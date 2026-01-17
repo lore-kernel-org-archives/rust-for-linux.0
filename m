@@ -1,190 +1,264 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013068.outbound.protection.outlook.com [40.93.196.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35FA13D638
-	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 00:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768610669; cv=none; b=TRBLAkPN5UHVLRgeFjvFUZup+IlVrlflR17B0YOCD7J67AA3ZkVf54gfLzxn7BzOXklllAjsXTFvvfFA9x+3o5wCWNGNokzKP4ejlE0n90/sNMiL3IqUPldPrw19mE/Q6ili0dWUz0PJnF3Z4zgdoARV+O6nHA8dMfW3NWubUHk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768610669; c=relaxed/simple;
-	bh=CgBRFm2Cv+c7Lf71Brl/A0fgWHhAto09L/NNtNH7Mrw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZqRzTrInqNU5edCgu15BKfQMtmMTnoX2vzQ/eintIeH3Cxd7k/plhUyXC2s0fU1q/OojwIk3e8MOiwq1V0Bt72oU7ZsxCRzRUxPlKgaaVMbvOi7wkY20Xx+cCVhqXWXXRBC7iwAbHfRnaiM2tCBxd8t88u/PCor4QkXpSRI7jHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a09a3bd9c5so19114875ad.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 16:44:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768610666; x=1769215466;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5LNGXAu1gOIuVgbKQ48AfTz/iHxZtEMCwM5bobAPUCg=;
-        b=xFExMTHQ5hSuAGS8KZHO21D1Zc84tkrdrHYHOeEw7w66qPkArqSu8EzoRhOOriscgb
-         b2WIMukgS42Im+tvYUwRLWjTtKleTf8DGszNtNcCEMBRZ9Zr/fIVhD0B3hN6n0yqWDue
-         8oGRnsx+6V1khJQIaYwAHAK2vJtBIkETDMzSRMn4DbQb36IZap4fb5brxooGYEpmOM4q
-         eTydMyg67QGZ5Qd8kh+6zWYEaJNf3iVYGI2RYahibKoCX/w1EyhyYYTHZjNiNPFdRte3
-         GnqhLCdtHTht5HbAEwm1WxETgSHfW5kUo4+egg5hgd64zaImdaALaEMeirNKPY6rX6i5
-         Lv5g==
-X-Forwarded-Encrypted: i=1; AJvYcCUMufPzwME6djZq77a6vpgaXSfigiG5cwwoZ/nv+zFJD6FQGuTHH3uR0JHetjFbKleJQGbRkrfyLS9/5RprdQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6gXouejLkIZ7xGsZxEtDoyxwNDiZ5LLOKf1kAUQSYaFNccfFO
-	t2omajCYzUB4Suq9wUuBqrDCgb1XNZOBSi2JHvhFuFJiEkMavH8ZaMHV
-X-Gm-Gg: AY/fxX7ZE05ofnDqXnZI1DrIgf7Peh3P7ZM5LyA2oRdH78n6DVWVdeK0801IIJ32Hem
-	zx6vBLEuyappebVy8pkVkfAth1lYgjahw9vIusjWQtWdqPek/TTgOe7xfHq4keUhVybplyjl+aF
-	FAJlVHx+pX3ELnK8Cu/DY1YWnLa2hoeY9gOp3/hm9D/nkBYPWg/dU8ZTbKlvW8BarFF4B5PX3hl
-	421l5Ce3ihp3AaMskFPl34XaOI3UHsMBg9VFn31XvXZ7m7nG6EYKLLq33xtqkaEXxUX1QLohd7C
-	vYnsbMeNyz/CRQqndLYtz7XmIVe7bDXrxyHqVi8nbcIYk6p0s9zRjmrfM/+QY4CjxXLzx9kXwWR
-	dV4NErlNUniKdpABxoH6lgaC8v5BdpoF0koUCxRXCW3v0EQ99zu9SVfqxTdErAY80TU61Jyl96L
-	Fh28zrSWR8YOd9pfZIA0HpTiH7T9GvCRgxlb0mJylwXchF
-X-Received: by 2002:a17:903:2ed0:b0:2a0:9081:8a6 with SMTP id d9443c01a7336-2a71887c864mr40490835ad.20.1768610666344;
-        Fri, 16 Jan 2026 16:44:26 -0800 (PST)
-Received: from localhost.localdomain (104.244.95.48.16clouds.com. [104.244.95.48])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a719406505sm30381715ad.84.2026.01.16.16.44.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 16:44:25 -0800 (PST)
-From: Ke Sun <sunke@kylinos.cn>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: linux-rtc@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Alvin Sun <sk.alvin.x@gmail.com>,
-	Ke Sun <sunke@kylinos.cn>
-Subject: [RFC PATCH v3 3/5] rust: add device wakeup capability support
-Date: Sat, 17 Jan 2026 08:44:13 +0800
-Message-ID: <20260117004413.449027-1-sunke@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260116162203.296844-4-sunke@kylinos.cn>
-References: <20260116162203.296844-4-sunke@kylinos.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F7C3033D7
+	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 01:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768614983; cv=fail; b=ehYMsWP3101ZffcdZh7hpQbt/BG6iEY2w5VwJNI8bxmBHkRsmz55WarQ/CmVyczvvlXQ17wnQTONC419gW2NPGy+VLflajdlxcs8ecGTflRqplSr7ApeKn4rANZr1SwTpErPa9/hR4y/WMu0RcBoQvaKwETsQFj0AYWPFzVmKzs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768614983; c=relaxed/simple;
+	bh=O/tLjvEgtMKBoQ5hpXqGR21hK2xukvbqHkNHGd03H/w=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=K0FbLtnAaywlO48PD8Jbb9TeKa++kucu07ThLMh++B137rvzSa5K2JzP9HkSfEea5kzgjFXqRyCbCs7rd4D0j6RpmL2Tg0eH4Mt4c0ZmijOlY+rNZ8edQKVIMAfAzu/3th2tN7UeVh2WW2waGBsiJuQObK1y9dY1Fcrsj/A/Okk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Zjb4M4yx; arc=fail smtp.client-ip=40.93.196.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Zjb4M4yx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qUQpMo9QwlPKzIfugjRZEPvajqDg7E/lXwQIIQzOeJWEVERiWj9pZl94qorNrYcDlzgBjHzBtSMHD1HtQ+we0+35YqqMfafx/vRerAzeXwGYig0Ms4qdSimQkeG5GxZlRAd/ca9i0ZekTaVCeQg8rYLca8DNQ3EcKLv/trivb22FJiJwQwpAyud4UoDM8IyJyRGNjSLzpMRjG7UGA6cGcmyyZEnnDcyMmIAXc7f2khlNPJ6DazSlV+u89nhDij3NWWqj/YRUmzYtoaKYWGmNwjhL/XiRI7XK4091OvzoTlci239AZcBc4RZKhvCAcnnNoqGrSS18E9qUzMtOl0clRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Is2QYzXV7syv6o9UBKDyAvQbGu+wtNmSxhw+M7QC3N4=;
+ b=ferNVrz5OjVDvgEh0RQwCUj4Yli9QGTJ1bAArJ2wXyIxW2Ukk83/e4zOsuOaQvkrvdCDr4zywKnrf5XB0cqkZbWN/ekSq3ow7GekjQP6M8smz6szi0MhwCzdql5asV80nVM7JVIKLpJmaduSISgFjeiRu3TVmco3U00/es+DCwdjcN5pZQm514S1I1ztgWuk/d6JxqSxJMBUVsOwiUDw6AAxQ9XJ6zjxBTaaiNbRbNFwe7ddgOK8pjRMkLCH0eOH4hSvBZ0zt4ca/6V9Aqj/hQMYHJfeAyIMw3mXcLJxK5iz6s37Z3kZ2mJ+ObGP2DuRseF5nW+eQtohTrefScZw2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Is2QYzXV7syv6o9UBKDyAvQbGu+wtNmSxhw+M7QC3N4=;
+ b=Zjb4M4yx8QgavlCW9DiMaMXzeia8dyejgM99LwMFn500KFmfY4g3TzAgWfCeROIYMpu5t3JolCj5GcUIouO474rGRw0R2+PKT/zuIQ/vsvlx8oKE/gGxSiy8h3m7BaRv9ReKeWQzGiv+WMTB7ZHr2n6kv08r74Nvh2IV4gWTsOp6Cj3p+y1ttE+ru4a0aWOisEraP22iWFKrSoQ4L6HzvUHXbmv+av0i9XCj9noCprIrrKCgiRhTgxYRDNKIvj+q2OjstaHf8QjuA1h+Bmd5Vo9QDW1l+OV3dTEB8zdVxtv1LYR8nkdsHNpNcgR8nSHZwiuMkIOuQ7z4AooqMITIIA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN2PR12MB3997.namprd12.prod.outlook.com (2603:10b6:208:161::11)
+ by IA1PR12MB8466.namprd12.prod.outlook.com (2603:10b6:208:44b::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Sat, 17 Jan
+ 2026 01:56:19 +0000
+Received: from MN2PR12MB3997.namprd12.prod.outlook.com
+ ([fe80::73c6:e479:9b75:b2cf]) by MN2PR12MB3997.namprd12.prod.outlook.com
+ ([fe80::73c6:e479:9b75:b2cf%5]) with mapi id 15.20.9520.005; Sat, 17 Jan 2026
+ 01:56:19 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 17 Jan 2026 10:55:33 +0900
+Message-Id: <DFQHO4129L0Y.2RND2QTLDSTWZ@nvidia.com>
+Cc: "Timur Tabi" <ttabi@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, <nouveau@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v6 11/11] gpu: nova-core: add PIO support for loading
+ firmware images
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260114192950.1143002-1-ttabi@nvidia.com>
+ <20260114192950.1143002-12-ttabi@nvidia.com>
+ <DFQBHVTTHZY8.13ASLCJ3FJP81@kernel.org>
+In-Reply-To: <DFQBHVTTHZY8.13ASLCJ3FJP81@kernel.org>
+X-ClientProxiedBy: TYCP286CA0220.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c5::20) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3997:EE_|IA1PR12MB8466:EE_
+X-MS-Office365-Filtering-Correlation-Id: e8a3cc53-b739-4d80-549e-08de556b8b1d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bktGb2hpdGltdUd4SXBjdHFTQXdFYWVlN1pRK215VnQyL1VmMFlBMDBUM3Iw?=
+ =?utf-8?B?MVhsZzhSTzZ2QWE3Qm9WcXlrUmx6ZkJrekVFVlNwQW4rd3VqWG1JaDN0Y0lT?=
+ =?utf-8?B?MEJCeGkrK2prQzJlQU56TmdBTktuVGoweTQwRndJMFIrRlFVekc2VlBNc2RB?=
+ =?utf-8?B?L1lKOW5TMXQwR2VTNXlmUlRxRGtCOE4zRVlhdXJGNEFSUitNWnpGdktKQTRv?=
+ =?utf-8?B?TENqZyt4UGYwT3pjR2ZkUUtYc0NXT25CNmF0VzIyL3lRQ3NVeUVzV0g5cmtt?=
+ =?utf-8?B?SzRJUDdkVi9UTUJ2YVRsbUF0bzBCR2dDdmt1WTdrek0wZGJaQ0g3QWtYSzVO?=
+ =?utf-8?B?SDUyNkM1NmpqemVIdU9RVnNzMWR5N1EzZmxYRUNldFFyemRrN1R2Q0dnbDdV?=
+ =?utf-8?B?YkpFVDFrSUF1YmZyK2ZQTGY1bFBrWUxNSEdjWU5RVmg5KzJrTWlLTkFqWUhJ?=
+ =?utf-8?B?eUI5MlRBY0RJMkt3b0tUdnV2aFNRTHVFK3V3Sjh0UGpHTDVsNGlzTm9NTjRa?=
+ =?utf-8?B?Y01qTitrQUU0OVFBUzV2VmFQRDF4czRtcWFWbHZvL1dGU250ZHFVWWZlaG1B?=
+ =?utf-8?B?RFVSNnhybVJubHd4anZMdWwwVGxoWWl1MmRBL0NHVFZ2b3EwdkhXbHgzelF6?=
+ =?utf-8?B?NnRZQjE2TWZmMHl0RXBXclYwcXh5SVRlRS9zbFN2NnJpVUdXNlorNzUvYWNs?=
+ =?utf-8?B?MWY4RzV5MzNhWko1VDA1RUtCbjNOb1ZUTktoNmd3RklSeWsrV25SeU12TWVF?=
+ =?utf-8?B?Z2dtNW91R2tpQndjZDZ6cFhXNlgxbVVDdEEraEJNM3VTRFBQdUZNUHFCZS9K?=
+ =?utf-8?B?S1dFd1I1ck1UbUZJWVRZeWIxbllQVlROYUsrRldJbElBamdqRnVoT3RHQXV3?=
+ =?utf-8?B?TGFxZEZ2L2RvS3ZDUXRaUjV0R05MQk85SXdwQkNpZDhJRDRzU2orK1U2Vzhp?=
+ =?utf-8?B?YzB3Rm85M09BcXNxdXloR0lmQVVRQTIwR3Fua2dyUmdtRW9oeXhpRkt0QVM1?=
+ =?utf-8?B?TnVPRlZhNytTclg1cDY2Ny9IT1FwZllySXdWZXNBRGVNaTlHZ2FJTTRXaVpT?=
+ =?utf-8?B?QUNIOExxS3krcWtxYjJxUWc1c01CL3UyQTRiZ0tZSXE3cTN2dGRSL2VUWENS?=
+ =?utf-8?B?QzUxd1QvaTRncWJOWnBGMHBUcS9QZUZQN3ZXRTVLdU1NTSsveHZ1cHZsbnI4?=
+ =?utf-8?B?NlQ1Y05JTVNhaVI4RmpMRXhyekxkMHAzRkNqWjJKQllvMW1UTUwzNE5oaklx?=
+ =?utf-8?B?bi9WLzhOZHlBUjA3UDNLVUdJVHdXZCtFQzJwQ2FSQk1iQU9jK0trZkFMSG14?=
+ =?utf-8?B?WTgzR09Wb0dsTjRiOVZ5Y2tYZ1dQanBaeTFhblJWd1NDbnFwcmFRNUcxSm9D?=
+ =?utf-8?B?VzJrN2lDRmhXTTRDQjR4czZpT3hmQm9MMUtpdmVnMkkwRm1KZ1dXb2JkaWNt?=
+ =?utf-8?B?RDlqNTJEaXFPVU5DWUJCQmYzWlg4dzhFTVVpYm13eVc4c0hTa0h5QUdJaFVB?=
+ =?utf-8?B?ZW5HdDhLY3BHNC9xbnprb2NpeXhLREJpcU9CMlh5Z3U2RWlJZHNLVWxXMVpL?=
+ =?utf-8?B?TTdwTitUc0FWRWdFOE5DNXlEU2drbEVSTDdrZE41WjZkWURBRk5UQUEwbW8r?=
+ =?utf-8?B?Y1dIUmZ6WkdYeUhUdTdJZzd6MllhSzduaVd0N0ZhU1B2UlB1cHh5SkdYbGt2?=
+ =?utf-8?B?WGxoMDJ0bXZoWUVjaklydHdoSWF1RVlmUStuOGhIdTdWbzhkOXpTUGdCaXF5?=
+ =?utf-8?B?YVZJSXJjSlExUnJFSWl5M1FzZlpYSExmcDFVSjlrd1FJZmJGdXYxRDBlTGdZ?=
+ =?utf-8?B?RU56djBhckNteXh4UjFSb00yektZczBsRVYvTlU3ZCsrZmdaOG5DazdVdzlv?=
+ =?utf-8?B?VlE3clZOaEZheGl2QWhuSmRvdW1XMTN0ZWVKZE1oTVNsZ3BjazhRNXNxQWg0?=
+ =?utf-8?B?N24zeWpUSUpCMXhDSlJlMXE5cG5uNHJFQ3hlSkhoeU1iSFBSdldRSG1naVUr?=
+ =?utf-8?B?WFRJR3hHbFd0MDJJV2RrdVdVd1lLU1FhYzczZ3Q1VW1lazdoYnpIL212QzRM?=
+ =?utf-8?B?aWRYTW1YdVNLbTlBUk1XMU1ZSEVLQ3d6VnoxTmJwRjZoNHlQak1JRU9qajE3?=
+ =?utf-8?Q?B0Yw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3997.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZVlITjZkdytPb0dKWVlvNEVpRmJDR3V6cXhCc3BQWkZaZ3IvN0w1MkZ5VE5C?=
+ =?utf-8?B?bm9pOG0rZ2hBSmVyckNDQ3RIcWkvdnBoSUJ3OHA2QTRNU3hmVnZOaW0wczMv?=
+ =?utf-8?B?SWs4cXFtN2xhYUg4d2k3cFB3Yi9sVXRhNjZ5UEs4b3RGY0NRc3hwMXpaRy9s?=
+ =?utf-8?B?cXdVTGFWOU5vbDdGMlc4aUJVMkEySk1FS25GeHpzWHJlMDhQVzkvakN1eVVW?=
+ =?utf-8?B?YVFvanZ1bHoweFY2RFVVY2FLbkdRTmZmb2pWZTZrRmJiZ2lpT2NUcU15TFBh?=
+ =?utf-8?B?V1h4NFJFWGpHSitjWVdza1l3LzVjY3NLMHAvZjVRaEhNL01ld3VmbllnbHJE?=
+ =?utf-8?B?azgvbDhBMnM2VEpCWXBKT1NlR2pRTnFIMW9ZUnhpN24wcDl0VTdtMzRab0hX?=
+ =?utf-8?B?Rk51d0xnbWo3RVdXK25tcllpdjFybjM2M2dNdE52VGdNYlhjN0UrcEE4Lzdo?=
+ =?utf-8?B?R2drMldhMWpmeDdjOE1QL3hhN1ZXOUNjT2tYTlRacmgrd0dCRlAwS3Qxd3A1?=
+ =?utf-8?B?Y0s3Y0tWM0RJN2lZWE9xTFJNRzFSbVJDQ0xENkIyVmdHRnRWcys3S004cXYy?=
+ =?utf-8?B?aFIxOXViVjk3bEpla2FHOE1LZXFIblNYbkkyZUU3djJocFpoVUlWcWZkK3Ir?=
+ =?utf-8?B?R1VmOFYrS01PQVA2WlVjRnVSOXJnNHlwaHREd2lyelBnVUl3UDREa280RlJi?=
+ =?utf-8?B?S0l1eU9RalExRTdydWNpY0phbExNRFRiOTVwWENRU0JreU8zTE1MOStGRzNx?=
+ =?utf-8?B?Y1B5aDJvbHlUUzhRUWpzMFBIZXZOUWQ1RUtHYVU3RzBsZTFCanNFQUppSjFN?=
+ =?utf-8?B?U2o4UXBkektzenBaY3R1RkRqblUzd0wrUzBkS0xpd3lGd29XMlJyUi94QUFv?=
+ =?utf-8?B?Y0RhWVZ6bEhsZWloSmRaWWJVbStjT1ZqVW1qaGw4eXpYRlFCdk5Qd0tXaFZ3?=
+ =?utf-8?B?SUdsMjUyblNRbUpkUkVLV2JMcGNBdWEvY3kvY2RHRFM2VmIzcnJ1aC9SNzRR?=
+ =?utf-8?B?MVpxUWxmd0h0LytIM201VGpTazFHQVZiQ21KdFh5RGM0VFA5VU9pU1V6Y09p?=
+ =?utf-8?B?VldmYTF5a0RmbG5QZ1hMY1ViQ08xZWFLdmdZRFhueVVLY3JLM2phc1BRRlV0?=
+ =?utf-8?B?OGJqZjR1Tm13c3RMTWpmYjVnUFErUkYzY01JWkQyQmttWm1VemxSemVjS0JT?=
+ =?utf-8?B?bFRkTXI5WDF3b3dReFZzMUtBUjZzeHlFRmJjZ2RmOVNHODU0djBhK1hLQzgy?=
+ =?utf-8?B?c2cyS0JERjhJNEVKWVplMFFnbGpXMXJhRmhvN1JELzR0U1k2VmtpbytVWDlT?=
+ =?utf-8?B?VC9FNzVTZDFsVzc0NXh2UmNBWnROQS9ySmE1ZnZhNGl0OHNGZ0VGWHd6ZXpB?=
+ =?utf-8?B?OHFOS0tPeDViMHJuN25hcnY1UnZ4M3NDRzVKNDJaL29McWR5aUxhM3BBUS9U?=
+ =?utf-8?B?eUo2bEJPcVpZUmJlRE9qdkxJTGtVQUlHYUtpWlJnbG1IUmU1azR0Z2ZxYzdQ?=
+ =?utf-8?B?RkhUZXh3UDdTRngwdzk3dTlkdjZ0a0FwMEF1NHcwdkVCcDNvL3YxcGtqV3NX?=
+ =?utf-8?B?NkU5eHBjMzZkckJqcHRFQnpiV3hzZEZIUGl0VHM2QW04bVdIVS9uaDBYRVo3?=
+ =?utf-8?B?L0pOV1U3c0twWGdiRjhMZmlNMXBBSm9LbGVkSGc2bitZSGxwQk1LSUZlS1Q3?=
+ =?utf-8?B?eGNNMmFWNWJCdElIY3BUTUUyYXNydElMWTRYdmJSMDVXVXF2azN2M1g5b2ZE?=
+ =?utf-8?B?akNDbkFrSjN1N1NDdDFpQmV4UFFqTThKVENDOUxGYmNzVTYyMkZRM0crOXpz?=
+ =?utf-8?B?RlRGdUdzOXpTWnMzZEJGb3RaSk1WVm5TSENFNFVGZ2VLNFpEMHlFbFJrdVZO?=
+ =?utf-8?B?R3BqSmZEWWtzNmZKRzJhZDQwYjhnakNkNDdMemhRVks4aHMzMEN3L3kvQXhB?=
+ =?utf-8?B?eW1PTTk4L3BpVXIybTlTODUwSXZKcXlQeTl2L3ZwNnJleVhxWW1VbnoweklN?=
+ =?utf-8?B?ZSthNHNNdW5iejNwaG1hOEtHWFRFd1dMSWcxbUp4bjhBVm9JM3BlenBjSnlw?=
+ =?utf-8?B?YTdpeDZ3QWJvTGtYM01uRXFRczluckFrL2RsNlhMU2g5YmIzc0tTVjZDcVFH?=
+ =?utf-8?B?WmRVMTRGVisrR0ZjYnFGSys1Mjcxb3ArR3ZyOXB6YlI0U1ZUS28rOUY0Um1k?=
+ =?utf-8?B?MlhWZWo3OE5pd2JaUjVOMGhLYVhibGtuYkFWaytVVXh6dXFVTDJvbWh2Mlg0?=
+ =?utf-8?B?N3NqaG5WR0pGenRjZnNEZWxWRkxFRGJwYm9KNzM4MkNmN1h5cDdnTnlpazB3?=
+ =?utf-8?B?Yk5GL09ZWC9rTis5RklRY0xiSlB6YUlJeXpTcVRRUVFMSnVNRTRtenhiaWJy?=
+ =?utf-8?Q?/l42Ilzr4wnMXwNf7u2FmsCy1CmGfl5RVAGxtujGMfKHI?=
+X-MS-Exchange-AntiSpam-MessageData-1: vilDNkZJFQJE4g==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8a3cc53-b739-4d80-549e-08de556b8b1d
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2026 01:56:19.1942
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zi8avuXB+WA0uHd4m53JNMO8UDXJ2tfu8rJ/p9yK/wNb5JwCpsCqpQtS2U3Ze0cgcAxWgCfK5x0Vd6b7g8Ksfg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8466
 
-Add Rust bindings and wrappers for device wakeup functionality,
-including devm_device_init_wakeup() and dev_pm_set_wake_irq().
+On Sat Jan 17, 2026 at 6:05 AM JST, Danilo Krummrich wrote:
+<snip>
+>> +                    regs::NV_PFALCON_FALCON_IMEMT::default()
+>> +                        .set_tag(tag)
+>> +                        .write(bar, &E::ID, port);
+>> +                    for word in block.chunks_exact(4) {
+>> +                        let w =3D [word[0], word[1], word[2], word[3]];
+>> +                        regs::NV_PFALCON_FALCON_IMEMD::default()
+>> +                            .set_data(u32::from_le_bytes(w))
+>> +                            .write(bar, &E::ID, port);
+>> +                    }
+>> +                    tag +=3D 1;
+>> +                }
+>> +            }
+>> +            FalconMem::Dmem =3D> {
+>> +                regs::NV_PFALCON_FALCON_DMEMC::default()
+>> +                    .set_aincw(true)
+>> +                    .set_offs(mem_base)
+>> +                    .write(bar, &E::ID, port);
+>> +
+>> +                for block in img.chunks(256) {
+>> +                    for word in block.chunks_exact(4) {
+>> +                        let w =3D [word[0], word[1], word[2], word[3]];
+>> +                        regs::NV_PFALCON_FALCON_DMEMD::default()
+>> +                            .set_data(u32::from_le_bytes(w))
+>> +                            .write(bar, &E::ID, port);
+>> +                    }
+>> +                }
+>> +            }
+>> +        }
+>> +
+>> +        Ok(())
+>> +    }
+>> +
+>> +    fn pio_wr<F: FalconFirmware<Target =3D E>>(
+>> +        &self,
+>> +        bar: &Bar0,
+>> +        fw: &F,
+>> +        target_mem: FalconMem,
+>> +        load_offsets: &FalconLoadTarget,
+>> +        port: u8,
+>> +        tag: u16,
+>> +    ) -> Result {
+>> +        let start =3D usize::from_safe_cast(load_offsets.src_start);
+>> +        let len =3D usize::from_safe_cast(load_offsets.len);
+>> +        let mem_base =3D u16::try_from(load_offsets.dst_start)?;
+>> +
+>> +        // SAFETY: we are the only user of the firmware image at this s=
+tage
+>> +        let data =3D unsafe { fw.as_slice(start, len).map_err(|_| EINVA=
+L)? };
+>
+> Why do we need the firmware image to be backed by a DMA object at this po=
+int
+> when you load the firmware image through PIO anyways?
 
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
----
-Changes:
-- Add new include headers in alphabetical order
----
- rust/bindings/bindings_helper.h |  2 ++
- rust/helpers/device.c           |  6 ++++++
- rust/kernel/device.rs           | 18 +++++++++++++++++-
- rust/kernel/irq/request.rs      | 17 +++++++++++++++++
- 4 files changed, 42 insertions(+), 1 deletion(-)
+When we request the firmware, we don't know whether it is going to be
+loaded via DMA or PIO. DMA does require a DMA object though, so the safe
+route is to always create one and access its slice if it turns out we
+will be doing PIO.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index fa697287cf71b..327298fb39b00 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -72,6 +72,8 @@
- #include <linux/pid_namespace.h>
- #include <linux/platform_device.h>
- #include <linux/pm_opp.h>
-+#include <linux/pm_wakeirq.h>
-+#include <linux/pm_wakeup.h>
- #include <linux/poll.h>
- #include <linux/property.h>
- #include <linux/pwm.h>
-diff --git a/rust/helpers/device.c b/rust/helpers/device.c
-index 9a4316bafedfb..5e31e42e8ff00 100644
---- a/rust/helpers/device.c
-+++ b/rust/helpers/device.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/device.h>
-+#include <linux/pm_wakeup.h>
- 
- int rust_helper_devm_add_action(struct device *dev,
- 				void (*action)(void *),
-@@ -25,3 +26,8 @@ void rust_helper_dev_set_drvdata(struct device *dev, void *data)
- {
- 	dev_set_drvdata(dev, data);
- }
-+
-+int rust_helper_devm_device_init_wakeup(struct device *dev)
-+{
-+	return devm_device_init_wakeup(dev);
-+}
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 71b200df0f400..b8f7e185e32dd 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -5,7 +5,9 @@
- //! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
- 
- use crate::{
--    bindings, fmt,
-+    bindings,
-+    error::to_result,
-+    fmt,
-     prelude::*,
-     sync::aref::ARef,
-     types::{ForeignOwnable, Opaque},
-@@ -324,6 +326,20 @@ pub fn drvdata<T: 'static>(&self) -> Result<Pin<&T>> {
-         // - We've just checked that the type of the driver's private data is in fact `T`.
-         Ok(unsafe { self.drvdata_unchecked() })
-     }
-+
-+    /// Initialize device wakeup capability.
-+    ///
-+    /// Marks the device as wakeup-capable and enables wakeup. Both the
-+    /// wakeup capability and wakeup enable state are automatically
-+    /// cleared when the device is removed (resource-managed).
-+    ///
-+    /// Returns `Ok(())` on success, or an error code on failure.
-+    pub fn devm_init_wakeup(&self) -> Result {
-+        // SAFETY: `self.as_raw()` is a valid pointer to a `struct device`.
-+        // The function is exported from bindings_helper module via pub use.
-+        let ret = unsafe { bindings::devm_device_init_wakeup(self.as_raw()) };
-+        to_result(ret)
-+    }
- }
- 
- impl<Ctx: DeviceContext> Device<Ctx> {
-diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
-index b150563fdef80..2484e4b53cdc3 100644
---- a/rust/kernel/irq/request.rs
-+++ b/rust/kernel/irq/request.rs
-@@ -120,6 +120,23 @@ pub(crate) unsafe fn new(dev: &'a Device<Bound>, irq: u32) -> Self {
-     pub fn irq(&self) -> u32 {
-         self.irq
-     }
-+
-+    /// Attach the IRQ as a device wake IRQ.
-+    ///
-+    /// Attaches the device IO interrupt as a wake IRQ. The wake IRQ gets
-+    /// automatically configured for wake-up from suspend based on the
-+    /// device's sysfs wakeup entry. Typically called during driver probe
-+    /// after calling `devm_init_wakeup()`.
-+    ///
-+    /// The wake IRQ is automatically cleared when the device is removed
-+    /// (resource-managed).
-+    ///
-+    /// Returns `Ok(())` on success, or an error code on failure.
-+    pub fn devm_set_wake_irq(&self) -> Result {
-+        // SAFETY: `self.as_raw()` is a valid pointer to a `struct device`.
-+        let ret = unsafe { bindings::devm_pm_set_wake_irq(self.dev.as_raw(), self.irq as i32) };
-+        to_result(ret)
-+    }
- }
- 
- /// A registration of an IRQ handler for a given IRQ line.
--- 
-2.43.0
+Another way would be to put the firmware into a vector and create a DMA
+object on-demand in `dma_load`, but that's a more important refactoring
+that we can probably keep for after this patchset should we want to do
+it.
 
+>> +}
+>> +
+>>  /// The FWSEC microcode, extracted from the BIOS and to be run on the G=
+SP falcon.
+>>  ///
+>>  /// It is responsible for e.g. carving out the WPR2 region as the first=
+ step of the GSP bootflow.
+>> @@ -221,6 +286,8 @@ pub(crate) struct FwsecFirmware {
+>>      desc: FalconUCodeDesc,
+>>      /// GPU-accessible DMA object containing the firmware.
+>>      ucode: FirmwareDmaObject<Self, Signed>,
+>> +    /// Generic bootloader
+>> +    gen_bootloader: Option<GenericBootloader>,
+>
+> I'm not convinced this is a good idea. We probably want a HAL here and ha=
+ve
+> different FwsecFirmware types:
+>
+> One with a DMA object and one with a system memory object when the archit=
+ecture
+> uses PIO. In the latter case the object can have a GenericBootloader fiel=
+d, i.e.
+> this also gets us rid of the Option and all the subsequent 'if chipset <
+> Chipset::GA102' checks and 'match gbl_fw' matches below.
+
+Yeah that's basically what I have in mind as well - the FW type using
+the generic bootloader could wrap the regular FwsecFirmware as its
+purpose is simply to load it. I'm trying to put together some code to
+that effect but it looks like it would work and would also remove the
+special-case code in the PIO loader.
