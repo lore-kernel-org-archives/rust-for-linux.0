@@ -1,117 +1,125 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62067309EF4
-	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 11:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E67288B1;
+	Sat, 17 Jan 2026 12:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768650910; cv=none; b=lV/9YQw2En1qh/DqKMOSwwlecc96EEHH5VwuVQ7Gg0hQg56Vezge1pxhD60lHNY7FTZNqyLJCi1wwJWHSxICIb1zPcgbv1ibh13r/qk9f9jXrcQgojzRgmIhxEJmTy52iLQLU4tEGmYh6D65xs/U9xObkS1tRLiV7fzypik1Oik=
+	t=1768651679; cv=none; b=P5Jon7/cJ/w1JaBjB2eQ6PfP8cHhpHwpHnDxxVki5baMrXug3igAPpheVQlcNvSWYx/hh/rbu4ZwLXAruBgDQGViJ0hy8E+mI+o59cP5JYQ/ABGDTQsGpqFpuAqD3v9VxBpcfyRWGMnvRcN3H2IGNoui0VTYXh1StIa9Se33MzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768650910; c=relaxed/simple;
-	bh=JKuiMJd4b5PrjzGihqsZ2lYXtmBAHUr5Vx2YzFo1CFo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fxLi49QIMXFknADGzOl/XE95p0WlB96bH52h0ysKo8AbkqfzXttz63z0hz4CxCtvHrvea8jBVTKZdy3htg8hR71K9EJobGSFarmTmmJkjj2n8ZIIoykG5AyVPLGdOiYupd8OyUGp18Nfoa4XWmEPcx02BFV1/tNw85BmWZ8wB/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yKa25yV2; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1768651679; c=relaxed/simple;
+	bh=YFDmJOZXPg9+lwxyexc3704uh9a049DRLpQcVHf0ZOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zx5Qh6kSz4+nD02ZCFZUFca4+frp0TbJ9I7+gEoPROIqTeU/IA73Vx92Stm3Ed28dLiHSaF8tlQ12EmRaj9GBozfWR7NDcwl2PvVRkG192TRRiT+rveF7d8378UR4aNInDWxgHyHG3I2UxqX6RJ7W8blWmSFe/3U6Q2hwZL0TrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPeZqiBg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yKa25yV2"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47ee868f5adso22703045e9.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 03:55:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768650908; x=1769255708; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aLzmroCaS/6bTcyxw8v2f5hrQAsPrQS2nRkMsKAP0sg=;
-        b=yKa25yV2suGryY/7Wd+kPBR52nUFlBA1IQlqVhoc9Iak9NqFa95KfIZVZKTwp39gJy
-         ry7kICaBUNkNcvZlw7Nqf3wdT9kpzgj8tDJnxkDgyPX/WDTUw6iycTeb0Esr9y2VJWHv
-         RoWvjzYlZ2ZrbbS5u0stqa2Ij+j0/HC3Vk1G7CJ3UdRodhWHzKZBDuq/ob8D5j2D0qcS
-         ItooGlyPpvuVX1AHWRxMz4yF6lUAniB0Pc2XE0VJ3z599P8ywGAw/LePCCgwROVPl8zc
-         MMXRhH7TSn2cop0zwBOSRnQyGt3slsxS2golg4WHt0aNv/6K41XEy8j+IpZMmDf1ntzl
-         SnyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768650908; x=1769255708;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aLzmroCaS/6bTcyxw8v2f5hrQAsPrQS2nRkMsKAP0sg=;
-        b=VemkrBnSR8TPtAY2MQ1l9FM6+i0YKshO2pTZiH3SvsBs6HSXE6uglZz//03CJq4Fsl
-         slXkaVOBcazJpxchK+vKyuZr1ThJMOMdanG0SGFakHUdSg2DJv5YX8eSoMGaI4JPhyig
-         bWo35wr9pD7Q6WMW1sgrO45bEtXmnA5TZO8WKv7pF1P4i1ZQ6qqMVQleVBvuaz5suqHi
-         W0c1oX30BEADsHbTZdVTI/FHcoZLKTmcwd2HIze4lTACJ5+iRGzAo2hbrpvGJpSFJ7/a
-         qfedkD8ur5Zcq77hG+t9xn64YY7HLwpv5MUy/FrxniDYZpc2qC8CLw+ozaiQi3G8TVQ6
-         LvlA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2n/qqlOMZOdmqmfuLr+G/D/x3jBGG6eadvKrWHkZYR7ZzqNp1vzsa02ZZFflHL3R6lIEzyCZlF//yBR1ERw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxs59tOphJYIhOpBil97x+wDiFWBo51tj0UmKMly+QJh/lBJUsu
-	rspn3IEdgkYP1GheQwBMhy6qIl7EtLGCs4cZXlyMVyZIef1zXmlrVeek78bvJR9/3i+GBlULax6
-	zV6/PK+h+/9dJVl1ygA==
-X-Received: from wmpx37.prod.google.com ([2002:a05:600c:18a5:b0:476:ddb0:2391])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:458d:b0:47f:f952:d207 with SMTP id 5b1f17b1804b1-4801e341e2emr60365675e9.19.1768650907837;
- Sat, 17 Jan 2026 03:55:07 -0800 (PST)
-Date: Sat, 17 Jan 2026 11:55:06 +0000
-In-Reply-To: <aWrSkAPFkdH_tvtN@tardis-2.local>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPeZqiBg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D27C4CEF7;
+	Sat, 17 Jan 2026 12:07:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768651678;
+	bh=YFDmJOZXPg9+lwxyexc3704uh9a049DRLpQcVHf0ZOI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KPeZqiBgVecwl1DROq3utXjSu3tYdnmSwRCYha1+FI2GKMmPyZG0zH7QrXKcUp7LA
+	 1ONB/Fqouu3J0edS3z62j2mW/zYFRFqdIqkjbJU4qETTDBbeTrQBfhQGolrU40DPbw
+	 e1XTZiS261kSdtFc1yXzSBEY13Ff7Cs1Nb4ldBT8=
+Date: Sat, 17 Jan 2026 13:07:54 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, rafael@kernel.org, dakr@kernel.org,
+	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] rust: simplify `Adapter::id_info`
+Message-ID: <2026011703-bony-unloader-9099@gregkh>
+References: <20260117094710.24301-1-work@onurozkan.dev>
+ <20260117094710.24301-2-work@onurozkan.dev>
+ <2026011725-contour-salary-d3d1@gregkh>
+ <20260117140240.15d1120c@nimda>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com> <aWrSkAPFkdH_tvtN@tardis-2.local>
-Message-ID: <aWt4muGXbe7lBmXt@google.com>
-Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
-	Andrew Ballance <andrewjballance@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260117140240.15d1120c@nimda>
 
-On Sat, Jan 17, 2026 at 08:06:40AM +0800, Boqun Feng wrote:
-> On Fri, Jan 16, 2026 at 03:46:35PM +0000, Alice Ryhl wrote:
-> > I'm sending this RFC to share an experiment I'm looking at. This may let
-> > us replace the range allocator in Rust Binder with a maple tree.
+On Sat, Jan 17, 2026 at 02:02:40PM +0300, Onur Özkan wrote:
+> On Sat, 17 Jan 2026 11:00:11 +0100
+> Greg KH <gregkh@linuxfoundation.org> wrote:
+> 
+> > On Sat, Jan 17, 2026 at 12:47:10PM +0300, Onur Özkan wrote:
+> > > id_info() checks ACPI first and falls back to OF.
+> > > 
+> > > This replaces the unnecessarily verbose approach with a
+> > > simple or_else() chain and drops temporary variables.
+> > > 
+> > > No functional change intended.
+> > > 
+> > > Signed-off-by: Onur Özkan <work@onurozkan.dev>
+> > > ---
+> > >  rust/kernel/driver.rs | 12 +-----------
+> > >  1 file changed, 1 insertion(+), 11 deletions(-)
+> > > 
+> > > diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+> > > index 649d06468f41..6cef792d54e4 100644
+> > > --- a/rust/kernel/driver.rs
+> > > +++ b/rust/kernel/driver.rs
+> > > @@ -307,16 +307,6 @@ fn of_id_info(dev: &device::Device) ->
+> > > Option<&'static Self::IdInfo> { /// If this returns `None`, it
+> > > means that there is no match in any of the ID tables directly ///
+> > > associated with a [`device::Device`]. fn id_info(dev:
+> > > &device::Device) -> Option<&'static Self::IdInfo> {
+> > > -        let id = Self::acpi_id_info(dev);
+> > > -        if id.is_some() {
+> > > -            return id;
+> > > -        }
+> > > -
+> > > -        let id = Self::of_id_info(dev);
+> > > -        if id.is_some() {
+> > > -            return id;
+> > > -        }
+> > > -
+> > > -        None
+> > > +        Self::acpi_id_info(dev).or_else(|| Self::of_id_info(dev))
 > > 
+> > Have we already started the game of "rust golf" on the kernel?  The
+> > original code here is much easier to read, and the compiler should
+> > produce the same thing for both, right?
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
-> Thank you, Alice.
+> Hi Greg,
 > 
-> > An RcuBox is like a Box except that it lets you obtain a &T that
-> > outlives the box by a grace period. It does not allow mutable access to
-> 
-> I think the `RcuBox` can be folded into the more generic RCU pointer api
-> [1], e.g. Rcu<Box<RcuBoxInner<T>>> where RcuBoxInner<T>: HasRcuHead. The
-> benefits are at least 1) we use relaxed atomic read for RCU readers
-> which guarantees address dependency that RCU needs under LKMM (while in
-> the RcuBox here, we just use plain reads), 2) we also support mutable
-> access as well.
+> I don't know what "rust golf" means, the main motivation here was to use
+> a more idiomatic Rust pattern.
 
-1) But mtree_load() does use rcu_dereference() to obtain the pointer?
-1) "relaxed atomic" does not sound like something that provides an
-   address dependency to me.
-2) How do you intend to provide mutable access? By waiting a grace
-   period?
+I was referring to this:
+	https://en.wikipedia.org/wiki/Code_golf
+sorry for not being explicit :)
 
-> As for the progress of that effort, the Rcu atomic pointer is almost
-> ready [2], I will likely send it early next week. For the `HasRcuHead`
-> part, as you may be aware, I'm working on a generic `HasField` approach
-> to avoid duplication of `Has*` trait and macros [3], that requires some
-> syn adjustments from Gary and Benno, but they should be available next
-> cycle. I will probably send the patches for reviews before that. Once we
-> have that `HasRcuHead` should be easily to add.
-> 
-> Given the WIP code I have, I *think* we are not that far from providing
-> what you need for binder.
+> Functions called in Adapter::id_info already return the same Result
+> type and it's quite annoying(IMO) to do "if x.is_some() { return x }"
+> in cases like this. Clippy would argue on many cases similar to this.
+> Readability is subjective, but to me the new code is slightly simpler
+> to follow (as it does the "try X, then Y" thing in a shorter way).
 
-Hmm, so I looked over [2], and I think my RcuBox is an RcuOld<_> rather
-than an Rcu<_> under this model. Though I can't afford to pay
-synchronize_rcu() for cleanup - I need kfree_rcu().
+Does clippy complain about this one?
 
-Alice
+> That said, I don't have strong feelings on the new code. The main
+> motivation was to drop the "annoying" code with more idiomatic one,
+> but seems like not everyone agrees with it. Feel free to ignore the
+> patch if you prefer the original code.
+
+I don't have strong feelings either, but the original is "easier" for
+those of us used to C code.
+
+thanks,
+
+greg k-h
