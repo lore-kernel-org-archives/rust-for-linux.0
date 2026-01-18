@@ -1,73 +1,73 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714693328E1
-	for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 14:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858A432C94D
+	for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 15:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768748263; cv=none; b=KoYoz3+zdTlBUCcwQjlteI3fTw/Dyt2YLjIAz6//HZtRTDCPU8ODzcAfVLaZUQJ6f/saFSiIGHHa2w9s823IonETdopBZ9PgGCWiRHrDzizpYlwmsUxVKhL8YP2RABtKeoOqTrPg4VtI113TlYZRDcFRGd6p/NcReY1mokeByCk=
+	t=1768748711; cv=none; b=FnOL8nrtADFD3Cw65T+6m3BD84shRxcM1SboB3f9WGaAmknrlRLlW+gZQL6AcJkTpkaT8v3asvSQ1RjArwOaZuAaGNuKlcQGVCeK3HTSq0fik8k0GGY/SvZmGcArpuSfPGyav20y/uUcVqK/p65JPRCuxiBfDNUmmF/OOSu3xfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768748263; c=relaxed/simple;
-	bh=z0KLMHw/ngV2EDzNPq3PZUHUH0yS2kMxX72n4PgVnOs=;
+	s=arc-20240116; t=1768748711; c=relaxed/simple;
+	bh=5vRsRWeMNtoPVYsJZKkrfh9mzvgru9Cb2lGawFduPS4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZqCm5oHMl9JYElVnb+rwQy/1Pad39O+f9Hw0mCrKK9gzFZZm2CPIxr7hQ6JjbHplVrYbHE8Ev8SSjLEyjpuFQc/ZjZ8pnipg513GgAu9wU/NrapKx3IcpWV1IkWfcFa07ULzHy7EE7g/I1ZL2xPNPlxwHFFBek9/vzNrivk76vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gX05uhSY; arc=none smtp.client-ip=209.85.222.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=A0qSuQAbbdGUFbxIhtMzBqHgtsmsy3xslT9ioKOuCF0hd7xzHpkKKrAv3b+sFG9BIRWlhPYqYEnkUGB/jSLOEO3DR1j5CoE4rfVJQWDgtOtfiFrLaBpEYd7/zLqtCWXaux1CINdbkgfeMy6SljzFs3niqQHQCTSjkQnLxrXmz0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z98NeYzm; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gX05uhSY"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8c52c67f64cso382733085a.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 06:57:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z98NeYzm"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8c6a508a595so292574085a.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 07:05:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768748261; x=1769353061; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768748709; x=1769353509; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qxkD3y/JM8IrHeeArH3JorG5vzoWquy0eBJRy7nIqK0=;
-        b=gX05uhSYOPR1xVuaXSPMh5zWeJFB1D0o1rk753W0in7h7VCQhy+zbLiDA/KUqWPlDA
-         QABJjzLvp+ZAiLCfp/KDnG4gaHyOAstrKo65pcXZayeT2uUgEHAJuZXPhDYrkIM91HEU
-         pu8U09uh+b9+pW3u8t6kX6/hDUFZYY+N1cqSvWFtxOZs2Emib9z4YocE2lJBAQcuyr1F
-         sPngdvyhtR9ksFP2TEpgpbmyiV+LTJkgKKBPuGKgD5TB0imBUGwHRdmB8fO87FfJNnR0
-         pfVDwicMmtgoSfAi+AMVPFE957z5l3ExenC8in8Y/EninRAtZMSg8sIUzfY7o+1tewfA
-         KW2Q==
+        bh=21uLaqJ17tNxzyJX/CswTc0v9JKdWpeTLh7D9bEVPhE=;
+        b=Z98NeYzmpw+qePaVCufd1WPP3bJIB+wGRdTbU7jPuzCTubMba+PWkNktg2028HGJ0D
+         q/g3A9SrEPZGcmlkNQ+l+Sadj8coEP956cjiz1z9VNg1vMpGSaVb2dfevmol7IqILot5
+         g3HDRp6za2qlhHqZ7jNhxhD9bhutWV+64rclYFh/vsDMaRMlZnp1GGwXjhqFi+X5mHyb
+         3+pZwpn8Stp/LJHAJy3WIX4YPGkHlR073Y9BtSXfJLJp8YZqaFChsJrfeT6m7v7/zGnx
+         18AqZISBtF+NLkFsYwDZndmyvd7N+3JSxdXQumhpWjfJIseamxfgjT12R/UbWAc5fKsw
+         y/VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768748261; x=1769353061;
+        d=1e100.net; s=20230601; t=1768748709; x=1769353509;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qxkD3y/JM8IrHeeArH3JorG5vzoWquy0eBJRy7nIqK0=;
-        b=i2OczxU9qttGtqiSWXk44a0ziYbfU8ZZ7F0Xqqptz74yViGzEyaiwF5AfQKUQOzPQA
-         T9xZOUUicEr6ehGHzClOL1yeHiqjLr6IcgGXzUg216GHeZ8DIWnmQ/7RgfTu5fYmkxkr
-         aL5eab/jWrdewCvK/FEBrJ2PBVTh4yq5/dGk+cq7C8D6gDZDNG8EEWOwYGuEmLUYnEUG
-         zZuQtHIWMY4eX9oUcxOiingXgF89YzSDBDqdqysCwmrYhTdTFPcZpuR7kW9EaOfPEw8Q
-         9sIlNl8ChW6vOOQ78GW+ply2yVTeH9BwxUPeyvJOGR9ZMRpEgKjniGE+auSYhhDbys1u
-         EE3A==
-X-Gm-Message-State: AOJu0YyiHQSlHuJgLsBWMPumBKbIEvqxFR4yGGTHHvSqBUoQepz1B+e0
-	4QnI7syDSw8s6+7SmtlWGPeGvLmmpvZoTDwdA/z2Bwa0J5llNFWEZ+2J
-X-Gm-Gg: AY/fxX42NscWOAH+XKk2SEQIuYCO4pHVg+olwsLPZoFdJM1VSolZ/l3xhfNMRKDoVmL
-	ngwkG2F1QY8smeJWmEjLo61tlq4KsC13Jn3mZ9W29nK2vh776f4twJzsqZLcw6jyIZN3F1B1tkr
-	oq+kOhBXRwxI1BVrtBgIKP7SpXvKRp/T+wybwiLooL3csCxs6ZWMfG0TRQ/16w8BPWn3giE0X/Z
-	e+cmYHb2Onlnd5OSSsa2aE+L09CkajKo2T7NTa4aE0/axuBZEyJsVq5/wTwCqWAHoKXRUZ2ftPL
-	KJWOLDT8YaP2x1VTH50LAYc0y/P9uotyYqJWkIS854A1Q4i2Ryi4jQ1jNh96Ozn4XGhHPSVnhR1
-	CbYQocKDFb9bjZyjsw9O/9GGKjG3PibyYdM99/3/HsGynv3AIkMXeUehLP773wj+H9k7l9/q//N
-	GTykb/TUb1D9s8GrN+P3KfOL5d96n4DMc0/9oROGYmBBgfU2NNwDQNkSDSPA8eyuyR4SDchd4ps
-	wR4marsm0c4T8v8XpkzvYjiHQ==
-X-Received: by 2002:a05:620a:3f8f:b0:8c6:a8d1:bd8 with SMTP id af79cd13be357-8c6a8d11388mr698299585a.87.1768748261370;
-        Sun, 18 Jan 2026 06:57:41 -0800 (PST)
+        bh=21uLaqJ17tNxzyJX/CswTc0v9JKdWpeTLh7D9bEVPhE=;
+        b=onK10RJJrxwH1bn/a0BR+5mhORPSyniiIQAnHX0gyY9Xx8c4CW+JaRUPdzNszexkZJ
+         KNZdUEBQ2rd+vpLmHwg6gRneEwNHqcmfP87hIHCGEbDYY9qdJwNcK6PGVjxurTkFTVrC
+         H+jsWadA1HC7qScj31bWQ1KCdUgh2p4FkMu2h16vjFZ5B6FNDzSH5ytnwM0sp/jRHOEv
+         4wugsrkqkfzTm2lBKibdtCJI0YOFBimGCwg5ir/V55pxoPiqigfPxX2uv+ksSCdKhNAR
+         u6wcawmycbYpLrmmYjr7/tM/QX/Jff+Ypq+IgHySk2AU9eR9enU25R45/nAmA5X7eqL3
+         vHOg==
+X-Gm-Message-State: AOJu0Yw2naSeH+f0lRuc2VKzsfaQ4hcfe2ZIX8lnhkMAOaxP4l2oijh/
+	tyj+WAprh0dnlMDJ20rbra5dArQiPEYhu3KUAqvnzdrAoYct8pHePOwA
+X-Gm-Gg: AY/fxX6IHREPPsfKul31CbQRO+x1+90TLeN4ZmVCYddN/o5Ojbz5t1jDPU/Gh5jvP2K
+	nAMCA2QJ52fHUmrRQicTp5CmcL4JbxL0fFqY3qangNcm/rMhiGL4BSjrjl7ZYUZ53OU1VUaoZAs
+	163V7Vnkf2a02QE6ZfVRVYl+irT4nP6OA3rSsvIbeiaNpBrZhw/m2dA227OgO/BRBss/zyryTh/
+	ltfSrv8YnRkRyv1OdLB/T/1jL/FkWXENciKcypUBWwxWxRqy+velThubYVnPDAVkC1lw4M3FWTR
+	1UEV+impnBUFXQiVVeJF8aRnRNwbeltIJgc/ooEmvLSO+oMNcxsWo1isVFGpm9CTUYUpZhmvn4t
+	tK/Dej5bWTNkU2RhT0i/3w5YCkDnyhp8zUDsehxuexk4YrPvzudcqdx19YVNMCPycj5fF4xAsnA
+	JbHL8Gc+YjOCujqSDtiFtlKGtujuW45d4wMoQicRQO9Ohex5WIZ/Zp3u1xKa4KVa4oiMMSA8JZi
+	PK6OQwGShJ4+r8=
+X-Received: by 2002:a05:620a:c4b:b0:8c6:a608:5abc with SMTP id af79cd13be357-8c6a670532dmr1195312785a.28.1768748709345;
+        Sun, 18 Jan 2026 07:05:09 -0800 (PST)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e5e45a7sm66114946d6.1.2026.01.18.06.57.40
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e603a8bsm64025876d6.17.2026.01.18.07.05.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 06:57:40 -0800 (PST)
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1CD59F4006B;
-	Sun, 18 Jan 2026 09:57:40 -0500 (EST)
+        Sun, 18 Jan 2026 07:05:08 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 28814F4006A;
+	Sun, 18 Jan 2026 10:05:08 -0500 (EST)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Sun, 18 Jan 2026 09:57:40 -0500
-X-ME-Sender: <xms:5PRsaekaeYKLilQmyiWTXRKKdKuxeS4slavcLzhLtqi8Beh6kwiuVw>
-    <xme:5PRsaTQRZIt4MJyVaTri52hrBoGvbuvx27hiVAXPyR1VEfrGQOUwKK3JEQcyCUzoN
-    z41bxY_4cvY24_UXacz_0y2o9wOt0eRG86kojizOCZtnjcerNctBQ>
-X-ME-Received: <xmr:5PRsacnGUFO_E0poWsR36DCRvggOn5RlxJ4eCLxl79o_VFmA_taVdWNT>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeegleelucetufdoteggodetrf
+  by phl-compute-05.internal (MEProxy); Sun, 18 Jan 2026 10:05:08 -0500
+X-ME-Sender: <xms:pPZsaW-pcTbiRv1pgFwZ1zUQ7fjQ70T_q0eOjDJvbgWGhUmd6heEwA>
+    <xme:pPZsaUIkzRPwbq3kL9vQHtOAlw8ZXWBajOnj1YgvAXLryhuP2LOZQovwAuDTPAUys
+    zJjG35LDckyhBUS43BJiWpYFyGcAoOsd__v4jF4w8K5yZoNC8-rlw>
+X-ME-Received: <xmr:pPZsab93FIRODLq4dCC9UvuDgH4RGLGcoQAgJf4P4ok5CHDFrJ6qifP3>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeehtddtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
@@ -85,15 +85,15 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeegleelucetufdote
     hrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghp
     thhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnug
     gsohhrgheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:5PRsaUPSjQWOAdiWyOLZLcKlXOLK0MPxUlTUGLyxBzXxaWbIX86kaQ>
-    <xmx:5PRsac0Q0-LPoHAiW4hn_To2g8B1GXQrCSYKt65jqGne7QUWP4EI5Q>
-    <xmx:5PRsaQaHUGktj9gcvIvk06fXA2LyXZdGLUaoQU9sq9G0mJ_Yi3BU0g>
-    <xmx:5PRsac5K8ifkWetQFSkby7lEGmapw7AJZ7VjlBO3SHTEwqjj7podZg>
-    <xmx:5PRsafhMVo_6TJq44Qhii_hSq0ocMWgECHULFX7XokoW22H0eYyA-Smv>
+X-ME-Proxy: <xmx:pPZsaQEvpRDFFrcitxjb8Mj2QrQHs1sYj4s1oYuhuv0et-qgHSwMMg>
+    <xmx:pPZsabNBQNx5LmYfORsiYduFr39OjM9APU2MCWh1c8hmz1Q34rDoDA>
+    <xmx:pPZsafT8xD5iRy7v1CvLMctT_JCnUw6JxPezcmiLAUnYHnJYtFE5XQ>
+    <xmx:pPZsaSRV5Md2gRUp5st0McfxJZo9vOWP6OAxILg9PtRAFAt9pBj8Ig>
+    <xmx:pPZsaZb39TlipkHU7f1abqtKo6TFXDTTIw9M0ZTGXE7_pASypAEfS9Xe>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 18 Jan 2026 09:57:39 -0500 (EST)
-Date: Sun, 18 Jan 2026 22:57:37 +0800
+ 18 Jan 2026 10:05:07 -0500 (EST)
+Date: Sun, 18 Jan 2026 23:05:05 +0800
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Dirk Behme <dirk.behme@gmail.com>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -118,10 +118,11 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Zqiang <qiang.zhang@linux.dev>,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
 Subject: Re: [PATCH 4/5] rust: sync: atomic: Add Atomic<*mut T> support
-Message-ID: <aWz04Tb7SSDQls8T@tardis-2.local>
+Message-ID: <aWz2oZqMaQHQWe-e@tardis-2.local>
 References: <20260117122243.24404-1-boqun.feng@gmail.com>
  <20260117122243.24404-5-boqun.feng@gmail.com>
  <67e5482b-93ed-4b5f-8375-f7e68c50a436@gmail.com>
+ <aWz04Tb7SSDQls8T@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -130,45 +131,58 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <67e5482b-93ed-4b5f-8375-f7e68c50a436@gmail.com>
+In-Reply-To: <aWz04Tb7SSDQls8T@tardis-2.local>
 
-On Sun, Jan 18, 2026 at 09:38:36AM +0100, Dirk Behme wrote:
-[...]
-> >  
-> > +// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
+On Sun, Jan 18, 2026 at 10:57:37PM +0800, Boqun Feng wrote:
+> On Sun, Jan 18, 2026 at 09:38:36AM +0100, Dirk Behme wrote:
+> [...]
+> > >  
+> > > +// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
+> > 
+> > uses -> use ?
+> > 
 > 
-> uses -> use ?
+> Will fix, thank you!
+> 
+> > > +// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
+> > > +#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
+> > > +impl AtomicImpl for *const c_void {
+> > > +    type Delta = isize;
+> > > +}
+> > 
+> > Are all users of this guarded with CONFIG_ARCH_SUPPORTS_ATOMIC_RMW as
+> > well? Or do we want (need?) to cover the
+> 
+> No, the users don't need to guard with CONFIG_ARCH_SUPPORTS_ATOMIC_RMW,
+> the purpose of this #[cfg] is to avoid surprise that when
+> CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=n arch supports Rust, when that happens,
+> we need to add the support to the helpers of i8/i16/ptr.
 > 
 
-Will fix, thank you!
+Hmm... I guess at this moment, I probably should do
 
-> > +// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
-> > +#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
-> > +impl AtomicImpl for *const c_void {
-> > +    type Delta = isize;
-> > +}
-> 
-> Are all users of this guarded with CONFIG_ARCH_SUPPORTS_ATOMIC_RMW as
-> well? Or do we want (need?) to cover the
+#[cfg(not(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW))]
+static_assert!(false,
+               "Support of architectures that don't have native atomic needs to implement helpers in atomic_ext.c");
 
-No, the users don't need to guard with CONFIG_ARCH_SUPPORTS_ATOMIC_RMW,
-the purpose of this #[cfg] is to avoid surprise that when
-CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=n arch supports Rust, when that happens,
-we need to add the support to the helpers of i8/i16/ptr.
-
-> non-CONFIG_ARCH_SUPPORTS_ATOMIC_RMW cases where someone tries to use
-
-Note that these arches are very rare, so we might not have any problem
-for a while.
+I can add a patch in the next version if it looks good to everyone.
 
 Regards,
 Boqun
 
-> this as well?
+> > non-CONFIG_ARCH_SUPPORTS_ATOMIC_RMW cases where someone tries to use
 > 
-> Best regards
+> Note that these arches are very rare, so we might not have any problem
+> for a while.
 > 
-> Dirk
+> Regards,
+> Boqun
 > 
-> 
-> 
+> > this as well?
+> > 
+> > Best regards
+> > 
+> > Dirk
+> > 
+> > 
+> > 
