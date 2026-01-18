@@ -1,117 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FAD1D5174;
-	Sun, 18 Jan 2026 19:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768766357; cv=none; b=RfKpmlVySDsPKukt3Uf+Y1/RVmqnSg6Qx/1X7Lyc9y/dyYZnXNZeFBjNp6SDXMiS1G7AQHsHa09dAIZR89pIzbpBiFRXwhUBCPnUvWVBAykDt0wmT+VwxbvEUoWBdanuTwX25xr8y/iy4QFSxOT/VTjyYi5E4Kcb6GCgwDiA4LU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768766357; c=relaxed/simple;
-	bh=tdfFs8o6IzX0PU1jw/waS8H4E99wWg+JeQJm1sdbrRM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=M0y/wP8yujUZr+NfsrpACz4rXgrqQq2KqZJsVJQvTBrOvPrFa+JlqGNHpj9sqShKOVQkG39PgYEDQMys+9bJsHGI5hhpYbDhZmzrRneG50HeaStS85tzJueNC5nUXmz5DxGPTwPYISTUFwBiF7Kj/sWXypdLFt8DP5X/2xnHanA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dg4jW5ig; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773791E505
+	for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 21:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768770157; cv=pass; b=ZUsQsnN9Q8teI5sZ3ftTbh3xvXzXx2SvONeJJMrl4l8FaMq+5576JKhA722C93A0T3oWCJifnWYy+HNyR6wb3Kj5FCbRr3wqrdk5eD5VxexvCVyFXtYLT3Tn543KuTZ7S+Q51AwhPyyGNdmrT2Dms+uk1Cd6U04MSWkLiCETkfI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768770157; c=relaxed/simple;
+	bh=tw3NQpS9Gj2vZaiD4/k5v/fu6HS02ZOnQKBEHQg4W1Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X0LC6nWFaeKfOxIqnS05TPNd5LIcrSG0obZxIVYge5qtCwOHn3oXHfCYbZ3Qff6npiJkHHEb0VtPsrN/v/3fpS32xR7vH/v+SngCtb+rM1k2qqgQ/EIfw8oFntsAjXlIXrDXt+T2Atw2n0blYJiocZyi2ra+9J9EFOqX1At3rOk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OB7CTLqX; arc=pass smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dg4jW5ig"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73385C116D0;
-	Sun, 18 Jan 2026 19:59:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768766356;
-	bh=tdfFs8o6IzX0PU1jw/waS8H4E99wWg+JeQJm1sdbrRM=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=dg4jW5igsyGoKRtJ9HcfCH5Z/6dWYEI3KLA2H3qYxKuQdhuHgKuGcyyMnxFa13E/G
-	 DCNYClllqMnGsEdZuM1LtdWisM0SQJfKzEKWoIGFvFUOmcrLno4ylcTdUu9MvQG8IZ
-	 RXWhpJ0i28Bj7KQbKzYDTMFhuXnDedKPBqzoN7fltL9RTlbUFrerry4MyGbtm9t/Fp
-	 oS1dExloxWUfuFYgGv35R0AXTfuCKnkC6BeX89QfTs2Vv10RUP1FZF7nWfucKVCWYM
-	 ak5hZ/MaY1m/O1iSGidCvefQF1JZfDPBbUinxWysZJEdY3s9TgdIXgjizrX93ETyFe
-	 yg+2+SYUvRLxg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OB7CTLqX"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1233e05c77bso124291c88.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 13:02:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768770155; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ECQQlS0uAmkuXvecp6JRY652BNy9OsgK9laytD+LdkeUUQ10J5/+q1cBWSJ5uC3eoc
+         xLje/P5Cs9GddE5ESmvzyq9D47v9mhSXjX95xULa2v7k0d7/Wd2BtzKeAlYF+F1u0fgM
+         S6nRbgMJ+K/uu+AT3wpb+IU5/PSYDfx3CRNPB/6Zkm8njVutXCq8OAIRLrt7DCbqAcj/
+         ex9KJp1sEB+vrJDScSv3ulMWwjPfYv97oZ2j687XtXT2WU55BMUNyAba1C4NDfXWT24V
+         rbN72F+6prR7sjSOkzwo9jJ1tOEV31lmb+xzVAHOtG0ktesRmwO35Vg76eUH9y+6yXUc
+         nERw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tw3NQpS9Gj2vZaiD4/k5v/fu6HS02ZOnQKBEHQg4W1Q=;
+        fh=YpyrWcxKY6M84G7aFoHXawVogUykpnvnKrsLMH+KnFY=;
+        b=lxJ0bgfsUPP8rbyBjGItljlHm9f9m25J03Am3fHhDkJYR15wn5yVkR8D8ASD/eE/sA
+         8uIOJTA5IiILdrLkKY8MqazhHmSpsFielp8cxoOMHIQ2/dOzx9XGGhFYfLnMUTGNE8sC
+         ricwAohBeDLoSPNPMLV/R9j9maSDeECif8W8W7+9uRxlzUzk7rHEWTu+iTwxHn/qBhgI
+         Vt4j5wDaZf1P4GXfjiSI1UhgN6bC+xoPxVdXpyQbwULunopZkE/oKwqi90w3cNEYV+MF
+         N0gs5pozIzvOwWE23+9skmPXt/TYf0Zu9e9PVp54dMvqbCxGELQQhJCf46+Vn3iNDSVQ
+         4zGg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768770155; x=1769374955; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tw3NQpS9Gj2vZaiD4/k5v/fu6HS02ZOnQKBEHQg4W1Q=;
+        b=OB7CTLqXdSSjCfSPxlBROGqprWtDiY/huYS5eX86k6hViqCOrNAAYbuYmtcffT46fC
+         M4fhpVgWdfYA23LqqjfZtfun0q01L+cEN106y6EnzIkdYPI+4xfJ7KPXxlhMnUiPJzLn
+         YF2rWc7X4i5bQuKdHDqtkYJ4bK03GMW4XM5GGlihnJWCRSSv9+y+93CJk+E3ocs0VN16
+         ypjkJQkoUjtIl/ulhgxk8nnsm3vm+QZMfbrOIkCidYZ/dHMpUMjafWmaR1rGXUUUAcrB
+         uRNrjrEanTVMYbxXdGShp/spLlfQjbHQHTtuCjnPlSdZ5ho8qZQ/ofIpuuIZ3T3qNGd1
+         biOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768770155; x=1769374955;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tw3NQpS9Gj2vZaiD4/k5v/fu6HS02ZOnQKBEHQg4W1Q=;
+        b=Bc/BUBvt1X2I6SB2Or/z8fMa9i8nLrsb8QS6ZOoaP4HzYrdsrz33GS9/QGHbHeRPyW
+         +IK1cYgDoHJJqbhx1xxgYpVJtve78uuV7lyUi/1gcao6QFURqI9G15qV2rOX/oF0aHB2
+         rnU3laDAp78PjARzPTamr+tyA9KIUWcPchHfF5PzRW3vu6dBjYdXL85h3jFUc5s6Grj7
+         IzlLhyPVAXc2Kzi8s4M7V+Rm2I3miRwhROOOAlrB7T/0ClOpyUNX4Q4JJIie7ce5Rkdb
+         9PJ7vnsrhj1MHQjgBx1/aQk0sGBx4EdRCgoaEA7gJAaJmDgqn7YBOQ5JHWIssptVP6Iz
+         kgNQ==
+X-Gm-Message-State: AOJu0Ywa8FOe1ZYkrTNDQbAcIQLHWYNYYa4cBWcpW90DtoJrfj2+80lg
+	WMqzWZTtoNTwsWj/xC5mUkyDfNhnFY63lEhH66RCfjX0cOSARuJeIqkPlfJhB6VXuEai4R5LPVj
+	J+tcuITnU7ztG8Xa9ewD8AHfICHFUojc=
+X-Gm-Gg: AY/fxX6sVsb93tgllolaQHuPcDaNzv0KRMvI4xWLGBDJZGOlcZ7JjhgOA8DURJ4T5/3
+	uy9/cEDRxfZEoYcfJx9i1GwGDRqEdZtibBOj1GI0jVx89uNXr1cVK5+i9WSvy581ABI3kmxcVmE
+	oMD0bkq2j6Leq23/OaFxRsj4Q1zs8zufoLGKiQCYNopvwHbVrzSJ+AFZ3bkq7vblSbDhtXIwjDC
+	Ou7CRaywoLXHJIzb29pMJjkh9jV+p0nsRn8HVQWqGxWjIJdT8gkF/eTR355W7ROzpjgr7q7QswW
+	tvn0yGKR22YLsKgOXlXjM2UywR4y/ardblbOlGxTacCX6IzOH66p/M4/Dze9MpAi59Uob79+p1x
+	LMSgxdvAmQXGt
+X-Received: by 2002:a05:7301:4442:b0:2b0:4a1a:657 with SMTP id
+ 5a478bee46e88-2b6b4103a28mr3710162eec.8.1768770155529; Sun, 18 Jan 2026
+ 13:02:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251113144547.502-1-work@onurozkan.dev>
+In-Reply-To: <20251113144547.502-1-work@onurozkan.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 18 Jan 2026 22:02:23 +0100
+X-Gm-Features: AZwV_QiotaIfZv8SGwO_zqGp6Hnh7ImeBYpE2559L1datnkCA0ri4BEYTKiF0TY
+Message-ID: <CANiq72m_72QAehQFfdUt7HeET5rpJsK0niiWRUtqnueuiooD3w@mail.gmail.com>
+Subject: Re: [PATCH v1] rbtree: reduce unsafe blocks on pointer derefs
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, aliceryhl@google.com
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
+	yutaro.ono.418@gmail.com, charmitro@posteo.net, borys.tyran@protonmail.com, 
+	daniel@sedlak.dev, tamird@gmail.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 18 Jan 2026 20:59:09 +0100
-Message-Id: <DFRZCBBXBTM8.2BSEQFA5F28W9@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rcu@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Frederic
- Weisbecker" <frederic@kernel.org>, "Neeraj Upadhyay"
- <neeraj.upadhyay@kernel.org>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- "Josh Triplett" <josh@joshtriplett.org>, "Uladzislau Rezki"
- <urezki@gmail.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Mathieu
- Desnoyers" <mathieu.desnoyers@efficios.com>, "Lai Jiangshan"
- <jiangshanlai@gmail.com>, "Zqiang" <qiang.zhang@linux.dev>, "FUJITA
- Tomonori" <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH 4/5] rust: sync: atomic: Add Atomic<*mut T> support
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>, "Dirk Behme" <dirk.behme@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260117122243.24404-1-boqun.feng@gmail.com>
- <20260117122243.24404-5-boqun.feng@gmail.com>
- <67e5482b-93ed-4b5f-8375-f7e68c50a436@gmail.com>
- <aWz04Tb7SSDQls8T@tardis-2.local> <aWz2oZqMaQHQWe-e@tardis-2.local>
-In-Reply-To: <aWz2oZqMaQHQWe-e@tardis-2.local>
 
-On Sun Jan 18, 2026 at 4:05 PM CET, Boqun Feng wrote:
-> On Sun, Jan 18, 2026 at 10:57:37PM +0800, Boqun Feng wrote:
->> On Sun, Jan 18, 2026 at 09:38:36AM +0100, Dirk Behme wrote:
->> [...]
->> > > =20
->> > > +// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hen=
-ce the atomicity is only
->> >=20
->> > uses -> use ?
->> >=20
->>=20
->> Will fix, thank you!
->>=20
->> > > +// guaranteed against read-modify-write operations if the architect=
-ure supports native atomic RmW.
->> > > +#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
->> > > +impl AtomicImpl for *const c_void {
->> > > +    type Delta =3D isize;
->> > > +}
->> >=20
->> > Are all users of this guarded with CONFIG_ARCH_SUPPORTS_ATOMIC_RMW as
->> > well? Or do we want (need?) to cover the
->>=20
->> No, the users don't need to guard with CONFIG_ARCH_SUPPORTS_ATOMIC_RMW,
->> the purpose of this #[cfg] is to avoid surprise that when
->> CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=3Dn arch supports Rust, when that happen=
-s,
->> we need to add the support to the helpers of i8/i16/ptr.
->>=20
+On Thu, Nov 13, 2025 at 3:46=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev=
+> wrote:
 >
-> Hmm... I guess at this moment, I probably should do
->
-> #[cfg(not(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW))]
-> static_assert!(false,
->                "Support of architectures that don't have native atomic ne=
-eds to implement helpers in atomic_ext.c");
->
-> I can add a patch in the next version if it looks good to everyone.
+> Refactors parts of the get() and cursor_lower_bound()
 
-I think this is a great idea!
+This is now `find_best_match()` given commit f56b13172382 ("rust:
+rbtree: add immutable cursor").
 
-By the way, did you know about `cfg!` [1]?:
-
-    static_assert!(
-        cfg!(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW),
-        "Support of architectures that don't have native atomic needs to im=
-plement helpers in atomic_ext.c",
-    );
-
-
-[1]: https://doc.rust-lang.org/core/macro.cfg.html
+Alice: I assume your analysis/review still applies even after Vitaly's
+refactor -- if not, please shout!
 
 Cheers,
-Benno
+Miguel
