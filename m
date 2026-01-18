@@ -1,246 +1,281 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDF52D4813
-	for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 10:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2107A3358B8
+	for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 14:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768732794; cv=none; b=J3FhFFyvsadg5ybQLDHeXUXzuFaezf/E5LxaMqDB2HNQKOjZjgYVubLU04H/1prbl+0Oz9Nb7B762nIUd65E6UlhPAi3i3cnvK+7x2FiCjgigsIbqEtqoGKrWqcaDq4Jm2omLMe2fNoH4O0GSgr6vtId8HSoFMUWUBwyP1VaA8w=
+	t=1768746392; cv=none; b=Kp5YEMHLZe5xJy8xxoGBz+Ro4ncDpMGtHYtFlwHYGZ008tER4b5cYM0X27kJgwT39h7Y+H77ijV7YZrTO4XG9WZ0VXtiXU19uv84GR0xj53MJN6mDa0Wb3zbIX2qsc4/PBahGMBSdEQs+NN44Em4OBrRwA2TM99KalLDjgnlYcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768732794; c=relaxed/simple;
-	bh=likXx3lsQApM6JONVukVE/Mpr53YqrYKc4J3h53njsY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NPzRExKwhsum56u8JhE87PiR87iptFyOiN6evDFFQGS0bC/u379AnvdcJWEE5S7PXZrnjyHTuPeNmf4HKW5+68o44wKRFwEjULf6Rw4ekTVR+ndDpJEJ2QDcE9v0lDwONqln9UQmfzBzoFIesEnCkm+zjdXGb9Tz0FpdTeRq/Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WKKeHOZ1; arc=none smtp.client-ip=209.85.208.171
+	s=arc-20240116; t=1768746392; c=relaxed/simple;
+	bh=s0cwsEgG7g9n4Hg+hiJoeBEv+lAIY6fNgwF2jLJh4do=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rmIWrYgG6vchWfwh9wdt7HZH+iZM72Mn+LzvF27Ue0k5wC7GuyK64y6l0XoeIF+td4eNoVCPeuO8unYkP1mRuIOfkN3I3zGyv6kWKn434gqrh4r8dXyE3TQXpJxtIOYU8ZWWmKfOVW4lDIVa+D4nhSabtIZPpJAEnU9UbHCJwOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ClQ0qAjU; arc=none smtp.client-ip=74.125.82.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WKKeHOZ1"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3831ad8ae4eso29400741fa.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 02:39:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ClQ0qAjU"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ae38f81be1so4153930eec.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 06:26:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768732790; x=1769337590; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=do81nvqxnQsd+JF7gNbhz4jmsUyXkHo3tqbXNTfxmZ8=;
-        b=WKKeHOZ1EldZ2nnzmXF4WIXjARR8IFStmkkWkJzSFdF6KnUEJqmgNrHjW1xS8g+RqZ
-         rEqQIUHvnf5hc0PddtZF3MOsPOsPxzPQXME4IBoRZIgbqvPly1EkQXXyNFjzV9mAkuue
-         nEru2P94DB15VUTlV9UHL+K/gXC4hOD0syZo9or9iLGIenSNOGubN2O3uXQvqB1lupzS
-         IHhAk1ECEHdIpeFQ3d3X2CVVROzBif7nTlZMDDOul/e2k8UsfwD1k/jelPIlI4GjecDh
-         0xqN7i7Qe07hkoMFt3KkB4GOaYJVLAbxhgy4dDtm0IwrffNhCI5gFRjdhIyrg0G22zSk
-         x0Cw==
+        d=gmail.com; s=20230601; t=1768746389; x=1769351189; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=l68fmGn3uGtJbeW4EuRWDFel44wfPBgfn/qQavBDiKU=;
+        b=ClQ0qAjUAYpqoIXRHL0yyGPrZ5MXeusS7qchA0s7TFsq2XdcyPMlhCRyTIw9zFyHDv
+         nfr74ieHkOJEv09Hmv8paxvHElYjPzPmX+4rgBjUHZOrEhGk1B/1laaOst/SbdhyDkgq
+         jymFJz10+stVhkePR9pV/e+d2XllRB4c+dejcOuBWMl6a3EjjASLLrhVKevG4qJIcKrq
+         3HI1GaMWW/Ov73zRsiYlfJ7sDOKX0EpW16PajZ0otpOtTm3LYkiboego4ZX7Gj+7WEOK
+         GOSqL7l4yC5LkWpBqbj0TTZGndS4+hzZpRlXypbhKo+Oan7qeQzGrxDuxZe69xMP3Vq0
+         8IDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768732790; x=1769337590;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=do81nvqxnQsd+JF7gNbhz4jmsUyXkHo3tqbXNTfxmZ8=;
-        b=YHiitJ7r+jBOBg971gkz4r1geECeqCv334PswKWaBqWzXdMMheO2NbMJIOcs7Uupfd
-         2iA0QusTTX5y4a/3Sb/5xHzRDhtiWHuMX0YYtTH3V19Aiu0Rv5R1tvdj4UYMv7Gm/NGG
-         wI/DpUisxJZTluuLsCKhTgZBFX7Ihewa0oaHSpwNdX5S2y8j8qNmD51MfxBpwjVV5Vq7
-         Z8CsA2JVVG3DM0bJ7XAZgIpkOpSgZ+WA/llBpppVfwGUEHvVj7ATzYuDmeiC96xXdruO
-         F+QPFBqTDrKtZ3wMqGSKuGyK3qUHvmKBEVSw2ZVsyo+LE/a1yHiq7MHw534zrRYl/zIK
-         i0LA==
-X-Forwarded-Encrypted: i=1; AJvYcCVUoc+H/NUnVda2kw4UNeF2PUoM2vbRC64QJxJ7ZKDC1m0ogtOUbl9YIozY7z6DNKPkwaSgT9A6hfDZqAq17A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXyQ23JhoXefU2YIb9CMdhP8FJUhfka82P2Sd7GADZAn9wCJZm
-	BvhNVSOWUnZQR+0ovNVklkGk49qMPzqOjjoUJmGZmLk/8TBoZmpDOlrqKltxmA==
-X-Gm-Gg: AY/fxX6a4pyhWCGXCdojH+Hz0miOKF0aUL8w5zQkFVNFDb21XsuCMpJPpBSGHl31zZO
-	uGhpwak1k1EdzkmQb57p1u30Bc0oVWe+qQ25Bz+3unDkMoTK1BmcNjL7h6zkorzL7UxaQk+BImR
-	G6MGYAkc/PnK5hQ5A08nfdeK4lduuycS4kLTNtJObH13hFBKQ60+8gVZUqQC5sB8EMM5bUtYGyE
-	DhT1U2WA9MvEUszdTnQ8UH86F06XkWxcNd2qTw/qth+PT4DWoC/DfH0x1iowZHEoTgEx5GEXmW2
-	8c0otmRBVnkCb6EZkeTjz6j5JTNcZ22j+SwYsSRH+UyNR81MyeMX1BIFU3IxSuh4W0ZoLqpLKbE
-	e/by0X6kzSI/P7t3ikhAHdxUerHVS5hw3xQmI5hUiPI7t0z+IlI5SxSr6hKwzYJ7k7eMulKIRvz
-	32f8Obc0gv2K/02yYZTNmhQisPzCn7I79U5NevlXEsXc1uTKqB+pxjSqxDF11iozL2gmb1jQxFL
-	NOXtP3JjT4OOyCAMn1Moyups3r4yDUVNNwP1h1oUk6Q+Q==
-X-Received: by 2002:a05:6402:5114:b0:64b:93f4:bf85 with SMTP id 4fb4d7f45d1cf-654b955ce0dmr6185816a12.10.1768725520910;
-        Sun, 18 Jan 2026 00:38:40 -0800 (PST)
-Received: from ?IPV6:2003:df:bf2d:e300:8193:226f:9765:711d? (p200300dfbf2de3008193226f9765711d.dip0.t-ipconnect.de. [2003:df:bf2d:e300:8193:226f:9765:711d])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-654533cc5d6sm7155488a12.22.2026.01.18.00.38.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Jan 2026 00:38:39 -0800 (PST)
-Message-ID: <67e5482b-93ed-4b5f-8375-f7e68c50a436@gmail.com>
-Date: Sun, 18 Jan 2026 09:38:36 +0100
+        d=1e100.net; s=20230601; t=1768746389; x=1769351189;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l68fmGn3uGtJbeW4EuRWDFel44wfPBgfn/qQavBDiKU=;
+        b=AipJqMb1HuvJhT3dMWiFWNVrVOrtBXoUCxgvHAtkO2IPY3cAtS/j8wLbfUBdykLspF
+         /P3I2WWjSjxmvKVE8oHCzzALCKWUTrrV0TSRIE4UkY4bVl7wXdYgF+9tnvZeXr7Vz+Rr
+         z2sblAN1B6e0Rw+S+f2O+JA3y2ezdsJlCpKTbJUl0WZ2Z6IQk/dMLgrFgSeroB7+hd6w
+         ZIpdZYh6mTAKpcZXoydByNBUTV14E7IQ2j5sUBje8xvsY863HYpU+BgIDnZuncgxgkXR
+         o13SAoT0jkSU7PWeRP3fBdPzCGur/eOPF+ur/ADy7H4NrHwGOV642Pmbzm54uDlx3xSp
+         IrYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXTdO8ww5opRrb7sCsi36tGRzUfLsqBusFsIpJ36RmNo6bD15hGe9rcGBVvhlo5Nhe2/mTOQ57PiOrnrjbscg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8WqTgcwL8slddBn+M3HHdx0cIy39vPN/KiEiycXDZ1rt8Cu2U
+	uCT6hwhGp0bTPI6Ig/t4fWXklbwyykQrAmIbbin0Rzrcz8efn1R2LtXg
+X-Gm-Gg: AY/fxX6bIRW3sxDXDxD8VkoSrIUjYqAu/UV/Wq9EsZYpgYO6hmRH4YgpgUewHgrjsy6
+	ToPww47TiDlOpRxNiJo0leb+nxGaVS0OPcaz8c70+dHwEYn8QJhig3II9U869+aPpGraow43srn
+	n+8NzvfF42qP9edW5BwQb+Odd8IpYRfhLG77mV88yZNO1s5mUdG4RQcDDECXj60WZxSAI26EqNx
+	CCoQQx+nKCqXC1uoK0mDwjP0K1QK6l0+hnOrx8YOTrE5hOBgsmXEG1LMUV7VeNPdjMt0pzeBzIc
+	bpBgPtNEFL3Hu35Hv5hHiQEEw65H+z1LUW6lCxFSaqiz8dIGnehWgAUrWjkUKM8wi8zExaY7WbW
+	0c6YnnU2VPMQNRY5+dIuYHpCJHEWEQThQyOP9jSP56u4zj9A0i5vxn9+602Ks/ExKn1sslToAue
+	mESttSxsooz5UaNU8NxnD+koafuD+j+5+P75S8Ri9LRoVOJ/YjKftWz9eEskUe8qSeyZod40IWJ
+	Q==
+X-Received: by 2002:a05:7300:cc14:b0:2ae:53a5:8ed4 with SMTP id 5a478bee46e88-2b6b4ea9443mr5241246eec.30.1768746388028;
+        Sun, 18 Jan 2026 06:26:28 -0800 (PST)
+Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:46de:79e9:ba96:f42a])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b34c11c4sm9428742eec.1.2026.01.18.06.26.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 06:26:27 -0800 (PST)
+From: Jason Hall <jason.kei.hall@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@google.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jason Hall <jason.kei.hall@gmail.com>
+Subject: [PATCH v2] rust_binder: refactor context management to use KVVec
+Date: Sun, 18 Jan 2026 07:26:23 -0700
+Message-ID: <20260118142623.1188141-1-jason.kei.hall@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] rust: sync: atomic: Add Atomic<*mut T> support
-To: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>
-References: <20260117122243.24404-1-boqun.feng@gmail.com>
- <20260117122243.24404-5-boqun.feng@gmail.com>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20260117122243.24404-5-boqun.feng@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 17.01.26 13:22, Boqun Feng wrote:
-> Atomic pointer support is an important piece of synchronization
-> algorithm, e.g. RCU, hence provide the support for that.
-> 
-> Note that instead of relying on atomic_long or the implementation of
-> `Atomic<usize>`, a new set of helpers (atomic_ptr_*) is introduced for
-> atomic pointer specifically, this is because ptr2int casting would
-> lose the provenance of a pointer and even though in theory there are a
-> few tricks the provenance can be restored, it'll still be a simpler
-> implementation if C could provide atomic pointers directly. The side
-> effects of this approach are: we don't have the arithmetic and logical
-> operations for pointers yet and the current implementation only works
-> on ARCH_SUPPORTS_ATOMIC_RMW architectures, but these are implementation
-> issues and can be added later.
-> 
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->  rust/helpers/atomic_ext.c            |  3 +++
->  rust/kernel/sync/atomic.rs           | 12 +++++++++++-
->  rust/kernel/sync/atomic/internal.rs  | 21 +++++++++++++++------
->  rust/kernel/sync/atomic/predefine.rs | 23 +++++++++++++++++++++++
->  4 files changed, 52 insertions(+), 7 deletions(-)
-> 
-> diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
-> index 240218e2e708..c267d5190529 100644
-> --- a/rust/helpers/atomic_ext.c
-> +++ b/rust/helpers/atomic_ext.c
-> @@ -36,6 +36,7 @@ __rust_helper void rust_helper_atomic_##tname##_set_release(type *ptr, type val)
->  
->  GEN_READ_SET_HELPERS(i8, s8)
->  GEN_READ_SET_HELPERS(i16, s16)
-> +GEN_READ_SET_HELPERS(ptr, const void *)
->  
->  /*
->   * xchg helpers depend on ARCH_SUPPORTS_ATOMIC_RMW and on the
-> @@ -59,6 +60,7 @@ rust_helper_atomic_##tname##_xchg##suffix(type *ptr, type new)			\
->  
->  GEN_XCHG_HELPERS(i8, s8)
->  GEN_XCHG_HELPERS(i16, s16)
-> +GEN_XCHG_HELPERS(ptr, const void *)
->  
->  /*
->   * try_cmpxchg helpers depend on ARCH_SUPPORTS_ATOMIC_RMW and on the
-> @@ -82,3 +84,4 @@ rust_helper_atomic_##tname##_try_cmpxchg##suffix(type *ptr, type *old, type new)
->  
->  GEN_TRY_CMPXCHG_HELPERS(i8, s8)
->  GEN_TRY_CMPXCHG_HELPERS(i16, s16)
-> +GEN_TRY_CMPXCHG_HELPERS(ptr, const void *)
-> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> index 4aebeacb961a..4d2a5228c2e4 100644
-> --- a/rust/kernel/sync/atomic.rs
-> +++ b/rust/kernel/sync/atomic.rs
-> @@ -51,6 +51,10 @@
->  #[repr(transparent)]
->  pub struct Atomic<T: AtomicType>(AtomicRepr<T::Repr>);
->  
-> +// SAFETY: `Atomic<T>` is safe to transfer between execution contexts because of the safety
-> +// requirement of `AtomicType`.
-> +unsafe impl<T: AtomicType> Send for Atomic<T> {}
-> +
->  // SAFETY: `Atomic<T>` is safe to share among execution contexts because all accesses are atomic.
->  unsafe impl<T: AtomicType> Sync for Atomic<T> {}
->  
-> @@ -68,6 +72,11 @@ unsafe impl<T: AtomicType> Sync for Atomic<T> {}
->  ///
->  /// - [`Self`] must have the same size and alignment as [`Self::Repr`].
->  /// - [`Self`] must be [round-trip transmutable] to  [`Self::Repr`].
-> +/// - [`Self`] must be safe to transfer between execution contexts, if it's [`Send`], this is
-> +///   automatically satisfied. The exception is pointer types that are even though marked as
-> +///   `!Send` (e.g. raw pointers and [`NonNull<T>`]) but requiring `unsafe` to do anything
-> +///   meaningful on them. This is because transferring pointer values between execution contexts is
-> +///   safe as long as the actual `unsafe` dereferencing is justified.
->  ///
->  /// Note that this is more relaxed than requiring the bi-directional transmutability (i.e.
->  /// [`transmute()`] is always sound between `U` and `T`) because of the support for atomic
-> @@ -108,7 +117,8 @@ unsafe impl<T: AtomicType> Sync for Atomic<T> {}
->  /// [`transmute()`]: core::mem::transmute
->  /// [round-trip transmutable]: AtomicType#round-trip-transmutability
->  /// [Examples]: AtomicType#examples
-> -pub unsafe trait AtomicType: Sized + Send + Copy {
-> +/// [`NonNull<T>`]: core::ptr::NonNull
-> +pub unsafe trait AtomicType: Sized + Copy {
->      /// The backing atomic implementation type.
->      type Repr: AtomicImpl;
->  }
-> diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
-> index 0dac58bca2b3..93f5a7846645 100644
-> --- a/rust/kernel/sync/atomic/internal.rs
-> +++ b/rust/kernel/sync/atomic/internal.rs
-> @@ -7,6 +7,7 @@
->  use crate::bindings;
->  use crate::macros::paste;
->  use core::cell::UnsafeCell;
-> +use ffi::c_void;
->  
->  mod private {
->      /// Sealed trait marker to disable customized impls on atomic implementation traits.
-> @@ -14,10 +15,11 @@ pub trait Sealed {}
->  }
->  
->  // The C side supports atomic primitives only for `i32` and `i64` (`atomic_t` and `atomic64_t`),
-> -// while the Rust side also layers provides atomic support for `i8` and `i16`
-> -// on top of lower-level C primitives.
-> +// while the Rust side also provides atomic support for `i8`, `i16` and `*const c_void` on top of
-> +// lower-level C primitives.
->  impl private::Sealed for i8 {}
->  impl private::Sealed for i16 {}
-> +impl private::Sealed for *const c_void {}
->  impl private::Sealed for i32 {}
->  impl private::Sealed for i64 {}
->  
-> @@ -26,10 +28,10 @@ impl private::Sealed for i64 {}
->  /// This trait is sealed, and only types that map directly to the C side atomics
->  /// or can be implemented with lower-level C primitives are allowed to implement this:
->  ///
-> -/// - `i8` and `i16` are implemented with lower-level C primitives.
-> +/// - `i8`, `i16` and `*const c_void` are implemented with lower-level C primitives.
->  /// - `i32` map to `atomic_t`
->  /// - `i64` map to `atomic64_t`
-> -pub trait AtomicImpl: Sized + Send + Copy + private::Sealed {
-> +pub trait AtomicImpl: Sized + Copy + private::Sealed {
->      /// The type of the delta in arithmetic or logical operations.
->      ///
->      /// For example, in `atomic_add(ptr, v)`, it's the type of `v`. Usually it's the same type of
-> @@ -51,6 +53,13 @@ impl AtomicImpl for i16 {
->      type Delta = Self;
->  }
->  
-> +// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
+Replace the linked list management in context.rs with KVVec.
+This simplifies the ownership model by using standard
+Arc-based tracking and moves away from manual unsafe list removals.
 
-uses -> use ?
+The refactor improves memory safety by leveraging Rust's contiguous
+collection types while maintaining proper error propagation for
+allocation failures during process registration.
 
-> +// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
-> +#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
-> +impl AtomicImpl for *const c_void {
-> +    type Delta = isize;
-> +}
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://github.com/rust-for-linux/linux/issues/1215
+Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
+---
+v2:
+  - Used real name in Signed-off-by.
+  - Updated subject prefix to 'rust_binder:' and removed 'rust-next'.
+  - Changed return types from KVec to KVVec as request.
+  - Added cc: rust-for-linux@vger.kernel.org to email.
+  - Note: Kept manual loops for cloning because try_clone/from_iter
+    helpers for KVVec are not currently available / I couldn't get it
+    to work.
+---
+ drivers/android/binder/context.rs | 77 ++++++++++++++-----------------
+ drivers/android/binder/process.rs |  4 +-
+ 2 files changed, 38 insertions(+), 43 deletions(-)
 
-Are all users of this guarded with CONFIG_ARCH_SUPPORTS_ATOMIC_RMW as
-well? Or do we want (need?) to cover the
-non-CONFIG_ARCH_SUPPORTS_ATOMIC_RMW cases where someone tries to use
-this as well?
-
-Best regards
-
-Dirk
-
-
+diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
+index 3d135ec03ca7..b3adab830b51 100644
+--- a/drivers/android/binder/context.rs
++++ b/drivers/android/binder/context.rs
+@@ -3,8 +3,8 @@
+ // Copyright (C) 2025 Google LLC.
+ 
+ use kernel::{
+-    error::Error,
+-    list::{List, ListArc, ListLinks},
++    alloc::kvec::{KVVec, KVec},
++    error::code::*,
+     prelude::*,
+     security,
+     str::{CStr, CString},
+@@ -17,22 +17,19 @@
+ kernel::sync::global_lock! {
+     // SAFETY: We call `init` in the module initializer, so it's initialized before first use.
+     pub(crate) unsafe(uninit) static CONTEXTS: Mutex<ContextList> = ContextList {
+-        list: List::new(),
++        contexts: KVVec::new(),
+     };
+ }
+ 
+ pub(crate) struct ContextList {
+-    list: List<Context>,
++    contexts: KVVec<Arc<Context>>,
+ }
+ 
+-pub(crate) fn get_all_contexts() -> Result<KVec<Arc<Context>>> {
++pub(crate) fn get_all_contexts() -> Result<KVVec<Arc<Context>>> {
+     let lock = CONTEXTS.lock();
+-
+-    let count = lock.list.iter().count();
+-
+-    let mut ctxs = KVec::with_capacity(count, GFP_KERNEL)?;
+-    for ctx in &lock.list {
+-        ctxs.push(Arc::from(ctx), GFP_KERNEL)?;
++    let mut ctxs = KVVec::with_capacity(lock.contexts.len(), GFP_KERNEL)?;
++    for ctx in lock.contexts.iter() {
++        ctxs.push(ctx.clone(), GFP_KERNEL)?;
+     }
+     Ok(ctxs)
+ }
+@@ -42,7 +39,7 @@ pub(crate) fn get_all_contexts() -> Result<KVec<Arc<Context>>> {
+ struct Manager {
+     node: Option<NodeRef>,
+     uid: Option<Kuid>,
+-    all_procs: List<Process>,
++    all_procs: KVVec<Arc<Process>>,
+ }
+ 
+ /// There is one context per binder file (/dev/binder, /dev/hwbinder, etc)
+@@ -51,28 +48,16 @@ pub(crate) struct Context {
+     #[pin]
+     manager: Mutex<Manager>,
+     pub(crate) name: CString,
+-    #[pin]
+-    links: ListLinks,
+-}
+-
+-kernel::list::impl_list_arc_safe! {
+-    impl ListArcSafe<0> for Context { untracked; }
+-}
+-kernel::list::impl_list_item! {
+-    impl ListItem<0> for Context {
+-        using ListLinks { self.links };
+-    }
+ }
+ 
+ impl Context {
+     pub(crate) fn new(name: &CStr) -> Result<Arc<Self>> {
+         let name = CString::try_from(name)?;
+-        let list_ctx = ListArc::pin_init::<Error>(
++        let ctx = Arc::pin_init(
+             try_pin_init!(Context {
+                 name,
+-                links <- ListLinks::new(),
+                 manager <- kernel::new_mutex!(Manager {
+-                    all_procs: List::new(),
++                    all_procs: KVVec::new(),
+                     node: None,
+                     uid: None,
+                 }, "Context::manager"),
+@@ -80,8 +65,7 @@ pub(crate) fn new(name: &CStr) -> Result<Arc<Self>> {
+             GFP_KERNEL,
+         )?;
+ 
+-        let ctx = list_ctx.clone_arc();
+-        CONTEXTS.lock().list.push_back(list_ctx);
++        CONTEXTS.lock().contexts.push(ctx.clone(), GFP_KERNEL)?;
+ 
+         Ok(ctx)
+     }
+@@ -90,17 +74,24 @@ pub(crate) fn new(name: &CStr) -> Result<Arc<Self>> {
+     ///
+     /// No-op if called twice.
+     pub(crate) fn deregister(&self) {
+-        // SAFETY: We never add the context to any other linked list than this one, so it is either
+-        // in this list, or not in any list.
+-        unsafe { CONTEXTS.lock().list.remove(self) };
++        // Safe removal using retain
++        CONTEXTS.lock().contexts.retain(|c| {
++            let p1 = Arc::as_ptr(c);
++            let p2 = self as *const Context;
++            p1 != p2
++        });
+     }
+ 
+-    pub(crate) fn register_process(self: &Arc<Self>, proc: ListArc<Process>) {
++    pub(crate) fn register_process(self: &Arc<Self>, proc: Arc<Process>) -> Result {
+         if !Arc::ptr_eq(self, &proc.ctx) {
+             pr_err!("Context::register_process called on the wrong context.");
+-            return;
++            return Err(EINVAL);
+         }
+-        self.manager.lock().all_procs.push_back(proc);
++        self.manager
++            .lock()
++            .all_procs
++            .push(proc, GFP_KERNEL)
++            .map_err(Error::from)
+     }
+ 
+     pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Process) {
+@@ -108,8 +99,12 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Process) {
+             pr_err!("Context::deregister_process called on the wrong context.");
+             return;
+         }
+-        // SAFETY: We just checked that this is the right list.
+-        unsafe { self.manager.lock().all_procs.remove(proc) };
++        // Safe removal using retain
++        self.manager.lock().all_procs.retain(|p| {
++            let p1 = Arc::as_ptr(p);
++            let p2 = proc as *const Process;
++            p1 != p2
++        });
+     }
+ 
+     pub(crate) fn set_manager_node(&self, node_ref: NodeRef) -> Result {
+@@ -158,13 +153,11 @@ pub(crate) fn for_each_proc<F>(&self, mut func: F)
+         }
+     }
+ 
+-    pub(crate) fn get_all_procs(&self) -> Result<KVec<Arc<Process>>> {
++    pub(crate) fn get_all_procs(&self) -> Result<KVVec<Arc<Process>>> {
+         let lock = self.manager.lock();
+-        let count = lock.all_procs.iter().count();
+-
+-        let mut procs = KVec::with_capacity(count, GFP_KERNEL)?;
+-        for proc in &lock.all_procs {
+-            procs.push(Arc::from(proc), GFP_KERNEL)?;
++        let mut procs = KVVec::with_capacity(lock.all_procs.len(), GFP_KERNEL)?;
++        for proc in lock.all_procs.iter() {
++            procs.push(Arc::clone(proc), GFP_KERNEL)?;
+         }
+         Ok(procs)
+     }
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 132055b4790f..c3676fc7785d 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -513,7 +513,9 @@ fn new(ctx: Arc<Context>, cred: ARef<Credential>) -> Result<Arc<Self>> {
+         )?;
+ 
+         let process = list_process.clone_arc();
+-        process.ctx.register_process(list_process);
++        process
++            .ctx
++            .register_process(Arc::from(list_process.as_arc_borrow()))?;
+ 
+         Ok(process)
+     }
+-- 
+2.43.0
 
