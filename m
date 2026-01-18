@@ -1,281 +1,352 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2107A3358B8
-	for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 14:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266D6335BA1;
+	Sun, 18 Jan 2026 14:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768746392; cv=none; b=Kp5YEMHLZe5xJy8xxoGBz+Ro4ncDpMGtHYtFlwHYGZ008tER4b5cYM0X27kJgwT39h7Y+H77ijV7YZrTO4XG9WZ0VXtiXU19uv84GR0xj53MJN6mDa0Wb3zbIX2qsc4/PBahGMBSdEQs+NN44Em4OBrRwA2TM99KalLDjgnlYcU=
+	t=1768746478; cv=none; b=fQl08qLHmoiH2QBgc0G6kgCuLV4Qa2by/FsInOh7J+82ytULNEpXL6Yv3p75nSlDg64IuNMZMSmwgU45obwuEbJXDrLQWq5t6dBEq3+XBVWp/y5wezSN3+JuebsBfy+ckh+nEcV2Codi2KznwqGEmwHUGwwGPEFH2rS5/1AOHeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768746392; c=relaxed/simple;
-	bh=s0cwsEgG7g9n4Hg+hiJoeBEv+lAIY6fNgwF2jLJh4do=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rmIWrYgG6vchWfwh9wdt7HZH+iZM72Mn+LzvF27Ue0k5wC7GuyK64y6l0XoeIF+td4eNoVCPeuO8unYkP1mRuIOfkN3I3zGyv6kWKn434gqrh4r8dXyE3TQXpJxtIOYU8ZWWmKfOVW4lDIVa+D4nhSabtIZPpJAEnU9UbHCJwOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ClQ0qAjU; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768746478; c=relaxed/simple;
+	bh=lS3NniEDt1TzzRXMVQeNkdK2mEEG0wZdHjgODHnn90A=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=RTUPO+8VbkDdRKrCHxHQynAzbMjfIrSB+30etTw8jJheOsSgfd2mZW8xeQVADPgkgy6q2KiUjwv2acXGHL3vO4eNflZXKy6bLQyL8h68x1di2bqa4yxdmJpYkmZl5mx7YnUuRtKESDOC3xF3OahCOiVmDjErGmIahum273T03RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fU2dVGeo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ClQ0qAjU"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ae38f81be1so4153930eec.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 06:26:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768746389; x=1769351189; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=l68fmGn3uGtJbeW4EuRWDFel44wfPBgfn/qQavBDiKU=;
-        b=ClQ0qAjUAYpqoIXRHL0yyGPrZ5MXeusS7qchA0s7TFsq2XdcyPMlhCRyTIw9zFyHDv
-         nfr74ieHkOJEv09Hmv8paxvHElYjPzPmX+4rgBjUHZOrEhGk1B/1laaOst/SbdhyDkgq
-         jymFJz10+stVhkePR9pV/e+d2XllRB4c+dejcOuBWMl6a3EjjASLLrhVKevG4qJIcKrq
-         3HI1GaMWW/Ov73zRsiYlfJ7sDOKX0EpW16PajZ0otpOtTm3LYkiboego4ZX7Gj+7WEOK
-         GOSqL7l4yC5LkWpBqbj0TTZGndS4+hzZpRlXypbhKo+Oan7qeQzGrxDuxZe69xMP3Vq0
-         8IDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768746389; x=1769351189;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l68fmGn3uGtJbeW4EuRWDFel44wfPBgfn/qQavBDiKU=;
-        b=AipJqMb1HuvJhT3dMWiFWNVrVOrtBXoUCxgvHAtkO2IPY3cAtS/j8wLbfUBdykLspF
-         /P3I2WWjSjxmvKVE8oHCzzALCKWUTrrV0TSRIE4UkY4bVl7wXdYgF+9tnvZeXr7Vz+Rr
-         z2sblAN1B6e0Rw+S+f2O+JA3y2ezdsJlCpKTbJUl0WZ2Z6IQk/dMLgrFgSeroB7+hd6w
-         ZIpdZYh6mTAKpcZXoydByNBUTV14E7IQ2j5sUBje8xvsY863HYpU+BgIDnZuncgxgkXR
-         o13SAoT0jkSU7PWeRP3fBdPzCGur/eOPF+ur/ADy7H4NrHwGOV642Pmbzm54uDlx3xSp
-         IrYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTdO8ww5opRrb7sCsi36tGRzUfLsqBusFsIpJ36RmNo6bD15hGe9rcGBVvhlo5Nhe2/mTOQ57PiOrnrjbscg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8WqTgcwL8slddBn+M3HHdx0cIy39vPN/KiEiycXDZ1rt8Cu2U
-	uCT6hwhGp0bTPI6Ig/t4fWXklbwyykQrAmIbbin0Rzrcz8efn1R2LtXg
-X-Gm-Gg: AY/fxX6bIRW3sxDXDxD8VkoSrIUjYqAu/UV/Wq9EsZYpgYO6hmRH4YgpgUewHgrjsy6
-	ToPww47TiDlOpRxNiJo0leb+nxGaVS0OPcaz8c70+dHwEYn8QJhig3II9U869+aPpGraow43srn
-	n+8NzvfF42qP9edW5BwQb+Odd8IpYRfhLG77mV88yZNO1s5mUdG4RQcDDECXj60WZxSAI26EqNx
-	CCoQQx+nKCqXC1uoK0mDwjP0K1QK6l0+hnOrx8YOTrE5hOBgsmXEG1LMUV7VeNPdjMt0pzeBzIc
-	bpBgPtNEFL3Hu35Hv5hHiQEEw65H+z1LUW6lCxFSaqiz8dIGnehWgAUrWjkUKM8wi8zExaY7WbW
-	0c6YnnU2VPMQNRY5+dIuYHpCJHEWEQThQyOP9jSP56u4zj9A0i5vxn9+602Ks/ExKn1sslToAue
-	mESttSxsooz5UaNU8NxnD+koafuD+j+5+P75S8Ri9LRoVOJ/YjKftWz9eEskUe8qSeyZod40IWJ
-	Q==
-X-Received: by 2002:a05:7300:cc14:b0:2ae:53a5:8ed4 with SMTP id 5a478bee46e88-2b6b4ea9443mr5241246eec.30.1768746388028;
-        Sun, 18 Jan 2026 06:26:28 -0800 (PST)
-Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:46de:79e9:ba96:f42a])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b34c11c4sm9428742eec.1.2026.01.18.06.26.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 06:26:27 -0800 (PST)
-From: Jason Hall <jason.kei.hall@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Todd Kjos <tkjos@google.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jason Hall <jason.kei.hall@gmail.com>
-Subject: [PATCH v2] rust_binder: refactor context management to use KVVec
-Date: Sun, 18 Jan 2026 07:26:23 -0700
-Message-ID: <20260118142623.1188141-1-jason.kei.hall@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fU2dVGeo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9603FC116D0;
+	Sun, 18 Jan 2026 14:27:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768746477;
+	bh=lS3NniEDt1TzzRXMVQeNkdK2mEEG0wZdHjgODHnn90A=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=fU2dVGeo/fBWPIi5TjXgHF/AQGhPgDfcqjPXxb3F7Yl/ctK2/LvymrYobZr4+MidQ
+	 FfiIn3Y0s3nVe1WtyQg2EqlpmhztArA66k7XT+JAH4HVO1VhlhcMssQGEzxaDjc4SH
+	 Y1jWBl+krS7cWXCRC9f5DsvCWz0+Dan+hYWwbHG6jkfD2srhM1J78G6qlKdokDcNhP
+	 3XsWHbNmba3chM7scsPq88/NpoWssGGjhWLuYOSAOxRx2JO+Cn3PuwD+73kxdk1jBy
+	 vl8skgbsX5O0wJhf/iKlG+SKy74PmnALHuVGaaTCj42RDDc9sdrAX2rr9MeLp5cdHD
+	 wyrG/qyoCuEHg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 18 Jan 2026 15:27:52 +0100
+Message-Id: <DFRSAO9CXHZ7.2WD0GAOQUILUE@kernel.org>
+Subject: Re: [PATCH v2 1/3] rust/drm: Introduce DeviceContext
+Cc: <dri-devel@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Simona Vetter" <simona@ffwll.ch>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Shankari Anand" <shankari.ak0208@gmail.com>,
+ "David Airlie" <airlied@gmail.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Asahi Lina" <lina+kernel@asahilina.net>, "Atharv Dubey"
+ <atharvd440@gmail.com>, "Daniel Almeida" <daniel.almeida@collabora.com>
+To: "Lyude Paul" <lyude@redhat.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260116204728.725579-1-lyude@redhat.com>
+ <20260116204728.725579-2-lyude@redhat.com>
+In-Reply-To: <20260116204728.725579-2-lyude@redhat.com>
 
-Replace the linked list management in context.rs with KVVec.
-This simplifies the ownership model by using standard
-Arc-based tracking and moves away from manual unsafe list removals.
+On Fri Jan 16, 2026 at 9:41 PM CET, Lyude Paul wrote:
+> diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+> index 3ce8f62a00569..53ca71daf2f86 100644
+> --- a/rust/kernel/drm/device.rs
+> +++ b/rust/kernel/drm/device.rs
+> @@ -7,14 +7,20 @@
+>  use crate::{
+>      alloc::allocator::Kmalloc,
+>      bindings, device, drm,
+> -    drm::driver::AllocImpl,
+> +    drm::{driver::AllocImpl, private::Sealed},
 
-The refactor improves memory safety by leveraging Rust's contiguous
-collection types while maintaining proper error propagation for
-allocation failures during process registration.
+Please use kernel vertical style [1] when making changes.
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://github.com/rust-for-linux/linux/issues/1215
-Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
----
-v2:
-  - Used real name in Signed-off-by.
-  - Updated subject prefix to 'rust_binder:' and removed 'rust-next'.
-  - Changed return types from KVec to KVVec as request.
-  - Added cc: rust-for-linux@vger.kernel.org to email.
-  - Note: Kept manual loops for cloning because try_clone/from_iter
-    helpers for KVVec are not currently available / I couldn't get it
-    to work.
----
- drivers/android/binder/context.rs | 77 ++++++++++++++-----------------
- drivers/android/binder/process.rs |  4 +-
- 2 files changed, 38 insertions(+), 43 deletions(-)
+(If you want you can also add an additional patch converting the whole DRM
+module first for consistency.)
 
-diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
-index 3d135ec03ca7..b3adab830b51 100644
---- a/drivers/android/binder/context.rs
-+++ b/drivers/android/binder/context.rs
-@@ -3,8 +3,8 @@
- // Copyright (C) 2025 Google LLC.
- 
- use kernel::{
--    error::Error,
--    list::{List, ListArc, ListLinks},
-+    alloc::kvec::{KVVec, KVec},
-+    error::code::*,
-     prelude::*,
-     security,
-     str::{CStr, CString},
-@@ -17,22 +17,19 @@
- kernel::sync::global_lock! {
-     // SAFETY: We call `init` in the module initializer, so it's initialized before first use.
-     pub(crate) unsafe(uninit) static CONTEXTS: Mutex<ContextList> = ContextList {
--        list: List::new(),
-+        contexts: KVVec::new(),
-     };
- }
- 
- pub(crate) struct ContextList {
--    list: List<Context>,
-+    contexts: KVVec<Arc<Context>>,
- }
- 
--pub(crate) fn get_all_contexts() -> Result<KVec<Arc<Context>>> {
-+pub(crate) fn get_all_contexts() -> Result<KVVec<Arc<Context>>> {
-     let lock = CONTEXTS.lock();
--
--    let count = lock.list.iter().count();
--
--    let mut ctxs = KVec::with_capacity(count, GFP_KERNEL)?;
--    for ctx in &lock.list {
--        ctxs.push(Arc::from(ctx), GFP_KERNEL)?;
-+    let mut ctxs = KVVec::with_capacity(lock.contexts.len(), GFP_KERNEL)?;
-+    for ctx in lock.contexts.iter() {
-+        ctxs.push(ctx.clone(), GFP_KERNEL)?;
-     }
-     Ok(ctxs)
- }
-@@ -42,7 +39,7 @@ pub(crate) fn get_all_contexts() -> Result<KVec<Arc<Context>>> {
- struct Manager {
-     node: Option<NodeRef>,
-     uid: Option<Kuid>,
--    all_procs: List<Process>,
-+    all_procs: KVVec<Arc<Process>>,
- }
- 
- /// There is one context per binder file (/dev/binder, /dev/hwbinder, etc)
-@@ -51,28 +48,16 @@ pub(crate) struct Context {
-     #[pin]
-     manager: Mutex<Manager>,
-     pub(crate) name: CString,
--    #[pin]
--    links: ListLinks,
--}
--
--kernel::list::impl_list_arc_safe! {
--    impl ListArcSafe<0> for Context { untracked; }
--}
--kernel::list::impl_list_item! {
--    impl ListItem<0> for Context {
--        using ListLinks { self.links };
--    }
- }
- 
- impl Context {
-     pub(crate) fn new(name: &CStr) -> Result<Arc<Self>> {
-         let name = CString::try_from(name)?;
--        let list_ctx = ListArc::pin_init::<Error>(
-+        let ctx = Arc::pin_init(
-             try_pin_init!(Context {
-                 name,
--                links <- ListLinks::new(),
-                 manager <- kernel::new_mutex!(Manager {
--                    all_procs: List::new(),
-+                    all_procs: KVVec::new(),
-                     node: None,
-                     uid: None,
-                 }, "Context::manager"),
-@@ -80,8 +65,7 @@ pub(crate) fn new(name: &CStr) -> Result<Arc<Self>> {
-             GFP_KERNEL,
-         )?;
- 
--        let ctx = list_ctx.clone_arc();
--        CONTEXTS.lock().list.push_back(list_ctx);
-+        CONTEXTS.lock().contexts.push(ctx.clone(), GFP_KERNEL)?;
- 
-         Ok(ctx)
-     }
-@@ -90,17 +74,24 @@ pub(crate) fn new(name: &CStr) -> Result<Arc<Self>> {
-     ///
-     /// No-op if called twice.
-     pub(crate) fn deregister(&self) {
--        // SAFETY: We never add the context to any other linked list than this one, so it is either
--        // in this list, or not in any list.
--        unsafe { CONTEXTS.lock().list.remove(self) };
-+        // Safe removal using retain
-+        CONTEXTS.lock().contexts.retain(|c| {
-+            let p1 = Arc::as_ptr(c);
-+            let p2 = self as *const Context;
-+            p1 != p2
-+        });
-     }
- 
--    pub(crate) fn register_process(self: &Arc<Self>, proc: ListArc<Process>) {
-+    pub(crate) fn register_process(self: &Arc<Self>, proc: Arc<Process>) -> Result {
-         if !Arc::ptr_eq(self, &proc.ctx) {
-             pr_err!("Context::register_process called on the wrong context.");
--            return;
-+            return Err(EINVAL);
-         }
--        self.manager.lock().all_procs.push_back(proc);
-+        self.manager
-+            .lock()
-+            .all_procs
-+            .push(proc, GFP_KERNEL)
-+            .map_err(Error::from)
-     }
- 
-     pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Process) {
-@@ -108,8 +99,12 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Process) {
-             pr_err!("Context::deregister_process called on the wrong context.");
-             return;
-         }
--        // SAFETY: We just checked that this is the right list.
--        unsafe { self.manager.lock().all_procs.remove(proc) };
-+        // Safe removal using retain
-+        self.manager.lock().all_procs.retain(|p| {
-+            let p1 = Arc::as_ptr(p);
-+            let p2 = proc as *const Process;
-+            p1 != p2
-+        });
-     }
- 
-     pub(crate) fn set_manager_node(&self, node_ref: NodeRef) -> Result {
-@@ -158,13 +153,11 @@ pub(crate) fn for_each_proc<F>(&self, mut func: F)
-         }
-     }
- 
--    pub(crate) fn get_all_procs(&self) -> Result<KVec<Arc<Process>>> {
-+    pub(crate) fn get_all_procs(&self) -> Result<KVVec<Arc<Process>>> {
-         let lock = self.manager.lock();
--        let count = lock.all_procs.iter().count();
--
--        let mut procs = KVec::with_capacity(count, GFP_KERNEL)?;
--        for proc in &lock.all_procs {
--            procs.push(Arc::from(proc), GFP_KERNEL)?;
-+        let mut procs = KVVec::with_capacity(lock.all_procs.len(), GFP_KERNEL)?;
-+        for proc in lock.all_procs.iter() {
-+            procs.push(Arc::clone(proc), GFP_KERNEL)?;
-         }
-         Ok(procs)
-     }
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 132055b4790f..c3676fc7785d 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -513,7 +513,9 @@ fn new(ctx: Arc<Context>, cred: ARef<Credential>) -> Result<Arc<Self>> {
-         )?;
- 
-         let process = list_process.clone_arc();
--        process.ctx.register_process(list_process);
-+        process
-+            .ctx
-+            .register_process(Arc::from(list_process.as_arc_borrow()))?;
- 
-         Ok(process)
-     }
--- 
-2.43.0
+[1] https://docs.kernel.org/rust/coding-guidelines.html#imports
+
+>      error::from_err_ptr,
+>      error::Result,
+>      prelude::*,
+>      sync::aref::{ARef, AlwaysRefCounted},
+> -    types::Opaque,
+> +    types::{NotThreadSafe, Opaque},
+> +};
+> +use core::{
+> +    alloc::Layout,
+> +    marker::PhantomData,
+> +    mem::{self},
+> +    ops::Deref,
+> +    ptr::{self, NonNull},
+>  };
+> -use core::{alloc::Layout, mem, ops::Deref, ptr, ptr::NonNull};
+> =20
+>  #[cfg(CONFIG_DRM_LEGACY)]
+>  macro_rules! drm_legacy_fields {
+> @@ -47,26 +53,88 @@ macro_rules! drm_legacy_fields {
+>      }
+>  }
+> =20
+> -/// A typed DRM device with a specific `drm::Driver` implementation.
+> +macro_rules! drm_dev_ctx {
+> +    (
+> +        $( #[$attrs:meta] )*
+> +        $name:ident
+> +    ) =3D> {
+> +        $( #[$attrs] )*
+> +        pub struct $name;
+> +
+> +        impl DeviceContext for $name {}
+> +        impl Sealed for $name {}
+> +
+> +        // SAFETY: All registration states are free of side-effects (e.g=
+. no Drop) and are ZSTs,
+> +        // thus they are always thread-safe.
+> +        unsafe impl Send for $name {}
+> +        // SAFETY: All registration states are free of side-effects (e.g=
+. no Drop) and are ZSTs,
+> +        // thus they are always thread-safe.
+> +        unsafe impl Sync for $name {}
+
+They are all ZSTs and should be Send + Sync by default, hence the impls are=
+ not
+needed.
+
+Also, I don't think this macro adds a lot of value when the Send and Sync i=
+mpls
+are removed. In the driver core it looks like this:
+
+	mod private {
+	    pub trait Sealed {}
+=09
+	    impl Sealed for super::Bound {}
+	    impl Sealed for super::Core {}
+	    impl Sealed for super::CoreInternal {}
+	    impl Sealed for super::Normal {}
+	}
+=09
+	impl DeviceContext for Bound {}
+	impl DeviceContext for Core {}
+	impl DeviceContext for CoreInternal {}
+	impl DeviceContext for Normal {}
+
+I think that's compact enough.
+
+> +    };
+> +}
+> +
+> +/// A trait implemented by all possible contexts a [`Device`] can be use=
+d in.
+
+I think this documentation should provide a rough overview of the different
+states a DRM device can have.
+
+> +pub trait DeviceContext: Sealed + Send + Sync {}
+> +
+> +drm_dev_ctx! {
+> +    /// The [`DeviceContext`] of a [`Device`] that was registered with u=
+serspace at some point.
+> +    ///
+> +    /// This represents a [`Device`] which is guaranteed to have been re=
+gistered with userspace at
+> +    /// some point in time. Such a DRM device is guaranteed to have been=
+ fully-initialized.
+> +    ///
+> +    /// Note: A device in this context is not guaranteed to remain regis=
+tered with userspace for its
+> +    /// entire lifetime, as this is impossible to guarantee at compile-t=
+ime. However, any
+> +    /// userspace-dependent operations performed with an unregistered de=
+vice in this [`DeviceContext`]
+> +    /// are guaranteed to be no-ops.
+> +    ///
+> +    /// # Invariants
+> +    ///
+> +    /// A [`Device`] in this [`DeviceContext`] is guaranteed to have cal=
+led `drm_dev_register` once.
+
+I'm not sure it makes sense for user facing documentation to menthion the
+corresponding C function here. I'd just say that it has been registered wit=
+h the
+DRM core.
+
+> +    Registered
+> +}
+> +
+> @@ -132,9 +202,40 @@ pub fn new(dev: &device::Device, data: impl PinInit<=
+T::Data, Error>) -> Result<A
+> =20
+>          // SAFETY: The reference count is one, and now we take ownership=
+ of that reference as a
+>          // `drm::Device`.
+> -        Ok(unsafe { ARef::from_raw(raw_drm) })
+> +        // INVARIANT: We just created the device above, but have yet to =
+call `drm_dev_register`.
+> +        // `Self` cannot be copied or sent to another thread - ensuring =
+that `drm_dev_register`
+> +        // won't be called during its lifetime and that the device is un=
+registered
+
+Please end with a period.
+
+> +        Ok(Self(unsafe { ARef::from_raw(raw_drm) }, NotThreadSafe))
+>      }
+> +}
+> =20
+> +/// A typed DRM device with a specific [`drm::Driver`] implementation an=
+d [`DeviceContext`].
+> +///
+> +/// Since DRM devices can be used before being fully initialized and reg=
+istered with userspace, `C`
+> +/// represents the furthest [`DeviceContext`] we can guarantee that this=
+ [`Device`] has reached.
+> +///
+> +/// Keep in mind: this means that an unregistered device can still have =
+the registration state
+> +/// [`Registered`] as long as it was registered with userspace once in t=
+he past, and that the
+> +/// behavior of such a device is still well-defined. In such a situation=
+, the behavior of any
+> +/// functions which interact with userspace will simply be no-ops. Addit=
+ionally, a device with the
+
+I don't think those are necessarily no-ops, in hot-unplug cases drivers mig=
+ht
+still receive DRM callbacks from userspace. But they won't be able to acces=
+s bus
+device resources anymore. In contrast to the DRM C implementation the
+corresponding synchronization happens at driver core level in Rust, whereas=
+ on
+the C side there is drm_dev_enter() / drm_dev_exit() for this.
+
+> +/// registration state [`Uninit`] simply does not have a guaranteed regi=
+stration state at compile
+> +/// time, and could be either registered or unregistered. Since there is=
+ no way to guarantee a
+> +/// long-lived reference to an unregistered device would remain unregist=
+ered, we do not provide a
+> +/// [`DeviceContext`] for this.
+> +///
+> +/// # Invariants
+> +///
+> +/// * `self.dev` is a valid instance of a `struct device`.
+> +/// * The data layout of `Self` remains the same across all implementati=
+ons of `C`.
+> +/// * Any invariants for `C` also apply.
+> +#[repr(C)]
+> +pub struct Device<T: drm::Driver, C: DeviceContext =3D Registered> {
+> +    dev: Opaque<bindings::drm_device>,
+> +    data: T::Data,
+> +    _ctx: PhantomData<C>,
+> +}
+> +
+> +impl<T: drm::Driver, C: DeviceContext> Device<T, C> {
+>      pub(crate) fn as_raw(&self) -> *mut bindings::drm_device {
+>          self.dev.get()
+>      }
+> @@ -160,13 +261,13 @@ unsafe fn into_drm_device(ptr: NonNull<Self>) -> *m=
+ut bindings::drm_device {
+>      ///
+>      /// # Safety
+>      ///
+> -    /// Callers must ensure that `ptr` is valid, non-null, and has a non=
+-zero reference count,
+> -    /// i.e. it must be ensured that the reference count of the C `struc=
+t drm_device` `ptr` points
+> -    /// to can't drop to zero, for the duration of this function call an=
+d the entire duration when
+> -    /// the returned reference exists.
+> -    ///
+> -    /// Additionally, callers must ensure that the `struct device`, `ptr=
+` is pointing to, is
+> -    /// embedded in `Self`.
+> +    /// * Callers must ensure that `ptr` is valid, non-null, and has a n=
+on-zero reference count,
+> +    ///   i.e. it must be ensured that the reference count of the C `str=
+uct drm_device` `ptr` points
+> +    ///   to can't drop to zero, for the duration of this function call =
+and the entire duration when
+> +    ///   the returned reference exists.
+> +    /// * Additionally, callers must ensure that the `struct device`, `p=
+tr` is pointing to, is
+
+I'd drop "additionally", it is a listing anyways.
+
+> +    ///   embedded in `Self`.
+> +    /// * Callers promise that any type invariants of `C` will be upheld=
+.
+
+What do you mean by "type invariants of C"?
+
+>  impl<T: Driver> Registration<T> {
+>      /// Creates a new [`Registration`] and registers it.
+> -    fn new(drm: &drm::Device<T>, flags: usize) -> Result<Self> {
+> +    fn new(drm: drm::UnregisteredDevice<T>, flags: usize) -> Result<Self=
+> {
+>          // SAFETY: `drm.as_raw()` is valid by the invariants of `drm::De=
+vice`.
+>          to_result(unsafe { bindings::drm_dev_register(drm.as_raw(), flag=
+s) })?;
+> =20
+> -        Ok(Self(drm.into()))
+> +        // SAFETY: We just called `drm_dev_register` above
+> +        let new =3D NonNull::from(unsafe { drm.assume_ctx() });
+> +
+> +        // Leak the ARef from UnregisteredDevice in preparation for tran=
+sferring its ownership.
+> +        mem::forget(drm);
+> +
+> +        // SAFETY: `drm`'s `Drop` constructor was never called, ensuring=
+ that there remains at least
+> +        // one reference to the device - which we take ownership over he=
+re.
+> +        let new =3D unsafe { ARef::from_raw(new) };
+> +
+> +        Ok(Self(new))
+>      }
+> =20
+> -    /// Same as [`Registration::new`}, but transfers ownership of the [`=
+Registration`] to
+> +    /// Same as [`Registration::new`], but transfers ownership of the [`=
+Registration`] to
+>      /// [`devres::register`].
+> -    pub fn new_foreign_owned(
+> -        drm: &drm::Device<T>,
+> -        dev: &device::Device<device::Bound>,
+> +    pub fn new_foreign_owned<'a>(
+> +        drm: drm::UnregisteredDevice<T>,
+> +        dev: &'a device::Device<device::Bound>,
+>          flags: usize,
+> -    ) -> Result
+> +    ) -> Result<&'a drm::Device<T>>
+>      where
+>          T: 'static,
+>      {
+> -        if drm.as_ref().as_raw() !=3D dev.as_raw() {
+> +        let this_dev: &device::Device =3D drm.as_ref();
+> +        if this_dev.as_raw() !=3D dev.as_raw() {
+
+this_dev is misleading, since it actually is the parent device. Besides tha=
+t,
+the change seems unnecessary, no?
+
+>              return Err(EINVAL);
+>          }
+> =20
+>          let reg =3D Registration::<T>::new(drm, flags)?;
+> +        let drm =3D NonNull::from(reg.device());
+> +
+> +        devres::register(dev, reg, GFP_KERNEL)?;
+> =20
+> -        devres::register(dev, reg, GFP_KERNEL)
+> +        // SAFETY: Since `reg` was passed to devres::register(), the dev=
+ice now owns the lifetime
+> +        // of the DRM registration - ensuring that this references lives=
+ for at least as long as 'a.
+> +        Ok(unsafe { drm.as_ref() })
+>      }
 
