@@ -1,41 +1,41 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE0B2F12CF;
-	Mon, 19 Jan 2026 23:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E842F9C3D;
+	Mon, 19 Jan 2026 23:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768865735; cv=none; b=uvIP7BlCWXMNrKA0opoNykE50MIxVKIYtClSBI5hOZIu/PcmQOgx7xG2zaWrapr2JATG7LVYRIt9/Hd1yPe2QOdRXRentsLIGev3YPVPawCFUHCxuUbbd2V4CefRMfsZkszhT+nsXPWR7XDXNU8s3QGRBFTm9uu6uwTtGik6UtU=
+	t=1768865736; cv=none; b=Shs3co1zBhSctjFy9Ibw43PNvtW+zvrxhciEy3a0Nv/k7I7RIt+8mnr+2pnWDb4rAzHVwjF3jSJrT6QSQdy75D/7HTm/4SN/YMtW+nAPMRoWHdWtErGnH4NF4S5BSZXH0Y8m1oPg8ndFP67we7sSy98Qxv7YmTk9DwFycIbLOk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768865735; c=relaxed/simple;
-	bh=EIDY6ukxUEx2jxZ91hlUz1UpHM1wcNP5YSPiCVbXIpY=;
+	s=arc-20240116; t=1768865736; c=relaxed/simple;
+	bh=JvOYHt54V3wkz9XOQxonbU0lmdnTo5QUIcTkXnD3p28=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LtBsIlwMN4+9OHMM/QYqh/jpjyLCMZYDIFZbf3uAQbTPs7LGQHufi9mfQRpD6e8DUYrC8quVVsg48+s2B2AlCVFn025Dvq2qLfb+pvZHHMli4hnWtfgoqtDqrFk6rTI5cJCaxcLAgYbk699KypMrJmWMDEw+zEylimWFw2CGcyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=WPACwENQ; arc=none smtp.client-ip=148.251.105.195
+	 In-Reply-To:To:Cc; b=gzy3MEHQkB5QM3C6bsdd3clCMbGtCkgQZO5iO6rArSvbpPO6EMNVc5Jau6axS2skwFiozlfJriDs+6IFy9LGib/Hg+svpKFJPRwVvXxDTHRHrRQ/xx9iEwvvNCUwESNlEjmzF2Q6y0IE8T56L8/aaIpT+45l7NGPNmLxgo9wazs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=JPmB5bxS; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="WPACwENQ"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="JPmB5bxS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1768865725;
-	bh=EIDY6ukxUEx2jxZ91hlUz1UpHM1wcNP5YSPiCVbXIpY=;
+	s=mail; t=1768865722;
+	bh=JvOYHt54V3wkz9XOQxonbU0lmdnTo5QUIcTkXnD3p28=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=WPACwENQrJn3WLax62DYRlEEkSjznVzkFa+CO+Ru2XXDU6nrutxv/Yt5Sj2st5FGn
-	 rux1XlNr1livVuP8LOlq1VaiME27uNcZ4nUtu2b4CYbWYzmZZOEwjZ/NZ2Ay6NSgdd
-	 HsBn0VxB1GIndrkL4p82PoH6twHWDt40xwtuObIR+0JZxKYBtOCWh+SAEozhJ+sBu0
-	 LdRgKH8C0ozAy8htp3w0ysE9EaEHqinZQTLVYGKnqUf/rqLMJsF1URqJHSWRZMLAzB
-	 KLcV+xHLEEdLjsv/WbjXMw8fSnTDwc98R3Lmi8JJK5eZk2o2LWhVrekfFNrKkFOWmX
-	 sef/a4LfZrfhA==
+	b=JPmB5bxSwWlh3EqWQJgSR4eUG8eptyYivrLwW9pdq5g4QII9wkAuZw+MhISK8Lknq
+	 +Vyn4xy0zQUOZacPMnRQYMDCaSZlrW5fcqMCMIbSDHIiVNC4kCV0YCpyMfRubzYqIo
+	 2VaqVBbJJng5UGw9VP3U8AgwDuGKQW1DHTIgna64QqQ0R6hm6NXzYuBF2DQV3N1EHB
+	 elTiNwFcxLGhU3Mv4XrXxSF4/7CrBA6vePcQr7fG8wWxphHAxBEWomSWAzcS/EIkqv
+	 XIAbV5lol/ArTHsV6BkaV2TdVHWRdwyKo6JAEgrJlX6SL2L3caDW93crMB8b7BLo5I
+	 dCcayE3Gdxn+Q==
 Received: from [192.168.0.79] (unknown [IPv6:2804:14d:72b4:81ae:67c:16ff:fe57:b5a3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: dwlsalmeida)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0BA6B17E0FFA;
-	Tue, 20 Jan 2026 00:35:22 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1AA9217E0FDB;
+	Tue, 20 Jan 2026 00:35:19 +0100 (CET)
 From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Mon, 19 Jan 2026 20:34:47 -0300
-Subject: [PATCH 2/2] rust: drm: add FeatureRender
+Date: Mon, 19 Jan 2026 20:34:46 -0300
+Subject: [PATCH 1/2] rust: drm: add support for driver features
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260119-drm-render-v1-2-8326e4d5cb44@collabora.com>
+Message-Id: <20260119-drm-render-v1-1-8326e4d5cb44@collabora.com>
 References: <20260119-drm-render-v1-0-8326e4d5cb44@collabora.com>
 In-Reply-To: <20260119-drm-render-v1-0-8326e4d5cb44@collabora.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -60,130 +60,156 @@ Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.14.3
 
-Add a feature for drivers willing to expose render nodes to userspace. This
-comes with an added safety requirement in the DriverFeatures trait. This,
-in turn, exposes /dev/dri/renderDXX nodes that can be used by userspace to
-control the device.
+Add initial support for drm driver features via the DriverFeatures trait.
+This trait is unsafe, requiring the implementer to comply with the safety
+requirements of each feature individually if the feature is enabled.
 
-This is then enabled in the Tyr driver, while it's left as NoRender for
-Nova for the time being.
+New features can be described by adding separate ZSTs to encode them. The
+current design assumes two types, for example: FeatureFooSupported and
+NoFoo. As said above, this will require implementors to observe more safety
+requirements in their DriverFeatures trait implementation.
+
+A subsequent commit will build on this one to add support for FEAT_RENDER.
+This is required by Tyr and other drivers.
+
+Additionally, features can also require additional traits to be implemented
+when enabled. These traits can add their own safety requirements.
+
+This is roughly described below, with some boilerplate omitted:
+
+pub struct ModesetSupported;
+pub struct NoModeset;
+
+pub unsafe trait ModesetOps: Driver {
+    fn set_mode(&self, ...);
+}
+
+pub trait ModesetRequirement<F: ModesetFeature> {}
+impl<T: ModesetOps> ModesetRequirement<ModesetSupported> for T {}
+impl<T> ModesetRequirement<NoModeset> for T {}
+
+pub trait Driver:
+    DriverFeatures
+    + ModesetRequirement<Self::Modeset>
+{
+    // ...
+}
+
+// `driver::compute_features` is augmented to include the feature flag.
+const fn compute_features() -> u32 {
+  if T::Modeset::ENABLED {
+    features |= FEAT_MODESET;
+  }
+
+  features
+}
+
+// In driver code, `DriverFeatures` can enable the feature via
+// `ModesetSupported`.
+unsafe impl DriverFeatures for MyDriver {
+  type Modeset = ModesetSupported;
+}
+
+// Required because `Modeset = ModesetSupported`.
+unsafe impl ModesetOps for MyDriver {...}
+
+Feature support will soon be required by upcoming DRM drivers. This
+extensible model lets us describe them in terms of either additional safety
+requirements and/or traits.
 
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- drivers/gpu/drm/nova/driver.rs |  4 +++-
- drivers/gpu/drm/tyr/driver.rs  | 12 +++++++++---
- rust/kernel/drm/device.rs      | 10 +++++++++-
- rust/kernel/drm/driver.rs      | 37 ++++++++++++++++++++++++++++++++++++-
- 4 files changed, 57 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/nova/driver.rs |  5 +++++
+ drivers/gpu/drm/tyr/driver.rs  |  5 +++++
+ rust/kernel/drm/device.rs      |  6 +++++-
+ rust/kernel/drm/driver.rs      | 17 ++++++++++++++++-
+ 4 files changed, 31 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index 247a05f7b3a7..4de1e4cfdc5d 100644
+index 2246d8e104e0..247a05f7b3a7 100644
 --- a/drivers/gpu/drm/nova/driver.rs
 +++ b/drivers/gpu/drm/nova/driver.rs
-@@ -73,4 +73,6 @@ impl drm::Driver for NovaDriver {
- // SAFETY: This trait requires implementers to observe the safety requirements
- // of each enabled feature. There are no features enabled, so this is safe by
- // definition.
--unsafe impl drm::driver::DriverFeatures for NovaDriver {}
-+unsafe impl drm::driver::DriverFeatures for NovaDriver {
-+    type Render = drm::driver::NoRender;
-+}
+@@ -69,3 +69,8 @@ impl drm::Driver for NovaDriver {
+         (NOVA_GEM_INFO, drm_nova_gem_info, ioctl::AUTH | ioctl::RENDER_ALLOW, File::gem_info),
+     }
+ }
++
++// SAFETY: This trait requires implementers to observe the safety requirements
++// of each enabled feature. There are no features enabled, so this is safe by
++// definition.
++unsafe impl drm::driver::DriverFeatures for NovaDriver {}
 diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index ec2aa30515a1..c12ad8467605 100644
+index 0389c558c036..ec2aa30515a1 100644
 --- a/drivers/gpu/drm/tyr/driver.rs
 +++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -192,9 +192,15 @@ impl drm::Driver for TyrDriver {
+@@ -191,6 +191,11 @@ impl drm::Driver for TyrDriver {
+     }
  }
  
- // SAFETY: This trait requires implementers to observe the safety requirements
--// of each enabled feature. There are no features enabled, so this is safe by
--// definition.
--unsafe impl drm::driver::DriverFeatures for TyrDriver {}
-+// of each enabled feature.
-+//
-+// For `FeatureRender`: we do not call modesetting APIs in our ioctls, and we do
-+// not use any APIs requiring a DRM master. Furthermore, it is not possible for
-+// a client to interfere in another client by design. This is enforced by the
-+// `VM` layer and, at a lower level, by the system's IOMMU.
-+unsafe impl drm::driver::DriverFeatures for TyrDriver {
-+    type Render = drm::driver::RenderSupported;
-+}
- 
++// SAFETY: This trait requires implementers to observe the safety requirements
++// of each enabled feature. There are no features enabled, so this is safe by
++// definition.
++unsafe impl drm::driver::DriverFeatures for TyrDriver {}
++
  #[pin_data]
  struct Clocks {
+     core: Clk,
 diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index cfc2f34e8cc2..b2c2e6c195af 100644
+index 3ce8f62a0056..cfc2f34e8cc2 100644
 --- a/rust/kernel/drm/device.rs
 +++ b/rust/kernel/drm/device.rs
-@@ -62,7 +62,15 @@ pub struct Device<T: drm::Driver> {
+@@ -61,6 +61,10 @@ pub struct Device<T: drm::Driver> {
+ }
  
  impl<T: drm::Driver> Device<T> {
-     const fn compute_features() -> u32 {
--        drm::driver::FEAT_GEM
-+        use crate::drm::driver::FeatureRender;
++    const fn compute_features() -> u32 {
++        drm::driver::FEAT_GEM
++    }
 +
-+        let mut features = drm::driver::FEAT_GEM;
-+
-+        if T::Render::ENABLED {
-+            features |= drm::driver::FEAT_RENDER;
-+        }
-+
-+        features
-     }
- 
      const VTABLE: bindings::drm_driver = drm_legacy_fields! {
+         load: None,
+         open: Some(drm::File::<T::File>::open_callback),
+@@ -86,7 +90,7 @@ impl<T: drm::Driver> Device<T> {
+         name: crate::str::as_char_ptr_in_const_context(T::INFO.name).cast_mut(),
+         desc: crate::str::as_char_ptr_in_const_context(T::INFO.desc).cast_mut(),
+ 
+-        driver_features: drm::driver::FEAT_GEM,
++        driver_features: Self::compute_features(),
+         ioctls: T::IOCTLS.as_ptr(),
+         num_ioctls: T::IOCTLS.len() as i32,
+         fops: &Self::GEM_FOPS,
 diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-index fdfd083ba2b6..331a998e47e4 100644
+index f30ee4c6245c..fdfd083ba2b6 100644
 --- a/rust/kernel/drm/driver.rs
 +++ b/rust/kernel/drm/driver.rs
-@@ -15,6 +15,9 @@
- /// Driver use the GEM memory manager. This should be set for all modern drivers.
- pub(crate) const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
+@@ -98,7 +98,7 @@ pub trait AllocImpl: super::private::Sealed + drm::gem::IntoGEMObject {
+ /// This trait must be implemented by drivers in order to create a `struct drm_device` and `struct
+ /// drm_driver` to be registered in the DRM subsystem.
+ #[vtable]
+-pub trait Driver {
++pub trait Driver: DriverFeatures {
+     /// Context data associated with the DRM driver
+     type Data: Sync + Send;
  
-+/// Driver supports render nodes, i.e.: /dev/dri/renderDXX devices.
-+pub(crate) const FEAT_RENDER: u32 = bindings::drm_driver_feature_DRIVER_RENDER;
+@@ -168,3 +168,18 @@ fn drop(&mut self) {
+         unsafe { bindings::drm_dev_unregister(self.0.as_raw()) };
+     }
+ }
 +
- /// Information data for a DRM Driver.
- pub struct DriverInfo {
-     /// Driver major version.
-@@ -182,4 +185,36 @@ fn drop(&mut self) {
- ///
- /// Drivers implementing this trait must ensure they comply with the safety
- /// requirements of each supported feature.
--pub unsafe trait DriverFeatures {}
++/// Marker trait for drivers supporting specific features.
 +///
-+/// - For drivers implementing `FeatureRender`:
++/// This trait is unsafe, and each feature might add its own safety
++/// requirements. The safety requirements for this trait requires the caller to
++/// comply with the safety requirements of each supported feature.
 +///
-+/// The render-accessible subset of the driver's functionality must not allow
-+/// clients to interfere with each other or require master privileges. In other
-+/// words, any ioctl declared with [`drm::RENDER_ALLOW`] must not call any
-+/// KMS/modesetting APIs or require `DRM_MASTER`.
-+pub unsafe trait DriverFeatures {
-+    /// Feature for render nodes.
-+    type Render: FeatureRender;
-+}
-+
-+/// Controls whether render nodes are supported via `Self::ENABLED`.
-+pub trait FeatureRender: drm::private::Sealed {
-+    /// Whether render nodes are enabled.
-+    const ENABLED: bool;
-+}
-+
-+/// A marker type indicating that the driver supports render nodes.
-+pub struct RenderSupported;
-+
-+/// A marker type indicating that the driver does not support render nodes.
-+pub struct NoRender;
-+
-+impl drm::private::Sealed for RenderSupported {}
-+impl FeatureRender for RenderSupported {
-+    const ENABLED: bool = true;
-+}
-+
-+impl drm::private::Sealed for NoRender {}
-+impl FeatureRender for NoRender {
-+    const ENABLED: bool = false;
-+}
++/// Features might also require additional trait implementations to be present.
++/// These additional traits may also be unsafe.
++///
++/// # Safety
++///
++/// Drivers implementing this trait must ensure they comply with the safety
++/// requirements of each supported feature.
++pub unsafe trait DriverFeatures {}
 
 -- 
 2.52.0
