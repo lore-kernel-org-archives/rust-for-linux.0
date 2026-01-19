@@ -1,48 +1,48 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B4A2236F0
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 07:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A972236F0
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 07:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768806166; cv=none; b=lnPKCIkUnhm4rLmm1mNJbq9+7oXXLn2zoRcBS7OAt+KO7NFEh0+/4Lh0hA7v6dINhrOSUcoa7cdj7Kp817fBnS2BrLcKbVSezHFGmjMqLo1moRaAshmIxT8tZfwpiRNs/5noCYbutNCq8pMJe8skpccJq9QPW6mD91Fmn5ekcfw=
+	t=1768806182; cv=none; b=plglLSjhWb/DAceiQKA/WN7D+asb5kiLuoycG/ER/Km7J6dxOLXZrBlaR6e34UhdETCFZqmi24N7c5t4dyEgQmOC7Vw4g5UILAYCNMCWmcF1jXMArY/O/BUFbQWPHSTWxsaw73O8ZS6Cj/4TtiPNXm78PlH9S2kMkbAOP48DRaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768806166; c=relaxed/simple;
-	bh=SHZUF3VYHq7wC00OuhTM1/riEtwF8xDl9wAoaBaxtWs=;
+	s=arc-20240116; t=1768806182; c=relaxed/simple;
+	bh=A3QW38qDYUoVLDFk9H1w0o/ysF5g/novqjoPiVXHyw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isaiXp9CNayvLv3Lvq2+AVCyJoEw8fy0nQlx49L0CIF8vnGiT47h4FKjda37fkZwjgq4Sghv915zgKOugSvkwyCwrjIMbvgOY/8kQ6fRWa0tLrW11oT9wnNFE9VpNPGr43+Pb/h3bRxkej9cRty9JJc3yCfvqJEQsvn+r+O8XpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.172
+	 MIME-Version; b=nipzjJUHrvEMCKx22GLN20kTWs9lQuF+1kxn6bSJjFMzLgBPbz1txk1WJ+NzRaFpHyCBmV7Y//l7WOKhGDzHdkszy/mibdxwNq7oiQxa2km/sfrMW+r5ylJAMjoz88/oRFaB6+6EShd8b+FoYUwPlkCPKBa3VM3Cx1KAOY/ZQLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c46d68f2b4eso2459448a12.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 23:02:44 -0800 (PST)
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c47ee987401so1663984a12.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 23:03:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768806164; x=1769410964;
+        d=1e100.net; s=20230601; t=1768806180; x=1769410980;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=QK1gfTwgRyN5xSMXuSoAZuU7QBmAplLTdHI3ZMYDZnA=;
-        b=lwKvAwfbV6s8AtJX+S9lup3ldlkkyIoK0CZmtDoqbksuRMed40S3v7iZZWYvss0fLt
-         4dyNR5/E2g67I0bDEBljLHnqfcVYOh3T/CZLR6KDw1lz3xwXCHskA6lkmtKRPq27iAga
-         ls47H8nvI/I2pIItRoSvFNX2gvpY/CIYdKynwrVE/3Hq+DS7WB/VcvwLYZLHIfDMlfgs
-         IWMrkIvxM1j6zBQIMHxC0GcUIQmM/pGdM31Dcoa3nqD2QjNsyKm0agtrNNHooy6jedT4
-         t4eIyIPvcQnieKKDSNQrWr4lidwoadsqopfUl2VHz6iRxerjeSgK4NZ/RbvzTRyx3OpI
-         mw7A==
-X-Gm-Message-State: AOJu0YzfEQvEeyVKHQTIEor7uaJ5cE7+NgH7bp+FU8k0SRK7dW4PV0kd
-	YHgx9tgxz9F1c71SFBB4Z2ZRymXVssK9A6PfuAtbHJ24KK3L3xhAliO/M4YreilA
-X-Gm-Gg: AZuq6aLg8GexXVBvxbHStttPcEsXEyQpNM7y5ZNA9uvBdWHuvGlL36wxKot0rPAWLOl
-	BGSKWaNQqu5lAhQW5yFWH1dE4tzFYoYU8ZUHDtdVv5ssbm7NFzSuAQNWYuS38vNyWSC8Q3myn+P
-	sPEQ8D+/GH0vjox9ro4nEUg2GF6lzh6KvR/ouS5DXf77+gUgbNiJeCz4LRGF8nunocOnh3WbbyM
-	BPqidrNzhLD8Nd0aipwnxXfX31PAZbHizn/1OgetwAEkSNQs2aCVKqtL4ZbaTthPKqeHv2QwCPl
-	DMpUuPalZTjbRpaKUpcSFE8UVDouy5M1hI2AfeC0jmetCNCW4ycTsh+xJY1XSAaLniE6dnswHyY
-	9BXQXpUnv0WlKcbGYs28f3IzyqNbAkC5mlsX1B+34psYnBgLgEsHVTzsK6g5bQr/bh8Jqm5jfzW
-	9VanZ0KxyENjc5EC3SvhMDXcIEmWSWtKFAYWfFuZL7v9aJ
-X-Received: by 2002:a17:903:3850:b0:2a0:7fa0:7b5c with SMTP id d9443c01a7336-2a7176cc6bcmr102147375ad.55.1768806163693;
-        Sun, 18 Jan 2026 23:02:43 -0800 (PST)
+        bh=lSmDJwA0kw7CcIZslDARhH5y4gs/5Fi4LbdxsUMInnY=;
+        b=LwusT5z8WqriC6yLR3L0JIhd6dqCYFO5E16cbQujIMJe+WZlSUSrZzRdp8+EzfNZlZ
+         kiUAoiIPytLmJT5LJxzFugBm3oVGw6GjPeek17Co1d4+xZyC0IkelBzOGDVoEm6/+p25
+         NxxXOMCYFr33cprZdAW7rjUxq6XO6UfJl2CvvWOKOTC3Rxj55VKu/8WUBwyAYVHVSHhs
+         OGE7yyJZVhDTBshjubBUKoKg4f8XNhC26Phlw6XLPKQAQGL0P4FyuPevXHgtiLtvnO99
+         nlCgifS6moeELGgo0D4saNCPJ7XdUKglnOMRsCcIvbdG/bYfL1ihEZrPFjfRdBjlrOXK
+         WDNg==
+X-Gm-Message-State: AOJu0YwTN7eD4uSfrCAerDC4I/6PIGzbaqBxdwiQKzXULuVENtChU2Kb
+	1r/DP9Ji8T3BwkoIGxCqGiveCzWUMmxhDvJwfItnEDUUPreqhj5LfyWQ2VN7tzvh
+X-Gm-Gg: AZuq6aIQLYiCey/RxSyT729ws7iP7Y2MrOwZ8qsdcXPp4uZFqxQhLU1bSxaw8xz5MUn
+	o1qgYSO2XDEg+N7jHM56knJfga0EQrMZTReWqfTF+5NehRidmpi6ECBcMuvZXlIazbWxK6PacOw
+	41JSIWmz0g1Q9opwosJKQCrdfVYJuy36TWQbixXVd6kj3D8EPlt3z/f/FVGpQEk4LMdB1GduyO2
+	r0k8XqR2ANHb7QD4EcQU2t+7Cz+WjS+QzYKJvz1kffRy5XyOQ+pjLjzWzyFdmeR3vP+q+gEdSGR
+	I3OzjjRmDToHixv0FcKpwPSuT1oHMAr3rpopG1n67VOY00SKY8WpJ8+jZ0+ZZ1Hica8/oDNmWH4
+	20bDkqkIvzXbRHb68dPZSe6yWDmpTxTk2LIdDAb5fe/O106Rs3Nee3PVUGUsV1YbKidk8HjSyTA
+	NFGRu6thl9N6+UUR3FgToRfgl7wBFo6xRw3gxXmWANlsFw
+X-Received: by 2002:a17:903:986:b0:2a0:97ea:b1bd with SMTP id d9443c01a7336-2a70087cbfamr128207655ad.0.1768806180439;
+        Sun, 18 Jan 2026 23:03:00 -0800 (PST)
 Received: from localhost.localdomain (104.244.95.48.16clouds.com. [104.244.95.48])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a71940659fsm82353355ad.83.2026.01.18.23.02.38
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190d16a8sm85105785ad.39.2026.01.18.23.02.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 23:02:43 -0800 (PST)
+        Sun, 18 Jan 2026 23:03:00 -0800 (PST)
 From: Ke Sun <sunke@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -55,9 +55,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH v1 5/7] rust: of: use pin_init::zeroed() instead of unsafe zeroed
-Date: Mon, 19 Jan 2026 15:02:33 +0800
-Message-ID: <20260119070233.1924202-1-sunke@kylinos.cn>
+Subject: [PATCH v1 6/7] rust: pwm: use pin_init::zeroed() for pwm_ops
+Date: Mon, 19 Jan 2026 15:02:50 +0800
+Message-ID: <20260119070250.1925175-1-sunke@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260119065859.1914178-1-sunke@kylinos.cn>
 References: <20260119065859.1914178-1-sunke@kylinos.cn>
@@ -70,28 +70,30 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Replace unsafe core::mem::zeroed() with pin_init::zeroed() for
-of_device_id initialization.
+pwm_ops initialization.
 
 Signed-off-by: Ke Sun <sunke@kylinos.cn>
 ---
- rust/kernel/of.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/kernel/pwm.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/of.rs b/rust/kernel/of.rs
-index 58b20c367f993..44b30c05d4964 100644
---- a/rust/kernel/of.rs
-+++ b/rust/kernel/of.rs
-@@ -36,8 +36,8 @@ impl DeviceId {
-     pub const fn new(compatible: &'static CStr) -> Self {
-         let src = compatible.to_bytes_with_nul();
-         // Replace with `bindings::of_device_id::default()` once stabilized for `const`.
--        // SAFETY: FFI type is valid to be zero-initialized.
--        let mut of: bindings::of_device_id = unsafe { core::mem::zeroed() };
-+        // FFI type is valid to be zero-initialized.
-+        let mut of: bindings::of_device_id = pin_init::zeroed();
+diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+index cb00f8a8765c8..c1178ec51e388 100644
+--- a/rust/kernel/pwm.rs
++++ b/rust/kernel/pwm.rs
+@@ -496,9 +496,9 @@ pub(crate) fn as_raw(&self) -> *const bindings::pwm_ops {
+ /// This is used to bridge Rust trait implementations to the C `struct pwm_ops`
+ /// expected by the kernel.
+ pub const fn create_pwm_ops<T: PwmOps>() -> PwmOpsVTable {
+-    // SAFETY: `core::mem::zeroed()` is unsafe. For `pwm_ops`, all fields are
+-    // `Option<extern "C" fn(...)>` or data, so a zeroed pattern (None/0) is valid initially.
+-    let mut ops: bindings::pwm_ops = unsafe { core::mem::zeroed() };
++    // For `pwm_ops`, all fields are `Option<extern "C" fn(...)>` or data,
++    // so a zeroed pattern (None/0) is valid initially.
++    let mut ops: bindings::pwm_ops = pin_init::zeroed();
  
-         // TODO: Use `copy_from_slice` once stabilized for `const`.
-         let mut i = 0;
+     ops.request = Some(Adapter::<T>::request_callback);
+     ops.capture = Some(Adapter::<T>::capture_callback);
 -- 
 2.43.0
 
