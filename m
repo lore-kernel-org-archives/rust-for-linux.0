@@ -1,181 +1,101 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A6A35BDA6
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 12:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9BB35C19F
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 12:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768826127; cv=none; b=jvw1z0AWhijerwcPrhQj1N883U2zy9KKDqUqO+D22bkpD5ZodVd3I/E2B/aM8Is5bllAHZ9MSli/3iv6F6XdIxq4ghoqNKBqyypIE6mtHhNoNmm9y/X9ZcMtT7HlPMBh7nLAODw/rY0nOjHf8zwpT0JBMUZwO58A6nMtGLHaRas=
+	t=1768826341; cv=none; b=qxhC/q70Pj34voTMRXhh/FNMNN2ncPoT8UlUTSzuWeDvc5w/9aQG1hsoCxCI0ksllSIagT7OS3dHX8bMmazXxZYx+N+ZnWRG2sduXeS0QVaDKmprqUw0vHJT3i5kllzUIIAYbHFyXLhwCJkEYoKBe8VZkbWEUzTx0fOdRpus8Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768826127; c=relaxed/simple;
-	bh=QgtIrq2v5XTFNi5vlU8fw46Ar/tthUMJiTbRAMcagGQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hMFtqDdlSToW5ZzUVqSDXx//TxREcpv/lBiS0XhEUJxB7k5hrfkPo5WDNu7N1zlVRcgMPwRJfuwfZVHHrkFmJLNNXujhsHhv2uX0nnwzVwUkZZz+Bi+JPpUqhz0NN6t3RWHiYjlq3qf/H+Q6hofIcXo2JvssoxK1oWweVb65vI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=why3I2/c; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1768826341; c=relaxed/simple;
+	bh=arAi38nJkadXyPRr0fJ12sZFQzJWjy+451u08njCcY0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=BpgOfduhhuzXL2cJyOsFEpeaYO0zda21Nx0ZWaLTgHGRRX6OKn5wUyrYrNusJt1AQfEX5nSZGfbeZRPNk4gWOL92+oDhI2GCMzpi1bzUIya85mNAxg9GOFHrHX9N2Hr3ppTEZdgC0g10dDfIyNwldggXA7PxMFPXb/knBQU4TO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVu7QSFY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="why3I2/c"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47edee0b11cso21729405e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 04:35:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768826123; x=1769430923; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L339R8Vsk/eWURHJ0AqPSpw3w1NFXPchbsihcVaLjUM=;
-        b=why3I2/cUVdJrdwiko+xycCbGMCLYBh6gO5rNTfm5HRilICJTdQb0UzM286OCmHZ5x
-         Az/ENk7+vDBcon8Fs2ADANebi5Z2KIMU2Tb7yeslwJT2ml3MHhxs4gKIa3A5beuB73qD
-         uyLz2olrXCOWO1KOWrf5KF/QPKnSKrpct6TjpprI8HB/YIe/jg0oudYl7fgKc6TwaeZa
-         kF2EMLOw3evT3kR2EmDPLipZ9Iva9cVEBp0OG2VuBliG8eaSmeRhx8SHY57GKckV8Dyn
-         X++SkN+bJhV+haiOBUz7tdjDWNsoONI+LJz+iPeAikjoqspaos6wWS+oCVY9PXVPc8oK
-         1b1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768826123; x=1769430923;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=L339R8Vsk/eWURHJ0AqPSpw3w1NFXPchbsihcVaLjUM=;
-        b=kOuDs/L42OStMBqxZiiiTCuISQL/1aeWwhkXe0tPQbdg7peR2ilrb937RznFmVpcLn
-         Dvd/lYggSq+LokjoCF8rrqLg64QbuuelFrvMlDIl9fsGsPhjUaqnUI5r7AIY1qCxJCw2
-         Ty/BN8060Isn3Jsgt84Pjw+XzAIt2gMNlK/Oe698UU8hsU6CWJ4Lg+7HhkguRpTyBwob
-         IZNnYOn5v9lPyU8CsVx3+RbZjJniu35DmuKo3CsJKmE9V5OA9CURqI3oX8/wq2oRAjd2
-         PRQBoYLIyBNfuM8OTg3ns/eqLuDJcVY3PWRTUqxHwAGzaDT3PJLz+4SEDgOJLQEPFKoL
-         j7/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWwZlJbGexd6JhRt4WXM4cSEDWq9zonM9jrZJQx1qvFHg8HIeCr7ECOrMjbm3FAge4w9Wmct/juzfCD9GY48Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTvoh8DcSZtmPmoFOjqf82BPLdh3K+lbx6kAV/vHtOomMTsi2e
-	K67mhWmcdOYsIJTOdOmzNQAT0WMLaHWRlZUg6Q/AFu7DZIC7Vv/qoE/5VFksyL8siVRuYR/DbtM
-	vk88fuaKCj22cEy2H6Q==
-X-Received: from wmbh20.prod.google.com ([2002:a05:600c:a114:b0:47d:586e:2b7b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:811a:b0:480:1dc6:2686 with SMTP id 5b1f17b1804b1-4801eac0cfcmr114218055e9.13.1768826122871;
- Mon, 19 Jan 2026 04:35:22 -0800 (PST)
-Date: Mon, 19 Jan 2026 12:35:21 +0000
-In-Reply-To: <20260119-thundering-tested-robin-4be817@houat>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVu7QSFY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F2FC116C6;
+	Mon, 19 Jan 2026 12:38:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768826341;
+	bh=arAi38nJkadXyPRr0fJ12sZFQzJWjy+451u08njCcY0=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=sVu7QSFYPvyLRg7UrRGkxJd1Tb4MoW9OUw9cKNRNU9AZMz4JgfdYn92lF84IIBPZp
+	 SSlzsejx8HY7v4ML4M32GAKdVA329c5Q11dTjOUQzaTw9Dm8v5KshWCgchAuJ2UKZk
+	 6nODMBxSJztdPywwvrTMT2Pu4oou/Mddash0rh/6qSX/sjMJUoEueEPp17e2vgqNtZ
+	 0Y/5r2NoWgSynzCeCyS6ibr5/IXZ0Bf5iDHPrY/4k9AtTmTZJXHbWre3TBd39FRkaJ
+	 f6y8ORpVysQT+mUDHDglaiYfDKonWwv3NFMlr9hzCWaoxbGzd6ur+XeGq+8d5bLOJr
+	 WsF6umjoZuQaA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
- <20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com> <20260108-delectable-fennec-of-sunshine-ffca19@houat>
- <98CD0BF6-3350-40B9-B8A9-F569AE3E3220@collabora.com> <20260119-thundering-tested-robin-4be817@houat>
-Message-ID: <aW4lCfUyumOKRRJm@google.com>
-Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
-From: Alice Ryhl <aliceryhl@google.com>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Drew Fustini <fustini@kernel.org>, 
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	"Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=" <ukleinek@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
-	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 Jan 2026 13:38:58 +0100
+Message-Id: <DFSKLTVPNQ11.26N3WVT559F22@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Matthew Maurer" <mmaurer@google.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Alexandre
+ Courbot" <acourbot@nvidia.com>, <nouveau@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v5 3/8] rust: uaccess: add
+ UserSliceWriter::write_buffer() for raw pointer writes
+References: <20260116214959.641032-1-ttabi@nvidia.com>
+ <20260116214959.641032-4-ttabi@nvidia.com> <aWuNbUywGRH1zo-0@google.com>
+ <aWubWE4kstGI42P9@google.com> <DFQXTQJSCXV5.2FSUVMTSF2OB3@kernel.org>
+ <DFSK2KHCXTIB.3RR5Q81ADGKRR@garyguo.net>
+In-Reply-To: <DFSK2KHCXTIB.3RR5Q81ADGKRR@garyguo.net>
 
-On Mon, Jan 19, 2026 at 11:45:57AM +0100, Maxime Ripard wrote:
-> On Thu, Jan 08, 2026 at 11:14:37AM -0300, Daniel Almeida wrote:
-> > > For example, it's quite typical to have (at least) one clock for the =
-bus
-> > > interface that drives the register, and one that drives the main
-> > > component logic. The former needs to be enabled only when you're
-> > > accessing the registers (and can be abstracted with
-> > > regmap_mmio_attach_clk for example), and the latter needs to be enabl=
-ed
-> > > only when the device actually starts operating.
-> > >=20
-> > > You have a similar thing for the prepare vs enable thing. The differe=
-nce
-> > > between the two is that enable can be called into atomic context but
-> > > prepare can't.
-> > >=20
-> > > So for drivers that would care about this, you would create your devi=
+On Mon Jan 19, 2026 at 1:13 PM CET, Gary Guo wrote:
+> On Sat Jan 17, 2026 at 2:35 PM GMT, Danilo Krummrich wrote:
+>> On Sat Jan 17, 2026 at 3:23 PM CET, Alice Ryhl wrote:
+>>> On Sat, Jan 17, 2026 at 01:23:57PM +0000, Alice Ryhl wrote:
+>>>> On Fri, Jan 16, 2026 at 03:49:54PM -0600, Timur Tabi wrote:
+>>>> > +    pub unsafe fn write_buffer(
+>>>> > +        &mut self,
+>>>> > +        data: *const u8,
+>>>> > +        len: usize,
+>>>> > +        offset: usize,
+>>>> > +        count: usize,
+>>>> > +    ) -> Result {
+>>>>=20
+>>>> Why not this signature?
+>>>>=20
+>>>> 	unsafe fn write_raw_slice(&mut self, data: *const [u8]) -> Result;
+>>>>=20
+>>>> You can implement `write_slice` in terms of it.
+>>>
+>>> To clarify, I think this would be a simpler signature for
+>>> `write_buffer()`. And `write_raw_slice()` can be used both for DMA and
+>>> to simplify the existing `write_slice`.
+>>
+>> I.e. you can use it also to create a safe helper for DMA:
+>>
+>> 	fn write_dma(
+>> 	    &mut self,
+>> 	    data: &dma::CoherentAllocation<u8>,
+>> 	    offset: usize,
+>> 	    count: usize
+>> 	) -> Result;
+>
+> Would it make sense to expose a `&CoherentAllocation<u8>` -> `&[Atomic<u8=
+>]`
+> conversion method and have a `write_slice(&mut self, data: &[Atomic<[u8]>=
+)` for
+> `UserSliceWriter`?
+
+But we don't need any atomic operations for this. Maybe a transparent new t=
+ype
+that only allows access with {read,write}_volatile(), or maybe an UnsafeSli=
 ce
-> > > with an unprepared clock, and then at various times during the driver
-> > > lifetime, you would mutate that state.
+type that can provide accessors that internally use *mut [u8] with
+{read,write}_volatile().
 
-The case where you're doing it only while accessing registers is
-interesting, because that means the Enable bit may be owned by a local
-variable. We may imagine an:
-
-    let enabled =3D self.prepared_clk.enable_scoped();
-    ... use registers
-    drop(enabled);
-
-Now ... this doesn't quite work with the current API - the current
-Enabled stated owns both a prepare and enable count, but the above keeps
-the prepare count in `self` and the enabled count in a local variable.
-But it could be done with a fourth state, or by a closure method:
-
-    self.prepared_clk.with_enabled(|| {
-        ... use registers
-    });
-
-All of this would work with an immutable variable of type Clk<Prepared>.
-
-> > > AFAIU, encoding the state of the clock into the Clk type (and thus
-> > > forcing the structure that holds it) prevents that mutation. If not, =
-we
-> > > should make it clearer (by expanding the doc maybe?) how such a patte=
-rn
-> > > can be supported.
-> > >=20
-> > > Maxime
-> >=20
-> > IIUC, your main point seems to be about mutating the state at runtime? =
-This is
-> > possible with this code. You can just have an enum, for example:
-> >=20
-> > enum MyClocks {
-> >     Unprepared(Clk<Unprepared>),
-> >     Prepared(Clk<Prepared>),
-> >     Enabled(Clk<Enabled>),=20
-> > }
-
-I believe you need an extra state if the state is not bound to the scope
-of a function:
-
-enum MyClocks {
-    Unprepared(Clk<Unprepared>),
-    Prepared(Clk<Prepared>),
-    Enabled(Clk<Enabled>),=20
-    Transitioning,
-}
-
-since mem::replace() needs a new value before you can take ownership of
-the existing Clk value.
-
-> > In fact, I specifically wanted to ensure that this was possible when wr=
-iting
-> > these patches, as it=E2=80=99s needed by drivers. If you want to, I can=
- cover that in
-> > the examples, no worries.
->=20
-> Yes, that would be great. I do wonder though if it wouldn't make sense
-> to turn it the other way around. It creates a fair share of boilerplate
-> for a number of drivers. Can't we keep Clk the way it is as a
-> lower-level type, and crate a ManagedClk (or whatever name you prefer)
-> that drivers can use, and would be returned by higher-level helpers, if
-> they so choose?
->=20
-> That way, we do have the typestate API for whoever wants to, without
-> creating too much boilerplate for everybody else.
-
-I think that if you still want an API where you just call enable/disable
-directly on it with no protection against unbalanced calls, then that
-should be the special API. Probably called RawClk and functions marked
-unsafe. Unbalanced calls seem really dangerous and use should not be
-encouraged.
-
-The current type-state based API is the least-boilerplate option for
-drivers that exist today.
-
-Alice
+But for this problem we only need something to eventually pass to
+write_slice_raw() which will just use copy_to_user(), so it might be orthog=
+onal.
