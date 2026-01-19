@@ -1,47 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7489E3590BF
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 11:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2BA2BCF5D
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 11:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768820690; cv=none; b=NgbPHGaWEVLA/irXCBiD6Wsrl3znF45F0CERjRQu6qMuplKkAymR2PDUrnTodn3GwCVvTy0CqLEGWlP2nbohGqn/HB959qg65ws9nlaegt+rzw/EZnAG8v++cZK6D7QBP63wLF56wVVv2WUAubF1MloyPWBGmlXVXxW70tFoAXg=
+	t=1768821804; cv=none; b=Bxt5z6s9sS2robOezEzenquFWjDcd3IBtBIHFX0rIX3Xai58+FyrdOIjpp4BMvDneMKIDvc1Jeaalz9zNNT6a+xzH/bf2Qgyo/l4XHtNGcrFeJpDB62Vb9wv89nzFgQJMRGP2GlY+Eyrq0KeOwFRbXzaXHLX4t2nN6iQ+NH1o4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768820690; c=relaxed/simple;
-	bh=x3I73T+Kz31B0gAm1Z30TGcE3YkDX36QPo2/G6Dv35Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iIu5qFN7MWoBjCipXej7DXh40PrOJ/XO9sGUnzWsY1qzUcze7w4lmbOL/CGcM5bi/zzqAiq2uToYOWBN1i0oZEObgeUSpXDtRUpOIO+CBP+s31QGjANiXKBE21//r1LCd8wTOPDgdnXgPW39RyJTZn/PlA7GGBViCYpS5kaHy6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YEVDnZS8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768821804; c=relaxed/simple;
+	bh=mgmSkFKXzMVvgVyqrQvlMPA/hIq2ZckJOXw778SvJfc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oixj7rlRu6GZBetJ+YEIRjEQN7/jVPRwKJDjtdDtLBukHv/EEKYq4MqqRPI/yxXkzHExWtJ4A9x4uaoPbhh+049GM7KiBgTX0BINikbJgFukhrtCyijq8Lx9Ekewd0f99+nLE6kn8d1mEr+Fb5OZhod0nEKV6aVzGsCbRa/BQgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hXgqEc8S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YEVDnZS8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD27C19422;
-	Mon, 19 Jan 2026 11:04:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hXgqEc8S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF59DC116C6;
+	Mon, 19 Jan 2026 11:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768820690;
-	bh=x3I73T+Kz31B0gAm1Z30TGcE3YkDX36QPo2/G6Dv35Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YEVDnZS8IwtGe1X2f3mKbLdyVRp3pQJyJETUjMWHJUkgRJSFu/hfglqT86BV+dMxg
-	 TMQubClFJONWk4Wr1gsMHD2NNDA3ZNxci/k/Xhff3u4fnIFMSvz4a99Vlpts7pOPCw
-	 w60je7IrbJJq1f7spaV6E5wOQbSoDP6R7TRb3bRQ9Yvj3gIZG0qJtNNYYEaXJJtygY
-	 4xfGbGVngfidUXI8fT04WxSmZpz0bIOSlNjs3VoQi7ZEpYOLZR3mb9Y7B2Wenm3N6j
-	 5mA4LyjIXQb8tDeQfzbriJ76coXZ20CMmxjPKgQKPBDXH9MiGk+mTceERs7uAtnQgv
-	 /Bqmt1BmInk0A==
+	s=k20201202; t=1768821804;
+	bh=mgmSkFKXzMVvgVyqrQvlMPA/hIq2ZckJOXw778SvJfc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hXgqEc8SsfnTC0QJQ1R05J/8j/vvbV0BBC3Cp+lxmIK/PViNcVntbHkJPmNYghx56
+	 PwUYMt2k1YQ974lsSY04mtfqVO5dJM34c4PfJcYh39/LDdf7lgdyP0SVk3ruzxRAYx
+	 6x5oQIudmLxZZ4Y6yt2RWJ7ZuavlAPRLAukgI3p+fnYMEzApLpl4QfGxpQ3S7OETQp
+	 Wxqcts+5leCG/Oee3wvmmPp86sjfeCeCKZbqipLPbqd4WTObR256z9ftexe6J8W8CU
+	 J/iDWwzO7zy/q1MNW9dsAFowFshuTE4POQLKcLIQWzLCrbg0d/ZWg2aOrluHsvibCq
+	 QeQuDtSNOQVgQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Ke Sun <sunke@kylinos.cn>, rust-for-linux@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda
- <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Ke Sun <sunke@kylinos.cn>
-Subject: Re: [PATCH v1 2/7] rust: block: mq: use pin_init::zeroed() for
- queue_limits
-In-Reply-To: <20260119065859.1914178-3-sunke@kylinos.cn>
-References: <20260119065859.1914178-1-sunke@kylinos.cn>
- <Z55sb2ThC6nBqfAaJu3YNGj3bYMrT9XHy63LEXLGqzPUsAFp-dS0O_usawylT8GR8QrXk8BazrYsOGXe1ax6qw==@protonmail.internalid>
- <20260119065859.1914178-3-sunke@kylinos.cn>
-Date: Mon, 19 Jan 2026 12:03:57 +0100
-Message-ID: <87jyxdq2xu.fsf@t14s.mail-host-address-is-not-set>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Tamir Duberstein <tamird@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	rust-for-linux@vger.kernel.org
+Subject: [GIT PULL] Rust XArray abstractions for v6.20/v7.0
+Date: Mon, 19 Jan 2026 12:23:10 +0100
+Message-ID: <87bjipq21t.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,33 +46,37 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Ke Sun" <sunke@kylinos.cn> writes:
+Hi Miguel,
 
-> Replace unsafe core::mem::zeroed() with pin_init::zeroed() for
-> queue_limits initialization.
->
-> Signed-off-by: Ke Sun <sunke@kylinos.cn>
-> ---
->  rust/kernel/block/mq/gen_disk.rs | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-> index 1ce815c8cdab0..4620a86a88dd8 100644
-> --- a/rust/kernel/block/mq/gen_disk.rs
-> +++ b/rust/kernel/block/mq/gen_disk.rs
-> @@ -107,8 +107,8 @@ pub fn build<T: Operations>(
->              drop(unsafe { T::QueueData::from_foreign(data) });
->          });
->
-> -        // SAFETY: `bindings::queue_limits` contain only fields that are valid when zeroed.
-> -        let mut lim: bindings::queue_limits = unsafe { core::mem::zeroed() };
-> +        // `bindings::queue_limits` contain only fields that are valid when zeroed.
-> +        let mut lim: bindings::queue_limits = pin_init::zeroed();
+Please pull this change for the Rust XArray abstractions for v6.20/v7.0.
+This is just a single patch enabling the `__rust_helper` macro for the
+XArray helpers, so that we can get helpers inlined.
 
-I think we can just drop the comment now that this operation is safe.
+The following changes since commit 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb:
+
+  Linux 6.19-rc4 (2026-01-04 14:41:55 -0800)
+
+are available in the Git repository at:
+
+  https://github.com/rust-for-linux/linux.git tags/rust-xarray-for-v6.20-v7.0
+
+for you to fetch changes up to c455f19bbe6104debd980bb15515faf716bd81b8:
+
+  rust: xarray: add __rust_helper to helpers (2026-01-15 10:01:23 +0100)
+
+----------------------------------------------------------------
+Rust XArray abstraction changes for v6.20/v7.0
+
+ - Add `__rust_helper` to xarray abstraction C helpers.
+
+----------------------------------------------------------------
+Alice Ryhl (1):
+      rust: xarray: add __rust_helper to helpers
+
+ rust/helpers/xarray.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 
 Best regards,
 Andreas Hindborg
-
 
