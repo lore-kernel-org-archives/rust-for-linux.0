@@ -1,101 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9BB35C19F
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 12:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDD1326954
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 12:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768826341; cv=none; b=qxhC/q70Pj34voTMRXhh/FNMNN2ncPoT8UlUTSzuWeDvc5w/9aQG1hsoCxCI0ksllSIagT7OS3dHX8bMmazXxZYx+N+ZnWRG2sduXeS0QVaDKmprqUw0vHJT3i5kllzUIIAYbHFyXLhwCJkEYoKBe8VZkbWEUzTx0fOdRpus8Yw=
+	t=1768827153; cv=none; b=ezNUTe0LHvvB/61s4UzavVRe26I+gr0DWTdmcG/paWkY//Ka+13Jxi65DVJzE4/HeAmSQT0Pc8zM/93SniB8aFIAFQz/30Q8cqLDP2CWrEhx83HJYF/XDMFC80hyhNBw+MqGXdvvdbF+WpS7lgQN53QZJRlWiISb0UYxBM12+rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768826341; c=relaxed/simple;
-	bh=arAi38nJkadXyPRr0fJ12sZFQzJWjy+451u08njCcY0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=BpgOfduhhuzXL2cJyOsFEpeaYO0zda21Nx0ZWaLTgHGRRX6OKn5wUyrYrNusJt1AQfEX5nSZGfbeZRPNk4gWOL92+oDhI2GCMzpi1bzUIya85mNAxg9GOFHrHX9N2Hr3ppTEZdgC0g10dDfIyNwldggXA7PxMFPXb/knBQU4TO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVu7QSFY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768827153; c=relaxed/simple;
+	bh=Y+vzfzwxV0X9I6ZUZ9qwoqvJfRIq2CCJXDS2bCFWcAU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ph6nwxhpk70iu1rU2YEceWSSlLChuaqbvITS4dEfvBbns2FFNP8srmrte6nf/QXiNAFlbBIlJmh4+UUc5woloBl8bc5JlUKaLVxldsAR/FHcRVqPi0Z5v9ZjaQu8VgH5gM62ah93vC1ipc2BdmwsKs3nLJ1Z45WbiCDYeYqO7QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YQvxcYE2; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVu7QSFY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F2FC116C6;
-	Mon, 19 Jan 2026 12:38:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768826341;
-	bh=arAi38nJkadXyPRr0fJ12sZFQzJWjy+451u08njCcY0=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=sVu7QSFYPvyLRg7UrRGkxJd1Tb4MoW9OUw9cKNRNU9AZMz4JgfdYn92lF84IIBPZp
-	 SSlzsejx8HY7v4ML4M32GAKdVA329c5Q11dTjOUQzaTw9Dm8v5KshWCgchAuJ2UKZk
-	 6nODMBxSJztdPywwvrTMT2Pu4oou/Mddash0rh/6qSX/sjMJUoEueEPp17e2vgqNtZ
-	 0Y/5r2NoWgSynzCeCyS6ibr5/IXZ0Bf5iDHPrY/4k9AtTmTZJXHbWre3TBd39FRkaJ
-	 f6y8ORpVysQT+mUDHDglaiYfDKonWwv3NFMlr9hzCWaoxbGzd6ur+XeGq+8d5bLOJr
-	 WsF6umjoZuQaA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YQvxcYE2"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-382f087e6c9so22863831fa.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 04:52:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768827150; x=1769431950; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ft1ti+lcNR6y5zU/XvAAKrTqWQ0ka9nXreLNeXyu1sA=;
+        b=YQvxcYE2QdoJO9ohCQcXU3tk/Srl4gHS/ScNi2GDn8ny6Q0rM2x+vu4uqbuI4/GO61
+         q517yaGqwMsT1DjuKYc7NJIJgRNr5DqqXCIvajhixxeqPZ4oSh0vf6IzTUkLn8fFY6Gk
+         9nDsqS2kniq1eNKRUaTf2BD2TwyWJlrayxI9oFdAaKCzlazHh0nlUqgbZG5iOYYLgB4X
+         0mynM8aYC5pSutwIivJHAq7yMjRtz/tpfp+W1ZkeqV2z47EwMIrYQMC6+YZsfpNHIszn
+         duIWoYjxQz4u3Fn1iTOW8QgLfCcYaQT87IQWSVbQ+QnRsF5muQ6CDP8SAX+E/6+S1G5e
+         2Wvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768827150; x=1769431950;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ft1ti+lcNR6y5zU/XvAAKrTqWQ0ka9nXreLNeXyu1sA=;
+        b=fKFVDZ+tAB8cIcss1UPiHzS6J1i0/O5QF6HsG0LDy3+dYUlPmfJBSDtfulVsjyOOvK
+         TaVnKVGmrNgzl7Bm9JJABa9SjHsNHuLVIM7iGfSR33u7/6JxCye6KVEn0tXB85v7Qlxj
+         ShWX/wjmVnxCOUwUosxjkIlEj6ohUp1AgmUwbkKIEShmH9AHNnBPkHwtdwt4HT7xX//H
+         GhyY+yQ97Yu7IUnBBY02/K9bTAW+6+sv4eoiYPoh0Kb2LC/dYQTpYFk0rCpv22kBHV6a
+         LOdofiy7hUD/x/wLU4bKg5BS8hOtzih4m8ms+mF/QkmXTSj3AlaMxA9bUVtpB298panN
+         sSoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWiEDmbRHOEIBa/bLnfnRDq+4hZrHDUOEGXjmTnSNLYmQw5GXfwhPHeXjrKmD54hJzQN1OEl+Ugi6Zb34utQg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4oIDC034IrJseBPr5GGPnFoAPlWGeTnLlLsOGFcb0LigSfuqx
+	KK7HlByxuS0fAl20iz2SdmYlf/5Fhf1ajX+LfRkNUYrTBWPQi6hkMXjFTEgmqq279OtLivtfDCL
+	gTUGQGk4fWAYFZj/kFGm957bL9KDus/nBTeEk
+X-Gm-Gg: AY/fxX6Dy2A3+OAcQC/2ZrNyLryfXTkZm6UE7TxubIN6YpoyokbQIQmjC/CA+NYzHDQ
+	EFZw2ND+mjt95BqF6/SsMIm5OmgAEE8UgvkOZjm0+g4OowXIYgQK2oOzJbGoSsa6T4sKKQv2/vw
+	o/1FDTPbOqmOVcCOJFzLrNhXGBm0ee+57YZQWJbafBfiYMwGNAnYfGXU6gT2TA/sm2XSkZ8BYBt
+	I6NDT44PLpm9OK+qFWGTVvon4Hnbc3Mr/BtcwYqzkevUnAECFiTDrCs3XZYom38Xo1nBVUGHiXa
+	YwIKOKnZwcuzPvhukRugxNmI03Jr8RuXwz5gQXNOk0UsdqLMn7ROiAMKiMhOp9OqfmXyIn0R7za
+	/x7o9fYEQbVs3WoYWJwzs3h5vjPv/xMc0rHDQI0X+I1ovKMvqEMnd
+X-Received: by 2002:a2e:bc88:0:b0:37b:8d78:e4bf with SMTP id
+ 38308e7fff4ca-38384335558mr36408681fa.43.1768827149433; Mon, 19 Jan 2026
+ 04:52:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251222-cstr-clk-v1-1-ef0687717aa1@gmail.com> <CAJ-ks9mjBY7x1s_4wqMC8xqWsX2+aCM6NHn0j7yh_+daKiyS1Q@mail.gmail.com>
+In-Reply-To: <CAJ-ks9mjBY7x1s_4wqMC8xqWsX2+aCM6NHn0j7yh_+daKiyS1Q@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 19 Jan 2026 07:51:53 -0500
+X-Gm-Features: AZwV_QgRogLIzoCwOASO5Jrp0CfBksLoemO-T3HosJSEe-KW0dyiqzYg-hWml10
+Message-ID: <CAJ-ks9kn=0Sm2_1WV4xyzunzcGG1VZDKy8L=_SCCWyV2OkJTDA@mail.gmail.com>
+Subject: Re: [PATCH] rust: clk: replace `kernel::c_str!` with C-Strings
+To: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>
+Cc: linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Jan 2026 13:38:58 +0100
-Message-Id: <DFSKLTVPNQ11.26N3WVT559F22@kernel.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Matthew Maurer" <mmaurer@google.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Alexandre
- Courbot" <acourbot@nvidia.com>, <nouveau@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v5 3/8] rust: uaccess: add
- UserSliceWriter::write_buffer() for raw pointer writes
-References: <20260116214959.641032-1-ttabi@nvidia.com>
- <20260116214959.641032-4-ttabi@nvidia.com> <aWuNbUywGRH1zo-0@google.com>
- <aWubWE4kstGI42P9@google.com> <DFQXTQJSCXV5.2FSUVMTSF2OB3@kernel.org>
- <DFSK2KHCXTIB.3RR5Q81ADGKRR@garyguo.net>
-In-Reply-To: <DFSK2KHCXTIB.3RR5Q81ADGKRR@garyguo.net>
 
-On Mon Jan 19, 2026 at 1:13 PM CET, Gary Guo wrote:
-> On Sat Jan 17, 2026 at 2:35 PM GMT, Danilo Krummrich wrote:
->> On Sat Jan 17, 2026 at 3:23 PM CET, Alice Ryhl wrote:
->>> On Sat, Jan 17, 2026 at 01:23:57PM +0000, Alice Ryhl wrote:
->>>> On Fri, Jan 16, 2026 at 03:49:54PM -0600, Timur Tabi wrote:
->>>> > +    pub unsafe fn write_buffer(
->>>> > +        &mut self,
->>>> > +        data: *const u8,
->>>> > +        len: usize,
->>>> > +        offset: usize,
->>>> > +        count: usize,
->>>> > +    ) -> Result {
->>>>=20
->>>> Why not this signature?
->>>>=20
->>>> 	unsafe fn write_raw_slice(&mut self, data: *const [u8]) -> Result;
->>>>=20
->>>> You can implement `write_slice` in terms of it.
->>>
->>> To clarify, I think this would be a simpler signature for
->>> `write_buffer()`. And `write_raw_slice()` can be used both for DMA and
->>> to simplify the existing `write_slice`.
->>
->> I.e. you can use it also to create a safe helper for DMA:
->>
->> 	fn write_dma(
->> 	    &mut self,
->> 	    data: &dma::CoherentAllocation<u8>,
->> 	    offset: usize,
->> 	    count: usize
->> 	) -> Result;
+On Sat, Jan 3, 2026 at 9:29=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
 >
-> Would it make sense to expose a `&CoherentAllocation<u8>` -> `&[Atomic<u8=
->]`
-> conversion method and have a `write_slice(&mut self, data: &[Atomic<[u8]>=
-)` for
-> `UserSliceWriter`?
+> On Mon, Dec 22, 2025 at 7:17=E2=80=AFAM Tamir Duberstein <tamird@kernel.o=
+rg> wrote:
+> >
+> > From: Tamir Duberstein <tamird@gmail.com>
+> >
+> > C-String literals were added in Rust 1.77. Replace instances of
+> > `kernel::c_str!` with C-String literals where possible.
+> >
+> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Reviewed-by: Benno Lossin <lossin@kernel.org>
+> > Acked-by: Stephen Boyd <sboyd@kernel.org>
+> > Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> > ---
+> >  rust/kernel/clk.rs | 6 ++----
+> >  1 file changed, 2 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+> > index c1cfaeaa36a2..68a0c2f4e318 100644
+> > --- a/rust/kernel/clk.rs
+> > +++ b/rust/kernel/clk.rs
+> > @@ -104,13 +104,12 @@ mod common_clk {
+> >      /// The following example demonstrates how to obtain and configure=
+ a clock for a device.
+> >      ///
+> >      /// ```
+> > -    /// use kernel::c_str;
+> >      /// use kernel::clk::{Clk, Hertz};
+> >      /// use kernel::device::Device;
+> >      /// use kernel::error::Result;
+> >      ///
+> >      /// fn configure_clk(dev: &Device) -> Result {
+> > -    ///     let clk =3D Clk::get(dev, Some(c_str!("apb_clk")))?;
+> > +    ///     let clk =3D Clk::get(dev, Some(c"apb_clk"))?;
+> >      ///
+> >      ///     clk.prepare_enable()?;
+> >      ///
+> > @@ -272,13 +271,12 @@ fn drop(&mut self) {
+> >      /// device. The code functions correctly whether or not the clock =
+is available.
+> >      ///
+> >      /// ```
+> > -    /// use kernel::c_str;
+> >      /// use kernel::clk::{OptionalClk, Hertz};
+> >      /// use kernel::device::Device;
+> >      /// use kernel::error::Result;
+> >      ///
+> >      /// fn configure_clk(dev: &Device) -> Result {
+> > -    ///     let clk =3D OptionalClk::get(dev, Some(c_str!("apb_clk")))=
+?;
+> > +    ///     let clk =3D OptionalClk::get(dev, Some(c"apb_clk"))?;
+> >      ///
+> >      ///     clk.prepare_enable()?;
+> >      ///
+> >
+> > ---
+> > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> > change-id: 20251222-cstr-clk-122a1428b919
+> >
+> > Best regards,
+> > --
+> > Tamir Duberstein <tamird@gmail.com>
+> >
+>
+> @Stephen could you please have a look?
+>
+> Cheers.
+> Tamir
 
-But we don't need any atomic operations for this. Maybe a transparent new t=
-ype
-that only allows access with {read,write}_volatile(), or maybe an UnsafeSli=
-ce
-type that can provide accessors that internally use *mut [u8] with
-{read,write}_volatile().
-
-But for this problem we only need something to eventually pass to
-write_slice_raw() which will just use copy_to_user(), so it might be orthog=
-onal.
+Michael or Stephen: could you take this through clk or would you be ok
+with it going through rust-next?
