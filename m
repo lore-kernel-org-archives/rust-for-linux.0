@@ -1,103 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B05C2FB630;
-	Mon, 19 Jan 2026 21:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051E627FB32
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 21:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768858521; cv=none; b=kb6sLQiGVK4pK/11h6sDCkNsG/qdNaaRkX4wXNGp6P0tAqGfS8aXss0b2Wn0Tfy4JXJM47fRovKrVCagrJ70hsmQ/6dlz9TEryNB/b+BG7El2tun5dgVUEVqOkpVOkZruansLvtHDoTQSwch7ASwxr0aDKRG5RqCv0mR/lldkp8=
+	t=1768859163; cv=none; b=XzTApdlUcMSKyvmiPaicqG8dlXcGAVaw/k2T8gbNmg0m/EioNXXKNBdgEMRrcIl6pe2Vz5m7WsffgBk3v/qRdrOCTyg1Anky5AO4AmgFF4VZMhvTU2zrS+TXq1t3dPgjn03IDoSFJYsFRnEtrkJL4s5cwZItfuYb44cp3Itfr2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768858521; c=relaxed/simple;
-	bh=6JE8OFcylc3fxhz3KTfSs84aPeT4MbWppixwZYVyHzA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qSTrsHeAx8Dm0CO+jSpa8pU9+/zh+4InagFZVjVke0y77E/onb/nsq9IxSd7AQQJDG9F5jJS/zAfBx/YzKFFZ7/HdG2mXM9w/E54Ys7c6T9QEU3Be+OXLY5uXuHQMuaf5H9X2sutktSh1bPXJIZ9HyXEMQGFvFAO6m8SiKOEKAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kfg6OJX0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768859163; c=relaxed/simple;
+	bh=a8aoWOKowze8sjGeeHj9EglOtqbDd7Y5iPmk9raTN0E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=e5rrl7NefeS73nu01KPIlnM/492YpoBiavBlsNTh3XOlqzhGVWg7UL55wxmjMccDJIW7L+SKkP3AhbzgOOPL1YEkabbV3mKMGcosLi8GAVGh0QsDmiEr9eQpN8m0fc2WkNg6kZyjQjUl/nDcCKb8GGBjCZIuuF4nEbRWgWIE/ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=Q9Xf8fbQ; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kfg6OJX0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2011C116C6;
-	Mon, 19 Jan 2026 21:35:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768858521;
-	bh=6JE8OFcylc3fxhz3KTfSs84aPeT4MbWppixwZYVyHzA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Kfg6OJX0F5mQtg3eXoyjI8WPeCieLdr+SO1KwTrwCvYZmaMn8JzogSKtG6XeZBLMu
-	 d19i10Gmy19+Hvld0egitdclvZrrnaKtL1Ao3hBkLUpbxPavvKl7cHaO2LKXTGfelp
-	 C40zXEsoJhLHcRAw7Cn6iH7hukHXBDEhOSveY3W0DWmWBsOYj3r3FBX3m7917ZBAGt
-	 LqtWKISXz2Y7kgteBj3WgZrFA3jSSzzAv54c/VDn/qJI+JtC18ZJPQCNev/0JYLIIN
-	 NVzJUGSBlf2DSqtRF/myHrg56skHWcV5rDSlGjq4SraEV8QNZ9X0CFcxzUv6W9rS3m
-	 kNpqvamAZbsJQ==
-Date: Mon, 19 Jan 2026 14:35:16 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH v3 0/2] scripts: introduce containerized builds
-Message-ID: <20260119213516.GA1051134@ax162>
-References: <cover.1767199119.git.gtucker@gtucker.io>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Q9Xf8fbQ"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260119214559euoutp01b87b831688f2f9efc39a5c951a967294~MQAib2wpr0782507825euoutp01G
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 21:45:59 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260119214559euoutp01b87b831688f2f9efc39a5c951a967294~MQAib2wpr0782507825euoutp01G
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1768859159;
+	bh=FiwIk5BBQQ9iPckGkn5Dt7hTifYvLcVxHD5dU0pMV5E=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=Q9Xf8fbQ6xVsysLFDwsjw9red5LNE/4dOsmM6sweOLApnZwCpBccB68wd3WMnXddC
+	 0sstwB7PMcjsb9GbEeeM3X8TzuvpDxJe9fT4KrkQ3dvNZa7JCTxLNeKutAEUPGONtT
+	 YvPWGiPdsR2VcrU0fvTXCArpfNsRUtHtHYRWY64g=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260119214557eucas1p2a32532504042480c2809f13589fc9127~MQAhG-1kc1870218702eucas1p2W;
+	Mon, 19 Jan 2026 21:45:57 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260119214556eusmtip2baec3b17eba8b350eca229f32831d134~MQAgH2fip0752007520eusmtip22;
+	Mon, 19 Jan 2026 21:45:56 +0000 (GMT)
+Message-ID: <90657b83-1cff-4c7d-adde-9b560c2be7c2@samsung.com>
+Date: Mon, 19 Jan 2026 22:45:56 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1767199119.git.gtucker@gtucker.io>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] pwm: th1520: remove impl Send/Sync for
+ Th1520PwmDriverData
+To: Alice Ryhl <aliceryhl@google.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei
+	<wefu@redhat.com>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
+	<tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida
+	<daniel.almeida@collabora.com>, linux-clk@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-pwm@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <20260113-clk-send-sync-v4-3-712bc7d94a79@google.com>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260119214557eucas1p2a32532504042480c2809f13589fc9127
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260113151335eucas1p157cd966c5f0f4e477fb11272810a0ae8
+X-EPHeader: CA
+X-CMS-RootMailID: 20260113151335eucas1p157cd966c5f0f4e477fb11272810a0ae8
+References: <20260113-clk-send-sync-v4-0-712bc7d94a79@google.com>
+	<CGME20260113151335eucas1p157cd966c5f0f4e477fb11272810a0ae8@eucas1p1.samsung.com>
+	<20260113-clk-send-sync-v4-3-712bc7d94a79@google.com>
 
-Hi Guillaume,
 
-On Wed, Dec 31, 2025 at 05:51:48PM +0100, Guillaume Tucker wrote:
-> This proposal emerged from discussions over email and after a talk at
-> Plumbers 2024:
-> 
->     https://lore.kernel.org/all/affb7aff-dc9b-4263-bbd4-a7965c19ac4e@gtucker.io/
-> 
-> The aim is to facilitate reproducing builds for CI bots as well as
-> developers using containers.  Here's an illustrative example with a
-> kernel.org toolchain in a Docker image from tuxmake:
-> 
->     $ scripts/container -i tuxmake/korg-clang-21 make LLVM=1 defconfig
->       HOSTCC  scripts/basic/fixdep
->       HOSTCC  scripts/kconfig/conf.o
->     [...]
->       HOSTCC  scripts/kconfig/util.o
->       HOSTLD  scripts/kconfig/conf
->     *** Default configuration is based on 'x86_64_defconfig'
->     #
->     # configuration written to .config
->     #
-> 
-> This patch series also includes a documentation page with all the
-> relevant details and further examples about how to use the tool.
-> 
-> To go one step further, I'm in the process of preparing reference
-> container images with kernel.org toolchains and no third-party
-> dependencies other than the base Debian distro.  See this thread for
-> more details and options to host them in an upstream way:
-> 
->     https://lore.kernel.org/all/cc737636-2a43-4a97-975e-4725733f7ee4@gtucker.io/
-> 
-> Say, to run KUnit using the latest kernel.org GCC toolchain:
-> 
->     scripts/container --shell \
->         -i registry.gitlab.com/gtucker/korg-containers/gcc:kunit -- \
->         tools/testing/kunit/kunit.py \
->             run \
->             --arch=x86_64 \
->             --cross_compile=x86_64-linux-
 
-I went over the script and the documentation and it looks pretty good to
-me at this point. My only comment would be potentially referencing the
-TuxMake container images in the example section to give folks a
-"prebuilt" container option while getting the kernel.org container
-images sorted out but that can always be done in a follow-up change.
+On 1/13/26 16:12, Alice Ryhl wrote:
+> Now that clk implements Send and Sync, we no longer need to manually
+> implement these traits for Th1520PwmDriverData. Thus remove the
+> implementations.
+> 
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Cc: linux-riscv@lists.infradead.org
+> ---
+>  drivers/pwm/pwm_th1520.rs | 15 ---------------
+>  1 file changed, 15 deletions(-)
+> 
+> diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+> index e3b7e77356fc2492077c519073e861beb3e44df9..043dc4dbc6232020195c7b73fad302bbb69652df 100644
+> --- a/drivers/pwm/pwm_th1520.rs
+> +++ b/drivers/pwm/pwm_th1520.rs
+> @@ -97,21 +97,6 @@ struct Th1520PwmDriverData {
+>      clk: Clk,
+>  }
+>  
+> -// This `unsafe` implementation is a temporary necessity because the underlying `kernel::clk::Clk`
+> -// type does not yet expose `Send` and `Sync` implementations. This block should be removed
+> -// as soon as the clock abstraction provides these guarantees directly.
+> -// TODO: Remove those unsafe impl's when Clk will support them itself.
+> -
+> -// SAFETY: The `devres` framework requires the driver's private data to be `Send` and `Sync`.
+> -// We can guarantee this because the PWM core synchronizes all callbacks, preventing concurrent
+> -// access to the contained `iomem` and `clk` resources.
+> -unsafe impl Send for Th1520PwmDriverData {}
+> -
+> -// SAFETY: The same reasoning applies as for `Send`. The PWM core's synchronization
+> -// guarantees that it is safe for multiple threads to have shared access (`&self`)
+> -// to the driver data during callbacks.
+> -unsafe impl Sync for Th1520PwmDriverData {}
+> -
+>  impl pwm::PwmOps for Th1520PwmDriverData {
+>      type WfHw = Th1520WfHw;
+>  
+> 
 
-I will apply this to kbuild-next-unstable shortly to give folks a week
-or so to voice any objections or give critical review comments.
+I thought this was already merged :-).
 
-Cheers,
-Nathan
+Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
