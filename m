@@ -1,209 +1,228 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020076.outbound.protection.outlook.com [52.101.196.76])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E915359FA1
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 12:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE59A276050;
+	Mon, 19 Jan 2026 12:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768824835; cv=fail; b=HkQncBLCrxZMVo1oeua59f0Pc32PpmV+gJmn1OmW/qMbPRP7h2ZIIYg/DMfuFyHGQidGh++JfsEqFA3H0/xTJUk7RMN5TiMFwo1g6d2odcCfVdQr8U/FYhyv4nWOcsyzq8q0KwsKutSDJJ6b88DqF3RCbIK6tJWGcrjLxJa0D5s=
+	t=1768824874; cv=pass; b=ChO062QuUDhhxszWJUVC1flCXl2gRCISBNVUE9okGo2NnLQralLiys6+O/jOZXYPJpJvnv/VHz2TqEtkyzcQZdNY7JAs4S1WQmubqqKRYLUQXZxOzy3bP/+pxOKxo9PRoU/LZDXhXeuBWhfMrc5TEzMPeHLITc7NCYZCR6bBT4I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768824835; c=relaxed/simple;
-	bh=v/ZO2BLWB6/rkpSNWByMZIx6wG/LamvMDMewSQcdYeQ=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=YKfaLMMv5JvObhgWeagb5AzjdMczOcyhh/MJSoljiMIFkwbKABEIHKJ7ASp0r6ONp4Zsgj0Q3mCq0PDSs70sw4emmNzTiLLtoPhmDSJy90GVKviS1CQutWN+TryQlZeyxhSpqqf4DVU1k2By3LqV+p/mJMv32K9MLOzTDlTLuBY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=MJCroDkY; arc=fail smtp.client-ip=52.101.196.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1768824874; c=relaxed/simple;
+	bh=QcO42zC8THmtJbrqtd9Ygaqe1OR5YTbCpW7l1IkycBQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=KM15SULH6NeVZrcl+uv7uBi6i5M2P1mh50E0LT3bcRs7wxLDymrqeIBEwAMps2fTIWrGSsyviqQMmZHXifCwD/2C9zPgkEvXh6wf6S3WfPTJJZhcJDCVar5KXmOPquJfXMgKIJGt/ueBoMKCSumPs+O79E0HBOvS9zew/t+sRew=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LlhyNelP; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="MJCroDkY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B5Yrk8NfrRSsG9UEgwhN1D7/JowOJKCFK/DdhfTQrCx9+gaUogYBTJAYyQCWfRV2umPS68rgmfJ+hKlmmS3Ju4UsZeqyIM/t215YmfNevb9oDatjdFGi+SW50tU+nqn6M0G7eUHhOud0R3phlTK8ieKbhCAqO8omycy78baf85mtRqyDOViRXKCTb1NXwuD9UT1my9EueGqR1j4j6rI6sK/i33q+jMBTaRNSxiPcabcR/X6dKN0TPuz9KrZ6REG4Kx8yIS3S20jC6Wsv1oN9IGZr4qVbNWiQbsqa/8xjS6XAeBXULkXtlYFtfkuSASGNgrO0hoB2JqtXcDnVnt7GEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vhd7dWWhmKOuCfLkA96amseoi10GDuRq9mdTAtHuCCE=;
- b=b2wFgBSFx7E9Sx8QS1ufVkCmPDrvDgvnHcyWD3Nk+qeR7qhgkIFtlSjZugM9sLuyJi1gPCWz0/MRXsBF8EMBVf3Yk7Vs5HupZkGpP4TKWyh9ozl2FWEVrczhsHg38yQcVItEEYoY7BDUhQWlDhBxkUSaikx4BwysDF32Jam83DX1Bf9wtXkdZgTbLivwQ7zm6FI9nq5XmUny5jlwB8encZ0j8w+dY2pIrsLIWywJi9HCLzLhss2C06V3U2tLPZDrCtRxieccAmE/okPrHsYZKK139FKfRhe17MDpJUQBquly9zP2/rHJ5OAt7whNQXgj+peLf4dIs3pCuCkMoh9tCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vhd7dWWhmKOuCfLkA96amseoi10GDuRq9mdTAtHuCCE=;
- b=MJCroDkYazmw2/e5Era1FQKnPmLPoHhHbHRyKzJMFETFNvAdxOc3+e/UMeHYbAkxRjDQVZcuVA0NiFZdGfLfnq0qDefsGgfhHMimXKtckhstJ6ce75zmzZ2sjF4GkBAqDxRUHS/0T0plBvXJ/13G9ZS/m+za/+166R8TJz1XZFo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO9P265MB7729.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3a5::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
- 2026 12:13:49 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
- 12:13:49 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Jan 2026 12:13:48 +0000
-Message-Id: <DFSK2KHCXTIB.3RR5Q81ADGKRR@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>
-Cc: "Timur Tabi" <ttabi@nvidia.com>, "Matthew Maurer" <mmaurer@google.com>,
- "Gary Guo" <gary@garyguo.net>, "John Hubbard" <jhubbard@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <nouveau@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v5 3/8] rust: uaccess: add
- UserSliceWriter::write_buffer() for raw pointer writes
-X-Mailer: aerc 0.21.0
-References: <20260116214959.641032-1-ttabi@nvidia.com>
- <20260116214959.641032-4-ttabi@nvidia.com> <aWuNbUywGRH1zo-0@google.com>
- <aWubWE4kstGI42P9@google.com> <DFQXTQJSCXV5.2FSUVMTSF2OB3@kernel.org>
-In-Reply-To: <DFQXTQJSCXV5.2FSUVMTSF2OB3@kernel.org>
-X-ClientProxiedBy: LO2P265CA0427.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a0::31) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LlhyNelP"
+ARC-Seal: i=1; a=rsa-sha256; t=1768824845; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=KcH7GdA7xBbH241i8NfLausAddZyz5ZlVGcytkTvCFJXBaA1vUO5Rp034wbCuKZ3Fqjbxmu4MCMOzor6ONFvrToKZPNYfAJ3q5tUMVj58cLajsxQ5nJhuQWyJradG4fePU7j+UhLknsTkcd1UGRIj+PBk4zWKSadvCwhWUdTRg8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1768824845; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=BfXcIt0tBHjjnsqIXHlPzY4FaLVvmObvvbSPyRVGDJw=; 
+	b=B7r2bhf1aqYK4OQhfSjxB7LKy2l0mXKBzV0JObD+J5aXvnXABeA37KdUMKgFJQGsmxTjK1gaW83dsmhSIrxSh4K1wue3eMmCWMvOSwVGPpMwpMDKOxrIfGX3e2+tKPKsizJOhH5yl9g6G5Kafs1SszcRV+ZUPOtNNndiz5jwRh8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768824845;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=BfXcIt0tBHjjnsqIXHlPzY4FaLVvmObvvbSPyRVGDJw=;
+	b=LlhyNelPGUcdcnD3sv710vqtJ394DhGzCFIYy1VDO/AqvAtqn8iV315jYgwKQTkg
+	iVh6l9dmKL+dt+yz7PIARqIJV3TJEzHUjI7ZVsNDS7ctjEzlzypmJnIIsqCbfSz9y/N
+	02gC9vOvF/g4PJdAVl1/5lqZQqQxaSO9WWtyAJPo=
+Received: by mx.zohomail.com with SMTPS id 1768824843531275.960036876614;
+	Mon, 19 Jan 2026 04:14:03 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO9P265MB7729:EE_
-X-MS-Office365-Filtering-Correlation-Id: eca70ec2-069a-4441-c69b-08de575433ed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WHF3V3ZzOXVUbm5KUXJuZmpvMktFZnlveVdKcnJqZ0IrNHJUU2svUTdLNzNv?=
- =?utf-8?B?U3dXSmVRWmxHKzJqcGdyUG1iT2tGTThqbE1sazVXMGNnVW94QVZEb2RldGVH?=
- =?utf-8?B?c0dmeFFsU1dMc3k2dXdHN1FqbzI3YXlySVRBTHo4RTBsTFI5Yk5kdUdTRllE?=
- =?utf-8?B?eWNSZDg2TWNTemxNZXBDWU81SUVBcVFtdEVmQUtRR1kvOG5nM2xVVjFvMjV6?=
- =?utf-8?B?Vmx2dnBrTHJkY2dJMHUyMDJuS3g4Y3BpcWdVNDlyQ0tyNy9nK2I3TTNtNUoz?=
- =?utf-8?B?OElYWllySmtMK1ZEeE1wUjBVN0cwUGowQnRkYjUyOEJoYkZ0NkI4Szl4L1do?=
- =?utf-8?B?REM3NDlxRXlYbkpEVER6QWZYRUJxK3BtYjByNUI5VEtrRkRDdzJjeHRrc0tt?=
- =?utf-8?B?anovWUJmNE1XYUVLVnVZOUcxVEtXMkRHdUxvVzRWZmp2bGpaQlZ0M2dhMWNk?=
- =?utf-8?B?b0dKcWtDUnNjL2tKcUVGU1MvakdMRCtLdVgwYTRRRk1xTFluUmdKVmhOM3Ji?=
- =?utf-8?B?cVhUUjE4TXhoaVFmZGU2ZmhDRW9vSGFJZnJ2SUlaMTVsZTU2dVYwUkt5Si8r?=
- =?utf-8?B?MVFhZjZUV2tHNW03d05GN2JOK1ZyeGhKdDJPOEkvTG8xRytmc3JncGJVQk9I?=
- =?utf-8?B?bGhLaC9QWkdiOW4ybGMvL25RWGYzYzZDZVo5aWpYWVF1c0RhVDBmMDg3Sm91?=
- =?utf-8?B?RWxtemcxMFFmZnkxVlJGSDErMUMxYVAwSXd0c0d2dVdHb1F6b0plbXhNaHlI?=
- =?utf-8?B?NmdtV3JaWE5zZ3VSRXZUWUU3UTI4WnB1bFNISFVheDVUMnJSZ1h2a1ExcDFm?=
- =?utf-8?B?TGVQU1NFQVFHWWJCeWhUMGhlYjc4cFFHbGhDRGtSNE5NdkVkZzRGYkNTTDhn?=
- =?utf-8?B?ZXBUcGRSN0hMZ1BtTFJlSTJtY05ZU3ZmZUplT2VMMG5SM0xTOFlFbkI3QlpY?=
- =?utf-8?B?eWl1VEMxR2ovMmJrR2xUTmVMWjJJaEp0bmdZL0RVWDRmZzhQNk9PMGFDdkc3?=
- =?utf-8?B?TU1lM1pDT2d0eTZqdTgxM0drVUZSeEs5RVFkbENnZU13TVNWWk1IUVNQSUdP?=
- =?utf-8?B?bXYrcDdxdnJwWk1KTWlXL1JIblE2TWRiaVhlS3p0SXhUd2ZaTE4wcEJyc0xM?=
- =?utf-8?B?cWRNMUc3ZW4vSU9hQy8zTWZ6NllOdFAvd3lZU0ozQnp1SnkrcEhsVy9LNHVh?=
- =?utf-8?B?OTV6MW8rMms3L2FyaWcvdStRV1ZrdWRPS1lrM0QwL3lGd0JiWTI0ZVFCZlVh?=
- =?utf-8?B?SjdPYjVWV0FXdTVZZUtYeXFUdm1MTXAydi9tTUxzVkpwWHJFd0d6UThPZXhX?=
- =?utf-8?B?aGxjOXJ0ZUp0NEFMRGFJLzRxYUx6ck1IblBjeGRUallFbHhjNmVBUlFna1Ba?=
- =?utf-8?B?TTlGUVdmeTI3UlBQS05BSTV1cTIrSVlrRGYvaWp3cFJHaVZKb1N1NkxIaU84?=
- =?utf-8?B?eXN3VjM0RVpyeklRbmF2WlJ1eldRbysyR1pEa2pvVUhMUi9nKzhXTXM5OCtj?=
- =?utf-8?B?YnBBV0FFZlVseE1NWi9CalhFemp4dSsrTFN0MUFaeFdvem96a0dmcm9IbUdp?=
- =?utf-8?B?ZmtHcGEybThHQUNZZmt0cHFlS2owTVdFQmduTnVYL3NudVFraXg5eEJJUlhn?=
- =?utf-8?B?SW82RkVGMlU1elNIYjI5STM3QkRyNk5NY3BjR0hWeSt1Q0N4dzJzbUcxeW8x?=
- =?utf-8?B?UGdaYVF5cGw0YlhUbUpBTGNVc3l2TjdpZ3FNc0EwbjhMMWUxdXhvQjJRTEhW?=
- =?utf-8?B?YkhOVkZ0SC9zR0xvdHIycXV6V1VUTU9nMk0rcFVNS0dTaklZM3dpQ3lMazVy?=
- =?utf-8?B?ait1TEdKbFlIdGtVSnN6V09Ec0FEWU8xU0lmd3RpOFpPeURGeDRSdytSZ2x2?=
- =?utf-8?B?LzVxaGRKSnZFNTdXeG9LUDhiUlhxdVUwOUlVRlowcWQ1REJad0JoV2ZTS25z?=
- =?utf-8?B?R3RpUWZDd3Evb3FHbndpSU5iN1BUSXFFSEJGSjA2Yk00eTdEcFdaNU9Oc3Ft?=
- =?utf-8?B?SVZsbEgxNkU5TW9mNDM3S2xCSVJKMXpyQXcxME1jZS9oanhJNGhhNVlwYS9J?=
- =?utf-8?B?aE9xVlZxZVJMSEpPVXo1bVAyNDhoQVdPYnhYeUxkNURCWk9xMW9PNE5hRjV5?=
- =?utf-8?Q?NRV0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eHVMS0ljVjYwNmUwQkpua0tLV09OYVRRTUZpY3dySExGN2t0NVpReWF0QWF3?=
- =?utf-8?B?aDQxWFhWdnlGR3UvWlVqdHZydGtmWkZhYWloUVVtanU5NG5CTFBsU054OFBF?=
- =?utf-8?B?dVYzdG5lWkZic280L1QrdXcrZVpiWm1sTnJNZTNrU0pVRzgrN2NiWHJYOWQ2?=
- =?utf-8?B?aHZmVW9pMEU1RUh6NXNsZ2NEdU1CVWY5VHk4eU5TS2YyWTEyT2QvQVdYYlZ6?=
- =?utf-8?B?T3EveC95Vko5SlBrcmNka0E1Y2tUWEdJNUl5ZThVRGZha3ppbkZyOTY1VVoz?=
- =?utf-8?B?Mm42V1N3RE1UYnppbjNOaE1VZVd2UDJ4S040Nys4aXJ4TWcvWUIwWW1Ed004?=
- =?utf-8?B?NEtkNXFRaHZmNFI0dFJiMkxpc1B1S0RBbm9QY1hHV3d0d1dKZG9CNXh2V1FY?=
- =?utf-8?B?K0pRMlgzcFBsSmRJb2xNaXRHYXh1VCtkTFZnRzlsRWNZeDZvN1ZEWmxaK2dr?=
- =?utf-8?B?Vmc5aUF2MGFPcFJQcmo4MU0yS3RPOU9sQ1dWR2dzMVRCem81K2VxVnVabTdH?=
- =?utf-8?B?c2pMMlV4aTk0dzBzUExDVVVicVhNckZoaHFkdUtvTGNGNEdaN25kaFdJenh6?=
- =?utf-8?B?TmltRVZBTjh4QWZkbmlwYUxOdml4MGJzSUpMd2daY3Fkanh0QzhQdE84aGVu?=
- =?utf-8?B?Q3djdFRZT1ZkZ3FOSm55SmJuOXBCay9HWTVRekdXbVpaR2hqaElVR1pJYVNa?=
- =?utf-8?B?d05MYk5NZHZJTW8rWXJZQjk1WkdWZUVMS1JlN0pFNlUyenhvaUlpTTdCQXFW?=
- =?utf-8?B?VVAxWm1wOVo5Mk1PazUvSFhYbGJ1TTkwbkVaaHgyMGxUekwxcnZEZlZiRU5N?=
- =?utf-8?B?cy9MRTBncUxMVFpMczdtSDZyVmxaVGFIUTh1Z1dxeTAzRkNMNlBVN2J3Nlk2?=
- =?utf-8?B?MFFmMzJtL1VKcGhnRG5kZDZFRnlyQmRDWDltL1VqZkZnL2FxRGhKYm9nTXZQ?=
- =?utf-8?B?c0RvakFjWmZQckFPaXlvYUZJbklLV2VTdnBHRzErVWx1YUFsSzhxNmhFT0NC?=
- =?utf-8?B?YThaS1RTalQ3cjIrbmtGb1lLUW96NGFRa0xZQ0hDeWlDZ1BRSVIvelR5NGxp?=
- =?utf-8?B?MWg5eW9VdlRIZEtaZ3BlZExxQzk2REx6S1FEK0xUL2pnU3AvNUtadlc1elNr?=
- =?utf-8?B?S3BOVUZjQ3kzVllqSWxKVStvM2lGZVdTVzk2QlcxK2RKODR1TndlajVaSHF4?=
- =?utf-8?B?bEtkQWRVWXAwUHNCbXdaakdkdzA1M1h5V0I2MTNuR3VkdkFNS0lsNEVzSEFD?=
- =?utf-8?B?cE9VTGtpSlVEd3J2SGtGSThLVmtwTkpmajdQZmV0Vmo3QS9aNmFxZjk1NzdB?=
- =?utf-8?B?RHlmck9PSDJOVm93aDExT2gvcHBUTHpxWVY1eFZYT0wySnNGWldCdHBXVk9t?=
- =?utf-8?B?bUVBM1JmR1Q1T2tQWEl2dS9pWG1mQ3JZaGNnOFVsYlJoQmdCYXpPcGYwZXIv?=
- =?utf-8?B?WUdiYUtMTCtINmJiUSt0ajRWalIwaXFlMVc2c1dIR1E5UUtTdFZCeDl2d0Mw?=
- =?utf-8?B?MGhmVWFWaUdBcGNyUHRNd29KdkJIckk5bjBZbmNKUmF6NE1sQ1k4ZmNOU1I3?=
- =?utf-8?B?d25hZGdMYjFiUUUvc0NzZ1M1K0YvYnRHYkJka0NFQU56K0dWc0hOQnViODRq?=
- =?utf-8?B?S2s3cG5FTU91WTlrNC8vTjJEUUZhc3ZYb04wdU5FSGVMNEhlZk93Q1R2L1g5?=
- =?utf-8?B?RGxueEltY1RmVDl2VWxSWmpmbm9kTDlOdXdlNmdBMzRkRGNDeXNJVEllRkVo?=
- =?utf-8?B?K2hRN0Yyb0VTRVo2c1pEbE02N1NkaXlBY2xqOThhd3ZudzhUcmJlTnp6VzdL?=
- =?utf-8?B?cUsxWUVuaC9RdlNQWHR0enRkalJlV09MSStFaWFZWjN6UUpaZ1NPMWRCTk54?=
- =?utf-8?B?L3VheStpNGVMTWJNS3RxVWRmUFpkYkRZZjJEdGxxMDRxOGt4Y0pPRjA1eWlt?=
- =?utf-8?B?TjJKdVpsbUhLMEdnTVVsRlBVMXpvakxMSTZETXk5SnY2dGhNS25WM0tuUTl4?=
- =?utf-8?B?Vy9GZm05NTA0L2N4YytJR01KQzJoaEVtdG00T05OSytZTDQwUjJJUFNBVjB2?=
- =?utf-8?B?bVh5cGtlV1U4Q045OGxPc2VZbDlrMld4dGlZMXFSc3FvTWg2OHFrdDFtbG5R?=
- =?utf-8?B?NjlNSmVKcXRGdmQ2TVVydTNTMlo1b0Q1K1Jud0tGSWVsT0kwZGRidHhUUldp?=
- =?utf-8?B?ZjJuSE54MnJ5TFpHRzNiRFJ4VDRzQTlkN3VhUUk4Y2ZpbDFUcEw1b3BQaWt6?=
- =?utf-8?B?aHVMZFBlSnBKdFMwcy9hSFZHN1FBZU9BbDI1QWVIMklCMDVvdmptV0lQWEJI?=
- =?utf-8?B?NnlkVzZxcjFzWTVtbDhWbzlXdmVFUmZOdzRRdEllU1NaU2RDclV6Zz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: eca70ec2-069a-4441-c69b-08de575433ed
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 12:13:49.4093
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: a3vBEfZfaPklQAXGzOgfQvbXryftbThn/BqUqEyai1gPCF0tpegk6CV5WG0WMe3vM1ZTPdk4ngXZRHN0Kzjhig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO9P265MB7729
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260119-thundering-tested-robin-4be817@houat>
+Date: Mon, 19 Jan 2026 09:13:43 -0300
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Drew Fustini <fustini@kernel.org>,
+ Guo Ren <guoren@kernel.org>,
+ Fu Wei <wefu@redhat.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ linux-riscv@lists.infradead.org,
+ linux-pwm@vger.kernel.org,
+ linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <14A9284F-A773-4F21-A5FC-9762AE5A5390@collabora.com>
+References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
+ <20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com>
+ <20260108-delectable-fennec-of-sunshine-ffca19@houat>
+ <98CD0BF6-3350-40B9-B8A9-F569AE3E3220@collabora.com>
+ <20260119-thundering-tested-robin-4be817@houat>
+To: Maxime Ripard <mripard@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Sat Jan 17, 2026 at 2:35 PM GMT, Danilo Krummrich wrote:
-> On Sat Jan 17, 2026 at 3:23 PM CET, Alice Ryhl wrote:
->> On Sat, Jan 17, 2026 at 01:23:57PM +0000, Alice Ryhl wrote:
->>> On Fri, Jan 16, 2026 at 03:49:54PM -0600, Timur Tabi wrote:
->>> > +    pub unsafe fn write_buffer(
->>> > +        &mut self,
->>> > +        data: *const u8,
->>> > +        len: usize,
->>> > +        offset: usize,
->>> > +        count: usize,
->>> > +    ) -> Result {
->>>=20
->>> Why not this signature?
->>>=20
->>> 	unsafe fn write_raw_slice(&mut self, data: *const [u8]) -> Result;
->>>=20
->>> You can implement `write_slice` in terms of it.
->>
->> To clarify, I think this would be a simpler signature for
->> `write_buffer()`. And `write_raw_slice()` can be used both for DMA and
->> to simplify the existing `write_slice`.
->
-> I.e. you can use it also to create a safe helper for DMA:
->
-> 	fn write_dma(
-> 	    &mut self,
-> 	    data: &dma::CoherentAllocation<u8>,
-> 	    offset: usize,
-> 	    count: usize
-> 	) -> Result;
 
-Would it make sense to expose a `&CoherentAllocation<u8>` -> `&[Atomic<u8>]=
-`
-conversion method and have a `write_slice(&mut self, data: &[Atomic<[u8]>)`=
- for
-`UserSliceWriter`?
 
-Best,
-Gary
+> On 19 Jan 2026, at 07:45, Maxime Ripard <mripard@kernel.org> wrote:
+>=20
+> On Thu, Jan 08, 2026 at 11:14:37AM -0300, Daniel Almeida wrote:
+>> Hi Maxime :)
+>>=20
+>>>=20
+>>> I don't know the typestate pattern that well, but I wonder if we =
+don't
+>>> paint ourselves into a corner by introducing it.
+>>>=20
+>>> While it's pretty common to get your clock from the get go into a =
+state,
+>>> and then don't modify it (like what devm_clk_get_enabled provides =
+for
+>>> example), and the typestate pattern indeed works great for those, we
+>>=20
+>> Minor correction, devm_clk_get_enabled is not handled by the =
+typestate
+>> pattern. The next patch does include this function for convenience, =
+but
+>> you get a Result<()>. The typestate pattern is used when you want =
+more
+>> control.
+>>=20
+>>> also have a significant number of drivers that will have a =
+finer-grained
+>>> control over the clock enablement for PM.
+>>>=20
+>>> For example, it's quite typical to have (at least) one clock for the =
+bus
+>>> interface that drives the register, and one that drives the main
+>>> component logic. The former needs to be enabled only when you're
+>>> accessing the registers (and can be abstracted with
+>>> regmap_mmio_attach_clk for example), and the latter needs to be =
+enabled
+>>> only when the device actually starts operating.
+>>>=20
+>>> You have a similar thing for the prepare vs enable thing. The =
+difference
+>>> between the two is that enable can be called into atomic context but
+>>> prepare can't.
+>>>=20
+>>> So for drivers that would care about this, you would create your =
+device
+>>> with an unprepared clock, and then at various times during the =
+driver
+>>> lifetime, you would mutate that state.
+>>>=20
+>>> AFAIU, encoding the state of the clock into the Clk type (and thus
+>>> forcing the structure that holds it) prevents that mutation. If not, =
+we
+>>> should make it clearer (by expanding the doc maybe?) how such a =
+pattern
+>>> can be supported.
+>>>=20
+>>> Maxime
+>>=20
+>> IIUC, your main point seems to be about mutating the state at =
+runtime? This is
+>> possible with this code. You can just have an enum, for example:
+>>=20
+>> enum MyClocks {
+>> Unprepared(Clk<Unprepared>),
+>>        Prepared(Clk<Prepared>),
+>> Enabled(Clk<Enabled>),=20
+>> }
+>>=20
+>> In fact, I specifically wanted to ensure that this was possible when =
+writing
+>> these patches, as it=E2=80=99s needed by drivers. If you want to, I =
+can cover that in
+>> the examples, no worries.
+>=20
+> Yes, that would be great. I do wonder though if it wouldn't make sense
+> to turn it the other way around. It creates a fair share of =
+boilerplate
+> for a number of drivers. Can't we keep Clk the way it is as a
+> lower-level type, and crate a ManagedClk (or whatever name you prefer)
+> that drivers can use, and would be returned by higher-level helpers, =
+if
+> they so choose?
+
+The problem with keeping it the way it is that you=E2=80=99re back to =
+manual
+prepare/unprepare and enable/disable, as the type-state is what=E2=80=99s =
+enforcing
+the correct order of calls. This is also the case when the type is =
+dropped.
+
+In fact, one of the aims of this patch is to get rid of the current Clk =
+type
+before we have more users. The current series fixes this by enforcing a =
+sane
+order of operations. Most importantly, it enforces that the refcounts to =
+get(),
+enable() and etc are handled correctly using the type system.
+
+It rids us of this problem, which is possible today:
+
+clk.enable();
+clk.prepare();
+clk.prepare();
+clk.disable_unprepare();
+clk.set_rate();
+
+
+>=20
+> That way, we do have the typestate API for whoever wants to, without
+> creating too much boilerplate for everybody else.
+
+
+But that's how it works in this series. The typestate pattern is opt-in. =
+If you
+need to "set and forget" there's the devm API that's introduced by the =
+next
+patch. I can expose more devm_* APIs if you want.
+
+I'm not sure the boilerplate is significant, by the way. You can just =
+do:
+
+
+Clk::<Enabled>::get();
+
+
+As a starting point, and have the enum thing (which is also simple) _if_ =
+you
+need to manually enable/disable at runtime. Most of the time, you will =
+only
+need to mention the type state once, like I did in the call above, and =
+then
+the type system will figure out the rest when transitions take place.
+
+What boilerplate did you have in mind?
+
+=E2=80=94 Daniel
+
+
