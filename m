@@ -1,49 +1,49 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3389C23EAB7
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 03:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1BF267731
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 04:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768793433; cv=none; b=bdZm0RP1MPK4+VcEvB4YYUNJ0X0hSZGTGbGD1GUB3fjYWrmh42Alf8FduHRI8MUtBSNzrRHZxtDW1E4fDP9IJonMuSKlwfkZq+W3baM3SWLjIT6oB136u7RkJoWL3ntFYhcvTz5JuxWZGVUBnEOi5Sb3LBaw+4ZSamfNKgr6ca0=
+	t=1768797318; cv=none; b=g9DM2FplI4QLUJPHhK+CfbE1f5PQctYBfBIRqtxbOsKvnWMb2123Aa1pibyUXtU+2D6UwT+uLTti4d9tamAVdeZ2W+RqtVieiPZSNk06cI7Asfa2Tl8arLa4tMve1sSh9KigWyCY3jNOHOYXC11wVErHHOEKfBnWgh9hWYm8qNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768793433; c=relaxed/simple;
-	bh=0BGdN39VsLE8UOQ7Zv7bHsECbITmRMiqwji64PfdPco=;
+	s=arc-20240116; t=1768797318; c=relaxed/simple;
+	bh=sBOZFFRm5WpVRC1H1Lsqxc7TexKOLXjJgUUtx20PpOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBbZVF1Vn+RjnUA+I90QJ/aOZUFktMfadLnjMYjN/hJfhPXlVKxMZZYLHLkNBWLOLX3u+Mq06Wxnfp8buc8OUb0d+8Y13B3QpZAMrredVhaN7MwJlJ97MyIuyAXKbo7uJf5dFplrP6kdWQ4IpfA3Lj2TLFb4ooh9yAzeHd+JmkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.42
+	 MIME-Version; b=P66SmSwGiYioGBa4R3LlTpHYXwjOi7YmAmbMrLxAgc3/lLMafF77NSpsRL4rxhgqtyrDmsNBuP5ysLU/OwJzgwQye+eeGXbz4rbM9aXM28+I7UkrZE0gNDjO9TqALnhJyuaFncaUolmdLJEh9HK5pJG1cK+r7/3lSERoGoyOG9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34c30f0f12eso2145254a91.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 19:30:32 -0800 (PST)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a0fe77d141so25420645ad.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 20:35:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768793431; x=1769398231;
+        d=1e100.net; s=20230601; t=1768797314; x=1769402114;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Go2MuSRgyRX7QG3VhHx/bPGBD+aFtk21+zroHElYj5k=;
-        b=H+S+faDyoohVH+9T/a6MDMyMgLVJ0yYSQPZK5Y5RrV+8Sx+j8JsWPWd4M3Avgy25us
-         FJW9Evasj4OlT+mCNFQBl7hODjBRcuzGjay5fE5pQHWMLwhIh46kpyINo2LMAMvVWqVm
-         qIs4B117HnRIJpUqGYgnZsE+1luouljQxxS/pww5fVDRp1cmv24HcYDEGN+K+ic0gf5K
-         JsRRavcxeoNlc5kZhcyh0KmPXLwITlFHJ/rKI6ERlf5Qj0czPYn4YI+ILTSp5zBOMMXl
-         DSUkGHLwMsbRL6rGy4EB8j3Sf7dy8BM9U5Z0MuxsOYDDZ7rBC+pauIcIqUKEJGzyA33l
-         Ctug==
-X-Forwarded-Encrypted: i=1; AJvYcCVsjPPQ7w8e+aLY5Ont9YcBT5ww4sBkBAXDJ9Jc4jhh1CSv7ZIJWtxMV94lZPk8/OB/1MTHcD3B4vCzHcLKpw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywt2tljuVjSvZ7W/Ak2LOrUryEZCIKEGFqnoFjDKLeYzez5BNJm
-	ERNlYARBYTSgWbLEgTrLdybBlSXgDS3Hd1r1iViYw8aKgkJ95z0re0v+
-X-Gm-Gg: AY/fxX4YykMgUohbZmtrN14J7W831JWhzx/bubqzcx0Lm0LaC8N8G2BmsmjHclSKgyu
-	quzygANsqEoleMGKRWChp1PgZuyWiE2ypD2p8g3N2MxAYbHC1FkkaPq3yBFda/8jraRt6aGVXm9
-	FEJ79KClop7MnjJoj9d2dbpF4N9VSQnEtU8MWirk/YbS2YUu+FP16bEXc+KLyYr39tfbT7AsWEu
-	gaiEBIZdBn+VsUoF4kq6DT4eXsk4DW5+Boo8/4jHpWRQKBVo2VtlqPpCD23bvLK4x3oiPDgriRz
-	eSZ7I7o0W/yCoMmso+KAlCu04ajFJgFxTqrQUf5NH+rUNTF9JWcmD+2CZOqhw8a8OuvHe+pp9ua
-	lvg1vbz2cioFdbgieOFJvCpGiog6jaF0THewG5L3OhWa6iWiN90c1vypgquMoIK0Z+slXg8RgUP
-	kW+ptqusyWlK9WK6DMkfLUZ3zguYvCuWIa5TV3Mh7wOvKmTzd6kB3p4BY=
-X-Received: by 2002:a17:90b:2b4b:b0:32e:7340:a7f7 with SMTP id 98e67ed59e1d1-35272ec4d5dmr6981021a91.2.1768793431475;
-        Sun, 18 Jan 2026 19:30:31 -0800 (PST)
+        bh=ZQ0XMnJps3bF0FCBc9X/r4ObhgL2JP8UsYTceI3EWlI=;
+        b=qCWdQQkH60q3A07sxPi4oOD83ESczxwE+XNP+SbWPDVPebsWuWq1FHPwTx/xSNCPh7
+         jhbXw4zpTMWdkO0KQRpU4fx76VLJ4JFVp0FY1Lzko3K4sBwkrf6PwmkdfSrkM8qsnTBk
+         xCm/aQx3jJ+2ua14g6uOA3bqovueA+zvYLWJwcpRiNvN7+oPmBSbOeJLOucnPVE7gtOO
+         J4oupROMfH1wWRhVxdxYxUWsL8ou6Q9I5rJoTqBc96EIQ2DkaHdWF6YIuuDgAo68hm61
+         6We+gMrpqp9I1wTNbyWL0W4r0eGe2h0dOoO9dwn3PRDP5PdJoQehH42pw9Rk5rOYzODH
+         B3SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXzWaAb8b1aekRaZxTU99SNw7zGriN74BClAdhigljRA7LCVbCnagkQ14GjWxfZGcToNdgIR13j88kEZK1XSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/kI9fapKhf3E7wT61ghQ2EJByx7ughk6xU0CSV6vVezltPrre
+	ZqOjJjgk7Tl8KFTgjm4OwteQKBrcsE3TlrCeFE+Bdf384pAWwBov9/WO
+X-Gm-Gg: AZuq6aLOrhx3Z09D7l1VQlb/ZlFwDRz+YMjrjpZcPAfyWk1YoDn9hbcnuRhlAkv4QZ8
+	Ww+TEMF9vq0YhRgDrMa2RRryCGz0cJtxcpSosP+Fk0NqVerl1P1uqLBs6VnRzJ09EmhC41XgJMU
+	aoasu7g7RXSqI7z01YS/lyG9lnqyfVkoNWM0786EicASSn7KoKcbKa/xIeOeDeBkvKUFI3fKLjW
+	h7RN7qFq5xOR54q4l5YjCBHkjsF9M9saAVnc5q3RLN2W0urVOuviLNbfuAm3tOigi8AhdnRwzNl
+	YmFFebJ3UZGAKOGBOm0+RcX2CYZmFqEgEdBnav4Ubdc1XfdpzK/HjC3gSjeRIQ5xdBC+AQq6FGK
+	8GkQRmO0jdzQaybvX3xF7AtP9MgY4oTiynrUyft6KxLIVnXrHUxB7kWu1pyuEB9XnAIhEMeGAJe
+	KtlGR4VRajCz/1xPZar+iDm3KwfAGppfmTOUN+mdjvxh8F
+X-Received: by 2002:a17:903:9ce:b0:295:fc0:5a32 with SMTP id d9443c01a7336-2a717518e27mr102740185ad.3.1768797314077;
+        Sun, 18 Jan 2026 20:35:14 -0800 (PST)
 Received: from localhost.localdomain (104.244.95.48.16clouds.com. [104.244.95.48])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3527313c2a9sm7656972a91.17.2026.01.18.19.30.26
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a719411cc0sm78952825ad.85.2026.01.18.20.35.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 19:30:31 -0800 (PST)
+        Sun, 18 Jan 2026 20:35:13 -0800 (PST)
 From: Ke Sun <sunke@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>,
@@ -57,9 +57,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Tamir Duberstein <tamird@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH v9 3/4] rust: fmt: make raw pointers default to HashedPtr
-Date: Mon, 19 Jan 2026 11:30:05 +0800
-Message-ID: <20260119033006.1453006-4-sunke@kylinos.cn>
+Subject: [PATCH v9 4/4] rust: fmt: add RawPtr for debugging pointer formatting
+Date: Mon, 19 Jan 2026 12:35:02 +0800
+Message-ID: <20260119043502.1534349-1-sunke@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260119033006.1453006-1-sunke@kylinos.cn>
 References: <20260119033006.1453006-1-sunke@kylinos.cn>
@@ -71,64 +71,74 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement Pointer trait for raw pointer adapters, making raw pointers
-default to HashedPtr when formatted. This provides safe pointer
-formatting by default and prevents information leakage about kernel
-memory layout.
+Add RawPtr type that formats pointers as their raw address without
+hashing. This corresponds to the %px format specifier behavior in the
+kernel.
 
 Signed-off-by: Ke Sun <sunke@kylinos.cn>
 ---
- rust/kernel/fmt.rs | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ rust/kernel/fmt.rs | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
 
 diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
-index b3501a11c7a3c..6052d9f8628bb 100644
+index 6052d9f8628bb..d023aa00c7470 100644
 --- a/rust/kernel/fmt.rs
 +++ b/rust/kernel/fmt.rs
-@@ -192,3 +192,44 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
- impl_pointer_forward!(
-     {<T>} HashedPtr<T>,
+@@ -6,7 +6,10 @@
+ 
+ pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
+ 
+-use crate::bindings;
++use crate::{
++    bindings,
++    ffi::c_void, //
++};
+ 
+ /// Internal adapter used to route allow implementations of formatting traits for foreign types.
+ ///
+@@ -233,3 +236,43 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+     {<T>} Adapter<&*const T>,
+     {<T>} Adapter<&*mut T>,
  );
 +
-+// Special handling for Pointer: default to HashedPtr for raw pointers.
-+// This overrides the default Pointer implementation for raw pointers to
-+// use hashing, which is the safe default behavior for kernel pointers.
-+impl<T> Pointer for Adapter<*const T> {
++/// A pointer that will be printed as its raw address (corresponds to `%px`).
++///
++/// **Warning**: This exposes the real kernel address and should only be
++/// used for debugging purposes. Consider using [`HashedPtr`] instead for
++/// production code.
++///
++/// # Example
++///
++/// ```
++/// use kernel::{
++///     fmt::RawPtr,
++///     prelude::fmt,
++///     str::CString, //
++/// };
++///
++/// let ptr = RawPtr(0x12345678 as *const u8);
++/// pr_info!("Raw pointer: {:016p}\n", ptr);
++///
++/// // Width option test
++/// let cstr = CString::try_from_fmt(fmt!("{:30p}", ptr))?;
++/// let width_30 = cstr.to_str()?;
++/// assert_eq!(width_30.len(), 30);
++/// # Ok::<(), kernel::error::Error>(())
++/// ```
++#[repr(transparent)]
++#[derive(Copy, Clone)]
++pub struct RawPtr<T>(pub *const T);
++
++impl<T> Pointer for RawPtr<T> {
 +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        let Self(ptr) = self;
-+        Pointer::fmt(&HashedPtr(*ptr), f)
++        // Directly format the raw address - no hashing or restriction.
++        // This corresponds to %px behavior.
++        core::fmt::Pointer::fmt(&self.0.cast::<c_void>(), f)
 +    }
 +}
 +
-+impl<T> Pointer for Adapter<*mut T> {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        let Self(ptr) = self;
-+        Pointer::fmt(&HashedPtr(*ptr), f)
-+    }
-+}
-+
-+// Handle references to raw pointers (needed when pointers are passed by
-+// reference in macros).
-+impl<T> Pointer for Adapter<&*const T> {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        let Self(ptr) = self;
-+        Pointer::fmt(&HashedPtr(**ptr), f)
-+    }
-+}
-+
-+impl<T> Pointer for Adapter<&*mut T> {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        let Self(ptr) = self;
-+        Pointer::fmt(&HashedPtr(**ptr), f)
-+    }
-+}
-+
-+// Bridge implementations for raw pointer adapters.
 +impl_pointer_forward!(
-+    {<T>} Adapter<*const T>,
-+    {<T>} Adapter<*mut T>,
-+    {<T>} Adapter<&*const T>,
-+    {<T>} Adapter<&*mut T>,
++    {<T>} RawPtr<T>,
 +);
 -- 
 2.43.0
