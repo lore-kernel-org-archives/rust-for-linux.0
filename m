@@ -1,117 +1,151 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C48913B584
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 03:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A8927D786
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 03:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768792232; cv=none; b=Dm04YjJMSot4bGFeF7rcKyXvP6nhFh1zwbyeOIgELHPpoKhgwYHAMAkxGRSJg89VDKR0PXZ3lAa1BJj2ZwTz2nb7crjE9afhXmgiDWP8j/JvIrs1dpSGiLVRhWFkxcHiQaSa9GZMEhZnUXjrg3+0WbX6+ZWBF/fSZtOE49Ixte0=
+	t=1768793417; cv=none; b=T9PIiFi4EIX9y1UbIgp6HUgf+QBWr6Od8pd/bCKJyi0xSFVBVBtgDI5X+zPEr5xP1pHl+4IjDJ2VCIGlPbe8xdCRM6oWds1s5zL0PBJcaDCYVmWnc2vOQJefDJzf7ANQUt0FOyytVsW7dcsgN7JzoW1bruUyB/P7Q0HJI57BM/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768792232; c=relaxed/simple;
-	bh=oo5ZkUeVa070qbf4SBLZAAVQYzGoIJlQsmhkIb9OE4I=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=bT8yNbTAUpqWe1j5nvLmeJoiehgeFZSItnxMMA2Q4d2T2o+KOwKa/ssPCqv6C/DxtHqXLdgm4bsNXgcd1jvbxUNVP0tCITt3bHw/UHDu+1h5cg9K/3GDZWZ4YcTi+oOxmDs4lvZwTC50qYhCOxqIle96+5+JDFOycuHt5dYYQI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WtA/SWuU; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1768793417; c=relaxed/simple;
+	bh=vUk9O36MXW2fREYdFa8vRs7HsaJ3sW4d3QQyB+C1eH0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JTsX/ApjDF1aLIjVzy4aNINZF8VWvKO/cDCxBGkV8fRyHJ7UQIpHQ/5klelcCrBBhAIdAOZfyuiVPjfLRZ4Nq0wJFXBGYDyO6FNxlnjgOpursDpWR/Uk4pOVi6oq/Tz+uUrdO9XClsar3IMH8Cozhkn0U2Ln/2hOvU3zMdkl2bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WtA/SWuU"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-29f2676bb21so38714595ad.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 19:10:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768792230; x=1769397030; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3uWVBpkLfZJHSqQ4QDdkZTFmAqRAttQTMYIRxcEh/rA=;
-        b=WtA/SWuU1N0p4bdnaDgu8os4ZHFiBJnm0Ex92j6CueVwkCTmR9Kit7DJ1CBnBGtYIk
-         x8q1es6KfQe/cQlvdD9aCgWVER2UuB5z1SiqEKjZ5sAEXX7Lz+rHaWzHgUOk2Nx/CdXP
-         jqqO3DRB0zKecvxAfcx1oOdhnap2gAWYscPDlFvR/OTAZB5HchdnVYcIw59AY25JCw9I
-         Btp3grQ91LgvAFEIjPiFI9Xkh7ztwic/ohpFXeym9b43TzgWRTthSkKpTuLlgP15AboS
-         ZUu+3s7C8JmWpoMT7a91aga75n42rii/wG3ZVAJXj3x1GkTNRbgL5CvpS56spnwVdaIf
-         gUEQ==
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-bde0f62464cso1313606a12.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 Jan 2026 19:30:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768792230; x=1769397030;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3uWVBpkLfZJHSqQ4QDdkZTFmAqRAttQTMYIRxcEh/rA=;
-        b=ABi3EzqbIzyFcsOwk3t7YctMUU3BXi3fmQz/ClRwiu8/iv7JW5A2uOl8NuHhJSXPDM
-         dh9d18ACeAkOdTlBqwq8Ed7GAk8mm6iOvXn9cn+XZd5UJlpidPI0l+uJxTZoWSRIfjd4
-         n1lJscblDvWmqEe2Gql/mNL0gqiw0InYhJDD5fQKkaEEDvPScmqtkbOw5himWPTJGSP8
-         UisgjnMEPr1j4IWdHqDcweyZCPKeDMKmsdx1SgEIGmnR1BYUjSY3dkQI8/nZpf7pN5hN
-         DpQRIi3L5OCJQnpCFHERH6gZnKMzC3lIWsAu5RgyzCGkiNrSQKlONqQZboE0GoJyQ7n8
-         jxAA==
-X-Forwarded-Encrypted: i=1; AJvYcCXU12/aB3xt76HytryiZGEG7sZUPZuPRVbcx+7+5PE2QpKiNTaQlomFZkL/FHkZqNBT0CEvjpFf5jdSeRVAwQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCNB3n2DSZkEvnHpv7eNL8ICantu0JuXTqFHsSseKFUZ0+1YNr
-	ikvpiv61V/23hEz8NazBnonnuySLBc8dJWN1oW2J0QLY7LBz02yBmaDx
-X-Gm-Gg: AY/fxX4SUTrliWdUgQgScyrpQCxcTzpcK63lS/nQOdQ+UpewMQoREFMPFWjYNUN6JQL
-	YYr0hPuzUSZ/NaL2entUKq3ZaoV05jrIJeQ3rKGjJEyL6k/PT2AE8rZ7Rm6sWuhReKeyyua3qJO
-	F3RFWzp8c1GG1mEwxEd+rJLpCXFjwZb/dmUNRNbG4FyKdw3iFg2xb35CwcashDaMLpoQ0Vdmlaj
-	q5nC3ZhQKXSAYY3gXZ2PRD1RGOW1qenL1ufuxOQOGkfQirm3eBkM9Tinl3dbhQLNAlOs8GNKWO4
-	eO2pEgB3tbANSA8hoWBabkoDiGmEtrlKWOzbCyfup1/n6guJBJAa9j2dTVSeZ5luU+kqHTIMb1E
-	yhHIxxj1UQ/A6XpXjL2aBoDJkDvfuuC1pa4iVB/NoLPZWxHVw5nyKcrQ4r8B0ZeRi8MBlICDJOu
-	46n8GykBAqLnsmPrRVnQJ3EPZT/SlfUVrB0/3Vv5ftRwCFA+F3t1MeGBVjC7zi5iaEph0=
-X-Received: by 2002:a17:902:c40e:b0:298:616a:ba93 with SMTP id d9443c01a7336-2a718857417mr77082675ad.9.1768792230522;
-        Sun, 18 Jan 2026 19:10:30 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190ce415sm79890265ad.35.2026.01.18.19.10.27
+        d=1e100.net; s=20230601; t=1768793416; x=1769398216;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WSeBgzmgVN7AkI3QNecu/jMSVNkZd9N7rOXeVNZWTUo=;
+        b=f6VNvT2cShtijCziqL1O8bHsajqO8YH6pmqCdam1hK5Kodba+2G8R7NTC/q33AFEI5
+         VWKRBUDIAOD/ahp23I49wC4Tzb6R2VaDF4JZve3lnL7KDhsmF3jX6m/PYgTuAsEkG7wC
+         XgpKJA14XxbRlZExHDzL/HBqLyD3TY9vYulQ8BmZg1Dh00BzDuuetixS7pXC/ChVsemJ
+         ZgPn5DwXkEIIyUoBnXCrq6xElHNVTzmg6xPvH+1oyPHntEx6MK2i6DIRvTrfXyhyGFFI
+         hNP/rngx85J/pSsxRp/3hIeFrJ9NIyr4yDuTJVc+5fR124hlH8gUFjIHw4d0MCPigtxI
+         y63g==
+X-Forwarded-Encrypted: i=1; AJvYcCWYaX1crjeFNpmsDRDIy7K0CkHzceklg7GCVOg5Yz/LgsOTin3wi5N2dqeaydkDoyytGjdGocSPPNTMdtfFmA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoBxuBStWUluU5YE/geyfOaBEW3ooGJMjWhCiR30lyfRZ9nnnM
+	4N1Yx0cHGx42/Q9jhyELHeFD09m7tNH+wZuFwogeFt4nxvqRITjzFnLp
+X-Gm-Gg: AY/fxX4ZoskpIJ8vg/XIo2/kaIgv2CuXWATAwQ/zae2eV7Pu+24qekf7LZ5nMoqL6qc
+	3PMrmPXVpT2SgrcGsVnLHwvTP7/p9PMjIZjXTrFnAFWpktnCVIaYGTOpB/brV9HVPfZP8BIj4RL
+	rGwVdY6vQsKIqaPUpSdt2ZmYcZN+PsuvH6Vir+ZZPLM7wnjGI2WbEfMseUc0+HQVehl6AFZUZUc
+	DYNxGKkrfJYOP04ATdpNHDBnz4IPp16Vk+hLByflUOpboQJKPbbOVBXawr/dL17nofgdKF/nGX4
+	Da5MtFqAe8zKtXWW1w0cVOpPPRkSYJXUx6S9K1il+Kz/ojRlyrTBCSTveQOtXavqUzGMKWJ5MMH
+	ajcf6X+3LdvX7U869rIHFIwMAs0uMnQgYoIPTUTy4brm9TYnSq94RN2ToGyU6Xcobm1/V9IBMVP
+	pWTsjEKwtBEyyutAVJFuXvT1BFV050gCdr2J2MEco04cDj
+X-Received: by 2002:a05:6a21:9201:b0:38b:d9f5:3c4e with SMTP id adf61e73a8af0-38e00d5be25mr9014088637.55.1768793415755;
+        Sun, 18 Jan 2026 19:30:15 -0800 (PST)
+Received: from localhost.localdomain (104.244.95.48.16clouds.com. [104.244.95.48])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3527313c2a9sm7656972a91.17.2026.01.18.19.30.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 19:10:30 -0800 (PST)
-Date: Mon, 19 Jan 2026 12:10:25 +0900 (JST)
-Message-Id: <20260119.121025.255021656975699898.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, peterz@infradead.org,
- will@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
- lossin@kernel.org, mark.rutland@arm.com, tmgross@umich.edu,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] rust: sync: atomic: Add
- performance-optimal-integer-backed Flag for atomic booleans
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <aW2HQvo2h46WecQ3@tardis-2.local>
-References: <20260115021230.3297420-1-fujita.tomonori@gmail.com>
-	<20260115021230.3297420-2-fujita.tomonori@gmail.com>
-	<aW2HQvo2h46WecQ3@tardis-2.local>
+        Sun, 18 Jan 2026 19:30:15 -0800 (PST)
+From: Ke Sun <sunke@kylinos.cn>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	Ke Sun <sunke@kylinos.cn>
+Subject: [PATCH v9 0/4] rust: Add safe pointer formatting support
+Date: Mon, 19 Jan 2026 11:30:02 +0800
+Message-ID: <20260119033006.1453006-1-sunke@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 19 Jan 2026 09:22:10 +0800
-Boqun Feng <boqun.feng@gmail.com> wrote:
+This patch series adds safe pointer formatting support for Rust kernel code,
+providing two pointer wrapper types (HashedPtr, RawPtr) that correspond to
+C kernel's printk format specifiers %p and %px.
 
-> On Thu, Jan 15, 2026 at 11:12:29AM +0900, FUJITA Tomonori wrote:
->> Add a new Flag enum (Clear/Set) and implement AtomicType for it, so
->> users can use Atomic<Flag> for boolean flags.
->> 
->> The backing integer type is an implementation detail; it may vary by
->> architecture and change in the future.
->> 
->> Document when Atomic<Flag> is generally preferable to Atomic<bool>: in
->> particular, when RMW operations such as xchg()/cmpxchg() may be used
->> and minimizing memory usage is not the top priority. On some
->> architectures without byte-sized RMW instructions, Atomic<bool> can be
->> slower for RMW operations.
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> ---
->>  rust/kernel/sync/atomic.rs | 71 ++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 71 insertions(+)
->> 
->> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
->> index ca9cab77abf0..58f57903460f 100644
->> --- a/rust/kernel/sync/atomic.rs
->> +++ b/rust/kernel/sync/atomic.rs
-> 
-> I prefer we can move `Flag` into atomic/predefine.rs, I queued in
-> rust-sync with the following version, please let me know whether it
-> works, thank you all!
+The implementation ensures that raw pointers are automatically hashed when
+formatted with {:p}, providing safe default behavior that prevents information
+leaks about kernel memory layout. Users can also explicitly use wrapper types
+when they need specific formatting behavior.
 
-Works for me, thanks!
+---
+v9:
+- Refactor implementation to use Pointer trait and Adapter pattern instead
+  of exporting ptr_to_hashval() from lib/vsprintf.c. Use scnprintf directly
+  in Rust for pointer hashing, eliminating the need for C function export
+- Move pointer wrapper types from rust/kernel/ptr.rs to rust/kernel/fmt.rs
+- Split implementation into more granular patches: Pointer trait foundation,
+  HashedPtr type, raw pointer default behavior, and RawPtr type
+- Remove documentation patch, integrate examples into code doctests
+- Simplify API and improve code organization following Display trait pattern
 
+v8: https://lore.kernel.org/rust-for-linux/20260101081605.1300953-1-sunke@kylinos.cn/
+- Remove RestrictedPtr (%pK) support: only export ptr_to_hashval() with
+  EXPORT_SYMBOL_NS_GPL using "RUST_INTERNAL" namespace, provide only two
+  pointer wrapper types (HashedPtr, RawPtr) for %p and %px
+- Change API from HashedPtr::from(ptr) to HashedPtr(ptr) for direct construction
+
+v7: https://lore.kernel.org/rust-for-linux/20251229072157.3857053-1-sunke@kylinos.cn/
+- Refactor kptr_restrict handling: extract kptr_restrict_value() from
+  restricted_pointer() in lib/vsprintf.c and export it for Rust use, and
+  improve RestrictedPtr::fmt() implementation to directly handle
+  kptr_restrict_value() return values (0, 1, 2, -1) for better code clarity
+- Remove Debug derive from pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr)
+
+v6: https://lore.kernel.org/rust-for-linux/20251227033958.3713232-1-sunke@kylinos.cn/
+- Fix placeholder formatting to use `f.pad()` instead of `f.write_str()` in
+  format_hashed_ptr(), ensuring width, alignment, and padding options are
+  correctly applied to PTR_PLACEHOLDER
+
+v5: https://lore.kernel.org/rust-for-linux/20251226140751.2215563-1-sunke@kylinos.cn/
+- Format use statements in rust/kernel/ptr.rs and rust/kernel/fmt.rs using kernel
+  vertical style with alphabetical ordering
+- Remove unnecessary SAFETY comment in rust/kernel/ptr.rs (addressed Clippy warning)
+- Update type ordering to alphabetical (HashedPtr, RawPtr, RestrictedPtr) in
+  fmt.rs macro invocation
+
+v4: https://lore.kernel.org/rust-for-linux/20251225225709.3944255-1-sunke@kylinos.cn/
+- Use Pointer::fmt() instead of write!(f, "{:p}", ...) to preserve formatting
+  options (width, alignment, padding characters)
+- Improve code structure: reduce unsafe block scope, use early return pattern
+- Add doctests with formatting option tests for all pointer wrapper types
+- Enhance documentation with detailed formatting options section, including
+  examples for width, alignment, and padding
+- Fix RestrictedPtr example to use pr_info! instead of seq_print! in docs
+
+v3: https://lore.kernel.org/rust-for-linux/20251224081315.729684-1-sunke@kylinos.cn/
+- Export ptr_to_hashval() from lib/vsprintf.c for Rust pointer hashing
+- Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) in
+  rust/kernel/ptr.rs corresponding to %p, %pK, and %px
+- Make raw pointers automatically use HashedPtr when formatted with {:p}
+- Add documentation for pointer wrapper types
+
+v2: https://lore.kernel.org/rust-for-linux/20251223033018.2814732-1-sunke@kylinos.cn/
+- Disabled {:p} raw pointer printing by default to prevent accidental
+  information leaks
+
+v1: https://lore.kernel.org/rust-for-linux/20251218032709.2184890-1-sunke@kylinos.cn/
+- Initial implementation that directly printed raw pointers
+---
+
+Ke Sun (4):
+  rust: fmt: add Pointer trait for foreign type formatting
+  rust: fmt: add HashedPtr for safe pointer formatting
+  rust: fmt: make raw pointers default to HashedPtr
+  rust: fmt: add RawPtr for debugging pointer formatting
+
+ rust/kernel/fmt.rs | 190 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 188 insertions(+), 2 deletions(-)
+
+-- 
+2.43.0
 
