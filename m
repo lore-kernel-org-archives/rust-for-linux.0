@@ -1,173 +1,99 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from sg-1-39.ptr.blmpb.com (sg-1-39.ptr.blmpb.com [118.26.132.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3846C358D1B
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 13:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768828708; cv=pass; b=s6LZhwwoHyPSRCp7N/5DidP51JTWruFznPRcvi2EUHp8oH4+S1YFO3kPynWhszUoaaGQc/F8v7z5hPszOkjh2jVeWptksTDKDyyuApLrbjCno6kGMe9ZnuUSTziLRvocNdOEWlbyCbTEJXeqFZUgO+3lKVSQ3AnyIGRxOl3DG+s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768828708; c=relaxed/simple;
-	bh=cl2vU7PiFXCZWfRijLSzy8Vzwr3CPdzUCmYZJRs1SVQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RBSi504Rx+f+bRwyttJXbIxAS0kxi+Wwsh8yKP2RicUNEZH1pzx6ozwCK2YR/YqEzZL3LDcCT8X88fPX9q+YWngZYa13dOMqyuPTmLW8RfmpCl0LC9Rg/QvCtdpDcQzx15GxqWJsTltg5F01ufQcAA7pbbUQPUwvzgedrbb7GMw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=deKA58RL; arc=pass smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049EC1DF73A
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 13:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.39
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768829428; cv=none; b=Dxkmkl2SB1mn9Mrccp/4R0lcbp52gpZzX6lBzCQv0ZWPi3T4Sb+o+AQUMs0y9mHePArm0pgK+galDly8mY2Y3gFCwSGPiaPkIeulcz3MEJ0N9mDNA9ptdW+SDWxdiU7AiyPJqdYNi65YCSlZkDCMXkTD0OoWivBD2M81bjXqBr0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768829428; c=relaxed/simple;
+	bh=Hz997vqaGXzSWwkIjoBZvb8RU32SX4iTP59cSS8nTMQ=;
+	h=Mime-Version:Content-Type:From:Message-Id:In-Reply-To:Subject:
+	 References:To:Cc:Date; b=eXJqdwhLbKLJV87wRnsDZdz9gT7586KRhSp9jYcX1bQHOlb07b0E77jLJsTjQmzFo+Lm0oCmk5vCtL50B3E+YU/8at3oRNN2sT2HL+suH14CiW5+tVWXf46pS4gSFOjOgN8A6jWRyT9/54Be8zwmztrLq4iOjv/SLSHv1aLsnQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=FriD18WH; arc=none smtp.client-ip=118.26.132.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="deKA58RL"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-382fd8aaa6eso39114231fa.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 05:18:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768828705; cv=none;
-        d=google.com; s=arc-20240605;
-        b=S69xr143cTZA9CudDkhQIq3furrU5MIvnkof4Ut9xU7SdoBsTG913ydyCjDl+cN2J1
-         5FOOPrp6Ho+SBOZro1hJg2Rjk5qUNE7p10bBunxfziELV/LeQ0quuH6rjLEuAYEYdz5M
-         7BlKTw5FKut8YgS82Limx4ozMlFMwxPQp7Kz7GvHtHCxhUnb603qSn4S3ROeyS7lBGFe
-         3yjLRSBu2JeYK66U6HB8/eEpAHmDv5znVMyZeEXxbnwdUSpO/2o5h+InmJjF6gDp+Fe7
-         2LmO7Q6loDzrmGz3CatiPC3Zox1cMmzyUaFCIyNJjIf8fEBnAsLSJ3stmPFzJX9ziruZ
-         9UPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kjD3JEARGzp0UiXvO7+D/Os7OGtZnS9aK07aGaWrtYU=;
-        fh=yIgKpSIKolwHbH8mmkYLG9wYnwCwn9s83+PHbc6066o=;
-        b=faI8J9h0XhNSIqgbkHQ+KMZMVT6jX4cPmzOBD+EYM/nRsvWnWpBxidKUU0kDD2mjPM
-         V+oGFmBsHhL5DTxwKEeKAenHstd8GGWs5OJuBiC8Wb3HRv8Mf/Blr5s0c52pWIE9LuLN
-         UW9jM3d12XBp9qNP7mH5ntC8KnUrlvsQ8YW3wAPhWKb25oZAdRr47Iu9F+4rcAGy2ME7
-         EpOjASQ9B2GygzBVLKH4W5Hn4J9F0BE+pHk8RIGHAWUx7GBCN5ymyFjv7LxaPhvTonkD
-         Rzea3WhHt4ZTHTHo0+IMxOCqtAOOc2S3tg7ywhYEXKq9IxzMFJgoR4e/pOgYXK5ZPpRa
-         lW9A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768828705; x=1769433505; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kjD3JEARGzp0UiXvO7+D/Os7OGtZnS9aK07aGaWrtYU=;
-        b=deKA58RLdQGwa+I2zp402qFOXIycWVrbXTDuML/PDX9C5sHfuWXa8y7sCdfRXK23UP
-         et5ejgkP0FaMVjXFfYogUobycIcJZ1pMcu6d3JTS57ah4fZHiCdOHyT89PQ8Pp3QRvGF
-         8L7JyRC/OseKQGS1hjYq8ZNMriP84TR6wlr9dk4zjZfw7aLPimNlUe3SNbjYApfM1+4/
-         RTRAMx1X65ncHYtKlMHU5osb6KwN3Z7TFUZWJfVJqt/b9s7GibTjh9cbz3o3Caagd7e/
-         a8fsOaQPFuK2NZWCJAbusL8/udSxrKRjCMwvqs5wUXFQN1ddEcb7ymTH95JfiI3hawAV
-         QEAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768828705; x=1769433505;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kjD3JEARGzp0UiXvO7+D/Os7OGtZnS9aK07aGaWrtYU=;
-        b=eSi0X18ssMDyBKDyglOdb3QCKPl9gVsYWwrIDNji5HYxXhevxIiitTLgGTfvrNllGI
-         pFkUu8p7lbRmGmO0SNf++ZhjGM1wWYPdtSbNyZ82uv6uJIE1MyJ8Az4+Jahgxe+lO02n
-         fY+/mbiqsakMjrOQCWfOOa8TKGx9occivGEz6bcw51JW4CwGc2pZ/YC8dlwhabXHNuJo
-         Sraj9u92Prl1iFpgtNjHckHeLkaLfiyWE2XDKHTmB6+qNE82uySvHwDhV3+2UPM/Ko7b
-         HXHzDGb6EHEmqP4Sh0FNnBvNEqppmpnDxyivCwBCir/oJqk3vsnQZ7rMgF6HigopA6py
-         PjzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsOimT9vPNsbevb4k53zDkJbqMEe10hXKbjDX8KGtC9Mqr0LFpvQt7SNdsrjSOKrTzfzVhYie/8pljg3SrEA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzngupUy3hHFBgPIWBEiHxfxjNtEqvrOmKmX9f50veNaKjgtBnQ
-	m2nyhtaZh7ehd1IfPlEdg6ez8ZqIDFrZ5I2LhzVIZpxg0/fvFvtjchHc2CQTHdgduH+PK5AAsXg
-	SuDxa7qQs4oTr7FWkv7ETjq1u52uW0No=
-X-Gm-Gg: AY/fxX53YuF7d2sZ0uLAaKL9IndC2YvYR+zvcyUXPXp0ZQsw2QyfNBG7htP6OadVVmm
-	+Jon95cXzo9qd6/R3LMJDZBxURD+NCSGCZkIzUnn1SwqfppACCduLs6ZswNXiVjNb/p/Al16MPp
-	bUo6DGAsXLOW/ts9ADBUhVhQscDCvz1Sy/9OGIY/cj5wElc34VbUsHy7N0cNlNKcf5TdDgzPYwP
-	oeMdVmzaOx1/cYvQH9NSTdoZed+UUDQxmY3OpscA+xhHoFLe7qMgyWFIdmHUgtw9j/dEbpXmSuv
-	kxqUtO6FJXR9tD6ABV1C+/wGqDKuKvP2kAdOlmEZaSGx7LJstMst88wHsEG6ZfglNHL8SfHrGXi
-	0uU3uaHXJ5OnFodiH6BKCwK7vfQwAPtKFZQ7xPBnqMg==
-X-Received: by 2002:a2e:bcc3:0:b0:383:2fbb:6e63 with SMTP id
- 38308e7fff4ca-383843237d2mr40509011fa.42.1768828705064; Mon, 19 Jan 2026
- 05:18:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="FriD18WH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1768829414;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=Hz997vqaGXzSWwkIjoBZvb8RU32SX4iTP59cSS8nTMQ=;
+ b=FriD18WHn/m2KHt6dU+gdrRI5pre1GihFmb0C/M6tUyn/OkZz1nFNsPKDj4ntVQg+A2yzH
+ JDFnRyplzLlL42ujGPB8sBvQmsx/oxlcKSkmvWyGX9/e/n+3ysD7QAfyAf2kqjJv4Ejq59
+ /RJOldbh7FRsbb10tRzss3tgFJXOBOMUd504E3ZnDByR7zEgo0nVMReWauwDLeMghtMrG8
+ 32xTo0x3YLJ480u9RIN86cHvlugGPVPh1F7t7LMURZGqzDvyQF2GESHdKpCtDDuDmg8I+a
+ RLY++toC1Ko30ffg2T7sA9hqWoiD28oYLnN0hidJSt07kaJC+x+HmkpCZIvLXw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260119033006.1453006-1-sunke@kylinos.cn> <20260119033006.1453006-4-sunke@kylinos.cn>
-In-Reply-To: <20260119033006.1453006-4-sunke@kylinos.cn>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 19 Jan 2026 08:17:48 -0500
-X-Gm-Features: AZwV_QganpbvhB5_IZtqlx93YB3avOhc9a_jf9ApVCUxBcxvnGBHShEDWsMQt8Q
-Message-ID: <CAJ-ks9m9HV72MSchSS16FUzKLu9c6Ka2N4zZbg29VjNf8RCLOw@mail.gmail.com>
-Subject: Re: [PATCH v9 3/4] rust: fmt: make raw pointers default to HashedPtr
-To: Ke Sun <sunke@kylinos.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: Chen Miao <chenmiao@openatom.club>
+X-Lms-Return-Path: <lba+2696e31e4+77bce1+vger.kernel.org+chenmiao@openatom.club>
+Received: from [198.18.0.1] ([183.241.191.96]) by smtp.feishu.cn with ESMTPS; Mon, 19 Jan 2026 21:30:11 +0800
+User-Agent: Mozilla Thunderbird
+From: "Chen Miao" <chenmiao@openatom.club>
+Message-Id: <cc80fdf1-eeda-4f21-9d3c-13b4cfd276ca@openatom.club>
+In-Reply-To: <CANiq72kDsmkJeS3bGSiD_dA1wSm328nYbbHEZ8HRiMHOirCS+A@mail.gmail.com>
+Subject: Re: [PATCH v2] Makefile: Remove the product of pin_init cleanly in mrporper
+References: <71ff222b8731e63e06059c5d8566434e508baf2b.1761876365.git.chenmiao@openatom.club> <CANiq72kDsmkJeS3bGSiD_dA1wSm328nYbbHEZ8HRiMHOirCS+A@mail.gmail.com>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, 
+	"Benno Lossin" <lossin@kernel.org>, 
+	"Nathan Chancellor" <nathan@kernel.org>, 
+	"Nicolas Schier" <nsc@kernel.org>, 
+	"Tamir Duberstein" <tamird@kernel.org>
+Cc: <tamird@gmail.com>, <da.gomez@samsung.com>, 
+	<hust-os-kernel-patches@googlegroups.com>, 
+	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, 
+	"Linux Kbuild mailing list" <linux-kbuild@vger.kernel.org>, 
+	"Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, 
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	"Andreas Hindborg" <a.hindborg@kernel.org>, 
+	"Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, 
+	"Danilo Krummrich" <dakr@kernel.org>
+Date: Mon, 19 Jan 2026 21:30:10 +0800
 
-On Sun, Jan 18, 2026 at 10:30=E2=80=AFPM Ke Sun <sunke@kylinos.cn> wrote:
+=E5=9C=A8 2026/1/19 06:30, Miguel Ojeda =E5=86=99=E9=81=93:
+> On Fri, Oct 31, 2025 at 3:32=E2=80=AFAM chenmiao <chenmiao@openatom.club>=
+ wrote:
+>> When I enabled Rust compilation, I wanted to clean up its output, so I
+>> used make clean and make mrproper. However, I was still able to find tha=
+t
+>> libpin_init_internal.so in the rust directory was not deleted, while
+>> all other corresponding outputs were cleared.
+>>
+>> Dongliang Mu <dzm91@hust.edu.cn>
+> This line seems broken. Was this meant to be a Reviewed-by, like in v1?
+Yes, it should be `Reviewed-by`.
+>> Signed-off-by: chenmiao <chenmiao@openatom.club>
+> I think in another patch/thread you mentioned this should be "Chen Miao",=
+ right?
+Yes, Please modify this to Chen Miao.
 >
-> Implement Pointer trait for raw pointer adapters, making raw pointers
-> default to HashedPtr when formatted. This provides safe pointer
-> formatting by default and prevents information leakage about kernel
-> memory layout.
+> No need for a new patch, I can fix both on apply if you agree.
 >
-> Signed-off-by: Ke Sun <sunke@kylinos.cn>
-> ---
->  rust/kernel/fmt.rs | 41 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 41 insertions(+)
+> Adding the relevant people to Cc (pin-init, Kbuild and Rust). And
+> Tamir for the `.dylib` side.
 >
-> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
-> index b3501a11c7a3c..6052d9f8628bb 100644
-> --- a/rust/kernel/fmt.rs
-> +++ b/rust/kernel/fmt.rs
-> @@ -192,3 +192,44 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->  impl_pointer_forward!(
->      {<T>} HashedPtr<T>,
->  );
-> +
-> +// Special handling for Pointer: default to HashedPtr for raw pointers.
-> +// This overrides the default Pointer implementation for raw pointers to
-> +// use hashing, which is the safe default behavior for kernel pointers.
-> +impl<T> Pointer for Adapter<*const T> {
-> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-> +        let Self(ptr) =3D self;
-> +        Pointer::fmt(&HashedPtr(*ptr), f)
-> +    }
-> +}
-> +
-> +impl<T> Pointer for Adapter<*mut T> {
-> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-> +        let Self(ptr) =3D self;
-> +        Pointer::fmt(&HashedPtr(*ptr), f)
-> +    }
-> +}
-> +
-> +// Handle references to raw pointers (needed when pointers are passed by
-> +// reference in macros).
-> +impl<T> Pointer for Adapter<&*const T> {
-> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-> +        let Self(ptr) =3D self;
-> +        Pointer::fmt(&HashedPtr(**ptr), f)
-> +    }
-> +}
-> +
-> +impl<T> Pointer for Adapter<&*mut T> {
-> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-> +        let Self(ptr) =3D self;
-> +        Pointer::fmt(&HashedPtr(**ptr), f)
-> +    }
-> +}
-
-The equivalent code for Display handles references with a blanket
-impl. Is there a reason that doesn't work here?
-
-> +
-> +// Bridge implementations for raw pointer adapters.
-> +impl_pointer_forward!(
-> +    {<T>} Adapter<*const T>,
-> +    {<T>} Adapter<*mut T>,
-> +    {<T>} Adapter<&*const T>,
-> +    {<T>} Adapter<&*mut T>,
-> +);
-
-Can you help me understand why this isn't a blanket impl like we have
-for Display?
-
-
-> --
-> 2.43.0
+> Also, I guess we could backport this:
 >
+> Fixes: d7659acca7a3 ("rust: add pin-init crate build infrastructure")
+> Cc: stable@vger.kernel.org
+>
+> Cheers,
+> Miguel
+
+If it=E2=80=99s convenient for you, I think your proposal sounds great and =
+I agree.
+
+Thanks for the review.
+
+Regards,
+
+Chen Miao
