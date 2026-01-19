@@ -1,160 +1,98 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C2E2DA768
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 20:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F6F2F0C7A
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 20:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768854425; cv=pass; b=a5ceb60XVTwH7YBVu4G+9+izW0IyT/1C4r3d1dg12gfON9bJ7l4bX3+z8opPTz4wXeEaPGMHA9anycPsyu6mGiXRgP1ednvfCOdXB12rWeXXNJ5uUQDLpm45z5Y4r/xTE4NjHaLCCEnHtpiiNQJFM1/U+Q8xzOphFgot3S3bpwo=
+	t=1768855011; cv=pass; b=jt3EsFBAeVHNuz2vRNSlXTcpyEHpPQzzzabjsa62vW4r616s/nD3WPanNhkzHXm0icQjbOhkCWnI3aDXFG6ZmygPq8QRc1WAkdsAM2peVD/uFrqSlJWCoUOb6RfYVkQDqmV02jCEzDmKPMNV3R03ZtvDGk7pu9WdiZAyeEMGvzY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768854425; c=relaxed/simple;
-	bh=XysdaxkPQBHftR8aK3LmNndzxvL56mjPz0Tv1fgTu8g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VwilRCfnKuJ6kKJPRC8hk2APBcs1knTsBwNeGSADUd+BwS2zBcJxXpdppSbM7l1pWwBkxSmRPdK7sF8UVRTzZQUS1VqOVn4HodeF7bCfPU5ZrpimAYQ5foKc8wtlt+8BcwaTUmt+IbSYdhHtdcRisVRAIB5wQOEJVLogBiU2mBA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=Vw+7A19G; arc=pass smtp.client-ip=136.143.188.112
+	s=arc-20240116; t=1768855011; c=relaxed/simple;
+	bh=wtSLkZZkUs6J5lz2qryDcKTenUTrNQz4CbHMHvdm+5I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y5kcduXaYiixBqRiz2vM8I+Dk0Glc4HxXfAe6r8QW+r+OYVAEXFXgX6zr4S6qlGcT+xTZvowWDZS0xXM+I953Dbe5Q2ePCPrCJWWgyktmJxuL++8AerBB0c8ZGfnNts4u1O5X9ka88KVbjD8+RUWhvkq5QYyZ0T6vnVtypE5YSM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=gG0TX4/w; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="Vw+7A19G"
-ARC-Seal: i=1; a=rsa-sha256; t=1768854417; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="gG0TX4/w"
+ARC-Seal: i=1; a=rsa-sha256; t=1768854997; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=RMgmcLy4vcWFs307mUgy1s9XLcdLJw8nljPiVJeLZ3naVaSM1Ihyb/W6QsxCVR5hN6x8ic3rqD3JchzlwpTwbKO02SW17FKDIM8aF9q8HyhvmUdOohm6OEeAz/ibrVB4BrFyeQakpvD4y71gRHT/MEuM0pf3ywJ9w82KjTOq8tE=
+	b=DDjzrAeHUiLdJ10jIaZP77QoiEf05fdiS/r/o9YrmGO0vc4RPuWWl4eDW4JrFoHu5lB9tTQYQhxQGEmNSruAr2Yc5PeDF5bUXjnnxZOHbumCS5QJdqyffIWYQS2goRrjs9FpKqcNtz94MkTYomlqzcKO1dPiFZwbeisVU9gRDKM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768854417; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=PFxwGqkanV2+DGDiyGHfXjxrYR8nQju3fO8iQUC8Wog=; 
-	b=k//aTYfVgaRSXCUAUqCgvFCnmxPI1QbXdPuzxf66r4aCQOfj5DoTbhEAepzckEytk+hBmvcx6MjpIT/Zd6WH3KhoN2sLxfmG4+QsS97eMPN9x0ClM7G3T9WA0emPNhDRHsYrOEvob3vbjPuC5gG8CatAIrjAFh+roM6WxohysGs=
+	t=1768854997; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=TQdZGb0oOwWI8Cu0pUCKnjGsYoiNP2/SvTOlD9oeAxQ=; 
+	b=EtEsUwKrbWnz3PAwXaNNWsYBs88RTJqITbAOSv0zLqavXjvuQZI5LSCRuYQYPikFUKroEBg+eioatxnPIocBW0AdDppFJfTFW6znNKffLE5ktmfEoU5Xl92utkjuMRAO1kCNxu4y1fP9dR/A8zmmPy0e0ZRFwdq+o9sdokXTxzA=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768854417;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768854997;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=PFxwGqkanV2+DGDiyGHfXjxrYR8nQju3fO8iQUC8Wog=;
-	b=Vw+7A19Goldk4EXOZuKJcsi1AqSIobajHKWghHyxzSTn9gk6T/S0tgpt5345lkph
-	i03rpmeO8Xn/nMW07nN7+k2IvgSSiJt0UDMvudU1b6WB7IIwEdasEqjmokh8sXE6TsD
-	hyDGJg3beCD009qOuCBxRk8dP4e51oUL4DHNKlYk=
-Received: by mx.zohomail.com with SMTPS id 17688544158967.271306356357627;
-	Mon, 19 Jan 2026 12:26:55 -0800 (PST)
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=TQdZGb0oOwWI8Cu0pUCKnjGsYoiNP2/SvTOlD9oeAxQ=;
+	b=gG0TX4/wFavmfeksiWlWZG9KSTfLN67eMW+lWfKCms9JCa2GqsXOTmHBZpixbFiU
+	VrqqSB+D3SbwekdnVy+5CM8Nz56Kb8djpkTaq8De4qPib1r+kEpYNLK13pGjfvjE9dh
+	FPDqwCB0R5kfOWWdMf0f+kmzq1SF4jQ+7IYHBcpY=
+Received: by mx.zohomail.com with SMTPS id 1768854995501810.1118848998957;
+	Mon, 19 Jan 2026 12:36:35 -0800 (PST)
+Date: Mon, 19 Jan 2026 12:36:34 -0800
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Cc: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	boris.brezillon@collabora.com,
-	gary@garyguo.net,
-	Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH v2] drm/tyr: use read_poll_timeout
-Date: Mon, 19 Jan 2026 12:26:45 -0800
-Message-ID: <20260119202645.362457-1-deborah.brouwer@collabora.com>
-X-Mailer: git-send-email 2.52.0
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
+	aliceryhl@google.com, dri-devel@lists.freedesktop.org,
+	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net,
+	a.hindborg@kernel.org, dakr@kernel.org
+Subject: Re: [PATCH] rust: drm: tyr: Fix register name in error print
+Message-ID: <aW6V0gn4mLiCUu1q@um790>
+References: <20260119070838.3219739-1-dirk.behme@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260119070838.3219739-1-dirk.behme@de.bosch.com>
 
-The L2 power-on sequence and soft reset in Tyr previously relied on fixed
-sleeps followed by a single register check, since polling helpers were not
-available in Rust at the time.
+On Mon, Jan 19, 2026 at 08:08:38AM +0100, Dirk Behme wrote:
+> The `..IRQ..` register is printed here. Not the `..INT..` one.
+> Correct this.
 
-Now that read_poll_timeout() is available, poll the relevant registers
-until the hardware reports readiness or a timeout is reached.
+Hi Dirk, I was hoping to get rid of this register read since it's really
+just a bit of debugging, and it's the timeout error that is of more
+interest.
 
-This avoids unnecessary delays on start-up.
+What do you think of handling this through my read_poll_timeout changes
+instead?
 
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
-Changes in v2:
-- Changed the commit message prefix to drm/tyr
-- Replace if-let-Err blocks with inspect_err()
-- Remove redundant register read from issue_soft_reset() error path,
-  to avoid nested error handling
-- Link to v1: https://lore.kernel.org/rust-for-linux/20260115212355.201628-1-deborah.brouwer@collabora.com/
+https://lore.kernel.org/rust-for-linux/20260119202645.362457-1-deborah.brouwer@collabora.com/
 
- drivers/gpu/drm/tyr/driver.rs | 22 ++++++++--------------
- drivers/gpu/drm/tyr/gpu.rs    | 18 +++++++++---------
- 2 files changed, 17 insertions(+), 23 deletions(-)
+Thanks,
+Deborah
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index f0da58932702..2a45d0288825 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -8,6 +8,7 @@
- use kernel::devres::Devres;
- use kernel::drm;
- use kernel::drm::ioctl;
-+use kernel::io::poll;
- use kernel::new_mutex;
- use kernel::of;
- use kernel::platform;
-@@ -67,20 +68,13 @@ unsafe impl Sync for TyrData {}
- fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-     regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
- 
--    // TODO: We cannot poll, as there is no support in Rust currently, so we
--    // sleep. Change this when read_poll_timeout() is implemented in Rust.
--    kernel::time::delay::fsleep(time::Delta::from_millis(100));
--
--    if regs::GPU_IRQ_RAWSTAT.read(dev, iomem)? & regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED == 0 {
--        dev_err!(dev, "GPU reset failed with errno\n");
--        dev_err!(
--            dev,
--            "GPU_INT_RAWSTAT is {}\n",
--            regs::GPU_IRQ_RAWSTAT.read(dev, iomem)?
--        );
--
--        return Err(EIO);
--    }
-+    poll::read_poll_timeout(
-+        || regs::GPU_IRQ_RAWSTAT.read(dev, iomem),
-+        |status| *status & regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED != 0,
-+        time::Delta::from_millis(1),
-+        time::Delta::from_millis(100),
-+    )
-+    .inspect_err(|_| dev_err!(dev, "GPU reset failed."))?;
- 
-     Ok(())
- }
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index 3072562e36e5..bfbf2a1d80e6 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -6,9 +6,10 @@
- use kernel::device::Bound;
- use kernel::device::Device;
- use kernel::devres::Devres;
-+use kernel::io::poll;
- use kernel::platform;
- use kernel::prelude::*;
--use kernel::time;
-+use kernel::time::Delta;
- use kernel::transmute::AsBytes;
- use kernel::uapi;
- 
-@@ -204,14 +205,13 @@ fn from(value: u32) -> Self {
- pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-     regs::L2_PWRON_LO.write(dev, iomem, 1)?;
- 
--    // TODO: We cannot poll, as there is no support in Rust currently, so we
--    // sleep. Change this when read_poll_timeout() is implemented in Rust.
--    kernel::time::delay::fsleep(time::Delta::from_millis(100));
--
--    if regs::L2_READY_LO.read(dev, iomem)? != 1 {
--        dev_err!(dev, "Failed to power on the GPU\n");
--        return Err(EIO);
--    }
-+    poll::read_poll_timeout(
-+        || regs::L2_READY_LO.read(dev, iomem),
-+        |status| *status == 1,
-+        Delta::from_millis(1),
-+        Delta::from_millis(100),
-+    )
-+    .inspect_err(|_| dev_err!(dev, "Failed to power on the GPU."))?;
- 
-     Ok(())
- }
--- 
-2.52.0
-
+> 
+> Fixes: cf4fd52e3236 ("rust: drm: Introduce the Tyr driver for Arm Mali GPUs")
+> Link: https://lore.kernel.org/rust-for-linux/A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com/
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> ---
+>  drivers/gpu/drm/tyr/driver.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+> index 0389c558c0367..3047fd12fd849 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -76,7 +76,7 @@ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
+>          dev_err!(dev, "GPU reset failed with errno\n");
+>          dev_err!(
+>              dev,
+> -            "GPU_INT_RAWSTAT is {}\n",
+> +            "GPU_IRQ_RAWSTAT is {}\n",
+>              regs::GPU_IRQ_RAWSTAT.read(dev, iomem)?
+>          );
+>  
+> -- 
+> 2.48.0
+> 
