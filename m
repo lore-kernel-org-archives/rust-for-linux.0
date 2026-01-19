@@ -1,267 +1,141 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021073.outbound.protection.outlook.com [52.101.95.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F542324B3C
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 13:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.73
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768829509; cv=fail; b=HItu55CRBwGIJQfxBZogbjVlOwmt8LcNjDDEv2o4yZDVvQPbQ3cBEcH/ANJiK/u1iuCWLoFOJ3lp6KkoOQSjpmiUg3M6SlH+/bbur5OATx7ZRzRSEeObFFhxy8S2lYUb7aVRIoxQ09gklx9bp6K2G/BbjhaqNKLQc3NIb5FdKzE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768829509; c=relaxed/simple;
-	bh=SEaCiOpM5xtdoKKypNB9dhS/hkEDp9a2jyhpPd5BZKI=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=aVoHiECO6aR8qFQucfuQHHpcm9+/BEsnLp5ynjFrqlc7wLd7CZUWMYpAhPpqgOhb/hq9svSQj9xWW0kf/3rOj/n92ByF78+W8X8Fxm9c+xpfeiE8E7F9/j6hlgiy9yG1HtQYFdo1nIXt5JvMHniQLnpRuFLKPOYt9nr56VJoUjQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Olg86VPB; arc=fail smtp.client-ip=52.101.95.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDC036C5A1
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 13:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768830588; cv=none; b=XoGDcLpqsd46QUUa2a2nQNO0EWiYs0jjN8+W8vKa0clpJT1wi2I0qrxCuPlBokClydUZ0Co4ogEICC/MFf5HXkRnA+31VxFrsop8m+LM+RwrKr0tNaXFmGpeNUjV+g493zslsTS9qD1UusX32Vkk5ihoFbedxoXHCq4Kzpa17z8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768830588; c=relaxed/simple;
+	bh=M0gOzK34Io945NeYSkAEaVhm/whuG/jPKWvI1wcg8/E=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=elIliNO7Rf3s5KYN64G1f9NmOz2BDk3Pq23zJL/4Oxv1JWFlQ2X93GXxcdGxu0bwQmO/mi/a45OO3kTB1xDq9kYLHRXHZXkwm9QJvPwLGd/tuOrJz4/04i+NDZlQhXkw1vO1iTBvADTmVqqf3n52MuBzRJpdbrbchElhmAn+c3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J8QQJqs4; arc=none smtp.client-ip=209.85.216.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Olg86VPB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N9/AWa30xP6wyr2RUUduWE+k/xkwBMEr/vCob3RRcGR9BMc8NbScvzmOnmJ80QfdFVwoeMtxRXr11JY4yr6qGpzFQyd8MKpnCx8GC++7Pnu/9COlPDeJcNrriULnCh2wW6WZCC5s2Tvp6l58St9KHoX9QfCMnId9XfTlIW9mgO2kIo4XW/4ZTT1BEKguAXUtzTu5bAf5faISecszKukU2Zj7XV8Z0UhKoAuL7yGTJfxB1+I4qeKXzo5dZ1Q1IqfCnhNsJ2jGgPtkQ/fAecbD+HIUDlm3vA5MK89XmQXlk7OjoY2QHrjHc0hmTT6kF4xmO5vk5SmxmDB2uA3Lnc2fsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SH2D3iT1uN9d8TYa91eLUZu1P5dShX9cI3kkIhx4pQE=;
- b=vgG06/tAZkltXG/4sYMrdMY9gTVOu/ZC05WiWoFWh0NBL2w1cZBPs0zAuaOZVmy+Otpy7v0Mt5fTEfiBYuX7YQ7p514uY16KFTHsLGE0GMrRI+zq6WPI3LdCseDgormRLOFHCR/GHQn+ER+8Zyjcm7/hgWBz3+4CnCp7hYoXcvLuPotwuI7OkScH7DQ95+7EwrSDmMoF+cewBFF4eaK5YrKC1WBYfOKGGrHBgt+aZudEhBKuZ7P49WTjSEJFz8/0k/iNSOXuuDJH4skT5F6hhy+W5HJ2Q8nNr23wj6Slp2zplVnEU0AHK000wyHTfgqkiunwyJLXYEAzWB3eVV/SEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SH2D3iT1uN9d8TYa91eLUZu1P5dShX9cI3kkIhx4pQE=;
- b=Olg86VPBhGjFTJ6HvxkLw1eH2L91feop0hq3lAw0gR2kGr2LZvn0mxfDMwEcg+/2OOSLBB4ubREO5qMWvpx29tv1HtvDKZcU3NhD8iHJJw3+grPDfYrrN6uWSI2IJd54loFEQIA519fTviKvWw5A2vNtTVNuMkOiB1Rv5O2sHcM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB6129.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:24e::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
- 2026 13:31:44 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
- 13:31:44 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Jan 2026 13:31:44 +0000
-Message-Id: <DFSLQ8C5ZGZK.2NH94EL0CQLKY@garyguo.net>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Tamir Duberstein" <tamird@gmail.com>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v9 4/4] rust: fmt: add RawPtr for debugging pointer
- formatting
-From: "Gary Guo" <gary@garyguo.net>
-To: "Ke Sun" <sunke@kylinos.cn>, "Miguel Ojeda" <ojeda@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260119033006.1453006-1-sunke@kylinos.cn>
- <20260119043502.1534349-1-sunke@kylinos.cn>
-In-Reply-To: <20260119043502.1534349-1-sunke@kylinos.cn>
-X-ClientProxiedBy: LO4P123CA0103.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:191::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J8QQJqs4"
+Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-34c21417781so2219915a91.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 05:49:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768830587; x=1769435387; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ME3xcLnkyvoOmHYqsWZrxFtA9sjdhYk7JPPiQzitkMM=;
+        b=J8QQJqs4pD6s+n5ZQrke164fUkA7eXTA7YhElfN7kEU4fjoR2m2CJ4bjnCtDF/fkFb
+         K3aFIAdEsngOnyEqRl4LmoytbCvfkPPcuuSX7pElsvascEIQCCguB2T04CXlBOraC6go
+         5sAZrR6DA37yo2CGdRiqJNwqBjmrie0YZskd2dvVWl8U7R6He9EXK6Fbp1fH4k+J6C9e
+         gH3vYj/z9rWp2tIaB5T69Vji8+CbOd3YghYyN2/l2tdyKz1x+oAZH5zX+tmSCNnchf5y
+         Q2/EZ8JHOskz500YiU9pItvAZU2FCCKPl/+Vx4SxWJgXRLtPmttYcRLqiAtxoQNbKkRH
+         KljA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768830587; x=1769435387;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ME3xcLnkyvoOmHYqsWZrxFtA9sjdhYk7JPPiQzitkMM=;
+        b=s8fxbtSfxOAj90uNv6hGywWZIUoieusJXJRCK6Qg7PEJsCGCNGgO/CTKzfQhNvCcrZ
+         cdfDEUZJsiDgspeK498zW6OBWUiLepSbgd5dzYgfyaK3W7UrKwKdKhkZxZKzWA1MjXn9
+         EB6nlUbC2sIxz2KZmV95rIJwC320bcLHNZ4E53wfda117i8CUEHsF2Kxor7C1J7Aa1t2
+         4N7uSoHsiyRAiSLGw/v/gtzuknStOR88wGSXMUwF0vFeror+PKyE1OFiGjIoHskG5QuE
+         Ws85uQ9Xa1swV0NHm24en9D0yd8U2uyC4HozHi/sRL4I5Bt9hNGwFG8X/VFwGR6q9uPE
+         GQqg==
+X-Forwarded-Encrypted: i=1; AJvYcCUqHZDrzxYxCuSlaELY2m/bQAa9S1vZzaJXpWv/BbwxKkgPkBzQ/HGnlBmcsqQoAa5mnH5vgh6f/4w/2MjJyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YytoSM++53GFD9K3xvFViv8VxEMpkT57/NXE3uDvwKc/HYki1rz
+	FCU9MLR3+SczhysklCyI28UK6gUMeaud34i8yIKS3adWVG+1+CH0/hvl
+X-Gm-Gg: AZuq6aId+B7u6mnHT75JYx1zg+g3MKyuBzcHB+biy1aDO0QFg4tC11MhV5Fp30EHMm2
+	GqIc0erbtqGKiIQBdtPn2l+/fEiddBFGnPaqyucbNel7RqjO15iNEbu+FBKOXcyrxB2UmYw/fxi
+	bRKAZLXcbcXka+mjQqWIYRUtZyHVQFGlN+8kq4Gk5l+Gmcd9520zFUX5N2mhpTg/WXlaETT3C4h
+	8El+KcMKozhGI3haNrj1dOuF+UDwKw95pZcTsby+pvxXXPFae0wXYGbLDLKXjAR0qi8YDvnQSBB
+	r3JD7LNKp6mReRo4V0lj5EEY4539+q5P8uOMnAYIbqQEpTuOEdSZdLO/xR80k6WiBgKJovq6doB
+	DUVwsHqYTGjPO5jXMpMO0bnvXxcNq2F3oQKhFDtVX3pwFGOY9JbXNzhuXMkdyJFwUN/g/FeDK96
+	H4AZNv4oCMuZ11AOw53xwu6icyOdROCJxwVz+1gp1IzWlI01GibOfX67QqF9ashwtLx/s=
+X-Received: by 2002:a17:90b:58c8:b0:343:b610:901c with SMTP id 98e67ed59e1d1-35272fbcb37mr9741691a91.26.1768830586898;
+        Mon, 19 Jan 2026 05:49:46 -0800 (PST)
+Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35272f4a9a1sm9304161a91.0.2026.01.19.05.49.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 05:49:46 -0800 (PST)
+Date: Mon, 19 Jan 2026 22:49:42 +0900 (JST)
+Message-Id: <20260119.224942.2031351100749299829.fujita.tomonori@gmail.com>
+To: dakr@kernel.org, boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, gregkh@linuxfoundation.org,
+ ojeda@kernel.org, rafael@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, gary@garyguo.net,
+ lossin@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH v1] rust: debugfs: Use kernel Atomic type in docs
+ example
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <aS-ULCZAdj_l_j63@tardis.local>
+References: <20251203000411.30434-1-fujita.tomonori@gmail.com>
+	<aS-ULCZAdj_l_j63@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6129:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ea0f365-b178-4c3a-aa23-08de575f16a6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OEhIcEVjYTVuQlNUd3R6WmYrL2NWRWRLMmJvalhoK0ZxcGFKRkxSd29ZMU53?=
- =?utf-8?B?OTgzZ0pqTzVSVldnRWFkM3BRdzdKeVN0TXZGTkhpMFdiRTltMHlxWVdPNGJT?=
- =?utf-8?B?RlY5S2dNazBpbHRxVWxwOGRYcktHVStzSW9IaG5CQmZsamNRMDVkYW4wallL?=
- =?utf-8?B?R0hOMUlOZ3BjelZSMU95enlvRzlxMWZzbi9ENmdXWjFjNkx6RGZaUSttTXVM?=
- =?utf-8?B?bnNGNW5ZTVB3a0o3cWpuait3eHlFSXFiTDkybjhJdVFDMGdldEw5Tjk2N0RY?=
- =?utf-8?B?MFJibWo3TVVuRnMwYmFQRG9ndUdNZ3Z1bXoxN2YvTTZnV09QZ3pOU3Z0clFx?=
- =?utf-8?B?MWhyMjRFYnBvZVZ2UTV4bU8vcWRiWFJrV2xGRSs1WUpLNzRiSlltS0lkczlw?=
- =?utf-8?B?Y0FUb0N1RjJOVUdEYVh0dGY5aHMyeS9YTGpHaGdoWS9EbGxMSlJKc29TY2Vh?=
- =?utf-8?B?RkhTVW1Dd29kaUJiOGNEazdiQjkvalgwUllmek96b2hsNWtqc1FYRitHanFn?=
- =?utf-8?B?UWRIbXl4MGdGd0grTGJGRTZSc0x4VU9YSnJSaE5VZjFUVkRPNEZTVnpkeGli?=
- =?utf-8?B?QWVxMHAvR05EdDNnV2FMS3hHWTFQc3VwOFN3ZC81Nm4rV2JxU3ovdDh6NG54?=
- =?utf-8?B?Z0ZsVklLM1oxQjhWTStCc1VwNXo2c1h4ZGh0TVN6T3V6QkR4SU1waDVPVklF?=
- =?utf-8?B?QjRiTW51NnJYV2hXUGdYckFpTW0vdkdwREx4UFhkY2NxWXdyNjdQeldwTmZT?=
- =?utf-8?B?em8vOEIvRU5IMzQzWGRhU01PdjZJa0Y4QTc1cEh0SUhOY21zTTFzWk5RWDBx?=
- =?utf-8?B?czlVMm9aWUM0ZnlwTzJadk5tejExc1VjbnB5TTV4eWMxUnBCTXRFc0ZvSS82?=
- =?utf-8?B?dEhmZTJ3TGJJUWlMNUdNMnBUaHhVMWo3MjNPL0ZrNm9RWktNeFVjZGN2N2JJ?=
- =?utf-8?B?SHVVbXBtc3JGekNVUFF3ejJDWGIyYXlRQ3RGcWlQdDNHTTJ0RlJmb1lSaUVa?=
- =?utf-8?B?aXgrKzh2am1rSms1eExOZEF3OVprcDczZHVJZm1qQVpDQjlGT3V6RTJHZDhS?=
- =?utf-8?B?dHBVYmxWaTNRa0l3RHJWRW40RURiNjdaU2FadnlkWVNCRFlOSGJ4SUFtbDQ0?=
- =?utf-8?B?NUpWNWtadFI5T3lGdW0za2pvbmtyOHh2T0ViK2JhQklJTWQyT29QdHI5QnhB?=
- =?utf-8?B?Q1ppS1JiUWRCSytLdW4rU25JbXVZOVBvR2VrV3lOZ1laY0RtU05ZN0pjeHdZ?=
- =?utf-8?B?TXFyR25UVW1JendxV2FoNEk3QkdIUzRsaWViYlljT1N5T1cxVHFzemlPTDdZ?=
- =?utf-8?B?aFdlbTN3NThSQ21CcFJteUtDR0h3M1JiWkN6NGhYYVdQMm9GOGJ2OEVjOURj?=
- =?utf-8?B?UnFMeFMrWE8xbUFwdVQzQnRzRzdKT1dYK2RIQlVFUGE2Y1ZTTHBOV2U0eWtx?=
- =?utf-8?B?Ky9FdXRDZ25aWVR3QWloYTM1U3dkaTlHRzBubXlSQmNVaWZzcSswS3MrWTFs?=
- =?utf-8?B?UVhNUGNaYTJRY09IN2tnYWRwZlhsaG5mNzNYeXhvUlllZGJUdktNSFlkcTc4?=
- =?utf-8?B?UnpydW1ZRTNUeEJKY2lER3NjM2EzdmFUdUhoSTJUNWlJL0RxYWlXOHZtSGRv?=
- =?utf-8?B?bzJYVkxvYlRCSThHNHdKUEYwcXNOQ3k0R0g2NEdoMFlQb2hmcE1XYmw0Sk9C?=
- =?utf-8?B?QkY2b1VtYTIyMEpQeFRaalRhbDhrZjF2VlM1T1pEYkNZT250Vjg4a2prQTg1?=
- =?utf-8?B?NFhVaHZjbTVQOEtJRkc3MTREUmU1R2EvMDd4TWwrSWpRNFNqUCtBdUpwUGZx?=
- =?utf-8?B?TkJmU1NWeEhBQ3c1QytXOTZzVFQ0Wkl3ZllVUEJnZy8vYUhSU2QvRWRveCt1?=
- =?utf-8?B?N1NVVXpmbEY0cVBIRGh1Q1Zla2RxRTFRamcxSVNiTm5pejJES20xUUIvTmRV?=
- =?utf-8?B?WllGSTVDNkdJM0hjaVVYY1MzTTRuRGk2UXNhR2pHNTdYWDcvT1BRYUxYcklH?=
- =?utf-8?B?am5rVWErSzhWV3puZUdySUxoeHVkSmNOYlcxWEg4eG5jVVFhcEhORjF5TURs?=
- =?utf-8?B?VmV4WkFVRXdCMHB1LzRzUkt5QXczUmx2WUlTcjdsNzlJanRqSWZFZlNkWHA2?=
- =?utf-8?Q?UKQg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QzVDVmhGRDAvYkNFcDg3RHNvd0ZNNjlGaG9NV1N6UDh0UnVGYkdZMStoZFpJ?=
- =?utf-8?B?blRjZ0dKL2tNYm16OTZER21tdGVVSTdGb2JDS2JPQzBrL3BpME1nYlVsSDFZ?=
- =?utf-8?B?dlFGRGtnWnF0QWNIUzhYbHZFUEFqaG5wUkNiemcyL282ZUhxbThaNm9rSGxv?=
- =?utf-8?B?TWJDeG1NUXFseW5xVlZtNUxrc0JLdWQrZVlMVmovbk5Sd1FvNittakM0N2Fw?=
- =?utf-8?B?cit1MkkwTkQyenRMLzFCVyt2NDI1Y2QxYTBQKzUrdHczcFBURG1sY21jN05S?=
- =?utf-8?B?TFprRloxYXdCdS8vOVZDV09GM3IxUUtxWUZoOFRjNU04REFJQjFxaG5ZTUht?=
- =?utf-8?B?eTJZeXRFMU53REllQWp3eFl2a3cwejNXMEhYdGlRNStzdUs0NGtXeHZYdHpz?=
- =?utf-8?B?UGk0TDU4VEFiYUE1VGVndTJsYWJEeGRmV1lldjNaMGZORS95QXJqVkt4VVdt?=
- =?utf-8?B?eTkxU0pxNXcwSFJXT1ovN0p3OHBIQjV4ZWdFdEdlemt0MUJmenVUUG9wRDlw?=
- =?utf-8?B?THhEbGVxeTVndkVhRUVjKy9TMVF5TytpVVpHRVMzZWJWaVlKVjNEMjBqVk50?=
- =?utf-8?B?UWJBNmphWm56a3hOVWh0bGZ6bzJBL2pERyt1dDB3R2RaNzNteEJzdHpWRVU3?=
- =?utf-8?B?THkrZ2l0L3NpTzR2K1BRNWRLd2xFUDl2NVpJSEJxQmF1a29FKzZVMUtUUDRm?=
- =?utf-8?B?RHpRY2R3Mm96K1VnZ0s2d3JsRXFlbkp5N2xNM3ZHSVJwNkgybk9ybWNsSDZq?=
- =?utf-8?B?WkhQS1VnWFV4cjErdW0yUmRxcjVIMm9NNHhTMThGTU1XbS93NXcwUTl2amZa?=
- =?utf-8?B?V1Q5TUkxMzBiVDlyRmhFVHk2TVEzVmhoV3prOHhrUnBnU0F6Z0x3Y1ZORE5W?=
- =?utf-8?B?UEoremFpOG9ockxPWU1QUHNXSzBPMEhXdWxyUktmZzIzcDZDekhLMzlSS0Er?=
- =?utf-8?B?OWJoR3IxUDF3VWhVK2pvOWJ0Wm1SU2c4dUcrNEpWWjN5OGt3Yy9sQWpoMVdn?=
- =?utf-8?B?M2tEMEhTTTFnZFl6dXJFejFscFdvR0FvVVpGb2d0NjZiTUJuZ0NRbm5IaklR?=
- =?utf-8?B?VW5wK1JINkFNYWs2cy9FUFdEdDZzUDI4STNNSVZXTVJFQnJQM3RIMjBSSzNr?=
- =?utf-8?B?VTJTWnNTV25adWhvQXZqWTNaYWxHUVkyV05UL3RWdGVFMG9TU3RKeEZhMDFH?=
- =?utf-8?B?ZGRBdVkwcHFWMGsrSnQwUGNNY2Y0bXptZWZ2THY2YTlROTFEMWNYdjk2RlZt?=
- =?utf-8?B?V2R1MDhaaW5lcEJMRUQvWXJ2b1BvVnBNa2NlWEZiSVpVL1ltZG44SG1WVzNo?=
- =?utf-8?B?QlUwOEFCM2E3UWs5dUk3WVFOK0xwQTc4VnRPQmZVSDdaK29xRFZJMExsazc3?=
- =?utf-8?B?UUVwRFdwVlpiTUVtRDZ6QUY5eWJXRGdJVG1BdnlOdzVjamlwdjFsQ2UxRmdC?=
- =?utf-8?B?ZU5TY2xvMkNFTXVzZnFEeFNTS0t1cTdHU2Vza2o5R3VJR1JIaWt3SklkTTJ6?=
- =?utf-8?B?U05IdWNhOUdCOG5yR3FESkNiTENWL3dUSi9qRExBSFZEWWk5WUZKbUR1ZHpQ?=
- =?utf-8?B?WkVFZFdXMkl3bUVxdmZrVVBjSmU3L0JLWGVLQ214SXU5Uk40NVNrbjFkYk1u?=
- =?utf-8?B?dko4bHUySU91OGxSNHpGNWxaQWE3Z2ZWejFaYy90SWFmVjI0ZnkwK0tLZ01Z?=
- =?utf-8?B?RGxtSHVTci9ESmFiQmZYS3RaRHRSWVFHWVVqSjVVejRVOUNUalNFNlQ5MXRE?=
- =?utf-8?B?UW5XVnY1RUs3SzRSNlAxQS96Yy9xMWhMNkkrVElRTUVQVDRhc3IxdzZ2cm9S?=
- =?utf-8?B?QWlrY3pkZnhmdWlFZ0M4THJtbUJ3K0kvbm5mOThqQ3FOYy9PR0p2aUpUbWxj?=
- =?utf-8?B?U2RIbjd6RVFSbWZ4SEduTS8ySjFWd1RkTzhoZGY3dlNRUWlUUG9abjRoMzlV?=
- =?utf-8?B?MkVvaWFrVGJkNGRkTjdDY0xxNzFzZms5YXFtS294S25Gb00zbm9QVHdHdXJp?=
- =?utf-8?B?KytvL1Y5ZDJ2bkR4b0NqTXloNndPNkxxc0c3TzhyOXdCNVJUdUd1M25Md2dy?=
- =?utf-8?B?QVkyQ0ZaOExFREtGd0pKcUhGaGxtSys3cG4rNXdsZ1dGdkJneTVqQVZsZmJR?=
- =?utf-8?B?TDdtT0Fyd042NURyZ3VyR1JwcG9Td1hiNFlTRUhsTXpocmpWTStsZ0FWbnpi?=
- =?utf-8?B?U2VVc1lNUHBKMmtpeThlUkNZSW5zRVI1TGhvR3l4ajJ6SkFlZWF2L3c3STk3?=
- =?utf-8?B?cFBoMFpnRDBWYVhEK1piaDJlU3g0dEUydWI4YjRodmsvQXBMbWxNMU11dFdC?=
- =?utf-8?B?MDMwYjFjc1lrQXIwNXExeXpObXZLcnpuUENxM241UVd6UGpnMHZodz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ea0f365-b178-4c3a-aa23-08de575f16a6
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 13:31:44.7516
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jv4GDTkZVknS5i18l5rFKienY2sfWD5+nqpugzDxH5vptBLzZ8gAwFKxw93B9mraxqwDAnk3EhuoNrwpJmH3JA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6129
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Mon Jan 19, 2026 at 4:35 AM GMT, Ke Sun wrote:
-> Add RawPtr type that formats pointers as their raw address without
-> hashing. This corresponds to the %px format specifier behavior in the
-> kernel.
->
-> Signed-off-by: Ke Sun <sunke@kylinos.cn>
-> ---
->  rust/kernel/fmt.rs | 45 ++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 44 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
-> index 6052d9f8628bb..d023aa00c7470 100644
-> --- a/rust/kernel/fmt.rs
-> +++ b/rust/kernel/fmt.rs
-> @@ -6,7 +6,10 @@
-> =20
->  pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
-> =20
-> -use crate::bindings;
-> +use crate::{
-> +    bindings,
-> +    ffi::c_void, //
-> +};
-> =20
->  /// Internal adapter used to route allow implementations of formatting t=
-raits for foreign types.
->  ///
-> @@ -233,3 +236,43 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->      {<T>} Adapter<&*const T>,
->      {<T>} Adapter<&*mut T>,
->  );
-> +
-> +/// A pointer that will be printed as its raw address (corresponds to `%=
-px`).
-> +///
-> +/// **Warning**: This exposes the real kernel address and should only be
-> +/// used for debugging purposes. Consider using [`HashedPtr`] instead fo=
-r
-> +/// production code.
-> +///
-> +/// # Example
-> +///
-> +/// ```
-> +/// use kernel::{
-> +///     fmt::RawPtr,
-> +///     prelude::fmt,
-> +///     str::CString, //
-> +/// };
-> +///
-> +/// let ptr =3D RawPtr(0x12345678 as *const u8);
-> +/// pr_info!("Raw pointer: {:016p}\n", ptr);
-> +///
-> +/// // Width option test
-> +/// let cstr =3D CString::try_from_fmt(fmt!("{:30p}", ptr))?;
-> +/// let width_30 =3D cstr.to_str()?;
-> +/// assert_eq!(width_30.len(), 30);
-> +/// # Ok::<(), kernel::error::Error>(())
-> +/// ```
-> +#[repr(transparent)]
-> +#[derive(Copy, Clone)]
-> +pub struct RawPtr<T>(pub *const T);
+On Tue, 2 Dec 2025 17:36:44 -0800
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
-I wonder if this can be
+> On Wed, Dec 03, 2025 at 09:04:11AM +0900, FUJITA Tomonori wrote:
+>> Switch the read_callback_file() documentation example from
+>> core::sync::atomic::AtomicU32 to the kernel's Atomic because Rust
+>> native atomics are not allowed to use in kernel.
+>> 
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-    struct RawPtr<T>(T);
+Can this patch be merged via the driver-core tree, or should it go
+through a different tree? 
 
-and then you can have
-
-    impl<T: core::fmt::Pointer> Pointer for RawPtr<T> { ... }
-
-this way you don't can use it for both ptr and reference, and you don't nee=
-d to
-care about mutability.
-
-We could even do one step further and just have
-
-    use core::fmt::Pointer as RawPointer;
-
-so people can decide to allow `RawPtr` to format their custom smart pointer
-types.
-
-Best,
-Gary
-
-> +
-> +impl<T> Pointer for RawPtr<T> {
-> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-> +        // Directly format the raw address - no hashing or restriction.
-> +        // This corresponds to %px behavior.
-> +        core::fmt::Pointer::fmt(&self.0.cast::<c_void>(), f)
-> +    }
-> +}
-> +
-> +impl_pointer_forward!(
-> +    {<T>} RawPtr<T>,
-> +);
-
+> Regards,
+> Boqun
+> 
+>> ---
+>>  rust/kernel/debugfs.rs | 8 ++++----
+>>  1 file changed, 4 insertions(+), 4 deletions(-)
+>> 
+>> diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
+>> index 381c23b3dd83..9236866d6285 100644
+>> --- a/rust/kernel/debugfs.rs
+>> +++ b/rust/kernel/debugfs.rs
+>> @@ -158,21 +158,21 @@ pub fn read_only_file<'a, T, E: 'a>(
+>>      /// # Examples
+>>      ///
+>>      /// ```
+>> -    /// # use core::sync::atomic::{AtomicU32, Ordering};
+>> +    /// # use kernel::sync::atomic::{Atomic, Relaxed};
+>>      /// # use kernel::c_str;
+>>      /// # use kernel::debugfs::Dir;
+>>      /// # use kernel::prelude::*;
+>>      /// # let dir = Dir::new(c_str!("foo"));
+>>      /// let file = KBox::pin_init(
+>>      ///     dir.read_callback_file(c_str!("bar"),
+>> -    ///     AtomicU32::new(3),
+>> +    ///     Atomic::<u32>::new(3),
+>>      ///     &|val, f| {
+>> -    ///       let out = val.load(Ordering::Relaxed);
+>> +    ///       let out = val.load(Relaxed);
+>>      ///       writeln!(f, "{out:#010x}")
+>>      ///     }),
+>>      ///     GFP_KERNEL)?;
+>>      /// // Reading "foo/bar" will show "0x00000003".
+>> -    /// file.store(10, Ordering::Relaxed);
+>> +    /// file.store(10, Relaxed);
+>>      /// // Reading "foo/bar" will now show "0x0000000a".
+>>      /// # Ok::<(), Error>(())
+>>      /// ```
+>> 
+>> base-commit: d61f1cc5db799f4e44a63418b2dc19396787427b
+>> -- 
+>> 2.43.0
+>> 
+>> 
+> 
