@@ -1,266 +1,212 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022079.outbound.protection.outlook.com [52.101.101.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67712EBDD9;
-	Mon, 19 Jan 2026 13:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D49E35BDB3
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 13:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768828086; cv=fail; b=U/6d9ztO++qHngTvcMDovys7Eo6AKDtPInOReppdDoX8pKwOR+U23i+TCWRPpY57lt1hFq6PEskngKGKKuKYMGI5XpHHOQheCnZ2KxjG7IT+dLWC+O9r6kEXryq5Hx9dwtqFIZswXGvQo9Fn5IEWVWuX31iQKtSaY7reUfIZly8=
+	t=1768828285; cv=pass; b=b1DP0jI4QkwSjta2cvq96c2WoLMhpMp9lcPPCfovhgEmRWZT6s/Kmz1cG+iWr//SLK8rRX5VIeO2+oLg1wqggjqA4UOedbgyHvECDYp5nODC61uO2GBABh7yUlj0AzB/55ODXucX/TAtpzOLnFiFD8Ox585p02YZameBCanXmRQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768828086; c=relaxed/simple;
-	bh=2GUQxunN+I4yfC27sQ1Xhmy9P0xMnTboEuizkrQ2f4c=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=U63Z4OOLNIUrBe4bp5ZIzA9ndd5RlUe0AA/dNSJNT47eMCnQiLdJHhU1PiAPtRKPZ230E3mNEXVljkUksuwkHKeXHWSeSwFSGqaRdrSuwKMqKI0Z6zYU2M4E5frP41xuaGC58JYG1GPnu/V/PL8SKydfL6N55UgoWZ59v4gGxUY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=VT2CMODF; arc=fail smtp.client-ip=52.101.101.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1768828285; c=relaxed/simple;
+	bh=PNgF525nEMWn7yk7+UOHz3mFUzkN6wx8TYDDOVLAreU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j8YgLW1M9CIDdafDvVAf8Dqhn7cmEWb6woBrLisZxGQQ8mOfiDARJ1TZ4peYKNbDa0ylhJnWfT+rgD1ulRh7GWL1RP3jNZUAnBAHSKhvTKvAqQqBC3jKAfNvS2xOTmCf/z9N6lVmZrNLoyTTgy2SCYGavy/SEa0yytRmzX0T+vs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A+rwegnm; arc=pass smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="VT2CMODF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dVWFhEZrfQtORZ/C6i89WirHR79hCuLC7RIfNoC3peEu7Zx+0FRSw88Euqy/qoM7eANtVEBZCz4X1+aqhW4RPwwKoRd4hvyBvo79eIycpoaEPUEshGHjQFy83iF3zZYvGKkQ9LD0iCD5WEQhv/9AO6h5UDxDIEdbPU4AnJ7U7Hrofl4VBbZQYgTJaUXccdijMWD5YV3/KhZ77DYKtv7WVbBIbaklYX9TNm9p4izQgo5e27G5y5jTA+4e55V21cqbJVGZhG0FYP/BBu1WeGlxZGSnS1Cho+/0I6z18FOkmnkaFH5h8DrGYs0cnBesll5LoJXJSc8HdkYwxXKr+IIuow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p8WpKjXaPl2g7UGjLRT20SH7WXsQ+f5WykiZsB7nsxk=;
- b=FNHZMD9oR4xfvDXWPRP+AmlwyLiNfcAihWhZHUWV0kwzwI98sp9yDyzbg8ZGdF6SCCf+h5tcIe5t/rg1XsKX7s4nO2Zp4660aHpf4CNSH1nxPup2Pg0Zh8A55qmg+2blkpUvu05I1Ks6OnkkktD0CKsSOzHQB0UP0YQQHTeWXv40K47WADfETHcgsL5KeeRDjlWNaEkutINsyJimzun/YlpUpP5wVPzR3sVczbEnPuHZSPil8J80Fj+HDCwtFQU/uetCOl3gWGzskvhtU8EptaibG0uatw3anuH/zvclPAvfnz8U1n6auhZn2PUxXUY6HFZ/pkSxbEVEn0b1fU99NA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p8WpKjXaPl2g7UGjLRT20SH7WXsQ+f5WykiZsB7nsxk=;
- b=VT2CMODFmymVBq5/KjLlEwQaB3T+S5DD+ZKAWXgYrAVf9QaPyJFmN6NOM1Q8PydOZIwENS10FydQV2cw+4uDx5SqoX+MfeZiLyV+Ct57zjQmvWi4R44t+cmg/p75ZJX9yZQEUpUwLDkvIPNuSn8k6Cvi2Y0DiYwlFGt8LyyzDFU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB6164.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:24d::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
- 2026 13:07:59 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
- 13:07:59 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Jan 2026 13:07:58 +0000
-Message-Id: <DFSL81HEHYU6.8E3YYOXNV5C9@garyguo.net>
-Cc: <aliceryhl@google.com>, <anna-maria@linutronix.de>,
- <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>, <dakr@kernel.org>,
- <frederic@kernel.org>, <gary@garyguo.net>, <jstultz@google.com>,
- <lossin@kernel.org>, <lyude@redhat.com>, <sboyd@kernel.org>,
- <tglx@linutronix.de>, <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v1] rust: hrtimer: Restrict expires() to safe contexts
-From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>, <ojeda@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <M2M7QTmzyv0cuTcfmp8k-pHEgTa6pOlfONQW596m3-nM_3-fQoakLTxJy7SthiIlT_5I-07GG9On36gsydLT7g==@protonmail.internalid> <20260110115838.3109895-1-fujita.tomonori@gmail.com> <877btdpyz2.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <877btdpyz2.fsf@t14s.mail-host-address-is-not-set>
-X-ClientProxiedBy: LO4P265CA0146.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c4::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A+rwegnm"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-383251c34e6so32188671fa.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 05:11:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768828282; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZFVKHOjmkb6wbakvrQLWGtbx8ne8RpuqNWw43lG9LTdmT5Vg/Xx4Vb9XSQUNIGlVj4
+         Bba5wNpYukbL5HwZODE1pJyh5HtO3o6HvYWz3rHNfH0mzqq7/QLYqvGmlUDFsTs211RF
+         oOf3vu9Y0ZSRX1Bgi1ibFl9JMP1p8AtJ08lVILV8GJIy/dpkAJgPJiW/xBthzpbkwa1W
+         t5GkDrioIm5GqW4xH/KTGJtTV4mto7rNsEU5PYM//4HcFFjFA5NGeSWkot1jIiIedY03
+         oG5Apvdn7Oj9QFZdLlUzQXzF6S1jMt6e1xLG1w6z5whkggu548N08oXBw5VaVjjAOEAe
+         XjGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ItwFYjfCOTBQszs6NfuxWxeLpFV+ebtIxsieRROea4Y=;
+        fh=x4Nfb+ZugqoA4tVPNwRmEb7mv5hTJCZLzHck2xXmdsA=;
+        b=YsON3k6RFVdzUIfv/522xxfD2KvKuOCJZwpiT/vgx1DFwoaKIN/471iSEUj+QlQfXI
+         qa4jos6jdDSMsvd8L4+Wt6PvlAWK9oa+kXxbJb+FvBzCdH9vJOn/uCheannZFoxS82wM
+         cOzllIaBdeMSHbUqxMjShSb72WvBOUuRHKubCCEN4RIDt/Mh4IlTBKVaqH4/RmaTjA++
+         j8ADm1K9yOA76zsrJTCtbWApHJkkrYy8t6sLbBnh4QzEeeTCvOchYGvOPNaL2jCS9Ksg
+         qHGY9V1lV0MIjh0CKVwpw4lYG3qWOFKBMHFQJeshV0rVCgHvQSLaaOOtxPLR8abHf1yi
+         v0cA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768828282; x=1769433082; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ItwFYjfCOTBQszs6NfuxWxeLpFV+ebtIxsieRROea4Y=;
+        b=A+rwegnmxYjVSAv7k807QX7+ovWRF2YvP88Fe2NNRFxSMFbz6mJQ/MG/e51le6zore
+         GqVsQBTaCc2Fcj2UP6j969uoVHfk5XBE6EFec8zWY/0HiNHysIt6S/uZ2XR2K02e8foK
+         qtx7/3TT0cTQp7KRWvwBcZoRu+QakJOWFaZ3xmm2WXIAJd6ZkXBqTVqpV1RT31NNEGQ0
+         O/8NM3LSInVEi05JSCyArCW0Yx/CSeVimYvFU4wE5f0Kgx0ij8GaevydotSzqQzw6UQ6
+         o6jH8kl+GLBkqyWSn3Kg7ZEjQq+NJbfRXbejzUhTxZPtEAHuwAbJsc0PYVPpgEpZkX/u
+         FS2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768828282; x=1769433082;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ItwFYjfCOTBQszs6NfuxWxeLpFV+ebtIxsieRROea4Y=;
+        b=m6q+rRWQFyaLI/5R9AJoJZ3fPqi4krr1NfIsVwG1bcjEcxkXjsCne6EOF0q/BEd1g8
+         +i9SG5cxBiQgPV5Cdk7lApAfEnQnciglS8Jhfktza19NHGNTyYrS+lK1SQAimzxgx4wt
+         CYvLVqAxhxFmIQ1e6v6z4GabeyYQE04QU09dEc23E2BUuZ3mwYEizTZRAcSzCNw7bnMJ
+         Fp8sqYfVAy5V5NrIjU+VWdu6u3oJ0Xblcx+psgz/u00Bo2R9RtHPTPaLddBOq60Zk7Q3
+         3WlLrJmqtDYj3LYlkqTiBBDNpeRhk7k7Z+WL/SqoPvulejkTt5HsOdU7+UisY8eULEzo
+         ZSww==
+X-Forwarded-Encrypted: i=1; AJvYcCXs2/7+qO21lXo2GYMmKnPEDgOsSw3iFyMiO5r3/3rebdn4kRmm6L5DnnNUsc0S8qQU10AOyF+s/awBHWOmtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJoNDfte+prf9n3vgFEEb/8cy1FrjhJ5zBx5jbaIP/HH3vcc4U
+	eXyFhYo9iquW2GlzgbSym8HxY7Urm+MZKsQ1LifcPmrgU+aqn/JCb1YyV4rtwR54yFntpv32VBP
+	SumvPfe/jb9NnntyX+AFjZ7Ho9Ts4LXU=
+X-Gm-Gg: AY/fxX6F32ZFUkuP1gA8qbplAzhYcgVOiT8B9ngkaJ1+exqQ6sJskUpB+Qadlk8Hi+l
+	bYrPVCaRCjphfjvPe0+L39t46C3HSHdld+ofQMvcoH5vfdz2Fgknb8hL0EE4DAVoTzIdnJWKm+1
+	mVdj+ephh3GnaGl9dJb3TAfzU403MOyPXvMBlansbQFGzK5NkZBSCDjC/Zap2eyrAJWWkFJ0Kmc
+	YM6s73NZfvtZ9NrFWEG3XN91rnvuiYn+BxVb+9reqQAnN6h8Tm9w/FjnLo4zdOe2FEPh+Mhuj4t
+	pRfDSbu/VsCF8cALshXQleHJtIA+EU95Ouz+7Z6jRkjQKTTuTZn+ve5BY0GBI2yKoszhOXPUjKE
+	kWX/FLHyJ4MeYj+1JKhw5vqeGSHRWm+Ygk5+haExuFQ==
+X-Received: by 2002:a05:651c:1446:b0:37b:b140:e512 with SMTP id
+ 38308e7fff4ca-383841aa2d5mr36132541fa.10.1768828281885; Mon, 19 Jan 2026
+ 05:11:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6164:EE_
-X-MS-Office365-Filtering-Correlation-Id: b88d0b2c-c818-49d9-0f65-08de575bc514
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dTVOL1AzZndzSVVGLzhobVZuSkgvU0pOeTdkRG1DOWNUQnlYUytnWFRuaFlT?=
- =?utf-8?B?L096UmQxZkNyZzNBc3dmNjZNbXdQRGVuSTNGODhrSHdxSjNjUFI1emdvdHFY?=
- =?utf-8?B?RG82Smp1bVJxWkNDRGJmclJ3Z1ZRSG1aS3c2dzYycTBOM2RIdkJmWHNNcEV6?=
- =?utf-8?B?K29WVWFpb3RER0hRYjIvMkw1WXBMMmlkY0QzRXFuZjdVUE5xYWRUK2tOV2JC?=
- =?utf-8?B?cnVlT3JPaFhyVGtjTGk2OWNVWENHMG1iVVU5L0lSMEViYVBneVBuMWVvdEpF?=
- =?utf-8?B?Z3pWWFFBeGhqVlAwYWRBQ2JzOU53UC9hQUYrMU5oMmZPSGQxOFN3d0FMdXlX?=
- =?utf-8?B?L0xGOVpldytFblNhcjdIRmUyWGdhQVRwYjlaOCttNnpLNlRPNk0wdUZ1aVdJ?=
- =?utf-8?B?eU4xeTRVVm1tMHJDdVVKRUh5SmVWSTRvTWZNblE4cG5Ud2JKWXcrRTJvRFpk?=
- =?utf-8?B?akliVnVIRFZ3Mkgyd0lwUnd0S2kyamo0cUg4bXJ3VnhRMUQ3YU02clM4Tlcw?=
- =?utf-8?B?VmtlZlNPb3BOUk5qbFdkZENIOGxNekJ2NVMvQTJVbGdNOEZpS2lJeklxdUtN?=
- =?utf-8?B?bU5uQjJoSXhBUHBGYkhQRDdic1ZlVzFNT1ltOTVEa2RLUStpQklNb1c5OEhs?=
- =?utf-8?B?SE45Qk9JVThZcU0zREtOdkZhd0hRUm9ydm14Mmwvd3pXWlpyeDhPaXp6cXhI?=
- =?utf-8?B?bkxlTmZxeDNjOVB5UGhQVjcxbklheVduT3VJaWtxdStvTmdHOC9UV0pwM1kx?=
- =?utf-8?B?dlR3dEJ1cjFsNlpRN1BzQTVsRmpkcDRhenJxODFjVERIR0Fod3ZVVWNqdkZo?=
- =?utf-8?B?bCtVMUtQYTNOd2p2ZW5zdkFTMGdkUlRMVXFHUEJ4ODJTQS9ybkZsckVBclNj?=
- =?utf-8?B?YlVOQzlNRnVUdnZvWFJIaVJFVmJWd2ZyQklrT256Q0pTaVdjQmhSWW5RUkpm?=
- =?utf-8?B?T3M2eDZKZ0xUNFhpZ1J5WE5GWWFJaWxFRzdVYkp1dEFPVHYxa0VSQ1FvbElY?=
- =?utf-8?B?SEZ1U0gxY0dLSllRdm4rQVlJbUFvNjNkTnNnVVRVaWdSYWgzWGthQStTZExC?=
- =?utf-8?B?SlFZblQ1S2R0S3N1eFpXNTQ3YUt6c2FaajM2K3Y1ZVNpNm8rMHpvb1pFemd5?=
- =?utf-8?B?aTNKUkRhRVFsTFZ6VTJFM0pJajdwS3BJbVIvbjI1UnlhczYrUTdKRWVhNXZZ?=
- =?utf-8?B?ekxraTVKTXZqY3k5UjY1Ly9hSGk1dmV6ZGk1WVA0VDJONU5uSEE0QkkwTUJK?=
- =?utf-8?B?M1pSZmxEd1phc3dlU2F1STR3aWdLbzRCbU9rOC9YMTI2Q09pa1NvUStrdXhk?=
- =?utf-8?B?SlVIVGE4YllkWGROR0xQMm9ZRW9jbEc3V2xpeFp4N1lIL1pMYTFIOUk0bHM2?=
- =?utf-8?B?cngrQXF0bVJEcVVGWjQ1TjFEcFVZQXRpdlFGSmhhZGY1VnNkblFyd3hBYk8w?=
- =?utf-8?B?QnRsdEw3a2Y1MHJqaHNjNW9HY2Y4eVlCdVBRcEZ3T3JUSXVJeS9HK1V3TCtT?=
- =?utf-8?B?K1IzeS9oenc4RFV0RHJNM21ldFVKQXBDNGVDZGJhODhWQjlpekpDQ0lObU00?=
- =?utf-8?B?UFJpVkJDQ2dOanZoVU9ua0hreGhmeVVUZ0xOYlhYUDg3RWFNZnFXUElUUHN1?=
- =?utf-8?B?V2Z2ZFNxUlMrZ1FlMmp4ZDcxUzN2M3d3Y3FjTTdwWFJGTEZ3VnluNGVaRzc4?=
- =?utf-8?B?M0UzWUx5empJMkZzOEU4b215R3AzZUVXMDJYVTRTdU5iVmIrR2NBRzJaeFBQ?=
- =?utf-8?B?RXhUQUExdlk3L2xjRCtMWnBhUUsxL3NWY1VrUGhiT2k1SzhDMEx2RzF4eERi?=
- =?utf-8?B?WDNtU1VZMDFvUHllV3pYUjhsZE5nN1IxWnFZUjFBamorM3N6cVRVWm9sYVp1?=
- =?utf-8?B?dW9MN2NaR2kraWIzV21zcmtROW9OZFhEcHRXLzl3amVTZHpUUUNkRUFYbHpP?=
- =?utf-8?B?eE02TGo2cE9WT3BUMTNXZHl0c0d3K3B1T3lFODRFSG5LeTdMNFJmWTZDRnN0?=
- =?utf-8?B?OWpjb3RVMDZKbFk4ZFNLRkVTRE0vMVQ1cEZlRzc3NHcwNVJXZGJ1VFhDU3FH?=
- =?utf-8?B?WkltWlBaZDMzTUFEb0VxdzdPMjdtSEJ4U09Hbmlkb2c4VHk3cjIvSXhpN3Br?=
- =?utf-8?Q?QEQE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bUJhRWxsZUNFOVlQYjhGSkdoV0tWYVN3ZlBqUnI5cjhjZi9uUERlWnprYklU?=
- =?utf-8?B?UklzV1B4UHhuUFcvQmNzcW55OFZHR3FRd0xVNWl6SHU4aGswUGptcUxTU2JI?=
- =?utf-8?B?OCtvdVh0UmgzWnA5WUdIa000WXpJb2Vsd3k5WFhQeksrbDhtTzhVZm9hN1lU?=
- =?utf-8?B?U1hDclEzRTkzZFpBZVRCMnJudXp1cEU0RHBSRlNaVlBqeHJ1UDdub3NrNWgr?=
- =?utf-8?B?MFFPd1g4dlI2azJSM3Y1TVNNN21sc0RmSWlHUVFVRDN3S1d3bXZ2bUZjVms0?=
- =?utf-8?B?RTFlTWZFK3habmpHQ2w3bzllSVRmbllTQlhNbVBnT0p0TzRLUDZZNXV0RHRV?=
- =?utf-8?B?eDhTZ3lnb0VtclUxbko2OGpENUdLK3ZCQzNQM09NNDdHUldiWHMrd1U3V3J1?=
- =?utf-8?B?cC96SGlDTWFuL0JGRmJMR1UzbWdDaFhvaUZXTnR4a0RVNEErQXMvZVMzdEFI?=
- =?utf-8?B?THBka1lOY1NaVzFpbG5kQTg5cWlkQk81eFUrTnZRSkdOWTFIemxMRmlBSGl6?=
- =?utf-8?B?NmM4S2daMHU3OEpTQzhaVDhXbFlad0RqZ2tJK1ExRDZaVWJKV1l0MFRubkxo?=
- =?utf-8?B?eWFPU0JLazVTbzIvMkVkZGZwNmZEbjRFYkY5YmpCQm1XdGlDQVhkUFhvUldR?=
- =?utf-8?B?ajlZb3ZSUUJHZ0gyOHBqU2NYdWxHVjl4WG52RS9pdjU0UnVmaUh4eDk1R1VL?=
- =?utf-8?B?RXZMQjVjeWd1RkwrYXlOeENYNStWcy94eXd5ZW5TNFhCZUo1QTJYZ1VlQ2I5?=
- =?utf-8?B?TXpldUxrenVmcVZ3OTdLZjlQTkY5VWdtN1NWejNMSTJHMU10RUtwaDlxNFZi?=
- =?utf-8?B?aHdnYktrY0p1ZGNUMFNXdUE1dDVTMnpScncydlRtVE5YZ3kweEFvWEZaTFRi?=
- =?utf-8?B?UHgvTEZRbHFqMURseEcwcklqZTdHNUhXWEFCUUlCNFNaK1lOSW5mRm4zOVgx?=
- =?utf-8?B?ditrbTBZTDU5c0Q5QWt0RWZ3bStSeE5zb2F5aUlrV1pGT1oxalJZcGhnU2xn?=
- =?utf-8?B?SGJZZW1SWnFhUEFWUXpGdXZMV0ZIejhzUlBweG0vcC9FTDJOWEdMUmR6cGRL?=
- =?utf-8?B?Rlc4eWdZSloyV3QwRG1HbWRsOEdLUW1TRVYwdVVVWlNsK3NjT1VPQVNUa0xu?=
- =?utf-8?B?UWxDQkcxWFdzbHhNZnRvZ1Bsd25HZTQxZHNiSTdCLzFFWUtFVmt3RGl2VGJp?=
- =?utf-8?B?S3hKVGw5OEkyL05CYVRLczhsN0RLOE5UdXRJL3BUT2FxcUVEbldUUE1uQUt1?=
- =?utf-8?B?bGtFTHBVeXZteDBYbG5VcGxQZnQrSTV0NXRFQnNxWHBpUUx1QTZkRnFxQVRE?=
- =?utf-8?B?NTEyTmF0RFNsd01FVEYxQXFRd0tubDF2RzBHQmJFcjNZVkJ1ZHB0YThKMUVl?=
- =?utf-8?B?am5Ma1JscEdnREQybDErcis0aTNCYnZJN05QS3ZnTmRxcTc2THdFQ2d5TEVn?=
- =?utf-8?B?QzBqUXNiZjl4dVpSY2lzTkRSemxFdDdJVmV3bnh6Nnp0U2cyUkMrc2lUdXc1?=
- =?utf-8?B?OGQ2K0VsLzh1Q1cxVWRXbnZ0dWZHSVJQMWJNcC9sYkFueG1JQnl0ODFEc0x0?=
- =?utf-8?B?RTdFUStNSG1ZWi8rR2ZVeER0aHZwcjNmNnBxeWlEZ25RYmdPL29PMmNsSmpM?=
- =?utf-8?B?RC80QTJBb3ByZkt4b1c5aFFocmRQR245bzh0bGI3TytlREk0SXVYU09QcWk0?=
- =?utf-8?B?VmJMWlp1S3pES1F2OWJtT21yUzJSSkorUWJ4NW1YVkdUL1Juekl0Z2hubVNF?=
- =?utf-8?B?MVdDMGF1TFZsUEhUcjY3ZGVwbm5rWi9TTjYrODRpZ05TRUlyMk9Ba0ZQalg5?=
- =?utf-8?B?R29ZWnd1NmlhWTY2RWY1ell1MWRYb0g1dVplVjVUV2pnWWQxYVZsR21CTnlV?=
- =?utf-8?B?bHBpMFRsSjllQnRxdkNiVDdBdXVxRHlucEs5Z0l0U0c1YldlTGhGaU1XaWE1?=
- =?utf-8?B?dzVWemdrbmg1Mld4Sitsc21TU0V6aUJaRUpzM0NmVWxYektsL2xrUXcvTkV0?=
- =?utf-8?B?ZERkOXNTZ0FzSit1QUNkRURTOGgzSkNPcDhiRUFiN081L0dua1VSZVlmNlF3?=
- =?utf-8?B?UHNUZm9IbFdnNG8vd0J4d0NsWlV1N0hXZTNuSGRtdmpEK3Z4TmNpakpFMGhS?=
- =?utf-8?B?VXdpcVo3eUt0UDU3V2ZBa2pUV0Z1ekdIUjZ1dTJkQXEzTmlQQk4rSFlROU8v?=
- =?utf-8?B?VHo3M2ZKR2RUR3JnRmZtMDlxQW8wS0xDTnFsZXo2bHNRM2FMUjNVbEhPeklh?=
- =?utf-8?B?MERVMEtVSDZGczhYMGN5Mis4d0RFZkNNYUFOb21Nb1FpTy9jNFFsVTBZS2V4?=
- =?utf-8?B?S2QxYkg3cndTVENGWnFOQVVTWjlXWnVoaDJRQlNTenZpNTk4OVNUZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b88d0b2c-c818-49d9-0f65-08de575bc514
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 13:07:59.3943
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LzUdR4tw5bWJ8dD7WXtWQvCvvkHoFB8fEu01gS3xiy8i9x2U+JujLcb37b/Mf5IVuqfGWeJyqZE+Ds+MbeDvgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6164
+References: <20260119033006.1453006-1-sunke@kylinos.cn> <20260119033006.1453006-3-sunke@kylinos.cn>
+In-Reply-To: <20260119033006.1453006-3-sunke@kylinos.cn>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 19 Jan 2026 08:10:45 -0500
+X-Gm-Features: AZwV_QhhoALVpAWNrp8lEkjK0sgRTg2af9r9XQh1G0CZwVsc6bvtlGTpI-Z353A
+Message-ID: <CAJ-ks9mmk2sQF0nFQ0chz9=cuRUBf9KJKzk3thv3078isOMBnQ@mail.gmail.com>
+Subject: Re: [PATCH v9 2/4] rust: fmt: add HashedPtr for safe pointer formatting
+To: Ke Sun <sunke@kylinos.cn>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Jan 19, 2026 at 12:29 PM GMT, Andreas Hindborg wrote:
-> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+On Sun, Jan 18, 2026 at 10:30=E2=80=AFPM Ke Sun <sunke@kylinos.cn> wrote:
 >
->> HrTimer::expires() previously read node.expires via a volatile load, whi=
-ch
->> can race with C-side updates. Rework the API so it is only callable with
->> exclusive access or from the callback context.
->>
->> Introduce raw_expires() with an explicit safety contract, switch
->> HrTimer::expires() to Pin<&mut Self>, add
->> HrTimerCallbackContext::expires(), and route the read through
->> hrtimer_get_expires() via a Rust helper.
->>
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Add HashedPtr type that formats pointers using kernel's pointer hashing
+> mechanism. This type can be used to safely format pointers without
+> exposing kernel memory layout information.
 >
-> Patch looks good to me, but I just want to check with Lyude about their
-> use case in the rvkms driver. I think that is why we did the racy
-> implementation originally. In C we have stuff like this:
+> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+> ---
+>  rust/kernel/fmt.rs | 57 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
 >
+> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
+> index 059c26dfcfa21..b3501a11c7a3c 100644
+> --- a/rust/kernel/fmt.rs
+> +++ b/rust/kernel/fmt.rs
+> @@ -6,6 +6,8 @@
 >
->     /**
->     * drm_crtc_vblank_get_vblank_timeout - Returns the vblank timeout
->     * @crtc: The CRTC
->     * @vblank_time: Returns the next vblank timestamp
->     *
->     * The helper drm_crtc_vblank_get_vblank_timeout() returns the next vb=
-lank
->     * timestamp of the CRTC's vblank timer according to the timer's expir=
-y
->     * time.
->     */
->     void drm_crtc_vblank_get_vblank_timeout(struct drm_crtc *crtc, ktime_=
-t *vblank_time)
->     {
->       struct drm_vblank_crtc *vblank =3D drm_crtc_vblank_crtc(crtc);
->       struct drm_vblank_crtc_timer *vtimer =3D &vblank->vblank_timer;
->       u64 cur_count;
->       ktime_t cur_time;
+>  pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
 >
->       if (!READ_ONCE(vblank->enabled)) {
->         *vblank_time =3D ktime_get();
->         return;
->       }
->
->       /*
->       * A concurrent vblank timeout could update the expires field before
->       * we compare it with the vblank time. Hence we'd compare the old
->       * expiry time to the new vblank time; deducing the timer had alread=
-y
->       * expired. Reread until we get consistent values from both fields.
->       */
->       do {
->         cur_count =3D drm_crtc_vblank_count_and_time(crtc, &cur_time);
->         *vblank_time =3D READ_ONCE(vtimer->timer.node.expires);
->       } while (cur_count !=3D drm_crtc_vblank_count_and_time(crtc, &cur_t=
-ime));
->
->       if (drm_WARN_ON(crtc->dev, !ktime_compare(*vblank_time, cur_time)))
->         return; /* Already expired */
->
->       /*
->       * To prevent races we roll the hrtimer forward before we do any
->       * interrupt processing - this is how real hw works (the interrupt
->       * is only generated after all the vblank registers are updated)
->       * and what the vblank core expects. Therefore we need to always
->       * correct the timestamp by one frame.
->       */
->       *vblank_time =3D ktime_sub(*vblank_time, vtimer->interval);
->     }
->     EXPORT_SYMBOL(drm_crtc_vblank_get_vblank_timeout);
->
->
-> Also, we got some new docs for `read_volatile` that allow us to read
-> memory outside Rust of any allocation that are not "valid for read" [1],
-> meaning racy reads are OK as far as I understand. So the original
-> implementation might actually be OK, although the number might not be
-> correct always.
+> +use crate::bindings;
+> +
+>  /// Internal adapter used to route allow implementations of formatting t=
+raits for foreign types.
+>  ///
+>  /// It is inserted automatically by the [`fmt!`] macro and is not meant =
+to be used directly.
+> @@ -135,3 +137,58 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> c=
+ore::fmt::Result {
+>          )*
+>      };
+>  }
+> +
+> +/// A pointer that will be hashed when printed (corresponds to `%p`).
+> +///
+> +/// This is the default behavior for kernel pointers - they are hashed t=
+o
+> +/// prevent leaking information about the kernel memory layout.
+> +///
+> +/// # Example
+> +///
+> +/// ```
+> +/// use kernel::{
+> +///     fmt::HashedPtr,
+> +///     prelude::fmt,
+> +///     str::CString, //
+> +/// };
+> +///
+> +/// let ptr =3D HashedPtr(0x12345678 as *const u8);
+> +/// pr_info!("Hashed pointer: {:016p}\n", ptr);
+> +///
+> +/// // Width option test
+> +/// let cstr =3D CString::try_from_fmt(fmt!("{:30p}", ptr))?;
+> +/// let width_30 =3D cstr.to_str()?;
+> +/// assert_eq!(width_30.len(), 30);
+> +/// # Ok::<(), kernel::error::Error>(())
+> +/// ```
+> +#[repr(transparent)]
+> +#[derive(Copy, Clone)]
+> +pub struct HashedPtr<T>(pub *const T);
+> +
+> +impl<T> Pointer for HashedPtr<T> {
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +        let ptr =3D self.0;
+> +        // Buffer size chosen to accommodate pointer formatting
+> +        // 32 bytes is sufficient for all pointer formats including hash=
+ values
 
-The wording is for MMIO and should not be relied on if the accessed memory =
-is
-C memory. Also, `HrTimer` is going to be a Rust allocation.
+This needs a citation please. It also isn't clear if you took into
+account the "0x" prefix used below.
 
-Even if we don't treat it Rust allocation, it's also only "fine" in a sense=
- that
-you don't get UB for doing it. But the value you read can still be complete=
-ly
-meaningless if the updater is not atomic (it would be valid compiler
-implementation to, say, turn a non-atomic write into a write of a garbage v=
-alue
-and then an overwrite of the actual data).
+> +        let mut buf =3D [0u8; 32];
+> +
+> +        // SAFETY: We're calling the kernel's scnprintf function which i=
+s
+> +        // safe to use.
 
-I think the usage you quoted is just wrong, as on 32-bit platforms this cou=
-ld
-well read a teared value.
+> +        // The buffer is large enough to hold the formatted
+> +        // pointer string.
 
-Best,
-Gary
+Isn't the more relevant fact that scnprintf never exceeds size-1, as
+you state below?
+
+> +        // Using "%p" format specifier applies kernel's
+> +        // pointer hashing automatically.
+
+Irrelevant to safety, no?
+
+> +        let len =3D
+> +            unsafe { bindings::scnprintf(buf.as_mut_ptr(), buf.len(), c"=
+0x%p".as_ptr(), ptr) };
+> +
+> +        // scnprintf returns the number of characters written (excluding
+> +        // null terminator), and guarantees it never exceeds size-1
+
+Please strive to keep comments as proper sentences, including
+capitalization and punctuation.
+
+> +        let formatted =3D core::str::from_utf8(&buf[..len as usize]).map=
+_err(|_| Error)?;
+> +
+> +        // Use pad() to respect formatting options (width, alignment,
+> +        // padding, etc.)
+> +        f.pad(formatted)
+> +    }
+> +}
+> +
+> +impl_pointer_forward!(
+> +    {<T>} HashedPtr<T>,
+> +);
+> --
+> 2.43.0
+>
