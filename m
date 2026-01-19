@@ -1,128 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80EE326933;
-	Mon, 19 Jan 2026 12:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A6A35BDA6
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 12:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768825790; cv=none; b=fnSGi/Kg0CGDZSQmlvFQlxrtTLIBR87VRYwg8/aa9aE9tCgYZS2Q3iZqS+xqWpsBPxu2UQ0tWoi1EhZSlKnJn46aqToazYQ0Fdp/s83dwI7lPEAGVfhzMEBHCPH1Sz98jihGOjLKrT42377A5SaWPwv5Lz5sylpAnzBMiGG/qN8=
+	t=1768826127; cv=none; b=jvw1z0AWhijerwcPrhQj1N883U2zy9KKDqUqO+D22bkpD5ZodVd3I/E2B/aM8Is5bllAHZ9MSli/3iv6F6XdIxq4ghoqNKBqyypIE6mtHhNoNmm9y/X9ZcMtT7HlPMBh7nLAODw/rY0nOjHf8zwpT0JBMUZwO58A6nMtGLHaRas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768825790; c=relaxed/simple;
-	bh=2YSiQ73r8YEpGMiR7HpY74qOHSqVwhEdZIWj+DwohEc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AnM5Y0qe1us3UgHbVRW/HU0ZeohBHISh/K+vuHE77V0l1zeilYZptt3Pua6V/EzDX5M9QbF5n8yQYBkXh6Fm8zC1+JiNSTiveyU7e4oS7IoQ5s40zjo25z7xaRbTdMMcrLabBK9cYIWDep/s7Psgy4L9NRUfLpYIT8j0A+BCauE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fd4jiVjR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768826127; c=relaxed/simple;
+	bh=QgtIrq2v5XTFNi5vlU8fw46Ar/tthUMJiTbRAMcagGQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hMFtqDdlSToW5ZzUVqSDXx//TxREcpv/lBiS0XhEUJxB7k5hrfkPo5WDNu7N1zlVRcgMPwRJfuwfZVHHrkFmJLNNXujhsHhv2uX0nnwzVwUkZZz+Bi+JPpUqhz0NN6t3RWHiYjlq3qf/H+Q6hofIcXo2JvssoxK1oWweVb65vI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=why3I2/c; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fd4jiVjR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62633C19424;
-	Mon, 19 Jan 2026 12:29:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768825790;
-	bh=2YSiQ73r8YEpGMiR7HpY74qOHSqVwhEdZIWj+DwohEc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=fd4jiVjRZyEb3XhGamowDGJdTQI8+vVeydrIS2ipaBLIpBFlHf5bP9b1P3jsH1ASr
-	 wuIvaZ0SYJ0yb9Qd3YkqI2ezliegitFpSgci4KV47zHnFY2PRUbcbHszIQ9SLIcw1c
-	 nsSLotifoKQo3CIEOfWNGyTX3V7xGFfJcuVbcYQ7/gWffhNqA8Qk+1FhrE6L4r+npx
-	 mZN7RtLDkr+E+WmRVXFOLndxULDGg9t8iyyZkfFwWhOR0omsvK7ELCo+nJvVYsbLYR
-	 5Ke+/lDE0NcMgs5xb/n2+/GCTgRAJW3st3RFQsY4cPbBP/4PmpMN8IXW1X/F/mqYmY
-	 7mMkK6mjrX5Yw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org
-Cc: aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
- frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tglx@linutronix.de,
- tmgross@umich.edu, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v1] rust: hrtimer: Restrict expires() to safe contexts
-In-Reply-To: <20260110115838.3109895-1-fujita.tomonori@gmail.com>
-References: <M2M7QTmzyv0cuTcfmp8k-pHEgTa6pOlfONQW596m3-nM_3-fQoakLTxJy7SthiIlT_5I-07GG9On36gsydLT7g==@protonmail.internalid>
- <20260110115838.3109895-1-fujita.tomonori@gmail.com>
-Date: Mon, 19 Jan 2026 13:29:37 +0100
-Message-ID: <877btdpyz2.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="why3I2/c"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47edee0b11cso21729405e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 04:35:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768826123; x=1769430923; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=L339R8Vsk/eWURHJ0AqPSpw3w1NFXPchbsihcVaLjUM=;
+        b=why3I2/cUVdJrdwiko+xycCbGMCLYBh6gO5rNTfm5HRilICJTdQb0UzM286OCmHZ5x
+         Az/ENk7+vDBcon8Fs2ADANebi5Z2KIMU2Tb7yeslwJT2ml3MHhxs4gKIa3A5beuB73qD
+         uyLz2olrXCOWO1KOWrf5KF/QPKnSKrpct6TjpprI8HB/YIe/jg0oudYl7fgKc6TwaeZa
+         kF2EMLOw3evT3kR2EmDPLipZ9Iva9cVEBp0OG2VuBliG8eaSmeRhx8SHY57GKckV8Dyn
+         X++SkN+bJhV+haiOBUz7tdjDWNsoONI+LJz+iPeAikjoqspaos6wWS+oCVY9PXVPc8oK
+         1b1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768826123; x=1769430923;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=L339R8Vsk/eWURHJ0AqPSpw3w1NFXPchbsihcVaLjUM=;
+        b=kOuDs/L42OStMBqxZiiiTCuISQL/1aeWwhkXe0tPQbdg7peR2ilrb937RznFmVpcLn
+         Dvd/lYggSq+LokjoCF8rrqLg64QbuuelFrvMlDIl9fsGsPhjUaqnUI5r7AIY1qCxJCw2
+         Ty/BN8060Isn3Jsgt84Pjw+XzAIt2gMNlK/Oe698UU8hsU6CWJ4Lg+7HhkguRpTyBwob
+         IZNnYOn5v9lPyU8CsVx3+RbZjJniu35DmuKo3CsJKmE9V5OA9CURqI3oX8/wq2oRAjd2
+         PRQBoYLIyBNfuM8OTg3ns/eqLuDJcVY3PWRTUqxHwAGzaDT3PJLz+4SEDgOJLQEPFKoL
+         j7/g==
+X-Forwarded-Encrypted: i=1; AJvYcCWwZlJbGexd6JhRt4WXM4cSEDWq9zonM9jrZJQx1qvFHg8HIeCr7ECOrMjbm3FAge4w9Wmct/juzfCD9GY48Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTvoh8DcSZtmPmoFOjqf82BPLdh3K+lbx6kAV/vHtOomMTsi2e
+	K67mhWmcdOYsIJTOdOmzNQAT0WMLaHWRlZUg6Q/AFu7DZIC7Vv/qoE/5VFksyL8siVRuYR/DbtM
+	vk88fuaKCj22cEy2H6Q==
+X-Received: from wmbh20.prod.google.com ([2002:a05:600c:a114:b0:47d:586e:2b7b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:811a:b0:480:1dc6:2686 with SMTP id 5b1f17b1804b1-4801eac0cfcmr114218055e9.13.1768826122871;
+ Mon, 19 Jan 2026 04:35:22 -0800 (PST)
+Date: Mon, 19 Jan 2026 12:35:21 +0000
+In-Reply-To: <20260119-thundering-tested-robin-4be817@houat>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
+ <20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com> <20260108-delectable-fennec-of-sunshine-ffca19@houat>
+ <98CD0BF6-3350-40B9-B8A9-F569AE3E3220@collabora.com> <20260119-thundering-tested-robin-4be817@houat>
+Message-ID: <aW4lCfUyumOKRRJm@google.com>
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+From: Alice Ryhl <aliceryhl@google.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Drew Fustini <fustini@kernel.org>, 
+	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	"Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=" <ukleinek@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+On Mon, Jan 19, 2026 at 11:45:57AM +0100, Maxime Ripard wrote:
+> On Thu, Jan 08, 2026 at 11:14:37AM -0300, Daniel Almeida wrote:
+> > > For example, it's quite typical to have (at least) one clock for the =
+bus
+> > > interface that drives the register, and one that drives the main
+> > > component logic. The former needs to be enabled only when you're
+> > > accessing the registers (and can be abstracted with
+> > > regmap_mmio_attach_clk for example), and the latter needs to be enabl=
+ed
+> > > only when the device actually starts operating.
+> > >=20
+> > > You have a similar thing for the prepare vs enable thing. The differe=
+nce
+> > > between the two is that enable can be called into atomic context but
+> > > prepare can't.
+> > >=20
+> > > So for drivers that would care about this, you would create your devi=
+ce
+> > > with an unprepared clock, and then at various times during the driver
+> > > lifetime, you would mutate that state.
 
-> HrTimer::expires() previously read node.expires via a volatile load, which
-> can race with C-side updates. Rework the API so it is only callable with
-> exclusive access or from the callback context.
->
-> Introduce raw_expires() with an explicit safety contract, switch
-> HrTimer::expires() to Pin<&mut Self>, add
-> HrTimerCallbackContext::expires(), and route the read through
-> hrtimer_get_expires() via a Rust helper.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+The case where you're doing it only while accessing registers is
+interesting, because that means the Enable bit may be owned by a local
+variable. We may imagine an:
 
-Patch looks good to me, but I just want to check with Lyude about their
-use case in the rvkms driver. I think that is why we did the racy
-implementation originally. In C we have stuff like this:
+    let enabled =3D self.prepared_clk.enable_scoped();
+    ... use registers
+    drop(enabled);
 
+Now ... this doesn't quite work with the current API - the current
+Enabled stated owns both a prepare and enable count, but the above keeps
+the prepare count in `self` and the enabled count in a local variable.
+But it could be done with a fourth state, or by a closure method:
 
-    /**
-    * drm_crtc_vblank_get_vblank_timeout - Returns the vblank timeout
-    * @crtc: The CRTC
-    * @vblank_time: Returns the next vblank timestamp
-    *
-    * The helper drm_crtc_vblank_get_vblank_timeout() returns the next vblank
-    * timestamp of the CRTC's vblank timer according to the timer's expiry
-    * time.
-    */
-    void drm_crtc_vblank_get_vblank_timeout(struct drm_crtc *crtc, ktime_t *vblank_time)
-    {
-      struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(crtc);
-      struct drm_vblank_crtc_timer *vtimer = &vblank->vblank_timer;
-      u64 cur_count;
-      ktime_t cur_time;
+    self.prepared_clk.with_enabled(|| {
+        ... use registers
+    });
 
-      if (!READ_ONCE(vblank->enabled)) {
-        *vblank_time = ktime_get();
-        return;
-      }
+All of this would work with an immutable variable of type Clk<Prepared>.
 
-      /*
-      * A concurrent vblank timeout could update the expires field before
-      * we compare it with the vblank time. Hence we'd compare the old
-      * expiry time to the new vblank time; deducing the timer had already
-      * expired. Reread until we get consistent values from both fields.
-      */
-      do {
-        cur_count = drm_crtc_vblank_count_and_time(crtc, &cur_time);
-        *vblank_time = READ_ONCE(vtimer->timer.node.expires);
-      } while (cur_count != drm_crtc_vblank_count_and_time(crtc, &cur_time));
+> > > AFAIU, encoding the state of the clock into the Clk type (and thus
+> > > forcing the structure that holds it) prevents that mutation. If not, =
+we
+> > > should make it clearer (by expanding the doc maybe?) how such a patte=
+rn
+> > > can be supported.
+> > >=20
+> > > Maxime
+> >=20
+> > IIUC, your main point seems to be about mutating the state at runtime? =
+This is
+> > possible with this code. You can just have an enum, for example:
+> >=20
+> > enum MyClocks {
+> >     Unprepared(Clk<Unprepared>),
+> >     Prepared(Clk<Prepared>),
+> >     Enabled(Clk<Enabled>),=20
+> > }
 
-      if (drm_WARN_ON(crtc->dev, !ktime_compare(*vblank_time, cur_time)))
-        return; /* Already expired */
+I believe you need an extra state if the state is not bound to the scope
+of a function:
 
-      /*
-      * To prevent races we roll the hrtimer forward before we do any
-      * interrupt processing - this is how real hw works (the interrupt
-      * is only generated after all the vblank registers are updated)
-      * and what the vblank core expects. Therefore we need to always
-      * correct the timestamp by one frame.
-      */
-      *vblank_time = ktime_sub(*vblank_time, vtimer->interval);
-    }
-    EXPORT_SYMBOL(drm_crtc_vblank_get_vblank_timeout);
+enum MyClocks {
+    Unprepared(Clk<Unprepared>),
+    Prepared(Clk<Prepared>),
+    Enabled(Clk<Enabled>),=20
+    Transitioning,
+}
 
+since mem::replace() needs a new value before you can take ownership of
+the existing Clk value.
 
-Also, we got some new docs for `read_volatile` that allow us to read
-memory outside Rust of any allocation that are not "valid for read" [1],
-meaning racy reads are OK as far as I understand. So the original
-implementation might actually be OK, although the number might not be
-correct always.
+> > In fact, I specifically wanted to ensure that this was possible when wr=
+iting
+> > these patches, as it=E2=80=99s needed by drivers. If you want to, I can=
+ cover that in
+> > the examples, no worries.
+>=20
+> Yes, that would be great. I do wonder though if it wouldn't make sense
+> to turn it the other way around. It creates a fair share of boilerplate
+> for a number of drivers. Can't we keep Clk the way it is as a
+> lower-level type, and crate a ManagedClk (or whatever name you prefer)
+> that drivers can use, and would be returned by higher-level helpers, if
+> they so choose?
+>=20
+> That way, we do have the typestate API for whoever wants to, without
+> creating too much boilerplate for everybody else.
 
+I think that if you still want an API where you just call enable/disable
+directly on it with no protection against unbalanced calls, then that
+should be the special API. Probably called RawClk and functions marked
+unsafe. Unbalanced calls seem really dangerous and use should not be
+encouraged.
 
-Best regards,
-Andreas Hindborg
+The current type-state based API is the least-boilerplate option for
+drivers that exist today.
 
-
-[1] https://doc.rust-lang.org/std/ptr/fn.read_volatile.html
-
+Alice
