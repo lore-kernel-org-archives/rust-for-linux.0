@@ -1,242 +1,206 @@
-Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022142.outbound.protection.outlook.com [52.101.101.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175C027E07E
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 11:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.196
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768823904; cv=none; b=UqW84/djzUVnQIxOrOoNwPVC6ytWtOBbReu0gHdrd5ZpF+D1prMwJpfFeKa5pMOiiXYqRp9vjSewvVYnCcRtb/MFATCftoRRQV0rowyaIf8nILXQIQFiQBn889gIVN0fZJyFt3kcoGBP83A4+seIvARAygfEeKMJmgu7OyxLtCM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768823904; c=relaxed/simple;
-	bh=jQvxSW0SiBKXbCOXWix0eR8evNL9UchZ1fLLDAXr3OM=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=S8PLyb6GmeLWdiVulifPh0vp4qT5K/8X4dpF7e8NtCxu1IN/I43MUxEysAWJBvHH3b20f/uKpPe5l/NBFUAO7LnZcxItUsHXVoHStsYbKsL7KFFJ7Hb6Fv7YR+bAd0NxEHuP5GHTnWfaBtWYowcQb1NIINtC9aIJvEsVFxnnSWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CVW6g//h; arc=none smtp.client-ip=209.85.214.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCA131DDAB
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 11:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.142
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768823958; cv=fail; b=Ol8g1I5op+g9ZuLMqeRdBwdhYa/uyB8CIqlC7zJQ2ro9hanBXxTCy6ovARqYjvIqElxrxtmsJXcQbEmw+1jkZKZFA7fvAmDrywLa4b8ZzdLjMY7l9K75HELnKZtdHM3R2ysykrqpr6+zuekTu0+uPkEo9Oyft190S8XOQPTCp6g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768823958; c=relaxed/simple;
+	bh=Dx1U2VOijj3Jo07DuX1bQj4IP5hMbThsdZTyLw7t4PY=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=raB3Qv1qppa4uDJL5S27IYmKCsy42KmFVOlCxhrNaRyt93YvFoJYLr0BAVmyxEMnfdIVXJHefs1xJs/U8EtcnQlfv7CE2QC1O8oBE81041S4Z5+PzY81oz6H9N/oV0ogl5bQWUsKnzo+JHbNitFiCpYKPJbq5/yQn1ALFxdif+Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=xuGXQDni; arc=fail smtp.client-ip=52.101.101.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CVW6g//h"
-Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-2a09d981507so31954815ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 03:58:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768823902; x=1769428702; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YZhTgLfi+v6VJMGHRkz4UShj6I3zr9XMF0TcaWer6Hw=;
-        b=CVW6g//hc3DGuM/y9xfgdiOepvBoxIbQlkFYCIR/JWiOmc2RyDx13pp3OJ3qKbIPW/
-         QcgRJR+YS3/CUs4U3z9KPPAJm/8ayDnjf8SqJBPRS/7w9HSCvFmNM0D6KFUiwXglJvwv
-         PskxaNNgWabPZKvSvb4TsSz3b8yOWDQ4wLRy18aybEozxbDh3D8VJX5/FtmuPyiLv0S6
-         s2qcaMP3OaLwjHf56CfGhtPE6CRp2TdljAUHlcaYI2mcbof7ZbyKmQdGB+0/ugEqqMJs
-         oD9wJyWp7n7VRqQ65DOagq/YzgrQZkyE8mT2olBJIhCsGq8hmFXBG98N00wWDrX4MrjK
-         eWug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768823902; x=1769428702;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YZhTgLfi+v6VJMGHRkz4UShj6I3zr9XMF0TcaWer6Hw=;
-        b=bagZxBXalGTQx1XhCjRr99G5cnveiFuelWMw4C3pIHKF7iPF6+b3FIR5Kbek8fC89i
-         pGNi75J262THceP5Y6il9oEmRoayrrRL/I6nO6V+gnTmyl9U4oca0T+6JLwKxVLc7Ijf
-         0GJ1uMgvM21h2fP2QQIpTj4v1JEXZz4EpdqfLTBW+uwz0KMn1PcXDoTkpBQDJHpW9rus
-         OYB5ECd1pIKfN09nstsloOI4puvsJHmAzl5LQbkhfj9ch0udP6B1AiKwLamVnnrUKW1N
-         KdONla6EWiQ/X/zGq17eN0OJGBV45FkWM2P2tzSIAli8gmeUNvh8PeD3jtz80R03Ja6j
-         NYRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW/c57gRcb24bPqep3yn/Z0TLGTEaIBdtISK+6E0EkgrQXujjEEYjGRDH0jZNJHcKQSimcJ70zHHfCFUoLoOA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBf2Y+IREOLZcN3GlAyec8w+RWTOmwhRIQlsF7lweG8sI+9kC0
-	yH17QEuCDA7IfF8YgkZKOtwih/R99Ju8tBIIE7lati8hM2ZBJIw9qgWj
-X-Gm-Gg: AZuq6aJw2NDRXoXPIE9jthof6UNXF5V6HHWs04f3iAWavWHcRSKcBwrJ68S8ync2daD
-	ZSp3of0CPN8x+JK9YDXHx0CFU7UnxcEdlg2b/pn6RSS9NA0FFHj279ry5LD4dBGAk8JF2ekiI4C
-	U1/RILpYOUwwPx5hAyAW0nIiskQJEBmNdEmd3Hh8H8YHmdS7/m15DfMO2D7N3JuUzk/A0CHbncF
-	FmUJPKmbCe7nfHqHpzqsC1+apxdfLUJ1DaPJesqVHe7ZA7VC9ZE1s134WrFv1G2Vca4Y6jyR0U5
-	vnh9D7n6GHSzsgA9WI7j3arKjomH3Gu8sOg75MRxgfHAJsE2gK9qiOpyCYPlYG3kExrzqScjya+
-	LEnEfZYTE4KF7gkJLOKf+pkFIjJ21nE2I3u0X/IvYMu+VgqqfWoeDD49s2ZJxPeLGSu5RhS7HVJ
-	GW2zCdCepj7ZjNRiG9qVmfQw1KcG1fNlKLzWtRm7LmqZ4cNmdLtyTRXQrdAsIIW51GpN81svKfn
-	jDFpg==
-X-Received: by 2002:a17:903:8c7:b0:298:45e5:54a4 with SMTP id d9443c01a7336-2a7175460acmr107232565ad.1.1768823902358;
-        Mon, 19 Jan 2026 03:58:22 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193fc503sm92983975ad.75.2026.01.19.03.58.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 03:58:21 -0800 (PST)
-Date: Mon, 19 Jan 2026 20:58:16 +0900 (JST)
-Message-Id: <20260119.205816.296364426219257330.fujita.tomonori@gmail.com>
-To: dirk.behme@de.bosch.com, a.hindborg@kernel.org
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, lyude@redhat.com,
- aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org,
- gary@garyguo.net, jstultz@google.com, lossin@kernel.org, sboyd@kernel.org,
- tglx@linutronix.de, tmgross@umich.edu, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v1] rust: hrtimer: Restrict expires() to safe contexts
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <d817b1db-7f49-4220-ba82-1c8a750c84f1@de.bosch.com>
-References: <20260110115838.3109895-1-fujita.tomonori@gmail.com>
-	<d817b1db-7f49-4220-ba82-1c8a750c84f1@de.bosch.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="xuGXQDni"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q8bud/5DV42ZEqCONh7fyzE5e/74mKj3Yd2flPnGfGsU3Cpdveb5134s7cqyXL6fDDM3LNZsKMMbER6c4ZMt4DbdNf7i6GY4PaYmzVw0HCkMgUMrpAaTbCCHVG9wowZ1dNKbhs810W+aOs5qFRCxYNQHy8KXkMHyYfd+Z1uO0luiQbndbS5WEI8Bbeyklbdz41misxsvK11cCJkuTA4btd6vLNwfDNefsROqsz+EVvHY1JFE0TsnjMRhBNJtvWxaZrcBWzrQL7Jkf4kIIBLiHSBnJWEki/Kat2GAVIRECgAs2RfwYPEe3KayNZ2//eDbWsJ2W65bot7VSURr5SqVhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t6BH5DXRatGsdksxeESzGvu+vOI5vSfZyiePskuuQxs=;
+ b=DC6kJqFQUHfvPIw+3LUgcerEz6Zgt+vII4cVjwF/ezfMJPznYchKiL3HSroPWfe+XDD1cG7hc1YlG/RizBIdvkfJs0ysF7Spety85ZgB7KYUMLlU/WQUMlQPI0lidd6t3B033uIFX15oyL6rRb1h0cHXQXap4tZTtkRCT09S5M9nd5tU+OBxvclDe7AEYeO9pBUlJskRguf9W5n3K7wYLvGeIxAZLkmja+Kz4hrQ1hIHlIrPvXOUA4qddC39y2Jq/2IRTY+CP/T6utjBQVWU5hSxAOauRjcLtha/FbsiIbcYSmsnUSC70p1jZZGa7LHyw81iJ4yEynOBhxUGTzoBlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t6BH5DXRatGsdksxeESzGvu+vOI5vSfZyiePskuuQxs=;
+ b=xuGXQDnirbsGdG4vel6UFzlr54UlxO+irLAKXPVvdjYsT6gxm2rrfOzJxiooerllgoTmpJcal6i722RBl4IfzxUCfdekJnaYIf41niRq+yggKxN3nwQCZqWpvQY5bS2pS9F4WBEl1Hl5VGE/mcuRjOgkM9if3zvm94w9xmvt+aA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CW1P265MB7427.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:217::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
+ 2026 11:59:10 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
+ 11:59:10 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 Jan 2026 11:59:09 +0000
+Message-Id: <DFSJRCM1F247.212V4MUG0JNR9@garyguo.net>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
+ <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v1 2/7] rust: block: mq: use pin_init::zeroed() for
+ queue_limits
+From: "Gary Guo" <gary@garyguo.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Ke Sun" <sunke@kylinos.cn>,
+ <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260119065859.1914178-1-sunke@kylinos.cn>
+ <Z55sb2ThC6nBqfAaJu3YNGj3bYMrT9XHy63LEXLGqzPUsAFp-dS0O_usawylT8GR8QrXk8BazrYsOGXe1ax6qw==@protonmail.internalid> <20260119065859.1914178-3-sunke@kylinos.cn> <87jyxdq2xu.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87jyxdq2xu.fsf@t14s.mail-host-address-is-not-set>
+X-ClientProxiedBy: LO4P123CA0133.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:193::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7427:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5155fb0c-4760-40b2-86d3-08de575227e7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RUhNbnpBZGhVMlJiNWlyMXpTUUU4N0NDY2NuY2hFNW1vd2ZTVnhjQWM4RDV6?=
+ =?utf-8?B?c2hNVDRFaGNMY0I1NEYxOFY4YnBLdksxQ1BYcWtya3lFQTJ2VGhWV3J1M0NY?=
+ =?utf-8?B?blVnWU1yNUZyai8zTm5BdHBDM25maktMdnVzWWhyOUM1UTZVYnZLNlNJR2xo?=
+ =?utf-8?B?ZEEzMlEycVBzSS9YdStINTRJNVJmTmF0NGJiSWVsUm5OQ2NNK2U5RTVNTURz?=
+ =?utf-8?B?N20rbUVZdjNXNmNPVGlIdk0yUmVRMmRqbHpwVzNpL05IUStjMjdsL2c5cXpN?=
+ =?utf-8?B?YWo4cjF5eWFVbnpOeVpSTDdyOVNwMTI4amZ4a01IZ3YrRDZlL1VVTEp0czRt?=
+ =?utf-8?B?VjBsU2laMEJqV3dZZGdmTEFpVHA5U1oyOTZpUXk0WjgveWxGNndrZnlDSHdr?=
+ =?utf-8?B?OGtBcE1tY0lnOEhyWFlIbGxjeXE5MzJSS0hVWmR5a1ZkL2syWGdxdnU2b29T?=
+ =?utf-8?B?NERxeFpYMXVwSGIzbnh5WVVheG5qVVh4UjRETExSalhORGszOWV2L2xGU1h0?=
+ =?utf-8?B?bUt2V0hKaFVlMFJhSnYxaUpOYnFuM0RwQlhtb1I3ZmFLT0pZRVBpdjF4SEcy?=
+ =?utf-8?B?RjRCeXVCMXRyMi91LzdyZ0RjU2hobVNrbFYzY1FUYkgvUjIyWTRTNC9xODhz?=
+ =?utf-8?B?U29yM1M3ajAyZEd3QU8vTkZpTTBzT3VHVTIvaDN4RVcwYjZKMlZ2VDBwLzZQ?=
+ =?utf-8?B?N3hDM2VnMjJYSkhhd0FsSXFEQzMxUVk4QW1yaTZJdFNmTDhzanZoeFF3UGI1?=
+ =?utf-8?B?Zk1kS2tZNFN5a1Y1NGlrT1lhY3kyR1EwbjJheWlQWENLWmJjSUYySVNwS0pB?=
+ =?utf-8?B?UXRiUE50K09oZXlqL0FFUGwxSzNKUDQ3Z0JpYnVkRGxQazRIejRFTThETlRz?=
+ =?utf-8?B?OGJoTGJmOWpkeFJKZUxDZHgwWmNGd0Q4VTUrMGtGUjcvTjdPV2kyZFRva3VY?=
+ =?utf-8?B?VDFPQUFBMEdOUmdnekxaSXl3cFk1QWF2VlA0cXpJdTEyNndzN3VZeXNpaG9i?=
+ =?utf-8?B?VmRUSlNMNURwS1BqMUVuTzlQQUxzbnBjQ1hpT0Z2SGRZSThScGNEaVcweEV1?=
+ =?utf-8?B?N0hFWUlSRGRwZGhLK0tPYnQxK0grYlZyR2U2UEQ0NE5QZnZiUHNuQXdqZmlX?=
+ =?utf-8?B?ZWZVVlNHa3ZqUW0rc1ZYeStIRDhaeWlRWG5lTzQ0Y09RTmFZaUVhMEpKb0Jp?=
+ =?utf-8?B?K0tPM0RSSURUQ3QrL1lMamlrUmNwOUlFZUtxeHY4OXQ0aURKY1grM0JPYnZR?=
+ =?utf-8?B?K2YwYjgvZkM1bStyd0xhb0dPMVE4eThjUllHZmt4eHFhdU5JaDJsT2tnL1hN?=
+ =?utf-8?B?RitWT0x1Skc5U3lVQzNlOGNIWjJtS3M4NFQvcUJuVlNPM1pPYjNndkZGaXBG?=
+ =?utf-8?B?MjJ1QUI0S09DOEowdmVmRFJ1ck9FTlJMZ0N1QVFRZnJOOXRDOHhXcHVUaTdM?=
+ =?utf-8?B?MmFLQ0l5WXd2M05VWlcrVFZFSDRncWdCVlBpekhUTHByUUlSS2N0cUUxVm13?=
+ =?utf-8?B?SmRFcHdEVFpxbjd1Mkp0WnFXSE92WGZ6eFBmL0owU1YxbUw1UWJwVmRaYXhz?=
+ =?utf-8?B?SEYrL2g0bVVjNktObGEraG1OeEs1YkcweU1uNElUYmFXVFk0dkZIRUhIby85?=
+ =?utf-8?B?eHl3SUxIbk1MZHMzYUg5NWsyRjFRRVJCZ3FRVGtSM1lNeXYzZmhNMVhMUWgz?=
+ =?utf-8?B?TktSOW1zb2RqMmgrOEMvTjhHZEJMZFh1bUtGUEh3c0JHa244a0ZTUlA4NGpQ?=
+ =?utf-8?B?OERHZFBBQ1ozSUFoMTdWaTZCTVZucWNMZGYwbnAwejg1REZ2Z0RDMkRoV2Nh?=
+ =?utf-8?B?U3BpK3RldjcycWRuME9vNWVQYWV6MTNmcGZHZUtOeENqZ1pkOG1oZzVRemZG?=
+ =?utf-8?B?MUVLZFJMNUR0UHJlTTdjT09FV0RNV2pyUlNFc2hLSkxpcW9OVVA2aHBXazNI?=
+ =?utf-8?B?T2R6cDRCUVkyZHNLNTZzY1d3bk50MEJjRjVPc0FXS0dNbnJ4dS9WbHdFdDVs?=
+ =?utf-8?B?WUxHRWdjTGxmRWtxT0NMcGJkUjRxQThRNjZoR2t2bCtuQXcrOStnaUh0NDVI?=
+ =?utf-8?B?S1BGVmFQcWxWTVFMMmo1c3ozTHVFTXFUS1JBZEVvZW5zbnpjQTRmL3lnaWZN?=
+ =?utf-8?Q?NuMo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QXErM1pZTnMzNHp5WDZlMjhHa1FudDc1L3ZubFJUSEhEd3JqS0pnZ3RQd1M2?=
+ =?utf-8?B?RXgrUGphbGdVTDVuUzRSTlhsVkxSS0ZXUHVrR3dPMUpZT0JoTkpiTEMxZDU1?=
+ =?utf-8?B?cFhQeTRKemx2cVhTcDJ6WWV0VmxQR1ErWEZ5WGhKcG0yNkRmc1ZrUWdQV0FS?=
+ =?utf-8?B?bU96dGEwWXRHMGpDY2tjTDdZWVhMNUlJQlJOdFAxb1M2aDJEc3VNbWJSUlUv?=
+ =?utf-8?B?ZDFkZXJRbzRiMGl1RDlEdlozTzhjbXhHaUVMYSt1NVRIRXRRRXRvVjNDSkhK?=
+ =?utf-8?B?QUp2VGp0bUVOQ1pVLzdZR28wYU5QaWp0YXovTkZxNTY3WWlLY1VTV2d4cFlJ?=
+ =?utf-8?B?aTlpU01aLzVwYjc3MWdESGU3S1h5ejBRZHIzZmNsWVZYcU16dy9zb2NpVGZl?=
+ =?utf-8?B?eXNZNUppejNqK1ZLdGg0ZURCNWpMbHVIejF6KzBYdDJ0R29zajVSb1BSWnFz?=
+ =?utf-8?B?UHpJU2xhZXBmZ2pLeS9CWldjVE56UUd3clZ6aFZ0OGxxV0JYYkRoWUNTc1Nt?=
+ =?utf-8?B?RkJkWUpKS1JaejJITVJyWG5WQStOYWpYNDdHazYzZUZLZmc3UWs5Y3JUTUVV?=
+ =?utf-8?B?YXl0VGthWTgyblpoVEdGMWZXM2hPcEFTaFNlTzdnNFcwbkMzVnpmZnhsVVh3?=
+ =?utf-8?B?TkpJQXlrWkRPTXUvKzE5L2t1L014TE5yOXV4VmIveGxJQTVxbzhmSlNNdlVL?=
+ =?utf-8?B?QlZmcmJTQVNaanB1K2hyZCtlYmVYNElDaTRYWHEzdEc3M1NvK2gzeDVaRjg5?=
+ =?utf-8?B?OWFuRWJoM01NQnNKVVczMFlSMlRDNG9yN1BnUUdhQ1Zva0NBVWZ0MEZqYVEz?=
+ =?utf-8?B?OTdJVTdrdDlVZ3ZZYmVIV1RSN1J3T1h2a1d5b1NUOGpPdnEzWWc3YmRVdWZ1?=
+ =?utf-8?B?aEtERkYwT3kwTkVKOHlNMC9kenFJNW1Pa3NBWWg2aElCZ0dKZXNlaHI1cWtq?=
+ =?utf-8?B?R1dBRzFIQ3l4Vng2VWNtNmFETXEzekJIVzlZc1hRKzc0N2lZS3VRY3YrdFA1?=
+ =?utf-8?B?eldPanp0L2xheWhaY0dFNU5IVUt0M1FOUWVNMFFYVmpoREtSeWlVUzRob1lJ?=
+ =?utf-8?B?VVo0ZHh4elU3ZXRCRDJyeGluWjZtSFJ1eXFYSDVjTHUzQlZ2YW5WNTVURGIr?=
+ =?utf-8?B?UW5ZeWk4SUpLWllOaTdGTVRaQUJmSGxJVUFYYng5WWFwbGordVVUSmNGTy9E?=
+ =?utf-8?B?bHRGZFdZcGZMa3dCSEo4d0pJMWFmS1RISFkyYnh5YXdNMDRVQ3JqNzV6eWcr?=
+ =?utf-8?B?NVV6bVlLWnJqSjJKdWZma0czS3g4czJSem5iazhzdCtibHgxbjVyKzFFVXRj?=
+ =?utf-8?B?TGZnVFFrYjk5bGhhMW5ubndsclJ4eDlUdlNxMkx4RXZlRUdBNGpjakJzYjlK?=
+ =?utf-8?B?c2dZakJJZGFwazFhek5scUNOWTVRYnFDNUsxT1lSalZ5REh4aU9xTWJCenZu?=
+ =?utf-8?B?S1hVM1pFMFNUT2ZFbUxVWUkrLys5ZzZwZmNZbGdnS0N4S3ZnWFkyVEZSY2Ez?=
+ =?utf-8?B?UytNMXVEU3RJQ2NDTGkrNDgwdTZCOXVDQzlMYkpvOTNRa1dCaW9LZmJaM3FQ?=
+ =?utf-8?B?RUJqSnJMd1NHcXZ2T05ENnBmbTdnVVNOUU4wN3FDWkRHcmhPNldSSTZGRkUw?=
+ =?utf-8?B?RzRsWXM5Q0Y4SHQyeTJUY2ZsekpKdUxERVBWUmRHZ0pFU3RYcDFhei9GWlI5?=
+ =?utf-8?B?ajZBTWh4OE11TGVKSEdSZXFMRGI3RzVlSWRXb1JWQnh1NGZJYnVDZlprYWw5?=
+ =?utf-8?B?dkxldUhzT0FSWTdNdE5VQXNEYUtNR0ZtT083MDZSUW5JeWN6T2ZpeFRoV1R2?=
+ =?utf-8?B?OFhjeWlDeDFHTm1tWnVqTUR3bEpHdlYxY2lhVGZnZG9yMjJNbWlwZ3hjR0xZ?=
+ =?utf-8?B?NU9wKzI4MGhqMkJ1K3prS3FXL0ZqcXB1dTk1Mkc2TWRKaW5WZlFaaHZaVXBh?=
+ =?utf-8?B?SEZXUTBUVEt2ZEdNVHNYT2tnTmNGVWo4V2d2VGMybW1YT2NjdEdmbTVhQmMz?=
+ =?utf-8?B?WTZtRGM3cG1jZ0lNMk9NTm5wZC90K1pwN0VaQ0VTc0JJSVowMlo2QVNsN0FY?=
+ =?utf-8?B?MkFDVk5aVnpZYU5XK2RMSlhHVFU0RGQ4SzIxdnIyTzZtZjUrZzFTNjVRbmpJ?=
+ =?utf-8?B?QnQvbVJHbXJwSFJ6Uys1QnlEK1hJT29ZOHV5TFFEK3ZBU1hFM1Zid3BIRU9o?=
+ =?utf-8?B?TFZ1RHk4bUNLSjVvNmQ3VVZWdklIQzljMU1yUTNpN2ttU0pTVEU5cmhNR25s?=
+ =?utf-8?B?R0ZHN1FMNjhRSG11MFhhU05IbVNjSWgwNWd4Z0Y2NHBheXdJV3ljb3NDc2hD?=
+ =?utf-8?B?dFhHbVVTTGdCNlNla2h5eTdpU0ZQYmVMdTV2K2ZYaFNvRzAwNjhrZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5155fb0c-4760-40b2-86d3-08de575227e7
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 11:59:10.2530
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6UuguOI4Bu9xUm1z6u29BooNF/zho3rd9Ylez1OGk/S2KhYuNz/PhNylkb/P4Rfg6gEEZggAhidNQytolWf4xQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7427
 
-On Fri, 16 Jan 2026 07:20:44 +0100
-Dirk Behme <dirk.behme@de.bosch.com> wrote:
-
-> On 10/01/2026 12:58, FUJITA Tomonori wrote:
->> HrTimer::expires() previously read node.expires via a volatile load,
->> which
->> can race with C-side updates. Rework the API so it is only callable
->> with
->> exclusive access or from the callback context.
->> Introduce raw_expires() with an explicit safety contract, switch
->> HrTimer::expires() to Pin<&mut Self>, add
->> HrTimerCallbackContext::expires(), and route the read through
->> hrtimer_get_expires() via a Rust helper.
-> 
-> 
-> Do we want some tags here? E.g.:
-> 
-> Fixes: 4b0147494275 ("rust: hrtimer: Add HrTimer::expires()")
-> Closes:
-> https://lore.kernel.org/rust-for-linux/87ldi7f4o1.fsf@t14s.mail-host-address-is-not-set/
-
-Make sense.
-
-> Some quite minor nits below (which might be fixed while applying?):
-> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Mon Jan 19, 2026 at 11:03 AM GMT, Andreas Hindborg wrote:
+> "Ke Sun" <sunke@kylinos.cn> writes:
+>
+>> Replace unsafe core::mem::zeroed() with pin_init::zeroed() for
+>> queue_limits initialization.
+>>
+>> Signed-off-by: Ke Sun <sunke@kylinos.cn>
 >> ---
->>   rust/helpers/time.c         |  6 +++++
->>   rust/kernel/time/hrtimer.rs | 49 +++++++++++++++++++++++++++----------
->>   2 files changed, 42 insertions(+), 13 deletions(-)
->> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
->> index 67a36ccc3ec4..5be4170dc429 100644
->> --- a/rust/helpers/time.c
->> +++ b/rust/helpers/time.c
->> @@ -2,6 +2,7 @@
->>     #include <linux/delay.h>
->>   #include <linux/ktime.h>
->> +#include <linux/hrtimer.h>
->>   #include <linux/timekeeping.h>
->>     void rust_helper_fsleep(unsigned long usecs)
->> @@ -38,3 +39,8 @@ void rust_helper_udelay(unsigned long usec)
->>   {
->>   	udelay(usec);
->>   }
->> +
->> +__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct
->> hrtimer *timer)
->> +{
->> +	return hrtimer_get_expires(timer);
->> +}
->> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->> index 856d2d929a00..2c6340db1a09 100644
->> --- a/rust/kernel/time/hrtimer.rs
->> +++ b/rust/kernel/time/hrtimer.rs
->> @@ -224,27 +224,39 @@ pub fn forward_now(self: Pin<&mut Self>,
->> interval: Delta) -> u64
->>           self.forward(HrTimerInstant::<T>::now(), interval)
->>       }
->>   +    /// Return the time expiry for this [`HrTimer`].
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `self_ptr` must point to a valid `Self`.
->> + /// - The caller must either have exclusive access to the data
->> pointed at by `self_ptr`, or be
-> 
-> Would "... pointed to ..." be better than "... pointed at ..."?
+>>  rust/kernel/block/mq/gen_disk.rs | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen=
+_disk.rs
+>> index 1ce815c8cdab0..4620a86a88dd8 100644
+>> --- a/rust/kernel/block/mq/gen_disk.rs
+>> +++ b/rust/kernel/block/mq/gen_disk.rs
+>> @@ -107,8 +107,8 @@ pub fn build<T: Operations>(
+>>              drop(unsafe { T::QueueData::from_foreign(data) });
+>>          });
+>>
+>> -        // SAFETY: `bindings::queue_limits` contain only fields that ar=
+e valid when zeroed.
+>> -        let mut lim: bindings::queue_limits =3D unsafe { core::mem::zer=
+oed() };
+>> +        // `bindings::queue_limits` contain only fields that are valid =
+when zeroed.
+>> +        let mut lim: bindings::queue_limits =3D pin_init::zeroed();
+>
+> I think we can just drop the comment now that this operation is safe.
 
-I think that both are understandable, but I agree that 'pointed to'
-reads more natural here. I'll change.
+Indeed. I had a look at all the patches and I think for all the comments ab=
+out
+zeroability can be dropped as this is now checked by the compiler.
 
->> +    ///   within the context of the timer callback.
->> +    #[inline]
->> +    unsafe fn raw_expires(self_ptr: *const Self) -> HrTimerInstant<T>
->> +    where
->> +        T: HasHrTimer<T>,
->> +    {
->> +        // SAFETY:
->> + // - The C API requirements for this function are fulfilled by our
->> safety contract.
->> + // - `self_ptr` is guaranteed to point to a valid `Self` via our
->> safety contract.
->> + // - Timers cannot have negative ktime_t values as their expiration
->> time.
-> 
-> ktime_t -> `ktime_t` ?
-
-Of course, I'll fix.
-
->> + unsafe {
->> Instant::from_ktime(bindings::hrtimer_get_expires(Self::raw_get(self_ptr)))
->> }
->> +    }
->> +
->>       /// Return the time expiry for this [`HrTimer`].
->>       ///
->>       /// This value should only be used as a snapshot, as the actual expiry
->>       time could change after
->>       /// this function is called.
->> -    pub fn expires(&self) -> HrTimerInstant<T>
->> +    pub fn expires(self: Pin<&mut Self>) -> HrTimerInstant<T>
->>       where
->>           T: HasHrTimer<T>,
->>       {
->> -        // SAFETY: `self` is an immutable reference and thus always points to
->> -        a valid `HrTimer`.
->> -        let c_timer_ptr = unsafe { HrTimer::raw_get(self) };
->> +        // SAFETY: `raw_expires` does not move `Self`
-> 
-> Missing period at the end
-
-I'll fix.
-
->> +        let this = unsafe { self.get_unchecked_mut() };
->>   -        // SAFETY:
->> -        // - Timers cannot have negative ktime_t values as their expiration
->> -        time.
->> -        // - There's no actual locking here, a racy read is fine and expected
->> -        unsafe {
->> -            Instant::from_ktime(
->> -                // This `read_volatile` is intended to correspond to a READ_ONCE call.
->> -                // FIXME(read_once): Replace with `read_once` when available on the
->> -                Rust side.
->> -                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
->> -            )
->> -        }
->> + // SAFETY: By existence of `Pin<&mut Self>`, the pointer passed to
->> `raw_expires` points to a
->> +        // valid `Self` that we have exclusive access to.
->> +        unsafe { Self::raw_expires(this) }
->>       }
->>   }
->>   @@ -729,6 +741,17 @@ pub fn forward(&mut self, now: HrTimerInstant<T>,
->>   interval: Delta) -> u64 {
->>       pub fn forward_now(&mut self, duration: Delta) -> u64 {
->>           self.forward(HrTimerInstant::<T>::now(), duration)
->>       }
->> +
->> +    /// Return the time expiry for this [`HrTimer`].
->> +    ///
->> + /// This function is identical to [`HrTimer::expires()`] except that
->> it may only be used from
->> +    /// within the context of a [`HrTimer`] callback.
->> +    pub fn expires(&self) -> HrTimerInstant<T> {
->> +        // SAFETY:
->> + // - We are guaranteed to be within the context of a timer callback
->> by our type invariants.
->> + // - By our type invariants, `self.0` always points to a valid
->> `HrTimer<T>`.
->> +        unsafe { HrTimer::<T>::raw_expires(self.0.as_ptr()) }
->> +    }
->>   }
->>     /// Use to implement the [`HasHrTimer<T>`] trait.
-
-Thanks for the review!
-
-
-Andreas, do you like me to send v2?
+Best,
+Gary
