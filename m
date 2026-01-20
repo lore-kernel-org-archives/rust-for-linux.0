@@ -1,48 +1,48 @@
 Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424E53431FD
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B60F34889F
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768898327; cv=none; b=lx687RTpU1+WICmF4DGch90TBIqkoYFyxUuD5Bpe5VQjIAkYGOvSluZ5+ANkZxoRw1wHzO5lGnUDIkKgxqDygCxldX5CGwZezn1R3NtHFA9JUl5LkZdwwJeixJzkFlqvZDgFgpbW3evzy8KkXuUag67RdDM4YgFFKf971BNOIyw=
+	t=1768898332; cv=none; b=k2FAhsM4ZHX3/VnEvG3HPqaSJkz2hk/KfGaIb82tZkYbAEHn/cUsv1nEMoFHccO+yhF6z1m73aUjxAuPOP58LjuLqK1o9/HGGTzPtjQYlFWRcgegd67n+7JhaE9vU/zcl+lAQ0oNoZHEr/bIcz9o34FQz9kgAkg4OY4Xu9WNVAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768898327; c=relaxed/simple;
-	bh=DgiIvqia0JAzNsDIwf3e1W2V3JY6TgGiAqvtqk3JkIU=;
+	s=arc-20240116; t=1768898332; c=relaxed/simple;
+	bh=lXR3Ma+I33V3Jf/pfylAs8varbYnhbu9R4uU93f7VPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtwuIu3NAMLmWcGj1U6x5nigaCJQr85ZSqWgp7/OxchzAgYdLB5vkM0G1dpl5to1D9d3x+76MiGThVOtnzEHr78BwveXlAomU0RnJG3o2Ypju4KPUrBvkDx8a9z5Yx9NeeLOcliwMZJMmP8JarbRgYqm6O0B7zJ14HrKqtAH06U=
+	 MIME-Version; b=mNQho4l2H1NJ+2n+5VbNViN6RjKPQQl7J/c2elaAdevNrp1/jhjjzSqEi58WoJJsiVodSOpSj7rwJG5OAxKjUuTYwFoGjId1OdYIFG+mm1HQHBKYh6h6lkmDn5NH6rzaDys4L5owXI9dkGarP/s1ec2b0D0nd5bGp0JyOrspPRg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a7786d7895so1023745ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:38:46 -0800 (PST)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29f2676bb21so51347405ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:38:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768898325; x=1769503125;
+        d=1e100.net; s=20230601; t=1768898329; x=1769503129;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=f8uSh+dzlQQyHQlzcimRQKaFwXy4NPjwBWSrPuISq7s=;
-        b=MIRbN1Hz5iwavRxvFoPfq8ubnX3PYqArhZb65LinMVz49i53nFV/L+Kc7ouT0840RV
-         qcpWg8JwoiU9d4VllVBQKoN+VOSjj6sW/ikdFHyGJw/YR1BJ1P9xOVI26sRHLEVDFuh2
-         cQwa2Mk8fiGEjhkCwf2xyARvSU4RhyCxtcxgqu9A/JO1cEETDs3bYMvbmGruqUC5IpjK
-         Ec7Zc8ej6dfFYbgx7lwn/Pjo+yF46zZZNY1W7N814ry9gvRTc3pzdNNsjOyB0wQh9yuC
-         pgpzbw1HVxIxfIrG9WtQ+X+4rodcm4nzm0dzK9PQO8yq2KjFPDaORhuQ6PhKScoAFBk+
-         QHKg==
-X-Gm-Message-State: AOJu0YyU5UGmcSwL2NbXSJ1NXtST0ss8qG/PF6jhTC8A0ZEU73HQU9gg
-	Fo88/e8vV/SnEyeFApNIbFEqVgRDjRQI9kAze2BC/2kUs+PFp6AsDJ6o47fTZg==
-X-Gm-Gg: AZuq6aJG51cXvZmCDg19RIhe20IF5Ztk4l6fsgiA2CPmmvuiKfWzj2VJ+YtoLuXnLjI
-	a3K6IjLB5XKS60kXOmJKDtqlVcgc805KmE1SYRkjf0vioDbIiRrTBJc+JUH45WsPeHTeqZQiLlB
-	yycZJbjtDCK4j9kXNvQeJH/o6GOvz57aqs2qnCQRDhR0MbcaOyFOqKlsB4pZZPcWRuAH009M8IT
-	PJmWS8AbYiUWYbttWy+8nz2Xp/mSEkK8aIxbxq42BLwdrU7rSeInECDdGPdX9nXBbpSh706mjBW
-	ZMAdZ2ofvkcGNWR+9cQhfFVPqYiLcEzLNN6eLSO0lFcp0LRLBghIBjfILriIdv4sLCcuMsdYknP
-	CSUX2L+DZB29OrpFwuh4nhj5Kz+WfnXKDDyjxg/mQDaQ8RUJixoHquuJAwLWsQMMDs8E4AKeRNU
-	VnIrVqvPZiv0+Shmv2J3k=
-X-Received: by 2002:a17:903:124f:b0:295:6e0:7b0d with SMTP id d9443c01a7336-2a718946967mr118843095ad.56.1768898325074;
-        Tue, 20 Jan 2026 00:38:45 -0800 (PST)
+        bh=ai8xrbD1D9tiWYgy1snG9o9/fCZi/EtirUQvTWRvH8E=;
+        b=b9sq1ToySMalXFyrtoZ75dXvPk2HsiWxJGMWC4OYLLihAV2b2fwYfzaZCXVrcAVOMp
+         z4eF0Kmt/+6rVVPkaNdNMmpxVkKZ+YJc/fuRzDo8pjCp0fm5WeAf1lbO/W85f2872A05
+         PnEh8aBXdwsFvJgmwlk1k8Ir/fszMqkE7+HsHT1SqYOZ7GKCD5n9B0+G9Rjr9c7vQp1Q
+         y2i8ZrMsciE1R0f8WA7ySRROqdDLsGpFbhXI4nhKXaWsCTGWs7u6DsFfzvEkjoNmNuEh
+         EeaHgsyC+UKUrLm2bg/lGkNfEQrEKfs1QS6KKFbPjDe254hBREJ/8pF+iPtuhrPMoV9n
+         QY7A==
+X-Gm-Message-State: AOJu0YyDRehta2fetA0B65+WRgBkR518lcTXCqOTe37OXvu4V8bJBox6
+	CBX8d9mi7XZZMXjvIL4iVR6PZzK93nWEC6mgUfgYMfbsmzT5AxA9VNfTO69E3Q==
+X-Gm-Gg: AZuq6aJD09SzKzJrlqNHb0o2wXj6XHNg3gqcm8xHeAvIceEgBK7e9LehmFekvRHE2NI
+	5dDDbrqCHKQS33gJ+Dzj8Y5Fo5zX51nUH1N8oHCLBpKVDEXE9Zw4tmd7qP90ilBgXjEN9KHvVvl
+	kYXdzRFHVOOSEs7AZSlyiyg3w6AJlOvc3KJ2WyRwHYjdf9KfUiogPBbZnRJelrC9nxOHc4TWUR2
+	ZTAwBpwd74kAoRAuTL625EmpqNxL0Lvs9oyqs54q90XqEhzFxYOrVPNTanafmbxfor9llnl4VkN
+	jtKW6/2yW+LOaFQVomDv19lImIL8RiLxT3F35ADGK9olvAJ/fGlHZM03Q0W/m7TAKUhxzQlxvUP
+	aUpUu9oTKwEwALA1frKci7xMCOPzb/oHqK7mD7oNOr30urqVK9v3Hxit3d26/XHI9V6lmn7OHOc
+	gh86GnJd6g9gPBGD6Fl20=
+X-Received: by 2002:a17:903:247:b0:298:3892:3279 with SMTP id d9443c01a7336-2a71887c4a7mr137423255ad.17.1768898329429;
+        Tue, 20 Jan 2026 00:38:49 -0800 (PST)
 Received: from localhost.localdomain ([45.142.165.53])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190c9edesm115114625ad.23.2026.01.20.00.38.40
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190c9edesm115114625ad.23.2026.01.20.00.38.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 00:38:44 -0800 (PST)
+        Tue, 20 Jan 2026 00:38:48 -0800 (PST)
 From: Ke Sun <sunke@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -55,9 +55,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH v2 2/7] rust: block: mq: use pin_init::zeroed() for queue_limits
-Date: Tue, 20 Jan 2026 16:38:18 +0800
-Message-ID: <20260120083824.477339-3-sunke@kylinos.cn>
+Subject: [PATCH v2 3/7] rust: block: mq: use pin_init::zeroed() for tag_set
+Date: Tue, 20 Jan 2026 16:38:19 +0800
+Message-ID: <20260120083824.477339-4-sunke@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120083824.477339-1-sunke@kylinos.cn>
 References: <20260120083824.477339-1-sunke@kylinos.cn>
@@ -70,27 +70,28 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Replace unsafe core::mem::zeroed() with pin_init::zeroed() for
-queue_limits initialization.
+blk_mq_tag_set initialization.
 
 Signed-off-by: Ke Sun <sunke@kylinos.cn>
 ---
- rust/kernel/block/mq/gen_disk.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ rust/kernel/block/mq/tag_set.rs | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index 1ce815c8cdab0..c8b0ecb170827 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -107,8 +107,7 @@ pub fn build<T: Operations>(
-             drop(unsafe { T::QueueData::from_foreign(data) });
-         });
- 
--        // SAFETY: `bindings::queue_limits` contain only fields that are valid when zeroed.
--        let mut lim: bindings::queue_limits = unsafe { core::mem::zeroed() };
-+        let mut lim: bindings::queue_limits = pin_init::zeroed();
- 
-         lim.logical_block_size = self.logical_block_size;
-         lim.physical_block_size = self.physical_block_size;
+diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+index c3cf56d52beec..dae9df408a862 100644
+--- a/rust/kernel/block/mq/tag_set.rs
++++ b/rust/kernel/block/mq/tag_set.rs
+@@ -38,9 +38,7 @@ pub fn new(
+         num_tags: u32,
+         num_maps: u32,
+     ) -> impl PinInit<Self, error::Error> {
+-        // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
+-        // all are allowed to be 0.
+-        let tag_set: bindings::blk_mq_tag_set = unsafe { core::mem::zeroed() };
++        let tag_set: bindings::blk_mq_tag_set = pin_init::zeroed();
+         let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
+             .try_into()
+             .map(|cmd_size| {
 -- 
 2.43.0
 
