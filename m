@@ -1,219 +1,118 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EECA3A4AD4
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 07:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DD93A8FE6
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 07:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768894223; cv=none; b=JqYOytpGtSqvIOkGbtJfBDiab29am9ncztYqQMuMoA63J3QhN3I05zc0X8CUFza3IUnAeN4jG8GkIEnzyfxdJUcGE9+eXCMK39GZx5EmObSBwmgF49GxvCWX8hVR5n0pxs69bOOJQH8on5bTNcG6eEU9ohGi8mNp1585GHOJUJI=
+	t=1768895763; cv=none; b=T/2C0wdHb1+z/2SFbFpXnwqB+PFSQKQBK57iSVyq+3rn0AGDNN6jQ4X2/JwwC+aXbiSLYcTrDksxnx+p66OWznu1Jrsj15B3oUoWfc55JXQEaXznRbKLlfomjEbJJW/2PjR9kpBbmJrJ6UqPMVkPUmkO5ach05Heve33+9tIPtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768894223; c=relaxed/simple;
-	bh=uLD3Kfhs9vF3FJWpTh+h1tfUYtHq+WcBdY8x474VHM0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=saSL4MqZrD1oP+S3wU4Zc1pwUKs47JCnfB/pb/A7fAyYatQ75O73eYBnUKE1LMT3TyFDZX8469FyMoGTH4Ya7ig7jDAWP7GJl4pRfkvH4EmPebbhsBuaewHqDQQWIZSsNoLPoeW6q4+HjojT/8Vm99YQA/7v05BT83s5ZBzjxRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KtOk5rRo; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768895763; c=relaxed/simple;
+	bh=Z1ON5Z0cSM7bM+AviLwpLgIcyBgMR16fKcb6Hq54fjE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=VncK+S8D3dzUQikqqXRwPmbl7kFxgINp4eZuT2ZsUTdXKCBhiheHb6Z+QSavPvGbcF8xBSNLuQi2IsghT291rhfCYahx6hMaL8bIxkb4B7ngXSNCtdClX6Pk2XWmENf6e2hewgQXctia40RpNtA3NNaZ47DxPOTXku/i4rX1B4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q8bZIPoD; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KtOk5rRo"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-81f478e5283so4420742b3a.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 23:30:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q8bZIPoD"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430fcfe4494so5157713f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 23:56:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768894220; x=1769499020; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AoPJzK2LY4Hk5//MGfrl2FrP1dHV0q7YgBR1i+LH4To=;
-        b=KtOk5rRoq4kbGBWjUms1uU4VYMfsW7NMsE88D8rRheUHp1L5y1bSECjC/9QRPzdpyI
-         uZbHFl+G+MOkx4bf/7KZpSUmbG7Y21fgbIYriXrVqHuwSuH8UJqSn8VNl6bHEXJk+aLw
-         /54hXfzcj06MGa02BSKmZI7uqR+vr0kmBhBjJxQra/Hc80Ti8FCfvKwx1m6JIxxt1Ukm
-         dao/9XM55YEjqm374l+JcHOHGokimwgqcylUQwN9ad5Hvz3HEy7Y8/eyJ/q/AFuHdLQM
-         q9t0ETi1lCduLy75oE51Qlr/aiaFNCDNV7cph8wdnsj7W6zxgkSRXaYaHZEq+yIVUVvX
-         I7gQ==
+        d=google.com; s=20230601; t=1768895760; x=1769500560; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aCnJ8y0UYrlkUlqd4IHCJ2AeMARemKBN0GlGR7eCJus=;
+        b=Q8bZIPoD/eJUVL1Vge/90aosdkyJVfGVzxyGmGRMTcLDioR9/Tq2pIo/J4HoFiS3TC
+         3n+i86cfrxEHK2n0SDsQBC4Y90qgHe7nmGwhg+i1xDnG/nwrcGO4RNQn4SHReH3o8QTp
+         wunuUQCD+s+KCNE33GWp1e7hksuVAG8Eayd67gKv8wegkFMHJiAL2YmuWBPChouSyxeU
+         GbFLq5RAkRUtLRQPQxN/oiLWXveEsq8b/F7lSvum9xRhCXk/vlTRIA1l7pdDsuM/rxif
+         SPqNtzwNcJ9F2dxzNdiZ5f+B4bXcHHbM2hMaQvh5gM/PJp/eidMJmuK3C6vyqxVLdwN4
+         RQZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768894220; x=1769499020;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AoPJzK2LY4Hk5//MGfrl2FrP1dHV0q7YgBR1i+LH4To=;
-        b=v5h7FfXm+/5LLSF92+82hsBVcgFWiiaOzkIFHLKThcnsOrbr8MOqQp9A+aeYqIjCUK
-         Mr9y+mnl4LHbNpBKD0L0U0usq7dtXAHXtksKmSjVLxPcdPZuh8y4JlBTbJxWxysElKHA
-         +2AaztSWrjkst+aV4pcPKjvmANOmr0T4Qru66nrI21/L/wp2KyapxVhZEj/6yMMqoZx7
-         Gn4wHCuWWGOgD7JdoZIvWmzPBe+tBxRMx+7LS8ytcltGccY0helOMeqjuOdeteCp6+GA
-         qWY1a4wKGWRt3J+E++P4h0ClP2kUp8yKmBxEpo+/OmipOBuI9mw2W+hxdym+7Ruas52u
-         N/Og==
-X-Forwarded-Encrypted: i=1; AJvYcCWxP5aNqoa8xC37pRLOd4BlT/0kWrcXu/kebO+jKHUmi7V3l0GEmj7cFbYhRci4rFO7FKRK4/QX04V6nvXiog==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwobT31h2j3Hr9jrQigkJQjALW4IGQl5ff3xMi7yF80fZdnh3WU
-	fUv36eihjUPUNYba2MrxSI38MKlRydaU7m2NVBf/1J4744vq84FjBRPw
-X-Gm-Gg: AZuq6aJH+X1js3oOqDdC0qfaD4SMna0X6cVa/oQt6AF7BGoLsvdmqruyBhTmYFs/X6t
-	z5CYlkxyhZ/fTq7XnkJG61xRupgwMiIgW3qLm64XFRVa035xeGPWLNVSO3/j6oMalaTAw6tE2/+
-	pscXgiTozE7p2tp+1F3GeN1gmDkj0hwWy3cCFPgoKHbEXgMBN0VZbZ8B/nAel90142iPL2+/0Fh
-	ZXDtbezvmho1eMiuT/1V+sThbvxja3KnM3xBtUacMCupMLgGHtfZeolnI9hoPmhYDf8yS1OBnLY
-	+hJgYqLblXX5JoiXUqM6ewOECxh8cm31dpEA9IUEEYTKH873HFY7AzaY0C7gahJbrJkr2HWlfzy
-	SalbARYXAW+d7CxQ/LPDezIlueACzR6hUBGvh+SfYPcLvoeE+JenbYBMVAPF4BIyIAsMfGW5ARE
-	ty8rkswKXfdQE=
-X-Received: by 2002:a05:6a00:1996:b0:81d:e9b1:b6e3 with SMTP id d2e1a72fcca58-81f9f7f6242mr11721124b3a.14.1768894219641;
-        Mon, 19 Jan 2026 23:30:19 -0800 (PST)
-Received: from [10.0.10.3] ([45.142.165.53])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa10be07fsm11179022b3a.20.2026.01.19.23.30.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 23:30:19 -0800 (PST)
-Message-ID: <867a8e83-421f-404f-b0b2-7995006919d3@gmail.com>
-Date: Tue, 20 Jan 2026 15:30:13 +0800
+        d=1e100.net; s=20230601; t=1768895760; x=1769500560;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aCnJ8y0UYrlkUlqd4IHCJ2AeMARemKBN0GlGR7eCJus=;
+        b=MKQyOmMVMDFv2grY9oPx5S2dO9pDQx/1rJvuTthEpDbBZe41mqYe/ibpE/GfUhRJqm
+         Ho3Xw5XA9LgpKlEGX6CwWy9wc/9dCKRoSqKIR6eNYeYCntQan46/TVQTZjOjf5W9+m9R
+         1lMYI91efnrQgChbGZarewJ7GSBgfYBbQGF3obER9PXlEO801QMuHLOgXfbaMC8PgV1G
+         hZJfD1H28VVw/M/4x65n3Y/ObAGNL59zRKz79trzvUw/dNq0Yb9srnABn/C20mGDGtR8
+         FaOoIB9uupHC4/S6n6omouMa8Huf8tvsSmeNcByHwf8E4ZqVVxtJEwap6Mo1Dg9AyAmV
+         6f/w==
+X-Gm-Message-State: AOJu0YxGWjLrMdvj7/JaNAE/faw4Wp5JbEg0AgVXTCUSxd0HiAsrn2Mn
+	8mPsEl5wK2Ph/l7OaLGmMFzseID3ti+2es2dt53NIuBZCCusVwcdfdY673X0ggQzdHO9Txp2V8S
+	pYp5E82OryrIdrllLKQ==
+X-Received: from wrnv6.prod.google.com ([2002:adf:ebc6:0:b0:42f:b693:9d6])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:5889:0:b0:430:ff81:2961 with SMTP id ffacd0b85a97d-4356a082ebfmr18818918f8f.51.1768895759472;
+ Mon, 19 Jan 2026 23:55:59 -0800 (PST)
+Date: Tue, 20 Jan 2026 07:55:58 +0000
+In-Reply-To: <20260119133101.23708-1-jason.kei.hall@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/4] rust: fmt: make raw pointers default to HashedPtr
-To: Tamir Duberstein <tamird@gmail.com>, Ke Sun <sunke@kylinos.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org
-References: <20260119033006.1453006-1-sunke@kylinos.cn>
- <20260119033006.1453006-4-sunke@kylinos.cn>
- <CAJ-ks9m9HV72MSchSS16FUzKLu9c6Ka2N4zZbg29VjNf8RCLOw@mail.gmail.com>
-From: Ke Sun <sk.alvin.x@gmail.com>
-In-Reply-To: <CAJ-ks9m9HV72MSchSS16FUzKLu9c6Ka2N4zZbg29VjNf8RCLOw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260118142623.1188141-1-jason.kei.hall@gmail.com> <20260119133101.23708-1-jason.kei.hall@gmail.com>
+Message-ID: <aW81DrI7LT1fnLLS@google.com>
+Subject: Re: [PATCH v3] rust_binder: refactor context management to use KVVec
+From: Alice Ryhl <aliceryhl@google.com>
+To: Jason Hall <jason.kei.hall@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@google.com>, Carlos Llamas <cmllamas@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+On Mon, Jan 19, 2026 at 06:31:01AM -0700, Jason Hall wrote:
+> Replace the linked list management in context.rs with KVVec.
+> This simplifies the ownership model by using standard
+> Arc-based tracking and moves away from manual unsafe list removals.
+> 
+> The refactor improves memory safety by leveraging Rust's contiguous
+> collection types while maintaining proper error propagation for
+> allocation failures during process registration.
+> 
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://github.com/rust-for-linux/linux/issues/1215
+> Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
 
-On 1/19/26 21:17, Tamir Duberstein wrote:
-> On Sun, Jan 18, 2026 at 10:30 PM Ke Sun <sunke@kylinos.cn> wrote:
->> Implement Pointer trait for raw pointer adapters, making raw pointers
->> default to HashedPtr when formatted. This provides safe pointer
->> formatting by default and prevents information leakage about kernel
->> memory layout.
->>
->> Signed-off-by: Ke Sun <sunke@kylinos.cn>
->> ---
->>   rust/kernel/fmt.rs | 41 +++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 41 insertions(+)
->>
->> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
->> index b3501a11c7a3c..6052d9f8628bb 100644
->> --- a/rust/kernel/fmt.rs
->> +++ b/rust/kernel/fmt.rs
->> @@ -192,3 +192,44 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->>   impl_pointer_forward!(
->>       {<T>} HashedPtr<T>,
->>   );
->> +
->> +// Special handling for Pointer: default to HashedPtr for raw pointers.
->> +// This overrides the default Pointer implementation for raw pointers to
->> +// use hashing, which is the safe default behavior for kernel pointers.
->> +impl<T> Pointer for Adapter<*const T> {
->> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->> +        let Self(ptr) = self;
->> +        Pointer::fmt(&HashedPtr(*ptr), f)
->> +    }
->> +}
->> +
->> +impl<T> Pointer for Adapter<*mut T> {
->> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->> +        let Self(ptr) = self;
->> +        Pointer::fmt(&HashedPtr(*ptr), f)
->> +    }
->> +}
->> +
->> +// Handle references to raw pointers (needed when pointers are passed by
->> +// reference in macros).
->> +impl<T> Pointer for Adapter<&*const T> {
->> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->> +        let Self(ptr) = self;
->> +        Pointer::fmt(&HashedPtr(**ptr), f)
->> +    }
->> +}
->> +
->> +impl<T> Pointer for Adapter<&*mut T> {
->> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->> +        let Self(ptr) = self;
->> +        Pointer::fmt(&HashedPtr(**ptr), f)
->> +    }
->> +}
-> The equivalent code for Display handles references with a blanket
-> impl. Is there a reason that doesn't work here?
->
->> +
->> +// Bridge implementations for raw pointer adapters.
->> +impl_pointer_forward!(
->> +    {<T>} Adapter<*const T>,
->> +    {<T>} Adapter<*mut T>,
->> +    {<T>} Adapter<&*const T>,
->> +    {<T>} Adapter<&*mut T>,
->> +);
-> Can you help me understand why this isn't a blanket impl like we have
-> for Display?
-Hi Tamir,
+Thanks!
 
-The previous implementation was indeed a bit messy.
+Please send the next version as a separate thread rather than a reply.
 
-I've reorganized it. Please review:
+>      pub(crate) fn deregister(&self) {
+> -        // SAFETY: We never add the context to any other linked list than this one, so it is either
+> -        // in this list, or not in any list.
+> -        unsafe { CONTEXTS.lock().list.remove(self) };
+> +        // Safe removal using retain
+> +        CONTEXTS.lock().contexts.retain(|c| {
+> +            let p1 = Arc::as_ptr(c);
+> +            let p2 = self as *const Context;
+> +            p1 != p2
+> +        });
 
-1. First, add the Pointer trait:
+Please use Arc::ptr_eq here too.
 
-pub trait Pointer {
-     /// Same as [`core::fmt::Pointer::fmt`].
-     fn fmt(&self, f: &mut Formatter<'_>) -> Result;
-}
+> -    pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Process) {
+> +    pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
+>          if !Arc::ptr_eq(self, &proc.ctx) {
+>              pr_err!("Context::deregister_process called on the wrong context.");
+>              return;
+>          }
+> -        // SAFETY: We just checked that this is the right list.
+> -        unsafe { self.manager.lock().all_procs.remove(proc) };
+> +        let mut manager = self.manager.lock();
+> +        manager.all_procs.retain(|p| !Arc::ptr_eq(p, proc));
+> +        let len = manager.all_procs.len();
+> +        let cap = manager.all_procs.capacity();
+> +        if len < cap / 2 && cap > 128 {
+> +            let _ = manager.all_procs.reserve(0, GFP_KERNEL);
 
-impl<T: ?Sized + Pointer> Pointer for &T {
-     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-         Pointer::fmt(*self, f)
-     }
-}
+Calling reserve(0) has no effect. It will not shrink the vector.
 
-impl<T: ?Sized + Pointer> core::fmt::Pointer for Adapter<&T> {
-     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-         let Self(t) = self;
-         Pointer::fmt(t, f)
-     }
-}
+Perhaps we should add a method to `Vec` for moving elements from one
+vector to another?
 
-macro_rules! impl_pointer_forward {
-     ($($ptr_ty:ty),* $(,)?) => {
-         $(
-             impl<T> Pointer for $ptr_ty {
-                 fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-                     core::fmt::Pointer::fmt(self, f)
-                 }
-             }
-         )*
-     };
-}
-
-impl_pointer_forward!(*const T, *mut T);
-
-2. Then add HashedPtr and RawPtr types.
-
-<snip>
-
-3. Finally, modify the impl_pointer_forward macro to make
-      pointers default to HashedPtr:
-
-macro_rules! impl_pointer_forward {
-     ($($ptr_ty:ty),* $(,)?) => {
-         $(
-             impl<T> Pointer for $ptr_ty {
-                 fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-                     Pointer::fmt(&HashedPtr(*self), f)
-                 }
-             }
-         )*
-     };
-}
-
-Does this approach look better?
-
-Thanks,
-Ke Sun
->
->> --
->> 2.43.0
->>
+Alice
