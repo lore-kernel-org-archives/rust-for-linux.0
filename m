@@ -1,138 +1,63 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E404A41C2EE
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 10:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25EA3ED13E;
+	Tue, 20 Jan 2026 10:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768905308; cv=none; b=fnw0th3xEIqGTYzbqoODWPGQLt4gZH4BFrL1boSkNBc8jyP/HG+8o1/qywVN4W2eI6MA25/dwb+82B90X4PRyIA4ARrYQASx1wVvh1TdFiZAOiqwvymz1dVVUeISR2bF9QeBdQNn3ZhkIfbyGdpYdSf0X9l+XoGYEuQUJ4OI3n4=
+	t=1768905435; cv=none; b=ju0XjzEEwvEVR10MSft9ux24g3NITLs2mCJGMOyK9bGfTAcdeoEtFuOM3uosq/QzGZWWJ4eJ1uBPqcYyFS+ol4NPpUXWo0D4Ge6bUjHlPZfMXZc6tlUsW2C14qXPDiUsmtU7jw8QOveNYu6xg/CXFqAtgAoKRa4wzxWPappBlwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768905308; c=relaxed/simple;
-	bh=7177AGAPMaAsse1GpOLDrh5z0fRmMiDVTyg+0N86qpI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=s41TYbEZ9JAUNRNr9fK5WZ0mu9fePuXrKkXN2OXq0ThrQ7tXpAiX5lySgDRgPK3ZtW47OXHviGJy8dmeDyk01m1v9ig7jT1UuJzentIDVSmauXw6uoCZPRKUUliE9TAc73Gt2KpsL32qdSnSbuj/xvjqeEdKKOunab4QbdhfbKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kIFPOvay; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1768905435; c=relaxed/simple;
+	bh=ff8PvoLd27xknveeG6tYVL2fNILWoP3zoakHDhwG9Ys=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=P/vrYShM7PW4Wg7Ng7DMzqWwv3YW8fv0LkOHaWnhgaoWz1AWa0V12IHjB+u+YIGzJ0Dz8Vz+xZeQJ/ofsAfTmyMcVOj4Wd8KUlz4NPh4kWs4hnEeEJWBgcjYG8tKvGgNCHv4+SzU2LYDsVYdq8WgePqJWPfhigt9caq0NoEebsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dlOSIwXo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kIFPOvay"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430fc83f58dso3500821f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 02:35:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768905305; x=1769510105; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=t8zPX3QNCnb1hxlC+O269lFOl5dk4I2c8T66eA2u+oo=;
-        b=kIFPOvaysFe/c94sSGda95y1OUekWMlGftQxOVnBgFK0uWXId2RQDHzCH5KlboBaH4
-         oRFnJNvBEW1CRXs6CSd66ASPDDiuJ5Jpfhbhd3A5KpjXFrlKI+8DuwL03NmZQGA7U64a
-         bM9W6GmXEHaIkwYraZhK74oley8FsP8qy9lhggrjvxHe8OB2kUFF39GK2rFnO+eIKEki
-         KmGp34whCNDRxvSiDgVQbO5+IU3gJBlK8elTUGkoxfEpcr4GsrSr5gtJjSeq1SzZBPR5
-         ND/HZkpOrqiYITeVk0qc1NVZh/CXFNnb7HvpqzP9fUPw6ONH96cGZwctQufzEagg/9kH
-         BUiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768905305; x=1769510105;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=t8zPX3QNCnb1hxlC+O269lFOl5dk4I2c8T66eA2u+oo=;
-        b=VNUB5JrIPI37Ib9a/jrT3wJjgkhCNV/uh16h5Rv1M7gZS6r/mdClVy9OLviRdX7ebC
-         YVeUH//ubGgN65DdLmWSgUyLQs3p75IYnQEZcAep2ZVDruzHzvL05s9V5LAXNqltX1L0
-         v0Tr7rO0rJpyFO8hwzYlMOzhGM9/fsvCuTQjnIJNkzIb623BuOM4MBFGGB7cvl5/r2DT
-         n2gr3q5rdY2l1S+7MnZudImvUh4V0WtHLE7ObWJ/UvMod+yzo+VnQCInsFfZWPitJzSa
-         LUnkCxQCbkn/akPQJEawN7whuoBKu7DFF4e4wv9+wlWoKJ5iVkgs5uPjtmGvcqsmW2d1
-         idzw==
-X-Forwarded-Encrypted: i=1; AJvYcCXvzhM/gSa5dhM2Mo3ECnkRLvWUiw0JWHmHyt+s96hjDI0oZOfGncFbTjxAw8N72z4kjYMgAeIBVYxeysII/A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsYxIcxZ+LusRZFEKHGaFZkQnocYhYS/1W/IxBIbLqNnoygRje
-	tu4j8MeGCBLbm2Dg1a1QOYZ9mlIs08TyzPTNkQODPfJzJ19zpzRscbotqTdtc8PUK97rFitiRZL
-	6v87Z/cA2r2sXiTWyXA==
-X-Received: from wrpu11.prod.google.com ([2002:adf:f88b:0:b0:430:f5bb:5f60])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2502:b0:430:f3ab:56a1 with SMTP id ffacd0b85a97d-43569bcb6d7mr19546165f8f.42.1768905305346;
- Tue, 20 Jan 2026 02:35:05 -0800 (PST)
-Date: Tue, 20 Jan 2026 10:34:58 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dlOSIwXo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC49C16AAE;
+	Tue, 20 Jan 2026 10:37:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768905435;
+	bh=ff8PvoLd27xknveeG6tYVL2fNILWoP3zoakHDhwG9Ys=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=dlOSIwXodDxENXTQ4oe4XMsP2C6ZFlTtGNI46ZMROnGG+sAWC8YO95xnGVTIHYKTR
+	 6BVF341QW9TDTshFp1OomC9KB8OE5iuNMvlOzmcyo3Vw7TqpOFamTFgpMA3BOe2h+s
+	 q8XyL6gan0YTUnKr5LCvVuTJk0sE3myDAA+xI9oZX9S0lzt3nod/q61rIYicCULAxk
+	 R1lSHa2wgFsFClrENX/zlBoeBI3Mmh2f4wmYHr1uCrERzi+dOvOHepGuN3GXzp/p1E
+	 64x/Ta8PgpIqUd3Qn1gpa3zneWtC9OUiOypwCy9/Bq3EdK6BaoSU1K6QuyrGyn3wBK
+	 CMe45qn4syJPQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAFFab2kC/x3MMQqAMAxA0atIZgNpoQpeRRxKEzVLlVREEe9uc
- XzD/w8UMZUCQ/OAyalFt1zh2gbSGvMiqFwNnnxHzhMet+EemTBtq5jkdGNPzMGHXkLHUMPdZNb rn47T+36xCox8ZAAAAA==
-X-Change-Id: 20260120-tyr-pad0-coherency-70dd5257e56d
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1912; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=7177AGAPMaAsse1GpOLDrh5z0fRmMiDVTyg+0N86qpI=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpb1pTdZHkPDO1zexExeex9rmm6zlMr1egCXquP
- NEYbKmkE8eJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaW9aUwAKCRAEWL7uWMY5
- RkKHEACS0z5V0pJCYH4Oao4jlIyfX0Qe43IGGJKYVDlO/ypO91T6aeKcAyGgXWroP92hcBBlVpJ
- l5uVFzlS8j1AuruaqDWmMepdYtNmamkWGn9oYaj2MBT0aW/bJ9lOISl3ongSHzFhqAfjJkuPNM3
- 31qCthossofk62JQctMZOv7Q9noMgRcjLh7loImUvlzxGaZM3b8bLQnk13CfJOB5UesjSdWZGjs
- bwzvoo9K/lPLpfEIBVLsbbmnI8N4b/DSvFtoQ73UYOLq6fx5wFkqR5GkpIYrzX8CazvuvkECH5Z
- Q65ROTehPnzQnMQfn+s6e6JZWaaRqa1l9KwsSZEhexqm4LG6amTh+DqYlfCjdGltsErZI9C96xu
- VVWym96oF5hHK0aVwSaSNNxz8NncM2KkIzGZ4/yEZpXMB0kO29mh+2IHX/TUbgPaSjXNRIeO6hE
- iPVU8OV5b9G07qkTzMPzx6J0nMVoW6LMb7biiZyymX6jB8iRhTi/A0s6P2I4LrqQHRr9VFW0sTA
- QPcf6ulLf2JssfG9vDrIATmYwj+SqeoFONfTr/vpR6u4zj8jfupE3FRrCobj5QzRgj8k9mjbe/m
- h5noI44ladav7ZWcVw8jm8IvVjTzYG3EgWAciEHPB3kp5y5Ptr7Vz26V2odDE+B0ZRSNG3aq59v FH4OgHqCp8W9TYw==
-X-Mailer: b4 0.14.2
-Message-ID: <20260120-tyr-pad0-coherency-v1-1-91f40e56c67a@google.com>
-Subject: [PATCH] drm/tyr: rename pad0 to selected_coherency
-From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>, 
-	Deborah Brouwer <deborah.brouwer@collabora.com>, Danilo Krummrich <dakr@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Jan 2026 11:37:12 +0100
+Message-Id: <DFTCN53K0NOW.3N95KVYE3Z1JC@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] drm/tyr: rename pad0 to selected_coherency
+Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Deborah Brouwer"
+ <deborah.brouwer@collabora.com>, "Mark Brown" <broonie@kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+References: <20260120-tyr-pad0-coherency-v1-1-91f40e56c67a@google.com>
+In-Reply-To: <20260120-tyr-pad0-coherency-v1-1-91f40e56c67a@google.com>
 
-This applies the uapi change in commit ea78ec982653 ("drm/panthor:
-Expose the selected coherency protocol to the UMD") to the Tyr driver as
-well.
+On Tue Jan 20, 2026 at 11:34 AM CET, Alice Ryhl wrote:
+> This applies the uapi change in commit ea78ec982653 ("drm/panthor:
+> Expose the selected coherency protocol to the UMD") to the Tyr driver as
+> well.
+>
+> Once this is merged with drm-rust-next, this kind of change to the uapi
+> struct is automatically reflected in the Tyr driver's GpuInfo. [1]
+>
+> Link: https://lore.kernel.org/r/aW8-oH7dtp-OTAZC@google.com [1]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> For drm-misc rather than drm-rust.
+> ---
 
-Once this is merged with drm-rust-next, this kind of change to the uapi
-struct is automatically reflected in the Tyr driver's GpuInfo. [1]
-
-Link: https://lore.kernel.org/r/aW8-oH7dtp-OTAZC@google.com [1]
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-For drm-misc rather than drm-rust.
----
- drivers/gpu/drm/tyr/gpu.rs | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index 6c582910dd5d93006ea0ba10f876a487b156e313..fb7ef714540218f7d9b742021af327e1467076f7 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -8,6 +8,7 @@
- use kernel::prelude::*;
- use kernel::time;
- use kernel::transmute::AsBytes;
-+use kernel::uapi;
- 
- use crate::driver::IoMem;
- use crate::regs;
-@@ -34,7 +35,7 @@ pub(crate) struct GpuInfo {
-     pub(crate) coherency_features: u32,
-     pub(crate) texture_features: [u32; 4],
-     pub(crate) as_present: u32,
--    pub(crate) pad0: u32,
-+    pub(crate) selected_coherency: u32,
-     pub(crate) shader_present: u64,
-     pub(crate) l2_present: u64,
-     pub(crate) tiler_present: u64,
-@@ -89,7 +90,7 @@ pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-             // TODO: Add texture_features_{1,2,3}.
-             texture_features: [texture_features, 0, 0, 0],
-             as_present,
--            pad0: 0,
-+            selected_coherency: uapi::drm_panthor_gpu_coherency_DRM_PANTHOR_GPU_COHERENCY_NONE,
-             shader_present,
-             l2_present,
-             tiler_present,
-
----
-base-commit: d1c0978a7e7864fcaa7cdd562a8f938afcd2ad39
-change-id: 20260120-tyr-pad0-coherency-70dd5257e56d
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Acked-by: Danilo Krummrich <dakr@kernel.org>
