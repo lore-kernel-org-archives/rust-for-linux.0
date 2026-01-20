@@ -1,82 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-g121.zoho.com (sender4-pp-g121.zoho.com [136.143.188.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EBF43C06B;
-	Tue, 20 Jan 2026 14:18:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768918715; cv=none; b=Pr5CnaByWbbVEpFcSSGrenZnGhn+qys9XeAL0lWBwHufV96L41L4AFNGxDDu9lBolJbEAWFTv46MKdg42h27hrxXUNLfvDJ2ErqtjD+0V7whc1Y1TCklbvbCfW8ISxNwV5LrIssZdzH5fnsx9xQkQBtQf8cPgzuheM18b59pvsA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768918715; c=relaxed/simple;
-	bh=ia5JQrW6rAcNYJY+iu4j5rLB0PXLK37c4bqMJ5vWNi4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=JrKwknaJyZpDOpQti38kG1kIrHXCeCvunakVoLiJtqMNAQxjUMSUQN7K+i1BPZUOvOlQAaOwNtNcVwVhGCYHJ3z4DkeEIpCf12MMV91c8tBtCSBYuTtkgvbYfICoWRmQfCrHGVLOEZe1wD4zj1CaA7a3UcZxITImBZRF0W5vhUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKDH1qJG; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E063543637B;
+	Tue, 20 Jan 2026 14:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.121
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768919601; cv=pass; b=K09p8jIfgAvL4+OjUSAlRKJ6DPaj6PUp0Cqf8MNOU6BsfpJid2AFqPE8/PZXkVmt0sXFULaJ/iJw+qqDK+t54pVSCljdymVrxyl8T+SFVtsRmXFOyBYT19ORblX1R9cmAk3V/lWh4O/dYUss62xl5Gg6PfbNTQVZenFtEtjCtD0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768919601; c=relaxed/simple;
+	bh=3Zp0t2yMKmr+klAzTiCg7oeBZdk+/yxoP/VYsTaIPGM=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Q5PgroHqBbFdo+6CClZws0ZwAjWhzIB7+DZdZaLvSMoBO2KJ8axDbgIpgXXnQw2gfVkLuidxDNuIys7v9C+oAIFGJGREl2+cB58yp/PnYGIRoCnVTUTmscqN2oEfBQNjBboCM/PVjHlOCTnoBAKGYp/lVgke+s2TUfQm4VlXuqo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=EjULuGtK; arc=pass smtp.client-ip=136.143.188.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKDH1qJG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9648FC19423;
-	Tue, 20 Jan 2026 14:18:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768918713;
-	bh=ia5JQrW6rAcNYJY+iu4j5rLB0PXLK37c4bqMJ5vWNi4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=aKDH1qJGs3VlyqDNGM+KM78MQctmD1umzBpar/bnZxy48xnfBA4D6+nrJh7WER1xQ
-	 gehKqcmwVQUNw+W29zoyrlbLQRhwioddyoD7RmQHmPSV/fvfDkdGrYT+5pXg4m/5I8
-	 947wmXtrbjugAdkEBqny/+jvySyp+4OMBoA/ryUhb3XOSdGyUq6YC+jfjq8LEeyDne
-	 Mb7C6RwYtzM4bjbD4V8ij8rVzqpObEyv7/Ous/4qvgQXIIrpYIw0GwiKstehGndPtu
-	 gL6fONDPtH3Q7v83Vvgil1bVwmeDF0pWiRKIZQ60/uDXZa4lzAyAzD0MDTZuEbMlu4
-	 jlkY4VyHJdXew==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="EjULuGtK"
+ARC-Seal: i=1; a=rsa-sha256; t=1768919582; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=mwCpXmvp8rNIVts5YWlgz0IMBaa9ZcqDvYV62zFaHXJtmSAYTYeAVpOL87bsfVsg8UAZ/fTmP7Swt9B7D5ynoj6+c62EkeIRJoIcRX4xE7JDpppJvdJ6yG7FI79j6LFSsJ9BVoHNTs1/lt6aqf6lPCDTnusj8g0oAWQY20IpKKw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1768919582; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=rm6uLsK914Ig8j42ifKzk/cZJnO4sbvc5ycjj39F2So=; 
+	b=CAYR8qotVmiJwuXPSvO5MzoChVCEnjL1Yb3EO+captqO43FEJ6IO7a3ZwpACHVs08kvR/RMQBoq8LDEVNyoUjwJ3E5nxoky4P0Iu1kG9YrjaKBU42o28QWhuiyzKy8EakDFp/r6ZdMmbftCmAqfCqwyGDYy61Jq+eWOlXX3Ahgg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768919582;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=rm6uLsK914Ig8j42ifKzk/cZJnO4sbvc5ycjj39F2So=;
+	b=EjULuGtKrvioZA7uzzORC2u4sUgNoOGc9L1/1bLS/JbFefvAs33UxXWHKuXn7b+9
+	sb146YFLgCe/EWHtFK9oNqxhIDBj1PpxPvxU/Rm9yVt/1J62jW58rKmE55ll7i4zV1S
+	U7BSWiAYpLShthRLBt2Ve2hWOo3/lu8WtN4Kwtco=
+Received: by mx.zohomail.com with SMTPS id 1768919581714913.8193854287318;
+	Tue, 20 Jan 2026 06:33:01 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 4/4] rust: drm: dispatch delayed work items to the private
+ data
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DFTDFR0943NX.3RTHNQURC11XQ@kernel.org>
+Date: Tue, 20 Jan 2026 11:32:45 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jan 2026 15:18:27 +0100
-Message-Id: <DFTHCJYQHUHD.24MJ2SUFZDLTJ@kernel.org>
-Subject: Re: [PATCH 0/6] rust: add `bitfield!` and `register!` macros
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>,
- "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260120-register-v1-0-723a1743b557@nvidia.com>
- <CANiq72n9tSMFW1KHsLBLM-q47+4f7yM70CVFNVeg_3Q8i3RTvw@mail.gmail.com>
- <DFTGHU40Q7GS.2YXW1OUFRM2ML@kernel.org>
- <CANiq72=PWw6MW8NiHtFPmQ5C8xjzVJf2OOpVP2YQbsFqrB4XMA@mail.gmail.com>
-In-Reply-To: <CANiq72=PWw6MW8NiHtFPmQ5C8xjzVJf2OOpVP2YQbsFqrB4XMA@mail.gmail.com>
+Message-Id: <6833E564-ED5B-42F4-A0D9-932521AF18DE@collabora.com>
+References: <20260115-aref-workitem-v1-0-9883e00f0509@collabora.com>
+ <20260115-aref-workitem-v1-4-9883e00f0509@collabora.com>
+ <DFTDFR0943NX.3RTHNQURC11XQ@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue Jan 20, 2026 at 2:50 PM CET, Miguel Ojeda wrote:
-> On Tue, Jan 20, 2026 at 2:38=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
-> wrote:
->>
->> I discussed with Alex and Alice that it would be good to land the regist=
-er!()
->> macro this cycle (having some local to register.rs bitfield support), so=
- drivers
->> can start using it next cycle.
->
-> By "local to register.rs bitfield support", do you mean something else
-> than this series?
+Hi Danilo,
 
-Correct, this series came from a misunderstanding, I think Alex plans to fo=
-llow
-up on it tomorrow.
+> On 20 Jan 2026, at 08:14, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Fri Jan 16, 2026 at 1:36 AM CET, Daniel Almeida wrote:
+>> +// SAFETY: Our `HasWork<T, ID>` implementation returns a =
+`work_struct` that is
+>> +// stored in the `work` field of a `delayed_work` with the same =
+access rules as
+>> +// the `work_struct` owing to the bound on `T::Data: =
+HasDelayedWork<Device<T>,
+>> +// ID>`, which requires that `T::Data::raw_get_work` return a =
+`work_struct` that
+>> +// is inside a `delayed_work`.
+>> +unsafe impl<T, const ID: u64> HasDelayedWork<Device<T>, ID> for =
+Device<T>
+>> +where
+>> +    T: drm::Driver,
+>> +    T::Data: HasDelayedWork<Device<T>, ID>,
+>> +{
+>> +}
+>=20
+> What do you intend to do within work that is queued for a DRM device? =
+I assume
+> you have to access bus device resources?
+>=20
+> Also, it would be nice to see how this is used in a driver. Can you =
+please add a
+> patch for Tyr to the series?
 
-> To be honest, I think this is all quite late for the cycle.
+Yes, we need resources from the bus device, as need to access the =
+underlying
+mmio range for register reads and writes. We also need to allocate GEM =
+objects
+in that path, which requires the drm class device.
 
-I think there has been consensus on the register!() macro, so it seems poss=
-ible.
-But as always, if it works out, great -- if not, that's okay too.
+
+I've just pushed a demo with some WIP at [0] for illustration purposes. =
+Apart
+from the other cruft in that code, the main point is:
+
+- impl WorkItem<2> for TyrData {
+-    type Pointer =3D Arc<Self>;
++ impl WorkItem<2> for crate::driver::TyrInlineData {
++    type Pointer =3D ARef<TyrDevice>;
+
+1) The data is now defined inline with the drm::Device. This is used by =
+the
+work_container_of implementation in commit #2 in this series.
+
+2) This inline data now has the work and an Arc<TyrData> to keep the =
+shared
+ownership semantics of TyrData, i.e.:
+
+/// Inline data stored directly in the DRM device.
+/// Contains work items that need access to the device itself.
+#[pin_data]
+pub(crate) struct TyrInlineData {
+    /// The work to process firmware events (tiler OOM, etc.)
+    #[pin]
+    pub(crate) fw_events_work: Work<TyrDevice, 2>,
+
+    /// The scheduler tick work
+    #[pin]
+    pub(crate) tick_work: Work<TyrDevice, 1>,
+
+    /// The actual driver data
+    pub(crate) data: Arc<TyrData>,
+}
+
+3) When processing a TILER_OOM event, we now have access to =
+ARef<TyrDevice>
+which lets us allocate more memory to the tiler inside the handler =
+routine.
+
+This applies for regular work items, but there is a use-case for delayed =
+work
+items as well. As we spoke during Kangrejos, Tyr and Panthor have this =
+internal
+job scheduler that bridges the gap between the outstanding jobs and the =
+limited
+amount of ring buffers exposed by the firmware. This runs periodically, =
+which
+is a major use case for delayed work items in Tyr.
+
+This is not implemented in the prototype at the moment, because it's not =
+needed
+for a demo. We simply reject jobs with -EBUSY if all the firmware slots =
+are
+full. Sadly, there is not enough upstream at the moment to provide a =
+patch that is
+actually useful for Tyr itself in this series, but I am sure we will =
+eventually
+need it. This statement applies to both regular and delayed work items.
+
+I assume you're worried about the device being unbound in the meantime? =
+These types
+of discussions are precisely why I am submitting this a bit in advance =
+:)
+
+By the way, I=E2=80=99d say in any case we should merge patch #1 once =
+there=E2=80=99s no more comments,
+as implementing ARef support seems to be orthogonal to the issue I =
+raised above, unless
+you=E2=80=99re worried about something else?
+
+[0]: =
+https://gitlab.collabora.com/dwlsalmeida/for-upstream/-/commit/4ac5ec7d8b1=
+3d4d4fc5280b414b02ba5ab8e8f23=
