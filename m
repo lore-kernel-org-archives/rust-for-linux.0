@@ -1,241 +1,267 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021135.outbound.protection.outlook.com [52.101.100.135])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5766221ABBB
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 13:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.135
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768917287; cv=fail; b=TJSHVcauACiDJ4HkfKdRnTtjA9Yl6gymraLp/bS5XcRCUF5aEypKT8YqtIWtarSb3yVlqrSjaKTNyxPMiyVBTRWZcZvsw5rDJg/IZrlYgAJf+CgsDOARlAWq/FuMx3ChwriqaZSCclZja6l44deBayRJUCUifZljSnhKuuPSPH0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768917287; c=relaxed/simple;
-	bh=QVlUJmWz6SENB951VxbsvYCdo1GuKqOlpCLz6EEt/Tw=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=H9yhhDhjIEGPaipuXq154jjSdRAYCvaNbYmLiIrtbAfe9l+k1tN+sWbkNXb+efolu+NafpTa6IrMOrO08YNwuBvqndVDGaol+FkAGbgM4S5pdZil5elm3/pMX/+s+JK9U16z7HJTKSkaHqa0Lwka5A7OZNsuf1DWti42QGsMyY8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=gIpc9zNv; arc=fail smtp.client-ip=52.101.100.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B1921ABBB;
+	Tue, 20 Jan 2026 13:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768917312; cv=none; b=gCv1LyUNtw1YdVCsdEr604w4vpyqG7KiPOXRDnG8Ymp3ukOtalQkGm9bhKgpyW5uNXrHjhXZIjO/WzqdvWYyMPkVs3PjqkZMASjbNByy0jRDyQ4VpxgGIQnUUhovQqWBp5iTbFMKPMsE/rSn9aiN5T29S2GwIEKCRzoaGR8zN3Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768917312; c=relaxed/simple;
+	bh=OBHzWftJV/HPuzjp7EqL2/okD1447XonIyvVUXHuPyg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hXNtkEVdBBqy6q3f21Lo9jg2KU8yfns/FOcvC+eIbL6AlVcDiVaHtZaCReTYOMJC2c9poVsw241abQVB6c14Uw8nv6P4DVOruIEkNoFoGfYgvPSGKepxTKtjxTRFLL1G0ywtIiG0PgG7yQDNCUVQq56/plk+r6ADu6UC6LC3nVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwDTDqqt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="gIpc9zNv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G972lujuqgGO0WuxFl489Kl411qcU30Hjea5jSerlUL1JEvSJ/J6R+L28Kg0eqpLq1SdWUzurgNn8PAe8o02QT0wlTa4X71NPOWmxCnl/nJRPkDJ9i3KPst2zEHWWLODzfDJEOEgX1cip/qB4tm1Fn7eUbUOEy90L2uLOHVemA3buoyHh2SNH+h8JrWILOAmRNymPYQNK9UEgVRvwCFQenbyyLe/WFJjk2cqoXmnQZPS7iCbcAkcamXqyBhqgxvtO0B9hbVkpbEoLlw98Hrb8V395B4YQDuZh2VRMbibFNEqeshvueXQW8dzOiU/lE0RlDKT4Kb4s0Rm1FQskyK2cA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/lA7gT4egMnxAQ8J+LBkei2k3AjalcJOJ2ADuDXpcB0=;
- b=I2jRIrnw6UceyCZpb9c1S88hjgEysqupAo8j5s5Jdsb37gUT2+o7jTpjfzSWB38ribSberlSXOJCpVZsBLs2HZVjZEgz+1RQI52aGvLCMa5O8PTW+ZNBW8ZyTLbMQYfmOw3pNuoXg/EtPz7i6F3Phz+LXTpspHhmRQtINgUlDoqUpmheQEbl/Kl0mC6z9yYB66gME2swgSje64509fTbENK5fnvJHT3IKUii73njy/Zc/ujN27eoElrYVL6STgz6JscTWJfFHzBaKnXqthzj7zEWOKBvLs2hgyQow2kYUO4NL/9W7/HjNsAgo3qTjtT/jEHnuozrIkfsvLPB0kROcA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/lA7gT4egMnxAQ8J+LBkei2k3AjalcJOJ2ADuDXpcB0=;
- b=gIpc9zNvGuXw50JATd3IVIY2SrseQRSgnKidY217aVehH5bvk27mFhl4UrjTicfbm60PtkMwLCnGxqXo06+fbS0X75T/8z3sxrHFXF/fxvsab5XEAAKVTkIpeJU+pSeTqg5HPvH2JtYkj1PFTRV6ofYYFUlb0ThtEWCozXlaknM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB3127.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:b2::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
- 2026 13:54:41 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.012; Tue, 20 Jan 2026
- 13:54:39 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jan 2026 13:54:38 +0000
-Message-Id: <DFTGUBC2K4G8.3HSMNEUI24RGX@garyguo.net>
-Cc: <ojeda@kernel.org>, <a.hindborg@kernel.org>, <bjorn3_gh@protonmail.com>,
- <dakr@kernel.org>, <gary@garyguo.net>, <lossin@kernel.org>,
- <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v1] rust: list: Use AtomicFlag in AtomicTracker
-From: "Gary Guo" <gary@garyguo.net>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, <aliceryhl@google.com>,
- <boqun.feng@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260119231757.3460885-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20260119231757.3460885-1-fujita.tomonori@gmail.com>
-X-ClientProxiedBy: LO0P123CA0005.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:354::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwDTDqqt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65546C16AAE;
+	Tue, 20 Jan 2026 13:55:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768917309;
+	bh=OBHzWftJV/HPuzjp7EqL2/okD1447XonIyvVUXHuPyg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gwDTDqqtkwHgeTN6IP41Sqd3KBe8c9lwFp8o9NKhx1kDxhOrC1jJohlLMVmsv88AB
+	 ziEOXJeMGY6uBPANYuze1oI9P83VknRsN3GXpTUJhokSWIJeI7Q9j6Rm3J6R7XYh9i
+	 lGDceu4UReTscxvb6CmJmxSzD7ZQfXmg7aBh1rLCfLCe3jPcgFJ+CAVZL/HIBONiFc
+	 CUOh70KLJBMd+znpVopz62rrKpJFkrXq18UC3cGD0LM9Ecs99BobtjfS08Eylb7XQ2
+	 6CR97G/WwQWPHRMIJ4+FOjJdBIWlR8NwIvICBB/uUVy6iuEoM/wa3M1imC6ge0oFZP
+	 Nce/uoYXSuZuQ==
+Date: Tue, 20 Jan 2026 14:53:33 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Guillaume Tucker <gtucker@gtucker.io>
+Cc: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v3 2/2] Documentation: dev-tools: add container.rst page
+Message-ID: <aW-I3fNqp_7X0oeg@derry.ads.avm.de>
+Mail-Followup-To: Guillaume Tucker <gtucker@gtucker.io>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
+	llvm@lists.linux.dev
+References: <cover.1767199119.git.gtucker@gtucker.io>
+ <c859f9b6dd5313136f7a445497d6209405eafa7e.1767199119.git.gtucker@gtucker.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB3127:EE_
-X-MS-Office365-Filtering-Correlation-Id: cda3be0a-fc93-4d7e-435c-08de582b7449
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z2d3RENqU252VU5DM2lpVUdGcFlyTTJkeDRqZHZYcE1uQSszQktIMGJBOExH?=
- =?utf-8?B?dEZsUDVjblpCYjRNaDlrUEFvNk5mS2JsMEpuMExSc1lPNjUzTUl4T25NWjIz?=
- =?utf-8?B?Ync3TXQ0a1htWGl4OFg4cVZzTkRCUnMybHI2akR3bzA1anNBZUtreDZkeWZ5?=
- =?utf-8?B?UUxQTTFIYVk3TXVhZGxZd0QyTU5aMGc3OVB0Umo1ZDh4OWRVakZQWjNzSmlY?=
- =?utf-8?B?bnVoMXRSano0NG5WWnVZZ0ZMZGNnZEg0UE9ZUFBybm1RUUhLR0tnY1l2Vklp?=
- =?utf-8?B?UnFMYThhOGxzSm4xSjd1UHREQzM0ZXJFWG1OOXVObk1ZSWtJdEYrWXJhZSsy?=
- =?utf-8?B?L2VqdXo5blh3S2FVT0NSUmM0Sm1yUlVEOXlHNmExa3MxY1cyMm96MVhZUzRE?=
- =?utf-8?B?dE8zR2Q4OHZmSUxmOFFEK3MyM0QwejZpcENxeVBZSlVWTkVWY3hTZ2luS3Nj?=
- =?utf-8?B?RCtyeG5VbFlnTWRVMFkzRU1QVXhaYWl2dDhyRXRYYTdQMEluVDZFZzBiMFZF?=
- =?utf-8?B?WkFHbjBEa1dRREVLRVI5VWFzVURZK1ZzWFF1Q2Q5YUtVRjNxbXROcFM4NFFk?=
- =?utf-8?B?UFFMRE04Slh0NEtBSEhneTJEbzY5cUxJNjBXbzRoWEYrbENGeGF2VWN1ZDdZ?=
- =?utf-8?B?QnBobXUzci9yYXNFdnAwQU11MlVyQ1JMV0xrc3JsQTZGR2tYK2JxSlBnNGlQ?=
- =?utf-8?B?Y1RnQ1hKSFMvQnRJVXRHekwwemMxMjBaVzArSHV6bCtaUC9QSEtwdnBPQ2FE?=
- =?utf-8?B?MFVuMmpBU1g2czllMW02UWxWS3d0eTdqUXM1dGJPNzJqQUJlWXJzVHd3MmRE?=
- =?utf-8?B?ZEhTckUwL0RGbXp2dmpXRGs4VmxWQ0l0a0MzdFVVdkllNXRyZllxNmR4a2wv?=
- =?utf-8?B?cVRSRWVIOEtPeEJqblYxdUxpZ01DT2lBbGZKUVQyaTR6RjV6VUkyTTJFam5n?=
- =?utf-8?B?M0tiRjZOc3VMMytwRmlKbC85RDA0L0pXc0FtRlJ3TitUMmphbVVRWHpzTW45?=
- =?utf-8?B?QXFHeGdHWDJFUU0zUHd2b0dqUVJDMERJSktLVkVhbmpXRXl0QjFSTFNESEc4?=
- =?utf-8?B?YnBwSlN3RU96cS8xVnZxdWI3T3NQTS9pOGQ4TlVRUjhFRXVySGtHazFta21X?=
- =?utf-8?B?RThabStreW9XM0wyNVQzY053K1Y3aVRvWnZaOG1ITEpTMG40aHREN2RES2N2?=
- =?utf-8?B?NXRKSjBMbWdKbExyTGQ4MHBIWVVXMmxLdTZCZEZ6QS9RRXBhWjZ6T3pmMHRz?=
- =?utf-8?B?d1YvbFpxb3B4dGRxdGc5ZlRjekxNVFA4RFh0OElZM2hkd0VYK0FJbGxqd1R0?=
- =?utf-8?B?cFVGODJqWko2cUxxT1JhVThkMzJzNHNrcWF4TmpLR0F3ZHBxUlBudXNyM0dS?=
- =?utf-8?B?d1pHbWhua2l6TGc2aVZWS1F3cC9lWHVYaUVpeFY3RUltZk9pbmFVYTNMRExR?=
- =?utf-8?B?dlhQRFJCZ1E2bGxqSm9BZFhFRk1BNGtpb3dOYms4WUhCR2JiMWphTHZWU1hB?=
- =?utf-8?B?U3BvSy9oV0lnR3FuYlVOLzBJVU1QZ01NTFlBVWNzK21VUUpWWkRwc2wyVFVE?=
- =?utf-8?B?eUh1enpQMlBuT2pURUwrcU5kdHFwTElzWnpZTEVSRkllTHZ6K3dvY3VzMXFq?=
- =?utf-8?B?bHVqck52UnlGRzNGcjMvN1BTZGR2Z0Z6Qi94Z2x5a1AwUFFBT1JhMWJCWHRL?=
- =?utf-8?B?ZTZxekxVZ2ViY2g2U2U2bFVoUGp6bGNFR0I3dnFFMFh3NlJGbHpxRzJHRUpt?=
- =?utf-8?B?RUc0MS80VjBPdHpvY01SbG5QNkNKWE51NG9XVDJzS2pxMWdzTEV2OVdHbHZD?=
- =?utf-8?B?aS9UakNHYVJZRVZxZHFiZVBLNjdZVjF6ZlJDK1hnVHVleFlkWWI5MUFyTEls?=
- =?utf-8?B?dk9FYzA1TzI3bnc2NEF1cWVsZmlXb1FRT0lxZlZ6WGkvZy9TOGZneFl4RXpN?=
- =?utf-8?B?bGg2K0JRaU1ITXNTWDNYM1hLSGo0TnFsYi9nTE1VWGs4akVpM2hTcTJZYmV4?=
- =?utf-8?B?L2hnUzFCWXd0dHkydG8yRW9ycmk4T1lCMElzbStwYms0NFFkK3JEZjdwdzVq?=
- =?utf-8?B?TlI2dmtFM2VRVDgzTittM2lSWTdsUDc3ZVhCZUYzNFExS0FKK2ViN2J2WW8x?=
- =?utf-8?Q?sM3U=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VUFERVpyVXhFTTUwUEJBOTZhN21yYlVjWWlnZmJ1ZVBOU245VFFNK0tRRnB3?=
- =?utf-8?B?ZDZYTm5OditQSHpnSlFud3NUcGx0Vmt5TkhlZFpJL1JFZE9HRVhjL0lpeS9T?=
- =?utf-8?B?dksyNmlHN3d0SGZFWUZTcnhPZ1FPZ0pSRGxJUTNSVG8xZDhaaVpQWXBESUNF?=
- =?utf-8?B?SW9tRXdyVDVLNU56azFVSDdQT255ZWhydUtLdXlJQVJUam5KS0ZRY3Uzd1pX?=
- =?utf-8?B?T0N1OVY2amhzQkVnbW5PdmJhWVJFUGNuY1NBay9oaFkxVitXYzlkZHNOYVR3?=
- =?utf-8?B?N0hzV25yUTJlV1Rmc0tSOFBkYXBSMHlEV0t4YUpDMHE0UWpqL2FnNVN5U1Fk?=
- =?utf-8?B?dDk1eVZ3S0taZ2M0eU5SUFQ3MGZBbW4wVGJIRllCbFVOWGNNR2tDa3M5V2ov?=
- =?utf-8?B?N2tuaENtTzR1dTVIbzFnU1dMTnI3MXVDWWZsTGd4dTNITkYwSG5NUi9MZmQ2?=
- =?utf-8?B?enpYeGY5TmtySTJiU3JyZkJwRFc5ZEJGeE5xK1Q3L05pTEkxd0VMbDlSZHNu?=
- =?utf-8?B?WWZXL1dNSWJiUXgzTzhWcUZxamY1QzluU09EZlFMckg1dlgrVisrOVZiWHNo?=
- =?utf-8?B?R2g5UnNvRzVtNC9VZTFuV0drcFllZXNjckgyNElQS2xESWQ2MUdrZFpaWVl4?=
- =?utf-8?B?clV3YVU1NXcwcDhpckFJOVdwbHdhUFRjS3hmbHVYTFhkZEJKTi9PSytBM3Rs?=
- =?utf-8?B?VmUxV3BDUThoNlA2cWNEMUJkS0t3SzdLRlpIUE9aMCtaaXR3SWhYRlJIcDZy?=
- =?utf-8?B?RUV0QWQrdkcwaS9FT0p2YUFVMzZSZmVxejhsMHFQTWZsT1I4Ymx2NHFkdU1o?=
- =?utf-8?B?T0xueDZRQXE5UGtwWEFBcHpNZXJ0cnVUSXhtOFRKN2lWc0RyNDRLV29vWGNp?=
- =?utf-8?B?eU9BT3ZWSTI3TkJFZ1RpNWVnNHNFc3g0eWZKTElFYzhOZkFCUHhKajdYUVV5?=
- =?utf-8?B?T1dlM1lHTXFXL3YrRzhwWjlqbXhXMUZvSG44ektnSWZHWkFHUVdWMXpaS2E4?=
- =?utf-8?B?cjFMV2VhZ1BqR0h5Ynl1RmwyZmtnV2FPRjd1dHdoeTRTNnF3dVNJaUxuYng4?=
- =?utf-8?B?SEIrTWJiQVFMUEc5UGtrU0hHYnJUK1J1OXlPRkhMc0k2RkEybGVZN0dXTHg2?=
- =?utf-8?B?YWwwaDZrMlRaU2trdS8zdXJFSUpnNVpaRytkR25xOTIyOVQ0dXZMUkdjelpn?=
- =?utf-8?B?TUxvdUkzc3hxM1A0S3NQcmNwTVRTcVRhSzkrS0I1OS91V01vQ1NQN1RMMGlM?=
- =?utf-8?B?b0dHVUs2NzA1bm5NU3JoK3RvOHVMT0tESWNhK0lmNldGWFMxOXNBeUVicEIv?=
- =?utf-8?B?eTMyTnZRT0oyVjltNk5tckltNnNPNmtUZTU4eVlsdWtnVjA4S2dmMlhscE5z?=
- =?utf-8?B?eFpoanVFWmc1SlcxRHFYajc5ZmdhMUplS3Jna3RPb1JwTTh2bzJGOHk3TGtU?=
- =?utf-8?B?MXc4MEpFaHRobnBCOFl3RGJYNWZPWkFpSmk4QkYzbnpjb1ozN3BUYnBjQWhN?=
- =?utf-8?B?ak0xUy9ZWVhrUnVHdlJtdUUrbndoelZjempnS2kzNHdnKzZPTEx6bXJ2b2Z4?=
- =?utf-8?B?RHA2M1E5NmF5STlyQTU1QmpBNC95cG9TZGRSeVpxT2VQM21JWCtYZ0U3VXVQ?=
- =?utf-8?B?MjJuSlJhek5Vd0VQVGZWZ3ZTbEUrQkdlM2pkYmZYakVGSjVJZDRnVzNmdkhx?=
- =?utf-8?B?NE1qdGZuY0Y4Y2dFV3AvSGZueThJTWVYdHROZ0lOeTVzRHlTVkR5Y1dicTFQ?=
- =?utf-8?B?YzVLOVl3RzNwSDI0RHlLT0ZUY1RyQ3l0N21ZZkFFazV1Y1QwSGFyWUtuQk1T?=
- =?utf-8?B?YjV0N3VGOGFGaVBZaS9sWjFMeVlYcmZxd1FoVktwNUFDMnJLZG1UNUNnWHdZ?=
- =?utf-8?B?bkpQeDBKN2JQNFVhbGdWa0dOTGNNbjA2bGNIL3U5ZXBPKzlaTXNzbEVtcGY0?=
- =?utf-8?B?R0pkWEVIb1p6ZE1XVHZBRnFUK2trR2k2NkhoUXArT1VIdFp5U2xtMTVJRG9a?=
- =?utf-8?B?SWJkQllRS3Ftd252Uk1DRmJGRFo4SlFOZDFJRi80T3prOGhmZjlFaGthcENQ?=
- =?utf-8?B?SmZSaUlvSUlsZXJPbkxzdEhxSmVNN0gxd3ZuT0IvS2JyWnRQalVzODA4L2hZ?=
- =?utf-8?B?ZEd0eUV3SzkzUVo0T1lONmE0cWFJdUx3RDU2Z1psa1B4ZFMzRDJJQU4wMURG?=
- =?utf-8?B?Vkp6ZkpFMXBGdHBDMFY0MXROTzJxZDVoTDE1eXkxZU10Sm5obi85MGJCTmJE?=
- =?utf-8?B?cStsWDFRajkwTHk4SVlGYkxKMUtNZktGbCs2WS95MmVhTUtmTjZ4SmhvOVV5?=
- =?utf-8?B?WnhKT3BvS2ZxdFMwL3FIbk96ZTFsU1RjNU5BY2YrMUY1OG00NVk4QT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: cda3be0a-fc93-4d7e-435c-08de582b7449
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 13:54:39.1720
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6ayrDuCCvnc7nn5CfbgEfP9fncOVLa5orR8WVhRuyIbE1Ai9JE/MVsBzf5C7rpJnZnOWHaY3HV8+2MHtExdjYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3127
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c859f9b6dd5313136f7a445497d6209405eafa7e.1767199119.git.gtucker@gtucker.io>
 
-On Mon Jan 19, 2026 at 11:17 PM GMT, FUJITA Tomonori wrote:
-> Make AtomicTracker use AtomicFlag instead of Atomic<bool> to avoid
-> slow byte-sized RMWs on architectures that don't support them.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Wed, Dec 31, 2025 at 05:51:50PM +0100, Guillaume Tucker wrote:
+> Add a dev-tools/container.rst documentation page for the
+> scripts/container tool.  This covers the basic usage with additional
+> information about environment variables and user IDs.  It also
+> includes a number of practical examples with a reference to the
+> experimental kernel.org toolchain images.
+> 
+> Cc: Nathan Chancellor <nathan@kernel.org>
+> Cc: Miguel Ojeda <ojeda@kernel.org>
+> Cc: David Gow <davidgow@google.com>
+> Cc: "Onur Özkan" <work@onurozkan.dev>
+> Signed-off-by: Guillaume Tucker <gtucker@gtucker.io>
 > ---
->  rust/kernel/list/arc.rs | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
-> index 2282f33913ee..3296726e07d9 100644
-> --- a/rust/kernel/list/arc.rs
-> +++ b/rust/kernel/list/arc.rs
-> @@ -6,7 +6,7 @@
-> =20
->  use crate::alloc::{AllocError, Flags};
->  use crate::prelude::*;
-> -use crate::sync::atomic::{ordering, Atomic};
-> +use crate::sync::atomic::{ordering, AtomicFlag};
->  use crate::sync::{Arc, ArcBorrow, UniqueArc};
->  use core::marker::PhantomPinned;
->  use core::ops::Deref;
-> @@ -469,7 +469,7 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn<=
-ListArc<U, ID>> for ListArc
->  /// If the boolean is `false`, then there is no [`ListArc`] for this val=
-ue.
->  #[repr(transparent)]
->  pub struct AtomicTracker<const ID: u64 =3D 0> {
-> -    inner: Atomic<bool>,
-> +    inner: AtomicFlag,
->      // This value needs to be pinned to justify the INVARIANT: comment i=
-n `AtomicTracker::new`.
->      _pin: PhantomPinned,
->  }
-> @@ -480,12 +480,12 @@ pub fn new() -> impl PinInit<Self> {
->          // INVARIANT: Pin-init initializers can't be used on an existing=
- `Arc`, so this value will
->          // not be constructed in an `Arc` that already has a `ListArc`.
->          Self {
-> -            inner: Atomic::new(false),
-> +            inner: AtomicFlag::new(false),
->              _pin: PhantomPinned,
->          }
->      }
-> =20
-> -    fn project_inner(self: Pin<&mut Self>) -> &mut Atomic<bool> {
-> +    fn project_inner(self: Pin<&mut Self>) -> &mut AtomicFlag {
->          // SAFETY: The `inner` field is not structurally pinned, so we m=
-ay obtain a mutable
->          // reference to it even if we only have a pinned reference to `s=
-elf`.
->          unsafe { &mut Pin::into_inner_unchecked(self).inner }
-> @@ -495,7 +495,7 @@ fn project_inner(self: Pin<&mut Self>) -> &mut Atomic=
-<bool> {
->  impl<const ID: u64> ListArcSafe<ID> for AtomicTracker<ID> {
->      unsafe fn on_create_list_arc_from_unique(self: Pin<&mut Self>) {
->          // INVARIANT: We just created a ListArc, so the boolean should b=
-e true.
-> -        *self.project_inner().get_mut() =3D true;
-> +        self.project_inner().store(true, ordering::Relaxed);
+>  Documentation/dev-tools/container.rst | 201 ++++++++++++++++++++++++++
+>  Documentation/dev-tools/index.rst     |   1 +
+>  2 files changed, 202 insertions(+)
+>  create mode 100644 Documentation/dev-tools/container.rst
+> 
+> diff --git a/Documentation/dev-tools/container.rst b/Documentation/dev-tools/container.rst
+> new file mode 100644
+> index 000000000000..f6f134ec09f5
+> --- /dev/null
+> +++ b/Documentation/dev-tools/container.rst
+> @@ -0,0 +1,201 @@
+> +.. SPDX-License-Identifier: GPL-2.0-only
+> +.. Copyright (C) 2025 Guillaume Tucker
+> +
+> +====================
+> +Containerized Builds
+> +====================
+> +
+> +The ``container`` tool can be used to run any command in the kernel source tree
+> +from within a container.  Doing so facilitates reproducing builds across
+> +various platforms, for example when a test bot has reported an issue which
+> +requires a specific version of a compiler or an external test suite.  While
+> +this can already be done by users who are familiar with containers, having a
+> +dedicated tool in the kernel tree lowers the barrier to entry by solving common
+> +problems once and for all (e.g. user id management).  It also makes it easier
+> +to share an exact command line leading to a particular result.  The main use
+> +case is likely to be kernel builds but virtually anything can be run: KUnit,
+> +checkpatch etc. provided a suitable image is available.
+> +
+> +
+> +Options
+> +=======
+> +
+> +Command line syntax::
+> +
+> +  scripts/container -i IMAGE [OPTION]... CMD...
+> +
+> +Available options:
+> +
+> +``-e, --env-file ENV_FILE``
+> +
+> +    Path to an environment file to load in the container.
+> +
+> +``-g, --gid GID``
+> +
+> +    Group id to use inside the container.
+> +
+> +``-i, --image IMAGE``
+> +
+> +    Container image name (required).
+> +
+> +``-r, --runtime RUNTIME``
+> +
+> +    Container runtime name.  Supported runtimes: ``docker``, ``podman``.
+> +
+> +    If not specified, the first one found on the system will be used
+> +    i.e. Docker if present, otherwise Podman.
+> +
+> +``-s, --shell``
+> +
+> +    Run the container in an interactive shell.
+> +
+> +``-u, --uid UID``
+> +
+> +    User id to use inside the container.
+> +
+> +    If the ``-g`` option is not specified, the user id will also be used for
+> +    the group id.
+> +
+> +``-v, --verbose``
+> +
+> +    Enable verbose output.
+> +
+> +``-h, --help``
+> +
+> +    Show the help message and exit.
+> +
+> +
+> +Usage
+> +=====
+> +
+> +It's entirely up to the user to choose which image to use and the ``CMD``
+> +arguments are passed directly as an arbitrary command line to run in the
+> +container.  The tool will take care of mounting the source tree as the current
+> +working directory and adjust the user and group id as needed.
+> +
+> +The container image which would typically include a compiler toolchain is
+> +provided by the user and selected via the ``-i`` option.  The container runtime
+> +can be selected with the ``-r`` option, which can be either ``docker`` or
+> +``podman``.  If none is specified, the first one found on the system will be
+> +used.  Support for other runtimes may be added later depending on their
+> +popularity among users.
+> +
+> +By default, commands are run non-interactively.  The user can abort a running
+> +container with SIGINT (Ctrl-C).  To run commands interactively with a TTY, the
+> +``--shell`` or ``-s`` option can be used.  Signals will then be received by the
+> +shell directly rather than the parent ``container`` process.  To exit an
+> +interactive shell, use Ctrl-D or ``exit``.
+> +
+> +.. note::
+> +
+> +   The only host requirement aside from a container runtime is Python 3.10 or
+> +   later.
+> +
+> +
+> +Environment Variables
+> +=====================
+> +
+> +Environment variables are not propagated to the container so they have to be
+> +either defined in the image itself or via the ``-e`` option using an
+> +environment file.  In some cases it makes more sense to have them defined in
+> +the Containerfile used to create the image.  For example, a Clang-only compiler
+> +toolchain image may have ``LLVM=1`` defined.
+> +
+> +The local environment file is more useful for user-specific variables added
+> +during development.  It is passed as-is to the container runtime so its format
+> +may vary.  Typically, it will look like the output of ``env``.  For example::
+> +
+> +  INSTALL_MOD_STRIP=1
+> +  SOME_RANDOM_TEXT=One upon a time
+> +
+> +Please also note that ``make`` options can still be passed on the command line,
+> +so while this can't be done since the first argument needs to be the
+> +executable::
+> +
+> +  scripts/container -i tuxmake/korg-clang LLVM=1 make
+> +
+> +this will work::
+> +
+> +  scripts/container -i tuxmake/korg-clang make LLVM=1
 
-I would if we can still provide `get_mut()`. You can just hand out a refere=
-nce
-to the LSB of the flag (of course, this is a different byte depending on
-endianness..).
+First of all: Thanks for all that work!
 
-Best,
-Gary
 
->      }
-> =20
->      unsafe fn on_drop_list_arc(&self) {
->
-> base-commit: 47f079b9ac97c4b0c673bbbf57245952e9edf8a2
+I probably have just read it over: I have to prefix the
+'tuxmake/korg-clang' by 'docker.io/'.  Is that a problem of my system
+configuration (Debian forky, no special podman config)?
 
+
+> +
+> +
+> +User IDs
+> +========
+> +
+> +This is an area where the behaviour will vary slightly depending on the
+> +container runtime.  The goal is to run commands as the user invoking the tool.
+> +With Podman, a namespace is created to map the current user id to a different
+> +one in the container (1000 by default).  With Docker, while this is also
+> +possible with recent versions it requires a special feature to be enabled in
+> +the daemon so it's not used here for simplicity.  Instead, the container is run
+> +with the current user id directly.  In both cases, this will provide the same
+> +file permissions for the kernel source tree mounted as a volume.  The only
+> +difference is that when using Docker without a namespace, the user id may not
+> +be the same as the default one set in the image.
+> +
+> +Say, we're using an image which sets up a default user with id 1000 and the
+> +current user calling the ``container`` tool has id 1234.  The kernel source
+> +tree was checked out by this same user so the files belong to user 1234.  With
+> +Podman, the container will be running as user id 1000 with a mapping to id 1234
+> +so that the files from the mounted volume appear to belong to id 1000 inside
+> +the container.  With Docker and no namespace, the container will be running
+> +with user id 1234 which can access the files in the volume but not in the user
+> +1000 home directory.  This shouldn't be an issue when running commands only in
+> +the kernel tree but it is worth highlighting here as it might matter for
+> +special corner cases.
+
+I tested a tiny bit with podman as runtime backend.  If I leave out the
+'-r podman' podman's docker emulation is in effect and fails with:
+
+    $ scripts/container -i docker.io/tuxmake/korg-clang -- make LLVM=1 -j8 olddefconfig
+    Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+    mkdir: cannot create directory '.tmp_15': Permission denied
+    mkdir: cannot create directory '.tmp_19': Permission denied
+    mkdir: cannot create directory '.tmp_22': Permission denied
+    mkdir: cannot create directory '.tmp_25': Permission denied
+    mkdir: cannot create directory '.tmp_28': Permission denied
+    mkdir: cannot create directory '.tmp_31': Permission denied
+      HOSTCC  scripts/basic/fixdep
+    error: error opening 'scripts/basic/.fixdep.d': Permission denied
+    1 error generated.
+    make[2]: *** [scripts/Makefile.host:114: scripts/basic/fixdep] Error 1
+    make[1]: *** [/src/Makefile:655: scripts_basic] Error 2
+    make: *** [Makefile:248: __sub-make] Error 2
+    [exit code 2]
+
+But with '-r podman' it works like a charm.
+
+Would it make sense to switch the default runtime to podman to
+prevent non-functional podman-docker emulation?  (Or is this just a
+problem on my machine?)
+
+-- 
+Nicolas
