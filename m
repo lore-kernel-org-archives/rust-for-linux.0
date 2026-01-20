@@ -1,173 +1,207 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65A73AE713
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D593B3B8D56;
+	Tue, 20 Jan 2026 08:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768896494; cv=none; b=M5SGAvdftncNQO65gZoGRkARg5tGQ/NBUxqNwlsC7bnNwOItwS1bokRRBl5Rg/LcEnYOA8i4Ouly+hW2bYGgPuXZ3QRRFsy/3cAbVsf6gPYmv7NlQuahB+H/k3s4jjYBaNeNX6l6xGSomc5Pf6ZP4TdPE1QbHn7Wzo2glGjhEF8=
+	t=1768897396; cv=none; b=doI/TVbjPO1qR3LujNFL4muKMBAaQaoJFYL7qXoX2L+bju9XHn/1143VmlShkOKoeWw/i+xvh2p4B2YvJKrwxq1tytUOzjOsT1CXvq5hFeidP7Nkfhy8G9oEffHHEW9kb49UTVc2HjXvZmvuNpKsB/qmkPs1j/W+xLZGtBxtrQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768896494; c=relaxed/simple;
-	bh=+SQClug0ijWjldOO0uBkcSJCiLEZHCZdK0RkOK3fzRA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QlxXc8AGuUVCKRsLZCz253ZWLWuqe7NP40baWynL4H3I0r+g47hxfLZvoGmsgJeSgVBLam4LMUg28HpUOQ6sCAOXpfu56pa5J4DER2AYK8zPqya7TAUrP/N1P/wSjlORXx7aHsTnBLbmNNPdx1TaDGKKnxaejxaFObrKc1rx3jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-34c3cb504efso3410178a91.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:08:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768896492; x=1769501292;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8ysVv/ia/9PZ8QZoFVsW+VPMV2hxwUw+bf0IIM6Xc/A=;
-        b=lwyW9oDC397xcH2l1uJDN87SoXvMtdM2IUrpRVZD/M5EInPbyTzU1XQt28tAfDOUYK
-         9fSmYvhIYA0IYUvEVLSBp4vvPhC0uopAeVL6lMf5djEa2qYlll9ICbSafRg3Cmeaccoa
-         3ZU+Y+kLzLFwT1TYkcdjO2qtO/ydjFmKfQPEIxr3k12PKfT3xeB9PbOLNoX/RdO1rvZa
-         oerNQZXIyKSS9P2AWjFxjDOaxxK88r/QEDAvKQEMr8Ct2NAGXSJQLw3p/POzFZM18bCV
-         nTXa+dgUfwlk4h4TuLKLMQmqXcJIrsM1Zn9+Haq2F4bGWgAFmVWSGbdDGbuOXGboWUeO
-         L6dg==
-X-Forwarded-Encrypted: i=1; AJvYcCWOYb2Nc6zfP/vir0BJBO/ZelDQ+ryw5uqMs9oVF+O6Qofk/A7IqILQLPD+cFgWWDSI5Jt/S+QsauDLVHxVdQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/0hmdfwpZWPw5JY37CXjasHvNWMbw1qclYIkVHnApGk6+IzHo
-	h5y67ZjFVsogR3ltWQTz3Fpw/wuTUde8olP+XA1e+24xrkFGSK1qwtuC
-X-Gm-Gg: AZuq6aKotH9P0JHIvwI5QOCkroOLLyezeUj817eBAfFWy0mizgRXXF2PasKtjBS9uz/
-	J8F0/TffSsmRD6VJPYQphgbpCYQpzRNGDVzZWU2NWA4alEkk5H9wLPfil9iD/qOHI2EHL+u0JjP
-	cgJ2N1LDZ+z8CjnO6fBmis9Az4ruwFrOJKsdl/aMdheu2tJ+IMaBJqFQKtmehDz5nzEUvnbz+OP
-	/5RY7WqzOSZbweoC13EZ9rtRqjH0XteYR0ByFp1KpsNASVacx0lie0l8GeSxfWXzBzfCArip6G2
-	9hPZ5Xp+HPe4NFO5fEmAX/nYWJEwtN7CM31qZk2PEMGQYmhVAd1uvhkdCFDooGCn94svfKuzNBm
-	M4AXYUWWvjRYmhuj5oCWz+CT8b4eOe/+pz2xFqOcDqKg/HqdfXOpJWoSD1JHxA6121U/xgaW3cI
-	sH/0BPJqd/3aFcTHW3a8TOGAx291EMxfHw/BwBIGyYbg==
-X-Received: by 2002:a17:90b:1d0d:b0:340:ad5e:ca with SMTP id 98e67ed59e1d1-3527317db18mr11704047a91.12.1768896492005;
-        Tue, 20 Jan 2026 00:08:12 -0800 (PST)
-Received: from [10.0.10.3] (61-221-120-113.hinet-ip.hinet.net. [61.221.120.113])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c5edf23390asm9008520a12.3.2026.01.20.00.08.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jan 2026 00:08:11 -0800 (PST)
-Message-ID: <79bed32b-cb55-4747-a343-481ec44a4ce6@kylinos.cn>
-Date: Tue, 20 Jan 2026 16:08:06 +0800
+	s=arc-20240116; t=1768897396; c=relaxed/simple;
+	bh=QdQWnSnN+umjKdCrKZk6xPb1oM/GCv4hPjfJvw/M8AY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LSOt0ZzDnjKmwbv0WkT8KgKfihd6zEUQFS2eBfhIzpMvUK402fWCz2oScN/CvJ2bNtM4zuGx2/UmNxkiI/0ODwAQfh/UKf/uAyDcC3q6jD2xM2sz4FeczSvjwD2MIACqJbQ+D8sD5OZelUXPgHvSRa7aqxdNAfTuQxma7Hqwf8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vt7cGTJn; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vt7cGTJn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCAEBC16AAE;
+	Tue, 20 Jan 2026 08:23:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768897396;
+	bh=QdQWnSnN+umjKdCrKZk6xPb1oM/GCv4hPjfJvw/M8AY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Vt7cGTJnwLb5Gfk/A8/ur3OGOIAyRIrcmJUzQeWUN5yk+zlBTMGnTZU97j9nlGEED
+	 KoapKlMik27lTh5QEUClwp93iE8KvSNSKKhSyKpCFlAE8AzS5xOE4T/VRMieoFL8pD
+	 HSU8VeTjQiE2WuC+mm4Nzmlz8NBB067bD2p4An3bgLHEiBSYYNQQgEejTcb5QT0cD4
+	 lABn2GgcK96nP3L6RMwTwC9PW01W6q8yVJtpBM4DDLH1WSMAQp/c+5PyxsS4caVYK7
+	 3iTY6gZ8NzB92UfzUWvRyfMGDgINq5p7ocGRl0T6Sp896Zu6EtWWnroHD8oV+rizT+
+	 z/JWRpQ+3sITw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, FUJITA
+ Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org
+Cc: aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
+ frederic@kernel.org, jstultz@google.com, lossin@kernel.org,
+ lyude@redhat.com, sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v1] rust: hrtimer: Restrict expires() to safe contexts
+In-Reply-To: <DFSO4J9WM5BX.1H0OSQEII0KRB@garyguo.net>
+References: <M2M7QTmzyv0cuTcfmp8k-pHEgTa6pOlfONQW596m3-nM_3-fQoakLTxJy7SthiIlT_5I-07GG9On36gsydLT7g==@protonmail.internalid>
+ <20260110115838.3109895-1-fujita.tomonori@gmail.com>
+ <877btdpyz2.fsf@t14s.mail-host-address-is-not-set>
+ <pDwjG06OA4rlC4rEeo6eo5jUcleIUV5jT_SGHgMmJumfm1YpZU6tXdsLV6UgaSBTvJFSVmPCgTju09jyU7Ih0Q==@protonmail.internalid>
+ <DFSL81HEHYU6.8E3YYOXNV5C9@garyguo.net>
+ <874iohptem.fsf@t14s.mail-host-address-is-not-set>
+ <UWfowIYPYvjnylDlpyIzDvlnBLndFcpoYhkhjPT9aG7ynMqREHY8uigXm16cP6991vx-bEEAVgAVkA9lSGEK1Q==@protonmail.internalid>
+ <DFSO4J9WM5BX.1H0OSQEII0KRB@garyguo.net>
+Date: Tue, 20 Jan 2026 09:23:04 +0100
+Message-ID: <871pjkpuaf.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 4/4] rust: fmt: add RawPtr for debugging pointer
- formatting
-To: Gary Guo <gary@garyguo.net>, Ke Sun <sunke@kylinos.cn>,
- Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>,
- rust-for-linux@vger.kernel.org
-References: <20260119033006.1453006-1-sunke@kylinos.cn>
- <20260119043502.1534349-1-sunke@kylinos.cn>
- <DFSLQ8C5ZGZK.2NH94EL0CQLKY@garyguo.net>
-From: Ke Sun <sunke@kylinos.cn>
-In-Reply-To: <DFSLQ8C5ZGZK.2NH94EL0CQLKY@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
+"Gary Guo" <gary@garyguo.net> writes:
 
-On 1/19/26 21:31, Gary Guo wrote:
-> On Mon Jan 19, 2026 at 4:35 AM GMT, Ke Sun wrote:
->> Add RawPtr type that formats pointers as their raw address without
->> hashing. This corresponds to the %px format specifier behavior in the
->> kernel.
+> On Mon Jan 19, 2026 at 2:29 PM GMT, Andreas Hindborg wrote:
+>> "Gary Guo" <gary@garyguo.net> writes:
 >>
->> Signed-off-by: Ke Sun <sunke@kylinos.cn>
->> ---
->>   rust/kernel/fmt.rs | 45 ++++++++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 44 insertions(+), 1 deletion(-)
+>>> On Mon Jan 19, 2026 at 12:29 PM GMT, Andreas Hindborg wrote:
+>>>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+>>>>
+>>>>> HrTimer::expires() previously read node.expires via a volatile load, which
+>>>>> can race with C-side updates. Rework the API so it is only callable with
+>>>>> exclusive access or from the callback context.
+>>>>>
+>>>>> Introduce raw_expires() with an explicit safety contract, switch
+>>>>> HrTimer::expires() to Pin<&mut Self>, add
+>>>>> HrTimerCallbackContext::expires(), and route the read through
+>>>>> hrtimer_get_expires() via a Rust helper.
+>>>>>
+>>>>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>>>
+>>>> Patch looks good to me, but I just want to check with Lyude about their
+>>>> use case in the rvkms driver. I think that is why we did the racy
+>>>> implementation originally. In C we have stuff like this:
+>>>>
+>>>>
+>>>>     /**
+>>>>     * drm_crtc_vblank_get_vblank_timeout - Returns the vblank timeout
+>>>>     * @crtc: The CRTC
+>>>>     * @vblank_time: Returns the next vblank timestamp
+>>>>     *
+>>>>     * The helper drm_crtc_vblank_get_vblank_timeout() returns the next vblank
+>>>>     * timestamp of the CRTC's vblank timer according to the timer's expiry
+>>>>     * time.
+>>>>     */
+>>>>     void drm_crtc_vblank_get_vblank_timeout(struct drm_crtc *crtc, ktime_t *vblank_time)
+>>>>     {
+>>>>       struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(crtc);
+>>>>       struct drm_vblank_crtc_timer *vtimer = &vblank->vblank_timer;
+>>>>       u64 cur_count;
+>>>>       ktime_t cur_time;
+>>>>
+>>>>       if (!READ_ONCE(vblank->enabled)) {
+>>>>         *vblank_time = ktime_get();
+>>>>         return;
+>>>>       }
+>>>>
+>>>>       /*
+>>>>       * A concurrent vblank timeout could update the expires field before
+>>>>       * we compare it with the vblank time. Hence we'd compare the old
+>>>>       * expiry time to the new vblank time; deducing the timer had already
+>>>>       * expired. Reread until we get consistent values from both fields.
+>>>>       */
+>>>>       do {
+>>>>         cur_count = drm_crtc_vblank_count_and_time(crtc, &cur_time);
+>>>>         *vblank_time = READ_ONCE(vtimer->timer.node.expires);
+>>>>       } while (cur_count != drm_crtc_vblank_count_and_time(crtc, &cur_time));
+>>>>
+>>>>       if (drm_WARN_ON(crtc->dev, !ktime_compare(*vblank_time, cur_time)))
+>>>>         return; /* Already expired */
+>>>>
+>>>>       /*
+>>>>       * To prevent races we roll the hrtimer forward before we do any
+>>>>       * interrupt processing - this is how real hw works (the interrupt
+>>>>       * is only generated after all the vblank registers are updated)
+>>>>       * and what the vblank core expects. Therefore we need to always
+>>>>       * correct the timestamp by one frame.
+>>>>       */
+>>>>       *vblank_time = ktime_sub(*vblank_time, vtimer->interval);
+>>>>     }
+>>>>     EXPORT_SYMBOL(drm_crtc_vblank_get_vblank_timeout);
+>>>>
+>>>>
+>>>> Also, we got some new docs for `read_volatile` that allow us to read
+>>>> memory outside Rust of any allocation that are not "valid for read" [1],
+>>>> meaning racy reads are OK as far as I understand. So the original
+>>>> implementation might actually be OK, although the number might not be
+>>>> correct always.
+>>>
+>>> The wording is for MMIO and should not be relied on if the accessed memory is
+>>> C memory. Also, `HrTimer` is going to be a Rust allocation.
 >>
->> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
->> index 6052d9f8628bb..d023aa00c7470 100644
->> --- a/rust/kernel/fmt.rs
->> +++ b/rust/kernel/fmt.rs
->> @@ -6,7 +6,10 @@
->>   
->>   pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
->>   
->> -use crate::bindings;
->> +use crate::{
->> +    bindings,
->> +    ffi::c_void, //
->> +};
->>   
->>   /// Internal adapter used to route allow implementations of formatting traits for foreign types.
->>   ///
->> @@ -233,3 +236,43 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->>       {<T>} Adapter<&*const T>,
->>       {<T>} Adapter<&*mut T>,
->>   );
->> +
->> +/// A pointer that will be printed as its raw address (corresponds to `%px`).
->> +///
->> +/// **Warning**: This exposes the real kernel address and should only be
->> +/// used for debugging purposes. Consider using [`HashedPtr`] instead for
->> +/// production code.
->> +///
->> +/// # Example
->> +///
->> +/// ```
->> +/// use kernel::{
->> +///     fmt::RawPtr,
->> +///     prelude::fmt,
->> +///     str::CString, //
->> +/// };
->> +///
->> +/// let ptr = RawPtr(0x12345678 as *const u8);
->> +/// pr_info!("Raw pointer: {:016p}\n", ptr);
->> +///
->> +/// // Width option test
->> +/// let cstr = CString::try_from_fmt(fmt!("{:30p}", ptr))?;
->> +/// let width_30 = cstr.to_str()?;
->> +/// assert_eq!(width_30.len(), 30);
->> +/// # Ok::<(), kernel::error::Error>(())
->> +/// ```
->> +#[repr(transparent)]
->> +#[derive(Copy, Clone)]
->> +pub struct RawPtr<T>(pub *const T);
-> I wonder if this can be
+>> Why do you think the wording is only valid for MMIO accesses?
 >
->      struct RawPtr<T>(T);
->
-> and then you can have
->
->      impl<T: core::fmt::Pointer> Pointer for RawPtr<T> { ... }
->
-> this way you don't can use it for both ptr and reference, and you don't need to
-> care about mutability.
+> Because it is intent for this paragraph, and is mentioned in the text. This
+> specific text is introduced to allow hardware MMIO access and the need to be
+> able to access otherwise always-invalid pointers, such as pointers to 0 and end
+> of address space.
 
-Thanks for the suggestion. I'll explore it.
+The text does not say "only valid for MMIO locations", it says "intended
+for". It also would make no sense if it did, because MMIO locations are
+not special in that sense.
+
+>>
+>> I guess you are right about the allocation being a Rust allocation,
+>> since it is allocated by Rust. However, the value we interact with is
+>> behind an `Opaque`, so I think treating this as a non-rust allocation
+>> should be fine?
+>
+> No, it is not. Opaque cancels out some alias requirements but it is still a Rust
+> allocation. Everything that Rust code interacts directly, and this includes if
+> the allocation is made from C side, must stay follow the usual rules.
+
+As long as we are not ever making a reference pointing within the
+allocation or doing non-volatile operations on it, it we should be able
+to consider the region as a non-rust allocation, right? If not, why not?
+
+I am aware that this does not apply for the expires field, I'm just
+asking for the sake of clarification.
+
+>
+>>
+>>>
+>>> Even if we don't treat it Rust allocation, it's also only "fine" in a sense that
+>>> you don't get UB for doing it. But the value you read can still be completely
+>>> meaningless if the updater is not atomic (it would be valid compiler
+>>> implementation to, say, turn a non-atomic write into a write of a garbage value
+>>> and then an overwrite of the actual data).
+>>
+>> This is exactly the behavior I expect. In case of concurrent writes, the
+>> value might be garbage, but in the absence of concurrent writes, the
+>> value will be correct.
+>>
+>>> I think the usage you quoted is just wrong, as on 32-bit platforms this could
+>>> well read a teared value.
+>>
+>> Referring to the C code above, it seems like what people in C land will
+>> do is read the value until it seems to be stable yolo ahead with that
+>> value.
+>
+> It is non-obvious to me on why this code is correct. The updater seems to do a
+> hrtimer_forward_now and then call into drivers to update the vblank count. So
+> in this sequence:
+>
+>     CPU1                 CPU2
+>                          first drm_crtc_vblank_count_and_time
+>     hrtimer triggered
+>     hrtimer_forward_now  READ_ONCE(expires) <- racy read
+>                          second drm_crtc_vblank_count_and_time
+>     store_vblank
+>
+> you will get a teared read of garbage value while the vblank count is stable.
+
+Right, that is interesting. And it will not help them to flip the
+operations on `expires` and `count`. I guess they need to update `count`
+twice to make it sound, effectively implementing a seqlock.
+
 
 Best regards,
-Ke Sun
+Andreas Hindborg
 
->
-> We could even do one step further and just have
->
->      use core::fmt::Pointer as RawPointer;
->
-> so people can decide to allow `RawPtr` to format their custom smart pointer
-> types.
->
-> Best,
-> Gary
->
->> +
->> +impl<T> Pointer for RawPtr<T> {
->> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->> +        // Directly format the raw address - no hashing or restriction.
->> +        // This corresponds to %px behavior.
->> +        core::fmt::Pointer::fmt(&self.0.cast::<c_void>(), f)
->> +    }
->> +}
->> +
->> +impl_pointer_forward!(
->> +    {<T>} RawPtr<T>,
->> +);
->
+
+
