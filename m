@@ -1,80 +1,128 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-qv1-f66.google.com (mail-qv1-f66.google.com [209.85.219.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD81436378
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 14:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982B843D51E
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 14:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768917763; cv=none; b=FNDZR/cBsZlbiPGTzSumHA3hfZTKayzUalrfwfGPrSXoK1jJ5V+NE4xGyhIZerG2RibcxueqeWEkdvDOnyq5PEEfgMSJ5Zi/vStURdc+5pho9Bg/ZPid+CbiJ/n/TUOPKo0ETHskzfvIaVelVwd9uvxzETJOhePFA8jUJsm6J7g=
+	t=1768917921; cv=none; b=a7L1Fg0s/6J2A2RRatG7yP1kieSDTJ0RSjOXECxWdWVDGww8oIS931wKg9pluFeSpNUe6bqqxmOFZ8lbu1AHQkAwlsvHiiG143JgNUO8uUadoV1Aca7+6miQs/IlauLsEb481FJ6Qmq+k/VZbrcj7TyKE0acxK18PlNXl4zbjnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768917763; c=relaxed/simple;
-	bh=xPu9fBuMUhOPCePDz8GtSrWF1C+vSgEjvzKG6Lg96aU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SeRrPQJKvfqSUoYU+J615/zka2/q7kA7q2UlhOTJ+ySrjcgfp8ZREMpNhyIkik1N8dvQQvyALbAu+6prM0iDcZ+mSe/F/vpkVo4R6dqYcr82juNeGfY24x+mFVcireDU433smLjfUcEixNKd8Pur3fVUs8zBxz7neuWoYJge7Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cr2DLEgk; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1768917921; c=relaxed/simple;
+	bh=YYayMGV6ngRY7nmSsJrP2TzrNdW5dR5oIdqIjfBi5QQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EWWV2FevmcUZFeHNFTOF0BYFvUx3dtX8HdOp5GeOlf9A93Ycf6TunSlqaC+KXdhfrGnmR7IvTllbBKUyy+5n0jos4jrCEahE1Cof962vgdi+oK0Um0SO9+Yh97YqAtWLI58j8m6kwOtCfl/GxQBZFOMw807uU42VMVF25T9m6vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BNQovWsf; arc=none smtp.client-ip=209.85.219.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cr2DLEgk"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso34252605ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 06:02:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BNQovWsf"
+Received: by mail-qv1-f66.google.com with SMTP id 6a1803df08f44-8907fb0188fso55682606d6.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 06:05:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768917761; x=1769522561; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768917918; x=1769522718; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uFD71p8fWspU3BL1+X8LZN5zYONG2aaCKcJtMsQB+Vo=;
-        b=cr2DLEgk7MTf3awz95Cg7680K1kjdZyZtChH5IuSAjfiSBoSTZxE7ESLhQyfyYSTb9
-         PTHCDB0dycyISwyJnnqrsEFo09/6qjEnHbEdcH9+0JiGaNzqqrzJ8Pc/A8GvkB+uLW84
-         sswgGbKxyZC09fQMDRiHPOXY+XnqXxOrFXLFay8DiCR/AIgGcbPMsPVbZQaUD/mFwzaW
-         JrqFeO2WJpPT9D0bIqBDCF9zBpbdTh3kzYARvR6XFvdFRY5uXem/05nWBxa/tHbwtRwA
-         iXA66dSGeNUGBeg0W9LNSa6xSd61deVupZ1cFcGYLT5i1JQb1PPHOobKh43+8OQ/5CMZ
-         ezhQ==
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ndl0X5WSxnCKWziNf/kLjxjZJLIqLpW4gsz4OqMKe04=;
+        b=BNQovWsfeXA+HXOfpFAxQO6BLNf/v7Nbo5XRgXSf6RGHWSS4ElCdaPscrhAPyou1Dl
+         Gg1xhxxpwfwxm3ttBdoyKV7G5UJ36CpCypZlhV7fh1Lcvh+79/QAU5ywdu7IsmZ3BwKe
+         KPITOKn9dcsxkdrcpeJiYKg42iGzBuPsbuEzfHVTrIochu2KPtaV8P5Ta+BEV+AnBgUF
+         /Bvsy9R93rf0K4DqBOTiWH7pb90uZgI0OfgeJiuahUHaFevL5hymEKXGx0C8kmrT7M3z
+         n2HXpa4+y+Q+DBa/7Cd1Nnnom4DDi8JaKAGOT1WdbdOKDv3tA1JFijQOd2F3u4uqawfS
+         oL2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768917761; x=1769522561;
+        d=1e100.net; s=20230601; t=1768917918; x=1769522718;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uFD71p8fWspU3BL1+X8LZN5zYONG2aaCKcJtMsQB+Vo=;
-        b=kroSE0mz2xv3m5WVX2IndOnbpNezoVAO7vBcVDM1GvP793/l0hmap7OhBL3ivH9qgX
-         /pexqvXJwddQEvqshEiUxzMVf8ss0kougzLZWfqZSn3NoGZWRlICAl0DJuY7tngfST42
-         LmKgYwq9AyS7MEb1pVrAP3Ctb+gVaQtuzRkXwPqyod04XsAbY1HK2KN3yM/PW4D4Rxnm
-         bm+qZOPBbDpyEHlyreQyx40jcpprNWHL1OzG8mHAov0awXvF7/PEKnZ3lij6pfc+pL0s
-         x0UhFFA9rXCjU7VBggu5VZws97/zJpx8tEGhO7p0KmROf0jebF+xEWlS9+hu7kk4GXKZ
-         ePHA==
-X-Gm-Message-State: AOJu0YyJhVbMLdE93FJZRuezJVwqr00bmIwnz5+NARJu3J2P5cDcNptq
-	AYPbYyDMHOlgyHpJLO/kdlp4Wa1Bkac2ZbKk0FdTee50zLzFs40EBIs/aTWRILHy
-X-Gm-Gg: AZuq6aIGW0A/TzCV6NfwvETzTORKC0q1OhqqlQ6qk2rZtQxo3sK2ii8DXQD/UUA/fqr
-	kRYs4mtqXxOcrhhMYqEKQH72k5Re3TZr+wB+Uv0AClcUmsVstRRTsnclCW2X9gpuBGxqXIGsaoe
-	IWTXrdE/+YKTiHfxjfH5LfJ1WSQuRGX8UmI6vgh5igTC+qnEH1nLfVgPIE6RsmEQhs7X6uTTQaJ
-	eOsn64Egji+ZJ5KL15N1p6qGZpS3kZZbG43FgCoqA5tMhhOr5ETMsurm+lprEs6v4MyzJKXidXi
-	H9nSe78GKc8GALBTcWO7dHrKMMzsrbI/jEZgKe3YjEyo1fqZu+lBcyrv52Kxl65ghANEsitSPXL
-	/XyPfSspspVfk9Nwjtf0JuPWU3DWiLb73Ob0Q8pmwDMg2u6ge4L0eOtjwqoeZR0ZbJXQ4T3AOBs
-	mLc3/Q5x92ZDBY+CccsEsEs+dSnIvQFERKCanvrhmVBBGLT2/yI6b9l/AI/60UtKo=
-X-Received: by 2002:a17:903:38cf:b0:2a3:628d:dbea with SMTP id d9443c01a7336-2a76a0a673fmr16827585ad.24.1768917760594;
-        Tue, 20 Jan 2026 06:02:40 -0800 (PST)
-Received: from kailas.hsd1.or.comcast.net ([2601:1c2:1803:3ab0::2e2b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a773d4e5basm17649535ad.94.2026.01.20.06.02.39
+         :to:from:feedback-id:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ndl0X5WSxnCKWziNf/kLjxjZJLIqLpW4gsz4OqMKe04=;
+        b=kBE49qliACZvyOeEAwY+oUVRg9YU7h7Gd/jr6xU4c2f3GQILpeZ58BuiEJyEKMVlP+
+         rkge97M87rxm6VRAvEmlxw+4efMc9PT8RvZhQpswQ9Gr5licOp5LGC2UGR8GvtC9ibHe
+         8/mS1cfO498M4EIYOARpKxu4ESd5N/EOZmBppgVr5HKAM0QaxHZboHxtTrfuUJJk9tRp
+         92nj1vCGft4hMe/m6pcDv5ZxtQ8HIwXJjMQ7LLTzF2Dz8atq5+mZfCk900FLM1YIsbUq
+         /Xm8E3Cv8nd4Y4F6J4SDu5a5Xw6xcmy3SU6E+QV+5fKiX6oYCOKZ7gkIkGv2JGuPOCJ7
+         VQkQ==
+X-Gm-Message-State: AOJu0Yx88ZeXmyD/ctrcmf9xLgohLNmM0Dzcd13jfT2SHcwt7ZN5EBd3
+	y/VHVPNYWvA4RwjEymIzArPL3gIWbd7DzhK2SlLszYMFci/VxjFicU+8
+X-Gm-Gg: AZuq6aJ6TCQZ/v07CHHneQ6grIs31O0fWM7478noIJo9+yYU6FJ5cr/dViqscTKioRr
+	v9p1pYmH1IidpZz2S79tpeVaC3S/fS6n9rhOE9roliyCLLqqztanZBJY6NG4E58+e95B0truGZ7
+	cBHsvHMIuwFQQc5RK6fKyM1Y1gpyaTtSlM2MVh+OZIGgn+l3jjpHnHGKfQ7VA3EnGSxBVzEj7dX
+	8XvMxwx/DWyx/99I3GkqTUfSZVe3XpEaLWOTOMdIqdcA3Pi9YNjBTu51VoLyAPx5yPkJBQrEQJs
+	KVLOwLAm8TfhB84woBtEIcVvNn514cRKCH/m752Ao16CMINaNbSw6uzLHMYny1LnHGtjL/RIxKu
+	YE96tWMAZM/dAGSj58220pdTQE4uKqukH1w+BcuGFxPg3hgbdV1hfflXOcbb2ctyuSD1C/2PBlg
+	NCAHjuoZX7S0rhTD7nLwYYpXHBvSNuCI5mBF+HZQK+RkuPO+usJAww/BdOUfz8QXSHpWI1XIp1A
+	suHCUDut/G8lUM=
+X-Received: by 2002:a05:6214:5009:b0:879:d0eb:fe95 with SMTP id 6a1803df08f44-8942e421a04mr188044366d6.11.1768917916142;
+        Tue, 20 Jan 2026 06:05:16 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e5e45a7sm109499356d6.1.2026.01.20.06.05.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 06:02:39 -0800 (PST)
-From: Ryan Foster <foster.ryan.r@gmail.com>
+        Tue, 20 Jan 2026 06:05:15 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 519B7F40068;
+	Tue, 20 Jan 2026 09:05:14 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 20 Jan 2026 09:05:14 -0500
+X-ME-Sender: <xms:motvaQzVICAww-oRCZoxVPm3iA58WW75ffbAuD3VGZ-JeNrA3KPcgA>
+    <xme:motvacoWuGYUsItD2OfYg1vxbq97rmJd1GfhzTjz3f7dylWWy6A-NgQs2E4HEeaeJ
+    2kBNq3Mco9zWjhV79cVCNIHMMTQBTTXSS4jUCoOAluCqXGtgf3_XE0>
+X-ME-Received: <xmr:motvaUiI13lDsGCj2zVEJA7AUXebB_vyVN4JLyX1vbrn27zoukhi6-gM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedtiedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcuhfgv
+    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
+    hnpeeggeeukeeghfevudektdevjeehhfekffevueefudeivdelteeltdekheejgfeiveen
+    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
+    ohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnh
+    hgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedv
+    jedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuh
+    igsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgtuhesvhhgvghrrd
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhope
+    hgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehp
+    rhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:motvaWXo84i66k7k7re2ABUJLMs92aVAV6KLWpTYIgCv3EdhsF9PIQ>
+    <xmx:motvaUEako88WxNGtqMi3dyxsy2VeKv-NLP6CFlGYuNJ6C8Ql1YJBg>
+    <xmx:motvae_yxjoVrhwrKv-I9W0VhQC5swLt1G-04a5u2jo9DVCy2txsZA>
+    <xmx:motvac3TPZ9UCBaSbJT_Md0VGHmPlgSkwyzLEKzdC2JdcNfwNUd-7g>
+    <xmx:motvaemzkBjRSvvUqNg4nrP8Go_bXL5NmU3eGAoG54W8uEA4oBCl-9KS>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 20 Jan 2026 09:05:13 -0500 (EST)
+From: Boqun Feng <boqun.feng@gmail.com>
 To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ojeda@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Ryan Foster <foster.ryan.r@gmail.com>
-Subject: [PATCH] rust: replace `kernel::c_str!` with C-Strings in seq_file and device
-Date: Tue, 20 Jan 2026 06:02:35 -0800
-Message-ID: <20260120140235.126919-1-foster.ryan.r@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	linux-kernel@vger.kernel.org,
+	rcu@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>
+Subject: [PATCH v2 0/2] rust: sync: Atomic pointer
+Date: Tue, 20 Jan 2026 22:05:01 +0800
+Message-ID: <20260120140503.62804-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,63 +131,35 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-C-String literals were added in Rust 1.77. Replace instances of
-`kernel::c_str!` with C-String literals where possible.
+I've already queued the first 3 patches in v1, but comments on them are
+welcome as well. The RCU pointer patch is not included in this v2 since
+there is not much update and I'm still hoping to get some reviews on
+that for another respin.
 
-This patch updates seq_file and device modules to use the native
-C-string literal syntax (c"...") instead of the kernel::c_str! macro.
+Changes since v1:
 
-Signed-off-by: Ryan Foster <foster.ryan.r@gmail.com>
----
- rust/kernel/device.rs   | 5 +----
- rust/kernel/seq_file.rs | 4 ++--
- 2 files changed, 3 insertions(+), 6 deletions(-)
+* Add a clarification patch of CONFIG_ARCH_SUPPORTS_ATOMIC_RMW as
+  suggested by Dirk and Benno.
 
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 71b200df0f40..1c3d1d962d15 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -12,9 +12,6 @@
- };
- use core::{any::TypeId, marker::PhantomData, ptr};
- 
--#[cfg(CONFIG_PRINTK)]
--use crate::c_str;
--
- pub mod property;
- 
- // Assert that we can `read()` / `write()` a `TypeId` instance from / into `struct driver_type`.
-@@ -462,7 +459,7 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Arguments<'_>) {
-             bindings::_dev_printk(
-                 klevel.as_ptr().cast::<crate::ffi::c_char>(),
-                 self.as_raw(),
--                c_str!("%pA").as_char_ptr(),
-+                c"%pA".as_char_ptr(),
-                 core::ptr::from_ref(&msg).cast::<crate::ffi::c_void>(),
-             )
-         };
-diff --git a/rust/kernel/seq_file.rs b/rust/kernel/seq_file.rs
-index 855e533813a6..518265558d66 100644
---- a/rust/kernel/seq_file.rs
-+++ b/rust/kernel/seq_file.rs
-@@ -4,7 +4,7 @@
- //!
- //! C header: [`include/linux/seq_file.h`](srctree/include/linux/seq_file.h)
- 
--use crate::{bindings, c_str, fmt, str::CStrExt as _, types::NotThreadSafe, types::Opaque};
-+use crate::{bindings, fmt, str::CStrExt as _, types::NotThreadSafe, types::Opaque};
- 
- /// A utility for generating the contents of a seq file.
- #[repr(transparent)]
-@@ -36,7 +36,7 @@ pub fn call_printf(&self, args: fmt::Arguments<'_>) {
-         unsafe {
-             bindings::seq_printf(
-                 self.inner.get(),
--                c_str!("%pA").as_char_ptr(),
-+                c"%pA".as_char_ptr(),
-                 core::ptr::from_ref(&args).cast::<crate::ffi::c_void>(),
-             );
-         }
+* Add support for Atomic<*const T>.
+
+v1: https://lore.kernel.org/rust-for-linux/20260117122243.24404-1-boqun.feng@gmail.com/
+
+Regards,
+Boqun
+
+
+Boqun Feng (2):
+  rust: sync: atomic: Clarify the need of
+    CONFIG_ARCH_SUPPORTS_ATOMIC_RMW
+  rust: sync: atomic: Add Atomic<*{mut,const} T> support
+
+ rust/helpers/atomic_ext.c            |  3 ++
+ rust/kernel/sync/atomic.rs           | 12 +++++++-
+ rust/kernel/sync/atomic/internal.rs  | 37 ++++++++++++++--------
+ rust/kernel/sync/atomic/predefine.rs | 46 ++++++++++++++++++++++++++++
+ 4 files changed, 85 insertions(+), 13 deletions(-)
+
 -- 
-2.52.0
+2.51.0
 
