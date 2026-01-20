@@ -1,84 +1,112 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45C52F12D4
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BB6363C60;
+	Tue, 20 Jan 2026 08:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768898724; cv=none; b=cPswcZ3dsDyjr/TgtYO2PwtpbmfYnOoLkwu2/vs940h1TZeoNlfcP3H7vCqJjpMZgLyCJGPIJx483VR8l0dZJ9KQ6AJ2n7Z2J227ZTR+1sCJLDTnquopCZ2XFlXTd89CABI0w9z0LPwzbgObjO1Rmus7dvmscYo22JHLDWoGqB8=
+	t=1768898932; cv=none; b=rSDouCRkuFSgGbnC1zS040VMHLNfOeC642SlWGDSZNzjhF8X3xsNU9/rq+SMQCZKVBSykTJhVjaOVkFWACDmTwlp8HTyrmN+Qok3zfv5Q7iG/DltG0BpyZXX88CYBGSUnFCwEi3hv62CrmZMqj5C8LnefiSMYthk86w8RJLt5W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768898724; c=relaxed/simple;
-	bh=uGUgh7ki9bLfK3npVskZllRl6/2+3ou/Zjci3ZBF4GU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gI2ZKqt9p6iEXoZa8pHvk0gMnyUt96Wx5w3/bYCHq+NNdV9O/exh65TJWjmgIEe/0y86pEARnxFF+5Er7ffZbP28SXvKe86lt1o6r0qDRQLg/XfhUA2NjO7MxxPsC/ggHXzyKHGJUdFeXVcMjJqLQkoMHVCRcABnNQquYjedjeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pnDFfpZf; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1768898932; c=relaxed/simple;
+	bh=P2f5VRfQXjNxJlBuPknRTMHoXdQiUEDYr/NdKY8/GZ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uTB688q+X33f6/d3mec6lv2QGTM033goLXXckCzKxukh8W1olMONgMftdd0QHApX1JI2vUDkMui6ZmRHdJOwkj5fpbXOuxjZB0YCI11alY6o8a4d9hV2/yi9puKqbyT7AD694JT7UgrMnkQeXGDdfseTsgyECnfUQe+DUi1/d1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A0xfAzWF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pnDFfpZf"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64da80b3699so9017578a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:45:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768898721; x=1769503521; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uwzWOY7fBYLDsz0TUsm7RUZKhHWr8qsEprgw8/boGXg=;
-        b=pnDFfpZfrLVG09BXlMCEl4cq04w0O9Gw3MyPOWfsl+nKm1anFcXitv3cgIcT2NNW1M
-         MsW5b8SFpIpKwL/ig9tR2dI85jvS2Y9ypdEzXUgg8LPnfBZATG0YTe34tLU+SPrp9QLh
-         qjcx6nIh8Py7PpqIazz7wDGsMIUvpBK+M6SbdXzUqgg9oyyVrblkO9rHf5JoyVTq1uo5
-         4duimCF/Oq3Cm78Lx2N82lhue5VU9n3TEJBoltNHjwtxe+Q4qGgeefElJCs+CObpxtCa
-         dsQiJuyrKc/PPEUjcjuO/5Cxw3Cy5qa1wM2HHHWIn5dHJG8va90oxFhvsBYZomwUfBpZ
-         BSaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768898721; x=1769503521;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uwzWOY7fBYLDsz0TUsm7RUZKhHWr8qsEprgw8/boGXg=;
-        b=LI8RGeeduDOGB9o4FSlmhQ320b+hmWdFUXZrZGjEz/l74bifBdQAvbUc5NvLoKQZB6
-         thc+66sIHczRAdibjWLjIgcWxhfANo8j4jrVkS977XcMzQPVClDXfABk/g8IfPEIWij5
-         xDmn9nGbqPfg0rjPQisWA5p1GhgPCbt7HbwAK5RxZ7tIWw0UV57flwRXc7TYHIZ334Wy
-         SlZKjy7MDxej9CI/AWw7LJq7RNid/FW8y37DPRpw2SN7XKznGWX+P0tafcQWI1YfQK7d
-         IVvo268HUIgZDbAskARnqKXfzAAu1knRF+6pwi+SzX6jqeQXbjHmnauazNPW1UF+1z5j
-         MliA==
-X-Forwarded-Encrypted: i=1; AJvYcCXT3oZSjEwDvFcgKyFN/Uo+R0v8TqxNPWBcVppKG/AU/s8vQZN0M0k9aYtpzOmbSDlUr7RgmaU+x0sMYhrjsA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9hlfQznJMl3llS97IO5Z4KJzAm0W/h0q+5AK4pjXl4vq6eHCT
-	V3QjPq3pb5gGQ4Ah5+ljmcAwkxxb65mHueGa5QwEg3cCJaeSjBCGQFLvmySyOTmpWP8DaKmjZ2B
-	d7r2cdqR78rtZIojrBA==
-X-Received: from edsc18.prod.google.com ([2002:aa7:c752:0:b0:658:143:cbda])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:270b:b0:649:81f6:c35a with SMTP id 4fb4d7f45d1cf-657ff4eac6cmr988179a12.33.1768898721257;
- Tue, 20 Jan 2026 00:45:21 -0800 (PST)
-Date: Tue, 20 Jan 2026 08:45:20 +0000
-In-Reply-To: <20260120-register-v1-2-723a1743b557@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A0xfAzWF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE962C16AAE;
+	Tue, 20 Jan 2026 08:48:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768898932;
+	bh=P2f5VRfQXjNxJlBuPknRTMHoXdQiUEDYr/NdKY8/GZ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A0xfAzWFO1LjHkQA5H5Nr/oMPHlXF4oL00eDIkgCyAtz78Mi0JXQ0IuWGsgqFifWE
+	 4F1d7sT2HuwS5bbjfLR4PFMbDJeVuuZlqILz3c0dOILh4MOt3U5H+nUsabUa11Ofal
+	 leEltVrKocV4WrDzgYGjNWltKE2Uf/lZTRgbtwCfFoKohR7EBiNlkLKKygIfXQombv
+	 bS/uPTmMQZp2/QKU2PKfzlaFzGq24/X5p97uj4RpKmL+dqPwLovkZt0s+5uMEJpRs3
+	 V9/GKE74f3gWpgz/I0ZPijttLMTf7GV2i1IXeX2NMD16FUFmQFf7uUDiU7/XKxz0UY
+	 07AL/IEW7RY4w==
+Date: Tue, 20 Jan 2026 09:48:48 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Stephen Boyd <sboyd@kernel.org>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v4 3/3] pwm: th1520: remove impl Send/Sync for
+ Th1520PwmDriverData
+Message-ID: <3cfeounnaphhezvjpz5igswml6iu3b6jhwhjn2g4ziimjdoefi@ge4ezxx6jxlr>
+References: <20260113-clk-send-sync-v4-0-712bc7d94a79@google.com>
+ <CGME20260113151335eucas1p157cd966c5f0f4e477fb11272810a0ae8@eucas1p1.samsung.com>
+ <20260113-clk-send-sync-v4-3-712bc7d94a79@google.com>
+ <90657b83-1cff-4c7d-adde-9b560c2be7c2@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260120-register-v1-0-723a1743b557@nvidia.com> <20260120-register-v1-2-723a1743b557@nvidia.com>
-Message-ID: <aW9AoG4kgQhw_AEr@google.com>
-Subject: Re: [PATCH 2/6] rust: num: add `as_bool` method to `Bounded<_, 1>`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>, 
-	Eliot Courtney <ecourtney@nvidia.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Dirk Behme <dirk.behme@de.bosch.com>, Steven Price <steven.price@arm.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nwsg2exzzhgvomkd"
+Content-Disposition: inline
+In-Reply-To: <90657b83-1cff-4c7d-adde-9b560c2be7c2@samsung.com>
 
-On Tue, Jan 20, 2026 at 03:17:55PM +0900, Alexandre Courbot wrote:
-> Single-bit numbers are typically treated as booleans. There is an
-> `Into<bool>` implementation for those, but invoking it from contexts
-> that lack type expectations is not always convenient.
-> 
-> Add an `as_bool` method as a simpler shortcut.
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+--nwsg2exzzhgvomkd
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 3/3] pwm: th1520: remove impl Send/Sync for
+ Th1520PwmDriverData
+MIME-Version: 1.0
+
+Hello,
+
+On Mon, Jan 19, 2026 at 10:45:56PM +0100, Michal Wilczynski wrote:
+> On 1/13/26 16:12, Alice Ryhl wrote:
+> > Now that clk implements Send and Sync, we no longer need to manually
+> > implement these traits for Th1520PwmDriverData. Thus remove the
+> > implementations.
+>=20
+> I thought this was already merged :-).
+>=20
+> Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
+
+If I understand correctly this patch 3 depends on the first patch of
+this series so I cannot pick it up via the pwm tree *now*. There is
+another patch pending for the th1520 PWM driver, but as of now git seems
+to cope well when merging the pwm's tree for-next with this patch.  So
+it's fine for me if the series is picked up for 6.20-rc1 via the clock
+tree.
+
+Acked-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
+
+(Nitpick: If it was me who picked up patch 3 I would have capitalized
+the "remove" in the Subject for consistency.)
+
+Best regards
+Uwe
+
+--nwsg2exzzhgvomkd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlvQW4ACgkQj4D7WH0S
+/k4CswgAqYG9PEeOEysrNpuhGW5U3OIozAveU6uV7f/WsAm8r9/z/awUrqqx9SsI
+UuqhYcm/NXXK3TnrKeYfcU/03QiTBuwoZfyWVjwe2ZcJM0WRz0WcjRI65hmWgAIH
+sG5NN32/KLyj1ITpCXRCSPEps5R1ucJYuzjRLTaTwrAzQDXT0OlEVd8vUVeHJjxW
+DKuIm4QF/nBLtIq1JXv17rOqaU1mFQO3kZqYWu26GE50N5HwDDmJCflDeFVBmGpv
+snGBFWLlwvMYCF+GnBxXeOQ8Of394Tt9EUP5YZhC6cktDl1zN5Y4H9DfhVgj26Rh
+ZNbjBoDVXVZUlcwkA02YvTfmJcVzvw==
+=Dmu0
+-----END PGP SIGNATURE-----
+
+--nwsg2exzzhgvomkd--
