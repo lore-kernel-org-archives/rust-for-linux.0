@@ -1,152 +1,168 @@
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7776E407573
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4703B8D44
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768896109; cv=none; b=MOmI8w9YVI+HFuzAfhOaehnr9IQf3jkJpEpKgS4806rd/2R7vSyocjwM2c6INFfC7sVHxXSEflo8xEidff2bqOqAVKWmgKbraeGo/DejZuvmVOzrdBrb4zXoUrXyHadpXXOlBcchJyy9xX/Ehli8+tCkV4LA5usTKSSnkA/brVw=
+	t=1768896289; cv=none; b=Deo6oix6wTbjQWEo30VQa62wEgP6S5RytjYbwcFvEMy2j+3f09Zn1gYzFRyORAI9CO5lOj3v4BuSOt/Y0J/uxE6eR0RNtTRzgdTwMUOUlbSMmy0SLzvUkdQjccthS4GiVQ8uYQxMKqAJb2pKF0zdAqvBYcIR1f6QCJ4HiuuWx8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768896109; c=relaxed/simple;
-	bh=0vtMIkWvFv38BtB2UgJNGiK8/4dNFQkMGCAxXn5LHe4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m0OMylMvwdFaXFNQu7IHBznK309rYtmdWL/FM0Hv0SLMkg4tFIqDVYdPcSfxzcjWGIrrie/AC/kZfk+2Od56bq9DSzZBIhr5p0dxwlDlh1uFfJ/35ozEZDSMaFOh33+XKeRsUYV6i2UcUAL19RUCFfExkjMvkja90dmZqdkDTXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oen+uj12; arc=none smtp.client-ip=209.85.214.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768896289; c=relaxed/simple;
+	bh=P+SC1Lv8GtKFMmDmSP1puIAFS8fxxtphwLdKaMU0tBM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uUanS64SdLKUwadDagmCtlwFQDV5wSyRQZa/tXCBIakqNb1o2WZLEUuNxiS4cbi6ME+rVIY1m7QfkGeE6muf22o/6o6X0a9iuhAaluqTsCaboHFvBMQRM1Iajp4PIrnp3Ne23h0XQOq5zYcXyQLzqo1H+5xwlRaJom9G5jvO4Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZBNbTWeS; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oen+uj12"
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2a0fe77d141so33393665ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:01:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZBNbTWeS"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-4325cc15176so3448440f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:04:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768896106; x=1769500906; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ABvBbtXQdnWyWjUicvGm8YHeqIfqX8LGFS6NrmCUBwM=;
-        b=Oen+uj12t/T5JZ29/CrMYuuYa5z6h9R2CCb/bUnXmPWHf+DeHkqWY+jiKP8gyz6DIZ
-         OjnDuoSK9qGef1YVd2BjbIwtcILL2qGSzzLdr8yYSej1a5xEr9NFX7TX7Od6NxM3W9S+
-         F8Lcmg5pkazJS+jQVmf6WPY3X/8kV8rjpIDxEiFlHzn8/xSVjDjRjkADaw6woy+8m8CN
-         Z57iY3C/ha3Wu6Fwy2+g89hhhSVnA5ASLfm1sk/Hjp4QWhtyqvPz9qxYQTA1FS+HRywL
-         4FKCmRWGkO45VFyuTVSZiDfzIN0iPKHnW6rG/M8sbH6THwrgh6RnHsaBG/73rX8AxD6M
-         GUFA==
+        d=google.com; s=20230601; t=1768896286; x=1769501086; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=m4fFtv+H37c+9JHNHcFH2S2lHNgEGMW4y4wNCwUNdFE=;
+        b=ZBNbTWeShKEKgpjwsZeh4IyEMegy8tJw9RqODzg5Jx7P1/jcCuo+0pKgcd/bdoEKJS
+         Ziv/wPKFDrriCqsgGeeujUX4YjjMaYk+3XBOSBTyZauT22hebbqEQJq1IMbSUW099kxc
+         yUr392NnBMHrcBGPuqkNv1WW06P0aQkjpAJhtQhHmbDLKuTv6f7rBMNqmO8y3xnvCsAF
+         kAhGnpz1izmWuDWsdJo+LflzFvohQ6pdbqdGuRONtX2unJ8mIKVhEr2sIVz+Al4arS/D
+         LId4az1oto9RRS2vXh12gl5VhyNcsvKF4abGrIwANyZfVAD7FVwXltesdM0VPYIE3A4E
+         Flfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768896106; x=1769500906;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ABvBbtXQdnWyWjUicvGm8YHeqIfqX8LGFS6NrmCUBwM=;
-        b=rD7bioIZ5ve04I8cYqtd04+PLkJb9FYpJiE4SA/jje47RgCvK6MUwo+EibfJEeE7mD
-         tBxcd/sgSQ4bmshvaUolo8G2TNeRLoB5EHrxUSD3JK4+KzkQpxlZFUv9YCPeHm3s2ixT
-         QBOUi541Vl1jJo7sVrFjgHYmnjFVzzoJk8xJldjSGifQy67Fc86NhrsravYcxg72ULYF
-         HwZl9P+5p01cx4PZsQgjOh++3Pw7b1l1Fd/qYTcCadsPcDSxKZi3vT1dQn/+bA4gda5a
-         zngvcqKwSAO3LD9qyG9l6hIrTOyR37z9NNolxHDwmTI9Mh2q+Uqd7Mke9zGbpCQrB00K
-         4pEw==
-X-Forwarded-Encrypted: i=1; AJvYcCXYwC40t9xfBEieP2boxSRihjGZt5kj8oz+9ht3lxnBUKDoA0iEJ39bBK+Q8LbgMzx+++Q2EhiM5AlwDUF6CQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYu4PCsGuSi9vk7I9GDTv9Pz7saz3nRbiUgSsq+UVtrExFEYjA
-	jJK5Ir9jU1rgIeEZb7lXaZCA2X48+5Ne26gHIGH9rlLAP5jikwHAA3g0
-X-Gm-Gg: AZuq6aJnIF4tCl+NPUUJ5Kz8G9LqdQiWB7ZiOAE1bK9Qv3wEiA+ejuLI2kSvT6O62Zr
-	cG2gjLzykR5S8KLhI3F4cXZr28hkIWHbe2pGsUr547w8pmjwb57tPWzFRZJAsswMD3gZB6wJCfQ
-	XSXaTYYGqTOL6Krgu/qLIF/WskWO0OwRzwHOUaBNweVm66tFz5MlGCxXEaD94l8EYt+yLaFYJd8
-	T6A1EV+4xAs6n9bNtD7d77w3VzthST0e+qG3gT54bpCufpM7hZE/efnjetvS7ArimKcqte36T+7
-	2+0QbqC8uypm9+wrWAj/hJ8BWdTyjl17pGBwwlAoVLZmVA++sBHUomUp+iRCWCBxa/Kqk8pyHe7
-	OWNH2+TAq5Y//R/2ll58i5uC9pOyvgkEuHUXMxs0psQWueU4JGEq3jVxHSmW+MlodlVjV
-X-Received: by 2002:a17:902:d488:b0:295:7b89:cb8f with SMTP id d9443c01a7336-2a717413b94mr107094885ad.0.1768896105606;
-        Tue, 20 Jan 2026 00:01:45 -0800 (PST)
-Received: from [10.0.10.3] ([2403:2c80:17::10:4008])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a71941c56bsm116454455ad.92.2026.01.20.00.01.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jan 2026 00:01:45 -0800 (PST)
-Message-ID: <77d373dc-c5f2-4dca-b0d2-b5cee6a21b3b@gmail.com>
-Date: Tue, 20 Jan 2026 16:01:40 +0800
+        d=1e100.net; s=20230601; t=1768896286; x=1769501086;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=m4fFtv+H37c+9JHNHcFH2S2lHNgEGMW4y4wNCwUNdFE=;
+        b=gSTrArQPoBu28/1sQXvNxCOhu0VaItn0BU0pO1B8/UoS8Ft5rgHDZWKwRkPFwrLs57
+         ixazazZQf9wMu5XJvbmKDawEquXDRMrBAEDOV4Ru2KnCge8NI/whPk7CxQ5h8HfThMIq
+         0KfDDNKMx4SZlJ4CxXoo9YNY3UdLZu3TDiRlp9jt7XPTVKG2E2ixkOckKatVi7HpAJhX
+         HRBC3b/YzvFrDQmvn/tVD2cPobeCc5au6Dk682XqfCtVdzwCZQwMnE3BPP4Yct/n2VDa
+         DcK4spBCb9USBAHqsTd54Vo0B+KU5Sa5nqnfucczd8VX/yuuYTVdqiIfYI+Y75nOsD+f
+         x+EA==
+X-Gm-Message-State: AOJu0YyZnGK3Uk/X7y5eXxjpXAZtOFhJ/6syes4V4+PchW1D/m+aTELR
+	Uu35qwsG6/sfhmZGCrFQQq86dLe5XweUvEhkureJ1WNYXQenvBp/Df98uegq2r2pCZMM7h0mn58
+	BoaBRepM4mfcB1Bmz1A==
+X-Received: from wmgb2.prod.google.com ([2002:a05:600c:1502:b0:477:9801:6a64])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3e0d:b0:479:3a86:dc1c with SMTP id 5b1f17b1804b1-4803e803c1amr13091405e9.36.1768896286451;
+ Tue, 20 Jan 2026 00:04:46 -0800 (PST)
+Date: Tue, 20 Jan 2026 08:04:45 +0000
+In-Reply-To: <20260119202250.870588-3-zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
- callbacks
-To: Danilo Krummrich <dakr@kernel.org>, Ke Sun <sunke@kylinos.cn>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-References: <20260116162203.296844-1-sunke@kylinos.cn>
- <20260116162203.296844-2-sunke@kylinos.cn>
- <DFSN0O9RRVD6.1LCI38JKGO1R0@kernel.org>
-From: Ke Sun <sk.alvin.x@gmail.com>
-In-Reply-To: <DFSN0O9RRVD6.1LCI38JKGO1R0@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260119202250.870588-1-zhiw@nvidia.com> <20260119202250.870588-3-zhiw@nvidia.com>
+Message-ID: <aW83HV4lVR5MQlDd@google.com>
+Subject: Re: [PATCH v10 2/5] rust: io: separate generic I/O helpers from MMIO implementation
+From: Alice Ryhl <aliceryhl@google.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dakr@kernel.org, bhelgaas@google.com, 
+	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	markus.probst@posteo.de, helgaas@kernel.org, cjia@nvidia.com, 
+	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
+	kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com, 
+	joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org, 
+	daniel.almeida@collabora.com
+Content-Type: text/plain; charset="utf-8"
 
+On Mon, Jan 19, 2026 at 10:22:44PM +0200, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct. This coupling prevented
+> reusing the I/O helpers for other backends, such as PCI configuration
+> space.
+> 
+> Establish a clean separation between the I/O interface and concrete backends
+> by separating generic I/O helpers from MMIO implementation.
+> 
+> Introduce two traits to handle different access capabilities:
+> - IoCapable<T> trait provides infallible I/O operations (read/write)
+>   with compile-time bounds checking.
+> - IoTryCapable<T> trait provides fallible I/O operations
+>   (try_read/try_write) with runtime bounds checking.
+> - The Io trait defines convenience accessors (read8/write8, try_read8/
+>   try_write8, etc.) that forward to the corresponding IoCapable<T> or
+>   IoTryCapable<T> implementations.
+> 
+> This separation allows backends to selectively implement only the operations
+> they support. For example, PCI configuration space can implement IoCapable<T>
+> for infallible operations while MMIO regions can implement both IoCapable<T>
+> and IoTryCapable<T>.
+> 
+> Move the MMIO-specific logic into a dedicated Mmio<SIZE> type that
+> implements Io and the corresponding `IoCapable<T>` and `IoTryCapable<T>` traits.
+> Rename IoRaw to MmioRaw and update consumers to use the new types.
+> 
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: Bjorn Helgaas <helgaas@kernel.org>
+> Cc: Gary Guo <gary@garyguo.net>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 
-On 1/19/26 22:32, Danilo Krummrich wrote:
-> On Fri Jan 16, 2026 at 5:21 PM CET, Ke Sun wrote:
->> diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
->> index baf1a8ca8b2b1..eddcc5a69db3b 100644
->> --- a/drivers/rtc/dev.c
->> +++ b/drivers/rtc/dev.c
->> @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
->>   		}
->>   		default:
->>   			if (rtc->ops->param_get)
->> -				err = rtc->ops->param_get(rtc->dev.parent, &param);
->> +				err = rtc->ops->param_get(rtc_ops_dev(rtc), &param);
->>   			else
->>   				err = -EINVAL;
->>   		}
-> <snip>
->
->> +/**
->> + * rtc_ops_dev - Get the device pointer for RTC ops callbacks
->> + * @rtc: RTC device
->> + *
->> + * Returns &rtc->dev if RTC_OPS_USE_RTC_DEV flag is set,
->> + * otherwise returns rtc->dev.parent.
->> + */
->> +static inline struct device *rtc_ops_dev(struct rtc_device *rtc)
->> +{
->> +	if (test_bit(RTC_OPS_USE_RTC_DEV, &rtc->flags))
->> +		return &rtc->dev;
->> +	return rtc->dev.parent;
->> +}
-> I understand that the idea is to gradually convert all drivers to use the RTC
-> device, rather than it's parent device in RTC device callbacks.
->
-> My main concern is that once that has been achieved it's still not what we want
-> to have eventually, i.e. RTC device callbacks should ideally take a struct
-> rtc_device as argument and not the embedded base struct device.
->
-> I.e. we'd kick off a conversion process that won't reach the actual desired
-> state.
-Hi Danilo,
+Overall looks good to me. Some comments below:
 
-This is indeed an intermediate step.
+> +/// Trait representing infallible I/O operations of a certain type.
+> +///
+> +/// This trait is used to provide compile-time bounds-checked I/O operations.
+> +/// Different I/O backends can implement this trait to expose only the operations they support.
+> +///
+> +/// For example, a PCI configuration space may implement `IoCapable<u8>`, `IoCapable<u16>`,
+> +/// and `IoCapable<u32>`, but not `IoCapable<u64>`, while an MMIO region on a 64-bit
+> +/// system might implement all four.
+> +pub trait IoCapable<T> {
+> +    /// Infallible read with compile-time bounds check.
+> +    fn read(&self, offset: usize) -> T;
+> +
+> +    /// Infallible write with compile-time bounds check.
+> +    fn write(&self, value: T, offset: usize);
+> +}
+> +
+> +/// Trait representing fallible I/O operations of a certain type.
+> +///
+> +/// This trait is used to provide runtime bounds-checked I/O operations.
+> +/// Backends that do not support fallible operations (e.g., PCI configuration space)
+> +/// do not need to implement this trait.
+> +pub trait IoTryCapable<T> {
+> +    /// Fallible read with runtime bounds check.
+> +    fn try_read(&self, offset: usize) -> Result<T>;
+> +
+> +    /// Fallible write with runtime bounds check.
+> +    fn try_write(&self, value: T, offset: usize) -> Result;
+> +}
 
-Full cleanup is in progress, but it's large and untested. I'm working on a
-complete cleanup involving ~190+ files across arch/, drivers/rtc/, and
-drivers/virtio/. Most changes are straightforward interface replacements,
-but some drivers need additional modifications. Given the scale, I haven't
-fully tested everything and can't guarantee correctness yet.
+I still think it would make sense to have `IoCapable<T>: IoTryCapable<T>`,
+but it's not a big deal.
 
-The intermediate step enables gradual migration, allowing us to:
-- Clean up and test each rtc driver incrementally
-- Ensure correctness through gradual changes
-- Avoid breaking existing functionality
+> +    /// Infallible 64-bit read with compile-time bounds check.
+> +    #[cfg(CONFIG_64BIT)]
+> +    fn read64(&self, offset: usize) -> u64
+> +    #[cfg(CONFIG_64BIT)]
+> +    fn try_read64(&self, offset: usize) -> Result<u64>
 
-Once all cleanup is complete and tested, changing all rtc_class_ops
-callbacks to use struct rtc_device * will be much simpler and safer.
+These don't really need cfg(CONFIG_64BIT). You can place that cfg on
+impl blocks of IoCapable<u64>.
 
-Currently there seem to be only these two approaches. I'm still waiting
-for Alexandre's suggestion on how to proceed specifically, but haven't
-received a response yet.
+e.g., remove above but keep here:
 
-Best regard,
-Ke Sun
+> +// MMIO regions on 64-bit systems also support 64-bit accesses.
+> +#[cfg(CONFIG_64BIT)]
+> +impl<const SIZE: usize> IoCapable<u64> for Mmio<SIZE> {
+> +    define_read!(infallible, read, readq -> u64);
+> +    define_write!(infallible, write, writeq <- u64);
+> +}
+
+> +#[cfg(CONFIG_64BIT)]
+> +impl<const SIZE: usize> IoTryCapable<u64> for Mmio<SIZE> {
+> +    define_read!(fallible, try_read, readq -> u64);
+> +    define_write!(fallible, try_write, writeq <- u64);
+> +}
+
+Alice
