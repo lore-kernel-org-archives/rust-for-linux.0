@@ -1,46 +1,46 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013036.outbound.protection.outlook.com [40.93.201.36])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012013.outbound.protection.outlook.com [40.93.195.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C7F44D026;
-	Tue, 20 Jan 2026 20:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F0E4418DC;
+	Tue, 20 Jan 2026 20:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768941882; cv=fail; b=rwms+WS4vjoU3YRx2NtLATXG6RFhhpfAYCm67o9vTEIr5eSdfJ3HjvskZT5NhbIohX/ixtuP032qTEzMFjQ8lpwjEplQxRxtmwNywwtUWdedRRF5olztKnFGAVZMEVLsBjfTtYHqBBM1kQ4efEY8vzJxMRd0c8rIkPtRB64DUrE=
+	t=1768941884; cv=fail; b=EHgN9cEG4A1fMM69P0QzELCmokDfV32nU4st+gExHZjjj8S0hCmJ2/y2hNbRuAcQ8tLPCj0A1UOYMOl2YAFe21CNnDaWMZ2H6tJIAUGxakkb8owfgmgrBwAXiniVkZwhcNfQ4RrcA9D4zlVsBfGQfR21Q1o/Rq+uOOC7gZHtK4E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768941882; c=relaxed/simple;
-	bh=yUfxYh8UhqiO+TKXhjFf5cXGtP4kyZyK+kij775+lVQ=;
+	s=arc-20240116; t=1768941884; c=relaxed/simple;
+	bh=BvKySZNsDc7QLbdq39745irzTvQhRaXMKYusrUqcmg0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LMhCbBtbS+0bDugz8dzzime1u5VQFU4Khhxu47VHlBIdQbUM3gfZdum3PY+42HXzHcgjPaFcqbd+T/p892PzltNmv8mYm4F9g1cewjZYkvzDzgsQ8PaO5BkCFM+1fLiBLKWn0q8nMFFnyuwCZllXLUI/ae7NSHmiIG3uOqQmITo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sMP6RG6l; arc=fail smtp.client-ip=40.93.201.36
+	 Content-Type:MIME-Version; b=FhxF2jTAgzZ/6x9/amP74q+NRrBqq2kJK6cjO2NwCyub1CmMA2c45PJvowIpNVd4GxXVjU6BisTZvuolMEu+V5Ftuim4OP1ThLJ97F1blZN8JTpGQusjIigjK1CgJwrNIL/66UVbSJM0gTHJeJnNe5A6p574tGbPcN6GMiZFDio=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gk2FYGpZ; arc=fail smtp.client-ip=40.93.195.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sMP6RG6l"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gk2FYGpZ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mFP5GRT7jHgFEBtQzFC2RhFWqe8If8PZYMVQFQuyZ8id0QlRy+mY8PKOeRRD4ggG7ednsaF7O6wx9QIICRxHocxV1+cDOOy5IrJMlJduSLNbXVgzykQQkf6afoM9QI9eC8jn3C+tJ6XbBvRUxk1MoPdAXr6UGu084Fin9b+WvDb7DeK3wg0v+CJDBZgzbYu2bRP9pNCpVl8KmLeY6KHHbxOG4uKKioQCwecjUE68hZ9vVRTjjLHQHjAKDgv5nh6iU6RiZpdKUFtmCov32Yhtc1CS658oWzAmFNi4TSiaq+Ivi4tP4510847MpXpF+OHpW3Pw220GMs+iU5wtLjAdOg==
+ b=jqw8l3QVEW/CqL3geQUW3l7pLJkQuU4XvNfofaUWSJp1exTrxl3AFDKOfk1zwaTrXoFKNGvL8QRImbVtCX2z3BD3j1o6g/3fFIK74McQKQ7kC0lYir1x/oN5BRrtINlyg44pfjmD1IM01zXtiCL+SbjpXjGM/NmwVrlzK7lt/P0yZOio4QCOhTx+BS1Lpnqqi0V31faUp58SNn9um8gYAzR077Zp6uj3iTxSj0dJp/4gv3o/47IYmGgcVwibJ4iEEUBiQ5jiSf1urKDE4BMzSsKk2JxM6Twyn9G89g19Aso7wF2MW4CDu/gnL7IU+B90In5xVDYaXbpWhO9wLpuSoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IdALN0+ugbE7soKMWIcyQimRjhw6yH36lTEVBrFkBGI=;
- b=aF2dmZSZ1Lrkq10dZzoMgIi7uoDgwuG3vekZ+QCoOJOoLS4VeEP1jzT9tZLGSy4Zris6hcHyqOiyzgJ9OMk4ar5mWUZh1G69SfAWC/3JwWHnix9zqlT8QIT4wHoMuoUNCM4B8Bo5o9WTZoJFsHqTUKLMeeTF0Rr7OmEkQk6pI7DJPUHgtFKqD1CGZsD/l6+Xc+tPiDktTegCX4DeVnxaQFsgdXP6dnzWnwQOvIC+GfuoYxLl3fIhw8zCCbAyoOVjLRakos/1LLN3/2gJVIOoyqxG8exbqJefN9ZXRxjA4COq60N/PYovy4IaqRORgGzavbkAf1VJyaLLjho755uqTg==
+ bh=Yj3vA9psJcSaKDulHgpZPmwInF4j839R/DwTqlhUnh4=;
+ b=P6trYYNnqxDYQprrjVAfOerxNMgoTmT9wE58/cScGG66GJa5+xVwZaVegWxG9+sbB5XKEImFLJDNFwWsWiPJzK0LEhkhrH+lur0ktiFE1wi5gtya2Qit9woIQzYPwjK8vp0x3DKnPJyroU3vRW/hQrDt1v6yS4W5wN54a6qZRA8GzBJAPv8aAFSJAIRi4I6nF8+Sj+W41XQfsRk70tkIW1DlC8247WQoUevEX8lG5Q6puGUgfkG1DkMEh1nnz2kr9IF4lm82Qlop3nP63D4AWiiU4ThirOyBN6SbXtJPibnf75hdQ+C1eu+izEoThLsoS/n8yvLlM79mtyhc8MaoRA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IdALN0+ugbE7soKMWIcyQimRjhw6yH36lTEVBrFkBGI=;
- b=sMP6RG6liok1U4yS4ThVRHCKNQhFgsz1DZGh1CHmVd7c/I+vsZdcG9itLcl2eQF2GHUHrhg+bjlFESP+r7c1t1nAA1kINhNwjSa8to/wOk6OZeQ2tKavzxoHT8pwhO9CdbagHMWPjVGLsfFEJYuh9TnrzsOfVJJntSgsFbX5DP+M4BgJDceF+2O8RuusgTFxje8pFf7w8doXrSsVIBaTKDLjT6urz3yKqe4uKEo36wqYczrBWHx/uXgQb5o2f50Ekxe3ojUr6Vpr117NkR82l1VZwWsHh0L0RToCKKLsWagKteNoP28iZbTAPbLhZ4hOnXe6Y6odNfCINXbNTqdGkg==
+ bh=Yj3vA9psJcSaKDulHgpZPmwInF4j839R/DwTqlhUnh4=;
+ b=gk2FYGpZDq/p4JWLvU6ymmWP/I6eqP/89kepwMMQ6v2maHqO2e7BWnYWM7R/jSlYaxh6qrREcsXiJ4PVrNlTyulMphiS4CDuD5G0Tx5o90CYy3nasx1BwtPpmMKH/vMpm5SPEXZSl9gL3CebNEtpKojgCedA/2EUe+k0WCYXfWTulRXIRWD0koYfv+TwJO/weUdm9rhn0scPcqNJDGbuJAyWovLDN6gFer/+sV4SaINiEO53s/AhtWMb+u0EeY+0px/rU1xW7S4EKAKcF6OX2eDFFgvHz0pDX7r5YvPuqU+x5Hu037h5yL7XVMZkB+zwXz51dSRvx3qKeZCoaD3iPQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- PH7PR12MB6809.namprd12.prod.outlook.com (2603:10b6:510:1af::9) with Microsoft
+ CY1PR12MB9651.namprd12.prod.outlook.com (2603:10b6:930:104::8) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.12; Tue, 20 Jan 2026 20:44:17 +0000
+ 15.20.9520.13; Tue, 20 Jan 2026 20:44:26 +0000
 Received: from DS0PR12MB6486.namprd12.prod.outlook.com
  ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
  ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9542.008; Tue, 20 Jan 2026
- 20:44:17 +0000
+ 20:44:26 +0000
 From: Joel Fernandes <joelagnelf@nvidia.com>
 To: linux-kernel@vger.kernel.org
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -94,16 +94,16 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	intel-xe@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: [PATCH RFC v6 16/26] nova-core: mm: Add page table walker for MMU v2
-Date: Tue, 20 Jan 2026 15:42:53 -0500
-Message-Id: <20260120204303.3229303-17-joelagnelf@nvidia.com>
+Subject: [PATCH RFC v6 21/26] nova-core: mm: Add memory management self-tests
+Date: Tue, 20 Jan 2026 15:42:58 -0500
+Message-Id: <20260120204303.3229303-22-joelagnelf@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260120204303.3229303-1-joelagnelf@nvidia.com>
 References: <20260120204303.3229303-1-joelagnelf@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BLAPR05CA0020.namprd05.prod.outlook.com
- (2603:10b6:208:36e::23) To DS0PR12MB6486.namprd12.prod.outlook.com
+X-ClientProxiedBy: MN2PR20CA0066.namprd20.prod.outlook.com
+ (2603:10b6:208:235::35) To DS0PR12MB6486.namprd12.prod.outlook.com
  (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -112,422 +112,342 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|PH7PR12MB6809:EE_
-X-MS-Office365-Filtering-Correlation-Id: afc0fb6d-94f1-4f0a-1c52-08de5864ae1d
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|CY1PR12MB9651:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57be3f57-2271-4964-f841-08de5864b363
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OIELYioqrIeMAAuJDJ9PcviPMa5bDUhs37n4Y+kqS3ivu6wZc+vc5yp3abqu?=
- =?us-ascii?Q?YjyK6JjHD22cESO7eU+kEHBoegLOLCrQoZinbY4t5RZMdtwNBd39TVj/dzY2?=
- =?us-ascii?Q?E5x1ZWDAzStMqaJhbW8dof1dibjDApp236DgQ/BGPPTZOtG2x4ZuqKXYrjPE?=
- =?us-ascii?Q?f5dOBGOECqclTuj05ntKHetrx31c4VdzjpTN4cj9jwGx7dxn0WwCA4SJkt4u?=
- =?us-ascii?Q?UF3Hl1XW4y+kdZImt1J+WX7HHobN0F1EupQz+NrobzUHPlazoOt8MBBGEDnQ?=
- =?us-ascii?Q?oUDhNxSAyJQCZA2ZP2Yf1uKq8jImu6O4izbUtkuwEpAI/muoQUFNreG038Ad?=
- =?us-ascii?Q?gme+LT87ffTwovLYoAepSNCgsWM6kkhBsyqSD42Bpp4qTIvgZ5tWsZLIkwW7?=
- =?us-ascii?Q?ip1E47+GQxOwrniFakXe6P6+Ei+RDUw/LLvM5GymcKQ1v+xm5DswIfaT1OGU?=
- =?us-ascii?Q?b03KC8tefU5cT2TrLZ2ytHxkPZ1tLVnPJxivmAqI9kwHAu3lb7jGOcW67ge3?=
- =?us-ascii?Q?iOZmpPcke0ScpZq0I0rm6haYlnrZxoAerrXDqOf0UgdUvSPAFX6TgPwNaLoC?=
- =?us-ascii?Q?MhYTI5MPrMwt+nkyIbCa4OAWlvYf/NcnAR7G3Hsu0g8/9TjN0ZWxaV8IGgAx?=
- =?us-ascii?Q?bOx54vcWMc4HHIPHWmCw61OxG8LGWvSjrKo1N00Qbw5DBH7yEYrWMaV9ZFR0?=
- =?us-ascii?Q?tQJBfKOZPbk5PW/8tJ1VqeQlE8s+HQUmlnNGqd1vP983m1zo1hat8/8jxcEb?=
- =?us-ascii?Q?gXLysrX2GR93BU0W5bDoRDXSG7YpTd0jLPPcSff2WBT4ye1mQswtx4QxgG/M?=
- =?us-ascii?Q?yIStIyL1C/cA/pRmFUpT+38eljLDcfnoNEGdMKo5KV+WbFHlVGaqm/A8w6No?=
- =?us-ascii?Q?4KFFWJ97Um3uPo1e8jE2XbQAwlhd9NBbC2stpMZMKhmyT+q1x3jL7LI2mXHf?=
- =?us-ascii?Q?TdxulYw+VC71G+H6APusnqtnuBnE7dUmvHDNuDpyxqG/mExxG8NaAYCA7HAf?=
- =?us-ascii?Q?+QM4zoVX23ejCgfZl0oTj1+X+gfyJelXm58TXQr/mQHyR8jYev2xp5IUWXXH?=
- =?us-ascii?Q?OGCzdSo7zpIZQFOP61z2B8AYp1Def8VONktb7LqGCoUNqLj0Iif0K9/nt//H?=
- =?us-ascii?Q?kh9w+GIryjSJnnEoHWTTenKzYhlMSgJNU9faWF/bTIbmjFuHO8iylbmAosdL?=
- =?us-ascii?Q?3nxVU/nk9TpSPBLEzNRaK5tuvE00Pe3WFdbYi6Fo1HqVNu3nlb+hlJzS82mL?=
- =?us-ascii?Q?/B0kd8P59prdvWIX6D1ugfO5pK1JONe/XurGLCUYcJEOVYPCmVGDpJn8rp06?=
- =?us-ascii?Q?I/UldAY3XDwdUAW9/cQ79Uch5xKXzT3QEgztljB9mwJbxpJfzuRHZKfbfOGa?=
- =?us-ascii?Q?oqC6Lpzxg0WN/wxnEeX7FRVsTIRhrXAhMzgPDxB8GhgmVLnhRGm8HzGN6ewB?=
- =?us-ascii?Q?CPii2GLXqvKnhtoF8cWE9UCliV4zSbSAubcaXUk8eOhRAy3db3Bk9ftDBPMx?=
- =?us-ascii?Q?bOhPfFH7mDszP8v7P5vy9JDp601BWDLy1phUTi5O4AUeBBHSffkOF9ouZDsu?=
- =?us-ascii?Q?cxGLzX7xx//gc0Esgyk=3D?=
+	=?us-ascii?Q?NiNG7GUYUpGXD7Dji644zLw/00G9UAoGhBUWgClsUwkSUQxgP9TJSpDpxDGp?=
+ =?us-ascii?Q?I1ViU6HT4yJkWkb7Ca7zINYd1hvH+y5G3jvAhqo2ODpCyPdv3FCWPUGJGzS5?=
+ =?us-ascii?Q?HMRn0xp96H4vbr/B3JP6sI8tdobzoVviP07jdbHY/cyCZYug3EwCejezqGql?=
+ =?us-ascii?Q?Wsd59JBuAnVemOxnQE4R+2/RB5FagHG7i17oHkkf+lWY5NEFnegy/yR52kSx?=
+ =?us-ascii?Q?XAyXfnBDXKzaKMkIuuuJc5KUklRuFSFRaZxTSCYnH0a/V/Q0C5pNL3JcooS5?=
+ =?us-ascii?Q?+zx5ojrND7lhlNWr0om4a3yQYPaVOAiM+ris8zBgfbS5EIngCTeGjoH3pDad?=
+ =?us-ascii?Q?h1CLhBQJupwYF7nLxBvdV7qt2moi0cqCAYYRowDXhn/MOT3bMXl4kXFXKhqK?=
+ =?us-ascii?Q?rr1Gp+FE3f9NodhvMetHZHBrq8KvdCwSczwQMhHF4FfHEVrq4z8XuEXrpAwY?=
+ =?us-ascii?Q?BBuypCEaDsg8BxjcGSXjj8yy6cJqMg8bPOmK6/qwH7u1tIXRtSXWksSXbGj3?=
+ =?us-ascii?Q?Py7cZA3//EpP5eg05e1f0opBt5rFEeHtic6lv16415MWxOmniKgQgg7aLO7C?=
+ =?us-ascii?Q?mPayHykZQV0YlxdlCTUbRJAlyoFKqPWX3WuLJ7mxUsVfB+J+TyPmafeR9I27?=
+ =?us-ascii?Q?WbZLEp/zx9L5dNr/Z2gMY+solmYsi1FYXrMAxiD2i6uFAqJVv0wUggS211DZ?=
+ =?us-ascii?Q?UpnfqRKbjhAyrySCJ9/nrtC7jSwLEU6nexEOOMseODMhDNKHvtYSd2Q8I6TU?=
+ =?us-ascii?Q?dm4hgg17RkoNOpsKMrJ6TxOx2FrJVZ6Sm0fV0Q9cefyXCSfaWig7CTBzaFoP?=
+ =?us-ascii?Q?BELYdJtUcRC+oZ0HdUONS3fSgB5R1i0oHlCc4st7NwA8glWIQbfx425xJTna?=
+ =?us-ascii?Q?6lIJq1V27wMl4YPrx7D8gOYTkS1mYe5PiphefXasZ8jaSLc8XLpRh2/JCWg9?=
+ =?us-ascii?Q?j+GLsu4T1mHk3L+iHzVonAsqhBuxz1bEOexPnyWj+m32iBEaOvjVVSqlxCt4?=
+ =?us-ascii?Q?+fEJ5gC+TBWDLoS5F9JRhEhve0AsyHZnJ+RILahLwU+FkQy1Ne+iAB6TBsPo?=
+ =?us-ascii?Q?R1OvcXE27qbPzGDM9f/Yrf5Gycy360R59jhQ+47mBFnj3z+xOqdHK3Z1haWB?=
+ =?us-ascii?Q?jp6bFgQJ6hBnV6YDWTA6lLVE+MrtYLOhq+4ybkOVE+Cx79KYUJnmmnyCVTQy?=
+ =?us-ascii?Q?MK5cDD00Ii0a8zlf2QCSYO+koE8TVROzjZlyw3/mpadzuZzStgW7lxBuvelH?=
+ =?us-ascii?Q?2Fr6Rv53CO4btA+Vqyc4LSnXKzaPQhPaidcnBroBKNy8QtF5K9V/6eFYGB/a?=
+ =?us-ascii?Q?w3kK3/YkfjC2SCo28zk72Brr0l/xGyCPxW0+JrK3aDCv1EeZEG+i9Dxa1nQY?=
+ =?us-ascii?Q?gpyQ/Wi/GWiCg7jyspHjjGjhcrVkMmmAKgGHPytFg8CWk+UQwqWEzQYtSjn2?=
+ =?us-ascii?Q?65whLj58wqxJg/yXC0PmF42yo7NNXIejUxqrEbGwUSNTN2xsnMjir8IqvzHj?=
+ =?us-ascii?Q?acjdfB1Gk/z+cMXrqG9lKaNp5ukOYKSG4TD/JAUnqjP1pf4ro7bIRPRVRDuT?=
+ =?us-ascii?Q?X9oVMhUdrx0hs6zrpq0=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3ghF85w9HCeLIleeSomMGDU+ntK3P7pvMVjm/queaIB11JAAJ3hhRqEk9EvN?=
- =?us-ascii?Q?c48/XyojX8Y/oNQuaicqLuhRFfByNh17cT0QdUuerlbqJlEMBs2hmbJStT3M?=
- =?us-ascii?Q?qiNjhrlKfKcPoUHBrLxAhAdoLVd3PvKwO1cV8/9rWnjbZW5OBrUSKCBZg3Ha?=
- =?us-ascii?Q?ukNO1uyLjh0QnyYH65Ueog0o9TImbY15Fv374ri41XHOSQAENQjgqjR5yFb1?=
- =?us-ascii?Q?XPcRblrL+mTTAyTluj79GjXvM8i1PETtDhEwFVFfJf7N+lB1tpp54uAu0SjX?=
- =?us-ascii?Q?NfQnHW33aGEBYXJTxQcBWZsk6tivElKKOpDeIBHrkYo6mBzprDxMpUcQnYgF?=
- =?us-ascii?Q?gFKyjQI8wrTUVJjTp65i0B+r8ZuzQujcG7o/IEi8buswkrxDa+yEhZDF046a?=
- =?us-ascii?Q?HxVzhugLU3FXPFn14wJhstuMdkHhP8tkf1lhhe7C96GJi1Myf0/5hUGmcwBM?=
- =?us-ascii?Q?hm8JA222cOhkqUra81x1h/jAueSqRyJJXO8jM5G9i1D3rX+pYggRl0Ykvd2D?=
- =?us-ascii?Q?vFKAWYgs5athXcDcselJWtEWj0RA1EmimvWlVNQ3OdLG1m2OFwrBlgbysC8y?=
- =?us-ascii?Q?gvuhiifP7O4ZYWcdbU2ejFBOjyzuZe8zbwJM0hHhRNgf1oJTtcni/RUiZPy0?=
- =?us-ascii?Q?ynK700YeYVc2btzBJVvnS7fsErjgpeAp/Xn7U9C4+qXxKQVTMMankPQdlmF3?=
- =?us-ascii?Q?4KNJeyadCNWZroKcgvUE1cfnEfFdlpzQM2wWgAvg16y5kXZtS7i5C1GsgKB4?=
- =?us-ascii?Q?FJrOxIMrDanaaf7R+6zv5+X7WDWhTeosnSa647dT7+GSvsKJEvKkIlYZBwhA?=
- =?us-ascii?Q?7zodLr/3iEvOghxVcobBWiYYbIMX29inKZt3V8H2LOBIbOzwiQryGRhHnHye?=
- =?us-ascii?Q?S/iGaKfKL3/sXmk3FsoWWlG1tzfM2l1X0QaQlaVzrygtASH5Jga6yu9GL5pF?=
- =?us-ascii?Q?/Ftm3YzI9QbmWQF/BpkE2DpaP4VzOsfMDWef0iIexzhNKba6ZLmGWScakRj/?=
- =?us-ascii?Q?zc432uTnyuxGd8AkyvbFaAJJuKkyON06og2ucUWbi9jwE2V3YiUk+7EHdYX5?=
- =?us-ascii?Q?8CmqAbceCzAuFvpnrx4eSwNTPt2CnL4bKDPEeMovnPPL58W5Va2v9JKkyNKV?=
- =?us-ascii?Q?YAk3TmlFt3ktIGyMaNdIh3Pt/9P+lQo3KyGlYXazSU/CfXUBdFP+8URwNECW?=
- =?us-ascii?Q?uD6XfJ2sVgeb3gvwj5G0Hl4Ueh0/NkdKvgle/ByS54/2NiDSsSr7jz448V72?=
- =?us-ascii?Q?3bAKCTzSATvuClCGA2yi3ZaG1PIzPYyM/SAGBGNP6Edkt38B2SJsxSomqekP?=
- =?us-ascii?Q?8YQdRwbMQYvF+xhjRJAchd0dkc1itzAuwOC5FcSgQ/AEIjMIlLa9YAOQqi3k?=
- =?us-ascii?Q?/2cKbVi7z0zj71Ot2oPV+K3t49Dm3NNpvBT2bcGET0jbyfQNdv0PfmSAhVsi?=
- =?us-ascii?Q?G98I2lKy+f5ShZTrSmNh1xiyRA3E9WwnbKjYwFDVWdmB9Zwqyugo2XDqSp0A?=
- =?us-ascii?Q?81TbHhUPOhuaqLvx6Pbk/WqkkttPg3vmtdGbrdnTgeqSp83ZVunLuz6Wu4Fz?=
- =?us-ascii?Q?Ep/QsawyizyrFw4abbgPUZidB7Dln8jzazjW7Lb7YD+NOsHssUOMWi06HeCq?=
- =?us-ascii?Q?UrPTi5ocxVUl2LVNQWIRcd9V309eU29JD1NScnbHncN8icKA4BXHVyXPYcO/?=
- =?us-ascii?Q?108RjqOfgxl30x0vv066PwZbJoCzjQDDwsKUyo+YYSwIJKkPxPpzkg5SFIWl?=
- =?us-ascii?Q?EYzzi9E/cQ=3D=3D?=
+	=?us-ascii?Q?mFpVSFboKug8TqNeZ96Uxa95wNfpxDEDV2KwfBVswqgcnPFLNApCJ7TozvZA?=
+ =?us-ascii?Q?ymFfNknqpuerKogFlihgUQ/+txA9gpWrKCq01lCwAN45PRbPajGnKRjMVld6?=
+ =?us-ascii?Q?bkGh7AnVGdXlgAyDzt1wGv/9LQuA4I5frGcatHjFR3UMHZ038KHkbpgVUTHU?=
+ =?us-ascii?Q?sodWE63FDKFbstuSFIJuxJz9gZwVTQdIKmRMl1E5RzkKplLmBJVj0FzJt4li?=
+ =?us-ascii?Q?ZFojG7xqQQxkT/Ri4tXiKmBq6ym68W38NrBx47uAdPlvAobpNOVZm9qUaQQ0?=
+ =?us-ascii?Q?ChY0+zjh7KfzNSC28GkO6BJIlUxD44tT4GvlJnudrouONqFtdeNW/dNtz1e8?=
+ =?us-ascii?Q?v9czWwZ0JAfaJVga9o6t33UjKx0UwXFPhfdvBr8EtmrKOVW7N3IalLHCQP5I?=
+ =?us-ascii?Q?/S8ZXGjMUMlcFMbxfZyX6t0qkJtN4LgiRoiQEmRGiyoK59vdzvLJE8HZilz3?=
+ =?us-ascii?Q?MYvCg/+lHBjCVfCrKQpEr8SHaP1ZVkl+jmT3YMqxFWv8/MILlR3hvfxaV80/?=
+ =?us-ascii?Q?RzoD7NZXpmK3oslujd0CZd2+/JjCAwg/AhAOWGJiTqnn/cxMi6jahaTrusgr?=
+ =?us-ascii?Q?A8WMrOn+82GAUjvU7XWZAfVhwHnA6mJyj1s7Z1B6H0cFOQxkdEOqWouNTS5w?=
+ =?us-ascii?Q?mXAlQn5seOA3i8x63HXsSIJLWg6+UODxZB7JCSJKtivJHdX8rXjFpUz/oz99?=
+ =?us-ascii?Q?lGIyvfDitQbJ+zLrdD/iKZ1ams1B8JgarY6zxB4vxECbedDyc+TJTOxZNGKm?=
+ =?us-ascii?Q?PJ1LjABKBKNuuAkl0pcieXa8R/KbNMG6EdvdahyE6cgTMulaGQj9UphYUj/Y?=
+ =?us-ascii?Q?AxXSYm8kKgPfGiiF90QDdOuWsSCmtSaEGIgYbY6A+x7NquE5WNFMdrm3pfVK?=
+ =?us-ascii?Q?EXOkjkSla5dD/Gu0grVVziHjLPSv/WSHVSN/mrlmwFEJb1KDuCcH9u5JUjPd?=
+ =?us-ascii?Q?HcraJbzCrbUhU36YYTBQ6Xtp2RrllnFm59wH0q/1Zy18wvtvSeV1jmyqyJkc?=
+ =?us-ascii?Q?/Dbh29m4s+VPkaqiQXvc6GNa6QP/5JGT+xJb91Mb7+Y08N9qNrmuPMiMDOhB?=
+ =?us-ascii?Q?ELq2NWC5V/zi8CyZr+zYWlCxNhYtF7SjFV62mjpTkI8JMRhYW2GWGDygU/JT?=
+ =?us-ascii?Q?rXeYs2x5FzJYKPbNfFeDRKLs0R5nU2Ah6gIcgprTWFDFChnUxuxeisVyI2qR?=
+ =?us-ascii?Q?kbViYW3HxAzvJTfD497CF7hM4AkzY7IR6hY3igAm6bEuNbrr1pjp1bBDvmTQ?=
+ =?us-ascii?Q?6qZdWb1qooeY+zgqUaqq9pBOMTC3b8qbwiDlRK8fSTt7WlxC6HV7sGpFH6Gv?=
+ =?us-ascii?Q?t5tugiWEs2k8UR7QuB7O2L1jFYhy6kylouPlAzlF75FQh6u/XjFNwAUdMy54?=
+ =?us-ascii?Q?W+/j45EzWjn5GGQNnHhKkjJ7A3JvcNWoJwvNLhvEjMhhFPi80ntUiUK5fIdc?=
+ =?us-ascii?Q?vbAHSlm7WTkyDMQuXtidBSOugHCDpjLTswRnA9xhUczO3aBLFpAvs6Vswf9i?=
+ =?us-ascii?Q?ggI6OaCDk6oiEsO5pqnKASSpeoFbC1kZrS8gD9jQYI/+/ooCMKQ0xGWf5fsa?=
+ =?us-ascii?Q?Ii5FO+l0UWJwMAhPyh+EjwLmFS8N7tF0On2+Pso3Bb9y/RQID8mW1f+7qI4y?=
+ =?us-ascii?Q?ZXNW/KHt8ruwxpwbp5BLIWMvELHTsaUYPA0MSGWfCJcLyB7mWe2G7uubFwFC?=
+ =?us-ascii?Q?4CNR4PCPfV2q8SnI+azISqLZ4NrDqwZs8wf2Z46wJrYSUt4B7da+N7TpuFbw?=
+ =?us-ascii?Q?HxS9Vq71hA=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: afc0fb6d-94f1-4f0a-1c52-08de5864ae1d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57be3f57-2271-4964-f841-08de5864b363
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 20:44:17.6162
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 20:44:26.5307
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I5bx4xCiedV5YDHzVUo5Q+Esl0wfI9qp3jdd+ec1NLiQ6OevaeARg89wrrTFREFzUw/aBb7AgX+WBYsFP++1bA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6809
+X-MS-Exchange-CrossTenant-UserPrincipalName: 15B3EGlKPKU91G3wZWdeGxAvrzE0xU982H8F2Si2HlVp54w5yz0uRoHLQZxu67y++uILTmYHu+BGlsjw7Gv7ow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9651
 
-Add the page table walker implementation that traverses the 5-level
-page table hierarchy (PDB -> L1 -> L2 -> L3 -> L4) to resolve virtual
-addresses to physical addresses or find PTE locations.
-
-The walker provides:
-- walk_to_pte_lookup(): Walk existing page tables (no allocation)
-- Helper functions for reading/writing PDEs and PTEs via PRAMIN
-
-Uses GpuMm API for centralized access to PRAMIN window.
+Add comprehensive self-tests for the MM subsystem that run during driver
+probe when CONFIG_NOVA_MM_SELFTESTS is enabled (default disabled). These
+result in testing the Vmm, buddy, bar1 and pramin all of which should
+function correctly for the tests to pass.
 
 Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 ---
- drivers/gpu/nova-core/mm/pagetable/mod.rs  |  13 +
- drivers/gpu/nova-core/mm/pagetable/walk.rs | 285 +++++++++++++++++++++
- 2 files changed, 298 insertions(+)
- create mode 100644 drivers/gpu/nova-core/mm/pagetable/walk.rs
+ drivers/gpu/nova-core/Kconfig         |  10 ++
+ drivers/gpu/nova-core/driver.rs       |   2 +
+ drivers/gpu/nova-core/gpu.rs          |  43 ++++++++
+ drivers/gpu/nova-core/gsp/commands.rs |   1 -
+ drivers/gpu/nova-core/mm/bar_user.rs  | 141 ++++++++++++++++++++++++++
+ 5 files changed, 196 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/nova-core/mm/pagetable/mod.rs b/drivers/gpu/nova-core/mm/pagetable/mod.rs
-index 72bc7cda8df6..4c77d4953fbd 100644
---- a/drivers/gpu/nova-core/mm/pagetable/mod.rs
-+++ b/drivers/gpu/nova-core/mm/pagetable/mod.rs
-@@ -9,12 +9,25 @@
- #![expect(dead_code)]
- pub(crate) mod ver2;
- pub(crate) mod ver3;
-+pub(crate) mod walk;
+diff --git a/drivers/gpu/nova-core/Kconfig b/drivers/gpu/nova-core/Kconfig
+index 809485167aff..257bca5aa0ef 100644
+--- a/drivers/gpu/nova-core/Kconfig
++++ b/drivers/gpu/nova-core/Kconfig
+@@ -15,3 +15,13 @@ config NOVA_CORE
+ 	  This driver is work in progress and may not be functional.
  
- use super::{
-+    GpuMm,
-     Pfn,
-     VramAddress, //
- };
- use crate::gpu::Architecture;
-+use kernel::prelude::*;
+ 	  If M is selected, the module will be called nova_core.
 +
-+/// Trait for allocating page tables during page table walks.
-+///
-+/// Implementors must allocate a zeroed 4KB page table in VRAM and
-+/// ensure the allocation persists for the lifetime of the address
-+/// space and the lifetime of the implementor.
-+pub(crate) trait PageTableAllocator {
-+    /// Allocate a zeroed page table and return its VRAM address.
-+    fn alloc_page_table(&mut self, mm: &mut GpuMm) -> Result<VramAddress>;
-+}
++config NOVA_MM_SELFTESTS
++	bool "Memory management self-tests"
++	depends on NOVA_CORE
++	help
++	  Enable self-tests for the memory management subsystem. When enabled,
++	  tests are run during GPU probe to verify page table walking and
++	  BAR1 virtual memory mapping functionality.
++
++	  This is a testing option and is default-disabled.
+diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+index d8b2e967ba4c..7d0d09939835 100644
+--- a/drivers/gpu/nova-core/driver.rs
++++ b/drivers/gpu/nova-core/driver.rs
+@@ -92,6 +92,8 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, E
  
- /// MMU version enumeration.
- #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-diff --git a/drivers/gpu/nova-core/mm/pagetable/walk.rs b/drivers/gpu/nova-core/mm/pagetable/walk.rs
-new file mode 100644
-index 000000000000..7a2660a30d80
---- /dev/null
-+++ b/drivers/gpu/nova-core/mm/pagetable/walk.rs
-@@ -0,0 +1,285 @@
-+// SPDX-License-Identifier: GPL-2.0
+             Ok(try_pin_init!(Self {
+                 gpu <- Gpu::new(pdev, bar.clone(), bar.access(pdev.as_ref())?),
++                // Run optional GPU selftests.
++                _: { gpu.run_selftests(pdev)? },
+                 _reg <- auxiliary::Registration::new(
+                     pdev.as_ref(),
+                     c"nova-drm",
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index 91ec7f7910e9..938828508f2c 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -318,4 +318,47 @@ pub(crate) fn unbind(&self, dev: &device::Device<device::Core>) {
+             .inspect(|bar| self.sysmem_flush.unregister(bar))
+             .is_err());
+     }
 +
-+//! Page table walker implementation for NVIDIA GPUs.
-+//!
-+//! This module provides page table walking functionality for MMU v2 (Turing/Ampere/Ada).
-+//! The walker traverses the 5-level page table hierarchy (PDB -> L1 -> L2 -> L3 -> L4)
-+//! to resolve virtual addresses to physical addresses or to find PTE locations.
-+//!
-+//! # Page Table Hierarchy
-+//!
-+//! ```text
-+//!     +-------+     +-------+     +-------+     +---------+     +-------+
-+//!     | PDB   |---->|  L1   |---->|  L2   |---->| L3 Dual |---->|  L4   |
-+//!     | (L0)  |     |       |     |       |     | PDE     |     | (PTE) |
-+//!     +-------+     +-------+     +-------+     +---------+     +-------+
-+//!       64-bit        64-bit        64-bit        128-bit         64-bit
-+//!        PDE           PDE           PDE        (big+small)        PTE
-+//! ```
-+//!
-+//! # Result of a page table walk
-+//!
-+//! The walker returns a [`WalkResult`] indicating the outcome:
-+//! - [`WalkResult::PageTableMissing`]: Intermediate page tables don't exist (lookup mode).
-+//! - [`WalkResult::Unmapped`]: PTE exists but is invalid (page not mapped).
-+//! - [`WalkResult::Mapped`]: PTE exists and is valid (page is mapped).
-+//!
-+//! # Example
-+//!
-+//! ```ignore
-+//! use crate::mm::pagetable::walk::{PtWalk, WalkResult};
-+//! use crate::mm::GpuMm;
-+//!
-+//! fn walk_example(mm: &mut GpuMm, pdb_addr: VramAddress) -> Result<()> {
-+//!     // Create a page table walker.
-+//!     let walker = PtWalk::new(pdb_addr, MmuVersion::V2);
-+//!
-+//!     // Walk to a PTE (lookup mode).
-+//!     match walker.walk_to_pte_lookup(mm, Vfn::new(0x1000))? {
-+//!         WalkResult::Mapped { pte_addr, pfn } => {
-+//!             // Page is mapped to the physical frame number.
-+//!         }
-+//!         WalkResult::Unmapped { pte_addr } => {
-+//!             // PTE exists but the page is not mapped.
-+//!         }
-+//!         WalkResult::PageTableMissing => {
-+//!             // Intermediate page tables are missing.
-+//!         }
-+//!     }
-+//!
-+//!     Ok(())
-+//! }
-+//! ```
-+
-+#![allow(dead_code)]
-+
-+use kernel::prelude::*;
-+
-+use super::{
-+    DualPde,
-+    MmuVersion,
-+    PageTableAllocator,
-+    PageTableLevel,
-+    Pde,
-+    Pte, //
-+};
-+use crate::mm::{
-+    pramin,
-+    GpuMm,
-+    Pfn,
-+    Vfn,
-+    VirtualAddress,
-+    VramAddress, //
-+};
-+
-+/// Dummy allocator for lookup-only walks.
-+enum NoAlloc {}
-+
-+impl PageTableAllocator for NoAlloc {
-+    fn alloc_page_table(&mut self, _mm: &mut GpuMm) -> Result<VramAddress> {
-+        unreachable!()
++    /// Run selftests on the constructed [`Gpu`].
++    pub(crate) fn run_selftests(
++        mut self: Pin<&mut Self>,
++        pdev: &pci::Device<device::Bound>,
++    ) -> Result {
++        self.as_mut().run_mm_selftest(pdev)?;
++        Ok(())
 +    }
-+}
 +
-+/// Result of walking to a PTE.
-+#[derive(Debug, Clone, Copy)]
-+pub(crate) enum WalkResult {
-+    /// Intermediate page tables are missing (only returned in lookup mode).
-+    PageTableMissing,
-+    /// PTE exists but is invalid (page not mapped).
-+    Unmapped { pte_addr: VramAddress },
-+    /// PTE exists and is valid (page is mapped).
-+    Mapped { pte_addr: VramAddress, pfn: Pfn },
-+}
++    fn run_mm_selftest(mut self: Pin<&mut Self>, pdev: &pci::Device<device::Bound>) -> Result {
++        #[cfg(CONFIG_NOVA_MM_SELFTESTS)]
++        {
++            use crate::driver::BAR1_SIZE;
++            use crate::mm::pagetable::MmuVersion;
++            use kernel::c_str;
 +
-+/// Page table walker for NVIDIA GPUs.
++            let bar1 = Arc::pin_init(
++                pdev.iomap_region_sized::<BAR1_SIZE>(1, c_str!("nova-core/bar1")),
++                GFP_KERNEL,
++            )?;
++            let bar1_access = bar1.access(pdev.as_ref())?;
++
++            // Use projection to access non-pinned fields.
++            let proj = self.as_mut().project();
++            let bar1_pde_base = proj.gsp_static_info.bar1_pde_base();
++            let mm = proj.mm;
++            let mmu_version = MmuVersion::from(proj.spec.chipset.arch());
++
++            crate::mm::bar_user::run_self_test(
++                pdev.as_ref(),
++                mm,
++                bar1_access,
++                bar1_pde_base,
++                mmu_version,
++            )?;
++        }
++
++        // Suppress unused warnings when selftests disabled.
++        let _ = &mut self;
++        let _ = pdev;
++        Ok(())
++    }
+ }
+diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-core/gsp/commands.rs
+index 7b5025cba106..311f65f8367b 100644
+--- a/drivers/gpu/nova-core/gsp/commands.rs
++++ b/drivers/gpu/nova-core/gsp/commands.rs
+@@ -232,7 +232,6 @@ pub(crate) fn gpu_name(&self) -> core::result::Result<&str, GpuNameError> {
+     }
+ 
+     /// Returns the BAR1 Page Directory Entry base address.
+-    #[expect(dead_code)]
+     pub(crate) fn bar1_pde_base(&self) -> u64 {
+         self.bar1_pde_base
+     }
+diff --git a/drivers/gpu/nova-core/mm/bar_user.rs b/drivers/gpu/nova-core/mm/bar_user.rs
+index 288dec0ae920..e19906d5bcc6 100644
+--- a/drivers/gpu/nova-core/mm/bar_user.rs
++++ b/drivers/gpu/nova-core/mm/bar_user.rs
+@@ -193,3 +193,144 @@ fn drop(&mut self) {
+         }
+     }
+ }
++
++/// Run MM subsystem self-tests during probe.
 +///
-+/// Walks the 5-level page table hierarchy to find PTE locations or resolve
-+/// virtual addresses.
-+pub(crate) struct PtWalk {
-+    pdb_addr: VramAddress,
++/// Tests page table infrastructure and BAR1 MMIO access using the BAR1
++/// address space initialized by GSP-RM. Uses the GpuMm's buddy allocator
++/// to allocate page tables and test pages as needed.
++#[cfg(CONFIG_NOVA_MM_SELFTESTS)]
++pub(crate) fn run_self_test(
++    dev: &kernel::device::Device,
++    mm: &mut GpuMm,
++    bar1: &crate::driver::Bar1,
++    bar1_pdb: u64,
 +    mmu_version: MmuVersion,
-+}
-+
-+impl PtWalk {
-+    /// Create a new page table walker.
-+    ///
-+    /// Copies `pdb_addr` and `mmu_version` from VMM configuration.
-+    pub(crate) fn new(pdb_addr: VramAddress, mmu_version: MmuVersion) -> Self {
-+        Self {
-+            pdb_addr,
-+            mmu_version,
-+        }
-+    }
-+
-+    /// Get the MMU version this walker is configured for.
-+    pub(crate) fn mmu_version(&self) -> MmuVersion {
-+        self.mmu_version
-+    }
-+
-+    /// Get the Page Directory Base address.
-+    pub(crate) fn pdb_addr(&self) -> VramAddress {
-+        self.pdb_addr
-+    }
-+
-+    /// Walk to PTE for lookup only (no allocation).
-+    ///
-+    /// Returns `PageTableMissing` if intermediate tables don't exist.
-+    pub(crate) fn walk_to_pte_lookup(&self, mm: &mut GpuMm, vfn: Vfn) -> Result<WalkResult> {
-+        self.walk_to_pte_inner::<NoAlloc>(mm, None, vfn)
-+    }
-+
-+    /// Walk to PTE with allocation of missing tables.
-+    ///
-+    /// Uses `PageTableAllocator::alloc_page_table()` when tables are missing.
-+    pub(crate) fn walk_to_pte_allocate<A: PageTableAllocator>(
-+        &self,
-+        mm: &mut GpuMm,
-+        allocator: &mut A,
-+        vfn: Vfn,
-+    ) -> Result<WalkResult> {
-+        self.walk_to_pte_inner(mm, Some(allocator), vfn)
-+    }
-+
-+    /// Internal walk implementation.
-+    ///
-+    /// If `allocator` is `Some`, allocates missing page tables. Otherwise returns
-+    /// `PageTableMissing` when intermediate tables don't exist.
-+    fn walk_to_pte_inner<A: PageTableAllocator>(
-+        &self,
-+        mm: &mut GpuMm,
-+        mut allocator: Option<&mut A>,
-+        vfn: Vfn,
-+    ) -> Result<WalkResult> {
-+        let va = VirtualAddress::from(vfn);
-+        let mut cur_table = self.pdb_addr;
-+
-+        // Walk through PDE levels (PDB -> L1 -> L2 -> L3).
-+        for level in PageTableLevel::pde_levels() {
-+            let idx = va.level_index(level.as_index());
-+
-+            if level.is_dual_pde_level() {
-+                // L3: 128-bit dual PDE. This is the final PDE level before PTEs and uses
-+                // a special "dual" format that can point to both a Small Page Table (SPT)
-+                // for 4KB pages and a Large Page Table (LPT) for 64KB pages, or encode a
-+                // 2MB huge page directly via IS_PTE bit.
-+                let dpde_addr = entry_addr(cur_table, level, idx);
-+                let dual_pde = read_dual_pde(mm.pramin(), dpde_addr, self.mmu_version)?;
-+
-+                // Check if SPT (Small Page Table) pointer is present. We use the "small"
-+                // path for 4KB pages (only page size currently supported). If missing and
-+                // allocator is available, create a new page table; otherwise return
-+                // `PageTableMissing` for lookup-only walks.
-+                if !dual_pde.has_small() {
-+                    if let Some(ref mut a) = allocator {
-+                        let new_table = a.alloc_page_table(mm)?;
-+                        let new_dual_pde =
-+                            DualPde::new_small(self.mmu_version, Pfn::from(new_table));
-+                        write_dual_pde(mm.pramin(), dpde_addr, &new_dual_pde)?;
-+                        cur_table = new_table;
-+                    } else {
-+                        return Ok(WalkResult::PageTableMissing);
-+                    }
-+                } else {
-+                    cur_table = dual_pde.small_vram_address();
-+                }
-+            } else {
-+                // Regular 64-bit PDE (levels PDB, L1, L2). Each entry points to the next
-+                // level page table.
-+                let pde_addr = entry_addr(cur_table, level, idx);
-+                let pde = read_pde(mm.pramin(), pde_addr, self.mmu_version)?;
-+
-+                // Allocate new page table if PDE is invalid and allocator provided,
-+                // otherwise return PageTableMissing for lookup-only walks.
-+                if !pde.is_valid() {
-+                    if let Some(ref mut a) = allocator {
-+                        let new_table = a.alloc_page_table(mm)?;
-+                        let new_pde = Pde::new_vram(self.mmu_version, Pfn::from(new_table));
-+                        write_pde(mm.pramin(), pde_addr, new_pde)?;
-+                        cur_table = new_table;
-+                    } else {
-+                        return Ok(WalkResult::PageTableMissing);
-+                    }
-+                } else {
-+                    cur_table = pde.table_vram_address();
-+                }
-+            }
-+        }
-+
-+        // Now at L4 (PTE level).
-+        let pte_idx = va.level_index(PageTableLevel::L4.as_index());
-+        let pte_addr = entry_addr(cur_table, PageTableLevel::L4, pte_idx);
-+
-+        // Read PTE to check if mapped.
-+        let pte = read_pte(mm.pramin(), pte_addr, self.mmu_version)?;
-+        if pte.is_valid() {
-+            Ok(WalkResult::Mapped {
-+                pte_addr,
-+                pfn: pte.frame_number(),
-+            })
-+        } else {
-+            Ok(WalkResult::Unmapped { pte_addr })
-+        }
-+    }
-+}
-+
-+// ====================================
-+// Helper functions for accessing VRAM
-+// ====================================
-+
-+/// Calculate the address of an entry within a page table.
-+fn entry_addr(table: VramAddress, level: PageTableLevel, index: u64) -> VramAddress {
-+    let entry_size = level.entry_size() as u64;
-+    VramAddress::new(table.raw() as u64 + index * entry_size)
-+}
-+
-+/// Read a PDE from VRAM.
-+pub(crate) fn read_pde(
-+    pramin: &mut pramin::Window,
-+    addr: VramAddress,
-+    mmu_version: MmuVersion,
-+) -> Result<Pde> {
-+    let val = pramin.try_read64(addr.raw())?;
-+    Ok(Pde::new(mmu_version, val))
-+}
-+
-+/// Write a PDE to VRAM.
-+pub(crate) fn write_pde(pramin: &mut pramin::Window, addr: VramAddress, pde: Pde) -> Result {
-+    pramin.try_write64(addr.raw(), pde.raw_u64())
-+}
-+
-+/// Read a dual PDE (128-bit) from VRAM.
-+pub(crate) fn read_dual_pde(
-+    pramin: &mut pramin::Window,
-+    addr: VramAddress,
-+    mmu_version: MmuVersion,
-+) -> Result<DualPde> {
-+    let lo = pramin.try_read64(addr.raw())?;
-+    let hi = pramin.try_read64(addr.raw() + 8)?;
-+    Ok(DualPde::new(mmu_version, lo, hi))
-+}
-+
-+/// Write a dual PDE (128-bit) to VRAM.
-+pub(crate) fn write_dual_pde(
-+    pramin: &mut pramin::Window,
-+    addr: VramAddress,
-+    dual_pde: &DualPde,
 +) -> Result {
-+    pramin.try_write64(addr.raw(), dual_pde.big_raw_u64())?;
-+    pramin.try_write64(addr.raw() + 8, dual_pde.small_raw_u64())
-+}
++    use crate::mm::vmm::Vmm;
++    use crate::mm::PAGE_SIZE;
++    use kernel::gpu::buddy::BuddyFlags;
++    use kernel::gpu::buddy::GpuBuddyAllocParams;
++    use kernel::sizes::{
++        SZ_4K,
++        SZ_64K, //
++    };
 +
-+/// Read a PTE from VRAM.
-+pub(crate) fn read_pte(
-+    pramin: &mut pramin::Window,
-+    addr: VramAddress,
-+    mmu_version: MmuVersion,
-+) -> Result<Pte> {
-+    let val = pramin.try_read64(addr.raw())?;
-+    Ok(Pte::new(mmu_version, val))
-+}
++    // Self-tests only support MMU v2 (Turing/Ampere/Ada).
++    if mmu_version != MmuVersion::V2 {
++        dev_info!(
++            dev,
++            "MM: Skipping self-tests for MMU {:?} (only V2 supported)\n",
++            mmu_version
++        );
++        return Ok(());
++    }
 +
-+/// Write a PTE to VRAM.
-+pub(crate) fn write_pte(pramin: &mut pramin::Window, addr: VramAddress, pte: Pte) -> Result {
-+    pramin.try_write64(addr.raw(), pte.raw_u64())
++    // Test patterns - distinct values to detect stale reads.
++    const PATTERN_PRAMIN: u32 = 0xDEAD_BEEF;
++    const PATTERN_BAR1: u32 = 0xCAFE_BABE;
++
++    dev_info!(dev, "MM: Starting self-test...\n");
++
++    let pdb_addr = VramAddress::new(bar1_pdb);
++
++    // Phase 1: Check if page tables are in VRAM (accessible via PRAMIN).
++    {
++        use crate::mm::pagetable::ver2::Pde;
++        use crate::mm::pagetable::AperturePde;
++
++        // Read PDB[0] to check the aperture of the first L1 pointer.
++        let pdb_entry_raw = mm.pramin().try_read64(pdb_addr.raw())?;
++        let pdb_entry = Pde::new(pdb_entry_raw);
++
++        if !pdb_entry.is_valid() {
++            dev_info!(dev, "MM: Self-test SKIPPED - no valid page tables\n");
++            return Ok(());
++        }
++
++        if pdb_entry.aperture() != AperturePde::VideoMemory {
++            dev_info!(dev, "MM: Self-test SKIPPED - requires VRAM-based page tables\n");
++            return Ok(());
++        }
++    }
++
++    // Phase 2: Allocate a test page from the buddy allocator.
++    let alloc_params = GpuBuddyAllocParams {
++        start_range_address: 0,
++        end_range_address: 0,
++        size_bytes: SZ_4K as u64,
++        min_block_size_bytes: SZ_4K as u64,
++        buddy_flags: BuddyFlags::try_new(0)?,
++    };
++
++    let test_page_blocks = mm.buddy().alloc_blocks(alloc_params)?;
++    let test_vram_offset = test_page_blocks.iter().next().ok_or(ENOMEM)?.offset();
++    let test_vram = VramAddress::new(test_vram_offset);
++    let test_pfn = Pfn::from(test_vram);
++
++    // Use VFN 8 (offset 0x8000) for the test mapping.
++    // This is within the BAR1 aperture and will trigger page table allocation.
++    let test_vfn = Vfn::new(8u64);
++
++    // Create a VMM of size 64K to track virtual memory mappings.
++    let mut vmm = Vmm::new(pdb_addr, MmuVersion::V2, SZ_64K as u64)?;
++
++    // Phase 3+4: Create mapping using `GpuMm` and `Vmm`.
++    vmm.map_page(mm, test_vfn, test_pfn, true)?;
++
++    // Phase 5: Test the mapping.
++    // Pre-compute test addresses for each access path.
++    // Use distinct offsets within the page for read (0x100) and write (0x200) tests.
++    let bar1_base_offset = test_vfn.raw() as usize * PAGE_SIZE;
++    let bar1_read_offset: usize = bar1_base_offset + 0x100;
++    let bar1_write_offset: usize = bar1_base_offset + 0x200;
++    let vram_read_addr: usize = test_vram.raw() + 0x100;
++    let vram_write_addr: usize = test_vram.raw() + 0x200;
++
++    // Test 1: Write via PRAMIN, read via BAR1.
++    mm.pramin().try_write32(vram_read_addr, PATTERN_PRAMIN)?;
++
++    // Read back via BAR1 aperture.
++    let bar1_value = bar1.try_read32(bar1_read_offset)?;
++
++    let test1_passed = if bar1_value == PATTERN_PRAMIN {
++        true
++    } else {
++        dev_err!(
++            dev,
++            "MM: Test 1 FAILED - Expected {:#010x}, got {:#010x}\n",
++            PATTERN_PRAMIN,
++            bar1_value
++        );
++        false
++    };
++
++    // Test 2: Write via BAR1, read via PRAMIN.
++    bar1.try_write32(PATTERN_BAR1, bar1_write_offset)?;
++
++    // Read back via PRAMIN.
++    let pramin_value = mm.pramin().try_read32(vram_write_addr)?;
++
++    let test2_passed = if pramin_value == PATTERN_BAR1 {
++        true
++    } else {
++        dev_err!(
++            dev,
++            "MM: Test 2 FAILED - Expected {:#010x}, got {:#010x}\n",
++            PATTERN_BAR1,
++            pramin_value
++        );
++        false
++    };
++
++    // Phase 6: Cleanup - invalidate PTE.
++    vmm.unmap_page(mm, test_vfn)?;
++
++    if test1_passed && test2_passed {
++        dev_info!(dev, "MM: All self-tests PASSED\n");
++        Ok(())
++    } else {
++        dev_err!(dev, "MM: Self-tests FAILED\n");
++        Err(EIO)
++    }
 +}
 -- 
 2.34.1
