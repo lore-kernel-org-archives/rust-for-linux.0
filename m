@@ -1,127 +1,116 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F6543D4EB;
-	Tue, 20 Jan 2026 16:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96EF31ED90
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 16:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768925615; cv=none; b=Hw3RG5QNxic56bChyen0kcTzrEEk+jQb2qQChIp6VjOZu/eNKcO6Or8M5sHyy4UCSjPW2HVYj0MAWuVGE0x6QwDSHfY2ZJNil1v5cnTTYze5tZchcBcEaWP7QrZLoKk/llyHuDlfPTeKbuECZMQ2oFs+SlpHRh48yVRYjgTfCYc=
+	t=1768925795; cv=none; b=FfkJOzg9qPz72Gxr7j+CMar+PCd+UX6MR7Aw7FrRvMGmIXc6QQQKqiU1IPJWtVGlOZ3ebxiijaZ+mHMWfTH8Qm6rVULJHw+8EmmYxNlS1lZo9RcyA2zon9gKHOY4NuSJqSZapIrOBLQENMGCv89UVfLlZP5JeUS4oZxFIo8I9sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768925615; c=relaxed/simple;
-	bh=jnOSiKFsGXEAWduYH+LrnnhH1GduyoWnKKA2wNJ87aM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gem1URlBeztBghifno8vY06p19fdTVaNYBfnGHEReujLV4IHg+C8qRjje+ERimnxH8fwJ31OtkBQgPfYWrh6pYGYeOU4E06Kpoqgg40PpIdgMtRZ5upGTYOq9Ejc0B0rkru2Uu7oO+P9/nU+luj5X4tzoU0+DVLhWqQ11XulmCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LoljWEUq; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768925795; c=relaxed/simple;
+	bh=BNzsItdhwN4AlCLoipqscYZCx4sHqbuRLNDIVXpilSk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MY9AF5tMHbgGOw+//UKt5Z45Lk2E7T4yaqvhcO4T9vCc/t6U7P4LgoFH7Gu9HJUIRBC0mGBeIaQWnE4+K3aVhztAkP7uqldvykIudF23BCYD3XY9ufyCW62QP5OjoZQ6XgkZOczZmmEh8XehzL/ShGU+WVW/M/1T/5qaQZzYPKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THSDmi8g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LoljWEUq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768925614; x=1800461614;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jnOSiKFsGXEAWduYH+LrnnhH1GduyoWnKKA2wNJ87aM=;
-  b=LoljWEUq0Jsd+WhU0aFqG7xpODzvnzDXGWZbicDiGdi0G9k8PgjqfV5j
-   Ex7Xm8vJS+3W7MQG9yyUD3fzVNAr48sM+mQ8OTW6+5IoHCdEjTcFaxX4i
-   rJzZjMW60+3QTJ3YBT7grWZ1sI8HG5RWvudRQVHobADWkOgE1rOnvzogW
-   /5CmvBAYtgeP/3ktqzBmdbdp7Xf7DKhHQ9d4NHq9xlfX0pYhvWjcL4CTH
-   5gnxGl5kkUhG5UEVZJOFBGBTm2UOsUmB4+Q3FBiEXP70xFqmcmeNMEkJS
-   YJEPjVl2uC8B3fqTmlREbgWG4qaJgwYOKJtgRN8iwVtdNeq2BkOiQ873A
-   A==;
-X-CSE-ConnectionGUID: TXId4URGQbSVb4fCp7cQfQ==
-X-CSE-MsgGUID: uClE0H6iQEGTu3YVDCZOkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="73993443"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="73993443"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 08:13:33 -0800
-X-CSE-ConnectionGUID: P7eetHbhTsG9+ROlJ6gpoQ==
-X-CSE-MsgGUID: OrQ97F9+T+G4UW3Qw1+F1g==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 20 Jan 2026 08:13:25 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1viEM7-00000000PCH-0KbF;
-	Tue, 20 Jan 2026 16:13:23 +0000
-Date: Wed, 21 Jan 2026 00:12:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexandre Courbot <acourbot@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Steven Price <steven.price@arm.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexandre Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH 1/6] rust: num: add `shr` and `shl` methods to `Bounded`
-Message-ID: <202601202328.hnTsogt9-lkp@intel.com>
-References: <20260120-register-v1-1-723a1743b557@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THSDmi8g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928EDC2BCB7
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 16:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768925794;
+	bh=BNzsItdhwN4AlCLoipqscYZCx4sHqbuRLNDIVXpilSk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=THSDmi8gq235TCymdcD40neouylxEUPybAk8IqPK1VlC9tfnkSczzfK6vsoo+M7vm
+	 eXRPBc7IzwbOSPtHHf8dHvyl+qHLHU4MtJpcRy0md+yhVkI3QX0Wf9ZYLfVQc5BSI1
+	 EpHa3DG6ExQiIEki+f+ELIQVkMORCQqN0OFyLZu1xmbWwpQIqrBaWzxjzqxN3FzfI0
+	 wzaQ9R0CufxLLJ2C+ysHLBMxD0wT9LjUP0aUYVKk5p9C2c3t3djt/tuO+lpqqgq+dD
+	 c1KckqjyOcvQbx+YLaC0JIE7KedRkmAOFwWC8fFgTA0UlhvXaSSwSGeNAhlnSKX2WG
+	 hQVTvJWeGqqpA==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-38305d006faso48820291fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:16:34 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUXdVFOtTSUFbzCQMQ1yrBZHfNWZtOi3UbN6epk2NvAlu3AnRwMAuzoncpjgT5ETtnUw8aiQtPjVihtvB547Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwB3LlNneKSON2DgM5lBWmJgy+naFhWd8dLm2QKxJ2b6CfIVmIL
+	fSq65dibuAFSULqaeSiQaAgp8rEbdsI9ava0e6JzpTowlDYPVYOe/W7Wvq78S7YvyjYC/5ffbIg
+	G7f0zjjRpm0f4+GzFfjOGPPl5FD5kols=
+X-Received: by 2002:a05:651c:3612:b0:378:d5dc:17c2 with SMTP id
+ 38308e7fff4ca-3838417c912mr56935201fa.11.1768925793031; Tue, 20 Jan 2026
+ 08:16:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120-register-v1-1-723a1743b557@nvidia.com>
+References: <20251222-cstr-pwm-v1-1-e8916d976f8d@gmail.com> <o4uvwymm73wnehs5zb7lqgv3mjv235jpprfqrsb6oxscxhmmjh@25u7wrb7yo2i>
+In-Reply-To: <o4uvwymm73wnehs5zb7lqgv3mjv235jpprfqrsb6oxscxhmmjh@25u7wrb7yo2i>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 20 Jan 2026 11:15:56 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9=USrGECVS1qMqs+iCKUqvOdfcjA6phAjaF0wfcTkQt_g@mail.gmail.com>
+X-Gm-Features: AZwV_QhGR5x54f9_gIkwS8dqtjPRJRBl1YkXPqMFOsqu-3oh6YnupyEAn_EqRwc
+Message-ID: <CAJ-ks9=USrGECVS1qMqs+iCKUqvOdfcjA6phAjaF0wfcTkQt_g@mail.gmail.com>
+Subject: Re: [PATCH] drivers: pwm: replace `kernel::c_str!` with C-Strings
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-riscv@lists.infradead.org, 
+	linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Michal Wilczynski <m.wilczynski@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alexandre,
+On Tue, Jan 20, 2026 at 3:39=E2=80=AFAM Uwe Kleine-K=C3=B6nig <ukleinek@ker=
+nel.org> wrote:
+>
+> Hello,
+>
+> On Mon, Dec 22, 2025 at 01:24:46PM +0100, Tamir Duberstein wrote:
+> > From: Tamir Duberstein <tamird@gmail.com>
+> >
+> > C-String literals were added in Rust 1.77. Replace instances of
+> > `kernel::c_str!` with C-String literals where possible.
+> >
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+>
+> Applied to
+>
+>         https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.gi=
+t pwm/for-next
+>
+> as merge window material with the R-b tags by Michal Wilczynski and
+> Daniel Almeida.
+>
+> (Side note, b4 told me:
+>
+>           =E2=9C=97 No key: openssh/tamird@gmail.com
+>
+> . It's not clear to me how to verify this signature. My experiments
+> include:
+>
+>         $ b4 kr --show-keys 20251222-cstr-pwm-v1-1-e8916d976f8d@gmail.com
+>         ---
+>         No keys found in the thread.
+>
+> and looking at
+> https://lore.kernel.org/linux-pwm/20251222-cstr-pwm-v1-1-e8916d976f8d@gma=
+il.com/raw
+> where I see
+>
+>         X-Developer-Key: i=3Dtamird@gmail.com; a=3Dopenssh; fpr=3DSHA256:=
+264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+>
+> which IIUC isn't enough to verify the next mail signed with the same
+> key. Am I missing something? I very appreciate signing your work, but if
+> there is no way for me (or anyone else) to verify it, there is no gain.)
 
-kernel test robot noticed the following build errors:
+Yep, you are right to call this out. My usual setup uses SSH keys for
+commit signing, which are not part of the kernel web of trust. I
+promise to start signing kernel work with my GPG key soon :)
 
-[auto build test ERROR on 2af6ad09fc7dfe9b3610100983cccf16998bf34d]
+In the meantime if you trust Github you can verify my signature
+against https://github.com/tamird.keys.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexandre-Courbot/rust-num-add-shr-and-shl-methods-to-Bounded/20260120-143042
-base:   2af6ad09fc7dfe9b3610100983cccf16998bf34d
-patch link:    https://lore.kernel.org/r/20260120-register-v1-1-723a1743b557%40nvidia.com
-patch subject: [PATCH 1/6] rust: num: add `shr` and `shl` methods to `Bounded`
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260120/202601202328.hnTsogt9-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601202328.hnTsogt9-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601202328.hnTsogt9-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0658]: const arguments cannot yet be inferred with `_`
-   --> rust/doctests_kernel_generated.rs:10572:47
-   |
-   10572 | let v_shifted: Bounded::<u32, 8> = v.shr::<8, _>();
-   |                                               ^
-   |
-   = note: see issue #85077 <https://github.com/rust-lang/rust/issues/85077> for more information
-   = help: add `#![feature(generic_arg_infer)]` to the crate attributes to enable
-   = note: this compiler was built on 2025-06-23; consider upgrading it if it is out of date
---
->> error[E0658]: const arguments cannot yet be inferred with `_`
-   --> rust/doctests_kernel_generated.rs:10630:48
-   |
-   10630 | let v_shifted: Bounded::<u32, 16> = v.shl::<8, _>();
-   |                                                ^
-   |
-   = note: see issue #85077 <https://github.com/rust-lang/rust/issues/85077> for more information
-   = help: add `#![feature(generic_arg_infer)]` to the crate attributes to enable
-   = note: this compiler was built on 2025-06-23; consider upgrading it if it is out of date
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers.
+Tamir
