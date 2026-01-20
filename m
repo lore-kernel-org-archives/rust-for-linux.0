@@ -1,54 +1,54 @@
 Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9032A428829
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 12:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011AE426EA4
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 12:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768912732; cv=none; b=rBA2QT6g4dAkNo6ZulG0qQbiuGYe8wBBfL659L06ULZSh5ju4JXGTKKwyB9C5qXjrvY8AbdNH1JwG2srXNLYCvWjKhaJpkRS/IwJV0toaNsHZqIJfWX9YJRtJr6VRgu0nqVTOGtOhHVDvqoALkbHkeThIivP3GqWtIa8X68Ypic=
+	t=1768912758; cv=none; b=DuZpod1aJ3DKMaumTmaJ6K4mEiUMaDUFNhLYFMrI8serDKQBrXuyhzHU3OGRMiEo8iINv/op6a1JIhotq4kAL8IBdSfpXFIP0ZuImhWHzKpm4dcMaAwg8ntKM4ak6hIGKaomfyirizXNB+lSJIuWIeHorTX76eKpXcNfEOJ40tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768912732; c=relaxed/simple;
-	bh=PwApb91RxQIKd1rzfJ2xAleSXJcHnAXezOdyfHCU/8k=;
+	s=arc-20240116; t=1768912758; c=relaxed/simple;
+	bh=4hQ5wthGbRwK+tJ8j7a8ZpnaN272v9XF9TyqQHVeT7M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZdJBuXBIA5Vn7zhCS8/LmTnJ0UtdZtIJ/VB13h+eXi1L24tEra4mKcoAJqDKRp5zjXD3xvcdM9/tbA6mxNn/v5rfbpgSuAVAh9FUXOmmvwXf+h2jSPmi8fprGCZLwgyPZ6FfkJL3JaJWisHEgkGseV900rV1rkmosxhV0fwOz1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2umk9AWi; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=Qxa5ohhaNqOMQ8ZPH4Sbo+0p0RxJcf/aW97EAseO1R1KxIoVLlyWa+dF2OxLEokQQot2sO0itQfK/LXyDYHnWfVauL8jFfRH7+tXE2GmdlElt3wMZJqeqnQZomNv5vEpDfinlxV3yW5jaMni13JTJcv8Y0TLaQUDrsvFBX/Bnl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SINlgYNR; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2umk9AWi"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430fb8d41acso3082546f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 04:38:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SINlgYNR"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430f5dcd4cdso3019434f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 04:39:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768912728; x=1769517528; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1768912754; x=1769517554; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v5uBS89EprhTXTMtWy33Byzr1DNzGriqxZMXGCf0cIw=;
-        b=2umk9AWiz9orTQh9fEnzb0/lEKqJ1LAOeotkj6jpFrnlJBuYCX/3SstEFf5fY+njwX
-         iaYtfRFkhx0r/9VonYrK08tW5yfXMSDaEs/BWm7Yg5irVgrc/TzszgVQCdID/DxRu79b
-         n/swbGsrAA142gRzDZXbjPopqRC1j81ry8PRixoFL5kM+vEIPambFVj4T4wpyH9iEoAn
-         +mnh/TuW3Duo3UVER0vn4CCj8x/Qg0NoB+TtYw0ebfCiaOhsih8krX6P18R7IL0fAfnZ
-         7lMHoBION3CvFBFdMnC1biBllH0SaCi8cvn7mTqEV2Ax3s8+li0W/ioQutbY5jCT/tKR
-         ZxHw==
+        bh=aC20Vi3ua6RNxinQI5h1askXn9iFU0ocrDNDebQDeNI=;
+        b=SINlgYNR2tMUaMhpKlTrBu24v2h7sDtC19jXJFpl3psVbL8Kzxm6+vO/x7W0/z4HxD
+         eaB7ohKK8yTpqOjVFmNqyfzWZ9BL9JtcHuHJHx2R2yOilpBTpQL2XApTO4d31ptnVMN3
+         E3lWP/DJZEVWV34g5BPZWHPHPOWWzEtEU0n+kj5ED+FAIPyhEAUMFVK0o4td/w2Iszne
+         LJwa/XtQwmsiXyb6bp9fZzSUQiKaMq7RM74YsdVaP3GXFYf8Jau60ucY3LGE49C7iGjI
+         wyKeZH6S36RzTf8NVLSAKaN8MDmupPMra+Tt51T42NZvAvynocg6Dz+VY3Jt5RGvjOIT
+         zv+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768912728; x=1769517528;
+        d=1e100.net; s=20230601; t=1768912754; x=1769517554;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v5uBS89EprhTXTMtWy33Byzr1DNzGriqxZMXGCf0cIw=;
-        b=FKbKE/PXv/WNTzGz1Dmyk2MctXsRUet1q5z4iHhCn5rU0CU5Eu/kQUBXNz+b2GaDD0
-         Uf+IIvt3L9/zNccJw1bORT4p1gVEU18Ul0tnW1oCqJVJGykiR2Pa3pOQkuD1R0YTBzJl
-         2EHXT7fRiK1m5xSsAvJHIDu5FeKYrY6HObiNrevAzIGUCGuRfS7JCGcMxxra7pgKOqMD
-         yEmXNC9HCO88oYvnsbSF5LMDNrIgWuX1gaaqPqt6PycHflQ/8UjAxbsgwE+h4NrtuNjJ
-         RFZz/slD4UlFhpvPXZWWwyTXW1QyEBUe0cuF3RrH2mYknPdaWquyLdeJNlUz8CgZ2Gf6
-         rxxA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSH8p27NWri6rYdwQ43pA3PBdvH9ydnHU9+D+gYqUXP35D76jJ9zEd9KCMOZ5dj56sR2QnqpKvxRIWO1fuXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoUtvZTjXsPfeXOy35gJDH4eMJbcBhMTYaUt6tJz9DLLy7Jdi1
-	p9pdSAq4B4T3xeIXRdUsE4y+CDT8gX+tw8AX7aqtrEWEWg1lKb8JVVqzLpEWydKkLwhiaamVqqu
-	nkBk1Kg/C6lVKqCabLg==
-X-Received: from wrp4.prod.google.com ([2002:a05:6000:41e4:b0:435:948f:2ec0])
+        bh=aC20Vi3ua6RNxinQI5h1askXn9iFU0ocrDNDebQDeNI=;
+        b=Gg95RM4uCDZeW/8zzI7WqKG5R2VQUQJvovhm7fonYRHR72vgS7p3eExDZgdwvZep3U
+         JsN299+D3KJ7l8HTUCXx38JtX9ZyDfCPEL6RsRCIkmKBIBiUelSCL0xdWkkQyhCl7lht
+         li/jtwrBcJijJpftaHSDI7nionPkUDpZXVEL+HQE98VErOaZE3kCSoYCBy3nC5Qd+4wJ
+         NUtyjRh5FFylNaAqXkh6AuvGdsEPYiH8OxKca4+SHhUMUsyj9hsUNwSWMWbJnW0xWef8
+         h7KdcagaX3sTcG6skLH4lia0ylzn+rz40zrc6HYbOJ31WzNyxO83FPeT2YZu2x4d+4nf
+         0zBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUuIuEc4jABtnTo/dQOWhqAW3Q532m63zAx4w3r3f1cFbcKY8tnbHcXhuvvT7U9gzSeCmz/7ZthF5l7juGObA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8n43U7VsE43bsYyi0OtDOikJDylctefldZC6JnhqXY6MJ7bBT
+	GMnkyJQPI+v9+oCZgOLQirrB9uzzM1qHx8/xNVKKmZfjedbiERfHkGIoKX5keHkhBkESHnFQCt7
+	SwfquhVSj6LJ26KGW+w==
+X-Received: from wmig10.prod.google.com ([2002:a05:600c:140a:b0:47a:9f70:c329])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2885:b0:430:fd84:317a with SMTP id ffacd0b85a97d-4356a051d68mr21671610f8f.38.1768912728086;
- Tue, 20 Jan 2026 04:38:48 -0800 (PST)
-Date: Tue, 20 Jan 2026 12:38:47 +0000
+ 2002:a05:600c:811a:b0:480:1dc6:2686 with SMTP id 5b1f17b1804b1-4801eac0cfcmr156081605e9.13.1768912754423;
+ Tue, 20 Jan 2026 04:39:14 -0800 (PST)
+Date: Tue, 20 Jan 2026 12:39:13 +0000
 In-Reply-To: <20260120115207.55318-2-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -57,7 +57,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260120115207.55318-1-boqun.feng@gmail.com> <20260120115207.55318-2-boqun.feng@gmail.com>
-Message-ID: <aW93VwfgkHpJfjVs@google.com>
+Message-ID: <aW93cQq0Cyd9ivpE@google.com>
 Subject: Re: [PATCH 1/2] rust: sync: atomic: Remove bound `T: Sync` for `Atomci::from_ptr()`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Boqun Feng <boqun.feng@gmail.com>
@@ -85,4 +85,5 @@ On Tue, Jan 20, 2026 at 07:52:06PM +0800, Boqun Feng wrote:
 > Fixes: 29c32c405e53 ("rust: sync: atomic: Add generic atomics")
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+there is a typo in patch title
+
