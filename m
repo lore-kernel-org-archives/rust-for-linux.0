@@ -1,90 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBCB47884E;
-	Tue, 20 Jan 2026 19:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768937245; cv=none; b=NQvPEODMruMJoMitXKBV1AYrfO7BCB0ZY/HbElObAquH2wyfUCgL3ws4Zl3w3p9GUIWLQK0qnuPz+lbCTGLXu0wL264eqUQ+0a602Ik+vi+2Mk5V3SVd85maFPGd6iDdaV+rc3Rtpf+URrO8hJgKNP+3qmk9SyFUPx+CG7dNTAY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768937245; c=relaxed/simple;
-	bh=if+kL/O8iAI2iqfjwBnNKaWo72op3Za5GKQzP+73q54=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=WdIJX0B/8yHSPAcmJ2OfqtHfIuoxi5gX+57urwexL9T8cVMxNNo0g5s0mU6RD9LCk7CKLAv3oMELdOc0Tp6ikIOA/IGF/pgR35i9kYoRzLGE9kh8GgVD0xIZgO1c/PaVKVBmf0e1MztuxrkprUg4klDQDvXdAg3NC6mYkAetbV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fDH3+ugy; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E890C3A4AB6
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 19:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768938592; cv=pass; b=e/ULFajN8hCMADz46YzmZ4INVjvul2bxjeyDQZbLLzvbpRyEt8y3vOP1j3bRXWUlkVdISMpvh4JFljlmnquy82DjDCXUu5RTqYjZJaw9QfUH7VNAGRnZYp2OM+dO5L0EKzFmA9kNotg6Y5t5OIkTcsg/pd0qNvPVF4eT9iIN3KA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768938592; c=relaxed/simple;
+	bh=S9fl59k5puWt33JzR4GT4lL/HsZOZFVj400kW+fxybU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SCq7Ze9sMcl5WDPe1Z66kwq+J35RRi/Z76L+OhIxJj0Ct408I8jrjfyKKW6Pl9G3lj6+wn+d+Ofclj57xsEyPuPyrMaHyvhws+SIJYFo/JE1fHaQFFLT9Sw/e16iLZ2HyIdA3J2PP8dFbblD7bKdFBpCumuwL1F6kB/EtaUuWUs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4cpHcSo; arc=pass smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fDH3+ugy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE6DC16AAE;
-	Tue, 20 Jan 2026 19:27:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768937244;
-	bh=if+kL/O8iAI2iqfjwBnNKaWo72op3Za5GKQzP+73q54=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=fDH3+ugylGkTC+KohN4mkzSqEUYzwFr44MhQiH7WuEELSpjxKRYz8TeMOQEjEitgX
-	 iFLTkvgY1IY/lHu6aTj3ZjHeUB9gYTiBWQ1ZRG5Z3meRLZPcdagy0vJmanNoEvzWQL
-	 m97UZ8KtlCPZ3b+dGmMqNI6c9jagaARoPHSkgkqVK9m8e434iAVla4TppCrQgkWm9Q
-	 8wtynev74zYcDfVsAdnPOSagvoWvAjqJcYoGwehzpCJGNdiR8YHCZ8gkC/oBFANEt1
-	 iAXu87WznuKvJ/WLnqHprro8rDb6JrtOZHFGGe8gAAAxEOrUB4usGSUQ6LLnZKfnVY
-	 PhEhglsMdKtHA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4cpHcSo"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1232c98f98cso412643c88.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 11:49:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768938590; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QQ3Idh4QRiwXQ1ePRjECwLYbjjLWYUQFDPSXG0Ixo43xtoi9ZboAn2FMZLP+UMqZQX
+         8slLc+ZyI/9/UIhsxKdUSiAg6Oizg3MmdPlkoLq/W9u5WnpYLJbcpuXV+66hREW+Ig0s
+         izJY2+KtHVsZ6labmPLIy34y9Lhqv3PgYqoH3+l9S/yvshq5v4FrAoP+DHVmhZnw7FSQ
+         2iAFV9eSJgrKbXauCBX4mrpHcFoM+AXAj/pqj68f/kb262/X7iTnu2hxWTzK3zTaILLh
+         BlEihm6XyEGbWFBU8ymQRngzV/fF73gM0N7gNNlJahJx+uQOjqwhyiyUCexHh6btv7z6
+         W8yw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=blap3a3dHjESYY1Y1zms2pDZWMkQH8ZZXSdy8ZC5AK4=;
+        fh=W68lAMp98JdC5Ifcc8ig3wMnp3WtiAeeGbkT1ZM1p3s=;
+        b=V16JODOuEky8C4u97L9aDBzb1qqv698h4bqc+F/dBCW0JkuNT25hRSFYB5Ds0ypV7u
+         EitNkTyguBi8uLzstZcG8rQuMImF2F/mk3egT3qwuQM4ABR7vG4zy1ejqWoB8Ie5/stF
+         2qZVAzlof5dCYnV3K6LZHTsO1C3LF+gAlgsXQDOwGwmE3hFLr3qiv3AKgSzhy9RgFYOK
+         RG6pzVwMgMgI4rNzh8FToh3sJ9bktc5NgkUvgQMJIPCiSwd7HaX02CDhz6YsZtsF6gtg
+         wS52Mqco414PbJ8ShIybPjIRRkbjTm7MPP/QpUX3cpi+1dUNpwmnN13/tpfdW9uUnFOE
+         P1wQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768938590; x=1769543390; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=blap3a3dHjESYY1Y1zms2pDZWMkQH8ZZXSdy8ZC5AK4=;
+        b=d4cpHcSo0uLQPlXFH2FNVaMctqvrs5E+UrZccm8S6pSf/ZQqPZYE0GeGnNCC2o/0Kz
+         i8gHj0hN1Zna+F1N9X5N/2nzbUuH+9NPMri95ShuZy7eKBpaMsuiWZxPYQFy0+M7+Vdh
+         1RHfRlEGbcjuPkUUvSjRybawrC7kMWZjpYVVGqTwVMqY3CAz+Qu9ll8/NMTOEZz5Mzix
+         mKRFWLxVUUpNzxDZTrsXHFpsXeYsZn6MZarvdLlTsQ61YaBQSA0GFHFIxRCStcmBexxr
+         pcTtd5/uCqghVJodQ/ZzsFlL+3B/4vNjY4U2P79FxtbJN3kogMdbwmcKLBibZ8d+aw63
+         T7Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768938590; x=1769543390;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=blap3a3dHjESYY1Y1zms2pDZWMkQH8ZZXSdy8ZC5AK4=;
+        b=gEuQOyr6Vybpr/gYqAd0+dAPamYw7CRmYYVY0ecC/smvzNO4zpl2IMqV2SyayJCnlh
+         M4ywZkdpL7pDR7/dO/Ijy6SaS2cdqM3zhKAOj/y/Jq+vhMu4kAJ2uTFYP37vP2pN0a4z
+         VPzdpMN8i9tcFkpMH1+PAiChw8NdwsB0mL5RcMN+7jKRH07ANqKHoTk8WCTzmdI7nmTm
+         z080JrWbYiGuJl6t+T1hFAMV/MJ+DOJM65xFAP6S7Rqly4ZbjOMbsAy8lG0IaEhdLzEm
+         3Hoxth9tIEarIMJOfTQuT2ScHJ3GF3AD4DNfSHNX2r9RSR1X0UFtY86SO4UKlOJF3UZZ
+         hOGw==
+X-Gm-Message-State: AOJu0YzvCCSOS8i7JYewzl18NJ8zBDdGlQ1UaxNpRmzqUBOuFF/IdDbK
+	IaNCy5qSxjxNj+bABV4WZH6/46C/giLjRVTte3Xea7zynGpKE8EoQZl5qvWJog8OTdBI9X8T2O3
+	/1A9C51s11P/Grrd8v9HE9MIjrGPJAao=
+X-Gm-Gg: AZuq6aJMv6AkIrRQGh/Cb04jOk/swXT8Va5ZFRLrHtT1SNOMTGUgDErsPcy/Rb3TmY4
+	DpjGuFUM33IYn8W6yli8cZKh+Nt06+39TjaEzMHIQtRZSMLHs+4cR4fMuWBJd/50c1i3kR/YjMD
+	K0zgUBNrhjSMqtHN6LPZ3WaJkzE5uJ66VsFS/+egHvlNdU9PoOI3+p+yoqNeBeh8K5SWq0v3bN2
+	+3Ov/jMXyurQORfPfqsjYR4U+hc0xuW9yq+nr6R2UhvMG8JtSRdw00CcgYlbsl/kIfqzI3+oRpe
+	1zlpYg50OcTzl+Ic0MPd2uYLPkn9RjkICM49CxNYtKQ6OIilOrzUO3THMEtlcBx8UomIUA4BoHy
+	+kHrWNasDgJRW
+X-Received: by 2002:a05:7300:2308:b0:2ab:ca55:8940 with SMTP id
+ 5a478bee46e88-2b6f70d3b32mr1569108eec.7.1768938589492; Tue, 20 Jan 2026
+ 11:49:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <CAGk=Op9baRBH8_T1xZpa79TiteMEBHQJAqEM_E=5KHnsmZD8Mg@mail.gmail.com>
+In-Reply-To: <CAGk=Op9baRBH8_T1xZpa79TiteMEBHQJAqEM_E=5KHnsmZD8Mg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 20 Jan 2026 20:49:37 +0100
+X-Gm-Features: AZwV_QiFMYd3zhavHQQ7ChTPDY1CzWdmIULl-8w13fkhrWjUeooxm9p88rqnChA
+Message-ID: <CANiq72mxpYYL+q+PGCfu2nEsbD_7BjGMhz+Q7wXjNRgYXqhu2Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: add if_cfg! macro for config-based conditionals
+To: Christopher Erleigh <christopher.erleigh@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ojeda@kernel.org, fujita.tomonori@gmail.com, frederic@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jan 2026 20:27:19 +0100
-Message-Id: <DFTNX1DYBXWJ.24E4YYMAJSH9N@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>,
- "Linux Kbuild mailing list" <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH v2 0/2] rust: reduce duplicate information
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Tamir Duberstein" <tamird@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Jesung Yang" <y.j3ms.n@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260120-rust-analyzer-pin-init-duplication-v2-0-a1c76f0d3bef@kernel.org>
-In-Reply-To: <20260120-rust-analyzer-pin-init-duplication-v2-0-a1c76f0d3bef@kernel.org>
 
-On Tue Jan 20, 2026 at 5:10 PM CET, Tamir Duberstein wrote:
-> This series reuses `rust/Makefile`'s knowledge of `pin_init` and
-> `pin_init_internal`'s `cfg`s in `scripts/generate_rust_analzyer.py` and
-> reduces the ceremony needed to use that knowledge in the script.
+On Tue, Jan 20, 2026 at 5:28=E2=80=AFPM Christopher Erleigh
+<christopher.erleigh@gmail.com> wrote:
+>
+> From f0458e293b9fc50b39f1be5c604bb12c3c691704 Mon Sep 17 00:00:00 2001
+> From: KaiserGranatapfel <christopher.erleigh@gmail.com>
+> Date: Tue, 20 Jan 2026 17:09:59 +0100
+> Subject: [PATCH] rust: macros: add if_cfg! macro for config-based conditi=
+onals
 
-This is a cool idea, I don't maintain the makefile code, so this doesn't
-mean much, but it's on my radar :)
+I don't think this reached the mailing list, since it has HTML inside.
 
-Acked-by: Benno Lossin <lossin@kernel.org>
+Also, these headers are not supposed to be here, but used for the actual em=
+ail.
+
+I would recommend using `git send-email` and/or `b4` for sending the
+patch -- they make it easy. In particular, `b4` has a web submission
+endpoint that can send them for you if e.g. Gmail gives you trouble
+setting it up:
+
+    https://b4.docs.kernel.org/en/latest/contributor/send.html
 
 Cheers,
-Benno
-
-> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-> ---
-> Changes in v2:
-> - Split into two patches. (Miguel Ojeda)
-> - CC kbuild. (Miguel Ojeda)
-> - Link to v1: https://patch.msgid.link/20260116-rust-analyzer-pin-init-du=
-plication-v1-1-5e85c5824a02@kernel.org
->
-> ---
-> Tamir Duberstein (2):
->       rust: kbuild: extract configs for reuse
->       scripts: generate_rust_analyzer.py: reduce cfg plumbing
->
->  rust/Makefile                     | 32 +++++++++++++++++++++++---------
->  scripts/generate_rust_analyzer.py | 13 +++++--------
->  2 files changed, 28 insertions(+), 17 deletions(-)
-> ---
-> base-commit: 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
-> change-id: 20260116-rust-analyzer-pin-init-duplication-a22d05221771
->
-> Best regards,
-> -- =20
-> Tamir Duberstein <tamird@kernel.org>
-
+Miguel
