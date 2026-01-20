@@ -1,93 +1,81 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC173D1CAD;
-	Tue, 20 Jan 2026 09:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BC938A9B9;
+	Tue, 20 Jan 2026 10:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768903020; cv=none; b=bjdTKJc9GEJks+0GaZfzwjQVB8GWGAfhqE36wBOAg0fdDfE3PZnRT/y/p+STQgBCMpCe5l3e6jMYBBXYK/w+cYjMADC4nbkv8CNFHOVIsNxdvcawnxklFpqeI4LuS1rWCuJsmlvdR+O1bIJvVkZvFrNcjOIhnSugFF3r8452UAE=
+	t=1768903946; cv=none; b=G8FLMlR3MaqO+OxKnOpfGmj9Z4bKBVd10e3U78yPodIv0STqoc2TPEkPHXlUo6J5O6vuB8k5oS2YLcJW4n2XqAKeRf2+zG3IHAUVzpfWwfZ2rs72kLv6laDfhn2P73qNXQjihjU67w0UsFePy6ItMDnHXNA4M+mBub/JT/bcMEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768903020; c=relaxed/simple;
-	bh=MLxN6shAm2Ln0HLCZSjNmRijlp5EjI4zLoHjLhV2/CY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fKHaLh4zTiWcMfEWipC6bpUL7xuxpUcvvNJh4bxQ7wgBECptlcIhduSF8ZZ0tTnaXkbFGjXbyRftjaTlJrPInPfWvKMk+viyCe/SBrwRyJrZA8zZvQJvBV+on7HvJLExlXFDvjDdUeNoOSwhz6t1MgVxkPqqgKTHmNS4fi2Edy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=Ueq7n6SM; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1768903946; c=relaxed/simple;
+	bh=dxSOR0eN/vdhFUeOV8fumG7yv5nlIzfUzyKHu+4HI9s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=VtSMqxcEqKTb79xUduJHFFqoEfTVwrFyzv1scUu3cMTcFdwvuwsm3pf1x4AqxymbI7aUD5dginWek8kxD8BWV+KMS3qO6Bb/ATmWvBy3P8BcM++2c94z2m2taeyNPKbpKeC8HqNXCzJ2fQp03UbFGLEZAqSfZRgLtM7Lg8egkn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwQ8b5Rx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="Ueq7n6SM"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 290B141DF3;
-	Tue, 20 Jan 2026 09:56:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1768903008;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hbegtlNTbPxVcnJRIa09PMJk6eYCLCQm0+QaiVvmwvk=;
-	b=Ueq7n6SMwzYlQtIn6/RjVEK4lTjLBdfui5Xh9vyN/OdF9xE69O7KOwJherTsO6mVx5rf4t
-	LW074bWAshM3ICX9pKD/xf2wWLdpS55g7wxBtJqelzWSddROloott0dxW6NLMVhNVB5Yej
-	g1h0blvApYKjj5kSuQffr//GBvrHJU5XtNUf9BOqR3QahYivPdP8+XJeW7J1srhFn6Jfon
-	r6aZAAwgL8z0aPHtXFa9EN9a6WWKJUJv1n6atpnTIGt6dVMQuqO+rHX33cRxHRGUb4s+9U
-	VJbhBGAh0eF5LxrhvYRfoV25vu0ZL2Xj95+EVBDs4fCVt1X7dnSKtawLJLuDnw==
-Message-ID: <1766d2ae-1224-4d3e-bc9f-786702989a79@gtucker.io>
-Date: Tue, 20 Jan 2026 10:56:46 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwQ8b5Rx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82EFC16AAE;
+	Tue, 20 Jan 2026 10:12:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768903945;
+	bh=dxSOR0eN/vdhFUeOV8fumG7yv5nlIzfUzyKHu+4HI9s=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=YwQ8b5RxobMJuydC53XBdRhHGFAUumBN0nRrXwCROoSRN85KxTHEoHCSaxpjlwc03
+	 sT6QMXWmboLZwTb8Bhh8gC0fh8i/wajpyhhO8j6A9KSqm8Y6akCTpk0UIk93kPWnRs
+	 EjajSiRpgmhhqF5eDXcp1bH4WT9vw0giZGpnWAd7ofEDM+5Fyw6bCfdx9Mr3301t+t
+	 9M/zHZCyz11yN2GkTivHuU3dVKG61ZAFGMh0vrhkAoIysTTNrP4lCTXB1W6BHkJZXD
+	 7HutSVlrgR8OauVpm4ccy+mhiySbLLoRqLydhmZCG3gI/q8uzW/wfs6V9ONUAhg2pN
+	 rXG8JpCCVsLHg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] scripts: introduce containerized builds
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
- =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
- automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
- llvm@lists.linux.dev, Nicolas Schier <nsc@kernel.org>
-References: <cover.1767199119.git.gtucker@gtucker.io>
- <20260119213516.GA1051134@ax162> <20260119214931.GA1058062@ax162>
-Content-Language: en-GB
-From: Guillaume Tucker <gtucker@gtucker.io>
-Organization: gtucker.io
-In-Reply-To: <20260119214931.GA1058062@ax162>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedtudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhohgjtgfgsehtjeertddtvdejnecuhfhrohhmpefiuhhilhhlrghumhgvucfvuhgtkhgvrhcuoehgthhutghkvghrsehgthhutghkvghrrdhioheqnecuggftrfgrthhtvghrnhepfeegvdfgveethfffhedvfffgfeefveetkeegudduvdefleejgfdtveeuiedufeeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddttddumeekiedumeegrgegtdemkeeivddtmegrsggvrgemjegvsggsmegtrgekgeemudgstdgsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeegrgegtdemkeeivddtmegrsggvrgemjegvsggsmegtrgekgeemudgstdgspdhhvghloheplgfkrfggieemvddttddumeekiedumeegrgegtdemkeeivddtmegrsggvrgemjegvsggsmegtrgekgeemudgstdgsngdpmhgrihhlfhhrohhmpehgthhutghkvghrsehgthhutghkvghrrdhiohdpqhhiugepvdeltdeuudegudffhfefpdhmohguvgepshhmthhpohhuthdpnhgspghrtghpthhtohepuddvpdhrtghpthhtohepnhgrthhhrghnsehkvghrnhgvlhdrohhrghdpr
- hgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvihgughhofiesghhoohhglhgvrdgtohhmpdhrtghpthhtohepfihorhhksehonhhurhhoiihkrghnrdguvghvpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-State: clean
-X-GND-Score: -100
+Date: Tue, 20 Jan 2026 11:12:18 +0100
+Message-Id: <DFTC434Z6XRK.2RTE2DFC16TDA@kernel.org>
+Subject: Re: [PATCH v10 2/5] rust: io: separate generic I/O helpers from
+ MMIO implementation
+Cc: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <markus.probst@posteo.de>, <helgaas@kernel.org>,
+ <cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <acourbot@nvidia.com>, <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>,
+ <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260119202250.870588-1-zhiw@nvidia.com>
+ <20260119202250.870588-3-zhiw@nvidia.com> <aW83HV4lVR5MQlDd@google.com>
+In-Reply-To: <aW83HV4lVR5MQlDd@google.com>
 
-On 19/01/2026 22:49, Nathan Chancellor wrote:
-> On Mon, Jan 19, 2026 at 02:35:16PM -0700, Nathan Chancellor wrote:
->> I will apply this to kbuild-next-unstable shortly to give folks a week
->> or so to voice any objections or give critical review comments.
-> 
-> During application, checkpatch.pl pointed out that this should have a
-> MAINTAINERS entry. Would you be opposed to the following?
+On Tue Jan 20, 2026 at 9:04 AM CET, Alice Ryhl wrote:
+> On Mon, Jan 19, 2026 at 10:22:44PM +0200, Zhi Wang wrote:
+> Overall looks good to me. Some comments below:
+>
+> I still think it would make sense to have `IoCapable<T>: IoTryCapable<T>`=
+,
+> but it's not a big deal.
 
-Not at all, on the contrary I have some dedicated time and long-term
-interest to keep maintaining this.  Please feel free to add me or I
-can send an extra patch if you'd rather I did it.
+I think with this approach it's not necessary to have this requirement. In
+practice, most impls will have both, but I think it's a good thing that we =
+don't
+have to have an impl even if not used by any driver, i.e. it helps avoiding=
+ dead
+code.
 
-> CONTAINER BUILD SCRIPT
-> M:	Guillaume Tucker <gtucker@gtucker.io>
-> S:	Maintained
-> F:	Documentation/dev-tools/container.rst
-> F:	scripts/container
-> 
-> I will also add scripts/container to the kbuild entry. Now that I am
-> looking, it looks like Nicolas has been left out of this whole thread,
-> cc'ing him now (even though I assume he should have seen this through
-> linux-kbuild but just in case not, the top of the thread is
-> https://lore.kernel.org/cover.1767199119.git.gtucker@gtucker.io/).
+>> +    /// Infallible 64-bit read with compile-time bounds check.
+>> +    #[cfg(CONFIG_64BIT)]
+>> +    fn read64(&self, offset: usize) -> u64
+>> +    #[cfg(CONFIG_64BIT)]
+>> +    fn try_read64(&self, offset: usize) -> Result<u64>
+>
+> These don't really need cfg(CONFIG_64BIT). You can place that cfg on
+> impl blocks of IoCapable<u64>.
 
-OK sounds good.  And sorry, get_maintainer.pl didn't mention Nicolas.
-I should have checked the KERNEL BUILD entry by hand in the file...
-
-Cheers,
-Guillaume
-
+If you agree with the above, I can fix this up when applying the series.
