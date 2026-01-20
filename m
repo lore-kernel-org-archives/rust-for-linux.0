@@ -1,105 +1,88 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BF6421EE2
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 12:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9032A428829
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 12:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768912701; cv=none; b=XaiAzcZ+9nGngcRNjYxfAW3mKOFr1i7ZcqdmEHNVCsN705yi75azWnqegiDgPkE3naEYXA4N+l64H0SivRVX2KKc5kOq/wjhtavHQ/48zJY6f5EzLUXFoi3AuOHpaSDb/9MNMrnZKjF71ECN5gMt0hPfh1CS8YTy1mm+UlNGoT0=
+	t=1768912732; cv=none; b=rBA2QT6g4dAkNo6ZulG0qQbiuGYe8wBBfL659L06ULZSh5ju4JXGTKKwyB9C5qXjrvY8AbdNH1JwG2srXNLYCvWjKhaJpkRS/IwJV0toaNsHZqIJfWX9YJRtJr6VRgu0nqVTOGtOhHVDvqoALkbHkeThIivP3GqWtIa8X68Ypic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768912701; c=relaxed/simple;
-	bh=TXFVFSzZ/jVdUgcfun/l6Z+4x2xn58VmCP/XffLA3eo=;
+	s=arc-20240116; t=1768912732; c=relaxed/simple;
+	bh=PwApb91RxQIKd1rzfJ2xAleSXJcHnAXezOdyfHCU/8k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jBIGK31vBfJJ0hTiH8W5HXYArZMTTtboV0zy7p4CaHfhq1rlCeQaqk077LOLIsY/5adSnw2VNqlhtNFPLDio8opRJaE04V7xcHIPl9TIE8H+GL7mcWyMKxHudXWrxp4wr1tpPloDKjB6YNaMCDjR9uQvT/0010tSUoc6r2YoShM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aGoD4RTU; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=ZdJBuXBIA5Vn7zhCS8/LmTnJ0UtdZtIJ/VB13h+eXi1L24tEra4mKcoAJqDKRp5zjXD3xvcdM9/tbA6mxNn/v5rfbpgSuAVAh9FUXOmmvwXf+h2jSPmi8fprGCZLwgyPZ6FfkJL3JaJWisHEgkGseV900rV1rkmosxhV0fwOz1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2umk9AWi; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aGoD4RTU"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6580e793380so148647a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 04:38:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2umk9AWi"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430fb8d41acso3082546f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 04:38:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768912698; x=1769517498; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1768912728; x=1769517528; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kRu3uxT5l6ryH7K1x56GRVdKqVKTOQ0aBzImZoC0pQU=;
-        b=aGoD4RTU+L6HsoAjns/mR9MWP+FQL8S/Whr5WksEviwbQBAa5TkcGZZHS4NcGbkqr6
-         lQ3LAomAcLGsFfxVgjmMb/Sz+JmY1XFQIPNm2Wq9AvUTCveqyfUCBwz41l0bAOv92ekk
-         9ZRBFjC0d6Sva8hLWWgmA2FW37PMQPdebfaHSrTJ8uwqM1FMVRrGbM/2vzw+Waxxcj9s
-         sKGm0P6sSDz35WXRAhNnZtCsXdEsJuh7nnzY64UUyGludCt0ncq78kQV+2VmEzuMdVA0
-         fGLcClZqZhbo+v8YfyF/dMp08qO8dkHIxjv2yVdkTFGkCXefZyL00p627piK5mAajwFk
-         2oFQ==
+        bh=v5uBS89EprhTXTMtWy33Byzr1DNzGriqxZMXGCf0cIw=;
+        b=2umk9AWiz9orTQh9fEnzb0/lEKqJ1LAOeotkj6jpFrnlJBuYCX/3SstEFf5fY+njwX
+         iaYtfRFkhx0r/9VonYrK08tW5yfXMSDaEs/BWm7Yg5irVgrc/TzszgVQCdID/DxRu79b
+         n/swbGsrAA142gRzDZXbjPopqRC1j81ry8PRixoFL5kM+vEIPambFVj4T4wpyH9iEoAn
+         +mnh/TuW3Duo3UVER0vn4CCj8x/Qg0NoB+TtYw0ebfCiaOhsih8krX6P18R7IL0fAfnZ
+         7lMHoBION3CvFBFdMnC1biBllH0SaCi8cvn7mTqEV2Ax3s8+li0W/ioQutbY5jCT/tKR
+         ZxHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768912698; x=1769517498;
+        d=1e100.net; s=20230601; t=1768912728; x=1769517528;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kRu3uxT5l6ryH7K1x56GRVdKqVKTOQ0aBzImZoC0pQU=;
-        b=Bw3BBw5sqRQTuvr4JWPjZ9feF9jqCEirw5Jrf7vgSSiBJro06WCOfenKaGzZHwKTbL
-         gdSKx2nmLZfa0rQEuJ6WW0YvWTWlETrQZdlom4PVq4wVbChjeqF6ozBJJ1u2UCC+rfBH
-         X2pEiWI8PoFLaLfOjas+NrPLZ6P6RlDW/UBUFDcACWvRgrsJbiEyvSueCAtJ3VpFIMoj
-         x8PAz8pjSvX1qj4pJHC4N7Pu4Dg6MoYXekDJiQKHWiHQpXoyYwssGItmFt1YTYQBUeT1
-         2MgtHOvVZAqZ6ssYdMreKmzfV+exkokYEpgRR0UcQMgD7W0bgN6fX2J/rvH821LIqpgB
-         DZww==
-X-Forwarded-Encrypted: i=1; AJvYcCXJm8h84ZKBZx6i/FVRRbpLOphmWaWBksF07CSJeH/ymgGR3Pdk3ogpkWIW1/xghVLTc3WlZalXtSUDxaS9mQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YybkYTPT2adBMq7HXFZqkiM/G4vYP+3w9qwkZT6ozMEG2SAOt6K
-	CJadbuM0BOGACOMzTF46TKL+EioV3usBmorZV4KHFJOEoY7VNG2FY0MFR0sEmy+xmCPr58A7+Ah
-	sFukcCuwaYAaRJbX50Q==
-X-Received: from wmbgx18.prod.google.com ([2002:a05:600c:8592:b0:477:5a4b:d57f])
+        bh=v5uBS89EprhTXTMtWy33Byzr1DNzGriqxZMXGCf0cIw=;
+        b=FKbKE/PXv/WNTzGz1Dmyk2MctXsRUet1q5z4iHhCn5rU0CU5Eu/kQUBXNz+b2GaDD0
+         Uf+IIvt3L9/zNccJw1bORT4p1gVEU18Ul0tnW1oCqJVJGykiR2Pa3pOQkuD1R0YTBzJl
+         2EHXT7fRiK1m5xSsAvJHIDu5FeKYrY6HObiNrevAzIGUCGuRfS7JCGcMxxra7pgKOqMD
+         yEmXNC9HCO88oYvnsbSF5LMDNrIgWuX1gaaqPqt6PycHflQ/8UjAxbsgwE+h4NrtuNjJ
+         RFZz/slD4UlFhpvPXZWWwyTXW1QyEBUe0cuF3RrH2mYknPdaWquyLdeJNlUz8CgZ2Gf6
+         rxxA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSH8p27NWri6rYdwQ43pA3PBdvH9ydnHU9+D+gYqUXP35D76jJ9zEd9KCMOZ5dj56sR2QnqpKvxRIWO1fuXg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoUtvZTjXsPfeXOy35gJDH4eMJbcBhMTYaUt6tJz9DLLy7Jdi1
+	p9pdSAq4B4T3xeIXRdUsE4y+CDT8gX+tw8AX7aqtrEWEWg1lKb8JVVqzLpEWydKkLwhiaamVqqu
+	nkBk1Kg/C6lVKqCabLg==
+X-Received: from wrp4.prod.google.com ([2002:a05:6000:41e4:b0:435:948f:2ec0])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b78:b0:47e:e8c2:905f with SMTP id 5b1f17b1804b1-4801e30a790mr205228475e9.8.1768912686463;
- Tue, 20 Jan 2026 04:38:06 -0800 (PST)
-Date: Tue, 20 Jan 2026 12:38:05 +0000
-In-Reply-To: <aW9mTHedRc32izbh@google.com>
+ 2002:a05:6000:2885:b0:430:fd84:317a with SMTP id ffacd0b85a97d-4356a051d68mr21671610f8f.38.1768912728086;
+ Tue, 20 Jan 2026 04:38:48 -0800 (PST)
+Date: Tue, 20 Jan 2026 12:38:47 +0000
+In-Reply-To: <20260120115207.55318-2-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260119202250.870588-1-zhiw@nvidia.com> <20260119202250.870588-3-zhiw@nvidia.com>
- <aW83HV4lVR5MQlDd@google.com> <DFTC434Z6XRK.2RTE2DFC16TDA@kernel.org> <aW9mTHedRc32izbh@google.com>
-Message-ID: <aW93LS71i01F8FLA@google.com>
-Subject: Re: [PATCH v10 2/5] rust: io: separate generic I/O helpers from MMIO implementation
+References: <20260120115207.55318-1-boqun.feng@gmail.com> <20260120115207.55318-2-boqun.feng@gmail.com>
+Message-ID: <aW93VwfgkHpJfjVs@google.com>
+Subject: Re: [PATCH 1/2] rust: sync: atomic: Remove bound `T: Sync` for `Atomci::from_ptr()`
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, bhelgaas@google.com, 
-	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	markus.probst@posteo.de, helgaas@kernel.org, cjia@nvidia.com, 
-	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
-	kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com, 
-	joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org, 
-	daniel.almeida@collabora.com
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, kasan-dev@googlegroups.com, 
+	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Elle Rhumsaa <elle@weathered-steel.dev>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Marco Elver <elver@google.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jan 20, 2026 at 11:26:04AM +0000, Alice Ryhl wrote:
-> On Tue, Jan 20, 2026 at 11:12:18AM +0100, Danilo Krummrich wrote:
-> > On Tue Jan 20, 2026 at 9:04 AM CET, Alice Ryhl wrote:
-> > > On Mon, Jan 19, 2026 at 10:22:44PM +0200, Zhi Wang wrote:
-> > > Overall looks good to me. Some comments below:
-> > >
-> > > I still think it would make sense to have `IoCapable<T>: IoTryCapable<T>`,
-> > > but it's not a big deal.
-> > 
-> > I think with this approach it's not necessary to have this requirement. In
-> > practice, most impls will have both, but I think it's a good thing that we don't
-> > have to have an impl even if not used by any driver, i.e. it helps avoiding dead
-> > code.
-> > 
-> > >> +    /// Infallible 64-bit read with compile-time bounds check.
-> > >> +    #[cfg(CONFIG_64BIT)]
-> > >> +    fn read64(&self, offset: usize) -> u64
-> > >> +    #[cfg(CONFIG_64BIT)]
-> > >> +    fn try_read64(&self, offset: usize) -> Result<u64>
-> > >
-> > > These don't really need cfg(CONFIG_64BIT). You can place that cfg on
-> > > impl blocks of IoCapable<u64>.
-> > 
-> > If you agree with the above, I can fix this up when applying the series.
+On Tue, Jan 20, 2026 at 07:52:06PM +0800, Boqun Feng wrote:
+> Originally, `Atomic::from_ptr()` requires `T` being a `Sync` because I
+> thought having the ability to do `from_ptr()` meant multiplle
+> `&Atomic<T>`s shared by different threads, which was identical (or
+> similar) to multiple `&T`s shared by different threads. Hence `T` was
+> required to be `Sync`. However this is not true, since `&Atomic<T>` is
+> not the same at `&T`. Moreover, having this bound makes `Atomic::<*mut
+> T>::from_ptr()` impossible, which is definitely not intended. Therefore
+> remove the `T: Sync` bound.
 > 
-> Ok with me.
+> Fixes: 29c32c405e53 ("rust: sync: atomic: Add generic atomics")
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-with cfg(CONFIG_64BIT) adjusted:
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
