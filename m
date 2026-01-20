@@ -1,367 +1,252 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D69248F47
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 15:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768923286; cv=none; b=suGbCC7QG0edZFC8QcVRpKx5v//NRNpMG7e1VYMncfh9Fp3hVNXN3x8R1cVbkNPgP3+pfIGp0RkLAKXsow54oe8mOJ4MxLMj0Ag4GB9RIHRV1QPr8xnen9cH27yIEaT3O8GKMYkgoEO+DGGUgRDRUPop1RYLXseTsJBr1EAZOIs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768923286; c=relaxed/simple;
-	bh=84+3F+K+HvADNKqBYURJTnBncEm9TXlfTRYPjrRjeMs=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61E9310784
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 15:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768923610; cv=pass; b=BmifBI/YytCJiwJtTTsI1ZfEStlZHbA80zEebtwrig9gSBdyECsGkDNOn1cki7pQs1hfG1+fAvzy4+xEHm7wGrLM6SPBthRv9ypktAY+07G/1qlURFwTswcFVhTPoSTbGiT7uRhzSMxZr27Ayb+kTNYTSFnJa5PuGxQXw7rYPJA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768923610; c=relaxed/simple;
+	bh=TQGY/mnOv8xh5X3OZ4UfqmIz8FieKXUG5flmghJ6Alw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dt0ZVs76l0A+I8vDsOqIdhvv4yssOZZiWqgf2C6QBAhAK9j2AwpoMfVj/aX0Hq7GCvvNAxwq0W1PIVbDhh/NFKCnCZfPXb37/yVmPEufWGcOcuRQ1TfkiHTjv7fHrkMcdIaIzl/l/N5Noxb6pV7kTp+rcVf+dbcVyL+bcItoER4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EmTgL1oW; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=esA5m7uDRn/eYq0AaKXPNBO5hKymOZNFBOHP4IhksOMxJZlSgM20wEeqQvXQ1z2E8rLdnfiszyd8/o6NgVobhpWfJqbgD+xq2Rv9BZjqhaQAUTkV4Si4zIkvUDnsJ2+XdUs4ovzCsGf9dkOQJW0gpRGbmfmMZhfWori1jVrVuIo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kVwb1WbT; arc=pass smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EmTgL1oW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7C4C2BCB1
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 15:34:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768923286;
-	bh=84+3F+K+HvADNKqBYURJTnBncEm9TXlfTRYPjrRjeMs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EmTgL1oWEe5uR6A0U8l7wwTawrV0HWBRbzJ3Ls4VKUQ5ilWxjxsNJMX8JdXhur5sx
-	 +PFi+DP8h9RsDJa26I7XFnphgaBWIU5TP6O6A6Y+AI36ufwyLkymOA28qaAnyXZOfX
-	 ZiAssgjsq6p3DV3pQkoW/uM85dImh0ghtWGtUWceiZ9zU/uymgJ1pXPRsUqJo6UkKn
-	 QHh1Yynlf7LEUtjGetu9YnBKHWwhPtlHUItbzI0oTwu/UcADkC2bUocgEBSv9D3fC2
-	 TqOXEFmOx0faxthFisY3PtYhrOhr+piIFzFrhDBFpQyrZBeJQRt6Z3Qu3yXpbh6MB+
-	 SCxGOBLxktCDg==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3831ad8ae4eso46745761fa.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 07:34:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCULxxmR3D3sW4QFoE7gMDd1AQMzoFycVsYAbzACjOhPgEDN0canA4toXevBUfGvPYIPZdh9axN526/JrYJNUQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGbMzKEtAi9ThnYSjJXAAWFt8kPMAENz89hzGMuW+wvGiCC8ok
-	5qEo4apZqbXpodvbqkGDa4VgP0GckT/XE13peWhwSrkovbo/g0M1cK5wXJTZx6J0PJPqvZvy/Xj
-	P2uow2YGZLirhHd0x96Od0HXeHr61k44=
-X-Received: by 2002:a2e:a58a:0:b0:383:271d:5e12 with SMTP id
- 38308e7fff4ca-38386c66e27mr37770821fa.42.1768923284453; Tue, 20 Jan 2026
- 07:34:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kVwb1WbT"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37fd6e91990so54912771fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 07:40:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768923606; cv=none;
+        d=google.com; s=arc-20240605;
+        b=brQ1T0BMsYyP0bL3AFiqXAbdSNwcyK9No77TcH0MS66oNe9+AW6MrNcXW4bF6dBzmV
+         UZVPxNYSrFom+pHAVKHrkgXZnt5v2z2Jp0VPILM7ryF0eSNm0YWvQ3fxPreXesTIDv92
+         x93b9nONHncD0RxFVmv/r2Z9EGwuF7SYIgTQG3jqOzmqimsj2V1pba3s62x3iOQYALNN
+         lYLTjmM5uP3AlINfVFPBA7DYy8UH6x9jABvpwHjJ/eOoOS6tSECeiv5QL6H6H0dmF5f+
+         /0sst7MOt4WtkinKpAFV3NW6hTkvGfdzQTsXbpd2i4w3JZEy5U/2rcdce63GJVSwiN9b
+         xi7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pQ3DU/8TKNzt4I6ZjPuV9IAGlZRrIJo7C2QK9LSQsp4=;
+        fh=PeEswyam1Pm1bXt1vIx5y+qsN7p2rzzProi0/UV51aw=;
+        b=BEe/lGCbtaUyqzeMrbi1jIkkvfGoF95uF9pLT0eLaWKkwyVUPHPboSsPl4x8xNp21Q
+         39UGl9G0YdfolIVXqwjuexr5ThO9MQ/Ld4mxvS6jK4UxVRLFrXYk0loOWl55pU36X/9X
+         /tlTRaVM3SW2RcAo8KZgYO1Cf4vIbVMqvXw1Rb2IBa70rv8PSWZ9PuAcpzfw9zgDoSc5
+         x14XU4/G45OvmVYZDr2KBlDVfptHEWi+hX/94dcSrq1ildC6iJmLlz7FYb2RNCjOvBGA
+         NiZ5d/FEleAf0sChfXwiy+ELBIW7gMkfFoH4pWPgn0ilY67jpQJuOJUMM8X7+moVBU/5
+         d8gw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768923606; x=1769528406; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pQ3DU/8TKNzt4I6ZjPuV9IAGlZRrIJo7C2QK9LSQsp4=;
+        b=kVwb1WbTeCV/+k42AC96AsACh1cE6HZdztzN46rBlgM3lzTxxQjuqD0ZAoRjZLmHNm
+         LwfQIot3hNlqTCpjLwyeD9Wy1jKkcPoRZF5EVx1Yz8FNC/056i4ug8BaXyP6Ka1u7J5b
+         +RNolXEiTYwuf/SugGx7c0WIBcKYk+QJ/teuse0sAFGjpfM+U/PcpUd/7ppdissmXtzq
+         XO4dqnJnBdJr660cMWHVJE6TKdQEUlSqqHmtDHmucejY0o4ILtvvU6ycqTqNeG58mCh4
+         uAkjl8u9Rf7lcczbvSPAnkNG+9oxSZ00wTpw71wQFDBDj8YuTuaF2YokP+0TbA0rlM6k
+         7BzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768923606; x=1769528406;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pQ3DU/8TKNzt4I6ZjPuV9IAGlZRrIJo7C2QK9LSQsp4=;
+        b=WzRpePD0xO5pa1gbMXhH5/sJgJYJhw0Mt7uprD4KkM8bTFPH6mwUth1R2YpOzFuIjK
+         TfqKNcIiiq5VIHuISLkowdJmS6bXu4Zekbvg3BVfjVa56RMob++TSYzWeUNN2EjRXEn/
+         VeLK9+UNE7kZBK/nIL1d0HMfTuYgtJ1Ev9uVx4fNHW3jtLwsyb7/Z5oE6WgpPTOSpP3s
+         k1tY3meU0G7QwCUE8MxxrOZnHPZldnlfJ4cY9kNmUmK6ED4Cwx/r2qE3wiPLZ90uyGzu
+         Q1/t2G3sBEwUwzfUU/pUgvjR/mOLFucywTE/8yHl6341fcrzL5jxTo9CxLLIXIb3CaOs
+         QHJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXP4apXXe7Qd1u4lli8cGB6sjy0x42Yh9dPLAE0d3mptWU05Zg0QDTCqQz2LdVEJ0Wcb3aPMlQUVaS3DWzCMA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJApZIjZD4jVuEjTXKtcWxMc97uKta5oGbmOROKZ5F7eerWLkU
+	q27h8aV/jgPdWAWJqGlblpRSQQQLmBMY+6JIHWyWSe1tS+InZdk17u78rpd/56/x/BRjYS+QGZX
+	sTme2hK8qqYgwWx225KcCYBKIqhUXXH4=
+X-Gm-Gg: AZuq6aK3heE78eMxFy68RzeesxMNmyvnFALNZU+ZvC5Vu0wTy31hROpoxQKw62jHFnB
+	MgEaBEwCMi2ak9KYk5Acr80utvu3xMz/YAuYZl5XGgQUR7FSoqFHYo+a4quSjsS0bH76AoRr4Di
+	wzxYI2pjrlcN/o99IIx6VlKTmHHrFOoSv5WS223Trve4D/2FUKbi61eVh1ndUf3B3korx0FBJl/
+	/7EQQJPSfhJdfGw0zvtZlSVXe1/o1nKOf0PS/DVCzmukwfM1FdTnig7r323tIs7BxTF+Dbja7qY
+	VMGVxQKsV/o11NMuigbpJPPd3cGXtHwSkcKGPVGXw7ZilwtQEp9Xzr+a0akuZfzrBYysyDgrTfI
+	WEDLc4w==
+X-Received: by 2002:a05:651c:1986:b0:383:5c1b:4973 with SMTP id
+ 38308e7fff4ca-383866b0f16mr45420221fa.2.1768923605440; Tue, 20 Jan 2026
+ 07:40:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260120-ra-fix-v1-0-829e4e92818c@nvidia.com> <20260120-ra-fix-v1-6-829e4e92818c@nvidia.com>
-In-Reply-To: <20260120-ra-fix-v1-6-829e4e92818c@nvidia.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Tue, 20 Jan 2026 10:34:08 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9k_c3hq9ov8nqXLakkC6=Ly1+Fr3kbQ8BUbAQrRcHZhqw@mail.gmail.com>
-X-Gm-Features: AZwV_Qi5w0O3GEoHte64Slgta-GNpcPuTJFmH0M9g9dgdp_GnMbzx_0_pM4c3jw
-Message-ID: <CAJ-ks9k_c3hq9ov8nqXLakkC6=Ly1+Fr3kbQ8BUbAQrRcHZhqw@mail.gmail.com>
-Subject: Re: [PATCH 6/6] scripts: generate_rust_analyzer: move sysroot crates
- to sysroot_project
-To: Eliot Courtney <ecourtney@nvidia.com>, Jesung Yang <y.j3ms.n@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20260119033006.1453006-1-sunke@kylinos.cn> <20260119033006.1453006-4-sunke@kylinos.cn>
+ <CAJ-ks9m9HV72MSchSS16FUzKLu9c6Ka2N4zZbg29VjNf8RCLOw@mail.gmail.com> <867a8e83-421f-404f-b0b2-7995006919d3@gmail.com>
+In-Reply-To: <867a8e83-421f-404f-b0b2-7995006919d3@gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Tue, 20 Jan 2026 10:39:29 -0500
+X-Gm-Features: AZwV_QjhoNlAfKTzSaYoA-MNlBkRyuyW3lumFZO3l5L6ZuqGSvu6w-NlyHeRYUc
+Message-ID: <CAJ-ks9mmuSu5x5bUmkFidwhNFr2dTFzA0GvqfR=RDxaPFRLF4Q@mail.gmail.com>
+Subject: Re: [PATCH v9 3/4] rust: fmt: make raw pointers default to HashedPtr
+To: Ke Sun <sk.alvin.x@gmail.com>
+Cc: Ke Sun <sunke@kylinos.cn>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 20, 2026 at 3:55=E2=80=AFAM Eliot Courtney <ecourtney@nvidia.co=
-m> wrote:
+On Tue, Jan 20, 2026 at 2:30=E2=80=AFAM Ke Sun <sk.alvin.x@gmail.com> wrote=
+:
 >
-> Use rust-analyzer's sysroot_project feature to properly configure
-> sysroot crates (core, alloc, std, proc_macro). This allows
-> rust-analyzer to correctly resolve items from the sysroot and
-> automatically add sysroot crate dependencies to all project crates.
 >
-> Some sysroot crates use #[path] directives to load files outside of
-> their directory but still in the sysroot. This is disallowed by
-> rust-analyzer, so the sysroot crate are not properly loaded. Loading them
-> using sysroot_project tells rust-analyzer to let them load anything insid=
-e
-> sysroot_src.
+> On 1/19/26 21:17, Tamir Duberstein wrote:
+> > On Sun, Jan 18, 2026 at 10:30=E2=80=AFPM Ke Sun <sunke@kylinos.cn> wrot=
+e:
+> >> Implement Pointer trait for raw pointer adapters, making raw pointers
+> >> default to HashedPtr when formatted. This provides safe pointer
+> >> formatting by default and prevents information leakage about kernel
+> >> memory layout.
+> >>
+> >> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+> >> ---
+> >>   rust/kernel/fmt.rs | 41 +++++++++++++++++++++++++++++++++++++++++
+> >>   1 file changed, 41 insertions(+)
+> >>
+> >> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
+> >> index b3501a11c7a3c..6052d9f8628bb 100644
+> >> --- a/rust/kernel/fmt.rs
+> >> +++ b/rust/kernel/fmt.rs
+> >> @@ -192,3 +192,44 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> >>   impl_pointer_forward!(
+> >>       {<T>} HashedPtr<T>,
+> >>   );
+> >> +
+> >> +// Special handling for Pointer: default to HashedPtr for raw pointer=
+s.
+> >> +// This overrides the default Pointer implementation for raw pointers=
+ to
+> >> +// use hashing, which is the safe default behavior for kernel pointer=
+s.
+> >> +impl<T> Pointer for Adapter<*const T> {
+> >> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> >> +        let Self(ptr) =3D self;
+> >> +        Pointer::fmt(&HashedPtr(*ptr), f)
+> >> +    }
+> >> +}
+> >> +
+> >> +impl<T> Pointer for Adapter<*mut T> {
+> >> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> >> +        let Self(ptr) =3D self;
+> >> +        Pointer::fmt(&HashedPtr(*ptr), f)
+> >> +    }
+> >> +}
+> >> +
+> >> +// Handle references to raw pointers (needed when pointers are passed=
+ by
+> >> +// reference in macros).
+> >> +impl<T> Pointer for Adapter<&*const T> {
+> >> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> >> +        let Self(ptr) =3D self;
+> >> +        Pointer::fmt(&HashedPtr(**ptr), f)
+> >> +    }
+> >> +}
+> >> +
+> >> +impl<T> Pointer for Adapter<&*mut T> {
+> >> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> >> +        let Self(ptr) =3D self;
+> >> +        Pointer::fmt(&HashedPtr(**ptr), f)
+> >> +    }
+> >> +}
+> > The equivalent code for Display handles references with a blanket
+> > impl. Is there a reason that doesn't work here?
+> >
+> >> +
+> >> +// Bridge implementations for raw pointer adapters.
+> >> +impl_pointer_forward!(
+> >> +    {<T>} Adapter<*const T>,
+> >> +    {<T>} Adapter<*mut T>,
+> >> +    {<T>} Adapter<&*const T>,
+> >> +    {<T>} Adapter<&*mut T>,
+> >> +);
+> > Can you help me understand why this isn't a blanket impl like we have
+> > for Display?
+> Hi Tamir,
 >
-> The sysroot_project field was added to rust-analyzer in v0.3.2328
-> (~1.87.0) and is silently ignored by older versions. In that case,
-> rust-analyzer falls back to loading the sysroot via sysroot_src.
-> This basically works, but the advantage of using sysroot_project is
-> that we can make the set of features/cfgs more similar to what the
-> actual build uses.
-
-This is a very nice patch, and perhaps obviates the need for the
-versioning infrastructure in
-https://lore.kernel.org/all/20260109-ra-fix-primitive-v2-0-249852a4145a@gma=
-il.com/.
-
-As with the other commits in this series, we need citations of the
-claims that these newer fields are properly ignored by older versions
-of RA.
-
+> The previous implementation was indeed a bit messy.
 >
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
->  scripts/generate_rust_analyzer.py | 118 ++++++++++++++++++++++----------=
-------
->  1 file changed, 70 insertions(+), 48 deletions(-)
+> I've reorganized it. Please review:
 >
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
-alyzer.py
-> index ba2f6b0fb99b..f8666050a997 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -27,25 +27,14 @@ def args_crates_cfgs(cfgs):
+> 1. First, add the Pointer trait:
 >
->      return crates_cfgs
+> pub trait Pointer {
+>      /// Same as [`core::fmt::Pointer::fmt`].
+>      fn fmt(&self, f: &mut Formatter<'_>) -> Result;
+> }
 >
-> -def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, e=
-ditions, crate_attrs, common_crate_attrs):
-> -    # Generate the configuration list.
-> -    generated_cfg =3D []
-> -    with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-> -        for line in fd:
-> -            line =3D line.replace("--cfg=3D", "")
-> -            line =3D line.replace("\n", "")
-> -            generated_cfg.append(line)
-> -
-> -    # Now fill the crates list -- dependencies need to come first.
-> -    #
-> -    # Avoid O(n^2) iterations by keeping a map of indexes.
-> +def generate_sysroot_crates(cfgs, editions, crate_attrs):
->      crates =3D []
->      crates_indexes =3D {}
->      crates_cfgs =3D args_crates_cfgs(cfgs)
->      crates_editions =3D args_single(editions)
->      crates_crate_attrs =3D args_crates_cfgs(crate_attrs)
->
-> -    def append_crate(display_name, root_module, deps, cfg=3D[], is_works=
-pace_member=3DTrue, is_proc_macro=3DFalse, is_proc_macro_library=3DFalse):
-> +    def append_sysroot_crate(display_name, deps):
->          # Miguel Ojeda writes:
->          #
->          # > ... in principle even the sysroot crates may have different
-> @@ -72,6 +61,52 @@ def generate_crates(srctree, objtree, sysroot_src, ext=
-ernal_src, cfgs, editions,
->          # assumption if future edition moves span multiple rust versions=
-.
->          edition =3D crates_editions.get(display_name, "2021")
->
-> +        cfg =3D crates_cfgs.get(display_name, [])
-> +        crates_indexes[display_name] =3D len(crates)
-> +        crates.append({
-> +            "display_name": display_name,
-> +            # Paths in sysroot_project are relative to sysroot_src.
-> +            "root_module": f"{display_name}/src/lib.rs",
-> +            "is_workspace_member": False,
-> +            "is_proc_macro": False,
-> +            "deps": [{"crate": crates_indexes[dep], "name": dep} for dep=
- in deps],
-> +            "cfg": cfg,
-> +            "edition": edition,
-> +            # Crate attributes were introduced in 1.94.0 but older versi=
-ons will silently ignore this.
-> +            "crate_attrs": crates_crate_attrs.get(display_name, []),
-> +            "env": {
-> +                "RUST_MODFILE": "This is only for rust-analyzer"
-> +            }
-> +        })
-> +
-> +    append_sysroot_crate("core", [])
-> +    append_sysroot_crate("alloc", ["core"])
-> +    append_sysroot_crate("std", ["alloc", "core"])
-> +    append_sysroot_crate("proc_macro", ["core", "std"])
-> +
-> +    return crates
-> +
-> +def generate_crates(srctree, objtree, external_src, cfgs, editions, crat=
-e_attrs, common_crate_attrs):
-> +    # Generate the configuration list.
-> +    generated_cfg =3D []
-> +    with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-> +        for line in fd:
-> +            line =3D line.replace("--cfg=3D", "")
-> +            line =3D line.replace("\n", "")
-> +            generated_cfg.append(line)
-> +
-> +    # Now fill the crates list -- dependencies need to come first.
-> +    #
-> +    # Avoid O(n^2) iterations by keeping a map of indexes.
-> +    crates =3D []
-> +    crates_indexes =3D {}
-> +    crates_cfgs =3D args_crates_cfgs(cfgs)
-> +    crates_editions =3D args_single(editions)
-> +    crates_crate_attrs =3D args_crates_cfgs(crate_attrs)
-> +
-> +    def append_crate(display_name, root_module, deps, cfg=3D[], is_proc_=
-macro=3DFalse, is_proc_macro_library=3DFalse):
-> +        edition =3D crates_editions.get(display_name, "2021")
-> +
->          crate_attrs =3D crates_crate_attrs.get(display_name, [])
->          # Apply common crate attrs to non-host crates.
->          if not is_proc_macro_library and not is_proc_macro:
-> @@ -80,7 +115,7 @@ def generate_crates(srctree, objtree, sysroot_src, ext=
-ernal_src, cfgs, editions,
->          crate =3D {
->              "display_name": display_name,
->              "root_module": str(root_module),
-> -            "is_workspace_member": is_workspace_member,
-> +            "is_workspace_member": True,
->              "is_proc_macro": is_proc_macro,
->              "deps": [{"crate": crates_indexes[dep], "name": dep} for dep=
- in deps],
->              "cfg": cfg,
-> @@ -100,37 +135,20 @@ def generate_crates(srctree, objtree, sysroot_src, =
-external_src, cfgs, editions,
->          crates_indexes[display_name] =3D len(crates)
->          crates.append(crate)
->
-> -    def append_sysroot_crate(
-> -        display_name,
-> -        deps,
-> -        cfg=3D[],
-> -    ):
-> -        append_crate(
-> -            display_name,
-> -            sysroot_src / display_name / "src" / "lib.rs",
-> -            deps,
-> -            cfg,
-> -            is_workspace_member=3DFalse,
-> -        )
-> -
-> -    # NB: sysroot crates reexport items from one another so setting up o=
-ur transitive dependencies
-> -    # here is important for ensuring that rust-analyzer can resolve symb=
-ols. The sources of truth
-> -    # for this dependency graph are `(sysroot_src / crate / "Cargo.toml"=
- for crate in crates)`.
-> -    append_sysroot_crate("core", [], cfg=3Dcrates_cfgs.get("core", []))
-> -    append_sysroot_crate("alloc", ["core"])
-> -    append_sysroot_crate("std", ["alloc", "core"])
-> -    append_sysroot_crate("proc_macro", ["core", "std"])
-> +    # Sysroot crates (core, alloc, std, proc_macro) are in sysroot_proje=
-ct,
-> +    # and their deps are automatically added to all crates by rust-analy=
-zer.
-> +    # We only need to define deps between our own crates here.
->
->      append_crate(
->          "compiler_builtins",
->          srctree / "rust" / "compiler_builtins.rs",
-> -        ["core"],
-> +        [],
->      )
->
->      append_crate(
->          "proc_macro2",
->          srctree / "rust" / "proc-macro2" / "lib.rs",
-> -        ["core", "alloc", "std", "proc_macro"],
-> +        [],
->          cfg=3Dcrates_cfgs["proc_macro2"],
->          is_proc_macro_library=3DTrue,
->      )
-> @@ -138,7 +156,7 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
-ternal_src, cfgs, editions,
->      append_crate(
->          "quote",
->          srctree / "rust" / "quote" / "lib.rs",
-> -        ["core", "alloc", "std", "proc_macro", "proc_macro2"],
-> +        ["proc_macro2"],
->          cfg=3Dcrates_cfgs["quote"],
->          is_proc_macro_library=3DTrue,
->      )
-> @@ -146,7 +164,7 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
-ternal_src, cfgs, editions,
->      append_crate(
->          "syn",
->          srctree / "rust" / "syn" / "lib.rs",
-> -        ["std", "proc_macro", "proc_macro2", "quote"],
-> +        ["proc_macro2", "quote"],
->          cfg=3Dcrates_cfgs["syn"],
->          is_proc_macro_library=3DTrue,
->      )
-> @@ -154,20 +172,20 @@ def generate_crates(srctree, objtree, sysroot_src, =
-external_src, cfgs, editions,
->      append_crate(
->          "macros",
->          srctree / "rust" / "macros" / "lib.rs",
-> -        ["std", "proc_macro", "proc_macro2", "quote", "syn"],
-> +        ["proc_macro2", "quote", "syn"],
->          is_proc_macro=3DTrue,
->      )
->
->      append_crate(
->          "build_error",
->          srctree / "rust" / "build_error.rs",
-> -        ["core", "compiler_builtins"],
-> +        ["compiler_builtins"],
->      )
->
->      append_crate(
->          "pin_init_internal",
->          srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
-> -        ["std", "proc_macro"],
-> +        [],
->          cfg=3D["kernel"],
->          is_proc_macro=3DTrue,
->      )
-> @@ -175,14 +193,14 @@ def generate_crates(srctree, objtree, sysroot_src, =
-external_src, cfgs, editions,
->      append_crate(
->          "pin_init",
->          srctree / "rust" / "pin-init" / "src" / "lib.rs",
-> -        ["core", "compiler_builtins", "pin_init_internal", "macros"],
-> +        ["pin_init_internal", "macros"],
->          cfg=3D["kernel"],
->      )
->
->      append_crate(
->          "ffi",
->          srctree / "rust" / "ffi.rs",
-> -        ["core", "compiler_builtins"],
-> +        ["compiler_builtins"],
->      )
->
->      def append_crate_with_generated(
-> @@ -204,9 +222,9 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
-ternal_src, cfgs, editions,
->              "exclude_dirs": [],
->          }
->
-> -    append_crate_with_generated("bindings", ["core", "ffi", "pin_init"])
-> -    append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
-> -    append_crate_with_generated("kernel", ["core", "macros", "build_erro=
-r", "pin_init", "ffi", "bindings", "uapi"])
-> +    append_crate_with_generated("bindings", ["ffi", "pin_init"])
-> +    append_crate_with_generated("uapi", ["ffi", "pin_init"])
-> +    append_crate_with_generated("kernel", ["macros", "build_error", "pin=
-_init", "ffi", "bindings", "uapi"])
->
->      def is_root_crate(build_file, target):
->          try:
-> @@ -234,7 +252,7 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
-ternal_src, cfgs, editions,
->              append_crate(
->                  name,
->                  path,
-> -                ["core", "kernel", "pin_init"],
-> +                ["kernel", "pin_init"],
->                  cfg=3Dgenerated_cfg,
->              )
->
-> @@ -261,7 +279,11 @@ def main():
->
->      common_crate_attrs =3D args.common_crate_attrs.split() if args.commo=
-n_crate_attrs else []
->      rust_project =3D {
-> -        "crates": generate_crates(args.srctree, args.objtree, args.sysro=
-ot_src, args.exttree, args.cfgs, args.editions, args.crate_attrs, common_cr=
-ate_attrs),
-> +        "sysroot_src": str(args.sysroot_src),
-> +        "sysroot_project": {
-> +            "crates": generate_sysroot_crates(args.cfgs, args.editions, =
-args.crate_attrs),
-> +        },
-> +        "crates": generate_crates(args.srctree, args.objtree, args.exttr=
-ee, args.cfgs, args.editions, args.crate_attrs, common_crate_attrs),
->          "sysroot": str(args.sysroot),
+> impl<T: ?Sized + Pointer> Pointer for &T {
+>      fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>          Pointer::fmt(*self, f)
 >      }
+> }
 >
+> impl<T: ?Sized + Pointer> core::fmt::Pointer for Adapter<&T> {
+>      fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>          let Self(t) =3D self;
+>          Pointer::fmt(t, f)
+>      }
+> }
 >
-> --
-> 2.52.0
+> macro_rules! impl_pointer_forward {
+>      ($($ptr_ty:ty),* $(,)?) =3D> {
+>          $(
+>              impl<T> Pointer for $ptr_ty {
+>                  fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>                      core::fmt::Pointer::fmt(self, f)
+>                  }
+>              }
+>          )*
+>      };
+> }
 >
+> impl_pointer_forward!(*const T, *mut T);
 >
+> 2. Then add HashedPtr and RawPtr types.
+>
+> <snip>
+>
+> 3. Finally, modify the impl_pointer_forward macro to make
+>       pointers default to HashedPtr:
+>
+> macro_rules! impl_pointer_forward {
+>      ($($ptr_ty:ty),* $(,)?) =3D> {
+>          $(
+>              impl<T> Pointer for $ptr_ty {
+>                  fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>                      Pointer::fmt(&HashedPtr(*self), f)
+>                  }
+>              }
+>          )*
+>      };
+> }
+>
+> Does this approach look better?
+
+The name impl_pointer_forward does not seem appropriate for the final
+implementation, and the two-step process also seems unnecessary.
+Consider just doing everything in one patch (RawPtr can be a second
+patch, if you really want). Other than that it looks OK.
+
+Some basic tests would be good.
+
+>
+> Thanks,
+> Ke Sun
+> >
+> >> --
+> >> 2.43.0
+> >>
