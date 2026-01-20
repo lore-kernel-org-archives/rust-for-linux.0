@@ -1,293 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2C143C044;
-	Tue, 20 Jan 2026 13:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C6142EEA8;
+	Tue, 20 Jan 2026 13:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768916297; cv=none; b=ZYebSy9nkjZA3yw/RmMxEU2Ut2lHDImizc4IN2t4j106pw8LTFysJpt8JAo8B4ui1FBSQr71dhzcfjWV1HkQvauFiPR0WpEwzEBfEdz+UMguOgy2HQDtQSdlIXBhkXS5DMjn69sfBcQmjNYQ9vRMahecjhw8VsP6/zVTUscCLsA=
+	t=1768916307; cv=none; b=tMx81D5pG7M++zM8rF9Uf4E20P4De2kHFUxOsSZbB2NuGnlNI/21xaRrFqlb3Jee8bBSZ1hrzrUay+/ElZSpfRbYpYcfzGsKXcuo2rdgudWOYeE0twLoCSgiJCD//xDBs82GGIJX7ktej7t8yPvsXaVCc5j01WP70XFCcZAVaYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768916297; c=relaxed/simple;
-	bh=pSSrWCIklsSRcJaHDIaB8EgbSGX9daEF0899fXydSvM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ngz5v7O6N79vdFYigjQFFAb8va7lejrrj4pUAcXMw7QolTW+/F5t0QeVlxnmfRtyRoYDE0VE/lKfyNsJHHr6uSPPyF4tvyz58uonzKCw8Hx48FFzpVUy02U3f6TnKaT5JbM1BuQF1SRxOQXoE1yc+XXpJNokOr6XXYAlcuqdCF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ABDN1XJj; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768916307; c=relaxed/simple;
+	bh=HCLkGMFuJeXizWowUS4mHobPnpLqaAmfdib8PKqUB5I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=QWsC5E9Bsj0pxuRfufI6ktm2Zvlw4534F68LlgtETT7tc40QKS+nec2b/pl1g1Q0carXoKM18LeuHAOT7lGnKajhGo6eq/ZvVPd/Cvcc0jq8y11Qa8Hrn7OoXaV5OVjnpoImbz5NssVq6TldGfOWAGZVqhvkwVXGUbmvZw2E4v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FuZcPMhg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ABDN1XJj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768916296; x=1800452296;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pSSrWCIklsSRcJaHDIaB8EgbSGX9daEF0899fXydSvM=;
-  b=ABDN1XJjlQEpKgnPg0rA1uzPvy53EGqUwWsxk6ojTyW/6/RlD+pl+Kul
-   R2MipMtNNldi5jkIXhQ/Wxk3vrgHn2wI9RImy8TikiI42G/2VdhdwCBCM
-   xNExqj86gh5zzTOU9VbpTXxgS9qEwMk1IBo1woTYBbcbIP5+Ibhp7FKHy
-   dU2T3EKmYS/ph1CF7MdeD9ZOx8m/ywya4ninM4Q+upVpeVnCHPJ3zoz2w
-   nzgQ3KnfgutZEBlX/2RnkV/aCRCGDuGNy6XBX+7lJf81K+PKOsB+G+PC1
-   s+fBqMXN4NYlcMZubKXq1ZGpbrtRX/C+QMpwEPSJs1xunBYfSpQZT4sDk
-   w==;
-X-CSE-ConnectionGUID: L2OLoiTSR8yIAY3uJQHqLw==
-X-CSE-MsgGUID: d7DAMNcLQnyJHj6gF3TX9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="69136154"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="69136154"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:38:15 -0800
-X-CSE-ConnectionGUID: 73lzpn1ESiSqsFV6nhzIQA==
-X-CSE-MsgGUID: D/b+QLerQ+mFDkHAwRjTBg==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 20 Jan 2026 05:38:08 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1viBvq-00000000P1t-2mNw;
-	Tue, 20 Jan 2026 13:38:06 +0000
-Date: Tue, 20 Jan 2026 21:37:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, dakr@kernel.org,
-	aliceryhl@google.com, bhelgaas@google.com, kwilczynski@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, tmgross@umich.edu, markus.probst@posteo.de,
-	helgaas@kernel.org, cjia@nvidia.com, smitra@nvidia.com,
-	ankita@nvidia.com, aniketa@nvidia.com, kwankhede@nvidia.com,
-	targupta@nvidia.com, acourbot@nvidia.com, joelagnelf@nvidia.com,
-	jhubbard@nvidia.com, zhiwang@kernel.org,
-	daniel.almeida@collabora.com, Zhi Wang <zhiw@nvidia.com>
-Subject: Re: [PATCH v10 2/5] rust: io: separate generic I/O helpers from MMIO
- implementation
-Message-ID: <202601202126.NVP5cs8k-lkp@intel.com>
-References: <20260119202250.870588-3-zhiw@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FuZcPMhg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68FEC19422;
+	Tue, 20 Jan 2026 13:38:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768916306;
+	bh=HCLkGMFuJeXizWowUS4mHobPnpLqaAmfdib8PKqUB5I=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=FuZcPMhgeXFEdMIjFHkNjDSyP3thl2LhpyuSzWMwaqopMN6xEK/3c/ijQrF2B7LMG
+	 tgue+e35Np52MzPWABBJY0tTNUp4Xi7eJKMIirPfeejlyGEd1XrcKHwioKyMLHOyP2
+	 hR41mbh2a1rIwZJQaP2v717nZvqQnjzdLMd4P3Lnm8MxEoxa3QuoFkQXYl+BsgFhKD
+	 pxwdkVsJLiNmaE8CEtxo0r1JwZtMckKIVy/FQ1ZBYMkjhSIyB7RNJAESeKFW2aYGrd
+	 MEmI52zDgoahbPAuM/QXrLpwcdszRr35Ozr9X/Srrxa7sGULlANo2URwN2m87Fazr1
+	 IWC6IRwztDRHg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260119202250.870588-3-zhiw@nvidia.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Jan 2026 14:38:20 +0100
+Message-Id: <DFTGHU40Q7GS.2YXW1OUFRM2ML@kernel.org>
+Subject: Re: [PATCH 0/6] rust: add `bitfield!` and `register!` macros
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260120-register-v1-0-723a1743b557@nvidia.com>
+ <CANiq72n9tSMFW1KHsLBLM-q47+4f7yM70CVFNVeg_3Q8i3RTvw@mail.gmail.com>
+In-Reply-To: <CANiq72n9tSMFW1KHsLBLM-q47+4f7yM70CVFNVeg_3Q8i3RTvw@mail.gmail.com>
 
-Hi Zhi,
+On Tue Jan 20, 2026 at 2:14 PM CET, Miguel Ojeda wrote:
+> On Tue, Jan 20, 2026 at 7:23=E2=80=AFAM Alexandre Courbot <acourbot@nvidi=
+a.com> wrote:
+>>
+>>       rust: num: add `shr` and `shl` methods to `Bounded`
+>>       rust: num: add `as_bool` method to `Bounded<_, 1>`
+>
+> I could apply these two this cycle if that would help, since they are
+> straightforward and you say in the cover letter that you also use it
+> in Nova code -- does that mean outside the macro? (I don't see it in
+> linux-next, but perhaps I am blind...)
 
-kernel test robot noticed the following build errors:
+I discussed with Alex and Alice that it would be good to land the register!=
+()
+macro this cycle (having some local to register.rs bitfield support), so dr=
+ivers
+can start using it next cycle.
 
-[auto build test ERROR on driver-core/driver-core-testing]
-[also build test ERROR on driver-core/driver-core-next]
-[cannot apply to driver-core/driver-core-linus pci/next pci/for-linus drm-rust/drm-rust-next linus/master v6.19-rc6 next-20260119]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Subsequently, we can follow up on the discussions for global bitfield suppo=
+rt.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zhi-Wang/rust-devres-style-for-imports/20260120-042526
-base:   driver-core/driver-core-testing
-patch link:    https://lore.kernel.org/r/20260119202250.870588-3-zhiw%40nvidia.com
-patch subject: [PATCH v10 2/5] rust: io: separate generic I/O helpers from MMIO implementation
-config: x86_64-buildonly-randconfig-004-20260120 (https://download.01.org/0day-ci/archive/20260120/202601202126.NVP5cs8k-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601202126.NVP5cs8k-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601202126.NVP5cs8k-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0599]: no method named `try_read32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:241:26
-   |
-   241 |         let ctrl = iomap.try_read32(th1520_pwm_ctrl(hwpwm))?;
-   |                          ^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_read32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_read` with a similar name
-   |
-   241 -         let ctrl = iomap.try_read32(th1520_pwm_ctrl(hwpwm))?;
-   241 +         let ctrl = iomap.try_read(th1520_pwm_ctrl(hwpwm))?;
-   |
---
->> error[E0599]: no method named `try_read32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:242:35
-   |
-   242 |         let period_cycles = iomap.try_read32(th1520_pwm_per(hwpwm))?;
-   |                                   ^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_read32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_read` with a similar name
-   |
-   242 -         let period_cycles = iomap.try_read32(th1520_pwm_per(hwpwm))?;
-   242 +         let period_cycles = iomap.try_read(th1520_pwm_per(hwpwm))?;
-   |
---
->> error[E0599]: no method named `try_write32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:294:15
-   |
-   294 |         iomap.try_write32(
-   |         ------^^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_write32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_write` with a similar name
-   |
-   294 -         iomap.try_write32(
-   294 +         iomap.try_write(
-   |
---
->> error[E0599]: no method named `try_write32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:302:19
-   |
-   302 |             iomap.try_write32(wfhw.ctrl_val | TH1520_PWM_START, th1520_pwm_ctrl(hwpwm))?;
-   |                   ^^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_write32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_write` with a similar name
-   |
-   302 -             iomap.try_write32(wfhw.ctrl_val | TH1520_PWM_START, th1520_pwm_ctrl(hwpwm))?;
-   302 +             iomap.try_write(wfhw.ctrl_val | TH1520_PWM_START, th1520_pwm_ctrl(hwpwm))?;
-   |
---
->> error[E0599]: no method named `try_read32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:243:33
-   |
-   243 |         let duty_cycles = iomap.try_read32(th1520_pwm_fp(hwpwm))?;
-   |                                 ^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_read32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_read` with a similar name
-   |
-   243 -         let duty_cycles = iomap.try_read32(th1520_pwm_fp(hwpwm))?;
-   243 +         let duty_cycles = iomap.try_read(th1520_pwm_fp(hwpwm))?;
-   |
---
->> error[E0599]: no method named `try_read32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:275:33
-   |
-   275 |         let duty_cycles = iomap.try_read32(th1520_pwm_fp(hwpwm))?;
-   |                                 ^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_read32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_read` with a similar name
-   |
-   275 -         let duty_cycles = iomap.try_read32(th1520_pwm_fp(hwpwm))?;
-   275 +         let duty_cycles = iomap.try_read(th1520_pwm_fp(hwpwm))?;
-   |
---
->> error[E0599]: no method named `try_write32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:281:23
-   |
-   281 |                 iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
-   |                       ^^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_write32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_write` with a similar name
-   |
-   281 -                 iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
-   281 +                 iomap.try_write(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
-   |
---
->> error[E0599]: no method named `try_write32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:282:23
-   |
-   282 |                 iomap.try_write32(0, th1520_pwm_fp(hwpwm))?;
-   |                       ^^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_write32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_write` with a similar name
-   |
-   282 -                 iomap.try_write32(0, th1520_pwm_fp(hwpwm))?;
-   282 +                 iomap.try_write(0, th1520_pwm_fp(hwpwm))?;
-   |
---
->> error[E0599]: no method named `try_write32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:283:23
-   |
-   283 |                 iomap.try_write32(
-   |                 ------^^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_write32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_write` with a similar name
-   |
-   283 -                 iomap.try_write32(
-   283 +                 iomap.try_write(
-   |
---
->> error[E0599]: no method named `try_write32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:291:15
-   |
-   291 |         iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
-   |               ^^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_write32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_write` with a similar name
-   |
-   291 -         iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
-   291 +         iomap.try_write(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
-   |
---
->> error[E0599]: no method named `try_write32` found for reference `&Mmio<176>` in the current scope
-   --> drivers/pwm/pwm_th1520.rs:292:15
-   |
-   292 |         iomap.try_write32(wfhw.period_cycles, th1520_pwm_per(hwpwm))?;
-   |               ^^^^^^^^^^^
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Io` which provides `try_write32` is implemented but not in scope; perhaps you want to import it
-   |
-   23  + use kernel::io::Io;
-   |
-   help: there is a method `try_write` with a similar name
-   |
-   292 -         iomap.try_write32(wfhw.period_cycles, th1520_pwm_per(hwpwm))?;
-   292 +         iomap.try_write(wfhw.period_cycles, th1520_pwm_per(hwpwm))?;
-   |
-..
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+For this purpose, it would be nice if I could pick up those two prerequisit=
+es as
+part of this.
