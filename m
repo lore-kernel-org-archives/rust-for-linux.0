@@ -1,190 +1,265 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022100.outbound.protection.outlook.com [52.101.101.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF043921EF;
-	Tue, 20 Jan 2026 21:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.100
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768943786; cv=fail; b=VVhbikVWr9k9fyp7QpPut2bjQnMqtV6Axp+Ev/aFd3esCVJikdW4kjZCPewQblATVrsrSnthE4oquReAz0lksnje+kVBPIMNZ6uOtP9Ulk78W8OVIlJQZoApxNmF0BQxeQhzBoDlUXkueP1qjnPozWK0RXs2q5yxx12rDo1fkFE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768943786; c=relaxed/simple;
-	bh=OeGseoAs27e+rVbdzDtxTga0eCPuNtt4m4/hnzSAdG4=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=BkysZmtTAhV/nInCqRRwSwLluIf6A94Ta3jjNOL0yjOTawG425v7dAyz/eyoCpq7WoNIGsfAHII85ackWFBOzIgYQ1ZNJV7O0VD3KLVYXkxXuFd34FE7pGAiUZuN//73ju+dAm7ACUAMBUTqtp3oFeAd6jenj8sdYOFYevNMeBk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=g1B7c7k/; arc=fail smtp.client-ip=52.101.101.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E20F427A16
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 22:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768948270; cv=none; b=KcO49RAwO5yeFEx+uBHgSL81eZrAhx42YsO03YtzSw0v+FDnUiRJqS7+U/fkmo5v0WcC4p6EL2oSlMM+d59R3+OlQvGqAk6ISqSsjxTKBcDo9geosgsH4uNS0z3DAlJBnrfZxKKX4S47WMPIipRVvcPsgnPTYVSiFLBbuGtRG5o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768948270; c=relaxed/simple;
+	bh=Rj/c0jN1cd/5SvLS9DcEb/UKs1Cg66QmZr08vzlmrfU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RhP59gmLDiGK8uXIcoTcvbQ1ifPt4hzbWpFbHWdryh36KtvvC448OL6F67r8LsG7C0Wd8PRlCmeHJdqzsTbpmp7xMTKM6w/jVKV6AH5gDZJKT6WtECdqeEF49Y88NC2uhqcuLhcbIcrw4jbRzVepVkT9H9HHKpE8Ye3k4TBurRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mSUitdJS; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="g1B7c7k/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iccpfdndiACn0IvK6wBFKLDO8HYFWNqzics04UAMDooQRIXl6M9911OUTxeW8qz5L/aCj1FCwtELN7E3cf4w7zAAhqzORZQEyrUC3ITNGlqVWr4UpAaX/sskT+Y6SEuINqwpuFqnK4utcJbD/P0DUrzM10KanxDotohyKVzNImWbh1lDzCwnqVMSKPAp/Hl749CzaiDI6ZP04SddLeEDycp+DN48lpqfTCmkOLcSKxVIAa2Pkh9z1hSfRw61oLJq8sZZzFu06vJyg7fGDVfmhjPOZ6bU+ypqt+d9LcuNTG0bfGU16nJ4knqmkNDBV58G0rPw5Stz6QjsUvDbInuakg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZjUbckEAq53A7N0QnL9S/8LBOcqyufy31hT0nzRWuTE=;
- b=eOxeGBPJmuf7BeoiF4kGVdVJRovhAr7Ts962oNSxalCSXxLE28krmpnbyUGGX6kgzOws6IDRFac3kKuBwPvKS9nHYQTQ9OSoQrrhqxitScqXVhlWd/vt43Szd0+4xi+LkgC/+/zoUyNWhaP/JbkdPF7cjeknDBx7IKUJSbHSCQDJi+30jS0PCnWVgATATYd7gkc22VipCQcdRhVQhA6IubNgUr6RETCqwxg1AkbHGwyLzpuFQ2lzBiNPuWgl4bP2sOkm3ouYpETzqmSiP7GyCDeqT8lE5xfcYfHMmhGvWQEdu7bHjmY/ZGnil648YAWanzLMw0tkXQ2MGH/5nucH3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZjUbckEAq53A7N0QnL9S/8LBOcqyufy31hT0nzRWuTE=;
- b=g1B7c7k/b1bmmMXHXKWu+alJm/Pvi9IsLgOXDmUmNrGFki8Et5CKnJ/RYeThy4XKVRSRjwP0SEL3lTh+hwtUeCmaaUZtVNCN3ba9gENYPa2/x/mSCywG34FX7M5MOjQvbsVRmfsyH4arQZEzikl7ae9lxirAUkq5FCiDk24PZW0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO6P265MB6687.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:306::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Tue, 20 Jan
- 2026 21:16:21 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9542.008; Tue, 20 Jan 2026
- 21:16:21 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jan 2026 21:16:20 +0000
-Message-Id: <DFTQ8I30EH0A.H7A68JG8VBXZ@garyguo.net>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: sync: replace `kernel::c_str!` with C-Strings
-From: "Gary Guo" <gary@garyguo.net>
-To: "Tamir Duberstein" <tamird@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260120-cstr-sync-again-v1-1-2a775a2a36fd@kernel.org>
-In-Reply-To: <20260120-cstr-sync-again-v1-1-2a775a2a36fd@kernel.org>
-X-ClientProxiedBy: LO4P265CA0043.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ac::22) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mSUitdJS"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-81f223c70d8so4927400b3a.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 14:31:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768948257; x=1769553057; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qi2aIzmcDbNCw7y614MiDKvrAh6Yp1kcr0zXJQZmRWc=;
+        b=mSUitdJSI2cNTldv3ScrZ9KlMY1jsxr8201gU8A3T/vf3HoUIvoF30O/fBUZpK1SVU
+         3ATD8tIBab2e4rX3oK4YpOmFI2kW0vmyURQEVGIxI5JBI+giU9B5Khp3oSICQgmATc5F
+         JlbHypp8ewQQn6lZnAZThWwvX6MzKFRdVaGq7RH33R2lDRoDFnuPFbwpMM0azFKTqk0Q
+         6OpuwI4hndWaSmKFzRzyYlz5suubFB58bnZnqyG7o8eJOfQ6U7KIZsO/IPximhNHuKXw
+         wfDWCDPeNDTBTGHSBvmq65c1MnBz4STFV8NbyYbN+zmmoyYagR9EUs5wufLmm/N4NbjX
+         KKyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768948257; x=1769553057;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qi2aIzmcDbNCw7y614MiDKvrAh6Yp1kcr0zXJQZmRWc=;
+        b=b7IGZ3bHSI7aSXXXnZzHicnMNwr/9u/gmvzeiDj53gjMrqP4Agl5j0XxbnFWtKohjt
+         M5oKA64Kx2FFnDm/+BYZ/7oNsyAb9blVba5Rbw8HemN++u85wmVL7tDxiDVQ+5oEtWf3
+         bY2mHm5cac9WhY5bBoI5lz5ZmYO6mwrRJDp88wVDjr6epzFLMmCoCWrDHGBICsP2e5Hl
+         Nd5Erzn7sN3Pq7PZ4Nu91cmyhUCgiWxtv2EX237ew7WecEuaVRhAZfYs4WV5esYyV1X/
+         KRwrteiUecjeiAR+2ftoCwWX7GK0n3MM0/1owMNmqz0j3Tc8KRKtiKQzPOqSk89G0hsD
+         J3Og==
+X-Forwarded-Encrypted: i=1; AJvYcCVCfoPwO0UB6UOQg5f04EGVgIee3YPLMbXvadp/PScBwAkDUw2oQPiQ328eIA3eqLcv0bHqw6/97urbRN+Qyg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkZnVB5sktM8IqCSeBCjoxzlzemkQFDWx0SqfPd7nvceFc8Hli
+	xKyRg1QQnP4iPxU856Mrcpn5Xr54OXUG4enTg09s7AWSIPy7IFXt/iIK36LMDU2W
+X-Gm-Gg: AZuq6aLnJUksxGS85z2XQhRTm7azmPiO0HPHZ97aBfcTnbNHxuhSAZJ7tmunv4FanRn
+	lpMRE5gc9DZkLS2GXEX15oVvtie/fvmsspdRCy24B+cU2CVkQ4S59wfble2X4nhl+QetPBdUSUc
+	Zey0O6Gd484Zo1LQEOgqaud3eKA/fZAKMb+lpwsw+aHObTy+X0iaFxk10N2BGWB1G/9N6qEBNsq
+	DPeGbzu6SSpJ6MwXk4n2KmkpBhEDid1cu7ejSEr3h5obNWaINc/K9s3tix5sOM9E4c/EdZkkrCq
+	itRqx6Llwsi/oknr+lvquboGNrx/onoIQmSL9mvPFg4zSydpEp9bQuRwv+ZNYa6uJxLOlDwreDf
+	/F74oDb9yzUHTEg/OnK7awEBxTuQOWv1fWyrUmyos9Mx3JLZK9zsfqL8m278hZU3T+qAu49UxBK
+	JGBv4L9oY6B2IhhbR0oDg/NIi0yVw9aJY7nvh73ViKRHif8+HTHdy2Dvw2OkDmrotIIW7Xh4Cjd
+	w/e44onxAzUmVhPibwExhB7tw==
+X-Received: by 2002:a05:6214:ccc:b0:888:8913:89af with SMTP id 6a1803df08f44-8942e45d08emr223107256d6.15.1768942369869;
+        Tue, 20 Jan 2026 12:52:49 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6c6610sm112900286d6.40.2026.01.20.12.52.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 12:52:49 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E41E5F40068;
+	Tue, 20 Jan 2026 15:52:47 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 20 Jan 2026 15:52:47 -0500
+X-ME-Sender: <xms:H-tvaX1kojIonb-EVRFpy3nglRT3m4AeyFq7gIGsjhlxAtE3Glai1g>
+    <xme:H-tvaa_uevsm1j_nA4NTrtwklcrJfcdM4U0q6A4GEV260X5EjBnwaltr4cbZMvGn6
+    KjzbhVqDrWzmPLPK60YegDkEA-bX_UG4FRaExVHfUbCwIJ6YbElIQ>
+X-ME-Received: <xmr:H-tvaQcjaYTt02Yr6xj4KoQlgTn24zVa3RbwW5LW2HZzf9Kn0JJzuuiT>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedugedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeeftdevhfevteettdfgffeigfekieetudejgfdukeeihfffheehueevleffkeef
+    vdenucffohhmrghinheplhhptgdrvghvvghnthhsnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
+    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
+    pedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvghlvhgvrhesghhoohhglh
+    gvrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthht
+    oheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehkrghsrghnqdguvghvsehgohhoghhlvghgrhhouhhpshdrtghomhdp
+    rhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrh
+    iisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhgrrhhkrdhruhhtlhgrnhgu
+    segrrhhmrdgtohhm
+X-ME-Proxy: <xmx:H-tvaeGCsw5xjDM64D8SjYhhnldkREtAoHHk6fltcQp4MrUla1gBfw>
+    <xmx:H-tvadDGhFi5HIGAu0qJl6c5giOIok1DS4KJaLxc8GXWSUoaLq7W9Q>
+    <xmx:H-tvaZ5wWvabU4cN2ouWL4rRJ2lISLHhEX-o5ZFM64zCTWHORNKLwg>
+    <xmx:H-tvaUmgw3ZWtOfh6dkJaodk5OiAevILKQNizkbEcsqYM6MmybKYTw>
+    <xmx:H-tvaa5r9CTMjCLfZ_XDQgRhgYTbFp-IzPCnUePD-4VcLlCTbe87NB3X>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 20 Jan 2026 15:52:47 -0500 (EST)
+Date: Wed, 21 Jan 2026 04:52:45 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Marco Elver <elver@google.com>
+Cc: Gary Guo <gary@garyguo.net>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	kasan-dev@googlegroups.com, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Elle Rhumsaa <elle@weathered-steel.dev>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH 2/2] rust: sync: atomic: Add atomic operation helpers
+ over raw pointers
+Message-ID: <aW_rHVoiMm4ev0e8@tardis-2.local>
+References: <20260120115207.55318-1-boqun.feng@gmail.com>
+ <20260120115207.55318-3-boqun.feng@gmail.com>
+ <aW-sGiEQg1mP6hHF@elver.google.com>
+ <DFTKIA3DYRAV.18HDP8UCNC8NM@garyguo.net>
+ <CANpmjNN=ug+TqKdeJu1qY-_-PUEeEGKW28VEMNSpChVLi8o--A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6687:EE_
-X-MS-Office365-Filtering-Correlation-Id: f765d974-4816-424b-d408-08de58692898
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|10070799003|366016|1800799024|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dFYwUCtwdldIdG9VU1hpdUIxNGxlbWg2S2JCSG54M2xQMzNPN3pvWlhGazVY?=
- =?utf-8?B?RU5OcC9OSXFlZlI1bFFvelVoVSsvVVFHQ1YzSDdoaENBVmdjYThjaThWMTh5?=
- =?utf-8?B?UnpTTk5kY0JaOThEMkJTVEdyQjF2Q1UxZ28rSmFKTDVOQVh2dGxLbWRlcVhD?=
- =?utf-8?B?TU14Tm9OWVZHWjF3T2NzQzVsbitCT2o0aVQ3YkZubUZETWV4dzZWZFNXdFBO?=
- =?utf-8?B?Yk9nNHMxSWRzVk94WEptbFdVTitZeW1oWHlwV1pMSUk3NEZmdmpvLzhHZCs1?=
- =?utf-8?B?aXRMUmhPcDVPK3dJbHdnOFZjYmlGTml1TFFCTHB4eG5YM2ZFQyt2ZVU4OTkz?=
- =?utf-8?B?WVhhQXZNWWdxbUdzSWtyd2NsMGpuWHFyUFZtVHJkWEw4K0RtdmJrcEZSSUNN?=
- =?utf-8?B?b0t3TC91dTZ2UldmUVFYbFB6dmhaVnpCQ05wR25ncFVhMEdlYXR4T1BjMTZD?=
- =?utf-8?B?ajNSTjBTSUxUUVA5a2xUS0tDSFh2Ynh6YjdWMW1NdWVBSWRSc2xRMGUxNDRa?=
- =?utf-8?B?YkJpYXJkQUFRa1BEZDFIUjJvOGZLMnc0RHROci9KbHpucWtjQ0RiSXFnekRT?=
- =?utf-8?B?V3BvK29ub3JyMkdOTHdYS2ZWUGRodlJiQlE4enRaQ3FMcmhkS2VuUCtyUnpD?=
- =?utf-8?B?cEFMSGc5djloWjVIeW84bSsxMGlBYlVES0hENVBtbmxUSUV0UXg5RmhuSkFY?=
- =?utf-8?B?cFBxaDJwZnNab3ZONEljaG4yZnBsblZXVFRVRUdvd0dncFYvWmlyRkc3Wk1K?=
- =?utf-8?B?NDhZOStlSmNReEc0RXpBelZMY3p3NmV1YU9selFMeEZlQXZQdUwvZEJuanZD?=
- =?utf-8?B?VHpMNHFPZm5LcUhrV0lpeFZxU2pZeTB6UC9iVEhuRjIreHlxMXNGMUk5Qk9I?=
- =?utf-8?B?OTN0T2RLOFFBeGVMTFZZZVp2K3FJYmdRTzJpRGxSVkxOd081cFRCck9JODV5?=
- =?utf-8?B?alR0YWtxSFB2MDVHSTVUc0QxTWc0S0NlcHR1Wm1CMXQxdDZiSTFxZ0NlWHBH?=
- =?utf-8?B?SXJBMUNxQnZQS1BNS09PdzdFT0RLOUx5VzBCR25TeTNFT214K0xQaHJlMnZN?=
- =?utf-8?B?WExiblVOTStoczUySnpzU2thMFlWK3ZSYTlPOTJPczlvRXFGR1ZsY3lUeTVj?=
- =?utf-8?B?T0hXRnI0VXYwWkhCVU5vVlhDOGFaaDc2WXVGSFRLaGZKbmZsL2F2c3V4S3dn?=
- =?utf-8?B?SWV3bVNmM3V3T1o3M2JobUc1WjYrSVlwNDBnTGJDR2hBL3RjdGJvbUVNanFs?=
- =?utf-8?B?UkpVRnlPOGNpVU4wSlpPRHhXWmJBRFZXRjJDSHhBRXk4aW5kcm5JenNmRjA3?=
- =?utf-8?B?SSt6WFZSMWF1RGpSKzNndTFmRlNXM0NQMTk1VUVXa2NkVVZZbzZXcXRFMW16?=
- =?utf-8?B?d1lhSEVFR0Iremw3UkpNeDdDZ0N3c2k5SC9RRk9IaDBsRWo0QklmbDBzVStX?=
- =?utf-8?B?UHlZaFo5eXNhUHlwV1NyT25pblJGNWFKb0J6L3o1YXVsMEtPOEpaK0IrZys5?=
- =?utf-8?B?VWczRnNJcnBxQThBSG1HOXRrVktodSt1bjJtVDVsb0FvYXVCM3VjcE1LY2Iw?=
- =?utf-8?B?QnQ0cTVmZW1sUEUrYnQ1ZUJBN1kxWU5haXBOR2FSdTk5OUZFYk5iUHNCWThH?=
- =?utf-8?B?ZmpQTHA2VnNFNXB0dXJydGdndjQ1ZmJXVVM0dUlZcGhlZTdRUUdGdVhPcVdJ?=
- =?utf-8?B?Yk9BeUg1UjRhbEhpYXBSM24rZlhKbFVUdWJMZTRZYTJxK0dPOWpiRnJhSHFJ?=
- =?utf-8?B?Sk9raWJnNXgrcFc3UTVKa2I4Z3FlTm04ZjFwVlkxOU84LzJoS0tRcVFBdWt2?=
- =?utf-8?B?VGNsTE85MitzWlNiZjNUQUUxYWdpbERWaVJWMFBOK2s5TUJLMUJMdlBHUlRG?=
- =?utf-8?B?Ly8vTi82WW5Ob0k4YkoyU1hyRWo0U0loTkFEc2tRVjJjWGI0MnY1RjNiY0l1?=
- =?utf-8?B?dHBROUZHZTlNN2RaRFRHR2xVNnJyYUZFY1JBV0xKZE9JWnMyeDZ3R2t3RGIr?=
- =?utf-8?B?bktzTDFMaUhldExuZ0o2TjFrSWJEY0w2S1AvY0N1SjFXMS9lTVZJbUNBaUxx?=
- =?utf-8?B?SkFQM1BKNlY1S05QV1dRSTdEOEQwMlBockdzM0xEUjZFTFRZNmZKdU43Ry9U?=
- =?utf-8?B?bkJGcjNyd1g1dWhnd1dpUmpzYmhUa2k5L0JYeThYdDVQc0JzdEg1QStidE5D?=
- =?utf-8?Q?EeLN1TjZ3hgYXxdvO77ZQQk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(366016)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SlM4RmY5SWkwUFZxbGtaNExJRDZ3MGp4Vlp4ZmM2c2p0bTdQNjR1U0UyeXlN?=
- =?utf-8?B?eEQyZ21XWTV1R1prTEExdU1yNi9nOExtTDR6aVpGK0J4Q3Jod3VXcWpDOXNF?=
- =?utf-8?B?VGJqK3BjK3hCVXJYeDVCeE56YllwSHNNdjdGVC9BWUdCUkw1eVMwbXptMlZY?=
- =?utf-8?B?YTRkbFVjVG1DUUxtRzhyYVRHYkZxc2twNlpJWDlrd0ZaM0xHMWFrbERVQ0kr?=
- =?utf-8?B?TUsyUjljT0RFTXIvSXF0c3BMZ2pIZ1dXOXpGZzYyUEFUZk5vc0RLZklSbFNj?=
- =?utf-8?B?VG5PcURZcElJK3dlalAwWjBuSms0ZjBhOVhQY096bExQSkFkN3k1M004L2Fy?=
- =?utf-8?B?dmJoblI2SWwrUkR3a00wQy8wT29NMiszZldoOWt0OTJPa3NqUW1oMGxuRlRx?=
- =?utf-8?B?M1FUR28xQUV1WFgrd3lDVWZJOWUvUzN6Rm5FL3VLNVdPRXVoQmxacjBjcFRC?=
- =?utf-8?B?NCtab2d6ZlZOVURLRnRYd2Z1OEcxMEV3NE9EYUtxaWQxY204RHpYQ1BuOWZS?=
- =?utf-8?B?TUE5SkVEWloxR0YvVXFOaUREQkJjKzV4MXQzaDdiMU1HZkRiRUJZY1FqZ0Ri?=
- =?utf-8?B?eDZPRUpTRzBUVGY1MUc2ZERwOHl2N2dSOHN5L0E3YjA0RlgwdUtpTnNqQm0z?=
- =?utf-8?B?UEhYcEZRNFlIVFQrNFVlK3NYSTllM1hNRzVKckY0MEp1aUdxb0tVMzIyMk9v?=
- =?utf-8?B?M1R6NXE5SThYYjE4eTkrUWhHOCtVenNGZ2VvbCtydUhjOWJmR3psemFKbEpi?=
- =?utf-8?B?TW9Xa2Z5VHpOK1A2TTZ6L0x0cHNqNysvY1A0MXdUSzJWa2I0cFlPbFBSblBP?=
- =?utf-8?B?UjVLOVMzbTgyNEdzMkFOMUlKRTBHdHpBOU9xQ05PYUpZY3hCUFRjVnhEVUtu?=
- =?utf-8?B?MWxRVjFJL1pzdkxtZGhKVkRlS3NKY2dsQzlkaWt1aXRWekF1UHVzL3dOeFBw?=
- =?utf-8?B?UmIrTktuZWxpUHEwK1dLTXFLOFZpT29MQjNOQWtPaGxRYThidHpmK2dwNGwv?=
- =?utf-8?B?aHExZlVIVVc5enVwTDNPNldkL0RrOGdSQk1qYnc2Mk5GaDFXeUtaUnpiRDE5?=
- =?utf-8?B?cVBwU3hhZnFTSkNwZW8vYjNjMEJLdHF5UllkNmYzZDNOL1NlOE9nSnNKdjI0?=
- =?utf-8?B?ajkwU2RDbEJJdU1EQTVidU1xdkMyZk9VZ2JPZ3BPNHdxNGEzSU1Ic3FWR3Zr?=
- =?utf-8?B?ekNSc09FNmNzMzBrNjNDaTZIL01EaThHNzFPbGxRVC96MGxSdXkzK1FYTFEw?=
- =?utf-8?B?dzJMdVdWK1Y0MDZJOG5FK2RnK0dwYURLTVdpSlhVdlBrbXpXYU5mOEZWSmJQ?=
- =?utf-8?B?ck53Z0g0aDVIRllxMlFIRmNOazRIRmo4bTVqSWVBVG9RZFp1TDJiTUNDNWU1?=
- =?utf-8?B?czJvTzVQanhFcjZvYWM3OGl4dS9KQmNsVFdya05oS0FSTUNwWXJuVkVwYTB4?=
- =?utf-8?B?WitoaGQ2dDNJSzRoTlp4S1hUSyt1OE9mWmtnZ3d4VGNRZ3p4M1RGR2NuMmJn?=
- =?utf-8?B?TTd1TmcxdGhwakt1TFlEN1FSY2dUalJ4REtmNWxTVnVnTzRyNVlKUzRIcjBP?=
- =?utf-8?B?bkFFSFVwZkxJd3ZKUnZiSnRlb05XYVowc3FOMW5rNmV2ZUpTRGJCalVTR0tR?=
- =?utf-8?B?L1JlTVhYaU43d2ZZajVkcTR2TC9MYnN0ZmpraHJiZllmclNHcm5JeHdIYk5p?=
- =?utf-8?B?b2ZudGpFd25EcXNwVjBmOGhUdUU1WXFkZXlPbmsraGRRYVdOTnNlYjBSVlJu?=
- =?utf-8?B?YjhTRTZ3VXFKWEZKOGRlYkxGeDdnejJwSlZSUDFQRTVqem9wY3F1K29zdEcw?=
- =?utf-8?B?SXB2RitkbUVmL2NoY3BSKzZnSXJkdEVDRWtpOXFxMGhhd1BudDc1RHVFV2cr?=
- =?utf-8?B?TG5qait2dUV2UEdSRThBOEdqKzZYejBzdUdnVTJGbmZMeDc4M0ZpVEExOVJn?=
- =?utf-8?B?KzdoMm9uVjhOMm1QRHQwelpXRmtpOENJazZVS05nSy8rYUt0dllCU05Cakhy?=
- =?utf-8?B?Ym1jRDFmZjlxMUlNcGVqV0xQTTZDOFZ1L3ZjRHQxVTRWMVZldHozdmN5dUdY?=
- =?utf-8?B?Nyt3bElOQ1BnSnkrWC9JRmhNNW5ybFllZ3ZPcVdxbmtjWUl1ZzBldnprOGw2?=
- =?utf-8?B?WTRJQVJ6R2wvOGFkUDJISnArRjFjUkVrQWVmTGpoTmFORkI3TU8xWGtXOHFx?=
- =?utf-8?B?cklERnVJZXJJUkFjWjlMWlJLd1VmaU5HVmdxRXJzbGZ0NUZKQmdod0l1aDkx?=
- =?utf-8?B?SUVXVkxRVXp6NDFkWWs5KytDNlk4bmpkOFp6bTA4b3RXcG1KbTZTRnFnb1hs?=
- =?utf-8?B?ZjFadkVqbTJaOW9yN2NJRi9SRVBBYUZQalE1WFB0Tno3WnZqdFdZUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f765d974-4816-424b-d408-08de58692898
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 21:16:20.9877
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i24yQYpLAzXwXyqty3670n/sI0k/IpkX5KCiElOATizyciOkT4rerVxwaA7jT737Ewna3oShC/ar+EdlNk2iWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6687
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNN=ug+TqKdeJu1qY-_-PUEeEGKW28VEMNSpChVLi8o--A@mail.gmail.com>
 
-On Tue Jan 20, 2026 at 9:13 PM GMT, Tamir Duberstein wrote:
-> C-String literals were added in Rust 1.77. Replace instances of
-> `kernel::c_str!` with C-String literals where possible.
->=20
-> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+On Tue, Jan 20, 2026 at 06:10:40PM +0100, Marco Elver wrote:
+> On Tue, 20 Jan 2026 at 17:47, Gary Guo <gary@garyguo.net> wrote:
+> >
+[...]
+> > >> +
+> > >> +/// Atomic load over raw pointers.
+> > >> +///
+> > >> +/// This function provides a short-cut of `Atomic::from_ptr().load(..)`, and can be used to work
+> > >> +/// with C side on synchronizations:
+> > >> +///
+> > >> +/// - `atomic_load(.., Relaxed)` maps to `READ_ONCE()` when using for inter-thread communication.
+> > >> +/// - `atomic_load(.., Acquire)` maps to `smp_load_acquire()`.
+> > >
+> > > I'm late to the party and may have missed some discussion, but it might
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Thanks for bringing this up ;-)
 
-> ---
-> This is the same as my earlier change[0] but applies to additional
-> code[1] which didn't make it to mainline in a timely manner and is now
-> queued for v7.0.
->=20
-> Link: https://lore.kernel.org/all/20251117-core-cstr-cstrings-v4-1-924886=
-ad9f75@gmail.com/ [0]
-> Link: https://lore.kernel.org/all/20250811-lock-class-key-cleanup-v3-2-b1=
-2967ee1ca2@google.com/ [1]
-> ---
->  rust/kernel/sync.rs | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> > > want restating in the documentation and/or commit log:
+> > >
+> > > READ_ONCE is meant to be a dependency-ordering primitive, i.e. be more
+> > > like memory_order_consume than it is memory_order_relaxed. This has, to
+> > > the best of my knowledge, not changed; otherwise lots of kernel code
+> > > would be broken.
 
+Our C's atomic_long_read() is the same, that is it's like
+memory_order_consume instead memory_order_relaxed.
+
+> >
+> > On the Rust-side documentation we mentioned that `Relaxed` always preserve
+> > dependency ordering, so yes, it is closer to `consume` in the C11 model.
+> 
+> Alright, I missed this.
+> Is this actually enforced, or like the C side's use of "volatile",
+> relies on luck?
+> 
+
+I wouldn't call it luck ;-) but we rely on the same thing that C has:
+implementing by using READ_ONCE().
+
+> > > It is known to be brittle [1]. So the recommendation
+> > > above is unsound; well, it's as unsound as implementing READ_ONCE with a
+> > > volatile load.
+> >
+> > Sorry, which part of this is unsound? You mean that the dependency ordering is
+> > actually lost when it's not supposed to be? Even so, it'll be only a problem on
+> > specific users that uses `Relaxed` to carry ordering?
+> 
+> Correct.
+> 
+> > Users that use `Relaxed` for things that don't require any ordering would still
+> > be fine?
+> 
+> Yes.
+> 
+> > > While Alice's series tried to expose READ_ONCE as-is to the Rust side
+> > > (via volatile), so that Rust inherits the exact same semantics (including
+> > > its implementation flaw), the recommendation above is doubling down on
+> > > the unsoundness by proposing Relaxed to map to READ_ONCE.
+> > >
+> > > [1] https://lpc.events/event/16/contributions/1174/attachments/1108/2121/Status%20Report%20-%20Broken%20Dependency%20Orderings%20in%20the%20Linux%20Kernel.pdf
+> > >
+> >
+> > I think this is a longstanding debate on whether we should actually depend on
+> > dependency ordering or just upgrade everything needs it to acquire. But this
+> > isn't really specific to Rust, and whatever is decided is global to the full
+> > LKMM.
+> 
+> Indeed, but the implementation on the C vs. Rust side differ
+> substantially, so assuming it'll work on the Rust side just because
+> "volatile" works more or less on the C side is a leap I wouldn't want
+> to take in my codebase.
+> 
+
+Which part of the implementation is different between C and Rust? We
+implement all Relaxed atomics in Rust the same way as C: using C's
+READ_ONCE() and WRITE_ONCE().
+
+> > > Furthermore, LTO arm64 promotes READ_ONCE to an acquire (see
+> > > arch/arm64/include/asm/rwonce.h):
+
+So are our C's atomic_read() and Rust's Atomic::load().
+
+> > >
+> > >         /*
+> > >          * When building with LTO, there is an increased risk of the compiler
+> > >          * converting an address dependency headed by a READ_ONCE() invocation
+> > >          * into a control dependency and consequently allowing for harmful
+> > >          * reordering by the CPU.
+> > >          *
+> > >          * Ensure that such transformations are harmless by overriding the generic
+> > >          * READ_ONCE() definition with one that provides RCpc acquire semantics
+> > >          * when building with LTO.
+> > >          */
+> > >
+> > > So for all intents and purposes, the only sound mapping when pairing
+> > > READ_ONCE() with an atomic load on the Rust side is to use Acquire
+> > > ordering.
+> >
+> > LLVM handles address dependency much saner than GCC does. It for example won't
+> > turn address comparing equal into meaning that the pointer can be interchanged
+> > (as provenance won't match). Currently only address comparision to NULL or
+> > static can have effect on pointer provenance.
+> >
+> > Although, last time I asked if we can rely on this for address dependency, I
+> > didn't get an affirmitive answer -- but I think in practice it won't be lost (as
+> > currently implemented).
+> 
+> There is no guarantee here, and this can change with every new
+> release. In most cases where it matters it works today, but the
+> compiler (specifically LLVM) does break dependencies even if rarely
+> [1].
+> 
+> > Furthermore, Rust code currently does not participate in LTO.
+> 
+> LTO is not the problem, aggressive compiler optimizations (as
+> discussed in [1]) are. And Rust, by virtue of its strong type system,
+> appears to give the compiler a lot more leeway how it optimizes code.
+> So I think the Rust side is in greater danger here than the C with LTO
+> side. But I'm speculating (pun intended) ...
+> 
+> However, given "Relaxed" for the Rust side is already defined to
+> "carry dependencies" then in isolation my original comment is moot and
+> does not apply to this particular patch. At face value the promised
+> semantics are ok, but the implementation (just like "volatile" for C)
+> probably are not. But that appears to be beyond this patch, so feel
+
+Implementation-wise, READ_ONCE() is used the same as C for
+atomic_read(), so Rust and C are on the same boat.
+
+Regards,
+Boqun
+
+> free to ignore.
