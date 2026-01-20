@@ -1,126 +1,111 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B07D3A7829
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 19:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768938938; cv=pass; b=sacIvwvdUhpBA225QXh6X/eKuEXp/wxXMMPVEerPuCHM8oJJ6TTJ24ysucOgAKG6k5QcLxV7FjZtL9jFB2zSs7jlSAqUQZgVGyrx7c2M33ukaPxvORvqGaPxUS77Ju2IjvzuEMG9O9T6Se0UW7TQBk7wT9fYo0WhvlqayzH5/aE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768938938; c=relaxed/simple;
-	bh=cz8lG1+IXiss82S0j77suFZyGFhOFBQYPCGUQ3n8HnY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C6I2UGWPmuakrOekEdw5i2iUH8wM33HVpcPBcGuXroBHjPndmagh6NgUrrsU3mQ6br7+UtizYXaf8dk3m5pd5vm9CyxAmx+QkBry5m+GSZXD9v9ZxRqjPqd6M7snll+9aYUjNFaLpkhLIMv3TviQYmnBC4S8Baxe/9/1GwdEyzQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yf4zk8LG; arc=pass smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A97038B9B1;
+	Tue, 20 Jan 2026 20:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768939275; cv=none; b=ME1DKhuNNJ23FxE3cxwn8kUbrueqlQQxLOP3eKiJYvTS1j+79O6m6fix9YS5GhU0M0gOYZDvSGvMninKy7JTs1Ktubr8v0hIpRS49wEO+ZolqFFlfeI+ZN+FXI3Q1FM4Oxq3GeUBYu3/fkW1OGr0AjcysiDpyY0WT1aRm/bLg8M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768939275; c=relaxed/simple;
+	bh=lkTluKCAapJ+mOA8/RM/9/2OushMrLGsjtZNjHwCrtg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=hJnKpEONuKPbKYT8uiz/G23zZMpohOQgmMqsyvPailrBDxAP52J7iH41st1uKda8GJQujJOg1XmKwcgq55gzBIiIH2iKJybKvC+uxszMhwkfO4pW3nUzELTz0/C2V43uxbUF4y0l/zL4i/Nt0+g2OmRpi6Rlv6Ba/LDUyesJv68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n2PfdtSR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yf4zk8LG"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1244bce2c17so464325c88.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 11:55:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768938936; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RMYUPyCTo17qh1CDeBJNwMDlueH5oLPsxDG6hDYau1pgqYaEB4Vabzdnrh4rNrptm4
-         //ta1IaF8dhsZorS72ylFQDiY8ifmIv6RCJKuoHkXxtqAlG7DQYHbP9UGcOmBIYXQhfz
-         BtCsQnbC4rNHBoOrjSt6++RAhbW1fBbTBOaUXeQyfqPXZb55a2vCoFBKuiCpqZ2U2Djk
-         ULUCX9oYCYr8JJJnLsAzPHgfi0roJf5r+4gtv7/U1ip6KUoGiI3d9Gonfd0kkSpu0+2J
-         ygwfxq8M+94qP8mf4RmmfQe7BO/yjDxm4CyHP8CqR5pQk0ZMAGahwHwO6sqNSLnu6p6R
-         Nkfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bFBg+14denhpla9A6q5Icbqf/DV0L1pwK7WKO8lmnmw=;
-        fh=W68lAMp98JdC5Ifcc8ig3wMnp3WtiAeeGbkT1ZM1p3s=;
-        b=fYJ37D8QeG3EXmFfmao0pg77A7JlvNARuu4KwklouBmY6mrpLLZJxj5kOMGYyVMe8g
-         wU/Iz++hQll4QsSDMnFDZkuT8gbzIaAJXxUyjJQ2spW6dPxIajywkxiRIQhZ0tnQSCWH
-         4vdzFypFeJbRaPKmQsFjMRXvX5AQZpadd4tAFmVkrIMlTOAvQsesEqFoSb/YvWigy6pL
-         0zLasc7ggXUMYXGPD2WbpwYvc/xsQHvEmstrdnpd+TtUTfcXbeVXp6O9aqIfTUhuJQxJ
-         kSP7/BSHbKKbA7bdV30opE7MvrAdKCljC9cPWqO5vhYUFspnC/WEWydNFogzszKC2GXB
-         X6lQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768938936; x=1769543736; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bFBg+14denhpla9A6q5Icbqf/DV0L1pwK7WKO8lmnmw=;
-        b=Yf4zk8LGfyE3qcO7QBFI914qRRwFp/KjVQ8KajA02qBXyAU6fLLdJ/h5E8Y18+6Q36
-         GPQ28KOmx38/RaNtRoxX/REP6qV9SAgxiXsDt2K1/yR6+bsrmllVQHOAtKKyatxt8371
-         bahcLR9P++lLzJ4nCL6QlF5sBtppnuKwc7+pSIs3aHX4HE1rUnZ4Qxl9gIZCUS+qywCC
-         GNyWlcW8dCXbZcMfPzW01vbWN8LHUVmAjNePy2J4uJ0/dAW9lQ+Sl41MPk1DQjG2hfc/
-         Q1qGEjVJqaKE29F2iYT265QVYOwrsSFoSHCeFfjfy9SumR4ZM1WxzTVLviZKAXKVITyt
-         U/cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768938936; x=1769543736;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bFBg+14denhpla9A6q5Icbqf/DV0L1pwK7WKO8lmnmw=;
-        b=iYhpyDa95aGrJW7vzWsATVsn6Po27WmzwOf7jcOikUdnZ9as3cX+/EsfmKv2jN5RQa
-         A7g+a9xRButaRiGQZARCv03RAanp2jmpAs7eiDvvpkNrHzPymF0w/s4BiwfFdz1x2rwg
-         6nNlMucuqi9RdWzTaxHHB0/wum9dK/CumN/ETIWNrLhe96wJgCwcTXPJi86rCbH973/S
-         2FqPrvLGUHk0ptIkkMfesXXP7iBRePtjhodOn29L9Fq1UBvOFeu9PM5KT6LwMk6u12px
-         JtTZ9ToX04CjFOvIIEgmOYckfQKiMocg/cWyUJBRXwtb9qdLoTxnSJbL626ZttrzmOTB
-         epjA==
-X-Gm-Message-State: AOJu0YwamJDk18OMxvOAMDyhy4Rea0XkRXqZ5DtbX+3rfKuRwowhc60Y
-	5YrZmNEyBoFZtSeQrvRZJo0cEO4io64dZSKQPDwGeqxqZjgBlid2vPM3nOFFDwFKzVIzunh3QFG
-	TzUuBjs8A99ljZjzhsrwKVWoF/jO5oAk=
-X-Gm-Gg: AZuq6aJb2dkKgBJMHSkJSLsRDQ0yKLNS/bUngs3Ml8QBDoOkjWR1bP+G5j2fD8qcSX5
-	C7HDfK/Cfo1C4F7wpkLSjz0Q/NJPzJzwbLl68SzRAV+nZdNwZYr+5vDOnsR9m2OdTbIe5uvoSEm
-	WJtAkj27NwOTFOP6Xw96XLCBOYbpVK7oMR7Bm9gipIHOPcHOhIRonKOxOjX5760B7JvUHpMkTQu
-	Zs2LmP+diVVC7AN689pPDNpDHTIrejMwWybPd+YufMnLiYkJjqKcanHyNVn0D4ph4kcsIh7WOxu
-	wppNSWLy5eb75XOz3umHE5dQTNjSy3Yl0phRCStBR3121i0g8oBHwOxcB01kRBQqYKZbS4WJywo
-	cMh7NkgQ+oj0q
-X-Received: by 2002:a05:7300:d519:b0:2b4:6ed1:2ece with SMTP id
- 5a478bee46e88-2b6f6fb1b14mr1597693eec.3.1768938934373; Tue, 20 Jan 2026
- 11:55:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n2PfdtSR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F46C19421;
+	Tue, 20 Jan 2026 20:01:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768939274;
+	bh=lkTluKCAapJ+mOA8/RM/9/2OushMrLGsjtZNjHwCrtg=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=n2PfdtSRp42v+cqlXZKoHTEXV14ixBA/2XCnDiMMdYTyLGUA4+n0cTXz7JvpdwihO
+	 +MIcf3oU5c+avADtYrpKM6/tTV03GkGFoMcLmalPdPz6Hi1oOfrE8lmJqaGwCD1yWS
+	 E8DjsPFUSXsXkflSRu9Q64LvvtmyiaiwVq8B567tu1k/mDvtP5zmg35FH4niOIrPbx
+	 x0ts3BbOEZAiW3iUw9l43Bspce4tV2c9QNt6H4/xyXKTMx08CGXrUBFElRnDFtJs9B
+	 o2sQkZ6wf1JYrEXk/dPfLoEKOPHs/9v7BJa1JgI6zxBX5K9pry8dVxY+hhDpiJ1DI6
+	 8i/9GdEqhLXIA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CAGk=Op9baRBH8_T1xZpa79TiteMEBHQJAqEM_E=5KHnsmZD8Mg@mail.gmail.com>
- <CANiq72mxpYYL+q+PGCfu2nEsbD_7BjGMhz+Q7wXjNRgYXqhu2Q@mail.gmail.com>
-In-Reply-To: <CANiq72mxpYYL+q+PGCfu2nEsbD_7BjGMhz+Q7wXjNRgYXqhu2Q@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 20 Jan 2026 20:55:21 +0100
-X-Gm-Features: AZwV_QieeGxSXw5FB3vJRxXbTdNaaSQ8O3tujKyuITjRAqGzxbNyN7BF1OrB0zw
-Message-ID: <CANiq72nMpO0o-P0BbTgxPU4RSOttFPc4UQzH9Bs73F7Bnkyxmg@mail.gmail.com>
-Subject: Re: [PATCH] rust: macros: add if_cfg! macro for config-based conditionals
-To: Christopher Erleigh <christopher.erleigh@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, fujita.tomonori@gmail.com, frederic@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Jan 2026 21:01:08 +0100
+Message-Id: <DFTOMX7KEFXK.3A9467KZ5GGAG@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 0/6] rust: add `bitfield!` and `register!` macros
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+References: <20260120-register-v1-0-723a1743b557@nvidia.com>
+ <CANiq72n9tSMFW1KHsLBLM-q47+4f7yM70CVFNVeg_3Q8i3RTvw@mail.gmail.com>
+ <DFTGHU40Q7GS.2YXW1OUFRM2ML@kernel.org>
+ <CANiq72=PWw6MW8NiHtFPmQ5C8xjzVJf2OOpVP2YQbsFqrB4XMA@mail.gmail.com>
+ <DFTHCJYQHUHD.24MJ2SUFZDLTJ@kernel.org>
+ <CANiq72m2tU-Zuv_MjLdjfK0qjE45YnuMmTTtrbzmrQ3=84ei=Q@mail.gmail.com>
+ <DFTITPLFU1HB.3VCKBVLW2VCPI@kernel.org>
+ <CANiq72ny=huNUmM7_1XjFyXZ_zvTFiAGwx4UB_dOxSaUx5VwOg@mail.gmail.com>
+In-Reply-To: <CANiq72ny=huNUmM7_1XjFyXZ_zvTFiAGwx4UB_dOxSaUx5VwOg@mail.gmail.com>
 
-On Tue, Jan 20, 2026 at 8:49=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Tue Jan 20, 2026 at 4:48 PM CET, Miguel Ojeda wrote:
+> On Tue, Jan 20, 2026 at 4:27=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
+> wrote:
+>>
+>> I think it's just about pasting the current bitfield work into register.=
+rs, such
+>> that it can only be used from there. In a follow up we can work out how =
+it
+>> should turn out finally and have to patches: 1. introduce bitfield.rs an=
+d 2.
+>> move register!() to use the code from bitfield.rs.
 >
-> I don't think this reached the mailing list, since it has HTML inside.
+> Hmm... I am generally not a fan of putting local code. I know you did
+> it for the DRM `register!` itself, which is fine given the constraints
+> you have, but here perhaps we could put it in the right file but as
+> private/hidden as possible just to be used by the other file?
+>
+> i.e. that way we can debate improvements on top of what we have,
+> rather than having a move or new code and a drop of the old one?
 
-By the way, the Suggested-by tag seems strange:
+I'm fine either way; the reason I proposed it the way I did was that I thin=
+k it
+sets the least precedence for how bitfields should turn out eventually.
 
-    Suggested-by: Rust-for-Linux Issue #1183
-<https://github.com/Rust-for-Linux/linux/issues/1183>
+> I mention this since you say "pasting", i.e. I guess it is still
+> smaller, but it sounds like you would essentially use it more or less
+> as-is?
 
-It is meant to mention humans, not the issue itself, i.e. please see:
+I left this to Alex, he knows best what makes sense.
 
-    https://docs.kernel.org/process/submitting-patches.html#using-reported-=
-by-tested-by-reviewed-by-suggested-by-and-fixes
+>> The register!() macro code is worked on by Alex for about 10 month in no=
+va-core,
+>> the first RFC for general I/O infrastructure is from March 2025 and the =
+current
+>> series has been discussed on the list for about two cycles.
+>
+> I meant the `bitfield!` one, i.e. landing the patches as they are here
+> if we get very fast agreement etc. etc. I can see that possibility,
+> especially if private/hidden.
 
-Similarly, the Signed-off-by is meant to be (typically) your real name
-(I am assuming it is your nick from GitHub -- apologies if not).
+I think it's rather unlikely to land bitfields this cycle. I think Yury
+explicitly requested more discussion on bitfields and also encouraged the "=
+two
+stage" approach [1] moving register!() first and then extract bitfields
+subsequently.
 
-By the way, was this assisted by AI? (I am asking due to the GitHub PR
-style etc.) If so, the kernel will likely soon require mention it in
-the commit message, please see:
-
-    https://lore.kernel.org/all/20260119200418.89541-1-dave.hansen@linux.in=
-tel.com/
-
-I hope that helps -- thanks for the patch and welcome!
-
-Cheers,
-Miguel
+[1] https://lore.kernel.org/lkml/aOaIIV8KDA0GjF6E@yury/
