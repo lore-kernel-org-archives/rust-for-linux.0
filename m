@@ -1,43 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1273132C33D;
-	Tue, 20 Jan 2026 17:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CC944BC8E
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 18:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768931978; cv=none; b=mgfAYQ2K9ZmK1kENtHN7m8wwBlH10/m605CmARXpXEta11NHurjp6tt6n0drJ9Av/oKLS5LqTiv1VI3r/xQqdb5RyBfdkCKSI3je1WTXDlXp79jpc3IYrjA6yEClMcuNB4N1rNBkoW3qhzP9DxFx5cwRXfDpHUr/DdE2xu8PEFQ=
+	t=1768932137; cv=none; b=eKU+Ja4xs1BhUW+KNIJvNm+WLg7bY8xSK+8NHhOnObP7ooaI9BZwQ4qjp23QR0Qe+LpXbj8jT8g8J+vRLY/6IjDBc9h0wI8DmkDgKFSRh3gHQOm7PgZSAvL6w7Y3LnWgN7FsVt9oTtbeJVDfQzt3A77m/V6HPR7vN8O8rpF7Vy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768931978; c=relaxed/simple;
-	bh=im6rTGdtAHVoo9gMGfLRhHqPzagovRFiPRrkny9SMiM=;
+	s=arc-20240116; t=1768932137; c=relaxed/simple;
+	bh=1feF74p1hZuJuzZ/zjxof/doJAtUR/T5sZ3KS8Yscfw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BOYKPETiMBGxJY6UR8mbmvp10iHE04eVrTNYDnIf3AyRDkH7qNxZh94JgD5QAuPYfwdR5IEl3Qagcqd2BDGd5t5hQDIKIvC+RRxXErWRiFLriW+IqMIkBtJfMbhlSdFy9T19xwTjqln2Lf557D4+kgHjhltQYNn3+2va5eR+5Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aK1PfLxV; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=OPQ3LcLV8wfSFbUuc/BbuLGGZQioyIldy3CDKSEX3sU5LfR9lIm6FBnT6bVpAnJQ+2OilAXA5Moe2O3IKpgBqbyGPnyB9TFgZ7pvTjxjQK3G8diWfSqWfCXoBVxZ3rU/eNyEi7iVxFltvDrLL0deLEZ0839CKOERZ8sfk27F810=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Ep6vB2aS; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aK1PfLxV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A76DC16AAE;
-	Tue, 20 Jan 2026 17:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768931977;
-	bh=im6rTGdtAHVoo9gMGfLRhHqPzagovRFiPRrkny9SMiM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aK1PfLxVNKN1Ua0nUF6yXjbvl3bTts6+0P3a7FwemeqYInCPOqLMe7egQMKlgbamx
-	 jT0re+ddTMJQgS5KCw6K2n7fXjEhOQkpKKa9vlCB5ojDJv9D1C/L4BNg0PxsRo0xYK
-	 Dyz35tJWDs3fL6E+r5qBynAYWCGKSBzddr0Yne+MK0e3sLlpkw3rimWL92hHjZNRWL
-	 xiOGokhX5tSM0xxdKY3flR4dWii61ZPfK3Z1kGl/bteabDPKbZ/EVCdNm6UnzKpxbS
-	 4FE2Y1Z9/W3Dg9aBlM6qa7swT/o+nmgD1SI6FKvAYOdgDqBBowaFng7Q1zXMc+DSBO
-	 +S3hrb2+x56Nw==
-Date: Tue, 20 Jan 2026 18:59:35 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Kari Argillander <kari.argillander@gmail.com>
-Cc: Michal Wilczynski <m.wilczynski@samsung.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-pwm@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] rust: pwm: Fix init error handling and tidy style
-Message-ID: <6fwrwklfywcofk3pb7cn6fllk2ndekcrrfyifrb55u2dt4tzuw@zlpbxgs7lhak>
-References: <20260102-pwm-rust-v2-0-2702ce57d571@gmail.com>
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Ep6vB2aS"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-432d2670932so4410885f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 10:02:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768932131; x=1769536931; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JbQTjruPv+79bC7NXUKMnpFpvOUvYwvd8LHHgIF12mQ=;
+        b=Ep6vB2aSYaZy/IZdbrgU+uaRbpqvP/9b42BsiXEBt99zuGXKP5n/1P9tTrxG7rPg/X
+         nJPi8tWZK/mmHHxaa8Sagbk/BmdNTSYCTDD1ceOgpufgMfnWYOfjnFovOAycqDzq9TQK
+         MHxrz+DsvEA7kVF3eYjS9ZrP/90+XKJGlVEnS1SDL4+C4xg9hnH9FY/hu10wzqqO5gMT
+         bAuhFmoV4n9G28CctrANHpoXVUHiokIeFzVe52POVPI09vFczq+4zoTSVqko1uU94xYr
+         FZAwuaL5cSAXdiSrnOCtOL4RTKmXXOr0493Ph86n+JgUxSUQduCWPWilKbb0n10KidPB
+         F0rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768932131; x=1769536931;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JbQTjruPv+79bC7NXUKMnpFpvOUvYwvd8LHHgIF12mQ=;
+        b=OWjxmYc6HyQu8VbIjTR/etXbxtzLtWUZpfxRmbhg4Dwg3pAEygJeNFKyo20VQbiTs2
+         Gkcw17cJBR7zrlHytf554lHF7zrvced5Zs3D+rfILWXLnDSyoXQsFWYkLx8IvBOPtR9m
+         DCsdjA9E0awoqFd/5G3e3AXC/aHcAesZf2oCaVVBQaUptOHkV0E8IUjQ9HbhCMMEBgst
+         rcBPNwUNKnBNFJX0b2sQBaIBAa/uxpG7U8QqAWmdeMo5LYMxoWiyZMVCt7GcG3O8oItW
+         E3+/Ik+NvQbS4dFH5EPsn+ADQiyUSIbNlb8BTgpHaEu46c+oK84BnNjFM4+U7P+11vmh
+         ryGQ==
+X-Gm-Message-State: AOJu0YxOr02meelIDCd/fupEP2m4D3ccO29sRxh6KKs3k8rE5gSuOxLM
+	ILNU80yaVSZ61s7InELIXRRn+aogg9TS9RZR1PYBru3RwSpn0Vc5FDFPlmMWDyZ7G2+WcwT0u0C
+	u45lc
+X-Gm-Gg: AZuq6aIJAiypM45Q9h+kaFa1/AZv+vCYdHJK6+py3otqNWwPUKik2PMgzK5zYHb7qnj
+	Uo/61WddkBzYL1CejC0kdCO+Fpi2kVmIPTsosTvGd4509VACmJ9IUbGXWnzB+aDIDYFUm6cNg65
+	CjS92rUb8yPWSk/u4G1eODxlupQ5cn+mVvMFps+igeqmEe9HOf1yLdZ1uc2fY5qa9BIHE0/Y9iK
+	5iUD22l6LNjRMPu3hT8kZiwdoQ5xbNAVRZGbplOtNSoy04hj4rNfaEemSiMQZjSLgxUURj2fk4N
+	ThN0YSodFwuyEpfjFZ2SWCt+AOhCaKICLFec/n8pV8nuT0LEagvoCwsOOr+WNSrgT/aK7/HqWx2
+	yfKKoGjx62f/VgCNZBehqdvMQHSuLBguBbeWBMpljZiCh1JKXjvw8EV8XEM5IlWrChloEODzVqS
+	SoYkdXDxiHv8DFeU40A7n+Vj00leTzhB9wT2GI0DeypEOt11rUbvUDSQxdg9A8klGlYcvZ/ObCC
+	7s=
+X-Received: by 2002:a05:6000:bce:b0:435:8aa0:a30c with SMTP id ffacd0b85a97d-4358aa0a34dmr5194709f8f.48.1768932130909;
+        Tue, 20 Jan 2026 10:02:10 -0800 (PST)
+Received: from localhost (p200300f65f20eb0448044bf769fbb982.dip0.t-ipconnect.de. [2003:f6:5f20:eb04:4804:4bf7:69fb:b982])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-43596291e0asm2105352f8f.15.2026.01.20.10.02.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 10:02:10 -0800 (PST)
+Date: Tue, 20 Jan 2026 19:02:08 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Michal Wilczynski <m.wilczynski@samsung.com>, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v2 14/27] rust: pwm: add __rust_helper to helpers
+Message-ID: <ejdtzcvxpz5iih7o5ppgpdo6npdjut6utofacdgrwkdntvurhs@vgiuagsrzo6b>
+References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
+ <20260105-define-rust-helper-v2-14-51da5f454a67@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,53 +74,49 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="muncmzujuwzhebe7"
+	protocol="application/pgp-signature"; boundary="b724s7lxgfngeqjj"
 Content-Disposition: inline
-In-Reply-To: <20260102-pwm-rust-v2-0-2702ce57d571@gmail.com>
+In-Reply-To: <20260105-define-rust-helper-v2-14-51da5f454a67@google.com>
 
 
---muncmzujuwzhebe7
+--b724s7lxgfngeqjj
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 0/2] rust: pwm: Fix init error handling and tidy style
+Subject: Re: [PATCH v2 14/27] rust: pwm: add __rust_helper to helpers
 MIME-Version: 1.0
 
-On Fri, Jan 02, 2026 at 09:51:40AM +0200, Kari Argillander wrote:
-> This series contains two small updates to the Rust PWM bindings.
->=20
-> The first patch fixes a potential memory leak on an error path during PWM
-> chip initialization. Someone needs to decide if this goes to stable.
->=20
-> The second patch is just style-only cleanup.
->=20
-> Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+Hello,
 
-I applied these with Michal's Ack to
+On Mon, Jan 05, 2026 at 12:42:27PM +0000, Alice Ryhl wrote:
+> This is needed to inline these helpers into Rust code.
+>=20
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Cc: Michal Wilczynski <m.wilczynski@samsung.com>
+> Cc: linux-pwm@vger.kernel.org
+
+Applied this patch to
 	https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for=
 -next
-=2E
-
-For now I don't intend to send the first patch to Linus for 6.19 and
-queued both for the next merge window. Please convince me otherwise if
-you think this to be wrong.
+as merge window material.
 
 Best regards
 Uwe
 
---muncmzujuwzhebe7
+--b724s7lxgfngeqjj
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlvwoQACgkQj4D7WH0S
-/k6JswgAmWFOKTXa0Hy6P8v8S4w1IF6Y4/KJ5gc9noW2QnhlGY0DESZ2/1QOEbmt
-02ZxTWc8NDukwoM+/b+hFa/RsrWYATA3yfbdLVd5/0MtQHcbHjCfmWfRGA+VnUou
-rIrZzaF+Ocflpa7mzcVxQ/AdXuT2Dp7ggLM6AduDqy3ZeLzlUhhnLBoWQPioq9j2
-5yU95K2nrzPaELGArWRRjwJYkAuLsCsIoTUvzwP5kY4PvQbG8pVmRpuoWq5Zol5O
-whk4T7/i3H6Q2j6eYrVIORhPRePGiCSe+4Xarnl5J4nAGi2+OJ9By0h1WxrpInPF
-ZxMmULoi7gSa2lCQ6Od5nTS/KRVLgg==
-=mJu7
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlvwx4ACgkQj4D7WH0S
+/k7S9Af8Df5IfayQwO2CKCypBfDYh3ig8BbcsVXk1PrCDqs4gsZ/tsbSTUwWoYgI
+Id+1r1kUyJ7ssv7Jsh4IBW6Yu46TKFKVUtzDVKveNKFlL+aYn9zdipnYr8xH53u5
+ibLNg7n6CnI7hP2oYb1+nnZpCWdOBufQXm9zapjIMkTXl0bMrndlHyVZI+gz+bWD
+f8fhMKfKiHPp9Oq5wBMO3tAhAqt6EO1XJnVyM9EoJG8gx5cX8E4oclQun92XzR0h
+eR/RdRi7aMeX3WOolRzH8EWeb1ZSFyfOPltbocl3wAvQw4Ojc4Sx14xTXr6IH+Y/
+1I56LvvHrlkqyRoflNIHFXAy0fO0Nw==
+=a+NJ
 -----END PGP SIGNATURE-----
 
---muncmzujuwzhebe7--
+--b724s7lxgfngeqjj--
