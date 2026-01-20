@@ -1,156 +1,206 @@
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088E81D5CD1
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 01:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7982DA77E
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 02:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768872128; cv=none; b=OMOnfojBBKIjHSuevrC78oIaWuwu1/tAqUF1TQi8eSqnM+o6CmNJG2BHhSXBfTc6/Uanc1dm4cdseEoIO9pq5fA+Vv7LgU5hl2YJrLzcWzd+Hgat0MngmahjzLiKUyUhkb55pTb/mj48qxW53oePAgEag6pwzir/7aHhxeLWGt0=
+	t=1768877775; cv=none; b=Vv1GlOssTWzC6aNXhOHZIPPz4YXAdmnfgH6j8808HQDNBKpG9/bDr+YZt5BFcIEG9dcwY559S+TAas12+31kXvFvSHxvjJSaQxq6gRC6cm0axlw0le9anQ8LuTHi2FUkxRZzbdpe5pmrbH4HXEIA4KK8BVDAp5VfVHsvH96x3Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768872128; c=relaxed/simple;
-	bh=YoizsBHu3n79Xc3tQ0T9Y9HP9MXevKG5MURuvkI55OM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ejgQZwzml7dYnVGNFk+SXCU82cGpMCWkV82c/Vt8TSetuzBtJ4kLLzqKGy++YnMXXoF4ofGEtG7Znfk9S8EeZMIu5coABnuwCTkObwYbU3Rij3HPpgHVtNz5l1tFDig6V6k938OQ9k1ap2uBA53hU7ofzN7BQ+Yzbrp+DFn8ngM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AbDDVIXr; arc=none smtp.client-ip=209.85.167.176
+	s=arc-20240116; t=1768877775; c=relaxed/simple;
+	bh=LjNcosoBkd+hXxP41Og1FVblSHJi2Fltz3fRwIqy8ws=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XbkCgZ+8rzLuZxTGDbvDERpXw8UGHVEqYK4qmK2D9XIwdG8G/yjBOuUsNjyOO7BWMvuQrIVsj9wnaKCuIZbcdbvmNq53G983H0N4W838Od7pAmdm8/UgD88Ny56l2T5X9h9UwgYYXErfn9CF927aPVCL4iGMF6DmxqxLlywzNVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1IubWYg; arc=none smtp.client-ip=209.85.160.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AbDDVIXr"
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-45c798c92edso3015657b6e.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 17:22:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1IubWYg"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-502b698e510so23177881cf.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 18:56:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768872126; x=1769476926; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AcphxinHBu5Dt6Nikvz739mSNGlAYBODdeosdW4F0ig=;
-        b=AbDDVIXrt++mBOZ/AVYntQfg7a+dAEEzU5GMj3ULQ36jH2oZBsRXwoRQQMCIKgqfUd
-         A5m+/3V/D11x3+e1viI6QNNoHXA/zbuXMn4MawUtprmlWHx3rbtXK/bAJpEoTo/WKEuB
-         n8564ro7whyrjzIClb/gmTxNiWYQpiYkaCxeIuq+mxe0+6O8hVGlWJDb/eseUmRKu9sq
-         R+jQf6A+Qh9pMGRsPP0HdCK9wDm+Now6KaX8+9Xt7sSWSQTSex/nYhc0PuSYsjB2yfcv
-         eW58Niwrcsm3Y5lpYyuhk6i8qmHkfrGaBfolPXnW23goYnqg3Tqd6/XWl43znCRsihco
-         aEGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768872126; x=1769476926;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768877773; x=1769482573; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AcphxinHBu5Dt6Nikvz739mSNGlAYBODdeosdW4F0ig=;
-        b=BjKVisRjjIsZN1O+J3YZE3nijj+Qa6tquYuHkHGT1Cwft+WbK2U0oPWjYAhXXfC9Sj
-         sxysO9qM9RBqXLu6P+yZ6C2PvQpZgAbWO367MEiigw3Vy5EnL0NvHVS2r4K6X5Kdaedk
-         z9CJzsrjBUzN7E30xh/WO5mBe3rCkqvFYUen3LkZbMbswrbPoL58B6xkBhoT86+oQBjh
-         9I9RvqcFo25GAd6d4zwXM1I04piHvRhyFwENa50eydDx52Lj6Qd12ZySkti0d8Sz0VQp
-         t+57tLf7b6TGphQWItcXKzsprGVFg50hxg/YHilV2IRXJTehp1U3E8fRzLGK7rl+U+cg
-         JJGw==
-X-Forwarded-Encrypted: i=1; AJvYcCXi+tz7+R0f7wBBojP2LwOX5UfxofgOsjfr9BvvZ+wFZq/ZW5pfiQ/xxLnOt07Qngku/funmJXbU1OHn4A06A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7KbOU0v9dFzBh9Nszu1B5Z4GZxPhJsParTgQLBUDIy3g9QWHR
-	7DXeBgSARF4sMSfoYNSjhreMxBnhPtKfCZRemp8Cd6dr8BIu0O2l6BFAIWRL+A==
-X-Gm-Gg: AY/fxX7o5kRoza774j1/5a8k0cnuJYO1XZWLgGTdZwUBQmpg6b5RCpkI598cVMU4K05
-	RgkFNahEJJNNfBs5Y3Ht1NQgOy3az4RLzvGrYEhrBPFHT2dBshEFOj8eC35xOMgF2riX2hWt8Nr
-	Ro/jl/7mC0KbE6c7hbn5ClsOCeuGyZe8qllGe13xfKjaGQg2Vm+8nF4Wm2h1lHGN0eS8SUrr37h
-	ZfAE0x0ukcjddQydY8JB+cl1sjVc0v5455xzf785VQmW1NFAvolMEqH1QyQHMuzFKQe0pmdxbC0
-	UrYzpmpOa6ENyk6IdN2hURAZrzo6ZFcHgdvc+mcGwX3MtXU9Hop9ezxbYilANM/qTSK3J0FnedM
-	nBiqFFiDOMXqxH1y4QXPEDkWL8NUwNpWToydkE2YTWTm4pBMBOo7cG5rTMOyX1CcQjeVPAXVx9g
-	jYCDM+Au18RBkdlaj2gPc5jnzrzdOiuA1VXz270Q+7nO2wO5/lS/JN+664FsJ7Fw==
-X-Received: by 2002:a05:6a00:4394:b0:81f:61d2:849b with SMTP id d2e1a72fcca58-81f9f690012mr12626237b3a.6.1768865792216;
-        Mon, 19 Jan 2026 15:36:32 -0800 (PST)
-Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa108c51dsm10169203b3a.14.2026.01.19.15.36.29
+        bh=sUL8iaVLz+PdX8f+z3skj6jMr6TsFbqBgExIZRI0Ebw=;
+        b=G1IubWYgk2TLkqzXiprThzSfa0xLGavGSrX8o7M7mUEzFDGjATKMd2szLqZqd89C6J
+         rf51W8SfC0moQn9MomNnpuj/qjgA9pfZBvhnML0JmrOywU5oMTNcH3mM29e9DLX3VJpP
+         B2Lj9R5hSQTU/KyW4xHFMnc+gNKjfew2BYLk7mBYWFbL1kJUe71zEgAidQf5P9AZTgMm
+         ro3/nYnv13Ke4LOsoHqU6TpfVq6G/Vrfo68NErFqoBxCrWqi+/fPpkRQelBl3OMn3VtX
+         9olPAt5SxA7sFkDynPBiNIzADE+VqPTNBVnbssp7XetqcorTLEkKLOlSuWPTmDK71BjT
+         z9eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768877773; x=1769482573;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sUL8iaVLz+PdX8f+z3skj6jMr6TsFbqBgExIZRI0Ebw=;
+        b=vzsqk+pVveyBMd60WmQC2bZ3tsO6Al9MHoGyrh6Nr0HFnKDXx0xZVcFaaRoDHSyTTZ
+         I5DQw3El1/lUHnwxwiV5CfS2SjTMdCu4VOWQZ6IBywBJpaGDh/2ag2tsQgoYyNJBDpGM
+         WPgf/GRJpAjEBwcxsCOe0k4NJAD+0rCncA1vOtPLEM0hduv1rh5nYSlLRZnJQ8JXEEZL
+         8hP4KoAjzXXfiEQ+yU7kvr+sHduVdNYf8F5dkFXPpbPWa6e7ZGNgZpv8oI7rOL5A+GTL
+         EMERC+d3Z4KW2/MqYEb4d+f4v8WRWue55od9+TO1VdE+v2G3PFQCR2sDXqR0TW7FKkPR
+         PWFg==
+X-Forwarded-Encrypted: i=1; AJvYcCXpZzjNXXfqeWkcnwBTDp6YtbqvVcClaSiiE7cnnM7wjAFNG9qZm8b3H+yJ8TV/18NwCSsWHUwNcJk7ap8lzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYyVHHQs29ltuPHC0Cw3GxKUlFLOMk39e7uotkvrd7E1odgLOw
+	t3KSNlg4DbyFevzXdCVeysSEKE9Cw889eek8lnSEPNoWX/TyG+mwrhK8
+X-Gm-Gg: AY/fxX4EtOOMnIoAwEZwri0J4tvs84s9WVhiSQWxHw+/fmX29NiEjiidLx6TO3rdde2
+	LVxrglSRYgsn7vrZ7LgfK2USNl3XveRYfnWAveaPpHJMMtp/8pAN0nhqXYFHQYNtOjptvvZ9YVU
+	UGBA3o+qiLLFLKg0Yz6okTtfsa9b7yLuFQK8fhZz+NF9j0l6zrbVbgFDkXXlG+pDSWpo+fd9wpf
+	ik3D8oTn7jkfjYcg+doPmH9IMZrcxmnx7GPtV5zGuN4k5+Rk6hrGV9Ps22qLlJxn5PMxks409IC
+	vxwxkqK3ebIg7zjnPQ1AbNfHY02dbK+HzCmHF05h29IQYHVQ+2TsI/MZw+FKrUu9R4+Rbhz+pLR
+	KMp0jAGhuqvs61cJjZ3rTPJ0xfAK8yc9Eg+kSyr6xuBdjMP3xw0LatHucmq+oHzcfUIHkJIH6/F
+	Ox4Xo8zciIPeeixgcHSSg+NK6978bQMi9UULRRT55YWIzSuj7wvPMyisURyM7L1OzWvAxU9Ip4U
+	bBChQx68bzEdl0=
+X-Received: by 2002:ac8:7fcd:0:b0:501:1458:b3c5 with SMTP id d75a77b69052e-502a1f99ed8mr182519291cf.67.1768877772701;
+        Mon, 19 Jan 2026 18:56:12 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6031b4sm93625526d6.15.2026.01.19.18.56.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 15:36:31 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org,
-	ojeda@kernel.org
-Cc: aliceryhl@google.com,
-	anna-maria@linutronix.de,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	frederic@kernel.org,
-	gary@garyguo.net,
-	jstultz@google.com,
-	lossin@kernel.org,
-	lyude@redhat.com,
-	sboyd@kernel.org,
-	tglx@kernel.org,
-	tmgross@umich.edu,
+        Mon, 19 Jan 2026 18:56:12 -0800 (PST)
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9A98DF4006A;
+	Mon, 19 Jan 2026 21:56:11 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Mon, 19 Jan 2026 21:56:11 -0500
+X-ME-Sender: <xms:y-5uaemikq4lBJ1waGA6it7OGVomhFYH9sK76LRZsMr30yqBJ_w10w>
+    <xme:y-5uaZimXu1nOLwOZX06DPMMG_zKSd2yWLUCOFkVF3EO1DFMgCTHCk62rYh0pfPO4
+    Qo-O-wUtnZ2VoyBlLFNXg8IIxkg5uAonOEsWpBZpUVetgtGijSwbrY>
+X-ME-Received: <xmr:y-5uaVTMkEargZjYXgqJqXmN8ZadJHK2vTddllWd--LDFuHXe2ZHdEpO>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeelvdekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrdgtohhmpdhrtghpth
+    htohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhiisehi
+    nhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    oheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepsghjohhrnh
+    efpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepuggrkhhrsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:y-5uaT-_KomPAgVZHObaWwAfBrgsZOQ4iiBa8G3Cb_V5rnsJxafBIA>
+    <xmx:y-5uaeOPhN6AG6rhBWv6Pi3-4nyZ4avrSEMtLW5vkQpJWWraZfCMAg>
+    <xmx:y-5uach0GfXBrCDsPIs3t_iCiSRi_Kt1GgvbtqoYJckIEhEFZoPvvg>
+    <xmx:y-5uaZn8nTXsaBno348SSMM3TV2EAPAuwf4PejfKm4epSVE9J2Ssig>
+    <xmx:y-5uaRODIpGh2CMs0oyZbhjQOA4DN9Y7OjTs9EkbF6qs1GjGvFC40GDc>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 19 Jan 2026 21:56:11 -0500 (EST)
+Date: Tue, 20 Jan 2026 10:56:09 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: ojeda@kernel.org, peterz@infradead.org, will@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
+	lossin@kernel.org, mark.rutland@arm.com, tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v1] rust: time: Add Delta range constants for time units
-Date: Tue, 20 Jan 2026 08:36:21 +0900
-Message-ID: <20260119233621.3465304-1-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH v4 1/2] rust: sync: atomic: Add
+ performance-optimal-integer-backed Flag for atomic booleans
+Message-ID: <aW7uybpl1rIYRffg@tardis-2.local>
+References: <20260115021230.3297420-2-fujita.tomonori@gmail.com>
+ <aW2HQvo2h46WecQ3@tardis-2.local>
+ <20260119.121025.255021656975699898.fujita.tomonori@gmail.com>
+ <20260120.080851.1721614339637284826.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120.080851.1721614339637284826.fujita.tomonori@gmail.com>
 
-Add MIN_*/MAX_* constants for Delta::from_micros(), from_millis(), and
-from_secs() constructors, and update their documentation to reference
-these constants instead of integer literals.
+On Tue, Jan 20, 2026 at 08:08:51AM +0900, FUJITA Tomonori wrote:
+> On Mon, 19 Jan 2026 12:10:25 +0900 (JST)
+> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+> 
+> > On Mon, 19 Jan 2026 09:22:10 +0800
+> > Boqun Feng <boqun.feng@gmail.com> wrote:
+> > 
+> >> On Thu, Jan 15, 2026 at 11:12:29AM +0900, FUJITA Tomonori wrote:
+> >>> Add a new Flag enum (Clear/Set) and implement AtomicType for it, so
+> >>> users can use Atomic<Flag> for boolean flags.
+> >>> 
+> >>> The backing integer type is an implementation detail; it may vary by
+> >>> architecture and change in the future.
+> >>> 
+> >>> Document when Atomic<Flag> is generally preferable to Atomic<bool>: in
+> >>> particular, when RMW operations such as xchg()/cmpxchg() may be used
+> >>> and minimizing memory usage is not the top priority. On some
+> >>> architectures without byte-sized RMW instructions, Atomic<bool> can be
+> >>> slower for RMW operations.
+> >>> 
+> >>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> >>> ---
+> >>>  rust/kernel/sync/atomic.rs | 71 ++++++++++++++++++++++++++++++++++++++
+> >>>  1 file changed, 71 insertions(+)
+> >>> 
+> >>> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+> >>> index ca9cab77abf0..58f57903460f 100644
+> >>> --- a/rust/kernel/sync/atomic.rs
+> >>> +++ b/rust/kernel/sync/atomic.rs
+> >> 
+> >> I prefer we can move `Flag` into atomic/predefine.rs, I queued in
+> >> rust-sync with the following version, please let me know whether it
+> >> works, thank you all!
+> > 
+> > Works for me, thanks!
+> 
+> If we like to keep the intra-doc-links, a workaround like the
+> followings seems to be necessary.
+> 
+> diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+> index f6c7538cb47b..92e312c06595 100644
+> --- a/rust/kernel/sync/atomic/predefine.rs
+> +++ b/rust/kernel/sync/atomic/predefine.rs
+> @@ -156,6 +156,13 @@ fn rhs_into_delta(rhs: usize) -> isize_atomic_repr {
+>  /// flag.store(Flag::Set, Relaxed);
+>  /// assert_eq!(Flag::Set, flag.load(Relaxed));
+>  /// ```
+> +///
+> +/// [`Atomic<Flag>`]: kernel::sync::atomic::Atomic
+> +/// [`Atomic<bool>`]: kernel::sync::atomic::Atomic
+> +/// [`Atomic::xchg()`]: kernel::sync::atomic::Atomic::xchg
+> +/// [`Atomic::cmpxchg()`]: kernel::sync::atomic::Atomic::cmpxchg
+> +/// [`Atomic::load()`]: kernel::sync::atomic::Atomic::load
+> +/// [`Atomic::store()`]: kernel::sync::atomic::Atomic::store
+>  #[derive(Clone, Copy, PartialEq, Eq)]
+>  #[cfg_attr(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64), repr(i8))]
+>  #[cfg_attr(
+> 
 
-This improves documentation readability and makes the valid ranges
-reusable.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/time.rs | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+Good point! I was missing that, however I think we could use `super`
+instead of `kernel::sync::atomic` in this case. Already pushed to
+rust-sync with the following changes, thanks!
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 6ea98dfcd027..7b3d9795f322 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -363,9 +363,14 @@ impl Delta {
-     /// A span of time equal to zero.
-     pub const ZERO: Self = Self { nanos: 0 };
- 
-+    /// The minimum number of microseconds that can be represented by a [`Delta`].
-+    pub const MIN_MICROS: i64 = -9_223_372_036_854_775;
-+    /// The maximum number of microseconds that can be represented by a [`Delta`].
-+    pub const MAX_MICROS: i64 = 9_223_372_036_854_775;
-+
-     /// Create a new [`Delta`] from a number of microseconds.
-     ///
--    /// The `micros` can range from -9_223_372_036_854_775 to 9_223_372_036_854_775.
-+    /// The `micros` can range from [`Delta::MIN_MICROS`] to [`Delta::MAX_MICROS`].
-     /// If `micros` is outside this range, `i64::MIN` is used for negative values,
-     /// and `i64::MAX` is used for positive values due to saturation.
-     #[inline]
-@@ -375,9 +380,14 @@ pub const fn from_micros(micros: i64) -> Self {
-         }
-     }
- 
-+    /// The minimum number of milliseconds that can be represented by a [`Delta`].
-+    pub const MIN_MILLIS: i64 = -9_223_372_036_854;
-+    /// The maximum number of milliseconds that can be represented by a [`Delta`].
-+    pub const MAX_MILLIS: i64 = 9_223_372_036_854;
-+
-     /// Create a new [`Delta`] from a number of milliseconds.
-     ///
--    /// The `millis` can range from -9_223_372_036_854 to 9_223_372_036_854.
-+    /// The `millis` can range from [`Delta::MIN_MILLIS`] to [`Delta::MAX_MILLIS`].
-     /// If `millis` is outside this range, `i64::MIN` is used for negative values,
-     /// and `i64::MAX` is used for positive values due to saturation.
-     #[inline]
-@@ -387,9 +397,14 @@ pub const fn from_millis(millis: i64) -> Self {
-         }
-     }
- 
-+    /// The minimum number of seconds that can be represented by a [`Delta`].
-+    pub const MIN_SECS: i64 = -9_223_372_036;
-+    /// The maximum number of seconds that can be represented by a [`Delta`].
-+    pub const MAX_SECS: i64 = 9_223_372_036;
-+
-     /// Create a new [`Delta`] from a number of seconds.
-     ///
--    /// The `secs` can range from -9_223_372_036 to 9_223_372_036.
-+    /// The `secs` can range from [`Delta::MIN_SECS`] to [`Delta::MAX_SECS`].
-     /// If `secs` is outside this range, `i64::MIN` is used for negative values,
-     /// and `i64::MAX` is used for positive values due to saturation.
-     #[inline]
+Regards,
+Boqun
 
-base-commit: 2ad6c5cdc89acfefb01b84afa5e55262c40d6fec
--- 
-2.43.0
-
+------------->8
+diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+index f6c7538cb47b..5faa2fe2f4b6 100644
+--- a/rust/kernel/sync/atomic/predefine.rs
++++ b/rust/kernel/sync/atomic/predefine.rs
+@@ -156,6 +156,13 @@ fn rhs_into_delta(rhs: usize) -> isize_atomic_repr {
+ /// flag.store(Flag::Set, Relaxed);
+ /// assert_eq!(Flag::Set, flag.load(Relaxed));
+ /// ```
++///
++/// [`Atomic<Flag>`]: super::Atomic
++/// [`Atomic<bool>`]: super::Atomic
++/// [`Atomic::xchg()`]: super::Atomic::xchg
++/// [`Atomic::cmpxchg()`]: super::Atomic::cmpxchg
++/// [`Atomic::load()`]: super::Atomic::load
++/// [`Atomic::store()`]: super::Atomic::store
+ #[derive(Clone, Copy, PartialEq, Eq)]
+ #[cfg_attr(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64), repr(i8))]
+ #[cfg_attr(
