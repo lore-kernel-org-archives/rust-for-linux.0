@@ -1,48 +1,48 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B60F34889F
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEB7347FCD
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768898332; cv=none; b=k2FAhsM4ZHX3/VnEvG3HPqaSJkz2hk/KfGaIb82tZkYbAEHn/cUsv1nEMoFHccO+yhF6z1m73aUjxAuPOP58LjuLqK1o9/HGGTzPtjQYlFWRcgegd67n+7JhaE9vU/zcl+lAQ0oNoZHEr/bIcz9o34FQz9kgAkg4OY4Xu9WNVAM=
+	t=1768898336; cv=none; b=ex5JV0jXnBThhSFnfyWTHBt9YnOb4MiKM4+ZW1fg5Jaij0IVnW+ONIO4oN6bzJWoMvRr18lRZm5sVkTHiAXlrn58sViM+b7K7vXua6E4yL/dA4J1ZuYalWahTm2OITDwcOy1HhbuE28K8kQ/mqtrRePpWX8ucpUJA+aPkpwgRMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768898332; c=relaxed/simple;
-	bh=lXR3Ma+I33V3Jf/pfylAs8varbYnhbu9R4uU93f7VPw=;
+	s=arc-20240116; t=1768898336; c=relaxed/simple;
+	bh=Opu1D2RjNfdP2fA1ZdybKGAdLJOesPAJ1vUr36aRdPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNQho4l2H1NJ+2n+5VbNViN6RjKPQQl7J/c2elaAdevNrp1/jhjjzSqEi58WoJJsiVodSOpSj7rwJG5OAxKjUuTYwFoGjId1OdYIFG+mm1HQHBKYh6h6lkmDn5NH6rzaDys4L5owXI9dkGarP/s1ec2b0D0nd5bGp0JyOrspPRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
+	 MIME-Version; b=aDrRJd6iJ7+I2bfh4s00l1n7TbMutB3JJyo2YRGv3t0LN1ebilQQr9KsT/xgcxhVcMzkLqf2N6PPt7ueXKkqdyXgFRrrdpRGvbYWAkYz3XETYxRFW9ctxJ6Kvg6cf/bUHUfjMMX8Tpkewpcu7PydtTt4KU/OtkYjahIdnH2wv/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29f2676bb21so51347405ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:38:50 -0800 (PST)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0bae9aca3so34302625ad.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:38:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768898329; x=1769503129;
+        d=1e100.net; s=20230601; t=1768898334; x=1769503134;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ai8xrbD1D9tiWYgy1snG9o9/fCZi/EtirUQvTWRvH8E=;
-        b=b9sq1ToySMalXFyrtoZ75dXvPk2HsiWxJGMWC4OYLLihAV2b2fwYfzaZCXVrcAVOMp
-         z4eF0Kmt/+6rVVPkaNdNMmpxVkKZ+YJc/fuRzDo8pjCp0fm5WeAf1lbO/W85f2872A05
-         PnEh8aBXdwsFvJgmwlk1k8Ir/fszMqkE7+HsHT1SqYOZ7GKCD5n9B0+G9Rjr9c7vQp1Q
-         y2i8ZrMsciE1R0f8WA7ySRROqdDLsGpFbhXI4nhKXaWsCTGWs7u6DsFfzvEkjoNmNuEh
-         EeaHgsyC+UKUrLm2bg/lGkNfEQrEKfs1QS6KKFbPjDe254hBREJ/8pF+iPtuhrPMoV9n
-         QY7A==
-X-Gm-Message-State: AOJu0YyDRehta2fetA0B65+WRgBkR518lcTXCqOTe37OXvu4V8bJBox6
-	CBX8d9mi7XZZMXjvIL4iVR6PZzK93nWEC6mgUfgYMfbsmzT5AxA9VNfTO69E3Q==
-X-Gm-Gg: AZuq6aJD09SzKzJrlqNHb0o2wXj6XHNg3gqcm8xHeAvIceEgBK7e9LehmFekvRHE2NI
-	5dDDbrqCHKQS33gJ+Dzj8Y5Fo5zX51nUH1N8oHCLBpKVDEXE9Zw4tmd7qP90ilBgXjEN9KHvVvl
-	kYXdzRFHVOOSEs7AZSlyiyg3w6AJlOvc3KJ2WyRwHYjdf9KfUiogPBbZnRJelrC9nxOHc4TWUR2
-	ZTAwBpwd74kAoRAuTL625EmpqNxL0Lvs9oyqs54q90XqEhzFxYOrVPNTanafmbxfor9llnl4VkN
-	jtKW6/2yW+LOaFQVomDv19lImIL8RiLxT3F35ADGK9olvAJ/fGlHZM03Q0W/m7TAKUhxzQlxvUP
-	aUpUu9oTKwEwALA1frKci7xMCOPzb/oHqK7mD7oNOr30urqVK9v3Hxit3d26/XHI9V6lmn7OHOc
-	gh86GnJd6g9gPBGD6Fl20=
-X-Received: by 2002:a17:903:247:b0:298:3892:3279 with SMTP id d9443c01a7336-2a71887c4a7mr137423255ad.17.1768898329429;
-        Tue, 20 Jan 2026 00:38:49 -0800 (PST)
+        bh=B8rOtmZKuaNriBpYyMa83uJp/sBBJRks1Sjt+oph2IY=;
+        b=GfyMLVEawUdCiSUnGccdjxTfbXUhlZbyx+koKYfNGtCROwy+pi2M6shknoL3biDNmo
+         wJc0KVL2+tNcdtMcEDr88oC16BmhW8i3aBT9x84x5nmsI2wh65vPrINEujxiWUcrI+OR
+         83mrC8+6FyaoZXWpepucZLLmgKnFVmBHycUCsT5yhZeUdHmpJVqr1z4e/vM1BinS8Xfd
+         3WN97zczmfZM+QMEFTK7CqurIqI3kN1tRLGdpc+3mw/SiY7ls/psEgpAGUOL3nIO+bRT
+         uy/ByfLfTdzXpmY/xBKrjYUxNLQn6Nx3U2UaVKmBRGc41ROUOdiLOlpTgfAI+7DvgfXG
+         JYRA==
+X-Gm-Message-State: AOJu0YwHs0h0GR4zWbUTR6O8hENTjYEs5ZGD/ir2+L6pbrUhY9QtIa/+
+	Kv7OVB5BDwh5NjrKoZw+WzU5uffZyY9o/BddExMefsprZf5PUOkX4OgBJKm35g==
+X-Gm-Gg: AZuq6aLEv/dnLkuc8nV+keKkpFfdUXbNMsll/d/oNaFTQNC6htlSg5LKRSB2ExGVPRm
+	pwWhLSuc4+ARY95NBwHchQFnwVJgN0chw0sgZrhj53XCgxawGIA2s8PzMhSnOBoqYs59ydf+wrM
+	8scJty+XVUewJ8osWcvj0aADTBXRAxOvmQvgAN/5kVlw8o54IDFUyEpe44qA3ZR9GnvbqHBvRzv
+	lpXu6AKoytE1XTYfZDkzqaaRdWtfTyduqTxciKuYLvU7BWKALOOVPjASFQjlB9tmnp/d29BDdCV
+	hZ/qWYqreAg+LxrjValDlKA4Drg9zDDvu7vwwgv+eK6/u6haZNcwR2FGP8qEHYbCIjpNuOsuTUC
+	YjBqJQtpl/M/RXm6aZXFX97MCs+qxyMJukP27CyTOGyc3i076VPQ6f3yitsHIyTwNaMhWxhxlar
+	0GhO4mF8puqCiBdWKJdrcJFFxtyZwTtg==
+X-Received: by 2002:a17:903:238b:b0:29a:5ce:b467 with SMTP id d9443c01a7336-2a7177d74femr108783085ad.54.1768898333661;
+        Tue, 20 Jan 2026 00:38:53 -0800 (PST)
 Received: from localhost.localdomain ([45.142.165.53])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190c9edesm115114625ad.23.2026.01.20.00.38.45
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190c9edesm115114625ad.23.2026.01.20.00.38.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 00:38:48 -0800 (PST)
+        Tue, 20 Jan 2026 00:38:53 -0800 (PST)
 From: Ke Sun <sunke@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -55,9 +55,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH v2 3/7] rust: block: mq: use pin_init::zeroed() for tag_set
-Date: Tue, 20 Jan 2026 16:38:19 +0800
-Message-ID: <20260120083824.477339-4-sunke@kylinos.cn>
+Subject: [PATCH v2 4/7] rust: debugfs: use pin_init::zeroed() for file_operations
+Date: Tue, 20 Jan 2026 16:38:20 +0800
+Message-ID: <20260120083824.477339-5-sunke@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120083824.477339-1-sunke@kylinos.cn>
 References: <20260120083824.477339-1-sunke@kylinos.cn>
@@ -70,28 +70,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Replace unsafe core::mem::zeroed() with pin_init::zeroed() for
-blk_mq_tag_set initialization.
+file_operations initialization in all debugfs file operation
+implementations.
 
 Signed-off-by: Ke Sun <sunke@kylinos.cn>
 ---
- rust/kernel/block/mq/tag_set.rs | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ rust/kernel/debugfs/file_ops.rs | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
-index c3cf56d52beec..dae9df408a862 100644
---- a/rust/kernel/block/mq/tag_set.rs
-+++ b/rust/kernel/block/mq/tag_set.rs
-@@ -38,9 +38,7 @@ pub fn new(
-         num_tags: u32,
-         num_maps: u32,
-     ) -> impl PinInit<Self, error::Error> {
--        // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
--        // all are allowed to be 0.
--        let tag_set: bindings::blk_mq_tag_set = unsafe { core::mem::zeroed() };
-+        let tag_set: bindings::blk_mq_tag_set = pin_init::zeroed();
-         let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
-             .try_into()
-             .map(|cmd_size| {
+diff --git a/rust/kernel/debugfs/file_ops.rs b/rust/kernel/debugfs/file_ops.rs
+index 8a0442d6dd7a4..6648e6f464b1c 100644
+--- a/rust/kernel/debugfs/file_ops.rs
++++ b/rust/kernel/debugfs/file_ops.rs
+@@ -126,8 +126,7 @@ impl<T: Writer + Sync> ReadFile<T> for T {
+             llseek: Some(bindings::seq_lseek),
+             release: Some(bindings::single_release),
+             open: Some(writer_open::<Self>),
+-            // SAFETY: `file_operations` supports zeroes in all fields.
+-            ..unsafe { core::mem::zeroed() }
++            ..pin_init::zeroed()
+         };
+         // SAFETY: `operations` is all stock `seq_file` implementations except for `writer_open`.
+         // `open`'s only requirement beyond what is provided to all open functions is that the
+@@ -179,8 +178,7 @@ impl<T: Writer + Reader + Sync> ReadWriteFile<T> for T {
+             write: Some(write::<T>),
+             llseek: Some(bindings::seq_lseek),
+             release: Some(bindings::single_release),
+-            // SAFETY: `file_operations` supports zeroes in all fields.
+-            ..unsafe { core::mem::zeroed() }
++            ..pin_init::zeroed()
+         };
+         // SAFETY: `operations` is all stock `seq_file` implementations except for `writer_open`
+         // and `write`.
+@@ -235,8 +233,7 @@ impl<T: Reader + Sync> WriteFile<T> for T {
+             open: Some(write_only_open),
+             write: Some(write_only_write::<T>),
+             llseek: Some(bindings::noop_llseek),
+-            // SAFETY: `file_operations` supports zeroes in all fields.
+-            ..unsafe { core::mem::zeroed() }
++            ..pin_init::zeroed()
+         };
+         // SAFETY:
+         // * `write_only_open` populates the file private data with the inode private data
+@@ -288,8 +285,7 @@ impl<T: BinaryWriter + Sync> BinaryReadFile<T> for T {
+             read: Some(blob_read::<T>),
+             llseek: Some(bindings::default_llseek),
+             open: Some(bindings::simple_open),
+-            // SAFETY: `file_operations` supports zeroes in all fields.
+-            ..unsafe { core::mem::zeroed() }
++            ..pin_init::zeroed()
+         };
+ 
+         // SAFETY:
+@@ -343,8 +339,7 @@ impl<T: BinaryReader + Sync> BinaryWriteFile<T> for T {
+             write: Some(blob_write::<T>),
+             llseek: Some(bindings::default_llseek),
+             open: Some(bindings::simple_open),
+-            // SAFETY: `file_operations` supports zeroes in all fields.
+-            ..unsafe { core::mem::zeroed() }
++            ..pin_init::zeroed()
+         };
+ 
+         // SAFETY:
+@@ -369,8 +364,7 @@ impl<T: BinaryWriter + BinaryReader + Sync> BinaryReadWriteFile<T> for T {
+             write: Some(blob_write::<T>),
+             llseek: Some(bindings::default_llseek),
+             open: Some(bindings::simple_open),
+-            // SAFETY: `file_operations` supports zeroes in all fields.
+-            ..unsafe { core::mem::zeroed() }
++            ..pin_init::zeroed()
+         };
+ 
+         // SAFETY:
 -- 
 2.43.0
 
