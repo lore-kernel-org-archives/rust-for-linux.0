@@ -1,109 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C236644DB6A;
-	Tue, 20 Jan 2026 15:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD54A4508F5
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 15:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768922879; cv=none; b=S3WF2NGmRbmct2x0laUZ9skSTnzbI62QEj1cGgHFu0/mqqefkjrfJ7W9iRnRPTnN/70a9SN4Tpbok5mNakST79BVLI0BDLP6xbGM1BpOYEDc2CqXRSLkGfRTTl22HpnIfuQKrFDQB41sUYTVmLt6oJM827zD4dbD+L9fuWymjio=
+	t=1768922922; cv=none; b=m3U6OvQR4YQWLVs3OVrUGINIVFQ/v8kSr3f/qsMbNo26LhX7K2UZHbfyTqTA1dxGsjlNCSnJ7Myx8qxMKKe/4CG4YAAROfGNsZ5fE3B7NtdSJGAtql+sUZBzYsoohBKwr4a5dQirFAuA97+5xyHnd99JRNrZhkVXTr8n8US/O5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768922879; c=relaxed/simple;
-	bh=DAdfUhBZC+vDX30ufutripq2dqLFXhQ4wKrLozKOH2w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=d11YDR2qeOz2vDRwg+CXgHxkiyxnh3a7K34bHvmj/ryN6xVwggfBz9My9pkWFvUCorR0UpN4QeHG3Ix9wONw+hbVcoj3+qGI6zrdVx3ujuWxVjQvxA6xK6TvBOxMsnfuCMGN90Igxiam5zPatXK1GKyf/XO9Fc38MKbc03zljPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QetyZB5v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768922922; c=relaxed/simple;
+	bh=N1p2eB8cizghq/v2wz0MGbnVNRrBVHwcukqm9lffkkw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HTtUpOuCulmeZSt3Sx6ULoOb+WcgX2OkVJoZKzHdrVW05DptKhPMUECtFYvFqgcUJrtMYiC0duURVtkQzr8qeUNV4ZUW/HU2fHOlGs04Q3b/OM6LcqIHT496zu4Jsu716aPG2qgUtwoBKBpTApQAwHvxcobrX1LOkYUfB+jud9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RfT2R8Do; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QetyZB5v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C99C16AAE;
-	Tue, 20 Jan 2026 15:27:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RfT2R8Do"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731CFC2BCB4
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 15:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768922879;
-	bh=DAdfUhBZC+vDX30ufutripq2dqLFXhQ4wKrLozKOH2w=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=QetyZB5vMx9T47u/2IfwTYkVC2MaWRmtoUJKcSmR9hyq8oWyL9Cs9ts/ZJc9NJmTi
-	 w9pYjOAUh0dIuSDP9vs/Yb+fhKefcuuXfppednUfsRw/cWznxlTDIDyYroHBtGId4d
-	 yQyWujtuIXOv9UPs3Dd0XIQiISxvYuC94bSrfsw2kXHscmCrof7o4H1FHVWXfQzEGc
-	 wCBAhl9k4piELeY6X3hrkr5XQ3KqdXD1TX8I+cqo1DHEGbZ6IpVRHQAnFyfa1T28jC
-	 rGeMhOE8VLq9VhM5+xAPVLw4vByP2xGEauxhCyTzpWV3F1AJ7qd1RbXNMXovVFtyYm
-	 bYz8P0UP3sUAA==
+	s=k20201202; t=1768922922;
+	bh=N1p2eB8cizghq/v2wz0MGbnVNRrBVHwcukqm9lffkkw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RfT2R8DoRDuGQkPCQJoPMx7lBL9QRfBIZM+PWyCFQ4P4YcLiS8OY4bY319pVLbiBo
+	 ogKC1Fz0jHoeSNd0HPA20PIvEJwoLbkC0vRKJw6KUyJ7d6hyXP4JQfXI9xOuztFOJ+
+	 C1m1H1JHcIUYwqMAXAM77uqa400Av8yDYc/qa+aTjaWsQgq1OMk6oIDEVhyZxqU2tu
+	 WcRxb7QBIwwa6jnbbTMfNdK9RoPK8P7uwoGzN/GrbunvGUa/bGeHi6fDiSsi/gXYgr
+	 VrXY5XVyx8eUuD+q5IpZ2NXf/uLNBZuRz/wwoJ2Z64wr7VuT81H6E/T0ifI1y776DF
+	 qG7dt1JGCDUwg==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-382fa0dc9f4so60032911fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 07:28:42 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXhPAEpVwdB/EPPS+857QfVS4PqVSujVik6K6nlUYm3FMVTPQBds0hQZgXoVLKjKYD+Z/fE66muzRtwh3kW+g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9WB6bWnUGPUQKwKoEoEVZ/EdIE6zqiipCB9vyFoQmgsacbU12
+	Ob+SQpAZUM4dFUQ+FNGY5/4PcH8NvgT8WtE16WoLK7UXbcQjDQSbx8sluxqsOi6wqbK80f4L8iP
+	M2miklmFfQFFi5s7nOpOO8uex4hk0Xas=
+X-Received: by 2002:a2e:b8cf:0:b0:383:1832:958a with SMTP id
+ 38308e7fff4ca-385a54b99bcmr9040841fa.44.1768922921008; Tue, 20 Jan 2026
+ 07:28:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260120-ra-fix-v1-0-829e4e92818c@nvidia.com> <20260120-ra-fix-v1-1-829e4e92818c@nvidia.com>
+In-Reply-To: <20260120-ra-fix-v1-1-829e4e92818c@nvidia.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 20 Jan 2026 10:28:04 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9nhmTbGS0aeFkFnHLB=u_3g6A2qgpFhZu6E4oXrhP9U2A@mail.gmail.com>
+X-Gm-Features: AZwV_QhP_Ddj7lJs7tPk_tmydh7MIhX7Xt7MWWNNm2655zo1xcWwH_Gkb-SmWfU
+Message-ID: <CAJ-ks9nhmTbGS0aeFkFnHLB=u_3g6A2qgpFhZu6E4oXrhP9U2A@mail.gmail.com>
+Subject: Re: [PATCH 1/6] scripts: generate_rust_analyzer: rename cfg to generated_cfg
+To: Eliot Courtney <ecourtney@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jan 2026 16:27:53 +0100
-Message-Id: <DFTITPLFU1HB.3VCKBVLW2VCPI@kernel.org>
-Subject: Re: [PATCH 0/6] rust: add `bitfield!` and `register!` macros
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>,
- "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260120-register-v1-0-723a1743b557@nvidia.com>
- <CANiq72n9tSMFW1KHsLBLM-q47+4f7yM70CVFNVeg_3Q8i3RTvw@mail.gmail.com>
- <DFTGHU40Q7GS.2YXW1OUFRM2ML@kernel.org>
- <CANiq72=PWw6MW8NiHtFPmQ5C8xjzVJf2OOpVP2YQbsFqrB4XMA@mail.gmail.com>
- <DFTHCJYQHUHD.24MJ2SUFZDLTJ@kernel.org>
- <CANiq72m2tU-Zuv_MjLdjfK0qjE45YnuMmTTtrbzmrQ3=84ei=Q@mail.gmail.com>
-In-Reply-To: <CANiq72m2tU-Zuv_MjLdjfK0qjE45YnuMmTTtrbzmrQ3=84ei=Q@mail.gmail.com>
 
-On Tue Jan 20, 2026 at 3:57 PM CET, Miguel Ojeda wrote:
-> I want to make things easy for everyone, and I know there is pressure
-> to deliver etc., but yeah... I am supposed to also push back when
-> things get stretched a bit too much... :)
+On Tue, Jan 20, 2026 at 3:54=E2=80=AFAM Eliot Courtney <ecourtney@nvidia.co=
+m> wrote:
+>
+> This variable is for the cfg from generated files. It's also easy to
+> confuse with the `cfg` parameter in append_crate(), so rename it.
+>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
 
-I think it would be good if drivers other than nova-core would finally be a=
-ble
-to use the register!() macro, rather than having to go with raw I/O operati=
-ons.
+I have the same change sitting around locally.
 
-> Having said that, depending on what the "local bitfield!" entails,
-> i.e. how much of a hack/workaround/extra work it is, it may be best to
-> avoid it and go directly for `bitfield!`.
+Reviewed-by: Tamir Duberstein <tamird@kernel.org>
 
-I think it's just about pasting the current bitfield work into register.rs,=
- such
-that it can only be used from there. In a follow up we can work out how it
-should turn out finally and have to patches: 1. introduce bitfield.rs and 2=
-.
-move register!() to use the code from bitfield.rs.
 
-I also proposed that at the end of last cycle [1] because I think the two t=
-hings
-are mostly orthogonal and we don't need to stall register!() on the generic
-bitfield work.
-
-[1] https://lore.kernel.org/all/DDC49ZIRX79X.2Q4KW0UY7WUF3@kernel.org/
-
-> But for that to happen, we would need Linus to really do the -rc8, and
-> very fast agreements and reviews on it.
-
-The register!() macro code is worked on by Alex for about 10 month in nova-=
-core,
-the first RFC for general I/O infrastructure is from March 2025 and the cur=
-rent
-series has been discussed on the list for about two cycles.
-
-Given the above, that doesn't seem too unrealistic, let's see.
-
-> It seems to me the easiest is that I give you a branch/tag for you
-> (and others that want it) to merge with the `bitfield!` one next
-> cycle. That would avoid the workaround too and Alexandre having to
-> come up with another series etc.
-
-You mean a tag with the bitfield!() code? Yeah, that would help if we don't=
- make
-it this cycle.
+> ---
+>  scripts/generate_rust_analyzer.py | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
+alyzer.py
+> index 3b645da90092..c188d1f1fd5b 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -21,12 +21,12 @@ def args_crates_cfgs(cfgs):
+>
+>  def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, c=
+ore_edition):
+>      # Generate the configuration list.
+> -    cfg =3D []
+> +    generated_cfg =3D []
+>      with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
+>          for line in fd:
+>              line =3D line.replace("--cfg=3D", "")
+>              line =3D line.replace("\n", "")
+> -            cfg.append(line)
+> +            generated_cfg.append(line)
+>
+>      # Now fill the crates list -- dependencies need to come first.
+>      #
+> @@ -173,7 +173,7 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
+ternal_src, cfgs, core_edit
+>              display_name,
+>              srctree / "rust"/ display_name / "lib.rs",
+>              deps,
+> -            cfg=3Dcfg,
+> +            cfg=3Dgenerated_cfg,
+>          )
+>          crates[-1]["env"]["OBJTREE"] =3D str(objtree.resolve(True))
+>          crates[-1]["source"] =3D {
+> @@ -215,7 +215,7 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
+ternal_src, cfgs, core_edit
+>                  name,
+>                  path,
+>                  ["core", "kernel"],
+> -                cfg=3Dcfg,
+> +                cfg=3Dgenerated_cfg,
+>              )
+>
+>      return crates
+>
+> --
+> 2.52.0
+>
+>
