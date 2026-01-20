@@ -1,121 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7BA3B95F6;
-	Tue, 20 Jan 2026 18:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028C43F23B4
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 18:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768932777; cv=none; b=d+xMInm03qGZ4nE85MLs5ftSFrrvGFwg+XWf/juHU3ofbLHjjvf+Pn0jeKScQtLmrQJgX7GgJu0jTweeB3jnn1dcSMH5gXcvTPbKZNViVHElChnTO3C4n9P8JW2ts0/QIh0wjSKci76VNhOSz/1pp/sVCt8MbYVEVAjhiL3GiN4=
+	t=1768933150; cv=none; b=tb2IgfCmTbQC67OgVFjL/VyePH1w3DKKMRrYQIWkXeOcVFEAV8tgbS89Ll6Cwcg07Cnt9ZfPxX2440whpfDU1HpPr6Z1HZivYC9V4HhnsiYzbSg9SMfQSLahoJzz7fqeTeJ7cPuQ97g0NpIPmwmvjDb2CDpma0oyLIhAa3liQj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768932777; c=relaxed/simple;
-	bh=dCIEJ0G6o69ea1Bz0/r/qRT+iH22OxnaGUsP4EaI00g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uxb2lnLUJDyf1xORRztSRSsQyVkvYnKyXFlUE7zT2Bgk0FssuJAzdvA2FO2ack4DsIB6Hw+SaSF/pXgSQ2s3LCkeE0hWxho3kuFhK7jOOGPHfTwim8jSrPjfQJxBkb9vTs5DFvACZADa/orLSF1Cft8G74ryQtZVCf9XPqdO5BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pmoINzgv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768933150; c=relaxed/simple;
+	bh=DZHCHrPai1BOZjzmTZ9umyt/NN5XiM6GOrFB1Vta06U=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=M5xdisNMtMnCbgIpRUO7vnqlQkGRwYVjkfo+UnnUaWNgt0betEcE+L5PX12C28M7qbXyFudawphmj1KMkcYPlHPNkr8xnRunkk71iXHESVWaatYSl/6ROBziQMHIKcQDNAs2GlBk1W/DnJBThkgq6yoLVJ+V8LNc8kOrkhR4AWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rMovZpB8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pmoINzgv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B860C2BCB6;
-	Tue, 20 Jan 2026 18:12:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rMovZpB8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EB6C16AAE;
+	Tue, 20 Jan 2026 18:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768932777;
-	bh=dCIEJ0G6o69ea1Bz0/r/qRT+iH22OxnaGUsP4EaI00g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=pmoINzgv3VIPGxTRFl4ulPrVpPOnRcLdY0sn1dtmdwtf/gbxUbsrl8OsR93GaynKl
-	 7U5ieD28YEkz4C1wKjutoW6hxi2IsWSZUH/osOiJliJ/f/eLYD5fSn3YPd4LxOQEVX
-	 PqMsDP+AdgSq1pZ/NwH239GCULg7T794odUTezrOooOaOKEmhtMZ+4l4shTYn5q5+u
-	 v67hsSWgAXoPvn5sgkkztkliUovDmhpabg5866xpsV62KZfgZ1OPK/0XGYJ7OqKWMM
-	 Ge0P/FPGLyTKg3G4w9eLQAgjUsuI3oCyHqQtHdloOMFX/MB757GeRNcWAcsDUxjHwv
-	 snm3UJGab4oGw==
-From: Gary Guo <gary@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 4/4] gpu: tyr: remove redundant `.as_ref()` for `dev_*` print
-Date: Tue, 20 Jan 2026 18:11:09 +0000
-Message-ID: <20260120181152.3640314-4-gary@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260120181152.3640314-1-gary@kernel.org>
-References: <20260120181152.3640314-1-gary@kernel.org>
-Reply-To: Gary Guo <gary@garyguo.net>
+	s=k20201202; t=1768933149;
+	bh=DZHCHrPai1BOZjzmTZ9umyt/NN5XiM6GOrFB1Vta06U=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=rMovZpB8F5ReSdV8dzwdJlwVP3Bz/Wfssa0fCWrr2uhx+5Dafo19U8MrJxk4lDk9/
+	 apCvKGHAtRu0qdGfdDH1lrT9pVTIPHVp5XWC/fArUa79TXzV0dduXXF7BDsrwRcJ/f
+	 pD44ag4ozatad3RA8uWXcdMuC1n6i0LOvGlbOb59sImEDMHBCsYcazG/23OLPTH35h
+	 s9Fh4eIXg/lFP4Cu85jadqgmqmDfCFD/AJLWyWUk/YD7etdiCeScBmd+nsCmqlgonT
+	 8LoVzLnq5RNCaG5Lo3oWw6dMjD8mThmDpCL6qfVhsW+C/jn2N35L8bgZTcYGHEajeX
+	 Ea/4F8BmwU4JA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Jan 2026 19:19:06 +0100
+Message-Id: <DFTMGSPH6EGO.3NVQ4DRVVCDDF@kernel.org>
+Subject: Re: [PATCH v5 2/8] rust: debugfs: add Dir::empty() for conditional
+ debugfs usage
+Cc: "Timur Tabi" <ttabi@nvidia.com>, "Gary Guo" <gary@garyguo.net>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, <nouveau@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Matthew Maurer" <mmaurer@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260116214959.641032-1-ttabi@nvidia.com>
+ <20260116214959.641032-3-ttabi@nvidia.com>
+ <CAGSQo02KDAuHiec0vnZEYN45Tr-Kt8nWhUW41rHCQpnCTGpxNg@mail.gmail.com>
+In-Reply-To: <CAGSQo02KDAuHiec0vnZEYN45Tr-Kt8nWhUW41rHCQpnCTGpxNg@mail.gmail.com>
 
-From: Gary Guo <gary@garyguo.net>
+On Tue Jan 20, 2026 at 6:54 PM CET, Matthew Maurer wrote:
+> I thought the whole point of Greg's admonition to never report errors
+> and to automatically create no-op structures if debugfs was disable
+> was that we *don't* do things like this, and instead you just do
+> something like
+>
+> ```
+> // Always do this, whether or not debugfs is available.
+> let debugfs_root =3D Dir::new("my_thing");
+> debugfs_root.scope(data, name, |d, s| { ... })
+> ```
+>
+> If DebugFS is not available, it already returns an empty fake
+> directory. That variant of a fake directory is also size 0, so you
+> aren't paying anything to use it...
 
-This is now handled by the macro itself.
+Correct, I also explained that in [1]. This method may be useful if the dri=
+ver
+conditionally wants to provide debugfs entries regardless of CONFIG_DEBUG_F=
+S
+though.
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- drivers/gpu/drm/tyr/driver.rs | 2 +-
- drivers/gpu/drm/tyr/gpu.rs    | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+Of course, we should only introduce it if we have a user for it.
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 2a45d0288825..fe991d8cbb4a 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -140,7 +140,7 @@ fn probe(
- 
-         // We need this to be dev_info!() because dev_dbg!() does not work at
-         // all in Rust for now, and we need to see whether probe succeeded.
--        dev_info!(pdev.as_ref(), "Tyr initialized correctly.\n");
-+        dev_info!(pdev, "Tyr initialized correctly.\n");
-         Ok(driver)
-     }
- }
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index bfbf2a1d80e6..04a0a5d5ef3a 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -98,7 +98,7 @@ pub(crate) fn log(&self, pdev: &platform::Device) {
-         };
- 
-         dev_info!(
--            pdev.as_ref(),
-+            pdev,
-             "mali-{} id 0x{:x} major 0x{:x} minor 0x{:x} status 0x{:x}",
-             model_name,
-             self.gpu_id >> 16,
-@@ -108,7 +108,7 @@ pub(crate) fn log(&self, pdev: &platform::Device) {
-         );
- 
-         dev_info!(
--            pdev.as_ref(),
-+            pdev,
-             "Features: L2:{:#x} Tiler:{:#x} Mem:{:#x} MMU:{:#x} AS:{:#x}",
-             self.l2_features,
-             self.tiler_features,
-@@ -118,7 +118,7 @@ pub(crate) fn log(&self, pdev: &platform::Device) {
-         );
- 
-         dev_info!(
--            pdev.as_ref(),
-+            pdev,
-             "shader_present=0x{:016x} l2_present=0x{:016x} tiler_present=0x{:016x}",
-             self.shader_present,
-             self.l2_present,
--- 
-2.51.2
-
+[1] https://lore.kernel.org/all/DFR7AHOX0T8G.2NB9VOS3IZRZE@kernel.org/
