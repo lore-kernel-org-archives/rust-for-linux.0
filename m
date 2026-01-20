@@ -1,207 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D593B3B8D56;
-	Tue, 20 Jan 2026 08:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787533431FD
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768897396; cv=none; b=doI/TVbjPO1qR3LujNFL4muKMBAaQaoJFYL7qXoX2L+bju9XHn/1143VmlShkOKoeWw/i+xvh2p4B2YvJKrwxq1tytUOzjOsT1CXvq5hFeidP7Nkfhy8G9oEffHHEW9kb49UTVc2HjXvZmvuNpKsB/qmkPs1j/W+xLZGtBxtrQE=
+	t=1768898319; cv=none; b=uNhn7JezojiAhEylgHOBHGyFqEULstmGvteLOP9U0UJVilqIIPiid6jeP3dbey4GZTU6MtqK+Zh2E1VeXSQomvGmOEaGrFgrgzDueF0ygQobQXemLr9IRTd9VT3q5vOc0lHhvxeGMdtl7hwchm09AZKp8Ds5SZZEdG7yzql0npE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768897396; c=relaxed/simple;
-	bh=QdQWnSnN+umjKdCrKZk6xPb1oM/GCv4hPjfJvw/M8AY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LSOt0ZzDnjKmwbv0WkT8KgKfihd6zEUQFS2eBfhIzpMvUK402fWCz2oScN/CvJ2bNtM4zuGx2/UmNxkiI/0ODwAQfh/UKf/uAyDcC3q6jD2xM2sz4FeczSvjwD2MIACqJbQ+D8sD5OZelUXPgHvSRa7aqxdNAfTuQxma7Hqwf8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vt7cGTJn; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vt7cGTJn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCAEBC16AAE;
-	Tue, 20 Jan 2026 08:23:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768897396;
-	bh=QdQWnSnN+umjKdCrKZk6xPb1oM/GCv4hPjfJvw/M8AY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Vt7cGTJnwLb5Gfk/A8/ur3OGOIAyRIrcmJUzQeWUN5yk+zlBTMGnTZU97j9nlGEED
-	 KoapKlMik27lTh5QEUClwp93iE8KvSNSKKhSyKpCFlAE8AzS5xOE4T/VRMieoFL8pD
-	 HSU8VeTjQiE2WuC+mm4Nzmlz8NBB067bD2p4An3bgLHEiBSYYNQQgEejTcb5QT0cD4
-	 lABn2GgcK96nP3L6RMwTwC9PW01W6q8yVJtpBM4DDLH1WSMAQp/c+5PyxsS4caVYK7
-	 3iTY6gZ8NzB92UfzUWvRyfMGDgINq5p7ocGRl0T6Sp896Zu6EtWWnroHD8oV+rizT+
-	 z/JWRpQ+3sITw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, FUJITA
- Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org
-Cc: aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
- frederic@kernel.org, jstultz@google.com, lossin@kernel.org,
- lyude@redhat.com, sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v1] rust: hrtimer: Restrict expires() to safe contexts
-In-Reply-To: <DFSO4J9WM5BX.1H0OSQEII0KRB@garyguo.net>
-References: <M2M7QTmzyv0cuTcfmp8k-pHEgTa6pOlfONQW596m3-nM_3-fQoakLTxJy7SthiIlT_5I-07GG9On36gsydLT7g==@protonmail.internalid>
- <20260110115838.3109895-1-fujita.tomonori@gmail.com>
- <877btdpyz2.fsf@t14s.mail-host-address-is-not-set>
- <pDwjG06OA4rlC4rEeo6eo5jUcleIUV5jT_SGHgMmJumfm1YpZU6tXdsLV6UgaSBTvJFSVmPCgTju09jyU7Ih0Q==@protonmail.internalid>
- <DFSL81HEHYU6.8E3YYOXNV5C9@garyguo.net>
- <874iohptem.fsf@t14s.mail-host-address-is-not-set>
- <UWfowIYPYvjnylDlpyIzDvlnBLndFcpoYhkhjPT9aG7ynMqREHY8uigXm16cP6991vx-bEEAVgAVkA9lSGEK1Q==@protonmail.internalid>
- <DFSO4J9WM5BX.1H0OSQEII0KRB@garyguo.net>
-Date: Tue, 20 Jan 2026 09:23:04 +0100
-Message-ID: <871pjkpuaf.fsf@t14s.mail-host-address-is-not-set>
+	s=arc-20240116; t=1768898319; c=relaxed/simple;
+	bh=LLa1LQvSAhlvgqMmTcjCxlu3bNuGbAB9RUrYE5s1eS8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cq1Ld14ZJm7+WVKZ+7C+tRUI3apy8WazsHaYSbwz/v1q19M0GmMLjsiwRfnn4gw0K1+PXV4j6fpDzM9VseayxU2+r8rIHXaHntKqyAsmaqzZb4AoY5kLNzZbpUv4AsAjr+O8DsU/3CHRpwsHjWahrebs1u1rUhhwaQNW784Qju0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29f1bc40b35so51602445ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:38:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768898316; x=1769503116;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GTy7Gei9AY8cB8+6SRu94ohQCeLv8uIcQrsqZtsTuaE=;
+        b=lnYGMZd1fs8fX9Eccd5hgbCE0EEatBqPUNpLwlzj0Tr0cHSndmMt9ELDqxSkqMrPjZ
+         6ty41MYNy6Pl6noIaLe7Cq26TIz8L619akk9xiagzIZLagasBRNI19Au0y1oLldmbrox
+         okcjsEcnBdsdiK2EI3UAeSFDzWKjlRoUNNwZoXxLBfA3/5XuhurORBQ7+fbz20QupCdp
+         y7yzTdqHwx6ANXKtmY3Uj4DFs/czW6RsaISqtmuN1ra6H1T4DiZu0MosSIPHhil69x1/
+         eTb5ByVr5nkqfjbUO89uYTB9QJpK2Urf71YEEqIk44hAHLG5JpGi5LF087bDy71J/Cak
+         Mjmw==
+X-Gm-Message-State: AOJu0Yyoq9n4KnXfAyfux3AjQ9RNZKJxhkD7xnnwMAVrOFRWlRSnDT+6
+	016+IffmmKX4vUwosyJyIlRcGUUjM7IXIzgDXIwPmBjQGElyM5Rw5D8nHxJUnvZB7GU=
+X-Gm-Gg: AZuq6aIMuOZZQndaHtcRz+muZOAvKPJaNcPlRt3416QgGh4Cdh36XYwzuyt6E58JJgD
+	NbimfwrmHIBaetnPdW9Lo7KP0xAjzznwZBcY/p2CpR8qJACmReiKMIXLopozUrFVg7AFPgWxCCy
+	G5OgIGB+sZR9Xw7kSKTVbf5JKMWw+EWb1E6uAkRuDn8Y5ymcpm8+XCp1moNKnblRNVybtggTBlX
+	HfO20nOHtw30M/A5e9RSvdarykHWIagciwkebKdZHujkAmgb6FQVTCqhkbzLAemE70s+rov6dnh
+	hnmQgvKZcIiN9bRx9c46ENdO+w4VodbmLDcAbfFIEI6Gdl7izhjsDeZFXmKafFMTZzpfc+yJ6LN
+	3z5IwIfeycx8S+HnKGYkmjk4zQnHeS9lMtSkIiHlWpQjNX+A9N2wbHz1a9NHVSHs2CTJjx1BTr2
+	UT7Fi62YmR4cnaJw/+D3A=
+X-Received: by 2002:a17:902:cece:b0:2a7:5171:9222 with SMTP id d9443c01a7336-2a76b16452bmr10966605ad.49.1768898316377;
+        Tue, 20 Jan 2026 00:38:36 -0800 (PST)
+Received: from localhost.localdomain ([45.142.165.53])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190c9edesm115114625ad.23.2026.01.20.00.38.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 00:38:35 -0800 (PST)
+From: Ke Sun <sunke@kylinos.cn>
+To: rust-for-linux@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Ke Sun <sunke@kylinos.cn>
+Subject: [PATCH v2 0/7] rust: Replace unsafe core::mem::zeroed() with pin_init::zeroed()
+Date: Tue, 20 Jan 2026 16:38:16 +0800
+Message-ID: <20260120083824.477339-1-sunke@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Gary Guo" <gary@garyguo.net> writes:
+This patch series replaces unsafe core::mem::zeroed() calls with
+pin_init::zeroed() across multiple kernel modules.
 
-> On Mon Jan 19, 2026 at 2:29 PM GMT, Andreas Hindborg wrote:
->> "Gary Guo" <gary@garyguo.net> writes:
->>
->>> On Mon Jan 19, 2026 at 12:29 PM GMT, Andreas Hindborg wrote:
->>>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
->>>>
->>>>> HrTimer::expires() previously read node.expires via a volatile load, which
->>>>> can race with C-side updates. Rework the API so it is only callable with
->>>>> exclusive access or from the callback context.
->>>>>
->>>>> Introduce raw_expires() with an explicit safety contract, switch
->>>>> HrTimer::expires() to Pin<&mut Self>, add
->>>>> HrTimerCallbackContext::expires(), and route the read through
->>>>> hrtimer_get_expires() via a Rust helper.
->>>>>
->>>>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>>>
->>>> Patch looks good to me, but I just want to check with Lyude about their
->>>> use case in the rvkms driver. I think that is why we did the racy
->>>> implementation originally. In C we have stuff like this:
->>>>
->>>>
->>>>     /**
->>>>     * drm_crtc_vblank_get_vblank_timeout - Returns the vblank timeout
->>>>     * @crtc: The CRTC
->>>>     * @vblank_time: Returns the next vblank timestamp
->>>>     *
->>>>     * The helper drm_crtc_vblank_get_vblank_timeout() returns the next vblank
->>>>     * timestamp of the CRTC's vblank timer according to the timer's expiry
->>>>     * time.
->>>>     */
->>>>     void drm_crtc_vblank_get_vblank_timeout(struct drm_crtc *crtc, ktime_t *vblank_time)
->>>>     {
->>>>       struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(crtc);
->>>>       struct drm_vblank_crtc_timer *vtimer = &vblank->vblank_timer;
->>>>       u64 cur_count;
->>>>       ktime_t cur_time;
->>>>
->>>>       if (!READ_ONCE(vblank->enabled)) {
->>>>         *vblank_time = ktime_get();
->>>>         return;
->>>>       }
->>>>
->>>>       /*
->>>>       * A concurrent vblank timeout could update the expires field before
->>>>       * we compare it with the vblank time. Hence we'd compare the old
->>>>       * expiry time to the new vblank time; deducing the timer had already
->>>>       * expired. Reread until we get consistent values from both fields.
->>>>       */
->>>>       do {
->>>>         cur_count = drm_crtc_vblank_count_and_time(crtc, &cur_time);
->>>>         *vblank_time = READ_ONCE(vtimer->timer.node.expires);
->>>>       } while (cur_count != drm_crtc_vblank_count_and_time(crtc, &cur_time));
->>>>
->>>>       if (drm_WARN_ON(crtc->dev, !ktime_compare(*vblank_time, cur_time)))
->>>>         return; /* Already expired */
->>>>
->>>>       /*
->>>>       * To prevent races we roll the hrtimer forward before we do any
->>>>       * interrupt processing - this is how real hw works (the interrupt
->>>>       * is only generated after all the vblank registers are updated)
->>>>       * and what the vblank core expects. Therefore we need to always
->>>>       * correct the timestamp by one frame.
->>>>       */
->>>>       *vblank_time = ktime_sub(*vblank_time, vtimer->interval);
->>>>     }
->>>>     EXPORT_SYMBOL(drm_crtc_vblank_get_vblank_timeout);
->>>>
->>>>
->>>> Also, we got some new docs for `read_volatile` that allow us to read
->>>> memory outside Rust of any allocation that are not "valid for read" [1],
->>>> meaning racy reads are OK as far as I understand. So the original
->>>> implementation might actually be OK, although the number might not be
->>>> correct always.
->>>
->>> The wording is for MMIO and should not be relied on if the accessed memory is
->>> C memory. Also, `HrTimer` is going to be a Rust allocation.
->>
->> Why do you think the wording is only valid for MMIO accesses?
->
-> Because it is intent for this paragraph, and is mentioned in the text. This
-> specific text is introduced to allow hardware MMIO access and the need to be
-> able to access otherwise always-invalid pointers, such as pointers to 0 and end
-> of address space.
+---
+v2:
+- Remove all the comments about zeroability
 
-The text does not say "only valid for MMIO locations", it says "intended
-for". It also would make no sense if it did, because MMIO locations are
-not special in that sense.
+v1: https://lore.kernel.org/rust-for-linux/20260119065859.1914178-1-sunke@kylinos.cn/
+- First version
+---
 
->>
->> I guess you are right about the allocation being a Rust allocation,
->> since it is allocated by Rust. However, the value we interact with is
->> behind an `Opaque`, so I think treating this as a non-rust allocation
->> should be fine?
->
-> No, it is not. Opaque cancels out some alias requirements but it is still a Rust
-> allocation. Everything that Rust code interacts directly, and this includes if
-> the allocation is made from C side, must stay follow the usual rules.
+Ke Sun (7):
+  rust: auxiliary: use pin_init::zeroed() instead of unsafe zeroed
+  rust: block: mq: use pin_init::zeroed() for queue_limits
+  rust: block: mq: use pin_init::zeroed() for tag_set
+  rust: debugfs: use pin_init::zeroed() for file_operations
+  rust: of: use pin_init::zeroed() instead of unsafe zeroed
+  rust: pwm: use pin_init::zeroed() for pwm_ops
+  rust: security: use pin_init::zeroed() for lsm_context
 
-As long as we are not ever making a reference pointing within the
-allocation or doing non-volatile operations on it, it we should be able
-to consider the region as a non-rust allocation, right? If not, why not?
+ rust/kernel/auxiliary.rs         |  4 +---
+ rust/kernel/block/mq/gen_disk.rs |  3 +--
+ rust/kernel/block/mq/tag_set.rs  |  4 +---
+ rust/kernel/debugfs/file_ops.rs  | 18 ++++++------------
+ rust/kernel/of.rs                |  3 +--
+ rust/kernel/pwm.rs               |  4 +---
+ rust/kernel/security.rs          |  3 +--
+ 7 files changed, 12 insertions(+), 27 deletions(-)
 
-I am aware that this does not apply for the expires field, I'm just
-asking for the sake of clarification.
-
->
->>
->>>
->>> Even if we don't treat it Rust allocation, it's also only "fine" in a sense that
->>> you don't get UB for doing it. But the value you read can still be completely
->>> meaningless if the updater is not atomic (it would be valid compiler
->>> implementation to, say, turn a non-atomic write into a write of a garbage value
->>> and then an overwrite of the actual data).
->>
->> This is exactly the behavior I expect. In case of concurrent writes, the
->> value might be garbage, but in the absence of concurrent writes, the
->> value will be correct.
->>
->>> I think the usage you quoted is just wrong, as on 32-bit platforms this could
->>> well read a teared value.
->>
->> Referring to the C code above, it seems like what people in C land will
->> do is read the value until it seems to be stable yolo ahead with that
->> value.
->
-> It is non-obvious to me on why this code is correct. The updater seems to do a
-> hrtimer_forward_now and then call into drivers to update the vblank count. So
-> in this sequence:
->
->     CPU1                 CPU2
->                          first drm_crtc_vblank_count_and_time
->     hrtimer triggered
->     hrtimer_forward_now  READ_ONCE(expires) <- racy read
->                          second drm_crtc_vblank_count_and_time
->     store_vblank
->
-> you will get a teared read of garbage value while the vblank count is stable.
-
-Right, that is interesting. And it will not help them to flip the
-operations on `expires` and `count`. I guess they need to update `count`
-twice to make it sound, effectively implementing a seqlock.
-
-
-Best regards,
-Andreas Hindborg
-
-
+-- 
+2.43.0
 
