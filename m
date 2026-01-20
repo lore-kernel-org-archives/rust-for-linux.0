@@ -1,118 +1,152 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DD93A8FE6
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 07:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7776E407573
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768895763; cv=none; b=T/2C0wdHb1+z/2SFbFpXnwqB+PFSQKQBK57iSVyq+3rn0AGDNN6jQ4X2/JwwC+aXbiSLYcTrDksxnx+p66OWznu1Jrsj15B3oUoWfc55JXQEaXznRbKLlfomjEbJJW/2PjR9kpBbmJrJ6UqPMVkPUmkO5ach05Heve33+9tIPtc=
+	t=1768896109; cv=none; b=MOmI8w9YVI+HFuzAfhOaehnr9IQf3jkJpEpKgS4806rd/2R7vSyocjwM2c6INFfC7sVHxXSEflo8xEidff2bqOqAVKWmgKbraeGo/DejZuvmVOzrdBrb4zXoUrXyHadpXXOlBcchJyy9xX/Ehli8+tCkV4LA5usTKSSnkA/brVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768895763; c=relaxed/simple;
-	bh=Z1ON5Z0cSM7bM+AviLwpLgIcyBgMR16fKcb6Hq54fjE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VncK+S8D3dzUQikqqXRwPmbl7kFxgINp4eZuT2ZsUTdXKCBhiheHb6Z+QSavPvGbcF8xBSNLuQi2IsghT291rhfCYahx6hMaL8bIxkb4B7ngXSNCtdClX6Pk2XWmENf6e2hewgQXctia40RpNtA3NNaZ47DxPOTXku/i4rX1B4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q8bZIPoD; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1768896109; c=relaxed/simple;
+	bh=0vtMIkWvFv38BtB2UgJNGiK8/4dNFQkMGCAxXn5LHe4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m0OMylMvwdFaXFNQu7IHBznK309rYtmdWL/FM0Hv0SLMkg4tFIqDVYdPcSfxzcjWGIrrie/AC/kZfk+2Od56bq9DSzZBIhr5p0dxwlDlh1uFfJ/35ozEZDSMaFOh33+XKeRsUYV6i2UcUAL19RUCFfExkjMvkja90dmZqdkDTXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oen+uj12; arc=none smtp.client-ip=209.85.214.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q8bZIPoD"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430fcfe4494so5157713f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jan 2026 23:56:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oen+uj12"
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2a0fe77d141so33393665ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:01:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768895760; x=1769500560; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aCnJ8y0UYrlkUlqd4IHCJ2AeMARemKBN0GlGR7eCJus=;
-        b=Q8bZIPoD/eJUVL1Vge/90aosdkyJVfGVzxyGmGRMTcLDioR9/Tq2pIo/J4HoFiS3TC
-         3n+i86cfrxEHK2n0SDsQBC4Y90qgHe7nmGwhg+i1xDnG/nwrcGO4RNQn4SHReH3o8QTp
-         wunuUQCD+s+KCNE33GWp1e7hksuVAG8Eayd67gKv8wegkFMHJiAL2YmuWBPChouSyxeU
-         GbFLq5RAkRUtLRQPQxN/oiLWXveEsq8b/F7lSvum9xRhCXk/vlTRIA1l7pdDsuM/rxif
-         SPqNtzwNcJ9F2dxzNdiZ5f+B4bXcHHbM2hMaQvh5gM/PJp/eidMJmuK3C6vyqxVLdwN4
-         RQZg==
+        d=gmail.com; s=20230601; t=1768896106; x=1769500906; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ABvBbtXQdnWyWjUicvGm8YHeqIfqX8LGFS6NrmCUBwM=;
+        b=Oen+uj12t/T5JZ29/CrMYuuYa5z6h9R2CCb/bUnXmPWHf+DeHkqWY+jiKP8gyz6DIZ
+         OjnDuoSK9qGef1YVd2BjbIwtcILL2qGSzzLdr8yYSej1a5xEr9NFX7TX7Od6NxM3W9S+
+         F8Lcmg5pkazJS+jQVmf6WPY3X/8kV8rjpIDxEiFlHzn8/xSVjDjRjkADaw6woy+8m8CN
+         Z57iY3C/ha3Wu6Fwy2+g89hhhSVnA5ASLfm1sk/Hjp4QWhtyqvPz9qxYQTA1FS+HRywL
+         4FKCmRWGkO45VFyuTVSZiDfzIN0iPKHnW6rG/M8sbH6THwrgh6RnHsaBG/73rX8AxD6M
+         GUFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768895760; x=1769500560;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aCnJ8y0UYrlkUlqd4IHCJ2AeMARemKBN0GlGR7eCJus=;
-        b=MKQyOmMVMDFv2grY9oPx5S2dO9pDQx/1rJvuTthEpDbBZe41mqYe/ibpE/GfUhRJqm
-         Ho3Xw5XA9LgpKlEGX6CwWy9wc/9dCKRoSqKIR6eNYeYCntQan46/TVQTZjOjf5W9+m9R
-         1lMYI91efnrQgChbGZarewJ7GSBgfYBbQGF3obER9PXlEO801QMuHLOgXfbaMC8PgV1G
-         hZJfD1H28VVw/M/4x65n3Y/ObAGNL59zRKz79trzvUw/dNq0Yb9srnABn/C20mGDGtR8
-         FaOoIB9uupHC4/S6n6omouMa8Huf8tvsSmeNcByHwf8E4ZqVVxtJEwap6Mo1Dg9AyAmV
-         6f/w==
-X-Gm-Message-State: AOJu0YxGWjLrMdvj7/JaNAE/faw4Wp5JbEg0AgVXTCUSxd0HiAsrn2Mn
-	8mPsEl5wK2Ph/l7OaLGmMFzseID3ti+2es2dt53NIuBZCCusVwcdfdY673X0ggQzdHO9Txp2V8S
-	pYp5E82OryrIdrllLKQ==
-X-Received: from wrnv6.prod.google.com ([2002:adf:ebc6:0:b0:42f:b693:9d6])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5889:0:b0:430:ff81:2961 with SMTP id ffacd0b85a97d-4356a082ebfmr18818918f8f.51.1768895759472;
- Mon, 19 Jan 2026 23:55:59 -0800 (PST)
-Date: Tue, 20 Jan 2026 07:55:58 +0000
-In-Reply-To: <20260119133101.23708-1-jason.kei.hall@gmail.com>
+        d=1e100.net; s=20230601; t=1768896106; x=1769500906;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ABvBbtXQdnWyWjUicvGm8YHeqIfqX8LGFS6NrmCUBwM=;
+        b=rD7bioIZ5ve04I8cYqtd04+PLkJb9FYpJiE4SA/jje47RgCvK6MUwo+EibfJEeE7mD
+         tBxcd/sgSQ4bmshvaUolo8G2TNeRLoB5EHrxUSD3JK4+KzkQpxlZFUv9YCPeHm3s2ixT
+         QBOUi541Vl1jJo7sVrFjgHYmnjFVzzoJk8xJldjSGifQy67Fc86NhrsravYcxg72ULYF
+         HwZl9P+5p01cx4PZsQgjOh++3Pw7b1l1Fd/qYTcCadsPcDSxKZi3vT1dQn/+bA4gda5a
+         zngvcqKwSAO3LD9qyG9l6hIrTOyR37z9NNolxHDwmTI9Mh2q+Uqd7Mke9zGbpCQrB00K
+         4pEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXYwC40t9xfBEieP2boxSRihjGZt5kj8oz+9ht3lxnBUKDoA0iEJ39bBK+Q8LbgMzx+++Q2EhiM5AlwDUF6CQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYu4PCsGuSi9vk7I9GDTv9Pz7saz3nRbiUgSsq+UVtrExFEYjA
+	jJK5Ir9jU1rgIeEZb7lXaZCA2X48+5Ne26gHIGH9rlLAP5jikwHAA3g0
+X-Gm-Gg: AZuq6aJnIF4tCl+NPUUJ5Kz8G9LqdQiWB7ZiOAE1bK9Qv3wEiA+ejuLI2kSvT6O62Zr
+	cG2gjLzykR5S8KLhI3F4cXZr28hkIWHbe2pGsUr547w8pmjwb57tPWzFRZJAsswMD3gZB6wJCfQ
+	XSXaTYYGqTOL6Krgu/qLIF/WskWO0OwRzwHOUaBNweVm66tFz5MlGCxXEaD94l8EYt+yLaFYJd8
+	T6A1EV+4xAs6n9bNtD7d77w3VzthST0e+qG3gT54bpCufpM7hZE/efnjetvS7ArimKcqte36T+7
+	2+0QbqC8uypm9+wrWAj/hJ8BWdTyjl17pGBwwlAoVLZmVA++sBHUomUp+iRCWCBxa/Kqk8pyHe7
+	OWNH2+TAq5Y//R/2ll58i5uC9pOyvgkEuHUXMxs0psQWueU4JGEq3jVxHSmW+MlodlVjV
+X-Received: by 2002:a17:902:d488:b0:295:7b89:cb8f with SMTP id d9443c01a7336-2a717413b94mr107094885ad.0.1768896105606;
+        Tue, 20 Jan 2026 00:01:45 -0800 (PST)
+Received: from [10.0.10.3] ([2403:2c80:17::10:4008])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a71941c56bsm116454455ad.92.2026.01.20.00.01.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Jan 2026 00:01:45 -0800 (PST)
+Message-ID: <77d373dc-c5f2-4dca-b0d2-b5cee6a21b3b@gmail.com>
+Date: Tue, 20 Jan 2026 16:01:40 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260118142623.1188141-1-jason.kei.hall@gmail.com> <20260119133101.23708-1-jason.kei.hall@gmail.com>
-Message-ID: <aW81DrI7LT1fnLLS@google.com>
-Subject: Re: [PATCH v3] rust_binder: refactor context management to use KVVec
-From: Alice Ryhl <aliceryhl@google.com>
-To: Jason Hall <jason.kei.hall@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@google.com>, Carlos Llamas <cmllamas@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
+ callbacks
+To: Danilo Krummrich <dakr@kernel.org>, Ke Sun <sunke@kylinos.cn>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+References: <20260116162203.296844-1-sunke@kylinos.cn>
+ <20260116162203.296844-2-sunke@kylinos.cn>
+ <DFSN0O9RRVD6.1LCI38JKGO1R0@kernel.org>
+From: Ke Sun <sk.alvin.x@gmail.com>
+In-Reply-To: <DFSN0O9RRVD6.1LCI38JKGO1R0@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 19, 2026 at 06:31:01AM -0700, Jason Hall wrote:
-> Replace the linked list management in context.rs with KVVec.
-> This simplifies the ownership model by using standard
-> Arc-based tracking and moves away from manual unsafe list removals.
-> 
-> The refactor improves memory safety by leveraging Rust's contiguous
-> collection types while maintaining proper error propagation for
-> allocation failures during process registration.
-> 
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://github.com/rust-for-linux/linux/issues/1215
-> Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
 
-Thanks!
+On 1/19/26 22:32, Danilo Krummrich wrote:
+> On Fri Jan 16, 2026 at 5:21 PM CET, Ke Sun wrote:
+>> diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
+>> index baf1a8ca8b2b1..eddcc5a69db3b 100644
+>> --- a/drivers/rtc/dev.c
+>> +++ b/drivers/rtc/dev.c
+>> @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
+>>   		}
+>>   		default:
+>>   			if (rtc->ops->param_get)
+>> -				err = rtc->ops->param_get(rtc->dev.parent, &param);
+>> +				err = rtc->ops->param_get(rtc_ops_dev(rtc), &param);
+>>   			else
+>>   				err = -EINVAL;
+>>   		}
+> <snip>
+>
+>> +/**
+>> + * rtc_ops_dev - Get the device pointer for RTC ops callbacks
+>> + * @rtc: RTC device
+>> + *
+>> + * Returns &rtc->dev if RTC_OPS_USE_RTC_DEV flag is set,
+>> + * otherwise returns rtc->dev.parent.
+>> + */
+>> +static inline struct device *rtc_ops_dev(struct rtc_device *rtc)
+>> +{
+>> +	if (test_bit(RTC_OPS_USE_RTC_DEV, &rtc->flags))
+>> +		return &rtc->dev;
+>> +	return rtc->dev.parent;
+>> +}
+> I understand that the idea is to gradually convert all drivers to use the RTC
+> device, rather than it's parent device in RTC device callbacks.
+>
+> My main concern is that once that has been achieved it's still not what we want
+> to have eventually, i.e. RTC device callbacks should ideally take a struct
+> rtc_device as argument and not the embedded base struct device.
+>
+> I.e. we'd kick off a conversion process that won't reach the actual desired
+> state.
+Hi Danilo,
 
-Please send the next version as a separate thread rather than a reply.
+This is indeed an intermediate step.
 
->      pub(crate) fn deregister(&self) {
-> -        // SAFETY: We never add the context to any other linked list than this one, so it is either
-> -        // in this list, or not in any list.
-> -        unsafe { CONTEXTS.lock().list.remove(self) };
-> +        // Safe removal using retain
-> +        CONTEXTS.lock().contexts.retain(|c| {
-> +            let p1 = Arc::as_ptr(c);
-> +            let p2 = self as *const Context;
-> +            p1 != p2
-> +        });
+Full cleanup is in progress, but it's large and untested. I'm working on a
+complete cleanup involving ~190+ files across arch/, drivers/rtc/, and
+drivers/virtio/. Most changes are straightforward interface replacements,
+but some drivers need additional modifications. Given the scale, I haven't
+fully tested everything and can't guarantee correctness yet.
 
-Please use Arc::ptr_eq here too.
+The intermediate step enables gradual migration, allowing us to:
+- Clean up and test each rtc driver incrementally
+- Ensure correctness through gradual changes
+- Avoid breaking existing functionality
 
-> -    pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Process) {
-> +    pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
->          if !Arc::ptr_eq(self, &proc.ctx) {
->              pr_err!("Context::deregister_process called on the wrong context.");
->              return;
->          }
-> -        // SAFETY: We just checked that this is the right list.
-> -        unsafe { self.manager.lock().all_procs.remove(proc) };
-> +        let mut manager = self.manager.lock();
-> +        manager.all_procs.retain(|p| !Arc::ptr_eq(p, proc));
-> +        let len = manager.all_procs.len();
-> +        let cap = manager.all_procs.capacity();
-> +        if len < cap / 2 && cap > 128 {
-> +            let _ = manager.all_procs.reserve(0, GFP_KERNEL);
+Once all cleanup is complete and tested, changing all rtc_class_ops
+callbacks to use struct rtc_device * will be much simpler and safer.
 
-Calling reserve(0) has no effect. It will not shrink the vector.
+Currently there seem to be only these two approaches. I'm still waiting
+for Alexandre's suggestion on how to proceed specifically, but haven't
+received a response yet.
 
-Perhaps we should add a method to `Vec` for moving elements from one
-vector to another?
-
-Alice
+Best regard,
+Ke Sun
