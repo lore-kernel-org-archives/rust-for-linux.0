@@ -1,151 +1,309 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022138.outbound.protection.outlook.com [52.101.101.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBD2450916
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 15:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A6243CED7;
+	Tue, 20 Jan 2026 15:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.138
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768924111; cv=pass; b=Lu+gpo2+ixDIJllbhpMETZYbP66JzQJgSH286RD6T9plqQIiod/xkCmmTgLSlIo4SqkBLNrJmuqV7mtQZrXjEEi4bVJegcCtW9RsP5jVAIvtFYFCtTPxt+mvaGw1JJiivNnO1rIT61gNPkza4stI/UVMWkLg5odG1E3GKNUaQik=
+	t=1768924493; cv=fail; b=gJv50ALOjm6CYk7efrBlLTa9S2Nlj+ObHuF05sGiW3gcwGy6rVrwK7PF1zY+f+WogfmuETxRgpNrAvBaAU6DTbohXSjWeQtcWy5OCeO4CgQgH1o9zo657X8yMCVRUrfz+PLNl8zFP10pRxOEMzty/3dr24B7FglUJ5BcgR5lijc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768924111; c=relaxed/simple;
-	bh=iNS29Pvn7e4trT/66izyQW++U1iF/qAhxTr5wXYsUgg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=urfg6HmFQ+PQY02AHOxyfHpLMD5WogyX3VcqwR+KIYpGOZG9RBlBsxjsDH6s7r3FNoJIBIC/oKiGO+CzkLXTq46rUfcCegeX1ZBK+1o6dUTKCNzGGLxFzVuJOBHJwZzhGDBtVzXu2uNf+lKYDf7QLMWnCZXGAiE7wklbJeUWtxY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nS8dLvJD; arc=pass smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768924493; c=relaxed/simple;
+	bh=Vq94Y+iYiCR6p4FFrEcXXOjK4ict7/i6f3p6mHU2+Mc=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=Awc3UJK2MDmwMDEWszQwe/noIEYNhW8wbO608BIv0A6qcrKt4Zw4RpRmTiqHmeJnVkoyrkjstnPJDjSp+2DDfEtVJkhS4wfpId9ZSxBjvNACFyaiePJkSaqzOfRVy7gQgKcovOoxb9VMB7pUs1330wHMv9N2EShsmI6cTKe1UBM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=p6mCgt/R; arc=fail smtp.client-ip=52.101.101.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nS8dLvJD"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12336c0ae91so505216c88.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 07:48:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768924108; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dUN4Zc33sTn1gcYd8UIE7G56Lyhl87U6g3v2A/LtGyh+zKDaVHU5xzdQtMbDOOXDK7
-         EBD1A/ti8paeXsN7Z1HwpVE6q7naf5+N9KwE8y3bjSLsvjxkncymU7x+OdJd4IxB8vOM
-         LhumcBy3zU2zg8rVPKUVvWyJR0atXZsXEoCISf3Jr3dQuP6zaymCc6NLicsMWeoHWmWZ
-         3WOMKUqwV5Wez7v7KHHKvJDkqohBAga0CKC0/7pKe2a7QyLguOE9RtksWmGQ/EJaqMkU
-         wZ5HmrNdN6sTYwbQYXLmCDcjptkVDgHPaq9ewkJ59scI5hEk7M694rYlfF7w970NMCBh
-         8RKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iNS29Pvn7e4trT/66izyQW++U1iF/qAhxTr5wXYsUgg=;
-        fh=3IDXYgDuhT/uVDxw85c+foJuUvMXM5nkoz6mb0CIuQk=;
-        b=k19fZBbBZK9u9F7j28xwOci5CWiOCpIjs7zJ82joQa3WsnOdDBXbPuD1DuZxco1r+A
-         gAnCgy+cnLVirGaf0vhEubqiNIk/0axbdvLAIEPYURbMGOLeJcQ2bFzqHzkxiBhFiman
-         GlBSGPgIrN22g9MvzRQLum4mNPFcnV0Ojg0fUCZpD2n72r4yzGlDZGrIPQYn4mZ1AaA2
-         lhoXds3ei8QLTaZXRRqWWER8UH5U81Kn1f93ko2XzHfp+u7xO76L2b4inTj1ebycYZds
-         c/lGYFXAMfZgUFzO4gM+p0KoOi4bQa9PmREMBlv4J4cQaBplbYU55C+P+gAsjCp7P0UL
-         5IOA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768924108; x=1769528908; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iNS29Pvn7e4trT/66izyQW++U1iF/qAhxTr5wXYsUgg=;
-        b=nS8dLvJDpjYz+TV9GTwtzSvz1QHlHEkhWyI6WZkr0bU3+OGsThVTjsLefB6ayq6RLM
-         VjyQPQOsKtBB7nw/85HojmuSEzwybKWC3VDomOUPtzynPftwmDmSNmcKIeRccPszlvVL
-         0KVoOfoP9Lz1ZXDFF+trKlAbQNITegPYS7vaW0D9EL2ItYhXAzudQEAWqI3FkuuveADS
-         /pMEW1CjRE/z0ApdzH0w1JUUG1niBHNVPJuYQctnMn9d/IXfdKxqFemky9IIM7dXpC9z
-         DUt5fDdCaw/dizuun18odnxKSDzibbb6gi310AVCulFPD6Vrolt/FTCf8djUw3qtWn34
-         s6sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768924108; x=1769528908;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=iNS29Pvn7e4trT/66izyQW++U1iF/qAhxTr5wXYsUgg=;
-        b=bHOZ5vhFdDjqwz6gi9xsRlMHVo4Mgmrg5BStvJCnoJVcBHFEAZsagXRo7seV8uKPN+
-         CoAb7Jk5h3HHcWq6Q/ZlVnC5XUxSpri69B8KOOCKZO04muZaKYSEZIQhmOlmyse1HGoj
-         FNyNcuCGE2+pB7hNYyjks2MD5stWSsmPAwD8lw4n4FSuYeXrRlM3VWl+GxGz1WSLx+Vv
-         hpQeLT+a1uYw70qAb0HDwCC+FeMFGwtf21b9txSPPhUv/XmWqjelJQ2XbsLKgcKfF4C/
-         KzvTYHID42D0J9OWOCQU6gyoTWAz2FKT2aTKi2I3YJFrqGFlHwpbOagICxuUhoMaSMoG
-         5f/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVE5seoaqlO9ES16j3Ap/koaFA7E7IowpOeQ1wPjOl9rSbHWx+AZ6+d30P10HWvRKqRpjC8OP3BU4ucC7v2ng==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtYvM5VTARHl/Yb1WcDYxAQ7gSY901SSDRKXCzxJEtNakR01Q+
-	MVF651Tl7PL6K83OQ+2qh9KXxM5I+VYo1i+p35oKk4G2jJBurnn1sXetyXeS1zt3rg0zDh7KD9H
-	/d+X5/1/nPgKqyTra9/0QyYxoD8S7lFs=
-X-Gm-Gg: AZuq6aK3aTEPShi01SqQZlpYsbFKQWgnf9autEc117lcq7IRMOPzWNhtLwUrZWkPUzB
-	oM4Unz10+63JQKq+wiCDsm3FnuVUVLzCBafC7XlHv5M6800OZ6r0E6zz6gIeXQyFNzke1UuzJzl
-	ocebJ9SI24ReNH1ny2WWPJkMgnDH5dAFvkbdSlAO0Bl5NJVdYdwNpsurwCeUI71pXJ9O7Q1icRx
-	zgqpDYRZIe5IeBGPOlxzV9Bsn0vbtVgWJuPNqjb62/mfzebDrpoFBZkJ2JZNuYwHCABP8fp0s98
-	xK7/lgCpCwxTKU7ydHdmxXJS4NrqFbnbyBOxN7LrDkUzxDpBJlq97O1DHoyjUosxixW6dxxBYLy
-	PsrigXi8+LpMRHptlYfN+AIc=
-X-Received: by 2002:a05:7301:4342:b0:2ae:605b:d530 with SMTP id
- 5a478bee46e88-2b6f70d3a61mr1184164eec.6.1768924107387; Tue, 20 Jan 2026
- 07:48:27 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="p6mCgt/R"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dfxKN6hiFEGnHGM82Hokys339aIhO8wO6QalNos7diGbM2q+JdDPkE+Tm7RLD/4zP2xyE6CXaMV/18vjYw5viJJXGqe+EFq0kUc84DUQtPRk+YkKCKf5TBEgHUim4tkYK+eDvXXM7g8W2zjrcjVaYkzCUDFfgjwCCKbJ/7Oc//0ofrXmQ/tIGGkaZb3lam81hyXqDJRk2f41naJI9HjnpYZ84QWB7+VQKMF/z54oNn2AKTe9iYzzcTIH74p01HZ1FvKLsqehRB0L1hRjuWO5FK5Wf5q9JIOC+svs9uZk83+XoVNM5wlmYk4hQ9chgBa+8L2XVT+78X8TbopblVt/TQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yS7ug2G2js3A/F/KzOEsiDx5ZvelnD6UL6M63GbIuMg=;
+ b=bywQhGJ6L9LtVw/2BwJDbWMTi2Pe1kk02Cqc5DN0oAxk3T8HMEF0wpFFrPRcu46HkBAp0RE6k8MMEhmFpoIYKm5astt2ihco7R6Q/HiKaK3W8tfGHCQ6e55AvcvVE2SPle5iE7inhENIDxO+lty7mPyvowcV1qpxh4MlfMTlGYapwUYH9c/AZAYBy1aOLJd1XEBvnml9G0ub+5CZrK38Tufbe/dqCfP1SWxJgZUP4b+8Jma7fxBA/fxDrWRBRbpDSOK0qBeo49AChhLbSJKBZYQNAivNE3dXzUXBofmpk92h4eNFTU1aaJzwvYApKKWrDkpzAy9g8MRDSwBfiOw7ew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yS7ug2G2js3A/F/KzOEsiDx5ZvelnD6UL6M63GbIuMg=;
+ b=p6mCgt/RxOZ5lybE5iFkhfkZg9ZldTR1vaYdg9cNcnhK2+9L9XTtiNqjVMWYcQmoERXZPqQhuBRtlgMmPBfIP4cmOWK/As3xkEq6kjHz9IbGu/G/sNSHY2zN3/UquQG/MAUtwx2HPGX7Lm4KhMAWvjftiZYcqmVx6gFXEQPharU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO6P265MB6158.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2b8::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.9; Tue, 20 Jan
+ 2026 15:54:46 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.012; Tue, 20 Jan 2026
+ 15:54:46 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Jan 2026 15:54:45 +0000
+Message-Id: <DFTJEACENL9R.28V5QOJXXNM0S@garyguo.net>
+To: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Cc: <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
+ <smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
+ <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
+ <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v10 2/5] rust: io: separate generic I/O helpers from
+ MMIO implementation
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260119202250.870588-1-zhiw@nvidia.com>
+ <20260119202250.870588-3-zhiw@nvidia.com>
+In-Reply-To: <20260119202250.870588-3-zhiw@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0341.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18c::22) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260120-register-v1-0-723a1743b557@nvidia.com>
- <CANiq72n9tSMFW1KHsLBLM-q47+4f7yM70CVFNVeg_3Q8i3RTvw@mail.gmail.com>
- <DFTGHU40Q7GS.2YXW1OUFRM2ML@kernel.org> <CANiq72=PWw6MW8NiHtFPmQ5C8xjzVJf2OOpVP2YQbsFqrB4XMA@mail.gmail.com>
- <DFTHCJYQHUHD.24MJ2SUFZDLTJ@kernel.org> <CANiq72m2tU-Zuv_MjLdjfK0qjE45YnuMmTTtrbzmrQ3=84ei=Q@mail.gmail.com>
- <DFTITPLFU1HB.3VCKBVLW2VCPI@kernel.org>
-In-Reply-To: <DFTITPLFU1HB.3VCKBVLW2VCPI@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 20 Jan 2026 16:48:15 +0100
-X-Gm-Features: AZwV_QhhJK4UHBThj1zoWBcmtcNJ191v2d59EfoJ0Rnu-qpyRGh0hYU_h8TWd5Q
-Message-ID: <CANiq72ny=huNUmM7_1XjFyXZ_zvTFiAGwx4UB_dOxSaUx5VwOg@mail.gmail.com>
-Subject: Re: [PATCH 0/6] rust: add `bitfield!` and `register!` macros
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Yury Norov <yury.norov@gmail.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>, 
-	Eliot Courtney <ecourtney@nvidia.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Dirk Behme <dirk.behme@de.bosch.com>, Steven Price <steven.price@arm.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6158:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0e2b1c2-9ce8-49a6-64aa-08de583c3c5a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WlhzUzZjNkc5bERUWkpDK2Jya0I4ZHJBVTFkSzYwcDBEczdWcXlUZ2wvbGp2?=
+ =?utf-8?B?TDlhOGYzK3A4MjZmT1RxWU1EM3UwYWp6OG4rN3R4L3AwTEwrN0E5UkZFYzZ0?=
+ =?utf-8?B?aVRKV1QyNisxR254RWNyeXdPVUxNbm5XVGkwcVpFYnlIYVJ4M1ZaOEVaYzZK?=
+ =?utf-8?B?bjlNQjhwdEhLemdPNEtjcS9ucUdCY0lYbXVWZFlxK2dKeWlaUEZheFQ5REMz?=
+ =?utf-8?B?MmpaSWg4bVN4ODZlY1hiVzNsT2hiQnovK1krUWlPdkg4RzV0c0JmSUtGUzB6?=
+ =?utf-8?B?Z0pwSG5oUG9ZRkVYOWNEWmhQd25GK3NqV0RFVWxiVENjWUlldUVkR2RFRHhw?=
+ =?utf-8?B?QUdJQ0N4bEp1U3lnOUgwNXVEL2VmRlExUWJLMmZFSE1jbVRxOGxtenUxM052?=
+ =?utf-8?B?TmVZNUF4MTh3VGFVOWU4WUFIaGs3VlVma2xLc05kQnZZWUphUkk0SmQ5bEtW?=
+ =?utf-8?B?KzJibVpCTGllK3ZHa1d0K0lyRXMycUlxZmU4VVkrWHVManFKRVdmMW1zTTBt?=
+ =?utf-8?B?RlRJaHVGQmhIZE80ZEwrZmVjWW11UTdGVExJMzVsd2EybHY4Z0lpbFYyVmJ5?=
+ =?utf-8?B?Z2dYNDFPbWMyQUJ0ZE5EQmxTbnZHTVMvVU1ySFltUFBYb3JPQllHZGZkc0hY?=
+ =?utf-8?B?OHpzK1hiaTRlR21la3o1b2tyZzQySE1OYmZvcGdjYllrekFvdVF5VXAwRm9V?=
+ =?utf-8?B?aTYrMzRwTHB1YWFNQ3NKcElqVEkwbGNRYTNGL01sZXNWRldGWGJCcFZ4Nmg1?=
+ =?utf-8?B?c2dBTk1HQkYwU0lDdUprRU0weStLYkRWbmFicDRlMmZnZUIxeTFGbWxna083?=
+ =?utf-8?B?OFJsaWZpbjhiSEdyNlZjMXFtM3lDUWlxYWV4STRQUjJmUUR6OWx5YUpJcUpp?=
+ =?utf-8?B?a2pZeTI4cjBwVkFBaStBclpDMDNEeEdlTDBjbW53bDVJVHJESm4zYmoyQXE1?=
+ =?utf-8?B?TXVtbVJrNTIvNXJDTVQyTWRRU2VQWHVHenNWMDFpRjJaU2pna3cwOU5oR1lx?=
+ =?utf-8?B?OTNCUUhjaGZlV2NvYTVBS3pPU0FVbUdXQ21qUlhUeVFUeFRqd3JaSEVsWUlP?=
+ =?utf-8?B?bWhCL21HUVdTcVBZUUovM3IvS1pQUEdYZTNFYVBudC9lZHFrQmJQSU1yYlF6?=
+ =?utf-8?B?QzczSkcyZTRIUzdDSVlLL0xXRkRyT1ZuU1JXMGVuZDhqck9lemV5dW9Fa0xX?=
+ =?utf-8?B?UkwvVTVreVMwcWd4Wlo1bUtYLzgrOVNxVll4ZWpzbkZ3VEkyamt1OVRJTG1i?=
+ =?utf-8?B?OU9PTGhFT0Z2Y3IvNmhqMHFJdytFUERXSi9LcTFpaS9EYlZ2QXJ4UmVobTVZ?=
+ =?utf-8?B?UWZablA4d1hwVWlGSm5lWTNQek0wNlVESlZBdFRyd3gxZTdiTFRVeDBsK3JJ?=
+ =?utf-8?B?LzU0VUhhYkpyTjZhdFZRUGZValJ0ZkhLaWsyTmZLYk53TTZFTzJlb0pwZXo0?=
+ =?utf-8?B?UW9ieThKUFZMT09nUUtGNGVMYWVWYk1UMVY1ZWExZHdxZFY0OTFKdUpzUWhv?=
+ =?utf-8?B?QjZnOGhKeFdmS3UzbUQrbDB2VTV6cU9QRWhEZGhsalk2MGZZL20rKzBrR0hv?=
+ =?utf-8?B?ZzA2LzBFQ29pbkRwclVsVmVrcWM1Z1p0YTFFbWhmNDJKaWUwMXRZcTVWMklT?=
+ =?utf-8?B?SFNHaXBrdFF0amF5ZG40ODRoV0ZYdURkTThwRjFCcWF3YjNjZlB1cXdoMHhS?=
+ =?utf-8?B?OGpDZVFMR2dlWXJSTUEwZ3Y1RmxJNWRkSDByYkJkRk9QYUwyLzBCeTI3cmZP?=
+ =?utf-8?B?T2tjSlBoK3MwNzlYMnhlT3A3OTVGb2IwbG0xZ0JTZm9KS1VKdmJnN3B1cFQz?=
+ =?utf-8?B?MENheFJiUGpCUFE5WlJSQStDajkyMHo4N21xb0pNbnMwa3BETGFaLzg5Q01q?=
+ =?utf-8?B?aGlSNzZkVXdWZVNEN1RTeGVjazZZOW9jeVJ5eUdJU2prTG1QRmNSQWVCOVVC?=
+ =?utf-8?B?T0ZBNjlMNm1UbEVXSlJiL3R3VkYxWWpOeVAvMHBCMTBWc2JmOXZ4SkFtMkJw?=
+ =?utf-8?B?Y003REJjVFora0swZU1HRGVGR0N6cnFicFpzZm96blI5Y0lmS1B1TkZHbUlB?=
+ =?utf-8?B?ZXFJM1NlRUl0NGZNYlAzTjdWKzBaS0RhUzJSUlRTTGMrVGxNM0hWT3NRMENi?=
+ =?utf-8?Q?zfRM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eFdlaFl2U1VoWUIrM3J0RVNKOVppYzNGdXR3YUhsbTlET1BnUjdPdmpPVTJ6?=
+ =?utf-8?B?TXpKUUNyWkhSbENsaHhJMWlzbC9tUWZ0aG5xYXZ2U3VlaU9TcGIyWWhjcXo4?=
+ =?utf-8?B?MHBRaTZucFlZa3h2Z29vYm9GZ0FOMDlBUkFzVDcxNmRqcnBZS2luVVNueHl4?=
+ =?utf-8?B?UnJScjFSb3JScFp3cGtJQlZtMU5McXJtNFRaYVQrcVNtaVlDK2VTZllFS0hD?=
+ =?utf-8?B?UjJoL2JYN1Q4Y1BJMjhJNStwYW5WYnkrd1JUa0RJa0JJc08yZHh2K09lcTNT?=
+ =?utf-8?B?MmNQRmhSak1RN1p4dURwNXhmTi85R2VreGZleDlaeXJrUWE0NnFBNVc1RURN?=
+ =?utf-8?B?bW1zYmp4MGh4ejJhMzUyOGJpeHhHWXhPcFZVdU05eVlrak1hR2ptU0gxZTlx?=
+ =?utf-8?B?L0MrN2Y4QkVGd05EY2RLakVCbkcrdVZXSk5NVHdBVktoWTRDWTRjR1BuQ1du?=
+ =?utf-8?B?YjlwbHBkdyt0d0lGRDRpSld6OVNLc09tT3lES2tDdTlPUjEwczFjNU1HUWhk?=
+ =?utf-8?B?VUxOREQ5TUdJc0VTRmlWMUJJSENndGtzVUd3YjQ0R0VmY3hwWnRpMU5iWWNp?=
+ =?utf-8?B?MjZUN2NWOGV6Y1BBTGNQemQ2Q2k1aXlKeDZlS3AxL3hBMm9PKzJ0S3VwOTk2?=
+ =?utf-8?B?NlZiZFZCR005Z1l3UkxTYnc3RDV0RXNRNThsQkZMRHBlYXQ2MUZjOUoyUlV1?=
+ =?utf-8?B?MlpER2FjbzM0c0JkaU1oRURQRzFJZWg1dVF6RGJZR0RUMzFLcHRmVmRrOW1G?=
+ =?utf-8?B?emdwN3pDbVBvWlJoemd2TjJxazRPc3JRY1o2ZUttWlJCT0xBS1FUZjZTTHkw?=
+ =?utf-8?B?VU1pblFxTk84REJPM3BsbEp0dnE4QUVKTThyN0JtRCt3SlNzY2o1OXlyc1Z3?=
+ =?utf-8?B?UUthbzZ2YTNaUFBmV01SNFdocUpJU3p1UVFJcURuUStvbG5WKzI3a0krSlQ0?=
+ =?utf-8?B?cmVSZXNtZjR0SlNwNUVza29qVFcyS2p5RHoxTng2cHN3MDBEYlNmWVZ3S2F3?=
+ =?utf-8?B?YklHWW1sb3ZvQ2c0eVpaZXgzaEhDOXd5OVI2Uk5VNXJSMWZTV1pTeEF6NXNz?=
+ =?utf-8?B?QnRDT29hNHNVZmZGekRvT2plcG5TVjhLRlhUWGJYZHR1L2NaU0JRTTJQV1Va?=
+ =?utf-8?B?dHQ4OHhTQlhkL0Y2RStwdHZ0V2ZhSGRRVDJWV2FQV0dYYjhOSEQ0dmhaeWJH?=
+ =?utf-8?B?YzEvd2xLb2JXdStQWTlZL0Y0by9NWlp0L1pwc3laQmIwZWJicENhRUNXS2Z2?=
+ =?utf-8?B?K01jZmJDcHhnaGt5QVdsYTNPckVuZTZUQ3Qzcjd5OThpWTczUHE1c3NKMkZZ?=
+ =?utf-8?B?Um9IZlVVWEg4WnRXOTJBQTNWSHlrUXYvYzVlV2tyWi9ZMVNuYTF3eWlOV1M2?=
+ =?utf-8?B?TmgxRDF1M2VkYVplVERGcWNnWjhERE5CanUyZ2UzZVJDL3pZV0hqMHdkQ01W?=
+ =?utf-8?B?RkdYS1NCejZiSWhoRGRuTEwrS2Nwb3lzOU5oS1c3bWp6dmxhTCtxa0loUzJW?=
+ =?utf-8?B?YVJkUUxHRk5vL1U1MXBYNmwra2c4bGI2V0JiUDkreHYwUkFpRTFvUVZJWGFK?=
+ =?utf-8?B?VHFJejZvM3R1VXRPNTE1VU1aaURZYUFqL2VJZjlOdGMySXZDVnhlQlFhZGpv?=
+ =?utf-8?B?NHFnbkZ4QTJGQmFUd212Q1pHRkFmUUl4NG1ZeGpVK3lVUm9OVVpiYXVIbGJR?=
+ =?utf-8?B?NFdTd1AzTklvU1dMMnJKRytJb0ZOSFlibzFMRUdVNGw0bEswbkZ4ZlkzNlM5?=
+ =?utf-8?B?S3Fkd2R4OVM2cEVFMXk4OFo4elpSaHdxaHVFNll3dksvVjJhMEV5TXN0cGJx?=
+ =?utf-8?B?Q3gwTVlkTldzZUJ2ZE5WdnR2NmVJdEJGQnJ5UmdrU2JpQXFMVDlGSzUwbTJZ?=
+ =?utf-8?B?REd5REJZMVNtS3kxUDdsWDR4YU4xRm9VRXVpanpkVXBXMnJndW5GZ1QyczN1?=
+ =?utf-8?B?SytCMFAzSnMyak5JY0lzNkhReUpJOVFoUUVWc3l2MmxBNDlHSU40TUluZmdC?=
+ =?utf-8?B?SkhackE0Sm1WY2U0aFJTRDFoT1BXYkhWN0JxUWpVTytWOVduRmRjMi8vSDBD?=
+ =?utf-8?B?VXFCcDFrLzVERHBYQWdLOU1lNmJhcGtBeUc5SndZUjNiN01yTW0yQVhudXVn?=
+ =?utf-8?B?bXlkU3lmdnQ5WW9jUWppU1YyajlPRjAzVkVidm0rVTA0MnVSc2xYTnlhN2FJ?=
+ =?utf-8?B?aVdXK1JxQVhDcmF3ZTFsWCtXK3dBOGVyZDFDdUdhMzErb01XdUtRbTNIdUd1?=
+ =?utf-8?B?MDZwSFNUYzdTeFFsdVRhWG1YTkVFNElrUU9xcDcxcTl1TjlyN1J3NjFpaVJi?=
+ =?utf-8?B?U29VUUlVN01kck5mSVNGclJPWmw5aTd0YVhiZHY0TjVVUXJXYjdvZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0e2b1c2-9ce8-49a6-64aa-08de583c3c5a
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 15:54:46.7650
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ywJcERRPdy3scODSJScFsUksm2u/o0CD2d/e6JaIiJCtkB7/meKUFM8CCbvy0um9bDJcvLQjP6zUHXhcsJBjLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6158
 
-On Tue, Jan 20, 2026 at 4:27=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Mon Jan 19, 2026 at 8:22 PM GMT, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct. This coupling prevent=
+ed
+> reusing the I/O helpers for other backends, such as PCI configuration
+> space.
 >
-> I think it's just about pasting the current bitfield work into register.r=
-s, such
-> that it can only be used from there. In a follow up we can work out how i=
-t
-> should turn out finally and have to patches: 1. introduce bitfield.rs and=
- 2.
-> move register!() to use the code from bitfield.rs.
+> Establish a clean separation between the I/O interface and concrete backe=
+nds
+> by separating generic I/O helpers from MMIO implementation.
+>
+> Introduce two traits to handle different access capabilities:
+> - IoCapable<T> trait provides infallible I/O operations (read/write)
+>   with compile-time bounds checking.
+> - IoTryCapable<T> trait provides fallible I/O operations
+>   (try_read/try_write) with runtime bounds checking.
+> - The Io trait defines convenience accessors (read8/write8, try_read8/
+>   try_write8, etc.) that forward to the corresponding IoCapable<T> or
+>   IoTryCapable<T> implementations.
 
-Hmm... I am generally not a fan of putting local code. I know you did
-it for the DRM `register!` itself, which is fine given the constraints
-you have, but here perhaps we could put it in the right file but as
-private/hidden as possible just to be used by the other file?
+Does the runtime bound checking correlate to I/O sizes at all? I think it c=
+ould
+be that `IoCapable<ufoo>` gives you `try_readfoo` and then `IoCapable<ufoo>=
+ +
+IoKnownSize` gives you `readfoo`?
 
-i.e. that way we can debate improvements on top of what we have,
-rather than having a move or new code and a drop of the old one?
+For example, is there a case where a type would have `IoTryCapable<u16>`,
+`IoTryCapable<u32>`, `IoCapable<u32>`, but not `IoCapable<u16>`?
 
-I mention this since you say "pasting", i.e. I guess it is still
-smaller, but it sounds like you would essentially use it more or less
-as-is?
+>
+> This separation allows backends to selectively implement only the operati=
+ons
+> they support. For example, PCI configuration space can implement IoCapabl=
+e<T>
+> for infallible operations while MMIO regions can implement both IoCapable=
+<T>
+> and IoTryCapable<T>.
 
-> The register!() macro code is worked on by Alex for about 10 month in nov=
-a-core,
-> the first RFC for general I/O infrastructure is from March 2025 and the c=
-urrent
-> series has been discussed on the list for about two cycles.
+I think try_ methods could still remain available even if there's a known s=
+ize?
 
-I meant the `bitfield!` one, i.e. landing the patches as they are here
-if we get very fast agreement etc. etc. I can see that possibility,
-especially if private/hidden.
+>
+> Move the MMIO-specific logic into a dedicated Mmio<SIZE> type that
+> implements Io and the corresponding `IoCapable<T>` and `IoTryCapable<T>` =
+traits.
+> Rename IoRaw to MmioRaw and update consumers to use the new types.
+>
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: Bjorn Helgaas <helgaas@kernel.org>
+> Cc: Gary Guo <gary@garyguo.net>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> ---
+>  drivers/gpu/drm/tyr/regs.rs            |   1 +
+>  drivers/gpu/nova-core/gsp/sequencer.rs |   5 +-
+>  drivers/gpu/nova-core/regs/macros.rs   |  90 +++---
+>  drivers/gpu/nova-core/vbios.rs         |   1 +
+>  rust/kernel/devres.rs                  |  15 +-
+>  rust/kernel/io.rs                      | 396 ++++++++++++++++++++-----
+>  rust/kernel/io/mem.rs                  |  16 +-
+>  rust/kernel/io/poll.rs                 |  16 +-
+>  rust/kernel/pci/io.rs                  |  12 +-
+>  samples/rust/rust_driver_pci.rs        |   1 +
+>  10 files changed, 420 insertions(+), 133 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+> index f46933aaa221..d3a541cb37c6 100644
+> --- a/drivers/gpu/drm/tyr/regs.rs
+> +++ b/drivers/gpu/drm/tyr/regs.rs
+> @@ -11,6 +11,7 @@
+>  use kernel::device::Bound;
+>  use kernel::device::Device;
+>  use kernel::devres::Devres;
+> +use kernel::io::Io;
+>  use kernel::prelude::*;
+> =20
+>  use crate::driver::IoMem;
+> diff --git a/drivers/gpu/nova-core/gsp/sequencer.rs b/drivers/gpu/nova-co=
+re/gsp/sequencer.rs
+> index 2d0369c49092..862cf7f27143 100644
+> --- a/drivers/gpu/nova-core/gsp/sequencer.rs
+> +++ b/drivers/gpu/nova-core/gsp/sequencer.rs
+> @@ -12,7 +12,10 @@
+> =20
+>  use kernel::{
+>      device,
+> -    io::poll::read_poll_timeout,
+> +    io::{
+> +        poll::read_poll_timeout,
+> +        Io, //
+> +    },
+>      prelude::*,
+>      time::{
+>          delay::fsleep,
+> diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core=
+/regs/macros.rs
+> index fd1a815fa57d..6909ed8743bd 100644
+> --- a/drivers/gpu/nova-core/regs/macros.rs
+> +++ b/drivers/gpu/nova-core/regs/macros.rs
+> @@ -369,16 +369,18 @@ impl $name {
+> =20
+>              /// Read the register from its address in `io`.
+>              #[inline(always)]
+> -            pub(crate) fn read<const SIZE: usize, T>(io: &T) -> Self whe=
+re
+> -                T: ::core::ops::Deref<Target =3D ::kernel::io::Io<SIZE>>=
+,
+> +            pub(crate) fn read<T, I>(io: &T) -> Self where
+> +                T: ::core::ops::Deref<Target =3D I>,
 
-> You mean a tag with the bitfield!() code? Yeah, that would help if we don=
-'t make
-> it this cycle.
+Normally it's quite usual to see `Deref` on the bounds, as auto-deref solve=
+s the
+task. However, it won't work for generics hence I suppose it's why the boun=
+d
+exist here in the first place.
 
-Yeah.
+Would it make sense for whatever the smart pointer is here to gain a forwar=
+ding
+implementation of `Io` instead?
 
-Cheers,
-Miguel
+Also, I suppose we can still have `IoCapable: Io` this is just a single bou=
+nd.
+
+Best,
+Gary
+
+> +                I: ::kernel::io::Io + ::kernel::io::IoCapable<u32>,
+>              {
+>                  Self(io.read32($offset))
+>              }
+> =20
+> <snip>
+
