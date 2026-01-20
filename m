@@ -1,48 +1,48 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEB7347FCD
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16C8271476
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 08:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768898336; cv=none; b=ex5JV0jXnBThhSFnfyWTHBt9YnOb4MiKM4+ZW1fg5Jaij0IVnW+ONIO4oN6bzJWoMvRr18lRZm5sVkTHiAXlrn58sViM+b7K7vXua6E4yL/dA4J1ZuYalWahTm2OITDwcOy1HhbuE28K8kQ/mqtrRePpWX8ucpUJA+aPkpwgRMw=
+	t=1768898341; cv=none; b=OiZxBq2LnWYwClUoYVo/O/Z++UwEwfoIY0RkHNaHYXr6LICpQuTNcSQ5/mwmt4PVXIewCDHNS0yCcESaKr0Ur9gUBrCOP8aoiGmgzybrekeNlODlVee21ssXQhmY9I+gDPY6D7JbxhghJJKt00MNr3WxQPh3KeA6RNAtoA3PDQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768898336; c=relaxed/simple;
-	bh=Opu1D2RjNfdP2fA1ZdybKGAdLJOesPAJ1vUr36aRdPI=;
+	s=arc-20240116; t=1768898341; c=relaxed/simple;
+	bh=cqq+Huc2Qg/MFOXkyJQm4PpW6eaLmYuyhRgeB+xNM90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDrRJd6iJ7+I2bfh4s00l1n7TbMutB3JJyo2YRGv3t0LN1ebilQQr9KsT/xgcxhVcMzkLqf2N6PPt7ueXKkqdyXgFRrrdpRGvbYWAkYz3XETYxRFW9ctxJ6Kvg6cf/bUHUfjMMX8Tpkewpcu7PydtTt4KU/OtkYjahIdnH2wv/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.180
+	 MIME-Version; b=b3DnoD6UgRmV1x1tFLdd8iJzk74I7g1rUbdQ1SoQZaEMPtGP3UUX5bjW04rYqWD2qFvTNqP9uSfTCcRx79ZW0izk27dAcDHVQmX0bnCriMknI0VtnnW2s0PVYqOypb/OH5WrpR5qpFL1BiY1CUgwgDss6LS1gcurmwiKrrtYCN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0bae9aca3so34302625ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:38:54 -0800 (PST)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a3e89aa5d0so50652175ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 00:38:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768898334; x=1769503134;
+        d=1e100.net; s=20230601; t=1768898339; x=1769503139;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=B8rOtmZKuaNriBpYyMa83uJp/sBBJRks1Sjt+oph2IY=;
-        b=GfyMLVEawUdCiSUnGccdjxTfbXUhlZbyx+koKYfNGtCROwy+pi2M6shknoL3biDNmo
-         wJc0KVL2+tNcdtMcEDr88oC16BmhW8i3aBT9x84x5nmsI2wh65vPrINEujxiWUcrI+OR
-         83mrC8+6FyaoZXWpepucZLLmgKnFVmBHycUCsT5yhZeUdHmpJVqr1z4e/vM1BinS8Xfd
-         3WN97zczmfZM+QMEFTK7CqurIqI3kN1tRLGdpc+3mw/SiY7ls/psEgpAGUOL3nIO+bRT
-         uy/ByfLfTdzXpmY/xBKrjYUxNLQn6Nx3U2UaVKmBRGc41ROUOdiLOlpTgfAI+7DvgfXG
-         JYRA==
-X-Gm-Message-State: AOJu0YwHs0h0GR4zWbUTR6O8hENTjYEs5ZGD/ir2+L6pbrUhY9QtIa/+
-	Kv7OVB5BDwh5NjrKoZw+WzU5uffZyY9o/BddExMefsprZf5PUOkX4OgBJKm35g==
-X-Gm-Gg: AZuq6aLEv/dnLkuc8nV+keKkpFfdUXbNMsll/d/oNaFTQNC6htlSg5LKRSB2ExGVPRm
-	pwWhLSuc4+ARY95NBwHchQFnwVJgN0chw0sgZrhj53XCgxawGIA2s8PzMhSnOBoqYs59ydf+wrM
-	8scJty+XVUewJ8osWcvj0aADTBXRAxOvmQvgAN/5kVlw8o54IDFUyEpe44qA3ZR9GnvbqHBvRzv
-	lpXu6AKoytE1XTYfZDkzqaaRdWtfTyduqTxciKuYLvU7BWKALOOVPjASFQjlB9tmnp/d29BDdCV
-	hZ/qWYqreAg+LxrjValDlKA4Drg9zDDvu7vwwgv+eK6/u6haZNcwR2FGP8qEHYbCIjpNuOsuTUC
-	YjBqJQtpl/M/RXm6aZXFX97MCs+qxyMJukP27CyTOGyc3i076VPQ6f3yitsHIyTwNaMhWxhxlar
-	0GhO4mF8puqCiBdWKJdrcJFFxtyZwTtg==
-X-Received: by 2002:a17:903:238b:b0:29a:5ce:b467 with SMTP id d9443c01a7336-2a7177d74femr108783085ad.54.1768898333661;
-        Tue, 20 Jan 2026 00:38:53 -0800 (PST)
+        bh=jaDzyJBzI8CanNRf1i6FlHF4mVMi/qYa4tLLAKxRL4Q=;
+        b=ox1P5vpTvz8ss8X0CiOI9LXV15STIHJchtuTdhSl2SGQyeo3XZDpd4Ep/nDOYFpYjV
+         XCvc3YsEswNj6YdNEdji5aMzZw3C2SgP1FQE5jLofeGX2HQUJR/39bgFB1e9i77JenLH
+         j4Bl2LrH9SJ6gQfzmhGtTfoh6e+hyQluSqhte9ZxR9BPhU18uLpOczHDERGZYNafs8TY
+         n7ZpXqjM0tiAopqHWJZGI5Dv2feF6fdQy586Lmn3xt8zHIJ45QWcJ6f2nKoGh0tUFLB8
+         S4lmTtDVTKWRSmNumg75Ab/nWaRWgSEUUTxi4jvl4oCUIMbUG5R9qByZGfxVzRT0NAFY
+         Zqkg==
+X-Gm-Message-State: AOJu0YyeKGFF5iBVa4yM4pseIpAhbPa4L6X/48rn+tZojn8KNbDXjBO4
+	WN6am8WAES6C+lZNow8GSKNdhHn5yHhU0UFGNmAVNiQN/kp2Tfw3E3wywy5Vzg==
+X-Gm-Gg: AZuq6aJZXoKQmQH/oySsW/y031b8XHgL39+pTp41hpSvp4bmV2+30QMl4UVJujyp4sE
+	/3CjWzQ6mWls19YWqEhuDI/7n1WaPQa4XOLpiriTYcyEfJS/GGAzrCepUNtA20gShbceDGRh1jQ
+	s+sQit+rwg4mR88gAicoRmuo4VEVCwkJKoDbM2M2pKfgeCL6faN1Mnh+2v7ea0hUKhm7ymXvmBj
+	GfcaldJ1tDsA0qrQ/MHVj4xm/ihRXVY7fbECmuZ2MTHwv3C6DEHepIlokmXh6J+Snm0ai2lWkMD
+	Q3QEKcgiDcFszlViz4e4fSwmv+MQgtyiDatsPGMUbP7cwd2eJC04uaQdjr5Xvevl6bWKx+EMFGn
+	giJFngGg0lhVi57ycO39wlfSqGUYCLJxePdExxrEHA04pf3ZPG/Dgm8rV4jwm5r7PEXRD27flGO
+	Z6HZr4kPgjxWiYGNB9Kx4=
+X-Received: by 2002:a17:902:e74c:b0:2a0:97d2:a25d with SMTP id d9443c01a7336-2a717516415mr125136515ad.15.1768898338649;
+        Tue, 20 Jan 2026 00:38:58 -0800 (PST)
 Received: from localhost.localdomain ([45.142.165.53])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190c9edesm115114625ad.23.2026.01.20.00.38.49
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190c9edesm115114625ad.23.2026.01.20.00.38.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 00:38:53 -0800 (PST)
+        Tue, 20 Jan 2026 00:38:58 -0800 (PST)
 From: Ke Sun <sunke@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -55,9 +55,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH v2 4/7] rust: debugfs: use pin_init::zeroed() for file_operations
-Date: Tue, 20 Jan 2026 16:38:20 +0800
-Message-ID: <20260120083824.477339-5-sunke@kylinos.cn>
+Subject: [PATCH v2 5/7] rust: of: use pin_init::zeroed() instead of unsafe zeroed
+Date: Tue, 20 Jan 2026 16:38:21 +0800
+Message-ID: <20260120083824.477339-6-sunke@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120083824.477339-1-sunke@kylinos.cn>
 References: <20260120083824.477339-1-sunke@kylinos.cn>
@@ -70,78 +70,27 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Replace unsafe core::mem::zeroed() with pin_init::zeroed() for
-file_operations initialization in all debugfs file operation
-implementations.
+of_device_id initialization.
 
 Signed-off-by: Ke Sun <sunke@kylinos.cn>
 ---
- rust/kernel/debugfs/file_ops.rs | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ rust/kernel/of.rs | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/rust/kernel/debugfs/file_ops.rs b/rust/kernel/debugfs/file_ops.rs
-index 8a0442d6dd7a4..6648e6f464b1c 100644
---- a/rust/kernel/debugfs/file_ops.rs
-+++ b/rust/kernel/debugfs/file_ops.rs
-@@ -126,8 +126,7 @@ impl<T: Writer + Sync> ReadFile<T> for T {
-             llseek: Some(bindings::seq_lseek),
-             release: Some(bindings::single_release),
-             open: Some(writer_open::<Self>),
--            // SAFETY: `file_operations` supports zeroes in all fields.
--            ..unsafe { core::mem::zeroed() }
-+            ..pin_init::zeroed()
-         };
-         // SAFETY: `operations` is all stock `seq_file` implementations except for `writer_open`.
-         // `open`'s only requirement beyond what is provided to all open functions is that the
-@@ -179,8 +178,7 @@ impl<T: Writer + Reader + Sync> ReadWriteFile<T> for T {
-             write: Some(write::<T>),
-             llseek: Some(bindings::seq_lseek),
-             release: Some(bindings::single_release),
--            // SAFETY: `file_operations` supports zeroes in all fields.
--            ..unsafe { core::mem::zeroed() }
-+            ..pin_init::zeroed()
-         };
-         // SAFETY: `operations` is all stock `seq_file` implementations except for `writer_open`
-         // and `write`.
-@@ -235,8 +233,7 @@ impl<T: Reader + Sync> WriteFile<T> for T {
-             open: Some(write_only_open),
-             write: Some(write_only_write::<T>),
-             llseek: Some(bindings::noop_llseek),
--            // SAFETY: `file_operations` supports zeroes in all fields.
--            ..unsafe { core::mem::zeroed() }
-+            ..pin_init::zeroed()
-         };
-         // SAFETY:
-         // * `write_only_open` populates the file private data with the inode private data
-@@ -288,8 +285,7 @@ impl<T: BinaryWriter + Sync> BinaryReadFile<T> for T {
-             read: Some(blob_read::<T>),
-             llseek: Some(bindings::default_llseek),
-             open: Some(bindings::simple_open),
--            // SAFETY: `file_operations` supports zeroes in all fields.
--            ..unsafe { core::mem::zeroed() }
-+            ..pin_init::zeroed()
-         };
+diff --git a/rust/kernel/of.rs b/rust/kernel/of.rs
+index 58b20c367f993..8ae49282a09c5 100644
+--- a/rust/kernel/of.rs
++++ b/rust/kernel/of.rs
+@@ -36,8 +36,7 @@ impl DeviceId {
+     pub const fn new(compatible: &'static CStr) -> Self {
+         let src = compatible.to_bytes_with_nul();
+         // Replace with `bindings::of_device_id::default()` once stabilized for `const`.
+-        // SAFETY: FFI type is valid to be zero-initialized.
+-        let mut of: bindings::of_device_id = unsafe { core::mem::zeroed() };
++        let mut of: bindings::of_device_id = pin_init::zeroed();
  
-         // SAFETY:
-@@ -343,8 +339,7 @@ impl<T: BinaryReader + Sync> BinaryWriteFile<T> for T {
-             write: Some(blob_write::<T>),
-             llseek: Some(bindings::default_llseek),
-             open: Some(bindings::simple_open),
--            // SAFETY: `file_operations` supports zeroes in all fields.
--            ..unsafe { core::mem::zeroed() }
-+            ..pin_init::zeroed()
-         };
- 
-         // SAFETY:
-@@ -369,8 +364,7 @@ impl<T: BinaryWriter + BinaryReader + Sync> BinaryReadWriteFile<T> for T {
-             write: Some(blob_write::<T>),
-             llseek: Some(bindings::default_llseek),
-             open: Some(bindings::simple_open),
--            // SAFETY: `file_operations` supports zeroes in all fields.
--            ..unsafe { core::mem::zeroed() }
-+            ..pin_init::zeroed()
-         };
- 
-         // SAFETY:
+         // TODO: Use `copy_from_slice` once stabilized for `const`.
+         let mut i = 0;
 -- 
 2.43.0
 
