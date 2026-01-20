@@ -1,72 +1,72 @@
-Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com [209.85.222.194])
+Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B0F43E48C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B26A43DA29
 	for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 14:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.194
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768917927; cv=none; b=HTgi0HlW+hlyZdFBXY0GOwSUsJOBmdbCJf/2y/G6XqNdFNt+HgIIAt43MlzXXC2GS3DJ5Cmd+04O42Ohd5v9b29KAI9nxZXSYkgGk/e5KX1AFt+7UzOlyBis/4nKswQdZR+/OpzhhKUXmbKiiRfxmiC58sSnYses8roNZhbhbx8=
+	t=1768917928; cv=none; b=t1CIfnIf6E+/dNo0IvB+1KjqV41C2Pmcc+bQmAfviKre8rv/Ir+aC2t+Pv9qbdEa3qua8fDRqExYh9LJyiaYqWQ335pcfvq33UvZppnqpADE12UzJ7ixauDHg5Hml4GeSzYEoYWQbeXFjMwXStLBgCaJUljcKl7YuNFEa8DIyO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768917927; c=relaxed/simple;
-	bh=lKY1eJ8/q2YuwAvqzjqDdSke3x4ANRWo9Ml+P+k2QDw=;
+	s=arc-20240116; t=1768917928; c=relaxed/simple;
+	bh=BKLHL6GosVcMSmMVR2siGs9GnPyNEBiirPveW3YqweY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tI9heZMILDPIBZ9F+GJf0iC2utNZ6big7A1LvIYwkylsiwbN7Oe97Mp8HiVjGN0p58G0bfACdTVp8AoGPuq30riQRsGnZsncHmi+H3U+XQd5xaG9fzKRo41yA04e5g0pD2VGfGxqae60LQZ9enehSoTpsOD0tPxyz9q9h80DjYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FioJT63G; arc=none smtp.client-ip=209.85.222.194
+	 MIME-Version; b=J4flzTUu5C9q40JSe2dXzEK9hLvfUWv4A8lBBxgPARE68AuYo00BNwYliGMClRZRCZIQH/P+0ee7TEFmSo8tAKj75WDXzEXFZWLTo7mg8MYASNaSv5EuiS5ioBCvKrZwBxVtZP7/Dzhjjvls1CnaPQ6m0P+bPyAtdixGb9jPy9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ejZEvzdt; arc=none smtp.client-ip=209.85.222.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FioJT63G"
-Received: by mail-qk1-f194.google.com with SMTP id af79cd13be357-8c5265d06c3so634172985a.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ejZEvzdt"
+Received: by mail-qk1-f195.google.com with SMTP id af79cd13be357-8c59bce68a1so345355685a.0
         for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 06:05:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1768917923; x=1769522723; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=oGl+JawNZxbkW6YBThH+A9Q3ruFvPDTeQ6pPsaxwQ2U=;
-        b=FioJT63GjGrH9PRXnpoZyRnZbXhQfbjyCSpUbHUNJzlLVjyk8jHr1jCJKLLswLmzso
-         zbbaJNgAmKfKej283dhIgyxm13kwlJjl4wLXcqI0A0weOqg3mj0rB8fhqpzSSLorump3
-         AB9ovQfNf8Zbz3i86xqx5l6kWWWPf0gSao+1n+nPpDbnV5f7mRpiPjR9FqUcJ+5wOLaM
-         uJx/WFr/ubI/Ts7mLvYOa7oGw9Z2zEsoSw52kMcm/zln8ShYrTPEsmheukA9rnaNNWBQ
-         wxH/4KyQinZOeRJ3Mj2VQv66lhZOryl1Cl3p0hQeHjathrxmr8f1lLXNNc2qxx7s+BI9
-         3Czw==
+        bh=cdZCtc/SzUUU469DlUjjz+ivRYHRKqFHgnur+s05bgo=;
+        b=ejZEvzdtgykt2uVi8cWMlNEO1ulIUU9VWAA9gkVh9a+4u/6HU+m7k8mMUJAWjuVjsm
+         RaWcF80mMY1bl9ceouXFvkdG0zTBLlt8MPsFQeyRjT4KkYwfVPWD2OEcrnPhtvw92SXD
+         j9yUtVvO0othFpHPwdyd2wRpcxGsM44jzgjkMXWrbvlSfJMgbCN5XDjr9vFCtRmB93CV
+         mGJpG8zG3oddW7QUy3qSlW3Hlkj5BsneBL2X2A5vs5AmHT3oNEWKD/RxkQm2c5A6+CmK
+         +SUqzKUYOtvFmPl4aaUF+cXODK6zTbeq4is2gWqPVpNPRvqn0GKOpfgjtD/rJ1M4a/jw
+         94Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1768917923; x=1769522723;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oGl+JawNZxbkW6YBThH+A9Q3ruFvPDTeQ6pPsaxwQ2U=;
-        b=assCbEUHSXwfUKyocry2+lWNJ85trBmCnVELOQsRW+sKGBGux/lx2O/W58toNsbBKT
-         rK4FYo+n8df1gLm4hzIUWT7Pe9ZIorcO0nnu5GL6QoCTkVVQXQ3MBDWTAuH3GIIy6CX9
-         BoavYKZ3xWhnryDK0bFTWLInkIv/+2amM/+kTV3HQBHZa5AgzYG3d604u/6a7kHdQyWW
-         hprxeGUQv71p7fOjoyTmsvnkPP9pWo0m1IP59bn3nX8eutvU/XxCywE+rJ/cnF46cKWF
-         07DanNw1dEiGxf0rxupdMzU9eTSjltEfaF0aUlN+Kc4wgu0kB5vRMoM/KwmrEit4agce
-         D+gg==
-X-Gm-Message-State: AOJu0Yyc/QGnACNEA8YZcu2P8twylUm0Rjd1ygRO6dnVpFNj7qVF2t/7
-	yj/PIdk4n8meQ4nwE+qmO0Q5BreFIakjTr/oRgVr/rMPIPEX+P4569xO
-X-Gm-Gg: AY/fxX5UvwpyHoLWq6jlJFMlJ88riDlibzz+8Tr57R37yRe4pYkbArHWeZZaFGswwHB
-	n+VjnZz6OaNFeUQpK9y9uZj9Pd3zvZ6YGaaOEGo//Os+tq6ERR30Cj9IkaDWCSmw5sXsVzZRP8y
-	0f3iMRoVlocx3z6FQtNbzrp/BNfq5hoD8OVeqfeLxhj7EdPBPNXgJOYUufsemfTPz3DxqTnPdg3
-	Uk+PBBX+D4rPTDm7B1tHp7j65SJNe1n73Pg5y3bz+CsrstexLSzC9+Gr9Ff2KBJdXCd+061+rBD
-	QJ+57vRpR/Le8Rirz89Dr6rthfLMJURTCw3cVAtraZ0TMr3A82m0CCFUA+w2EIGLqiS2zGRY6f1
-	HSG8wa6zpsP7OO4usf3E4Y0y5OpctmoBndG2XwTC3Jg5h95hWI3ESeFDg1n525iXJo6VcnP7wVh
-	p3uZdqvIuXjq9YDbHSvRrAcVWInoGhPx2a/KJzn2vsCzj1/t6JIJcEYIaJZIj2ITORrnio6gqEj
-	t9SGIgggcyyTQQ=
-X-Received: by 2002:a05:620a:199e:b0:8b2:eb79:d37d with SMTP id af79cd13be357-8c6a645ca97mr1691655185a.4.1768917919581;
-        Tue, 20 Jan 2026 06:05:19 -0800 (PST)
+        bh=cdZCtc/SzUUU469DlUjjz+ivRYHRKqFHgnur+s05bgo=;
+        b=qaxATLrBPhiSjcDYwmEsl4EtP4TTw8KredqL+np7AO+INjgaGtqilyWHkFXQsFZhsI
+         jnGmIMCDlXaEREUEAIvNYc7JYbg47LLzKIXhLjurs5435it9XG0eht50+gcaKd2vHV8j
+         nPmNtD8hrRp22+SRTn1BOhOnIxCYIdaPdcWAmSeAWIgvkl7GXeAqMQCHRyP1lLHJHi+r
+         1eCmVbtng9Y2SpcY5piLOLXZrPTXQ7logMF6qsMbZD58TlFQ2AD1Le1fy/54SS9kNdzk
+         OZmhZkR1UDFE6LA50SnfeLx1JbLQfYKIQI5ZULQpi+21LpkkT+fZpU4cT8D4QKhcDkoe
+         j1Tw==
+X-Gm-Message-State: AOJu0Yyo2bK5DBn31s1YR9WjjbeQX6WPFbXLsyyXktOLQsxiRaNVNlbA
+	xLzE/1eEGuq4t90uZTy0EyjHDWWfr34by0jEGyS/C+w4qntExQlSt3e8jQ67OBwq
+X-Gm-Gg: AY/fxX79R7VB2dPBhRBKN9gAgic231x4yAXvGcAYhGPH2tx48sMU37wOfoPaTDj4JHN
+	8JDiVno9eEcvcqLtq98Z5d2UIStpNn6OwBJWND91XqDED7/yeceP+Tw4x2xR+1Y6o/rR8biul6f
+	qDvO78xZjr0k21cxWCfPbqNEQl7EKBW4OwYErpVEFXbDbGrYSCXDKdlEKH8bI3lSsJIN7jf1CO4
+	kq+ADhZl0H0/8V/CfynKQX3+WFHFclT3jfIC5BV8N5KL9HPau/ifuCUSOPNYDUtKsjbb+2FJrpr
+	QIQpbfWnYfVTKYjnXiPDlwxQCabWtR1VjBMXHVxUVjmFUlj6HPtOGZhB/BXfQseHx18wpAAevga
+	r6pCfZ4+5mnYB6/w47EkZL8bDpZc79KGJQ9NLzP43H3EukAI+X2yw8DRQjTk/UuJd15iNOvsOJ8
+	zezbI6KMgiZynbPbxDclxlNWD+OQh9XqVolBjSinnMgJWCquMEV/KHFLxvoS2ZWlfyi9gM2rS4U
+	xlwsNJWFu2NUuU=
+X-Received: by 2002:a05:620a:4404:b0:8c6:afa6:270f with SMTP id af79cd13be357-8c6ccf36a4fmr204945785a.76.1768917922310;
+        Tue, 20 Jan 2026 06:05:22 -0800 (PST)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6af506829sm813177485a.37.2026.01.20.06.05.17
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a7298472sm1043200285a.53.2026.01.20.06.05.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 06:05:18 -0800 (PST)
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4BD42F40068;
-	Tue, 20 Jan 2026 09:05:17 -0500 (EST)
+        Tue, 20 Jan 2026 06:05:21 -0800 (PST)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6932EF40069;
+	Tue, 20 Jan 2026 09:05:20 -0500 (EST)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 20 Jan 2026 09:05:17 -0500
-X-ME-Sender: <xms:nYtvaYGZT8ZnGNrt029Cf6ZpUkJrw1mYsl_m6c_7guVIDmG-cVRKhg>
-    <xme:nYtvaY2ZsQywMYPp31JsTD-pkJEG7kZAa9Y9rXSW7L6kU-RolIkL00eA06hjCQHfk
-    g7RfICxqq6x8xTg5izgnxUoXi_GN3tv9oc0x9O22_fmGaI8_MyrkA>
-X-ME-Received: <xmr:nYtvaYMlM1XIAM4rbYs3OqVPtzBQZEw-phsS6BVV6KkVw3t7J9Qkv8cd>
+  by phl-compute-03.internal (MEProxy); Tue, 20 Jan 2026 09:05:20 -0500
+X-ME-Sender: <xms:oItvaQM4q_qmUk0KmDijWjuPLPlEaH5kl5c5JZcCb_kX_iUq5uBoKQ>
+    <xme:oItvafUjQjYqGSTbeZJeVa_yrzqIx9kQ6g2Fcn0mtcOrN9oIYT-w0A1YhAyfpsIDA
+    s2F7tXeDWyGuSR1O_EEP05wlHUq-Z8eby2EousJLoQvxJr8E_7UCg>
+X-ME-Received: <xmr:oItvaZfFF00g49nVUUAL8rlh7Dr9Yoq6tVOiXDTHfZwjgpbzus71r7lx>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedtiedtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -76,7 +76,7 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedtiedtucetufdote
     gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
     hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
     udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgt
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepvdejpdhmohguvgepshhmthhpohhuthdprhgt
     phhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgh
     dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
     ghdprhgtphhtthhopehrtghusehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
@@ -85,25 +85,28 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedtiedtucetufdote
     hrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghp
     thhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnug
     gsohhrgheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:nYtvaYK077jMROLjaUWFYeMxGbaiC-32xOvSgb6GOtrkGz1g6GrgkA>
-    <xmx:nYtvaZaIwjvj60VvrrLjZWXqzj_3Bh_suRmNI4rybVo5GjkX1oQIAQ>
-    <xmx:nYtvaRk_9nNuXpXRAhkXUPh40qZ4S0kxowcPvR_jVJKzv37KLxMOcw>
-    <xmx:nYtvacY9UFp9_3KExj93t5QQS4c1_uUepMo77own-x1FAwD61YnKZg>
-    <xmx:nYtvaRC1fa7uOfKAL-RlzmUHS3pLc5gERuB5_QG_mK_4QPp-C984hpbp>
+X-ME-Proxy: <xmx:oItvaQj9NjmaLdpJb7ukya3oFGZauhytynhLN7qi0OH7fMdrOq-1JA>
+    <xmx:oItvaahV8ECiHj5CdXxFSdcjD_91kNCSWDcCaZR-E-Al-l51Dg_4RA>
+    <xmx:oItvacrHOH41CneZvBU75D0b9TNLV0e36-6VD3P_3SEja6lhUygs9w>
+    <xmx:oItvaQw31r8uoA_AUCro7HTgrndIxS9JY6hL_GMiQRToEpOUbDIWig>
+    <xmx:oItvabyPsQIAJX0Hwx119jVucQ00o3B0vMSvvwm6TKE4DUZVa1RhqyqK>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 20 Jan 2026 09:05:16 -0500 (EST)
+ 20 Jan 2026 09:05:19 -0500 (EST)
 From: Boqun Feng <boqun.feng@gmail.com>
 To: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	rcu@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,	Boqun Feng <boqun.feng@gmail.com>,
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,	Will Deacon <will@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
@@ -114,12 +117,13 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,	Boqun Feng <boqun.feng@gmail.com>,
 	Uladzislau Rezki <urezki@gmail.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,	Zqiang <qiang.zhang@linux.dev>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,	Dirk Behme <dirk.behme@gmail.com>
-Subject: [PATCH v2 1/2] rust: sync: atomic: Clarify the need of CONFIG_ARCH_SUPPORTS_ATOMIC_RMW
-Date: Tue, 20 Jan 2026 22:05:02 +0800
-Message-ID: <20260120140503.62804-2-boqun.feng@gmail.com>
+	Dirk Behme <dirk.behme@de.bosch.com>
+Subject: [PATCH v2 2/2] rust: sync: atomic: Add Atomic<*{mut,const} T> support
+Date: Tue, 20 Jan 2026 22:05:03 +0800
+Message-ID: <20260120140503.62804-3-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260120140503.62804-1-boqun.feng@gmail.com>
 References: <20260120140503.62804-1-boqun.feng@gmail.com>
@@ -131,60 +135,241 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, since all the architectures that support Rust all have
-CONFIG_ARCH_SUPPORTS_ATOMIC_RMW selected, the helpers of atomic
-load/store on i8 and i16 relies on CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=y.
-It's generally fine since most of architectures support that.
+Atomic pointer support is an important piece of synchronization
+algorithm, e.g. RCU, hence provide the support for that.
 
-The plan for CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=n architectures is adding
-their (probably lock-based) atomic load/store for i8 and i16 as their
-atomic_{read,set}() and atomic64_{read,set}() counterpart when they
-plans to support Rust.
+Note that instead of relying on atomic_long or the implementation of
+`Atomic<usize>`, a new set of helpers (atomic_ptr_*) is introduced for
+atomic pointer specifically, this is because ptr2int casting would
+lose the provenance of a pointer and even though in theory there are a
+few tricks the provenance can be restored, it'll still be a simpler
+implementation if C could provide atomic pointers directly. The side
+effects of this approach are: we don't have the arithmetic and logical
+operations for pointers yet and the current implementation only works
+on ARCH_SUPPORTS_ATOMIC_RMW architectures, but these are implementation
+issues and can be added later.
 
-Hence use a statis_assert!() to check this and remind the future us the
-need of the helpers. This is more clear than the #[cfg] on impl blocks
-of i8 and i16.
-
-Suggested-by: Dirk Behme <dirk.behme@gmail.com>
-Suggested-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 ---
- rust/kernel/sync/atomic/internal.rs | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ rust/helpers/atomic_ext.c            |  3 ++
+ rust/kernel/sync/atomic.rs           | 12 +++++++-
+ rust/kernel/sync/atomic/internal.rs  | 24 +++++++++------
+ rust/kernel/sync/atomic/predefine.rs | 46 ++++++++++++++++++++++++++++
+ 4 files changed, 75 insertions(+), 10 deletions(-)
 
+diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
+index 240218e2e708..c267d5190529 100644
+--- a/rust/helpers/atomic_ext.c
++++ b/rust/helpers/atomic_ext.c
+@@ -36,6 +36,7 @@ __rust_helper void rust_helper_atomic_##tname##_set_release(type *ptr, type val)
+ 
+ GEN_READ_SET_HELPERS(i8, s8)
+ GEN_READ_SET_HELPERS(i16, s16)
++GEN_READ_SET_HELPERS(ptr, const void *)
+ 
+ /*
+  * xchg helpers depend on ARCH_SUPPORTS_ATOMIC_RMW and on the
+@@ -59,6 +60,7 @@ rust_helper_atomic_##tname##_xchg##suffix(type *ptr, type new)			\
+ 
+ GEN_XCHG_HELPERS(i8, s8)
+ GEN_XCHG_HELPERS(i16, s16)
++GEN_XCHG_HELPERS(ptr, const void *)
+ 
+ /*
+  * try_cmpxchg helpers depend on ARCH_SUPPORTS_ATOMIC_RMW and on the
+@@ -82,3 +84,4 @@ rust_helper_atomic_##tname##_try_cmpxchg##suffix(type *ptr, type *old, type new)
+ 
+ GEN_TRY_CMPXCHG_HELPERS(i8, s8)
+ GEN_TRY_CMPXCHG_HELPERS(i16, s16)
++GEN_TRY_CMPXCHG_HELPERS(ptr, const void *)
+diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+index 53177052b4b2..7ed8febe4a58 100644
+--- a/rust/kernel/sync/atomic.rs
++++ b/rust/kernel/sync/atomic.rs
+@@ -52,6 +52,10 @@
+ #[repr(transparent)]
+ pub struct Atomic<T: AtomicType>(AtomicRepr<T::Repr>);
+ 
++// SAFETY: `Atomic<T>` is safe to transfer between execution contexts because of the safety
++// requirement of `AtomicType`.
++unsafe impl<T: AtomicType> Send for Atomic<T> {}
++
+ // SAFETY: `Atomic<T>` is safe to share among execution contexts because all accesses are atomic.
+ unsafe impl<T: AtomicType> Sync for Atomic<T> {}
+ 
+@@ -69,6 +73,11 @@ unsafe impl<T: AtomicType> Sync for Atomic<T> {}
+ ///
+ /// - [`Self`] must have the same size and alignment as [`Self::Repr`].
+ /// - [`Self`] must be [round-trip transmutable] to  [`Self::Repr`].
++/// - [`Self`] must be safe to transfer between execution contexts, if it's [`Send`], this is
++///   automatically satisfied. The exception is pointer types that are even though marked as
++///   `!Send` (e.g. raw pointers and [`NonNull<T>`]) but requiring `unsafe` to do anything
++///   meaningful on them. This is because transferring pointer values between execution contexts is
++///   safe as long as the actual `unsafe` dereferencing is justified.
+ ///
+ /// Note that this is more relaxed than requiring the bi-directional transmutability (i.e.
+ /// [`transmute()`] is always sound between `U` and `T`) because of the support for atomic
+@@ -109,7 +118,8 @@ unsafe impl<T: AtomicType> Sync for Atomic<T> {}
+ /// [`transmute()`]: core::mem::transmute
+ /// [round-trip transmutable]: AtomicType#round-trip-transmutability
+ /// [Examples]: AtomicType#examples
+-pub unsafe trait AtomicType: Sized + Send + Copy {
++/// [`NonNull<T>`]: core::ptr::NonNull
++pub unsafe trait AtomicType: Sized + Copy {
+     /// The backing atomic implementation type.
+     type Repr: AtomicImpl;
+ }
 diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
-index 0dac58bca2b3..ef516bcb02ee 100644
+index ef516bcb02ee..e301db4eaf91 100644
 --- a/rust/kernel/sync/atomic/internal.rs
 +++ b/rust/kernel/sync/atomic/internal.rs
-@@ -37,16 +37,23 @@ pub trait AtomicImpl: Sized + Send + Copy + private::Sealed {
+@@ -7,6 +7,7 @@
+ use crate::bindings;
+ use crate::macros::paste;
+ use core::cell::UnsafeCell;
++use ffi::c_void;
+ 
+ mod private {
+     /// Sealed trait marker to disable customized impls on atomic implementation traits.
+@@ -14,10 +15,11 @@ pub trait Sealed {}
+ }
+ 
+ // The C side supports atomic primitives only for `i32` and `i64` (`atomic_t` and `atomic64_t`),
+-// while the Rust side also layers provides atomic support for `i8` and `i16`
+-// on top of lower-level C primitives.
++// while the Rust side also provides atomic support for `i8`, `i16` and `*const c_void` on top of
++// lower-level C primitives.
+ impl private::Sealed for i8 {}
+ impl private::Sealed for i16 {}
++impl private::Sealed for *const c_void {}
+ impl private::Sealed for i32 {}
+ impl private::Sealed for i64 {}
+ 
+@@ -26,10 +28,10 @@ impl private::Sealed for i64 {}
+ /// This trait is sealed, and only types that map directly to the C side atomics
+ /// or can be implemented with lower-level C primitives are allowed to implement this:
+ ///
+-/// - `i8` and `i16` are implemented with lower-level C primitives.
++/// - `i8`, `i16` and `*const c_void` are implemented with lower-level C primitives.
+ /// - `i32` map to `atomic_t`
+ /// - `i64` map to `atomic64_t`
+-pub trait AtomicImpl: Sized + Send + Copy + private::Sealed {
++pub trait AtomicImpl: Sized + Copy + private::Sealed {
+     /// The type of the delta in arithmetic or logical operations.
+     ///
+     /// For example, in `atomic_add(ptr, v)`, it's the type of `v`. Usually it's the same type of
+@@ -37,9 +39,9 @@ pub trait AtomicImpl: Sized + Send + Copy + private::Sealed {
      type Delta;
  }
  
--// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
--// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
--#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
-+// The current helpers of load/store of atomic `i8` and `i16` use `{WRITE,READ}_ONCE()` hence the
-+// atomicity is only guaranteed against read-modify-write operations if the architecture supports
-+// native atomic RmW.
-+//
-+// In the future when a CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=n architecture plans to support Rust, the
-+// load/store helpers that guarantee atomicity against RmW operations (usually via a lock) need to
-+// be added.
-+crate::static_assert!(
-+    cfg!(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW),
-+    "The current implementation of atomic i8/i16/ptr relies on the architecure being \
-+    ARCH_SUPPORTS_ATOMIC_RMW"
-+);
-+
- impl AtomicImpl for i8 {
+-// The current helpers of load/store of atomic `i8` and `i16` use `{WRITE,READ}_ONCE()` hence the
+-// atomicity is only guaranteed against read-modify-write operations if the architecture supports
+-// native atomic RmW.
++// The current helpers of load/store of atomic `i8`, `i16` and pointers use `{WRITE,READ}_ONCE()`
++// hence the atomicity is only guaranteed against read-modify-write operations if the architecture
++// supports native atomic RmW.
+ //
+ // In the future when a CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=n architecture plans to support Rust, the
+ // load/store helpers that guarantee atomicity against RmW operations (usually via a lock) need to
+@@ -58,6 +60,10 @@ impl AtomicImpl for i16 {
      type Delta = Self;
  }
  
--// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
--// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
--#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
- impl AtomicImpl for i16 {
++impl AtomicImpl for *const c_void {
++    type Delta = isize;
++}
++
+ // `atomic_t` implements atomic operations on `i32`.
+ impl AtomicImpl for i32 {
      type Delta = Self;
+@@ -269,7 +275,7 @@ macro_rules! declare_and_impl_atomic_methods {
+ }
+ 
+ declare_and_impl_atomic_methods!(
+-    [ i8 => atomic_i8, i16 => atomic_i16, i32 => atomic, i64 => atomic64 ]
++    [ i8 => atomic_i8, i16 => atomic_i16, *const c_void => atomic_ptr, i32 => atomic, i64 => atomic64 ]
+     /// Basic atomic operations
+     pub trait AtomicBasicOps {
+         /// Atomic read (load).
+@@ -287,7 +293,7 @@ fn set[release](a: &AtomicRepr<Self>, v: Self) {
+ );
+ 
+ declare_and_impl_atomic_methods!(
+-    [ i8 => atomic_i8, i16 => atomic_i16, i32 => atomic, i64 => atomic64 ]
++    [ i8 => atomic_i8, i16 => atomic_i16, *const c_void => atomic_ptr, i32 => atomic, i64 => atomic64 ]
+     /// Exchange and compare-and-exchange atomic operations
+     pub trait AtomicExchangeOps {
+         /// Atomic exchange.
+diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+index e04268379157..a560518e96ee 100644
+--- a/rust/kernel/sync/atomic/predefine.rs
++++ b/rust/kernel/sync/atomic/predefine.rs
+@@ -4,6 +4,7 @@
+ 
+ use crate::static_assert;
+ use core::mem::{align_of, size_of};
++use ffi::c_void;
+ 
+ // Ensure size and alignment requirements are checked.
+ static_assert!(size_of::<bool>() == size_of::<i8>());
+@@ -28,6 +29,26 @@ unsafe impl super::AtomicType for i16 {
+     type Repr = i16;
+ }
+ 
++// SAFETY:
++//
++// - `*mut T` has the same size and alignment with `*const c_void`, and is round-trip
++//   transmutable to `*const c_void`.
++// - `*mut T` is safe to transfer between execution contexts. See the safety requirement of
++//   [`AtomicType`].
++unsafe impl<T: Sized> super::AtomicType for *mut T {
++    type Repr = *const c_void;
++}
++
++// SAFETY:
++//
++// - `*const T` has the same size and alignment with `*const c_void`, and is round-trip
++//   transmutable to `*const c_void`.
++// - `*const T` is safe to transfer between execution contexts. See the safety requirement of
++//   [`AtomicType`].
++unsafe impl<T: Sized> super::AtomicType for *const T {
++    type Repr = *const c_void;
++}
++
+ // SAFETY: `i32` has the same size and alignment with itself, and is round-trip transmutable to
+ // itself.
+ unsafe impl super::AtomicType for i32 {
+@@ -339,4 +360,29 @@ fn atomic_bool_tests() {
+         assert_eq!(false, x.load(Relaxed));
+         assert_eq!(Ok(false), x.cmpxchg(false, true, Full));
+     }
++
++    #[test]
++    fn atomic_ptr_tests() {
++        let mut v = 42;
++        let mut u = 43;
++        let x = Atomic::new(&raw mut v);
++
++        assert_eq!(x.load(Acquire), &raw mut v);
++        assert_eq!(x.cmpxchg(&raw mut u, &raw mut u, Relaxed), Err(&raw mut v));
++        assert_eq!(x.cmpxchg(&raw mut v, &raw mut u, Relaxed), Ok(&raw mut v));
++        assert_eq!(x.load(Relaxed), &raw mut u);
++
++        let x = Atomic::new(&raw const v);
++
++        assert_eq!(x.load(Acquire), &raw const v);
++        assert_eq!(
++            x.cmpxchg(&raw const u, &raw const u, Relaxed),
++            Err(&raw const v)
++        );
++        assert_eq!(
++            x.cmpxchg(&raw const v, &raw const u, Relaxed),
++            Ok(&raw const v)
++        );
++        assert_eq!(x.load(Relaxed), &raw const u);
++    }
  }
 -- 
 2.51.0
