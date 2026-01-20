@@ -1,66 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7D33EDAC3;
-	Tue, 20 Jan 2026 17:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1273132C33D;
+	Tue, 20 Jan 2026 17:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768931935; cv=none; b=dWf6i9nklYaXEf7t9DQSkw7i4iOnAaG8I8XaHKmwXZejP2AksgrkmrERTdJoHh9JdylvofDFABDKRvsLpwJaTbOgGchsTliveS39wAbF4rkTInpT9LQaavji1Eh/J9IIwLYqkkOFkJ0Rc8sV6uvtoFf2sxp8wQ2kMwwKydAlZdY=
+	t=1768931978; cv=none; b=mgfAYQ2K9ZmK1kENtHN7m8wwBlH10/m605CmARXpXEta11NHurjp6tt6n0drJ9Av/oKLS5LqTiv1VI3r/xQqdb5RyBfdkCKSI3je1WTXDlXp79jpc3IYrjA6yEClMcuNB4N1rNBkoW3qhzP9DxFx5cwRXfDpHUr/DdE2xu8PEFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768931935; c=relaxed/simple;
-	bh=Y9cZ7orhjjaxMihveN4lhxry2uDDss/+iMQKy1Nem28=;
+	s=arc-20240116; t=1768931978; c=relaxed/simple;
+	bh=im6rTGdtAHVoo9gMGfLRhHqPzagovRFiPRrkny9SMiM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m21pJK8N8N5PvJIwrFX9onB1z1dgnClsHNhf3f4F9oXds2LqJmPQC1DunErU3Kyaep9ny/oSpzSFdf38CGZIoZjP97f/SDgXB4Mj4NEfssVAMnbtixK24R/iJJ5z1/MhnvSTKUyG0Iz5DSKxDh0Ct2cYFlHqbRR4J8M8dDCWAuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sqrigPUg; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=BOYKPETiMBGxJY6UR8mbmvp10iHE04eVrTNYDnIf3AyRDkH7qNxZh94JgD5QAuPYfwdR5IEl3Qagcqd2BDGd5t5hQDIKIvC+RRxXErWRiFLriW+IqMIkBtJfMbhlSdFy9T19xwTjqln2Lf557D4+kgHjhltQYNn3+2va5eR+5Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aK1PfLxV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sqrigPUg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87471C16AAE;
-	Tue, 20 Jan 2026 17:58:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aK1PfLxV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A76DC16AAE;
+	Tue, 20 Jan 2026 17:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768931934;
-	bh=Y9cZ7orhjjaxMihveN4lhxry2uDDss/+iMQKy1Nem28=;
+	s=k20201202; t=1768931977;
+	bh=im6rTGdtAHVoo9gMGfLRhHqPzagovRFiPRrkny9SMiM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sqrigPUgLp8CHIqvTB6si1zueozeU91+N/v9yWs4bY62qtFStLd53MjtG++o8a+s2
-	 Y/PFetqqq+kdWgw2TOBB3Ark2XGfAx8lIxZT3Win+m5i9IkRWA7Nmv3+hr0x0TtI8V
-	 GMqEyau6VYSSM/PYtVBat8h6sfJvLwPs7cRK710WYVD/xUBS32nmX5Q/V7QbbygWgA
-	 Mrcn4zD1hRBa9o3/D/YaduSNS9rukKrLc4PvCYMJB6ZSYEDZyPQ7zUNNBYeCJd6GgR
-	 4/4CRV3HqLkWCm/3Wcx4DkYxYNuOpDmBOT12se5HV6lOVjjllJO+cQf5sAWjVxrthb
-	 TkBvw2tXhLkVA==
-Date: Tue, 20 Jan 2026 10:58:49 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
-	llvm@lists.linux.dev, Nicolas Schier <nsc@kernel.org>
-Subject: Re: [PATCH v3 0/2] scripts: introduce containerized builds
-Message-ID: <20260120175849.GB2749368@ax162>
-References: <cover.1767199119.git.gtucker@gtucker.io>
- <20260119213516.GA1051134@ax162>
- <20260119214931.GA1058062@ax162>
- <1766d2ae-1224-4d3e-bc9f-786702989a79@gtucker.io>
+	b=aK1PfLxVNKN1Ua0nUF6yXjbvl3bTts6+0P3a7FwemeqYInCPOqLMe7egQMKlgbamx
+	 jT0re+ddTMJQgS5KCw6K2n7fXjEhOQkpKKa9vlCB5ojDJv9D1C/L4BNg0PxsRo0xYK
+	 Dyz35tJWDs3fL6E+r5qBynAYWCGKSBzddr0Yne+MK0e3sLlpkw3rimWL92hHjZNRWL
+	 xiOGokhX5tSM0xxdKY3flR4dWii61ZPfK3Z1kGl/bteabDPKbZ/EVCdNm6UnzKpxbS
+	 4FE2Y1Z9/W3Dg9aBlM6qa7swT/o+nmgD1SI6FKvAYOdgDqBBowaFng7Q1zXMc+DSBO
+	 +S3hrb2+x56Nw==
+Date: Tue, 20 Jan 2026 18:59:35 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Kari Argillander <kari.argillander@gmail.com>
+Cc: Michal Wilczynski <m.wilczynski@samsung.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-pwm@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] rust: pwm: Fix init error handling and tidy style
+Message-ID: <6fwrwklfywcofk3pb7cn6fllk2ndekcrrfyifrb55u2dt4tzuw@zlpbxgs7lhak>
+References: <20260102-pwm-rust-v2-0-2702ce57d571@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="muncmzujuwzhebe7"
 Content-Disposition: inline
-In-Reply-To: <1766d2ae-1224-4d3e-bc9f-786702989a79@gtucker.io>
+In-Reply-To: <20260102-pwm-rust-v2-0-2702ce57d571@gmail.com>
 
-On Tue, Jan 20, 2026 at 10:56:46AM +0100, Guillaume Tucker wrote:
-> Not at all, on the contrary I have some dedicated time and long-term
-> interest to keep maintaining this.  Please feel free to add me or I
-> can send an extra patch if you'd rather I did it.
 
-I can fold that into the two changes in a natural way.
+--muncmzujuwzhebe7
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 0/2] rust: pwm: Fix init error handling and tidy style
+MIME-Version: 1.0
 
-> OK sounds good.  And sorry, get_maintainer.pl didn't mention Nicolas.
-> I should have checked the KERNEL BUILD entry by hand in the file...
+On Fri, Jan 02, 2026 at 09:51:40AM +0200, Kari Argillander wrote:
+> This series contains two small updates to the Rust PWM bindings.
+>=20
+> The first patch fixes a potential memory leak on an error path during PWM
+> chip initialization. Someone needs to decide if this goes to stable.
+>=20
+> The second patch is just style-only cleanup.
+>=20
+> Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
 
-No worries, I am sure there are quite a few scripts that we technically
-own but do not have an entry for it in MAINTAINERS. This won't be a
-problem going forward at least :)
+I applied these with Michal's Ack to
+	https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for=
+-next
+=2E
+
+For now I don't intend to send the first patch to Linus for 6.19 and
+queued both for the next merge window. Please convince me otherwise if
+you think this to be wrong.
+
+Best regards
+Uwe
+
+--muncmzujuwzhebe7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlvwoQACgkQj4D7WH0S
+/k6JswgAmWFOKTXa0Hy6P8v8S4w1IF6Y4/KJ5gc9noW2QnhlGY0DESZ2/1QOEbmt
+02ZxTWc8NDukwoM+/b+hFa/RsrWYATA3yfbdLVd5/0MtQHcbHjCfmWfRGA+VnUou
+rIrZzaF+Ocflpa7mzcVxQ/AdXuT2Dp7ggLM6AduDqy3ZeLzlUhhnLBoWQPioq9j2
+5yU95K2nrzPaELGArWRRjwJYkAuLsCsIoTUvzwP5kY4PvQbG8pVmRpuoWq5Zol5O
+whk4T7/i3H6Q2j6eYrVIORhPRePGiCSe+4Xarnl5J4nAGi2+OJ9By0h1WxrpInPF
+ZxMmULoi7gSa2lCQ6Od5nTS/KRVLgg==
+=mJu7
+-----END PGP SIGNATURE-----
+
+--muncmzujuwzhebe7--
