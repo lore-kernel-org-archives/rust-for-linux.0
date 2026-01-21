@@ -1,194 +1,218 @@
-Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFB32ED848
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 01:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.193
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768958171; cv=none; b=rI0XpJuYxG/gwJmORhymRUcgfVfG6peibdBqkbTWBA/UsOBPbwk4QeliYdYk1dmMSjkWfjBv+rzOMPuyNfFNcSGPpWKKbCiz+3r3Wes6Q76RDnv/1V+KQI8EA8ka8Mt/ZF52X0whhM2r7gX48BTJZZAC0uhWi5z432qiJRZbuMM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768958171; c=relaxed/simple;
-	bh=8tK93kNbfRfdSjL6W5C/lx7kmJbOTp0ynbmaT+UmxLU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=bqlTtRAjk2vr8SlydC5YLmq4ff7t2HPLlIzadRoRZfT8iKruv2F4meC0Y/bYYbea5rKEBStw8VHZAdMP+6YNPC/DI1aopycXhQm5S0J/YjrB5rn5o4YS71mLuZ3+OuaSCTVRlF5CiUPl9MM7KLDn6bC2Dd8w96yh5KEnf8E/KME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bbL/rA7v; arc=none smtp.client-ip=209.85.210.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B340C19CD05
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 01:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768959160; cv=pass; b=FqQnbFCSobRTOPc1Fbijb+F4tXFlqfVBUFZpZu0/zrxXC5pHPFyGg5PgnloNv5ALYPtqd8psSkjPNlu9v5MzBjNWUe4/OMbGdZKoTI1SYUOaxO0y6mBJg75/rqcX7T98lKiNkCaBWXe4TqL+QRFgTI8qsDWFff1ddvagQ8C58Qs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768959160; c=relaxed/simple;
+	bh=ShWRak8oUy88OSaopaw+aLPDpDo1ZpJd6cDyp++LarM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GN70VH7b+4ngI7DgOm0wWs8AtsUArj+tCnqvWUv3IFpm+z47tTevnpJGC2IkQxXYEeiDHHI7qdzd7f+Z25rKvx4sW8hyQpYupiSOPcfp/0D94YQmhTPJt7VAyyom2WDBtqGyGGjuTCDSsWxRFUWoM9rh0qwm1iBjzQlJbIf1WoE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=A5BCDI+7; arc=pass smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bbL/rA7v"
-Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-81ed3e6b8e3so2901818b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 17:16:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="A5BCDI+7"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b876f3f603eso992423866b.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Jan 2026 17:32:34 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768959152; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HXtHO85hrlsoaehT9ZeiVbwagOkWRIVJ5enNx0Hy0kVm3hHNCvdSLDgSQH9enyhmy6
+         Yy9DVmL/1h513rRaWKTBKTCu3lYORQK/pkufRB8LeGaFz/yVCXg9hDRvykR62B+IdgUA
+         p5ThTCsLFfwQVEKfp8iPfHnTrCvMLWANPfs9QHs8UxkpGroc5GKdjeOEJDr50mGH/s+Z
+         ETsvxAtgyc98p46HBeDZ1NFTG2W9vOfmilalFVGHHGn5r8nVYHfmJYLAM6xDQPXS4peC
+         K+BnOdXMRc7cfx1BA6wrwupccBsLCej+1Lk1jytI5zo8BYL9DS2YxUmVAgF0/kws7mKx
+         SPXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=phhznUg1me3aMCDh6RtpPgdrBfYLQTkKfqDDafoKBZI=;
+        fh=wpJXzYtvF+5CZ1TRta6pFGBZ9aKj8zvph7i1XvPW1dY=;
+        b=WsWv9VtcQvaehZzzN/MsHuj87ynwc6DwZsVtMC8LM92U7obK2WnmSfnrQVngMgz4El
+         p2FympgwN73DukhYFHGXoHIxfvM2dAk+VCdM9nDimOwY0EmutgvMGPnKCvq96onApDGl
+         9+yWfdUaXunprznci7ZvQjuWKHBdPMos1v6qYd/dTtek8be6xdrcUkkN2ptecyMSI0TV
+         vv/DBjCLzjMteXMQt57Ntyqhsn8i+jgGMYEdCvL2hUuOZ2vLlMzvuQ9pEhULK7s7OXmS
+         FVAE2vS28Br7fk5pfUYHd/D5ODIS6zBzkUXJZg7JdNxdhGXQKaSYkphyOr9BP7qoG7Fi
+         ZJ7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768958169; x=1769562969; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=sifive.com; s=google; t=1768959152; x=1769563952; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TuJvjah/Tw/b3alV1e6g6NeIK8xwKHZbZfdxMeTcSjs=;
-        b=bbL/rA7vKnUK60t458F+k9TNmrrwQRp8FNJf1paJmgyO7pQcG9Tf2qL0FwNlIhhj/M
-         wmtYltkWPyFHUdsyCKbqd5h08PvbVZgVW6ePP6x4NVHWViPuxHkqzTm0gxh8OfPs6vQJ
-         CoiqOT7sQXm04poUyru2FrS/ScaUYPl+3wTfGnhHIBqQFxlhYv9aatxwTWh67PAtLBHJ
-         Y9PzxZWzEPOv5SuVLi91d7OvHTAc4sWuYMTDIvQDFiArd1iN344BmRJ13zI5QeVzP2Ye
-         O/cu6PKyRykf8hSOPQiv/f+f6ecEViOeILdgFEa3vHKTQteqaqUX5o8vxRrXy0Fzf9bH
-         RLEg==
+        bh=phhznUg1me3aMCDh6RtpPgdrBfYLQTkKfqDDafoKBZI=;
+        b=A5BCDI+7uaow+L1pkR0/vhbZZn6AJyq7brkzi3g5PXQfBD4lA4/eE0X3H0eaNyQ9uI
+         BhpW1W5q/SgcOo9bLiXBhGEOuJjNOLdsgI1yomjhhtiMc4yYgjkRRCEZEjOgjfqf0UZm
+         alaado9gHlyuyjKWjd2TKsKjKgLfd7fX9KqgYnaBHFx227Fx+cmQlNknKxxjjBc6MhHc
+         tG3tvKjpIj28uMUF7HVJL7ZayB6r9Ecpz7T11yD3GxnJ2kYCvSe5zS/YTgO0OkPIEynl
+         85aax+WRhLPNanwVxq+Dtb0SSQHEK2jnBzPJpDYm/K1qIbTkzVoB1lPQoyDUEHDmqQ9K
+         uN2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768958169; x=1769562969;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TuJvjah/Tw/b3alV1e6g6NeIK8xwKHZbZfdxMeTcSjs=;
-        b=sZl7rytkWPUFuC+owFkfpD0kWweSo3z0B2i0vCB0fURKGK5tdhdG2KYkcGHEnAvSxp
-         x3A23yq8uWMcvnw2v2Y8U2sie0NAvR+zthtkuLjxR5YxBBPOYKTG1JWIOM+iLPwwHWBR
-         9HRSSsUZRRf8yTsPI8n8yp7nccP9YftbG5w5BdMX16C35WHFC8bZEwGcvZ3I/pfUOLYa
-         hsDN/2fp+d4X51QXB3rAU7GRJTGl/ZTH9Y4s6GqwbUlJeZz9MDLctlPMtLPVzUvnGxW1
-         9BwE2ge5GGguwTU2IdqPQ9w1ojeeY65guit9mqzC0Yc7p0ll57WoCC1SjzSRQlG4BdB8
-         uJyg==
-X-Gm-Message-State: AOJu0YydhPqFKyLoV8AY66E21/F8M91Ov85b/g22hcb8U4qQmC4KTBc0
-	AY4i0ArLiZtzup2F1FWkIB1zvl0oVfEIctsTVLsqOLZbJTTnPZ0NIQH1
-X-Gm-Gg: AZuq6aLNUalv2E4tX3FWML9EM11+3guC95hzo2Jr3WlxUWDhtHzB7X3wi+1DmfJmCd+
-	MnPyHoISC4sPFpoRmKw6s0aPYIn1pV2R93Y4UbcZpTas6qtpz6SwTCHBZYz5jMFf1jDaAiuoXOF
-	9NWIwPOVBCltvrb/SNp1mItcZbTATIMsRj9hCPe7e1rml0mxEZbopE60aGlA4T304q30pzAP/RW
-	lQoMvw1yxCnmzisHbKxgKJhIu/ZB21kB1FHDsdzyUB90ZvXnsHBRDGZtVkfd6F8x1z38pqLt0+l
-	1QEVLkUrVLM/ANAPPBQM8yHqu5gLxn4UOnny16v2Tc4DcMNB0ww2+r+wJ+jYACXJEugTLixuLHg
-	lV6MmAGJJSXPX1u3cACA5d0gnwfyIYFyRmOZrk7NaugoVZK3etNgIglIfiX+QzpoN0I5XdE//Ss
-	TcAD6UhV6tCezM7zQE
-X-Received: by 2002:a05:6a00:1413:b0:81d:8d00:76d2 with SMTP id d2e1a72fcca58-81fa18204a0mr12463838b3a.40.1768958168312;
-        Tue, 20 Jan 2026 17:16:08 -0800 (PST)
-Received: from localhost ([112.149.32.52])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa108c4dbsm13363443b3a.5.2026.01.20.17.16.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jan 2026 17:16:07 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768959152; x=1769563952;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=phhznUg1me3aMCDh6RtpPgdrBfYLQTkKfqDDafoKBZI=;
+        b=Jgt8Jm/6yKnnik2IMt0lXh815e/4GuIZP+pEh9iaL0Y5jmM7h9RMdWuact9MnE7qfX
+         QlCJhUNB7noodh9j2ukSJ6Tsgg0UT+QkOmtxmhlN14OS0Fni/fEOKRcwR0JRMrrSQ8iI
+         h15nFccM/f6xreeuBTrPVnydpclMdee9jQf4E70xw4yoQyPi3WG1xaKG/xeFezOApQUK
+         rrPR2irshE3JDcPIR+QNPr2wWP1tlIq3AZbtleZrsT86ck6rQxLpl6S9Jkarr6yWlWpZ
+         +bFRBvQqCLR31uLllehpmy+XvCQDyJ2fmWPjgfapGvsxbePxG6RwQUxP3rcjGiMacBZq
+         aQJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWhi7nuefAmc1fLlav48ASVGBdeq+DtJLW12Xo2aA+EtkA2hYoWcvltquHJBSw+5MkIBw8WDT5BYktItBt0KQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOdACYxKPCk0gMevHEKirnBAX2+qUn6GGcG+vutskNUbcmBHGQ
+	DR2oHi/cTJc0orlerApiP4UOHRBZ4yyZLbG6t7+mWRiSDwJgSMsLxd9XW4MlHl8pxM+aIwrM+QD
+	0TOyGbD6m3Tk7lSlWt1/pil1CdRpwZynhr+4LAuKUKA==
+X-Gm-Gg: AZuq6aIOqcMvsOWNpM97WcddR3nd9ZHRkA4WxF3VxDZKrmkwfXQH2t5ESztk6aAcHg5
+	dXC31mQEQl2/dH6Tv3bpcLSh0Py6OvNYFsmv9/x7/2j64bIeuhcq9adibmOP0hjymlAG1OKZ0+3
+	hb4yjWvcZYiZs2yNEazrFGhyQKd1lCMtyQFE09DAgf0CpTC1h39nlegleH4S22QtWRNwZBWkITd
+	1tinBNXm3SyyY5SvTfgr0sV4tF0HxCjW7J4L+fhE9CDIYPajfYbsylGKhvYG/n0wXffk4qkGQ==
+X-Received: by 2002:a17:907:9488:b0:b87:7634:b20c with SMTP id
+ a640c23a62f3a-b8796b215a4mr1301363166b.38.1768959152268; Tue, 20 Jan 2026
+ 17:32:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
+ <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org> <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
+ <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
+In-Reply-To: <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
+From: Zong Li <zong.li@sifive.com>
+Date: Wed, 21 Jan 2026 09:32:20 +0800
+X-Gm-Features: AZwV_QgpJ38WsQTA-JLh1W5jk7su1plcAErfmIKl7ceT3yMsB0wZBJHvBBZ5Ujw
+Message-ID: <CANXhq0rpjSvOThACrB6_MMc8S34--xJsUYZ+HtMu1GUNyk8zOg@mail.gmail.com>
+Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Paul Walmsley <pjw@kernel.org>, x86@kernel.org, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+	richard.henderson@linaro.org, jim.shu@sifive.com, 
+	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com, charlie@rivosinc.com, 
+	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
+	alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
+	Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
+	Valentin Haudiquet <valentin.haudiquet@canonical.com>, Charles Mirabile <cmirabil@redhat.com>, 
+	Jesse Huang <jesse.huang@sifive.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Jan 2026 10:16:03 +0900
-Message-Id: <DFTVC1IH8KM0.VR14LX627BWD@gmail.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>,
- "Linux Kbuild mailing list" <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] scripts: generate_rust_analyzer.py: reduce cfg
- plumbing
-From: "Jesung Yang" <y.j3ms.n@gmail.com>
-To: "Tamir Duberstein" <tamird@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Jesung Yang" <y.j3ms.n@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260120-rust-analyzer-pin-init-duplication-v2-0-a1c76f0d3bef@kernel.org> <20260120-rust-analyzer-pin-init-duplication-v2-2-a1c76f0d3bef@kernel.org>
-In-Reply-To: <20260120-rust-analyzer-pin-init-duplication-v2-2-a1c76f0d3bef@kernel.org>
 
-On Wed Jan 21, 2026 at 1:10 AM KST, Tamir Duberstein wrote:
-> Centralize `cfg` lookup in `append_crate` to avoid having to do so for
-> each crate. Remove hardcoded `cfg`s for `pin-init{,-internal}` now that
-> these are passed from `rust/Makefile`.
+On Thu, Jan 8, 2026 at 11:10=E2=80=AFPM Deepak Gupta <debug@rivosinc.com> w=
+rote:
 >
-> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-> ---
->  scripts/generate_rust_analyzer.py | 13 +++++--------
->  1 file changed, 5 insertions(+), 8 deletions(-)
+> Hi Paul,
 >
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
-alyzer.py
-> index 147d0cc94068..b96d3cbe3df1 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -35,7 +35,9 @@ def generate_crates(srctree, objtree, sysroot_src, exte=
-rnal_src, cfgs, core_edit
->      crates_indexes =3D {}
->      crates_cfgs =3D args_crates_cfgs(cfgs)
-> =20
-> -    def append_crate(display_name, root_module, deps, cfg=3D[], is_works=
-pace_member=3DTrue, is_proc_macro=3DFalse, edition=3D"2021"):
-> +    def append_crate(display_name, root_module, deps, cfg=3DNone, is_wor=
-kspace_member=3DTrue, is_proc_macro=3DFalse, edition=3D"2021"):
-> +        if cfg is None:
-> +            cfg =3D crates_cfgs.get(display_name, [])
+> I have a bugfix for a bug reported by Jesse Huang (thanks Jesse) in riscv
+> implementation of `map_shadow_stack`.
+>
+> Should I send a new series or only the bugfix-patch for implementation
+> of `map_shadow_stack`
+>
 
-Could we add a brief comment explaining how the behavior of
-`append_crate` changes according to the `cfg` parameter? Since `None`
-and an empty list have different effects, documenting that distinction
-would make the intended behavior clearer.
+Hi Deepak,
+Not sure if I missed the bugfix patch, I couldn't find it on the
+mailing list. Could I know have you submitted it? If so, could you
+please point me where the patch is?
+Thanks
 
-This would also help later when we add proper Python docstrings.
-
-Thanks!
-
-Best regards,
-Jesung
-
->          crate =3D {
->              "display_name": display_name,
->              "root_module": str(root_module),
-> @@ -60,7 +62,7 @@ def generate_crates(srctree, objtree, sysroot_src, exte=
-rnal_src, cfgs, core_edit
->      def append_sysroot_crate(
->          display_name,
->          deps,
-> -        cfg=3D[],
-> +        cfg=3DNone,
->          edition=3D"2021",
->      ):
->          append_crate(
-> @@ -75,7 +77,7 @@ def generate_crates(srctree, objtree, sysroot_src, exte=
-rnal_src, cfgs, core_edit
->      # NB: sysroot crates reexport items from one another so setting up o=
-ur transitive dependencies
->      # here is important for ensuring that rust-analyzer can resolve symb=
-ols. The sources of truth
->      # for this dependency graph are `(sysroot_src / crate / "Cargo.toml"=
- for crate in crates)`.
-> -    append_sysroot_crate("core", [], cfg=3Dcrates_cfgs.get("core", []), =
-edition=3Dcore_edition)
-> +    append_sysroot_crate("core", [], edition=3Dcore_edition)
->      append_sysroot_crate("alloc", ["core"])
->      append_sysroot_crate("std", ["alloc", "core"])
->      append_sysroot_crate("proc_macro", ["core", "std"])
-> @@ -90,21 +92,18 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
-ternal_src, cfgs, core_edit
->          "proc_macro2",
->          srctree / "rust" / "proc-macro2" / "lib.rs",
->          ["core", "alloc", "std", "proc_macro"],
-> -        cfg=3Dcrates_cfgs["proc_macro2"],
->      )
-> =20
->      append_crate(
->          "quote",
->          srctree / "rust" / "quote" / "lib.rs",
->          ["alloc", "proc_macro", "proc_macro2"],
-> -        cfg=3Dcrates_cfgs["quote"],
->      )
-> =20
->      append_crate(
->          "syn",
->          srctree / "rust" / "syn" / "lib.rs",
->          ["proc_macro", "proc_macro2", "quote"],
-> -        cfg=3Dcrates_cfgs["syn"],
->      )
-> =20
->      append_crate(
-> @@ -124,7 +123,6 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
-ternal_src, cfgs, core_edit
->          "pin_init_internal",
->          srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
->          [],
-> -        cfg=3D["kernel"],
->          is_proc_macro=3DTrue,
->      )
-> =20
-> @@ -132,7 +130,6 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
-ternal_src, cfgs, core_edit
->          "pin_init",
->          srctree / "rust" / "pin-init" / "src" / "lib.rs",
->          ["core", "pin_init_internal", "macros"],
-> -        cfg=3D["kernel"],
->      )
-> =20
->      append_crate(
-
+> Let me know. Thanks.
+>
+> -Deepak
+>
+> -Deepak
+>
+>
+>
+> On Fri, Dec 12, 2025 at 10:33=E2=80=AFAM Deepak Gupta <debug@rivosinc.com=
+> wrote:
+> >
+> > On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
+> > >On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
+> > >
+> > >> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shad=
+ow stack
+> > >> on MMU). Used b4 to pick tags, apparantly it messed up some tag pick=
+s. Fixing it
+> > >
+> > >Deepak: I'm now (at least) the third person to tell you to stop resend=
+ing
+> > >this entire series over and over again.
+> >
+> > To be very honest I also feel very bad doing and DOSing the lists. Sorr=
+y to you
+> > and everyone else.
+> >
+> > But I have been sitting on this patch series for last 3-4 merge windows=
+ with
+> > patches being exactly same/similar. So I have been a little more than d=
+esperate
+> > to get it in.
+> >
+> > I really haven't had any meaningful feedback on patch series except sta=
+lling
+> > just before each merge window for reasons which really shouldn't stall =
+its
+> > merge. Sure that's the nature of open source development and it's maint=
+ainer's
+> > call at the end of the day. And I am new to this. I'll improve.
+> >
+> > >
+> > >First, a modified version of the CFI v23 series was ALREADY SITTING IN
+> > >LINUX-NEXT.  So there's no reason you should be resending the entire
+> > >series, UNLESS your intention for me is to drop the entire existing se=
+ries
+> > >and wait for another merge window.
+> > >
+> > >Second: when someone asks you questions about an individual patch, and=
+ you
+> > >want to answer those questions, it's NOT GOOD for you to resend the en=
+tire
+> > >28 series as the response!  You are DDOSing a bunch of lists and E-mai=
+l
+> > >inboxes.  Just answer the question in a single E-mail.  If you want to
+> > >update a single patch, just send that one patch.
+> >
+> > Noted. I wasn't sure about it. I'll explicitly ask next time if you wan=
+t me to
+> > send another one.
+> >
+> > >
+> > >If you don't start paying attention to these rules then people are goi=
+ng
+> > >to start ignoring you -- at best! -- and it's going to give the entire
+> > >community a bad reputation.
+> >
+> > Even before this, this patch series has been ignored largely. I don't k=
+now
+> > how to get attention. All I wanted was either feedback or get it in. An=
+d as I
+> > said I've been desparate to get it in. Also as I said, I'll improve.
+> >
+> > >
+> > >Please acknowledge that you understand this,
+> >
+> > ACKed.
+> >
+> > >
+> > >
+> > >- Paul
