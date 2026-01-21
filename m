@@ -1,329 +1,225 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021086.outbound.protection.outlook.com [52.101.95.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A1340B6E6
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 11:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768995129; cv=none; b=ULjk8404FeQH9oPovO0BZh+CD+NMmnLpDDWG3PiKAlvP4NiypfPr48fXWvk1fsZvEumz6zzUOcLUOrAWFZcmjLOZn/6hbq+SbmJKIRnCN8CRhUgKkbCfF8yZJmW8bEPJwUHvfx0FatTx6vrUYKdLMhPIgugeippXc6Xtp60tMx0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768995129; c=relaxed/simple;
-	bh=puxOKvWZSmMilkgdnuRja+EvIpEfKakk94O5pIyZrME=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Gsx7wkFJrI1cH9xLALiT74cCuFAI48usHtgdWiWZdRlEo0jnKWynYbaBPTXRCU1D5aouWkRW19EHZW3x0X9MLqmWExzN1fRVqig8jyAmLJdDE6VZ1JQFIOYwa+aJO8R8+KZ258IgjZNc6KwtgsZGAdZV6nGIu3Gr0rC828zcJSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EtyxTym5; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7E23BB9F5
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 11:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768996024; cv=fail; b=JCxUg7ljKMDLZwTxIiNIWGoe3lFnaARFjho7dRS1rvXohXs9iqqpDLgAgdj2D1KPx6lI9e94e/5gkkrZq/BGEP+wf9d9XC3831qOsqYfd23xlaifsy0npIqqBWFktB55qxUeJp3dWjVDsv2/eZAL6sV+5drLridYCbOFxYtrMck=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768996024; c=relaxed/simple;
+	bh=C12FKEZ0aQBbDKuG0e2SaqXRQbw2t/g2tM0jBt3G8no=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=nDTCJR0O8MZvPYkBo6KvBvsaFKsZt9qGgAhHNf2y2jYVY6yuGcV4j2S9gr10KqfgPtiXWzKtk78FpiNBciK0s99Xgp0ZpQnfl30ske38C+mqrCKrjRhzkccReKx5IVKW+ZiMItmbywnTMeX0zFfam5STHhC8CgGkLsiBtMn0PJM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=a3zwBb4L; arc=fail smtp.client-ip=52.101.95.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EtyxTym5"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4801e9e7159so30789505e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 03:32:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768995125; x=1769599925; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ADHnj9pTGTbd43O9T51NFX85JNRLR0rvNZITUD0GxdM=;
-        b=EtyxTym5EhqKEAFYdNO+AqgmSuxzUVbY7O6IeacedicvavqwLIWz/ZcZnOKhJ5gzee
-         8kolfOLJFjKACLaFSjnP2oW/7OklWPgsTTnTPRgkYtapC8IrsJsr9g9ET9C1yDJppwsy
-         4P19g/TlhvsJnRpt3YOGWflEcMjBwt3JP5I33GimL790Ioc0YrVKm6tVOQdt7+gjGxpm
-         CWjw/wTD+o4by67RuV38c71scaELQxL6+Nx2yzOW7CtpmtDDFN7NAnnDTouSVzHw57r6
-         lELoRTdG4vy1GUi/Wc0R7NQVr2AIlTc8xzbs9wjTEmXia/cPgUdT7NF08wbukuJRyvFb
-         6VFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768995125; x=1769599925;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ADHnj9pTGTbd43O9T51NFX85JNRLR0rvNZITUD0GxdM=;
-        b=eYYm05MltPgzeMdB6p3sSfgttE6hpScsQB4qJ/e6C66vcd00wj6CFApXsJlhwtgA5y
-         AM6FAvl0+7nULrwYnKtVXbxcPyTiyqUoZiNSvTef2OwY1me2bM+6S2lwftooMbI+F4R/
-         Jmx0akoKM2DkDLg0FYIk2p063DDC9qCwnCh0obodXwHni056LTzanL2f0O5ANuoCGkKw
-         hq8mH+xmrEHYDqr5FUgygXp3HhgEOFkNsd6YTG6gOZfMR85c1Xu0oH7/5OVTkifCyqzz
-         wYTcOtGQfv4reqSCgR3xTicvNlnkfV3CZbDHE4ShrWdUOcIW78Qy6ButoVIQfXQgccB9
-         /QJg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrlk//FJf99sHU7z4FPIgfBWPTXH1fTWdDHF2XFAJNmsgpPooy0eesaNudgtuCg6l/Iv340w8uE9Wfyq+0/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNzbrmhRS8kZiuwdK7MpmuhHPBTj4d0MGEXnMoXDIjLq9U5l0U
-	Ue1rEC8wpnNDlCPF2DHqw6HidVCJlZbvIuvD1Zz3Le7u6iTffigS7XVBQfWzfKC1lPolbDQnT4z
-	P1RhJXkUU+1kZzLOCjw==
-X-Received: from wmbhb6.prod.google.com ([2002:a05:600c:8686:b0:475:dadb:c8f2])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d14:b0:477:73cc:82c2 with SMTP id 5b1f17b1804b1-4803e7a4051mr69580645e9.9.1768995125342;
- Wed, 21 Jan 2026 03:32:05 -0800 (PST)
-Date: Wed, 21 Jan 2026 11:31:22 +0000
-In-Reply-To: <20260121-gpuvm-rust-v3-0-dd95c04aec35@google.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="a3zwBb4L"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IjoOqQFp9m8gXmSIWiO0Lcp7bqmpxYxCHWEBvb17DfX19ISBWWPdwnbBTLVw2+YqUNkAFoEtxcOgmUzeH6me3ZrYLZnC3oN8Skax5ooaVSG2MqA5BP2Mn6Wzy7gAwRcPUZ+PsXqvhIWRk0he64dv/ya6GCa1kjreMaXgZd2R2RZcdm/gbssFagraFBVb0IvZ0lw/Q73hrrgehqSqrQPtShDPHuwS+TCkIvG1od1Z7AcsBzUc3hbTQCkXp3FBGoajQ3KosHfzMhEqrqV9FzPCEWRP0JlT857DECpfvu8mmwHYbMr4/ZHGSFCB3pIEQE1PDdv8F2YmBEKlkt1D+lHjQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5izUSruuxhLI0M+mj/c7Z6sP5QhYI9S0pMK5L8OTuhY=;
+ b=dbnxZ7UQMg3MojjT+hRMSiklR1wtncsCvRE+hGCwB/kr7yXHMzltXyVbNDUHN3VUlz6sBL+6s3FdqM08AWKXIvsmnYY3GR3mMXvFI9aY4UzJDIbbv3TQSincsuq7XJOFQ2/K2378Ko9DHgKU605UQKk3oNigWB33w9ECa3i2rC6Rgx2+a494yDYRTuiYCpTbAkp2TbRo6ztPpbuX3FGD6FYpFsk621GtxI2AARVYF7XitUl2LiBkA0EQhe/ovZ3x5IL+IkoAdLKyqeTKNTsJieIC5VrZmp90yf6jn+uE5g0HnHn1dI7uEcsTr6hB5x93G4ZlLV4cYmPs5hFjkttJ7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5izUSruuxhLI0M+mj/c7Z6sP5QhYI9S0pMK5L8OTuhY=;
+ b=a3zwBb4L3jwgQ7MuYteftg/qYctOVJGE7hRu5+4tMQ9vFaJ8dqfCC01W7ZEenhF8VMuuez1LoApfcTXIXmSeAYtF+YRx8LtWa6MmZp9ndjjGzX3M2JdTNjmFoBkscn6lu2jDntHZ1z0BgKB4MIOpDg0Op09qu1DAsAfeBP3HvlY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWLP265MB6303.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:181::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.14; Wed, 21 Jan
+ 2026 11:46:56 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
+ 11:46:54 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 Jan 2026 11:46:53 +0000
+Message-Id: <DFU8R1U4X9IM.DS5S82YYN4X0@garyguo.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
+ <ojeda@kernel.org>
+Cc: <aliceryhl@google.com>, <anna-maria@linutronix.de>,
+ <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>, <dakr@kernel.org>,
+ <frederic@kernel.org>, <jstultz@google.com>, <lossin@kernel.org>,
+ <lyude@redhat.com>, <sboyd@kernel.org>, <tglx@kernel.org>,
+ <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v1] rust: time: Add Delta range constants for time units
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260119233621.3465304-1-fujita.tomonori@gmail.com>
+ <KPB3FIcVMpT7PQ-Zg-0bQVF4nSfqiVuhuzot88r7jK8LruVydZSqJRtFsvpBazN7-iJV8NL6ZLPzK_RnQMHV5A==@protonmail.internalid> <DFTJPKIWK06S.3J0C75Z4RHUY3@garyguo.net> <87sebzti6x.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87sebzti6x.fsf@t14s.mail-host-address-is-not-set>
+X-ClientProxiedBy: LO6P265CA0030.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ff::20) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260121-gpuvm-rust-v3-0-dd95c04aec35@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9517; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=puxOKvWZSmMilkgdnuRja+EvIpEfKakk94O5pIyZrME=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpcLkezgTn6a3N4qhkQEjM7d2JXqI0C+4VoWJDj
- kUFK5DuqY6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaXC5HgAKCRAEWL7uWMY5
- RlLXD/9c5Be8fBOxYmcDNrxEJd5yQFMEUqjllsfSNRz1dvTepH1SiaSzi7glFTAdjp5An2S5to8
- WhLUFtBdx0mZ/+NCKYDrUemcCJAQlKU/PQqnxyxUt6enja6LaLEJFM4iQ48jnmy6g4DrWyYjT8W
- WggqmFpNwL6y9QUQd8oRaTWTbUJ1m8Ij1yZxX945p87X1qTDvHOKy93sX5F2hVwtbbEpvUhkI6y
- ZOVUfZd1siQc2Qmlp26VbdZiGOtEqHWIzCl7zY/Fm/7mhMbh1WfQSfOO7LirdOQy9RbKwJpCvWB
- YdZLjD2FlvFbt3niguznRhBm3X+/xNIBki3nyOumowMvKCv3M9w6zYPjzphkbOKFQOzPDLN9kUT
- xXo+6eyPa7IWdPSyFCyBenLiPaHTaBBXaZc1K/NLOTn4xvQBMEibtH832F05Oq8WsH7GuMF/lCt
- Q9fgNg4bEtONTzB8XZncoG1Es2DolQQgoDsc8TlwMHuXs3x6cKwITDBYrSk++P9N5dCCbcRYZhZ
- /9kYoeiK2TNx24QP4O98/OrqEK6dcqrEjajqu5UAmGoTuXeSKc1JbfDXCr42ttyGhpa+ORAj+sa
- w0wQQfG2ZrvyVhWXSUD7l6PwFreHEK1it3mwvOqYvgvgek6no/VjxXnw0LJVOunmhCdBj+OBKT9 6dJQszz7C6VtFrA==
-X-Mailer: b4 0.14.2
-Message-ID: <20260121-gpuvm-rust-v3-6-dd95c04aec35@google.com>
-Subject: [PATCH v3 6/6] rust: gpuvm: add GpuVmCore::sm_map()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	"=?utf-8?q?Thomas_Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Lyude Paul <lyude@redhat.com>, 
-	Asahi Lina <lina+kernel@asahilina.net>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB6303:EE_
+X-MS-Office365-Filtering-Correlation-Id: bc6eef6f-e47b-4b2c-6595-08de58e2c642
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|376014|366016|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Q2VIdlAyS0MyS1FnWXBzeTNlK01KNFlZR241VEtvU3FmYjd0NUFZRENGOWU5?=
+ =?utf-8?B?TWlUVTh3VWp3ZHlEV0pjc3p5TTZYSUEvWEV4VG1zdVN0NWNKejNwdmZwUlVp?=
+ =?utf-8?B?Um5wenBFMDFnc2lXcVVCL0RveERFSzRVTVg2dStqZjhwV1pqemd6WEpNVXdl?=
+ =?utf-8?B?U3VHVzlCaXJnT0ZtUlZkNUZVM1E3VE9tNUxpR3lUcmNDZGVzNXliV1hXT0hS?=
+ =?utf-8?B?YkIxSGI4bXBpUE51RE5kUVppUU41TjMxVGlZaGUySkZ5MU9abmltSGMwSytu?=
+ =?utf-8?B?VnYvN2tJR2Z6eVczaXBoVWF2TmtGVXZGNkpXWFRFdW9jNCtRcC8raEI0bTds?=
+ =?utf-8?B?cFl2cFZMdXdIZWRNN3lqc0FRbG1uU1pjTlJ2d0hkRDBJYWYwOFhNd3VhK2Na?=
+ =?utf-8?B?K21EOUhSMmdIV1RtYU8wSnR1aDU5NjM0MTVDYnRxR085ZjcvRmw0V001UWwy?=
+ =?utf-8?B?SjlqMFIyN0lNc1d6d01EMVRqSWNwNzdwazM5QUVKL3h6Y1J0ajBTdFg0OWNT?=
+ =?utf-8?B?QUFBa3NOeEVienNJMmVqeHJrMkdOcm1zMExKRGhWNnpoYXRBV0V5aE5jdks4?=
+ =?utf-8?B?bS9oVHNPeUZiNGg0NVg4dDRqOEMyQURnWHZDMmE2cTJvaTNJa3hKWVdHZzZT?=
+ =?utf-8?B?cTg5K2cvclRLYnFCUmhRSUpwV1JyWEVoK0w4Q0duMTJRdnNja09MSE16aExu?=
+ =?utf-8?B?b25vcXk0M00rQTBGOTdGMzlEMnVscU9wYkZwcUhIRFJyNHMrVlhkZ0hmb1NY?=
+ =?utf-8?B?SEpKOXpiRnRYdis1TEFQYmFwVUwrSnFHTXhiaExYRG9NVzgxTzVEdlJKVFRu?=
+ =?utf-8?B?a1kxNVBJSmM1MzcvRFVLODNqQ2RIazNOQUtPNW8xbHE5RUNVRmJUOENkbXlE?=
+ =?utf-8?B?SUIwL0h1U1FxN0J4MXBJYWdFeU85bUpySUJBeWNkaGRtY1hzMDkxZmxvNkI4?=
+ =?utf-8?B?YnhFVXJwajJ6OHFtdVFvcU5CK1VHWE1uN3h3VUJoUDU3eVgxWTlQOUZ0RFVj?=
+ =?utf-8?B?T0JWT0xmempwQjlHejRvSEwxS2dEZ29sbDNQRWlwOTZDSlVpY2VjM21LUU1Q?=
+ =?utf-8?B?MlgrVmhURit4ZktneVorbDR5VVBtWWZ1aTJVQXovRWVvcThlQm16WDFEQ1lL?=
+ =?utf-8?B?bXRYUmVpMWJFMUJCVmZ4My8vc2RDRnV2cUhRaW5Sa3BDajNtbGhMaFBsb245?=
+ =?utf-8?B?a3A1cU5FNE84MEhSVDA1eUdCcWpqSjZKL0VjQ0JMaG50WXAyRDVleVBUQmo3?=
+ =?utf-8?B?UHVGNW03N2pFa0xzbXdlMXQ5SXgxS3BUajFIRDBBRE9Gc2cvWVA5SHM5Mkhk?=
+ =?utf-8?B?dHc2aGVnKzNlbHlnYmN0aEZUakZqVEUxMjlyMy9CMWRocmRiUFJhZVk0b2pD?=
+ =?utf-8?B?UUhyY0FRT2ZIZXh0bTIrMFlkK25nMkRnRjhTNUhGK2NZdXJ2ZUJ1bGdoekhm?=
+ =?utf-8?B?ei8yZkx1NHFJSUhHcTV2NDdOWS9JVzlRVGlVaUdHblZscE4vNU5TWGZrR3Zr?=
+ =?utf-8?B?MTZPVGMrWk5za0VZOFZMWHFFOVh3Nmo5MUVXYmJvWUc1UklodkVXTHRIWDNu?=
+ =?utf-8?B?Q2l4MWdsa0hEU1VDUnlxZEhmQ2VuS09RUDhxQXA4b0ZhMG9rUDA4dWpyOWs3?=
+ =?utf-8?B?UzdMU2xDZlJpRGRjTFRmdlk1ZFFjQkxyb0lCdG9BMmNkSWNXalBoZGFQNDJk?=
+ =?utf-8?B?TWszNVRrNnNPMkdwMEdPVi94MytWNW5XS0M1bm1WU3NqQUs5RXpqUGkxQk8w?=
+ =?utf-8?B?VlJEcDVJNDhIWE9zbFpCWGtrd2EwOTBrczhtTi8rK0xiQkNTVU5BOWFaNnlJ?=
+ =?utf-8?B?VzlTWFFUZklld2oxZUZPdlNsRU1GVXAyaGNpQ3NYdXBvQWZiNTZRN0s3bDVI?=
+ =?utf-8?B?bWo2K083a0R6MzgwNDFoUGMwSStlTmRMQ040YlFOR3FIdmdkelpwd2MzaUhx?=
+ =?utf-8?B?enhKYTFUK2hmbURXa3hVTkdmRm5IbTR5SmpXTHlNdi9UN3MyenJSMVV0T3FE?=
+ =?utf-8?B?QnlBZGV2cFNFVW9uU1p1cWVxRHo1dGFNWWcvZ3REVkYwcm1VbFdoR0lzK3pR?=
+ =?utf-8?B?TmxWT24ra0JTSjNpRnA4TEZtb0poaDhUN1d3bmVRejZvNFhyT3hTaVdzemFU?=
+ =?utf-8?Q?SvSY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R2krR3JZQ1czMDFQblNoVDNacEk5MUlJTzk5MXExMnE2Zk1iamxEcmNVSHlp?=
+ =?utf-8?B?dUNYc3hLYUdkN1FmZTh6TVBQd0dObzZ6YWJsejlZNXRVQ2RxaGVlWjlLY0Rn?=
+ =?utf-8?B?VVFiR3JyRVluUHNkNVlJTkNvQWl6KzFEZXFPaUhOdVU5dTNzRVFDSytxeFh5?=
+ =?utf-8?B?dko0c1BhZUI4WUtja1ptY1NaTWM5VkdMWWZwbGlqUldtVTAxZTRkQkJNTGdF?=
+ =?utf-8?B?am9yY29ZTW01Z0N5TndaNmYwY1dYMk1QM0dWQ2VSeDBoQmhPYUp2QjZEZUZH?=
+ =?utf-8?B?aHZoS0RjRnlEQWwxYWxwWW93c202RndPQWc3c3dlSkxicnV0bWRna3Nxckp2?=
+ =?utf-8?B?UzNtZm9sMDd4V3d5V0lLUmZPTnFvNnJVaXhxT21aUHRkaVlPUmt2eVFPeWdI?=
+ =?utf-8?B?SE1ucWJ5dHd5ZmFFaEs4YTVCL1JiMEtxZVFKNVNpL05YbVVSQ1NSQUcwSG5v?=
+ =?utf-8?B?T0dNZDdqbnRsL05TMWNZb1MrVUErWEs3ZUk1OUQzL2NxM01BbUdJRGZ6bXZV?=
+ =?utf-8?B?Y2Z6Z2JVUXhkWnVtMWdlaEF5YVMxajUxQml0K0h1bDZxT2VYRjU4bktBNkw0?=
+ =?utf-8?B?YW8zdkdhS01XV0tibDhQblpPdGR1WVlmZEt1Um5YU0VQVVNyMi9xZkJYNG54?=
+ =?utf-8?B?eGRFWjhQV0h5ZmZRQ3JaTHBNbXJGeml0c1licFgwSU5MQ1EwMU5UU0FLZ2hH?=
+ =?utf-8?B?N3FzekZQeDBmbTJtajkxaDg0VVVnclozRG0rYXBOa2Nta0ZUSU41VGplYVla?=
+ =?utf-8?B?Wm9qYWNmWHYzSFRtemxCTzYyN2srOGp3ajE0K09XczRwMjFrRkFQSU5WNk01?=
+ =?utf-8?B?NFcrZC9FYlg1R1NHY3dLdWlpZUozaVFUMjkvMVlhcEpIRFljYXZiUERCSzNW?=
+ =?utf-8?B?UjB5TVZaMUdSSzdxY3lKcVpPNmFTN1BteUxQRGZaZi9tT3pZRWRQU2pLUGVB?=
+ =?utf-8?B?VU5xOXR6djdaajZxV2tGTnpYdEZVUkNaTjZiVnY4REg4cEJoZHBMREdHdFNC?=
+ =?utf-8?B?QXI5NnNRMnRrWlpweGlIWWtMRmdIMDEySWU0NXQ0TFJ0R3IyU3ZSaXYvUVJG?=
+ =?utf-8?B?ZTFhZElnSEllTVlaVCtaM2hHUzM1c1d6RW9Xbnpvdm5WTTI0MkwwNkxQeTFX?=
+ =?utf-8?B?bWY3N3QxbVJybkIxNDRUdGUrb09UbmxuVENRU3lzTXBNaG42MzlHQVZlT2ZW?=
+ =?utf-8?B?MmtSN1NjRFRESnBudUxHUHV6UjU1MGRkYTdzMGIrYTFGK0ZkaTBOMFlYdmJV?=
+ =?utf-8?B?VGpaek1jVk82Y0psakdyTjZiWE1lREZEdGZPeEdoM3RvMXo3bDArZGZHV3dM?=
+ =?utf-8?B?TEt2YTlpNmRIc1NzbE1FTnRJOWNVVERKS25JRkdwVXBETGxHSWx0ZUhPdGtV?=
+ =?utf-8?B?dEEwdENoZFhzZytOM3RWK3Q0WlkzclRJY01lTlhVNGZRUFZ4d3dqaUVucUJ1?=
+ =?utf-8?B?N3J1cElQbEdqSnRSWGtNNlpwTUZpTE1USHFKc3NuKzVMSkFhNkFEdWYrYlFD?=
+ =?utf-8?B?NXZzbmkvK3FyRVl5UURxWDB2cVJiUEFjOWc1RnExQUk4VWRucnZ3ZmlRSk9L?=
+ =?utf-8?B?MXNMeHNucUhydnI0Mktacm9jeklmbHV1NlVnVGFQVytTY2tsamJITmhtOGtF?=
+ =?utf-8?B?ZXpFaHlwNjFqT2p5V1dsdjhMR1A3eWpZRnpUc24wbmlXT2loa0wwWkdteGhH?=
+ =?utf-8?B?T2tTNU5NV0lFU0UweUt3WXZ2akt2SGZFNmJ5bmJ3TnVoZFN4UWhvSkNBang3?=
+ =?utf-8?B?Z1JNMVdFcVpCbHZCS3ZqTWdQejZFT0lYNXNDUXpYT2Y3MEdPWlQ5OUhFTURH?=
+ =?utf-8?B?L3M3OHMzWVVHd1BrZ2JJWHlxS3ozazhVbkRVcDR0WWRUdE91Mk5Fek0xdk1X?=
+ =?utf-8?B?UHFKcGt0Z2hka1NYRjJ5V1dvblpnNWtpeWZhQjBJaFFwUTBOYVJZQnJXcFdn?=
+ =?utf-8?B?bkpvY1dMeUVHei9aaHFScTZpREdrbCszMzZYWVAwaGdkTHk2NGh4aHJTMGxB?=
+ =?utf-8?B?RmxFOHRRc1JINEZkS0RkaG0yY3NobnBYaG5mY21TK2FjSDRGa2dicy94bTJo?=
+ =?utf-8?B?c3FMTnYzUDl3Z3ZSaUs5L0d4NGVOQlZIZmI0cng3NVZkNk9IWFRpMFR5VmJr?=
+ =?utf-8?B?SllWb2NHcDErVkQ1dWN6cW5jY0dMQklsUFBHZkRtMDVvVUJtaVZRdzRRYmtH?=
+ =?utf-8?B?ZEtaMjV5Sit4T2p4R3MxYWp2YTZFK3pHSStUeFNtdUluc3dORlRVeXFBSXA5?=
+ =?utf-8?B?VjZtUFFVQTQvOXJvdmZ4aWo2U1c5dkt5SDFXdTkvMnE5OVlURFZkQ291OEdl?=
+ =?utf-8?B?VEM2NHRtSmo0V0tScEU2TG1OeXFReUg0Wi9jUGp5SVpLTUFrTmM0UT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc6eef6f-e47b-4b2c-6595-08de58e2c642
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 11:46:54.5942
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6bsC+FB25McNuFlL94JXV4M08qqAfwcKeUuHIS+ZOeF57moyBiOxR9EOuAYgh6X6fKdfMqe8ROgS87O71q4udA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6303
 
-Finally also add the operation for creating new mappings. Mapping
-operations need extra data in the context since they involve a vm_bo
-coming from the outside.
+On Wed Jan 21, 2026 at 9:43 AM GMT, Andreas Hindborg wrote:
+> "Gary Guo" <gary@garyguo.net> writes:
+>
+>> On Mon Jan 19, 2026 at 11:36 PM GMT, FUJITA Tomonori wrote:
+>>> Add MIN_*/MAX_* constants for Delta::from_micros(), from_millis(), and
+>>> from_secs() constructors, and update their documentation to reference
+>>> these constants instead of integer literals.
+>>>
+>>> This improves documentation readability and makes the valid ranges
+>>> reusable.
+>>
+>> I think they're really just their for documentation purpose, and we shou=
+ldn't be
+>> expecting anybody to use these constants.
+>>
+>> I would rather just drop these constants given that we already specify t=
+he
+>> behaviour on when this is non-representable.
+>>
+>> If you have a geniune use case of these constants, I would like to see t=
+hem, and
+>> they likely can be replaced by something else?
+>>
+>
+> I specifically asked for these constants to be added, because I do not
+> want to see something like
+>
+>   The `secs` can range from -9_223_372_036 to 9_223_372_036
+>
+> in the documentation. It is useless.
 
-Co-developed-by: Asahi Lina <lina+kernel@asahilina.net>
-Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/drm/gpuvm/mod.rs    |   9 ++-
- rust/kernel/drm/gpuvm/sm_ops.rs | 154 ++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 157 insertions(+), 6 deletions(-)
+Then drop it.
 
-diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
-index 165a25666ccc3d62e59b73483d4eedff044423e9..557c0d629eec912a97fc4ef18495d5bf0807db0a 100644
---- a/rust/kernel/drm/gpuvm/mod.rs
-+++ b/rust/kernel/drm/gpuvm/mod.rs
-@@ -93,7 +93,7 @@ const fn vtable() -> &'static bindings::drm_gpuvm_ops {
-             vm_bo_alloc: GpuVmBo::<T>::ALLOC_FN,
-             vm_bo_free: GpuVmBo::<T>::FREE_FN,
-             vm_bo_validate: None,
--            sm_step_map: None,
-+            sm_step_map: Some(Self::sm_step_map),
-             sm_step_unmap: Some(Self::sm_step_unmap),
-             sm_step_remap: Some(Self::sm_step_remap),
-         }
-@@ -248,6 +248,13 @@ pub trait DriverGpuVm: Sized {
-     /// The private data passed to callbacks.
-     type SmContext<'ctx>;
- 
-+    /// Indicates that a new mapping should be created.
-+    fn sm_step_map<'op, 'ctx>(
-+        &mut self,
-+        op: OpMap<'op, Self>,
-+        context: &mut Self::SmContext<'ctx>,
-+    ) -> Result<OpMapped<'op, Self>, Error>;
-+
-     /// Indicates that an existing mapping should be removed.
-     fn sm_step_unmap<'op, 'ctx>(
-         &mut self,
-diff --git a/rust/kernel/drm/gpuvm/sm_ops.rs b/rust/kernel/drm/gpuvm/sm_ops.rs
-index 3c29d10d63f0b0a1976c714a86d486948ba81a15..5f3c5d3918147a6962e5658443c343835baa10b8 100644
---- a/rust/kernel/drm/gpuvm/sm_ops.rs
-+++ b/rust/kernel/drm/gpuvm/sm_ops.rs
-@@ -8,6 +8,100 @@ struct SmData<'a, 'ctx, T: DriverGpuVm> {
-     user_context: &'a mut T::SmContext<'ctx>,
- }
- 
-+#[repr(C)]
-+struct SmMapData<'a, 'ctx, T: DriverGpuVm> {
-+    sm_data: SmData<'a, 'ctx, T>,
-+    vm_bo: GpuVmBoResident<T>,
-+}
-+
-+/// The argument for [`GpuVmCore::sm_map`].
-+pub struct OpMapRequest<'a, 'ctx, T: DriverGpuVm> {
-+    /// Address in GPU virtual address space.
-+    pub addr: u64,
-+    /// Length of mapping to create.
-+    pub range: u64,
-+    /// Offset in GEM object.
-+    pub offset: u64,
-+    /// The GEM object to map.
-+    pub vm_bo: GpuVmBoResident<T>,
-+    /// The user-provided context type.
-+    pub context: &'a mut T::SmContext<'ctx>,
-+}
-+
-+impl<'a, 'ctx, T: DriverGpuVm> OpMapRequest<'a, 'ctx, T> {
-+    fn raw_request(&self) -> bindings::drm_gpuvm_map_req {
-+        bindings::drm_gpuvm_map_req {
-+            map: bindings::drm_gpuva_op_map {
-+                va: bindings::drm_gpuva_op_map__bindgen_ty_1 {
-+                    addr: self.addr,
-+                    range: self.range,
-+                },
-+                gem: bindings::drm_gpuva_op_map__bindgen_ty_2 {
-+                    offset: self.offset,
-+                    obj: self.vm_bo.obj().as_raw(),
-+                },
-+            },
-+        }
-+    }
-+}
-+
-+/// Represents an `sm_step_map` operation that has not yet been completed.
-+pub struct OpMap<'op, T: DriverGpuVm> {
-+    op: &'op bindings::drm_gpuva_op_map,
-+    // Since these abstractions are designed for immediate mode, the VM BO needs to be
-+    // pre-allocated, so we always have it available when we reach this point.
-+    vm_bo: &'op GpuVmBo<T>,
-+    _invariant: PhantomData<*mut &'op mut T>,
-+}
-+
-+impl<'op, T: DriverGpuVm> OpMap<'op, T> {
-+    /// The base address of the new mapping.
-+    pub fn addr(&self) -> u64 {
-+        self.op.va.addr
-+    }
-+
-+    /// The length of the new mapping.
-+    pub fn length(&self) -> u64 {
-+        self.op.va.range
-+    }
-+
-+    /// The offset within the [`drm_gem_object`](crate::gem::Object).
-+    pub fn gem_offset(&self) -> u64 {
-+        self.op.gem.offset
-+    }
-+
-+    /// The [`drm_gem_object`](crate::gem::Object) to map.
-+    pub fn obj(&self) -> &T::Object {
-+        // SAFETY: The `obj` pointer is guaranteed to be valid.
-+        unsafe { <T::Object as IntoGEMObject>::from_raw(self.op.gem.obj) }
-+    }
-+
-+    /// The [`GpuVmBo`] that the new VA will be associated with.
-+    pub fn vm_bo(&self) -> &GpuVmBo<T> {
-+        self.vm_bo
-+    }
-+
-+    /// Use the pre-allocated VA to carry out this map operation.
-+    pub fn insert(self, va: GpuVaAlloc<T>, va_data: impl PinInit<T::VaData>) -> OpMapped<'op, T> {
-+        let va = va.prepare(va_data);
-+        // SAFETY: By the type invariants we may access the interval tree.
-+        unsafe { bindings::drm_gpuva_map(self.vm_bo.gpuvm().as_raw(), va, self.op) };
-+
-+        let _gpuva_guard = self.vm_bo().lock_gpuva();
-+        // SAFETY: The va is prepared for insertion, and we hold the GEM lock.
-+        unsafe { bindings::drm_gpuva_link(va, self.vm_bo.as_raw()) };
-+
-+        OpMapped {
-+            _invariant: self._invariant,
-+        }
-+    }
-+}
-+
-+/// Represents a completed [`OpMap`] operation.
-+pub struct OpMapped<'op, T> {
-+    _invariant: PhantomData<*mut &'op mut T>,
-+}
-+
- /// Represents an `sm_step_unmap` operation that has not yet been completed.
- pub struct OpUnmap<'op, T: DriverGpuVm> {
-     op: &'op bindings::drm_gpuva_op_unmap,
-@@ -205,6 +299,30 @@ pub struct OpRemapped<'op, T> {
- }
- 
- impl<T: DriverGpuVm> GpuVmCore<T> {
-+    /// Create a mapping, removing or remapping anything that overlaps.
-+    ///
-+    /// Internally calls the [`DriverGpuVm`] callbacks similar to [`Self::sm_unmap`], except that
-+    /// the [`DriverGpuVm::sm_step_map`] is called once to create the requested mapping.
-+    #[inline]
-+    pub fn sm_map(&mut self, req: OpMapRequest<'_, '_, T>) -> Result {
-+        let gpuvm = self.as_raw();
-+        let raw_req = req.raw_request();
-+        let mut p = SmMapData {
-+            sm_data: SmData {
-+                gpuvm: self,
-+                user_context: req.context,
-+            },
-+            vm_bo: req.vm_bo,
-+        };
-+        // SAFETY:
-+        // * raw_request() creates a valid request.
-+        // * The private data is valid to be interpreted as both SmData and SmMapData since the
-+        //   first field of SmMapData is SmData.
-+        to_result(unsafe {
-+            bindings::drm_gpuvm_sm_map(gpuvm, (&raw mut p).cast(), &raw const raw_req)
-+        })
-+    }
-+
-     /// Remove any mappings in the given region.
-     ///
-     /// Internally calls [`DriverGpuVm::sm_step_unmap`] for ranges entirely contained within the
-@@ -218,19 +336,45 @@ pub fn sm_unmap(&mut self, addr: u64, length: u64, context: &mut T::SmContext<'_
-         };
-         // SAFETY:
-         // * raw_request() creates a valid request.
--        // * The private data is valid to be interpreted as SmData.
-+        // * The private data is a valid SmData.
-         to_result(unsafe { bindings::drm_gpuvm_sm_unmap(gpuvm, (&raw mut p).cast(), addr, length) })
-     }
- }
- 
- impl<T: DriverGpuVm> GpuVm<T> {
-     /// # Safety
--    /// Must be called from `sm_unmap` with a pointer to `SmData`.
-+    /// Must be called from `sm_map` with a pointer to `SmMapData`.
-+    pub(super) unsafe extern "C" fn sm_step_map(
-+        op: *mut bindings::drm_gpuva_op,
-+        p: *mut c_void,
-+    ) -> c_int {
-+        // SAFETY: If we reach `sm_step_map` then we were called from `sm_map` which always passes
-+        // an `SmMapData` as private data.
-+        let p = unsafe { &mut *p.cast::<SmMapData<'_, '_, T>>() };
-+        let op = OpMap {
-+            // SAFETY: sm_step_map is called with a map operation.
-+            op: unsafe { &(*op).__bindgen_anon_1.map },
-+            vm_bo: &p.vm_bo,
-+            _invariant: PhantomData,
-+        };
-+        match p
-+            .sm_data
-+            .gpuvm
-+            .data()
-+            .sm_step_map(op, p.sm_data.user_context)
-+        {
-+            Ok(OpMapped { .. }) => 0,
-+            Err(err) => err.to_errno(),
-+        }
-+    }
-+
-+    /// # Safety
-+    /// Must be called from `sm_map` or `sm_unmap` with a pointer to `SmMapData` or `SmData`.
-     pub(super) unsafe extern "C" fn sm_step_unmap(
-         op: *mut bindings::drm_gpuva_op,
-         p: *mut c_void,
-     ) -> c_int {
--        // SAFETY: The caller provides a pointer to `SmData`.
-+        // SAFETY: The caller provides a pointer that can be treated as `SmData`.
-         let p = unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
-         let op = OpUnmap {
-             // SAFETY: sm_step_unmap is called with an unmap operation.
-@@ -244,12 +388,12 @@ impl<T: DriverGpuVm> GpuVm<T> {
-     }
- 
-     /// # Safety
--    /// Must be called from `sm_unmap` with a pointer to `SmData`.
-+    /// Must be called from `sm_map` or `sm_unmap` with a pointer to `SmMapData` or `SmData`.
-     pub(super) unsafe extern "C" fn sm_step_remap(
-         op: *mut bindings::drm_gpuva_op,
-         p: *mut c_void,
-     ) -> c_int {
--        // SAFETY: The caller provides a pointer to `SmData`.
-+        // SAFETY: The caller provides a pointer that can be treated as `SmData`.
-         let p = unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
-         let op = OpRemap {
-             // SAFETY: sm_step_remap is called with a remap operation.
+> Reading this:
+>
+>   The `secs` can range from [`Delta::MIN_SECS`] to [`Delta::MAX_SECS`].
+>
+> makes much more sense. If the reader requires the actual number, they
+> can go use the constant in code, or they can click through the link if
+> they are browsing docs.
 
--- 
-2.52.0.457.g6b5491de43-goog
+I don't see a user for these APIs. I'd rather not have an API for documenta=
+tion
+purpose only, especially, to me, the documentation reads fine without these
+constants at all. Simply stating "If `millies` is outside representable
+range..." etc would be fine.
 
+If there is a need for APIs that don't staturate on overflow but rather ret=
+urns
+an error, good, then let's add a try_from_* API that returns an error. Nobo=
+dy
+shouldn't check against these constants manually.
+
+Best,
+Gary
