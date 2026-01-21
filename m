@@ -1,98 +1,133 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3509F3A7F46;
-	Wed, 21 Jan 2026 10:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DEE47D92D;
+	Wed, 21 Jan 2026 11:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768990447; cv=none; b=j4kcb7eQj8VW2PYbqBL1OdFKrdFJuTBjzzzl11oc64+DX1urm09mROAu5pZxtomGZKLuIhNlBV7q0mtysHcnAKTf/H84BTQ08uj0l9FfTYFHCVxRXGC3dLK6IY096Pxv4Sx3X4ia7cqgL/Hq0hW0d6Zb/QvrLQIDzng1bYR3tzo=
+	t=1768993558; cv=none; b=WiLFqx5EWYak2Ku3oRcua8Yh2XkR4x5IfRhHkV99Yg7MrwL4n2h5tauGpp3RDR21ahJCD8nvHGXmOw/5NFutAZgVimFjgofvd15Ht6NKWbsttJWOQSR9ZWqI36R3rGUADZ7C2M75yMcI1Y97M4+C65bHufOHiyRdxS/80y61Aks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768990447; c=relaxed/simple;
-	bh=pwh6f5VzaTK/a8Hxv/pzd+4XEZHCMvMiYB2JKPP4yXc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=ueWsUXw6pc0gDwi4jAnvzidKx36foy2Ck/NMJ/os19EH0PrD04tkiQotFFqSADE/9sHyq2gA72dqaAwk5cQ40cVffUPBZYExk6/+G4g576NbjuNSXaujX8V/fRhVVuJyex7JLAfe/LZwGL+XlUQZiS8E7Oieplbdy9LTsGbPR8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=jI/xZ/wz; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1768993558; c=relaxed/simple;
+	bh=OSBeBnGHkX8xyHUtAxcxKCNGZMo/j2CMejwl6KhZ23w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UjCmiJNQCpxcWQYtZI7GU0qr0mzsxHoKk9drKwtFNxc+0TYRFdMJL3zlKQMQOx3PCf5Qyl2h0eqNjYmar+/O/7cJ6Saeb1UxvsIHKLAVnyHd2wop0aIvTm1n/wblJ80qPRaq/oI1M6XHzJIZk0/ljDxzkhBflrgLsu3F0oUUn8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HtaVkvCU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="jI/xZ/wz"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 10C09433D3;
-	Wed, 21 Jan 2026 10:13:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1768990437;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XSdVek+3nur9iWZzpy6Ip/w5pyhwEVGS8pZ2EUOfZJk=;
-	b=jI/xZ/wzkd3D4gjdSbPX12TmGCEtrWikuLQ0bTDQhy5VWAYUlBL6wXTrwhpApdq6IS17hq
-	UfVnLkazYlCeNB6G0/yh9sVKu54HVlxP8zOzl7Tzp8MfTrpuLzl7F8OEU/SFZWZSPnQr17
-	6kxfZkFC2IXJdpNxSsgrv78aBWlhftU1hvim/PAMofKdTtFTSrOjwU9PTuB1+Go8hJKQDD
-	Z7cHpPKn1qHt9B0V8mADlFgrE1omJ8daq8z/+XTW+Ygj19dIZjlOJrNADIkL9NB8kO2yWq
-	ILAuFthHqtElzNuNibFLaw9wPMhc2fAU2JhsUb4aCKbKNEUUSlOIhYNeoUauUQ==
-Message-ID: <d4020305-fc95-446f-b73c-5f0be68529c9@gtucker.io>
-Date: Wed, 21 Jan 2026 11:13:54 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HtaVkvCU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1613C116D0;
+	Wed, 21 Jan 2026 11:05:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768993558;
+	bh=OSBeBnGHkX8xyHUtAxcxKCNGZMo/j2CMejwl6KhZ23w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HtaVkvCUkTJnXsfAIybqc+b/a3zDn4yIkCyeK9ytM0M8Tg0vTUCSFP0EkDHoVy/7/
+	 Hm5v8hDwkb3XkdYa4WpG+SCkOtBPiSuqG+1VAlfRLWESP8hWSOSt8FidC3JdxahHRU
+	 yzXeP0ixTB44o4Hm0hjBwdiblq98fBl5aIVjdnMJtqPpaFEJBZawJnxfgdLxLXzt8w
+	 oPYB2Zah2d7JszhNGOx2ognrzb7m90iMMa/2nBvcPFtTizAH9AIEiBVHsx+lkDcitF
+	 PuB6sCPoMoUTyHtjRHvZB6lL8DIJW9Nv3rAruqI8zdHw4PM/fSOY7/Ah8WSw+QuZcE
+	 4inyE8zHQfnbw==
+Date: Wed, 21 Jan 2026 12:05:55 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Michal Wilczynski <m.wilczynski@samsung.com>
+Subject: Re: [PATCH] drivers: pwm: replace `kernel::c_str!` with C-Strings
+Message-ID: <jmdkabxocbq7grui7qvepuymmrygmfps3pcb65wxflnbo75whc@dtvypglu7o4m>
+References: <20251222-cstr-pwm-v1-1-e8916d976f8d@gmail.com>
+ <o4uvwymm73wnehs5zb7lqgv3mjv235jpprfqrsb6oxscxhmmjh@25u7wrb7yo2i>
+ <CAJ-ks9=USrGECVS1qMqs+iCKUqvOdfcjA6phAjaF0wfcTkQt_g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] scripts: introduce containerized builds
-To: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- David Gow <davidgow@google.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, Nicolas Schier <nsc@kernel.org>
-References: <cover.1767199119.git.gtucker@gtucker.io>
- <aW-JJ5DT-LRSZkdF@derry.ads.avm.de>
-Content-Language: en-US
-From: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
- automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
- llvm@lists.linux.dev
-In-Reply-To: <aW-JJ5DT-LRSZkdF@derry.ads.avm.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeftdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfevjggtgfesthejredttddvjeenucfhrhhomhepifhuihhllhgruhhmvgcuvfhutghkvghruceoghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhoqeenucggtffrrghtthgvrhhnpefhleeiueelhedtveefheegiedvheevieetvddtgedvjeeljeegffehfeehveevleenucfkphepudejiedrudekkedrudejgedrudegudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedujeeirddukeekrddujeegrddugedupdhhvghloheplgduledvrdduieekrdduleekrdeigegnpdhmrghilhhfrhhomhepghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhopdhqihgupedutdevtdelgeeffefffedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiughgohifsehgohhoghhlvgdrtghomhdprhgtphhtthhopeifohhrkhesohhnuhhrohiikhgrnhdruggvvhdprhgtphhtthhopehnshgtsehkvghrnhgvlhdro
- hhrghdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggv
-X-GND-State: clean
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gkkdphhfqabbpivp"
+Content-Disposition: inline
+In-Reply-To: <CAJ-ks9=USrGECVS1qMqs+iCKUqvOdfcjA6phAjaF0wfcTkQt_g@mail.gmail.com>
 
-Hi Nicolas,
 
-On 20/01/2026 2:54 pm, Nicolas Schier wrote:
-> Out-of-source builds do not work on my system with podman.  If this is
-> expected, I think it would be great to mention that somewhere in the
-> documentation.
+--gkkdphhfqabbpivp
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] drivers: pwm: replace `kernel::c_str!` with C-Strings
+MIME-Version: 1.0
 
-Yes, as discussed with Nathan.  So here's the list of potential
-improvements gathered so far:
+On Tue, Jan 20, 2026 at 11:15:56AM -0500, Tamir Duberstein wrote:
+> On Tue, Jan 20, 2026 at 3:39=E2=80=AFAM Uwe Kleine-K=C3=B6nig <ukleinek@k=
+ernel.org> wrote:
+> > (Side note, b4 told me:
+> >
+> >           =E2=9C=97 No key: openssh/tamird@gmail.com
+> >
+> > . It's not clear to me how to verify this signature. My experiments
+> > include:
+> >
+> >         $ b4 kr --show-keys 20251222-cstr-pwm-v1-1-e8916d976f8d@gmail.c=
+om
+> >         ---
+> >         No keys found in the thread.
+> >
+> > and looking at
+> > https://lore.kernel.org/linux-pwm/20251222-cstr-pwm-v1-1-e8916d976f8d@g=
+mail.com/raw
+> > where I see
+> >
+> >         X-Developer-Key: i=3Dtamird@gmail.com; a=3Dopenssh; fpr=3DSHA25=
+6:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+> >
+> > which IIUC isn't enough to verify the next mail signed with the same
+> > key. Am I missing something? I very appreciate signing your work, but if
+> > there is no way for me (or anyone else) to verify it, there is no gain.)
+>=20
+> Yep, you are right to call this out. My usual setup uses SSH keys for
+> commit signing, which are not part of the kernel web of trust. I
+> promise to start signing kernel work with my GPG key soon :)
 
-* automatically pick Podman first, Docker second
-* explicitly mention docker.io registry in examples
-* mention TuxMake available images more explicitly in the docs
-* mention that out-of-tree builds aren't supported yet
-* distinguish true Docker from Docker-compatible Podman
-* add support for out-of-tree output build directory
-* add option for mounting source tree from arbitrary path
-   (needed for nested containers e.g. Docker-in-Docker)
-* detect when Docker has namespace support enabled and document
-* add user config file with default images and runtime etc.
+While I notice that the trend goes to using ssh-keys, I still prefer
+OpenPGP. So +1 on your plan.
+=20
+> In the meantime if you trust Github you can verify my signature
+> against https://github.com/tamird.keys.
 
-Then beyond that we could consider other container runtimes such as
-containerd, lxc, runc or whatever works in practice.
+OK, for the record:
 
-> Nevertheless, thanks a lot!  I expect me to use that a lot in the
-> future!
-> 
-> For the whole patch set:
-> Tested-by: Nicolas Schier<nsc@kernel.org>
-> Acked-by: Nicolas Schier<nsc@kernel.org>
+	$ curl --create-dirs -o ~/.local/share/b4/keyring/openssh/gmail.com/tamird=
+/default https://github.com/tamird.keys
 
-Thank you!  Let's hope others will find it useful too.
+makes `b4 am
+CAJ-ks9=3DUSrGECVS1qMqs+iCKUqvOdfcjA6phAjaF0wfcTkQt_g@mail.gmail.com`
+emit:
 
-Cheers,
-Guillaume
+	  =E2=9C=93 Signed: openssh/tamird@gmail.com (From: tamird@kernel.org)
 
+This looks a bit strange (because there is gmail and kernel.org), but
+better than before.
+
+Best regards
+Uwe
+
+--gkkdphhfqabbpivp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlwsxEACgkQj4D7WH0S
+/k6vvwf9E8mLZeboBuVh8CdCIfb5AMi5+tIcVmJ5hPOx4Tr+sZI9ATfYiWXV75oI
+UGyBCcZm2n05j1KHBmZpKANCtBTPxFIRW/H5nViualdUjNSTUerWw7s5SK3NcQTt
+JSEGjjTK4/JpX0kTO4dUGs57xkegcr300fp4nAJqUdaJx+QhlWw3uIl5GbabrAYs
+120Zd3xFlPjIh2TksByMeh1R55sRhv6vQi/r5Isen7CYqMK7pFS2h5DLZvSibldm
+JscOK/sTW2ZcV0o6v/ElFRH4noxet9qskBNhoUfrZurdXGwjHnzrgnBXt2oruaTU
+OSGhDhKnShDIu6kc1t05ZH8agT9JSw==
+=L/eL
+-----END PGP SIGNATURE-----
+
+--gkkdphhfqabbpivp--
