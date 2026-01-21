@@ -1,236 +1,214 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011070.outbound.protection.outlook.com [40.93.194.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA6324337B;
-	Wed, 21 Jan 2026 13:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769001240; cv=fail; b=d5PDORDdlYRnLTuqAmNdzMuqUaKSyjdgiHSx2496CivPrGxUDcaBk3mitgukZKzvRTV6mm6gSCIWwVnZehSVe0V9QsHEWaCcZPTdlZMD7JkAC6KMXWmlXxi97WOKdwHa4pmLsDk9sKVbib+BJot+nDNhe761/DY3g9pLDgm5wfs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769001240; c=relaxed/simple;
-	bh=VVb0+X0INftvKKcrveguCQoUdS76pBKNCS14OXnxWuA=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=GZdrl3+q/YrXAeG4C40g3dpSXe2O3Aw9vA/qi0Tzt97XimWy5mf8EcaGHsb78eIz64uZJ+WoIQCP77Fp5d7338o9zNy3ASsCxtA5ANKGTTkNsGo4YFgVuU9QNyoZY9QsM+ZoXXZhdayg/OccW/bDBfkFfbNOKjaEBnEY7uqW+NQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oThUc2jz; arc=fail smtp.client-ip=40.93.194.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FC23E9F90
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 13:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769001253; cv=none; b=dWqh9FZMiHdlOsm7/gM+TGhETW4y4rg7rMfcvd9mSL6E1/pFVCM78LXd5V//Mw6Yhq0prIBWsg13bA37x/mSN5vB3y+BC7dGULwGLZQ6VxluvY1yIlMeC1z2UcEwMtXePJhDwq5Kq8pSsqDaqSFV4ITIES3FSmP/eJa1ruoliKc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769001253; c=relaxed/simple;
+	bh=IeAeLFBrBEZGsR6NOogYV7pmwtcHYu0XB/ofvHW411o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D2OVXJf/QT0jTCOGNNumtNVUHmYQR0pNZ9fO0pbiIQh0EtrAzcPh5++lrEpb8bioRhU3jBdNAn3XLcv+Li6TwNIt/bq5Ptdr0BN/ExHZiIe+lWaXxcgn7cTqRB9XetQFS9rRv5zEYvr3sKwAOqVKOc+RtJLkDi32B2NbxAKquUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OnFc/D7W; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oThUc2jz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tQVniOwWIabaJVFKSnKrjfK8Dftvzne3L6tBnBOcdaDcAqzCOeB1k2UM1Igj45BV+8gQBr9/DcWTS4+Cmjf2mpU1pXa9uiKuz8rNCJyM3mQASPJbi0UCQrI6O+yHuqAWP2AvJtxY4I6Ku7kdGdUN0/ajkRCU2b1OZgYONFz42LowzQVJLhr+UlCAidsKTnsbgBtyb6VHdzfrBSZPcOgCf2GXC0m4Q8AA0NSubQxR0VmY/uKBQm7dbzsaR7ahHfqU7nkYfc6UBjwUJMn3xSvmmWJgVBs8hTyffI4M3ULuIc1ibTxJKJMvkbhBRLzcqMBuPv9cxa80WBtUCr9yEPksOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=snHdqtI+VBT1VGrEvYNMi2kUI3Imt4PvTwaqYk5fKzU=;
- b=x/VrMWbyGPMB4J5NgO+yMa7jMzYkc11/UKvw/9brGaJgCLXdjnOjpXhUuA7QFDBMhjqOvk3hCW1o88tT4r05HBOwUEPMc2kZontbC+mXcOKU3n/soqN0oxyVw1lH8NKzT0nZZHLwd/zx5CfZrQMpTShwaSI1YBHwII9khRG05LwUEdl4jkP75Trj+U879aCsI+Pc4WAegYnDaBjVhOo1ArFoqzDo1FJDqEdyS/cobLllHDXseiZsob1I6J5MgdisTuoX0tC4mugP47vBe0CwVJffp4Crrox0KAd2w+o0aIxFdHcWXBbUgx7JN0q5D9hnHIMdLtaNSQP14V1Zxz50TQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=snHdqtI+VBT1VGrEvYNMi2kUI3Imt4PvTwaqYk5fKzU=;
- b=oThUc2jz1qJXYYiXwwVjDfvgBWKxHAz049m1aKG7MXFdlQOC7Ud1e8Y/nOx8/bvhcR7v3LmrtKPxXiqL+qyP3KjL62j3ewrP/aon+6bZ53+5RgmEmUJWA/kWZhH0JTrBj5DaMCO21CfBeJ62l2U92q+qHMQLj8ZvfwmLjLa1vT2UgNsFltg8qHA2ZijnzBwBse60wExo5QJiZDCj5SE44BANZbXLPR+JMoFxnjxt1VHcML3EBbkwJXVUu1pcIPJLdjdLSHZD0sVGZvCDH0vaac6Yb44ywH0LPN4tnbl89YXE93tIr4pfwJbWu5Q8dPHqitM6VwiscKn5t/qO+lzP3g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by IA0PR12MB8647.namprd12.prod.outlook.com (2603:10b6:208:480::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.10; Wed, 21 Jan
- 2026 13:13:55 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
- 13:13:55 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Jan 2026 22:13:51 +0900
-Message-Id: <DFUALMIOT3N1.8QCH5X7RKM4O@nvidia.com>
-Cc: "Yury Norov" <yury.norov@gmail.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Edwin
- Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Dirk
- Behme" <dirk.behme@de.bosch.com>, "Steven Price" <steven.price@arm.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>
-Subject: Re: [PATCH v2 4/5] rust: io: add `register!` macro
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>
-References: <20260121-register-v2-0-79d9b8d5e36a@nvidia.com>
- <20260121-register-v2-4-79d9b8d5e36a@nvidia.com>
-In-Reply-To: <20260121-register-v2-4-79d9b8d5e36a@nvidia.com>
-X-ClientProxiedBy: TY4P301CA0023.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:2b1::15) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OnFc/D7W"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-50145d27b4cso67811911cf.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 05:14:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769001250; x=1769606050; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/HQDkqfe8wWRgLYxMvvzfKdW4MZONwsks3Mx1gvqFM4=;
+        b=OnFc/D7Wjm35O4fqBza+uRWnYjZ58ZIMKAEyXbGfJvi20qrJ9qxBSdjtkZNMA2IbLM
+         bsHoPQXMz2EAjSoAAwG21HWvU++YQtYBo6lHkH3dNODwOaxi6bPusc6cBDvPwvZUbYx3
+         puJnj0RI+2vw+IZEuKHUpyfa4FDY8/ykK3b5z8SUpFlplFZs789rdpgUkoNHQFpo1xa6
+         2nSTqalmL9zTokFuNbz0XwJ7Agl4iDD6LhizvSDVY697896Wbut4/0SSy7zyLcHz7bqR
+         ydZEHAxZ1rCF+BGD2opfj4JzKVln6Oc5/G/RLHTbKLlr/vJTa/m3tcYqcvQ6zAEBikJ9
+         vI/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769001250; x=1769606050;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/HQDkqfe8wWRgLYxMvvzfKdW4MZONwsks3Mx1gvqFM4=;
+        b=HKI1kNYynf6rvbZUQf7tpBVWG6Es6XfbUNtX77lfXvxovgCEicAtffSi19kX1A53CW
+         XfL22CzbYJeV6vTWZbA/TSnmfGu8QHw86bK0Cn1toWNsccC5WjHuuG4WmVoPUtr1bjMw
+         rY5sKwYdlSdFY6FNocgQRA2JlIByUUW1Zqt3UsuIKQtgoSns8YiW3Qw49cj1xtowAvaH
+         1YY3CdmlvGduBFp3Fkc//O2DwlWZVq6GL2cBEUhl/DMmDuMsNONb4JS2ehPaSWZHnt8H
+         StV5F7WY38rhAGsewaAEtKvMAGia4XutMdRW3Rd8us0V8poEGTtaG5wwbW+XKQcT+XQj
+         Lm0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVvks8ED5PW4z0YaIUDQafSdi359GM0WtaySpy5D2QrMmZEq5vUwHqWnhebrzBVeO9gg3f0xCHgb+DR6uHTtg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyn6LPe3ACSwU8vy4TovdePQ1QHsVKWue1u0Ol6LdcFZcrMui1F
+	dsLrGYdZUwXE3jjSEJFIcxFX5VSaR7fQ6q5e2oIHmtaHZKNCHDCxpxha
+X-Gm-Gg: AZuq6aLEAkLcpRMSOLPCBJQpi0McbMEkjMR6t21P3mA0fT0MnBOrxsuLoGtrp4ibwcd
+	MXBZpWZop81SNhbDyEVbIJO7tvI4ymEZtFtcywuSDE324Ss6BWEU+0z7ZQFrwgwc4Q2syy2EXa5
+	SB9zGNSB1DkBt7hOK+u2doDkei/yh4fUvwOR4gk0vGbTLzt76oL3QeXdAMzNJtq4nH9LbNj6gE4
+	o4k5abOTFK+CqI3Wh9fPb4gNQjt7WWDehH98DvAjqQekw0hoi6U/ZSeYyj5++AVWszDqeBV0aI1
+	wCyp8A0YFVKKKXVP6mcL0NfZ5VSoKbDCB4xZyzRl5A+jbkVMfqp4k/z/UM3IWiWAuaeoJN41FlU
+	84gPBcHhUZRRNef+zRp9pD7zcuwai8p97qfasdrz7OsoWSghwuGRhD2X7hkEGeK2b7EBl9i+H06
+	Slzq1ymKgyEWJj9bDxuUSIPIa72f4Cw5HoNt5tjlW3tBF3IbulMdd5UdKoniNKSo8Wf5wvVhB9F
+	i7R96UMiNOG5ygKh52lx8amRQ==
+X-Received: by 2002:a05:622a:1805:b0:502:99c9:591e with SMTP id d75a77b69052e-502a16b3a66mr243793681cf.38.1769001250090;
+        Wed, 21 Jan 2026 05:14:10 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6d7302sm124098106d6.52.2026.01.21.05.14.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 05:14:09 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 007D7F4006A;
+	Wed, 21 Jan 2026 08:14:08 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 21 Jan 2026 08:14:08 -0500
+X-ME-Sender: <xms:H9FwaT6QxyGAbq02ztxJgwthcxj-ep_vFFW8_qF2wco0e4hYfosIrA>
+    <xme:H9FwaYydmotzjXwsBUcX6kWw0iV39_Nra-amxLAv0A-EdzQtYcGVTdf1uTgyE7kMj
+    saWb_ykwgUSto98MXuuGUCD_0gG265YL5-hO5QETwbsIsEvJ89GFg>
+X-ME-Received: <xmr:H9FwaXzjSFalaBqzn87ia9lgR2N1Yjf6YsJbPNhNut2FR_T3301XFWvV>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeffeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpefhiedtieekleduledtgfelvdejffdvjeevvdefjedugeegffekjeeiiefhieff
+    veenucffohhmrghinhepthigthdrhihouhenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshho
+    nhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngh
+    eppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdei
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhogh
+    hlvgdrtghomhdprhgtphhtthhopehprghulhhmtghksehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtoh
+    epghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepohhjvggurgeskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
+    gtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhmghhroh
+    hsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:H9FwaQX7al9e38e0O4NKXddNLn6d0hY0fH7ac6s5kq4fAM9xS95MgQ>
+    <xmx:H9FwaUQ0N7NkeFHXrrQP4GyjuAwAU8USNw8_M8eIFD5eIKZokc9DEQ>
+    <xmx:H9FwafOeAGHKVYy0YYU9_ShbhoA_0ueMN1XMwgzhM-NefIgXik-fCA>
+    <xmx:H9FwaRy7ZjxD4UfFdS50NZ1LDTQwyTyiVe4znAPnA0ykVvCAKArP4w>
+    <xmx:H9FwaZpr7TPPcyL4pbNxYn9iVeS9_3-cX7zxPcbmzoj4Te_-qU8Q1HyI>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Jan 2026 08:14:07 -0500 (EST)
+Date: Wed, 21 Jan 2026 21:14:05 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	rcu@vger.kernel.org, maple-tree@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
+Message-ID: <aXDRHerRiM7TzACy@tardis-2.local>
+References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
+ <aWrSkAPFkdH_tvtN@tardis-2.local>
+ <aWt4muGXbe7lBmXt@google.com>
+ <aWt8Ze-otTkexNIe@tardis-2.local>
+ <aWuKqLERqpNz9qtz@google.com>
+ <aWuV858wU3MeYeaX@tardis-2.local>
+ <aXDCTvyneWOeok2L@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA0PR12MB8647:EE_
-X-MS-Office365-Filtering-Correlation-Id: 42c79a64-1b26-4099-fa03-08de58eeedc5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|10070799003|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UVBMTm1Da0UzWWhuYmFBK3lOcVFsSHVKOVhjYXRQVjU4SlNPMm54RjhZZVJ3?=
- =?utf-8?B?REdFdU5hV2prWUFIbzJ6R1hZamlNUk9CbjBNeGU0RnFMNEZjaWsvMkZsbGtx?=
- =?utf-8?B?M2p2bkV5ZlBPN0tyNFluTFNsM0Q3UXB2cHB3T2k5eFZQZ2N3ZjdDUHVaTDFT?=
- =?utf-8?B?UERSNTBYd1NEb2oxWU9YREdPN1lnWEd3RG5Ic1lrM1FEaGNDVlZMS1B3VHo3?=
- =?utf-8?B?RXNSUURKc2w1U3hEd2xKalpmbWFWclJkbzRielYrU1VLbzNZZ3greWhrNzBl?=
- =?utf-8?B?aWllYXduclV3WDhNNlFQbkVLQTcxL2N4ZEdEazlvS0ZCQXl0NEZrR2ZPZHBJ?=
- =?utf-8?B?QzRmazRRdEZNc3M0OFBZOTlkRVgrK1ZGdGNyaC80NUF2YUlzdXlWUVBlUC9Y?=
- =?utf-8?B?K2w2a1Y3OEovb0RXMjVod3c3ZTR2NkxaTzVFZU1TKzdrbmFFWk1oOTVYclBE?=
- =?utf-8?B?cldVUWRoQXJsQzFmLzJTdVF1NDRuVHVEbjNCSnRPNGl6N0RpUmpGTzRpOCs2?=
- =?utf-8?B?U3pYRUF2MVc4RTFpOEJQYVc1N2Z4a05QWjl0RUhHb0tpWGVyVEJLdjJHT0Fs?=
- =?utf-8?B?c3V4RmMrWmFyY0ZKamwxNlhFVW1jVEhWZVF3aXRzWlpRaUZuMEJVcEIwa3Ji?=
- =?utf-8?B?WDFiNVhZVEZuS0FmR2RFMlFOUHFUZTVkdEhOT3c4MHNRNHRsMUVLRE1sY1Ni?=
- =?utf-8?B?UjQwNEdBOU9QcXpGMndUd1BzNTZKcCtqYUFWNmV4S2laSS9aN1VoOW8waGJw?=
- =?utf-8?B?L1d5dlRHZUplcWxvZkxjelorY0RNVk55Nk1pQmhoazZkYlRESVdzV0dFUTM1?=
- =?utf-8?B?Yk53bHplRElWbnNwUEdoL1dtbDNqOG1rSkwzV1crSzdOQ2l4WDVyMjhrcE9X?=
- =?utf-8?B?Y0V5ckJQdG5Nbjdhbk9teGppNjIvSmZUczl6aGVQaU1GTGpPMXJsdHRYTVhI?=
- =?utf-8?B?R0NHNHN6NS9XdW5jSTh2TEFIc0pYM2xJMDVWM21zdFBXNTJLL3VXNmVpdUts?=
- =?utf-8?B?WXFzUnUrNmpDTFpiajcxSWxra3FKaTZpSWZ5eU9QTmVlS2ZtMDB2N3k5Mnky?=
- =?utf-8?B?U3EyUnk3VU45dDl0eFNCR0U5WkY0TE9aeDlueE02T20ycmw2aWt1UzdPRXQ5?=
- =?utf-8?B?dXVDaHpCNURicDlyYjZ2aHBKM1dyK0wyVk9QN3BCRkFjQlpJMDJwbm9HUWd4?=
- =?utf-8?B?MFg3WENDQnhZQ1lGd2RadzgrNjh3RGszWk00MlpXVHdiOUJSd3RiRHZJdldD?=
- =?utf-8?B?eTVmbmcyZTBMVnVnWDNFNVFqOFFLUFNEUnF6WTd6RHBUbGU5ZXVDZGw1NXZ0?=
- =?utf-8?B?aDhCQStEWThWRjBrTk1QaWFYdEs5RDJuVGdaa3U2ZkFEdXRMaE5hdTZqWlBS?=
- =?utf-8?B?WXY5Sk5wdk9rV1NCNGxKRWVLZC9YVnN5VlQ4dmdNQTFSNVA5b0NLeVBuSGx0?=
- =?utf-8?B?bmpUKzFQRlQ3b2F0Smd1VXJvcXRKWWZDdUZWeFdtSkY1dlpXcW1TUjVpTkNE?=
- =?utf-8?B?alhuQWlUSVhMcG4zZGpITVl5dXRVcjJ3U2FVVHg2ZG4rbFNVYXlxdVNJY09a?=
- =?utf-8?B?SXhVOFYyZFJTUG9lMDdBVy9kd0pydjJvNWJFOGY0K2N0bUtJN1RMeGNpU1lO?=
- =?utf-8?B?RGo4Y1JiRUlYdndaSk9LZ244MTRIM3hObWtzNnRZODd3L1B3NnZtZk84VEFG?=
- =?utf-8?B?TzY4TFJKZG56dllGS2c0RE1FaDZaSkJMR3I5aGN4bktneHR6bUVsUXJaRkNL?=
- =?utf-8?B?Ymo3M3VKQ2U3OGE1Slg5TlA3eXpEVDkwNGpMN2s1Q3A3bStqeVhkaFFicEQy?=
- =?utf-8?B?ZU8xMzVjaXFremExUkVXa0lFVEFzMXBybWdtQkwrNktpRGg1YXdlSjRPY3dt?=
- =?utf-8?B?Vit1VUF2SEZwLzhOVk9ESCtzTC9IN3lBVjg5MFJwZTVwQ0xyOVcybXRTNHFL?=
- =?utf-8?B?VWdRZ0ZVdkQxbGs1akJYOUs2SmNBQS84aWRKYmZZeE5tbjBKS0ZjNkZqc280?=
- =?utf-8?B?N2Y2SGxTdnA0TWl2aDdxZ3ZRSDVqTmtBSU5wMVVYUEw2NXo5S2ZTWEpxVXBD?=
- =?utf-8?B?b1IvR051M2lHbk4xU3RobGdRcWRSdjkzSmdrQTJWSWpBNGdaNlplRzRTOS90?=
- =?utf-8?B?SzdLdWZZVmlmZDRDSVFBTTBXbkNjbFhCY2pIRVJncU5NUlJPQ1ZYbVY1ak9G?=
- =?utf-8?B?RXc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(10070799003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bFVrZDMzYkpwTkRrNmNNTnBSV1BmbTlVK2gwZmtsendTVjdvbHRoMVBPN3hU?=
- =?utf-8?B?TERlekcydkNoenpVTUhWVi9ld1VuSkNyb0llTzJhWmRFRTFwOUQxZFZITjJl?=
- =?utf-8?B?VXkzVUNESTJ4RFoyOTBOTnZKREpydUViYUpWcU5Xa2dweEdRS2pMVXQ4QWov?=
- =?utf-8?B?NGlqWG1QU05lVjB1b21Rd3p3QXpjdkZRQVhIWTgzdkJMTk5pczhQaTFXZWNR?=
- =?utf-8?B?MVlWenpuNDQ5QXhRTG93dm5UUEh4MDZsWVE5aEFYd3NOTDNXZHNCeXFETEk4?=
- =?utf-8?B?NW9ZL3hDY3lzSEdlamZ6bXRuVm9Vbzl6TFpKbWY3ZkNNcm9QaVZyTkw2cEJY?=
- =?utf-8?B?Z0pzTFpWdFdPUXJZdlZ0Y2NlWW5zUXN5T2pBZ3Yrdis1eUI5SG9GSW04N1BP?=
- =?utf-8?B?Y2ZZTnRxQnoyN2o3MXB4R24zZDBaSVFnaE5rdDhkdGk1VW1DcmhHUUIvNlBO?=
- =?utf-8?B?MGdzSXl3ckxmSE41Z0RNaWpNZVN3U2VzT1U4WkRNbitsTERzSVppeGJrMEdY?=
- =?utf-8?B?UHlCdTEzWnRuQzhoZnVuUmp1SkxUbmFCRXFqeXlqOW5hRXRFcjdtLzVhK1R5?=
- =?utf-8?B?bGtnUnJneHJnOFJ2Ui9TeGw4RUZXdU4wMVg4NXpocjhZc0NjKzJ2RlR0SmFo?=
- =?utf-8?B?SWZtbnNqZDNFOUwvYTFMc0p1VjBuQzd3dEk3Y3hIYlpIYTZmWGJmTUtwemdY?=
- =?utf-8?B?dC9Yd21Fd09QMXNOVko1OHZJUUdHbDJacU5xa0VoYjV5VVNWRHNNT1V5WWFT?=
- =?utf-8?B?MTM1M1Bqdi9nZGJzTGJCREtXblpoQmV4b0dMRml2SnhNVUJjNGllTUFHWmdL?=
- =?utf-8?B?Y0s0RVhaaS9aMlBzMVRtOW9pd2NmY3ZyZm1qWEdYTkFXWDQ3dVVGUzZoL0NV?=
- =?utf-8?B?elJBb0dlMlk0a3ZNR0NqQ2J4OWN0Q2h6V2s5UDRwaGREWEVpd1dseWZKdzlC?=
- =?utf-8?B?SHNIdXJXSyt5dldnT25xZDBPRzJYNzdqaUd1RjdzaXRUVUpaUmh6R3B3cUdN?=
- =?utf-8?B?MWprVEVIMjg4MlErZGJGandNaXUwS2lBV0VSekVTL29DTnZaMlRoVHJRVmY2?=
- =?utf-8?B?SmhxR1M3ZGl2RzVRNks1WDF4UlNUaXBobkpaNDJySWNVV1IzUVd2OHFGWHIx?=
- =?utf-8?B?NDJjQ3pDdUhRNlFZTUFtU09Eb3RwRXZzVHY3aGZlWXlMckVWbzZyNFZjV0V4?=
- =?utf-8?B?cHBNQmxBVE5udlRzREtDdDgvUkVEMzZGY0JoZjlpVmRCdWhwaGtoVDhPazdV?=
- =?utf-8?B?OXZ0RVI3M1U3dU0vWm1xdEVrNlgrTDNnaEg0bGVRMU5LM2xVSmNPbU1pMkFR?=
- =?utf-8?B?b3ZwbSs2N3VVUjk3RUp1Q2NsY3RPY0lldGpVanFET3VUTlJwc0srTkpldGRB?=
- =?utf-8?B?Yk5tM09PVFlXYXUrYzdRM0N3U2xxZXhlM01vUGxOMGFibE5yY1Y3dnYrV0FK?=
- =?utf-8?B?c2hIdjk0aWc0V21UWkU3U1daa2w1RmNUT1pESHJCMGEzQTdyMWlYdUk5anpl?=
- =?utf-8?B?ZzVKSEdOcExXOUhLVmtJYm4ydm5xVDVsU2ZJQjFWZ01WUk0wV1Irb2xWWEMy?=
- =?utf-8?B?UXkya2ZkV3RHRmRHVUs0WDJaY1J1MGJRSlJzWFU3WjM4S2NRd1hpSHRoL2h4?=
- =?utf-8?B?MTRGUnkvWks0cXBqaEM2bUE3b2RtREdUVnRRNHdoT1Z3T1owU1lTWGhMa1Mx?=
- =?utf-8?B?c3ZKOGQ4cEZ0RTdlcjl2SVJhVVdDRXdCWDYwZVpjUm96b1FNd09GandwRlI5?=
- =?utf-8?B?SUExalBNekZLRmdITkJRTmI0dE8wd1pYRDVxOWt1YnNHRG5mMzdnRDNMZGVs?=
- =?utf-8?B?NC9USkZ2RnlLQlRiSGoyV0dZby9rbGJNKzlYeTI4LzlSRE5xbk1VR24xNEVy?=
- =?utf-8?B?Y041eDY0Zmg0Y0M0RXovU0dudHI1clUrcVNIdmtVQWQ2Mkl4S0ZiL3RYV2Fx?=
- =?utf-8?B?clExTUdoemJycVAyWGRPUTdVMVhjMEFDNFhYaVFiRngrTldQelU4ejdGMnJw?=
- =?utf-8?B?VmZ0T1ZqSkNyazVBWXJSWHF5WXJVb2dpQ3NBVkV5Ym5qSTA4cnJ0K2lsM3ZR?=
- =?utf-8?B?ekI5dm1FWXNMaUJ5Q1lRaXRmYmhFamJvbzREM0ZrcG5ZekNkUmZlL1ByVUZK?=
- =?utf-8?B?Y3J0S3BwT3BwWnZUaENNYjRTVW41QklQTXh6S25KZnhjVjE0RjN2RFZpajRa?=
- =?utf-8?B?ZjVTTlp2WXErcVNTZkRJUVNWSFpQRGhpUjdjMk5iVFNtNnQvMXl5TVZXaEVV?=
- =?utf-8?B?MHBMR0QyMXVWWWJFY1k5RkpkWUNFL1ExWUhvZ2MxMlRsVHI1eFVwK2ZLazdJ?=
- =?utf-8?B?MWtyYUFxc1ZNbjZvaE1LRmhxUDFDc2tQTUNxdmFRdHV4bTlBVkJmMXFtVTJu?=
- =?utf-8?Q?P9yQDYMaO5xoxntqPHZJucO5Wfe7GY6Hw8YyMafv6ePOk?=
-X-MS-Exchange-AntiSpam-MessageData-1: daYFoJ4oN/1YMw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42c79a64-1b26-4099-fa03-08de58eeedc5
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 13:13:55.1890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ABfepUeKh0YQAmEOxo+CmTBMbClW6/aDE53xsfYkJKOpHNAmTrn4/VJ6hrztGVOZ7Ts85V11yLgT6wqu8fxprg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8647
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXDCTvyneWOeok2L@google.com>
 
-On Wed Jan 21, 2026 at 4:23 PM JST, Alexandre Courbot wrote:
-> Add a macro for defining hardware register types with I/O accessors.
->
-> Each register field is represented as a `Bounded` of the appropriate bit
-> width, ensuring field values are never silently truncated.
->
-> Fields can optionally be converted to/from custom types, either fallibly
-> or infallibly.
->
-> The address of registers can be direct, relative, or indexed, supporting
-> most of the patterns in which registers are arranged.
->
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  rust/kernel/io.rs          |    1 +
->  rust/kernel/io/register.rs | 1198 ++++++++++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 1199 insertions(+)
->
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index a97eb44a9a87..eccaa176b6b9 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -11,6 +11,7 @@
-> =20
->  pub mod mem;
->  pub mod poll;
-> +pub mod register;
->  pub mod resource;
-> =20
->  pub use resource::Resource;
-> diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
-> new file mode 100644
-> index 000000000000..e414aebe4c86
-> --- /dev/null
-> +++ b/rust/kernel/io/register.rs
-> @@ -0,0 +1,1198 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! A macro to define register layout and accessors.
-> +//!
-> +//! A single register typically includes several fields, which are acces=
-sed through a combination
-> +//! of bit-shift and mask operations that introduce a class of potential=
- mistakes, notably because
-> +//! not all possible field values are necessarily valid.
-> +//!
-> +//! The [`register!`] macro in this module provides an intuitive and rea=
-dable syntax for defining a
-> +//! dedicated type for each register. Each such type comes with its own =
-field accessors that can
-> +//! return an error if a field's value is invalid. Please look at the [`=
-bitfield!`] macro for the
-> +//! complete syntax of fields definitions.
-> +//!
-> +//! [`register!`]: kernel::register!
-> +//! [`bitfield!`]: crate::bitfield!
+On Wed, Jan 21, 2026 at 12:10:54PM +0000, Alice Ryhl wrote:
+> On Sat, Jan 17, 2026 at 10:00:19PM +0800, Boqun Feng wrote:
+> > On Sat, Jan 17, 2026 at 01:12:08PM +0000, Alice Ryhl wrote:
+> > [...]
+> > > > > 1) "relaxed atomic" does not sound like something that provides an
+> > > > >    address dependency to me.
+> > > > 
+> > > > If you look at rcu_dereference(), it's a READ_ONCE(), which is the same
+> > > > as a relaxed atomic load, and yes in LKMM, relaxed atomic load provides
+> > > > address dependency (Please see the DEPENDENCY part in
+> > > > tools/memory-model/Documentation/explanation.txt).
+> > > 
+> > > You argued that we should rename READ_ONCE() to atomic load on that
+> > > other patch series because "atomic load" naming is better than what LKMM
+> > > normally uses. Fine, but relaxed atomic load is a much worse name than
+> > 
+> > To be clear, in that series, my argument was not about naming, it's
+> > about READ_ONCE() being more powerful than atomic load (no, not because
+> > of address dependency, they are the same on that, it's because of the
+> > behaviors of them regarding a current access on the same memory
+> > location), and we want user to specify the intention more clearly.
+> 
+> Expressing intent more clearly is fine with me. I still think it's weird
+> for us to not have READ_ONCE() when it's a primitive operation of our
+> memory model, though.
+> 
 
-Oops, I should remove these references to `bitfield!`...
+But in our memory model, it's exact the same as atomic_read() (see
+tools/memory-model/linux-kernel.def and search for "atomic_read"), so
+why do we want to have both? ;-)
+
+> And I also think we should consider using an implementation along the
+> lines of what I shared for our atomic_load() or READ_ONCE() or whatever
+> you wish to call it. The perf impact of helpers makes me sad.
+> 
+
+I'm not totally against that, it'll actually help Atomic as well, I also
+hope that we can use `asm!()` to implement the cases where
+`{read,write}_volatile()` cannot cover. However currently I would rely
+on helper inlining to resolve this to avoid duplicate implementations.
+
+> > > READ_ONCE() if what you want to convey is "has address dependency".
+> > > That's not what "relaxed" means!
+> > > 
+> > 
+> > Also note that my previous reply was explaining why we don't need to
+> > call rcu_dereference() from Rust, because implementation-wise the
+> > LKMM relaxed atomic load provides the address dependency. Depending on
+> > what we want to do, we can limit this address dependency only to
+> > rcu_dereference() and make it a special case, this means we disallow the
+> > address dependency provided by the "relaxed" in normal cases. Or we can
+> > add a Consume ordering (a type alias to Relaxed) that makes user to
+> > explicitly use it when they rely on the address dependency. I think
+> > either would resolve your concern about the name of "relaxed".
+> 
+> Yes, I suppose that would resolve my concern about the name.
+> 
+> Well, I do have one partial concern there, which is that the wrong name
+> will show up in stack traces as long as helpers are used.
+> 
+
+I think it won't be a problem since in LKMM, atomic_read() and
+READ_ONCE() are identical.
+
+Regards,
+Boqun
+
+> > > I suppose you can argue that the word "relaxed" means different things
+> > > in LKMM than it does elsewhere, but I looked over the doc you mentioned,
+> > > and there the LKMM calls said operation READ_ONCE(). The word "relaxed"
+> > > does not appear even once. If we're going to change terminology / use
+> > > new terminology, let's at least pick terminology that's not
+> > > contradictory with the rest of the world.
+> > > 
+[...]
