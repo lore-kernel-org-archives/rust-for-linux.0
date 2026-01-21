@@ -1,149 +1,150 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449DA346782
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 12:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768997950; cv=none; b=NgUYvokQQRXSkJB4lObdno0PhL7bakLevod0Dc6+38tSyBKfcZwu0ec7fCdRJG3eaS6BQRr7hE05SXLQIvQZ4rNajzx2cP10groYJaLhOC99Q08+v/tQjMRHcxAp+9dE7t71LaNs2qCFMtQAWPXQe1azTSWoHlqNuXoo0V76mgA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768997950; c=relaxed/simple;
-	bh=6Dcu8/bULslvO91L7SspBkSyK9LD8GT4ussbXNPXvLQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aHEB6oA2i3Cl1qVBAUSSZRUKjHcDEJnYLTWlIpp5rQtUOkIdeiL6p/ZAI1XALwf8zcPfOs6zQ88av3Ddla13FKF4fmyZNwdqONBgoJcyRpoKoBgMdhxyZQ88Qsj68Nyxb1YotMBvyg4NFI7coXqRzQaMPcyTDDYG4Inxr4gBcOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2ngn+bRU; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A517A42048;
+	Wed, 21 Jan 2026 12:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768998365; cv=pass; b=dbFnFsFokhdQdXR5+vPBRvz7iJQm4rxtqZM10QU5d7jFEJGi3xxAj1YpXqZoaTk31itJyC0/G3nhZrKXZYUY5Vrz49FGibmUp5SANFBMQ6c1seg/dSXBh9nMRrGSR2lfHapuon/TNfCGLwG0OsnRc3CyD8ozm59vYhiA3rB02sI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768998365; c=relaxed/simple;
+	bh=3a0p3uMI3Fr6Z1fCHwuK1def/IvnGbhblzEFdg10IWY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=mlTNM5JsWQou639wfvRo+9jn172IC598mAnyJugchRSM6/6ypR1wWExxXUqF0+DqUNxMH6Ff4TWgM0L5TdcYG/b+Tb3E+bs5vJW66yflI/0U+5hbtSe0YdCHimhjMxQ48bAtcHfO+OwWtH4LQnJbWygwMW5e4bP/OhPS+ikdFws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=NusVomfW; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2ngn+bRU"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-435a0fb0c9cso374975f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 04:19:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768997946; x=1769602746; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tW692zqK7I63nrKQN1683F1Ixt/sQ4szIigR0l7y37E=;
-        b=2ngn+bRUwxeDJmnW1ui4ycBm90U0fIRaM+5H0HhP/1KnryGObeXIOVGynEAonVpMcx
-         NzUhynvPno6XOFx21Jy+yibP1glYYw0U0zvVF2f7pDVC7fGcCjHMVyEiSnjHNnMeKXVW
-         cqaFMB1l6IAvAglNMM5SWbzVzVsB9FlUuzt3t5chdkXz2pIsuelMbx9wa6rAagaXxof9
-         iAncmp1EgIn3prq28td38N3lp7ZAlsho2Qlt1Ipf027zOkEdA11JualYvrmo2du/sHVf
-         Ml4VCHlfEkSWBYdbj74y+bhHx029V9YnPOsSkEOL2/Hi6fT+8mY0FyKQq6silo57RGxY
-         Q3Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768997946; x=1769602746;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tW692zqK7I63nrKQN1683F1Ixt/sQ4szIigR0l7y37E=;
-        b=N6FGn/jre5Z5IXInb4zLMsKY6jfIgqIRPGYcpWjtCRdb6ZBrk896lE3Rhj8/VuqZOw
-         kL8x0oDKRBubJqCpnuauHzxYQHEDF3bIa6yK5+d184JzoLrHt7sRVXOhsGW3AfJz/6KD
-         Aj8A0ZL+qQG0ZZIs4EpoosQ7DOO+5LM7Cd3rAvfCvuZXZk8VSF9Jm1+OdJO0KYXI76mK
-         3o0RKEOAO203DZacf65xEuso2YujuAyB44YY1VxGcC0WsyrUcubyFTpYEJWpLtHHnQ5a
-         oHxxaskkyUvdiuzi3T5Ud5fPbLkrY2CjrbUh2bHBjhQKRyDg5xTnnbtTyLHCGTm1f+Lf
-         oJ/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXYjQbiCzLQYFOvjir/EDYS5FAhrOFlc1XIf1/CuSZL8jJRTe/MXOsEmD0j/rrZjnMeT3LGExf47cNJQ7U0qw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YySCObtaxCIUSIyp5sHIZ9XZoflmlxuosLY/LqpuLxkFvCS2YPc
-	1Y1ZV6FsFGEOPBx1NinZcJOQ/TWXbBSNJE3NwPF7j7TMstI4nmj9h7L+dyyjF8TRXffNn9+d0bW
-	CwhXuHFiZ3Nn8czuetA==
-X-Received: from wmcu4.prod.google.com ([2002:a7b:c044:0:b0:47e:db03:6850])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:45d1:b0:471:14b1:da13 with SMTP id 5b1f17b1804b1-4803e7a2c17mr77774955e9.14.1768997946591;
- Wed, 21 Jan 2026 04:19:06 -0800 (PST)
-Date: Wed, 21 Jan 2026 12:19:05 +0000
-In-Reply-To: <DFTKIA3DYRAV.18HDP8UCNC8NM@garyguo.net>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NusVomfW"
+ARC-Seal: i=1; a=rsa-sha256; t=1768998348; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=j6gxz+AMc+Ef4n+nYe88V0M8PERKQ2TT22cSnDINv80xL23plNJQTcezohm9fQtYGqsullpmvLB4xvaZ+CEtV7xHaB0biYcEb7GFRVueUdG6GRHB0DmF2D1fEgYKyDzVFYglPgx4d4FTT8rVWdcmOMyRVcdakfaB1eUWeU9c9Xw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1768998348; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ziZ6Zkr6BIi8sGyBnmGeK7WaLH9fF37csTWwS4Uc6oU=; 
+	b=AlO9CQ8MV23jxo3AaWlrHpJ/HI2HVCPKhTeZvwYNkkIWOlSpIQ75Yuam7G47NRAky4bwdWJn7VjQw0sOUiU5DmpX1WG4qoYrZCzMqCmfIq1qobsbM76OahfjgynjLQdzwsE58xRRnzGj0tvL+JULLL6D0NC6Tu4J+ksV6gOqdv4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768998348;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=ziZ6Zkr6BIi8sGyBnmGeK7WaLH9fF37csTWwS4Uc6oU=;
+	b=NusVomfW8mpSfxI+/avCNKVF+boHclRL6UvpGb/mb4N+lLt/UChfFBf7pPSgsoI0
+	jaaxJ2nWCSxaisyuSW6eb3hRRdGScq7UTp4/9rMQwBi0AZQ491ndlq5m24QT9NzpnNU
+	XLqa+Py1LSBgxQqYfjlu2wPiV2+AU2QU2SxufQCc=
+Received: by mx.zohomail.com with SMTPS id 1768998346574839.9172334040906;
+	Wed, 21 Jan 2026 04:25:46 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260120115207.55318-1-boqun.feng@gmail.com> <20260120115207.55318-3-boqun.feng@gmail.com>
- <aW-sGiEQg1mP6hHF@elver.google.com> <DFTKIA3DYRAV.18HDP8UCNC8NM@garyguo.net>
-Message-ID: <aXDEOeqGkDNc-rlT@google.com>
-Subject: Re: [PATCH 2/2] rust: sync: atomic: Add atomic operation helpers over
- raw pointers
-From: Alice Ryhl <aliceryhl@google.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 4/4] gpu: tyr: remove redundant `.as_ref()` for `dev_*`
+ print
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260120181152.3640314-4-gary@kernel.org>
+Date: Wed, 21 Jan 2026 09:25:29 -0300
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <26F297F3-A93C-4998-9522-CFAD15C9A701@collabora.com>
+References: <20260120181152.3640314-1-gary@kernel.org>
+ <20260120181152.3640314-4-gary@kernel.org>
 To: Gary Guo <gary@garyguo.net>
-Cc: Marco Elver <elver@google.com>, Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Elle Rhumsaa <elle@weathered-steel.dev>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset="utf-8"
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Jan 20, 2026 at 04:47:00PM +0000, Gary Guo wrote:
-> On Tue Jan 20, 2026 at 4:23 PM GMT, Marco Elver wrote:
-> > On Tue, Jan 20, 2026 at 07:52PM +0800, Boqun Feng wrote:
-> >> In order to synchronize with C or external, atomic operations over raw
-> >> pointers, althought previously there is always an `Atomic::from_ptr()`
-> >> to provide a `&Atomic<T>`. However it's more convenient to have helpers
-> >> that directly perform atomic operations on raw pointers. Hence a few are
-> >> added, which are basically a `Atomic::from_ptr().op()` wrapper.
-> >> 
-> >> Note: for naming, since `atomic_xchg()` and `atomic_cmpxchg()` has a
-> >> conflict naming to 32bit C atomic xchg/cmpxchg, hence they are just
-> >> named as `xchg()` and `cmpxchg()`. For `atomic_load()` and
-> >> `atomic_store()`, their 32bit C counterparts are `atomic_read()` and
-> >> `atomic_set()`, so keep the `atomic_` prefix.
-> >> 
-> >> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> >> ---
-> >>  rust/kernel/sync/atomic.rs           | 104 +++++++++++++++++++++++++++
-> >>  rust/kernel/sync/atomic/predefine.rs |  46 ++++++++++++
-> >>  2 files changed, 150 insertions(+)
-> >> 
-> >> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> >> index d49ee45c6eb7..6c46335bdb8c 100644
-> >> --- a/rust/kernel/sync/atomic.rs
-> >> +++ b/rust/kernel/sync/atomic.rs
-> >> @@ -611,3 +611,107 @@ pub fn cmpxchg<Ordering: ordering::Ordering>(
-> >>          }
-> >>      }
-> >>  }
-> >> +
-> >> +/// Atomic load over raw pointers.
-> >> +///
-> >> +/// This function provides a short-cut of `Atomic::from_ptr().load(..)`, and can be used to work
-> >> +/// with C side on synchronizations:
-> >> +///
-> >> +/// - `atomic_load(.., Relaxed)` maps to `READ_ONCE()` when using for inter-thread communication.
-> >> +/// - `atomic_load(.., Acquire)` maps to `smp_load_acquire()`.
-> >
-> > I'm late to the party and may have missed some discussion, but it might
-> > want restating in the documentation and/or commit log:
-> >
-> > READ_ONCE is meant to be a dependency-ordering primitive, i.e. be more
-> > like memory_order_consume than it is memory_order_relaxed. This has, to
-> > the best of my knowledge, not changed; otherwise lots of kernel code
-> > would be broken.
-> 
-> On the Rust-side documentation we mentioned that `Relaxed` always preserve
-> dependency ordering, so yes, it is closer to `consume` in the C11 model.
 
-Like in the other thread, I still think this is a mistake. Let's be
-explicit about intent and call things that they are.
-https://lore.kernel.org/all/aXDCTvyneWOeok2L@google.com/
 
-> If the idea is to add an explicit `Consume` ordering on the Rust side to
-> document the intent clearly, then I am actually somewhat in favour.
-> 
-> This way, we can for example, map it to a `READ_ONCE` in most cases, but we can
-> also provide an option to upgrade such calls to `smp_load_acquire` in certain
-> cases when needed, e.g. LTO arm64.
+> On 20 Jan 2026, at 15:11, Gary Guo <gary@kernel.org> wrote:
+>=20
+> From: Gary Guo <gary@garyguo.net>
+>=20
+> This is now handled by the macro itself.
+>=20
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+> drivers/gpu/drm/tyr/driver.rs | 2 +-
+> drivers/gpu/drm/tyr/gpu.rs    | 6 +++---
+> 2 files changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/driver.rs =
+b/drivers/gpu/drm/tyr/driver.rs
+> index 2a45d0288825..fe991d8cbb4a 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -140,7 +140,7 @@ fn probe(
+>=20
+>         // We need this to be dev_info!() because dev_dbg!() does not =
+work at
+>         // all in Rust for now, and we need to see whether probe =
+succeeded.
+> -        dev_info!(pdev.as_ref(), "Tyr initialized correctly.\n");
+> +        dev_info!(pdev, "Tyr initialized correctly.\n");
+>         Ok(driver)
+>     }
+> }
+> diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+> index bfbf2a1d80e6..04a0a5d5ef3a 100644
+> --- a/drivers/gpu/drm/tyr/gpu.rs
+> +++ b/drivers/gpu/drm/tyr/gpu.rs
+> @@ -98,7 +98,7 @@ pub(crate) fn log(&self, pdev: &platform::Device) {
+>         };
+>=20
+>         dev_info!(
+> -            pdev.as_ref(),
+> +            pdev,
+>             "mali-{} id 0x{:x} major 0x{:x} minor 0x{:x} status =
+0x{:x}",
+>             model_name,
+>             self.gpu_id >> 16,
+> @@ -108,7 +108,7 @@ pub(crate) fn log(&self, pdev: &platform::Device) =
+{
+>         );
+>=20
+>         dev_info!(
+> -            pdev.as_ref(),
+> +            pdev,
+>             "Features: L2:{:#x} Tiler:{:#x} Mem:{:#x} MMU:{:#x} =
+AS:{:#x}",
+>             self.l2_features,
+>             self.tiler_features,
+> @@ -118,7 +118,7 @@ pub(crate) fn log(&self, pdev: &platform::Device) =
+{
+>         );
+>=20
+>         dev_info!(
+> -            pdev.as_ref(),
+> +            pdev,
+>             "shader_present=3D0x{:016x} l2_present=3D0x{:016x} =
+tiler_present=3D0x{:016x}",
+>             self.shader_present,
+>             self.l2_present,
+> --=20
+> 2.51.2
+>=20
+>=20
 
-It always maps to READ_ONCE(), no? It's just that on LTO arm64 the
-READ_ONCE() macro is implemented like smp_load_acquire().
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-> However this will mean that Rust code will have one more ordering than the C
-> API, so I am keen on knowing how Boqun, Paul, Peter and others think about this.
-
-On that point, my suggestion would be to use the standard LKMM naming
-such as rcu_dereference() or READ_ONCE().
-
-I'm told that READ_ONCE() apparently has stronger guarantees than an
-atomic consume load, but I'm not clear on what they are.
-
-Alice
