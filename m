@@ -1,231 +1,136 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013062.outbound.protection.outlook.com [40.93.196.62])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EFC3E8C47;
-	Wed, 21 Jan 2026 09:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768989307; cv=fail; b=ZVJR796nCMbEblDO2RkxTfnJVnGtiRaWhZE5gEwzuE9CDF2bWBoOMVUij/3T5BcGAsT/vEAKQswF6AMRZbMfrl9HTTgC3pXPxgkTJx6TXpsUIejBbZ6y392btBDTopM4jFXOOcZS1zI+23Vf9xJWtHXnaCAIRSy+HkSTAHNr1NU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768989307; c=relaxed/simple;
-	bh=O2F614A7lxOrqpFhZCeDhVbkBcbWz3cvgAVCL5VcWX8=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QAb6AiRYiCQzRfIfdIER4qDqRa79aqfTgrRSn9sN++rrX7HPbJ08uCxsgGfYwXln2egJ7AbYZPMzsExB6WLoh6h3rT+KNQOJItEdeNT9VhD7r/2t0cf4AO5b+CwXFnXN1T1+pvbL44nJccVgoW4P5NGSRlSnFpC4OKbzBPNt08A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DM1Fq1jx; arc=fail smtp.client-ip=40.93.196.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9053D3486;
+	Wed, 21 Jan 2026 09:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768989362; cv=none; b=WIEm2dwUOKbkMEeoUFpse4y0+dtjE5tnPxKkur3xJZSZHw7gp79FmIrSNHPhqDKRbdZYJBwLroy4swVB+rgqAstfREef/64Sz3iW0SbvAp7E5Cs+++wxjmBXiufHpFyZEJ0kjVr8duFqrPDQ/dDm70giNuhS5fUm0zV2Ijgl9Dc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768989362; c=relaxed/simple;
+	bh=vb33am2CXNzJTUFW8xjXCgEdnw5d36/6zQ548a5P7CE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=tXgUVz50Q4aaj1iRO820VJrW5mpExsFTmELSBzd5UBQGRHOlljPA1Rfop8IaSFDHk+xY+LanCrAXuHTtwtnTAEHNRZWrhgxwtkeVQsRUWPB99Xb/eodEheZxLVKsvuX+PcOeJ/C/4TEShvTuWG3AU13ZHLvlbqwGKf32T+pheIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=EQ1DCx84; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DM1Fq1jx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hSh8BgZXfzA1K+hOWPVPtCXknXs2aHe31UwViPGmJNXKMVA0iBjmO21ZfOOKxi1sdmllVXj/UjploiqFJEgt/SluTztictcolIPCCikPzfZmuyvtZO0iEEoBjjJjfXGRJAsk+S4LK9lJcot9j1zuCmd0t7w33ZypxH71/8CNXujBAz7stw8E8JQTcQE3eRwuprRyGBLL15ddpccRJ6rxz1GGLipAk/lHq8ssRxYrGeUXdIPj8rvO+rea9sDUJPpUz9rt5Z4Lbwfm48lmBTyulsuFismEYcJv7Lblmbz3TxuTtWBemB1PVCp2SirIT5TlUqsQ73tYSNa1SZaMI33jJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nfjaO8rLX6OnscGNkcc9LBgeJjOZ4fSgjTrxS/oKuHw=;
- b=c7xbIKfsvmte5GloY8NOWIA+wypqVUZTVy0Tp+qf/n5Ln07hVKNLvMGnqQuDF/qCL5byt/atmUm1VCRJ8dT/Rh+YIh0bFsRi2W5J8sqka9oXvAJpZxF4BiHtBR6yFlfn+lI1UaI3j1zv6EXNOOgfyyLiP9L13UaIO6Igoib3Kl1z2o5D7BxTSB3AjU9SrAz6qHtLTMCYIekmy4OUbhwygzGpQAuOH7SUrBFPUSFa5IDvVk3v8XDv/Gra/mtzyxN+ccIuTkgt4xYHPlajG53UufJaMrHpCzlHS257OkFscHun07F0nXlj6RBsI74MRT0MQGzpKb/xOVpau0DzHoCZZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=protonmail.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nfjaO8rLX6OnscGNkcc9LBgeJjOZ4fSgjTrxS/oKuHw=;
- b=DM1Fq1jxvgX2xfmIwtQPWQk0dTp2rckEUhYwVvw+B1YACffrS/nALeU1GcETff5Uyj4TJnKu8ojV9n5UZpzP8opiezAnAvoqFj2lET8fXc5dRb6UGaOuvrkP7FQQ10mE8p+mwMgimlw78oxTDaibXVYtT9iGWQ4Hm0+Ib80Pz6ds30zQLup3cHSWntGvUUw/9NMObQWhajojlKd4ZwpqR4Czky5j7FzmDxWcRhrhrQCgWOFS3xc99h4QzrAzjjDrzUHSDwdTsl7PVmxFNBoNksmh4QSNmPWmZoiy3LgUrLWJN22XtHgtLLx+gMXLPEQ+c59Z8jZDF6dB2y3zr5ULdQ==
-Received: from SJ0PR03CA0288.namprd03.prod.outlook.com (2603:10b6:a03:39e::23)
- by CH3PR12MB8658.namprd12.prod.outlook.com (2603:10b6:610:175::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Wed, 21 Jan
- 2026 09:55:01 +0000
-Received: from MWH0EPF000989E7.namprd02.prod.outlook.com
- (2603:10b6:a03:39e:cafe::62) by SJ0PR03CA0288.outlook.office365.com
- (2603:10b6:a03:39e::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.9 via Frontend Transport; Wed,
- 21 Jan 2026 09:54:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- MWH0EPF000989E7.mail.protection.outlook.com (10.167.241.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.4 via Frontend Transport; Wed, 21 Jan 2026 09:55:00 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 21 Jan
- 2026 01:54:47 -0800
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Wed, 21 Jan 2026 01:54:46 -0800
-Received: from inno-thin-client (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Wed, 21 Jan 2026 01:54:37 -0800
-Date: Wed, 21 Jan 2026 11:54:36 +0200
-From: Zhi Wang <zhiw@nvidia.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-CC: <linux-kernel@vger.kernel.org>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>, "Alex
- Deucher" <alexander.deucher@amd.com>, Christian =?UTF-8?B?S8O2bmln?=
-	<christian.koenig@amd.com>, Jani Nikula <jani.nikula@linux.intel.com>,
-	"Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
-	<rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui
-	<ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, Matthew Brost
-	<matthew.brost@intel.com>, Lucas De Marchi <lucas.demarchi@intel.com>, Thomas
- =?UTF-8?B?SGVsbHN0csO2bQ==?= <thomas.hellstrom@linux.intel.com>, Helge Deller
-	<deller@gmx.de>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl
-	<aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
-	<alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
-	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	"Alistair Popple" <apopple@nvidia.com>, Alexandre Courbot
-	<acourbot@nvidia.com>, "Andrea Righi" <arighi@nvidia.com>, Alexey Ivanov
-	<alexeyi@nvidia.com>, "Philipp Stanner" <phasta@kernel.org>, Elle Rhumsaa
-	<elle@weathered-steel.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
-	<joel@joelfernandes.org>, <nouveau@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
-	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
-	<linux-fbdev@vger.kernel.org>
-Subject: Re: [PATCH RFC v6 13/26] nova-core: mm: Add unified page table
- entry wrapper enums
-Message-ID: <20260121115436.45e174d3.zhiw@nvidia.com>
-In-Reply-To: <20260120204303.3229303-14-joelagnelf@nvidia.com>
-References: <20260120204303.3229303-1-joelagnelf@nvidia.com>
-	<20260120204303.3229303-14-joelagnelf@nvidia.com>
-Organization: NVIDIA
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="EQ1DCx84"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A38F9430CC;
+	Wed, 21 Jan 2026 09:55:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1768989356;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GaqCvMBL8GtzVC6jIdKSwudL/1w67Gf2qPep5NgGXv4=;
+	b=EQ1DCx84h6BZdcoubAvXWSPdKNVxCvwdllgqX2gJTFTgVi2brHbRG9kfXR4iby7t6eVMV0
+	BizgUDW4ZXuVQymNB4OZoZ7faRLH/Wg5zt5AAT7puLMhUIBNC/VpskQFvnk+cBUwOkstVA
+	4SBQDx3Pl0XWJdZnbGTDQcIDj8f7/28ZILt3FEOX4qY+18vjAAWs7FNhftncYvorbRKPHM
+	4s3RZ25KbKn+EiQPBgsP2PPumyE3zw93wNGgEDdFnu5mULfsO5PGA1Qz54f7dHeyBr4jrG
+	2qioSwCL+IbnsRt1aCwSaDEN73Wd3V5V8O9jYs8Gp8ceYJWW8MMwhpq7/iEmeg==
+Message-ID: <e96a6e71-80b3-4556-a4eb-fd242e0f5713@gtucker.io>
+Date: Wed, 21 Jan 2026 10:55:53 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] Documentation: dev-tools: add container.rst page
+To: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ David Gow <davidgow@google.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, Arnd Bergmann <arnd@arndb.de>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, automated-testing@lists.yoctoproject.org,
+ workflows@vger.kernel.org, llvm@lists.linux.dev
+References: <cover.1767199119.git.gtucker@gtucker.io>
+ <c859f9b6dd5313136f7a445497d6209405eafa7e.1767199119.git.gtucker@gtucker.io>
+ <aW-I3fNqp_7X0oeg@derry.ads.avm.de> <20260120183550.GD2749368@ax162>
+Content-Language: en-US
+From: Guillaume Tucker <gtucker@gtucker.io>
+In-Reply-To: <20260120183550.GD2749368@ax162>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000989E7:EE_|CH3PR12MB8658:EE_
-X-MS-Office365-Filtering-Correlation-Id: 13692daa-06af-4a4b-a34a-08de58d32486
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|82310400026|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BfFD3JixCOQrWeO3dToJjYMBti1Mba6PdFGRHDccfZwBAGCuvTmfC0B6o6E9?=
- =?us-ascii?Q?aLr4CRAXDjQWgJKXlzmPqghHsyAqgz/pH20xzV1NVI8K5K2+rWBoqxOcGfd8?=
- =?us-ascii?Q?BCBLGx/7CA9PEi9cpC39LA7vhkQwVgDl/QgNd4nH27trSuXZkaQ6pNAooNHL?=
- =?us-ascii?Q?iDbjjfUIWBLxb8nNUBuE6c5rRRBqAVlYhjLYduLjE4hiXIJNqzmb9Y4GBUb3?=
- =?us-ascii?Q?boEcNwnFXXm3sKU6yUzWgOI+Zhpy+aHjjiqknPc05ATuDgaodQc38JLZR/KM?=
- =?us-ascii?Q?iGwOpgIUyqjsmhKp8nVvNKsAh9ZxoBSmvn5bxeHsAFu/9b7GFQHf1WiGkcrE?=
- =?us-ascii?Q?CE996EJAg0khnZfBz1nTQeHrygQIixqIRjfJEPyyngI0fYZkAz+hghsfM5pV?=
- =?us-ascii?Q?MHvchPd18bJE9LVx91VJPzK+w2z5pnEbgacIiP+YKI4d9S5ckQO1BPVKfAlm?=
- =?us-ascii?Q?rXlPr0+mZtvGIev263eyoTBEcSmDkjcIANsbEotpA0dDSBXxsk9ecf5zG8ux?=
- =?us-ascii?Q?+A9B4jnF/SlWWNeebTAKlgbV9wcM3RO3ATXte4nI2DEeMKhlu3/o8eG6gpqa?=
- =?us-ascii?Q?izvIKyI6sxCrLZsnjeNsxJEUb9utqQmpa8h7jNXEH57o5XCnWccKvR8oZmHQ?=
- =?us-ascii?Q?lSHuGDVNtOGtB5Lmv9PSJYEtcOGWPyJ6zNWSamm3yt/ASxpmQffQ2SwWc0XI?=
- =?us-ascii?Q?dZAaLXAfni7Wd+FM1pivKysOMX7i9AXYvg6js8wNlYwzMoxFaxMQVzBoo8nW?=
- =?us-ascii?Q?ELM8SUTO/50GIh7RnLJ1vo5LdWVF2opqZtoYi2upOJIKBOO9tKpdmhFj6ccA?=
- =?us-ascii?Q?FLOh/TUEBvYAQzUar+kmaemFgQMTactA5oGsSgwdghnslF2pR8NTaqTTwdVF?=
- =?us-ascii?Q?H3cqqrmSVh0slWTRQB347oGmmbcWEiZloJikmCrBXhMkHV6y40ZFN+f0iUFC?=
- =?us-ascii?Q?rgjRZSgEhSb9dLwLf+8hzGKv7LesCJAObidAe5btUSu1IxRpvCx8hBZ9SMbv?=
- =?us-ascii?Q?LiY8rYmDhAg53DpBgWMlQZyU84RiYHbJT1X9QVxTMYSsTZlViAO/Sf91B3Tz?=
- =?us-ascii?Q?N+mGleW56le7lvWa6k0lGXfstTsCmgHYYlDSqKhPEG6ctGVyrkzQMZ3aMkWl?=
- =?us-ascii?Q?WBp6yyYrnOKKqtqvla0mf07ETkxnkm4FouxWqqwbbHLEbxRw7r4WdAMtWU61?=
- =?us-ascii?Q?Mb5Qqc8FG9dMBZZslyVBmTB4JrCus33ng+lsfu2vFdRcpIC8Pq+S8hN0WE6L?=
- =?us-ascii?Q?b5+hRkJJYxkHMrcDN25z3Bzu4zeUIYeOLyQd2L0QpJ5vFPPfWiAvVM//eJWl?=
- =?us-ascii?Q?t0mahh0a9tijJTH1Hsv3gT3poRjdXMMf1yfvaq9k4M5R7FYc4OzLZp3xXVkM?=
- =?us-ascii?Q?PYU7/H+Of7sC+stbFAV7GVi6I/Gh6fYWeBVFknofB+EF+QsgnHECuiXB1TiP?=
- =?us-ascii?Q?QsfIfVB8UrXtUCxigTbGikiDpp1GDqVgfPzf3XXavCq0IRmIyV7LNOCn40aj?=
- =?us-ascii?Q?hJ+ak9vS180fhD7AqIilrgZiNWJpQcFTiloJvMyokORSW+YBsD7ZA+8zLEKL?=
- =?us-ascii?Q?lMKuECOiDCIV2wVTpzaXFQT7mae04T+J8EwUMQl78TajBOpmGns9Leu1FNdP?=
- =?us-ascii?Q?Cmkfe+4LCFbW2TkRRz85i7GrrEYVdODR9fjRVpnqWcIG/H05GZV+ZOQZyuvj?=
- =?us-ascii?Q?tLF6Mg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(82310400026)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 09:55:00.6781
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13692daa-06af-4a4b-a34a-08de58d32486
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000989E7.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8658
+X-GND-Sasl: gtucker@gtucker.io
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedvleejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpefiuhhilhhlrghumhgvucfvuhgtkhgvrhcuoehgthhutghkvghrsehgthhutghkvghrrdhioheqnecuggftrfgrthhtvghrnheptdejffefieefffegtefgueehgeehgfdviefhjeegleetgefhfeejfeeuuefhgeeinecuffhomhgrihhnpeguohgtkhgvrhdrihhopdhpohgumhgrnhdrihhonecukfhppedujeeirddukeekrddujeegrddugedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudejiedrudekkedrudejgedrudeguddphhgvlhhopegludelvddrudeikedrudelkedrieegngdpmhgrihhlfhhrohhmpehgthhutghkvghrsehgthhutghkvghrrdhiohdpqhhiugepteefkefhleegfedtveevpdhmohguvgepshhmthhpohhuthdpnhgspghrtghpthhtohepuddupdhrtghpthhtohepnhgrthhhrghnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvihgughhofiesghhoohhglhgvrdgtohhmpdhrtghpthhtohepfihorhhksehonhhurhhoi
+ ihkrghnrdguvghvpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-State: clean
+X-GND-Score: -100
 
-On Tue, 20 Jan 2026 15:42:50 -0500
-Joel Fernandes <joelagnelf@nvidia.com> wrote:
-> Add unified Pte, Pde, and DualPde wrapper enums that abstract over
-> MMU v2 and v3 page table entry formats. These enums allow the page
-> table walker and VMM to work with both MMU versions.
+On 20/01/2026 7:35 pm, Nathan Chancellor wrote:
+> On Tue, Jan 20, 2026 at 02:53:33PM +0100, Nicolas Schier wrote:
+>> I probably have just read it over: I have to prefix the
+>> 'tuxmake/korg-clang' by 'docker.io/'.  Is that a problem of my system
+>> configuration (Debian forky, no special podman config)?
 > 
+> Some distributions ship registries.conf [1] to allow unqualified image
+> names but I do not think Debian does. Personally, I use the full name
+> regardless but it should be easy to create it for commands such as these
+> to work. I use:
+> 
+> unqualified-search-registries = ['docker.io', 'ghcr.io', 'quay.io']
+> 
+> [1]: https://podman.io/docs/installation#registriesconf
 
-snip
+And this is not directly related to the scripts/container tool as it
+just passes the image name as-is.  Maybe the example in the docs
+should explicitly use docker.io/ though.
 
-> +impl DualPde {
-> +    /// Create a [`DualPde`] from raw 128-bit value (two `u64`s) for
-> the given MMU version.
-> +    pub(crate) fn new(version: MmuVersion, big: u64, small: u64) ->
-> Self {
-> +        match version {
-> +            MmuVersion::V2 => Self::V2(ver2::DualPde::new(big, small)),
-> +            MmuVersion::V3 => Self::V3(ver3::DualPde::new(big, small)),
-> +        }
-> +    }
-> +
-> +    /// Create a [`DualPde`] with only the small page table pointer set.
-> +    pub(crate) fn new_small(version: MmuVersion, table_pfn: Pfn) ->
-> Self {
-> +        match version {
-> +            MmuVersion::V2 =>
-> Self::V2(ver2::DualPde::new_small(table_pfn)),
-> +            MmuVersion::V3 =>
-> Self::V3(ver3::DualPde::new_small(table_pfn)),
-> +        }
-> +    }
-> +
-> +    /// Check if the small page table pointer is valid.
-> +    pub(crate) fn has_small(&self) -> bool {
-> +        match self {
-> +            Self::V2(d) => d.has_small(),
-> +            Self::V3(d) => d.has_small(),
-> +        }
-> +    }
-> +
+>> I tested a tiny bit with podman as runtime backend.  If I leave out the
+>> '-r podman' podman's docker emulation is in effect and fails with:
+>>
+>>      $ scripts/container -i docker.io/tuxmake/korg-clang -- make LLVM=1 -j8 olddefconfig
+>>      Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+>>      mkdir: cannot create directory '.tmp_15': Permission denied
+>>      mkdir: cannot create directory '.tmp_19': Permission denied
+>>      mkdir: cannot create directory '.tmp_22': Permission denied
+>>      mkdir: cannot create directory '.tmp_25': Permission denied
+>>      mkdir: cannot create directory '.tmp_28': Permission denied
+>>      mkdir: cannot create directory '.tmp_31': Permission denied
+>>        HOSTCC  scripts/basic/fixdep
+>>      error: error opening 'scripts/basic/.fixdep.d': Permission denied
+>>      1 error generated.
+>>      make[2]: *** [scripts/Makefile.host:114: scripts/basic/fixdep] Error 1
+>>      make[1]: *** [/src/Makefile:655: scripts_basic] Error 2
+>>      make: *** [Makefile:248: __sub-make] Error 2
+>>      [exit code 2]
+>>
+>> But with '-r podman' it works like a charm.
+>>
+>> Would it make sense to switch the default runtime to podman to
+>> prevent non-functional podman-docker emulation?  (Or is this just a
+>> problem on my machine?)
+> 
+> Yeah, I think it would be better to prefer podman over docker if both
+> existed on the system. Something like this should do that?
+> 
+> diff --git a/scripts/container b/scripts/container
+> index dbe92630f05b..50c4ae851001 100755
+> --- a/scripts/container
+> +++ b/scripts/container
+> @@ -105,7 +105,7 @@ class PodmanRuntime(CommonRuntime):
+>   class Runtimes:
+>       """List of all supported runtimes"""
+>   
+> -    runtimes = [DockerRuntime, PodmanRuntime]
+> +    runtimes = [PodmanRuntime, DockerRuntime]
+>   
+>       @classmethod
+>       def get_names(cls):
 
-Should we also have a has_big here as well?
+Yes this should do the trick, although the help message and docs
+would need to be updated too.
 
-Z.
+A better way still would be to make it able to distinguish between
+actual Docker and docker-compatible Podman (e.g. if it's just a
+symlink) so it's not just down to luck.  This may be added to the
+list of potential improvements.
 
-> +    /// Get the small page table VRAM address.
-> +    pub(crate) fn small_vram_address(&self) -> VramAddress {
-> +        match self {
-> +            Self::V2(d) => d.small.table_vram_address(),
-> +            Self::V3(d) => d.small.table_vram_address(),
-> +        }
-> +    }
-> +
-> +    /// Get the raw `u64` value of the big PDE.
-> +    pub(crate) fn big_raw_u64(&self) -> u64 {
-> +        match self {
-> +            Self::V2(d) => d.big.raw_u64(),
-> +            Self::V3(d) => d.big.raw_u64(),
-> +        }
-> +    }
-> +
-> +    /// Get the raw `u64` value of the small PDE.
-> +    pub(crate) fn small_raw_u64(&self) -> u64 {
-> +        match self {
-> +            Self::V2(d) => d.small.raw_u64(),
-> +            Self::V3(d) => d.small.raw_u64(),
-> +        }
-> +    }
-> +}
+Feel free to make these tweaks now, or we might wait a bit to see if
+others have more feedback with further changes and I can send a v4.
 
+Cheers,
+Guillaume
