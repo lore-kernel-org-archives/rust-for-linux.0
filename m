@@ -1,157 +1,176 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E9343DA50
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 12:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768997463; cv=none; b=TR/7c/zvzhUwlJRlJTf2Sbkwv3yNk7c+lPeOcXsZFLN3mi+f+jemNjvo4tK/kftJKyMfHwtTvV4ATeQr8Py931cDwgMf1iFgzECzD5vL36+E24IwPEfe07UGmzXGavxcbTb5ntNEv5hiuneXZU9pNg0/5RYXD9KrYaYbytAVtO8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768997463; c=relaxed/simple;
-	bh=ylscVMtDsSAWluUPcU1ZBTpSkzchflyIObPGvesyXuM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rpjDtsszklWEY1oilqyJgE0l5MFIEjnJCPFxd/JrAGVjJrVgjsjdHiBRApXnVhCmSX7xys6V3jFmcfjFBLk3pKHQqwVAmwmEayp8Pn1N+elbhHj3R1a9qEMSAoP15C3yDRE6l89HPPtUaCOhaPOFlP2F61JAK4U1lckqnvutFGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mNp6jT2O; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B4644DB8B
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 12:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768997677; cv=pass; b=PySEHLqjLcXZxmllr82xEjzBG5sFFuDxvKGoP8gl7kMgDdyNwHpyK9NNNFX1N4SN9lcJE34qGd96zisjnDAJ4D7fGfUtwByUtJQv14Bu12rCQs0ilNreDt2ttrcu0ACNB62U2RK8VjdEUOi1NxY2SYHCddKMXbD81tBud0HF1N8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768997677; c=relaxed/simple;
+	bh=QT5JLW9eYEpsOmAOwnp2GUulzcXGfwSdxy/nr0y3+KI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VHIncHRT44z6wCQJS3LsLS1mPyR37vqK+eTeYMeQbptdaILAAjNu4hulPd2moW5DSmUaLrd6xicVUGHjUryb8bgvoHzsD+hopXlzuCnnRRWF3Sbc5nbiJhkEH4HDNmT3nP2P8H9nk1dQzTp/KEbsLcClsTv8EZtRwY5NKpEarOg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZrBGeQ6k; arc=pass smtp.client-ip=74.125.82.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mNp6jT2O"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4801e9e7159so31074505e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 04:10:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZrBGeQ6k"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2b71515d8adso517706eec.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 04:14:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768997675; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LPnjBM1FCXIww8BOdAR5vPo37urPxIpm+2qSLbpFL+lHu59gCOXcdw4sNlRKQ5db0D
+         NYr3xBtVexgvN06c6pZ8bbeTvMoSztNt9m59HKWgvXlqZgiWuvlBMT/30v6nxY6JeNzy
+         QlBJibbneNXGCvENn7ez9eck9EA3uMUh6oUdYYvxhjRJvUSoS9ttok12VECR1hWtHACP
+         geBnrAsaua0gM5u1cR/tESr58Wj+8QhbGELRkk7RmNso1tkEvAbLifg4eMOKsN8N+mbe
+         LG7Gl0p0EYoJY7ZUWHN5Reb7rBMC80i+fI3nuWS8o2nf89j0ccT596HpKmYB2vCnpyeX
+         i2ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=QT5JLW9eYEpsOmAOwnp2GUulzcXGfwSdxy/nr0y3+KI=;
+        fh=EI7MJXV+eEvNAnuL6cprGdV7W58nC+T+z7238Qa/05c=;
+        b=XYvJ+Zrh7UxPmqB3Uwm6wuCywrlHGBgFM4OyQLlwBNCU6+Uxm8U5YVwoTT7br9m7v9
+         lLSM+a51bMNaVdYKrauHczvhCHlbSRwfJyxZgE3X/ZO4FokZQ4hqJ4s7I3SiVQY6Jq0t
+         tRh9SuWjeeIHP2Kz9d91DC7Qr2Sew6eQSGxt9OrVgHR17NvKtSvcVvwksGSLBM/KwUiJ
+         IUzipZ/z1wLc8aboIvOsz36vy3vlZ+uiNO75yTiR8uk8WCvBpT9TSZ+Z9JgWSOgKZ4K5
+         F4rlVSuE+SgNhG1IZOsQ2xf5qeYfgDIpXBq3FSindJqzhjijMJY0rZAC0RTwleUTVKLw
+         4UnA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768997455; x=1769602255; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ziR3r9m7pUVvYH96OZBkYpK+ngyEyWi7rW5109gK7C4=;
-        b=mNp6jT2O1Y/FGHhtA1pGHtNKQscKKZkq455Mmb2wQxQjewEwRaoRwabP/F+ZYVHLsH
-         QyTdt/ptuIUnJKFQqAq1zbYioIvET58VSH5huRtcq+h7TYDHz8v0962Kl55oYiZwjNXL
-         G/mse2feK6crL48Dgf1Hvu2H8YFymYuKq7qMP3v11DpzeVWyQUQbIMY61WCoYuYOQJH3
-         rG3pLoKyTQyV9vlvkA+IlXlMRrfQio+sY7lzTyPTCrf2diwGzwQIlWQK4m+2nUtKaesn
-         oNaJ91H7xWQdjRAl7eIy8XD8n7MW/JxkLcHBJ1UtYXa5fcbi/gLj+wSTGnAuHOax2vjx
-         eieA==
+        d=google.com; s=20230601; t=1768997675; x=1769602475; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=QT5JLW9eYEpsOmAOwnp2GUulzcXGfwSdxy/nr0y3+KI=;
+        b=ZrBGeQ6kfNdJzYQRP1LEJdHfCT1HaMbsgAs5E6G4uDSHU1EFFbGzENXeGpfvg5S/c6
+         X2UONltsCXS6bNIRmway17Xxt5hLBWyM369c2Nbg4c1dIXNrd9F206xpy/zYOqWBGOXm
+         /GW2J+1iZ4hTgTpBt7biueYVAKzJyNmg2JMqOG7aLNkMaeOLiFb1UIyFYcMLlw1ujH1O
+         gQPCeDwGrqFt73DiUAArW6/I1+ep6+PYgQKLVcKM6Xxw6VEJ3FAC//U+JMmJ2sDhZU3o
+         DEjQlxUuY5xbdAB3emK1yVeXHDyV173uL5+ys9/n3q34Qgxbr/0VwhxVnNCvRoQDhim1
+         b6hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768997455; x=1769602255;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ziR3r9m7pUVvYH96OZBkYpK+ngyEyWi7rW5109gK7C4=;
-        b=E2hSn2IC0mq92DgFsi2o3flwSvfImD8kVmiILWEYJlAT2XS4mQJXLEICv5WwZjwnTg
-         SScZmgCUmgUWsHf/akXsOnHSn0Ua/OYfdlMSrlCqtsoxkVpLZcXZYktj2fAAf+1bbXfI
-         oPa0WBRfMj2E2nmCFpDHQD98J/FMGncH6XdpHTIicH0WMDKsKmBukYLkbzBfjjwxlrT0
-         y16l8gPZ8Md/mT3JcZEdCa7nMtmnQu1P7kImpbneAMeOu36SJr+6aPnaAeWQsSoaDyTq
-         PmbrAjGVflIU9sW4vodXoUPymKyhyyn2df9MST4N5CtzMMqMm+jivQ1dAeh2BiMOy8tm
-         B8nw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4zpHAX28tjVqJ7IVyHjC2HDpKu1BWRPDUouQzDzW9pB5nIl7oOT1146biWKDxxNB+UjQyzFOtsKyTeq5cig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfAiyoVamktXU1HtkZLT+/tcVWxZIrr6nFVvsbQrfYbFHbe7EJ
-	uAYOVWrRVsKaYYUYvRhkdcdR3CoaI02nZJexZy21aUiewodzRQwVsZbwePkOw7X7MW73ejlMQOe
-	X72y/r8WsNPTD4Ab5/A==
-X-Received: from wmqh8.prod.google.com ([2002:a05:600c:3508:b0:47d:5dae:74f0])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6388:b0:477:9a28:b0a4 with SMTP id 5b1f17b1804b1-4803e713cc2mr75064445e9.0.1768997455476;
- Wed, 21 Jan 2026 04:10:55 -0800 (PST)
-Date: Wed, 21 Jan 2026 12:10:54 +0000
-In-Reply-To: <aWuV858wU3MeYeaX@tardis-2.local>
+        d=1e100.net; s=20230601; t=1768997675; x=1769602475;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QT5JLW9eYEpsOmAOwnp2GUulzcXGfwSdxy/nr0y3+KI=;
+        b=Iy/SlT++QTPFZhLCnVLB6AeIlv5Sq2KE4/9kYONjhuhewYH2LadFKrHKVa6cAkeiFB
+         H18kgIFehx2qlfSlC+YhmDZHNrtPIpIXvt2k3MtSXp51l6A4JnKBLRWHj1TwTVdpLVE2
+         h0hJ4WVcVqLZkH+16zQe65IkVF5gYUS2Wx05Hi7hm2L8tJaUAKzAGYx5AO2zl28bP1q9
+         GZvtKGEf+eXBoNmrGwxy+4JAv2qS79SFF8yOmxWC0MpM0N0PmR8cpporxjveBAYHZQor
+         ih0c+ThMUD0uvByW2xRrDaYN9PwozcjBbBFRMfsfBMfw1jPDwy4IdKQZ/E51fnp4fsJg
+         BHSA==
+X-Forwarded-Encrypted: i=1; AJvYcCXfHNhndc4TG3/QD+hAjEy233RSM/E4YEWH4QJTnPSVey5XMBtJ1571gNwYqainO+dMMnIwG4Zfi8EIBuN+Zg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8kbpVnQOu5misbuqtEYBFw9/5PtlBoysUM7RDPcEMhGcH1n8r
+	NpocIsrhSqT1H2SCGbIMWyVu++nabos9sU49ETvvZQYp5X8vCAaniABaVn7ExMA2PQdII41AEm+
+	u44Y5kkrRShj95q+vJEFxiJjufudEyyKA/gVnChj7
+X-Gm-Gg: AZuq6aLFUUTnPP/v1LGjFWLK/ebcQahH4faIYAnYEgatkkZsom+Tunb4VuIfMXrAAKt
+	YRv6KpuoRTIQz9BOy2QpwpGiFQcPAjSjAeXdpslUkCCM7l4Fjqorxvnp0Em74eu6h9ue3ervuIC
+	QiMJIia93OcKKbHLhXeVu6R8gVn3ITRShGYu4tfVm6e22+A+isJqY4QBegPpliPRoZDFaXXgbwd
+	oZYQcv5mSAlpIJKLrncfbQT8K75oxov7myoP6fGmdCHnGSo1njS7CNtWZyFe3sKvMhZ9WPjm4fh
+	o5CwVkS5lX0uCT2QSIFoWQNFKw==
+X-Received: by 2002:a05:7300:ad06:b0:2ab:ca55:89b1 with SMTP id
+ 5a478bee46e88-2b6fd7bdf89mr2710322eec.40.1768997674493; Wed, 21 Jan 2026
+ 04:14:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
- <aWrSkAPFkdH_tvtN@tardis-2.local> <aWt4muGXbe7lBmXt@google.com>
- <aWt8Ze-otTkexNIe@tardis-2.local> <aWuKqLERqpNz9qtz@google.com> <aWuV858wU3MeYeaX@tardis-2.local>
-Message-ID: <aXDCTvyneWOeok2L@google.com>
-Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
-From: Alice Ryhl <aliceryhl@google.com>
+MIME-Version: 1.0
+References: <20260120115207.55318-1-boqun.feng@gmail.com> <20260120115207.55318-3-boqun.feng@gmail.com>
+ <aW-sGiEQg1mP6hHF@elver.google.com> <DFTKIA3DYRAV.18HDP8UCNC8NM@garyguo.net>
+ <CANpmjNN=ug+TqKdeJu1qY-_-PUEeEGKW28VEMNSpChVLi8o--A@mail.gmail.com> <aW_rHVoiMm4ev0e8@tardis-2.local>
+In-Reply-To: <aW_rHVoiMm4ev0e8@tardis-2.local>
+From: Marco Elver <elver@google.com>
+Date: Wed, 21 Jan 2026 13:13:57 +0100
+X-Gm-Features: AZwV_QiNdZftFkEU8_aSSpgL9dCXraNCslVH2OipOEvIiJlDSmBop19Ul7_z1dM
+Message-ID: <CANpmjNNpb7FE8usAhyZXxrVSTL8J00M4QyPUhKLmPNKfzqg=Ww@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: sync: atomic: Add atomic operation helpers over
+ raw pointers
 To: Boqun Feng <boqun.feng@gmail.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
-	Andrew Ballance <andrewjballance@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+Cc: Gary Guo <gary@garyguo.net>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	kasan-dev@googlegroups.com, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Elle Rhumsaa <elle@weathered-steel.dev>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Jan 17, 2026 at 10:00:19PM +0800, Boqun Feng wrote:
-> On Sat, Jan 17, 2026 at 01:12:08PM +0000, Alice Ryhl wrote:
-> [...]
-> > > > 1) "relaxed atomic" does not sound like something that provides an
-> > > >    address dependency to me.
-> > > 
-> > > If you look at rcu_dereference(), it's a READ_ONCE(), which is the same
-> > > as a relaxed atomic load, and yes in LKMM, relaxed atomic load provides
-> > > address dependency (Please see the DEPENDENCY part in
-> > > tools/memory-model/Documentation/explanation.txt).
-> > 
-> > You argued that we should rename READ_ONCE() to atomic load on that
-> > other patch series because "atomic load" naming is better than what LKMM
-> > normally uses. Fine, but relaxed atomic load is a much worse name than
-> 
-> To be clear, in that series, my argument was not about naming, it's
-> about READ_ONCE() being more powerful than atomic load (no, not because
-> of address dependency, they are the same on that, it's because of the
-> behaviors of them regarding a current access on the same memory
-> location), and we want user to specify the intention more clearly.
+On Tue, 20 Jan 2026 at 23:29, Boqun Feng <boqun.feng@gmail.com> wrote:
+[..]
+> > > > READ_ONCE is meant to be a dependency-ordering primitive, i.e. be more
+> > > > like memory_order_consume than it is memory_order_relaxed. This has, to
+> > > > the best of my knowledge, not changed; otherwise lots of kernel code
+> > > > would be broken.
+>
+> Our C's atomic_long_read() is the same, that is it's like
+> memory_order_consume instead memory_order_relaxed.
 
-Expressing intent more clearly is fine with me. I still think it's weird
-for us to not have READ_ONCE() when it's a primitive operation of our
-memory model, though.
+I see; so it's Rust's Atomic::load(Relaxed) -> atomic_read() ->
+READ_ONCE (for most architectures).
 
-And I also think we should consider using an implementation along the
-lines of what I shared for our atomic_load() or READ_ONCE() or whatever
-you wish to call it. The perf impact of helpers makes me sad.
+> > > On the Rust-side documentation we mentioned that `Relaxed` always preserve
+> > > dependency ordering, so yes, it is closer to `consume` in the C11 model.
+> >
+> > Alright, I missed this.
+> > Is this actually enforced, or like the C side's use of "volatile",
+> > relies on luck?
+> >
+>
+> I wouldn't call it luck ;-) but we rely on the same thing that C has:
+> implementing by using READ_ONCE().
 
-> > READ_ONCE() if what you want to convey is "has address dependency".
-> > That's not what "relaxed" means!
-> > 
-> 
-> Also note that my previous reply was explaining why we don't need to
-> call rcu_dereference() from Rust, because implementation-wise the
-> LKMM relaxed atomic load provides the address dependency. Depending on
-> what we want to do, we can limit this address dependency only to
-> rcu_dereference() and make it a special case, this means we disallow the
-> address dependency provided by the "relaxed" in normal cases. Or we can
-> add a Consume ordering (a type alias to Relaxed) that makes user to
-> explicitly use it when they rely on the address dependency. I think
-> either would resolve your concern about the name of "relaxed".
+It's the age-old problem of wanting dependently-ordered atomics, but
+no compiler actually providing that. Implementing that via "volatile"
+is unsound, and always has been. But that's nothing new.
 
-Yes, I suppose that would resolve my concern about the name.
+[...]
+> > > I think this is a longstanding debate on whether we should actually depend on
+> > > dependency ordering or just upgrade everything needs it to acquire. But this
+> > > isn't really specific to Rust, and whatever is decided is global to the full
+> > > LKMM.
+> >
+> > Indeed, but the implementation on the C vs. Rust side differ
+> > substantially, so assuming it'll work on the Rust side just because
+> > "volatile" works more or less on the C side is a leap I wouldn't want
+> > to take in my codebase.
+> >
+>
+> Which part of the implementation is different between C and Rust? We
+> implement all Relaxed atomics in Rust the same way as C: using C's
+> READ_ONCE() and WRITE_ONCE().
 
-Well, I do have one partial concern there, which is that the wrong name
-will show up in stack traces as long as helpers are used.
+I should clarify: Even if the source of the load is "volatile"
+(through atomic_read() FFI) and carries through to Rust code, the
+compilers, despite sharing LLVM as the code generator, are different
+enough that making the assumption just because it works on the C side,
+it'll also work on the Rust side, appears to be a stretch for me. Gary
+claimed that Rust is more conservative -- in the absence of any
+guarantees, being able to quantify the problem would be nice though.
 
-> > I suppose you can argue that the word "relaxed" means different things
-> > in LKMM than it does elsewhere, but I looked over the doc you mentioned,
-> > and there the LKMM calls said operation READ_ONCE(). The word "relaxed"
-> > does not appear even once. If we're going to change terminology / use
-> > new terminology, let's at least pick terminology that's not
-> > contradictory with the rest of the world.
-> > 
-> > > > 2) How do you intend to provide mutable access? By waiting a grace
-> > > >    period?
-> > > 
-> > > Please see the {read_}copy_update() in the RCU patches that I linked.
-> > > In short, you don't wait a grace for mutable access, since in RCU,
-> > > readers don't block updaters, but instead updater will copy the object,
-> > > atomically update the pointer and then get an `RcuOld`,
-> > > which you can either synchronize_rcu() or {call,kfree}_rcu().
-> > 
-> > Hm, ok. I don't really need that. What I want rcu for is the internal
-> > maple tree data structure, so mtree_load() doesn't need to block on the
-> > maple tree internal spinlock. The contents of the box would be protected
-> > by a separate lock (probably via LockedBy).
-> > 
-> 
-> You mean after `load_rcu()`, we could access mutably by a lock? You need
-> to hold that lock and the rcu_read_lock() while mutably accessing the
-> return of `load_rcu()`, right? That is basically using RCU as a proof
-> for existence.
+[..]
+> > However, given "Relaxed" for the Rust side is already defined to
+> > "carry dependencies" then in isolation my original comment is moot and
+> > does not apply to this particular patch. At face value the promised
+> > semantics are ok, but the implementation (just like "volatile" for C)
+> > probably are not. But that appears to be beyond this patch, so feel
+>
+> Implementation-wise, READ_ONCE() is used the same as C for
+> atomic_read(), so Rust and C are on the same boat.
 
-Yeah, that's right.
+That's fair enough.
 
-Alice
+Longer term, I understand the need for claiming "it's all fine", but
+IMHO none of this is fine until compilers (both for C and Rust)
+promise the semantics that the LKMM wants. Nothing new per-se, the
+only new thing here that makes me anxious is that we do not understand
+the real impact of this lack of guarantee on Linux Rust code (the C
+side remains unclear, too, but has a lot more flight miles). Perhaps
+the work originally investigating broken dependency ordering in Clang,
+could be used to do a study on Rust in the kernel, too.
