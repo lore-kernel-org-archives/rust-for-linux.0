@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A425544BC8C
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 22:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B101B2D595D
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Jan 2026 22:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769035233; cv=none; b=GrgeZpM+lssvZejt+qBGenZpoFNprKbXETRv3sapIVYThf797amoJlMmTidrw1QHYrRcKYxjjMRk5cL6DWoDenhMUgUugrxBqtJP0VsOkF685rktEHVwcCQtoau7CYwLTOsgMNLhgBHUgUxsn39+yHW9hQA2Nv1TV+EGStuJnrs=
+	t=1769035238; cv=none; b=H/0Ijk3MfSeF8G/By5jVntEtOOz/kdA3yYzweUguI9q3gytCg75D+KSCQtJzWprY31xRXWsgDsASYsaqen2HdqTcIt0TgUVL6Lpa8Cnl2+L8BvuTCCJjLmgQgVjpWHlMYlWDORnBQwqFdhfmv/CMld45c8bRyAg/x/1bVVeooTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769035233; c=relaxed/simple;
-	bh=Z0piJ2uMHqJvLowyoCX36ouM9fy0bcmA2oM/iZMlUr0=;
+	s=arc-20240116; t=1769035238; c=relaxed/simple;
+	bh=zvvvHWXz7UCDK0v8VnRvJPMW1ebfFPVHPti4YCgR9Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jbz8cNlH45voKhA/+b4U+maLospEYXp93ukt0AuWTXs/0mwCD767Uf3oonCXQVGfcay1vuPAJBjxXOSQBqRRYzs6h2i8VZ7NE3nmDp9jBx6zDMwDZ/NDdMC7Mp/ou+2lKQO+u3n1JUjYtj+aTbR6TTu0rMEQ2N4eOv1xixLQwQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jVZq9cxk; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=oZ0lo6VrZ3b/K+No87aTJFOHysFeIryOZ+TVMFiRu/eBlG6SLGX/LHWp4dV0qjaNGVIRq0q/I+yelkUjqmkl48iWeqLSOVd6/ryV3fpJP7Ag2W0mR9f4ibazLhSo+HTnJK58s6hntADv+beK18iQcocmvHS+OJfVqZebPMMiLMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IFB6vNkw; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jVZq9cxk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IFB6vNkw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769035224;
+	s=mimecast20190719; t=1769035226;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ctsqKiNbu9tw0Co3r3NlUOa+U4FB32iqwclFHrHc7RQ=;
-	b=jVZq9cxkj1iKRlXgV1zhbvwV1gsa9sRTFCEjPhnmCbTu5JyyBAT0YfcS6+PmgSVsGjxcYe
-	IQqGC++Oo2Fb4DMPIeDE5VazV+SIDyXkCUg5H4H6taWwBRMS665KmfqusUNbjBEX4699yK
-	HGau1RJIQD/iMFIWu+EkwYlCQGBKm7Y=
+	bh=t/zO6XPY3u7ajOKfprwTh9LWtnYTo5A2KiZd+ZTtaOM=;
+	b=IFB6vNkwtrD2fyWCqSyltH9jOH4XhE7huy2W6ggyE3vM79wLUT6rBEAELB08eNRNFyavyj
+	Udng2wGIJLQenJF4WWFIcyCZt0ONu2TpZ2lXrDdX+62k0uZuVGMwbvfDsZI9MnuAtmEQuE
+	VqEEne2AOImmMrqC/9S48aU3uz/FtW8=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-458-XohwArc_PB6s9h9FGNmWrQ-1; Wed,
- 21 Jan 2026 17:40:20 -0500
-X-MC-Unique: XohwArc_PB6s9h9FGNmWrQ-1
-X-Mimecast-MFC-AGG-ID: XohwArc_PB6s9h9FGNmWrQ_1769035217
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-t_t0rb7vM2SD-OrGWP1Ikg-1; Wed,
+ 21 Jan 2026 17:40:22 -0500
+X-MC-Unique: t_t0rb7vM2SD-OrGWP1Ikg-1
+X-Mimecast-MFC-AGG-ID: t_t0rb7vM2SD-OrGWP1Ikg_1769035220
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AE3C31954234;
-	Wed, 21 Jan 2026 22:40:17 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6EB6719560A5;
+	Wed, 21 Jan 2026 22:40:20 +0000 (UTC)
 Received: from GoldenWind.redhat.com (unknown [10.22.89.232])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E361619560AB;
-	Wed, 21 Jan 2026 22:40:14 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DF21819560AB;
+	Wed, 21 Jan 2026 22:40:17 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Will Deacon <will@kernel.org>,
 	Waiman Long <longman@redhat.com>
-Subject: [PATCH v17 08/16] rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
-Date: Wed, 21 Jan 2026 17:39:11 -0500
-Message-ID: <20260121223933.1568682-9-lyude@redhat.com>
+Subject: [PATCH v17 09/16] rust: sync: Add SpinLockIrq
+Date: Wed, 21 Jan 2026 17:39:12 -0500
+Message-ID: <20260121223933.1568682-10-lyude@redhat.com>
 In-Reply-To: <20260121223933.1568682-1-lyude@redhat.com>
 References: <20260121223933.1568682-1-lyude@redhat.com>
 Precedence: bulk
@@ -76,41 +76,303 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Boqun Feng <boqun.feng@gmail.com>
+A variant of `SpinLock` that ensures interrupts are disabled in the
+critical section. `lock()` will ensure that either interrupts are already
+disabled or disable them. `unlock()` will reverse the respective operation.
 
-spin_lock_irq_disable() and spin_unlock_irq_enable() are inline
-functions, to use them in Rust, helpers are introduced. This is for
-interrupt disabling lock abstraction in Rust.
+[Boqun: Port to use spin_lock_irq_disable() and
+spin_unlock_irq_enable()]
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/helpers/spinlock.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-index 42c4bf01a23e4..d4e61057c2a7a 100644
---- a/rust/helpers/spinlock.c
-+++ b/rust/helpers/spinlock.c
-@@ -35,3 +35,18 @@ void rust_helper_spin_assert_is_held(spinlock_t *lock)
- {
- 	lockdep_assert_held(lock);
+---
+V10:
+* Also add support to GlobalLock
+* Documentation fixes from Dirk
+V11:
+* Add unit test requested by Daniel Almeida
+V14:
+* Improve rustdoc for SpinLockIrqBackend
+V17:
+* Update Git summary according to Benno's review
+
+ rust/kernel/sync.rs               |   4 +-
+ rust/kernel/sync/lock/global.rs   |   3 +
+ rust/kernel/sync/lock/spinlock.rs | 229 ++++++++++++++++++++++++++++++
+ 3 files changed, 235 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index 5df87e2bd212e..48a7cae86c50c 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -27,7 +27,9 @@
+ pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
+ pub use lock::global::{global_lock, GlobalGuard, GlobalLock, GlobalLockBackend, GlobalLockedBy};
+ pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
+-pub use lock::spinlock::{new_spinlock, SpinLock, SpinLockGuard};
++pub use lock::spinlock::{
++    new_spinlock, new_spinlock_irq, SpinLock, SpinLockGuard, SpinLockIrq, SpinLockIrqGuard,
++};
+ pub use locked_by::LockedBy;
+ pub use refcount::Refcount;
+ pub use set_once::SetOnce;
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index eab48108a4aeb..7030a47bc0ad1 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -302,4 +302,7 @@ macro_rules! global_lock_inner {
+     (backend SpinLock) => {
+         $crate::sync::lock::spinlock::SpinLockBackend
+     };
++    (backend SpinLockIrq) => {
++        $crate::sync::lock::spinlock::SpinLockIrqBackend
++    };
+ }
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index d7be38ccbdc7d..3fdfb0a8a0ab1 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -3,6 +3,7 @@
+ //! A kernel spinlock.
+ //!
+ //! This module allows Rust code to use the kernel's `spinlock_t`.
++use crate::prelude::*;
+ 
+ /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+ ///
+@@ -139,3 +140,231 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
+         unsafe { bindings::spin_assert_is_held(ptr) }
+     }
  }
 +
-+void rust_helper_spin_lock_irq_disable(spinlock_t *lock)
-+{
-+	spin_lock_irq_disable(lock);
++/// Creates a [`SpinLockIrq`] initialiser with the given name and a newly-created lock class.
++///
++/// It uses the name if one is given, otherwise it generates one based on the file name and line
++/// number.
++#[macro_export]
++macro_rules! new_spinlock_irq {
++    ($inner:expr $(, $name:literal)? $(,)?) => {
++        $crate::sync::SpinLockIrq::new(
++            $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
++    };
++}
++pub use new_spinlock_irq;
++
++/// A spinlock that may be acquired when local processor interrupts are disabled.
++///
++/// This is a version of [`SpinLock`] that can only be used in contexts where interrupts for the
++/// local CPU are disabled. It can be acquired in two ways:
++///
++/// - Using [`lock()`] like any other type of lock, in which case the bindings will modify the
++///   interrupt state to ensure that local processor interrupts remain disabled for at least as long
++///   as the [`SpinLockIrqGuard`] exists.
++/// - Using [`lock_with()`] in contexts where a [`LocalInterruptDisabled`] token is present and
++///   local processor interrupts are already known to be disabled, in which case the local interrupt
++///   state will not be touched. This method should be preferred if a [`LocalInterruptDisabled`]
++///   token is present in the scope.
++///
++/// For more info on spinlocks, see [`SpinLock`]. For more information on interrupts,
++/// [see the interrupt module](kernel::interrupt).
++///
++/// # Examples
++///
++/// The following example shows how to declare, allocate initialise and access a struct (`Example`)
++/// that contains an inner struct (`Inner`) that is protected by a spinlock that requires local
++/// processor interrupts to be disabled.
++///
++/// ```
++/// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
++///
++/// struct Inner {
++///     a: u32,
++///     b: u32,
++/// }
++///
++/// #[pin_data]
++/// struct Example {
++///     #[pin]
++///     c: SpinLockIrq<Inner>,
++///     #[pin]
++///     d: SpinLockIrq<Inner>,
++/// }
++///
++/// impl Example {
++///     fn new() -> impl PinInit<Self> {
++///         pin_init!(Self {
++///             c <- new_spinlock_irq!(Inner { a: 0, b: 10 }),
++///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
++///         })
++///     }
++/// }
++///
++/// // Allocate a boxed `Example`
++/// let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
++///
++/// // Accessing an `Example` from a context where interrupts may not be disabled already.
++/// let c_guard = e.c.lock(); // interrupts are disabled now, +1 interrupt disable refcount
++/// let d_guard = e.d.lock(); // no interrupt state change, +1 interrupt disable refcount
++///
++/// assert_eq!(c_guard.a, 0);
++/// assert_eq!(c_guard.b, 10);
++/// assert_eq!(d_guard.a, 20);
++/// assert_eq!(d_guard.b, 30);
++///
++/// drop(c_guard); // Dropping c_guard will not re-enable interrupts just yet, since d_guard is
++///                // still in scope.
++/// drop(d_guard); // Last interrupt disable reference dropped here, so interrupts are re-enabled
++///                // now
++/// # Ok::<(), Error>(())
++/// ```
++///
++/// [`lock()`]: SpinLockIrq::lock
++/// [`lock_with()`]: SpinLockIrq::lock_with
++pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
++
++/// A kernel `spinlock_t` lock backend that can only be acquired in interrupt disabled contexts.
++pub struct SpinLockIrqBackend;
++
++/// A [`Guard`] acquired from locking a [`SpinLockIrq`] using [`lock()`].
++///
++/// This is simply a type alias for a [`Guard`] returned from locking a [`SpinLockIrq`] using
++/// [`lock_with()`]. It will unlock the [`SpinLockIrq`] and decrement the local processor's
++/// interrupt disablement refcount upon being dropped.
++///
++/// [`Guard`]: super::Guard
++/// [`lock()`]: SpinLockIrq::lock
++/// [`lock_with()`]: SpinLockIrq::lock_with
++pub type SpinLockIrqGuard<'a, T> = super::Guard<'a, T, SpinLockIrqBackend>;
++
++// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. `relock` uses the
++// default implementation that always calls the same locking method.
++unsafe impl super::Backend for SpinLockIrqBackend {
++    type State = bindings::spinlock_t;
++    type GuardState = ();
++
++    unsafe fn init(
++        ptr: *mut Self::State,
++        name: *const crate::ffi::c_char,
++        key: *mut bindings::lock_class_key,
++    ) {
++        // SAFETY: The safety requirements ensure that `ptr` is valid for writes, and `name` and
++        // `key` are valid for read indefinitely.
++        unsafe { bindings::__spin_lock_init(ptr, name, key) }
++    }
++
++    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
++        // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
++        // memory, and that it has been initialised before.
++        unsafe { bindings::spin_lock_irq_disable(ptr) }
++    }
++
++    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
++        // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
++        // caller is the owner of the spinlock.
++        unsafe { bindings::spin_unlock_irq_enable(ptr) }
++    }
++
++    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
++        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
++        let result = unsafe { bindings::spin_trylock_irq_disable(ptr) };
++
++        if result != 0 {
++            Some(())
++        } else {
++            None
++        }
++    }
++
++    unsafe fn assert_is_held(ptr: *mut Self::State) {
++        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
++        unsafe { bindings::spin_assert_is_held(ptr) }
++    }
 +}
 +
-+void rust_helper_spin_unlock_irq_enable(spinlock_t *lock)
-+{
-+	spin_unlock_irq_enable(lock);
-+}
++#[kunit_tests(rust_spinlock_irq_condvar)]
++mod tests {
++    use super::*;
++    use crate::{
++        sync::*,
++        workqueue::{self, impl_has_work, new_work, Work, WorkItem},
++    };
 +
-+int rust_helper_spin_trylock_irq_disable(spinlock_t *lock)
-+{
-+	return spin_trylock_irq_disable(lock);
++    struct TestState {
++        value: u32,
++        waiter_ready: bool,
++    }
++
++    #[pin_data]
++    struct Test {
++        #[pin]
++        state: SpinLockIrq<TestState>,
++
++        #[pin]
++        state_changed: CondVar,
++
++        #[pin]
++        waiter_state_changed: CondVar,
++
++        #[pin]
++        wait_work: Work<Self>,
++    }
++
++    impl_has_work! {
++        impl HasWork<Self> for Test { self.wait_work }
++    }
++
++    impl Test {
++        pub(crate) fn new() -> Result<Arc<Self>> {
++            Arc::try_pin_init(
++                try_pin_init!(
++                    Self {
++                        state <- new_spinlock_irq!(TestState {
++                            value: 1,
++                            waiter_ready: false
++                        }),
++                        state_changed <- new_condvar!(),
++                        waiter_state_changed <- new_condvar!(),
++                        wait_work <- new_work!("IrqCondvarTest::wait_work")
++                    }
++                ),
++                GFP_KERNEL,
++            )
++        }
++    }
++
++    impl WorkItem for Test {
++        type Pointer = Arc<Self>;
++
++        fn run(this: Arc<Self>) {
++            // Wait for the test to be ready to wait for us
++            let mut state = this.state.lock();
++
++            while !state.waiter_ready {
++                this.waiter_state_changed.wait(&mut state);
++            }
++
++            // Deliver the exciting value update our test has been waiting for
++            state.value += 1;
++            this.state_changed.notify_sync();
++        }
++    }
++
++    #[test]
++    fn spinlock_irq_condvar() -> Result {
++        let testdata = Test::new()?;
++
++        let _ = workqueue::system().enqueue(testdata.clone());
++
++        // Let the updater know when we're ready to wait
++        let mut state = testdata.state.lock();
++        state.waiter_ready = true;
++        testdata.waiter_state_changed.notify_sync();
++
++        // Wait for the exciting value update
++        testdata.state_changed.wait(&mut state);
++        assert_eq!(state.value, 2);
++        Ok(())
++    }
 +}
 -- 
 2.52.0
