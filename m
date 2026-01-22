@@ -1,354 +1,216 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012019.outbound.protection.outlook.com [40.93.195.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AB13C0882;
-	Thu, 22 Jan 2026 22:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3433806CD
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 23:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769122782; cv=pass; b=pEFx5rA5vfIBtKZwKvp1XOga6T7ExOkgaNiA7Ceb5jlqeEhQp52Y43MHDCNAtYlLIM9uZbrxKUVS3jtIrIlUZnmW6Y/f7MgltoiMLZW7ET/tS+kEXtWwq9uYoXgWiat53M2UeA5E37SBV2fB+9zurjlHLbTCnmAEa1vO35rURik=
+	t=1769122873; cv=fail; b=ffQMve6ge1xlwc9FEFalWgLWR38/oLcCb49a2dkY+L4+efoRZFFQKjjYAtG8UWDnm4w0Q474y6ZyWrQmlFysha2lirZnc61K4F5S1X6IpcKO7n7FETCEMADgl5gnhIJf0HP9oyEnrQ3bS+L5n7wdaSoFQtf+ZzmC3YXHOUHCQ84=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769122782; c=relaxed/simple;
-	bh=qvMeR+LnmE04p2Bctek6Oq/Sq+59elM4mMWRt25Ik+U=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=a70uh9/jrkjFBY6mZh4M9iYfL4tumBase29mgFdV5miewRIXQh3837ydCtNS52DYk3dXWNpRWZaFDsIq5VUISp9txUMlibTyPDD2X8EmehxstUX+HnIvhRSvyz3nDtUbUxXlfyGt7Xb5LRtkw96EDjeoV+wmiiaI124gdNR2Qf4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YoqgRqia; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1769122873; c=relaxed/simple;
+	bh=o0Tv0PALWPxKtkpx9fbF5QwPTgPyka2p8pThU0NPgRg=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E4q5c1fxZYivZwmk/oqezJbb0wnLY7yN/uyk54eh1sbbWT1jy972PIhOad7QYcaB9i0Dedn//LqYxlPLTxEIOe28wDRkgnUg66aGz5BuNGFMQxpZoVCOSVqfj/f3X9FmDJeshcMfVz/4EOdIT6f73IEnzU1h6GVdkxPCtAgNuZQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dTviNuWX; arc=fail smtp.client-ip=40.93.195.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YoqgRqia"
-ARC-Seal: i=1; a=rsa-sha256; t=1769122754; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=R2LgV6nO61qyIBRzpT6fvAgaRGTX8pcchNo4cibRB71QoqR2Pn/Nn8UTO61h+CjEGDyVSLfa1AOGUo5TU8fK7oSVRPYf2WgXGR4H0VTKIJ5HmJ4R9fdj/zSmN79SuUzJOqa7y28vrmXdSdSlVZw0DEj7AVds9+1oZ5TtjJ5J++s=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1769122754; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=6NxrSyB17i1u2lohsrtKjXZ/8YsKz352zKNyIofAbZg=; 
-	b=Ucra3kxSV2TokKAzkaiJCKczeqGei3IQ+CHf8Xnt21GS9SwLPPFPgYVdry4T4Zpfm7samrB2FC37VeZEw6GVfYUVQhaveE03abjo4BeCeODW0Dm/OOHi4/LGFlXK9Lbvv+RFJS6PhQO+qKgHrXw3Xqk2n6Ij570++XGX3LbJVBg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1769122754;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=6NxrSyB17i1u2lohsrtKjXZ/8YsKz352zKNyIofAbZg=;
-	b=YoqgRqiaOJ+kpbSKWYgMqoSvI0/iIBAMs2cByfHHy8IKRzUF1jjqbxVplTYZKFGu
-	YKVXOD6CedbubiNVGaHu1loqMIrQbiggr0r30QyyL/bZHbKYpIyoB7PHJabPx0W5GhM
-	cRl533/rQmTAtDEecnHmCCme3EhsMsszLN3V4ax8=
-Received: by mx.zohomail.com with SMTPS id 1769122751318268.23325911627626;
-	Thu, 22 Jan 2026 14:59:11 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dTviNuWX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aJRUn5FLjdR7y+SPl5oFMRrpdSzprsQLhkSbBmLkSEljkWIGn0lpEE8KpDtPAfrEPspavbtrwn03TSHRXHDHkg67KFPE4xIGdCY9WYNLosCLhl3uj07vklFkk9CP674+itZclo7aPHZalDXDcVjDGcBQNISaBz1ZC8kMCEOPsWu0KjcBchrHaRpGQkC5YGruJSTfp7nwhW0QiM/xLDhIBsYH8QytMjF8sopS44xVP9weqOkk+9BnkxwjlsM2rFqUaSglxLSaag+majq8FQ2NRt9CtBPV5Jns904ljIC+tI4MHXMSiMg4KyQ6B+bWTzT8hsEGchtBchfmQg6/5bZsug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Hem6a6ex0EyiPUaX3uBYC3F76vMgE7LMynbRG+xklt8=;
+ b=Z/e3461Hl0+37kzKvvFpuDlKbQj4fIH7I8b/qYsopKUHB/uk9LN7ZzIR2LzfG3t67WAbYJ+erAt+UBeMpVKmmob8wvHZrRk/XwOX2h5RgVv9nU2vMlpTKk6CozzUv/N99xp5pElSh/hqIqQE8x2Nq4daPAi3pMnBpvWm+l+FcZOp9k2FWJ0lxa2yrvCNqK0MR6t8VpyatwoKpXz2BU+pVpHeYrnOAxcx5DHhbNm/n1U3LqIw6G/bRPPOG8EgCCcb/klV44jGWfWMSa0Oe/dlzbb/yt8ASs4f4nLvUNLo/KYNEjgD67YczdXT+90Mr5vrMvWEe0R3vu/le4/BzX9gQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=garyguo.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Hem6a6ex0EyiPUaX3uBYC3F76vMgE7LMynbRG+xklt8=;
+ b=dTviNuWXu4WtlO3+b6IGrMD3vFRtPkOmoslbqI7sF6kmGJhZaMvONwGPnCNoeOw8q0v+sJN10ibamCaB9G0GT4+UpiTbr/EM5xH3iPVYKc/KwvyR0ehF6XbWOjUFq4c43bWTsdC2k2GW3OUV6TgtoMYiBn7VGfLg3e5An2xRpobs0T1dXmSOCAamg7ClxjWD9rCdl5s9Hbxincjz4JPu2P3Nl+sn2lQlDfPUCLsMo7E4k2ndRF5zwRw5W9JEJZA0P4xfamKAO0fGmnkRca46L6cVs+UX3+Y6uLeoR1f4U3wQuY2nE1tMNdWK5rfKbt4Qs3usO87gqAhbJrBwSOiiyg==
+Received: from SN7PR04CA0223.namprd04.prod.outlook.com (2603:10b6:806:127::18)
+ by IA0PR12MB7699.namprd12.prod.outlook.com (2603:10b6:208:431::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.10; Thu, 22 Jan
+ 2026 23:00:57 +0000
+Received: from SN1PEPF00036F41.namprd05.prod.outlook.com
+ (2603:10b6:806:127:cafe::dd) by SN7PR04CA0223.outlook.office365.com
+ (2603:10b6:806:127::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.10 via Frontend Transport; Thu,
+ 22 Jan 2026 23:00:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SN1PEPF00036F41.mail.protection.outlook.com (10.167.248.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.3 via Frontend Transport; Thu, 22 Jan 2026 23:00:55 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 22 Jan
+ 2026 14:29:08 -0800
+Received: from ttabi.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 22 Jan
+ 2026 14:29:01 -0800
+From: Timur Tabi <ttabi@nvidia.com>
+To: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>,
+	"Alexandre Courbot" <acourbot@nvidia.com>, John Hubbard
+	<jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+	<rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
+Subject: [PATCH v8 05/13] gpu: nova-core: add NV_PFALCON_FALCON_DMATRFCMD::with_falcon_mem()
+Date: Thu, 22 Jan 2026 16:28:40 -0600
+Message-ID: <20260122222848.2555890-6-ttabi@nvidia.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260122222848.2555890-1-ttabi@nvidia.com>
+References: <20260122222848.2555890-1-ttabi@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 6/6] rust: gpuvm: add GpuVmCore::sm_map()
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260121-gpuvm-rust-v3-6-dd95c04aec35@google.com>
-Date: Thu, 22 Jan 2026 19:58:34 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Janne Grunau <j@jannau.net>,
- Matthew Brost <matthew.brost@intel.com>,
- =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Lyude Paul <lyude@redhat.com>,
- Asahi Lina <lina+kernel@asahilina.net>,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9C5177DB-CEBA-4DD5-8E93-DB39CB1F2079@collabora.com>
-References: <20260121-gpuvm-rust-v3-0-dd95c04aec35@google.com>
- <20260121-gpuvm-rust-v3-6-dd95c04aec35@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F41:EE_|IA0PR12MB7699:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee9412dc-b493-4784-a227-08de5a0a194d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?V94Pdhen2OKYEPzaqrG1VcuYf0JeiRwSg6EzrKpKXF0dZW04efxnwGX8paGS?=
+ =?us-ascii?Q?5+SDTDtazqQKErAh78f7yHpRkVKsoYRx+jkTEpmdFtZboC4UJzrYyoU1q7cf?=
+ =?us-ascii?Q?8qLEznJ+ZYmnLWxt1MIwOzFfljGqTsf4CqzjIMPJ+FvlxOz29F77qB7bN7Pf?=
+ =?us-ascii?Q?hc2hc7M9Kky3BLfpN2FJbtysY4PVhKaVosGRWXTYPNEXDdfT2pKZoTzm1J7S?=
+ =?us-ascii?Q?5xdRdGojC5s2rzlIrRKiD5FXU/lA396e0lNNUJJNfi4HTBzLbXLvzijuLpBh?=
+ =?us-ascii?Q?i1N9pMdUHF1dVSd04bqOsJW6qHKWq8gqplRtdK4Tq49wwtWgCxRre25DpAha?=
+ =?us-ascii?Q?JbgnRdEbnT9nMVH+X42voNSVSYEzmeFp1lJT3viRU8SdNnv6fxpo9Er+pocT?=
+ =?us-ascii?Q?WZvtMoHbWfqIIz3r9PntVZaoW9XL4dRPbPn03K8JMzUlzd6ZCVaPjR8/WP71?=
+ =?us-ascii?Q?s/w0nZk1NzqSc5FpSEKnnniW0n+1DDd3MZSvoWU1eaFbYQTVNuJHTpwDiyB/?=
+ =?us-ascii?Q?OsOrrcHHSHzZQrYWEuTqes9TY14NEAZ8dTUXROI+cJRsRukjEXziodf9ORNC?=
+ =?us-ascii?Q?iqdWVPfWd9Ha6FDKDXsGL2XqVGbUEBNsX0bL3Ukly78avwEa5JT7oJYeQQEk?=
+ =?us-ascii?Q?BVOvpnz8yaFY+2d980w8qDY4t+e6mxVYG9QgXZE79z1KYouxKrS00bcdEWEV?=
+ =?us-ascii?Q?M00nMbvzmwt+Bh5CZVLTieVICLdttL8iHVfeUjaXA4M3MehTy+OrzwgFeL1i?=
+ =?us-ascii?Q?mL3NuQnj/KCmd5wUiNHEoqwWno7z++TCxVZ0dEKI6/pCVH7BEBA9Ck/RKbmy?=
+ =?us-ascii?Q?HL+1z5qYwqKLejV9Eeh+EOFioThXCGQLMHgr/FcWzz10+HJYTMQxjCUb+b5n?=
+ =?us-ascii?Q?Pi1+zIN80/+Hl0NnUW1UfhXMcGs8lztbFBj9inJzj10b2rxoKap1OSmyzTMi?=
+ =?us-ascii?Q?bCGP/yJ6buuN+m712pq8wfXQ1cp7bZ18VJd8TnecdoLlPwfVqMJzfFOTe0D+?=
+ =?us-ascii?Q?jXBcy1ILJIF/fLX9VmCNVpeDqoHzOef+/NyjxTxu/x/vd/LtHnysX1hB9xen?=
+ =?us-ascii?Q?J58p1BcfdMiMRlaToMywRidbuap6o81LzpG6Xiv4wV906wMvZ45SxdnyL0kT?=
+ =?us-ascii?Q?g1j4zmzrtE9YIqsRjEU6hP87mzs0bu+7w5lzoU7MjhPYXDejQolyPgTyfTZN?=
+ =?us-ascii?Q?PjA7r8Ugn67HjUM1UqJ2rE9+LbYC9DIXYgj9DPg7A+A5V7Q6+mBAxyx9Y01+?=
+ =?us-ascii?Q?2Wq5dXwUDxve2RfC7/VbEBrpKy/Vco2snKxAJKQejd+yTaynONQx9Do5x5nA?=
+ =?us-ascii?Q?6QmF/JrZOz9LBJM7uCmGHjE4nS9NZAN/Hfqy7PmPc4Qd2BSCoEr2ujLN5Oi4?=
+ =?us-ascii?Q?aae50AhyI4aaXGRnFACc/rzCNbb8ahe8/Ad4T+18jxE5r6gkfRQmlXvf8vSR?=
+ =?us-ascii?Q?ndbYlm2MYUb17UkpRWpfmwjBgUT7G9wQMnBY+wXekGoWlvryqKDv+eWY4eod?=
+ =?us-ascii?Q?TN8jtekkygCqfWr1VNjuOdf/tc1HmTOdzPxFfwoIYHFjKWmkzW01nQkIaK/N?=
+ =?us-ascii?Q?ZsgrNVRXelpzg2vC5MKkVPgxKzcgTpyc99easplS7X44IgjQlMaB4EoH6wrJ?=
+ =?us-ascii?Q?87XlBOzHc5p/qHbl9PUfdpBWyINHXFrpfzzxkR0ncijq2hAqz6c3CmJFzNbk?=
+ =?us-ascii?Q?9OwvJA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 23:00:55.2499
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee9412dc-b493-4784-a227-08de5a0a194d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00036F41.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7699
 
-Hi Alice,
+The with_falcon_mem() method initializes the 'imem' and 'sec' fields of
+the NV_PFALCON_FALCON_DMATRFCMD register based on the value of
+the FalconMem type.
 
-> On 21 Jan 2026, at 08:31, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> Finally also add the operation for creating new mappings. Mapping
-> operations need extra data in the context since they involve a vm_bo
-> coming from the outside.
->=20
-> Co-developed-by: Asahi Lina <lina+kernel@asahilina.net>
-> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> rust/kernel/drm/gpuvm/mod.rs    |   9 ++-
-> rust/kernel/drm/gpuvm/sm_ops.rs | 154 =
-++++++++++++++++++++++++++++++++++++++--
-> 2 files changed, 157 insertions(+), 6 deletions(-)
->=20
-> diff --git a/rust/kernel/drm/gpuvm/mod.rs =
-b/rust/kernel/drm/gpuvm/mod.rs
-> index =
-165a25666ccc3d62e59b73483d4eedff044423e9..557c0d629eec912a97fc4ef18495d5bf=
-0807db0a 100644
-> --- a/rust/kernel/drm/gpuvm/mod.rs
-> +++ b/rust/kernel/drm/gpuvm/mod.rs
-> @@ -93,7 +93,7 @@ const fn vtable() -> &'static =
-bindings::drm_gpuvm_ops {
->             vm_bo_alloc: GpuVmBo::<T>::ALLOC_FN,
->             vm_bo_free: GpuVmBo::<T>::FREE_FN,
->             vm_bo_validate: None,
-> -            sm_step_map: None,
-> +            sm_step_map: Some(Self::sm_step_map),
->             sm_step_unmap: Some(Self::sm_step_unmap),
->             sm_step_remap: Some(Self::sm_step_remap),
->         }
-> @@ -248,6 +248,13 @@ pub trait DriverGpuVm: Sized {
->     /// The private data passed to callbacks.
->     type SmContext<'ctx>;
->=20
-> +    /// Indicates that a new mapping should be created.
-> +    fn sm_step_map<'op, 'ctx>(
-> +        &mut self,
-> +        op: OpMap<'op, Self>,
-> +        context: &mut Self::SmContext<'ctx>,
-> +    ) -> Result<OpMapped<'op, Self>, Error>;
-> +
->     /// Indicates that an existing mapping should be removed.
->     fn sm_step_unmap<'op, 'ctx>(
->         &mut self,
-> diff --git a/rust/kernel/drm/gpuvm/sm_ops.rs =
-b/rust/kernel/drm/gpuvm/sm_ops.rs
-> index =
-3c29d10d63f0b0a1976c714a86d486948ba81a15..5f3c5d3918147a6962e5658443c34383=
-5baa10b8 100644
-> --- a/rust/kernel/drm/gpuvm/sm_ops.rs
-> +++ b/rust/kernel/drm/gpuvm/sm_ops.rs
-> @@ -8,6 +8,100 @@ struct SmData<'a, 'ctx, T: DriverGpuVm> {
->     user_context: &'a mut T::SmContext<'ctx>,
-> }
->=20
-> +#[repr(C)]
-> +struct SmMapData<'a, 'ctx, T: DriverGpuVm> {
-> +    sm_data: SmData<'a, 'ctx, T>,
-> +    vm_bo: GpuVmBoResident<T>,
-> +}
-> +
-> +/// The argument for [`GpuVmCore::sm_map`].
-> +pub struct OpMapRequest<'a, 'ctx, T: DriverGpuVm> {
-> +    /// Address in GPU virtual address space.
-> +    pub addr: u64,
-> +    /// Length of mapping to create.
-> +    pub range: u64,
-> +    /// Offset in GEM object.
-> +    pub offset: u64,
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+---
+ drivers/gpu/nova-core/falcon.rs | 14 +++-----------
+ drivers/gpu/nova-core/regs.rs   |  9 +++++++++
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
-I=E2=80=99d rename this gem_offset. A bit vague/confusing otherwise.
-
-> +    /// The GEM object to map.
-> +    pub vm_bo: GpuVmBoResident<T>,
-> +    /// The user-provided context type.
-> +    pub context: &'a mut T::SmContext<'ctx>,
-> +}
-> +
-> +impl<'a, 'ctx, T: DriverGpuVm> OpMapRequest<'a, 'ctx, T> {
-> +    fn raw_request(&self) -> bindings::drm_gpuvm_map_req {
-> +        bindings::drm_gpuvm_map_req {
-> +            map: bindings::drm_gpuva_op_map {
-> +                va: bindings::drm_gpuva_op_map__bindgen_ty_1 {
-> +                    addr: self.addr,
-> +                    range: self.range,
-> +                },
-> +                gem: bindings::drm_gpuva_op_map__bindgen_ty_2 {
-> +                    offset: self.offset,
-> +                    obj: self.vm_bo.obj().as_raw(),
-> +                },
-> +            },
-> +        }
-> +    }
-> +}
-> +
-> +/// Represents an `sm_step_map` operation that has not yet been =
-completed.
-
-> +pub struct OpMap<'op, T: DriverGpuVm> {
-> +    op: &'op bindings::drm_gpuva_op_map,
-> +    // Since these abstractions are designed for immediate mode, the =
-VM BO needs to be
-> +    // pre-allocated, so we always have it available when we reach =
-this point.
-> +    vm_bo: &'op GpuVmBo<T>,
-> +    _invariant: PhantomData<*mut &'op mut T>,
-> +}
-> +
-> +impl<'op, T: DriverGpuVm> OpMap<'op, T> {
-> +    /// The base address of the new mapping.
-> +    pub fn addr(&self) -> u64 {
-> +        self.op.va.addr
-> +    }
-> +
-> +    /// The length of the new mapping.
-> +    pub fn length(&self) -> u64 {
-> +        self.op.va.range
-> +    }
-> +
-> +    /// The offset within the [`drm_gem_object`](crate::gem::Object).
-> +    pub fn gem_offset(&self) -> u64 {
-> +        self.op.gem.offset
-> +    }
-> +
-> +    /// The [`drm_gem_object`](crate::gem::Object) to map.
-> +    pub fn obj(&self) -> &T::Object {
-> +        // SAFETY: The `obj` pointer is guaranteed to be valid.
-> +        unsafe { <T::Object as =
-IntoGEMObject>::from_raw(self.op.gem.obj) }
-> +    }
-> +
-> +    /// The [`GpuVmBo`] that the new VA will be associated with.
-> +    pub fn vm_bo(&self) -> &GpuVmBo<T> {
-> +        self.vm_bo
-> +    }
-> +
-> +    /// Use the pre-allocated VA to carry out this map operation.
-> +    pub fn insert(self, va: GpuVaAlloc<T>, va_data: impl =
-PinInit<T::VaData>) -> OpMapped<'op, T> {
-> +        let va =3D va.prepare(va_data);
-> +        // SAFETY: By the type invariants we may access the interval =
-tree.
-> +        unsafe { bindings::drm_gpuva_map(self.vm_bo.gpuvm().as_raw(), =
-va, self.op) };
-> +
-> +        let _gpuva_guard =3D self.vm_bo().lock_gpuva();
-> +        // SAFETY: The va is prepared for insertion, and we hold the =
-GEM lock.
-> +        unsafe { bindings::drm_gpuva_link(va, self.vm_bo.as_raw()) };
-> +
-> +        OpMapped {
-> +            _invariant: self._invariant,
-> +        }
-> +    }
-> +}
-> +
-> +/// Represents a completed [`OpMap`] operation.
-> +pub struct OpMapped<'op, T> {
-> +    _invariant: PhantomData<*mut &'op mut T>,
-> +}
-> +
-> /// Represents an `sm_step_unmap` operation that has not yet been =
-completed.
-> pub struct OpUnmap<'op, T: DriverGpuVm> {
->     op: &'op bindings::drm_gpuva_op_unmap,
-> @@ -205,6 +299,30 @@ pub struct OpRemapped<'op, T> {
-> }
->=20
-> impl<T: DriverGpuVm> GpuVmCore<T> {
-> +    /// Create a mapping, removing or remapping anything that =
-overlaps.
-> +    ///
-> +    /// Internally calls the [`DriverGpuVm`] callbacks similar to =
-[`Self::sm_unmap`], except that
-> +    /// the [`DriverGpuVm::sm_step_map`] is called once to create the =
-requested mapping.
-> +    #[inline]
-> +    pub fn sm_map(&mut self, req: OpMapRequest<'_, '_, T>) -> Result =
-{
-> +        let gpuvm =3D self.as_raw();
-> +        let raw_req =3D req.raw_request();
-> +        let mut p =3D SmMapData {
-> +            sm_data: SmData {
-> +                gpuvm: self,
-> +                user_context: req.context,
-> +            },
-> +            vm_bo: req.vm_bo,
-> +        };
-> +        // SAFETY:
-> +        // * raw_request() creates a valid request.
-> +        // * The private data is valid to be interpreted as both =
-SmData and SmMapData since the
-> +        //   first field of SmMapData is SmData.
-> +        to_result(unsafe {
-> +            bindings::drm_gpuvm_sm_map(gpuvm, (&raw mut p).cast(), =
-&raw const raw_req)
-> +        })
-> +    }
-> +
->     /// Remove any mappings in the given region.
->     ///
->     /// Internally calls [`DriverGpuVm::sm_step_unmap`] for ranges =
-entirely contained within the
-> @@ -218,19 +336,45 @@ pub fn sm_unmap(&mut self, addr: u64, length: =
-u64, context: &mut T::SmContext<'_
->         };
->         // SAFETY:
->         // * raw_request() creates a valid request.
-> -        // * The private data is valid to be interpreted as SmData.
-> +        // * The private data is a valid SmData.
->         to_result(unsafe { bindings::drm_gpuvm_sm_unmap(gpuvm, (&raw =
-mut p).cast(), addr, length) })
->     }
-> }
->=20
-> impl<T: DriverGpuVm> GpuVm<T> {
->     /// # Safety
-> -    /// Must be called from `sm_unmap` with a pointer to `SmData`.
-> +    /// Must be called from `sm_map` with a pointer to `SmMapData`.
-> +    pub(super) unsafe extern "C" fn sm_step_map(
-> +        op: *mut bindings::drm_gpuva_op,
-> +        p: *mut c_void,
-> +    ) -> c_int {
-> +        // SAFETY: If we reach `sm_step_map` then we were called from =
-`sm_map` which always passes
-> +        // an `SmMapData` as private data.
-> +        let p =3D unsafe { &mut *p.cast::<SmMapData<'_, '_, T>>() };
-> +        let op =3D OpMap {
-> +            // SAFETY: sm_step_map is called with a map operation.
-> +            op: unsafe { &(*op).__bindgen_anon_1.map },
-> +            vm_bo: &p.vm_bo,
-> +            _invariant: PhantomData,
-> +        };
-> +        match p
-> +            .sm_data
-> +            .gpuvm
-> +            .data()
-> +            .sm_step_map(op, p.sm_data.user_context)
-> +        {
-> +            Ok(OpMapped { .. }) =3D> 0,
-> +            Err(err) =3D> err.to_errno(),
-> +        }
-> +    }
-> +
-> +    /// # Safety
-> +    /// Must be called from `sm_map` or `sm_unmap` with a pointer to =
-`SmMapData` or `SmData`.
->     pub(super) unsafe extern "C" fn sm_step_unmap(
->         op: *mut bindings::drm_gpuva_op,
->         p: *mut c_void,
->     ) -> c_int {
-> -        // SAFETY: The caller provides a pointer to `SmData`.
-> +        // SAFETY: The caller provides a pointer that can be treated =
-as `SmData`.
->         let p =3D unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
->         let op =3D OpUnmap {
->             // SAFETY: sm_step_unmap is called with an unmap =
-operation.
-> @@ -244,12 +388,12 @@ impl<T: DriverGpuVm> GpuVm<T> {
->     }
->=20
->     /// # Safety
-> -    /// Must be called from `sm_unmap` with a pointer to `SmData`.
-> +    /// Must be called from `sm_map` or `sm_unmap` with a pointer to =
-`SmMapData` or `SmData`.
->     pub(super) unsafe extern "C" fn sm_step_remap(
->         op: *mut bindings::drm_gpuva_op,
->         p: *mut c_void,
->     ) -> c_int {
-> -        // SAFETY: The caller provides a pointer to `SmData`.
-> +        // SAFETY: The caller provides a pointer that can be treated =
-as `SmData`.
->         let p =3D unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
->         let op =3D OpRemap {
->             // SAFETY: sm_step_remap is called with a remap operation.
->=20
-> --=20
-> 2.52.0.457.g6b5491de43-goog
->=20
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
+index 0d1a0f86d83c..3629422e7a52 100644
+--- a/drivers/gpu/nova-core/falcon.rs
++++ b/drivers/gpu/nova-core/falcon.rs
+@@ -458,7 +458,6 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
+         fw: &F,
+         target_mem: FalconMem,
+         load_offsets: FalconLoadTarget,
+-        sec: bool,
+     ) -> Result {
+         const DMA_LEN: u32 = 256;
+ 
+@@ -526,8 +525,7 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
+ 
+         let cmd = regs::NV_PFALCON_FALCON_DMATRFCMD::default()
+             .set_size(DmaTrfCmdSize::Size256B)
+-            .set_imem(target_mem != FalconMem::Dmem)
+-            .set_sec(if sec { 1 } else { 0 });
++            .with_falcon_mem(target_mem);
+ 
+         for pos in (0..num_transfers).map(|i| i * DMA_LEN) {
+             // Perform a transfer of size `DMA_LEN`.
+@@ -567,14 +565,8 @@ pub(crate) fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F)
+                 .set_mem_type(FalconFbifMemType::Physical)
+         });
+ 
+-        self.dma_wr(
+-            bar,
+-            fw,
+-            FalconMem::ImemSecure,
+-            fw.imem_sec_load_params(),
+-            true,
+-        )?;
+-        self.dma_wr(bar, fw, FalconMem::Dmem, fw.dmem_load_params(), true)?;
++        self.dma_wr(bar, fw, FalconMem::ImemSecure, fw.imem_sec_load_params())?;
++        self.dma_wr(bar, fw, FalconMem::Dmem, fw.dmem_load_params())?;
+ 
+         self.hal.program_brom(self, bar, &fw.brom_params())?;
+ 
+diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
+index 82cc6c0790e5..b8ddfe2e5ae7 100644
+--- a/drivers/gpu/nova-core/regs.rs
++++ b/drivers/gpu/nova-core/regs.rs
+@@ -16,6 +16,7 @@
+         FalconCoreRevSubversion,
+         FalconFbifMemType,
+         FalconFbifTarget,
++        FalconMem,
+         FalconModSelAlgo,
+         FalconSecurityModel,
+         PFalcon2Base,
+@@ -325,6 +326,14 @@ pub(crate) fn mem_scrubbing_done(self) -> bool {
+     16:16   set_dmtag as u8;
+ });
+ 
++impl NV_PFALCON_FALCON_DMATRFCMD {
++    /// Programs the `imem` and `sec` fields for the given FalconMem
++    pub(crate) fn with_falcon_mem(self, mem: FalconMem) -> Self {
++        self.set_imem(mem != FalconMem::Dmem)
++            .set_sec(if mem == FalconMem::ImemSecure { 1 } else { 0 })
++    }
++}
++
+ register!(NV_PFALCON_FALCON_DMATRFFBOFFS @ PFalconBase[0x0000011c] {
+     31:0    offs as u32;
+ });
+-- 
+2.52.0
 
