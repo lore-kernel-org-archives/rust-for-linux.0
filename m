@@ -1,81 +1,141 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169D9357707
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 08:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A78438BF9E
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 08:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769070519; cv=none; b=qJ2bFIl+NP+Jp8yfDYlC9wVFWjHrh7kndixEEser16eVQODpRCtlr+hHtCoJ2t8Tnu8bH1Kedn1Ko44ojtJChQctw5HNtDLrRPEQr6V0fQTqZqKLaDl8xoWvENQTT77akmEUT3c/9EVXMmUutdb+/YxoYUbdZxrnd+v/YcMnLyE=
+	t=1769071330; cv=none; b=OR1A+AegfTnkR0IkeMQg8xIMTHsM/c2/JAf9tSUwATC7CAJtzwdHoTV5xKmmzjtQItVR48nxkQvwnYu2Js8fupWEbQohV2jDvTGJlpTW+WTD5Se3Sf6hnj/KPqYcTSeJkpeE4oVsmTP3xd6+35PIUPtoEj/ghrAhyKTL/1eaTdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769070519; c=relaxed/simple;
-	bh=e5SHl9tdfe7U9tsFeacyHLMUAVT4waohJ18Yy+KpQfI=;
+	s=arc-20240116; t=1769071330; c=relaxed/simple;
+	bh=nGlUpDoVBVDvAGF7vX9CfzjAkkGmzAP/VKRI5OPk77k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nyf8dpAPHSpub8Pwl5kV/TMLpwiENBHiT+bjscznLrHuRq8STnFqf0ntYWu2wB4rO2VLsJDZo5IeipfhARnqmGq8MGBu/qm5R56vaCaah9WAj/t7cj3N9KAtJrIESJueYobuir+9R0i8L+xC0L9uyB8pirKuK6kyNlArCwwE6PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T3xxb4Be; arc=none smtp.client-ip=209.85.218.74
+	 To:Cc:Content-Type; b=XER11p6Bcn8kW1qmDdAZFVCswdrKYm/dNYbcUSFMLZuY/n6ajpIzGJ0jbQ4mJYWo+GYCt3QRndqcXF0LX7LEKkYf09Ttp5G9ZKsbh1+neyrHkMmKjo4YmbM5diBESuXK7oSy/giAdKWdjf3AQXsCWhmZNK0V6kcartDVPI1vbWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NgTPb/zE; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T3xxb4Be"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b870d3327baso52310366b.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 00:28:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NgTPb/zE"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4779ecc3cc8so5226175e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 00:42:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769070516; x=1769675316; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1769071324; x=1769676124; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QwqQXeBUazQtYA5jTKcA+ISjgjVSs2NRoJVqymEav80=;
-        b=T3xxb4BeKatIDdG51O7pAtOiopDtu6Urxbu9kLGeIjBse15//JfhvKyPrxACnaPCFn
-         F5j2FV3OOjPEY7/QQPmAPHQPvsfOjWWKo8IHtjz7ICGST53c0A2/kqavo5ZplVAteYnW
-         wy80F+EqYAGx7fdC+i5dIwKO/q2IcxWdgYZ31kBZY0HqnibtA+qLUoiRd9g2A7Pn6DS3
-         xmuDD5eGlNb0k7RISytsLvokc/mIL1R2Bvi9mFbaL63DNHqdpWbzk9Oo3wQ+aTtDMmdf
-         SqqWBy3oRBSBR+OSiT85+be7KtZ5nETjcVwg2nJmCmmOlfazBNd85AWVfa1wiFonI9kv
-         Qfzg==
+        bh=eUi/3E4y07lYAhJzymrjYIl8d6EumDS+Xmgbs2h2dPs=;
+        b=NgTPb/zECYJYuQPEi2v14v6WwgsDGgJ30yfuzk20GWpLfN8G/cyjXozNTGw1xjpGoC
+         nJWV7WbH+hdzmy2dtgFLyW8gVbzkraNGgb+y8sMl4vExdmzS2je3bFQYG2pq7m4t4/ah
+         +alipYYDxyIKhDQboUTyhmvWIIo3m35+otiorZYxmmZmQYIqXqUSHUaPhU/YRHhtd1+U
+         pNuJ4jL9F9xCiw39z5ZcfUsbIpQ9ZHs9qy47DDzcU47aRMWLtyiYomLZ6XxHEMFtr6d8
+         r7pzwnrVm1cl/UM5PeBUESe8yPUNXyCrvzzAPHsPm4pfUnsoEUi1JoXQDziLNAs7/yDd
+         5DOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769070516; x=1769675316;
+        d=1e100.net; s=20230601; t=1769071324; x=1769676124;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QwqQXeBUazQtYA5jTKcA+ISjgjVSs2NRoJVqymEav80=;
-        b=B0Q7dpp9WJbsWq3CHtyN61hDjgCL2xZtMwuJrTULEuegVc4gTAu2r57fcB+zizNs6o
-         /59ECq7vA683hcBXi++mjNfvCqkVSC4wLvE8dYp9L24gI+yR/Ol6X8PS+LjNedYQKZLy
-         r/sAW7/O3aLOSjdpcEqxKCBBZHEDar7U//18tfBnDBRXs/Ynm8eMU7d5l2L2NHQLt5PU
-         7uumCEjk3OiSA7/JXs+LsNSZzCTqjKTypS0/hNBmH9AZ6RicpQK9i4rlcSSj/CbThQ7g
-         UdkPznArnLDn/8LS3ii43hKvsBOUPQDcPBLw+yUMyQugG98vZTICIGTEDrB+4/Ogb+q5
-         vmxg==
-X-Forwarded-Encrypted: i=1; AJvYcCWdTA3pyeTvpcSvoaS97Xt8RkhI//2dFHB3Tm78YUs+nO9N3ghaMqGoJFmLFXxhzsiFfkr9u90VJbjQoUXRZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxSzeRh72KEf0vrNrL6/o0Hd9gX+k1NBhwzzex8hyjuWjMvNiX
-	mK+NM1cutv1Rpeaa/7Py0D9bA82tZQLuMR0ZjpEJGma/IO4+/v07vLXG/sg+oI4+SfYY434ghwc
-	Bi1MdA9abnPIUQ2U0xA==
-X-Received: from ejcts11.prod.google.com ([2002:a17:907:c5cb:b0:b88:397e:3a7e])
+        bh=eUi/3E4y07lYAhJzymrjYIl8d6EumDS+Xmgbs2h2dPs=;
+        b=mDz79PKTDNJsY3XJJGcBv9EdfqrrM7Nz6EpKvF1CsgX4T5CIXugn22dg/JXaT6vDGs
+         7mn+4T9BmCMYBRWXa9I/Iv5+/l3+OVl45bGHz1iMZHkTm85VZ2XYDoUMAhhXPeQngohc
+         nosOk8qNnf4BL5gijYgdSXrRYdPmWn7JelaRPeT+5naMMONtlqQysnYG8Ui1I5+CMvso
+         GsREuCDqQzmWCEYYNOCVAuW76P945fQYRRWceAt2gK9Ab1OE/zkg1pfXy71hqoTCou/+
+         56Vi8C3Rv9sy+PPemF/PqqznVE1rkmSlk9O3KmMuzq82USI/9bRuBj2ZJTUvgfzcD4ZR
+         ocTg==
+X-Forwarded-Encrypted: i=1; AJvYcCV5iGqBsijolZKllBahX1tzm1lcwe4zF8X4cIf1WbMVd8NBSny6ZYLUUMmeBoeSXG1OsMhpkiqY6mUyXvb+CQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMNv8Jn37QO+kfmLUxBN/wCm/HPm7dS5nqZAok1hAcl9x4N5KI
+	4D4EUWk2RjlOp1zmAvwdz8jOUfTLEEncRaQkeH7IC4P7HaTCyTy7GiK54lNtXjolmO7cj+HmaZu
+	bUswBWXwv6h9QtoW6VA==
+X-Received: from wmcq10.prod.google.com ([2002:a05:600c:c10a:b0:477:988a:7675])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:7256:b0:b87:4c37:7fcc with SMTP id a640c23a62f3a-b8792d3bc19mr1712231466b.5.1769070516343;
- Thu, 22 Jan 2026 00:28:36 -0800 (PST)
-Date: Thu, 22 Jan 2026 08:28:35 +0000
-In-Reply-To: <20260121165835.4097975-1-gary@kernel.org>
+ 2002:a05:600c:4fcb:b0:477:7bca:8b34 with SMTP id 5b1f17b1804b1-4803e78fdb4mr130750555e9.6.1769071323772;
+ Thu, 22 Jan 2026 00:42:03 -0800 (PST)
+Date: Thu, 22 Jan 2026 08:42:02 +0000
+In-Reply-To: <20260122003746.405370-1-deborah.brouwer@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260121165835.4097975-1-gary@kernel.org>
-Message-ID: <aXHfs9XoRrg3hoCF@google.com>
-Subject: Re: [PATCH] rust: disallow use of `CStr::as_ptr`
+References: <20260122003746.405370-1-deborah.brouwer@collabora.com>
+Message-ID: <aXHi2jJNptrgUqyj@google.com>
+Subject: Re: [PATCH] drm/tyr: suppress unread field warnings
 From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	daniel.almeida@collabora.com, boris.brezillon@collabora.com, 
+	broonie@kernel.org, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jan 21, 2026 at 04:58:14PM +0000, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
+On Wed, Jan 21, 2026 at 04:37:46PM -0800, Deborah Brouwer wrote:
+> Currently these warnings, as errors, are preventing Tyr driver
+> from building:
 > 
-> As kernel always use unsigned char and not the platform ABI's default, an
-> user should always use `as_char_ptr` provided via `CStrExt` instead.
-> Therefore configure `disallow-methods` feature of clippy to catch incorrect
-> usage.
+> error: field `device` is never read
+>   --> drivers/gpu/drm/tyr/driver.rs:37:5
+>    |
+> 36 | pub(crate) struct TyrDriver {
+>    |                   --------- field in this struct
+> 37 |     device: ARef<TyrDevice>,
+>    |     ^^^^^^
+>    |
+>    = note: `-D dead-code` implied by `-D warnings`
+>    = help: to override `-D warnings` add `#[allow(dead_code)]`
 > 
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+> error: fields `mali` and `sram` are never read
+>    --> drivers/gpu/drm/tyr/driver.rs:196:5
+>     |
+> 195 | struct Regulators {
+>     |        ---------- fields in this struct
+> 196 |     mali: Regulator<regulator::Enabled>,
+>     |     ^^^^
+> 197 |     sram: Regulator<regulator::Enabled>,
+>     |     ^^^^
+> 
+> error: aborting due to 2 previous errors
+> 
+> Suppress these errors so that the Tyr driver will build.
+> 
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I still don't understand why I couldn't reproduce it myself, but
+assuming it's not just an 1.80.0 issue, below is my review:
+
+>  drivers/gpu/drm/tyr/driver.rs | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+> index 2a45d0288825..04c865cb4397 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -34,6 +34,7 @@
+>  
+>  #[pin_data(PinnedDrop)]
+>  pub(crate) struct TyrDriver {
+> +    #[allow(dead_code)]
+>      device: ARef<TyrDevice>,
+
+Let's use #[expect(dead_code)] so we remember to remove this when a user
+is added.
+
+>  }
+>  
+> @@ -193,6 +194,8 @@ struct Clocks {
+>  
+>  #[pin_data]
+>  struct Regulators {
+> +    #[allow(dead_code)]
+>      mali: Regulator<regulator::Enabled>,
+> +    #[allow(dead_code)]
+>      sram: Regulator<regulator::Enabled>,
+
+I don't think we intend to ever use these fields - they exist only for
+their destructor. In that case, please prefix them with an underscore
+instead:
+
+#[pin_data]
+struct Regulators {
+    _mali: Regulator<regulator::Enabled>,
+    _sram: Regulator<regulator::Enabled>,
+}
+
+Alice
