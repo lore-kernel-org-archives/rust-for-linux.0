@@ -1,380 +1,101 @@
-Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0263590B7;
-	Thu, 22 Jan 2026 16:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ACD1E0DD8;
+	Thu, 22 Jan 2026 16:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769100007; cv=none; b=PyzB3jIAwy80jGXvRggrWWkRhFlDY4WqwkqHdPDtkoLlqN9Ql2EeuAxirlwY6smHxNxCv8A1bltgyfUqOSVyfY8WBTPzDbK+qD0w1Nmsa3UjmYtwoSGapE+HAPGa80YvCTC5ZTrYUoKtKLiJxA7A3hRzYQ56Yy46jBETz26SK0M=
+	t=1769100279; cv=none; b=YkyQYw2GOuTGQ1q80wMZcCzBhHwSfnW9wPQHfftWwo57I11xOuNW/yiZNbq8ZNjgDIQXCvuDmRjP422BRoJIxcxqf+E8oo9beenyhHz8bpRwt3S1FVsdDu4IJ00JRd4eLksOa/A0CIAQ516PfYu/WIWTCEkQMbMgJ4BakXrQz38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769100007; c=relaxed/simple;
-	bh=okxm9qDjurKqOfegnygaQcQpA/gDZI5OU9/5MSg3qCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ruxksw8UuAqegAFAdvU1MUsZr0SWI/YfzaGsAQXXf7NvNHjOjzW7qdTkkNuvnxRwjHFVz4lq40KgG/x+0p15njZ5zoIEFI9kvMZeWmxLpgDdBmKPYfqkoJ8RYZfPHOsIsaHYheBKBfMgy3SDSxi1aW3n6gb7HWjWhjWsFO8j/Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=bIaC3XnU; arc=none smtp.client-ip=178.154.239.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1769100279; c=relaxed/simple;
+	bh=JC52RpmU/eEqAbLLOYq4VyCvG0i40uK2mOQjuoMBLUM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E58LmkXgKkFJcpyBv5N9KS7+6hkZXxHez2sYHDvj3m2MpstajUwO6enyI6SiMHCeWU7r9X4rWEe3nbtKixwZjlQrvwWVPGUbzFJ4uUJh8uBsQgLIGgcAd2bDt1B3sCimGuPz0q6gRY2CZk48OMufXlTOewYOM/H2rdVBQ2aTScY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pTxLINgN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="bIaC3XnU"
-Received: from mail-nwsmtp-smtp-production-main-72.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-72.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:bb89:0:640:ae22:0])
-	by forward502a.mail.yandex.net (Yandex) with ESMTPS id 164BC81748;
-	Thu, 22 Jan 2026 19:39:55 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-72.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id odfMBt0GNKo0-6fpR6Jy3;
-	Thu, 22 Jan 2026 19:39:53 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1769099994;
-	bh=IVXS/eBGU64zWQ3RZilF4LHNzfs9+NLtxK6fSbGpJRM=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=bIaC3XnUDMc2b65SpM5KvK9J2SM9bYNyjxTIKNlMWSqVOBfdS6nTBcjyexKF3CJCS
-	 TQz5BRnb5gkvogQC7CDM2rpzNX3Y2dMY/RS5kTg8TWiEldn2hfMrR1TFQOP+NsYI5g
-	 L0DuWat1h2+bv9aBCRw24UgXrDNzii2IB0YM5yFU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-72.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 22 Jan 2026 19:39:48 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>, Arnd
- Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
- automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH v4 1/2] scripts: add tool to run containerized builds
-Message-ID: <20260122193948.6af09199@nimda>
-In-Reply-To: <611ce02f-2b48-4338-b37f-1df39e02da03@gtucker.io>
-References: <cover.1769090419.git.gtucker@gtucker.io>
-	<9b8da20157e409e8fa3134d2101678779e157256.1769090419.git.gtucker@gtucker.io>
-	<20260122172928.1d922490@nimda>
-	<611ce02f-2b48-4338-b37f-1df39e02da03@gtucker.io>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pTxLINgN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AA5C116C6;
+	Thu, 22 Jan 2026 16:44:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769100277;
+	bh=JC52RpmU/eEqAbLLOYq4VyCvG0i40uK2mOQjuoMBLUM=;
+	h=From:Date:Subject:To:Cc:From;
+	b=pTxLINgN0aMgtL7ViUw1cB7hYh7W3Byn5q6oaUBA8O4IJLcUYJzUq7oTZm7c2gdnQ
+	 6X2DagrtVWEjkQ/7HqHaxXSo7a+P4A8jDDA/JGvFmdzW+PWY0U9hUXBAy90+CpLtCo
+	 fDn/53MBBMa9vRVp7exjEAt33DWmQfnanKYxUL9Nd7N5cM9OOp7UrfbUgD8GoPugzA
+	 f76+IEs7H/mplkYE5mL31vjRfr5B5XUrB2uyRcwjnxcUV9q6RVVi7y1MxJGDDJtKVj
+	 AuncnVAvXGH253mSrfbQaH+K/9N2r2MNbFwfcKRRq3upN5JIjY5dVvXv9wt6CIie7Q
+	 +f/8EtCyzxGlA==
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Thu, 22 Jan 2026 11:44:33 -0500
+Subject: [PATCH] scripts: generate_rust_analyzer.py: avoid FD leak
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260122-rust-analyzer-fd-leak-v1-1-945577813b20@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CQAxA0auQrmkyVDMar2JYDEzRKhlJCwYk3
+ N0Rl2/x/wrGKmxwKVZQfovJK2VUZQHtPaQbo8RsIEfeVUSok40YUuiXDyt2EXsOT2zoeDofXPT
+ eM+R2UO5k3r/X+m+bmge3428G2/YFIIjSMnkAAAA=
+X-Change-ID: 20260122-rust-analyzer-fd-leak-b247830d666e
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Fiona Behrens <me@kloenk.dev>, Boris-Chengbiao Zhou <bobo1239@web.de>
+Cc: Kees Cook <kees@kernel.org>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1769100275; l=1288;
+ i=tamird@kernel.org; h=from:subject:message-id;
+ bh=JC52RpmU/eEqAbLLOYq4VyCvG0i40uK2mOQjuoMBLUM=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QAogqhziJkc867yHN5uGBWLh5t4PjCYlX/rtV4VUjJOmhXaNlTxTZocYgIGPgOGKjd3DvmaDPvb
+ DP8Xut9+y8A4=
+X-Developer-Key: i=tamird@kernel.org; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-On Thu, 22 Jan 2026 15:59:54 +0100
-Guillaume Tucker <gtucker@gtucker.io> wrote:
+Use a context manager to avoid leaking file descriptors.
 
-> Hi Onur,
->=20
-> On 22/01/2026 15:29, Onur =C3=96zkan wrote:
-> > Hi Guillaume,
-> >=20
-> > Just 2 notes from my end.
-> >=20
-> > On Thu, 22 Jan 2026 15:06:59 +0100
-> > Guillaume Tucker <gtucker@gtucker.io> wrote:
-> >=20
-> >> Add a 'scripts/container' tool written in Python to run any
-> >> command in the source tree from within a container.  This can
-> >> typically be used to call 'make' with a compiler toolchain image
-> >> to run reproducible builds but any arbitrary command can be run
-> >> too.  Only Docker and Podman are supported in this initial version.
-> >>
-> >> Add a new entry to MAINTAINERS accordingly.
-> >>
-> >> Cc: Nathan Chancellor <nathan@kernel.org>
-> >> Cc: Nicolas Schier <nsc@kernel.org>
-> >> Cc: Miguel Ojeda <ojeda@kernel.org>
-> >> Cc: David Gow <davidgow@google.com>
-> >> Cc: "Onur =C3=96zkan" <work@onurozkan.dev>
-> >> Link:
-> >> https://lore.kernel.org/all/affb7aff-dc9b-4263-bbd4-a7965c19ac4e@gtuck=
-er.io/
-> >> Signed-off-by: Guillaume Tucker <gtucker@gtucker.io> ---
-> >>  MAINTAINERS       |   6 ++
-> >>  scripts/container | 199
-> >> ++++++++++++++++++++++++++++++++++++++++++++++ 2 files changed, 205
-> >> insertions(+) create mode 100755 scripts/container
-> >>
-> >> diff --git a/MAINTAINERS b/MAINTAINERS
-> >> index da9dbc1a4019..affd55ff05e0 100644
-> >> --- a/MAINTAINERS
-> >> +++ b/MAINTAINERS
-> >> @@ -6384,6 +6384,11 @@ S:	Supported
-> >>  F:	drivers/video/console/
-> >>  F:	include/linux/console*
-> >> =20
-> >> +CONTAINER BUILD SCRIPT
-> >> +M:	Guillaume Tucker <gtucker@gtucker.io>
-> >> +S:	Maintained
-> >> +F:	scripts/container
-> >> +
-> >>  CONTEXT TRACKING
-> >>  M:	Frederic Weisbecker <frederic@kernel.org>
-> >>  M:	"Paul E. McKenney" <paulmck@kernel.org>
-> >> @@ -13676,6 +13681,7 @@ F:	scripts/Makefile*
-> >>  F:	scripts/bash-completion/
-> >>  F:	scripts/basic/
-> >>  F:	scripts/clang-tools/
-> >> +F:	scripts/container
-> >>  F:	scripts/dummy-tools/
-> >>  F:	scripts/include/
-> >>  F:	scripts/mk*
-> >> diff --git a/scripts/container b/scripts/container
-> >> new file mode 100755
-> >> index 000000000000..09663eccb8d3
-> >> --- /dev/null
-> >> +++ b/scripts/container
-> >> @@ -0,0 +1,199 @@
-> >> +#!/usr/bin/env python3
-> >> +# SPDX-License-Identifier: GPL-2.0-only
-> >> +# Copyright (C) 2025 Guillaume Tucker
-> >> +
-> >> +"""Containerized builds"""
-> >> +
-> >> +import abc
-> >> +import argparse
-> >> +import logging
-> >> +import os
-> >> +import pathlib
-> >> +import shutil
-> >> +import subprocess
-> >> +import sys
-> >> +import uuid
-> >> +
-> >> +
-> >> +class ContainerRuntime(abc.ABC):
-> >> +    """Base class for a container runtime implementation"""
-> >> +
-> >> +    name =3D None  # Property defined in each implementation class
-> >> +
-> >> +    def __init__(self, args, logger):
-> >> +        self._uid =3D args.uid or os.getuid()
-> >> +        self._gid =3D args.gid or args.uid or os.getgid()
-> >> +        self._env_file =3D args.env_file
-> >> +        self._shell =3D args.shell
-> >> +        self._logger =3D logger
-> >> +
-> >> +    @classmethod
-> >> +    def is_present(cls):
-> >> +        """Determine whether the runtime is present on the
-> >> system"""
-> >> +        return shutil.which(cls.name) is not None
-> >> +
-> >> +    @abc.abstractmethod
-> >> +    def _do_run(self, image, cmd, container_name):
-> >> +        """Runtime-specific handler to run a command in a
-> >> container""" +
-> >> +    @abc.abstractmethod
-> >> +    def _do_abort(self, container_name):
-> >> +        """Runtime-specific handler to abort a running
-> >> container""" +
-> >> +    def run(self, image, cmd):
-> >> +        """Run a command in a runtime container"""
-> >> +        container_name =3D str(uuid.uuid4())
-> >> +        self._logger.debug("container: %s", container_name)
-> >> +        try:
-> >> +            return self._do_run(image, cmd, container_name)
-> >> +        except KeyboardInterrupt:
-> >> +            self._logger.error("user aborted")
-> >> +            self._do_abort(container_name)
-> >> +            return 1
-> >> +
-> >> +
-> >> +class CommonRuntime(ContainerRuntime):
-> >> +    """Common logic for Docker and Podman"""
-> >> +
-> >> +    def _do_run(self, image, cmd, container_name):
-> >> +        cmdline =3D [self.name, 'run']
-> >> +        cmdline +=3D self._get_opts(container_name)
-> >> +        cmdline.append(image)
-> >> +        cmdline +=3D cmd
-> >> +        self._logger.debug('command: %s', ' '.join(cmdline))
-> >> +        return subprocess.call(cmdline)
-> >> +
-> >> +    def _get_opts(self, container_name):
-> >> +        opts =3D [
-> >> +            '--name', container_name,
-> >> +            '--rm',
-> >> +            '--volume', f'{pathlib.Path.cwd()}:/src',
-> >> +            '--workdir', '/src',
-> >> +        ]
-> >> +        if self._env_file:
-> >> +            opts +=3D ['--env-file', self._env_file]
-> >> +        if self._shell:
-> >> +            opts +=3D ['--interactive', '--tty']
-> >> +        return opts
-> >> +
-> >> +    def _do_abort(self, container_name):
-> >> +        subprocess.call([self.name, 'kill', container_name])
-> >> +
-> >> +
-> >> +class DockerRuntime(CommonRuntime):
-> >> +    """Run a command in a Docker container"""
-> >> +
-> >> +    name =3D 'docker'
-> >> +
-> >> +    def _get_opts(self, container_name):
-> >> +        return super()._get_opts(container_name) + [
-> >> +            '--user', f'{self._uid}:{self._gid}'
-> >> +        ]
-> >> +
-> >> +
-> >> +class PodmanRuntime(CommonRuntime):
-> >> +    """Run a command in a Podman container"""
-> >> +
-> >> +    name =3D 'podman'
-> >> +
-> >> +    def _get_opts(self, container_name):
-> >> +        return super()._get_opts(container_name) + [
-> >> +            '--userns',
-> >> f'keep-id:uid=3D{self._uid},gid=3D{self._gid}',
-> >> +        ]
-> >> +
-> >> +
-> >> +class Runtimes:
-> >> +    """List of all supported runtimes"""
-> >> +
-> >> +    runtimes =3D [PodmanRuntime, DockerRuntime]
-> >> +
-> >> +    @classmethod
-> >> +    def get_names(cls):
-> >> +        """Get a list of all the runtime names"""
-> >> +        return list(runtime.name for runtime in cls.runtimes)
-> >> +
-> >> +    @classmethod
-> >> +    def get(cls, name):
-> >> +        """Get a single runtime class matching the given name"""
-> >> +        for runtime in cls.runtimes:
-> >> +            if runtime.name =3D=3D name:
-> >> +                if not runtime.is_present():
-> >> +                    raise ValueError(f"runtime not found: {name}")
-> >> +                return runtime
-> >> +        raise ValueError(f"unknown runtime: {runtime}")
-> >> +
-> >=20
-> > I think you meant to use "{name}" not "{runtime}" inside ValueError.
->=20
-> Ah yes, sorry.  The parser already checks that the runtime name is in
-> the list so I've never hit this error.  We would probably need some
-> unit tests at some point.
->=20
-> So yes this fixes the issue, which can be reproduced with a small
-> hack in the script to relax the -r option checks:
->=20
-> --- a/scripts/container
-> +++ b/scripts/container
-> @@ -120,7 +120,7 @@ class Runtimes:
->                  if not runtime.is_present():
->                      raise ValueError(f"runtime not found: {name}")
->                  return runtime
-> -        raise ValueError(f"unknown runtime: {runtime}")
-> +        raise ValueError(f"unknown runtime: {name}")
-> =20
->      @classmethod
->      def find(cls):
->=20
->=20
-> Nathan, would you be OK with folding this in or should I send a v5?
->=20
-> >> +    @classmethod
-> >> +    def find(cls):
-> >> +        """Find the first runtime present on the system"""
-> >> +        for runtime in cls.runtimes:
-> >> +            if runtime.is_present():
-> >> +                return runtime
-> >> +        raise ValueError("no runtime found")
-> >> +
-> >=20
-> > nit: We could extend the error message like: "Couldn't find any
-> > runtime. Use -r <runtime> to specify one manually". What do you
-> > think?
->=20
-> I'm all for improving the user experience.  It's good to keep the
-> implementation logic separate from the command line interface though.
-> Maybe this is something I could improve in a follow-up?  There are a
-> few other potential things to rework in this area; a more detailed
-> error could be logged in main().
->
+Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+---
+ scripts/generate_rust_analyzer.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Sure, sounds good to me.
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 3b645da90092..5ed375c8aa3f 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -190,7 +190,8 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+ 
+     def is_root_crate(build_file, target):
+         try:
+-            return f"{target}.o" in open(build_file).read()
++            with open(build_file) as f:
++                return f"{target}.o" in f.read()
+         except FileNotFoundError:
+             return False
+ 
 
-Thanks,
-Onur
-=20
-> >> +
-> >> +def _get_logger(verbose):
-> >> +    """Set up a logger with the appropriate level"""
-> >> +    logger =3D logging.getLogger('container')
-> >> +    handler =3D logging.StreamHandler()
-> >> +    handler.setFormatter(logging.Formatter(
-> >> +        fmt=3D'[container {levelname}] {message}', style=3D'{'
-> >> +    ))
-> >> +    logger.addHandler(handler)
-> >> +    logger.setLevel(logging.DEBUG if verbose is True else
-> >> logging.INFO)
-> >> +    return logger
-> >> +
-> >> +
-> >> +def main(args):
-> >> +    """Main entry point for the container tool"""
-> >> +    logger =3D _get_logger(args.verbose)
-> >> +    try:
-> >> +        cls =3D Runtimes.get(args.runtime) if args.runtime else
-> >> Runtimes.find()
-> >> +    except ValueError as ex:
-> >> +        logger.error(ex)
-> >> +        return 1
-> >> +    logger.debug("runtime: %s", cls.name)
-> >> +    logger.debug("image: %s", args.image)
-> >> +    return cls(args, logger).run(args.image, args.cmd)
-> >> +
-> >> +
-> >> +if __name__ =3D=3D '__main__':
-> >> +    parser =3D argparse.ArgumentParser(
-> >> +        'container',
-> >> +        description=3D"See the documentation for more details: "
-> >> +        "https://docs.kernel.org/dev-tools/container.html"
-> >> +    )
-> >> +    parser.add_argument(
-> >> +        '-e', '--env-file',
-> >> +        help=3D"Path to an environment file to load in the
-> >> container."
-> >> +    )
-> >> +    parser.add_argument(
-> >> +        '-g', '--gid',
-> >> +        help=3D"Group ID to use inside the container."
-> >> +    )
-> >> +    parser.add_argument(
-> >> +        '-i', '--image', required=3DTrue,
-> >> +        help=3D"Container image name."
-> >> +    )
-> >> +    parser.add_argument(
-> >> +        '-r', '--runtime', choices=3DRuntimes.get_names(),
-> >> +        help=3D"Container runtime name.  If not specified, the first
-> >> one found "
-> >> +        "on the system will be used i.e. Podman if present,
-> >> otherwise Docker."
-> >> +    )
-> >> +    parser.add_argument(
-> >> +        '-s', '--shell', action=3D'store_true',
-> >> +        help=3D"Run the container in an interactive shell."
-> >> +    )
-> >> +    parser.add_argument(
-> >> +        '-u', '--uid',
-> >> +        help=3D"User ID to use inside the container.  If the -g
-> >> option is not "
-> >> +        "specified, the user ID will also be set as the group ID."
-> >> +    )
-> >> +    parser.add_argument(
-> >> +        '-v', '--verbose', action=3D'store_true',
-> >> +        help=3D"Enable verbose output."
-> >> +    )
-> >> +    parser.add_argument(
-> >> +        'cmd', nargs=3D'+',
-> >> +        help=3D"Command to run in the container"
-> >> +    )
-> >> +    sys.exit(main(parser.parse_args(sys.argv[1:])))
-> >=20
-> > The rest LGTM.
->=20
-> Thanks for the reviews.
->=20
-> Cheers,
-> Guillaume
+---
+base-commit: 2af6ad09fc7dfe9b3610100983cccf16998bf34d
+change-id: 20260122-rust-analyzer-fd-leak-b247830d666e
+
+Best regards,
+--  
+Tamir Duberstein <tamird@kernel.org>
 
