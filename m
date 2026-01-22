@@ -1,171 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3D4350D7B
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 21:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769118235; cv=none; b=WgHkaQOvURQ2j+/Iagx1J3zBoLgNrKkN9sWXPnWs31X/ctk603K4KbHcGybIHeizUbcDuc15bPbNoGUSojKlqNvyFITqMs5g7fLrzP4XqfA1Law0S3D1vlhA5wq/PY3sbm5Uo+FPfKdK76HpI0tDviDajbfzYgp2iaEu0hyByCk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769118235; c=relaxed/simple;
-	bh=WCqgFc9cewr4XZu5f0sdwaLuhKGwhBpcnvkzMaOCOzA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNO+PuecDonb+M1O4tAJR5UuK1JTyUHCfx+oFRjMbb/WpDA4HxrJZs6LrUAQwzInJa98xDvPG5dyRexQGmUSWtA8nCkkLVEQHxXXTP1yrjvCkFSK9+UQewYdEvp7ETsgMzljfVJuJWLSd1ut2CzMtpeY+LOK678h+KdhRo3Lc/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QTsAbb1I; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B5D3BE4A9
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 21:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769118771; cv=pass; b=lrYixWs8/ZHSSkyl3FOVjlTN30E1VWGX+vSxF2F0tKuWiqmTBFsGaQ5KtK1udYnp48ASFW4h2OfzixpBnJorO77M3Ij1jwHcgLvPeSVy4ALzynBDNTud4UWhnDq2MnjtelS+yXvPqdZfxjdi9LRH5C7DcTAnspDszbluqpFNdl8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769118771; c=relaxed/simple;
+	bh=kJ1n1W9oNr5vNhOoeiv4otLFkO0Rv3BVZJZSEM76zTY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KAONmZWzZEBPxUT9ETw3jSmtcoORsWy+xRpHoVlz6n0VQlBRhPnP16yf59o+5G9C8zWX4Vd6p9LSh5GV0wbS5w00Kv84KN085fO+7j6Y369WkEPjMZs0e6PJ5jabEVS7wWkAwcybXszjmiwbB5yWUemRRu9sqZW47WZ1p+lxYVc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=htTwDgJZ; arc=pass smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QTsAbb1I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769118227;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lAQV4O1UaX/OoIDeCzrBseKKhkGScnjnhRmZuyKIEn0=;
-	b=QTsAbb1IOV/AoIXGiRmpnX0QWxnjtlOhCd2wA3MSl9+jgwJSETWpwM0o2q6J4CrsoJWFco
-	1nsCN4rAOgSD4QvJYR9mDXLDG8yaXpEzhxV8iCwnKwI1lCa8tj2DnwcbAxGpWehthdhr7o
-	eGMTBq2hbVE3hZlu7JVUMkpx/RAM7Qg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-Ld1vsUYTN9WFTl1Ae8tWlA-1; Thu,
- 22 Jan 2026 16:43:43 -0500
-X-MC-Unique: Ld1vsUYTN9WFTl1Ae8tWlA-1
-X-Mimecast-MFC-AGG-ID: Ld1vsUYTN9WFTl1Ae8tWlA_1769118221
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DE4DF18005BB;
-	Thu, 22 Jan 2026 21:43:40 +0000 (UTC)
-Received: from GoldenWind.redhat.com (unknown [10.22.89.232])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 798D530002D1;
-	Thu, 22 Jan 2026 21:43:38 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: "Ewan Chorynski" <ewan.chorynski@ik.me>,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Simona Vetter" <simona@ffwll.ch>,
-	"Shankari Anand" <shankari.ak0208@gmail.com>,
-	"David Airlie" <airlied@gmail.com>,
-	"Asahi Lina" <lina+kernel@asahilina.net>,
-	"Daniel Almeida" <daniel.almeida@collabora.com>,
-	"Lyude Paul" <lyude@redhat.com>
-Subject: [PATCH v2 2/2] rust/drm: Remove imports covered by prelude::*
-Date: Thu, 22 Jan 2026 16:43:03 -0500
-Message-ID: <20260122214316.3281257-2-lyude@redhat.com>
-In-Reply-To: <20260122214316.3281257-1-lyude@redhat.com>
-References: <20260122214316.3281257-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="htTwDgJZ"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2b701d29ddcso34028eec.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 13:52:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769118762; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Go2NGxFSlJebxO9PUFcCOtiwctly2wU07RU/m6FtKjZO+fdl5dxyG+NlsQdyHMcWDQ
+         yrBESdsSMvFRRkQQkyzeSj2QjDv0dwafCeW83VWcimzb7GjYteOYbfnTnmYLO0s08MB1
+         iVAOPWCJvLGUt/6k4fuF6Dd5opCZc5dISlZ6MfE++eMwVEpHo9LfufABYQ5enbsIu2n0
+         h/meZ3wOi8jP012VY8SPRunKXvJAnbfmgTZLJXtgrwZg6WoOr84vb05+rUklgzx7CJuO
+         ULSb9mGBUPpOzO8KcCWQkhENAPIjOEW8V6tK9JlattW5aGaIxNSu0ovztKcnVP0i2C/Q
+         SNLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kJ1n1W9oNr5vNhOoeiv4otLFkO0Rv3BVZJZSEM76zTY=;
+        fh=fariJZ2DWQ7tI1kKAQBOboQYrhg3doLJD4CpTqkrOYw=;
+        b=UMRs+WMhceFnmxlgNCPQJo6KyaZcSxJCtHiAWe5BDb0tvvd28mherFeTK0QG6JMIti
+         Kd3f3ItlGA0bXFdnYyJWRhIGxCI2xwZVqRPeDUq5h4mW18uw/QnBhTtwX2AdMCRPnk6T
+         HdHoSBNXriPKn1Zno4CGs2js4GlWHhcvFforhCvwn900PRrzpTd/T7fvGeiwC9Z+oO9L
+         hLDh1z+JFLr88nGn4jlomIwLRCOJN4WTVkEO3xDIGsdpv6auc+F2kzRUatyGbAGIQNby
+         6YUg7gfMh1Eobue+9wevQH2XCJA/AbaCD4K7+KWdw9GsgJBXvnJ/UgKhXVn6obm4iQzF
+         cQFQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769118762; x=1769723562; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kJ1n1W9oNr5vNhOoeiv4otLFkO0Rv3BVZJZSEM76zTY=;
+        b=htTwDgJZ8GFmyDfJFx2QnDmnxcOaY0d1yVBWlkGKkyIEp5hzW91Um7YEA8mPSorxu8
+         bJNfvtcplOze50v2hGTEeGed0D4HuBSjl7VGXNhWvpeZ0GsUyd6LvoWdZOxYQRWYiV/i
+         K+X/HUp07p9aFm7U2A2vi5ahbQO62+ZWZcI/6/UElJsymSB4wIFyDM6ppM6tLas9DuQJ
+         2mhMSn25lBg0n/oZQQfkHNPan1p45vw4BpfW5UyYW6ognFurdZC/i+jlR8ocbFAreatq
+         6/4fTkKcOefdbtqKatCRaVDDfOujoAz4oAeHVVvA7TD7F+vxf3q5UaHAIEoKIHf9CrFd
+         hzbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769118762; x=1769723562;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kJ1n1W9oNr5vNhOoeiv4otLFkO0Rv3BVZJZSEM76zTY=;
+        b=fwxJRu5MPLlKWIJmPtZ8sB6y3tpZ9jO8O06FpMNduMf7YUmFFfIn/V9NO85UVpjti7
+         Xi9VJGbo/J0eteGfW1eesZEbO+8rHkOw5wlRTEffzOuea5TtZHbR73KKh2YiZxtgKmWP
+         2Pn0SHQV86VJSkwto9nj/+E7WT+mZbwHgJBZznpCdes2jlnAIX/hYcetFkSPKQr4rghQ
+         xgDpdYyaFgmQl65PCfkaItjxPWUF2vFDuGhWjTsaaDJfA7tSCQouQaecffnGmI7HAZOA
+         F7Bu7+GvQ304jJm7V9XZgPziScmQ2x3e00ul9CF9jndEPYBk6iE8j7BPeNvpaby3Ak/S
+         m/9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVr472lLXis/HgLjdXYJHTs2nG9WeUBXrTtDITU3tLhyo4ogYDuP0G7aZ52rp3eEOUWpEDvD3/DOccQYv8uTA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSZTSedGoogkEDSqXT8qfgEkztPUN0tCeDFPcJksK06QP+B4Ak
+	Hvf8ZPU464bel/hoMeErSTjBZOgAj0iqdX4pcJrVgBYw6IuB5TvNtDrJJe01rCtlcECzdGIj5A9
+	zkKCizrWhTg+lG7uArMEDN9jUMGXr5L0=
+X-Gm-Gg: AZuq6aIv7MeEdVJtI5Lnspo01P6NYW/0oUWQqCHUZSnGgVMkBnnkhyKqEF7BRjYPiMF
+	bQeyuGkGl/uEbhR6IsfrvoAJATfnIZz2vFBXTkw33pF9HCZqdReCRaNwJbAWPTKFhewTL4vmvt7
+	Ay8PN2th6HmslBc4NNZluSNztonI1lghfBk3nw+Bl+aunX8OZLtsMF2limdrGxtWdtLuj+1ugit
+	Hye7DWjG/OHQ3Y1I24ieNqGupTy46t9rFr8Qo7H3pxvJ2C+E5PPT762PnWc5BEuXmPd2E7wdgO4
+	lU8gcP1nZwQCWuFM8D9hDBSdyB+Z1AJf/CsIHfYhFqDIVkSU8jACbExigkBWjn+ivwhnA/Bi6xO
+	5wgavNXBovqpW
+X-Received: by 2002:a05:7300:324a:b0:2ae:5549:2c86 with SMTP id
+ 5a478bee46e88-2b739b6f4e4mr228287eec.5.1769118761814; Thu, 22 Jan 2026
+ 13:52:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <20260122202804.3209265-1-lyude@redhat.com> <DFVEI4KHCNFS.2IT595IZJBGGT@kernel.org>
+ <25d3c403781a88019340a47567ff85959b0c03bd.camel@redhat.com>
+In-Reply-To: <25d3c403781a88019340a47567ff85959b0c03bd.camel@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 22 Jan 2026 22:52:28 +0100
+X-Gm-Features: AZwV_QhZZxWF4WZYVcR4FnS_Sg28Z3ZQQfKTOoxKuwtN0Bkji7JJbfvuj-OOB1M
+Message-ID: <CANiq72k1b3DLEy_32ruWu1XBFK80oRDVzSer69ANL_232mmv-w@mail.gmail.com>
+Subject: Re: [PATCH] rust/drm: Fixup import styles
+To: lyude@redhat.com, Gary Guo <gary@garyguo.net>
+Cc: Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Simona Vetter <simona@ffwll.ch>, Alice Ryhl <aliceryhl@google.com>, 
+	Shankari Anand <shankari.ak0208@gmail.com>, David Airlie <airlied@gmail.com>, 
+	Asahi Lina <lina+kernel@asahilina.net>, Atharv Dubey <atharvd440@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This just removes any explicit imports of items in files that are already
-being pulled in by `use prelude::*;`.
+On Thu, Jan 22, 2026 at 10:34=E2=80=AFPM <lyude@redhat.com> wrote:
+>
+> Just a random musing - it would actually be quite nice if we could have
+> some sort of automated style check for this. I have to assume the linux
+> kernel probably isn't the only project out there with its own prelude=E2=
+=80=A6
 
-There should be no functional changes in this patch.
+Yeah, that would be quite nice indeed -- we have discussed this a few
+times (most recently a couple weeks ago, including whether Klint could
+be used for that and for detecting "long import paths", i.e. when we
+have a re-export we prefer, but that has edge cases; as well as
+related bits like a `klint::moved` annotation -- Cc'ing Gary).
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/drm/device.rs  |  5 +----
- rust/kernel/drm/driver.rs  | 10 +++-------
- rust/kernel/drm/file.rs    |  6 +-----
- rust/kernel/drm/gem/mod.rs |  6 +-----
- 4 files changed, 6 insertions(+), 21 deletions(-)
-
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index 23c457c90a6ab..30116d78cabe0 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -12,10 +12,7 @@
-         self,
-         driver::AllocImpl, //
-     },
--    error::{
--        from_err_ptr,
--        Result, //
--    },
-+    error::from_err_ptr,
-     prelude::*,
-     sync::aref::{
-         ARef,
-diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-index c8ec5c0819a06..2940fece7d59e 100644
---- a/rust/kernel/drm/driver.rs
-+++ b/rust/kernel/drm/driver.rs
-@@ -8,15 +8,11 @@
-     bindings,
-     device,
-     devres,
--    drm, //
--    error::{
--        to_result,
--        Result, //
--    },
-+    drm,
-+    error::to_result,
-     prelude::*,
--    sync::aref::ARef,
-+    sync::aref::ARef, //
- };
--use macros::vtable;
- 
- /// Driver use the GEM memory manager. This should be set for all modern drivers.
- pub(crate) const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
-diff --git a/rust/kernel/drm/file.rs b/rust/kernel/drm/file.rs
-index 7dade6dfa1ba2..10160601ce5af 100644
---- a/rust/kernel/drm/file.rs
-+++ b/rust/kernel/drm/file.rs
-@@ -7,14 +7,10 @@
- use crate::{
-     bindings,
-     drm,
--    error::Result,
-     prelude::*,
-     types::Opaque, //
- };
--use core::{
--    marker::PhantomData,
--    pin::Pin, //
--};
-+use core::marker::PhantomData;
- 
- /// Trait that must be implemented by DRM drivers to represent a DRM File (a client instance).
- pub trait DriverFile {
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 56b7641b1405e..b4199945db378 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -5,7 +5,6 @@
- //! C header: [`include/drm/drm_gem.h`](srctree/include/drm/drm_gem.h)
- 
- use crate::{
--    alloc::flags::*,
-     bindings,
-     drm::{
-         self,
-@@ -14,10 +13,7 @@
-             AllocOps, //
-         },
-     },
--    error::{
--        to_result,
--        Result, //
--    },
-+    error::to_result,
-     prelude::*,
-     sync::aref::{
-         ARef,
--- 
-2.52.0
-
+Cheers,
+Miguel
