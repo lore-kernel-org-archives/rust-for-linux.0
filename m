@@ -1,171 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59A23A7F57;
-	Thu, 22 Jan 2026 10:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BA737FF5F;
+	Thu, 22 Jan 2026 10:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769076634; cv=none; b=nBcsJW8OYj6OhgdY2mqK0qiELTWLZRaHdiim9OBfWUAxz+ckK7N76fVVQF1qT76u7B4Ct3vqAn8BLGmI0saDhlMnm6utKMMY2LWoAYiKJck+yYnbR+8Y+NU13TIE+JKEFHTc+BUoVIEBNJKAFSPb0iwE1tKj9ydOchG99VPwErE=
+	t=1769076827; cv=none; b=ISIlj4pYnk2xAzo3OxNcFUaX5aBQLuFhNZTbZWHCjvHSItpzhgUrtovkvtmRCmBXhADH7zmVgfdYJsd8jvNnAQWyMMdkP+co9lR6tvo5YKspq7njlgByeV3auFVuF/FQ/+iQORwe+536x4Rld2JODJdpHfO23/klOcSxTo9EVZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769076634; c=relaxed/simple;
-	bh=lT2a/wkzlUt0trRWXele7oGGBck4IQXQ7B2hQtkiG/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HaoK8hWsrbtSKW4t4I0W0fcxiwXmW/GWNaME8FhLgxZnQ/HHp/0Q4kM1QzF5oj2b5XLVTJ5gHe8yadss9u1k8jTqeWS2+CyLBqTXPYOgjIqq/eeRQ7Er7uxwRg9JtyIQwwE6zB9+lYSq2FrHOFnBIzJBznnLczCC5VyXg+taLg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBCYSDZo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769076827; c=relaxed/simple;
+	bh=DIdgKvbsE+stQowC8PbWkHC7BKt42IMjS2ZVC6qoNWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=hAIUtxogWti4AzHqTdby6lvE+M7b6J7a6xq7Ozz2pqg8A2P5We/gnQLFtmbh9Yj5zGcQvPY/5dvJbLGA36BIoKYtvvUGhjRAjBmO2WQ+/LGz/w7zZmtMzia7gniv7OiItYIrUPVFha6mZZ3bjxQy+oX2hGglrfGG7JraSo+HUUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=Zc53HrB4; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBCYSDZo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D72C116C6;
-	Thu, 22 Jan 2026 10:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769076634;
-	bh=lT2a/wkzlUt0trRWXele7oGGBck4IQXQ7B2hQtkiG/M=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IBCYSDZoP/BovEVzfWUuso5EJSjQlQ+j+N4I5C6eht3iIyh8N5ddGnUzGukX7VUwT
-	 91CU/yF1u1gEdmwxF0cFe652m1SA2I3oCUPx7PIWFlGpgM2t9dSupTUDCWdEMjz7os
-	 7Kb1Q+MVs47VLt4Vl4rSSQAeJwk2pbUBsSm+8Srn9fiPXmfitHbViCnzLvrNwCPaKE
-	 ygGfw5Bd065MQ9WO8+b9JXCr3rrCAlH01CMCp8+yTLcSjtG0Df6LD7qTWjmRbbF9M6
-	 7kpQBymLp5DhLEY1PyEystuIuWCQlNZ2SJF1HF6QyduonDOplwj23m4qB531s9vVGI
-	 bbgvZTHGySr5w==
-From: Benno Lossin <lossin@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Fiona Behrens <me@kloenk.dev>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Alban Kurti <kurti@invicto.ai>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [GIT PULL] Rust pin-init for v7.0
-Date: Thu, 22 Jan 2026 11:10:27 +0100
-Message-ID: <20260122101027.1427972-1-lossin@kernel.org>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="Zc53HrB4"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 27FCE41DDC;
+	Thu, 22 Jan 2026 10:13:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1769076823;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FQ1ccnpNqTzAnpIZMwC9x+2AHxI7DYmZi4jFycjHTtQ=;
+	b=Zc53HrB4ErkhxH6BDTLA7t2jNiAoXcZNexCBEzW08h+0JI8PGlqxiHyaALqIKbhLuApQKP
+	8Y1QO3t20/DY+3snt+9b3/vUSvaJq19+96JN3j3qH2LJ7JJh3+5ZQ0kO28zO2dYjSRZDCo
+	a//ZC24JGsbeTfQTWm7WKNb9+YdWuELHyM81n/vMoeeTS5XcOKM9vlLsjDlItd1p7Pl6r7
+	bRNgpbuinN5T6B/rCFD/ZFLIEH5AvMoMchBzrtS37N/zJhLq+kGbr1L77Y+rLBESvurAub
+	PS2Flcg1S+RSrabuBrjg5pTGUlNVQbFjSBqg2LQZ/n0Y469HcRvvPGqXYxnlYQ==
+Message-ID: <61379dc4-2031-4f94-9709-dd5608cdb780@gtucker.io>
+Date: Thu, 22 Jan 2026 11:13:39 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] Documentation: dev-tools: add container.rst page
+To: Nicolas Schier <nsc@kernel.org>
+References: <cover.1767199119.git.gtucker@gtucker.io>
+ <c859f9b6dd5313136f7a445497d6209405eafa7e.1767199119.git.gtucker@gtucker.io>
+ <aW-I3fNqp_7X0oeg@derry.ads.avm.de>
+Content-Language: en-US
+From: Guillaume Tucker <gtucker@gtucker.io>
+Cc: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ David Gow <davidgow@google.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, Arnd Bergmann <arnd@arndb.de>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, automated-testing@lists.yoctoproject.org,
+ workflows@vger.kernel.org, llvm@lists.linux.dev
+In-Reply-To: <aW-I3fNqp_7X0oeg@derry.ads.avm.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeehkeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfevjggtgfesthejredttddvjeenucfhrhhomhepifhuihhllhgruhhmvgcuvfhutghkvghruceoghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhoqeenucggtffrrghtthgvrhhnpeelgfehueeugfegudfgveehveegtddvgefggeevvdeutdeghffhfffhtdeklefhieenucffohhmrghinhepughotghkvghrrdhiohenucfkphepudejiedrudeikedrudeguddruddvudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedujeeirdduieekrddugedurdduvddupdhhvghloheplgduledvrdduieekrdduleekrdeigegnpdhmrghilhhfrhhomhepghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhopdhqihgupedvjefhvefggeduffffvedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopehnshgtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiughgohifsehgohhoghhlvgdrtghomhdprhgtphhtt
+ hhopeifohhrkhesohhnuhhrohiikhgrnhdruggvvhdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggv
+X-GND-State: clean
 
-Hi Miguel,
+Hi Nicolas,
 
-Lot's of changes in this one, mainly the `syn` rewrite, but also some
-smaller changes such as removing the `try_` versions of the macros in
-pin-init (the kernel still declares its own).
+On 20/01/2026 2:53 pm, Nicolas Schier wrote:
+>> +User IDs
+>> +========
+>> +
+>> +This is an area where the behaviour will vary slightly depending on the
+>> +container runtime.  The goal is to run commands as the user invoking the tool.
+>> +With Podman, a namespace is created to map the current user id to a different
+>> +one in the container (1000 by default).  With Docker, while this is also
+>> +possible with recent versions it requires a special feature to be enabled in
+>> +the daemon so it's not used here for simplicity.  Instead, the container is run
+>> +with the current user id directly.  In both cases, this will provide the same
+>> +file permissions for the kernel source tree mounted as a volume.  The only
+>> +difference is that when using Docker without a namespace, the user id may not
+>> +be the same as the default one set in the image.
+>> +
+>> +Say, we're using an image which sets up a default user with id 1000 and the
+>> +current user calling the ``container`` tool has id 1234.  The kernel source
+>> +tree was checked out by this same user so the files belong to user 1234.  With
+>> +Podman, the container will be running as user id 1000 with a mapping to id 1234
+>> +so that the files from the mounted volume appear to belong to id 1000 inside
+>> +the container.  With Docker and no namespace, the container will be running
+>> +with user id 1234 which can access the files in the volume but not in the user
+>> +1000 home directory.  This shouldn't be an issue when running commands only in
+>> +the kernel tree but it is worth highlighting here as it might matter for
+>> +special corner cases.
+> I tested a tiny bit with podman as runtime backend.  If I leave out the
+> '-r podman' podman's docker emulation is in effect and fails with:
+> 
+>      $ scripts/container -i docker.io/tuxmake/korg-clang -- make LLVM=1 -j8 olddefconfig
+>      Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+>      mkdir: cannot create directory '.tmp_15': Permission denied
+>      mkdir: cannot create directory '.tmp_19': Permission denied
+>      mkdir: cannot create directory '.tmp_22': Permission denied
+>      mkdir: cannot create directory '.tmp_25': Permission denied
+>      mkdir: cannot create directory '.tmp_28': Permission denied
+>      mkdir: cannot create directory '.tmp_31': Permission denied
+>        HOSTCC  scripts/basic/fixdep
+>      error: error opening 'scripts/basic/.fixdep.d': Permission denied
+>      1 error generated.
+>      make[2]: *** [scripts/Makefile.host:114: scripts/basic/fixdep] Error 1
+>      make[1]: *** [/src/Makefile:655: scripts_basic] Error 2
+>      make: *** [Makefile:248: __sub-make] Error 2
+>      [exit code 2]
+> 
+> But with '-r podman' it works like a charm.
+> 
+> Would it make sense to switch the default runtime to podman to
+> prevent non-functional podman-docker emulation?  (Or is this just a
+> problem on my machine?)
 
-All commits have been in linux-next since Monday.
+Yes, I just had a quick look as I'm not familiar with the setup to
+run Docker commands on top of the Podman backend.  So I'll swap the
+order like Nathan suggested so that Podman takes priority over Docker
+and add a note to the docs.  It's on the list of improvements and
+I'll work on a proper fix once the initial version of the tool has
+landed, assuming this is not a blocking issue.
 
-The first commit in my tree is also in the `syn` patch series from Gary
-[1], to avoid problems it should be merged after this tag. There also is
-a "phantom conflict" with 74e15ac34b098 ("scripts:
-generate_rust_analyzer: Add pin_init_internal deps") in rust-fixes,
-which you already saw in linux-next [2]. Otherwise no conflicts
-expected.
-
-Please pull for v7.0 -- thanks!
+Thanks for trying it out and reporting this use case.
 
 Cheers,
-Benno
+Guillaume
 
-[1]: https://lore.kernel.org/all/20260112170919.1888584-1-gary@kernel.org
-[2]: https://lore.kernel.org/all/aW5GPwfJPrQjm-wC@sirena.org.uk
-
-The following changes since commit 0f61b1860cc3f52aef9036d7235ed1f017632193:
-
-  Linux 6.19-rc5 (2026-01-11 17:03:14 -1000)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/pin-init-v7.0
-
-for you to fetch changes up to aeb5ecad5316f6af160993915163367290825b6b:
-
-  rust: pin-init: Implement `InPlaceWrite<T>` for `&'static mut MaybeUninit<T>` (2026-01-17 10:53:28 +0100)
-
-----------------------------------------------------------------
-pin-init changes for v7.0
-
-Added:
-
-- '&'static mut MaybeUninit<T>' now implements 'InPlaceWrite'. This
-  enables users to use external allocation mechanisms such as
-  'static_cell'.
-
-- Gary Guo as a Maintainer.
-
-Changed:
-
-- Rewrote all proc-macros ('[pin_]init!', '#[pin_data]',
-  '#[pinned_drop]', 'derive([Maybe]Zeroable)'),  using 'syn' with better
-  diagnostics.
-
-- 'derive([Maybe]Zeroable)' now support tuple structs.
-
-- '[pin_]init!' now supports attributes on fields (such as
-  '#[cfg(...)]').
-
-- Add a '#[default_error(<type>)]' attribute to '[pin_]init!' to
-  override the default error (when no '? Error' is specified).
-
-- Support packed struct in '[pin_]init!' with
-  '#[disable_initialized_field_access]'.
-
-Removed:
-
-- 'try_[pin_]init!' have been removed in favor of merging their feature
-  with '[pin_]init!'. The kernel's own 'try_[pin_]init!' macros have
-  been updated to use the 'default_error' attribute.
-
-Fixed:
-
-- Corrected 'T: Sized' bounds to 'T: ?Sized' in the generated
-  'PinnedDrop' check by '#[pin_data]'.
-
-----------------------------------------------------------------
-Benno Lossin (15):
-      rust: pin-init: remove `try_` versions of the initializer macros
-      rust: pin-init: allow the crate to refer to itself as `pin-init` in doc tests
-      rust: pin-init: add `syn` dependency and remove `proc-macro[2]` and `quote` workarounds
-      rust: pin-init: internal: add utility API for syn error handling
-      rust: pin-init: rewrite `derive(Zeroable)` and `derive(MaybeZeroable)` using `syn`
-      rust: pin-init: rewrite the `#[pinned_drop]` attribute macro using `syn`
-      rust: pin-init: rewrite `#[pin_data]` using `syn`
-      rust: pin-init: add `?Sized` bounds to traits in `#[pin_data]` macro
-      rust: pin-init: rewrite the initializer macros using `syn`
-      rust: pin-init: add `#[default_error(<type>)]` attribute to initializer macros
-      rust: init: use `#[default_error(err)]` for the initializer macros
-      rust: pin-init: internal: init: add support for attributes on initializer fields
-      rust: pin-init: internal: init: add escape hatch for referencing initialized fields
-      rust: pin-init: internal: init: simplify Zeroable safety check
-      MAINTAINERS: add Gary Guo to pin-init
-
-Oleksandr Babak (1):
-      rust: pin-init: Implement `InPlaceWrite<T>` for `&'static mut MaybeUninit<T>`
-
- MAINTAINERS                               |    1 +
- rust/Makefile                             |   16 +-
- rust/kernel/init.rs                       |   40 +-
- rust/pin-init/README.md                   |    2 +-
- rust/pin-init/examples/linked_list.rs     |   19 +-
- rust/pin-init/examples/pthread_mutex.rs   |   10 +-
- rust/pin-init/internal/src/diagnostics.rs |   30 +
- rust/pin-init/internal/src/helpers.rs     |  152 ---
- rust/pin-init/internal/src/init.rs        |  548 ++++++++++
- rust/pin-init/internal/src/lib.rs         |   48 +-
- rust/pin-init/internal/src/pin_data.rs    |  615 +++++++++--
- rust/pin-init/internal/src/pinned_drop.rs |   88 +-
- rust/pin-init/internal/src/zeroable.rs    |  157 ++-
- rust/pin-init/src/lib.rs                  |  200 +---
- rust/pin-init/src/macros.rs               | 1677 -----------------------------
- scripts/generate_rust_analyzer.py         |    2 +-
- 16 files changed, 1305 insertions(+), 2300 deletions(-)
- create mode 100644 rust/pin-init/internal/src/diagnostics.rs
- delete mode 100644 rust/pin-init/internal/src/helpers.rs
- create mode 100644 rust/pin-init/internal/src/init.rs
- delete mode 100644 rust/pin-init/src/macros.rs
