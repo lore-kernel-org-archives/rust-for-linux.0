@@ -1,64 +1,67 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020098.outbound.protection.outlook.com [52.101.195.98])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022140.outbound.protection.outlook.com [52.101.101.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DDE338598
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 19:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFE6280CC9
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 19:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.140
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769110393; cv=fail; b=hDUFsrzpJgtP8N6vDz7hIeocV4V+b916LgghBnN3GIkHqjpJ1GU/UU42ejzlehffKOmqgGR2hBz+YDureS0hzhsFyh3LAfooYpbW/UF5Kv2Rp7aJSuevBikpWiitXR5cOHKrfxOyPemHCTffRLFZSepSSRI7lr/Qjgla3jl35E4=
+	t=1769110727; cv=fail; b=fOdDkHXxzyCGyQdt5gN6RoVZdtctqwemzdG1QgMZBhoLlhmQvlxw4ZE2M2hU6yiNjn6wcPx0sfA8pw9CRLU8O1drwzP82Osv1RlTucoBKUpTiidQ5ppCPtNjzLmFwTfAgW0/LtzFBeLrxMS44PSA1En6z26xcZ936Jkt88aZILk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769110393; c=relaxed/simple;
-	bh=JIyyCrSwpa5meJ5jQS6daP5ta2MbJIR4waFalUJQTEA=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=kOo4wNahRN88yphhbuB/46eE0zfi4yr7Asy3XIGkK2/QUzIO6RhRKMaRmRj9WDDr54jRRlQXwVkAa5inIcReQ92vcXzXooPmWbJ6dPrmwUNALLRNy5VLPIkOxjfBjhspzKDcCpREJ6MLdjXNHMlXROVgJcHjoUWwJEXQ37V7TdM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=CVvVnjMx; arc=fail smtp.client-ip=52.101.195.98
+	s=arc-20240116; t=1769110727; c=relaxed/simple;
+	bh=+OUj6o2CMfMqlshghgSlGC0qonqFlUfpOVKStTcX25c=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=B2ifMDx9XqwkmEiCbqXzNR/zyRfZRVAQtw4KFR+BgNKXhxbZ6RMbulwtLigfdoo+ihIcPK/qWNAd0HQ4iV2e3Zd6Zx5MRwIedAGLnEXdwuKXObEn5CCIOtLcxmQs6ICoX/+hBjDzYW8occiEdQ8YEvqKJE9MoRiWQu2TaUQshg0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=pZwpV+H3; arc=fail smtp.client-ip=52.101.101.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="CVvVnjMx"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="pZwpV+H3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IkhTo00lNEvnOFEpWq9QHWB0JXVrH+npk+LGi6AfSLDw6Rbym8Ovq0Gf4kaFEM2GF0flRMlpLSBBhrdpRffUCfu2LScipcJ9j8XjJrljHDIdqPabX7YNWdAZ8q9NJZhQ/wXC035OU0TMTXRNZNNv9w1WN8BX7RDYSzvlSVGufXRNf+l9eA6Ew2qVkl3grtUca1X0jaxUDtRyqqpMjxKeLpK0Gf2dOqwAbNT+wxoebHvhtofcipbrItkBMljLwoi8QW8ZG34lRfwOsUu1nrwxp0zmJRgeouvNnxlI1qBv50XJlf2zCTk8ksDcof7YEDNsyQQiRiF5VaQaRt4F0wb7YQ==
+ b=f8n4DIKfZyRDl7cgD7jdUfx86QFnbKm2+Na5dFeHWKo11lkoHKsPM/XN9Fsf8uf41lqpxMs4ca0Oa26VGOcAagqC8HXCXHZStBAvMcsEbhzpWqPInN+Ua4WZwEDwP5kKySXJ5VH6d4QLBiwXebKKoQ8FtpvISZxNVFVQ4aFFIV3AxecB7H5KFf3GVE8pjwtg+zf+P9f163imw4vEcdveRBlFS+F2W0PDfk0XADP4i49rebTKu47LPwHbnppQoQyEWZMnYwvWxzBgTekEGTfitgJSWLzfTJuKBfu9khD0x7xQYVI3//YqHVavzvqg31ntaGcX7QuO7OEFrFAPSA2vfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h4wRm0kWwlDs5h4iiuG2fcCtlwLTPXn1GHP119sR3fY=;
- b=ahrREKTWlYAfvJOtXK9LyymlWt2b07kOeFMjxI0yWQWkK/ouV7ZMwJmnIoupyvF6DgTqQaz7AxdMm5ZLTkwQoPsDR7yZ6NNMnTcJKKjU4JztWGFD64bQx4b99NgkHFr4dsOrbnlRr/j67eK/kSjknDu2SFMRQI9uyE3KE1uPNRVVhRaNVGIIGsnMvdiFoBajeDRjILhYNydQ+sOvpFyb4u4XG78z4bbKSrEqS4XPveji3NbiuL+uDzV0DtFsCgCX7LzjjzsGxv+nVanGyva/zjyyNulOSY6t5oOYHqNDUYAQ/n87tCkBzNHpM8N7OjrAnqVxGX6c0gBaoE+wn4iU4g==
+ bh=U/VPi2ckGe3haou1z58XklUxXejaN8+AIPiPKeyEP3w=;
+ b=qApJGzbotyJP0vASKF9eT5v8lyx02utO4MqmumhSsKQHHFwHH0529iXjhAq8wH05w6JYBjsfvq4jBaHMHZZtOKdwXK+mbJKy0Ud/3f1jVAB0IkB2cnY8e/ma9WcMLImt783rgVaGauPgAFnd+CE2H6/7ccazTVNEoDM7tHcWika+4N97q/7bP5fgeWfRjFP7XhJ8VDHb5vdhiFNcjcNXToxjfY+uSGZ1BB5jbUddrPy/2dY5dgLKdujYQzwCzsdTLSw+NvJh1FXPk16LIO4yLeKFqxAEkkowR8XiQ4cNfWIejwGW07qn8YTv0OvHuAV+BRh+yVE2gYsi+zpOeSWOog==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h4wRm0kWwlDs5h4iiuG2fcCtlwLTPXn1GHP119sR3fY=;
- b=CVvVnjMxhmnYUbFnlroGM7i9xT3HCpqpb3dOzpIctDBfJkYkoR6vy8vAJ7GVVxR/YP37AlJgX2Qt/wuqaCBi26far3nBLu00TP3Yo0BcNRufcZ0k+s30mhNmHlWuygW5TshezMCZKzx91s+2n7SZyijx4+o+iYgGomlc80tm9xI=
+ bh=U/VPi2ckGe3haou1z58XklUxXejaN8+AIPiPKeyEP3w=;
+ b=pZwpV+H3ykDuA1Ge/Ofr2g5+1KeMSMbW6uw/lM9a2GspAECmvrb4aflhM9aVmjp5hJDI/ZiT3tUww/pAazixQp++4Bo3/G8IbX08YjfTwv/VdLiRQpbtKYYxP7pM3acwbnBkdwYhziaE4PoBTixNTR1hOV6IBdl4V1BgpQJWPO4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB1800.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:30::15) with
+ by LO0P265MB2939.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:184::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Thu, 22 Jan
- 2026 19:32:56 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.10; Thu, 22 Jan
+ 2026 19:38:30 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9542.010; Thu, 22 Jan 2026
- 19:32:55 +0000
+ 19:38:30 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 22 Jan 2026 19:32:55 +0000
-Message-Id: <DFVDAEMXT9LT.YCUH2BB8FV7C@garyguo.net>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Deborah Brouwer"
- <deborah.brouwer@collabora.com>
-Cc: <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <daniel.almeida@collabora.com>, <boris.brezillon@collabora.com>,
- <broonie@kernel.org>, <dakr@kernel.org>, <miguel.ojeda.sandonis@gmail.com>
-Subject: Re: [PATCH] drm/tyr: suppress unread field warnings
+Date: Thu, 22 Jan 2026 19:38:29 +0000
+Message-Id: <DFVDEOE3UFRJ.1KJM285XFV7H6@garyguo.net>
+Subject: Re: [PATCH v10 1/1] rust: fmt: add safe pointer formatting support
 From: "Gary Guo" <gary@garyguo.net>
+To: "Tamir Duberstein" <tamird@gmail.com>, "Ke Sun" <sunke@kylinos.cn>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260122003746.405370-1-deborah.brouwer@collabora.com>
- <aXHi2jJNptrgUqyj@google.com>
-In-Reply-To: <aXHi2jJNptrgUqyj@google.com>
-X-ClientProxiedBy: LO4P265CA0134.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c4::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260121050059.2315091-2-sunke@kylinos.cn>
+ <20260122085228.2449409-1-sunke@kylinos.cn>
+ <CAJ-ks9k63auxfUEBrE+6HAeHrmgwmLZQiwo58MSd8+HSzQ7KQg@mail.gmail.com>
+In-Reply-To: <CAJ-ks9k63auxfUEBrE+6HAeHrmgwmLZQiwo58MSd8+HSzQ7KQg@mail.gmail.com>
+X-ClientProxiedBy: LO4P265CA0011.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ad::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -67,189 +70,335 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB1800:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1f70db3b-b4e6-4b89-bbeb-08de59ed0ad2
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB2939:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e7f4b35-c303-497f-f176-08de59edd243
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|10070799003|366016|376014;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|7142099003;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZXNQbzlOUXJkMWJxd1BZaDhzTkVSSmxXSHlKUkZwOWNwWitFSXI2Z0tDRytZ?=
- =?utf-8?B?d0pBd3h4YW5MMkVYMUtXWE9YWjVBK0JYMmVMc2hvUWlpcTZNakJ3WXFuOTRx?=
- =?utf-8?B?d3VTejRKM0dZeWhKM3hZNzZ3VE1MejI0RTI1dUdhYjdnaUVSaHhwaFk2NUUr?=
- =?utf-8?B?aEpPTDBMa0ppU1FEa09zcU9UYm40NVlYZDBOU0I4VDRpSUNROGdMR1NQSERx?=
- =?utf-8?B?SmtwQzE1dnJjNTdMd0FaOWtGT2tHeEdTTlIyM1E4WWdBbzdpbEYxTXhVakts?=
- =?utf-8?B?VUFzLzNmZjYwcmp5VjJLNXVnQVZrRytIQSsyL0lhNG1wQ1dMZUR1ZXZqOGxB?=
- =?utf-8?B?cW5EL2wvZTAxOHpuUE5ZczdacWZVbkNYWjN2K1YweHdNU1ZNUmN5T3Jlc0lU?=
- =?utf-8?B?YnJubks0TkpQRi9BM2RycEQxc2ZGZnVmOXR6RmtTQkdPUUFXODEzdmJQY0VH?=
- =?utf-8?B?RzVvZ2ZiaHNiT3hRcUp0L2loQ3Btai9PdjdNYTNmMldmN01NSkY5c21ycGs3?=
- =?utf-8?B?Wm9DZXIxWHhsYVdIK3hlTlF6K2lUT25GajA3YmxQekxsWG5lQkpjVjBCUkpr?=
- =?utf-8?B?NHp3dUNCL1k5aWl6amJqTjBRamhBSlI2akxhdWoyb3diQmNEelFqMFZuSktl?=
- =?utf-8?B?bG9FZ3JOTE9henR0RnFOcHRKeTB1L0c5RElWKzFNVWZFM3FUSUpBbFRqcEZv?=
- =?utf-8?B?TmZiSkhkTXltNW15cnhXU1NyVHlGcVRhUi81NjdSbktVU2hVWUFURHdQbHNw?=
- =?utf-8?B?eW83OEhjZEkrcG9veFBSdEo4Q29kajNtZnVrY0VpM3dWTGxxUW10RS9HcGY3?=
- =?utf-8?B?eEhxc1N1REFjY2p5cGZwVWI3aVNWeWMvSnFMbDY1NG9mdXU5S0k4Y1AzRjll?=
- =?utf-8?B?K0Y2NzlpQVlsa2tPektSVGdZbXhEY1l5VzRQZlJjc0Y2Q2xSOFBHRUJKL3hX?=
- =?utf-8?B?QWs2WUFoR01jcXJIUEJFcW03U1AzaGJFV2hqNERtZEp5bWZ4THV6OFEwQm9V?=
- =?utf-8?B?THpzaHhKMEM2K21BdjkyN2owSzJPQVRRNEZMUGN6VzRyRjA0cy9mdU4rOUty?=
- =?utf-8?B?RDFIOGk5Wm5nUDZLM09aZkNkaWZWaGQ0TElvTWw0VHVyb0MvaGRiTDBMcy9u?=
- =?utf-8?B?V3p5dmNjbTNlQ0tTQXRXK09iTXhOTW1wSmFHeEhzSWorcmthQnNLcVhVSjBH?=
- =?utf-8?B?Q2Z5WVE2OGNSYXByUkdLS1M5RDFqVWN2MFppRytDTUVOaHg3RmdJK0krcmtM?=
- =?utf-8?B?Z3FoTTFDSWg3QU9GVHJQUnR6QkwxS2dIZ3JTbU1ZbWhObDZlRDEwV3hsbkRC?=
- =?utf-8?B?WWdjRE0xZGJVUzc2OFR4ak1qN2kzTFN4SjJ3Qm94WUp6NFk1U2srMHN1bGFx?=
- =?utf-8?B?a2sycHZTK0dJSWFKWWJ3eFJKenNYUmxHeWJCRlZaVVpMdjF3N3hyNkFNbzJ6?=
- =?utf-8?B?NmxHT0RRbVd0RGNYUnNrd0hiRXM1VEZzTmxhK0dnaUF3U3dZNHNEV2k5cllN?=
- =?utf-8?B?bGdyWmZObGtjWHlnWHl6ZWFkcGs0RkdYQjc0SG5HUUp0dlZwUnBXZmwyVDNv?=
- =?utf-8?B?b1EzUFVuN1hLbzI0di9EbVFmN2NqQUZ3dmMvWTMyNU9XTjlXeVBVYzhKSjE4?=
- =?utf-8?B?VFJNRUlLOFdMVXRmT1lxU2N0a0VKUmlud083YmdrL3NEbklxNjlZdXYzSnM5?=
- =?utf-8?B?K2JGd2FMMlZHMU5YYW16Sk5aU2RSYURuY214WXhCbkE0Zkxvaklwc0N6MDdW?=
- =?utf-8?B?ODJqbk9tSWRzLy9Hem5BdmhVM3E5QWhaSkFTY2tDdFh1L1JKNSt3emxFUHg4?=
- =?utf-8?B?UkU5eFhMMHk4NjI3MHpQTTVqL0dtYjdHN3VuenZQYkZaa0hxdUJoekU3SFM4?=
- =?utf-8?B?bWVqWnA5SlVtOGxqMmNvUjZBMXY0MklxS0FpRGFWalE0eE5Ob2xza1p4RGV0?=
- =?utf-8?B?MGE5a0FyY1ZoU1J2eVZucWJXS3grc3hYdytOWFpRZUtsSUJ5YmFjWmVtSTdu?=
- =?utf-8?B?Qy8wUVFmQUFWZkR0TmVEWFI0ZWw0RTZtbXR1SGpIb1Yxa1VCODduQzZteG1s?=
- =?utf-8?B?TnFtNVFUS04rSGpWZTZYemYrNmNhTG9sT0wwVWo5TGZzZFNUYkRKK25IVExJ?=
- =?utf-8?Q?zbRw=3D?=
+	=?utf-8?B?MG9WNlo2YmQ2aGZQM3hqcGlZOElxbm5FMW9JQnpYN3luSklmaDE3UEF4UjVL?=
+ =?utf-8?B?U1hFY1ljb0t3ckxRQ2ZrcWdDUys1NXlXRlhnaE1uZUpMaS9ZczJOem95ZzFB?=
+ =?utf-8?B?Q2x1aytYbXlaNzVCczNtZEFZV0JsL2IyY3FiRk16aGZwWXdpdWlSeW95RThW?=
+ =?utf-8?B?dzhiZmJOUnZzN0d3NDVhQ3lwcWtnMitoeU5tOEJNMVlYblo0dUc3QTRPN05w?=
+ =?utf-8?B?bW0zcWNJSEJFbHZwL0Nld29ybW5UcXpLNFVoU0cyQUgxMkNPMG9ZTW5wYjkz?=
+ =?utf-8?B?MnBHUHpwMVZzTXo4Tm1DcVJxSmJzQnF4bC91bFFBMm94YXhYQTV0Y0Q2eFQr?=
+ =?utf-8?B?bkNNZU9jQmtjZWJWWktmbUVIRHNTVlhPN2tZamVzYXFzeWxTVlpRd2Rwb2Iz?=
+ =?utf-8?B?Q0I1Mzhmazd4OWF2d2dBMDJmeTdpTjRHUU45WFpzQ0VUS1BWTGxGZEZJTzhh?=
+ =?utf-8?B?NWlhamJDY0s4aEFlMXNLN1Y5RlFCTmlibGRsTnNoMG1mdit5UG00MnZ4emxC?=
+ =?utf-8?B?YzViNGdGdlhKekp2d0E1ZExoQzdkNUtpck9LbmRUM21uQ1JKNHBxRGFGd2ZC?=
+ =?utf-8?B?b3N6U0hlRlpmSlNPQlRxUkc4WmVGaG1oLzByRHdKMCthbzJVclIrRktuSTZh?=
+ =?utf-8?B?NEtUdVMzN3ZFdDZ5MGhlWngrV3BycVN1dmw4Q1ZTMmZuNjRaKzN0Nm42eEZO?=
+ =?utf-8?B?bnB5aDFhUGVOMEVIWDdCZmhiVXdVNmhJTFIyeG4yNHkzd0xwbFhhYXVnUGxl?=
+ =?utf-8?B?Smd5VTVmNmkxeE9VV2RXUE9kLzB3OG5Mc0VJTzRpK3Z6MkRlSUlDdXVWUkVQ?=
+ =?utf-8?B?RjNHQ1VDaVUxRUxrci9uREJtS2ZhOXR2dkx6SGxCeDNDbmszMWxaQ3oydjlH?=
+ =?utf-8?B?aTlZMzVNSG9lQjdoRko1RC9DL2srbXFnb3U4dUtqaGNrU1BqakdYb3RaajBj?=
+ =?utf-8?B?MTU2eHA3SXIrZ21Jd3FvWG83YWgwOXJoVnhITXpRd3dZWUxmTnhxckxPQmtE?=
+ =?utf-8?B?d3diS2xOWXhOQ1V4L0NCRnZYbjl1MlpWMDdaSEU0dU9VY3JDSUNXMllJWk5K?=
+ =?utf-8?B?b3plQlFocmdGWFdqczNzcjNpYTMyYjcwUFFDSzlkL1M4bUd4cFlDV2tUNTJB?=
+ =?utf-8?B?aEJ6ZElWYTFrZVpRN3JqUWZuNzBtb2RncnFWUjljU3VJeVI1OE5sUDVEbk1Q?=
+ =?utf-8?B?QVhVS1hTeE1NQ3FJaHdOalQwMlhBQlZONmh2OW1vMjRuTkNJVVBsWDRUc242?=
+ =?utf-8?B?TisyeXpMVy8vYmxWQnVCNVZHK0Y3ZHk1MFpCeTgrR0xveFVHQjRBNmdNaWVE?=
+ =?utf-8?B?R043Qkh2ZThpVFF5STVBOUN2a0VFMXNGV2dybDhCV1VKSjZuV1JqaG9XeE5X?=
+ =?utf-8?B?MGYzNjYzaE5tM09PUnlON001eEpkc0I5aW96OEgwd3ovTlg1c1lVWW9kZGVG?=
+ =?utf-8?B?ZExvbDlHd0NiQTcvZy9NZ2k2cUcxYVVHY20vVVNYYXRKWjdhQTJpNU05UFM4?=
+ =?utf-8?B?b0NiaUNKYlRpMUJwTndVdEh6MThMSC82Tm0yd3JmUkhYM0FURmdWai9JYnZU?=
+ =?utf-8?B?bG00R1lkem1SV1B2VjhiNWJiQ2pEeWNhRCtBUERma3FqeHRybHNBZlJUMWVM?=
+ =?utf-8?B?NkVNL2dudEIxRWxkWkMwSlVMbE9XNThjSmE1OC9Rbk8ydVF2ME96YW5hSjc1?=
+ =?utf-8?B?bWoxQmlMV0NBZjhLRmljaTYza2ltanZ6REZORTFPeXBjcWdKTnJsVkJkSC9p?=
+ =?utf-8?B?Nm5QQWNFOXNKM3QvTkp2NHdTeVNlVS80L0pINEY2S2ViS09UYi9JYTNkVG5y?=
+ =?utf-8?B?Q1ZkeGJjNFp3SGg2MTZpcXB1eFVScUhhTWxEMnlNWEVWWEc1WEIzU3RmVHBK?=
+ =?utf-8?B?K0pOaGhXWXNaTzJOTkVtMDVNc3NzSnFSOEJMcHFQQXhRYk1CWDcvSDVjclo1?=
+ =?utf-8?B?WGQ2eG1XM0ZTVEgvNmhJWTJ4dXNsYnJzRkhYQVlsOXVBcjFFSE5xOXRCbi9n?=
+ =?utf-8?B?NXJNSDZWTjZRbThpdXFQSm9QRDQ2aXRGY0FzM0RkWi9vUjJ4aGl4THE5eTdI?=
+ =?utf-8?B?dGM0RUhVdCsxYnZtZnZaTlR1NVQ1aTkzVGt3VytUMVVrRmZNSlhjSERQQzVH?=
+ =?utf-8?Q?KBSU=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(7142099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YVRqUmE2YzJMQVUyVU8wKzcyR2dEVGJqMGQrbDZxNUp6VzFPa0tFV09HSWRy?=
- =?utf-8?B?WWFudk1IWnhjWW5SY3JkaW5PV3htdHBGSm94b0dFaXAwSXFKV0FIOW5FQ3Er?=
- =?utf-8?B?TVlsTXc1OGtLUmx4QXFUOVlMTlZ5L0RUNGpVMzc5YXdYWGpLOVY0bjJ4cW4v?=
- =?utf-8?B?SCthbmpOVmNvT2xGRVR1VXExWnF0L1dUaFo5OFczSDZaUVhOajBDTU1SdUVm?=
- =?utf-8?B?eFFjZE5KV3NDOEkyaHFHOUJSbkNlL29UNUZlZ2pIT1RFd1o3MVVjb1hHK1dO?=
- =?utf-8?B?TmEvSVcwNUxkSXFEZUU3ZDBab2F0ZFJHU25VdXVuTHV2QWdnSXJrVk9SeEpL?=
- =?utf-8?B?cG9yYjg0R2taL3djSHhwRGRHbWp5c2Q0MmRwNFhaZWhHQ2RJNDRSQ2xTbFFL?=
- =?utf-8?B?RnhvNUVsV0RPcndpWGlGaUpsY1NlNVA4S2dlY1NjQUZvS0JuZ1YvK1cvVm5q?=
- =?utf-8?B?OURyZnhEVmx3YSt1RXFiVnU1VHpEcjllSGV6ZTY3cTJiVkZNUTVoWHhrQlFB?=
- =?utf-8?B?MkVsdHNQOWhhclM3N3BkZFhDRGYzSENoczFlSlBaTGRPQ1hYQXM2SjFNZUE4?=
- =?utf-8?B?QlhVVjRySFdmVTRnQU5CUjNBVE9Ob1BMS28zR0hiV3lxR1FPRUNtVzQwcG1L?=
- =?utf-8?B?Ym9MRGNaT2I0ZDNSd21TVDB4bzN2UXV4REtzOG5qYWJJeGp2eTlNaWlKa0NI?=
- =?utf-8?B?Syt5emVnc3ZHeTJWeXkyeFllaCtJS3Z1NVpBeWRsYTJvK1NiOGdBYzJFU2hu?=
- =?utf-8?B?SW9BVGU4ano5SEZraG0wTWo1eVpJWnp3cEtDckIxMitRRGNMSEgwMmZleUJG?=
- =?utf-8?B?dy8ycE5mN0c4MEF6cnNqc2o1Y2t3SXZRdzBkK0hNRU9ad2d1OXVWeU5FVlJs?=
- =?utf-8?B?dDh5MW5rZUx3SnJ2SU5HZVFZRHgrNDRtWi8wWGdJdTlaaGNnQWZkSEZMN1BF?=
- =?utf-8?B?VUtsbzQrKzcrcVRhb2FQNm5QV2ZFeVdENFVacElCbzJPUGJFNVBwN1dGMCtD?=
- =?utf-8?B?Nnd1bHAwU2R5aW54WEU1SU80bGNJTGxBZWZXUndHcjlTQ1RjZjBnNDFkM0kx?=
- =?utf-8?B?emYrSFROTTdFcHhtbDZra244RVZjQ0d2SGRtb3RwMlNwWmQ3WW5HTFEzNnZj?=
- =?utf-8?B?QWJUTVNUbUt3U0d5Vm05MXhzb3NIK1dKTkwyRWdMWW9tU0l0UWo2Tmhudzln?=
- =?utf-8?B?MTRvOUYwd1k3MVZuT3gzV0ZldUpsZk5PY3hadFlmRVhuVFFrd0FLaW16YkFE?=
- =?utf-8?B?MGpjREltUnJHYmxpZHNoZGJLK0JWbENUeWJzYTZBZE02ajFXUUF0dXErd2Ew?=
- =?utf-8?B?OXRUdEQ2NUptQXRLdGdUYUM3SHJxMjRxaEV3RnFDNnlhZDVqcGlJTDBNa1JB?=
- =?utf-8?B?d3JIRUNQaHBQcmRnZ1IxOFNic216enZFVG5zbEVYZSt1ZzA5STdVWmhEQ3o2?=
- =?utf-8?B?dXRRZUlERWpBTm9LSkh6N0djdGJNaXErR0U1NzZhZW1HdGZUUzlFSTMvZVJR?=
- =?utf-8?B?VFRDNDF3OUgyRHMvclRJejViRy9LZ0dCdFdXZEdNemJZNzMyZ2Y5OE1ZaXpi?=
- =?utf-8?B?VVpURHBaelg3bEs3OWhPc2p6TFhWRWxCRHE3Rmxia2lvZmd4MFExQ3pjWVpP?=
- =?utf-8?B?WUFKTnJFV2E1VFRDbXV3aWJzWFdEc3FFWHlyMURrRkpTZStvSDVHem9YNUIz?=
- =?utf-8?B?Qkp4THBJUVZsK3pBWVdBdVVxVlI1b2E0WTNVRzVQcmZiRzIyWTVnSFUzSWxo?=
- =?utf-8?B?T2tIdGFRdVo5RjQ0Y2FRemo0a3dvZnVuY1VGWGxPTVRpRmpUZE5na3RRVG9V?=
- =?utf-8?B?K01tbnhsOG9CcnBSdEtsQjZhTUhkNmhKOUU3Q0FhOUk2WUNURi82NW1KUlJq?=
- =?utf-8?B?aDRQRG5MSFpnOWxIV3d2VEVvNTh2TE5rSEVnYTZudFVsUFpha2xlYityVGdr?=
- =?utf-8?B?WmdaZjEwRExkMUVCWFJNL251QVVSRXI4RFlBQ25lRjRQTVc3WUpIQzVCMzVK?=
- =?utf-8?B?TVlvbXR0SVNTeWVoU0MyUFdXOHJtVms5UVYrMmcvN0dVWlA5TjV3SlcyOENo?=
- =?utf-8?B?Z3ozZzNMNTY2dUhtN015aHYrQUhpYllYWG5hNjl0U3VQR3dGVjRFcUV4WWVD?=
- =?utf-8?B?RWcydkd3K21Rb3ozUlJseDRzYkJqelk1ekFiNDRtUDlBQ25IVWhIMnVLb0RF?=
- =?utf-8?B?anE2NWVWcjQyZmh2eUpvWFl5YnEzd0IycTRmeVBZUXFrdDRxaXR2Z3pYanJt?=
- =?utf-8?B?SndncDQzaS91K0h1dzVyUG9pTkZXNmovRHpWa3drU0o5WEgydmx2UzQvbmpt?=
- =?utf-8?B?elo3a1ovRTBONlAzeC9jeWJuRlU1cWFmV0VSb1ZScFByNUxwL3ViQkcrRUJp?=
- =?utf-8?Q?JcqiKDgT9XlovWgNebj+GniXOC4GGSmzavLWq?=
+	=?utf-8?B?VC9WQ0hFQWpVVzlBSHc4NkNpQVFrSWVFR0h1TERoU1ZhNDlRKy94bi9sVnh5?=
+ =?utf-8?B?dmRvR2V5YXJqcVRMbGR6QWFYYjlmcHgxMzFUUlBHeWlpVmNmOVJvR0Zhb1Nx?=
+ =?utf-8?B?VmZwSnZEdkVJU3FrRDhWeTVoN0xmdzZNOHlFYkZQZ04wL0gxTUYvVHI0cWlp?=
+ =?utf-8?B?cnBQbmgzNlNmQU5wa0o1bWo3NXJNVEZkOWsraFNabGU5OE04MlVhWFFHSlRG?=
+ =?utf-8?B?cmdRcEsxSHpoSFA0NXNweUJwTXRmNlgyM0UxcGl5V01BTHlob2U1SFRFTWNO?=
+ =?utf-8?B?aFI1S1NsMWlOcUdJV0RBR1o3YWZPbFEwTFpVRlp6YlZTbHNuYzNuT0FCNkwx?=
+ =?utf-8?B?TXA3bXl1OWxSRXNjQnpwSXRaSitEc1FBL05YbFlvS0pzVHNreUVBb1NQVTFP?=
+ =?utf-8?B?RExGR2QvKzFwdnFzSG1ucVJaWUhuTE5RRGYrM2t2VFFsMzl6Sy9JT2ZWU0Qw?=
+ =?utf-8?B?NkxmdTJwb2dmcW9oRjFYODVsSzV4ZjFjckZQOEN5ZGZPRzIwb1VzcVgvUW9N?=
+ =?utf-8?B?TWs4UjNOekovNkQ2ODc3NEhBVmNSYmUxTVJ6d0RxVE9EQ0JYNzZHaUpPS3Q4?=
+ =?utf-8?B?YzNQYWtGOTFLVWRUL1N4MFViY3pXY3k3RDJHS2RrM2JNTkdmaFpta01rcDBW?=
+ =?utf-8?B?Y2IyL0U4M1hwVFZ3TWhDNzF6TGVxTVlyNURsR3Azb1FkbGdlVVNyZ3NVU0s4?=
+ =?utf-8?B?Q2tzMDVrM0N1WEpURWkxWVVFMFpXOUlOTDRIbEt5NmFzQnZOWHF4MkRqa0cw?=
+ =?utf-8?B?T2hFVUhXcStKUjBSVVNYY2RXQ1B4eTExb2NpUGNPOGF4R2p0Uko1TURaSzli?=
+ =?utf-8?B?K0grSDAyb25UeU45RVMvUG9BQ2NLVEpUUXdVL0FUZlRTOE5zc3FtZzcrVDN1?=
+ =?utf-8?B?OUJiVGhwU29kS1FvdUdzM3VoSVUzUkxiZVdTRmk4V2d4azlFRU1wL0xLMlVp?=
+ =?utf-8?B?K0MzZzV4L1NpcUJraGhXWEcwSTlZcWxlWVFMR3BpdjV1Tk1DdHFSNldRUEwz?=
+ =?utf-8?B?cFU4di9aSXhXVVVTeThScmthN1ZwWXA0UldyYzd5dFpvVmRBZGRHU0NyMExT?=
+ =?utf-8?B?TG56ejJ3NUR3VVZObnF3K01CSVpnQmhhMTRvUHl4ZnNGY0ZteGsvNjNiSUlW?=
+ =?utf-8?B?ZkZVdXlJbkt6SlcwQjhLREJkSW5LMGJtNU1Wa2M5NWJodExOM3NCbGE3WldS?=
+ =?utf-8?B?NHp3cnM2SXhzclhILzFHby9nSnNJMW5ZNTZoV1ZCYW1jb0JmbHlib3U2Y3NE?=
+ =?utf-8?B?UGVabUlubzZoQ2R6bUlUSktQSFpzbmVZSDBIMDZ6VGh5azhuZ2pDSXU0d1lN?=
+ =?utf-8?B?cFFSSnV5UC9DcmNEQm4wRXlFTm12M25YTlJJVzludkFaV3F1Sno3NTlBeEhs?=
+ =?utf-8?B?dEEwNy9taWZoanB2ZWYzaGxFWGY1M3pOMmZoTGxoQ21QRzRsaFVpZExJaUZ3?=
+ =?utf-8?B?KzFyK3hrQldPN0ZvYlVleW1WaGwzdzkwTEVLRWlXV1NHWG9NUG5SRFh0bENy?=
+ =?utf-8?B?Y0RxbWRLN3JqV29xaEF4eUJpZk1QVmp1cjJSL2MxZXpYSnNEZE9jL0xLZXJv?=
+ =?utf-8?B?UGYwVlphdmtJZ2ZnVFNnMERydjFBajdmYWdTSWUrT2tPdERNeUNtSE1LNEtr?=
+ =?utf-8?B?QnZtWThxWWR1RzNEMXpPNGhHMTBsdlhwSTdiYTN1QXlCejNCV3pRUVJ0U2Fx?=
+ =?utf-8?B?KzRxWW5GUnN0NjJtUERGcjFvaU9FWFBSY21VY1o4MUdCaUJGMjdvc0wzZzlV?=
+ =?utf-8?B?OVVCL3J3S210WkFleFVqU2FsaUNpM0kwZDhlTlpVODV6VUIzMlU4dG1jUjB2?=
+ =?utf-8?B?dG9USGdjb0hENDUzNWZ6ZGNUTGJWemtIQ2NZSGlLd092NWl1RXlGK0EvNUdz?=
+ =?utf-8?B?VFRiTzV0c2QydzdDWVdjL2pJKzc5TDMxOFIvQ2NQMmhMZU56QXVlYTdiTTRh?=
+ =?utf-8?B?bTJaZWcxak9XR2lWSlBOeVdjai9vREI0THZHWlROdGlvT0VkNndCZ1E5VDlB?=
+ =?utf-8?B?SWZBQnNad1Q2TUI5Rk9KY2dTUlU5Qkg2eXo5RGh5N1ZVa3MxUGVzT0FTam9S?=
+ =?utf-8?B?YlR1SDUyY3ZqcDdZWnZidVpPMkR1ZGxtUzhDVkZWL3VqYURiWXNXekJxbzJQ?=
+ =?utf-8?B?TDAzRzFzRlB6TXZjVk1DOU5TMDNnZzY5QVlUZ29BaW95NVAvRDdabDJsS0Qr?=
+ =?utf-8?B?ZnVZcld6YjBhRS9NME5RMWRISUZaNGtQV2Rxd0pSa1YwOUtMd0hIWmRHUTJO?=
+ =?utf-8?B?VTBoMkt0d29VTGJMMGppdUc1YSt4akhpeFIwY1g3b0NncndvdWxNTEgweE5C?=
+ =?utf-8?B?ZitRb0d6ZWxBSEs0MU9VMGFHWm85YXhkdWJRdTRxRWNXR0lDcTh0Uk1aSFAv?=
+ =?utf-8?Q?PakU4nE7samvHpg7AyD+eD2xzHXIqMHbnY7op?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f70db3b-b4e6-4b89-bbeb-08de59ed0ad2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e7f4b35-c303-497f-f176-08de59edd243
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 19:32:55.8096
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 19:38:30.3794
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C2/lAJ88gTcj+3qr21PSHaL7Zh9NwGtIS1aymlaZH8hjxdHnHgpZ7IS1FU2XUD7H/785mKyYnBJ9hnPFwxEDSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB1800
+X-MS-Exchange-CrossTenant-UserPrincipalName: reYZi0cZhh7nXhC0pRwP+DgRMQnxx7MZJnEyEF8o/ZSqND4YgWQBtVoGVMeiJRDBwXXnxHYizGOIABK5snicoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB2939
 
-On Thu Jan 22, 2026 at 8:42 AM GMT, Alice Ryhl wrote:
-> On Wed, Jan 21, 2026 at 04:37:46PM -0800, Deborah Brouwer wrote:
->> Currently these warnings, as errors, are preventing Tyr driver
->> from building:
->>=20
->> error: field `device` is never read
->>   --> drivers/gpu/drm/tyr/driver.rs:37:5
->>    |
->> 36 | pub(crate) struct TyrDriver {
->>    |                   --------- field in this struct
->> 37 |     device: ARef<TyrDevice>,
->>    |     ^^^^^^
->>    |
->>    =3D note: `-D dead-code` implied by `-D warnings`
->>    =3D help: to override `-D warnings` add `#[allow(dead_code)]`
->>=20
->> error: fields `mali` and `sram` are never read
->>    --> drivers/gpu/drm/tyr/driver.rs:196:5
->>     |
->> 195 | struct Regulators {
->>     |        ---------- fields in this struct
->> 196 |     mali: Regulator<regulator::Enabled>,
->>     |     ^^^^
->> 197 |     sram: Regulator<regulator::Enabled>,
->>     |     ^^^^
->>=20
->> error: aborting due to 2 previous errors
->>=20
->> Suppress these errors so that the Tyr driver will build.
->>=20
->> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
->
-> I still don't understand why I couldn't reproduce it myself, but
-> assuming it's not just an 1.80.0 issue, below is my review:
->
->>  drivers/gpu/drm/tyr/driver.rs | 3 +++
->>  1 file changed, 3 insertions(+)
->>=20
->> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.=
-rs
->> index 2a45d0288825..04c865cb4397 100644
->> --- a/drivers/gpu/drm/tyr/driver.rs
->> +++ b/drivers/gpu/drm/tyr/driver.rs
->> @@ -34,6 +34,7 @@
->> =20
->>  #[pin_data(PinnedDrop)]
->>  pub(crate) struct TyrDriver {
->> +    #[allow(dead_code)]
->>      device: ARef<TyrDevice>,
->
-> Let's use #[expect(dead_code)] so we remember to remove this when a user
-> is added.
->
+On Thu Jan 22, 2026 at 2:51 PM GMT, Tamir Duberstein wrote:
+> On Thu, Jan 22, 2026 at 3:52=E2=80=AFAM Ke Sun <sunke@kylinos.cn> wrote:
+>>
+>> Add Pointer trait and two pointer wrapper types for safe pointer
+>> formatting:
+>>
+>> - Pointer trait: A copy of core::fmt::Pointer for foreign types.
+>>
+>> - HashedPtr: Formats pointers with kernel hashing (corresponds to %p).
+>>   This is now the default behavior when formatting raw pointers with
+>>   "{:p}", preventing kernel memory layout information leakage.
+>>
+>> - RawPtr: Formats raw address without hashing (corresponds to %px).
+>>
+>> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+>> ---
+>>  rust/kernel/fmt.rs | 142 ++++++++++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 140 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
+>> index 84d634201d90a..5d4d9b72eeb37 100644
+>> --- a/rust/kernel/fmt.rs
+>> +++ b/rust/kernel/fmt.rs
+>> @@ -5,6 +5,7 @@
+>>  //! This module is intended to be used in place of `core::fmt` in kerne=
+l code.
+>>
+>>  pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
+>> +use kernel::str::CStrExt;
+>>
+>>  /// Internal adapter used to route allow implementations of formatting =
+traits for foreign types.
+>>  ///
+>> @@ -27,8 +28,8 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>>      };
 >>  }
->> =20
->> @@ -193,6 +194,8 @@ struct Clocks {
->> =20
->>  #[pin_data]
->>  struct Regulators {
->> +    #[allow(dead_code)]
->>      mali: Regulator<regulator::Enabled>,
->> +    #[allow(dead_code)]
->>      sram: Regulator<regulator::Enabled>,
+>>
+>> -use core::fmt::{Binary, LowerExp, LowerHex, Octal, Pointer, UpperExp, U=
+pperHex};
+>> -impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, Poi=
+nter, LowerExp, UpperExp);
+>> +use core::fmt::{Binary, LowerExp, LowerHex, Octal, UpperExp, UpperHex};
+>> +impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, Low=
+erExp, UpperExp);
+>>
+>>  /// A copy of [`core::fmt::Display`] that allows us to implement it for=
+ foreign types.
+>>  ///
+>> @@ -90,3 +91,140 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>>      {<T: ?Sized>} crate::sync::Arc<T> {where crate::sync::Arc<T>: core:=
+:fmt::Display},
+>>      {<T: ?Sized>} crate::sync::UniqueArc<T> {where crate::sync::UniqueA=
+rc<T>: core::fmt::Display},
+>>  );
+>> +
+>> +/// A copy of [`core::fmt::Pointer`] that ensures raw pointers (`*const=
+ T`
+>> +/// and `*mut T`) are automatically formatted using [`HashedPtr`] inste=
+ad
+>> +/// of being formatted directly, preventing kernel memory layout
+>> +/// information leakage.
 >
-> I don't think we intend to ever use these fields - they exist only for
-> their destructor. In that case, please prefix them with an underscore
-> instead:
+> The trait, of course, does not ensure anything. The trait, taken
+> together with Adapter and the fmt macro, allows us to supply custom
+> pointer-printing machinery.
 >
-> #[pin_data]
-> struct Regulators {
->     _mali: Regulator<regulator::Enabled>,
->     _sram: Regulator<regulator::Enabled>,
-> }
+>> +///
+>> +/// [`fmt!`]: crate::prelude::fmt!
+>> +/// # Example
+>> +///
+>> +/// ```
+>> +/// use kernel::{
+>> +///     bindings,
+>> +///     prelude::fmt,
+>> +///     str::CString, //
+>> +/// };
+>> +///
+>> +/// // SAFETY: no_hash_pointers is a global variable.
+>> +/// let no_hash_pointers =3D unsafe { bindings::no_hash_pointers };
+>> +///
+>> +/// #[cfg(CONFIG_64BIT)]
+>> +/// {
+>> +///     let ptr_const =3D 0xffffffff12345678 as *const u8;
+>> +///     let ptr_mut =3D 0xffffffff12345678 as *mut u8;
+>> +///
+>> +///     // SAFETY: no_hash_pointers is a global variable.
+>> +///     unsafe { bindings::no_hash_pointers =3D false; }
+>> +///     let cstr =3D CString::try_from_fmt(fmt!("{:p}", ptr_const))?;
+>> +///     assert_eq!(cstr.to_str()?.starts_with("0x00000000"), true);
+>> +///
+>> +///     // SAFETY: no_hash_pointers is a global variable.
+>> +///     unsafe { bindings::no_hash_pointers =3D true; }
+>> +///     let cstr =3D CString::try_from_fmt(fmt!("{:p}", ptr_mut))?;
+>> +///     assert_eq!(cstr.to_str()?, "0xffffffff12345678");
+>> +/// }
+>> +///
+>> +/// #[cfg(not(CONFIG_64BIT))]
+>> +/// {
+>> +///     let ptr_const =3D 0x12345678 as *const u8;
+>> +///     let ptr_mut =3D 0x12345678 as *mut u8;
+>> +///
+>> +///     // SAFETY: no_hash_pointers is a global variable.
+>> +///     unsafe { bindings::no_hash_pointers =3D false; }
+>> +///     let cstr =3D CString::try_from_fmt(fmt!("{:p}", ptr_const))?;
+>> +///     assert_ne!(cstr.to_str()?, "0x12345678");
+>> +///
+>> +///     // SAFETY: no_hash_pointers is a global variable.
+>> +///     unsafe { bindings::no_hash_pointers =3D true; }
+>> +///     let cstr =3D CString::try_from_fmt(fmt!("{:p}", ptr_mut))?;
+>> +///     assert_eq!(cstr.to_str()?, "0x12345678");
+>> +/// }
+>> +///
+>> +/// // SAFETY: no_hash_pointers is a global variable.
+>> +/// unsafe { bindings::no_hash_pointers =3D no_hash_pointers; }
+>> +///
+>> +/// # Ok::<(), kernel::error::Error>(())
+>> +/// ```
+>
+> All this should just be a normal test, in a `mod tests { ... }`.
+> Please see Documentation/rust/testing.rst.
+>
+>> +pub trait Pointer {
+>> +    /// Same as [`core::fmt::Pointer::fmt`].
+>> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result;
+>> +}
+>> +
+>> +impl<T: ?Sized + Pointer> Pointer for &T {
+>> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>> +        Pointer::fmt(*self, f)
+>> +    }
+>> +}
+>> +
+>> +impl<T: ?Sized + Pointer> core::fmt::Pointer for Adapter<&T> {
+>> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>> +        let Self(t) =3D self;
+>> +        Pointer::fmt(t, f)
+>> +    }
+>> +}
+>> +
+>> +macro_rules! impl_hashed_pointer {
+>> +    ($($ptr_ty:ty),* $(,)?) =3D> {
+>> +        $(
+>> +            impl<T> Pointer for $ptr_ty {
+>> +                fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>> +                    Pointer::fmt(&HashedPtr(*self), f)
+>> +                }
+>> +            }
+>> +        )*
+>> +    };
+>> +}
+>> +
+>> +impl_hashed_pointer!(*const T, *mut T);
+>> +
+>> +/// A pointer that will be hashed when printed (corresponds to `%p`).
+>> +///
+>> +/// This is the default behavior for kernel pointers - they are hashed =
+to
+>> +/// prevent leaking information about the kernel memory layout.
+>> +#[derive(Copy, Clone)]
+>> +pub struct HashedPtr<T>(pub *const T);
+>> +
+>> +impl<T> Pointer for HashedPtr<T> {
+>> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>> +        let ptr =3D self.0;
+>> +        // The default width for %p is 2 * sizeof(ptr) (see lib/vsprint=
+f.c:
+>> +        // pointer_string() and ptr_to_id()), which is 16 characters on
+>> +        // 64-bit systems. With the "0x" prefix and null terminator, th=
+is
+>> +        // is at most 19 characters. 32 bytes is sufficient for all poi=
+nter
+>> +        // formats including hash values.
+>> +        let mut buf =3D [0u8; 32];
+>> +
+>> +        // SAFETY: scnprintf never writes more than size-1 characters, =
+so
+>> +        // len is at most buf.len() - 1.
+>> +        // The "%p" format produces a fixed pointer format: "0x..." (e.=
+g.,
+>> +        // "0x00000000b231c2e6").
+>> +        let len =3D
+>> +            unsafe { bindings::scnprintf(buf.as_mut_ptr(), buf.len(), c=
+"0x%p".as_char_ptr(), ptr) };
+>> +        // SAFETY: scnprintf with "%p" format always produces valid ASC=
+II
+>> +        // output, which can be directly converted to UTF-8.
+>> +        let formatted =3D unsafe { core::str::from_utf8_unchecked(&buf[=
+..len as usize]) };
+>> +
+>> +        // Use pad() to respect width and alignment. Padding with expli=
+cit
+>> +        // characters (e.g., {:0>16p}) is supported, but zero-padding
+>> +        // shorthand (e.g., {:016p}) is not.
+>
+> What does it mean that zero-padding is not supported? Would this
+> comment make more sense in a test that demonstrates the deficiency?
+>
+>> +        f.pad(formatted)
+>> +    }
+>> +}
+>> +
+>> +/// A wrapper that formats any type implementing [`core::fmt::Pointer`]=
+ as its
+>> +/// raw address without hashing (corresponds to `%px`).
+>> +///
+>> +/// **Warning**: This exposes the real kernel address and should only b=
+e
+>> +/// used for debugging purposes.
+>> +#[derive(Copy, Clone)]
+>> +pub struct RawPtr<T>(pub T);
+>> +
+>> +impl<T: core::fmt::Pointer> Pointer for RawPtr<T> {
+>> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>> +        // Directly format the raw address - no hashing or restriction.
+>> +        // This corresponds to %px behavior.
+>> +        core::fmt::Pointer::fmt(&self.0, f)
+>> +    }
+>> +}
+>> --
+>> 2.43.0
+>>
+>
+> Thinking about the API a bit: do HashedPtr and RawPtr need to be pub?
+> We could have an extension trait to provide a method on raw pointers
+> that returns `impl Pointer` for the case where raw printing is
+> required.
 
-I wonder if it makes sense to request a feature to mute `dead_code` lint on
-certain types which we know are there to represent a registration or resour=
-ce
-enablement.
-
-Currently rustc's dead_code lint has a builtin exception for `PhantomData`,=
- but
-I think a lot other types should have the same treatment, this can be usefu=
-l
-even for other core types, e.g `PhantomPinned`.
+I think having the types as `pub` is fine. Having extension trait is fine b=
+ut I
+don't see what we gain by hiding these types.
 
 Best,
 Gary
-
