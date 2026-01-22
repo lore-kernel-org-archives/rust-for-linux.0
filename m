@@ -1,424 +1,354 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E8A3BBA01
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 22:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769122312; cv=none; b=nJicAa1r5iheODykfEjFQFESYJJj9RD0vjCppxoOPgO7Q+mDoNfvknJukzqRdI5i3SpfGVoZA6F02LscgOmqTLFllIDUmXeQ0acjDhPDxLaGv5yH1CegRdZnBC0PV/KXOw0s0gpnoOpTFezXNiWGfJ1W082Iy0c32i0/ODVEa+4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769122312; c=relaxed/simple;
-	bh=GhuOYqvQpalmoSXu6mCFYmxkXcdilageOmg/M4AM8Ec=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYPXPECM+Xb/4dip4/NTm3uFrkvnfQ04/QbWlXRBEGS6veJ0Y618ruKy3dI9V1fGVTtCF0L9l6KtdYUeUDts7uKTe6TIDnFwlWlZUUGvM72+RpZCZcZrQ0AvnddhX/FNwitBPrenigRxs65X6vF5imEhSFYp4iIEooIBqETjKI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qae1D14o; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AB13C0882;
+	Thu, 22 Jan 2026 22:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769122782; cv=pass; b=pEFx5rA5vfIBtKZwKvp1XOga6T7ExOkgaNiA7Ceb5jlqeEhQp52Y43MHDCNAtYlLIM9uZbrxKUVS3jtIrIlUZnmW6Y/f7MgltoiMLZW7ET/tS+kEXtWwq9uYoXgWiat53M2UeA5E37SBV2fB+9zurjlHLbTCnmAEa1vO35rURik=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769122782; c=relaxed/simple;
+	bh=qvMeR+LnmE04p2Bctek6Oq/Sq+59elM4mMWRt25Ik+U=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=a70uh9/jrkjFBY6mZh4M9iYfL4tumBase29mgFdV5miewRIXQh3837ydCtNS52DYk3dXWNpRWZaFDsIq5VUISp9txUMlibTyPDD2X8EmehxstUX+HnIvhRSvyz3nDtUbUxXlfyGt7Xb5LRtkw96EDjeoV+wmiiaI124gdNR2Qf4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YoqgRqia; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qae1D14o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769122301;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nQAwevz0ciNQM0YUnOSMlXTy29Y2XG3XBRLvdNS/yqc=;
-	b=Qae1D14oxLSucEOoOJUn6W3BbKmUKpt585+5ze0Xv0T+54zYmWxQos5dN29+Ib7SE5Fli4
-	wRaxfnKz0MLQld+iKMOIKipAD7x4fuSHepKraFvzNb6D3n/8s4Lamph8GacIMxagXoYV7U
-	RH+4/xlridyN8dIDGCqZfESfhXSnSWk=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-ZiL1OjSUOUuEk2vdyrv8yA-1; Thu,
- 22 Jan 2026 17:51:37 -0500
-X-MC-Unique: ZiL1OjSUOUuEk2vdyrv8yA-1
-X-Mimecast-MFC-AGG-ID: ZiL1OjSUOUuEk2vdyrv8yA_1769122295
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 504DF19775AB;
-	Thu, 22 Jan 2026 22:51:35 +0000 (UTC)
-Received: from GoldenWind.redhat.com (unknown [10.22.89.232])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3846830002D8;
-	Thu, 22 Jan 2026 22:51:33 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: nouveau@lists.freedesktop.org,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	"Simona Vetter" <simona@ffwll.ch>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Shankari Anand" <shankari.ak0208@gmail.com>,
-	"David Airlie" <airlied@gmail.com>,
-	"Benno Lossin" <lossin@kernel.org>,
-	"Asahi Lina" <lina+kernel@asahilina.net>,
-	"Daniel Almeida" <daniel.almeida@collabora.com>,
-	"Lyude Paul" <lyude@redhat.com>
-Subject: [PATCH v3 3/3] rust/drm/gem: Use DeviceContext with GEM objects
-Date: Thu, 22 Jan 2026 17:46:38 -0500
-Message-ID: <20260122225057.3589500-4-lyude@redhat.com>
-In-Reply-To: <20260122225057.3589500-1-lyude@redhat.com>
-References: <20260122225057.3589500-1-lyude@redhat.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YoqgRqia"
+ARC-Seal: i=1; a=rsa-sha256; t=1769122754; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=R2LgV6nO61qyIBRzpT6fvAgaRGTX8pcchNo4cibRB71QoqR2Pn/Nn8UTO61h+CjEGDyVSLfa1AOGUo5TU8fK7oSVRPYf2WgXGR4H0VTKIJ5HmJ4R9fdj/zSmN79SuUzJOqa7y28vrmXdSdSlVZw0DEj7AVds9+1oZ5TtjJ5J++s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1769122754; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=6NxrSyB17i1u2lohsrtKjXZ/8YsKz352zKNyIofAbZg=; 
+	b=Ucra3kxSV2TokKAzkaiJCKczeqGei3IQ+CHf8Xnt21GS9SwLPPFPgYVdry4T4Zpfm7samrB2FC37VeZEw6GVfYUVQhaveE03abjo4BeCeODW0Dm/OOHi4/LGFlXK9Lbvv+RFJS6PhQO+qKgHrXw3Xqk2n6Ij570++XGX3LbJVBg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1769122754;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=6NxrSyB17i1u2lohsrtKjXZ/8YsKz352zKNyIofAbZg=;
+	b=YoqgRqiaOJ+kpbSKWYgMqoSvI0/iIBAMs2cByfHHy8IKRzUF1jjqbxVplTYZKFGu
+	YKVXOD6CedbubiNVGaHu1loqMIrQbiggr0r30QyyL/bZHbKYpIyoB7PHJabPx0W5GhM
+	cRl533/rQmTAtDEecnHmCCme3EhsMsszLN3V4ax8=
+Received: by mx.zohomail.com with SMTPS id 1769122751318268.23325911627626;
+	Thu, 22 Jan 2026 14:59:11 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v3 6/6] rust: gpuvm: add GpuVmCore::sm_map()
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260121-gpuvm-rust-v3-6-dd95c04aec35@google.com>
+Date: Thu, 22 Jan 2026 19:58:34 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Janne Grunau <j@jannau.net>,
+ Matthew Brost <matthew.brost@intel.com>,
+ =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Lyude Paul <lyude@redhat.com>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9C5177DB-CEBA-4DD5-8E93-DB39CB1F2079@collabora.com>
+References: <20260121-gpuvm-rust-v3-0-dd95c04aec35@google.com>
+ <20260121-gpuvm-rust-v3-6-dd95c04aec35@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-Now that we have the ability to represent the context in which a DRM device
-is in at compile-time, we can start carrying around this context with GEM
-object types in order to allow a driver to safely create GEM objects before
-a DRM device has registered with userspace.
+Hi Alice,
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- drivers/gpu/drm/nova/driver.rs |  2 +-
- drivers/gpu/drm/nova/gem.rs    | 11 +++---
- drivers/gpu/drm/tyr/driver.rs  |  2 +-
- drivers/gpu/drm/tyr/gem.rs     |  3 +-
- rust/kernel/drm/device.rs      | 14 ++++----
- rust/kernel/drm/driver.rs      |  2 +-
- rust/kernel/drm/gem/mod.rs     | 64 +++++++++++++++++++++++-----------
- 7 files changed, 63 insertions(+), 35 deletions(-)
+> On 21 Jan 2026, at 08:31, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> Finally also add the operation for creating new mappings. Mapping
+> operations need extra data in the context since they involve a vm_bo
+> coming from the outside.
+>=20
+> Co-developed-by: Asahi Lina <lina+kernel@asahilina.net>
+> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> rust/kernel/drm/gpuvm/mod.rs    |   9 ++-
+> rust/kernel/drm/gpuvm/sm_ops.rs | 154 =
+++++++++++++++++++++++++++++++++++++++--
+> 2 files changed, 157 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/rust/kernel/drm/gpuvm/mod.rs =
+b/rust/kernel/drm/gpuvm/mod.rs
+> index =
+165a25666ccc3d62e59b73483d4eedff044423e9..557c0d629eec912a97fc4ef18495d5bf=
+0807db0a 100644
+> --- a/rust/kernel/drm/gpuvm/mod.rs
+> +++ b/rust/kernel/drm/gpuvm/mod.rs
+> @@ -93,7 +93,7 @@ const fn vtable() -> &'static =
+bindings::drm_gpuvm_ops {
+>             vm_bo_alloc: GpuVmBo::<T>::ALLOC_FN,
+>             vm_bo_free: GpuVmBo::<T>::FREE_FN,
+>             vm_bo_validate: None,
+> -            sm_step_map: None,
+> +            sm_step_map: Some(Self::sm_step_map),
+>             sm_step_unmap: Some(Self::sm_step_unmap),
+>             sm_step_remap: Some(Self::sm_step_remap),
+>         }
+> @@ -248,6 +248,13 @@ pub trait DriverGpuVm: Sized {
+>     /// The private data passed to callbacks.
+>     type SmContext<'ctx>;
+>=20
+> +    /// Indicates that a new mapping should be created.
+> +    fn sm_step_map<'op, 'ctx>(
+> +        &mut self,
+> +        op: OpMap<'op, Self>,
+> +        context: &mut Self::SmContext<'ctx>,
+> +    ) -> Result<OpMapped<'op, Self>, Error>;
+> +
+>     /// Indicates that an existing mapping should be removed.
+>     fn sm_step_unmap<'op, 'ctx>(
+>         &mut self,
+> diff --git a/rust/kernel/drm/gpuvm/sm_ops.rs =
+b/rust/kernel/drm/gpuvm/sm_ops.rs
+> index =
+3c29d10d63f0b0a1976c714a86d486948ba81a15..5f3c5d3918147a6962e5658443c34383=
+5baa10b8 100644
+> --- a/rust/kernel/drm/gpuvm/sm_ops.rs
+> +++ b/rust/kernel/drm/gpuvm/sm_ops.rs
+> @@ -8,6 +8,100 @@ struct SmData<'a, 'ctx, T: DriverGpuVm> {
+>     user_context: &'a mut T::SmContext<'ctx>,
+> }
+>=20
+> +#[repr(C)]
+> +struct SmMapData<'a, 'ctx, T: DriverGpuVm> {
+> +    sm_data: SmData<'a, 'ctx, T>,
+> +    vm_bo: GpuVmBoResident<T>,
+> +}
+> +
+> +/// The argument for [`GpuVmCore::sm_map`].
+> +pub struct OpMapRequest<'a, 'ctx, T: DriverGpuVm> {
+> +    /// Address in GPU virtual address space.
+> +    pub addr: u64,
+> +    /// Length of mapping to create.
+> +    pub range: u64,
+> +    /// Offset in GEM object.
+> +    pub offset: u64,
 
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index 8cea5f68c3b04..2c13261450406 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -67,7 +67,7 @@ fn probe(adev: &auxiliary::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<S
- impl drm::Driver for NovaDriver {
-     type Data = NovaData;
-     type File = File;
--    type Object = gem::Object<NovaObject>;
-+    type Object<Ctx: drm::DeviceContext> = gem::Object<NovaObject, Ctx>;
- 
-     const INFO: drm::DriverInfo = INFO;
- 
-diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
-index 6ccfa5da57617..f6e98b9db58d8 100644
---- a/drivers/gpu/drm/nova/gem.rs
-+++ b/drivers/gpu/drm/nova/gem.rs
-@@ -2,7 +2,7 @@
- 
- use kernel::{
-     drm,
--    drm::{gem, gem::BaseObject},
-+    drm::{gem, gem::BaseObject, DeviceContext},
-     page,
-     prelude::*,
-     sync::aref::ARef,
-@@ -20,20 +20,23 @@ pub(crate) struct NovaObject {}
- impl gem::DriverObject for NovaObject {
-     type Driver = NovaDriver;
- 
--    fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, Error> {
-+    fn new<Ctx: DeviceContext>(_dev: &NovaDevice<Ctx>, _size: usize) -> impl PinInit<Self, Error> {
-         try_pin_init!(NovaObject {})
-     }
- }
- 
- impl NovaObject {
-     /// Create a new DRM GEM object.
--    pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem::Object<Self>>> {
-+    pub(crate) fn new<Ctx: DeviceContext>(
-+        dev: &NovaDevice<Ctx>,
-+        size: usize,
-+    ) -> Result<ARef<gem::Object<Self, Ctx>>> {
-         if size == 0 {
-             return Err(EINVAL);
-         }
-         let aligned_size = page::page_align(size).ok_or(EINVAL)?;
- 
--        gem::Object::new(dev, aligned_size)
-+        gem::Object::<Self, Ctx>::new(dev, aligned_size)
-     }
- 
-     /// Look up a GEM object handle for a `File` and return an `ObjectRef` for it.
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index e73c56659ea75..03e337d95521c 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -177,7 +177,7 @@ fn drop(self: Pin<&mut Self>) {
- impl drm::Driver for TyrDriver {
-     type Data = TyrData;
-     type File = File;
--    type Object = drm::gem::Object<TyrObject>;
-+    type Object<R: drm::DeviceContext> = drm::gem::Object<TyrObject, R>;
- 
-     const INFO: drm::DriverInfo = INFO;
- 
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 1273bf89dbd5d..00804f8c14bd4 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -3,6 +3,7 @@
- use crate::driver::TyrDevice;
- use crate::driver::TyrDriver;
- use kernel::drm::gem;
-+use kernel::drm::DeviceContext;
- use kernel::prelude::*;
- 
- /// GEM Object inner driver data
-@@ -12,7 +13,7 @@ pub(crate) struct TyrObject {}
- impl gem::DriverObject for TyrObject {
-     type Driver = TyrDriver;
- 
--    fn new(_dev: &TyrDevice, _size: usize) -> impl PinInit<Self, Error> {
-+    fn new<Ctx: DeviceContext>(_dev: &TyrDevice<Ctx>, _size: usize) -> impl PinInit<Self, Error> {
-         try_pin_init!(TyrObject {})
-     }
- }
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index 0e81957cf8c28..4c03105e6a817 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -163,13 +163,13 @@ impl<T: drm::Driver> UnregisteredDevice<T> {
-         master_set: None,
-         master_drop: None,
-         debugfs_init: None,
--        gem_create_object: T::Object::ALLOC_OPS.gem_create_object,
--        prime_handle_to_fd: T::Object::ALLOC_OPS.prime_handle_to_fd,
--        prime_fd_to_handle: T::Object::ALLOC_OPS.prime_fd_to_handle,
--        gem_prime_import: T::Object::ALLOC_OPS.gem_prime_import,
--        gem_prime_import_sg_table: T::Object::ALLOC_OPS.gem_prime_import_sg_table,
--        dumb_create: T::Object::ALLOC_OPS.dumb_create,
--        dumb_map_offset: T::Object::ALLOC_OPS.dumb_map_offset,
-+        gem_create_object: T::Object::<Uninit>::ALLOC_OPS.gem_create_object,
-+        prime_handle_to_fd: T::Object::<Uninit>::ALLOC_OPS.prime_handle_to_fd,
-+        prime_fd_to_handle: T::Object::<Uninit>::ALLOC_OPS.prime_fd_to_handle,
-+        gem_prime_import: T::Object::<Uninit>::ALLOC_OPS.gem_prime_import,
-+        gem_prime_import_sg_table: T::Object::<Uninit>::ALLOC_OPS.gem_prime_import_sg_table,
-+        dumb_create: T::Object::<Uninit>::ALLOC_OPS.dumb_create,
-+        dumb_map_offset: T::Object::<Uninit>::ALLOC_OPS.dumb_map_offset,
-         show_fdinfo: None,
-         fbdev_probe: None,
- 
-diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-index a16605b407159..94ebaf19ac069 100644
---- a/rust/kernel/drm/driver.rs
-+++ b/rust/kernel/drm/driver.rs
-@@ -110,7 +110,7 @@ pub trait Driver {
-     type Data: Sync + Send;
- 
-     /// The type used to manage memory for this driver.
--    type Object: AllocImpl;
-+    type Object<Ctx: drm::DeviceContext>: AllocImpl;
- 
-     /// The type used to represent a DRM File (client)
-     type File: drm::file::DriverFile;
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index b4199945db378..3af9f52f8eda4 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -8,6 +8,10 @@
-     bindings,
-     drm::{
-         self,
-+        device::{
-+            DeviceContext,
-+            Registered, //
-+        },
-         driver::{
-             AllocImpl,
-             AllocOps, //
-@@ -22,6 +26,7 @@
-     types::Opaque,
- };
- use core::{
-+    marker::PhantomData,
-     ops::Deref,
-     ptr::NonNull, //
- };
-@@ -33,21 +38,30 @@
- /// [`DriverFile`]: drm::file::DriverFile
- pub type DriverFile<T> = drm::File<<<T as DriverObject>::Driver as drm::Driver>::File>;
- 
-+/// A type alias for retrieving the current [`AllocImpl`] for a given [`DriverObject`].
-+///
-+/// [`Driver`]: drm::Driver
-+pub type DriverAllocImpl<T, Ctx = Registered> =
-+    <<T as DriverObject>::Driver as drm::Driver>::Object<Ctx>;
-+
- /// GEM object functions, which must be implemented by drivers.
- pub trait DriverObject: Sync + Send + Sized {
-     /// Parent `Driver` for this object.
-     type Driver: drm::Driver;
- 
-     /// Create a new driver data object for a GEM object of a given size.
--    fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl PinInit<Self, Error>;
-+    fn new<Ctx: DeviceContext>(
-+        dev: &drm::Device<Self::Driver, Ctx>,
-+        size: usize,
-+    ) -> impl PinInit<Self, Error>;
- 
-     /// Open a new handle to an existing object, associated with a File.
--    fn open(_obj: &<Self::Driver as drm::Driver>::Object, _file: &DriverFile<Self>) -> Result {
-+    fn open(_obj: &DriverAllocImpl<Self>, _file: &DriverFile<Self>) -> Result {
-         Ok(())
-     }
- 
-     /// Close a handle to an existing object, associated with a File.
--    fn close(_obj: &<Self::Driver as drm::Driver>::Object, _file: &DriverFile<Self>) {}
-+    fn close(_obj: &DriverAllocImpl<Self>, _file: &DriverFile<Self>) {}
- }
- 
- /// Trait that represents a GEM object subtype
-@@ -73,9 +87,12 @@ extern "C" fn open_callback<T: DriverObject>(
-     // SAFETY: `open_callback` is only ever called with a valid pointer to a `struct drm_file`.
-     let file = unsafe { DriverFile::<T>::from_raw(raw_file) };
- 
--    // SAFETY: `open_callback` is specified in the AllocOps structure for `DriverObject<T>`,
--    // ensuring that `raw_obj` is contained within a `DriverObject<T>`
--    let obj = unsafe { <<T::Driver as drm::Driver>::Object as IntoGEMObject>::from_raw(raw_obj) };
-+    // SAFETY:
-+    // * `open_callback` is specified in the AllocOps structure for `DriverObject`, ensuring that
-+    //   `raw_obj` is contained within a `DriverAllocImpl<T>`
-+    // * It is only possible for `open_callback` to be called after device registration, ensuring
-+    //   that the object's device is in the `Registered` state.
-+    let obj: &DriverAllocImpl<T> = unsafe { IntoGEMObject::from_raw(raw_obj) };
- 
-     match T::open(obj, file) {
-         Err(e) => e.to_errno(),
-@@ -92,12 +109,12 @@ extern "C" fn close_callback<T: DriverObject>(
- 
-     // SAFETY: `close_callback` is specified in the AllocOps structure for `Object<T>`, ensuring
-     // that `raw_obj` is indeed contained within a `Object<T>`.
--    let obj = unsafe { <<T::Driver as drm::Driver>::Object as IntoGEMObject>::from_raw(raw_obj) };
-+    let obj: &DriverAllocImpl<T> = unsafe { IntoGEMObject::from_raw(raw_obj) };
- 
-     T::close(obj, file);
- }
- 
--impl<T: DriverObject> IntoGEMObject for Object<T> {
-+impl<T: DriverObject, Ctx: DeviceContext> IntoGEMObject for Object<T, Ctx> {
-     fn as_raw(&self) -> *mut bindings::drm_gem_object {
-         self.obj.get()
-     }
-@@ -105,7 +122,7 @@ fn as_raw(&self) -> *mut bindings::drm_gem_object {
-     unsafe fn from_raw<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self {
-         // SAFETY: `obj` is guaranteed to be in an `Object<T>` via the safety contract of this
-         // function
--        unsafe { &*crate::container_of!(Opaque::cast_from(self_ptr), Object<T>, obj) }
-+        unsafe { &*crate::container_of!(Opaque::cast_from(self_ptr), Object<T, Ctx>, obj) }
-     }
- }
- 
-@@ -122,7 +139,7 @@ fn size(&self) -> usize {
-     fn create_handle<D, F>(&self, file: &drm::File<F>) -> Result<u32>
-     where
-         Self: AllocImpl<Driver = D>,
--        D: drm::Driver<Object = Self, File = F>,
-+        D: drm::Driver<Object<Registered> = Self, File = F>,
-         F: drm::file::DriverFile<Driver = D>,
-     {
-         let mut handle: u32 = 0;
-@@ -137,7 +154,7 @@ fn create_handle<D, F>(&self, file: &drm::File<F>) -> Result<u32>
-     fn lookup_handle<D, F>(file: &drm::File<F>, handle: u32) -> Result<ARef<Self>>
-     where
-         Self: AllocImpl<Driver = D>,
--        D: drm::Driver<Object = Self, File = F>,
-+        D: drm::Driver<Object<Registered> = Self, File = F>,
-         F: drm::file::DriverFile<Driver = D>,
-     {
-         // SAFETY: The arguments are all valid per the type invariants.
-@@ -177,16 +194,18 @@ impl<T: IntoGEMObject> BaseObject for T {}
- ///
- /// # Invariants
- ///
--/// - `self.obj` is a valid instance of a `struct drm_gem_object`.
-+/// * `self.obj` is a valid instance of a `struct drm_gem_object`.
-+/// * Any type invariants of `Ctx` apply to the parent DRM device for this GEM object.
- #[repr(C)]
- #[pin_data]
--pub struct Object<T: DriverObject + Send + Sync> {
-+pub struct Object<T: DriverObject + Send + Sync, Ctx: DeviceContext = Registered> {
-     obj: Opaque<bindings::drm_gem_object>,
-     #[pin]
-     data: T,
-+    _ctx: PhantomData<Ctx>,
- }
- 
--impl<T: DriverObject> Object<T> {
-+impl<T: DriverObject, Ctx: DeviceContext> Object<T, Ctx> {
-     const OBJECT_FUNCS: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
-         free: Some(Self::free_callback),
-         open: Some(open_callback::<T>),
-@@ -206,11 +225,12 @@ impl<T: DriverObject> Object<T> {
-     };
- 
-     /// Create a new GEM object.
--    pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
-+    pub fn new(dev: &drm::Device<T::Driver, Ctx>, size: usize) -> Result<ARef<Self>> {
-         let obj: Pin<KBox<Self>> = KBox::pin_init(
-             try_pin_init!(Self {
-                 obj: Opaque::new(bindings::drm_gem_object::default()),
-                 data <- T::new(dev, size),
-+                _ctx: PhantomData,
-             }),
-             GFP_KERNEL,
-         )?;
-@@ -219,6 +239,8 @@ pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
-         unsafe { (*obj.as_raw()).funcs = &Self::OBJECT_FUNCS };
- 
-         // SAFETY: The arguments are all valid per the type invariants.
-+        // INVARIANT: We use `dev` for creating the GEM object, which is known to be in state `Ctx` -
-+        // ensuring that the GEM object's pointer to the DRM device is always in the same state.
-         to_result(unsafe { bindings::drm_gem_object_init(dev.as_raw(), obj.obj.get(), size) })?;
- 
-         // SAFETY: We will never move out of `Self` as `ARef<Self>` is always treated as pinned.
-@@ -232,13 +254,15 @@ pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
-     }
- 
-     /// Returns the `Device` that owns this GEM object.
--    pub fn dev(&self) -> &drm::Device<T::Driver> {
-+    pub fn dev(&self) -> &drm::Device<T::Driver, Ctx> {
-         // SAFETY:
-         // - `struct drm_gem_object.dev` is initialized and valid for as long as the GEM
-         //   object lives.
-         // - The device we used for creating the gem object is passed as &drm::Device<T::Driver> to
-         //   Object::<T>::new(), so we know that `T::Driver` is the right generic parameter to use
-         //   here.
-+        // - Any type invariants of `Ctx` are upheld by using the same `Ctx` for the `Device` we
-+        //   return.
-         unsafe { drm::Device::from_raw((*self.as_raw()).dev) }
-     }
- 
-@@ -264,7 +288,7 @@ extern "C" fn free_callback(obj: *mut bindings::drm_gem_object) {
- }
- 
- // SAFETY: Instances of `Object<T>` are always reference-counted.
--unsafe impl<T: DriverObject> crate::sync::aref::AlwaysRefCounted for Object<T> {
-+unsafe impl<T: DriverObject, Ctx: DeviceContext> AlwaysRefCounted for Object<T, Ctx> {
-     fn inc_ref(&self) {
-         // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-         unsafe { bindings::drm_gem_object_get(self.as_raw()) };
-@@ -279,9 +303,9 @@ unsafe fn dec_ref(obj: NonNull<Self>) {
-     }
- }
- 
--impl<T: DriverObject> super::private::Sealed for Object<T> {}
-+impl<T: DriverObject, Ctx: DeviceContext> super::private::Sealed for Object<T, Ctx> {}
- 
--impl<T: DriverObject> Deref for Object<T> {
-+impl<T: DriverObject, Ctx: DeviceContext> Deref for Object<T, Ctx> {
-     type Target = T;
- 
-     fn deref(&self) -> &Self::Target {
-@@ -289,7 +313,7 @@ fn deref(&self) -> &Self::Target {
-     }
- }
- 
--impl<T: DriverObject> AllocImpl for Object<T> {
-+impl<T: DriverObject, Ctx: DeviceContext> AllocImpl for Object<T, Ctx> {
-     type Driver = T::Driver;
- 
-     const ALLOC_OPS: AllocOps = AllocOps {
--- 
-2.52.0
+I=E2=80=99d rename this gem_offset. A bit vague/confusing otherwise.
+
+> +    /// The GEM object to map.
+> +    pub vm_bo: GpuVmBoResident<T>,
+> +    /// The user-provided context type.
+> +    pub context: &'a mut T::SmContext<'ctx>,
+> +}
+> +
+> +impl<'a, 'ctx, T: DriverGpuVm> OpMapRequest<'a, 'ctx, T> {
+> +    fn raw_request(&self) -> bindings::drm_gpuvm_map_req {
+> +        bindings::drm_gpuvm_map_req {
+> +            map: bindings::drm_gpuva_op_map {
+> +                va: bindings::drm_gpuva_op_map__bindgen_ty_1 {
+> +                    addr: self.addr,
+> +                    range: self.range,
+> +                },
+> +                gem: bindings::drm_gpuva_op_map__bindgen_ty_2 {
+> +                    offset: self.offset,
+> +                    obj: self.vm_bo.obj().as_raw(),
+> +                },
+> +            },
+> +        }
+> +    }
+> +}
+> +
+> +/// Represents an `sm_step_map` operation that has not yet been =
+completed.
+
+> +pub struct OpMap<'op, T: DriverGpuVm> {
+> +    op: &'op bindings::drm_gpuva_op_map,
+> +    // Since these abstractions are designed for immediate mode, the =
+VM BO needs to be
+> +    // pre-allocated, so we always have it available when we reach =
+this point.
+> +    vm_bo: &'op GpuVmBo<T>,
+> +    _invariant: PhantomData<*mut &'op mut T>,
+> +}
+> +
+> +impl<'op, T: DriverGpuVm> OpMap<'op, T> {
+> +    /// The base address of the new mapping.
+> +    pub fn addr(&self) -> u64 {
+> +        self.op.va.addr
+> +    }
+> +
+> +    /// The length of the new mapping.
+> +    pub fn length(&self) -> u64 {
+> +        self.op.va.range
+> +    }
+> +
+> +    /// The offset within the [`drm_gem_object`](crate::gem::Object).
+> +    pub fn gem_offset(&self) -> u64 {
+> +        self.op.gem.offset
+> +    }
+> +
+> +    /// The [`drm_gem_object`](crate::gem::Object) to map.
+> +    pub fn obj(&self) -> &T::Object {
+> +        // SAFETY: The `obj` pointer is guaranteed to be valid.
+> +        unsafe { <T::Object as =
+IntoGEMObject>::from_raw(self.op.gem.obj) }
+> +    }
+> +
+> +    /// The [`GpuVmBo`] that the new VA will be associated with.
+> +    pub fn vm_bo(&self) -> &GpuVmBo<T> {
+> +        self.vm_bo
+> +    }
+> +
+> +    /// Use the pre-allocated VA to carry out this map operation.
+> +    pub fn insert(self, va: GpuVaAlloc<T>, va_data: impl =
+PinInit<T::VaData>) -> OpMapped<'op, T> {
+> +        let va =3D va.prepare(va_data);
+> +        // SAFETY: By the type invariants we may access the interval =
+tree.
+> +        unsafe { bindings::drm_gpuva_map(self.vm_bo.gpuvm().as_raw(), =
+va, self.op) };
+> +
+> +        let _gpuva_guard =3D self.vm_bo().lock_gpuva();
+> +        // SAFETY: The va is prepared for insertion, and we hold the =
+GEM lock.
+> +        unsafe { bindings::drm_gpuva_link(va, self.vm_bo.as_raw()) };
+> +
+> +        OpMapped {
+> +            _invariant: self._invariant,
+> +        }
+> +    }
+> +}
+> +
+> +/// Represents a completed [`OpMap`] operation.
+> +pub struct OpMapped<'op, T> {
+> +    _invariant: PhantomData<*mut &'op mut T>,
+> +}
+> +
+> /// Represents an `sm_step_unmap` operation that has not yet been =
+completed.
+> pub struct OpUnmap<'op, T: DriverGpuVm> {
+>     op: &'op bindings::drm_gpuva_op_unmap,
+> @@ -205,6 +299,30 @@ pub struct OpRemapped<'op, T> {
+> }
+>=20
+> impl<T: DriverGpuVm> GpuVmCore<T> {
+> +    /// Create a mapping, removing or remapping anything that =
+overlaps.
+> +    ///
+> +    /// Internally calls the [`DriverGpuVm`] callbacks similar to =
+[`Self::sm_unmap`], except that
+> +    /// the [`DriverGpuVm::sm_step_map`] is called once to create the =
+requested mapping.
+> +    #[inline]
+> +    pub fn sm_map(&mut self, req: OpMapRequest<'_, '_, T>) -> Result =
+{
+> +        let gpuvm =3D self.as_raw();
+> +        let raw_req =3D req.raw_request();
+> +        let mut p =3D SmMapData {
+> +            sm_data: SmData {
+> +                gpuvm: self,
+> +                user_context: req.context,
+> +            },
+> +            vm_bo: req.vm_bo,
+> +        };
+> +        // SAFETY:
+> +        // * raw_request() creates a valid request.
+> +        // * The private data is valid to be interpreted as both =
+SmData and SmMapData since the
+> +        //   first field of SmMapData is SmData.
+> +        to_result(unsafe {
+> +            bindings::drm_gpuvm_sm_map(gpuvm, (&raw mut p).cast(), =
+&raw const raw_req)
+> +        })
+> +    }
+> +
+>     /// Remove any mappings in the given region.
+>     ///
+>     /// Internally calls [`DriverGpuVm::sm_step_unmap`] for ranges =
+entirely contained within the
+> @@ -218,19 +336,45 @@ pub fn sm_unmap(&mut self, addr: u64, length: =
+u64, context: &mut T::SmContext<'_
+>         };
+>         // SAFETY:
+>         // * raw_request() creates a valid request.
+> -        // * The private data is valid to be interpreted as SmData.
+> +        // * The private data is a valid SmData.
+>         to_result(unsafe { bindings::drm_gpuvm_sm_unmap(gpuvm, (&raw =
+mut p).cast(), addr, length) })
+>     }
+> }
+>=20
+> impl<T: DriverGpuVm> GpuVm<T> {
+>     /// # Safety
+> -    /// Must be called from `sm_unmap` with a pointer to `SmData`.
+> +    /// Must be called from `sm_map` with a pointer to `SmMapData`.
+> +    pub(super) unsafe extern "C" fn sm_step_map(
+> +        op: *mut bindings::drm_gpuva_op,
+> +        p: *mut c_void,
+> +    ) -> c_int {
+> +        // SAFETY: If we reach `sm_step_map` then we were called from =
+`sm_map` which always passes
+> +        // an `SmMapData` as private data.
+> +        let p =3D unsafe { &mut *p.cast::<SmMapData<'_, '_, T>>() };
+> +        let op =3D OpMap {
+> +            // SAFETY: sm_step_map is called with a map operation.
+> +            op: unsafe { &(*op).__bindgen_anon_1.map },
+> +            vm_bo: &p.vm_bo,
+> +            _invariant: PhantomData,
+> +        };
+> +        match p
+> +            .sm_data
+> +            .gpuvm
+> +            .data()
+> +            .sm_step_map(op, p.sm_data.user_context)
+> +        {
+> +            Ok(OpMapped { .. }) =3D> 0,
+> +            Err(err) =3D> err.to_errno(),
+> +        }
+> +    }
+> +
+> +    /// # Safety
+> +    /// Must be called from `sm_map` or `sm_unmap` with a pointer to =
+`SmMapData` or `SmData`.
+>     pub(super) unsafe extern "C" fn sm_step_unmap(
+>         op: *mut bindings::drm_gpuva_op,
+>         p: *mut c_void,
+>     ) -> c_int {
+> -        // SAFETY: The caller provides a pointer to `SmData`.
+> +        // SAFETY: The caller provides a pointer that can be treated =
+as `SmData`.
+>         let p =3D unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
+>         let op =3D OpUnmap {
+>             // SAFETY: sm_step_unmap is called with an unmap =
+operation.
+> @@ -244,12 +388,12 @@ impl<T: DriverGpuVm> GpuVm<T> {
+>     }
+>=20
+>     /// # Safety
+> -    /// Must be called from `sm_unmap` with a pointer to `SmData`.
+> +    /// Must be called from `sm_map` or `sm_unmap` with a pointer to =
+`SmMapData` or `SmData`.
+>     pub(super) unsafe extern "C" fn sm_step_remap(
+>         op: *mut bindings::drm_gpuva_op,
+>         p: *mut c_void,
+>     ) -> c_int {
+> -        // SAFETY: The caller provides a pointer to `SmData`.
+> +        // SAFETY: The caller provides a pointer that can be treated =
+as `SmData`.
+>         let p =3D unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
+>         let op =3D OpRemap {
+>             // SAFETY: sm_step_remap is called with a remap operation.
+>=20
+> --=20
+> 2.52.0.457.g6b5491de43-goog
+>=20
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
