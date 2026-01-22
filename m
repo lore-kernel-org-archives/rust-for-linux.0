@@ -1,630 +1,307 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020076.outbound.protection.outlook.com [52.101.196.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694413A89B4
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 12:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769086299; cv=none; b=tXbzjOdPC9uqLl5wNOhIJgW5qR2goGlo0oeuTxJQyPbAB1XL48GlT5f2XXrB0oa9njNrzqSbSJ7HyoKCB1y8KXosPmugu6CHSb6rHpRUzDPeyouJdMj+3xk1PFz+hTbjsgXeCfUVTlNrQSmvqAhVVvh2NNDr7+tLqXiFbz5bwGI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769086299; c=relaxed/simple;
-	bh=CXTO+nVZz4ZwrfM0S/7bBdwn3ueUYLz1bRm50yyjQ2Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L5j6JBo/YuZRHvFQ32GB8AOrM58uJbL/VV1B2lKUHEveH9pkyCYt+6rsXu0oyjq+H9LNwxBDSy9iLqwn//L8HlE7GXqtCv0B/509462SXznjLWPhRWAWU+8pTHkL5pp0b9TOfKPSvxJKDhqwr3v/qiISk47Za97xzFSK6Fhdm7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=fpStRM17; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1913570B2
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 12:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769086344; cv=fail; b=GREY+rEQvfKE3pmANStLM037iPxJnI+GUSecM5cJdm6cHPFlk91Sg6SJrosgMO1WUKTRoRjGf2mUD4BJ0wqmY/fBH0GRnb+0HAOlTL5MqIxfx8B0Wh5eHxaVlweG6v6piGisL5/YktP9+ETP/hV83Z4XK7lmmMhz9B1csVPff+0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769086344; c=relaxed/simple;
+	bh=UJn+QPjinPjVkXCQ2TUcfFUHgh6bt217PlYqSpEWM1U=;
+	h=Content-Type:Date:Message-Id:From:To:Subject:References:
+	 In-Reply-To:MIME-Version; b=bhgi10N7UaZHcfNa1q6S4DEVWYY/0XddTDjSgvZs3L+UmjTt9enqJ7dNxHgn7z8TbfTHovIkeWXt8nNkI0TJmEaE02UQiP4pzYZbrYYqTpRUzrTWu9+qu2kk2hWqiDETSBQdJSRlKlzLIHu9DG8P4RrK0wgguIqE1XKrnBxmLv0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=zKbj2sME; arc=fail smtp.client-ip=52.101.196.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="fpStRM17"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 727E124002D
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 13:42:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1769085729; bh=x3Q8FhbiTzluPx9xrF7GIrmddaXf56g8OckCsvR6UV8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=fpStRM17yRjp3x4ZnIHyXCuf/y1xefBnQ8PRhdCuQN24LKN3Bz6VsbvnpB7nO8XkO
-	 kDucPKwSs41CCkf9CPU/8f8OL/kIQowIaPZDL0vLjZ6V4SuS+KQYP29E6s1DNrFCty
-	 6A/fFGOM8kay68Yf++95ajkoCPg6+uJQt0vf975Hl2JPcYGj0iONplPvaAyDe/kMI8
-	 VEmY1YSBOMn/C0PuMl+abLUuA7xVCbI6ql3IJdDc6KleHHu6M9NP6jeCNLVHBo80zo
-	 kQXSHRQDi0xLwEx29PmgZG5gMHXtknMMRyg+35zIrPIGRua+xX+TYQ4ed0gvllMbcj
-	 //qdcfHVLMwWg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4dxggK5lggz6tw2;
-	Thu, 22 Jan 2026 13:42:05 +0100 (CET)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Thu, 22 Jan 2026 12:42:08 +0000
-Subject: [PATCH RESEND v10 1/3] rust: leds: add basic led classdev
- abstractions
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="zKbj2sME"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q27tfdZhfzPV+XFo4ulEPOgH6caotw6mZ6D7T7xeAM20vAK4rc2gOfzrrHwyAfz47WnIVFC1qFC3P4wy+GWcA/k0xlCh49nTasCRBjua32I54qU2IkMzaavRP634W3v7bARZXPuNt3FriJ7AQvQastq+2yzo7UqIygsxZIy88Ej2r8q2lQyqrJJUxsyXt7g6X8/2x8a9j25WIUGXwmqAPaG6tDDEw9bKLYEHz7WRAD550xImPyKkb0fWddxqk4Dn1h+H8JdqEZw6w+ZzumWjKRrP2kh3NAKSCCNpRGyXndw0NHWaKQnZyzjKV8TlFxqXdoSJLbaOCsoy552zBJ9n+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TH1pwiv8r7Je6CjgvXn34WnLlYDuFouUcEsioQjaYbM=;
+ b=hBHBYpej3JYbNTgPJ+652ut/O8ym4kqFZkhP4v5AscWImhWFR0fhsvnivOqsDcDAE1kYCJlGF3cA8bUxaw8Uz/gMdF+mnwS7w+QhjnRA8up2ZXZAh3RqYhPSbtsVbwvxrGHy7t4wKlWRXq/fuCjUwJWn9oBVsbdKuXvjfSJ3blEA/T/HVeai3/i1di0wP3f2Eld7LwVeiIbiEUJjLK8mHrQD6k4rBcBiiKTUEU5c0mmOPt5S+jWQmFLJ4tvsRMfAy/2L9SAsagUqDmwiviWw0FXUs7h5NIZqYXlOo65YBAs1nfOwhGBdj/Bcba4IXnzMV0J8cPrzKg+5eR5mh5AB+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TH1pwiv8r7Je6CjgvXn34WnLlYDuFouUcEsioQjaYbM=;
+ b=zKbj2sMEPHq+SZlNlRAdmlNxY4XxrlVXFjrF25ITHRcPBwkmWDodJNm8qjM6fN0961dJ/hiFNdCftg5SE+g2JY+WdZFVBBHdPaPGGSHv9qirluKPF0G2vorMlwLZISML3Prr5CmHq+KxhodKyvlyveO08zMMMBwWnFnJCde+FE8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWLP265MB5738.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1a0::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Thu, 22 Jan
+ 2026 12:52:18 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9542.009; Thu, 22 Jan 2026
+ 12:52:18 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 22 Jan 2026 12:52:18 +0000
+Message-Id: <DFV4RO6NFXQM.LD680MTZNYSM@garyguo.net>
+From: "Gary Guo" <gary@garyguo.net>
+To: "Timur Tabi" <ttabi@nvidia.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v6 02/11] gpu: nova-core: add ImemNonSecure section
+ infrastructure
+X-Mailer: aerc 0.21.0
+References: <20260114192950.1143002-1-ttabi@nvidia.com>
+ <20260114192950.1143002-3-ttabi@nvidia.com>
+In-Reply-To: <20260114192950.1143002-3-ttabi@nvidia.com>
+X-ClientProxiedBy: LO4P265CA0326.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:390::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-rust_leds-v10-1-fb9edb04b080@posteo.de>
-References: <20260122-rust_leds-v10-0-fb9edb04b080@posteo.de>
-In-Reply-To: <20260122-rust_leds-v10-0-fb9edb04b080@posteo.de>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
- Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=18142;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=CXTO+nVZz4ZwrfM0S/7bBdwn3ueUYLz1bRm50yyjQ2Y=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBpchsUFHveqVjUxS+8jON+vTi2DhDXn4FeB5CGC
- S7hBBZ7aMOJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaXIbFBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9Jyug/+MOkg+DodcIamWJJyVYqYZthGcPd12h7
- DAsFcJEKh2W6M37Nil/Ya/HmvTagauwXJGykj86F3VMld9z+Pz0a9rgsXFgEH1WXlinm0MzutxE
- KMFoQkedUcFEfnjE+P/Y8cn2pXMdXt8Jji7jNlXfgka+Ld/rrz9Iu0SJUnuIgB2epBx6xV5lFAD
- xpKU4d3Q4A2a8xxcjF3Vt2vdsMjsLRdO6ZT1kpY5Mxu6vZ0sfOHYXAWcgv1etJnse2yB4DvA3yH
- j4UPHJbs/vKjcFkGUBoRI0ZhtSDNkBT9lFWOS5BSqp6LAG33Rx4EUz9eiWDp5hwn9vlHif7o8k6
- Mhv+MU8iMTThhYLQhZ4JEX6iDdVc97CNn1obUQen9zK9Qep2MVPT7X7W06Yfm2C5nI1UdHGYz72
- HanTE6n1f0IWWhTUA88W3bKiIFuak5E3VfqONPV93eYWhon80YKUwswCGxyEBFqdgoYfhC1KNzH
- SvmfooaBo+a7G/O/jXJx7OIF+MyS6+XfZaSA040jKI7UUTni/94Q4HA4e9zZe0j0zzZTr7gm8v1
- jx/ioqigU3Tn8pC5tK0ozfxnSwG8X01OEhD7dNYrNvbdFa5AliX3B4aXk4XWcUeG/NPjHsEtz7N
- MHhMtaWN0A5q6a1ihGIHdVKJY+eRcK2C6Isiy1B7RqiRaYlWYVNo=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB5738:EE_
+X-MS-Office365-Filtering-Correlation-Id: d8296cf6-95b7-4fc6-d061-08de59b5137f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M1FJbkxsVnpEVzFaWTVqaUlwOHZ5TmoyWmVSY0JTOHhGRXhmZVozeUhpWERB?=
+ =?utf-8?B?ZVprYWN6VUlKUWRLWEpYYTBMbzFVR3d0Tmd3QWFrWnMwV0w0NjR1aVF2c21r?=
+ =?utf-8?B?WG9KZjgyOUdKT0JDYkJYTmg0MUJuSjdXSzNIS2lXdktpZHVPTWsyQnpZaWxK?=
+ =?utf-8?B?SkloOEZ2N0VJcE4yVVk1ek9DQitTNjJTai9WS0NjOWR2bUlVVTVpRkJPRDdj?=
+ =?utf-8?B?by92WHNMZUozMkVuaW5VcDVlUDlqQnV4bWFPQ251elFDdTd3akhCamNUcTRB?=
+ =?utf-8?B?UFJDaDdYR1JqTjFVT3NPWUwxZzAzUENxOTcyRy8wZWRscGRzSmRhZjNTNGdm?=
+ =?utf-8?B?NnhUZXY5LzhMajNONWJUY3laUUR3a3AwRWNrUTZPRWxMcDhZVk1QaWhiZUFY?=
+ =?utf-8?B?MkpSZnhxbWRkVmc2T1BsUTJ4M09EeXI2bjBnUWNsUlVJTk9iZlI4OHNFYkh3?=
+ =?utf-8?B?N21hYzZQYXNhaVpVcXJKME8vdFpaMXJGUzRjRWdwcCs4RTAwRWtTeW5FcUVY?=
+ =?utf-8?B?Y3hZWFM0SklZU01FWGx1OHBZTFNPUmtON0YzcDZ3WHF0UHFqRzZEZmloYzBE?=
+ =?utf-8?B?cDltSnhiUlh3aEdFMXdQUm00dkJoUGw1T1NxZlp2WHQxNWpsVjNHbnc3aHZs?=
+ =?utf-8?B?LzZ0QkJiaWVKVnB0d2Jna2paVTAvSFREYTA0cFU2MmJRQWQvdnJHRFpPd3NC?=
+ =?utf-8?B?aEtUQ1lZNlZPcFJuQTlCRjVlOHVlaWFDYU4rL0NOWnpvdUZPVUlFQ0NBcEpm?=
+ =?utf-8?B?MllQSFpYcDRySHV2T2NxVTdnMjFGNzB4Um1FNXNTMW1MMzdwL1owajlCZTF6?=
+ =?utf-8?B?QU5vNVdVZVZUaW1QZUtGNXpRby9vem0ySEp1ZVMwZy8yejZFYkhpMGM0VmdH?=
+ =?utf-8?B?MlgrVjJ2QUYreG5TY3FDazNQdXdSdmU0V05oU2cwNFBjUGJaL2sxc3BCd2Qz?=
+ =?utf-8?B?OEVKdjMrQ1JLRWE0aHplK1lxUnQ3V3p1WlBxdytuVCtlYUhsaHZRNDZVV1ZR?=
+ =?utf-8?B?c0kwcUFsNnRWWElGK0NuRWtmL3h3a1orSWNZMVlzb2FuQS9WMEhZNUlQdFpG?=
+ =?utf-8?B?UmdhblRyeWZncUdhN0JteDRweFlVRkpWdmZuQnBxSXZZTlhSVzc1MWFiVldN?=
+ =?utf-8?B?OThTS0pycnhvbHhHQ01kazhQRnpobGxSUm5haU5tc2c2U0RZRkVValNkaDFr?=
+ =?utf-8?B?UXpqL2tySWU2VW1Pc3BsNU1tWVphTnQ4N1lzaEM0RFBoeWVUNzJEUVBkVTN4?=
+ =?utf-8?B?dGtFV1BSd012VEs3Y3ZVV09UYXh3NW1qY0pVNDNObnRjUVA3TlVscWFyaG1X?=
+ =?utf-8?B?OHZVaFg5UUZzQVA0VmhoWU40T1RuYSs3MkVCUUMyRGFCemEzUkFpcTdpdjBS?=
+ =?utf-8?B?dUpaQzRvRzIrcitpMnBoZWVvUi9ZSlpHaTh2Um94RC9GOVJ6em9BOXo3STB5?=
+ =?utf-8?B?N1Y0S1NxTWI0YUpCbkVxT0ZUK2NROHhGUUtFWU5OVS9Id0lLSXRWRzMxbVcz?=
+ =?utf-8?B?d0RwSmRkcGJLTWFhNHNHd2xTYUwyalM4U2NxTHBvSXpEcldnQUZIMklwbkpL?=
+ =?utf-8?B?SDVEMDk5RnJ0ZlBPQUZ4UkEzbDBiM2tCajdteVZzLyt0KzVNZEdhZSsvZGJZ?=
+ =?utf-8?B?Wk9nR2hXMGM2ckRGVXpVTlFKaWxZTGMxRFUxTnNtTTh3QnZxUi9sWTBiUVJl?=
+ =?utf-8?B?eVVzMjVxQzA4WitPZitzVldLMXUyMCtPY1l6YVJHSzV4d3VHVFRjdGFnWEpn?=
+ =?utf-8?B?NGt0dVdKUytDc1hUcHNHd2xHejBoUHZqUnFJS2pEWjJWSlJuMlRVcHY1Q0Mx?=
+ =?utf-8?B?L2xWNW5xcFhYTUhLR1hDWkFHV05zRVRPb3J2dEdJSGJGQ3RDcnVUZjZDSHhC?=
+ =?utf-8?B?S2UzRkdJRi9FWmdvTFVZUHJWdGI4M1IxZ1RnZEI4RGlqQkVjSTEvU1BJamVa?=
+ =?utf-8?B?VHlGQ2hhdjc5WWhJOWpPellKTGdjNFczSmtQV1B6OGhZMytnYzZwNFdqYWVE?=
+ =?utf-8?B?WUpNdjJCQU1YOVJzMFkxOU13QlVKTmVFSkI4a1NScGhaQURkY2VBN0VhSXhC?=
+ =?utf-8?B?NTAvQ05zZzdqN3lVNnNhQ2UyM0RxMmJnNlI5bGs0OTExMmJHMGNSbG9ZV3lO?=
+ =?utf-8?Q?7pG4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VlhEaUE0cTUrVzB0V0N6T0NRM1BnaHQyTDhINVIyeTdlcmRrc1p0TXV4VEtm?=
+ =?utf-8?B?MXpkb2dLOU51NVg2RFUxUVo2a1EzNG0vVGI2ZUtWTUhVTUtSZmZZb21YN2gw?=
+ =?utf-8?B?WmhEbkRRWk9JMmo4TlZRR2pXakJKQ3lDSkpzUE4yd2dFUTV2TzZZQ3lhOGk2?=
+ =?utf-8?B?RktxZkFCWm8vWWdGNVpJS1R5ZzBqRXRBdlpyK2wxUlpMNXJBZXJrUzNTcTV5?=
+ =?utf-8?B?NG5jN0orU21wRGlmT0E4dlIvKzZadlJxRUFCeEVxZ1Z5dUZpT2RCSElvT1Y0?=
+ =?utf-8?B?aDlXeXpXZWpMbG0zcm9HMytOTmRvTWsyclZKajU5OXBXZkZMbStmaGZMQ29z?=
+ =?utf-8?B?UC9NVlg4amc2QlJZbU56MG05LytzSnpzejYwRmJHamVuTzdXN2VsckF1VTNR?=
+ =?utf-8?B?T0F5MnN4bW1KeXlJSnBQWkdWU2dlQ2VSK2EzVDQ2Q0pNbUw3TXVEdmVhUTgr?=
+ =?utf-8?B?dllQVXFFdEVLZlpqYklHUU5hUm9nQzRWNnFJSDBoUUJKR25Xb3BtOXhKZjNU?=
+ =?utf-8?B?RVZNSDRNT1grMUR4Q25USysyTXUwNGM5TVNWbnhFcVcyV3NleEVzQ2N3aGtY?=
+ =?utf-8?B?VGJXYXRYQlAyOVRYMlJ5Qm4vWlhiN1MyU2ZzUll4TW1iMnZQeklEeXlOZVNt?=
+ =?utf-8?B?dUhmb1lldUxlSXo0V2FqYlZ1T25TVzZIaDJLSDZ5NzNqa2E4WXJTaVFCL2J3?=
+ =?utf-8?B?dDVKNjFoOXhZaTJNWUlweDVOY0ZxOGFZc2tBTHF5Y0p2aE1GM1ZHMythUlR2?=
+ =?utf-8?B?MkQ1b3B5SWRSdlhDQUpUTTZaSTJub3VWVDFiKy9xK2pZZHN5T2dmb2JmQXFT?=
+ =?utf-8?B?OTdHdG1PYm5xUFVDLzM5T3RBTTluZHBDd1hhemcybXlGVURKSkwyTzZlTFZC?=
+ =?utf-8?B?T2FLWkxMeVZoV3JrWXlIRVNkTm5YdTkyL0kvOElaWXEyT1ZWdmNuNllSMVBS?=
+ =?utf-8?B?RDlTb28zRTFnTWtYQnZVM1ZVZ0c0ZFBHREFsYlI1QTlhVkNvajc4MEtySG1Q?=
+ =?utf-8?B?ZC84eVJtbHEzTGNEblFGUEE2RjQxSVpiNUFTaGY4Q05Dc3haL0dUZ0R5RHhm?=
+ =?utf-8?B?bjVZSms2UlZyekxOY0FOdUlQZFBEY3BhbThTWTZnRzIvUllmWlR0YVRYeUlu?=
+ =?utf-8?B?MHJZdktzY0RtRk82ZWR5ZmNBQkZucEVNckFXbG9aZjRFREF0cUJVczNyUTJ2?=
+ =?utf-8?B?TGJubnRNeHlkOVNQcndVa1ZvQjdhTkFtQmdlRFY4VlR4L3pxUjArTW5WWC92?=
+ =?utf-8?B?a3BUQ1RYenYyLzRHeHo4cWJLNHhJdThJNk5MQVh5VjBQeCs0S21KZlFMWlp4?=
+ =?utf-8?B?MTBzalFhNWg0a2hJanVmQmFNVVZlZzVnNmJNeHpROUtCSTl6bUJudC9rUnBj?=
+ =?utf-8?B?WXJ2KzA0amZoZ1Jra1JXYWVSR2ErU2lLclhDTTIxaG8wU21oV2E0Wk1ZVjJJ?=
+ =?utf-8?B?TVF3ZGRTbjFtczM4YnNRNnorNk1GUlBxdzdPSnUvTkpvZFh1Q1k5VFBEOXN2?=
+ =?utf-8?B?KzNjb2NGMVErb2dwU0ZEcHpEQUMvMVBhalJNaUFETThBTndnVXYxWkJLQXZz?=
+ =?utf-8?B?NjNKQ0tqaWRWLzkrbEFDMTdLQWN5eUI5K3p6YmtTaUg5R3lnbFRMSXY2Qy9G?=
+ =?utf-8?B?NlhGNlUxV3FnT1ZDMWNxaW96ZmNQT1pBYjcyUEJ1YURrT0Q5YzZubXpQN05K?=
+ =?utf-8?B?ZmVqYWdNWHNqK3plclJnVmtjSUV0bjF6Vkd3ZHpZYlAzc3c3bUVaSnpXeXhw?=
+ =?utf-8?B?OFVhbTNIQWtZcWFpL1ZVbnJXSkVKQkZhS0pmVHJQMGVxaVNQdVE5dElQaE9K?=
+ =?utf-8?B?cGlWNVQxT2JydDFiQ1FoOFBTTHhMNGhTQmQ1T3V0Mm02UVRNUTRhTUxkekt0?=
+ =?utf-8?B?dHNrcWczaDlGaGhjV1BXRGMxR1BSb0piMzd2R1huOTFseHpTZ0x1U056WTdk?=
+ =?utf-8?B?Y3BkM2lRTCtEZG1rc0hCZG9nbFAxZGdLMmV1STE0VmE4d1NXWjZxM3dCdlIv?=
+ =?utf-8?B?RXZkSGRjOUVheUFIdUZIQkczMTU0c2lTenIxY05hS2NIWkFPblowUDJjeUdE?=
+ =?utf-8?B?L3YrL0NEeUlDM3VtVldNK3lKS1JDbFpkbWUzZHNCWnpubXFVMkJKSDc5eDEw?=
+ =?utf-8?B?VU9JaHpZejJwNmI3aTQya3N0UWxkN1BkSUdsMFM5L1k0UlBXNVhQSll3Z0hW?=
+ =?utf-8?B?dS9oQUJqanhkTHAwbWVqa1Y2ZytZY2FYeVNBUWRGK2d4LzNac1lwUGxsU1gr?=
+ =?utf-8?B?UkdVOCtTa0sva3dZc2lQYi9XcFVJdktDaiswTzhxYnlmVDVvRHhTNlZCR2lW?=
+ =?utf-8?B?WWZaU2hHN2VXSWZXMzkyUFN6MDRBa01kenRHTVcyQ3doNFUySEdNZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8296cf6-95b7-4fc6-d061-08de59b5137f
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 12:52:18.5130
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4l3xCcI1BDwMbkYcG4+ru/rq6IWCwdmGMIi06o9Kth8I/iw7512dtzAuBnnUYGzaick/C+EUBBu+jLi2xGHgsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5738
 
-Implement the core abstractions needed for led class devices, including:
+On Wed Jan 14, 2026 at 7:29 PM GMT, Timur Tabi wrote:
+> The GSP booter firmware in Turing and GA100 includes a third memory
+> section called ImemNonSecure, which is non-secure IMEM.  This section
+> must be loaded separately from DMEM and secure IMEM, but only if it
+> actually exists.
+>
+> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+> Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/falcon.rs          | 18 ++++++++++++++++--
+>  drivers/gpu/nova-core/firmware/booter.rs |  9 +++++++++
+>  drivers/gpu/nova-core/firmware/fwsec.rs  |  5 +++++
+>  3 files changed, 30 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falc=
+on.rs
+> index 310d4e75bad3..60713fecffc9 100644
+> --- a/drivers/gpu/nova-core/falcon.rs
+> +++ b/drivers/gpu/nova-core/falcon.rs
+> @@ -242,6 +242,8 @@ fn from(value: PeregrineCoreSelect) -> Self {
+>  pub(crate) enum FalconMem {
+>      /// Secure Instruction Memory.
+>      ImemSecure,
+> +    /// Non-Secure Instruction Memory.
+> +    ImemNonSecure,
+>      /// Data Memory.
+>      Dmem,
+>  }
+> @@ -351,6 +353,10 @@ pub(crate) trait FalconLoadParams {
+>      /// Returns the load parameters for Secure `IMEM`.
+>      fn imem_sec_load_params(&self) -> FalconLoadTarget;
+> =20
+> +    /// Returns the load parameters for Non-Secure `IMEM`,
+> +    /// used only on Turing and GA100.
+> +    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget>;
+> +
+>      /// Returns the load parameters for `DMEM`.
+>      fn dmem_load_params(&self) -> FalconLoadTarget;
+> =20
+> @@ -460,7 +466,9 @@ fn dma_wr<F: FalconFirmware<Target =3D E>>(
+>          //
+>          // For DMEM we can fold the start offset into the DMA handle.
+>          let (src_start, dma_start) =3D match target_mem {
+> -            FalconMem::ImemSecure =3D> (load_offsets.src_start, fw.dma_h=
+andle()),
+> +            FalconMem::ImemSecure | FalconMem::ImemNonSecure =3D> {
+> +                (load_offsets.src_start, fw.dma_handle())
+> +            }
+>              FalconMem::Dmem =3D> (
+>                  0,
+>                  fw.dma_handle_with_offset(load_offsets.src_start.into_sa=
+fe_cast())?,
+> @@ -517,7 +525,7 @@ fn dma_wr<F: FalconFirmware<Target =3D E>>(
+> =20
+>          let cmd =3D regs::NV_PFALCON_FALCON_DMATRFCMD::default()
+>              .set_size(DmaTrfCmdSize::Size256B)
+> -            .set_imem(target_mem =3D=3D FalconMem::ImemSecure)
+> +            .set_imem(target_mem !=3D FalconMem::Dmem)
+>              .set_sec(if sec { 1 } else { 0 });
+> =20
+>          for pos in (0..num_transfers).map(|i| i * DMA_LEN) {
+> @@ -546,6 +554,12 @@ fn dma_wr<F: FalconFirmware<Target =3D E>>(
+> =20
+>      /// Perform a DMA load into `IMEM` and `DMEM` of `fw`, and prepare t=
+he falcon to run it.
+>      pub(crate) fn dma_load<F: FalconFirmware<Target =3D E>>(&self, bar: =
+&Bar0, fw: &F) -> Result {
+> +        // The Non-Secure section only exists on firmware used by Turing=
+ and GA100, and
+> +        // those platforms do not use DMA.
+> +        if fw.imem_ns_load_params().is_some() {
+> +            return Err(EINVAL);
+> +        }
 
-* `led::LedOps` - the trait for handling leds, including
-  `brightness_set`, `brightness_get` and `blink_set`
+This error path should never be exercised would it?
 
-* `led::InitData` - data set for the led class device
+dma_load should never be called in the first place but pio_load should be c=
+alled
+instead when the platform does not support DMA?
 
-* `led::Device` - a safe wrapper around `led_classdev`
+Best,
+Gary
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- MAINTAINERS        |   7 +
- rust/kernel/led.rs | 450 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs |   1 +
- 3 files changed, 458 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 765ad2daa218..8c8648a26f93 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14269,6 +14269,13 @@ F:	drivers/leds/
- F:	include/dt-bindings/leds/
- F:	include/linux/leds.h
- 
-+LED SUBSYSTEM [RUST]
-+M:	Markus Probst <markus.probst@posteo.de>
-+L:	linux-leds@vger.kernel.org
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	rust/kernel/led.rs
-+
- LEGO MINDSTORMS EV3
- R:	David Lechner <david@lechnology.com>
- S:	Maintained
-diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
-new file mode 100644
-index 000000000000..cdd9b0300b72
---- /dev/null
-+++ b/rust/kernel/led.rs
-@@ -0,0 +1,450 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Abstractions for the leds driver model.
-+//!
-+//! C header: [`include/linux/leds.h`](srctree/include/linux/leds.h)
-+
-+use core::{
-+    marker::PhantomData,
-+    mem::transmute,
-+    ptr::NonNull, //
-+};
-+
-+use crate::{
-+    container_of,
-+    device::{
-+        self,
-+        property::FwNode,
-+        AsBusDevice,
-+        Bound, //
-+    },
-+    devres::Devres,
-+    error::{
-+        from_result,
-+        to_result,
-+        VTABLE_DEFAULT_ERROR, //
-+    },
-+    macros::vtable,
-+    prelude::*,
-+    str::CStrExt,
-+    types::{
-+        ARef,
-+        Opaque, //
-+    }, //
-+};
-+
-+/// The led class device representation.
-+///
-+/// This structure represents the Rust abstraction for a C `struct led_classdev`.
-+#[pin_data(PinnedDrop)]
-+pub struct Device<T: LedOps> {
-+    ops: T,
-+    #[pin]
-+    classdev: Opaque<bindings::led_classdev>,
-+}
-+
-+/// The led init data representation.
-+///
-+/// This structure represents the Rust abstraction for a C `struct led_init_data` with additional
-+/// fields from `struct led_classdev`.
-+#[derive(Default)]
-+pub struct InitData<'a> {
-+    fwnode: Option<ARef<FwNode>>,
-+    devicename: Option<&'a CStr>,
-+    devname_mandatory: bool,
-+    initial_brightness: u32,
-+    default_trigger: Option<&'a CStr>,
-+    color: Color,
-+}
-+
-+impl InitData<'static> {
-+    /// Creates a new [`InitData`].
-+    pub fn new() -> Self {
-+        Self::default()
-+    }
-+}
-+
-+impl<'a> InitData<'a> {
-+    /// Sets the firmware node.
-+    pub fn fwnode(self, fwnode: Option<ARef<FwNode>>) -> Self {
-+        Self { fwnode, ..self }
-+    }
-+
-+    /// Sets the device name.
-+    pub fn devicename(self, devicename: &'a CStr) -> Self {
-+        Self {
-+            devicename: Some(devicename),
-+            ..self
-+        }
-+    }
-+
-+    /// Sets if a device name is mandatory.
-+    pub fn devicename_mandatory(self, mandatory: bool) -> Self {
-+        Self {
-+            devname_mandatory: mandatory,
-+            ..self
-+        }
-+    }
-+
-+    /// Sets the initial brightness value for the led.
-+    ///
-+    /// The default brightness is 0.
-+    /// If [`LedOps::brightness_get`] is implemented, this value will be ignored.
-+    pub fn initial_brightness(self, brightness: u32) -> Self {
-+        Self {
-+            initial_brightness: brightness,
-+            ..self
-+        }
-+    }
-+
-+    /// Set the default led trigger.
-+    ///
-+    /// This value can be overwritten by the "linux,default-trigger" fwnode property.
-+    pub fn default_trigger(self, trigger: &'a CStr) -> Self {
-+        Self {
-+            default_trigger: Some(trigger),
-+            ..self
-+        }
-+    }
-+
-+    /// Sets the color of the led.
-+    ///
-+    /// This value can be overwritten by the "color" fwnode property.
-+    pub fn color(self, color: Color) -> Self {
-+        Self { color, ..self }
-+    }
-+}
-+
-+/// Trait defining the operations for a LED driver.
-+///
-+/// # Examples
-+/// ```
-+/// use kernel::{
-+///      device,
-+///      devres::Devres,
-+///      led,
-+///      macros::vtable,
-+///      platform,
-+///      prelude::*, //
-+///  };
-+///
-+/// struct MyLedOps;
-+///
-+///
-+/// #[vtable]
-+/// impl led::LedOps for MyLedOps {
-+///     type Bus = platform::Device<device::Bound>;
-+///     const BLOCKING: bool = false;
-+///     const MAX_BRIGHTNESS: u32 = 255;
-+///
-+///     fn brightness_set(
-+///         &self,
-+///         _dev: &platform::Device<device::Bound>,
-+///         _classdev: &led::Device<Self>,
-+///         _brightness: u32
-+///     ) -> Result<()> {
-+///         // Set the brightness for the led here
-+///         Ok(())
-+///     }
-+/// }
-+///
-+/// fn register_my_led(
-+///     parent: &platform::Device<device::Bound>,
-+/// ) -> Result<Pin<KBox<Devres<led::Device<MyLedOps>>>>> {
-+///     KBox::pin_init(led::Device::new(
-+///         parent,
-+///         led::InitData::new(),
-+///         MyLedOps,
-+///     ), GFP_KERNEL)
-+/// }
-+/// ```
-+/// Led drivers must implement this trait in order to register and handle a [`Device`].
-+#[vtable]
-+pub trait LedOps: Send + 'static + Sized {
-+    /// The bus device required by the implementation.
-+    #[allow(private_bounds)]
-+    type Bus: AsBusDevice<Bound>;
-+    /// If set true, [`LedOps::brightness_set`] and [`LedOps::blink_set`] must perform the
-+    /// operation immediately. If set false, they must not sleep.
-+    const BLOCKING: bool;
-+    /// The max brightness level.
-+    const MAX_BRIGHTNESS: u32;
-+
-+    /// Sets the brightness level.
-+    ///
-+    /// See also [`LedOps::BLOCKING`].
-+    fn brightness_set(
-+        &self,
-+        dev: &Self::Bus,
-+        classdev: &Device<Self>,
-+        brightness: u32,
-+    ) -> Result<()>;
-+
-+    /// Gets the current brightness level.
-+    fn brightness_get(&self, _dev: &Self::Bus, _classdev: &Device<Self>) -> u32 {
-+        build_error!(VTABLE_DEFAULT_ERROR)
-+    }
-+
-+    /// Activates hardware accelerated blinking.
-+    ///
-+    /// delays are in milliseconds. If both are zero, a sensible default should be chosen.
-+    /// The caller should adjust the timings in that case and if it can't match the values
-+    /// specified exactly. Setting the brightness to 0 will disable the hardware accelerated
-+    /// blinking.
-+    ///
-+    /// See also [`LedOps::BLOCKING`].
-+    fn blink_set(
-+        &self,
-+        _dev: &Self::Bus,
-+        _classdev: &Device<Self>,
-+        _delay_on: &mut usize,
-+        _delay_off: &mut usize,
-+    ) -> Result<()> {
-+        build_error!(VTABLE_DEFAULT_ERROR)
-+    }
-+}
-+
-+/// Led colors.
-+#[derive(Copy, Clone, Debug, Default)]
-+#[repr(u32)]
-+#[non_exhaustive]
-+#[expect(
-+    missing_docs,
-+    reason = "it shouldn't be necessary to document each color"
-+)]
-+pub enum Color {
-+    #[default]
-+    White = bindings::LED_COLOR_ID_WHITE,
-+    Red = bindings::LED_COLOR_ID_RED,
-+    Green = bindings::LED_COLOR_ID_GREEN,
-+    Blue = bindings::LED_COLOR_ID_BLUE,
-+    Amber = bindings::LED_COLOR_ID_AMBER,
-+    Violet = bindings::LED_COLOR_ID_VIOLET,
-+    Yellow = bindings::LED_COLOR_ID_YELLOW,
-+    Ir = bindings::LED_COLOR_ID_IR,
-+    Multi = bindings::LED_COLOR_ID_MULTI,
-+    Rgb = bindings::LED_COLOR_ID_RGB,
-+    Purple = bindings::LED_COLOR_ID_PURPLE,
-+    Orange = bindings::LED_COLOR_ID_ORANGE,
-+    Pink = bindings::LED_COLOR_ID_PINK,
-+    Cyan = bindings::LED_COLOR_ID_CYAN,
-+    Lime = bindings::LED_COLOR_ID_LIME,
-+}
-+
-+impl TryFrom<u32> for Color {
-+    type Error = Error;
-+
-+    fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
-+        const _: () = {
-+            assert!(bindings::LED_COLOR_ID_MAX == 15);
-+        };
-+        if value < bindings::LED_COLOR_ID_MAX {
-+            // SAFETY:
-+            // - `Color` is represented as `u32`
-+            // - the const block above guarantees that no additional color has been added
-+            // - `value` is guaranteed to be in the color id range
-+            Ok(unsafe { transmute::<u32, Color>(value) })
-+        } else {
-+            Err(EINVAL)
-+        }
-+    }
-+}
-+
-+// SAFETY: A `led::Device` can be unregistered from any thread.
-+unsafe impl<T: LedOps + Send> Send for Device<T> {}
-+
-+// SAFETY: `led::Device` can be shared among threads because all methods of `led::Device`
-+// are thread safe.
-+unsafe impl<T: LedOps + Sync> Sync for Device<T> {}
-+
-+impl<T: LedOps> Device<T> {
-+    /// Registers a new led classdev.
-+    ///
-+    /// The [`Device`] will be unregistered on drop.
-+    pub fn new<'a>(
-+        parent: &'a T::Bus,
-+        init_data: InitData<'a>,
-+        ops: T,
-+    ) -> impl PinInit<Devres<Self>, Error> + 'a {
-+        Devres::new(
-+            parent.as_ref(),
-+            try_pin_init!(Self {
-+                ops,
-+                classdev <- Opaque::try_ffi_init(|ptr: *mut bindings::led_classdev| {
-+                    // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write.
-+                    // `led_classdev` gets fully initialized in-place by
-+                    // `led_classdev_register_ext` including `mutex` and `list_head`.
-+                    unsafe {
-+                        ptr.write(bindings::led_classdev {
-+                            brightness_set: (!T::BLOCKING)
-+                                .then_some(Adapter::<T>::brightness_set_callback),
-+                            brightness_set_blocking: T::BLOCKING
-+                                .then_some(Adapter::<T>::brightness_set_blocking_callback),
-+                            brightness_get: T::HAS_BRIGHTNESS_GET
-+                                .then_some(Adapter::<T>::brightness_get_callback),
-+                            blink_set: T::HAS_BLINK_SET.then_some(Adapter::<T>::blink_set_callback),
-+                            max_brightness: T::MAX_BRIGHTNESS,
-+                            brightness: init_data.initial_brightness,
-+                            default_trigger: init_data.default_trigger
-+                                .map_or(core::ptr::null(), CStrExt::as_char_ptr),
-+                            color: init_data.color as u32,
-+                            ..bindings::led_classdev::default()
-+                        })
-+                    };
-+
-+                    let mut init_data_raw = bindings::led_init_data {
-+                        fwnode: init_data.fwnode
-+                            .as_ref()
-+                            .map_or(core::ptr::null_mut(), |fwnode| fwnode.as_raw()),
-+                        default_label: core::ptr::null(),
-+                        devicename: init_data
-+                            .devicename
-+                            .map_or(core::ptr::null(), CStrExt::as_char_ptr),
-+                        devname_mandatory: init_data.devname_mandatory,
-+                    };
-+
-+                    // SAFETY:
-+                    // - `parent.as_raw()` is guaranteed to be a pointer to a valid `device`
-+                    //    or a null pointer.
-+                    // - `ptr` is guaranteed to be a pointer to an initialized `led_classdev`.
-+                    to_result(unsafe {
-+                        bindings::led_classdev_register_ext(
-+                            parent.as_ref().as_raw(),
-+                            ptr,
-+                            &raw mut init_data_raw,
-+                        )
-+                    })?;
-+
-+                    core::mem::forget(init_data.fwnode); // keep the reference count incremented
-+
-+                    Ok::<_, Error>(())
-+                }),
-+            }),
-+        )
-+    }
-+
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    unsafe fn from_raw<'a>(led_cdev: *mut bindings::led_classdev) -> &'a Self {
-+        // SAFETY: The function's contract guarantees that `led_cdev` points to a `led_classdev`
-+        // field embedded within a valid `led::Device`. `container_of!` can therefore
-+        // safely calculate the address of the containing struct.
-+        unsafe { &*container_of!(Opaque::cast_from(led_cdev), Self, classdev) }
-+    }
-+
-+    fn parent(&self) -> &device::Device<Bound> {
-+        // SAFETY:
-+        // - `self.classdev.get()` is guaranteed to be a valid pointer to `led_classdev`.
-+        unsafe { device::Device::from_raw((*(*self.classdev.get()).dev).parent) }
-+    }
-+}
-+
-+struct Adapter<T: LedOps> {
-+    _p: PhantomData<T>,
-+}
-+
-+impl<T: LedOps> Adapter<T> {
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    /// This function is called on setting the brightness of a led.
-+    unsafe extern "C" fn brightness_set_callback(
-+        led_cdev: *mut bindings::led_classdev,
-+        brightness: u32,
-+    ) {
-+        // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
-+        // `led_classdev` embedded within a `led::Device`.
-+        let classdev = unsafe { Device::<T>::from_raw(led_cdev) };
-+        // SAFETY: `classdev.parent()` is guaranteed to be contained in `T::Bus`.
-+        let parent = unsafe { T::Bus::from_device(classdev.parent()) };
-+
-+        let _ = classdev.ops.brightness_set(parent, classdev, brightness);
-+    }
-+
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    /// This function is called on setting the brightness of a led immediately.
-+    unsafe extern "C" fn brightness_set_blocking_callback(
-+        led_cdev: *mut bindings::led_classdev,
-+        brightness: u32,
-+    ) -> i32 {
-+        from_result(|| {
-+            // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
-+            // `led_classdev` embedded within a `led::Device`.
-+            let classdev = unsafe { Device::<T>::from_raw(led_cdev) };
-+            // SAFETY: `classdev.parent()` is guaranteed to be contained in `T::Bus`.
-+            let parent = unsafe { T::Bus::from_device(classdev.parent()) };
-+
-+            classdev.ops.brightness_set(parent, classdev, brightness)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    /// This function is called on getting the brightness of a led.
-+    unsafe extern "C" fn brightness_get_callback(led_cdev: *mut bindings::led_classdev) -> u32 {
-+        // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
-+        // `led_classdev` embedded within a `led::Device`.
-+        let classdev = unsafe { Device::<T>::from_raw(led_cdev) };
-+        // SAFETY: `classdev.parent()` is guaranteed to be contained in `T::Bus`.
-+        let parent = unsafe { T::Bus::from_device(classdev.parent()) };
-+
-+        classdev.ops.brightness_get(parent, classdev)
-+    }
-+
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    /// `delay_on` and `delay_off` must be valid pointers to `usize` and have
-+    /// exclusive access for the period of this function.
-+    /// This function is called on enabling hardware accelerated blinking.
-+    unsafe extern "C" fn blink_set_callback(
-+        led_cdev: *mut bindings::led_classdev,
-+        delay_on: *mut usize,
-+        delay_off: *mut usize,
-+    ) -> i32 {
-+        from_result(|| {
-+            // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
-+            // `led_classdev` embedded within a `led::Device`.
-+            let classdev = unsafe { Device::<T>::from_raw(led_cdev) };
-+            // SAFETY: `classdev.parent()` is guaranteed to be contained in `T::Bus`.
-+            let parent = unsafe { T::Bus::from_device(classdev.parent()) };
-+
-+            classdev.ops.blink_set(
-+                parent,
-+                classdev,
-+                // SAFETY: The function's contract guarantees that `delay_on` points to a `usize`
-+                // and is exclusive for the period of this function.
-+                unsafe { &mut *delay_on },
-+                // SAFETY: The function's contract guarantees that `delay_off` points to a `usize`
-+                // and is exclusive for the period of this function.
-+                unsafe { &mut *delay_off },
-+            )?;
-+            Ok(0)
-+        })
-+    }
-+}
-+
-+#[pinned_drop]
-+impl<T: LedOps> PinnedDrop for Device<T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        let raw = self.classdev.get();
-+        // SAFETY: The existence of `self` guarantees that `self.classdev.get()` is a pointer to a
-+        // valid `struct led_classdev`.
-+        let dev: &device::Device = unsafe { device::Device::from_raw((*raw).dev) };
-+
-+        let _fwnode = dev
-+            .fwnode()
-+            // SAFETY: the reference count of `fwnode` has previously been
-+            // incremented in `led::Device::new`.
-+            .map(|fwnode| unsafe { ARef::from_raw(NonNull::from(fwnode)) });
-+
-+        // SAFETY: The existence of `self` guarantees that `self.classdev` has previously been
-+        // successfully registered with `led_classdev_register_ext`.
-+        unsafe { bindings::led_classdev_unregister(self.classdev.get()) };
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index f812cf120042..231818e0614b 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -108,6 +108,7 @@
- pub mod jump_label;
- #[cfg(CONFIG_KUNIT)]
- pub mod kunit;
-+pub mod led;
- pub mod list;
- pub mod maple_tree;
- pub mod miscdevice;
-
--- 
-2.52.0
+> +
+>          self.dma_reset(bar);
+>          regs::NV_PFALCON_FBIF_TRANSCFG::update(bar, &E::ID, 0, |v| {
+>              v.set_target(FalconFbifTarget::CoherentSysmem)
+> diff --git a/drivers/gpu/nova-core/firmware/booter.rs b/drivers/gpu/nova-=
+core/firmware/booter.rs
+> index 096cd01dbc9d..1b98bb47424c 100644
+> --- a/drivers/gpu/nova-core/firmware/booter.rs
+> +++ b/drivers/gpu/nova-core/firmware/booter.rs
+> @@ -253,6 +253,9 @@ impl<'a> FirmwareSignature<BooterFirmware> for Booter=
+Signature<'a> {}
+>  pub(crate) struct BooterFirmware {
+>      // Load parameters for Secure `IMEM` falcon memory.
+>      imem_sec_load_target: FalconLoadTarget,
+> +    // Load parameters for Non-Secure `IMEM` falcon memory,
+> +    // used only on Turing and GA100
+> +    imem_ns_load_target: Option<FalconLoadTarget>,
+>      // Load parameters for `DMEM` falcon memory.
+>      dmem_load_target: FalconLoadTarget,
+>      // BROM falcon parameters.
+> @@ -359,6 +362,8 @@ pub(crate) fn new(
+>                  dst_start: 0,
+>                  len: app0.len,
+>              },
+> +            // Exists only in the booter image for Turing and GA100
+> +            imem_ns_load_target: None,
+>              dmem_load_target: FalconLoadTarget {
+>                  src_start: load_hdr.os_data_offset,
+>                  dst_start: 0,
+> @@ -375,6 +380,10 @@ fn imem_sec_load_params(&self) -> FalconLoadTarget {
+>          self.imem_sec_load_target.clone()
+>      }
+> =20
+> +    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
+> +        self.imem_ns_load_target.clone()
+> +    }
+> +
+>      fn dmem_load_params(&self) -> FalconLoadTarget {
+>          self.dmem_load_target.clone()
+>      }
+> diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-c=
+ore/firmware/fwsec.rs
+> index 6a2f5a0d4b15..e4009faba6c5 100644
+> --- a/drivers/gpu/nova-core/firmware/fwsec.rs
+> +++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+> @@ -232,6 +232,11 @@ fn imem_sec_load_params(&self) -> FalconLoadTarget {
+>          }
+>      }
+> =20
+> +    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
+> +        // Only used on Turing and GA100, so return None for now
+> +        None
+> +    }
+> +
+>      fn dmem_load_params(&self) -> FalconLoadTarget {
+>          FalconLoadTarget {
+>              src_start: self.desc.imem_load_size,
 
