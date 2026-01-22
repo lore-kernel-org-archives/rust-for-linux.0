@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329FE23ED75;
-	Thu, 22 Jan 2026 17:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8B830F925;
+	Thu, 22 Jan 2026 17:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769103059; cv=none; b=iiyHx279fOA6kQW2ZvXmUaL27qjyC0DXTRevNE9qSr7taBgEf/9BAU33CjdEzgDLWzItmwjGq9x65GqkAQtKqYG0doLZYMYSYlMuUlK1TnE4AnjHYEDBy0EKOG7Y+ZMxWflonU4rPOrb/v8qIbkl3hqKd2aqkCymzgt9zBRKsWw=
+	t=1769103062; cv=none; b=tGBrVlvPRZjCuFtyCmO2Iw3uCGotlkshKgwxn3ofinoQiUyUMrN32BV4FCJ0ZYj8bZhK76aeDnnN+jdxbWuqumETHDrhoCGENK6qW4Ty9j9PdE4cKWQykdAz2U0q0op3YpLu/ABSB1ehPUU/1+U+X5IBztTU29SFFqoC3X8yEwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769103059; c=relaxed/simple;
-	bh=36ruCmo+r1BzderDNTCI9lf9enZ1Me+RMKf1acltnyo=;
+	s=arc-20240116; t=1769103062; c=relaxed/simple;
+	bh=zMXrgAtF0e7iHP7f42GLvdV5rWt3y/mmSt8wv4h7l9U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kq1vRWoBXloOz+xUHemdHN0VEx//16QUczk/9lEWhhXt7zZIVrEkLWFmhj9PSJkfYQFM8TYyILD1LtTx4/lA2KU+tYD0xS44c45H8YUerUoHr85CAPRflhs84wIoT0Ck2pf9D210uszDQKhIjSCU3ZbVEe7zZxeDe6Q9RB31WMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ITMWVIWM; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gvb82eWzLQJq9Z2QaeKJQ6nvdl5m7LEg0Hg6066eWW6tY/EdYPAs4MQpAVq4xe9MnW72IjTuLbbIGVr7X1Hf13XduwtOtoTXUplZxEDm8EZepjLE0DKD/0pJiqokanvGB5AWGOaha8uVlQp1ZOjVdXEOPSJzWf3+epnbD4pEc1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uO8m8yqZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ITMWVIWM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF51C19423;
-	Thu, 22 Jan 2026 17:30:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uO8m8yqZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A27DC116C6;
+	Thu, 22 Jan 2026 17:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769103058;
-	bh=36ruCmo+r1BzderDNTCI9lf9enZ1Me+RMKf1acltnyo=;
+	s=k20201202; t=1769103060;
+	bh=zMXrgAtF0e7iHP7f42GLvdV5rWt3y/mmSt8wv4h7l9U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ITMWVIWMq86fI6T7gyFwdk+En6sO7V+aJFOAoBhyvescyVBhvVjDj/2NDHm81gJHH
-	 ZDCmmjfsUINFy13G3G0GkjzXFa7+dgMkeUTErGk8/omuMVJuRa5d8cDhm/LWyXH/Q+
-	 04hzGyIyQ8rtARwL1+2JQFOlQ3UwEOFJZB52/t0/e/ouh6pBhxsE35qQkHEdQllogb
-	 EyQJ6xG8mjcLSG/cs11bjMoZRTj1ri/pjEg2Gke7qCifjcgW62+J0Ebz8vf5VTTZgC
-	 0GO28FT9Mr4bV3lkMQEk9Iu51aKWPZlNrvx465DjU7GJWDxrB+c8sBNiNgaQVG8Hbf
-	 RlFa4tYIJd7Dw==
+	b=uO8m8yqZP38LdNv/rSyEUO1QZXSrFm25o9C4qBarV0xAhI0jWA5DaHbXhmICIOFk8
+	 sbRhKEo1jSNE8D9+3nCUbZmbQU2kBdPD0j87K5Wgak08K407Fzfx1UC7tVlK25LbeC
+	 Tu0h5JAKNY/K0dL02YzSQzcAbhMFWcm/vshfAS3YEVb3+AzTmg5eA+If+pRGaPv3ia
+	 B0uRm+XDdknsoEyCm8Y/vhLMsx8h3iUkvxIEAmwgpi3Twvj5QeJFy2MyDFtUrGQ25y
+	 suMQPsZwcJ3b4/EO/R8vaF8wKK5QPAPHq5NUWxjep51Zx4Xo1wg+n33wjU7UKe5QWz
+	 osv7ze9jTJrEQ==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Thu, 22 Jan 2026 12:30:47 -0500
-Subject: [PATCH 3/4] scripts: generate_rust_analyzer.py: add type hints
+Date: Thu, 22 Jan 2026 12:30:48 -0500
+Subject: [PATCH 4/4] scripts: generate_rust_analyzer.py: identify crates
+ explicitly
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +38,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-rust-analyzer-types-v1-3-29cc2e91dcd5@kernel.org>
+Message-Id: <20260122-rust-analyzer-types-v1-4-29cc2e91dcd5@kernel.org>
 References: <20260122-rust-analyzer-types-v1-0-29cc2e91dcd5@kernel.org>
 In-Reply-To: <20260122-rust-analyzer-types-v1-0-29cc2e91dcd5@kernel.org>
 To: Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -47,276 +48,243 @@ To: Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
  Danilo Krummrich <dakr@kernel.org>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tamir Duberstein <tamird@kernel.org>, 
+ Tamir Duberstein <tamird@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
  Daniel Almeida <daniel.almeida@collabora.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1769103052; l=8692;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1769103052; l=7970;
  i=tamird@kernel.org; h=from:subject:message-id;
- bh=36ruCmo+r1BzderDNTCI9lf9enZ1Me+RMKf1acltnyo=;
+ bh=zMXrgAtF0e7iHP7f42GLvdV5rWt3y/mmSt8wv4h7l9U=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QNNymsf14WPoK5+wOQqIeRu5U+mOArn0IFVnX2lua9wVTMRuGaV+zI73fsHVwn+JbVqOWNbjv7K
- HwYtmzcJRcA8=
+ QLoDj7FdQyCDjkHHvRN7RFQVo7wlPYx8Ytsm9evXkDc0bVJCg/086ce3xMNKd3xVt6sfXHGz0aT
+ ssmmovTKfkQI=
 X-Developer-Key: i=tamird@kernel.org; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-Python type hints allow static analysis tools like mypy to detect type
-errors during development, improving the developer experience.
+Use the return of `append_crate` to declare dependency on that crate.
+This removes the need to build an index of crates and allows multiple
+crates with the same display_name be defined, which allows e.g. host
+crates to be defined separately from target crates.
 
-Python type hints have been present in the kernel since 2019 at the
-latest; see commit 6ebf5866f2e8 ("kunit: tool: add Python wrappers for
-running KUnit tests").
-
-Add a subclass of `argparse.Namespace` to get type checking on the CLI
-arguments.
-
-Run `mypy --strict scripts/generate_rust_analyzer.py --python-version
-3.9` to verify. Note that `mypy` no longer supports python < 3.9.
-
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
 Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 ---
- scripts/generate_rust_analyzer.py | 130 ++++++++++++++++++++++++++------------
- 1 file changed, 90 insertions(+), 40 deletions(-)
+ scripts/generate_rust_analyzer.py | 82 ++++++++++++++++++++-------------------
+ 1 file changed, 42 insertions(+), 40 deletions(-)
 
 diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index bc79e4d8e8e7..2723154f207c 100755
+index 2723154f207c..b8fa1b4c37b0 100755
 --- a/scripts/generate_rust_analyzer.py
 +++ b/scripts/generate_rust_analyzer.py
-@@ -10,8 +10,9 @@ import os
- import pathlib
- import subprocess
- import sys
-+from typing import Dict, Iterable, List, Literal, Optional, TypedDict
+@@ -65,17 +65,14 @@ def generate_crates(
+             line = line.replace("\n", "")
+             cfg.append(line)
  
--def args_crates_cfgs(cfgs):
-+def args_crates_cfgs(cfgs: List[str]) -> Dict[str, List[str]]:
-     crates_cfgs = {}
-     for cfg in cfgs:
-         crate, vals = cfg.split("=", 1)
-@@ -19,7 +20,43 @@ def args_crates_cfgs(cfgs):
- 
-     return crates_cfgs
- 
--def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edition):
-+class Dependency(TypedDict):
-+    crate: int
-+    name: str
-+
-+
-+class Source(TypedDict):
-+    include_dirs: List[str]
-+    exclude_dirs: List[str]
-+
-+
-+class Crate(TypedDict):
-+    display_name: str
-+    root_module: str
-+    is_workspace_member: bool
-+    deps: List[Dependency]
-+    cfg: List[str]
-+    edition: str
-+    env: Dict[str, str]
-+
-+
-+class ProcMacroCrate(Crate):
-+    is_proc_macro: Literal[True]
-+    proc_macro_dylib_path: str  # `pathlib.Path` is not JSON serializable.
-+
-+
-+class CrateWithGenerated(Crate):
-+    source: Source
-+
-+
-+def generate_crates(
-+    srctree: pathlib.Path,
-+    objtree: pathlib.Path,
-+    sysroot_src: pathlib.Path,
-+    external_src: Optional[pathlib.Path],
-+    cfgs: List[str],
-+    core_edition: str,
-+) -> List[Crate]:
-     # Generate the configuration list.
-     cfg = []
-     with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-@@ -31,19 +68,19 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     # Now fill the crates list -- dependencies need to come first.
-     #
-     # Avoid O(n^2) iterations by keeping a map of indexes.
--    crates = []
--    crates_indexes = {}
-+    crates: List[Crate] = []
-+    crates_indexes: Dict[str, int] = {}
+-    # Now fill the crates list -- dependencies need to come first.
+-    #
+-    # Avoid O(n^2) iterations by keeping a map of indexes.
++    # Now fill the crates list.
+     crates: List[Crate] = []
+-    crates_indexes: Dict[str, int] = {}
      crates_cfgs = args_crates_cfgs(cfgs)
  
      def build_crate(
--        display_name,
--        root_module,
--        deps,
-+        display_name: str,
-+        root_module: pathlib.Path,
-+        deps: List[str],
+         display_name: str,
+         root_module: pathlib.Path,
+-        deps: List[str],
++        deps: List[Dependency],
          *,
--        cfg,
--        is_workspace_member,
--        edition,
--    ):
-+        cfg: Optional[List[str]],
-+        is_workspace_member: Optional[bool],
-+        edition: Optional[str],
-+    ) -> Crate:
-         cfg = cfg if cfg is not None else []
-         is_workspace_member = (
-             is_workspace_member if is_workspace_member is not None else True
-@@ -62,14 +99,14 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-         }
- 
+         cfg: Optional[List[str]],
+         is_workspace_member: Optional[bool],
+@@ -90,7 +87,7 @@ def generate_crates(
+             "display_name": display_name,
+             "root_module": str(root_module),
+             "is_workspace_member": is_workspace_member,
+-            "deps": [{"crate": crates_indexes[dep], "name": dep} for dep in deps],
++            "deps": deps,
+             "cfg": cfg,
+             "edition": edition,
+             "env": {
+@@ -101,12 +98,12 @@ def generate_crates(
      def append_proc_macro_crate(
--        display_name,
--        root_module,
--        deps,
-+        display_name: str,
-+        root_module: pathlib.Path,
-+        deps: List[str],
+         display_name: str,
+         root_module: pathlib.Path,
+-        deps: List[str],
++        deps: List[Dependency],
          *,
--        cfg=None,
--        is_workspace_member=None,
--        edition=None,
--    ):
-+        cfg: Optional[List[str]] = None,
-+        is_workspace_member: Optional[bool] = None,
-+        edition: Optional[str] = None,
-+    ) -> None:
+         cfg: Optional[List[str]] = None,
+         is_workspace_member: Optional[bool] = None,
+         edition: Optional[str] = None,
+-    ) -> None:
++    ) -> Dependency:
          crate = build_crate(
              display_name,
              root_module,
-@@ -95,26 +132,26 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-             .decode("utf-8")
-             .strip()
-         )
--        proc_macro_crate = {
-+        proc_macro_crate: ProcMacroCrate = {
-             **crate,
-             "is_proc_macro": True,
-             "proc_macro_dylib_path": str(objtree / "rust" / proc_macro_dylib_name),
+@@ -139,19 +136,20 @@ def generate_crates(
          }
          return register_crate(proc_macro_crate)
  
--    def register_crate(crate):
-+    def register_crate(crate: Crate) -> None:
-         crates_indexes[crate["display_name"]] = len(crates)
+-    def register_crate(crate: Crate) -> None:
+-        crates_indexes[crate["display_name"]] = len(crates)
++    def register_crate(crate: Crate) -> Dependency:
++        index = len(crates)
          crates.append(crate)
++        return {"crate": index, "name": crate["display_name"]}
  
      def append_crate(
--        display_name,
--        root_module,
--        deps,
-+        display_name: str,
-+        root_module: pathlib.Path,
-+        deps: List[str],
+         display_name: str,
+         root_module: pathlib.Path,
+-        deps: List[str],
++        deps: List[Dependency],
          *,
--        cfg=None,
--        is_workspace_member=None,
--        edition=None,
--    ):
-+        cfg: Optional[List[str]] = None,
-+        is_workspace_member: Optional[bool] = None,
-+        edition: Optional[str] = None,
-+    ) -> None:
+         cfg: Optional[List[str]] = None,
+         is_workspace_member: Optional[bool] = None,
+         edition: Optional[str] = None,
+-    ) -> None:
++    ) -> Dependency:
          return register_crate(
              build_crate(
                  display_name,
-@@ -127,12 +164,12 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-         )
+@@ -165,11 +163,11 @@ def generate_crates(
  
      def append_sysroot_crate(
--        display_name,
--        deps,
-+        display_name: str,
-+        deps: List[str],
+         display_name: str,
+-        deps: List[str],
++        deps: List[Dependency],
          *,
--        cfg=None,
--        edition=None,
--    ):
-+        cfg: Optional[List[str]] = None,
-+        edition: Optional[str] = None,
-+    ) -> None:
+         cfg: Optional[List[str]] = None,
+         edition: Optional[str] = None,
+-    ) -> None:
++    ) -> Dependency:
          return append_crate(
              display_name,
              sysroot_src / display_name / "src" / "lib.rs",
-@@ -210,9 +247,9 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+@@ -182,74 +180,76 @@ def generate_crates(
+     # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
+     # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
+     # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
+-    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []), edition=core_edition)
+-    append_sysroot_crate("alloc", ["core"])
+-    append_sysroot_crate("std", ["alloc", "core"])
+-    append_sysroot_crate("proc_macro", ["core", "std"])
++    core = append_sysroot_crate(
++        "core", [], cfg=crates_cfgs.get("core", []), edition=core_edition
++    )
++    alloc = append_sysroot_crate("alloc", [core])
++    std = append_sysroot_crate("std", [alloc, core])
++    proc_macro = append_sysroot_crate("proc_macro", [core, std])
+ 
+-    append_crate(
++    compiler_builtins = append_crate(
+         "compiler_builtins",
+         srctree / "rust" / "compiler_builtins.rs",
+         [],
+     )
+ 
+-    append_crate(
++    proc_macro2 = append_crate(
+         "proc_macro2",
+         srctree / "rust" / "proc-macro2" / "lib.rs",
+-        ["core", "alloc", "std", "proc_macro"],
++        [core, alloc, std, proc_macro],
+         cfg=crates_cfgs["proc_macro2"],
+     )
+ 
+-    append_crate(
++    quote = append_crate(
+         "quote",
+         srctree / "rust" / "quote" / "lib.rs",
+-        ["alloc", "proc_macro", "proc_macro2"],
++        [alloc, proc_macro, proc_macro2],
+         cfg=crates_cfgs["quote"],
+     )
+ 
+-    append_crate(
++    syn = append_crate(
+         "syn",
+         srctree / "rust" / "syn" / "lib.rs",
+-        ["proc_macro", "proc_macro2", "quote"],
++        [proc_macro, proc_macro2, quote],
+         cfg=crates_cfgs["syn"],
+     )
+ 
+-    append_proc_macro_crate(
++    macros = append_proc_macro_crate(
+         "macros",
+         srctree / "rust" / "macros" / "lib.rs",
+-        ["std", "proc_macro", "proc_macro2", "quote", "syn"],
++        [std, proc_macro, proc_macro2, quote, syn],
+     )
+ 
+-    append_crate(
++    build_error = append_crate(
+         "build_error",
+         srctree / "rust" / "build_error.rs",
+-        ["core", "compiler_builtins"],
++        [core, compiler_builtins],
+     )
+ 
+-    append_proc_macro_crate(
++    pin_init_internal = append_proc_macro_crate(
+         "pin_init_internal",
+         srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
+         [],
+         cfg=["kernel"],
+     )
+ 
+-    append_crate(
++    pin_init = append_crate(
+         "pin_init",
+         srctree / "rust" / "pin-init" / "src" / "lib.rs",
+-        ["core", "pin_init_internal", "macros"],
++        [core, pin_init_internal, macros],
+         cfg=["kernel"],
+     )
+ 
+-    append_crate(
++    ffi = append_crate(
+         "ffi",
+         srctree / "rust" / "ffi.rs",
+-        ["core", "compiler_builtins"],
++        [core, compiler_builtins],
      )
  
      def append_crate_with_generated(
--        display_name,
--        deps,
--    ):
-+        display_name: str,
-+        deps: List[str],
-+    ) -> None:
+         display_name: str,
+-        deps: List[str],
+-    ) -> None:
++        deps: List[Dependency],
++    ) -> Dependency:
          crate = build_crate(
              display_name,
              srctree / "rust"/ display_name / "lib.rs",
-@@ -222,7 +259,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-             edition=None,
-         )
-         crate["env"]["OBJTREE"] = str(objtree.resolve(True))
--        crate_with_generated = {
-+        crate_with_generated: CrateWithGenerated = {
-             **crate,
-             "source": {
-                 "include_dirs": [
-@@ -238,7 +275,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
-     append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
+@@ -271,9 +271,11 @@ def generate_crates(
+         }
+         return register_crate(crate_with_generated)
  
--    def is_root_crate(build_file, target):
-+    def is_root_crate(build_file: pathlib.Path, target: str) -> bool:
-         try:
-             return f"{target}.o" in open(build_file).read()
-         except FileNotFoundError:
-@@ -247,7 +284,9 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     # Then, the rest outside of `rust/`.
-     #
-     # We explicitly mention the top-level folders we want to cover.
--    extra_dirs = map(lambda dir: srctree / dir, ("samples", "drivers"))
-+    extra_dirs: Iterable[pathlib.Path] = (
-+        srctree / dir for dir in ("samples", "drivers")
+-    append_crate_with_generated("bindings", ["core", "ffi", "pin_init"])
+-    append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
+-    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
++    bindings = append_crate_with_generated("bindings", [core, ffi, pin_init])
++    uapi = append_crate_with_generated("uapi", [core, ffi, pin_init])
++    kernel = append_crate_with_generated(
++        "kernel", [core, macros, build_error, pin_init, ffi, bindings, uapi]
 +    )
-     if external_src is not None:
-         extra_dirs = [external_src]
-     for folder in extra_dirs:
-@@ -270,7 +309,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
  
-     return crates
+     def is_root_crate(build_file: pathlib.Path, target: str) -> bool:
+         try:
+@@ -303,7 +305,7 @@ def generate_crates(
+             append_crate(
+                 name,
+                 path,
+-                ["core", "kernel"],
++                [core, kernel],
+                 cfg=cfg,
+             )
  
--def main():
-+def main() -> None:
-     parser = argparse.ArgumentParser()
-     parser.add_argument('--verbose', '-v', action='store_true')
-     parser.add_argument('--cfgs', action='append', default=[])
-@@ -280,7 +319,18 @@ def main():
-     parser.add_argument("sysroot", type=pathlib.Path)
-     parser.add_argument("sysroot_src", type=pathlib.Path)
-     parser.add_argument("exttree", type=pathlib.Path, nargs="?")
--    args = parser.parse_args()
-+
-+    class Args(argparse.Namespace):
-+        verbose: bool
-+        cfgs: List[str]
-+        srctree: pathlib.Path
-+        objtree: pathlib.Path
-+        sysroot: pathlib.Path
-+        sysroot_src: pathlib.Path
-+        exttree: Optional[pathlib.Path]
-+        core_edition: str
-+
-+    args = parser.parse_args(namespace=Args())
- 
-     logging.basicConfig(
-         format="[%(asctime)s] [%(levelname)s] %(message)s",
 
 -- 
 2.52.0
