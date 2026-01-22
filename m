@@ -1,331 +1,97 @@
-Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A954034D90A;
-	Thu, 22 Jan 2026 14:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939202BD00C;
+	Thu, 22 Jan 2026 14:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769092188; cv=none; b=fY50B4HQ07NhXJxVu9gE7vQKYn6iu5Rjb0VEIWUPjob5zFc1MNYeeWUi9u+YIiBg3V+pluXVDPDxR0LBk/UmE38pg4Ww1g2PQZ62zteRI/BC0mCIakA0YZl4uuPfyZ3T9VrR2d1O8Kwke8pY5IYmb/unZmtzV+j4ln3DsdmyEbs=
+	t=1769093097; cv=none; b=O/YIzcLQPfb82N+pd2Ft33Gq/ddmkd87UMgf4LHHrUQLEFBCiIomtzUVTFTTcTVts257EqOYng9uoS9V38JHBW2JfgYU9YGUUuPv3X/ZQQLV/W2tLMTTh8t1QiZetov01gFRVFwOhHMAuuAWxXaT89lw09h3r+jovwUwQh9eVvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769092188; c=relaxed/simple;
-	bh=HBuOHhieAIL5la/akI+ua8bySjrIX/ZaFFv1BLv3CmU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BnLScfHnh4b7NjFW5Xv6NuXubaA9H2ChvJMSd9BsY9CJOQwPm2KrWhmerjMg3TUcdS1H7aqsD1XvCnF3Exg6ZCLXQNuYP9ilgU03BbXG0H9UCYWKKTpL/Civ5uadZTfPNpCpa1QVK2jojxlyR6yIOJ5P9DGTFInjcxm3ZXKo4Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=ZeWjjmjS; arc=none smtp.client-ip=178.154.239.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1769093097; c=relaxed/simple;
+	bh=IEEd+n0IvheHBUmxA+lWEqAu2qKPQCDkPR8anepGPC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MJjootWAHt6aCheaGiOJ6+4kXhWJnGZfj5vd4K8JLhecHGC6g1bVLijpdJM20yMBLCCbY1VYjJyDnZq9MY4GevuOcULMbvqLvUD3waXpiwN8vLLJvYwxBjyTbIGlTJvs5uCwrgMxOn1Njnla+4uRivPwEdpiEbtn4Pngl+bmKPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHSOjJ/F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="ZeWjjmjS"
-Received: from mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:1698:0:640:befc:0])
-	by forward500b.mail.yandex.net (Yandex) with ESMTPS id E0278C101C;
-	Thu, 22 Jan 2026 17:29:35 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id VTdWfmJGvCg0-3Jhx7uBU;
-	Thu, 22 Jan 2026 17:29:34 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1769092174;
-	bh=4Sv7bUspHizMY8Odv2UjT2q5RWF079Qjm51KUXkM3MA=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=ZeWjjmjSp2wmkpW06gZOkxbg1tsMp3k0o2QmJzIe7nslFxEpKl0mExg/pU701rM87
-	 yERuv2Gsizp2Wf6LT1vqOqkPWIHnIptonQvoSzXSydFyXzUzWo7OblXBIM8sTxjTIj
-	 DxYESN3792dQGNmBEQeVogQNLUkfQ719YKbvXqXQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 22 Jan 2026 17:29:28 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>, Arnd
- Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
- automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH v4 1/2] scripts: add tool to run containerized builds
-Message-ID: <20260122172928.1d922490@nimda>
-In-Reply-To: <9b8da20157e409e8fa3134d2101678779e157256.1769090419.git.gtucker@gtucker.io>
-References: <cover.1769090419.git.gtucker@gtucker.io>
-	<9b8da20157e409e8fa3134d2101678779e157256.1769090419.git.gtucker@gtucker.io>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHSOjJ/F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F7DC116C6;
+	Thu, 22 Jan 2026 14:44:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769093097;
+	bh=IEEd+n0IvheHBUmxA+lWEqAu2qKPQCDkPR8anepGPC0=;
+	h=From:To:Cc:Subject:Date:Reply-To:From;
+	b=SHSOjJ/FPjAFU3D84Ju9FIbffPwWIvtEUSZqGWDmAY+HMimnpnIugaMUD+dTssVFM
+	 GwSgh4DW/8SlHr6/Im9PzuKOriWvKSEf4oGTDv/QQUXj0XpPVIeMHriCCVFTLA+6GU
+	 fy0ux0GQtV6B3Eis5WxSXllvAn/DZ8+EaIu6lMzAo/tH3+w1oiTPn+7xCITT7bNokY
+	 l7WOfoYLnpXgKixpw9W0vUqF6UiJnG5u5MRBkp5ywiYdUUaHNhyq7mNE32k2DZ2wtW
+	 5OFXE4AYkHMY9YmXhnyZ1wW4lU3FMB8v8gv46J7GysI/+vvjYPS3XymqLH5rEbCk4q
+	 fLhSeIHhT8RXw==
+From: Gary Guo <gary@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Panagiotis Foliadis <pfoliadis@posteo.net>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: kernel test robot <lkp@intel.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] rust: task: use `as_char_ptr` instead of `as_ptr().cast()`
+Date: Thu, 22 Jan 2026 14:44:09 +0000
+Message-ID: <20260122144444.265412-1-gary@kernel.org>
+X-Mailer: git-send-email 2.51.2
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Guillaume,
+From: Gary Guo <gary@garyguo.net>
 
-Just 2 notes from my end.
+`as_char_ptr` would provide the correct (unsigned char) type without
+needing to convert to an intermediate type and cast the pointer.
 
-On Thu, 22 Jan 2026 15:06:59 +0100
-Guillaume Tucker <gtucker@gtucker.io> wrote:
+The `as_ptr()` function is going to be disallowed by clippy warning, so fix
+this usage.
 
-> Add a 'scripts/container' tool written in Python to run any command in
-> the source tree from within a container.  This can typically be used
-> to call 'make' with a compiler toolchain image to run reproducible
-> builds but any arbitrary command can be run too.  Only Docker and
-> Podman are supported in this initial version.
->=20
-> Add a new entry to MAINTAINERS accordingly.
->=20
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: Nicolas Schier <nsc@kernel.org>
-> Cc: Miguel Ojeda <ojeda@kernel.org>
-> Cc: David Gow <davidgow@google.com>
-> Cc: "Onur =C3=96zkan" <work@onurozkan.dev>
-> Link:
-> https://lore.kernel.org/all/affb7aff-dc9b-4263-bbd4-a7965c19ac4e@gtucker.=
-io/
-> Signed-off-by: Guillaume Tucker <gtucker@gtucker.io> ---
->  MAINTAINERS       |   6 ++
->  scripts/container | 199
-> ++++++++++++++++++++++++++++++++++++++++++++++ 2 files changed, 205
-> insertions(+) create mode 100755 scripts/container
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index da9dbc1a4019..affd55ff05e0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6384,6 +6384,11 @@ S:	Supported
->  F:	drivers/video/console/
->  F:	include/linux/console*
-> =20
-> +CONTAINER BUILD SCRIPT
-> +M:	Guillaume Tucker <gtucker@gtucker.io>
-> +S:	Maintained
-> +F:	scripts/container
-> +
->  CONTEXT TRACKING
->  M:	Frederic Weisbecker <frederic@kernel.org>
->  M:	"Paul E. McKenney" <paulmck@kernel.org>
-> @@ -13676,6 +13681,7 @@ F:	scripts/Makefile*
->  F:	scripts/bash-completion/
->  F:	scripts/basic/
->  F:	scripts/clang-tools/
-> +F:	scripts/container
->  F:	scripts/dummy-tools/
->  F:	scripts/include/
->  F:	scripts/mk*
-> diff --git a/scripts/container b/scripts/container
-> new file mode 100755
-> index 000000000000..09663eccb8d3
-> --- /dev/null
-> +++ b/scripts/container
-> @@ -0,0 +1,199 @@
-> +#!/usr/bin/env python3
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +# Copyright (C) 2025 Guillaume Tucker
-> +
-> +"""Containerized builds"""
-> +
-> +import abc
-> +import argparse
-> +import logging
-> +import os
-> +import pathlib
-> +import shutil
-> +import subprocess
-> +import sys
-> +import uuid
-> +
-> +
-> +class ContainerRuntime(abc.ABC):
-> +    """Base class for a container runtime implementation"""
-> +
-> +    name =3D None  # Property defined in each implementation class
-> +
-> +    def __init__(self, args, logger):
-> +        self._uid =3D args.uid or os.getuid()
-> +        self._gid =3D args.gid or args.uid or os.getgid()
-> +        self._env_file =3D args.env_file
-> +        self._shell =3D args.shell
-> +        self._logger =3D logger
-> +
-> +    @classmethod
-> +    def is_present(cls):
-> +        """Determine whether the runtime is present on the system"""
-> +        return shutil.which(cls.name) is not None
-> +
-> +    @abc.abstractmethod
-> +    def _do_run(self, image, cmd, container_name):
-> +        """Runtime-specific handler to run a command in a
-> container""" +
-> +    @abc.abstractmethod
-> +    def _do_abort(self, container_name):
-> +        """Runtime-specific handler to abort a running container"""
-> +
-> +    def run(self, image, cmd):
-> +        """Run a command in a runtime container"""
-> +        container_name =3D str(uuid.uuid4())
-> +        self._logger.debug("container: %s", container_name)
-> +        try:
-> +            return self._do_run(image, cmd, container_name)
-> +        except KeyboardInterrupt:
-> +            self._logger.error("user aborted")
-> +            self._do_abort(container_name)
-> +            return 1
-> +
-> +
-> +class CommonRuntime(ContainerRuntime):
-> +    """Common logic for Docker and Podman"""
-> +
-> +    def _do_run(self, image, cmd, container_name):
-> +        cmdline =3D [self.name, 'run']
-> +        cmdline +=3D self._get_opts(container_name)
-> +        cmdline.append(image)
-> +        cmdline +=3D cmd
-> +        self._logger.debug('command: %s', ' '.join(cmdline))
-> +        return subprocess.call(cmdline)
-> +
-> +    def _get_opts(self, container_name):
-> +        opts =3D [
-> +            '--name', container_name,
-> +            '--rm',
-> +            '--volume', f'{pathlib.Path.cwd()}:/src',
-> +            '--workdir', '/src',
-> +        ]
-> +        if self._env_file:
-> +            opts +=3D ['--env-file', self._env_file]
-> +        if self._shell:
-> +            opts +=3D ['--interactive', '--tty']
-> +        return opts
-> +
-> +    def _do_abort(self, container_name):
-> +        subprocess.call([self.name, 'kill', container_name])
-> +
-> +
-> +class DockerRuntime(CommonRuntime):
-> +    """Run a command in a Docker container"""
-> +
-> +    name =3D 'docker'
-> +
-> +    def _get_opts(self, container_name):
-> +        return super()._get_opts(container_name) + [
-> +            '--user', f'{self._uid}:{self._gid}'
-> +        ]
-> +
-> +
-> +class PodmanRuntime(CommonRuntime):
-> +    """Run a command in a Podman container"""
-> +
-> +    name =3D 'podman'
-> +
-> +    def _get_opts(self, container_name):
-> +        return super()._get_opts(container_name) + [
-> +            '--userns', f'keep-id:uid=3D{self._uid},gid=3D{self._gid}',
-> +        ]
-> +
-> +
-> +class Runtimes:
-> +    """List of all supported runtimes"""
-> +
-> +    runtimes =3D [PodmanRuntime, DockerRuntime]
-> +
-> +    @classmethod
-> +    def get_names(cls):
-> +        """Get a list of all the runtime names"""
-> +        return list(runtime.name for runtime in cls.runtimes)
-> +
-> +    @classmethod
-> +    def get(cls, name):
-> +        """Get a single runtime class matching the given name"""
-> +        for runtime in cls.runtimes:
-> +            if runtime.name =3D=3D name:
-> +                if not runtime.is_present():
-> +                    raise ValueError(f"runtime not found: {name}")
-> +                return runtime
-> +        raise ValueError(f"unknown runtime: {runtime}")
-> +
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601221157.89t3Sqbl-lkp@intel.com/
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/kernel/task.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I think you meant to use "{name}" not "{runtime}" inside ValueError.
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index cc907fb531bc..7ccb20a8f813 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -9,6 +9,7 @@
+     ffi::{c_int, c_long, c_uint},
+     mm::MmWithUser,
+     pid_namespace::PidNamespace,
++    str::CStrExt,
+     sync::aref::ARef,
+     types::{NotThreadSafe, Opaque},
+ };
+@@ -419,7 +420,7 @@ pub fn might_sleep() {
+         let file = kernel::file_from_location(loc);
+ 
+         // SAFETY: `file.as_ptr()` is valid for reading and guaranteed to be nul-terminated.
+-        unsafe { crate::bindings::__might_sleep(file.as_ptr().cast(), loc.line() as i32) }
++        unsafe { crate::bindings::__might_sleep(file.as_char_ptr(), loc.line() as i32) }
+     }
+ 
+     // SAFETY: Always safe to call.
 
-> +    @classmethod
-> +    def find(cls):
-> +        """Find the first runtime present on the system"""
-> +        for runtime in cls.runtimes:
-> +            if runtime.is_present():
-> +                return runtime
-> +        raise ValueError("no runtime found")
-> +
+base-commit: 053966c344dbd346e71305f530e91ea77916189f
+-- 
+2.51.2
 
-nit: We could extend the error message like: "Couldn't find any runtime.
-Use -r <runtime> to specify one manually". What do you think?
-
-> +
-> +def _get_logger(verbose):
-> +    """Set up a logger with the appropriate level"""
-> +    logger =3D logging.getLogger('container')
-> +    handler =3D logging.StreamHandler()
-> +    handler.setFormatter(logging.Formatter(
-> +        fmt=3D'[container {levelname}] {message}', style=3D'{'
-> +    ))
-> +    logger.addHandler(handler)
-> +    logger.setLevel(logging.DEBUG if verbose is True else
-> logging.INFO)
-> +    return logger
-> +
-> +
-> +def main(args):
-> +    """Main entry point for the container tool"""
-> +    logger =3D _get_logger(args.verbose)
-> +    try:
-> +        cls =3D Runtimes.get(args.runtime) if args.runtime else
-> Runtimes.find()
-> +    except ValueError as ex:
-> +        logger.error(ex)
-> +        return 1
-> +    logger.debug("runtime: %s", cls.name)
-> +    logger.debug("image: %s", args.image)
-> +    return cls(args, logger).run(args.image, args.cmd)
-> +
-> +
-> +if __name__ =3D=3D '__main__':
-> +    parser =3D argparse.ArgumentParser(
-> +        'container',
-> +        description=3D"See the documentation for more details: "
-> +        "https://docs.kernel.org/dev-tools/container.html"
-> +    )
-> +    parser.add_argument(
-> +        '-e', '--env-file',
-> +        help=3D"Path to an environment file to load in the container."
-> +    )
-> +    parser.add_argument(
-> +        '-g', '--gid',
-> +        help=3D"Group ID to use inside the container."
-> +    )
-> +    parser.add_argument(
-> +        '-i', '--image', required=3DTrue,
-> +        help=3D"Container image name."
-> +    )
-> +    parser.add_argument(
-> +        '-r', '--runtime', choices=3DRuntimes.get_names(),
-> +        help=3D"Container runtime name.  If not specified, the first
-> one found "
-> +        "on the system will be used i.e. Podman if present,
-> otherwise Docker."
-> +    )
-> +    parser.add_argument(
-> +        '-s', '--shell', action=3D'store_true',
-> +        help=3D"Run the container in an interactive shell."
-> +    )
-> +    parser.add_argument(
-> +        '-u', '--uid',
-> +        help=3D"User ID to use inside the container.  If the -g option
-> is not "
-> +        "specified, the user ID will also be set as the group ID."
-> +    )
-> +    parser.add_argument(
-> +        '-v', '--verbose', action=3D'store_true',
-> +        help=3D"Enable verbose output."
-> +    )
-> +    parser.add_argument(
-> +        'cmd', nargs=3D'+',
-> +        help=3D"Command to run in the container"
-> +    )
-> +    sys.exit(main(parser.parse_args(sys.argv[1:])))
-
-The rest LGTM.
-
-Regards,
-Onur
