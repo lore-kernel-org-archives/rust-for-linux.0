@@ -1,173 +1,125 @@
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E87A1A262D
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 13:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769174127; cv=pass; b=QFfeDuASdL0ukJ/JJlq3iHtp4RmWIxrLt2VtzrytfL4uEqKRVXeR5X1vYxqLN/cHP7ncbYiYzOIpTn/Xwvyp1liIvB9GIR4FseR0RqBovBiQHX34RDcFqg7Z98bc2EKh5DrRf3+WxhlPX7E8tXiFLgFKhDlV1EWxdhELfZpMmbA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769174127; c=relaxed/simple;
-	bh=UrvBPNubb4qrqSeZa7bNtICJMXtxAm5PjAyxikd42CI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=db4krJ309d4yDXBQGLBlrVYWvk7+slY+HWHwx3F+Snlko2rbgqjaTnBdCoyQoXINYxDz2/YgoZ1cu39DJ8otEq0W2LbnlLrUUNX7hhjwI8LL6BmltJJyMnNV62KHtNHPj87B2i4S/1/fmS9At/mjZh9UXwTYPQsTTK8eEvL6Bfo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MwN4yFZT; arc=pass smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8681FF7C8;
+	Fri, 23 Jan 2026 13:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769174343; cv=none; b=sn5CMd8/sEb36cdNJZk+jbBVoOF/jEumPId95nrLZFv74HKHhjdkYWsqhge8QHajG640ucDONM02/D86BR7ntNMQHWIVikvdhhjqe8t5hX/G4wtEcm5wU27KetEfaab6Z6z9LbKSgvmhB10hV1Lnq1BEql3EIeseWjc+ogIPgvo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769174343; c=relaxed/simple;
+	bh=dsKzrETj83doPlDW0uwpA69ziOQsUO0yoyK9XIBLuVA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=m0PH3qVII3lUKCP8fe/v+peI8dDsqFC7wztd1qcbxNMP9ZOyxk24MpDoexi6NWcMfiomcn6q3mElfDb8fY3maLx7Mmg+cEosE55Fl5JqE1jlvus5Vu26JsK/HVpXeCtitj0lNwvKaxv85p/cHC1aE0ZOH3sGmPJP32eGYOJeGUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pFfD9Mzj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MwN4yFZT"
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5635f3eff8aso507512e0c.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 05:15:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769174125; cv=none;
-        d=google.com; s=arc-20240605;
-        b=D28/p11f7YIwsWH5Hc5/2TF22WwsjEYy+YucfZiZvKhx8yVw+y0n7Du3p0nZGDDf4o
-         7e8eEzH6B8KHcVCfXn8W+jFxxqclG29lxfWRExhG40qdpF5TlQK8Bnk0PrVNCXW8sgYN
-         f0/ZPmXzRjCohg1/A1sSubzweEGaLSExPGgydmKOys0+IIJDzR+dmoacur+BenknOXBG
-         obriHcdF0v283ONI5P1674m64WKlL48Hui4DOZxdpuDn2MFBpeQrZsnDRXgccCDMNBjU
-         CtfvPZZVzAAk4gq1elPwS/YWbHm/N0IeqJ33DZ4HMC5dutvOxDwDmGp4bP9Z1cbGzNRf
-         7KVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uGeg/QhSMqJRXb1XiJN3IAY6ZMo9L/9nv2OB4c5T0Uo=;
-        fh=56epFrIs/+Tlkf6HCdHIJuuEpfJZyT/mo3X+fKp6jho=;
-        b=BsvC+rWYhJUQ/6WgyGUhCTek1ZbkyrrCoCv730EOx4KEB+CclK4of2ay3EJPzfY4Co
-         c+nmAqrRLp2uhll+y4stUGCPMzb5wwOiRzRaxiJMCAhNw06DoYbrSxgSB2NtpMbdKQR2
-         uSoUHH8wq7l/Cj/xsa1m/PTxtP7b8JHF2NZN56p3EgmP66NgA1A0TJE983G5ahAI/lRL
-         JBquwdY6V8z/crrpPF7czZ16lr2QhF9cTHbJ5fDqbEJfIk7yywT0d49WvOr0g2OOkdHQ
-         Eicf4tG9Fqdz5i5nVHExIx2bkZOPzxWRe0d1FFnt6cuWmJd9qZE26k8gftvkD9AUClkO
-         zkqg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769174125; x=1769778925; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uGeg/QhSMqJRXb1XiJN3IAY6ZMo9L/9nv2OB4c5T0Uo=;
-        b=MwN4yFZTXv+8Gz/zrbQqy5LWnoctjfoTlnbF9vQazR+Il3ECMyATQgR+i2PhFYID/F
-         gi8V+Oexr56L4L90SgeNYN/hFr9cjs7Z6uzbhg8ple+EJAA986a2igSqk6tYM8y4RbRQ
-         zFgUmytvyttHuK54dgeY9vfg8l7F0t0s6wM1DTX+PxEkH9SsDwMC3adY9tbdRv9OysM1
-         7tbk8rhLQdIuI05tcW6Lv2AuA7GzDiRRxIsLK8Gg01NN0W+UwWTzEAWWZqSvBICwzhO5
-         HNuAkqOKkHJfVStzgqcSYwiHvX7SnYHysEDw9Psx0ymf2ZsmJvR1fnlrWKKowHkS4tdR
-         Nyrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769174125; x=1769778925;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uGeg/QhSMqJRXb1XiJN3IAY6ZMo9L/9nv2OB4c5T0Uo=;
-        b=LEuUHEVMGCi/FuzOr9CLTsIHH+jjhFLKhI6VV5ufNw56dmOdiSpGN+JAX3NlxSB/zf
-         zuCGNJMygNIwtR7O+YrsuJcoDPk3Yv8X+ql+oYuqMS9EdOpGo6/W5G9zofKYFcozeVr+
-         cDQb1QQs3Rh1wJvJw0parP8YXH76XsRcs29ornoESh1nKDAPfc2//7bTGG2iVeZExRXF
-         zugrHYl+zbzByl9YvedjSz8cWQHodeqh3jpiKdIPMLbaK5h0QPB11I/d06idqVyJaG3Z
-         I+dqpiOGFAyIgt+QNKwU7yaJhBvTTXVDQH2fTIHbVn/jYUu7/CrMy2LBgceMPbmVINMU
-         6MIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXIdC0GwTRGvOYJjC+qaZbSab/4d4teBTGSkkHV2TnMhYaeswnU/uF3ZJuJEFYNKSF7D9M5rjap6c+8tE8org==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYN3F5ZiiIHteCrf5TbkoodD/B7Fh/vp8NRvWGhWEyqXijZZ1h
-	jKtaYPZcMi1BS6/P+SpzVXKZgeY20egtypy7jP9OX5iGebMcDO6EgaWXaFKDoE+2WX8aThTVQ3G
-	RjuxOiXbsvZZS5lgR7xp2d1XF8Y5ra+Q=
-X-Gm-Gg: AZuq6aJq1S3Xb48CdCdUrJ5pu6EjVPtHTDT31S9ILKK1HYI5Tj2t0v7qBGx29l3+1/l
-	r9TDgU51PV4mJ+FxQzRHfuNKXLYb8puQ3f2yXIY2Qs/4Mhya1GbtVj7z6yUtr/8tLsiX2WxySPv
-	9CI++7NLUTFsJRbY1MAcoYccl0K6tqJ/c6AqafNSu/AQAQrRsmlmy4qQsIt2rQjkJzOYZSogSqI
-	IPPC9vxHY+I4oMR3BYlKymGmCjq+P+Tqeon4bNw1HAUtH9Inat9Fu2fHEr3V7bgJf/LZDXzXo2S
-	3jcd4e3lFf1Xg+zMWy25bfjjNE0=
-X-Received: by 2002:a05:6102:32c5:b0:5f5:2ab7:cef4 with SMTP id
- ada2fe7eead31-5f54bb05f6emr897724137.12.1769174124537; Fri, 23 Jan 2026
- 05:15:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pFfD9Mzj"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 77582C4CEF1;
+	Fri, 23 Jan 2026 13:19:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769174342;
+	bh=dsKzrETj83doPlDW0uwpA69ziOQsUO0yoyK9XIBLuVA=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=pFfD9MzjWOvLuYZuANCQ/BLUdLklIVYIjTOAht2IDnazNvrEQlIgTM/+SZbDgNobQ
+	 9VjpCFP8kBAaLnMyXuzfEND3JxfD7gcuglJVKCVSqa6M0p7NQshsi5Y8sIbEtk8H7e
+	 J5EJ3tpwMCFmGUhy+mz+oibV/4wTrjLYFaydIwUYwrdQvoPaQh+N0aP8XmQLfTYxCx
+	 1kxf8tDojmnrz1AkJtij1NSHihwWv3T/bqT1YQz8IgjxQVEQtLxvL8P9txFHqDGbym
+	 7SPM0JecmHjYlc2ISNo3S6O3ns6nz7pJ7RWmOL7MyZrQiMGjDijjjujqWYcpv9E7DU
+	 evi5j5mTZKJOQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BD4AD74EC8;
+	Fri, 23 Jan 2026 13:19:02 +0000 (UTC)
+From: SeungJong Ha via B4 Relay <devnull+engineer.jjhama.gmail.com@kernel.org>
+Date: Fri, 23 Jan 2026 13:18:44 +0000
+Subject: [PATCH v2] scripts: generate_rust_analyzer: fix resolution of
+ #[pin_data] macros
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260123-fix-pin-init-crate-dependecies-v1-1-1c6cfe9aa352@gmail.com>
- <DFVYSCDHP5UA.2RX1AU34POA3M@gmail.com>
-In-Reply-To: <DFVYSCDHP5UA.2RX1AU34POA3M@gmail.com>
-From: =?UTF-8?B?7ZWY7Iq57KKF?= <engineer.jjhama@gmail.com>
-Date: Fri, 23 Jan 2026 22:15:13 +0900
-X-Gm-Features: AZwV_Qi2jw3BZ_92Vqv7AXJbCNLnwsnlacQQFU8h4oobErCb3-dQnsyJtBwF5xY
-Message-ID: <CAGAB667SkERm=Lghacqp3FGVZAbZq5Ojv4POe5Lho2b1C5h45Q@mail.gmail.com>
-Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: better pin-init macro resolvea
-To: Jesung Yang <y.j3ms.n@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260123-fix-pin-init-crate-dependecies-v2-1-bb1c2500e54c@gmail.com>
+X-B4-Tracking: v=1; b=H4sIADN1c2kC/42NQQ6CQAxFr0K6tgaGEcWV9zAsainQRAYyQ4iGc
+ HerJzB/9X7y398gSVRJcM02iLJq0ikYuEMGPFDoBbU1Bpe7Ki9ciZ2+cNaAGnRBjrQItjJLaIX
+ Ng4/aE3vnz+QvYJI5ii1+B/fGeNC0TPH9+1uLb/u3ei3QwhV3UhOVJ3frR9LnkacRmn3fP64d9
+ FjMAAAA
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jesung Yang <y.j3ms.n@gmail.com>, SeungJong Ha <engineer.jjhama@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769174341; l=1902;
+ i=engineer.jjhama@gmail.com; s=20260103; h=from:subject:message-id;
+ bh=c7P9j4yaUBkVPSuFKvUbKfXZDCnr6ZWiWGUJURpt+5A=;
+ b=iooMwfpk6BvhAz77cbYZxulg/1QPZPrvPxRDPgdolo3ZaYnWEN4irWRH6N1xKv7nanDuDhphy
+ tXEShaG5pkKBI5EIeAfT99Gw3MpmP29W8ArojELHDr9ZRgUBjQO6CmD
+X-Developer-Key: i=engineer.jjhama@gmail.com; a=ed25519;
+ pk=G5nmjm+RTiWBpyCvc5xjR1b3li/2zipLSMyz+T4fj5E=
+X-Endpoint-Received: by B4 Relay for engineer.jjhama@gmail.com/20260103
+ with auth_id=590
+X-Original-From: SeungJong Ha <engineer.jjhama@gmail.com>
+Reply-To: engineer.jjhama@gmail.com
 
-2026=EB=85=84 1=EC=9B=94 23=EC=9D=BC (=EA=B8=88) PM 9:23, Jesung Yang <y.j3=
-ms.n@gmail.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> Hi SeungJong,
->
-> I think I could give you some background on where things stand :)
->
-> On Fri Jan 23, 2026 at 7:02 PM KST, SeungJong Ha wrote:
-> [...]
-> >  scripts/generate_rust_analyzer.py | 12 ++++++++++--
-> >  1 file changed, 10 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_=
-analyzer.py
-> > index 147d0cc94068..0c6c0444917f 100755
-> > --- a/scripts/generate_rust_analyzer.py
-> > +++ b/scripts/generate_rust_analyzer.py
-> > @@ -123,10 +123,18 @@ def generate_crates(srctree, objtree, sysroot_src=
-, external_src, cfgs, core_edit
-> >      append_crate(
-> >          "pin_init_internal",
-> >          srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
-> > -        [],
-> > +        ["std", "proc_macro"],
->
-> As Miguel pointed out, this fix has already landed on the `rust-fixes`
-> branch as commit "scripts: generate_rust_analyzer: Add pin_init_internal
-> deps" [1].
+From: SeungJong Ha <engineer.jjhama@gmail.com>
 
-Thank you, Jesung!
-I successfully rebased the next version onto `rust-fixes`.
-And I also found the other line to use "go to definition" feature on
-#[pin_data] struct. I will introduce it in the next version.
+Currently, rust-analyzer fails to properly resolve structs annotated with
+`#[pin_data]`. This prevents IDE features like "Go to Definition" from
+working correctly for those structs.
 
->
-> >          cfg=3D["kernel"],
-> >          is_proc_macro=3DTrue,
-> >      )
-> > +    # pin_init_internal uses #[path =3D "../../../macros/quote.rs"] to=
- include quote.rs
-> > +    crates[-1]["source"] =3D {
-> > +        "include_dirs": [
-> > +            str(srctree / "rust" / "pin-init" / "internal" / "src"),
-> > +            str(srctree / "rust" / "macros"),
-> > +        ],
-> > +        "exclude_dirs": [],
-> > +    }
->
-> AFAIK, the `#[path =3D "../../../macros/quote.rs"]` part was removed
-> recently by this series [2], which is set to land in this cycle.
+Add the missing configuration to `generate_rust_analyzer.py` to ensure
+the `pin-init` crate macros are handled correctly.
 
-Oh, It would be better to check this point after the series lands.
+Signed-off-by: SeungJong Ha <engineer.jjhama@gmail.com>
+---
+I encountered an issue where rust-analyzer fails to analyze
+structs decorated with the #[pin_data] attribute while testing
+Rust kernel modules.
 
->
-> So I would recommend checking if the problem is still present even after
-> rebasing on `rust-fixes` with the new pin-init update applied (or simply
-> checking the `linux-next` tree as I think it has already picked up the
-> relevant changes).
+It appears that the dependencies for pin-init and drivers were
+missing from the analyzer's configuration. This patch adds
+those missing dependencies.
 
-After rebasing, it also seems that just editing a single line looks enough.
-I will bring it soon.
+I have verified that my rust-analyzer correctly processes
+\#[pin_data] structs after applying this fix.
 
->
-> Thanks!
->
-> [1] https://github.com/Rust-for-Linux/linux/commit/74e15ac34b098934895fd2=
-7655d098971d2b43d9
-> [2] https://lore.kernel.org/rust-for-linux/20260116105514.3794384-4-lossi=
-n@kernel.org/
->
-> Best regards,
-> Jesung
+Best regards, SeungJong
+---
+Changes in v2:
+- Fix typos
+- Drop the quote module workaround (will be handled separately)
+- Rebase onto `rust-fixes`
+- Add `pin_init` dependency for Rust drivers
+- Link to v1: https://lore.kernel.org/r/20260123-fix-pin-init-crate-dependecies-v1-1-1c6cfe9aa352@gmail.com
+---
+ scripts/generate_rust_analyzer.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 3b645da90092..766c2d91cd81 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -214,7 +214,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+             append_crate(
+                 name,
+                 path,
+-                ["core", "kernel"],
++                ["core", "kernel", "pin_init"],
+                 cfg=cfg,
+             )
+ 
+
+---
+base-commit: 6d7fef23043553336259211346b6b135d6c1f4c3
+change-id: 20260123-fix-pin-init-crate-dependecies-b94ac4247a48
+
+Best regards,
+-- 
+SeungJong Ha <engineer.jjhama@gmail.com>
+
+
