@@ -1,79 +1,82 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF43A59;
-	Fri, 23 Jan 2026 13:22:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.cock.li (unknown [37.120.193.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFD923741;
+	Fri, 23 Jan 2026 13:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.120.193.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769174571; cv=none; b=hGD0S54t8lCK9nKeYmlE3WeJ0ds2qo5iBKGqhakPPod8S199Nh9UDc1yXTGystneOTnOj5+NNcAKa4P+A1wM7OLKynVjmvBeoBO1+lD6WcBMmiG5F8w0nJZHMLGqXpRfEg3pQBzL9FBjjDCUcxRfWF8SnYsc0AmkVRA79xvIBDE=
+	t=1769174670; cv=none; b=jaSVdtfC7AecbNIGwvRYLY/O28AZ6dBHL78z7gWcqEkiVWINTwKhZIaAPZ8RWml+d9GdneG6ueF9gb8VDzQId13RPTo56v5Dp+Hh6EkA9YqJmxyn0Bnf7ay2QR0wwIqvyodDHMYjXKiLZQ9MO79VjLpKvKiS2iOHG8sK7NT1NKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769174571; c=relaxed/simple;
-	bh=QKhLnPxWAnrj1nPfcFMG+Pg5gBr7D0S6Yes5Gpvk4AI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rfZtEr7C9nEXGKk61bxXIft6O5tI+FUlqO1sYNnKIrzFYhEbOyJ7iNr9Xm03sR382Y8bqZlLCEqqYLHBsADAgmZIvDmz2hxQ9dPu2JgSFmF3uiv30GU20iCgAEoxh5SZVbvU1OkyqAt3cBPGqchjaavII/CHZ/zuEdxPuQdHVhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4FB901476;
-	Fri, 23 Jan 2026 05:22:42 -0800 (PST)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 380703F632;
-	Fri, 23 Jan 2026 05:22:45 -0800 (PST)
-Date: Fri, 23 Jan 2026 14:22:53 +0100
-From: Beata Michalska <beata.michalska@arm.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org,
-	abdiel.janulgue@gmail.com, daniel.almeida@collabora.com,
-	aliceryhl@google.com, robin.murphy@arm.com, a.hindborg@kernel.org,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, tmgross@umich.edu, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: dma: allow drivers to tune max segment size
-Message-ID: <aXN2LVQJqtZKGzQP@arm.com>
-References: <20260123101832.3136897-1-beata.michalska@arm.com>
- <DFVWLIUK193C.EAXZYN4JKZVH@kernel.org>
+	s=arc-20240116; t=1769174670; c=relaxed/simple;
+	bh=qNWanRdkWyeGd6Z3j5HzGe4yV/wK7+tQyL54yQG2cek=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lt/PX2gHlYVvd80yX0etb9nX15hIaxEjQ/WS+v/eYIUthTZkLhXzWXpjtNvZmYM8BJ7iP1qhTv+brk7IAJPWSjG4qNW85W67WIoW3GXvDVCGrBkVFX58St6+m4voyn68vN8MOyxnjBcq8XDgclNgdoPcTlfE9QmodjWkXol7lKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li; spf=pass smtp.mailfrom=cock.li; dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b=lFklW2fM; arc=none smtp.client-ip=37.120.193.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cock.li
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b="lFklW2fM"
+From: Shivam Kalra <shivamklr@cock.li>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cock.li; s=mail;
+	t=1769174656; bh=qNWanRdkWyeGd6Z3j5HzGe4yV/wK7+tQyL54yQG2cek=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lFklW2fMT8wtox4lz1cwihdl+GDf5J5tDHTFh2P9mwnsZtS1jrcjl16K9nUvRY9Qy
+	 dAkmmyRFVTZTe6hziI6DT/he7YuOf8cRwprl7Deffmj0cLpU4uD/cZJ931OLmp5N6k
+	 97iu4QmHtb+wFTBKkwYhtRk0UBvR5VetiTV8lUpOayYkaLpE1qyPCh5MtVcfuqose0
+	 oDjv5JqVyRUPYhsEaDGpgcaRpvWvSY1zbk9+CGlqefwtPsX4wv6l2OV9LL+3JVEfgb
+	 PRR7K7qfWD14XuRPleDK7yLWncWDbQOfOjQU/eGsACZ2LgM0ktvAXSv8PYklIUn08l
+	 vJsDDn5tdp+NA==
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Shivam Kalra <shivamklr@cock.li>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: num: clean up Bounded::__new documentation and comments
+Date: Fri, 23 Jan 2026 18:51:13 +0530
+Message-ID: <20260123132132.53854-1-shivamklr@cock.li>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DFVWLIUK193C.EAXZYN4JKZVH@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 23, 2026 at 11:40:47AM +0100, Danilo Krummrich wrote:
-> On Fri Jan 23, 2026 at 11:18 AM CET, Beata Michalska wrote:
-> > +    /// Set the maximum size of a single DMA segment the device may request.
-> > +    ///
-> > +    /// This method is usually called once from `probe()` as soon as the device capabilities are
-> > +    /// known.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// This method must not be called if there are any in-flight DMA allocation
-> > +    /// or mapping operations.
-> 
-> Yes, unfortunately it has the same requirements as the DMA mask setters.
-> 
-> For consistency, can you please use the exact same safety requirement text as
-> the other methods?
+Remove the redundant paragraph in the documentation of __new now that
+the Safety section explicitly covers the requirement. Additionally,
+add an INVARIANT comment inside the function body where the Bounded
+instance is actually constructed to document that the type invariant
+is upheld.
 
-Done:
-https://lore.kernel.org/rust-for-linux/20260123131308.3218421-1-beata.michalska@arm.com/T/#u
-
+Link: https://lore.kernel.org/rust-for-linux/CANiq72mUCUh72BWP4eD1PTDpwdb1ML+Xgfom-Ys6thJooqQPwQ@mail.gmail.com/.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Shivam Kalra <shivamklr@cock.li>
 ---
-BR
-Beata
-> 
-> > +    unsafe fn dma_set_max_seg_size(&self, size: u32) {
-> > +        // SAFETY:
-> > +        // - By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
-> > +        // - The safety requirement of this function guarantees that there are no concurrent calls
-> > +        //   to DMA allocation and mapping operations relying on this parameter.
-> > +        unsafe { bindings::dma_set_max_seg_size(self.as_ref().as_raw(), size) }
-> > +    }
-> >  }
-> >  
-> >  /// A DMA mask that holds a bitmask with the lowest `n` bits set.
-> > -- 
-> > 2.25.1
-> 
+ rust/kernel/num/bounded.rs | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+index 5ef8361cf..fa81acbdc 100644
+--- a/rust/kernel/num/bounded.rs
++++ b/rust/kernel/num/bounded.rs
+@@ -282,9 +282,6 @@ impl<T, const N: u32> Bounded<T, N>
+     /// All instances of [`Bounded`] must be created through this method as it enforces most of the
+     /// type invariants.
+     ///
+-    /// The caller remains responsible for checking, either statically or dynamically, that `value`
+-    /// can be represented as a `T` using at most `N` bits.
+-    ///
+     /// # Safety
+     ///
+     /// The caller must ensure that `value` can be represented within `N` bits.
+@@ -297,6 +294,7 @@ impl<T, const N: u32> Bounded<T, N>
+             assert!(N <= T::BITS);
+         }
+ 
++        // INVARIANT: The caller ensures `value` fits within `N` bits.
+         Self(value)
+     }
+ 
+-- 
+2.43.0
+
