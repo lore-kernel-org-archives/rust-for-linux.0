@@ -1,169 +1,118 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE03184
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 18:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3781DF27D;
+	Fri, 23 Jan 2026 18:11:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769191757; cv=none; b=kSmWwsl2SgM6k2yzzki1bRiRyL5d/1x3zGR7hGU6ZV71/1USJoltdwqQQSbBoj+4Zdq187Td9P2rye7G4a/2FAvq6lblS9lvud7FTwUhY7YrYOSO0VQUuJ9mgCpYkK2b+Ok66kSlhIYR7sLImxQ5doYYAGUH1JF1xghv0+svop4=
+	t=1769191918; cv=none; b=BYc1ZMNaNLt3XmN79TIDCIavz0WOvcbC4Hj+cXNUqAc3iP/UCwQ5QGC7e/wcah4Hvqa+Rznru6CTG2YHD7+JmjfquwDWMYXiQV03qoBldHVZPQ6MxbGshaPHCFg6q1m5lhDeKxbo7he+J0w/OdFjItTSqezTIohQ9VKdid26llQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769191757; c=relaxed/simple;
-	bh=U6jok9Lm4gAl1gXQAwBolGmq4HjJ88DnwYNX9jA/Pek=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRpi/eSfRDxLXPSP5R9WSK3MFa66+qa0zYveYAnLLKOJfH6zUlY++K0P8X0Sqnzv9lnPl+WmFWdjg4PQUKSzn12zA5nBJ3zn/g8yZWF/toCVBUsGN/T2ePKqEQ1XKsJHhF4f+JAI4vFYf/43T19nH8ffKpJGdbZNn0QdJweR6yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I10RhgmB; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1769191918; c=relaxed/simple;
+	bh=gAu59N+pafJqOnym+UnaH+Jh421RCCkXaq2oHeKQwyc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=FP3bwLHfS0MH0qPhW5RhUYNPEFHVNGGTDdy1q0xPuObqFj2oeyJP+TfxsTPYJWa9vdnNMfTqvnsAWGvEPYRdnlcVj9SfTS90ZqjL7zChqVp/h4Y8mkmeCvPJ0dMfbwmWec9Nb6KNIbgajb+wkV7LzuWrNc4gCkMEeTWiG0ok2qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvwePtsh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I10RhgmB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769191755;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Sju1fArvXLQeBXSNQsoi+yWmCa/O67MXYMKkbK3HSjs=;
-	b=I10RhgmBf39UeyzW1PFGmT1UTpngJD3/z7VkwIDIYC4PbGFpj/8TUt8mwQicUJ0iVYXsLK
-	0Y5zDwMsvTnPugyEUbFHrM22dC/NUwv8LdKKhAo+YgVGGLqZdeLeQZKz/f4K12TOX/mBgH
-	Rb4FUKNs+4dc7FMTMVvnDehYZti/A7I=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-8ZTT9zXcO0-1LCjDfiacMQ-1; Fri,
- 23 Jan 2026 13:09:11 -0500
-X-MC-Unique: 8ZTT9zXcO0-1LCjDfiacMQ-1
-X-Mimecast-MFC-AGG-ID: 8ZTT9zXcO0-1LCjDfiacMQ_1769191749
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B183B1944B0C;
-	Fri, 23 Jan 2026 18:09:09 +0000 (UTC)
-Received: from GoldenWind.redhat.com (unknown [10.22.89.232])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A394718004D8;
-	Fri, 23 Jan 2026 18:09:07 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: "Ewan Chorynski" <ewan.chorynski@ik.me>,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Simona Vetter" <simona@ffwll.ch>,
-	"Shankari Anand" <shankari.ak0208@gmail.com>,
-	"David Airlie" <airlied@gmail.com>,
-	"Asahi Lina" <lina+kernel@asahilina.net>,
-	"Atharv Dubey" <atharvd440@gmail.com>,
-	"Daniel Almeida" <daniel.almeida@collabora.com>,
-	"Lyude Paul" <lyude@redhat.com>
-Subject: [PATCH v3 2/2] rust/drm: Remove imports covered by prelude::*
-Date: Fri, 23 Jan 2026 13:08:08 -0500
-Message-ID: <20260123180851.3974488-2-lyude@redhat.com>
-In-Reply-To: <20260123180851.3974488-1-lyude@redhat.com>
-References: <20260123180851.3974488-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvwePtsh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA38C4CEF1;
+	Fri, 23 Jan 2026 18:11:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769191917;
+	bh=gAu59N+pafJqOnym+UnaH+Jh421RCCkXaq2oHeKQwyc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=LvwePtshB6UIxrIW7FGsza5eXIE59STNMmWVvsp2x4a0k7oWK6L/nkvXpMny6Y0N0
+	 t1cdNdNtomNAL3LXCy81O3+dMW1wArBcJCl+kTme6UinW/FePbJLAAar2b2SDVFT37
+	 PaylQ2U63tbJdsnNnJHNmqToZ0U+MctQUu60NCBxSfkfQQyfIOro8BndVP7AzGfySX
+	 2dCTNodn3jt9yar2BXHmcyWJQ8BRNrjOiSTV8OP3+A2n86eGGvfxkDSYZbZAs0Hp0p
+	 T7BiYPgnI7LNHfD+t1UwdrFrqfbNWOeRRTX4v3Mt34WgC66PjoejENdtnUgLXhIovk
+	 A+IwYQ8ILJicQ==
+Date: Fri, 23 Jan 2026 12:11:56 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Jon Mason <jdmason@kudzu.us>, Jonathan Corbet <corbet@lwn.net>,
+	Linas Vepstas <linasvepstas@gmail.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Martin =?utf-8?Q?Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
+	Pavel Machek <pavel@ucw.cz>, MD Danish Anwar <danishanwar@ti.com>,
+	Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Huacai Chen <chenhuacai@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
+	Takashi Iwai <tiwai@suse.de>, Eric Biggers <ebiggers@google.com>,
+	Madadi Vineeth Reddy <vineethr@linux.ibm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Frederic Barrat <fbarrat@linux.ibm.com>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Dong Yibo <dong100@mucse.com>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@kernel.org>
+Subject: Re: [PATCH net-next] net: ethernet: neterion: s2io: remove unused
+ driver
+Message-ID: <20260123181156.GA84531@bhelgaas>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123033233.16906-1-enelsonmoore@gmail.com>
 
-This just removes any explicit imports of items in files that are already
-being pulled in by `use prelude::*;`.
+On Thu, Jan 22, 2026 at 07:30:41PM -0800, Ethan Nelson-Moore wrote:
 
-There should be no functional changes in this patch.
+> ... Remove the driver, and move the former maintainer
+> to the CREDITS file (restoring credit for the vxge driver, which was
+> removed in commit f05643a0f60b ("eth: remove neterion/vxge").
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/drm/device.rs  | 5 +----
- rust/kernel/drm/driver.rs  | 6 +-----
- rust/kernel/drm/file.rs    | 6 +-----
- rust/kernel/drm/gem/mod.rs | 6 +-----
- 4 files changed, 4 insertions(+), 19 deletions(-)
+>  include/linux/pci_ids.h                       |    6 -
 
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index ae123ffece790..629ef0bd1188e 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -12,10 +12,7 @@
-         self,
-         driver::AllocImpl, //
-     },
--    error::{
--        from_err_ptr,
--        Result, //
--    },
-+    error::from_err_ptr,
-     prelude::*,
-     sync::aref::{
-         ARef,
-diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-index 24e81afb04f58..2940fece7d59e 100644
---- a/rust/kernel/drm/driver.rs
-+++ b/rust/kernel/drm/driver.rs
-@@ -9,14 +9,10 @@
-     device,
-     devres,
-     drm,
--    error::{
--        to_result,
--        Result, //
--    },
-+    error::to_result,
-     prelude::*,
-     sync::aref::ARef, //
- };
--use macros::vtable;
- 
- /// Driver use the GEM memory manager. This should be set for all modern drivers.
- pub(crate) const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
-diff --git a/rust/kernel/drm/file.rs b/rust/kernel/drm/file.rs
-index 7dade6dfa1ba2..10160601ce5af 100644
---- a/rust/kernel/drm/file.rs
-+++ b/rust/kernel/drm/file.rs
-@@ -7,14 +7,10 @@
- use crate::{
-     bindings,
-     drm,
--    error::Result,
-     prelude::*,
-     types::Opaque, //
- };
--use core::{
--    marker::PhantomData,
--    pin::Pin, //
--};
-+use core::marker::PhantomData;
- 
- /// Trait that must be implemented by DRM drivers to represent a DRM File (a client instance).
- pub trait DriverFile {
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 56b7641b1405e..b4199945db378 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -5,7 +5,6 @@
- //! C header: [`include/drm/drm_gem.h`](srctree/include/drm/drm_gem.h)
- 
- use crate::{
--    alloc::flags::*,
-     bindings,
-     drm::{
-         self,
-@@ -14,10 +13,7 @@
-             AllocOps, //
-         },
-     },
--    error::{
--        to_result,
--        Result, //
--    },
-+    error::to_result,
-     prelude::*,
-     sync::aref::{
-         ARef,
--- 
-2.52.0
+Not sure there's value in removing the IDs from pci_ids.h.  It may
+lead to unnecessary conflicts later for stable and other backports.
 
+> +++ b/include/linux/pci_ids.h
+> @@ -2445,12 +2445,6 @@
+>  #define PCI_DEVICE_ID_ARECA_1680	0x1680
+>  #define PCI_DEVICE_ID_ARECA_1681	0x1681
+>  
+> -#define PCI_VENDOR_ID_S2IO		0x17d5
+> -#define	PCI_DEVICE_ID_S2IO_WIN		0x5731
+> -#define	PCI_DEVICE_ID_S2IO_UNI		0x5831
+> -#define PCI_DEVICE_ID_HERC_WIN		0x5732
+> -#define PCI_DEVICE_ID_HERC_UNI		0x5832
+> -
+>  #define PCI_VENDOR_ID_SITECOM		0x182d
+>  #define PCI_DEVICE_ID_SITECOM_DC105V2	0x3069
