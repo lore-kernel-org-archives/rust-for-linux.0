@@ -1,104 +1,87 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010020.outbound.protection.outlook.com [52.101.201.20])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013025.outbound.protection.outlook.com [40.93.201.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9E337AA95;
-	Fri, 23 Jan 2026 10:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3654F343D8A;
+	Fri, 23 Jan 2026 10:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769163256; cv=fail; b=VY/DUozv2cxCs66ZGTNDnoHOl2QOcybqrOgr843Ldx7n1SEXvAJJti7uocFQvdhjcSKm/Z3rPUVqbPdwJERP0YygiFXrFo5fy8PA/fCDwxUfX9hm/ghJk26bwn1QwHqcnfD82KJ85bfPcDStBloPE/70EjVLR1H7D/J4tvJV8Cc=
+	t=1769163308; cv=fail; b=QFHVPfcCLy8G+wGFp0PRaa0O38wkqXLSRxUexQm0xqPvq4MPPu7vSOoQocd44jR0Y2uV3C3AyrG14SabPBrpqquKVgvOMjcjXtZwvuv7gMxLahlILsEvJyCts1EvzhXR11/kF+WxB3KVVh5gwJ95uuaRMfWykZRYsHJHYn7Hqdg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769163256; c=relaxed/simple;
-	bh=R3Ce19PlzCzs8dBA/bye/nRyQ2PwKjqZaT4ecm6NOTo=;
+	s=arc-20240116; t=1769163308; c=relaxed/simple;
+	bh=sXS1GOLavsno+k0zw2goc3Ia16eno/wg0ZNQkVLvo5Y=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NmJu2i4b3B+Hn2MmTeOPa5Cbf5fVCj9PYtq8m72MTQxNREV4IknF7kR8URS6iydSi7i3lNdmk8q0T0sCqm9nvA6nFEDbQ7P8fV6ekuwYT1uLiNGWwmPNPdxJVBm8Vcx7Qy5Tcg3brk3jC228iQ3QI6dfoSyk+sPLw3O/vsS70LE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=W4QIwRsX; arc=fail smtp.client-ip=52.101.201.20
+	 MIME-Version:Content-Type; b=bTtyW3sZoYe4YPVLzpEVgo96CyBqNiZEW8v9jhLLa4eW3Aq7LhYyzcFh0a4ZuhbCGy7C1iHYvx36JGSggdoZmVee5F5a1zSEpLok4YNJWEEsBwVhG57kNooDqFz32PHwUUPh7FVaFOeUZkZz+Wt6tmBOj1softAq7yHBJ13Avu4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FslaceDw; arc=fail smtp.client-ip=40.93.201.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="W4QIwRsX"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FslaceDw"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rIDjrYi3rUTdahj+eBTLUkdNwuqnhXvjJR5rtX9bn/5ywIltTq4VwsJ2XMqrFherAEf9tyF9JBvVZW0VtIlWT4c4spM8bSdjg7owM8/1Zkn7oxhI+Q4ZEtMEAbj1YnHMEEHdhAYbh556pW58NqlXrunTrv17UU5s3ctpjnqvHYfDgPopb0j0QnkvhU//T8AmZNC3Rk6Cw+dWCflEzBvvjiveuy5EZOaiMMAxxGjZThi/5f8eBmae3we1vd63Th4fskekb0eIZVlx9w0p8VXgRgP2yD8Re3pLuvU8cpNtKYvMCxDomGOqbVr3oQgVXzwIP9Gni2mO1Dwwz9/LZg63gQ==
+ b=jgMRc4aHHPTqd96pyA4fr/fgJSRklSxR8SFspDAwSrUfSJP3YvexLbLnVRBxNIMx+syIY4mJ7pVCFEZvoFgcWN7219lATXuOvMWrkQl9lw9kULqWDIbaBbwoKotln9SeLuLwCUyxzJKBffxtYkBk5mXAknn0ElCsYQXFD1pobINwIlX/knQIE1rTM/2ouXnQto/4a2zZ/sRyI2q7w1zBzJMdv930I5J1gKr27/GinEYv5/OBr/JK9inJ6QF1USU8HPXXMcgXRQk78AkY81fYF1o3Di1gQHQlH0ssy0d2Tot+aRK9fSFGsILSAR/jQ8sOl+R96G9m4Ux1Vsif8ktQJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mReL2HqlLw6k9N55UDV8jQDAy80aTJhXhTqdfjp68Wk=;
- b=u3Iyau23IchgZO6rzajgc5eK4GP7O3erBsutGqoFbgaTTQ6Iuy48lqIjY822OTRSufPkpo11MVQVZyIc7sDqjc5zHiSnbB8q2+5x78yinipgCZg5A/m2ZhslBc8IXA2TkaMMWkmYbDzd3rSIJ76CbpZRt6G1fhZarBYbaDRZfK9IICxPrfCKtDwqcgMxxg9uIFW2hfkMlNAX6Ffl9qJKiLqzzZyXNJj8qmUwiE+cIN9Aa/K64QyHl0JXiFYmgCaupkSVgSlhW/FFWDMHJNaEzRmss2e4dDws3hLf9lxpoxK6HynYknL/nBRJC3LFnbYvpGPzw0N2QKTLpAgtz9WoQQ==
+ bh=tNLILcD8nZjoXPovXAgAp7i2FinyB3Bivri+oAVgAXY=;
+ b=NQ5yM2D9uL284xP9hTeG/WGHr4u0CXQr8cewuWB/nejNvFm3ZMDwSXPied6THH39lwFibIQqt1+kHiJGpjfUY7vEUrGnuGyoXSS08KCEYsh7tYx/NAYyrbr1+l46SAry8wYXGsBtq6JgjJ+u/0P7zaOt9VYuX+oMCWKoHkRNezBeX7F2fPEyEWT19T4bmyh+YipcwW5ivy3B0mc46BnYAZEDFISKDPcxcmBl7k2jPRtrChUCD3Dpvcuo63bHIu8MFxAojlcU3kaRyxYT2/Y95RebM0+odynC7OGYwaNPSbYYctssvWD10u5BCDbrylT16cEzfrRroI1dqIEB7WT4Xw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=garyguo.net smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mReL2HqlLw6k9N55UDV8jQDAy80aTJhXhTqdfjp68Wk=;
- b=W4QIwRsXKJvFpri3OE5Ur3jy/oCgOFvgMTpTmzUkHMvIHqkR5g0hlqVKOFqcsxRCdW2SXqMgGHTndxj+pJdYY3MbkzqHbCgrCMuQy4Y3Ul5P6JFnDmXZ8TlMELm3OEtHtZXf0+g1y2rpAccndordHgBTJ2zZ6SHvjIAOjFFo/5WbBVuA9tKfFZtHd4OvhffPEXJmB8whfsKDLjqZeCTFunaG8O0FozOOQ3zf7BueQtKFqngdO9b6XNToHa1j+SAMcDN8B5+rgBAQ/HorG5rj+EV6bsXPpLOp+Cqe8j1vVECREqrZ4IB2HWnwmyz85z6EWoEDWPF+UHYN0kY39yX0dQ==
-Received: from DM6PR06CA0047.namprd06.prod.outlook.com (2603:10b6:5:54::24) by
- DS4PR12MB999075.namprd12.prod.outlook.com (2603:10b6:8:2fc::20) with
+ bh=tNLILcD8nZjoXPovXAgAp7i2FinyB3Bivri+oAVgAXY=;
+ b=FslaceDwBf6T+3Q9ob66G5UxxdOoDijQWQJhYAPqZ//iBHvnGoQZjTwcMKT0vpQrPIeNfIVleH9U413qS95CnU6+IzxTclypVS/AGyk4dbHO+32lpltIT5b2uMfYbZMjV01yjgTdwlPPXjSWjlO6XQavmMRpjJAfENwjYf7MM2edU50Qzqkm2tMMT6fNtm8ERzKvAJWRuWb+DXJuAwfSWqT5b1EkDkCw9vbfBf1yxFPxCfi7rOHh9U2O/CSY2d0cFXFRQD4EpFjrbNTBomJ2MXjAvqIonnu/edtbggMOD8CnFdYDJUTt/Hle9nb7oMpCdXE6vDZh+bRd5OH96Af2hQ==
+Received: from SJ0PR05CA0043.namprd05.prod.outlook.com (2603:10b6:a03:33f::18)
+ by DS0PR12MB8455.namprd12.prod.outlook.com (2603:10b6:8:158::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.10; Fri, 23 Jan
- 2026 10:14:04 +0000
-Received: from DS1PEPF00017094.namprd03.prod.outlook.com
- (2603:10b6:5:54:cafe::e1) by DM6PR06CA0047.outlook.office365.com
- (2603:10b6:5:54::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.11 via Frontend Transport; Fri,
- 23 Jan 2026 10:14:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
+ 2026 10:14:53 +0000
+Received: from SJ1PEPF00002325.namprd03.prod.outlook.com
+ (2603:10b6:a03:33f:cafe::62) by SJ0PR05CA0043.outlook.office365.com
+ (2603:10b6:a03:33f::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.3 via Frontend Transport; Fri,
+ 23 Jan 2026 10:14:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- DS1PEPF00017094.mail.protection.outlook.com (10.167.17.137) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ1PEPF00002325.mail.protection.outlook.com (10.167.242.88) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Fri, 23 Jan 2026 10:14:04 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9564.3 via Frontend Transport; Fri, 23 Jan 2026 10:14:53 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 23 Jan
- 2026 02:13:54 -0800
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Fri, 23 Jan 2026 02:13:53 -0800
-Received: from inno-thin-client (10.127.8.10) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Fri, 23 Jan 2026 02:13:44 -0800
-Date: Fri, 23 Jan 2026 12:13:43 +0200
+ 2026 02:14:41 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 23 Jan
+ 2026 02:14:41 -0800
+Received: from inno-thin-client (10.127.8.10) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Fri, 23
+ Jan 2026 02:14:34 -0800
+Date: Fri, 23 Jan 2026 12:14:33 +0200
 From: Zhi Wang <zhiw@nvidia.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-CC: <linux-kernel@vger.kernel.org>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>, "Alex
- Deucher" <alexander.deucher@amd.com>, Christian Koenig
-	<christian.koenig@amd.com>, Jani Nikula <jani.nikula@linux.intel.com>,
-	"Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
-	<rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui
-	<ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, Matthew Brost
-	<matthew.brost@intel.com>, Lucas De Marchi <lucas.demarchi@intel.com>,
-	"Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>, Helge Deller
-	<deller@gmx.de>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl
-	<aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, Alex Gaynor
-	<alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
-	<lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, Trevor Gross
-	<tmgross@umich.edu>, "Alistair Popple" <apopple@nvidia.com>, Alexandre
- Courbot <acourbot@nvidia.com>, "Andrea Righi" <arighi@nvidia.com>, Alexey
- Ivanov <alexeyi@nvidia.com>, "Philipp Stanner" <phasta@kernel.org>, Elle
- Rhumsaa <elle@weathered-steel.dev>, "Daniel Almeida"
-	<daniel.almeida@collabora.com>, <nouveau@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
-	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
-	<linux-fbdev@vger.kernel.org>
-Subject: Re: [PATCH RFC v6 05/26] nova-core: mm: Add support to use PRAMIN
- windows to write to VRAM
-Message-ID: <20260123121343.396bc4cd.zhiw@nvidia.com>
-In-Reply-To: <DS0PR12MB6486717785F6DD14EE1F1C46A397A@DS0PR12MB6486.namprd12.prod.outlook.com>
-References: <20260120204303.3229303-1-joelagnelf@nvidia.com>
-	<20260120204303.3229303-6-joelagnelf@nvidia.com>
-	<20260121100745.2b5a58e5.zhiw@nvidia.com>
-	<e186973c-ce31-405a-8bfa-dc647737a666@nvidia.com>
-	<DS0PR12MB6486717785F6DD14EE1F1C46A397A@DS0PR12MB6486.namprd12.prod.outlook.com>
+To: Danilo Krummrich <dakr@kernel.org>
+CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <aliceryhl@google.com>,
+	<bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+	<alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+	<bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+	<tmgross@umich.edu>, <markus.probst@posteo.de>, <helgaas@kernel.org>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<acourbot@nvidia.com>, <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>,
+	<zhiwang@kernel.org>, <daniel.almeida@collabora.com>, Jason Gunthorpe
+	<jgg@nvidia.com>
+Subject: Re: [PATCH v2 0/2] rust: introduce abstractions for fwctl
+Message-ID: <20260123121433.2374df00.zhiw@nvidia.com>
+In-Reply-To: <DFVFTMRD9LM8.HGKSL57RYD1D@kernel.org>
+References: <20260122204232.15988-1-zhiw@nvidia.com>
+	<DFVFTMRD9LM8.HGKSL57RYD1D@kernel.org>
 Organization: NVIDIA
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -107,137 +90,174 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017094:EE_|DS4PR12MB999075:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e977e9b-bb5f-4136-ef9d-08de5a6822ed
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002325:EE_|DS0PR12MB8455:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4d76266-f084-4a9e-a6af-08de5a684014
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700013|82310400026;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|82310400026|36860700013|7053199007|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8gUNWX/O8eHZBAUr3VJTeDyjNuSbOr+741G7nKhZJQDVJ7sdcQTJfAm70gqp?=
- =?us-ascii?Q?K6Lx2xUI/SWi6nckOXW5hkZZTXv4bHE6YiFZ1AluMO8BoEqVpfBhrr2rHF+j?=
- =?us-ascii?Q?vUR20aNwcmo/+rE+8QIHa0/80OM3vmVmBvPypYtA18XSub9eHMEX/kJxLfPT?=
- =?us-ascii?Q?qlB/Posk/IZ+KFAVgzbV5hhZSh/aOHvOBLrKzVlk8iaBr3FHCf9ajmB++p6x?=
- =?us-ascii?Q?ktRdsxPH3uI3SHgQsyD4mPZxILqQdnr+fQdiADfXxhXCnYIEX+SWiI+SacPM?=
- =?us-ascii?Q?6lE1hdNYParyUs7bQJZi6wGdelz5n06Fyk2Y6uouW0CR5aN7zyn4rHedwnd8?=
- =?us-ascii?Q?ErlTHLnxNjH8I3o4NLW1GqDgXn0i9L26tn6AxIkSY+5hVqjvlf/XcvdBaGst?=
- =?us-ascii?Q?xk8yTggDO4YWaq/Bl9grT5gXdSpVTARJfaBzi1GjJ1AZSVFWQaBV5SjnwrnF?=
- =?us-ascii?Q?EwmEMuxhD23C7dnnPpm+lNwmEmIqvpr46X4+4D3T8quRAFz8You8G0NzjjBk?=
- =?us-ascii?Q?bcEhX0WC7p2mqC4KZEA/Rplyt0g8LANjCbf8VUXlCn4/2mFXCibnLStRzdxB?=
- =?us-ascii?Q?bXhVpDhnU1GY8RVHRNJsIT957jl+/PW2+Sh8y50wdHfQtI1p6ABPjDrMMmhl?=
- =?us-ascii?Q?YajnsvULAiMCOTZlOxguQllgJN5jdzCysrgCUnVkYwmp9NbzeJDj2oZFa0ul?=
- =?us-ascii?Q?LQjUA0Jd3WzXEUjEC1OhJ2OHJhf+Br1QnipPsAZk0K8lDVDxB8Q378M8cXi0?=
- =?us-ascii?Q?gOK52UiOj76v3NPdlD7ZaiORHFwA2mumZa3UO5GKkWCXrF40KxSzZ1g/SFXt?=
- =?us-ascii?Q?cn+WwnEuJ/5HlVEuDrIonv+bNmOIh/f2bexUMmzUT2wGKGyzbtln4SN6/jcM?=
- =?us-ascii?Q?AvMZNWFpXeW6K3ND4ehGfpulI7iEnaz5f9XBk8BqM4uJ4LUNmINP0Aj/s8kH?=
- =?us-ascii?Q?MO+1ktsIcyvi107CxgqsUbzSKrPDiXEE665yowMRKj7rT6e56NfabeUFcgTC?=
- =?us-ascii?Q?6mSAWuQvhFzsSKgmgUwCF7e9FZc2F3o76YeWqpqOB5J9Qlqt30kK0MHKsCg+?=
- =?us-ascii?Q?NcOueIgVf8FqKUFhXgrbB+wJAgF8cUzxCzPeEafBQVnuEQPOU+jPRj9njESQ?=
- =?us-ascii?Q?UGuBpLQIxQYssC45tRVkIPdj0ayAvC2b7kI1QohAv09TQ92fMgIVfbruRcty?=
- =?us-ascii?Q?1TuWhpF+KVIhMb9DOyirHzz8ZQBuYgr8jDIbcTfl/h7MOBxh7/dHPQ64wbxa?=
- =?us-ascii?Q?0z3B2yGggDE/vRIbA3PABq//GL4RIJqe2AjEg19M5XLIGplk6t8ptpeVxaO2?=
- =?us-ascii?Q?1YKZt8xwYquzmrh4PMsYL7iMDEDbPCUUY/SdsVgf7iv7LsnRGaxq9mUyqe34?=
- =?us-ascii?Q?TRyIYWTHIB1phhYIGBrd9Y6kBajku1fD3h4u7TuKxe7DNphP8Jndvs8NPIIB?=
- =?us-ascii?Q?s3JNu/nqmMGcrvLs+70/XVXHA7Jpv874sqS/ZNdx+4ivQ/nIsKwgg7WNlP2g?=
- =?us-ascii?Q?wKxDqX01kMQq37FtebGNkWEtyUbRur5tL6DEredmGysfTyr9VBzE3zyRBTfv?=
- =?us-ascii?Q?4ltnESy4ZzsfIyGnBu3CUoo1xh2VPdnUffU8afZqXsdpbssLrE0C6ORvhqsW?=
- =?us-ascii?Q?HSdIU7yjGy6r1eGhJrUhT+s+mOqZRH/YYsRfXn/1nZ+TRFy1FZAQVtetMm3K?=
- =?us-ascii?Q?i/9/4Q=3D=3D?=
+	=?utf-8?B?L2VvNnlJVlBNZnIydlRMZkJmTGMwUy9YTHFqRVppUEdYbWJwcmZscEtSOVpQ?=
+ =?utf-8?B?UVFSOUlYdlR1OTd3OUtpTzVsZng5THlGWmQwRGdUMkVRWXpVVnp5TC9YZHZw?=
+ =?utf-8?B?M2hVeEtZcGw4Vm1MbVdpdjcyTU5WVDJaS1BDL1YvU29OWHpRWUFKOWtlMlc3?=
+ =?utf-8?B?NGs0bnRiS29IcWJrVG8vckZtMStkQ2Q4VDJGLy9WUUo2UDR2SlMza0xEMlZS?=
+ =?utf-8?B?aW03V2o5OTVISEtFTXFzN0VGNjBWbzhCK1hRUnpUWnRXeTN6c01LOWgzdHdB?=
+ =?utf-8?B?ODVPazc5V3pOUXZrb0s4Y0xiQVhTbUdHdHFod3RsREVoVGNSZ3VwZ3RWRDZ5?=
+ =?utf-8?B?dEZiZENKa0VkWTh3NkdpanBsTUd5OURUS3lYRHQ5SzUrR0dpRFVxbURnY0JP?=
+ =?utf-8?B?MHdrQnlPOVZRK0gvSEZiUTUvWkFGZ0lvS29ueEhqOE94cVpRNXVsZ2Y5c0pU?=
+ =?utf-8?B?b0JMcHhmeGowRk8xcFFMNzczaUtHMnRLMWp2c1VkZlFkeTZFTzB5MS9UdWNT?=
+ =?utf-8?B?ZmpPQzZPMXR6TUZ6RWtSVGFKSXJNSjQvdWZybEVTb0YvZnZIemM0OFVUVWQy?=
+ =?utf-8?B?SDc5L053ajkxeHpydjRyb2tUZjR5M2puU0lWM3ErOXpyZ2s1cXdDZ1NONU5v?=
+ =?utf-8?B?cGE0QTVLQmcyY2ExZHJBeThNS0dZVDE3SUtQdjFBOHJCMmhvQmJQclNpK2ty?=
+ =?utf-8?B?UXhTZm1GZnQzWCtDbEFDempYUitDRjZyaDNKQmI1bDBjZzJya3FYM0pNclFH?=
+ =?utf-8?B?SDZoM3pIMk1vUGZmQXpseCszcm9hL0VCQWpucVYyVzNJNVl6cEVaS2VDS0F2?=
+ =?utf-8?B?cTBnVXhBSXR5M084NDJSVUdlRUI3WERGdE0rRm02UUdGNlZmVExtakE5bTFK?=
+ =?utf-8?B?OVFxaTBxSE1sTWN6clBUTUFwSmFyc3IzNlBEdGd1WFF6Q1NvbHZEQTB0TUM4?=
+ =?utf-8?B?dldzN2lvWWlPdHFDdWFaZWdwalNBNzAyRFNnS2p0TUQ5cDkzZ1JyUCt5TGRN?=
+ =?utf-8?B?Q3REelB4M24yWTVRcDdUSXdoQkpVemxRemRxcjlYRS9lWWpLRXpCOVFxRk0y?=
+ =?utf-8?B?emwzYkIvT0dDSUNzUWxtRE1XYlRmVWw1Z3VySUJpRi9JRHFVYUtRNXpLRXJo?=
+ =?utf-8?B?SHZuOTBPb1lSWUwxNmZlcFQwWjIwU3NIK21KRWJiMHR3S0paTWsvRDVhUkhk?=
+ =?utf-8?B?b0pQbC9rbVhNaU5vSzhwbFNXNkx0U3lyVHVJWHpDWU9KdmFCa1V3RWhMOWdY?=
+ =?utf-8?B?WkhnMi9kR0M0L2ZKeEFOcEVwYjQ3eWxnQU9CQzM1amQzWTlUdWV1MG5sSmVE?=
+ =?utf-8?B?eDQ1aFkrWllocE9DRDRqVmNFQkxONUlFZTAxQ1c5SHdubHR3T2ZPWkVEdFEy?=
+ =?utf-8?B?ZmlyRGlTcWFKakNyZXQxNGV0dDB5MExRazdvSCt4em9vVktqRW1ZUHVMNmQw?=
+ =?utf-8?B?TDNMT1hZMnE3ZDAwdDl2NXZyMVppK25wNEswZ0MzQWpLNnltN2Y2ckZYdVZa?=
+ =?utf-8?B?TlZoRkw0eXZKMUF6R0hEdVdkVUdDM3lhQWNRRk5FZC9Jcm9zU0lPQlVIWVRp?=
+ =?utf-8?B?dndXdldzaEMzdE1CdWZXSWVEaWg0T3EyNDBya1pqL3YwaE56Ky9pR0dyVE5D?=
+ =?utf-8?B?R2lkUkNuZFdMYmQwZWJ6Q3NMeW82VW9EakpCSHJOak9zakpVNU5USU9QaHd0?=
+ =?utf-8?B?MlFWWThHSTNXMW00eVM5OHArTXROLzRrTkpqWjRBQy9hQU5lWFE5cjBlVGZS?=
+ =?utf-8?B?UEdGMWJqaXZuZ21pSWhYcnJmV09mbjQ0T3lxbEExcGpSZFVCWjVwNmJmMHhF?=
+ =?utf-8?B?Zi96VTZGNEQrT2ZHTlBRWW94ZWtvb0h2YUNRN0hNeE45SHZpd2dDVEpMdy9T?=
+ =?utf-8?B?UDFZSXVzZGprT2duUDQxZmlhRzNEUVlnMGpTMVBqUU1LQktxUHZIc2FnSkNi?=
+ =?utf-8?B?aUpvckwxbWFmbi9hWHFRS3pneTUzZDFEYmRlQTRwSzdEZ2dsY1czbEZLMHBq?=
+ =?utf-8?B?RytPWUYwdWhMTFhTZTk2VEdtR1I3L0M0V0NJbkEyYnpJWGtGbG5NYUJITmtN?=
+ =?utf-8?B?eUFoRzdzMHY3UjNlUWlKT09wY3h2ZFhTNXNLQlU4d0RocXk4SmF6R29zUzlN?=
+ =?utf-8?B?OXhWZitjb3RYNW9RbFFMc0J5ZjE0a2tOczB1YXpDS3NKeDZtQU5BYnV4cllN?=
+ =?utf-8?B?MU1MTU4xdTdNSU5iMEg1aCtoajVnMnZ3aDVjSWNUeWsySCtQcTR6RXU0Tkdv?=
+ =?utf-8?Q?sZ95SljQn+d49U/QEWpp209GP5nvtE1gmxxo9VbM3U=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(82310400026)(36860700013)(7053199007)(13003099007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 10:14:04.1322
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 10:14:53.1048
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e977e9b-bb5f-4136-ef9d-08de5a6822ed
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4d76266-f084-4a9e-a6af-08de5a684014
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017094.namprd03.prod.outlook.com
+	SJ1PEPF00002325.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB999075
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8455
 
-On Thu, 22 Jan 2026 18:16:00 -0500
-Joel Fernandes <joelagnelf@nvidia.com> wrote:
+On Thu, 22 Jan 2026 22:32:03 +0100
+"Danilo Krummrich" <dakr@kernel.org> wrote:
 
-> On Wed, 21 Jan 2026 12:52:10 -0500, Joel Fernandes wrote:
-> > I think we can incrementally build on this series to add support for
-> > the same, it is not something this series directly addresses since I
-> > have spend majority of my time last several months making translation
-> > *work* which is itself no east task. This series is just preliminary
-> > based on work from last several months and to make BAR1 work. For
-> > instance, I kept PRAMIN simple based on feedback that we don't want to
-> > over complicate without fully understanding all the requirements.
-> > There is also additional requirements for locking design that have
-> > implications with DMA fencing etc, for instance.
-> >
-> > Anyway thinking out loud, I am thinking for handling concurrency at
-> > the page table entry level (if we ever need it), we could use per-PT
-> > spinlocks similar to the Linux kernel. But lets plan on how to do this
-> > properly and based on actual requirements.
-> 
-> Thanks for the discussion on concurrency, Zhi.
-> 
-> My plan is to make TLB and PRAMIN use immutable references in their
-> function calls and then implement internal locking. I've already done
-> this for the GPU buddy functions, so it should be doable, and we'll keep
-> it consistent. As a result, we will have finer-grain locking on the
-> memory management objects instead of requiring to globally lock a common
-> GpuMm object. I'll plan on doing this for v7.
-> 
-> Also, the PTE allocation race you mentioned is already handled by PRAMIN
-> serialization. Since threads must hold the PRAMIN lock to write page
-> table entries, concurrent writers are not possible:
-> 
->   Thread A: acquire PRAMIN lock
->   Thread A: read PDE (via PRAMIN) -> NULL
->   Thread A: alloc PT page, write PDE
->   Thread A: release PRAMIN lock
-> 
->   Thread B: acquire PRAMIN lock
->   Thread B: read PDE (via PRAMIN) -> sees A's pointer
->   Thread B: uses existing PT page, no allocation needed
-> 
-> No atomic compare-and-swap on VRAM is needed because the PRAMIN lock
-> serializes access. Please let me know if you had a different scenario in
-> mind, but I think this covers it.
-> 
-> Zhi, feel free to use v6 though for any testing you are doing while I
-> rework the locking.
-> 
+> (Cc: Jason)
+>=20
+> Looks like you used the recipient list of another patch series by
+> accident. :)
+>=20
 
-Hi Joel:
-
-Thanks so much for the work and the discussion. It is super important
-efforts for me to move on for the vGPU work. :)
-
-As we discussed, the concurrency matters most when booting multiple vGPUs.
-At that time, the concurrency happens at:
-
-1) Allocating GPU memory chunks
-2) Reserving GPU channels
-3) Mapping GPU memory to BAR1 page table
-
-We basically need kinda protection there. E.g. Guard/Access on immutable
-references, which is backed by the mutex. I believe there shouldn't be a
-non-sleepible path reaching those. This should be fine.
-
-I can see you are thinking of fine-granularity locking scheme, which I
-think is the right direction to go. I agreed with the above two locks.
-
-For 1), I can recall that you mentioned there is some lock protection
-already there.
-
-For 2), We can think of it when reaching there.
-
-However for 3), We need to have one there as well beside the above two
-locks. Have you already had one in the GPU VA allocator?
-
-If yes, the above two locks should be good enough so far. IMO.
+Sorry my bad. I would prepare a new script for this series.
 
 Z.
+
+> On Thu Jan 22, 2026 at 9:42 PM CET, Zhi Wang wrote:
+> > In the NVIDIA vGPU RFC [1], the vGPU type blobs must be provided to
+> > the GSP before userspace can enumerate available vGPU types and create
+> > vGPU instances. The original design relied on the firmware loading
+> > interface, but fwctl is a more natural fit for this use case, as it is
+> > designed for uploading configuration or firmware data required before
+> > the device becomes operational.
+> >
+> > This patch introduces a Rust abstraction over the fwctl subsystem,
+> > providing safe and idiomatic bindings.
+> >
+> > The new `fwctl` module allows Rust drivers to integrate with the
+> > existing C-side fwctl core through a typed trait interface. It
+> > provides:
+> >
+> >   - `Operations` trait =E2=80=94 defines driver-specific operations suc=
+h as
+> >     `open_uctx()`, `close_uctx()`, `info()`, and `fw_rpc()`. =20
+> >     Each Rust driver implements this trait to describe its own per-FD
+> >     user-context behavior and RPC handling.
+> >
+> >   - `UserCtx<T>` =E2=80=94 a generic wrapper around `struct fwctl_uctx`
+> >     embedding driver-specific context data, providing safe conversion
+> >     from raw C pointers and access to the parent device.
+> >
+> >   - `Registration<T>` =E2=80=94 safe registration and automatic unregis=
+tration
+> >     of `struct fwctl_device` objects using the kernel's device model.
+> >
+> >   - `VTable<T>` =E2=80=94 a static vtable bridging C callbacks and Rust
+> >     trait methods, ensuring type safety across the FFI boundary.
+> >
+> > `rust/kernel/lib.rs` is updated to conditionally include this module
+> > under `CONFIG_FWCTL`.
+> >
+> > The repo with the patches can be found at [2].
+> >
+> > v2:
+> >
+> > - Don't open fwctl_put(). Add a rust helper. (Jason/Danilo)
+> > - Wrap Registration with Devres to guarantee proper lifetime
+> > management. (Jason/Danilo)
+> > - Rename FwctlOps to Operations, FwctlUserCtx to UserCtx, FwctlDevice
+> > to Device. (Danilo)
+> > - Use fwctl::DeviceType enum instead of raw u32 for DEVICE_TYPE.
+> > (Danilo)
+> > - Change fwctl_uctx field in UserCtx to Opaque<bindings::fwctl_uctx>
+> > and make it private. (Danilo)
+> > - Provide Deref and DerefMut implementations for UserCtx::uctx.
+> > (Danilo)
+> > - Add UserCtx::parent_device_from_raw() to simplify parent device
+> > access.
+> > - Use cast() and cast_mut() instead of manual pointer casts. (Danilo)
+> > - Implement AlwaysRefCounted for Device and use ARef<Device> in
+> >   Registration. (Danilo)
+> > - Add rust_helper_fwctl_get() for reference counting.
+> > - Improve safety comments for slice::from_raw_parts_mut() in
+> >   fw_rpc_callback. (Danilo)
+> > - Convert imports to vertical style.
+> > - Fix all clippy warnings.
+> >
+> > v1:
+> >
+> > - Initial submission introducing fwctl Rust abstractions.
+> >
+> > [1]
+> > https://lore.kernel.org/all/20250903221111.3866249-1-zhiw@nvidia.com/
+> > [2]
+> > https://github.com/zhiwang-nvidia/driver-core/tree/fwctl-rust-abstracti=
+on-v2
+> >
+> > Zhi Wang (2):
+> >   rust: introduce abstractions for fwctl
+> >   samples: rust: fwctl: add sample code for fwctl
+> >
+> >  drivers/fwctl/Kconfig             |  12 +
+> >  include/uapi/fwctl/fwctl.h        |   1 +
+> >  rust/bindings/bindings_helper.h   |   1 +
+> >  rust/helpers/fwctl.c              |  17 ++
+> >  rust/helpers/helpers.c            |   3 +-
+> >  rust/kernel/fwctl.rs              | 456 ++++++++++++++++++++++++++++++
+> >  rust/kernel/lib.rs                |   2 +
+> >  samples/rust/Kconfig              |  11 +
+> >  samples/rust/Makefile             |   1 +
+> >  samples/rust/rust_driver_fwctl.rs | 136 +++++++++
+> >  10 files changed, 639 insertions(+), 1 deletion(-)
+> >  create mode 100644 rust/helpers/fwctl.c
+> >  create mode 100644 rust/kernel/fwctl.rs
+> >  create mode 100644 samples/rust/rust_driver_fwctl.rs
+> >
+> > --=20
+> > 2.51.0
+>=20
+
