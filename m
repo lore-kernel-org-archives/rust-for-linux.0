@@ -1,124 +1,155 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F9A224244
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 14:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DC43396F8
+	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 15:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769177956; cv=pass; b=ukLKzJVH2DZFNg8FoA7PZGDBvyecUBmHEgTtq32E/AjFleYV2QMvDh9I9VA1UCBr37lqgAOzzEKnfSd9WOU6fhnZ2FC1S5xnYyOvB06dcZ+gH0vUPaCFXqIf0qwQ8y1H6W45hnX8qRgSJ+qrBPwvH+rruYr2WKHC2ifnhGR84/Q=
+	t=1769180517; cv=pass; b=lIidiXZaQ64VlHucuwnKtki5sXu4oZYcWH86U2TxeAkAbWv00+Yquwl7BrZw8E7dASQrHlRurgesCzuaTFVwKx4/C+xQ3X5NRUu2r+oYxKRp/vfxrUA8ucExftOFXoRpI+372l4Aw0AU5wGfuyvdPy3SRN92agZbOuVlsvbhvD8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769177956; c=relaxed/simple;
-	bh=YGHC4awsoSa/dRJGgbn4zkLgLCUO/JGIDvPLTMMvbKA=;
+	s=arc-20240116; t=1769180517; c=relaxed/simple;
+	bh=VC2h4lfc+BbUujEGaba26tXKPRwhtzboKzSAr/97GhA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lA4iFlT0tkMX0p6NFf9oEKD/giSnRmfrFoZxBCcMz8zj3xvnNAdUaKQ8/L2YQFuT4o5ZWnIWTxPfNEhXR+Gt3ER+T7Sw8zQKQeNBtT/QQmXYBC1MigCumOtJBv9vUDBM3icspUftGT6BRnPBybJCK2iR7jo4rbVAMbY73CnYq0Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWcVQFqe; arc=pass smtp.client-ip=74.125.82.182
+	 To:Cc:Content-Type; b=t6DFwU9fLmY1HA/gvDwehKEjR0hwWPYwlEFTcIG69AzUI572WWbg+Oh+9QMVp3QnwkuIxrPGu4FXOalgrpLI50UB3D3IMnHv2pSMvzaFuPdIZ6zQkHlZK2+JJQoRvhkI/GNynR0o7zPIhNIQ5ncw6ORKZ0h+SG4I4Tq3dHl8LUw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gYDLKEQH; arc=pass smtp.client-ip=74.125.82.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PWcVQFqe"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2ae5283dae8so128574eec.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 06:19:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769177954; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gYDLKEQH"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1233608c7e9so329920c88.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 07:01:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769180515; cv=none;
         d=google.com; s=arc-20240605;
-        b=UOTMxRreSNAYZglWnMxi9ErbchW72YF2mKckS8LNuV9lJf1P499SLrvY9SLdqhT5OM
-         ziklzPTv0qhwxClRYaDWAIeNt8VtpBITLVWCqQpR8FVyTPodMXMR4uLJ7+mkkm5U0R4t
-         1DSGF4/x1Zcun+aI4xeJmV3/+7kjUd3GU8EEORN+iop8J3IwZxr88u/PHQq1PrF4WtgN
-         xNID9lj8+Ve4ClmxrX9zo/O5BWwiSdIfKBrBobOHSlNYYLIHB5Yr/i/YSVdrqTLG9JA6
-         EwJYh8ufzxsrNe18/rFm8TOtqVZx4g/6/njSDiHDXZY7D6xRzmqvwEeXumA6d7WWkK8q
-         Z9cQ==
+        b=P7vnfwLS3gkuzI0dKrIXg+P0zQkmtgtQrY92kdFzI5ugvkMkuJRPOdgeh9XZ780qx9
+         hBBBijoO33ef5hHFSq+X71yTbSWVVVdRvqZLYgngmTik/94n93nCivvQuR1f7QtlcMtA
+         KCxWz+1Z8UcnPnN7xBkGaQHs/TxPFRV3Htv8XsxOo4+6yR2xG9qpuoLcE8o2tzQZ4Tke
+         +L1NNCRxGE8Ob+yMOnTYyRXbFmVwuiw/y4n6PuoM6kOhHUUE7wONU8Nr6cmOVBlT2oB/
+         HmJ/W1K0crG5t1hhiLqm4Mp0QpfuRc+qzrde0NZokos3Sg4uG6pB8k6ghQvag/O0S0IP
+         HWnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=YGHC4awsoSa/dRJGgbn4zkLgLCUO/JGIDvPLTMMvbKA=;
-        fh=GQTH5QcRJ53m4GO8Ok5HKhVHqEdKsW4mkXgnIlbZDao=;
-        b=OMTyk2yHe/Y4MwyHtzjAg2VaXeYo25IkWd3ZaipwUe9gEc3g+Zm0SZmk02zKHYdj73
-         JW9ikLvJ6qb4AIQ42fzT+JkxwMI6eztlO05NFKDc/vAxZr2Ikxwipxr7Tnv4VgoIzxCq
-         Nm84dqkaAXxXqSufGTQdMCQAcBWTxYB5baph4hcWB0DflldoO9//dp1b+rmnUon8ZRt7
-         ukPxyCOkz/ZV21KqgVTxvEOXWgI9es7PqGNlZ23NYqGnA7zhJtlnilmvbKpUiHwkArxg
-         /Sjt5SF8JgWajvEyIwYuPoG5R782nVjGVXl10I4IgyJ0O9DjUvufbqFdVOQeEq9W36pj
-         YC+w==;
+        bh=VbFx30dPL0M2NcCT8PkhEdtarDYXYJVb0o7yqa2B0pk=;
+        fh=oR4RFRYYEpwB14q7Dy0ZxCnxL8P/RegWEq4eB1kxKV0=;
+        b=A/dWOh/uVpolaGZ9VxRXe9vN0QIz6NQ5dCzg3JCpafnIL0nfuSwM58DYPjnnzFkjka
+         uBDQXpgthKEvme1glkViob4PjEbP+gGHoaN2gefTpXzQHEJRa/a6KHQ7LlzLtMNeTfJ3
+         eEQE17tdpQGuh64sPWgemDOCFT/aysBbleACTc1n3FJJj+NGai4UkTaTR5al6SQfXZaX
+         RelA8Y+nof6B9IGVg93N1/FTw8A2+DTdSxnSFq4JUcy9SCcwh4gM+0T7WkSQqMc+udGu
+         j9NWc1gGt07bPYZ5ukFF7OIX8dtaR+rqYc/XBh1kKYjhBnH611o8L7gIh4acA/NxXl25
+         ay/g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769177954; x=1769782754; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769180515; x=1769785315; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YGHC4awsoSa/dRJGgbn4zkLgLCUO/JGIDvPLTMMvbKA=;
-        b=PWcVQFqefVM6AvGXmM/cEIW8IQwE7eXgPJfYrZaE2kMQuSYWhal77yDpOWeQ/YkvbY
-         /KM3gtNNDW/q9Oedu2yOk94J0+MJp4s2/MX6GBZ5NhXpNdKAItknPXxxo5QtD3P7axua
-         Q42hhWAqzOyyTPVRFt/1K8MSeE6GD8Y/eL88EhPZbzEPeUBgwtYJ/waw8RHNEbDtcTzr
-         +CGVDK+lMcv3NRMegJyMBh2w/yqZt2wBa2cHSlHFuC3fMyraXewEgrEQJY5f1jVKBXXh
-         4uHhB/ssd3bi9SPu/4zyDcZz+wn8RwQC7OFTl5VOW6PXvWb4j/ENzrmVzqIeqjcyGZo0
-         hBAw==
+        bh=VbFx30dPL0M2NcCT8PkhEdtarDYXYJVb0o7yqa2B0pk=;
+        b=gYDLKEQHYL8yG5Slp1rrpgRK3JBcfOF2FBA5mc5dy6n8cHfTtsLOARAFqAUB7G4EgD
+         mU4IIddvuJujAK+icD0frowbNlM8CEWAUJ1v4i+LVnhhU+339c6sTs6/8W5JEqDSspet
+         w9rsm6VUi9ZSakgkx2Q7dbsGgC1G2dkEviW28YutzbJTQ/cI7v5njbTsycuAwHfsF4AY
+         RWOGEQcTfT9pfjjqYwsKYmituo1vLptY3u9+Mx85HYL9OvlVd7gImHv+Af75ObgxJ/sP
+         msoHntKdB3cue+qremWdh0apmAFuKVdPKlOSXBG5zPoMXvX6iTXuTY/YxEuN3Iy50FML
+         oDBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769177954; x=1769782754;
+        d=1e100.net; s=20230601; t=1769180515; x=1769785315;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=YGHC4awsoSa/dRJGgbn4zkLgLCUO/JGIDvPLTMMvbKA=;
-        b=tXSSKt32iBrv84EuDzfdVbZUm4zo1pG0JXiGawE2QyelesMw5ihBbQjyIIXAM/PaZj
-         vtBNgY4DJe51tpHPpBKacNtaGaeFaaibpVmiA3HnL6vGNfSeCS8jx9dOmp05G5j7cUxA
-         O85vs/BnybETlfK0ThfP6zr6RNqhEgZm/gEIdb3OKrVb4TU0CyIBDW2N4Z2sRVua/yb6
-         InIDWkMXlLTbAEXrDbrZ3ylmBk4CcHG8jD7k4z83cQE4V3wxE9j66Tb7i/LHce7euQi7
-         gIDwj/STAsjSrWwrMppH+Jv7yZbOc4y50stnb+aEDnn7UWf8V7HwAWrimK+4NYPCo0mC
-         SzTg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHKMGVXkWJuxoufItKBosYhuwDCgt4FQgMPnLeJQ1fg7b4B25r6UDD1nseT6xYwjxlotphUb8SxVAAAJsNjw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4TJkEEVhWXFeAaTgEwPfxQbClNndEO7aR1BCrj8gP4vhKmMIK
-	EoxccLXSbFklr57/kZ8uQyghYkPuiRK/aToAYIxKMRuZu3jTfexVS9By4bz4I3LSTVABHYMIn0k
-	yI05L5CFb+EIiYE4psHhqtmA0Qo8FUjU=
-X-Gm-Gg: AZuq6aJ3yeM4GNS1f50Sbi5ADsxplwwoi6vDJpdJYUnmrxOvcyF5GsBzDZqbnIoQsXY
-	HkwpTl6im6s9XJvFTkaTu56QCiq3LPYcJ63vB47ckjbAwCcnpC7EsLEFB4gSFaIcOm+QsI58Qld
-	64I8LdAjDnF/hZG59bBwiY9Mbyb1/8Ygmd+C1SiOF/Y199u1jQcflPCoNsMnLEXgX78YTQScHtH
-	r+jgk1G69SP5EYcNoWg/yEx6dibMOhcvc4dWQ2desogcLQHovFgiAW3KvpGT+oCL0ZLdas8rM9B
-	HUBDyGjdBuHs23ha7OmALa4Frpb8S5p78bD/F3d2QzoCapXc3c1auqfrq7vU/k58hOyeWUq3/Fs
-	wnYEMxP+uaDUb
-X-Received: by 2002:a05:7301:4e0b:b0:2b7:3835:21f0 with SMTP id
- 5a478bee46e88-2b73995f4f0mr880908eec.2.1769177953953; Fri, 23 Jan 2026
- 06:19:13 -0800 (PST)
+        bh=VbFx30dPL0M2NcCT8PkhEdtarDYXYJVb0o7yqa2B0pk=;
+        b=dpZ6/FIiG7LYKC6hV39k3/ie5mj4+uRQbd9H+Cjpd40W81tQZNwBqhPPBc7oEbMOiF
+         4lXVwdJXsacF27kf88Fe9hRg2+Oin091WwTrhjH4tX1uJ6tk3n43kmkc3CWoCLpEhHxR
+         PCxL4jCkVOnFVDZcgou47XjkIWPhSXjNLEfWJIawW7X4IdZOgK4WATFk7nnPIB8aSmDs
+         LLcvuwXx+SWsBmcCEL+3YT2Owu/rKDIRGEQnkxIKgKnyQoWTYsAxeP32nQuYQJ9AfGOs
+         mpglJjGzrF7vPY3nr68dCGslnK7194CKBZR7DKPmhHjrFE+ycX8RK6E/yuR7+eQzzPFd
+         k+Ig==
+X-Forwarded-Encrypted: i=1; AJvYcCVcJ2kJw9Wnw1gX6z5LLAHia7sqdBjN/kOSoHlTgRzO/WoQzb5eRP0cD3/QZds9weeJyylsA5xsAChz+hk6LQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxxsjTSRRY0ULns3TjF1gaX2CbiuRdEZ/n7Ubmslq+oj0pKERM
+	ZhafXIHmNEu81SQjNLzS32fylxrno4P+yiOCYNBM5aSmLynfyA1oyEuVT6K0B6+HuEiK8VsdEKC
+	57VIywhLXo6zmijo3n3BvIPvbgr0vzhU=
+X-Gm-Gg: AZuq6aJB95aJFjClhCzRtYJGVLtgWr41zyqlcrrjt/Au6Ddh0BFLRu1cVy9rD3EPOE2
+	hj0f9/dvinJGxpmauaR+Wmo+oSjvnHRK6PMGm/ruxpT9rRGO/jt5g9y8gzafDQb1LihNNCrPOzS
+	lDVeC6tLZq1rYirZ3o5lUjgahP8e8XuGhTkvHt+az3e5XtVRwO5osHc3Sh0DA05ygP7/eCCl7+C
+	Vc1tclMI1zj15k4T9QtB4GbJI7WzHiL1QlRhPxY9wUWQ7MxLHyo0LqknLThp71G7ESkO/wHdafP
+	BHtRXnxYSHnjJG7cuTfQOspMqOLhxlqrR+UcjdoeYr4FpyK45NcU1u+e/MT2CoKwW5bosa1adM0
+	1TxmMOKjksK4+
+X-Received: by 2002:a05:7300:324a:b0:2ae:5549:2c86 with SMTP id
+ 5a478bee46e88-2b739b6f4e4mr843868eec.5.1769180514805; Fri, 23 Jan 2026
+ 07:01:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260122-nova-core-cmdq1-v1-0-7f8fe4683f11@nvidia.com>
- <20260122-nova-core-cmdq1-v1-3-7f8fe4683f11@nvidia.com> <ee459198-04f2-4bae-8e1f-4ec413d92f89@nvidia.com>
- <DFUUVM5M0MYA.36CL66OCAICDA@nvidia.com> <DFV0F28KHNXP.3JU1QGBJCZBUQ@nvidia.com>
-In-Reply-To: <DFV0F28KHNXP.3JU1QGBJCZBUQ@nvidia.com>
+References: <20260122003746.405370-1-deborah.brouwer@collabora.com>
+ <CANiq72=xNcgg6hahQRkAjfbiKOEGMvdePLSaWvD7cML9qTP2iA@mail.gmail.com>
+ <cccf7d2d-fe7c-4b90-8181-ae4cbfacb63f@sirena.org.uk> <DFVDKMMA7KPC.2DN0951H3H55Y@kernel.org>
+In-Reply-To: <DFVDKMMA7KPC.2DN0951H3H55Y@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 23 Jan 2026 15:19:00 +0100
-X-Gm-Features: AZwV_QhNDrz0erAn3-OGI1WooCKBr-7Jq3HMbGGFubBIWd3KYSPpgYNkX9koyGY
-Message-ID: <CANiq72ksbD57UDweA8Y5-635fBMcRb-mPnzZtdQ9yv86xUNkCQ@mail.gmail.com>
-Subject: Re: [PATCH 3/4] gpu: nova-core: gsp: fix improper handling of empty
- slot in cmdq
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Eliot Courtney <ecourtney@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alistair Popple <apopple@nvidia.com>, nouveau@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, 
-	dri-devel <dri-devel-bounces@lists.freedesktop.org>
+Date: Fri, 23 Jan 2026 16:01:42 +0100
+X-Gm-Features: AZwV_QjGYp8HTKn0evohs8O9D0EdmrgFJkbU0Dzi-AzDhaVW1Ks4i5R7pcNc1VM
+Message-ID: <CANiq72m9Nq-Wonw57Nwk480CTCmoaDk-_rTLX-dFrqh_N+eyfg@mail.gmail.com>
+Subject: Re: [PATCH] drm/tyr: suppress unread field warnings
+To: Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Cc: Mark Brown <broonie@kernel.org>, Deborah Brouwer <deborah.brouwer@collabora.com>, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	daniel.almeida@collabora.com, boris.brezillon@collabora.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 22, 2026 at 10:29=E2=80=AFAM Alexandre Courbot <acourbot@nvidia=
-.com> wrote:
+On Thu, Jan 22, 2026 at 8:46=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
 >
-> Would be interesting to have Miguel/Alice and the core team's opinion
-> on this IMHO.
+> If I run 1.85.0, I *instead* see the following ones from clippy:
+>
+>   CLIPPY [M] drivers/gpu/drm/tyr/tyr.o
+> warning: operator precedence can trip the unwary
+>   --> drivers/gpu/drm/tyr/gpu.rs:51:13
+>    |
+> 51 |             shader_present | u64::from(regs::GPU_SHADER_PRESENT_HI.r=
+ead(dev, iomem)?) << 32;
+>    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^ help: consider parenthesizing your expression: `sha=
+der_present | (u64::from(regs::GPU_SHADER_PRESENT_HI.read(dev, iomem)?) << =
+32)`
+>    |
+>    =3D help: for further information visit https://rust-lang.github.io/ru=
+st-clippy/master/index.html#precedence
+>    =3D note: `-W clippy::precedence` implied by `-W clippy::all`
+>    =3D help: to override `-W clippy::all` add `#[allow(clippy::precedence=
+)]`
 
-[ Re-replying to this so that it gets saved in the list. ]
+I took a look at this --  Rust 1.85.0 extended the `precedence` lint
+to catch these, and then because it was too much, they split part of
+it into a new one called `precedence_bits` which is not enabled by
+default, which landed in Rust 1.86.0 (and is not in Rust 1.85.1,
+sadly).
 
-This is something that we have discussed back and forth, including
-making it way more formal, even using special notation, etc.
+    https://github.com/rust-lang/rust-clippy/pull/13743
+    https://github.com/rust-lang/rust-clippy/issues/14097
+    https://github.com/rust-lang/rust-clippy/pull/14115
 
-Please take a look at Benno=E2=80=99s proposal at:
+I see others in the kernel have written similar expressions with
+parenthesis, e.g. for Rust in `ioctl.rs`, and I see a ton of those in
+C files too.
 
-https://lore.kernel.org/all/20240717221133.459589-1-benno.lossin@proton.me/
+Personally, I don't mind seeing the parenthesis, but I know others may
+feel like it is obvious.
 
-(He may have a newer link)
+Now, seeing quite a bunch of parenthesis for this in C files, from
+kernel devs and crypto stuff and all over drivers and so on and so
+forth, means others definitely do not find it obvious or prefer to be
+explicit for extra clarity.
+
+So we can just clean this one up and later enable `precedence_bits`
+for newer versions. Or if we decided it is too much, then I guess I
+could allow `precedence` on Rust 1.85.0 only.
+
+Cc'ing others in case they want to give their opinion.
 
 Cheers,
 Miguel
