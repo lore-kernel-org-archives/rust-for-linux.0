@@ -1,262 +1,277 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010005.outbound.protection.outlook.com [52.101.46.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161AD2D6E71
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 22:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769208881; cv=fail; b=NTxl/1+POge3Q6mmrxnM36ufMhMEybehUoHCfKjjTeLhTumBc+LsM47mW7ycSb3r3uB3rKzlevrLWtcForPAZWyl1cMWPs9HL1/WMk+RbNkQ6VK4gYWbiYj6WhmSKmJ94azlYV4l6ZuJJgTrhxBEb8iEZmTRzgbmYb8aQ/mDoJE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769208881; c=relaxed/simple;
-	bh=AAAHLbJQtjDUw0cdoXQwq/j+1SeCHqrMC6J8CB0VAY0=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ARIc4dybcdoxS11/qD7lPBQoOPlhqNj6X9k7/wgrdkq7p9CEdqMgKSyepjPRFfkt3Gye6uk3C5JUrTTti00fdxQ9CaFlQgDsyoenyxf5b4kvO8ChF+UvfQhKx4HqX8Tqm65944VLAYvNRqSnUNiWrBVIo8YxNHXqRYjIS/y2Xgg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MSa/T7ax; arc=fail smtp.client-ip=52.101.46.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBD53EBF01;
+	Fri, 23 Jan 2026 22:55:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769208951; cv=none; b=i6sLlmrB68wsJIlcGeWyfsC5yZEsD3WqhupASXipDNt8OnHSXlGGAJ4QFpVlxmc2EsurJ8YX8Y+DEIgNdt/lWNZ0weUgebuZju2Z5CZnuguLSWTFLqhlKywBU+DT9X7rXFe3IflxqiiIJiMvf7YXESWvPtoyfZQoqtDdbR6t9FQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769208951; c=relaxed/simple;
+	bh=orbHjJYBqWQNED6p5ZZsi3FnChgcew+IhUh43kGyjxQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=UaCviN77Zmp4twXLpHBC91xVWy6T0ZumxlKfOcK2sBeFTdpx4fD6WgDNkrFwC8TM8krxmhwiF174Z1BCEmu7WC1ThhW6MjYyimbh91v/YKa3WMbM+1LxnCfKvlWc6iMGjPVD6Wl7DoUVBiVIJoJzxssjI+XgwC+uXgrVrV8y2HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qD6MpUi+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MSa/T7ax"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oEyQVY3p3L9AQW64B5sQnNX4QKvn+6pp2jD/951PwcQ0Emb1mhsUVkvmXr5bJ3LdR2n238EnFHAur+hkFYW5/58nmlUN1Bcy1EtxRhIyt8ruYhtmSBZ7sIlnmz9sLl0fW4+tV8NTRCrY4Hp6ioxFMiNk1s/0QVUkzmBq0b63B9D8FtoTFRTgmRXzusMGht25x4MMucL30QLKxujAXvf6+RT7o+4Gnnfo6daWpG42YiwRLNwGfIS4PC6rIzimdRJ0tfO1wdc0D0KEoT9jTwczpDYgqFJw8IG72Vgyk+Smc05OOYa/shr6BTFVAJ3ZrhG2mupaUqLa+6ac75Ed6/gvdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i7UMUT09f5tEhluLeBON5iTsvufOofLmLdKbLNMw5L0=;
- b=kej4UnmgFGtc92A1n0LvyA72RRF2YhjjU79okEu6466DArTxaAND1uZajSnF+zh0XTjwyT1xaK842UduYZXWYK+zY7DJXQzwA5nfWoJUMQosY4/efH2qHJjz35eGaQGO9QoLJXIEY1szg6KN2/hFOLGGWUGG3QSHTF7tyiGxUhhrsx2sZkAq/Yhw2kvbtwymP4K/vmJNefgLXBNuTFnpPxREczZZipVhBkiha+nWBgMrFdPYDdMSu2E0Tj7qoRToxeO1m1qs1zBqOmxoTJgBMaI5gxeC+gLn8dLgImge0QvK4lAVs2GpESO1LcD+HyDTdUP0JPI8BBroTCGShUkqhQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i7UMUT09f5tEhluLeBON5iTsvufOofLmLdKbLNMw5L0=;
- b=MSa/T7axrOMYMMy6eN+sB3qec2vhvO6FVpa/voSOuve4EKsK8Msz3dNqqJNbCXu2JmDOU2LuYbJw90ZeUn6fgjPNJ0y7wyYn/mzBE1WLJDjAtLzyGg5CsXKzFiHVThyIw/Id4v0D9adsw9MXP8TRbUnDX9sofHrfjb/QAwnKYlDMSeCx1fVYrM44fBAAiGn/S4fO5XkO+3agj21d5GmeGIbXmYYggmD1S+FkQYW6zL0wApwOtyDmnZR8dET5w45A7sWa8S0/IpUozc7sQhzSKu+cmOtWb3vNQRv/LximQTQg2mYsTZ1m6oNt4Z1xLr6wd0YKr60FLXI1v6PoSZZ3YA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH7PR12MB7162.namprd12.prod.outlook.com (2603:10b6:510:201::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
- 2026 22:54:34 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9542.010; Fri, 23 Jan 2026
- 22:54:34 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 24 Jan 2026 07:54:29 +0900
-Message-Id: <DFWC7A81FRFW.3347HWNH0CE6L@nvidia.com>
-Cc: "Timur Tabi" <ttabi@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>,
- "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>
-Subject: Re: [PATCH v8 11/13] gpu: nova-core: align
- LibosMemoryRegionInitArgument size to page size
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-References: <20260122222848.2555890-1-ttabi@nvidia.com>
- <20260122222848.2555890-12-ttabi@nvidia.com>
- <DFW69A2VGB81.1YJ26924JUFII@garyguo.net>
-In-Reply-To: <DFW69A2VGB81.1YJ26924JUFII@garyguo.net>
-X-ClientProxiedBy: TY4P286CA0062.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:371::17) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qD6MpUi+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3392CC4CEF1;
+	Fri, 23 Jan 2026 22:55:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769208950;
+	bh=orbHjJYBqWQNED6p5ZZsi3FnChgcew+IhUh43kGyjxQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qD6MpUi+6IBwur9iUPjN6nRVKQYqGqejZFCzV3tmnYjCEA1WISV3eAXLjYMm8h9vf
+	 V6/xt9v9KNHq0uyo+ylmgJ8yQckwmjHGTGI9XPhI9+3sIE1TGjoX2jFMrY2VFwZ2aA
+	 Lv7JTckbJVfH49FV3PKJJ+dn3YrS1qYfw3D1k+GalhsusVMwOoDkXF5oryiMxx7Q9n
+	 REeSnKfj3DUSfGRCc+oyna30KGbotCIP7pYCa9nrXRNjihBJkILc4JZMx2pBnEyb+a
+	 1y6Y+ZfT5IymJmBLSIg8u2yweZCNliojZBzU5THzMmvFsJZDd4DVsRDN3d7wHR+KPd
+	 j+Ixjtrx2GqjQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH7PR12MB7162:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba4f701b-596b-41ab-d602-08de5ad2605e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?REdYYWx2SHFBZWk4S2lsRDJmSWl3QmhGa2FLQldZVzdtOXdCNGNsaWY0V3hM?=
- =?utf-8?B?dWQ0UzBUSkwyaTZicDZ0MlU1UFJZajQxZWpFQ0s1bVg3RTJjV3A4ajloOFpD?=
- =?utf-8?B?R29LTGZ2RVh0bTByZWJxYTA5bTZPQzFDNGlxNzRtNHdLWGptNit1ZFg2c3pT?=
- =?utf-8?B?UXc3NldmRGVLTG9WNEdhUVFDVGxsZloyVlVpZEhkWnliNllpQ0hXUGYxS0pC?=
- =?utf-8?B?aVVRQWZUeUJmUGFRQkFDQjc2MGR0Qjc1eWN4aDk4cjkxRk5RNHFNd2F0bDdH?=
- =?utf-8?B?TCtmNTUzYlA1L0g1S2JoUDdCRjJWUVArU05aRlhKTVg0d0o5dG4rMDhPYlRZ?=
- =?utf-8?B?b3JtNUdKR2R5ckZZTDFGS2wzOWF2WW5neThhZkI2K0h5TEsxYXZEQ1lWWkRX?=
- =?utf-8?B?cUNnY1hHWjVYUnFGbHVkbkZOek1sMTZySnRCQWl1OHNOWGdOdmVPbjB1V3J5?=
- =?utf-8?B?MWw1bjVrUE9MOWt2RGZEVlJQMW1RM21IdVg1bXlFSkF4OCtnYkdtSjIxWHkz?=
- =?utf-8?B?OWlBTDdjbmZHZmkrRklBWG9FdVdEbDlwYjdac3hQRDZkYVhXbWxNR3lVT3Fu?=
- =?utf-8?B?eDBBZE5saDVGSFNpNUFRWENVRGZpS25wSnhvcDZuY2s1NzZGKzJWc3poaXNy?=
- =?utf-8?B?YThCWGllSlFHMkUrTVQwMVUyT05IWlNqb2dYVElmejUrV2FVc2k4U0R1WEpX?=
- =?utf-8?B?dUZ6cEZKVXViaVVzbzJnQlk5RW11SlF4VEZTUTd2Wk1VcjZUTC90cG5RT01Y?=
- =?utf-8?B?VEw5Z04wVGtJQ1NwUjFKcVU1b0YxOHBMcEpuSU1wRzY3SjU5eU1OMDh3OXVp?=
- =?utf-8?B?eFBvc1BmZjkvMXNDc2pzVFlocHZsMy9oOGZINnA5WGpicmZVWFlOZkVKekU5?=
- =?utf-8?B?R1BTUC9iVmhwNjR3RHVQTTh1TGZhUnNZak5lb2UyaUZEZmh4L1ZZUXUzaGR4?=
- =?utf-8?B?cGRQR054L1pqcFNSVVNVQVdiVnFTbTdxd1BoNkVIbWRKNVNkVDhYY05hdlVF?=
- =?utf-8?B?TTdiTzhWV1ovWjYxR0h2eG1XbGRqUEFPWTR2djRrdkdTaGpROFY4K1ZWUmU0?=
- =?utf-8?B?YzYwMVlXU0xqcWZzMFd2N08vN3ArbDA3MFMwYTZNd0xrd2ExZnRzMkxmNHRv?=
- =?utf-8?B?WjlkZ28rRG5ucWlzSGxmTC9HQXVlSzhTQjBnd2pLUXpQcDAvK0FiTUp0WU83?=
- =?utf-8?B?akRBL0p5OGZOdytGOXhhMmNUTEp0VkJNNUxqQ2ZURmVoRWY2cmFMdmRxU2hE?=
- =?utf-8?B?UlhzNEFQbEJXZ0FPVE13d2dzM1U2cmF6MmJFZmkwaExtdFRDdUtpNmdvVWFG?=
- =?utf-8?B?d0R0WVNjM09hWkZMRWUxcVp5MXY1NFZqU1d3ZVl4WUovVWRaRDE5YkZMZkdT?=
- =?utf-8?B?Tzd4b0VDOW1oc3RZcmFiSkZqekNRYmpQNUtBOXVyZ2JuaEs4S1NkSUY3TVFU?=
- =?utf-8?B?YVBNRStzTVl1djk2UFBsSmxQSEdHRHJxcmZ6QTB5RGhvdkJlQk9FSmpJZllF?=
- =?utf-8?B?NjFiQ05QVW9tZHVZa2luajd2L1QvUm1OYko2Z2pqZndQVFdZVmlVT040REdh?=
- =?utf-8?B?UTVXeldyalJ3blVoem1zeXZoWkxSanZYc3JNM3ZucXdSVVg3U3FucVdFTHVZ?=
- =?utf-8?B?RU1tdm5LRnVGclVDbVJWMVl4b2FwMlFkQkFzNVMvb1ZZZlQ2cDJnWFZ2NmVs?=
- =?utf-8?B?a3dzRld1UWFza2VOU2pmOEt3NkMwcHZiRlhDK1paUjNIV0w4QUtuNHNHSHJH?=
- =?utf-8?B?WGVxY1BGT0Q0OExTdDIxN2RmZ2djV3o1Z0VQeG9adGRaUTNlZVBiYVRTQTBG?=
- =?utf-8?B?WlR4VVRtbnhoNHJLTlAvcU5xVmwxUTExd3YxSWZwMlhNeEdmNVYwVFBRQWdE?=
- =?utf-8?B?U2oyNU0zVlN0U1Jnb3ltSlJGSTd6bGFTNkVvNEo0MTRGSW9WK2dmdzNZcjZo?=
- =?utf-8?B?alhoUDYxc3h3Q05LQVJqaDFvRnhKL3gyZUNjOHNpZ0p4SXV1dHljOTRSL3Rm?=
- =?utf-8?B?Z1EwUVh0Vi9pbCtVSFlNYnJsd0trTzkzN00rVjZCQzB5QTlEcS8zOFpWdVhU?=
- =?utf-8?B?bm92anZrcWFzMW81eDJXaFdkTktTbTR3Z0FWV29NM2kvcXdyMzVuWTh5WHkv?=
- =?utf-8?Q?d2NQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NWNaZlMxbFNwYjVhWHdqd3ZlU2VFS3RPdmJoOUJYZFFjSWpsYUNCTXcvcmxw?=
- =?utf-8?B?cFhJTTIxNjdVVWNiemRRbG9Hay9HRFkvV1pNcjRHYkRVbXZnRVFKSWtPcXZS?=
- =?utf-8?B?ckJ3SXFmRGdOajZDaGRWZjJpWm5BYlN6N0hZM3RRNnl3Ym1jaGhZUjN5QjNP?=
- =?utf-8?B?enAvVmEvV0laZjJ0L0p0cGMyOFJPYmoyZ2FTN2VjbmRYSlR4amFOUk5VV0lw?=
- =?utf-8?B?ckFCUTlQOEJ1YnVrMVpsQVBmV09aWnhnc3JKVENRT09NQU1tREdSL2s2cU9z?=
- =?utf-8?B?d21yQXV5QmxVb1ZkeU15SitOdk5oc3lrdDRZZXNvK2hhR2tNYTVzWXl4alZH?=
- =?utf-8?B?cEY4QVlwc0dzOGdmSmdLVWoxZCtvRTA4QWtvNHVxQkRUTFFrRVVUV01qeEpV?=
- =?utf-8?B?YkR1VVNFVnkwZDJCeExUUWJ4UERJV3hxTG5rbmpIV2hxZ1dWWXNuelBBbjVD?=
- =?utf-8?B?NENGdUhCVVRCTE9halRuejVkLzF1U0JiWmFMVkowN2VwaG9Mc25UbHVpVjgx?=
- =?utf-8?B?M2E2bWg2bFRESzdqWjRJd0g4Ym1UcGc1ak5tbnBDRTRxeXA0NGxpc2JHREQx?=
- =?utf-8?B?OU5JN3FUR2EwYWI1TkYzSkVFcm9oUWp3VXdwQjc4YjFvSXF5U3FmMHVkaTNi?=
- =?utf-8?B?Z1lzZ2c5b0VaM1hSYVRqcGo1c0pWd1ZPTjE3NUxpT2tvVWZKOWZ6MGFwZkl2?=
- =?utf-8?B?NXZPRld0Rm40WU1nTHQ0cXkzdUg2VC9xWGVkWG9ieE9tbmpFNno4U2hYNXcx?=
- =?utf-8?B?SklTMFJYcllpZk9jcjFvMGtkMEF1UGpsWVpSZVVTblFtZXhWanUvVkppVnlG?=
- =?utf-8?B?U1BnWVhQdEp3QzZNUDdPakJFU2lGT2M5aGlKMjBoZTdLQTVIWjNlOG9Tc1Za?=
- =?utf-8?B?YUxxdDdpc2xRazkyT1pYaTdqcHpCNkRTbDhSTnpQNytpR1Vjb0EwV0QzNnZz?=
- =?utf-8?B?d01NVkpWUURXemphUE1DQ3hybGtPbTNrenZkclE1eC9YeCtoQ1oxQUc3a01q?=
- =?utf-8?B?YWlKTlhCb0NEUTl2M1NVVU5DUldUODY0cVlnM0tzT0huaG81a2tlZUlGQjAx?=
- =?utf-8?B?b20vdDNEMzFuS2xDNFVxRE00ZWJPV1VETHN0SG5ySVBMa0FTRHdIQzcxa2Js?=
- =?utf-8?B?L2tjYTFvWWFMWEpyYTV5c2M2b1kwN1VpVFRFOFJVN2JsdXlXWVMwSUEwSC9u?=
- =?utf-8?B?RDRXL3ZSekd4bUsxc3E4ZXIwU2ZUNmQvS0QxTFN0REVYMHdpK1d5YndtVDVw?=
- =?utf-8?B?ZjFrcWgvcTVzeVE0dUd6Q05YNDRlQWFPYjhDbGprTXB6MjhWWWZqZHNzdzVa?=
- =?utf-8?B?NW5PeDBhSnBLQmg4bHRTREZ3MmJ5bllhZDQyQ3NHZHpFa256TmpGOWk1VFAy?=
- =?utf-8?B?WldQbTlpQVJEWHJDOTdBTTZJdW5UdTg4UlUwc1dGSWJHUDJkR2ZIRGRxSnAy?=
- =?utf-8?B?d2VuVHVPU0xodTJ3UXJEQk5oZm5PcTFGQ0dnazFuNWRPeDc3a0k1b0Y4bDRm?=
- =?utf-8?B?SHNqaW9vemNkdlFBalhOc2ozMWRSNDFyRjhMUUFTaXRJejd2ZEk5M0k0TmFL?=
- =?utf-8?B?amdiM1FGOU1YN2hKb2l1YWRidW81SVR3YUR2cDFzSjB1RDB2NGRHVUhRa3F3?=
- =?utf-8?B?MkNYTE5peXRCN0s2NkluR2JPR0RVeStSclk4NkZCK2g3aEJLMzRKZFJ0bllo?=
- =?utf-8?B?MHJBTGlCd2RNUUNPVTZVV3FSenA5aHVLa0hJMHd3WGdaZTBhZmR1aWdOTXh3?=
- =?utf-8?B?czkwRnNmcnpHcEdlR1lveXhUaWp6ckI1UVNQZUtmdmZkRlB3NGNQVDFwUmY5?=
- =?utf-8?B?dDNST2pTejFWTjNPOGhxWndBektFTnRMSFZJTjZTSnBjWGRJWFNKZzdrOGFr?=
- =?utf-8?B?VGY3M2FFaUJDS2htYWRkQ1hZNi9JTUlGZkJLL0tkeDEyUjRucGdueU5SY3VF?=
- =?utf-8?B?WEVkUzRIdko1c0ZUUVFwT0pFcmFVeVNWSFBPUlV5aHQ1dlU2MUNWc3JFUWRO?=
- =?utf-8?B?d055QmJXRW1qWjU2RU1vU3NuRG1ZUVlxN0V2QWtxM1h1VlBQczBpdzA2Qk9B?=
- =?utf-8?B?UmVxMzJRYXVBUWQ3RVZBaFNQWVFjcVlsejY1MWF5Q1lRSjRDaG02ZEROWERP?=
- =?utf-8?B?aGdrRWFqWU1kaUxSaDNnakljYVBSTGpUbUVxNElRcVovVE9QTnRjODRMTkgw?=
- =?utf-8?B?b1FiU0lyMGlVdlduZkZySjFxM0RoWHNKN1hSQUJhK0h3QTFlV3VCa1F3Q014?=
- =?utf-8?B?YkxSRkxBVUVIYTFnVkl5a1JoY0VBUFhBUlFIYWhuRkdNeGdhVzJTMnY1WG9r?=
- =?utf-8?B?c2lWN2VsTGpZUzgwWTErbHRJbHRvS00yRjMvOXViL3I2eFRYMFYzdzQyajhQ?=
- =?utf-8?Q?H4mGwB39XOUZp2aw6/uPX8Qexs3V7Om8MEVoH1H0QIsix?=
-X-MS-Exchange-AntiSpam-MessageData-1: eOHzHmuMiv0GXQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba4f701b-596b-41ab-d602-08de5ad2605e
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 22:54:34.3315
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hLerI75pkniXvetQpc7YHJWgKyI52pnilC32E2MzRTwj4jGsVpHGh6VlTfWVT5pIFJnUVYX4oro0+tPCnt6gfA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7162
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 23 Jan 2026 23:55:45 +0100
+Message-Id: <DFWC8962IIE1.2KMJBBAP0CC8N@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
+ <will@kernel.org>, "Waiman Long" <longman@redhat.com>
+Subject: Re: [PATCH v17 10/16] rust: sync: Introduce lock::Lock::lock_with()
+ and friends
+X-Mailer: aerc 0.21.0
+References: <20260121223933.1568682-1-lyude@redhat.com>
+ <20260121223933.1568682-11-lyude@redhat.com>
+In-Reply-To: <20260121223933.1568682-11-lyude@redhat.com>
 
-On Sat Jan 24, 2026 at 3:14 AM JST, Gary Guo wrote:
-> On Thu Jan 22, 2026 at 10:28 PM GMT, Timur Tabi wrote:
->> From: Alexandre Courbot <acourbot@nvidia.com>
->>
->> On Turing and GA100 (i.e. the versions that use Libos v2), GSP-RM insist=
-s
->> that the 'size' parameter of the LibosMemoryRegionInitArgument struct be
->> aligned to 4KB.  The logging buffers are already aligned to that size, s=
-o
->> only the GSP_ARGUMENTS_CACHED struct needs to be adjusted.  Make that
->> adjustment by adding padding to the end of the struct.
->>
->> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/gsp.rs    |  8 ++++----
->>  drivers/gpu/nova-core/gsp/fw.rs | 14 +++++++++++++-
->>  2 files changed, 17 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
->> index 766fd9905358..bcf6ce18a4a1 100644
->> --- a/drivers/gpu/nova-core/gsp.rs
->> +++ b/drivers/gpu/nova-core/gsp.rs
->> @@ -27,7 +27,7 @@
->>  use crate::{
->>      gsp::cmdq::Cmdq,
->>      gsp::fw::{
->> -        GspArgumentsCached,
->> +        GspArgumentsAligned,
->>          LibosMemoryRegionInitArgument, //
->>      },
->>      num,
->> @@ -114,7 +114,7 @@ pub(crate) struct Gsp {
->>      /// Command queue.
->>      pub(crate) cmdq: Cmdq,
->>      /// RM arguments.
->> -    rmargs: CoherentAllocation<GspArgumentsCached>,
->> +    rmargs: CoherentAllocation<GspArgumentsAligned>,
->>  }
->> =20
->>  impl Gsp {
->> @@ -133,7 +133,7 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>)=
- -> impl PinInit<Self, Error
->>                  logintr: LogBuffer::new(dev)?,
->>                  logrm: LogBuffer::new(dev)?,
->>                  cmdq: Cmdq::new(dev)?,
->> -                rmargs: CoherentAllocation::<GspArgumentsCached>::alloc=
-_coherent(
->> +                rmargs: CoherentAllocation::<GspArgumentsAligned>::allo=
-c_coherent(
->>                      dev,
->>                      1,
->>                      GFP_KERNEL | __GFP_ZERO,
->> @@ -149,7 +149,7 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>)=
- -> impl PinInit<Self, Error
->>                          libos[1] =3D LibosMemoryRegionInitArgument::new=
-("LOGINTR", &logintr.0)
->>                      )?;
->>                      dma_write!(libos[2] =3D LibosMemoryRegionInitArgume=
-nt::new("LOGRM", &logrm.0))?;
->> -                    dma_write!(rmargs[0] =3D fw::GspArgumentsCached::ne=
-w(cmdq))?;
->> +                    dma_write!(rmargs[0].inner =3D fw::GspArgumentsCach=
-ed::new(cmdq))?;
->>                      dma_write!(libos[3] =3D LibosMemoryRegionInitArgume=
-nt::new("RMARGS", rmargs))?;
->>                  },
->>              }))
->> diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp=
-/fw.rs
->> index caeb0d251fe5..89be26b597d1 100644
->> --- a/drivers/gpu/nova-core/gsp/fw.rs
->> +++ b/drivers/gpu/nova-core/gsp/fw.rs
->> @@ -904,9 +904,21 @@ pub(crate) fn new(cmdq: &Cmdq) -> Self {
->>  // SAFETY: Padding is explicit and will not contain uninitialized data.
->>  unsafe impl AsBytes for GspArgumentsCached {}
->> =20
->> +/// On Turing and GA100, the entries in the `LibosMemoryRegionInitArgum=
-ent`
->> +/// must all be a multiple of GSP_PAGE_SIZE in size, so add padding to =
-force it
->> +/// to that size.
->> +#[repr(C)]
->> +pub(crate) struct GspArgumentsAligned {
+On Wed Jan 21, 2026 at 11:39 PM CET, Lyude Paul wrote:
+> `SpinLockIrq` and `SpinLock` use the exact same underlying C structure,
+> with the only real difference being that the former uses the irq_disable(=
+)
+> and irq_enable() variants for locking/unlocking. These variants can
+> introduce some minor overhead in contexts where we already know that
+> local processor interrupts are disabled, and as such we want a way to be
+> able to skip modifying processor interrupt state in said contexts in orde=
+r
+> to avoid some overhead - just like the current C API allows us to do. So,
+> `ContextualBackend` allows us to cast a lock into it's contextless versio=
+n
+> for situations where we already have whatever guarantees would be provide=
+d
+> by `BackendWithContext::ContextualBackend` in place.
 >
-> Hi Timir,
+> In some hacked-together benchmarks we ran, most of the time this did
+> actually seem to lead to a noticeable difference in overhead:
 >
-> This is not "aligned" to GSP_PAGE_SIZE, but rather just "padded" to
-> GSP_PAGE_SIZE, so calling it `GspArgumentsAligned` would be a misnomer.
+>   From an aarch64 VM running on a MacBook M4:
+>     lock() when irq is disabled, 100 times cost Delta { nanos: 500 }
+>     lock_with() when irq is disabled, 100 times cost Delta { nanos: 292 }
+>     lock() when irq is enabled, 100 times cost Delta { nanos: 834 }
 >
-> `GspArgumentsPadded`, perhaps?
+>     lock() when irq is disabled, 100 times cost Delta { nanos: 459 }
+>     lock_with() when irq is disabled, 100 times cost Delta { nanos: 291 }
+>     lock() when irq is enabled, 100 times cost Delta { nanos: 709 }
+>
+>   From an x86_64 VM (qemu/kvm) running on a i7-13700H
+>     lock() when irq is disabled, 100 times cost Delta { nanos: 1002 }
+>     lock_with() when irq is disabled, 100 times cost Delta { nanos: 729 }
+>     lock() when irq is enabled, 100 times cost Delta { nanos: 1516 }
+>
+>     lock() when irq is disabled, 100 times cost Delta { nanos: 754 }
+>     lock_with() when irq is disabled, 100 times cost Delta { nanos: 966 }
+>     lock() when irq is enabled, 100 times cost Delta { nanos: 1227 }
+>
+>     (note that there were some runs on x86_64 where lock() on irq disable=
+d
+>     vs. lock_with() on irq disabled had equivalent benchmarks, but it ver=
+y
+>     much appeared to be a minority of test runs.
+>
+> While it's not clear how this affects real-world workloads yet, let's add
+> this for the time being so we can find out. Implement
+> lock::Lock::lock_with() and lock::BackendWithContext::ContextualBackend.
+> This makes it so that a `SpinLockIrq` will work like a `SpinLock` if
+> interrupts are disabled. So a function:
+>
+>         (&'a SpinLockIrq, &'a InterruptDisabled) -> Guard<'a, .., SpinLoc=
+kBackend>
+>
+> makes sense. Note that due to `Guard` and `InterruptDisabled` having the
+> same lifetime, interrupts cannot be enabled while the Guard exists.
+>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-Sounds good, let me convert when applying.
+My overall opinion of the design is that we should no longer use the generi=
+c
+approach with the `Backend` traits. I think I mentioned this on Zulip
+already at multiple points. I'm okay with having this extension, but it
+would be ideal if we could move to not having a single `Lock` struct,
+but one for each locking primitive.
+
+>
+> ---
+> This was originally two patches, but keeping them split didn't make sense
+> after going from BackendInContext to BackendWithContext.
+>
+> V10:
+> * Fix typos - Dirk/Lyude
+> * Since we're adding support for context locks to GlobalLock as well, let=
+'s
+>   also make sure to cover try_lock while we're at it and add try_lock_wit=
+h
+> * Add a private function as_lock_in_context() for handling casting from a
+>   Lock<T, B> to Lock<T, B::ContextualBackend> so we don't have to duplica=
+te
+>   safety comments
+> V11:
+> * Fix clippy::ref_as_ptr error in Lock::as_lock_in_context()
+> V14:
+> * Add benchmark results, rewrite commit message
+> V17:
+> * Introduce `BackendWithContext`, move context-related bits into there an=
+d
+>   out of `Backend`.
+> * Add missing #[must_use =3D =E2=80=A6] for try_lock_with()
+> * Remove all unsafe code from lock_with() and try_lock_with():
+>   Somehow I never noticed that literally none of the unsafe code in these
+>   two functions is needed with as_lock_in_context()...
+>
+>  rust/kernel/sync/lock.rs          | 71 ++++++++++++++++++++++++++++++-
+>  rust/kernel/sync/lock/spinlock.rs | 48 ++++++++++++++++++++-
+>  2 files changed, 117 insertions(+), 2 deletions(-)
+>
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 46a57d1fc309d..9f6d7b381bd15 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -30,10 +30,15 @@
+>  ///   is owned, that is, between calls to [`lock`] and [`unlock`].
+>  /// - Implementers must also ensure that [`relock`] uses the same lockin=
+g method as the original
+>  ///   lock operation.
+> +/// - Implementers must ensure if [`BackendInContext`] is a [`Backend`],=
+ it's safe to acquire the
+> +///   lock under the [`Context`], the [`State`] of two backends must be =
+the same.
+
+This isn't needed, since we don't have `Backend::Context` any longer.
+
+>  ///
+>  /// [`lock`]: Backend::lock
+>  /// [`unlock`]: Backend::unlock
+>  /// [`relock`]: Backend::relock
+> +/// [`BackendInContext`]: Backend::BackendInContext
+> +/// [`Context`]: Backend::Context
+> +/// [`State`]: Backend::State
+
+Same for these.
+
+>  pub unsafe trait Backend {
+>      /// The state required by the lock.
+>      type State;
+> @@ -97,6 +102,34 @@ unsafe fn relock(ptr: *mut Self::State, guard_state: =
+&mut Self::GuardState) {
+>      unsafe fn assert_is_held(ptr: *mut Self::State);
+>  }
+> =20
+> +/// A lock [`Backend`] with a [`ContextualBackend`] that can make lock a=
+cquisition cheaper.
+> +///
+> +/// Some locks, such as [`SpinLockIrq`](super::SpinLockIrq), can only be=
+ acquired in specific
+> +/// hardware contexts (e.g. local processor interrupts disabled). Enteri=
+ng and exiting these
+> +/// contexts incurs additional overhead. But this overhead may be avoide=
+d if we know ahead of time
+> +/// that we are already within the correct context for a given lock as w=
+e can then skip any costly
+> +/// operations required for entering/exiting said context.
+> +///
+> +/// Any lock implementing this trait requires such a interrupt context, =
+and can provide cheaper
+> +/// lock-acquisition functions through [`Lock::lock_with`] and [`Lock::t=
+ry_lock_with`] as long as a
+> +/// context token of type [`Context`] is available.
+> +///
+> +/// # Safety
+> +///
+> +/// - Implementors must ensure that it is safe to acquire the lock under=
+ [`Context`].
+
+This safety comment needs some improvements. We probably should just put
+the entire cast into this.
+
+> +///
+> +/// [`ContextualBackend`]: BackendWithContext::ContextualBackend
+> +/// [`Context`]: BackendWithContext::Context
+> +pub unsafe trait BackendWithContext: Backend {
+> +    /// The context which must be provided in order to acquire the lock =
+with the
+> +    /// [`ContextualBackend`](BackendWithContext::ContextualBackend).
+> +    type Context<'a>;
+> +
+> +    /// The alternative cheaper backend we can use if a [`Context`](Back=
+endWithContext::Context) is
+> +    /// provided.
+> +    type ContextualBackend: Backend<State =3D Self::State>;
+> +}
+> +
+>  /// A mutual exclusion primitive.
+>  ///
+>  /// Exposes one of the kernel locking primitives. Which one is exposed d=
+epends on the lock
+> @@ -169,7 +202,8 @@ pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a=
+ Self {
+> =20
+>  impl<T: ?Sized, B: Backend> Lock<T, B> {
+>      /// Acquires the lock and gives the caller access to the data protec=
+ted by it.
+> -    pub fn lock(&self) -> Guard<'_, T, B> {
+> +    #[inline]
+> +    pub fn lock<'a>(&'a self) -> Guard<'a, T, B> {
+
+Why this change?
+
+>          // SAFETY: The constructor of the type calls `init`, so the exis=
+tence of the object proves
+>          // that `init` was called.
+>          let state =3D unsafe { B::lock(self.state.get()) };
+> @@ -189,6 +223,41 @@ pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+>      }
+>  }
+> =20
+> +impl<T: ?Sized, B: BackendWithContext> Lock<T, B> {
+> +    /// Casts the lock as a `Lock<T, B::ContextualBackend>`.
+> +    fn as_lock_in_context<'a>(
+> +        &'a self,
+> +        _context: B::Context<'a>,
+> +    ) -> &'a Lock<T, B::ContextualBackend>
+> +    where
+> +        B::ContextualBackend: Backend,
+> +    {
+> +        // SAFETY:
+> +        // - Per the safety guarantee of `Backend`, if `B::ContextualBac=
+kend` and `B` should
+> +        //   have the same state, the layout of the lock is the same so =
+it's safe to convert one to
+> +        //   another.
+
+This also relies on `Lock` being `repr(C)`. `repr(Rust)` types are
+allowed to change layout in cases where their generics are substituted
+for others (even if those other ones have the same layout!).
+
+Cheers,
+Benno
