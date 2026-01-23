@@ -1,125 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8681FF7C8;
-	Fri, 23 Jan 2026 13:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF43A59;
+	Fri, 23 Jan 2026 13:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769174343; cv=none; b=sn5CMd8/sEb36cdNJZk+jbBVoOF/jEumPId95nrLZFv74HKHhjdkYWsqhge8QHajG640ucDONM02/D86BR7ntNMQHWIVikvdhhjqe8t5hX/G4wtEcm5wU27KetEfaab6Z6z9LbKSgvmhB10hV1Lnq1BEql3EIeseWjc+ogIPgvo=
+	t=1769174571; cv=none; b=hGD0S54t8lCK9nKeYmlE3WeJ0ds2qo5iBKGqhakPPod8S199Nh9UDc1yXTGystneOTnOj5+NNcAKa4P+A1wM7OLKynVjmvBeoBO1+lD6WcBMmiG5F8w0nJZHMLGqXpRfEg3pQBzL9FBjjDCUcxRfWF8SnYsc0AmkVRA79xvIBDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769174343; c=relaxed/simple;
-	bh=dsKzrETj83doPlDW0uwpA69ziOQsUO0yoyK9XIBLuVA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=m0PH3qVII3lUKCP8fe/v+peI8dDsqFC7wztd1qcbxNMP9ZOyxk24MpDoexi6NWcMfiomcn6q3mElfDb8fY3maLx7Mmg+cEosE55Fl5JqE1jlvus5Vu26JsK/HVpXeCtitj0lNwvKaxv85p/cHC1aE0ZOH3sGmPJP32eGYOJeGUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pFfD9Mzj; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pFfD9Mzj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 77582C4CEF1;
-	Fri, 23 Jan 2026 13:19:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769174342;
-	bh=dsKzrETj83doPlDW0uwpA69ziOQsUO0yoyK9XIBLuVA=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=pFfD9MzjWOvLuYZuANCQ/BLUdLklIVYIjTOAht2IDnazNvrEQlIgTM/+SZbDgNobQ
-	 9VjpCFP8kBAaLnMyXuzfEND3JxfD7gcuglJVKCVSqa6M0p7NQshsi5Y8sIbEtk8H7e
-	 J5EJ3tpwMCFmGUhy+mz+oibV/4wTrjLYFaydIwUYwrdQvoPaQh+N0aP8XmQLfTYxCx
-	 1kxf8tDojmnrz1AkJtij1NSHihwWv3T/bqT1YQz8IgjxQVEQtLxvL8P9txFHqDGbym
-	 7SPM0JecmHjYlc2ISNo3S6O3ns6nz7pJ7RWmOL7MyZrQiMGjDijjjujqWYcpv9E7DU
-	 evi5j5mTZKJOQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BD4AD74EC8;
-	Fri, 23 Jan 2026 13:19:02 +0000 (UTC)
-From: SeungJong Ha via B4 Relay <devnull+engineer.jjhama.gmail.com@kernel.org>
-Date: Fri, 23 Jan 2026 13:18:44 +0000
-Subject: [PATCH v2] scripts: generate_rust_analyzer: fix resolution of
- #[pin_data] macros
+	s=arc-20240116; t=1769174571; c=relaxed/simple;
+	bh=QKhLnPxWAnrj1nPfcFMG+Pg5gBr7D0S6Yes5Gpvk4AI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rfZtEr7C9nEXGKk61bxXIft6O5tI+FUlqO1sYNnKIrzFYhEbOyJ7iNr9Xm03sR382Y8bqZlLCEqqYLHBsADAgmZIvDmz2hxQ9dPu2JgSFmF3uiv30GU20iCgAEoxh5SZVbvU1OkyqAt3cBPGqchjaavII/CHZ/zuEdxPuQdHVhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4FB901476;
+	Fri, 23 Jan 2026 05:22:42 -0800 (PST)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 380703F632;
+	Fri, 23 Jan 2026 05:22:45 -0800 (PST)
+Date: Fri, 23 Jan 2026 14:22:53 +0100
+From: Beata Michalska <beata.michalska@arm.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org,
+	abdiel.janulgue@gmail.com, daniel.almeida@collabora.com,
+	aliceryhl@google.com, robin.murphy@arm.com, a.hindborg@kernel.org,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, tmgross@umich.edu, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: dma: allow drivers to tune max segment size
+Message-ID: <aXN2LVQJqtZKGzQP@arm.com>
+References: <20260123101832.3136897-1-beata.michalska@arm.com>
+ <DFVWLIUK193C.EAXZYN4JKZVH@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-fix-pin-init-crate-dependecies-v2-1-bb1c2500e54c@gmail.com>
-X-B4-Tracking: v=1; b=H4sIADN1c2kC/42NQQ6CQAxFr0K6tgaGEcWV9zAsainQRAYyQ4iGc
- HerJzB/9X7y398gSVRJcM02iLJq0ikYuEMGPFDoBbU1Bpe7Ki9ciZ2+cNaAGnRBjrQItjJLaIX
- Ng4/aE3vnz+QvYJI5ii1+B/fGeNC0TPH9+1uLb/u3ei3QwhV3UhOVJ3frR9LnkacRmn3fP64d9
- FjMAAAA
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jesung Yang <y.j3ms.n@gmail.com>, SeungJong Ha <engineer.jjhama@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769174341; l=1902;
- i=engineer.jjhama@gmail.com; s=20260103; h=from:subject:message-id;
- bh=c7P9j4yaUBkVPSuFKvUbKfXZDCnr6ZWiWGUJURpt+5A=;
- b=iooMwfpk6BvhAz77cbYZxulg/1QPZPrvPxRDPgdolo3ZaYnWEN4irWRH6N1xKv7nanDuDhphy
- tXEShaG5pkKBI5EIeAfT99Gw3MpmP29W8ArojELHDr9ZRgUBjQO6CmD
-X-Developer-Key: i=engineer.jjhama@gmail.com; a=ed25519;
- pk=G5nmjm+RTiWBpyCvc5xjR1b3li/2zipLSMyz+T4fj5E=
-X-Endpoint-Received: by B4 Relay for engineer.jjhama@gmail.com/20260103
- with auth_id=590
-X-Original-From: SeungJong Ha <engineer.jjhama@gmail.com>
-Reply-To: engineer.jjhama@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DFVWLIUK193C.EAXZYN4JKZVH@kernel.org>
 
-From: SeungJong Ha <engineer.jjhama@gmail.com>
+On Fri, Jan 23, 2026 at 11:40:47AM +0100, Danilo Krummrich wrote:
+> On Fri Jan 23, 2026 at 11:18 AM CET, Beata Michalska wrote:
+> > +    /// Set the maximum size of a single DMA segment the device may request.
+> > +    ///
+> > +    /// This method is usually called once from `probe()` as soon as the device capabilities are
+> > +    /// known.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// This method must not be called if there are any in-flight DMA allocation
+> > +    /// or mapping operations.
+> 
+> Yes, unfortunately it has the same requirements as the DMA mask setters.
+> 
+> For consistency, can you please use the exact same safety requirement text as
+> the other methods?
 
-Currently, rust-analyzer fails to properly resolve structs annotated with
-`#[pin_data]`. This prevents IDE features like "Go to Definition" from
-working correctly for those structs.
-
-Add the missing configuration to `generate_rust_analyzer.py` to ensure
-the `pin-init` crate macros are handled correctly.
-
-Signed-off-by: SeungJong Ha <engineer.jjhama@gmail.com>
----
-I encountered an issue where rust-analyzer fails to analyze
-structs decorated with the #[pin_data] attribute while testing
-Rust kernel modules.
-
-It appears that the dependencies for pin-init and drivers were
-missing from the analyzer's configuration. This patch adds
-those missing dependencies.
-
-I have verified that my rust-analyzer correctly processes
-\#[pin_data] structs after applying this fix.
-
-Best regards, SeungJong
----
-Changes in v2:
-- Fix typos
-- Drop the quote module workaround (will be handled separately)
-- Rebase onto `rust-fixes`
-- Add `pin_init` dependency for Rust drivers
-- Link to v1: https://lore.kernel.org/r/20260123-fix-pin-init-crate-dependecies-v1-1-1c6cfe9aa352@gmail.com
----
- scripts/generate_rust_analyzer.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 3b645da90092..766c2d91cd81 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -214,7 +214,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-             append_crate(
-                 name,
-                 path,
--                ["core", "kernel"],
-+                ["core", "kernel", "pin_init"],
-                 cfg=cfg,
-             )
- 
+Done:
+https://lore.kernel.org/rust-for-linux/20260123131308.3218421-1-beata.michalska@arm.com/T/#u
 
 ---
-base-commit: 6d7fef23043553336259211346b6b135d6c1f4c3
-change-id: 20260123-fix-pin-init-crate-dependecies-b94ac4247a48
-
-Best regards,
--- 
-SeungJong Ha <engineer.jjhama@gmail.com>
-
-
+BR
+Beata
+> 
+> > +    unsafe fn dma_set_max_seg_size(&self, size: u32) {
+> > +        // SAFETY:
+> > +        // - By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
+> > +        // - The safety requirement of this function guarantees that there are no concurrent calls
+> > +        //   to DMA allocation and mapping operations relying on this parameter.
+> > +        unsafe { bindings::dma_set_max_seg_size(self.as_ref().as_raw(), size) }
+> > +    }
+> >  }
+> >  
+> >  /// A DMA mask that holds a bitmask with the lowest `n` bits set.
+> > -- 
+> > 2.25.1
+> 
