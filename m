@@ -1,139 +1,122 @@
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B2E325716
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 12:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769171030; cv=none; b=Rvr56rAhDcsiRGKCzvfCTbD3HyPZpp6rsMmHEhPN7TMTuCh9FEjDf5Ygec3mFGKoK7agZIaDrhAv/uXPZGztL+2COvSXsPqDAwcPsppwJzRuACyg5FZD7vXXD4tqM85cwfU0oX+ScAYxVF1iguenVFriFs02WFvpYIYxUth2HrU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769171030; c=relaxed/simple;
-	bh=nORhTpsSqGe84i8S4O4Syf7Oa/fZet/1ahZXLyjwbaI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=g4mbz/cUw7lpxfCMmA/jmTfXT8TKqafgg0m20nBLq5WrHQT9ZXfF+sQpZVpbh83F8dJW6zwHLgv7zNdOc/kUedx4PL2GwKRkdd0hVAgzx0KsrZG2zS4Prw+kMKj5HWITgIjpNeesjF1lBIInEj/R2vuq/nIjIBhK4ILFah9kW9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FFi3t9W1; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910121EFF80
+	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 12:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769171504; cv=pass; b=bhkQcz9Wat8NnISxP+2k6rW4VPLD77l/BGAFsV6BVA7u3NWNpRvPM3C7MflVRzxHiETh58cXrQTM936KjHInno8LOd1lv6DCojHcCzOAzBQUNLdMvlyXPdkjT4ha249o8yvLWinEARr580oHg2eRCbjPw7phVMLzbA6a7IH7z20=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769171504; c=relaxed/simple;
+	bh=+GzcYi91BQDSWwlAc4ZNh6qiTOwo9jBo7rD3VEnOcRo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TeeqD9orIFbsDyXevy+RFckOoHeq2Rn2IgrU7/Ys823Vf7PCq/JQuHfyHlwwx44DIHMr72ATe065oqTT3QgBbSDzYB2CfW5aI/7cwi3JQBwf/Rvqe5L9uWGYKGOzocnCz3L9lMaYumEBiGNyi3Jjdy3KttbKjE/hp+PcpfbjFHk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nq2R4LlE; arc=pass smtp.client-ip=74.125.82.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FFi3t9W1"
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-81e8a9d521dso1253557b3a.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 04:23:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nq2R4LlE"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2b72b154883so48246eec.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 04:31:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769171503; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BIV85Elgn9eX1n9xv+i017EJK+8ArI5ilXypCABDJCrVKNkpiHN3oZlqc9idmiWmoI
+         HpDDMhvGkhxJWjqjg+bEQbBG5ixOU8vX8mf+DFV/k83Dmnwg8pdZ72QeZybpAr4FYiMA
+         13UZakY/RDl0B/PKeceXAYyxMdQCGEIP5htaZ0j7qIY4CuoQoyS10Vc6D5E5b9QHSoiJ
+         GS3phqlseNm46IebhJq7EntUq8ZDzImXLooZV0QMutYU8d4qkaelqDDHZ0MbCpg22Qry
+         G+ZDNc5dl3jc//w3QvPSm1XrOLAgxu7VGXFqyOtcU7zmcfk6Z6+496anNRxMVqEBDHF4
+         wfaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+GzcYi91BQDSWwlAc4ZNh6qiTOwo9jBo7rD3VEnOcRo=;
+        fh=i5oR0HW7cJanKMGQPRqWgdyQ8LjiNYshfU+LViRsX5I=;
+        b=SwO5tRaSAHW4tFL38Jo03NXtZWdECSBwGvXyiS6oF/JSIlMZO8ZSwaIyf/p9LgJzo9
+         +5nIARaaHwf7qaFJcCTcR3fUC0SD49ruceRpL6QtW7aAuTnt/PWShny8dT7BQG4js/Q3
+         M93I5dJl6q71GQ3GgeM/J8v4Pg6KCyHEmh/h9JR20TcpF8z1qd7b34sxhNB4k0jgqY9L
+         lzvkKAw99xmjShXQoKYNyJUBSxFB8+Tu2VIAnQYpiy/8/Gjk44ph7k5vtG8Wg1pozs2r
+         ChNckZIgjn8BxaEc1TV7VW0qV6MZ5ZErEEqrmTY9M1kKXz3c6ivRgasbUUYtZ7Wnu9Ns
+         Mm5A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769171029; x=1769775829; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769171503; x=1769776303; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=puoDcbNsoBglApMH5U6xdwiKVX5/fe7/Z4P1s6f20iw=;
-        b=FFi3t9W1LbnesQOoSGqayrUeH4H6H19WDiCqxVTEaLwtEDg1mw/FA27Gd5J3Bhmtri
-         RgHhkrfh6dFiphbCHTWlRPifEXhm2d4sxBzPUHx02lrIKLzr+6srwldtnv5/eqR92Ziv
-         kg4Km6nXK/K5qVpiVSl5bz9xm00zkyKa2BboV5lCwU1qeLfwmPkY9s/JocQLjjYlLTn2
-         uKWKrMUIBYkY/DSTy3Skuk0r6DYc4Ml4fXTkNelm7BbvS1KrWa8FpyoeM1weNvDkmFgN
-         7FPV2pJ+ZZpDyahShjDQkFOsI73Ou7tdZPUGMiIwdMon5t0fwUR3Tw4eWprCCKnXzdLv
-         7oyQ==
+        bh=+GzcYi91BQDSWwlAc4ZNh6qiTOwo9jBo7rD3VEnOcRo=;
+        b=Nq2R4LlEZezTvdD4MWuUf0q9DrC8UHwzuXK4vIl2i5idOmHdEaGDBXTSMMoUa5bWz2
+         ccg2tzEYyjiHZ1rGfNfTch5mf8AzFIisIy0zhmsWNUEH5XR7uZr9H7DoCO7Nvo5NUTFZ
+         2jEr5CgqCT2GG6GxOnSKb/OUR4I24r759FDwccjZQrhDDFyAO8ByAezp6Sb1A+0sQEO/
+         LmB3qQXYoqCuCyytu1DtnuxEcyLNgMP9ecihucF7XTU95LS00BtoSXKdiCXK7Gia06b6
+         iPdmOOA5/SwpytUUsrPQzs3Zpq35G0hac0qZKPuY2g93NDf1mmKhrQBcLclE6b/uP8Ps
+         eECg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769171029; x=1769775829;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=puoDcbNsoBglApMH5U6xdwiKVX5/fe7/Z4P1s6f20iw=;
-        b=nmLhi9ZaNCJCNpJMXNMilKbOtHJT6nF3MedIHCBpKHtvY4DSp/0t6D6qj+YayWcS+o
-         u57BB5qZ9g3t7/s2CmhvW9jrPwn0o+SYo77zrrV+7jm6g0Eld4vLpIosi3SmB8UpM30b
-         0trRE8FpGsW30o5PMwOi1VGfF1fEE4ndafCSbOTFlyM0HfRWsZ5ZcRs2d4uX7PJ668pQ
-         R6izYHYDmjs/LmC6ycQz/VyZhulVndknXdfvjpyMeq2qxaEdNyxwk03BN4b1bnDQZdtE
-         D4Km0DOcPAKPtWY/uVd0cR7eJM5/NWGMelGgKNrLH/qtmui70d5CAidgSvBgeN/PZxQS
-         EzHw==
-X-Gm-Message-State: AOJu0YzO+rVJ7FtXaVoBx9CmpQbeyx/fbv7/uANDoywkh7Nt7DhdyHYQ
-	nOWEWFuN8CGsLVKQC0Ke7wY19NILIbBaqg4d4kJ8SW6Id5RPsYDOY9QH
-X-Gm-Gg: AZuq6aLRYsND0SxSt4W6XuL3Od3Thv11yAcr4mc6ngW05G8dVUbwvFPi3v4tIsEw+KA
-	aQpnqjdEUsKTHVVhb3KeipKFTNX3rNo+JRVNGlwGsTXSpkxGVMOAm2LCa+ldATtY1LpvkvjHuTA
-	WNl0sYdO5jf5zCb2WxSiltWAsTGdhgTp9O7x8WNtnCzXxxHbLi1nYrNUjFXmCv1DTeqlLVOVT2M
-	Q3jYaZ4bjnks2CPV12vuIOsFaeCh6zgg7xjxSTpRtsNxYm/IIf+CgikvvQ4/c5MHqlVuXq4pgks
-	irKrkgnD5mKKE4zpp1WF/tq32NfeqI9l4YZal1GUHOkjd+3t0SoCzStSxtqtfY1TUlyqfeVomAz
-	EFxyjyLcukRfFc8q6Yq95ZSnEU6KqJsRjwF4Ga5ltkt36/hln7GbnZpPBj6GAjFPdbWid9qyITZ
-	yncyN+sg==
-X-Received: by 2002:a05:6a21:6b17:b0:33f:4e3d:afed with SMTP id adf61e73a8af0-38e6f74eb4dmr3319479637.33.1769171028485;
-        Fri, 23 Jan 2026 04:23:48 -0800 (PST)
-Received: from localhost ([112.149.32.52])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c635a3f1ebesm2081827a12.19.2026.01.23.04.23.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Jan 2026 04:23:47 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769171503; x=1769776303;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+GzcYi91BQDSWwlAc4ZNh6qiTOwo9jBo7rD3VEnOcRo=;
+        b=oryZX6pPjwyajGk8ci2pKLv9sN3MbnBakZSpXfDTKnUq+s2EEz4ixOG/ZNSTBFE8Pf
+         W4U95iGCeHcUcQFpRYJOgDtUHYfdPHWiJEA4kW6/FvuKHdxODPSAkd4qIS8nZOamdr8e
+         OzgB61k7JG8iiVsR8S1OZCryAKy8YsoRMA2XSQjbYeumvFh5JXTGf665oOMQs4gNTV3t
+         5mdF6fbxyIDkElTzzRSyezrt/vYdcQfbb+0UYWDsvqve5UWAoZWvdzGKZOZvO96/7NWy
+         lJOlFuwdzMp+1wYBkiuyWrs7Ly1kB/ul2HncpJ9C4Uo5mWYLI7VAb6aa20LwYNCMr2gk
+         eVjA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1QXW3IK595T21t5BX8rc9E3SCW6hWrzN8oJvvC6KY1TOkKUPPJATJsdvJEJsv/Wl/0wwVOzlsYE5OqN3X7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yze6uieNzzeD3N9GT4Ak4iKTVNMbHvMuxrWWPzDmBfxgmwG9VH4
+	T53PVjylMxRnl1MhFqfA75MM2XfYYM+9QQlkOv+pHGMIf10M7+79SmfaUf2PQaNqUQ5V5flxOMK
+	XzkE+QsgfEUkfYo220Ok2rv+c0TScrOs=
+X-Gm-Gg: AZuq6aKAJe4UZQ1K1gRtmJQe0MrTBN6krRqot0aQHqA38IayhSsmiecfl3JGpSjQmDJ
+	hnnF1TboofNsKn3g7pUCNIr27Rw3ga52hxd/bj+UwJGha+/ZiDLZEmaDPsCY2AFiJ7wKSBHbdjj
+	uxA8oHxDtFTX5l9ToLDCmBvsUWKfnVWTohOqXfwMm9pzXOlE8TJbFD6uxpx2W9GyeJ+VSHW9Cmi
+	0fd/ckk/JvjB6DpFvkJOWZvAMomv8l4LSp7aJzkzmB943pbcCXNYxdouDqlLEDMgeLkXaFY15u/
+	alnun837syvXa7jeEhRD6x7dHuvkIkH7oeF646MZZQ0kACrRbNr4UZz0S4wXG/q+lyVybwqpY5w
+	kU3QXh1sEkU62oUP9M+Ssv5k=
+X-Received: by 2002:a05:7300:cd87:b0:2b6:f613:74e6 with SMTP id
+ 5a478bee46e88-2b739b6f228mr766445eec.4.1769171502626; Fri, 23 Jan 2026
+ 04:31:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260120-ra-fix-v1-0-829e4e92818c@nvidia.com> <20260120-ra-fix-v1-6-829e4e92818c@nvidia.com>
+ <CAJ-ks9k_c3hq9ov8nqXLakkC6=Ly1+Fr3kbQ8BUbAQrRcHZhqw@mail.gmail.com>
+ <DFTTQTYK1KNF.2N1PS08QIAID2@gmail.com> <DFV0C3T2RXW8.1F3G0Q7R999TC@nvidia.com>
+ <DFV2IL7N8X9O.2DLY12HALP8AA@gmail.com> <DFVQBFD54CJO.2D3VQ091URH2B@nvidia.com>
+ <CANiq72n65eLUmWShvpVBzkbCork_85A8nMZPKdf+rpw-nJ6j_Q@mail.gmail.com> <DFVYSBDDF4L4.24SKCFXJ1M00A@garyguo.net>
+In-Reply-To: <DFVYSBDDF4L4.24SKCFXJ1M00A@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 23 Jan 2026 13:31:30 +0100
+X-Gm-Features: AZwV_Qjv_kM_Ib87W-Q6Ic8acv_zKWF-fRViP125obbU1YTM7QOJocoA-kwnG9o
+Message-ID: <CANiq72=dxV9fLo7--oeAE+5OH7PKSUnwsP60Y31maHpmt6zxVw@mail.gmail.com>
+Subject: Re: [PATCH 6/6] scripts: generate_rust_analyzer: move sysroot crates
+ to sysroot_project
+To: Gary Guo <gary@garyguo.net>
+Cc: Eliot Courtney <ecourtney@nvidia.com>, Jesung Yang <y.j3ms.n@gmail.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 23 Jan 2026 21:23:44 +0900
-Message-Id: <DFVYSCDHP5UA.2RX1AU34POA3M@gmail.com>
-To: "SeungJong Ha" <engineer.jjhama@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: better pin-init
- macro resolvea
-From: "Jesung Yang" <y.j3ms.n@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260123-fix-pin-init-crate-dependecies-v1-1-1c6cfe9aa352@gmail.com>
-In-Reply-To: <20260123-fix-pin-init-crate-dependecies-v1-1-1c6cfe9aa352@gmail.com>
 
-Hi SeungJong,
-
-I think I could give you some background on where things stand :)
-
-On Fri Jan 23, 2026 at 7:02 PM KST, SeungJong Ha wrote:
-[...]
->  scripts/generate_rust_analyzer.py | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
+On Fri, Jan 23, 2026 at 1:23=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
-alyzer.py
-> index 147d0cc94068..0c6c0444917f 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -123,10 +123,18 @@ def generate_crates(srctree, objtree, sysroot_src, =
-external_src, cfgs, core_edit
->      append_crate(
->          "pin_init_internal",
->          srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
-> -        [],
-> +        ["std", "proc_macro"],
+> I would avoid dropping old RA support before we actually bump MSRV.
 
-As Miguel pointed out, this fix has already landed on the `rust-fixes`
-branch as commit "scripts: generate_rust_analyzer: Add pin_init_internal
-deps" [1].
+There is no intentional support for old rust-analyzer at the moment.
 
->          cfg=3D["kernel"],
->          is_proc_macro=3DTrue,
->      )
-> +    # pin_init_internal uses #[path =3D "../../../macros/quote.rs"] to i=
-nclude quote.rs
-> +    crates[-1]["source"] =3D {
-> +        "include_dirs": [
-> +            str(srctree / "rust" / "pin-init" / "internal" / "src"),
-> +            str(srctree / "rust" / "macros"),
-> +        ],
-> +        "exclude_dirs": [],
-> +    }
+i.e. if it works, it is because it still happens to work with the
+current output.
 
-AFAIK, the `#[path =3D "../../../macros/quote.rs"]` part was removed
-recently by this series [2], which is set to land in this cycle.
+That is why I mentioned that -- but if it actually works well today
+with the current output, then sure, let's not break it.
 
-So I would recommend checking if the problem is still present even after
-rebasing on `rust-fixes` with the new pin-init update applied (or simply
-checking the `linux-next` tree as I think it has already picked up the
-relevant changes).
-
-Thanks!
-
-[1] https://github.com/Rust-for-Linux/linux/commit/74e15ac34b098934895fd276=
-55d098971d2b43d9
-[2] https://lore.kernel.org/rust-for-linux/20260116105514.3794384-4-lossin@=
-kernel.org/
-
-Best regards,
-Jesung
+Cheers,
+Miguel
