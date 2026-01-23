@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA89727B4FA;
-	Fri, 23 Jan 2026 17:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2582E27B4FA;
+	Fri, 23 Jan 2026 17:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769191167; cv=none; b=lqRWeWwx8ctOE6Je8o22Lgqa/wcgDl5rs1lEcbg6rQQterXLqsmSK1+hkOefWIAvP2R59kijgNACcWgxGltugaBbfExvd3cK0zCYTFNLQ3G5fBj85QEFj1GLk6+LEr4mRSbYoFF77b/SLgoWRhfJ76vAGC9MdwA8wktw+xF//QI=
+	t=1769191178; cv=none; b=qxCw1t7w/FszEv35vJD+INz73Vj/koAhppwjT6IYK789BB59ZPAppKIZY9tGkdgxbNrEK1alg5sFVWDDebjL/irEKkjdasHPwJfuKratyJ/I5UWqhJn4wGzfFI5egK7FiHuL4fbbhotQygiuWcwR/BIEpN+w4PFqI/sY3a6jBbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769191167; c=relaxed/simple;
-	bh=M+DDYxzSboI/nCfuiIxMEG2aQdWdI4Cb1BK/huw6zSc=;
+	s=arc-20240116; t=1769191178; c=relaxed/simple;
+	bh=awIr1K1KTsidvoGcDEzmoe3Uym3Wj1XHUyBNXJs4cG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eI68/XCvnjY/RHMwdVtikw95JTJuDGc/FFWwB7cwvlxm5mmqC9+NsW1qnlwSGaqEJoVYVGI/uxcH0GIVfIFq832RHXJodLMN7OU7FgFWuj4HJkziu06tNzPI6BXfzTvDXS4VWcx2u4YZO1n2st06znCGoR+ulvu+l/uNiRuleHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ihyEvXZR; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=MKVTiPQ60n9NtOjOrvnGCmc72HXcvPAUS+33GlhFNRFfV3UvE1TrYqknsRvl1jqBt0AIrPIRDf7KyJmHRukwzEfSv0MxPLO9NDsZHFM2VTMzmAY5g36aJ7r/j5KCjIto70dR6iadbFmQ/7iotUJhFmKLj3XEwta06Lm1S3yELyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKqLz4fo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ihyEvXZR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38D9C19421;
-	Fri, 23 Jan 2026 17:59:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKqLz4fo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B4AC19421;
+	Fri, 23 Jan 2026 17:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769191167;
-	bh=M+DDYxzSboI/nCfuiIxMEG2aQdWdI4Cb1BK/huw6zSc=;
+	s=k20201202; t=1769191177;
+	bh=awIr1K1KTsidvoGcDEzmoe3Uym3Wj1XHUyBNXJs4cG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=ihyEvXZR1SGbYkINb7YmlT2YH+Q+JeC34cBcCKNodEaaSuxzIZDPDS7hpMMYUhmXk
-	 6fTUx92hkOZS1m9NbyDavctIhKBQlzCho+PrUv8eiqmhxFMq2RgJ20Yihjij9YKg/Z
-	 6yohP46EuSCdy6B/jyNgbp1B+F+gA6AYxFx7Rgg2LQ8XeLFhGMLhAPgV2K6I9SKViq
-	 P3W1xlB6mVi48m3FRfA7QplaX56GIPUu3S2VQYbCN5YRp2svo3BFaCwvnq92HL8GgJ
-	 nDq/xbFr2GjQDwBDok44DZs1he+Z+6Rl4QsyyzARPJhzKxP/UwkutYsd5pYe9v9oZt
-	 QSYWNhknuZhjA==
+	b=BKqLz4foHtsAzkgUHGlowvwRamIK82kyFk3gzw0W4g9l2+sPMyQD01ItudtFyRzaR
+	 REX3ukTUkyTa7X5BdoeA4FGeWolL6c14ApBQ2mRQ5c8z6Jlbxk3F/ubTvm4E8vqySq
+	 q4D43w+bJT28SA4y5sClPVHs11qqYSNDXh8FCfXzoWsIdnZm23CFSGCakP4KVK44x8
+	 m27XAltZIuAFE0VRYCwXHUNp9eJuNYBTB4WECHqh5BOm2INr3moKeiyEeytuZ1DEF7
+	 sjvC+AvLUabF8rSQC5RGJZjdfxb9JiNOTxFKVIbjUhtWQXfG/i0B247DRQD5CAe5yI
+	 2L/EfjLujdZlQ==
 From: Gary Guo <gary@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
@@ -37,12 +37,27 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
+	Trevor Gross <tmgross@umich.edu>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Lyude Paul <lyude@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>
 Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 6/8] rust: samples: usb: remove redundant `.as_ref()` for `dev_*` print
-Date: Fri, 23 Jan 2026 17:58:43 +0000
-Message-ID: <20260123175854.176735-6-gary@kernel.org>
+	linux-kernel@vger.kernel.org,
+	Timur Tabi <ttabi@nvidia.com>,
+	nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH v2 7/8] gpu: nova-core: remove redundant `.as_ref()` for `dev_*` print
+Date: Fri, 23 Jan 2026 17:58:44 +0000
+Message-ID: <20260123175854.176735-7-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260123175854.176735-1-gary@kernel.org>
 References: <20260123175854.176735-1-gary@kernel.org>
@@ -61,31 +76,112 @@ This is now handled by the macro itself.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- samples/rust/rust_driver_usb.rs | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/nova-core/driver.rs   |  2 +-
+ drivers/gpu/nova-core/gpu.rs      |  4 ++--
+ drivers/gpu/nova-core/gsp/boot.rs | 32 +++++++------------------------
+ 3 files changed, 10 insertions(+), 28 deletions(-)
 
-diff --git a/samples/rust/rust_driver_usb.rs b/samples/rust/rust_driver_usb.rs
-index ab72e99e1274..1da02fba3d09 100644
---- a/samples/rust/rust_driver_usb.rs
-+++ b/samples/rust/rust_driver_usb.rs
-@@ -33,15 +33,13 @@ fn probe(
-         _id: &usb::DeviceId,
-         _info: &Self::IdInfo,
-     ) -> impl PinInit<Self, Error> {
--        let dev: &device::Device<Core> = intf.as_ref();
--        dev_info!(dev, "Rust USB driver sample probed\n");
-+        dev_info!(intf, "Rust USB driver sample probed\n");
+diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+index 5a4cc047bcfc..e39885c0d5ca 100644
+--- a/drivers/gpu/nova-core/driver.rs
++++ b/drivers/gpu/nova-core/driver.rs
+@@ -70,7 +70,7 @@ impl pci::Driver for NovaCore {
  
-         Ok(Self { _intf: intf.into() })
-     }
+     fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
+         pin_init::pin_init_scope(move || {
+-            dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
++            dev_dbg!(pdev, "Probe Nova Core GPU driver.\n");
  
-     fn disconnect(intf: &usb::Interface<Core>, _data: Pin<&Self>) {
--        let dev: &device::Device<Core> = intf.as_ref();
--        dev_info!(dev, "Rust USB driver sample disconnected\n");
-+        dev_info!(intf, "Rust USB driver sample disconnected\n");
-     }
- }
+             pdev.enable_device_mem()?;
+             pdev.set_master();
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index 9b042ef1a308..60c85fffaeaf 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -262,13 +262,13 @@ pub(crate) fn new<'a>(
+     ) -> impl PinInit<Self, Error> + 'a {
+         try_pin_init!(Self {
+             spec: Spec::new(pdev.as_ref(), bar).inspect(|spec| {
+-                dev_info!(pdev.as_ref(),"NVIDIA ({})\n", spec);
++                dev_info!(pdev,"NVIDIA ({})\n", spec);
+             })?,
  
+             // We must wait for GFW_BOOT completion before doing any significant setup on the GPU.
+             _: {
+                 gfw::wait_gfw_boot_completion(bar)
+-                    .inspect_err(|_| dev_err!(pdev.as_ref(), "GFW boot did not complete\n"))?;
++                    .inspect_err(|_| dev_err!(pdev, "GFW boot did not complete\n"))?;
+             },
+ 
+             sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.chipset)?,
+diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
+index 581b412554dc..1582e1a65274 100644
+--- a/drivers/gpu/nova-core/gsp/boot.rs
++++ b/drivers/gpu/nova-core/gsp/boot.rs
+@@ -170,15 +170,10 @@ pub(crate) fn boot(
+             Some(libos_handle as u32),
+             Some((libos_handle >> 32) as u32),
+         )?;
+-        dev_dbg!(
+-            pdev.as_ref(),
+-            "GSP MBOX0: {:#x}, MBOX1: {:#x}\n",
+-            mbox0,
+-            mbox1
+-        );
++        dev_dbg!(pdev, "GSP MBOX0: {:#x}, MBOX1: {:#x}\n", mbox0, mbox1);
+ 
+         dev_dbg!(
+-            pdev.as_ref(),
++            pdev,
+             "Using SEC2 to load and run the booter_load firmware...\n"
+         );
+ 
+@@ -190,19 +185,10 @@ pub(crate) fn boot(
+             Some(wpr_handle as u32),
+             Some((wpr_handle >> 32) as u32),
+         )?;
+-        dev_dbg!(
+-            pdev.as_ref(),
+-            "SEC2 MBOX0: {:#x}, MBOX1{:#x}\n",
+-            mbox0,
+-            mbox1
+-        );
++        dev_dbg!(pdev, "SEC2 MBOX0: {:#x}, MBOX1{:#x}\n", mbox0, mbox1);
+ 
+         if mbox0 != 0 {
+-            dev_err!(
+-                pdev.as_ref(),
+-                "Booter-load failed with error {:#x}\n",
+-                mbox0
+-            );
++            dev_err!(pdev, "Booter-load failed with error {:#x}\n", mbox0);
+             return Err(ENODEV);
+         }
+ 
+@@ -216,11 +202,7 @@ pub(crate) fn boot(
+             Delta::from_secs(5),
+         )?;
+ 
+-        dev_dbg!(
+-            pdev.as_ref(),
+-            "RISC-V active? {}\n",
+-            gsp_falcon.is_riscv_active(bar),
+-        );
++        dev_dbg!(pdev, "RISC-V active? {}\n", gsp_falcon.is_riscv_active(bar),);
+ 
+         // Create and run the GSP sequencer.
+         let seq_params = GspSequencerParams {
+@@ -239,8 +221,8 @@ pub(crate) fn boot(
+         // Obtain and display basic GPU information.
+         let info = commands::get_gsp_info(&mut self.cmdq, bar)?;
+         match info.gpu_name() {
+-            Ok(name) => dev_info!(pdev.as_ref(), "GPU name: {}\n", name),
+-            Err(e) => dev_warn!(pdev.as_ref(), "GPU name unavailable: {:?}\n", e),
++            Ok(name) => dev_info!(pdev, "GPU name: {}\n", name),
++            Err(e) => dev_warn!(pdev, "GPU name unavailable: {:?}\n", e),
+         }
+ 
+         Ok(())
 -- 
 2.51.2
 
