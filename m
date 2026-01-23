@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C005F26A1AF;
-	Fri, 23 Jan 2026 17:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805E02989A2;
+	Fri, 23 Jan 2026 17:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769191160; cv=none; b=dBbhV0IRNol7KdrLDG9Gtxvmtn1lyPTAwh67AF4KBWePXoTdXU2ecn8JZhYgj/kUapsBAMaMV1UfS9/iCqWHn7nJf6VwURKS0/kmaF3EMjJ8NPJixH4aGYGOwrlKD3RE3V/XeUz2DldrsRUrXZdh9m6CdjTlf4LsKqdIiFWHhtU=
+	t=1769191164; cv=none; b=kS/YNvpCHdI14LChcrSfIuxnhBJ5S8Ay9Ck4zI9gCIOlCmZyWOv69Eyxc92YhEa+rx1hCtbcptP4GkSpB6e8MpGQFMYpO9BqkFvhlg3oUJ7fgHPDCOd3vvk8MYInm5S2QfbIIY5gpbwtvqOZ/SbLlmXkOc1vbzfxNOW30mI/STw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769191160; c=relaxed/simple;
-	bh=7ljj0hImvKFzPEaYEolmDg5S97ICXLOJaiPRjgx4OTc=;
+	s=arc-20240116; t=1769191164; c=relaxed/simple;
+	bh=+UwSwiUQmOLx1BjOanN5kU1pJQAqGUY3S32DrvsTb0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovrOZIfq7hrMDK7hvplaAry4m+/EiWmSy79vNj2gCp3JXzA0LEC7kPclr4A5WnqTVcG5sbEEm9VC2vaEYtPvgoCgLvy6ViK796teM56E7phmFFde6lagXFK0EaZhEOsV70FmpwqCrVRu3m6vXFz41mBqEPfUUFcZTJeOj8zJcmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lu/doDc2; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Dd3RKSRWyqOwaKe0e6QH1XN1HKkP0oEKr2X8qE/xKrFsXiQf84xwQb0i/KWJEoSlOyhDXkkI2EP1riFTZUOy0d1Lyx9BPV1c8XBQiR89LegO0QS1gRVTqsubWU3DioiSh47gMJWaVPU8hhQzmrFCCuE6t50hu2MOScnaW4AbgMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YYOfKgF0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lu/doDc2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884EDC4CEF1;
-	Fri, 23 Jan 2026 17:59:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YYOfKgF0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A7FC19421;
+	Fri, 23 Jan 2026 17:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769191160;
-	bh=7ljj0hImvKFzPEaYEolmDg5S97ICXLOJaiPRjgx4OTc=;
+	s=k20201202; t=1769191164;
+	bh=+UwSwiUQmOLx1BjOanN5kU1pJQAqGUY3S32DrvsTb0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=lu/doDc2uYgMCuJUPr+ptveITpY0um7mKoEoH5VJ9Pp+izT/jDZNsya0NCQXiYZaE
-	 ibXWvU2ei15m9j4KCOhRVS9mg3/+NVAo4yhrmMJxymDJ3jjD40WEQfjz5AVO2vTqOm
-	 t/BvtzJuzuSjJQipFkgB0DC1mocHxMveQ0W/nnRx2heS4ztQLvMDOCd4dfw+f1DJl3
-	 lF5Wer6ZngKx6uwd71zUZZ9zvbux9Z/LfGqBzzQLWO5w3SLGtKjbX44WuinA7tqKec
-	 yJEpaYUMazH9M4Fq6QpQjQkhBOLzG6o3mi1spZdoUc7+NFp5el8K9nw7F1VrrUabEd
-	 2en4kqb19QrNQ==
+	b=YYOfKgF0V8wa/Cf5wp4xfPuUaJKOiWIUKlddbHfFlZ7YbbCzSIyWJrjnpdkDLgU4b
+	 B/gNK7dU8BxSEm7uLwUw2EVPiFaTIyEvo0FhUcHKqsATn8lOnD+1FSl858F/79brYN
+	 qsJGWGTI8TTVAXxLM/tuJxoEo4rHXZX6n1riYcLw1495crqainxuCfwy2xj423FULq
+	 7RCCFicI+fl6SZHurubbp5WE02wjWkmBEMkyKgt6l7TucQorePfZncUxjKclQrb33z
+	 D8DO1rruDB2jI8eBtHniBaH5FMnJ06Vn1rh+shLhunUFqIsZdCIe9deXxoRKQZNMsX
+	 P2BG/PZNdFQNQ==
 From: Gary Guo <gary@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
@@ -38,14 +38,13 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>
+	Igor Korotin <igor.korotin.linux@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/8] rust: samples: dma: remove redundant `.as_ref()` for `dev_*` print
-Date: Fri, 23 Jan 2026 17:58:41 +0000
-Message-ID: <20260123175854.176735-4-gary@kernel.org>
+Subject: [PATCH v2 5/8] rust: samples: i2c: remove redundant `.as_ref()` for `dev_*` print
+Date: Fri, 23 Jan 2026 17:58:42 +0000
+Message-ID: <20260123175854.176735-5-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260123175854.176735-1-gary@kernel.org>
 References: <20260123175854.176735-1-gary@kernel.org>
@@ -64,42 +63,70 @@ This is now handled by the macro itself.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- samples/rust/rust_dma.rs | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ samples/rust/rust_driver_i2c.rs | 10 ++++------
+ samples/rust/rust_i2c_client.rs | 10 ++--------
+ 2 files changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
-index f53bce2a73e3..94effeb4eca4 100644
---- a/samples/rust/rust_dma.rs
-+++ b/samples/rust/rust_dma.rs
-@@ -57,7 +57,7 @@ impl pci::Driver for DmaSampleDriver {
- 
-     fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
-         pin_init::pin_init_scope(move || {
--            dev_info!(pdev.as_ref(), "Probe DMA test driver.\n");
-+            dev_info!(pdev, "Probe DMA test driver.\n");
- 
-             let mask = DmaMask::new::<64>();
- 
-@@ -88,9 +88,7 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, E
- #[pinned_drop]
- impl PinnedDrop for DmaSampleDriver {
-     fn drop(self: Pin<&mut Self>) {
--        let dev = self.pdev.as_ref();
+diff --git a/samples/rust/rust_driver_i2c.rs b/samples/rust/rust_driver_i2c.rs
+index 6be79f9e9fb5..3079d57fe473 100644
+--- a/samples/rust/rust_driver_i2c.rs
++++ b/samples/rust/rust_driver_i2c.rs
+@@ -44,23 +44,21 @@ fn probe(
+         idev: &i2c::I2cClient<Core>,
+         info: Option<&Self::IdInfo>,
+     ) -> impl PinInit<Self, Error> {
+-        let dev = idev.as_ref();
 -
--        dev_info!(dev, "Unload DMA test driver.\n");
-+        dev_info!(self.pdev, "Unload DMA test driver.\n");
+-        dev_info!(dev, "Probe Rust I2C driver sample.\n");
++        dev_info!(idev, "Probe Rust I2C driver sample.\n");
  
-         for (i, value) in TEST_VALUES.into_iter().enumerate() {
-             let val0 = kernel::dma_read!(self.ca[i].h);
-@@ -107,7 +105,7 @@ fn drop(self: Pin<&mut Self>) {
+         if let Some(info) = info {
+-            dev_info!(dev, "Probed with info: '{}'.\n", info);
++            dev_info!(idev, "Probed with info: '{}'.\n", info);
          }
  
-         for (i, entry) in self.sgt.iter().enumerate() {
--            dev_info!(dev, "Entry[{}]: DMA address: {:#x}", i, entry.dma_address());
-+            dev_info!(self.pdev, "Entry[{}]: DMA address: {:#x}", i, entry.dma_address());
-         }
+         Ok(Self)
+     }
+ 
+     fn shutdown(idev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
+-        dev_info!(idev.as_ref(), "Shutdown Rust I2C driver sample.\n");
++        dev_info!(idev, "Shutdown Rust I2C driver sample.\n");
+     }
+ 
+     fn unbind(idev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
+-        dev_info!(idev.as_ref(), "Unbind Rust I2C driver sample.\n");
++        dev_info!(idev, "Unbind Rust I2C driver sample.\n");
      }
  }
+ 
+diff --git a/samples/rust/rust_i2c_client.rs b/samples/rust/rust_i2c_client.rs
+index 8d2c12e535b0..72da5499f150 100644
+--- a/samples/rust/rust_i2c_client.rs
++++ b/samples/rust/rust_i2c_client.rs
+@@ -113,10 +113,7 @@ fn probe(
+         pdev: &platform::Device<device::Core>,
+         _info: Option<&Self::IdInfo>,
+     ) -> impl PinInit<Self, Error> {
+-        dev_info!(
+-            pdev.as_ref(),
+-            "Probe Rust I2C Client registration sample.\n"
+-        );
++        dev_info!(pdev, "Probe Rust I2C Client registration sample.\n");
+ 
+         kernel::try_pin_init!( Self {
+             parent_dev: pdev.into(),
+@@ -130,10 +127,7 @@ fn probe(
+     }
+ 
+     fn unbind(pdev: &platform::Device<device::Core>, _this: Pin<&Self>) {
+-        dev_info!(
+-            pdev.as_ref(),
+-            "Unbind Rust I2C Client registration sample.\n"
+-        );
++        dev_info!(pdev, "Unbind Rust I2C Client registration sample.\n");
+     }
+ }
+ 
 -- 
 2.51.2
 
