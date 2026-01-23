@@ -1,188 +1,147 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from sender4-pp-e107.zoho.com (sender4-pp-e107.zoho.com [136.143.188.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77212F532C;
-	Fri, 23 Jan 2026 00:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E19E352920;
+	Fri, 23 Jan 2026 01:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.107
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769128261; cv=pass; b=n7iqrceOGbH0PKpQUO8RLISLbocVzYPhZkA1M0m/ufI6F3Pgp9eGj0VoOR6ITwKO2AysWdjWDK91AoeT3x3DAiXSoTcJI/eFSkqEovrPA5FLufkg/+5lPzzjyS3wlXUvEivDy04AZ77kT6ftE/jJPStEveqEiUlvXQGvGzxbzuA=
+	t=1769132532; cv=pass; b=hSwBLFNJHG3z/x9C6ppYwPAS0qHD84foFkaHWusc4KCit3zUE6sTcNe9XCmEtyGPz2VJ2JqM7rA/ZJ4z6/KiXLRh1V1Hs3sSy7nxr6RrfSkrGmRXlFIDt7JAnNua/mfE+LwcZOj8TTYGhbbxBfywZv2iXFUtklVrDUehqd/tTpM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769128261; c=relaxed/simple;
-	bh=/yeziewaw15H86mUs/MvNCnEniIqbrsf9kqGH0zpSXc=;
+	s=arc-20240116; t=1769132532; c=relaxed/simple;
+	bh=FIZpoiQtgkOAhTfzGocvXW2gWninCmD4iI2z7ihIIIM=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=uRy5ei4hkKdj9NG7KYSons7fNu7uQVkC8V9oKkZaQz2ICPkWJmzwH6ey8UmRoNSsPE/Iq3RPTxshDuotQ+XP79jcFzpiY60OUUbO22FUVU+t+imPN7DPNX42oc9mD8tHqxvNVP5k11GmYpLA0nr3U6cd2XK5KRMmznHYzVwQ3Z8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=JFVN7vr2; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=g2yh6IpQ2dz4G9SeK4jNHzxZDfdOmuAX6uq5DHBviV4/pjzXzh2KdHE8bVID3kgp2qpF9O8KbGKf2BY1EYXFPAjG57u6uqJ2s6aOAl36pB03Wc0Ihb05LpxJSBz0CETag3nCIaviRy9/GI4nSGHRvQ7nw0vKu/KoiDw7v3WSslA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=lO0Q6Byl; arc=pass smtp.client-ip=136.143.188.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="JFVN7vr2"
-ARC-Seal: i=1; a=rsa-sha256; t=1769128221; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="lO0Q6Byl"
+ARC-Seal: i=1; a=rsa-sha256; t=1769132513; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=IZX+1LsCpQQ+Rl7KDSFtZgqKtr0PFsWoY/u+das8x/TXSxh+Ln1Hk9x+LvhBnMOhhD04WoVYYpE5cQ7UuNgeA7XlHCsKB5IjjWyZ1BvfungO69wQ/8scKUuKaVt01w89ed8KawoVYjMdgiGCZoTubcf9rarqe8R+8TI2Y8+77dc=
+	b=etxDCOe8onm+rexMExPRGupsJ1FElwBvfwLdo6KiRt6ij1QkPmgJmX1N0dry7o1UqefE5LzYFUizhPcAvqspyqGOhEorcPH3vjbvfJIyjY22OFpQyZSgviT4kG7CcwTW997RPkfGoml5WdBsW0zTmUS/PvYf/LEvw0EBWw+nHPM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1769128221; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=/yeziewaw15H86mUs/MvNCnEniIqbrsf9kqGH0zpSXc=; 
-	b=Tt3GOU/H/cyscwd7myazOyzRW77JnO56/aqYeAt/Zkpoe1vOTJYpVVs//RrL8nLiVC50uAxu8dPVbEFPFncY3Zi8ScUHJFG/fTrevf7PE1rmXyegT6LtmAMu7xKcFSitHRUUDmxCOgHUfHdefBNj9kz+/maGAMxgCUlPa0Xryes=
+	t=1769132513; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=B2E/pdvjGJdEf8yl6+nKJ4aiGgNEIwYqtgyXIg34CGY=; 
+	b=YgbLdDzQH0CBY5nTC/+TiXOU7nsLznYMJJxYDJ+Qf2s/u+5odZqNFVLr3dHXbYMsq2qeInlCoMY5aMDbHJNdL57MY3M5MvZw4Gwg1nWulfHy0uhVAMTH3ug2R6o4/Mt4FUgJigiOM3h3+eRUfTobmYrBqZrqOX+bt8tZeto66jE=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1769128221;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1769132513;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=/yeziewaw15H86mUs/MvNCnEniIqbrsf9kqGH0zpSXc=;
-	b=JFVN7vr2V3WZMOROff8QAPjioTjWXyMphmAFlpev66SuROF3067M31vA00BA9Qdv
-	9k2102LwLuyRGbUhXPt7+F8xLhnysIan5A9yTTYnFciNuqWiFEWVWPUEbWV9s4yDnMX
-	8Y0Hf0auyWwWFoUrq7zk34PewHnWOptInla8L9JM=
-Received: by mx.zohomail.com with SMTPS id 1769128219741646.6810529308862;
-	Thu, 22 Jan 2026 16:30:19 -0800 (PST)
+	bh=B2E/pdvjGJdEf8yl6+nKJ4aiGgNEIwYqtgyXIg34CGY=;
+	b=lO0Q6Byl2Lr8RRUyL18rO1KskDkfUJUccUAOpH3rywMQPdYtGH1iEMWszO4G1k9J
+	9OCFiOQWRmfPkNGQ6Ssah697CIeuqpWD6sXOTCzxSgF7DFrSC2UES/gzszA/5FhcKEA
+	EC+ttVndloGxs7tZYQgz9AZ/CQkI+GV4oK3sSpkg=
+Received: by mx.zohomail.com with SMTPS id 1769132511680242.43444565853054;
+	Thu, 22 Jan 2026 17:41:51 -0800 (PST)
 Content-Type: text/plain;
-	charset=utf-8
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+Subject: Re: [PATCH v3 1/3] rust/drm: Introduce DeviceContext
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260122-majestic-masterful-jaguarundi-d0abde@houat>
-Date: Thu, 22 Jan 2026 21:29:30 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Drew Fustini <fustini@kernel.org>,
- Guo Ren <guoren@kernel.org>,
- Fu Wei <wefu@redhat.com>,
- =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org,
+In-Reply-To: <20260122225057.3589500-2-lyude@redhat.com>
+Date: Thu, 22 Jan 2026 22:41:19 -0300
+Cc: linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org,
- linux-riscv@lists.infradead.org,
- linux-pwm@vger.kernel.org,
- linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2F3D3A40-6EF9-46FC-A769-E5A3AAF67E65@collabora.com>
-References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
- <20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com>
- <20260108-delectable-fennec-of-sunshine-ffca19@houat>
- <98CD0BF6-3350-40B9-B8A9-F569AE3E3220@collabora.com>
- <20260119-thundering-tested-robin-4be817@houat> <aW4lCfUyumOKRRJm@google.com>
- <518D8B09-B9A1-4DB4-85CD-37A2DD3D5FB1@collabora.com>
- <DFSLCI9U4NCW.2HI2UPUI7G134@kernel.org>
- <20260119-weightless-pelican-of-anger-190db0@houat>
- <DFSN4FDCYHMW.3J3237PEBV2ZP@kernel.org>
- <20260122-majestic-masterful-jaguarundi-d0abde@houat>
-To: Maxime Ripard <mripard@kernel.org>
+ rust-for-linux@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
+ nouveau@lists.freedesktop.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Shankari Anand <shankari.ak0208@gmail.com>,
+ David Airlie <airlied@gmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Asahi Lina <lina+kernel@asahilina.net>
+Content-Transfer-Encoding: 7bit
+Message-Id: <C7E53051-738B-47CF-9A12-28D683FA0D4F@collabora.com>
+References: <20260122225057.3589500-1-lyude@redhat.com>
+ <20260122225057.3589500-2-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
+Hi Lyude,
 
+> On 22 Jan 2026, at 19:46, Lyude Paul <lyude@redhat.com> wrote:
+> 
+> One of the tricky things about DRM bindings in Rust is the fact that
+> initialization of a DRM device is a multi-step process. It's quite normal
+> for a device driver to start making use of its DRM device for tasks like
+> creating GEM objects before userspace registration happens. This is an
+> issue in rust though, since prior to userspace registration the device is
+> only partly initialized. This means there's a plethora of DRM device
+> operations we can't yet expose without opening up the door to UB if the DRM
+> device in question isn't yet registered.
+> 
+> Additionally, this isn't something we can reliably check at runtime. And
+> even if we could, performing an operation which requires the device be
+> registered when the device isn't actually registered is a programmer bug,
+> meaning there's no real way to gracefully handle such a mistake at runtime.
+> And even if that wasn't the case, it would be horrendously annoying and
+> noisy to have to check if a device is registered constantly throughout a
+> driver.
+> 
+> In order to solve this, we first take inspiration from
+> `kernel::device::DeviceContext` and introduce `kernel::drm::DeviceContext`.
+> This provides us with a ZST type that we can generalize over to represent
+> contexts where a device is known to have been registered with userspace at
+> some point in time (`Registered`), along with contexts where we can't make
+> such a guarantee (`Uninit`).
+> 
+> It's important to note we intentionally do not provide a `DeviceContext`
+> which represents an unregistered device. This is because there's no
+> reasonable way to guarantee that a device with long-living references to
+> itself will not be registered eventually with userspace. Instead, we
+> provide a new-type for this: `UnregisteredDevice` which can
+> provide a guarantee that the `Device` has never been registered with
+> userspace. To ensure this, we modify `Registration` so that creating a new
+> `Registration` requires passing ownership of an `UnregisteredDevice`.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> 
+> ---
+> V2:
+> * Make sure that `UnregisteredDevice` is not thread-safe (since DRM device
+>  initialization is also not thread-safe)
+> * Rename from AnyCtx to Uninit, I think this name actually makes a bit more
+>  sense.
+> * Change assume_registered() to assume_ctx()
+>  Since it looks like in some situations, we'll want to update the
+>  DeviceContext of a object to the latest DeviceContext we know the Device
+>  to be in.
+> * Rename Init to Uninit
+>  When we eventually add KMS support, we're going to have 3 different
+>  DeviceContexts - Uninit, Init, Registered. Additionally, aside from not
+>  being registered there are a number of portions of the rest of the Device
+>  which also aren't usable before at least the Init context - so the naming
+>  of Uninit makes this a little clearer.
+> * s/DeviceContext/DeviceContext/
+>  For consistency with the rest of the kernel
+> * Drop as_ref::<Device<T, Uninit>>() for now since I don't actually think
+>  we need this quite yet
+> V3:
+> * Get rid of drm_dev_ctx!, as we don't actually need to implement Send or
+>  Sync ourselves
+> * Remove mention of C function in drm::device::Registration rustdoc
+> * Add more documentation to the DeviceContext trait, go into detail about
+>  the various setup phases and such.
+> * Add missing period to comment in `UnregisteredDevice::new()`.
+> 
+> drivers/gpu/drm/nova/driver.rs |   8 +-
+> drivers/gpu/drm/tyr/driver.rs  |  10 +-
+> rust/kernel/drm/device.rs      | 179 +++++++++++++++++++++++++++------
+> rust/kernel/drm/driver.rs      |  38 +++++--
+> rust/kernel/drm/mod.rs         |   4 +
+> 5 files changed, 193 insertions(+), 46 deletions(-)
+> 
 
-> On 22 Jan 2026, at 10:44, Maxime Ripard <mripard@kernel.org> wrote:
->=20
-> On Mon, Jan 19, 2026 at 03:37:17PM +0100, Danilo Krummrich wrote:
->> On Mon Jan 19, 2026 at 3:18 PM CET, Maxime Ripard wrote:
->>> On Mon, Jan 19, 2026 at 02:13:48PM +0100, Danilo Krummrich wrote:
->>>> On Mon Jan 19, 2026 at 1:54 PM CET, Daniel Almeida wrote:
->>>>>> On 19 Jan 2026, at 09:35, Alice Ryhl <aliceryhl@google.com> =
-wrote:
->>>>>> I think that if you still want an API where you just call =
-enable/disable
->>>>>> directly on it with no protection against unbalanced calls, then =
-that
->>>>>> should be the special API. Probably called RawClk and functions =
-marked
->>>>>> unsafe. Unbalanced calls seem really dangerous and use should not =
-be
->>>>>> encouraged.
->>>>=20
->>>> +1; and unless there is a use-case that requires otherwise, it =
-should not even
->>>> be possible to do this at all -- at least for driver code.
->>>=20
->>> I mean, it's great, it's safe, etc. but it's also suboptimal from a =
-PM
->>> perspective on many platforms. It's totally fine to provide nice, =
-safe,
->>> ergonomic wrappers for the drivers that don't care (or can't, =
-really),
->>> but treating a legitimate optimisation as something we should =
-consider
->>> impossible to do is just weird to me.
->>=20
->> I said that an unsafe API with potentially unbalanced calls is =
-something we
->> should clearly avoid for drivers. This is *not* equivalent to =
-"treating a
->> legitimate optimisation as something we should consider impossible".
->>=20
->> If we discover use-cases where the current API doesn't work well, we =
-can
->> invenstigate further.
->=20
-> I'm not sure I'm following what you're saying, sorry. I've pointed out
-> such a use-case already.
->=20
->>>>> I think we should discourage RawClk if at all possible. But if the =
-consensus
->>>>> is that we *really* need this easily-abused thing, I can provide a =
-follow-up.
->>>>=20
->>>> I think we should only do this if there are use-case with no =
-alternative, so far
->>>> there haven't been any AFAIK.
->>>=20
->>> I don't really care about which alternative we come up with, but =
-look at
->>> devm_regmap_init_mmio_clk for example. It is a valid use-case that
->>> already exists today, and has had for more than a decade at this =
-point.
->>=20
->> I don't see the issue with devm_regmap_init_mmio_clk()? It takes a =
-reference
->> count of the clock and prepares it when called and unprepares the clk =
-in drops
->> its reference in regmap_mmio_free_context() called from the devres =
-callback.
->>=20
->> That something we can easily do with the current API, no?
->=20
-> The current one, yes. Doing that in the API suggested here would =
-involve
-> some boilerplate in all those drivers they don't have right now.
->=20
-> Maxime
-
-Maxime, I know you=E2=80=99ve already pointed out a use-case, but I =
-think the
-confusion stems from why you seem to think that the current solution =
-cannot
-cater to the API you mentioned in a clean way. You seem to imply that =
-there
-will be a lot of boilerplate involved, but we (or I) cannot see this. =
-Perhaps
-it would help if you highlighted how exactly the type state solution =
-would be
-verbose using some pseudocode. I guess that would make your point =
-clearer for
-us.
-
-=E2=80=94 Daniel
-
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
