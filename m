@@ -1,86 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10300296BAF;
-	Fri, 23 Jan 2026 10:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D3E29E0E6
+	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 11:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769164852; cv=none; b=Rpb3WdmJU2NAX8elZds1f1SNt+IuFBzeJJUPp0yS6wI2KfrLBkY1/E65Z9qLUQSvBah3DfTP4O/OGIePVjJqoNQM3pMfaofclj4Sa0IxEFwpQ0rEIGz6KJPFu3qHjoAUJqGTWPjC/dyd8H7g+oVjNxOCzqjhL6t5hGSlGu/h+CA=
+	t=1769168518; cv=none; b=vF+SDqsSCw2RWlFOIk0JyTaM8Ro51M06+qxvScns2X4YSselUcyo5MduDGNnXeYlymxd5RicMHHa5lZc2m9CA+4DjcNQzftMI180MQsuKSnkyIfPGn9Ub1OzBtvrJ73SzsEyfYSmQ5ax9E1H6z8/01wEOMoTxcymXvsbQAKZLnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769164852; c=relaxed/simple;
-	bh=c5/JcexVLk2FUA368ZQKgpZMQgdkS40S+eWlA1lDMqI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=FxlIOUlI66AQ4VbDA3bLOrqMJW6Apr6vf4e4ctDfv9Y+rj86DtV6dBAzuWaTLn9o4xhr4EElafFwiy7A0yMI2jH3Z/SNiUIzbSHFCnifywWgYE4Ei33zsdOeFvNfyv4q/plBAsdUKUF/wFaOCdOJqNHbzCb9jO9G1T6dw4sYGRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tg7g4Oe0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769168518; c=relaxed/simple;
+	bh=ktlQ8RmvlJ+pU9m2ooBrGlb3XT/RfR84iLXgy7qFdXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aoNXkVA6xEAevVk42ERLQ9SlZQfIF7taHVL9J+5Bvxt+6u0puDbOvGM4XaC1mDYwETg3E6/1/0fHyydGgujxUXzFYpjvNmjRb7bKqNu3ZRp9UQ7Zidioz5/auAeDPccWNf7DI/w/itz7k/xIs+88j4PsrxPBNAn7F2XvwrenwfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KgMwD0+K; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tg7g4Oe0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA45C19423;
-	Fri, 23 Jan 2026 10:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769164851;
-	bh=c5/JcexVLk2FUA368ZQKgpZMQgdkS40S+eWlA1lDMqI=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=Tg7g4Oe0alTNwi6p7SO+dFlXVQrNYz/FVBRA8/Rg+ShwjKG+FWjwrcq/64OOmd+9k
-	 BgsAj6uk5R+NfRsTuzCJwEBmbf8u09s4Ab5CDwGrFJuWbu5QBexJilzvQN3hbPLTPK
-	 Nwts4bj4meWQdcD3YSJJ/68He5CkuR7EHOneZocRzWyxKluGR5xZuRQb9WTIxZKRWf
-	 36HgQTGnVtBq7cl3hHhrsxcBHd/tRvWDTLgZsh1xpa8s2tZX7Frrr0gNwrKmrCobBG
-	 +wZN6ox+DTuiaSeeYiCfE+pxgxNJeYWtABUiyplaJ1QqM7J+PejvgIp0wZ2/JQT1k3
-	 AlJCtBZPZIuEw==
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KgMwD0+K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769168517; x=1800704517;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ktlQ8RmvlJ+pU9m2ooBrGlb3XT/RfR84iLXgy7qFdXs=;
+  b=KgMwD0+KNm5YOQrgOMv9Ji1rIrtI4dOtMbM5nO0n+tQxjiT3nm63IObc
+   tQB6InOUNfrf76lOz9EO1txvkbkgB+kpVKBmmIsNQG+4vDf6S0pZ+6YFf
+   Gzx5aRe3ZmfiUZgottBD1IXpKqq0ouoY8H1DkoeFh33mAc1ojupMu5BrL
+   88obuuH16MmW9eK7NyH5KO0JgadQBGoTMMImViRpl5jqtqxhzue1V0vD0
+   EMyZ8erZvlHhIXjDD3UAEWAIhzufOPLG7v3yvnXA/ZHlIyJKOfn71c8HZ
+   S/8L5FKE+C4H4GTgYNiC3cLd2E2tfkj5u2GjxOrY7M2AcPty+nrpAM2Jr
+   Q==;
+X-CSE-ConnectionGUID: CAEom5sKS7qoFHwAVC64TQ==
+X-CSE-MsgGUID: gjxEUEnJR3mV8BW5B8OPVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70481949"
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
+   d="scan'208";a="70481949"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 03:41:57 -0800
+X-CSE-ConnectionGUID: YIPNh8WcSOuGSPsfMfyLTg==
+X-CSE-MsgGUID: s9l23Rw9SeuhgXCraeLZ8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
+   d="scan'208";a="211130241"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 23 Jan 2026 03:41:52 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vjFXy-00000000Tu0-0mZ6;
+	Fri, 23 Jan 2026 11:41:50 +0000
+Date: Fri, 23 Jan 2026 19:41:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ke Sun <sunke@kylinos.cn>, Miguel Ojeda <ojeda@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	Ke Sun <sunke@kylinos.cn>
+Subject: Re: [PATCH v9 2/4] rust: fmt: add HashedPtr for safe pointer
+ formatting
+Message-ID: <202601231901.n0LCYrxo-lkp@intel.com>
+References: <20260119033006.1453006-3-sunke@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 23 Jan 2026 11:40:47 +0100
-Message-Id: <DFVWLIUK193C.EAXZYN4JKZVH@kernel.org>
-To: "Beata Michalska" <beata.michalska@arm.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: dma: allow drivers to tune max segment size
-Cc: <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
- <aliceryhl@google.com>, <robin.murphy@arm.com>, <a.hindborg@kernel.org>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>
-References: <20260123101832.3136897-1-beata.michalska@arm.com>
-In-Reply-To: <20260123101832.3136897-1-beata.michalska@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260119033006.1453006-3-sunke@kylinos.cn>
 
-On Fri Jan 23, 2026 at 11:18 AM CET, Beata Michalska wrote:
-> +    /// Set the maximum size of a single DMA segment the device may requ=
-est.
-> +    ///
-> +    /// This method is usually called once from `probe()` as soon as the=
- device capabilities are
-> +    /// known.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// This method must not be called if there are any in-flight DMA al=
-location
-> +    /// or mapping operations.
+Hi Ke,
 
-Yes, unfortunately it has the same requirements as the DMA mask setters.
+kernel test robot noticed the following build errors:
 
-For consistency, can you please use the exact same safety requirement text =
-as
-the other methods?
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on linus/master v6.19-rc6]
+[cannot apply to next-20260122]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> +    unsafe fn dma_set_max_seg_size(&self, size: u32) {
-> +        // SAFETY:
-> +        // - By the type invariant of `device::Device`, `self.as_ref().a=
-s_raw()` is valid.
-> +        // - The safety requirement of this function guarantees that the=
-re are no concurrent calls
-> +        //   to DMA allocation and mapping operations relying on this pa=
-rameter.
-> +        unsafe { bindings::dma_set_max_seg_size(self.as_ref().as_raw(), =
-size) }
-> +    }
->  }
-> =20
->  /// A DMA mask that holds a bitmask with the lowest `n` bits set.
-> --=20
-> 2.25.1
+url:    https://github.com/intel-lab-lkp/linux/commits/Ke-Sun/rust-fmt-add-Pointer-trait-for-foreign-type-formatting/20260119-123751
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20260119033006.1453006-3-sunke%40kylinos.cn
+patch subject: [PATCH v9 2/4] rust: fmt: add HashedPtr for safe pointer formatting
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260123/202601231901.n0LCYrxo-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260123/202601231901.n0LCYrxo-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601231901.n0LCYrxo-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0308]: mismatched types
+   --> rust/kernel/fmt.rs:180:71
+   |
+   180   |             unsafe { bindings::scnprintf(buf.as_mut_ptr(), buf.len(), c"0x%p".as_ptr(), ptr) };
+   |                      -------------------                              ^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
+   |                      |
+   |                      arguments to this function are incorrect
+   |
+   = note: expected raw pointer `*const u8`
+   found raw pointer `*const i8`
+   note: function defined here
+   --> rust/bindings/bindings_generated.rs:27439:12
+   |
+   27439 |     pub fn scnprintf(
+   |            ^^^^^^^^^
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
