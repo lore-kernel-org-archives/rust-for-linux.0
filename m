@@ -1,171 +1,108 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1573016E5
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 07:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EACF31A06F
+	for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 09:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769154723; cv=none; b=giXApg2VJ0DBikmudXL4F0CdY0FA2MTQZ/wdoY74w/QdF6yp6LKZRUK68FVLVhKMWuanbeidq54sHb40dmHSbq+qL61Tv0oHersO+TEuxNcJ0RZkboeEvq3xDLyRiW1IiQalJU5BEKwAxQnR50H3ED4zCb2QInDAPUyLecdREvg=
+	t=1769159628; cv=none; b=KyTXoCMwgpVjamjx9tOU1Rsd6oqtuASmatQ2cs3h8mbRabevOxMlrN8UFEaOgcHGtTy+qfkzeIBnVEPceLd04AKaLP38A9yCCbDmq3MJzwuu085znAaMxO3mCV8rR0uK+8aVi5n8yhms7MAy184qBVdsFED6Qqjgj14zwSMmFBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769154723; c=relaxed/simple;
-	bh=0+XcF/DKpKJlNk6gvVQ80r03ERq08zSyXtZRvvv3D2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ULRpzNeK9TGA358YTEJ2OEJuDt6XBd2bUVhMFCWnJc1aGyRtX8ueRfaq62+GxLKA55sA8khG9pzOBGmf1NYKusO4F+e8gRZ0CkC9nswzcAJjoQ/Iv8OJsBDho5hlg50wKniYjsO5+I1Rk7+swPrEi8bl7z1U1jkf73pPMRd+8rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IJUuSxIc; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769159628; c=relaxed/simple;
+	bh=ciIrAmJYe/LBIP/e1tyFLCknBE3Ef5Fr7mcY8gWZqaA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pYBgRVJ00Ugye04lZKUHW2hgEudXRQlktkGUHu3a4F537iApC71l0Hcn1UO2Wv5uiDCcCNUT/0Rky8/F91u4jGD71aS3sp9JmLqhiNDkUm9M0O9xqC8ys/CdkaWRsOrGmCaburkAn3qwfrrQjqjPL5YaKXuz4Cswwo37fp66mNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WkSIJajr; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IJUuSxIc"
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-566390e7db3so1865123e0c.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 22 Jan 2026 23:52:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WkSIJajr"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47edee0b11cso11200295e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 01:13:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769154721; x=1769759521; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cpNcbqq3QKYz3lgJbaD3XSigUERyy/+zoCPLiX3NuWs=;
-        b=IJUuSxIcZqW2zFQA/iyDmnLeHr5SvYRtvRyPNCDbWO2F/QtlXShAJHTXikgc8hPEd/
-         GWau4bjRLFhfnSSc6v7i1KAe5xCE0PLRdPT6+sWjWPC6sSR+v3olqQ6KxqZAr18YXN9X
-         HbzFwOzUJkQXe8n0T4TykgltN0ux46T616j3xNrerFYFr5b4NqIV9WJWOpgU51zTzGiX
-         yZhAl0hQc9Ry9b13EB5ovd5EYOzIsrO6CiCy98606iAl68vSkO585yTK9yhLx3z+NXGR
-         weV2JNrZbnTrAnPkaVdKHndW8rMEHdTMOXjbkO9u6QUUGNj38cQmUXbPEsEn+az70DjP
-         V9Hw==
+        d=google.com; s=20230601; t=1769159625; x=1769764425; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dA7sHJ8V5XB9t/C7Z7mv34QdmVApd5UJk+OAhQYXxaY=;
+        b=WkSIJajrHOKd8/xjsyofoNFm3EQ9ZXUM1Gjtb+KyGil+P/8yVvVRfC35OVW8l1h8n4
+         xBgJnP2OfC/852SYrAXftiE95uAHfoeE5jfPKY/Ne43UMWd3c5Gxe6/c9jt/Gl8Hjrrp
+         nszV/oGG57IfeQT8nZ2uAIA+XUIcBODFhKqToiRe4kINVYlGVjibMxcBJxflQynn4bH5
+         TtHi+0sg+mycv59ryiL0l3EzDtyMw9D28ef3ghy2BnXtO/YQL5wO15KvFho3UILa7H93
+         TdxCjg152O0Jvn9gnlus6dPbp1tuk8Q+RSlHLulFnZEW+6CadahlEegeF9eJHf9S+0Tj
+         viHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769154721; x=1769759521;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cpNcbqq3QKYz3lgJbaD3XSigUERyy/+zoCPLiX3NuWs=;
-        b=UoOr8IG01Lh5dj5da373MQtDaqfXsUKuef/Ijn1OtGtzchA8E9ZCSbJJxOyIQGq/60
-         yPky7VbDJXLve5+Bvgtqh8Jc5wh4ToNDrAkCOU3tn21J9SZ7dAuwhnUhnmyCKIpF3HlI
-         +4kPSaRnz9gFyK+tspVXO5nAX+vjNGumcIk/0N86UJPN9sFvzAyV2zb4ifym21n9G1vx
-         E7BjsJDvHOqRsv3UDzj4Xv7eAXNk+NyZcUGhBZXIRqWnE2dZGzXGVYF3+vTEZFUcpxd0
-         nsgwHMkypg1MHEw02elds9+niJIRILLolxTo9gRTL43Tj/ziSCBnhnbss2eJ7SOyzY9C
-         K+Ug==
-X-Gm-Message-State: AOJu0Ywj8xchzdAT8w9PA1KYdDZAq62xq5TukZoxA9iDqeKQlWvZWxYG
-	jfoNzoUQ+gkdVbTylsNKeHqMRRbyc/PvvKaUOAzWQntzv56MUNCVYvzF
-X-Gm-Gg: AZuq6aLLJX5677KrqkFh9RYYSUXTlLJQl0hmG1GjwlejQZ/hUDQNUrsTlRCQ9qHmf3O
-	bBh0ZdivqV9Qrt0RmZrdRv294+pLFjs+oxsaAk98VjQdJF2BobG9pMruVxVExVMFwCmCkAoVtwT
-	gUBwRigEA2fP5t/fwqVJ2GOBHPp6GFvHWYH5rMgbi189qtEBQou/U+TMiQysUVK2qmzh+CRgzLk
-	QJ3TeNc5BjzQyuyYWZ//WpIAXTq/DtPOB8IJckTdXlVGbGJJZ9/MzeG5D1vCzYdmp5Hn4Fu0kQ8
-	wGvQUIO9fK0PXGdq50hio0/x0yHC1RHlt5hInXsOLNn7gkvKHGhzadW85vnioN1yEndlAs7eQ4H
-	cWQc41Oe7Jrczu1AR/Z2uvowL7HX+CV+L73dz9xcIrayA10/WdZ7W4tWi/K0DBsFjG5MoBOZ9bX
-	CZDdnAlwZnZ72VEgqJULU9+Ib+caewRWHh9hUzAMCNu0tukp3zScik6Y7apYCrjwJhqIgHa/5Y/
-	FNnX447ddmWl5Y=
-X-Received: by 2002:ac8:5a8a:0:b0:4f1:ab28:d9f6 with SMTP id d75a77b69052e-502f7725200mr27683781cf.26.1769147688575;
-        Thu, 22 Jan 2026 21:54:48 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-502f7f8702fsm9798031cf.28.2026.01.22.21.54.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 21:54:48 -0800 (PST)
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6D9CDF40068;
-	Fri, 23 Jan 2026 00:54:47 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Fri, 23 Jan 2026 00:54:47 -0500
-X-ME-Sender: <xms:Jw1zacNSv72845-XjhCUDb8XV4_xqsR2qDrAqR8lviRFlk3rhJLTxg>
-    <xme:Jw1zabUH2n7wnD9HJMJi-sVbpZ1wUOXlR5UmflwV8DbcwOIRF1lWt1qofGE764FW7
-    UZE-C8uffzMeohQTrqQANlVVQenNf4_3g3zMAhOz0x8jI0vpGUU7kA>
-X-ME-Received: <xmr:Jw1zaVc-YiHrgUiSUFQ3yxt_KkWPQqyd8WIdtUhEnpj_mgcmmtwtlur1uIkPkIn_p1xjIzdujJw-ioxixHI_rc2i0PjV8pew>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeekvdehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedvvdeh
-    tdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
-    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
-    pedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhushhtqdhfohhrqdhlih
-    hnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgv
-    rhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgtuhesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjh
-    horhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhi
-    nheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:Jw1zacjmaFYKlPW7RL2Oa2zEZHphkSwkL15DTycEfst7U3kjSGpM-g>
-    <xmx:Jw1zaWhcM4TsUj_WSAW3mRGJ_o-Z08crbA3Yv5b30xgZZ7x2qsVcDg>
-    <xmx:Jw1zaYon0xKAeeaPvuGl3EYpsb5W-d-GTc3_1-I5FTxBXrDpYBMm5A>
-    <xmx:Jw1zacx7l3wGN-ztfuAGbiSZji7LtbLDayvno7oRVhdR98BctZdDaw>
-    <xmx:Jw1zaXxVwOXUOrAh_HWeI5BLNv59v6fKGC_yclLw11OMOf3Vb5J1BFEL>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 23 Jan 2026 00:54:46 -0500 (EST)
-Date: Thu, 22 Jan 2026 21:54:45 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rcu@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: Re: [PATCH v2 0/2] rust: sync: Atomic pointer
-Message-ID: <aXMNJZv8H2OQl37t@tardis.local>
-References: <20260120140503.62804-1-boqun.feng@gmail.com>
+        d=1e100.net; s=20230601; t=1769159625; x=1769764425;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dA7sHJ8V5XB9t/C7Z7mv34QdmVApd5UJk+OAhQYXxaY=;
+        b=C8zyoJU20jWpj10bawi4kxELcMYMnqRn+E3OugQAi+hcJnwtnREyozOiu7woK64udA
+         +JWZheP+Xz0CS0Zfs+h2r4EwjTwQbKmHZZSWKqmBcgUAuLAhixG8L9rW/gln//HjPD9I
+         FFinaFtdrhKsS0nZIUKTMZXJqI+ck+hGnuLdrXQaAGJ3HZLsY1lFVE3PJx+kF/oRC4go
+         j7Fe4q3qrwBfFND9GuqRiVii18hZ5vgCaGfumbXp5dLEwXbleztBEg6lb46XErri8Ysx
+         9wYQFFYSI9uhPnocGQTvCJdJjrzURaGuyzCOy5BmiMtsB1j6JiYwtamBxvDISIHwptNU
+         JwIg==
+X-Gm-Message-State: AOJu0Yw8OzaVJPyvOXr1w1oRmAe9YWd7rQqs5FQyptU+4DDjWr0j64Ip
+	1Xw+/y7SwZFHdtxNv/RNLroNQ452/mvh+kTjBTk3ws2vQ9705kJLJi8KE57/bySxngS1M8ndcvm
+	WkJdMFajK5Itg2gJZMQ==
+X-Received: from wmjf20.prod.google.com ([2002:a7b:cd14:0:b0:47d:47dc:d5d4])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:190b:b0:47e:e949:37e8 with SMTP id 5b1f17b1804b1-4804c9c8d1fmr35402515e9.30.1769159624587;
+ Fri, 23 Jan 2026 01:13:44 -0800 (PST)
+Date: Fri, 23 Jan 2026 09:13:43 +0000
+In-Reply-To: <20260121202212.4438-3-zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120140503.62804-1-boqun.feng@gmail.com>
+Mime-Version: 1.0
+References: <20260121202212.4438-1-zhiw@nvidia.com> <20260121202212.4438-3-zhiw@nvidia.com>
+Message-ID: <aXM7xwP-A4qUvnBI@google.com>
+Subject: Re: [PATCH v12 2/5] rust: io: separate generic I/O helpers from MMIO implementation
+From: Alice Ryhl <aliceryhl@google.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dakr@kernel.org, bhelgaas@google.com, 
+	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	markus.probst@posteo.de, helgaas@kernel.org, cjia@nvidia.com, 
+	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
+	kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com, 
+	joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org, 
+	daniel.almeida@collabora.com
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jan 20, 2026 at 10:05:01PM +0800, Boqun Feng wrote:
-> I've already queued the first 3 patches in v1, but comments on them are
-> welcome as well. The RCU pointer patch is not included in this v2 since
-> there is not much update and I'm still hoping to get some reviews on
-> that for another respin.
+On Wed, Jan 21, 2026 at 10:22:08PM +0200, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct. This coupling prevented
+> reusing the I/O helpers for other backends, such as PCI configuration
+> space.
 > 
-> Changes since v1:
+> Establish a clean separation between the I/O interface and concrete
+> backends by separating generic I/O helpers from MMIO implementation.
 > 
-> * Add a clarification patch of CONFIG_ARCH_SUPPORTS_ATOMIC_RMW as
->   suggested by Dirk and Benno.
+> Introduce a new trait hierarchy to handle different access capabilities:
 > 
-> * Add support for Atomic<*const T>.
+> - IoCapable<T>: A marker trait indicating that a backend supports I/O
+>   operations of a certain type (u8, u16, u32, or u64).
 > 
-> v1: https://lore.kernel.org/rust-for-linux/20260117122243.24404-1-boqun.feng@gmail.com/
+> - Io trait: Defines fallible (try_read8, try_write8, etc.) and infallibile
+>   (read8, write8, etc.) I/O methods with runtime bounds checking and
+>   compile-time bounds checking.
 > 
+> - IoKnownSize trait: The marker trait for types support infallible I/O
+>   methods.
+> 
+> Move the MMIO-specific logic into a dedicated Mmio<SIZE> type that
+> implements the Io traits. Rename IoRaw to MmioRaw and update consumers to
+> use the new types.
+> 
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: Bjorn Helgaas <helgaas@kernel.org>
+> Cc: Gary Guo <gary@garyguo.net>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 
-Queued for v7.1, thanks you all!
-
-Regards,
-Boqun
-
-> Regards,
-> Boqun
-> 
-> 
-> Boqun Feng (2):
->   rust: sync: atomic: Clarify the need of
->     CONFIG_ARCH_SUPPORTS_ATOMIC_RMW
->   rust: sync: atomic: Add Atomic<*{mut,const} T> support
-> 
->  rust/helpers/atomic_ext.c            |  3 ++
->  rust/kernel/sync/atomic.rs           | 12 +++++++-
->  rust/kernel/sync/atomic/internal.rs  | 37 ++++++++++++++--------
->  rust/kernel/sync/atomic/predefine.rs | 46 ++++++++++++++++++++++++++++
->  4 files changed, 85 insertions(+), 13 deletions(-)
-> 
-> -- 
-> 2.51.0
-> 
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
