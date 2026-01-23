@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2582E27B4FA;
-	Fri, 23 Jan 2026 17:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB0026FDAC;
+	Fri, 23 Jan 2026 17:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769191178; cv=none; b=qxCw1t7w/FszEv35vJD+INz73Vj/koAhppwjT6IYK789BB59ZPAppKIZY9tGkdgxbNrEK1alg5sFVWDDebjL/irEKkjdasHPwJfuKratyJ/I5UWqhJn4wGzfFI5egK7FiHuL4fbbhotQygiuWcwR/BIEpN+w4PFqI/sY3a6jBbA=
+	t=1769191182; cv=none; b=sGn5xF1BmkOAwD0s4G77xEvszvDGNnU8pVXOt6DmLvJ281kQfYk/ePvLJzikzXEYhJgYPJi+gJLdeUI8YF62sP+XEh7h2Q6m5JNVx84p0Mk3GGm62npqZFwB24MAUuIaYEHK4ng3JZzcuL+aGp4xbU8KVb0ClS67awmqTHm7PDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769191178; c=relaxed/simple;
-	bh=awIr1K1KTsidvoGcDEzmoe3Uym3Wj1XHUyBNXJs4cG4=;
+	s=arc-20240116; t=1769191182; c=relaxed/simple;
+	bh=abMEdDj1ecT7PEBgeo3Efaftk/vtPUHppJTpuJNaA5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKVTiPQ60n9NtOjOrvnGCmc72HXcvPAUS+33GlhFNRFfV3UvE1TrYqknsRvl1jqBt0AIrPIRDf7KyJmHRukwzEfSv0MxPLO9NDsZHFM2VTMzmAY5g36aJ7r/j5KCjIto70dR6iadbFmQ/7iotUJhFmKLj3XEwta06Lm1S3yELyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKqLz4fo; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=SbDdMyat19MWwUzpO1nnE0XSrAt1+ecqKvkyv30NMFsC5tDe3d9ThgM/tJe5W8ionr0gIFB/XSyiOcZpkaSOT4PEFxriZVSl48Qiq7uNHrE2LxuubgMa2KJ4j43m5PyT40WtqhoN5bWP/pKehxVxK9CAlbuQ092fkymgUu5f73c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWQBJ0hG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKqLz4fo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B4AC19421;
-	Fri, 23 Jan 2026 17:59:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWQBJ0hG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A981CC19423;
+	Fri, 23 Jan 2026 17:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769191177;
-	bh=awIr1K1KTsidvoGcDEzmoe3Uym3Wj1XHUyBNXJs4cG4=;
+	s=k20201202; t=1769191181;
+	bh=abMEdDj1ecT7PEBgeo3Efaftk/vtPUHppJTpuJNaA5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=BKqLz4foHtsAzkgUHGlowvwRamIK82kyFk3gzw0W4g9l2+sPMyQD01ItudtFyRzaR
-	 REX3ukTUkyTa7X5BdoeA4FGeWolL6c14ApBQ2mRQ5c8z6Jlbxk3F/ubTvm4E8vqySq
-	 q4D43w+bJT28SA4y5sClPVHs11qqYSNDXh8FCfXzoWsIdnZm23CFSGCakP4KVK44x8
-	 m27XAltZIuAFE0VRYCwXHUNp9eJuNYBTB4WECHqh5BOm2INr3moKeiyEeytuZ1DEF7
-	 sjvC+AvLUabF8rSQC5RGJZjdfxb9JiNOTxFKVIbjUhtWQXfG/i0B247DRQD5CAe5yI
-	 2L/EfjLujdZlQ==
+	b=tWQBJ0hGSMfV9MbHmctkF6zXMFWybelZwtXbWKtmlJlLjn0/FWy8JtsC0ocR4fYaB
+	 NQalsLm3+3ldC9YFTqhx9k7u8n2nyfcUkMqhzgJD0jZtpaPV1PvP1/IlHhhHM/24ti
+	 jJSOa1aY54EX+30u1PfN6k8p61ELtHu0bxiPslCKAWc5U0oD4ho2lwm/Q8oD8awEui
+	 OoojRrZYJjC3xGcE3fb8NrJrxW/DRV4r2sPB8ev4aJrMs9a3Gyg0u8hQv0fz1SgaHR
+	 ltUZ+yptSxB6Narz21YhGU7tueViDge2yGbMa62qiL3FqoY/pxa1cnNbo2XjMZGLP5
+	 9yQKLbbWmgbNA==
 From: Gary Guo <gary@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
@@ -38,26 +38,15 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Alexandre Courbot <acourbot@nvidia.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
 	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Alistair Popple <apopple@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Lyude Paul <lyude@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>
+	Simona Vetter <simona@ffwll.ch>
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Timur Tabi <ttabi@nvidia.com>,
-	nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH v2 7/8] gpu: nova-core: remove redundant `.as_ref()` for `dev_*` print
-Date: Fri, 23 Jan 2026 17:58:44 +0000
-Message-ID: <20260123175854.176735-7-gary@kernel.org>
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH v2 8/8] gpu: tyr: remove redundant `.as_ref()` for `dev_*` print
+Date: Fri, 23 Jan 2026 17:58:45 +0000
+Message-ID: <20260123175854.176735-8-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260123175854.176735-1-gary@kernel.org>
 References: <20260123175854.176735-1-gary@kernel.org>
@@ -74,114 +63,57 @@ From: Gary Guo <gary@garyguo.net>
 
 This is now handled by the macro itself.
 
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- drivers/gpu/nova-core/driver.rs   |  2 +-
- drivers/gpu/nova-core/gpu.rs      |  4 ++--
- drivers/gpu/nova-core/gsp/boot.rs | 32 +++++++------------------------
- 3 files changed, 10 insertions(+), 28 deletions(-)
+ drivers/gpu/drm/tyr/driver.rs | 2 +-
+ drivers/gpu/drm/tyr/gpu.rs    | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index 5a4cc047bcfc..e39885c0d5ca 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -70,7 +70,7 @@ impl pci::Driver for NovaCore {
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 2a45d0288825..fe991d8cbb4a 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -140,7 +140,7 @@ fn probe(
  
-     fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
-         pin_init::pin_init_scope(move || {
--            dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
-+            dev_dbg!(pdev, "Probe Nova Core GPU driver.\n");
+         // We need this to be dev_info!() because dev_dbg!() does not work at
+         // all in Rust for now, and we need to see whether probe succeeded.
+-        dev_info!(pdev.as_ref(), "Tyr initialized correctly.\n");
++        dev_info!(pdev, "Tyr initialized correctly.\n");
+         Ok(driver)
+     }
+ }
+diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+index 6395ffcfdc57..64ca8311d4e8 100644
+--- a/drivers/gpu/drm/tyr/gpu.rs
++++ b/drivers/gpu/drm/tyr/gpu.rs
+@@ -98,7 +98,7 @@ pub(crate) fn log(&self, pdev: &platform::Device) {
+         };
  
-             pdev.enable_device_mem()?;
-             pdev.set_master();
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 9b042ef1a308..60c85fffaeaf 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -262,13 +262,13 @@ pub(crate) fn new<'a>(
-     ) -> impl PinInit<Self, Error> + 'a {
-         try_pin_init!(Self {
-             spec: Spec::new(pdev.as_ref(), bar).inspect(|spec| {
--                dev_info!(pdev.as_ref(),"NVIDIA ({})\n", spec);
-+                dev_info!(pdev,"NVIDIA ({})\n", spec);
-             })?,
- 
-             // We must wait for GFW_BOOT completion before doing any significant setup on the GPU.
-             _: {
-                 gfw::wait_gfw_boot_completion(bar)
--                    .inspect_err(|_| dev_err!(pdev.as_ref(), "GFW boot did not complete\n"))?;
-+                    .inspect_err(|_| dev_err!(pdev, "GFW boot did not complete\n"))?;
-             },
- 
-             sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.chipset)?,
-diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
-index 581b412554dc..1582e1a65274 100644
---- a/drivers/gpu/nova-core/gsp/boot.rs
-+++ b/drivers/gpu/nova-core/gsp/boot.rs
-@@ -170,15 +170,10 @@ pub(crate) fn boot(
-             Some(libos_handle as u32),
-             Some((libos_handle >> 32) as u32),
-         )?;
--        dev_dbg!(
--            pdev.as_ref(),
--            "GSP MBOX0: {:#x}, MBOX1: {:#x}\n",
--            mbox0,
--            mbox1
--        );
-+        dev_dbg!(pdev, "GSP MBOX0: {:#x}, MBOX1: {:#x}\n", mbox0, mbox1);
- 
-         dev_dbg!(
+         dev_info!(
 -            pdev.as_ref(),
 +            pdev,
-             "Using SEC2 to load and run the booter_load firmware...\n"
+             "mali-{} id 0x{:x} major 0x{:x} minor 0x{:x} status 0x{:x}",
+             model_name,
+             self.gpu_id >> 16,
+@@ -108,7 +108,7 @@ pub(crate) fn log(&self, pdev: &platform::Device) {
          );
  
-@@ -190,19 +185,10 @@ pub(crate) fn boot(
-             Some(wpr_handle as u32),
-             Some((wpr_handle >> 32) as u32),
-         )?;
--        dev_dbg!(
+         dev_info!(
 -            pdev.as_ref(),
--            "SEC2 MBOX0: {:#x}, MBOX1{:#x}\n",
--            mbox0,
--            mbox1
--        );
-+        dev_dbg!(pdev, "SEC2 MBOX0: {:#x}, MBOX1{:#x}\n", mbox0, mbox1);
++            pdev,
+             "Features: L2:{:#x} Tiler:{:#x} Mem:{:#x} MMU:{:#x} AS:{:#x}",
+             self.l2_features,
+             self.tiler_features,
+@@ -118,7 +118,7 @@ pub(crate) fn log(&self, pdev: &platform::Device) {
+         );
  
-         if mbox0 != 0 {
--            dev_err!(
--                pdev.as_ref(),
--                "Booter-load failed with error {:#x}\n",
--                mbox0
--            );
-+            dev_err!(pdev, "Booter-load failed with error {:#x}\n", mbox0);
-             return Err(ENODEV);
-         }
- 
-@@ -216,11 +202,7 @@ pub(crate) fn boot(
-             Delta::from_secs(5),
-         )?;
- 
--        dev_dbg!(
+         dev_info!(
 -            pdev.as_ref(),
--            "RISC-V active? {}\n",
--            gsp_falcon.is_riscv_active(bar),
--        );
-+        dev_dbg!(pdev, "RISC-V active? {}\n", gsp_falcon.is_riscv_active(bar),);
- 
-         // Create and run the GSP sequencer.
-         let seq_params = GspSequencerParams {
-@@ -239,8 +221,8 @@ pub(crate) fn boot(
-         // Obtain and display basic GPU information.
-         let info = commands::get_gsp_info(&mut self.cmdq, bar)?;
-         match info.gpu_name() {
--            Ok(name) => dev_info!(pdev.as_ref(), "GPU name: {}\n", name),
--            Err(e) => dev_warn!(pdev.as_ref(), "GPU name unavailable: {:?}\n", e),
-+            Ok(name) => dev_info!(pdev, "GPU name: {}\n", name),
-+            Err(e) => dev_warn!(pdev, "GPU name unavailable: {:?}\n", e),
-         }
- 
-         Ok(())
++            pdev,
+             "shader_present=0x{:016x} l2_present=0x{:016x} tiler_present=0x{:016x}",
+             self.shader_present,
+             self.l2_present,
 -- 
 2.51.2
 
