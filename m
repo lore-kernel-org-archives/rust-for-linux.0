@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2741E23E350;
-	Fri, 23 Jan 2026 17:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223E9223DD4;
+	Fri, 23 Jan 2026 17:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769191153; cv=none; b=DZ6AtAezV2+QXkycTWDK21km5shhSHrHEzq3rmXt4sQlHnIMyYL9ginWYGO7nlEtIbkc8fAX6ZZNuctdWMYl0Xd2MJPonn4k78lemyEeDNZZx55Uwuh1hoPXdxVqF8g758bMJoDMx3Dtd81raWegpmbHtyv7lsA8uTngt3dQcvM=
+	t=1769191157; cv=none; b=sgtSUZPspdutvwXHSRiNFjv55UdCU7iL1EXriGiqGyYx60czDjRUN4lcBV/sd5hNsay1PsXQeJGT6ZGBZGVcWqh16NJOJuxAOEXAUDTj6f7Az3kZ6GXRdvAI7tJczmFGBE00CnaYyRhL43CxJ/csyRAUe+OeDqcmboU6C1LIR2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769191153; c=relaxed/simple;
-	bh=Ep2x6rVx12l4+IY9emWYEk/GG5ESR6tBB6U+MWL+jlg=;
+	s=arc-20240116; t=1769191157; c=relaxed/simple;
+	bh=U1tCEh4VpDL/jPJvJXbOzA8YcdPeWexTaJlwZ3141Y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+0hgpD+h7KXQFgcGHsTv/ejBO06wC53TBiAdPZTYnOuAyR5FtjaTU+saWCxdYEDnP5fO4AB9thY43cim7phuxocFTg66bBukJMj2O+ZWQ9Tha+V7OwrYVRRljNbILQy89KLDoxmV2Z5r4GHMikFs6sQ/UgIUBW9ryHhk9heoSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSgdoK15; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=OlVcHVBn4XcMb/ZACwIZ+i6JX2YvngX/ntUBsCxEmuO96R9t1ulB+VKQ2Rh6pBSMp/+TKN8B1sqP1vcbbGZs9qLQrdyCNzCKeXglHvCDJmmP4vXkrcYX7p17k853K/omdZIni6ZMHtR/Vdo9GcyfMX4b8ncDfKjd/vABLzwIzmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pQ1naV4k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSgdoK15"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0F8C4CEF1;
-	Fri, 23 Jan 2026 17:59:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pQ1naV4k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4615C4CEF1;
+	Fri, 23 Jan 2026 17:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769191152;
-	bh=Ep2x6rVx12l4+IY9emWYEk/GG5ESR6tBB6U+MWL+jlg=;
+	s=k20201202; t=1769191156;
+	bh=U1tCEh4VpDL/jPJvJXbOzA8YcdPeWexTaJlwZ3141Y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=HSgdoK15TLzEHTfDSUyGW8uPo82/6CI5hLtFPU1O/Z8aBzZsjR4o5bx6qsXxZvJzG
-	 ak3ri0BFu+4iKLKPSykrOEUj1azG97N3mj9Qwvepwi4jj+kejqdqfGz5gDscJvqGeG
-	 YsDuIufGALM6iWFczumD3/CXePTnK4wRRulfkWHVhMLfqL3fJIaeMAOjAQof6mgdU9
-	 t9VSI8ML1lDKehr2gYpn4InzB2Hks/ZvDKmccpzEim+w/m0YuyP2UiDX3BYEpl9fPj
-	 S8hQaRX3/3fQNhtpnHD1k7p9V61F3qsfN5hqoIOFPuZhUOivIGH802PFGOM5xAAE3J
-	 EikxPUPGLdkLQ==
+	b=pQ1naV4kJUgPlAjntY06IEbGy1p/o2mVKellQH9JlV/8TM7TiY9C64YBRPdqjJNL3
+	 dBU7AmyL5pqvn3qW8ott7tp4fooap4NQ+f/Nq/IFu0/7tb6GCwMnlhinj3QdkvQyah
+	 BFTxBBE6oO6k5wNk1QN6bmQThuvOHJYh210Qe+e7KdY6mgtsEE4nFyjhHiExfYqHTb
+	 igIuF0fLVpnI2FBL/+zgpaTyRiTUGeq8XKoUKKV3c1EPYnY+s2bBEmzOCG3UFnDrB4
+	 QSYvPTFDBvARt6qcZDQ7b3wsolqCCJNbZrGdpt4qD1Uq+Sc9pWtZxQx1v1xg2GJNrQ
+	 krXrN9mdJofXw==
 From: Gary Guo <gary@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
@@ -38,14 +38,14 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Leon Romanovsky <leon@kernel.org>
 Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH v2 2/8] rust: pci: remove redundant `.as_ref()` for `dev_*` print
-Date: Fri, 23 Jan 2026 17:58:39 +0000
-Message-ID: <20260123175854.176735-2-gary@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 3/8] rust: samples: driver-core: remove redundant `.as_ref()` for `dev_*` print
+Date: Fri, 23 Jan 2026 17:58:40 +0000
+Message-ID: <20260123175854.176735-3-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260123175854.176735-1-gary@kernel.org>
 References: <20260123175854.176735-1-gary@kernel.org>
@@ -64,68 +64,66 @@ This is now handled by the macro itself.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/pci.rs              | 2 +-
- rust/kernel/pci/id.rs           | 2 +-
- samples/rust/rust_driver_pci.rs | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ samples/rust/rust_driver_auxiliary.rs | 2 +-
+ samples/rust/rust_driver_faux.rs      | 2 +-
+ samples/rust/rust_driver_platform.rs  | 2 +-
+ samples/rust/rust_soc.rs              | 4 +---
+ 4 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index bea76ca9c3da..3946ca919332 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -351,7 +351,7 @@ impl Device {
-     ///     // Get an instance of `Vendor`.
-     ///     let vendor = pdev.vendor_id();
-     ///     dev_info!(
--    ///         pdev.as_ref(),
-+    ///         pdev,
-     ///         "Device: Vendor={}, Device=0x{:x}\n",
-     ///         vendor,
-     ///         pdev.device_id()
-diff --git a/rust/kernel/pci/id.rs b/rust/kernel/pci/id.rs
-index 42ffb1bbf87c..50005d176561 100644
---- a/rust/kernel/pci/id.rs
-+++ b/rust/kernel/pci/id.rs
-@@ -22,7 +22,7 @@
- /// fn probe_device(pdev: &pci::Device<Core>) -> Result {
- ///     let pci_class = pdev.pci_class();
- ///     dev_info!(
--///         pdev.as_ref(),
-+///         pdev,
- ///         "Detected PCI class: {}\n",
- ///         pci_class
- ///     );
-diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-index ef04c6401e6a..d50828b642e5 100644
---- a/samples/rust/rust_driver_pci.rs
-+++ b/samples/rust/rust_driver_pci.rs
-@@ -75,7 +75,7 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl PinInit<Self, Er
-         pin_init::pin_init_scope(move || {
-             let vendor = pdev.vendor_id();
-             dev_dbg!(
--                pdev.as_ref(),
-+                pdev,
-                 "Probe Rust PCI driver sample (PCI ID: {}, 0x{:x}).\n",
-                 vendor,
-                 pdev.device_id()
-@@ -91,7 +91,7 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl PinInit<Self, Er
-                     let bar = bar.access(pdev.as_ref())?;
+diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_driver_auxiliary.rs
+index f148124fe81f..c20961f16835 100644
+--- a/samples/rust/rust_driver_auxiliary.rs
++++ b/samples/rust/rust_driver_auxiliary.rs
+@@ -39,7 +39,7 @@ impl auxiliary::Driver for AuxiliaryDriver {
  
-                     dev_info!(
--                        pdev.as_ref(),
-+                        pdev,
-                         "pci-testdev data-match count: {}\n",
-                         Self::testdev(info, bar)?
-                     );
-@@ -112,7 +112,7 @@ fn unbind(pdev: &pci::Device<Core>, this: Pin<&Self>) {
- #[pinned_drop]
- impl PinnedDrop for SampleDriver {
-     fn drop(self: Pin<&mut Self>) {
--        dev_dbg!(self.pdev.as_ref(), "Remove Rust PCI driver sample.\n");
-+        dev_dbg!(self.pdev, "Remove Rust PCI driver sample.\n");
+     fn probe(adev: &auxiliary::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
+         dev_info!(
+-            adev.as_ref(),
++            adev,
+             "Probing auxiliary driver for auxiliary device with id={}\n",
+             adev.id()
+         );
+diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
+index 5330b77ea986..99876c8e3743 100644
+--- a/samples/rust/rust_driver_faux.rs
++++ b/samples/rust/rust_driver_faux.rs
+@@ -26,7 +26,7 @@ fn init(_module: &'static ThisModule) -> Result<Self> {
+ 
+         let reg = faux::Registration::new(c"rust-faux-sample-device", None)?;
+ 
+-        dev_info!(reg.as_ref(), "Hello from faux device!\n");
++        dev_info!(reg, "Hello from faux device!\n");
+ 
+         Ok(Self { _reg: reg })
+     }
+diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
+index 9537dc38c563..f2229d176fb9 100644
+--- a/samples/rust/rust_driver_platform.rs
++++ b/samples/rust/rust_driver_platform.rs
+@@ -180,7 +180,7 @@ fn properties_parse(dev: &device::Device) -> Result {
+ 
+ impl Drop for SampleDriver {
+     fn drop(&mut self) {
+-        dev_dbg!(self.pdev.as_ref(), "Remove Rust Platform driver sample.\n");
++        dev_dbg!(self.pdev, "Remove Rust Platform driver sample.\n");
      }
  }
  
+diff --git a/samples/rust/rust_soc.rs b/samples/rust/rust_soc.rs
+index 403c1137af77..8079c1c48416 100644
+--- a/samples/rust/rust_soc.rs
++++ b/samples/rust/rust_soc.rs
+@@ -44,9 +44,7 @@ fn probe(
+         pdev: &platform::Device<Core>,
+         _info: Option<&Self::IdInfo>,
+     ) -> impl PinInit<Self, Error> {
+-        let dev = pdev.as_ref();
+-
+-        dev_dbg!(dev, "Probe Rust SoC driver sample.\n");
++        dev_dbg!(pdev, "Probe Rust SoC driver sample.\n");
+ 
+         let pdev = pdev.into();
+         pin_init_scope(move || {
 -- 
 2.51.2
 
