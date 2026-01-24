@@ -1,111 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4D33EBF1E;
-	Sat, 24 Jan 2026 07:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664FB1C01;
+	Sat, 24 Jan 2026 07:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769239510; cv=none; b=RCn3nTu3Vp6FqP1I+g/WCusiDBn8vL3Ub6rXlPgMAwAYHKMLQYUGwvvfN5zhvVVkJK+AoSmLJkTr9WUfxvwZ3dQVjI6Jpnp8r+aHPukfjbxoSUNjnhDdkjJZg2dafAlfCKRhqQAANmmW8bkWSDE2D0aGFrKjJoou0xp5ACx7ix0=
+	t=1769240853; cv=none; b=PrA3glPhFSL2s88KCq7sdlcZLM6eRgBEBy7c9akIq04kIG4wwbTNv3PAdDRnpGzR69KNpnp9iQw2lrDFeh9Xre2fEWDJoQHHU88mLmsOEUSAMHqmez0FNXzPU1CDDpkiJMNHpHULf1uUFH+fGRkTp3AvWUKhwam69seQbB3fJf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769239510; c=relaxed/simple;
-	bh=BpoHXPSY5AwaQmN6Xw7QMaOi0dRnd72osdnYD0X4kPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u8h2fI3SkxFHdgh4+lkqtwkih5keB9Jy8XTWqTRALpS177KkjszMcxLDe/0LGWjci0xx2psfMB79gh+Tk31eB0B2+G9Xym5QHA+ZtLBiQQmhpIdqX7kYuSVYVCufa1ZH0hxaxLczymbUt4Yqyrvt20v8j/3X3rqixZZ1TVBvfWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lqCXsxeU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769240853; c=relaxed/simple;
+	bh=cRhYEqASoyGXvv4wFRlJyoAFgB1wB4v+V+7SwqQAphE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ikSU5YmnbZVcecfzPeGREI4not891gITzWYZTAhmT3PCPVXGbyDujvxdHFqb0Ztvx57TyFHpLeNPuIXpnMvjzzFOZ3rxxHwILHpTAoimhszROKwxsO62Sz8fJSRj4/8aeQkeqkVPP/OsH8gDfVdjoRGvTn7sTQEy0zRZL8AmY2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PJ0RtR6l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqCXsxeU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DC9C116D0;
-	Sat, 24 Jan 2026 07:24:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PJ0RtR6l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79FAC116D0;
+	Sat, 24 Jan 2026 07:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769239510;
-	bh=BpoHXPSY5AwaQmN6Xw7QMaOi0dRnd72osdnYD0X4kPY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lqCXsxeURasvHP4unVWE7PgUKtV41NIhdpM5vvDoekklddO/E8dY6AGHT6g46ECmE
-	 jAqr/Ps7aGYp+PMRIA3YPw/Vwo9C+TpR/sdjlCknPM+8dAleph3X/4bU5wz1IumbJ4
-	 vsIyOm7lmyAqlf6I/LEv+1yiLfUCgQG5Qep86ZG9pnUsCEjekEe9P1WoWrrEtjnmQI
-	 QDhJCZSHNho0ytQ1vYlLxEHC3JmuX9H5jIR2xZzspstMFBwT5DWK5sGJiegpaS1O84
-	 ta04pSX1Y2X93B0O1gM0i3o07Wqvm66WeMTmtMVkp9TeOCvY9mMZIkCPgoXqmAL2FG
-	 PTBGII1HLujNQ==
-Message-ID: <8477da83-2441-440c-80f1-66dac9700523@kernel.org>
-Date: Sat, 24 Jan 2026 08:24:47 +0100
+	s=k20201202; t=1769240852;
+	bh=cRhYEqASoyGXvv4wFRlJyoAFgB1wB4v+V+7SwqQAphE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=PJ0RtR6lxginyXgC/wWOq1PMCQqJtrBUuSSzp/J8zAW+hMSaBttoj7el3UIRvGwOn
+	 JJNrpOxF6gaqtNWer9O66JBK+EXrzLJR04mmKvqrTJoM+B6Eprwh3m60XamLfuGHOx
+	 Ygi2e7mYPlEuCYGL/Z9sD4dBSbsgzPn2e3ywqABJJ0J86BGWJMFlEmLS98lqG/wFl+
+	 8Lfo5dkLTfZ7JGgkXtYMhbVTsUazD/bqi6Qfd4nA1e+pxvFUNL9hPd36fkj7qzy3BL
+	 ChEdKHzDghh82z0477fb9eQjqGOFMlqrgzQkF/H3fZ3qW/tlcMB27o3iDPY/6goisr
+	 NXIu0menLU07A==
+Date: Sat, 24 Jan 2026 00:47:26 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>
+cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+    Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+    Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Danilo Krummrich <dakr@kernel.org>, 
+    Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+    Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+    Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+    Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+    Jonathan Corbet <corbet@lwn.net>, Conor Dooley <conor@kernel.org>, 
+    Mingcong Bai <jeffbai@aosc.io>, Han Gao <rabenda.cn@gmail.com>, 
+    Vivian Wang <wangruikang@iscas.ac.cn>, 
+    Jason Montleon <jmontleo@redhat.com>, linux-kbuild@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+    llvm@lists.linux.dev, linux-riscv@lists.infradead.org, 
+    linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 0/4] RISC-V: re-enable gcc + rust builds
+In-Reply-To: <1b0943c4-b1c5-460a-8944-c8d9c868b085@isrc.iscas.ac.cn>
+Message-ID: <47d1dab9-a379-7b3a-d06c-03d674cfbb76@kernel.org>
+References: <20251230-gcc-rust-v5-v6-0-2ac86ba728c8@isrc.iscas.ac.cn> <1b0943c4-b1c5-460a-8944-c8d9c868b085@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: ethernet: neterion: s2io: remove unused
- driver
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
- Bjorn Helgaas <helgaas@kernel.org>
-Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Jon Mason <jdmason@kudzu.us>, Jonathan Corbet <corbet@lwn.net>,
- Linas Vepstas <linasvepstas@gmail.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Danilo Krummrich <dakr@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>,
- =?UTF-8?Q?Martin_Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
- Pavel Machek <pavel@ucw.cz>, MD Danish Anwar <danishanwar@ti.com>,
- Mengyuan Lou <mengyuanlou@net-swift.com>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Huacai Chen
- <chenhuacai@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
- Takashi Iwai <tiwai@suse.de>, Eric Biggers <ebiggers@google.com>,
- Madadi Vineeth Reddy <vineethr@linux.ibm.com>,
- Ard Biesheuvel <ardb@kernel.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan
- <ajd@linux.ibm.com>, Herbert Xu <herbert@gondor.apana.org.au>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Dong Yibo <dong100@mucse.com>,
- Lukas Bulwahn <lukas.bulwahn@redhat.com>,
- Vivian Wang <wangruikang@iscas.ac.cn>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@kernel.org>
-References: <20260123033233.16906-1-enelsonmoore@gmail.com>
- <20260123181156.GA84531@bhelgaas>
- <CADkSEUg5EqpKg2_X3LRc1CaQ2RVFNucJbuxDcHQxvjdLq1Qg1A@mail.gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <CADkSEUg5EqpKg2_X3LRc1CaQ2RVFNucJbuxDcHQxvjdLq1Qg1A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+
+Hi Asuna,
+
+On Thu, 22 Jan 2026, Asuna Yang wrote:
+
+> Gently ping. I think this patch is ready for review. Is there anything else I
+> need to do before merging?
+
+I guess this should probably go in via the arch/riscv tree?  If you agree, 
+then from a maintenance point of view, it would be good to get some acks 
+for the first and third patches from the relevant maintainers.
 
 
+thanks,
 
-Le 24/01/2026 à 03:01, Ethan Nelson-Moore a écrit :
-> [Vous ne recevez pas souvent de courriers de enelsonmoore@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> On Fri, Jan 23, 2026 at 10:11 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
->> Not sure there's value in removing the IDs from pci_ids.h.  It may
->> lead to unnecessary conflicts later for stable and other backports.
-> 
-> Patches to remove drivers are generally not backported to stable
-> versions, even if the driver is broken, so I don't think this will be
-> an issue. There is no point in keeping unused IDs around.
-
-Yes and that's exactly the reason why removing unused IDs will be a problem.
-
-Let's take an exemple: some patch adds PCI_DEVICE_ID_ARECA_1682 after 
-PCI_DEVICE_ID_ARECA_1681 in pci_ids.h in the mainline. That patch needs 
-to be backported and it conflicts with PCI_VENDOR_ID_S2IO which is not 
-anymore in the mainline but is still in stable.
-
-Christophe
+- Paul
