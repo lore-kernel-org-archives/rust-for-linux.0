@@ -1,66 +1,33 @@
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BE93EBF00
-	for <rust-for-linux@vger.kernel.org>; Sat, 24 Jan 2026 06:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4D33EBF1E;
+	Sat, 24 Jan 2026 07:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769236266; cv=none; b=akgf2Ux/dW3RQ6Hnw2mk8xiyXTD91oPDy3gJ0sqmn0DuCZZdNxyJsTgoDWsWLLCNDXu55YP6XkP+dkVPtkEgnGYbh4o4qPvrdN6I8f/fyNx0sSUPLZ7iI8c9W+1+JLOsBYCNQXadW/i8XTGG/3z1Rk+RoVI9DzKYfx54hkZvSPo=
+	t=1769239510; cv=none; b=RCn3nTu3Vp6FqP1I+g/WCusiDBn8vL3Ub6rXlPgMAwAYHKMLQYUGwvvfN5zhvVVkJK+AoSmLJkTr9WUfxvwZ3dQVjI6Jpnp8r+aHPukfjbxoSUNjnhDdkjJZg2dafAlfCKRhqQAANmmW8bkWSDE2D0aGFrKjJoou0xp5ACx7ix0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769236266; c=relaxed/simple;
-	bh=AXbsp0iA+kfhsYrr7IT/8HQp7O8TAuYUd5VamoNhZWI=;
+	s=arc-20240116; t=1769239510; c=relaxed/simple;
+	bh=BpoHXPSY5AwaQmN6Xw7QMaOi0dRnd72osdnYD0X4kPY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JdYkrRoiqwhykrJwSaTIeNN0WrCUomzc6vv91aLb2WbgQDmtsfNg6xYt6IkmYn8ptTyGHzgx96A0KzAz57z0UFCyQ/8PdkvSQin4ZgHrcSU7dSUs0bf6KsTbCNjOrCZ3PiwLSQaob9Bf6kK+gyQrP8XAlI2mkPqxiFz/dkD0dQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MWDzpH9b; arc=none smtp.client-ip=209.85.221.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=u8h2fI3SkxFHdgh4+lkqtwkih5keB9Jy8XTWqTRALpS177KkjszMcxLDe/0LGWjci0xx2psfMB79gh+Tk31eB0B2+G9Xym5QHA+ZtLBiQQmhpIdqX7kYuSVYVCufa1ZH0hxaxLczymbUt4Yqyrvt20v8j/3X3rqixZZ1TVBvfWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lqCXsxeU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MWDzpH9b"
-Received: by mail-wr1-f67.google.com with SMTP id ffacd0b85a97d-4359228b7c6so1798425f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 Jan 2026 22:31:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769236263; x=1769841063; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oGRbMOTASBrvGeUUbJ3PGk+C0O4AnQDM0U+seE4zEkQ=;
-        b=MWDzpH9bTcfjEq8AtFBO0QUY2w2sYyser2QzAdrPTLcxXSl4O9AAoKFbTbD/mFqF+W
-         cWi9Xc5ETrAjUvnTqFI8Ot5guDmrImqFrPG6Y6Z1K8e03uDPtpdPYsNy09PKl5ayExwq
-         12RMDh4Ugyvds+g2SLVKLwwbyzErFbMF1oiI7UAWVH3qu5tuDFIqoTXu40y+8U8GY3Xv
-         KjadY+5lOnX3zg7jjhI5cb7OWFZ7D8cenuFTjSVB4DIZDgr6JU1Yn8mUPh1kpCvr4Dit
-         LrnR5ITbR30eXTfsTpYq2zX502sU+h5hOTiITOOgyxKOc2S2A01imOHSXTQD8601j9/J
-         XDsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769236263; x=1769841063;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oGRbMOTASBrvGeUUbJ3PGk+C0O4AnQDM0U+seE4zEkQ=;
-        b=ChKrtGbPUJd6d+z5gB65or8Mqpr3z/Jvyj9gVLoid5H/qQnIOdxsFkgRVhTbJVa7IJ
-         dbFHUHljGar8rVFyC3IAmTNy+MlSahw6dJRzGTpQkJblp3bfOn0u81lrcSWccDmHBJaZ
-         RWQTa2JXM8VbS1FoflSDxRag5xKEkRck+QVwiY69O1/YzFi6sentd6VKdYC2x7q89Z2m
-         oDn2GsWER1FzA0sJ7wojbya+y3Fma4sMGqMG3gJ7IIF3L2yS8VuV0TVa51TgynC2ntL9
-         Yyy1+l40Be/gtyZSBVt8j1rHuNB2/4AWW29w8pmB1EithLXEctDSzyKBVCWmQsruvYK/
-         F1FA==
-X-Gm-Message-State: AOJu0YyqcyaHj0zyHJN90YIvFKIq5GokgChxdlJdqO/CIhAH9E5iEUQe
-	LSwhXDn0/03ODvel2MDlnpKxFpJZeXLx79qjzYU2csJXlNR3QbbsgKvr
-X-Gm-Gg: AZuq6aJbiTSaIVAJdZDY498KZmnRCxd/8H2XS+72U5hV2mkCZbj/HF6BDZVc+qiU2Vq
-	IPEkrhn33Kqk2Xef7iZ+6IexcFNUAcGDHuf/Ju//30PFwMRpgprj0uxAO9R5p9VzcRKpcq44ad9
-	ot8NOT4GTxFRpElePFruTm66qyCODi0eSOBnuKxmGtW5/0MqJ5NZ1j66g1ptrGBOUsKdEWHzQxQ
-	8hPekfVsC992Iv3U7L9UGpcXOzVRmY0dB0pIXxQM37O3RtyWPZgnhcAhFy8sPgy0qFphOkyBZA+
-	6RNgnzeTUdi/r67o8ZBwmSfyMgIPOc6eDT47P5LnI4ywfIIMEU94Hx7OzzWh1V6ADY/2xIT774S
-	Ar2MiZW3FY3iNPW27YmgauHR4fh37AAc6OEKexf/7kuD4wyaQATtdn/ebKtg91clqElaJgUTMoU
-	XRAxvEeyNKXUsGDLcLEgGegO4ctGT8R2vNMUTd4H8JlFtn8ouao+CadeCDRqYb7LZ1MYV53CQ5s
-	UgyD3gC7t0X8tsdcH+p+4yJUXtc0UkpJ0TQEyZfMRMpXA==
-X-Received: by 2002:a05:6000:1a8a:b0:435:9801:d393 with SMTP id ffacd0b85a97d-435b1603648mr9336909f8f.37.1769236262816;
-        Fri, 23 Jan 2026 22:31:02 -0800 (PST)
-Received: from ?IPV6:2003:df:bf2d:e300:84b0:9a99:cca7:e10c? (p200300dfbf2de30084b09a99cca7e10c.dip0.t-ipconnect.de. [2003:df:bf2d:e300:84b0:9a99:cca7:e10c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c02cd8sm11347081f8f.8.2026.01.23.22.31.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Jan 2026 22:31:02 -0800 (PST)
-Message-ID: <cdc52b14-bf2f-4189-8594-25c25d9f78c9@gmail.com>
-Date: Sat, 24 Jan 2026 07:31:00 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqCXsxeU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DC9C116D0;
+	Sat, 24 Jan 2026 07:24:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769239510;
+	bh=BpoHXPSY5AwaQmN6Xw7QMaOi0dRnd72osdnYD0X4kPY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lqCXsxeURasvHP4unVWE7PgUKtV41NIhdpM5vvDoekklddO/E8dY6AGHT6g46ECmE
+	 jAqr/Ps7aGYp+PMRIA3YPw/Vwo9C+TpR/sdjlCknPM+8dAleph3X/4bU5wz1IumbJ4
+	 vsIyOm7lmyAqlf6I/LEv+1yiLfUCgQG5Qep86ZG9pnUsCEjekEe9P1WoWrrEtjnmQI
+	 QDhJCZSHNho0ytQ1vYlLxEHC3JmuX9H5jIR2xZzspstMFBwT5DWK5sGJiegpaS1O84
+	 ta04pSX1Y2X93B0O1gM0i3o07Wqvm66WeMTmtMVkp9TeOCvY9mMZIkCPgoXqmAL2FG
+	 PTBGII1HLujNQ==
+Message-ID: <8477da83-2441-440c-80f1-66dac9700523@kernel.org>
+Date: Sat, 24 Jan 2026 08:24:47 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,104 +35,77 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/8] rust: device: support `dev_printk` on all devices
-To: Gary Guo <gary@garyguo.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+Subject: Re: [PATCH net-next] net: ethernet: neterion: s2io: remove unused
+ driver
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+ Bjorn Helgaas <helgaas@kernel.org>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Jon Mason <jdmason@kudzu.us>, Jonathan Corbet <corbet@lwn.net>,
+ Linas Vepstas <linasvepstas@gmail.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Danilo Krummrich <dakr@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260123175854.176735-1-gary@kernel.org>
-Content-Language: de-AT-frami, en-US
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20260123175854.176735-1-gary@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>,
+ =?UTF-8?Q?Martin_Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
+ Pavel Machek <pavel@ucw.cz>, MD Danish Anwar <danishanwar@ti.com>,
+ Mengyuan Lou <mengyuanlou@net-swift.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Huacai Chen
+ <chenhuacai@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
+ Takashi Iwai <tiwai@suse.de>, Eric Biggers <ebiggers@google.com>,
+ Madadi Vineeth Reddy <vineethr@linux.ibm.com>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan
+ <ajd@linux.ibm.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Dong Yibo <dong100@mucse.com>,
+ Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+ Vivian Wang <wangruikang@iscas.ac.cn>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>
+References: <20260123033233.16906-1-enelsonmoore@gmail.com>
+ <20260123181156.GA84531@bhelgaas>
+ <CADkSEUg5EqpKg2_X3LRc1CaQ2RVFNucJbuxDcHQxvjdLq1Qg1A@mail.gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <CADkSEUg5EqpKg2_X3LRc1CaQ2RVFNucJbuxDcHQxvjdLq1Qg1A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 23.01.26 18:58, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
+
+
+Le 24/01/2026 à 03:01, Ethan Nelson-Moore a écrit :
+> [Vous ne recevez pas souvent de courriers de enelsonmoore@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
 > 
-> Currently, `dev_*` only works on the core `Device`, but not on any other
-> bus or class device objects. This causes a pattern of
-> `dev_info!(pdev.as_ref())` which is not ideal.
+> On Fri, Jan 23, 2026 at 10:11 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>> Not sure there's value in removing the IDs from pci_ids.h.  It may
+>> lead to unnecessary conflicts later for stable and other backports.
 > 
-> This adds support of using these devices directly with `dev_*` macros, by
-> adding `AsRef` call inside the macro. To make sure we can still use just
-> `kernel::device::Device`, as `AsRef` implementation is added for it; this
-> is typical for types that is designed to use with `AsRef` anyway, for
-> example, `str` implements `AsRef<str>` and `Path` implements `AsRef<Path>`.
-> 
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
-> 
-> Notes:
->     v1 -> v2:
->     - split change to samples/rust to subsystems
->     - converted more cases where `as_ref()` is only for dev_printk
+> Patches to remove drivers are generally not backported to stable
+> versions, even if the driver is broken, so I don't think this will be
+> an issue. There is no point in keeping unused IDs around.
 
+Yes and that's exactly the reason why removing unused IDs will be a problem.
 
-Many thanks for adding the additional cases!
+Let's take an exemple: some patch adds PCI_DEVICE_ID_ARECA_1682 after 
+PCI_DEVICE_ID_ARECA_1681 in pci_ids.h in the mainline. That patch needs 
+to be backported and it conflicts with PCI_VENDOR_ID_S2IO which is not 
+anymore in the mainline but is still in stable.
 
-With the discussion in [1], I think the rule of thumb is now:
-
-* If `&Device` is only needed specifically for printing, then no
-`.as_ref()` and no helper variable are needed any more (as done in
-this patch series).
-* If you already need to obtain `&Device` not only for printing, but
-also for other use cases, then a helper variable like `let dev =
-pdev.as_ref();` is fine. An example is `probe()` in
-samples/rust/rust_driver_platform.rs [2].
-
-I think we have a trivial warning from the kernel test robot on the
-USB one, now. But with that fixed (if its not too late already):
-
-Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
-
-Thanks,
-
-Dirk
-
-[1]
-https://lore.kernel.org/rust-for-linux/DFW5LUIQVZK0.2W01YO54KTKR7@garyguo.net/
-
-[2]
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/samples/rust/rust_driver_platform.rs#n103
-
-
->     - Link to v1: https://lore.kernel.org/rust-for-linux/20260120181152.3640314-1-gary@kernel.org/
-> 
->  rust/kernel/device.rs | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index c7b5db9dcca1..94e0548e7687 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -601,6 +601,13 @@ impl DeviceContext for Core {}
->  impl DeviceContext for CoreInternal {}
->  impl DeviceContext for Normal {}
->  
-> +impl<Ctx: DeviceContext> AsRef<Device<Ctx>> for Device<Ctx> {
-> +    #[inline]
-> +    fn as_ref(&self) -> &Device<Ctx> {
-> +        self
-> +    }
-> +}
-> +
->  /// Convert device references to bus device references.
->  ///
->  /// Bus devices can implement this trait to allow abstractions to provide the bus device in
-> @@ -720,7 +727,7 @@ macro_rules! impl_device_context_into_aref {
->  macro_rules! dev_printk {
->      ($method:ident, $dev:expr, $($f:tt)*) => {
->          {
-> -            ($dev).$method($crate::prelude::fmt!($($f)*));
-> +            $crate::device::Device::$method($dev.as_ref(), $crate::prelude::fmt!($($f)*))
->          }
->      }
->  }
-> 
-> base-commit: a0c666c25aeefd16f4b088c6549a6fb6b65a8a1d
-
+Christophe
