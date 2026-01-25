@@ -1,113 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100B31DDC3F
-	for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 20:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769372431; cv=none; b=nZMA5ybxlqNjgVmaQvO3u1af8Wwkd0Z4tZNkQigP+M1e9IQATiIhlBct9CFzwRVTGb14lcM6R2MmNbAodSoHcdZFNusoxBhkqm4d6Nan58TSdtYx1J+x3quYm0w9EUNfqGolnENjMjlTaDTH4VVE+iOEt/Zpwbkbz7MPahNhiy4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769372431; c=relaxed/simple;
-	bh=cuq0e8BHaeEWrUFZwxpmD/GiVpxG3w+3f0fBqxCMiFo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C421F3EBF09
+	for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 21:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769375268; cv=pass; b=d9PoMakr8Gu9d3sWp9tazeX5jjqZH2rdG/6Th5Asevntyyxds23K+SXmjMcjdBXwpYsaHt/3lzX7ekKXzQUUqO1eYeSHdkMUUrH9OBEPUNDY2I0UzGeiI3XJyYtSOCZm5A3e/rNUivCPk4Yzlwad2RUWgeT5HIfrqXhU8H/1REg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769375268; c=relaxed/simple;
+	bh=QElr5C7h/WEZ2XkWUj0fD13Y4g5cZjuLGOEGFxpDVhs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kra0yX5Xft9aqKue7pdhalj2I45ViYQK65lcBTjddHC7XIecPnlzxUBavP0xWzRsezlF8ekEB4oSJ5vI4H0EdK3ctnIB8FuVwl/BfIUkpl/4N5e6LTrtrGbQNQn8Xa7arVoXuXg4zPdWOnat5Czb4vl7iDG3mkgC5D8oN4zEyCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJipjVKg; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=jyvRNEOYZs/glxb9GZ+CicoE9ygruEq20QirOEN+5b+pHYdxK8yYedUkinM7Yqc+e0ftlPEa8lLmYsR/WBXlYhsfX3pca+fqF2EHS+TbfM+NkRe1vKAdQ3piRta/MLCRNF3v+DVG51gE2jlZtjB17UztZGG179gEO9jgz9hGcyo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cgm+C3Rk; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJipjVKg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87CAC2BCB8
-	for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 20:20:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769372430;
-	bh=cuq0e8BHaeEWrUFZwxpmD/GiVpxG3w+3f0fBqxCMiFo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WJipjVKgXJN0Z5/f0kYzdyPg/jY6Q3adWEJIWEz9pXlS1wF2NPFl44PgAn5/6D/1p
-	 ngADp5rpOodurKa37crWZWoym7gaCcNdFTl0Mkb07buTB+rV+E7P0DUE0LaQkgWD3A
-	 cZ/TaKgD+ebaUh+7ahw3ASsrsVGWFbbbztWJB2K92ho856wFDAU7w9BV5wbi9jW0tF
-	 fjb0BUikyLRqsN5uyQvRqXOw4fwEiHU6LKGk/a1CDapTou72GinU0Uso53BPjR+UjI
-	 SCodRZYYubdqBhr9QAup9Xw1nveyVCNw6hTs3Tok+vdUwP+qJFzuE3HDcOZWRZoAR4
-	 hU8VK93VGwCwg==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-382fb275271so36215021fa.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 12:20:30 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWxd/0qlM5l7mwsogF62u5MShidZLnrxbKuNATya1kKqt43raEGYjV48drjonA+UFAPYR3OwCBkIUkdZrBt4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXaLrnCi3q503ahdSVKGqYZLyZZ6BleKFAu2DzNrj5nrKptMgp
-	kd2PpmPf8km6EXsri8+8JAXpYZZsibvmIiWLLgvhiuX05PHBcNlktYHJzSMXIdtx5AXWoUl7VPz
-	RN1imZBjVhttG/Z0YHne6J0ahCnaqrkc=
-X-Received: by 2002:a2e:a587:0:b0:37c:e28c:5bff with SMTP id
- 38308e7fff4ca-385fa15276dmr8551861fa.23.1769372429288; Sun, 25 Jan 2026
- 12:20:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cgm+C3Rk"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b70b21ce0aso122072eec.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 13:07:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769375266; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Mdi6qgRoN90XMgYF/V2J9CuntLR2WlsYWjlwObaLdk5YVkdrVaAYNro5wM2mwvy5cJ
+         dVyu0UGpWkjIsbsLOcfxDvNEJNCqvSIKrfsi/WzNSU0xlciU++LaWcVCPPgWL9AWYZUp
+         poa3ZxgL2YMOPhHQ9mmuAQwMHYxCiNlp8l4QwS+vAvkqEKLbnUyozjCXkaRHJdMmgaOb
+         SKUQofxidRysSo0PCZS7d4r5XyPkJVOKvlj7KCZTRfkn8J44HFNEzOUdnl+V24YByAEJ
+         84bzV/SPUtlEXVbydQY7SlCknDMb/qQlhYqf/RJd0u1T78bpnLSTPcsqjdOD305GWF6P
+         mxmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QElr5C7h/WEZ2XkWUj0fD13Y4g5cZjuLGOEGFxpDVhs=;
+        fh=wI6wtf8BmfcLy/eac8/7F/Oht5anCThRjV4xCLsuUk0=;
+        b=RAx+iBFPmmmd3pr8Xn0z9V+QT2VdGzNVt/eKAEFtSNkiDWY7z15nPrODgkvsMOGJOl
+         LBWVJFlVK8M0Dx528+FyPPitI4Jiw3zcwzZn1nxwwh+JU/mXmz44oV/4+cyfYl5bJT3G
+         3IhVUSfKPIF9tbhFj7met1cyxj9iYnD/UFbm/+Mt56yUf60m38kUmMMtWdCRSjOUNs4r
+         CnvRJsgryfQirqHNJPTgwy6l5tdPA6tez+v8zXk7+mVwwgWDEC9urXRtqlQrswwSiFtP
+         kPUiy30telsWR9HwUG95WTF8lxlLD3SS+858pa72CLiDHTrqRfMUxcjPqwI+0Ur5M3fl
+         BVtA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769375266; x=1769980066; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QElr5C7h/WEZ2XkWUj0fD13Y4g5cZjuLGOEGFxpDVhs=;
+        b=cgm+C3Rk+TbopWMbErsAecaS2QRGAqISpNS/dlQDZrhm9DqPKjWLQCjeL1C3yJgxmc
+         K9Zmb0+RpYGJuhGDMunsid1v9XLB+bHPbIZpND8GUlnQM5vbLUrKCPq+ei7Vr5Vw5Hlk
+         w8ougrcFTZLki2vRM66kPykx+/6cCaqcIJ3wGzk5/y382iRZHf22Gvb1bYcJk+QyZ4Kr
+         pMOzxQIaKbJyS/SX1Tsrg3K5d6YcDFDAEivYMYsmnscltaVB+MVPRSlmlo1b5s8FbRyH
+         4Fp884I2R+GxoS5MIui0Ojwl6yFJSRZTpRX58os2zo1ZUYPZpLnrJraRTGH8TcXQyuaj
+         S/ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769375266; x=1769980066;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QElr5C7h/WEZ2XkWUj0fD13Y4g5cZjuLGOEGFxpDVhs=;
+        b=Qpk8lpfONxfbs0YsdkIaaGyOQINp6evjywh9rw+2md6RrMrKAkvb/IWBGoxA36T7ov
+         cy3T67y8jKZIirFdu1p5bgBuJBgAUbdkNqJy+sRuI5hlZr8aVlHziR1bDsAdTMWpp/V+
+         y7EPW8MkkR2FQyAcp74+48D07iDePP7p6aCQF9+VWxewSVZ0QvhP7l1gWvNF8J9SvHJX
+         RPcXp+LJyLksucFRMHFy3oM6bHPd248uF8DXc4Xc4192RRE/QizHHL+m9NPF1T86PK98
+         ARyuwR+yQb5tSEZnRR0TsfLVrQMNrgInQL1Wei43xSPNaaYaSavcjio1/B/wtfNClAz8
+         Hg0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVYzj7TGLIuJvv/0gBkyloLhBgGz2MqjyCDH1Wap+4Ny4hdZ7DLDq7IUyShhiukkF/p99k2uVW2uwPI/5neig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvqreMYGCldAvlDjdlXxDqr6H5osEwdjBo9afYVmsHjBgcylae
+	hPuvuWpxJseAOE62QNc2f+BHjIfog7wUwSos/eFheMzu9HaSdDStUw5Zex9d35aBh7zUH4tarJ7
+	USNDEnPxQ1eFyTAs421fXOMRv0RLvoN4=
+X-Gm-Gg: AZuq6aJ0CDQVFljyl02BztbN71PRHS2pa5SVjcnMNPN+BdCggVaalh7RI95+b83J9yH
+	W6ybY+gxF+SoUcXRvp3uUxrrNfQjEPn31n8N41GsOZ2gyjO8Fu0JvoZIYFjNTa9H70BWtKZJ+ne
+	WFvm/hbMqyWnQeL8kM812NUdsQ6K4TYVy6Oxkj2rxy4C2r++vK5KJCF38o1ErHpseyi++QvARYp
+	3ip4iK8R+wZIgMrXZ+7AaxWpJlWTtPS1pgJZtK7YLBm419v/+yhTv2ASXGAHTKZOqs4NPuO3/hn
+	LMWfpb6QIsgWesl80/9Gh6EroryfK2GczlOjFRmk3qb61fe8T85i1DfNWWBmX2QT8tNeBaCO+TD
+	uqI+mTenE5+qM
+X-Received: by 2002:a05:7301:1286:b0:2b6:f613:74e6 with SMTP id
+ 5a478bee46e88-2b764505d01mr597652eec.4.1769375265611; Sun, 25 Jan 2026
+ 13:07:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260122144444.265412-1-gary@kernel.org> <202601250701.wXxtGd9z-lkp@intel.com>
-In-Reply-To: <202601250701.wXxtGd9z-lkp@intel.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Sun, 25 Jan 2026 15:19:53 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9=N6GViTH-7Ki1qpSfRdByBFxb9132et7J0OXTTcosLwg@mail.gmail.com>
-X-Gm-Features: AZwV_QjoJoRjxYY7LPCWEsV4oVDQzxpbIlh3GhBeW30M0TDiAyjTlOxQVzK6MAs
-Message-ID: <CAJ-ks9=N6GViTH-7Ki1qpSfRdByBFxb9132et7J0OXTTcosLwg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: task: use `as_char_ptr` instead of `as_ptr().cast()`
-To: kernel test robot <lkp@intel.com>
-Cc: Gary Guo <gary@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20260123172007.136873-1-gary@garyguo.net>
+In-Reply-To: <20260123172007.136873-1-gary@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 25 Jan 2026 22:07:33 +0100
+X-Gm-Features: AZwV_Qi4824N54q8N5DW-YqARODM9TUmihwxHH8jN1UYM1eFxecmsSlcGMzI290
+Message-ID: <CANiq72kaQVopOdB809=kFMVx83MGca1T91RdNUSyC+iFhg642Q@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Remove redundant imports of items re-exported from prelude
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Panagiotis Foliadis <pfoliadis@posteo.net>, 
-	Shankari Anand <shankari.ak0208@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 24, 2026 at 6:34=E2=80=AFPM kernel test robot <lkp@intel.com> w=
-rote:
+On Fri, Jan 23, 2026 at 6:22=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Hi Gary,
+> We had a few occurrence of these redundant imports and up until now they'=
+re
+> mostly checked by human reviews.
 >
-> kernel test robot noticed the following build warnings:
+> I have now implemented a new lint in klint, which is able to spot these a=
+nd
+> advice on using prelude imports instead. It caught a few existing cases
+> that slip through the review. Thus, fix them.
 >
-> [auto build test WARNING on 053966c344dbd346e71305f530e91ea77916189f]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Gary-Guo/rust-disa=
-llow-use-of-CStr-as_ptr/20260122-224657
-> base:   053966c344dbd346e71305f530e91ea77916189f
-> patch link:    https://lore.kernel.org/r/20260122144444.265412-1-gary%40k=
-ernel.org
-> patch subject: [PATCH v2 1/2] rust: task: use `as_char_ptr` instead of `a=
-s_ptr().cast()`
-> config: x86_64-buildonly-randconfig-004-20260125 (https://download.01.org=
-/0day-ci/archive/20260125/202601250701.wXxtGd9z-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0=
-227cb60147a26a1eeb4fb06e3b505e9c7261)
-> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20260125/202601250701.wXxtGd9z-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202601250701.wXxtGd9z-lkp=
-@intel.com/
->
-> All warnings (new ones prefixed by >>):
->
-> >> warning: unused import: `str::CStrExt`
->    --> rust/kernel/task.rs:12:5
->    |
->    12 |     str::CStrExt,
->    |     ^^^^^^^^^^^^
->    |
->    =3D note: `#[warn(unused_imports)]` on by default
+> Link: https://github.com/Rust-for-Linux/klint/blob/trunk/doc/not_using_pr=
+elude.md
 
-Seems like the import needs to be conditional on
-CONFIG_DEBUG_ATOMIC_SLEEP. Aside: it can also be `as _` since it isn't
-named directly.
+This is great news, thanks Gary.
 
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
->
+If others give Acked-bys, I can pick these all, but it may be easier
+to pick them independently (for that, the print sample should be split
+in principle, but it is so small that Acked-bys may work better for
+that last patch).
+
+Cheers,
+Miguel
