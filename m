@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377A1823DD;
-	Sun, 25 Jan 2026 22:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701B2823DD
+	for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 22:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769381129; cv=none; b=UVlOqaP/0RH71Xh1wZRjfVxPc+RuiGCmDkvfxaNz8KTiufw/J0lk8/S+0Dd8wKktK9pmA7xd97Cb4Yj60clK4xM7J8iYr0TgkV4mkflEfkUHE1mlFXKMUkKtBCOL22007AaXVsVyImuRmMru1PY9EvLCwH6c0o6E0i8A9HM9Rv8=
+	t=1769381136; cv=none; b=ls2xIj9GQcAT3/nl8G92x2ns5Zukhj/OvLtAZCuLay4RHBWTMyahgu6YoRV5HRhFIIq5VN3zs0fsUWvqI8xO3O+g/hc4aRoG1JJ3LiQWS5JcEd4cMKkqzFTkK/7JPePN/cWnCNShj5TnBHhTV50l+R9QvAPaXe7KNG8+EtxQnXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769381129; c=relaxed/simple;
-	bh=qYUbrEIIL+D2hDKBfUMAblOKu2xh9Z6LVfBozxHiHLE=;
+	s=arc-20240116; t=1769381136; c=relaxed/simple;
+	bh=Kxfd4TJghgF9a+UTMwFBHRl29bsi8VSBmHgBlBZ6aig=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=g/oc2eJXCYkbHRVDZjxqs9RcSQBPkyKmL6QFtMyjb0bu1ar2hdp25mWCZNs5Z7jHMOEC7fgha3TAyR3oxhOKUcmyBnyjXIRhhRFVBtaf0Vj4YVPvK1mwxccnQy0MImmwJd7tdjuy4vMFjHUfA8AEt+iUtR7epams42P6wcjELx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HeqTXh/U; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=cRl+0avsLQqsraQSHQOe7DvROt/pt0SGZHh9/kN3nsaJIMEvo1tIMhRp1mNCu8NzBYmh3Ao+qn63XzzRn4MxfdfLu+tU25bhHQbOJ2do2EJ1ZyJ/uOyVOQ/V+vxn6TqXQZeSaMZr51nKlxRuO3zb64IqQNXSRTWFyDjS0Bv2vbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZxHxvmUx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HeqTXh/U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A1DC4CEF1;
-	Sun, 25 Jan 2026 22:45:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZxHxvmUx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAC4C4CEF1;
+	Sun, 25 Jan 2026 22:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769381128;
-	bh=qYUbrEIIL+D2hDKBfUMAblOKu2xh9Z6LVfBozxHiHLE=;
+	s=k20201202; t=1769381136;
+	bh=Kxfd4TJghgF9a+UTMwFBHRl29bsi8VSBmHgBlBZ6aig=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=HeqTXh/USg4CzCQsOwqefxY3gOV5FYFZGdQ1+6mncIDuJx2QRHa0Qd4TzXh+JKxck
-	 9eUIHYxu6q5PdicMe0ZR3Z/TEDRZtqHoU6U5FeLa8vMOibtdZjefd5wV8N4DQocglm
-	 aZveLm9TOqmtv9zUClNo3/Z1+TsCzS24Q0BBAk7gYC8UC6xWGOT2b6jIxgkf+D+aSr
-	 UPO4Xux+W9gXZpiLdv3jG20e89bw5aFFm/LpREsbfmwuMylubxJvXBSXUFZNWkRWAg
-	 Ua+u3/BqOuAv8TVOh9j86A2+5QsPV0b0vY7XgQNaxmvgbnonyYHqmK8PynV1Cd5NBb
-	 etdu0RJaKCY1A==
+	b=ZxHxvmUxteNKHhTAqnD0c7vHFXuBdXvBKuvRvNKAiW4PnUVYaEudhC1JWGDcoI8KY
+	 WkbkW8C69rv/9SsncuCwONNYAAcXQiPtymz5bRw4gEeawc1u0a5ECUKNi6MHsURX58
+	 TBr8dS649O6IDUp+KglYkTTYpNwf4XTBJhwGiJUB4L1QTGl/yzyfx9NZ6Jbly6tt9v
+	 vWZqXDKkqC/lQy8Rys3Q2OANgMuyxKYWNMqFfee/aTbrIxE5r6Y0LHnwzPcTHTYLj+
+	 TJS25cqWN3euVVuzqaxcqcDB5kqj3SdcOQBuUOY5ViyghnQ/kQQrYmiaq/H/k4eEYh
+	 hntEIBnHZJiLQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,28 +34,27 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 25 Jan 2026 23:45:23 +0100
-Message-Id: <DFY19EWAGLES.12E5U93X7ESX9@kernel.org>
-Subject: Re: [PATCH] rust: auxiliary: use `pin_init::zeroed()` for  device
- ID
-Cc: <gregkh@linuxfoundation.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <david.m.ertman@intel.com>, <ira.weiny@intel.com>,
- <leon@kernel.org>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Atharv Dubey" <atharvd440@gmail.com>
+Date: Sun, 25 Jan 2026 23:45:32 +0100
+Message-Id: <DFY19ISM6K8S.RC3Q66OPMKUA@kernel.org>
+Subject: Re: [PATCH v2 4/7] rust: debugfs: use pin_init::zeroed() for
+ file_operations
+Cc: <rust-for-linux@vger.kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>
+To: "Ke Sun" <sunke@kylinos.cn>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251129124706.26263-1-atharvd440@gmail.com>
-In-Reply-To: <20251129124706.26263-1-atharvd440@gmail.com>
+References: <20260120083824.477339-1-sunke@kylinos.cn>
+ <20260120083824.477339-5-sunke@kylinos.cn>
+In-Reply-To: <20260120083824.477339-5-sunke@kylinos.cn>
 
-On Sat Nov 29, 2025 at 1:47 PM CET, Atharv Dubey wrote:
-> Replace the previous `unsafe { core::mem::zeroed() }` initialization
-> for `bindings::auxillary_device_id` with `pin_init::zeroed()`. This remov=
-es
-> the explicit unsafe block and uses the safer pinned zero-initialization
-> helper.
+On Tue Jan 20, 2026 at 9:38 AM CET, Ke Sun wrote:
+> Replace unsafe core::mem::zeroed() with pin_init::zeroed() for
+> file_operations initialization in all debugfs file operation
+> implementations.
 >
-> Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
+> Signed-off-by: Ke Sun <sunke@kylinos.cn>
 
 Applied to driver-core-testing, thanks!
