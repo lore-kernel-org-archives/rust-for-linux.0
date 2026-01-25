@@ -1,117 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581F51DDC3F;
-	Sun, 25 Jan 2026 18:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769364687; cv=none; b=Ql2T7YaLkM2+Pm6BrMOkqgPuFdP2v9TNB8Fqo3XS/XE8b/+l9iWc/vUE9pMBXric3BTOKsHMg491aQ7LqK23lrgXLAef7RtC4Ybi/Odxap4bf0ftSnKHabL8mNBv4bBFlEWpbTz637P0CR1BQSdMfqNt/7GAvYclRcIwlyhDusg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769364687; c=relaxed/simple;
-	bh=qgVtO8mWSRuxFs90xJYzoTYRLOJL+pr5SZ3KzZGHvdk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=JrBl8NqOHqK/+j7aHq721HekzwPww8lzJE8c7RS/tLIqqwwc30YLXyEAb51V5OTuQoJH16wNfdVWLnIpZWwBNVeNUYDOtS0kFSb1T1AxiWednqEGG71jV/br1DwUP5oQrLjXWrRjMWztBidI5JTVLis24RaWJlzrHzKZuC+xejQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSXPgBM6; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858952F3608
+	for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 19:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769369075; cv=pass; b=opjR6xp93U5sLfjynKpNdpjiZ7SvjDRqtmKSdaqKAlEpPFuR9f3bMHEydwwpKyWWa5x0qJSLOSX0dSguCISDeuFGr+M+AyqOQYDvU3lG5gEeCnXIz70rKlkEcqf4cxape0hBOREm954VFLUeBfP3vvSbiHF9AYpLhWH2SUfxSpk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769369075; c=relaxed/simple;
+	bh=fJt1aWSEMWk6/aewHrMmpRAYrvpwaYOxGHD1U6zPqSc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HeWMidLoSCPdzZYmu/5Zhc02hRkx+giGCZn0GE7PeiVxIBkNT3Z0eaAwpZOaaFvmMXmy96AsR0AL1T63d35S2OLggsGGJMS+2a6/0kbsls8JN85I84lpqvkbK6ExaOEdd0VWMkaRJvkVI+grNHfTpMznk6dvHq1uMh475SpPuuk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gEFgpV5r; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSXPgBM6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF50C4CEF1;
-	Sun, 25 Jan 2026 18:11:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769364687;
-	bh=qgVtO8mWSRuxFs90xJYzoTYRLOJL+pr5SZ3KzZGHvdk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=fSXPgBM6pyKu6dxW7/SPJOT2E4JeiGkQ610PJjUqTKkJD9/f6FdXDhiGS/C9infEx
-	 NjqBQ+VPIKS16IbneeZpeiRn3dBNpjmUKDKCm9NK0GT4y2zfbjmuo+gQ6x1UmoXMTD
-	 kZz2Irh3PGvFPBoVFaVH+V3BFLlM+GH3c0KBgTuGpNwBKg5MJWfMWSlJbD0UIfkwg5
-	 DKDEIsbflP87ympyOXbQ3AF+c2uoO5v7DXWIhl6viE/qlEoW0SJxIRMkuV34fF3QjY
-	 jWtTRONGo64Ey2japsnD7I9qrRXOkuY7b6Ww8c/lrOxcIhdtkuaKfpAI/o6fDzgsqu
-	 Y3/fmBHYDsx6w==
-Date: Sun, 25 Jan 2026 12:11:25 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Jon Mason <jdmason@kudzu.us>, Jonathan Corbet <corbet@lwn.net>,
-	Linas Vepstas <linasvepstas@gmail.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Martin =?utf-8?Q?Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
-	Pavel Machek <pavel@ucw.cz>, MD Danish Anwar <danishanwar@ti.com>,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Huacai Chen <chenhuacai@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
-	Takashi Iwai <tiwai@suse.de>, Eric Biggers <ebiggers@google.com>,
-	Madadi Vineeth Reddy <vineethr@linux.ibm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Frederic Barrat <fbarrat@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Dong Yibo <dong100@mucse.com>,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
-	Vivian Wang <wangruikang@iscas.ac.cn>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@kernel.org>
-Subject: Re: [PATCH net-next] net: ethernet: neterion: s2io: remove unused
- driver
-Message-ID: <20260125181125.GA209392@bhelgaas>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gEFgpV5r"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b703e04984so228603eec.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 11:24:34 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769369073; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UBzxLI/s5n1h9/nWM8zfJzRc7hMGhNbHF0CcuOM8zdU+6QfQEFhxKX5HQaaK7Jqu4A
+         ERQ4bKCrXi9alNq+wsOMHGAi0+gF8Y5FtjTYtQbfJe/wmQaDcZ740ApsYNyF4qQec2hX
+         qXa+qvm7OdoE9JOtId2CLVxgeDRDRNdyxuxouQ5Ixf0AuX+6NYrrmS2xe1rtvoTF2Hxs
+         GlKtPzVpaJCQZMC8d3TjlDUD+WeI04ZChxsN1ZkIUpwkt+MB8xbT8F+Z5Jm8sP92VnzN
+         WpKo21owcK4l/DgKQ0AX8I9xQ55g5oby3N5+n7d/bUCD7rrrbF2KYiPFzW/S0Uh91RLD
+         EYQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fJt1aWSEMWk6/aewHrMmpRAYrvpwaYOxGHD1U6zPqSc=;
+        fh=WJXCT9MQHNDJGFDlF2PUR2x0/PuH6fCTzKmKeDK1SCM=;
+        b=C6MmWKHkPVCfAD+AeS3Y8oHUbC0Z/F3kFFHfoyrv4iILthR85pW80kTIUyhkJiYL3W
+         q2QFXuNRO3D1/eNWH5pce6x24bRB9iVrmkTkqMuUgJAExnbTPeZcIzJ43DebKDnKlC9+
+         bUnMnUOuCv69kMwc/q49ya0F4UOEHsFpnH1UfWWitHRqeHPDvVTrR4xj1sktJ+zOo+b1
+         Dh+whYs1gTEfG8Wid8poFvTfqpHhvKbzQhRaf9Q+6BiUhzYuXcx2XQozQlHCElZTkzIB
+         7E0I9IaVAaVdmbvR/NOvTUnS2NOL4r71Zo72fVTsd/9jJyMZmlrAVbAiFdKTt6uXdy7k
+         lmfQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769369073; x=1769973873; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fJt1aWSEMWk6/aewHrMmpRAYrvpwaYOxGHD1U6zPqSc=;
+        b=gEFgpV5r4v4bi0SkG2egM0NZz26jUr2XWTTp3YRyfPj9c0g5VCAhRbIPIB/bHWADc6
+         Mit8DeBrWP3ZeuOw9644hD3R85W1xidQAQoUuS8z4Tt+q3iiF96rCcU/7mjjQ1n4qru4
+         4EYoQyuyNSnkOBegIGt7EDRdbjxL7Hfr51zK7c/ZLHJ9fe2+iLTKzNX0fr6KWYTT0VHt
+         Pslgg8anyCGHHcyG3V5ZhrDRYLX8jHEKCkdk+WdOF+X2uXb9kB6oKi8QStNFnqvlLHwf
+         ObgQYu1osxPsBgxQvu1rnhw2HNpCHW+vZw9STee4Cv4Xg5GpHq8HxBGz+Qb9BI2KzWxc
+         H6QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769369073; x=1769973873;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fJt1aWSEMWk6/aewHrMmpRAYrvpwaYOxGHD1U6zPqSc=;
+        b=jldho+Ur/nGNwAlfhWtTsJG8UdBc1r5KGMi5GVQIAv9SgvoDFJ0Z1FMwpEBI+7Bq7q
+         x8XJbagz4Rj1jR/5MeETaBfdT323f+Y9wfQ9BwqY/u8n27zYHXGiy2DZEV8K72EYfno0
+         NDBbM7/eBXAw+QzpK2nWv7mWVzfbfq0IMfzebq8k0BHDa+NdQeEqP21HqBOhXwAMqrSj
+         yZGQGVAv8tMrNtz97z92UvlPtoZfNplXRnXAQLXFufy5C6wgaBELcX5oHsNOPM+OPDt7
+         dtVo9ZYzHRvJiW+/JrZGn5xwdLtL2mkecQJbi123ej6lmCzjCL5670yG9pEHlcmsX3KT
+         nG+Q==
+X-Gm-Message-State: AOJu0Ywc5zFW+3D+ohlR/Pt+ip+40z/1ZzQ3iggvBr+5AGWq1xQSQwD0
+	s1y7c90NzSCtLgxkPklUoDuUjxqBgqpcu94fy5fRXb7V/WfY+ZA4QTzscdcAohRkMd5y+G+QBM7
+	7LSBL4Vvkq95/nhMrRS0XXWNeGkoEg3bQTYN2LBA=
+X-Gm-Gg: AZuq6aLeRdrS2S8PSKw0o6Mu6IU0rpYO0Rnc/T+kxzCUF/gKeq/Vl22N9SSyE0hXSLS
+	8KSAhIXgbP/08jGOoNmcRS8X40Nh/ch9wkNWEcYugKNHGQsddw/uoppum69BD++SB79ogWoTLku
+	0JbOzUXAmXKOjyGcUCvLOvuIW9iIp+ysF3inINhCyhzBWsmUUKF9Kx/e2knZmvxwF2bMjK72lVs
+	NdeWnlyiIVzRlWstrUsWRxvNCmmdB6izZ+KmnDgbZs5KPvB0wDKS8BorbBl973cJhx11lymL1pL
+	ZGNK5zLfFUSWI+MOurDvk+gy6pLeu0Q3CphyPRjP0vcd9pAvX9vHbdglPPqm3eB6qJ5C9gzv0rE
+	mIbBAtkn0h5VdNQGj/iLmmcM=
+X-Received: by 2002:a05:7301:3c9b:b0:2b7:1c58:dc9e with SMTP id
+ 5a478bee46e88-2b764828eb7mr520760eec.9.1769369073416; Sun, 25 Jan 2026
+ 11:24:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADkSEUjyXH74izTrsfhdAjh=n-jnGx=tXbqPx86M9OYqjXj0PA@mail.gmail.com>
+References: <20260120083824.477339-1-sunke@kylinos.cn>
+In-Reply-To: <20260120083824.477339-1-sunke@kylinos.cn>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 25 Jan 2026 20:24:21 +0100
+X-Gm-Features: AZwV_QjDREbio0IoFTAHbZ-eJZbTeAtJFKB9XIxWxKudwvxhwkHbNFyalVQ5mlc
+Message-ID: <CANiq72noQv1rE=13CP9Ci1WAUONqN0bqq-z1r75n_572ZWA2Ww@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] rust: Replace unsafe core::mem::zeroed() with pin_init::zeroed()
+To: Ke Sun <sunke@kylinos.cn>, Benno Lossin <lossin@kernel.org>, 
+	Atharv Dubey <atharvd440@gmail.com>, Moritz Zielke <moritz.zielke@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 24, 2026 at 03:32:17PM -0800, Ethan Nelson-Moore wrote:
-> On Fri, Jan 23, 2026 at 11:25 PM Christophe Leroy (CS GROUP)
-> <chleroy@kernel.org> wrote:
-> > Yes and that's exactly the reason why removing unused IDs will be a problem.
-> >
-> > Let's take an exemple: some patch adds PCI_DEVICE_ID_ARECA_1682 after
-> > PCI_DEVICE_ID_ARECA_1681 in pci_ids.h in the mainline. That patch needs
-> > to be backported and it conflicts with PCI_VENDOR_ID_S2IO which is not
-> > anymore in the mainline but is still in stable.
-> 
-> Hi, Christophe,
-> 
-> I understand your reasoning now. Thanks for clarifying. In my opinion,
-> changes to pci_ids.h don't happen often enough for that to be a
-> problem. Unused IDs have been removed from it before.
+On Tue, Jan 20, 2026 at 9:38=E2=80=AFAM Ke Sun <sunke@kylinos.cn> wrote:
+>
+> This patch series replaces unsafe core::mem::zeroed() calls with
+> pin_init::zeroed() across multiple kernel modules.
 
-What is the value in removing the IDs?
+A few of these were already sent by (by Atharv and Moritz, Cc'd):
 
-The values can never be reused for new hardware, so removal doesn't
-make room for anything in the future.  Unlike the removal of driver
-code, removing the IDs doesn't reduce complexity or improve
-readability or maintainability.
+https://lore.kernel.org/rust-for-linux/20251129124706.26263-1-atharvd440@gm=
+ail.com/
+https://lore.kernel.org/rust-for-linux/20251129135657.36144-1-atharvd440@gm=
+ail.com/
+https://lore.kernel.org/rust-for-linux/20251030-zeroed-of-rs-v1-1-1c46d0251=
+28e@gmail.com/
+
+In addition, they were also sent by Benno, and in the issue he
+mentions "re-sending", which usually means just adding your
+Signed-off-by below his. Otherwise, if he is OK without authorship,
+this should most likely have:
+
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1189
+
+Cheers,
+Miguel
