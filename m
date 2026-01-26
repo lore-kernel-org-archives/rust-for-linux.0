@@ -1,136 +1,160 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0AD2343BE
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 08:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B3824113D;
+	Mon, 26 Jan 2026 08:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769415033; cv=none; b=rLO6z1YGd71xFdm828SeevZT79lveJDpnQGU5l2MNW6epy+43yXn/WWIfOXWbfepwQPVvRhP0yY2xIVsGbBdZy3jWirfMRgNGbPJVWo2cBlwZPpCYtlKLToSjyui/7uD1tYks2HtRI6bqhTDdPB70FR5vA3OCPA3I0bAC1UszcE=
+	t=1769415477; cv=none; b=GnE0B40EEjpwLJMF+CKAgev3+fAR1POF7lqYyBgQC7blbIU22lV31RPmQxGByuSl7jNuLNNl7DKNaKYxD3OPZKkTDnfMMKhlRJw6chljpx4hnXR7wEI5W+g0DjO4sp5+FDZCyc5Dc6uwM0USCGhLopcH/wz7oq3g28zFdSgmZoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769415033; c=relaxed/simple;
-	bh=R5EBGRnmK3ONp+jT0IGjHYx3veAq/WjXxzxTUJN0XN8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1AD7Al/I2n3z4Wna8ah1rcdXYTFYmfo7qCyjIIjhXyCw7DG141CqZkqEZ0CVcQuOStdnnumR03OnLgcSFTf66b4q0oQQ7fW2KF1JJb3oQvU/uLQKd4vWG8bi9XliSl45QDITSwP2QzOCdEVjusenyViITsvwA8kjglfdFFtDNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aUNfZRRH; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aUNfZRRH"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a1388cdac3so32260495ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 00:10:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769415032; x=1770019832; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DCVx/+4onon5Rps8ewPMIbOZ9VlOYp8bAF5YtERJrMM=;
-        b=aUNfZRRHRK+2u4hGcNtQiOTc2+3Oi7PyGoJisOhs0SHV57oiNqa+BctspriTnMKWfl
-         1HfxUCTfnbSM3cPH9s9LqU/okQlPVuu+cYfgyvX7kYWesOt1WtNiyeWaTT49dRGbjO5l
-         YdMSYk2Cc95vv8XSyyKh8Yxp/L+a7AhJFGCFhQLBi/0K+hTkJnEp+wxlJItSuRMI82q+
-         nGr8DXVqWA+Xu3tphPf+QGvrdsN+0InbPA3VoZp1rrzpRwWOOFsx5fEAemhWa09RhDk4
-         RuAi+Fn31PjSD1ynXw7J6TuCw/peWG330OlAqxU8wWWJncgtwNLv/cR4Kbs0G1JNPz9p
-         i9xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769415032; x=1770019832;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DCVx/+4onon5Rps8ewPMIbOZ9VlOYp8bAF5YtERJrMM=;
-        b=dyu5YS13ZKj5mBkqWle8B8tRqPoHyPEaN9SP/1xvwdVfUkCn/g+rgq+Ye0lMSE66w4
-         o4fR0KkWCzVaMqQeQxmTswRDzOaXuJ47CY0kdZ0OX3jTr506qy6ogHivIsjgO9d+lYe3
-         yvQLEf3ISJc/6IEAALeqm0td4Bgto7uKYDa4SMiHSyAuJDFkLaKas7Qh7Q9i0u1EPtUz
-         +5CdLcqK0KyKnwcVc2e9EIs68ZxCrwnaiqphKE+RHb3BysDl+EfFmbutKWG2D+XDj/2e
-         +d5h6cKKVKp9vQ4H4pr48rdivadMVby6qfJf7jKdDTw8cc0rpIcJCmZreRQVNEEWA/cF
-         mBAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXyL978XbrAZl3SJ/blI1O0wUX/s3xQ/LMtpZ72+WHYP9jPR9b93wb8h83XtA66KZCeyVRHf+xuIZk4+1vlpQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxz97tlNczFz3XNpbM/Lly0frctvNOo7Yzj9PMeFt35CD9RfwyK
-	3uzjwm2I2SLrUfQnzuFtZNucJucobfLvvPj34JMG4xXMSByeD5/MvlK8
-X-Gm-Gg: AZuq6aKMLXgv7eshcHvh6x6S3lIQQ+ylG6K+Nd1rTvPyc2daMquA8KWgh5K/uExwCRy
-	L3OhmKIEel6PGC8IuhHrV6uFQqQMb27KUuoXkMlL4YSMZYCW4dN2Z/jFHsW9ADCpV0Z/VdmWvLw
-	MSxgffMAUzzDfeF2BVvry0jfEHrx2LD6rMSBqObYbTzpy3wtOZjtOkc0ioslBomfPPJwWgMnAqZ
-	rq7ZJC9A5XSvN3EQj4ccfS3aokOptX9NufRoeE/S2bfLGn0VQHulnrtM8LXmyKE//kacT/SUL2M
-	t3TWQKvshiC1ONnvdTTByrcshqQZK5ZonhZDMDnfdIEO8+Mh2bKVFaVj3f29093BQBc6me37qg5
-	btK5+2At39lFTc8UKXlzVbj+34axmZe9W2INpw/jGMw7daoNWbSAqMboU4xqFmlTaZ/l23v/YLg
-	L00/dOyTEg1XNwTMWGhgCXi8pik3ING+3/AtIgfy5kF9df9HaM5QjuOIx8E0qUVA==
-X-Received: by 2002:a17:902:dacc:b0:2a0:9e9d:e8cf with SMTP id d9443c01a7336-2a845332006mr34093295ad.57.1769415031770;
-        Mon, 26 Jan 2026 00:10:31 -0800 (PST)
-Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802f978c7sm83498565ad.65.2026.01.26.00.10.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 00:10:31 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com,
-	ojeda@kernel.org,
-	peterz@infradead.org,
-	will@kernel.org,
-	gary@garyguo.net,
-	aliceryhl@google.com
-Cc: a.hindborg@kernel.org,
-	bjorn3_gh@protonmail.com,
-	dakr@kernel.org,
-	lossin@kernel.org,
-	mark.rutland@arm.com,
-	tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 2/2] rust: list: Use AtomicFlag in AtomicTracker
-Date: Mon, 26 Jan 2026 17:10:13 +0900
-Message-ID: <20260126081013.3616346-3-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260126081013.3616346-1-fujita.tomonori@gmail.com>
-References: <20260126081013.3616346-1-fujita.tomonori@gmail.com>
+	s=arc-20240116; t=1769415477; c=relaxed/simple;
+	bh=ZV+y3n2UPfl9QAWdzck61V9hDjuyMPdvbMtJe0/JfBE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JX26psO9uc58W/iM4Aj1EsGXjZYw15AdCZPHIvQoJlrliVFMS1z3jcNdH2AW0J3XurONmHWbxhYgJiaPpfGT+GVLKl1TxwB1+/Tm8HKNqEKubxEB1mtx08oO9AJWyN1N2aIOZ44zYj1AXL6dNR6ko4BHKy6jpGhuQ032f4TniPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 807a68f2fa8f11f0b0f03b4cfa9209d1-20260126
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:8a3c612f-7ffb-4c5a-951e-85a6fec6eb78,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:a9d874c,CLOUDID:183c2674dc5f80bf5febbde31a2928b0,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:-
+	3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,A
+	V:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 807a68f2fa8f11f0b0f03b4cfa9209d1-20260126
+X-User: pengfuyuan@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <pengfuyuan@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 603079910; Mon, 26 Jan 2026 16:17:49 +0800
+From: pengfuyuan <pengfuyuan@kylinos.cn>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	Hans de Goede <hansg@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lee Jones <lee@kernel.org>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Zsolt Kajtar <soci@c64.rulez.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	pengfuyuan <pengfuyuan@kylinos.cn>
+Subject: [PATCH v1 v1 0/4] [RUST] Framebuffer driver support
+Date: Mon, 26 Jan 2026 16:17:40 +0800
+Message-Id: <20260126081744.781392-1-pengfuyuan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Make AtomicTracker use AtomicFlag instead of Atomic<bool> to avoid
-slow byte-sized RMWs on architectures that don't support them.
+This patch series adds Rust bindings and safe abstractions for the Linux
+framebuffer subsystem, enabling framebuffer drivers to be implemented in Rust.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/list/arc.rs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+The series consists of 4 patches:
 
-diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
-index 2282f33913ee..5e84f500a3fe 100644
---- a/rust/kernel/list/arc.rs
-+++ b/rust/kernel/list/arc.rs
-@@ -6,7 +6,7 @@
- 
- use crate::alloc::{AllocError, Flags};
- use crate::prelude::*;
--use crate::sync::atomic::{ordering, Atomic};
-+use crate::sync::atomic::{ordering, AtomicFlag};
- use crate::sync::{Arc, ArcBorrow, UniqueArc};
- use core::marker::PhantomPinned;
- use core::ops::Deref;
-@@ -469,7 +469,7 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> for ListArc
- /// If the boolean is `false`, then there is no [`ListArc`] for this value.
- #[repr(transparent)]
- pub struct AtomicTracker<const ID: u64 = 0> {
--    inner: Atomic<bool>,
-+    inner: AtomicFlag,
-     // This value needs to be pinned to justify the INVARIANT: comment in `AtomicTracker::new`.
-     _pin: PhantomPinned,
- }
-@@ -480,12 +480,12 @@ pub fn new() -> impl PinInit<Self> {
-         // INVARIANT: Pin-init initializers can't be used on an existing `Arc`, so this value will
-         // not be constructed in an `Arc` that already has a `ListArc`.
-         Self {
--            inner: Atomic::new(false),
-+            inner: AtomicFlag::new(false),
-             _pin: PhantomPinned,
-         }
-     }
- 
--    fn project_inner(self: Pin<&mut Self>) -> &mut Atomic<bool> {
-+    fn project_inner(self: Pin<&mut Self>) -> &mut AtomicFlag {
-         // SAFETY: The `inner` field is not structurally pinned, so we may obtain a mutable
-         // reference to it even if we only have a pinned reference to `self`.
-         unsafe { &mut Pin::into_inner_unchecked(self).inner }
+1. rust: io: mem: add ioremap_wc support
+   Adds write-combining memory mapping support to the Rust iomem abstraction,
+   which is essential for framebuffer memory regions that benefit from
+   write-combining semantics.
+
+2. rust: device: add platdata accessors
+   Implements generic accessors for platform data, enabling drivers to access
+   platform-provided configuration. This is needed for framebuffer drivers
+   that use platform data for configuration.
+
+3. rust: fb: add framebuffer driver support
+   Adds the core framebuffer framework abstraction, including:
+   - Device abstraction (`fb::Device`) with reference counting via `AlwaysRefCounted`
+   - Driver and Operations traits (`fb::Driver`, `fb::Operations`)
+   - Screen information wrappers (`fb::FixScreenInfo`, `fb::VarScreenInfo`)
+   - I/O operation helpers (`fb_io_read`, `fb_io_write`, `fb_io_mmap`)
+   - Blit operation helpers (`cfb_fillrect`, `cfb_copyarea`, `cfb_imageblit`)
+
+4. rust: fb: add simplefb test driver
+   Adds a test driver that validates the framebuffer framework by porting
+   the C simplefb driver to Rust. This driver serves as both a validation
+   tool and a reference implementation for future Rust framebuffer drivers.
+
+The implementation follows the same patterns established in the DRM subsystem
+and maintains full compatibility with the existing C framebuffer subsystem.
+All C callbacks are properly bridged to Rust trait methods via the `Operations`
+trait, memory safety is ensured through proper use of `Opaque<fb_info>`, `ARef`,
+and `AlwaysRefCounted` for reference counting, type invariants are documented
+and enforced through the type system, and resource cleanup is handled via RAII
+with proper cleanup order.
+
+Testing:
+--------
+This series has been tested on:
+- ARM64 platforms with various display configurations
+- AMD RX550 graphics card
+- Moore Threads S30 graphics card
+- Multiple other graphics cards
+
+All tested configurations show normal display functionality with proper
+framebuffer initialization, rendering operations (including I/O, color register
+management, and blitting), memory mapping, and resource cleanup. The simplefb
+test driver successfully demonstrates the usage of all framebuffer framework
+APIs and validates the abstraction's correctness.
+
+The simplefb test driver serves as both a validation tool and a reference
+implementation for future Rust framebuffer drivers.
+
+
+pengfuyuan (4):
+  rust: io: mem: add ioremap_wc support
+  rust: device: add platdata accessors
+  rust: fb: add framebuffer driver support
+  rust: fb: add simplefb test driver
+
+ drivers/video/fbdev/Kconfig          |  21 +
+ drivers/video/fbdev/Makefile         |   1 +
+ drivers/video/fbdev/simplefb_rust.rs | 653 +++++++++++++++++++++++++++
+ rust/bindings/bindings_helper.h      |   2 +
+ rust/helpers/device.c                |   5 +
+ rust/helpers/io.c                    |   5 +
+ rust/kernel/device.rs                |  31 ++
+ rust/kernel/fb/blit.rs               | 106 +++++
+ rust/kernel/fb/device.rs             | 463 +++++++++++++++++++
+ rust/kernel/fb/driver.rs             | 169 +++++++
+ rust/kernel/fb/io.rs                 |  76 ++++
+ rust/kernel/fb/mod.rs                |  23 +
+ rust/kernel/fb/screeninfo.rs         | 318 +++++++++++++
+ rust/kernel/io/mem.rs                |  71 +++
+ rust/kernel/lib.rs                   |   2 +
+ 15 files changed, 1946 insertions(+)
+ create mode 100644 drivers/video/fbdev/simplefb_rust.rs
+ create mode 100644 rust/kernel/fb/blit.rs
+ create mode 100644 rust/kernel/fb/device.rs
+ create mode 100644 rust/kernel/fb/driver.rs
+ create mode 100644 rust/kernel/fb/io.rs
+ create mode 100644 rust/kernel/fb/mod.rs
+ create mode 100644 rust/kernel/fb/screeninfo.rs
+
 -- 
-2.43.0
+2.25.1
 
