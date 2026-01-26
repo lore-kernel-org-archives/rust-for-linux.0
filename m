@@ -1,70 +1,67 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010054.outbound.protection.outlook.com [52.101.56.54])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020088.outbound.protection.outlook.com [52.101.195.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D3E1DE8BE;
-	Mon, 26 Jan 2026 18:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016B24F881;
+	Mon, 26 Jan 2026 18:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.88
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769451562; cv=fail; b=uQt8EBJa0cJvlTRSzL3nBEgChfrvH5hOprZY6J/CZp3erebP9VusC0FsCiK/mL48m7T5hMlT9UOaQUpqvGSS7QEcp2lTmCMLj5y2wBixGPz3Irl5qqVgFLMGdSIiWumVsNTQFy475qxGdD0vjsFg4UN9GfiRXhvur1K9w4KMXgs=
+	t=1769451998; cv=fail; b=avXqdXfwKUWc2K9zQHEuVhUTrQbCU/TnlKMb60e1NHPJ2ehG3zb6m7rdK+bk4sHKj9RomXSMb/Ys1S6+sVChIqN5OyaDDWqH4zQOBAi7OxPdZ8RwLzchSdCFqFFmu3O1jLrwzmWeiV/ZY600siSJqkGQ+ygun1G3MV4nUbJDrC8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769451562; c=relaxed/simple;
-	bh=jvHJPB9BiwUNvOi2APPnlwHTVtlUpcuJ80QbgjDTsCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mbsqflw69kIzg2Wk7UiJ2U63wxt5YU7foEmHHM7FIUMVmtHtF1tOaR0jSGMbgPNqt/70xIXqJ8i++5oFwU3gNpOdermwCiKJB6KLi9b/Jq7cWEfRwaTRsvTjq+bhh7ATpiPfLQXvprD5/cLZ9SFD37YxqM7qCk4fyZs7pk7BEEs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MXffpTth; arc=fail smtp.client-ip=52.101.56.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1769451998; c=relaxed/simple;
+	bh=cb1yYcFth4wNcUcP4xWbhsPPkzlsKz+1HGqYR/ayECs=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=DUhsrj6TwH/TcJLiyV84wEcnYyhOuejkoBSWRMEbRTt0Q94Z6b2BQCGbHmRgAh9cy6ejzRgu/mVJCb9fBI+iufrNPfHh+FQ0ieRbUTGMXKq+CZdvIOnVtywRQduF9tE4gCf5pjeUu5r+dy4WVVHJ8zobwqF4LkAXe7qPONQIISY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=BUMAQk0x; arc=fail smtp.client-ip=52.101.195.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MXffpTth"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="BUMAQk0x"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ObwFkMx86pqhlC8CNvPIObRxTMwaHj0dFBNvEdQQcChXBgJaBS0QpWNJ0AcnO3ibhuAnOPULqhgqTUdsys1d1bde5/48cH5kIp/PrBegJQegzdCW1Tl6f5ag9ubZ/BLEc/3hKuc7ZhHBt8mMoS6Sxm8uBXrlYUseLgvBg8vIZTfa7hOcY3wpQJ4tdfmvD+bRScEhb90FfNzZ8y57vcLFmPNJFJGJbDItcYF4ipFTDj+WYlCP9w1wmFOktgYTEr5JZT9tsXLPgbD0t8FFi4AuUJ6gfbCXz12yyzX22Cxxloy8qcul/GeCA8qriNgn4nMGedxa27+RWFyHsxe01XbI2A==
+ b=QVJJG4VBE6FfvEGI5+0GEybmLiimfVhxm44Cy9wkJ5LoFOXRECv5YKDN7Rgy+OyshwAppCVBmWPo5ykgqWC6JcJbTC8LBT8OOGbZM20UJIWyJaJsf5v1swfzAhL0otMvv1gguyC8HCsP2fXAya/YmBxKVmxCMF+ljUDrfWsNoLfhuLupxFZTuy/o5fPgf0w+eUqbg8wDz0FWYnmTW9dT4+ePoUy3Qe4ygmwpAxtL9OdaAIQRdnhfZGDavaxG9fcOWio1Mfxbk7ndlz8ok6YjNnTky4o/FZYMUJTJrSd399IubAGc0jGuIvbc9hEDyBQyC0YGb2IB0rTePSrUVEvpvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H++95ao5JiJt6IktGNi2k7zbKKcq6GWcjpGUVXO428Y=;
- b=hf4B2w5jc2g98J10oFY4PVy9HvcTJrgiPLMxJ9oD4SRRJsZpINzV4Iks2TByBLQIjTNTJRFhxKRCAvY35cyFs0HDyWw/1HGO4wdSkNiNf/czHiICJwSjXM15AV7EXSpRHlfx7SKq4GQ69hflGamccrHSEw2GRozDIg6vW/ar8iHYaWeJkfC22nUCAjmHz3kLkcepzrJ051W3ZRqp02UJnmXNC0deqOj+F8u1ERJYqz1e0JdNWqxDzPA3QjiDLGm0fkzznLPevDcwjJvyI6/LGcZ3w+FtPURwSLfIIgtin8TrTcl53RPn89AnfRx1DXYzPoaiIsfYE9jA9YW/5bgaxQ==
+ bh=c+sP9wCqx1RU4ehZBnIoQ54nrEhK0Y4RjQOJ9mOCds8=;
+ b=S/HuAYWfOsDIZds3wOR+qlzug8OPFuS4kaYcbYo/uJjXYpSWxhKl6bacs9wQbt4kjV/D709x5Am/YSUcP2Wk+z/J5PCrBZuTJc9Vw4CesXmXlJzfKQAiD5yJtBwDW72pKd5OiVTpOhxK4CqyyK6Yd1K33Y2dhHv4bXMe0oVhLudr0M+s8mKfqWtfJMihnU9Dxj80q6CZ/2GWY691ErF5zKWB1D2rHJdoHulW0ebRnizZzIJULUcOoFZsqXZsjSzW0R7HczaiiP7qj6RfURZUrKjLdpaey4Kiok8jyuJu37843YPOssk6sF36/OOU3la7rV4r3ZsZPKN0hne6ZE0yvA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H++95ao5JiJt6IktGNi2k7zbKKcq6GWcjpGUVXO428Y=;
- b=MXffpTthPUPKsttmsTG0hBccOZHmMV8+ogG5G8pVgYrBGmKaTmJA6rW4zdNQTN93B9Zeyk49ZzvU9eyqMSn7MC/xdWoplV4FWBt4DshdFzgd+8pgmcxnT0cZvINik2th5/fNTLIbODJtVzEM5Bd7mukmpBE810OqwPq7ZXFiWWbFQIa9wBcBr48DHwe7BK6Bq84qQyvlLE0TLBuca/mqHEjhkiFmF4rhU7onPpSIPCVQMuGeYFtbWbhC0rf8iwQCcP0Abm1F2Lz9iGdP6/LR910/jeOkpHrcbEGvxn7aTYmLQIa/P/1EY3MEGN2E+BlI8wnbxui4otbSW3LvVcJZtA==
+ bh=c+sP9wCqx1RU4ehZBnIoQ54nrEhK0Y4RjQOJ9mOCds8=;
+ b=BUMAQk0xbAxbKszSpIcyvMWooQqVl6hHdOz2UBwORIsREf4VYyqQIxsqQCIZ1bIQ928i7OusBj8mnENenhDRFjoJ2fvjF8wy846k3NQ4pCibZ7HTSfExy0BrsGTtcM4x6z0caAD9UV9LyuVLLz6hzshsM/rRga7CrPLPyk6gfU4=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by SA1PR12MB6969.namprd12.prod.outlook.com (2603:10b6:806:24c::14) with
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
+ by LO4P265MB6795.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2f9::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.14; Mon, 26 Jan
- 2026 18:19:13 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c%3]) with mapi id 15.20.9542.015; Mon, 26 Jan 2026
- 18:19:13 +0000
-Date: Mon, 26 Jan 2026 14:19:12 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dakr@kernel.org, aliceryhl@google.com,
-	bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	tmgross@umich.edu, markus.probst@posteo.de, helgaas@kernel.org,
-	cjia@nvidia.com, smitra@nvidia.com, ankita@nvidia.com,
-	aniketa@nvidia.com, kwankhede@nvidia.com, targupta@nvidia.com,
-	acourbot@nvidia.com, joelagnelf@nvidia.com, jhubbard@nvidia.com,
-	zhiwang@kernel.org, daniel.almeida@collabora.com
-Subject: Re: [PATCH v2 1/2] rust: introduce abstractions for fwctl
-Message-ID: <20260126181912.GA2131321@nvidia.com>
-References: <20260122204232.15988-1-zhiw@nvidia.com>
- <20260122204232.15988-2-zhiw@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122204232.15988-2-zhiw@nvidia.com>
-X-ClientProxiedBy: MN2PR19CA0059.namprd19.prod.outlook.com
- (2603:10b6:208:19b::36) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Mon, 26 Jan
+ 2026 18:26:33 +0000
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.20.9542.010; Mon, 26 Jan 2026
+ 18:26:33 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 Jan 2026 18:26:33 +0000
+Message-Id: <DFYQDRTTNQ4J.7DS0PAZQZ7XV@garyguo.net>
+Cc: <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 3/4] gpu: nova-core: gsp: fix improper handling of
+ empty slot in cmdq
+From: "Gary Guo" <gary@garyguo.net>
+To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <20260123-nova-core-cmdq1-v2-0-e797ec1b714c@nvidia.com>
+ <20260123-nova-core-cmdq1-v2-3-e797ec1b714c@nvidia.com>
+In-Reply-To: <20260123-nova-core-cmdq1-v2-3-e797ec1b714c@nvidia.com>
+X-ClientProxiedBy: LO2P265CA0221.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:b::17) To CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:27c::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -72,267 +69,192 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SA1PR12MB6969:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e38f86e-cef5-4397-38c9-08de5d076881
+X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|LO4P265MB6795:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2de4a390-1211-4c38-fa0f-08de5d086f07
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/ayv9tXMui4ljPK7Aq1kXKaeOXKLMjkbNNGHObwDTXHXaLdz8LVgwsaOik/+?=
- =?us-ascii?Q?IP9mzSpyXJlKIveO9iIvTfGu9Z2G9hTYQJALSevwgXYIlCeLiA6GDamGzuY5?=
- =?us-ascii?Q?VinTjsAIR+phvBs9dfoaodr1JlZu9xgohl9LZjKr4OWOjZSNafftcZdwMD/I?=
- =?us-ascii?Q?lZLR0n7Ytvev8EBZsoAGdPeKXWH1xbWo0n/nIJ0jr+Z71PVfWSqF7WzszEr2?=
- =?us-ascii?Q?XO6Vae+Wr8PLX24/YL/xFAGqtXjxlyF46LPwZ+uv80hyAKQ3UDDVNR5xwx1D?=
- =?us-ascii?Q?2RQmjKsv0e9KnzrWr9GUBAydGZG9ODztIvqBfHHhyrMpKLOnMh+TcqJp/1B5?=
- =?us-ascii?Q?NsL6r5JlQSrko3N92iBr51n5L3Ni3tzUgK1+frsOe4UMGBSHMNFxIUaP56tZ?=
- =?us-ascii?Q?d11Y5FololI9HGz8I+WJud3JU2e8AKDS7vsGVGSqIDY0RGyagcnNqghyUN75?=
- =?us-ascii?Q?AkCCJvyl7AGzRNXRmjhjiEaImKyC+TU1oWa8cacDD+wLtPP6V3GaMdpfuNDf?=
- =?us-ascii?Q?moH7NGiukwvHms7da5U0wg9W9rGHA6EiBopjNqdgK6gfFZX5XYFii/14IUEa?=
- =?us-ascii?Q?b5VqbJJCqnH28CkyaJM9TseDx9K1Y8CBbp3yR8uqpxEfevgVvX8TaseYFHno?=
- =?us-ascii?Q?9t1VoqVO/T8P1z3KfzdZjjQ9vFcbGwtcW++KfACQ17dyQU2fdo6Pwy01ayZ2?=
- =?us-ascii?Q?Jr8MzcdskpSbreDVx+S2xzWtWg8y5u2aZNcSvXtbmALOjRprENUjYhMbN12W?=
- =?us-ascii?Q?pWSjD9pNeCey/citZzWiXkLHpjW8TE5m+qrxqebwSKSxiZrTem9bqTtupQ1s?=
- =?us-ascii?Q?Kq+TC1PGQn0NXPDiKjtrn1hO1N/pVtdUkV9JWQ+OZlW4u+yhEOZwfQgo826n?=
- =?us-ascii?Q?ASZ9snEtdOxZfXMNrckiCiFy1Jmz6Ndn4lRK7QXqu0rw0443c7ecQ3WhfhJn?=
- =?us-ascii?Q?8FloBYSpiERic033MAWCRscJXqUi2RGfipt82jkENjGqkGYP11n/Rfs4Df00?=
- =?us-ascii?Q?gm/MWddlTn+ErrArrcJo7Ad1kq9r7r2DWJrN1c2BSKPNotNXsrqvLKg0u2i6?=
- =?us-ascii?Q?OlItZzcwU/krZggW052jDNYc4FeK1dUhlurNlguGQkfvvz8eX79o/Y8mQpR6?=
- =?us-ascii?Q?PlfWXJKrHfG+2GKSyQnDqACGTASnBmvDT8VbKokykfz+4WuRik2DeAaX+u4A?=
- =?us-ascii?Q?6JejlXp/p/YBWNNDjGBe8CukRTkNQS+Z2YsIjwQcDAWChA+5K539IBaEZQtc?=
- =?us-ascii?Q?VBSnAiCU1mfUFgsi1zRR9BmPQhu8tvxowB9IpxVDpKVcEZMVbJKvVhYwsj/Q?=
- =?us-ascii?Q?7HFFflKzqiI/03SriJ489aHAoUkxJC9bxX0bhXVS2SGVgEy2pOTlJcXphHha?=
- =?us-ascii?Q?9g6PrSR2YemVC20OIOEd3odn7KRV6Im/Kfqiqz9dTRyygWwEYr8lhEPWuvtC?=
- =?us-ascii?Q?W6ag5sPPsrrb5A0WIAC8NwAPJr5mSJoqr0oUmC5rZTViQ0kUxuHtT7i1uKAk?=
- =?us-ascii?Q?dUy0Whcn8lGO/eztj87Su5xb6zVQUhDiJxPITdGfe2Lj2wWbT3wEanSEb8uI?=
- =?us-ascii?Q?QGtyWvxhSSwPxrre3hQ=3D?=
+	=?utf-8?B?TXVXdEZUZC94SFFhdThhV1djTjlxOXNid2FVbzhUOHZwbk9KSndSVnFvWk9X?=
+ =?utf-8?B?WkMvSFlmbmdRVXNQRFFsWHNXaDZIYlFFbytFU3pUeXpkNVJrUGxtNXh1WFl2?=
+ =?utf-8?B?NURmaXBRR3daYTkxSitVL3VtNjJtbGVldnpqNVlLTldjUkRQMWxUeDhPN2Fs?=
+ =?utf-8?B?Ym90a1o0c0pLSXRjaFpsYWUzVmMwcWhKaWNGcFkxNnlZajJGWjhxSkZIaW1h?=
+ =?utf-8?B?S0crb2taU1d1Z1YxYXkyNys0MnYvWDhFRjQ3WXlQK2ROR25mTUo1aENaMkZV?=
+ =?utf-8?B?OHlTeTR3STUzdzNmeDVBUDUwMEJuVGI0Q2dNYW1zdUlEUnhEaTJhSXQ4MUlR?=
+ =?utf-8?B?bFJFejFWdlVRem9HeWswUkZCaXdveS9uQXVXU2ViWmN6YlJ2RHhzdVZtUVpB?=
+ =?utf-8?B?K3FwRjI5Vm1OekJGUGNUakR2R2xHT3Z1QzA0Ym9WVWd1dTY4bjJZaXNsSUFw?=
+ =?utf-8?B?djMveUJOOW50d0JEU1RsN2QwY25WNGtqMkpuOXdYWkJtaG5tQzlEbTExSW45?=
+ =?utf-8?B?RjBTcE5pbGcvcFVSVkZxdkxWclZqa3QzWE55cUhvVDNRZVdDcWdkdm5mNUx0?=
+ =?utf-8?B?QWlCZTNWTkFqQTRPaGZha0tqOS9QMGFFY2J4OGE4cTN1WjJEc2RYSGFBbWxM?=
+ =?utf-8?B?N2V1Z3NHT0lPYTUrT1crdW1PTGFzai9ac2ovN21zN0pNNWF1aVoyS0pIWTJ1?=
+ =?utf-8?B?UkpQaW45NnBUSGpvSkRzaUt2WGV0d0ZWcytUZGNwS0JKdTZzeGI2Q1cwSURJ?=
+ =?utf-8?B?S1hwRHhpdHRRdmNnTi8vSHBBQ0lXRUNxNCtxSGhxc29CRDRnTnVQTGxRdUg3?=
+ =?utf-8?B?eG42WEhPVVFsb0RJK0s5SlRXQmI4bGhocS9CSExCWnh0NWtYRXlBUSswdEJ1?=
+ =?utf-8?B?aTRGL2tWT1UwMTB6TzViMmRYT0pMZjVLVERDWDBmZnNkOUVrRy9WR2pSVStp?=
+ =?utf-8?B?QkpoYkNJSzVlZ1ZUdkNjWis3ZFZsZTN3U2l3a3NzWUJHTUNXZ3ViK3g3U3RV?=
+ =?utf-8?B?V0krdmVGQjRxMlVmOWtnSmduMnBpbGx0SUxYRGU4SEgzakxDMC9NK1RiSVVV?=
+ =?utf-8?B?NSt1TVpYbWExb1pVUW1mSFp1TXcxRHRCRFBGRm9WM0dXU29jRFVmcXFVVG9H?=
+ =?utf-8?B?bmVUUlRwS2tUZUhFVGwzTTFpemdYZTVSbmplVTBpWWhPUVphV2p1L2c2dVN6?=
+ =?utf-8?B?UU41SU8rbVp5SThWSkZIeXFHeGVsMk1XdVZJZExheTk0MisrdWFnNk9Lb3Rx?=
+ =?utf-8?B?YUtrZDcwaVhJZ1UvUGd2VmR0c3NaeWlTY2FVbXlvU0gwdTZlbHJPWTgwdDZi?=
+ =?utf-8?B?V05zejhzaDNBL2FoVXBBK2pvcUtpaEJpMGNxajVZNkt4V3NMeFZHYnU0dTFt?=
+ =?utf-8?B?YVdxVE01MWYrZkZHN25wMXp0OXFxTENDVXVDRmd6ZEY5OE1RenZ6b0g4QXUv?=
+ =?utf-8?B?dngrc2cvREM5SWZDc0FvNVgrK2xqRnc4ODM3THlZcFg5K1dMOERsSElCVVdx?=
+ =?utf-8?B?SWVzNXNJUEJiSFZKd05mVFBXRzZiUmZIUFhZaGo4SE9kMEd2Tk5OY0xOYWVY?=
+ =?utf-8?B?bHIxRnNVdlg5VC9MRHBObmNzeWU1a0JpR1B5WHdPNmJoS2wrd2VzdmYyQ0RB?=
+ =?utf-8?B?dHBWSml6Y0pUOC9DSGJyazZPUFY3Zis4TitEZ1Z3cmxtSzN0cFdqT1E3cmdR?=
+ =?utf-8?B?QVFkRUtFenU2VTVEU3k3Z21WSDZFSlNKTWNpb3NJNkFTQVd6TGFZUHM2dTJD?=
+ =?utf-8?B?Vi93OExtSkRhR2dVZ0xlL1ZmSUw2NFdNcDlnTm9hMEVxRVB1bDZnQ0RtREZC?=
+ =?utf-8?B?OHNzZWtVVTNNN2YwUWpTcVU0dlg4VzlxaXBVUi9yWmgyRlhXSitYb3MvSFlO?=
+ =?utf-8?B?T0w4dWZBT3NpNjdvRnNIRXAzNDJPZGgrU2tqSWJ2aXhRVW84dENHWlRlQjcr?=
+ =?utf-8?B?d0tEUDZ2ekZ5YU5ZUnRZMmZJMk5VR0pYZ0Q0YzhDSFlocWp2eXl3MUxXYlVC?=
+ =?utf-8?B?dXp4UEpRai9tWGxQamZrN3Q1NWNKYWFHSnkwN1RnNWpZRkV4S3BTN3hOdWZT?=
+ =?utf-8?B?ZlNqYVdvZ1ZvLzFwYlFKbXhlNUd5QUFoc0pDVkFHb2RFa1N5RCtjSDd4VlNt?=
+ =?utf-8?Q?Xm4U=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TsYbMGWgws6t3QhaA5Kz3Fu5hf1iu7f5WcHlLXTPmt42Fx8m8f5sIUlr1C3+?=
- =?us-ascii?Q?FcLPFdA5CbkZYemSBazxzZEDYK+Amfv0TxVZD1xMSNUzQbjwPi0iccontchI?=
- =?us-ascii?Q?0qFViOcrbRavhSUAKGG91Jw3bb+0mnfenpcvoRwQm9uCbr1SA574k3TZUxx8?=
- =?us-ascii?Q?sftGYefCvbcc4PswLyQIqENUwDJev6e0fGo2lexaGYa12k1DFP+3Er6sknOU?=
- =?us-ascii?Q?Wf/ZpxgCGrTyld5a4ZApx0/IA4lXPn/jCVpBJpmJg8z1JbsoUDzdavpC12c2?=
- =?us-ascii?Q?aEr9/b2YbE3guZLGpmTT0Gs0Fj8uc0F8rHk6wMkXY87vKsWcnh5rstDwphjT?=
- =?us-ascii?Q?vHL6XUnjcgGFf8TFo0duKnbvuV25OlliPdBlEKtwLHAdU9H7VqqT3mtxSNJ4?=
- =?us-ascii?Q?QPHq9GUZDbiPPmHERPL23wZAQGneW+fmUhIvsLH666F9QIO3DHj1fRAJuPDh?=
- =?us-ascii?Q?PcTgEguhcrXYjUDERaYocxe0yyusToXyKqrRQuTH7CByuRcM/4dtZQvLZ5ZV?=
- =?us-ascii?Q?IEuv8SBvXVNj1b1aQiXAgJiQnJUjoTD1gAIcVX75iSKc61wEc53XCp16idKB?=
- =?us-ascii?Q?gOrAfPqaIK94WBClQ2MspznekdGO5r1fBB5kD3nLjkEWHuoqi3G8SaWAugI1?=
- =?us-ascii?Q?BHEEAZcj1U2+VXlUNW/iudMs36fTgVkLAnyV0xGs7vtyWRo/JhdvfKJX8atF?=
- =?us-ascii?Q?zu1g/t2HPsiF3m+nbqPo475ZA6X0Z3/uRlDmB9FY2PvmIDUV1yGkVTqhXe0Y?=
- =?us-ascii?Q?Bs4AUu9Kc7OsrVk3A0LzeAehpu64y8YWotyZfH6EbmVXrbxwG403rRVd4ey4?=
- =?us-ascii?Q?MsYrGy2etg5Wft7C6CVn9t3IKe5MgQNYlCOe/RRB2y38LKWQYSGcqyiKRiDo?=
- =?us-ascii?Q?xQejb9qc/nMskHLPTLikYwIQjNE4SfyKPC/m0ZGifUa10FV4uvAxwg90Akbu?=
- =?us-ascii?Q?ZoM1Gx2leIRMdMc8z2WyVsDK/7bKkpeiJlgXR6OJksDyCjs+4FBPeTEPkL5m?=
- =?us-ascii?Q?UMoQTPZrvs6vwA8xUDwweN9IqqYi6UBPD+ib2wDlrQn0N+RkMV2cT8kVqDly?=
- =?us-ascii?Q?GzwgTtDfMxYNL/ys2LuiTK1D5CZ5mUIEP+uZVf5EM90fe5dXSLS38xZbR3op?=
- =?us-ascii?Q?bxVv1q6ZjLp+EEBzC3LC6v1uTlOX93wo9B48nXqHvg3dsv41ORFHoU1+3AFm?=
- =?us-ascii?Q?ntd0Yd15b9xLxk3ssHg1wZ4QPlkhJlUEeLDNPOyUWigB9cJkqqQZGfrvhmQD?=
- =?us-ascii?Q?lTctmKXHvM0ndJY/PSk12xyeBafS/usDgoJ6bY4L4vbd2Ldiy/wy3/DcdzPW?=
- =?us-ascii?Q?2ItRriTmL3p0WqrGF9UjFX+xH4AMEpEmGtA8Qt+6vwEc1vbjCKRzSb1tJjh7?=
- =?us-ascii?Q?2xQJjS2zNOdtAfbhRfUSM9AfM4r6MSOW4+Nh1nsKhNEyQWYt3P5vwr5qcnBT?=
- =?us-ascii?Q?VcOtLbvUMlQ+NR1M5KhjAJ1GLx9Wh5YHnSJk8ujJD9uKEK4CYk5ofw31MVMv?=
- =?us-ascii?Q?ojJHrRZQWzDzv1PqKm2Ta/LPJkSPAniLn35Fw0QKq6M5ysNALooC9LvfVHax?=
- =?us-ascii?Q?UgdGlWJWRqeRy9bIxnzNas/zGobKOuCu1eXGiRUiZYhkYEEhaW4CCB4kBwc4?=
- =?us-ascii?Q?8Pb/trPLm91ImctXUF61EU054RbWUivd3HzhgFsDcO3IjhxL9JVy8CFuVzAV?=
- =?us-ascii?Q?NGWuQJ0kl9vR+T9LLm3H6LXdghKH421aIsrTJrY7dL7X4SR0RxmiyKIsab2q?=
- =?us-ascii?Q?/3D9/fDXWA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e38f86e-cef5-4397-38c9-08de5d076881
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+	=?utf-8?B?UU1uQTAyTFFmcnNmbTZYOTYwRkt6a0o4Y1ZWZWJLV3ZZY3B2VEFMVUhqTHdl?=
+ =?utf-8?B?RVNNbzRxS2Z6R2l4c0QxVmhPZ1dPamdFaGF5SzJ5enFvbUcrWDh0dGIvai9M?=
+ =?utf-8?B?NWVTTktKSkRSRkt6YVJUdWtteFBaK2VuTzA1TzdxRG5wM0ZDZEVObHJ1NTM5?=
+ =?utf-8?B?MDhzemxmelErMHJuWmd0cGtMNThxRmZTMmNyZndIWmxmRmswWDFLeWVJamlF?=
+ =?utf-8?B?dlNFR1ZMZFAwekxWZWF6eWdkbk9oZXRnL3pzaWhXYmQ5ZTVqOXRaZ085U0Zn?=
+ =?utf-8?B?dnR6UEF3TzhiU0NxWjFZbDg0bGZSa09JU2xoNkRRSk1yeHFaM3FlVHdhWEVx?=
+ =?utf-8?B?bDgweTF5ekFpU0dwQjNKRWtiVkVEcjYxVG5hTGJCOTBmNlNEemRteE1CbGRK?=
+ =?utf-8?B?cmo0SWR2R0tCL0NLeXFISVgrZmwrYTl2TVJHWlZvenI0QlZ6TjhlNUp4bHZ0?=
+ =?utf-8?B?bVpQcS9uSEYrMXV4bmNUWjlZTnhOU1pwWkZoV01JVE50cHFRNkhIZ1dVT3hY?=
+ =?utf-8?B?ek9qK0RtN3VON2xNT1lndmJQV1U5emxSN0J1N3JTRFBGbFJjSGg3WWhESEFo?=
+ =?utf-8?B?cU5xT1EwNzJUUm1wdkppLzQzZ2pGL1ZrNXNyTGlXbHl5THZ5VW5KNzFwYzFy?=
+ =?utf-8?B?NnYvMloxN3pmc05Ndm9oSzdlNnFUZ0lnaFFXYVViRHlsQ3NFRU81TDFhU0ky?=
+ =?utf-8?B?dXlKL2tTaTNIcDJMSW8vSExxWk0raEYvdExlYVhNQTBLZm5Rb0dFYmtUaWl2?=
+ =?utf-8?B?ejdiZmdYcWRLMDRxUjFiT2hGeVlVZDFtbVN6RTFpMTd3SXhrSnQ4c1JtV245?=
+ =?utf-8?B?VjdacVdwNmZ2aXJsNllGQ29kbUtmekd5c2tvYmNDamhqdmpLR1NTdFdXWnBX?=
+ =?utf-8?B?a2h6VlYvY08rZy94ZDFhai85WnVla1E5cm5XdlA2UUtQSU1BYzR0dzBJam1Y?=
+ =?utf-8?B?MFdTVmpFdVFBRTE0cE85TndZMkFXZ0xjZjlqU0ZUVC82b2VLeWZzMFNBWnI2?=
+ =?utf-8?B?SjNuUEVVQ0pwNHpmeGd6VlhBN25OM1VDdWplNVMvelFRUkVtb0s4RjhVQTN5?=
+ =?utf-8?B?TkJHVVI1R2pyTm8zQysyaGllWDRhajRNU0o4cjF6LzQ3Vk9wY21RMUJkalp3?=
+ =?utf-8?B?WHdvd0VKa2dybGE3eWplcFJzam9vQ0ZXR3hYRlVnN1RpaWIyVjdvelB6Q2dw?=
+ =?utf-8?B?TjlMSGJZUzZYcitqc09tWCtLbDV5c3F2TWJvb2pKbkM0dkltMnE2c0ZrYnls?=
+ =?utf-8?B?MFZLRzR5R0VVaGZnalhRKzZENElGSEpmRVpZZDRRd0g3RFpiS0NOUUF1QVVm?=
+ =?utf-8?B?bXJaUTVMR2FDNklJUWZSL21leEJteUhKQVl1a0JiRDVrSEg3M1JoYU9PMldz?=
+ =?utf-8?B?Z0xCK2lkUzdCNW5VSkNRV212WG53L25aZGpFYnhCOWtSQjJUM0M0V0VIOEp1?=
+ =?utf-8?B?anhsY0hJc3V5Yjd4ZWxFeGplTXBqSEdsUUZGTzFxbmFjTUNCOWFwN0dTUXBx?=
+ =?utf-8?B?NjhtNTVoL2J2UWNqZ0Z1T2VrN1pYaTJLYks3bXlnUDlMekZ0TXNmS0JDSDZt?=
+ =?utf-8?B?aUdZNS9NSUhHTGdOVkxuMnpMK1krQlRwQUR6cHFYQzhPMGFnL1FIY3Vtbkln?=
+ =?utf-8?B?cjRmZ2ZtS1h3eXFHSUxtR0pMckloVDFWSnN2VlZVMmhzL1BSTjU0bHZ4MitB?=
+ =?utf-8?B?UVU0ck51SmduZktLTnhPNlJqcmJXQnQ4ZFh3VTJLVVdRN3gyTFk0ZHgyUWFZ?=
+ =?utf-8?B?R3h6V0RtamN3cFJ1NUU2OW9pTmdxODN2MUNvWGJKK2V1MHlNTThRNzNveFp0?=
+ =?utf-8?B?RFFhTnZvNHVkVXZBcWJqcFovS0JIQlFNMGYxdmt2am9NV25hZmRqbWpacGZN?=
+ =?utf-8?B?N2t5Q0Zxb0tRVU0zSW5MKzZIODRoN3JFTHFWc3VBZkJZdVBKdWpFVGZITUJD?=
+ =?utf-8?B?UVRZRWV2eU9xYlN4a0w0d1VJaitYbGFCVE5wcWNwUHU2TU5LNWlyY0x0dzF0?=
+ =?utf-8?B?TG1OYXR5SGR4ZURac0pKWEFRdVcwbEp5aUs5QyszYndiRHJyNy9GMkVmYTNV?=
+ =?utf-8?B?V1RncTFWcUVuV2pLaElDaFpUd2prQ0N5YXM4WEhUdzBndU9pTVdXWmpQS2F5?=
+ =?utf-8?B?UHdrRW9tOEZTUWgrM01pSkN5RlJ0Lzk5ajI2WTdxVGtGUDlBYWlTWmo2UXpo?=
+ =?utf-8?B?RGVXK2RKOXk5L2M5NHVOOUxvdkZ0YnkybTB2aEZFUGhzeXZyVFFXQnV0ZnI3?=
+ =?utf-8?B?WlZOVzExbEcwTmFjQVplSnRrSTZIMU9rdnJlUGluSTE1ajQ0V1FoeEVneWd2?=
+ =?utf-8?B?OEJWZ1ZRalBIM3hVTnhhNmhCb2tGWisvbC9iYmNJY2JwMjZ1VW5RUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2de4a390-1211-4c38-fa0f-08de5d086f07
+X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 18:19:13.5056
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 18:26:33.7829
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WJ9hwykO/Wxj/0dpwYR8IMVFZp2gOwTEM/9zJ9FYdxUvmihA2tCt04H/PWyPGlDv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6969
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8OLf4eFu9U/C3plUbVU8otUVFv+vAlIRPXgpUnePJ+sz61jf5Pg/xBEUHTTrqPJyLY1fFAiztLuuvqMxKVRJmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6795
 
-On Thu, Jan 22, 2026 at 10:42:30PM +0200, Zhi Wang wrote:
-> --- a/drivers/fwctl/Kconfig
-> +++ b/drivers/fwctl/Kconfig
-> @@ -8,6 +8,18 @@ menuconfig FWCTL
->  	  manipulating device FLASH, debugging, and other activities that don't
->  	  fit neatly into an existing subsystem.
->  
-> +config RUST_FWCTL_ABSTRACTIONS
-> +	bool "Rust fwctl abstractions"
-> +	depends on RUST
-> +	select FWCTL
-> +	help
-> +	  This enables the Rust abstractions for the fwctl device firmware
-> +	  access framework. It provides safe wrappers around struct fwctl_device
-> +	  and struct fwctl_uctx, allowing Rust drivers to register fwctl devices
-> +	  and implement their control and RPC logic in safe Rust.
-> +
-> +	  If unsure, say N.
-> +
->  if FWCTL
->  config FWCTL_MLX5
+On Fri Jan 23, 2026 at 12:12 PM GMT, Eliot Courtney wrote:
+> The current code hands out buffers that go all the way up to and
+> including `rx - 1`, but we need to maintain an empty slot to prevent the
+> ring buffer from wrapping around into having 'tx =3D=3D rx', which means
+> empty.
+>
+> Also add more rigorous no-panic proofs.
+>
+> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindings=
+ and handling")
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/gsp/cmdq.rs | 33 +++++++++++++++++++--------------
+>  1 file changed, 19 insertions(+), 14 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
+p/cmdq.rs
+> index 09c28eeb6f12..aa8758fc7723 100644
+> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+> @@ -227,21 +227,26 @@ fn new(dev: &device::Device<device::Bound>) -> Resu=
+lt<Self> {
+>          // PANIC: per the invariant of `cpu_write_ptr`, `tx` is `< MSGQ_=
+NUM_PAGES`.
+>          let (before_tx, after_tx) =3D gsp_mem.cpuq.msgq.data.split_at_mu=
+t(tx);
+> =20
+> -        if rx <=3D tx {
+> -            // The area from `tx` up to the end of the ring, and from th=
+e beginning of the ring up
+> -            // to `rx`, minus one unit, belongs to the driver.
+> -            if rx =3D=3D 0 {
+> -                let last =3D after_tx.len() - 1;
+> -                (&mut after_tx[..last], &mut before_tx[0..0])
+> -            } else {
+> -                (after_tx, &mut before_tx[..rx])
+> -            }
+> +        // The area starting at `tx` and ending at `rx - 2` modulo MSGQ_=
+NUM_PAGES, inclusive,
+> +        // belongs to the driver for writing.
+> +        if rx =3D=3D 0 {
+> +            // Since `rx` is zero, leave an empty slot at end of the buf=
+fer.
+> +            let last =3D after_tx.len() - 1;
+> +            (&mut after_tx[..last], &mut before_tx[0..0])
 
-It should be below the if and not use "select FWCTL"
+Does the address actually matter? Otherwise I would find `&mut []` easier t=
+o
+understand than an empty indexing.
 
-> --- a/include/uapi/fwctl/fwctl.h
-> +++ b/include/uapi/fwctl/fwctl.h
-> @@ -45,6 +45,7 @@ enum fwctl_device_type {
->  	FWCTL_DEVICE_TYPE_MLX5 = 1,
->  	FWCTL_DEVICE_TYPE_CXL = 2,
->  	FWCTL_DEVICE_TYPE_PDS = 4,
-> +	FWCTL_DEVICE_TYPE_RUST_FWCTL_TEST = 8,
->  };
+> +        } else if rx > tx {
+> +            // The area is contiguous and we leave an empty slot before =
+`rx`.
+> +            // PANIC:
+> +            // - The index `rx - tx - 1` is non-negative because `rx > t=
+x` in this branch.
+> +            // - The index does not exceed `after_tx.len()` (which is `M=
+SGQ_NUM_PAGES - tx`)
+> +            //   because `rx < MSGQ_NUM_PAGES` by the `gsp_read_ptr` inv=
+ariant.
+> +            (&mut after_tx[..(rx - tx - 1)], &mut before_tx[0..0])
+>          } else {
+> -            // The area from `tx` to `rx`, minus one unit, belongs to th=
+e driver.
+> -            //
+> -            // PANIC: per the invariants of `cpu_write_ptr` and `gsp_rea=
+d_ptr`, `rx` and `tx` are
+> -            // `<=3D MSGQ_NUM_PAGES`, and the test above ensured that `r=
+x > tx`.
+> -            (after_tx.split_at_mut(rx - tx).0, &mut before_tx[0..0])
+> +            // The area is discontiguous and we leave an empty slot befo=
+re `rx`.
+> +            // PANIC:
+> +            // - The index `rx - 1` is non-negative because `rx !=3D 0` =
+in this branch.
+> +            // - The index does not exceed `before_tx.len()` (which equa=
+ls `tx`) because
+> +            //   `rx <=3D tx` in this branch.
+> +            (after_tx, &mut before_tx[..(rx - 1)])
 
-Put this in the patch adding the test and maybe this is a reason not
-to merge it..
+If this is written with get_disjoint_mut, the indices would be so much easi=
+er to
+understand... To bad that that API is only available from 1.86 onwards.
 
-> +/// Represents a fwctl device type.
-> +///
-> +/// This enum corresponds to the C `enum fwctl_device_type` and is used to identify
-> +/// the specific firmware control interface implemented by a device.
-> +#[repr(u32)]
-> +#[derive(Copy, Clone, Debug, Eq, PartialEq)]
-> +pub enum DeviceType {
-> +    /// Error/invalid device type.
-> +    Error = bindings::fwctl_device_type_FWCTL_DEVICE_TYPE_ERROR,
-> +    /// MLX5 device type.
-> +    Mlx5 = bindings::fwctl_device_type_FWCTL_DEVICE_TYPE_MLX5,
-> +    /// CXL device type.
-> +    Cxl = bindings::fwctl_device_type_FWCTL_DEVICE_TYPE_CXL,
-> +    /// PDS device type.
-> +    Pds = bindings::fwctl_device_type_FWCTL_DEVICE_TYPE_PDS,
-> +    /// Rust fwctl test device type.
-> +    RustFwctlTest = bindings::fwctl_device_type_FWCTL_DEVICE_TYPE_RUST_FWCTL_TEST,
-> +}
+Best,
+Gary
 
-Do we really need these contentless comments?
+>          }
+>      }
+> =20
 
-> +impl Device {
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must be a valid pointer to a `struct fwctl_device`.
-> +    unsafe fn from_raw<'a>(ptr: *mut bindings::fwctl_device) -> &'a Self {
-> +        // CAST: `Self` is a transparent wrapper around `bindings::fwctl_device`.
-> +        // SAFETY: By the safety requirement, `ptr` is valid.
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    fn as_raw(&self) -> *mut bindings::fwctl_device {
-> +        self.0.get()
-> +    }
-> +
-> +    /// Returns the parent device.
-> +    pub fn parent(&self) -> &device::Device {
-> +        // SAFETY: By the type invariant, `self.as_raw()` is a valid pointer to a
-> +        // `struct fwctl_device`, which always has a parent device.
-> +        let parent_dev = unsafe { (*self.as_raw()).dev.parent };
-> +        // SAFETY: `parent_dev` points to a valid `struct device`. The parent device
-> +        // is guaranteed to be valid for the lifetime of the fwctl_device.
-> +        unsafe { device::Device::from_raw(parent_dev) }
-> +    }
-> +}
-> +
-> +impl AsRef<device::Device> for Device {
-> +    fn as_ref(&self) -> &device::Device {
-> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
-> +        // `struct fwctl_device`.
-> +        let dev = unsafe { core::ptr::addr_of_mut!((*self.as_raw()).dev) };
-> +
-> +        // SAFETY: `dev` points to a valid `struct device`.
-> +        unsafe { device::Device::from_raw(dev) }
-> +    }
-> +}
-> +
-> +// SAFETY: The fwctl_device is reference counted through the embedded `struct device`,
-> +// and inc_ref/dec_ref use fwctl_get/fwctl_put to manage its lifetime.
-> +unsafe impl crate::sync::aref::AlwaysRefCounted for Device {
-> +    fn inc_ref(&self) {
-> +        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-> +        // `self.as_raw()` is a valid pointer to a `struct fwctl_device`.
-> +        unsafe { bindings::fwctl_get(self.as_raw()) };
-> +    }
-> +
-> +    unsafe fn dec_ref(obj: NonNull<Self>) {
-> +        // CAST: `Self` is a transparent wrapper of `bindings::fwctl_device`.
-> +        let fwctl: *mut bindings::fwctl_device = obj.cast().as_ptr();
-> +
-> +        // SAFETY: By the type invariant, `fwctl` is a valid pointer to a `struct fwctl_device`.
-> +        unsafe { bindings::fwctl_put(fwctl) };
-> +    }
-> +}
-> +
-> +// SAFETY: A `Device` is always reference-counted and can be released from any thread.
-> +unsafe impl Send for Device {}
-> +
-> +// SAFETY: `Device` can be shared among threads because all methods are thread-safe.
-> +unsafe impl Sync for Device {}
-> +
-> +/// The registration of a fwctl device.
-> +///
-> +/// This type represents the registration of a [`struct fwctl_device`]. It should always be
-> +/// used within a [`Devres`] wrapper to ensure proper lifetime management. When dropped,
-> +/// the fwctl device will be unregistered and freed.
-> +///
-> +/// [`Devres`] guarantees that the device is unregistered before the parent device is unbound.
-> +///
-> +/// [`struct fwctl_device`]: srctree/include/linux/device/fwctl.h
-> +pub struct Registration<T: Operations> {
-> +    device: ARef<Device>,
-> +    _marker: PhantomData<T>,
-> +}
-> +
-> +impl<T: Operations> Registration<T> {
-> +    /// Allocate and register a new fwctl device under the given parent device.
-> +    ///
-> +    /// The returned [`Devres`] wrapper ensures that the fwctl device is unregistered
-> +    /// before the parent device is unbound.
-> +    pub fn new<'a>(
-> +        parent: &'a device::Device<device::Bound>,
-> +    ) -> impl PinInit<Devres<Self>, Error> + 'a
-> +    where
-> +        T: 'a,
-> +    {
-> +        pin_init::pin_init_scope(move || {
-> +            let ops = core::ptr::from_ref::<bindings::fwctl_ops>(&VTable::<T>::VTABLE).cast_mut();
-> +
-> +            // SAFETY: `_fwctl_alloc_device()` allocates a new `fwctl_device`
-> +            // and initializes its embedded `struct device`. The `ops` pointer
-> +            // points to a static VTABLE that outlives the device. The parent
-> +            // device is guaranteed to be bound to a driver (Device<Bound>),
-> +            // ensuring it remains valid during allocation.
-> +            let dev = unsafe {
-> +                bindings::_fwctl_alloc_device(
-> +                    parent.as_raw(),
-> +                    ops,
-> +                    core::mem::size_of::<bindings::fwctl_device>(),
-> +                )
-> +            };
-> +
-> +            if dev.is_null() {
-> +                return Err(ENOMEM);
-> +            }
-> +
-> +            // SAFETY: dev is guaranteed to be a valid pointer from `_fwctl_alloc_device()`.
-> +            let ret = unsafe { bindings::fwctl_register(dev) };
-> +            if ret != 0 {
-> +                // SAFETY: dev is guaranteed to be a valid pointer from `_fwctl_alloc_device()`.
-> +                unsafe {
-> +                    bindings::fwctl_put(dev);
-> +                }
-> +                return Err(Error::from_errno(ret));
-> +            }
-
-This looks weirdly sequenced, the driver's object has to be fully
-initialized before you can call register, so it is quite strange to
-see a wrapper that does both alloc and register in one function.
-
-> +// SAFETY: `Registration` can be sent to other threads because:
-> +// - It only contains a `NonNull<fwctl_device>` pointer and a PhantomData marker
-> +// - The underlying C fwctl_device is thread-safe with internal locking
-> +// - `Drop` calls `fwctl_unregister()/fwctl_put()` which are safe from any sleepable context
-
-fwctl_unregister is not safe from any context, it must be called
-while the Device is still bound.
-
-Jason
