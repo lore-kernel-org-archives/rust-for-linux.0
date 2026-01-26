@@ -1,157 +1,137 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006702DECB1
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 16:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769444098; cv=pass; b=cWZ4vLWvah7h6BY0PH6bLGWWNnsierwzL4Vcd/HCq9p6hTRhD8ROLp4OIkX9Rrt9ZCreOeY9nXe0j/cQyf/udkcEYypnjcmeY3zOaZlF+XtyloeaSrmMQ/iPsL+i/mY9F9U5Ech9jxDSvGbVn8Nd0IZmJ28uFYb7B6ffB6vf27M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769444098; c=relaxed/simple;
-	bh=b3m3/VVdwm1L5JwvxjexOIEy5wN31isjno52EUeePNw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eu4jkSbkPBRf0bZIDYCeWCWKHXl0l/p76XZosAX+r6lifB+X3faA6qc80ERgAt4+ghj9B/FI3/UjJ1txBuvGyMg3o2/LEvenHhWRlh8QqniEaGYbw8ssEuAg8tnJDCMdrJPogF+ernG8ydC7mS+0eT1w2PYmw9kRQcCVJiSejQw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=280F4xTc; arc=pass smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609B927FD45
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 16:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769444253; cv=none; b=MtcUWTSQQvOQX6WaYljlJYeer+q4r10Nz+SxKGOBK9Ott5h6EdSejFOukhcwAIT+C0c9NVNWVV5DLKBGjohcPypNC28yBcMq0EfSuBehxhYrZR6/+AdAA6CuXUlBmYqjU25lF7uq8Tx0cOt0DMPh7bVOp4ieANTBAY0IMSoDaP4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769444253; c=relaxed/simple;
+	bh=rOG9FoZYFoybD9DfZu1CESGpzmVUYAGNrtJWWk0HZqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/IY6ThGL+iqdO1E6KmhGA7xlNCSM/QaR/aqrrI48hz9SvGkSsZyFQO9v20Fh+j0t9gsFsF6HVAOkRYEGK7xlzApIyRfZMG+dUCpN9ojIpE4eCOpcWdz9LpIs/CuwT2BlNx+lI1iWs4sCASQN4SzcaMwXrk0J+yeBtlJgbrCU1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JhlHFUhl; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="280F4xTc"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-432d2670932so4336206f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 08:14:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769444095; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MXsaBewoqdntMkeqb4AKX8gzts5w65BOadHqyAzwXEhLwSoJrfNRPo9h9Dftc99Oci
-         I7YM8k6wTS9HGAc7H8+z7ES14TVPmon1eXHXjpW2fwTM22QCfXiIDqcmsbHw2ihqjZ2I
-         1HEFuhK7UAAiHX/P0y/PQ1APtS3eKyMYgdGrMSUZl/awnSQN3GK+BZWr6Arrl0zCbOwe
-         Ip9ea0D5LsDUhRWPIXVMXH7Dc+NeHgIerx2JJxECiuEPLraWSPgL5Y0ABvuIiv9xvX2w
-         AyAyiotmpTPN6h8BenxHtcUYdONcLJfKquvrAg+lEGOqEHxcpY2nfPIq+KaEyQgCEeA2
-         E8uQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=b3m3/VVdwm1L5JwvxjexOIEy5wN31isjno52EUeePNw=;
-        fh=+ljtNDonbQ6xt+8HuL0YQGlNdPYso0fKbFYLVrW6Hqo=;
-        b=LiChFN1OVgGzjdPsvJ8RLBxOELvg0w7UGPpSDv7qvKdRJDZbPTLHkT4qvnGG8ECfpj
-         JXTA5g6722IloaM+UUl9vrjj2fAptM1s5xDspFuAUxEyvDlHkTSZdfvp4Anf9OzrLuZB
-         f+4V2zESkMFhtCrAhmXbCYRhvtpIPtvOxQJN79CXLepusyJW8Xss/lazMfy3JtoIn1Nf
-         FdfyRa9r4d5FAeM27KseEnFQTR0UWf+mTZlX+5bDFh69Q7cRPyhvV+ObhbwiYtDgW9uo
-         3Men5SXIREh7M7fY48FXYlhyITec+9BsEaGte/fMzD4HDlVmV5FkF68cDklcGAObZPqR
-         Pjyg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JhlHFUhl"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c6aaf3cd62so598371085a.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 08:17:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769444095; x=1770048895; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769444251; x=1770049051; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=b3m3/VVdwm1L5JwvxjexOIEy5wN31isjno52EUeePNw=;
-        b=280F4xTcTA5p7vg5B5/a3tkfZPvH27OboATow6174PXCIko+LqdKpnRfDP8XHBnAUe
-         ArRkDkQB1pGbSc8tIMGhDbZWZyUw2bads/RiqeCEpgkQELOYoDdDEYVVlF97swjgQcYM
-         iyDfImGYsVwTEsDdDplBx78x2U7PyZ6fmHemHUDjligMpvVATecJRJW0H5G4tuPF/O7r
-         4H7mqfbxziXX56rlp1VkMWMGv/cbhiC5GQRZdwdacQFE0GXHx+psu0RRWLwWv3TVbjsJ
-         b0GMKSE+mOs9F+xV48ThsTRbQNlZUxif5RrYPdXAjFCEFQ77ovtfJiY8VDZSBqslU2JZ
-         D4PA==
+        bh=/WPusBAfPZLfB4yp0DtCCI5cKa6WeYoBYOHgHsWUCZA=;
+        b=JhlHFUhlAcOAg5FGZrCraEXQeiva4F+c2jpsQO+crRl4Ej94HNOq4eSr4m+T94sS40
+         Fjw4Txy0V9lQRIMzXHUELRC5lB/xETAk6SgU6XI8aBFn7GDHxcIscbidEPK4QfQbJcGc
+         KMQ08hcO0AXGP2RPQPODWi9kR8gqA+avJe8O77Lrd8NQ+4ohBWFEuZEFMoGCnTPgkKpt
+         FbfD73pMKlTGakdVXhVtR24HSEwCOP+EmWNcaTydE2MIc6gN4w3XPD0P90hF3xKN8yAc
+         vbnikX7xXl0t2Kq+qLoUMuBBCCTNr3Gd+2DIbjTRMIDTd7zdaFmFy7ge287lrk/kDS2e
+         dGDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769444095; x=1770048895;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1769444251; x=1770049051;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=b3m3/VVdwm1L5JwvxjexOIEy5wN31isjno52EUeePNw=;
-        b=HVRTOXOcr+VlFxlkjVwVclfse6qwyqZXnQ4xNmaCDmOnWF50dhp+W2DV98Nmo0kEWM
-         UFWALGb2haoMo/6Fs/ORVjNaMqkUXCyM6nVdvIJiHnbJVbQm4m8uUGqfdAzQ9MveFzKF
-         V8ag6+Hqs82breqgZiU5xNf3c9EUUBRQmH2TQurX8gjE/bkJ6KDCf3f739LSweZ0KwCD
-         xFtXSVpPtxqAoQGteZRzD7G0LzGVXLPpCxOsljs98PaCY3Mbb9vOEPLiUGXUwuwRIG4A
-         WCgCY6H7l05b4/TxYrqLoDWY3aknLA6+tJp26ATGb+bCOEkREQNaHHGRakMX5V3tLQyO
-         kbcg==
-X-Forwarded-Encrypted: i=1; AJvYcCWheF0d2zeujfmQhaKB6RUsvdZk3K/58MTnSya0GffeE473ahhxrDAjDednxxiW2hgHObPKRHciFTbDyDzZuQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxMrkzRQzbFrO3pb/9yRb0WO+ZWoD6tG4HZGmeGmUnkPihAi8q
-	iOYYJrUXPEaMvnOz7fVNkMR/9PCYtlYL3C93/dBulYsMRYJ3mJ61gncdY9jYMRH7i+HopzYD4T8
-	kizd+gTPmdHamaoP9zE4g9+85gA1/KgyZq7QVHWZw
-X-Gm-Gg: AZuq6aIziGNeMZ2KoNh/GjoTBLk//sTceTXoXQocb3LzxKswVdJ+rJrxUMZ2KwnMBz5
-	cbWJeW8V48sJM20C4VX+P4QU8ghS56fG7CUMvWXoR7iL63I8IAPtwld6qcRsPmnnq6rOAmdV7z6
-	M8jVcj/q4WDQMIbjwcP5lo3YMj3UPZ4TTYYXABUHEmiNFQz4dFPvJImm3PXT8UqvgUknRAfVS+w
-	xthbMBNtlxkQz+pXAF0OkqQ3mjysj3NylXDkbqrJLdMxTW6cJ/35IKayO2HSeXh7+YbJyBoEjpP
-	o3p/FBFKbzc0RUcdLx3qZhTgvw==
-X-Received: by 2002:a5d:5d0a:0:b0:42f:b690:6788 with SMTP id
- ffacd0b85a97d-435ca0e2909mr7711789f8f.10.1769444095193; Mon, 26 Jan 2026
- 08:14:55 -0800 (PST)
+        bh=/WPusBAfPZLfB4yp0DtCCI5cKa6WeYoBYOHgHsWUCZA=;
+        b=iiKjRwX1zZr58GtR16KDpqaZR4SvN5RMVmcBW+9Ro99OhURHD6PGCbNIHVepOfqeZ6
+         g7A6yWILvxXD+/fSGaoC+UzaT1mqfoLqkTx5j2vcv1SKIEWyzez3PwFUM24mBk1K6ywH
+         ibqXgpG/xmkjQ9qK5nHjVXBbmfyiNwMCxVLBymwXEnSzOTe3dGlpIky3Gs70yUpN/bam
+         W0WQ5TgoJNQ7/1ZbggpevyBBLfwWwtg2Fdm1Wm1erTpryFxIFhhktzNSNlKFTKkHkl2u
+         5WG+8GFtQYM1Shh5sH1gUD0dzQO3ECPMNT0wOpDGtp9R+NwtiE7PqRUs4hwtX56szN5v
+         wVwQ==
+X-Gm-Message-State: AOJu0YzVa3RVZKR6xK8PoP6/JWcOGOsRrqQQ0/oYm1gCE0hCFyoGH7WR
+	wP1eCvNMPu7QRApqVPQMSpnT/qYERuwklmB+5WJK+xjrIDK+O7nJLQAy
+X-Gm-Gg: AZuq6aLslCZDIoSXRnAB8a7yhxPCiFwiEfMns6Z02p264MwWQ7D54FNXR/5km0Tt4Z/
+	FppcJr62w1IbIsl5d8n7X3MiWLmyspL6cmwFnWRjfeg7N98kZ8AMiXpnZb4lsD1AUm3/hxOE30C
+	zchcVqWBI4ncm+UzFuJegXXAUO0wkgP9JME0H3QgaMTEOGevwx7xiPXfZ/ZKCMvEdcoIeEqP013
+	c45mj1XFgnufcd4sgEukF4shavTi+7CmnzE9W0T5OalarTD0CPLP5LG3FOfoZlonWzsqYlnnKVM
+	ClNsnJt/igyNul3u0gdU/vlC+KYUEI9uw2E7jeVA/FGTH0OPxb7Mt1hapFpTZcxCIG9WCTX+DlI
+	QlCSKEnmYOmmG/MRgIkLgdKt0d22bARvmivmgCP5/h+HskAWuYVyQb3vwwdyOC61OdQljAmcaEc
+	3ZLCit/93j6fBoiAIZt0JuN1fHIQe8nueGPCBU4tMSsHB6dAGLD58G79v7A1uY/SC6iQiJrX+Qf
+	Chx6fyL6LjLVoA=
+X-Received: by 2002:a05:620a:460d:b0:8a0:fb41:7f3c with SMTP id af79cd13be357-8c6f9590b78mr586555985a.27.1769444251202;
+        Mon, 26 Jan 2026 08:17:31 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6e37d1f14sm995174185a.15.2026.01.26.08.17.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jan 2026 08:17:30 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 19438F4006A;
+	Mon, 26 Jan 2026 11:17:29 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 26 Jan 2026 11:17:29 -0500
+X-ME-Sender: <xms:mZN3aTk-1JrINYD0I-BCoUKyNw-tNYdX_CqhjXKNX5wmnkZC2MdD8w>
+    <xme:mZN3aWHsh4siOyl5qvfqtoL9i9aup-ZPNFzJdV8_9G9wG1h0SPOC5OiLorjKwL0_8
+    wtmc6VgNJ8pL7_2ZnLSfoNh1r8FFrYkCouG7DalKY4Cr6JjFcFX_Q>
+X-ME-Received: <xmr:mZN3ace_Camfq0QHUmKVtCdxd-8B2Nl5nmiRICGHKPTcknDncVZjDd60N8uZlL5klQXT03YM4YbjYrYkxFHBB0u6XtCuMuqD>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduheekudefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehruhhsthdqfh
+    horhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtgh
+    hlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopegurghnihgvlhdrrghlmhgv
+    ihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
+    pdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjoh
+    hrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:mZN3aTFJuZVl_Y7SD3ofYXBMM5faSx1YqqW6DDYiJUNo-c59Gpxk_Q>
+    <xmx:mZN3aWF4HmJ8UK07v_BQSnNNqkOtK0awjpNjnXhjnHU7sDj55tXQbA>
+    <xmx:mZN3aTO2jxq0MGyVv5xqr1dvnn4LhwtD9UdYy_A_B-rtsf4ItF6eVA>
+    <xmx:mZN3abpM-qYulpYCKd6dKga1fuYKHSywCqG8aTY8ZQX204LJ_nspvw>
+    <xmx:mZN3aUCxbFSrs571xoyT__uhSCgYYtYecj5ENLWTXfsmBF-EzXwS70c_>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Jan 2026 11:17:28 -0500 (EST)
+Date: Mon, 26 Jan 2026 08:17:27 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH v17 00/16] Refcounted interrupts, SpinLockIrq for rust
+Message-ID: <aXeTl7fihxD57STk@tardis.local>
+References: <20260121223933.1568682-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com>
- <DFYJRWUHCOMQ.3L6ZVLOJTNDNO@garyguo.net> <aXdrUsrKVmzpBVd8@google.com>
- <DFYNFSOP2UVY.27KHATUQMCXHQ@kernel.org> <DFYNILJPAYJE.3CFM49W80ED4O@garyguo.net>
-In-Reply-To: <DFYNILJPAYJE.3CFM49W80ED4O@garyguo.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 26 Jan 2026 17:14:43 +0100
-X-Gm-Features: AZwV_Qhm51ZvNtcAl24ity6Z1oGdEZsigYZ9qHzy-oChasQeMJ3ey0HJ1RLeuNE
-Message-ID: <CAH5fLggAfRkjSmYuYAZioXn3OP31Fwr=VGd2znnaHQvPL3tKHg@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Re-export Zeroable and zeroed() from ffi module
-To: Gary Guo <gary@garyguo.net>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Igor Korotin <igor.korotin.linux@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Len Brown <lenb@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121223933.1568682-1-lyude@redhat.com>
 
-On Mon, Jan 26, 2026 at 5:11=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> On Mon Jan 26, 2026 at 4:08 PM GMT, Benno Lossin wrote:
-> > On Mon Jan 26, 2026 at 2:25 PM CET, Alice Ryhl wrote:
-> >> On Mon, Jan 26, 2026 at 01:15:53PM +0000, Gary Guo wrote:
-> >>> On Mon Jan 26, 2026 at 1:05 PM GMT, Alice Ryhl wrote:
-> >>> > Currently, the Zeroable trait is defined by pin-init because pin-in=
-it
-> >>> > happens to use the trait. However, zeroed types are useful for many
-> >>> > purposes other than pin-init. Also, we wish to implement Zeroable f=
-or
-> >>> > types generated by bindgen. For both of these reasons, re-export
-> >>> > Zeroable from the ffi crate, which is a already dependency of the c=
-rates
-> >>> > with bindgen output.
-> >>>
-> >>> I don't see a benefit of re-exporting these from the `ffi` crate? Esp=
-ecially
-> >>> that we re-export `ffi` crate from kernel crate anyway, and `Zeroable=
-` is
-> >>> already in the kernel prelude.
-> >>>
-> >>> We already derive `Zeroable` for bindgen via `MaybeZeroable` derive i=
-n
-> >>> rust/bindgen_parameters.
-> >>
-> >> I can't find the convo now, but this change is on my list from when we
-> >> discussed also implementing FromBytes / IntoBytes for the bindings
-> >> types. To do that, we need to move our FromBytes / IntoBytes traits
-> >> somewhere that bindings/uapi can access, and we agreed that the ffi
-> >> crate was a good place for it.
-> >>
-> >> And then for consistency, also reexport Zeroable from the same locatio=
-n.
-> >
-> > I think you also mentioned at some point that using `pin_init` from
-> > `bindings` seemed strange and also using the `pin_init::zeroed()`
-> > function also doesn't fit, since it doesn't have to do with pinned
-> > initialization.
->
-> Shouldn't it be that a crate that implements Zeroable / FromBytes / IntoB=
-ytes
-> and then pin_init becoming an user of that crate, then?
+On Wed, Jan 21, 2026 at 05:39:03PM -0500, Lyude Paul wrote:
+> This is the latest patch series for adding rust bindings for controlling
+> local processor interrupts, adding support for spinlocks in rust that
+> are acquired with local processor interrupts disabled, and implementing
+> local interrupt controls through refcounting in the kernel.
+> 
 
-The Zeroable trait has to be in pin-init because it's also outside the
-kernel. You *could* add yet another crate just for this and let
-pin-init depend on it, but just putting it in the existing ffi seems
-reasonable to me, and ffi is not a bad name for the owner of those
-traits anyway.
+If there is no objection, I plan to queue patch #1 to #6 and patch #16
+first, hence kindly ping for any review on these.
 
-Though I guess if we add zerocopy, that concern goes away.
-
-Alice
+Regards,
+Boqun
