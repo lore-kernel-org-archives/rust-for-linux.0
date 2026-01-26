@@ -1,117 +1,241 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893602AF1D
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 03:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769398136; cv=pass; b=Yb/Gk/KJqBtOK8paTMPWRnnlK17LkoONzyJIzZytqnC5P2Tyxix4ufNO1XxYcqBqbRxZFnRenczOan95sXF1fAtkEMqaURptJcxSCqPuwGcsiP06hahOq5aqmEtoNgkx7aIZjXZrNMQ2B5Fsdxf7INYcVZnYMFM094SQZpaGoVM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769398136; c=relaxed/simple;
-	bh=RO6EGpqkl7ErqKo9oPQ1lfQ3RKhgNMI57SH8XY0i/ig=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HTXoSQiL9wVpg2WlhnHBYuS3sQsjJx1fChuG5ZS5E0icDE2TKxUy242bI5KuYoC0JG2wWso7+DN51BVLd1OP/sGLgl4hNZ68EkKI4wDi9Sy7zzLg1A95XQOCYFzG9O8qxYnM3qjAr9PyGkEVNwtSbqHf6nenj8qOMGsaV5ZaoKk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jIAPRG22; arc=pass smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FA8128816;
+	Mon, 26 Jan 2026 03:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769398751; cv=none; b=J/UQAb79S7Jd8bh8mweqPf50KNK4imMRvcP5269bd6+oCNzMhhBMmOrip9IwJFoNUgn000M7/PwuY/496dYO66WN3pYwyiaBFT94PRw8dMOQO6Zrvx7HOH59xtbQecZyN9GDSIq2QsEx8O595s4GZWzTBy2ycEgS7vCiTDrksF4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769398751; c=relaxed/simple;
+	bh=QDen/lbFr0OrqZPB+Q+4DSK6r/05MWks/Pa21Xlsmko=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bTgTIYPDKJ1ivQ4rIHCREXjIVIqJtZndy5HvirfxmcqrbFAm0JAofTR8bNZStFsBj8h7t1mlI4i0HbRTQCNqvcZVrOvYo1/Nki3fl7X8Bxm97z80xCeTcgSFjTO65VsZIw3mtQWEGK8VWmjvJKTIfny6x7AHyz8nfcfiTBn/CFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=pqHPWPwi; arc=none smtp.client-ip=51.81.35.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jIAPRG22"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2b718524994so155159eec.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 19:28:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769398135; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lmwHk8UIkpFtotCt+92bUudsNr7tyX7NdoS3xYHv0B/OAEUEQykL0p7ho6E68K28om
-         sIUD3wD5TF5MBjvJFLk5CXSIc3H0aFS+xAjD5ffWozU8ZzJ5sDxTxVgK+kJdmJu5qQjd
-         7XsPP2Uu1cgoWqk0v1mtr3jFTzJa+5Je3uddYRtVknivjW6UAPWtHrRnRcDf827KlXn+
-         ENZ0kcclStDe8GL7EYMMCqvoOxxVlWUPAqj+7X61+QDzz70FSvfYfr00eP3LtbLoMdoZ
-         o3G5CTRoQcZ/q1p3QZCpaRPiMk1hF8MRLDOw8DweSDALbaO3grSw4vJNPZReIR1gwdRA
-         qI4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RO6EGpqkl7ErqKo9oPQ1lfQ3RKhgNMI57SH8XY0i/ig=;
-        fh=EGsv6sgz2ygzBqQk1+dAjUZlBi7qavM1iSaCSeRmY2w=;
-        b=X2sdFAlllCohn3Fvzku0tFeqod8t+4lAi1oTbTkgtvNGbCdqKFYUzvFtRfdwgfzZCL
-         yG2Xt3Wjq2tXj3UMPuA58bQLeQHI0kTEWJ+BX99BLsfDY7upKjaTKAnHX8qJO9+lj7qO
-         /H18VDaWR6q844VLdkXqoCV/zxbZht9ZIvGwVJO5fL0krFyQFsjC+q0g5/k7bFNbahsF
-         mTvdnQMPHxPQ6pWyWRHjxrLhyqWAbr2o1zIqRLOrnY8cmCHMzzaf8Uc3zQh5XY9t9tX8
-         N1beHWOBC2ocOlzqD99FNjuf3Jc55UaM9JVZhj/ndUcmSUbRnanR0CRO97cpBS50cERh
-         LU0A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769398135; x=1770002935; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RO6EGpqkl7ErqKo9oPQ1lfQ3RKhgNMI57SH8XY0i/ig=;
-        b=jIAPRG22+8nxn71SabaAFuzbK6xpYTAazu+W8SSbqdMw7k/n3eMAQKOE5XVJncbSLk
-         3FQLJTH7c4pf5hRb6BD4qDszbJ71smhRvPfWIeiWq4NgAs/XVHQIyUHYce2DSTMncmEU
-         XElyVl5oEBre72tXm+lgNDPEWqzR2+aie+VtR1HZWLW39NH5imgyNKIGE10NWU5pHqIm
-         6BHZxurZNgkQdzzVEsq2sKGJwFBh/YfMjd5Nm3zfByFZVc+7iGn1mujJDa2h5HhvfehF
-         7HnXcEO+6aw8gZzNQi/sNl44MqW612yFHRehdVw6lc/UWFsCYOQ+OfgAAUiRiXgwV+PG
-         0+1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769398135; x=1770002935;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RO6EGpqkl7ErqKo9oPQ1lfQ3RKhgNMI57SH8XY0i/ig=;
-        b=TQwv9pPlxQSHgr5E2ll26n4eUOGFlhJvxkicDzlgvENUn6H/RTuNhu2Zz7hgnoZkfK
-         KM5/1ksrD8lM6n8dPasZqaqh2Th2VzcKww5W71BeIEYcTo5laMFAZjHrrrKufK3WvWgo
-         VcU6FrPGbRczVYdg2R/LLVsQsxsD8z0ifYgmm5MCrQVseXN1YKrbK7YyqZZOQQLeVF6P
-         Kw115WrmBNQyC2X9NOXr5olnZUFQjz6p8xwRmCeJBi0d2tyung/a9sorjYE9eJzL59tU
-         BIYuniWdRBw+kWEE7W+79RAyOKrPfJFcb+gaatSxhztNZUCAZmpKdqUzATkSZpx6X+wB
-         6GTA==
-X-Forwarded-Encrypted: i=1; AJvYcCVA0qNiwUsqPQRW4tWMBTSqOCMq3lI5xw/uvMM7g2aFFtI63P/nIvrKEhILJsAG+oHqkxdOYwWfZLipWn5k1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4zaDXsgVUDU/kRsS3xKDfuPUapKCzCjRUWFyEXXG9AutLKCit
-	UAsb6+hYDSZoMNjJZMbl1D4Gh4AiUAfttf4RI1yMV1Hx+HcdmMhMZWnIV77pwsGD/jLtF1SQcof
-	GDxXFeAlXumo+y0aiPIzhSdom5xcQPrA=
-X-Gm-Gg: AZuq6aKGK8DDi066RCo06pOw10d2xLq1tZv2Pckmi19mWgeAUJaX1pzmt7Md67BmqUv
-	mIrbfDN0WIOXWvL58jkvgs4S4/GTPnnQMOegPwf5a7qbCbUZXQzg91Jqm3H6KODstVyEDeQri7y
-	eDIdtKz9PNnBUPx0ZGYgDn37DZNDxIA7Hidu86QKddweoOFr2/ZlTtxMh4BFoOWkd/z5rmtRIK6
-	dLZ9mY5nzpS1D4iKJL1M+A1fLLHDnEZTdVMCAwM6zlvupFNFzKV0/61gVcfWg2nE8HA4u7TuPTP
-	/li6YBpGQCe1hrCP1uBoAnE8UPd0VyhWhuXOEXJzbwH5LQxeNfYueO0BZQ7FpllgjCpfE6hsJyn
-	Z7NiSCA/w1PFb
-X-Received: by 2002:a05:7301:3d1a:b0:2b6:f142:44ce with SMTP id
- 5a478bee46e88-2b76433995amr894413eec.2.1769398134582; Sun, 25 Jan 2026
- 19:28:54 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="pqHPWPwi"
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id EEB0C20224;
+	Mon, 26 Jan 2026 03:39:08 +0000 (UTC)
+Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.155])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id ECE3626344;
+	Mon, 26 Jan 2026 03:38:59 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay3.mymailcheap.com (Postfix) with ESMTPS id 3D6EC3EC2C;
+	Mon, 26 Jan 2026 03:38:52 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 5BDD1400D5;
+	Mon, 26 Jan 2026 03:38:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1769398731; bh=QDen/lbFr0OrqZPB+Q+4DSK6r/05MWks/Pa21Xlsmko=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pqHPWPwiV6w8D+jP5a1SfHUfFaPayXRCL+6lqyAMLthoyY83zoVlQpSbXwoatvvOZ
+	 MR38O49DqVOvkLu5ueU65Ys/AzfihVeNlKr0rd2S5PlY8kaXEVEsh+xC2tvxSJ4W/V
+	 HuHPJGbCHFp7l60rCJGduqiA4dxhTXHFZ7IqWK70=
+Received: from [127.0.0.1] (unknown [117.151.13.225])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 60F7C4097F;
+	Mon, 26 Jan 2026 03:38:44 +0000 (UTC)
+Message-ID: <972430be-d2f3-49b6-851b-a057ddfcafec@aosc.io>
+Date: Mon, 26 Jan 2026 11:38:41 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260121-register-v2-0-79d9b8d5e36a@nvidia.com>
- <20260121-register-v2-2-79d9b8d5e36a@nvidia.com> <DFUBUAW9WMGC.3KY2ZOUJPERED@garyguo.net>
- <DFY76NDCE2HU.AJ6VJ1ETD944@nvidia.com>
-In-Reply-To: <DFY76NDCE2HU.AJ6VJ1ETD944@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 26 Jan 2026 04:28:42 +0100
-X-Gm-Features: AZwV_QgfVtwxoguOeiLzjS9rhNjBfLDypqpJ1dMODKmwVO_ryGHve2VSVtev2aA
-Message-ID: <CANiq72kddJ5Tx_vLYo-kkS=er-8mEy=sMAPvC6yjFGujpZuDMg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] rust: num: add `shr` and `shl` methods to `Bounded`
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Yury Norov <yury.norov@gmail.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>, 
-	Eliot Courtney <ecourtney@nvidia.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
-	Steven Price <steven.price@arm.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
+To: Bibo Mao <maobibo@loongson.cn>, WANG Xuerui <kernel@xen0n.name>,
+ Huacai Chen <chenhuacai@kernel.org>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ rust-for-linux@vger.kernel.org
+References: <20260125054322.1237687-1-liushuyu@aosc.io>
+ <4b504274-4241-0e3e-3ed3-7804b72b7ee8@loongson.cn>
+From: liushuyu <liushuyu@aosc.io>
+Content-Language: en-US-large, en-US
+In-Reply-To: <4b504274-4241-0e3e-3ed3-7804b72b7ee8@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5BDD1400D5
+X-Spamd-Result: default: False [1.40 / 10.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	BAYES_HAM(-0.00)[33.37%];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED(0.00)[mail20.mymailcheap.com:rdns,mail20.mymailcheap.com:helo,aosc.io:mid,aosc.io:from_smtp,aosc.io:from_mime,aosc.io:email];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_ONE(0.00)[1];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	LOCAL_OUTBOUND(0.00)[];
+	FREEMAIL_CC(0.00)[aosc.io,redhat.com,lwn.net,loongson.cn,kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	URIBL_BLOCKED(0.00)[mail20.mymailcheap.com:rdns,mail20.mymailcheap.com:helo,aosc.io:mid,aosc.io:from_smtp,aosc.io:from_mime,aosc.io:email];
+	SURBL_MULTI_FAIL(0.00)[git.kernel.org:server fail,mail20.mymailcheap.com:server fail]
+X-Rspamd-Action: no action
+X-Rspamd-Server: nf1.mymailcheap.com
 
-On Mon, Jan 26, 2026 at 4:24=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
+Hi Bibo,
 >
-> This indeed creates a minor conflict with `rust-next` as it includes a
-> couple of patches for `bounded.rs`.
+>
+> On 2026/1/25 下午1:43, Zixing Liu wrote:
+>> This ioctl can be used by userspace applications to determine which
+>> (special) registers are get/set-able.
+>>
+>> This can be very useful for cross-platform VMMs so that they do not have
+>> to hardcode register indices for each supported architectures.
+>>
+>> Signed-off-by: Zixing Liu <liushuyu@aosc.io>
+>> ---
+>>
+>> For example, this ioctl could be used by rust-vmm/rust-kvm or maybe
+>> VirtualBox-kvm in the future.
+>>
+>>   Documentation/virt/kvm/api.rst |  2 +-
+>>   arch/loongarch/kvm/vcpu.c      | 69 ++++++++++++++++++++++++++++++++++
+>>   2 files changed, 70 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/virt/kvm/api.rst
+>> b/Documentation/virt/kvm/api.rst
+>> index 01a3abef8abb..f46dd8be282f 100644
+>> --- a/Documentation/virt/kvm/api.rst
+>> +++ b/Documentation/virt/kvm/api.rst
+>> @@ -3603,7 +3603,7 @@ VCPU matching underlying host.
+>>   ---------------------
+>>     :Capability: basic
+>> -:Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
+>> +:Architectures: arm64, loongarch, mips, riscv, x86 (if KVM_CAP_ONE_REG)
+>>   :Type: vcpu ioctl
+>>   :Parameters: struct kvm_reg_list (in/out)
+>>   :Returns: 0 on success; -1 on error
+>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+>> index 656b954c1134..b884eb9c76aa 100644
+>> --- a/arch/loongarch/kvm/vcpu.c
+>> +++ b/arch/loongarch/kvm/vcpu.c
+>> @@ -1186,6 +1186,57 @@ static int kvm_loongarch_vcpu_set_attr(struct
+>> kvm_vcpu *vcpu,
+>>       return ret;
+>>   }
+>>   +static unsigned long kvm_loongarch_num_lbt_regs(void)
+>> +{
+>> +    /* +1 for the LBT_FTOP flag (inside arch.fpu) */
+>> +    return sizeof(struct loongarch_lbt) / sizeof(unsigned long) + 1;
+>> +}
+>> +
+>> +static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
+>> +{
+>> +    /* +1 for the KVM_REG_LOONGARCH_COUNTER register */
+>> +    unsigned long res = CSR_MAX_NUMS + KVM_MAX_CPUCFG_REGS + 1;
+>> +
+>> +    if (kvm_guest_has_lbt(&vcpu->arch))
+>> +        res += kvm_loongarch_num_lbt_regs();
+>> +
+>> +    return res;
+>> +}
+>> +
+>> +static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
+>> +                      u64 __user *uindices)
+>> +{
+>> +    u64 reg;
+>> +    unsigned int i;
+>> +
+>> +    for (i = 0; i < CSR_MAX_NUMS; i++) {
+>> +        reg = KVM_IOC_CSRID(i);
+>> +        if (put_user(reg, uindices++))
+>> +            return -EFAULT;
+>> +    }
+> CSR_MAX_NUMS is max number of accessible CSR registers, instead only
+> part of them is used by vCPU model. By my understanding, there will be
+> no much meaning if CSR_MAX_NUMS is returned. And I think it will be
+> better if real CSR register id and number is returned. 
+>
+Did you mean we should only return the CSR registers initialized in this
+function
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/loongarch/kvm/main.c?id=63804fed149a6750ffd28610c5c1c98cce6bd377#n48
+?
 
-`rust-fixes`, i.e. it will be in mainline soon, but yeah :)
+That looks like a very large list and the values of the register IDs are
+not fully continuous. If that is the case, how do we maintain the
+get/set-able CSR register list?
 
-Cheers,
-Miguel
+> Regards
+> Bibo Mao
+>> +
+>> +    for (i = 0; i < KVM_MAX_CPUCFG_REGS; i++) {
+>> +        reg = KVM_IOC_CPUCFG(i);
+>> +        if (put_user(reg, uindices++))
+>> +            return -EFAULT;
+>> +    }
+>> +
+>> +    reg = KVM_REG_LOONGARCH_COUNTER;
+>> +    if (put_user(reg, uindices++))
+>> +        return -EFAULT;
+>> +
+>> +    if (!kvm_guest_has_lbt(&vcpu->arch))
+>> +        return 0;
+>> +
+>> +    for (i = 1; i <= kvm_loongarch_num_lbt_regs(); i++) {
+>> +        reg = (KVM_REG_LOONGARCH_LBT | KVM_REG_SIZE_U64 | i);
+>> +        if (put_user(reg, uindices++))
+>> +            return -EFAULT;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>>   long kvm_arch_vcpu_ioctl(struct file *filp,
+>>                unsigned int ioctl, unsigned long arg)
+>>   {
+>> @@ -1251,6 +1302,24 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>>           r = kvm_loongarch_vcpu_set_attr(vcpu, &attr);
+>>           break;
+>>       }
+>> +    case KVM_GET_REG_LIST: {
+>> +        struct kvm_reg_list __user *user_list = argp;
+>> +        struct kvm_reg_list reg_list;
+>> +        unsigned n;
+>> +
+>> +        r = -EFAULT;
+>> +        if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
+>> +            break;
+>> +        n = reg_list.n;
+>> +        reg_list.n = kvm_loongarch_num_regs(vcpu);
+>> +        if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
+>> +            break;
+>> +        r = -E2BIG;
+>> +        if (n < reg_list.n)
+>> +            break;
+>> +        r = kvm_loongarch_copy_reg_indices(vcpu, user_list->reg);
+>> +        break;
+>> +    }
+>>       default:
+>>           r = -ENOIOCTLCMD;
+>>           break;
+>>
+>
+Thanks,
+Zixing
