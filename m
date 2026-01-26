@@ -1,213 +1,157 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022114.outbound.protection.outlook.com [52.101.101.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EC12DB7B4;
-	Mon, 26 Jan 2026 16:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006702DECB1
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 16:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769443913; cv=fail; b=aVsmTl77YuikYLyB45k7UspPwaV5qnd5pn6ArJnRANwXlTrQCYKHyDdeBA8Ns8d8lHkjpB5yalljVE0/MsH4crLobGDnx2f+EZsSBvYTmlr7A4ZNX6prMWnC2LB9TuB53DEKFtb5BnYALQaGlzRFosXIYu/JppFGBQzj09IlKG4=
+	t=1769444098; cv=pass; b=cWZ4vLWvah7h6BY0PH6bLGWWNnsierwzL4Vcd/HCq9p6hTRhD8ROLp4OIkX9Rrt9ZCreOeY9nXe0j/cQyf/udkcEYypnjcmeY3zOaZlF+XtyloeaSrmMQ/iPsL+i/mY9F9U5Ech9jxDSvGbVn8Nd0IZmJ28uFYb7B6ffB6vf27M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769443913; c=relaxed/simple;
-	bh=iv59j2SgYDEoAa8OqPbYRSuSkQgQ/T7ob45bKb+s2dw=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=uF/hbTddJ4QgjDkNgUkR765AibkNhzan6C9TbewHv9FksdRePKVracFLwJaslhl+5i4Tg7yhSeFSaSFvjeup5YIQL1K8c1NZ4t2LEeVhoFrbSwy3oN0lLyPtd4ReJFKud6ZF4x6XYuFsTXGc7SfTu/8hVIE1b+weRO6Bt62VuaI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=zp88GvYp; arc=fail smtp.client-ip=52.101.101.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1769444098; c=relaxed/simple;
+	bh=b3m3/VVdwm1L5JwvxjexOIEy5wN31isjno52EUeePNw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eu4jkSbkPBRf0bZIDYCeWCWKHXl0l/p76XZosAX+r6lifB+X3faA6qc80ERgAt4+ghj9B/FI3/UjJ1txBuvGyMg3o2/LEvenHhWRlh8QqniEaGYbw8ssEuAg8tnJDCMdrJPogF+ernG8ydC7mS+0eT1w2PYmw9kRQcCVJiSejQw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=280F4xTc; arc=pass smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="zp88GvYp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cNJ+2w5iyIfzo1IILxKCxkeEmYgvNCZIz4kefojjbdHko5MHfdI2IKO2FVhfqXlRn+ujPdcTWYUDtyyQH3h1UzsCrDEjwS3Jzx8y6u+MD3ZiN9NPaotME41Lw2kE5E78iElny5u9vy1SP3eNG60tUeNmdOUWudE98ucFOHVdVRUj4Flu4xx3/kklAr4g9j30KkEAUo/fnBNjckOIVGrPRLDt+gHynz7bd1hTBO9qEOxaZZscK2RQv9HAnxmU4DP7U2wecrYahca4hUfkj2KPZ1zrA3IMPZrUDF9rkMEfA74QdfKUxS934EEIp87AYfzAdnR3bUKdCdv0q0sdnEKykA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iv59j2SgYDEoAa8OqPbYRSuSkQgQ/T7ob45bKb+s2dw=;
- b=oD0/o/H9v3c4xvUvf94XPg8QlrZrZav0TzThxPeiVCzD9L0PJyx2gjQuBrNPgVMCz1DV/2xIDZfcBdndO9GPG1qkEMDGCJlMzJF+PnaH1xPG6a7524sObpC2xx9NxFUrEPQxkwi4SIRJkST4KsUtu2AZ8hleaPcTDzW8k/S1ey73KdkS/OqhvcJYmMNGY3LWPG3aVups2F2Bwvi2rrposMrpGdkoBlM/PERp4oz4Y3tRDg2jWmVafkB/dMGkXKxVq0kSbUK4NSVSYqLzzCs1/MrPgAX2BJMPhsXNJM8kbjOXeuVWKw5+/3+cS386q/pbgM4X6Ax6Y3iRfqI3kYLdKw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iv59j2SgYDEoAa8OqPbYRSuSkQgQ/T7ob45bKb+s2dw=;
- b=zp88GvYpV7ynFeU6h17qC4gSX+AvKhyclOZP4DwBjarOUIqOs2aE5xDOE5GRl01EjjlVakGKO2Zwn7mL92ch2kmicZhgyju1w14Cs/oaG0jbMg1SEKooKSCJ73T/FzQ94XqDH/HemMB9jFFqBAwYoDH8rljatJl+Fcn/bbR2uHI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB3268.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:d7::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.12; Mon, 26 Jan
- 2026 16:11:48 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9542.010; Mon, 26 Jan 2026
- 16:11:48 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Jan 2026 16:11:48 +0000
-Message-Id: <DFYNILJPAYJE.3CFM49W80ED4O@garyguo.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Igor
- Korotin" <igor.korotin.linux@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Len Brown" <lenb@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 0/4] Re-export Zeroable and zeroed() from ffi module
-From: "Gary Guo" <gary@garyguo.net>
-To: "Benno Lossin" <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com>
- <DFYJRWUHCOMQ.3L6ZVLOJTNDNO@garyguo.net> <aXdrUsrKVmzpBVd8@google.com>
- <DFYNFSOP2UVY.27KHATUQMCXHQ@kernel.org>
-In-Reply-To: <DFYNFSOP2UVY.27KHATUQMCXHQ@kernel.org>
-X-ClientProxiedBy: LO4P123CA0334.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18c::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="280F4xTc"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-432d2670932so4336206f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 08:14:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769444095; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MXsaBewoqdntMkeqb4AKX8gzts5w65BOadHqyAzwXEhLwSoJrfNRPo9h9Dftc99Oci
+         I7YM8k6wTS9HGAc7H8+z7ES14TVPmon1eXHXjpW2fwTM22QCfXiIDqcmsbHw2ihqjZ2I
+         1HEFuhK7UAAiHX/P0y/PQ1APtS3eKyMYgdGrMSUZl/awnSQN3GK+BZWr6Arrl0zCbOwe
+         Ip9ea0D5LsDUhRWPIXVMXH7Dc+NeHgIerx2JJxECiuEPLraWSPgL5Y0ABvuIiv9xvX2w
+         AyAyiotmpTPN6h8BenxHtcUYdONcLJfKquvrAg+lEGOqEHxcpY2nfPIq+KaEyQgCEeA2
+         E8uQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=b3m3/VVdwm1L5JwvxjexOIEy5wN31isjno52EUeePNw=;
+        fh=+ljtNDonbQ6xt+8HuL0YQGlNdPYso0fKbFYLVrW6Hqo=;
+        b=LiChFN1OVgGzjdPsvJ8RLBxOELvg0w7UGPpSDv7qvKdRJDZbPTLHkT4qvnGG8ECfpj
+         JXTA5g6722IloaM+UUl9vrjj2fAptM1s5xDspFuAUxEyvDlHkTSZdfvp4Anf9OzrLuZB
+         f+4V2zESkMFhtCrAhmXbCYRhvtpIPtvOxQJN79CXLepusyJW8Xss/lazMfy3JtoIn1Nf
+         FdfyRa9r4d5FAeM27KseEnFQTR0UWf+mTZlX+5bDFh69Q7cRPyhvV+ObhbwiYtDgW9uo
+         3Men5SXIREh7M7fY48FXYlhyITec+9BsEaGte/fMzD4HDlVmV5FkF68cDklcGAObZPqR
+         Pjyg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769444095; x=1770048895; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b3m3/VVdwm1L5JwvxjexOIEy5wN31isjno52EUeePNw=;
+        b=280F4xTcTA5p7vg5B5/a3tkfZPvH27OboATow6174PXCIko+LqdKpnRfDP8XHBnAUe
+         ArRkDkQB1pGbSc8tIMGhDbZWZyUw2bads/RiqeCEpgkQELOYoDdDEYVVlF97swjgQcYM
+         iyDfImGYsVwTEsDdDplBx78x2U7PyZ6fmHemHUDjligMpvVATecJRJW0H5G4tuPF/O7r
+         4H7mqfbxziXX56rlp1VkMWMGv/cbhiC5GQRZdwdacQFE0GXHx+psu0RRWLwWv3TVbjsJ
+         b0GMKSE+mOs9F+xV48ThsTRbQNlZUxif5RrYPdXAjFCEFQ77ovtfJiY8VDZSBqslU2JZ
+         D4PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769444095; x=1770048895;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=b3m3/VVdwm1L5JwvxjexOIEy5wN31isjno52EUeePNw=;
+        b=HVRTOXOcr+VlFxlkjVwVclfse6qwyqZXnQ4xNmaCDmOnWF50dhp+W2DV98Nmo0kEWM
+         UFWALGb2haoMo/6Fs/ORVjNaMqkUXCyM6nVdvIJiHnbJVbQm4m8uUGqfdAzQ9MveFzKF
+         V8ag6+Hqs82breqgZiU5xNf3c9EUUBRQmH2TQurX8gjE/bkJ6KDCf3f739LSweZ0KwCD
+         xFtXSVpPtxqAoQGteZRzD7G0LzGVXLPpCxOsljs98PaCY3Mbb9vOEPLiUGXUwuwRIG4A
+         WCgCY6H7l05b4/TxYrqLoDWY3aknLA6+tJp26ATGb+bCOEkREQNaHHGRakMX5V3tLQyO
+         kbcg==
+X-Forwarded-Encrypted: i=1; AJvYcCWheF0d2zeujfmQhaKB6RUsvdZk3K/58MTnSya0GffeE473ahhxrDAjDednxxiW2hgHObPKRHciFTbDyDzZuQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxMrkzRQzbFrO3pb/9yRb0WO+ZWoD6tG4HZGmeGmUnkPihAi8q
+	iOYYJrUXPEaMvnOz7fVNkMR/9PCYtlYL3C93/dBulYsMRYJ3mJ61gncdY9jYMRH7i+HopzYD4T8
+	kizd+gTPmdHamaoP9zE4g9+85gA1/KgyZq7QVHWZw
+X-Gm-Gg: AZuq6aIziGNeMZ2KoNh/GjoTBLk//sTceTXoXQocb3LzxKswVdJ+rJrxUMZ2KwnMBz5
+	cbWJeW8V48sJM20C4VX+P4QU8ghS56fG7CUMvWXoR7iL63I8IAPtwld6qcRsPmnnq6rOAmdV7z6
+	M8jVcj/q4WDQMIbjwcP5lo3YMj3UPZ4TTYYXABUHEmiNFQz4dFPvJImm3PXT8UqvgUknRAfVS+w
+	xthbMBNtlxkQz+pXAF0OkqQ3mjysj3NylXDkbqrJLdMxTW6cJ/35IKayO2HSeXh7+YbJyBoEjpP
+	o3p/FBFKbzc0RUcdLx3qZhTgvw==
+X-Received: by 2002:a5d:5d0a:0:b0:42f:b690:6788 with SMTP id
+ ffacd0b85a97d-435ca0e2909mr7711789f8f.10.1769444095193; Mon, 26 Jan 2026
+ 08:14:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB3268:EE_
-X-MS-Office365-Filtering-Correlation-Id: a826486f-8045-4af0-9b65-08de5cf59be4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?b0FqdkE4S0RqWlVpbXE2WWpQeGNVMjErTC8xemlvN1VId1F0OXdCT2pHeDlj?=
- =?utf-8?B?VXZVUC9nYTVXOVdXZVAyZ3FFR1hwbkl1TWhlV0FndmxlSk9Qeks1NWQ5c1Fy?=
- =?utf-8?B?VEQzb0JPQnFnZWZmd0VLTm0yQzduQ25LVEZKbHFCbDUyanBSZzJIRlRSSjIz?=
- =?utf-8?B?QVhmK3lXdlBuQUdTZlRPUEIrUTZuMjMrU3Q5d1FST2FqaE5TQ3FXcC9EYUQv?=
- =?utf-8?B?bnl2Y1BYbCsyR3QxRGRBYVcvMUdzY0d2cWYwNjhMNjRiTHZXbE1TKzloa2Fk?=
- =?utf-8?B?WjR5UWNWUDZpRHRKOGh0VW9zRTZxZDBQSytZR2R4YS9QVVp4YWlHTGNBcVF2?=
- =?utf-8?B?OXRHbGtrN0d4NlNlNjNzL1ZIWkVuLzBmV21OZVJGOVp2YTY5QzlDR3dIcHNW?=
- =?utf-8?B?cjdYMk9CWk1KcFZMTnhSZjFrRlNSRXd0c2dXU0xWTGFjbG1jWUpDT1h6aTlj?=
- =?utf-8?B?QkptVWhqbXpKTTBXY0gwTWFRM0FWVFBka1k1SlVqZ2U2eTZaSHhMcUJsRXlh?=
- =?utf-8?B?eUxLWFRBb2Q5bkd5eE5XaW1FRVRlck5GTytWZFQzZU94ZU9UUVBwRjdQeU85?=
- =?utf-8?B?OEJodGFTYlJ3RFF2UEhNWWZ4Nk1SRHpvdCt3UzBldUp5ZjBGQkpQUEdBUEFM?=
- =?utf-8?B?Nk43aDhvN0VCTEgzRGxwNm9YaXoweFRuZWJrdUZ5elhsVnlMVE5vR2dQR1BW?=
- =?utf-8?B?YjBtdkhpUWVTQzNhWkpQVmNIMGZzR1IwNXhTNVlQSVVSTytpYjJDUjcrcUdI?=
- =?utf-8?B?djBYekhmRFVyZVJpUmhCVEM1bUU4NzNOZ1RRRHMreVg3Y05RYkJkeG9qVXJE?=
- =?utf-8?B?bkIxYVB2UmdhbWpIYTZKcWRXbkppa21neWw1aGFISmx0WVVUSkV5eHZaUkhR?=
- =?utf-8?B?R2xkdkZaOThwc2ErNUVRbytvS3FtQUxTRHBJOXdtWStYclpmWUprSVU1UzNv?=
- =?utf-8?B?VWFUbFFkYytvcVBCQ04zUkhrN1pTUDV3elJuWndFeDd3WG51cFFPL3JQTkZu?=
- =?utf-8?B?eVJycGpKb1JCT21JOUZFRmNkaDAyRmNXV2h0ajI0RldKMm81UkRTR09IMm5X?=
- =?utf-8?B?ZHMyNDVsM0FKOHRoZCtqNm1NS1RQRnplMTE2cUYwQlkraU0rbDlGM1hVb0NL?=
- =?utf-8?B?M2JRVFhZcVVyaFNsUDFmODdWcmhoSFJ0SDNDL0ZCbHp3ZFRUTnZlMFY1ZFBT?=
- =?utf-8?B?T2dDOFVwWFQ2RGdpZzk5SUxRakx0UFk2YVUwV05rU0hWQTQyLzRoVW95Vk5k?=
- =?utf-8?B?d0JOL0N5YnJYRXVidmVpQ3BNRzRNWkplaFN5Q0VnTkNjckFiUlgzSTFsbWdr?=
- =?utf-8?B?dVZMUS93OWVEem14dE5BOTJpbGZxOFA2aThuQ0NnZ05oVEpuVTdMckNyTVEv?=
- =?utf-8?B?Mmg0TEltYng5M21LZFJTcVBtdmszeWZNaUQrQXNTaGVMV0M3Qjd2bnFuZVVt?=
- =?utf-8?B?cUs0SHc3MXhIVFhqMUdJUnlFS2wyNStOUVRZdDg3MzNsa1R3ckpZcjRTU2tF?=
- =?utf-8?B?cUpwMGp0eFAyell2Vm1yM0pxSEJMK0FwVThDQUhqc242cHFKQitib3FlS0R4?=
- =?utf-8?B?SnNUYXVzelFYMVh2VWpFUi8wWThDMTltcUJ0ZE82K3JPa1g4Mm0rWkZhVm9J?=
- =?utf-8?B?RktERjJGZkhuSmFZT0F1L3hubHpZTktvZHdCK1Eyajd2RzZkLzZUQU42NmEv?=
- =?utf-8?B?bmFoU2RNUzRwOUhTSzhFT2o5N1hzNXJCK3B4K2xUTnh4MVFOK2Z5S2FCUWF5?=
- =?utf-8?B?K1JBTjcwRGxodEVmS3htQ1M4cWd1YVhCVkJBWUZLeXJrVnB6U1RXaFRGeFNV?=
- =?utf-8?B?eU1Fak1xMHlVUkdvOUwzclh5UUdtOGdLMGJ0aW9EeWNuaFpNMjRxR1ZleWRI?=
- =?utf-8?B?allJKzA3ZUZGZlduYXBaUHpYYVcxV0tieVY3Sk56UVFlcGkvd3U2b1RCU0Ey?=
- =?utf-8?B?ZVdFZHljS0hoTEYvc252UnVwalVWSWFabTdEa2lNdlgzSVBNNk5CZ1hvTXNT?=
- =?utf-8?B?VTdNcXdNaWYxWUt3cVE4ZytsZDNsaWhGclZ3bjVHNVkvK3pCRUhOZHJiejlK?=
- =?utf-8?B?L0FlVFQyUmxYNnV2NitCM3lwbHgyeS9UcVhHUlpNUVNoVHdFRnY4VlFWQSs0?=
- =?utf-8?Q?PKWA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TXBydG91ck4xT3M3UUZXOE1yMHBmR0p4cDlqKzlOcmcrZmhNQ2hEc1ZIRTVG?=
- =?utf-8?B?aFVWNHVZYzZrUUtFRVZvZ0V6YUpOMFA3d0o0NzdGRW45UXczWGVIK1hwMW05?=
- =?utf-8?B?eXk5eUlUcVBJZVl3RXduY2tyWXBabjZDOXdvYTRnL291OWpDTFY4dyt1SDRk?=
- =?utf-8?B?bi9rWHhhcngwc0FsNXJrYWFKQ01IMEN3ZkQvUEFkZGtISEM1eFRKVjFiTEhK?=
- =?utf-8?B?UjhmekRmcW5JOVkzYk5TNmdMWDZ2Tis3Nm85S0F4a2F4YkhlWjh4Y0tQSXM1?=
- =?utf-8?B?TmpPaUEvbXpKcW5wY0RZc3d1SjFoTllHaTZma1RZT1p2Sit1NlVzeUFYNlFl?=
- =?utf-8?B?QkxSK250RnVaOGd5Z0QyN2hXaS9aSUZOQkNsckVvUGdlK1JqN0JBb2luUWlw?=
- =?utf-8?B?RjJZNFFpS20ranV5cmxMZmk0RjV6MXpCMWlodVYrMmsxejNVemV0ZnpNbm45?=
- =?utf-8?B?VWZYeHRJR0N6b3QrUnVoOXZ1WGE1bWNNbkt5SzZhQVRiK1JHVmhvMzVsb0Q3?=
- =?utf-8?B?aU44QjlJVEZ0amJmODZlcVdyLzlBMlFNQVZ2KzE3SFJJNXExenRSdkRYWG5U?=
- =?utf-8?B?T1c5OUVqSmE3aGxkLzlSTXlPZEpDSzhURk9ZVDA3MmVqeENsVE1Xc0ppRjlS?=
- =?utf-8?B?VlVDbGRHNXhUelV6NlB6eGlpRXNoRlRJL0RPL2F6VkRRM3NhYjlPOXFvSjVB?=
- =?utf-8?B?Q1I5VVFBK0Z2bittN1BKckJFYnJSN0QrRUNqVWF1YW54elRlWVlJdW5NQjhv?=
- =?utf-8?B?cDlVWjFYeGVvRVNGRVdldzltMUNkZWNuR1ZHakR3cnNERVBzREc4QVZEbGtD?=
- =?utf-8?B?a1pTdEI1QTJnTGo0dzBhMnBvbmZnYXlZZUtoYVFwVHd1dDF4RFluZU0zYy80?=
- =?utf-8?B?UUhTYkQzZTd2ZmxsaEUwb2JXZWhlWGZDKzRjazVXbVlWZlNJekk5L0MxaTlo?=
- =?utf-8?B?aHQ0Y2p0KzV6YjJGWjVEZDhtOFhrL2R0YUk0Uk0vS1hoYVE1R3JINTFiOXpG?=
- =?utf-8?B?cFBOSE5NMGQvRGZIS2pqMEFpUTJreGxENlBrWTZyY09ObFloRUMvNHVIengz?=
- =?utf-8?B?cHQ0cHczTEl6NktXL2lGZW9IZjBBZ0dQV0hBZExocHd0Yk9sMUdqZTFKWjZm?=
- =?utf-8?B?T0QvWmZzZTlHK1FUMXRnYVdBcHU5R01ERE5RLzhNc01KYmZRVGtQVHZDL1JD?=
- =?utf-8?B?cDVtdlBYZnBDYityVElZc05ibkFzSUs0bnhJeEEvNFJVNXcyUDdFZkkrMHpB?=
- =?utf-8?B?T1FYSTVYTFdEUVZ6R1FMNWJaUFBGWkVRZGxUdjRzSnJKNkdUM3lRQ3JsVGM4?=
- =?utf-8?B?M2pOa0xuWmJXZCtONW4zN0hpQ0d2YjRNclJLdVhWY3RjQVoyK3hISHBJUEZq?=
- =?utf-8?B?NU9VUlVYY0R5T3luQzZhelUvTWtjeXk4RFBKU2pCN3NFTUxCVW1LT091RUdi?=
- =?utf-8?B?TUZFaHRMQUdmVXIzSHpVMkFOUUgrdThBVW5WUDRnc0hreEdkMkxGRk4ySTRG?=
- =?utf-8?B?TnUya3hLQkdxT1NQcVBNN1RMdVhPREZTaFNwWm5jaDRJcHFTdEFrZm5Venl6?=
- =?utf-8?B?OUwwYVA5N2V3T3dScHNaaDZmVTJvS0QwdzJQc1l6Ny9hb0haK0ZKQVpFL1h1?=
- =?utf-8?B?bE0wdmtFc2Z1SlJRbHdOaUhxLzBNeCtsZE9ENHhGWlN5QW11M0ZISEd2UENn?=
- =?utf-8?B?R1ViVk84WE9ta1AzNTJhUjk0N1k4enhOcFloSTVyZmlzQWFHYVZEOFNmTVM3?=
- =?utf-8?B?VzA5VXo2VTBwczRqTEZSV25KN1pBVmV5bFQyV1oweUpEanc4Q1RFR0h3NFZU?=
- =?utf-8?B?VWNHcTJwQXp1eGprOHZhbUJaWXBPQlRlc0VYc0VNTzRJR2J0TVh0ZnBaL2Na?=
- =?utf-8?B?amNCdVpidUF2czQyQ3ltUHVtWHBia3hkOGd4NkJ1cUl0Qy9GY0NWZU9vcUpZ?=
- =?utf-8?B?eDVjbkZDWGpNWU5CU3UwWitHRDNUNnF5blBiTHAzVXVLSjh6UjBRYmNNeXhP?=
- =?utf-8?B?VDNBOXRBZDhraStUTDVrbFBnQmRSTG9QVHhRVDYzTXVlQ0RWaUYxZnRWeEpy?=
- =?utf-8?B?RWJ0Uy8xRXg0MW4xU0xVVGVSZ0xFNVAwSjRaZEZEc1lIWXF2bXBrTUUyTzNP?=
- =?utf-8?B?WHZxaWhONmpxUVlrRW1MeEVFZ09PeDlmWnhGMkRaLzZKR1djUmRvaG5TZGFk?=
- =?utf-8?B?NVlCK2xMVzNBMWw0MlBYYXMrVG5kUEpGcjMrV2JpUWgwV21mVHBQSXVZaTI1?=
- =?utf-8?B?UDQ5L3MrRGt6SUR3Q0Q0bCs5b1BITTV3K2dEaDZ1T3pWdHpuTHRPK1dBaWNh?=
- =?utf-8?B?VmtWZTlOYTVSUjhXWlpLbEtMcndoVWVtb245T2VqTDQybi9CVVNyZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a826486f-8045-4af0-9b65-08de5cf59be4
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 16:11:48.6118
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c4T8ayC7xsAjFry95Nhy8sXZ2Qq3IYMUVacE1chMpqAFzLDmvDfVwG5E4RpwnyMughf8f5FSCk+YNFfxpSSPwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB3268
+References: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com>
+ <DFYJRWUHCOMQ.3L6ZVLOJTNDNO@garyguo.net> <aXdrUsrKVmzpBVd8@google.com>
+ <DFYNFSOP2UVY.27KHATUQMCXHQ@kernel.org> <DFYNILJPAYJE.3CFM49W80ED4O@garyguo.net>
+In-Reply-To: <DFYNILJPAYJE.3CFM49W80ED4O@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 26 Jan 2026 17:14:43 +0100
+X-Gm-Features: AZwV_Qhm51ZvNtcAl24ity6Z1oGdEZsigYZ9qHzy-oChasQeMJ3ey0HJ1RLeuNE
+Message-ID: <CAH5fLggAfRkjSmYuYAZioXn3OP31Fwr=VGd2znnaHQvPL3tKHg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] Re-export Zeroable and zeroed() from ffi module
+To: Gary Guo <gary@garyguo.net>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Igor Korotin <igor.korotin.linux@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Len Brown <lenb@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Jan 26, 2026 at 4:08 PM GMT, Benno Lossin wrote:
-> On Mon Jan 26, 2026 at 2:25 PM CET, Alice Ryhl wrote:
->> On Mon, Jan 26, 2026 at 01:15:53PM +0000, Gary Guo wrote:
->>> On Mon Jan 26, 2026 at 1:05 PM GMT, Alice Ryhl wrote:
->>> > Currently, the Zeroable trait is defined by pin-init because pin-init
->>> > happens to use the trait. However, zeroed types are useful for many
->>> > purposes other than pin-init. Also, we wish to implement Zeroable for
->>> > types generated by bindgen. For both of these reasons, re-export
->>> > Zeroable from the ffi crate, which is a already dependency of the cra=
-tes
->>> > with bindgen output.
->>>=20
->>> I don't see a benefit of re-exporting these from the `ffi` crate? Espec=
-ially
->>> that we re-export `ffi` crate from kernel crate anyway, and `Zeroable` =
-is
->>> already in the kernel prelude.
->>>=20
->>> We already derive `Zeroable` for bindgen via `MaybeZeroable` derive in
->>> rust/bindgen_parameters.
->>
->> I can't find the convo now, but this change is on my list from when we
->> discussed also implementing FromBytes / IntoBytes for the bindings
->> types. To do that, we need to move our FromBytes / IntoBytes traits
->> somewhere that bindings/uapi can access, and we agreed that the ffi
->> crate was a good place for it.
->>
->> And then for consistency, also reexport Zeroable from the same location.
+On Mon, Jan 26, 2026 at 5:11=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> I think you also mentioned at some point that using `pin_init` from
-> `bindings` seemed strange and also using the `pin_init::zeroed()`
-> function also doesn't fit, since it doesn't have to do with pinned
-> initialization.
+> On Mon Jan 26, 2026 at 4:08 PM GMT, Benno Lossin wrote:
+> > On Mon Jan 26, 2026 at 2:25 PM CET, Alice Ryhl wrote:
+> >> On Mon, Jan 26, 2026 at 01:15:53PM +0000, Gary Guo wrote:
+> >>> On Mon Jan 26, 2026 at 1:05 PM GMT, Alice Ryhl wrote:
+> >>> > Currently, the Zeroable trait is defined by pin-init because pin-in=
+it
+> >>> > happens to use the trait. However, zeroed types are useful for many
+> >>> > purposes other than pin-init. Also, we wish to implement Zeroable f=
+or
+> >>> > types generated by bindgen. For both of these reasons, re-export
+> >>> > Zeroable from the ffi crate, which is a already dependency of the c=
+rates
+> >>> > with bindgen output.
+> >>>
+> >>> I don't see a benefit of re-exporting these from the `ffi` crate? Esp=
+ecially
+> >>> that we re-export `ffi` crate from kernel crate anyway, and `Zeroable=
+` is
+> >>> already in the kernel prelude.
+> >>>
+> >>> We already derive `Zeroable` for bindgen via `MaybeZeroable` derive i=
+n
+> >>> rust/bindgen_parameters.
+> >>
+> >> I can't find the convo now, but this change is on my list from when we
+> >> discussed also implementing FromBytes / IntoBytes for the bindings
+> >> types. To do that, we need to move our FromBytes / IntoBytes traits
+> >> somewhere that bindings/uapi can access, and we agreed that the ffi
+> >> crate was a good place for it.
+> >>
+> >> And then for consistency, also reexport Zeroable from the same locatio=
+n.
+> >
+> > I think you also mentioned at some point that using `pin_init` from
+> > `bindings` seemed strange and also using the `pin_init::zeroed()`
+> > function also doesn't fit, since it doesn't have to do with pinned
+> > initialization.
+>
+> Shouldn't it be that a crate that implements Zeroable / FromBytes / IntoB=
+ytes
+> and then pin_init becoming an user of that crate, then?
 
-Shouldn't it be that a crate that implements Zeroable / FromBytes / IntoByt=
-es
-and then pin_init becoming an user of that crate, then?
+The Zeroable trait has to be in pin-init because it's also outside the
+kernel. You *could* add yet another crate just for this and let
+pin-init depend on it, but just putting it in the existing ffi seems
+reasonable to me, and ffi is not a bad name for the owner of those
+traits anyway.
 
-Best,
-Gary
+Though I guess if we add zerocopy, that concern goes away.
+
+Alice
