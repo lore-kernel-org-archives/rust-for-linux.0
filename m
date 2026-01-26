@@ -1,203 +1,125 @@
-Received: from mail-dy1-f195.google.com (mail-dy1-f195.google.com [74.125.82.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B2F2D77FA
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 20:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769460211; cv=none; b=gh7t+02ZGmdzB6tDLlQdmrJhnkg9duOhPkCIDhJL2vWlLDAu5NTMr2d3pwlWjPqErVcXN12BsdrSrslhS/kTPV+QMErgHmxmLnv8XAjKyjqdYh0ahnMXDKQBT6FNZIOmZrU/oFdrBD8cGPsFU6g2n8wm0578NyESrpxs8j9pybU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769460211; c=relaxed/simple;
-	bh=2ImvZniPDzFetnyqCWbg0zblKqhE8c/sMpTgsU+ZG+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V3j6edL90agUHtOdZwlBT7Dq+s5z2RsLx9BNqFH19TD81F2hdCM313xV0BVfFK2vIK5tD5rZ2rQyc5JhZtBNHgby1wzAm7iDuh9Uv831LvJmMC7iCea6xGw0ccgwBVzmxGDHORHW3YQl7dbV8KLf9vcvsz47PSvX5SGh8T54glI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=PXJ9VFxS; arc=none smtp.client-ip=74.125.82.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B4D27F010;
+	Mon, 26 Jan 2026 20:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769460737; cv=pass; b=E6XNB8orgVpdlUiMKsTIBzzKkgI+LK02k5hNZEc9H1EIMmP6mTy+4oaWTaAfNLXDA0Ac5G4vT0yO1qk46sHH6j4V+ipFZUOgcztj1E5Njrj62nfgWSSvC7SU42n5ekBFOVXdMsW9XOm01l4sQKBAJ2etCt1aO7XuKcO5fE9SwOQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769460737; c=relaxed/simple;
+	bh=gk7bCLmsZAworll9Tyept4IT2p2JBUL6ir6idYJ5x3w=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=snr1yHrekzWjnYmisDHrlmKJ+MpgVcRk7chIWGP/WnGDeDOw9vA+KiO0sCmOxn3B3eadaHEdlNPMrceBLnh2OnoKijie6sqyTA0/7VEffYCwCK/CFvNTNuAyU8DLgjqCneALf6ZYUgVNUA7dnNjCQeqe86oDNFFHgLyDNGb+dyM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Y8EIJNOQ; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="PXJ9VFxS"
-Received: by mail-dy1-f195.google.com with SMTP id 5a478bee46e88-2b70abe3417so11178396eec.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 12:43:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1769460207; x=1770065007; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=s0UipC5QHyJnTmDWXctjUpxhkNyTA6jh9RjXD3Q3T9M=;
-        b=PXJ9VFxSjyN7jT6HpQvw3Be1870o/akPKIBYteU+9y4pc4JKWkWSlVVZJG9svjhYaO
-         QNQltekxPSEKZz3E8CCa0xhAMOBANuOOR/9BQ7se9cqNTA73kBz6rwlKM3hKE6P3o8jP
-         /2pNwK3HcvKn9B8LBxYSHqfcHaOS/aDi2D0wf2orHCgBR2VymuZRj31zkzLDvv2MTTBI
-         fBk0YnCYiSx2YDhTvdcnPzdGpjep8uf7u/PBeVG76moqqJ+7dkV5G6nBf/UugVGQ21el
-         FGLUeoqcTFBfToCiDMTM5w7Fu+FbZczcDLz51FQymVRGNfcQKrw6r3aMskOgYdoHfwKy
-         0peQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769460207; x=1770065007;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s0UipC5QHyJnTmDWXctjUpxhkNyTA6jh9RjXD3Q3T9M=;
-        b=ETHxPZiGFOpmTsCGCb0QsyLwkiH6f0ZKCcHdmMwAIwIi2BNi+jP8acOT/f6/1ZzmMc
-         rPRSGBV82y6kYXwGlXHzVwpQGZXFubOFMxiWcDonSQnU1o5U5iSUjjXTwHe74lga3jvn
-         OQV6wgY4VIM2STbq+aGu/GJbWjHhnEzKLKSJ/jklHef5McJ0XLplhGfwUEUeWATeS5ju
-         TIit9SkHSRuyyWNClIRzAI0V9qprdRvzcP3ZQRS7wrMD/+25wGuZudxoZmx5wxi9cDtf
-         6cUCVpgNc+/eqhsz7dy2DdTuUVBZBEeqMN0VNBA0gJcdGP2pRa/noX7MmlhEbEpyRMfQ
-         S1Lg==
-X-Forwarded-Encrypted: i=1; AJvYcCWnpLo09mQzlMBKGZP4HUYk3z0azAkhrSU45CF9wiLWpLZSklVe2cQGslqbisvk6unL9BhU0rIIM8LTDq3XQg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywj4RonELTYFsq9sarSzywZeeppNHvOLWxH+JpyNJ5XUMa+rwww
-	KxPZorY0Y8iH+u6+bLuA/Mdc+fbzM1AMIG2SGGuxkFr3s40NrDDJRJ+fkvIXnJeArO4=
-X-Gm-Gg: AZuq6aLLsRSa0MJP3bqaSzgCQ1oNd3j6lo9m3WdSOaO4KCyOe71henzvy2vMphoK3Bx
-	RM1vLYwmnffmlOQ2fVKUCOe6t3M2/qi8h7ASf2OF131KnhPPhgk4/F71rhkxJ67iz2o1Yu+T/bq
-	TN5FLIxs7r8d2ZVUzmb9jqUtqSxnaLTJSpjOfZ6Tziwmzc+rXCUG7OI6525YcXIch6Wjfht/LvX
-	HMS9GzMXs/wTJiXCVWZkvTeBhgtbvkI250P3+x/KDXgr95hbpzc+0B1ObcXPmVAEwPQzqjin7SH
-	DdnBPlL91kxxdb6JkJIvC99waoRn1DFvvC4jubnOtoa5PZEofMB2kWWHYtfFy1uLNLUNbJHkQ4P
-	/8BltgTUpjWrRm3Nrp6p2y+k4NE5AIlaEjGwscruum9iYrhailVImZoFVoBwoHxNgIofxrJyzFu
-	ybs9/17Q8L/CQyYz5mAKyj
-X-Received: by 2002:a05:7301:d16:b0:2af:7ee:5300 with SMTP id 5a478bee46e88-2b7643466e8mr2954218eec.14.1769460207055;
-        Mon, 26 Jan 2026 12:43:27 -0800 (PST)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b73aa08964sm14741354eec.28.2026.01.26.12.43.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 12:43:26 -0800 (PST)
-Date: Mon, 26 Jan 2026 12:43:24 -0800
-From: Deepak Gupta <debug@rivosinc.com>
-To: Zong Li <zong.li@sifive.com>
-Cc: Paul Walmsley <pjw@kernel.org>, x86@kernel.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
-	richard.henderson@linaro.org, jim.shu@sifive.com,
-	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com,
-	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com,
-	cleger@rivosinc.com, alexghiti@rivosinc.com,
-	samitolvanen@google.com, broonie@kernel.org,
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
-	Andreas Korb <andreas.korb@aisec.fraunhofer.de>,
-	Valentin Haudiquet <valentin.haudiquet@canonical.com>,
-	Charles Mirabile <cmirabil@redhat.com>,
-	Jesse Huang <jesse.huang@sifive.com>
-Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
-Message-ID: <aXfR7NhAxHlND3z9@debug.ba.rivosinc.com>
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
- <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org>
- <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
- <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
- <CANXhq0rpjSvOThACrB6_MMc8S34--xJsUYZ+HtMu1GUNyk8zOg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Y8EIJNOQ"
+ARC-Seal: i=1; a=rsa-sha256; t=1769460724; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=aOWNmqHI0cSjGLHm+y4IvVLF/4YJLWB0zo4lhon7+FpCMYil/lFbTCKiQ+fuzR76evoPHzATFQXQk3Ux6LlttaL8Wy6TLgfyqvb2nO2xTepqGjgAIuaHFhjLMiaOsmMPNDZvQ1one6KK/f5csZ3VuLri5lAjttCQTtNDn0i9D0s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1769460724; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=rEHkKpBcmkOspe2hK05VCnHAt4UqLafts8UPtI4RO7A=; 
+	b=Id+rb4XoeYpfNBzlQfMBB7nKN1xBTtUmXyBaX3EtkdzjJDAxatIjBGgipsldscZwtpGT5WlEti2IYy1N9ZjYM5M4toqQDyIjUF0pdDkNWj3VpN+Kwz/RKxF7TCE2gbpH5g/8UzqU91deNakSSvKYs1Opfb09goQ+rRXdlRKPyz8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1769460724;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=rEHkKpBcmkOspe2hK05VCnHAt4UqLafts8UPtI4RO7A=;
+	b=Y8EIJNOQIwYw0TiQ0WIJKtdg3ymohxI+YzA8n891zeE2pUX5jhjvsAVWJDralPHO
+	NyuHibCeI5Yw0/FXbtwAxylTxJWkemin4uUOIXuak4HYJw1GSnLmbcuvsmzhvQbr8Rs
+	zJSZ2CM5gOSXwUufqXv1st7TYWF2Q43wPDBCfYJo=
+Received: by mx.zohomail.com with SMTPS id 176946072310858.48046846843215;
+	Mon, 26 Jan 2026 12:52:03 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANXhq0rpjSvOThACrB6_MMc8S34--xJsUYZ+HtMu1GUNyk8zOg@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v4 0/3] Introduce DeviceContext
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260123231230.248500-1-lyude@redhat.com>
+Date: Mon, 26 Jan 2026 21:51:46 +0100
+Cc: linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
+ nouveau@lists.freedesktop.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Shankari Anand <shankari.ak0208@gmail.com>,
+ David Airlie <airlied@gmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Asahi Lina <lina+kernel@asahilina.net>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E1EA1F0E-0A78-4F6A-B67F-03E5CB8F0135@collabora.com>
+References: <20260123231230.248500-1-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Wed, Jan 21, 2026 at 09:32:20AM +0800, Zong Li wrote:
->On Thu, Jan 8, 2026 at 11:10 PM Deepak Gupta <debug@rivosinc.com> wrote:
->>
->> Hi Paul,
->>
->> I have a bugfix for a bug reported by Jesse Huang (thanks Jesse) in riscv
->> implementation of `map_shadow_stack`.
->>
->> Should I send a new series or only the bugfix-patch for implementation
->> of `map_shadow_stack`
->>
->
->Hi Deepak,
->Not sure if I missed the bugfix patch, I couldn't find it on the
->mailing list. Could I know have you submitted it? If so, could you
->please point me where the patch is?
->Thanks
+Hi Lyude,
 
-No you didn't miss anything. I had been busy with job change and even though
-change was small. I wanted to do some basic testing before sending fix. I just
-sent the fix on this v26 series, patch #10/28.
+> On 24 Jan 2026, at 00:10, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> Previous version of this patch series:
+>  https://patchwork.freedesktop.org/series/160217/#rev2
+>=20
+> One of the unsolved issues we still have with the rust DRM bindings is
+> the ability to limit certain Device operations to contexts where we =
+can
+> guarantee that a Device has been fully initialized and registered with
+> userspace, or vice-versa (e.g. must be unregistered).
+>=20
+> While the previous solution for this that I had was simply not =
+exposing
+> drm::Device at all until the device has been registered with =
+userspace,
+> unfortunately this isn't enough since:
+>=20
+> * As we found out with Tyr, drivers occasionally need to be able to
+>  create GEM objects before device registration
+> * We would still need to be able to handle KMS callbacks which could =
+be
+>  invoked after KMS init but before userspace registration (not handled
+>  in this series specifically, but DeviceContext will be required for
+>  handling this).
+>=20
+> This patch series provides a pretty nice solution to this, by
+> implementing a very similar solution to kernel::device::DeviceContext:
+> introducing our own DeviceContext type state.
+>=20
+> This patch series depends on the two pre-requisite patch series:
+>=20
+> * https://patchwork.freedesktop.org/series/160523/
+>=20
+>                          Series-wide changes
+>=20
+> V2:
+> * s/DeviceCtx/DeviceContext/ for consistency
+> * Move private driver-data availability to the Registration
+>  DeviceContext
+> * s/AnyCtx/Init/
+>=20
 
-Sorry about the delay here.
+Did you forget the changelog for v3 and v4?
 
->
->> Let me know. Thanks.
->>
->> -Deepak
->>
->> -Deepak
->>
->>
->>
->> On Fri, Dec 12, 2025 at 10:33 AM Deepak Gupta <debug@rivosinc.com> wrote:
->> >
->> > On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
->> > >On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
->> > >
->> > >> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow stack
->> > >> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks. Fixing it
->> > >
->> > >Deepak: I'm now (at least) the third person to tell you to stop resending
->> > >this entire series over and over again.
->> >
->> > To be very honest I also feel very bad doing and DOSing the lists. Sorry to you
->> > and everyone else.
->> >
->> > But I have been sitting on this patch series for last 3-4 merge windows with
->> > patches being exactly same/similar. So I have been a little more than desperate
->> > to get it in.
->> >
->> > I really haven't had any meaningful feedback on patch series except stalling
->> > just before each merge window for reasons which really shouldn't stall its
->> > merge. Sure that's the nature of open source development and it's maintainer's
->> > call at the end of the day. And I am new to this. I'll improve.
->> >
->> > >
->> > >First, a modified version of the CFI v23 series was ALREADY SITTING IN
->> > >LINUX-NEXT.  So there's no reason you should be resending the entire
->> > >series, UNLESS your intention for me is to drop the entire existing series
->> > >and wait for another merge window.
->> > >
->> > >Second: when someone asks you questions about an individual patch, and you
->> > >want to answer those questions, it's NOT GOOD for you to resend the entire
->> > >28 series as the response!  You are DDOSing a bunch of lists and E-mail
->> > >inboxes.  Just answer the question in a single E-mail.  If you want to
->> > >update a single patch, just send that one patch.
->> >
->> > Noted. I wasn't sure about it. I'll explicitly ask next time if you want me to
->> > send another one.
->> >
->> > >
->> > >If you don't start paying attention to these rules then people are going
->> > >to start ignoring you -- at best! -- and it's going to give the entire
->> > >community a bad reputation.
->> >
->> > Even before this, this patch series has been ignored largely. I don't know
->> > how to get attention. All I wanted was either feedback or get it in. And as I
->> > said I've been desparate to get it in. Also as I said, I'll improve.
->> >
->> > >
->> > >Please acknowledge that you understand this,
->> >
->> > ACKed.
->> >
->> > >
->> > >
->> > >- Paul
+
+> More changes described in each patch description.
+
+Seems to be the case for the individual patches as well.
+
+Anyways, I will do a second round of reviews here; please
+wait a bit before potentially merging a new iteration.
+
+
+=E2=80=94 Daniel=
