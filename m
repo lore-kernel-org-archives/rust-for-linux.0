@@ -1,346 +1,216 @@
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012050.outbound.protection.outlook.com [52.101.48.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F0A3090C5;
-	Mon, 26 Jan 2026 08:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769417688; cv=none; b=myx1Q+ohGF3d66CgbzUuy0lBgy68dvxFEGkV+tGlm0VkMxV2C5+X5LLCAePAuSX6CKQU3sg4GVMI4UK4oXBcLqRx7ElDBOR7eVpgwVrhlV2LcqzX+mLGQoPHVzJcTgzjh/pgEJ2KdXxsGNWcGPumJU2ktgIuTjDU8RoyYxkSl3M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769417688; c=relaxed/simple;
-	bh=TwIToU064K5dMWaz+SRpXB7pa10vjszZ1Jy8t7dLIrc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iyN+KDq26QxJCBhAZ/j1HVd5f4d20Wh5tFYrBdG6beC0Ut+ZmzYnh7V2ZrQsCDEhFffXcsJ4z/X8cjxm5ErclxmPyDW+jPZxEA0IGWbwVrOHDzg6FugNhYMF2YVZt6dcSgrjLUDsHTWv23s+rckpp8arQiLVRFr0gPmL2gAbdfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=ORqjPLk+; arc=none smtp.client-ip=159.100.248.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECDD303A05;
+	Mon, 26 Jan 2026 09:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769418368; cv=fail; b=mfAd7n91U7avNVQMlMpwho5JQuoDrjQucdpO4H+6Ofb2NhR5eSyVS/f6k+nk8W+Cjq807gwFe1jau0FoDFk0bT90xgcAYxQVo08j8syyIocQSrkiqX9OvAZFFHgCH/bBZCEBmxFEcyshf0JJV7lEoVz4N/TayFmqXCrMxdsDg6o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769418368; c=relaxed/simple;
+	bh=qgvc1kyGGxRQbOEx/vNv/7x/LLSoQQbhWRwteyLTfoc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OquMOOsdLQ8Tw9hyAVPgoepaf7n+Ue3xWxfSN42Hv3xx2We3e70I8E0B8rFEnL116qtUColPOTDvXlfTSdzric3RdKmRUAxR9lrvOd6RbEqdaWwyzdu6u/9lhWE/8txSBd5a6W6DsBx7NleQWx9dGY3psj/bgfqL/lJppe6Fgxk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hDoxfEqI; arc=fail smtp.client-ip=52.101.48.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="ORqjPLk+"
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.113.132])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 3B31F26345;
-	Mon, 26 Jan 2026 08:54:44 +0000 (UTC)
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 0C8663E8B0;
-	Mon, 26 Jan 2026 08:54:36 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id A2F0D400D5;
-	Mon, 26 Jan 2026 08:54:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1769417671; bh=TwIToU064K5dMWaz+SRpXB7pa10vjszZ1Jy8t7dLIrc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ORqjPLk++EGfsnq5gappSmmd+co4PSfSsPlDjskR5vg14gPN7pChfp5XREpSKs0jx
-	 Cbke3yY4poVFGqSSE4Yf72g9OJzkXuhAWPFDGWb495qP0jSi2ecAMoheaHzVbUQEO7
-	 +kckd9qRE/pa8VR/InKeQPrA5GsVWV1ezawKn5pw=
-Received: from [127.0.0.1] (unknown [117.151.13.225])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id DF98543622;
-	Mon, 26 Jan 2026 08:54:20 +0000 (UTC)
-Message-ID: <f3256219-bb97-45d4-9364-cf28d3c9dc8a@aosc.io>
-Date: Mon, 26 Jan 2026 16:54:15 +0800
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hDoxfEqI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vXrSAnpmCe4ULm6xgqFShe2D9NVFDeeYQ/ih1yH6vFMiZV31p4/iAofwZ7h4982sbvrbFp5qMvDtTygNirML5cIbABgTjcRQsguEG8MnVQnfDcPR/MmUYe/CqritR8fDUUMAL2cTqAhmcjNIsiyGelCyIhRbwdrT7aaujtYtyzYYW4A9Jbv1zJ1wuvXG6lr1mAN9r1EnIvth4+eLvo41UAyFivDAKWOisuP1f3oMGUQKvVowdn6LA/WmkYRTgwPngxnACpqP0vHlTK2TwL3Rc8xqfhqsHUqOQZjmThC81HLJ4mufo3w+JYv8v9yREg5EpuF57wgtNQwdbCdNSlmcDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KKFuIWBI5ke0BRWZABXLTq17KuaspN+pjQVE9e5ltOo=;
+ b=Rkdvh1dfv9dFmCtSEbP5TXPy8O9rChJbKXr7OAZPPf6C25FQMxzBOv1b3RfJtdBI1mQxxdXvQaXkeBbxpVK09M5f9nUOWYj8cOSe9Symh42ed8GWvsCa8jrK6qXiGNb0+IW09ODijuHXJwxAUudyf0bN+nnPuZDEdwXn/r7a9krN672tJqV7nS5kY43Bxrz1Cz0yVsgI2Jhhg11W4LLc6HQ94cc9Lck3g0QzdBgJC8275UnsfCuLZGEVklnsywkglfQhYxMpcyyNEec/2K7+UoibSMq7wREu9ejnRJvWW4Xf+IWDaZGu7/XAqDjDpGHZYF/fn0kE5qU0FUlu9yLsVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KKFuIWBI5ke0BRWZABXLTq17KuaspN+pjQVE9e5ltOo=;
+ b=hDoxfEqIIUF+fc74LTSbKogFTiPFTo1YGKPDiAz8Gu6uUCfdV+pXbjdPYVAsBfS9QijzTz6f+8Xh+7sV5bQnN/5flV0epM0corSIMuQ4RPo4NNRhwd7K3E1mJ0o1y6whBli8faIW7sELETwm0Ogh7zLdaAh5GDu8LwkgimfOpr8LBKpNFdGamWAzCdYVNPD++EbxAq+PZ6SJc5TA7S/tpOAZqIbiugjpzdQx7XT1r4sGZ/lOT2sTlo+pKlCJhdx7f6DJOh4/6MNbe1hYxjbZejAmNdJolBAsyA0webraDVUP7Hz7p5AevLasy5PnP5M5sXMWpqQynk8D4ujw5ghSBw==
+Received: from BN9PR03CA0554.namprd03.prod.outlook.com (2603:10b6:408:138::19)
+ by SA1PR12MB6774.namprd12.prod.outlook.com (2603:10b6:806:259::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Mon, 26 Jan
+ 2026 09:05:59 +0000
+Received: from BN3PEPF0000B06F.namprd21.prod.outlook.com
+ (2603:10b6:408:138:cafe::ad) by BN9PR03CA0554.outlook.office365.com
+ (2603:10b6:408:138::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.16 via Frontend Transport; Mon,
+ 26 Jan 2026 09:06:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN3PEPF0000B06F.mail.protection.outlook.com (10.167.243.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9587.0 via Frontend Transport; Mon, 26 Jan 2026 09:05:58 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 26 Jan
+ 2026 01:05:40 -0800
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 26 Jan
+ 2026 01:05:39 -0800
+Received: from inno-ryzen (10.127.8.9) by mail.nvidia.com (10.129.68.10) with
+ Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 26 Jan
+ 2026 01:05:32 -0800
+Date: Mon, 26 Jan 2026 09:05:31 +0000
+From: Zhi Wang <zhiw@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <aliceryhl@google.com>,
+	<bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+	<alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+	<bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+	<tmgross@umich.edu>, <markus.probst@posteo.de>, <helgaas@kernel.org>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
+	<daniel.almeida@collabora.com>
+Subject: Re: [PATCH v12 5/5] sample: rust: pci: add tests for config space
+ routines
+Message-ID: <20260126090531.6ef5986e@inno-ryzen>
+In-Reply-To: <DFY9EQP9PKG2.N71XAPSK2MKK@nvidia.com>
+References: <20260121202212.4438-1-zhiw@nvidia.com>
+	<20260121202212.4438-6-zhiw@nvidia.com>
+	<DFUU4ABJQ3PW.15VQSR9ZOSG9F@nvidia.com>
+	<DFY9EQP9PKG2.N71XAPSK2MKK@nvidia.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
-Content-Language: en-US-large, en-US
-To: Bibo Mao <maobibo@loongson.cn>, WANG Xuerui <kernel@xen0n.name>,
- Huacai Chen <chenhuacai@kernel.org>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- rust-for-linux@vger.kernel.org
-References: <20260125054322.1237687-1-liushuyu@aosc.io>
- <4b504274-4241-0e3e-3ed3-7804b72b7ee8@loongson.cn>
- <972430be-d2f3-49b6-851b-a057ddfcafec@aosc.io>
- <29565e27-f153-c2c5-cbc3-e0457d45f094@loongson.cn>
- <2fa2dc72-b24e-4504-8c8e-e4ecacda02c4@aosc.io>
- <13746394-1a33-894a-d325-8125743f7906@loongson.cn>
-From: liushuyu <liushuyu@aosc.io>
-In-Reply-To: <13746394-1a33-894a-d325-8125743f7906@loongson.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A2F0D400D5
-X-Spamd-Result: default: False [1.40 / 10.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	BAYES_HAM(-0.00)[14.52%];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED(0.00)[mail20.mymailcheap.com:rdns,mail20.mymailcheap.com:helo,aosc.io:mid,aosc.io:from_smtp,aosc.io:from_mime,aosc.io:email];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	MIME_TRACE(0.00)[0:+];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[liushuyu.aosc.io:server fail];
-	ALIAS_RESOLVED(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	LOCAL_OUTBOUND(0.00)[];
-	FREEMAIL_CC(0.00)[aosc.io,redhat.com,lwn.net,loongson.cn,kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	URIBL_BLOCKED(0.00)[mail20.mymailcheap.com:rdns,mail20.mymailcheap.com:helo,aosc.io:mid,aosc.io:from_smtp,aosc.io:from_mime,aosc.io:email];
-	SURBL_MULTI_FAIL(0.00)[git.kernel.org:server fail]
-X-Rspamd-Action: no action
-X-Rspamd-Server: nf1.mymailcheap.com
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06F:EE_|SA1PR12MB6774:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26136464-8e63-454c-000e-08de5cba1f2f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|7416014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Pi9XwkpTVPbogjj0y/KvTFhlk9GPyvxG42eaq68KZEbd7Pf56peENqlmIo4v?=
+ =?us-ascii?Q?cf0pfJsIJCmOObzhZzgVfbYrqr6B7lSKJiWNVfpMBfBLEEx/DcNshx5chgqN?=
+ =?us-ascii?Q?nHUci5KElD3sjUpmLgK5WB3M41GEo0dMn4jE773IoAVutNPyoV1mcbWnTCPn?=
+ =?us-ascii?Q?035SOHrbdCIKjcG4UN8D2EbTQBvdgh+udk26An6R1Hm0f0Xm9JaF3lKzb2Rj?=
+ =?us-ascii?Q?DKFCZALRuQfAtkPdqeDNDdT0r6kZ/ReOvVQMYuYuMVYreS8t3nhdlaV2XeKV?=
+ =?us-ascii?Q?PuU8cO8VtGk/ZEAUXa/FXdBr++x43DbJ8AIMEgX0eerMFt4ElHCTcfoPIZHW?=
+ =?us-ascii?Q?JoRETTBCw2P3UC9Va50PTGuUmUxUno3KKJjYKKEV/v5z7Dqedtx2RaJmpA1D?=
+ =?us-ascii?Q?3Ot/h94rWEJA7tpUuRZcEdqIWI7iXMD5F0ekshaoTJqdKUIuKcfkRnKMTAcY?=
+ =?us-ascii?Q?i17ZiWngNCi2awNd/uecU7gThd4pmnnxzlha2byYkfi7z/Htgx8R/p+F5qJ9?=
+ =?us-ascii?Q?lf4Knys4WkFyNUL4EOGVaGK+6inzZqsQit0DnyY9SGu258V9GyMeKH8e92Zl?=
+ =?us-ascii?Q?9uCD2SAb0/RvvJTMwl3KgxSLJ+vSbV86eHK118tFme3seyastzSzxpfKM4hl?=
+ =?us-ascii?Q?J40hX3VY2vJzmeJg2KoTSbP8aj2l2BKDzekVOpOJCcvivadoH6cLFOiUHTRV?=
+ =?us-ascii?Q?4j7Y9A4a9zpHThyDK0lMUN3Ex5hJOvgyEMNhpFKgTVwhx7u6aXn1YMR3Qyt0?=
+ =?us-ascii?Q?9z7G5+wvaVTc5DR2X3J1dT5xLX/Wh4MN0DfrUr13Ram92hK5G8Qt/Fr1l2zU?=
+ =?us-ascii?Q?FDsdGQOPij/F4VHd4JyShGL1Rnlq2kPGnpvexrLul71v/lmlLyGWiaiwgKCp?=
+ =?us-ascii?Q?VXOkcJ/3WJeGt3D6YPyyQg/Na88wIa9eI9gEF+g4bAupQhg0HaOY7sHR06ks?=
+ =?us-ascii?Q?Q8CIGBdgBohn8KRXaSKrbhVwsJPCaXhXQlFKliNu9CHyjsRJCFzwXsDf/snW?=
+ =?us-ascii?Q?4ljWdRmAeVLsx3h45KbXcf1X3XMyuYdKNQH/viOroo+uOIt6DwgoRo1WkMzF?=
+ =?us-ascii?Q?cBcQAbaT7CHRybpA1n7/xQDyrXx2Tdb23Fbbo3w5VkqVlkvOVjp22Hq5kmOn?=
+ =?us-ascii?Q?vORTrbyHGCIwOB4haDX2xElhtfUYj5+Dr+h+Vj8LojnMwHLEPIO4hAD2FdWr?=
+ =?us-ascii?Q?lO6fgKui70w3F/yvQU2jERtatFignt7z/eh+LCLmPy6hoTmvhO81fKC28sBi?=
+ =?us-ascii?Q?fRZdzioQDGguZqSf07XxYp1jqsxCI+CKkE7YToav/D3BWygEsZ4xeHuwGUfd?=
+ =?us-ascii?Q?gMBparoOuAgnWqxKBsdYxFNlvpbCWRPuyN6HudQceJyTce8+8go7xfe1Kmop?=
+ =?us-ascii?Q?D8gaeTuskSD7SouPZM4jzoxoC8Z0eRWPi8r8g+gOc92pgJpmN9Jq+d9wadyF?=
+ =?us-ascii?Q?VIy08x7TVEAOO4M0FxBVLzb23n4Scw9JI3WrokWWl8LO1XDMM2PdSJwTXbFW?=
+ =?us-ascii?Q?tOFidw0+IKBhHq9OgAcUM+BbmPVtihrwjKmcZia37MBic+2xr/2YeGw7+6te?=
+ =?us-ascii?Q?fPIQVzd5/v0u1fVYjeT0KhiKmkuKO4FxjfHzga+3zjabGz9dy6+0SuI+Bwxt?=
+ =?us-ascii?Q?TUrNpeTzkAnofmVsOUxQZb8eROwzTPeySRks73bESIdkVnvUBz3wT2md5V20?=
+ =?us-ascii?Q?YE/t1w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(7416014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 09:05:58.8128
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26136464-8e63-454c-000e-08de5cba1f2f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B06F.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6774
 
-Hi Bibo,
+On Mon, 26 Jan 2026 14:08:30 +0900
+"Alexandre Courbot" <acourbot@nvidia.com> wrote:
 
->
->
-> On 2026/1/26 下午12:22, liushuyu wrote:
->> Hi Bibo,
->>
->>>
->>>
->>> On 2026/1/26 上午11:38, liushuyu wrote:
->>>> Hi Bibo,
->>>>>
->>>>>
->>>>> On 2026/1/25 下午1:43, Zixing Liu wrote:
->>>>>> This ioctl can be used by userspace applications to determine which
->>>>>> (special) registers are get/set-able.
->>>>>>
->>>>>> This can be very useful for cross-platform VMMs so that they do not
->>>>>> have
->>>>>> to hardcode register indices for each supported architectures.
->>>>>>
->>>>>> Signed-off-by: Zixing Liu <liushuyu@aosc.io>
->>>>>> ---
->>>>>>
->>>>>> For example, this ioctl could be used by rust-vmm/rust-kvm or maybe
->>>>>> VirtualBox-kvm in the future.
->>>>>>
->>>>>>     Documentation/virt/kvm/api.rst |  2 +-
->>>>>>     arch/loongarch/kvm/vcpu.c      | 69
->>>>>> ++++++++++++++++++++++++++++++++++
->>>>>>     2 files changed, 70 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/Documentation/virt/kvm/api.rst
->>>>>> b/Documentation/virt/kvm/api.rst
->>>>>> index 01a3abef8abb..f46dd8be282f 100644
->>>>>> --- a/Documentation/virt/kvm/api.rst
->>>>>> +++ b/Documentation/virt/kvm/api.rst
->>>>>> @@ -3603,7 +3603,7 @@ VCPU matching underlying host.
->>>>>>     ---------------------
->>>>>>       :Capability: basic
->>>>>> -:Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
->>>>>> +:Architectures: arm64, loongarch, mips, riscv, x86 (if
->>>>>> KVM_CAP_ONE_REG)
->>>>>>     :Type: vcpu ioctl
->>>>>>     :Parameters: struct kvm_reg_list (in/out)
->>>>>>     :Returns: 0 on success; -1 on error
->>>>>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
->>>>>> index 656b954c1134..b884eb9c76aa 100644
->>>>>> --- a/arch/loongarch/kvm/vcpu.c
->>>>>> +++ b/arch/loongarch/kvm/vcpu.c
->>>>>> @@ -1186,6 +1186,57 @@ static int kvm_loongarch_vcpu_set_attr(struct
->>>>>> kvm_vcpu *vcpu,
->>>>>>         return ret;
->>>>>>     }
->>>>>>     +static unsigned long kvm_loongarch_num_lbt_regs(void)
->>>>>> +{
->>>>>> +    /* +1 for the LBT_FTOP flag (inside arch.fpu) */
->>>>>> +    return sizeof(struct loongarch_lbt) / sizeof(unsigned long)
->>>>>> + 1;
->>>>>> +}
->>>>>> +
->>>>>> +static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
->>>>>> +{
->>>>>> +    /* +1 for the KVM_REG_LOONGARCH_COUNTER register */
->>>>>> +    unsigned long res = CSR_MAX_NUMS + KVM_MAX_CPUCFG_REGS + 1;
->>>>>> +
->>>>>> +    if (kvm_guest_has_lbt(&vcpu->arch))
->>>>>> +        res += kvm_loongarch_num_lbt_regs();
->>>>>> +
->>>>>> +    return res;
->>>>>> +}
->>>>>> +
->>>>>> +static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
->>>>>> +                      u64 __user *uindices)
->>>>>> +{
->>>>>> +    u64 reg;
->>>>>> +    unsigned int i;
->>>>>> +
->>>>>> +    for (i = 0; i < CSR_MAX_NUMS; i++) {
->>>>>> +        reg = KVM_IOC_CSRID(i);
->>>>>> +        if (put_user(reg, uindices++))
->>>>>> +            return -EFAULT;
->>>>>> +    }
->>>>> CSR_MAX_NUMS is max number of accessible CSR registers, instead only
->>>>> part of them is used by vCPU model. By my understanding, there
->>>>> will be
->>>>> no much meaning if CSR_MAX_NUMS is returned. And I think it will be
->>>>> better if real CSR register id and number is returned.
->>>>>
->>>> Did you mean we should only return the CSR registers initialized in
->>>> this
->>>> function
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/loongarch/kvm/main.c?id=63804fed149a6750ffd28610c5c1c98cce6bd377#n48
->>>>
->>>>
->>>> ?
->>>>
->>>> That looks like a very large list and the values of the register
->>>> IDs are
->>>> not fully continuous. If that is the case, how do we maintain the
->>>> get/set-able CSR register list?
->>> It will be better if CSR register list can be categorized, for example
->>> with LoongArch CPU manual CSR register is split into 8 types from
->>> chapter 7.4 -- 7.11
->>>
->>> At the beginning, there is big array with size CSR_MAX_NUMS without
->>> any category, it can be fine-gained in late.
->>
->> Does that mean in the new `kvm_loongarch_copy_reg_indices` function, it
->> is also okay to embed this big list in there?
-> Firstly I do not know how to use ioctl command KVM_GET_REG_LIST in VMM
-> actually.
->
-> At the second from the word "determine which (special) registers are
-> get/set-able", I think that it is better to set accessible CSR
-> register number and ID rather than the total number CSR_MAX_NUMS. 
->
-Understood. I will post a v2 patch, and we can continue the discussion
-from there to see if I understood your points correctly.
+> On Thu Jan 22, 2026 at 1:31 PM JST, Alexandre Courbot wrote:
+> > On Thu Jan 22, 2026 at 5:22 AM JST, Zhi Wang wrote:
+> >> Add tests exercising the PCI configuration space helpers.
+> >>
+> >> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> >> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> >> ---
+> >>  samples/rust/rust_driver_pci.rs | 28 ++++++++++++++++++++++++++++
+> >>  1 file changed, 28 insertions(+)
+> >>
+> >> diff --git a/samples/rust/rust_driver_pci.rs
+> >> b/samples/rust/rust_driver_pci.rs index 38c949efce38..1bc5bd1a8df5
+> >> 100644 --- a/samples/rust/rust_driver_pci.rs
+> >> +++ b/samples/rust/rust_driver_pci.rs
+> >> @@ -5,6 +5,7 @@
+> >>  //! To make this driver probe, QEMU must be run with `-device
+> >> pci-testdev`. 
+> >>  use kernel::{
+> >> +    device::Bound,
+> >>      device::Core,
+> >>      devres::Devres,
+> >>      io::Io,
+> >> @@ -65,6 +66,32 @@ fn testdev(index: &TestIndex, bar: &Bar0) ->
+> >> Result<u32> { 
+> >>          Ok(bar.read32(Regs::COUNT))
+> >>      }
+> >> +
+> >> +    fn config_space(pdev: &pci::Device<Bound>) -> Result {
+> >> +        let config = pdev.config_space()?;
+> >> +
+> >> +        // TODO: use the register!() macro for defining PCI
+> >> configuration space registers once it
+> >
+> > I'll rebase the `register!` series on top of this and try to address
+> > this item.
+> 
+> Actually... is this expected to work?
+> 
+> > +        dev_info!(
+> > +            pdev.as_ref(),
+> > +            "pci-testdev config space read8 rev ID: {:x}\n",
+> > +            config.read8(0x8)
+> > +        );
+> 
+> We are performing I/O on `config`, but since this is a sample device
+> with no hardware backing, what is providing the data for the
+> registers?
+> 
 
-> +static int kvm_loongarch_num_csr_regs(struct kvm_vcpu *vcpu)
-> +{
-> +    unsigned int i, count;
-> +
-> +    count = 0
-> +    for (i = 0; i < CSR_MAX_NUMS; i++) {
-> +        if (!(get_gcsr_flag(i) & (SW_GCSR | HW_GCSR)))
-> +            continue;
-> +        count++;
-> +    }
-> +    return count;
-> +}
->
-> static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
-> {
->     /* +1 for the KVM_REG_LOONGARCH_COUNTER register */
-> +    unsigned long res = kvm_loongarch_num_csr_regs +
-> KVM_MAX_CPUCFG_REGS + 1;
->
->     if (kvm_guest_has_lbt(&vcpu->arch))
->         res += kvm_loongarch_num_lbt_regs();
->
->     return res;
-> }
->
-> static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
->                       u64 __user *uindices)
-> {
->     u64 reg;
->     unsigned int i;
->
->     for (i = 0; i < CSR_MAX_NUMS; i++) {
-> +                if (!(get_gcsr_flag(i) & (SW_GCSR | HW_GCSR)))
-> +                    continue;
->         reg = KVM_IOC_CSRID(i);
->         if (put_user(reg, uindices++))
->             return -EFAULT;
->     }
->
-> Regards
-> Bibo Mao
->>
->> Or do you want to extract the list from the `kvm_init_gcsr_flag`
->> function and refactor both functions to share one single big list
->> (probably in the kvm_host.h header)?
->>
->> Because from what I could understand, your previous messages point to
->> that we need to use this list to make out what CSR registers to return
->> to the user space VMMs.
->
->>
->>>
->>> Regards
->>> Bibo Mao
->>>>
->>>>> Regards
->>>>> Bibo Mao
->>>>>> +
->>>>>> +    for (i = 0; i < KVM_MAX_CPUCFG_REGS; i++) {
->>>>>> +        reg = KVM_IOC_CPUCFG(i);
->>>>>> +        if (put_user(reg, uindices++))
->>>>>> +            return -EFAULT;
->>>>>> +    }
->>>>>> +
->>>>>> +    reg = KVM_REG_LOONGARCH_COUNTER;
->>>>>> +    if (put_user(reg, uindices++))
->>>>>> +        return -EFAULT;
->>>>>> +
->>>>>> +    if (!kvm_guest_has_lbt(&vcpu->arch))
->>>>>> +        return 0;
->>>>>> +
->>>>>> +    for (i = 1; i <= kvm_loongarch_num_lbt_regs(); i++) {
->>>>>> +        reg = (KVM_REG_LOONGARCH_LBT | KVM_REG_SIZE_U64 | i);
->>>>>> +        if (put_user(reg, uindices++))
->>>>>> +            return -EFAULT;
->>>>>> +    }
->>>>>> +
->>>>>> +    return 0;
->>>>>> +}
->>>>>> +
->>>>>>     long kvm_arch_vcpu_ioctl(struct file *filp,
->>>>>>                  unsigned int ioctl, unsigned long arg)
->>>>>>     {
->>>>>> @@ -1251,6 +1302,24 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->>>>>>             r = kvm_loongarch_vcpu_set_attr(vcpu, &attr);
->>>>>>             break;
->>>>>>         }
->>>>>> +    case KVM_GET_REG_LIST: {
->>>>>> +        struct kvm_reg_list __user *user_list = argp;
->>>>>> +        struct kvm_reg_list reg_list;
->>>>>> +        unsigned n;
->>>>>> +
->>>>>> +        r = -EFAULT;
->>>>>> +        if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
->>>>>> +            break;
->>>>>> +        n = reg_list.n;
->>>>>> +        reg_list.n = kvm_loongarch_num_regs(vcpu);
->>>>>> +        if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
->>>>>> +            break;
->>>>>> +        r = -E2BIG;
->>>>>> +        if (n < reg_list.n)
->>>>>> +            break;
->>>>>> +        r = kvm_loongarch_copy_reg_indices(vcpu, user_list->reg);
->>>>>> +        break;
->>>>>> +    }
->>>>>>         default:
->>>>>>             r = -ENOIOCTLCMD;
->>>>>>             break;
->>>>>>
->>>>>
->>>> Thanks,
->>>> Zixing
->>>>
->>>
->> Thanks,
->> Zixing
->>
->
-Thanks,
+We are running the sample driver in the virtual machine. QEMU provides
+a emulated PCI test device (-device pci-testdev) for this purpose. E.g.
+with the following command line, I am able to run and test this in the
+virtual machine.
 
-Zixing
-
+qemu-system-x86_64 \
+        -enable-kvm \
+        -cpu host \
+        -m 8192 \
+        -smp 24 \
+        -drive file=/home/inno/vm/xubuntu.img,if=virtio \
+        -netdev user,id=net0 \
+        -device virtio-net-pci,netdev=net0 \
+        -device usb-tablet \
+        -device pci-testdev \
+        -usb
