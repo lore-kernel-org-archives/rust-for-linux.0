@@ -1,483 +1,194 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012006.outbound.protection.outlook.com [40.107.209.6])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A952FC024;
-	Mon, 26 Jan 2026 22:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769464852; cv=fail; b=nygsNrkh5jIwpsZvGzLkExw29o2yY5Ni/iI6jg+4nHiJg2E49BDGUDBphHrkXn19hI4yABxbQavY5LHn8HkSe3dXMqx4Ycd4lZtbfNlEpM32RT7ALggZDt2hz+i6mWrMIZ/uTneMDheCRQk4ebDL95uzUyCybHlYlYBdUslfM9Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769464852; c=relaxed/simple;
-	bh=qRBhYq1P2NlEOKovp9/x9vJtLGd/PBImQFJY2qS5Vyc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZlXkuYm5D6WC0m6KuTBC452t6VS6yZNZuSuan4SzNt0bO5ZPFeUaEmzyLQnsB+F4BeQ2zntOgLuvxM0vK3QN023S1DtUphU34YHOOICVwUrSPO1/r4lo9YNI+Ed77E+XGkMmcWcIIrqkp1w7g86sjyOPlAFl/+qZ1jeIwyH94Lo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TOGDojOu; arc=fail smtp.client-ip=40.107.209.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953751A08AF;
+	Mon, 26 Jan 2026 22:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769466646; cv=none; b=Q7VxlYcBpHAT64RQUSjq3EWm3P+o2hqRhdjj9P97ahZMT+/qt2nw9k4H66gGH+ZWL9//VmlKrqoOttxKRCpjnUm6TawvZQ1okleD3L9OSkLpERaWzH4Lchv44SLrPKXYsUPiKf9PkH1DbM/gz3jkN/Vefq0x+agQdrmRZydD/nQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769466646; c=relaxed/simple;
+	bh=SDlHPRbnJB1XeB8p7QDzp8qp4nlasKsGSTn2yj84yhk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LOJBqEJ++gZQuTulJ+p2XxCSSO/nRwQ+LiaivPJp5D29xlz05/vDmItwhIduRHAZLAHoiFx8aMlSqrkbid61Hnx482uiGYGbhdsl/yYXDD8ow4F1Wp6VE7AwbhNObQhqk9brzHgdFEKj2Jov6v66SKFIHvC0W8oUXty9oAnQgfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kwWVieaK; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TOGDojOu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pH2GpqT81kZ5HCZI44i4vY3jujrwx9uKYcQXHsj1bs5+jXvUwReZuNlI/IUSvweVCHFl0RDA9uDyPdsEDaOE5Z8caFB9BZN/ORD87B9oRnACMnnLMpcUFknXxpB7rd3IbtCOafO/JyD1ENkQgoJNNRJk8vUjcSCAjYRFziyiPcevhKtT9tP+L2nHoeNdkqA1sjr4OrddsxS8o6S1qZ4BfsAdMs2SzmRttI8aS+6q2egyksErtOsT/i8nFuVaHrSSJU8KHLP7g2+w8BRbAjQvE3Zmf4DfcAu6cxu130M+gFWtwxhszMpvele05z1sNLJmHriKccHFDpy4jY84PiMqZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AfMrxCtCw8NscMP9prJecgYgFA+l9RqRkeoeJK5qzZQ=;
- b=aytkOwjl622ZZh0d51F12cbNA28n2SAXJ7zjjQnzRQvdp8aD4A3Df4zol48zYq50K5AXovOiij9Jfx2Da1cvA0JuMnO7EBQvEIxGdPaQGutaws9Q8cwqay4pt6C5gtKIoT4EZgYyTjnKI2bP3WBSaK1M2FbjivebrnQZjjs6qhaWV7aGMwglkNxSu1oc0x/ncO+viL19aeYFnk6kkFGkMAId/C6k2wib4MLYbs3iF4MyRrklYPy3Pz5yfq1xQ618v82ea4gstdnKWRNPeKqQO9MJRWdfnYo0ZHPfiJ5lgBSvLklRi+aE8n8jqp/eZ3UNxbsPojwEmd8LQYh3+ExznQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AfMrxCtCw8NscMP9prJecgYgFA+l9RqRkeoeJK5qzZQ=;
- b=TOGDojOuV3l10HI9j2ELKKznUazf/rEEeagzhNZ/yPK/TaLlmzXlhvBoTU/TeqWzTovhIwmR6LjSSMvoS4nT/Oxnp8dGbBs0Lo603M+XaXXtokFud2domxECilA5Gn5V290wmFh4XF+Ro6+oXTtWUUWmgfcRJW6CAgi8boPAuaBiGZIIiCT09wAwsm7RzFpMkZm7HpabsiiwLAOvE4RV9kO4pAVpxUTK+r3JI7hu4q0eDEB1QFwwcJ6X88W9Zj98DiiQgGnh/99eqySHa1qP3AI8m+qtOCNUzeTR0UQjWLaLYF31smJcMmPgc0noJAZrEo+STM4YkSshTQrc6Wcrig==
-Received: from MN2PR19CA0047.namprd19.prod.outlook.com (2603:10b6:208:19b::24)
- by DM4PR12MB5987.namprd12.prod.outlook.com (2603:10b6:8:6a::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.10; Mon, 26 Jan
- 2026 22:00:45 +0000
-Received: from MN1PEPF0000ECD7.namprd02.prod.outlook.com
- (2603:10b6:208:19b:cafe::c6) by MN2PR19CA0047.outlook.office365.com
- (2603:10b6:208:19b::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.15 via Frontend Transport; Mon,
- 26 Jan 2026 22:00:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- MN1PEPF0000ECD7.mail.protection.outlook.com (10.167.242.136) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Mon, 26 Jan 2026 22:00:44 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 26 Jan
- 2026 14:00:18 -0800
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Mon, 26 Jan 2026 14:00:18 -0800
-Received: from inno-vm-xubuntu (10.127.8.9) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Mon, 26 Jan 2026 14:00:12 -0800
-From: Zhi Wang <zhiw@nvidia.com>
-To: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
-	<kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
-	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
-	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
-	<markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
-	<smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
-	<kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
-	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
-	<daniel.almeida@collabora.com>, Zhi Wang <zhiw@nvidia.com>
-Subject: [RFC 2/2] pci: Add PCI capability infrastructure and SR-IOV capability support
-Date: Mon, 26 Jan 2026 23:59:57 +0200
-Message-ID: <20260126215957.541180-3-zhiw@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260126215957.541180-1-zhiw@nvidia.com>
-References: <20260126215957.541180-1-zhiw@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kwWVieaK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769466643; x=1801002643;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SDlHPRbnJB1XeB8p7QDzp8qp4nlasKsGSTn2yj84yhk=;
+  b=kwWVieaK6oIDinCVoON3WUCf1HQdLmN29sH8f+W870VeoHxuspHzIzMU
+   RIOfuodu0XPTlp2XNWYF1VN9tPd1E80hu6cNQg5V+gX5bPq05YKJbddpb
+   lUpsIFDyXP9GBYve8SMvSmHsuRissY3zdlPM7myreYwv4Tp1KvobmHq4C
+   hEcsab4pcOP729pne2zriSqY3ixgGG8Lkg+ovOrWdUu9D6zmoIjWlpa2C
+   3QU6L5VFVBboL7oOvjy1y99hkDz9yX66lWOfd7UU19r1mArREqmZA7/Fi
+   +dcAiwMsSSJOlfrRlTn5AH05abkUok8XujlcuEfPiasZEqxHpYxnxH2PC
+   g==;
+X-CSE-ConnectionGUID: c+fJJlQqTqKcuFSm2gRl3Q==
+X-CSE-MsgGUID: J3N1H/9GTqy8vJeaZp7YJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="82021428"
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
+   d="scan'208";a="82021428"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 14:30:42 -0800
+X-CSE-ConnectionGUID: Kg8CKuQ1QIO3ci8zzJ95cA==
+X-CSE-MsgGUID: /mOcDF+HSoStiLCAx97Guw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
+   d="scan'208";a="245407170"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 26 Jan 2026 14:30:37 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vkV6P-00000000XkE-3Sha;
+	Mon, 26 Jan 2026 22:30:33 +0000
+Date: Tue, 27 Jan 2026 06:29:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: pengfuyuan <pengfuyuan@kylinos.cn>, Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Helge Deller <deller@gmx.de>, Hans de Goede <hansg@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, Lee Jones <lee@kernel.org>,
+	Sam Ravnborg <sam@ravnborg.org>, Zsolt Kajtar <soci@c64.rulez.org>,
+	Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	pengfuyuan <pengfuyuan@kylinos.cn>
+Subject: Re: [PATCH v1 v1 3/4] rust: fb: add framebuffer driver support
+Message-ID: <202601270630.FHzCSbVv-lkp@intel.com>
+References: <20260126081744.781392-4-pengfuyuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD7:EE_|DM4PR12MB5987:EE_
-X-MS-Office365-Filtering-Correlation-Id: 537f8885-59b0-41cf-9cba-08de5d265aea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|376014|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?6CoJSCxqlhwKCJASnqecRsoIRows0WyXlSuJ0LOXR+CJQ1d3B0DreleTpgAB?=
- =?us-ascii?Q?VQkZisJpBCViZNTduCVy32Gbs8FGhOLM5HDQWdZdB+t1HwpfnBRW+SYXPr0p?=
- =?us-ascii?Q?pu3KRIzO12JAHfCYPJjURgfdEmcsDTJOxqOw1JpT668pqLCRsa7tog0x0eAt?=
- =?us-ascii?Q?+4cPfL4wY8KGQ3gk1sT9cmhh6XX/lVB/ej+2T+a3pMm/GDKySPYTxxg1maUx?=
- =?us-ascii?Q?hpM4K0oQEHrZnYS/y+zuvDNqOJkzgaNjf8mxCgNLXF7iwOTXH0vO2dMswYDu?=
- =?us-ascii?Q?Q04Z2CreCXv7mOSn01tOx0d9ZwxJthLmcUiF6YKlp7zb5FIPs1I5Q5dRdX1p?=
- =?us-ascii?Q?ynPuG9UJdml4PBBtI1203XrhGY9XHMq+/bDM+vVDFqiRFySt57nsVK+fIjVX?=
- =?us-ascii?Q?pJNQTpohPYL4pGxb/RcJmNs1oHNjjK0Wbc7tvrhgN4i9FF2Z6I09GqaCUUNo?=
- =?us-ascii?Q?V7252L0EQMvycbtgIJSY7rxf4Uc0oemvJ6ZDmPHPs6f8frWVK66T756DBFae?=
- =?us-ascii?Q?OpBoe/JdghYaUlTnrY0SN9bzB6lhtrcsTRkvWy1yaHzHYfuHdSc0XtHoXjCo?=
- =?us-ascii?Q?uhtUtd6aWVwIblex1SMOZx/jnTcp/eb68fP/onIPkFUoDfmoId9gb7JwI3fD?=
- =?us-ascii?Q?5O6UBBm/Eo8MMJxOfNUJMrAp8NG6Mp5+AHFrtls0GheTU2eH5es9YfGSndZA?=
- =?us-ascii?Q?Dx9F8otzcIsSQ2IF+ywrFqJ6vNVqh7jSSid9L6KM/IzCCBML/uYcRA8nn4Ft?=
- =?us-ascii?Q?elK7/6CQoT5iBfhvs+yBSDHkypUhEiKm8mj8BhOVrOOjZ+N3HGjtHKIMAAgx?=
- =?us-ascii?Q?ow0aSf0pGix3+lNibj3amwRzkiy7gZWUy98JtWXN8KDiKyZ1bFBiR3G3W3Hb?=
- =?us-ascii?Q?9Wud0WpLrkamKR09R2wMwj17cbhuU0KsfQTfBDlTMyK7+ZKO7T3BJhc4kgRI?=
- =?us-ascii?Q?q2+K8Ui2zNzLJsmOyp1kInKlBAIhZZ2LPnyS9MnpZlPwhdEhpgVgWNk1AHPx?=
- =?us-ascii?Q?/gTUjWt+NYN6ZDTNVWYjNHFLhuT/4g/WkfOiUXg8dlB3ciWL7m62NTkmqnX/?=
- =?us-ascii?Q?wPx+RTAwCHRDn7ziNvNeptZ7qbUjxCIcnF7hP0EbEVODqnj2Fe0rETVX+QRv?=
- =?us-ascii?Q?PTjxbQQhm954r5v+zv2GNyq9xHqWoC/2Q8Fk1LjD3M8ILZ2IsWOwbPSvEgL0?=
- =?us-ascii?Q?nEVSWVk3j1dDVs/yViDjYlUacAusJqjsfGv48b22WCpRrbbs/FUej54EPguU?=
- =?us-ascii?Q?mo6ixqMjvqc5QlvePAXaOzwmDga5/kiFroJyIzkVKb5Ij5M4cq9FDUdF1FHP?=
- =?us-ascii?Q?BN/sDUoECGD+yc9WCtnfY1baP+pdlCXKsmNA1ExM4+oWHQCHOqQR46BiKLgZ?=
- =?us-ascii?Q?BCJOCn6dWjAsE0AhOuYFTfAUvz56IacnnvllJujCaqCAbyDWba8mMxdSjwrc?=
- =?us-ascii?Q?r4FJEEyfrsvYp7cjKskpvarq59o401+iPkVPTpqJqhadbH/1EcJc/wCcs0Qt?=
- =?us-ascii?Q?SGjAshmJVc61J/Qofb30JLyveTRm1vxAlKRWCLHhRSJVKdUcpXp6mRQg1xH+?=
- =?us-ascii?Q?AumWiOfOaAzaDnCynj+7qfiZ2ohNz0OA1ZnerE/k42V5uuoDz+HIUhvZ703S?=
- =?us-ascii?Q?XWKC9ExyRdFC+5lkTmsX4UkjM10XLIRNYhoVvduxCXxcOWd5RjxwikpsGfTh?=
- =?us-ascii?Q?PLWTNQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 22:00:44.7454
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 537f8885-59b0-41cf-9cba-08de5d265aea
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000ECD7.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5987
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260126081744.781392-4-pengfuyuan@kylinos.cn>
 
-Rust drivers may need to access PCI capabilities (such as SR-IOV) to
-configure firmware metadata.
+Hi pengfuyuan,
 
-Add a generic Capability<S, K> structure that:
-- Wraps capability discovery via kernel's pci_find_ext_capability()
-- Dynamically calculates capability size by reading next capability
-  pointers (using 0xffc mask per PCI_EXT_CAP_NEXT for extended caps)
-- Implements fallible I/O via the Io trait with runtime bounds checking
+kernel test robot noticed the following build errors:
 
-Add SR-IOV (Single Root I/O Virtualization) capability support:
-- SriovCapability wraps Capability<Extended, Extended>
-- read_vf_offset() reads PCI_SRIOV_VF_OFFSET register
-- read_vf_bar(n) reads PCI_SRIOV_BAR + n*4 (32-bit BAR)
-- read_vf_bar64(n) reads 64-bit BAR by combining two 32-bit reads
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on driver-core/driver-core-linus linus/master v6.19-rc7]
+[cannot apply to driver-core/driver-core-testing driver-core/driver-core-next next-20260123]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Signed-off-by: Zhi Wang <zhiw@nvidia.com>
----
- rust/kernel/pci.rs     |   9 ++
- rust/kernel/pci/cap.rs | 274 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 283 insertions(+)
- create mode 100644 rust/kernel/pci/cap.rs
+url:    https://github.com/intel-lab-lkp/linux/commits/pengfuyuan/rust-io-mem-add-ioremap_wc-support/20260126-162117
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20260126081744.781392-4-pengfuyuan%40kylinos.cn
+patch subject: [PATCH v1 v1 3/4] rust: fb: add framebuffer driver support
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260127/202601270630.FHzCSbVv-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260127/202601270630.FHzCSbVv-lkp@intel.com/reproduce)
 
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index cd46ac12812c..2deb26fb3775 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -31,6 +31,7 @@
-     },
- };
- 
-+mod cap;
- mod id;
- mod io;
- mod irq;
-@@ -42,6 +43,7 @@
- };
- pub use self::io::{
-     Bar,
-+    ConfigSpace,
-     ConfigSpaceKind,
-     ConfigSpaceSize,
-     Extended,
-@@ -52,6 +54,13 @@
-     IrqTypes,
-     IrqVector, //
- };
-+pub use self::cap::{
-+    Capability,
-+    CapabilityId,
-+    CapabilityKind,
-+    ExtCapabilityId,
-+    SriovCapability, //
-+};
- 
- /// An adapter for the registration of PCI drivers.
- pub struct Adapter<T: Driver>(T);
-diff --git a/rust/kernel/pci/cap.rs b/rust/kernel/pci/cap.rs
-new file mode 100644
-index 000000000000..e3a903b79299
---- /dev/null
-+++ b/rust/kernel/pci/cap.rs
-@@ -0,0 +1,274 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! PCI Capability support.
-+//!
-+//! This module provides abstractions for discovering and accessing PCI capabilities.
-+
-+use super::{
-+    ConfigSpace,
-+    ConfigSpaceKind,
-+    Extended,
-+    Normal, //
-+};
-+use crate::{
-+    bindings,
-+    io::{
-+        define_read,
-+        define_write,
-+        Io,
-+        IoCapable, //
-+    },
-+    prelude::*,
-+};
-+
-+/// Internal helper macro to call ConfigSpace fallible methods from Capability.
-+macro_rules! call_cap_read {
-+    (fallible, $method:ident, $self:ident, $ty:ty, $addr:expr) => {
-+        $self.config_space.$method($self.offset() + $addr)
-+    };
-+}
-+
-+/// Internal helper macro to call ConfigSpace fallible write methods from Capability.
-+macro_rules! call_cap_write {
-+    (fallible, $method:ident, $self:ident, $ty:ty, $addr:expr, $value:expr) => {
-+        $self.config_space.$method($value, $self.offset() + $addr)
-+    };
-+}
-+
-+/// PCI Capability IDs for normal capabilities (in 256-byte config space).
-+///
-+/// These are not currently implemented, but the enum is provided for API completeness.
-+#[repr(u8)]
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+pub enum CapabilityId {
-+    /// Power Management
-+    PM = bindings::PCI_CAP_ID_PM as u8,
-+    /// Message Signalled Interrupts
-+    MSI = bindings::PCI_CAP_ID_MSI as u8,
-+    /// MSI-X
-+    MSIX = bindings::PCI_CAP_ID_MSIX as u8,
-+    /// PCI Express
-+    Express = bindings::PCI_CAP_ID_EXP as u8,
-+    /// Vendor Specific
-+    VendorSpecific = bindings::PCI_CAP_ID_VNDR as u8,
-+}
-+
-+/// PCI Extended Capability IDs (in 4096-byte config space).
-+///
-+/// Currently only SR-IOV is implemented.
-+#[repr(u16)]
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+pub enum ExtCapabilityId {
-+    /// Single Root I/O Virtualization
-+    SRIOV = bindings::PCI_EXT_CAP_ID_SRIOV as u16,
-+}
-+
-+/// Trait for capability kinds (Normal or Extended).
-+pub trait CapabilityKind {
-+    /// The capability ID type for this kind.
-+    type IdType: Copy + PartialEq;
-+
-+    /// Start offset for capability scanning.
-+    const START_OFFSET: usize;
-+}
-+
-+/// Marker for normal (legacy) PCI capabilities.
-+impl CapabilityKind for Normal {
-+    type IdType = u8;
-+    const START_OFFSET: usize = bindings::PCI_CAPABILITY_LIST as usize;
-+}
-+
-+/// Marker for extended PCI capabilities.
-+impl CapabilityKind for Extended {
-+    type IdType = u16;
-+    const START_OFFSET: usize = bindings::PCI_CFG_SPACE_SIZE as usize;
-+}
-+
-+/// A PCI capability.
-+///
-+/// This type represents a discovered PCI capability and provides safe access
-+/// to its registers. All I/O operations are relative to the capability's
-+/// base offset in configuration space.
-+pub struct Capability<'a, S: ConfigSpaceKind, K: CapabilityKind> {
-+    config_space: &'a ConfigSpace<'a, S>,
-+    offset: usize,
-+    id: K::IdType,
-+    size: usize,
-+}
-+
-+impl<'a, S: ConfigSpaceKind, K: CapabilityKind> Capability<'a, S, K> {
-+    /// Creates a new capability handle.
-+    fn new(
-+        config_space: &'a ConfigSpace<'a, S>,
-+        offset: usize,
-+        id: K::IdType,
-+        size: usize,
-+    ) -> Self {
-+        Self {
-+            config_space,
-+            offset,
-+            id,
-+            size,
-+        }
-+    }
-+
-+    /// Returns the offset of this capability in configuration space.
-+    pub fn offset(&self) -> usize {
-+        self.offset
-+    }
-+
-+    /// Returns the capability ID.
-+    pub fn id(&self) -> K::IdType {
-+        self.id
-+    }
-+
-+    /// Returns the size of this capability in bytes.
-+    pub fn size(&self) -> usize {
-+        self.size
-+    }
-+}
-+
-+// Implement IoCapable for Capability
-+impl<'a, S: ConfigSpaceKind, K: CapabilityKind> IoCapable<u8> for Capability<'a, S, K> {}
-+impl<'a, S: ConfigSpaceKind, K: CapabilityKind> IoCapable<u16> for Capability<'a, S, K> {}
-+impl<'a, S: ConfigSpaceKind, K: CapabilityKind> IoCapable<u32> for Capability<'a, S, K> {}
-+
-+// Implement Io trait for Capability using fallible methods (runtime checks)
-+impl<'a, S: ConfigSpaceKind, K: CapabilityKind> Io for Capability<'a, S, K> {
-+    const MIN_SIZE: usize = S::SIZE; // Use config space size for fallible bounds checking
-+
-+    #[inline]
-+    fn addr(&self) -> usize {
-+        0  // Offsets are relative to capability base, not absolute
-+    }
-+
-+    #[inline]
-+    fn maxsize(&self) -> usize {
-+        self.size()
-+    }
-+
-+    // Only implement fallible methods (no IoKnownSize, so infallible methods not available)
-+    define_read!(fallible, try_read8, call_cap_read(try_read8) -> u8);
-+    define_read!(fallible, try_read16, call_cap_read(try_read16) -> u16);
-+    define_read!(fallible, try_read32, call_cap_read(try_read32) -> u32);
-+
-+    define_write!(fallible, try_write8, call_cap_write(try_write8) <- u8);
-+    define_write!(fallible, try_write16, call_cap_write(try_write16) <- u16);
-+    define_write!(fallible, try_write32, call_cap_write(try_write32) <- u32);
-+}
-+
-+impl<'a> ConfigSpace<'a, Extended> {
-+    /// Finds a specific extended capability by ID using the kernel's `pci_find_ext_capability`.
-+    pub fn find_ext_capability(&self, id: u16) -> Option<Capability<'_, Extended, Extended>> {
-+        // SAFETY: pdev is valid by ConfigSpace invariants
-+        let offset = unsafe { bindings::pci_find_ext_capability(self.pdev.as_raw(), id as i32) };
-+
-+        if offset == 0 {
-+            return None;
-+        }
-+
-+        let size = self.calculate_ext_cap_size(offset as usize);
-+        Some(Capability::new(self, offset as usize, id, size))
-+    }
-+
-+    fn calculate_ext_cap_size(&self, offset: usize) -> usize {
-+        // Extended capability header: [31:20] = next capability offset
-+        // Use 0xffc mask (not 0xfff) to match kernel's PCI_EXT_CAP_NEXT macro
-+        let header = self.try_read32(offset).unwrap_or(0);
-+        let next_ptr = ((header >> 20) & 0xffc) as usize;
-+
-+        if next_ptr == 0 {
-+            // Last capability, size goes to end of config space
-+            self.pdev.cfg_size().into_raw() - offset
-+        } else {
-+            // Size is distance to next capability
-+            next_ptr - offset
-+        }
-+    }
-+
-+    /// Finds the next occurrence of a specific extended capability starting from a given position.
-+    pub fn find_next_ext_capability(
-+        &self,
-+        start_pos: u16,
-+        id: u16,
-+    ) -> Option<Capability<'_, Extended, Extended>> {
-+        // SAFETY: pdev is valid by ConfigSpace invariants
-+        let offset = unsafe {
-+            bindings::pci_find_next_ext_capability(self.pdev.as_raw(), start_pos, id as i32)
-+        };
-+
-+        if offset == 0 {
-+            return None;
-+        }
-+
-+        // Calculate real capability size
-+        let size = self.calculate_ext_cap_size(offset as usize);
-+        Some(Capability::new(self, offset as usize, id, size))
-+    }
-+}
-+
-+/// SR-IOV register offsets (relative to the capability base).
-+mod sriov_offsets {
-+    use crate::bindings;
-+
-+    /// First VF Offset register offset
-+    pub(super) const VF_OFFSET: usize = bindings::PCI_SRIOV_VF_OFFSET as usize;
-+    /// VF BAR0 register offset (first of 6 VF BARs)
-+    pub(super) const VF_BAR0: usize = bindings::PCI_SRIOV_BAR as usize;
-+}
-+
-+/// SR-IOV capability structure.
-+///
-+/// This structure provides typed access to the SR-IOV extended capability
-+/// registers using the PCI configuration space backend.
-+pub struct SriovCapability<'a> {
-+    cap: Capability<'a, Extended, Extended>,
-+}
-+
-+impl<'a> SriovCapability<'a> {
-+    /// Creates a new SR-IOV capability from an extended capability.
-+    pub fn new(cap: Capability<'a, Extended, Extended>) -> Result<Self> {
-+        if cap.id() != ExtCapabilityId::SRIOV as u16 {
-+            return Err(EINVAL);
-+        }
-+        Ok(Self { cap })
-+    }
-+
-+    /// Tries to find and create an SR-IOV capability from a config space.
-+    pub fn from_config_space(config_space: &'a ConfigSpace<'a, Extended>) -> Result<Self> {
-+        let cap = config_space
-+            .find_ext_capability(ExtCapabilityId::SRIOV as u16)
-+            .ok_or(ENODEV)?;
-+        Self::new(cap)
-+    }
-+
-+    /// Returns the offset of this capability in configuration space.
-+    pub fn offset(&self) -> usize {
-+        self.cap.offset()
-+    }
-+
-+    /// Reads the First VF Offset register.
-+    pub fn read_vf_offset(&self) -> Result<u16> {
-+        self.cap.try_read16(sriov_offsets::VF_OFFSET)
-+    }
-+
-+    /// Reads a VF BAR register (32-bit).
-+    /// Returns the 32-bit value of the specified VF BAR register.
-+    pub fn read_vf_bar(&self, bar_index: usize) -> Result<u32> {
-+        if bar_index >= 6 {
-+            return Err(EINVAL);
-+        }
-+        self.cap.try_read32(sriov_offsets::VF_BAR0 + bar_index * 4)
-+    }
-+
-+    /// Reads a 64-bit VF BAR register.
-+    /// Returns the 64-bit address combining BAR[n] (low) and BAR[n+1] (high).
-+    pub fn read_vf_bar64(&self, bar_index: usize) -> Result<u64> {
-+        if bar_index >= 5 {
-+            return Err(EINVAL);
-+        }
-+        let low = self.read_vf_bar(bar_index)?;
-+        let high = self.read_vf_bar(bar_index + 1)?;
-+        Ok((u64::from(high) << 32) | u64::from(low))
-+    }
-+}
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601270630.FHzCSbVv-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0308]: mismatched types
+   --> rust/kernel/fb/device.rs:307:23
+   |
+   307 |         fb_read: Some(Self::read_callback),
+   |                  ---- ^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+   |                  |
+   |                  arguments to this enum variant are incorrect
+   |
+   = note: expected fn pointer `unsafe extern "C" fn(_, *mut u8, _, _) -> _`
+   found fn item `extern "C" fn(_, *mut i8, _, _) -> _ {fb::device::Device::<T>::read_callback}`
+   help: the type constructed contains `extern "C" fn(*mut fb_info, *mut i8, usize, *mut i64) -> isize {fb::device::Device::<T>::read_callback}` due to the type of the argument passed
+   --> rust/kernel/fb/device.rs:307:18
+   |
+   307 |         fb_read: Some(Self::read_callback),
+   |                  ^^^^^-------------------^
+   |                       |
+   |                       this argument influences the type of `Some`
+   note: tuple variant defined here
+   --> /opt/cross/rustc-1.88.0-bindgen-0.72.1/rustup/toolchains/1.88.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:597:5
+   |
+   597 |     Some(#[stable(feature = "rust1", since = "1.0.0")] T),
+   |     ^^^^
+--
+>> error[E0308]: mismatched types
+   --> rust/kernel/fb/device.rs:308:24
+   |
+   308 |         fb_write: Some(Self::write_callback),
+   |                   ---- ^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+   |                   |
+   |                   arguments to this enum variant are incorrect
+   |
+   = note: expected fn pointer `unsafe extern "C" fn(_, *const u8, _, _) -> _`
+   found fn item `extern "C" fn(_, *const i8, _, _) -> _ {fb::device::Device::<T>::write_callback}`
+   help: the type constructed contains `extern "C" fn(*mut fb_info, *const i8, usize, *mut i64) -> isize {fb::device::Device::<T>::write_callback}` due to the type of the argument passed
+   --> rust/kernel/fb/device.rs:308:19
+   |
+   308 |         fb_write: Some(Self::write_callback),
+   |                   ^^^^^--------------------^
+   |                        |
+   |                        this argument influences the type of `Some`
+   note: tuple variant defined here
+   --> /opt/cross/rustc-1.88.0-bindgen-0.72.1/rustup/toolchains/1.88.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:597:5
+   |
+   597 |     Some(#[stable(feature = "rust1", since = "1.0.0")] T),
+   |     ^^^^
+--
+>> error[E0308]: mismatched types
+   --> rust/kernel/fb/io.rs:32:13
+   |
+   30     |         bindings::fb_io_read(
+   |         -------------------- arguments to this function are incorrect
+   31     |             device.as_raw(),
+   32     |             buf.as_mut_ptr() as *mut core::ffi::c_char,
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut u8`, found `*mut i8`
+   |
+   = note: expected raw pointer `*mut u8`
+   found raw pointer `*mut i8`
+   note: function defined here
+   --> rust/bindings/bindings_generated.rs:123562:12
+   |
+   123562 |     pub fn fb_io_read(
+   |            ^^^^^^^^^^
+--
+>> error[E0308]: mismatched types
+   --> rust/kernel/fb/io.rs:58:13
+   |
+   56     |         bindings::fb_io_write(
+   |         --------------------- arguments to this function are incorrect
+   57     |             device.as_raw(),
+   58     |             buf.as_ptr() as *const core::ffi::c_char,
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
+   |
+   = note: expected raw pointer `*const u8`
+   found raw pointer `*const i8`
+   note: function defined here
+   --> rust/bindings/bindings_generated.rs:123570:12
+   |
+   123570 |     pub fn fb_io_write(
+   |            ^^^^^^^^^^^
+
 -- 
-2.51.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
