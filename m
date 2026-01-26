@@ -1,84 +1,113 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9673D3358C9;
-	Mon, 26 Jan 2026 15:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769439646; cv=none; b=Gi9/mnIh/jCcl9rOurSUv4I5jP9mi5i4SDsSK2UpRJF5ZT4z+H4WQMGKnZz+jwfFcb2BkcXXzbsHnOgibdHlXAn4ETaB2nJAPTutf2X96amlXAYO32e7O4RYB9/Zc+UyKt9M2cJUt2xIitFO5j+PTYFdMrFL88t8+/wgYSLYOYA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769439646; c=relaxed/simple;
-	bh=vw6z8ZGo6PgeHs5Ehjr4OdzYvmwTaU+5mdR6XfWOOkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h1iB+ZQJtkX293nWR5PyLweRdByaSp3K9fXOAGVAW0l6QWEleY46VxbaE87E3n5B/MPsuW+8M8degTMwpiMIC5aPeaLm8ReMBNwqTMRx7QzkHGcBgXCDwb0uSXVS8O9Kl7Dto6i32KydpmtpB3tOPa0vxl2zQO4PZpn3VOpHzUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=aY1KVLeN; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0D328D8ED
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 15:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769439765; cv=pass; b=HaMWiP+i08PkoT+bxAruyeottIhHtWeacpkwFrmCenzo5GsQd9MtRLEWBR92GAA8VgfK7QWWM8cNmMqtard8MEX4W2LEuRAQRL3EFTdHvggKL2OMqB21UbRm6+3oFKM41LBC8LqusPMCOAEX0oODwXmpdFm57dApBpCRZcerlDQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769439765; c=relaxed/simple;
+	bh=rp5TqfE9zLOyeqnvzDKD6I0dAZPw6wy5AXjvt9LXXnQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QcEkM6pqVtvucTI691oI4ny6LUMtoONOc51do+40c+GtU8jA/yP+ViteYXzMjQ18rwBORNvqsixGsMiVQD5k7hDQOB4Hd74Fu99sm3xKaQvgnFfcdpwL6eOddooqjsnLxwSuSgxy+pAf3SOahOEGe/1cRq4eJnZHfgduE5jTQsk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e310jtMR; arc=pass smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="aY1KVLeN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1769439642;
-	bh=vw6z8ZGo6PgeHs5Ehjr4OdzYvmwTaU+5mdR6XfWOOkE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aY1KVLeNR/TDZRb5voHD+pg0P5OcXsDAy+sLEx+stAEjihoxKSMIGRCmWzv3ZueyM
-	 KMBsji9ak9z0FwEWmgy50bZeh58PnpSznWq3KRWYOhAEdsgiF+Jtv6ULJsP9htCfpq
-	 OXrDHYmlKWdKfB+CMXmTSxqG8kgrbv8uIC8C96yE7OPtVt+kCy3oh1MpR2HvGyLo/g
-	 n/kj+BDqzMzvh08jhaPy/0LY1xcwDB7gV28DSglamilOPqmMsBYXoHhBlkE2xN/T0L
-	 zs5m1F3hmR0jx8e0lydvoHaan99m2c0sDLbXr4OmkqMWny4Alg/mCN6IU4CqkF4Cvv
-	 CRjS6NWPuCTyQ==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7DAD517E0342;
-	Mon, 26 Jan 2026 16:00:42 +0100 (CET)
-Date: Mon, 26 Jan 2026 16:00:36 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida
- <daniel.almeida@collabora.com>, Janne Grunau <j@jannau.net>, Matthew Brost
- <matthew.brost@intel.com>, "Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?="
- <thomas.hellstrom@linux.intel.com>, Lyude Paul <lyude@redhat.com>, Asahi
- Lina <lina+kernel@asahilina.net>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] rust: gpuvm: add GpuVm::obtain()
-Message-ID: <20260126160036.2b2c66a7@fedora>
-In-Reply-To: <20260121-gpuvm-rust-v3-3-dd95c04aec35@google.com>
-References: <20260121-gpuvm-rust-v3-0-dd95c04aec35@google.com>
-	<20260121-gpuvm-rust-v3-3-dd95c04aec35@google.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e310jtMR"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2ae5283dae8so296116eec.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 07:02:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769439763; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jkysmtxmlk9fAy3sDvlHlNOiYUW+AmHwmSYsypxztFAuwG261vLBbAnBAS44yhgd5I
+         qCP1+yBkqBsYccSdraPa3bRzt9E4zUUhi8/8PYIEaK624AFdn+5LEHEczKoDSO6LamEE
+         /xWyqdr32CjfT8xNS5QegcnjFaUBaSJw2CldCPgSr1EBoSdez9LwuPC3Sg2hgvINMzob
+         MosScCgMotQaUiKgeOHIjYsCDlZw1yL9y+LrIwanQhxlAbIcAgC+lyU4oRer49+TQ784
+         Limc+DzpUmpTIrtkN4wEEkFJmRchnJT4Ixl/W0fPMWMOiZbkl4vTF0wYvSZwxFzsDcTX
+         hfvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eoxvPx9TbIsdy8t0Ge6WCOFlFgsktrXqmBZ3k8r6Wtg=;
+        fh=BzoIUFZ68P4XNmpo6ZbdmYfPWn/ZHWqm9+0ziX5Yl90=;
+        b=L5ypt8CRQ4G/yNL6MVkPqk2qMm4w5kXk12mZpxpv8+nbueVsoSPaBlM8WUytPf53CJ
+         IIUIlrFvVNfFbyEZlGts6HRQc9c3xs8BgZtW0kGYHABJNR/vIFFKJ1e7ScVyNqwCRNkZ
+         jwjpHD2FYzkwJSgDT+rzB7lQ6XSOALcr0y12aij7oQtNe7pbT0AWA68hfXhRth4DwTti
+         5VINGiO6enZpDS0YSyzP/uMGIK2O5w176quAmiaJygzmyuJfJROMiYBg4Yz+Di6/9pR1
+         R5W+7KxXXjFEUz5I4sr2rRzEXfQikASky73oPqo1XWpTXwkWgK8Jot5lq8+690nrpWIO
+         GTBA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769439763; x=1770044563; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eoxvPx9TbIsdy8t0Ge6WCOFlFgsktrXqmBZ3k8r6Wtg=;
+        b=e310jtMRsmO2U3ZVtQCqYX2HydtBAP9CG2AJTqq4zRmMLfkKOHF0wW0ZzY58jg2vFu
+         xPDAKguf4kCCAEoAqwPy4GfXadjcqo8FQFndUxNPxwzea779/spRMShxhuE1z8pvLBl0
+         mrZKj5zyEgI4XeU6UiSh3KSskPPZTqy2tL6mfz9ubeviflLvq96cktlcurNhcoFfreWI
+         JZR7ct+5iSnEc17l5IOK7jTKhdLccmvYzBEM0pVgkF7mZdJRLhR8Wb0/N+lCIAHUeN/M
+         SKOjbGdAZiRSqqzUmMEJw2P/9iHsAF+jf5sdDoZ0CmFSeZJmR8nd2wW0WfFwqcuUqQH9
+         gkSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769439763; x=1770044563;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=eoxvPx9TbIsdy8t0Ge6WCOFlFgsktrXqmBZ3k8r6Wtg=;
+        b=s64jRyHCbRpbcDFSizSboQnPe0V3zE3OsNTKJEQldJasmfZlbEpra+hwnq6UHS1XGB
+         FlAXtV4kWXyrLza0+1MGOPKJ00uUagNWgtaDny6YdPJ9ESjP1b6H2w8X4z2BSZyTCZlH
+         V+xJDU4zz1PwzYi01o4kwgxT9J13vGLAqrEKaVn/MRSr6d8PM6HVMxqkiinsN3MQrFCg
+         M+ssi4Mc6EMTJxEB2gw7Rv8QghxM+ZXkv3RBf0yKr3IKPMgfyzljN1CdgOhI6c8lqH39
+         DEV4XzNZ968McfPTpwmYBKoMg5aHiTEQSxmQeGnD9qSx2y+AeAax28enT7q5RFuBjjN3
+         qjoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPCYFVtvapACjt8X9OHe5JPWPwILBND8lABoItK9ww5rD5vubvCu1u4E8/CaUJGOUUv+iNMFEa0qzFeVJkwA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBTgp6bCaKiPXEzafizSo7ySv66EBnSqKSlOZ//4C14hPRKcvV
+	3CTyZSc0M71F913sACaq48nzDf6/O6YcvB4bzG9ks6DgNp4NzhYrjQpm4676EOxxf2BZ3nA7Oek
+	IDA15Jx5CfFdp4oPXMrYyPjx8w/ax6LpEhunjfyU=
+X-Gm-Gg: AZuq6aIltHArq74AVx0L8Bc8iP79xy8OVFzp5lgjpkd31EcXmpxwhRSYaoQZ3V7PmZ+
+	zS46QOVCgqk/LcQtUA0p88UOQEgUQPbwR/zQCUXcKK7Dqn74Q11hPBwcQc+lRrJ5gpQl+wAMobx
+	2VUwQGWN9sbMIBsLfZC2s55mW6bnewhmPKMZ4cmig5M7WqtTHp18XBQYiEVCNZd0fKtNB5NIAZE
+	z7iGlrQBKkFyM7JvJSCO7eI6eCvnaJmIQ3UDkdpPPtl6EUmrMdACG+bS+ZCC5nMtn7vepBAYDjN
+	tFUlqnbcuwrPcusSul7YuyA54WIDBqROC2XOFH6eD3NpZDz/fXmiU48iTDJY9JD2aLTNdWfvqao
+	JuCyl5vPBGQB/
+X-Received: by 2002:a05:693c:2c0c:b0:2b7:3678:2d1a with SMTP id
+ 5a478bee46e88-2b7645253a2mr1242478eec.6.1769439762862; Mon, 26 Jan 2026
+ 07:02:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260123172007.136873-1-gary@garyguo.net> <20260123172007.136873-4-gary@garyguo.net>
+In-Reply-To: <20260123172007.136873-4-gary@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 26 Jan 2026 16:02:29 +0100
+X-Gm-Features: AZwV_QgiX0eFATH2BS-cSgRL-nHZ6-2MaTRUOw-3ELWcT9aDkkatEcTOGy3AegQ
+Message-ID: <CANiq72kKDx-A0uLcRzau771WQNJG5MLrz_jBkY9hD=NPNkKbeg@mail.gmail.com>
+Subject: Re: [PATCH 3/3] samples: rust: remove imports available via prelude
+To: Gary Guo <gary@garyguo.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 21 Jan 2026 11:31:19 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Sat, Jan 24, 2026 at 6:08=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
+>
+>   samples/rust/rust_misc_device.rs      | 2 --
 
-> +/// A [`GpuVmBo`] object in the GEM list.
-> +///
-> +/// # Invariants
-> +///
-> +/// Points at a `drm_gpuvm_bo` that contains a valid `T::VmBoData` and is present in the gem list.
-> +pub struct GpuVmBoResident<T: DriverGpuVm>(NonNull<GpuVmBo<T>>);
+If Greg/Arnd don't say otherwise, I will eventually pick this patch
+including the file above, given it is trivial.
 
-I find the name a bit confusing: BO residency is often used to refer to
-memory backing the buffer object, and in this case, you can end up with
-a GpuVmBoResident being returned for a BO that has been evicted (one
-that's no longer resident).
-
-> +
-> +impl<T: DriverGpuVm> GpuVmBoResident<T> {
-> +    /// Returns a raw pointer to underlying C value.
-> +    #[inline]
-> +    pub fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
-> +        // SAFETY: The pointer references a valid `drm_gpuvm_bo`.
-> +        unsafe { (*self.0.as_ptr()).inner.get() }
-> +    }
-> +}
+Cheers,
+Miguel
