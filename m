@@ -1,53 +1,53 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B97C33891D
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 13:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74E5338F5E
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 13:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769432734; cv=none; b=rtYviH3pMNBOKK9psqk4CSZfF309GE4sxcLSd3hylGiopt9HwePrUOYpYN7OM1kaB7l2su4N/pcNBG617wXYO3pLbZKkDcRewFO342/XNH58XWz1sP3493THEZ5XK8YUTnZyrq92zQxcKMPkhMuOqXGzXOeg5DLKzLm5/0I3LBk=
+	t=1769432735; cv=none; b=JsQ+qF2c6ktq2rEn2QZN+Vw8yEMtOFLup4plO5XP8jglrS7QePGawBy58MDDenWbet9O+h5KboIHy4cj9yjJHU0bWxiTVBxEL7ON46iG21IHqZyKd/FQEN4ygR78hFaZPohqdQqEbSH9e9ivB1oxpt9zjEI3R0Uyv9S4G3EX1y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769432734; c=relaxed/simple;
-	bh=LUQ8/ci9izP5J9/4y+2ltP+4wEzDDnOt0Trjo5chvYo=;
+	s=arc-20240116; t=1769432735; c=relaxed/simple;
+	bh=xl8shNTbd3l7f1l/wIitQRKB1WOKnOl+vwXdD/w65TA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aDJxVHMrKU8YJvFhgERLHDY53vn7uQ/h1oXXgLU0OdAUPaM1roTJfHUrU7aO7e70+X1xZ+6/KaF3wsmEn6cKdGuvbe+H+Ok0ghcjasQtzbO9Iax5FqFtZA5Wk07+/c18rJUI80D+vrRHB4EPUtmuPNs6yeIlwY7ymTHs1oe/6Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YGlWRNbS; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=htYEEdIvYlcZ3XIMmUKDHCXeXp/keSCZ/iRyZXFWseJnei4L7eG21HOZv2yjiGsUxYuOhZ6fmHXnTdgdGeBxk3fzS3g0On75OmUZVRssVq+HdkTQ/mJmvqjiYZ/KMYfpiYqFJjTNIQmIQH7K+j5MOigeIq2JrN6ISo+LEmfEbM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u8pxPmYN; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YGlWRNbS"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47ee056e5cfso36217135e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 05:05:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u8pxPmYN"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47ee8808ffbso33731835e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 05:05:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769432731; x=1770037531; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1769432732; x=1770037532; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=f+RxVCguDzSbO7RZAiYTn6auR9kVUW4tmzLLXhLMJbM=;
-        b=YGlWRNbS34nRsqVveuY//zUCTXKdGUziRUgrBN+uab6fgcQykqEkA9JKdQClh0R6FA
-         7Wb/qTxQDz56A3phif+jTiXVPyVTW6M9PetaUyBuhFZ1kd70tCP7aRtgNMsk6lNkiMAf
-         6cSESETyUUH76bRRceL9EvPVI3fAX6npoNtYodXTHieGBrKUub3MfOJKyvqtZCcxRAcl
-         rAVYbsPLPo3pNA9ZqPu45jV+0pUAc2ee4IoBRbzGl572Mni/LtFVPWJpU+FF2es9b6NV
-         zTOOiMsSXEdsZkPvbQ98tGqiRTM59ZxJYBGrQ7pMKZJEpYSeO+Z68hx00c2R1xP9r9EI
-         CFEQ==
+        bh=4nsmpG+AyhITKbCRZV0HvgvKMdSs0TbZAwbcGdtt0dY=;
+        b=u8pxPmYNhV3nGjOr4Kzto6ZTmlOorqunLn9Gn+bBrAbSzwvQGZLAGLFh26vYI284sz
+         nPu183EMMF2bYfvqBNn1Wla5wEw4ES3Vi3L/43ODY4seg0pzwEg8gVe5CxjkvJ8kFWlp
+         XJhj+R40kokZ7e6+pD5H5lMh7KLYJT008I+pw+TDit8eKnXZ07heCeTNjB26i+gDTdPe
+         mXYwl8jBQOKlHd1oTV/MV3Bk1Ky3DjmS4HtlL31OxqyftC1eDTmmasgcvrf9eJiMQjZ0
+         GtxrwQVrs3KmJA9oGCafWmRYyvbijmdJ0O7axZ0GhLU/4k8hz/ogziRWnf/sV0epC8LI
+         lYcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769432731; x=1770037531;
+        d=1e100.net; s=20230601; t=1769432732; x=1770037532;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f+RxVCguDzSbO7RZAiYTn6auR9kVUW4tmzLLXhLMJbM=;
-        b=QsRCS0AoJop9Qb8ltLlETEuMBQUjO+prb55RjnzjvcFsaeiuKpybOc4Dvlqhrf+1tw
-         6IAvFu0kEFOG+Y0D5Jiobmc1iLR29qHqlgjaOB9K8rEoEZwPtPY4ZJzCJunHRvtEiext
-         YZVSLssjrMQ/4utCQOWW6r2fscJFnsa8o2kdOaOxv85FJTTJn5JGwz5R9Trc+vvnO+eI
-         Df/CE7508WFqMBGKhIhVpL5YrFa8+uSdkgeR0JmqxF5HTnx8SkZxS1iPArRyglwsxuBz
-         XBAotij5gefb2WdG3ro2Y6S6ohT44XU2659CzjTNnBUiER469dSqscayG9kDhNkRXc4q
-         mmYg==
-X-Gm-Message-State: AOJu0YxJZ5J8cpk3lC1ILYOsZSuINw0dup9HNMSk6Z7KCDgkXQNyBtAo
-	aaoIG46HxL5rjNknVJ6vHaslOqUyK0DIPh72RLyq5m8FY348Gh5fb8WefUMtpQZTdSRZL4rCYf+
-	gkJUK2YdtJHx2q06SkA==
-X-Received: from wmbjr13.prod.google.com ([2002:a05:600c:560d:b0:475:decb:4c4d])
+        bh=4nsmpG+AyhITKbCRZV0HvgvKMdSs0TbZAwbcGdtt0dY=;
+        b=Mty8SAelCTiXVnJgIJZLDBqOJDK63dB9kGkch/r3zTcIZl/UWcizOUQmuIXMYBzwe3
+         RqluA6dVh1QRKrEi2nVdjA7Se7shCxnFGcE2x6GPDY+aMD95V4xV2hY3AGh/cGl0v99n
+         nO1hKIYcupAVvJxTAxV2uSk927bHDUMkhkT32f0xaTemAnUcjTMy5cxHAIA0aCmLduJ3
+         J8He++shsdsfCtyQeYWHwm6e53XOc/HlyQpDIwpTUrzUrsQm7EAHRAZyQuXTiPHvyPj2
+         FvFkN13cxx/4FBxxDZoAZD+QBjhB1W/iN+XFPxICdd2GrYqvwI3OAFiASRLsi6hdCMKE
+         uvMA==
+X-Gm-Message-State: AOJu0YyN6IUsZObVM85tGt9UIXK97MUM32u/JpuPxxv4uRPrVtsA1xGx
+	AHjy8K9I9l9EVF5/AqQKYDA84LIpKjfktG+3KEJx7lHjoaouQPN6jOAElAYeXsx8Ip+4Tfyik25
+	Jp58FJboGkXBFjmHlxg==
+X-Received: from wmbjw6.prod.google.com ([2002:a05:600c:5746:b0:480:3842:3532])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f8f:b0:477:b642:9dc9 with SMTP id 5b1f17b1804b1-4805cf672c6mr73201695e9.28.1769432730846;
- Mon, 26 Jan 2026 05:05:30 -0800 (PST)
-Date: Mon, 26 Jan 2026 13:05:16 +0000
+ 2002:a05:600c:310f:b0:475:da1a:53f9 with SMTP id 5b1f17b1804b1-4805ce4253cmr68763735e9.14.1769432732198;
+ Mon, 26 Jan 2026 05:05:32 -0800 (PST)
+Date: Mon, 26 Jan 2026 13:05:17 +0000
 In-Reply-To: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -57,22 +57,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1464; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=LUQ8/ci9izP5J9/4y+2ltP+4wEzDDnOt0Trjo5chvYo=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpd2aVtIXd8lRq79A4IpzR63g6UepxqP3aP882H
- LHek6E8d/KJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaXdmlQAKCRAEWL7uWMY5
- Rgj7D/9tTA8NIpQVPOoBpUOfXvxyJh7I9QqsPbk2lhfUJ91ylb4nQV11NUnJK+HIj5SflIxE7BF
- mYJngykVKsX7zuV50ZnIjT9IxkkCrrROw4lZxAHaBqt5Q8G6tQqfcH3z6106ZZNDbaGwrGK3Gtk
- cn48veOg7BNZbVACSBoznv1R7o++CfAiX9Zt7mWz7UdG1yaw8fdCXQkf4Fvh0Z63ocZ7lnt8Zag
- m8D0pmiQeqUCEggRpao5HxxEl+D0tg1vvLFti7/x8PrvyWG67qcyvhcRVpq6G9EbSLhYRUqJ+4u
- OBzvQYUSiHqaWQBMiyGB4GrxkDTY9f1FAnWQkUi9CtxbsHvbfN+IZ5DsTKHolhw21VOSCtZQMAr
- 3Ku6iXNp8qEypBEWEKUJ29NEBSIjkq5EMlV6sjnyu3hzkuwEH52lRaD/b7RZjdhv9RP1Q5e6ZY+
- s6ZQq7/PhL1+egs84UXI+Mu8mdRrfsEJwWA35dX3uyf/Zfvbg0kQ8UuuSECJKXDgTLOq+WreF5b
- P179o69MSYJyGdQE5mNYWnlvKvl0RxTAly0LSMqlE8aV9W59ySJwyxwjT0lr0Y+pyeyddlkDYlU
- OQNk6DBi7IyrpFDrb9nC2wdv6RMMSwph1p9wOG38PmnTs9IxhNLUJTlAaxpszYzxv5xVNm5Xvia ByFjijCPk5RWTFA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=959; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=xl8shNTbd3l7f1l/wIitQRKB1WOKnOl+vwXdD/w65TA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpd2aV9Vd1e2rwhMiupm4OaSyGzjJpM8HhP+PR+
+ NvrLp5mn++JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaXdmlQAKCRAEWL7uWMY5
+ RoYMEACWHZ40+tzZDKpX1QwIMIaXP7/OPrWwSWZcGG5u52wEuWcjYYRIttamuTP+CVDMdVNgA3Q
+ whtnCJvnfgMe2SGBHXduT9gewGP8Mrp9BmF7027YyFSHwquzVTb1L4hCqaD2Bts6Nybq7a4YrEr
+ xJ8h0HuxspeQmzMVt6Smb9Ywje9zO/5TFvGU43TZaQY0FAGTxkvkAKKkeu5egWE9IXsQpVNNR1j
+ bJsjWFzfI6S/9+22xFDouHlpJ4MvyHBH9PxVupLuGK+tOVQh6XNTQ7wHeNHy/tPbYqF/2MtBd2N
+ q4muezv0uOgBqMXjMq58Zbb5jwR38ts1AUPURoWQ8xrxtYGn9L9XNpnRA5MiO74juCwFyCJ3xbO
+ 2a2SGnCLvP5budzPpQ7SK7mE12oNKIXYSrER1Kk9UHOoKEKw0cFvkdLBCKRYugln2oD28hQKJ/6
+ gO8cz6SdNsbb859FkYTN5sJy/7ap+LQ1memQq0u/Urjpdu7opqBhQOwvCnMxLhTyW5ikhwfui58
+ tppWZAc3nrH8QtHeQxbLtPV+Wg09sja2Sc1dqhXwVI5bBdESQoc/3Jw75UR1N7OMVcyY6TcIIBL
+ YrrYBQE0DDmSgaiiGZGtfZqfedoL6C+JdCOMxNGutVpPsPOepM5xH2TwPqn0kcnCAU8ABzwtvRJ mfipw3tC70OW1jw==
 X-Mailer: b4 0.14.2
-Message-ID: <20260126-zeroable-ffi-v1-3-0ef101d1ed85@google.com>
-Subject: [PATCH 3/4] rust: i2c: import pin_init::zeroed() from ffi
+Message-ID: <20260126-zeroable-ffi-v1-4-0ef101d1ed85@google.com>
+Subject: [PATCH 4/4] rust: acpi: import pin_init::zeroed() from ffi
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
@@ -90,31 +90,22 @@ zeroed() has nothing to do with pin-init, use the new re-export.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/i2c.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/kernel/acpi.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 491e6cc25cf42619ebfd88af731db47efb8db93c..731bacff0990c8b9b2fe8601f07470b68032f3e8 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -46,7 +46,7 @@ impl DeviceId {
+diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
+index 9b8efa623130c1f4256e36cc350caf5cef46d132..9ae0eca82c658a591b407c4f4549eda00b8d293c 100644
+--- a/rust/kernel/acpi.rs
++++ b/rust/kernel/acpi.rs
+@@ -39,7 +39,7 @@ impl DeviceId {
      pub const fn new(id: &'static CStr) -> Self {
          let src = id.to_bytes_with_nul();
-         build_assert!(src.len() <= Self::I2C_NAME_SIZE, "ID exceeds 20 bytes");
--        let mut i2c: bindings::i2c_device_id = pin_init::zeroed();
-+        let mut i2c: bindings::i2c_device_id = ffi::zeroed();
+         build_assert!(src.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
+-        let mut acpi: bindings::acpi_device_id = pin_init::zeroed();
++        let mut acpi: bindings::acpi_device_id = ffi::zeroed();
          let mut i = 0;
          while i < src.len() {
-             i2c.name[i] = src[i];
-@@ -433,7 +433,7 @@ impl I2cBoardInfo {
-     pub const fn new(type_: &'static CStr, addr: u16) -> Self {
-         let src = type_.to_bytes_with_nul();
-         build_assert!(src.len() <= Self::I2C_TYPE_SIZE, "Type exceeds 20 bytes");
--        let mut i2c_board_info: bindings::i2c_board_info = pin_init::zeroed();
-+        let mut i2c_board_info: bindings::i2c_board_info = ffi::zeroed();
-         let mut i: usize = 0;
-         while i < src.len() {
-             i2c_board_info.type_[i] = src[i];
+             acpi.id[i] = src[i];
 
 -- 
 2.52.0.457.g6b5491de43-goog
