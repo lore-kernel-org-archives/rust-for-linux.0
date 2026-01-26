@@ -1,80 +1,44 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC97313550
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 10:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5690315D22;
+	Mon, 26 Jan 2026 10:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769421706; cv=none; b=uw+NcBnWcjbCTTL9t4ymeuRLS7/F45FVEWRVc+ahSNI5RlstqCYHGx2gQ5+1eiZ6hOSgt1fonz04dxF4KI7OX3H3egUObTba4jaIVDvdFM6kGib8aovX7aW9BGmH9L0I4ybpOk5HRIN/UpWelCEjv3pmLL6cTmAUAOMeVGysqFI=
+	t=1769421811; cv=none; b=FN9pL5JCrCuiTYKABd3aUiV/fn2acV2dmKUOyAfiweKTulBECpe1DEHKwcIPVMdHpJLmEQWH8p4HCEEXWQG2u6FWciBBMfo2RO5n59Lc8G1eJ0w52IeU/niKD5GcvtKJZ+cLgrgXb6biwCAxj3SDHniuhCvTiofubL1IOjxTefQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769421706; c=relaxed/simple;
-	bh=43yr8MpN9iodHfijPTJPG/VmdfqUrAFfZZhPG6ooPF8=;
+	s=arc-20240116; t=1769421811; c=relaxed/simple;
+	bh=uL/zrKiJL0NrpRn7S1T5zQm6Z2BAWFrf2uvRyXBML8I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CSmXHyJmGCIJArQ+haymVtc/n6R548Pfh5wNfWPvpdfD7RkyNhE0ifEZD5gYVp3jaeW74KhLBToEKNsPMxVC8wP1fPmEurGWN2fAuymvD1livvm1VQK3lzoFNcIlNlq7Q37f/HPkT0NfOZhk2oVzdONrB7AdEDBCO2qidHXuw+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cljO8j/8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5zfe0Vri; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cljO8j/8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5zfe0Vri; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 In-Reply-To:Content-Type; b=a5JZMN02mMSCIobULzv/Bf/9nh6pVrOGKTwHKw55fNBvREowUggjFi/vIUt5gvV6SWtvGWvbmCyTmnp++l/ufwZkzXlyVJ1T9bHb+Ob0ig8osjDXhrhHgoPwpivSRjvS+FrjdVxFebp5CG40BkUxTGk1bF5F0shYYoXQqt4DU6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=WoRuJ7zr; arc=none smtp.client-ip=159.100.248.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cljO8j/8";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5zfe0Vri";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cljO8j/8";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5zfe0Vri"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="WoRuJ7zr"
+Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.66.161])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 3D4EC26345;
+	Mon, 26 Jan 2026 10:03:27 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay3.mymailcheap.com (Postfix) with ESMTPS id 401EE3E91A;
+	Mon, 26 Jan 2026 10:03:19 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 6B19B400D5;
+	Mon, 26 Jan 2026 10:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1769421798; bh=uL/zrKiJL0NrpRn7S1T5zQm6Z2BAWFrf2uvRyXBML8I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WoRuJ7zr7IYbCSWp13iIpw6DqHAIyHS/7fcNWVySs7iNaB9fRXguSGL2oX5ZDLQE7
+	 yj7EzJT9Gi0sDx8WRKLASSk2j4R+w9p3tibWmDf2WnkOyEAtsxYzxsmvc2EChx5q2J
+	 Wi+jA8ltHfyWTb/1UX5a/b3a0P1+yU703ZQfhWog=
+Received: from [127.0.0.1] (unknown [117.151.13.225])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 364995BD33;
-	Mon, 26 Jan 2026 10:01:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769421702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MCTdo2kIuXkq/O+r27x3Hh0LuKAl+WTC23OqrDgITkw=;
-	b=cljO8j/8EFltCww+6LA4PQioVmV1kZ24qISLcMlQ1R4+oKVIs6u2ZmxsGNZxm0wbrnWmJc
-	/0xHbb0rUdRMJP23432mzG+TsljCjO2mhmgZYhIy27riu+XbLiG/2HpwbUWxRYlIwY+lJO
-	Lat3/RIqVnJ9gCwstEY1lQB4FUopFbY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769421702;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MCTdo2kIuXkq/O+r27x3Hh0LuKAl+WTC23OqrDgITkw=;
-	b=5zfe0Vrivp1KUobBZc8loxmLM8CZbDcNlCtgNxVSIEkj3G0A0X+r52dpv+gHd7aACx9RiA
-	bGLwZTnUn5xrBbAQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769421702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MCTdo2kIuXkq/O+r27x3Hh0LuKAl+WTC23OqrDgITkw=;
-	b=cljO8j/8EFltCww+6LA4PQioVmV1kZ24qISLcMlQ1R4+oKVIs6u2ZmxsGNZxm0wbrnWmJc
-	/0xHbb0rUdRMJP23432mzG+TsljCjO2mhmgZYhIy27riu+XbLiG/2HpwbUWxRYlIwY+lJO
-	Lat3/RIqVnJ9gCwstEY1lQB4FUopFbY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769421702;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MCTdo2kIuXkq/O+r27x3Hh0LuKAl+WTC23OqrDgITkw=;
-	b=5zfe0Vrivp1KUobBZc8loxmLM8CZbDcNlCtgNxVSIEkj3G0A0X+r52dpv+gHd7aACx9RiA
-	bGLwZTnUn5xrBbAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5FB7C139F0;
-	Mon, 26 Jan 2026 10:01:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gWo8FIU7d2k1fQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 26 Jan 2026 10:01:41 +0000
-Message-ID: <ed48e82a-cb94-477f-83c4-b2d87ae3cde6@suse.de>
-Date: Mon, 26 Jan 2026 11:01:40 +0100
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 754FA40594;
+	Mon, 26 Jan 2026 10:03:09 +0000 (UTC)
+Message-ID: <a3beb69c-5236-49fb-aebc-c716c10ea7c3@aosc.io>
+Date: Mon, 26 Jan 2026 18:03:06 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -82,182 +46,340 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 v1 0/4] [RUST] Framebuffer driver support
-To: pengfuyuan <pengfuyuan@kylinos.cn>, Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+Subject: Re: [PATCH 1/1] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
+Content-Language: en-US-large, en-US
+To: Bibo Mao <maobibo@loongson.cn>, WANG Xuerui <kernel@xen0n.name>,
+ Huacai Chen <chenhuacai@kernel.org>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>,
- Hans de Goede <hansg@kernel.org>, Lee Jones <lee@kernel.org>,
- Sam Ravnborg <sam@ravnborg.org>, Zsolt Kajtar <soci@c64.rulez.org>,
- =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20260126081744.781392-1-pengfuyuan@kylinos.cn>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260126081744.781392-1-pengfuyuan@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ rust-for-linux@vger.kernel.org
+References: <20260125054322.1237687-1-liushuyu@aosc.io>
+ <4b504274-4241-0e3e-3ed3-7804b72b7ee8@loongson.cn>
+ <972430be-d2f3-49b6-851b-a057ddfcafec@aosc.io>
+ <29565e27-f153-c2c5-cbc3-e0457d45f094@loongson.cn>
+ <2fa2dc72-b24e-4504-8c8e-e4ecacda02c4@aosc.io>
+ <13746394-1a33-894a-d325-8125743f7906@loongson.cn>
+ <f3256219-bb97-45d4-9364-cf28d3c9dc8a@aosc.io>
+ <913e8e96-9124-2fbe-bd00-f6122962562a@loongson.cn>
+From: liushuyu <liushuyu@aosc.io>
+In-Reply-To: <913e8e96-9124-2fbe-bd00-f6122962562a@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: 6B19B400D5
+X-Spamd-Result: default: False [1.40 / 10.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	TAGGED_RCPT(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	BAYES_HAM(-0.00)[36.75%];
 	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de,protonmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,garyguo.net,protonmail.com,kernel.org,umich.edu,linuxfoundation.org,ffwll.ch,gmx.de,ravnborg.org,c64.rulez.org,linux.intel.com,vger.kernel.org,lists.freedesktop.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DBL_BLOCKED(0.00)[mail20.mymailcheap.com:rdns,mail20.mymailcheap.com:helo,aosc.io:mid,aosc.io:from_smtp,aosc.io:from_mime,aosc.io:email];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-X-Spam-Level: 
-X-Spam-Flag: NO
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	LOCAL_OUTBOUND(0.00)[];
+	FREEMAIL_CC(0.00)[aosc.io,redhat.com,lwn.net,loongson.cn,kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Action: no action
+X-Rspamd-Server: nf1.mymailcheap.com
 
-Hi
-
-Am 26.01.26 um 09:17 schrieb pengfuyuan:
-> This patch series adds Rust bindings and safe abstractions for the Linux
-> framebuffer subsystem, enabling framebuffer drivers to be implemented in Rust.
-
-The framebuffer subsystem is obsolete and has been deprecated for a 
-decade. No new drivers accepted. Anything that really wants fbdev 
-already has a driver. Can we please let it die?
-
-Best regards
-Thomas
+Hi Bibo,
 
 >
-> The series consists of 4 patches:
 >
-> 1. rust: io: mem: add ioremap_wc support
->     Adds write-combining memory mapping support to the Rust iomem abstraction,
->     which is essential for framebuffer memory regions that benefit from
->     write-combining semantics.
+> On 2026/1/26 下午4:54, liushuyu wrote:
+>> Hi Bibo,
+>>
+>>>
+>>>
+>>> On 2026/1/26 下午12:22, liushuyu wrote:
+>>>> Hi Bibo,
+>>>>
+>>>>>
+>>>>>
+>>>>> On 2026/1/26 上午11:38, liushuyu wrote:
+>>>>>> Hi Bibo,
+>>>>>>>
+>>>>>>>
+>>>>>>> On 2026/1/25 下午1:43, Zixing Liu wrote:
+>>>>>>>> This ioctl can be used by userspace applications to determine
+>>>>>>>> which
+>>>>>>>> (special) registers are get/set-able.
+>>>>>>>>
+>>>>>>>> This can be very useful for cross-platform VMMs so that they do
+>>>>>>>> not
+>>>>>>>> have
+>>>>>>>> to hardcode register indices for each supported architectures.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Zixing Liu <liushuyu@aosc.io>
+>>>>>>>> ---
+>>>>>>>>
+>>>>>>>> For example, this ioctl could be used by rust-vmm/rust-kvm or
+>>>>>>>> maybe
+>>>>>>>> VirtualBox-kvm in the future.
+>>>>>>>>
+>>>>>>>>      Documentation/virt/kvm/api.rst |  2 +-
+>>>>>>>>      arch/loongarch/kvm/vcpu.c      | 69
+>>>>>>>> ++++++++++++++++++++++++++++++++++
+>>>>>>>>      2 files changed, 70 insertions(+), 1 deletion(-)
+>>>>>>>>
+>>>>>>>> diff --git a/Documentation/virt/kvm/api.rst
+>>>>>>>> b/Documentation/virt/kvm/api.rst
+>>>>>>>> index 01a3abef8abb..f46dd8be282f 100644
+>>>>>>>> --- a/Documentation/virt/kvm/api.rst
+>>>>>>>> +++ b/Documentation/virt/kvm/api.rst
+>>>>>>>> @@ -3603,7 +3603,7 @@ VCPU matching underlying host.
+>>>>>>>>      ---------------------
+>>>>>>>>        :Capability: basic
+>>>>>>>> -:Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
+>>>>>>>> +:Architectures: arm64, loongarch, mips, riscv, x86 (if
+>>>>>>>> KVM_CAP_ONE_REG)
+>>>>>>>>      :Type: vcpu ioctl
+>>>>>>>>      :Parameters: struct kvm_reg_list (in/out)
+>>>>>>>>      :Returns: 0 on success; -1 on error
+>>>>>>>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+>>>>>>>> index 656b954c1134..b884eb9c76aa 100644
+>>>>>>>> --- a/arch/loongarch/kvm/vcpu.c
+>>>>>>>> +++ b/arch/loongarch/kvm/vcpu.c
+>>>>>>>> @@ -1186,6 +1186,57 @@ static int
+>>>>>>>> kvm_loongarch_vcpu_set_attr(struct
+>>>>>>>> kvm_vcpu *vcpu,
+>>>>>>>>          return ret;
+>>>>>>>>      }
+>>>>>>>>      +static unsigned long kvm_loongarch_num_lbt_regs(void)
+>>>>>>>> +{
+>>>>>>>> +    /* +1 for the LBT_FTOP flag (inside arch.fpu) */
+>>>>>>>> +    return sizeof(struct loongarch_lbt) / sizeof(unsigned long)
+>>>>>>>> + 1;
+>>>>>>>> +}
+>>>>>>>> +
+>>>>>>>> +static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu
+>>>>>>>> *vcpu)
+>>>>>>>> +{
+>>>>>>>> +    /* +1 for the KVM_REG_LOONGARCH_COUNTER register */
+>>>>>>>> +    unsigned long res = CSR_MAX_NUMS + KVM_MAX_CPUCFG_REGS + 1;
+>>>>>>>> +
+>>>>>>>> +    if (kvm_guest_has_lbt(&vcpu->arch))
+>>>>>>>> +        res += kvm_loongarch_num_lbt_regs();
+>>>>>>>> +
+>>>>>>>> +    return res;
+>>>>>>>> +}
+>>>>>>>> +
+>>>>>>>> +static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
+>>>>>>>> +                      u64 __user *uindices)
+>>>>>>>> +{
+>>>>>>>> +    u64 reg;
+>>>>>>>> +    unsigned int i;
+>>>>>>>> +
+>>>>>>>> +    for (i = 0; i < CSR_MAX_NUMS; i++) {
+>>>>>>>> +        reg = KVM_IOC_CSRID(i);
+>>>>>>>> +        if (put_user(reg, uindices++))
+>>>>>>>> +            return -EFAULT;
+>>>>>>>> +    }
+>>>>>>> CSR_MAX_NUMS is max number of accessible CSR registers, instead
+>>>>>>> only
+>>>>>>> part of them is used by vCPU model. By my understanding, there
+>>>>>>> will be
+>>>>>>> no much meaning if CSR_MAX_NUMS is returned. And I think it will be
+>>>>>>> better if real CSR register id and number is returned.
+>>>>>>>
+>>>>>> Did you mean we should only return the CSR registers initialized in
+>>>>>> this
+>>>>>> function
+>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/loongarch/kvm/main.c?id=63804fed149a6750ffd28610c5c1c98cce6bd377#n48
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> ?
+>>>>>>
+>>>>>> That looks like a very large list and the values of the register
+>>>>>> IDs are
+>>>>>> not fully continuous. If that is the case, how do we maintain the
+>>>>>> get/set-able CSR register list?
+>>>>> It will be better if CSR register list can be categorized, for
+>>>>> example
+>>>>> with LoongArch CPU manual CSR register is split into 8 types from
+>>>>> chapter 7.4 -- 7.11
+>>>>>
+>>>>> At the beginning, there is big array with size CSR_MAX_NUMS without
+>>>>> any category, it can be fine-gained in late.
+>>>>
+>>>> Does that mean in the new `kvm_loongarch_copy_reg_indices`
+>>>> function, it
+>>>> is also okay to embed this big list in there?
+>>> Firstly I do not know how to use ioctl command KVM_GET_REG_LIST in VMM
+>>> actually.
+>>>
+>>> At the second from the word "determine which (special) registers are
+>>> get/set-able", I think that it is better to set accessible CSR
+>>> register number and ID rather than the total number CSR_MAX_NUMS.
+>>>
+>> Understood. I will post a v2 patch, and we can continue the discussion
+>> from there to see if I understood your points correctly.
+> Remember to add such lines in function kvm_init_gcsr_flag() in the
+> next round, since MSGINT CSR registers are missing here.
 >
-> 2. rust: device: add platdata accessors
->     Implements generic accessors for platform data, enabling drivers to access
->     platform-provided configuration. This is needed for framebuffer drivers
->     that use platform data for configuration.
+> void kvm_init_gcsr_flag(void) {
+> +        if (cpu_has_msgint) {
+> +                set_gcsr_hw_flag(LOONGARCH_CSR_ISR0);
+> +                set_gcsr_hw_flag(LOONGARCH_CSR_ISR1);
+> +                set_gcsr_hw_flag(LOONGARCH_CSR_ISR2);
+> +                set_gcsr_hw_flag(LOONGARCH_CSR_ISR3);
+> +        }
+> } 
 >
-> 3. rust: fb: add framebuffer driver support
->     Adds the core framebuffer framework abstraction, including:
->     - Device abstraction (`fb::Device`) with reference counting via `AlwaysRefCounted`
->     - Driver and Operations traits (`fb::Driver`, `fb::Operations`)
->     - Screen information wrappers (`fb::FixScreenInfo`, `fb::VarScreenInfo`)
->     - I/O operation helpers (`fb_io_read`, `fb_io_write`, `fb_io_mmap`)
->     - Blit operation helpers (`cfb_fillrect`, `cfb_copyarea`, `cfb_imageblit`)
->
-> 4. rust: fb: add simplefb test driver
->     Adds a test driver that validates the framebuffer framework by porting
->     the C simplefb driver to Rust. This driver serves as both a validation
->     tool and a reference implementation for future Rust framebuffer drivers.
->
-> The implementation follows the same patterns established in the DRM subsystem
-> and maintains full compatibility with the existing C framebuffer subsystem.
-> All C callbacks are properly bridged to Rust trait methods via the `Operations`
-> trait, memory safety is ensured through proper use of `Opaque<fb_info>`, `ARef`,
-> and `AlwaysRefCounted` for reference counting, type invariants are documented
-> and enforced through the type system, and resource cleanup is handled via RAII
-> with proper cleanup order.
->
-> Testing:
-> --------
-> This series has been tested on:
-> - ARM64 platforms with various display configurations
-> - AMD RX550 graphics card
-> - Moore Threads S30 graphics card
-> - Multiple other graphics cards
->
-> All tested configurations show normal display functionality with proper
-> framebuffer initialization, rendering operations (including I/O, color register
-> management, and blitting), memory mapping, and resource cleanup. The simplefb
-> test driver successfully demonstrates the usage of all framebuffer framework
-> APIs and validates the abstraction's correctness.
->
-> The simplefb test driver serves as both a validation tool and a reference
-> implementation for future Rust framebuffer drivers.
->
->
-> pengfuyuan (4):
->    rust: io: mem: add ioremap_wc support
->    rust: device: add platdata accessors
->    rust: fb: add framebuffer driver support
->    rust: fb: add simplefb test driver
->
->   drivers/video/fbdev/Kconfig          |  21 +
->   drivers/video/fbdev/Makefile         |   1 +
->   drivers/video/fbdev/simplefb_rust.rs | 653 +++++++++++++++++++++++++++
->   rust/bindings/bindings_helper.h      |   2 +
->   rust/helpers/device.c                |   5 +
->   rust/helpers/io.c                    |   5 +
->   rust/kernel/device.rs                |  31 ++
->   rust/kernel/fb/blit.rs               | 106 +++++
->   rust/kernel/fb/device.rs             | 463 +++++++++++++++++++
->   rust/kernel/fb/driver.rs             | 169 +++++++
->   rust/kernel/fb/io.rs                 |  76 ++++
->   rust/kernel/fb/mod.rs                |  23 +
->   rust/kernel/fb/screeninfo.rs         | 318 +++++++++++++
->   rust/kernel/io/mem.rs                |  71 +++
->   rust/kernel/lib.rs                   |   2 +
->   15 files changed, 1946 insertions(+)
->   create mode 100644 drivers/video/fbdev/simplefb_rust.rs
->   create mode 100644 rust/kernel/fb/blit.rs
->   create mode 100644 rust/kernel/fb/device.rs
->   create mode 100644 rust/kernel/fb/driver.rs
->   create mode 100644 rust/kernel/fb/io.rs
->   create mode 100644 rust/kernel/fb/mod.rs
->   create mode 100644 rust/kernel/fb/screeninfo.rs
->
+I think this might need to be a separate patch or commit.
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+Do you want me to include this in the KVM_GET_REG_LIST patch, or do you
+want to submit this change separately?
 
+> Regards
+> Bibo Mao
+>>
+>>> +static int kvm_loongarch_num_csr_regs(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    unsigned int i, count;
+>>> +
+>>> +    count = 0
+>>> +    for (i = 0; i < CSR_MAX_NUMS; i++) {
+>>> +        if (!(get_gcsr_flag(i) & (SW_GCSR | HW_GCSR)))
+>>> +            continue;
+>>> +        count++;
+>>> +    }
+>>> +    return count;
+>>> +}
+>>>
+>>> static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
+>>> {
+>>>      /* +1 for the KVM_REG_LOONGARCH_COUNTER register */
+>>> +    unsigned long res = kvm_loongarch_num_csr_regs +
+>>> KVM_MAX_CPUCFG_REGS + 1;
+>>>
+>>>      if (kvm_guest_has_lbt(&vcpu->arch))
+>>>          res += kvm_loongarch_num_lbt_regs();
+>>>
+>>>      return res;
+>>> }
+>>>
+>>> static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
+>>>                        u64 __user *uindices)
+>>> {
+>>>      u64 reg;
+>>>      unsigned int i;
+>>>
+>>>      for (i = 0; i < CSR_MAX_NUMS; i++) {
+>>> +                if (!(get_gcsr_flag(i) & (SW_GCSR | HW_GCSR)))
+>>> +                    continue;
+>>>          reg = KVM_IOC_CSRID(i);
+>>>          if (put_user(reg, uindices++))
+>>>              return -EFAULT;
+>>>      }
+>>>
+>>> Regards
+>>> Bibo Mao
+>>>>
+>>>> Or do you want to extract the list from the `kvm_init_gcsr_flag`
+>>>> function and refactor both functions to share one single big list
+>>>> (probably in the kvm_host.h header)?
+>>>>
+>>>> Because from what I could understand, your previous messages point to
+>>>> that we need to use this list to make out what CSR registers to return
+>>>> to the user space VMMs.
+>>>
+>>>>
+>>>>>
+>>>>> Regards
+>>>>> Bibo Mao
+>>>>>>
+>>>>>>> Regards
+>>>>>>> Bibo Mao
+>>>>>>>> +
+>>>>>>>> +    for (i = 0; i < KVM_MAX_CPUCFG_REGS; i++) {
+>>>>>>>> +        reg = KVM_IOC_CPUCFG(i);
+>>>>>>>> +        if (put_user(reg, uindices++))
+>>>>>>>> +            return -EFAULT;
+>>>>>>>> +    }
+>>>>>>>> +
+>>>>>>>> +    reg = KVM_REG_LOONGARCH_COUNTER;
+>>>>>>>> +    if (put_user(reg, uindices++))
+>>>>>>>> +        return -EFAULT;
+>>>>>>>> +
+>>>>>>>> +    if (!kvm_guest_has_lbt(&vcpu->arch))
+>>>>>>>> +        return 0;
+>>>>>>>> +
+>>>>>>>> +    for (i = 1; i <= kvm_loongarch_num_lbt_regs(); i++) {
+>>>>>>>> +        reg = (KVM_REG_LOONGARCH_LBT | KVM_REG_SIZE_U64 | i);
+>>>>>>>> +        if (put_user(reg, uindices++))
+>>>>>>>> +            return -EFAULT;
+>>>>>>>> +    }
+>>>>>>>> +
+>>>>>>>> +    return 0;
+>>>>>>>> +}
+>>>>>>>> +
+>>>>>>>>      long kvm_arch_vcpu_ioctl(struct file *filp,
+>>>>>>>>                   unsigned int ioctl, unsigned long arg)
+>>>>>>>>      {
+>>>>>>>> @@ -1251,6 +1302,24 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>>>>>>>>              r = kvm_loongarch_vcpu_set_attr(vcpu, &attr);
+>>>>>>>>              break;
+>>>>>>>>          }
+>>>>>>>> +    case KVM_GET_REG_LIST: {
+>>>>>>>> +        struct kvm_reg_list __user *user_list = argp;
+>>>>>>>> +        struct kvm_reg_list reg_list;
+>>>>>>>> +        unsigned n;
+>>>>>>>> +
+>>>>>>>> +        r = -EFAULT;
+>>>>>>>> +        if (copy_from_user(&reg_list, user_list,
+>>>>>>>> sizeof(reg_list)))
+>>>>>>>> +            break;
+>>>>>>>> +        n = reg_list.n;
+>>>>>>>> +        reg_list.n = kvm_loongarch_num_regs(vcpu);
+>>>>>>>> +        if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
+>>>>>>>> +            break;
+>>>>>>>> +        r = -E2BIG;
+>>>>>>>> +        if (n < reg_list.n)
+>>>>>>>> +            break;
+>>>>>>>> +        r = kvm_loongarch_copy_reg_indices(vcpu, user_list->reg);
+>>>>>>>> +        break;
+>>>>>>>> +    }
+>>>>>>>>          default:
+>>>>>>>>              r = -ENOIOCTLCMD;
+>>>>>>>>              break;
+>>>>>>>>
+>>>>>>>
+>>>>>> Thanks,
+>>>>>> Zixing
+>>>>>>
+>>>>>
+>>>> Thanks,
+>>>> Zixing
+>>>>
+>>>
+>> Thanks,
+>>
+>> Zixing
+>>
+>
+Thanks,
+
+Zixing
 
