@@ -1,108 +1,83 @@
-Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DB633B979
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 14:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FABD33D6C7;
+	Mon, 26 Jan 2026 14:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769436794; cv=none; b=OTTBo/Zlm+HeDiQDipGUQSfBnce0OjedzknspV77n2S7nydjkhiht/+29nQy4lC7u4EqYInTL5A0kWWHdSST0B1oixZKXZMebddVOG5a89gkvO69ZDq03tgWccFh0KTjOGWbArKp67+LiWHGPnOUfe3d0tUCmDN+/xoOH+Jl6Fs=
+	t=1769437499; cv=none; b=KN18VKL0M4q3Q5I+i70OEvzwzhqseIRHo9tI6o1/g2DF20LpnwRUErfKSSwwh3E7MYAwDNFC/jVMigSPZC77mgjc8IL/TNusI1AKhGthSpsq5vY7hw5BZlWSLPBcm1k1AGcKI2g3XGre3EcHnH9v1x1KcULl4+PZ09gBUA6ALrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769436794; c=relaxed/simple;
-	bh=wXseiqG0bKg0e46RCa4v4KA2nNGw4UAJFJlMfZjr7fc=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=bDDuniyjKa5bjKnCFj/WPSHP4QlM9hR0HpwHmv66B3dqmsLD3L106IPOJqDO9EifD+xZv6t95GSVL0uZpf8GHaTVXENDXowj+eBVYDMD4usXDf5iOoRgvv8iq7MwD8NX63fUlbcUZRdF+G+soZMQgdCD+W32Q/3/9xJOKY/kKO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=ovHPr3Ad; arc=none smtp.client-ip=209.85.215.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliasing.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
+	s=arc-20240116; t=1769437499; c=relaxed/simple;
+	bh=iMJtGXEHMxpFsCUhJf/lAtP9ObmCOjWKtuvptRv1qVY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=mkkCoZ6fHuPmIXsPv05bJcxO7bQLBkQIuqXWws7TLrH8FsOTavNTjYwOE2W9YMeqaGtRbiLqBTn6wSncEi1dTGNZqLIGmzSOI9Ol51Cr7PhQBdYC3HTpOkRgdpwMxMIp2lv+6GP9Ep5y7lK5NdLiLdoMi4wbO+nJCQhXWkCLMZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sfuDpDjo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="ovHPr3Ad"
-Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-c635559e1c3so1367255a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 06:13:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aliasing.net; s=google; t=1769436792; x=1770041592; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JpC0dL7b7IDa6tRe7O4c/NGlX2TCCH+wFh7STtc5K3A=;
-        b=ovHPr3Adw5aM+W32ygHY6DmE3HxNh83jb4hNsBs43g1kZS4LOJfBTydka/DSS2GlT5
-         8JV/QZD5h6tNT6g945dXJ3Hciv50LNGa4BIAasElcndJcDkHuXPNVoCBTzA0++mLJ4Y+
-         nKBYqIRpx9zz0+eBsSNheFHI074ExsFtQUmIKhzbwOCOnBDy4/8Vq64Ta99+yTfjaf+X
-         e6IRHCNvQUAZn2EghBAaOAN6b4mKZ+meBbAa8YBR6MEQT8TsHqhXfBipgvK9fKxRuPnL
-         2gTTG2wSOppP3jw83rlt1SVZAxTCFT3D1qfjRul3BPrGQnlDYWP17k1A//0QLqekVkpv
-         R1eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769436792; x=1770041592;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JpC0dL7b7IDa6tRe7O4c/NGlX2TCCH+wFh7STtc5K3A=;
-        b=fEMXZpb181Dl+0wsncxJMINbg+Rv9sXfd00TOrMR5EvyRJ0pn4nfnluXHgBtg4NUZA
-         Hsx+2PtoiCAsSvRZ/PubjEyqeLgHuRXJbipe8qG6kA7hCMS8itpW/jhDNSqCZUHWIrwB
-         xMVA9k0er+r9KQwltWZ7WVLLLSefCx2a1YPTY7YFSXBoeNJdcEZiDrdC+ZqRVF+1QOf0
-         w2wLPo9SAU8MPr5gUnr6WnhREZOIxxYjU6wdkniwKlVWbvI7u7+CTioSSGzLvF8zcvCR
-         shinA/A3fu0FPvy89qvGi8Ml9c/z7a7NgaQ/G3fFGzlZsHWWT8Nn1g+AynJ01TOa0MPl
-         o8og==
-X-Forwarded-Encrypted: i=1; AJvYcCWTD8pDjZZhmioQWqrMJj9YRjxGeEwAx38Gs0WKyFI69ypTtPVtMM8gxczWsmrKAy771pVPsswBu7RxKEwSxg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxF4qH4dKwUXLNLHvTzLodwEIobUREH0iLQ+dccmVodJvcKjBZM
-	6eKIRoigr384pHIqVu+Br6pgzY4vImKBRRXJvd/tUfkQf8DFQurTiDOxJZZqNfMazvZD
-X-Gm-Gg: AZuq6aL3oc9SFnolORU4BH1n0nI9oyf1WX5z2XEgDTPwpsbKb1dp3KyXez6iKd941Zl
-	gwiHBLloJpzEByNo8g7lgUzTuvw/a6aYh67av1ac9coQA7htV/C6T5qW4FCUypLfUaWUl4iFOoE
-	u8ALXmNSpgrOK9B5zfYPQhqcjmwLys3VvgwBbUDIVY9i8jk/GQFxkVyf2zZ6nGqUreD7oBIJ2rN
-	ebeAV2N5/zAu2FMwUtfuA9T75RaBwrkpZXxxMusLJXRtuA5gPYJ2GN6MUj+JcTMqqu/IySwtwX4
-	SGkacl0/iOjEzviFFg5FZ12f0fAwPXT+i9AqoHMzmWnGO3TE1VyzTk1to8Qla0el0uBt13kVhGh
-	GbYqQH3c8ewWgKV31jXR6vWZ0e0EWJ/RZKFmfcvgnZeCnfqPrASNP3E0KIz48WgX8rK3QciJ+fI
-	b9t5uXDe/520/LCFrehaBShLD5rlRSGkmX0bXNg169SRMrsd7Hn9dSYpyK
-X-Received: by 2002:a17:90b:3848:b0:352:dbcc:d74c with SMTP id 98e67ed59e1d1-353c463c9b1mr3869575a91.15.1769436792106;
-        Mon, 26 Jan 2026 06:13:12 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3536d88bc55sm8845087a91.4.2026.01.26.06.13.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 06:13:11 -0800 (PST)
-Date: Mon, 26 Jan 2026 23:13:05 +0900 (JST)
-Message-Id: <20260126.231305.17475057092261789.tomo@aliasing.net>
-To: gary@garyguo.net
-Cc: fujita.tomonori@gmail.com, boqun.feng@gmail.com, ojeda@kernel.org,
- peterz@infradead.org, will@kernel.org, aliceryhl@google.com,
- a.hindborg@kernel.org, bjorn3_gh@protonmail.com, dakr@kernel.org,
- lossin@kernel.org, mark.rutland@arm.com, tmgross@umich.edu,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] rust: add AtomicFlag::get_mut
-From: FUJITA Tomonori <tomo@aliasing.net>
-In-Reply-To: <DFYHRY9IB2ZP.2Z70E6XMBMEL3@garyguo.net>
-References: <20260126081013.3616346-1-fujita.tomonori@gmail.com>
-	<DFYHRY9IB2ZP.2Z70E6XMBMEL3@garyguo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sfuDpDjo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC49DC116C6;
+	Mon, 26 Jan 2026 14:24:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769437499;
+	bh=iMJtGXEHMxpFsCUhJf/lAtP9ObmCOjWKtuvptRv1qVY=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=sfuDpDjodWrw/As6ni9pABO+smO1edmN2rHtXlKUFIjX5cfrwp+a79H80Ffk8lfR7
+	 GS47jMS1tZlJMfqamufpYHyZqaZw/WRKYX/WQO6GGJmoMiSt+ADZss09KuqcMC+Lm5
+	 +f/CAIExvyKCGS7tzQDsNy1ARQFMw1U4BfJcxHet1ozyo38KjDr/M2N3IejKYInM0D
+	 PbWcByaHVn/Q/VtbRi5XtpQ89FudHKjs+yfT5Dxba0O9ZLWZNrSJiQtACVGwJqB7mK
+	 rp+TSfRonLo3wkx8X6I+pIW3DRtBasVH0pY4AopVWIrkLVTtvxzS4rVjGHxpd1sl3r
+	 GVX6Kn7yj1EPw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 Jan 2026 15:24:52 +0100
+Message-Id: <DFYL8QGPXY92.3NPF5MTDSUZNE@kernel.org>
+Subject: Re: [PATCH v3 0/6] rust: add `register!` macro
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Yury Norov" <yury.norov@gmail.com>, "John Hubbard" <jhubbard@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer"
+ <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Dirk Behme"
+ <dirk.behme@de.bosch.com>, "Steven Price" <steven.price@arm.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260126-register-v3-0-2328a59d7312@nvidia.com>
+ <CANiq72=AsoyN=+K8Tg3+zrK95ET0SyKaLFjzukxbMR1AbSk9vA@mail.gmail.com>
+In-Reply-To: <CANiq72=AsoyN=+K8Tg3+zrK95ET0SyKaLFjzukxbMR1AbSk9vA@mail.gmail.com>
 
-On Mon, 26 Jan 2026 11:41:54 +0000
-"Gary Guo" <gary@garyguo.net> wrote:
-
-> On Mon Jan 26, 2026 at 8:10 AM GMT, FUJITA Tomonori wrote:
->> This series adds AtomicFlag::get_mut to expose a bool API under exclusive
->> access, and switches the list atomic tracker to use AtomicFlag.
+On Mon Jan 26, 2026 at 2:56 PM CET, Miguel Ojeda wrote:
+> On Mon, Jan 26, 2026 at 2:29=E2=80=AFPM Alexandre Courbot <acourbot@nvidi=
+a.com> wrote:
 >>
->> v2:
->> - Add AtomicFlag::get_mut()
->> - Make AtomicTracker use get_mut()
->> v1: https://lore.kernel.org/rust-for-linux/20260119231757.3460885-1-fujita.tomonori@gmail.com/
->>
->> FUJITA Tomonori (2):
->>   rust: sync: atomic: Add AtomicFlag::get_mut
->>   rust: list: Use AtomicFlag in AtomicTracker
-> 
-> Hi Fujita,
-> 
-> I've not had the first patch in my inbox. It appears not to land in
-> lore.kernel.org either.
+>> This patchset is based on `driver-core-next`.
+>
+> I think in the end you wanted to pick this through driver-core in this
+> cycle, right?
 
-Thanks. Recently, sending from my Gmail address to vger.kernel.org
-hasn't been working as expected (e.g., long delays). If it still
-hasn't reached lore.kernel.org by tomorrow, I'll try sending it from a
-different address.
+Yes, if the series is ready until -rc8.
 
+> I have sent Acked-by's for that, I hope it helps.
+
+Thanks!
+
+>> Note that it also need `rust-fixes` to avoid an `unused_unsafe` warning.
+>
+> That sounds fine, i.e. -next has it and Linus will have it before the
+> merge window (unless you want to get rid of the warnings in your own
+> branch).
+
+Exactly, having this warning in the driver-core tree intermediately is fine=
+ with
+me.
+
+- Danilo
