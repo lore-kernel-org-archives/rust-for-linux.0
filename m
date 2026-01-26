@@ -1,229 +1,185 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C8F2BB17;
-	Mon, 26 Jan 2026 04:00:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769400027; cv=none; b=ZxgvJ2+G0DlqAZu67lCmcxTIoNa03F8ik2zgo4suTVrwwcy16Xr1rwTXeC9KkPgTpa8VQP1F7I2HLoZwx4BtoZO/sEgdHoapNDmrBm2mdzwPZZ8TwuESD0s+/G4Bew5PfrvJzW3dLeT/o3xZ1nNToKySk0RjVtHrQsBBbKMPiPI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769400027; c=relaxed/simple;
-	bh=r/hU7H+WlM01gB6KHVku+qtCFvFZp5WiIiuu9jeoop4=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=ZzG6b1f5JDTGxJvA+Ka438EzpwkJq0VZwBceVHv4FrS8kMcCs3dqXxPVOQ9tXvtTaLNmPjqAgtbwiO6hoAGIDP87fFZSyzgsEz6XgjU62eXvnuFG44HdxXPgNegmXb+ewJiCVwAtMjKJZ91W1lqNVBXdJ1/Fg1cfDyfOwWQ22tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8BxHMPU5nZpWJoMAA--.40831S3;
-	Mon, 26 Jan 2026 12:00:20 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCx+8HF5nZpb1kxAA--.31227S3;
-	Mon, 26 Jan 2026 12:00:07 +0800 (CST)
-Subject: Re: [PATCH 1/1] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
-To: liushuyu <liushuyu@aosc.io>, WANG Xuerui <kernel@xen0n.name>,
- Huacai Chen <chenhuacai@kernel.org>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- rust-for-linux@vger.kernel.org
-References: <20260125054322.1237687-1-liushuyu@aosc.io>
- <4b504274-4241-0e3e-3ed3-7804b72b7ee8@loongson.cn>
- <972430be-d2f3-49b6-851b-a057ddfcafec@aosc.io>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <29565e27-f153-c2c5-cbc3-e0457d45f094@loongson.cn>
-Date: Mon, 26 Jan 2026 11:57:31 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012060.outbound.protection.outlook.com [40.107.209.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577A2A92E;
+	Mon, 26 Jan 2026 04:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769400151; cv=fail; b=BFEzo3x1H3OiTntsFHHvvtY5yVCCmUkzDtCJ8zhLu1xBFZmGYqn2saYI3rsk8nrzWusohdIzb3tUBnxm3w6D7gUFIGTraNIJ9jqVDJrso/sTmBOOiFpAMvmo6A4K27CnvSJLxh1bti0+7qiF9YGsSF4tahV3/aMrGnZYak740Zk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769400151; c=relaxed/simple;
+	bh=rCchmY4zinc1hOaDs7LhzfZdBByuBNTTxNVEQ1M+HwU=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=mX87EFZOeScumWlSnExyn6birgLhYXIj7Ih61OzCMkOsEtYh7f+DeeWNgjd+rcqrrrJStziBC+V/tj7I7jIGL/CmCRIkZHwazCERtyG5p8CjnG4/3DF1hO4Qv+EhGOUjdRXYUmHSiVwI3L+gSgkWeooNlpJOTz6V6rgy4lIBdR8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZMFHVc8c; arc=fail smtp.client-ip=40.107.209.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZMFHVc8c"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zPwao0G34+wUpyeWXQ5bMy8QY9p/bF+gW/XsMJ9D9yFYsKyImDeTNIxFY4fCyP/TtkMizqj1JDOoDcpS+oYI/QZYoXHY91B+YQCi6QLf7yw5kbQSBYqPK0FEZa1aw0mH3s5q1lxHIPz3Wly+wNaiXzSstKg9qJxSU5T+L4VCspB3Cvegeftrqh+pgLQ3Pg3g872R6tY5wrCqnLCOo6xUY8aCOUim/tq0eIZLaFULmzIuxq9UpL1NrYX7NJCPZyykXnzWdgumqllISKDZm6IRwLTXcLKQjAsGKdo/o+2UyHjhYtoC15PfdChSYe+tvGLBXQBDJinxjhhxUAG1xida3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r0IOIS4Al1ZnWYj+xrCNFjfNI7Exj3KxE1hXPePH9wE=;
+ b=H5JaEwKXzUHjvX7GHQzOVZrMz+HdGT5EMp1tGyqyGQqDj7XERORyCTVLImu8c7GeZN43T1BQObw9IhISPLhV2PPyg3rHW5eHiRnQLShgPrkN/IduvuVtx3OW9dkrOhKqJjxR0mO8lIKC7+FV0IF/rRD/+BPqZZgTFgVoCNfxouwNHCCIWU14yPf0mG3MOmcvXev6LkBpZuqmGoPlwgdPH7+NF4RuJyFWKG2tJN1PJUcFtjE3f3Qj856uipLXBDcvXB8ZJTvpC4PfJc+p+veKs8d3d4zCT/kHi9S/DHUI2IWVI2TgkYDJrs+vbVfj1oGq602Q7xkStMmjWfJ5xeug/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r0IOIS4Al1ZnWYj+xrCNFjfNI7Exj3KxE1hXPePH9wE=;
+ b=ZMFHVc8cVKZ/uXQXd5FwfIPFqm06ulHreaodjgNgJgy8wlmVsXJZUuIow4xORVId2Ik3sGKnDrab7NvhW+vuW1EdpOvg3rsFbhIlxcH2pruC7gHL5F+cbo/3+jKmN1F9cnfwynLaCBMFIotJWhttlUAdWvgMoEgvfRka/kxqABKUzi3CHF4aoV+FFFW+Ug0AftRDwrBO31aCBfS8hYbUIJ5g41mVUVzJnjzGkOAuxlImRsPx0qkJ5xrp5TCjniJvHAcecygdW2d79qlE69X2QBr88VaOLEimK1A07W7Ve65DYOb/S3sPteC4QGOzXyPIHJfIdIAqKCZ0uTgSvlaWeQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by CH3PR12MB9314.namprd12.prod.outlook.com (2603:10b6:610:1c5::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Mon, 26 Jan
+ 2026 04:02:26 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%6]) with mapi id 15.20.9542.010; Mon, 26 Jan 2026
+ 04:02:26 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 Jan 2026 13:02:22 +0900
+Message-Id: <DFY803SR0JSR.3U1NXL7KHCGU1@nvidia.com>
+Cc: <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/4] gpu: nova-core: gsp: fix incorrect advancing of
+ write pointer
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Alistair Popple"
+ <apopple@nvidia.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260122-nova-core-cmdq1-v1-0-7f8fe4683f11@nvidia.com>
+ <20260122-nova-core-cmdq1-v1-1-7f8fe4683f11@nvidia.com>
+ <DFW6JA3YWVBT.165YBPOMPL0KI@garyguo.net>
+In-Reply-To: <DFW6JA3YWVBT.165YBPOMPL0KI@garyguo.net>
+X-ClientProxiedBy: TY4P301CA0093.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:37a::11) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <972430be-d2f3-49b6-851b-a057ddfcafec@aosc.io>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCx+8HF5nZpb1kxAA--.31227S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3GFW5ZryfGrWkCF1fAw1fuFX_yoW7trWkpr
-	ykAFW5Jry5Jrn3Jr1jgw15WFyUAr18J3ZrZrn3XF18ArsFyr12gr18WryqgF1UJ3y8JF40
-	vr1UXrnxZrs8J3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUA529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
-	6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVW8ZVWrXwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jCMKZUUU
-	UU=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|CH3PR12MB9314:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa941f6a-27e4-4f90-b3d1-08de5c8fb736
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|10070799003|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dHR1dG1wMjRLamsvNXVmMldEbGZwbHlzbzA3MUVoeXBBN1o5MVJaUWFiT2Np?=
+ =?utf-8?B?bU1hMng0OTZLOEh2RjVtcDZ3Q3BIekRaRlh3V1htWE1PVEd5U1g4THkvTWw4?=
+ =?utf-8?B?K0tZRlZ0ZkpEd1BVVit5Q3dCYTlxK2dkZ0FuTitpU2JPZS8vZGNHRE5pYjg4?=
+ =?utf-8?B?R1dudHZRaUIyb0R6Q3JzekZMSjFKTFQ2ajJNRjNlZUNQRDZTaGQ2MWVoT3Ri?=
+ =?utf-8?B?Vnh2VWUvUWFIdk9waTFTdXlMU0xMaUFWYXYrMVRHNXUrZnBLTDc0VlBqWHFU?=
+ =?utf-8?B?UFZoZWRSR0FUelgvWGhtVm56dFl1SS9ObS9nUDVOK2dmaTh0Qmpwb3o0ZUNp?=
+ =?utf-8?B?dWdSdUNid1l5R0FTdWhGRjR1M1FSeWRpNnRFN1VnU1FiWHMvL0VWWlBnRUJY?=
+ =?utf-8?B?QktpV0srZi92a044TDFqVjl6SlVRajR5SXBSTERvVkE5U2toTHFoS01xbFNI?=
+ =?utf-8?B?Ym9SRWpNSUlESjBXK3BKdU9SYXJhd3FIWUg3UU9aQ0JIbGtxVVRzd2FjSlVl?=
+ =?utf-8?B?cFZyamZwc1Q5T21HTm9RTjBhM2t4MTZHMmZmbnZhekV2cHFlZEp6Z2g3U0R4?=
+ =?utf-8?B?ejh5ZFl3cGJTYlErektMQUdzSnM2ZmxwR08xeXZhTGZhN1p0a3ZFNzVON0J4?=
+ =?utf-8?B?OFBaM25JVWhickg2R1VqaDE3WjNqV2NuNUZBa0tMN01wYUhQWW5yYzltTEQ4?=
+ =?utf-8?B?b1U5K1lWRjVqYTNXNEVQbmxFYjV0eEY0RTAzdkJFS3gyeVZyTDJ0MjdZSzVJ?=
+ =?utf-8?B?cGtma040V2JDaGx1U29rUXdtbjZLdUNzZElyTUdNTkIvTFZxbHB6NjNDR0VU?=
+ =?utf-8?B?Z1RCMUVvZEJ5N1BvNTdwVkRPallLcFV0N1F4Q1FNR1JxcXVUQTU3YlBjNi85?=
+ =?utf-8?B?TmZqeG95VzRObzgwS1d1V2FVWXJEVDdLeldDaTRXM2EzVFgzUVdhK0lNemZO?=
+ =?utf-8?B?anhaekFzZW5pRFhHdVMwazBPZ2UxTjErOUY4SEtYcWJQK0RXOUdGT2FBcjFL?=
+ =?utf-8?B?WUFKWFJ1RXhYVEcvYy9sWXBobDQ1KzNHWmZXWWluK215UlVFN1ZPZFJlMWgz?=
+ =?utf-8?B?d1FtV0xqb1pOMy93QjN1bGQ5dDVTWVBYcUQzNXkyUTRRT2J4VGF2ZGgxL1Fs?=
+ =?utf-8?B?VnFiR3lWTWh6aEpZd0xWSWE1djVUUTRRaXJ6UTlXTWlodjBqbkJWdzZDUUt3?=
+ =?utf-8?B?N3l4THZ4emk4U3ZtRnlaMHpvclNRbXlCampDVTlnODRSMytTRGlSR25sdlJz?=
+ =?utf-8?B?dlIwcWhPNmhUakxqT0RBUUt1SzBZdCtIS2RBNTJKcnNwc0UvSXRlWStqOFRm?=
+ =?utf-8?B?bmZNbHhsbnpIcXI5TnFsMW1qM3NzTHpieCtUZjBSd2h1eFJwc1FVVytGQWpy?=
+ =?utf-8?B?TzVudklxL3dOOXNYbFVoMVFMOThNMi9YSU9ueVp5eVdKY0RDNEc2NXVBWUI4?=
+ =?utf-8?B?S2hUeHZsYUh5S3BibjNNNFhaR2V2YlhjNTloWThoVGI3L2RmMUhLL2cwMlZQ?=
+ =?utf-8?B?end6L3N4STVOUm1EZTZPejc0M3pLallPT1VqVVo2eWxzaFJCOHdwV2l0RlU1?=
+ =?utf-8?B?WFpOM1lNZFRxOHIxcmFISHhLVmV1Q0Vrb2lFbUtKTmhIMW9yUHIrNU4yUXpI?=
+ =?utf-8?B?Zk8yY1ZsNVR3SVErTit0UHFYQ3lWL3N6QzNMMDk1NGtpUFdwSWFmbDJKNDNa?=
+ =?utf-8?B?VkpwZGFDK0NLcVVVQUhVVFBUSmplNVA3RStPRTlyakxlT3JBTmdqWVhCSU1i?=
+ =?utf-8?B?akRIUDhmak1BOUxYM3NHMGNtYXU3UWY0T1ZGNWh4OTJRWTRLMll4UkVoSG5S?=
+ =?utf-8?B?a3BVcnpOUkt4dUtxeXh0STdvOXZIZEdGY3dKWU9uMnpoaUQwZm1uRUY2YXM0?=
+ =?utf-8?B?bnR6MmtKT1RlaHc4TWdrL2dtSFhza0R3bmd4UE5uR0I1YmdTWWoyTFh2ejJB?=
+ =?utf-8?B?TU9pY0phcUpIZEE2M3JkZWlVclVQRnZZSTQwQUFycFRrWGhaUGFqTzNtNWJE?=
+ =?utf-8?B?ZGhYUm9oMmZ0YWRWYjJ0ZzUvLzlFUUR1VE5VQWd2K3pCSjZwcGZDMG4vNzdV?=
+ =?utf-8?B?N05UMEp5TXlCY2dTTndEVXdlSENEdnY2UHd4Y2dBN2xCV25QWjViMWFqLzJj?=
+ =?utf-8?Q?lqOg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dnlOQ1k0MDRBbTJ2elMyQUxKc2lhSXNTbml4NHVPMVgyeXZXNnA2WkN2SUNn?=
+ =?utf-8?B?a28ya29peUJ3a2JJdlp5a2x2c0pzRUxQNVdUS3M0RHFqdWZid291WWNsdTQ0?=
+ =?utf-8?B?bStiZ2RwbFpPVGNxS2ZXTUc3cjRabXlaY1dTVTR1NUhPNkhid0kzN3FXVWts?=
+ =?utf-8?B?WG9VTWV5R2xjSWhOeWVONnp3L3U5Ui8rVDYvMjloYXYzS1QveGJVM1pyYkVN?=
+ =?utf-8?B?cWthOHRmZjM1Yk0vdUdCTHRuNHN3TjB5b1Y0OTdjREhjNVNoL0J2bHQ3ZTdw?=
+ =?utf-8?B?UWkyUSswRkEyWHZBdGFVbExZNGgyN0EzSlRiNmhXNkU2cGFraEpMUVNlMVZW?=
+ =?utf-8?B?dkRwdUlibnlIdzZaSkFTRGNSbzV5eS9PQ2l2UUd0c0VQVlljaXF0alE1b1pJ?=
+ =?utf-8?B?VFFHb1hiaS9lbnE0VXpMYXBEWWlnWXd3S0t1TnRHQXk3NEppa1BGUlVxTTNC?=
+ =?utf-8?B?YVZhQkN0UlBaaWJ4LzJxcFdEM1pXK1J1dm9GWUNaNWhiQ0pXVUROTTE3Wllj?=
+ =?utf-8?B?aVNRd0RRYkZSS2ZRM1N4NXFteUVGS0ZvMGFnRHN4VXhnRldSbm9NRDV3VHdj?=
+ =?utf-8?B?bHlMQnBzQmlEaFNtZyt3Vnl4Q1MxeUUvTVBrSjZTZVlaekZpVkpXRmJTWlRY?=
+ =?utf-8?B?UHdKSUVyaXlCNWhyYmkxUFQ3Yjl0SU8vU2JJRG92aGptREhVRW40UEtoNXND?=
+ =?utf-8?B?aDFuNUlpbmhzaVFsUWk1VmhvV1ZFR2w4UmVHNzFKNHR5NGRJZmNlSmE4UVRu?=
+ =?utf-8?B?b1JHbFRXTUorTUZjakx4V2U4KzRVOFI4Zi80VnJrVE9jN2hXRmYyZFc1WGtr?=
+ =?utf-8?B?c0tBVk96a0hlSlFldjVBNTRpOTAvdnZoTzR0NU5ZQkQ2ZGpOeUdEdEYrMEJL?=
+ =?utf-8?B?SkN0Mk95QnJnYjVSenFTRGVEeUpPTHdaVFNYbFVnQVQvZmxUUzA4ZUxaa2l0?=
+ =?utf-8?B?a0VOSjJtOUlqbCsxejYvY3Q3QTdUYXd1TzdRSHpvU0FCWGx1a2NMbmdZTTI4?=
+ =?utf-8?B?RCtSOERlcjVBVHBQbldyNkd2a05UVWNrWlc2SldrMUYwbTJ4amo4dzc4bytQ?=
+ =?utf-8?B?UnkwZ3dKQk8yb1czN1QxMHVUcWRNNkhXRkFNb1ZsR2cxN2d0Q2VLS0phVWtL?=
+ =?utf-8?B?VVBCZnhwUERwVE1xTjFGQjBKZUMwdjYvQVZmamJFMlhXbDZLaXpDZTFDYjFq?=
+ =?utf-8?B?bmJkV2VBQlV6bXpJb3gvMXJLdjV2QlpLajJHVUlQeDhacW1CZGlYbW9GMFR3?=
+ =?utf-8?B?L2hsSFdVME9Dd1YzUWZxWUE1Y1NFVkQ1cG4zMWNPdjNYc05YYzI4bnZoZUN5?=
+ =?utf-8?B?L3luS0RkcW9UTURJRW03SnpNR0o4ZkxWeUNXSVNBL2dCK29LMEhxVUhlQjBl?=
+ =?utf-8?B?RWFOYi9KdXNEUWV4NFFqejRzVzNKckwwdGpETHozdC83T3JQdzBwL0xKVFB0?=
+ =?utf-8?B?NjJ6d1RHNVY0TTJZNFBzeGNBSld5Szdxdm01UkVyaTBiY01KeUE5b1ZHeU9E?=
+ =?utf-8?B?ZCtZYUZNTEpjKzVvN0s1TmNsV3BuMmxtcUU1ekphejl1UlVQcXBnRStQS2J6?=
+ =?utf-8?B?L2daVWdTWjFVNHZSNFVYb0FCbmdCMGxFVWhZUTVkRkpWbUsrZGJTQURuVWEx?=
+ =?utf-8?B?Y0VjTEpNdjBqeG1JcWdyRWxtWkNVc054ZzhDbnUrdmc5QkJnaVdONU5GUkda?=
+ =?utf-8?B?R012aUVlN1FXcnRBSHRJN1V1NDhvSWQyTk5HUUtpM095ZUpwanJqbjZBTTJ5?=
+ =?utf-8?B?OGgvUnkzaHMzejRmVU9ZS3JvUWZRM29UY3JGOVlOd1NrV1c4YWRzVVlkdnhu?=
+ =?utf-8?B?M2xzamN6N0tDMXc1SndCLzZZVTJDUlJUTzdSd3htOFo4Q2MrV0tkWU1RMlVq?=
+ =?utf-8?B?MmprMjhRa092TkVpcTBZSWxpYjJUVC9UWXZFRGFrc2lFaDZaTlJuMEhNanM3?=
+ =?utf-8?B?ck9NVUlSQlozYjZrRVFva2ltQ0gyT2NRTWlTTHpTNVF2WVN0cWdhWTB0cTg1?=
+ =?utf-8?B?amdCaHdZOGJLZjVyUWVBdVZWeWowem9INEw1QmpTbmFGcWZVQWVSeWxoMVF6?=
+ =?utf-8?B?UGVGSjh2a2pZNEtpb2g0ak1VQTFaUnFRLytUYlNhRk5DSzJNMnBWeUtac3Ju?=
+ =?utf-8?B?OGw2YTl4V3gyaEVOWUNZTFFEM3ZTVVZ5RnRZZ0ZRT2FMUk11anNSenFMSFpq?=
+ =?utf-8?B?MndBYlhET0w5am9iTTlSajNPKzVqc2xqQXdYSnd3Ync2SGU0dDN5RDgra1Bu?=
+ =?utf-8?B?VHJITmJEeFhMU3NLWkxGclozWE5PL1ZLMVlDc1ZFekEwQS96QlRkd3JjcnR5?=
+ =?utf-8?B?K3JTcnJBcXBNYytTWmlWYkwycEd0dmRHcG5zSWVhcTZMeERobUZjeEc2ZzZt?=
+ =?utf-8?Q?HP6DKlw3N1WvmQBgzvZn5C3O3NuCnG/bT8H/UK4HSBhPW?=
+X-MS-Exchange-AntiSpam-MessageData-1: 9TS4ErpOwCA+Kw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa941f6a-27e4-4f90-b3d1-08de5c8fb736
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 04:02:25.8720
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5SAAv40DpW4/z6CMvfxWYOMfHkrtHkqiNJNVzgFOtI/ASOBYIdNHq0fW5KnbL86BcjmiljCW9WybOidvlRFXoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9314
 
+On Sat Jan 24, 2026 at 3:28 AM JST, Gary Guo wrote:
+>> -        let wptr =3D self.cpu_write_ptr().wrapping_add(elem_count) & MS=
+GQ_NUM_PAGES;
+>> +        let wptr =3D self.cpu_write_ptr().wrapping_add(elem_count) % MS=
+GQ_NUM_PAGES;
+>
+> So the actual number of pages is indeed 0x3F, not 0x40? That's interestin=
+g...
 
-
-On 2026/1/26 上午11:38, liushuyu wrote:
-> Hi Bibo,
->>
->>
->> On 2026/1/25 下午1:43, Zixing Liu wrote:
->>> This ioctl can be used by userspace applications to determine which
->>> (special) registers are get/set-able.
->>>
->>> This can be very useful for cross-platform VMMs so that they do not have
->>> to hardcode register indices for each supported architectures.
->>>
->>> Signed-off-by: Zixing Liu <liushuyu@aosc.io>
->>> ---
->>>
->>> For example, this ioctl could be used by rust-vmm/rust-kvm or maybe
->>> VirtualBox-kvm in the future.
->>>
->>>    Documentation/virt/kvm/api.rst |  2 +-
->>>    arch/loongarch/kvm/vcpu.c      | 69 ++++++++++++++++++++++++++++++++++
->>>    2 files changed, 70 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/Documentation/virt/kvm/api.rst
->>> b/Documentation/virt/kvm/api.rst
->>> index 01a3abef8abb..f46dd8be282f 100644
->>> --- a/Documentation/virt/kvm/api.rst
->>> +++ b/Documentation/virt/kvm/api.rst
->>> @@ -3603,7 +3603,7 @@ VCPU matching underlying host.
->>>    ---------------------
->>>      :Capability: basic
->>> -:Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
->>> +:Architectures: arm64, loongarch, mips, riscv, x86 (if KVM_CAP_ONE_REG)
->>>    :Type: vcpu ioctl
->>>    :Parameters: struct kvm_reg_list (in/out)
->>>    :Returns: 0 on success; -1 on error
->>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
->>> index 656b954c1134..b884eb9c76aa 100644
->>> --- a/arch/loongarch/kvm/vcpu.c
->>> +++ b/arch/loongarch/kvm/vcpu.c
->>> @@ -1186,6 +1186,57 @@ static int kvm_loongarch_vcpu_set_attr(struct
->>> kvm_vcpu *vcpu,
->>>        return ret;
->>>    }
->>>    +static unsigned long kvm_loongarch_num_lbt_regs(void)
->>> +{
->>> +    /* +1 for the LBT_FTOP flag (inside arch.fpu) */
->>> +    return sizeof(struct loongarch_lbt) / sizeof(unsigned long) + 1;
->>> +}
->>> +
->>> +static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
->>> +{
->>> +    /* +1 for the KVM_REG_LOONGARCH_COUNTER register */
->>> +    unsigned long res = CSR_MAX_NUMS + KVM_MAX_CPUCFG_REGS + 1;
->>> +
->>> +    if (kvm_guest_has_lbt(&vcpu->arch))
->>> +        res += kvm_loongarch_num_lbt_regs();
->>> +
->>> +    return res;
->>> +}
->>> +
->>> +static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
->>> +                      u64 __user *uindices)
->>> +{
->>> +    u64 reg;
->>> +    unsigned int i;
->>> +
->>> +    for (i = 0; i < CSR_MAX_NUMS; i++) {
->>> +        reg = KVM_IOC_CSRID(i);
->>> +        if (put_user(reg, uindices++))
->>> +            return -EFAULT;
->>> +    }
->> CSR_MAX_NUMS is max number of accessible CSR registers, instead only
->> part of them is used by vCPU model. By my understanding, there will be
->> no much meaning if CSR_MAX_NUMS is returned. And I think it will be
->> better if real CSR register id and number is returned.
->>
-> Did you mean we should only return the CSR registers initialized in this
-> function
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/loongarch/kvm/main.c?id=63804fed149a6750ffd28610c5c1c98cce6bd377#n48
-> ?
-> 
-> That looks like a very large list and the values of the register IDs are
-> not fully continuous. If that is the case, how do we maintain the
-> get/set-able CSR register list?
-It will be better if CSR register list can be categorized, for example 
-with LoongArch CPU manual CSR register is split into 8 types from 
-chapter 7.4 -- 7.11
-
-At the beginning, there is big array with size CSR_MAX_NUMS without any 
-category, it can be fine-gained in late.
-
-Regards
-Bibo Mao
-> 
->> Regards
->> Bibo Mao
->>> +
->>> +    for (i = 0; i < KVM_MAX_CPUCFG_REGS; i++) {
->>> +        reg = KVM_IOC_CPUCFG(i);
->>> +        if (put_user(reg, uindices++))
->>> +            return -EFAULT;
->>> +    }
->>> +
->>> +    reg = KVM_REG_LOONGARCH_COUNTER;
->>> +    if (put_user(reg, uindices++))
->>> +        return -EFAULT;
->>> +
->>> +    if (!kvm_guest_has_lbt(&vcpu->arch))
->>> +        return 0;
->>> +
->>> +    for (i = 1; i <= kvm_loongarch_num_lbt_regs(); i++) {
->>> +        reg = (KVM_REG_LOONGARCH_LBT | KVM_REG_SIZE_U64 | i);
->>> +        if (put_user(reg, uindices++))
->>> +            return -EFAULT;
->>> +    }
->>> +
->>> +    return 0;
->>> +}
->>> +
->>>    long kvm_arch_vcpu_ioctl(struct file *filp,
->>>                 unsigned int ioctl, unsigned long arg)
->>>    {
->>> @@ -1251,6 +1302,24 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->>>            r = kvm_loongarch_vcpu_set_attr(vcpu, &attr);
->>>            break;
->>>        }
->>> +    case KVM_GET_REG_LIST: {
->>> +        struct kvm_reg_list __user *user_list = argp;
->>> +        struct kvm_reg_list reg_list;
->>> +        unsigned n;
->>> +
->>> +        r = -EFAULT;
->>> +        if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
->>> +            break;
->>> +        n = reg_list.n;
->>> +        reg_list.n = kvm_loongarch_num_regs(vcpu);
->>> +        if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
->>> +            break;
->>> +        r = -E2BIG;
->>> +        if (n < reg_list.n)
->>> +            break;
->>> +        r = kvm_loongarch_copy_reg_indices(vcpu, user_list->reg);
->>> +        break;
->>> +    }
->>>        default:
->>>            r = -ENOIOCTLCMD;
->>>            break;
->>>
->>
-> Thanks,
-> Zixing
-> 
+Yes, that's right. I thought it was weird as well, but the reason is
+that the first page stores the rx/tx pointers (see `Msgq`) and the
+remaining 63 are used for the actual ring buffer.
 
