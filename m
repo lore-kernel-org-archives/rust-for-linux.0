@@ -1,200 +1,138 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB2224113D;
-	Mon, 26 Jan 2026 02:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769393569; cv=none; b=QcU9thf9xkVFEeSC3Tmoxbks3cTK73xCiXZpD5mtB9unXCteMcjrVH9MXNRke2HUi8iKCuUiK2w0bHT6qhTqbeXSY5jqJ5S8qXfdrZA6B6Ad8dB9GSsZW7g6dn6aYG0RDu5cIh2OQ8kG2qAf8GBPIPAfJyeQS1HG+ULCntX9Wcs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769393569; c=relaxed/simple;
-	bh=BUM8C9hkjEGzOYKfxRu8J1XeZ8xVDt4sjCeOZKvu4Ww=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=CG8EMLxt3MgYA1EWJpkfZwQkKLxJneNAc0J/03SyPHlpkbAMI9qvemiAI/xZSBLfnsOujs1LJ4S/uUtmMVNcm6zSC57+iMjWrhk5ANlLcVp/FmV1vfCCKrKlC78v2FVMoFeDxpJccdEQHqiXzIX8wX3NSbvXLKOqZLRPWA2gFKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Axz8OQzXZpgJUMAA--.41370S3;
-	Mon, 26 Jan 2026 10:12:32 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCxfcKFzXZp7TQxAA--.30120S3;
-	Mon, 26 Jan 2026 10:12:23 +0800 (CST)
-Subject: Re: [PATCH 1/1] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
-To: Zixing Liu <liushuyu@aosc.io>, WANG Xuerui <kernel@xen0n.name>,
- Huacai Chen <chenhuacai@kernel.org>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- rust-for-linux@vger.kernel.org
-References: <20260125054322.1237687-1-liushuyu@aosc.io>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <4b504274-4241-0e3e-3ed3-7804b72b7ee8@loongson.cn>
-Date: Mon, 26 Jan 2026 10:09:47 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B4E145348
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 03:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769396974; cv=pass; b=sSh9bYZ6JpaKEG1lrYBHsorJWJ4kkTufXiqa1b7jLL5HnYBT62vTmky3MdajyuKTnEMD5EZBe9lccI8RzPVTXJPCsR3oLjG6A/EuxgahcxNeFndTf+DIqFb5IgCg7uMhglj4925bxdByg/uzn1QdkWdLEwK5fLThXIsVKVGuDfQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769396974; c=relaxed/simple;
+	bh=K6DDw0DnPj7mvHPYtwH3BVqEUAIu+jK9lefxwZGtH7Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iTtfdFin+PXSxackjOJtHCEemQHpuM5b2/E7Q/eUS9XDqWLFF87uvKn7RaRNZJkq1mwCU1VjL8eRtkG6m272FrLsu3n1YUeCCiuodJ6RmAUgFJ27OsM9LkKoYvSsd/sY7xAbhUzT6c+naQ+AUynGcoeLo3ozagCutPOw504GIgU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cdZbVd3k; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cdZbVd3k"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b703e04984so240773eec.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 19:09:33 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769396972; cv=none;
+        d=google.com; s=arc-20240605;
+        b=THyX0GyQUk1J7uX2JLu3uIR0E2EnPCJzL+Llz5Mu0QEuYJd2CoX18V1A8qvnvspYmJ
+         V9KmUqtlI5/INm2h0bg4Zj8kW7aSHmOxWi7ZtWYTIMBSxfvKLhDdsoVhv2y6PSPMEXhC
+         E+iJhTsitIHmGJD9JQUCV4DYzhoZ5JGLewO1eTHfQwQoHj7HZ/ws+no0kK476zy4F++R
+         Blb2Of4GLobDwydq4uTbaVF/FrCdrjweFhb3NB2Xx2klVU/A6oNdox5EmH5vlxR3ocU9
+         wiD1nmcNzVASVOMe4f8HUtbW2qVdVzvNi1etyepaM6pfjn+jjDDDqM/P4NvpjErHs6dz
+         qe0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=R1fUeALujy44mUEAZiAhmpCspOLrTsCLnopvPc5dHxI=;
+        fh=PIyQfGL9NBXWB/J2VDCuN5gIBDXTU3rxKesKJlPboQY=;
+        b=RO/etvWtqMbrWX2nqxQJrC9PYwDgg1dfZW/Pdpthkre8cO7jTfscGZz6qbwmYvI+tZ
+         lMIsSkPXsLO/842aLn9KqrjtwCySy0tpcclBhAoAAtIdLUrY2CNIbbf963KuI9/5xTaq
+         3VzlgnExGNAFJoeT3FTP3ykoi/AgnBTv/MNhEdsUJMjwgXHbmB1n/nNlg9fzbBW7uBQp
+         PTWMjXygCBPaiU54tmJVSGYr6rekwYp8Xg5IApXVbDqyNUr/G6epAPbGP4K7sRv9E3ip
+         mph7dZcoGQj5mwMos1kzHfFPUqSp096S277vSfVCP3Mj/QF+rbWoY2PE4jX/3UARHzoP
+         nTaw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769396972; x=1770001772; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R1fUeALujy44mUEAZiAhmpCspOLrTsCLnopvPc5dHxI=;
+        b=cdZbVd3kaWd0ioVrLpJg2AjRqA4iheKh6CQdowlBMgUxrPIb+JHiflLFfK7I3LbkVQ
+         kyuFCuZXMbDUmyHIsZErJzMJbgyBNyNEvxp1Dhj0v7ZlsbjzndLJfY/HSnV8Q4YSsl91
+         i0JsjgLnbjxsrSCgQabzmVaLZxeek5A0w0ddmtMVofTS30gDe/fxCJ6WfFETyX8PDMGu
+         Y7iQ6icOSD7kARNQogpjhL+RoV2ceo4c2Qt4iJOPtFZudYeKqpMt0fnQ2r4Np7DLq1dv
+         Kz2/6M9rlvEUA9sHLLf0xnNSUc879p8KCy/2klrwu4dwTmREYGlxGeBohyMP/3PoFTAA
+         a9kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769396972; x=1770001772;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=R1fUeALujy44mUEAZiAhmpCspOLrTsCLnopvPc5dHxI=;
+        b=hAazq1nF+XZRZyLB8aY56pwuribyGjXyZVzYL1dguWUCN2usz/LBR9ONpbJYn569jX
+         0YU8gBCChCc/qszm7Brb8xJeBbW6O6poUgN6N4NgQzW7w6r7DhLbCqh/Aa4FO0BMFfjq
+         hsPip5M3cLvr0UE227QeHSQA9cJ4xjfA9MX924G6waIuLksKM0OnkwVUTWjAqJhzoAwB
+         hn6g/rWNo5nXxTz2CQMErVnjmss0hgKR4JuJB9ksJg4w14WGerBomLSMBY2wfsCACU5w
+         1yRf0cpJ3c4KfXezetKxW5MzwPM3/xMzHI4ue7VGG5SokqT0N3Udqy/gfWfHTjtD+2U2
+         JpUw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8b6ltZozybrZZqL2AlWUqkQOh89++9OPIeGgrXEyD9rRtepn7M1RE9tvXS/sXb5sFZtCLRvkkj0lbd8a9eg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5KZu0BcYYT1WO+ZuxMpFAMWFDuqVVJW0+eMIM/zWuknHn4O29
+	Kvqu623HarhxomviidaRiR2rnkzzwlNPnVqXKdCrHoqr531ZcNDRmDwaxM+0ULvjfrB/9UU30O8
+	qMnIsGwPDuqI1sumNtRfxgvVfMaKEdiw=
+X-Gm-Gg: AZuq6aI3q8J+4nWRv6diZ6qmcnMsRG9ies9sIFA3m/PPr57DVJ1SxlvhGj+BKe+DorI
+	bYoPGhtjZPQbdLZhsZPFiv77YsuRYQqcUN8mK8RCYHdN2FBmjxGKQ721v+Ihtz89mW/n9PQyfB2
+	xnY9IXBw0tICmDzcFC093+bUntueVlrwoCMwo3f3G6j2uihbofHDP8EdJxaZqrMMXgFNe6iKecJ
+	c+kyRUqV3nkOLK1sBpHswsu60G4T++giPN0CWmJlhm/vUdApb9vzybDBhIkkKbX37X1yYSrStlx
+	a+g7PL96aYkQcQSYCUE17zFECoxpS1Djtg/DxwY5NoMzZmY8qc9lI7lsvGACJgPUX4a91CZlemy
+	HB4ffmGZ6KuP2
+X-Received: by 2002:a05:693c:2c0c:b0:2b7:3678:2d1a with SMTP id
+ 5a478bee46e88-2b7645253a2mr790352eec.6.1769396972164; Sun, 25 Jan 2026
+ 19:09:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260125054322.1237687-1-liushuyu@aosc.io>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxfcKFzXZp7TQxAA--.30120S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxXr4rurW3ArW7KF47ZryxJFc_yoWrGFyDpF
-	W3C3ZIqrWFyr1Ik343ZwnxuF98Xrs2gw47ZFy3Ga4xAr4Yyr4FvF40krZrXFWrJ348CF40
-	vF10gFyY9FWqv3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUA529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l
-	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUShiSDUUUU
+References: <20260123233432.22703-1-ojeda@kernel.org>
+In-Reply-To: <20260123233432.22703-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 26 Jan 2026 04:09:19 +0100
+X-Gm-Features: AZwV_QhyJlwqjnxEjcnWt33KyJTo5YK6Z1Wag5jcoj96I5FuwtWe1hRjBgDDTd8
+Message-ID: <CANiq72mQEeW4dN0_QvB1=F2cnOe7=56q9mG=y+g1CznASG32xA@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: atomic: Provide stub for `rusttest` 32-bit hosts
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>, 
+	linux-kernel@vger.kernel.org, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Jan 24, 2026 at 12:35=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
+>
+> For arm32, on a x86_64 builder, running the `rusttest` target yields:
+>
+>     error[E0080]: evaluation of constant value failed
+>       --> rust/kernel/static_assert.rs:37:23
+>        |
+>     37 |         const _: () =3D ::core::assert!($condition $(,$arg)?);
+>        |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the =
+evaluated program panicked at 'assertion failed: size_of::<isize>() =3D=3D =
+size_of::<isize_atomic_repr>()', rust/kernel/sync/atomic/predefine.rs:68:1
+>        |
+>       ::: rust/kernel/sync/atomic/predefine.rs:68:1
+>        |
+>     68 | static_assert!(size_of::<isize>() =3D=3D size_of::<isize_atomic_=
+repr>());
+>        | ----------------------------------------------------------------=
+---- in this macro invocation
+>        |
+>        =3D note: this error originates in the macro `::core::assert` whic=
+h comes from the expansion of the macro `static_assert` (in Nightly builds,=
+ run with -Z macro-backtrace for more info)
+>
+> The reason is that `rusttest` runs on the host, so for e.g. a x86_64
+> builder `isize` is 64 bits but it is not a `CONFIG_64BIT` build.
+>
+> Fix it by providing a stub for `rusttest` as usual.
+>
+> Fixes: 84c6d36bcaf9 ("rust: sync: atomic: Add Atomic<{usize,isize}>")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
+Applied to `rust-fixes`-- thanks everyone!
 
-On 2026/1/25 下午1:43, Zixing Liu wrote:
-> This ioctl can be used by userspace applications to determine which
-> (special) registers are get/set-able.
-> 
-> This can be very useful for cross-platform VMMs so that they do not have
-> to hardcode register indices for each supported architectures.
-> 
-> Signed-off-by: Zixing Liu <liushuyu@aosc.io>
-> ---
-> 
-> For example, this ioctl could be used by rust-vmm/rust-kvm or maybe
-> VirtualBox-kvm in the future.
-> 
->   Documentation/virt/kvm/api.rst |  2 +-
->   arch/loongarch/kvm/vcpu.c      | 69 ++++++++++++++++++++++++++++++++++
->   2 files changed, 70 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 01a3abef8abb..f46dd8be282f 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -3603,7 +3603,7 @@ VCPU matching underlying host.
->   ---------------------
->   
->   :Capability: basic
-> -:Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
-> +:Architectures: arm64, loongarch, mips, riscv, x86 (if KVM_CAP_ONE_REG)
->   :Type: vcpu ioctl
->   :Parameters: struct kvm_reg_list (in/out)
->   :Returns: 0 on success; -1 on error
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index 656b954c1134..b884eb9c76aa 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -1186,6 +1186,57 @@ static int kvm_loongarch_vcpu_set_attr(struct kvm_vcpu *vcpu,
->   	return ret;
->   }
->   
-> +static unsigned long kvm_loongarch_num_lbt_regs(void)
-> +{
-> +	/* +1 for the LBT_FTOP flag (inside arch.fpu) */
-> +	return sizeof(struct loongarch_lbt) / sizeof(unsigned long) + 1;
-> +}
-> +
-> +static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
-> +{
-> +	/* +1 for the KVM_REG_LOONGARCH_COUNTER register */
-> +	unsigned long res = CSR_MAX_NUMS + KVM_MAX_CPUCFG_REGS + 1;
-> +
-> +	if (kvm_guest_has_lbt(&vcpu->arch))
-> +		res += kvm_loongarch_num_lbt_regs();
-> +
-> +	return res;
-> +}
-> +
-> +static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
-> +					  u64 __user *uindices)
-> +{
-> +	u64 reg;
-> +	unsigned int i;
-> +
-> +	for (i = 0; i < CSR_MAX_NUMS; i++) {
-> +		reg = KVM_IOC_CSRID(i);
-> +		if (put_user(reg, uindices++))
-> +			return -EFAULT;
-> +	}
-CSR_MAX_NUMS is max number of accessible CSR registers, instead only 
-part of them is used by vCPU model. By my understanding, there will be 
-no much meaning if CSR_MAX_NUMS is returned. And I think it will be 
-better if real CSR register id and number is returned.
-
-Regards
-Bibo Mao
-> +
-> +	for (i = 0; i < KVM_MAX_CPUCFG_REGS; i++) {
-> +		reg = KVM_IOC_CPUCFG(i);
-> +		if (put_user(reg, uindices++))
-> +			return -EFAULT;
-> +	}
-> +
-> +	reg = KVM_REG_LOONGARCH_COUNTER;
-> +	if (put_user(reg, uindices++))
-> +		return -EFAULT;
-> +
-> +	if (!kvm_guest_has_lbt(&vcpu->arch))
-> +		return 0;
-> +
-> +	for (i = 1; i <= kvm_loongarch_num_lbt_regs(); i++) {
-> +		reg = (KVM_REG_LOONGARCH_LBT | KVM_REG_SIZE_U64 | i);
-> +		if (put_user(reg, uindices++))
-> +			return -EFAULT;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->   long kvm_arch_vcpu_ioctl(struct file *filp,
->   			 unsigned int ioctl, unsigned long arg)
->   {
-> @@ -1251,6 +1302,24 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->   		r = kvm_loongarch_vcpu_set_attr(vcpu, &attr);
->   		break;
->   	}
-> +	case KVM_GET_REG_LIST: {
-> +		struct kvm_reg_list __user *user_list = argp;
-> +		struct kvm_reg_list reg_list;
-> +		unsigned n;
-> +
-> +		r = -EFAULT;
-> +		if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
-> +			break;
-> +		n = reg_list.n;
-> +		reg_list.n = kvm_loongarch_num_regs(vcpu);
-> +		if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
-> +			break;
-> +		r = -E2BIG;
-> +		if (n < reg_list.n)
-> +			break;
-> +		r = kvm_loongarch_copy_reg_indices(vcpu, user_list->reg);
-> +		break;
-> +	}
->   	default:
->   		r = -ENOIOCTLCMD;
->   		break;
-> 
-
+Cheers,
+Miguel
