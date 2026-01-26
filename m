@@ -1,178 +1,130 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013044.outbound.protection.outlook.com [40.107.162.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C149F2727FC
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 07:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D97A2C08DC
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 07:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769411910; cv=fail; b=ubPCW5aBNbll1gGB/IjqFg9siJ3y+gjMHpgiZsVg53hamy+S1albMvI6TAIW0ipRoCHDLXABDtWg4IiqW9EKVO7JYKnjs7Wbb8yLMZUXuefXVcUTExtU6HGj/DFpdR0MxEPwuexKdV9rAOJHr/wydkOm3NP/u8x/LH/QdpJhSqE=
+	t=1769412900; cv=pass; b=FNMAteQpQ0OqVoSWcOhdIyDVcRltjlBbPOAe8eqDhiobz2MjYFZAjsTtwB3QBjSj7XpxYsm7FNHbzTNmLSGTNOxcwL6EMddiYFRSClp02KCq39mdzKiOUl6HL81TDfyE87oxB6p3l3ItupPUlBQ2llQ5Az1wsaq2FSjMc0MacbA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769411910; c=relaxed/simple;
-	bh=MXBZDNbOnxFburLgszbMdNR/Z0whhzuC27Z2Pz8ZLWc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AlgHnAo4t3Cu+qpjW3QENLR4cIXa+aPz/Q5sEazt2dEex7WyLV26dG3d0IGz/YhF3zE/KM/ytwFnk8T7iXKD4laCzgLnxHLuGu6SD4NciKOcOYU/NJzQjF5d9Cnwm1MAniRQJciSlUDbvcxvq4DLY98eRdoFWDm/HmgMmHbUUHg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=AWbw7n3j; arc=fail smtp.client-ip=40.107.162.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	s=arc-20240116; t=1769412900; c=relaxed/simple;
+	bh=THFcxiM29iAxgbEd4iDhi2mIwhQRXAH4YxKo/5qMUGQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tgNau8g0ywBXE4QX8XZiye5FSKEJnSQuQgol033TGxVXFIagPk2E06f1WUXuzkkr3yNg8XiYs+X7CTT0LTQ1NIiSR0YoqzWZdWrSHzNRH8YIvIgNyxglkXdgunPjcuOLoQ3vNmUxPNOAFoGoJVb1GVHhm1sk4KB7oaym0w9GnkU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qpxJ20vg; arc=pass smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="AWbw7n3j"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NLQO963DnjycuXBv+ewXehGcWuVjDJ6Dbqd+SVhEe+Jl7BO9iS54QnouZw/ZVZXZzc6eOxngOUL1uXcKb9emix5OEPwcgfRO/SHvNTqY17Kk68mZ98gYNMFh02lME9iHINRQnG2pRNHodvkJpUD/f9F1u5jdn/rkxtcNswuX0h7UYgA55YD0KyPnb3wZ1HoOrwWtHkM0bEvCiHf0BD1ZBydYFhRKmZi9gew55jlgUgjB2SROpeTyX9FOq4rcvSAInFc4Czz0rutfpzPrUhGUYBRiGvWnLXZG9BIpTmuTto67J/emHFxjB1ljz0vZ+1T7BaUHS0SuxJa6WIcGhOGAdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YC+XSd1ncaTmSaIsn9IrOIYkhjxjipASep/IbkYl/k4=;
- b=WHuW1wGq0sRJ4vGQIkync8J65DYhdSEmDjwFT3dOB5XtF6KZddHmVazmqpG8SpsJ22mAVgKcj2DeieqfbI44hwLWF8wcPg2wqEOfbcrXbLyNS6U3wL2Wb0iUmErebhn8B5Dtje9aLNTNEosmY9cEkjs0To7Min5+eYBzFNlfSF6wVXPbHJf6bauZKULvwuYlnDRbZ6z+pcfo/F5phTnFv8oqpA81KMRJcRpPCROa5GthVwT2O8Mh4x/KSnzvlYfzI5HZhp+SxCpsz4ZqS+wA2vMZQV26W4xBO3JXmyZmrUe7Dbus6Gp4NbsttX6igGWCdGNVU5w+CUfc0pHGaGxCdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YC+XSd1ncaTmSaIsn9IrOIYkhjxjipASep/IbkYl/k4=;
- b=AWbw7n3jDGvsk+wIxd6d8IL/nUYlj3u8JAFf788Z1k6WE+K0d/6q3Y6E8QJjcuYe5YJc4wBVppaFd8n3iL6QGSMXYt2nl8rye2vk5RIUepI831waecqDms3IJKCh/xKZd8GlQWfDqL9JkqNB2Bzjh9NZfxM2DY6GznX0L+DdLQhwBipHbQwVSpKW4ujp0ctqCISgeVYEOJKtVrAf6LN7AhLlS69q0N8d8I7JzpwHbcnsoBFsF1MyLedLNgSAyrWU70btZIWZfmsmTsuOdx5NdhC3Wz2Y8U23ZJYwxnDBqRPPHp+z/v7iVexhiuAelnGCWehNR6Ys7pArO5OGevW/cw==
-Received: from AM0PR02CA0195.eurprd02.prod.outlook.com (2603:10a6:20b:28e::32)
- by DB9PR10MB5787.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:37e::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.14; Mon, 26 Jan
- 2026 07:18:23 +0000
-Received: from AM3PEPF0000A78F.eurprd04.prod.outlook.com
- (2603:10a6:20b:28e:cafe::ca) by AM0PR02CA0195.outlook.office365.com
- (2603:10a6:20b:28e::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.15 via Frontend Transport; Mon,
- 26 Jan 2026 07:18:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.205) by
- AM3PEPF0000A78F.mail.protection.outlook.com (10.167.16.118) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Mon, 26 Jan 2026 07:18:23 +0000
-Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by eop.bosch-org.com
- (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 26 Jan
- 2026 08:18:11 +0100
-Received: from HI7-C-0001H.de.bosch.com (10.34.220.0) by smtp.app.bosch.com
- (10.124.11.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 26 Jan
- 2026 08:18:10 +0100
-From: Dirk Behme <dirk.behme@de.bosch.com>
-To: <rust-for-linux@vger.kernel.org>, <beata.michalska@arm.com>,
-	<gary@garyguo.net>, <dakr@kernel.org>
-CC: <dirk.behme@de.bosch.com>, <ojeda@kernel.org>, <boqun.feng@gmail.com>,
-	<a.hindborg@kernel.org>, <aliceryhl@google.com>
-Subject: [PATCH] rust: dma: add missing __rust_helper annotations
-Date: Mon, 26 Jan 2026 08:17:38 +0100
-Message-ID: <20260126071738.1670967-1-dirk.behme@de.bosch.com>
-X-Mailer: git-send-email 2.48.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qpxJ20vg"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4801bbbdb4aso34691445e9.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jan 2026 23:34:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769412896; cv=none;
+        d=google.com; s=arc-20240605;
+        b=e2JCgM9DfwBpANFL08G1vVCCQkMH7lHlv+Ovf34zsILmES7SdzzrajBQBU2Cp3v4lS
+         a9Hzn2J7RQlzKhumpV34YA/N2pY2y5QsfAWsAE7dw/9RXFQi06yfX4v4ngvXIXFJ2d0z
+         9DLGRJyoHWVH8AL8Un//c6HuAEobiNpOzpomCanT4lUSz/a8CWJnrSqE/5xz6RGKNPh7
+         mKTAA3e9sjSGtrDb0WmKJiqF2FiPgae+yAg2VoFRt2jBQXKxG+i2Yqv1u7CCXrFOwwYm
+         /FWA0Ti6O2EfY/aOyWXwqNQKlJ1eDo2e5tAJz9HTDQTAqXPtL7z/4PSlLHub9LZlGcYf
+         U9og==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TW8SDHm4wY+72pZI5lkyEknmq1cQQbn7gnfEPgF9Cow=;
+        fh=KeD0we5ATQETdj1KZqlm2ffoLgMxEKqXr2/ZLVAKCqk=;
+        b=YdbsXsRLnWRFA4Qq2yQlUTfeKkc8dN2sQanrOzdRAgTqCvd7uErO8RV1PJo+56r6iC
+         /TVXI8zop3/QbLgqSBGuKUvFxdFpCtlouklX1biuFlYL3Qz0QUNXZz0oFWHGxuQrd1de
+         A0H4a43Lfuffpk621aj3HO9+1/Gg7iIQBoDc0mf2/tEX3zRjT1iOPLzIX7GBoqBhZeqA
+         MJNkyeOBgyEbuFE8zwIisKSgZ7RQfTQZjxa1UTcX/u+uK9VOPSyhA5zfu3GuRYfOufD1
+         cXlB5+Et5kQUH54aXRNEIjgOO8Xc/LVnRYzb0rUT4SCkd+qJCBe+J6s63ClXXxCv7jfB
+         cviw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769412896; x=1770017696; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TW8SDHm4wY+72pZI5lkyEknmq1cQQbn7gnfEPgF9Cow=;
+        b=qpxJ20vgtN50a+Br1oIWFXebWiWG0+esShJwAhPhcY3Klm3GKpq+sbcPifr5F8aMYe
+         2IEN6F6Bb4q+dO8BWW/fZZeDrlNbtbjDvKDNfiS28uO9yxZ/qXA5vrux0xAQjW7U9jGn
+         XgS9/EGqqAQO+5I2KSradkuLe8ZcwFTTRy+1C7/Ar+HSKv4R24axgAnEQ7zeI5XM9yR8
+         Z19rhs8kOIIkmsGwp1i6XceUn9FwIck1xSrlW8FisYSG1NnNCvc3nzbs9Eo/fm87qOq6
+         GHk0jbA+eH3VCHw2aRL2VqnGJOlfiH/6tZVPMYLlYRP89e+MWG8rkTNIwGaqVI/yZ3Wz
+         UadQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769412896; x=1770017696;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TW8SDHm4wY+72pZI5lkyEknmq1cQQbn7gnfEPgF9Cow=;
+        b=LlANtXodb2xli8fNv1ljOdppISkb1uiefs+eQ4KC+5S03JE3qgDhCJ5S7oVnVbIzTk
+         qzSfv1jYQQ1onJ0cpQpu6Qvs8PBWJiYHwNZ9RxKRIbd83Hr5m2Cm6MqPgRnNpovXAfaC
+         +nOF5WM033KS4bUlxEWl94KV72cAzYsWubKTAk436AbwkC7F3MKutC+uC4gvjYulMwXI
+         D6/8QR2jZMJFmWlUeBB5oAh6O9uahsOQopdfBW47KlKlGhG60hmTxnf5YkGI8dV34Fyn
+         2UboOFyyulU0aZg1gBQTQEEfCRPHOUvzonRw3xEJaZeU4VUUB0V1FnqPaC9abN/kiIMJ
+         FK7A==
+X-Forwarded-Encrypted: i=1; AJvYcCUmjBvn8dwBuDjIp47lxA1kOjzDAwnYHWtH+SI+8uRY2y9XciwYkY+QdDh6NCHTAHwQu25GEm4Cjws1stk6og==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDdnAGeeeUdhViyknRAPp5VHYpj8WLUoSQi/ItqsmMJcSNR6ap
+	iAMJfpxfqIhWw3i/jYE0Um9VT49MoWNpjzNTfeOoWh3Q/zSFXe1grX97lM587vcaIgAThTOOEFq
+	jH28+rkI7Pf/+cB2ROmZk3Yt70rDvzf1IUVuthH3z
+X-Gm-Gg: AZuq6aLn5s7Ep2cZYT1qT9UMP6g7UyYYwRCFwCE8U9bOODFnIhzaXvCVlfgQLm1Bv/c
+	7E+41nxlfMizgI/M6w+pE4uGJvAp4EIegrDBbkj3oyXT3dZemWyvoBA5M0otqqFIrYAOyr87oeo
+	FcnFwBhSmSXSBd6oBMYE0G/9ovALUc3zaqP+fGuk/DAXmP19nS3/gS6tGlR8oUPmgPHlpZgBGeZ
+	TepxT9WtDnZwUDWJG+mqV+WpykIYrSYO4mN9XjEMctOxUqbqTx3pDQG8FmKuFuiYweRXAbMvZi/
+	VLJZptJ7La+S/oVvtyGEmCjUrA==
+X-Received: by 2002:a05:6000:1acd:b0:430:f2ee:b21f with SMTP id
+ ffacd0b85a97d-435c9b29d89mr6070418f8f.22.1769412896418; Sun, 25 Jan 2026
+ 23:34:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM3PEPF0000A78F:EE_|DB9PR10MB5787:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe3e3f76-fd34-4872-965c-08de5cab175a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+NvUodZB7qESsrWteWdt3uVN/5KFcQLzuf1g0VCyib+rgCHa2lIucl7lJ8+q?=
- =?us-ascii?Q?ccF1jgcdqd3qiAK0nSUS2G+wlXKFWVAk2nFOMLhjVx0e4T0cK/V7nRqjXk98?=
- =?us-ascii?Q?NAE/QlYXm1bTTqNSZIQgxdKJaBsK+7I4Uq97QIdjMDZMv3QuM4n3CaCiFMgv?=
- =?us-ascii?Q?9PFs5TVuOqZVUH8BuPVSoJRa6glpVT+zSjXroU78waTzxT48B//xdoTb07vO?=
- =?us-ascii?Q?5Av+oGw1J6MAwxFuSOZPRKpHLM6rWZ7J2mxPdvwofVfbTBd081qSGo17Q6H/?=
- =?us-ascii?Q?yOpIBq5mLcBVX5JREy9BV6xAMY7FFrMSSxYbZF0Jh5Jx85d5IVqKL0gJDsu3?=
- =?us-ascii?Q?m/t/lsx7dg/38zQ/38yPUk2+Ol+U8uY1JH7ZHX3LIPcanS9uHUmnT/P9cWVz?=
- =?us-ascii?Q?dXgslxfZucJ+Qb/Jpiko2RGrz6AA9tjse8kns2GX+jXHoq9bi/6RnaVEjddJ?=
- =?us-ascii?Q?NUc/4/9Sgu9kUjUP+FHXHXnBK8EBfsnVoSVM9BzqCDAR0e7jiPWQu8QRVMxa?=
- =?us-ascii?Q?Y6gCjIcJcWYvapxpqOJpHoQ8sItnkTZ8x3kYL8O25OBW7CKSkVUjolRptkyF?=
- =?us-ascii?Q?fK7iZPYRsieYxvGofQwc/VxnCHuFbDwkavGFTUAfTBtaFhy7/wz/epiC44Xd?=
- =?us-ascii?Q?Faayx2jMgwOnkqjFUOKJItbN88jjr3ak2Xw/aXOx3+blztKj7p1tNyymvTLC?=
- =?us-ascii?Q?QHaTqrU9oSfUrMJr3zeBpOGIdpwQHTj93ZfJZhRtExgUwEOkMG7ROHSgZhs2?=
- =?us-ascii?Q?61s5GKbMxXQlK8JA7gIV8wksDfAGeqqH692qC2YlEft6nEDq4imAAlUyCPEC?=
- =?us-ascii?Q?bJr0aAGQDp7ADiwYSroOfth8ABwSoqWFVivPsZqalPcasPd61XCXDddZQ3Rj?=
- =?us-ascii?Q?TEtomBtnfK23HGaXtSh1LrqJS5YPR+MLWGmupxWcxdq4lmL8e7i1YqwsZETS?=
- =?us-ascii?Q?g9Zxwh+XXd+OxnliiLKWw5mYsLZI18goFhmlb9nlLgAop40o93bw8effGeYc?=
- =?us-ascii?Q?ZoVz2P+n6L4G/ERnKznij3XYLQA16gQGQzLl0s/WbAVoc7IOhBDAqh+wR60r?=
- =?us-ascii?Q?JTJsvMT355BByOTWVblVb7XdTj///w2LuZHboklWSoMWPxXvW1Ye/Oo2xiRi?=
- =?us-ascii?Q?J3GSbE+KfMhW5nLgeRtW5MqcLwhblomC2NxzRSl/0EWC69kOJt3s2Pu4KMRt?=
- =?us-ascii?Q?lRNEysdx4hKT66DXe4BM8yDUa7Be5yxrk8OSZjRT/sZXgs/4xi9E4KDl+mMI?=
- =?us-ascii?Q?EvqO4CaLE+30Hm1Fu7JX7wjT2VWHYtuKrvjQENezlBHMDLduQ+8WfdeSW6f9?=
- =?us-ascii?Q?mcyh/pcMlgSyeiZc4dF72V9gvnstkMHKx3NCydN/mTtw99lqvmUvBjynuWv9?=
- =?us-ascii?Q?11ZE1vaV6BtLCb7N9ZllrJpf7sbLNrvVEJLyrD0ZtExq94g/F+rk1DDUITL/?=
- =?us-ascii?Q?0pE/2SJlltDB//3ZB47a+qd+DQTuA8swOs1ZFKqJffOxC00+9qSFaQcLyDYX?=
- =?us-ascii?Q?/oDn1O4zzCZMHQiOjh6yVmtF/6EY4QdFvQerKT8TwIZxY/NHsLePsNKOQ/64?=
- =?us-ascii?Q?EyPVUeySSpvDed50fkgkYaVsGRmRzKjFOMypRyYdQDIiXYQrWVmM5Bc+iXJI?=
- =?us-ascii?Q?L/Oi4muZJ4xvx1FdKPfiwMMKTByu1gZ4WwwYD1Gj9Vcta8t2ZKvP15TbnKl5?=
- =?us-ascii?Q?CkvY7A=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 07:18:23.3416
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe3e3f76-fd34-4872-965c-08de5cab175a
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A78F.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR10MB5787
+References: <20260124160948.67508-1-ojeda@kernel.org> <CANiq72=3+==Px50E+EA0fhe3pxVAGzRRt+6d+qze3cdeEBjyoA@mail.gmail.com>
+In-Reply-To: <CANiq72=3+==Px50E+EA0fhe3pxVAGzRRt+6d+qze3cdeEBjyoA@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 26 Jan 2026 08:34:43 +0100
+X-Gm-Features: AZwV_Qj9ldnC_uCDqYFEUEUQ3iDRZ5FCfEYSggcx9Mg02uPkev3eBUfDJsHByaM
+Message-ID: <CAH5fLgiRvAvoJkpLmkSZwo82=VwQZUjZxCROc_0LZ0YkzZhj5w@mail.gmail.com>
+Subject: Re: [PATCH] drm/tyr: depend on `COMMON_CLK` to fix build error
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	dri-devel@lists.freedesktop.org, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The commit d8932355f8c5 ("rust: dma: add helpers for architectures
-without CONFIG_HAS_DMA") missed adding the __rust_helper annotations.
-Add them.
+On Mon, Jan 26, 2026 at 4:10=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Sat, Jan 24, 2026 at 5:13=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> w=
+rote:
+> >
+> > Tyr needs `CONFIG_COMMON_CLK` to build:
+> >
+> >     error[E0432]: unresolved import `kernel::clk::Clk`
+> >      --> drivers/gpu/drm/tyr/driver.rs:3:5
+> >       |
+> >     3 | use kernel::clk::Clk;
+> >       |     ^^^^^^^^^^^^^^^^ no `Clk` in `clk`
+> >
+> >     error[E0432]: unresolved import `kernel::clk::OptionalClk`
+> >      --> drivers/gpu/drm/tyr/driver.rs:4:5
+> >       |
+> >     4 | use kernel::clk::OptionalClk;
+> >       |     ^^^^^^^^^^^^^^^^^^^^^^^^ no `OptionalClk` in `clk`
+> >
+> > Thus add the dependency to fix it.
+> >
+> > Fixes: cf4fd52e3236 ("rust: drm: Introduce the Tyr driver for Arm Mali =
+GPUs")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> Applied to `rust-fixes` -- thanks!
 
-Fixes: d8932355f8c5 ("rust: dma: add helpers for architectures without CONFIG_HAS_DMA")
-Closes: https://lore.kernel.org/rust-for-linux/DFW4F5OSDO7A.TBUOX6RCN8G7@garyguo.net/
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
----
-Note: This is against linux-next.git next-20260123
-
- rust/helpers/dma.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/rust/helpers/dma.c b/rust/helpers/dma.c
-index e7defeecda71b..6514ce1647950 100644
---- a/rust/helpers/dma.c
-+++ b/rust/helpers/dma.c
-@@ -23,23 +23,23 @@ __rust_helper int rust_helper_dma_set_mask_and_coherent(struct device *dev,
- 	return dma_set_mask_and_coherent(dev, mask);
- }
- 
--int rust_helper_dma_set_mask(struct device *dev, u64 mask)
-+__rust_helper int rust_helper_dma_set_mask(struct device *dev, u64 mask)
- {
- 	return dma_set_mask(dev, mask);
- }
- 
--int rust_helper_dma_set_coherent_mask(struct device *dev, u64 mask)
-+__rust_helper int rust_helper_dma_set_coherent_mask(struct device *dev, u64 mask)
- {
- 	return dma_set_coherent_mask(dev, mask);
- }
- 
--int rust_helper_dma_map_sgtable(struct device *dev, struct sg_table *sgt,
-+__rust_helper int rust_helper_dma_map_sgtable(struct device *dev, struct sg_table *sgt,
- 				enum dma_data_direction dir, unsigned long attrs)
- {
- 	return dma_map_sgtable(dev, sgt, dir, attrs);
- }
- 
--size_t rust_helper_dma_max_mapping_size(struct device *dev)
-+__rust_helper size_t rust_helper_dma_max_mapping_size(struct device *dev)
- {
- 	return dma_max_mapping_size(dev);
- }
--- 
-2.48.0
-
+Thanks!
