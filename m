@@ -1,162 +1,212 @@
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022128.outbound.protection.outlook.com [52.101.101.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC2D3382FB
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 13:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873037494;
+	Mon, 26 Jan 2026 13:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.128
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769433193; cv=pass; b=mrlNne3mAPIW6stoodV6t2NC2p34yrrxaceZI3t+nuF13TTeIxwrjPFY9r3+a05kz/4roRJuDxybPuKJS99d4ZqXhQSeNBLahgR4IrJCskyPyD3DwAf8k7n4whMtZnEBk9ERlcge6mnV6fRXzXQiywnbPUJ15ahyg9ZWchtmVDw=
+	t=1769433357; cv=fail; b=kvnCFNE/xdG5jCufmSnVrZ2ZABd1/CVG/mAsHvGaiBZK5TYCsAprACFgZZ0Dym+2GEXuEa9haDzQTLByBtOTEAvGeVPcVeU70np8ksHUbqNTSwIX4u3AiX4J+YXBHlD17OlGNfTzX+dFCMeK76P8Sd+OZM3ScA9/suyGpqFlFgw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769433193; c=relaxed/simple;
-	bh=EJK2lCVsN11osTyh2tALoONR03SwlouN4UIKYzzTW2k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lTYGpzrumL92QTLdshFv6LSvN0E2S6UrYTHNWAYi7E71A4E22mAuoZkoXfTsOsFrWmG006M/+QWQPh1ak8bCqL4d7OuEyP/R6yx2m4mooWhqnV0iBlNyU2kHPA04q/PMDy6BsP81drUeJcIFcOAPdwe4pWljIzFQ1/9GIv3VCug=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bFaGeBdj; arc=pass smtp.client-ip=209.85.222.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769433357; c=relaxed/simple;
+	bh=9x72rftbb8KDCAPlWmmBpnswXuHZcCuGOZLjOV3P4po=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=r/7c+BJJLxytzTH78y5cq/ecDFACmcRWvBTAkAl0N/KijVPeV9lBTg6fP7uAqRO0KjzxYzretMNgxuS1KUqkMOh3GY0fCz0o+scPSxWmAOKmwiu8bAFuEs7qmNtsoJJFmMS9amght2ZwmAnsPHVkQFW7mTzxsE5pRiPi2ra4JNs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=NWcKz17u; arc=fail smtp.client-ip=52.101.101.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bFaGeBdj"
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-94130b88642so3699090241.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 05:13:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769433191; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AHzIv2Mm6B8iBfzlBuXa7pp2R37uVVoLj3/ymqIYEBYzS453+QF2jWcTLT9aw/WZPS
-         Rrij64yPXRoG/Rr3jo6qXSQDljOST3nYcYG3ggfotesFz6kuUqfl1ez55KjiJG6I7nlv
-         YmkK8um+uFpLxfzlc5jfYC0M/hjEo9+ehefTbqdfE4oA3oRTmGT3TlbTvNA4ba8U6A/i
-         GuDPV5dGFbBGsVBRudQQ/ILRR2fjq50IFex5j8/8/7Y1C4s2BNKBvoCok+rhHDwch7iD
-         3cpp9CKrGjXghpCTe1Imqujyv8sS5xhLQnUnVd61ymAzSQrLEIBxrPOCPc8CgWTojPdG
-         tJ6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hts1VbXSAhfHqgvmmsaKIeglK0db4+EFOEtENA3B/W8=;
-        fh=R5eQofyOJn255aMxvCA4kxi5kJO9wc6QC/lRtvYd9ag=;
-        b=TCBc2FDZZ5CaRk3HZeH1R8GZKFs2L58IXUUXDLQp4UlbhICw9c2Dz8e5eolu81Opjn
-         jWSi6B88qj0iYrcrAGYhhe0e5dkiNd5Sx5hvu9EYI30f+EeeypwdgeRhqyKZj4RKgxZ0
-         weKZz162PZHUGSnoVwgB5nveX3bi7Aih8vPd2rwB4GPA8p6LZnzHJOQ7rk/mIVlQVuV0
-         rfs78OodMjqpT41NR/BGYSnT608RxQf7uNf+3RKUjfPFVE85Q3FQXNEe48YcSJDeeVoP
-         nNWpkqTgrwGRcahg2hP+/M1nl7meNR05MvhigTyHgp5cNBdjA+Inwx9GlQBFZ9EALhrm
-         H30g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769433191; x=1770037991; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hts1VbXSAhfHqgvmmsaKIeglK0db4+EFOEtENA3B/W8=;
-        b=bFaGeBdjRwwGrmcS2jAwNkauWfEwi/IcMqctSL9T/kKU7jnZnImnjunCR5cuMAmE8M
-         lPYCGnwt3/s9xbwkF/kojHDzoNgKPHArJ6Dt+PlPX79k7FXIKQMUik7NM/VjVXy/XuPD
-         aQeqZz59fLK6+35cmK4bxyjuz6seViU3FPXGPUsjj71BBLNds2XxknfsMOWJZk9h8x/P
-         LeMjRsCObvrBxbV0wp5pF3uHdpJOFP6K8CCWVwkZrn4onXLeQm68qR5dYfJaUIgsvoAd
-         NNSeyRLdEynL9JE0YPI3kcE04nyaJKuM+OY3POEtbQCrO6VmPQbcDH0iwhio7om6DcWE
-         XW9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769433191; x=1770037991;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hts1VbXSAhfHqgvmmsaKIeglK0db4+EFOEtENA3B/W8=;
-        b=taApicQjK3+7GvtqUi+xqRHICpbyXM4PYzK7mhQ6uoFuU1dLW5WC5Uq+Bg7pjJFIPg
-         hV02WyUcmXAbRlH+jSh6+E7eotdz0Uu6h58BXq8kVEfTqdWxrUS4avJT80b0lZTnVNTi
-         ztE1VK2KD3c95ASk+zOzOvMFIDjKTNOi8/6sEv+38+qvYMwzxdnZY0tkJZxI0oNKsSJg
-         pd4mu78GgjRLpr6gO/nCumrAVTXQ7tMiPKKbVQwKkVgdvHPqGiy9/nv22xi16F6VZ/yt
-         YkSiyZXooVP1BJKBIVuZ0wBZmIO3l8JcCx7wDOq8sRzwVjqW4DsHE5g0rVWbieBSc/bu
-         tJ/w==
-X-Forwarded-Encrypted: i=1; AJvYcCWoA54/V95GJfSnGY4n4IzZ2OVYqbOd4hut+OIdKadT56mx+05GdfrbOtbzBkrYrxKOwoYX9xaOBzL1Kdjyyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRddl/ZmpqQIPH6UqcZbexxwDk1pPXN+S0wiX5t+B/+KRqUD9s
-	wsrdRXQ3vf2i1+Arkf2bIhJXfxOcsu5GcgRJYqZ2mYTnjEIJifn5GVZ+S5sGWILe4Aqp3ooozGD
-	hhibN1GFvtN8U1o1JEjMwDWXCawPJtYY=
-X-Gm-Gg: AZuq6aKTXnXHyujZqYQ7q8Vy99m6XITSwHtAUHEf0uwRpVM5AT7CcPMGnlkwE+e27Du
-	ynar3jjaQkuleLzADDRl0tnOy7ShFT94hCCvrB/vFVG8+U+9eP3lkI2gOpnKBRJxXb3SYYGiW1x
-	0gzh8xgXs6bc7/J+RGwLD9TX9vBIM5c2EoRNJY4vFBaYPV8jorAR+zjaoNtNw5H0EvXZpoXHNjL
-	j8K/CsdptoUtjBvo6HGbN5hcozYQz0E/zVjzqqAZwZ5GsQBhQ/6tiuwElWzn6HMnauKBcf6yCW0
-	SA+b/yb82tlC3IlQgHZ28ViZK3fsE9C6Qo07744WL59knOIW5v3Be6XpiLyVD13ZL6ti3AMEfYL
-	5eXwazAuMk8mX
-X-Received: by 2002:a05:6102:2920:b0:5f5:2ab7:cefc with SMTP id
- ada2fe7eead31-5f576514c47mr1439180137.41.1769433191081; Mon, 26 Jan 2026
- 05:13:11 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="NWcKz17u"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Kd2w2i3mYjVEEQm9qXuKhGuh+saKKp/8gOBum5l/XtSUTyFIKji6gS9+1dk/J756txy5+eI+EKm55VTQBR8fJXbIMxwArO5Do5X5gGPA/hybAvyXHnOlvrz53ZkIMvIbv2OPUIbFqSPFvYc20xJaLkr5GCma3kIN48/6g10O+qEKrTkFAOMOw7S5DBj2k9QhFbx0qYmYZ1V+YnbKZ6BdEpvmUMKg5F5fg5vDyfYlQF+rWc35orXCrrjtppR2xQbyX3wgpeMJdTbnSR1BLd4LQllkcbi9luGV2cIbh7IV1NumRiS946H2XIttnZldPDYK7J+SliU+/FOjNNUaj4BBqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zSSGK9vmG9KV0pj9oWvqv7PIZwqY0n2dEvaMB1E/ANo=;
+ b=MdRC+O2WJ7/QO7wvtRs4tE4/Il6ncZjWxm+NLXyhD2GMIzjs0QDv3ekwJ53ZX6gJbPjN+F3/8+Iqf/UI8rxT2KW46tkC0UTxkPtSPq6jLS9qSJHDnm6BfREKLt6e7LhUeQS3Cgdrinku6SeFBFADMMI/JMzStkoyTXhIwlNRg756s/4CvplScOhS4IRQOzqmNWAnz6yS69Gne9f0+bqEWpaffPk8BAIQWeSH0kb3b0iJBhfdbwJfH9vdC2Q2iBFjwPMBpjoVGudEwfFDuPtE0NJsplO3TLXPgGcnHn5zEcWcTW9cdNJwR46UCHtWeGb3sBSKBBTSg3T5n+ORn/i6QA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zSSGK9vmG9KV0pj9oWvqv7PIZwqY0n2dEvaMB1E/ANo=;
+ b=NWcKz17u6NWmMckmpnN7ooxZYvVxtkIqwr5D28pUJJlW7wqj9aki6QQoAt8AmMXZbImW7mYQBAwQtytcXDPLe907wPGlko5+8hjBJGUP+RiOxUiZNe+vMd9E3wkSAGcLT1ulyaPMwdLdETgUVLIemt85NxfXU53k+zg6nBoWyj0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWXP265MB2022.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:83::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Mon, 26 Jan
+ 2026 13:15:54 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9542.010; Mon, 26 Jan 2026
+ 13:15:54 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 Jan 2026 13:15:53 +0000
+Message-Id: <DFYJRWUHCOMQ.3L6ZVLOJTNDNO@garyguo.net>
+Subject: Re: [PATCH 0/4] Re-export Zeroable and zeroed() from ffi module
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ "Igor Korotin" <igor.korotin.linux@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Len Brown" <lenb@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com>
+In-Reply-To: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com>
+X-ClientProxiedBy: LO4P123CA0629.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:294::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126-rust-tty-printk-driver-v1-0-28604e7e100e@gmail.com> <2026012652-case-subsector-f671@gregkh>
-In-Reply-To: <2026012652-case-subsector-f671@gregkh>
-From: =?UTF-8?B?7ZWY7Iq57KKF?= <engineer.jjhama@gmail.com>
-Date: Mon, 26 Jan 2026 22:13:00 +0900
-X-Gm-Features: AZwV_QgQ1Z3Rd4KQ7Rp2euLnZfmQXxco4CcOfImenRlQsmjEQKSEWlE9Ob9sZIc
-Message-ID: <CAGAB667vN1jR4UX4iw_sDHCMWLOfrbVKop-f7FXy7UTH_fpCuA@mail.gmail.com>
-Subject: Re: [PATCH RFC 0/3] rust: tty: introduce TTY subsystem abstractions
- and rttyprintk
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Arnd Bergmann <arnd@arndb.de>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2022:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0efd7376-3ec6-4e12-f189-08de5cdd08d3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|921020|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QXI0THFlSytoV0NZekFEaHhhWXlwUzNxbHJURW1iakxxWitLblF6M21kWElH?=
+ =?utf-8?B?WlpTaGZ3cjJUb2s4ZlF5TEtQaG5OSStiM3pQUkViLzBCOGpwcHJzL2FMT25w?=
+ =?utf-8?B?MDdraWJxWXNaSVVES1BUZjBrRlVXbkxxQWF0b3JtbmJERTNmWGZXVUo5ZzFH?=
+ =?utf-8?B?ek1kWTNQSElpamFtYjBZMHFUY1FKTjZGUHo1aDZvVUNlZjhIVW1yTExFZTBH?=
+ =?utf-8?B?YlYrOHd4dCtINVlobTF1RDVoYjNKQmZIaTg2bktRbVR5MzdVeHo2U3Vwb3pS?=
+ =?utf-8?B?VU8zOHNSQUNnVXNhaVVvYnlwWDRWbWJLeGRnVnNhZ0IvVTlsdjFmRkVEbFg1?=
+ =?utf-8?B?THFsaU5lUFZYMjlRVkJ2c0R0NkUvMGNYNlY4SUVIRDYvcjBrNFVVbWRKalMz?=
+ =?utf-8?B?aWVkZTh0ZEZkeUJGSUlhRk01cEtKS0ltcVoyM0Q2N21ZUG1ha1A5TER5eFRR?=
+ =?utf-8?B?ckRuY2FvOGRsbm9nZG40Q0g0WHRmOTY3L0pUenczdFQwOHd2RTQ2REVqWWZR?=
+ =?utf-8?B?Qlc1dDJibUNlcUxxclk1dC9DV2c2Mkk5YitGZDRWNVNuT3pmcFowRk1wV25S?=
+ =?utf-8?B?V1VDR1haYTYvYVlXVjBXUkQwV0cxdXZob0E5dkdTSWxuZU5KTGluRGU5aThn?=
+ =?utf-8?B?YUZMMlpMaXdmOXk3QjYwUnkrWElaTk5KTytpbEZES0dCTjNYVjRUOEpmOG5Y?=
+ =?utf-8?B?S3NWcXgzWVVQdktaTTgrWGFpUzI4aFN1T2dzS0dCbHVVQ3V2dk41TkJadGUz?=
+ =?utf-8?B?ZnVETnVrZ0hsemhMT2xTL1o4ckRuQUk2VTZRbkYzeUZVc3JLZEFVUUNGNVNZ?=
+ =?utf-8?B?S0F5bjlVbk9MUGp6NXc4cGdXYVhtZzBBY3BzZUFud0tKdjdQZmcrZmNsMTVw?=
+ =?utf-8?B?OHdRekh6aXRiMGl5bkU0dVRib01PWXlpZVNQd2wyVzYrOHNGWGpnVzl6S2ZX?=
+ =?utf-8?B?RnNRY2x0U2pHUEtEMUpabFIyQVdDVUgvOU5DRFQyd2JXVG8yVWdFaGNndEpi?=
+ =?utf-8?B?WURYNlpNM0E1SzQwdlFPeTVIdDhrL2lZOFJrTTREaFFNNTJ6ZkR5cytLZmdZ?=
+ =?utf-8?B?RE9weVkwd0N4YVZWN05YRkpzeE5BR1ZuTGZVQVlDczRsOTZmOWJ5aHFlcXpt?=
+ =?utf-8?B?SWhKbE9LUnZ3bHFoZm1HL2E5RUFZSGwxUGY5KzJkMm5GVzM1Q1UzSlh0T3hH?=
+ =?utf-8?B?TWNld0hqZnV0MWlUNU9oK3ZIK0FpNXc3RTlocndRVkhNS2Rzb0h3eEpTRkJK?=
+ =?utf-8?B?V0drUGtINGhSeW1uTGNrYXNvODVFL1FEQmZ2aW1KMzU5K25RMURZY3QxNHhi?=
+ =?utf-8?B?SWJiVnlLNkFrVGhPenhaNTRtSytwazMxbWdYU1BLYUxYQW5TU3VFYTA1dzF1?=
+ =?utf-8?B?Q2UvQ1UwT2ZSY2EwTHpScFVhRW1BT3I0bGdkMlEwUDB2WHdMaDMvcUF6SG1w?=
+ =?utf-8?B?NWt6dU5JNlJGcCswNWdNaG9YVFN0M2NBTmc0cGxEVzZ4Sk93YmRqbUNWTTAy?=
+ =?utf-8?B?Z2RxaFVOeDNXL3FpMmUxS3phREpHSmpIUEpyVzQzNC9udE84dlkwMDJuUHAr?=
+ =?utf-8?B?WHVHSFVSeUVIS1h1MTl1RTlqUll5bEZMT09JYTlCdzlsMkxIY21hSTI2amI2?=
+ =?utf-8?B?R09WM1FWbHhHR0V2S1BPZFF3aUZxOEhURC9OMUYyN2lZajBqeDFwaUxVOXlV?=
+ =?utf-8?B?bld3K05KSTlybXRUZ2NISTFiWnBvTTArSzNuV3lOanNhTkRmbU0vRHowUWlj?=
+ =?utf-8?B?VXp4N1RLaGlwTWZsZElSeWsvK1lzYXpSOGZONGtlNFZLUGx6bDJvaTdNVFA5?=
+ =?utf-8?B?Rm0rNzZ5RnM4OXg0OTBqZjlLWjhNNUFYUDI3T1ZrQTBsZGYraEt0djROamlz?=
+ =?utf-8?B?UlhTY3A4OUFzeUxtaWhIZFF4dU9CTk9HdTZTdGpzRnd3aDhhT3FJN2xscUV3?=
+ =?utf-8?B?UW5uNzJiYm50S0tMamliZUtBeUs5Z0Y1MkpwZlZkOVJqSTczdWdGdHpycnNr?=
+ =?utf-8?B?ZlcyK1Rsb21SVGxQd09rRXkyNVFlK0RnN3g3QU1VU0N2TVNGOUowMVZFL0VJ?=
+ =?utf-8?B?N3YxOENVSzIvSXBtNEhtR2ZXWGZUdW8rMVA3Qk5EMHJoaFhDL2dJK1YxV1Z4?=
+ =?utf-8?B?KzB5VERPOUQ4ZiswcVlWUTAxK1U4QnpVV1NLbUNzK2tZdkdHSXVzQXpMSWRt?=
+ =?utf-8?B?dlE9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(921020)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V09ydXNJcmZlZmxVcDJzWWlOK2RXVG9TTktZdGljNG1kVHpEbU4xZitWSWNz?=
+ =?utf-8?B?YStIVDNBQTlMY1R1NXR2cHBVMGYwU0NZRXF2VWYvdW55RFhYNU1iSC96bE13?=
+ =?utf-8?B?MVJjVnlFY1dVM1JiZm9WMUFseXRwMGVVR3BHdFFiVnQzZzZHVEt0cW5mQzZj?=
+ =?utf-8?B?aUxMUVJ3aTVxbUhmZlV5RUg2MWlzV3oyZnFEa0VvSC9TVEZhVzBubXlCK1dX?=
+ =?utf-8?B?NWhZYzk4a0Iwcm1SdWxQQ1hGR1JDRmtzemJLdEVoWmNQWnd2Q21RM3g0RVA1?=
+ =?utf-8?B?RVRhSkJ4Q1BMdE4rbnhtZWZNYlFNOUJ1VFBxZEplVXJCNnFuT3pwVlNzcXFs?=
+ =?utf-8?B?Vnc5RlRVZkt5c3dLTTByMnVlVlRhZnJLQWRtUHVGMUNleUVONHRQTXFsVWJE?=
+ =?utf-8?B?QlVFZmszSFdiSE43ek1NaVVmbCt2bnc2N2E4TU1IZDNKK2h3WXlQS1Z5TDdu?=
+ =?utf-8?B?Z0ZNSFlXSVBiRTlGTGMydVhuVHZWVWNRR3BHVmhxdTU2MmJLZnBjKzgrUnlY?=
+ =?utf-8?B?Sm1nQzZPUkhPV2k5Y2ViZXRoR0NQUFVoNm9JVWNmaHo4c1VZaTJXS2o1Y3M4?=
+ =?utf-8?B?N2E5RHo4YzEzRmR0NDd2UWd4aHc3Z2pObmEyNUYzNXFwR1plMnNLTEd3N0xW?=
+ =?utf-8?B?d0p2V2VVTStHeUNPSVBlQ1hBVS96NDFtNklUTGV3RlVtWnFzL1kxYkVXamNI?=
+ =?utf-8?B?RkdVTUZFU1JtNnFUc0dyak1OdGFvS01WUWh1Vnh0QWM4STV5VEk4d2FOaXoy?=
+ =?utf-8?B?czd0VkhhM0FaYzZWUFRTdURPN2p1c3ZGMjFaV0lVN3hRa1ZlY0RjVEkrbVkz?=
+ =?utf-8?B?SkFFRkJJNExrRVE5Y1lqQkREMFM4WUZKejhSVDhmSHUvRlEwUGYwTlpySk1P?=
+ =?utf-8?B?WXBwODNndVdJbmRMQVVZTGs3RXpBakU0L3BHbktYdWlVYkNhNmZiVTVjZUZX?=
+ =?utf-8?B?MmxraVRNN0N4WnJoMC9CbnA4aVN6dzNRNzRHVTJlTi9WdmNxaE9DQVF6K2RO?=
+ =?utf-8?B?Q0pKS0FIUUptY0l4RThOc01aUWtUSWRVdFpqTElKdE9NeVVDOWlwRkZMVkJv?=
+ =?utf-8?B?azRXYjFzdm0wSWQxaWVENEZxeVNhSVdNUzRFa1U5cEVwWVRvbnEyRzJEQUpk?=
+ =?utf-8?B?Nko5MGg4SVkzNjZZNDl5VGFpQjdJYUN2b3B5MTF3bDMzaHZuR0RaR0h5ZW84?=
+ =?utf-8?B?VTBvWXByODVLUzBObEYzdTdLZGlNbC9RRWcwYXlvMHNxTXZxUzdRaStWd2Y3?=
+ =?utf-8?B?SjNlSFhWN0h4THVtMWFXTEx3Wjd4VVQ5bENkTFdGNkN6ekRDVTRidXNadkhB?=
+ =?utf-8?B?ZFFHeE8vOWRwelB2UzRYTGl4V1BIcHVQRkpTVU1DaUdwWWtQQThvV0NteGs4?=
+ =?utf-8?B?OUM2TG1iUWNhczlzZ1ViWXJmaS9iNWtEU25abW1uNGc2MWVSbnhNNkZITTVi?=
+ =?utf-8?B?Ynd6WUJpV2xYQUc3aDVMVHM2QlAyeTR1U29ROTVxMHhpQm82QzB1UUREQW5r?=
+ =?utf-8?B?ckt6NE4xaTYrM21tTUIyS0psdmovUnkzWmo1MUxlK2pLa2NXK0p3OHQzQ3Nh?=
+ =?utf-8?B?ZDlxc1VCK096S3RlcGdkK21mUWE2d28vMlhWN1pid3U0K3JydTk0RFFldVJY?=
+ =?utf-8?B?TzY0WVVQeCtmQ1VDR0pGdGVKSmlRVStzVS9HWC9vY0xocndlNjJ6TzJXT01v?=
+ =?utf-8?B?U2FndkRjcHo4UWkvNXJaVjByV1oyVmRhUHl3OFNWLzBEUkU4STBKRHpLRHNG?=
+ =?utf-8?B?ZkliM0swdDRnQTVBZzFmc2orbzdMN3pPTlVwcEc5RGJBOWJIRnp0MktqTDk0?=
+ =?utf-8?B?TWhqMCtUU04ybkRScDlJT3FNa0toSkM2d1hydGdWemhYejVteHpyL0NYckNP?=
+ =?utf-8?B?UGwrNTVVbm9FL01QSEw1NU43all0eGJ0b3J0amtGa3lHT3hKdE00MEE3SFc3?=
+ =?utf-8?B?alVMTnd4RVU3VE8zVzlxV0ZyMyszT29ST2VsZlVYNjBqNEJhT3g0MDZWNXBs?=
+ =?utf-8?B?bHBmSUpLZ1JFcitkN2c1ZU42QzE5RlJjbUVpZ0NLVjJLOExqWWo2SGsvdWxZ?=
+ =?utf-8?B?RnZlQVBVdDZLblZrWmxvb0FDYWRadEdTdnRQbGdGdUtpWGgxbjBOUW9iUkg0?=
+ =?utf-8?B?T3lXeEtGaEJ0TksrOW1GenNzd3AweGdYaFpGbit3cDh3RVBxaDI1RDh3aGFI?=
+ =?utf-8?B?TTl2Z3dFUXlqTE1nOE5EemJXbXJqODBnNjZ0TWNrOFMxTmVZb3JsWEtJVjVu?=
+ =?utf-8?B?MXBLQXV4RnJNR3JPQyt3ZzVKU3NhdEtIcVNjcUdkQ0hsL0djdjA0MENLcC9Y?=
+ =?utf-8?Q?lxeoDs5PVftsbI7FWi?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0efd7376-3ec6-4e12-f189-08de5cdd08d3
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 13:15:53.9681
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8/iBQ1divkar4tlPYeRJoPMFowdm3X50eVSxSNiVeFlPanlp9AZYRZEPUJVUsUqkpBSrc77Wdnlit/BbjrYO4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2022
 
-2026=EB=85=84 1=EC=9B=94 26=EC=9D=BC (=EC=9B=94) PM 9:48, Greg Kroah-Hartma=
-n <gregkh@linuxfoundation.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+On Mon Jan 26, 2026 at 1:05 PM GMT, Alice Ryhl wrote:
+> Currently, the Zeroable trait is defined by pin-init because pin-init
+> happens to use the trait. However, zeroed types are useful for many
+> purposes other than pin-init. Also, we wish to implement Zeroable for
+> types generated by bindgen. For both of these reasons, re-export
+> Zeroable from the ffi crate, which is a already dependency of the crates
+> with bindgen output.
+
+I don't see a benefit of re-exporting these from the `ffi` crate? Especiall=
+y
+that we re-export `ffi` crate from kernel crate anyway, and `Zeroable` is
+already in the kernel prelude.
+
+We already derive `Zeroable` for bindgen via `MaybeZeroable` derive in
+rust/bindgen_parameters.
+
+Best,
+Gary
+
 >
-> On Mon, Jan 26, 2026 at 12:22:07PM +0000, SeungJong Ha via B4 Relay wrote=
-:
-> > Hello,
-> >
-> > This RFC patch series introduces Rust abstractions for the
-> > TTY subsystem and implements a sample driver, rttyprintk.
-> >
-> > Currently, TTY abstractions are missing in the
-> > Rust for Linux implementation. This series aims to fill that gap.
-> >
-> > It consists of two main parts:
-> > - Rust TTY abstractions
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Alice Ryhl (4):
+>       rust: ffi: reexport Zeroable and related items
+>       rust: cpufreq: import pin_init::zeroed() from ffi
+>       rust: i2c: import pin_init::zeroed() from ffi
+>       rust: acpi: import pin_init::zeroed() from ffi
 >
-> What type of new tty driver are you writing that you need these
-> bindings?  The need for new tty drivers is quite low based on the lack
-> of new ones being added to the tree anymore.  Are you sure you just
-> don't want a serial port driver instead?
+>  rust/Makefile          | 9 ++++++---
+>  rust/ffi.rs            | 7 +++++++
+>  rust/kernel/acpi.rs    | 2 +-
+>  rust/kernel/cpufreq.rs | 2 +-
+>  rust/kernel/i2c.rs     | 4 ++--
+>  5 files changed, 17 insertions(+), 7 deletions(-)
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20251202-zeroable-ffi-2beb542376c3
 >
+> Best regards,
 
-To answer your question directly: I do not have a plan to implement a speci=
-fic
-serial port driver at this moment.
-My motivation for this patch series was simply to fill the missing TTY subs=
-ystem
-gap in the Rust for Linux project. I believed that providing these abstract=
-ions
-would be valuable as foundational infrastructure, enabling future developer=
-s to
-write TTY-related drivers in Rust.
-
-> > - The rttyprintk driver
-> > rttyprintk serves as the first example of a Rust TTY driver.
-> > I chose to port ttyprintk because its simplicity makes it and
-> > ideal candidate for validating the new abstractions and demonstrating
-> > their usage.
->
-> I would want to see a real need for this before going any further.  It's
-> great that you created these bindings, but without a need, I don't see
-> why this should even be reviewed.
->
-> thanks,
->
-> greg k-h
-
-I understand your concern about adding code without a "real need" or an
-active user in the tree.
-
-If you believe that these abstractions are premature or unnecessary without
-a concrete driver implementation to back them up, I fully accept that decis=
-ion.
-In that case, I am content with leaving this work as a reference implementa=
-tion
-for those who might be interested in the future.
-
-Thanks,
-
-SeungJong Ha
