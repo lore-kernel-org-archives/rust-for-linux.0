@@ -1,271 +1,202 @@
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011040.outbound.protection.outlook.com [52.101.62.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC372FE074;
-	Mon, 26 Jan 2026 04:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769401393; cv=none; b=O9E6FyDefJbdB4IkdzvAKiQWKFsh2uN4nDD7h/FXrAPqUR1qtQHHjiLOtQfvFE7NxVb6R4xbdeSb1MIyM+nN5LfDc1iUH1cgQ+VyZ9lktM5SY+zAI/gTU5c7sf2ysha3REL6121thYQIatduZ0MaPV+GVDgV85pQwRscDAHoLxk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769401393; c=relaxed/simple;
-	bh=RcYHwyI32BEHw/TkJ87L802B+/oqw8tkQehkzjJ6zgA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DkrMRirFHXvr6PqYJE2cDOYeLb6ZInmrs+ZpEmnjdcFzZPUlWnK7iyi91xzGSvEUWNV2hHuEGePflQqAdh2QsJqQJ7x/GiD7c0Qql9WgenTUWiC8gfiumk50mVXYDlzNqKxok5oB7AdzGD2OpM9pW1xvasUdMAZCEDfuzZgX9Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=GynOa++v; arc=none smtp.client-ip=159.100.248.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78B6298CB7;
+	Mon, 26 Jan 2026 04:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769401905; cv=fail; b=cBIPgbfZCprGwilwTrA72DANF+NC2ATrakfaOhFPgKWWJeLBvzWhXdvRU6JLBH1rVGMaOX7DbCn7QibbxffNZc5igrYtXDjlsuQdT6h7zMdw8TXo32qE3idyvOQeZkJogUz3AyVs161tHSHsX88Ayjs0ADHDFMOKEiSIz5ymb1c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769401905; c=relaxed/simple;
+	bh=A8c+cnS+2mJz+YRzZgRIJ5FSshOgtOfMUTFzVbHZDnM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=KDnBs/rFQY4S2dOeYpuHDttOAYg+4l7Fq85YkMgdrbxOuMAJkpn4DyKl4TbrTQ4VY2qxE8ZXixV3P3qCQh3MBUMzwyp3UKem9x4MCF6i3Hm0lnqnaThQ7nV3vzhyJwfu1PnWDKoGUsTOTyuWuBWuBqm07oFtVlsqPiwsHMdp/iI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UZb75hzl; arc=fail smtp.client-ip=52.101.62.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="GynOa++v"
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [151.80.165.199])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 2D5CA26344;
-	Mon, 26 Jan 2026 04:23:10 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id C9B973E878;
-	Mon, 26 Jan 2026 04:23:00 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 1697340408;
-	Mon, 26 Jan 2026 04:22:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1769401378; bh=RcYHwyI32BEHw/TkJ87L802B+/oqw8tkQehkzjJ6zgA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GynOa++vHBLhePi4NPGWXs5Jkdyy2eZ5sAsWFCWtNaInrTHUrhM5HTgCuus85w3or
-	 DNo7FBKi5u/CD9o8nUVbaW/ApBh6LjbzmGBsCOrxWmDHNx7ePjoja/42KX4WPeiwfC
-	 9fbkcMw1momYUVXh5+ut4b5r/cBrwnTdK/Lq5Cy0=
-Received: from [127.0.0.1] (unknown [117.151.13.225])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id C3F5B4097F;
-	Mon, 26 Jan 2026 04:22:50 +0000 (UTC)
-Message-ID: <2fa2dc72-b24e-4504-8c8e-e4ecacda02c4@aosc.io>
-Date: Mon, 26 Jan 2026 12:22:48 +0800
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UZb75hzl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y54/nu+JugRl+HQIUz3UBohu682AmzZ6c935kxxwlxmb5uXroURqV3xNNjxxsUD552mtp2Wo2Irmn9FGQw6kwuwPVIInz1LkkVW+Zq5lxyV/C9klL+XDcuP5H+7b6+XKRkFqnF59b+ftGAHd9Hr1wBBu+WcneF/6ajA/nHAcdAdOhHo9kJM2W+DWNWgjT60yVVarXstUdizShbSriZpCTXjUShltPNhONGeW9tuGp5l56BcPAZkhbo00VzfVghyRuH18IqOVmCTQH7iEfOX7IOKB13TFrv540gRDQCpkKx96vPtvx6FYilKx26Y2G19u+A6h97B7jROWq1MtiKyAgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s6afLV+EWkbMK0rF09OW87a1c8PBcJs9/0p2WsHOtV4=;
+ b=kExQwLhYpeUogq/u52Cgx1joeTAZ99O9MfkdsAb80DpK/Ur4p5Yk/2oD6puAHVIhHhGjGP/YzAGX3xNL5SERAOgFo2gAZxggTHe+tSgo1mrhJR963QmCPIA97GOSw7kv6zKV3pRbGlj2FpnUw3jrrQCQDxuD76mC49/cwEBjspRWFBtj9kr7XR66Qw/1G70q3d4vcP0kOzF5YA8NXKwKiiHuDj1abAHU5P+nOqdHbVJbIuMF+/svPN+gRhdQrQXbmtsjHw2Yig8sbSzySWknJ6cVqtZlX61gAEoG81Ph0sheY1tZluKAHIjAVrvWhhFNE93wrh8UQ9ia56Sgy4N96w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s6afLV+EWkbMK0rF09OW87a1c8PBcJs9/0p2WsHOtV4=;
+ b=UZb75hzliZHZfrm8G/XCTplM0yEGoPOoPTc76g5Ae0yA4NYZRkYGebUc7LvRTX1lfQjHaScuFdQQw8ro5bMtC9+0pPiD8yrZ6V+H+W0ULqzCAH+sLnB3TcHNiYyLJWoohmTIz9MIza9kXFR2zbu7gCgy3lneSnC6BL/6jSS8cTc9GYOPjF8DBwF/TkoQvEubXVvEwydXTw8vpGM3GJe/zZyYuy/SgPMkga8lk7BLW/0gDFrQDyv2evz7ASrHy0OThI94WaTirZcE7b3zLbcvaU3UApqVRYoKGrzji3prGMsPoAYuQBw/A5DaQ3CI04KLb/C80pf+ZYTMltfJhBhPMg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ PH7PR12MB6739.namprd12.prod.outlook.com (2603:10b6:510:1aa::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.14; Mon, 26 Jan
+ 2026 04:31:37 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9542.010; Mon, 26 Jan 2026
+ 04:31:37 +0000
+Message-ID: <edac88ac-664a-4bdc-a702-b6f41d9cea41@nvidia.com>
+Date: Sun, 25 Jan 2026 20:31:32 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/5] rust: io: add `register!` macro
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Gary Guo <gary@garyguo.net>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Yury Norov <yury.norov@gmail.com>,
+ Alistair Popple <apopple@nvidia.com>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+ Dirk Behme <dirk.behme@de.bosch.com>, Steven Price <steven.price@arm.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260121-register-v2-0-79d9b8d5e36a@nvidia.com>
+ <20260121-register-v2-4-79d9b8d5e36a@nvidia.com>
+ <DFUCNHHYB6VV.43MOY4Y1NV06@garyguo.net>
+ <CANiq72kkRJVsp_BNszRDy5DaQ6qKhB7e7g16qvEQK5gBtVrYug@mail.gmail.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <CANiq72kkRJVsp_BNszRDy5DaQ6qKhB7e7g16qvEQK5gBtVrYug@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR05CA0010.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::23) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
-Content-Language: en-US-large, en-US
-To: Bibo Mao <maobibo@loongson.cn>, WANG Xuerui <kernel@xen0n.name>,
- Huacai Chen <chenhuacai@kernel.org>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- rust-for-linux@vger.kernel.org
-References: <20260125054322.1237687-1-liushuyu@aosc.io>
- <4b504274-4241-0e3e-3ed3-7804b72b7ee8@loongson.cn>
- <972430be-d2f3-49b6-851b-a057ddfcafec@aosc.io>
- <29565e27-f153-c2c5-cbc3-e0457d45f094@loongson.cn>
-From: liushuyu <liushuyu@aosc.io>
-In-Reply-To: <29565e27-f153-c2c5-cbc3-e0457d45f094@loongson.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1697340408
-X-Spamd-Result: default: False [1.40 / 10.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_ONE(0.00)[1];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_CC(0.00)[aosc.io,redhat.com,lwn.net,loongson.cn,kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	LOCAL_OUTBOUND(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Action: no action
-X-Rspamd-Server: nf2.mymailcheap.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|PH7PR12MB6739:EE_
+X-MS-Office365-Filtering-Correlation-Id: 50c06a65-77b5-49ce-2ee3-08de5c93cb22
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TngrOUNaV3N5ZTZoeDVJTTdzZTRMM1ZrUmxxMmZMaFFod1JnbjF4dEM2R1F1?=
+ =?utf-8?B?MjhqYWdsTVN2ZkpxS08wWG5xRk9HRkhRREh6WG1UaE9iM21FZDc0SUYxR1VQ?=
+ =?utf-8?B?aXZwdlBFSCs4RW5UM1FIUGpGZmZkQWpKWnEvb2hLcHdTVG9va0lQajNKc080?=
+ =?utf-8?B?elhDWUdRc1h2ZkxWV2Mzc1dYZlhtTEVqazZITjNSNldTdWpwZndNNnphYzds?=
+ =?utf-8?B?K3JHWTdleVYyNHdnSHRYbGh2SUZERTl5L0J0REo4MnI3d1owbi8vNXVJSVFZ?=
+ =?utf-8?B?cmllenQvbkNaOFFsa1J5aHpVVUw2U1NVY0I4a0FwSndDSzEyV2wxYlk1ekFk?=
+ =?utf-8?B?S1k4U2JEbTZmd2FQMTBLU2lydENCYWFTRGY2aXZKdjRtckpueWF4NFcwbzlw?=
+ =?utf-8?B?eXpSdjFVY0JkdWd2NWF1ZUN5RnRLNVlpbzc0cCtraTdjMjAvUlR1akZSQ0xD?=
+ =?utf-8?B?aFMza2Nwdlk5NGFPRC82TWtBTXFUeUp2N1I5N0hWUnUvVUo5cnZ6azlKamJD?=
+ =?utf-8?B?TzN5WTgwVXJabmozTFd1b0FRMXpaRTdYSzBnenczOHNYbEx3bHUzc0dPUDdi?=
+ =?utf-8?B?aVdaSkpNNkpmbVE1dEVwY0xWRUhzQ2E0L3Fqd2tiZXBQYWx4M282Uk1qTlZB?=
+ =?utf-8?B?K0xJSzdxeE82c1pTd2pGRHltTFRnV2FVek91TGo0d3UvbW84OXhTQjBJeGZG?=
+ =?utf-8?B?QitFS3daUzVhams4QkdlZ3g5Tm0vS1kvUi8rWmN2TzF1cXU2Y1IyU0t6bDgy?=
+ =?utf-8?B?aWhWU2NUTGdnZGNSTGdVZ1NTbDhpNU4zcWcrTXZnVkJQb0hMeFg5bll3eWxS?=
+ =?utf-8?B?S0cxdEJsVkNDeGM0L1ZkSTJMTG1MK3VoQWRJNm1nb1BscmJuL3hLbG5RYlkr?=
+ =?utf-8?B?QzhQd2RrMUNpL0xBZ1p2OWowVG1pVXNtOFk2OGtBanc4NjhMblFaYzdWdEFL?=
+ =?utf-8?B?WG85em5yWmoza0xKZ25nUDNmc2M4czF3RU1nZFI1Z290c3VERXl6VC85eW5U?=
+ =?utf-8?B?dE1jMVhVam9BRGZRM00xOXg4OXJLMXFTTnQxR3p4WFV0bUZDN3l4U29CRVFm?=
+ =?utf-8?B?RVRwclpMZGpiWnZDZUNJdEkrTHVBTHZLZ1BEUlYydWQ0VTlWdFV3QnNVSExv?=
+ =?utf-8?B?cVhIUVAyOXpRT3BXdU9sNlZVUHBsdG1zMU5pQ0FCeEVqMFdzZHcxNGVwbHpw?=
+ =?utf-8?B?c2NwWVcxS3dLZzIxMEVZV3pEVEVuS1MxekkrSnM1UW9BaUU4RmNpS0toVTlw?=
+ =?utf-8?B?aGpoZm03RWpWMkpLUG9VcjhORTlwZldaeUZ5UFd3UmpkTThDZTJ6d3VaZGc3?=
+ =?utf-8?B?dytOaURVV0tHVER6YVBiaDB2OVZ5QkxCWWtlMXMwdkw2ZmNYMlY1Q2YzekE1?=
+ =?utf-8?B?YytXMFJaNEgvQVNXd2FNN0dSMmNhWHJka2FzUnZKY3ZIUUp1eDVueEY5N1Jy?=
+ =?utf-8?B?VWJ6RDNITFdRdERBejFlMWpoVUI5Y2p1aHRUWTRNd0dYMXNzK0lQdzkwcWlT?=
+ =?utf-8?B?MlIxYytESnRULzhqRW1qYzN0Z2FWclBFTmJ1OFZESmlvVzA5TnBJWTRmdDBT?=
+ =?utf-8?B?M2dCdXlwQW5rbTd4dGZrSXhTcmhkSFhpNGprWm5FWkl5ZVRkWFE0QmNkdlRD?=
+ =?utf-8?B?TW5ENzdaMDNIbzVGZTg1dXRLdktOdTU4ZnlmLzMyZEN1S2x5bS80dTIwSDVy?=
+ =?utf-8?B?RWovT0x2SzVTQS8wWDZQQ0FGOGlOcmNpNmxyeEFHWkY2aVJVTnVYdTVPWTlU?=
+ =?utf-8?B?L0NWemp2TU5OZnorR0dSK1NuS0Fad0tTZmNKcW1oMUFtVGRVdTU1bStBd1VG?=
+ =?utf-8?B?V3o3RjAwZzFHM0Y4Lzdta3hZNVFabHVzbUtMVWlvUkhod1hhWkxZZ3hHaWJ0?=
+ =?utf-8?B?VEdMTTlkakFxdDRvSjRZd3NyZWhGQ0xXRUJoSzk2aGxlY1hRenV0SWVaWHZj?=
+ =?utf-8?B?U09hNVkwZ3JBSnpkOVZPajRLa280RXo5ZEZScEVkNGxVN0pWb2pyRGVySUhz?=
+ =?utf-8?B?UlhtUGxGSHpOWTk1NzROQ2kvcHRPZWhIQTB1MVFad3ZZTkhhOVRMMVQ5OHFJ?=
+ =?utf-8?B?ZGdvS3plMHNKRFR4NEp1MHlPaEVrOFZxREVldTd6R2pZT29HZFlxeFZVbDQ4?=
+ =?utf-8?Q?/teQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b1BKcWllMTB0M0V6ZUFUTHJBakYvdktvVUNIZll4WFZZdXlHamwxQ05tclo0?=
+ =?utf-8?B?MHM2dG9mWDR3WGhGQXI1TWtWNlk5NGpYeUtWZXViQVRaTnVVUnVXdlczcHdC?=
+ =?utf-8?B?TGtucnlQdTRWRmJta0RHN0dGUFNqcktaRkpObUxOMDlKNzdJTWVMQkxTUlRU?=
+ =?utf-8?B?WDg2MnRYQVR4MllucHNUQllDdnNxZUNPdXN3a3NWZG1Ec3ptUm5VZkYzZXZw?=
+ =?utf-8?B?VlJSTWRpamdaRnVwZjNNaFZDdUFsdHFBdUcwTC9aYkhCMVlJY0Z0MnJkUGlM?=
+ =?utf-8?B?NGEyOGk3RlkzbFU2a3lFUEQ5NWJvQXFnbVRxL21UQndLbWVGTUI5aWZSSjIx?=
+ =?utf-8?B?dTA3cFBZMXpRd3ZVUHIyL3NkZm5SZEtsc2duVmtueDd4aUh5czJUVjY3WkZD?=
+ =?utf-8?B?NjR4K0s3d3plNDh5ZW1NYmcxOTNueDhianpWWDVUdG1mbldhcUd1OHI1V0Fs?=
+ =?utf-8?B?SkVXOXViTzFPUi85MXhpVDU4a09tblRqcitFWGM4NEtvNkpqeGhsMEdLTkIy?=
+ =?utf-8?B?eDhUdWpUa2VDTVZOQ0p2Sy93TnUzbk4rLzBGSU5ZUU95TVl4WnRvNW5BM1JC?=
+ =?utf-8?B?b0UyWnRNMUhGUEFFaTk5bzRpUjhER2RxWFY5Tzc1VEhoTDZZZUFqck9Xbnkv?=
+ =?utf-8?B?Si9QMGxRWTdDRDZJQ2RoZFRJZDJoV2w0QUVPZ0VTQ0tPUVFRN3JBd3o1YXQ3?=
+ =?utf-8?B?NzRGWjRWbjlKaS9zaHJFSkRITTk0TWt6RVlkQmpxWkJ5UlhSN1pwUUg0aE5N?=
+ =?utf-8?B?UkJsQ2RiejV3b1d1Rytzem9TelBKR1h5ak5KM0hPaE5Xc1l2dHRwNnBhSEVM?=
+ =?utf-8?B?UE9ab091Y0VzN3JoNlhBdGZZZGE1c3dPYThSb0VZQ0R5LytLNXVuYkpZUEt2?=
+ =?utf-8?B?TG03dWtBYmxzd3VUOUdLcVRFcjRVdDh4Y0ZtMENFamZnbVhwWmVXeUNaZVhT?=
+ =?utf-8?B?L0ZyMEZheHR5SWdBVENtRG1hVTVHaFFCcEl1aDNwNHdDbTNGYzlENjBPOGEv?=
+ =?utf-8?B?eDl5RGM3bjJ6RmJjQzhUcmg3eE1aL1hMUHoxTGxiOUxscjZWOEhXTUhVRi8w?=
+ =?utf-8?B?SGFDaDN1VEVmSnRwYXpqcGdFY0pkR3p1Mysvb2FlK0orSUNXVVF2Y2tQZFZR?=
+ =?utf-8?B?dyt4ZXhQU1Z0VEtST2dMbHRGeEZXTHpMWWR4OW9sdElDNVVzckduK0lLQkQ4?=
+ =?utf-8?B?cmVCVmtlNWNCUGJEY0w0ZTh2L3dwV3JpQllrbmtaKzdaMlYrTmFaVjFmOUhy?=
+ =?utf-8?B?UGUxUzJ5QURPWkRoTkVWY3lkT2JiYThMVTF3SWVJalFjZ1ZnYTdPK0VuSzY4?=
+ =?utf-8?B?azlIRWtIc01reTFLV0k3U0JYWTdaUkpxMXdtMEpTaXpUbmlNMU1qejRYNGl6?=
+ =?utf-8?B?a0VEd3ZQdDJDT3diVzE0S0dpc2VWb011bE41Sm5BU3lRSWdUZWQ2KzNKdnZp?=
+ =?utf-8?B?VFE3WnZLVVdROUduMEJnMUIvRkFNTkd6dWdPNU8xZ0JIWXlnWGdTd2FiZGdX?=
+ =?utf-8?B?SUl5STJ2REVhTGo2c1JjMzJMT212MVNCc3hTblNRZFFDWUczYXlJcmtLUHpy?=
+ =?utf-8?B?aVlTWmc5WSt2Z2Z6RzU5QVZVR3BZcTJZcUhsTjMzbGtScG5ZRVhtYlVqWWor?=
+ =?utf-8?B?ZEFxV25UOWZUSDZtK3cwL3QzdGxuVUFuOFhJTlp2dm1GQVF3TU94TDU1TXJC?=
+ =?utf-8?B?a2RiaDJOMVZzWmxtK3dDMU91WFBoZUxZNitINUFzdDVKSXkyRDMrSjJEMDkz?=
+ =?utf-8?B?NTJURDAvNzZVVCt5d2U2d0RmeVRnZHRwVHFDVVI4c2dDdDVvRkw4d2hXd0gx?=
+ =?utf-8?B?OVFjeEJiZVFCTGdEakJKOW9vdkZkQjg5bDQxVGMxVC9TYVhZRFhvNTRtMHYz?=
+ =?utf-8?B?ZTh5dUVOb2ExVGtJN1R2QXV4bHZZV3c5RTFOdGVLN3ZnOE5FSHhmamQwQUxQ?=
+ =?utf-8?B?alEyYjVaWFlWMmVxdWpFR0xEc2Z6NG5HZlp4SFl0NDJmdnJYbzM0OG12TVU4?=
+ =?utf-8?B?QjZSN1ZyR2tqNFNGcHNyL2lEcEVOdHZOazZvOHNBelFDMWovdmxQQmNvK2tE?=
+ =?utf-8?B?NlFMNG5HWkVNZnFYM0t0NUlXNVhSNXRKcXdadk5YZjN0MUtwZEZacHlQb0hw?=
+ =?utf-8?B?QzRmbk9DblM4WHFEY3V6SFF3SktmNXNpbFBGTFBZa1p0cERuNFgrV0xpangv?=
+ =?utf-8?B?Q0swUDQrVmVmNzJaZ2d0bkU2b3JMODFtcHA1Ty84ZTNZWkExWWNidVJBZWsv?=
+ =?utf-8?B?dS84TSt1QVEzWWpLMDFacmU0NTJ4TUJ5dVVsdW04ZitLTE0zWUdIS0xJZ3ZD?=
+ =?utf-8?B?TnhOUFhuRGVDT2U0eVZwL2RpYm5odmgzNWZzRnV6c0JWYmlGa29wWDlyUi9F?=
+ =?utf-8?Q?rV7H5mNmWeJE+uuU=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 50c06a65-77b5-49ce-2ee3-08de5c93cb22
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 04:31:37.2681
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nk0epG0SNLVg/jIABmUgORVOqjs+xBWT0LxadQakvZCP1/BoUbZ7M3p+00k/5iXMnuXbmmcy0m5rjGhgO9dAEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6739
 
-Hi Bibo,
-
->
->
-> On 2026/1/26 上午11:38, liushuyu wrote:
->> Hi Bibo,
->>>
->>>
->>> On 2026/1/25 下午1:43, Zixing Liu wrote:
->>>> This ioctl can be used by userspace applications to determine which
->>>> (special) registers are get/set-able.
->>>>
->>>> This can be very useful for cross-platform VMMs so that they do not
->>>> have
->>>> to hardcode register indices for each supported architectures.
->>>>
->>>> Signed-off-by: Zixing Liu <liushuyu@aosc.io>
->>>> ---
->>>>
->>>> For example, this ioctl could be used by rust-vmm/rust-kvm or maybe
->>>> VirtualBox-kvm in the future.
->>>>
->>>>    Documentation/virt/kvm/api.rst |  2 +-
->>>>    arch/loongarch/kvm/vcpu.c      | 69
->>>> ++++++++++++++++++++++++++++++++++
->>>>    2 files changed, 70 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/Documentation/virt/kvm/api.rst
->>>> b/Documentation/virt/kvm/api.rst
->>>> index 01a3abef8abb..f46dd8be282f 100644
->>>> --- a/Documentation/virt/kvm/api.rst
->>>> +++ b/Documentation/virt/kvm/api.rst
->>>> @@ -3603,7 +3603,7 @@ VCPU matching underlying host.
->>>>    ---------------------
->>>>      :Capability: basic
->>>> -:Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
->>>> +:Architectures: arm64, loongarch, mips, riscv, x86 (if
->>>> KVM_CAP_ONE_REG)
->>>>    :Type: vcpu ioctl
->>>>    :Parameters: struct kvm_reg_list (in/out)
->>>>    :Returns: 0 on success; -1 on error
->>>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
->>>> index 656b954c1134..b884eb9c76aa 100644
->>>> --- a/arch/loongarch/kvm/vcpu.c
->>>> +++ b/arch/loongarch/kvm/vcpu.c
->>>> @@ -1186,6 +1186,57 @@ static int kvm_loongarch_vcpu_set_attr(struct
->>>> kvm_vcpu *vcpu,
->>>>        return ret;
->>>>    }
->>>>    +static unsigned long kvm_loongarch_num_lbt_regs(void)
->>>> +{
->>>> +    /* +1 for the LBT_FTOP flag (inside arch.fpu) */
->>>> +    return sizeof(struct loongarch_lbt) / sizeof(unsigned long) + 1;
->>>> +}
->>>> +
->>>> +static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
->>>> +{
->>>> +    /* +1 for the KVM_REG_LOONGARCH_COUNTER register */
->>>> +    unsigned long res = CSR_MAX_NUMS + KVM_MAX_CPUCFG_REGS + 1;
->>>> +
->>>> +    if (kvm_guest_has_lbt(&vcpu->arch))
->>>> +        res += kvm_loongarch_num_lbt_regs();
->>>> +
->>>> +    return res;
->>>> +}
->>>> +
->>>> +static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
->>>> +                      u64 __user *uindices)
->>>> +{
->>>> +    u64 reg;
->>>> +    unsigned int i;
->>>> +
->>>> +    for (i = 0; i < CSR_MAX_NUMS; i++) {
->>>> +        reg = KVM_IOC_CSRID(i);
->>>> +        if (put_user(reg, uindices++))
->>>> +            return -EFAULT;
->>>> +    }
->>> CSR_MAX_NUMS is max number of accessible CSR registers, instead only
->>> part of them is used by vCPU model. By my understanding, there will be
->>> no much meaning if CSR_MAX_NUMS is returned. And I think it will be
->>> better if real CSR register id and number is returned.
->>>
->> Did you mean we should only return the CSR registers initialized in this
->> function
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/loongarch/kvm/main.c?id=63804fed149a6750ffd28610c5c1c98cce6bd377#n48
+On 1/21/26 8:15 AM, Miguel Ojeda wrote:
+> On Wed, Jan 21, 2026 at 3:58 PM Gary Guo <gary@garyguo.net> wrote:
 >>
->> ?
->>
->> That looks like a very large list and the values of the register IDs are
->> not fully continuous. If that is the case, how do we maintain the
->> get/set-able CSR register list?
-> It will be better if CSR register list can be categorized, for example
-> with LoongArch CPU manual CSR register is split into 8 types from
-> chapter 7.4 -- 7.11
->
-> At the beginning, there is big array with size CSR_MAX_NUMS without
-> any category, it can be fine-gained in late. 
+>> Another top-level question I have is whether we should define multiple registers
+>> (perhaps all) in one macro invocation. That's the strategy of `tock-registers`
+>> crate which is widely used in embedded Rust.
+> 
+> Yeah, I suggested a multi-register one for something similar in 2021
+> and even tackling extra automatic codegen there, like e.g. adjusting
+> the value as needed to get to the proper unit from a sensor.
+> 
+> Not sure how useful the multi-register part in practice it would be,
+> but it would allow to relate several registers together if needed (is
+> that even common nowadays?). Or perhaps things like the
 
-Does that mean in the new `kvm_loongarch_copy_reg_indices` function, it
-is also okay to embed this big list in there?
+For the NVIDIA GPU drivers, maybe not. Just a data point.
 
-Or do you want to extract the list from the `kvm_init_gcsr_flag`
-function and refactor both functions to share one single big list
-(probably in the kvm_host.h header)?
 
-Because from what I could understand, your previous messages point to
-that we need to use this list to make out what CSR registers to return
-to the user space VMMs.
+thanks,
+-- 
+John Hubbard
 
->
-> Regards
-> Bibo Mao
->>
->>> Regards
->>> Bibo Mao
->>>> +
->>>> +    for (i = 0; i < KVM_MAX_CPUCFG_REGS; i++) {
->>>> +        reg = KVM_IOC_CPUCFG(i);
->>>> +        if (put_user(reg, uindices++))
->>>> +            return -EFAULT;
->>>> +    }
->>>> +
->>>> +    reg = KVM_REG_LOONGARCH_COUNTER;
->>>> +    if (put_user(reg, uindices++))
->>>> +        return -EFAULT;
->>>> +
->>>> +    if (!kvm_guest_has_lbt(&vcpu->arch))
->>>> +        return 0;
->>>> +
->>>> +    for (i = 1; i <= kvm_loongarch_num_lbt_regs(); i++) {
->>>> +        reg = (KVM_REG_LOONGARCH_LBT | KVM_REG_SIZE_U64 | i);
->>>> +        if (put_user(reg, uindices++))
->>>> +            return -EFAULT;
->>>> +    }
->>>> +
->>>> +    return 0;
->>>> +}
->>>> +
->>>>    long kvm_arch_vcpu_ioctl(struct file *filp,
->>>>                 unsigned int ioctl, unsigned long arg)
->>>>    {
->>>> @@ -1251,6 +1302,24 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->>>>            r = kvm_loongarch_vcpu_set_attr(vcpu, &attr);
->>>>            break;
->>>>        }
->>>> +    case KVM_GET_REG_LIST: {
->>>> +        struct kvm_reg_list __user *user_list = argp;
->>>> +        struct kvm_reg_list reg_list;
->>>> +        unsigned n;
->>>> +
->>>> +        r = -EFAULT;
->>>> +        if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
->>>> +            break;
->>>> +        n = reg_list.n;
->>>> +        reg_list.n = kvm_loongarch_num_regs(vcpu);
->>>> +        if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
->>>> +            break;
->>>> +        r = -E2BIG;
->>>> +        if (n < reg_list.n)
->>>> +            break;
->>>> +        r = kvm_loongarch_copy_reg_indices(vcpu, user_list->reg);
->>>> +        break;
->>>> +    }
->>>>        default:
->>>>            r = -ENOIOCTLCMD;
->>>>            break;
->>>>
->>>
->> Thanks,
->> Zixing
->>
->
-Thanks,
-Zixing
