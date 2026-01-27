@@ -1,75 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDAC1E7C34;
-	Tue, 27 Jan 2026 20:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE80199949;
+	Tue, 27 Jan 2026 20:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769544594; cv=none; b=pMbTi9rL+TS2rG8PD2y7FJDmFPP+WqrJ9nDiP83coiDlTj1zvaFg5UGjWsya+8U3C51F1aiEHoBkKf0wNiq7rD9ZG2irLRrSpEhpK4Gin8icqoIOuCfpNjwaU57TQkqhOJ9QnTz7rfKz197apU1mAFicNONYccjPu28esowKB+k=
+	t=1769547464; cv=none; b=WTjqzWkWC6jeYiqTSpIjmjdAyTYDmEQgySt+a3MSXk8FHQMVCTVeMrTgm8xMN5Mjc3KkWI53EvYQSsyJ7HfLFkDxa5tRMFrKZZUt2/XUT+/I79gBSvfhEWaL5XcX8Jqxg8EvXdslVQad1gOl8N1jdC/CupjB4IEtxLwJwAxi1MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769544594; c=relaxed/simple;
-	bh=li5PgsPeyDOaDUR6nHT6meMbGY+B1SiSJCuUR+pQMJ0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=ADUsDdpGxyS6u1cvMmKS3KxhFmJd/RbS8xF1T5ktCaWSlm3LGSG0wZYgPX6d8Amt+nCn9E07fhz45DGEnQNyi1rOLY0z9rwn8+UXFmC48kHTXNW5/r3dtJqDkdoEEHKCaEBpt/C/ZQFOQTmZoaxr7WSpNvP3n2u/rjfA3FDSFo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RsrtyYeg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769547464; c=relaxed/simple;
+	bh=cmjdEPiuJ79Jte59ZTtNhVL6Y+xDId8DcPmc95XyRk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RvAQpCT5gKGBUZ4P4t2Faeofxb4mAORJs5g/0Pe9q5OUPYzoSe6yqkT9LxL9+GPqVfz5JtLp95oc+cARW4FbiKjMr8ufjQz90bgt+ajaSn44N2aa4la6Y13vZh3eR+le4vXsQt6gCo6Vj+KNMipooR01v4oEqfcFN1IFDIuTOvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6/XtGDY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RsrtyYeg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69EAC116C6;
-	Tue, 27 Jan 2026 20:09:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6/XtGDY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD292C116C6;
+	Tue, 27 Jan 2026 20:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769544593;
-	bh=li5PgsPeyDOaDUR6nHT6meMbGY+B1SiSJCuUR+pQMJ0=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=RsrtyYegpZDrntAoBTgmkIO+CYQZRO9exn0Kk1TtUixbVcZHek9bx7jG/IJcmY55J
-	 6UprJ4VdqttW0ENoQh1Srd0ZMqLg+pOG6Kp+Fc9yRQI3goNGQzwq2SogruMSY7qiHI
-	 2/TMd07fwg58WUBgZUOQqoZ0oyXxzQ31qqRqjWBO32Gg7V7J60nHBWBNXXt+LOXdpJ
-	 SD1ycHIocnl+bFKiX6AjlUBoIHADfM23NSkW4Cf0iBhbCnKveiHFuuSPl+ovGTj9eI
-	 Z8HBlDvU/xuYxrG0SGnAVefaU9OCi9oiw74hN74Ygrp/3yIPkBs8zoOSCPX+h3KveO
-	 67TDPfev1ujoA==
+	s=k20201202; t=1769547464;
+	bh=cmjdEPiuJ79Jte59ZTtNhVL6Y+xDId8DcPmc95XyRk8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j6/XtGDYplbq+mTzHXjamxwk3buhZszIzNkUdkvmLnV6h5exMY6O/T9dJVY/q0V+o
+	 UJm9zx9RVSscgD/xH7iXpTlxMnEabNXrHpsWYezd9tiabqT8kLuzYayUssOQvRcsgb
+	 FhZ9J/lKJwRIPk/ElmzaXsPrHBtWG5ZqpyCr+7MbOrnFzo5UbP6rIVTwBF92Yh/y9u
+	 6gANy67fENNrsiW0gq0gXalgVhU7nRX3PdW36diRiMuIJe48gNBThnUIiLgRms7VnZ
+	 6jHl5hahTxbFNEejmUeRHknOwv0GjUYnmep0NTzvxlGtrSwQhqehzTA5/PMhVqDj8p
+	 /8dlu5nPJ7ztA==
+Date: Tue, 27 Jan 2026 21:13:44 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Guillaume Tucker <gtucker@gtucker.io>
+Cc: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v3 0/2] scripts: introduce containerized builds
+Message-ID: <aXkceKDeYxUGHLQh@levanger>
+Mail-Followup-To: Guillaume Tucker <gtucker@gtucker.io>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
+	llvm@lists.linux.dev
+References: <cover.1767199119.git.gtucker@gtucker.io>
+ <aW-JJ5DT-LRSZkdF@derry.ads.avm.de>
+ <56209dbc-2dbe-4f52-a703-bcbd9ed3e712@gtucker.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 Jan 2026 21:09:45 +0100
-Message-Id: <DFZN7C8P37RK.3IF24Z1YUVVOX@kernel.org>
-To: "Zhi Wang" <zhiw@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: introduce abstractions for fwctl
-Cc: "Jason Gunthorpe" <jgg@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <aliceryhl@google.com>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
- <helgaas@kernel.org>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <acourbot@nvidia.com>, <joelagnelf@nvidia.com>,
- <jhubbard@nvidia.com>, <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
-References: <20260122204232.15988-1-zhiw@nvidia.com>
- <20260122204232.15988-2-zhiw@nvidia.com>
- <20260126181912.GA2131321@nvidia.com>
- <20260127215744.332380fe.zhiw@nvidia.com>
-In-Reply-To: <20260127215744.332380fe.zhiw@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <56209dbc-2dbe-4f52-a703-bcbd9ed3e712@gtucker.io>
 
-On Tue Jan 27, 2026 at 8:57 PM CET, Zhi Wang wrote:
-> On Mon, 26 Jan 2026 14:19:12 -0400
-> Jason Gunthorpe <jgg@nvidia.com> wrote:
->> fwctl_unregister is not safe from any context, it must be called
->> while the Device is still bound.
->>=20
->
-> The registration is wrapped in Devres<> in the sample driver, which
-> guarantees that drop is called while the Device is still bound.
->
-> I agree that the current abstraction itself does not strictly enforce thi=
-s
-> (e.g., if the object is moved out of Devres). I will investigate an
-> approach to enforce this requirement in the next re-spin.
+On Thu, Jan 22, 2026 at 03:12:36PM +0100, Guillaume Tucker wrote:
+> Hi Nicolas,
+> 
+> On 20/01/2026 14:54, Nicolas Schier wrote:
+> > Out-of-source builds do not work on my system with podman.  If this is
+> > expected, I think it would be great to mention that somewhere in the
+> > documentation.
+> 
+> The v4 now mentions this and also includes a trick using bind-mount:
+> 
+>   mkdir -p $HOME/tmp/my-kernel-build
+>   mkdir -p build
+>   sudo mount --bind $HOME/tmp/my-kernel-build build
+>   scripts/container -i kernel.org/gcc -- make mrproper
+>   scripts/container -i kernel.org/gcc -- make O=build defconfig
+>   scripts/container -i kernel.org/gcc -- make O=build -j$(nproc)
+> 
+> Would this work for your use-case?  Directory names are entirely
+> arbitrary.  It's not ideal but might be good enough as a workaround
+> until this gets properly supported by the tool in a future version.
 
-The code is fine, the Registration object can't be moved out of devres safe=
-ly.
-You just need to update the safety comment accordingly. :)
+sorry for the long delay.  Yes, thanks for the follow-up!
+
+Kind regards,
+Nicolas
