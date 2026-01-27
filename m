@@ -1,90 +1,281 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D606D2C0F75
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 08:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33232149C6F
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 08:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769503456; cv=none; b=NhageHa/QZHq1XS4xENqaMyZWhXUXFenPdsz79gt0ynsCJ8p2BjuJ+hlc/0RJ+Arar35z8YLSxMWhD4/lxJ+DR4bwDNF3v9+dL1+rmKKqW2MQYi+Ur4dHXdPCqOI8zQKTHm/kNyaAQcG43EBTKn2fRQrWuP88zjdEU28OhO5eU4=
+	t=1769503823; cv=none; b=hKxbmbwePdzkuwqMMqA1ppjqQQUZV06zZjJo9goV2oiFibUCMhoAx9zDvc/U/qLh1V5ggY1Hk+BHUBWT4OC+eFJ2MrHM1A8spAdaeCTVDiXQX6xDw+YmIq0CYE87rGclVE2c1aqBJ87SJKDFlo0lMKgpqVGXL/LbEpUdMkbtj28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769503456; c=relaxed/simple;
-	bh=3MJ2ii/ye0pMb2Bh2DBm54/4dM3YA6Zg5p8ode956TE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GSlcAy/l+eQ1PH4I2K8qhVql9kdkYITlCW/sntptIf2mUwL0e2IBqUZpEIPPVNM/Q6AF8W9T7KzIfh/40GoRTOYNUZ+dXHX0xvqJPSaL325TIhisSjrpC6vF4GzUGH0UbvzF9kKHAokLMy+A0Ti5fFplC2sK4NlI8lCWCTCkW/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J3cVbeAd; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J3cVbeAd"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-480686b3b4cso4495885e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 00:44:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769503453; x=1770108253; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IAXyvcgq4gapK4XzgbxiTztA7SACwP1oODA1FepPFTs=;
-        b=J3cVbeAdx91LVRkSQ915QVQsZOuytIo0TSSSyHL587WhgEjXJ9eVSnarn7ocpAUR/b
-         N2zC8T8XRK8QvzLXry/ebzdetorcHNh4sOxfrFHk52LJ0o+L9m2bwo0jJoI4V9/9Axz7
-         OzrGJ8gWwvb1r+jvBAdbegw7lw4eRKdgqCqTkUsJdYrIBaC7LjlhD7r1hv2tb+Ckdfue
-         B37huXFZ9Hrth5fhvxhe5DM2MOpHpo+Y8UGBDHuYHovQ48PHF1QldZBPxGuAzGw2ELXn
-         oFMjNuTLupGsxyFfFy9+mh96I2LI//0et2ZHyCIwMlk2v7nHPRnAdyZHvJaLk7lY5rel
-         2GqA==
+	s=arc-20240116; t=1769503823; c=relaxed/simple;
+	bh=y5ixh+bg5BVJyvmj4uLXP9CDA9ORN6xN8K66gd8tbsI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DeBQkkvA5ctdm+lUVOTYinpfo3+kVi7zBKLOcW35qNERFCvk1tTCAKWAk1UeS3h6c5ZLpm+AWy3iDP6jbMchUidrck/4t6xJ7mgj8+tsGzfTXK64e3b1G/AGByvTOi3Ta8Ck52Z0wCd4dknqjXYyR4peuwiBZ76pa3/dzylbPGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-649605d3664so3765511d50.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 00:50:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769503453; x=1770108253;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IAXyvcgq4gapK4XzgbxiTztA7SACwP1oODA1FepPFTs=;
-        b=BswCje28gd4HGk6Qsfn6qBekYpPKq6hbraFMdDdusfq7qVrnJAIo1ow1D5NgeM7LZI
-         LrpMGlfQfFEOLz2XMZE8HRcse7jw2Eo4N+bj9HVE4MSeBUBEA0wUUNQjtAkXuNa0txM1
-         coLfde+Ysg+GTnzeuADNL1QuZ3gczUGfTVIcAbS7/zin62P201LncqN7N1JEU3L3stie
-         JEIVjN8pc66Blmjq1TyvR363WskyAvbGU6tUrF6bwz7Az2e3GCYuvx/Zl3mlQX662d5H
-         1eNLAGfkJDHou+RCxIaec63E/eYBPiDznEJKIruUmQFqFlgXH+gjWaU0KyDVombGOEuD
-         Q9dA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ+lJfnCIuvSkJI0j7tZNjiwuTVveZLFUN6oY4gMoYYzo3EdAu4dRsnTGATrWMSMcbMXP4jfzZet64JnHvHw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtVX++tAIqQ4FL9gJlviLELcNwBL3p4FCclGk1bJp2yoUc8owq
-	FWF0wdu8i78O+DRyPGxfgAyucAL852TRmy4DcPVz1ZtlR8XOsKwrWYRi+OCcPjZG2mRCS3pJbF9
-	GQZbpRy302xJIG1b2fg==
-X-Received: from wmbei16.prod.google.com ([2002:a05:600c:3f10:b0:47e:dc0c:276f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1994:b0:477:9986:5e6b with SMTP id 5b1f17b1804b1-48069c78895mr11471285e9.28.1769503453365;
- Tue, 27 Jan 2026 00:44:13 -0800 (PST)
-Date: Tue, 27 Jan 2026 08:44:12 +0000
-In-Reply-To: <20260127083543.GU171111@noisy.programming.kicks-ass.net>
+        d=1e100.net; s=20230601; t=1769503820; x=1770108620;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Xyt1d6B5fGIIDvXrsblkgyRo6rVn7TLxW6LGzeuqD00=;
+        b=QkNWV6jhxurGXX87TOQW+p8NsBMOT22HBwkEuqeaRCyx1rycqrkUDbeIXGugMTCq6b
+         yYDXNcuL9QB+dpw1HOjkcVhm4d8xFg8fBqmju0VdEov5oJEeiqlirl7f36ySOyghzVTm
+         02/zKLmRW7adTCYFPwlZ9Ivd1K1DulVS1s1wC3c9qVIxkrKPJ/KUzFwSsBY6e4ULq+tQ
+         iSJoZBTGW7GBMWfx0sHGmq1I/nWTXADM7Z0FcYlf6LXnrnfA91Wv+MdyxFkOU0epVWEM
+         nr0udSuHgFNnriqo14kKm6l6Sj/zmnoq1s4Xfyd5WzwwOC4LS3IH0CstH0jW5wSvw/yI
+         U0wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVbUjHiRdAeYco43vJvUYtK2z4NXoH1aZ6a7yGsS5vmRBuJrpIMPeQAwjm4ezCPnxiMFr2LWF+20zpopfkBBw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJq0/hAJVu2i5DiyxYEfohEFfrdjKImhIaL5mWNkG4UaJLIxuG
+	cQ3O3thjworXqiEkHmthAgXDgk7AtVknPxEJtAVCn1lfs4p+vffTTNiV
+X-Gm-Gg: AZuq6aIrbrkfUnWv6sraBx7omX3Ln10FlBicFX1afYXQ6mw+GkXFbB0+ubaDbnfDfe5
+	nxi61L9KnGmFWicVOIvAGaWzIrR06Q1UUyfnbtvGEO+GqX0uxG88/PgJ7lc+j8EyCNie85M17YC
+	VnQS6Y36v+gT9j69s+8t6A0/l21MdxoitkzYlcpJpXXaM5//N7XULm/rGd0YDaD8MPzsglHUUxD
+	x1oxT+vO3xBDlBIf12FPpwuevTVzuauJVdHbxp0weqMdVrn+QZ8mrUvIcodgjiyuON9Wzxg2xgB
+	Tn/vgJ/mRST7M3qrKu88zUe2KnvVA//G/c1SmYxLc+VGZVBDP3WbEH79kMETCQxAZCe4y6wTxUN
+	kJyZ/j8Xxwlo0QOtWE2YEiPCtdD4yxglXW3r+t+6DNRonInukftrzGMflrcrkXycPLIUGJp1gcI
+	f9WLL+WktMuWeALBG0kWjngFFo4mNpSA==
+X-Received: by 2002:a53:d018:0:b0:649:422e:a68d with SMTP id 956f58d0204a3-6498fc5d1femr503130d50.69.1769503820110;
+        Tue, 27 Jan 2026 00:50:20 -0800 (PST)
+Received: from [10.0.8.3] (104.244.95.48.16clouds.com. [104.244.95.48])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64968a8211csm4512047d50.13.2026.01.27.00.50.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jan 2026 00:50:19 -0800 (PST)
+Message-ID: <179c2a86-a5a6-4f56-895f-3ea112580d9b@kylinos.cn>
+Date: Tue, 27 Jan 2026 16:50:14 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260127-jump-label-rust-maintainers-v2-1-11b7c30b11d9@google.com>
- <20260127083543.GU171111@noisy.programming.kicks-ass.net>
-Message-ID: <aXh63MOsTulaQc4E@google.com>
-Subject: Re: [PATCH v2] MAINTAINERS: add Rust files to STATIC BRANCH/CALL and TRACING
-From: Alice Ryhl <aliceryhl@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 1/1] rust: fmt: add safe pointer formatting support
+To: Gary Guo <gary@garyguo.net>, Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+References: <CAJ-ks9k63auxfUEBrE+6HAeHrmgwmLZQiwo58MSd8+HSzQ7KQg@mail.gmail.com>
+ <20260127080340.2886001-1-sunke@kylinos.cn>
+From: Ke Sun <sunke@kylinos.cn>
+In-Reply-To: <20260127080340.2886001-1-sunke@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 27, 2026 at 09:35:43AM +0100, Peter Zijlstra wrote:
-> On Tue, Jan 27, 2026 at 08:30:01AM +0000, Alice Ryhl wrote:
-> > I realized that these files were never listed in MAINTAINERS when they
-> > were added in commit ad37bcd965fd ("rust: add tracepoint support").
-> > 
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> Works for me; Steve were you taking this or should I?
-> 
-> In case Steve wants to route this:
-> 
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-Thanks Peter!
+On 1/27/26 16:03, Ke Sun wrote:
+> Add Pointer trait and two pointer wrapper types for safe pointer
+> formatting:
+>
+> - Pointer trait: A copy of core::fmt::Pointer that, together with the
+>    Adapter type and fmt! macro, ensures raw pointers are automatically
+>    formatted using HashedPtr instead of being formatted directly.
+>
+> - HashedPtr: Formats pointers with kernel hashing (corresponds to %p).
+>    This is now the default behavior when formatting raw pointers with
+>    "{:p}", preventing kernel memory layout information leakage.
+>
+> - RawPtr: Formats raw address without hashing (corresponds to %px).
+>    Should only be used for debugging purposes.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1219
+> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+> ---
+>   rust/kernel/fmt.rs | 162 ++++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 160 insertions(+), 2 deletions(-)
+>
+> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
+> index 84d634201d90a..56d505e120aa1 100644
+> --- a/rust/kernel/fmt.rs
+> +++ b/rust/kernel/fmt.rs
+> @@ -5,6 +5,8 @@
+>   //! This module is intended to be used in place of `core::fmt` in kernel code.
+>   
+>   pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
+> +use crate::prelude::kunit_tests;
+> +use kernel::str::CStrExt;
+>   
+>   /// Internal adapter used to route allow implementations of formatting traits for foreign types.
+>   ///
+> @@ -27,8 +29,8 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>       };
+>   }
+>   
+> -use core::fmt::{Binary, LowerExp, LowerHex, Octal, Pointer, UpperExp, UpperHex};
+> -impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, Pointer, LowerExp, UpperExp);
+> +use core::fmt::{Binary, LowerExp, LowerHex, Octal, UpperExp, UpperHex};
+> +impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, LowerExp, UpperExp);
+>   
+>   /// A copy of [`core::fmt::Display`] that allows us to implement it for foreign types.
+>   ///
+> @@ -90,3 +92,159 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+>       {<T: ?Sized>} crate::sync::Arc<T> {where crate::sync::Arc<T>: core::fmt::Display},
+>       {<T: ?Sized>} crate::sync::UniqueArc<T> {where crate::sync::UniqueArc<T>: core::fmt::Display},
+>   );
+> +
+> +/// A copy of [`core::fmt::Pointer`] that exists to prevent raw pointers from
+> +/// being formatted directly.
+> +///
+> +/// Together, the [`Adapter`] type, [`fmt!`] macro, and this trait ensure that
+> +/// raw pointers (`*const T` and `*mut T`) are automatically formatted using
+> +/// [`HashedPtr`] instead of being formatted directly, preventing kernel memory
+> +/// layout information leakage.
+> +///
+> +/// [`fmt!`]: crate::prelude::fmt!
+> +pub trait Pointer {
+> +    /// Same as [`core::fmt::Pointer::fmt`].
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result;
+> +}
+> +
+> +impl<T: ?Sized + Pointer> Pointer for &T {
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +        Pointer::fmt(*self, f)
+> +    }
+> +}
+> +
+> +impl<T: ?Sized + Pointer> core::fmt::Pointer for Adapter<&T> {
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +        let Self(t) = self;
+> +        Pointer::fmt(t, f)
+> +    }
+> +}
+> +
+> +macro_rules! impl_hashed_pointer {
+> +    ($($ptr_ty:ty),* $(,)?) => {
+> +        $(
+> +            impl<T> Pointer for $ptr_ty {
+> +                fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +                    Pointer::fmt(&HashedPtr(*self), f)
+> +                }
+> +            }
+> +        )*
+> +    };
+> +}
+> +
+> +impl_hashed_pointer!(*const T, *mut T);
+> +
+> +/// A pointer that will be hashed when printed (corresponds to `%p`).
+> +///
+> +/// This is the default behavior for kernel pointers - they are hashed to
+> +/// prevent leaking information about the kernel memory layout.
+> +#[derive(Copy, Clone)]
+> +pub struct HashedPtr<T>(pub *const T);
+> +
+> +impl<T> Pointer for HashedPtr<T> {
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +        let ptr = self.0;
+> +        // The default width for %p is 2 * sizeof(ptr) (see lib/vsprintf.c:
+> +        // pointer_string() and ptr_to_id()), which is 16 characters on
+> +        // 64-bit systems. With the "0x" prefix and null terminator, this
+> +        // is at most 19 characters. 32 bytes is sufficient for all pointer
+> +        // formats including hash values.
+> +        let mut buf = [0u8; 32];
+> +
+> +        // SAFETY: scnprintf never writes more than size-1 characters, so
+> +        // len is at most buf.len() - 1.
+> +        let len =
+> +            unsafe { bindings::scnprintf(buf.as_mut_ptr(), buf.len(), c"0x%p".as_char_ptr(), ptr) };
+> +        // SAFETY: scnprintf with "%p" format always produces valid ASCII
+> +        // output, which can be directly converted to UTF-8.
+> +        let formatted = unsafe { core::str::from_utf8_unchecked(&buf[..len as usize]) };
+> +
+> +        // Use pad() to respect width and alignment.
+> +        f.pad(formatted)
+> +    }
+> +}
+> +
+> +/// A wrapper that formats any type implementing [`core::fmt::Pointer`] as its
+> +/// raw address without hashing (corresponds to `%px`).
+> +///
+> +/// **Warning**: This exposes the real kernel address and should only be
+> +/// used for debugging purposes.
+> +#[derive(Copy, Clone)]
+> +pub struct RawPtr<T>(pub T);
+> +
+> +impl<T: core::fmt::Pointer> Pointer for RawPtr<T> {
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +        // Directly format the raw address - no hashing or restriction.
+> +        // This corresponds to %px behavior.
+> +        core::fmt::Pointer::fmt(&self.0, f)
+> +    }
+> +}
+> +
+> +#[kunit_tests(rust_kernel_fmt)]
+> +mod tests {
+> +    use crate::{
+> +        bindings,
+> +        prelude::fmt,
+> +        str::CString, //
+> +    };
+> +
+> +    #[test]
+> +    fn test_ptr_formatting() -> core::result::Result<(), crate::error::Error> {
+> +        // SAFETY: no_hash_pointers is a global variable.
+> +        let no_hash_pointers = unsafe { bindings::no_hash_pointers };
+> +
+> +        #[cfg(CONFIG_64BIT)]
+> +        {
+> +            let ptr = 0xffffffffdeadbeef as *const u8;
+> +
+> +            // SAFETY: no_hash_pointers is a global variable.
+> +            unsafe { bindings::no_hash_pointers = false; }
+> +            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
+> +            let formatted = cstr.to_str()?;
+> +            // On 64-bit systems, hashed pointers start with 0x00000000.
+> +            assert!(formatted.starts_with("0x00000000"));
+> +            assert_ne!(formatted, "0xffffffffdeadbeef");
+> +
+> +            // SAFETY: no_hash_pointers is a global variable.
+> +            unsafe { bindings::no_hash_pointers = true; }
+> +            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
+> +            // When hashing is disabled, fmt outputs the raw pointer directly.
+> +            assert_eq!(cstr.to_str()?, "0xffffffffdeadbeef");
+> +
+> +            // HashedPtr uses scnprintf and pad to format pointers. The pad
+> +            // method does not support zero-padding.
+> +            let cstr = CString::try_from_fmt(fmt!("{:032p}", ptr))?;
+> +            assert_eq!(cstr.to_str()?, "0xffffffffdeadbeef              ");
+> +        }
+> +
+> +        #[cfg(not(CONFIG_64BIT))]
+> +        {
+> +            let ptr = 0xdeadbeef as *const u8;
+> +
+> +            // SAFETY: no_hash_pointers is a global variable.
+> +            unsafe { bindings::no_hash_pointers = false; }
+> +            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
+> +            let formatted = cstr.to_str()?;
+> +            // On 32-bit systems, hashed pointers start with 0x, but the
+> +            // content differs from the original pointer.
+Sorry, I sent the wrong patch - the 32-bit and 64-bit comments are swapped.
+Please ignore that and review the rest.
 
-By the way, in case you didn't see it, there is a patch for the STATIC
-BRANCH/CALL side:
-https://lore.kernel.org/all/20260105-define-rust-helper-v2-9-51da5f454a67@google.com/
 
-Alice
+Best regards,
+Ke Sun
+> +            assert!(formatted.starts_with("0x"));
+> +            assert_ne!(formatted, "0xdeadbeef");
+> +
+> +            // SAFETY: no_hash_pointers is a global variable.
+> +            unsafe { bindings::no_hash_pointers = true; }
+> +            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
+> +            // When hashing is disabled, fmt outputs the raw pointer directly.
+> +            assert_eq!(cstr.to_str()?, "0xdeadbeef");
+> +
+> +            // HashedPtr uses scnprintf and pad to format pointers. The pad
+> +            // method does not support zero-padding.
+> +            let cstr = CString::try_from_fmt(fmt!("{:016p}", ptr))?;
+> +            assert_eq!(cstr.to_str()?, "0xdeadbeef      ");
+> +        }
+> +
+> +        // SAFETY: no_hash_pointers is a global variable.
+> +        unsafe { bindings::no_hash_pointers = no_hash_pointers; }
+> +
+> +        Ok(())
+> +    }
+> +}
