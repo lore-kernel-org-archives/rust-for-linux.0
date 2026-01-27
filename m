@@ -1,104 +1,105 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015B23BB40
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 16:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3707C35FF41
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 16:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769532361; cv=none; b=NyLIz5GxFIIolU6rFREYHbh0Gep1uLLl65IjYKZIWjFtZ0QJsq2IEiUmtWrMom1AeQkzpfoz9FGRv81KdER5J3ndydhh0QMR+aK66WYhlpNd9+MlkN0i4/dCn3n5aMu6BUqxgX+azs6k5UZE7vFX5P3T2oz5cpz/UEglBy+6Suc=
+	t=1769532442; cv=none; b=bhHGIKia1GMvZ6v+ku94rb5WXaPHgPJ38ag+k3PEiUMxbY3/GOiw45z2waVqfVAXPU5Yj2JxiG3ZsReveT3YE/Axin4cXri9DmRq8WmT8aBZltXf+ggVwZ5x6buYkryXEt1r8LgGuOEbi8v/DdS0DC0lx59A+HMYM/KNDqHzSYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769532361; c=relaxed/simple;
-	bh=ytETLMqnK1km5YgW7IIjhG91PABjfpJG4iBBH+tfBjU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=niVP9mynC3b6s7ELMsPhZZXrV5i2p5/WGjoXgHT3vU0qvaV54oDwX+dJUFIuGcnaHtjkrPYCx82aFaJLVa7Uwn018J5UZ/725ZLyOGZ2no4/Tlj4meoIGm2bwkDAaXYBjtlot88+BZ4w5/rvlrNkJ8V7vlRXXkd5GbMKpc18J9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=vnRm8xnL; arc=none smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1769532442; c=relaxed/simple;
+	bh=Dn+FGftJrugUUlu2nkUafFid8rSUEu4lJqfhzEDlOMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u7TqA272ybbjPnKa8A/zE5z1e6edyAqTri9OxIU6cDRYqaMUxzlstpLhL6+JdKyEDOPvFyzaMPNOMUFT/2fHckDz2EM57mFZ+WLQDxzqxiBHKVW+BbCG3YocNHjcSkf4ZG16O4+ol7uw36FhZP5ZnyGnapuVNLFaIL/GQUSqKTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DgBqsGdQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="vnRm8xnL"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b720e4dcb4so6103846eec.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 08:45:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1769532359; x=1770137159; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EZg99l5T6Nvbs576/aecVX27BRBVhs2ng1JODgSD32U=;
-        b=vnRm8xnLfNO3I7/KspM/b7xSX5WYmlLvAgHJsdPBNhk/R6c/PUzA08atMBSyAQoqmF
-         F4olH5yrZHhqp52PQ4wT3WnLNqr6QJRSiA8b51qhzqQCqsCcc96Uc5LFwzK67TCnhqfN
-         FOhKxvS2sbWInQi55l//523il9F6WbhkjMAEntG4YKUJI5rb7EbCZo/OzjEQeioTayVh
-         pzFe6FwSuRJAe7cShjaugVfQ7UvtDoQsoAuHb4gXH3HuVKpV9FNgzSvEBO/cA+/LMWQW
-         YWkCwofcCif5w20JK3h/ZD1MTp0qnw9T6Ouh0YGWfMJb9HzXGDk3iq6/oQP4bKkgsDaJ
-         HyDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769532359; x=1770137159;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EZg99l5T6Nvbs576/aecVX27BRBVhs2ng1JODgSD32U=;
-        b=uSyULOmj4DPi+SiAUc8a8hMGpIH/jBJMp9AE8Xm08ujEp4XMcxpY/P2lXE24BqKYL2
-         IV1N/I+2h8AP/ILdOEJKWsWO+UXC7cuPXmXOJxmMI7mCZ1ZSl42z1q7WG4Wc+keVoUck
-         NfMJ5+rzPNinlwYyzo3S4Yf91js674t9gzrYH2cy9Oh0ANpXJsQ/u+klu6JgSDXaEXgX
-         0vQOy7qoauUiu6FnufNSYzvfi6ycv50bA+pN5VXpYD5t4zA8ovuFnknKtU5xMkqEKqxc
-         EO3rhe9NgyYzmbNT8LFl3WAbsnhnO8VxHJvh8TZTlrv40aeDcxPuuTaWqO4aoiZXIjW5
-         egsw==
-X-Gm-Message-State: AOJu0YxuR0iZ8u/GoD7X1//d/SWM6RSuVQ+XiaApnJP+59g+ZPT9EmaE
-	VgEEP2cMzlnkMZM9vLLlAIqWRY6ZHkDEAgIjw1/tz5xBmrGUT55p3wzkYtewrbGc/so=
-X-Gm-Gg: AZuq6aKdzgZVPmxbM4wuQ0IRE8gZI0zi3k6cDzLXiGw0A3AVYq73Ez+l9YgOS1yyuoZ
-	TbubN2wJzEPaiDuN+PuaYBh9WMGVt7ziArKjD5NUkVGuj0U4AKZS+NzpCkEGaUy9Gj5GDeSIDnE
-	SEdV/HKcXAOF5eymo9YkRVeLvqOpLZK8MtRz3K82HEBGAmHBKtDM8dUaUvE8CegsGsk3xhjqMoE
-	dXjaRLUKmhuEKzXasb59+tt7o+V1prN8g09ptl7FwEDBo3xvFmuyNiYq1gHRHgYEBH9Eo62f8hD
-	dHAjK059OuAdnLuTY6wziWG3zVOWdDRfxNd2YfopSJnNOyCzOuvzeEYMCQxtokVHyuVbXNnInCy
-	3a3bqh/cN1lTckokSdVV/xqwPwDGQdLGqaiAe8x3v87for3Jltvv6zOsap5Ic8j+tDYxWZ5sFAQ
-	yT5KXPZgqJ4n1jcEnu2re8NLS3qAT2geR0O+pvl681poY2EStCiVT8Ml6gRVE4
-X-Received: by 2002:a05:7300:80ce:b0:2b7:17c4:be27 with SMTP id 5a478bee46e88-2b78da70ddemr1408827eec.42.1769532359014;
-        Tue, 27 Jan 2026 08:45:59 -0800 (PST)
-Received: from [127.0.0.1] ([2620:10d:c090:600::cedf])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b73a9e1bc8sm17496617eec.22.2026.01.27.08.45.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 08:45:58 -0800 (PST)
-From: Jens Axboe <axboe@kernel.dk>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>
-Cc: rust-for-linux@vger.kernel.org
-In-Reply-To: <20260123172007.136873-1-gary@garyguo.net>
-References: <20260123172007.136873-1-gary@garyguo.net>
-Subject: Re: (subset) [PATCH 0/3] Remove redundant imports of items
- re-exported from prelude
-Message-Id: <176953235809.14203.223038623552325483.b4-ty@kernel.dk>
-Date: Tue, 27 Jan 2026 09:45:58 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DgBqsGdQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24C8C116D0
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 16:47:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769532441;
+	bh=Dn+FGftJrugUUlu2nkUafFid8rSUEu4lJqfhzEDlOMY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DgBqsGdQZ5tbV/o4A+/PWYyGArr+GdGzhmaVBq5hqej03fbT/21+uzvh5sm2DXzhY
+	 kU5umI15rJM22lCwh1dZwUTqeUv5awgRUT0dwpOogR8kDUCZVfPjPVN6nmqke1guTT
+	 dnwe3cbfs3whuD7VgY1N02yOGafWmOqzd1BNDJJV3nfeDeFHi7GEurnwdsGIk6ZtFz
+	 1vmkc8M4XN1YAOImrM+iASz/hKY1HjFRf0yEeMRZ0ydRCseq5OZdxgW4yPN5hXvS3o
+	 UBDRBU6kwtaUfWf6bAgLraiin66oJmIiVOydB/ZcS9IlMgUC+uUXUL9kWurZTvRdEs
+	 FGccKRGPzybNQ==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-382fb2bb83dso35049741fa.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 08:47:21 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUFhhx/b0C1kJ4yrZRaU1/FEAunFrGbxpDLeFQYNnL2+t78w4paxnsZz2g/9Bs4n1580rGl5LHc/8OFrXSjLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwL+NmKXXh4HsZDM3sGJFuiwKaWvGxXFjFlPmYhJSe4mdHHx0zM
+	AkhnexnfIkTSFYlddb7Z3QwLqIooRUd2ucQpQ3bMh+20vte+ZoUsQ5ptRNHIpVAHo27QiOoIUj8
+	y1MZhVmFWfJewl3qs/Qet08Uw46KfiMw=
+X-Received: by 2002:a2e:a581:0:b0:385:9b50:91a2 with SMTP id
+ 38308e7fff4ca-3861c832ac5mr10143091fa.10.1769532440619; Tue, 27 Jan 2026
+ 08:47:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+References: <20260127-rust-analyzer-fd-leak-v2-1-1bb55b9b6822@kernel.org> <DFZIS0QDDD56.1ZB0WZUXPR5IZ@garyguo.net>
+In-Reply-To: <DFZIS0QDDD56.1ZB0WZUXPR5IZ@garyguo.net>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 27 Jan 2026 11:46:44 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9=hKVVa9UXFXx-aiqba7U0UHQChf-5pf1d=TdYrtC11Yw@mail.gmail.com>
+X-Gm-Features: AZwV_QgeoGbfCOU3jUEvobmD0YCHd7Aj6bunTM3WiQXjl37fWCLVd3-CqRgroW4
+Message-ID: <CAJ-ks9=hKVVa9UXFXx-aiqba7U0UHQChf-5pf1d=TdYrtC11Yw@mail.gmail.com>
+Subject: Re: [PATCH v2] scripts: generate_rust_analyzer.py: avoid FD leak
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Fiona Behrens <me@kloenk.dev>, 
+	Boris-Chengbiao Zhou <bobo1239@web.de>, Kees Cook <kees@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Daniel Almeida <daniel.almeida@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Jan 27, 2026 at 11:41=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
+>
+> On Tue Jan 27, 2026 at 4:35 PM GMT, Tamir Duberstein wrote:
+> > Use `pathlib.Path.read_text()` to avoid leaking file descriptors.
+> >
+> > Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> > Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+> > ---
+> > Changes in v2:
+> > - Use pathlib.Path.read_text. (Levi Zim)
+> > - Drop errant Tested-by tag. (Miguel Ojeda)
+> > - Link to v1: https://patch.msgid.link/20260122-rust-analyzer-fd-leak-v=
+1-1-945577813b20@kernel.org
+> > ---
+> >  scripts/generate_rust_analyzer.py | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_=
+analyzer.py
+> > index 3b645da90092..152bd3705303 100755
+> > --- a/scripts/generate_rust_analyzer.py
+> > +++ b/scripts/generate_rust_analyzer.py
+> > @@ -190,9 +190,10 @@ def generate_crates(srctree, objtree, sysroot_src,=
+ external_src, cfgs, core_edit
+> >
+> >      def is_root_crate(build_file, target):
+> >          try:
+> > -            return f"{target}.o" in open(build_file).read()
+> > +            contents =3D build_file.read_text()
+>
+> Couldn't this just be
+>
+>     return f"{target.o}" in build_file.read_text()
+>
+> ?
 
-On Fri, 23 Jan 2026 17:19:39 +0000, Gary Guo wrote:
-> We had a few occurrence of these redundant imports and up until now they're
-> mostly checked by human reviews.
-> 
-> I have now implemented a new lint in klint, which is able to spot these and
-> advice on using prelude imports instead. It caught a few existing cases
-> that slip through the review. Thus, fix them.
-> 
-> [...]
-
-Applied, thanks!
-
-[2/3] block: rnull: remove imports available via prelude
-      commit: b2b2ce870651db659247f34636e6243b4547e8af
-
-Best regards,
--- 
-Jens Axboe
-
-
-
+Yes, of course. I chose this form to be just a bit more explicit about
+exception handling.
