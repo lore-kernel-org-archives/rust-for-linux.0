@@ -1,72 +1,222 @@
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D269735D60B;
-	Tue, 27 Jan 2026 15:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622873009C1
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 15:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769527671; cv=none; b=FHHbiSC0qKsZGgYGkqhKB9lj0VySt53oIyajCZ45ZFcdbeEJr2fm1tXiPBdB7Nx0vEQPVvU27p16sTI8mPIjKXfhDaPUqk3JJj7ypQOG45XrN4ywLzPileYGsEJibsii+bdRgtNr5jF9HD3OB4d0xML2vK8a5NVYfwC7dfcqDbQ=
+	t=1769528137; cv=none; b=LwkLm/GVIr+Jp6VYLOp9tjSiJnfc9MR1wU9WpAoRS4KcPYzj0+kkpiD8aTajaTa7q7Zioh5Fyt30S42/VR89hoYq/pz2fsLqzWiVUGX6XchxyI5fCLo+svdfh1CHobs/jI2vj6S+2SsboTRJo6rFdwupGVJRov6Tt2uVKYWMCgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769527671; c=relaxed/simple;
-	bh=Dj14eSLFEAqtkPYJPBfeRPH3HVklFyctdqJlRkXnykg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EKKqxSUKgX1Smecfm1C1IjXW+cTR2akbATjiufZHyZmsnj5jhtX45lD4BsjB5Rek4ugm9OB4W+XbMvaZhqO3EZvQRC9T30ZKysiuKk6rkcR760rLdKiP35XXI6cxey12zq9nYQjigKzBIv7TS5K4JzoQrbE/2y8nuzoyvuddofE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3CCEDB6976;
-	Tue, 27 Jan 2026 15:27:48 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id ED7982000F;
-	Tue, 27 Jan 2026 15:27:45 +0000 (UTC)
-Date: Tue, 27 Jan 2026 10:27:51 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, Ard
- Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] MAINTAINERS: add Rust files to STATIC BRANCH/CALL
- and TRACING
-Message-ID: <20260127102751.2adddb78@gandalf.local.home>
-In-Reply-To: <20260127083543.GU171111@noisy.programming.kicks-ass.net>
-References: <20260127-jump-label-rust-maintainers-v2-1-11b7c30b11d9@google.com>
-	<20260127083543.GU171111@noisy.programming.kicks-ass.net>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1769528137; c=relaxed/simple;
+	bh=eGw8Zrcp56z4P97UGB0NaoadmvzAYb/x7hXvO0rvr/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V3Zq2aRKCKBtxOClOe7tyDgJumTG+eFNcMjLifUHI4ZtZudJSuVEPIDgj/6ZlEnJtBTSNf9I4SNQQaa/8spTlRTDl9VXzF6oUmD4vag6fYjcjIG/6PDiIeJWAjiPalf1Bm2dlEyx9x1A0eIDIy52dfhzcTBtFvLcvy38/769TP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4W0EPgP; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4W0EPgP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6595AC16AAE;
+	Tue, 27 Jan 2026 15:35:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769528136;
+	bh=eGw8Zrcp56z4P97UGB0NaoadmvzAYb/x7hXvO0rvr/I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U4W0EPgPGtUAtWQfxfuSuRUgukAIt3ugxafG2MIZ8ACbmvdEtWUpgT4fNe8a8DjRE
+	 Rx7Uk7q4Wv1NIP3fe5UaLzaF1Qc12jJgGos0oyUoPm0ACU6k2OI7e3lEPMModycISX
+	 OszuaG7tHxW2XesuppYAcbQPrtnfgs20NCf2UhKAosWExop5gGVJPqO+q+3xKEk17T
+	 BVeQ5C/lfr14CbQYjhXrjvKpO7U2fmw0jw+B2H1xSaOsJfPFayg9isJL1lmgjJqGTD
+	 2DVJc3vG1b3iWjzzL784USYRNrl/kJuLfEt4HsPOhcWMWymjOJ+30c2gYRDfH9hIv0
+	 05Jbf4Ze3yBTw==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 873E2F4006A;
+	Tue, 27 Jan 2026 10:35:35 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 27 Jan 2026 10:35:35 -0500
+X-ME-Sender: <xms:R9t4afdlU3wcKHFM1STARkwB4t99LUFJvOpdfH5kEZc1ezomRWAaEw>
+    <xme:R9t4aRnUsk98cOcoFUrM3DW4dmc6svLgNfJqboS49z-IA0akjHdkHOKzE_kopYoG7
+    Zu3yl3QmP65KHVmUBCchtPSJymMBrQUWmfIL5jEQ2zzgRB6rnXMWnw>
+X-ME-Received: <xmr:R9t4ac9VehGV302ATla3pDY3EQRMBpctG2zc5U1LjS4soweq5HmYw3nygf6sj32NdpJj6tc4HbNrWYGWpiEqwp0l5zGw3gDL>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduiedtkeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
+    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
+    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepthho
+    mhhosegrlhhirghsihhnghdrnhgvthdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgt
+    phhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusg
+    horhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohho
+    ghhlvgdrtghomhdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilh
+    drtghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    ghgrrhihsehgrghrhihguhhordhnvght
+X-ME-Proxy: <xmx:R9t4afGXN36O5zWScf5vndOKuNjgWnXIbFBCGLq6nKKJMLZHfL9uCQ>
+    <xmx:R9t4aYLXIG3pw46_OFG0Bf_ZkHUbgeAfLJBv0Z45cv5iO16Sl6URow>
+    <xmx:R9t4aXmy2XulBtbMGn-LbgnCDrKoEmMfISx8c8_cPPx_STh-9YdKLQ>
+    <xmx:R9t4aZy4wFtTAKAQVkv4dXPyXYNjP--iLttwaL46h2EkS-F175wxag>
+    <xmx:R9t4aZs1ZeJmDFwZBlByICxDuiwXajmjW1IsXr6vMxEywaIURpgcWkk2>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 27 Jan 2026 10:35:35 -0500 (EST)
+Date: Tue, 27 Jan 2026 07:35:34 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: FUJITA Tomonori <tomo@aliasing.net>
+Cc: ojeda@kernel.org, peterz@infradead.org, will@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
+	lossin@kernel.org, mark.rutland@arm.com, tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: sync: atomic: Add AtomicFlag::get_mut
+Message-ID: <aXjbRq3Npqo7kr26@tardis.local>
+References: <20260127125300.3656544-1-tomo@aliasing.net>
+ <20260127125300.3656544-2-tomo@aliasing.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspamout07
-X-Rspamd-Queue-Id: ED7982000F
-X-Stat-Signature: dtr5wem6ywbgb6oq37pwdqhok84xnjok
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1+5UmyLrVsY/t2e5fVfgyXkeZRgoSPiXEw=
-X-HE-Tag: 1769527665-839052
-X-HE-Meta: U2FsdGVkX1+EE09NCzMO+wrlpauhC+lUweIqlUdF4nuMH9yW4/bO6cLH8dDd/Cj3GXm1n7ce7/yNyeKFKixW9PiRpcKO5WRD1xXcGnnE28lfLa8hFt9S2J58p11KPWHdS3QBbMTqmI3J+6o0nqJmZU4FlHpkdS9cnuB5g2nN/8Eewq4D/ZG/IRI0hprlYaBr+zJSaiMmbuKf1Sot9fwRHbiZviWgSG4lx/wrls/Ihdak5/8m9EX/Xv6gneA3vIvMe5Ju1E/4xvnUvyXbFpuapmYZC6FjxOuwNeU8eIoIRpTMKaih6PuhVb10D2xM7JdmkbKNwH6pcx6YwiYaoaWoNqCP7+Gpf4d/EnYhMdxuAkfPbhfwalc4S3TESwfXbHy4JANzbMnmqT4JUqLmK2UEoA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260127125300.3656544-2-tomo@aliasing.net>
 
-On Tue, 27 Jan 2026 09:35:43 +0100
-Peter Zijlstra <peterz@infradead.org> wrote:
+[For some unknown reasons, I cannot send my reply via gmail hence reply
+ via kernel.org account, I might switch from gmail later on]
 
-> On Tue, Jan 27, 2026 at 08:30:01AM +0000, Alice Ryhl wrote:
-> > I realized that these files were never listed in MAINTAINERS when they
-> > were added in commit ad37bcd965fd ("rust: add tracepoint support").
-> > 
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>  
+On Tue, Jan 27, 2026 at 09:52:59PM +0900, FUJITA Tomonori wrote:
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > 
-> Works for me; Steve were you taking this or should I?
+> AtomicFlag exposes a bool API, but it lacks a get_mut() equivalent to
+> Atomic<T>::get_mut().
 > 
-> In case Steve wants to route this:
+> Also add kunit tests for AtomicFlag.
 > 
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/kernel/sync/atomic.rs           | 20 ++++++++++++++++++++
+>  rust/kernel/sync/atomic/predefine.rs | 17 +++++++++++++++++
+>  2 files changed, 37 insertions(+)
+> 
+> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+> index 6c46335bdb8c..b6c01d9f3a46 100644
+> --- a/rust/kernel/sync/atomic.rs
+> +++ b/rust/kernel/sync/atomic.rs
+> @@ -591,6 +591,26 @@ pub fn store<Ordering: ordering::ReleaseOrRelaxed>(&self, b: bool, o: Ordering)
+>          self.0.store(b.into(), o)
+>      }
+>  
+> +    /// Returns a mutable reference to the underlying flag as a `bool`.
+> +    ///
+> +    /// This is safe because the mutable reference of the atomic flag guarantees exclusive access.
+> +    pub fn get_mut(&mut self) -> &mut bool {
+> +        let byte_ptr = {
+> +            let ptr = self.0.as_ptr().cast::<u8>();
+> +            let offset = if cfg!(target_endian = "big") {
+> +                core::mem::size_of::<Flag>() - 1
+> +            } else {
+> +                0
+> +            };
 
-I can add it to my tree.
+The idea is solid, but I want to avoid endian handling in the function,
+I would prefer a "struct declaration" solution like:
 
-Thanks!
+    #[cfg(target_endian = "big")]
+    #[repr(align(4))]
+    pub(super) struct FlagInner {
+        _pad: [i8; 3],
+	bool_field: bool,
+    }
 
--- Steve
+    #[cfg(target_endian = "little")]
+    #[repr(align(4))]
+    struct FlagInner {
+	bool_field: bool,
+        _pad: [i8; 3],
+    }
+
+redefine `Flag` as `BoolFlag`
+
+    #[repr(i32)]
+    pub enum BoolFlag {
+        Clear = 0,
+	Set = 1,
+    }
+
+and `Flag` becomes a union of `BoolFlag` and `FlagInner`:
+
+    /// # Invariants
+    /// `Flag` is either 0 or 1 in a i32 representation which implies
+    /// that `inner` is always valid as long as `_pad` stays 0.
+    pub union Flag {
+        pub(super) inner: FlagInner,
+        pub flag: BoolFlag,
+    }
+
+    // can static_assert that `Flag` and `BoolFlag` has the same
+    // alignement and size.
+
+then
+
+    impl AtomicFlag {
+        pub fn get_mut(&mut self) -> &mut bool {
+	    let flag = self.0.get_mut(); // <- &mut Flag
+
+            // INVARIANTS: flag.inner._pad cannot be modified via the
+	    // returned reference.
+	    // SAFETY: Per type invariants, `flag.inner.bool_field` is
+	    // always a valid bool.
+	    unsafe { &mut flag.inner.bool_field }
+	}
+    }
+
+Thoughts?
+
+Regards,
+Boqun
+
+> +
+> +            // SAFETY: `ptr` is valid for `size_of::<Flag>()` bytes; `offset` selects the LSB.
+> +            unsafe { ptr.add(offset) }
+> +        };
+> +
+> +        // SAFETY: The LSB holds `0`/`1` for `Flag::Clear/Set`, and `bool` is `i8`-sized/aligned.
+> +        unsafe { &mut *byte_ptr.cast::<bool>() }
+> +    }
+> +
+>      /// Stores a value to the atomic flag and returns the previous value.
+>      #[inline(always)]
+>      pub fn xchg<Ordering: ordering::Ordering>(&self, b: bool, o: Ordering) -> bool {
+> diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+> index 11bc67ab70a3..e413b9e9fe21 100644
+> --- a/rust/kernel/sync/atomic/predefine.rs
+> +++ b/rust/kernel/sync/atomic/predefine.rs
+> @@ -351,6 +351,23 @@ fn atomic_bool_tests() {
+>          assert_eq!(Ok(false), x.cmpxchg(false, true, Full));
+>      }
+>  
+> +    #[test]
+> +    fn atomic_flag_tests() {
+> +        let mut flag = AtomicFlag::new(false);
+> +
+> +        assert_eq!(false, flag.load(Relaxed));
+> +
+> +        *flag.get_mut() = true;
+> +        assert_eq!(true, flag.load(Relaxed));
+> +
+> +        assert_eq!(true, flag.xchg(false, Relaxed));
+> +        assert_eq!(false, flag.load(Relaxed));
+> +
+> +        *flag.get_mut() = true;
+> +        assert_eq!(Ok(true), flag.cmpxchg(true, false, Full));
+> +        assert_eq!(false, flag.load(Relaxed));
+> +    }
+> +
+>      #[test]
+>      fn atomic_ptr_tests() {
+>          let mut v = 42;
+> -- 
+> 2.43.0
+> 
