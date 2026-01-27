@@ -1,29 +1,29 @@
-Received: from outbound.pv.icloud.com (p-west1-cluster4-host4-snip4-10.eps.apple.com [57.103.65.211])
+Received: from outbound.pv.icloud.com (p-west1-cluster4-host9-snip4-10.eps.apple.com [57.103.65.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA00A34DB59
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 12:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.65.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4712FD69E
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 12:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.65.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769518396; cv=none; b=FoXyEE0dXmR1DIZiLLfHnby43ejYzQGvpcul286FMvdy5CfYlZ5pnYVKiHFlonga6CwA81pu9ZATMzSkXsNldqVKcqtteHXSnc9YOHZBmpXwdRWqmZ/K0988RrQWIVtUTCYsU0ti2yIc6ooaTs8737S8AMdAwx6PF56Wn+8Qzn4=
+	t=1769518398; cv=none; b=FOHHqufoXdzYhCrltJXhLDuuhIU6iEtPNS3yOAXxuwKC+QQ+GCJk7VGewzsJXWfJSwoYFCAV3gevKFO8ayajY2fy63HELuCvMVFfhh1pbuDr3OPpCENBC5Fwiriig7gqa5kC0e1f+9o4IK7z74DXeXpffnm6mGvW7d6VBf50yZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769518396; c=relaxed/simple;
-	bh=YIDBEiMG6T7TVreiVCzbBlJda5t8ckNZUfIct4miKVc=;
+	s=arc-20240116; t=1769518398; c=relaxed/simple;
+	bh=G1vK1WTbpwl4hg8d8kOUCO9bjhce5lwCbQBY7RS0sm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjGM9JSCsMQwh+fPoeoc5aNPcBNLejH1+nIgAK4CA4kYtkysCLjitLA0e1QovpMTaCmbJsA0+yAH3gMW6NxjES61g7B6HDznlPHpaD7+LPbAHIYeXNC4skMqmyDjctTBUhBnpkhD3nEv47+ET6Aw3/Gjnq+T+wX9DMQSqOjIxdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=Vjy6m5Z5; arc=none smtp.client-ip=57.103.65.211
+	 MIME-Version; b=mjIk9pyDvE/xzChzJjnjfofipQ7uP7oh7FtHgeiwArMnGL0/ZW8Tptc5W06NfKZwmnkgNGhlSOi/T/Lt1t4b2TNkvpuJHs9XOV512loW8K8vTtSrwqh5928iQrrUD3jaeFeMc9aSlPO5pWYNSVU7nODC2EvO9enfFAPnE0hpzSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=rrHQuIxk; arc=none smtp.client-ip=57.103.65.161
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="Vjy6m5Z5"
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="rrHQuIxk"
 Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-13 (Postfix) with ESMTPS id 4C4A718006E2;
-	Tue, 27 Jan 2026 12:53:13 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1769518394; x=1772110394; bh=QArI52lq3ZrCqaEmB0GHhcVYxYDqL9XDhDksKUV7WIs=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=Vjy6m5Z5WPheikC0EYNX2AMrccZEWisMSSUWvZd99DBEjql/fA/47qH55iIFYkuGv+9WFZ6Bj2G2aqa0T9P8Su2dTEh8wiYbUJXj4zbxyrxaLkMOSqdo7XYdsKlGBY+VEet3l2RqcEJaMt7UklMIyLn5dtId7sH2lUJBIOmfcleEM4DF5E0hbSlnC7ADk54q0ltUlrNOuKsdmoNLEafhf7OjpOli6bbmnBEljA8XghJn3adGyyEbNkWmQ6EkwU3JKDahHSjRuuWbLRRVaXAlEgaecETfM+BJVQ0KOyiKTq9+bg160Ghd3nSKYX7XsvaZCyTZZb2582WMUb1LhnuFaQ==
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-13 (Postfix) with ESMTPS id 27D0618006CA;
+	Tue, 27 Jan 2026 12:53:16 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1769518396; x=1772110396; bh=mDglJ6kLLeIdqQE5nAlI285hMd4ddL4PR5qoSn869io=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=rrHQuIxkc6SXB+PYkBPz89SyaSLibAy3cWKGH/wlv7PPBv5Pntt1YF2wrqQpjXLoQoEyKHzjePVfS3U7ErNif4GvlCsSlkrhXzcjDBMb+E3jM7D9pF5XeNrG18DDK/PtITmUJFlsEJgmnJZqcfgzMpdt52rv5r7WQaIMkfdnLDsUYOn66mehgqu5exmxzhUZiJfgWTPmULt8x4xQ5vREof0+jnRNXcpdg6imEBxYIEpOz2CKMcquQ9WdTH12MzMpSrDPEN5OEygdr/+9lslC0+rkoUwL9UMoa8KALukBBeDNLMZ1s/GcwQTZnjBOI2bSc7oi0P+lztqookbb7J2NUA==
 mail-alias-created-date: 1769500909675
 Received: from bee.. (unknown [17.56.9.36])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-13 (Postfix) with ESMTPSA id A05B618006D9;
-	Tue, 27 Jan 2026 12:53:10 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-13 (Postfix) with ESMTPSA id 788E718006E7;
+	Tue, 27 Jan 2026 12:53:13 +0000 (UTC)
 From: FUJITA Tomonori <tomo@aliasing.net>
 To: boqun.feng@gmail.com,
 	ojeda@kernel.org,
@@ -39,9 +39,9 @@ Cc: a.hindborg@kernel.org,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v2 1/2] rust: sync: atomic: Add AtomicFlag::get_mut
-Date: Tue, 27 Jan 2026 21:52:59 +0900
-Message-ID: <20260127125300.3656544-2-tomo@aliasing.net>
+Subject: [PATCH v2 2/2] rust: list: Use AtomicFlag in AtomicTracker
+Date: Tue, 27 Jan 2026 21:53:00 +0900
+Message-ID: <20260127125300.3656544-3-tomo@aliasing.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260127125300.3656544-1-tomo@aliasing.net>
 References: <20260127125300.3656544-1-tomo@aliasing.net>
@@ -52,100 +52,74 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: LECaQsBgFPEDekVuny9nrOsD6_Z9LzMN
-X-Authority-Info-Out: v=2.4 cv=GMoF0+NK c=1 sm=1 tr=0 ts=6978b539
+X-Authority-Info-Out: v=2.4 cv=LtGfC3dc c=1 sm=1 tr=0 ts=6978b53c
  cx=c_apl:c_apl_out:c_pps a=azHRBMxVc17uSn+fyuI/eg==:117
  a=azHRBMxVc17uSn+fyuI/eg==:17 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=pGLkceISAAAA:8 a=0fZ0V6VmMsrEkdd8rU0A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEwNSBTYWx0ZWRfXx3GTZU81CEET
- QaRuqi7zsXU1a+wg49kXIlI6Idw+EVxQkwsqQ87xH91KIXXbngAigs7ps8xbpOtxTNPhYuXchrx
- iq5+7bndE2E/qtfsA6ZY4fWrbKruu0J36bGDY40J1Y7GsIKqsaDyKPUYfUnMZAWOzZ5NSXUArIi
- qAzw4fFX7FuPi1EhM6BpzeHnqpj159ZlJOcx5nn3ohQS/OgM1FLqSM7Rgn0/iK5BUHgm1yFs/ij
- rNMxYJmbf/VOHSLNM329+7P8pnQXoCXgSKlOabnaSTw7nC2rA7hFZmk7KbSqWK+7NbwKKRPjFOf
- 57ND/zcOx2IGT0eqDxe5tApIWcD9H9FIi5K/ZbVWJHjehh8hLMMUGklyRivI24=
-X-Proofpoint-ORIG-GUID: LECaQsBgFPEDekVuny9nrOsD6_Z9LzMN
+ a=pGLkceISAAAA:8 a=EUDMsqly4THW3T8X6KQA:9
+X-Proofpoint-GUID: HnK2aoywNtppr72y8tlozz9zfGgDLs7K
+X-Proofpoint-ORIG-GUID: HnK2aoywNtppr72y8tlozz9zfGgDLs7K
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEwNSBTYWx0ZWRfX9WrcHXJrXsgM
+ 13JiQZyfqAX/WiicWZPq+vNzhhAa2aG4fCYkFwTXA+gPPUE7wnJuIqUxv9hKbvg8UAerH0bF9BE
+ 69djZWGH+aCN28BK+1wtrAkCMvE2kZzAXWLgvNT44PDWlpXw9riq+xxdlagbTE5PYhsC2wcCy8/
+ NljibafHueRi9lxT6h14SDdaPG1lLM3GDKljxBxGrqgay5KZSFBorF6sK+lx63K8BMMmlzZ/WIO
+ sjdeMGCQUg1M30LkGIm304MObkmZ6ZNMuy17nNP2Am2temex5XCc1WVtyPIKuvPpYwjdxocwQD1
+ 1qD21862E3EHIt3PVYG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-01-27_02,2026-01-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- adultscore=0 bulkscore=0 malwarescore=0 suspectscore=0 phishscore=0
- mlxscore=0 mlxlogscore=999 lowpriorityscore=0 clxscore=1030 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601270105
-X-JNJ: AAAAAAABcEvOa2cPfo6D8X0BKkJi/UyD0lkwo3bBTYUAl1kZr45cAwKCK+B03vw8U3RdwItbRr13/M5kY18o7KG8kapb8gxYet0szbMdW1G5RGhPfW5jMkRO6KhUz2IMzWQTHEj6SYfm+SxhMkNoV2GT7tT1lkNtP/bLg2JlrRC9n6Gy0eUZzvyg2EFBhZM7wdxLMvnav2vhWiecgfw/xaZCxLLM5b5etG05fhEmWLMvvxcBL1IgJtC/eCnAopNOaIg3yT1cBDzwsAP6ci06v5AfMgnHGIU4RJ4RcPxAA92kLI2lu56h1CeLiLamqgyGBM2oFo4v7t8TufFO9a6ZkIw3SiVo6V567+z3qTCfvA+hlrfcN+S5gl0B08IxmFn7Er8oTJNhOJQbo16vc9eBDOLs96/4p0H2AnJ0UQYw0ZJ23y5he4MqLuKeMKmLwYkQpTLEJYlOv5IZ3Q64/0lvHMyH2Z3mH7qgqFcQZNxcL1CJVPzE2eF9mC6JKtHh65Sa4Hu0XZtBl/Ff/IdzqxOHrG5O1/3N3lMXeJTFTtM5K7Ocs6ccAupgMQl6AsshvDN1jg3ob3UCtYz2iFttRS3l1blnFx4cHM8vmFzKbrHwJ9MyxiRru9Y/SBgJpeaYWKfVmP46nqMlueI6/D79EWYTkaEv47cdLDd5URlmb5u9W0DrihAj51YC7KNijlKoClQGhqunA3M4bDMS0Eqn/SQcnyJuFMcPnD2bqK1wpdo1Od2ZUgV0um+8R9NM9622ngk+6wPwJmlzosRLkKj+9EMC/NfAYc0rgSkop5G63w==
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ spamscore=0 mlxlogscore=954 clxscore=1030 malwarescore=0 mlxscore=0
+ bulkscore=0 suspectscore=0 phishscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2601270105
+X-JNJ: AAAAAAABeBGOcbsnYo95JlsKOD1g+x1RhoVqtUepzmgdWFHnBbe2a6BUi1baJnb5xhsGdwwbD9Bx6QMhLV2YVm5eSEGxasaAVuTpHdVmMy4sPKCklcQX83aU3w+wJuJN3Q12QwPSE9xn9pPDnXSvn28YvgHnmMYDWBkfQoa7xKVOmNmW5A2U4UJHTST+5r37Lu+Y4QaHfmiTSOXJn1MmymNUxOA3lX2zYdsotPqxfpl4iOLKVJwXplnGgUcqOeQYb5MGrs9Yq55aquD1f8NappbWqfgBQJD/ipT1InyeZiDiAOOeFj86lBPyLv8H7dugTqE0ir7VBsAQjF1mKBijvoWcOmpxOjrHWL6SKINYlkyANAAxgx8oN2rlIvwH1p3+V3BCo/2W1rYRsWVBxZFy0crmtNocMkYvjGDtyj27SquUsmPAtucgL7ZpjlOUi1irwEKl+xbKF0gACLj78clBQhrepiY80oltjoRsSGamXv2wu35OhNqT89lHQKKCdacPi7EnhmeTaX6OtcaiAgtzcAN7zFAvSe7LJZQERkQzLGzSPrnEVN9bocDcd+6mixprl+AVQzh5Xd9V73VNQDKZXz/P1CHdFWq+boqmZY9KkpZpYztQzFnevtaDULGjxLwe96Bwp/jO3JW1wjghtrY4a8vn8WPMQBCFPTJXca1RKG0ummH6JBqM2WzR9Aml0o7UqhyVLdOF4ZLhcYwHCITdxi0I5uZ5NCms8XCC3ZtJa4Whcog9wrn1ucg7TJjCUdKkYnmMcUL0KKj7wc8bw8XDnMiiQxvZNjs=
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-AtomicFlag exposes a bool API, but it lacks a get_mut() equivalent to
-Atomic<T>::get_mut().
-
-Also add kunit tests for AtomicFlag.
+Make AtomicTracker use AtomicFlag instead of Atomic<bool> to avoid
+slow byte-sized RMWs on architectures that don't support them.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/sync/atomic.rs           | 20 ++++++++++++++++++++
- rust/kernel/sync/atomic/predefine.rs | 17 +++++++++++++++++
- 2 files changed, 37 insertions(+)
+ rust/kernel/list/arc.rs | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index 6c46335bdb8c..b6c01d9f3a46 100644
---- a/rust/kernel/sync/atomic.rs
-+++ b/rust/kernel/sync/atomic.rs
-@@ -591,6 +591,26 @@ pub fn store<Ordering: ordering::ReleaseOrRelaxed>(&self, b: bool, o: Ordering)
-         self.0.store(b.into(), o)
+diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
+index 2282f33913ee..5e84f500a3fe 100644
+--- a/rust/kernel/list/arc.rs
++++ b/rust/kernel/list/arc.rs
+@@ -6,7 +6,7 @@
+ 
+ use crate::alloc::{AllocError, Flags};
+ use crate::prelude::*;
+-use crate::sync::atomic::{ordering, Atomic};
++use crate::sync::atomic::{ordering, AtomicFlag};
+ use crate::sync::{Arc, ArcBorrow, UniqueArc};
+ use core::marker::PhantomPinned;
+ use core::ops::Deref;
+@@ -469,7 +469,7 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> for ListArc
+ /// If the boolean is `false`, then there is no [`ListArc`] for this value.
+ #[repr(transparent)]
+ pub struct AtomicTracker<const ID: u64 = 0> {
+-    inner: Atomic<bool>,
++    inner: AtomicFlag,
+     // This value needs to be pinned to justify the INVARIANT: comment in `AtomicTracker::new`.
+     _pin: PhantomPinned,
+ }
+@@ -480,12 +480,12 @@ pub fn new() -> impl PinInit<Self> {
+         // INVARIANT: Pin-init initializers can't be used on an existing `Arc`, so this value will
+         // not be constructed in an `Arc` that already has a `ListArc`.
+         Self {
+-            inner: Atomic::new(false),
++            inner: AtomicFlag::new(false),
+             _pin: PhantomPinned,
+         }
      }
  
-+    /// Returns a mutable reference to the underlying flag as a `bool`.
-+    ///
-+    /// This is safe because the mutable reference of the atomic flag guarantees exclusive access.
-+    pub fn get_mut(&mut self) -> &mut bool {
-+        let byte_ptr = {
-+            let ptr = self.0.as_ptr().cast::<u8>();
-+            let offset = if cfg!(target_endian = "big") {
-+                core::mem::size_of::<Flag>() - 1
-+            } else {
-+                0
-+            };
-+
-+            // SAFETY: `ptr` is valid for `size_of::<Flag>()` bytes; `offset` selects the LSB.
-+            unsafe { ptr.add(offset) }
-+        };
-+
-+        // SAFETY: The LSB holds `0`/`1` for `Flag::Clear/Set`, and `bool` is `i8`-sized/aligned.
-+        unsafe { &mut *byte_ptr.cast::<bool>() }
-+    }
-+
-     /// Stores a value to the atomic flag and returns the previous value.
-     #[inline(always)]
-     pub fn xchg<Ordering: ordering::Ordering>(&self, b: bool, o: Ordering) -> bool {
-diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
-index 11bc67ab70a3..e413b9e9fe21 100644
---- a/rust/kernel/sync/atomic/predefine.rs
-+++ b/rust/kernel/sync/atomic/predefine.rs
-@@ -351,6 +351,23 @@ fn atomic_bool_tests() {
-         assert_eq!(Ok(false), x.cmpxchg(false, true, Full));
-     }
- 
-+    #[test]
-+    fn atomic_flag_tests() {
-+        let mut flag = AtomicFlag::new(false);
-+
-+        assert_eq!(false, flag.load(Relaxed));
-+
-+        *flag.get_mut() = true;
-+        assert_eq!(true, flag.load(Relaxed));
-+
-+        assert_eq!(true, flag.xchg(false, Relaxed));
-+        assert_eq!(false, flag.load(Relaxed));
-+
-+        *flag.get_mut() = true;
-+        assert_eq!(Ok(true), flag.cmpxchg(true, false, Full));
-+        assert_eq!(false, flag.load(Relaxed));
-+    }
-+
-     #[test]
-     fn atomic_ptr_tests() {
-         let mut v = 42;
+-    fn project_inner(self: Pin<&mut Self>) -> &mut Atomic<bool> {
++    fn project_inner(self: Pin<&mut Self>) -> &mut AtomicFlag {
+         // SAFETY: The `inner` field is not structurally pinned, so we may obtain a mutable
+         // reference to it even if we only have a pinned reference to `self`.
+         unsafe { &mut Pin::into_inner_unchecked(self).inner }
 -- 
 2.43.0
 
