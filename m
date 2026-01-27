@@ -1,167 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEFE35B631;
-	Tue, 27 Jan 2026 13:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A045D262FEC
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 14:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769522161; cv=none; b=SYQ9BLW89cN5eDV4z4ldTM3yo4ZBfXIycbWttMsS2sxdIzhYeTummpcnj+REsUKdFMMjl0DnnfsJZ21+zg1MDVgn0rLS8PQeMkCBDfxTQCTvs1TYfxHiXlPjP6Vos+aeQ7YlE8RO/DxWHtVojoJ2RYJM2eehfc5cL+6rZhqQsWY=
+	t=1769522807; cv=none; b=ruZ7FGPYvnpH7zSwVI2GGdy/6/OSFK3+RzkzOPokD0vDTzgshyMosBjpH6auHxYc09hgub6qQAa752wjpFrAaRW/LHDMPOkCoqxsIcil2YLOctnCUHYRnIsBV7IqIQoHpFKiHrTXjhFR8+sSetyfq4XTyor4jmazU8EEYJJ9rgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769522161; c=relaxed/simple;
-	bh=J9h3BctZhtdKmb7cEw6+613P+IgYkCI1Ng1aDGOU9BE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NA0akFJSCfis1F3Ib27q1Snb1Wvo1b0JVa4OVmQZ1CktTOUp5h9aZLXQNHP9TbYnt5+7ohiWmrhkZuSQaFdcIf+VUf/NU0SIvEk5MAHKz9NkvXoLz0RwVzxnfzpL36iIsplebq8Gqhv0xmfLiyHX2bOlX/fVjWgT9KjuPemgBn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cLGp59SL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769522807; c=relaxed/simple;
+	bh=xyXn8cyiAzlKXuVNOiFTzEpiO7S4YTBTgM5b2Hrp5LM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AZwH4m+iTnIcDfcPcuzi7ARxJLNpHP+68zRviQh0BR4y+3eu7ruDFDheWopCl9PrliEfENx/3QE4F3v9bGUGnyKcSBGFdQI3SDIuQ5qH0mnwFRfPXs+MHeau8SidrVji1Co3RGjfBJPCJ0u/W0VNGEgR0Qs81Vme+HiM9MLkw+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XB9udGZp; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cLGp59SL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FCAC116C6;
-	Tue, 27 Jan 2026 13:55:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769522161;
-	bh=J9h3BctZhtdKmb7cEw6+613P+IgYkCI1Ng1aDGOU9BE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=cLGp59SLBETGrLCr8IhrFVBMRpxpWZ0YgVhxDDIJo8XiYF6+dGgQZJmIDr7oxjyw+
-	 pcrT5IFEJjElXEVbf1fbAIeC3zVNm/4eBwZR5zPFK/Pehs1Hhx48OmTuEbaBRC0Ki8
-	 zrf3uJgWINYmPFOajC10ORnKTXuQsD+W1OFCDIsYLjGTE/nItPyr3Sm2EI+Lx6GF6o
-	 ZACA81I099sCQV6eYKWPbSJlc+q/mHb2HCB1XLm42p7zd2mb+OHxZBY4B/+fGd3WvL
-	 XYwLYKZbJo9ilGEyDNTPG30Y24DUdBjaO7fE6+LWDXzf4WFDjZ/fz+6zF5O81I7eqH
-	 kswLWS6Fbd54Q==
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Tue, 27 Jan 2026 08:55:51 -0500
-Subject: [PATCH v3 2/2] scripts: generate_rust_analyzer.py: reduce cfg
- plumbing
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XB9udGZp"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50331ac1fedso4808221cf.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 06:06:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769522804; x=1770127604; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kZ7vT2lPy8FgSQDsZLklHZSjzPS3T1P/Yj8mXh5VQf4=;
+        b=XB9udGZpmNRB6WtXRQQZZ1zNrXJcrWec5s73fEI2zYV2pmLYCDPdbTFnrGYc6C6gMk
+         D8hU8KrTPxRNsqPtSX3uDWPi/YRtb8CTSV/IYPgOueYQPwzCF5TTlu8Hfa3iyXMSu/7Q
+         3Cv7VINRtym4Bf56Onm1PYlzNjaFcOlLLwx/JwzZpB1B9l+K1VhUZVeRKPT0ylXUfDYn
+         bGXxV8GRYu+A2NGY/ZA20BZiUvRiLbMqaGr/yv3tLxFXECVXLrN5LHRZUa7wQmRyYJGj
+         /dXZJ1502vz4GbvU8oHdxwKa1OqgsBwMTl7azAQJ5ZbBTuiO/2I3ogdozaGrR+KEK+0n
+         rg3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769522804; x=1770127604;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kZ7vT2lPy8FgSQDsZLklHZSjzPS3T1P/Yj8mXh5VQf4=;
+        b=ATN2FaW33WdpiCdbE9zuAo7UoVvJqYLLv7NgdUL744AkB4fLfhcNJa8t72qlAD83iR
+         kzLUGUIrGOcLXFCLdz4zpyX6LjqLt5hn7ORC0s3RTLwjKBkDB+TKNPk//XHE1ZqKOoir
+         Hfhe28LTCRGGlUS1jN+9y+w6PlpVagIiiST7jS5U9VJOiWaMp2wjRi/9uZgxjyGeVXUz
+         Ws7NvHxbiXMM3852WawaAf+eOW14ZwbvvlMFocgqDAJ5RBnbjMZO0PZ9M2PkMImTR8t7
+         edCKyoos5rfd9cncooTu8NZk6yLdAw1wsmeMcuQm9A+kXQcydPB0evFZAV6K+t6FLbsS
+         yVtg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBkyaCQbkhKXL2KCcmQYdl+Re0U+CSsCC/CMnAFA6ph6hYbfRZb6k5ByPk8f9sHvEf1aa9TRlG00fqbn/AYg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzESfJUMcMN/V4qL6zvEQV7A6mguNIKtS86CG7Ttfpm3Pscx/62
+	wFD+7ENHOf5Z4k/DqmlmzRzWzzFVUCqwAH3jqaM35dNxvMRMJOHfMGi3
+X-Gm-Gg: AZuq6aLrAcQoS3W+mdpiDJc2E/jsgMwcO0sKDTNoxhSti+1Zsm4AFl8SRMW0zSGzvlU
+	MRPysX5TCBpcoSb9r8QktPlIGV+7L5SIMcxwVxs4PPR9e8LxOVaeERjtnQlT2L9QMzBWX8Se+41
+	AjCUbqr7qm9LKTlR5c2W/D/t63qKKiIl+seuaAEFU+c+21T8Fg2mDxlSCFi3133ZjMh+FqRGLyl
+	JI31dWAHEStgquGi/Iru8dFdyyXhRI3nBv5Wru0xzBNJlHBxX58tC6X3CdydWeo7gYgRvpqVGLk
+	w0OfFgBt3yc8UoD9+mLn+WXZy02uOfqICLJ9s/VWeZHxDVlX4aW4u87RSqEYYdYobwdfO9cPGRK
+	m7WUrSDCB9iT8xlcceJ6gfnPE7K1D3Mk+n0DZW4nLUn1S26ALSpPLUpnv7qdFp6WJPszQ9ZgYzw
+	JYs2ncw7Uhw6vTV5RtT0W4LIEGczJH9cBvGDdXcRGYqkPC5Ybm4JOB5CN6l7eEkMMQTinjd3u64
+	fT/1i+1Yrak7Bs=
+X-Received: by 2002:ac8:5914:0:b0:4f5:fd34:bb02 with SMTP id d75a77b69052e-5032fa1b725mr17902391cf.57.1769522803996;
+        Tue, 27 Jan 2026 06:06:43 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50335bcfd1esm506441cf.30.2026.01.27.06.06.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jan 2026 06:06:43 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 082B7F40090;
+	Tue, 27 Jan 2026 09:06:43 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 27 Jan 2026 09:06:43 -0500
+X-ME-Sender: <xms:csZ4aRZ4GFQau_NGS3Bc-kMA0gmg0Pj5QmaaXrUd-whebsOndbsxTg>
+    <xme:csZ4ae6EBPiK6SrKpBecEB7SaGToruvcj6zyNDQ8dQ846981u38TRrb3Rq7fCqpQh
+    4zcAykodt3JDUECnDskGSXkd1XoG-8m902hd-bXH6UEbU9IimTFNw>
+X-ME-Received: <xmr:csZ4aR94rDF3ylgsATTpYA8RiKRm3PowsnMie6TQ2nJXLuhIzDjTFqpniv5PRTmmquy9tyOFeaJhC2ous6eskqDpnm29aQYt>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduiedtjedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedvvdeh
+    tdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
+    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
+    pedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgvthgvrhiisehinhhfrh
+    gruggvrggurdhorhhgpdhrtghpthhtohepthgrmhhirhgusehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhi
+    esghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothho
+    nhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhosh
+    hssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:csZ4aSZLmcZTslfcBwf_apOsrW2QuBXY7B4zrIzpJf547DD1aVvI_Q>
+    <xmx:csZ4aS4Gv_04iOHhN5IO2gDEWkMDoCk6MqmQ5SfWcIDN3tPoEMJSsA>
+    <xmx:csZ4afnoEN42c7stMeGB6MDXNJ_FgYZEsKEPi6X2-u72hYfBxEyfJw>
+    <xmx:csZ4aaE1hjmML2mg6Z0XQBMfNgFCj_I7LGVa8JNfnMEo8MNI1W_Gjg>
+    <xmx:c8Z4aQjDP1FMQ1x943zP7cCP4_p39NhFxs1WCpdJvtP1NHwS2Sz4EYiN>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 27 Jan 2026 09:06:42 -0500 (EST)
+Date: Tue, 27 Jan 2026 06:06:41 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [GIT PULL][PATCH 0/1] Fixes for Rust synchronization PR of v7.0
+Message-ID: <aXjGccnQ5mj-Lwb0@tardis.local>
+References: <aXAnTVnprfDnj7se@tardis-2.local>
+ <20260123054624.8226-1-boqun.feng@gmail.com>
+ <20260127083014.GT171111@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-rust-analyzer-pin-init-duplication-v3-2-118c48c35e88@kernel.org>
-References: <20260127-rust-analyzer-pin-init-duplication-v3-0-118c48c35e88@kernel.org>
-In-Reply-To: <20260127-rust-analyzer-pin-init-duplication-v3-0-118c48c35e88@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, 
- Tamir Duberstein <tamird@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1769522154; l=4239;
- i=tamird@kernel.org; h=from:subject:message-id;
- bh=J9h3BctZhtdKmb7cEw6+613P+IgYkCI1Ng1aDGOU9BE=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
- MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QPemx9I9p0FL8tYmnhHr/FuvsMLBa4PzD0WMq4+BxhjiGn0JSqE02nwJc7QJsBXrtN4BWJ+MPIh
- 8RbI7Hoq9/ww=
-X-Developer-Key: i=tamird@kernel.org; a=openssh;
- fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260127083014.GT171111@noisy.programming.kicks-ass.net>
 
-- rust/Makefile: pass `pin_init{,_internal}-cfgs` from rust/Makefile to
-  scripts/generate_rust_analyzer.py.
-- scripts/generate_rust_analyzer.py: centralize `cfg` lookup in
-  `append_crate` to avoid having to do so for each crate. Remove
-  hardcoded `cfg`s for `pin-init{,-internal}` now that these are passed
-  from `rust/Makefile`.
+On Tue, Jan 27, 2026 at 09:30:14AM +0100, Peter Zijlstra wrote:
+> On Thu, Jan 22, 2026 at 09:46:23PM -0800, Boqun Feng wrote:
+> > Hi Peter,
+> > 
+> > Although we chatted about this over IRC, but I figured it might be
+> > better for me to just send a fix PR for this, so here is it.
+> > 
+> > Thanks!
+> > 
+> > Regards,
+> > Boqun
+> > 
+> > --------------------------------->8
+> > The following changes since commit ccf9e070116a81d29aae30db501d562c8efd1ed8:
+> > 
+> >   rust: sync: Inline various lock related methods (2026-01-10 10:53:46 +0800)
+> > 
+> > are available in the Git repository at:
+> > 
+> >   git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git tags/rust-sync-fixes-for-v7.0-pr
+> > 
+> > for you to fetch changes up to 6583920e15fc567109e1c64ca58c917f52f40736:
+> > 
+> >   rust: sync: Replace `kernel::c_str!` with C-Strings (2026-01-22 21:36:57 -0800)
+> > 
+> > ----------------------------------------------------------------
+> > Fixes for Rust sync v7.0 PR:
+> > 
+> > - Remove the usage of `c_str!()` in the example of static_lock_class!()
+> 
+> So I'm notoriously bad at keeping track of version numbers; but I'm
+> thinking you want this in tip/locking/urgent, right? Thing is, it
 
-Reviewed-by: Jesung Yang <y.j3ms.n@gmail.com>
-Acked-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
----
- rust/Makefile                     |  2 ++
- scripts/generate_rust_analyzer.py | 13 +++++--------
- 2 files changed, 7 insertions(+), 8 deletions(-)
+No, it's targeting tip/locking/core, it's a fix to the PR that is going
+into v7.0. Or I guess I could just say it's a "part 2" for the PR to
+reduce ambiguity?
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 280a18617627..2461c5835a7e 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -583,6 +583,8 @@ rust-analyzer:
- 		--cfgs='proc_macro2=$(proc_macro2-cfgs)' \
- 		--cfgs='quote=$(quote-cfgs)' \
- 		--cfgs='syn=$(syn-cfgs)' \
-+		--cfgs='pin_init_internal=$(pin_init_internal-cfgs)' \
-+		--cfgs='pin_init=$(pin_init-cfgs)' \
- 		$(realpath $(srctree)) $(realpath $(objtree)) \
- 		$(rustc_sysroot) $(RUST_LIB_SRC) $(if $(KBUILD_EXTMOD),$(srcroot)) \
- 		> rust-project.json
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 147d0cc94068..b96d3cbe3df1 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -35,7 +35,9 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     crates_indexes = {}
-     crates_cfgs = args_crates_cfgs(cfgs)
- 
--    def append_crate(display_name, root_module, deps, cfg=[], is_workspace_member=True, is_proc_macro=False, edition="2021"):
-+    def append_crate(display_name, root_module, deps, cfg=None, is_workspace_member=True, is_proc_macro=False, edition="2021"):
-+        if cfg is None:
-+            cfg = crates_cfgs.get(display_name, [])
-         crate = {
-             "display_name": display_name,
-             "root_module": str(root_module),
-@@ -60,7 +62,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     def append_sysroot_crate(
-         display_name,
-         deps,
--        cfg=[],
-+        cfg=None,
-         edition="2021",
-     ):
-         append_crate(
-@@ -75,7 +77,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
-     # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
-     # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
--    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []), edition=core_edition)
-+    append_sysroot_crate("core", [], edition=core_edition)
-     append_sysroot_crate("alloc", ["core"])
-     append_sysroot_crate("std", ["alloc", "core"])
-     append_sysroot_crate("proc_macro", ["core", "std"])
-@@ -90,21 +92,18 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-         "proc_macro2",
-         srctree / "rust" / "proc-macro2" / "lib.rs",
-         ["core", "alloc", "std", "proc_macro"],
--        cfg=crates_cfgs["proc_macro2"],
-     )
- 
-     append_crate(
-         "quote",
-         srctree / "rust" / "quote" / "lib.rs",
-         ["alloc", "proc_macro", "proc_macro2"],
--        cfg=crates_cfgs["quote"],
-     )
- 
-     append_crate(
-         "syn",
-         srctree / "rust" / "syn" / "lib.rs",
-         ["proc_macro", "proc_macro2", "quote"],
--        cfg=crates_cfgs["syn"],
-     )
- 
-     append_crate(
-@@ -124,7 +123,6 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-         "pin_init_internal",
-         srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
-         [],
--        cfg=["kernel"],
-         is_proc_macro=True,
-     )
- 
-@@ -132,7 +130,6 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-         "pin_init",
-         srctree / "rust" / "pin-init" / "src" / "lib.rs",
-         ["core", "pin_init_internal", "macros"],
--        cfg=["kernel"],
-     )
- 
-     append_crate(
+Regards,
+Boqun
 
--- 
-2.52.0
-
+> doesn't apply :/
