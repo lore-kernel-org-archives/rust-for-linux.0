@@ -1,120 +1,149 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359DF2571C7;
-	Tue, 27 Jan 2026 08:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D9729AAFD
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 08:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769502627; cv=none; b=QRyVKZ8TMJ3ZUFHGJL17WryChpDR5D3hofpPsap4RdGr+SxIT5MRDppL2Lq2fxWKbznFR+j7E4Vh5e+HVR44ZSg7FXidd712UzlDLa6W5LPk6xsDFeXwiST/JgRpGNb3oXTb+RIyoK+1AsNkADaavALHzBkIWx6TO4wM4kh/ci0=
+	t=1769502627; cv=none; b=kLcEEm1xxCjJXDKtUHADNN9OEvZ2C9OUCHpV3+PttcpxOsFctjfR0I+G7MRVCSg+zm940rHgLWmJXUXhl5JMtcNEYW7BW4wiRpGBBobaiStcp+og4Ro2zAS3bL6pxrELeEnq4TCIbMUb0QvAJSuyhkTvo06VwvHidBbKX8ncytE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769502627; c=relaxed/simple;
-	bh=Qd9o0dhwwbCdLcEjAR+CNYNTHgGjnJKzdZKupLKpFFA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BSo9LxB/yQLYhH8PVQ9/wBb3/kctVuhPOjbmoQoEKmiHgQLQYgXLv3EUG0uUdAEkdh6TUnCMh+fznf0QhMOzobavki/H/A5VlioLD7hL4gUS4axV1tml05dOTbnLXpF3yYkwQKniy4/2DjDExez4SxPHkJ/3YIX6QJO2Yjj9A04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 69791998fb5a11f0b0f03b4cfa9209d1-20260127
-X-CID-CACHE: Type:Local,Time:202601271604+08,HitQuantity:1
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:35cfd77d-35cf-4da1-a4a8-7c1512706972,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:a9d874c,CLOUDID:da141f988872f93dfd5565e7e8f36d3e,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|898,TC:nil,Content:0|15|
-	50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
-	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 69791998fb5a11f0b0f03b4cfa9209d1-20260127
-X-User: pengfuyuan@kylinos.cn
-Received: from peng [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <pengfuyuan@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1400207429; Tue, 27 Jan 2026 16:30:18 +0800
-Date: Tue, 27 Jan 2026 16:30:15 +0800
-From: pengfuyuan <pengfuyuan@kylinos.cn>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Helge Deller <deller@gmx.de>, Hans de Goede <hansg@kernel.org>,
-	Lee Jones <lee@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
-	Zsolt Kajtar <soci@c64.rulez.org>,
-	Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v1 v1 0/4] [RUST] Framebuffer driver support
-Message-ID: <20260127083015.GB965382@peng>
-References: <20260126081744.781392-1-pengfuyuan@kylinos.cn>
- <ed48e82a-cb94-477f-83c4-b2d87ae3cde6@suse.de>
- <DFYG7MT5JINY.1T8ZZ4ASIWXU@nvidia.com>
- <CANiq72kRhkLKcc279CacJ8CnQ18JEZ4A9-vkcg_k4Jw88O4EDw@mail.gmail.com>
+	bh=hwBaBoD9OSacw4NnzL4jIYitbGlgLVKwETo1gtKVJMY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=P6HyCFfUPh5kpa/GNX4LiBvpY8mOKHkQE/nSIKhaAWlMzOsH4PDihfupBDxwb4YJVqvPWbSiROB4cp4Xno1a9FMn5k17XP6gzbsPqNZBlhjD80d2/IrAX4xlJMJIwcixKu8odCzx5hsejMCG1omMwuTk6msPAWBvqK/vB4oxzOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0sa3Y7m3; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0sa3Y7m3"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4806865a01bso3480305e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 00:30:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769502623; x=1770107423; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/QInygNzsk4saCgmIsdJYB7YPnJtRMIU+9UtY5fzvQw=;
+        b=0sa3Y7m3HNGsr7fkVSDpnkJNBj4lh52Ggl2RpEHmdnL/RWRjiLD34qNxbzfCdUPc1f
+         jnRs0FfB6QvBsztXJWZT0oFjfctCJQYF/Qq8/Gs53lE0oWRq4DTuqHNVZx2uFapqOVuo
+         DSoPVlGWPZYBFcEmLpHqqT8Ogr7FmVcqicxDKGtr2FKQ3rq53t92ZnIR8jGQSIaPrKmt
+         4BECzhox9+Vrwb0VcadUGTCpRnl05LTp6bFoICe+0TPUAiSwFEgxXW8OYeK8j5JgDfIh
+         hbUO4jqCDr+bCs4HEm+yMQqwGHfw/Sw+R3IYjUq7DkMGXOjVVFoM445HcprCYIOMYGYj
+         dW8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769502623; x=1770107423;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/QInygNzsk4saCgmIsdJYB7YPnJtRMIU+9UtY5fzvQw=;
+        b=qF9ZOa1ORXdWJ9D9JECjt2USOg53At8G9SJuD/baewEUJGurd8xjrLEzDs2CQ511tH
+         MJmRRlXsmlrug63Po6Pr+rLqDrCvRmXcNsOcGEVo67MZXHLzV9cTOxLcbumY5tEi1zIn
+         8FhiQpYqGodFmOh1Ip7r5UKXJZ+J7E2ZWnJJjz9h10M/5Bx+3Vo2Yia777jTAF8Ea3C0
+         9/EezQK57YNmzSHovPm31K5c24O2C+47j/TCDuqpNt1voVYSpm0wPbUnWt5zF2dKjYVP
+         yEEwfQv+eIYreTBu9zjnzPMHMA3dg2N/NulmT9T6DO48vi5V1zMiGYl0QOdxbMc/M1+6
+         BkIg==
+X-Forwarded-Encrypted: i=1; AJvYcCWU29+WeQS4z2Cos7bK+qE3SdPHE4vunHhrBrmKflzCzHXfHY4KkYh0Mfymj0IbVbn9mX7I8skNeXHW+FFHMA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeYkmTGueBjpQ9a/srGn6lDVVjxLt7jIcQsO6xCXLni/xyLPRt
+	DaLNWW5GWC7PDlpZY/yBcPXEPzCzm4GHflJDK2VnDp0mM6H/ke5PE+7h8cySuoFlSAhzRQUlGQO
+	9OvS1yVh1jvVH2buIKA==
+X-Received: from wmo16.prod.google.com ([2002:a05:600c:2310:b0:477:9654:b44c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3b24:b0:480:4c20:6a06 with SMTP id 5b1f17b1804b1-48069c486a7mr11321405e9.17.1769502622747;
+ Tue, 27 Jan 2026 00:30:22 -0800 (PST)
+Date: Tue, 27 Jan 2026 08:30:01 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kRhkLKcc279CacJ8CnQ18JEZ4A9-vkcg_k4Jw88O4EDw@mail.gmail.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIh3eGkC/42NSw6CQBAFr0J6bZueljjiynsYFnwaaAMMmQGiI
+ dzdkRO4eIt6i6oNgniVAPdkAy+rBnVjBD4lUHXF2ApqHRmY+EqGLL6WYcK+KKVHv4QZh0LHOU5
+ 8QGMppSxjsXUJ0TB5afR92J955E7D7PzniK3m9/7nXQ0atMQlXdIbNyyP1rm2l3PlBsj3ff8CB qg0OscAAAA=
+X-Change-Id: 20260107-jump-label-rust-maintainers-17040992e7db
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2119; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=hwBaBoD9OSacw4NnzL4jIYitbGlgLVKwETo1gtKVJMY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpeHeWER77Zri73/W6N/5KgdP27HFRlfQCAO16s
+ zvIVuK/Gj+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaXh3lgAKCRAEWL7uWMY5
+ RmNfEACK/KILBMeokBf3bUhZoyAQxazhasStI0fs4LHhWp87r++jsgfqmVhaQmrs3rR9wjz4ZNV
+ kn3Ww2ivOrm+i7sHtgRVgsNqALiVrQ+XX/Zqbo5ftGFsvBhYKHDaHuVAn+hva8mD3dvnVl4u8p4
+ gXX36HcKmbxYoRqZsM3Y9+yFDQMaCElJ8vQPmW+CTD/6QDMn6gMJ2Vo3uwmeLtg91kGC2UfjucG
+ 3o4U+YfUIZmds4701Cs43jb+ccqcuFhYq4+UHJfI8rOgJ4WuGDSxD+9kfaWp4lD1rvZy1L4adlj
+ PNm5OPg1pcPsOzuW1YZCkmRqUQ+1MVVXUGSjziNBryyAbHoU3w5F+oKrFkQ3Ik4u5929Nxlfyuo
+ gAHV7KFkWucVU+ku7Cnww7QM01tuC2Wxeq11yntS6w7of6jaugCHxEXKSXK8k1KCdYeov7rtmo0
+ OqeV8B9COkcglj28oHd60djn0qI8MH7mCopVBTobsFdWrvpg6RQC9SeeSuWy8TPfr7TXOAifvpP
+ m3uDU1LFNIMM2atvSbFX4Nu1UXFOjighhGJ9MrURq5/ANeOo6bOkLGtKmuVlIEHrMrkpz4Sp7lC
+ umC7jQMgcGMYR0P8PLalR5EE50hG2FdEzW9xZlPnuJWm7loTkKiiOaRb2RYtBIEelG7gfXkfciy AzAKVkEy1dCxWgQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20260127-jump-label-rust-maintainers-v2-1-11b7c30b11d9@google.com>
+Subject: [PATCH v2] MAINTAINERS: add Rust files to STATIC BRANCH/CALL and TRACING
+From: Alice Ryhl <aliceryhl@google.com>
+To: Steven Rostedt <rostedt@goodmis.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
+	Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Jan 26, 2026 at 12:46:41PM +0100, Miguel Ojeda wrote:
-> On Mon, Jan 26, 2026 at 11:28 AM Alexandre Courbot <acourbot@nvidia.com> wrote:
-> >
-> > This, and the patchset is also obviously AI-generated.
-> 
-> pengfuyuan: the generated content guidelines I mentioned earlier this
-> month in another of your patches have been merged now, please read:
-> 
->     https://docs.kernel.org/next/process/generated-content.html
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
+I realized that these files were never listed in MAINTAINERS when they
+were added in commit ad37bcd965fd ("rust: add tracepoint support").
 
-Hi Miguel,
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Based on v6.19-rc1.
+---
+Changes in v2:
+- Adjust MAINTAINERS entries as per discussion on v1.
+- Link to v1: https://lore.kernel.org/r/20260107-jump-label-rust-maintainers-v1-1-702b03482f2e@google.com
+---
+ MAINTAINERS | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Thank you for the pointer. I've read the generated content guidelines at
-https://docs.kernel.org/next/process/generated-content.html and will follow
-them.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5b11839cba9de1e9e43f63787578edd8c429ca39..d1bc1bd7584896c78e517f80194d5de6828298cf 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -25006,6 +25006,7 @@ STATIC BRANCH/CALL
+ M:	Peter Zijlstra <peterz@infradead.org>
+ M:	Josh Poimboeuf <jpoimboe@kernel.org>
+ M:	Jason Baron <jbaron@akamai.com>
++M:	Alice Ryhl <aliceryhl@google.com>
+ R:	Steven Rostedt <rostedt@goodmis.org>
+ R:	Ard Biesheuvel <ardb@kernel.org>
+ S:	Supported
+@@ -25017,6 +25018,9 @@ F:	include/linux/jump_label*.h
+ F:	include/linux/static_call*.h
+ F:	kernel/jump_label.c
+ F:	kernel/static_call*.c
++F:	rust/helpers/jump_label.c
++F:	rust/kernel/generated_arch_static_branch_asm.rs.S
++F:	rust/kernel/jump_label.rs
+ 
+ STI AUDIO (ASoC) DRIVERS
+ M:	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+@@ -26474,6 +26478,17 @@ F:	scripts/tracing/
+ F:	scripts/tracepoint-update.c
+ F:	tools/testing/selftests/ftrace/
+ 
++TRACING [RUST]
++M:	Alice Ryhl <aliceryhl@google.com>
++M:	Steven Rostedt <rostedt@goodmis.org>
++R:	Masami Hiramatsu <mhiramat@kernel.org>
++R:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
++L:	linux-trace-kernel@vger.kernel.org
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace.git
++F:	rust/kernel/tracepoint.rs
++
+ TRACING MMIO ACCESSES (MMIOTRACE)
+ M:	Steven Rostedt <rostedt@goodmis.org>
+ M:	Masami Hiramatsu <mhiramat@kernel.org>
 
-For transparency, here is the disclosure for my contribution:
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260107-jump-label-rust-maintainers-17040992e7db
 
-Tools used:
-- Cursor (IDE) with Claude Sonnet 4.5
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-Parts affected by tool use:
-- Cover letter: The cover letter text was summarized/written with AI assistance.
-- Code comments: Comments in the code were written with AI assistance.
-- Learning and development: I used AI to help analyze existing Rust for Linux
-  framework code (e.g. rust/kernel/drm and similar abstractions) and to look
-  up existing traits/abstractions while writing the code. The code itself was
-  not fully AI-generated; I wrote it with AI used as an aid for querying
-  existing abstractions and patterns.
-
-Testing:
-- I tested on a real ARM64 machine, manually swapping six different
-  graphics cards to verify the changes.
-
-I understand and can explain the code I submit, and I'm prepared to respond
-to review comments.
-
-Thanks,
-pengfuyuan
