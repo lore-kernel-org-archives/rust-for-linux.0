@@ -1,110 +1,103 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7A71FDE01
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 05:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640992DB7B8
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 05:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769491245; cv=none; b=uDN6h3TewU4XXW1ailg9TnPKqO2OotvtVWFOGA9jeCZRrNOXRhLFGPuu7Oz8Deb+KOEqqMtaemJwT2P7jockMxuvIlLpbXWpj3mC9NaiMavJSN8++RRYL8by1JSgoTJywfDYhJ/Nq42ZOCcNfqnI/e9Y2Ue5MIvdTCLIpYtQCao=
+	t=1769493413; cv=none; b=MCo+b2pf/MesdiH5CQNoQGUFAatHnBquDE+aZDRd+SttQXT5cUbQQw/0DbAEFKBIink4Ud5yl2sXFnVGhKwh4CHgU21RcY/rt6S5goyr/9k1rJfPogV0XY8Q5RFoB1/v11yZ2Dd68jJpPmQCs97ilPycs+DkBTQq63bETSjunFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769491245; c=relaxed/simple;
-	bh=mZBl8GIUWmM/EKOTDFkupIvO4PA/8SXCYwuoqP2UO7g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GHPFz2MzCryYMvgXLVtfNpXtl63m41CVh1GftVjExe5M0EccoqHYKu6IOkTYtlLI649bPsdERP1fZTEuiDRpxBJiTaCz5jXrMpBaImpV/ZtGbU3Q08UCVTaoW9CfBLj9vpJnl/GsbCDIJKrP+HGUZo6qTX+fIyDTeyuWT8n6gRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QutnZT+M; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QutnZT+M"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so55789745ad.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 21:20:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769491243; x=1770096043; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=F6wAX1Zovj19NzcpBaNON6pwgReLt1GKp42ZyseUkIE=;
-        b=QutnZT+MereIHCgpwFI3PtcEGMx4hd2qXDNQ6GfnbPnPpVhXjyr8tSZQFbcyz3jDO/
-         84ltF1qGPr2a7CPpiu4rsQH5vNEA2B0nmWHZI++mIitEQotOPMbR/8d9Mlat0ekjv3gl
-         60D//y/vu5GTmK6MJtlSoCXH8Ou3TZ4LGPtode85TAYtEJiUIe0TCLBAtBQTpvfZQbFi
-         heKTjJIxpvQnvLJPcetadWzbyrMGXYlqXbvppefNWrIPBKLWP8M1b4SKsRCv6BzpRljG
-         PuQI3kC0Xevd/2TUUrdmvn6cez75xhv5q8JwSZelekXiNt1U/MdixOlQP8tOSqp1YjVa
-         +BEQ==
+	s=arc-20240116; t=1769493413; c=relaxed/simple;
+	bh=j0vZ6Q4EKRxXa4qzSSiF565beROQN+SYo7XhjBoj2a0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KzxVAqVj5Y+SKmjfzf9V7txIq66S91oYS8SQmG3HxQD13Iw52SGp0aVLzADF7/qGoeKo25JgQ6km27DLAyh5O28ORmwkri1pNXwdBu18HkPYqOVCoQSQLSbDKFf2pTaVIH9RoDyUh5BC5vzM8dwBnN73TQVmEpwG8PsxT6WXx8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-649523df010so4724946d50.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jan 2026 21:56:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769491243; x=1770096043;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F6wAX1Zovj19NzcpBaNON6pwgReLt1GKp42ZyseUkIE=;
-        b=mwzCF7FKvNLcuMXGnBJzzE3i120cP72a/ZJNyourA5K1yUDdNLegNF3x+Jl/ViITdB
-         FQG9k/oST0rJqF/Kx46af5wqKXlSaqrDb64bFUqFlNBBbB7PjkYPIxyCwmoQFlVF9skB
-         NhWjiTQHVDPnAYaCikFq9laYBNNOF7orqYwiwyMeVDfWMFkzt+g2E4Crg17KkqOifM/X
-         +nstdQG2LkvTyNQV6AEzLDyhIB9qRlk03OVJysVDhpqP4U9i7wYAWYa+UdWqDFXR6vbV
-         OTj4OXJFqFrvO9NzRbRPmpxDMJW2VIaZ7PhFfpftel+9g75TnVf2HYiLDOWAt1F8NLs6
-         dPKA==
-X-Forwarded-Encrypted: i=1; AJvYcCWbRcVNHP6Lx59m+s90AIXEa8LUFnaSDw2KZTy6SbgOzK/1Z3FF7mrpWvbPBsZ43UgMVv3pM9SutX7/0xtzPw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgPZUknzptY23yPzVx4rKCYRg8QkuX6nG4KnDXO/HZzGgU0Ttj
-	A+0DsNyhdxj4y93UvsQy4fwDJrE0StLuoZz2ifuNMjHPZTZt7a7YgEK6EKFBO7pmLfQ=
-X-Gm-Gg: AZuq6aK1Uz7PiG93YPEp7I9snVS2DhgeoiuT9nr7OuB0YyYthZBKgXTVu+qeNzqiNjj
-	+VuVk0ZaKAtTiiyyMNsc8otIB8Fu1k8dtIDm3pmKhzTuQ7UYtlzeZR+4AkzMtRYjEXVgivQlLQg
-	vcHfq1Vj/c4eOWKytg01ymoxNMyrNqJaFgBpo4g21kNA7MkA/WPpZTyXFNyJZHsUKiUYFYtm08F
-	3e7ssXsZ6zKWRWebp/WzD5S8iYJj37Gw+vVaIs/hLN0JfboNdVFOmG0EvPwe/XaF3tGcUBma/iV
-	cGud4x0yLw2tQuBAgG46KZsIh2YGGmNwj4IJzcEtrlNgLz8y/Cfovu+r9ro27Ld2W0NF6W2cl05
-	HwvOOgSCPt4sxpAuMW07RkQRSrCu1jZFN1o+YotaZ/A0BBL/eMySGHFvj9ySe8I9bk7zNcN0Lhq
-	REPhDhJHnYtfk=
-X-Received: by 2002:a17:903:22d2:b0:2a7:5751:5b27 with SMTP id d9443c01a7336-2a870e192ecmr6697375ad.39.1769491243136;
-        Mon, 26 Jan 2026 21:20:43 -0800 (PST)
-Received: from localhost ([122.172.80.63])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802dcd9e1sm102853215ad.25.2026.01.26.21.20.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 21:20:42 -0800 (PST)
-Date: Tue, 27 Jan 2026 10:50:39 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Len Brown <lenb@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 2/4] rust: cpufreq: import pin_init::zeroed() from ffi
-Message-ID: <qkp35jvv2bpoqtuash5uok2krhzjfnpyxzflsndyv6gxrkk7th@7b2gjgibhtnz>
-References: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com>
- <20260126-zeroable-ffi-v1-2-0ef101d1ed85@google.com>
+        d=1e100.net; s=20230601; t=1769493410; x=1770098210;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OWuoa6jyT2ZRnL9RvQBPgOBuuHBW29UQFIDur9MA4VQ=;
+        b=ecZsOV2SP8GlncB9tKdXYd3QOnq+4ygqm/RAEvKE9k2+boe/PflMPByaxC4gtdX8Y2
+         1/JqMMKnMPjcbhXyPC2gqT+t/8yNXUPiCZxcEqXKswcN3yXBS5bTFjeSa1ri2oMbnLUK
+         OGeNDnCFm1vlYM5N+KhXiwLVWfWOpIB4FU2Zh2oEIZ3GTRnBPqOStx0z5Di09SvkHauh
+         nEFWw/HoQHe0ZwmREimByH5rwSXY0ye2P8X0r/6Mdmo3U3oFzSjAmMWtHTv/vl4sZv1t
+         tai8VdWiamGjBvubW5s91nDzz6vepJWJ32bzo7KjqDmpvaHl8juDRcnuBA3DdXdn8RGr
+         dE4A==
+X-Gm-Message-State: AOJu0Yx7eKkgNeFSAcPibcO9e9lrhWNQLys0gy+kJVWAwX/9F1Pog85z
+	D9psUpj9oobmpZvzeDGU44/w1251LT4GxKMtzLoyv42dyOF/n8SsxVX1LAzlKOsR
+X-Gm-Gg: AZuq6aIoAEmgR5qyz2uuEGsF5sKKAurPA/UpDS5NTPx2Z3qjcvTQ8Ca0xAOlLma+WwM
+	hMvppEToP6OUJr715ZPKcp3GvkKeZ37uWT0NBO1duU0uiNBq68XzLwOjssxk33Js8JTngEaKi7H
+	gz/oRB/d8g68MnkR0VpYoV2n0JBDaXXZaMsyVLedRvMXRGFm9ikl4rX9ezwlZ35GOzTAK5u6PFi
+	B9eZ5egpEg57PFguB0zIUYlQdd7WhdeVbSh344wCx36xRKjSnxtZ96s0Kowb/b/Dpf6iGxJA3hC
+	XtpxG3WniSq8kaX85oUqsCWdbJhjxPRS8Easy0lbqD5m8pcGNSu5TVngMxgW1sHmxMSUG46u9Y+
+	BjFRYHraq+jqMtGoB7jTgVh0055NKdlAdK9MzpwCD6rgyT432Mc9wn7VPivzZE0OB9oRldpsJCm
+	BlmgLStWcqTCO3VrivvFHm+Ne9pU8DVeTDhSTj7dNos0GzRAnKKKlP3r45LQ==
+X-Received: by 2002:a05:690e:d8a:b0:644:7822:95cb with SMTP id 956f58d0204a3-6498fc461e0mr280395d50.60.1769493410455;
+        Mon, 26 Jan 2026 21:56:50 -0800 (PST)
+Received: from [10.0.10.3] (2607-8700-2200-dfb7-0000-0000-0000-0002.16clouds.com. [2607:8700:2200:dfb7::2])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6496c4d4244sm3873434d50.16.2026.01.26.21.56.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Jan 2026 21:56:49 -0800 (PST)
+Message-ID: <40cb01ab-e165-4f21-8e66-d003967d91db@kylinos.cn>
+Date: Tue, 27 Jan 2026 13:56:43 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260126-zeroable-ffi-v1-2-0ef101d1ed85@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/7] rust: Replace unsafe core::mem::zeroed() with
+ pin_init::zeroed()
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Benno Lossin <lossin@kernel.org>, Atharv Dubey <atharvd440@gmail.com>,
+ Moritz Zielke <moritz.zielke@gmail.com>
+Cc: rust-for-linux@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+References: <20260120083824.477339-1-sunke@kylinos.cn>
+ <CANiq72noQv1rE=13CP9Ci1WAUONqN0bqq-z1r75n_572ZWA2Ww@mail.gmail.com>
+From: Ke Sun <sunke@kylinos.cn>
+In-Reply-To: <CANiq72noQv1rE=13CP9Ci1WAUONqN0bqq-z1r75n_572ZWA2Ww@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 26-01-26, 13:05, Alice Ryhl wrote:
-> The zeroed() helper was re-exported from the ffi crate. As this usage of
-> zeroed() has nothing to do with pin-init, use the new re-export.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/cpufreq.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-> index f968fbd22890546db1758d921e3374359ef9d00b..fadba8e669be33911a30be0254d3d4dcba9f4226 100644
-> --- a/rust/kernel/cpufreq.rs
-> +++ b/rust/kernel/cpufreq.rs
-> @@ -1012,7 +1012,7 @@ impl<T: Driver> Registration<T> {
->          } else {
->              None
->          },
-> -        ..pin_init::zeroed()
-> +        ..ffi::zeroed()
->      };
->  
->      const fn copy_name(name: &'static CStr) -> [c_char; CPUFREQ_NAME_LEN] {
+Hi Miguel,
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Thanks for pointing this out! I wasn't aware others had already submitted
+patches for this. I'm fine with any arrangement, and I'll check GitHub 
+issues
+more carefully going forward.
 
--- 
-viresh
+Best regards,
+Ke Sun
+
+On 1/26/26 03:24, Miguel Ojeda wrote:
+> On Tue, Jan 20, 2026 at 9:38 AM Ke Sun <sunke@kylinos.cn> wrote:
+>> This patch series replaces unsafe core::mem::zeroed() calls with
+>> pin_init::zeroed() across multiple kernel modules.
+> A few of these were already sent by (by Atharv and Moritz, Cc'd):
+>
+> https://lore.kernel.org/rust-for-linux/20251129124706.26263-1-atharvd440@gmail.com/
+> https://lore.kernel.org/rust-for-linux/20251129135657.36144-1-atharvd440@gmail.com/
+> https://lore.kernel.org/rust-for-linux/20251030-zeroed-of-rs-v1-1-1c46d025128e@gmail.com/
+>
+> In addition, they were also sent by Benno, and in the issue he
+> mentions "re-sending", which usually means just adding your
+> Signed-off-by below his. Otherwise, if he is OK without authorship,
+> this should most likely have:
+>
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1189
+>
+> Cheers,
+> Miguel
+>
