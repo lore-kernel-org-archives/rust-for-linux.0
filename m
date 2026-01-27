@@ -1,71 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D4E28726D
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 17:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9EC327206
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 18:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769536041; cv=none; b=ocmuo3NO+jDmoifOfdCydlbwRS/rEkPCHTrJYuAN8gRG5UGG++nsUQ39ys3bX/2HzzA6oDINd+A0KJ5lY/iDaOGRnwvf6gPV4nJvomkaTeuckKi4qtnFSgP1BEiv8xr8nRAVMfHyi6PVvbnFfxhG5hpeGUJBMQZArptKFanMiYE=
+	t=1769538705; cv=none; b=GUCgy0mlfoTnejxt/K4q185iTw7zE2X/w+LJmqvvjvT/rD0daGSsVyl6/vKn4ShZNwOmpBz6FUQsYG4oIFwnl8P2SA0BFO1mgqozo2tUMWBeqm09R1iG77EDEReTlYVYhPqqoZaOglJfVvM59bgu7J3J6KTvxIx/GiMEmrKw9AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769536041; c=relaxed/simple;
-	bh=hQNErM/bV7rrO/YbECWerJ9EWqbY2Imk5C7sF6BuoJU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=UfdgunejgKooXS4vvLD8r5g1gT/nPOX8GIglJnDYRYYOxz4Z/CfURNsOL5SluFnB1PDD9ApiiVFD4WFOKqCVQcHH5K3NzU0nTFNkaD+7r0u/gWojAm1jVss5kSOXayVWjBFkbsp5KD/Hd06lq4eNrpD8JPilPGhfBX8idajeh8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxaDJEvZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769538705; c=relaxed/simple;
+	bh=h26afcKOHIVNnzkGt0ZdZvKmdm5p5/NPbHS+3QBbrPQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R25Dkwewt0pY+9Uonc5TOplydapK1Vc7ptHSzaME2n5eQ55rU3dl+uBma0byGb/ByVrzYP4pTs6lHsJYivm8X//si/0qzVWsPr+o9nRGIvLSDorwnZyEaKjH9eK2SM3FBI2Zaf2R7ubMdaPa0tUcq7KtYEEUkQdjEj5MEarjIuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dxRAU8Kh; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxaDJEvZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E28FC116C6;
-	Tue, 27 Jan 2026 17:47:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769536041;
-	bh=hQNErM/bV7rrO/YbECWerJ9EWqbY2Imk5C7sF6BuoJU=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=mxaDJEvZLAhILxj792ameaAxSrEcYJgX68Yw90nf03nNgQ5+uyiFPruEqMY/xEMk1
-	 HenQSGr6orvi9mUKmbiAsVSoStq9/be8PRR9M+RYgw4+e0oTgxI7o1iMW6a6GSYunu
-	 NZbcoDD+FNMORnopKugtrdeVce/s/QFYE/TC3Rd/N3pl7PAHL53O80qZ+onievXU/6
-	 DLKH0CMQu8wk+DqlfJnztKxbuBl59YOYbJ9lbYesDT1Ll0RAfY1U3owIRXXpAiEgQP
-	 QcUKDFx1eN9Z5GVAPnJVpdOiXNUvW6xlao1pb7Zpe666yN4qtKUmeWOsN/9mNzjpLG
-	 NRScZPZJYIDpg==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dxRAU8Kh"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a76b39587aso8135ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Jan 2026 10:31:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769538702; x=1770143502; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=M7H/8xfB5IYsah8RhOLV2MePrkEzYaBFh1rOK2YldAs=;
+        b=dxRAU8KhslJocLzcAVGwR+vqSEYqpg8Ysyi0osRbrHcf/xSeWJNyXtHVgJRWpREJL6
+         hOlp4NHzoH1DMXNUcLAY0TKSt+1/Bp/4idayQSHWNkiE8QgPpPi0H8PzKmmMxbbRucNE
+         lMvZjSCFqb/Uz2NRbq9hHYpp+b+MNo3056c9PmXEggtCBtcCKFDCRPIMRMYPwNJ6bHvI
+         xdVRx83fvZUduDu4jrGHPCUYZRw+IYgAokzkVQWeknFO7b3YJxEfMIUh3glL0s+jS3yf
+         liDKSUY2ilfAhrpzQHS/ukk1RGJdV3TMynt16xvmxgpGYy99/xKmdCth+r7jwJOq7KJP
+         2sFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769538702; x=1770143502;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M7H/8xfB5IYsah8RhOLV2MePrkEzYaBFh1rOK2YldAs=;
+        b=hr5gxHAYcHFQAbgi6DYSTxEn51YeA9sqReo8EWdx6wSkWt6RjprakYstZ14X/yQI4F
+         05A4MFDuIShc4azK9STFt4gP5Zsw2BeSn5Yt/Dl2RMB39pk2DBXGZX15XDFreeDsmgbx
+         z6nhl0yDrbfL2DWXsHoDh6mVFMyINrn3DJrQQTdnuOjXylZ6im1aoimsDLdVEWEipeYp
+         K8SLx+dLzTXwdMl07AKbCSKLuaU0hgI1VGoHG8jfj6vU713rw3rTQBQ2++j9k1PqLT9P
+         pH0Vfq8cCd7+tfolZH+27N6Za2qyNian6ZqriCUlvF0938b4gxKR5Wcjnwb6RZds2uWW
+         4JNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+HalWIl9xx31/iQOZIe6Hir4ODGcBO+6RA05K4iuPMDBunuJOL4QJEEuHt0JjICHrKLTSioY+a9fYuxDEAg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxgm6DGUU6ITfCcIpq/uJP8nynB/PmSMOkDZWNTs6K5atNnw6/i
+	lGqATaaecYuD4D371U9sRA6UXOUnE7kbbQytQI4kwz63e16haBwsYK6zU/rwCZvEmA==
+X-Gm-Gg: AZuq6aInUs33WCMO7eSJaiQ/MkksPW4VTGiExClaOmmJtsF2B2BligwhRO3en0OwBT5
+	4/s5/brBYtnZcLokDnJ1aTIPYqCGcgtyfqsB7u7fj/m1b5NYXMPwlN/2xbfCQqQJ6DuPmnx23Ad
+	KHu+uAZqJStH17BpjcHseEc6/coT/ioRNVBj5OMPY+Az4i9IFmtc5dixdBbDqCmRtq4Pj3FcbfY
+	5bJWRLEdRJ0pwp/wiyNlMLYVe6mKrZkGuKPmsxXkKdydDN1UorGa7Rz0tc/5odJT6kshxpaTeQU
+	Hr6yaWLJE2ONaNp+NdfAQ1DejfLSvmhH6xsXgUxSnunLvUz6MVVZiE/YhUf+AWM3M2xFjAzGVhf
+	qT92GN9Yru6LQrtf4BzD27vEPygTtgzbqPkWUOAO7/rQhzDwfk1ea3hKVgSepvhgXBmHbKm5XPE
+	6Slu3tkB5bluHcXNgaRiMKqctlcynQ/1RILaWQNKXimoLM1+IXqw==
+X-Received: by 2002:a17:902:d583:b0:2a7:6fd3:c11e with SMTP id d9443c01a7336-2a870b4f72fmr2828205ad.18.1769538701664;
+        Tue, 27 Jan 2026 10:31:41 -0800 (PST)
+Received: from google.com (28.117.125.34.bc.googleusercontent.com. [34.125.117.28])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b4c3b1esm605245ad.63.2026.01.27.10.31.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jan 2026 10:31:41 -0800 (PST)
+Date: Tue, 27 Jan 2026 18:31:36 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	rust-for-linux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust_binder: add binder_transaction tracepoint
+Message-ID: <aXkEiC1sGOGfDuzI@google.com>
+References: <20251203-binder-trace1-v1-0-22d3ffddb44e@google.com>
+ <20251203-binder-trace1-v1-2-22d3ffddb44e@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 Jan 2026 18:47:16 +0100
-Message-Id: <DFZK68UQ44F4.O2HV8PYFC4LX@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [RFC PATCH 0/2] Initial klint integration
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>
-To: "Gary Guo" <gary@kernel.org>
-References: <20260127172330.1492107-1-gary@kernel.org>
-In-Reply-To: <20260127172330.1492107-1-gary@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251203-binder-trace1-v1-2-22d3ffddb44e@google.com>
 
-On Tue Jan 27, 2026 at 6:11 PM CET, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
->
-> This RFC series introduce klint integration into the kernel.
->
-> Klint is a linting tool (in the form of a custom Rust compiler driver,
-> similar to how Clippy works) that I have been working on since 2022.
-> It was initially created to help lint on code that can trigger panics on
-> allocation failure; this feature has been long obsolete after we started
-> vendoring alloc crate and subsequently replacing it with a custom
-> implementation, but over time it also gains some other useful lints.
->
-> Lints that are considered ready currently:
-> * Items available via kernel prelude but imported via other means
-> * build_error/build_assert calls not being optimized out (klint will
->   provide you a backtrace to ease analysis, as opposed to just a linker
->   error).
-> * Stack frames larger than desired (configured via CONFIG_FRAME_WARN).
+On Wed, Dec 03, 2025 at 02:48:09PM +0000, Alice Ryhl wrote:
+> This patch adds the binder_transaction tracepoint to Rust Binder. This
+> was chosen as the next tracepoint to add as it is the most complex
+> tracepoint. (And it's also an important tracepoint known to perfetto.)
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
 
-Great work, Gary!
+This approach seems to work well considering the limitations. I wonder
+though if it would be more practical to simply pass the individual
+primitive values used by TP_prinkt() from the start? I suppose the
+downside would be the extra overhead with the tracepoints disabled.
+However, this might be neglectable and the solution much simpler?
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+> +static inline rust_binder_node rust_binder_transaction_target_node(rust_binder_transaction t)
+> +{
+> +	void *p = *(void **) (t + RUST_BINDER_LAYOUT.t.target_node);
+> +
+> +	if (p)
+> +		p = p + RUST_BINDER_LAYOUT.n.arc_offset;
+> +	return NULL;
+
+It looks like this should have 'return p' right? Sorry for the late
+review this has been picked up so we might need a fixes for this.
+
+--
+Carlos Llamas
