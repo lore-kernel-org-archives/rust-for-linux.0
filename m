@@ -1,91 +1,120 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7BC21D596;
-	Tue, 27 Jan 2026 08:30:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359DF2571C7;
+	Tue, 27 Jan 2026 08:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769502620; cv=none; b=rcUcAjoYnmzGmSHz+k2TdDu7tXfxr6IHctpLqa5aTQbVEZoBMGtKBBnZOtmjhJx+BHSFo787I1WZG5JmO0koIbbMJSRz1qI7gaBPfvC5WYZ1rlsr4I1tPa9/iBwWYfg6+RT2lQXYxwl9nZkUIvtrOqPeb9WXC9UxKm/v015BDzI=
+	t=1769502627; cv=none; b=QRyVKZ8TMJ3ZUFHGJL17WryChpDR5D3hofpPsap4RdGr+SxIT5MRDppL2Lq2fxWKbznFR+j7E4Vh5e+HVR44ZSg7FXidd712UzlDLa6W5LPk6xsDFeXwiST/JgRpGNb3oXTb+RIyoK+1AsNkADaavALHzBkIWx6TO4wM4kh/ci0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769502620; c=relaxed/simple;
-	bh=06ZezMlsvXKYs2JiZ3hBOuKmJ1ryOs2vHGeIpRsXldY=;
+	s=arc-20240116; t=1769502627; c=relaxed/simple;
+	bh=Qd9o0dhwwbCdLcEjAR+CNYNTHgGjnJKzdZKupLKpFFA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H4gWKchuWqp3fCJrkSyYcinvxeFALBvJpNW7ZalQB5pFnM8SUdl9D3AAOMTI4S6T6e+AZeKLuuFCY+bUjNifrjMZ2QajPzgvDLDMsueskIgHHKR+Z0ZCULT7jarRrh+Gx6YbgJordQmKs7SAWuQJXXM5ONn/KsdokRTGm7oim7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=In3BfqfX; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="In3BfqfX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=bl03uKc0ELJ2Fi5p/6I6WEfhdgRleeMOE843RDNRsm0=; b=In3BfqfXDoigiRGfq8EygTNg4E
-	AFo+wAActwTIkmj7hIceb3+S5V0yruJ+MnFvIacpMHC9GY/tpfPitejNDNd90nrC55hf4gkkke7N2
-	uxPjQVy34sgfqLWKc0yxZ93Fc/euY2UIQsxq2vqN7S1Ha6Sm72NTDlKY+dbWUr44+0js2mlFNK2EI
-	611O8dby59F9IvDbPS2qA2wM2z+1PZzTo6W8WqKA9R+j7r5MGEiiCHdJDXoSxV3uHqQG7KvoB5JO+
-	AkTMdQd9W36o37tP0libbUkZewuNzuPf8dOvykrr2LgHnNUKTTFjst7ySpjxhE5S15p4dstTGKWDa
-	EUVBI9OQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkeSl-000000079a1-1y7J;
-	Tue, 27 Jan 2026 08:30:15 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id EC3F0300756; Tue, 27 Jan 2026 09:30:14 +0100 (CET)
-Date: Tue, 27 Jan 2026 09:30:14 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=BSo9LxB/yQLYhH8PVQ9/wBb3/kctVuhPOjbmoQoEKmiHgQLQYgXLv3EUG0uUdAEkdh6TUnCMh+fznf0QhMOzobavki/H/A5VlioLD7hL4gUS4axV1tml05dOTbnLXpF3yYkwQKniy4/2DjDExez4SxPHkJ/3YIX6QJO2Yjj9A04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 69791998fb5a11f0b0f03b4cfa9209d1-20260127
+X-CID-CACHE: Type:Local,Time:202601271604+08,HitQuantity:1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:35cfd77d-35cf-4da1-a4a8-7c1512706972,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:a9d874c,CLOUDID:da141f988872f93dfd5565e7e8f36d3e,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|898,TC:nil,Content:0|15|
+	50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
+	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 69791998fb5a11f0b0f03b4cfa9209d1-20260127
+X-User: pengfuyuan@kylinos.cn
+Received: from peng [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <pengfuyuan@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1400207429; Tue, 27 Jan 2026 16:30:18 +0800
+Date: Tue, 27 Jan 2026 16:30:15 +0800
+From: pengfuyuan <pengfuyuan@kylinos.cn>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [GIT PULL][PATCH 0/1] Fixes for Rust synchronization PR of v7.0
-Message-ID: <20260127083014.GT171111@noisy.programming.kicks-ass.net>
-References: <aXAnTVnprfDnj7se@tardis-2.local>
- <20260123054624.8226-1-boqun.feng@gmail.com>
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Helge Deller <deller@gmx.de>, Hans de Goede <hansg@kernel.org>,
+	Lee Jones <lee@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
+	Zsolt Kajtar <soci@c64.rulez.org>,
+	Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v1 v1 0/4] [RUST] Framebuffer driver support
+Message-ID: <20260127083015.GB965382@peng>
+References: <20260126081744.781392-1-pengfuyuan@kylinos.cn>
+ <ed48e82a-cb94-477f-83c4-b2d87ae3cde6@suse.de>
+ <DFYG7MT5JINY.1T8ZZ4ASIWXU@nvidia.com>
+ <CANiq72kRhkLKcc279CacJ8CnQ18JEZ4A9-vkcg_k4Jw88O4EDw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260123054624.8226-1-boqun.feng@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kRhkLKcc279CacJ8CnQ18JEZ4A9-vkcg_k4Jw88O4EDw@mail.gmail.com>
 
-On Thu, Jan 22, 2026 at 09:46:23PM -0800, Boqun Feng wrote:
-> Hi Peter,
+On Mon, Jan 26, 2026 at 12:46:41PM +0100, Miguel Ojeda wrote:
+> On Mon, Jan 26, 2026 at 11:28 AM Alexandre Courbot <acourbot@nvidia.com> wrote:
+> >
+> > This, and the patchset is also obviously AI-generated.
 > 
-> Although we chatted about this over IRC, but I figured it might be
-> better for me to just send a fix PR for this, so here is it.
+> pengfuyuan: the generated content guidelines I mentioned earlier this
+> month in another of your patches have been merged now, please read:
+> 
+>     https://docs.kernel.org/next/process/generated-content.html
 > 
 > Thanks!
 > 
-> Regards,
-> Boqun
-> 
-> --------------------------------->8
-> The following changes since commit ccf9e070116a81d29aae30db501d562c8efd1ed8:
-> 
->   rust: sync: Inline various lock related methods (2026-01-10 10:53:46 +0800)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git tags/rust-sync-fixes-for-v7.0-pr
-> 
-> for you to fetch changes up to 6583920e15fc567109e1c64ca58c917f52f40736:
-> 
->   rust: sync: Replace `kernel::c_str!` with C-Strings (2026-01-22 21:36:57 -0800)
-> 
-> ----------------------------------------------------------------
-> Fixes for Rust sync v7.0 PR:
-> 
-> - Remove the usage of `c_str!()` in the example of static_lock_class!()
+> Cheers,
+> Miguel
 
-So I'm notoriously bad at keeping track of version numbers; but I'm
-thinking you want this in tip/locking/urgent, right? Thing is, it
-doesn't apply :/
+Hi Miguel,
+
+Thank you for the pointer. I've read the generated content guidelines at
+https://docs.kernel.org/next/process/generated-content.html and will follow
+them.
+
+For transparency, here is the disclosure for my contribution:
+
+Tools used:
+- Cursor (IDE) with Claude Sonnet 4.5
+
+Parts affected by tool use:
+- Cover letter: The cover letter text was summarized/written with AI assistance.
+- Code comments: Comments in the code were written with AI assistance.
+- Learning and development: I used AI to help analyze existing Rust for Linux
+  framework code (e.g. rust/kernel/drm and similar abstractions) and to look
+  up existing traits/abstractions while writing the code. The code itself was
+  not fully AI-generated; I wrote it with AI used as an aid for querying
+  existing abstractions and patterns.
+
+Testing:
+- I tested on a real ARM64 machine, manually swapping six different
+  graphics cards to verify the changes.
+
+I understand and can explain the code I submit, and I'm prepared to respond
+to review comments.
+
+Thanks,
+pengfuyuan
