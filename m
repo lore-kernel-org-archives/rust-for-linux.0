@@ -1,119 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFCB371077;
-	Wed, 28 Jan 2026 18:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769625464; cv=none; b=ODfobNgB3DRcwvPbR+2XTqMFODDA0pXnPltkpWoa2l82DXiAqcQxDaP2UE2Sqm7LCLxPjbqEXVr2jfTXYd1vW81YVE72+27O16uG5A70rttkWppVf7v1vI9rHPWLKB+Kd/TGhDFojtYfBHiptapNaOKPt0RBubhM+xi6e4ou+04=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769625464; c=relaxed/simple;
-	bh=I13qmJwfcnCCX0pUmPY6awCKcIVVpjZVGVo7I6TNs50=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E3XWnx8dTMH7sr6uWtTs0JnRo6dCuPbm4rGfqJbcB5/cz0QTKz8+fILmlOmEepEnojMXMIMORtXYbTyw36Z+pRXDVAgNIBKZCVDi/WNBc6lwmv2AHPEkXgOkhBH+ZABk4hrbmaA5CwrddW4Ya5htCt8LT6GyplWwOzRBODvIPNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9ZlYvLx; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8796F371072
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 18:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769625694; cv=pass; b=QzjEMaeVdWMg2kPfzgMCAiiVkZSVp55sMH4TA1UajIBDebgofi+72QTvncqzZk/WHWGpQ8z20A7Gzt8bLKNKN9tx2fcMqdRuvVWnqOAGtqhIex4TkuJI/3cOk7LM3bwR7i5ak3vjs37nb5ZIGsYbp4gIq1gNF3UONjzdIR3n0/U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769625694; c=relaxed/simple;
+	bh=ttG3qlAFFJpT8PzbCCCV8yd14ECEBjB5uHYqXeSabVw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lMxKxXbPxZ88CzSw3XTttn20Q2Yzh3zmKufe59+1+iA8iIIXrBujUWCTJjhNjf8ZNQYpik7wb34qQkBbpI5zD57Ao2LWovZ9/2T1ADniqA1IAnsZQrdmLotDZeoFLBvvXF1Hljh1FL+RA3FVWjoEYQBv2adc+p/eqqVeZbgZzPI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nIhOfE+d; arc=pass smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9ZlYvLx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43CFCC16AAE;
-	Wed, 28 Jan 2026 18:37:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769625463;
-	bh=I13qmJwfcnCCX0pUmPY6awCKcIVVpjZVGVo7I6TNs50=;
-	h=From:Date:Subject:To:Cc:From;
-	b=u9ZlYvLxuLrCjuyaGB92q7YwVlXALNV0Md7CUT/dLjXyRhXf1SpW/oB5VNdmBDcEL
-	 I3Cxi8BX+eD6/iDqVKAWK7hHOddKuDmrdbpVULIWHUyPLOFyiLx3lm4326hYOtPAFW
-	 ugPeXxbE/7nyquoiuvpGTcFiZ+GEjSRBbGbi7obm3L4vrv+GDaZdqjw9sVHcvi985p
-	 XKwJ78di6y8l0A9aeVe3YYvYD2D1hZvczEyfzScaaU1vMNW24Y9MO9R7CxGzoomMqf
-	 +hEU0X3kIobwZWgqpYUhOqiWwB3hC9EgQeUNDyDla+yu+lRF3RoSD0NFOt7aMgHXsR
-	 0CtHCGEuFAnTA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 28 Jan 2026 19:37:12 +0100
-Subject: [PATCH] rust: alloc: add GFP_NOIO flag
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nIhOfE+d"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59de306cec1so11483e87.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 10:41:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769625690; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lmLbSZXoTAvPKWdO+Fxi/fhD79xji0hQHtIcB5JNvqgY9OGQivhVLgEEtLSVihiffe
+         g+rhLCVtJZb26qKQckEE4t4fQv6Gh7MfnIXXID3afm7WM0mqpjVN9n5PglQQU7C/d2Za
+         yG+kUMZYPBkcaDnuCskkll9x2XV5/0HrlS+hpqJf2BAc4TAvLwn5Bs6EtaZb8FCPObG+
+         D1CFVuwuWtiNO5lrkgSgAnXbnAdYqg6/RD+TWHcpywQDgaNikovP+5ej+B5EpTITGSDo
+         fo+ADH1QTY43ih1jwx5a2NCq5l2v+dg2viJeEnsqswCcOYPz3+Nb6A+C7fUdodfdkM+1
+         AtTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ttG3qlAFFJpT8PzbCCCV8yd14ECEBjB5uHYqXeSabVw=;
+        fh=A7VqZIctnrtN+EDO9wssa4+Dn6OvKIQ39OnxL5/r4wY=;
+        b=L9RePTFT0PbSJ+YeXTdpgwO+keH6MYm2e6gjtHkjv1nq0KmAN8rDoLM1bKa7fTv8hj
+         LdPbifEfGfGBvZERNQZcoXm3k1rvXL8zwc0wZn5TQQMUrx2AlWnKZmA7SvBN0CmweS+e
+         sQAtzQbsi06DPG+K9G/7ml4xZmQJ29/Vb5GfTbt56HNl+TL0rmlHCMqH/r1f7Zq6P6Wn
+         CvzMQsRGx0AJTLNT98wSu6TTJ8EPy7ICoFXFAGsJRN8LKrSeICL5NqKfZWRWXf+RY6v+
+         ahI9y+ZKClXwHTq2CJ0P0Oz6MSmk2L3O90iH1ftOM99asnL0WISpLAWIyUnEyPDbTBjZ
+         FRgQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769625690; x=1770230490; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ttG3qlAFFJpT8PzbCCCV8yd14ECEBjB5uHYqXeSabVw=;
+        b=nIhOfE+dTBMrNelpJsPHTipYi9b3ABH3v8ngrY4IC9RANgJzE/+u8y6GdRyLJNAYtL
+         8hOEFEnkGzv6zJY0IbPPpsVMNaiMROaHSpCil9sMzX7rznNsO4K4xcuvAwb0xl8f70p5
+         n0pLXQDQonFwZDiiLVt+BrmILa5t/Fzj0Sa1HTDmwac3DWNnSXzAIjfK2Kb3HfoYvDmK
+         Fvnwu0Pa/JlYeyel8EmCDjIMulMxSVQdP85HG3eR7Q0qEP696qA/kv5iThOzlOIaKcjs
+         7Sge3jJhxU2pt8mzw3qRq/lNdTg6RYt85tGeoxUitVIxvJtfm3a4M7yvwnc6C3KkJv/f
+         OWZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769625690; x=1770230490;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ttG3qlAFFJpT8PzbCCCV8yd14ECEBjB5uHYqXeSabVw=;
+        b=hYoohyA6JzHsqvzKjUscFfIaVUW3SyKDKQPXnytlaJN6TEPfregVjvI5XKKTH04gmc
+         VQAN73zQhJbWxe3Zp/hGNj0kt1QITBNaHua1MOaBdViBX2i4jGKSWRd2pmPJzQluPhh6
+         RUQsxznCDv4yNsdkxlfvH5m9xA/hsXF834ehZKEPZCVBsymstsQrr1k86A0fAK+hXGZr
+         5aX+Q/E9s3XqR0akyR9nvgQ1azejJ7YpwJlHCtZP42w90f7NBqAiRJOhal3/BUgJp5HH
+         8qlcOexU/YO6aJY/GUGUNLxZ5bOp3CXfQlXR/jFFKi8HZgInKLo/YTRgKQdiH6aTdKUY
+         E9NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxF7aCYzvcts/VYhvzvmGPbxUBxSO28LJZZWhhAL3a7Ku+zmF/KUaLjNgEXS3nv52VUS/K2UqCSdPqfKSQ/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvHMHg65u/GY/rrdOAOBGW19ywOZ6DQ5XwcQyZciv/pQBH/exT
+	5sGJ2uFKQyTIwthCwhdKwg6npyTqd2LNLzwA8CWezcCKUusc8AIvKbVHLCZOZWvPq3QHA359Q3H
+	AIEG+qGGR7Zn9f/Uy6ls6GLE+jUUefCUfvtOE
+X-Gm-Gg: AZuq6aJmx1LhSP/Q4UA0FdFZbi7bvjdrkb92I8XqSKQfAEMboagyOdqj6jf68V3fj05
+	00j1zr1XxokqVDufhQpyyqFkWbjhtqsXevr05qSdSG44d8Y7sWaqexoHk6rBW5sCBSB9moOdRlZ
+	ygbnAf2KgUCcNlUk5R95EflKNCIwYQ20AOYEKoFGlTNx9+v4C7PyjFyiXHMK/0GldPZKi6Z7U52
+	9lVjgM/vycAyFoMy6R0lWCXBE4fnzgyszAL+ijqmcImHsbUmO+WgnC3spSBkobbZe4JmWyy3im1
+	xHhkBLjPXg/W5d/Sq8z4t+BRGJNbhzgHhtKIgctxnjNmuYM+Xr55NvQzxSwthJh8KyiUokZdwiG
+	5Hh/r4N5frRVX
+X-Received: by 2002:a05:6512:61a6:b0:59e:d5d:116e with SMTP id
+ 2adb3069b0e04-59e0d5d1197mr105557e87.0.1769625690185; Wed, 28 Jan 2026
+ 10:41:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-gfp-noio-v1-1-9a808fc49b44@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAFdXemkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQyML3fS0At28/Mx83bSkFBPDVENjUwMLCyWg8oKi1LTMCrBR0bG1tQA
- Rw3YWWgAAAA==
-X-Change-ID: 20260128-gfp-noio-fbd41e135088
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Uladzislau Rezki <urezki@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1997; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=I13qmJwfcnCCX0pUmPY6awCKcIVVpjZVGVo7I6TNs50=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpeldZ9sX7pM2PW6foqrgEDGlxBHgzB5LIVGuHg
- cKM2F46Zu2JAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaXpXWQAKCRDhuBo+eShj
- d+jsD/kBy2LvML03X3KzOhGn3rYBrumLdmJH2KE0Q7QxdgDJSWGVUoBoNCN+rzClevWH2GJyGm3
- +AvQQNO4RWyYQz4hmXv/zMqdJyizayFR2oEUa4A6bDkt3J/cToL5MS1I9ZV9PFJ9N27J2WlqxPF
- URlqPc3/1YBYcoSTEMYymAzfdZ7Aa0DcEDlaxMQT4QHlwCIl6uLV6HGpSvcLpV4r9IZg6kwkYd1
- 89M385IpAKfLFCzX3fE4n3LbRnuN36IxnJrnlZzrksBdD6rEM6NxVHwJn0Nn0G+pyPFFitoHXnH
- z/sUzZMb1ZlS56hSNmSU34lsiBKb357KWxyYqcQ4TWTZhbij/EFDDc+j+d1vGq4d2DTI+Ck24pn
- ViBakr5Mg4UHXgJ5sS0BAt1bEozIbXvE3ZMEMktRYvATuGgvOL3m0mHMhvucJE2TYzsOFOOgFfc
- r6dJdWlw9NROR5Elh1QiloXA9sUlFhOEZgPD4WmH/pW6yb+08/wEty1jTAXXCfrPfgcLZuP+WuX
- K1h/nYHQdRkBcbSM1uz3JwRIFUwNR5VQqE84dAuaMh02N8tds0QHsj9NxTWtWDFntrhZuN6BWyl
- Kxez3xIuzpE/28aBUBxoIWAUbQwVd1f0rUKvlyzsAlBshh9P9aY+tRgu47OyaX4lPBIF+yuxI7H
- EqtE24TdQVXRsgg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <20260128-cache-aligned-v1-1-a4eb7c3ffd35@kernel.org>
+ <HywJSfnz6Ic-AiaoIhW4WEsxI6joJea5UuRJqh_sqpDCeyEYZrOoM9ZKLgKz0V8Q00AENEnmwXATYQjlVbMEkA==@protonmail.internalid>
+ <CANiq72=nMQb_zKOngmKWQQeESGAovC+pE2wiD7Njxxix-BQ3Fw@mail.gmail.com> <87fr7psijk.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87fr7psijk.fsf@t14s.mail-host-address-is-not-set>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 28 Jan 2026 19:41:11 +0100
+X-Gm-Features: AZwV_QjFBVQMjeaa2rRRqPEl5bIo9wrK14Tpvn9HSKMS8bhfSqRAQUx6Dlnsj_o
+Message-ID: <CANiq72my6zTs2L6FpGSG=EcnUBWy7Fs9EEJqs3JzbNP0K123=g@mail.gmail.com>
+Subject: Re: [PATCH] rust: add `CacheAligned` for easy cache line alignment of values
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add an abstraction for the `GFP_NOIO` flag. This flag signals that the
-caller requires allocation to complete without triggering any block device
-IO.
+On Wed, Jan 28, 2026 at 7:23=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> I think I wrote this before `kernel::prelude`. I would put it in the
+> prelude today instead of here, what do you think about that?
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/bindings/bindings_helper.h | 1 +
- rust/kernel/alloc.rs            | 4 ++++
- 2 files changed, 5 insertions(+)
+I guess it depends on how much we expect it to be used.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index a067038b4b422..3910ecc5c34cf 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -106,6 +106,7 @@ const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
- const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
-+const gfp_t RUST_CONST_HELPER_GFP_NOIO = GFP_NOIO;
- const gfp_t RUST_CONST_HELPER_GFP_NOWAIT = GFP_NOWAIT;
- const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
- const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
-diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index e38720349dcf7..5f6a0f7e99c03 100644
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -99,6 +99,10 @@ pub mod flags {
-     /// The same as [`GFP_KERNEL`], except the allocation is accounted to kmemcg.
-     pub const GFP_KERNEL_ACCOUNT: Flags = Flags(bindings::GFP_KERNEL_ACCOUNT);
- 
-+    /// [`GFP_NOIO`] will use direct reclaim to discard clean pages or slab
-+    /// pages that do not require the starting of any physical IO.
-+    pub const GFP_NOIO: Flags = Flags(bindings::GFP_NOIO);
-+
-     /// For kernel allocations that should not stall for direct reclaim, start physical IO or
-     /// use any filesystem callback.  It is very likely to fail to allocate memory, even for very
-     /// small allocations.
+i.e. so far we put things in the prelude if they are both general
+("core") enough and frequently used.
 
----
-base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
-change-id: 20260128-gfp-noio-fbd41e135088
-
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+Cheers,
+Miguel
