@@ -1,123 +1,101 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A9C231C91
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 14:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769611526; cv=pass; b=RZhkC33lpgHrc+dTL6INtMTB0Y9hJZCbzsY/LSlRcIidjM3OjLUEg8jn0l4f5Ts2Jym1DL0MSC6vklZSr3RmSuHaM2mS8DvzvFGGg6FRBm2ftlqDjoh0TCcQLXl0QyG5RY8Rba+cSwZB9G1vltwKzao9kmQlE+0ntOpPYILdwUc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769611526; c=relaxed/simple;
-	bh=tk8yQdZjuBC3I1uBFAy6ZFZv/4okNpnK+GN25/tKu28=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n/QQGt7xMO85e4rUMt4P9/TclICruj3gRyjpoQcliz6NE+JmdAXALcLzneMfPafdcKk5+U5iAKcpDwoFQldZ2GzrBEGqLwVIwuaeztoYqGcsrD+QYm2yg5DZgDZ+dtNsNLY17ZBXNpmcjmLu2LOIl6p7EQXsmPen4OWqnryCa4k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZBpegaLo; arc=pass smtp.client-ip=74.125.82.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E2B279DCA
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 14:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769611571; cv=none; b=Yjv6AJu8V3dZBYXCr70PHcurj2hWzQ4BUINAK0Mv4BsG1BGO9Qdeqely4PQ20EuelCeAtnGXmZZzjVG1SarTWcEdGnI3mf1SW8IZm5inEyHgXI3xcg6m9itbDUl5reFNT8bSMOSuWUYT++4DwCxhpeGxuLApTQIrwdJtTiVnHf4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769611571; c=relaxed/simple;
+	bh=x1zRG43LA/EwWbaM3PwU0X+XPRQbFtO8zNYTlFZMNxM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=M1b8s7maYH5Q8F6u4yQm69yrsVoy4jNoMI/kjGQ/CQNs8hOOJ4rBscl5SGsKZW4OzFcAqzL4wkPYiUKrpgRW8k6Z9FFvtRIct4634qLfvumnsQlJvpwVPXnIxlxFRN800OdxuHuRd2ZU9lAJCIIXjiyoJBVGAhYsUfFULyCbqVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dOdE6vto; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZBpegaLo"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-124a946a340so69408c88.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 06:45:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769611525; cv=none;
-        d=google.com; s=arc-20240605;
-        b=X0vV35oLyurfLjbELh+vTWGij2pm4yiaQkv3yGrVGdz75GHswqvXYMnaLdKl0ssbz/
-         7u//7WkSWsZtQSEEsNbCw49HK1vlZIzognckCIrSytPjfmhT83LskMijQ4tnasNquD0Y
-         36WOQLuXTHNcwxPxQx8/54xgFNqBSCJzhMi+uM7LMPIpL9IV6K+d2GA0MvxP5QAsNNoJ
-         0GimKvZa2GWYKHUQFe5S/yUYuwHwiR8KJLZbwDLt7rVIgypkR7lMjafJnFSzJrQ8qkFg
-         55D7vxKLBazEYwKO+QU7kmcD00lA9O632rBKkYT0FCA/5ZhissE6KX4NgSrYPYZU0CPJ
-         l6aA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tk8yQdZjuBC3I1uBFAy6ZFZv/4okNpnK+GN25/tKu28=;
-        fh=xgXk4Vv8VF+lrcELCjYJ7kIVrv9TLCcS2ykIoxmvNcM=;
-        b=ifnto/Xej7PCm5J0Iq/lggTvi6GfTYyiAPlR/alS0HL2dN5O4rIicMsyDfMW5KxjzM
-         KZy8mLYWKcLW87Ma9UnByXisS8rJiZ7CfJXgtxZRBAKptu8fJGkVNMuKcmnHBCNILtwP
-         VGTmoAXKI17WCbOFJJeaVvM0rvbbbpcmX4IwjB7rQS/2V83fZiXbwnqoshCE1tvtxatm
-         Mdz4rp1nZZfKxNiNUP0evK0qSwoPMLnlTP48DEvl/TFOysi88QjXx4B+SKgh5fTXbwTA
-         IWwlQgp2SN1joYh52DS7LTIgrTiQvRI02y79dbgAceu9fsY6UXTm9M4Zk4r2xkn/UYXt
-         LM4g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dOdE6vto"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b844098869cso682202966b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 06:46:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769611525; x=1770216325; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tk8yQdZjuBC3I1uBFAy6ZFZv/4okNpnK+GN25/tKu28=;
-        b=ZBpegaLoxWqA1WZn8FUyaoaB0Rc9iPQXI+K7lMuSOjJiWyfblc7l2mS1VmKGIHEa06
-         h8pZ/E0SUgpaQGaa56EJckobi9RBbZYEsW1qHN6WqfqGfXkv/bCqoddsg5jAoU7860fL
-         718RY7zybHiscEi3RkHgFJknlM5yd1AYPKW6VGl42D/SolfJhaFlRG/kN0c95yc6cIoK
-         dnmyDEBICH3Fig2gsZhmZx0o/+sc/6URWJdKNNYB2vDsRB9h407rHZuaf/mGw8lOO1uG
-         ciUHhMpp4n0rwwLfrItRYXiIa22FJtHWF2NJqsE3Cbas8KaZnqUDU86EzmQymX1cIBFm
-         SRdA==
+        d=google.com; s=20230601; t=1769611569; x=1770216369; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lzzY8deZp2K9s9zfZCJmROn2nWP4BNz5bRVLgnZ6t+0=;
+        b=dOdE6vtoSjDgS/LGWtfdI/o8K656flElvLr0N5uLBIrSpMLAmiIPkE0h4GqJgml2vw
+         IW3TlVIIxDhsui/4VPkJzNmAu/gi59RiJ6fd65TbLVUB7fVBJfQiW3gSSQ/Hw4aqW2Iy
+         k3qyjc0avLvWBWqCCsnN/kgir5EYBXjJEBoXk4q/fEE1esUxoOtP793rStZTWwOBdB1P
+         r9eDj7SYBmt80WY5vLMd7kKn5JLXTz92mOVZful7Lx6zcUqfv8FF1Nc/SzfTkeoCdNgj
+         nyei6Gq7tiKEpX4wJJRG2dCr3JxyFFI8dKMw0VzDAB9sWfz7eYs1c7qQt24XYqsuTrUW
+         mpIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769611525; x=1770216325;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tk8yQdZjuBC3I1uBFAy6ZFZv/4okNpnK+GN25/tKu28=;
-        b=TOJYB6gRATF5C0O/YLK23GPNaG8m0VB8a3HXYhZoaFDjPVAYygUnElnIA1rXdn5KDD
-         Vk4sCJNoAsqzDhdlKI2pMra/8GpaATEJDXcMBPagBW1cZDA5+OEfHuvXE80DglpMZ0Zh
-         jt2pNXh/6Lxd5ZblSNrHOI8qoN4+IHMbCcwC+1wfKTVlGZ75GaK5ufksH/LATQLdZAVm
-         dlkq+n02yzehcMcMono8adFwkulS4v9tCs0e2GHJayYvAhY25OmJoTMMOWcZjYCv8CNn
-         g1DKVYG8hTecuNsEKvmVZAI9qYjXTgmOXsbqrRqOclNCCbgQJ097FtJaaulaKn29GLIS
-         RwtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVQQdCbTOmq+rO98JHAEzMnYBDuZyQMsjotyc4CIYkdMvVNegfy6dwQBBFJNcHqK6F8HwAJ/8frfYC/cbtfog==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGEFtEbtYe03flu8W88bLal6+wiAC7sr1jwEMDC3Pj5tzIkPjo
-	eNqfyMGqy40IS3BrwPx12ULOnSbgBsQisHtGbbklezwlKPGe3g52flMDAoSL/mvpT8RK4Zjfi/1
-	LyenxFgjQd/WEMRb3wJgLcZKGKwzHtQA=
-X-Gm-Gg: AZuq6aL4W0PiQkNh2VIy+Tjr4VIT8GJffio7552jM8vwRSgukfaYjqnb+HnbUEgTlOh
-	Teyt9LnGsAyU11hBaj6qBCH1bImeZ6HZS/VSJPpTqYX/w29dd0mz9nR0jDWhPalDP0Tpxao9VR+
-	1yPp0Rx61CROUj7yE87qA1iUFHAL7xvskEsdPHUJr2HLcJzyy1WTz5Xkx8vRr0GqBhnl4WL42/b
-	DsIcpOeFdRN7NfW/PD+aoHl8s1Fcq1C06htPBRRcrkgOjff5lycvnV0MdD60m1GPiGDTNAHLcDN
-	PNtei0oYP4jjR1vWVeiFbqa/rAd8xW1qbU1UOu490a5dl1k8nj2UEgSYqKr3LkwclOVo59v/Phj
-	ssIfXkJ0a7KuYrKuxAF+Pa74=
-X-Received: by 2002:a05:7301:615:b0:2b7:24fc:f639 with SMTP id
- 5a478bee46e88-2b7af0ee973mr77206eec.3.1769611524526; Wed, 28 Jan 2026
- 06:45:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769611569; x=1770216369;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lzzY8deZp2K9s9zfZCJmROn2nWP4BNz5bRVLgnZ6t+0=;
+        b=wrA97tTIXjCAKIRESMFemch4ehm4+f6BeCccC4GkwB7vVRZ/MQIx92qCUDpcyKmvD3
+         zYXvJHEsAgYKvu43vgGVh4Vxyo6WtPZzdAFt2r4Ahbu7Jk046Gr1zlfMgMULqpUa6j0i
+         zZv+XwC4DAp3owSnbokH9G58YvB5L4JqzCZO03fFZwJr7zr7ZCR0k2MRDxmOvZyXFory
+         U+IqlCvc4zUMdV4JhFFqZnMD1XHFx9rw+2n/EaMHvMOdXQxP9Y+BcUZEUWyVkzFvBKZz
+         1a9mzh78jrD6db5HuAByb7tKIhgIt7SJtcGcIP3F57UCL/459VKlI6Z73IbhPzKxLPZz
+         m5Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCVf2CE0q4UzXWswkoNocRRJmQie2JLlo/5ww90BXRy7ck0DdjmhEZ50IZ6OBSdUUBX1RQfFJshO+rytUT1fGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwS65oR1JF1C4hmKrFKGvyFIXaQSogJ5vbu+38VsHfJwNhFdb17
+	mq0pGvMd4g/R4KfOz9Dx0jQBIlwvynER8u5oDUSG/ljlMJCnNGceD0DQeeAzKWr/wxzdPnhDuzQ
+	99CfkaeDt05YxHudDOQ==
+X-Received: from ejye2.prod.google.com ([2002:a17:906:8442:b0:b8d:c324:47d5])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:3f1d:b0:b88:4673:68ea with SMTP id a640c23a62f3a-b8dab45b85amr373703566b.45.1769611568636;
+ Wed, 28 Jan 2026 06:46:08 -0800 (PST)
+Date: Wed, 28 Jan 2026 14:46:07 +0000
+In-Reply-To: <DG0AU8J5K0SA.2SJVFWGAI98RZ@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 References: <20260128-cache-aligned-v1-1-a4eb7c3ffd35@kernel.org>
  <DG0AIMJXPP65.1PTB9I0KQS4LI@nvidia.com> <DG0AU8J5K0SA.2SJVFWGAI98RZ@garyguo.net>
-In-Reply-To: <DG0AU8J5K0SA.2SJVFWGAI98RZ@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 28 Jan 2026 15:45:12 +0100
-X-Gm-Features: AZwV_QiPlA_LKaEwUCgWBkHFyTCN3Tbje6sqbaG2_VlwjwPVORAZwtwQdP-hM9Q
-Message-ID: <CANiq72=LyWx+5FbZ8H2FzoXNF9TaYAf06qA-Fo83pCxP_e-94Q@mail.gmail.com>
+Message-ID: <aXohLx77gHe9b_oJ@google.com>
 Subject: Re: [PATCH] rust: add `CacheAligned` for easy cache line alignment of values
+From: Alice Ryhl <aliceryhl@google.com>
 To: Gary Guo <gary@garyguo.net>
 Cc: Alexandre Courbot <acourbot@nvidia.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
 	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jan 28, 2026 at 3:41=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> Unfortunately `repr(align())` does not accept expression or macro invocat=
-ions.
-> It's still possible with code-generation, but it'll be more tricky.
->
-> On all archs that we do support today, I think the value is always 64. Ho=
-wever
-> it'd worth putting a FIXME or TODO (or assertion, maybe?) in case new arc=
-hs gets
+On Wed, Jan 28, 2026 at 02:41:05PM +0000, Gary Guo wrote:
+> On Wed Jan 28, 2026 at 2:25 PM GMT, Alexandre Courbot wrote:
+> > On Wed Jan 28, 2026 at 11:05 PM JST, Andreas Hindborg wrote:
+> > While 64 bytes is the most common cache line size, AFAIK this is not
+> > a universal value? Can we expose and use `L1_CACHE_BYTES` here?
+> 
+> On all archs that we do support today, I think the value is always 64. However
+> it'd worth putting a FIXME or TODO (or assertion, maybe?) in case new archs gets
 > addded where this isn't true.
 
-The docs need to also avoid mentioning 64 themselves; otherwise,
-someone may use this and rely on it being 64, i.e. not just cache
-aligned, but actually 64.
+Are you sure? From Tokio:
 
-If Andreas really wants a fixed 64 one, then perhaps we want several
-types like `Aligned64` etc.
+> Starting from Intel's Sandy Bridge, spatial prefetcher is now pulling pairs of 64-byte cache
+> lines at a time, so we have to align to 128 bytes rather than 64.
+>
+> Sources:
+> - https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-optimization-manual.pdf
+> - https://github.com/facebook/folly/blob/1b5288e6eea6df074758f877c849b6e73bbb9fbb/folly/lang/Align.h#L107
+>
+> ARM's big.LITTLE architecture has asymmetric cores and "big" cores have 128-byte cache line size.
+>
+> Sources:
+> - https://www.mono-project.com/news/2016/09/12/arm64-icache/
+>
+> powerpc64 has 128-byte cache line size.
+>
+> Sources:
+> - https://github.com/golang/go/blob/3dd58676054223962cd915bb0934d1f9f489d4d2/src/internal/cpu/cpu_ppc64x.go#L9
 
-Cheers,
-Miguel
+https://github.com/tokio-rs/tokio/blob/master/tokio/src/util/cacheline.rs#L85
