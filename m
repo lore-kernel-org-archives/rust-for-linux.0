@@ -1,266 +1,96 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012053.outbound.protection.outlook.com [52.101.48.53])
+Received: from outbound.qs.icloud.com (qs-2003i-snip4-2.eps.apple.com [57.103.86.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDDD33D51D;
-	Wed, 28 Jan 2026 11:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769600580; cv=fail; b=C5axrPb7rea3GVLEGrD+DdaTy60r1TdEwdjy4qMfe7Bgwj3n81KdNiSBSH0A1qfmD+9QK4rfVkQB/WchcCOqIn4vDwhQyVhNHXjrk6/YC3gC/R+pli1iz8V7O7yayFiijk8S0R8BLz57vI+l0m0pWzbvXjAPygEvoHNJVRyY4vs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769600580; c=relaxed/simple;
-	bh=bdb50x82sbRBMeB9ZO/rHPmD38B/4fQzynqYxXy/OfU=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=XoIoB/DGtWdqSFHukXtw18ALzneB/+mGcRgfcvcfxvD/S40dqbzZZNTiCoKXxotgIPAQVf5Zm5uHdhNkhuV/H1xgh3WxV91ozbZahUdUDsECnjdbY2vvvvChyhHz01Tm7k3wJkdEJETHbHCp+4XpMmKIyZXaXounADOyCmKhQFA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=R47oYFyr; arc=fail smtp.client-ip=52.101.48.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75392E7F29
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 11:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.86.85
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769601143; cv=none; b=iWgo9dvCf9bvUWRKNXMWz6ZuW71wa0aEGYlzL+WqUh+b2Ndyp2FzsrpwruQRa2VAJ2F6hUwq2+ZWkk47NK8WDdVMRArSm5X52MNIzwo0y24i+WGbVL8H1wbTcR1YTX5exT/PtGfOvw4fesfAxTSqTR94o6EYc39aeiQ1TnOkFfY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769601143; c=relaxed/simple;
+	bh=O5jSWkRxTjrbiBytWiE4SJvQrrxfuOzLsZeCB6hPIXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j7BC5Ww0uo6BYOkjwfdMGKObq3apIJHDuXIGiWJWXqPeerJcWisO7Jwe8H66650Q0paRUPVJhn19w1JxIMR6GNyYE7aV3sMbYmXT8Py+w9SemFMawq6AVYYsHtYHXVY0QV7HIfdXIVuO7pSEnpzRkabYvZ5AXTTwCDp94OgxhLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=5bIKXOMa; arc=none smtp.client-ip=57.103.86.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="R47oYFyr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hwvGooyUKdiCa+fbSpMFKr7Sv362deaXVB1FenMBQfi0eavuGjz79nSTb531LUBwz3j8+aqgde2oYQeY5wIsX46+EZnBVVS1vB78fiENDIwUUNo0ROOkduSFGVRbWRVpWcc53h55DtcuPcEbUAjyLn0JVpStKTguz7dl1ee2jOiyYUVYf4D+Px8EIB0TpK2tQDWmUi4jb3QHqtXp1zepAztGcGMDVuluF1Vo6SiNQcBVb70w8tCSaPonfhK5IH3Jk+12nm4Oz5XTgnxtvlnzvd2B5pWvIasm9LeXbYTJAHREXtmQRhC19gEV5BG15g2Wq03JaCQQATMCQ9rnMszhyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j/Sx08D9VPm9fPeH2dwVs9wP7USAO7h+53XVp6/YTvE=;
- b=Fib9/HSAA98Lvl4gQPilQt01VLMOl6TZyJhPzRIALcTlK/NeACJ0fId5jNTqOTm+7fDr/HGRC5DwrThdaeLFL7wbtXnXet7ZEhoBwwCoBeoW1Aj6hVQQuRyN5vdCFMIzhuZwdc7pjQZar/S4X0xcIDXkRWSrtxvZa+K/oPfyDkNFAYaOZniCDDDEPvpctb7rmzLJTEbANb7j2O+V5lHkA8CFGgpo/2yQBWHNn9vMwhEweXe/rFzazs2rmQih1J8Q3zdrOQgUyoHioBv7JyMlOaotvy0Fvus1IPbhuibh61uvE7jAZPD3q/St7HGNzqVSCDK/6kXxM1T9U3QyGE5GOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j/Sx08D9VPm9fPeH2dwVs9wP7USAO7h+53XVp6/YTvE=;
- b=R47oYFyrE0Y/4ApgYoUY7PYyQQJA8xF+m9KrMUGoRQm9cO9/KLCOBB6mTGHys2+RSvZmqeA3y05j8qTtWdXLEn0lAm8GB5rJAzr0SMyMmfx692S6OVbf2ynHmg1ZvGpiq9mospeDW+MAYlVtHyxhAkJ+AOnRCCCM9WobUui+zsvxUm/xt5teNuU22q9yDeFwSmnOkCYQISoiaHuz4i2YK5rVWknf+AvVUMwrTcmlrv6IJYlT9xdW47AzIESZXNtFnhcfYyMcUTJVVpuO6H9HgkpY0KKYVEElZ4PQOjMGgb2VBb72TnH1H0AOmZ7ScZZZg+mauq2Yh+JlhC6w1BAh1g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CY8PR12MB7563.namprd12.prod.outlook.com (2603:10b6:930:96::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Wed, 28 Jan
- 2026 11:42:56 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9542.010; Wed, 28 Jan 2026
- 11:42:56 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 28 Jan 2026 20:42:52 +0900
-Message-Id: <DG071RZV1S25.22955R6F9YZ7J@nvidia.com>
-Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Alistair Popple"
- <apopple@nvidia.com>, <nouveau@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 3/4] gpu: nova-core: gsp: fix improper handling of
- empty slot in cmdq
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-References: <20260123-nova-core-cmdq1-v2-0-e797ec1b714c@nvidia.com>
- <20260123-nova-core-cmdq1-v2-3-e797ec1b714c@nvidia.com>
- <DFYQDRTTNQ4J.7DS0PAZQZ7XV@garyguo.net>
-In-Reply-To: <DFYQDRTTNQ4J.7DS0PAZQZ7XV@garyguo.net>
-X-ClientProxiedBy: TY4P286CA0001.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:26d::9) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="5bIKXOMa"
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-2d-60-percent-15 (Postfix) with ESMTPS id DF6971800214;
+	Wed, 28 Jan 2026 11:52:16 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1769601139; x=1772193139; bh=xJMnhPnxsOTqVbnqtxaxu3JPsxX/ROIvGxS1rJm3m4U=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=5bIKXOMagyQzjjcAzUFwjERei6B/w8FKHoZWUHvW381HfDiJ9CHbB/vC8BvbrcgMcENiQ/0ytgsOOV+EnaUGKhr8GccDMqUj/bdNCWEZNb2UVm+A/VOnVfhuw8Rt4AkNFPpiMZpJrBrIREiWQFkbUdnPBu3sKyN5zx1AAWCkBbD/E1uyVosDbktgeMsL54sAQ5Kg85NSwBDmp+dtRvCGY4hWBJ/uqtgv74bL3JHQhxcdcFmqOOFDhQarZtgnG3WYrORQDnifO8vsIX5dDQcnRuHebCXFJmyQ9zL4lmk00WDXxNREI6IGrXZ3RbPuYEQBXd0x69HgBijpURWvjJQnog==
+mail-alias-created-date: 1769500909675
+Received: from bee.. (unknown [17.57.155.37])
+	by p00-icloudmta-asmtp-us-east-2d-60-percent-15 (Postfix) with ESMTPSA id 9FCD91800147;
+	Wed, 28 Jan 2026 11:52:13 +0000 (UTC)
+From: FUJITA Tomonori <tomo@aliasing.net>
+To: boqun.feng@gmail.com,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	will@kernel.org
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	mark.rutland@arm.com,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1 0/2] rust: sync: Add AtomicFlag type
+Date: Wed, 28 Jan 2026 20:51:58 +0900
+Message-ID: <20260128115200.3820113-1-tomo@aliasing.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CY8PR12MB7563:EE_
-X-MS-Office365-Filtering-Correlation-Id: 584c0326-fd4e-4af3-31b8-08de5e6260e7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MXo2eFUrUGRkbXEyaFE0QnlRdzZvM1hWRFdoa1VPNEFFOVEvS3E5NkJkN0t5?=
- =?utf-8?B?Um52RmdBbm5TMlNTRmhvVkhoNFlhSFZ5dGlhanFUQXpTaU50aU8xUE5SbXdx?=
- =?utf-8?B?U1VzemtDWUZBTWhuVWNmNEM1c3hOUmxybmQwNVpDR3RjQkpQY1Y2OURnbmNP?=
- =?utf-8?B?ZzRxemNwNUN5QUZha1hXVXk4TmowNm54M3VobmlVOHZ5OFR4Z1hiM09lVGJx?=
- =?utf-8?B?ZEk1ekdhNTc0T2RRNitLQ2FueUVUS3VnT0FnZkhKS25nSkREWS9kaFlyY2Q0?=
- =?utf-8?B?Z3psWndHcHhOWWhtWkIvcSs0eWdGVU5lbU1wMUpLYU4weVNZTWhvNkJNUk5z?=
- =?utf-8?B?VlYwV0RXWEkwNUZDdFRrdmJPSDU1ZW5MQlNHdVNVM2c5aHJFU1RFaHZ1aExi?=
- =?utf-8?B?cHJpTWlVNXpVa0hwQzBoSlRXQmRxc2toVXFad3pMZWdGbEZHcDU1K3lXbVJY?=
- =?utf-8?B?Um14RFcyeUZOV0F3Y05FU2ZwS3l0bmpPYVRVNG1wVG5TNlkrenlMOU1ycDh0?=
- =?utf-8?B?TkIvMGtZUkJaTFR0YUcyNXUya0hST1hjNmhjb1MxQU5JNlVoeUFQYmxxSnB5?=
- =?utf-8?B?WjVxbWMrd2hHaWRORDFsVnhHU1llYWgwaEdjdUJucnNtTkFBaGtJUHM0TkNG?=
- =?utf-8?B?SzZNY2liUGR5ZVNWaU41R3J3L3dhQ0FOZjNES0p0WVZkNjZuc3luRCtMUjZr?=
- =?utf-8?B?QUtEY3dLYUJPVUV4VS9taERGdXFtQzVkbVFXM3g5L2NpUWNxd0l1Z3h0U0RJ?=
- =?utf-8?B?TnhXZ1BsSFFUWUxUSWNHaVh2UXBrTERZRDRjamNwWXZ3VHFVYkFCL3A2bDV4?=
- =?utf-8?B?NXg4NEZYYklkaDRaNUZPOXVwWmFHSW5KR1hXd2x3ZFlDTGg0TWlaK2RYNGJH?=
- =?utf-8?B?c3pTSXNqdW5mSFcxS1VWU21pUEd6RUttWnhuaU5mMWU5d0FZUXpKV0FuMSt0?=
- =?utf-8?B?bkdUWGVPQjc2cENEZDZyNGdEVit3ak5VdEJqZ09KMUFYZ2t3QVVvSFN4T1NJ?=
- =?utf-8?B?OXF2V2E0ZUQzZnFDWjV5NktIMmpjejA1aVUyaC9WZzBYR1dyK0VIRlZIVUMy?=
- =?utf-8?B?b2FhZ2dHN2o5WFQ1K1VhZmVyOTRIOWUxQzViNHdxYkxMekcyTmpUdWUvaGF0?=
- =?utf-8?B?VkNLa3hMSlZya2NTc2lQK3NpL2ZlWjQ0ZlA5RzVJUkNxT2tuRHlWT3QrRyt1?=
- =?utf-8?B?UWZsQmhyb1lQRERiVGpQV2o5YXZ3ak8vdSswNTNOcHdscVJMTzFsQnpTa01w?=
- =?utf-8?B?YnNsY3JkanBDeDZkVGlHdU9HRWJmRTNMajROWkR3VGhuMTVuTXpKUlBCek52?=
- =?utf-8?B?YmRLcGpBZDU3KzQvUmErOVQzS2lJdnA2T3ZKMTJoZVRLN2ZxL042V2owRmlr?=
- =?utf-8?B?YmhtN05OeDd0OGhWYTN2MTMwNkpOWmlGREVWdDh3MFBrSmZrcWpSdTlSOUdk?=
- =?utf-8?B?dnpaNmxCSEdJQWZRaE1qbi9NRnVFNHdpVGJXemNHT0xtREE0ZDBuTVR2NW9W?=
- =?utf-8?B?L0JZZVNodnVYeEJuOVcrVGVoVXJiSm13bkgvWktUOXpHWkZMd0Q2bnEyWHdw?=
- =?utf-8?B?ZnVBUHRXaEV6cHFoTXhVV2puQ0V1cXdDakIvS3Rwa1hZNUdmNkoxRXEyTC83?=
- =?utf-8?B?dkd3MEVFOVV5ejVhS3kxL0tPRU1sVlpLQnRzMFdsYjZtdUNwWDUvNkxFRWJ5?=
- =?utf-8?B?YmtVNmxmWmw4VHlXMEk0dEwzRnNFU2ZsaytYQ29uSGVXQmVrU2h6M2xmWFUx?=
- =?utf-8?B?dGE3SSt0RXE4RHBVZnkzRTZDQjBGZDAyelFLMld0ZFBVYkFRU2x5bWhvb01T?=
- =?utf-8?B?Mm0wUWR4Z3RsUTZXOTFkTXI4TUdnOFR2K09jVkcrNzlYbjd6Y2xUVklHaE1t?=
- =?utf-8?B?V1BIbFc0WUhmQllDTkZud01ISUdjYkZXUVk5RlZVZmpQdWxUUEdrZlN6M2Fz?=
- =?utf-8?B?aEZvTVJaNFkvWllpT2JIcGkyNC8wRkgyYWQ2dUhvcDRLSnEwa1JSLzh1Qm1G?=
- =?utf-8?B?YUcxVzVUbXBadDRVa2FxcGM2SkgzQi9zempYczh1dmJBV01RTUptUk9GTWR5?=
- =?utf-8?B?YStEQVBTSWoxdVhtSXluaDZQanFtTnU4eGl4UVdaMmtsT1JEN1p4QlFUZ0J0?=
- =?utf-8?Q?IwAI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZkNjNWMrckppWFYrWWJ5b1pOTUtFTkE3ZHRSSE5nMWR5MjAzaThNOEE3R3ZF?=
- =?utf-8?B?WGVkbHRIUG9WNDVnUVpSaWpEODl0MWtoZVFEMmtNTW95YWtnR2dWeUxrZGNN?=
- =?utf-8?B?NVpPdjNQdWY4NXU4bXgyU0VtSEwwMXRVQ2VVMi9zN0FtMnhjbTZ3ZEhrZ0pp?=
- =?utf-8?B?YnlSYVdBaWI0MnM3MlA1SFd0Z21iTE12NS94SGFDeXI5SnNNNWliZm92cEhp?=
- =?utf-8?B?UkVLbWRKLy9IU0RuWWYwUG9BaS9WbW1GcjVaUzNzVG4zUHJMQUFHUW1DSkVz?=
- =?utf-8?B?aFlDRTNmcG9yWGwxbWpnTENGWFd2QUlkYjcvOHhoNlVnTkZWWHUxTloxOFFX?=
- =?utf-8?B?TW52QXc1aTFiMmRidDVaYUJPMDMwamdPTHdZUVRlVUZxbCtDZ0Z6TU1oQkxO?=
- =?utf-8?B?Q1BLdjVSWjdrUytPRzdLditvVXFXTHRBUEVMdmFOckVVTnExckgzYi96M0JC?=
- =?utf-8?B?ek5ST0FxUUZnVUtsMm9lVWtkM2hBbWhCeWIyUUlPL3NQd0JUMXQ4Q0pIQUpo?=
- =?utf-8?B?Ry9qQUdQdTV2VlM2SndvS0VqelRKODhoNkhYZFZIZE9FUHovVmlpSE5lMVk2?=
- =?utf-8?B?N3VQVXZlQkRDWnVDVUJqTVYzakNrZVd2eHVET2RqbU5HM1k3L2h4Y2srMzZh?=
- =?utf-8?B?TXY1MUQvQnNOaVJoTFI1alUxOEdTZ1NjVVE4eC9qWUFwTm5YZWZCczhzeHJU?=
- =?utf-8?B?R0Y5VmxOOUhVUHdkOU84c1ZjZTBuSkFPT2pxUXZ4d2l1RTJXWlZONEp1MHFX?=
- =?utf-8?B?V1BoVW1RM25tc2VGemFlL1VtZ1VNb1Q2bDBoVWs0bTJDbmhwNEdHVHg4QndL?=
- =?utf-8?B?c0c5Y3YxQTRiK3RVWHhLbjZIN08ycUpiQVROU3JJdjF3bnI5TCtDMXlITzZy?=
- =?utf-8?B?MSsva1NRaFRER3pXNXJpeDZUYTFPSnJJb3IwNFVoa1VyWUpsWlJJc2x2UWU4?=
- =?utf-8?B?b21UZ2p3OHRQVERLY0dNejc1RG9OVmg5djd5TmNHNmdzTjZEN3N0cUVHTENq?=
- =?utf-8?B?SGZHc01pbmt6MDB4RURzV2ZmeFNKdG5TQ3lFQUVENU5NUFVhMGVNdklRSmlE?=
- =?utf-8?B?c2UvdDBXQmdyaWduUStjSTRkbTNxZURSbEQ0UDFtOUhTTXdQTzJCeU82bGFw?=
- =?utf-8?B?MnY0QjJodFkwVmxkcFhRTWhXK2l6QzdDUmloeEVVenRqQUR3UEV0NisrQkhX?=
- =?utf-8?B?QzFISlcyQTd6WWJ1N1NqTkY2aXZpZ0FVMldxZzF4akl3dUtEL0IrU2N0ZTZJ?=
- =?utf-8?B?cC8rUmpWbTRibDNVeUVVT0FFLzFyVkFIdDhSK3dwNXNucFBNc2U5TnpOWllT?=
- =?utf-8?B?aS9MLzl2V2VEMHB1Tmx1VU1yVEdiRUp5SnBRaW80bC83VFhZdEJWQ1dEdnVw?=
- =?utf-8?B?UnBKdFhyZmhRZElxWnoxRDZuTHAxczByZVBlK3BOL0JmT3paUThtR2lTR1Bo?=
- =?utf-8?B?Q0I5OEg5TzNjcjR5WFZ0VXJzS1NGcEpPc0tpYzNMTkJwVFoxcllhWVFIQVFP?=
- =?utf-8?B?OCs2ajRNckVkeFl0VlhJci84cUhvSTRQTXNNbXc3NmhpMkQvRUZXYkVob2ZB?=
- =?utf-8?B?L2hBc09tUkdiZ0RzUHZQZmlzdmRZUlR0a2NjS3BqaDlOK0lIdEQvUjdNYmhK?=
- =?utf-8?B?R0VRM1BZck5kc3NRVEdoWjg2azBEQjFyb3N3ZWo4b2hKRXRJdk92U3NEQ0FQ?=
- =?utf-8?B?QjNLa0lsY1FMdWR6RXJLSUJ0aS9NRDBaRHk5S1JBNUxGYWU1M09RcjZhQita?=
- =?utf-8?B?dTBoZ2pyZGo2RHI4dTNJbU1FYUZVSlp1bXl6RXdtK2VxRTdudUJ6MGRWNXZ4?=
- =?utf-8?B?eWpuMWh4aFhhU3RCWmJ2aVcvZ3FKOGJwV252Zy9jVUtrZXlTdG5wZzVmMU1B?=
- =?utf-8?B?dXZzeGF2U2VCY21YRkJWOU85TkdCSkl6S1VPTDRoczNob2h0VE5kM1FYVTY1?=
- =?utf-8?B?eXFlcGJNa2grU3NMREUwTVc5VUd5cHBPUEFFRy91TnpqTHFGc3ZXR2FNWGkz?=
- =?utf-8?B?dkF0WTg0MXgybXJtZFlBYU92RHNPc2dHYVRyVEsxbVdpNHdkUmNDa3JQNlQ2?=
- =?utf-8?B?L2llZVN6S1N4dUY0dUJXL3RFb1Joa2VjRVVNZnZQN0RkZlNnS3RzQ1lITXZ0?=
- =?utf-8?B?dnhRZjhTTm1kaG9ZLzI0NG1RdzMyOTZiVnNZdDJYdU81UEtndjJ6ZmtKZ0RH?=
- =?utf-8?B?ZFMrNFR4NjNtbHpTK0NpdHV2OGd5V3BKNzdyenN1Y1FTeWVCaFd0NTVMKzFF?=
- =?utf-8?B?elZnWEl0dmJmMGN4R000WDh4YWNMQTdRK3MrTjRacGtiSHRRaVJaNm04NFFW?=
- =?utf-8?B?OVBMSk40MkZJUmlQeDUzbHpKc1VkWTZXYWNudlcvQ0svaXRTb1ZQZkFtZ2hF?=
- =?utf-8?Q?IHZZ+TFXeFv4+M2BV/F7T0zsWCiT4hGvE5IGveD0S6MiB?=
-X-MS-Exchange-AntiSpam-MessageData-1: mRZ74s/mnEAuQg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 584c0326-fd4e-4af3-31b8-08de5e6260e7
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 11:42:55.9976
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hjxCBJBM7P/tQ8p3hHSpvCDcrqMw5MHX7mNhZIFQkS/vkFLsJ1R1B4sxHcKkh9KDJtKAwxkxMmb8YtOdMIuEUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7563
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: W_R3rExX1R9Obx5SKRc6akYZbkIgEzpp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDA5NyBTYWx0ZWRfX14IK0aZXCvnd
+ YtbF85q33Thkp/ggwm2RgN/HPdzLCxRp2grlV3HlL6z7Yqu1+13jFQ64BKb09PG/Yvgv0q8Mtee
+ 9jSsdJe7c3KRzggnnmOfmdsUfv3AyuS6NRSTf64t+6dktdrn0agg7J9/Jr1W5Z+llTqkpA4fB+h
+ FDbikwFxZ7+y2GKVDJoO+Temw3Zg2H8+WRzh0O9umKSlv80cXSgohyHXUexL5xX4HWRHPHnD3Aa
+ csZogvasUnqLt8ZNjmmI7Fs8PxdMpRkEzlf0NmVBVyOdWcE2l45csVfHgqNWtRJPLv0Pzq1HKDH
+ xFLVGwFJVMEiYhkjbBir5B3zy4vfXovIcfWbAaFzds84YyCsoy0rqTHeXOsXJs=
+X-Proofpoint-GUID: W_R3rExX1R9Obx5SKRc6akYZbkIgEzpp
+X-Authority-Info-Out: v=2.4 cv=R9AO2NRX c=1 sm=1 tr=0 ts=6979f872
+ cx=c_apl:c_apl_out:c_pps a=bsP7O+dXZ5uKcj+dsLqiMw==:117
+ a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pGLkceISAAAA:8 a=ena4uqGln5_Ct1VSX3UA:9 a=zZCYzV9kfG8A:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-28_02,2026-01-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ phishscore=0 malwarescore=0 clxscore=1030 mlxscore=0 adultscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 mlxlogscore=489 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2601280097
+X-JNJ: AAAAAAABRx95LmQlz0h15ruVsGzGrRfkz2gX3u9vn4FJQg5uVMl8OgqbRZazBo5jTqyGFCMSfSlZRycwmf7bROVx+PrqpVBg41ixZWmSNkEYFPd666Psd0iYawkLJIG3Hv2k/HKZO6aK2nmrZ763IZZt1MFvjZOBh4aJTjJBqmUSXTsLr27vZTMe+pW4ZuMLG/RE6biPlmmgzuIjkx1zxBRxdbOT/rXYxRVdLo670IGxHobvEiRgz9zg5nPtGLxsa7e8dHb63Cd8klAgmdVsBf/xVgRZOqSvsz9PlJVfhNa8f5H+wXz/sDhcFIiWXybPQWH6XsreTOauFaAToYJtGwQnDTToE2p4UsL75CJGHAfF2LTGrW+5hx5FyCVDpKHVJG906qstEWptk6VZ000gY4CjmtP6y/4ESXhal/X7A6OdI5CqHT30bIYZIsj7ZN1+8V8kjEd1qnRG6Y4g18g3cofXpGT9fS4W1ql9uv1K8wrEF8XqiPggpANF+gcdQIxbN/2+LIdhcE3GAueppEKDR2dlmmzVVzN7RxHsiuQDgEMD4LQ9xurDSiKl2eFtMicYoqpRN7s0H5pFxVyXTA+bXuXiEBRRdIHY9hl7a35CpTGphnaPA/mlW7NHyrixa0a8rnSik76yIq94PwLU5FCWjJaYDITe0KPfiYj7LmWEnZidVN3bf5BDGYWQKuGOWMV3kWkW3GrFNSUSGYTujKZI61XYrtWte3xpbqAyQGLn+l9KGBchXaKJ/4wTLrXnbzPDQtZWIy1S+YRucm+k7lhpudRp
 
-On Tue Jan 27, 2026 at 3:26 AM JST, Gary Guo wrote:
-> On Fri Jan 23, 2026 at 12:12 PM GMT, Eliot Courtney wrote:
->> The current code hands out buffers that go all the way up to and
->> including `rx - 1`, but we need to maintain an empty slot to prevent the
->> ring buffer from wrapping around into having 'tx =3D=3D rx', which means
->> empty.
->>
->> Also add more rigorous no-panic proofs.
->>
->> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue binding=
-s and handling")
->> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/gsp/cmdq.rs | 33 +++++++++++++++++++-------------=
--
->>  1 file changed, 19 insertions(+), 14 deletions(-)
->>
->> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/g=
-sp/cmdq.rs
->> index 09c28eeb6f12..aa8758fc7723 100644
->> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
->> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
->> @@ -227,21 +227,26 @@ fn new(dev: &device::Device<device::Bound>) -> Res=
-ult<Self> {
->>          // PANIC: per the invariant of `cpu_write_ptr`, `tx` is `< MSGQ=
-_NUM_PAGES`.
->>          let (before_tx, after_tx) =3D gsp_mem.cpuq.msgq.data.split_at_m=
-ut(tx);
->> =20
->> -        if rx <=3D tx {
->> -            // The area from `tx` up to the end of the ring, and from t=
-he beginning of the ring up
->> -            // to `rx`, minus one unit, belongs to the driver.
->> -            if rx =3D=3D 0 {
->> -                let last =3D after_tx.len() - 1;
->> -                (&mut after_tx[..last], &mut before_tx[0..0])
->> -            } else {
->> -                (after_tx, &mut before_tx[..rx])
->> -            }
->> +        // The area starting at `tx` and ending at `rx - 2` modulo MSGQ=
-_NUM_PAGES, inclusive,
->> +        // belongs to the driver for writing.
->> +        if rx =3D=3D 0 {
->> +            // Since `rx` is zero, leave an empty slot at end of the bu=
-ffer.
->> +            let last =3D after_tx.len() - 1;
->> +            (&mut after_tx[..last], &mut before_tx[0..0])
->
-> Does the address actually matter? Otherwise I would find `&mut []` easier=
- to
-> understand than an empty indexing.
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-The address doesn't matter, and indeed I am not sure why we did that
-(possibly a lifetime issue with some previous version of the code?).
+This series adds AtomicFlag and switches the list atomic tracker to
+use it.
 
-Your suggestion seems to work fine, so Eliot feel free to include it in
-your series (as a separate patch please to make sure we can isolate the
-effects of both changes).
+Unlike the previous design, we avoid exposing Atomic<Flag> and always
+use AtomicFlag.
 
->
->> +        } else if rx > tx {
->> +            // The area is contiguous and we leave an empty slot before=
- `rx`.
->> +            // PANIC:
->> +            // - The index `rx - tx - 1` is non-negative because `rx > =
-tx` in this branch.
->> +            // - The index does not exceed `after_tx.len()` (which is `=
-MSGQ_NUM_PAGES - tx`)
->> +            //   because `rx < MSGQ_NUM_PAGES` by the `gsp_read_ptr` in=
-variant.
->> +            (&mut after_tx[..(rx - tx - 1)], &mut before_tx[0..0])
->>          } else {
->> -            // The area from `tx` to `rx`, minus one unit, belongs to t=
-he driver.
->> -            //
->> -            // PANIC: per the invariants of `cpu_write_ptr` and `gsp_re=
-ad_ptr`, `rx` and `tx` are
->> -            // `<=3D MSGQ_NUM_PAGES`, and the test above ensured that `=
-rx > tx`.
->> -            (after_tx.split_at_mut(rx - tx).0, &mut before_tx[0..0])
->> +            // The area is discontiguous and we leave an empty slot bef=
-ore `rx`.
->> +            // PANIC:
->> +            // - The index `rx - 1` is non-negative because `rx !=3D 0`=
- in this branch.
->> +            // - The index does not exceed `before_tx.len()` (which equ=
-als `tx`) because
->> +            //   `rx <=3D tx` in this branch.
->> +            (after_tx, &mut before_tx[..(rx - 1)])
->
-> If this is written with get_disjoint_mut, the indices would be so much ea=
-sier to
-> understand... To bad that that API is only available from 1.86 onwards.
+FUJITA Tomonori (2):
+  rust: sync: atomic: Add perfromance-optimal Flag type for atomic
+    booleans
+  rust: list: Use AtomicFlag in AtomicTracker
 
-I for one am longing for `split_at_checked`... :)
+ rust/kernel/list/arc.rs              |   8 +-
+ rust/kernel/sync/atomic.rs           | 121 +++++++++++++++++++++++++++
+ rust/kernel/sync/atomic/predefine.rs |  17 ++++
+ 3 files changed, 142 insertions(+), 4 deletions(-)
+
+
+base-commit: 6583920e15fc567109e1c64ca58c917f52f40736
+-- 
+2.43.0
+
