@@ -1,73 +1,73 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91EB2BE03D
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 23:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF3A178372
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 23:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769643447; cv=none; b=nPL6b733hC4PhaNwDrR+DB43LOThrTjmp39Qn4gXjZZBqk/pfvzU2eS7W+vuzsk+cCkvHowsobN97z9IcTtybVVItwziTEzjwv38mcycVURNXn/qHrabD0PcJbCtxLEICVYUcvq/lDuW3740HAaJ5b3IVTKarIdQLwtrYd7jmX8=
+	t=1769643919; cv=none; b=Pe+w3dfVCL/bPFspR1z1GZKJzyelwrlVhgn99aXdzBHt7bbOBqxUr4S65WrE63tLbSplMbxtjFEIe8l3bpwSgaj5X/XeZ49606NRayLsFTOhv7gBd5isuPixen+1cpI1tT2Bdj+lBJyDJob26OHWZcZOIh0TduF1/yKmAitaYus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769643447; c=relaxed/simple;
-	bh=OUnhhLpw0G4jfOUrV0sIe5rYFeDBYm/rgYAQew5ALOE=;
+	s=arc-20240116; t=1769643919; c=relaxed/simple;
+	bh=D8IHOpzdpv4jpNHqY+5RxyIP01Gxc9I18RznU79aOOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBhaGybDQ66nkCWqP0SCFXk/nCblwJuESs2VZKdCtq64L5HJA86qSub6AhPQnaTMKV7FpDDrmlpOalAepMy7jWczUKgmGg2VBj/r34H2FZslxhqGWN9hykuKRvhhkY2KbO3WWUj2Xi1eGJ8/brUEfMHmOreAXskJED8iMDGIesc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K7/uDBpl; arc=none smtp.client-ip=209.85.215.179
+	 MIME-Version; b=YMwRLV6boNFk1R05dYpRpipAz6ioh9oXDMcXhV2a2BIZlpOxJzdrUT9YknWr1zdHeK6DJbF8XfYJZXOzfSJQosTJM6hNssubTzmQP1+VRaL9VZjJYdZTVUG+NFwe+dENPaN6rob42CKTAbUjm4eQKfiQ/XxgzJhUmWhI8SaMP/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bv/ZYJtr; arc=none smtp.client-ip=209.85.217.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K7/uDBpl"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c05d66dbab2so229004a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 15:37:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bv/ZYJtr"
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-5eeff7e8bb3so316568137.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 15:45:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769643445; x=1770248245; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769643917; x=1770248717; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ZwleCKT0WC1y4r31KovKxSZY4leqC3/LnghDg5OFIfc=;
-        b=K7/uDBplxwPaMky8a1ZlY3OKMi1ZzYN1JuDlWyk3nBUdp5ySxXmVuqQjoEBzw9dc2L
-         BZ3PGkrhKvmmYBcURQshLK/wEsZNzXznLbBwHA4KudxzULQr0sf11wlr+c4+uv/iOznb
-         9WXgBsXD8As5sOHifo+OIpIGzmx5WWc9xr4XEJ0Wuy10GUMNlrx+KU86Ud/diqipz2bO
-         cS9mpNzrq5MY7Ied0sUwu9QekIU7lijdBJD/nE+G6ZzFXfgN7jf5rlqtjUoLgVVGdMnD
-         OZ1U0kTHJ/dYGSczldBklImk0LiYybR4JP9Cqtb7X6GjGt5U9zMXdwQvO+WkteCiILAd
-         5n2g==
+        bh=5K4fiuuxH7TZZ5P2nOc2at3WjKzG7Xg5l87CzajWOME=;
+        b=Bv/ZYJtrvbChBP+Hnv6A389o5n4WWcaNqCbnBLaqZqkCIv0ChhTpSuIe03TdAGfJNu
+         iAaysftqZBiKKLXt/19VULKeEhLAS4weDohhZ/4gLbceJruBQRFKChvaWmYDZ4bAGozo
+         KzxEwA9ITck7oNAivAhbUV/q/XHXY2s0Rui9KArUBK5bXCK2uygPSBa9ww8IfYfOcg/W
+         eT9EPbwo5NzlbLEQgO4TAO0FpHXZTOXmGfGos3ACxEk++c1uysSum6tLiJWW94g1gFKL
+         e+qvreaFBEwlXq5LzHlXS2GZzkeJIpqH0pKhMxzkt1xW/r5e68kYK2pc3NAudmpwJCWz
+         kVhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769643445; x=1770248245;
+        d=1e100.net; s=20230601; t=1769643917; x=1770248717;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZwleCKT0WC1y4r31KovKxSZY4leqC3/LnghDg5OFIfc=;
-        b=fTFcNiWFxWWK4kuBeemh0tsetMC68qjGWh6a3OOhksF74o5XHYj4f6/5XjrX5mRO+n
-         CMF6QazPPiOgoMnxw6tIxI46QpqtrcR5zv+LiU7GMXWWUl1b23gzXvoryaUPhYDvYOlM
-         QCTREVUG3qm4uRILvpjXdwSGPl/F6yJADxddJlqE6ZMugv2VRUn7Jca6Z6BxY3XoyXCD
-         SlyXGU2qlLMNjWsSJrRGwMGZO4mqyP3o9/+AGT/vPY5qx3GotPOabRePgFlidTSATZ+e
-         AQnnRBL5nKVMyYBB149j1ifHh17GwiQyrvRnQCXVT/4ZK14hhMxiMjDHsgwEaeGF7OmF
-         9NlA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGwb1rqRgJMnx8p2t8RVJv4LqC93YAiAcZqsj727ZBMp0r9swrD//zzGalQs0TBrVgH3nauakUMriikStQNg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyzpSLJJsXEUCx5Tej5QjWX6alqySgUNbr3nzpdSiSDugC6fqq
-	KvybMjWlrD7vgbhOgwIRWt0YLkPVT8/kOR6jao6LdiVZE/KLZG6HkprvkwFqYw==
-X-Gm-Gg: AZuq6aLM1It211SXGh4PanST3gAI2l2O51xk1A5jCd9WkubRISeZOLege2Za6jhP9Fd
-	CNOE9Bj0kp8QMu+yTXHMK8FauA7vuji+wvnJFcFnZz977vRNJECws4scNWimrjvvlR9BmrihOFJ
-	xfScEUk4c12de9b4DJkpBPfvob+KDLz14cc87oc4leGgCvTn/NHNLFDxAkn/sGHgagHH/dn1K5Q
-	i0I8m3RV3adjTDwvBe/jACvyw36IeT9zYNDLmEJWXyWGdTaXa/Nj6E7dgYT6QIDfAtZ7HAk4aPO
-	hS9zGsJ+QUYaOHA9eofN/80AL80JPr5/djQccARJf8XaPkuMtikdVUpxORdIiMBBY5pHVGKy8g+
-	kETUCVn0iLmVpguqfDDoUiQ2Q6xgE+r9xz+Hx93EnLDu4AZa4DEBALJWBb+MBNrJoM6SeacWqrT
-	MsOcbQ+r8jMjBYsqCc5SIqIX6mSxuagdDtm9HG4A4as7bg6H61USUmCX9zpHJMwz7CY+r7rN5Pr
-	Z5T534YQxeOUig33hqlMgiCmw==
-X-Received: by 2002:ad4:5f0f:0:b0:888:3d1e:f95 with SMTP id 6a1803df08f44-894cc8c97dbmr102202586d6.32.1769637217348;
-        Wed, 28 Jan 2026 13:53:37 -0800 (PST)
+        bh=5K4fiuuxH7TZZ5P2nOc2at3WjKzG7Xg5l87CzajWOME=;
+        b=IBg3cLMlKMLld0ZbdO/U3NBu8YMyhG7uhqjDRsEkuaTx07Vzr1O3rhAU0zOWW58919
+         AmiU/aYkctJ7h1RHOc9Gvi1jNhWvELtvBfM56zRZtiUSoTddMg7S2CwzDswNX4QEGyiZ
+         9ymgQUIkt7OZhRKdBw8jzbHqf+t7iWmG92XDmkopu25rP5PsLaom5Q/Yu2WWTAIZd2UV
+         yo3Tg89boXa7PpFPy7ZMyT55mfNFaajTkZvF9T7C8kgUz+f0hlAkknw+cQe9uZBsesCu
+         7rKKIxMqECEHwf2qT8OkYTg+T/uUTDkmpFVXvqlU38+pl2Uk/PUeAW9G4v8a5ldjBgrP
+         4imQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQvEnNe0uvMXmvSrKL+s4bbE3HY646AcqnrkDT7xMrc+tfRBS4+gNg9nN/d94sUtWW6kJC7vvmz1J+wrybkg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YycRaayQqn6biBQny2AiScZwGrx1tobyVqvTqqqf0FtCU5QKDA4
+	3Us4XjMEAxRlvKQ/qi4/Z+07lU8UN62wTzBqW6XOmyZe39UFFNGZW4mW
+X-Gm-Gg: AZuq6aLkRG7xzG2K8plYnDELVh++Ei9mPKvTZYBa9c2LP+a+lwh42MF0eKLDclckVPR
+	g1xu2U2ozZid4yv/87PcGHqgsYUwcya3ISe/GjVEB0wWJJnHtdnMv7W7VKuMTuNI38vNaYIY6BJ
+	5uBzyexCE66xi5Lpcbo0BBFN9eYM45jCxXKOj01Eci5caSFFYB0buYAtk+YyPIzetzWdXeIE+GG
+	/yhHBiCIGvk8DS8kSBLEWEC1CVPWGjhM825p6mghWUIBuqBMoeeEWlklhfARIMYHQKZ3L2GMnTK
+	gYJzJY2ONJEDabUzDMYMY/hmiROeVbWop8LQQaURdTRbcgUiclzJhnB+KRleo1BVylSMJ12fESX
+	7gfI6ZMV7PdIRv1lTWDGZiEVFqEpp2ekiH/vwdgHY1OJUrR5RyTjcyDnz2D/ClEjvR9w3RxaFYH
+	RY52ZepRuc1ot5FvwJgYcLg/VEN71zwmtnj+FCweuGupRlMO2PpxvOp8bdG//LCqeDPEstmyfnJ
+	+u2WBKzOqB85X9ZpeVMoZ8KDw==
+X-Received: by 2002:a05:620a:1a9d:b0:8b2:ea2b:923c with SMTP id af79cd13be357-8c70b84a575mr922371985a.14.1769637222303;
+        Wed, 28 Jan 2026 13:53:42 -0800 (PST)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d373fe92sm25727956d6.32.2026.01.28.13.53.36
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711b7ba79sm256119785a.11.2026.01.28.13.53.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 13:53:37 -0800 (PST)
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 28E16F4006C;
-	Wed, 28 Jan 2026 16:53:36 -0500 (EST)
+        Wed, 28 Jan 2026 13:53:41 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id F1F6CF4006C;
+	Wed, 28 Jan 2026 16:53:40 -0500 (EST)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Wed, 28 Jan 2026 16:53:36 -0500
-X-ME-Sender: <xms:YIV6aaFIVqu1vzme2VW38MSlOBHLiWRQSF2V-SxUhc3r0IpLwI384A>
-    <xme:YIV6aQwoAtzlJQ97cyCGHjaHsUHLIshlyuDQAsgvGa4_xaJAGJrbLp7ol10P2h2n2
-    KRcJOewPjkHj7OBTEqqOPjBSe-7JG8oGRCw73AHQcYhO4F9E-AYvg>
-X-ME-Received: <xmr:YIV6aY70_MKwCKmidquhUATwoM2PDGliV-3HHvE-nK3U1-DDGddTZRIj9XQj4Wm-lQ6NIehIQf7meG_WZ-_jsIbVQa-bVHC0>
+  by phl-compute-05.internal (MEProxy); Wed, 28 Jan 2026 16:53:40 -0500
+X-ME-Sender: <xms:ZIV6aTDN3a_kIhhZ2H1nxH6f1S4IEsaoD7jvSaxwzd8rl6LSb-51mQ>
+    <xme:ZIV6ae8SosD5jve8mF2--YJpnqUosLSGl-UqrYYHL5uMtJwOax37zhE4LbLEByHC5
+    5q6uPagmqo4og9SFtjesT3BdNHUZyL40IUwzGLfnpQ0ZD1XY-kJIQ>
+X-ME-Received: <xmr:ZIV6aTXpXyuhOlbUt0kOqjc76SyB2CDqB4X_313KDtQ-9HGBSphHTqdf3S6nO0shk8Hffe0N65GYW8hB-haBf91-IlD-Fjwe>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieeggeehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -86,14 +86,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieeggeehucetufdote
     hiugdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgt
     phhtthhopegtmhhllhgrmhgrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghlih
     gtvghrhihhlhesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:YIV6aVAdxyRI7i9c75UP1OKe2Bv8wm04aNI1gBnt75x3dzu1jwBuqA>
-    <xmx:YIV6ad0Bi4W7IBwGOHhDjdvikuuIKESqCxIDuYSKttGvHo5Gr__1ow>
-    <xmx:YIV6aYFJK2BsysJTkEA1w5-cd_XOkGa5sdtjL_AX74OFQoIQ9LsjUA>
-    <xmx:YIV6aehmFEta2df7Jvcc7N6UslnRiAKLz-OqBem8zcQcA_7lilXCtQ>
-    <xmx:YIV6aauOB-9wVOKHl12R-2qAcnd3syYeCTCudza0yHA3zUH-pRv8Hcef>
+X-ME-Proxy: <xmx:ZIV6aWtSq9qpHrQQCLvMPW4tXsR5-IUpcyz34pT40M6ooIQlQzinsw>
+    <xmx:ZIV6aVzgT15Ft9tGPhtPB9RPB3-O2jEcLd8mw1a8J94NYFkJlRhxCg>
+    <xmx:ZIV6aZQf-MrcPbQmQCtRNOHpqgTiVUXgSjOrz_ajV5t_gipytjSxKQ>
+    <xmx:ZIV6af-eJKAoKYj_3zRswIp9N1j5joWZkNGg4ZIHbXysKfMiHTKuDA>
+    <xmx:ZIV6aXYaiGDuao_kQDt-XU_ZwwaVQZB_etcPSULeJAtBgaPK8LO6zA90>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Jan 2026 16:53:35 -0500 (EST)
+ 28 Jan 2026 16:53:40 -0500 (EST)
 From: Boqun Feng <boqun.feng@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -129,9 +129,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mitchell Levy <levymitchell0@gmail.com>,	David Gow <davidgow@google.com>,
 	Peter Novak <seimun018r@gmail.com>,
 	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [RFC PATCH 2/7] rust: time: hrtimer: Make `HasField` a super-trait of `HasHrTimer`
-Date: Wed, 28 Jan 2026 13:53:25 -0800
-Message-ID: <20260128215330.58410-3-boqun.feng@gmail.com>
+Subject: [RFC PATCH 5/7] rust: sync: Completion: Replace `impl_has_work!` with `#[derive(HasField)]`
+Date: Wed, 28 Jan 2026 13:53:28 -0800
+Message-ID: <20260128215330.58410-6-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260128215330.58410-1-boqun.feng@gmail.com>
 References: <20260128215330.58410-1-boqun.feng@gmail.com>
@@ -143,137 +143,43 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This decouples the hrtimer mode part from the `HasField` part of a
-`HasHrTimer`, `impl_has_hr_timer` also gets removed, as we can do:
-
-    #[has_field]
-    #[pin]
-    struct MyStruct {
-        a: i32,
-	#[field]
-	timer: HrTimer<MyStruct>,
-    }
-
-    impl HasHrTimer<MyStruct> for MyStruct {
-    	type TimerMode = ...;
-    }
+`#[derive(HasField)]` offers less code and better ergnomic for defining
+a struct with a Work in it. Hence replace the current usage of
+`impl_has_work!()`.
 
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 ---
- rust/kernel/time/hrtimer.rs | 70 ++++++++-----------------------------
- 1 file changed, 15 insertions(+), 55 deletions(-)
+ rust/kernel/sync/completion.rs | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 856d2d929a00..eef6d60f5adb 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -98,6 +98,8 @@ unsafe impl<T> Send for HrTimer<T> {}
- // on a timer from multiple threads.
- unsafe impl<T> Sync for HrTimer<T> {}
- 
-+impl<T> Field<T> for HrTimer<T> {}
-+
- impl<T> HrTimer<T> {
-     /// Return an initializer for a new timer instance.
-     pub fn new() -> impl PinInit<Self>
-@@ -417,17 +419,7 @@ pub unsafe trait HrTimerHandle {
- }
- 
- /// Implemented by structs that contain timer nodes.
+diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completion.rs
+index c50012a940a3..c4af58924fe3 100644
+--- a/rust/kernel/sync/completion.rs
++++ b/rust/kernel/sync/completion.rs
+@@ -17,20 +17,18 @@
+ ///
+ /// ```
+ /// use kernel::sync::{Arc, Completion};
+-/// use kernel::workqueue::{self, impl_has_work, new_work, Work, WorkItem};
++/// use kernel::workqueue::{self, new_work, Work, WorkItem};
+ ///
++/// #[derive(HasField)]
+ /// #[pin_data]
+ /// struct MyTask {
+ ///     #[pin]
++///     #[field]
+ ///     work: Work<MyTask>,
+ ///     #[pin]
+ ///     done: Completion,
+ /// }
+ ///
+-/// impl_has_work! {
+-///     impl HasWork<Self> for MyTask { self.work }
+-/// }
 -///
--/// Clients of the timer API would usually safely implement this trait by using
--/// the [`crate::impl_has_hr_timer`] macro.
--///
--/// # Safety
--///
--/// Implementers of this trait must ensure that the implementer has a
--/// [`HrTimer`] field and that all trait methods are implemented according to
--/// their documentation. All the methods of this trait must operate on the same
--/// field.
--pub unsafe trait HasHrTimer<T> {
-+pub trait HasHrTimer<T>: HasField<T, HrTimer<T>> {
-     /// The operational mode associated with this timer.
-     ///
-     /// This defines how the expiration value is interpreted.
-@@ -441,7 +433,11 @@ pub unsafe trait HasHrTimer<T> {
-     /// # Safety
-     ///
-     /// `this` must be a valid pointer.
--    unsafe fn raw_get_timer(this: *const Self) -> *const HrTimer<T>;
-+    #[inline]
-+    unsafe fn raw_get_timer(this: *const Self) -> *const HrTimer<T> {
-+        // SAFETY: Per function safety requirement, `this` is a valid pointer.
-+        unsafe { <Self as HasField<_, _>>::raw_get_field(this.cast_mut()) }.cast_const()
-+    }
- 
-     /// Return a pointer to the struct that is containing the [`HrTimer`] pointed
-     /// to by `ptr`.
-@@ -452,9 +448,15 @@ pub unsafe trait HasHrTimer<T> {
-     /// # Safety
-     ///
-     /// `ptr` must point to a [`HrTimer<T>`] field in a struct of type `Self`.
-+    #[inline]
-     unsafe fn timer_container_of(ptr: *mut HrTimer<T>) -> *mut Self
-     where
--        Self: Sized;
-+        Self: Sized,
-+    {
-+        // SAFETY: Per function safety requirement, `ptr` is a valid pointer and points to a
-+        // `HrTimer` field in a struct.
-+        unsafe { <Self as HasField<_, _>>::field_container_of(ptr) }
-+    }
- 
-     /// Get pointer to the contained `bindings::hrtimer` struct.
-     ///
-@@ -731,48 +733,6 @@ pub fn forward_now(&mut self, duration: Delta) -> u64 {
-     }
- }
- 
--/// Use to implement the [`HasHrTimer<T>`] trait.
--///
--/// See [`module`] documentation for an example.
--///
--/// [`module`]: crate::time::hrtimer
--#[macro_export]
--macro_rules! impl_has_hr_timer {
--    (
--        impl$({$($generics:tt)*})?
--            HasHrTimer<$timer_type:ty>
--            for $self:ty
--        {
--            mode : $mode:ty,
--            field : self.$field:ident $(,)?
--        }
--        $($rest:tt)*
--    ) => {
--        // SAFETY: This implementation of `raw_get_timer` only compiles if the
--        // field has the right type.
--        unsafe impl$(<$($generics)*>)? $crate::time::hrtimer::HasHrTimer<$timer_type> for $self {
--            type TimerMode = $mode;
--
--            #[inline]
--            unsafe fn raw_get_timer(
--                this: *const Self,
--            ) -> *const $crate::time::hrtimer::HrTimer<$timer_type> {
--                // SAFETY: The caller promises that the pointer is not dangling.
--                unsafe { ::core::ptr::addr_of!((*this).$field) }
--            }
--
--            #[inline]
--            unsafe fn timer_container_of(
--                ptr: *mut $crate::time::hrtimer::HrTimer<$timer_type>,
--            ) -> *mut Self {
--                // SAFETY: As per the safety requirement of this function, `ptr`
--                // is pointing inside a `$timer_type`.
--                unsafe { ::kernel::container_of!(ptr, $timer_type, $field) }
--            }
--        }
--    }
--}
--
- mod arc;
- pub use arc::ArcHrTimerHandle;
- mod pin;
+ /// impl MyTask {
+ ///     fn new() -> Result<Arc<Self>> {
+ ///         let this = Arc::pin_init(pin_init!(MyTask {
 -- 
 2.50.1 (Apple Git-155)
 
