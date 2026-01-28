@@ -1,210 +1,255 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013008.outbound.protection.outlook.com [40.93.196.8])
+Received: from outbound.pv.icloud.com (p-west1-cluster4-host9-snip4-10.eps.apple.com [57.103.65.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893922BEFFB;
-	Wed, 28 Jan 2026 03:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769569379; cv=fail; b=dm2zRuzL93m1Ws7Bqf8EUCgU6PJQcECx3ZmoGRrM3CQO0O6DRqrMLkrdf7coBRSMJPeBMvLxmdK+Wo0K6qmSGMgl0Ve6zubHx6xI6Y1D+2CzjAw9+rHKNVIuYNLR/hyH10fi/Gxfesm338tmPI9EAl9hJp0E0aSWOr5z2Kb4PWE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769569379; c=relaxed/simple;
-	bh=hP8lIYweT8RMi0Y7QBMNtfC54y0LkWADTe+croPYeiM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=EDZcFZRBcP9caf31d8/OX32cRHpVtkhoGksfY0uyZ6k1mOZmyiNUMXaGZMF+yNHUIcIb8f5TacA6aRjWlvtijQY7b2B/hq0RNf0ma85gj2LlKQ+lwJYneS7t7rGBdkuA5VaKW0Jy7ZsnFr8XWWE6/QqzhQ3ArAlSzUA6hj0ofn8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rUIGtmMS; arc=fail smtp.client-ip=40.93.196.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8B32BDC0B
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 03:32:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.65.161
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769571141; cv=none; b=YNMhUDZC8WW9rr0a4s1V5G2pvJOenc7nLP7BR0IbgTw8Z5TeXdfXx8w70jwYudWNEDNO756/vr0dgTKA8SCJkwjGcU6JYxbWZvdNXr+mFRsA6tExuAvreirguYZQxk7pa9tGFDIvAS/Zus+CdJ7USRUmHzGx+UimUpevmqPPW0w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769571141; c=relaxed/simple;
+	bh=hpLdP0Zc1/qLX85Up3j2D4OruWTiVzDJyO6Ls32xAMs=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Fkd2ygUKZytKoif/5UVQE6pe4N0asC20kPF25MLHVteTLgkt7f/bbcc0IOwtJEAcq9C/F1Qpx3ltPKxDv+tefXCYp1jGnaJC7zSTexsvFhCYtAbcGdJgHQ/xx2mHUytFMLfO06YCRL0Ww9YI7DojViyKWZpnZxCmtmIU0u3SHZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=vwrgcHWt; arc=none smtp.client-ip=57.103.65.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rUIGtmMS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gH5Gsawhp7FJglfePRw22WqEBGBhkCqNw+gNGZfOJgx4r+7XXdvcMEp3/RcaONTkWEgVAFMkJfi7tLf0eJNrZ+HVIu4qjASXDhdOoucpTAX7YrTqePFVo3KTUv6T+Nlc1fZx8G8UBEUO1xUrfjUOc4AYCYn370oK4EgU+rmeP93GE3Hd0yHoZNKxlmOfx2A/xysGNLKImcdNOJaPy/36JRcO3rANQk7DPh3JR+bFdm6RtAcSnJIrItUv0mwN0iGA9Ow+wnAuxiTZpzN/ieRk2Uhfjs9UifNCU2D2Ixn3CcNquWV78K9AOz7KU3U2mu/HhRxz6WOKKEnglBFFT4PSUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o5/uA59NFrWBD/gx+wb43qSko9qr1l7S3RUdkSumvdU=;
- b=cPhP2UjvTlJJ2zyg7WGYHal45xslEoANSm0r+xemWozaZySMG9vz5t8wiLBZpmJu8R1iPfPyE8de2AffiBBCNltBGiNrWmFvX2KVf7JmX3dbJhXStCyBGWoQ0PiJUS+Yt0BRsTjjfCDc5gI6wKvvKxqQwbBobzixLMzdcDv85aZBneciv7cO7snMBKk0N1xWsNxL7QoVQN6ZhCrk4pZtyjkX6lTN2Xdgl8cllSicaDMMVCv3sP78GFq2xfIsSogbaCtslk7fOGcvufZ0sGhTDrrPHFQ3D3cP5i0L4dJ9qiEtJ/2lt88rJ0W5PEn2pfA09AaI82tNjPcQkfMPIKfqWw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o5/uA59NFrWBD/gx+wb43qSko9qr1l7S3RUdkSumvdU=;
- b=rUIGtmMSkJdxG9VwgUBgrFQIeooov7cMM7VGVEYvITZp9hUkRcdAyovlCQOxYYezwIPtyQvJ5pptZJH9ZuAzyd8xnzvLirVO6K5Aw4RvOixa+HTPCzPt/xpCYsX3PXe8ylGLbRavgsr7OOaf9hWgtbbYhhRi5jYTA3xn5qeW3ZPw5DpLFI+lM7twZh6yw9BjGHG8hauhHYytfYqulYv5hDgIOByhFCNHM6A9akN1P2i8VbYshJHtSE15JWUoJDwjWCVQ8yz5J9S7K49SIqMeJsX8QXq9HYEHkdAXT1CYCo5lT2EhwqVgpUO09eEay46eXQ5+1HLhpjJACREyqhH/Tg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- CY8PR12MB7361.namprd12.prod.outlook.com (2603:10b6:930:53::21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.8; Wed, 28 Jan 2026 03:02:53 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9542.010; Wed, 28 Jan 2026
- 03:02:53 +0000
-Message-ID: <df2772b7-0313-4767-a370-4a4821425f60@nvidia.com>
-Date: Tue, 27 Jan 2026 19:02:48 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/7] rust: io: add `register!` macro
-To: Alexandre Courbot <acourbot@nvidia.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>
-Cc: Yury Norov <yury.norov@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Edwin Peer <epeer@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
- Dirk Behme <dirk.behme@de.bosch.com>, Steven Price <steven.price@arm.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260128-register-v4-0-aee3a33d9649@nvidia.com>
- <20260128-register-v4-5-aee3a33d9649@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20260128-register-v4-5-aee3a33d9649@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0139.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::24) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="vwrgcHWt"
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-1 (Postfix) with ESMTPS id A69AA1800131;
+	Wed, 28 Jan 2026 03:32:17 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1769571139; x=1772163139; bh=A6OjfsUZQqCA0qkVQGCI6gVPXHOK09L6RIUJGxp1Id0=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=vwrgcHWtoG9PpBnHjaToqm/FE0SYedrXyc2uiq9gLiQ/PWGaL1h15YscrSRQ0dPuYUaHMymaqO1anoeNV/2r/F9qZSmTIhbwc1haB2D6QADn6+5kE8QSk3j9hfDSwBa+5VHGh56BPVKeKA9nZMBhmSyQR1RjsapbSKgMFNWQqaRS+hQoZZXcVF5lU+S5nh5XNW7aGE9GWVdu8W/SCcjLZxi/yt1nW+2KhBt6ELxuJ1OeL9H2/9lNF+nLyYvaO4ww/zesqQy96aoConRFxUzZkj5Kaos1tOVEmEjOucaRk1c6tbOb7s5sHDQThYW3AU4SYPcEylXXIOpUKexV0YJWPg==
+mail-alias-created-date: 1769500909675
+Received: from localhost (unknown [17.56.9.36])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-1 (Postfix) with ESMTPSA id 2BB14180011A;
+	Wed, 28 Jan 2026 03:32:15 +0000 (UTC)
+Date: Wed, 28 Jan 2026 12:32:12 +0900 (JST)
+Message-Id: <20260128.123212.248535348759706770.fujita@bee>
+To: boqun@kernel.org
+Cc: gary@garyguo.net, tomo@aliasing.net, ojeda@kernel.org,
+ peterz@infradead.org, will@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ lossin@kernel.org, mark.rutland@arm.com, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v2 1/2] rust: sync: atomic: Add AtomicFlag::get_mut
+From: FUJITA Tomonori <tomo@aliasing.net>
+In-Reply-To: <aXjpMhRytX-W3AX9@tardis.local>
+References: <aXjg4jv-3aQcy4O0@tardis.local>
+	<DFZI47QW7VTE.1PF5P6LUTASVS@garyguo.net>
+	<aXjpMhRytX-W3AX9@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|CY8PR12MB7361:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9639533c-d9b0-4fcb-3747-08de5e19ba68
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WUh2ZnpWSkpjZDdSYmZFa0xnVmdVVnFnZ2RvT0k1UUhCQzhwTlg2R0ROVlFp?=
- =?utf-8?B?eDdjcVozVXY0YTVEc0VJdjkrcUh0dkpVQUtTVGJLRHBXalR4OWE0ZndJUmxF?=
- =?utf-8?B?Mms4bkdpc29FL3VnTGYxbFBzdG5wa1YwUGpRRURRYkdPLy9TQnJZNVFDSHNN?=
- =?utf-8?B?M1ZBcnNVWTMwRUtFS0hia2YydkIzSEl6NThJVXZFdjdlRmtHWjBhSHBDUWky?=
- =?utf-8?B?ZlV6NTRwMnRTN0wyQlByVnlWOFFSbVcyRktBdWY2UlhiZDVVUFQ4bVZjK0Ez?=
- =?utf-8?B?dGlsbmQzVzhpZElHZkl3MjI3WDlGZ1lCaWwzcXBGaUJFTzlPVFZLZG4zU3Nm?=
- =?utf-8?B?S1FBVVc5aC9ITmorVXUxZFl0eWtzWS80N29EYUl2RkRvdXp5WGxtQ2tCT1VO?=
- =?utf-8?B?WStkRWhoemZ3Q2lzMXQwRm5SZVdvTmhlY2Q5NWlldnBKUGJqYzUxZkJWbkVm?=
- =?utf-8?B?ZzRMajVud0J1NmJIOW5oQVZSbnlzTjJrZTZ0V2RBUlB4cnJ5elhJaXVMdEta?=
- =?utf-8?B?YWg2YWxmakk3Um02OEo1OTZmajdvOU1sN3dua2x2Si9TS2JRSWZKcjZ2b1pH?=
- =?utf-8?B?RzRMNm44UXRQQlUyd05MWThiSXNtTXczVmRrY0prd1c5c0hHZ0dnTThWZ0lw?=
- =?utf-8?B?cWV5ZUF5ZXVELytzVjF6M001RGEwN1V3TDBFSGFyd0g5YlNxaW03YWxrSURP?=
- =?utf-8?B?OXc4bm1uUy9KUUxZOFlKVlhEVG1SN3oxR3Eyd1lGWG5pWmZ3QlJzaC9hZUtV?=
- =?utf-8?B?bXl1VFZ2ZGRSQkg3UTgvWG5mUFVvZTc5dFBGTEs1ZDhkWWNpUVlPNHBtV1N0?=
- =?utf-8?B?eW5lQ2p3SVdHNnA1NnZjK01aSkJNdUF0UmNHWVVhcFQ1U2lPYjB3YnRydGkw?=
- =?utf-8?B?REdDWkVYaVp2WDZWSjVJdW9pSExEbFdIY3lhRUZtaGxqaEdOZnJjdW5CNVdO?=
- =?utf-8?B?NHVWallUZUx5cytSS3NhWnJwcGdqMDdGcmF0dmVvZ1lNdHBVRW5XZk1HaERD?=
- =?utf-8?B?TmNFRHByVnRBYlAwKzlYcjdscEsxbzdvWWJCRXZFdXF3Smd4WDdMOXNueEpz?=
- =?utf-8?B?Rnk5d1BBTzlPN1gvVXMrbGFjRVlscVNMRWJaUFpJMjJDaDFkUzJJbXdiR1kz?=
- =?utf-8?B?Vi9PSS9sOFpSaE5IbUdSbWF2SDhGZXQ3M3Nndm9qK3Y1UGZSUGw3cnMxRStO?=
- =?utf-8?B?Zk0xWTU1VGUxamU1aVFHRWJGek5UZXpPdHJwNzZKclhkZngreUhoRkZKcyt2?=
- =?utf-8?B?ZUR0Z29ibkYwalUyRUJISlgzdytjNGFaSlpqNkdQdnNscDViNnBxa3FyTURY?=
- =?utf-8?B?OEdmZWdkN1JmNkxSbkJlbjFvam9NWUEvYlQvQ1lDc2Fhc001MEIxMlIyTGtz?=
- =?utf-8?B?ZXZQR0p5TUxOVkk1MndIQ3l5azNrcmhLUkc1NUphMTU0Qk5KV0RHdGMvY2h1?=
- =?utf-8?B?c25kS01LYWNvZlMrUEdEemtTV1RRajVpVVZVQy9WOTcrRzNCb09INWJZN2R1?=
- =?utf-8?B?MlZGdWlHak50UWVVb1AzeWFsTGd1d3J4VmZjemRtTS96UUp5dFl1TG9NUUt1?=
- =?utf-8?B?N09SMGRYZ2VjWTV0dUF3MktWc0lVWDErMm4xbWZoVnZvUVZlWmc3K3BUR0Ey?=
- =?utf-8?B?MlM5eDdEb3F0blVWYU91Sjdvam1UdHlUVmpaWXJrY3REMEFxQVN6ak9qSFc5?=
- =?utf-8?B?amVZdnpIUUpBRndjNnhVdnRWVWtUNWFQcFcxbThUZzFsQzVVTU9nTzBNNmxq?=
- =?utf-8?B?TzJEck8yb25uSVJxNy81alYvQXNZWElQbHlsbWI5Qmw0TlBvbnY1SVR1ZFo5?=
- =?utf-8?B?bDN5U2hMQy9WK05jbWg1dGlER3Z3TkZka3YraWh2eVVjV1VSNHVXd1U1N3V3?=
- =?utf-8?B?UHBvQnNGbWZjNzEwSG1WMS9nM0RCc2VTTmZDaHR3Qk9ES1ZlVXdsUkpIOEpC?=
- =?utf-8?B?TEdzQTU2TFJKNTVaMUdrZ0pVOU51bGhtdnhBZWJLVEg0eFdKNHRRaXhSanB0?=
- =?utf-8?B?TGtkR010eU9vR0U3OWZuOFlkMEJiSkdXb0xpMEE0bVMybW9NOUp6ZzVGVFh5?=
- =?utf-8?B?TlcraHNGSWVrWjVkekR5UHFreTdua3lSSndxZmo0NE81UGc0dDJydkpxMlhM?=
- =?utf-8?B?OE9aMmZnaXR1RXhLZDJwb0ZpL0grN2pWQjY0VGtBaDRFYjlOdVMxYmJYZXFE?=
- =?utf-8?B?L0E9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dE1ybW9OZ3NQNUVsRXpxcVlIZHcxZFhSUkZQNlE2Uno4SXFNa1ltNHkxSjdj?=
- =?utf-8?B?SlowQzg2Vks1QkhQbHcxbFpwS3NGUFNxcmx4eHRLbEo5Z2tWTCtMMEQxc3Mr?=
- =?utf-8?B?SFcrZXgxMXRaRWZoNDlNMWVPZzZJdDMvNzRVRWkyZFVDUkFETzl5dkt2NjZP?=
- =?utf-8?B?MHM1Zkt3V3A5KzdvNWNZZ0ZwUXNDSXcwS1B5VjYrWG9WWVlxRjgwYm9tM09r?=
- =?utf-8?B?N3FySTJLL25hTkYxU09Wc2l3VXphSFZ4bnVBWWZQenBwMDhMVnpaWERHR0dZ?=
- =?utf-8?B?SE9VN0JkaDVLM092WWxycVVYa3l6U1FHQkEvUkx4b3QwazEya1llcGxwSlJE?=
- =?utf-8?B?eGFCZjFBUk5zSzRockxsZkVvaFNvcnB2NHgrdG4yNEZ0SU9MOE9MMHAwcmt2?=
- =?utf-8?B?ZDdseDVpbnhadWpwak9xbHc5azdHWnBZZS9HalZ5cWVab1VLdE5CSWtEU2VX?=
- =?utf-8?B?QUFmOG5OdFV1bWkxR2VCR2VETDh2OXdMTnBiOVhvd0VBcmdoYzJiUGthNGtO?=
- =?utf-8?B?YzZkcVNCcFNNeGI4SHZad1hZaE05Nzk4b1JJNmVjaUVrVGVJZlVYVjVVTXkw?=
- =?utf-8?B?T2dxK00zZkw5Z2ZBNUlTNm1zYXlOaFFib09BMlBOaVp2VGlBY1IyVUhYUi9h?=
- =?utf-8?B?S05mVXgzY2Z4V3pmWE1UQkQ1bTRXUmJyRXljc0lTbjVqU3F4MDF6dHBGS0kx?=
- =?utf-8?B?VnptVTRLeG9YU016VEdGemlId2tRNEtDQzhxbVNhS2ZNMFgxOG9MSHNjMlBZ?=
- =?utf-8?B?MlZMLzlTWTN4MjdwQVBrOEs3cXVpaWl0c0U3bmNBL0JyVkhiZ3ozM0hhek92?=
- =?utf-8?B?YzZ1cC9lOTJNQ1kwOHdJamh2SldtY1hORTNoOEF5UEpGaXVESmJDNEM4bmZH?=
- =?utf-8?B?aXBOM2NnMlhlYXorUEVzTS9tNnZTL01wMXEzQUVCekdtakJaZy9TVVdiSEtQ?=
- =?utf-8?B?Z1pRM1dpbVo3MUhyVlVtOHIzRm9TTWExc2s5ZlQ2UkErTUd1RWg1Um9WenNG?=
- =?utf-8?B?ZHNadVRVMnBRbTRDY3g4RVk4cVJRK3Qxb0YvTHV2Y2lJbnQ3SkkvNlpPam11?=
- =?utf-8?B?ZlpGTEFOaWFseXg1TjRLUVcyMW0vd1pKclh0QXFMM0E0NDNEQkQ1b1JNQnlF?=
- =?utf-8?B?eGs0a1lJbGR4L1RkVzgwS3doMDB6OXQ1UCtzM0dzV0lMWUhLdzl3T01XaHY2?=
- =?utf-8?B?dnRzbE5tNFJ6T0Y5eUkxeUJpVWdJN0RHRE9VMmZwREozdmQxSC9Ea3B1TjlH?=
- =?utf-8?B?MnhLNWZEcTVvcnVDUnIrVldTZVFQRnRLOEwwM0VPZkpFb2lRZ0gvRkRVRFVa?=
- =?utf-8?B?RnNkWUlrb2UxZ3dWSzNjMkJIZE45NElrSEhrMlpwZ3g3cmk1bDkySHVtRG9E?=
- =?utf-8?B?eGEyRTJkVEZGY09RTEpIa1JSRk1jZmprVzkrWHQ1ZlFhVHdSZ25qcU5vazVa?=
- =?utf-8?B?T0d1RVEwWnd0ODZuU1dhUmJSakNKSE9FRC9PSXRZRFdrOUt5OFJ0Rk0wR3RB?=
- =?utf-8?B?NUdaN2UwZFZmdlhiQ3o1d1c5enNsWStrUFNISjJDM1NMOXR4SWNlcmluZURr?=
- =?utf-8?B?N0dTTStGZ2IxN0lweGZUOFF1YVlFdlNXTTRHb0h6SXdXT214TWtlNzNTN0o2?=
- =?utf-8?B?YjVaL0NLWERUM3FtSEtNb1lBOGhKM3JpUnE0Rm9pYi9OczNjTE5xYmtjSW5M?=
- =?utf-8?B?WVZqVGF0T3k4L202UHd4QTZXNFo5SlI1Qm9MRWpVRVd3QXU1UGY0anZIUVJT?=
- =?utf-8?B?b1l5UFNVUXZLVzhFcmlDVy9xZ0ZaZ3o4bCs0dFpvaWxuN3Rpa0VldUJyaDgv?=
- =?utf-8?B?L1Azb0puQ1hXOFBnTi8rR21kT1BDY3pHZGtJVHVZSHowSHZQQi9FYVFZdHFL?=
- =?utf-8?B?aDBMT28yOG03OTZsYTJROEMxVFJPTmx3U1dYWTU1WmtKK2hISlhSQms4R1JI?=
- =?utf-8?B?c3liR3BjTmFDMnZYN29ld2dFd1FOYVhFdzUrRTNQYUFMbzlFcmVKWE5mdWdw?=
- =?utf-8?B?TnRaOTU0K0E2enhpcjdiRWt5ZllIRXB4OTczd0FuZEdHeDBDaUdsbTQ1Mk8r?=
- =?utf-8?B?SEdGVy9ENG45a00rM3g1RjJVeHdpUDlBMklyRnZDS1FIK3JsMDNTTmd3U1dR?=
- =?utf-8?B?bk1wVDlaamFLT1E1a2ZtMVVXRkJpRUtncldHK3BKc0xpRXpGV0twZ2ZBdzJ4?=
- =?utf-8?B?cEEyYmVobWdRRThRYVZVSU9wMFBmTXBITGZpQ0FuaUdjb0cvU1JHWXU5eFBz?=
- =?utf-8?B?MEd2WTFYdC9IYTA1d1FkQUI4NEZiZmpHQkVXK0VRS3JYamUveFd3RW9sdGQz?=
- =?utf-8?B?bE92elNwc1Iwc2pNeGNYQmF4bXBmUmNGelZ5eDJiQjRWNGpSNnI5Zz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9639533c-d9b0-4fcb-3747-08de5e19ba68
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 03:02:52.9344
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CeZXPHc0wi85nMB+10uTM/OHVHkvIdVvnWEECPyP0uRnHOV0Y3riUJgVewmQp7fVCaYgR59KDWMbOwf2avrWWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7361
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: RnEIcwJylQGm6DJZpvhR3JJKzw0wRhXA
+X-Authority-Info-Out: v=2.4 cv=brpBxUai c=1 sm=1 tr=0 ts=69798342
+ cx=c_apl:c_apl_out:c_pps a=azHRBMxVc17uSn+fyuI/eg==:117
+ a=azHRBMxVc17uSn+fyuI/eg==:17 a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=cpreI_3xfpZTddIiUs8A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: RnEIcwJylQGm6DJZpvhR3JJKzw0wRhXA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDAyNSBTYWx0ZWRfXzStmM2W0cX57
+ 3bZQkWhSiIkPHXyLmUcxJ/ABzKDQmScfrJ5276RcPfWANrelwZzu86DPa/b+1JyXROue3m3xA9A
+ 9qsgrFEe2i+i40DE+vHIZgRUVa1ZVUerxql6Cs4Kzgv6GSVZwVRTeF4hMWqbAo9miyujlaAYCEA
+ r3elnrjd4HgGAyCc+MGcPaYUeL76KWclwDIoHEvgObP1O3ckdYPGcpRxkEFHy9FBTJRvNYYB80J
+ lMfOq1VeQ2kqYqf+15ZUs2haYh+hqc8L4gIJRWnw97YjtGhet+hacZCkWeXbawbXR/t0TaYx/7I
+ JE0ddLeUgop/aLorvDkkMHu+XQvBe7vlYt84RX79irCq1stEAYfjizTZfMzeh0=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-27_05,2026-01-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ mlxscore=0 clxscore=1030 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ spamscore=0 phishscore=0 adultscore=0 mlxlogscore=999 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2601280025
+X-JNJ: AAAAAAABYxS4MsvJUiHiQ0b1HeelxRUK/igu7afXAbbbOtRBOC04RSlz05vfDIyg6yjJSQqa0bU6SSKDJc3R+sWzG2iHKFBHXLja384MzUBQ4yvOTyFfEfQ4HnAprygaS7xLx3bU17TZaysYGitG4lQBY2nvoX67edH/1J6xIOxjTY1N9rLZRQ/0mNhgk+pXWse/ttA58Zm9E8XJ8n8hgPW5TmOl9YX4XzkG5OHuWIxtbCwtkJ82aLogy/XHGFEgXnxTmfc9+7QgLCanHk8trZIQas8qlTMgRgWTTDcbkp0HSNNPC/gurJbhcl3EalUsqdqCQNME0pNadfahHHcBTZnf2hHkLMCDmsCBm9vDhLzJD/OPPKIbE00/uMhkIW4KiqtpTItqG2FpliFwNFZWGqrMvBlhZF/pnqjVYaX/9bDNRL9iTTrRe6W5UMmYZ3qDWjL08TcscKxparmIg7YdgP7lnMgOfFr4lP/u+Qo1Amvd5Y7OI5KhStkrRdFz4HOF21qm14B7OYOAiRPA99RGymF25VQzYBT+A+XvSNKlAybmOFrUECUz18LZfyvb7BP1l1XQRY1ZR5F3e8oxPpDiv456Sr+vyYPJl9mXnx7MZkyP0pmF9tbNz958TyXPX6SaSgoJCjdvjyUw6EM71OYUv+0JzZh6OlNShb1oni13Itv7RwUEtxxm577lzf5/v+O6hi1mpJ+H0RmAXJY8AfOjQjmQUJhVEfQjVEykvDsnxM9M0YjHxByqshox4WALHMeaKZvB9OevuhIVzQhv1SCED5n28hw8my+zES5ceobxtQ==
 
-On 1/27/26 6:37 PM, Alexandre Courbot wrote:
-> Add a macro for defining hardware register types with I/O accessors.
-...
-> +/// Fields are instances of [`Bounded`](kernel::num::Bounded) and can be read by calling their
-> +/// getter method, which is named after them. They also have setter methods prefixed with `set_`
-> +/// for runtime values and `with_` for constant values. All setters return the updated register
-OK, this still looks like a naming problem that we don't need to create.
-Let's just pick either "set_" or "with_" as a prefix (it seems that
-"with_" has won out, in the v3 discussion thread), and then add "const",
-so that the name doesn't require explanation.
+On Tue, 27 Jan 2026 08:34:58 -0800
+Boqun Feng <boqun@kernel.org> wrote:
 
-...
-> +/// // Update some fields and write the new value back.
-> +/// boot0
-> +///     // Constant values.
-> +///     .with_major_revision::<3>()
-> +///     .with_minor_revision::<10>()
-> +///     // Run-time value.
-> +///     .set_vendor_id(obtain_vendor_id())
+> On Tue, Jan 27, 2026 at 04:10:35PM +0000, Gary Guo wrote:
+>> On Tue Jan 27, 2026 at 3:59 PM GMT, Boqun Feng wrote:
+>> > On Tue, Jan 27, 2026 at 03:42:42PM +0000, Gary Guo wrote:
+>> >> On Tue Jan 27, 2026 at 3:35 PM GMT, Boqun Feng wrote:
+>> >> > [For some unknown reasons, I cannot send my reply via gmail hence reply
+>> >> >  via kernel.org account, I might switch from gmail later on]
+>> >> >
+>> >> > On Tue, Jan 27, 2026 at 09:52:59PM +0900, FUJITA Tomonori wrote:
+>> >> >> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> >> >> 
+>> >> >> AtomicFlag exposes a bool API, but it lacks a get_mut() equivalent to
+>> >> >> Atomic<T>::get_mut().
+>> >> >> 
+>> >> >> Also add kunit tests for AtomicFlag.
+>> >> >> 
+>> >> >> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> >> >> ---
+>> >> >>  rust/kernel/sync/atomic.rs           | 20 ++++++++++++++++++++
+>> >> >>  rust/kernel/sync/atomic/predefine.rs | 17 +++++++++++++++++
+>> >> >>  2 files changed, 37 insertions(+)
+>> >> >> 
+>> >> >> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+>> >> >> index 6c46335bdb8c..b6c01d9f3a46 100644
+>> >> >> --- a/rust/kernel/sync/atomic.rs
+>> >> >> +++ b/rust/kernel/sync/atomic.rs
+>> >> >> @@ -591,6 +591,26 @@ pub fn store<Ordering: ordering::ReleaseOrRelaxed>(&self, b: bool, o: Ordering)
+>> >> >>          self.0.store(b.into(), o)
+>> >> >>      }
+>> >> >>  
+>> >> >> +    /// Returns a mutable reference to the underlying flag as a `bool`.
+>> >> >> +    ///
+>> >> >> +    /// This is safe because the mutable reference of the atomic flag guarantees exclusive access.
+>> >> >> +    pub fn get_mut(&mut self) -> &mut bool {
+>> >> >> +        let byte_ptr = {
+>> >> >> +            let ptr = self.0.as_ptr().cast::<u8>();
+>> >> >> +            let offset = if cfg!(target_endian = "big") {
+>> >> >> +                core::mem::size_of::<Flag>() - 1
+>> >> >> +            } else {
+>> >> >> +                0
+>> >> >> +            };
+>> >> >
+>> >> > The idea is solid, but I want to avoid endian handling in the function,
+>> >> > I would prefer a "struct declaration" solution like:
+>> >> >
+>> >> >     #[cfg(target_endian = "big")]
+>> >> >     #[repr(align(4))]
+>> >> >     pub(super) struct FlagInner {
+>> >> >         _pad: [i8; 3],
+>> >> > 	bool_field: bool,
+>> >> >     }
+>> >> >
+>> >> >     #[cfg(target_endian = "little")]
+>> >> >     #[repr(align(4))]
+>> >> >     struct FlagInner {
+>> >> > 	bool_field: bool,
+>> >> >         _pad: [i8; 3],
+>> >> >     }
+>> >> >
+>> >> > redefine `Flag` as `BoolFlag`
+>> >> >
+>> >> >     #[repr(i32)]
+>> >> >     pub enum BoolFlag {
+>> >> >         Clear = 0,
+>> >> > 	Set = 1,
+>> >> >     }
+>> >> >
+>> >> > and `Flag` becomes a union of `BoolFlag` and `FlagInner`:
+>> >> >
+>> >> >     /// # Invariants
+>> >> >     /// `Flag` is either 0 or 1 in a i32 representation which implies
+>> >> >     /// that `inner` is always valid as long as `_pad` stays 0.
+>> >> >     pub union Flag {
+>> >> >         pub(super) inner: FlagInner,
+>> >> >         pub flag: BoolFlag,
+>> >> >     }
+>> >> >
+>> >> >     // can static_assert that `Flag` and `BoolFlag` has the same
+>> >> >     // alignement and size.
+>> >> >
+>> >> > then
+>> >> >
+>> >> >     impl AtomicFlag {
+>> >> >         pub fn get_mut(&mut self) -> &mut bool {
+>> >> > 	    let flag = self.0.get_mut(); // <- &mut Flag
+>> >> >
+>> >> >             // INVARIANTS: flag.inner._pad cannot be modified via the
+>> >> > 	    // returned reference.
+>> >> > 	    // SAFETY: Per type invariants, `flag.inner.bool_field` is
+>> >> > 	    // always a valid bool.
+>> >> > 	    unsafe { &mut flag.inner.bool_field }
+>> >> > 	}
+>> >> >     }
+>> >> >
+>> >> > Thoughts?
+>> >> >
+>> >> > Regards,
+>> >> > Boqun
+>> >> 
+>> >> I think we really need special handling for endianness for this one single
+>> >> function, so doing all the extra stuff feels really unnecessary.
+>> >> 
+>> >
+>> > First, this one single function changes the design actually, previously
+>> > you can even implement a Flag as:
+>> >
+>> >    enum Flag {
+>> >        Clear = 6,
+>> >        Set = 7,
+>> >    }
+>> >
+>> > and it'll work, that is as long as `Flag` behaves like a bool, it's
+>> > fine. But now this function implies there is actually a bool in `Flag`,
+>> > which is kinda totally different.
+>> >
+>> > Besides, by using the current implement, we set an example about "how to
+>> > do a byte offset in an i32 for different endians", and then if anyone
+>> > wanted to do something similar, very likely they would copy-paste and
+>> > modify what we have here. The potential tech debts are significant. So I
+>> > would like to do it in a right way ("right" is probably subjective, but
+>> > it comes from someone who needs to live with the code as a maintainer
+>> > ;-) and I'm happy to switch to a better way if necessary).
+>> 
+>> I think what Fujita has is more "proper". Your approach still have the issue of
+>> requiring a specific ordering of the fields. If this is messed up, then the
+>> entire thing is broken. I.e. the safety proof of `get_mut` depends on the fields
+>> being ordered correctly in `FlagInner`.
+>> 
+>> If you want to go down this route then I would just scrap `enum Flag` all
+>> together and always define it as struct, with an internal `bool` + 3 bytes of
+>> zero padding. This way we don't even need unsafe for `get_mut`.
+>> 
+> 
+> Hmm.. so like:
+> 
+>     const PAD_SIZE: usize = <3 or 0 depending on ARCHs>
+> 
+>     /// # Invariants
+>     /// `pad` has to be all zero.
+>     struct Flag {
+>         bool_field: bool,
+> 	pad: [i8; PAD_SIZE],
+>     }
+> 
+>     impl Flag {
+>         pub const fn set() -> Flag {
+> 	    Self { true, pad: [0; PAD_SIZE] }
+> 	}
+> 
+>         pub const fn clear() -> Flag {
+> 	    Self { false, pad: [0; PAD_SIZE] }
+> 	}
+>     }
+> 
+> ?
+> 
+> Yes, I think it's better ;-)
+> 
+> Also, now given that `AtomicFlag` behaves exactly like a `Atomic<bool>`,
+> should we do:
+> 
+>     /// `AtomicFlag` documentation here.
+>     #[cfg(<Arch supports byte-wise atomic>)]
+>     type AtomicFlag = Atomic<bool>;
+>     #[cfg(<Arch doesn't supprot byte-wise atomic>)]
+>     struct AtomicFlag(Atomic<BooleanFlag>);
+> 
+>     // `Flag` doesn't even need to be public.
+>     #[cfg(<Arch doesn't supprot byte-wise atomic>)]
+>     struct BooleanFlag { ... }
+> 
+> (I renamed `Flag` -> `BooleanFlag`)
+> 
+> Thoughts? I don't think there is any extra benefit of exposing
+> `Atomic<BooleanFlag>`.
 
-See, that is just not obvious at all, why it's different. That's why
-you had to write a couple of comments.
+Agreed.
 
-.with_const_major_revision(), on the other hand, keeps the pattern
-clear and obvious. No comments necessary.
-
-nova-core doesn't even use the const_ settors yet at all, according
-to my quick read of the (very helpful) [PATCH FOR REFERENCE v4 7/7].
-So clearly it is a bit rare, and the extra characters won't come into
-play in daily life.
-
-thanks,
--- 
-John Hubbard
+You prefer the cleaner git history? Then I'll send the next version
+for rust-sync-fixes, to implement BooleanFlag (or Flag) and AtomicFlag
+from scratch.
 
