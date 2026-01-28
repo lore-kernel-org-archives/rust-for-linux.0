@@ -1,328 +1,227 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013061.outbound.protection.outlook.com [40.93.196.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD87253F07
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 17:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769620758; cv=none; b=eJnuJVojzWzYv+IL1R0xPz3Ws1CSGRTVn0yBE5Gs21b1bydhSeJgoGEGFp9VNSPzs1MtxZ3Lhlyn0oiXBv78g5bCbQwL7QtGPIHGS/dvLmYh2lOWfyu3g7lohjQazq6BtK2207qYMFlcnX5H3C483iNrWwkCO74mplfDjIu/nR4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769620758; c=relaxed/simple;
-	bh=J/uZ0qHlm/BEALDkt6iu/cGRqZNrk48aZx9nZF+ntzo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KKIs6Jn3xfiaFmx+nLQy/b69vX8lcYGkwsmceHyilnZp+hFTOwcu4z3zxhcPrU69Fklu/RQ+BgmZVcIdOuxMMDobx58Y0i2T6gNTpVa8sxnEG0Ks3k8tZjDbMraxo5UUCTvMW4gg0vzRNmq6wLo92+J+QOzd2LE/Qg813Wj5ztA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hRu9oEOA; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8572B350A21;
+	Wed, 28 Jan 2026 17:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769621222; cv=fail; b=Fnz9qmZ0m2/TOWaze5e2Z+kcRwse0AFZGAWm2TLXCJARvwAhGDvnaD9VyV/1a2FeB3F7y0R0GNlYqEDmn+8cp6sK7KAjXekZUXeP+n/Zs3ms3/Cbx3iHHy7PXs5Wy118EaO3h1RAFm6DvioOxS6wW0yVWxKRaHFLk+pI3dC0jrA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769621222; c=relaxed/simple;
+	bh=cJb71+5MTnLOfPGKrE3R3ojK7FHJ7Df8wPrGudEGV1o=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E3mC4QhhSO3FamSkjVB373ZcwT+W/lEiVBYrvwP0OB4jFdqpctRc6e4WjwkizRzdeoAPwhgfj4eOG8j2/XNJJJ92dA6qmYHtiaO54v/BV45ajQWg90SsLYZRXlvpfbJmm8C/ndlLcglfREYR3U/GK6WPaNqB5we4EQeH2vYvGkM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AxvSTs+T; arc=fail smtp.client-ip=40.93.196.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hRu9oEOA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542E8C4AF09;
-	Wed, 28 Jan 2026 17:19:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769620757;
-	bh=J/uZ0qHlm/BEALDkt6iu/cGRqZNrk48aZx9nZF+ntzo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hRu9oEOAS4B/9msVvmDYu/1XAOkslFlTOHE1P3uTE3EmJSBAkdi0tLMOUrw17YQ4Q
-	 3Fsd+jToTBGIStSVNHgSfFlXhHbdeOkNCAYpQbw+IBh/wu140baET/0rMvJwB96Hcl
-	 VmrMQYReQnBm0foP9VNw9dmO+e5P5s+xpeet/0RBp2xOs6IjCcgsvX3eDiHQrmCiBx
-	 vyRjI5olb0NQCMZ9yCCXZqqjJsHzhZxFuwaLah9Iiqq4u12ceg4nsePzT0POTKXoeZ
-	 QkmH3oF9+jh4n81Fu1lZ8aX223xEW+x28kwIou/z3vaaOuaDwyz27d4b+xrjj1TPBP
-	 /F1TMdpF8lYlQ==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5B296F4006D;
-	Wed, 28 Jan 2026 12:19:16 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Wed, 28 Jan 2026 12:19:16 -0500
-X-ME-Sender: <xms:FEV6ac7sj0wHU4weLZFcJFUaXu-LCI3sDNbCs4r9J-2mrj8sPb2t0g>
-    <xme:FEV6aeVamw2SfaqH987Dbpr5cOGvqxe8WKKAHfnhBHp44JPe3zN1rD_hyLgECsnfM
-    wVs0vhuPkCVkOZIQfufqsJC6S8v4w0_akDzQliQOO_wHmCtNfmE>
-X-ME-Received: <xmr:FEV6abPhziCTFutqorl19TGJPtfbh0Mu0A4bE8-_q9YYn3kFLZgk86AUde3FRqg-FfMusWfm144wW3pQJOtis7JyvExx7yGw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieefledtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
-    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
-    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
-    hnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepghgr
-    rhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepthhomhhosegrlhhirghsihhngh
-    drnhgvthdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgt
-    phhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrii
-    esihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegsjhho
-    rhhnfegpghhhsehprhhothhonhhmrghilhdrtghomh
-X-ME-Proxy: <xmx:FEV6adi6cnjWHXydUwA-tpxg905J6u_5y7T-18755h3qzEv6OktmNw>
-    <xmx:FEV6aZ6oggZUNb0pxi1H5iAd9r5lkRTx5XdiHASgqXEKgbqqX1GgdQ>
-    <xmx:FEV6accee1JAk55iMjO-4I6_XFzwEQhMk6wvYlhtEB2JzH9so10NQQ>
-    <xmx:FEV6aaBs2MHxFMUNa3BFHkuhE1Ublbacz9zvzApzxqC2ZDvRrO_GDg>
-    <xmx:FEV6aTA-xL2s378-0HWDSRG6vyQ1uwowxiMG4nuEdHU9uAxgeRql7x9G>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Jan 2026 12:19:15 -0500 (EST)
-Date: Wed, 28 Jan 2026 09:19:14 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: FUJITA Tomonori <tomo@aliasing.net>, boqun.feng@gmail.com,
-	ojeda@kernel.org, peterz@infradead.org, will@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com,
-	bjorn3_gh@protonmail.com, dakr@kernel.org, lossin@kernel.org,
-	mark.rutland@arm.com, tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v1 1/2] rust: sync: atomic: Add perfromance-optimal Flag
- type for atomic booleans
-Message-ID: <aXpFEhJxbF6cRhAZ@tardis.local>
-References: <20260128115200.3820113-1-tomo@aliasing.net>
- <20260128115200.3820113-2-tomo@aliasing.net>
- <DG09KR1O5JL3.3VYRDKRR8UXX8@garyguo.net>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AxvSTs+T"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TP8BZwIGBU8eilIfvvu0ikqfZYr2MG+NAAnXqOFE+qbIVM090FrhPOXAyuNjqKfSKjfydz0tWghy1DaWDzWfwjkXI3ViKpPWcAuy7Sgfxx+VdmJNPmfSUKD1ff3T3zVihDpfDIAv7WQ6P4EhZRqOvLz4Oh3sjJIeH8OKovVDRfx5846M3k4Y7QzmXH7/XBCg/Oz2sR/BErLt0sWEzxPBA73yFtK6S9OOZLnuL0po0wAWWOohrgwXg3/K3A/WlHLEnBj6RvcORK0uKX0X1jAOXEapcyTm5MqMgPvhvhXk7SOqP7m4ggv+nSoiFJnEnulDG3CEs413DSLlSltyVV6q9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xuTG8rshGe/+lzlOlchmQ4vAiEJxNbaFN9zAYaRRcpY=;
+ b=Tppqf5qXwaaT7t+m3mzO6/gM4Um0e/et6YKmdZA8slkoVDAz3egULwrswdTxBm1rQTlqVppXbkKiNSCNBkhCjw80U2X9C9IKs0nUHDLkNK/YKD9f0TQ4Qxmj7Fnklqefgt5y9v1KnwlReMQyGeglDTGAqyoRzubabvHJ9UT3CJrM9sIXFOjOeknhmKN0s6T6wa2avr24l+8ohs0qQcmf8/rs1WwOx0BhhjfBu3pHXHM6umuU3h9krCVrllhX5GrvgCsSNiBKara0w6edegblQwEtllvM4jJRHyMYikvctDXMqbmJNMncp5GGDJwzoN0Z+arRWRR5C/peIciGosXoxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xuTG8rshGe/+lzlOlchmQ4vAiEJxNbaFN9zAYaRRcpY=;
+ b=AxvSTs+TvdSN/qy5JCmPywMs13tv0haiR1+4c5dLe1Va+WSHaz+ac2CbmiBf50+lzsVPUo8cEkd8T1IfNdj1iDDU0yTna5UtjMFuYMrz0KkrsbXFldUSUmFr8+igyM4ubepLrbpQWV8ZpvQaxYO5fIHbnpFwE4jVw8NhPG5MugSHKTz/MkrqnJMoQTzPu/+QXnYT7CsOKT+WdS/hRYoDrI3jyS8c3zRrfk6iHXgcqTvmfizakrbSdCPRFjk9CgZi7xu1Uh4hpS/jT2/jG8GHqS07G0diqXpr+ciWQgzmmBmLMT2bONfrQ7W0yT6pSe1FsPlH+lTWJCqwMfoaiGlekw==
+Received: from PH0PR07CA0019.namprd07.prod.outlook.com (2603:10b6:510:5::24)
+ by LV8PR12MB9644.namprd12.prod.outlook.com (2603:10b6:408:296::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Wed, 28 Jan
+ 2026 17:26:51 +0000
+Received: from CY4PEPF0000EDD3.namprd03.prod.outlook.com
+ (2603:10b6:510:5:cafe::af) by PH0PR07CA0019.outlook.office365.com
+ (2603:10b6:510:5::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.8 via Frontend Transport; Wed,
+ 28 Jan 2026 17:26:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CY4PEPF0000EDD3.mail.protection.outlook.com (10.167.241.199) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.3 via Frontend Transport; Wed, 28 Jan 2026 17:26:50 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 28 Jan
+ 2026 09:26:24 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 28 Jan
+ 2026 09:26:23 -0800
+Received: from inno-thin-client (10.127.8.9) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Wed, 28
+ Jan 2026 09:26:15 -0800
+Date: Wed, 28 Jan 2026 19:26:14 +0200
+From: Zhi Wang <zhiw@nvidia.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+CC: Danilo Krummrich <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<aliceryhl@google.com>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+	<ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+	<a.hindborg@kernel.org>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+	<helgaas@kernel.org>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+	<ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
+	<targupta@nvidia.com>, <acourbot@nvidia.com>, <joelagnelf@nvidia.com>,
+	<jhubbard@nvidia.com>, <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v2 1/2] rust: introduce abstractions for fwctlg
+Message-ID: <20260128192614.6bce6eab.zhiw@nvidia.com>
+In-Reply-To: <20260128163927.GD1134360@nvidia.com>
+References: <20260127215744.332380fe.zhiw@nvidia.com>
+	<DFZN5P8G6MQG.2DYXNFSRIL450@kernel.org>
+	<20260128000410.GT1134360@nvidia.com>
+	<DFZTU4ZFFCM0.3N8LJ8XBN3DF@kernel.org>
+	<20260128132029.GX1134360@nvidia.com>
+	<DG09ZUY530SW.K62KDIT4LIXN@kernel.org>
+	<20260128145906.GZ1134360@nvidia.com>
+	<DG0CABK2DQE8.1TDN35GOJ0DYI@kernel.org>
+	<20260128155646.GB1134360@nvidia.com>
+	<DG0D9I9P5BO9.6Q9H2BQN5AWU@kernel.org>
+	<20260128163927.GD1134360@nvidia.com>
+Organization: NVIDIA
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DG09KR1O5JL3.3VYRDKRR8UXX8@garyguo.net>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD3:EE_|LV8PR12MB9644:EE_
+X-MS-Office365-Filtering-Correlation-Id: 886735aa-28c4-4ca1-7409-08de5e926c69
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Q0UmzLZCRWwzbiPQQUtL5pv6pj3szea4V/1nRJ6tZN8ZzoWZcu5rQNuajOUe?=
+ =?us-ascii?Q?0TGhFpFoV+RiAkJUTek7HQ6yLT08neNQjDBoYL9UCYmpKEAchXFHE8FfmBq/?=
+ =?us-ascii?Q?Ett0bp+MYwnGeVh494LfpIlCqKVnGDr1dVFJMxnoadi9xT3lJVU1l0+WIGUF?=
+ =?us-ascii?Q?EETrWHni0lORR65BHV3wg4L3fxy4bydMmgsmpDJWQ4DR2p/RxzWymQBvZDGG?=
+ =?us-ascii?Q?fBZJ2JtAAdfpdwJa0dMQayoN9cYk0pMl2uAXESQVoCyee+s1+svmFi7iIljI?=
+ =?us-ascii?Q?pz5NxFL1Czu48SDSOtHP92zQeGCP/zhp653cU75lYOXDKMzeThNijmddWktc?=
+ =?us-ascii?Q?s1yD/LxjIe+1Ac3i310hEUll4+by10sYl+4Y0tADtNaHG1/22R9RBxsvn6d2?=
+ =?us-ascii?Q?07XZFuJ/fVSDOHy5O3f2teNRMFjHO41IUHROg5fzTDrbZpvL3eObuY3jJ/z4?=
+ =?us-ascii?Q?gKok835/aa4s1rIvR9DqWe6cqDUM+5FuN6p0OoTVGWoD0IuQB3JXMpDPvFr5?=
+ =?us-ascii?Q?vPxqiHCdZtMEYiMrWDt93vQSmxPKAjNYDkXtIDrgDEUfd8YVnwNTGhZ+pdMj?=
+ =?us-ascii?Q?MoIa73j3yKw+63vBLUmS8xbBSGB2khcHkAbogzH8A5mjAgCrsk+u5+vEwWJr?=
+ =?us-ascii?Q?JckKhvXGkYiCLzhHUhClcWJhYTaLeKCm5b8HXtk4xSJ2NEEheMCpKYCTZqp/?=
+ =?us-ascii?Q?vcQ0j0XjKgarLkqSl2dQveDbdMudrabKt0/hEqbEqUyhNHCqbcyaC6LEJv4g?=
+ =?us-ascii?Q?XeO2M2pE4dauqA1ttHFmN1w4tPocvR8IiItfFDwk5GtT5pqJj3CyyQrSIEdF?=
+ =?us-ascii?Q?T6pTfwbNImLvg1+T1FeOMTn4yAjAZe5oyYpfFt9sgzwqpqjmj3QsSE5Fzo+g?=
+ =?us-ascii?Q?RysbzBnFLx6Bk8X7Cr8kUpKAtTK0MCfkcR52/39MrAV0MUoAmSg09qihPnJh?=
+ =?us-ascii?Q?Ei+nurQGNbGY0XlKg3WZIhor1HkP5fMNkFOw3B7i8Mckzr0bg8fQ0g8f82Xb?=
+ =?us-ascii?Q?vpfQ5plIMwzgzUid+MaSj/x9bpYA8IvkFjHWARq37hyt1r9t+wG+wY6Wc7W9?=
+ =?us-ascii?Q?mbonadO5Jn0RngQA4FJw5okVX95uFGEV0NFDw2u8V4/ZhaZnTgpCEL0UqARl?=
+ =?us-ascii?Q?CcYtxGt/OX87jqsJCPQbZAzfnhriEjLdUHOTMrJac6AbC7Xou6KSpZEUYsxc?=
+ =?us-ascii?Q?wwpk/0eUXwx55f7UGNsTbdmtw0mgj2Dqhnr71WKisy+tdXV+tufiBMHSR0Xy?=
+ =?us-ascii?Q?gz5XTyBSxVIJNjuRf3GJH0K9mx7evnmv0FgqF9ojAMOZwNr8gEXapxtfngUd?=
+ =?us-ascii?Q?dvJcYZdky6ih2YLu4xyP6OKhV5+Y3EKpcMsWeVCmwHdtk+CreP6go3q1gu52?=
+ =?us-ascii?Q?Yg39I1O/0tP1dgyBA9Wm2LOcIpHjBYOCPJiS4hzoy8wtGU/awCfblXywg4a1?=
+ =?us-ascii?Q?k9zyp7osTekfmmg4GmG4qQ9VJpB0Ml/YkwSh2dCBfr3KQesP6MS9D8XtQqoU?=
+ =?us-ascii?Q?tKzjsMT9qxNFvcH/N8NMN9G7T0Ska8TvT/mkfPTEe7HLIqOYU2OQ0ksGAkvk?=
+ =?us-ascii?Q?Z8mzr2nBEfwRCYCjtCRjI4oTSiYFqysUl1YFKsErrCb3XE473cd6M7WtSiiQ?=
+ =?us-ascii?Q?WNTYqUOFQsgeJNGWUows4Ybh8m3KOY//vk/AbvGfKy5NfdzSVUCmV1IxlAPG?=
+ =?us-ascii?Q?TTzMxQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 17:26:50.9162
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 886735aa-28c4-4ca1-7409-08de5e926c69
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EDD3.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9644
 
-On Wed, Jan 28, 2026 at 01:41:41PM +0000, Gary Guo wrote:
-> On Wed Jan 28, 2026 at 11:51 AM GMT, FUJITA Tomonori wrote:
-> > From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> >
-> > Add AtomicFlag type for boolean flags.
-> >
-> > Document when AtomicFlag is generally preferable to Atomic<bool>: in
-> > particular, when RMW operations such as xchg()/cmpxchg() may be used
-> > and minimizing memory usage is not the top priority. On some
-> > architectures without byte-sized RMW instructions, Atomic<bool> can be
-> > slower for RMW operations.
-> >
-> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > ---
-> >  rust/kernel/sync/atomic.rs           | 121 +++++++++++++++++++++++++++
-> >  rust/kernel/sync/atomic/predefine.rs |  17 ++++
-> >  2 files changed, 138 insertions(+)
-> >
-> > diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> > index 4aebeacb961a..7d06193709c0 100644
-> > --- a/rust/kernel/sync/atomic.rs
-> > +++ b/rust/kernel/sync/atomic.rs
-> > @@ -560,3 +560,124 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
-> >          unsafe { from_repr(ret) }
-> >      }
-> >  }
-> > +
-> > +/// # Invariants
-> > +///
-> > +/// `padding` must be all zeroes.
-> > +#[cfg(not(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64)))]
+On Wed, 28 Jan 2026 12:39:27 -0400
+Jason Gunthorpe <jgg@nvidia.com> wrote:
+
+> On Wed, Jan 28, 2026 at 05:35:04PM +0100, Danilo Krummrich wrote:
+> > On Wed Jan 28, 2026 at 4:56 PM CET, Jason Gunthorpe wrote:
+> > > On Wed, Jan 28, 2026 at 04:49:07PM +0100, Danilo Krummrich wrote:
+> > >
+> > >> 	        // Initialize the `data` initializer within the
+> > >> memory pointed // to by `raw_data`.
+> > >> 	        unsafe { data.__pinned_init(raw_data)
+> > >> }.inspect_err(|_| {
+> > >
+> > >> So, essentially the driver passes an initializer of its private
+> > >> data and we "write" this initializer into the extra memory
+> > >> allocated with _fwctl_alloc_device().
+> > >
+> > > This all seems like the right way to do it!
+> > >
+> > > My only remark it that it still doesn't give an opportunity to call a
+> > > function between init and register.
+> > 
+> > You would, from a driver side it would look like this:
+> > 
+> > 	#[pin_data]
+> > 	struct MyDriver {
+> > 	    #[pin]
+> > 	    _reg: Devres<fwctl::Registration>,
+> > 	    fwctl: ARef<fwctl::Device>,
+> > 	}
+> > 
+> > 	#[pin_data]
+> > 	struct FwctlData {
+> > 	    #[pin]
+> > 	    foo: Mutex<Foo>,
+> > 	    ...,
+> > 	}
+> > 
+> > 	impl pci::Driver for MyDriver {
+> > 	    fn probe(
+> > 	        pdev: &pci::Device<Core>,
+> > 	        _info: &Self::IdInfo,
+> > 	    ) -> impl PinInit<Self, Error> {
+> > 	        let fwctl = fwctl::Device::new(
+> > 	            pdev.as_ref(),
+> > 	            try_pin_init!(FwctlData {
+> > 	                foo <- mutex_new!(Foo::new()),
+> > 	                ...,
+> > 	            }),
+> > 	        )?;
+> > 
+> > 	        // Let's do something with the `fwctl::Device` before
+> > we // register it.
+> > 	        fwctl.do_stuff();
+> > 
+> > 	        try_pin_init!(Self {
+> > 	            // We could omit this and instead provide
+> > 	            // `fwctl::Registration::register()`, which does
+> > only return // a `Result` and keeps the `fwct::Device` registered until
+> > 	            // driver unbind.
+> > 	            _reg <- fwctl::Registration::new(pdev.as_ref(),
+> > fwctl); fwctl,
+> > 	        })
+> > 	    }
+> > 	}
 > 
-> This config repeats too much.
-> 
-> I think probably we should just not let `AtomicFlag` alias `Atomic<u8>` (this
-> has the benefit of creating a type mismatch, so code cannot rely on this on x86
-> and fail to compile on, say, RV).
-> 
-> This way the `struct Flag`, `struct AtomicFlag` and `impl AtomicFlag` would
-> always exist and the config is only needed for much fewer times (plus, you don't
-> need to macro to avoid duplicating docs).
+> Okay it is fine by me, Zi did you get all this?
 > 
 
-You probably still need configs for `#[repr(align(_))]` in that case or
-two definitions of `Flag` anyway. but yes the duplicate docs can be
-avoided, so are some impl blocks.
+Yes. These will be addressed in the next re-spin.
 
-BTW, while we are at it, maybe we should use arches that don't support
-byte-wise atomic instructions here instead of the ones do, i.e. 
+> Jason
 
-    #[cfg(not(any(CONFIG_RISCV, CONFIG_LOONGARCH)))]
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    struct Flag {
-        bool_flag: bool,
-    }
-
-    #[cfg(any(CONFIG_RISCV, CONFIG_LOONGARCH))]
-    #[repr(C, align(4)]
-    #[derive(Clone, Copy)]
-    struct Flag {
-        #[cfg(target_endian = "big")]
-        padding: [u8; 3],
-        bool_flag: bool,
-        #[cfg(target_endian = "little")]
-        padding: [u8; 3],
-    }
-
-and we should do
-
-    unsafe impl AtomicType for Flag {
-        #[cfg(any(CONFIG_RISCV, CONFIG_LOONGARCH)))]
-	type Repr = i32;
-        #[cfg(not(any(CONFIG_RISCV, CONFIG_LOONGARCH)))]
-	type Repr = i8;
-    }
-
-as well.
-
-> > +#[repr(C, align(4))]
-> > +#[derive(Clone, Copy)]
-> > +struct Flag {
-> > +    bool_field: bool,
-> > +    padding: [u8; 3],
-> 
-> You probably still want, on big endian platforms, put padding first, so the
-> generated instruction uses small immediates (0 & 1) instead of 0 & 0x01000000.
-> 
-> Best,
-> Gary
-> 
-> > +}
-> > +
-> > +#[cfg(not(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64)))]
-> > +impl Flag {
-> > +    #[inline(always)]
-> > +    const fn new(b: bool) -> Self {
-> > +        // INVARIANT: `padding` is all zeroes.
-> > +        Self {
-> > +            bool_field: b,
-> > +            padding: [0; 3],
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +// SAFETY: `Flag` and `i32` have the same size and alignment, and it's round-trip
-> > +// transmutable to `i32`.
-> > +#[cfg(not(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64)))]
-> > +unsafe impl AtomicType for Flag {
-> > +    type Repr = i32;
-> > +}
-> > +
-> > +macro_rules! atomic_flag_doc {
-> > +    () => {
-> > +        concat!(
-> > +            "An atomic flag type intended to be backed by performance-optimal integer type.\n\n",
-> > +            "The backing integer type is an implementation detail; it may vary by architecture and change\n",
-> > +            "in the future.\n\n",
-> > +            "[`AtomicFlag`] is generally preferable to [`Atomic<bool>`] when you need read-modify-write\n",
-> > +            "(RMW) operations (e.g. [`Atomic::xchg()`]/[`Atomic::cmpxchg()`]) or when [`Atomic<bool>`] does\n",
-> > +            "not save memory due to padding. On some architectures that do not support byte-sized atomic\n",
-> > +            "RMW operations, RMW operations on [`Atomic<bool>`] are slower.\n\n",
-> > +            "If you only use [`Atomic::load()`]/[`Atomic::store()`], [`Atomic<bool>`] is fine.\n\n",
-> > +            "# Examples\n\n",
-> > +            "```\n",
-> > +            "use kernel::sync::atomic::{Atomic, AtomicFlag, Relaxed};\n\n",
-> > +            "let flag = AtomicFlag::new(false);\n",
-> > +            "assert_eq!(false, flag.load(Relaxed));\n",
-> > +            "flag.store(true, Relaxed);\n",
-> > +            "assert_eq!(true, flag.load(Relaxed));\n",
-> > +            "```\n"
-> > +        )
-> > +    };
-> > +}
-> > +
-> > +#[cfg(not(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64)))]
-> > +#[doc = atomic_flag_doc!()]
-> > +pub struct AtomicFlag(Atomic<Flag>);
-> > +
-> > +#[cfg(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64))]
-> > +#[doc = atomic_flag_doc!()]
-> > +pub type AtomicFlag = Atomic<bool>;
-> > +
-> > +#[cfg(not(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64)))]
-> > +impl AtomicFlag {
-> > +    /// Creates a new atomic flag.
-> > +    #[inline(always)]
-> > +    pub const fn new(b: bool) -> Self {
-> > +        Self(Atomic::new(Flag::new(b)))
-> > +    }
-> > +
-> > +    /// Returns a mutable reference to the underlying flag as a [`bool`].
-> > +    ///
-> > +    /// This is safe because the mutable reference of the atomic flag guarantees exclusive access.
-> > +    ///
-> > +    /// # Examples
-> > +    ///
-> > +    /// ```
-> > +    /// use kernel::sync::atomic::{AtomicFlag, Relaxed};
-> > +    ///
-> > +    /// let mut atomic_flag = AtomicFlag::new(false);
-> > +    /// assert_eq!(false, atomic_flag.load(Relaxed));
-> > +    /// *atomic_flag.get_mut() = true;
-> > +    /// assert_eq!(true, atomic_flag.load(Relaxed));
-> > +    /// ```
-> > +    #[inline(always)]
-> > +    pub fn get_mut(&mut self) -> &mut bool {
-> > +        &mut self.0.get_mut().bool_field
-> > +    }
-> > +
-> > +    /// Loads the value from the atomic flag.
-> > +    #[inline(always)]
-> > +    pub fn load<Ordering: ordering::AcquireOrRelaxed>(&self, o: Ordering) -> bool {
-> > +        self.0.load(o).bool_field
-
-For load(), xchg() and cmpxchg(), I think we should not use
-`.bool_field`, because we know that `padding` is always zero, but
-compilers don't. Using `.bool_field` will make the compiler generate i32
-to i8 or a bit mask instruction to get the boolean. We need to implement
-`From<Flag>` for `bool` and use `.into()` here.
-
-Regards,
-Boqun
-
-
-> > +    }
-> > +
-> > +    /// Stores a value to the atomic flag.
-> > +    #[inline(always)]
-> > +    pub fn store<Ordering: ordering::ReleaseOrRelaxed>(&self, v: bool, o: Ordering) {
-> > +        self.0.store(Flag::new(v), o);
-> > +    }
-> > +
-> > +    /// Stores a value to the atomic flag and returns the previous value.
-> > +    #[inline(always)]
-> > +    pub fn xchg<Ordering: ordering::Ordering>(&self, new: bool, o: Ordering) -> bool {
-> > +        self.0.xchg(Flag::new(new), o).bool_field
-> > +    }
-> > +
-> > +    /// Store a value to the atomic flag if the current value is equal to `old`.
-> > +    #[inline(always)]
-> > +    pub fn cmpxchg<Ordering: ordering::Ordering>(
-> > +        &self,
-> > +        old: bool,
-> > +        new: bool,
-> > +        o: Ordering,
-> > +    ) -> Result<bool, bool> {
-> > +        match self.0.cmpxchg(Flag::new(old), Flag::new(new), o) {
-> > +            Ok(_) => Ok(old),
-> > +            Err(f) => Err(f.bool_field),
-> > +        }
-> > +    }
-> > +}
-> > diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
-> > index 42067c6a266c..d14e10544dcf 100644
-> > --- a/rust/kernel/sync/atomic/predefine.rs
-> > +++ b/rust/kernel/sync/atomic/predefine.rs
-> > @@ -215,4 +215,21 @@ fn atomic_bool_tests() {
-> >          assert_eq!(false, x.load(Relaxed));
-> >          assert_eq!(Ok(false), x.cmpxchg(false, true, Full));
-> >      }
-> > +
-> > +    #[test]
-> > +    fn atomic_flag_tests() {
-> > +        let mut flag = AtomicFlag::new(false);
-> > +
-> > +        assert_eq!(false, flag.load(Relaxed));
-> > +
-> > +        *flag.get_mut() = true;
-> > +        assert_eq!(true, flag.load(Relaxed));
-> > +
-> > +        assert_eq!(true, flag.xchg(false, Relaxed));
-> > +        assert_eq!(false, flag.load(Relaxed));
-> > +
-> > +        *flag.get_mut() = true;
-> > +        assert_eq!(Ok(true), flag.cmpxchg(true, false, Full));
-> > +        assert_eq!(false, flag.load(Relaxed));
-> > +    }
-> >  }
-> 
