@@ -1,99 +1,97 @@
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A3321D5AA
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 23:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66DD2D6E75
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 23:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769643995; cv=none; b=LQDHxaOiCTfL7Rt31Q/nGTaPZl8ZG8qhWBjQOK2ZmtOV2LxqyNHhMoLec1msZ1Ndpom2cvUTZsdu1sq/upcGjIs+xUauLR2q6WyLjJinp9hNyjulYLfKK9rqB6TqNVLctZKRrSi1PdTHxBxBGQcAK0c6H9WZxR1HZmrUadeLsZA=
+	t=1769644113; cv=none; b=tmQq56F1jx4D5zm5Brw3T3a/8Drje6F7T1+da47cQvco3txXyJZwdFprgMjt0P/JyncYrJG/A/YQFnNswj0d6d/q+Zj6IFV5lvyi4ydyuVqYXp9MyNhQ2mcU2Rsclo5DdNbewj8d4Cj4JeOh8B4eNrVwcIHjINtNap7IZ31Ch7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769643995; c=relaxed/simple;
-	bh=/hRPwTjZmIfPfF6SXM76s/bDbQMZnDCoJvb+xB1fsC4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOP8zgpAnwT24Jz6iGBNZh8C9EFxZ2ly4QcY8iiC/TEH7YbGdzCHgFUoe64hWzisBaAGROe2hwI6ZenmD1I/CVdNllRt2ao3Pznroc5ROWql0KTeqiaR02zMNdNoKI7jOfVQZ+itQcph9jyrfkZ5/zUc03CYHHJb9qWb9u3LuTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HG0K+ktx; arc=none smtp.client-ip=209.85.161.54
+	s=arc-20240116; t=1769644113; c=relaxed/simple;
+	bh=sxpbpWKTZvxcwwFtu3C/YF5qkG3yECiILa4gEgaG3GA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fhQnvECs523tQHw8RZvUM4kCyBFJnWTzq5bfCCfK0GeEoq33xtvUoct2ErEjMrG4wASXfzNAceQBCP9VfOOXiBTR1cXRTi2MgqGMS94ZQLeUHa6xHwN9Yrb1TpOL6fHQpzpIIfYGrZXjOkGPIPtlzcvzQSQbJwVhLJsuSCqOYGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B9Sv8ccE; arc=none smtp.client-ip=209.85.217.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HG0K+ktx"
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-662fe3ff6f6so248519eaf.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 15:46:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B9Sv8ccE"
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-5f526c39718so264793137.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 15:48:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769643993; x=1770248793; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NNS0YAOwbVOFsEM5UfR8k15PlxPXeRQf3X2TS9uzn6I=;
-        b=HG0K+ktxvfgAsDGCY6OrkBI/pkcNKJ4p29Ij6z7kLKxm2H3vlUJN4iijc292dKtv3R
-         awosEH5cpnFUlE0ALt3zhdA1ovUT8O0OZVwwWyMqND1io4x+9/MyvYtfbIAhDGMwo/AS
-         teltxuF4ivRhfmCKI+2TsKzxG3UrflAqSL38isALIh+gpTzIonTitMGjM7JjgUwWJ+Cy
-         Sg4DQRwGSjQYn1xtkZ4t25OIUDLfY0icKOgEbtr/VbPlHyP+stVGinF+cGI0sRsXAeRF
-         hEbXyB1ydfKCnfcvNygIdieePxt2azCQK/yiWlV/64w4w5LkVHmCnuTIMa3RLyqaXmhB
-         y7yQ==
+        d=gmail.com; s=20230601; t=1769644111; x=1770248911; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=9rsltUJYSM7HaaCYyAzd6NhR6FQ1Y8lMhd5oHE/Kxmw=;
+        b=B9Sv8ccEQVb9kgRNFv9Cvsqli9lj3AbEr7ouaEjS3255PQjQXmDoL1cKyerxUHTUA8
+         jxZedbw3hx+8QCD/5Z5vgAVIpQtOEzEfo8HT7iwg3Aw68OBUe6MBE5RMYr8wgoDFb5a9
+         vJW/JGpUrN+a0mqcBc6h3YB/hbUZb3hHgUTyIr1J33AkSsRGvAuwTENHMrYK/m79sM7T
+         llebXZaW0SdbHhrMUoT2Zt6cgig2QhoqVLI6uuOV61dgyXBgMZ+cbR/iIw8HElEuj7W+
+         KCJiUkvLd3MY55c/Nwmpamu2urEkwNGZTkCyij3pz1UvmVrFBpNb93Dh3iI5Gk2R8/0E
+         xkAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769643993; x=1770248793;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NNS0YAOwbVOFsEM5UfR8k15PlxPXeRQf3X2TS9uzn6I=;
-        b=YXh6a6bKLTl7sO/zM6v0pGlVjiLqWfChYs1k4KANetziN9jU4aYyWlxLY61BD0GWdK
-         k9Gw+0m/hAgJwliMZX7mtFHfugHj+F0jO/db5IP5WK4YV+CUeHgJgfg7COmvR/9ldk9v
-         oROnC7TppEWenWxHg9dXQD8inN9lvs6CbOGKtnXRGzs+jONOg7lRU6E0OJHn1LnrJYs+
-         +j0L/ntEiSgEhWXAQmefE9i5hUJQUHMY+1LnW+S+yz+O2mbfRRTxACT0jZYi92KISDs4
-         pj1EVOd+x2SxPo7ev1M/0yhclABQnBMgmQ/FE2Af1b7aQBn7IHT+8Z1VUcKQPI+1TkuF
-         qnQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgWQoMyYSi6FfRsaG0lSD5U7QTxvP04tRrdjwb95HvjNZL+nmb6cwN1GVsil/QLysHEH6hJ94jphOEMn5mfQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCUOk6V9+DgCirBkoigyxUXxoS2qoFQ/LtTeiBiGFKow2RwciP
-	uvFvi4AlXaxuhymIqu90o6rNYhNrd9C/rCeNY0phQqbk2VxuEDiwag7G70980g==
-X-Gm-Gg: AZuq6aLfP4onUVPwIRh5XFqF5hvNpXsLHJoshqPSY72XIHD1oz6ViHCGtAj9hXkievx
-	zUJNspdSzHd9Exg1c8ib1xfjelzY9ctUJwwluavurkRnrVUB55aPL5jGIIEN3sU+8QBW81631rE
-	TRIOBiFHsmZ/PNsURO1NEs/y7We5vD99qLs/7/xDPaxhcf1Yddo5Qvp4zfHwFRIq9MHphTMKmuD
-	SN368ChquXAnNQeb1EEnv+/K4wwSGq6cnr3Dxzm2h4pTNsCQsGJASTpIH1aDyHn37+6OM+9XCyu
-	ur6kjSrdUFBjLT1Eaj8MOchp1EHqW7IbCRD8SFRfQ0TZTC2VmJjd6WahOyx20RcRM1ruyg/wUnT
-	+ElSmbPfIOUrwUO+tImqW8voH05RbjdIdFhtuCSl4+giJ3guhIAjGjtjOfDLIPgfUnNBtDQUXY1
-	e9xxIyO4JWvcQyzRcL6HAS+uYHtKeArvdiSX5jj5wVJxdAbyjZhQGHPIq2wX0eN5pJjWHlVaCpJ
-	nOxCrAAnm/7InQ=
-X-Received: by 2002:ad4:5de1:0:b0:894:6e23:3c3f with SMTP id 6a1803df08f44-894cc81e09amr106899066d6.20.1769637215910;
-        Wed, 28 Jan 2026 13:53:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769644111; x=1770248911;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9rsltUJYSM7HaaCYyAzd6NhR6FQ1Y8lMhd5oHE/Kxmw=;
+        b=qJuREWElO3FbRRX+krjF/Y8vXPw8bEzZggTmidvCx6m0JFLeloimH1kqKfpj0YlYFp
+         IhED885xDzvmqF2xlfhmojlYk3EBVXm7S0ENd/bErNlEgGdOs8U0ojm47jUFEBFiY/uo
+         x8TBB1NQwxp+Vljmp7Oub7GuAOHcLHxpFZ1XOZjhkDPY3TwFOTaIP55zYNmYjmiSKBA/
+         d8wXo4s2rOx/g4jm9bYkWB200PK6Kwm4+o6qPXhYCvTGdJHUSh6BnCvCNG72DMhX1MUY
+         Fvpp3EYVlPOgEPLM+iwsH36NU9QTaqJu477YkPSammtLbpblLEPzhXz5zr7yXbcuw6y/
+         k8Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCVAAkT50Q/UKv0VTWqk5yJXtkp5gk0lo1WB5hZN9cFvyiT6PHfVMrUGRvBL5KJqdQd2aIpo3ddzcvZTnTU23Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywh3/Fu4kErv88lNJDHL3yPcWvhBDM4w8wopHpWDsG6fmuKx6KE
+	UIxdRlmBavOAo6HiUS27aZMrLUfMrWzQ5c1oft0xs3FTi3ZE71YQLnNifq0Iqg==
+X-Gm-Gg: AZuq6aISHTNPL6CfOqi55JZLk0kQoj4+O2uMPVIGcRnHRTQXzgGaZtASHdDVfoTxfyQ
+	LKnIKgG2MLwEVyDLl0Z4HZlaERSF8HzD3SaO5n22lQbbRVL2AdB1uXZYUWZlhfitJzRsgGsYBPR
+	G+caY9+S0ahj3FnVeUe5Q1ADTZlT4mh/h+UHNFBeArQntJroeYCByecLaL0pXx1Lzx2frPbQm7i
+	yQhl8Vvc4Qxro/DsJoEFQcjtierwPZcW1LuTcox66Mn5Vm83FvOyJsh5M4G/3YJFNG7P2isAyAg
+	AzpgzTbv/U6vL+FTdZRjdO0hy2JwpHvjq20lJISjb29cWPG/q0KNYml0iSdAy7AGPg/AMIKm8eN
+	bf5vp+/ew/0uy1RNtI37Ill3g5Q8xZvGBlSQpS61+A9qHj5PebEiTL2nQzaTsM1cQZFeNFKDkI2
+	SRFyCLr7u4um6BgLws3a64rv+NhrmHCAPLlqaCq/Jf4lhfyLdOvpxA+Eh8/nQzP0go+HUNZEwL4
+	sMM2R68+cXqmVk=
+X-Received: by 2002:a05:6214:1247:b0:880:5867:45b4 with SMTP id 6a1803df08f44-894cc7b9952mr92925456d6.13.1769637214740;
+        Wed, 28 Jan 2026 13:53:34 -0800 (PST)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d3740f6dsm25243756d6.37.2026.01.28.13.53.34
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711d2889asm258472585a.27.2026.01.28.13.53.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 13:53:35 -0800 (PST)
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A8058F4006D;
-	Wed, 28 Jan 2026 16:53:34 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Wed, 28 Jan 2026 16:53:34 -0500
-X-ME-Sender: <xms:XoV6ac3g9JzHLUNNmTj2yMvm-MRCyaYCLkJRsDdYj5rE5TkEB8VQEw>
-    <xme:XoV6ach60KkUCWaJxMqLjVM8pUiEvhiZ138esZjQfCzSTl9Snh5lDvXJcXJmo3y0u
-    F9ITqN1erJvRe35oK-DyLGW1ofQcvApVHfA_UHxOThaQ37DZuZO634>
-X-ME-Received: <xmr:XoV6aZoWew_74M3eZCOX84aDR9FYOmg9VlIvH5nYnBv0uku67o0KNi2E2XNMmh17u-7dl4xgsF8bjRzGHgL5B3SeUVma5724>
+        Wed, 28 Jan 2026 13:53:34 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1652AF4006C;
+	Wed, 28 Jan 2026 16:53:33 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 28 Jan 2026 16:53:33 -0500
+X-ME-Sender: <xms:XYV6aZ9z-QUvAGSHezMUHaFgptqOz8p1VjxHqW0DaB8Ff7R71d70cw>
+    <xme:XYV6aTKqQ_J1Hvv4jkECTXfoBQLi0D7zHtroaelPik_EH1R1RN6t_x8EEryopcewD
+    myJLUDdkPKjkf9X-uDk0PqRYXnNVbhp9SY7rG_rrQksmRnyPdjjrg>
+X-ME-Received: <xmr:XYV6abyC1wZTJsOsYAivmPfFMdOpTePOUSi78KjN4kgnEhLJA-756fntmj6cLlLGqTKn8Rkw-ZhchELTp9S_mVAMATkrwfuQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieeggeehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpefhkeetffffleefffelueduhfeufedtffdvuedtkeejhfeivdelkedvffejvdeu
-    keenucffohhmrghinhepphgrthhhrdhishenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshho
-    nhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngh
-    eppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepgedv
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhu
-    giesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrtghusehvghgvrhdrkh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggr
-    thhiohhnrdhorhhgpdhrtghpthhtoheprghrvhgvsegrnhgurhhoihgurdgtohhmpdhrtg
-    hpthhtohepthhkjhhoshesrghnughrohhiugdrtghomhdprhgtphhtthhopegsrhgruhhn
-    vghrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtmhhllhgrmhgrshesghhoohhglh
-    gvrdgtohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:XoV6aWxkItRdfHtyPIt7nfN4U7qLd4rqy1yTjpDOxIaQv06kNi7bhA>
-    <xmx:XoV6aclwGwdr9Wtenqdsnj8AVHyAfAPQbdpqTDxYixvQ0bgmWd2gWA>
-    <xmx:XoV6af2L4jeRyBXPyPkw2egVYGFjzkyVOjnDGTTFQs8-3woI6qlcLA>
-    <xmx:XoV6abQdJ5xiHW8IfQYP5akZWBNzI4AhN0-zD-JMQH5qPEpWKs8E5g>
-    <xmx:XoV6aYerSrDOvB0R7IKW-t2o1O5m9Z14Rcarb4aJlySzNhqJHj9x8Nts>
+    gurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcuhfgv
+    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
+    hnpefgteffhfehjeegtdduieffudetfeehgfegudejudfhieefgfeigfevueduleduffen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquh
+    hnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudej
+    jeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrd
+    hnrghmvgdpnhgspghrtghpthhtohepgedvpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehrtghusehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgh
+    hrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghr
+    vhgvsegrnhgurhhoihgurdgtohhmpdhrtghpthhtohepthhkjhhoshesrghnughrohhiug
+    drtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopegtmhhllhgrmhgrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghlihgtvg
+    hrhihhlhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:XYV6aeb6-lpxe5BmItSQ8TGwxwL3-m_BKM4W1H3Y-3cq0Mnn1AMx4g>
+    <xmx:XYV6abse_Yxb9vsUFZBwhDupYtyUPOlCxBOaD1gVfEi9MRz6glZA8Q>
+    <xmx:XYV6aQcIWTK4QFeE7DAYpbYjMW8gknH7DTvAtLJnamxd_XK-EUJTSw>
+    <xmx:XYV6afbpQrkGgIIKfvZWuQ3WJziSIJzo_jziv4carR1ymlHvOg-Fdg>
+    <xmx:XYV6aaHve5ck36TkQ4APwW2GO5o_n4kEHHShlf08OOo17DeEytfrbJd3>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Jan 2026 16:53:34 -0500 (EST)
+ 28 Jan 2026 16:53:32 -0500 (EST)
 From: Boqun Feng <boqun.feng@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -129,12 +127,10 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mitchell Levy <levymitchell0@gmail.com>,	David Gow <davidgow@google.com>,
 	Peter Novak <seimun018r@gmail.com>,
 	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [RFC PATCH 1/7] rust: types: Introduce HasField trait and derive macro
-Date: Wed, 28 Jan 2026 13:53:24 -0800
-Message-ID: <20260128215330.58410-2-boqun.feng@gmail.com>
+Subject: [RFC PATCH 0/7] Introduce HasField infrastructure
+Date: Wed, 28 Jan 2026 13:53:23 -0800
+Message-ID: <20260128215330.58410-1-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260128215330.58410-1-boqun.feng@gmail.com>
-References: <20260128215330.58410-1-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -143,265 +139,75 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In order to unify all the `Has*` infrastrutures, a generic `HasField`
-trait is added along with a derive macro `#[derive(HasField)]` which
-allows generate implementation of `HasField` automatically, e.g.
+Currently we have a few similar places where we use a `Has*` trait to
+describe that a data structure has some types of field in it so that the
+containing type can do something with it. There are also a `impl_has_*!`
+macro to help implement the trait. While it's working, but it's less
+ergonomic to me, especially considering the amount of the work we need
+to do for something new (e.g. rcu_head).
+
+Therefore here is the effort to unify them into a proc-macro based
+solution. `Field` and `HasField` traits are introduced to generify the
+"Has A" relationship, and a derive macro `#[derive(HasField)]` is also
+added to support automatically implementing `HasField` trait.
+
+This series convert a few users (Work, HrTimer) and introduce a new
+`Field` type `RcuHead`. These improvements demonstrate how this
+infrastructure can be used.
+
+Some future work is still needed: using `HasField` for `DelayedWork` and
+`ListLink` is still missing. Also it's possible to clean up `HasWork`
+trait as well.
+
+One known issue is that `#[derive(HasField)]` doesn't play alone with
+`#[pin_data]` at the moment, for example:
 
     #[derive(HasField)]
-    struct Base {
-        a: i32;
-	b: i32;
-	#[field]
-	f1: Field<Base, 1>,
-	#[field]
-	f2: Field<Base, 2>,
-    }
+    #[pin_data]
+    struct Foo { .. }
 
-two implementations `impl HasField<Base, Field<Base, 1>>` and `impl
-HasField<Base, Field<Base, 2>>` will be generated with `&raw mut` and
-`container_of!()`.
+works, but 
 
-This simplifies the usage of the current `Has*` traits, namely `HasWork`
-and `HasHrTimer`, and eases the introduction of more `Field` type in the
-future.
+    #[pin_data]
+    #[derive(HasField)]
+    struct Foo { .. }
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- rust/kernel/field.rs   | 73 ++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs     |  1 +
- rust/kernel/prelude.rs |  4 +-
- rust/macros/field.rs   | 85 ++++++++++++++++++++++++++++++++++++++++++
- rust/macros/lib.rs     | 11 ++++++
- 5 files changed, 173 insertions(+), 1 deletion(-)
+doesn't. Maybe it's by design or maybe something could be improved by
+pin-init.
+
+
+The patchset is based on today's rust/rust-next, top commit is:
+
+	a7c013f77953 ('Merge patch series "refactor Rust proc macros with `syn`"')
+
+Regards,
+Boqun
+
+Boqun Feng (7):
+  rust: types: Introduce HasField trait and derive macro
+  rust: time: hrtimer: Make `HasField` a super-trait of `HasHrTimer`
+  rust: workqueue: Add HasField support for Work
+  drivers: android: binder: Replace `impl_has_work!` with
+    `#[derive(HasField)]`
+  rust: sync: Completion: Replace `impl_has_work!` with
+    `#[derive(HasField)]`
+  rust: work: Remove `impl_has_work!`
+  rust: sync: rcu: Introduce RcuHead
+
+ drivers/android/binder/process.rs |   6 +-
+ rust/kernel/field.rs              |  73 ++++++++++++++++++++
+ rust/kernel/lib.rs                |   1 +
+ rust/kernel/prelude.rs            |   4 +-
+ rust/kernel/sync/completion.rs    |   8 +--
+ rust/kernel/sync/rcu.rs           |  69 ++++++++++++++++++-
+ rust/kernel/time/hrtimer.rs       |  70 ++++---------------
+ rust/kernel/workqueue.rs          | 109 +++++++++++-------------------
+ rust/macros/field.rs              |  85 +++++++++++++++++++++++
+ rust/macros/lib.rs                |  11 +++
+ 10 files changed, 299 insertions(+), 137 deletions(-)
  create mode 100644 rust/kernel/field.rs
  create mode 100644 rust/macros/field.rs
 
-diff --git a/rust/kernel/field.rs b/rust/kernel/field.rs
-new file mode 100644
-index 000000000000..347387731d71
---- /dev/null
-+++ b/rust/kernel/field.rs
-@@ -0,0 +1,73 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Field types to describe a field inside a struct.
-+
-+/// A field.
-+///
-+/// The generic type `T` is usually the type that contains the field. For some field types, it
-+/// needs to be generic over the type containing it, because it needs to be initialized with
-+/// container-type-specific callbacks. For other types, simply implement [`Field<T>`] for all `T`
-+/// to indicate there is no restriction.
-+pub trait Field<T>: Sized {}
-+
-+/// A struct `T` that has a field `F`.
-+///
-+/// # Safety
-+///
-+/// The methods [`raw_get_field()`] and [`field_container_of()`] must return valid pointers and
-+/// must be true inverses of each other; that is, they must satisfy the following invariants: -
-+/// `field_container_of(raw_get_field(ptr)) == ptr` for any `ptr: *mut Self`. -
-+/// `raw_get_field(field_container_of(ptr)) == ptr` for any `ptr: *mut Field<T>`.
-+///
-+/// Use [`macros::HasField`] to generate the impls automatically.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use core::marker::PhantomData;
-+/// use kernel::{
-+///     macros::HasField,
-+///     field::{
-+///         Field,
-+///         HasField, //
-+///     }, //
-+/// };
-+///
-+/// struct Work<T, const ID: u64> {
-+///     _x: isize,
-+///     _inner: PhantomData<T>,
-+/// }
-+///
-+/// // Declare that `Work` is a `Field`.
-+/// impl<T, const ID: u64> Field<T> for Work<T, ID> {}
-+///
-+/// #[derive(HasField)]
-+/// struct B {
-+///     #[field]
-+///     w: Work<B, 2>,
-+///     a: i32,
-+/// }
-+///
-+/// const _: () = {
-+///     const fn assert_has_field<T: HasField<T, Work<T, 2>>>() { }
-+///     assert_has_field::<B>();
-+/// };
-+/// ```
-+///
-+/// [`raw_get_field()`]: HasField::raw_get_field
-+/// [`field_container_of()`]: HasField::field_container_of
-+pub unsafe trait HasField<T, F: Field<T>> {
-+    /// Returns a pointer to the [`Field<T>`] field.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The provided pointer must point at a valid struct of type `Self`.
-+    unsafe fn raw_get_field(ptr: *mut Self) -> *mut F;
-+
-+    /// Returns a pointer to the struct containing [`Field<T>`] field.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The pointer must point at a [`Field<T>`] field in a struct of type `Self`.
-+    unsafe fn field_container_of(ptr: *mut F) -> *mut Self;
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index f812cf120042..36259aac1843 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -93,6 +93,7 @@
- pub mod drm;
- pub mod error;
- pub mod faux;
-+pub mod field;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
- pub mod firmware;
- pub mod fmt;
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index 2877e3f7b6d3..3668ef42046b 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -25,10 +25,12 @@
- pub use crate::alloc::{flags::*, Box, KBox, KVBox, KVVec, KVec, VBox, VVec, Vec};
- 
- #[doc(no_inline)]
--pub use macros::{export, fmt, kunit_tests, module, vtable};
-+pub use macros::{export, fmt, kunit_tests, module, vtable, HasField};
- 
- pub use pin_init::{init, pin_data, pin_init, pinned_drop, InPlaceWrite, Init, PinInit, Zeroable};
- 
-+pub use super::field::{Field, HasField};
-+
- pub use super::{build_assert, build_error};
- 
- // `super::std_vendor` is hidden, which makes the macro inline for some reason.
-diff --git a/rust/macros/field.rs b/rust/macros/field.rs
-new file mode 100644
-index 000000000000..3d32e5089f27
---- /dev/null
-+++ b/rust/macros/field.rs
-@@ -0,0 +1,85 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use proc_macro2::{Span, TokenStream};
-+use quote::quote;
-+use syn::{
-+    spanned::Spanned, Data, DataStruct, DeriveInput, Error, Fields, Generics, Ident, Result, Type,
-+};
-+
-+fn impl_has_field(base: &Ident, field: &Ident, ty: &Type, generics: &Generics) -> TokenStream {
-+    let (impl_generics, type_generics, where_clause) = generics.split_for_impl();
-+
-+    quote!(
-+        // SAFETY: The implementation of `raw_get_field()` only compiles if the field has the
-+        // right type.
-+        unsafe impl #impl_generics
-+        HasField<#base #type_generics, #ty>
-+        for #base #type_generics
-+        #where_clause {
-+            #[inline(always)]
-+            unsafe fn raw_get_field(ptr: *mut Self) -> *mut #ty {
-+                // SAFETY: Per function safety requirement, the pointer is valid.
-+                unsafe { &raw mut (*ptr).#field }
-+            }
-+
-+            #[inline(always)]
-+            unsafe fn field_container_of(ptr: *mut #ty) -> *mut Self {
-+                // SAFETY: Per function safety requirement, the pointer is valid, and it points
-+                // to the right field of the struct.
-+                unsafe { kernel::container_of!(ptr, Self, #field) }
-+            }
-+        }
-+    )
-+}
-+fn handle_struct(
-+    ident: &Ident,
-+    generics: &Generics,
-+    st: &DataStruct,
-+    span: Span,
-+) -> Result<TokenStream> {
-+    let mut impls = vec![];
-+
-+    if let Fields::Named(fields) = &st.fields {
-+        for field in &fields.named {
-+            let found = field
-+                .attrs
-+                .iter()
-+                .find(|attr| attr.path().is_ident("field"));
-+
-+            if found.is_some() {
-+                if let Some(name) = &field.ident {
-+                    impls.push(impl_has_field(ident, name, &field.ty, generics));
-+                }
-+            }
-+        }
-+
-+        Ok(quote!(
-+            #(#impls)*
-+        ))
-+    } else {
-+        Err(Error::new(
-+            span,
-+            "`#[derive(HasField)]` only supports structs with named fields",
-+        ))
-+    }
-+}
-+
-+pub(crate) fn has_field(input: DeriveInput) -> Result<TokenStream> {
-+    let span = input.span();
-+    let data = &input.data;
-+    let ident = &input.ident;
-+    let generics = &input.generics;
-+
-+    if let Data::Struct(st) = data {
-+        let impls = handle_struct(ident, generics, st, span)?;
-+
-+        Ok(quote!(
-+            #impls
-+        ))
-+    } else {
-+        Err(Error::new_spanned(
-+            input,
-+            "`#[derive(HasField)]` only supports structs",
-+        ))
-+    }
-+}
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 85b7938c08e5..4fccca0e11af 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -13,6 +13,7 @@
- 
- mod concat_idents;
- mod export;
-+mod field;
- mod fmt;
- mod helpers;
- mod kunit;
-@@ -486,3 +487,13 @@ pub fn kunit_tests(attr: TokenStream, input: TokenStream) -> TokenStream {
-         .unwrap_or_else(|e| e.into_compile_error())
-         .into()
- }
-+
-+/// Derives the implementation for `HasField`.
-+///
-+/// See the documentation of `HasField` for more information.
-+#[proc_macro_derive(HasField, attributes(field))]
-+pub fn has_field(input: TokenStream) -> TokenStream {
-+    field::has_field(parse_macro_input!(input))
-+        .unwrap_or_else(|e| e.into_compile_error())
-+        .into()
-+}
 -- 
 2.50.1 (Apple Git-155)
 
