@@ -1,252 +1,88 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F260233D6D6
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 21:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8171C341056;
+	Wed, 28 Jan 2026 22:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769637231; cv=none; b=e/HfcZ2DWGkYUt0+qSDf2DuPdG+nSJWbKrRDwJwjSO8WLJVLeMVBIosluugLbH6Katf//YE7+FLWKJwpz9jXqUYUQ46lpJWzwavOrU1K1DkWC5ghWA5n7GHjY2wpUaiCTKXMmxmam+2D98wk2O3hPGKsvDhoQWZ2ZSwb4kBdMCc=
+	t=1769637744; cv=none; b=OwBQRdr5htetUqkIHwD4ocTJ5C5HDj3biIQVe2wj8P9d2zvFA2qb9ifjKWLGrVj275y4piPbLTLf1wC72mnYfgFRVXrxISVRgsZJk4QC+wA+fr9TRJLEJlvBgtl+BCL3V6bSxQxyBVpll34kVIjDpsQiaq2vqz5Iw7a5Id46WDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769637231; c=relaxed/simple;
-	bh=VS2vDVTbhryM2iG2RFEe63s3RzGceDZw2ywU6GaaAO4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sac5GAMt1tKTAb3oVewEWpntNjGpBDCUW2PLghqLIBCBMJuCr8z4uiFUcXsyCuFDh5Q5jYUvUuklLAIed2GoIiueGZmcHXY+LiaDO6Z+yBGB/iOjc6IS+u8gTW1+BvSNCM6/Mp2XUb7YlG4RVllWOCV3QVyt4XQ9pj5gRFbSu8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UWP2xgle; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769637744; c=relaxed/simple;
+	bh=p3Ov9GAWmc7miJdCYyGL4Sq5/XQCePT1md0p6UZP2ic=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XZqjohDHVQx/tFDKlxcl0U46Vsxm9Ss+O7eRcRMe64GVpI5x3IVRvM9BuALJT1Dx3YaMAQjIlhqx61CqPsJNOwVTOKBjEkYtkvFZ/DdZjAV0oF5QGHhWVhpY44hEbXkptVQg8V0of04GtlFNJNLzeC7hKpH7L6EcW3JoKKgjk1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rO7foRxJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UWP2xgle"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8c717f2b654so52637585a.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 13:53:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769637225; x=1770242025; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NJefVb7bf1Dw+gUw0ZVM3yqaOt6rhoTdHQFIKu4uZfc=;
-        b=UWP2xglezd+cyTnP70i7txqJuIktFy1MIxQeWsY/RIamcg0lhDKpL462kDCtgm6234
-         G3KembYWEBOoCiBQ/7+NP5InQ7Wsf8BmcnA7f+Vb3Tti1TIoFUu9xBNOELTnk+o8xVI1
-         92d/o900HVXi6GQRz1M+UPNhov8j3rcoBJsUlV0/uvHej1JIGnSXKY0FrfcQ6ilqefsq
-         aaKtxY5PEEtwSs/YaNuxvf48nyG7mfRLk37I5j1bfbvU1Y3kxqvPjR4gC54ryd93J9uN
-         6ckHCCN/gVfOYyuNpFs/P5LD09r+9j6b4CAqTVGUB7KtIBFPMT8nd1lJheeeEQs6XN+x
-         s4nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769637225; x=1770242025;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NJefVb7bf1Dw+gUw0ZVM3yqaOt6rhoTdHQFIKu4uZfc=;
-        b=gpIR62CnUOzNlgfrj9j2utji+Lf3LrpIWTMfDKpeiT61kogp2jUWbFUDCvuEsEtv4O
-         0UraK9O0UUjoHs13suJkx8Pxb7wwq2Y67WZx9We052N4w99X2rMBtUHnRR3QDNMg6Ajw
-         4GFsSe/8LuGWZaOXeLOVmcUpH+nD5f6z/9L9ELnBBIXKTI9GaXDFGcO+sChhQ9M4gUJj
-         hSAq8/BTR04MWwDNjlwgox7F+eNy/9bg44Pf+tw4lZVmNFLjmxFDNMYO7bRwrG8lYbML
-         qlRsNXIgQ/UoN3jtMmcYRBbOqdNyhzhKyAzOzxude0+JKtG+Ele5pokfcuWbnX4xUxm0
-         fSfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0S/VZEr6pQqLc9wqS4VmZX25XJiEtm7OwXabk02VfcPIGV7s+gZ4vzaChHV+z/HTIHH43VN0CaGlkh/H9SA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqfdQL1mVRERP3bcwf8f7WhbBWSTN+80Lwd5EirdQdieNa27Pl
-	qNRPh35Oh5gAKLbmsFi+YoamX/NS4xvF6odjKI0PnXsxz6nMeoFJPRvn
-X-Gm-Gg: AZuq6aL+iG2YoLmVXxIg568H2E+JUGX+h48PqbOYLyQn2zrAB/jMRtu8Lv3TJh/kjn4
-	7Tgke8rFNwFF0aVHPWzfK3te7DEDF6laZedYMSR5gEmYzEhHcTt+CppN62z2f5jnsA2xICT+elP
-	/wl+/OaxeTQKhXySaB1ha10Onz9ohwdJSUWducj8RAdsMdPbTd43VUjAUooGzIQWXW18e1FEwoH
-	4xqn1isXS2iNtHr6ArGR6KnUvPYI7bPahyOHw5YJ7KMYQXJClO+MVkNEYS9j3YZ5imAj6CfbkcK
-	nZ8Em+R65YmJgX2LPDXPDFkzC8uV4V3xSPw9VpKPMDeCSnsJjhpGnZNa9AgEyr93jWvxrMPWKam
-	meUZrsIDyOaleJc9Z7m7pVzLCiSYOMk0ZfIosRbQpsMXdoTX88kcaW8d/Im2qf11LemDpzp1HMk
-	V6zvSSBZs4JmzuUee/tBuQ0LUxLD2rGhB+w+mCbHIHV5klBluZR5ML0FdYkioPTNALx4GGKQ69E
-	NpwHr/947QLUw4=
-X-Received: by 2002:a05:620a:1988:b0:8c1:6018:b186 with SMTP id af79cd13be357-8c70b927a0dmr857145285a.87.1769637225168;
-        Wed, 28 Jan 2026 13:53:45 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711b96fbdsm261644985a.14.2026.01.28.13.53.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 13:53:44 -0800 (PST)
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id EE44BF4006D;
-	Wed, 28 Jan 2026 16:53:43 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 28 Jan 2026 16:53:43 -0500
-X-ME-Sender: <xms:Z4V6aXdz8cRDm_tXieHr7Oh9aaspEpgLS5vE7365MNmX3jhUjb534A>
-    <xme:Z4V6aR0zRj-XjoQeMplYNrOXg1OK_bm5MX38oBfU6ltmGTjwBc1gav3_eaFZBkVaD
-    GjBxAmIoTTVRadffy88Xd90MZP7XBvDNZlFA7CiBsWfe0rJkD-RIA>
-X-ME-Received: <xmr:Z4V6aTM6_4uSuJrv-sDQbmFNn-tAmcqaq80Dz7CSXgyi7BqBbUyzjeqUDICIjwqlQqpJHmooR3vwA5B6pd97AO3KqcwrhQSB>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieeggeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeegleejiedthedvheeggfejveefjeejkefgveffieeujefhueeigfegueehgeeg
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepgedvpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehrtghusehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
-    rghrvhgvsegrnhgurhhoihgurdgtohhmpdhrtghpthhtohepthhkjhhoshesrghnughroh
-    hiugdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegtmhhllhgrmhgrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghlih
-    gtvghrhihhlhesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:Z4V6aYRAp11D9kA6qgwYhTm9VqUIXtiYizrlzCk9-pDIxAMY8nkKbQ>
-    <xmx:Z4V6aZwAcFiAXuDH9lyiz_ofRJHPV_ofS_moTroDNBVrvFWywH8ZXA>
-    <xmx:Z4V6aWefvPOGpFfGLUsVgdIR4z3G5zFaVy_kB2-qXmuPTaWnLfnITA>
-    <xmx:Z4V6ab62fRhqp-I7kxvuBzZBgIdN7mXiPhl4qsvQZFZWuiMtF5xbCw>
-    <xmx:Z4V6abIgGVW-UWYzuf6USJEVBaJouxsY2gKlUzEeHeKwKd4u2eKZslpt>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Jan 2026 16:53:43 -0500 (EST)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	rcu@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>,	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rO7foRxJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97859C4CEF1;
+	Wed, 28 Jan 2026 22:02:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769637744;
+	bh=p3Ov9GAWmc7miJdCYyGL4Sq5/XQCePT1md0p6UZP2ic=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rO7foRxJTLPHd7EFmeFADSjhcLf68oqo1bXtvO276v0tpiQsHqoDKl3Z0sZDYap7t
+	 oydPLH8RBKr2xqRKSq1kNRdbC/KxMHWJfc5Bs3h22MxttrBp1njG4p1Ihr2nJaetTs
+	 oP4/2edOoXnbb/r3/tCwp1HMuxeuzicVNtonlF3UXOzUQCFGOVjccp8hfclO2o8GGx
+	 uzxpMsVGixvOKTxDevSSkBn/1L4CuyWoQv2AJc7UAaqnPls0dpZ4hD7krNH9xEX7OJ
+	 aTCWZkvUNwAFBcGKjxj7bLUPm1oupEZ2pvi3AXEFzfIwHDnrcxTSmsJeD7CTEW1eoo
+	 5xG1bDHuAJwIQ==
+Date: Wed, 28 Jan 2026 15:02:17 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Gary Guo <gary@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,	Danilo Krummrich <dakr@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,	Zqiang <qiang.zhang@linux.dev>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Lyude Paul <lyude@redhat.com>,	Thomas Gleixner <tglx@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>,	Stephen Boyd <sboyd@kernel.org>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Vitaly Wool <vitaly.wool@konsulko.se>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Mitchell Levy <levymitchell0@gmail.com>,	David Gow <davidgow@google.com>,
-	Peter Novak <seimun018r@gmail.com>,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [RFC PATCH 7/7] rust: sync: rcu: Introduce RcuHead
-Date: Wed, 28 Jan 2026 13:53:30 -0800
-Message-ID: <20260128215330.58410-8-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260128215330.58410-1-boqun.feng@gmail.com>
-References: <20260128215330.58410-1-boqun.feng@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] kbuild: rust: use klint to provide
+ CONFIG_FRAME_WARN
+Message-ID: <20260128220217.GA2129077@ax162>
+References: <20260127172330.1492107-1-gary@kernel.org>
+ <20260127172330.1492107-3-gary@kernel.org>
+ <DFZSRE43IHOU.2OZNE9IFIO3UB@nvidia.com>
+ <DFZTOMSDPOQM.3QW4TZ52N4MKZ@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DFZTOMSDPOQM.3QW4TZ52N4MKZ@garyguo.net>
 
-In order to support RCU delay free (call_rcu() and kfree_rcu()), the
-abstraction of the `rcu_head` is introduced. Types that want to support
-RCU delay free can specify a `RcuHead<T>` in it, e.g.
+On Wed, Jan 28, 2026 at 01:14:27AM +0000, Gary Guo wrote:
+> It might be possible to do more detailed analysis by checking what is using the
+> stack (e.g. perhaps recovery variable -> stack slots using DWARF if full
+> debuginfo is enabled, or find out the instruction that first touches the
 
-    #[derive(HasField)]
-    struct Foo {
-        a: i32,
-	b: i32,
-	#[field]
-        rcu_head: RcuHead,
-    }
+Yeah Nick wrote a Python script to use debug info to give a better idea
+of stack usage to help us debug these warnings from clang:
 
-A wrapper `WithRcuHead<T>` is also provided for users that want to
-specify a generic `T` with a rcu_head.
+  https://github.com/ClangBuiltLinux/frame-larger-than
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- rust/kernel/sync/rcu.rs | 69 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 68 insertions(+), 1 deletion(-)
+It is rather hacky and feels like there are a number of corner cases
+where things don't look quite right but it is better than nothing.
 
-diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
-index a32bef6e490b..694ca2f54953 100644
---- a/rust/kernel/sync/rcu.rs
-+++ b/rust/kernel/sync/rcu.rs
-@@ -4,7 +4,14 @@
- //!
- //! C header: [`include/linux/rcupdate.h`](srctree/include/linux/rcupdate.h)
- 
--use crate::{bindings, types::NotThreadSafe};
-+use crate::{
-+    bindings,
-+    field::{Field, HasField},
-+    macros::HasField,
-+    types::{NotThreadSafe, Opaque},
-+};
-+
-+use core::ops::Deref;
- 
- /// Evidence that the RCU read side lock is held on the current thread/CPU.
- ///
-@@ -50,3 +57,63 @@ fn drop(&mut self) {
- pub fn read_lock() -> Guard {
-     Guard::new()
- }
-+
-+/// RCU head for call backs.
-+///
-+/// # Examples
-+///
-+/// Use `#[derive(HasField)]` macro to specify a struct has a RCU head.
-+///
-+/// ```
-+/// use kernel::sync::rcu::RcuHead;
-+///
-+/// #[derive(HasField)]
-+/// struct Foo {
-+///     a: i32,
-+///     #[field]
-+///     rcu_head: RcuHead,
-+///     b: i32,
-+/// }
-+///
-+/// const _: () = {
-+///     const fn assert_has_field<T: HasField<T, RcuHead>>() { }
-+///     assert_has_field::<Foo>();
-+/// };
-+/// ```
-+#[repr(transparent)]
-+pub struct RcuHead(Opaque<bindings::callback_head>);
-+
-+impl<T> Field<T> for RcuHead {}
-+
-+// SAFETY: `callback_head` doesn't hold anything local to the current execution context, so it's
-+// safe to transfer to another execution context.
-+unsafe impl Send for RcuHead {}
-+// SAFETY: `callback_head` should only be used when it's in the destructor, and accesses to it are
-+// already unsafe, hence make it `Sync`.
-+unsafe impl Sync for RcuHead {}
-+
-+/// A wrapper that adds an `RcuHead` on `T`.
-+#[derive(HasField)]
-+pub struct WithRcuHead<T> {
-+    #[field]
-+    head: RcuHead,
-+    data: T,
-+}
-+
-+impl<T> WithRcuHead<T> {
-+    /// Creates a new wrapper on `T` with `RcuHead`.
-+    pub fn new(data: T) -> Self {
-+        Self {
-+            head: RcuHead(Opaque::zeroed()),
-+            data,
-+        }
-+    }
-+}
-+
-+impl<T> Deref for WithRcuHead<T> {
-+    type Target = T;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.data
-+    }
-+}
--- 
-2.50.1 (Apple Git-155)
+> specific stack location and map it back like that), but doing so is quite tricky
+> and the marginal benefit is less than pointing out there's an issue to be
+> investigated in the first place.
 
+Does Rust have the equivalent of '-Rpass-analysis' from clang? There was
+'-Rpass-analysis=stack-frame-layout' that was added in LLVM 16:
+
+  https://github.com/llvm/llvm-project/commit/557a5bc336ffb9b03c53d4d13fd8f0bc9418ec96
+
+I assume that could be used from Rust as well since it is in the LLVM
+backend? It does not necessarily show exactly where the stack usage
+comes from aside from variables and spills but still, some information
+(especially accurate information at this level) is better than nothing.
+
+Cheers,
+Nathan
