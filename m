@@ -1,259 +1,157 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011062.outbound.protection.outlook.com [52.101.52.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677A2350A02;
-	Wed, 28 Jan 2026 12:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769604288; cv=fail; b=M6cOu8/nvh9W2upiGBC3LAx5NZLl9c9i7PF+BsU0eXsX5KwYSvinmgWjbSbuj23i+hrdiry/DiSOR8mpAJP1sjbaF08tHs/T4RwM8g/GoH4ds4u6OveYJIuQC47X6j8NKAxqsPpKNeDERcYzIJ4f5PYebz1Oh1p7HoUeCTSqbiY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769604288; c=relaxed/simple;
-	bh=aGlwrIDuus9Om0TRDhNT0I6rCz0wkJ1FOZDKZvwdY5E=;
-	h=Date:From:To:Cc:Subject:Message-ID:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RcxN3A4xH3m3HErOB8dUmzxdmIpo+5xRZHhddTPqed9yWIFzlhm5/V4DjbrF2JgY9tER8jnkNJqnkyRUVm+0owzKQBmTGg2nO+WWvIv+Wf86EoJPOX4dArBkP5MLdl/arSdPqjTYhOF83Z5lMFmkBNpnyrrkpUy4KDX8SCulX0A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hPIWJE9s; arc=fail smtp.client-ip=52.101.52.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEC1191F98;
+	Wed, 28 Jan 2026 12:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769604482; cv=none; b=cTp13L0v9e3DO1fNu5olBohT27fQzZjpJURgJYnOxYW+iEneQ0wLNNhBGEZc3/Nnt0rFnfFyP3sSswhnYOueOv8TA4OoczPgbbADVAIf7bBzekKixqUxdcDyNnu7GcltteOshqUXaAqltnIBuedzIuUT/Soytg78wpSWsud0LnY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769604482; c=relaxed/simple;
+	bh=7IKzUb7aPUOS9iLZvr/oA8UAML9y/78mMGrVeGEIFRU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IIgZeSqI8XaWtz1w9CIMu1N3nwyqRog+3E8pqYo2SvWSAt6e5oa6PKFqp+o43iUpUTeQAYj82PdbIWGIKCW4/If7Vq+ck0JCIvSiz25Fz9Z8kSZ4kpSe06BXunR5CPr3EpKBtprzgq8kVhCcCHdvEKn8qO8L7FPdgf686GWPGws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=euv2D0JJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hPIWJE9s"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z+lYGgLsS6XcD4yn2N57SS56NCvanO1z3jGL3oBGUv4GNAW4LZNQIu0UowakPZnDMl8sPJLpL0ZEvISDYZiJSClQ84fBPSJ4Jws7kS0AjEjfz03aIhnBOjJ06unlrVL/oCfKZ8jl1EfwSxFb/5/op/0q8z3/ESatzPHOC1FLhWN3+PCkdT54J5+dwd7xngjAV7HiGyZvdF9I30mH0M6f1yewxXOiS6T3sCMtOwdQuC3hWW08mERqw8RIH0vVYrTYhgkL0JGg2taXJBDu5ehoUJ17PMw3dYFmGdwTWDO93CPis6Pbz9qiEDGmdNnVsb1nTjZsCkOrofs/xKLKZI2F7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s0D0uxLPAApM+DLvGr1aKRFdjBdf4g9N89FDZJFLRLs=;
- b=B1TWZ0USESJCmHJ8r0FPdL8TlU4rVAbneEafeKk8jnMCN/Ud9eYIiI2mTZcZGY37PIjI0Ne0dZrCghtn6uVcCERf1lBTsVUuYI3RvXCxtLYQmgvENAUwu6JRaggk/EEOHESuJj0orEyS9sPYeoOnAvFq1td+msAMDMmpG3P/+uaXHOBzFZlnFEBA6KRo2ezColz/GEKJam3JB/u53eouAAHJiQRz7ar/A8A4NmxZ1667qH8PCMyLAT5EN8FkCI+qa1jo3NPnUePq32d/nMMfXyEviZ76wDEcc8R6TwtpZgp2rp5Sa4Ui5BOJ7NpjqOojpgzMXsV60KgPpfTV+WtMzA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s0D0uxLPAApM+DLvGr1aKRFdjBdf4g9N89FDZJFLRLs=;
- b=hPIWJE9sCUuguA4iH6OvQKeoOCDHdXDHZsUtZBnYWHtt6hpjqhDWrgxdkvcSb8peG4HmVAWYBRn2Wwkd9lOSSay6x9Ae0xlZHHxDv8gao9mvwHAm7Til9sCU9gpvAAZLWTj4x7ClVgNcRlmMqPJQgf8HLXbE3gA6QEQluLW/h6/EFGH4Wb30yrjsCb/Ro15XPE5elt2c6eA8nZMqT1RZZQVnshW0/A7cKMr9hbV9DHQg7RcirfM3Zm/xqX29xZh1PfTwgDvI2HT74DpGiCa8GtwRydfNWiBEs8Hy5bZGzxhFqZeGw0422T+b5D3T0Sf5+tJdHz4cgvN8gndyZr6LmA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- IA1PR12MB6601.namprd12.prod.outlook.com (2603:10b6:208:3a3::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Wed, 28 Jan
- 2026 12:44:36 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9542.010; Wed, 28 Jan 2026
- 12:44:36 +0000
-Date: Wed, 28 Jan 2026 07:44:34 -0500
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Vivi Rodrigo <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Rui Huang <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-	Helge Deller <deller@gmx.de>, Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	Edwin Peer <epeer@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Andrea Righi <arighi@nvidia.com>, Andy Ritger <aritger@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>, Alexey Ivanov <alexeyi@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Elle Rhumsaa <elle@weathered-steel.dev>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH RFC v6 00/26] nova-core: Memory management infrastructure
- (v6)
-Message-ID: <4540DD73-77BA-45F0-B686-32EB96402717@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DG06XUWOJLO5.1ESB8ES6A6081@kernel.org>
-X-ClientProxiedBy: IA4P220CA0008.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:558::6) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="euv2D0JJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B10C4CEF1;
+	Wed, 28 Jan 2026 12:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769604482;
+	bh=7IKzUb7aPUOS9iLZvr/oA8UAML9y/78mMGrVeGEIFRU=;
+	h=From:Date:Subject:To:Cc:From;
+	b=euv2D0JJ3TeNtiAlW0RYpalKjtb6G4W1o+GLX0D/+bOnLEsaEMn3SEeafJ7XYA3tj
+	 rCUdKREjDBktvPT6Wsul80ZAzMsPGSSCOaWh83F/rDwrq43NqaglpKNceKtQsgjtGX
+	 Zwrju3sP9x5PWFtOTORMH01rUPaFKBY3upTjyML13lcDx2x2/Rz6xMQ+vQ1UnTr/CT
+	 SSUUHIeQMXOsiISB3lPV8t3z6C1X+QUFZbB06OiE/5AKDpdg7EmzP4tHqq7lzNCAHf
+	 mPsF9R6RdZLRPLzyE52qDZru5HZ27i/l0sdI8uqQT5m2HN3KoULvI14GHoAvBo0NKN
+	 GygL3Uc+m1B0Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Wed, 28 Jan 2026 13:47:11 +0100
+Subject: [PATCH] rust: atomic: add fetch_sub
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|IA1PR12MB6601:EE_
-X-MS-Office365-Filtering-Correlation-Id: 687689d8-90ff-4223-8106-08de5e6afe97
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RWV74g88gNMSyxN3Zr9O2iIdB09EU9FD/mzZHgWwiwV0OJX5r9ku1dJZnnJG?=
- =?us-ascii?Q?e/0Dua5r0XomtFSLfwNfE8YsClfYZdKlMl33vFsmqEWy0m5CoxUKms+GNnyp?=
- =?us-ascii?Q?iVVaYBDg98oo3riYO/lZ6DttPQPDEwBGvwYoVuJvYGjI0q+IfhFfvpCaFAfI?=
- =?us-ascii?Q?d7uHf/R4hApsFhAC2Fm+hz5bPM6OycXmKxN/rIl0v1pAodAElWmn5335Vz6A?=
- =?us-ascii?Q?VL94EJgiY7imXXDwlM72YFlPAzZHJFt4MWlhUt90SFPmopyOGwDlPrPGB7YZ?=
- =?us-ascii?Q?PqAXpu2BMdatENhnpOJ8UmVXkFheZF9h+PaCKdZByq4mz8rB6c7HEU9/Gh0t?=
- =?us-ascii?Q?TPQlVQx/FcWMd3/i60ZQVaCFK+ldX5NM7MH2Wq7O9kuySEzFPW0/ipK0DE4H?=
- =?us-ascii?Q?lg7q1/Iy7xAkDmPs+o5rzOvinykh+YzAf2/xnJyckqTeLBkbrdBhPnFVROv4?=
- =?us-ascii?Q?yQTbBw/Cx45PZADlGqMedz8Ih1d69GJij/P1HTTK4JNdHq1JWT6auWx7nXuX?=
- =?us-ascii?Q?4pQNRAb7UGShZNXwYguzEmHUp4XhWcv/mhOe8Dmh9y8vWUc5ewViMEPVTW5J?=
- =?us-ascii?Q?Dkt+Hm8p16yYInmL+kpId8DBQkvejY8FhTJwWPOSkPI+6nup9vWIl56RB4Di?=
- =?us-ascii?Q?w2PCAVBYc935J7Ic0ErBZ6lOVtQmJWVHbv7xl7W2pCnWKd+D0OhGfv7kjkwk?=
- =?us-ascii?Q?dl7buLpZRyt7aNrWvL+p2nTlobUaMrdlhdkKwhmo0+EBbvE95eAffqzXp17R?=
- =?us-ascii?Q?LlrFtgQmjb4OXFlxRA4p95CcECIycNqrz3OgXbkgbw7p0E4BNWawOXY5s67v?=
- =?us-ascii?Q?l2hbf2OT27XNMpNK1ZqOkip+lq81HoeMO2sAQSETIvOnllaQ8P7GoFzU7IAN?=
- =?us-ascii?Q?B1bPOqi1YJJcOrRoO5HwUlyK9Oz223SCHXpOLR/V1i+l7NS0uy4F2gdUI2xf?=
- =?us-ascii?Q?DkLiKX24dGuF2PKNcuK3tqhqTk3V3rzf5Z/VeWcPaqzCwbo8KqelltxLVBvm?=
- =?us-ascii?Q?n7Fapv3TXtnR0b4fVEc+f3FoxIothhpPxI0GDKz2YgbUFtwgb8wKa24xV1rZ?=
- =?us-ascii?Q?heIQpU9Wo6CoI+ELTUzuwNF5mAT1VctHvJ3MKXFk5WBcaP6Dw/czwYAfecqf?=
- =?us-ascii?Q?sVkK2fAGddsCl3e1LLNaMIBg4Dy/8PF3jqkQjYhQ63VTxLB5mc5x+V3i8/ik?=
- =?us-ascii?Q?cHkTqIcI2f1BlitJDqdOES61IMwGJhK0/DwFwaFQwozN4f6DlR5B0SIPXuIr?=
- =?us-ascii?Q?/ezy5blGa6tsLd6gVyOoqffD/yiLCm+y3CNL+gIT8R8/GydLyFzibAXO9uAj?=
- =?us-ascii?Q?MV1YkxqbhlA/VDJTzGS+zm7vTvboWWPM/3DLwp67ixZ3nf2NcT7pfDFK+VBq?=
- =?us-ascii?Q?VoDSepVuvi5uNS4HbcZSV1mRSAM0jBKlQpbnW6ZYtw51n/SpClijarD2JhJX?=
- =?us-ascii?Q?dsU530OWhVAKHfIJ4RGHSnc69UT8WWMQX3VNOLCPuwNpnKX1fCBr0sfidhox?=
- =?us-ascii?Q?VQ44sVkJaXCn3EJpv7oIMCgQ9WEh0JfEd5N1yZ9c9bYeesP8yj+kCgKwaNde?=
- =?us-ascii?Q?ppYefjVH7g2s7OkzcS0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cYzKhfqtlJRPBrru+1hwTzU0psHZ5AVZZpkGIDmFKfr+wTA33gBa1L06C0OE?=
- =?us-ascii?Q?vLysSBJ/6/d8SSNy278dk0nhMHeds9JjEr0pZ/HC1YQ+eGPA88R5booMXjJi?=
- =?us-ascii?Q?TJ2ndX5UeSMWLD4zofZ64YbobuMlDY2zjgTeveIIA1y+vzZySTORyGb95FEP?=
- =?us-ascii?Q?ej33LnIy9PCYDVf44R0+BR94QYTnaLqeCQMv7SM1HQceu/yz3rMMe+WgZRk3?=
- =?us-ascii?Q?oO9YOpoXARnpEjbHLn7CKRbMdeHqETN2sI4rlw23E13rdRoMjGiU3ZOmy+zc?=
- =?us-ascii?Q?t1Zr2AYnGFOOye/GtHPFGIywF1ZFp8RqH2HneCaSUwS5Z/BL6qbLePZxUSIZ?=
- =?us-ascii?Q?4JbEZ2ZZ0A4NVLzXhxhzKtEJNPBoB0RfNjIpS+O3XUIWOjSJhs2UIg3+iprM?=
- =?us-ascii?Q?h7qcCRCvA86BtbfCc5I5T00ByOzjuqK3MoZyDtABv2zHVxNM/8vfDPIOf2jk?=
- =?us-ascii?Q?g2gxAYnUpNsbGKIBlwtiD0BP0j9fsO5o+VOSioznoaSaTSuYHUgWZ3PE6xA7?=
- =?us-ascii?Q?ZRoWcsfVrP+ey8jNBOXX/9HqKquwZw1ZccfMve44CpmH1ECUL0rxECFJi1x/?=
- =?us-ascii?Q?IMw0kE7Gh2Sn+iKx7vqnocELfNwEl49gui142rNU/UKFoUg4JbEYZ4bbw4Ck?=
- =?us-ascii?Q?eBkrjVmHOy6dZEJmwtJnC5cpRZSLXj0vORoDbpJWEToU8Sakj3f/RzZ5Mkd7?=
- =?us-ascii?Q?0/AoLr2V8+mvl2PRouP8I9FPPsKU+i592x1tr1W2hjeIYkstvUOBZv3Dhot7?=
- =?us-ascii?Q?8nAPHAMPCMjlPDSJKKqcYfrw/oD9w+LhnP0iDZf6ULtgyokiYOjaF4l8zxQS?=
- =?us-ascii?Q?dreP2MJCXUmiPAj+IyVkEETDVMREREehEqoeleDpueh9PGGdBeJ7GcxRLBh7?=
- =?us-ascii?Q?mlHJUfAhZzZYMPcQoIfCPcjFssmS4kANVzAPteUI1ye0UzR1v2O/b/O4RUoe?=
- =?us-ascii?Q?+cMhooLUEL3QDSNWXTns3NLDikv2G1f4jjWFDqzNDub2KThsSk5je5ymzloy?=
- =?us-ascii?Q?44V32YdaAeiEFc8UBKqQaFjGbvRyhb2nU20NHEkhJOsTiniw1/q8a3SqXswt?=
- =?us-ascii?Q?cMUwe/FGIyuqHuigAs3ztJvHfyyAjoIELsBnPtYjoeHbFNGsUl/UsBEya8ai?=
- =?us-ascii?Q?FTdeZaJuxJvyLJaftsM2tYZ2//zbe8GQLrAsu+MEic+MIf8YWXA/EOdaFAhh?=
- =?us-ascii?Q?FfhO89ftDbjyYc0827mIyCGtb4issLqf5s4aiZo7BohaCJunGQVsCBMUc4AX?=
- =?us-ascii?Q?WF4NGSX85kKlSeSnaPkLI2swJz4e7BzI5B7zAGREtXNKDVSwgBJf6FNGsTW5?=
- =?us-ascii?Q?ZPM2nKfph4dmphz+v+5DIE/zDBDSoZoMcCal95+VNuFeqdBgEbPQxxGwJcoR?=
- =?us-ascii?Q?CPCr/uM8ELB9jlD5DcGk0PgZf3IRkSNWf3B+GiotWmTILqjlYWtt+fPBadNH?=
- =?us-ascii?Q?3EPeg8DRGcURzg859wRdRwWYK4vQUz8CGCNuSpAfGVHhmwyERIBQ7iFasIUw?=
- =?us-ascii?Q?A00GcdZ+1cqH7mYVdGRIIq4bouDXYqZMFMlQIS4hOFMBW52mje09fBurAlmf?=
- =?us-ascii?Q?Yv6Lr+s5uoo+FJY4uSbp628QcsjJU2BX5HXIMPtr+DBk3A57KNM1HGj8OjaN?=
- =?us-ascii?Q?jxW/ge9UILotDnHmGdBL6EKFf/x+fW/ISIpaWm9ZLGdbK2ar2AAnmKas/1P2?=
- =?us-ascii?Q?Q/arU3UjD9jBeVxFf8wpizr1QpZF1cO24kjS7pwcktyLJL7lwx9QbKnlgxyo?=
- =?us-ascii?Q?dPjdhD2Rpw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 687689d8-90ff-4223-8106-08de5e6afe97
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 12:44:36.5743
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T0NATs37xmcxF10iglpEgvn17VPX99f1lUUwfHfVx3hGcHbrPLGNFGI/qr6AQ6FLdkh1rm4b1SUMSgV6wTymlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6601
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260128-atomic-sub-v1-1-f8c6abcbb067@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAE4FemkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDQyML3cSS/NzMZN3i0iRdo7Q0Q1NLM6OUNEMjJaCGgqLUtMwKsGHRsbW
+ 1AEjxridcAAAA
+X-Change-ID: 20260128-atomic-sub-2ff15962df12
+To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Boqun Feng <boqun.feng@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
+ Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3340; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=7IKzUb7aPUOS9iLZvr/oA8UAML9y/78mMGrVeGEIFRU=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpegVUrJlHJ8yMK1jtD1+c9ImyDNfd2I0yh3BS/
+ Shh7c/RWfmJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaXoFVAAKCRDhuBo+eShj
+ d5QUEACFXJF5kgS3wIcaKv92Da4np5rfuvBW7in/hT1RsU+cNFdo+f4+23sXYO4Cu2xq5l3jaEK
+ sxgIrLcNbtAifAbMrayEvBqLetkMUA84sdmzg3vgKavenncSkZT2ACTbQcZJ9DvvqNTDzpPy3fn
+ dPqTQ1NiD7+KZadsrSZXD5w0+7mqeud7C8skCJxRG1oPNT6xjgEkVBxRjrPaQ6D9vOyVpGRygK1
+ tkqJ6bknkW8bamOG/K6CQIIIhYjx/Bun0XGRIBBlKOg46zN75mf6ZGBjK/IsiLTmqD6YHaHLOxc
+ feo/bAp4PpMpDhUqzYKxBTSryZDozLxqCwQ/BOQo+MFm3pJsZpWCDIFKBKnSWnEqUHcwnc1U3lF
+ oDQv+jq4IJazz5fgjC1kMX1zRzdE495TRHV5PV+xf3gVbd3SkiTP2P95ic6iuph3EM4rUiyvcXi
+ TMryfERG7kmm952WxdPn6ODCHpYtlhhXMVSAjx0pHU50c+40c22jl51F/s6/7z5livPOKYlQBFz
+ OuVjQtPPRy8UhhTRQX+kTm4IV4qT8z8dp0RENBX8lRSBLwYu5aRQ0UOHqAwRvfsH9s9YzV5+G/C
+ y+kCcr5UFX+WGFG6O6clBQgtqYlDNw5jRGLZKQh4DAcZTCRJki+6fzRbqc6GdHEtLjhI52eECO8
+ xQCVgo3DBbGzo6Q==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Jan 28, 2026, at 6:38 AM, Danilo Krummrich <dakr@kernel.org> wrote:
-> On Tue Jan 20, 2026 at 9:42 PM CET, Joel Fernandes wrote:
->> This series is rebased on drm-rust-kernel/drm-rust-next and provides memory
->> management infrastructure for the nova-core GPU driver. It combines several
->> previous series and provides a foundation for nova GPU memory management
->> including page tables, virtual memory management, and BAR mapping. All these
->> are critical nova-core features.
->
-> Thanks for this work, I will go through the series soon. (Although it would also
-> be nice to have what I mention below addressed first.)
+Add `Atomic::fetch_sub` with implementation and documentation in line with
+existing `Atomic::fetch_add` implementation.
 
-Thanks, I appreciate that.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/sync/atomic.rs          | 45 +++++++++++++++++++++++++++++++++++++
+ rust/kernel/sync/atomic/internal.rs |  5 +++++
+ 2 files changed, 50 insertions(+)
 
-> I'm not overly happy with this version history. I understand that you are
-> building things on top of each other, but going back and forth with adding and
-> removing features from a series is confusing and makes it hard to keep track of
-> things.
->
-> (In the worst case it may even result in reviewers skipping over it leaving you
-> with no progress eventually.)
->
-> [...]
->
-> Hence, please separate the features from each other in separate patch series,
-> with their own proper version history and changelog. In order to account for the
-> dependencies, you can just mention them in the cover letter and add a link to
-> the other related patch series, which should be sufficient for people interested
-> in the full picture.
->
-> I think the most clean approach would probably be a split with CList, DRM buddy
-> and Nova MM stuff.
->
-> And just to clarify, in the end I do not care too much about whether it's all in
-> a single series or split up, but going back and forth with combining things that
-> once have been separate and have a separate history doesn't work out well.
+diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+index 4aebeacb961a2..aa0b672cef848 100644
+--- a/rust/kernel/sync/atomic.rs
++++ b/rust/kernel/sync/atomic.rs
+@@ -559,4 +559,49 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
+         // SAFETY: `ret` comes from reading `self.0`, which is a valid `T` per type invariants.
+         unsafe { from_repr(ret) }
+     }
++
++    /// Atomic fetch and subtract.
++    ///
++    /// Atomically updates `*self` to `(*self).wrapping_sub(v)`, and returns the value of `*self`
++    /// before the update.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::sync::atomic::{Atomic, Acquire, Full, Relaxed};
++    ///
++    /// let x = Atomic::new(42);
++    ///
++    /// assert_eq!(42, x.load(Relaxed));
++    ///
++    /// assert_eq!(30, { x.fetch_sub(12, Acquire); x.load(Relaxed) });
++    ///
++    /// let x = Atomic::new(42);
++    ///
++    /// assert_eq!(42, x.load(Relaxed));
++    ///
++    /// assert_eq!(30, { x.fetch_sub(12, Full); x.load(Relaxed) });
++    /// ```
++    #[inline(always)]
++    pub fn fetch_sub<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering) -> T
++    where
++        // Types that support addition also support subtraction.
++        T: AtomicAdd<Rhs>,
++    {
++        let v = T::rhs_into_delta(v);
++
++        // INVARIANT: `self.0` is a valid `T` after `atomic_fetch_sub*()` due to safety requirement
++        // of `AtomicAdd`.
++        let ret = {
++            match Ordering::TYPE {
++                OrderingType::Full => T::Repr::atomic_fetch_sub(&self.0, v),
++                OrderingType::Acquire => T::Repr::atomic_fetch_sub_acquire(&self.0, v),
++                OrderingType::Release => T::Repr::atomic_fetch_sub_release(&self.0, v),
++                OrderingType::Relaxed => T::Repr::atomic_fetch_sub_relaxed(&self.0, v),
++            }
++        };
++
++        // SAFETY: `ret` comes from reading `self.0`, which is a valid `T` per type invariants.
++        unsafe { from_repr(ret) }
++    }
+ }
+diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
+index 6fdd8e59f45be..7eed8c66efff8 100644
+--- a/rust/kernel/sync/atomic/internal.rs
++++ b/rust/kernel/sync/atomic/internal.rs
+@@ -261,5 +261,10 @@ fn fetch_add[acquire, release, relaxed](a: &AtomicRepr<Self>, v: Self::Delta) ->
+             // SAFETY: `a.as_ptr()` is valid and properly aligned.
+             unsafe { bindings::#call(v, a.as_ptr().cast()) }
+         }
++
++        fn fetch_sub[acquire, release, relaxed](a: &AtomicRepr<Self>, v: Self::Delta) -> Self {
++            // SAFETY: `a.as_ptr()` is valid and properly aligned.
++            unsafe { bindings::#call(v, a.as_ptr().cast()) }
++        }
+     }
+ );
 
-I understand the concern, and I appreciate you taking the time to explain. Let
-me provide some context on how we ended up here, as it may help clarify the
-situation.
+---
+base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+change-id: 20260128-atomic-sub-2ff15962df12
 
-1. This is a multi-month undertaking with many interdependencies. It is
-   difficult to predict which patches will come to exist, the optimal order, how to split, which series
-   first, or what pieces are missing. This is similar to the evolution of nova
-   itself - complex interdependencies make it hard to predict what will be
-   needed. Rather than waiting months for a perfect plan before posting
-   anything, I chose to iterate publicly.
+Best regards,
+-- 
+Andreas Hindborg <a.hindborg@kernel.org>
 
-2. The decision to move GPU buddy out of DRM came later in the process [1].
-   This significantly changed the scope, requiring a much larger patch to
-   handle the buddy infrastructure that everything else depends on.
-
-3. The decision to separate buddy from the CList series came from wanting to
-   make progress on CList independently [2]. That effort alone took almost a
-   month with several rewrites based on feedback from  others.
-
-4. There was some back and forth on whether to post code with users or code
-   that could potentially be used. This influenced the decision to combine
-   things into the same series to demonstrate working functionality.
-
-5. The memory management code only became functional around v3. Page table
-   walking turned out to be tricky, and I did not have a proper user at that
-   time. Eventually I realized BAR1 is a strong use case for page table
-   translation, so I added support for that.
-
-Regarding splitting the series: that makes sense, I will split into CList, GPU
-buddy, and Nova MM as you suggest. You make a fair point about the versioning
-too - labeling new patches (even though most are old) as v6 is confusing. One question: what version
-numbers should each split series use? CList was at v3 before being combined,
-and similar story for GPU buddy and Nova MM. Should I continue from the last
-version number they were posted with, or continue from v6?
-
-[1] https://lore.kernel.org/all/20251124234432.1988476-1-joelagnelf@nvidia.com/
-[2] https://lore.kernel.org/all/20251129213056.4021375-1-joelagnelf@nvidia.com/
-
---
-Joel Fernandes
 
