@@ -1,153 +1,73 @@
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DED62EAB71
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 20:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3645323ED5B;
+	Wed, 28 Jan 2026 20:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769631705; cv=none; b=g/3nA3lO2/g2sOvBt6qyAGVSquxTTh2BAYThiPBZB03ZPaFRMoubmc0868YVsD0pcOe4bfL+7sr2iY2nvfwqnFG9zw/XjMuoyhxpG+0OBhQFjjlroab1+LRC078yF203YH+gq6asRfnDGdl0SILE+wtoIOcCCvTPvcmubeWMQ0c=
+	t=1769632419; cv=none; b=kpDQjk6MZkTsUKthSNPohYfVMO/ZDkmorsr1YdnpL1+nLoS5UhJIbN2CKQ0RqumM7rwUl4JlEuv8j/yTdBwEMl/B4q3MuYKeHOeUUvW2pVtcgVI9MHmmRc2P0eO3IAVXCwSAdBxoDbFOXS0gv8x+ow2BtF27hAkgci/0LAVqggI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769631705; c=relaxed/simple;
-	bh=fxSRMnS+DTdOe/9PQuED4usCl8i1K+SEzjMJ8MhoJtc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=buMOoQesbAbk1mCz84LwSiDBDIigdlDCE9BkTHSCCKMfR9f4LB6xFj4doPKfXzrj47lB4TubqIOzqQA03IrN1ry05yIXKejIV6sHZgVGzNZCdqAbPGJ2je41rpCperA/Nu2eOd9OAGzTV1N906ABgMBz9AGYe4q9SDuWfvvLqQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kTpaboKw; arc=none smtp.client-ip=209.85.214.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769632419; c=relaxed/simple;
+	bh=KelgtYQwasZw0N6+6oEDu2iZxgNIj8PjDW16xvh3y30=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fmPnd6V2sxkzU8zrzR0dsmKOvXS94d3yNG08/91V4ignhDWYQyEESZRjnFLpZn70fKK9G8yBYq67yyiHiH2MgzZFn/XpWEgC9LTMeSCeP0d1LBAsDtmckFjdnfvEB6senGsszIzU/PXXU/I7cfOODaZg9Kg9OquzqQZbwAYnPMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vw7pdGCe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kTpaboKw"
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2a7bced39cfso1616375ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 12:21:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769631704; x=1770236504; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gHGLmxFDguwmEL7MTwAtIpFUj1gQFdHnrXFkxEwQ3gA=;
-        b=kTpaboKwK5CXaVp53TOAGFvBhypJpCfr+nEK4TPDuHVk2HKhqoF+V5H2eRf7w+ylbU
-         ctXV5bttJuqj5rszDr6l2xOsujEdw+H8whZ4j1BG4x2AcWb+mGFBD0UjjUf61CRCL2WH
-         lsFMilhkarXr+uvImfcisJAb5HlgSwL0Nh20My3AnsqcjqIXrpmIaD/8jWKmUQ8nzg2n
-         FHy3zaYOtdzYY0nFcNUSAPemWrJNX19RHd7W2TBMEWVXOxtVOFRTUk7Kim2ccHP8zNjX
-         Ffpvfn4SKFifJahwHVS8RJkq/5Oi8qtnlOLkeZ7WkP9b8KzRpta5zuq7RiOQO9VlXm5z
-         kcxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769631704; x=1770236504;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gHGLmxFDguwmEL7MTwAtIpFUj1gQFdHnrXFkxEwQ3gA=;
-        b=oCdVsf9Yq9V/5rwvCFsrcLMfq69GlrNnTrNGiHFxcyeJTFrm9Sis9/yZLn/lUxk/HX
-         uHvJvWNdocBeBw07h6+gxESpb70ZvgEvb+bhDbVGS1P0bSup3W5GiMD90Ycn5hUU9pe7
-         jmVdoGnW2RgHy7UGnzfZhcLrnXCy+UrQmG+Ey+0h2zXBfZ+ngiAEeL75cfBbfudxKdQu
-         pXAC41RCyMs4i59m5Scsp44DJiMGJk6tSJVCLDYYQ6uItecsVsfNm71lbQQXvBUIChNn
-         C0Ng5kFLU1JFSD/JpaR5InCNA7G4fUk47K6L72Q8nvCp9dxijmgq/35+33WJE2VTK3i5
-         EvTw==
-X-Gm-Message-State: AOJu0Yw7rxrTjDfHPAmqvlfkLDSZJh48nLN7RIbmgsvf6uXCHZockcn9
-	N72Ytfvhs0RNm5ioph87FhH25p/xJd/3ilWJP2c5fGKW5MEQDMlwos5i
-X-Gm-Gg: AZuq6aIeQBgKYbJlDMN1ilMHDpZ0J7ZaeLkVhthAN4czs3W8N9bEEdZBMjo8YmgqKtX
-	TAJljtvtSuSt6WEXHtC48nsv/2LBuk3B5PJrfITTHdGzyw4ewVtfdy8CzVecL+hnNmUegHxSMS9
-	w0GDrWkJG1IHC1wIpnYXQEYe45mIQdEjo1ZbW6o3mf+0/xf+HTOrsXY/WbgKrRnStiYmW4eU7NY
-	gdWEUWtiJTpyuO2Jy1SH9bYXS/mvtaXJH2Odd67WsSPWSb0YxR2d1wj7MFWByKUFBmgaoubYbf+
-	VCt2g4Wh92x47qgtZeNfMltEC2rN8X5l6O311ZiGh9oIOV6xo4hSq0sR8ASqY+brtjrGN/VktXl
-	/jVAHm1sMNufKyuvSaumkdsq9NnxbH0EsczRHZNXu6/+c64dvP2fiXWCtRDTPIHG2oKr4HKf3SA
-	7kAcQAgY+pTxRyN05Du6ECO88e
-X-Received: by 2002:a17:902:ce83:b0:2a1:e19:ff5 with SMTP id d9443c01a7336-2a870e19191mr61737335ad.38.1769631703952;
-        Wed, 28 Jan 2026 12:21:43 -0800 (PST)
-Received: from xozo.localdomain ([117.250.76.240])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b4c3deasm30691385ad.57.2026.01.28.12.21.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 12:21:43 -0800 (PST)
-From: Shivendra Sharma <shivendra02467@gmail.com>
-To: ojeda@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shivendra02467@gmail.com
-Subject: [PATCH] rust: kernel: document safety for rust_fmt_argument
-Date: Thu, 29 Jan 2026 01:51:30 +0530
-Message-ID: <20260128202130.196419-1-shivendra02467@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vw7pdGCe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C45C116C6;
+	Wed, 28 Jan 2026 20:33:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769632418;
+	bh=KelgtYQwasZw0N6+6oEDu2iZxgNIj8PjDW16xvh3y30=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Vw7pdGCen8iPBYHjP7Lb+7j8E+/PPU86ys/p2M/27xd9xezdkGsln5mKOSEMexS6j
+	 SgUkO2g7GsL3CRkxILKzBRhgTpXBDGrFn7ngj/2um7zEkes7NMGh8mVaOP7WGpc9FF
+	 R2r8CPzSj9BKx2t9dWyKLQwgkXeZ1UM8hKj29EUhhNx8VcEZ9pkoBR8N3fudW6wWu/
+	 nxxgP+x9ZAepcS4laXeApmasjwwsboVYlck77z97PrkLyyhNvVQ7hr+5ltAQuYQWUl
+	 6PtQ5id0K/fpi61qYZtnNMOsPWsUFcglsfdsPaDFdnUwX3wjceLHp6LiUh8i/OvoD7
+	 brKrd6I3b57/w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
+ Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki
+ <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: alloc: add GFP_NOIO flag
+In-Reply-To: <DG0GX23ANI54.2PQM2BL2IKRLL@kernel.org>
+References: <20260128-gfp-noio-v1-1-9a808fc49b44@kernel.org>
+ <B382G4tglwrTe0BrE4L1X0Gomobzu5_izmtxPTKuVlYvKb4zniLIMTaCMpVikVaqMIUusk_d7I9eZw0iJYFOaA==@protonmail.internalid>
+ <DG0GX23ANI54.2PQM2BL2IKRLL@kernel.org>
+Date: Wed, 28 Jan 2026 21:33:27 +0100
+Message-ID: <87a4xxsciw.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Currently, `rust_fmt_argument` uses a TODO for its safety rationale and
-suppresses the `missing_safety_doc` clippy warning.
+"Danilo Krummrich" <dakr@kernel.org> writes:
 
-Following feedback from a previous attempt [1], replace the
-suppression with a formal "# Safety" section and update the internal
-"// SAFETY" comments to reference these requirements. Additionally,
-add a comment to the C header file pointing to the Rust documentation
-for safety preconditions.
+> On Wed Jan 28, 2026 at 7:37 PM CET, Andreas Hindborg wrote:
+>> +    /// [`GFP_NOIO`] will use direct reclaim to discard clean pages or slab
+>> +    /// pages that do not require the starting of any physical IO.
+>> +    pub const GFP_NOIO: Flags = Flags(bindings::GFP_NOIO);
+>
+> How do you use this? What about abstractions for memalloc_noio_{save,restore}()
+> instead?
 
-[1] https://lore.kernel.org/rust-for-linux/CANiq72=b=Z+6dk4XWK6QWcKDJx7SYXL0obAFFfWp8xpE1CFkkw@mail.gmail.com/
+I use it to allocate memory for backing storage in rust null block. The
+allocation is done during processing of disk IO:
 
-Signed-off-by: Shivendra Sharma <shivendra02467@gmail.com>
----
- include/linux/sprintf.h |  7 ++++++-
- rust/kernel/print.rs    | 14 +++++++++++---
- 2 files changed, 17 insertions(+), 4 deletions(-)
+                page: Page::alloc_page(GFP_NOIO | __GFP_ZERO)?,
 
-diff --git a/include/linux/sprintf.h b/include/linux/sprintf.h
-index f06f7b785091..f915829cbba5 100644
---- a/include/linux/sprintf.h
-+++ b/include/linux/sprintf.h
-@@ -25,7 +25,12 @@ __scanf(2, 0) int vsscanf(const char *, const char *, va_list);
- extern bool no_hash_pointers;
- void hash_pointers_finalize(bool slub_debug);
- 
--/* Used for Rust formatting ('%pA') */
-+/**
-+ * Used for Rust formatting ('%pA').
-+ *
-+ * Safety preconditions are documented in the Rust implementation
-+ * (rust/kernel/print.rs).
-+ */
- char *rust_fmt_argument(char *buf, char *end, const void *ptr);
- 
- #endif	/* _LINUX_KERNEL_SPRINTF_H */
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 2d743d78d220..30da8b974398 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -14,7 +14,12 @@
- };
- 
- // Called from `vsprintf` with format specifier `%pA`.
--#[expect(clippy::missing_safety_doc)]
-+///
-+/// # Safety
-+///
-+/// - `buf` must be valid for writes until `end`.
-+/// - `ptr` must point to a valid `fmt::Arguments` instance.
-+/// - The `fmt::Arguments` must remain valid for the duration of the call.
- #[export]
- unsafe extern "C" fn rust_fmt_argument(
-     buf: *mut c_char,
-@@ -22,9 +27,12 @@
-     ptr: *const c_void,
- ) -> *mut c_char {
-     use fmt::Write;
--    // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
-+    // SAFETY: The safety requirements of this function (see above)
-+    // guarantee that `buf` and `end` define a valid range.
-     let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
--    // SAFETY: TODO.
-+
-+    // SAFETY: The safety requirements of this function guarantee that `ptr`
-+    // points to a valid `fmt::Arguments`.
-     let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
-     w.pos().cast()
- }
--- 
-2.52.0
+Best regards,
+Andreas Hindborg
+
 
