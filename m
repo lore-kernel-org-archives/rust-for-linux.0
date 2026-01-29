@@ -1,220 +1,830 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021095.outbound.protection.outlook.com [52.101.95.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4B21A239A;
-	Thu, 29 Jan 2026 14:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.95
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769696518; cv=fail; b=k7wEKaLQEfrF054isaowW3YwKjJzOfDChUOsWHwZlunxz6lXOrSpLPvpnVlFlhXTq7TumcEi2jFRLzzLOY9MueNbzXPTOCB8pGXrVj2V/WDx18sDhLJIhCwn5wEtLXGe9ZtEmV8T27JnhIMeC1K7rS2gJo12iPjazoWEMPLKTH8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769696518; c=relaxed/simple;
-	bh=N0k1cHjj/KcRxsbxSDmkVU6ZHQLHjcUxZLwOYJ3n8KM=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Swiz6lMHLqhRREp2tiy+zUQVOiDGxuCbphTFnmUh3CchfIF8QQNk+TGbhk7Uyf9lub6wUFSly3Sw825BG9S8B4aEkhMD2rw15Kk2D2trXCCK6A6j1aQxrFa+qPub599qU8iqgs5hZVbHD64wuxOfi7kOVWeUT6QumSJJ1LkI+Qc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=IEbGYAvI; arc=fail smtp.client-ip=52.101.95.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151EA3770B;
+	Thu, 29 Jan 2026 14:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769697168; cv=none; b=JZoJ5FjyyuXrbV5jnkeHtZKXEivi8BcU6rlMxPwR9O8S4UU4WwBjcJu5attF4d255iesaMgzGo5KgeFB1z3VqZGQD6oDfm0tC5gcSUtkhqd8KXvFHY2dNoEJG/oum6WSPEH29ZitFIs+k7iCAQuz4CmDXG+4oJhVCDWY0K1pB8g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769697168; c=relaxed/simple;
+	bh=mbXTFja8+DxV4klQIc4NdQlfUSgrh/zwUK5PbaGMJ9A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=XznU+rfBjaUvil34fKv24HMNFovX9d7trQXG/v8H92PimngMuqhjbO6oI+qJMi1BdoWvWKVorRP3gr6T9IJGVMY2rIlou2r3d131XrVotleWiEN7O3B41KMaJuToJGxMwkhXji5u2L6gnL+ILVS9f76MQyhYtq5MJJBHZJBcong=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PAPrJ60e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="IEbGYAvI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WWdWmvJfPqA4gqqboJqJy7hggdMG5QrRSfr6DyhrjanxVXjHp0H2imPouCW0gsTPltGJPQg5+URQ6xvY6FAQvfD4+eZaCQlFa1JyEQyZdf5p8yFJUEckwRkvgQfk+jtfQ1ZhEbESAW7LvDr9DmCjjgFmeEetqiECK7e0c5npyY4ZqpoVvY+IF5irSozodDvkxTfTpl880RF9Y45VjssdBa3O1V/T8XoREygHgBVxJmuK4KhoUTkhBnG2oWQkl4auJxyxPINyCnNhaFcEIT5goNcdOj4geV5Ktgb6Fp1XX+pwuIQfIXYxUzud+vcB2Ng8ubR1Od9N3c2yo7/iEMRN3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CJiYHGjMWEIcsGERqnDwvFA6uKXhVkWQhjEPyxZMOeI=;
- b=GJPy9MPjmzR9fphGt0oc4+rxtcyNQfeJhqjGwJhjcVqYT939U/SqqXYz9xyqBNdyb4pdal/+120CVHfGPKpcTu7i4HlEztu8n9Bk6rg56xtPUt2Lbb/B1QThn3d4m4k+0tmH3R7eXnfbHCOUY4VNJGEPB09ywVuTNErcFZERZnlJ1B1qyCg5I9u3ZsFjByZO+YwGhNyb3tMRkV6TrpkQWnBpBHe8vQRTChJWskg5CNVfB1mrpgk9GF8zHexnr6c8y0wlkZGt6HHzuPG0tkkm9Ks+MPEwLqSHLn3rmrOUMahpGZqXFHSaMwi+6geji46dbBK3ZSGa95mbnScOTueykg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CJiYHGjMWEIcsGERqnDwvFA6uKXhVkWQhjEPyxZMOeI=;
- b=IEbGYAvIoZ5bouzT8FdbP0dDzARnYgcVuZEZ63MdeeFd1N+OsG0rAyWyJ9EXHhcjE1V84EI3VSxlWpToVrG/95n3u1Xx0eTRrPMEQk/xvLSZs14yMIsRs3e+fw1ZKOqaYe0nTeggne7HVJMC4z3ZdlFTpDFiqI7mFiM/WGJQCrM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO2P265MB7153.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:32e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.10; Thu, 29 Jan
- 2026 14:21:53 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.008; Thu, 29 Jan 2026
- 14:21:53 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 29 Jan 2026 14:21:53 +0000
-Message-Id: <DG1522O8EVWU.1J7Y5529FM1RS@garyguo.net>
-Cc: <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 0/5] gpu: nova-core: gsp: fix command queue ring
- buffer bugs
-From: "Gary Guo" <gary@garyguo.net>
-To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260129-nova-core-cmdq1-v3-0-2ede85493a27@nvidia.com>
-In-Reply-To: <20260129-nova-core-cmdq1-v3-0-2ede85493a27@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0259.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:194::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PAPrJ60e"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E8A17C19422;
+	Thu, 29 Jan 2026 14:32:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769697168;
+	bh=mbXTFja8+DxV4klQIc4NdQlfUSgrh/zwUK5PbaGMJ9A=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=PAPrJ60eB8bo4F5SLNjcFMgsZMAiIRtHZYRqiBPTr6qZkzv7ShWzR9aeW+9UItUqo
+	 YRwIaSQKQrOeQ+Eba4Limxk0bngUW9nyDc/GCpMMfGoRy8WgFXM8tpPWBz/S9YXOqL
+	 ZpLRoznmde7chZLpKA/r90KWl4M0Vr/uvY7JGFZvQWDAFlZuZgP+7mVVLlCw038X8N
+	 UpVpQoButkrc1FsoKvfFOGqz2iyo8wsOgN84VrORMyYkKspvfWaUV/5RI4FyqgKpwf
+	 vpZIekqwS+qka/lnEAy39erVdHP3FMoaSP++6mUPLJFQiORTDYNDCsUDhAsGOm5/u0
+	 EtkpSZHlMNeZA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7FF2D6101E;
+	Thu, 29 Jan 2026 14:32:47 +0000 (UTC)
+From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
+Date: Thu, 29 Jan 2026 23:32:45 +0900
+Subject: [PATCH v5 1/4] rust: macros: add derive macro for `Into`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB7153:EE_
-X-MS-Office365-Filtering-Correlation-Id: 176f5e54-84bb-492f-7e01-08de5f41c01a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TTR5dGVHbjhsQ3JGR2RDREhYempCOHN2UWlpajQ2OVpPWU1NSjBDYVh4VUFD?=
- =?utf-8?B?R3E4QXkrQzV5S21lcGhwekhnMzJzQlZKYWNtNVNYMFJ0VGxnbXBHRUtQOEVX?=
- =?utf-8?B?eVFUYTF3TmVWc1o2Yzc2YTV1S1BmaXpzRUdmNWh6ejBFbGxBK3FFQlgwcTFp?=
- =?utf-8?B?N01PREpEdisyby9USHNxcENCZ25TcjRtUDdCZG5ybm10akVyMTkrR1BGeFNP?=
- =?utf-8?B?VU9IWHBtUHZsYyt1MWpESEhpYmx0QkhuZkdkODg3S0hzQVN2UEtsSStxV3Zm?=
- =?utf-8?B?YjJnUGozSThPK01EeFpNMnprQTM0SzF5WlkyaDFzSU1ybHFTQWIyQWNIOUk1?=
- =?utf-8?B?Rno3aXQ5Wk0zdjhGNG80RHl6T2hHTGFxYmZxMkJLOCtqa0cxVTFZbW1VTGdO?=
- =?utf-8?B?QkRndUJ6a0YvVW80cE1kSXNESEtoN1ZEbVh5V0VCTFNFTVVVNU42ZlN6NWR1?=
- =?utf-8?B?NUpsWERQMkt4UlRkYlJVSEJaNDNmUkZyRW5vUldJd1BvQm0zNVR0VXRMQ2ZX?=
- =?utf-8?B?SERqMWdlZFVaejBaQ0paVUhla292VVRiY1hVNGRwbDJ4alJwTThObERVTEVU?=
- =?utf-8?B?NHQxVWRYTFpHRGFVOTM0aFFqWWFVZG9zNnhvY1EvNnVTb2dsWFNPai9YNUJK?=
- =?utf-8?B?RCt1NDJZbDhsVTVEOFUzbHFpbThvTmtXdjBlaE54dTIwYThtMmVnL1RKSUpN?=
- =?utf-8?B?V3JWVG9EM1ozVHhCSnUrVEtrS2kwaWMrSFE3MmNKWW1hQ09sNllRZ0ZUckVW?=
- =?utf-8?B?UHB2b1NReTVCeVF5NUNIV2szT2FHRFI1MzhjbllxMVcvdFNoT0ZWVUFJcVZN?=
- =?utf-8?B?UGRja0I4N3ZreHl4WXVFalNOZE5xVXJRVDVLd2hTTVlkcUx1NmJrWHBGYkJx?=
- =?utf-8?B?VmpnNzhPN0V5M05IaStBN1EvdzZBTHZiUTJXTG93MWREbk9TRHJ6dXVIalRa?=
- =?utf-8?B?dS9DcW9TZ1ZxbTJweG8zaUYvUldkVWtRTzZydGhqT215ODVNZGpIT3V4Yk8v?=
- =?utf-8?B?VXJPdDY2YUluY1R3UGtFVFpxS1lvVUVXRU1nMEZPazJEd3FCSm91ZEMxM1Rz?=
- =?utf-8?B?SzZOa25peHBEbVdIRDJLNCtkR2pFNmNDL014VEVNS3RXd3BHblRvQ2FPSDNU?=
- =?utf-8?B?bWI5OFhkMzdPQjBPZlVOL3RuY09BVlFNenZqc0VKb2xkcVV3ZDU3OTdUak10?=
- =?utf-8?B?RHJUZVN6aGR6ckt4RG9KYzd4NkgyNjRGZXhEdVhkM3RFNm1udFVsemtwajF5?=
- =?utf-8?B?b3R0bXEvcFlpQnpmeEoyb3VtTyswNXgwVDVla2dVbUwzWGFrVllySXU3Rk5t?=
- =?utf-8?B?L2VJVy8rUGhyUFlPdlFQamxmbkNENjVkdzBNU1NBTVUzT1IvVlhRQVVyTDA3?=
- =?utf-8?B?T2wzelV4aW5Td1ZRaVRPU0FoSHhSaWtpVWJGc1g0VzFTWTBUOHZLZXFTTmFa?=
- =?utf-8?B?aDZBNjh5T1hoWk1FeDdWYTR2RzBBbTUvcE9FWFlPaXBZLytJY1hEOWpYZENV?=
- =?utf-8?B?bkNEOVg3cTZNTk1KakcxMEhXSlN6NGMvN0dPWEdiak1FS0RSazI0V05FWmVv?=
- =?utf-8?B?bTc1cEFYc2NoaXhFSVFGSW9uOXArb2p5aXRhWFJscE55dkgvOFduSnE0MURw?=
- =?utf-8?B?ZWN6TDVZK2Q3WEJ5QVM2R0crbHlkcm9YZGZlZmFMWXpuVjBuL1FYTGhwbU93?=
- =?utf-8?B?bHhYSERTejdERW1kVktVUTFTZnc2Vk5mVzJlMlBYWHo4dXp3UzNKUnkrbW03?=
- =?utf-8?B?VTVHaG81LytaWDdrdEp4cnhDdVBrRlJ5MVRzVDNSOFc4bnNBVm1BMVVvNDFW?=
- =?utf-8?B?WnNYTllETHdRTXZqUkFnWlZOd0VRczJ6NWxxRlFhSU5uYW1wMjNielNhT3dk?=
- =?utf-8?B?THNtQkRQc0loaUN0Z0Y2L2luMXFqdnc1UVl6eFoyeU1MVjZiSjRQdXJMR3BF?=
- =?utf-8?B?aE42OVh4MXFSMWNER0RWQ3RMQ2VKZjVlRktWckpFaU9kZlorcVdXZGwyMzM0?=
- =?utf-8?B?UldZTGVLUGpBSHdjVC9idTk5L3hOZmp2bWxoSE45bGxaaXdnN3E0eGVFaUEx?=
- =?utf-8?B?TWF5WE1vYkRzWFJ2R1ZOVWxRaVh6aFZZc2F3UnArQkdqVFBEUEN5a2dyRmE1?=
- =?utf-8?Q?IR5w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VkwvQUQzVlIxbkVxUW4xWmMwekFwdE5ubk9LdlBGWFJ2aUx3Rm40MGVQS2VM?=
- =?utf-8?B?SDBRdkxvK0s0TzVlY1I3dVA0eCtNQWg4cTE2NWNOK3owcE1wWkhRR0kvZUdk?=
- =?utf-8?B?TitqUmJWTm5HQnMwLzR1MURFUHliNzROL2MvbThEeGFhYmcrMVlmb3l0VlhM?=
- =?utf-8?B?bVBLeDZpUVpoSEZCcXhwR09JdDV1bFVDN3J0ZC8xYUlXVWxOclpEVW1QRmta?=
- =?utf-8?B?ZklRbFhZMXRVSnBpaFFsRTZYWXlEazlGQVovZE01a1FZcUlVaFFHLzlMMGZR?=
- =?utf-8?B?VThHOGlYaU9rdmNXdzFKRWxVMktxNVJQMXdIdTIvckp1RkRYa0hyd3UrUXdj?=
- =?utf-8?B?QU5wK0hBTUhrYklYQkZ0bDk4cjg0M1hPeDNMT0JMbmljVnZ1cUlyb0tDc0F5?=
- =?utf-8?B?VmE3ZXdoT1ZqYXA2VzIwNjFhWStvd3AvcnBhd3hMdVVSYk9sMnVGRndJWmY5?=
- =?utf-8?B?dzRiRUlwQitUeWFWd2JWUFMxWEh1NDMwVHpwa0E3TUZvSVJ3eTNKVCtLVXpX?=
- =?utf-8?B?Z1Jid0pXT0FKbGpxNzNQeEwzbEJCOHprU3hWZ3dkTkxmbkhKZEJTcFJjbGcx?=
- =?utf-8?B?VmVXbTQwaW02WFdqaEV2bWVTRmE0MEVCRnV2TmgySkI4RGxUZXRCek5uYUIw?=
- =?utf-8?B?WlltWHB3V3RCQng0dUR6aHRVQTZLSDBNc2FKTXFQOVBmQmQzbFR1S0ZRZHNG?=
- =?utf-8?B?YXR6cEZWVmJNKzE0eUJwV0tqd1lUZUNsVEorWTU5c2hhZXhDQTAvdjFpK0Q5?=
- =?utf-8?B?bCtjc3NCMzRBdDduSzlCd0k4YjRudnZVREIrTFVBbnQyUmtiUnU0b2RIWmVl?=
- =?utf-8?B?TFF5ZVZ5OWZXRUp1VXM5anlMVXEyYlpxZzhTQkFWaWNOTjlnbXRORFcvSThM?=
- =?utf-8?B?WkJyMG9TT3NyUktOc25LSnprZ3U3THNPMTlTdFQ5Z1RQQmM3QlRVa1VrL3Ir?=
- =?utf-8?B?MEIyUW8rKzI5YjQxOHFFTEU5OTBCblJ6Q3d1VkZYSkRYQzAwMTBNalZNeWVB?=
- =?utf-8?B?THpVYWxTU1cxYzArQ1FTYTRMRXlOWk95M0s5ZE1mSkloMlJLR3JKayswMVFF?=
- =?utf-8?B?aXVOaVowU3EyeCtSS0xiSzlQN1pWZlE3YkJrQTNTYzZiNnZ6U0FiaGJZN2Zt?=
- =?utf-8?B?a3I0QzY1bHJuZ2hGanM0dmxEdndwVlIzcFJoYUNGZHRaUENKdVBlTmUybyt0?=
- =?utf-8?B?M2w4NGF2MVZWd1pCV3RhYTc3STB4eHRham1LUEE0YTQ5VjRQQ2xQczlXTkY0?=
- =?utf-8?B?eU52SlRiYzFmVVlYM1hYSTB6UGVFTTBxUkU4WjVuZFBsYXFpa2RiWmgwWitQ?=
- =?utf-8?B?cnRCYXg5YU1iUUFvWFMwSGtiL1lPVjRFRUdmcm1FY2pJT1FRV3R6RVdkaHlB?=
- =?utf-8?B?bVI1c2JGczZsR2tLZ0hSYnhDM2dBQ3ZnTmNOZDZQdlorbllxbUdWQ2luby9W?=
- =?utf-8?B?MlYzS2czWDVEamdLZnhmNGVXQjdDck5ac3NJc2lqeGtZaitOREhUem1penJP?=
- =?utf-8?B?Vk9rc3dEbzNWY2pPeGQxUzhvRXZHcG9QZ2ZxNFYyNTFQN2Z1cEJYT00rY3RB?=
- =?utf-8?B?T2l0SE91eU5SNU5DeGxWaGc3UjFmMmZPUmRLK3I2TURBTytZMVgvelpZaEpD?=
- =?utf-8?B?MTA4UFNVem9pNVoxeVBYQkt6YkE1UG56eVRSSXFMdnZhT0FqdXYyeCtrdGlH?=
- =?utf-8?B?MTJOZi9LYVJ5UDR2cGJLdnVTdnBLRUQ0bGhJSjdlY1pSaTJnNk5iZVN6Mkwy?=
- =?utf-8?B?dnJHNnBJdmdVU3lSTXRYQXR0R0NBaVR6cm5vNnZHNkVSeUthQ2xJaWdPWHRG?=
- =?utf-8?B?WVlLQU5XYXAxOWVoU0VtZktIVENzWEdWWEdmNkNSejBBODVxQmQvUVZjd2hn?=
- =?utf-8?B?OUZmMDNLRW9sVTQwTGp6ME5nNDFrMDlhUTVEbms3T2VHTGh3QW5mTi9pUjh4?=
- =?utf-8?B?bWlXOVN4NHdhNHgydFE1clpjSlBpdE15bDExL1RyamhPa2dvSEZRL1U5T1Bh?=
- =?utf-8?B?cWFrbzR5TlZSOWZNaXpIVVp3ODE3TEtZaTk0SndYL01HWjZaTVVDY3M2SFdX?=
- =?utf-8?B?RE9QZGVvaE1xWGdWZy80WStyMGt1RGFvV3JIbXVybkFPVlEvdEdweHN4Y1Q1?=
- =?utf-8?B?RUhGREpSN0RmZE5RSCtrdm5tazd6Y2crZmRuSXVTY3dOazNrMHlEc0xuMDlB?=
- =?utf-8?B?RnhScVF3cU0vcDhkNGJ3THkxNVVIWFJ1SWhBRm9JN0tPTjN4QnV5ZXlxbkti?=
- =?utf-8?B?emhnZXk5U25xazgrOGIvczFiMTBRaUZGeW0vY1BKMXNidDdxL0hDZDJxdWt0?=
- =?utf-8?B?L2dBZ1VkNm8rZ1RHQlFQeDhHdzJ6TEVLRlhKVEtxUk9oZXdpdVhrUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 176f5e54-84bb-492f-7e01-08de5f41c01a
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 14:21:53.4592
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QOzvwDMa9U/vbscunXnszIOHb7KfqBtM4vBVCOtD1ACPtps84Y/ySOUTZtX5nZNW8ozAM83exLguvOKhxNg++A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB7153
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260129-try-from-into-macro-v5-1-dd011008118c@gmail.com>
+References: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
+In-Reply-To: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ nouveau@lists.freedesktop.org, Jesung Yang <y.j3ms.n@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=24349;
+ i=y.j3ms.n@gmail.com; h=from:subject:message-id;
+ bh=fqd8zOaitcBRxKU24wAifnhgZPjcG5QtkTIKJmcPkkg=;
+ b=owJ4nAFtApL9kA0DAAoBhnBYoOPQ2LoByyZiAGl7b45zTZmAB6KJu94Bc57Sr4Fe3d9388dbF
+ SH8SKpWPPmVGYkCMwQAAQoAHRYhBNJuBqTTLsbEgOaQ0IZwWKDj0Ni6BQJpe2+OAAoJEIZwWKDj
+ 0Ni6v3UQALmtw/64MU3340vnFxo84DcQUimTss1gOBHzSQeDPVtD/YH7wR42KvMeeXdlSGejAvc
+ ZV/sZg8uAMf/9zPWr7ETznmYWrt39dCLmbOWBgCvJYXB6Gz4KMkacokd2vANPyFTjlYfndA6iBD
+ TeCoW3awhaycfx8RidKLvXsDikxEm4oX+gAdurrMki4nq4OZ/3cXVWB0m8tH+amAuqmxtKBJGgn
+ zizPPyGPmsKWLhqKUjo0FCpsDEKoKjcosQxJSf60QiNXuS3P2uuh/QX+CVXvYBw48a00XVv68UH
+ kHmRJxeUDDRRwfRvENxO6VHWFVieCYXYjMCjd1YBj7aTUCWDJUocKr0IyheOrZxfnk2hziLK7XD
+ mpIdspnaQiYVIIi0Jo24Dw/J82sC5X1cpAsBTGW5+LIWoxcBY4yce2Gi8cpy+G55wdQ67AXz+eS
+ Y9dITs4A5w66WMr6uaaGb4TQQja79sMqwGaPzVpDVW7AlcyuaqQ7e300/nwzqKpFnI2HXkpUGTs
+ 56TYzapLwuYKk1bpHkFkDn+Zxulz2gQaRVHn6XBhP/fbVJ2VLXpBpCFqLCbY4UIWLaqnKY6nlVQ
+ tbbSqDoNnM67TgHTYaAKgtFOCSCzRBUSSqrbQJTTeV8VdnW9CgHiFlwtrm8eF+P0Bjc/EQ4wWZf
+ +N6+V5HICbcjzQBDbt3cqAA==
+X-Developer-Key: i=y.j3ms.n@gmail.com; a=openpgp;
+ fpr=D26E06A4D32EC6C480E690D0867058A0E3D0D8BA
+X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/default with
+ auth_id=602
+X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
+Reply-To: y.j3ms.n@gmail.com
 
-On Thu Jan 29, 2026 at 7:44 AM GMT, Eliot Courtney wrote:
-> This series fixes a few bugs in the GSP command queue ring buffer
-> implementation in nova-core and also clarifies some of the comments.
->
-> The ring buffer uses read and write pointers (rx/tx) to track which areas
-> are available for the CPU vs the GSP to read/write into.
->
-> In the ring buffers there were some indexing issues which could end up
-> causing panics, so I fixed those and added more rigorous proofs of
-> correctness in the panic comments.
->
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
 
-For the whole series:
+Introduce a procedural macro `Into` to automatically implement the
+`Into` trait for unit-only enums.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+This reduces boilerplate in cases where enum variants need to be
+interpreted as relevant numeric values. A concrete example can be
+found in nova-core, where the `register!()` macro requires enum types
+used within it to be convertible via `u32::from()` [1].
 
-Best,
-Gary
+The macro not only supports primitive types such as `bool` or `i8`, but
+also `Bounded`, a wrapper around integer types limiting the number of
+bits usable for value representation. This accommodates the shift toward
+more restrictive register field representations in nova-core where
+values are constrained to specific bit ranges.
 
-> ---
-> Changes in v3:
-> - Use `&mut []` instead of `&mut xyz[0..0]` for empty slices.
-> - Simplify driver_read_area by removing unnecessary split_at.
-> - Use range notation for comments (e.g., `is within 0..MSGQ_NUM_PAGES`).
-> - Fix up branch order to mirror existing code.
-> - Link to v2: https://lore.kernel.org/r/20260123-nova-core-cmdq1-v2-0-e79=
-7ec1b714c@nvidia.com
->
-> Changes in v2:
-> - Modified PANIC comments to match existing style.
-> - Link to v1: https://lore.kernel.org/r/20260122-nova-core-cmdq1-v1-0-7f8=
-fe4683f11@nvidia.com
->
-> ---
-> Eliot Courtney (5):
->       gpu: nova-core: gsp: fix incorrect advancing of write pointer
->       gpu: nova-core: gsp: clarify comments about invariants and pointer =
-roles
->       gpu: nova-core: gsp: use empty slices instead of [0..0] ranges
->       gpu: nova-core: gsp: fix improper handling of empty slot in cmdq
->       gpu: nova-core: gsp: fix improper indexing in driver_read_area
->
->  drivers/gpu/nova-core/gsp/cmdq.rs | 71 +++++++++++++++++++++++----------=
-------
->  1 file changed, 42 insertions(+), 29 deletions(-)
-> ---
-> base-commit: 58d26d42818c0f8c9b334cc7cf318b43046e675f
-> change-id: 20260121-nova-core-cmdq1-6aaa369824c4
->
-> Best regards,
+Note that the macro actually generates `From<E> for T` implementations,
+where `E` is an enum identifier and `T` is an arbitrary integer type.
+This automatically provides the corresponding `Into<T> for E`
+implementations through the blanket implementation.
+
+Link: https://lore.kernel.org/rust-for-linux/20250624132337.2242-1-dakr@kernel.org/ [1]
+Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
+---
+ rust/macros/convert.rs | 520 +++++++++++++++++++++++++++++++++++++++++++++++++
+ rust/macros/lib.rs     | 173 +++++++++++++++-
+ 2 files changed, 692 insertions(+), 1 deletion(-)
+
+diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
+new file mode 100644
+index 000000000000..096e3c9fdc1b
+--- /dev/null
++++ b/rust/macros/convert.rs
+@@ -0,0 +1,520 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use proc_macro2::{
++    Span,
++    TokenStream, //
++};
++
++use std::fmt;
++
++use syn::{
++    parse_quote,
++    parse_str,
++    punctuated::Punctuated,
++    spanned::Spanned,
++    AngleBracketedGenericArguments,
++    Attribute,
++    Data,
++    DeriveInput,
++    Expr,
++    ExprLit,
++    Fields,
++    GenericArgument,
++    Ident,
++    Lit,
++    LitInt,
++    PathArguments,
++    PathSegment,
++    Token,
++    Type,
++    TypePath, //
++};
++
++pub(crate) fn derive_into(input: DeriveInput) -> syn::Result<TokenStream> {
++    derive(DeriveTarget::Into, input)
++}
++
++fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream> {
++    let data_enum = match input.data {
++        Data::Enum(data) => data,
++        Data::Struct(data) => {
++            let msg = format!(
++                "expected `enum`, found `struct`; \
++                `#[derive({})]` can only be applied to a unit-only enum",
++                target.get_trait_name(),
++            );
++            return Err(syn::Error::new(data.struct_token.span(), msg));
++        }
++        Data::Union(data) => {
++            let msg = format!(
++                "expected `enum`, found `union`; \
++                `#[derive({})]` can only be applied to a unit-only enum",
++                target.get_trait_name(),
++            );
++            return Err(syn::Error::new(data.union_token.span(), msg));
++        }
++    };
++
++    let mut errors: Option<syn::Error> = None;
++    let mut combine_error = |err| match errors.as_mut() {
++        Some(errors) => errors.combine(err),
++        None => errors = Some(err),
++    };
++
++    let (helper_tys, is_repr_c, repr_ty) = parse_attrs(target, &input.attrs)?;
++
++    let mut valid_helper_tys = Vec::with_capacity(helper_tys.len());
++    for ty in helper_tys {
++        match validate_type(&ty) {
++            Ok(valid_ty) => valid_helper_tys.push(valid_ty),
++            Err(err) => combine_error(err),
++        }
++    }
++
++    let mut is_unit_only = true;
++    for variant in &data_enum.variants {
++        match &variant.fields {
++            Fields::Unit => continue,
++            Fields::Named(_) => {
++                let msg = format!(
++                    "expected unit-like variant, found struct-like variant; \
++                    `#[derive({})]` can only be applied to a unit-only enum",
++                    target.get_trait_name(),
++                );
++                combine_error(syn::Error::new_spanned(variant, msg));
++            }
++            Fields::Unnamed(_) => {
++                let msg = format!(
++                    "expected unit-like variant, found tuple-like variant; \
++                    `#[derive({})]` can only be applied to a unit-only enum",
++                    target.get_trait_name(),
++                );
++                combine_error(syn::Error::new_spanned(variant, msg));
++            }
++        }
++
++        is_unit_only = false;
++    }
++
++    if is_repr_c && is_unit_only && repr_ty.is_none() {
++        let msg = "`#[repr(C)]` fieldless enums are not supported";
++        return Err(syn::Error::new(input.ident.span(), msg));
++    }
++
++    if let Some(errors) = errors {
++        return Err(errors);
++    }
++
++    let variants: Vec<_> = data_enum
++        .variants
++        .into_iter()
++        .map(|variant| variant.ident)
++        .collect();
++
++    // Extract the representation passed by `#[repr(...)]` if present. If nothing is
++    // specified, the default is `Rust` representation, which uses `isize` for its
++    // discriminant type.
++    // See: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.discriminant.repr-rust
++    let repr_ty = repr_ty.unwrap_or_else(|| Ident::new("isize", Span::call_site()));
++
++    Ok(derive_for_enum(
++        target,
++        &input.ident,
++        &variants,
++        repr_ty,
++        valid_helper_tys,
++    ))
++}
++
++#[derive(Clone, Copy, Debug)]
++enum DeriveTarget {
++    Into,
++}
++
++impl DeriveTarget {
++    fn get_trait_name(&self) -> &'static str {
++        match self {
++            Self::Into => "Into",
++        }
++    }
++
++    fn get_helper_name(&self) -> &'static str {
++        match self {
++            Self::Into => "into",
++        }
++    }
++}
++
++fn parse_attrs(
++    target: DeriveTarget,
++    attrs: &[Attribute],
++) -> syn::Result<(Vec<Type>, bool, Option<Ident>)> {
++    let helper = target.get_helper_name();
++
++    let mut is_repr_c = false;
++    let mut repr_ty = None;
++    let mut helper_tys = Vec::new();
++    for attr in attrs {
++        if attr.path().is_ident("repr") {
++            attr.parse_nested_meta(|meta| {
++                let ident = meta.path.get_ident();
++                if let Some(i) = ident {
++                    if is_valid_primitive(i) {
++                        repr_ty = ident.cloned();
++                    } else if i == "C" {
++                        is_repr_c = true;
++                    }
++                }
++                // Delegate `repr` attribute validation to rustc.
++                Ok(())
++            })?;
++        } else if attr.path().is_ident(helper) && helper_tys.is_empty() {
++            let args = attr.parse_args_with(Punctuated::<Type, Token![,]>::parse_terminated)?;
++            helper_tys.extend(args);
++        }
++    }
++
++    Ok((helper_tys, is_repr_c, repr_ty))
++}
++
++fn derive_for_enum(
++    target: DeriveTarget,
++    enum_ident: &Ident,
++    variants: &[Ident],
++    repr_ty: Ident,
++    helper_tys: Vec<ValidTy>,
++) -> TokenStream {
++    let impl_fn = match target {
++        DeriveTarget::Into => impl_into,
++    };
++
++    let qualified_repr_ty: syn::Path = parse_quote! { ::core::primitive::#repr_ty };
++
++    return if helper_tys.is_empty() {
++        let ty = ValidTy::Primitive(repr_ty);
++        let implementation = impl_fn(enum_ident, variants, &qualified_repr_ty, &ty);
++        ::quote::quote! { #implementation }
++    } else {
++        let impls = helper_tys
++            .into_iter()
++            .map(|ty| impl_fn(enum_ident, variants, &qualified_repr_ty, &ty));
++        ::quote::quote! { #(#impls)* }
++    };
++
++    fn impl_into(
++        enum_ident: &Ident,
++        variants: &[Ident],
++        repr_ty: &syn::Path,
++        input_ty: &ValidTy,
++    ) -> TokenStream {
++        let param = Ident::new("value", Span::call_site());
++
++        let overflow_assertion = emit_overflow_assert(enum_ident, variants, repr_ty, input_ty);
++        let cast = match input_ty {
++            ValidTy::Bounded(inner) => {
++                let base_ty = inner.emit_qualified_base_ty();
++                let expr = parse_quote! { #param as #base_ty };
++                // Since the discriminant of `#param`, an enum variant, is determined
++                // at compile-time, we can rely on `Bounded::from_expr()`. It requires
++                // the provided expression to be verifiable at compile-time to avoid
++                // triggering a build error.
++                inner.emit_from_expr(&expr)
++            }
++            ValidTy::Primitive(ident) if ident == "bool" => {
++                ::quote::quote! { (#param as #repr_ty) == 1 }
++            }
++            qualified @ ValidTy::Primitive(_) => ::quote::quote! { #param as #qualified },
++        };
++
++        ::quote::quote! {
++            #[automatically_derived]
++            impl ::core::convert::From<#enum_ident> for #input_ty {
++                fn from(#param: #enum_ident) -> #input_ty {
++                    #overflow_assertion
++
++                    #cast
++                }
++            }
++        }
++    }
++
++    fn emit_overflow_assert(
++        enum_ident: &Ident,
++        variants: &[Ident],
++        repr_ty: &syn::Path,
++        input_ty: &ValidTy,
++    ) -> TokenStream {
++        let qualified_i128: syn::Path = parse_quote! { ::core::primitive::i128 };
++        let qualified_u128: syn::Path = parse_quote! { ::core::primitive::u128 };
++
++        let input_min = input_ty.emit_min();
++        let input_max = input_ty.emit_max();
++
++        let variant_fits = variants.iter().map(|variant| {
++            let msg = format!(
++                "enum discriminant overflow: \
++                `{enum_ident}::{variant}` does not fit in `{input_ty}`",
++            );
++            ::quote::quote! {
++                ::core::assert!(fits(#enum_ident::#variant as #repr_ty), #msg);
++            }
++        });
++
++        ::quote::quote! {
++            const _: () = {
++                const fn fits(d: #repr_ty) -> ::core::primitive::bool {
++                    // For every integer type, its minimum value always fits in `i128`.
++                    let dst_min = #input_min;
++                    // For every integer type, its maximum value always fits in `u128`.
++                    let dst_max = #input_max;
++
++                    #[allow(unused_comparisons)]
++                    let is_src_signed = #repr_ty::MIN < 0;
++                    #[allow(unused_comparisons)]
++                    let is_dst_signed = dst_min < 0;
++
++                    if is_src_signed && is_dst_signed {
++                        // Casting from a signed value to `i128` does not overflow since
++                        // `i128` is the largest signed primitive integer type.
++                        (d as #qualified_i128) >= (dst_min as #qualified_i128)
++                            && (d as #qualified_i128) <= (dst_max as #qualified_i128)
++                    } else if is_src_signed && !is_dst_signed {
++                        // Casting from a signed value greater than 0 to `u128` does not
++                        // overflow since `u128::MAX` is greater than `i128::MAX`.
++                        d >= 0 && (d as #qualified_u128) <= (dst_max as #qualified_u128)
++                    } else {
++                        // Casting from an unsigned value to `u128` does not overflow since
++                        // `u128` is the largest unsigned primitive integer type.
++                        (d as #qualified_u128) <= (dst_max as #qualified_u128)
++                    }
++                }
++
++                #(#variant_fits)*
++            };
++        }
++    }
++}
++
++enum ValidTy {
++    Bounded(Bounded),
++    Primitive(Ident),
++}
++
++impl ValidTy {
++    fn emit_min(&self) -> TokenStream {
++        match self {
++            Self::Bounded(inner) => inner.emit_min(),
++            Self::Primitive(ident) if ident == "bool" => {
++                ::quote::quote! { 0 }
++            }
++            qualified @ Self::Primitive(_) => ::quote::quote! { #qualified::MIN },
++        }
++    }
++
++    fn emit_max(&self) -> TokenStream {
++        match self {
++            Self::Bounded(inner) => inner.emit_max(),
++            Self::Primitive(ident) if ident == "bool" => {
++                ::quote::quote! { 1 }
++            }
++            qualified @ Self::Primitive(_) => ::quote::quote! { #qualified::MAX },
++        }
++    }
++}
++
++impl ::quote::ToTokens for ValidTy {
++    fn to_tokens(&self, tokens: &mut TokenStream) {
++        match self {
++            Self::Bounded(inner) => inner.to_tokens(tokens),
++            Self::Primitive(ident) => {
++                let qualified_name: syn::Path = parse_quote! { ::core::primitive::#ident };
++                qualified_name.to_tokens(tokens)
++            }
++        }
++    }
++}
++
++impl fmt::Display for ValidTy {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        match self {
++            Self::Bounded(inner) => inner.fmt(f),
++            Self::Primitive(ident) => ident.fmt(f),
++        }
++    }
++}
++
++struct Bounded {
++    base_ty: Ident,
++    bits: LitInt,
++}
++
++impl Bounded {
++    const NAME: &'static str = "Bounded";
++    const QUALIFIED_NAME: &'static str = "::kernel::num::Bounded";
++
++    fn emit_from_expr(&self, expr: &Expr) -> TokenStream {
++        let Self { base_ty, bits, .. } = self;
++        let qualified_name: syn::Path = parse_str(Self::QUALIFIED_NAME).expect("valid path");
++        ::quote::quote! {
++            #qualified_name::<#base_ty, #bits>::from_expr(#expr)
++        }
++    }
++
++    fn emit_qualified_base_ty(&self) -> TokenStream {
++        let base_ty = &self.base_ty;
++        ::quote::quote! { ::core::primitive::#base_ty }
++    }
++
++    fn emit_min(&self) -> TokenStream {
++        let bits = &self.bits;
++        let base_ty = self.emit_qualified_base_ty();
++        ::quote::quote! { #base_ty::MIN >> (#base_ty::BITS - #bits) }
++    }
++
++    fn emit_max(&self) -> TokenStream {
++        let bits = &self.bits;
++        let base_ty = self.emit_qualified_base_ty();
++        ::quote::quote! { #base_ty::MAX >> (#base_ty::BITS - #bits) }
++    }
++}
++
++impl ::quote::ToTokens for Bounded {
++    fn to_tokens(&self, tokens: &mut TokenStream) {
++        let bits = &self.bits;
++        let base_ty = self.emit_qualified_base_ty();
++        let qualified_name: syn::Path = parse_str(Self::QUALIFIED_NAME).expect("valid path");
++
++        tokens.extend(::quote::quote! {
++            #qualified_name<#base_ty, #bits>
++        });
++    }
++}
++
++impl fmt::Display for Bounded {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(f, "{}<{}, {}>", Self::NAME, self.base_ty, self.bits)
++    }
++}
++
++fn validate_type(ty: &Type) -> syn::Result<ValidTy> {
++    let Type::Path(type_path) = ty else {
++        return Err(make_err(ty));
++    };
++
++    let TypePath { qself, path } = type_path;
++    if qself.is_some() {
++        return Err(make_err(ty));
++    }
++
++    let syn::Path {
++        leading_colon,
++        segments,
++    } = path;
++    if leading_colon.is_some() || segments.len() != 1 {
++        return Err(make_err(ty));
++    }
++
++    let segment = &path.segments[0];
++    if segment.ident == Bounded::NAME {
++        return validate_bounded(segment);
++    } else {
++        return validate_primitive(&segment.ident);
++    }
++
++    fn make_err(ty: &Type) -> syn::Error {
++        let msg = format!(
++            "expected unqualified form of `bool`, primitive integer type, or `{}<T, N>`",
++            Bounded::NAME,
++        );
++        syn::Error::new_spanned(ty, msg)
++    }
++}
++
++fn validate_bounded(path_segment: &PathSegment) -> syn::Result<ValidTy> {
++    let PathSegment { ident, arguments } = path_segment;
++    return match arguments {
++        PathArguments::AngleBracketed(inner) if ident == Bounded::NAME => {
++            let AngleBracketedGenericArguments {
++                colon2_token, args, ..
++            } = inner;
++
++            if colon2_token.is_some() {
++                return Err(make_outer_err(path_segment));
++            }
++
++            if args.len() != 2 {
++                return Err(make_outer_err(path_segment));
++            }
++
++            let (base_ty, bits) = (&args[0], &args[1]);
++            let GenericArgument::Type(Type::Path(base_ty_lowered)) = base_ty else {
++                return Err(make_base_ty_err(base_ty));
++            };
++
++            if base_ty_lowered.qself.is_some() {
++                return Err(make_base_ty_err(base_ty));
++            }
++
++            let Some(base_ty_ident) = base_ty_lowered.path.get_ident() else {
++                return Err(make_base_ty_err(base_ty));
++            };
++
++            if !is_valid_primitive(base_ty_ident) {
++                return Err(make_base_ty_err(base_ty));
++            }
++
++            let GenericArgument::Const(Expr::Lit(ExprLit {
++                lit: Lit::Int(bits),
++                ..
++            })) = bits
++            else {
++                return Err(syn::Error::new_spanned(bits, "expected integer literal"));
++            };
++
++            let bounded = Bounded {
++                base_ty: base_ty_ident.clone(),
++                bits: bits.clone(),
++            };
++            Ok(ValidTy::Bounded(bounded))
++        }
++        _ => Err(make_outer_err(path_segment)),
++    };
++
++    fn make_outer_err(path_segment: &PathSegment) -> syn::Error {
++        let msg = format!("expected `{0}<T, N>` (e.g., {0}<u8, 4>)", Bounded::NAME);
++        syn::Error::new_spanned(path_segment, msg)
++    }
++
++    fn make_base_ty_err(base_ty: &GenericArgument) -> syn::Error {
++        let msg = "expected unqualified form of primitive integer type";
++        syn::Error::new_spanned(base_ty, msg)
++    }
++}
++
++fn validate_primitive(ident: &Ident) -> syn::Result<ValidTy> {
++    if is_valid_primitive(ident) {
++        return Ok(ValidTy::Primitive(ident.clone()));
++    }
++    let msg =
++        format!("expected `bool` or primitive integer type (e.g., `u8`, `i8`), found {ident}");
++    Err(syn::Error::new(ident.span(), msg))
++}
++
++fn is_valid_primitive(ident: &Ident) -> bool {
++    matches!(
++        ident.to_string().as_str(),
++        "bool"
++            | "u8"
++            | "u16"
++            | "u32"
++            | "u64"
++            | "u128"
++            | "usize"
++            | "i8"
++            | "i16"
++            | "i32"
++            | "i64"
++            | "i128"
++            | "isize"
++    )
++}
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 85b7938c08e5..8842067d1017 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -12,6 +12,7 @@
+ #![cfg_attr(not(CONFIG_RUSTC_HAS_SPAN_FILE), feature(proc_macro_span))]
+ 
+ mod concat_idents;
++mod convert;
+ mod export;
+ mod fmt;
+ mod helpers;
+@@ -22,7 +23,10 @@
+ 
+ use proc_macro::TokenStream;
+ 
+-use syn::parse_macro_input;
++use syn::{
++    parse_macro_input,
++    DeriveInput, //
++};
+ 
+ /// Declares a kernel module.
+ ///
+@@ -486,3 +490,170 @@ pub fn kunit_tests(attr: TokenStream, input: TokenStream) -> TokenStream {
+         .unwrap_or_else(|e| e.into_compile_error())
+         .into()
+ }
++
++/// A derive macro for providing an implementation of the [`Into`] trait.
++///
++/// This macro automatically derives the [`Into`] trait for a given enum by generating
++/// the relevant [`From`] implementation. Currently, it only supports [unit-only enum]s.
++///
++/// [unit-only enum]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.unit-only
++///
++/// # Notes
++///
++/// - Unlike its name suggests, the macro actually generates [`From`] implementations
++///   which automatically provide corresponding [`Into`] implementations.
++///
++/// - The macro uses the `into` custom attribute or `repr` attribute to generate [`From`]
++///   implementations. `into` always takes precedence over `repr`.
++///
++/// - Currently, the macro does not support `repr(C)` fieldless enums since the actual
++///   representation of discriminants is defined by rustc internally, and documentation
++///   around it is not yet settled. See [Rust issue #124403] and [Rust PR #147017]
++///   for more information.
++///
++/// - The macro generates a compile-time assertion for every variant to ensure its
++///   discriminant value fits within the type being converted into.
++///
++/// [Rust issue #124403]: https://github.com/rust-lang/rust/issues/124403
++/// [Rust PR #147017]: https://github.com/rust-lang/rust/pull/147017
++///
++/// # Supported types in `#[into(...)]`
++///
++/// - [`bool`]
++/// - Primitive integer types (e.g., [`i8`], [`u8`])
++/// - [`Bounded`]
++///
++/// [`Bounded`]: ../kernel/num/bounded/struct.Bounded.html
++///
++/// # Examples
++///
++/// ## Without Attributes
++///
++/// Since [the default `Rust` representation uses `isize` for the discriminant type][repr-rust],
++/// the macro implements `From<Foo>` for `isize`:
++///
++/// [repr-rust]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.discriminant.repr-rust
++///
++/// ```
++/// use kernel::macros::Into;
++///
++/// #[derive(Debug, Default, Into)]
++/// enum Foo {
++///     #[default]
++///     A,
++///     B = 0x7,
++/// }
++///
++/// assert_eq!(0_isize, Foo::A.into());
++/// assert_eq!(0x7_isize, Foo::B.into());
++/// ```
++///
++/// ## With `#[repr(T)]`
++///
++/// The macro implements `From<Foo>` for `T`:
++///
++/// ```
++/// use kernel::macros::Into;
++///
++/// #[derive(Debug, Default, Into)]
++/// #[repr(u8)]
++/// enum Foo {
++///     #[default]
++///     A,
++///     B = 0x7,
++/// }
++///
++/// assert_eq!(0_u8, Foo::A.into());
++/// assert_eq!(0x7_u8, Foo::B.into());
++/// ```
++///
++/// ## With `#[into(...)]`
++///
++/// The macro implements `From<Foo>` for each `T` specified in `#[into(...)]`,
++/// which always overrides `#[repr(...)]`:
++///
++/// ```
++/// use kernel::{
++///     macros::Into,
++///     num::Bounded, //
++/// };
++///
++/// #[derive(Debug, Default, Into)]
++/// #[into(bool, i16, Bounded<u8, 4>)]
++/// #[repr(u8)]
++/// enum Foo {
++///     #[default]
++///     A,
++///     B,
++/// }
++///
++/// assert_eq!(false, Foo::A.into());
++/// assert_eq!(true, Foo::B.into());
++///
++/// assert_eq!(0_i16, Foo::A.into());
++/// assert_eq!(1_i16, Foo::B.into());
++///
++/// let foo_a: Bounded<u8, 4> = Foo::A.into();
++/// let foo_b: Bounded<u8, 4> = Foo::B.into();
++/// assert_eq!(Bounded::<u8, 4>::new::<0>(), foo_a);
++/// assert_eq!(Bounded::<u8, 4>::new::<1>(), foo_b);
++/// ```
++///
++/// ## Compile-time Overflow Assertion
++///
++/// The following examples do not compile:
++///
++/// ```compile_fail
++/// # use kernel::macros::Into;
++/// #[derive(Into)]
++/// #[into(u8)]
++/// enum Foo {
++///     // `256` is larger than `u8::MAX`.
++///     A = 256,
++/// }
++/// ```
++///
++/// ```compile_fail
++/// # use kernel::macros::Into;
++/// #[derive(Into)]
++/// #[into(u8)]
++/// enum Foo {
++///     // `-1` cannot be represented with `u8`.
++///     A = -1,
++/// }
++/// ```
++///
++/// ## Unsupported Cases
++///
++/// The following examples do not compile:
++///
++/// ```compile_fail
++/// # use kernel::macros::Into;
++/// // Tuple-like enums or struct-like enums are not allowed.
++/// #[derive(Into)]
++/// enum Foo {
++///     A(u8),
++///     B { inner: u8 },
++/// }
++/// ```
++///
++/// ```compile_fail
++/// # use kernel::macros::Into;
++/// // Structs are not allowed.
++/// #[derive(Into)]
++/// struct Foo(u8);
++/// ```
++///
++/// ```compile_fail
++/// # use kernel::macros::Into;
++/// // `repr(C)` enums are not allowed.
++/// #[derive(Into)]
++/// struct Foo(u8);
++/// ```
++#[proc_macro_derive(Into, attributes(into))]
++pub fn derive_into(input: TokenStream) -> TokenStream {
++    let input = parse_macro_input!(input as DeriveInput);
++    convert::derive_into(input)
++        .unwrap_or_else(syn::Error::into_compile_error)
++        .into()
++}
+
+-- 
+2.52.0
+
 
