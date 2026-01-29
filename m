@@ -1,61 +1,61 @@
 Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F73356A22
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 02:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DD4261388
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 03:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769655248; cv=none; b=uEm2PKDX7rJ41pQUP4S1GAReLiAwG5poEdhmaiaj+jDdIywC/A5cbIAdyk+j3aho97DbaobJHXwB5VCRfqj5uK5DeJicFlDceu1XlpCJCUnkDpJkqPMZDIed9sRF0L8B+9TP2NaMEq+jCAm2VwZ9tusfIF53DfBfNCLipbkm1uQ=
+	t=1769656059; cv=none; b=KeMhveSLZol5fiy2mhgobwTnphdzRvDcUUBLZvESqaZDawrSBO85Q2ggThwIASbOWWbGBfii3XTndG3yvajjVvzM3F8Mz5GQTvy2J2efq5WU6sKRT3pRTDSjHPw0kVDNd+BXnETZeNjfJ6Pz4fABBbCuSf5Kkf71K8V1D5ShZgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769655248; c=relaxed/simple;
-	bh=wn1m+br1TBOR784BJGjVu5s+038ns3FcvJsywelK95E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P9o0Tr11zftUsyinO2jKCsXy6jowejcHjX7hRA//H2cfP8L5hgv59ujaR/k3rPAh0oSHXRUwXd5vURPsZeanllrfowoXLn7sx+emc8wN+tZWNb+8XpU5bFrruHgUO/tPADTJPrSLvbxfnuo4ac61uKlMM0nvnpO+ZE/fNJ7jTEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XZBg5v8V; arc=none smtp.client-ip=74.125.82.52
+	s=arc-20240116; t=1769656059; c=relaxed/simple;
+	bh=D5HvBwq9KBBQtckyDJ0vATtGRTcFt8eQ11FoGa6LSMs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cCHKRB2+Du4t3SFMMKXi9CWsKYUsThgX/nVh4zEo7xyMp5ctphNGrr/dpdHe7xfnjdVtLOcF5S9KzaWCCEfNyw4O89OV7gAz9EhtkJkCkaEd4NeQuvzY7jYHmtPGuqFA8mRhdwsZhohKcW4vU90N/NtlPQNUh5pHyot6kbBEd5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RSRk3aFf; arc=none smtp.client-ip=74.125.82.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XZBg5v8V"
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-124b117776fso394489c88.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 18:54:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RSRk3aFf"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-124a635476fso733876c88.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 19:07:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769655241; x=1770260041; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769656056; x=1770260856; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rTjwIP2vgqxu7fxZeJC7bZQdu9aLDDe/pDZwtRq1Pfs=;
-        b=XZBg5v8VL41X7mxNImL2N4JDtGrh5qYc4zGOQ+eAgVr1UzH0J8QLsRftVeHecvW0+Q
-         9Ao0a6t3uS25AOk+5GjYjjcBvrfRLsmTDMe+whRDkuefBCRid9zm4haAzDIUWNypZ7Jh
-         R23+Z5wie3pq+bAp/8YBvjLQjD5ZlyIeqPhjHHSd2DTmoD1JfLzd9NUsjW6K+0ovvdj+
-         Sb3wmjA4XSNWhiwFH9pNmhKYf4raNGLaYU+QfulUwhOUNvFzIWlXDk0KX7BdrSzgS5fU
-         HoYSgoxMQZ9ctKU9SjBDGdS8UoVJjklsg/iVWc+c38DhmIrgVanfdDSBQ+M+Ked72ZI0
-         jxfQ==
+        bh=idXYF6OFRh6A7qWjhos4p7dP5Z9noDDpuntJy2Lqy8M=;
+        b=RSRk3aFfAz2AuqzfDRtuYjC3W5nKLI8HfvVaBvYtTKQeJh7DZjKHGKCMrcUDWBGhiO
+         WmODnN+eai5a8E0eRlKasM8Er1FGFFONBPK5o4PDEURUs86jxYoEQUZJxcvw9TbZdshQ
+         hjFukFeISdM83t/h3Au4JafG74xOO/ND/Qp1MaJAy0LPkKfodTNBpz815jfWIH6yq9Hk
+         fxuCYT4Kqsm7o8Uut+4+HfXCxNVSc8Rz8dUmRoVVFCc7248IEM7SrNHGhQtC93y3LWPn
+         lPJXUGdtoYzX3k7CiaX+fBKjVjmAVasmmONaUmn9RbKp863llQ/dwfBRVo+7gB/gI78b
+         lHWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769655241; x=1770260041;
+        d=1e100.net; s=20230601; t=1769656056; x=1770260856;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rTjwIP2vgqxu7fxZeJC7bZQdu9aLDDe/pDZwtRq1Pfs=;
-        b=NUqp6dzpqBqlAp2G+XOF4HqKMQR+yZRZ3Z/40EgxFpTINmIPtuccHtzjpE+yXBHjfq
-         N39gQBjvxDJ2DZZ7MPKZnrd/V5ywLscmiyvs9p1JqWjobHRLZisGckqZDpK8DwSJ+rsb
-         TjSoinRG5cwcJ3OXrilQ2hHlo2nXgoVDTFH8enc8ocvQDDuIzq2wp6svHCoFfxiptKDg
-         djYpkL7Vr6Wukzzs5miVWfdm072BQrVKfyNfz46DQI1J7iQyMosKIt1qAE/ts4rKLThs
-         NH1Wp6Pbk4wV0tAS3W0PxgTKh6m/Mbsh5SKiyMZprqArnVsAADQVNDi9Q0y6EDqbuSjy
-         Ifog==
-X-Forwarded-Encrypted: i=1; AJvYcCXXishBV0xUa2JzF9zWzqNkGwuvk1XlEB5Gnc3ZDToEOAq9aq2o9HsHmO4g+8GLEtc9P5YR742afO3DJ0hZ0A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6SmL36bqdM7llOtJ8iixmvXu9YYMyJkDp8J/s5XB8YyQDm860
-	I8KewVXiPCJYYare3dLtQoKEQQSNYilwmUo29+R6R4mH4Tzld2+1eZfnzPCvag==
-X-Gm-Gg: AZuq6aLXeb1xYnV7XU7DTKgbkmtX924Mt2zhFHQYEmjhQo2eTS8kTi+2M5XV+JQMbee
-	wljq98Teeniq0+tI+wRLVcjzJ9vqL5kzVJmOpTIOdNQIeVKpCPfuYSUnubApqRhrBeoHVpI1TyT
-	ygJ2KB7vw8HFplcE7Q4kisgMEaBejZinGcLnVIDje2lgrMY3ffYDpKVrHz0HtQazH/JdD52ehr+
-	JtqSDRaKKpPB5nuHPsm2jyWGHUmWLiOfnwtHfTfd6Lemg62KyoYeNUS3Fow9L7iC//A6dJf/fNz
-	onpsqE3oIBpFBI2hD8zVEYUmhr9LocOeDlx9teEb8fbgF5r3BIL6g1+pHXu6v1qCCo4WcoGt2Fp
-	bYwsaHkAdFbf9Noxw7fHrfdn022sSYl0DZGHbSY80ztWUBCewYYBXLwsO6pbFecsIh+puRQmqO5
-	dlnbIhfcEsapQY4QGBlG9eCEsBa9pCmwNKRHYb5/Rtu8JkM+UeCETy5AvfGmvU8RDQGdOXQDAd
-X-Received: by 2002:a05:7022:4399:b0:119:e56b:98b8 with SMTP id a92af1059eb24-124a00b1ae1mr3452454c88.31.1769655241339;
-        Wed, 28 Jan 2026 18:54:01 -0800 (PST)
+        bh=idXYF6OFRh6A7qWjhos4p7dP5Z9noDDpuntJy2Lqy8M=;
+        b=W5AmK0ImNVF69hkfiaA1TwVReANod1D4i5ba3zvbZWgVfBbnJ34pZvtM7PQ4MSRnA0
+         kmDeVGFabgcm8+3fhByUxtcVF/mlXZ8p2HOEiKu8mRQayPfIwNuynCnSHWyL7NcrmMZO
+         wPutfmwjaE0J1CkPxEWD6/A+yN1J7KB+NvwSqDI4/iEhYfXftJ0HgiF3lIuN5ba52REt
+         ngDDjCZfTyAgoSQ2Zo4VUIn3o807+RUkEDk+zn3U4lUNVBQHeRSV3NtR/MO3zlconp2y
+         bbfI2CHJr9NS39VF1dXKWevTX496l0fUaqMdf8tz5i2SDG0fGLQSLCWObmB/uXiejfKT
+         mFPA==
+X-Forwarded-Encrypted: i=1; AJvYcCVWXv7CYn3tNb3BDkhdTUo2xfE9QCcnkl+U8EbQOlYLh6YLYAVpB/hnGPPMiyq2PbiCDtN4yQpJkULIy8po5g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxMG/WjChKbJqdUEm4RGFQgXsxmhfYjza1OAlUqv6COgkGjI5A
+	JIycpTo96jFaKXUKUB+luQ0jDp1cwKAxjMHyedZBlalr9WKbui9lD9jJ
+X-Gm-Gg: AZuq6aLRqOGt0GEcMdAUsb1vToRHnaW/PIFyXdBfrAx07kzX8xDxPacznwRL8Hw9PNo
+	ZkUFPxohJRkv2IpfOMbPjXx8j/xpe6R7bHHlQIAsmkHF83R+G58EOGrIXCpxw3LwDfvtL3C8npC
+	4KCmoAQt2iMfE8VP15fokjdNCtGFLoeHnctE+e86Bd+vn75qcgKRt+owxLqCZ1UlTwT/1CeQ+lk
+	+h+mbJ+MGdSiO9oa7D8UIoc6zgvbrFAb/2skMri2qmFV8gbaOo+e14OJEQWBhGp9GPcFwX0YzS0
+	nLtJm2idv4mJONQrKJPDtegxfixDM/J9oaqwzoCBt5dw4v+/E5rLe+xG04frC4uWZV8rfWkpXsf
+	SlZ5wgR/BeYYZnlG97rHotAUUOMba2xCiQ/B/7hzzvQGPryXZ0rZy0fa+ediamv27PGvZ0FB7nR
+	tq90ON/OY2rVPrxsbbMC9FIRW9d5iHahq9TxPnnwsp0NPi2xczAk3N2pI/ESnpLAL+rpcWa42S
+X-Received: by 2002:a05:7022:68b:b0:11e:528:4185 with SMTP id a92af1059eb24-124a0119a2cmr4602564c88.38.1769656056476;
+        Wed, 28 Jan 2026 19:07:36 -0800 (PST)
 Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:4e1:6e5f:e09f:d45a])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9df97d0sm4850753c88.13.2026.01.28.18.53.59
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9d7f597sm4855682c88.5.2026.01.28.19.07.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 18:54:00 -0800 (PST)
+        Wed, 28 Jan 2026 19:07:35 -0800 (PST)
 From: Jason Hall <jason.kei.hall@gmail.com>
 To: a.hindborg@kernel.org,
 	ojeda@kernel.org
@@ -65,9 +65,9 @@ Cc: lossin@kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-block@vger.kernel.org,
 	Jason Hall <jason.kei.hall@gmail.com>
-Subject: [PATCH] rust: block: use pin_init::zeroed
-Date: Wed, 28 Jan 2026 19:53:55 -0700
-Message-ID: <20260129025355.1066511-1-jason.kei.hall@gmail.com>
+Subject: [PATCH v2] rust: block: use pin_init::zeroed
+Date: Wed, 28 Jan 2026 20:07:32 -0700
+Message-ID: <20260129030732.1072223-1-jason.kei.hall@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -80,6 +80,8 @@ Content-Transfer-Encoding: 8bit
 Replace manual unsafe zeroing of block structures with the safe
 pin_init::zeroed() helper.
 
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1189
 Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
 ---
  rust/kernel/block/mq/gen_disk.rs | 4 +---
