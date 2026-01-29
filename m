@@ -1,247 +1,298 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011060.outbound.protection.outlook.com [40.107.208.60])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EA42868B2;
-	Thu, 29 Jan 2026 13:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769694067; cv=fail; b=AO9aOAmN0hi5aW0or313NHWsDmF8sbOYrcKkvUwtpd9lujuS9pY+0gnYqmmimOHRexUTp9eyhus1kvCI2L4aXIJwJJYn2hZkXGlNpHPKJ/QWysmPo07sxEqCUbYzRtlX8GAJ2V1NUS7cYnHsYyLEJeEyNPlnz0rU5daQgWVO2S4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769694067; c=relaxed/simple;
-	bh=eWkxLdS11+pg2TtZUGvpMEcdL2O6CCzLjeuSRzw6QSc=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=CTmn4M51hKayPm+xCtSIEjV9muffr/FvLyBvg+plDYwhkvRR38p0+eDK1fuxGtkw892OOyrDZEUpQN6/DelTBGPhbclGoOoC696YqCgoKAGjfIyVslH4ZV5+RolOnZYkPh1ftooRCENaB+6fMq0CqI8A4YH7TzLRYDff0OexFUI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KKqcRCwE; arc=fail smtp.client-ip=40.107.208.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E426F346E40
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 13:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769694603; cv=none; b=U668zWMyArubaSyR0ZnfXrGll35Tbd9OQ7UKKL95vVCP1+D2hHkYex5+H/zXLW0Co3o0mIJLmBZXm8m40tv8yYGH6xR+Yj1Sajs8XKDROrb09MV7BecdmK+S/qFCLiFpeUthNRb/lxBWsO3WA8yn3GgfLUf1/C+oez5fpVH409A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769694603; c=relaxed/simple;
+	bh=3jnlf1IREiL+KygAIfwEEO6hHK7S1OFnKfdhlq2nLdc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pPXVfQ+hNZyTEi989BB3KWx5QwiAWyVixCKh+6IwxsUZeL6NcGg8IMgvg5ETu3Dh+VdVLoPQpxG8dnYGAozN6AxS9M9XT5fLJ/l59k8VXgkHOovA0xbR8fNs6Z03gi3t5wtl9Ud6PFjVCTC2gX/nZ16PpS6cBcfKWzgyDgnWR0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=GCYiUCD2; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KKqcRCwE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qZ0VKnjQ/jNaHtk9nnUkkr5j0+CuagMdzMX24Xyq/qmMOFZIMmUYLYXboSiTt8PKiPRcIS1GxFbPxaTA9YTnABR55nn+uC0QRXLfOAZTEwCC8ee+OnHocsjZt1S3hntXul4dIb+OpMvF6zljKaWWw3BcwxjWW6zKz988vqUdBq0jIgRlYaPXNmODq4ugfgl0mX8Z1mGi4V4q8bN/7widX+5yr9533qkMSh1iGwWx5xQuiRZ7FgsdR7BI6m6KV7z76MaEv7N666hWM+qjeOKM5HrR412FMs7d8IqDW3C5oC+20KZ1AbBI4UxD3EOEGcDdsyhqEjpgrCdI3NrbZkoeyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jNie8XaITfm1dchq/3HL7qAIsEzzlcL7c6TLleyA4dY=;
- b=eyHUcmfCpvcFvhYpDzlctJcC17cMRhO2Iw5bsIRfXxZAa+6KHI0HxNg0Bqk7/k69R07QzCfgw0woiXOXIlu+8ve7fUX3LH/7vklbixuhnjwzGiT4VwJmP6I5TPBemyBcps7Dee+qCPQo+whYJ9axph9JgkdGvlux890ZhECcU/KbJwVpKUrZq0FixExi4qj1Nxf9zFe1qS8LjuH1k8mlw0EU+GwZYL7wSSgVPqXg/zjUTN1y9c7vzDXua7mDTauFABz1zKdwRsolw2nzDzoId9l5OBzMBiQNUxIS9xo0UaKvjDXhCVF1nr+AT0MPne7kkv26GeDIFItQ1m2YDZWlxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jNie8XaITfm1dchq/3HL7qAIsEzzlcL7c6TLleyA4dY=;
- b=KKqcRCwE/qUOjQjrlsi8YAqUt2pPu+K7zKVJCN2danig3ZmxeokLGJTZay2yFrYqjiMSREs9nSERrMRAUXTmo8tmjmElIzw/oW3hR+N379/h+8YCd5Zj8Ooa7m6PkO1sqcRqHtubfhwkRz9wl+VZuY94mYsUUo6GpQ74rsGJGoSk/mJ5JKpi7Yo/dVp/AxIyvWBAuM+l/I8ZBcEQvXG0nNdT08xFYEm/ZW8yRUR1qxNNj8/0QHqQ5Jg0DcwtnSjn13leFhNaJYcuOLK8oZEqJSzBHHC7toVUTMjwD9Jdtra8xaOnx0xT/2UMOvuMQcNw4oZco9hOQgVyofYRerNZgg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CH3PR12MB8909.namprd12.prod.outlook.com (2603:10b6:610:179::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.10; Thu, 29 Jan
- 2026 13:41:01 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9542.010; Thu, 29 Jan 2026
- 13:41:01 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 29 Jan 2026 22:40:58 +0900
-Message-Id: <DG146R3XWKZK.2ECB220V56ORS@nvidia.com>
-Cc: "Joel Fernandes" <joelagnelf@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Yury Norov" <yury.norov@gmail.com>, "John Hubbard" <jhubbard@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Dirk Behme"
- <dirk.behme@de.bosch.com>, "Steven Price" <steven.price@arm.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/6] rust: add `bitfield!` macro
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Yury Norov" <ynorov@nvidia.com>
-References: <aXgpKOHAmvZuMVSt@yury>
- <1C5C477A-2CE8-4B25-B968-416B89EA617A@nvidia.com> <aXhD4sI6MHdAvgNT@yury>
- <DFZB4ID2H1D6.2ES3VEZQEGEQO@nvidia.com> <aXmeR2ocKm-xPM-w@yury>
- <DG0A8B4DUBDB.2NT25Q8SZOHT7@nvidia.com> <aXpP2l9Gr0XOfSEn@yury>
-In-Reply-To: <aXpP2l9Gr0XOfSEn@yury>
-X-ClientProxiedBy: TY1PR01CA0191.jpnprd01.prod.outlook.com (2603:1096:403::21)
- To CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="GCYiUCD2"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 31196240028
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 14:49:59 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
+	t=1769694599; bh=Xv30LavhO4rN6saEyHYn+XnCL4YQgEmDy4BNFRu1GBs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=GCYiUCD2hA9oCJji3wIMxh2iBViPRXpP9OV9LQUAK3e/Kb6fHSFqKPKmPgsPeqgAU
+	 4vC5spyxIRgllQEkiBs91RvJytP9oDnFP6woro5zHY1h3RQtP5t+UT9aBuL9fctQWZ
+	 lyWGaONYkkMmI1nC/FVuRkafaTuzLxg45B2Usich5+JEdI7OGs/E4vafaf9ZOBmJ2J
+	 s2ZWeMVTJOvyeCEK2Dob57kl5QHrK0PJX4SHf2XWMkwa95gmr2JEM16WYVpc3fkHuw
+	 w4qduRhI1ief0F5mULS83KC9wdgK2uNcvAPaNwZdJ0G8lJvuxGimmFc2C1O69Zi2H9
+	 cnvTLcb1vZuGQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4f20rD1s7Kz9rxh;
+	Thu, 29 Jan 2026 14:49:48 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>
+Cc: Nathan Chancellor <nathan@kernel.org>,  Nicolas Schier <nsc@kernel.org>,
+  Miguel Ojeda <ojeda@kernel.org>,  Boqun Feng <boqun.feng@gmail.com>,
+  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Benno Lossin <lossin@kernel.org>,  Andreas Hindborg
+ <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross
+ <tmgross@umich.edu>,  Danilo Krummrich <dakr@kernel.org>,  Nick
+ Desaulniers <nick.desaulniers+lkml@gmail.com>,  Bill Wendling
+ <morbo@google.com>,  Justin Stitt <justinstitt@google.com>,  Paul Walmsley
+ <pjw@kernel.org>,  Palmer Dabbelt <palmer@dabbelt.com>,  Albert Ou
+ <aou@eecs.berkeley.edu>,  Alexandre Ghiti <alex@ghiti.fr>,  Jonathan
+ Corbet <corbet@lwn.net>,  Conor Dooley <conor@kernel.org>,  Mingcong Bai
+ <jeffbai@aosc.io>,  Han Gao <rabenda.cn@gmail.com>,  Vivian Wang
+ <wangruikang@iscas.ac.cn>,  Jason Montleon <jmontleo@redhat.com>,
+  linux-kbuild@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  rust-for-linux@vger.kernel.org,  llvm@lists.linux.dev,
+  linux-riscv@lists.infradead.org,  linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 4/4] RISC-V: handle extension configs for bindgen,
+ re-enable gcc + rust builds
+In-Reply-To: <20251230-gcc-rust-v5-v6-4-2ac86ba728c8@isrc.iscas.ac.cn>
+References: <20251230-gcc-rust-v5-v6-0-2ac86ba728c8@isrc.iscas.ac.cn>
+	<20251230-gcc-rust-v5-v6-4-2ac86ba728c8@isrc.iscas.ac.cn>
+Date: Thu, 29 Jan 2026 13:49:56 +0000
+Message-ID: <87v7gk8r5x.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH3PR12MB8909:EE_
-X-MS-Office365-Filtering-Correlation-Id: 730f0c62-85ad-4b8f-73e5-08de5f3c0a74
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U0MyaEhXY3Yva0g4VURRMmJ6QmVUaE92TDhCZDNMcDZNajBIYitRdzJUeFNy?=
- =?utf-8?B?TnJueVR4UklxYUJUQ2kwUzZNdDVseWNSLzdneXhsVVZNcjg5bEFRSFViME04?=
- =?utf-8?B?WW5MUWdzNThRL1BmSEk0VjdIbEZadFVHYnY3WHNiTlFYLzBHTG5RVmNNTVM3?=
- =?utf-8?B?bHV3YWFjT2d3OFVadEc5L0FSbXhzSHMwRkk0dDFoR2lXYmVPRFUreVVHazkv?=
- =?utf-8?B?T3VrdFhsdmxuQ2tDZzZ2ZStLRkJZSUVKSTdPUzR2NHBSVTd2R2EvRlRhdEVz?=
- =?utf-8?B?My9iNzFOV1JiTGdWUmJGa3V1d1BmRXBqamNqZlhkUThyMFJRejdQV2V4N2dL?=
- =?utf-8?B?VWF4NEs5VUM3a09jVDZNdzY2NnFlb1VvaUdvTVNmK0M3bnVhcVlYcWNKUUVo?=
- =?utf-8?B?bG1NNGdHUWZLS3RrajhRTWJUOXk1ZlBnTTd6MWR0Y0JKUXVlaDdDeVFDbzM5?=
- =?utf-8?B?RWJMTDBDUEFlYmsyMEwrWU1UaDhWbU8xT2czZW0rYW1UZWhYaXhWQmg3UHdK?=
- =?utf-8?B?Y0pzNkVLKytvMU52Q0tmS3QzQy92NThFMnlaY0RlVFMwMjQzWnJSWitBTGs1?=
- =?utf-8?B?NGpMSXlLQ0I2WVl0czgyejlPVmxXNTFBUGd4eG1iOWxDNm1YWU9MR1BqbnpR?=
- =?utf-8?B?Z0Q3OEw4RnpIMDh0anpxbm5oUUU4WU1CMTIzenVwYUUyNGVkUE1sbTlqcDdD?=
- =?utf-8?B?aGZlMFFoV1Nma0I3LzJSaHpZY1Uzb0wxR3Nkem1YRVBIUldvSlVyN1ZITFcv?=
- =?utf-8?B?alZrUFlsQXZJdU4xM3BSMm0zTmVlc3hTRHJDeW5SRzRQWVVyd0I0d1ZIRnNz?=
- =?utf-8?B?Ukk1elNUMG5CMnoxSDFDTUVQMkhkbzRtVVdiK1JCamwxZGlCY0ZWZmFzQ3Zx?=
- =?utf-8?B?WHhMRG5wN2NzWC9iRzM0SXFlZDlPczV5RWdiYXpvc2k1MWRtdlJVaHNlcitV?=
- =?utf-8?B?Ukxtc0hRc2ZBdFBEbzZYYmM4cTRRNU5lbkVueDYwbXJKbWVZdUlXejN1MmJF?=
- =?utf-8?B?bEpxNUNZMHZXUDQzSUgyZXJxOENDZE1XV0ZqblZDUnFMTE16Sk9PSEV2UkVi?=
- =?utf-8?B?K0crWVlZMzZvblR0OUZCOG1QUXZhZmlGMzBQekdsaFlDc2dxOWJHM3JheUc3?=
- =?utf-8?B?SnBtU1laVUQ1UjhJcXNOcGRSSVlZQ2gwZnAzOXJiQ25TWk5CK2FRYWlmaXpX?=
- =?utf-8?B?blNSMmc2Q2pERy9MMXdVV2Y0enEvT3kyZWg4VzEyWERMbmtTcGFoQW5QaGNl?=
- =?utf-8?B?S3VQSmtFV1hRb3RMOFR2bVQzNTl1TTh3dnJYVzVtUDk1M0RzdW0yQVM4K3hN?=
- =?utf-8?B?YnhabG5TVUpMYmVQaGZUOWJjZTI5ajM1RWhwY0FzaXFXd2c0RFUyMjRTb2RR?=
- =?utf-8?B?ajZ2ZUxSY3c3eFJVaGhCbmVmUS9ENEo0K0tCM3NsTzBQU1M2UUZRc2EyZEFv?=
- =?utf-8?B?U0JiRlZ0czI2ZERrWVpDb2IyaWNEQkZORDF6YUVnV1Bma1I1RElodHJselNR?=
- =?utf-8?B?L2R1SG5ROUlKY2ppdzJ0cjAvbGszUGd0ajlKUGlKdC9BQXR2R1lkYnNkeFly?=
- =?utf-8?B?TWN5a1FMY0U2WG5WaS9FcWhVWUVVaG1LWnZsZXFMMm1OWGVmNGdubG9ubE5p?=
- =?utf-8?B?VE0yU3NtQXI5YlE0bTBZa0hlMzN5ckNLYVZZZEt5aVBYSUNDaThwelU2YmdX?=
- =?utf-8?B?bS9EWWVTMFFpMTYzcXV0Tllud0xtYjJuczM1U3dsOGdBaVdoTkNkVjFQcFpw?=
- =?utf-8?B?ekdWUUdFNWpta21NOUlmVTR5TUM3dXd2MGZua1VCcG5lTXdqeEZjdVljQWFH?=
- =?utf-8?B?UW01eTYrWHoxVXoybXZnYW1TQ0pGMXFYb2l1OUJQeitKNzNtb3NsN09USW82?=
- =?utf-8?B?UVNVRy9Ya1lMeUJycm13Q011bGd2UnR1OUU1Y1Y1TldGS1lmYklJdWpaTlBj?=
- =?utf-8?B?YkwvbnlZenNHSEo0RlEvaDNrTWRXajlKWUduZkhOOEthMzY2QTl6cGVwSmsw?=
- =?utf-8?B?TklYcWxtdE9BNzZQazg1SDBPb0JVWG41aUtaSDJmM0ZGY3hGSGkwUDBxeWZu?=
- =?utf-8?B?UHVpSlg4bnN6cXJ1MHJzcUNnMVZBQ2dRK3kyZEsveWdzTUFXUkJvMCswTUhO?=
- =?utf-8?Q?Lij4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eHZYUGtlVUJiQjFOOHd5TjlNT3BJOHlRWG81ZlBiMHcxUUc4cmVhUFd6b29H?=
- =?utf-8?B?UC9Na2xJcWRBY2lXV3VZdDM1ZnJDeGNTL3duYzExTkRWUWo5eTBUNTFqc3ZU?=
- =?utf-8?B?ZHkyQThFZmxrdExpMWdCUE40cUhBUHVudUtObG04SmFJd1pFaUJQTXpiTzdR?=
- =?utf-8?B?VkFudlJMN09aaUVNSk9xcE9ENm81SDhqa0cwaDdyaWRjQ2VENGk5ZXlWbFZ0?=
- =?utf-8?B?RHQxQ3B5bStvSnAyeWhVOVQydFJPK0pza3FyY2lENHB4cmpMdjR0OE4xaVRQ?=
- =?utf-8?B?Z05iejB3OU5oK0hoa3FIaTlBYXVJNXJIajlydHRUYW1HUktDYjJUWng1eTlC?=
- =?utf-8?B?LzRnU2M5YldsUkE5a0J2dUVyMkRDb1MvQlJlQ1QrYlZhT2tiZVpxSEtXK2Y2?=
- =?utf-8?B?SXNMV2dXTlZyWVk2clJoZ1BmQ0JTb1BiazROZ3Flc0lSZE1sbFl4T3gyM1Yv?=
- =?utf-8?B?Qys5VU1VYUR2ejRyUEJ6SGl1REJadmlPT29PR2pDcE84cmROa21WTWcvdG8z?=
- =?utf-8?B?dE93ayt2dnNmZ3grdU5vd3hZY1c4eklNYnlQTkN3S0xsQTYzLzVFRFBObnYw?=
- =?utf-8?B?ZmhjU1BqUE1maWpNRTZLUklRajFRWm9qaTVNVC91TGhINDZreDlaVmZDMlpI?=
- =?utf-8?B?RGNzYzMrWEk5ZHo5YkxHamJxSkFoTkYreGhNUE9MRXNkM2dXN2daN2xKZGpZ?=
- =?utf-8?B?OGdRWG5IZTd0MnZBUkhyMkdTcGFIbGtFS1FxenZhYmhpb0daRUR3ZTg4YnJD?=
- =?utf-8?B?Vm03b29IMEUycXkycXJTZXRybTJ3WHY2ZzBkcXJuY2Nnek1iVkJnbE1TdkxH?=
- =?utf-8?B?V0Z4WUZrUjJjMnRBSUoyTms3ejR5K2NjVzNTVVdMS29oMkZoWlJUVTRwb25J?=
- =?utf-8?B?UWxyTzBoVWJWMUZPU3BrVHpURzZ2dUE3Y0Y0anF5ZU9qWUFJNTZYc0d6eGhQ?=
- =?utf-8?B?aDUwWHI0Slh4ZjB0cFRhSTFMZ1dCandpZHd0dS9WQkZiQ0ViWisxTmRSejNC?=
- =?utf-8?B?RDd3eUYwZTRhWHlwWDllb3Y4bklsZWFVbkhlbEFNeGVSZDJhOU9hSlArblhs?=
- =?utf-8?B?QVVCTjFzU2lqMk1kOE4rNzFqd1Uwa01IK2Q3cVp0Y01neWp5Q0ovdzhDTVNS?=
- =?utf-8?B?dEFyeFZXWExaTVQzbkdYdy9SV0RYL1htcDlQN2ZXdXV2NHJmZWQrWmt5eSs4?=
- =?utf-8?B?a0hvbUpiVnhjU2l4NFd3NkluQTFEWjZ6RFlJNHN4dm1ZSUhiSklBRTRaUmw4?=
- =?utf-8?B?K0laRW0vSUdYajJ4SkdHbzd0dUJxSWQ5dWtpczYyakVtcnpCMHdUOUx1Ty9K?=
- =?utf-8?B?WTFSUk5rL1g1TUt5alBEVTFPK29YUTY4NlFZRENOL215S09hVDNxZHZobDhl?=
- =?utf-8?B?UUZ6aE40RGhTYUlJcW1tYUh4UXBta2hubUtoQWRQNGJXMzh1Y1NXOVRVZ2ta?=
- =?utf-8?B?emJ1K2NpZkRVWm5TY2pTSXJscTUvdXorYTI3SEhVTUZPOUs0MWk4KytiL1Ns?=
- =?utf-8?B?L04wWVRHTi9KQnFyUkJyWitVdjFYQXRHY1VuQXRpK0prUUJXc2Rwak5tMGZz?=
- =?utf-8?B?NFF1N29CbGsraUpUWXMxaTJTQm1ySU90aHd6Z3RuN2Nwa3BYczFlYm1SNnJ3?=
- =?utf-8?B?RlBvSnB1bHRhYUhmR1FxbnV4UTV0Qm05M3U4N0lNbVAxa0hJYVluV0VYa3Rw?=
- =?utf-8?B?b25BUG93MU8zK04rS2xqQnpjWndZbWYyakZOanpWUTU1NkJMTDdDWFJZM3d1?=
- =?utf-8?B?bnRHSjcyNEpsUTZsdDZrZTZuMjFMRExXRjdQcERXY1gvNE5NS0RnUUZVOGlo?=
- =?utf-8?B?SS8rSk1yNkVZaHpDRm1zTHJzUkc3UWsxeCtPK3hFNElqdmhRbVdZSjU2bHdu?=
- =?utf-8?B?ZEJEeUZUTGRYbm9JYTN3NTZCVkVCNzJQSXF3L0phbnF0VXZkQkNOeXJjUWx6?=
- =?utf-8?B?WjBWQ0hwSzY3OEx6VFZRczZ2R1ptZjlRMi91S21yZGZSRkF4NGhjcWZxOWsz?=
- =?utf-8?B?YkExYkJnWkJiWmhzQ2ttYklZMTdkcnBDQ1Y2dG9RZG92dHFJUDhPQkJLTVM4?=
- =?utf-8?B?YkFLa0c1ZTRtOG5qQzVHZmZyLzVGM2o4RTgyTUU3eGhJWHJXeWNDbFJwdVBa?=
- =?utf-8?B?Ym5GSysrS1hXc3Q1WlJJQVFGM0Q4K2w0cTVjRWhpeDZFQlhNck9oZWlhOWZk?=
- =?utf-8?B?Q0R5b3RTWkVHaDRrL3RxNGhnUitqMEpsaERRWDVnWTVaaTZpTzhXdElxVG9i?=
- =?utf-8?B?NVptaWJ1aU9tSWt4NUVmYUl4MEViRWtaa29LUFhURkFXdjZaeHpWUjNiT0RC?=
- =?utf-8?B?OU1BRzV2eU9YamlyR1dJL1I5cE1zV2hUc0JPTkhwUG0xWENub1NDUzJ6aGRt?=
- =?utf-8?Q?07Eog9k2ozJ4QA4Ig/S5lIJZw3vSK665JtOrG72S2T5eE?=
-X-MS-Exchange-AntiSpam-MessageData-1: lJf5U85TKa9Yvw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 730f0c62-85ad-4b8f-73e5-08de5f3c0a74
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 13:41:01.3047
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sJ4i/3CigvCY88cRwegLd/JnJfPCHMwTkf0FqiQQAOSBV0Ad4vmu/af3ETFFCeL4aqc1dmBlfbYeHACcOmM/sA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8909
+Content-Type: text/plain
 
-On Thu Jan 29, 2026 at 3:05 AM JST, Yury Norov wrote:
-> On Wed, Jan 28, 2026 at 11:12:27PM +0900, Alexandre Courbot wrote:
->> On Wed Jan 28, 2026 at 2:27 PM JST, Yury Norov wrote:
+Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn> writes:
+
+> Commit 33549fcf37ec ("RISC-V: disallow gcc + rust builds") disabled GCC
+> + Rust builds for RISC-V due to differences in extension handling
+> compared to LLVM. This commit enables GCC + Rust builds again.
 >
->  <snip>
+> Add `bindgen-option` conditions for the availability of libclang to the
+> RISC-V extension Kconfig symbols that depend on the `cc-option`
+> function.
 >
->> >> > Then let's implement it better. Can you comment why the suggested A=
-PI
->> >> > doesn't work for you?
->> >> >
->> >> >         color.set(blue, 10);
->> >> >         color.get(blue);
->> >> >
->> >> > I think it should solve the problem with name clashing.
->> >>=20
->> >> That syntax cannot be implemented as it is written. What type is `blu=
-e` here?
->> >
->> > 'blue' has no type because it is not a variable but keyword. We do
->> > such things in C all the time:
->> >
->> >         DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
->> >                     ^^^^^
->> >                     keyword that becomes a part of cleanup function na=
-me
->> >
->> > And in another email I seemingly do similar thing for python_init!()
->> > macro in rust to pick the right constructor.
->>=20
->> Yup, and we could do the same in Rust with a macro, but your example
->> above was not macro code (macros are always ending with a `!`).
+> For Zicsr/Zifencei special handling, since LLVM/Clang always enables
+> these two extensions, either don't pass them to `-march`, or pass them
+> explicitly and Rust bindgen libclang must recognize them.
 >
-> color.set!(blue, 10) is equally good, if it helps.
-
-But not doable unfortunately, since macros cannot be declared as
-methods. The closest we could get is
-
-  bitfield_set!(color, blue, 10);
-
+> Clang does not support `-mno-riscv-attribute` flag, filter it out to
+> resolve error: unknown argument: '-mno-riscv-attribute'.
 >
-> If someone will point to the excessive use of macros, you're safe to
-> ignore it. This is the very basic fundamental type, and I believe that
-> it brings enough attention and expertise to make it safe.
-
-I think the consensus is that macros are fine if they can hide
-boilerplace. For instance, the `vec!` macro declares and initializes a
-vector with content and spares you the need to write a loop. A proper
-and elegant bitfield initializer would fit within that category imho.
-
+> Define `BINDGEN_TARGET_riscv` to pass the target triplet to Rust bindgen
+> libclang for RISC-V to resolve error: unsupported argument 'medany' to
+> option '-mcmodel=' for target 'unknown'.
 >
->> >> The closest we could get would be a macro, that would look like
->> >>=20
->> >>     bitfield_set!(color, blue, 10);
+> Update the documentation, GCC + Rust builds for RISC-V are now
+> maintained.
 >
-> Or maybe bitfield_set!(color.blue, 10), but the above looks more natural.
-> Is it possible to make it color.blue =3D 10 by any chance?
-
-the `=3D 10` part is no problem. However I am not sure we can parse
-`color.blue` safely since the macro should also support
-`object.bitfield.color` as an argument and won't be able to
-differenciate between the path to the bitfield and the field itself
-(hopefully that makes sense).
-
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>
+> ---
+>  Documentation/rust/arch-support.rst |  2 +-
+>  arch/riscv/Kconfig                  | 35 ++++++++++++++++++++++++++++++++++-
+>  rust/Makefile                       |  3 ++-
+>  scripts/Makefile.rust               |  1 +
+>  4 files changed, 38 insertions(+), 3 deletions(-)
 >
-> Again (and again) - usability and readability is a king, and I'm glad
-> we're moving toward the right direction.
+> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+> index 6e6a515d0899..5282e0e174e8 100644
+> --- a/Documentation/rust/arch-support.rst
+> +++ b/Documentation/rust/arch-support.rst
+> @@ -18,7 +18,7 @@ Architecture   Level of support  Constraints
+>  ``arm``        Maintained        ARMv7 Little Endian only.
+>  ``arm64``      Maintained        Little Endian only.
+>  ``loongarch``  Maintained        \-
+> -``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
+> +``riscv``      Maintained        ``riscv64`` only.
+>  ``um``         Maintained        \-
+>  ``x86``        Maintained        ``x86_64`` only.
+>  =============  ================  ==============================================
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 6b39f37f769a..c869ee07117e 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -195,7 +195,7 @@ config RISCV
+>  	select HAVE_REGS_AND_STACK_ACCESS_API
+>  	select HAVE_RETHOOK if !XIP_KERNEL
+>  	select HAVE_RSEQ
+> -	select HAVE_RUST if RUSTC_SUPPORTS_RISCV && CC_IS_CLANG
+> +	select HAVE_RUST if RUSTC_SUPPORTS_RISCV && TOOLCHAIN_MATCHES_ZICSR_ZIFENCEI
+>  	select HAVE_SAMPLE_FTRACE_DIRECT
+>  	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI
+>  	select HAVE_STACKPROTECTOR
+> @@ -619,6 +619,8 @@ config TOOLCHAIN_HAS_V
+>  	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32imv)
+>  	depends on LD_IS_LLD || LD_VERSION >= 23800
+>  	depends on AS_HAS_OPTION_ARCH
+> +	depends on !RUST || !64BIT || $(bindgen-backend-option,-mabi=lp64 -march=rv64imv)
+> +	depends on !RUST || !32BIT || $(bindgen-backend-option,-mabi=ilp32 -march=rv32imv)
 
-I am confident we can find something that is both nice to use and
-efficient under the hood when we start extracting the bitfield macro out
-of `register!` during the next cycle. We've already made good progress.
+Hi Asuna!
+
+I'm under the impression that the `!RUST ||` guard here doesn't
+actually prevent the `$(bindgen-backend-option,...)` call from being
+executed. `$(...)` shell expansions should happen during the textual
+substitution phase, before symbol dependency evaluation occurs, check
+documentation at kconfig-macro-language.rst lines 228-229.
+
+I did this test:
+  $ cat /tmp/fake_bindgen
+    #!/bin/bash
+    echo "[BINDGEN INVOKED] $(date '+%H:%M:%S') args: $@" >> /tmp/bindgen_calls.log
+    # Call real bindgen
+    exec /home/charmitro/.cargo/bin/bindgen "$@"
+
+  $ make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- BINDGEN=/tmp/fake_bindgen defconfig
+    HOSTCC  scripts/basic/fixdep
+    ...
+  *** Default configuration is based on 'defconfig'
+  #
+  # configuration written to .config
+  #
+
+  $ linux git:(master) rg CONFIG_RUST .config
+  ...
+  283:# CONFIG_RUST is not set
+  ...
+
+  $ cat /tmp/bindgen_calls.log
+  [BINDGEN INVOKED] 15:44:44 args: --version workaround-for-0.69.0
+  [BINDGEN INVOKED] 15:44:44 args: ./scripts/rust_is_available_bindgen_libclang.h
+  [BINDGEN INVOKED] 15:44:44 args: --version workaround-for-0.69.0
+  [BINDGEN INVOKED] 15:44:44 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64imv
+  [BINDGEN INVOKED] 15:44:44 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32imv
+  [BINDGEN INVOKED] 15:44:44 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zabha
+  [BINDGEN INVOKED] 15:44:44 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zabha
+  [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zacas
+  [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zacas
+  [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zbb
+  [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zbb
+  [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zba
+  [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zba
+  [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zbc
+  [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zbc
+  [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zbkb
+  [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zbkb
+  [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zicsr_zifencei
+  [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zicsr_zifencei
+
+So, CONFIG_RUST not set, yet bindgen was invoked. Not sure if that is
+intentional though.
+
+
+Cheers,
+C. Mitrodimas
+
+>  
+>  config RISCV_ISA_V
+>  	bool "Vector extension support"
+> @@ -683,6 +685,8 @@ config TOOLCHAIN_HAS_ZABHA
+>  	depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64ima_zabha)
+>  	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zabha)
+>  	depends on AS_HAS_OPTION_ARCH
+> +	depends on !RUST || !64BIT || $(bindgen-backend-option,-mabi=lp64 -march=rv64ima_zabha)
+> +	depends on !RUST || !32BIT || $(bindgen-backend-option,-mabi=ilp32 -march=rv32ima_zabha)
+>  
+>  config RISCV_ISA_ZABHA
+>  	bool "Zabha extension support for atomic byte/halfword operations"
+> @@ -701,6 +705,8 @@ config TOOLCHAIN_HAS_ZACAS
+>  	depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64ima_zacas)
+>  	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zacas)
+>  	depends on AS_HAS_OPTION_ARCH
+> +	depends on !RUST || !64BIT || $(bindgen-backend-option,-mabi=lp64 -march=rv64ima_zacas)
+> +	depends on !RUST || !32BIT || $(bindgen-backend-option,-mabi=ilp32 -march=rv32ima_zacas)
+>  
+>  config RISCV_ISA_ZACAS
+>  	bool "Zacas extension support for atomic CAS"
+> @@ -719,6 +725,8 @@ config TOOLCHAIN_HAS_ZBB
+>  	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zbb)
+>  	depends on LD_IS_LLD || LD_VERSION >= 23900
+>  	depends on AS_HAS_OPTION_ARCH
+> +	depends on !RUST || !64BIT || $(bindgen-backend-option,-mabi=lp64 -march=rv64ima_zbb)
+> +	depends on !RUST || !32BIT || $(bindgen-backend-option,-mabi=ilp32 -march=rv32ima_zbb)
+>  
+>  # This symbol indicates that the toolchain supports all v1.0 vector crypto
+>  # extensions, including Zvk*, Zvbb, and Zvbc.  LLVM added all of these at once.
+> @@ -734,6 +742,8 @@ config TOOLCHAIN_HAS_ZBA
+>  	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zba)
+>  	depends on LD_IS_LLD || LD_VERSION >= 23900
+>  	depends on AS_HAS_OPTION_ARCH
+> +	depends on !RUST || !64BIT || $(bindgen-backend-option,-mabi=lp64 -march=rv64ima_zba)
+> +	depends on !RUST || !32BIT || $(bindgen-backend-option,-mabi=ilp32 -march=rv32ima_zba)
+>  
+>  config RISCV_ISA_ZBA
+>  	bool "Zba extension support for bit manipulation instructions"
+> @@ -769,6 +779,8 @@ config TOOLCHAIN_HAS_ZBC
+>  	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zbc)
+>  	depends on LD_IS_LLD || LD_VERSION >= 23900
+>  	depends on AS_HAS_OPTION_ARCH
+> +	depends on !RUST || !64BIT || $(bindgen-backend-option,-mabi=lp64 -march=rv64ima_zbc)
+> +	depends on !RUST || !32BIT || $(bindgen-backend-option,-mabi=ilp32 -march=rv32ima_zbc)
+>  
+>  config RISCV_ISA_ZBC
+>  	bool "Zbc extension support for carry-less multiplication instructions"
+> @@ -792,6 +804,8 @@ config TOOLCHAIN_HAS_ZBKB
+>  	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zbkb)
+>  	depends on LD_IS_LLD || LD_VERSION >= 23900
+>  	depends on AS_HAS_OPTION_ARCH
+> +	depends on !RUST || !64BIT || $(bindgen-backend-option,-mabi=lp64 -march=rv64ima_zbkb)
+> +	depends on !RUST || !32BIT || $(bindgen-backend-option,-mabi=ilp32 -march=rv32ima_zbkb)
+>  
+>  config RISCV_ISA_ZBKB
+>  	bool "Zbkb extension support for bit manipulation instructions"
+> @@ -893,6 +907,25 @@ config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
+>  	  versions of clang and GCC to be passed to GAS, which has the same result
+>  	  as passing zicsr and zifencei to -march.
+>  
+> +config RUST_BINDGEN_HAS_ZICSR_ZIFENCEI
+> +	def_bool y
+> +	depends on !64BIT || $(bindgen-backend-option,-mabi=lp64 -march=rv64ima_zicsr_zifencei)
+> +	depends on !32BIT || $(bindgen-backend-option,-mabi=ilp32 -march=rv32ima_zicsr_zifencei)
+> +
+> +config TOOLCHAIN_MATCHES_ZICSR_ZIFENCEI
+> +	def_bool y
+> +	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
+> +	depends on TOOLCHAIN_NEEDS_OLD_ISA_SPEC || !TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI || RUST_BINDGEN_HAS_ZICSR_ZIFENCEI
+> +	help
+> +	  LLVM/Clang >= 17.0.0 starts recognizing Zicsr/Zifencei in -march, passing
+> +	  them to -march doesn't generate an error anymore, and passing them or not
+> +	  doesn't have any real difference, it still follows ISA before version
+> +	  20190608 - Zicsr/Zifencei are included in base ISA.
+> +
+> +	  The current latest version of LLVM/Clang still does not require explicit
+> +	  Zicsr/Zifencei to enable these two extensions, Clang just accepts them in
+> +	  -march and then silently ignores them.
+> +
+>  config FPU
+>  	bool "FPU support"
+>  	default y
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 37b4205afb70..d8b6a570cb84 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -383,7 +383,8 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+>  	-fno-inline-functions-called-once -fsanitize=bounds-strict \
+>  	-fstrict-flex-arrays=% -fmin-function-alignment=% \
+>  	-fzero-init-padding-bits=% -mno-fdpic \
+> -	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
+> +	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference \
+> +	-mno-riscv-attribute
+>  
+>  # Because scripts/Makefile.rust is included regardless of whether Rust is enabled,
+>  # we perform this check here to avoid breaking targets that do not yet support Rust builds.
+> diff --git a/scripts/Makefile.rust b/scripts/Makefile.rust
+> index 5c12b4b8c8b6..bfdad4a0a3ce 100644
+> --- a/scripts/Makefile.rust
+> +++ b/scripts/Makefile.rust
+> @@ -3,6 +3,7 @@ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+>  BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
+>  BINDGEN_TARGET_arm	:= arm-linux-gnueabi
+>  BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
+> +BINDGEN_TARGET_riscv	:= riscv64-linux-gnu
+>  BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
+>  BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
