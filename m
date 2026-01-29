@@ -1,209 +1,121 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477A727FB1E
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 02:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F73356A22
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 02:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769654956; cv=none; b=qxKtCQwBRzjqgNNfdMRcO556mZsXKjsWyFLiKvRUO1IgGOJarpTai+1aO58Ychrgr5NPRGAs5rq0tbIyrK6V6sXDkfECz57UVIOC3FlV1VpeYwMLpcTaKg0jmzvwzPzP5+LxFRxj/kKRIjwTp9EhbMGPJppxMMAQI8rY4XScCGA=
+	t=1769655248; cv=none; b=uEm2PKDX7rJ41pQUP4S1GAReLiAwG5poEdhmaiaj+jDdIywC/A5cbIAdyk+j3aho97DbaobJHXwB5VCRfqj5uK5DeJicFlDceu1XlpCJCUnkDpJkqPMZDIed9sRF0L8B+9TP2NaMEq+jCAm2VwZ9tusfIF53DfBfNCLipbkm1uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769654956; c=relaxed/simple;
-	bh=FMBbSDhXFPSkid5kp1UU/j2H/F0IzMkopdtANRDylhQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oXBncn8rZ0KG0GPlG2k8xa2ZO8Z36rR1P2kV+h6Fr5fr5YWNuftnI7+KvgiikX31hCUa8mTGvBnWly9dwmsEX6BVA8wcpXNOqi2eculnM0tzt2wvak4I7iKfrA7VumgQY5/bTunMQ3LEf7n0Gd5R8Gvk13lobwYRWmAirFCiPuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PmsnvBZ0; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1769655248; c=relaxed/simple;
+	bh=wn1m+br1TBOR784BJGjVu5s+038ns3FcvJsywelK95E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P9o0Tr11zftUsyinO2jKCsXy6jowejcHjX7hRA//H2cfP8L5hgv59ujaR/k3rPAh0oSHXRUwXd5vURPsZeanllrfowoXLn7sx+emc8wN+tZWNb+8XpU5bFrruHgUO/tPADTJPrSLvbxfnuo4ac61uKlMM0nvnpO+ZE/fNJ7jTEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XZBg5v8V; arc=none smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PmsnvBZ0"
-Message-ID: <2c65737c-eae9-4f73-a93e-9536d318f5d4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769654934;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VBsjSopdWUaDrYJ+vyummLSqs20JInbxS9Vu3XZB1wI=;
-	b=PmsnvBZ0B6KbwRRGuBaz1W1XtflOu4E93/KohZrkFORS7rhe9PTX06lzEozBDTJ57jFYVc
-	rpSQDgrkEWynHQMrr9AqUCxU3MDZe5ohmF4XsrDQCLiTjmEO8sCFD5l1meTteWE53tp7Mo
-	8walqbv33qOyhSztlaVHccfLnNSHn8o=
-Date: Thu, 29 Jan 2026 10:47:55 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XZBg5v8V"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-124b117776fso394489c88.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Jan 2026 18:54:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769655241; x=1770260041; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rTjwIP2vgqxu7fxZeJC7bZQdu9aLDDe/pDZwtRq1Pfs=;
+        b=XZBg5v8VL41X7mxNImL2N4JDtGrh5qYc4zGOQ+eAgVr1UzH0J8QLsRftVeHecvW0+Q
+         9Ao0a6t3uS25AOk+5GjYjjcBvrfRLsmTDMe+whRDkuefBCRid9zm4haAzDIUWNypZ7Jh
+         R23+Z5wie3pq+bAp/8YBvjLQjD5ZlyIeqPhjHHSd2DTmoD1JfLzd9NUsjW6K+0ovvdj+
+         Sb3wmjA4XSNWhiwFH9pNmhKYf4raNGLaYU+QfulUwhOUNvFzIWlXDk0KX7BdrSzgS5fU
+         HoYSgoxMQZ9ctKU9SjBDGdS8UoVJjklsg/iVWc+c38DhmIrgVanfdDSBQ+M+Ked72ZI0
+         jxfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769655241; x=1770260041;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rTjwIP2vgqxu7fxZeJC7bZQdu9aLDDe/pDZwtRq1Pfs=;
+        b=NUqp6dzpqBqlAp2G+XOF4HqKMQR+yZRZ3Z/40EgxFpTINmIPtuccHtzjpE+yXBHjfq
+         N39gQBjvxDJ2DZZ7MPKZnrd/V5ywLscmiyvs9p1JqWjobHRLZisGckqZDpK8DwSJ+rsb
+         TjSoinRG5cwcJ3OXrilQ2hHlo2nXgoVDTFH8enc8ocvQDDuIzq2wp6svHCoFfxiptKDg
+         djYpkL7Vr6Wukzzs5miVWfdm072BQrVKfyNfz46DQI1J7iQyMosKIt1qAE/ts4rKLThs
+         NH1Wp6Pbk4wV0tAS3W0PxgTKh6m/Mbsh5SKiyMZprqArnVsAADQVNDi9Q0y6EDqbuSjy
+         Ifog==
+X-Forwarded-Encrypted: i=1; AJvYcCXXishBV0xUa2JzF9zWzqNkGwuvk1XlEB5Gnc3ZDToEOAq9aq2o9HsHmO4g+8GLEtc9P5YR742afO3DJ0hZ0A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6SmL36bqdM7llOtJ8iixmvXu9YYMyJkDp8J/s5XB8YyQDm860
+	I8KewVXiPCJYYare3dLtQoKEQQSNYilwmUo29+R6R4mH4Tzld2+1eZfnzPCvag==
+X-Gm-Gg: AZuq6aLXeb1xYnV7XU7DTKgbkmtX924Mt2zhFHQYEmjhQo2eTS8kTi+2M5XV+JQMbee
+	wljq98Teeniq0+tI+wRLVcjzJ9vqL5kzVJmOpTIOdNQIeVKpCPfuYSUnubApqRhrBeoHVpI1TyT
+	ygJ2KB7vw8HFplcE7Q4kisgMEaBejZinGcLnVIDje2lgrMY3ffYDpKVrHz0HtQazH/JdD52ehr+
+	JtqSDRaKKpPB5nuHPsm2jyWGHUmWLiOfnwtHfTfd6Lemg62KyoYeNUS3Fow9L7iC//A6dJf/fNz
+	onpsqE3oIBpFBI2hD8zVEYUmhr9LocOeDlx9teEb8fbgF5r3BIL6g1+pHXu6v1qCCo4WcoGt2Fp
+	bYwsaHkAdFbf9Noxw7fHrfdn022sSYl0DZGHbSY80ztWUBCewYYBXLwsO6pbFecsIh+puRQmqO5
+	dlnbIhfcEsapQY4QGBlG9eCEsBa9pCmwNKRHYb5/Rtu8JkM+UeCETy5AvfGmvU8RDQGdOXQDAd
+X-Received: by 2002:a05:7022:4399:b0:119:e56b:98b8 with SMTP id a92af1059eb24-124a00b1ae1mr3452454c88.31.1769655241339;
+        Wed, 28 Jan 2026 18:54:01 -0800 (PST)
+Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:4e1:6e5f:e09f:d45a])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9df97d0sm4850753c88.13.2026.01.28.18.53.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 18:54:00 -0800 (PST)
+From: Jason Hall <jason.kei.hall@gmail.com>
+To: a.hindborg@kernel.org,
+	ojeda@kernel.org
+Cc: lossin@kernel.org,
+	boqun.feng@gmail.com,
+	aliceryhl@google.com,
+	rust-for-linux@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	Jason Hall <jason.kei.hall@gmail.com>
+Subject: [PATCH] rust: block: use pin_init::zeroed
+Date: Wed, 28 Jan 2026 19:53:55 -0700
+Message-ID: <20260129025355.1066511-1-jason.kei.hall@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] MAINTAINERS: Update my email address to @kernel.org
-To: Boqun Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, lkmm@lists.linux.dev
-Cc: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, John Stultz <jstultz@google.com>,
- Stephen Boyd <sboyd@kernel.org>, Alan Stern <stern@rowland.harvard.edu>,
- Andrea Parri <parri.andrea@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
- David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>,
- Luc Maranget <luc.maranget@inria.fr>, Akira Yokosawa <akiyks@gmail.com>,
- Daniel Lustig <dlustig@nvidia.com>, Ingo Molnar <mingo@redhat.com>,
- Waiman Long <longman@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-References: <20260129004520.62697-1-boqun@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kunwu Chan <kunwu.chan@linux.dev>
-In-Reply-To: <20260129004520.62697-1-boqun@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-On 1/29/26 08:45, Boqun Feng wrote:
-> I had issues using my gmail account multiple times this week, hence
-> switch to @kernel.org.
->
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: Andreas Hindborg <a.hindborg@kernel.org>
-> Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Cc: Frederic Weisbecker <frederic@kernel.org>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: John Stultz <jstultz@google.com>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Cc: Andrea Parri <parri.andrea@gmail.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: Jade Alglave <j.alglave@ucl.ac.uk>
-> Cc: Luc Maranget <luc.maranget@inria.fr>
-> Cc: Akira Yokosawa <akiyks@gmail.com>
-> Cc: Daniel Lustig <dlustig@nvidia.com>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Waiman Long <longman@redhat.com>
-> Cc: "Paul E. McKenney" <paulmck@kernel.org>
-> Cc: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
-> Cc: Joel Fernandes <joelagnelf@nvidia.com>
-> Cc: Josh Triplett <josh@joshtriplett.org>
-> Cc: Uladzislau Rezki <urezki@gmail.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-> Cc: Zqiang <qiang.zhang@linux.dev>
-> Cc: Miguel Ojeda <ojeda@kernel.org>
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: Benno Lossin <lossin@kernel.org>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Trevor Gross <tmgross@umich.edu>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Boqun Feng <boqun@kernel.org>
-> ---
->  .mailmap    |  1 +
->  MAINTAINERS | 16 ++++++++--------
->  2 files changed, 9 insertions(+), 8 deletions(-)
->
-> diff --git a/.mailmap b/.mailmap
-> index 84309a39d329..ea3ac46aceda 100644
-> --- a/.mailmap
-> +++ b/.mailmap
-> @@ -153,6 +153,7 @@ Boris Brezillon <bbrezillon@kernel.org> <b.brezillon.dev@gmail.com>
->  Boris Brezillon <bbrezillon@kernel.org> <b.brezillon@overkiz.com>
->  Boris Brezillon <bbrezillon@kernel.org> <boris.brezillon@bootlin.com>
->  Boris Brezillon <bbrezillon@kernel.org> <boris.brezillon@free-electrons.com>
-> +Boqun Feng <boqun@kernel.org> <boqun.feng@gmail.com>
->  Brendan Higgins <brendan.higgins@linux.dev> <brendanhiggins@google.com>
->  Brian Avery <b.avery@hp.com>
->  Brian Cain <bcain@kernel.org> <brian.cain@oss.qualcomm.com>
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2953b466107e..5d4443576687 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4107,7 +4107,7 @@ F:	drivers/input/touchscreen/atmel_mxt_ts.c
->  ATOMIC INFRASTRUCTURE
->  M:	Will Deacon <will@kernel.org>
->  M:	Peter Zijlstra <peterz@infradead.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun@kernel.org>
->  R:	Mark Rutland <mark.rutland@arm.com>
->  R:	Gary Guo <gary@garyguo.net>
->  L:	linux-kernel@vger.kernel.org
-> @@ -4498,7 +4498,7 @@ F:	lib/sbitmap.c
->  
->  BLOCK LAYER DEVICE DRIVER API [RUST]
->  M:	Andreas Hindborg <a.hindborg@kernel.org>
-> -R:	Boqun Feng <boqun.feng@gmail.com>
-> +R:	Boqun Feng <boqun@kernel.org>
->  L:	linux-block@vger.kernel.org
->  L:	rust-for-linux@vger.kernel.org
->  S:	Supported
-> @@ -11267,7 +11267,7 @@ F:	tools/testing/selftests/timers/
->  
->  DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
->  M:	Andreas Hindborg <a.hindborg@kernel.org>
-> -R:	Boqun Feng <boqun.feng@gmail.com>
-> +R:	Boqun Feng <boqun@kernel.org>
->  R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
->  R:	Frederic Weisbecker <frederic@kernel.org>
->  R:	Lyude Paul <lyude@redhat.com>
-> @@ -14561,7 +14561,7 @@ M:	Alan Stern <stern@rowland.harvard.edu>
->  M:	Andrea Parri <parri.andrea@gmail.com>
->  M:	Will Deacon <will@kernel.org>
->  M:	Peter Zijlstra <peterz@infradead.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun@kernel.org>
->  M:	Nicholas Piggin <npiggin@gmail.com>
->  M:	David Howells <dhowells@redhat.com>
->  M:	Jade Alglave <j.alglave@ucl.ac.uk>
-> @@ -14719,7 +14719,7 @@ LOCKING PRIMITIVES
->  M:	Peter Zijlstra <peterz@infradead.org>
->  M:	Ingo Molnar <mingo@redhat.com>
->  M:	Will Deacon <will@kernel.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com> (LOCKDEP & RUST)
-> +M:	Boqun Feng <boqun@kernel.org> (LOCKDEP & RUST)
->  R:	Waiman Long <longman@redhat.com>
->  L:	linux-kernel@vger.kernel.org
->  S:	Maintained
-> @@ -21909,7 +21909,7 @@ M:	Frederic Weisbecker <frederic@kernel.org> (kernel/rcu/tree_nocb.h)
->  M:	Neeraj Upadhyay <neeraj.upadhyay@kernel.org> (kernel/rcu/tasks.h)
->  M:	Joel Fernandes <joelagnelf@nvidia.com>
->  M:	Josh Triplett <josh@joshtriplett.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun@kernel.org>
->  M:	Uladzislau Rezki <urezki@gmail.com>
->  R:	Steven Rostedt <rostedt@goodmis.org>
->  R:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> @@ -22359,7 +22359,7 @@ RESTARTABLE SEQUENCES SUPPORT
->  M:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->  M:	Peter Zijlstra <peterz@infradead.org>
->  M:	"Paul E. McKenney" <paulmck@kernel.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun@kernel.org>
->  L:	linux-kernel@vger.kernel.org
->  S:	Supported
->  F:	include/trace/events/rseq.h
-> @@ -22882,7 +22882,7 @@ F:	tools/verification/
->  
->  RUST
->  M:	Miguel Ojeda <ojeda@kernel.org>
-> -R:	Boqun Feng <boqun.feng@gmail.com>
-> +R:	Boqun Feng <boqun@kernel.org>
->  R:	Gary Guo <gary@garyguo.net>
->  R:	Björn Roy Baron <bjorn3_gh@protonmail.com>
->  R:	Benno Lossin <lossin@kernel.org>
+Replace manual unsafe zeroing of block structures with the safe
+pin_init::zeroed() helper.
 
-Acked-by: Kunwu Chan <kunwu.chan@linux.dev>
+Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
+---
+ rust/kernel/block/mq/gen_disk.rs | 4 +---
+ rust/kernel/block/mq/tag_set.rs  | 4 +---
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-Thanx,  Kunwu
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 1ce815c8cdab..649c3d9b1ff9 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -106,9 +106,7 @@ pub fn build<T: Operations>(
+             // SAFETY: T::QueueData was created by the call to `into_foreign()` above
+             drop(unsafe { T::QueueData::from_foreign(data) });
+         });
+-
+-        // SAFETY: `bindings::queue_limits` contain only fields that are valid when zeroed.
+-        let mut lim: bindings::queue_limits = unsafe { core::mem::zeroed() };
++        let mut lim: bindings::queue_limits = pin_init::zeroed();
+ 
+         lim.logical_block_size = self.logical_block_size;
+         lim.physical_block_size = self.physical_block_size;
+diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+index c3cf56d52bee..dae9df408a86 100644
+--- a/rust/kernel/block/mq/tag_set.rs
++++ b/rust/kernel/block/mq/tag_set.rs
+@@ -38,9 +38,7 @@ pub fn new(
+         num_tags: u32,
+         num_maps: u32,
+     ) -> impl PinInit<Self, error::Error> {
+-        // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
+-        // all are allowed to be 0.
+-        let tag_set: bindings::blk_mq_tag_set = unsafe { core::mem::zeroed() };
++        let tag_set: bindings::blk_mq_tag_set = pin_init::zeroed();
+         let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
+             .try_into()
+             .map(|cmd_size| {
+-- 
+2.43.0
+
