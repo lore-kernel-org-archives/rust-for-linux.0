@@ -1,220 +1,231 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013059.outbound.protection.outlook.com [40.107.201.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD861FF7C7;
-	Thu, 29 Jan 2026 00:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769647674; cv=none; b=Bi+qYMq3G/zPhJIJgjw7QJKL7XQcPcCODhcmOm9Y3X0pWj58A+2yGeWBZa/6MOQxpFKI7qlakuRFpQn5AlR/JLpB8WB0EQ6iPU+RX62GLcShfYUlwh+D2QEuMAC3bTyYutLvHwbFwdXNi8clIe+hCSZoUrZMr6QtUn4LrRZa0HI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769647674; c=relaxed/simple;
-	bh=s1xvWyNrritNLgbPhI5qFzhOWX5vOBvdf8aR2I6/q7E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lkgyuLSHRW1o5qygESpw70U1kDm73iGB06gmJZeGjqKcuj3dkYR0M5frsIWg1By7fSKjpBu8cHSVDeTpe8RVmJccAMoeiJ6Y5gJbqTJbO7sjhtM7uOsFdO5IGX23zpOUuHVEkNvFRTkTkoITMv3ngtDTE5fG+rQ2n3Sy3U7PsbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MI4f0ydc; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248CE242D60;
+	Thu, 29 Jan 2026 00:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769648333; cv=fail; b=A+A4nipv3xKLJCx+AGSpeV6sw46S/4hH8wYAkjSoCdriuhcw5Bssv5LHLa5ifHCyvWsyzw+52A6s+1TxTvNoT4IHogdmxXg3THY2l0+fiTlISx/PHf17naFmhJVNR32xATnfgSnQzfz4kMuiomDT/If13PFdOcpJhWQulaST8tI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769648333; c=relaxed/simple;
+	bh=JVFoN6/U304ijK+kkBqzSOaTDjtDRQc5XSU+vBIOEr8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=iuqWGEnZo6xC6jhf3iNBDz7IB0ZZBdNTeNOaK1tuImLzUbj9fDa9rAWxZv5/szxNhjgKIs/vqodVp0LMHt8kwrP7q+RCkIAN+Th+LplK1tb2dKrEdgmziAcGcpDSKaa/EZrwawSssJOxQ//gVEPAafZofpH2mz5+u9q4180M+Tw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OXFSLA/B; arc=fail smtp.client-ip=40.107.201.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MI4f0ydc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104EFC4CEF1;
-	Thu, 29 Jan 2026 00:47:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769647674;
-	bh=s1xvWyNrritNLgbPhI5qFzhOWX5vOBvdf8aR2I6/q7E=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=MI4f0ydcwX1l4tksHLQtm5GrKRQFB16OS8Kv/MCbGwMXnLxv6NaawT2uVdVu5lnhM
-	 Cc7mGEyORMhuuV9nTaOFFB5c9No/ICkIYLuw1D2znos92xm+Ww2x794KSLk1rbTxUj
-	 szF45IvUMQq6sPVqyEahbF3G/GKDmmndZRxW1KNj9R6PbtgobUqFuVg69zXCNIFKMT
-	 3ORFIrurA4OB0tFoS1Hg1selYoMmtpPKQcxTG6s1l3t0eVMJZiM0UWckXYXKaaXoD/
-	 6O7lwn3BmiAR8J145t0a2e6cFrWQk7WnX6QdPEqo8OdOYLuNHxAIQpxHhkcOTj2eIc
-	 lMcyAZ1m9m6qQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 97F05CE3907; Wed, 28 Jan 2026 16:47:53 -0800 (PST)
-Date: Wed, 28 Jan 2026 16:47:53 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	rcu@vger.kernel.org, lkmm@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Daniel Lustig <dlustig@nvidia.com>, Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH] MAINTAINERS: Update my email address to @kernel.org
-Message-ID: <cb8548ca-286a-498c-a427-ef5b07803e55@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260129004520.62697-1-boqun@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OXFSLA/B"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CQMwu2F7zr7YO0CI1DqeZ08iD1PKRRIICtpQlNC0oTPW5ZYS6Y2mnsyl5XiSOfVuWCEpST5C3T/hiaXl4XyPDfnylLOHVfLtzK5RxxE+ca8ANLrqubnaFQhT8OkLjsICPwGYPU/F2hdfMrU0zXeDwdMBYxAQhNrUxlEHRhXfX1ffq7ebni65vEyrvr40lTFYcyMyj8aMQKBCrVN3TByNUTUA1xkmsiGuuc1neE1YEl04qJBgCrb/Qc+zaQm2QrP5zIBp7UWxBP9DerSKjX0+p5grYsJ6ApoV92i7BfoGr78HdXoeo5YauvpB234bgc/BYlE754Urh7ZoOfN+De5FZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lqruOZZCWm84lOyOBwcn6//Q9zISyC5L0TG4cv/2vGQ=;
+ b=WWFdI4y8pRN2hGoOt6LGSDjnutSoYTFNtesD2dqVCgPK/qMV6+vheJHizvN8WaTVHOWyssvxacmlBrOpa7hrtRNL6uBjVJElFyopSmVq77EmmOEmb3owrNxkkLobXalg43+jO7bc7KPIWbGtDLNXYdQpBubBG6xjMYEK06D+K8KMlHGsImS5bDUISTDMeTzFu5dNy54P5olgd7Q8Aa8nhZgez2/hSi6gME7/JX/V4ksRM+K6rpXW1Xc0JwYCdBMhgkxcUFzUInpwmBCc3ulq7dp2ZPNWJM+7vaXxVJmkdUp6Tbdv981J59XpWiUHFXJr5fOMRsom9Yo5Kjg+iGZnbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lqruOZZCWm84lOyOBwcn6//Q9zISyC5L0TG4cv/2vGQ=;
+ b=OXFSLA/BlGQIco7ph5hUkDL+EjVoVTY0CTMZ99dvqUezEN6mA+12VODUkGPTDY7hS0SXsbjd8LlGQHBlev4rt5v3xitNCWuTh5qpkTb68e+RFM78+PmQqWbX7ZoC4NgU7hh3v52UECJcSTlYSjlSvQ7d7JNoli+xhJAUxFBiDDWZze8Bo1B8vahr7HHySzpVgpEDv7NU/DnTktP6RDv50VB8afFrSFKMQjux3FzRBZkoklV5jgjbPohkb0AXaR3821yGeBM5ZZqKMGW3h20i1Y//MzZnT3lRdgG4YG+vIlzvN/LA52bfO0PKvwXTwqARUgWXiQCDoHleLCxrnbXhAg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9412.namprd12.prod.outlook.com (2603:10b6:408:211::18)
+ by SA3PR12MB9108.namprd12.prod.outlook.com (2603:10b6:806:37d::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Thu, 29 Jan
+ 2026 00:58:48 +0000
+Received: from LV3PR12MB9412.namprd12.prod.outlook.com
+ ([fe80::c319:33b5:293:6ec4]) by LV3PR12MB9412.namprd12.prod.outlook.com
+ ([fe80::c319:33b5:293:6ec4%5]) with mapi id 15.20.9542.010; Thu, 29 Jan 2026
+ 00:58:48 +0000
+Message-ID: <8859d68f-ca38-469e-8345-84059573ac97@nvidia.com>
+Date: Wed, 28 Jan 2026 16:58:44 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] gpu: nova-core: use checked arithmetic in FWSEC
+ firmware parsing
+To: Danilo Krummrich <dakr@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Alexandre Courbot <acourbot@nvidia.com>, Alistair Popple
+ <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Bjorn Helgaas <bhelgaas@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Dirk Behme <dirk.behme@gmail.com>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+References: <20260126202305.2526618-1-joelagnelf@nvidia.com>
+ <20260126202305.2526618-2-joelagnelf@nvidia.com>
+ <DG0607SU943F.1FDOPYPN38FCS@kernel.org>
+ <259bdacf-d16e-4fff-9f6b-f860feb40aa8@nvidia.com>
+ <DG0N5PNS1ZQ0.13WMT4XYDXNUS@kernel.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DG0N5PNS1ZQ0.13WMT4XYDXNUS@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0004.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::9) To LV3PR12MB9412.namprd12.prod.outlook.com
+ (2603:10b6:408:211::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260129004520.62697-1-boqun@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9412:EE_|SA3PR12MB9108:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4d9004a2-7503-4de6-e1b2-08de5ed18f41
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?d2FUVHExRjUyM1hrV0JXTUp4TnVOYkdUM3NIZXF0bnVsS0pNM0c3UlA1SlE1?=
+ =?utf-8?B?dXZwU3o2RVM1elZOdkdoOUNTQzV3a2swZGFGOTd2a0NSeXVzRTZtWDdzWnJF?=
+ =?utf-8?B?c2VRN0Yva2djakZVVFk5QmpIUS9kaTJOT2pWb0J3eXRIVW9BUW1NSHF1QTZp?=
+ =?utf-8?B?dklpR3puVzFIZlZMR3F2TGVZb0Q2eEYzOHBjdU8wWnJXd25OemFrdnhoWHNP?=
+ =?utf-8?B?L3ZzNGFHUlRpME1JdnhpUHhqd0ZsYnlmNTd1bTFwb1V1NExTSllmSlBlcnUy?=
+ =?utf-8?B?WFNBUkRvbW80ZnF2U1Z5OFlGZ0lLNnpNeU9oOHNzbWcyWDhmanZtZkNqbnB6?=
+ =?utf-8?B?SzRzbWoxQjFPK1RLYyt0R2MvWGJOamdkNmlqNVBDQldNcXErVTVzNkE3eFkv?=
+ =?utf-8?B?MGRvV1NGQVIzWjlGU2E1YkxDUldNSFBCSURERWFHNDdQMC92RkNCaE9nSUVB?=
+ =?utf-8?B?RE1TRG5Bc1V0ZGlVMEwzV0FEMitBTDBoWlE5cWRJbEw2OS9yM29QMUduTEZG?=
+ =?utf-8?B?VGZUNUNMbVRkK0ZnazVnNFZCVlp4dUFoRXRaMU0xOWNESWMraUtvb0tUYi9T?=
+ =?utf-8?B?U1RpeDgyQUtqcEZ3ck9RaHhqblcxa2trYW1WSEttUzdrV1l5ZUFtbVJpMEVz?=
+ =?utf-8?B?RHgxdTY4UXdENUJ0elREeDVaMUdIejBpREpRYzlQUHJvR1hmRTEyaDdHRFZX?=
+ =?utf-8?B?WngrMy9QQlNyd3pwSS9PY2ZkUTRSUy9Lam5XeXErWWxiaFQxUnl1Sk9Cbndw?=
+ =?utf-8?B?RGl3V1U3V0E2eW9jSzlBOFZtcVhBbThycks4Vkx2UWs0cjBaaFZKbkE2bGxv?=
+ =?utf-8?B?eDY5U3Q0N1NabGcyd1c0YnVpWk5idEZreHF0ZUltM2FKc3J2YTBDam1rdlJV?=
+ =?utf-8?B?NUg3N1FlRmJESnVpcjZRRjI4TlJWdTFuS291USt5M3VVZlJ0VE9VQnBIYm5q?=
+ =?utf-8?B?dkNjR2g2MFduQXJETGY5RXR4Kzdhaks4UTE0V3dFZm1SL3RRalJsWmhpZkkw?=
+ =?utf-8?B?V0hoQ0luREdYSEJVeVdEVGdVS2tWMEF5M0lXak5sZi95OWorMGNWaU5CL25R?=
+ =?utf-8?B?dDltUHBKSjEvWFZEOVQwVVZjVEtTcW1VdWhuQlRqaTZ6MEhTbkZzdHZTelE3?=
+ =?utf-8?B?eWdWdktnNUtkQzhUdk51WGhWT3VGMGVMdkNOZG1PUmRXeldISTk4TEFXNnNI?=
+ =?utf-8?B?QW5oMnZKTzR6VHQwTlNNc1ZsWkd4M3ZQNVpKakhyY3JkVTU3bWNNRDJjR0NI?=
+ =?utf-8?B?djRGeUI3aHRDT1VCQi8zQ1h1WTJ1RCtEcmx4dHVjVlJlS2xmOWVjN1NiVXFw?=
+ =?utf-8?B?ZlBiZks4ek9PQk5Xa0pqRGduRW4yWFRoaDV5cTN5dmZzdVpxTC9mMGl3ZDMz?=
+ =?utf-8?B?akRra2Z2d1ZKNDZ5b2dCQXBiVUJzalE2ZTdlWmd1M3JaalozNmhDQlRUOC9G?=
+ =?utf-8?B?c3ptTVZXVkVUWHZ4REtGcGM4MXhobnJ2aHBxUWNXeVBnMWt3UkxpdTdpc3hR?=
+ =?utf-8?B?c0lvcU1GckJpanM2bkNvZWh5eU1xbmRkeU9yVXAxTjJHckNtWWlHNDkwMlNx?=
+ =?utf-8?B?enFyUjRvdFY3bWhuRGh6SXVra2lQYVdrVW13TE5yaVBhZ0ZJeDNLUGlycysz?=
+ =?utf-8?B?ZWxYb2l3K3RydWdzcWhZandWZTRkby9BR2lteDE4S1U5UXk3N0hZcmF4MTZw?=
+ =?utf-8?B?WTNFTktTMHhjRHBPNDB4ODFuQTJqdHV4UlRWdTY3MzlCYUtaVXk1YlBxYTRK?=
+ =?utf-8?B?UDI2dXcvRXVmQW1KeC9Ld0VPQm93Z2tBaDNVYURRbEJGQ3hoUGptMkZuOVZR?=
+ =?utf-8?B?ZENXdWxjSTBpZDRxQ2ZBdndkUHpTUjEyZ1lMbU1DNllPVENoRGlLTjZkUzRD?=
+ =?utf-8?B?KzF0a1h2MzcvajdMaldyRnEwWThHeWZBVlpmeTFFNVZGNzEvQy9OOStjd1BK?=
+ =?utf-8?B?RlRCNXVwZHJ2ODZuNG5CWVJMQXlSOU1kaGQ1S0RnYUhiZU5ZUDhZRndWNThi?=
+ =?utf-8?B?Z2J3cUViZTgwR0lzS1ZqbDEreWYxTnIzOFNEcGIwekxBS1hQbjhvenpjWXVn?=
+ =?utf-8?B?UUE5ZVp5UGFqOE12T1l6MG5wNXYzanNENlZLTlBXZ0pxMzNKdHVSVERibGMx?=
+ =?utf-8?Q?d/Ug=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bGxheWsrK2hiWkk0TmtnUWF3RXNrVFg0OXdTQkxocEhPZ3ZuNWRuZmFYWjJG?=
+ =?utf-8?B?UW9uSTZpK3c4M1Q2SXhBV3Vyc0tuSjhsR0JnSVBjWkM3aHgvMjA2STZEaU5B?=
+ =?utf-8?B?Ris4amhKVzlVek5KOHlGNy9hWlRKZ3JpUUhkU1psMHpZc3EzVFFsYVNIVzd5?=
+ =?utf-8?B?ZHIzZHVtV2RBM1RaMzFsL3hva1lGTVpRSVdhcEdEeFd1SkNicHNJVUJxRmh6?=
+ =?utf-8?B?d1Exb3N4WHBSZ2p3VjZHOGVnL2p6V0w2aGNlZFpKNjkrdldYY3ZaUmRjMGFN?=
+ =?utf-8?B?UTRRVnVZRTlmYXlkSnJ0bzduM0JramhQODF0S0svVTNWd2hmeHE0MnpRYWZm?=
+ =?utf-8?B?ZUNNN3k4MjYybUpTQU1wYW1lWTZON1A1K3dTR0ZVbTJjRHh1OTB3R0tzcXJs?=
+ =?utf-8?B?dCtCTkpvWnhTbkQ0RXNYUEw1d1MzREhVWU44cmRSdDVwZkNZaWhWSXNHc1pB?=
+ =?utf-8?B?RExpMnB4LzJScFBiS0c4ajBmVG1Wd2hKajNHdWRhSUxqNW9XUHduYU1YOEx0?=
+ =?utf-8?B?VFBTUFc2amdUckNweWRPSllNYmtTRlN1NGdKakpEZlhUSm5NVkt4L3JkMEhj?=
+ =?utf-8?B?NjZNcDFsek1yZDh3YTM4c01GdGRkRUc3dnd4MVY5UlU3WTV5TzZvdDZPUjRs?=
+ =?utf-8?B?YTIyZWdKdHJvbkVEdndYN2J2b3FoN2w1OENXY0JMWHNsakg2SmtteU15a3di?=
+ =?utf-8?B?T3VrZGlrZWJzT0ZPVFQraGx3S1lTOU9sbkFrM2lYcVpyeDhDdTVONjhJVCt4?=
+ =?utf-8?B?UWtMd1l4N0g2YUF6Ty9oSksxcmFBRFhrQ3hTM0c1eTMzUm1RSFZaVG9CZUFI?=
+ =?utf-8?B?RW03N2lXNFMwcTNiSllKdjhpd05Tc3ZPcnFTZlRVQk9XME5VUnhJOFE4NEd0?=
+ =?utf-8?B?VWxJREZTb2VsYlN5L2x1dlpQY3VkUmtZUDMybFRLeWRWZnJCTk14VmtDWktG?=
+ =?utf-8?B?Z05iN0JmR0lFZWk1TTA2UXhleENwWDdlQThHM082STF5SmNyYmFsQUQrNW9u?=
+ =?utf-8?B?Ymg3cG5ZY0NZNkg0aTNCbnFZS09hK09oNWdZSForSjlkMXovTTl4bm1HTlZi?=
+ =?utf-8?B?WEJNRHBaRkFxbTMrTU03NGkrUWFQVlkwaXA5MHN5MU5pdWw1OVdlKysvb3lO?=
+ =?utf-8?B?dTZPY2UycUlLVHJaRjIvek9PeHN1ekhVcjRmNnYrY1hCRmtEMEZtODdVb2Zs?=
+ =?utf-8?B?RmdCU1FFVkc5ZXByTGdOYitzRTllSWN1UGdFNndITktPL3FZMDNpeEY1WTZS?=
+ =?utf-8?B?V0JKZTJ0cm5jWDRucU5ocG1zZFJMSkpuTFEweFJQcWlGRk8yQWlwZVZQM0FS?=
+ =?utf-8?B?aXBQQ0o4aHA4cVgxS0ZmSkFQbG5WRlJTV09QeVF6ek40SnJSZkF0U25HSzlF?=
+ =?utf-8?B?d2RaOTNtbm9wLzAwVnpNVHRUVlpZVERuL01LeWcwV0w2aGRESW1ubzJSTE4z?=
+ =?utf-8?B?ZzNDUEJseXdNZng3WllPVGdzd1NJNHhYNlhhUkJGeHlYVFF3c2NWM0ZPcGF1?=
+ =?utf-8?B?bTBHRnhmOUY4Q1YrWC9DSTFYU0xta2FTekZocGNSQjhNbGNaalQvZmRRNHNS?=
+ =?utf-8?B?NGcyU3FUS2xqaHBiRVhiR1VVNHhSYjhvdU15K1JkSzVkbUdwSytmREN4OHg4?=
+ =?utf-8?B?NERjalZESGxpVnd2ZE1pZWUrUVRsZXFDT2t2aUZld0lxL3EzeWI1MjhMdytx?=
+ =?utf-8?B?Z3RJTUNOK3R4aUVHZ2NSZG55YW90MGZ5RWI4c205djQyMFlpSVFhS21CUG14?=
+ =?utf-8?B?YjNaZVFrSlR3N1VjbW5nWFB0RVFuYWZpOVNzcWgreDJjMEhmRExFam0rSHZ4?=
+ =?utf-8?B?Z2VaNUYrZFFVaHdSbG5TTzRXV3QrNFZrcVhRd0l2MmNwY3l0ZzhwTWtQWFNP?=
+ =?utf-8?B?cnJIQnFkcFJ6QkJYV3JjVVVXUGFnTmxiWUFzV2RWOStMRG1aVWJPYW5iSGRq?=
+ =?utf-8?B?MGlpcElKaU51cG0yMTZYZUJISm5zTlRhZTZGdTE3S2g3TjhCOXRSYmZQOXln?=
+ =?utf-8?B?U3c0aGJZbSsyMUJUYWsrSENudDAyVzVFT1dYbFprOEQ3ZnlSdUttN1ppczhY?=
+ =?utf-8?B?RmQ4TFFHanJaRklTblhTVkQ3TE9BTGJrd2xyVzhMOHRaRzhXYUZsUy9SNzI2?=
+ =?utf-8?B?R05EZXVldTdJWWU1bjVKVWVnaDFQWjZWSVBjcXc0UlkzUWI5VjRLdWNIK0U5?=
+ =?utf-8?B?Yi9RNUpMMDd1bWhWamVMYjg4SFpwcWtXbXdac3ZRbG5SemxrenR1emtKR2l1?=
+ =?utf-8?B?TUpHOEJOSjJ6aVlVSGxxRXhFQTBvbW5tUWptRWhoNXdoS0RGN2c2MExTcTVV?=
+ =?utf-8?B?cE9DVVZXZ2hXdEZCdGgyTFFRSVI4YmVWWk11ZFNCRDBrWWlrVHNudz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d9004a2-7503-4de6-e1b2-08de5ed18f41
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9412.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 00:58:47.9764
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: p9Rf3UhbZLK/v8aEBA6LIleNqXvogCyoHh7QJHcdbONN1ZNcz1SBgD35rfdQ8AxIEd5c+zwVOit+o/8Mtd1K3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9108
 
-On Wed, Jan 28, 2026 at 04:45:18PM -0800, Boqun Feng wrote:
-> I had issues using my gmail account multiple times this week, hence
-> switch to @kernel.org.
+On 1/28/26 4:20 PM, Danilo Krummrich wrote:
+> On Wed Jan 28, 2026 at 4:14 PM CET, Joel Fernandes wrote:
+>> On 1/28/2026 5:53 AM, Danilo Krummrich wrote:
+>>> On Mon Jan 26, 2026 at 9:23 PM CET, Joel Fernandes wrote:
+>>>> @@ -267,7 +264,12 @@ fn new_fwsec(dev: &Device<device::Bound>, bios: &Vbios, cmd: FwsecCommand) -> Re
+>>>>            let ucode = bios.fwsec_image().ucode(&desc)?;
+>>>>            let mut dma_object = DmaObject::from_data(dev, ucode)?;
+>>>>    
+>>>> -        let hdr_offset = usize::from_safe_cast(desc.imem_load_size() + desc.interface_offset());
+>>>> +        // Compute hdr_offset = imem_load_size + interface_offset.
+>>>
+>>> I do get the idea behind those comments, but are we sure that's really a good
+>>> idea? How do we ensure to keep them up to date in case we have to change the
+>>> code?
+>>>
+>>> If we really want this, I'd at least chose a common syntax, e.g.
+>>>
+>>> 	// CALC: `imem_load_size + interface_offset`
+>>>
+>>> without the variable name the resulting value is assigned to.
+>>>
+>>> But I'd rather prefer to just drop those comments.
+>> The idea of adding these comments was to improve readability. However, I
+>> can drop them in the v3, that's fine with me.
 > 
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: Andreas Hindborg <a.hindborg@kernel.org>
-> Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Cc: Frederic Weisbecker <frederic@kernel.org>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: John Stultz <jstultz@google.com>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Cc: Andrea Parri <parri.andrea@gmail.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: Jade Alglave <j.alglave@ucl.ac.uk>
-> Cc: Luc Maranget <luc.maranget@inria.fr>
-> Cc: Akira Yokosawa <akiyks@gmail.com>
-> Cc: Daniel Lustig <dlustig@nvidia.com>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Waiman Long <longman@redhat.com>
-> Cc: "Paul E. McKenney" <paulmck@kernel.org>
-> Cc: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
-> Cc: Joel Fernandes <joelagnelf@nvidia.com>
-> Cc: Josh Triplett <josh@joshtriplett.org>
-> Cc: Uladzislau Rezki <urezki@gmail.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-> Cc: Zqiang <qiang.zhang@linux.dev>
-> Cc: Miguel Ojeda <ojeda@kernel.org>
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: Benno Lossin <lossin@kernel.org>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Trevor Gross <tmgross@umich.edu>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Boqun Feng <boqun@kernel.org>
+> Yeah, that's why I wrote "I get the idea". :) But as I write above, I'm
+> concerned about the comments getting outdated or inconsistent over time.
+> 
+> Besides that, it more seems like something your favorite editor should help with
+> instead.
+> 
+>> Do you want me to wait for additional comments on this series, or should
+>> I make the update and repost it?  Thanks,
+> 
+> As mentioned, I tend to think we should just drop them, but I'm happy to hear
+> some more opinions on this if any.
 
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Yes, please drop the comments. They were just echoing the code for
+the most part, so the code itself will be easier to read without
+them.
 
-> ---
->  .mailmap    |  1 +
->  MAINTAINERS | 16 ++++++++--------
->  2 files changed, 9 insertions(+), 8 deletions(-)
-> 
-> diff --git a/.mailmap b/.mailmap
-> index 84309a39d329..ea3ac46aceda 100644
-> --- a/.mailmap
-> +++ b/.mailmap
-> @@ -153,6 +153,7 @@ Boris Brezillon <bbrezillon@kernel.org> <b.brezillon.dev@gmail.com>
->  Boris Brezillon <bbrezillon@kernel.org> <b.brezillon@overkiz.com>
->  Boris Brezillon <bbrezillon@kernel.org> <boris.brezillon@bootlin.com>
->  Boris Brezillon <bbrezillon@kernel.org> <boris.brezillon@free-electrons.com>
-> +Boqun Feng <boqun@kernel.org> <boqun.feng@gmail.com>
->  Brendan Higgins <brendan.higgins@linux.dev> <brendanhiggins@google.com>
->  Brian Avery <b.avery@hp.com>
->  Brian Cain <bcain@kernel.org> <brian.cain@oss.qualcomm.com>
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2953b466107e..5d4443576687 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4107,7 +4107,7 @@ F:	drivers/input/touchscreen/atmel_mxt_ts.c
->  ATOMIC INFRASTRUCTURE
->  M:	Will Deacon <will@kernel.org>
->  M:	Peter Zijlstra <peterz@infradead.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun@kernel.org>
->  R:	Mark Rutland <mark.rutland@arm.com>
->  R:	Gary Guo <gary@garyguo.net>
->  L:	linux-kernel@vger.kernel.org
-> @@ -4498,7 +4498,7 @@ F:	lib/sbitmap.c
->  
->  BLOCK LAYER DEVICE DRIVER API [RUST]
->  M:	Andreas Hindborg <a.hindborg@kernel.org>
-> -R:	Boqun Feng <boqun.feng@gmail.com>
-> +R:	Boqun Feng <boqun@kernel.org>
->  L:	linux-block@vger.kernel.org
->  L:	rust-for-linux@vger.kernel.org
->  S:	Supported
-> @@ -11267,7 +11267,7 @@ F:	tools/testing/selftests/timers/
->  
->  DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
->  M:	Andreas Hindborg <a.hindborg@kernel.org>
-> -R:	Boqun Feng <boqun.feng@gmail.com>
-> +R:	Boqun Feng <boqun@kernel.org>
->  R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
->  R:	Frederic Weisbecker <frederic@kernel.org>
->  R:	Lyude Paul <lyude@redhat.com>
-> @@ -14561,7 +14561,7 @@ M:	Alan Stern <stern@rowland.harvard.edu>
->  M:	Andrea Parri <parri.andrea@gmail.com>
->  M:	Will Deacon <will@kernel.org>
->  M:	Peter Zijlstra <peterz@infradead.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun@kernel.org>
->  M:	Nicholas Piggin <npiggin@gmail.com>
->  M:	David Howells <dhowells@redhat.com>
->  M:	Jade Alglave <j.alglave@ucl.ac.uk>
-> @@ -14719,7 +14719,7 @@ LOCKING PRIMITIVES
->  M:	Peter Zijlstra <peterz@infradead.org>
->  M:	Ingo Molnar <mingo@redhat.com>
->  M:	Will Deacon <will@kernel.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com> (LOCKDEP & RUST)
-> +M:	Boqun Feng <boqun@kernel.org> (LOCKDEP & RUST)
->  R:	Waiman Long <longman@redhat.com>
->  L:	linux-kernel@vger.kernel.org
->  S:	Maintained
-> @@ -21909,7 +21909,7 @@ M:	Frederic Weisbecker <frederic@kernel.org> (kernel/rcu/tree_nocb.h)
->  M:	Neeraj Upadhyay <neeraj.upadhyay@kernel.org> (kernel/rcu/tasks.h)
->  M:	Joel Fernandes <joelagnelf@nvidia.com>
->  M:	Josh Triplett <josh@joshtriplett.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun@kernel.org>
->  M:	Uladzislau Rezki <urezki@gmail.com>
->  R:	Steven Rostedt <rostedt@goodmis.org>
->  R:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> @@ -22359,7 +22359,7 @@ RESTARTABLE SEQUENCES SUPPORT
->  M:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->  M:	Peter Zijlstra <peterz@infradead.org>
->  M:	"Paul E. McKenney" <paulmck@kernel.org>
-> -M:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun@kernel.org>
->  L:	linux-kernel@vger.kernel.org
->  S:	Supported
->  F:	include/trace/events/rseq.h
-> @@ -22882,7 +22882,7 @@ F:	tools/verification/
->  
->  RUST
->  M:	Miguel Ojeda <ojeda@kernel.org>
-> -R:	Boqun Feng <boqun.feng@gmail.com>
-> +R:	Boqun Feng <boqun@kernel.org>
->  R:	Gary Guo <gary@garyguo.net>
->  R:	Björn Roy Baron <bjorn3_gh@protonmail.com>
->  R:	Benno Lossin <lossin@kernel.org>
-> -- 
-> 2.50.1 (Apple Git-155)
-> 
+I think this is something that, when you are writing the code and
+comments, it's really hard to see. But when you come back a while
+later (or you are reviewing someone else's patch), then it is much
+easier to spot.
+
+thanks,
+-- 
+John Hubbard
