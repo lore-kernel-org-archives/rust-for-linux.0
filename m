@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B33B28688E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3AF2874F5;
 	Thu, 29 Jan 2026 14:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769697168; cv=none; b=G/hNfLQbZH+79D1119YBg/2481sF7STFLO16QpIXmVZrWO6UDDr0i7h02zcUse9ZeFTyTrs1W2GvQ8IHMMTp6MXvQmK3RvKS8dhYtCNAQOGhXJniH+K+j6YC4uTdIVAJ/AjkWjk9UhkNZkBBHFTbXhr70FsPVvU6GglOoFsNoNY=
+	t=1769697168; cv=none; b=pQG8Z0y0JxGV2CEmN4EN1tHZcldRxVIuZWVKrJ90kjEUd9ur12N4VxwFVB00P/HVeNqkkeXxczPTMNfBcsmCxdxgXhKKpfJ57JTd/6BgOhsRupDdxtGvGGKQJ+5/pGoC6KZrsg60VXtRxSc2Lpf52YOFd2dsDFrua28xxCSNGrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769697168; c=relaxed/simple;
-	bh=W/lQNM+k2nJyyhsWP+iX2X75QmPDfFgQGv2yUuk2t+c=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sjTPH2s+yybo9594ESIenMDfA+UM/Juz1oiwafavMcwj+p/Czcn/RMZ7/q+QwrT9EBRn4OP4dDr8Kq2EOxSTm9tY1wdTPxNV0syFbF3RyVyYpEEihqREFiwyPOiV42Sduv0pgKI2IrpjiiFwt1ftvX1Bq9IhSaOI03sRkMopjo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oL16AibZ; arc=none smtp.client-ip=10.30.226.201
+	bh=zsJKLouslNIMhVTvOdw5iCz2jJoutLn9tl1l10pprrw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=T4RDNhQglEG4GG0A1PofWPbIAmx8g+3LbfZ9ZLOOzc6GCO88f/ZjYYoDdDRjY2W2gLGa9FzLJGaPmS5k0+g0iEuU//LWDjTlMH8pjxwK5dUdMw3s0JTdabHnpsuoSd30GEfcNhindjKd5FGoSGJQzuJYkdlP0rMH/lzKXjf/Jys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijzwrdW/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oL16AibZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D5F13C4CEF7;
-	Thu, 29 Jan 2026 14:32:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijzwrdW/"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 021F3C4AF0B;
+	Thu, 29 Jan 2026 14:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769697167;
-	bh=W/lQNM+k2nJyyhsWP+iX2X75QmPDfFgQGv2yUuk2t+c=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=oL16AibZN0jHuPACubdWBmgmUVZazIWIHv+mzxXoDb324dpkhbgOCLEkt8AFgOpIq
-	 WWe7t5zolX6rkCMn9kER5xaPOWTnocEs8Z4xMZ0Zt5pWCDXCS2N2ED0Ek2CYrPc0FU
-	 xRVQE5+QtBZSm8ZvR6IGeTUifTJ4nPKbTjlJk3MkakBObiMEuR2qYY/ZH2oTsw+7nX
-	 6RPuCVrlsA5wrrR0bhVJzVIzAPDwVyc/mcsemH+dyp6FEr4Ed/JdfLSt4RIXCny4Yp
-	 OabE2XV/iaEYOGI9Nwn9d5RswgvptVSTV736RVcdUc0NMDFMQsQ3DPAkASLZS8q0hx
-	 TQ9C3sLDFSV9Q==
+	s=k20201202; t=1769697168;
+	bh=zsJKLouslNIMhVTvOdw5iCz2jJoutLn9tl1l10pprrw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ijzwrdW/sFAA6DIn8UJ6Y1yU5jLhaqOMk8LePZU0AtU3kAOsCZhy7Mrh4y+TlllAX
+	 4MP8fCrGNombPay1ja6SwYH8mH8f8gMc+D/ZDpec9sujK+bZOftGfQWxofXtvRumzG
+	 rh6NbhBHSF7g5LwUVqv9XKwhd+JDqubMIziqpPuohXI1YyriscPNDIvuiJnwUGvr/x
+	 JS8WgJeGM6JPhSpCeoTLKnTkdqx4M7fvMPzZ3W6xcrxOLK2bbIm3ENt3FjXBtR/kFW
+	 6XFQyV5o2wUfdtKGRj10juxheir7MBnhQA795806PLxwjeAjw7w4XHvVu71xV4agy1
+	 WPI8+EhTjGawQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5AF9D6101F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7E0CD61020;
 	Thu, 29 Jan 2026 14:32:47 +0000 (UTC)
 From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
-Subject: [PATCH v5 0/4] rust: add `TryFrom` and `Into` derive macros
-Date: Thu, 29 Jan 2026 23:32:44 +0900
-Message-Id: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
+Date: Thu, 29 Jan 2026 23:32:46 +0900
+Subject: [PATCH v5 2/4] rust: macros: add derive macro for `TryFrom`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,11 +40,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIxve2kC/32NQQqDMBBFryKz7hSNSWq76j2KixATHWiMTEQqk
- rs39QBdvgf//QOSY3IJHtUB7DZKFOcC6lKBncw8OqShMIhaqEYIhSvv6DkGpHmNGIzliI3Waqi
- Nt952UJYLO0+fs/rqC0+U1sj7ebLJn/3f2yTWKI3S7aDut67VzzEYel9tDNDnnL9JtcWwtgAAA
- A==
-X-Change-ID: 20251225-try-from-into-macro-1665d0afcfc8
+Message-Id: <20260129-try-from-into-macro-v5-2-dd011008118c@gmail.com>
+References: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
+In-Reply-To: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -54,21 +52,21 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  nouveau@lists.freedesktop.org, Jesung Yang <y.j3ms.n@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5049; i=y.j3ms.n@gmail.com;
- h=from:subject:message-id;
- bh=W/lQNM+k2nJyyhsWP+iX2X75QmPDfFgQGv2yUuk2t+c=;
- b=owJ4nAFtApL9kA0DAAoBhnBYoOPQ2LoByyZiAGl7b47aya1K7Gld9Pr15f5ILWyBdh7l0GBPa
- 6HOxnu/aM43uYkCMwQAAQoAHRYhBNJuBqTTLsbEgOaQ0IZwWKDj0Ni6BQJpe2+OAAoJEIZwWKDj
- 0Ni6aioQALMVekoonpoiaF5wtL63jMIje/TKyxuKccuJJgghAmjDvYFM4Ij7lhMP9rjvb4NJ0rE
- BQw56rPhtTrad1s2AeJkx8Aie2GJd0fyrjwdSFUG3OrlAdZgqrVAP3irlL5ZJ+FK3FHr6nbgE18
- JEyiO4/UF21wCOi1YaF9nWSjj2uLisRsPUdlDaAqHzgSHGVbahFctM0006DjSIZ8d3Mzv3ualFl
- KJubhQGMISfbbqAlc1iU/WTInrVhSpUuHDvk40aQhwdVyfBmsEK0UxybwYgsW6Z/FooynBug22r
- QXXSpKORx8PldH4mlr7smdXgfAdqOBs5oa0hUs+yrbfqozj7gw9RsNes+KdiSYRxVbrQhmwYtcm
- 7PFwGpYnazCtS1IwFYP3f2nuXgFlDGbNapgxI5qGObbnoe5DvWhMZA6owKOfC9KJ07+7mulQwts
- aCXS6J2y5yTIVLb4pSfUgrD9+MEWu8rvh8oW873hdc5Lq8qGOYe7KP+zXsXhEemm6BTkLxaKE9T
- VZI3lE85DzjmFW+sbbeo/Edf8/6yCl/iHgJS7j+P1Omf4bB6Rw9HdB+1J0ngAxBZQN8n3DiABQh
- 1cveTR6Nm29OnkogajCL53/BC+89P9xNdlOnBuEXCZAbokQ/yF/IRRzShLHx9UdViEPSpUYRe4q
- O1VgLCpp6xCsEOkH5dbAwfw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10808;
+ i=y.j3ms.n@gmail.com; h=from:subject:message-id;
+ bh=o0ZOJ2u6fulpd6euQbCwZeiZqbQpSA+Y1ClbiBC4Hqs=;
+ b=owJ4nAFtApL9kA0DAAoBhnBYoOPQ2LoByyZiAGl7b47aA5WH7vO27Eax/xs4+3OV8/xJrrBLu
+ hHqXotpVMg9EIkCMwQAAQoAHRYhBNJuBqTTLsbEgOaQ0IZwWKDj0Ni6BQJpe2+OAAoJEIZwWKDj
+ 0Ni6a3UP/3v9YccMDx0NI+IfLLnZQdKyC6kjqKkTFuVFtmyU6+abCyBRfivWFQYEKwv/C2PIOCu
+ 5GWkMvGyD+iHz4VyhYgOd9JBoNL+KjQXI7uF5zQpzWFCA9zvt97gw76K94El2Kwl1SHAtoBsF4e
+ oRHmUAMvwHwoc+Bvq9GIwiAuEcyafDMX8ktwYxUb9U61fqBPKZKpH7jPf2Rc4/bd3OMO/Yw55Pa
+ ivdiSFO7wmXSI3r0OJdja66PWAiga0URV97XZEVTlJZkRgNScrbCxF5nARxrI1DAIddchIZUHb0
+ +UcaMrnW1s7GoBP0N4kHVPl95jVAgFZiBMTkrk/q0erR3suHOpYYmPkOcAN0wu5xidpfi5io66q
+ TvKnfY/WmGvZGEwYA1zy6/X9XPQEd4U+F8GVsybDP7KebzrbbONMVyNeMw6m7fDTiVMKYrxBDXh
+ Cd/k58ErBtHwAPJaVI4o8P12+diboiAPNUmlPVqEKugfktgftNS/krbpA0Yx1G6NjZD1L/EHD3J
+ k/3ieugATWzJKLNajrchxDi44HIgYfS4TXc0wOUINjBE0kfYoJZSjuO7bB8QSaNxTg1+IHOQv51
+ YYmCwkQiaPHH4eCGX7Mwe1bM3SIrZFDJUh11uWRHLYo1MANAzrqky2dCCAc6HWvb5hxg2pIW4hs
+ DSgBGXklSMMUG6xxt8fspUw==
 X-Developer-Key: i=y.j3ms.n@gmail.com; a=openpgp;
  fpr=D26E06A4D32EC6C480E690D0867058A0E3D0D8BA
 X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/default with
@@ -76,127 +74,330 @@ X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/default with
 X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
 Reply-To: y.j3ms.n@gmail.com
 
-This patch series introduces derive macros for the `TryFrom` and `Into`
-traits.
+From: Jesung Yang <y.j3ms.n@gmail.com>
 
-I dropped support for `#[repr(C)]` fieldless enums (i.e., disallow
-deriving `TryFrom` and `Into` on those enums), since the actual
-representation of discriminants is defined by rustc internally, and
-documentation around it is not yet settled [1][2].
+Introduce a procedural macro `TryFrom` to automatically implement the
+`TryFrom` trait for unit-only enums.
 
-I would like to highlight some feedback from the previous series where I
-have decided to retain the original behavior in this series. In part, I
-feel more community feedback is needed to reach the right design; I've
-also elaborated on my personal reasoning for each point below:
+This reduces boilerplate in cases where numeric values need to be
+interpreted as relevant enum variants. This situation often arises when
+working with low-level data sources. A typical example is the `Chipset`
+enum in nova-core, where the value read from a GPU register should be
+mapped to a corresponding variant.
 
-1) Require explicit `#[repr(..)]` for enums using the macros.
-
-Given the drop of `#[repr(C)]` support, I believe defaulting to `isize`
-when no `#[repr(..)]` is specified is safe, as it follows the
-compiler's (documented) default behavior [3]. By "safe", I mean I see no
-potential regressions or hidden issues; we even have a compile-time
-overflow assertion which ensure all enum discriminants fit within the
-types involved in the conversion.
-
-2) Generate trait implementation for a type in `#[repr(..)]` even when
-   the helper attribute is present. For example:
-
-     #[derive(TryFrom)]
-     #[try_from(bool)]
-     #[repr(u8)]
-     enum E {
-         A = 0,
-         B = 1,
-     }
-
-   make the above snippet generate both `TryFrom<u8>` and
-   `TryFrom<bool>` implementations.
-
-However, sometimes users might want to prevent generating trait
-implementations for the type in `#[repr(..)]`, especially when the enum
-encodes types like `bool` or `Bounded<u8, 4>` that cannot be used in
-`#[repr(..)]`, like the above snippet. If we were to follow the feedback
-directly, users would end up with an unnecessary `TryFrom<u8>`
-implementation. Therefore, I think it is reasonable to treat the helper
-attribute as an override that ignores the type in `#[repr(..)]` when
-present.
-
-One last point: the current `Into` implementation relies on
-`Bounded::from_expr()`, which utilizes `build_assert!()`. So the
-expanded result looks roughly like this:
-
-  impl From<Enum> for Bounded<u8, 4> {
-      fn from(value: Enum) -> Bounded<u8, 4> {
-          // Compile-time assertions to guarantee `value` fits within
-          // `u8` (Omitted)
-
-          Bounded::<u8, 4>::from_expr(value as u8)
-      }
-  }
-
-After some experimentation, it appears that the compiler correctly
-optimizes out the assertion if (and only if) the `Bounded` type covers
-all enum discriminants, though I'm not 100% certain of this behavior in
-all cases. Can we approach this better?
-
-Appreciate any feedback or suggestions.
-
-[1] https://github.com/rust-lang/rust/issues/124403
-[2] https://github.com/rust-lang/rust/pull/147017
-[3] https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.discriminant.repr-rust
+The macro not only supports primitive types such as `bool` or `i8`, but
+also `Bounded`, a wrapper around integer types limiting the number of
+bits usable for value representation. This accommodates the shift toward
+more restrictive register field representations in nova-core where
+values are constrained to specific bit ranges.
 
 Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
 ---
-Changes in v5:
-- Drop support for `#[repr(C)]` enums. (Benno Lossin)
-- Allow `#[repr(C, {primitive_int_type})]` for future-proofing.
-  (Benno Lossin)
-- Parse types in helper attributes into `syn::Type` prior to validation.
-  (Benno Lossin)
-- Replace doctests for `TryFrom` with correct examples. (Benno Lossin)
-- Reorganize error reporting structure.
-- Add documentation about `#[repr(C)]` fieldless enums.
-- Rebase on commit a7c013f77953 ("Merge patch series "refactor Rust proc
-  macros with `syn`"")
-- Link to v4: https://lore.kernel.org/r/20251225-try-from-into-macro-v4-0-4a563d597836@gmail.com
+ rust/macros/convert.rs |  64 ++++++++++++++++++
+ rust/macros/lib.rs     | 176 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 240 insertions(+)
 
-Changes in v4:
-- Fix typos.
-- Link to (broken) v3: https://lore.kernel.org/rust-for-linux/cover.1766544407.git.y.j3ms.n@gmail.com/
+diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
+index 096e3c9fdc1b..a7a43b1a2caf 100644
+--- a/rust/macros/convert.rs
++++ b/rust/macros/convert.rs
+@@ -34,6 +34,10 @@ pub(crate) fn derive_into(input: DeriveInput) -> syn::Result<TokenStream> {
+     derive(DeriveTarget::Into, input)
+ }
+ 
++pub(crate) fn derive_try_from(input: DeriveInput) -> syn::Result<TokenStream> {
++    derive(DeriveTarget::TryFrom, input)
++}
++
+ fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream> {
+     let data_enum = match input.data {
+         Data::Enum(data) => data,
+@@ -129,18 +133,21 @@ fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream>
+ #[derive(Clone, Copy, Debug)]
+ enum DeriveTarget {
+     Into,
++    TryFrom,
+ }
+ 
+ impl DeriveTarget {
+     fn get_trait_name(&self) -> &'static str {
+         match self {
+             Self::Into => "Into",
++            Self::TryFrom => "TryFrom",
+         }
+     }
+ 
+     fn get_helper_name(&self) -> &'static str {
+         match self {
+             Self::Into => "into",
++            Self::TryFrom => "try_from",
+         }
+     }
+ }
+@@ -186,6 +193,7 @@ fn derive_for_enum(
+ ) -> TokenStream {
+     let impl_fn = match target {
+         DeriveTarget::Into => impl_into,
++        DeriveTarget::TryFrom => impl_try_from,
+     };
+ 
+     let qualified_repr_ty: syn::Path = parse_quote! { ::core::primitive::#repr_ty };
+@@ -238,6 +246,54 @@ fn from(#param: #enum_ident) -> #input_ty {
+         }
+     }
+ 
++    fn impl_try_from(
++        enum_ident: &Ident,
++        variants: &[Ident],
++        repr_ty: &syn::Path,
++        input_ty: &ValidTy,
++    ) -> TokenStream {
++        let param = Ident::new("value", Span::call_site());
++
++        let overflow_assertion = emit_overflow_assert(enum_ident, variants, repr_ty, input_ty);
++        let emit_cast = |variant| {
++            let variant = ::quote::quote! { #enum_ident::#variant };
++            match input_ty {
++                ValidTy::Bounded(inner) => {
++                    let base_ty = inner.emit_qualified_base_ty();
++                    let expr = parse_quote! { #variant as #base_ty };
++                    inner.emit_new(&expr)
++                }
++                ValidTy::Primitive(ident) if ident == "bool" => {
++                    ::quote::quote! { ((#variant as #repr_ty) == 1) }
++                }
++                qualified @ ValidTy::Primitive(_) => ::quote::quote! { #variant as #qualified },
++            }
++        };
++
++        let clauses = variants.iter().map(|variant| {
++            let cast = emit_cast(variant);
++            ::quote::quote! {
++                if #param == #cast {
++                    ::core::result::Result::Ok(#enum_ident::#variant)
++                } else
++            }
++        });
++
++        ::quote::quote! {
++            #[automatically_derived]
++            impl ::core::convert::TryFrom<#input_ty> for #enum_ident {
++                type Error = ::kernel::prelude::Error;
++                fn try_from(#param: #input_ty) -> Result<#enum_ident, Self::Error> {
++                    #overflow_assertion
++
++                    #(#clauses)* {
++                        ::core::result::Result::Err(::kernel::prelude::EINVAL)
++                    }
++                }
++            }
++        }
++    }
++
+     fn emit_overflow_assert(
+         enum_ident: &Ident,
+         variants: &[Ident],
+@@ -360,6 +416,14 @@ fn emit_from_expr(&self, expr: &Expr) -> TokenStream {
+         }
+     }
+ 
++    fn emit_new(&self, expr: &Expr) -> TokenStream {
++        let Self { base_ty, bits, .. } = self;
++        let qualified_name: syn::Path = parse_str(Self::QUALIFIED_NAME).expect("valid path");
++        ::quote::quote! {
++            #qualified_name::<#base_ty, #bits>::new::<{ #expr }>()
++        }
++    }
++
+     fn emit_qualified_base_ty(&self) -> TokenStream {
+         let base_ty = &self.base_ty;
+         ::quote::quote! { ::core::primitive::#base_ty }
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 8842067d1017..893adecb9080 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -657,3 +657,179 @@ pub fn derive_into(input: TokenStream) -> TokenStream {
+         .unwrap_or_else(syn::Error::into_compile_error)
+         .into()
+ }
++
++/// A derive macro for generating an implementation of the [`TryFrom`] trait.
++///
++/// This macro automatically derives the [`TryFrom`] trait for a given enum. Currently,
++/// it only supports [unit-only enum]s.
++///
++/// [unit-only enum]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.unit-only
++///
++/// # Notes
++///
++/// - The macro generates [`TryFrom`] implementations that:
++///   - Return `Ok(VARIANT)` when the input corresponds to a variant.
++///   - Return `Err(EINVAL)` when the input does not correspond to any variant.
++///     (where `EINVAL` is from [`kernel::error::code`]).
++///
++/// - The macro uses the `try_from` custom attribute or `repr` attribute to generate
++///   [`TryFrom`] implementations. `try_from` always takes precedence over `repr`.
++///
++/// - Currently, the macro does not support `repr(C)` fieldless enums since the actual
++///   representation of discriminants is defined by rustc internally, and documentation
++///   around it is not yet settled. See [Rust issue #124403] and [Rust PR #147017]
++///   for more information.
++///
++/// - The macro generates a compile-time assertion for every variant to ensure its
++///   discriminant value fits within the type being converted from.
++///
++/// [`kernel::error::code`]: ../kernel/error/code/index.html
++/// [Rust issue #124403]: https://github.com/rust-lang/rust/issues/124403
++/// [Rust PR #147017]: https://github.com/rust-lang/rust/pull/147017
++///
++/// # Supported types in `#[try_from(...)]`
++///
++/// - [`bool`]
++/// - Primitive integer types (e.g., [`i8`], [`u8`])
++/// - [`Bounded`]
++///
++/// [`Bounded`]: ../kernel/num/bounded/struct.Bounded.html
++///
++/// # Examples
++///
++/// ## Without Attributes
++///
++/// Since [the default `Rust` representation uses `isize` for the discriminant type][repr-rust],
++/// the macro implements `TryFrom<isize>`:
++///
++/// [repr-rust]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.discriminant.repr-rust
++///
++/// ```rust
++/// # use kernel::prelude::*;
++/// use kernel::macros::TryFrom;
++///
++/// #[derive(Debug, Default, PartialEq, TryFrom)]
++/// enum Foo {
++///     #[default]
++///     A,
++///     B = 0x7,
++/// }
++///
++/// assert_eq!(Err(EINVAL), Foo::try_from(-1_isize));
++/// assert_eq!(Ok(Foo::A), Foo::try_from(0_isize));
++/// assert_eq!(Ok(Foo::B), Foo::try_from(0x7_isize));
++/// assert_eq!(Err(EINVAL), Foo::try_from(0x8_isize));
++/// ```
++///
++/// ## With `#[repr(T)]`
++///
++/// The macro implements `TryFrom<T>`:
++///
++/// ```rust
++/// # use kernel::prelude::*;
++/// use kernel::macros::TryFrom;
++///
++/// #[derive(Debug, Default, PartialEq, TryFrom)]
++/// #[repr(u8)]
++/// enum Foo {
++///     #[default]
++///     A,
++///     B = 0x7,
++/// }
++///
++/// assert_eq!(Ok(Foo::A), Foo::try_from(0_u8));
++/// assert_eq!(Ok(Foo::B), Foo::try_from(0x7_u8));
++/// assert_eq!(Err(EINVAL), Foo::try_from(0x8_u8));
++/// ```
++///
++/// ## With `#[try_from(...)]`
++///
++/// The macro implements `TryFrom<T>` for each `T` specified in `#[try_from(...)]`,
++/// which always overrides `#[repr(...)]`:
++///
++/// ```rust
++/// # use kernel::prelude::*;
++/// use kernel::{
++///     macros::TryFrom,
++///     num::Bounded, //
++/// };
++///
++/// #[derive(Debug, Default, PartialEq, TryFrom)]
++/// #[try_from(bool, i16, Bounded<u8, 4>)]
++/// #[repr(u8)]
++/// enum Foo {
++///     #[default]
++///     A,
++///     B,
++/// }
++///
++/// assert_eq!(Err(EINVAL), Foo::try_from(-1_i16));
++/// assert_eq!(Ok(Foo::A), Foo::try_from(0_i16));
++/// assert_eq!(Ok(Foo::B), Foo::try_from(1_i16));
++/// assert_eq!(Err(EINVAL), Foo::try_from(2_i16));
++///
++/// assert_eq!(Ok(Foo::A), Foo::try_from(false));
++/// assert_eq!(Ok(Foo::B), Foo::try_from(true));
++///
++/// assert_eq!(Ok(Foo::A), Foo::try_from(Bounded::<u8, 4>::new::<0>()));
++/// assert_eq!(Ok(Foo::B), Foo::try_from(Bounded::<u8, 4>::new::<1>()));
++/// ```
++///
++/// ## Compile-time Overflow Assertion
++///
++/// The following examples do not compile:
++///
++/// ```compile_fail
++/// # use kernel::macros::TryFrom;
++/// #[derive(TryFrom)]
++/// #[try_from(u8)]
++/// enum Foo {
++///     // `256` is larger than `u8::MAX`.
++///     A = 256,
++/// }
++/// ```
++///
++/// ```compile_fail
++/// # use kernel::macros::TryFrom;
++/// #[derive(TryFrom)]
++/// #[try_from(u8)]
++/// enum Foo {
++///     // `-1` cannot be represented with `u8`.
++///     A = -1,
++/// }
++/// ```
++///
++/// ## Unsupported Cases
++///
++/// The following examples do not compile:
++///
++/// ```compile_fail
++/// # use kernel::macros::TryFrom;
++/// // Tuple-like enums or struct-like enums are not allowed.
++/// #[derive(TryFrom)]
++/// enum Foo {
++///     A(u8),
++///     B { inner: u8 },
++/// }
++/// ```
++///
++/// ```compile_fail
++/// # use kernel::macros::TryFrom;
++/// // Structs are not allowed.
++/// #[derive(TryFrom)]
++/// struct Foo(u8);
++/// ```
++///
++/// ```compile_fail
++/// # use kernel::macros::TryFrom;
++/// // `repr(C)` enums are not allowed.
++/// #[derive(TryFrom)]
++/// struct Foo(u8)
++/// ```
++#[proc_macro_derive(TryFrom, attributes(try_from))]
++pub fn derive_try_from(input: TokenStream) -> TokenStream {
++    let input = parse_macro_input!(input as DeriveInput);
++    convert::derive_try_from(input)
++        .unwrap_or_else(syn::Error::into_compile_error)
++        .into()
++}
 
-Changes in v3:
-- Use the vendored `syn` and `quote` crates.
-- Support `kernel::num::Bounded`.
-- Add compile-time overflow assertion.
-- Add a comment about `#[repr(C)]` enums.
-- Drop Tested-by and Reviewed-by tags, as the code structure has
-  changed substantially. (Thanks for the previous reviews and testing!)
-- Link to v2: https://lore.kernel.org/rust-for-linux/cover.1755235180.git.y.j3ms.n@gmail.com/
-
-Changes in v2 (no functional changes):
-- Split the patch "rust: macros: extend custom `quote!()` macro"
-  into two separate patches.
-- Remove unnecessary spaces between tags.
-- Use a consistent commit subject prefix: "rust: macros:".
-- Add Tested-by tags.
-- Link to v1: https://lore.kernel.org/rust-for-linux/cover.1754228164.git.y.j3ms.n@gmail.com/
-
----
-Jesung Yang (4):
-      rust: macros: add derive macro for `Into`
-      rust: macros: add derive macro for `TryFrom`
-      rust: macros: add private doctests for `Into` derive macro
-      rust: macros: add private doctests for `TryFrom` derive macro
-
- rust/macros/convert.rs | 1599 ++++++++++++++++++++++++++++++++++++++++++++++++
- rust/macros/lib.rs     |  349 ++++++++++-
- 2 files changed, 1947 insertions(+), 1 deletion(-)
----
-base-commit: a7c013f779530190d0c1e1aa5e7c8a61f0bd479e
-change-id: 20251225-try-from-into-macro-1665d0afcfc8
-
-Best regards,
 -- 
-Jesung Yang <y.j3ms.n@gmail.com>
+2.52.0
 
 
