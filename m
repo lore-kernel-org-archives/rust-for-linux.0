@@ -1,16 +1,16 @@
 Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C3F336EC3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BC031ED6B
 	for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 08:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769676615; cv=none; b=JkRHr2Tmzz3b+Moi7jckwOHA+t5MKTeQ4EXQtqrRHzof+sOCDnJo0JRg+764H/017yf+seWsl/m95xXKmveDpzOwiMQeKEX7JeAGhojz90IF+pEr51Qswg/mxOk7Gr+dyh5Hp5zwq3AD4Vt5aYGOk+Dte34TuwldhkUhq2v5Ut8=
+	t=1769676615; cv=none; b=mKfcHCu93knduatIoMGCCFKWEJue7ab3QA5/5jPwHiun3U/ynvLZymU5IDxMGDzDoGMj9S+h/luBBtNJBnn7tkfkd7RekhNpPR8GMaFxcyFDOM5ltKyBcDIjUWvMY6VpBGXasTjyfd5YHNx4Hrnu6ufvATsGnOS476RL+MFUFW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769676615; c=relaxed/simple;
-	bh=B6BX9LAqKeH96zCaktFruwWYpyDs6u+KS/1irGHdG1k=;
+	bh=42ExUEcwpHqQp/+4fltsfJYhB19bOmGoT5X7nlBvvf8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ihNaY+YSyNILj4Fcf9c1QUh4sq3ZNMBFm0c8EOv57GPbFefr6/VAgR73+VU3RUUsNpWwmxyaxvI+fHQraka/4uz85L1QnAUtGJdPV+ludWhA0q9NKhSohuHoVzciL0CXbLOyUqcZQ3hixT1YL56FDRFGH/Q8MtPEaDW6geqCook=
+	 MIME-Version; b=D0xiYGwsJAPapZ+iuAsR+m/AaFrzapl+6TN2tL3CbAnbFf9JmJVYbNs91yK999YoBjSssrZ6ccyd13bgs6Vy9yTu10OU9Xi1Tlwujiu09k3+fjnNoOU104y+oGVgVsNfEc1SNMtSDpI3J0sxcTllGxvStQHlIYBvvE4RpnF98yI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
@@ -52,9 +52,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sanghun.lee@lge.com,
 	seulgi.lee@lge.com,
 	sunghoon.kim@lge.com
-Subject: [PATCH v2 3/3] rust_binder: handle PID namespace conversion for freeze operation
-Date: Thu, 29 Jan 2026 17:41:19 +0900
-Message-Id: <20260129084119.32994-4-jongan.kim@lge.com>
+Subject: [PATCH v2 1/3] binder: handle PID namespace conversion for freeze operation
+Date: Thu, 29 Jan 2026 17:41:17 +0900
+Message-Id: <20260129084119.32994-2-jongan.kim@lge.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260129084119.32994-1-jongan.kim@lge.com>
 References: <20260129084119.32994-1-jongan.kim@lge.com>
@@ -66,108 +66,129 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: HeeSu Kim <heesu0025.kim@lge.com>
+From: JongAn Kim <jongan.kim@lge.com>
 
-Port PID namespace conversion logic from C binder to the Rust
-implementation.
+Currently, when a freeze is attempted from a non-init PID namespace,
+there is a possibility that the wrong process in the init namespace
+may be frozen due to PID collision across namespaces.
 
-Without namespace conversion, freeze operations from non-init namespaces
-can match wrong processes due to PID collision. This adds proper
-conversion to ensure freeze operations target the correct process.
+For example, if a container with PID namespace has a process with
+PID 100 (which maps to PID 5000 in init namespace), attempting to
+freeze PID 100 from the container could incorrectly match a different
+process with PID 100 in the init namespace.
 
-Signed-off-by: HeeSu Kim <heesu0025.kim@lge.com>
+This patch fixes the issue by:
+1. Converting the caller's PID from their namespace to init namespace
+2. Matching against binder_proc->pid (which stores init namespace TGID)
+3. Returning -EINVAL for invalid PIDs and -ESRCH for not-found processes
+
+This change ensures correct PID handling when binder freeze occurs in
+non-init PID namespace.
+
+Signed-off-by: JongAn Kim <jongan.kim@lge.com>
 ---
- drivers/android/binder/process.rs | 40 ++++++++++++++++++++++++++++---
- 1 file changed, 37 insertions(+), 3 deletions(-)
+ drivers/android/binder.c | 52 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 49 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 132055b4790f..41b89accea6a 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -22,6 +22,8 @@
-     id_pool::IdPool,
-     list::{List, ListArc, ListArcField, ListLinks},
-     mm,
-+    pid::Pid,
-+    pid_namespace::init_pid_ns,
-     prelude::*,
-     rbtree::{self, RBTree, RBTreeNode, RBTreeNodeReservation},
-     seq_file::SeqFile,
-@@ -29,7 +31,7 @@
-     sync::poll::PollTable,
-     sync::{
-         lock::{spinlock::SpinLockBackend, Guard},
--        Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
-+        Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, rcu, SpinLock, UniqueArc,
-     },
-     task::Task,
-     types::ARef,
-@@ -1498,17 +1500,47 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
-     }
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 535fc881c8da..4695e459c924 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -5609,6 +5609,40 @@ static bool binder_txns_pending_ilocked(struct binder_proc *proc)
+ 	return false;
  }
  
-+/// Convert a PID from the current namespace to the global (init) namespace.
-+fn convert_to_init_ns_tgid(pid: u32) -> Result<i32> {
-+    let current = kernel::current!();
-+    let init_ns = init_pid_ns();
++/**
++ * binder_convert_to_init_ns_tgid() - Convert pid to global pid(init namespace)
++ * @pid:    pid from user space
++ *
++ * Converts a process ID (TGID) from the caller's PID namespace to the
++ * corresponding TGID in the init namespace.
++ *
++ * Return: On success, returns TGID in init namespace (positive value).
++ *         On error, returns -EINVAL if pid <= 0, or -ESRCH if process
++ *         not found or not visible in init namespace.
++ */
++static int binder_convert_to_init_ns_tgid(u32 pid)
++{
++	struct task_struct *task;
++	int init_ns_pid;
 +
-+    if current.active_pid_ns().map(|ns| ns.as_ptr()) == Some(init_ns.as_ptr()) {
-+        // Already in init namespace.
-+        return Ok(pid as i32);
-+    }
++	/* already in init namespace */
++	if (task_is_in_init_pid_ns(current))
++		return pid;
 +
-+    if pid == 0 {
-+        return Err(EINVAL);
-+    }
++	if (pid == 0)
++		return -EINVAL;
 +
-+    let rcu_guard = rcu::read_lock();
++	rcu_read_lock();
++	task = pid_task(find_vpid(pid), PIDTYPE_PID);
++	init_ns_pid = task ? task_tgid_nr_ns(task, &init_pid_ns) : -ESRCH;
++	rcu_read_unlock();
 +
-+    let pid_struct = Pid::find_vpid_with_guard(pid as i32, &rcu_guard).ok_or(ESRCH)?;
-+    let task = pid_struct.pid_task_with_guard(&rcu_guard).ok_or(ESRCH)?;
-+    let init_ns_pid = task.tgid_nr_ns(Some(init_ns));
++	if (!init_ns_pid)
++		return -ESRCH;
 +
-+    if init_ns_pid == 0 {
-+        return Err(ESRCH);
-+    }
-+
-+    Ok(init_ns_pid)
++	return init_ns_pid;
 +}
 +
- fn get_frozen_status(data: UserSlice) -> Result {
-     let (mut reader, mut writer) = data.reader_writer();
+ static void binder_add_freeze_work(struct binder_proc *proc, bool is_frozen)
+ {
+ 	struct binder_node *prev = NULL;
+@@ -5717,13 +5751,18 @@ static int binder_ioctl_get_freezer_info(
+ 	struct binder_proc *target_proc;
+ 	bool found = false;
+ 	__u32 txns_pending;
++	int init_ns_pid = 0;
  
-     let mut info = reader.read::<BinderFrozenStatusInfo>()?;
+ 	info->sync_recv = 0;
+ 	info->async_recv = 0;
+ 
++	init_ns_pid = binder_convert_to_init_ns_tgid(info->pid);
++	if (init_ns_pid < 0)
++		return init_ns_pid;
 +
-+    let init_ns_pid = convert_to_init_ns_tgid(info.pid)?;
+ 	mutex_lock(&binder_procs_lock);
+ 	hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
+-		if (target_proc->pid == info->pid) {
++		if (target_proc->pid == init_ns_pid) {
+ 			found = true;
+ 			binder_inner_proc_lock(target_proc);
+ 			txns_pending = binder_txns_pending_ilocked(target_proc);
+@@ -5869,6 +5908,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		struct binder_freeze_info info;
+ 		struct binder_proc **target_procs = NULL, *target_proc;
+ 		int target_procs_count = 0, i = 0;
++		int init_ns_pid = 0;
+ 
+ 		ret = 0;
+ 
+@@ -5877,9 +5917,15 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 			goto err;
+ 		}
+ 
++		init_ns_pid = binder_convert_to_init_ns_tgid(info.pid);
++		if (init_ns_pid < 0) {
++			ret = init_ns_pid;
++			goto err;
++		}
 +
-     info.sync_recv = 0;
-     info.async_recv = 0;
-     let mut found = false;
+ 		mutex_lock(&binder_procs_lock);
+ 		hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
+-			if (target_proc->pid == info.pid)
++			if (target_proc->pid == init_ns_pid)
+ 				target_procs_count++;
+ 		}
  
-     for ctx in crate::context::get_all_contexts()? {
-         ctx.for_each_proc(|proc| {
--            if proc.task.pid() == info.pid as _ {
-+            if proc.task.pid() == init_ns_pid as _ {
-                 found = true;
-                 let inner = proc.inner.lock();
-                 let txns_pending = inner.txns_pending_locked();
-@@ -1530,13 +1562,15 @@ fn get_frozen_status(data: UserSlice) -> Result {
- fn ioctl_freeze(reader: &mut UserSliceReader) -> Result {
-     let info = reader.read::<BinderFreezeInfo>()?;
+@@ -5900,7 +5946,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		}
  
-+    let init_ns_pid = convert_to_init_ns_tgid(info.pid)?;
-+
-     // Very unlikely for there to be more than 3, since a process normally uses at most binder and
-     // hwbinder.
-     let mut procs = KVec::with_capacity(3, GFP_KERNEL)?;
+ 		hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
+-			if (target_proc->pid != info.pid)
++			if (target_proc->pid != init_ns_pid)
+ 				continue;
  
-     let ctxs = crate::context::get_all_contexts()?;
-     for ctx in ctxs {
--        for proc in ctx.get_procs_with_pid(info.pid as i32)? {
-+        for proc in ctx.get_procs_with_pid(init_ns_pid)? {
-             procs.push(proc, GFP_KERNEL)?;
-         }
-     }
+ 			binder_inner_proc_lock(target_proc);
 -- 
 2.25.1
 
