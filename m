@@ -1,91 +1,142 @@
-Received: from outbound.pv.icloud.com (p-west1-cluster4-host12-snip4-10.eps.apple.com [57.103.65.231])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3282136BCEF
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 23:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.65.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73AB36CDF1;
+	Thu, 29 Jan 2026 23:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769728235; cv=none; b=Sel6PkXHLi7hdYHdY7n7lUfQMIYABJmFYUeCCLYbB2u+xnZd3Xhq00r5NI6BVCUn006WuV2nGUoYNRvA46043nhO8Z8LF7vl78a0MkLSumMO8S6h4ArmvwPMtdWTQJARBPr8ZMMyRoq39i9D/6ifiGcC26BYj1UQxyRRV5dvc0I=
+	t=1769729143; cv=none; b=C5G2eWXmfUXhIoSojHZFUB6fZrj7pum4g4unAbycXs1cpEkw7v9Nd7gMSDkeG2ox24XnugXzjUE6NUjewNzRKX61yy8RVhqlCBvHWFi7NxpmO068YvcZKFj9UGRTAaUgO0KIMcxH45oiFUctN+9+AU3EW/7H9y9xYNzFLdi61Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769728235; c=relaxed/simple;
-	bh=u2wAT2vhZjFOeW4aRg1F0RY3rFtcPkJ5mtD+8967/8Q=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=MhCIkyot22/pABijH7vb475TLN+yWNiP7BZFZ8TPY7uWbiSeAQOstRl4e3h7UlhhcYsfs4zl8fLJGv6uGGM0f23bi2sZ5SVDFq17iRshyKPI08wA4lUI0UYvpOcDj1SEcUe41whfP4+alqZZrV1nuGR7jwWr8JrKxplAHg6gGUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=F6sf7Omq; arc=none smtp.client-ip=57.103.65.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
+	s=arc-20240116; t=1769729143; c=relaxed/simple;
+	bh=3+xik+/x6pFcQMFxG5QqN5mR1gL6yX1jrYgnP2VQ1dA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nQyLzx/gc8apUh2qyvqScKVE0ECkEwUOfVwn87Ktm8hyebJ/gsx8yIapm+heI8+IOxIDfwRcAPdKk7YOvnjxscRltjIOJJ/+Y+epvt3il8hDjL/KHN/KZXgK3UO+ApgLnaN+Es/mDlZJ7WtRQ8r4iLtQqoIoexrzGpHbdia/XN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LgXJgQCd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="F6sf7Omq"
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-10 (Postfix) with ESMTPS id 656A21800F8C;
-	Thu, 29 Jan 2026 23:10:30 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1769728233; x=1772320233; bh=ky3bLQLZsL5Leo+0TADMKO7dLRtrhwP0ahyukbd9lYc=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=F6sf7Omq6+DagJShUbK0Wmb0q6k4nvbSbfQ2SchI3tBEr7q82vUT/1uNh7NVHJeeHzBCmwQWFJGlq9oxZk/PXIj7HuYU8qjQD7q423o15l49k90g2hg2M6xjKYup+8yCQAj84fecZIC8pomqqslOx9n2f7FitRQVk4s6dJfKCEAot4y/Yjpwow+vo68jVRxUglFejgIORo6/yRBHZORpV3O+Q5T7DoBNE/TmGdqXZzcKj1I429QL8E4uVNdghQN0P9bVYyps7RrJwOQ5XQw4fRgMjrBR4RlYBPRuQNCRaroQrqo0COW1QRysjOwoP5BaQIOq7LWeXV3FRGRQ+Yu5hw==
-mail-alias-created-date: 1769500909675
-Received: from localhost (unknown [17.56.9.36])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-10 (Postfix) with ESMTPSA id 19A7D18000AB;
-	Thu, 29 Jan 2026 23:10:27 +0000 (UTC)
-Date: Fri, 30 Jan 2026 08:10:26 +0900 (JST)
-Message-Id: <20260130.081026.1940544935415358894.fujita@bee>
-To: ojeda@kernel.org, gary@garyguo.net
-Cc: fujita.tomonori@gmail.com, a.hindborg@kernel.org, aliceryhl@google.com,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
- lossin@kernel.org, tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] rust: bug: Support DEBUG_BUGVERBOSE_DETAILED option
-From: FUJITA Tomonori <tomo@aliasing.net>
-In-Reply-To: <20260108124240.239a5338.gary@garyguo.net>
-References: <20260108013350.2880613-1-fujita.tomonori@gmail.com>
-	<20260108124240.239a5338.gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LgXJgQCd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C9AC4CEF7;
+	Thu, 29 Jan 2026 23:25:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769729143;
+	bh=3+xik+/x6pFcQMFxG5QqN5mR1gL6yX1jrYgnP2VQ1dA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LgXJgQCduBviX6Pf5XMfcb9aW6ykHIkhl0Z6Zjlkw96jyKTrpGQwQA8tuDCuq6bmL
+	 rZ9RavnLNAyBE2rnhO1yAIoE7K0XaC3jPEBLk6gqw2A9HkBV1oZ7x/hijwzaR5urQE
+	 qVwBpVXIp00grEZzG0WdscxJ+dtgADy1weesMNqVq2q07mYMrMScyQzvoBYt1FbVQK
+	 tb/MuuVq58SjwOeMt+nsTJRB+V/oAeYWkZpxwgM4xegcVT4tQIftjzWCtRqC/0Aj7b
+	 Eqn2khyMx/cJdgbqR3TWoXRiRKLOywiAQETfK/IPsskVw3VSiw9tz2rE2cSS9vyR9n
+	 6QCROt0qaTMfQ==
+Date: Thu, 29 Jan 2026 16:25:35 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Charalampos Mitrodimas <charmitro@posteo.net>
+Cc: Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>,
+	Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Jonathan Corbet <corbet@lwn.net>, Conor Dooley <conor@kernel.org>,
+	Mingcong Bai <jeffbai@aosc.io>, Han Gao <rabenda.cn@gmail.com>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Jason Montleon <jmontleo@redhat.com>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 4/4] RISC-V: handle extension configs for bindgen,
+ re-enable gcc + rust builds
+Message-ID: <20260129232535.GD844102@ax162>
+References: <20251230-gcc-rust-v5-v6-0-2ac86ba728c8@isrc.iscas.ac.cn>
+ <20251230-gcc-rust-v5-v6-4-2ac86ba728c8@isrc.iscas.ac.cn>
+ <87v7gk8r5x.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI5MDE3MSBTYWx0ZWRfX3ppDIFmFDXyq
- 4izx/HfXvCegH3v7mT6JRMZoNLUmTz6RbJ7WEgfR3CnFJGNtcMPFfHq+leWSOa8x34FqxtzQ8PL
- Qsc7JtrrmRI5nmv9WRQAG4bQu0qnaeH3os8YTWY6d4KmboBlK3aV8mXJRMqSlX5NR05/tL9xc/A
- 5eIvfZRRgEAT0aQc7lszxbxnNpNvkuNtknAm3lU1sXEBKp9ZTB/B41Ub67dy1pfSMsTQ9yaebsy
- 5vIwB0CUpFPJVg4yFpKfylIbuHfqZ62hR2R3dZ6NsjeavTIXYcRn8rYADBINyxbB2RcH2ltL5Ai
- WmiS4Mw7v02aAr+GdEMCUQcHa66KCzvI4iOHmpGMwxpmL8gWigPRoE5ikBBTSE=
-X-Authority-Info-Out: v=2.4 cv=FqYIPmrq c=1 sm=1 tr=0 ts=697be8e7
- cx=c_apl:c_apl_out:c_pps a=azHRBMxVc17uSn+fyuI/eg==:117
- a=azHRBMxVc17uSn+fyuI/eg==:17 a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=_2yia0w1AAAA:8 a=pGLkceISAAAA:8
- a=C4QlOmdVP5ocQQY890EA:9 a=CjuIK1q_8ugA:10 a=4yAS8WwzZ1jAEY03B-5r:22
-X-Proofpoint-GUID: 0S64lgb03JLJULxgNMZ1OaPN7otyvScU
-X-Proofpoint-ORIG-GUID: 0S64lgb03JLJULxgNMZ1OaPN7otyvScU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-29_03,2026-01-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- bulkscore=0 suspectscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=531
- clxscore=1030 spamscore=0 mlxscore=0 adultscore=0 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601290171
-X-JNJ: AAAAAAABoGzwOnbRe7DNUp/q9YLXsD1HWuBeOfkDD6Z3On/eCSpJWV9+o0WGWVvnXQroxgKDqjOGRdDuHOmVrsekwcRtFrG6R9qn76bav/iT+saXoWdEVeH9Ka6F2NNQxHugoTpN8xbI019szlNwuet8ChBVMU7dnBIo4ZNTQ5p0OjMcJni7QMUNVz6oWYkYbZ5R0MyaLsR1WCTQB1vPEAmCcaTY2WPg0nTXv/uSQjpx6rwMMtFjUAK0Fjt+axf/plA+OtsDv8JWkN9etu5lvWh421WeU1i4OETU4N1jA4vtx7dt/lQLumDTzyMVskURfdko3XsCl1OhsUVkkx4vuENmweLRPXpFdCFGaoHDM6dMAObzXbXsiyu3ptHOqN8rs0u71KYHw9qWoCs4aJGkPYGgT0N+jPOW91takoxseqt8KfPCKFWNSIpQ2jDnh52hHIzLhqxdyeAvQy9CU4d2s7HUdA9FeKhRV4HK82Ul9HGONeVdEv7+xiYXxdCDCymt2W+s2lJ2PJzmUQzD9d4GNBw1KPiTfeRH2hMV755gugqrq3hIr7YYcvB4sUs9Un6ezl1qJBBS83iv7//YuPWgj/Hs6DK0a+uJWKNyXc78Hr7bZgTxBqcWv0VSwA7D2VD06L5P94yof3g5wphGlfmhmgIq2I1yjldphRqLB51+SvGGx2IGp8GlBMh5RYvXTMeq0ag4G3h/lgy4HTLKfN5KWoqs5LjYjtSSSDX6P6KYZJYKuY4gGr49tecbxsinZ+HnEvjWvSSZNJQTJniqS8Y=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v7gk8r5x.fsf@posteo.net>
 
-On Thu, 8 Jan 2026 12:42:40 +0000
-Gary Guo <gary@garyguo.net> wrote:
-
-> On Thu,  8 Jan 2026 10:33:50 +0900
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+On Thu, Jan 29, 2026 at 01:49:56PM +0000, Charalampos Mitrodimas wrote:
+> I'm under the impression that the `!RUST ||` guard here doesn't
+> actually prevent the `$(bindgen-backend-option,...)` call from being
+> executed. `$(...)` shell expansions should happen during the textual
+> substitution phase, before symbol dependency evaluation occurs, check
+> documentation at kconfig-macro-language.rst lines 228-229.
 > 
->> Make warn_on() support DEBUG_BUGVERBOSE_DETAILED option, which was
->> introduced by the commit aec58b48517c ("bugs/core: Extend
->> __WARN_FLAGS() with the 'cond_str' parameter").
->> 
->> When the option is enabled, WARN splats now show the evaluated
->> warn_on() condition alongside the file path, e.g.:
->> 
->> ------------[ cut here ]------------
->> WARNING: [val == 1] linux/samples/rust/rust_minimal.rs:27 at _RNvXCsk7t4azzUqHP_12rust_minimalNtB2_11RustMinimalNtCs8pcx3n4
->> Modules linked in: rust_minimal(+)
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> I did this test:
+>   $ cat /tmp/fake_bindgen
+>     #!/bin/bash
+>     echo "[BINDGEN INVOKED] $(date '+%H:%M:%S') args: $@" >> /tmp/bindgen_calls.log
+>     # Call real bindgen
+>     exec /home/charmitro/.cargo/bin/bindgen "$@"
 > 
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+>   $ make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- BINDGEN=/tmp/fake_bindgen defconfig
+>     HOSTCC  scripts/basic/fixdep
+>     ...
+>   *** Default configuration is based on 'defconfig'
+>   #
+>   # configuration written to .config
+>   #
+> 
+>   $ linux git:(master) rg CONFIG_RUST .config
+>   ...
+>   283:# CONFIG_RUST is not set
+>   ...
+> 
+>   $ cat /tmp/bindgen_calls.log
+>   [BINDGEN INVOKED] 15:44:44 args: --version workaround-for-0.69.0
+>   [BINDGEN INVOKED] 15:44:44 args: ./scripts/rust_is_available_bindgen_libclang.h
+>   [BINDGEN INVOKED] 15:44:44 args: --version workaround-for-0.69.0
+>   [BINDGEN INVOKED] 15:44:44 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64imv
+>   [BINDGEN INVOKED] 15:44:44 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32imv
+>   [BINDGEN INVOKED] 15:44:44 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zabha
+>   [BINDGEN INVOKED] 15:44:44 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zabha
+>   [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zacas
+>   [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zacas
+>   [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zbb
+>   [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zbb
+>   [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zba
+>   [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zba
+>   [BINDGEN INVOKED] 15:44:45 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zbc
+>   [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zbc
+>   [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zbkb
+>   [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zbkb
+>   [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=lp64 -march=rv64ima_zicsr_zifencei
+>   [BINDGEN INVOKED] 15:44:46 args: /dev/null -- -x c --target=riscv64-linux-gnu -mabi=ilp32 -march=rv32ima_zicsr_zifencei
+> 
+> So, CONFIG_RUST not set, yet bindgen was invoked. Not sure if that is
+> intentional though.
 
-Miguel, any chance you could merge this?
+While I have only recently adopted Kconfig, the section you pointed to
+in kconfig-macro-language.rst makes it seem like this is expected. I
+read that to mean all shell commands are going to be evaluated and
+effectively turned into "y" and "n" before dependencies are evaluated.
+You can test this with something like:
 
+if RUST
+
+config RUST_FOOBAR
+    def_bool $(bindgen-backend-option,-obviously-not-supported)
+
+endif
+
+added in init/Kconfig and running your fake bindgen.
+
+While this is obviously a little wasteful, I suspect this drastically
+simplifies the shell commands part of Kconfig for no change in runtime
+behavior.  The way that the dependency is currently written ensures that
+either the result of bindgen-backend-option matters for the sake of
+saying an extension is fully supported by the toolchain (when Rust is
+enabled) or it does not matter (because Rust is not enabled).
+
+Cheers,
+Nathan
