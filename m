@@ -1,53 +1,53 @@
 Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013068.outbound.protection.outlook.com [40.93.196.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36D634FF61;
-	Thu, 29 Jan 2026 13:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5216C308F05;
+	Thu, 29 Jan 2026 13:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769693560; cv=fail; b=fh7b8VbB5j3BCuCynf5uWTUKTU6D3z9HVK4UVP5ThJ+lpmThw45FG81FfWt6N4Lh6UL2i8Zwp7FEJd96CbQWK38d+JTyRf1qbMXchxVjm2z8SH/as26yv7FzyE8/uD1IDWQZ3xuHqUkTVvkydnmi9O6sxojTykNFNTe6gjmXHXk=
+	t=1769693563; cv=fail; b=p8YBso2mYbdp7ODmzmJyeXfkEgX1eaFpkttEncf5054DCwh4NSjjpXCyA6ebLhuBSaDfPY/+Cyz6mPS8M8EumbYMV0WZqjlYCv2lBD1qxD9DKZKnH5zwK2x8vgRYLSRxqxnuLOgNgYaCZVXytfmRboYGjaQKVpHXRl6l485H7YU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769693560; c=relaxed/simple;
-	bh=6MiXBt4lDx3bpMkX0Lw2s942vGdsWZGwxkBHCJOfzCI=;
+	s=arc-20240116; t=1769693563; c=relaxed/simple;
+	bh=YQeamm+I9ktGWOVTJVevD60gSoea7A26viD2qLCcy6s=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=FznbLWsHcEEq2tQjIdvj08GK1Var1sOqrSSSJSaiEw6WZR3oNy0PaA1kz6GwKD99tbLalvROfL7h4TgCDPjJEW2riDDmWg0TCdWVpMRRHJE8J4MzbmwzuA0ARbcteyNJMqDGFHI719BdZQyTwQqM/haXWjagxRjloH0TdA3O7SQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TCOL4Nux; arc=fail smtp.client-ip=40.93.196.68
+	 To:Cc:MIME-Version; b=OXUPEPw+VPRKpTAzvao7nU+PtOYcXjyo3gF9F1cpNQLQ2AKQ/dJmeG2wDiYgAR6tO0ND4WT3VduovNyo/RcMGodZ8bg64spUMEVSzvo+wyVTA9W6/h+P3f4xo70oMtZGNwcGuRIZ6xQcWM3D5jWfTjFLy+8opQvpzS2oD2dsvts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CEUWaFpu; arc=fail smtp.client-ip=40.93.196.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TCOL4Nux"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CEUWaFpu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uqghel9EmOSnxnH1i9hmYwtO2lKp1cLk5YcWYRypOd4Eaqc9MK+GSO3c60i6Fvjizmx6+zsefncEgXkRHQOz1mjtuTk2evZuePTgvehZP/aNsjhRp90+KadHdiTtycDtu4CF4JwDTB9L2DXuxNeLtbG44ej+JGpryh9RZw81FkzXjtWBRSTg/WIOruj58bYUOBxdfKR8SbW3Io4dF0yKOE7TWM0UqXFneMxad5ikDWk6fcMRdpXZWhW91pXY8JWSVu0vIdaKzmp80XD7jCw4cjHNwq/41NIUHm6WTdTuEv4H53RhEH5Rgs3kG5NZJ04yqx9w1Zp8qI9Ps93KMjYycw==
+ b=waLjpblkpdEUQPw2OaODyKtAb3hTvrixn6sSej4rAvUVRAJZG4YcSzpeNurASvrnvJILu9RzJiF0ZXbUehst5ORDF+vmLdGemIf2mwx3/fLqeyZt3C7biidxEtJqnoicqgrskWNo8ycd5ANWUou2Oj2ECn6bSL72eC9Fqds+1ArBjV3m3gF9aml06+zejp2c9ysehNbYlL5+WBNKgYcsHf3CINEHz9bMJFcxW8pZBCebq6/LHynP8bYhCAh24dBv2s3aT7ni5sjE84bCMZgw8aMu7i4BRJYWVZ8MWhx2gR8PW74qRgHk67Kf/HwrmQ4Hnhokh/r54V+g+yqf9ww+Rg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=erNDtKyH6VHGO5jv2oZNK/1Ju4ma6zgs1RHsz7tXJS8=;
- b=WZZD3nXhcOch7xFjTuyLO95qo3y4Nb3tO5urEk+oP30wnBNY1DcLGGNvg24pf5iCx7SG6c/79Ok4v9k1+wnGjPe4LDChcAtHzLU6+5DWeLNynJhbthuw4CPKCcbp9tjduLO9ti9DqSIxuA3seO2eVhi+NyqpgNKB1dKJ+MqHqDBPM/k2N06ebgHDZP+DmSU3im7G4KwISrR9N7JGpJWktQ/L8A0jI9RYjeI1+dA0rRruMfL7Tn85JQBPD5aAth42W3GHPYuYe3dgahFyHgXv1O03VfWWkq4xnFqQxUqEGpn1cu9C+RT3ASpF+XLoMHvMe6Ct4C98M+ubBYqxOam5bA==
+ bh=ombNWhgee0xS7DHVbt6S18r+qf/hAAFOavMOSs7QMCo=;
+ b=vywMifpuYwmb7QGU39OBWwkTurbbWxSEmW4ImnZGybWxFwb/Ph9uW1XyQt/T4Iaz3KdI0kVLJ/awTlci1vXcHqLfJh883CcQ0UXkseiEouermagVQ8SkosdTmPKWzIlz0gPuT7dsNz2GwU4WfgXFEhTX55t+H9bkOniH4J4dk/sYFvDvsG+uxzuChxhTaxuSY4xy4vBEpmLR1554JUE9mNShlBXDjQtpymwdZniLXkGNoEBCoAjaxlktMdWFPv3mnyMYeLf4zjAE9TxDHzb0Nhh62Cpiqg+F1s1jhCrfKI/oUbdz7st1L8gXPQH2dW0tsNZuwPzDjKMIhdIoFc7VnQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=erNDtKyH6VHGO5jv2oZNK/1Ju4ma6zgs1RHsz7tXJS8=;
- b=TCOL4NuxBXHsSJFcF6J71hSy1bIP6CXLaAzhvH2rzJbiTYeScoBh01B+L8uXnkZG6Ok7YarmHV6tXYCGgUrG7uP6MPGU1mgQEk1IQPzmalSexWv3kav2vrdRcb5oOqU9BcIIYGwuvjEKm6PU3knYz9YrRiIQMGEbYQeqdbQI5Upgt8nCodnJT6f/pZ5cd2tCrr8FFVcMqxV7hpk36qlQ1adO+crqG/z6OieopJmhsHA68vmNyljQFY6AZwg68Tg9dN721S1/9LSJBMNtihgHai8nL6iiHOrFp7C+GGfU4JxXNAvm5tOI7TGgCxOCYU9F2riBjFlCGdzyVxm+XRZbAQ==
+ bh=ombNWhgee0xS7DHVbt6S18r+qf/hAAFOavMOSs7QMCo=;
+ b=CEUWaFpugY4OOSGqSMN6JnSuII3gFuL3XKZwxj4Tr/kh8nOoa5dLIEpxyFXPupbH6p7/URj70ycsIR7UZMhjOFB5o5Up/Ft0d/2L4irdFn0KHzKD9feIvxk5xWdJSry6oYeJActW1zevU6H06PZQkaXzk7X+TSHPPQg6zjDwg6bSACyAw2LfPxpqj6dTwi/LuKattA6GvFh9oiZP/MpAXpQOCnXR2jfslpJB7wOsw6pM7R04MuulqrCihoApLAy/9fpuxHPKLMYHyxXCoZ/awbkHs78s7rM9FAJC6uD2hV33SZ/eMN/zcoSu04r65jKZQ1IPRmrT1jhqVl/VImm9xw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
  by SN7PR12MB8146.namprd12.prod.outlook.com (2603:10b6:806:323::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.10; Thu, 29 Jan
- 2026 13:32:36 +0000
+ 2026 13:32:32 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9542.010; Thu, 29 Jan 2026
- 13:32:36 +0000
+ 13:32:31 +0000
 From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Thu, 29 Jan 2026 22:32:06 +0900
-Subject: [PATCH v5 6/7] sample: rust: pci: use `register!` macro
+Date: Thu, 29 Jan 2026 22:32:05 +0900
+Subject: [PATCH v5 5/7] rust: io: add `register!` macro
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-register-v5-6-c4587c902514@nvidia.com>
+Message-Id: <20260129-register-v5-5-c4587c902514@nvidia.com>
 References: <20260129-register-v5-0-c4587c902514@nvidia.com>
 In-Reply-To: <20260129-register-v5-0-c4587c902514@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -63,10 +63,10 @@ Cc: Yury Norov <yury.norov@gmail.com>, John Hubbard <jhubbard@nvidia.com>,
  Edwin Peer <epeer@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
  Dirk Behme <dirk.behme@de.bosch.com>, Steven Price <steven.price@arm.com>, 
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Alexandre Courbot <acourbot@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
+ Alexandre Courbot <acourbot@nvidia.com>
 X-Mailer: b4 0.14.3
-X-ClientProxiedBy: TY4P286CA0028.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:2b0::10) To CH2PR12MB3990.namprd12.prod.outlook.com
+X-ClientProxiedBy: TYCP286CA0361.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:79::17) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -76,161 +76,1428 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB8146:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7313e742-a38d-408d-9c48-08de5f3add1d
+X-MS-Office365-Filtering-Correlation-Id: 76d7c65a-163b-4d0e-23db-08de5f3adabb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|10070799003|1800799024|7416014|376014|366016|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?czJrL2VrdlorZTVUaEt6b3lRVWxLeFpyQnRRd1F1TVBYRmhFOCtqM0hvckRX?=
- =?utf-8?B?cGhiVFQ3UWVrL1hmUmdsaHI3dGJnSkxPOHdKNlNieVlnaTlzNHJmY2JxaEZL?=
- =?utf-8?B?SndST2dVYzQ5MFpOZG5mTXhzZDNMT0g2SWhFcGRNYUlvZ0p3MTV0bUlnM0pG?=
- =?utf-8?B?WHNBUE1xdDhKQWZLTEhlRW1sek9nWllhWCs4M1JkQ3lxQWRQa3hvMDJZNmg5?=
- =?utf-8?B?OUluemhiWlh3UDRkdWNtbkt6bE9oVk55V3Vta3k1MHI0VkFQVzhaWGlWeHZS?=
- =?utf-8?B?SVNUT2NOWjBxWnRGZSt1ekg5NFNQTXgrRkZPRys1akllYXBsV0ZWMEFHMTRK?=
- =?utf-8?B?Q2dIK2luTkZabkhqM1FlSnpBZlBZQ0FHYW51ck8wYnM0WUErOFNwMXVSWGNr?=
- =?utf-8?B?ekFkd2llMlNwd3RIdFpKbmhIbCt3SFBVNDFsdk9LazFUUE5FT0dUWS8yM2Mr?=
- =?utf-8?B?Wm1YWVFxUXRoNWtUbnk2U1lBUWlMTkJFK1pFUDkzVXBhRXpvSmF3K1I3MklE?=
- =?utf-8?B?ZXMrTHJxc2l3MVBxSHc4dWhHWEFPVGRqR092S3EvUFlFWUxjVmhKZzJQNjA1?=
- =?utf-8?B?T3lPdjU5RmQvbjA4dWdqOElCTXpWM2ZCRzNwTEtkdzBNSzVtWC9Rdi9PVGl4?=
- =?utf-8?B?RXJ3Szc0clF5WUJDdFlhMGdLRnJ0aEViQitrZGo1VjBjaWNVTFJodDBnaXUy?=
- =?utf-8?B?WVU5NUhPRXExRFpFTEFwZkhKaEZBdWpSUjhSdkd6cGlIZ1ZtNFAyMG9yNWlU?=
- =?utf-8?B?ZUxFczlOWGliWm14UWIydG1JdjhjSXRZSTBRQk81WEk4Z1RWUUp1WlBSZzh6?=
- =?utf-8?B?SUtodUxuSUxPdTZ1ZU81SmpQZ0J3V09CMi9iSVIvVjJxenY1YWNhckNlQUZL?=
- =?utf-8?B?NG9EMnJ1bW5xZ3FmN3RYRGNKWXFsOGJIMWphRHVzTXhjL3ZGWFd2RGdnaTdF?=
- =?utf-8?B?Yzk3Mm5ORlEzOTdobkNNVlVpTmpMNHhrRjkvSGo4OE94bTNHZHdOVU42SldW?=
- =?utf-8?B?MzlFUlJRTGY2WlNkRlBOS1hvUk1oMXZNWFZteXk2YWhmVTZaZm1xYXkxSGFm?=
- =?utf-8?B?WUdaQWJsMldMejVVOE9iN3FleVdNNWVla0RFYzVZT2hFRUNxT2VSR1FiQnZZ?=
- =?utf-8?B?bEpRUUlDUnJQYkEyV2Jwd3RKT1dOdlp3MGhvZzEwY3RCS0lydXpscVErUHdl?=
- =?utf-8?B?NEpGcjc4eXlTajFEWDZhWEQ2YitqY1U0TmMzVzdTS2E5cVcwaHRPYkx4V01B?=
- =?utf-8?B?MVZDNk45a2FLY0NsZ0NuUmdxRUQ1bjA4L012YmZIOUloclQ1OHp1bHlJS2dx?=
- =?utf-8?B?UjUrckZmcnRNeGZxR2RNUHNIZk5yUGwxeU1ZZXFteS93UHFXQUVOcSt2VWtJ?=
- =?utf-8?B?TmpabEpXTG5lR1ZKN2xXZ0l6dmtHbzRXWi9uU29UQjB2THM5bGpIbVdyY3Bm?=
- =?utf-8?B?TWF2aFF1VmtJcXRmRzhkL0pwWmNYaW1CdVp3enFHS21JM0R4dEprUy9sYVJ2?=
- =?utf-8?B?M3pTSkFEUDl5MXAvSHMxdzV3SlpEMi93MlpRVXNyZW11d2YwbTdHdEJYRGRC?=
- =?utf-8?B?bFpPOHU3VW52bGMvZnBWbGF4eWxITTJSYjh4N0tXL3M5THN1aFJvNXRwU3c5?=
- =?utf-8?B?K2hNSHVvYXFPYWIxVUIvd0tHblk5Y25tdk9hK2RPNkVySHpDYjBkZDcxUEph?=
- =?utf-8?B?bVRoRVUzSHk4ODNqQ2FUTWR3Vi9yTEJnaTIvUTFxemM2ZUhVa1llMFp2djl2?=
- =?utf-8?B?WHViMWorTnhua2I0WitzNEM1SXpYa3JWWkE0QVFtd3gxUFBMVSs5Rlg0TmQz?=
- =?utf-8?B?cGI0ODkyei8xczJlTnNlc1Nvek9tUGEwNHMrZTJKZDNKRi9GYnY3eDBxWWdm?=
- =?utf-8?B?aXNZSDdNSkhoLzJuSWlQTzBUNnFuT3hXeEdCeUR2K2U3aUNPdGpTMjJpODQ2?=
- =?utf-8?B?NmNTbHJPZWdKZmlhejdiUG1LektwcVY5SnVNaEtYT3hSZmtBYnU3NFp3R0VM?=
- =?utf-8?B?enVSSDJQSWZmYkREWUhTMGVNVzdZQi9XeTQxQVBVNklMNTJmNS9HeVhWZlV0?=
- =?utf-8?B?RE9NZDJoMkUvWjMwdzRRVzdHeEdPVlp6WTZFUksxd3hWcnBzZStMSGZxRFFP?=
- =?utf-8?B?VVhIcVlmRi9reVRvU3Y4ZXdGOGRBenpMZXZyVnExR2lkR3JvOFZ1NG5KZi9P?=
- =?utf-8?B?a2c9PQ==?=
+	=?utf-8?B?YUtqOHEzR3ZTZnNrTXMzcFd5TUs1WFErNzcrTDRKcGxtVGZMUVdsME85UzRK?=
+ =?utf-8?B?OFJwQy9VTEdwY3k0OUQ4dHA5ZzFKbk9vUU45bEc1dEFXTWgzYkpmOWxvYjVo?=
+ =?utf-8?B?bXZkTVU5RXhPS0pvNndBc3R2eTFJN1pZY0NRWVNwVHowTS9hd29xMW9HOHNY?=
+ =?utf-8?B?Z0dTWDZxcjRuYURDRjlsbVFLczlPbmh5RnhpM1VobzFvNTBENTNTZnlIZ0xY?=
+ =?utf-8?B?WGlva3RkTDl2KytNMmpqMXBmbGxNeE1FdkRuRHpkd3J2ZHdOYzAyZCtXQkdE?=
+ =?utf-8?B?SjM5dDAweUdMZzhMaC9udHN6RG5OYXJxdk9FdVFzVUpsRnZyd1ROOHJ2aHVX?=
+ =?utf-8?B?WitRV2piaVVUTTA2MUlhOEw5ZUFDNWFCOU8zbElvMHBYUnBnVFREVXh0dWcw?=
+ =?utf-8?B?ZUZGNHNvM0Ixbms5eGpqVjdWTzBiUjY1MUZYaytkK0xRRDE4WXRzTXVOY2hx?=
+ =?utf-8?B?cW1vT0RrdTI3UDdrMlRXZk1XZFRDUnJxUGd6OElXdW5DdnlpcVVTa09sQnhQ?=
+ =?utf-8?B?VndNNmJtUi84ZFZLekRoWmpZLzZ0eWtsd2tSWjFtMnpWZUprYm4rVytaTDVP?=
+ =?utf-8?B?VUNBUUROQ0syendjOU1XalhxN3lEeDMrZmhkbUdCcWVxZlJkVEl3VU9lc0ZR?=
+ =?utf-8?B?c2ZZTjByUFZwR2w5WVJWNlNJQ1V4emMwSVkyMlpFakZoV3ZKRGJkLzloZDA1?=
+ =?utf-8?B?NDZCOExkMytkSGlUUkFxc3EvMXRNU0QvM3J1MDc2RU1RWUFJazF2NVk3Q08x?=
+ =?utf-8?B?N1BIWUVIVDRVOUpSdkRtVTZIV1JpRFVCSWtjMUJrMStPaVYzMWJyckd0REFw?=
+ =?utf-8?B?clNxOVY4a2QwZENFTTNDdXhLVkJjcFFlc01yVmEzeThzUFpIbWZDS2RFRm1B?=
+ =?utf-8?B?cStuMGRobXJ3Rm1rL0RtbzdBSVhGMDg2NHhXZllBOUNWVVZyd3NWNkNqcWdQ?=
+ =?utf-8?B?R1UwSWNrMC92bFBQVyt0cnlBUDVFUUN5cjNOb0F0ZjZhcHhJcENvSGFtZlRI?=
+ =?utf-8?B?TUlTSzRJcGYrTkNjbG13UDF4YUpmNFZydExNQ2I5bEJRdU5hbXZ3L0hBNmxT?=
+ =?utf-8?B?OEZ4SkVNWSs1RWRUU0Z3VGZ0QkYrSVJrQzJHeGZUK3VUOW1qQ2lZangyMGI4?=
+ =?utf-8?B?cWs2NVZsUlFlS1NTRFFyQ01hQlByQSt5R0RSdVRKanlsSWJqYzBOQ1pScy92?=
+ =?utf-8?B?akJiRzZmNVVvRjV4V0Fic2ZqOU8rei9JTjhQS2tQS1N3bmpJazBuWEFvVHJt?=
+ =?utf-8?B?WmdDSEdqdnRLNWtRTVNnc2ZFUFhoc3dRL2ZmTVJkRExwWUNFaEVFSSt3Yjhs?=
+ =?utf-8?B?R0Q4Q3VJRGhVTjR1dE84Vm93VVhINndRaStYUVU5Z28xNkVmTzYrcnpiU3Fi?=
+ =?utf-8?B?YkF6TG9EczdVMS91QkROTEN4R2FTQnppaUd1UVMvMkhRVzFhYTE0Y2lkWjRN?=
+ =?utf-8?B?OWVQTzhJMnJzWUxHTGx0enkvK3luMWlKZjllNFpjNVR2TlBNc1RFdjBMajNQ?=
+ =?utf-8?B?S1ZVTmUzTy84YUZrZWp0eTlVT0E4OUtlYVMwSG4rdWQwN0pzaUQ5ZUpVUXZU?=
+ =?utf-8?B?SFh0cDh1Slo4S0dFOWh5emRESFRsVGR6TE5BMkV2V3RKT1pSN3VkNkxNYWRr?=
+ =?utf-8?B?SUNMOGxqSTByZ0JSU0VIM2FMVzlYTnpwbXYyTDBsMHQ2ZlJUbnUrMmh0ZnhS?=
+ =?utf-8?B?RVhvYVRqUzNuU3RjbVdVanR4bllwbnhtdzlzb0YxQ1NYSXR1cXUxaWs4RVhU?=
+ =?utf-8?B?akZUWWZzTWJFS2ZBcCtIUDVlenJhS2ZEY3kyWkJoNi9wMDVYbWM3WCs4cjVx?=
+ =?utf-8?B?dlYxTzc2T1RHRDFlK3d2cEhLK3VTb2h4RmxjYUxoOXRaQ2V4NDVCSUtBcGNZ?=
+ =?utf-8?B?NWN1OCt2L2FPNUxXVWtrbmYzVk13ZEpVeU5pT3BrT1hNeFd5YWo0N0k5akxL?=
+ =?utf-8?B?czZWcEM3ZzRTQTNjd0pZVEtWSzlIWi95bFRXVnM5MUdGcDVvemx5b0Rod2ps?=
+ =?utf-8?B?NE0rQ1gwSk1yTGNQVzI0L3lwUHNhUVpNT3FKRWd3QTNTRTdQaHJxZUpuYkZk?=
+ =?utf-8?B?WFVkTGRZZVJnUFM3SlZXblBaS25EZU9Za0xqTEovNUJnVEp4RDlKcU96czNl?=
+ =?utf-8?B?RTNJQldleDlaSlYxKy9HMWc3dTIvS3k4RVpFVlhtNDIwZW9ycGZuSUhoSkE2?=
+ =?utf-8?B?U1E9PQ==?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(376014)(366016)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dGgyZmc1amo4YlhEYmZsYVNvSkxFa2RWcDBkaC9kcnJUMWlVeXlEOWc2eWhC?=
- =?utf-8?B?ZnJoUzJJNkNHSFVrWmQ2WEZKWjVDWmpYNmhrTllzOWNWbGVrVWJ2UU02LzVj?=
- =?utf-8?B?a0wvRHFwZmFVcXpDZDlSZXIvSUM3NEpsQ2pSRTVWcVBVWlpvNituSUQrVEhQ?=
- =?utf-8?B?T1c4UDdZYkRnWTBzZStoZW5UOHgzS3QwU2JGS3FqNDNSaTArVUFZNjdNeXE1?=
- =?utf-8?B?cGFDWUVhM2J3ek9KUzFWUzNIalUwZkxVY0k2a202Snh4dzJ5Ri8zV0lnQXRw?=
- =?utf-8?B?TDZBU1hyWmtEanB0c2hEa0phZC9XWEVhU2RFODEwb0Jwd25IWURYd01VRlNl?=
- =?utf-8?B?ZHpwTnpTSHhqeFBuWmxHTjJGRnI2QTF6UTZtbEhBYkZpQlJ0TnBxdWRlWXJv?=
- =?utf-8?B?bUppWnltVmlNcGpEbzN4aTkrUTZOQzdjZG9LTTdhSU9QVnZOWEtERmRWWnNS?=
- =?utf-8?B?RzRMZUMxdHNCdHYvNXN6T1hOMXR0aE5IanhCd2wwU2JuaTQzSlZvNEF1MVBE?=
- =?utf-8?B?eXNzNWlTajkrbzNma09FTWZMakRSSFd0Vm12bmNEK3pDRW5pUi9xSCtvdW5i?=
- =?utf-8?B?dmRyZkhZVnYzTzk5V2FUc1JsOXZFZ1R3Q2dZalFmWjVKMWpVbGl5T09jcnpi?=
- =?utf-8?B?RDhMOVEvRzEzTGlFS0ZldkhxNE55MlRYbTh2RFM2T0xGNmF5SFl6WU5NL3hV?=
- =?utf-8?B?NGNOSDBTaVhDZ0lwTjlKS1ZUYjQ1ZTVJaFNmZ0xSR3VETm5IbE16YUc2Q0ha?=
- =?utf-8?B?enBrOUlSSE1tekRsZFAvSVNvTWVrYzZjdVRwY2szbkptK3Y3bEpxWjZDRGdU?=
- =?utf-8?B?dnJLR2V4R2FTY1pqaTRneTJhZy9CS0ZlbE5mNDhKaWZyT3NRdEtoN3NrdEpn?=
- =?utf-8?B?dWE3c1Zpa0JiNnhKRnREcjh3NGsrV2ltUFNDRitvWEdabVlCdFpNcU1TUzQz?=
- =?utf-8?B?ZEhPMjNlZEUyZERhRWRCS3JucW5rdFRQRlg2TDN3UVZrdWxkVHJQQjFidWJ1?=
- =?utf-8?B?cHVlbWU2L0lTOTFjUkN4UXArMVdsamxObUZEYWdBeHUrU2lUOFF2M1dIaVVs?=
- =?utf-8?B?RlBEMnQ5KzlvTCt4dHF5ZWVwTjdBSW85bnBiaFJaZUZnNmh5QUJ0MXNUT2Iy?=
- =?utf-8?B?bG4vU2tIRHcxUThMa0ZNTmsxQ3VqR1RHRzlGYmt6eTV0VER0OVh5NDZndFZR?=
- =?utf-8?B?ZWNvUkJzMkpJb2ZsbHFCOC9DMTFoVHRFSnNlTHRKbnR4RmFwSlFtdTZNT2wz?=
- =?utf-8?B?Ynd0S2M2N2FDUDEybkdibDM1SDZhc2RiM2Y2MzNqSG1sVWRsekYrUnAxdG1G?=
- =?utf-8?B?VkdPQ0JsNmhiUkJGYXFHNEFHR3pMelhIQ2dEK1MxRFYrK0ZlV0ttSWVucnBC?=
- =?utf-8?B?bmJ1NVJCTE43SVlZOXhuLy8zYjdBenBKUWlnL0U4MmhOU0pPbGwwYnVQVlFJ?=
- =?utf-8?B?KzREbFJsaFFtSHRoYnFJYmZnd2tlUkREdUYxR3BDYUgvU0NIL21VNGlCY1Bz?=
- =?utf-8?B?VG5OakNDTUxhMXNESHpVSW9JUVF2NWpRNDV3UkorcjhZb0hLQTVMUVF6SWdQ?=
- =?utf-8?B?WnIwbEdvT1NLUVVEQ1dqaFczR2pROFA0czJMTU9jdS85T3NEN2grN2lUNGIx?=
- =?utf-8?B?eEhvN1lVNlEzY0dMQThrMHNpSTg0TmV2b3RTR0VXS1JwNDVxV08vdUlkbmZa?=
- =?utf-8?B?OGhUeDc4QlJCUG55SzhtRjF0bEFIVXlEUTRJVmJWYm9ZOU9hcXhnblZkOW5s?=
- =?utf-8?B?dUl3UkdQOEZSWGZRb2FPWHhWOUFLRTFyaXd1Rjk5ZnVxSmFoTldjTlQzaHVR?=
- =?utf-8?B?UGFyeWlaWklFUnNMRk13cXA5blpMWm5NQThpYTJSbnBnUHlaS2hwenlYNnFz?=
- =?utf-8?B?aURYSExpVVRnVmVKamlzNVhrT1RzaDN4SS94VjdDUWFiMWtDNGN0bzJESmk2?=
- =?utf-8?B?WXdRRUE3bCs0dEhPeGxKQmFjOSt4ZjkyclI5SXR6ZXRsazBtY3JIVlp5VW5x?=
- =?utf-8?B?NEVGUm1VbFJTbUdlWEE5Q2lXM3Z3QnMvUjh4Y1d3NWJ6cWZvVEd4czNwY3hv?=
- =?utf-8?B?OUdieGRmOGVEdDBtSVlqMGdpTFhmUTUyUlJDL3pYMFRoOTQ3dG5wOUczTDhj?=
- =?utf-8?B?ZTRRVzFsTVl2Wk9mZW1xeW1SZ1MzZlBkbVRYWEtxMG9yUFNSbGZkR3JPSHRT?=
- =?utf-8?B?enlzWHBYYmpkb3M4OGd5MUhtWnVYQTJoYzVLL0taSXc1OWRGamoxWmFQYWV5?=
- =?utf-8?B?bW5Jci85dWx5TXZkRFNNZGFNSUdYZ1daWlhXRGFiRjdiNkhUSWxzTnZZczFR?=
- =?utf-8?B?ZFJ2T0dzNVF1Vi9GdGtvbWZ6RmxxRTBnODBhd1kvNWd5QnFqNWlrNDNXbXlR?=
- =?utf-8?Q?gsGWFbjQ8+I/S39wBKUjA4iaXLJmR0SQ0SoE5P84wbTfu?=
-X-MS-Exchange-AntiSpam-MessageData-1: FWfBgPonBBfZAg==
+	=?utf-8?B?M1RVRk1wNGZqYmw1TG8rZk1HMFFBdjdLcHNqdDI0S0pnK0s4akJxbE1MK1RC?=
+ =?utf-8?B?bUw3ODB6WU92U2d3c2FLUEdQbVUxdE5lVXFzRkZOOUJBcU5vZDZpYUJIcXRT?=
+ =?utf-8?B?MTJqbXZyVHpySnBSaHhZdjRwdVNkMjIzSHBwU25EbnR1bHFNTzBxdytNQWpn?=
+ =?utf-8?B?UmJsKytUaEkrY1QyZzlUZ2RZeTc0NC9RY3dJa3dLVUZuOHRJcFFSQTNYNUwx?=
+ =?utf-8?B?eHFTdElLQnJubmZwVm4xcmRnaTFvOTFuTlhQdGE4VlJ0ZFAxeUJSS21laU5m?=
+ =?utf-8?B?ZEs5eHZGRFFueVVUV3hneHpkRDlwOXJGb1hnSE4vckxSMXJxNWI4VUZpRVJW?=
+ =?utf-8?B?SGhRR1JITTh1cWQvK3RFblJNTEJNbEtsT3A0SkxTTmNmQ1BnQzFTY0VaeGFv?=
+ =?utf-8?B?RjRta2t1VXdZY3I0MGlCWkpybEFBbmUxc0F6RHZnZU15T2pEYlhlbk51SThp?=
+ =?utf-8?B?MGc0bVRYY3J3M0hwUi9KVHBiKzRha0R4YjZjbktNZkYwTnBSQ3NtVkdqNk4z?=
+ =?utf-8?B?cnV4Y3pRbDZJL0tubGpNaVFlbFFWS0VOY0VBQTBoUlVuK2NlZW9qaktqMHR2?=
+ =?utf-8?B?eW9DekwwZ3orYzZPanhOQ01tQ1JHMUFVVUx3bG01bTZwcWxzZUVHb1RRS29X?=
+ =?utf-8?B?eUdsRTNza004UmppVHZuMjJPMkUxRlBFM1JYRUxVd3lUY1lNMlA1SFJtQ1RS?=
+ =?utf-8?B?S1luRHJ3WitTNlJwd25Id05yWWYrME40dm1sMDl3Q09JYjh6c0JweVBuQnNH?=
+ =?utf-8?B?MVprYnhybUtVbFNSUkFnYXVMOFV3R1BmNnBuVkRES3RDZWp1NnpCZTR4RWFj?=
+ =?utf-8?B?S0g1aG5TWDMrZXAzL0pJTHFVdzlFRmpNbGJUeDhZSHJiUmxENXdqdVM2K1c1?=
+ =?utf-8?B?T3dHV1dIakdZQ1lTVm55SXhKNldVdElJTm5sYmgzUkJEQnBYUDJuMU9CZElX?=
+ =?utf-8?B?d3RqZlF3dEw3Tm14Ym5IR250amFEY1hOK3JibjdpOENMYmJLMTU1ZFhCOS9V?=
+ =?utf-8?B?Zm5uVG5wbklIMDVFN2hyYlRpSCsrWmtTZm1kZWVadTB4dGJpREk3TUN5bVhO?=
+ =?utf-8?B?TU54bkt5OVB5L0VNdTc3UVhqazJSeVBDZ0ZvcG5NREwzY3R1SHhZcVhIcmZn?=
+ =?utf-8?B?QXo2Mk5SaHdvWW50N0FnQWtGT1JOMjZuSVQ2NVhYVkxLbWUvcDhKc1ArQmc5?=
+ =?utf-8?B?TDFzN1dBUWdmOXVvenh5L1JQZzFsWXVkZ1RjVEUrREx4bUNLT3lPb3doeFFt?=
+ =?utf-8?B?Tm5VLytrN1BXSTdEb0R6NWt4S0xpV1V4dUd1ZXlYMWIyOVU3bXZoR3Y1aTFt?=
+ =?utf-8?B?UFVEbmdHL0g4ZjJybUtodkhTYW9CdVpXTk1hMHRnd3J0SUNGeVpYUENCb1lJ?=
+ =?utf-8?B?Z3dnWDVuVVRsdUFHT3g3TWdJemhKT2VINVVWRWVOQkViek9DNmJtT3cwejFk?=
+ =?utf-8?B?c2JabS9LNVdFbmJvZnBJRHNlRk1KQ0owZVY5U3pOQzVqd0hRT3VuSVZlWUNm?=
+ =?utf-8?B?OW5OeHppWUtNekFUeUxRYUoxV3pBWVp2a2RidVJkUVNzdEdSeUFlanRTaEQ5?=
+ =?utf-8?B?VHRhNGloRDVzRUlmNTZTTkc5YTdUTGtwbjNwRm4rYmpEVHoyKzlNdVNtampL?=
+ =?utf-8?B?bXBZQ0VzeXh5SGI2Qjc2ZkFTQlZnelREQVUyQmV4Tlh2aXpKVVRnM0xsQlBD?=
+ =?utf-8?B?WW5Ibk5CNVRqTUdYUjNoc2g0V2MrWnBtQXp1OUlhLzF0Ym5hRW5aeFF1ODRB?=
+ =?utf-8?B?cG9RdEtYS1FKVzExM2I4Z2tWMTR6S2ZGT2w5VGVaek1LbnZ6SlE0TXlicVB2?=
+ =?utf-8?B?WFJUN3E4RjJZZHh3OGQzeW5ZV1U5NmNHSVRsVjc5RGlnUURrMmYrOVhxb0hK?=
+ =?utf-8?B?dnREVWUxK2hRb1VRbWtMQk94eXdwbE9Ka3N3clp5OXNKYnlQQU43WU5PWjRF?=
+ =?utf-8?B?NnRpQnhsaVVmdkFETW1QSmIxNkhNMVBhRjR5cFVIenU0cGt1YlVoQnI4WjV6?=
+ =?utf-8?B?dGE5UHh0S0o2YkZ3UVFlYXlzS0ova0QySDUxaUdXaksxV0pucjdQMDdVTUQ5?=
+ =?utf-8?B?Y09kdGo5UHB2QkNMNmhDR2ptMXpkdnBLWXVPNEdFTG11cXNDRDRHaFo2VERi?=
+ =?utf-8?B?OFd1bFJRZXJEYXQ0UUFNeDBjK3AxYW9NSlhkNnFvKzRZdUgrVzZ2WVF5dlI1?=
+ =?utf-8?B?UEQxVFRNM3FSRG0vK3U3TjhlVTY0eVpGcHZ1MFdCN1pIeGJUZ1o0d05kdEV1?=
+ =?utf-8?B?ZlB1dFY2NnM3RzFrc0xlYk1DOEM2TW8zTW9IYlV1OGt0dTBsWENRb2FGdVVo?=
+ =?utf-8?B?Z2tMaXZZeWtGcU5ZRkg1K2NZU0ZndU1saDY0VGhUdzlPaGs5RGJMSlpjZTh1?=
+ =?utf-8?Q?f37hKEn/nMFQco3MMlYDyUvH0/9QMf7hsvGzQWPZwneOW?=
+X-MS-Exchange-AntiSpam-MessageData-1: PzfJkdv1YN1nyg==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7313e742-a38d-408d-9c48-08de5f3add1d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76d7c65a-163b-4d0e-23db-08de5f3adabb
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 13:32:35.6901
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 13:32:31.8687
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NSRp/Q37zNruLx1ohyStv1KUVJm8DQTry5yTft988EfKNNNq8vqeSHjQHFMBXabGPnO1sTAF7tFQMtz+PNJbrA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: OCYjLm6nxfwPOyu4iW67hgST7eaN+wE1zpT+LhG74eh57KPCsTiuh+0ObtnmAIUUTNH8TPJDyTzl6Qb1O/S5Mg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8146
 
-Convert the direct IO accesses to properly defined registers.
+Add a macro for defining hardware register types with I/O accessors.
 
-Tested-by: Zhi Wang <zhiw@nvidia.com>
+Each register field is represented as a `Bounded` of the appropriate bit
+width, ensuring field values are never silently truncated.
+
+Fields can optionally be converted to/from custom types, either fallibly
+or infallibly.
+
+The address of registers can be direct, relative, or indexed, supporting
+most of the patterns in which registers are arranged.
+
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
 Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
- samples/rust/rust_driver_pci.rs | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ rust/kernel/io.rs          |    1 +
+ rust/kernel/io/register.rs | 1286 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 1287 insertions(+)
 
-diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-index 4dfb8a6a4707..df2232d6b71f 100644
---- a/samples/rust/rust_driver_pci.rs
-+++ b/samples/rust/rust_driver_pci.rs
-@@ -70,24 +70,37 @@ fn testdev(index: &TestIndex, bar: &Bar0) -> Result<u32> {
-     fn config_space(pdev: &pci::Device<Bound>) {
-         let config = pdev.config_space();
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 056a3ec71647..112f43ecbf88 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -11,6 +11,7 @@
  
--        // TODO: use the register!() macro for defining PCI configuration space registers once it
--        // has been move out of nova-core.
-+        // Some PCI configuration space registers.
-+        ::kernel::register! {
-+            VENDOR_ID(u16) @ 0x0 {
-+                15:0 vendor_id;
+ pub mod mem;
+ pub mod poll;
++pub mod register;
+ pub mod resource;
+ 
+ pub use resource::Resource;
+diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
+new file mode 100644
+index 000000000000..9d6c265e70c7
+--- /dev/null
++++ b/rust/kernel/io/register.rs
+@@ -0,0 +1,1286 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! A macro to define register layout and accessors.
++//!
++//! A single register typically includes several fields, which are accessed through a combination
++//! of bit-shift and mask operations that introduce a class of potential mistakes, notably because
++//! not all possible field values are necessarily valid.
++//!
++//! The [`register!`] macro in this module provides an intuitive and readable syntax for defining a
++//! dedicated type for each register. Each such type comes with its own field accessors that can
++//! return an error if a field's value is invalid.
++//!
++//! [`register!`]: kernel::register!
++
++use crate::io::{
++    IoCapable,
++    IoKnownSize, //
++};
++
++/// Trait providing a base address to be added to the offset of a relative register to obtain
++/// its actual offset.
++///
++/// The `T` generic argument is used to distinguish which base to use, in case a type provides
++/// several bases. It is given to the `register!` macro to restrict the use of the register to
++/// implementors of this particular variant.
++pub trait RegisterBase<T> {
++    /// Base address to which register offsets are added.
++    const BASE: usize;
++}
++
++/// Trait providing I/O read/write operations for register storage types.
++///
++/// This trait is implemented for all integer types on which I/O can be performed, allowing the
++/// `register!` macro to generate appropriate I/O accessor methods based on the register's storage
++/// type.
++#[doc(hidden)]
++pub trait RegisterIo: Sized {
++    /// Read a value from the given offset in the I/O region.
++    fn read<I>(io: &I, offset: usize) -> Self
++    where
++        I: IoKnownSize + IoCapable<Self>;
++
++    /// Write a value to the given offset in the I/O region.
++    fn write<I>(self, io: &I, offset: usize)
++    where
++        I: IoKnownSize + IoCapable<Self>;
++}
++
++impl RegisterIo for u8 {
++    #[inline(always)]
++    fn read<I>(io: &I, offset: usize) -> Self
++    where
++        I: IoKnownSize + IoCapable<Self>,
++    {
++        io.read8(offset)
++    }
++
++    #[inline(always)]
++    fn write<I>(self, io: &I, offset: usize)
++    where
++        I: IoKnownSize + IoCapable<Self>,
++    {
++        io.write8(self, offset)
++    }
++}
++
++impl RegisterIo for u16 {
++    #[inline(always)]
++    fn read<I>(io: &I, offset: usize) -> Self
++    where
++        I: IoKnownSize + IoCapable<Self>,
++    {
++        io.read16(offset)
++    }
++
++    #[inline(always)]
++    fn write<I>(self, io: &I, offset: usize)
++    where
++        I: IoKnownSize + IoCapable<Self>,
++    {
++        io.write16(self, offset)
++    }
++}
++
++impl RegisterIo for u32 {
++    #[inline(always)]
++    fn read<I>(io: &I, offset: usize) -> Self
++    where
++        I: IoKnownSize + IoCapable<Self>,
++    {
++        io.read32(offset)
++    }
++
++    #[inline(always)]
++    fn write<I>(self, io: &I, offset: usize)
++    where
++        I: IoKnownSize + IoCapable<Self>,
++    {
++        io.write32(self, offset)
++    }
++}
++
++impl RegisterIo for u64 {
++    #[inline(always)]
++    fn read<I>(io: &I, offset: usize) -> Self
++    where
++        I: IoKnownSize + IoCapable<Self>,
++    {
++        io.read64(offset)
++    }
++
++    #[inline(always)]
++    fn write<I>(self, io: &I, offset: usize)
++    where
++        I: IoKnownSize + IoCapable<Self>,
++    {
++        io.write64(self, offset)
++    }
++}
++
++/// Defines a dedicated type for a register, including getter and setter methods for its fields and
++/// methods to read and write it from an [`Io`] region.
++///
++/// Example:
++///
++/// ```
++/// use kernel::register;
++///
++/// register! {
++///     /// Basic information about the chip.
++///     pub BOOT_0(u32) @ 0x00000100 {
++///         /// Vendor ID.
++///         15:8 vendor_id;
++///         /// Major revision of the chip.
++///         7:4 major_revision;
++///         /// Minor revision of the chip.
++///         3:0 minor_revision;
++///     }
++/// }
++/// ```
++///
++/// This defines a `BOOT_0` type which can be read from or written to offset `0x100` of an `Io`
++/// region. For instance, `minor_revision` consists of the 4 least significant bits of the
++/// register.
++///
++/// Fields are instances of [`Bounded`](kernel::num::Bounded) and can be read by calling their
++/// getter method, which is named after them. They also have setter methods prefixed with `with_`
++/// for runtime values and `with_const_` for constant values. All setters return the updated
++/// register value.
++///
++/// ```no_run
++/// use kernel::register;
++/// use kernel::num::Bounded;
++///
++/// # register! {
++/// #     pub BOOT_0(u32) @ 0x00000100 {
++/// #         15:8 vendor_id;
++/// #         7:4 major_revision;
++/// #         3:0 minor_revision;
++/// #     }
++/// # }
++/// # fn test<T: kernel::io::IoKnownSize + kernel::io::IoCapable<u32>>(bar: &T) {
++/// # fn obtain_vendor_id() -> u8 { 0xff }
++/// // Read from the register's defined offset (0x100).
++/// let boot0 = BOOT_0::read(&bar);
++/// pr_info!("chip revision: {}.{}", boot0.major_revision().get(), boot0.minor_revision().get());
++///
++/// // Update some fields and write the new value back.
++/// boot0
++///     // Constant values.
++///     .with_const_major_revision::<3>()
++///     .with_const_minor_revision::<10>()
++///     // Run-time value.
++///     .with_vendor_id(obtain_vendor_id())
++///     .write(&bar);
++///
++/// // Or, just read and update the register in a single step.
++/// BOOT_0::update(&bar, |r| r
++///     .with_const_major_revision::<3>()
++///     .with_const_minor_revision::<10>()
++///     .with_vendor_id(obtain_vendor_id())
++/// );
++///
++/// // Constant values can also be built using the const setters.
++/// const V: BOOT_0 = BOOT_0::zeroed()
++///     .with_const_major_revision::<3>()
++///     .with_const_minor_revision::<10>();
++/// # }
++/// ```
++///
++/// Fields can also be transparently converted from/to an arbitrary type by using the bitfield `=>`
++/// and `?=>` syntaxes.
++///
++/// If present, doccomments above register or fields definitions are added to the relevant item
++/// they document (the register type itself, or the field's setter and getter methods).
++///
++/// Note that multiple registers can be defined in a single `register!` invocation. This can be
++/// useful to group related registers together.
++///
++/// ```
++/// use kernel::register;
++///
++/// register! {
++///     pub BOOT_0(u8) @ 0x00000100 {
++///         7:4 major_revision;
++///         3:0 minor_revision;
++///     }
++///
++///     pub BOOT_1(u8) @ 0x00000101 {
++///         7:5 num_threads;
++///         4:0 num_cores;
++///     }
++/// };
++/// ```
++///
++/// It is possible to create an alias of an existing register with new field definitions by using
++/// the `=> ALIAS` syntax. This is useful for cases where a register's interpretation depends on
++/// the context:
++///
++/// ```
++/// use kernel::register;
++///
++/// register! {
++///     /// Scratch register.
++///     pub SCRATCH(u32) @ 0x00000200 {
++///         /// Raw value.
++///         31:0 value;
++///     }
++///
++///     /// Boot status of the firmware.
++///     pub SCRATCH_BOOT_STATUS(u32) => SCRATCH {
++///         /// Whether the firmware has completed booting.
++///         0:0 completed;
++///     }
++/// }
++/// ```
++///
++/// In this example, `SCRATCH_BOOT_STATUS` uses the same I/O address as `SCRATCH`, while also
++/// providing its own `completed` field.
++///
++/// ## Relative registers
++///
++/// A register can be defined as being accessible from a fixed offset of a provided base. For
++/// instance, imagine the following I/O space:
++///
++/// ```text
++///           +-----------------------------+
++///           |             ...             |
++///           |                             |
++///  0x100--->+------------CPU0-------------+
++///           |                             |
++///  0x110--->+-----------------------------+
++///           |           CPU_CTL           |
++///           +-----------------------------+
++///           |             ...             |
++///           |                             |
++///           |                             |
++///  0x200--->+------------CPU1-------------+
++///           |                             |
++///  0x210--->+-----------------------------+
++///           |           CPU_CTL           |
++///           +-----------------------------+
++///           |             ...             |
++///           +-----------------------------+
++/// ```
++///
++/// `CPU0` and `CPU1` both have a `CPU_CTL` register that starts at offset `0x10` of their I/O
++/// space segment. Since both instances of `CPU_CTL` share the same layout, we don't want to define
++/// them twice and would prefer a way to select which one to use from a single definition
++///
++/// This can be done using the `Base + Offset` syntax when specifying the register's address.
++///
++/// `Base` is an arbitrary type (typically a ZST) to be used as a generic parameter of the
++/// [`RegisterBase`] trait to provide the base as a constant, i.e. each type providing a base for
++/// this register needs to implement `RegisterBase<Base>`. Here is the above example translated
++/// into code:
++///
++/// ```no_run
++/// use kernel::register;
++/// use kernel::io::register::RegisterBase;
++///
++/// // Type used to identify the base.
++/// pub struct CpuCtlBase;
++///
++/// // ZST describing `CPU0`.
++/// struct Cpu0;
++/// impl RegisterBase<CpuCtlBase> for Cpu0 {
++///     const BASE: usize = 0x100;
++/// }
++/// // Singleton of `CPU0` used to identify it.
++/// const CPU0: Cpu0 = Cpu0;
++///
++/// // ZST describing `CPU1`.
++/// struct Cpu1;
++/// impl RegisterBase<CpuCtlBase> for Cpu1 {
++///     const BASE: usize = 0x200;
++/// }
++/// // Singleton of `CPU1` used to identify it.
++/// const CPU1: Cpu1 = Cpu1;
++///
++/// # fn test<T: kernel::io::IoKnownSize + kernel::io::IoCapable<u32>>(bar: &T) {
++/// // This makes `CPU_CTL` accessible from all implementors of `RegisterBase<CpuCtlBase>`.
++/// register! {
++///     /// CPU core control.
++///     pub CPU_CTL(u32) @ CpuCtlBase + 0x10 {
++///         /// Start the CPU core.
++///         0:0 start;
++///     }
++/// }
++///
++/// // The `read`, `write` and `update` methods of relative registers take an extra `base` argument
++/// // that is used to resolve its final address by adding its `BASE` to the offset of the
++/// // register.
++///
++/// // Start `CPU0`.
++/// CPU_CTL::update(&bar, &CPU0, |r| r.with_start(true));
++///
++/// // Start `CPU1`.
++/// CPU_CTL::update(&bar, &CPU1, |r| r.with_start(true));
++///
++/// // Aliases can also be defined for relative register.
++/// register! {
++///     /// Alias to CPU core control.
++///     pub CPU_CTL_ALIAS(u32) => CpuCtlBase + CPU_CTL {
++///         /// Start the aliased CPU core.
++///         1:1 alias_start;
++///     }
++/// }
++///
++/// // Start the aliased `CPU0`.
++/// CPU_CTL_ALIAS::update(&bar, &CPU0, |r| r.with_alias_start(true));
++/// # }
++/// ```
++///
++/// ## Arrays of registers
++///
++/// Some I/O areas contain consecutive registers that can be interpreted in the same way. These
++/// areas can be defined as an array of identical registers, allowing them to be accessed by index
++/// with compile-time or runtime bound checking. Simply specify their size inside `[` and `]`
++/// brackets, and add an `idx` parameter to their `read`, `write` and `update` methods:
++///
++/// ```no_run
++/// use kernel::register;
++///
++/// # fn test<T: kernel::io::IoKnownSize + kernel::io::IoCapable<u32>>(bar: &T)
++/// #     -> Result<(), Error>{
++/// # fn get_scratch_idx() -> usize {
++/// #   0x15
++/// # }
++/// // Array of 64 consecutive registers with the same layout starting at offset `0x80`.
++/// register! {
++///     /// Scratch registers.
++///     pub SCRATCH(u32)[64] @ 0x00000080 {
++///         31:0 value;
++///     }
++/// }
++///
++/// // Read scratch register 0, i.e. I/O address `0x80`.
++/// let scratch_0 = SCRATCH::read(&bar, 0).value();
++/// // Read scratch register 15, i.e. I/O address `0x80 + (15 * 4)`.
++/// let scratch_15 = SCRATCH::read(&bar, 15).value();
++///
++/// // This is out of bounds and won't build.
++/// // let scratch_128 = SCRATCH::read(&bar, 128).value();
++///
++/// // Runtime-obtained array index.
++/// let scratch_idx = get_scratch_idx();
++/// // Access on a runtime index returns an error if it is out-of-bounds.
++/// let some_scratch = SCRATCH::try_read(&bar, scratch_idx)?.value();
++///
++/// // Alias to a particular register in an array.
++/// // Here `SCRATCH[8]` is used to convey the firmware exit code.
++/// register! {
++///     /// Firmware exit status code.
++///     pub FIRMWARE_STATUS(u32) => SCRATCH[8] {
++///         7:0 status;
++///     }
++/// }
++/// let status = FIRMWARE_STATUS::read(&bar).status();
++///
++/// // Non-contiguous register arrays can be defined by adding a stride parameter.
++/// // Here, each of the 16 registers of the array are separated by 8 bytes, meaning that the
++/// // registers of the two declarations below are interleaved.
++/// register! {
++///     /// Scratch registers bank 0.
++///     pub SCRATCH_INTERLEAVED_0(u32)[16, stride = 8] @ 0x000000c0 {
++///         31:0 value;
++///     }
++///
++///     /// Scratch registers bank 1.
++///     pub SCRATCH_INTERLEAVED_1(u32)[16, stride = 8] @ 0x000000c4 {
++///         31:0 value;
++///     }
++/// }
++/// # Ok(())
++/// # }
++/// ```
++///
++/// ## Relative arrays of registers
++///
++/// Combining the two features described in the sections above, arrays of registers accessible from
++/// a base can also be defined:
++///
++/// ```no_run
++/// use kernel::register;
++/// use kernel::io::register::RegisterBase;
++///
++/// # fn test<T: kernel::io::IoKnownSize + kernel::io::IoCapable<u32>>(bar: &T)
++/// #     -> Result<(), Error>{
++/// # fn get_scratch_idx() -> usize {
++/// #   0x15
++/// # }
++/// // Type used as parameter of `RegisterBase` to specify the base.
++/// pub struct CpuCtlBase;
++///
++/// // ZST describing `CPU0`.
++/// struct Cpu0;
++/// impl RegisterBase<CpuCtlBase> for Cpu0 {
++///     const BASE: usize = 0x100;
++/// }
++/// // Singleton of `CPU0` used to identify it.
++/// const CPU0: Cpu0 = Cpu0;
++///
++/// // ZST describing `CPU1`.
++/// struct Cpu1;
++/// impl RegisterBase<CpuCtlBase> for Cpu1 {
++///     const BASE: usize = 0x200;
++/// }
++/// // Singleton of `CPU1` used to identify it.
++/// const CPU1: Cpu1 = Cpu1;
++///
++/// // 64 per-cpu scratch registers, arranged as a contiguous array.
++/// register! {
++///     /// Per-CPU scratch registers.
++///     pub CPU_SCRATCH(u32)[64] @ CpuCtlBase + 0x00000080 {
++///         31:0 value;
++///     }
++/// }
++///
++/// let cpu0_scratch_0 = CPU_SCRATCH::read(&bar, &Cpu0, 0).value();
++/// let cpu1_scratch_15 = CPU_SCRATCH::read(&bar, &Cpu1, 15).value();
++///
++/// // This won't build.
++/// // let cpu0_scratch_128 = CPU_SCRATCH::read(&bar, &Cpu0, 128).value();
++///
++/// // Runtime-obtained array index.
++/// let scratch_idx = get_scratch_idx();
++/// // Access on a runtime value returns an error if it is out-of-bounds.
++/// let cpu0_some_scratch = CPU_SCRATCH::try_read(&bar, &Cpu0, scratch_idx)?.value();
++///
++/// // `SCRATCH[8]` is used to convey the firmware exit code.
++/// register! {
++///     /// Per-CPU firmware exit status code.
++///     pub CPU_FIRMWARE_STATUS(u32) => CpuCtlBase + CPU_SCRATCH[8] {
++///         7:0 status;
++///     }
++/// }
++/// let cpu0_status = CPU_FIRMWARE_STATUS::read(&bar, &Cpu0).status();
++///
++/// // Non-contiguous register arrays can be defined by adding a stride parameter.
++/// // Here, each of the 16 registers of the array are separated by 8 bytes, meaning that the
++/// // registers of the two declarations below are interleaved.
++/// register! {
++///     /// Scratch registers bank 0.
++///     pub CPU_SCRATCH_INTERLEAVED_0(u32)[16, stride = 8] @ CpuCtlBase + 0x00000d00 {
++///         31:0 value;
++///     }
++///
++///     /// Scratch registers bank 1.
++///     pub CPU_SCRATCH_INTERLEAVED_1(u32)[16, stride = 8] @ CpuCtlBase + 0x00000d04 {
++///         31:0 value;
++///     }
++/// }
++/// # Ok(())
++/// # }
++/// ```
++/// [`Io`]: kernel::io::Io
++#[macro_export]
++macro_rules! register {
++    // Entry point for the macro, allowing multiple registers to be defined in one call.
++    // It matches all possible register declaration patterns to dispatch them to corresponding
++    // `@reg` rule that defines a single register.
++    (
++        $(
++            $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
++                $([ $size:expr $(, stride = $stride:expr)? ])?
++                $(@ $($base:ident +)? $offset:literal)?
++                $(=> $alias:ident $(+ $alias_offset:ident)? $([$alias_idx:expr])? )?
++            { $($fields:tt)* }
++        )*
++    ) => {
++        $(
++        $crate::register!(
++            @reg $(#[$attr])* $vis $name ($storage) $([$size $(, stride = $stride)?])?
++                $(@ $($base +)? $offset)?
++                $(=> $alias $(+ $alias_offset)? $([$alias_idx])? )?
++            { $($fields)* }
++        );
++        )*
++    };
++
++    // All the rules below are private helpers.
++
++    // Creates a register at a fixed offset of the MMIO space.
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) @ $offset:literal
++            { $($fields:tt)* }
++    ) => {
++        $crate::register!(
++            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
++        );
++        $crate::register!(@io_fixed $name($storage) @ $offset);
++    };
++
++    // Creates an alias register of fixed offset register `alias` with its own fields.
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) => $alias:ident
++            { $($fields:tt)* }
++    ) => {
++        $crate::register!(
++            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
++        );
++        $crate::register!(@io_fixed $name($storage) @ $alias::OFFSET);
++    };
++
++    // Creates a register at a relative offset from a base address provider.
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) @ $base:ident + $offset:literal
++            { $($fields:tt)* }
++    ) => {
++        $crate::register!(
++            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
++        );
++        $crate::register!(@io_relative $name($storage) @ $base + $offset );
++    };
++
++    // Creates an alias register of relative offset register `alias` with its own fields.
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) => $base:ident + $alias:ident
++            { $($fields:tt)* }
++    ) => {
++        $crate::register!(
++            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
++        );
++        $crate::register!(@io_relative $name($storage) @ $base + $alias::OFFSET );
++    };
++
++    // Creates an array of registers at a fixed offset of the MMIO space.
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
++            [ $size:expr, stride = $stride:expr ] @ $offset:literal { $($fields:tt)* }
++    ) => {
++        static_assert!(::core::mem::size_of::<$storage>() <= $stride);
++
++        $crate::register!(
++            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
++        );
++        $crate::register!(@io_array $name($storage) [ $size, stride = $stride ] @ $offset);
++    };
++
++    // Shortcut for contiguous array of registers (stride == size of element).
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) [ $size:expr ] @ $offset:literal
++            { $($fields:tt)* }
++    ) => {
++        $crate::register!(
++            $(#[$attr])* $vis $name($storage) [ $size, stride = ::core::mem::size_of::<$storage>() ]
++                @ $offset { $($fields)* }
++        );
++    };
++
++    // Creates an alias of register `idx` of array of registers `alias` with its own fields.
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) => $alias:ident [ $idx:expr ]
++            { $($fields:tt)* }
++    ) => {
++        static_assert!($idx < $alias::SIZE);
++
++        $crate::register!(
++            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
++        );
++        $crate::register!(@io_fixed $name($storage) @ $alias::OFFSET + $idx * $alias::STRIDE);
++    };
++
++    // Creates an array of registers at a relative offset from a base address provider.
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
++            [ $size:expr, stride = $stride:expr ]
++            @ $base:ident + $offset:literal { $($fields:tt)* }
++    ) => {
++        static_assert!(::core::mem::size_of::<$storage>() <= $stride);
++
++        $crate::register!(
++            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
++        );
++        $crate::register!(
++            @io_relative_array $name($storage) [ $size, stride = $stride ] @ $base + $offset
++        );
++    };
++
++    // Shortcut for contiguous array of relative registers (stride == size of element).
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) [ $size:expr ]
++            @ $base:ident + $offset:literal { $($fields:tt)* }
++    ) => {
++        $crate::register!(
++            $(#[$attr])* $vis $name($storage) [ $size, stride = ::core::mem::size_of::<$storage>() ]
++                @ $base + $offset { $($fields)* }
++        );
++    };
++
++    // Creates an alias of register `idx` of relative array of registers `alias` with its own
++    // fields.
++    (
++        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
++            => $base:ident + $alias:ident [ $idx:expr ] { $($fields:tt)* }
++    ) => {
++        static_assert!($idx < $alias::SIZE);
++
++        $crate::register!(
++            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
++        );
++        $crate::register!(
++            @io_relative $name($storage) @ $base + $alias::OFFSET + $idx * $alias::STRIDE
++        );
++    };
++
++    // Generates the bitfield for the register.
++    //
++    // `#[allow(non_camel_case_types)]` is added since register names typically use SCREAMING_CASE.
++    (
++        @bitfield $(#[$attr:meta])* $vis:vis struct $name:ident($storage:ty) { $($fields:tt)* }
++    ) => {
++        $crate::register!(@bitfield_core
++            #[allow(non_camel_case_types)]
++            $(#[$attr])* $vis $name $storage
++        );
++        $crate::register!(@bitfield_fields $vis $name $storage { $($fields)* });
++    };
++
++    // Generates the IO accessors for a fixed offset register.
++    (@io_fixed $name:ident ($storage:ty) @ $offset:expr) => {
++        #[allow(dead_code)]
++        impl $name {
++            /// Absolute offset of the register.
++            pub const OFFSET: usize = $offset;
++
++            /// Read the register from its address in `io`.
++            #[inline(always)]
++            pub fn read<T, I>(io: &T) -> Self where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++            {
++                let io = io.deref();
++
++                Self(<$storage as $crate::io::register::RegisterIo>::read(io, Self::OFFSET))
 +            }
 +
-+            REVISION_ID(u8) @ 0x8 {
-+                7:0 revision_id;
++            /// Write the value contained in `self` to the register address in `io`.
++            #[inline(always)]
++            pub fn write<T, I>(self, io: &T) where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++            {
++                let io = io.deref();
++
++                <$storage as $crate::io::register::RegisterIo>::write(self.0, io, Self::OFFSET)
 +            }
 +
-+            BAR(u32)[6] @ 0x10 {
-+                31:0 value;
++            /// Read the register from its address in `io` and run `f` on its value to obtain a new
++            /// value to write back.
++            ///
++            /// Note that this operation is not atomic. In concurrent contexts, external
++            /// synchronization may be required to prevent race conditions.
++            #[inline(always)]
++            pub fn update<T, I, F>(
++                io: &T,
++                f: F,
++            ) where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                F: ::core::ops::FnOnce(Self) -> Self,
++            {
++                let reg = f(Self::read(io));
++                reg.write(io);
++            }
++        }
++    };
++
++    // Generates the IO accessors for a relative offset register.
++    (@io_relative $name:ident ($storage:ty) @ $base:ident + $offset:expr ) => {
++        #[allow(dead_code)]
++        impl $name {
++            /// Relative offset of the register.
++            pub const OFFSET: usize = $offset;
++
++            /// Read the register from `io`, using the base address provided by `base` and adding
++            /// the register's offset to it.
++            #[inline(always)]
++            pub fn read<T, I, B>(
++                io: &T,
++                #[allow(unused_variables)]
++                base: &B,
++            ) -> Self where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                B: $crate::io::register::RegisterBase<$base>,
++            {
++                let io = io.deref();
++                let offset = <B as $crate::io::register::RegisterBase<$base>>::BASE + Self::OFFSET;
++
++                Self(<$storage as $crate::io::register::RegisterIo>::read(io, offset))
++            }
++
++            /// Write the value contained in `self` to `io`, using the base address provided by
++            /// `base` and adding the register's offset to it.
++            #[inline(always)]
++            pub fn write<T, I, B>(
++                self,
++                io: &T,
++                #[allow(unused_variables)]
++                base: &B,
++            ) where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                B: $crate::io::register::RegisterBase<$base>,
++            {
++                let io = io.deref();
++                let offset = <B as $crate::io::register::RegisterBase<$base>>::BASE + Self::OFFSET;
++
++                <$storage as $crate::io::register::RegisterIo>::write(self.0, io, offset)
++            }
++
++            /// Read the register from `io`, using the base address provided by `base` and adding
++            /// the register's offset to it, then run `f` on its value to obtain a new value to
++            /// write back.
++            ///
++            /// Note that this operation is not atomic. In concurrent contexts, external
++            /// synchronization may be required to prevent race conditions.
++            #[inline(always)]
++            pub fn update<T, I, B, F>(
++                io: &T,
++                base: &B,
++                f: F,
++            ) where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                B: $crate::io::register::RegisterBase<$base>,
++                F: ::core::ops::FnOnce(Self) -> Self,
++            {
++                let reg = f(Self::read(io, base));
++                reg.write(io, base);
++            }
++        }
++    };
++
++    // Generates the IO accessors for an array of registers.
++    (@io_array $name:ident ($storage:ty) [ $size:expr, stride = $stride:expr ]
++        @ $offset:literal) => {
++        #[allow(dead_code)]
++        impl $name {
++            /// Absolute offset of the register array.
++            pub const OFFSET: usize = $offset;
++            /// Number of elements in the array of registers.
++            pub const SIZE: usize = $size;
++            /// Number of bytes separating each element of the array of registers.
++            pub const STRIDE: usize = $stride;
++
++            /// Read the array register at index `idx` from its address in `io`.
++            #[inline(always)]
++            pub fn read<T, I>(
++                io: &T,
++                idx: usize,
++            ) -> Self where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++            {
++                build_assert!(idx < Self::SIZE);
++
++                let io = io.deref();
++                let offset = Self::OFFSET + (idx * Self::STRIDE);
++
++                Self(<$storage as $crate::io::register::RegisterIo>::read(io, offset))
++            }
++
++            /// Write the value contained in `self` to the array register with index `idx` in `io`.
++            #[inline(always)]
++            pub fn write<T, I>(
++                self,
++                io: &T,
++                idx: usize
++            ) where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++            {
++                build_assert!(idx < Self::SIZE);
++
++                let io = io.deref();
++                let offset = Self::OFFSET + (idx * Self::STRIDE);
++
++                <$storage as $crate::io::register::RegisterIo>::write(self.0, io, offset)
++            }
++
++            /// Read the array register at index `idx` in `io` and run `f` on its value to obtain a
++            /// new value to write back.
++            ///
++            /// Note that this operation is not atomic. In concurrent contexts, external
++            /// synchronization may be required to prevent race conditions.
++            #[inline(always)]
++            pub fn update<T, I, F>(
++                io: &T,
++                idx: usize,
++                f: F,
++            ) where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                F: ::core::ops::FnOnce(Self) -> Self,
++            {
++                let reg = f(Self::read(io, idx));
++                reg.write(io, idx);
++            }
++
++            /// Read the array register at index `idx` from its address in `io`.
++            ///
++            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned if the
++            /// access was out-of-bounds.
++            #[inline(always)]
++            pub fn try_read<T, I>(
++                io: &T,
++                idx: usize,
++            ) -> ::kernel::error::Result<Self> where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++            {
++                if idx < Self::SIZE {
++                    Ok(Self::read(io, idx))
++                } else {
++                    Err(::kernel::error::code::EINVAL)
++                }
++            }
++
++            /// Write the value contained in `self` to the array register with index `idx` in `io`.
++            ///
++            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned if the
++            /// access was out-of-bounds.
++            #[inline(always)]
++            pub fn try_write<T, I>(
++                self,
++                io: &T,
++                idx: usize,
++            ) -> ::kernel::error::Result where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++            {
++                if idx < Self::SIZE {
++                    Ok(self.write(io, idx))
++                } else {
++                    Err(::kernel::error::code::EINVAL)
++                }
++            }
++
++            /// Read the array register at index `idx` in `io` and run `f` on its value to obtain a
++            /// new value to write back.
++            ///
++            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned if the
++            /// access was out-of-bounds.
++            ///
++            /// Note that this operation is not atomic. In concurrent contexts, external
++            /// synchronization may be required to prevent race conditions.
++            #[inline(always)]
++            pub fn try_update<T, I, F>(
++                io: &T,
++                idx: usize,
++                f: F,
++            ) -> ::kernel::error::Result where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                F: ::core::ops::FnOnce(Self) -> Self,
++            {
++                if idx < Self::SIZE {
++                    Ok(Self::update(io, idx, f))
++                } else {
++                    Err(::kernel::error::code::EINVAL)
++                }
++            }
++        }
++    };
++
++    // Generates the IO accessors for an array of relative registers.
++    (
++        @io_relative_array $name:ident ($storage:ty) [ $size:expr, stride = $stride:expr ]
++            @ $base:ident + $offset:literal
++    ) => {
++        #[allow(dead_code)]
++        impl $name {
++            /// Relative offset of the register array.
++            pub const OFFSET: usize = $offset;
++            /// Number of elements in the array of registers.
++            pub const SIZE: usize = $size;
++            /// Number of bytes separating each element of the array of registers.
++            pub const STRIDE: usize = $stride;
++
++            /// Read the array register at index `idx` from `io`, using the base address provided
++            /// by `base` and adding the register's offset to it.
++            #[inline(always)]
++            pub fn read<T, I, B>(
++                io: &T,
++                #[allow(unused_variables)]
++                base: &B,
++                idx: usize,
++            ) -> Self where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                B: $crate::io::register::RegisterBase<$base>,
++            {
++                build_assert!(idx < Self::SIZE);
++
++                let io = io.deref();
++                let offset = <B as $crate::io::register::RegisterBase<$base>>::BASE +
++                    Self::OFFSET + (idx * Self::STRIDE);
++
++                Self(<$storage as $crate::io::register::RegisterIo>::read(io, offset))
++            }
++
++            /// Write the value contained in `self` to `io`, using the base address provided by
++            /// `base` and adding the offset of array register `idx` to it.
++            #[inline(always)]
++            pub fn write<T, I, B>(
++                self,
++                io: &T,
++                #[allow(unused_variables)]
++                base: &B,
++                idx: usize
++            ) where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                B: $crate::io::register::RegisterBase<$base>,
++            {
++                build_assert!(idx < Self::SIZE);
++
++                let io = io.deref();
++                let offset = <B as $crate::io::register::RegisterBase<$base>>::BASE +
++                    Self::OFFSET + (idx * Self::STRIDE);
++
++                <$storage as $crate::io::register::RegisterIo>::write(self.0, io, offset)
++            }
++
++            /// Read the array register at index `idx` from `io`, using the base address provided
++            /// by `base` and adding the register's offset to it, then run `f` on its value to
++            /// obtain a new value to write back.
++            ///
++            /// Note that this operation is not atomic. In concurrent contexts, external
++            /// synchronization may be required to prevent race conditions.
++            #[inline(always)]
++            pub fn update<T, I, B, F>(
++                io: &T,
++                base: &B,
++                idx: usize,
++                f: F,
++            ) where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                B: $crate::io::register::RegisterBase<$base>,
++                F: ::core::ops::FnOnce(Self) -> Self,
++            {
++                let reg = f(Self::read(io, base, idx));
++                reg.write(io, base, idx);
++            }
++
++            /// Read the array register at index `idx` from `io`, using the base address provided
++            /// by `base` and adding the register's offset to it.
++            ///
++            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned if the
++            /// access was out-of-bounds.
++            #[inline(always)]
++            pub fn try_read<T, I, B>(
++                io: &T,
++                base: &B,
++                idx: usize,
++            ) -> ::kernel::error::Result<Self> where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                B: $crate::io::register::RegisterBase<$base>,
++            {
++                if idx < Self::SIZE {
++                    Ok(Self::read(io, base, idx))
++                } else {
++                    Err(::kernel::error::code::EINVAL)
++                }
++            }
++
++            /// Write the value contained in `self` to `io`, using the base address provided by
++            /// `base` and adding the offset of array register `idx` to it.
++            ///
++            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned if the
++            /// access was out-of-bounds.
++            #[inline(always)]
++            pub fn try_write<T, I, B>(
++                self,
++                io: &T,
++                base: &B,
++                idx: usize,
++            ) -> ::kernel::error::Result where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                B: $crate::io::register::RegisterBase<$base>,
++            {
++                if idx < Self::SIZE {
++                    Ok(self.write(io, base, idx))
++                } else {
++                    Err(::kernel::error::code::EINVAL)
++                }
++            }
++
++            /// Read the array register at index `idx` from `io`, using the base address provided
++            /// by `base` and adding the register's offset to it, then run `f` on its value to
++            /// obtain a new value to write back.
++            ///
++            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned if the
++            /// access was out-of-bounds.
++            ///
++            /// Note that this operation is not atomic. In concurrent contexts, external
++            /// synchronization may be required to prevent race conditions.
++            #[inline(always)]
++            pub fn try_update<T, I, B, F>(
++                io: &T,
++                base: &B,
++                idx: usize,
++                f: F,
++            ) -> ::kernel::error::Result where
++                T: ::core::ops::Deref<Target = I>,
++                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<$storage>,
++                B: $crate::io::register::RegisterBase<$base>,
++                F: ::core::ops::FnOnce(Self) -> Self,
++            {
++                if idx < Self::SIZE {
++                    Ok(Self::update(io, base, idx, f))
++                } else {
++                    Err(::kernel::error::code::EINVAL)
++                }
++            }
++        }
++    };
++
++    // Defines the wrapper `$name` type and its conversions from/to the storage type.
++    (@bitfield_core $(#[$attr:meta])* $vis:vis $name:ident $storage:ty) => {
++        $(#[$attr])*
++        #[repr(transparent)]
++        #[derive(Clone, Copy, PartialEq, Eq)]
++        $vis struct $name($storage);
++
++        #[allow(dead_code)]
++        impl $name {
++            /// Creates a bitfield from a raw value.
++            $vis const fn from_raw(value: $storage) -> Self {
++                Self(value)
++            }
++
++            /// Creates a zeroed bitfield value.
++            ///
++            /// This is a const alternative to the `Zeroable::zeroed()` trait method.
++            $vis const fn zeroed() -> Self {
++                Self(0)
++            }
++
++            /// Returns the raw value of this bitfield.
++            ///
++            /// This is similar to the [`From`] implementation, but is shorter to invoke in
++            /// most cases.
++            $vis const fn as_raw(self) -> $storage {
++                self.0
 +            }
 +        }
 +
-         dev_info!(
-             pdev.as_ref(),
-             "pci-testdev config space read8 rev ID: {:x}\n",
--            config.read8(0x8)
-+            REVISION_ID::read(&&config).revision_id()
-         );
- 
-         dev_info!(
-             pdev.as_ref(),
-             "pci-testdev config space read16 vendor ID: {:x}\n",
--            config.read16(0)
-+            VENDOR_ID::read(&&config).vendor_id()
-         );
- 
-         dev_info!(
-             pdev.as_ref(),
-             "pci-testdev config space read32 BAR 0: {:x}\n",
--            config.read32(0x10)
-+            BAR::read(&&config, 0).value()
-         );
-     }
- }
++        // SAFETY: `$storage` is `Zeroable` and `$name` is transparent.
++        unsafe impl ::pin_init::Zeroable for $name {}
++
++        impl ::core::convert::From<$name> for $storage {
++            fn from(val: $name) -> $storage {
++                val.as_raw()
++            }
++        }
++
++        impl ::core::convert::From<$storage> for $name {
++            fn from(val: $storage) -> $name {
++                Self::from_raw(val)
++            }
++        }
++    };
++
++    // Definitions requiring knowledge of individual fields: private and public field accessors,
++    // and `Debug` implementation.
++    (@bitfield_fields $vis:vis $name:ident $storage:ty {
++        $($(#[doc = $doc:expr])* $hi:literal:$lo:literal $field:ident
++            $(?=> $try_into_type:ty)?
++            $(=> $into_type:ty)?
++        ;
++        )*
++    }
++    ) => {
++        #[allow(dead_code)]
++        impl $name {
++        $(
++        $crate::register!(@private_field_accessors $vis $name $storage : $hi:$lo $field);
++        $crate::register!(
++            @public_field_accessors $(#[doc = $doc])* $vis $name $storage : $hi:$lo $field
++            $(?=> $try_into_type)?
++            $(=> $into_type)?
++        );
++        )*
++        }
++
++        $crate::register!(@debug $name { $($field;)* });
++    };
++
++    // Private field accessors working with the correct `Bounded` type for the field.
++    (
++        @private_field_accessors $vis:vis $name:ident $storage:ty : $hi:tt:$lo:tt $field:ident
++    ) => {
++        ::kernel::macros::paste!(
++        $vis const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> = $lo..=$hi;
++        $vis const [<$field:upper _MASK>]: $storage =
++            ((((1 << $hi) - 1) << 1) + 1) - ((1 << $lo) - 1);
++        $vis const [<$field:upper _SHIFT>]: u32 = $lo;
++        );
++
++        ::kernel::macros::paste!(
++        fn [<__ $field>](self) ->
++            ::kernel::num::Bounded<$storage, { $hi + 1 - $lo }> {
++            // Left shift to align the field's MSB with the storage MSB.
++            const ALIGN_TOP: u32 = $storage::BITS - ($hi + 1);
++            // Right shift to move the top-aligned field to bit 0 of the storage.
++            const ALIGN_BOTTOM: u32 = ALIGN_TOP + $lo;
++
++            // Extract the field using two shifts. `Bounded::shr` produces the correctly-sized
++            // output type.
++            let val = ::kernel::num::Bounded::<$storage, { $storage::BITS }>::from(
++                self.0 << ALIGN_TOP
++            );
++            val.shr::<ALIGN_BOTTOM, { $hi + 1 - $lo } >()
++        }
++
++        const fn [<__with_ $field>](
++            mut self,
++            value: ::kernel::num::Bounded<$storage, { $hi + 1 - $lo }>,
++        ) -> Self
++        {
++            const MASK: $storage = $name::[<$field:upper _MASK>];
++            const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
++
++            let value = value.into_inner() << SHIFT;
++            self.0 = (self.0 & !MASK) | value;
++
++            self
++        }
++        );
++    };
++
++    // Public accessors for fields infallibly (`=>`) converted to a type.
++    (
++        @public_field_accessors $(#[doc = $doc:expr])* $vis:vis $name:ident $storage:ty :
++            $hi:literal:$lo:literal $field:ident => $into_type:ty
++    ) => {
++        ::kernel::macros::paste!(
++
++        $(#[doc = $doc])*
++        #[doc = "Returns the value of this field."]
++        #[inline(always)]
++        $vis fn $field(self) -> $into_type
++        {
++            self.[<__ $field>]().into()
++        }
++
++        $(#[doc = $doc])*
++        #[doc = "Sets this field to the given `value`."]
++        #[inline(always)]
++        $vis fn [<with_ $field>](self, value: $into_type) -> Self
++        {
++            self.[<__with_ $field>](value.into())
++        }
++
++        );
++    };
++
++    // Public accessors for fields fallibly (`?=>`) converted to a type.
++    (
++        @public_field_accessors $(#[doc = $doc:expr])* $vis:vis $name:ident $storage:ty :
++            $hi:tt:$lo:tt $field:ident ?=> $try_into_type:ty
++    ) => {
++        ::kernel::macros::paste!(
++
++        $(#[doc = $doc])*
++        #[doc = "Returns the value of this field."]
++        #[inline(always)]
++        $vis fn $field(self) ->
++            Result<
++                $try_into_type,
++                <$try_into_type as ::core::convert::TryFrom<
++                    ::kernel::num::Bounded<$storage, { $hi + 1 - $lo }>
++                >>::Error
++            >
++        {
++            self.[<__ $field>]().try_into()
++        }
++
++        $(#[doc = $doc])*
++        #[doc = "Sets this field to the given `value`."]
++        #[inline(always)]
++        $vis fn [<with_ $field>](self, value: $try_into_type) -> Self
++        {
++            self.[<__with_ $field>](value.into())
++        }
++
++        );
++    };
++
++    // Public accessors for fields not converted to a type.
++    (
++        @public_field_accessors $(#[doc = $doc:expr])* $vis:vis $name:ident $storage:ty :
++            $hi:tt:$lo:tt $field:ident
++    ) => {
++        ::kernel::macros::paste!(
++
++        $(#[doc = $doc])*
++        #[doc = "Returns the value of this field."]
++        #[inline(always)]
++        $vis fn $field(self) ->
++            ::kernel::num::Bounded<$storage, { $hi + 1 - $lo }>
++        {
++            self.[<__ $field>]()
++        }
++
++        $(#[doc = $doc])*
++        #[doc = "Sets this field to the compile-time constant `VALUE`."]
++        #[inline(always)]
++        $vis const fn [<with_const_ $field>]<const VALUE: $storage>(self) -> Self {
++            self.[<__with_ $field>](
++                ::kernel::num::Bounded::<$storage, { $hi + 1 - $lo }>::new::<VALUE>()
++            )
++        }
++
++        $(#[doc = $doc])*
++        #[doc = "Sets this field to the given `value`."]
++        #[inline(always)]
++        $vis fn [<with_ $field>]<T>(
++            self,
++            value: T,
++        ) -> Self
++            where T: Into<::kernel::num::Bounded<$storage, { $hi + 1 - $lo }>>,
++        {
++            self.[<__with_ $field>](value.into())
++        }
++
++        $(#[doc = $doc])*
++        #[doc = "Tries to set this field to `value`, returning an error if it is out of range."]
++        #[inline(always)]
++        $vis fn [<try_with_ $field>]<T>(
++            self,
++            value: T,
++        ) -> ::kernel::error::Result<Self>
++            where T: ::kernel::num::TryIntoBounded<$storage, { $hi + 1 - $lo }>,
++        {
++            Ok(
++                self.[<__with_ $field>](
++                    value.try_into_bounded().ok_or(::kernel::error::code::EOVERFLOW)?
++                )
++            )
++        }
++
++        );
++    };
++
++    // `Debug` implementation.
++    (@debug $name:ident { $($field:ident;)* }) => {
++        impl ::kernel::fmt::Debug for $name {
++            fn fmt(&self, f: &mut ::kernel::fmt::Formatter<'_>) -> ::kernel::fmt::Result {
++                f.debug_struct(stringify!($name))
++                    .field("<raw>", &::kernel::prelude::fmt!("{:#x}", self.0))
++                $(
++                    .field(stringify!($field), &self.$field())
++                )*
++                    .finish()
++            }
++        }
++    };
++}
 
 -- 
 2.52.0
