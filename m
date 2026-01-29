@@ -1,83 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D6335C18E;
-	Thu, 29 Jan 2026 21:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416E0352C51;
+	Thu, 29 Jan 2026 22:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769720890; cv=none; b=QtJb90ricuXAahcFN7wluB1pq0BiCrv5fGhL9JrzqLw6hZrs4ucfdSQpNNwW3l82N+sWx0c5Wtsb3InLpCPudipYgV208+NMQq0GQdjy6ApPsTnlPDygrFLfL7phQNmmrSxQeCnJsyWzM53f5S+OobYGKfC+Jwhalnn96DpCoXU=
+	t=1769726139; cv=none; b=OxhfAjQJAd4zyRUYiehnu2Z86cwP/NCjMOTCoHbDTV6jYSBlW2HfrzG/jdvVjzQb+DV1CYSyve43XwQWqUzWN5UW1Q3rqjDjo/LAVSwgDUydZfv/kmpIufJb2eGNZc3AYq7t8Jk6MnL+oDqGMk52dOO90nN3v25vLa0/OQdRpbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769720890; c=relaxed/simple;
-	bh=ftfrQd/ES4H5plF9z0HigSVRBDvqHy/5Ly6SDuoK+0Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=ENYm2fAHBFjatjB+Oc7/llqr+pGXT2CGPIMT6A6WF6XylVUHC4XQIqVq6jcsEYI3it+P4wL1LNz9ajHLvkygSdyS75VMTNtYDYcU2EOFwcZOVyjq7m2GUoKXYrT7Ql0C9NIkGiJngKMOsKOdu+YCxTmzPWDqyZfLxcgoSZ7L/6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qiqSBt7d; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769726139; c=relaxed/simple;
+	bh=UkNX32KZtTbiUWsoCAvLwtloIiF3hbhWHYIeoQpDme8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nyvlf2d7fzgkYYcn88d/NiV+zWDJ9EH3SLgns6NkdlG/gSzAWgaTFO4QLtkGQs1HgRxVo1FDyuZJG98V2vMV/s9nzW6B5OcWhbVUWjyowGJn4AP9fvlQUI6JLPdCQE2KP/bPBIP+s/wSaTIDLtJibvHyvpzUs5K4+gWodEzHmFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k09VX/to; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qiqSBt7d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56AAC4CEF7;
-	Thu, 29 Jan 2026 21:08:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k09VX/to"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76475C4CEF7;
+	Thu, 29 Jan 2026 22:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769720888;
-	bh=ftfrQd/ES4H5plF9z0HigSVRBDvqHy/5Ly6SDuoK+0Y=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=qiqSBt7d3Vx5a/9z7kbHsGfAmsojRKaZB+nmRwqbpPSPcgBRuc8zdbbVxQ7/WwrBw
-	 invM/2m3fv+LdGTWpBt1f8lY5hxtlRzby7AcDoY8rthyPXsgKWqvcd7SBohegSfEPt
-	 m4oKnde1lKXwae0Dt2kFjRy/r3mUhVP1zrQs6L3DrhimtRdBqZUQVhoKfEEWsqIhE8
-	 MtwXo+TfX9F9XuRMst81hiD6NCwSnqpIz4ynptCORgiIFDaDQ/HN8cYZPNoP5/9yxX
-	 FJ++WSsdKJ3ChPSrv3zo/PNAS16Fr4zPqlSUz/jBzxudAoF6mME/FS+4efwSC7paok
-	 /7du7682RTmTw==
+	s=k20201202; t=1769726138;
+	bh=UkNX32KZtTbiUWsoCAvLwtloIiF3hbhWHYIeoQpDme8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k09VX/toJdFybVhpIQRAo1f8y9CbBEYErGzzsMQjRzVbSqvNBcSEBAVY8oPUivtXX
+	 eopkMR1CT43PMYuUpbsjZMN3YVmv7zqh5JkSq4BOVI80zjWQORYC7tLqj0m79kS8IS
+	 SzNVpo0JtqO2mLkbucoyiQUqAf+oKRagkGxOsaQM/EmF/5r19t1wc8ZiEjoDFO4MDr
+	 Et19cFV2FQoGPxFYsm/v7jsdJtr92j3dJuhva40AFYk1ksrIj3yDj+tChSZWx97B9R
+	 gv9yqQfF/lEwYGy4KjUPSoLy5uY1HLwj9WqcCv9Bo+HiegXEmV+6ZRPHA2WrjnlZU/
+	 X2X+fxmCsMGAg==
+Date: Thu, 29 Jan 2026 15:35:28 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>
+Cc: Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Jonathan Corbet <corbet@lwn.net>, Conor Dooley <conor@kernel.org>,
+	Mingcong Bai <jeffbai@aosc.io>, Han Gao <rabenda.cn@gmail.com>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Jason Montleon <jmontleo@redhat.com>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 1/4] rust: export BINDGEN_TARGET from a separate
+ Makefile
+Message-ID: <20260129223528.GA844102@ax162>
+References: <20251230-gcc-rust-v5-v6-0-2ac86ba728c8@isrc.iscas.ac.cn>
+ <20251230-gcc-rust-v5-v6-1-2ac86ba728c8@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 29 Jan 2026 22:08:02 +0100
-Message-Id: <DG1DP20EZCTK.2YW5G4C198BQT@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v4 5/7] rust: io: add `register!` macro
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-References: <20260128-register-v4-0-aee3a33d9649@nvidia.com>
- <20260128-register-v4-5-aee3a33d9649@nvidia.com>
- <DG0CVJN57L5F.2I6J4RXMJOGQ@garyguo.net>
- <DG0WY7S2QPQM.37S6PROC464QI@nvidia.com>
- <DG14TFQG2C13.2BFREQR1DV4I@garyguo.net>
-In-Reply-To: <DG14TFQG2C13.2BFREQR1DV4I@garyguo.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251230-gcc-rust-v5-v6-1-2ac86ba728c8@isrc.iscas.ac.cn>
 
-On Thu Jan 29, 2026 at 3:10 PM CET, Gary Guo wrote:
-> The issue with `Deref` bound here is that now you *require* a level of
-> indirection. If something implements `Io` directly, you cannot use it wit=
-h the
-> method. While `&Bar` is accepted, `&Mmio` is not because `Mmio` is a dire=
-ct
-> implementor of `Io` and not deref to it.
->
-> A `Deref` bound also does not help if, say, a type is `Arc<Bar>` which ne=
-eds two
-> level of dereffing before it is Io. For consistency I think it's best to =
-avoid
-> `Deref` call all together
+On Tue, Dec 30, 2025 at 05:47:54PM +0100, Asuna Yang wrote:
+> A subsequent commit will add a new function `bindgen-option` to
+> `scripts/Kconfig.include`. The bindgen backend requires the `--target`
+> option for cross compiling, but variable `BINDGEN_TARGET` in
+> `rust/Makefile` cannot be exported to `scripts/Kconfig.include`.
+> 
+> Therefore, move this variable to a separate new `Makefile.rust` file and
+> include it from `scripts/Makefile` to make the exported variable
+> available for use in Kconfig. Place the include in the `need-compiler`
+> branch to avoid including it in irrelevant make targets.
+> 
+> Since the new file name is `Makefile.rust`, it matches an existing
+> MAINTAINERS rule `scripts/*rust*`, so no modification to the MAINTAINERS
+> file is needed.
+> 
+> Signed-off-by: Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>
 
-I agree with that and we will probably run into this once we start implemen=
-ting
-the I/O traits for things like DMA memory.
+Acked-by: Nathan Chancellor <nathan@kernel.org>
 
-We could use AsRef or a custom trait instead, but I'd rather leave this for=
- a
-subsequent series, as it requires more changes. They should also be transpa=
-rent
-to users.
+> ---
+>  Makefile              | 3 ++-
+>  rust/Makefile         | 8 --------
+>  scripts/Makefile.rust | 9 +++++++++
+>  3 files changed, 11 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index 27ce077520fe..9754d7add947 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -718,9 +718,10 @@ ifneq ($(findstring clang,$(CC_VERSION_TEXT)),)
+>  include $(srctree)/scripts/Makefile.clang
+>  endif
+>  
+> +ifdef need-compiler
+> +include $(srctree)/scripts/Makefile.rust
+>  # Include this also for config targets because some architectures need
+>  # cc-cross-prefix to determine CROSS_COMPILE.
+> -ifdef need-compiler
+>  include $(srctree)/scripts/Makefile.compiler
+
+Not that it is a big deal but it would make the diff simpler if the Rust
+makefile was added after the compiler one, both for alphabetical reasons
+and it would not necessitate moving the comment (even if it mostly
+applies just to the compiler include).
+
+>  endif
+>  
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 5d357dce1704..2603b34f9833 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -385,14 +385,6 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+>  	-fzero-init-padding-bits=% -mno-fdpic \
+>  	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
+>  
+> -# Derived from `scripts/Makefile.clang`.
+> -BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+> -BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
+> -BINDGEN_TARGET_arm	:= arm-linux-gnueabi
+> -BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
+> -BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
+> -BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+> -
+>  # All warnings are inhibited since GCC builds are very experimental,
+>  # many GCC warnings are not supported by Clang, they may only appear in
+>  # some configurations, with new GCC versions, etc.
+> diff --git a/scripts/Makefile.rust b/scripts/Makefile.rust
+> new file mode 100644
+> index 000000000000..5c12b4b8c8b6
+> --- /dev/null
+> +++ b/scripts/Makefile.rust
+> @@ -0,0 +1,9 @@
+> +# Derived from `scripts/Makefile.clang`.
+> +BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+> +BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
+> +BINDGEN_TARGET_arm	:= arm-linux-gnueabi
+> +BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
+> +BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
+> +BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+> +
+> +export BINDGEN_TARGET
+> 
+> -- 
+> 2.51.1
+> 
