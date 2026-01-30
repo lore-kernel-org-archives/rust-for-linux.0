@@ -1,196 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound.pv.icloud.com (p-west1-cluster6-host12-snip4-5.eps.apple.com [57.103.67.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71652310782;
-	Fri, 30 Jan 2026 12:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA73B378D9D
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 12:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.67.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769776443; cv=none; b=BDlD92ap0WRW825i9PmoRRf+k915Hh3ehZOE3AU+R24YnEt4Pk262JzBjCH/BOm4XBuJaGUqu3w6yJx2gu6z1+fcrh6C8fEeHrsyPDv5kVPiV20xxSZpAnjpT8NrfaNSv8BBNJNplEzor/kAE6474A3t4EMIbrHy5aMYwAIBzVg=
+	t=1769776506; cv=none; b=GmlWB74R1kEOXmwl1LTxPjqPdSjcDIRCBv3zxjocpEwvvIVSlzmj1dEVIXSxtaQ2rZae6qjbrFXFELUvL9t+3LfCdKgDg2JJe7Q277LqvkKJ6G9QU61SzgYTsCkHoaFBW+CJeTvRUAz//SOd9dYq5EdCf6wxMeifBDaLbxXD3Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769776443; c=relaxed/simple;
-	bh=iZzpNEAujmycUgTI/h9S+Zxb+pjdstnZT2VsHNdpb6w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hkUw03iD/aLaZWKpEONbszXsiwUNnm36a6gopzGcKzoj5SoqLtiE2PvACwCK0PapLWr9rsapLNcS2cJKXH3W24QO9KGdCSTxLL9jZPBdQcE5SHiJlQ2DZ+R78X7/NlVMxfopxKQwiTtim1wA6R0KpR27wmZhk9Ben/OaCILkTGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPSciKCJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769776506; c=relaxed/simple;
+	bh=cevHoQfwyuJWbwR+TNBR/26Wh04ew/K+L7WGC8DzJP0=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=oj4Vk37FbE4aDHWa/lfCO279YBGI0WD791y9hkKxgWcnGTj1qO5/koOyeqaFJix3ukV8WHvNKVukoJts39OP9FTEA9AbwMZLAZLh7yQh2FyV0KhSLquJF9dfYkVHkJQipg6e6nu3LKMs037L5i+pM57zyN+CIklDdVvnzinneTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=yJ0ycLvb; arc=none smtp.client-ip=57.103.67.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPSciKCJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31197C116D0;
-	Fri, 30 Jan 2026 12:34:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769776443;
-	bh=iZzpNEAujmycUgTI/h9S+Zxb+pjdstnZT2VsHNdpb6w=;
-	h=From:Date:Subject:To:Cc:From;
-	b=UPSciKCJW3vx0x9g39qyILSkxW/plroKdQf3kg+IaLVG8W4qqoYLi/oKXVCYf0dl6
-	 /ibOyaxK2uC4Wd0/QhqtnpWml6NLF2xwf2+wpJsNinzbIbyd7hp/xPMmRFyEvpVMJH
-	 fgAhkWkWHxGTSVpL2/y03k/QBX389tE0XOINdl4AXG6myO0Lcnn7PeqF0K+nfIUeQx
-	 P/BdJ/GoFWBWcNhYA2F6AxTlL555lBbcSzJEuEQKkPGkwbS3x75s2qZGxOZVX1C+sE
-	 Z5QxQ9LbnUnNKIy2ZxlNwGWKWoiZdjBSqiFnr/+TZ85OxmmcAoBmgxgfy3Gg9cCa4w
-	 /rlsO3X+QqmYw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 30 Jan 2026 13:33:38 +0100
-Subject: [PATCH] rust: page: add volatile memory copy methods
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="yJ0ycLvb"
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-11 (Postfix) with ESMTPS id 7CDBF18002A8;
+	Fri, 30 Jan 2026 12:35:01 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1769776504; x=1772368504; bh=cevHoQfwyuJWbwR+TNBR/26Wh04ew/K+L7WGC8DzJP0=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=yJ0ycLvbq8FdNbNR2uXONsc3mLyOGGOIDZqfIylqxePrKhbIxpK2HFmppndafKu5X2Y2PiJZNz/ORf3GrW1zXtYydfUSgyhZNoGSqSs84iWqDlsQYycd5JbMEq/PT1jAepwfcHGzLSaqNB/uk9xE7ocecneG7WEEWAAkmv+9ldgv7QIO3qch7TLMU5q0T0O0y/0mmlYfWK4l0WN+uC+sUTbVtwOY3CgVISIN6xgUUyqasdnxelNYozRfksgGAGk6MDx1Z5LZY4bXt29hyqBE0MkSkq89cgu0DCflhrccnsiOOkTZU5BEEz6gHVBkMDepBkC5a4jKs0Ca1oogEm3GQQ==
+mail-alias-created-date: 1769500909675
+Received: from localhost (unknown [17.56.9.36])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-11 (Postfix) with ESMTPSA id 577261801218;
+	Fri, 30 Jan 2026 12:34:59 +0000 (UTC)
+Date: Fri, 30 Jan 2026 21:34:57 +0900 (JST)
+Message-Id: <20260130.213457.682218231145284582.fujita@bee>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org,
+ a.hindborg@kernel.org, aliceryhl@google.com, boqun.feng@gmail.com,
+ bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
+ lossin@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH v3 0/2] Add support for print exactly once
+From: FUJITA Tomonori <tomo@aliasing.net>
+In-Reply-To: <CANiq72k7qXoz3wcHqjNK29ZZ9gTdkmpwX7oqxgV9Rq6uGRwugw@mail.gmail.com>
+References: <20251117002452.4068692-1-fujita.tomonori@gmail.com>
+	<CANiq72k7qXoz3wcHqjNK29ZZ9gTdkmpwX7oqxgV9Rq6uGRwugw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
-X-B4-Tracking: v=1; b=H4sIACGlfGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQ2MD3YJEoFhZfk5iSWYOUDJf18A0Lc3U0tTUwDzFWAmoraAoNS2zAmx
- kdGxtLQCfFwNbYgAAAA==
-X-Change-ID: 20260130-page-volatile-io-05ff595507d3
-To: Alice Ryhl <aliceryhl@google.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5554; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=iZzpNEAujmycUgTI/h9S+Zxb+pjdstnZT2VsHNdpb6w=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpfKUtQhVPsKXzyLGXH3fkMmnJyCtj/n/+nP5+f
- MolQXKgF+OJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaXylLQAKCRDhuBo+eShj
- dznoD/9P26y0YDv1cPE86Bh1YGhktvCuaw1sp27fWh7YxQ0wX6O0WA5IlgEaGSx8xF2hOHJi2w+
- LJeLQnALyrOPIvSzNPzAfx2pPBNK6w0QQxXiU0ebgMtk+UPHFbQMS64irBjLi0bL3xQoesmOrP+
- 2bB99pbdVY4gC0Dq12XeoM9HfDUIYAOurPpQfpIpsUKAPiIEDhesIr5AuZJsi/AdNxirHuDiqdT
- S4+OWdHaGeHte6w4qjZl2fujURG66lxR1MVsaOdhs5ov44CBROneErN/q0EMqXCdqnzXGBk6ieF
- 66zeZxekJHEaTK+HFXPBOIOKu4Bpl8Xs+FAa5e6axWbZt6JodaOaOmYH05l550eQLsGFl3Ambz6
- eAI6AuhlcnmnYADQzAjks1mzQHCQZptXzxs3Y0cV0gfbbZ+1PtTI/xWTeXKkju9iKM3A7w5PdUE
- T9j9/jJjaZt0oeD73MKrU+eZCX1fcigGKLhc7zLs4YwuXQd29q4K7fKKgNzSDn6vvlI6LP5s2D2
- wi7AOHKisq/Un/Tt6DzSvzH6DnHXJjjYJ62AkuJ02PLXMQaUnSodNF60W6uDwkB2tMl+AJ2ElsS
- tAQXWMJrendvBe6gPjwEmuc+cDFYTxfUrBjjsTiHnvSklJdVA/U62bIgX++vjhdrzWe8qP5t39P
- KzawbSp67BdAooQ==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
+X-Authority-Info-Out: v=2.4 cv=DsJbOW/+ c=1 sm=1 tr=0 ts=697ca577
+ cx=c_apl:c_apl_out:c_pps a=azHRBMxVc17uSn+fyuI/eg==:117
+ a=azHRBMxVc17uSn+fyuI/eg==:17 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=zV1oc8Cxy4iWas2m4qAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: CiFctLcaPfxxzd2Snv0ivM4OeOyNFYDR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDEwMyBTYWx0ZWRfX0AbrFZIqFjVo
+ oyrdVYUN6tvlZ79Ih2Th0pdh6GkNetAbGmmv8wzBX3JjD/08f3mEBuYd518MAflCcLIamogohC1
+ AuDAlQHegmpLP0JxO788JxnrRR+22HR0f4OoI55Qt5DtfDjTbJ67f4ktpET0+osQSpdCHgRDrsG
+ eCbJgGxkV3bupLgvPsfgxFmdSNjA5gGf3n0VUVxNqH3U+FLgHyvgqKk8Er9nffXfFxTr5eb1BMA
+ o8bBnI6O9mdPly+yjNNF4lc0dsM1HQ53ds1hdtJfsYZA5hz0Je3YSpnKAbe3FJXUOTDxim6KRW4
+ 96Jxf+RW4bFbLgF8bcK4ppK7+tR6M2B3J2HgWPiqs0lLTXRX0RTBUzrmUTzV8Y=
+X-Proofpoint-GUID: CiFctLcaPfxxzd2Snv0ivM4OeOyNFYDR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-30_01,2026-01-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxscore=0 mlxlogscore=874 bulkscore=0 adultscore=0 suspectscore=0
+ phishscore=0 malwarescore=0 clxscore=1030 lowpriorityscore=0 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2601300103
+X-JNJ: AAAAAAABVLnpyqbsjMjtsE7fOKk1LTkgRys6aYBGoUWCz3vok7B963XPyHEurj7w0rev/hau0C+q+vzfM77Lw1Gdvr5ZHxCO8ZXC2VB9hq0Q4GKB0QNeHju7iq8RqRdvdaWrKhl3FkvYdZVkidicujIzr/9Qib/bsEoI8ZU1+PSfqu0EjHH1sBYX/HAkiDAkX29gdjYj2FvKbs8Y1odEIa4ydq5XK9EFv0YBXnRmFMHvuuWIhJKmmqeYpsqsSz2fx4WSbJIp4mjykl6USaWY82UNSYWp7Q5w6HSsf0vXUpcDgx2eLun2ihELWkt/db2bF4bIrpkYGm5J4tEkiEVi7Lo0vCOr40E5T9hknTgsH9hpJPNul4EqsSjr5K2ZMEdOLjIpxu/P8BeO5srJDfIMivWRjJEh1i8vwVX/yQyNVillIpczH67P/gaLzLPjc5X9WbhD8dKlA65nlXk9q3XEYUcud+rTHbfCkbL3o8lWL+zDOaxfGzvakkjwk1zRTI82hfea1Uc9vNIlc0Kkk1CvY+dbM8ZrIBdJNKQBAoJ2Mn2eGsn+tC9JNkQos6nk9IwtBvGEPMzx43G3ysYsigPOtqSuMGSFGqb1xwhGGfsll2S1ppzwcpcBl2yXTRmLyzdX1McY0fU/IGy7olrXmg3EEfktchH2Kyvlt217naEzAtcWk1SMCpUp7+wdu60kSeSoWhR288rhYJ46iFGbg3kGLKIV/axOjFgy9km84AxEOjzLmtmN6Vwr84cyG+LTw+7O5SHL9Gsi2OHr/mevfJVbKwzTWg==
 
-When copying data from buffers that are mapped to user space, or from
-buffers that are used for dma, it is impossible to guarantee absence of
-concurrent memory operations on those buffers. Copying data to/from `Page`
-from/to these buffers would be undefined behavior if regular memcpy
-operations are used.
-
-The operation can be made well defined, if the buffers that potentially
-observe racy operations can be said to exist outside of any Rust
-allocation. For this to be true, the kernel must only interact with the
-buffers using raw volatile reads and writes.
-
-Add methods on `Page` to read and write the contents using volatile
-operations.
-
-Also improve clarity by specifying additional requirements on
-`read_raw`/`write_raw` methods regarding concurrent operations on involved
-buffers.
-
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/page.rs | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
-
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index 432fc0297d4a8..6568a0d3b3baa 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -7,6 +7,7 @@
-     bindings,
-     error::code::*,
-     error::Result,
-+    ffi::c_void,
-     uaccess::UserSliceReader,
- };
- use core::{
-@@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
-     /// # Safety
-     ///
-     /// * Callers must ensure that `dst` is valid for writing `len` bytes.
-+    /// * Callers must ensure that there are no other concurrent reads or writes to/from the
-+    ///   destination memory region.
-     /// * Callers must ensure that this call does not race with a write to the same page that
-     ///   overlaps with this read.
-     pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
-@@ -274,6 +277,30 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
-         })
-     }
- 
-+    /// Maps the page and reads from it into the given IO memory region using volatile memory
-+    /// operations.
-+    ///
-+    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
-+    /// outside of the page, then this call returns [`EINVAL`].
-+    ///
-+    /// # Safety
-+    /// Callers must ensure that:
-+    ///
-+    /// * The destination memory region is outside of any Rust memory allocation.
-+    /// * The destination memory region is writable.
-+    /// * This call does not race with a write to the same source page that overlaps with this read.
-+    pub unsafe fn read_raw_toio(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
-+        self.with_pointer_into_page(offset, len, move |src| {
-+            // SAFETY: If `with_pointer_into_page` calls into this closure, then
-+            // it has performed a bounds check and guarantees that `src` is
-+            // valid for `len` bytes.
-+            //
-+            // There caller guarantees that there is no data race at the source.
-+            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
-+            Ok(())
-+        })
-+    }
-+
-     /// Maps the page and writes into it from the given buffer.
-     ///
-     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
-@@ -282,6 +309,7 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
-     /// # Safety
-     ///
-     /// * Callers must ensure that `src` is valid for reading `len` bytes.
-+    /// * Callers must ensure that there are no concurrent writes to the source memory region.
-     /// * Callers must ensure that this call does not race with a read or write to the same page
-     ///   that overlaps with this write.
-     pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Result {
-@@ -295,6 +323,31 @@ pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Res
-         })
-     }
- 
-+    /// Maps the page and writes into it from the given IO memory region using volatile memory
-+    /// operations.
-+    ///
-+    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
-+    /// outside of the page, then this call returns [`EINVAL`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that:
-+    ///
-+    /// * The source memory region is outside of any Rust memory allocation.
-+    /// * The source memory region is readable.
-+    /// * This call does not race with a read or write to the same destination page that overlaps
-+    ///   with this write.
-+    pub unsafe fn write_raw_fromio(&self, src: *const u8, offset: usize, len: usize) -> Result {
-+        self.with_pointer_into_page(offset, len, move |dst| {
-+            // SAFETY: If `with_pointer_into_page` calls into this closure, then it has performed a
-+            // bounds check and guarantees that `dst` is valid for `len` bytes.
-+            //
-+            // There caller guarantees that there is no data race at the destination.
-+            unsafe { bindings::memcpy_fromio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
-+            Ok(())
-+        })
-+    }
-+
-     /// Maps the page and zeroes the given slice.
-     ///
-     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
-
----
-base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
-change-id: 20260130-page-volatile-io-05ff595507d3
-
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+T24gRnJpLCAzMCBKYW4gMjAyNiAwNTo1MTo0MiArMDEwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBNb24sIE5vdiAxNywgMjAy
+NSBhdCAxOjI14oCvQU0gRlVKSVRBIFRvbW9ub3JpDQo+IDxmdWppdGEudG9tb25vcmlAZ21haWwu
+Y29tPiB3cm90ZToNCj4+DQo+PiBUaGlzIGFkZHMgdGhlIFJ1c3QgZXF1aXZhbGVudCBvZiB0aGUg
+QydzIERPX09OQ0VfTElURSBhbmQgcHJfKl9vbmNlDQo+PiBtYWNyb3MuDQo+Pg0KPj4gQSBwcm9w
+b3NhbCBmb3IgdGhpcyBmZWF0dXJlIHdhcyBtYWRlIGluIHRoZSBwYXN0IFsxXSwgYnV0IGl0IGRp
+ZG4ndA0KPj4gcmVhY2ggY29uc2Vuc3VzIG9uIHRoZSBpbXBsZW1lbnRhdGlvbiBhbmQgd2Fzbid0
+IG1lcmdlZC4NCj4+DQo+PiBVbmxpa2UgdGhlIHByZXZpb3VzIHByb3Bvc2FsLCB0aGlzIGltcGxl
+bWVudHMgdGhlIEMncyBET19PTkNFX0xJVEUNCj4+IG1lY2hhbmlzbSB1c2luZyBhIHNpbmdsZSBh
+dG9taWMgdmFyaWFibGUuIFdoaWxlIGl0IHdvdWxkIGJlIHBvc3NpYmxlDQo+PiB0byBpbXBsZW1l
+bnQgdGhlIGZlYXR1cmUgZW50aXJlbHkgYXMgYSBSdXN0IG1hY3JvLCB0aGUgZnVuY3Rpb25hbGl0
+eQ0KPj4gdGhhdCBjYW4gYmUgaW1wbGVtZW50ZWQgYXMgcmVndWxhciBmdW5jdGlvbnMgaGFzIGJl
+ZW4gZXh0cmFjdGVkIGFuZA0KPj4gaW1wbGVtZW50ZWQgYXMgdGhlIE9uY2VMaXRlIHN0cnVjdCBm
+b3IgYmV0dGVyIGNvZGUgcmVhZGFiaWxpdHkuDQo+Pg0KPj4gVG8gbWFrZSBpdCBjbGVhciB0aGF0
+IHRoaXMgZmVhdHVyZSBpcyBpbnRlbmRlZCBzb2xlbHkgZm9yDQo+PiBwcmludC1yZWxhdGVkIGZ1
+bmN0aW9uYWxpdHkgKGp1c3QgbGlrZSBpbiBDKSwgdGhlIGltcGxlbWVudGF0aW9uIGlzDQo+PiBw
+bGFjZWQgaW4gcHJpbnQucnMuIElmIGFuIGVxdWl2YWxlbnQgb2Ygc3RkOjpzeW5jOjpPbmNlIGlz
+IG5lZWRlZCBpbg0KPj4gdGhlIGZ1dHVyZSwgaXQgc2hvdWxkIGJlIGJhc2VkIG9uIFNldE9uY2Ug
+cmF0aGVyIHRoYW4gT25jZUxpdGUuIFVubGlrZQ0KPj4gc3RkOjpzeW5jOjpPbmNlIGFuZCBTZXRP
+bmNlLCBPbmNlTGl0ZSBvbmx5IG1hbmFnZXMgdHdvIHN0YXRlczoNCj4+IGluY29tcGxldGUgYW5k
+IGNvbXBsZXRlLg0KPj4NCj4+IFRoZSBkb19vbmNlX2xpdGUgbWFjcm8gcGxhY2VzIHRoZSBPbmNl
+TGl0ZSBvYmplY3QgaW4gdGhlIC5kYXRhLi5vbmNlDQo+PiBzZWN0aW9uLCB3aGljaCBtYXkgYmUg
+emVyb2VkIGJ5IG1lbXNldCBhdCBhbnkgdGltZS4gV2hpbGUgdGhpcyBtZWFucw0KPj4gdGVhciBy
+ZWFkcyBtaWdodCBoYXBwZW4sIE9uY2VMaXRlIG9ubHkgbWFuYWdlcyB0d28gc3RhdGVzICh6ZXJv
+IGFuZA0KPj4gbm9uLXplcm8pLCBzbyBubyBhY3R1YWwgcHJvYmxlbSBvY2N1cnMgaW4gcHJhY3Rp
+Y2UuDQo+Pg0KPj4gT25jZUxpdGUgY3VycmVudGx5IHVzZXMgQXRvbWljPGkzMj4sIGJ1dCBtYXkg
+YmUgY2hhbmdlZCB0byB1c2UNCj4+IEF0b21pYzxpOD4gWzJdIHdoZW4gaXQgYmVjb21lcyBhdmFp
+bGFibGUuDQo+Pg0KPj4gWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3J1c3QtZm9yLWxpbnV4
+LzIwMjQxMTI2LXByX29uY2VfbWFjcm9zLXY0LTAtNDEwYjhjYTk2NDNlQHR1dGEuaW8vDQo+PiBb
+Ml0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcnVzdC1mb3ItbGludXgvMjAyNTExMTUwNTAzMDUu
+Mzg3MjQxMi0xLWZ1aml0YS50b21vbm9yaUBnbWFpbC5jb20vDQo+IA0KPiBBcHBsaWVkIHRvIGBy
+dXN0LW5leHRgIC0tIHRoYW5rcyBldmVyeW9uZSENCj4gDQo+IEkgaGF2ZSB1c2VkIHRoaXMgbmlj
+ZSBjb3ZlciBsZXR0ZXIgYXMgdGhlIGJhc2lzIGZvciBhIG1lcmdlIGNvbW1pdC4NCj4gV2hpbGUg
+dGhleSB3ZXJlIGp1c3QgdHdvIGNvbW1pdHMsIEkgdGhpbmsgdGhlIGNvdmVyIGxldHRlciBhZGRz
+IHNvbWUNCj4gY29udGV4dCB0aGF0IHRob3NlIG90aGVyIGNvbW1pdCBtZXNzYWdlcyBkbyBub3Qu
+DQo+IA0KPiBUb21vbm9yaSwgcGxlYXNlIGRvdWJsZSBjaGVjayB0aGUgbWVyZ2UgY29tbWl0IG1l
+c3NhZ2UhIEFuZCBpZiB5b3UgZGlkDQo+IG5vdCBpbnRlbmQgZm9yIHRoaXMgdG8gbGFuZCBpbiB0
+aGUgR2l0IGxvZywgcGxlYXNlIGxldCBtZSBrbm93IChJIGFtDQo+IHN0YXJ0aW5nIHRvIHRha2Ug
+bW9yZSBjb3ZlciBsZXR0ZXJzIGludG8gdGhlIEdpdCBsb2cpLg0KPiANCj4gICAgIFsgQWRkZWQg
+cHJlZml4IHRvIHRpdGxlLiAtIE1pZ3VlbCBdDQo+IA0KPiAgICAgWyBBZGRlZCBwcmVmaXggdG8g
+dGl0bGUuIEZpeGVkIHR5cG8uIC0gTWlndWVsIF0NCg0KVGhhdCBzb3VuZHMgbGlrZSBhIGdvb2Qg
+aWRlYS4gTG9va3MgZ29vZC4NCg0KSSd2ZSBqdXN0IHRyaWVkIHRoZSBydXN0LW5leHQgYnJhbmNo
+IGFuZCBkb19vbmNlX2xpdGUoKSB3b3JrcyBhcw0KZXhwZWN0ZWQuDQoNClRoYW5rcyENCg0K
