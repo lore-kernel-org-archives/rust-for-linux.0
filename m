@@ -1,87 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B11F355818;
-	Fri, 30 Jan 2026 17:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60E2366545
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 18:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769793509; cv=none; b=Z1iufB8+rTivtmld3u7G7WG0CvTF9bTpgbc0oHozUTeQdLVlhn/3yIvabdRM8kMH8v/CjVHleccrX4IU4U6gQdsy2Hs00j5+cDEsv2nAHwc2z0tivg5iIAA9ipKJ5aSMpMiRVFSalvAJeUZ37Xxp0Pu2Q1frHgGohT9CaVkx/Hw=
+	t=1769797352; cv=none; b=rpwi4DLmnVLUr7hlRNLcB9YpdJvTtVtQe6SMaTCxeR+CTnzuiZGlwY7SlL0Pss0I6990G9UgfBxHuBwzs67/veHkAu6KD0U5X5UthCXEH3BbgQX5q3cLTMr8TFmA6m+Vm3ZPhLKWAYpUTrwBWj8RFJxv8nV1SBZXaeYcc8zRJWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769793509; c=relaxed/simple;
-	bh=F7W8rHHV/x88JwVWSFQbLnbtawGUdR6rPEtpilbuGeM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=bMug/qCAYhCDxuzG+oKit06tudVfphAHjVngnYWKiB93fpxZZtW3k+/K7sGKAzQr4uuRgvTHzlpcomZbuunjAhG+eIwQTwLGEm9DZa9BdZIUnmRtRrxPoQty5xTCNnOHVRw8h/x/GHk5brzmmSeFCIL3X86ESjh6T0LmS8RtSf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=keT+Ud4s; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769797352; c=relaxed/simple;
+	bh=lU6jpbnATpQTxYeo7D2FPha7yl7UYUmflHoK5DqPtZM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IvNkNqT2pdgCsCz4bTI08YXncYkK65zfmuolkC6d3iMXTLg0VxCvrwB2UqWSBHViNopEUbCDBRVTsb3d98VmeBPC2v6WPx/0vzBa0tE/cTWsXuXOnaYOREDO4UBkm/nx1owhV0ZMnmnejzJbEYQVyKvxt0UK+XEOOdD0HLKkiLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ku7XS6V1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="keT+Ud4s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD347C4CEF7;
-	Fri, 30 Jan 2026 17:18:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ku7XS6V1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D59CC2BC9E
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 18:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769793508;
-	bh=F7W8rHHV/x88JwVWSFQbLnbtawGUdR6rPEtpilbuGeM=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=keT+Ud4sgZrbSaADE75Q/7sMx2R9ORde+s2fCCQfRBAl/HyiQZdVSGEkvZU/0Rfma
-	 Ak2NxhjkE1ua7Nasp9NjyfQPQolP2Z3VpY63Iflz1HYvrSvOZrGqLn6N3WtBXpTbDy
-	 U3R2VHQXuHCbZcyhFuLvRFhC4fOMqfSptUmIE51rU4Wvbu0U+weObHi42UiyEWKqOT
-	 155/YSsPZQjCfRfO1sskJB7JUbtuJjFZo7buG452ynpl5dCz8umjLCGV6ZibgkkQzi
-	 MrDsWSibtNB30Oy28Ta7cQ9V5bgQM+FwHuBdYmTET5lDPm9d6MTUoHYrBiDCWjXTwT
-	 brXtOFiXhZutw==
+	s=k20201202; t=1769797352;
+	bh=lU6jpbnATpQTxYeo7D2FPha7yl7UYUmflHoK5DqPtZM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Ku7XS6V1IUm9jFqzSILTpnP+tcAP1m8yAgBc3K+hxUTvYnoxLiz552piLqadwgG55
+	 F4hmuEsSDhAblaNgj/5Nj6BQD8yQNxeE88a3hmHdgRqIft4bJO0l3nAmdvr8twhlWG
+	 LPJGpaQv2nHKuVVXyDqlr/EfSG6csJRwpeqxop28c47tKMlC3CV4SJLjctBPqdJ2U/
+	 I1HHToj02LlyTW0LL7gI29nx+liksfigH8jKyJ86QGIobSXKllyHPwv0LWS2ByImh+
+	 +B8ApHwIqCKOHMVkt+++j7lvZwk6G5fcKjACxRbkMm/OaLAk5ZjXZiFDYSso85xGKr
+	 RzWTM8i0f5/EQ==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-385bdc72422so20269141fa.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 10:22:32 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX6UtMdOfh4DWCegA1mHJzDbckd/z9KJholuMCokVS8XIBuYOiFp8WBiFZAIlEZ7FttlknWhKvExgnhgueJcg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjiWnlWd4aQ09T7R+fxkz7cprEGsHRv/Y4DPJAUpVGEoutuyLh
+	d2QI23+03slWgIKAf3ZYbdVwKjKodmdI6qTgIqnPZYLv2ypZnU9H6rvNPT7SfF9KY9Swmb0NXIW
+	IUzz7xa3P6n/0EM4Fj21GD5MhxrrOIHE=
+X-Received: by 2002:a2e:be90:0:b0:37a:34e2:88e7 with SMTP id
+ 38308e7fff4ca-3864662d0d6mr14586501fa.22.1769797351096; Fri, 30 Jan 2026
+ 10:22:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251222-cstr-vfs-v1-1-18e3d327cbd7@gmail.com>
+ <20260129-erwogen-vorfeld-85a7dd7df060@brauner> <CAJ-ks9=+30hkc7+AJF4Sd7T0+odPtiK4p+XrNyDJUU2rrqOP7g@mail.gmail.com>
+ <CANiq72m9sG8K6zJWCpG_yMih8KmX-V998e3C0LviWoo5p5ZA1w@mail.gmail.com>
+In-Reply-To: <CANiq72m9sG8K6zJWCpG_yMih8KmX-V998e3C0LviWoo5p5ZA1w@mail.gmail.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Fri, 30 Jan 2026 13:21:54 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9nNShpgdu_+eCNjvfD7YNTqBnV4Pz=u3C6VpMgS+Nq-Zg@mail.gmail.com>
+X-Gm-Features: AZwV_QhIpdBYIn0WR4XDgBiZCHh8TeYVKOmfDznE-6oYEp16_YTCAUI8OHZQZII
+Message-ID: <CAJ-ks9nNShpgdu_+eCNjvfD7YNTqBnV4Pz=u3C6VpMgS+Nq-Zg@mail.gmail.com>
+Subject: Re: [PATCH] rust: seq_file: replace `kernel::c_str!` with C-Strings
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 Jan 2026 18:18:23 +0100
-Message-Id: <DG23FR9ZVL5S.34ON222I49MIW@kernel.org>
-Subject: Re: [PATCH v4 5/7] rust: io: add `register!` macro
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260128-register-v4-0-aee3a33d9649@nvidia.com>
- <20260128-register-v4-5-aee3a33d9649@nvidia.com>
- <DG0CVJN57L5F.2I6J4RXMJOGQ@garyguo.net>
- <DG0WY7S2QPQM.37S6PROC464QI@nvidia.com>
- <DG14TFQG2C13.2BFREQR1DV4I@garyguo.net>
- <DG1Q6I5CTD87.RYS7QBJCHZ7T@nvidia.com>
- <DG222YZ4WT33.21A5GG66K9X5O@garyguo.net>
- <DG22Q420ISG8.169OONC5IKK7I@kernel.org>
- <DG232UE5TCK2.3FQARVQKDTUIL@garyguo.net>
-In-Reply-To: <DG232UE5TCK2.3FQARVQKDTUIL@garyguo.net>
 
-On Fri Jan 30, 2026 at 6:01 PM CET, Gary Guo wrote:
-> `AsRef` won't work for `Io` which is a trait, unlike `Device` which is a =
-type. A
-> custom trait might work but that's more complex than what Alex purposed.
+On Thu, Jan 29, 2026 at 10:20=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Thu, Jan 29, 2026 at 4:14=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
+rg> wrote:
+> >
+> > Thanks Cristian. The commit doesn't seem to exist (with this hash or
+> > any other, see https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.=
+git/log/?h=3Dvfs-7.0.misc).
+> > Is this expected?
+>
+> Christian may not have pushed the batch yet, given the dates in the repos=
+itory.
 
-Are we sure about that? For instance, how do we determine the size of the I=
-/O
-operation in *_reg()? How can we trust that the type passed to *_reg() is v=
-alid
-for an arbitrary bit pattern?
-
-I mean, I'm not saying it's possible, but it seems that we end up with a co=
-uple
-of safety requirements for the base register traits.
-
-> I'm quite fond of the `io.read_reg(REGISTER_REF)` API suggested. It looks=
- quite
-> uniform with other I/O acceessor methods, except typed and with constant
-> offsets.
-
-It's just a nit, but I find it a bit icky that we have to have something li=
-ke
-the "_reg" suffix.
+Indeed, and that remains true now. Unfortunately this commit wont land
+in linux-next until pushed, which is making me a bit worried about
+discovering last-minute breakage.
