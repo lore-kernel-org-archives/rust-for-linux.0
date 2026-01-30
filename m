@@ -1,112 +1,189 @@
-Received: from outbound.pv.icloud.com (p-west1-cluster6-host12-snip4-5.eps.apple.com [57.103.67.18])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011066.outbound.protection.outlook.com [40.107.130.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA73B378D9D
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 12:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.67.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769776506; cv=none; b=GmlWB74R1kEOXmwl1LTxPjqPdSjcDIRCBv3zxjocpEwvvIVSlzmj1dEVIXSxtaQ2rZae6qjbrFXFELUvL9t+3LfCdKgDg2JJe7Q277LqvkKJ6G9QU61SzgYTsCkHoaFBW+CJeTvRUAz//SOd9dYq5EdCf6wxMeifBDaLbxXD3Rs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769776506; c=relaxed/simple;
-	bh=cevHoQfwyuJWbwR+TNBR/26Wh04ew/K+L7WGC8DzJP0=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=oj4Vk37FbE4aDHWa/lfCO279YBGI0WD791y9hkKxgWcnGTj1qO5/koOyeqaFJix3ukV8WHvNKVukoJts39OP9FTEA9AbwMZLAZLh7yQh2FyV0KhSLquJF9dfYkVHkJQipg6e6nu3LKMs037L5i+pM57zyN+CIklDdVvnzinneTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=yJ0ycLvb; arc=none smtp.client-ip=57.103.67.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D83125A9;
+	Fri, 30 Jan 2026 12:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769777125; cv=fail; b=Xpbo+lBosRXUdUIchGcUsD8xEHp7D5XstniOsNjqj6gPKMQPFWQKgpqiVq9Vo87YThCBk/YDpkoz48a3Yeea3OYWSQ63642Yqk9uVXA9FMA45MyaMhF02UqscLGM+GMHa9i2YljVC65KAlAzUSEtQ4g2DQYeK4SrGyrfVIgC9WM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769777125; c=relaxed/simple;
+	bh=AKUcKGt4LYhYJGdmT9fR/3IIvkYPoCN/287SqaiiaX4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dXy+xCy9ptdlqbxB0NsrYJ8G0k5jgT0UrofIMYxwxEZbr+FhOgH5vBpqZtvCpRxnaCNV4j2MTdxb+fHxGzEANEW2Y1uyqGYbc6aPEU8+uTNb4mOwfRkSNlnnkxfigxCYldtrFtJCwJilliKzuY8LfKFFxlHoqPqpZFGAN8aR82c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=aBeuAGCQ; arc=fail smtp.client-ip=40.107.130.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="yJ0ycLvb"
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-11 (Postfix) with ESMTPS id 7CDBF18002A8;
-	Fri, 30 Jan 2026 12:35:01 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1769776504; x=1772368504; bh=cevHoQfwyuJWbwR+TNBR/26Wh04ew/K+L7WGC8DzJP0=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=yJ0ycLvbq8FdNbNR2uXONsc3mLyOGGOIDZqfIylqxePrKhbIxpK2HFmppndafKu5X2Y2PiJZNz/ORf3GrW1zXtYydfUSgyhZNoGSqSs84iWqDlsQYycd5JbMEq/PT1jAepwfcHGzLSaqNB/uk9xE7ocecneG7WEEWAAkmv+9ldgv7QIO3qch7TLMU5q0T0O0y/0mmlYfWK4l0WN+uC+sUTbVtwOY3CgVISIN6xgUUyqasdnxelNYozRfksgGAGk6MDx1Z5LZY4bXt29hyqBE0MkSkq89cgu0DCflhrccnsiOOkTZU5BEEz6gHVBkMDepBkC5a4jKs0Ca1oogEm3GQQ==
-mail-alias-created-date: 1769500909675
-Received: from localhost (unknown [17.56.9.36])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-11 (Postfix) with ESMTPSA id 577261801218;
-	Fri, 30 Jan 2026 12:34:59 +0000 (UTC)
-Date: Fri, 30 Jan 2026 21:34:57 +0900 (JST)
-Message-Id: <20260130.213457.682218231145284582.fujita@bee>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, boqun.feng@gmail.com,
- bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
- lossin@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH v3 0/2] Add support for print exactly once
-From: FUJITA Tomonori <tomo@aliasing.net>
-In-Reply-To: <CANiq72k7qXoz3wcHqjNK29ZZ9gTdkmpwX7oqxgV9Rq6uGRwugw@mail.gmail.com>
-References: <20251117002452.4068692-1-fujita.tomonori@gmail.com>
-	<CANiq72k7qXoz3wcHqjNK29ZZ9gTdkmpwX7oqxgV9Rq6uGRwugw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="aBeuAGCQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AiqnYIrbfjN/RODvFZ6nZjhho0JOHdVvlrvbIsims6evWRUMbHj/RIOA/3PxP5KITtTXAW+9PY7pvwVF0VTdOVOCFOWOlqIoe44Nl8rhiFEO6Lf9q+mIe+LyABXHoUl1QZBZ5smVJnqLbSBZrPTXlDNmOnSiq8TgUVbHQnSzx3KVLAYLpAbNf2mtxpNpuGTU71elu4xXJTFRzb4mNDD1H3E5qANLnTPFY+L7AVrExMifIJKwZLcsEuOvysSwzDmrum0ci5CX8bVUah9vfdmNBEJJYPoBCKAzhvGQ2qrQFBUCNzCMmYCCAMvhRqWZWcRF6qtPoKOu4DMuN9z/ZodpTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8Ia9yrRYEdr6OSxEvAtFX/hGkwIZsevUGoozBvPUyis=;
+ b=RnPgWwYjoh1+MWTGvB8reukWoNGdxeQq7IkXlmXAjNVIaIkR3UTqMqxieSylrRQOk7S6TZaGz1M0qs+TGNPe7tps97n0QgjjuQxA8G9I6NiE6ovdRm2Hyf0ABwf1DQe1eezQcBSbUufatk+Bekv31JLffzTwMWHtEURZrVyIDwzdB9Q0ju6c01NoOqcSYa3rRgTa/YnIeZMpVGLNVJnrhMKEMp3kRYsjr3E4LxI/nARWoj9UPc+wKIVooouq94yPLT7RIGICr3o8EPz2ybNzOSBSWpy4Fo8WBUhZna0hsNgHtNa5AqUTuzDbyqkTOwdcdD0OWwOg1lALJVbxNq1fSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8Ia9yrRYEdr6OSxEvAtFX/hGkwIZsevUGoozBvPUyis=;
+ b=aBeuAGCQiM7PTTCoO6QKheChN+QfHrFOpdPiZDhgGCItD/xfzUg4Q4F7EtlW/Yo6/5JKpSeFigOGUnX+VIDDNqLeSpoX7nLhjqV6XQj0s0sBRU9BGcIWwzUt0N6DBrNZ1LpSpJgF2+0pLsPhSl+7nZ+YLyY9gWsz0X5Guxl6hFILG+v+bH3Baq+GtLySQmic/icRS8cJ14kZ832kMN4Xtvpo5l7mS78JG14fQG79PGDRgYihh6OTU4IN1hQVHQmuk1x4nuzoVpJw5lEGlgni3M3KZE9Ci0FjV/7Ghfw7KoLoGC35hm6QXjYZUpCOR6PgaNG3BDZ8cHqsl3H+25PO3w==
+Received: from DU7PR01CA0027.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:50e::14) by VI1PR10MB3247.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:803:135::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
+ 2026 12:45:17 +0000
+Received: from DU6PEPF00009528.eurprd02.prod.outlook.com
+ (2603:10a6:10:50e:cafe::e8) by DU7PR01CA0027.outlook.office365.com
+ (2603:10a6:10:50e::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.11 via Frontend Transport; Fri,
+ 30 Jan 2026 12:45:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DU6PEPF00009528.mail.protection.outlook.com (10.167.8.9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.3 via Frontend Transport; Fri, 30 Jan 2026 12:45:15 +0000
+Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Fri, 30 Jan
+ 2026 13:45:12 +0100
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Fri, 30 Jan
+ 2026 13:45:12 +0100
+Message-ID: <fb68b2d2-a5bd-4359-a0c5-019ef4060e7d@de.bosch.com>
+Date: Fri, 30 Jan 2026 13:45:05 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
-X-Authority-Info-Out: v=2.4 cv=DsJbOW/+ c=1 sm=1 tr=0 ts=697ca577
- cx=c_apl:c_apl_out:c_pps a=azHRBMxVc17uSn+fyuI/eg==:117
- a=azHRBMxVc17uSn+fyuI/eg==:17 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
- a=zV1oc8Cxy4iWas2m4qAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: CiFctLcaPfxxzd2Snv0ivM4OeOyNFYDR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDEwMyBTYWx0ZWRfX0AbrFZIqFjVo
- oyrdVYUN6tvlZ79Ih2Th0pdh6GkNetAbGmmv8wzBX3JjD/08f3mEBuYd518MAflCcLIamogohC1
- AuDAlQHegmpLP0JxO788JxnrRR+22HR0f4OoI55Qt5DtfDjTbJ67f4ktpET0+osQSpdCHgRDrsG
- eCbJgGxkV3bupLgvPsfgxFmdSNjA5gGf3n0VUVxNqH3U+FLgHyvgqKk8Er9nffXfFxTr5eb1BMA
- o8bBnI6O9mdPly+yjNNF4lc0dsM1HQ53ds1hdtJfsYZA5hz0Je3YSpnKAbe3FJXUOTDxim6KRW4
- 96Jxf+RW4bFbLgF8bcK4ppK7+tR6M2B3J2HgWPiqs0lLTXRX0RTBUzrmUTzV8Y=
-X-Proofpoint-GUID: CiFctLcaPfxxzd2Snv0ivM4OeOyNFYDR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-30_01,2026-01-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxscore=0 mlxlogscore=874 bulkscore=0 adultscore=0 suspectscore=0
- phishscore=0 malwarescore=0 clxscore=1030 lowpriorityscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601300103
-X-JNJ: AAAAAAABVLnpyqbsjMjtsE7fOKk1LTkgRys6aYBGoUWCz3vok7B963XPyHEurj7w0rev/hau0C+q+vzfM77Lw1Gdvr5ZHxCO8ZXC2VB9hq0Q4GKB0QNeHju7iq8RqRdvdaWrKhl3FkvYdZVkidicujIzr/9Qib/bsEoI8ZU1+PSfqu0EjHH1sBYX/HAkiDAkX29gdjYj2FvKbs8Y1odEIa4ydq5XK9EFv0YBXnRmFMHvuuWIhJKmmqeYpsqsSz2fx4WSbJIp4mjykl6USaWY82UNSYWp7Q5w6HSsf0vXUpcDgx2eLun2ihELWkt/db2bF4bIrpkYGm5J4tEkiEVi7Lo0vCOr40E5T9hknTgsH9hpJPNul4EqsSjr5K2ZMEdOLjIpxu/P8BeO5srJDfIMivWRjJEh1i8vwVX/yQyNVillIpczH67P/gaLzLPjc5X9WbhD8dKlA65nlXk9q3XEYUcud+rTHbfCkbL3o8lWL+zDOaxfGzvakkjwk1zRTI82hfea1Uc9vNIlc0Kkk1CvY+dbM8ZrIBdJNKQBAoJ2Mn2eGsn+tC9JNkQos6nk9IwtBvGEPMzx43G3ysYsigPOtqSuMGSFGqb1xwhGGfsll2S1ppzwcpcBl2yXTRmLyzdX1McY0fU/IGy7olrXmg3EEfktchH2Kyvlt217naEzAtcWk1SMCpUp7+wdu60kSeSoWhR288rhYJ46iFGbg3kGLKIV/axOjFgy9km84AxEOjzLmtmN6Vwr84cyG+LTw+7O5SHL9Gsi2OHr/mevfJVbKwzTWg==
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 3/3] samples: rust: remove imports available via prelude
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo
+	<gary@garyguo.net>
+CC: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+	<dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, "Ira
+ Weiny" <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Arnd
+ Bergmann <arnd@arndb.de>, <rust-for-linux@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260123172007.136873-1-gary@garyguo.net>
+ <20260123172007.136873-4-gary@garyguo.net>
+ <CANiq72kwRdYbs9L1hrX_0SdGHsycMi9fz6+wh+qGgWiOsFZZiQ@mail.gmail.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <CANiq72kwRdYbs9L1hrX_0SdGHsycMi9fz6+wh+qGgWiOsFZZiQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU6PEPF00009528:EE_|VI1PR10MB3247:EE_
+X-MS-Office365-Filtering-Correlation-Id: bad8df97-8c03-43fa-f01e-08de5ffd6ae6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cEIxbFZRNkV3djdmNVZXbjV6T2d0bFdic0RyZ1JBSE52TWc1MWdObU53UGVW?=
+ =?utf-8?B?SFN6eWYyNlFrL3RsUXNmMUVUK1VjN3M3aUxQRmcyMjliQWFKSDVCU0xYMGNL?=
+ =?utf-8?B?cDk4RTVSK2pEWnNQUU1sNzNOODBrRUJsdmpHa1NmUmgwUXI2dXo2QnRRY1pS?=
+ =?utf-8?B?bjFpY05lUG03U2l1VnVMMHkwOFZVNUNDQ2RxWDI0U1VCbzQrdy9Nckd6NlUx?=
+ =?utf-8?B?UUQ1aFhOTTBqZFBKRmlia0k5cE5tYkFRejhmdVFrMHVzK3VsSnBYRE5HaVg0?=
+ =?utf-8?B?bzRIMS96ckNVSU45L0VPcGNta2MzQnQ5eEZJZHZKQ0tjSFA3S0xmM0tJdlBi?=
+ =?utf-8?B?SE93by9UNGRscHpDNWI4L2lqZHJ4ZjlsYStEbXcxSUpsc1dnM042Umlrc2F2?=
+ =?utf-8?B?Y2daUjlMWG45V25CY01VaWNHdU84MTFGOEt6Q1hDSUNITlRPNklXbWlKbHBn?=
+ =?utf-8?B?V2VwVm5rYkxwVC9yUERnbEhKZnkzYWY1TlBxLzFkRmdNSk0vZDV5OFA1N0xX?=
+ =?utf-8?B?enJhWjhrVlhoTWZMUW5SZGtTa05WdW5PdTdNQlZXenNwa2ZNOHFzc3I0NmJj?=
+ =?utf-8?B?WFhoZ3k2ei9EMWVKQVRHeHpINXNLWjcxRjNJL2ZTOVhERjY4UnNvdlM2dEJv?=
+ =?utf-8?B?dnFEVUZUVGgzbmhTVnZmcDVpalRRQytUSFNKTm4rZEdnbVdEcGtEZUJrQ2p2?=
+ =?utf-8?B?Ly8zV3dLYkpFeFZIajJZQTNwYTN5c2prTHFjRmJQU0lkaEQ2U1JncWlaQnhD?=
+ =?utf-8?B?MHFpSHR2SlFSZEprSlhqU3VINldEa0NtOGNTeVJWRW5EN3U4UXpiMmRkWTNO?=
+ =?utf-8?B?UlR3Snp1TXJGazlDUi9oVktnandaNlNhQWZOVGRhdkk4SWRia3FHZ2x0RVdT?=
+ =?utf-8?B?d1BuQ3locDQxRjI2aGRSZVBBVml2VDZDOEFjNnh5Y3graDFKY01BSmNsNXpW?=
+ =?utf-8?B?UXc4UnBRNW9GeWpSOEp0cVlVQ2xZVEdzSDFJMEg4c3pxVFcyc1hSK3p0QXRw?=
+ =?utf-8?B?M0lzZDdjUVp0MkY1czRrSXRRSHdVZm9ERk9zbUt0ZnB5anE2cG1OSS9tYXVQ?=
+ =?utf-8?B?OXVIZE95WEJnbFRnbGM4SkZZWkdQdzhteEVCcWRYbEZuUmVPNGJQMW5GY0ps?=
+ =?utf-8?B?b0MwS25oaXZVaC9DV2JDSWJ0TU4zVWllRXFNb1FEdVUxMHIzUVlIVnhTUHlk?=
+ =?utf-8?B?QytDdjRsOUZZYUxvM0ZkMDdsSk5EK2d1Q2hsMUFTOTBRMkluRmo3dDdPN3lF?=
+ =?utf-8?B?Vkc0OHNYTUJ1RkcwbnV1ZS9EL1NTbmE3N25KNmZEWVNWeWhGb1JPd2ZPSVNE?=
+ =?utf-8?B?Tm5SWmZ3OXVyV24ya1RqTHFvNWVFZHpXclZseElCY0U3N09jUEpYS1hIZ1hp?=
+ =?utf-8?B?OUtkd3IyV2pZNk5PSHU2QXBrUGVlK2lsd1ZjVTlHSEJuUCtWUlNKWFRNd0Vn?=
+ =?utf-8?B?TWYwSzJuZzlCS3FaUG1QeFBhMXV1c3dTUlhQanBjRWsxbzV4T2I4QktOQnk3?=
+ =?utf-8?B?RlIraFFqUEM0dExnRk5ENFZsTmVDd3J0aElmczZqUXJXWXdoNU44aXlJMG5v?=
+ =?utf-8?B?NFBjamZWYzFIcDFJc2RzU0RJeGtMU2I1R2pEcnBHdDkrRzQ5MUxGL21FSUgz?=
+ =?utf-8?B?WkxDYk8zV2ZQa1NRM3hOblJ1d1VpcVQ5VWhXR21CYlFLeFF3R1B5TEorTEEy?=
+ =?utf-8?B?ZXB3dG1Hd0trWXRPczNLVlFjbHZ5VmRiT1JMSU9VRzF0Q1E0b3U5QTRMT3VV?=
+ =?utf-8?B?anl3TjBxeXdhN3IzdnhYYjcxUll3SkJJY0VXOEpyN1lBSTdDdWlCeEZGeHRQ?=
+ =?utf-8?B?YjErZ0VLTkM1WFpKenNSZnQ4ZEdNLy8zcDZFSk1wQXUwUis4V1ZIQURmcmdF?=
+ =?utf-8?B?T3I0MHNDSjBJRVZnZ01sRFEvMEVJbVIxd1ZzTU15R3Jmdm5jeVZHazY5SEU5?=
+ =?utf-8?B?bUdLaGg0TkhDb0JzenUvRldUMkYvTXhJT3BGK0RwNm1Yc2Q5Uk5NOGxYTHNi?=
+ =?utf-8?B?WTFuYkZvV25oeGE5RnpGdmhKdERaNUpJdStaU3ZKc3h0VjVEd1BMNWVWdjZh?=
+ =?utf-8?B?ODBMVUxMY3dvQnJpY05IVmVXTm1mTTVsdEdPeG5jRnIrMnpvMkFxaDZLZzQ0?=
+ =?utf-8?B?YlIvVk1QTVU3T1FBeWd0MUtkVnNuL1VkVy8xZURnWTlDam9vYjhRc0pTQmxJ?=
+ =?utf-8?B?TjhHcnB1YmtzVG1JZ01xMVN4S0Vra0ZnMXZqakVCRXBHT3JNL0xFVWtsQ2RZ?=
+ =?utf-8?B?dC9kR1MrdnUzRTdpM2dLRHgrajlBPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	jeEWLBwolAJT/x6gC+o2YKJVH2o3k3nyN+rx8d1YVPpqm1gwTsxaPnrusHLTsPQSTJYpP6P2tG5JFMl7w9xCDlb5FGwulViSxEOdOWomMCouAVuCUoO4MTTiKcGXZMuP4/1tVQiKYX9jihSYdvO1jJll6T/qIaye5NHfO5kiaqW3G4JvOxU14VxMTCvFxFMXHWD8bs61cwRC3o5ZopYU0yyIW7i4yTHZTNyCYNdcN0IpFkQgotukVsMAhGAiLzqQqjFXv8H/e3UH+IddgorGZrE/ap1G5meGtOUxR8iLtqzNmYMjh2aS/tVGvjm83aYZcW7rNm1LvXhuw7KmJNveRbONqlMz+dPfQFJGl7jsW4ntAtPVvtsZlkWcR43sG4prVKGs9rfzoH7/bdLOv5dA+5rwSvaUKYCej5dQCQSA/0Os2v/8s5hIJEreYlWmcftP
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 12:45:15.6936
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bad8df97-8c03-43fa-f01e-08de5ffd6ae6
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU6PEPF00009528.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB3247
 
-T24gRnJpLCAzMCBKYW4gMjAyNiAwNTo1MTo0MiArMDEwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
-b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBNb24sIE5vdiAxNywgMjAy
-NSBhdCAxOjI14oCvQU0gRlVKSVRBIFRvbW9ub3JpDQo+IDxmdWppdGEudG9tb25vcmlAZ21haWwu
-Y29tPiB3cm90ZToNCj4+DQo+PiBUaGlzIGFkZHMgdGhlIFJ1c3QgZXF1aXZhbGVudCBvZiB0aGUg
-QydzIERPX09OQ0VfTElURSBhbmQgcHJfKl9vbmNlDQo+PiBtYWNyb3MuDQo+Pg0KPj4gQSBwcm9w
-b3NhbCBmb3IgdGhpcyBmZWF0dXJlIHdhcyBtYWRlIGluIHRoZSBwYXN0IFsxXSwgYnV0IGl0IGRp
-ZG4ndA0KPj4gcmVhY2ggY29uc2Vuc3VzIG9uIHRoZSBpbXBsZW1lbnRhdGlvbiBhbmQgd2Fzbid0
-IG1lcmdlZC4NCj4+DQo+PiBVbmxpa2UgdGhlIHByZXZpb3VzIHByb3Bvc2FsLCB0aGlzIGltcGxl
-bWVudHMgdGhlIEMncyBET19PTkNFX0xJVEUNCj4+IG1lY2hhbmlzbSB1c2luZyBhIHNpbmdsZSBh
-dG9taWMgdmFyaWFibGUuIFdoaWxlIGl0IHdvdWxkIGJlIHBvc3NpYmxlDQo+PiB0byBpbXBsZW1l
-bnQgdGhlIGZlYXR1cmUgZW50aXJlbHkgYXMgYSBSdXN0IG1hY3JvLCB0aGUgZnVuY3Rpb25hbGl0
-eQ0KPj4gdGhhdCBjYW4gYmUgaW1wbGVtZW50ZWQgYXMgcmVndWxhciBmdW5jdGlvbnMgaGFzIGJl
-ZW4gZXh0cmFjdGVkIGFuZA0KPj4gaW1wbGVtZW50ZWQgYXMgdGhlIE9uY2VMaXRlIHN0cnVjdCBm
-b3IgYmV0dGVyIGNvZGUgcmVhZGFiaWxpdHkuDQo+Pg0KPj4gVG8gbWFrZSBpdCBjbGVhciB0aGF0
-IHRoaXMgZmVhdHVyZSBpcyBpbnRlbmRlZCBzb2xlbHkgZm9yDQo+PiBwcmludC1yZWxhdGVkIGZ1
-bmN0aW9uYWxpdHkgKGp1c3QgbGlrZSBpbiBDKSwgdGhlIGltcGxlbWVudGF0aW9uIGlzDQo+PiBw
-bGFjZWQgaW4gcHJpbnQucnMuIElmIGFuIGVxdWl2YWxlbnQgb2Ygc3RkOjpzeW5jOjpPbmNlIGlz
-IG5lZWRlZCBpbg0KPj4gdGhlIGZ1dHVyZSwgaXQgc2hvdWxkIGJlIGJhc2VkIG9uIFNldE9uY2Ug
-cmF0aGVyIHRoYW4gT25jZUxpdGUuIFVubGlrZQ0KPj4gc3RkOjpzeW5jOjpPbmNlIGFuZCBTZXRP
-bmNlLCBPbmNlTGl0ZSBvbmx5IG1hbmFnZXMgdHdvIHN0YXRlczoNCj4+IGluY29tcGxldGUgYW5k
-IGNvbXBsZXRlLg0KPj4NCj4+IFRoZSBkb19vbmNlX2xpdGUgbWFjcm8gcGxhY2VzIHRoZSBPbmNl
-TGl0ZSBvYmplY3QgaW4gdGhlIC5kYXRhLi5vbmNlDQo+PiBzZWN0aW9uLCB3aGljaCBtYXkgYmUg
-emVyb2VkIGJ5IG1lbXNldCBhdCBhbnkgdGltZS4gV2hpbGUgdGhpcyBtZWFucw0KPj4gdGVhciBy
-ZWFkcyBtaWdodCBoYXBwZW4sIE9uY2VMaXRlIG9ubHkgbWFuYWdlcyB0d28gc3RhdGVzICh6ZXJv
-IGFuZA0KPj4gbm9uLXplcm8pLCBzbyBubyBhY3R1YWwgcHJvYmxlbSBvY2N1cnMgaW4gcHJhY3Rp
-Y2UuDQo+Pg0KPj4gT25jZUxpdGUgY3VycmVudGx5IHVzZXMgQXRvbWljPGkzMj4sIGJ1dCBtYXkg
-YmUgY2hhbmdlZCB0byB1c2UNCj4+IEF0b21pYzxpOD4gWzJdIHdoZW4gaXQgYmVjb21lcyBhdmFp
-bGFibGUuDQo+Pg0KPj4gWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3J1c3QtZm9yLWxpbnV4
-LzIwMjQxMTI2LXByX29uY2VfbWFjcm9zLXY0LTAtNDEwYjhjYTk2NDNlQHR1dGEuaW8vDQo+PiBb
-Ml0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcnVzdC1mb3ItbGludXgvMjAyNTExMTUwNTAzMDUu
-Mzg3MjQxMi0xLWZ1aml0YS50b21vbm9yaUBnbWFpbC5jb20vDQo+IA0KPiBBcHBsaWVkIHRvIGBy
-dXN0LW5leHRgIC0tIHRoYW5rcyBldmVyeW9uZSENCj4gDQo+IEkgaGF2ZSB1c2VkIHRoaXMgbmlj
-ZSBjb3ZlciBsZXR0ZXIgYXMgdGhlIGJhc2lzIGZvciBhIG1lcmdlIGNvbW1pdC4NCj4gV2hpbGUg
-dGhleSB3ZXJlIGp1c3QgdHdvIGNvbW1pdHMsIEkgdGhpbmsgdGhlIGNvdmVyIGxldHRlciBhZGRz
-IHNvbWUNCj4gY29udGV4dCB0aGF0IHRob3NlIG90aGVyIGNvbW1pdCBtZXNzYWdlcyBkbyBub3Qu
-DQo+IA0KPiBUb21vbm9yaSwgcGxlYXNlIGRvdWJsZSBjaGVjayB0aGUgbWVyZ2UgY29tbWl0IG1l
-c3NhZ2UhIEFuZCBpZiB5b3UgZGlkDQo+IG5vdCBpbnRlbmQgZm9yIHRoaXMgdG8gbGFuZCBpbiB0
-aGUgR2l0IGxvZywgcGxlYXNlIGxldCBtZSBrbm93IChJIGFtDQo+IHN0YXJ0aW5nIHRvIHRha2Ug
-bW9yZSBjb3ZlciBsZXR0ZXJzIGludG8gdGhlIEdpdCBsb2cpLg0KPiANCj4gICAgIFsgQWRkZWQg
-cHJlZml4IHRvIHRpdGxlLiAtIE1pZ3VlbCBdDQo+IA0KPiAgICAgWyBBZGRlZCBwcmVmaXggdG8g
-dGl0bGUuIEZpeGVkIHR5cG8uIC0gTWlndWVsIF0NCg0KVGhhdCBzb3VuZHMgbGlrZSBhIGdvb2Qg
-aWRlYS4gTG9va3MgZ29vZC4NCg0KSSd2ZSBqdXN0IHRyaWVkIHRoZSBydXN0LW5leHQgYnJhbmNo
-IGFuZCBkb19vbmNlX2xpdGUoKSB3b3JrcyBhcw0KZXhwZWN0ZWQuDQoNClRoYW5rcyENCg0K
+On 27/01/2026 12:10, Miguel Ojeda wrote:
+> On Sat, Jan 24, 2026 at 6:08 AM Gary Guo <gary@garyguo.net> wrote:
+>>
+>> These imports are already in scope by importing `kernel::prelude::*` and
+>> does not need to be imported separately.
+>>
+>> Signed-off-by: Gary Guo <gary@garyguo.net>
+> 
+> Applied (this one only) to `rust-next` -- thanks everyone!
+
+Having my klint setup running now (many thanks Gary!) on today's 
+rust-next [1] I still get
+
+error: this item is available via prelude
+   --> samples/rust/rust_driver_auxiliary.rs:12:5
+    |
+12 |     error::Error,
+    |     ^^^^^^^^^^^^
+    |
+    = help: import with `kernel::prelude::*` instead
+    = note: `-D klint::not-using-prelude` implied by `-D warnings`
+    = help: to override `-D warnings` add 
+`#[allow(klint::not_using_prelude)]`
+
+error: aborting due to 1 previous error
+
+Somehow dropping this was not part of this patch. Not sure why ...
+
+Best regards
+
+Dirk
+
+[1] HEAD is 08afcc38a64c ("Merge patch series "Add support for print 
+exactly once"")
