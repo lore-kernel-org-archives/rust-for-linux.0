@@ -1,91 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EE0357724
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 11:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C4F34FF7C
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 11:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769772313; cv=none; b=lgtYev2hYh/Aov/ggUxw8+/y7Nl0Tg5BLY44KvOOSyzAaiGSnd3CxbZwBywRsSp4zgzwBnWaGX+5kV1BltZAChQljctoEbmWYd+n06r4RtSXgrN9MW6zN6rmdxPHVhDYOiiSh6AJfZapN2eYtc0F7xqSCgV5JtyWQADF9XHAoCc=
+	t=1769772910; cv=none; b=mHlzE2cOI6uiFZVvL51I7UA/tMivqqeYeM/rtkJfdq+kBBAmlY9bftp1V47hChdqZsxPPWbuTWuld++3X8GBQtNp7MC2vfVnZ443OSk6EXWgfigNWO4jYdDLAC3KyJq3c/Ghl/1kND1nzQ6965Cj8ouklinFoQS5oxkC5ixfiwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769772313; c=relaxed/simple;
-	bh=/Is4pF+G/cAVaoRANAVnOakAyrY90dOrluvgZxDsU3A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lf7QhK2t3+FmZ5C3fTYOR9FNJsHuUSf/V8HwRHGC5kGIsWtwpcbEiYCSBGDv6M2LChw/bMbx31adN4D+QcurxAFQD9GIVDlYw9qBWdevEU7u+WaUVWSAuMjiAwg6QtkvO8lOS9+Vf3jvYOJUXG10cCoUAlhLBC4+Jlp2i8BS8sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u7PuIOUK; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u7PuIOUK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F23C2BC87
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 11:25:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769772312;
-	bh=/Is4pF+G/cAVaoRANAVnOakAyrY90dOrluvgZxDsU3A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=u7PuIOUK2J6AWwefUUjfa1qkpxuKuXHSjAdtUAJpXG6PE9gf7/lG3PYwU8lOmrvfL
-	 cfjcWsu7x80DiuHCOU1ElZfyJHFPnNM+KalIqjIQUJ0zwIKGM8IcCiLWTq+P3eNIvN
-	 qLb3gtKOfdb3eU6a43I1jGsGSfeyBLoXthxi6ipWvDSxRT2djX8iF/Mk+vNEyw0l0W
-	 P2qltqpOzmj5SEVhxnnFA/uqj9yJ4euAZwRacpZlIz0+G+UQUMiZFV5b4Zh/5kuz5g
-	 1/LP7y4xG/TNEC00T0XMD3TIdIcX4SVLrwbP4qoZkACJkt6uHnlrnO1TXkAYLOZJW3
-	 TkZ2B8Q9KrM/A==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-385b9be0759so16905011fa.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 03:25:12 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXux6mZK3sS2TD9b6jtj4LUHXRpyDyDcyLfXprmYZlXAgX8m9bNGsTAmPB8ddVsdpMxafb0OQS+ohM/ijET8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhhB8OvdSZdusakkEl5KoIOO+uAMVrRL96yKpoyvpuuZ2DLq8T
-	37AXTvCUuz2pi0Fz0yp+T7O+Z5Qevja46QMDs5S5XQTYEodHNqjD5aW5SjGPF2Bhu4iT+5QRTyh
-	5S1HkqHQgfkuSWJvU/dlp9/W7hLUlMoQ=
-X-Received: by 2002:a05:651c:1501:b0:37b:b140:e512 with SMTP id
- 38308e7fff4ca-38646523bb6mr8808741fa.10.1769772311581; Fri, 30 Jan 2026
- 03:25:11 -0800 (PST)
+	s=arc-20240116; t=1769772910; c=relaxed/simple;
+	bh=n2kuZK+AmdnpiUxueVhxbinZ2/SypyxHxjQmPVjfQfI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=b/9gyjdsnP6IKtANVpT8NKgeuv+zmNvwOECc4WqzaPUKjZmjOUTwnU0le3W10KU4iahppgIUgfI8MTYalNrkAFx0ojvE1xKvpRJDmE26qKd290R05RANMd9fSc42VApTWXpnb/wGeMt6R7AR/aYvmthfpznRsn66N4+2YbZKPho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
+Received: from unknown (HELO lgeamrelo04.lge.com) (156.147.1.127)
+	by 156.147.23.51 with ESMTP; 30 Jan 2026 20:34:58 +0900
+X-Original-SENDERIP: 156.147.1.127
+X-Original-MAILFROM: heesu0025.kim@lge.com
+Received: from unknown (HELO heesu0025-kim-aosp-rust-binder.beeworker.bee-live.svc.cluster.local) (10.159.44.90)
+	by 156.147.1.127 with ESMTP; 30 Jan 2026 20:34:58 +0900
+X-Original-SENDERIP: 10.159.44.90
+X-Original-MAILFROM: heesu0025.kim@lge.com
+From: heesu0025.kim@lge.com
+To: aliceryhl@google.com
+Cc: a.hindborg@kernel.org,
+	arve@android.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	brauner@kernel.org,
+	cmllamas@google.com,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	heesu0025.kim@lge.com,
+	ht.hong@lge.com,
+	jongan.kim@lge.com,
+	jungsu.hwang@lge.com,
+	kernel-team@android.com,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	sanghun.lee@lge.com,
+	seulgi.lee@lge.com,
+	sunghoon.kim@lge.com,
+	tamird@gmail.com,
+	tkjos@android.com,
+	tmgross@umich.edu,
+	viresh.kumar@linaro.org,
+	vitaly.wool@konsulko.se,
+	yury.norov@gmail.com
+Subject: Re: [PATCH v2 2/3] rust: pid: add Pid abstraction and init_pid_ns helper
+Date: Fri, 30 Jan 2026 20:34:57 +0900
+Message-Id: <20260130113457.21521-1-heesu0025.kim@lge.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <aXs3OjlGzQVABAwR@google.com>
+References: <aXs3OjlGzQVABAwR@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260127-rust-analyzer-pin-init-duplication-v3-0-118c48c35e88@kernel.org>
- <20260127-rust-analyzer-pin-init-duplication-v3-1-118c48c35e88@kernel.org> <CANiq72knqZ7-xXjuSdv4rAuxpY5u8xF8DvGyKVqWnZfGyRf2rQ@mail.gmail.com>
-In-Reply-To: <CANiq72knqZ7-xXjuSdv4rAuxpY5u8xF8DvGyKVqWnZfGyRf2rQ@mail.gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 30 Jan 2026 06:24:34 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9nuS26bxqSwDcQ9+N=bPmjZhPjiDGWt4Txab23wzSAu3A@mail.gmail.com>
-X-Gm-Features: AZwV_QgzWNA8amtP91hQR2Vy7ysVURzVirKm6ZDuOm-OlKn9LXIa7aZyFmkEg5Q
-Message-ID: <CAJ-ks9nuS26bxqSwDcQ9+N=bPmjZhPjiDGWt4Txab23wzSAu3A@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rust: kbuild: extract configs for reuse
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 29, 2026 at 11:43=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu, Jan 29, 2026 at 10:32:26AM +0000, Alice Ryhl wrote:
+> On Thu, Jan 29, 2026 at 05:41:18PM +0900, jongan.kim@lge.com wrote:
+>> From: HeeSu Kim <heesu0025.kim@lge.com>
+>> 
+>> Add a new Pid abstraction in rust/kernel/pid.rs that wraps the
+>> kernel's struct pid and provides safe Rust interfaces for:
+>> - find_vpid_with_guard: Find a pid by number under RCU protection
+>> - pid_task_with_guard: Get the task associated with a pid under RCU
+>>   protection
+>> 
+>> Also add init_pid_ns() helper function to pid_namespace.rs to get
+>> a reference to the init PID namespace.
+>> 
+>> These abstractions use lifetime-bounded references tied to RCU guards
+>> to ensure memory safety when accessing RCU-protected data structures.
+>> 
+>> Signed-off-by: HeeSu Kim <heesu0025.kim@lge.com>
 >
-> On Tue, Jan 27, 2026 at 2:55=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
-rg> wrote:
-> >
-> > Extract `pin_init{,_internal}-{cfgs,flags}` to reduce duplication.
-> >
-> > Acked-by: Benno Lossin <lossin@kernel.org>
-> > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+> This looks really nice, thanks!
 >
-> Applied to `rust-next` -- thanks everyone!
+>> +//! Process identifiers (PIDs).
+>> +//!
+>> +//! C header: [`include/linux/pid.h`](srctree/include/linux/pid.h)
+>> +
+>> +use crate::{bindings, ffi::c_int, sync::rcu, task::Task, types::Opaque};
 >
-> I rebased and things changed a fair bit since now we have a few
-> `--extern`s more -- Tamir, please double-check that things will still
-> work with your future rust-analyzer patch on top!
+> Currently we use this formatting for imports:
+>
+> use crate::{
+>     bindings,
+>     ffi::c_int,
+>     sync::rcu,
+>     task::Task,
+>     types::Opaque, //
+> };
+>
+>> +/// Wraps the kernel's `struct pid`.
+>> +///
+>> +/// This structure represents the Rust abstraction for a C `struct pid`.
+>> +/// A `Pid` represents a process identifier that can be looked up in different
+>> +/// PID namespaces.
+>> +#[repr(transparent)]
+>> +pub struct Pid {
+>> +    inner: Opaque<bindings::pid>,
+>> +}
+>
+> I would implement Send, Sync, and AlwaysRefCounted for Pid too.
+>
+>> +            // SAFETY: `find_vpid` returns a valid pointer under RCU protection,
+>> +            // and `Pid` is `#[repr(transparent)]` over `bindings::pid`.
+>> +            Some(unsafe { &*(ptr as *const Self) })
+>
+> It would be nice to extract this cast into a Pid::from_raw().
+>
+>> +            // SAFETY: `pid_task` returns a valid pointer under RCU protection,
+>> +            // and `Task` is `#[repr(transparent)]` over `bindings::task_struct`.
+>> +            Some(unsafe { &*task_ptr.cast() })
+>
+> I think it would be nice to add a Task::from_raw() to avoid the cast
+> here.
+>
+> 	Some(unsafe { Task::from_raw(task_ptr) })
+>
+>> +    pub fn pid_task_with_guard<'a>(&'a self, _rcu_guard: &'a rcu::Guard) -> Option<&'a Task> {
+>> +    pub fn find_vpid_with_guard<'a>(nr: i32, _rcu_guard: &'a rcu::Guard) -> Option<&'a Self> {
+>
+> I think we can drop the 'with_guard' suffixes of these.
+>
+>> +/// Returns a reference to the init PID namespace.
+>> +///
+>> +/// This is the root PID namespace that exists throughout the lifetime of the kernel.
+>> +#[inline]
+>> +pub fn init_pid_ns() -> &'static PidNamespace {
+>> +    // SAFETY: `init_pid_ns` is a global static that is valid for the lifetime of the kernel.
+>> +    unsafe { PidNamespace::from_ptr(core::ptr::addr_of!(bindings::init_pid_ns)) }
+>
+> Simplifies to:
+>
+> 	PidNamespace::from_ptr(&raw const bindings::init_pid_ns)
+>
+> Alice
 
-Looks good.
+Thanks for the detailed review and feedback.
 
->     [ The new variables will be used later on to easily pass them to
->       the `scripts/generate_rust_analyzer.py` script. - Miguel ]
->
->     [ Rebased. Moved new variables above. Reworded title. - Miguel ]
->
-> Cheers,
-> Miguel
+I agree with your suggestions. While our immediate use case only requires
+RCU-protected access, implementing Send, Sync, and AlwaysRefCounted makes
+sense from the broader rust/kernel perspective, as these abstractions
+will likely be used in various contexts across the kernel.
 
-Thanks Miguel!
+I will incorporate all suggestions in the next revision.
+
+Best Regards,
+Heesu Kim
