@@ -1,221 +1,424 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021132.outbound.protection.outlook.com [52.101.100.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFD2329367;
-	Fri, 30 Jan 2026 14:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.132
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769783071; cv=fail; b=EdZER6EkMW0itU4kAbgmN7MqEF2PaLhwKGP6cj56OGa7nE7iiE3j12+dnuSyMptsbUmPNusSTa3d1bUJkY8srcs71Tou460+nDYJGoREOZr/VmEqlxnhZ7Ta+fxoxochpFz0q7QX4WcLoFXOdUIAFgxRyLzlGChry+0g103mDa4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769783071; c=relaxed/simple;
-	bh=nny6MJbtIXfdlAL/ejuK/4X0YGrOSPrpBfhL5gFuv8M=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=XMEsF4bSUXT2G9v0ghBv+Xk1TrFoT0QW8rWGIWsV+GNZDYLI5JQTr/rLggDmXwAwEm+QrIEY6/CxNaKLckReLP7dlhFNYlwBN7Chnhsh19XeAMNt+n22xCb1aRVMoB2stxBCJyDa3+rtpPCPJ9Y50RpyiOSFA1joq0GWmAy66FQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=RZTHUhkv; arc=fail smtp.client-ip=52.101.100.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA70329378
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 14:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769783073; cv=none; b=pjHA4db4+Cn2rUGFAhVRfHswNaXPAAjmczYrvq+T9zRMLN+64LaXhgcsqyBDJzYrihqryoFpODk+9gfSLPBX+UwModGnmnKYc33pZndSUuC3CQAp5LBjkHsXJynITvmVSDTlYqPIb3kRvXa/Hcxf1YyM/xyF68vQZfkTVbbBYw8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769783073; c=relaxed/simple;
+	bh=jwVB73Goy1eFiXhQV9XQGXXaSu7p/Z7zsbGnU3h3g48=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SWxKh0zgy/l79IUqH/mnnmU90+V/bbeXZWJGkMAdrHqqXPY/WdbvJw78HFtLQpXP/tmfZTiJBE1Uc9GHBxq5i2wpG+HJsrv0yt0W+f1v6POo54BvQQCnY2tlbckwIXyPKVdaPxyWQzHnThOq39pfSNQTV8JrmvIlpMbq3Uueagc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qEt/EAUB; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="RZTHUhkv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JZvo3eKDqf1QivIFDtaoOTSMCPtsp3kOcKrhw59QDzkLul/IHdq4woi14QysHhqkU4klDAGh2pxSUmb/c08oetirYk4tgiZjpn0kJyP9pE3Wl6m92bZj5UJsOaRxOx7GRiKeTDr6GqberRnshcHy6Gy2I5SXaBwTV/tp5X5Ow81wFUkCY1wSTyaUoTi6xKoFQYCtP+Ua1QUhFmbCuKdVKxtF6pgDWlkNF18RoSkRwMx1UJMV3UAtwzrdy5fk7v26cac7IsbWL5iuamSheQkIMhhaXlv4Ye0VHJoNi1S6I0IIYPVT8SjQ8I4tB46Ex4TJEJWJ0HOPv3ijsA1Pp6ybVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qVvRsYnwioOYlQBDwHo8gn4KnKtdBnwyX2x7wgdS38U=;
- b=OUuaexjf5fTGZg7HVMBkFclobACvBI1v83tWcDVc5EFZqgXhTp+HLztdjH9CfdhLfH0Y6qFUzhQVzQz1atOYwTeUm2mm0yz1k+gsWRnHt4lgguSIjz//t5Gy+hN7053yQAW1Gl3LIv1ghEF5Yuw/Qyvo5gbCj8BcsZreto0kC61eQTCctVtu8HdAlRI8GkAG8fpX2REBS0bVy0e9cehYK6pBcNGDnM1v8QMWnOU6UfJlpdWuMs8HttxRc4xc8SF1NiGjZQZYFeoKI9AlzLJxdhWi44V3q4xRbPgW1A3d2VYp0uFBIGa6GhqxW3KrzpePld4JpQD4oM4LZ3s7abf64A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qVvRsYnwioOYlQBDwHo8gn4KnKtdBnwyX2x7wgdS38U=;
- b=RZTHUhkvmFt87QFvqlVqq4O2Ullez/2dvtDawWqZ9OsVVuULl2Q8lkLE3xW8Jd/ZKEUPxL8VH/jq+depwX2dG2fY8m4wlyBnCcRkdmbInhjjyMeN/Ne38NmbUd9Y+jPUHRa6BtnEz6Ff2XNe96/HTidwXTNf2HsHs5gS7uLcHsQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB2901.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:c1::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.11; Fri, 30 Jan
- 2026 14:24:27 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
- 14:24:27 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 Jan 2026 14:24:26 +0000
-Message-Id: <DG1ZQKV1CVM6.2HMY8Z8G7Y9UE@garyguo.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Dave Ertman" <david.m.ertman@intel.com>, "Ira Weiny"
- <ira.weiny@intel.com>, "Leon Romanovsky" <leon@kernel.org>, "Arnd Bergmann"
- <arnd@arndb.de>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/3] samples: rust: remove imports available via prelude
-From: "Gary Guo" <gary@garyguo.net>
-To: "Dirk Behme" <dirk.behme@de.bosch.com>, "Miguel Ojeda"
- <miguel.ojeda.sandonis@gmail.com>, "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260123172007.136873-1-gary@garyguo.net>
- <20260123172007.136873-4-gary@garyguo.net>
- <CANiq72kwRdYbs9L1hrX_0SdGHsycMi9fz6+wh+qGgWiOsFZZiQ@mail.gmail.com>
- <fb68b2d2-a5bd-4359-a0c5-019ef4060e7d@de.bosch.com>
-In-Reply-To: <fb68b2d2-a5bd-4359-a0c5-019ef4060e7d@de.bosch.com>
-X-ClientProxiedBy: LO4P265CA0152.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c7::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qEt/EAUB"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-480717a8ef9so16652505e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 06:24:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769783070; x=1770387870; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yhJUSoGORcPmFs/1pDmni+0CTscySpgtXwx1t8RNgwY=;
+        b=qEt/EAUBHKm8wc3cRx0JAIz7mO7b6y+vn1rCZekGGYk88bsXYiRxcjkKMgoBSrOyDO
+         eH8AbRqD8ecureE7ji8RSbu34fpk/D5r1apW7UJRbw5IqhF63IUmuNMGhCFaTyFq2m6a
+         3+NrXMJBs5I94MOr/Eu//jHT3ZYdJRxP9f425XiTePfKAe/RksSeD22k+OMWREQQpD9E
+         HGOmM2lPoMdDxU9I/dORodXjpUT1uOvhJFhLPEWriegGE/JvA5HxbYXQ6IeumBKQcHpe
+         lwe+IqBJvF3+COlTJst5IyO2CQZ0sPJwpS0+gB7eko4uX34Uf9SUDaHonuUgiKJ8jsh5
+         /eug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769783070; x=1770387870;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yhJUSoGORcPmFs/1pDmni+0CTscySpgtXwx1t8RNgwY=;
+        b=uRfpqr90V2TPONhBKO5BBHok3n6yoVz8o5Az3TctxzoQ+ZN7/2lk330jLEaNrUd11s
+         zd89aDwFNzmpJJPyQFGpEJWIjx2VgIGZ+XwZxIPMs3XjerjobmuQB6pf3G/rcDu4q53h
+         QH2Se8K5xt/wvZdSty2LjK+VQhRHNUrM56JyvEUL5lWt8pbmcxLSaDWB5Hdl2A7EqeCf
+         9SJcWSdbbVkPaI6hYp0DOFBombl9y1xiuR4j/AIHLvCmZivNToIgRK4nffj85Aw3P6f7
+         YND4mvlbf2sHgG+L4qwtw0h8Dxid/y00v9lZ7KBWCJ3ghuL+vbHdhkpmDfWtbUsG2RUM
+         AgWA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQmQ5daY13h7rLoDdLbS/dKNvYA+N1UtxvLAhubuZtVz2Jl5NZH/4BXh+/B6GOsb5LdQZ9vmqsMleL7wKd/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2Hwmhv1EhUN1q4eHcuwi8kBWmrxitvSt7oRdtJPvw7gfa1zda
+	Nsrl90KOJmXsWLvnFXbQja1mgbnylrww+TAantvihs39CEIYLgcsovJxDGYexNaO4ZoAqxYpmRF
+	+wKEgjC67TfC6MSoIJQ==
+X-Received: from wmcn27.prod.google.com ([2002:a05:600c:c0db:b0:47e:e414:b8fa])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:45cb:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-482db47de28mr43665845e9.13.1769783069709;
+ Fri, 30 Jan 2026 06:24:29 -0800 (PST)
+Date: Fri, 30 Jan 2026 14:24:12 +0000
+In-Reply-To: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2901:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99f1ed78-2599-432d-797d-08de600b461c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bzlKRktoaHVhd0xDamU3d1U5Szh5SE5QRUhLcjdHVGFVMm4vYVRxYXVJc3ZI?=
- =?utf-8?B?MU5BZmtOZ1VrZ1hiaXQvS0hQM3VDM2EwTjZnbyt4a1hPUzlIcEVlTU93alNs?=
- =?utf-8?B?MVZZTnNzWkQ5KzRoeEVGY3BNTWxiNG5aYUhHcm9OYmwxUHYwbE5WMXREOFdO?=
- =?utf-8?B?SlQ2emxtb0ZIY0phbjdiL0d4Y0IrU3FXVC9vcXlrQUluV09KL29EQ3dnazRx?=
- =?utf-8?B?WXNkbFp2ZmlzS1R0VXN0SlEwUXpDeG9HaW8rbjBDYjlKelY0VHFVc1BheVNV?=
- =?utf-8?B?amdkQ1hEVUZ3SlBIQVh4RStiQzREQVlrbzA4SzNaSmpIbUJ4UFFyQ2xBR0J0?=
- =?utf-8?B?NmNtSUVQVXFrOVM5ZGtDeDdHWkEwaGY2NWIwWTB0Y3Q5V211VlNCaXZUSFdn?=
- =?utf-8?B?clFpaDcxMTQzcWlXWVhoTGdLS0cvY2VUQ2JpTGx5VmxlQ3FNRTljMFNWS2xy?=
- =?utf-8?B?QVYwNmNLYXM2OWlrYi9BZm1uZVZsT1Q3ZU53Mm92MUc1TWxhZEpvR2tKNkpi?=
- =?utf-8?B?VE5KeXBTSGVuYnZCYmwzWndhNXFIK1ZCL1R0L3pBYlIwT3U4dEdnRVRGdHB3?=
- =?utf-8?B?N1h0d0I5K1FRYlM5VTNzK2szdi9nVmtuSEpsbCt6dktzMCsvVytvbVNqOXkr?=
- =?utf-8?B?M1ZuYWh5QVgvMllpNFV3akx4L05tWW50anRrRkFnNHZHRUJKekNJMjRRQm55?=
- =?utf-8?B?SjFYOGtQSlB2Y3pKaGU5cTNyV0ZrdHpVazhKQmpRMmRmSkZKZ0tTNGlIdDds?=
- =?utf-8?B?SHpsakVQL2ExWDUrQWVHSzlHdlNEakNRL05tdEhPa1hTZlppeHhZdFRpWFor?=
- =?utf-8?B?eS8rUmNOOSsxOFJWRW0zK0NxTFova0R4VTZ4UDVPSGdDUW9ZUWRvOW5oNlox?=
- =?utf-8?B?SmtDOXBQQWppZkUvMXFmYzlMWHd6T0xPRFpVaE5wb0ZZeExrMktmeGFLZzYz?=
- =?utf-8?B?dFB4amRyY2VCQW5KNThpWFR1WXBXL3NSbG5VZVBTbjhRdDNTUEJ3NG1LNlg2?=
- =?utf-8?B?cVpmYmt3enRnSE03cy95WHAzUTNDUzIxRWRmZzlBTzZNYzA1L2IrdmhwL1du?=
- =?utf-8?B?ajV3Z3Z6WXRXMFZlOE5qRk5RN0JmVURJWVpZMTV2RXBTODZZNHFUN3dJaFVX?=
- =?utf-8?B?QXVWaVBIVERkNE83NGRNK1NPdGdPbWFDK3V5ZGN4VXlScHUwYTdFbHNsK2xs?=
- =?utf-8?B?Ym1CTXd2bTljTlJHVjRDMnVvcitZU1NiWERTK1NzZ2xPS3FHSlhuMHl0Z21M?=
- =?utf-8?B?eVF3dWwxS2l6WFRjNlFFemZ4QW8wZmgrSm1hKy82THdiMjVsSXZBdEpzZ2Er?=
- =?utf-8?B?eFBDYitSNmRjaGVEYmpwVEJ5TFovT29Sa0VWRzQyNjlnRUsyNW1WQ01ST0dm?=
- =?utf-8?B?dEM4ZENMVlZHUTFsLzRTbkg4WkEwWGJCb1lCRDNsRCtIUkpPMkdHQzlXV2E5?=
- =?utf-8?B?OVE4b0Q0aU44SFEzaElOaUVZTFpSdVg1UGVMRVdUTkxWbE5hNTQrN05mcmpU?=
- =?utf-8?B?UkhseWlJQTNMU05sWjlISDBKYjFzRWxBM2tUaEFBU29FN3QzU1JtVTJHbzN6?=
- =?utf-8?B?V1FHK1Q5cjYrSW95eTJoODNBVG8vd2N1TlNFR2F5Rjhic20wNTVNSFluN1FP?=
- =?utf-8?B?alhBYzR6cHJIaTB6akpTWG5OckJuV0pqdis2Y1FwV0hsQTN1UWUrdWgyeXMw?=
- =?utf-8?B?MGxXdEF3S3ZRR2l6V1Nka2NGVGtQeUw2dzk1QTNvUlhPL01nQkQ1VTFaQ0hp?=
- =?utf-8?B?VUQ2aXl5RTA4Rk04TG1zQXBRWFZSNG5vbmw5RWg0UnFaWUY1R2JBRWFFdStT?=
- =?utf-8?B?SmU5ZHB0cjZyQ0FoNTIwNnZDQk1kUjFWU0xsSFc2TmxXZ2RtTDU3SDE3YXhW?=
- =?utf-8?B?ZFB3NStCUGZlV0dFWVBzTFQrMndrQTFKbnREcTY4SktjYzBjeGpaN3ZsSFYr?=
- =?utf-8?B?UndSdTFoSWNLL1VPZFYwbTU3YjVkVFhrNzg1MGdZenk5Q3NTbDFrYWI4a0Nq?=
- =?utf-8?B?emM1S3dFa3Z1N0M5d21DSkZmK2FaenZGUys3TmhzVzNEYmJhMUFQWWRlckJL?=
- =?utf-8?B?RGxzbjZIS3hqVjJGNUNDWHJJTHFEZ2w2dXJHWmpMYU1jdFg3OGhrWEs5S1c1?=
- =?utf-8?Q?arCU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M0xueUxLSWxGQzJYSmgxdXFyQ3RUSCsyYkdFSzUyajlnVjNoeC9IbjNXdUcr?=
- =?utf-8?B?ZnJmTzBUaGxkMitBbEQ1QXNMZkNEYU5RS0NObGxoUTVKak42Tmd5SUl6d2ZI?=
- =?utf-8?B?aE8rQk5yRWRiTXFldm1KTFJDTFhoT3N0NzM3NmV3UGpKL3I5Um02TVM5em9B?=
- =?utf-8?B?NmZJS3pxbEhOTE50M1lIY1c2Q1ZBMExHOGZkdzBadlp0dHY2VjgrSWpHUzYx?=
- =?utf-8?B?MSt2UUhmeGpnWE1qUXkvVGFnWXJLbnV1NExOa3AzaHd4RE0rcFAvdS81emQr?=
- =?utf-8?B?N3ZqWkZESGZxNkNTSFhUT096dzJGREF2alZ6QnBMVEV5SzFLYkFXSG1GUHJF?=
- =?utf-8?B?Y2p0RjFjTVQ0VFVlWElmTTF4R0xQdms5VWszcVRtLy9xS3ZpNGZadGxLTFF3?=
- =?utf-8?B?a3lrMnNxWGdFUVN1OE9SYWNxU0h3UFpRTEhIUFkwemZjVm93ams3RHJBbDQ0?=
- =?utf-8?B?UDFNOVR2MDBwV2ZDdVRvc0twd3hZUk52RnFjM0lnQ25PdHpqb1RSNDZOSXBQ?=
- =?utf-8?B?VG1CbWhQaHI5OWkxRGM5UEZUYk1pOHhLaVZ3c1ZndDF3MmFRQktjb3dUcDJG?=
- =?utf-8?B?M2FpcmFjWDRDL2JTYUJXelFZV1VBL21VVGlDU0dKTUowYVI5YUxPbGxmMUo2?=
- =?utf-8?B?bGVHOEwwZzA0TzFGQ3NGOVROTHZpOCtlT2R4cmhCbDlDSGRtajVsWVRScmVs?=
- =?utf-8?B?L0d3VGlJTWFqVldLKzUyTWVXOERwRndWblBONSs0dXU0NkQxK0FSdThFUnlS?=
- =?utf-8?B?cytWVWtSV2ltTkdSR01MZHdMblFpWTZQL1B5UGZKU0tUMGQzZVdOUWIxUnBJ?=
- =?utf-8?B?Qksvd3haRG1xanpwd1hnU2VONTl3UUJaNmI1Umd2akVPV1lmZkU3OGFoUzJp?=
- =?utf-8?B?aUtFY2JVRVBQYjk5dmJwZVE2bTBGYytvQ3NSeFV5QWovamw4OGtHSXpiNVN2?=
- =?utf-8?B?aTVRUGNBN3VTOVp6WkEzRS9odmt2MllVc3h2QlJUVFl6a0VBaHRlZ2JONFFa?=
- =?utf-8?B?SGpDMTlaQjRKN1RJanZndVB3b3VnTVM2YlVTVXdvbm9NOG5CditUZ29oSksy?=
- =?utf-8?B?UUxBRHNENlNDTXA1MjB3aU4wZHhBOWM3R3oyaVJLcVpjdkRFU2NOZVVHdGxx?=
- =?utf-8?B?TmFJcXNYRzdXNkVMa1QrNG1Rbks2OCt4Zm16ejNFdUk5OTRlWitDeXZoL1ln?=
- =?utf-8?B?R3MySjdYRTVqRVhPNzR4dGVMR2piSWd1cS9uK01yUUNhMEdNYUpEY0d6Zm4y?=
- =?utf-8?B?ckhpY0N2Y2owcEJUWStvVTc4WmNJNkk1d2d0OHdydDVLd3Nia3lxZlBYVFNC?=
- =?utf-8?B?SEtVZnVpUTRYZXh4VGpoQ2NNOENwMFZlRG9EeVZjRXdpQVY2OVhTem1PU1Jt?=
- =?utf-8?B?RlBNNllTcU82aVRVN1MraW5MS3d1Ti9nTThDTGRVTkJrSW0vYkxpM1FVdU85?=
- =?utf-8?B?SHQ0OU5xRWFZQ1pjbDdKOGF3NFlObEhkMERGb0NnTWN0TSthUkR0MitDL2Fj?=
- =?utf-8?B?YXloaG5VMGNrWUZyTDV4UDZqckRyTlErbEIwRkhqS1NFbENxUzk2Z29aeTZL?=
- =?utf-8?B?YmpkMGM5UUw4UTdTcDB0d0RpVWR5WEZmZmpHZDZndTRQelhWb3V2L0VkcEZS?=
- =?utf-8?B?ZlV1cmtHVWl1VWVENzR5ODZiM2NNZVRtSGg1SVFXQXJqMWxvcldRNHoyR0hH?=
- =?utf-8?B?QjZHcDdSb1hrdndnalZMZHl3M3pENmxmR29EOHBWWTlvTTRMZ2p3dmNPdThG?=
- =?utf-8?B?ZjRaaGJ4V2NiZXY1SjJmSFI5TnBCUTZGWHFTaHQzNWxlV1V6M3NRL3lvai84?=
- =?utf-8?B?YlR5a2QxenJyeldnL1ZiQnBFVGxjSGk5eW8rend4ZGdzVEs1enB6MGhYei82?=
- =?utf-8?B?SUJKdzYyb2toWmtkV0ErZGZUTmh3R2EyTjR2VTg5QzR1WFR6YzB3azBMRHNn?=
- =?utf-8?B?eTd6V3krNjUybWRvWU5yRlpvUHMwM2FhcDh2WHVrRkwyNUQxYkhlSS90Vmp2?=
- =?utf-8?B?a3NTdTArbUMyMExpSlZYc08xWUlxTENFNzUrN0VNY3M0bllJTld0c3JraE9Y?=
- =?utf-8?B?bDA5NU5obFhVemVvYnc0dU1rOTdmSitzUjFZZmp4WW5waTkxTjJqVVFXMzRD?=
- =?utf-8?B?YjNXL0JGZlRxOGRSV2pYY013NDIxckdxNnJ4MGlqQlVFVTJIL3ZqQ3lWc1dp?=
- =?utf-8?B?SUVzZVRaVHduVGVlQ0JLZmp3ckRlMXM0YUs1OGhVY2F1WXQxR1o0anNlS0Ez?=
- =?utf-8?B?TzM4U2Rqa29sb1YzcElpYjIzdWhzMjRVeFpNV2M5MHhtZjJjWEp6dTVKUXRW?=
- =?utf-8?Q?oLmUiUOhuB8pL06AVN?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99f1ed78-2599-432d-797d-08de600b461c
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 14:24:27.1206
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jQQaA+Jz7Cm+i/rR6NTlrih69EpwKhRQBr3/qSyf9g341fycbMozovD3kjXF3yZM3bBGuxpqWf3W9JzuTyAefQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2901
+Mime-Version: 1.0
+References: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12569; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=jwVB73Goy1eFiXhQV9XQGXXaSu7p/Z7zsbGnU3h3g48=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpfL8T2SZ+JHz8VbiIpmjFQwf4kvpvo8SUk/bbn
+ 698aC/2w3iJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaXy/EwAKCRAEWL7uWMY5
+ Rs/mD/wL/K/DMPXG147iK8vo68tuxIcmVPxg1tfp6/1KirgIFOLK9SSckmoEkvm27WDyGIGF2F8
+ 92J3bfxN4kDa30TXw5r4nPq3iBf8S8BYSRup0CNPcCXfiGmM0fuTkHUdQ0Q2fknZ9j4PcgaD88v
+ gbdB/lkecuHE0X//wKuYbngb8gequI8qbAkpQxKaAfb799/tkG5/Z8xmWwmwIc+JhB7KTveV/xm
+ 9ExWFiaKrxs2GpXXEGLwXCu/rJHCuq7QfHATISX0XxDqWrUl7bnEyE5G6mIpLNSgK1okmQUaa6p
+ 8+2kQ06n5c3fsn5oLsPv9QrSN1ri/8E69lxrpV3A9JAaj4KaCD9wwrCehSJrAi6CbzPse46Ps+O
+ d1vMw45s6yxr+HC06iKP0G+qMBB8KdFOJktncT/oRddMbv/3usH8jueWtpaf+YGYDsjw0cFQsIX
+ m23u0MCSKn/b99hYz5H+0qxvfl7QGoZbuwa8zian1CjL2SiwXXRftiBasbquQ0uL/oRmSdFwTZs
+ M/c+h9Guf4LAtZvQe6mbgr23WIJjc4UqxrW23pMxWx1NLIy+pS29VdLS91KC3bPAbVb/7i+NXOK
+ 1ToZvBSTPRvL3vbBFHq0w2iSFU2BBUbj0Sv0tcQ7vuybR/0hPq7cAjITeBI685ZTAsVcdqQRH+O He3dQZkNn3/ErNA==
+X-Mailer: b4 0.14.2
+Message-ID: <20260130-gpuvm-rust-v4-3-8364d104ff40@google.com>
+Subject: [PATCH v4 3/6] rust: gpuvm: add GpuVm::obtain()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	"=?utf-8?q?Thomas_Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Lyude Paul <lyude@redhat.com>, 
+	Asahi Lina <lina+kernel@asahilina.net>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Jan 30, 2026 at 12:45 PM GMT, Dirk Behme wrote:
-> On 27/01/2026 12:10, Miguel Ojeda wrote:
->> On Sat, Jan 24, 2026 at 6:08=E2=80=AFAM Gary Guo <gary@garyguo.net> wrot=
-e:
->>>
->>> These imports are already in scope by importing `kernel::prelude::*` an=
-d
->>> does not need to be imported separately.
->>>
->>> Signed-off-by: Gary Guo <gary@garyguo.net>
->>=20
->> Applied (this one only) to `rust-next` -- thanks everyone!
->
-> Having my klint setup running now (many thanks Gary!) on today's=20
-> rust-next [1] I still get
->
-> error: this item is available via prelude
->    --> samples/rust/rust_driver_auxiliary.rs:12:5
->     |
-> 12 |     error::Error,
->     |     ^^^^^^^^^^^^
->     |
->     =3D help: import with `kernel::prelude::*` instead
->     =3D note: `-D klint::not-using-prelude` implied by `-D warnings`
->     =3D help: to override `-D warnings` add=20
-> `#[allow(klint::not_using_prelude)]`
->
-> error: aborting due to 1 previous error
->
-> Somehow dropping this was not part of this patch. Not sure why ...
+This provides a mechanism to create (or look up) VMBO instances, which
+represent the mapping between GPUVM and GEM objects.
 
-It was already dropped in
-https://lore.kernel.org/rust-for-linux/20260105142123.95030-1-dakr@kernel.o=
-rg/
+The GpuVmBoRegistered<T> type can be considered like ARef<GpuVm<T>>,
+except that no way to increment the refcount is provided.
 
-Best,
-Gary
+The GpuVmBoAlloc<T> type is more akin to a pre-allocated GpuVmBo<T>, so
+it's not really a GpuVmBo<T> yet. Its destructor could call
+drm_gpuvm_bo_destroy_not_in_lists(), but as the type is currently
+private and never called anywhere, this perf optimization does not need
+to happen now.
 
->
-> Best regards
->
-> Dirk
->
-> [1] HEAD is 08afcc38a64c ("Merge patch series "Add support for print=20
-> exactly once"")
+Pre-allocating and obtaining the gpuvm_bo object is exposed as a single
+step. This could theoretically be a problem if one wanted to call
+drm_gpuvm_bo_obtain_prealloc() during the fence signalling critical
+path, but that's not a possibility because:
+
+1. Adding the BO to the extobj list requires the resv lock, so it cannot
+   happen during the fence signalling critical path.
+2. obtain() requires that the BO is not in the extobj list, so obtain()
+   must be called before adding the BO to the extobj list.
+
+Thus, drm_gpuvm_bo_obtain_prealloc() cannot be called during the fence
+signalling critical path. (For extobjs at least.)
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/drm/gpuvm/mod.rs   |  32 +++++-
+ rust/kernel/drm/gpuvm/vm_bo.rs | 219 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 248 insertions(+), 3 deletions(-)
+
+diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
+index dcb1fccc766115c6a0ca03bda578e3f3e5791492..8f2f1c135e9dd071fd4b4ad0762a3e79dc922eea 100644
+--- a/rust/kernel/drm/gpuvm/mod.rs
++++ b/rust/kernel/drm/gpuvm/mod.rs
+@@ -25,13 +25,20 @@
+ 
+ use core::{
+     cell::UnsafeCell,
++    mem::ManuallyDrop,
+     ops::{
+         Deref,
+         Range, //
+     },
+-    ptr::NonNull, //
++    ptr::{
++        self,
++        NonNull, //
++    }, //
+ };
+ 
++mod vm_bo;
++pub use self::vm_bo::*;
++
+ /// A DRM GPU VA manager.
+ ///
+ /// This object is refcounted, but the "core" is only accessible using a special unique handle. The
+@@ -68,8 +75,8 @@ const fn vtable() -> &'static bindings::drm_gpuvm_ops {
+             vm_free: Some(Self::vm_free),
+             op_alloc: None,
+             op_free: None,
+-            vm_bo_alloc: None,
+-            vm_bo_free: None,
++            vm_bo_alloc: GpuVmBo::<T>::ALLOC_FN,
++            vm_bo_free: GpuVmBo::<T>::FREE_FN,
+             vm_bo_validate: None,
+             sm_step_map: None,
+             sm_step_unmap: None,
+@@ -166,6 +173,16 @@ pub fn va_range(&self) -> Range<u64> {
+         Range { start, end }
+     }
+ 
++    /// Get or create the [`GpuVmBo`] for this gem object.
++    #[inline]
++    pub fn obtain(
++        &self,
++        obj: &T::Object,
++        data: impl PinInit<T::VmBoData>,
++    ) -> Result<GpuVmBoRegistered<T>, AllocError> {
++        Ok(GpuVmBoAlloc::new(self, obj, data)?.obtain())
++    }
++
+     /// Clean up buffer objects that are no longer used.
+     #[inline]
+     pub fn deferred_cleanup(&self) {
+@@ -191,6 +208,12 @@ pub fn is_extobj(&self, obj: &T::Object) -> bool {
+         // SAFETY: By type invariants we can free it when refcount hits zero.
+         drop(unsafe { KBox::from_raw(me) })
+     }
++
++    #[inline]
++    fn raw_resv(&self) -> *mut bindings::dma_resv {
++        // SAFETY: `r_obj` is immutable and valid for duration of GPUVM.
++        unsafe { (*(*self.as_raw()).r_obj).resv }
++    }
+ }
+ 
+ /// The manager for a GPUVM.
+@@ -200,6 +223,9 @@ pub trait DriverGpuVm: Sized {
+ 
+     /// The kind of GEM object stored in this GPUVM.
+     type Object: IntoGEMObject;
++
++    /// Data stored with each `struct drm_gpuvm_bo`.
++    type VmBoData;
+ }
+ 
+ /// The core of the DRM GPU VA manager.
+diff --git a/rust/kernel/drm/gpuvm/vm_bo.rs b/rust/kernel/drm/gpuvm/vm_bo.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..272e1a83c2d5f43c42dbdd9e09f51394a1e855b6
+--- /dev/null
++++ b/rust/kernel/drm/gpuvm/vm_bo.rs
+@@ -0,0 +1,219 @@
++// SPDX-License-Identifier: GPL-2.0 OR MIT
++
++use super::*;
++
++/// Represents that a given GEM object has at least one mapping on this [`GpuVm`] instance.
++///
++/// Does not assume that GEM lock is held.
++#[repr(C)]
++#[pin_data]
++pub struct GpuVmBo<T: DriverGpuVm> {
++    #[pin]
++    inner: Opaque<bindings::drm_gpuvm_bo>,
++    #[pin]
++    data: T::VmBoData,
++}
++
++impl<T: DriverGpuVm> GpuVmBo<T> {
++    pub(super) const ALLOC_FN: Option<unsafe extern "C" fn() -> *mut bindings::drm_gpuvm_bo> = {
++        use core::alloc::Layout;
++        let base = Layout::new::<bindings::drm_gpuvm_bo>();
++        let rust = Layout::new::<Self>();
++        assert!(base.size() <= rust.size());
++        if base.size() != rust.size() || base.align() != rust.align() {
++            Some(Self::vm_bo_alloc)
++        } else {
++            // This causes GPUVM to allocate a `GpuVmBo<T>` with `kzalloc(sizeof(drm_gpuvm_bo))`.
++            None
++        }
++    };
++
++    pub(super) const FREE_FN: Option<unsafe extern "C" fn(*mut bindings::drm_gpuvm_bo)> = {
++        if core::mem::needs_drop::<Self>() {
++            Some(Self::vm_bo_free)
++        } else {
++            // This causes GPUVM to free a `GpuVmBo<T>` with `kfree`.
++            None
++        }
++    };
++
++    /// Custom function for allocating a `drm_gpuvm_bo`.
++    ///
++    /// # Safety
++    ///
++    /// Always safe to call.
++    unsafe extern "C" fn vm_bo_alloc() -> *mut bindings::drm_gpuvm_bo {
++        KBox::<Self>::new_uninit(GFP_KERNEL | __GFP_ZERO)
++            .map(KBox::into_raw)
++            .unwrap_or(ptr::null_mut())
++            .cast()
++    }
++
++    /// Custom function for freeing a `drm_gpuvm_bo`.
++    ///
++    /// # Safety
++    ///
++    /// The pointer must have been allocated with [`GpuVmBo::ALLOC_FN`], and must not be used after
++    /// this call.
++    unsafe extern "C" fn vm_bo_free(ptr: *mut bindings::drm_gpuvm_bo) {
++        // SAFETY:
++        // * The ptr was allocated from kmalloc with the layout of `GpuVmBo<T>`.
++        // * `ptr->inner` has no destructor.
++        // * `ptr->data` contains a valid `T::VmBoData` that we can drop.
++        drop(unsafe { KBox::<Self>::from_raw(ptr.cast()) });
++    }
++
++    /// Access this [`GpuVmBo`] from a raw pointer.
++    ///
++    /// # Safety
++    ///
++    /// For the duration of `'a`, the pointer must reference a valid `drm_gpuvm_bo` associated with
++    /// a [`GpuVm<T>`].
++    #[inline]
++    pub unsafe fn from_raw<'a>(ptr: *mut bindings::drm_gpuvm_bo) -> &'a Self {
++        // SAFETY: `drm_gpuvm_bo` is first field and `repr(C)`.
++        unsafe { &*ptr.cast() }
++    }
++
++    /// Returns a raw pointer to underlying C value.
++    #[inline]
++    pub fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
++        self.inner.get()
++    }
++
++    /// The [`GpuVm`] that this GEM object is mapped in.
++    #[inline]
++    pub fn gpuvm(&self) -> &GpuVm<T> {
++        // SAFETY: The `obj` pointer is guaranteed to be valid.
++        unsafe { GpuVm::<T>::from_raw((*self.inner.get()).vm) }
++    }
++
++    /// The [`drm_gem_object`](crate::gem::Object) for these mappings.
++    #[inline]
++    pub fn obj(&self) -> &T::Object {
++        // SAFETY: The `obj` pointer is guaranteed to be valid.
++        unsafe { <T::Object as IntoGEMObject>::from_raw((*self.inner.get()).obj) }
++    }
++
++    /// The driver data with this buffer object.
++    #[inline]
++    pub fn data(&self) -> &T::VmBoData {
++        &self.data
++    }
++}
++
++/// A pre-allocated [`GpuVmBo`] object.
++///
++/// # Invariants
++///
++/// Points at a `drm_gpuvm_bo` that contains a valid `T::VmBoData`, has a refcount of one, and is
++/// absent from any gem, extobj, or evict lists.
++pub(super) struct GpuVmBoAlloc<T: DriverGpuVm>(NonNull<GpuVmBo<T>>);
++
++impl<T: DriverGpuVm> GpuVmBoAlloc<T> {
++    /// Create a new pre-allocated [`GpuVmBo`].
++    ///
++    /// It's intentional that the initializer is infallible because `drm_gpuvm_bo_put` will call
++    /// drop on the data, so we don't have a way to free it when the data is missing.
++    #[inline]
++    pub(super) fn new(
++        gpuvm: &GpuVm<T>,
++        gem: &T::Object,
++        value: impl PinInit<T::VmBoData>,
++    ) -> Result<GpuVmBoAlloc<T>, AllocError> {
++        // CAST: `GpuVmBoAlloc::vm_bo_alloc` ensures that this memory was allocated with the layout
++        // of `GpuVmBo<T>`. The type is repr(C), so `container_of` is not required.
++        // SAFETY: The provided gpuvm and gem ptrs are valid for the duration of this call.
++        let raw_ptr = unsafe {
++            bindings::drm_gpuvm_bo_create(gpuvm.as_raw(), gem.as_raw()).cast::<GpuVmBo<T>>()
++        };
++        let ptr = NonNull::new(raw_ptr).ok_or(AllocError)?;
++        // SAFETY: `ptr->data` is a valid pinned location.
++        let Ok(()) = unsafe { value.__pinned_init(&raw mut (*raw_ptr).data) };
++        // INVARIANTS: We just created the vm_bo so it's absent from lists, and the data is valid
++        // as we just initialized it.
++        Ok(GpuVmBoAlloc(ptr))
++    }
++
++    /// Returns a raw pointer to underlying C value.
++    #[inline]
++    pub(super) fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
++        // SAFETY: The pointer references a valid `drm_gpuvm_bo`.
++        unsafe { (*self.0.as_ptr()).inner.get() }
++    }
++
++    /// Look up whether there is an existing [`GpuVmBo`] for this gem object.
++    #[inline]
++    pub(super) fn obtain(self) -> GpuVmBoRegistered<T> {
++        let me = ManuallyDrop::new(self);
++        // SAFETY: Valid `drm_gpuvm_bo` not already in the lists.
++        let ptr = unsafe { bindings::drm_gpuvm_bo_obtain_prealloc(me.as_raw()) };
++
++        // Add the vm_bo to the extobj list if it's an external object, and if the vm_bo does not
++        // already exist. (If we are using an existing vm_bo, it's already in the extobj list.)
++        if ptr::eq(ptr, me.as_raw()) && me.gpuvm().is_extobj(me.obj()) {
++            let resv_lock = me.gpuvm().raw_resv();
++            // SAFETY: The GPUVM is still alive, so its resv lock is too.
++            unsafe { bindings::dma_resv_lock(resv_lock, ptr::null_mut()) };
++            // SAFETY: We hold the GPUVMs resv lock.
++            unsafe { bindings::drm_gpuvm_bo_extobj_add(ptr) };
++            // SAFETY: We took the lock, so we can unlock it.
++            unsafe { bindings::dma_resv_unlock(resv_lock) };
++        }
++
++        // INVARIANTS: Valid `drm_gpuvm_bo` in the GEM list.
++        // SAFETY: `drm_gpuvm_bo_obtain_prealloc` always returns a non-null ptr
++        GpuVmBoRegistered(unsafe { NonNull::new_unchecked(ptr.cast()) })
++    }
++}
++
++impl<T: DriverGpuVm> Deref for GpuVmBoAlloc<T> {
++    type Target = GpuVmBo<T>;
++    #[inline]
++    fn deref(&self) -> &GpuVmBo<T> {
++        // SAFETY: By the type invariants we may deref while `Self` exists.
++        unsafe { self.0.as_ref() }
++    }
++}
++
++impl<T: DriverGpuVm> Drop for GpuVmBoAlloc<T> {
++    #[inline]
++    fn drop(&mut self) {
++        // TODO: Call drm_gpuvm_bo_destroy_not_in_lists() directly.
++        // SAFETY: It's safe to perform a deferred put in any context.
++        unsafe { bindings::drm_gpuvm_bo_put_deferred(self.as_raw()) };
++    }
++}
++
++/// A [`GpuVmBo`] object in the GEM list.
++///
++/// # Invariants
++///
++/// Points at a `drm_gpuvm_bo` that contains a valid `T::VmBoData` and is present in the gem list.
++pub struct GpuVmBoRegistered<T: DriverGpuVm>(NonNull<GpuVmBo<T>>);
++
++impl<T: DriverGpuVm> GpuVmBoRegistered<T> {
++    /// Returns a raw pointer to underlying C value.
++    #[inline]
++    pub fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
++        // SAFETY: The pointer references a valid `drm_gpuvm_bo`.
++        unsafe { (*self.0.as_ptr()).inner.get() }
++    }
++}
++
++impl<T: DriverGpuVm> Deref for GpuVmBoRegistered<T> {
++    type Target = GpuVmBo<T>;
++    #[inline]
++    fn deref(&self) -> &GpuVmBo<T> {
++        // SAFETY: By the type invariants we may deref while `Self` exists.
++        unsafe { self.0.as_ref() }
++    }
++}
++
++impl<T: DriverGpuVm> Drop for GpuVmBoRegistered<T> {
++    #[inline]
++    fn drop(&mut self) {
++        // SAFETY: It's safe to perform a deferred put in any context.
++        unsafe { bindings::drm_gpuvm_bo_put_deferred(self.as_raw()) };
++    }
++}
+
+-- 
+2.53.0.rc1.225.gd81095ad13-goog
 
