@@ -1,55 +1,51 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5002C324B1C
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 14:25:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55222D8DC8;
+	Fri, 30 Jan 2026 14:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769783116; cv=none; b=gCed557eGBBslqDjTBewD7zUC+B0Xk5mJHHqFo/5aQHCnv4h4FKgyLSdHqb9QqQVTXQ+upcfX0R+XdYI8I3Fm43++piIWsEvzAF1t/trMg5XwcUq4ZK6IbjOVt5yw9l3SitbQIq3lW3cnmg0MLvk1LPuf9OzaKtlhg7FCh+hm6A=
+	t=1769784154; cv=none; b=OwcAK7Ma9U7pSLtkkS7kGA37h+P99dCnC+8N3bR5rehsiwRMmnKnEMAep+Lkms/6a3IQc0KzQDvALRfsYk1chuTQif+hk022WzTEE7TCYtDLeguTqERfuGvvhDc2oMmE/M6MlgczwGpDa184jBEkzEtGCfkejJBU8B9+8jI7+a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769783116; c=relaxed/simple;
-	bh=ky56pFmagL53l/6EDJ0oTxsX72fRm9RrAm1uoEG+cnM=;
+	s=arc-20240116; t=1769784154; c=relaxed/simple;
+	bh=JPzOLHG40jPLavhTwN68d9iWIrexHiP3vBrSv5OwBgw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=u7iywkioACfm87c+oNfr5aHLXHSoOx8Uj269Yjz7hljkNPowdrlNdiKLscbHzt6tAKdV0aWewZLkH/c3dnFNSlacfTI2QK8n0coOLW+meLXxl/Y7OI7f89cUu92gVj0FMDRRxvACpr0ryYpZFo4Id68mPyyQ/C/qGnXrn6V7F20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=OAY3hYQ3; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	 MIME-Version:Content-Type; b=LHIpmIMNB39Iz1nJ4bO+BgAfcnzwW/Nn5R37ICBMPxPlkPOxKO0t1vfjMv81TzwR89NNTrjlVexnRfRooCh0ljPmRywMZLgqxaaokWs2RcsM6czMW8c8eXkfMK1qDaU8IM4Zl+FVGk1yKQSlxGyjGZSt++5RHKfSY1GIk1pL7BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrC9r4HM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="OAY3hYQ3"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 5E096240104
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 15:25:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
-	t=1769783107; bh=NuU7o3acHMY5tPPTqWm/q6sOOEfui3MF1FN/fdWnEZY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=OAY3hYQ3JiCNZ8d1tyjL++nVkypuHUaYKRREjN8KhuK+U1AuV0SFXc7K93xcQrVUw
-	 4th8MZn7A+zPGwwb5cMcT89odCBmwQekO5kMxV8xPbC4V147WSDBPpbyy2jf4t+Ln0
-	 QK/yfwS617lEmyyR7KkqIyDimsNccjLg7Qyy+7N1jP0alSA9DCuttSkNm/yaAriOH/
-	 uTHY8JI50WtrSxyeYtZnOMdmQ41fOi1/TKtZnjSAYxCjcBdYgcx/CHF8YL36oYqFUL
-	 T2BeDpG1TCMwI9QnwYTXMlaub2U5g5fL20jCkWrdsaBhk0/7kcpBsr2Uq5vEQYiaNK
-	 Ko65FK8TFWnAQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4f2dZS2jQQz9rxQ;
-	Fri, 30 Jan 2026 15:25:04 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,
-  Daniel Almeida <daniel.almeida@collabora.com>,  Miguel Ojeda
- <ojeda@kernel.org>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno
- Lossin <lossin@kernel.org>,  Andreas Hindborg <a.hindborg@kernel.org>,
-  Trevor Gross <tmgross@umich.edu>,  Bjorn Helgaas <bhelgaas@google.com>,
-  Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,  Zhi Wang
- <zhiw@nvidia.com>,  driver-core@lists.linux.dev,
-  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-pci@vger.kernel.org
-Subject: Re: [PATCH] rust: io: move MIN_SIZE and io_addr_assert to IoKnownSize
-In-Reply-To: <20260130-io-min-size-v1-1-65a546e3104d@nvidia.com>
-References: <20260130-io-min-size-v1-1-65a546e3104d@nvidia.com>
-Date: Fri, 30 Jan 2026 14:25:06 +0000
-Message-ID: <87bjibtby8.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrC9r4HM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365C0C4CEF7;
+	Fri, 30 Jan 2026 14:42:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769784154;
+	bh=JPzOLHG40jPLavhTwN68d9iWIrexHiP3vBrSv5OwBgw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=KrC9r4HMnWBD5NWXRF1Rcd+cMLpLxZWGDYIl/rGJH733cpkH+1a+mCQfZUhv8Zkmu
+	 EiV7BRpFpg5VZmrhHsy1BS6bElq9gs+WO4Fd6NITl99Bk+L66JZWK7rUZGr/ntCJ4K
+	 WtxlSHwgF0Pdgw+sfOk3hhcCG1ThvxQPOJQd7Dv1Mrqi+zBgrkYft/Tm5C1LGpgqtI
+	 2hfNwVrETY/LHUW9pIJ8Y9w/DRcQNwK/RlC5znRe0jR6XPWwxJ/O51iNOqc3z4xMb9
+	 5AZlwe4U/Lp9s8YegmCFGQ+HtfbqPMuAoMZ5xUOMEPYp9gp9NE9m+rRPxQtfkl/jF7
+	 KnrcipdYUfM4w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Alice Ryhl
+ <aliceryhl@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: page: add volatile memory copy methods
+In-Reply-To: <DG1ZJ1350EMS.1S1360PA496QG@garyguo.net>
+References: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
+ <eGcGSx_-fgeLHkPmdfbWgLGhzEcmXunLzIAvS1-X3GqwyFOny9Frz1xN29-fj99sHxxa5_1WrcPxuSSZKxCHhA==@protonmail.internalid>
+ <DG1Y5V810II1.1HE2T0HDBLNXI@garyguo.net>
+ <877bszrz37.fsf@t14s.mail-host-address-is-not-set>
+ <a8nHDdzac5l20akcxjjf9w7huObjn4eIHjUI-A17aKEwWl1N-4vvLBiVdqTQbBHwypMIA6gNkzm8YFXmMl44ew==@protonmail.internalid>
+ <DG1ZJ1350EMS.1S1360PA496QG@garyguo.net>
+Date: Fri, 30 Jan 2026 15:42:16 +0100
+Message-ID: <874io3rwl3.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,141 +54,95 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Alexandre Courbot <acourbot@nvidia.com> writes:
+"Gary Guo" <gary@garyguo.net> writes:
 
-> `MIN_SIZE` are `io_addr_assert` only ever used for IO types which
+> On Fri Jan 30, 2026 at 1:48 PM GMT, Andreas Hindborg wrote:
+>> "Gary Guo" <gary@garyguo.net> writes:
+>>
+>>> On Fri Jan 30, 2026 at 12:33 PM GMT, Andreas Hindborg wrote:
+>>>> When copying data from buffers that are mapped to user space, or from
+>>>> buffers that are used for dma, it is impossible to guarantee absence of
+>>>> concurrent memory operations on those buffers. Copying data to/from `Page`
+>>>> from/to these buffers would be undefined behavior if regular memcpy
+>>>> operations are used.
+>>>>
+>>>> The operation can be made well defined, if the buffers that potentially
+>>>> observe racy operations can be said to exist outside of any Rust
+>>>> allocation. For this to be true, the kernel must only interact with the
+>>>> buffers using raw volatile reads and writes.
+>>>>
+>>>> Add methods on `Page` to read and write the contents using volatile
+>>>> operations.
+>>>>
+>>>> Also improve clarity by specifying additional requirements on
+>>>> `read_raw`/`write_raw` methods regarding concurrent operations on involved
+>>>> buffers.
+>>>>
+>>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>>> ---
+>>>>  rust/kernel/page.rs | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>>  1 file changed, 53 insertions(+)
+>>>>
+>>>> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+>>>> index 432fc0297d4a8..6568a0d3b3baa 100644
+>>>> --- a/rust/kernel/page.rs
+>>>> +++ b/rust/kernel/page.rs
+>>>> @@ -7,6 +7,7 @@
+>>>>      bindings,
+>>>>      error::code::*,
+>>>>      error::Result,
+>>>> +    ffi::c_void,
+>>>>      uaccess::UserSliceReader,
+>>>>  };
+>>>>  use core::{
+>>>> @@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
+>>>>      /// # Safety
+>>>>      ///
+>>>>      /// * Callers must ensure that `dst` is valid for writing `len` bytes.
+>>>> +    /// * Callers must ensure that there are no other concurrent reads or writes to/from the
+>>>> +    ///   destination memory region.
+>>>>      /// * Callers must ensure that this call does not race with a write to the same page that
+>>>>      ///   overlaps with this read.
+>>>>      pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
+>>>> @@ -274,6 +277,30 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
+>>>>          })
+>>>>      }
+>>>>
+>>>> +    /// Maps the page and reads from it into the given IO memory region using volatile memory
+>>>> +    /// operations.
+>>>> +    ///
+>>>> +    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
+>>>> +    /// outside of the page, then this call returns [`EINVAL`].
+>>>> +    ///
+>>>> +    /// # Safety
+>>>> +    /// Callers must ensure that:
+>>>> +    ///
+>>>> +    /// * The destination memory region is outside of any Rust memory allocation.
+>>>> +    /// * The destination memory region is writable.
+>>>> +    /// * This call does not race with a write to the same source page that overlaps with this read.
+>>>> +    pub unsafe fn read_raw_toio(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
+>>>> +        self.with_pointer_into_page(offset, len, move |src| {
+>>>> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then
+>>>> +            // it has performed a bounds check and guarantees that `src` is
+>>>> +            // valid for `len` bytes.
+>>>> +            //
+>>>> +            // There caller guarantees that there is no data race at the source.
+>>>> +            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
+>>>
+>>> I feel that this should be a generic utility that integrates with our IO infra
+>>> that allows you to copy/from IO to a slice.
+>>
+>> While that might also be useful, for my particular use case I am copying
+>> between two pages. One is mapped from user space, the other one is
+>> allocated by a driver. No slices involved. Pasting for reference [1]:
+>
+> Then what you need is a byte-wise atomic memcpy, not memcpy_{from,to}io.
 
-Hi,
+Can you elaborate on how you get to this requirement?
 
-Typo? should be "and" instead of "are"?
 
-Cheers,
-C. Mitrodimas
+Best regards,
+Andreas Hindborg
 
-> implement `IoKnownSize` and do not make sense for types that don't.
->
-> It looks like they should have been there since the beginning, so move
-> them while the code is still fresh.
->
-> Also update `IoKnownSize`'s documentation since it is not just a marker
-> trait anymore.
->
-> Fixes: 121d87b28e1d ("rust: io: separate generic I/O helpers from MMIO implementation")
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  rust/kernel/io.rs     | 36 ++++++++++++++++++------------------
->  rust/kernel/pci/io.rs |  7 +++----
->  2 files changed, 21 insertions(+), 22 deletions(-)
->
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index 056a3ec71647..c1cca7b438c3 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -301,9 +301,6 @@ pub trait IoCapable<T> {}
->  /// For MMIO regions, all widths (u8, u16, u32, and u64 on 64-bit systems) are typically
->  /// supported. For PCI configuration space, u8, u16, and u32 are supported but u64 is not.
->  pub trait Io {
-> -    /// Minimum usable size of this region.
-> -    const MIN_SIZE: usize;
-> -
->      /// Returns the base address of this mapping.
->      fn addr(&self) -> usize;
->  
-> @@ -323,16 +320,6 @@ fn io_addr<U>(&self, offset: usize) -> Result<usize> {
->          self.addr().checked_add(offset).ok_or(EINVAL)
->      }
->  
-> -    /// Returns the absolute I/O address for a given `offset`,
-> -    /// performing compile-time bound checks.
-> -    // Always inline to optimize out error path of `build_assert`.
-> -    #[inline(always)]
-> -    fn io_addr_assert<U>(&self, offset: usize) -> usize {
-> -        build_assert!(offset_valid::<U>(offset, Self::MIN_SIZE));
-> -
-> -        self.addr() + offset
-> -    }
-> -
->      /// Fallible 8-bit read with runtime bounds check.
->      #[inline(always)]
->      fn try_read8(&self, _offset: usize) -> Result<u8>
-> @@ -478,14 +465,27 @@ fn write64(&self, _value: u64, _offset: usize)
->      }
->  }
->  
-> -/// Marker trait for types with a known size at compile time.
-> +/// Trait for types with a known size at compile time.
->  ///
->  /// This trait is implemented by I/O backends that have a compile-time known size,
->  /// enabling the use of infallible I/O accessors with compile-time bounds checking.
->  ///
->  /// Types implementing this trait can use the infallible methods in [`Io`] trait
->  /// (e.g., `read8`, `write32`), which require `Self: IoKnownSize` bound.
-> -pub trait IoKnownSize: Io {}
-> +pub trait IoKnownSize: Io {
-> +    /// Minimum usable size of this region.
-> +    const MIN_SIZE: usize;
-> +
-> +    /// Returns the absolute I/O address for a given `offset`,
-> +    /// performing compile-time bound checks.
-> +    // Always inline to optimize out error path of `build_assert`.
-> +    #[inline(always)]
-> +    fn io_addr_assert<U>(&self, offset: usize) -> usize {
-> +        build_assert!(offset_valid::<U>(offset, Self::MIN_SIZE));
-> +
-> +        self.addr() + offset
-> +    }
-> +}
->  
->  // MMIO regions support 8, 16, and 32-bit accesses.
->  impl<const SIZE: usize> IoCapable<u8> for Mmio<SIZE> {}
-> @@ -497,8 +497,6 @@ impl<const SIZE: usize> IoCapable<u32> for Mmio<SIZE> {}
->  impl<const SIZE: usize> IoCapable<u64> for Mmio<SIZE> {}
->  
->  impl<const SIZE: usize> Io for Mmio<SIZE> {
-> -    const MIN_SIZE: usize = SIZE;
-> -
->      /// Returns the base address of this mapping.
->      #[inline]
->      fn addr(&self) -> usize {
-> @@ -552,7 +550,9 @@ fn maxsize(&self) -> usize {
->      );
->  }
->  
-> -impl<const SIZE: usize> IoKnownSize for Mmio<SIZE> {}
-> +impl<const SIZE: usize> IoKnownSize for Mmio<SIZE> {
-> +    const MIN_SIZE: usize = SIZE;
-> +}
->  
->  impl<const SIZE: usize> Mmio<SIZE> {
->      /// Converts an `MmioRaw` into an `Mmio` instance, providing the accessors to the MMIO mapping.
-> diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
-> index 026e7a3b69bd..6ca4cf75594c 100644
-> --- a/rust/kernel/pci/io.rs
-> +++ b/rust/kernel/pci/io.rs
-> @@ -148,8 +148,6 @@ impl<'a, S: ConfigSpaceKind> IoCapable<u16> for ConfigSpace<'a, S> {}
->  impl<'a, S: ConfigSpaceKind> IoCapable<u32> for ConfigSpace<'a, S> {}
->  
->  impl<'a, S: ConfigSpaceKind> Io for ConfigSpace<'a, S> {
-> -    const MIN_SIZE: usize = S::SIZE;
-> -
->      /// Returns the base address of the I/O region. It is always 0 for configuration space.
->      #[inline]
->      fn addr(&self) -> usize {
-> @@ -174,8 +172,9 @@ fn maxsize(&self) -> usize {
->      define_write!(infallible, write32, call_config_write(pci_write_config_dword) <- u32);
->  }
->  
-> -/// Marker trait indicating ConfigSpace has a known size at compile time.
-> -impl<'a, S: ConfigSpaceKind> IoKnownSize for ConfigSpace<'a, S> {}
-> +impl<'a, S: ConfigSpaceKind> IoKnownSize for ConfigSpace<'a, S> {
-> +    const MIN_SIZE: usize = S::SIZE;
-> +}
->  
->  /// A PCI BAR to perform I/O-Operations on.
->  ///
->
-> ---
-> base-commit: c71257394bc9c59ea727803f6e55e83fe63db74e
-> change-id: 20260130-io-min-size-f3c289c148ae
->
-> Best regards,
+
+
