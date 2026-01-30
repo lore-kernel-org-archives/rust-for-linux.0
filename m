@@ -1,161 +1,196 @@
-Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C4F34FF7C
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 11:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71652310782;
+	Fri, 30 Jan 2026 12:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769772910; cv=none; b=mHlzE2cOI6uiFZVvL51I7UA/tMivqqeYeM/rtkJfdq+kBBAmlY9bftp1V47hChdqZsxPPWbuTWuld++3X8GBQtNp7MC2vfVnZ443OSk6EXWgfigNWO4jYdDLAC3KyJq3c/Ghl/1kND1nzQ6965Cj8ouklinFoQS5oxkC5ixfiwY=
+	t=1769776443; cv=none; b=BDlD92ap0WRW825i9PmoRRf+k915Hh3ehZOE3AU+R24YnEt4Pk262JzBjCH/BOm4XBuJaGUqu3w6yJx2gu6z1+fcrh6C8fEeHrsyPDv5kVPiV20xxSZpAnjpT8NrfaNSv8BBNJNplEzor/kAE6474A3t4EMIbrHy5aMYwAIBzVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769772910; c=relaxed/simple;
-	bh=n2kuZK+AmdnpiUxueVhxbinZ2/SypyxHxjQmPVjfQfI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b/9gyjdsnP6IKtANVpT8NKgeuv+zmNvwOECc4WqzaPUKjZmjOUTwnU0le3W10KU4iahppgIUgfI8MTYalNrkAFx0ojvE1xKvpRJDmE26qKd290R05RANMd9fSc42VApTWXpnb/wGeMt6R7AR/aYvmthfpznRsn66N4+2YbZKPho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO lgeamrelo04.lge.com) (156.147.1.127)
-	by 156.147.23.51 with ESMTP; 30 Jan 2026 20:34:58 +0900
-X-Original-SENDERIP: 156.147.1.127
-X-Original-MAILFROM: heesu0025.kim@lge.com
-Received: from unknown (HELO heesu0025-kim-aosp-rust-binder.beeworker.bee-live.svc.cluster.local) (10.159.44.90)
-	by 156.147.1.127 with ESMTP; 30 Jan 2026 20:34:58 +0900
-X-Original-SENDERIP: 10.159.44.90
-X-Original-MAILFROM: heesu0025.kim@lge.com
-From: heesu0025.kim@lge.com
-To: aliceryhl@google.com
-Cc: a.hindborg@kernel.org,
-	arve@android.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	heesu0025.kim@lge.com,
-	ht.hong@lge.com,
-	jongan.kim@lge.com,
-	jungsu.hwang@lge.com,
-	kernel-team@android.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	sanghun.lee@lge.com,
-	seulgi.lee@lge.com,
-	sunghoon.kim@lge.com,
-	tamird@gmail.com,
-	tkjos@android.com,
-	tmgross@umich.edu,
-	viresh.kumar@linaro.org,
-	vitaly.wool@konsulko.se,
-	yury.norov@gmail.com
-Subject: Re: [PATCH v2 2/3] rust: pid: add Pid abstraction and init_pid_ns helper
-Date: Fri, 30 Jan 2026 20:34:57 +0900
-Message-Id: <20260130113457.21521-1-heesu0025.kim@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <aXs3OjlGzQVABAwR@google.com>
-References: <aXs3OjlGzQVABAwR@google.com>
+	s=arc-20240116; t=1769776443; c=relaxed/simple;
+	bh=iZzpNEAujmycUgTI/h9S+Zxb+pjdstnZT2VsHNdpb6w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hkUw03iD/aLaZWKpEONbszXsiwUNnm36a6gopzGcKzoj5SoqLtiE2PvACwCK0PapLWr9rsapLNcS2cJKXH3W24QO9KGdCSTxLL9jZPBdQcE5SHiJlQ2DZ+R78X7/NlVMxfopxKQwiTtim1wA6R0KpR27wmZhk9Ben/OaCILkTGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPSciKCJ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPSciKCJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31197C116D0;
+	Fri, 30 Jan 2026 12:34:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769776443;
+	bh=iZzpNEAujmycUgTI/h9S+Zxb+pjdstnZT2VsHNdpb6w=;
+	h=From:Date:Subject:To:Cc:From;
+	b=UPSciKCJW3vx0x9g39qyILSkxW/plroKdQf3kg+IaLVG8W4qqoYLi/oKXVCYf0dl6
+	 /ibOyaxK2uC4Wd0/QhqtnpWml6NLF2xwf2+wpJsNinzbIbyd7hp/xPMmRFyEvpVMJH
+	 fgAhkWkWHxGTSVpL2/y03k/QBX389tE0XOINdl4AXG6myO0Lcnn7PeqF0K+nfIUeQx
+	 P/BdJ/GoFWBWcNhYA2F6AxTlL555lBbcSzJEuEQKkPGkwbS3x75s2qZGxOZVX1C+sE
+	 Z5QxQ9LbnUnNKIy2ZxlNwGWKWoiZdjBSqiFnr/+TZ85OxmmcAoBmgxgfy3Gg9cCa4w
+	 /rlsO3X+QqmYw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 30 Jan 2026 13:33:38 +0100
+Subject: [PATCH] rust: page: add volatile memory copy methods
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
+X-B4-Tracking: v=1; b=H4sIACGlfGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDQ2MD3YJEoFhZfk5iSWYOUDJf18A0Lc3U0tTUwDzFWAmoraAoNS2zAmx
+ kdGxtLQCfFwNbYgAAAA==
+X-Change-ID: 20260130-page-volatile-io-05ff595507d3
+To: Alice Ryhl <aliceryhl@google.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5554; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=iZzpNEAujmycUgTI/h9S+Zxb+pjdstnZT2VsHNdpb6w=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpfKUtQhVPsKXzyLGXH3fkMmnJyCtj/n/+nP5+f
+ MolQXKgF+OJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaXylLQAKCRDhuBo+eShj
+ dznoD/9P26y0YDv1cPE86Bh1YGhktvCuaw1sp27fWh7YxQ0wX6O0WA5IlgEaGSx8xF2hOHJi2w+
+ LJeLQnALyrOPIvSzNPzAfx2pPBNK6w0QQxXiU0ebgMtk+UPHFbQMS64irBjLi0bL3xQoesmOrP+
+ 2bB99pbdVY4gC0Dq12XeoM9HfDUIYAOurPpQfpIpsUKAPiIEDhesIr5AuZJsi/AdNxirHuDiqdT
+ S4+OWdHaGeHte6w4qjZl2fujURG66lxR1MVsaOdhs5ov44CBROneErN/q0EMqXCdqnzXGBk6ieF
+ 66zeZxekJHEaTK+HFXPBOIOKu4Bpl8Xs+FAa5e6axWbZt6JodaOaOmYH05l550eQLsGFl3Ambz6
+ eAI6AuhlcnmnYADQzAjks1mzQHCQZptXzxs3Y0cV0gfbbZ+1PtTI/xWTeXKkju9iKM3A7w5PdUE
+ T9j9/jJjaZt0oeD73MKrU+eZCX1fcigGKLhc7zLs4YwuXQd29q4K7fKKgNzSDn6vvlI6LP5s2D2
+ wi7AOHKisq/Un/Tt6DzSvzH6DnHXJjjYJ62AkuJ02PLXMQaUnSodNF60W6uDwkB2tMl+AJ2ElsS
+ tAQXWMJrendvBe6gPjwEmuc+cDFYTxfUrBjjsTiHnvSklJdVA/U62bIgX++vjhdrzWe8qP5t39P
+ KzawbSp67BdAooQ==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Thu, Jan 29, 2026 at 10:32:26AM +0000, Alice Ryhl wrote:
-> On Thu, Jan 29, 2026 at 05:41:18PM +0900, jongan.kim@lge.com wrote:
->> From: HeeSu Kim <heesu0025.kim@lge.com>
->> 
->> Add a new Pid abstraction in rust/kernel/pid.rs that wraps the
->> kernel's struct pid and provides safe Rust interfaces for:
->> - find_vpid_with_guard: Find a pid by number under RCU protection
->> - pid_task_with_guard: Get the task associated with a pid under RCU
->>   protection
->> 
->> Also add init_pid_ns() helper function to pid_namespace.rs to get
->> a reference to the init PID namespace.
->> 
->> These abstractions use lifetime-bounded references tied to RCU guards
->> to ensure memory safety when accessing RCU-protected data structures.
->> 
->> Signed-off-by: HeeSu Kim <heesu0025.kim@lge.com>
->
-> This looks really nice, thanks!
->
->> +//! Process identifiers (PIDs).
->> +//!
->> +//! C header: [`include/linux/pid.h`](srctree/include/linux/pid.h)
->> +
->> +use crate::{bindings, ffi::c_int, sync::rcu, task::Task, types::Opaque};
->
-> Currently we use this formatting for imports:
->
-> use crate::{
->     bindings,
->     ffi::c_int,
->     sync::rcu,
->     task::Task,
->     types::Opaque, //
-> };
->
->> +/// Wraps the kernel's `struct pid`.
->> +///
->> +/// This structure represents the Rust abstraction for a C `struct pid`.
->> +/// A `Pid` represents a process identifier that can be looked up in different
->> +/// PID namespaces.
->> +#[repr(transparent)]
->> +pub struct Pid {
->> +    inner: Opaque<bindings::pid>,
->> +}
->
-> I would implement Send, Sync, and AlwaysRefCounted for Pid too.
->
->> +            // SAFETY: `find_vpid` returns a valid pointer under RCU protection,
->> +            // and `Pid` is `#[repr(transparent)]` over `bindings::pid`.
->> +            Some(unsafe { &*(ptr as *const Self) })
->
-> It would be nice to extract this cast into a Pid::from_raw().
->
->> +            // SAFETY: `pid_task` returns a valid pointer under RCU protection,
->> +            // and `Task` is `#[repr(transparent)]` over `bindings::task_struct`.
->> +            Some(unsafe { &*task_ptr.cast() })
->
-> I think it would be nice to add a Task::from_raw() to avoid the cast
-> here.
->
-> 	Some(unsafe { Task::from_raw(task_ptr) })
->
->> +    pub fn pid_task_with_guard<'a>(&'a self, _rcu_guard: &'a rcu::Guard) -> Option<&'a Task> {
->> +    pub fn find_vpid_with_guard<'a>(nr: i32, _rcu_guard: &'a rcu::Guard) -> Option<&'a Self> {
->
-> I think we can drop the 'with_guard' suffixes of these.
->
->> +/// Returns a reference to the init PID namespace.
->> +///
->> +/// This is the root PID namespace that exists throughout the lifetime of the kernel.
->> +#[inline]
->> +pub fn init_pid_ns() -> &'static PidNamespace {
->> +    // SAFETY: `init_pid_ns` is a global static that is valid for the lifetime of the kernel.
->> +    unsafe { PidNamespace::from_ptr(core::ptr::addr_of!(bindings::init_pid_ns)) }
->
-> Simplifies to:
->
-> 	PidNamespace::from_ptr(&raw const bindings::init_pid_ns)
->
-> Alice
+When copying data from buffers that are mapped to user space, or from
+buffers that are used for dma, it is impossible to guarantee absence of
+concurrent memory operations on those buffers. Copying data to/from `Page`
+from/to these buffers would be undefined behavior if regular memcpy
+operations are used.
 
-Thanks for the detailed review and feedback.
+The operation can be made well defined, if the buffers that potentially
+observe racy operations can be said to exist outside of any Rust
+allocation. For this to be true, the kernel must only interact with the
+buffers using raw volatile reads and writes.
 
-I agree with your suggestions. While our immediate use case only requires
-RCU-protected access, implementing Send, Sync, and AlwaysRefCounted makes
-sense from the broader rust/kernel perspective, as these abstractions
-will likely be used in various contexts across the kernel.
+Add methods on `Page` to read and write the contents using volatile
+operations.
 
-I will incorporate all suggestions in the next revision.
+Also improve clarity by specifying additional requirements on
+`read_raw`/`write_raw` methods regarding concurrent operations on involved
+buffers.
 
-Best Regards,
-Heesu Kim
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/page.rs | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
+
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 432fc0297d4a8..6568a0d3b3baa 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -7,6 +7,7 @@
+     bindings,
+     error::code::*,
+     error::Result,
++    ffi::c_void,
+     uaccess::UserSliceReader,
+ };
+ use core::{
+@@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
+     /// # Safety
+     ///
+     /// * Callers must ensure that `dst` is valid for writing `len` bytes.
++    /// * Callers must ensure that there are no other concurrent reads or writes to/from the
++    ///   destination memory region.
+     /// * Callers must ensure that this call does not race with a write to the same page that
+     ///   overlaps with this read.
+     pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
+@@ -274,6 +277,30 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
+         })
+     }
+ 
++    /// Maps the page and reads from it into the given IO memory region using volatile memory
++    /// operations.
++    ///
++    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
++    /// outside of the page, then this call returns [`EINVAL`].
++    ///
++    /// # Safety
++    /// Callers must ensure that:
++    ///
++    /// * The destination memory region is outside of any Rust memory allocation.
++    /// * The destination memory region is writable.
++    /// * This call does not race with a write to the same source page that overlaps with this read.
++    pub unsafe fn read_raw_toio(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
++        self.with_pointer_into_page(offset, len, move |src| {
++            // SAFETY: If `with_pointer_into_page` calls into this closure, then
++            // it has performed a bounds check and guarantees that `src` is
++            // valid for `len` bytes.
++            //
++            // There caller guarantees that there is no data race at the source.
++            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
++            Ok(())
++        })
++    }
++
+     /// Maps the page and writes into it from the given buffer.
+     ///
+     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
+@@ -282,6 +309,7 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
+     /// # Safety
+     ///
+     /// * Callers must ensure that `src` is valid for reading `len` bytes.
++    /// * Callers must ensure that there are no concurrent writes to the source memory region.
+     /// * Callers must ensure that this call does not race with a read or write to the same page
+     ///   that overlaps with this write.
+     pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Result {
+@@ -295,6 +323,31 @@ pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Res
+         })
+     }
+ 
++    /// Maps the page and writes into it from the given IO memory region using volatile memory
++    /// operations.
++    ///
++    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
++    /// outside of the page, then this call returns [`EINVAL`].
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that:
++    ///
++    /// * The source memory region is outside of any Rust memory allocation.
++    /// * The source memory region is readable.
++    /// * This call does not race with a read or write to the same destination page that overlaps
++    ///   with this write.
++    pub unsafe fn write_raw_fromio(&self, src: *const u8, offset: usize, len: usize) -> Result {
++        self.with_pointer_into_page(offset, len, move |dst| {
++            // SAFETY: If `with_pointer_into_page` calls into this closure, then it has performed a
++            // bounds check and guarantees that `dst` is valid for `len` bytes.
++            //
++            // There caller guarantees that there is no data race at the destination.
++            unsafe { bindings::memcpy_fromio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
++            Ok(())
++        })
++    }
++
+     /// Maps the page and zeroes the given slice.
+     ///
+     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
+
+---
+base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+change-id: 20260130-page-volatile-io-05ff595507d3
+
+Best regards,
+-- 
+Andreas Hindborg <a.hindborg@kernel.org>
+
+
