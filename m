@@ -1,189 +1,336 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011066.outbound.protection.outlook.com [40.107.130.66])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021090.outbound.protection.outlook.com [52.101.95.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D83125A9;
-	Fri, 30 Jan 2026 12:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DAAD27E;
+	Fri, 30 Jan 2026 13:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.90
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769777125; cv=fail; b=Xpbo+lBosRXUdUIchGcUsD8xEHp7D5XstniOsNjqj6gPKMQPFWQKgpqiVq9Vo87YThCBk/YDpkoz48a3Yeea3OYWSQ63642Yqk9uVXA9FMA45MyaMhF02UqscLGM+GMHa9i2YljVC65KAlAzUSEtQ4g2DQYeK4SrGyrfVIgC9WM=
+	t=1769778628; cv=fail; b=W1NWnMzC266nLZVT+LY/jklpEInOsryywLDbdb00VkRUYvCJGMx6ItEWNfJGVKpZ+5utJK/XzB9aZLI+BrMVo7lfIx/fv8hsegwEjxB2rLKwDIgWIqbuRFeNX1kavaiQMk9Kc0akusU6ovgU3+Mkd4JsfeWWdhXvSC9eJSmz8E4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769777125; c=relaxed/simple;
-	bh=AKUcKGt4LYhYJGdmT9fR/3IIvkYPoCN/287SqaiiaX4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dXy+xCy9ptdlqbxB0NsrYJ8G0k5jgT0UrofIMYxwxEZbr+FhOgH5vBpqZtvCpRxnaCNV4j2MTdxb+fHxGzEANEW2Y1uyqGYbc6aPEU8+uTNb4mOwfRkSNlnnkxfigxCYldtrFtJCwJilliKzuY8LfKFFxlHoqPqpZFGAN8aR82c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=aBeuAGCQ; arc=fail smtp.client-ip=40.107.130.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	s=arc-20240116; t=1769778628; c=relaxed/simple;
+	bh=4XDOa69JR5PZT66n+NhM96OCPFvxx/N1AZETeLw3zl0=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=A7uQv8EBloNGYAiG/SjFKXEkD8HQ3ezBWF322C7VJdRNsYGLq2et8iUWw7ADOMwz2mo4jdGxfifjHyc1OPfnviHfJAcoou18D6YTwtYzDlblq7CHkRdIrGrbBN2I9DTWRhAE6B5OlgPwwe5Qhy5WHQVB+C5YkDB2J4/o7cDbxyg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Lnbjn/V9; arc=fail smtp.client-ip=52.101.95.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="aBeuAGCQ"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Lnbjn/V9"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AiqnYIrbfjN/RODvFZ6nZjhho0JOHdVvlrvbIsims6evWRUMbHj/RIOA/3PxP5KITtTXAW+9PY7pvwVF0VTdOVOCFOWOlqIoe44Nl8rhiFEO6Lf9q+mIe+LyABXHoUl1QZBZ5smVJnqLbSBZrPTXlDNmOnSiq8TgUVbHQnSzx3KVLAYLpAbNf2mtxpNpuGTU71elu4xXJTFRzb4mNDD1H3E5qANLnTPFY+L7AVrExMifIJKwZLcsEuOvysSwzDmrum0ci5CX8bVUah9vfdmNBEJJYPoBCKAzhvGQ2qrQFBUCNzCMmYCCAMvhRqWZWcRF6qtPoKOu4DMuN9z/ZodpTw==
+ b=CK+BVSLq+KFfj0oPrffi4Ww718HhvvXjPKE3N2LssMVr5NMnp/DUx2JHl0j/bZnXKuy41xmr+4cNz1yAC/dS4HybqiCm+BkvJ1sYCL+BoJqgKDHDM0PWD9k+FJmvSmPaNGR91c9LhpGaFFWi0nJ1uzvC4PnlkqzVU4mG/DRAAvvOqhPyU7Aaan2PHPVp4T4wj/1al+ViFEIzt6bl1z+1B2S1Xr7YaZsXfM8dss86Ubi2aEjp4PrhXKflB9aDZxz73qbDjfNmAPSs9KbWgTi4fjnAGleS1RoKV0KiG4GFJWuTlDvtq58V+EJfwQHOcIc7Jl1JGs5By2X1Rm4EOhXV7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8Ia9yrRYEdr6OSxEvAtFX/hGkwIZsevUGoozBvPUyis=;
- b=RnPgWwYjoh1+MWTGvB8reukWoNGdxeQq7IkXlmXAjNVIaIkR3UTqMqxieSylrRQOk7S6TZaGz1M0qs+TGNPe7tps97n0QgjjuQxA8G9I6NiE6ovdRm2Hyf0ABwf1DQe1eezQcBSbUufatk+Bekv31JLffzTwMWHtEURZrVyIDwzdB9Q0ju6c01NoOqcSYa3rRgTa/YnIeZMpVGLNVJnrhMKEMp3kRYsjr3E4LxI/nARWoj9UPc+wKIVooouq94yPLT7RIGICr3o8EPz2ybNzOSBSWpy4Fo8WBUhZna0hsNgHtNa5AqUTuzDbyqkTOwdcdD0OWwOg1lALJVbxNq1fSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
+ bh=WsNxMFM4nVPBm3vTxgidFT8kVAPmEF338dYvqpw5NTw=;
+ b=nCsKqTD1iOgWq4OKa3o0ozHsXDFhcXMkT31lb11HW8l0DPpzx9pparOwGW4cX1ZfI06JefrdKgYzBwPCVu/REJ4SmMV3vWtkGmB83pCNqug3gaurBhU9dlolZoGYoxgH28TzpDTGVUWYxeD2KZ8oRu2JLzXnnaJiWheqlMG+BlR4JgMlgAW8FiDOZ9/SPH+0hYmx3busQlYenlM5aMblNVfXEdW+NGF5dLtVYExSNp5IGqdtgc0VE1XKNPNoQMfDUJ0bUgx7hCUHZpFqt8nAthvwJaEAI6xSHjmiBh7KUxJ1u54iAxiUGA8bY1J/HxqWG3QzQ3GeNrF4ggX+HYj4Pg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8Ia9yrRYEdr6OSxEvAtFX/hGkwIZsevUGoozBvPUyis=;
- b=aBeuAGCQiM7PTTCoO6QKheChN+QfHrFOpdPiZDhgGCItD/xfzUg4Q4F7EtlW/Yo6/5JKpSeFigOGUnX+VIDDNqLeSpoX7nLhjqV6XQj0s0sBRU9BGcIWwzUt0N6DBrNZ1LpSpJgF2+0pLsPhSl+7nZ+YLyY9gWsz0X5Guxl6hFILG+v+bH3Baq+GtLySQmic/icRS8cJ14kZ832kMN4Xtvpo5l7mS78JG14fQG79PGDRgYihh6OTU4IN1hQVHQmuk1x4nuzoVpJw5lEGlgni3M3KZE9Ci0FjV/7Ghfw7KoLoGC35hm6QXjYZUpCOR6PgaNG3BDZ8cHqsl3H+25PO3w==
-Received: from DU7PR01CA0027.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:50e::14) by VI1PR10MB3247.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:803:135::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
- 2026 12:45:17 +0000
-Received: from DU6PEPF00009528.eurprd02.prod.outlook.com
- (2603:10a6:10:50e:cafe::e8) by DU7PR01CA0027.outlook.office365.com
- (2603:10a6:10:50e::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.11 via Frontend Transport; Fri,
- 30 Jan 2026 12:45:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.205) by
- DU6PEPF00009528.mail.protection.outlook.com (10.167.8.9) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Fri, 30 Jan 2026 12:45:15 +0000
-Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by eop.bosch-org.com
- (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Fri, 30 Jan
- 2026 13:45:12 +0100
-Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
- (10.124.11.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Fri, 30 Jan
- 2026 13:45:12 +0100
-Message-ID: <fb68b2d2-a5bd-4359-a0c5-019ef4060e7d@de.bosch.com>
-Date: Fri, 30 Jan 2026 13:45:05 +0100
+ bh=WsNxMFM4nVPBm3vTxgidFT8kVAPmEF338dYvqpw5NTw=;
+ b=Lnbjn/V9ZDayJglluAQGk8J9lRDdtrCxOHXxKUXP6UgBZ6ltpOHcXA14HyrqM2E0zlqgxlAmJYEEZkhCEeoruTM1PoAwSyI3ZRhrrZ2TkPd0dA2lW0Z8gZ12BfWRrbHhF7QC1lNhZ/wfMhg03G7Fyu026BJjUu2itzTQV4Is9VE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB3068.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:183::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.11; Fri, 30 Jan
+ 2026 13:10:23 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
+ 13:10:23 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 30 Jan 2026 13:10:22 +0000
+Message-Id: <DG1Y5V810II1.1HE2T0HDBLNXI@garyguo.net>
+Cc: <linux-mm@kvack.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: page: add volatile memory copy methods
+From: "Gary Guo" <gary@garyguo.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
+In-Reply-To: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
+X-ClientProxiedBy: LO6P123CA0045.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:2fe::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 3/3] samples: rust: remove imports available via prelude
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo
-	<gary@garyguo.net>
-CC: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
-	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
-	<dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael
- J. Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, "Ira
- Weiny" <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Arnd
- Bergmann <arnd@arndb.de>, <rust-for-linux@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260123172007.136873-1-gary@garyguo.net>
- <20260123172007.136873-4-gary@garyguo.net>
- <CANiq72kwRdYbs9L1hrX_0SdGHsycMi9fz6+wh+qGgWiOsFZZiQ@mail.gmail.com>
-Content-Language: en-GB
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <CANiq72kwRdYbs9L1hrX_0SdGHsycMi9fz6+wh+qGgWiOsFZZiQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU6PEPF00009528:EE_|VI1PR10MB3247:EE_
-X-MS-Office365-Filtering-Correlation-Id: bad8df97-8c03-43fa-f01e-08de5ffd6ae6
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB3068:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97152da5-54d0-41e7-d0e7-08de6000ed29
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014|7416014;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|921020|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cEIxbFZRNkV3djdmNVZXbjV6T2d0bFdic0RyZ1JBSE52TWc1MWdObU53UGVW?=
- =?utf-8?B?SFN6eWYyNlFrL3RsUXNmMUVUK1VjN3M3aUxQRmcyMjliQWFKSDVCU0xYMGNL?=
- =?utf-8?B?cDk4RTVSK2pEWnNQUU1sNzNOODBrRUJsdmpHa1NmUmgwUXI2dXo2QnRRY1pS?=
- =?utf-8?B?bjFpY05lUG03U2l1VnVMMHkwOFZVNUNDQ2RxWDI0U1VCbzQrdy9Nckd6NlUx?=
- =?utf-8?B?UUQ1aFhOTTBqZFBKRmlia0k5cE5tYkFRejhmdVFrMHVzK3VsSnBYRE5HaVg0?=
- =?utf-8?B?bzRIMS96ckNVSU45L0VPcGNta2MzQnQ5eEZJZHZKQ0tjSFA3S0xmM0tJdlBi?=
- =?utf-8?B?SE93by9UNGRscHpDNWI4L2lqZHJ4ZjlsYStEbXcxSUpsc1dnM042Umlrc2F2?=
- =?utf-8?B?Y2daUjlMWG45V25CY01VaWNHdU84MTFGOEt6Q1hDSUNITlRPNklXbWlKbHBn?=
- =?utf-8?B?V2VwVm5rYkxwVC9yUERnbEhKZnkzYWY1TlBxLzFkRmdNSk0vZDV5OFA1N0xX?=
- =?utf-8?B?enJhWjhrVlhoTWZMUW5SZGtTa05WdW5PdTdNQlZXenNwa2ZNOHFzc3I0NmJj?=
- =?utf-8?B?WFhoZ3k2ei9EMWVKQVRHeHpINXNLWjcxRjNJL2ZTOVhERjY4UnNvdlM2dEJv?=
- =?utf-8?B?dnFEVUZUVGgzbmhTVnZmcDVpalRRQytUSFNKTm4rZEdnbVdEcGtEZUJrQ2p2?=
- =?utf-8?B?Ly8zV3dLYkpFeFZIajJZQTNwYTN5c2prTHFjRmJQU0lkaEQ2U1JncWlaQnhD?=
- =?utf-8?B?MHFpSHR2SlFSZEprSlhqU3VINldEa0NtOGNTeVJWRW5EN3U4UXpiMmRkWTNO?=
- =?utf-8?B?UlR3Snp1TXJGazlDUi9oVktnandaNlNhQWZOVGRhdkk4SWRia3FHZ2x0RVdT?=
- =?utf-8?B?d1BuQ3locDQxRjI2aGRSZVBBVml2VDZDOEFjNnh5Y3graDFKY01BSmNsNXpW?=
- =?utf-8?B?UXc4UnBRNW9GeWpSOEp0cVlVQ2xZVEdzSDFJMEg4c3pxVFcyc1hSK3p0QXRw?=
- =?utf-8?B?M0lzZDdjUVp0MkY1czRrSXRRSHdVZm9ERk9zbUt0ZnB5anE2cG1OSS9tYXVQ?=
- =?utf-8?B?OXVIZE95WEJnbFRnbGM4SkZZWkdQdzhteEVCcWRYbEZuUmVPNGJQMW5GY0ps?=
- =?utf-8?B?b0MwS25oaXZVaC9DV2JDSWJ0TU4zVWllRXFNb1FEdVUxMHIzUVlIVnhTUHlk?=
- =?utf-8?B?QytDdjRsOUZZYUxvM0ZkMDdsSk5EK2d1Q2hsMUFTOTBRMkluRmo3dDdPN3lF?=
- =?utf-8?B?Vkc0OHNYTUJ1RkcwbnV1ZS9EL1NTbmE3N25KNmZEWVNWeWhGb1JPd2ZPSVNE?=
- =?utf-8?B?Tm5SWmZ3OXVyV24ya1RqTHFvNWVFZHpXclZseElCY0U3N09jUEpYS1hIZ1hp?=
- =?utf-8?B?OUtkd3IyV2pZNk5PSHU2QXBrUGVlK2lsd1ZjVTlHSEJuUCtWUlNKWFRNd0Vn?=
- =?utf-8?B?TWYwSzJuZzlCS3FaUG1QeFBhMXV1c3dTUlhQanBjRWsxbzV4T2I4QktOQnk3?=
- =?utf-8?B?RlIraFFqUEM0dExnRk5ENFZsTmVDd3J0aElmczZqUXJXWXdoNU44aXlJMG5v?=
- =?utf-8?B?NFBjamZWYzFIcDFJc2RzU0RJeGtMU2I1R2pEcnBHdDkrRzQ5MUxGL21FSUgz?=
- =?utf-8?B?WkxDYk8zV2ZQa1NRM3hOblJ1d1VpcVQ5VWhXR21CYlFLeFF3R1B5TEorTEEy?=
- =?utf-8?B?ZXB3dG1Hd0trWXRPczNLVlFjbHZ5VmRiT1JMSU9VRzF0Q1E0b3U5QTRMT3VV?=
- =?utf-8?B?anl3TjBxeXdhN3IzdnhYYjcxUll3SkJJY0VXOEpyN1lBSTdDdWlCeEZGeHRQ?=
- =?utf-8?B?YjErZ0VLTkM1WFpKenNSZnQ4ZEdNLy8zcDZFSk1wQXUwUis4V1ZIQURmcmdF?=
- =?utf-8?B?T3I0MHNDSjBJRVZnZ01sRFEvMEVJbVIxd1ZzTU15R3Jmdm5jeVZHazY5SEU5?=
- =?utf-8?B?bUdLaGg0TkhDb0JzenUvRldUMkYvTXhJT3BGK0RwNm1Yc2Q5Uk5NOGxYTHNi?=
- =?utf-8?B?WTFuYkZvV25oeGE5RnpGdmhKdERaNUpJdStaU3ZKc3h0VjVEd1BMNWVWdjZh?=
- =?utf-8?B?ODBMVUxMY3dvQnJpY05IVmVXTm1mTTVsdEdPeG5jRnIrMnpvMkFxaDZLZzQ0?=
- =?utf-8?B?YlIvVk1QTVU3T1FBeWd0MUtkVnNuL1VkVy8xZURnWTlDam9vYjhRc0pTQmxJ?=
- =?utf-8?B?TjhHcnB1YmtzVG1JZ01xMVN4S0Vra0ZnMXZqakVCRXBHT3JNL0xFVWtsQ2RZ?=
- =?utf-8?B?dC9kR1MrdnUzRTdpM2dLRHgrajlBPT0=?=
+	=?utf-8?B?MHBYTFo4bGdLV0V3cTB4OXlGRVc5UVRnQ0VZLzgvVmdENGgybVdiV0V0UFpN?=
+ =?utf-8?B?ZVR2YWNYSkVOb1B6MXJOdDlscDRLUzZBa0N0am9MYytMWWNsZGlJTHMwZzEv?=
+ =?utf-8?B?dW5xeFNHUzU1SjBnYnJaN2RGTVUzYmxKTjZYZDNyaHFabGU3U0RmL3NzclBn?=
+ =?utf-8?B?aXFwNHBHbmt3RHZ6cjJWQzF6eFNzd2VPaHkyMDdSNnAzUUJxZGlWS25TVU55?=
+ =?utf-8?B?MHkzUlVvUk5QNEdJakwwN3ZHdVlaTmNIKzN4L0R0SS9rVjJKNVFIckJLZzhJ?=
+ =?utf-8?B?M3Q5Z3BkMXlBOXdmSHpMVE5ZZzVGMlFORGVQV2JJcG04dStudGdFaTR5Zzdi?=
+ =?utf-8?B?Ti95cjlLcEtVSW5aTTNsREZDV1JwLzNJQ2pWeEZuNjd3VndwT0V2WFZ5bjIv?=
+ =?utf-8?B?OEhKcWpsSGZKbEhXa0Z0Z0ZJY0NhcWx0QlQyaVp0MkZ5YjhmRTVOSlMzNjUx?=
+ =?utf-8?B?bGJtMXZWVzRXN2VNRVB2ekJ1N2hYaE1VU2ZSM2hDVjcwRVdOcWphZXM0K3hQ?=
+ =?utf-8?B?Q29SOHVuQzljSlE3aVprdlFRZVBaZ2JTNjJwUDY1aEtOVmxtOW9SM1liVjIv?=
+ =?utf-8?B?a2NoT1RBa1NYbWhVOEYzWXpIcUJ2aER5SmpJaHJLT2MxdnVDQ2hwemk5dGpi?=
+ =?utf-8?B?akp1QlUvbkZva3NTSUo5alppL3dXVkpIQVBmZ1JtS1hYTC9zdDhTeWdPTWEz?=
+ =?utf-8?B?QjdUVGxFYjJ5aFB2Rk55TFdwR3hBazJ1WFY5YnphUVhheTJscDlqY0h5cEhk?=
+ =?utf-8?B?R1I3NXVUQytBWiszSHNiczVQVk9HeXdHMGp6QkJlYkQ3aDFaeDQ1VkdMQ0Ji?=
+ =?utf-8?B?TVZEcys5Yy9XMGJTVGVpd3dsNVRZbS93N1QyMDRmdmVVUWU1WkRRNDZkU0lY?=
+ =?utf-8?B?b0dlQWtsQjRLWjltdGpzYUdadFdUcUpQSUswMU1JcXg1a2swWDkxbnVGbE1T?=
+ =?utf-8?B?MHJZOVRHMm11VjkvQ1l4cFhRU20zN2RCQzJWVVluUGlOQTJXNFg5MThXcElk?=
+ =?utf-8?B?ZWg2dlVXTWtzaDVOOHJ5NjNNckx6eEV5cVZYelNaMUh5OUd5TWprd0RqWnRz?=
+ =?utf-8?B?SUs0Qi9rL3lmSzRHd1hZOVM2VER4Y3pPeXplenFvSGszaDZ0QjRUcnJSdW5P?=
+ =?utf-8?B?UjZYWWZSRWNIK2NiTzRtZVhFTDZ4WG54TlV5T3FSV1VrdUNqWHM1K0M2b1pl?=
+ =?utf-8?B?WXhYTHlGU1c5SGtHQ2VKVnVLdUhIekkyVVBNQjlDMVRyS1U1UFFnQlBkZVVX?=
+ =?utf-8?B?ZG1EbzI2MzhwclV1TTZlZVBGdEZocUhFdG1SOFVVdmxwM3lwQXRQN2cwVGFQ?=
+ =?utf-8?B?bStuZVF1Z3lkRXByME5aM1J3b2IzbXV6aEJJWmdsYWs4Lzl2Wkkvam1ZWE5C?=
+ =?utf-8?B?enVPanIvbkE4Vi9jbzhwWDk0N2dUZ1ZWNDBFd0U5SnZnOTJPK3dHOW1aaDc4?=
+ =?utf-8?B?azA3anovNjVYVUNmZzNIQThKeDFLRVJTeGRZUDBnTVBMZ3RSeHEweWVJMWdn?=
+ =?utf-8?B?bzlFVWVyUmpSRDlUTFU5WWtzZEpVSXI2OVYxblY5V2F4dFdSeEF4YUxqY1Fw?=
+ =?utf-8?B?ZU1yRzIybG1HT2hPQWhFNW9oYVUrT2RaZkJSbFNTVVRWS0VVSDF1b09lb00x?=
+ =?utf-8?B?ek5aVTA2bjZ1bTZkdStndmhTRlJ3TW1mN0V1VUZ5NDBQdjVXZW1mRDRxeVpJ?=
+ =?utf-8?B?VE9VTEd1Y3lPNVI4U3RmQmFsWXI1MzlJZGdqMjBTeDVpQjBRRXlqMFlMdVMw?=
+ =?utf-8?B?Uzc0dlQ5Vi9VbnB4WEVNSWpTMGRXQWE0RllBTnNCUHE4Mmx6MTNmYlRlaksy?=
+ =?utf-8?B?bHJxNlByeTlhUU96a2Vma3lUa1NXRSt5bzFvS1oxNkZyUVlEbzBzRjBsK1Qy?=
+ =?utf-8?B?UnBoTkYzYXp6eDBQMThUTEhjSW1ya2d6YmNvNW9neUFtZVcza1hadGRBdmpX?=
+ =?utf-8?B?MHZXWmhqRzd4elNUMU1IS013Uy9mZVpKREpjOXlCMFVUWXEralh3RUNpSzBB?=
+ =?utf-8?B?eHNrTFdaaGQwb1VYUFZ5R0xnSVFJVmk2UGFRVmxCK2NVaFFTT0VMODVla3JB?=
+ =?utf-8?B?a0J1TlUyd3ZWQjJsclVScW9zYXVCVWFYQ3BraEw0dkt0VWc5M25PVzgxa2JJ?=
+ =?utf-8?B?UGN3dHJFaHpsTHQzVVh4MUM1TzlPYXpQRUUraURURGU5NnordVdVQ3NOM2ov?=
+ =?utf-8?B?Wmc9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(921020)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	jeEWLBwolAJT/x6gC+o2YKJVH2o3k3nyN+rx8d1YVPpqm1gwTsxaPnrusHLTsPQSTJYpP6P2tG5JFMl7w9xCDlb5FGwulViSxEOdOWomMCouAVuCUoO4MTTiKcGXZMuP4/1tVQiKYX9jihSYdvO1jJll6T/qIaye5NHfO5kiaqW3G4JvOxU14VxMTCvFxFMXHWD8bs61cwRC3o5ZopYU0yyIW7i4yTHZTNyCYNdcN0IpFkQgotukVsMAhGAiLzqQqjFXv8H/e3UH+IddgorGZrE/ap1G5meGtOUxR8iLtqzNmYMjh2aS/tVGvjm83aYZcW7rNm1LvXhuw7KmJNveRbONqlMz+dPfQFJGl7jsW4ntAtPVvtsZlkWcR43sG4prVKGs9rfzoH7/bdLOv5dA+5rwSvaUKYCej5dQCQSA/0Os2v/8s5hIJEreYlWmcftP
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 12:45:15.6936
+	=?utf-8?B?UTV5Y0JQalg3Y2ZCOUhibld3Tjc4Tk9rWXJ1L2YxQWdvUTJwZy9wRU9MVDJu?=
+ =?utf-8?B?V1JOYk5nOUp5N3pvTkRtNG1VZ1lPVXRPVEpzRGdiUzdNTXpRVkY0YmZITEI4?=
+ =?utf-8?B?RENUdENxVGUxQlBKRFhSVTVoWndTaTNoMERIQXJGejZmalFxWEI0N2lUM1cr?=
+ =?utf-8?B?dTZQeW40cDdoamFaL0RWbjhNQ2ptaUYyNW1Lc1U1SHFYUnVDZ3JLeGwxWm84?=
+ =?utf-8?B?eThxRjlyNnNZV2xNVjN2bzVnakhxR2dPaWVKOExra1d0NFRjQUYwenBTNjVu?=
+ =?utf-8?B?SkJOVzdrbmtJeXZyalZCNnRYdERSdkZCOXFIWUZ6eFE0dStoNHBoaVcwM09G?=
+ =?utf-8?B?a3YwbVpqL096QVBYOWd2SFZYS1ByOG9nUEZlMWxBdnEyT2RxWmkrck9JVVJs?=
+ =?utf-8?B?Y2RlZVRSN3Y2bTBTcHF1RHJBU2Y5b1BTVHRpWHhrSU8weUVRRElFczFNSjJ6?=
+ =?utf-8?B?VkN4UExsQ0JLd2h2SkZ0SnArekFtRXQ5eVpYRVpKZ1ZybkgvLy82aTdyYlVB?=
+ =?utf-8?B?MnMzejBwQXNnUEdhNTN5UlNMRzd2KzY0OFlrc1R5NXhneU45SzVGOGFOMTIz?=
+ =?utf-8?B?K05vZlRMQU9XOWdjSVYvc2prVWR0TFVZSU9KaFRLV0RndlVCOUphUXpxSUYw?=
+ =?utf-8?B?MWhrcjlic2R1eXpJZzAxbUR6MDdqNmxmUUFCR3o5TEVPdktmbmUxZ1ZWSHVO?=
+ =?utf-8?B?L3VJaDdhZWo1d0t6OWdjNnplaFU4dlp4S0VyNXdad2RJQURhUXpJS3h4dlpC?=
+ =?utf-8?B?eE9qZHNPbzNNemN2aWFXTHNGVlFpR0drbzF6RE1rMUdiS1d0U09NTnFPT2pz?=
+ =?utf-8?B?ZXJZeVpSTEhZSm5ybVU4dkhoZlNJZFlYdGFPNWtOQXBPNVlnaHVDUWlKdUh1?=
+ =?utf-8?B?cmVjRGorVlA3NisxV1o4NzVMZ0FUMDlkR0dpT0RIdE5nWHRpN3d3V2tkTUNI?=
+ =?utf-8?B?UWtUMk9CRHJoZ1RDRmJaYURuWnZtb3J0R24waTFJZ0p6aVE0TkVRYlN0WmpK?=
+ =?utf-8?B?RE9SdEd3MmNEdlNEcWlqSm5OS2hBNTYva1QyWVg5UTVVSjhZVGpGU0xmb0Qy?=
+ =?utf-8?B?RU9JQ2FRVkNoTnVjN1EvQkJscy9ISy9STE9Zb2ZOeDg3Z1YrMGMyQXlHdUgy?=
+ =?utf-8?B?TjRrQXMxcy9GaDVVMnh1ZW9DU0pvQ2FXWFpGOGtlY2VvMVdJclBZTjJ5cHB5?=
+ =?utf-8?B?dkZyTjd0R2U5dm03REFXYVB1bUFQdnFhS0FXczN1V2lvdWNBQjNRdU9HU0Nt?=
+ =?utf-8?B?LzQzKzZOaWZWSWtmNE5yUDM3SlorZDh0bFZhMys1MjFGN1hZOVIxWmphZmF2?=
+ =?utf-8?B?YWp5YTBWQTNHVHFNL3FZcGEwenZkNE50M2NNaEt1UnpyMllVR1JERWJ0cWFw?=
+ =?utf-8?B?dWVpVjRuakFkQlB5MTR6RXR3TUhySlI5emcrYXRtUUE4QVRLN3BnNndRQnRK?=
+ =?utf-8?B?UHBnLzRacmVjWnJ4ZFJmVzBGbEpFdndQdlhKamEvVExyemdTbk12cWc0c2VD?=
+ =?utf-8?B?YVY5dmZRQTF2WW1VNE5LWHNOTHFkaXdWYlFhMlI4UVkxQWhXN01XNUVENklv?=
+ =?utf-8?B?YWkvdkNhNTR6UmhsUWkxZUhJYjhaR3NqVjNjcHJpcG1LTWZNR1AyUmJTalZ1?=
+ =?utf-8?B?aFlTSHVZN2NqWHk0WGJxT0diYTY3TXpudDV1SThIOGZPN1dxMnBmLzlCN21K?=
+ =?utf-8?B?QXdzVkdoWlhVWGlILzNncSt1cElRc3J0S1RGSTNxN3NUN1hEbm9INjRJTzg5?=
+ =?utf-8?B?NUVFSXk5dnNLNzYwUVNDMndLOUs1YS9MS3psaER5NTE0QnZ2dHRxTllFcFlt?=
+ =?utf-8?B?VDBGeXJLWTJvcnAvakVWNjlEVFlzMW5kcFRyYStINW1HNlRLVGlTOVhlaEts?=
+ =?utf-8?B?TExtbUJLQ2lBR2x1NjZmWmducDdnamtieHhhRDJtcll5MGhzVDV3SUV3ZFpm?=
+ =?utf-8?B?ZXdmNVdtd2p1c2RiNkhUVDVhdElsVzJrR1VnY3EwY2RzQTNSN1hZaHkwZFV0?=
+ =?utf-8?B?UmY5YU5UdE5FSWlQWlh1ZmY5WFV6ZEhleVI0NkxmcXFGSWpkb0JwMmZZajV6?=
+ =?utf-8?B?Tk16RGl4clNCWmhNS1VHVTdPY0Z6Ni82Nk1Va3JTRis2Q2kyNFJnZVhPVlhr?=
+ =?utf-8?B?TGlDVjZvd1MxWHNJbnVSamtuZno0a1dvaW9abFBmUFNGWnpXSS9ZSjVHQU9M?=
+ =?utf-8?B?dU9VQ0lLc3RpT1hLc3dRY1pkckdjeXFEQTBYN3drRE82aEhybWQxdE1VODVz?=
+ =?utf-8?B?Z1k5SnFJWnF1L0RMZkFsVmFHZjgzOU1KNzVYNzNsY05sMGRCdzl4RmdqelBl?=
+ =?utf-8?Q?5jZkXS77MS6dAtA052?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97152da5-54d0-41e7-d0e7-08de6000ed29
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 13:10:22.9592
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bad8df97-8c03-43fa-f01e-08de5ffd6ae6
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU6PEPF00009528.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB3247
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O10x0UVdJtYrtMQmX6ME6IamRdA27MwTbtW7WTm/dK319OMO3XbpSxgRFU7U+SCzAiN7XE2bThjmGeTWN3N4QQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB3068
 
-On 27/01/2026 12:10, Miguel Ojeda wrote:
-> On Sat, Jan 24, 2026 at 6:08 AM Gary Guo <gary@garyguo.net> wrote:
->>
->> These imports are already in scope by importing `kernel::prelude::*` and
->> does not need to be imported separately.
->>
->> Signed-off-by: Gary Guo <gary@garyguo.net>
-> 
-> Applied (this one only) to `rust-next` -- thanks everyone!
+On Fri Jan 30, 2026 at 12:33 PM GMT, Andreas Hindborg wrote:
+> When copying data from buffers that are mapped to user space, or from
+> buffers that are used for dma, it is impossible to guarantee absence of
+> concurrent memory operations on those buffers. Copying data to/from `Page=
+`
+> from/to these buffers would be undefined behavior if regular memcpy
+> operations are used.
+>
+> The operation can be made well defined, if the buffers that potentially
+> observe racy operations can be said to exist outside of any Rust
+> allocation. For this to be true, the kernel must only interact with the
+> buffers using raw volatile reads and writes.
+>
+> Add methods on `Page` to read and write the contents using volatile
+> operations.
+>
+> Also improve clarity by specifying additional requirements on
+> `read_raw`/`write_raw` methods regarding concurrent operations on involve=
+d
+> buffers.
+>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/page.rs | 53 +++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 53 insertions(+)
+>
+> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> index 432fc0297d4a8..6568a0d3b3baa 100644
+> --- a/rust/kernel/page.rs
+> +++ b/rust/kernel/page.rs
+> @@ -7,6 +7,7 @@
+>      bindings,
+>      error::code::*,
+>      error::Result,
+> +    ffi::c_void,
+>      uaccess::UserSliceReader,
+>  };
+>  use core::{
+> @@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
+>      /// # Safety
+>      ///
+>      /// * Callers must ensure that `dst` is valid for writing `len` byte=
+s.
+> +    /// * Callers must ensure that there are no other concurrent reads o=
+r writes to/from the
+> +    ///   destination memory region.
+>      /// * Callers must ensure that this call does not race with a write =
+to the same page that
+>      ///   overlaps with this read.
+>      pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usiz=
+e) -> Result {
+> @@ -274,6 +277,30 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: =
+usize, len: usize) -> Result
+>          })
+>      }
+> =20
+> +    /// Maps the page and reads from it into the given IO memory region =
+using volatile memory
+> +    /// operations.
+> +    ///
+> +    /// This method will perform bounds checks on the page offset. If `o=
+ffset .. offset+len` goes
+> +    /// outside of the page, then this call returns [`EINVAL`].
+> +    ///
+> +    /// # Safety
+> +    /// Callers must ensure that:
+> +    ///
+> +    /// * The destination memory region is outside of any Rust memory al=
+location.
+> +    /// * The destination memory region is writable.
+> +    /// * This call does not race with a write to the same source page t=
+hat overlaps with this read.
+> +    pub unsafe fn read_raw_toio(&self, dst: *mut u8, offset: usize, len:=
+ usize) -> Result {
+> +        self.with_pointer_into_page(offset, len, move |src| {
+> +            // SAFETY: If `with_pointer_into_page` calls into this closu=
+re, then
+> +            // it has performed a bounds check and guarantees that `src`=
+ is
+> +            // valid for `len` bytes.
+> +            //
+> +            // There caller guarantees that there is no data race at the=
+ source.
+> +            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), src.cas=
+t::<c_void>(), len) };
 
-Having my klint setup running now (many thanks Gary!) on today's 
-rust-next [1] I still get
+I feel that this should be a generic utility that integrates with our IO in=
+fra
+that allows you to copy/from IO to a slice.
 
-error: this item is available via prelude
-   --> samples/rust/rust_driver_auxiliary.rs:12:5
-    |
-12 |     error::Error,
-    |     ^^^^^^^^^^^^
-    |
-    = help: import with `kernel::prelude::*` instead
-    = note: `-D klint::not-using-prelude` implied by `-D warnings`
-    = help: to override `-D warnings` add 
-`#[allow(klint::not_using_prelude)]`
+Best,
+Gary
 
-error: aborting due to 1 previous error
+> +            Ok(())
+> +        })
+> +    }
+> +
+>      /// Maps the page and writes into it from the given buffer.
+>      ///
+>      /// This method will perform bounds checks on the page offset. If `o=
+ffset .. offset+len` goes
+> @@ -282,6 +309,7 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: u=
+size, len: usize) -> Result
+>      /// # Safety
+>      ///
+>      /// * Callers must ensure that `src` is valid for reading `len` byte=
+s.
+> +    /// * Callers must ensure that there are no concurrent writes to the=
+ source memory region.
+>      /// * Callers must ensure that this call does not race with a read o=
+r write to the same page
+>      ///   that overlaps with this write.
+>      pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: u=
+size) -> Result {
+> @@ -295,6 +323,31 @@ pub unsafe fn write_raw(&self, src: *const u8, offse=
+t: usize, len: usize) -> Res
+>          })
+>      }
+> =20
+> +    /// Maps the page and writes into it from the given IO memory region=
+ using volatile memory
+> +    /// operations.
+> +    ///
+> +    /// This method will perform bounds checks on the page offset. If `o=
+ffset .. offset+len` goes
+> +    /// outside of the page, then this call returns [`EINVAL`].
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that:
+> +    ///
+> +    /// * The source memory region is outside of any Rust memory allocat=
+ion.
+> +    /// * The source memory region is readable.
+> +    /// * This call does not race with a read or write to the same desti=
+nation page that overlaps
+> +    ///   with this write.
+> +    pub unsafe fn write_raw_fromio(&self, src: *const u8, offset: usize,=
+ len: usize) -> Result {
+> +        self.with_pointer_into_page(offset, len, move |dst| {
+> +            // SAFETY: If `with_pointer_into_page` calls into this closu=
+re, then it has performed a
+> +            // bounds check and guarantees that `dst` is valid for `len`=
+ bytes.
+> +            //
+> +            // There caller guarantees that there is no data race at the=
+ destination.
+> +            unsafe { bindings::memcpy_fromio(dst.cast::<c_void>(), src.c=
+ast::<c_void>(), len) };
+> +            Ok(())
+> +        })
+> +    }
+> +
+>      /// Maps the page and zeroes the given slice.
+>      ///
+>      /// This method will perform bounds checks on the page offset. If `o=
+ffset .. offset+len` goes
+>
+> ---
+> base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+> change-id: 20260130-page-volatile-io-05ff595507d3
+>
+> Best regards,
 
-Somehow dropping this was not part of this patch. Not sure why ...
-
-Best regards
-
-Dirk
-
-[1] HEAD is 08afcc38a64c ("Merge patch series "Add support for print 
-exactly once"")
