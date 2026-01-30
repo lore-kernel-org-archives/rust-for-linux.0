@@ -1,155 +1,203 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FBF15E8B;
-	Fri, 30 Jan 2026 21:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FA71F2B88;
+	Fri, 30 Jan 2026 22:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769809269; cv=none; b=TYrJw9LhnYEIsk7EWt8u4EM5mZjcLZ4RHsA677/YKrlmW9L89AQU2RQGd5ZWHPRPZlNWNKKe16PAZUBz90bc8s9CnFMZVblrR4rKFWJTzg8RsZ4YkeD1+PygADbIbNTFqnyYG3FJd4yz8+9KUhSlzaEijRezDiKQ0Fcglf+FIvQ=
+	t=1769811525; cv=none; b=TZNCFyXFMVKbVIRU+TLuF0S1gikY80xiUP/nZwDgDckdtUpgfk4RzzO6j1fvEx6dwNVCaLaU14uIiCY5xm9rH8TdD+TuPO9RNIIk9V7ZAB+SVHCzDJD0RyaXy+Ei71nWNlZOpwT0dhPU36XYjWhB2kOpvBE19z0Y1LK8G9lLXME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769809269; c=relaxed/simple;
-	bh=nYAz8cOnAdH7OKPPWgG8rvbMO1Wr91nM6L7SjxMsYRU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TMmohyoep42n/qJWGi32EdN+mWS4yb6wxF6TKba7zy6q+C+PneQYMTX4wibd0fC7uHfloPW1Zqd4oqpGJ0/GnZLjZT2NNXc4CaeSCyV/XWlpb++WTMDZqnUuX156sAmV3opBMp9qUs14tTit5mfdZJVRUjE1I9jI5KAduQllwiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B4KQbvu4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769811525; c=relaxed/simple;
+	bh=4FrORBn5Rfckrq473q3XJvHvX4pf+ihpPQdVMPWhh5A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NQ0mGt1GGwcy+zOKCY+F8An8xBuf5zvy3XU7vYwepPpvpKkYscTzHlMSf+f5JsyiQmX8za5Bb0K2pM5Z7+6c9tHEOhAZ2QBkTEuDmfvNhaVzGJF0IsyFgxA8jdG/K8sqWpbg4p9lIAnrBSS3jgaceh5+NbxJGcjj4ycvq18YQMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EK6V8i4O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B4KQbvu4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4E4C4CEF7;
-	Fri, 30 Jan 2026 21:41:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EK6V8i4O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8659C4CEF7;
+	Fri, 30 Jan 2026 22:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769809268;
-	bh=nYAz8cOnAdH7OKPPWgG8rvbMO1Wr91nM6L7SjxMsYRU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B4KQbvu4vdFgHIUDXyt3iCPRcTH8tz4B9WSg8heLg4k7VW24Dj08kXxC9QPo8tE6C
-	 l2dgfQLe3MbSGRPK4Ec8gBZYWPEW9tVa9t+TCB0K5LwNw5CCixbBWo1GJZuK23ciJ9
-	 m8kRdL/Xbt7FBS+hJtw03laGB1CYuqEVvFqKL22OBjbi0bKahI+0fOTK2KU9LXx45v
-	 wkwjWxpKkIfqQ+7gu7DxxzBKpfKC321WokPMKbrpJNMtJ3uHu/34jYJVNtVjoFmQjs
-	 pqH+yG71ptSrxUEXqfPwD2hdy67s8LyjaNOyPCXwll9bI1YdUzaL/wloQLWxMg/z9k
-	 8Js0VxNUyyL4A==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5A4E9F40077;
-	Fri, 30 Jan 2026 16:41:07 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 30 Jan 2026 16:41:07 -0500
-X-ME-Sender: <xms:cyV9aSxbljfv-mFkc0MCRmSgwoGMguq8AXp2beielNeThjktiOQDqQ>
-    <xme:cyV9aYpus3y--F2FwWzPkZ2cmRI-rNEIqjj6hLYweVjagjvjlOdUtWE7XmMAQH4Wk
-    QEDb3ZebEq-FDAJhZcQUPW_U--p8S0E8tKpgFAlqcz23mojkeDcvA>
-X-ME-Received: <xmr:cyV9aaestI1JpNgyFi311oTnhLkr2Gwf1XpIxW0VV0j76zBDC7HIay6DHHom_T029-VBhaAsuQbgbfQYdrmoj1qdSo28VoBg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujedtudehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
-    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
-    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
-    hnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprgdr
-    hhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrh
-    ihghhuohdrnhgvthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtgho
-    mhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomh
-    dprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghp
-    thhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqhhunhdrfh
-    gvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohht
-    ohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:cyV9aTqxZsAtdPlqFrhoo4AIijYuLjnrdr3cxKzRpVIvlU8i5EoAcg>
-    <xmx:cyV9acmWlnA8XPJf-uaa1V5EZpR5npPWHyJSzjR6-UA7FsnK38TlXQ>
-    <xmx:cyV9acQ8jb5MZ8CaJmiQU4g0vsuv9bhd9-ShrSn8ikWR9jpIjO446g>
-    <xmx:cyV9aaZnTmR4rOJnUOmyUflM3Mkq1bv9lqEKxsAYlMguxFrafOGj9A>
-    <xmx:cyV9aU8VG_6owHVdEOD9kpanSvSxb0pwLlsczlW0b0UNQYd0gkrisVIF>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Jan 2026 16:41:06 -0500 (EST)
-Date: Fri, 30 Jan 2026 13:41:05 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: page: add volatile memory copy methods
-Message-ID: <aX0lcVngRcRwqgd5@tardis.local>
-References: <877bszrz37.fsf@t14s.mail-host-address-is-not-set>
- <a8nHDdzac5l20akcxjjf9w7huObjn4eIHjUI-A17aKEwWl1N-4vvLBiVdqTQbBHwypMIA6gNkzm8YFXmMl44ew==@protonmail.internalid>
- <DG1ZJ1350EMS.1S1360PA496QG@garyguo.net>
- <874io3rwl3.fsf@t14s.mail-host-address-is-not-set>
- <iFJVkpTMbd-NR24OHYTJj8lr4dw7MwCQ9rJWiuRZFgK3JRDhIIAcpf5Z24viL5qHhkrPzpnKfvX7JS6X_VO2vg==@protonmail.internalid>
- <DG20LKAHMXMZ.262Y7NAC1A1Z9@garyguo.net>
- <871pj7ruok.fsf@t14s.mail-host-address-is-not-set>
- <-9VZ2SJWMomnT82Xqo2u9cSlvCYkjqUqNxfwWMTxKmah9afzYQsZfNeCs24bgYBJVw2kTN2K3YSLYGr6naR_YA==@protonmail.internalid>
- <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
- <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1769811525;
+	bh=4FrORBn5Rfckrq473q3XJvHvX4pf+ihpPQdVMPWhh5A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EK6V8i4OMYgyQrEyCOlEUWRFYjUAKFQdZzobZ3BYU1+sNBVjc7lQYuDnZNw/A7eDB
+	 PfulubYkVXKUsmmyszKhsWT/tNwrSMmgPutBRUuq3vQOul3UUPbpPY0rY1pfeV+k+N
+	 G8Y5VG4+i4An9OwHGonQhEGs2j70oEscvKrIrrX8RAU7WF+nYPRSSlRam10MnOw1yh
+	 wnS8f2/QeIRAf4+JYzkShLbBtHdRYkBFnzm8JgK8fsxiPPpz1nW5LJyRSL1h6se/Zl
+	 8myArl75nky7ingafmkMtT+vF/J4zC5a6mVCawEL2a6NAk4BfQ0BcFUesEKZo2YiUk
+	 0XrsG0IGeR07A==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.19
+Date: Fri, 30 Jan 2026 23:17:40 +0100
+Message-ID: <20260130221755.159543-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 30, 2026 at 05:20:11PM +0100, Andreas Hindborg wrote:
-[...]
-> >> In the last discussions we had on this, the conclusion was to use
-> >> `volatile_copy_memory` whenever that is available, or write a volatile
-> >> copy function in assembly.
-> >>
-> >> Using memcpy_{from,to}io is the latter solution. These functions are
-> >> simply volatile memcpy implemented in assembly.
-> >>
-> >> There is nothing special about MMIO. These functions are name as they
-> >> are because they are useful for MMIO.
-> >
-> > No. MMIO are really special. A few architectures require them to be accessed
-> > completely differently compared to normal memory. We also have things like
-> > INDIRECT_IOMEM. memory_{from,to}io are special as they use MMIO accessor such as
-> > readb to perform access on the __iomem pointer. They should not be mixed with
-> > normal memory. They must be treated as if they're from a completely separate
-> > address space.
-> >
-> > Normal memory vs DMA vs MMIO are all distinct, and this is demonstrated by the
-> > different types of barriers needed to order things correctly for each type of
-> > memory region.
-> >
-> > Userspace-mapped memory (that is also mapped in the kernel space, not __user) is
-> > the least special one out of these. They could practically share all atomic infra
-> > available for the kernel, hence the suggestion of using byte-wise atomic memcpy.
-> 
-> I see. I did not consider this.
-> 
-> At any rate, I still don't understand why I need an atomic copy function, or why I
-> need a byte-wise copy function. A volatile copy function should be fine, no?
-> 
+Hi Linus,
 
-but memcpy_{from,to}io() are not just volatile copy functions, they have
-additional side effects for MMIO ;-)
+Please pull these fixes for Rust.
 
-> And what is the exact problem in using memcpy_{from,to}io. Looking at
-> it, I would end up writing something similar if I wrote a copy function
-> myself.
-> 
-> If it is the wrong function to use, can you point at a fitting funciton?
-> 
+They have been in linux-next this week or more.
 
-I *think* for your use cases, a `user_page.read_volatile()` should
-suffice if the only potential concurrent writer is in the userspace
-(outside the Rust AM). The reason/rule I'm using is: a volatile
-operation may race with an access that compiler can know about (i.e.
-from Rust and C code), but it will not race with an external access.
+No conflicts expected.
 
-However, byte-wise atomic memcpy will be more defined without paying any
-extra penalty.
+Thanks!
 
-Regards,
-Boqun
+Cheers,
+Miguel
 
-> 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
+The following changes since commit 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb:
+
+  Linux 6.19-rc4 (2026-01-04 14:41:55 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.19
+
+for you to fetch changes up to 5016cae970d7d59d62aa4f6f11455a9e9630dd1c:
+
+  rust: num: bounded: clean __new documentation and comments (2026-01-26 02:53:16 +0100)
+
+----------------------------------------------------------------
+Rust fixes for v6.19
+
+Toolchain and infrastructure:
+
+  - Trigger rebuilds of the newly added 'proc-macro2' crate (and its
+    dependencies) when the Rust compiler version changes.
+
+  - Fix error in '.rsi' targets (macro expanding single targets) under
+    'O=' pointing to an external (not subdir) folder.
+
+  - Fix off-by-one line number in 'rustdoc' KUnit tests.
+
+  - Add '-fdiagnostics-show-context' to GCC flags skipped by 'bindgen'.
+
+  - Clean objtool warning by adding one more 'noreturn' function.
+
+  - Clean 'libpin_init_internal.{so,dylib}' in 'mrproper'.
+
+'kernel' crate:
+
+  - Fix build error when using expressions in formatting arguments.
+
+  - Mark 'num::Bounded::__new()' as unsafe and clean documentation
+    accordingly.
+
+  - Always inline functions using 'build_assert' with arguments.
+
+  - Fix 'rusttest' build error providing the right 'isize_atomic_repr'
+    type for the host.
+
+'macros' crate:
+
+  - Fix 'rusttest' build error by ignoring example.
+
+rust-analyzer:
+
+  - Remove assertion that was not true for distributions like NixOS.
+
+  - Add missing dependency edges and fix editions for 'quote' and
+    sysroot crates to provide correct IDE support.
+
+DRM Tyr:
+
+  - Fix build error by adding missing dependency on 'CONFIG_COMMON_CLK'.
+
+Plus clean a few typos in docs and comments.
+
+----------------------------------------------------------------
+Alexandre Courbot (3):
+      rust: bits: always inline functions using build_assert with arguments
+      rust: sync: refcount: always inline functions using build_assert with arguments
+      rust: num: bounded: add missing comment for always inlined function
+
+Atharv Dubey (1):
+      rust: rbtree: fix minor typo in comment
+
+Chen Miao (1):
+      kbuild: rust: clean libpin_init_internal in mrproper
+
+Dirk Behme (1):
+      rust: fmt: Fix grammar in Adapter description
+
+FUJITA Tomonori (2):
+      objtool/rust: add one more `noreturn` Rust function
+      rust: macros: ignore example with module parameters
+
+Gary Guo (1):
+      rust: fix off-by-one line number in rustdoc tests
+
+Hang Shu (1):
+      rust: rbtree: fix documentation typo in CursorMut peek_next method
+
+Hsiu Che Yu (1):
+      rust: num: bounded: mark __new as unsafe
+
+Jesung Yang (2):
+      scripts: generate_rust_analyzer: syn: treat `std` as a dependency
+      scripts: generate_rust_analyzer: quote: treat `core` and `std` as dependencies
+
+Miguel Ojeda (4):
+      rust: kbuild: give `--config-path` to `rustfmt` in `.rsi` target
+      rust: proc-macro2: rebuild if the version text changes
+      rust: sync: atomic: Provide stub for `rusttest` 32-bit hosts
+      drm/tyr: depend on `COMMON_CLK` to fix build error
+
+Nakamura Shuta (1):
+      rust: num: fix typos in Bounded documentation
+
+Onur Özkan (1):
+      scripts: generate_rust_analyzer: remove sysroot assertion
+
+SeungJong Ha (1):
+      scripts: generate_rust_analyzer: fix resolution of #[pin_data] macros
+
+Shivam Kalra (1):
+      rust: num: bounded: clean __new documentation and comments
+
+Siddhesh Poyarekar (1):
+      rust: kbuild: Add -fdiagnostics-show-context to bindgen_skip_c_flags
+
+Tamir Duberstein (6):
+      rust: fmt: fix formatting expressions
+      scripts: generate_rust_analyzer: Add compiler_builtins -> core dep
+      scripts: generate_rust_analyzer: Add pin_init -> compiler_builtins dep
+      scripts: generate_rust_analyzer: Add pin_init_internal deps
+      scripts: generate_rust_analyzer: compile quote with correct edition
+      scripts: generate_rust_analyzer: compile sysroot with correct edition
+
+ Makefile                             |  3 ++-
+ drivers/gpu/drm/tyr/Kconfig          |  1 +
+ rust/Makefile                        |  1 +
+ rust/kernel/bits.rs                  |  6 +++--
+ rust/kernel/fmt.rs                   |  2 +-
+ rust/kernel/num/bounded.rs           | 49 +++++++++++++++++++-----------------
+ rust/kernel/rbtree.rs                |  4 +--
+ rust/kernel/sync/atomic/predefine.rs | 11 ++++++++
+ rust/kernel/sync/refcount.rs         |  3 ++-
+ rust/macros/fmt.rs                   |  2 +-
+ rust/macros/lib.rs                   |  2 +-
+ rust/proc-macro2/lib.rs              |  4 +++
+ scripts/Makefile.build               |  2 +-
+ scripts/generate_rust_analyzer.py    | 45 ++++++++++++++++++++++++---------
+ scripts/rustdoc_test_gen.rs          |  2 +-
+ tools/objtool/check.c                |  3 ++-
+ 16 files changed, 93 insertions(+), 47 deletions(-)
