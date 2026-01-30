@@ -1,68 +1,77 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022083.outbound.protection.outlook.com [52.101.101.83])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021117.outbound.protection.outlook.com [52.101.95.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D182338925;
-	Fri, 30 Jan 2026 15:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6826534D394;
+	Fri, 30 Jan 2026 16:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.117
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769788113; cv=fail; b=ZeUo82N96RNgZqCEWj7ZUaZWmQH3OsnjPJ86HMB/HFjuUK8VxlgGO8EjWx3wJnaURaQtDJqwxkUVAYBV0e/TqK4DS2m/vdo32MyzOoyzYUWb55PJMMFlujpG8lJv06NAHvBJZpKbBMwCaApXWCsAU3ETALC+oMzvVEQSh7oBuWw=
+	t=1769789688; cv=fail; b=CVqLdqFJ1PoGvYtLuhRWm5Q5lktJyoFj2C1eq8axq7xkA2ExhEDGVjLxzRZpOeEy9erbbni2X8CtbfJ9yX2RjiIZxJLcbkV7wWXRWtzcSnzr7Ia1U0Pimf1WnF6JHZtbURuQKJGctMr9WrcQa7mREOcahT/0jnppL8clxp6PxY8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769788113; c=relaxed/simple;
-	bh=BAGEbPB2Pn/jSTTSE8N1Y4GzLDdtAKTQOJ7uOaDPvrQ=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=RuO2rr+TSIk88x4F4N0EUCDp1Y/TRMKAEvb7cHJttRC/2FdHNn9NbYnHqvFZQsRB/bQPwJGN5Yi7+nn21EynygibV4oluwXaBHrWt9MQnPUav/gWn3QdCyFgBYzeEB8vBjoWZpRZp1JgHVWbQTwD0hLuL+GVwoqnQAEOXcoeDB0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=hU/Bz5g6; arc=fail smtp.client-ip=52.101.101.83
+	s=arc-20240116; t=1769789688; c=relaxed/simple;
+	bh=DH4Xc+dLye1s5njLS35w2iY6bfef5xXknWG0qWTgu1k=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Cg25OErcjYTpeVvJrwyQ4ZQH7XdWLS2pK7VLti+S9ohx4DTSqROxCjSWv1KvwVFs8jVsQoQauu95XXidksihNSGKF6vvsyQ6K3/R417Vb7O4g+5yN8VQexg2dHUNvRontLPPLfrNkklzjIFEk8gdHM/336Q+6azZQImwIInBQzg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=n6dP3Pup; arc=fail smtp.client-ip=52.101.95.117
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="hU/Bz5g6"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="n6dP3Pup"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AGcjmXkE8T9Y+mnGAuj98yEfQjDti/sFLw9pEAxp13/CCY5RS+GuKVChIJ1HwKhpHp8geqMA9QwCaqnQum/H08lAz6HCB/QQ/2RCDJMvtrzQkRROHDsWeiJ9J2pTAsOsq88fOkC4Ybe8c1Hfv94dlhNi/HDU+LRiT36X9myrqxkLuqy1nXyzXv0NAzpSvc1bbymP3ihLiiBfFmLtU4qbKivrqJFrQ5w26CL1KoOSfYbS6fRERBt8waIZ8fONVOc+sebykCYlPLAZqBThRLEo2dHOqoY8vyvwIgYbaeIdUr24Mcc5XNIOlSTa2nuJdXgOR80CypPW54IDWyhpxDK6UA==
+ b=B30hQikCRt56WKls6EkU/VIVOdoDwlei4ASvGdUb0mzWoeEO/obebrkZxHxhb7ac4Nw4fCEg4Y4+SSbXa0GT6rEtYod7lrHqBD7hm7TcfCDcyhrlye89/ipZy5ZC86nfefUBFo/oe0GRGpOxlNxTmZWmXBcXmuHjS9UDSRejrY728KM0KlY9NbVk+b+/OBNfayDoFHEbfpvUsc0rOGsw8+XX82icWP2iM94MKUKtkbZZYeqxElGO2gf/jtT7CA7xwyVoB8EO2dHXrE3gcFQ1fqQMApT5q+vG+5GBb3NdppVlJXSdepqwEMVICzqNnhpenFR0Py9vckP9smYS0+vUPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kXH+Kz2NwfGJv8R6ERCguaViescrMMJDuxq1CNUPrp4=;
- b=ho3qgeGBAxFABZ4g03ngPwhn+H2MYI6CthBQ4jnis9R0GPglCI1MBv8fmqJrWdM67ZCR4RFZFEEXHWXgwSWmgmYZx+r9uAa/Cjn+W6ISzGHss9l53Mz+U0dqkG7qRVKwK2ruqVAtkf3yTs/ey0Hp0kivviTUXB3YKUY066MOmYPEx81yUMyPd/JssD7c/amZN0Go/iSHoNyzbQAh0oK0QMdB1nhsu07UyvMuWmcYpsn9sp7RbLh+6M2rqqCGyBcyZEL9LBqqAohQ7/taNyqm4CozsHoMWTG8N0h/V/phGAgfJz6lX/p2lWy5yQ0w3iYfEuYFQr4bkOH++xBmUYnK6A==
+ bh=6yI8ZYGum/TcMIExpyV+JHgr89EYisctpvHXU0Cyy34=;
+ b=S39cHyMbqz+f6eaSi9hviF5anEUkG0iiZF37QmAeFzVdrgKpECfGgNYUnCJ9WwIz2IdyW++2qNDqgoFStt1XSgpb2aaKR3jF279tGUV6L1SZYK5vgyVGF1JQ2B1WGltnvan0w/iRsr1WxIzOxqXfPhfz2a1ptPT0jfiwDG0bwLM4MfyhlsNWpj4IPmUKji8NoFRAN6tOgCNN4LLexcsOqYQteqLKS1ikZXlFAZ1SW2ZdNtR+g2qExH3tLaAlvHe0li7CutrHbX94KHM78boyOPJ1MTRGHLPWihkq1xAk34zCVLnAcytM9jX7ugVKOjIq0+/zzxZqKQbjLlBVgdqt2Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kXH+Kz2NwfGJv8R6ERCguaViescrMMJDuxq1CNUPrp4=;
- b=hU/Bz5g6QKc7RP67GkLTJUwsOVwUY0YHaLPFgW0EpqPH1Pi15qelRg7F/63ZSRtKW9Dt0gxc9yLbkdJsYrrDM21KzIoNjRM7oSNzddpHm4CsiHdJTK8IvLUjqfXuUKfqbciJBAUjyVAP/E5hxKH6zHHNWnTnh9td6NN5JjIIgfA=
+ bh=6yI8ZYGum/TcMIExpyV+JHgr89EYisctpvHXU0Cyy34=;
+ b=n6dP3PupYejPcaN7vOCYCyvDrTFZXpx9zBloatn9bQbqo5Yslivez9KXKgjIS429DZCygnx+yQGpzUJ+RzRLtreDn2EMEkMka7kayR3D3B9GB4d8wRUaum4Dkc8g3AuxrgOZQrOscmk8xlMEZe92SS4u5yHKQBx0TvJ4G509cL0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO2P265MB3545.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1b4::12) with
+ by LO0P265MB3418.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:16b::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.11; Fri, 30 Jan
- 2026 15:48:27 +0000
+ 2026 16:14:40 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
- 15:48:27 +0000
+ 16:14:40 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 Jan 2026 15:48:26 +0000
-Message-Id: <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, "Alice Ryhl" <aliceryhl@google.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+Date: Fri, 30 Jan 2026 16:14:39 +0000
+Message-Id: <DG222YZ4WT33.21A5GG66K9X5O@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
  "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich"
- <dakr@kernel.org>
-Cc: <linux-mm@kvack.org>, <rust-for-linux@vger.kernel.org>,
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: page: add volatile memory copy methods
+Subject: Re: [PATCH v4 5/7] rust: io: add `register!` macro
 From: "Gary Guo" <gary@garyguo.net>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
 X-Mailer: aerc 0.21.0
-References: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
- <eGcGSx_-fgeLHkPmdfbWgLGhzEcmXunLzIAvS1-X3GqwyFOny9Frz1xN29-fj99sHxxa5_1WrcPxuSSZKxCHhA==@protonmail.internalid> <DG1Y5V810II1.1HE2T0HDBLNXI@garyguo.net> <877bszrz37.fsf@t14s.mail-host-address-is-not-set> <a8nHDdzac5l20akcxjjf9w7huObjn4eIHjUI-A17aKEwWl1N-4vvLBiVdqTQbBHwypMIA6gNkzm8YFXmMl44ew==@protonmail.internalid> <DG1ZJ1350EMS.1S1360PA496QG@garyguo.net> <874io3rwl3.fsf@t14s.mail-host-address-is-not-set> <iFJVkpTMbd-NR24OHYTJj8lr4dw7MwCQ9rJWiuRZFgK3JRDhIIAcpf5Z24viL5qHhkrPzpnKfvX7JS6X_VO2vg==@protonmail.internalid> <DG20LKAHMXMZ.262Y7NAC1A1Z9@garyguo.net> <871pj7ruok.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <871pj7ruok.fsf@t14s.mail-host-address-is-not-set>
-X-ClientProxiedBy: LO2P123CA0039.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600::27)
- To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+References: <20260128-register-v4-0-aee3a33d9649@nvidia.com>
+ <20260128-register-v4-5-aee3a33d9649@nvidia.com>
+ <DG0CVJN57L5F.2I6J4RXMJOGQ@garyguo.net>
+ <DG0WY7S2QPQM.37S6PROC464QI@nvidia.com>
+ <DG14TFQG2C13.2BFREQR1DV4I@garyguo.net>
+ <DG1Q6I5CTD87.RYS7QBJCHZ7T@nvidia.com>
+In-Reply-To: <DG1Q6I5CTD87.RYS7QBJCHZ7T@nvidia.com>
+X-ClientProxiedBy: LO4P265CA0054.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ac::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,283 +79,364 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB3545:EE_
-X-MS-Office365-Filtering-Correlation-Id: c58c49f7-8ad6-4cc8-0bca-08de60170223
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB3418:EE_
+X-MS-Office365-Filtering-Correlation-Id: bdba5964-ebdb-4d84-961b-08de601aac09
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|921020|7053199007;
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007|7142099003;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SmV4VG5GZ0FFY00rbkpvK0hPbC8xNFJCd01STHFGditXakY2VjRLcjJBc1FW?=
- =?utf-8?B?UVBjR2w2TEx0T3prRXlKNGZDWFZqM011aWdGbHpvc2g0OWd6WGF1bE9VSUFX?=
- =?utf-8?B?NjE2cDQ3ZEoxK090R1A4RlJ1SUgrYitEOUMybFQrSWdaMWtHeG5mb2xlNkV0?=
- =?utf-8?B?VG9MRWdiTmJwUkRFd3l0a1lDT2NBWHVsajBzbUFRbTZrS1NHbStrVUw4bFRv?=
- =?utf-8?B?ODBucFNZU2ZvcVAyT091c1JqcjJYKzAyaTdnMlVoQnlUc3htelNucFpoT3pQ?=
- =?utf-8?B?YW1NMVErcE9yc1lmQlRvRG05enQzejF0VG9EWEYvVDFlUlR1SUFKZWVRSU84?=
- =?utf-8?B?bFFXdjhDUEVEWm5mYkk3NXVNeHNRM2lEMWdQV0gyRmQyR08zUE5wWnBJODNo?=
- =?utf-8?B?UEFIeVBqVDZuQWpveGE5c3lOQ3lWYXNJS29hWHlOY2F2Smc0WmovaGVRU01X?=
- =?utf-8?B?bzhlUGw5TXJNL3ovb3NuUmJUcTBVME10RmJrbTN5MWZwRWlqd1FZUUdiVDRv?=
- =?utf-8?B?aHcwMXZWczViWjZjaGg4bnh3bGxkTDlxdHphMkVEaTZKVGV1cGdZMTBzMTVX?=
- =?utf-8?B?ZzBTVDIwaGJnMXQwWHJNVmZneHF0Q0RvOWdLalpoNE96bStrL2pKUUJYckps?=
- =?utf-8?B?ZnRjMDlhZVhYL1RwNjhEbldjVkxVQ0l0YlRFSmNPdno1clVYeXVhSy9CWm5E?=
- =?utf-8?B?MTBVNFAxVTFlNndPamRWMElJZExJNW5PbnUyeWZsQlRoeXBWR3Y3cExvcmhm?=
- =?utf-8?B?SXhIclk1QmlGU21yTEtTWEdUTGtKWmtXOG4xSzB2S1oySWlxMG1qSTZjSzBq?=
- =?utf-8?B?dEVZMXZLczE1QXc3c1pETVEyY3ZGYWRrL1hEM1Q3Mk9VK2FPeEJmeCtmS2Fs?=
- =?utf-8?B?S09RU29oTE4ySXJNWm9CL0xvREx4aTA1YVpBUlRKaDNtbFpJT2MzSDJjODh3?=
- =?utf-8?B?K2Eya01nVldDZnZvVGZsemliMENLK3QwSUhZVG5OREViT2FYRnhHUmlVSXlk?=
- =?utf-8?B?aksrZ0E4ZllkUUdmR09oRHUwVHVwVk1pM2x1VU1sUkVQMFZBVzZHdWNxODRO?=
- =?utf-8?B?V1psT3N6cDdndjdCWGNQd3JXTkJ3aGdkenk5aWlTdlFTbk0vV0x6b2JnTy85?=
- =?utf-8?B?T3ZmQWdDN01KTmJveThMTU5rTG1yaWp3bElhM1JZS1FxTUhWYmNGQjA4aWI5?=
- =?utf-8?B?amJTK1Fpd3M1ZjZsMUdrZkhCeThEUGFnWE5QQTd5aXUveHhhTWtpTVdML2RM?=
- =?utf-8?B?bXpNUERwSFpSNkUzclNMQVdKTTRPQkxrQWVIMHMydkdJcUJZakZsM05uM3p1?=
- =?utf-8?B?VGtlWnZScU8yb0lnM0VTTGFlb2kvMzNqbnBYU3V1SW5QNW9aSko1dnJQbk5R?=
- =?utf-8?B?RHI3SWxNQlp3V09PSjRtRytYdkZwZGd2Ukp0TXpsVDFmMzNFM3BPeTY3Vmgy?=
- =?utf-8?B?a2haeFVFYncvL1hEY1F6Y0p6di9XNVhlOTE2dDVndHBpa0N0Q2gwQ0NkVUV5?=
- =?utf-8?B?S2dKVWIxREJnNDdSbm5OeFZXRElHeGFBdTMxeWw4M056T01vanJ3VzF3VWxm?=
- =?utf-8?B?NFFhU2dnaFBhT3A3Qkx0bWZtd0h3SXBkWWJPSkdsejJXZXVCZ3BoSmlBVEdy?=
- =?utf-8?B?bW82RG4xMlZrSUxlb1pmUkw1M09VYUNMNDBJMm9XYjdGcGsxTVRPanF3QXEv?=
- =?utf-8?B?UTZOeTBPS3g3dHhBMGVlcDNvaWI4bHd0YWN4YTBITFg2bC9nelg0akN0d2R1?=
- =?utf-8?B?Z0Z5MFZBOUhYY1NMZlZKem10VlErYm9zR2hwOW5xenhsZ01RV0J6T3A2WXV5?=
- =?utf-8?B?RUE4Z1dQYnRhNjU0ejFoZmlWOHNsclpibmhMNGNHTFNQeFowOGkvWC9GK1lW?=
- =?utf-8?B?YThLL05pb3ZHR0syZklydHJEc3NxZzNHeXZDb2Joc0w1dkpITngzQWVOQjNx?=
- =?utf-8?B?b1h5ZC9COHhneVBvTDRIM3NyQm8wQWxVWisxQkJ6Nmx6Ni83Z1l1bkxEUkwx?=
- =?utf-8?B?SFpMdnY4dXJxcmFOcnIxdHR4T1U2NTQya1JPZllyL3RSRnp6MS9YRmhKaFlE?=
- =?utf-8?B?cEhqbUptVlFzZ2V6eDhJWUJoUW1KTkswT1Y2OU92WlFuNWJKaXFhSW1LcnV1?=
- =?utf-8?B?VXd4TnNQOE9aOVV3dkxRdThuSzF4Q3FZTUhQUitpYTlLeTBzRllBUm5VNjBX?=
- =?utf-8?B?TVE9PQ==?=
+	=?utf-8?B?YXhraHpIN1VPWHJJc081Znd4QzZaZHl4UzJYVVBWcm1mTmdGV2FBRDhtMDJR?=
+ =?utf-8?B?djZ5T3ptZUUyNVlydGJ0NmNVMDRsOG9GeVJuTDI1WncyY1pLYVZKaHNiSU83?=
+ =?utf-8?B?V0hSa05oRTBTOXdMdjVRemx2THJBS2lOaW5aUDFpZERPSXQ2N0VCUFZtK1Vy?=
+ =?utf-8?B?aDVOUjhuK2hrdzZEYS9KMElBZFlGeURkb2lPNkhQTEpCMERPM2pCcUNlVGd5?=
+ =?utf-8?B?R1lnYmkxNWZBL2dWUXozWmVPM1YxbFV5aUN3LzUzTitKcUs4NXNDS1YxeVNa?=
+ =?utf-8?B?ZHloNElzaUxoRTU1QzYxZVlpVEwvT0labWE2TFNBSlh0U3lNSTFIRlQra1N1?=
+ =?utf-8?B?RUd5ODd4SmhXdURIQk1Sc2Y1ZG1ld201dEh3b09SVHN3SkhzcGxhdCtyczVX?=
+ =?utf-8?B?V1VnWlc5ZGFiYXNxQzNGNzdMc2xiTVJkeDhZdmxjMnM4RjgxOTFxS0EydSs4?=
+ =?utf-8?B?VzhRZHI4amtkZGJ3WTA2T0pLa0RNWTFlUnJFcXJjQUNyV0ExbFZiaUdtZytl?=
+ =?utf-8?B?NWRXcjdwRVpOOXZUclh0VnMyQmhsNkxiTTJwY0dwTDg4TE4vcElMLzlHRFor?=
+ =?utf-8?B?RzQ3WGdkcVpkZ0ZoL0kxZG5OTkRBYTRIRXp6Uk1PZkwwakc3YWlmeEpNTnc2?=
+ =?utf-8?B?M1BpYUM2ajQwd2dDRjdtaHlCYUdyRkVSY0xpVll4cHc2NXZWanlrc3pvMEZr?=
+ =?utf-8?B?M2tGT1ZLdHdJRlkzMVRhRmd4aDBLRFNlcHJUeFI1WGFadGo2TWt0QStDa3pp?=
+ =?utf-8?B?NDBOM1FxVFJOb3A5SEFyRVRVMjMxekhqTkYxeG1HRHVIeUZmeDVxcURaSGFW?=
+ =?utf-8?B?VGlkV3cyTkNVWGJyNHIzd052OVp6aHRLNTcvdzRNd1g5VnVOamFYMURwRDEz?=
+ =?utf-8?B?ZXY4TDladzgwb3NxYkx4RGxCY2dURFk4RVRkUS9INmNLMzZJSFh2ZUl2b1Uv?=
+ =?utf-8?B?bkt3U3VrQkpjN0pMNDZZT2UyRFUzNUpSL2I1Z3ZqdHI3Z0IzTW5vZ0lMa1ZC?=
+ =?utf-8?B?dzJLK1BnSWNLSGZQU0Z4a2hQNFlXeFVxYmFLS0gyb1ZDNEE0M0crdjgrS0dZ?=
+ =?utf-8?B?T1d2SWxoYThWTHc3SkF5eTVSLzBDUElQQTlXcDNRa2RIZmtCYUVlWStkZldP?=
+ =?utf-8?B?QzJTdjZFYy9FMGdZWTVYOG5idGVsQjlKS2lCdDYxNVQ4ODVRZzdqWkJ5K0kw?=
+ =?utf-8?B?cmlzeUxhR3RIUWpZaUd5L2ZkQ3hOYUk2T3FPRmRzSkh4bjBVWU94bThQSnlo?=
+ =?utf-8?B?VU5tdXRCZ21VRXBsVG5PVWExZ2NOQURrRXpRdWkzVTNuRUdEUlYrYzhqcWky?=
+ =?utf-8?B?NDFreEtYejZXdzBLak5SUGh2UUxVYzRJQzJJRXdaYTAya0J2d2Z4Ry82MEgz?=
+ =?utf-8?B?Nkk5RnpjSHpvTlhTejJZcmw3Z0xzczFRSUFRUVo2MVF6UmVoVDFNcWJ0eXNs?=
+ =?utf-8?B?NkJCRUdNdVJzTU1jcE1PTzBHTVg5ZC8wVjdLdWFQK3A2SXJSTVZIM0FabnBK?=
+ =?utf-8?B?cWRsNm5HaVJqU09ob29INmIzYnRHUjVXQ243QW1kVFhVNzREd051OXRyUXNE?=
+ =?utf-8?B?d29uRTlzZE5rZngzcTJld3dTTTJrM09hV0NiR2YwWkxhaldmb3g5UTRRdUw2?=
+ =?utf-8?B?a21mZHRJRW83ZTU1bnJZS2hMMW9INHlTZ0UrTHphUjFuemMzYjZOeWh6OFpm?=
+ =?utf-8?B?R3VhalRNYzZhVXA1dDVrREVYRDR4MFZ5VHkrTUd1VmJpTENyQ1hYR01vODc3?=
+ =?utf-8?B?VWZwVmgvQVg5eXM1RXF1WUpaeUsyY2d5VXpQam1VRTloN3Y4ditnNWxrOXFp?=
+ =?utf-8?B?MTFmczZtMWt6WVdrL1VLbkVyTDZKQkFweFVQalh2OVdDM2phTFc5Ymw0cy9q?=
+ =?utf-8?B?WHdHcEIwUGZVSnNuNEFHejUzWExVQmhCVXFFRDhkbXdCaTFaVEVvTHVKQ2ZU?=
+ =?utf-8?B?RmRvODFJZ3FoYWh2dHRJTjg0Mnk5cUcxN1o1OXpuVWNxbGZ6Q2U4S05TalVr?=
+ =?utf-8?B?Z2ljSzJTM1dFUS94UGNpOTYvUkI3STJRVnd6NTk1R1BIZG5qelFUZ1ZUUDNV?=
+ =?utf-8?B?Q0ZFNUdVZ1psdGNjREphbm4yWWlWQXZmUk0wZFdMa1RjUDd1ZDczUXJFcnEx?=
+ =?utf-8?Q?BW28=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(921020)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007)(7142099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dUx3SmdhMjV2dVllT3lqa0lSTFhPYVRicTgwNU5mZnFPMGhIZ211OTlkOWtU?=
- =?utf-8?B?WTNsbElkUHpoZ3FzVFpCSldaMTZJR2tGN2JWMHZnakpsRFlSOUdHd3BJeVp1?=
- =?utf-8?B?U0t5Q2pxWTlYVGpEYWVqY3lob3psVklpb1cxYXVSRXljS0NmMGhpWUV6QlhI?=
- =?utf-8?B?enZ2dTRZa2NZUmVvdVRZbWJuYmY5bnFPSTNka1RNM013YkJUQ1ZPdlQ2N2tl?=
- =?utf-8?B?Ty9KVzBsNEx0VnRIcHdRaFlnMTJlWi90RDlJT0lBUkx5T3A5T0h1bGFuV3dw?=
- =?utf-8?B?MFZiRXJ1N2R2WXo3N3cxQmJRODhRbVhXbjhrYm9tYi9zZWlIU1MzWERXZXVH?=
- =?utf-8?B?S2F6ckVxNldTajhMQ0g3Y1hGajdwT24rM1dJYUFKVFVuS3c5UnVOakVwRC8y?=
- =?utf-8?B?YkEzV1ZZS1AxUHF5My9HWHA5ZXJOemhaRHVyVXRLUmRVWmVMM09aVk1aeVFl?=
- =?utf-8?B?Z2pLQTFuanF6QzFsT3RnbGVHY2JMc29rYjBPeDArd0NJY2pIbVBhSVdMbTJy?=
- =?utf-8?B?ci9ibjBmb3VNU3JvZ3g2eFNnNVAzZ1NOc0pZR2w4Y1lFWnR3eVZPQ0p6czV5?=
- =?utf-8?B?VWFTOExjQ0JOMDFCOHVqU3huK0FHZk5JUXdER3J3MitZTFJUSE9OU3kzNXpv?=
- =?utf-8?B?ZWFya0hZVTNJNTAvRHpxbEYvTVB6Q1hXT2xYVG83MjZVMXBvS05XVlh6OFpF?=
- =?utf-8?B?Z29UZHE4OVRiMDhUd3Y0MUY2WkVNRjFDdnhtZGZWekpyaytYNTNkM1B5c3NN?=
- =?utf-8?B?L2hmSDU2ZjM4N0FoeEtidFQ0T3RjSXRtSFZnT29JT1NFV2wwSW0zNi9KRU9l?=
- =?utf-8?B?OGJLZFJXSGN4OTk0WVVJLzFEZGZweHVHbGMydklZT3FVMDFFWVprUU1uMU5J?=
- =?utf-8?B?UTRHNjhrYjJxVWx2N0hPN3RhMER5YTBGQUtFSUViOWhXdXpqaXFTTGdKMlZn?=
- =?utf-8?B?RzhBc1E5YzRteXRPekVLaExNeEViMk8wVzlKd3VZSnJJeTlpN3ByS2FEaTBM?=
- =?utf-8?B?cjdKT2doQytSRURIVk5PRllKeXFlMnRIQ2hVY0tQQWRGTG91dXVuRklLZjNa?=
- =?utf-8?B?ZGRHNWhqd1RHbEd5SHo0RnhvWTNwL3MrY3p3UEtyaUc3RGN6ZUNCRklUVDlw?=
- =?utf-8?B?ZDZ3aFdpY2w0YjhlMk9id3hOYlljV2hyN3ZLZUhyZkVpOEpONE0vUUttZDEy?=
- =?utf-8?B?L1lzQnVyeE5meEdlaEJ1cFZYN245SVBycjV2dVpqeDIyY2FCaThINnBCOVZy?=
- =?utf-8?B?MVhvbURQYlNaRm9Pd1RkajM4TFVKWjl3ekZtVlVFUFdNQ2RpYk1HMEtKM1dv?=
- =?utf-8?B?NXk1cEhhQVQrUXg1cXlySTRKMFJrazlYVk0rSDNTT3J5MGl6bldjV3NuSVFX?=
- =?utf-8?B?aGpHaEpZK3RpTDh0dFNrTjNkUk5CSVEwa3hKcG1rQkJYeW10a3k0eG8rZjVk?=
- =?utf-8?B?T2kzZEpKS0FwRk44RXZUMnNRUTdsRVFWL2dyQUtxNkdkOXRuQ0IwZDRRTGt0?=
- =?utf-8?B?Y3lCZDJicXRiWko0anI1dnQxelEwcHdQR2E3alViMTlIbFNxYlY5WUo4bGZi?=
- =?utf-8?B?Ky9FYS8zM09HdEZxQk5YSHBxeWwrTWxjQkxiSHNyZGpSY2JQT29VZGV6L3VD?=
- =?utf-8?B?QkYxYTdrcjUxSlozL2wvZ3hxNTl5MDJ1TW51elZyaTg1aTU2cXNpTGYyN1BE?=
- =?utf-8?B?SW5WN2JkWFdmMFY4SC9ERFdGdXhzM3YrWWVDQ1RHMnQwTC9ZYW9LbTFEZUQ2?=
- =?utf-8?B?MTRqWmVSOTBNcnN2K3JnM1c4MURSNldqV0E3YTdSSDlvVW5kQzdwNTNhWmNS?=
- =?utf-8?B?WG9acHpSWnh5OTBoL3h0Tk1SMjF0aXplK2hCWnFJWDI0WFJxWDRYclFCa21K?=
- =?utf-8?B?MVRYV05LeVBRcmZSNDVUVjErUEd0dTlBN1VSSTY5TUVGM3NpQlpWSEkzejBa?=
- =?utf-8?B?VnI5WWRZMHYyTU5iNWJ4V3VvKzdLTE8vcTlIT1pSQVJad3d6TWJzaFVtcFlL?=
- =?utf-8?B?S1QvWDhRK202T1Qxd1Z2eUJycHpuU1JHS0FUVktvSGgzaDBaK0FsNkFFQmFG?=
- =?utf-8?B?dGlKNGdXMC84dGF0TDlxcWlITHVuNGEvWFgzU1Nwa0F4YWlNc01jekphUVY3?=
- =?utf-8?B?dWN6VEk5cGdrUmJFL1hWV29Rektva2dBc2d1ZmhxZndwY1dYMnYyWG0zb3R1?=
- =?utf-8?B?cFBQczlEVVpjQmFPeGZHeDdQS2NQN2FvbzQrRWhCZGYvSWNsSHdpM2Jha2tV?=
- =?utf-8?B?QmVGNHBDUVBkVkZnQnJCNm95SkJvOEhuaHhiUXphNURBRmdPczhkSjB0aXRp?=
- =?utf-8?Q?y0XUHCj/uvRE1c04Hs?=
+	=?utf-8?B?RmFOVjA5UElpakorQWljTkVWSWJhY1hYQ1V1eEpRMHc0ZEpWek9NRDRwWmdY?=
+ =?utf-8?B?Q1Z2YnlXWFp0QTZVbkFySmZraGdNSStkNUMrUzlsM1FzRm80Z0tQNnNDY1V0?=
+ =?utf-8?B?dWlES2xaRXRmYVRMdUV5bktMcURuUXd3SGlESmR4L1hqOU1PZXVXQ2x5bkYz?=
+ =?utf-8?B?TVJrSjZPRjBJYnpqbXhxM2FLV2hMYlZkVm5FWUx0M2Vsem04N0hYTVl2M2ty?=
+ =?utf-8?B?alJxV2VnWVQ0V2RtVFE3ZEdtYlVzTzBhQXlnU0NxZG53VUZ4ajBaakhRVXpH?=
+ =?utf-8?B?d3M2SzQ4Szd4Skx5bFlGV3FkU3Rnd3FnWGlxOUxkQVVxbEZnOVZleko3K095?=
+ =?utf-8?B?TEhPaHdkTHpwZFEzUjl4dnpWVkh5RmxmdjBzSHdUam5kOXhPYUJ1SFFoMitt?=
+ =?utf-8?B?RzZwd0F6b1lPSmtGUU1tWm1oaUlxYitlYlhlZVRJRk12clYvN1NZSDhaamw3?=
+ =?utf-8?B?RkxVWEpwT3Azbmd1dmp3VURwTWdSeGZBaStNNTcyaTVlUU4rbWJ4alRzaTNz?=
+ =?utf-8?B?dURpQUNqWFNLNDhEcE9aYU4wR2FySERuenFsMjYrWjB6cVNiWWZpcDJSSzBp?=
+ =?utf-8?B?UmFlSG5YdU1mNWlXWUlXN250VEp1OFFVVHBKZWExRjY5dzVkVCs0OEROUENX?=
+ =?utf-8?B?OHF2bFZvK2UwZnhFRjQ0Wm40SDlHbjh0MDQzSHNIMWRSa2wwYzRLQityNXBq?=
+ =?utf-8?B?LzNwelRGbXVYWmIwTjJ6RnZoNGo2S0tSRmQ1RlgwZjdpbFpoYjhieUEyL1hX?=
+ =?utf-8?B?Q0pPcmhjMUpsTXFaYWFzdnJWaWJCcDlLZ3BTSDNqNGNyK0ErR3lWc1BPQWVH?=
+ =?utf-8?B?M3p0czZ3UmRNM2dwajhKYmNDR2JJUnYyZTBSTjBkeS9MYVQyQ0hYMUF2NGFv?=
+ =?utf-8?B?Q1NPWXpJL2U4OXJKVytDeHl6Sy9FZGVIbllrS3JhbktrUHl0dmx0KzdmT3Z0?=
+ =?utf-8?B?bFhGNWRIQ1JhcGJNMDNYM2RuWVI0b3FKT3JFaEVkTjBBVkZUNUVMVDd6ZWg3?=
+ =?utf-8?B?MVVZYUJMVUtUT2owYzg3MDAxMWFSMDhPeFNDbE9zRG5JczZhRnBJeDk1RnhT?=
+ =?utf-8?B?S0J1QUpPbEJzbzFZY3gvUGhQWFZ0dUNyaUxPdUxtKzF5a3ovTlIyaTRSOWtn?=
+ =?utf-8?B?b3IzeW9NUWl5VWlvRHRZV3dzUHR1UlN2dm12Y1NhazhpUHQ4TFJpRW1UblFR?=
+ =?utf-8?B?Y2swVElOODNyWTJlaVdIRGtwbzlpYkt0ZWV2RE9IRHBqRTQ5dkVFdlFoQVAy?=
+ =?utf-8?B?SGhhcWtKQkJlK1JaSmhEL2NnaTFRNkRoYWRMWmhZVWxCclRGdTVrbXFydXBY?=
+ =?utf-8?B?ZHVmNmFEaDJDczJwc1RjN3Zxd3UzK0lHZ1dlYlpJUU5rNzk5TjhXK2ZqYVpl?=
+ =?utf-8?B?Ky9ySEJLVWxZRHgzRUVyRDR6S0xLTFk2WmttMUY0TlMwdUhQQ3ZIcGM3Nmhk?=
+ =?utf-8?B?UW8xRlFyekhTcGJ6WlJBeU9kY2s2RXowODgvaWFaRW5KKzhZaS91c29YTkZs?=
+ =?utf-8?B?RXg3UkdDSFRlRE4reUxIR3ZkOFhoZFR0dHROa2hIeVBRcmdFdFJZV3lGZHVK?=
+ =?utf-8?B?Y3pvRW01c3dSaGQ3allmWnhIVnVzclA2S01lUjFycklqN0IwcVJ6NC92VzlT?=
+ =?utf-8?B?SUdPOXhDSGtoMGJuRTNISW85TWdoTGZiSDQ2cncyd1FRWmxMNWRZM1lRVW9L?=
+ =?utf-8?B?OXE1NHBPR0dHa3RSNitJbUJJYTdTSWtVNjQyZjNJNEFCeEtFVzJJTU5hbWV2?=
+ =?utf-8?B?dFlrVnc1SVdNN0xyV2lqdjRMOU5tSUg4ZHlFOTdkQjIrUVBnbTN2cFFoUjRm?=
+ =?utf-8?B?Qk9lcVk0WlBVd1Vld1BSbDFDS1hMUitmK1dPTVVBU0t2ejJCRlEzYmpRczN0?=
+ =?utf-8?B?SExuWUpod1JjOUhpeE9MN3RQSWd6bHA3WDdEZVROTGoweE91dHh3azFyeXMv?=
+ =?utf-8?B?UkljbUNtUW1QT0VJS2pacXJlaU93MTU0OFE0RzRRUlIrT1BNVGlDbTVRMjRx?=
+ =?utf-8?B?bTVoczlVL1RNNm5DUlFTSFpUN2lpSExwMS90YjZjNWFjNFk2NFErc2ZSTHlM?=
+ =?utf-8?B?a1BiUGE2anpCZVZOa3pTVStuT1hHbnFqQzdUNXAzL0tpNi80ZWF6eE95WE9R?=
+ =?utf-8?B?L0VPL1dkMS9XSk1rMFVKU1lIRGxVNDBUU2YydURyWVE3RVArR3AzTFNucmlX?=
+ =?utf-8?B?bWRLMjVZQjZJOTYrTUh5OFFOWFVSd3VhaG92emxlbi85MWdHSmk4UkxMZmxv?=
+ =?utf-8?B?NTFRK0xyVzZFczBtbjJaSTV1MXV5bUUzYmEwTTZGa1ZhYm84aExHc2JFUTBB?=
+ =?utf-8?Q?0D40Mvgje9UqViK57k?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: c58c49f7-8ad6-4cc8-0bca-08de60170223
+X-MS-Exchange-CrossTenant-Network-Message-Id: bdba5964-ebdb-4d84-961b-08de601aac09
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 15:48:27.0477
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 16:14:40.6051
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ji7xhCs78WJwSrTio+pRcCXsjAR65zg0CdiZjSf3ikBL3F372PEKK+i5SbNvmlZ++DjvpjncN51aZ/9KZPjQdg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3545
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8TAwSVbnZXpew5e2esq+Pd1RMAQnlb/lj8ngNdTLr+Gp4Mp3lwcddUW3BXD6u/pmNWNfW9NK8I+DlD9eX3P8Yw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB3418
 
-On Fri Jan 30, 2026 at 3:23 PM GMT, Andreas Hindborg wrote:
-> "Gary Guo" <gary@garyguo.net> writes:
->
->> On Fri Jan 30, 2026 at 2:42 PM GMT, Andreas Hindborg wrote:
->>> "Gary Guo" <gary@garyguo.net> writes:
->>>
->>>> On Fri Jan 30, 2026 at 1:48 PM GMT, Andreas Hindborg wrote:
->>>>> "Gary Guo" <gary@garyguo.net> writes:
+On Fri Jan 30, 2026 at 6:55 AM GMT, Alexandre Courbot wrote:
+> On Thu Jan 29, 2026 at 11:10 PM JST, Gary Guo wrote:
+>> On Thu Jan 29, 2026 at 8:00 AM GMT, Alexandre Courbot wrote:
+>>> On Thu Jan 29, 2026 at 1:16 AM JST, Gary Guo wrote:
+>>>> On Wed Jan 28, 2026 at 2:37 AM GMT, Alexandre Courbot wrote:
+>>>>> Add a macro for defining hardware register types with I/O accessors.
 >>>>>
->>>>>> On Fri Jan 30, 2026 at 12:33 PM GMT, Andreas Hindborg wrote:
->>>>>>> When copying data from buffers that are mapped to user space, or fr=
-om
->>>>>>> buffers that are used for dma, it is impossible to guarantee absenc=
-e of
->>>>>>> concurrent memory operations on those buffers. Copying data to/from=
- `Page`
->>>>>>> from/to these buffers would be undefined behavior if regular memcpy
->>>>>>> operations are used.
->>>>>>>
->>>>>>> The operation can be made well defined, if the buffers that potenti=
-ally
->>>>>>> observe racy operations can be said to exist outside of any Rust
->>>>>>> allocation. For this to be true, the kernel must only interact with=
- the
->>>>>>> buffers using raw volatile reads and writes.
->>>>>>>
->>>>>>> Add methods on `Page` to read and write the contents using volatile
->>>>>>> operations.
->>>>>>>
->>>>>>> Also improve clarity by specifying additional requirements on
->>>>>>> `read_raw`/`write_raw` methods regarding concurrent operations on i=
-nvolved
->>>>>>> buffers.
->>>>>>>
->>>>>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>>>>>> ---
->>>>>>>  rust/kernel/page.rs | 53 +++++++++++++++++++++++++++++++++++++++++=
-++++++++++++
->>>>>>>  1 file changed, 53 insertions(+)
->>>>>>>
->>>>>>> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
->>>>>>> index 432fc0297d4a8..6568a0d3b3baa 100644
->>>>>>> --- a/rust/kernel/page.rs
->>>>>>> +++ b/rust/kernel/page.rs
->>>>>>> @@ -7,6 +7,7 @@
->>>>>>>      bindings,
->>>>>>>      error::code::*,
->>>>>>>      error::Result,
->>>>>>> +    ffi::c_void,
->>>>>>>      uaccess::UserSliceReader,
->>>>>>>  };
->>>>>>>  use core::{
->>>>>>> @@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
->>>>>>>      /// # Safety
->>>>>>>      ///
->>>>>>>      /// * Callers must ensure that `dst` is valid for writing `len=
-` bytes.
->>>>>>> +    /// * Callers must ensure that there are no other concurrent r=
-eads or writes to/from the
->>>>>>> +    ///   destination memory region.
->>>>>>>      /// * Callers must ensure that this call does not race with a =
-write to the same page that
->>>>>>>      ///   overlaps with this read.
->>>>>>>      pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len=
-: usize) -> Result {
->>>>>>> @@ -274,6 +277,30 @@ pub unsafe fn read_raw(&self, dst: *mut u8, of=
-fset: usize, len: usize) -> Result
->>>>>>>          })
->>>>>>>      }
->>>>>>>
->>>>>>> +    /// Maps the page and reads from it into the given IO memory r=
-egion using volatile memory
->>>>>>> +    /// operations.
->>>>>>> +    ///
->>>>>>> +    /// This method will perform bounds checks on the page offset.=
- If `offset .. offset+len` goes
->>>>>>> +    /// outside of the page, then this call returns [`EINVAL`].
->>>>>>> +    ///
->>>>>>> +    /// # Safety
->>>>>>> +    /// Callers must ensure that:
->>>>>>> +    ///
->>>>>>> +    /// * The destination memory region is outside of any Rust mem=
-ory allocation.
->>>>>>> +    /// * The destination memory region is writable.
->>>>>>> +    /// * This call does not race with a write to the same source =
-page that overlaps with this read.
->>>>>>> +    pub unsafe fn read_raw_toio(&self, dst: *mut u8, offset: usize=
-, len: usize) -> Result {
->>>>>>> +        self.with_pointer_into_page(offset, len, move |src| {
->>>>>>> +            // SAFETY: If `with_pointer_into_page` calls into this=
- closure, then
->>>>>>> +            // it has performed a bounds check and guarantees that=
- `src` is
->>>>>>> +            // valid for `len` bytes.
->>>>>>> +            //
->>>>>>> +            // There caller guarantees that there is no data race =
-at the source.
->>>>>>> +            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), s=
-rc.cast::<c_void>(), len) };
->>>>>>
->>>>>> I feel that this should be a generic utility that integrates with ou=
-r IO infra
->>>>>> that allows you to copy/from IO to a slice.
+>>>>> Each register field is represented as a `Bounded` of the appropriate =
+bit
+>>>>> width, ensuring field values are never silently truncated.
 >>>>>
->>>>> While that might also be useful, for my particular use case I am copy=
+>>>>> Fields can optionally be converted to/from custom types, either falli=
+bly
+>>>>> or infallibly.
+>>>>>
+>>>>> The address of registers can be direct, relative, or indexed, support=
 ing
->>>>> between two pages. One is mapped from user space, the other one is
->>>>> allocated by a driver. No slices involved. Pasting for reference [1]:
+>>>>> most of the patterns in which registers are arranged.
+>>>>>
+>>>>> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+>>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>>>> ---
+>>>>>  rust/kernel/io.rs          |    1 +
+>>>>>  rust/kernel/io/register.rs | 1287 ++++++++++++++++++++++++++++++++++=
+++++++++++
+>>>>>  2 files changed, 1288 insertions(+)
+>>>>>
+>>>>> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+>>>>> index 056a3ec71647..112f43ecbf88 100644
+>>>>> --- a/rust/kernel/io.rs
+>>>>> +++ b/rust/kernel/io.rs
+>>>>> @@ -11,6 +11,7 @@
+>>>>> =20
+>>>>>  pub mod mem;
+>>>>>  pub mod poll;
+>>>>> +pub mod register;
+>>>>>  pub mod resource;
+>>>>> =20
+>>>>>  pub use resource::Resource;
+>>>>> diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
+>>>>> new file mode 100644
+>>>>> index 000000000000..fc85dcd1f09a
+>>>>> --- /dev/null
+>>>>> +++ b/rust/kernel/io/register.rs
+>>>>> @@ -0,0 +1,1287 @@
+>>>>> +// SPDX-License-Identifier: GPL-2.0
+>>>>> +
+>>>>> +//! A macro to define register layout and accessors.
+>>>>> +//!
+>>>>> +//! A single register typically includes several fields, which are a=
+ccessed through a combination
+>>>>> +//! of bit-shift and mask operations that introduce a class of poten=
+tial mistakes, notably because
+>>>>> +//! not all possible field values are necessarily valid.
+>>>>> +//!
+>>>>> +//! The [`register!`] macro in this module provides an intuitive and=
+ readable syntax for defining a
+>>>>> +//! dedicated type for each register. Each such type comes with its =
+own field accessors that can
+>>>>> +//! return an error if a field's value is invalid.
+>>>>> +//!
+>>>>> +//! [`register!`]: kernel::register!
+>>>>> +
+>>>>> +use core::ops::Deref;
+>>>>> +
+>>>>> +use crate::io::{
+>>>>> +    IoCapable,
+>>>>> +    IoKnownSize, //
+>>>>> +};
+>>>>> +
+>>>>> +/// Trait providing a base address to be added to the offset of a re=
+lative register to obtain
+>>>>> +/// its actual offset.
+>>>>> +///
+>>>>> +/// The `T` generic argument is used to distinguish which base to us=
+e, in case a type provides
+>>>>> +/// several bases. It is given to the `register!` macro to restrict =
+the use of the register to
+>>>>> +/// implementors of this particular variant.
+>>>>> +pub trait RegisterBase<T> {
+>>>>> +    /// Base address to which register offsets are added.
+>>>>> +    const BASE: usize;
+>>>>> +}
+>>>>> +
+>>>>> +/// Trait providing I/O read/write operations for register storage t=
+ypes.
+>>>>> +///
+>>>>> +/// This trait is implemented for all integer types on which I/O can=
+ be performed, allowing the
+>>>>> +/// `register!` macro to generate appropriate I/O accessor methods b=
+ased on the register's storage
+>>>>> +/// type.
+>>>>> +pub trait RegisterIo: Sized {
 >>>>
->>>> Then what you need is a byte-wise atomic memcpy, not memcpy_{from,to}i=
-o.
+>>>> Is this trait intended for public usage or just internal detail of `re=
+gister!()`
+>>>> macro?
+>>>>
+>>>> If it's the former, then we should probably just put the method into `=
+IoCapable`
+>>>> and allow generic-read in Io. If it's the latter, let's `#[doc(hidden)=
+]` this so
+>>>> it won't get abused.
 >>>
->>> Can you elaborate on how you get to this requirement?
+>>> It is an internal detail of `register!()` and not supposed to be used b=
+y anyone
+>>> else.
+>>>
+>>>>
+>>>>> +    /// Read a value from the given offset in the I/O region.
+>>>>> +    fn read<T, I>(io: &T, offset: usize) -> Self
+>>>>> +    where
+>>>>> +        T: Deref<Target =3D I>,
+>>>>> +        I: IoKnownSize + IoCapable<Self>;
+>>>>
+>>>> I think generally `Deref` bound shouldn't be exposed to user. What sma=
+rt
+>>>> pointers are involved here, and can we implement forwarding impls of `=
+Io`?
+>>>
+>>> Removing the requirement for `Deref` in the `RegisterIo` trait is simpl=
+e - we
+>>> can just call `Deref` in the register IO accessors.
 >>
->> Memory that is possibly mapped into userspace is still normal memory, it=
- is not
->> I/O. I/O accessors (and IO memcpy) are specifically used for MMIO, and y=
-ou
->> should not be using them for userspace memory.
+>> The issue with `Deref` bound here is that now you *require* a level of
+>> indirection. If something implements `Io` directly, you cannot use it wi=
+th the
+>> method. While `&Bar` is accepted, `&Mmio` is not because `Mmio` is a dir=
+ect
+>> implementor of `Io` and not deref to it.
 >>
->> For memory that can be mutated from userspace you can just treat them as=
- a
->> potentially concurrent accessor hence all accesses should be using atomi=
-c. When
->> tearing is acceptable, byte-wise atomic is sufficient.
+>> A `Deref` bound also does not help if, say, a type is `Arc<Bar>` which n=
+eeds two
+>> level of dereffing before it is Io. For consistency I think it's best to=
+ avoid
+>> `Deref` call all together
 >
-> I would treat them the same as DMA regions and MMIO regions. As these
-> regions are outside of any Rust allocation, if we never make references
-> to them and if we only operate on them with volatile operations,
-> behavior of the copy operations like these are defined, as far as I
-> understand.
+> Do you mean that `Bar` should implement `Io`, `IoKnownSize`, and all the
+> required `IoCapable`s? That's a lot of boilerplate I'm afraid, and that
+> would need to be repeated for all other I/O proxy types.
+>
+> No, I'm starting to believe that the fundamental issue is that the
+> register interface does its I/O backwards, and that design issue is only
+> exacerbated by the recent I/O redesign. I.e. instead of doing
+>
+>   regs::NV_PMC_BOOT_0::read(bar);
+>
+> We should really do
+>
+>   bar.read_reg::<regs::NV_PMC_BOOT_0>();
+>
+> Because that way we can use deref coercion.
+>
+> That's quite a big redesign though, which means I don't believe
+> `register!` can make it this cycle... I'll give it a try though.
 
-I don't find the argument about these being outside Rust allocation very us=
-eful.
-Apart from MMIO, I view all other types of memory still within purview of t=
-he
-abstract machine.
+Hmm, that's unfortunate, but I think this is indeed a big design change tha=
+t we
+should iron out before merging...
+
+I think you're right that if we put the methods on `Io` then all of the der=
+ef
+issue would just went away.
+
+BTW, there's a tricky that would allow you to avoid turbofish in this case,=
+ i.e.
+you would be able to write
+
+    bar.read_reg(regs::NV_PMC_BOOT_0)
+
+Or
+
+    bar.write_reg(regs::PV_PMC_BOOT_0, ...)
+
+The trick is to note that the same name can present in both type and value
+namesapce. For example, when you define
+
+    struct Foo;
+
+you create `Foo` type in type namespace and a `const Foo: Foo` in value
+namespace. Similarly
+
+    struct Foo(u32);
+
+creates a `Foo` in type namespace and a `fn(u32) -> Foo` in value namespace=
+.
+This process doesn't need to be automatic. So if you create
+
+    struct Foo { value: u32 }
+
+then you're only creating `Foo` in type namespace and not in value namespac=
+e.
+This means that you could do something like:
+
+    // Use PhantomData as example, could be other token/marker types.
+    const Foo: PhantomData<Foo> =3D PhantomData;
+
+    trait Io {
+        fn read_reg<Reg>(&self, _: PhantomData<Reg>) -> Reg { ... }
+    }
+
+    // Now no turbofish!
+    bar.read_reg(NV_PMC_BOOT_0)
+
+This trick is heavily used in `syn`, so you do `input.peek(type)` instead o=
+f
+`input.peek::<Type>()`, which I find quite handy.
 
 >
-> In the last discussions we had on this, the conclusion was to use
-> `volatile_copy_memory` whenever that is available, or write a volatile
-> copy function in assembly.
->
-> Using memcpy_{from,to}io is the latter solution. These functions are
-> simply volatile memcpy implemented in assembly.
->
-> There is nothing special about MMIO. These functions are name as they
-> are because they are useful for MMIO.
-
-No. MMIO are really special. A few architectures require them to be accesse=
+> <snip>
+>>>>> +        $vis struct $name($storage);
+>>>>> +
+>>>>> +        #[allow(dead_code)]
+>>>>> +        impl $name {
+>>>>> +            /// Creates a bitfield from a raw value.
+>>>>> +            $vis const fn from_raw(value: $storage) -> Self {
+>>>>> +                Self(value)
+>>>>> +            }
+>>>>> +
+>>>>> +            /// Creates a zeroed bitfield value.
+>>>>> +            ///
+>>>>> +            /// This is a const alternative to the `Zeroable::zeroed=
+()` trait method.
+>>>>> +            $vis const fn zeroed() -> Self {
+>>>>> +                Self(0)
+>>>>> +            }
+>>>>
+>>>> All types that impl `Zeroable` automatically have the `::zeroed()` fn =
+provided
+>>>> via the trait.
+>>>
+>>> Yes, but that method from the trait cannot be used in const context, an=
 d
-completely differently compared to normal memory. We also have things like
-INDIRECT_IOMEM. memory_{from,to}io are special as they use MMIO accessor su=
-ch as
-readb to perform access on the __iomem pointer. They should not be mixed wi=
-th
-normal memory. They must be treated as if they're from a completely separat=
-e
-address space.
+>>> `zeroed` is the starting point for building register values from scratc=
+h (and
+>>> thus constant values).
+>>
+>> `pin_init:::zeroed()` is a const function.
+>
+> Ah, I thought about using `Zeroable::zeroed()` at first, but indeed we
+> can use the function instead.
+>
+> Strangely though, I expected to be able to do
+>
+>   const V: BOOT_0 =3D pin_init::zeroed()
+>
+> and have the compiler infer the generic type, but for some reason I have
+> to specify it explicitly:
+>
+>   const V: BOOT_0 =3D pin_init::zeroed::<BOOT_0>()
+>
+> Not a big deal, but a const method would reduce this to=20
+>
+>   const V: BOOT_0 =3D BOOT_0::zeroed()
+>
+> (for variables `let v: BOOT_0 =3D pin_init::zeroed()` works fine.)
 
-Normal memory vs DMA vs MMIO are all distinct, and this is demonstrated by =
-the
-different types of barriers needed to order things correctly for each type =
-of
-memory region.
-
-Userspace-mapped memory (that is also mapped in the kernel space, not __use=
-r) is
-the least special one out of these. They could practically share all atomic=
- infra
-available for the kernel, hence the suggestion of using byte-wise atomic me=
-mcpy.
+That's strange. Do you have a MCVE for this? I can't reproduce what you
+described.
 
 Best,
 Gary
-
->
->
-> Best regards,
-> Andreas Hindborg
 
