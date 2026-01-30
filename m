@@ -1,120 +1,150 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4E422541C
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 04:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BEB1EDA0F
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 04:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769748324; cv=pass; b=Wiuy3mTYt/OgCHF1bJeGbCSXvuPQLQwVGFkVpY+S6rU3/r84pg7L77YCdokTg4e0SyIY01fpSJTVp5cSySh0OGhhvfI/Zo2mstiVBKhJJUOK3alfqHhwdn9DTGBe7MajfHL5hsCJOagxegMNyaVoU2m+GiMNgTWYqg+TEV2d32U=
+	t=1769748717; cv=pass; b=t8KXGJ0ZYFnkA1ySrp5sPLOySJHJnDs0KCqWZOWBaS1ISXCY3yYViO3S9k6W/xdkMm+xsjlqRiZ7lvbP8qoItn29KEtAL10DDP9LQI+R8vHy81P6ELb7uL/mq8EHM7+KKzIZSTr7vqXN/yFwE4g973xli0xpOR0zJ5WCheJShj0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769748324; c=relaxed/simple;
-	bh=j5sTRnzPjz3wvCNU3OF2BowzpzjC8BR+ik08DcuugI4=;
+	s=arc-20240116; t=1769748717; c=relaxed/simple;
+	bh=1u7bIRWp2Pd8qCUbSac5FjsS+jfGiGGCb/ASTQ189hw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oA2K1MM6tK9P5IJsCacqV2QCKbVBCNaMHtibLfGvekfOWcTmkrUelTdEOTNom7BE9Y50heGAY52aLYeD9gRpA36bwZI3vU0hjnIR6WzMW6uqt2ZTX3yf5vKnqasZ40/NbqzQoQzS4+yPJfvCGhIwAV4Ljro/mbj2eLdqZZw0pUg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SkKdYatC; arc=pass smtp.client-ip=74.125.82.175
+	 To:Cc:Content-Type; b=JsriVJ36bloDEnxM6V+SLPT8L+hl8GS4cIFCdwM3TjWmK9i32pnuF80zTwmCpa3uIFyEKFedBlWVz4yITrDIALBs7Re0J5zpnIHnAprmJ6MMiMRD86C16HCvqwmyYd2vFJITycy4mJ8o9NlNf2t0X/wAaA1SFAnaxuA3LEnWdT0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gp+dceSg; arc=pass smtp.client-ip=74.125.82.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SkKdYatC"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b78c97f57bso16238eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 20:45:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769748323; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gp+dceSg"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2b70b21ce0aso6425eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 20:51:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769748715; cv=none;
         d=google.com; s=arc-20240605;
-        b=LsMCPRn6wBkMi8D/LEKYLu2c6A9gV3xVYb7MotJUfB5mx6ViGcyNrxikQfPAI4SFTm
-         lOPhcouJ650OhO1iDPFLTH6Vs5F5h9nCMV4yNtHO69zOIub//iaZbVkVxcHJPxhosvnU
-         KQ9jt25N2SqUeZLCdvbm+z5ShjgW2nFzX1qx5pMe5sfddNi+oQjI+dz6q7OLm2aClh1D
-         IJc9MEf+uintH9+GpqE5gJuGdW/s5mBG7cblI2jdn4kPuTz5vo+tIJQU9zO6oS8YzoCu
-         vdrVRQyFV3Io5mTeu1Nk2YvH8W12bj1xl/OM7tnOoDWA0kIIDgX+edgS0chRC+E6hk29
-         OVNA==
+        b=Etv+/B4vGaRbXuJbosSICdwp3X30R1Lcu76M4udg8OMh3UNtJXTEJaQup+jE8xM7ph
+         s3eyWA3sPx3Za0nzL9Ddz6+lY2k6fPALL17ift+qJpuLC+jR0JOMVKsqhIyetbnOj1r4
+         PF2mHxJNEyL1NcxeRsTwXFULuZZzVvOm5gjVmQGY+W0B5gSpAIe15Zc2RLAjdcpnpC++
+         gCJI8mPkSWofYP9qrY0BW2bYAd75+56huQo0+CB+RyeFctKMb3oCP10cCKt1Mb1/AznM
+         liEFfKsdE85I4cF/NueAqA9T/AjYDzyh/+3pL9494AMF8w4QmNa5OBJrGOsa0pJXFzoT
+         jYcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=j5sTRnzPjz3wvCNU3OF2BowzpzjC8BR+ik08DcuugI4=;
-        fh=a3sJVvYzhzlMJ6dwgVh/boydrvyWmwjhEkVFzNj/T2U=;
-        b=Z6MCdaU+JKFBzGq9o6Qd/aRx1wKyaoRGGcgHru69qAPAY4lIHUURPdxDPRh5za7PSo
-         aZYCP6uho/KTvB5lnMHyXJ8CjLxYoI9EQK1Njk05k2Z01vU8u8OwmkkeE0WqEnAdUft9
-         jDm2tl/cZJGtB/8w4esZhoOTSmAskHVOP5x3Q4EPrXWKqfnBGuFl9Biq5pyIB0ZiTviN
-         N6CjmOvvSkO5iquPHF3VDPsUWHg/LGhZL3S0Ca9W1uME+ZSlZIzuOeoGGIcF9m5JhXEt
-         7vcc04MrU8Lz1t1z/DCXd2X/aN7/8VEWROOhXj8CWu8wQXvPnIwMfzqk4ZPeoKeQ5yQE
-         /zEA==;
+        bh=uqjGaXvGxanS0d/vyrt8/Fubz63X60VirMxVGzKrpeI=;
+        fh=DMdwqKwur/8kzMKOlvosd7PqCJv0PL9WRKUL7jcCIqA=;
+        b=DSFiZsDlGDfSAJ9wNQ37CvKpKWruMqxV8nKjicYUX26BanRpObdQS0dOcJUR/QomzV
+         05nx6/md5UcYJNCfTFB1EePaRZ8eH8T3AyCqE4XeAE3mofVaI5MS/4BnP9x1jIjqquGE
+         2uCGXJTCPiVmGEnPPdOfdXklB2xCRp87TkSij6yyGoFQsLBn+ZDvg/lZ2PWUz9ZHDAXy
+         if9Wpa1BLUgayFTTg2S5dCD3EhzlSb5q9IAirnUPcsHKDFs5wYkFMV5CsET0Wzem1roh
+         npu8115gEIZcBcboXDdcQHyW0WhFbdo9fcYQ8tkn4WDa0cvTrCEErQdAGS/n40x2avKn
+         MzvA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769748323; x=1770353123; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769748715; x=1770353515; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j5sTRnzPjz3wvCNU3OF2BowzpzjC8BR+ik08DcuugI4=;
-        b=SkKdYatCzzVePSxRPdEO2bQgpbx9AwceI8clswMqy9KX4o9tgomn7XBniK9mkJFCuR
-         MhP47sKE3VOQFfkbJeStDAA+qDlgE4iiHX0sPRutQzHEl8BJURYe/wvi8KvpdYFIwsBi
-         5xSGalhj9cQcKwqDkc4rY5Yh36yUUCzqvz7YDplAQaVmw3US1Gi2HtCnVwKcnD5tRUP9
-         +eB0rJ/2i/ivODmF8N5GX4axAm2X//YruKwRCp1XWU5ex5GtZxB/fS5YRlOVv2c0/BH3
-         rC7DGQSQs2DilLkaaIVX94nXZCDiHr9BcF1DBP9YW05hCaGPTftddopn/cKTD9a7eh3R
-         HrlA==
+        bh=uqjGaXvGxanS0d/vyrt8/Fubz63X60VirMxVGzKrpeI=;
+        b=Gp+dceSgY0dR0O8xtGjVeWR0JnpJaEVNL6x4jgscjIZn4ptZIHHok7qGW/ynoXtjJj
+         4HMnnTa5hzcu7QWLyWtO2JFCsUS4DpR+rnRV0bk2OybsfShsSDqrD1Mqt56zH0KrxE7g
+         iMmNWiPxIiAdLjeen8dWLpIrdSRK+PFPmfO9v47QHte2v6qvWuCZmeYf1dWeyABpQbtk
+         E6jxYETykrbF8UzoTReRzhb9IdkQxaTFYmOx1HHVejmm11cGEeNpXn4cFG8HDLpK6lfa
+         Ihj48DvuP02dAWOT7byv666ewnwJcYrCdo5Ro3Qp14NB8IKcHd7ufRddQEsuGvXqZO86
+         gw8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769748323; x=1770353123;
+        d=1e100.net; s=20230601; t=1769748715; x=1770353515;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=j5sTRnzPjz3wvCNU3OF2BowzpzjC8BR+ik08DcuugI4=;
-        b=hoDcVxWu2UoxKBbcI/rsR5Vjl10wVYut+KDpZq6XkaS32sbXq1WDkKSR7TSuyvSk0/
-         FMpP0+nFNwguUMkyrX00/hYabnmrj8e4y5EOJFUn3fXgn0snw9qDGCqiYBxCl9jt3pF2
-         BEso4DOKOqQdXVXWzaCKADY4cbEeniuaq7hSeRqvpTKiP9oOg34r9mjVMAnvEIY2HTK1
-         BrR3X9wD9AlKJrMqO+9UUQXAzCQtuEx/l2v+fjv08C5h0H03RzZONpQXXuFt/EO/mLqh
-         K8BCjD3iR3GOCDdMX6rxWKNAoiYKQQelfyKrJzH2avi+q038cMifoEgVCASch29QQ0vx
-         YeUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUA/zzKSEYyu3u/kVV/KNBlT72CYYN9j8YwHQmmfM4tUm6JzTd9q0zrR/mOaMgOnWioNSMSqk8bGTGN66nGow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvYQXV/1ZmildN+6sHkUr1n+aPjsJ5Stdug7xOfNK9+ZS6od2k
-	GmqS+8PIkNt4gJvwEw0TV3/1njJ0lIAwWZo+HJ5ff0GtY05G0A2C8c8ixGX89W3UShTcf0hXOtj
-	32TkV7GVBtKlWtA9kfs4XGKhRzugrq5E=
-X-Gm-Gg: AZuq6aK0bHXH/mKK8UJJ5FEbGEbvpmuMfOrv9IGXk1Njv79Nbx00m9bI3la3S/ZnM8b
-	k8GuZU9PcDaM7tUgRSY1zvNQLUEDPQ/VZq874LZh7kPmNOtWoe9Z8KSopJ1frg/9n9qJUb4CRO3
-	JBD1li1maSQDky65zUn++JN8KW1OkZdNVMGyvidtO7SKm45gFSBu27rwCrBGtv7bKXpA2FUDGJr
-	wS1olLrryn3j9QZrz6y7Q+t6l29d1j6x+affiF6Kikjf49Wz+pEXZZPDWc3WuM6ffxYSuVDIyQ3
-	cfV4xb4I3onFyp6ahf1UtYN0GUSFr2+AT4QtA7Yij8OyvFzWI8SLu0QWG4uANyzvNQxwFIA6ODp
-	JKstKbJtbQy6It6p4mPTINps=
-X-Received: by 2002:a05:7301:3c9b:b0:2b7:1008:9f2e with SMTP id
- 5a478bee46e88-2b7c88e6dd6mr473954eec.7.1769748321071; Thu, 29 Jan 2026
- 20:45:21 -0800 (PST)
+        bh=uqjGaXvGxanS0d/vyrt8/Fubz63X60VirMxVGzKrpeI=;
+        b=iWCKKRM8RalEFgXXWwXeR/CFSCcu7kyoXa0eQLpmXCE9wA9fdbrG/j/x60hgjv7Dy8
+         Or5kz+MZ47LWb/1kM2XT3YtJ2xeL77Q5YjH8woPsgxb03Vi91I15x1BikPqSrCHkesMO
+         RaZZlvAHu35iARtdkRNaitMtbT2NeOgEGRLMq4JkvOhejl+jqmnHS0msqX3Q8ZhErBk7
+         +qsFaeTIVwinSrXGqgUTnXu8LrVdX3f2CRYEOtoGe91ytu5AX8FfgUxXUiCfX/uqLl5z
+         MRzNZe0jJQlbmq39nAQbqfKx7BC+saCDNHaxzXet0rqcUcwQC+0rCdTVTNu/50Z8ecmY
+         7GZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJZBI1RULx4atLTSG7J8mlufCjLJKqLuVN7cnGk4O4GYWnw3qhA+9VggT+PbJb5sKb1wD3lcLUbpsWetmDyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7Enpc6NZfEbAyDysNOFk0ViLnV/9bBna9nQHYz9cxJ1AtqjY3
+	RLQ3KOi4j7eRpZIU8FMcMK0X2yTM4wI2W1B2rFeW+CitNMS++wWn7piX3QCwjHyPHJKnh3AQgvG
+	I2DHbhaUcCrUgeTJSJ4snYAOS8gF+tJU=
+X-Gm-Gg: AZuq6aKXxA3MFQSmamFqBSWsxKHyzH66KVXyKIxQ/ZEREAda+0fpt9kyELxEtS4+YJH
+	/CEcsThzttGU+cQHG+J3XH2ZLfaTuvdmrhZ0F8LDFBfqLVAR+2jeixRho952lhYHKSnz60zJ0mC
+	Q9XOf53o2g7oo3D51tARm4pf0/dcR7Fjq8I2N0C1GdqI/iTyJFR68Ep1ea/+DpS3o2I5wggBUGF
+	EwITgiylQHZwuUedRhDGHWcQbdmbwYtjlYho0ovmOyYAdB4nXNbPzJGWRmeEHU8hDoR7qsqQEOR
+	lW9iv0AqgbWlvEdgNlSOmNOwWZAn8A3wmgk+ijgzfEaWIsdUy7t5h5zAQwVEaWJZQ/wPvWys4GP
+	tbTcP79civmcEdWC0QBSUBOM=
+X-Received: by 2002:a05:7300:fd10:b0:2ae:5549:2c86 with SMTP id
+ 5a478bee46e88-2b7c88eddcfmr503547eec.5.1769748715462; Thu, 29 Jan 2026
+ 20:51:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260108013350.2880613-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20260108013350.2880613-1-fujita.tomonori@gmail.com>
+References: <20251117002452.4068692-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20251117002452.4068692-1-fujita.tomonori@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 30 Jan 2026 05:45:08 +0100
-X-Gm-Features: AZwV_QgZi0B8AaMe-Q_Oc03CdUxJG0NpFZq8I3UmbFQ7ofCHgp8kP-l8Zs5eu_g
-Message-ID: <CANiq72k5TftQOSGAtWnbuxL2D6oyLY5=zBh5tmqboAaY09PQyw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: bug: Support DEBUG_BUGVERBOSE_DETAILED option
+Date: Fri, 30 Jan 2026 05:51:42 +0100
+X-Gm-Features: AZwV_QipP2FEm9jaYoX4XV0Wba1UPdksiqIqY7CVoEJyzXF9SJWNtQfwyv771b8
+Message-ID: <CANiq72k7qXoz3wcHqjNK29ZZ9gTdkmpwX7oqxgV9Rq6uGRwugw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] Add support for print exactly once
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: ojeda@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	gary@garyguo.net, lossin@kernel.org, tmgross@umich.edu, 
-	rust-for-linux@vger.kernel.org
+Cc: alex.gaynor@gmail.com, ojeda@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
+	dakr@kernel.org, gary@garyguo.net, lossin@kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 8, 2026 at 2:34=E2=80=AFAM FUJITA Tomonori
+On Mon, Nov 17, 2025 at 1:25=E2=80=AFAM FUJITA Tomonori
 <fujita.tomonori@gmail.com> wrote:
 >
-> Make warn_on() support DEBUG_BUGVERBOSE_DETAILED option, which was
-> introduced by the commit aec58b48517c ("bugs/core: Extend
-> __WARN_FLAGS() with the 'cond_str' parameter").
+> This adds the Rust equivalent of the C's DO_ONCE_LITE and pr_*_once
+> macros.
 >
-> When the option is enabled, WARN splats now show the evaluated
-> warn_on() condition alongside the file path, e.g.:
+> A proposal for this feature was made in the past [1], but it didn't
+> reach consensus on the implementation and wasn't merged.
 >
-> ------------[ cut here ]------------
-> WARNING: [val =3D=3D 1] linux/samples/rust/rust_minimal.rs:27 at _RNvXCsk=
-7t4azzUqHP_12rust_minimalNtB2_11RustMinimalNtCs8pcx3n4
-> Modules linked in: rust_minimal(+)
+> Unlike the previous proposal, this implements the C's DO_ONCE_LITE
+> mechanism using a single atomic variable. While it would be possible
+> to implement the feature entirely as a Rust macro, the functionality
+> that can be implemented as regular functions has been extracted and
+> implemented as the OnceLite struct for better code readability.
 >
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> To make it clear that this feature is intended solely for
+> print-related functionality (just like in C), the implementation is
+> placed in print.rs. If an equivalent of std::sync::Once is needed in
+> the future, it should be based on SetOnce rather than OnceLite. Unlike
+> std::sync::Once and SetOnce, OnceLite only manages two states:
+> incomplete and complete.
+>
+> The do_once_lite macro places the OnceLite object in the .data..once
+> section, which may be zeroed by memset at any time. While this means
+> tear reads might happen, OnceLite only manages two states (zero and
+> non-zero), so no actual problem occurs in practice.
+>
+> OnceLite currently uses Atomic<i32>, but may be changed to use
+> Atomic<i8> [2] when it becomes available.
+>
+> [1] https://lore.kernel.org/rust-for-linux/20241126-pr_once_macros-v4-0-4=
+10b8ca9643e@tuta.io/
+> [2] https://lore.kernel.org/rust-for-linux/20251115050305.3872412-1-fujit=
+a.tomonori@gmail.com/
 
 Applied to `rust-next` -- thanks everyone!
+
+I have used this nice cover letter as the basis for a merge commit.
+While they were just two commits, I think the cover letter adds some
+context that those other commit messages do not.
+
+Tomonori, please double check the merge commit message! And if you did
+not intend for this to land in the Git log, please let me know (I am
+starting to take more cover letters into the Git log).
+
+    [ Added prefix to title. - Miguel ]
+
+    [ Added prefix to title. Fixed typo. - Miguel ]
 
 Cheers,
 Miguel
