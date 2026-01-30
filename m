@@ -1,124 +1,106 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1453112B4
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 20:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769803926; cv=pass; b=NNdYzJKGSxDO6GlZ/Kq7bW9U8amWsH+VfwmYShUPqO3hW3ROHNn3TbAx0+vlgv2MyzZdwoxTG/e9mvkwEQQS1tos2BJA7Auf+Ni+ano59inbSe/yOWCmZi5gVFEZMWn7g3KQfa92m7c9JmtrmLLJ0b0DbdMpqDX685srcbRlgXE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769803926; c=relaxed/simple;
-	bh=jf4SXvUaWDQhdD0o5T0svnQ22xhEC4AAo9cwMcawRFg=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE3B1D6AA
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 20:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769804124; cv=none; b=Nn2dSfESyCtF7gVpjGbspNbm2MjrraxZuTaxroKkh+5jD32ryPey+JtHWYveshkyL0sr/WF7YtFaleNkhtO7vs484hXH/Y8BZZNM4atRrP2Gva5gPQ1psSPegtwyKYAW1L9s78EZcmJ7dq4Oee3fj6Aqb2Ico19ABi5DB0BzNYU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769804124; c=relaxed/simple;
+	bh=rDxpBa2wQbBmAcOx3wZdYI5yW3Gufe5SwgazwffXj5A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qime78YCyKqHfEhW9WXTkjj7SMEwQky01+sg9Qvjf5CIzK6qumiMXi0ypw+uCcbwyRYfArrFJMEtkmnIp7Gg8DD60Q6rZJ/y355YL/Kl+hGgvamFS63lOb7InDv/lP9C6ZfFaiZgcW9XY8Q5bEg67k4q5PK+pncZ6Xkrot2lmFc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DtbL9G8d; arc=pass smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=MQOqIR63F1dd8bYDp+WWtIsHUM90aZDPHEY9EvFdtqpPlYvItJZMyGRaWs90iAIG+3DXZDZuHRpHvz4AbMXLV4EDn1qgX5C2RmeXYsiN5FQrtNmXer5TZfJG7VB9whtwTD/lCbIaUfec5m3AMd2hbwLNEcUQwDFsxNHpea5v19Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QXRR1P1e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DtbL9G8d"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b703e04984so136516eec.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 12:12:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769803924; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fE1wZCCJKF05Z+/VRgcC4M/6C2jLsaaNztlzZCj05MJE8IZfS3rMVUdq99QSTdFA8t
-         +Zb9Zx1IqXtNEwxeBZvRTYmGTbQbUDdJq/cgrgMfCjdU5i8fk5gzuMBwjPx4eZZtLsfP
-         VBbpcinFOYJxue9kaN/8jca/K75TZxclRqSZTWa7ovZKVqa1dGIqW9tfrBKIq8qFSlK8
-         qXQl2gVcQbF/8DxmK+oIhM0y9iYDYvlHmrzqe6oi0GIVyymIlqL/vR1HcZi4nX/MqhCp
-         fWzW6wBFJL4QdiRdBn/dz443Zv330fCETEMMxR6/2+4rlAcRJ8HGodmSdn9EfqrJhNR/
-         kXLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jf4SXvUaWDQhdD0o5T0svnQ22xhEC4AAo9cwMcawRFg=;
-        fh=lTC+K8lFIJrjWnYSIpzUYiR6xH0A4ysDM2c0ET3MPso=;
-        b=Y3lInDPItjqbzUSY//xMpdgIKwSt9D2lDD49xxSUIOWJ0FocYnFlPQTy/HoSlpLCzT
-         UTifmk1Y6g3NgyTVTA6oetwxTNR6PMAUyQ31FEQZXmsvZpAiBtO9TOxSUffiGF/IYQYU
-         2/By8Mev4kLfYg9Y0dqnr74k5XZncU4WfyiTg7MJe7iYVed9oyofZuDhrPWhcQ9Kvoxg
-         8dcsfVcZBPzPtS9MzvVxYJGmN3bA3sTzXbvIFxYG/CBOCZ+Zc6xSmTJicUrWgbZP3dlk
-         ut/p7CfjGGKaktGLDxlcYVZ4XfSOPrag4nLGdMzllmaGA/8+nU95ldtq6GUWND5CmZM5
-         h8LA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769803924; x=1770408724; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jf4SXvUaWDQhdD0o5T0svnQ22xhEC4AAo9cwMcawRFg=;
-        b=DtbL9G8dmePfcyD912NnyDFmQluYAK8EUeIt1Uyweeg9jB1FNw8ur4egYFOKtGq4zx
-         c5MHVJEurdrmJn1WKFrT7OhjcBw4osXmDe3DqnJbSv7xI8Kf28U11h1L1Vueo9D0ykrD
-         d4Qqmqf9TM82+yQLicwn03wp5ueJmHnMQuJRPSssgBtmowNmmP5LyTsDU5aivgnEP2wk
-         7bfEbTO7P1zyAUYzrMyiQQAJ3NqMh3wbDpK8zAzbuo2qJXxMgQxXLVdc3IyBhqFN/i7Z
-         j5OFqj6FEVzlWpOMybBfxzEJcQ00xQCuF1Ibene8dSfiG2+ZPwWOVncW6Thy6PThyDHo
-         Z9Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769803924; x=1770408724;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jf4SXvUaWDQhdD0o5T0svnQ22xhEC4AAo9cwMcawRFg=;
-        b=XSmgoK+2hvbYl3fEmCnXbo7aE+eUywpnD5rs+O1iICpEU+ZGJVTXFElzqYvdSnPgDR
-         xIQ6qAiwG1k1uXMaMaXN4Pi6msBri0voEwnni1BY2nu6Qj++qEperYZ2NlJDk1C4UK/Q
-         AwiCIu3F1zxeNfB1igmHFtu84mWS0H4ON6nrNUFr/CfDdLsa/hamJL0vGYGN1N9KL39A
-         WBv2KIrSz9p16Zm45+aVP5rmxxJimu3UNKCKqMLPHyo6tDklxzPMxf/xKtjUgQ7AmD9J
-         EaLpD3YKdn6WJbICbLRYa96BwdDM0fJ/X4RDCcbceBLbFddwdIm7XUVj742oA2Xa04QS
-         AIgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXBQianGt/kjh0JqwDLzsjYc0TQGoJqun0r8cabaxdFw4kcoktUUzaQEIW+cxWadQzmGPR07Okq4n++Bm8rTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyked8jW4D2oARlmIaM6Ao2jB52LQqrR0dx5jlcN242E5Qhivzl
-	OKpjhZmw+VNObPMVqh3aqWerMgVJ6Yha+FjksGTCOhC+pGfr1GLMiqJjuAim5TGXWeppieQdUDj
-	3AJ8BW6n8sXxV5X1rIGKfKuaUdvvnYI0=
-X-Gm-Gg: AZuq6aJzBJHv05/B0uYa+odVlyyZsvkWdBRCK16D18IJieg8yyU4n80h2qzacNtnns4
-	O3Fvh1MTUVofq3z3NM10+hi1G43g8kFJNKL1/QiNhT/qyU+FN2U5vkK3nmNWC+YpLzyTC77OR4n
-	3ieDDzASfn/EzQJytR4qm7528fvUt37vBlpQKiv0feXZQMrOvnpk4ie3ZXPqfKXCPRkdrTXz2Sg
-	ByH37wzzqYXXlS+/kNRe7EyuIPabQ9qUdjcSGnsJRiUsKl62XW1SLZJNmfxdabijIX+mgeZTy4J
-	oWiI2t4SLPg/ohT5MM4vu99JfFUO4PtYzi4MTlqeYV3KypR+nhKLnKG4FvDSUYjnvsuIerrG+Qj
-	MepFY8qAyzneh
-X-Received: by 2002:a05:7301:3d0f:b0:2b7:3678:2d1a with SMTP id
- 5a478bee46e88-2b7c88e8ff4mr1012955eec.6.1769803924294; Fri, 30 Jan 2026
- 12:12:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QXRR1P1e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABA3C4CEF7
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 20:15:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769804124;
+	bh=rDxpBa2wQbBmAcOx3wZdYI5yW3Gufe5SwgazwffXj5A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=QXRR1P1elSoPSRoPWCjHLjHHkt3Lgl/1Fr0Ot8ggOenQwvgbMoga9DVY88BTtJZy4
+	 xyqVfIk96W1cuRDtQUbl3QxdNdjm7FwkRXbuIpdTC4JRgcghoYyzKSI02AGdplTFRY
+	 Z8LzJ1Ho/e+sJ0dJwEjHrG8M3ZZkF1G/jNF5E9N2oXJpKMMCMwh1SO3Xe7S/8ooLSY
+	 DNiJ5bX8XZcTNZfaWHv12IISR5vME3IgcbI8WIQLhBqRrn4N/8afBc8H9B8h77m68m
+	 OLgt1Qnxp1gJSlytXrsviS8umSML0FkbfCaXAZLSbSOLYsyE5vD9t65GUaFJk3fupd
+	 0aBa4NkQlD4+Q==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-382fb2bb83dso16246631fa.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 12:15:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU4qEFBV8uxPHXCFACyY5kujHIYm2C5hrr6zutGLNQcxitvUrW7Qsvkm1McbVRwAh6aHD1u+vUQD5rygNBp6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnbGLeItTR1rSq9e8ni1AglcvmUfct8Oj803NDxl3nxSfXn/gW
+	s1vjQjKq2swtu/yypMzRO/SY9OyDQpQKVYBQVEtLX4IWCChPdC/PUdKvlVjR7ibnXhnntgy9GMr
+	wQk0pga8QzfziJp2cLpXZyONUqi5oWsU=
+X-Received: by 2002:a05:651c:a0a:b0:383:5ea:e9c1 with SMTP id
+ 38308e7fff4ca-386464e0997mr14206801fa.2.1769804123007; Fri, 30 Jan 2026
+ 12:15:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260122-rust-analyzer-types-v1-0-29cc2e91dcd5@kernel.org> <CAJ-ks9nbegTw9hEqo+vgJnU4OzMG-gwegA74FysB9D+TV-Xz+A@mail.gmail.com>
-In-Reply-To: <CAJ-ks9nbegTw9hEqo+vgJnU4OzMG-gwegA74FysB9D+TV-Xz+A@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 30 Jan 2026 21:11:52 +0100
-X-Gm-Features: AZwV_Qj4au0aU7pebrbcXg4I13-69k2VjqboU7pe4LNCnz2LbkozSTB8ZAuBBiY
-Message-ID: <CANiq72k=WkiuKCQoOQFewbCcKATm7KZMV4jYBFmSSFryNKEAhQ@mail.gmail.com>
-Subject: Re: [PATCH 0/4] scripts: generate_rust_analyzer.py: tidy and add type hints
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+References: <20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org>
+ <CANiq72kkxS9ACvR52q03AN+WdFV96cK+tvejnnDXKZTKuKZH9g@mail.gmail.com>
+ <CAJ-ks9kiWZr=82sztLfYqtp-fvsQ2QTgTYqNg5hSsZMKCsvjZA@mail.gmail.com>
+ <CANiq72m8Bx=1s1+_OFxE=PFOjKrtuh_uhsomTA9VwQ4=Fz4d0g@mail.gmail.com> <CAJ-ks9=zWmVnspkfCqPH=+-_qZ0YZVyNrs2xMvRRvEmr-mNMcQ@mail.gmail.com>
+In-Reply-To: <CAJ-ks9=zWmVnspkfCqPH=+-_qZ0YZVyNrs2xMvRRvEmr-mNMcQ@mail.gmail.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Fri, 30 Jan 2026 15:14:46 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9nMHtAaLc_LHOWqa_hTRqVcBNpGsaC49VFh2O+_3AoY+A@mail.gmail.com>
+X-Gm-Features: AZwV_QhncK0We1zFUkHB-_4kfr0Qvxn-w4b_0QxwXlk2gLz6yBBl0VkZfg9wrck
+Message-ID: <CAJ-ks9nMHtAaLc_LHOWqa_hTRqVcBNpGsaC49VFh2O+_3AoY+A@mail.gmail.com>
+Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: define scripts
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, David Gow <davidgow@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
 	Fiona Behrens <me@kloenk.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 30, 2026 at 8:57=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
-> wrote:
+On Tue, Jan 27, 2026 at 12:07=E2=80=AFPM Tamir Duberstein <tamird@kernel.or=
+g> wrote:
 >
-> Applied to rust-analyzer-next, thanks all!
+> On Tue, Jan 27, 2026 at 10:13=E2=80=AFAM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > On Tue, Jan 27, 2026 at 2:53=E2=80=AFPM Tamir Duberstein <tamird@kernel=
+.org> wrote:
+> > >
+> > > It depends on your perspective - I framed it as a fix of the commit
+> > > that added the first script because that script was added without RA
+> > > support. What do you think?
+> >
+> > Yeah, I see.
+> >
+> > So, on the implementation side, I don't think we expected scripts to
+> > work at all, which is why it sounds to me like a feature (neither the
+> > linked commit nor the one that added rust-analyzer overall support
+> > mentions it that I can see, though it doesn't say otherwise either).
+> >
+> > But perhaps someone out there expected it to actually work and thus
+> > may think of it as a fix. I don't recall someone asking for it, but I
+> > haven't checked. Perhaps someone would, when we use more and more Rust
+> > scripts.
+> >
+> > Now, for the backport part, according to the official rules, I think
+> > it wouldn't fit. But those rules are often relaxed and who knows what
+> > companies out there doing out-of-tree work on top of LTS kernels
+> > want... (Commits can be submitted there even if they are not fixes, by
+> > the way).
+>
+> Thanks for the context. In that case I'll keep it as a fix and take it
+> through rust-analyzer-next with the backport tags since I expect it to
+> apply cleanly.
+>
+> Cheers,
+> Tamir
 
-To clarify, in most cases, branches are supposed to start from a tag
-from Linus, not something in between his tags.
-
-In addition, the idea was that you would start applying patches next
-cycle, i.e. normally the branch should start applying patches with an
--rc1 or -rc2 base, rather than at this time of the cycle, and e.g.
-finish around -rc5 time, and then you can send me your PR for that
-cycle and so on.
-
-Let's talk about it in the next meeting or we can schedule a call.
-
-(The patches seem to be applied with the msgid link and with tags
-collected, so that is fine :)
-
-Cheers,
-Miguel
+Applied to rust-analyzer-next. Thanks all!
