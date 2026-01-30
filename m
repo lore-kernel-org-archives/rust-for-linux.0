@@ -1,68 +1,72 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021090.outbound.protection.outlook.com [52.101.95.90])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010031.outbound.protection.outlook.com [40.93.198.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DAAD27E;
-	Fri, 30 Jan 2026 13:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D79B26E16C;
+	Fri, 30 Jan 2026 13:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.31
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769778628; cv=fail; b=W1NWnMzC266nLZVT+LY/jklpEInOsryywLDbdb00VkRUYvCJGMx6ItEWNfJGVKpZ+5utJK/XzB9aZLI+BrMVo7lfIx/fv8hsegwEjxB2rLKwDIgWIqbuRFeNX1kavaiQMk9Kc0akusU6ovgU3+Mkd4JsfeWWdhXvSC9eJSmz8E4=
+	t=1769779992; cv=fail; b=otXb/6lxkW1hYQhQ766YWpkntiMsqlHoyUeumHNr2iMoK8lJ+4PVMaT7u5jlTyl2Mn7rx4MweW00O9xeZoUKb7GA56R5R7NG0LGym3DrpV4E7awxbNqJlY+b2qvtUQJweMysG92WFBy+Muj7DVkFoyFHZVuUr5o8vtMxuwfY44Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769778628; c=relaxed/simple;
-	bh=4XDOa69JR5PZT66n+NhM96OCPFvxx/N1AZETeLw3zl0=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=A7uQv8EBloNGYAiG/SjFKXEkD8HQ3ezBWF322C7VJdRNsYGLq2et8iUWw7ADOMwz2mo4jdGxfifjHyc1OPfnviHfJAcoou18D6YTwtYzDlblq7CHkRdIrGrbBN2I9DTWRhAE6B5OlgPwwe5Qhy5WHQVB+C5YkDB2J4/o7cDbxyg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Lnbjn/V9; arc=fail smtp.client-ip=52.101.95.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1769779992; c=relaxed/simple;
+	bh=4yB/FFCkyk6FyLOHcT4vQ3iETzmi4BRvSsR61xjFdck=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=tB4LWo5JIKDk/syebcxUMLkNx/P1lj9ue8fdGR+2u29s6tz6ZqrB1STnHJxNrOdabhdV1nDmVhc4T4i/T3NtTIQvVwBhn0hBnXSvosr6KsHl0jTpffkvHnehpdkHqlZPr2fPa8+EsWnORw68hpuejWFRkRkHwUqfRY3Sn6w2/5k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Z0nORIzs; arc=fail smtp.client-ip=40.93.198.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Lnbjn/V9"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Z0nORIzs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CK+BVSLq+KFfj0oPrffi4Ww718HhvvXjPKE3N2LssMVr5NMnp/DUx2JHl0j/bZnXKuy41xmr+4cNz1yAC/dS4HybqiCm+BkvJ1sYCL+BoJqgKDHDM0PWD9k+FJmvSmPaNGR91c9LhpGaFFWi0nJ1uzvC4PnlkqzVU4mG/DRAAvvOqhPyU7Aaan2PHPVp4T4wj/1al+ViFEIzt6bl1z+1B2S1Xr7YaZsXfM8dss86Ubi2aEjp4PrhXKflB9aDZxz73qbDjfNmAPSs9KbWgTi4fjnAGleS1RoKV0KiG4GFJWuTlDvtq58V+EJfwQHOcIc7Jl1JGs5By2X1Rm4EOhXV7g==
+ b=h3B1EGe0Aye4EIUq0SJFdLJfJ6vIJgOroCNdxV6eoVh7fDZYoQihoItUcnxBurOGXQRH+Zt7rA3BDfUUS1OfEHROiIqOeftTwInzVXysTo1WUxf5WwhABcvNLXRNaPLW3qebIZlK3qWHGycLKQO6bwJ4HUKMxulHht15VPDJoiiLQ/ijSl5lyWdAIa1s1Ozj8JvNqLRjGYVEXh4wM+9hqomxAofnqFveEA3ieks3XKlny3egLVMaalW0USOp4u4XFAVKIJTuay0dhPDaRb6ZD0s+fEGGqyoxo+c8hUEkArMXMbRPE0WIOCD41mNBG45k8CnFkCW0Is8MwJKNFJ2mqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WsNxMFM4nVPBm3vTxgidFT8kVAPmEF338dYvqpw5NTw=;
- b=nCsKqTD1iOgWq4OKa3o0ozHsXDFhcXMkT31lb11HW8l0DPpzx9pparOwGW4cX1ZfI06JefrdKgYzBwPCVu/REJ4SmMV3vWtkGmB83pCNqug3gaurBhU9dlolZoGYoxgH28TzpDTGVUWYxeD2KZ8oRu2JLzXnnaJiWheqlMG+BlR4JgMlgAW8FiDOZ9/SPH+0hYmx3busQlYenlM5aMblNVfXEdW+NGF5dLtVYExSNp5IGqdtgc0VE1XKNPNoQMfDUJ0bUgx7hCUHZpFqt8nAthvwJaEAI6xSHjmiBh7KUxJ1u54iAxiUGA8bY1J/HxqWG3QzQ3GeNrF4ggX+HYj4Pg==
+ bh=a19byuoTHXL3ssNpRJtujZZjdiT2bWZZ2x8GJL3PJcc=;
+ b=Clt65BSEtRS46DDxfJc0c4lwfjJcnxQJIHcsQCF5GXyIoJZnFSjjTPR8hZmgw6KYL8Sl4PgpYNpBmNEBNB7ZUTpfEiQHCB4sdHm+CtZM7EdOdFBJ+Th++ZaAdjv/gp22KKVnTR6FWKO0vf7CMbH6xYsXzAJ8DpAEC0bUWLsAi5o94S3hsLn/Lt3k/bPdcj90ZxwHH4mlXS90fc6eMjaCS/0oK5+4bMtBmQPRkdL8WuS67+wAP1j5vhj3wNswz8oxLlgbbJh8LtO7ycNgMIUGOJ2KKng3gVDmtoQ3man1dNQUUYMcUbrjS2zJVElwZgsjeXuabFu0WHqNtgMqoXTHzQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WsNxMFM4nVPBm3vTxgidFT8kVAPmEF338dYvqpw5NTw=;
- b=Lnbjn/V9ZDayJglluAQGk8J9lRDdtrCxOHXxKUXP6UgBZ6ltpOHcXA14HyrqM2E0zlqgxlAmJYEEZkhCEeoruTM1PoAwSyI3ZRhrrZ2TkPd0dA2lW0Z8gZ12BfWRrbHhF7QC1lNhZ/wfMhg03G7Fyu026BJjUu2itzTQV4Is9VE=
+ bh=a19byuoTHXL3ssNpRJtujZZjdiT2bWZZ2x8GJL3PJcc=;
+ b=Z0nORIzsquCqxFMWGsTxz9PfqsI/bvH08Ax0f8FAOIj9vXb6DxyKg8aNmcDlEU3NXXdq4x35nPkunUnJHvuN5wZ8L31nTrmmAF1TI7YlUtm3A+oaYDaCzeiXmZa6w4TXpSjkjAZZVKNAe+Kk2Kn5p6kpqlY76/X5YYkcsudSUQrdS//gey20wMBb9JlGFT5wx6jXA0DsaqcH9IRZ2qlnGzeLzbGseYwCK6qIgFgLCp5Spo7gHzJI0PiIUDiCrvLgQV6c0NdY+kmt1b0O1FQj2ZcgNPIFoFdKMhuwsNwzcHRNjQqfMmyUYK4F7lEF1pDAVrxcQzx7nQDnMnnUA0oG0Q==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB3068.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:183::6) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by CY5PR12MB6084.namprd12.prod.outlook.com (2603:10b6:930:28::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.11; Fri, 30 Jan
- 2026 13:10:23 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
- 13:10:23 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 Jan 2026 13:10:22 +0000
-Message-Id: <DG1Y5V810II1.1HE2T0HDBLNXI@garyguo.net>
-Cc: <linux-mm@kvack.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: page: add volatile memory copy methods
-From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
-In-Reply-To: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
-X-ClientProxiedBy: LO6P123CA0045.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:2fe::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+ 2026 13:33:08 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%3]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
+ 13:33:07 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Date: Fri, 30 Jan 2026 22:32:46 +0900
+Subject: [PATCH] rust: io: move MIN_SIZE and io_addr_assert to IoKnownSize
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260130-io-min-size-v1-1-65a546e3104d@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDQ2MD3cx83dzMPN3izKpU3TTjZCMLy2RDE4vEVCWgjoKi1LTMCrBp0bG
+ 1tQBsTUJbXQAAAA==
+X-Change-ID: 20260130-io-min-size-f3c289c148ae
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Zhi Wang <zhiw@nvidia.com>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.14.3
+X-ClientProxiedBy: TYCP286CA0253.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:456::11) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,267 +74,235 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB3068:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97152da5-54d0-41e7-d0e7-08de6000ed29
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CY5PR12MB6084:EE_
+X-MS-Office365-Filtering-Correlation-Id: bd6cee6f-468a-499a-819a-08de60041a89
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|921020|7053199007;
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MHBYTFo4bGdLV0V3cTB4OXlGRVc5UVRnQ0VZLzgvVmdENGgybVdiV0V0UFpN?=
- =?utf-8?B?ZVR2YWNYSkVOb1B6MXJOdDlscDRLUzZBa0N0am9MYytMWWNsZGlJTHMwZzEv?=
- =?utf-8?B?dW5xeFNHUzU1SjBnYnJaN2RGTVUzYmxKTjZYZDNyaHFabGU3U0RmL3NzclBn?=
- =?utf-8?B?aXFwNHBHbmt3RHZ6cjJWQzF6eFNzd2VPaHkyMDdSNnAzUUJxZGlWS25TVU55?=
- =?utf-8?B?MHkzUlVvUk5QNEdJakwwN3ZHdVlaTmNIKzN4L0R0SS9rVjJKNVFIckJLZzhJ?=
- =?utf-8?B?M3Q5Z3BkMXlBOXdmSHpMVE5ZZzVGMlFORGVQV2JJcG04dStudGdFaTR5Zzdi?=
- =?utf-8?B?Ti95cjlLcEtVSW5aTTNsREZDV1JwLzNJQ2pWeEZuNjd3VndwT0V2WFZ5bjIv?=
- =?utf-8?B?OEhKcWpsSGZKbEhXa0Z0Z0ZJY0NhcWx0QlQyaVp0MkZ5YjhmRTVOSlMzNjUx?=
- =?utf-8?B?bGJtMXZWVzRXN2VNRVB2ekJ1N2hYaE1VU2ZSM2hDVjcwRVdOcWphZXM0K3hQ?=
- =?utf-8?B?Q29SOHVuQzljSlE3aVprdlFRZVBaZ2JTNjJwUDY1aEtOVmxtOW9SM1liVjIv?=
- =?utf-8?B?a2NoT1RBa1NYbWhVOEYzWXpIcUJ2aER5SmpJaHJLT2MxdnVDQ2hwemk5dGpi?=
- =?utf-8?B?akp1QlUvbkZva3NTSUo5alppL3dXVkpIQVBmZ1JtS1hYTC9zdDhTeWdPTWEz?=
- =?utf-8?B?QjdUVGxFYjJ5aFB2Rk55TFdwR3hBazJ1WFY5YnphUVhheTJscDlqY0h5cEhk?=
- =?utf-8?B?R1I3NXVUQytBWiszSHNiczVQVk9HeXdHMGp6QkJlYkQ3aDFaeDQ1VkdMQ0Ji?=
- =?utf-8?B?TVZEcys5Yy9XMGJTVGVpd3dsNVRZbS93N1QyMDRmdmVVUWU1WkRRNDZkU0lY?=
- =?utf-8?B?b0dlQWtsQjRLWjltdGpzYUdadFdUcUpQSUswMU1JcXg1a2swWDkxbnVGbE1T?=
- =?utf-8?B?MHJZOVRHMm11VjkvQ1l4cFhRU20zN2RCQzJWVVluUGlOQTJXNFg5MThXcElk?=
- =?utf-8?B?ZWg2dlVXTWtzaDVOOHJ5NjNNckx6eEV5cVZYelNaMUh5OUd5TWprd0RqWnRz?=
- =?utf-8?B?SUs0Qi9rL3lmSzRHd1hZOVM2VER4Y3pPeXplenFvSGszaDZ0QjRUcnJSdW5P?=
- =?utf-8?B?UjZYWWZSRWNIK2NiTzRtZVhFTDZ4WG54TlV5T3FSV1VrdUNqWHM1K0M2b1pl?=
- =?utf-8?B?WXhYTHlGU1c5SGtHQ2VKVnVLdUhIekkyVVBNQjlDMVRyS1U1UFFnQlBkZVVX?=
- =?utf-8?B?ZG1EbzI2MzhwclV1TTZlZVBGdEZocUhFdG1SOFVVdmxwM3lwQXRQN2cwVGFQ?=
- =?utf-8?B?bStuZVF1Z3lkRXByME5aM1J3b2IzbXV6aEJJWmdsYWs4Lzl2Wkkvam1ZWE5C?=
- =?utf-8?B?enVPanIvbkE4Vi9jbzhwWDk0N2dUZ1ZWNDBFd0U5SnZnOTJPK3dHOW1aaDc4?=
- =?utf-8?B?azA3anovNjVYVUNmZzNIQThKeDFLRVJTeGRZUDBnTVBMZ3RSeHEweWVJMWdn?=
- =?utf-8?B?bzlFVWVyUmpSRDlUTFU5WWtzZEpVSXI2OVYxblY5V2F4dFdSeEF4YUxqY1Fw?=
- =?utf-8?B?ZU1yRzIybG1HT2hPQWhFNW9oYVUrT2RaZkJSbFNTVVRWS0VVSDF1b09lb00x?=
- =?utf-8?B?ek5aVTA2bjZ1bTZkdStndmhTRlJ3TW1mN0V1VUZ5NDBQdjVXZW1mRDRxeVpJ?=
- =?utf-8?B?VE9VTEd1Y3lPNVI4U3RmQmFsWXI1MzlJZGdqMjBTeDVpQjBRRXlqMFlMdVMw?=
- =?utf-8?B?Uzc0dlQ5Vi9VbnB4WEVNSWpTMGRXQWE0RllBTnNCUHE4Mmx6MTNmYlRlaksy?=
- =?utf-8?B?bHJxNlByeTlhUU96a2Vma3lUa1NXRSt5bzFvS1oxNkZyUVlEbzBzRjBsK1Qy?=
- =?utf-8?B?UnBoTkYzYXp6eDBQMThUTEhjSW1ya2d6YmNvNW9neUFtZVcza1hadGRBdmpX?=
- =?utf-8?B?MHZXWmhqRzd4elNUMU1IS013Uy9mZVpKREpjOXlCMFVUWXEralh3RUNpSzBB?=
- =?utf-8?B?eHNrTFdaaGQwb1VYUFZ5R0xnSVFJVmk2UGFRVmxCK2NVaFFTT0VMODVla3JB?=
- =?utf-8?B?a0J1TlUyd3ZWQjJsclVScW9zYXVCVWFYQ3BraEw0dkt0VWc5M25PVzgxa2JJ?=
- =?utf-8?B?UGN3dHJFaHpsTHQzVVh4MUM1TzlPYXpQRUUraURURGU5NnordVdVQ3NOM2ov?=
- =?utf-8?B?Wmc9PQ==?=
+	=?utf-8?B?R3cvMCtKQm9tWkJ1cW95Szl1YXpzcTFtMlRIdXJvdTUreDdwK2g3VlVXU2RD?=
+ =?utf-8?B?Y2ViY3ArbFFlQmxXenppTHAyWEpwZHF0L2dhTkJIaGQyY3JObElJQ2oxdjNL?=
+ =?utf-8?B?OEcxWkNNMEpOMTVJdllOaWtLeVV5Rzk2T3czZXcvVmRQZEpObHJLMXRCenZx?=
+ =?utf-8?B?d2U4Q3BKem5hNmh0RzJpbGFYc1hpUGZUVEZGRURndnNKR2Qyc1o0cE9VNjdo?=
+ =?utf-8?B?NVhTRnQ0SzVIR2RwV3lGUEVlMHpXMDRXby84WXdEMVhDMElzL09pZ1hiMVVj?=
+ =?utf-8?B?UVNuN1lzNnRKQUw5RW1wTE1xRk0wc0J0TWU3YXUvakdGdy9oNDZ6NnIwc3NY?=
+ =?utf-8?B?YW5vQzRIdGx1YnpZL01zU0VaVHY4TFlQQW5GRHRtbVg4VVVKcDF5WVFtajVn?=
+ =?utf-8?B?ODQ1b1lSRTM5QkQwaEUwQ1JkaWxXYnBpbmZnMzVPT0FXNkh0OW4raDBZNGth?=
+ =?utf-8?B?WjVpSWVnR0VuU2w0Y2NMN0hnUUNYOUZhZXpRYlNkNXIrUEN1Mmp4RmEydEpi?=
+ =?utf-8?B?dUVFUFcwZ2tlVU1yMy9LL3ZBWnNobk1FREVHR1NjcDdySDdXUzM3TjBScWdW?=
+ =?utf-8?B?WWlOeElhYVppR3NNUU9LOWxtYTRiWUhQWHpIZDZOZFZCOHh6TmNnMko5cEQz?=
+ =?utf-8?B?enU5ZEJFeFRwczc1dFRla1E0aWljSmttODRMTDYzaHp5cGRhTVBTajlzZm5u?=
+ =?utf-8?B?Yy8rZnZ4YW9WOHB2M3NqRUxKODlsL0lwaUZtLzV3YUM4K0NwTWZUb3gwS3Ew?=
+ =?utf-8?B?WVdlbVZodUdaNzU4U1UydnIxQWdLQW5lV1MycEZ1T2ErWFVYV0pUcmxtRTdC?=
+ =?utf-8?B?SFYvSitpdXd6WHBpdWE5a3FlWmFLamIyenJaYkU4ZDBXNXhxMC9vSG54U2Ft?=
+ =?utf-8?B?RWZxMGlQR3IzNnhjeWEvWmk0Z3R4Z1RFaGJ5azduWEw2ZjJZLzAzbjJmKzNL?=
+ =?utf-8?B?QzhPcWMxRU1ib2VWMmpVOTFud1RKd2hRL2paSWNtcExLckYzelFRZk5ZdVo5?=
+ =?utf-8?B?Q216YTlrQ0J4bUozMjBNblc4UEVrVHcrM1A1akJ5YmdsYlBqUFl1VkEwZVJC?=
+ =?utf-8?B?WHpKbnlWWVhLUlZsMmQ0d2J1eGtwbXB1ZjVlRWtyZ1JNYkhUVk5zZjdPZmVs?=
+ =?utf-8?B?cUxHVXhuenUrd0NwS0ZENnE3STlySHg3YzFJUkFrcFgrOG0vNUJ6TGpDMTRH?=
+ =?utf-8?B?anRBYXFYVmRFNW01dlp3U2htbjBVWWUyTlM5UmthRVB0aGc1YTRJWHo0ZVVn?=
+ =?utf-8?B?ZjZGdy8vN2RrcVovSEFGUTJ1cUl2TUhNM2F6TmFXN0hnQjZNWHRVbnNIZjhu?=
+ =?utf-8?B?clB1UjMwd1ZRc3hSaE9MWENKc2QwSVFKdEw3dXdDb2duN1NDaGw4NUdiQUNu?=
+ =?utf-8?B?SW5IT3A4a1U3QWw0Q3BsVU1zTVpzSk85cVZJeVg0TFlPRzZIVGRkTVoyNUFq?=
+ =?utf-8?B?V0tiSUIwTWJuUVFzUWNjalljY3JZQjFXSWNqZEFRTHE5SUtqeW9sTmIvdlY2?=
+ =?utf-8?B?VjROWkVpT2ZnQzZQMlNHbWpWd2xxeUo2WUNyMjdqc0RrNml5L2JYRGE0bld1?=
+ =?utf-8?B?Z3hJMzEvZTBMQXE2ZkZnVkZpd24vT2xOTVVCWU5jSTRER05NWGNDeG1YQVVR?=
+ =?utf-8?B?T2xjVUVhbWM3Q0dla1BCcERDbWR0MGo5eUVsREdLMXRTNysrUVlJT3pKR1Zx?=
+ =?utf-8?B?TzZ2QVYvTVYrU0VCZlBzL1I4aVk4M0JBQmJqOXhlYVBLQUd4STJtSzRuRjBC?=
+ =?utf-8?B?WmJ2YmpTREZQSUFSVUhGUUQ2NWxVU2x1ZGhaQ3F0cEJ1b2tkeStKYWRBUVpl?=
+ =?utf-8?B?Uk1xSjJtUlQ2aEtaVW82VXArSlhLMzZWWW5JRXlsVHpOR3B2SEhCdGhOcGdh?=
+ =?utf-8?B?Z1g4MEpmZmFXZWxlejhQRWdnVnRnbXBCYXVyVlFJQms2UGxxUitWUzh0bWRm?=
+ =?utf-8?B?RFVSNzZDYnRwcllGaXUzek1uWG5FUklTaVk0SGszbEkxU09wQjRUSUhvTWZU?=
+ =?utf-8?B?eU91azhnemlJUmgxQ1g3b3ZPMm5Ydm5XU1I2Zm5NTFR6dDB1dlF4WGxrRHIz?=
+ =?utf-8?B?TFpUNjZPZ2tDZ2EvYldCRFVNNkRZWjFWMW5YYkswYmp4eFBCM0RmTzlhQlE2?=
+ =?utf-8?B?RjZoOUpocXhrZHFSKzZQaXNjTTRxUk9kc3UzY3V3cU15dHNJSUZNSlE5VnR4?=
+ =?utf-8?B?WlE9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(921020)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UTV5Y0JQalg3Y2ZCOUhibld3Tjc4Tk9rWXJ1L2YxQWdvUTJwZy9wRU9MVDJu?=
- =?utf-8?B?V1JOYk5nOUp5N3pvTkRtNG1VZ1lPVXRPVEpzRGdiUzdNTXpRVkY0YmZITEI4?=
- =?utf-8?B?RENUdENxVGUxQlBKRFhSVTVoWndTaTNoMERIQXJGejZmalFxWEI0N2lUM1cr?=
- =?utf-8?B?dTZQeW40cDdoamFaL0RWbjhNQ2ptaUYyNW1Lc1U1SHFYUnVDZ3JLeGwxWm84?=
- =?utf-8?B?eThxRjlyNnNZV2xNVjN2bzVnakhxR2dPaWVKOExra1d0NFRjQUYwenBTNjVu?=
- =?utf-8?B?SkJOVzdrbmtJeXZyalZCNnRYdERSdkZCOXFIWUZ6eFE0dStoNHBoaVcwM09G?=
- =?utf-8?B?a3YwbVpqL096QVBYOWd2SFZYS1ByOG9nUEZlMWxBdnEyT2RxWmkrck9JVVJs?=
- =?utf-8?B?Y2RlZVRSN3Y2bTBTcHF1RHJBU2Y5b1BTVHRpWHhrSU8weUVRRElFczFNSjJ6?=
- =?utf-8?B?VkN4UExsQ0JLd2h2SkZ0SnArekFtRXQ5eVpYRVpKZ1ZybkgvLy82aTdyYlVB?=
- =?utf-8?B?MnMzejBwQXNnUEdhNTN5UlNMRzd2KzY0OFlrc1R5NXhneU45SzVGOGFOMTIz?=
- =?utf-8?B?K05vZlRMQU9XOWdjSVYvc2prVWR0TFVZSU9KaFRLV0RndlVCOUphUXpxSUYw?=
- =?utf-8?B?MWhrcjlic2R1eXpJZzAxbUR6MDdqNmxmUUFCR3o5TEVPdktmbmUxZ1ZWSHVO?=
- =?utf-8?B?L3VJaDdhZWo1d0t6OWdjNnplaFU4dlp4S0VyNXdad2RJQURhUXpJS3h4dlpC?=
- =?utf-8?B?eE9qZHNPbzNNemN2aWFXTHNGVlFpR0drbzF6RE1rMUdiS1d0U09NTnFPT2pz?=
- =?utf-8?B?ZXJZeVpSTEhZSm5ybVU4dkhoZlNJZFlYdGFPNWtOQXBPNVlnaHVDUWlKdUh1?=
- =?utf-8?B?cmVjRGorVlA3NisxV1o4NzVMZ0FUMDlkR0dpT0RIdE5nWHRpN3d3V2tkTUNI?=
- =?utf-8?B?UWtUMk9CRHJoZ1RDRmJaYURuWnZtb3J0R24waTFJZ0p6aVE0TkVRYlN0WmpK?=
- =?utf-8?B?RE9SdEd3MmNEdlNEcWlqSm5OS2hBNTYva1QyWVg5UTVVSjhZVGpGU0xmb0Qy?=
- =?utf-8?B?RU9JQ2FRVkNoTnVjN1EvQkJscy9ISy9STE9Zb2ZOeDg3Z1YrMGMyQXlHdUgy?=
- =?utf-8?B?TjRrQXMxcy9GaDVVMnh1ZW9DU0pvQ2FXWFpGOGtlY2VvMVdJclBZTjJ5cHB5?=
- =?utf-8?B?dkZyTjd0R2U5dm03REFXYVB1bUFQdnFhS0FXczN1V2lvdWNBQjNRdU9HU0Nt?=
- =?utf-8?B?LzQzKzZOaWZWSWtmNE5yUDM3SlorZDh0bFZhMys1MjFGN1hZOVIxWmphZmF2?=
- =?utf-8?B?YWp5YTBWQTNHVHFNL3FZcGEwenZkNE50M2NNaEt1UnpyMllVR1JERWJ0cWFw?=
- =?utf-8?B?dWVpVjRuakFkQlB5MTR6RXR3TUhySlI5emcrYXRtUUE4QVRLN3BnNndRQnRK?=
- =?utf-8?B?UHBnLzRacmVjWnJ4ZFJmVzBGbEpFdndQdlhKamEvVExyemdTbk12cWc0c2VD?=
- =?utf-8?B?YVY5dmZRQTF2WW1VNE5LWHNOTHFkaXdWYlFhMlI4UVkxQWhXN01XNUVENklv?=
- =?utf-8?B?YWkvdkNhNTR6UmhsUWkxZUhJYjhaR3NqVjNjcHJpcG1LTWZNR1AyUmJTalZ1?=
- =?utf-8?B?aFlTSHVZN2NqWHk0WGJxT0diYTY3TXpudDV1SThIOGZPN1dxMnBmLzlCN21K?=
- =?utf-8?B?QXdzVkdoWlhVWGlILzNncSt1cElRc3J0S1RGSTNxN3NUN1hEbm9INjRJTzg5?=
- =?utf-8?B?NUVFSXk5dnNLNzYwUVNDMndLOUs1YS9MS3psaER5NTE0QnZ2dHRxTllFcFlt?=
- =?utf-8?B?VDBGeXJLWTJvcnAvakVWNjlEVFlzMW5kcFRyYStINW1HNlRLVGlTOVhlaEts?=
- =?utf-8?B?TExtbUJLQ2lBR2x1NjZmWmducDdnamtieHhhRDJtcll5MGhzVDV3SUV3ZFpm?=
- =?utf-8?B?ZXdmNVdtd2p1c2RiNkhUVDVhdElsVzJrR1VnY3EwY2RzQTNSN1hZaHkwZFV0?=
- =?utf-8?B?UmY5YU5UdE5FSWlQWlh1ZmY5WFV6ZEhleVI0NkxmcXFGSWpkb0JwMmZZajV6?=
- =?utf-8?B?Tk16RGl4clNCWmhNS1VHVTdPY0Z6Ni82Nk1Va3JTRis2Q2kyNFJnZVhPVlhr?=
- =?utf-8?B?TGlDVjZvd1MxWHNJbnVSamtuZno0a1dvaW9abFBmUFNGWnpXSS9ZSjVHQU9M?=
- =?utf-8?B?dU9VQ0lLc3RpT1hLc3dRY1pkckdjeXFEQTBYN3drRE82aEhybWQxdE1VODVz?=
- =?utf-8?B?Z1k5SnFJWnF1L0RMZkFsVmFHZjgzOU1KNzVYNzNsY05sMGRCdzl4RmdqelBl?=
- =?utf-8?Q?5jZkXS77MS6dAtA052?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97152da5-54d0-41e7-d0e7-08de6000ed29
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?RFA1UlVza0xVajE1d3NNTm01NEVFTFh4UTVjQy9yek1QaE01T3ptck9vWVFU?=
+ =?utf-8?B?U0U0cVBuTkJCU3lGazM3OXhOeGNKMU1lWjJDbmgvZWkzYTY1UmlHOVdKV0tJ?=
+ =?utf-8?B?c3U2R0RvVjMvdXc3TGhzM0lVMDJYeUJxZTlqbnVNallmRmpaOUxDUkZIT0xk?=
+ =?utf-8?B?a0xMOUpHVFhWS25yZ2g5eTR4eGFXemU0QlEvbHYxVXNTaVF3UVdYNnA5dzdk?=
+ =?utf-8?B?WGhUMGRIaGxuOGVZRUR2UkNtaExJVDB3UVJRN1c4ditKNTJheXN4c2R3MXpv?=
+ =?utf-8?B?cnV0d1dQc1dIZlN6VGVnZjVMajRmYnVDOU9JcEJsLzVFeFVvSkFqdkpiWFBu?=
+ =?utf-8?B?eFBPWHBTZWNON0kwQ2hOcVhnZkFORC9FVHFrVUNlU0toMmdDaHVmd3l5d1k3?=
+ =?utf-8?B?dmV5Y0hMODlBdXNtZHlXVGdvQkk2WnhJK3JEQ25UUkQvaWtJM3NPWDVqK3Vy?=
+ =?utf-8?B?SGhhRnMxcjREblNtbm81SDlPRC9uYWVXUXJUWnJVQnI1VVpzRmdxNnU3Tmpr?=
+ =?utf-8?B?cWordmRWczRENjJBckhqbUdXUy9nL09HNkVwT2lycW1QdytMSDhTbkh3Y0Vy?=
+ =?utf-8?B?TSsrM2phOGpSQldmUGNPWnV4THdJYjFvQUdvcm5IMnMzcHZybCtEb2hNK2xE?=
+ =?utf-8?B?TW4zVitxUVZvRzRmSjNTNUNOK0pQTkhkUjhxb3JRdGswcS9Hb0k0Tm94ejQ5?=
+ =?utf-8?B?RHhUQ0kxNkJ2bGFVZXFOTExXTk4zbk5RQ1phcEg0WGswTzNUeVgxN0VnVVlq?=
+ =?utf-8?B?UGpPdzVWcytCSUlmdDRla3JhbWlWVzlxN2phSFhwWER0NjdLOENTNTdRTWpi?=
+ =?utf-8?B?MHBPSjQvc215VHVUTUNWc3JLTWRwb1ZMaXpweE1OdDNwcTdkUlNkbUlPOUQ0?=
+ =?utf-8?B?djI4eExaQ2doYTAyU2VFeDU5Rk1WWTVmVGc0YjcveTlyUGFZYk5ZSFFpUHp3?=
+ =?utf-8?B?bkxOTlliOGxuZGtMOStEaHZjOEIzSk5qRk1jZW82cEc4bG1JVVFMV3VRZUw4?=
+ =?utf-8?B?STJYODlrdk1oNWF2UDRFZWpmNmdSV2Z5cGtwZDBlaTliZXJXUjUwSEdyQ3N5?=
+ =?utf-8?B?eEszMTJlcGs0OWNKd1pvMG1DWDUwU0xsWkFFbmVDYnRpaEpCbDZ0UVNxTjVz?=
+ =?utf-8?B?eEVvL3ZSaUd4U0VCTzFXcHZNRmtMZlkvQU8wSkFQUTZqU0tqOHYwc01EZDJn?=
+ =?utf-8?B?UVJ6djZuUE50SmlucTFXWHlKZDYyRy9heXM3VTVlanZ3TW5YSGJWV2ZiMEJR?=
+ =?utf-8?B?YkpTYWhMS2FUTTBBL0F5WGZyM014b3JBNkNWOGVaMjhqL0gxcTQ2UnRpNU9B?=
+ =?utf-8?B?cVk3R2VVRWdQTEJ2aE1pWWhDWG0vQm02SS83NHR2ZXJaemc1bVNrVk9qcFpz?=
+ =?utf-8?B?cEJzOHRqS1lFSDJwRVM2MGYzQXJCM3MxclY0c3VGOFhGbmV5Y0gxNHpjK2JE?=
+ =?utf-8?B?R3BNUVU2ckJFVWN2YkZ0Mk5pYmgwdWlYVHlnRkJ5UTN0ZTNSQm5NOWdPK0ZT?=
+ =?utf-8?B?WWlhS1U2Z1ErdEtuaElUSkhPNVllZjVSdWZyUGZ6UmpRTldBTnJyK2U4NWhw?=
+ =?utf-8?B?OW1wYUhXRlJSRzMxdDUzYXUrNzNla3d1RWFOWDg1bDVMS0xYYWJXa2tmV3Fq?=
+ =?utf-8?B?eFYrazZiU3NYUjdrYXVqUklWbHpkUGtsYWNsRVNBRG5pT2xHL2gxQlErbGp3?=
+ =?utf-8?B?SitmcitWRk5RZzQ3aDZVUlhtak92K1FJS3FzNU14MkJaR053K2wrczd4TGpS?=
+ =?utf-8?B?bDhNZ1A5eFJUMVlkamp1ZlF2cENWenIxQm9vTUZnYXlrWkdEY3N3MzJhOVZX?=
+ =?utf-8?B?Y2dOSGNhY3E0K2xqejRzaGYwU3RoZktBTVdBTnN4M0NUWk5GVHFZQU9kSkd1?=
+ =?utf-8?B?NWJoQ3BsMzRoTXVMQjJCKzBLV1hBNTBtSkxuTTF6aGJkQ3lrVFhBNmRZYXND?=
+ =?utf-8?B?UXBzVmpqeEx1eW91dCt3NE9meDMwN2RrZFRaZFJNeDBTeVBwb2RzL3F4N2ZO?=
+ =?utf-8?B?c3lYaVdyV1ArR2htV2hyQmtWd21pSVlCL0VOUG9YV2ZXZ29scG1LM2FxVkc4?=
+ =?utf-8?B?QWg1YzJnQzBJYmFRWklmNXM2ZkErcmpQemhzMzd4aUtMb29yTVQyRVhSRFJY?=
+ =?utf-8?B?QnhkUXdQUWpFdlNXOVFvNlErbktpUnRQa3BINmhJdVdJeU81SEdHV2xzeTJP?=
+ =?utf-8?B?R205WkR6Skw4VWx0bm1Wenpkc3k5SHVHakVRUW82a080WU9KWmhsQm5IVDkw?=
+ =?utf-8?B?NTJVeHBvSDZyMkNQaFVtb0ROZlY5R2pHRysxNlF0VGhGK25EVVFDbzk5VGJW?=
+ =?utf-8?B?aWJRRmtXdUNmaUM5djlCNGpmOVFpZGkvQWpXSHMyREowYzlIM1RpblRBeUFG?=
+ =?utf-8?Q?YWIn5cFXksLn+JBr+41xzMo9rghUV2ajJgs9MpkkXwjRa?=
+X-MS-Exchange-AntiSpam-MessageData-1: Wur8ZGCIlXbxUw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd6cee6f-468a-499a-819a-08de60041a89
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 13:10:22.9592
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 13:33:07.6623
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O10x0UVdJtYrtMQmX6ME6IamRdA27MwTbtW7WTm/dK319OMO3XbpSxgRFU7U+SCzAiN7XE2bThjmGeTWN3N4QQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB3068
+X-MS-Exchange-CrossTenant-UserPrincipalName: mUYqF8blqitz/OKO73KPdZ4CU5ic/ZYEQNBO2laeceOUP0px5xIbbqpLIlZIKYhCHEOT5eZg9eTCQvrB0wuu4w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6084
 
-On Fri Jan 30, 2026 at 12:33 PM GMT, Andreas Hindborg wrote:
-> When copying data from buffers that are mapped to user space, or from
-> buffers that are used for dma, it is impossible to guarantee absence of
-> concurrent memory operations on those buffers. Copying data to/from `Page=
-`
-> from/to these buffers would be undefined behavior if regular memcpy
-> operations are used.
->
-> The operation can be made well defined, if the buffers that potentially
-> observe racy operations can be said to exist outside of any Rust
-> allocation. For this to be true, the kernel must only interact with the
-> buffers using raw volatile reads and writes.
->
-> Add methods on `Page` to read and write the contents using volatile
-> operations.
->
-> Also improve clarity by specifying additional requirements on
-> `read_raw`/`write_raw` methods regarding concurrent operations on involve=
-d
-> buffers.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/page.rs | 53 +++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 53 insertions(+)
->
-> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> index 432fc0297d4a8..6568a0d3b3baa 100644
-> --- a/rust/kernel/page.rs
-> +++ b/rust/kernel/page.rs
-> @@ -7,6 +7,7 @@
->      bindings,
->      error::code::*,
->      error::Result,
-> +    ffi::c_void,
->      uaccess::UserSliceReader,
->  };
->  use core::{
-> @@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
->      /// # Safety
->      ///
->      /// * Callers must ensure that `dst` is valid for writing `len` byte=
-s.
-> +    /// * Callers must ensure that there are no other concurrent reads o=
-r writes to/from the
-> +    ///   destination memory region.
->      /// * Callers must ensure that this call does not race with a write =
-to the same page that
->      ///   overlaps with this read.
->      pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usiz=
-e) -> Result {
-> @@ -274,6 +277,30 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: =
-usize, len: usize) -> Result
->          })
->      }
-> =20
-> +    /// Maps the page and reads from it into the given IO memory region =
-using volatile memory
-> +    /// operations.
-> +    ///
-> +    /// This method will perform bounds checks on the page offset. If `o=
-ffset .. offset+len` goes
-> +    /// outside of the page, then this call returns [`EINVAL`].
-> +    ///
-> +    /// # Safety
-> +    /// Callers must ensure that:
-> +    ///
-> +    /// * The destination memory region is outside of any Rust memory al=
-location.
-> +    /// * The destination memory region is writable.
-> +    /// * This call does not race with a write to the same source page t=
-hat overlaps with this read.
-> +    pub unsafe fn read_raw_toio(&self, dst: *mut u8, offset: usize, len:=
- usize) -> Result {
-> +        self.with_pointer_into_page(offset, len, move |src| {
-> +            // SAFETY: If `with_pointer_into_page` calls into this closu=
-re, then
-> +            // it has performed a bounds check and guarantees that `src`=
- is
-> +            // valid for `len` bytes.
-> +            //
-> +            // There caller guarantees that there is no data race at the=
- source.
-> +            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), src.cas=
-t::<c_void>(), len) };
+`MIN_SIZE` are `io_addr_assert` only ever used for IO types which
+implement `IoKnownSize` and do not make sense for types that don't.
 
-I feel that this should be a generic utility that integrates with our IO in=
-fra
-that allows you to copy/from IO to a slice.
+It looks like they should have been there since the beginning, so move
+them while the code is still fresh.
 
-Best,
-Gary
+Also update `IoKnownSize`'s documentation since it is not just a marker
+trait anymore.
 
-> +            Ok(())
-> +        })
-> +    }
-> +
->      /// Maps the page and writes into it from the given buffer.
->      ///
->      /// This method will perform bounds checks on the page offset. If `o=
-ffset .. offset+len` goes
-> @@ -282,6 +309,7 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: u=
-size, len: usize) -> Result
->      /// # Safety
->      ///
->      /// * Callers must ensure that `src` is valid for reading `len` byte=
-s.
-> +    /// * Callers must ensure that there are no concurrent writes to the=
- source memory region.
->      /// * Callers must ensure that this call does not race with a read o=
-r write to the same page
->      ///   that overlaps with this write.
->      pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: u=
-size) -> Result {
-> @@ -295,6 +323,31 @@ pub unsafe fn write_raw(&self, src: *const u8, offse=
-t: usize, len: usize) -> Res
->          })
->      }
-> =20
-> +    /// Maps the page and writes into it from the given IO memory region=
- using volatile memory
-> +    /// operations.
-> +    ///
-> +    /// This method will perform bounds checks on the page offset. If `o=
-ffset .. offset+len` goes
-> +    /// outside of the page, then this call returns [`EINVAL`].
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that:
-> +    ///
-> +    /// * The source memory region is outside of any Rust memory allocat=
-ion.
-> +    /// * The source memory region is readable.
-> +    /// * This call does not race with a read or write to the same desti=
-nation page that overlaps
-> +    ///   with this write.
-> +    pub unsafe fn write_raw_fromio(&self, src: *const u8, offset: usize,=
- len: usize) -> Result {
-> +        self.with_pointer_into_page(offset, len, move |dst| {
-> +            // SAFETY: If `with_pointer_into_page` calls into this closu=
-re, then it has performed a
-> +            // bounds check and guarantees that `dst` is valid for `len`=
- bytes.
-> +            //
-> +            // There caller guarantees that there is no data race at the=
- destination.
-> +            unsafe { bindings::memcpy_fromio(dst.cast::<c_void>(), src.c=
-ast::<c_void>(), len) };
-> +            Ok(())
-> +        })
-> +    }
-> +
->      /// Maps the page and zeroes the given slice.
->      ///
->      /// This method will perform bounds checks on the page offset. If `o=
-ffset .. offset+len` goes
->
-> ---
-> base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
-> change-id: 20260130-page-volatile-io-05ff595507d3
->
-> Best regards,
+Fixes: 121d87b28e1d ("rust: io: separate generic I/O helpers from MMIO implementation")
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+ rust/kernel/io.rs     | 36 ++++++++++++++++++------------------
+ rust/kernel/pci/io.rs |  7 +++----
+ 2 files changed, 21 insertions(+), 22 deletions(-)
+
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 056a3ec71647..c1cca7b438c3 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -301,9 +301,6 @@ pub trait IoCapable<T> {}
+ /// For MMIO regions, all widths (u8, u16, u32, and u64 on 64-bit systems) are typically
+ /// supported. For PCI configuration space, u8, u16, and u32 are supported but u64 is not.
+ pub trait Io {
+-    /// Minimum usable size of this region.
+-    const MIN_SIZE: usize;
+-
+     /// Returns the base address of this mapping.
+     fn addr(&self) -> usize;
+ 
+@@ -323,16 +320,6 @@ fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+         self.addr().checked_add(offset).ok_or(EINVAL)
+     }
+ 
+-    /// Returns the absolute I/O address for a given `offset`,
+-    /// performing compile-time bound checks.
+-    // Always inline to optimize out error path of `build_assert`.
+-    #[inline(always)]
+-    fn io_addr_assert<U>(&self, offset: usize) -> usize {
+-        build_assert!(offset_valid::<U>(offset, Self::MIN_SIZE));
+-
+-        self.addr() + offset
+-    }
+-
+     /// Fallible 8-bit read with runtime bounds check.
+     #[inline(always)]
+     fn try_read8(&self, _offset: usize) -> Result<u8>
+@@ -478,14 +465,27 @@ fn write64(&self, _value: u64, _offset: usize)
+     }
+ }
+ 
+-/// Marker trait for types with a known size at compile time.
++/// Trait for types with a known size at compile time.
+ ///
+ /// This trait is implemented by I/O backends that have a compile-time known size,
+ /// enabling the use of infallible I/O accessors with compile-time bounds checking.
+ ///
+ /// Types implementing this trait can use the infallible methods in [`Io`] trait
+ /// (e.g., `read8`, `write32`), which require `Self: IoKnownSize` bound.
+-pub trait IoKnownSize: Io {}
++pub trait IoKnownSize: Io {
++    /// Minimum usable size of this region.
++    const MIN_SIZE: usize;
++
++    /// Returns the absolute I/O address for a given `offset`,
++    /// performing compile-time bound checks.
++    // Always inline to optimize out error path of `build_assert`.
++    #[inline(always)]
++    fn io_addr_assert<U>(&self, offset: usize) -> usize {
++        build_assert!(offset_valid::<U>(offset, Self::MIN_SIZE));
++
++        self.addr() + offset
++    }
++}
+ 
+ // MMIO regions support 8, 16, and 32-bit accesses.
+ impl<const SIZE: usize> IoCapable<u8> for Mmio<SIZE> {}
+@@ -497,8 +497,6 @@ impl<const SIZE: usize> IoCapable<u32> for Mmio<SIZE> {}
+ impl<const SIZE: usize> IoCapable<u64> for Mmio<SIZE> {}
+ 
+ impl<const SIZE: usize> Io for Mmio<SIZE> {
+-    const MIN_SIZE: usize = SIZE;
+-
+     /// Returns the base address of this mapping.
+     #[inline]
+     fn addr(&self) -> usize {
+@@ -552,7 +550,9 @@ fn maxsize(&self) -> usize {
+     );
+ }
+ 
+-impl<const SIZE: usize> IoKnownSize for Mmio<SIZE> {}
++impl<const SIZE: usize> IoKnownSize for Mmio<SIZE> {
++    const MIN_SIZE: usize = SIZE;
++}
+ 
+ impl<const SIZE: usize> Mmio<SIZE> {
+     /// Converts an `MmioRaw` into an `Mmio` instance, providing the accessors to the MMIO mapping.
+diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
+index 026e7a3b69bd..6ca4cf75594c 100644
+--- a/rust/kernel/pci/io.rs
++++ b/rust/kernel/pci/io.rs
+@@ -148,8 +148,6 @@ impl<'a, S: ConfigSpaceKind> IoCapable<u16> for ConfigSpace<'a, S> {}
+ impl<'a, S: ConfigSpaceKind> IoCapable<u32> for ConfigSpace<'a, S> {}
+ 
+ impl<'a, S: ConfigSpaceKind> Io for ConfigSpace<'a, S> {
+-    const MIN_SIZE: usize = S::SIZE;
+-
+     /// Returns the base address of the I/O region. It is always 0 for configuration space.
+     #[inline]
+     fn addr(&self) -> usize {
+@@ -174,8 +172,9 @@ fn maxsize(&self) -> usize {
+     define_write!(infallible, write32, call_config_write(pci_write_config_dword) <- u32);
+ }
+ 
+-/// Marker trait indicating ConfigSpace has a known size at compile time.
+-impl<'a, S: ConfigSpaceKind> IoKnownSize for ConfigSpace<'a, S> {}
++impl<'a, S: ConfigSpaceKind> IoKnownSize for ConfigSpace<'a, S> {
++    const MIN_SIZE: usize = S::SIZE;
++}
+ 
+ /// A PCI BAR to perform I/O-Operations on.
+ ///
+
+---
+base-commit: c71257394bc9c59ea727803f6e55e83fe63db74e
+change-id: 20260130-io-min-size-f3c289c148ae
+
+Best regards,
+-- 
+Alexandre Courbot <acourbot@nvidia.com>
 
