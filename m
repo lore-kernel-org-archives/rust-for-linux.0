@@ -1,380 +1,366 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011067.outbound.protection.outlook.com [52.101.52.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F55D515;
-	Fri, 30 Jan 2026 06:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B702BDC0A
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Jan 2026 07:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769756122; cv=fail; b=SputN+jStiMPzWPeLdxXxlaV8e4REbVnXFjPGqgKjVKsLC6hBIOVS7CrjlYvzi1JCpKv83iH+trZ6K/3ht86a29kdupkI+iotzhI7LikNCKi3BXVND4fvwK11lXypeep5jjOuCr8UTQ97oZUI78U11j2myY9haeZ2j6JhdLQIBQ=
+	t=1769758997; cv=pass; b=mQHtZSB4URn5E/Xc9WOYo8QmNopmT/pPAKbM691GIbeYbjVthieI4yhROKc/aS6/rs7IjmT2TODDBUXZ1BvfhIRAtrl0dUM8avdIcDd23PDNz7MQOSX6vNhRq1mrYLTfxzSITH4Q5JBRyjhfu8fYrTHjNKmN4CiL0njox80aoaM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769756122; c=relaxed/simple;
-	bh=ImMinEU9qLn19uawK4ahZGZhlQNrwByVc1d0NEcVmKo=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=RlmyHX/AjexQD0tUnU1HyT7+YREFEBFxc51YuZeGodGQtYSV7nL4e/oANnfMYtHQsz0b5yCwKrNOk3kYKf9tcWe2l87bRoR5VG9AiLcv3dX6rq1y4LjfjHCPTTpLrQLklFscx9qBmMsYVruZn4iq+YzRVr4kIlywC9Le1jpCoLQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Tk+f1G/0; arc=fail smtp.client-ip=52.101.52.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1769758997; c=relaxed/simple;
+	bh=qGqm9vwZ3JXiAyTpYBYbWxRb9ZTNQZ14xM5qZn1Fi2E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RvtucGsLRfDhZYefyC8Jp6k6b+OgDp/FJEuXaPkGOjrZZ3QFWmM9zGeLbYco5exK3iLKbC8DYF1o29Y6eiWKBVFfPhbpuhqYGIY5vo+aQTDbR/pVJagzXPxssetcTgjZLYTMOaBR7QyxqPYNQVmiQ9LkRKPc8RlYIgSoWms/CiU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tSfD6snk; arc=pass smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Tk+f1G/0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=etzOxRlwkDUgrPho8xDEeFPaH926Hfo5x0eVbitYyEqcRpW7Emb6rm9uCB6cTgnoWaCWvRLwdx5l1LGpUN1XEJJUCJ/p33FIGVw/AJ0eUwUSp+8+zC+nuPNyjHRuiVWh9ciV3+6Qs3IDKA/FUQ7n9uQTl8CWIZrUx6PFAIaE2SZ1LOJ/0EPQUegUicpzaoWC+4gfV4XTI2owI8QGFWvcoV5htJlbqBHb84CRaqOLd1vzLlNhqsLvkmROa0fnHR6sqbIqsCl+S3FXc0V9D3867YhXfj4emg6oOCv5nmU+c9edNWkJg4RrF6t2X8R3tF3ePVbiglojZ6pZd/7+8MLg7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Eui1z3QBs5X/TSvVrOCVxqKDSuT/uspaie0xF3IoENY=;
- b=r/6p1ooRkMZ2xP15qr5Ih1qDLy3vGc5w7c5lozu6+mL66Joep0Mcf4Sh7gaaXZz/Jlnsl4DRv1RX0vUz/7rMgfnaTjgfmeN10zH72s+J49+O38BpCcTMvqfu1VotZmNy7GzzklfKSjjHpRsjrPHXzKS9gP69GUOzmjEUMl4RM6wWx/3CkxWNQcqwm+6CC/G0JwjugpkDe1hWVGEO7HT0FE0gQQs930YOrkR966ldlzUvlaDOvseFS+S5sWFTi3AhJHjAgIrnLBPa5bO0BqSDOHMk+YklNZRum5YPCnymi6E2es1pMArxNXJievExfydxgFAL+BAUmJ8kLCtt0D6EIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Eui1z3QBs5X/TSvVrOCVxqKDSuT/uspaie0xF3IoENY=;
- b=Tk+f1G/08F4dkIdlk9Om6rT+S7R8UogSUbLTe+d3eUM3fXadkHCBDojGo/wx+9Pciy3UI2Fs7u+oTS+cE6XrI5TmazEiyg9FK3h/zK21QnIAJV/9AVsxz0tq+YHJRpLNVuGafMIuJbWZXMgSL96xX/axHNBnFxzxhdhdTeJkexRAkNQXQoPN08XKiRKXtZnF0F6eKzZEPEzHSgDrKFsqajevu8JJxJzrazvBZX1idi8wrbe071buJIPyZvDK0QtnXftyEx20TzHwouSKs6c0vNfC/rZkY0JWaj7LdNe1sjLWDXlRukIBp5wzynE4d8gJbopLUKeXXiCoYcsr7nKGmA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB3997.namprd12.prod.outlook.com (2603:10b6:208:161::11)
- by IA0PR12MB7580.namprd12.prod.outlook.com (2603:10b6:208:43b::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.10; Fri, 30 Jan
- 2026 06:55:15 +0000
-Received: from MN2PR12MB3997.namprd12.prod.outlook.com
- ([fe80::73c6:e479:9b75:b2cf]) by MN2PR12MB3997.namprd12.prod.outlook.com
- ([fe80::73c6:e479:9b75:b2cf%5]) with mapi id 15.20.9564.008; Fri, 30 Jan 2026
- 06:55:09 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 Jan 2026 15:55:03 +0900
-Message-Id: <DG1Q6I5CTD87.RYS7QBJCHZ7T@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 5/7] rust: io: add `register!` macro
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-Content-Transfer-Encoding: quoted-printable
-References: <20260128-register-v4-0-aee3a33d9649@nvidia.com>
- <20260128-register-v4-5-aee3a33d9649@nvidia.com>
- <DG0CVJN57L5F.2I6J4RXMJOGQ@garyguo.net>
- <DG0WY7S2QPQM.37S6PROC464QI@nvidia.com>
- <DG14TFQG2C13.2BFREQR1DV4I@garyguo.net>
-In-Reply-To: <DG14TFQG2C13.2BFREQR1DV4I@garyguo.net>
-X-ClientProxiedBy: OSTPR01CA0043.jpnprd01.prod.outlook.com
- (2603:1096:604:21b::20) To MN2PR12MB3997.namprd12.prod.outlook.com
- (2603:10b6:208:161::11)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tSfD6snk"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4801d7c72a5so13690175e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 Jan 2026 23:43:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769758993; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ValjYEfx07Fxfu+MfF5EDOnh8TZE++Nm7XsEyoDhcyG0ii9pGsL2AC4zVM3Y8zG1U5
+         aV5cTRu2lPz9JfI9z0XiHjtoqZKLJhvXDPnRrb0ksibKjS7I5MkDaZ+arBR94zYP8uVH
+         uPPpwezc3mg5rMc2z2xPKYaTXHlwYcKcUbZK0LTvCPbQIckP4koo83K1ZjHgLWa7zl6/
+         PqhGyYwQyB8TgOR4cjX9UhY2SizjH18sObNc3AP0QdffE37DSW17QtD/+O0aH7LASVy4
+         5JltOcp/ODqaqHR9VbT3oZC0BCgTlr1MPvzZq5k1tZcukRAws9GYVcJa7NFdDl5JV/LE
+         5flg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Aie1HwLp74q87DizHgs7IV+dPUPmJsMau3chdywfMhk=;
+        fh=5aYPS1Ew3kSB9ncarnODMjRbbNRYu4Yn+4GGGQtDWFQ=;
+        b=PO17Mr+VPOMO4F/KRxmgtQd3b6D9xhpGD3R5GmHl1o0b0Z7ubO2J1rvgEY6hlV5swo
+         JhqqRbqrB6bHeGCKVQsHTZC96GRT0QGA7P1FO//459RF24wxtsBinjCWNmH0GubwwJLA
+         TxQ53oDGtjU372esWNEVapfLc/YQ3fOB1rBBU/of+hjMJh2cCG7veXa65rpOMLhAOeKa
+         t6VscNOGMjZP9k375zvWrQMym0ScLz0oy3V2+jqTZkO5JoMzHIRpX2R8WSm1uEExbCNK
+         +u2FAVZXfq80hNNwBRxDVTaAU+DKIBXByUk7K8rcbiAkjHPSZhEErT8B6Sqv0UvFXIGl
+         bgPQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769758993; x=1770363793; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Aie1HwLp74q87DizHgs7IV+dPUPmJsMau3chdywfMhk=;
+        b=tSfD6snkJ+R0qtqiqjxsLZ8z6PuAYtYXqyCvdwE7cL8rf18mgpnLvbMjElTo+2T8sO
+         M+/jfVogNEAGc3lqMO4gfOJbyhN95mPGDcYjMoVxru7hrAd/SWc5T5Bd2eZ7tSM4f/hq
+         IPd4iH41j7ZoOVRIFs/+uUPm4IzXiLxcyCbp98oenElWNvBToYENs2wOjlI1sZVI9+EK
+         i3ZcuJIHmCj2iJqALOiVbU3Yx1CpqXkKZ8AEWUUDVnTYFXnvzWNH2nzXq3A+WKR6b6Ed
+         jE3uRUkSdWk7QoDTclRqy6n/IC8rtzAy+wLtTt/rMOyEUQhgKNvaTjy2j2dDxGqXm/81
+         Dp8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769758993; x=1770363793;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Aie1HwLp74q87DizHgs7IV+dPUPmJsMau3chdywfMhk=;
+        b=OGKQGYWHmS6iYBMQ5uTjuqStY4iyXdEEcqZlPB/99S6gmRKCxgF1X3rfHXkpDYXArw
+         zSM1XoV36WYzDaLeagA12RKaomlf9xocz60pbNM3MPow9Cl3s3GF7tqHvx0xQ6wB80rm
+         AVwt7CT5Na0Y3RUp3RWBbqnccIsyngxcr9ywEm1nYWcatNlKVseCiLLdAVBnv80AWUM9
+         DIFKK87AzqNyKC/w3Ta/0I8RYU/LkC0kYXC/3lyZHhM7c6uUvfP2lbQc7yul/H2MgSaY
+         R7bMYy8NEVYFaxiTTC+5WhtTKtuDNLSQBS+D2Vs3N05QEEaejkCAd4X+1gMRFnm4osvo
+         gw6g==
+X-Gm-Message-State: AOJu0YxG23BByAfK18UZ+0dyaGZPTrhIas9CS4p1C+xMNfx6IHH2VE+q
+	Rt2jBvDz4xlgG+ogCAghXdN/+eIwXuEtcyeSFw/zAAzUKDzE/onrTi3NjrscScd9gMlRMjPy2Hd
+	UnsKa/aIuD6Z/q2nTUjNFHd5zGKI3H8zV86hhPTQ1
+X-Gm-Gg: AZuq6aJ37U2ez+eVCqA1Szb1MbvYrOBqB+0AB+3GLKn1rUZbQy+xom0LG6OSenGak0n
+	tjMJUgQxYJF28YTRv9J6Ox0aKM+Z5nLRJGoFXncPhmHDcGv4qA/wqyfzx4G7XMWdgg34dE/yryX
+	YP5k32ELpc8lsnHOZqKvo9X18KSHEf/NaBcrxypI8f2qHBTdjDNHk57RXdEYUo2be62eGLalkQj
+	TAz0BoIzKDdenEmU05rb9q8koYgflBqnMvCbjdCdRUnqN/JF0hfP/Vgs47FSqDPPLj2+w==
+X-Received: by 2002:a05:600c:348b:b0:47e:e779:36d with SMTP id
+ 5b1f17b1804b1-482db4d826dmr18678235e9.23.1769758993363; Thu, 29 Jan 2026
+ 23:43:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3997:EE_|IA0PR12MB7580:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28b04390-2eef-43c1-5881-08de5fcc80f1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RFRLM0U0S0RjWUZvSTJqOEhibHJyRngvRitGTVN6cThobzdkNUppcHZnclVR?=
- =?utf-8?B?TlBGZkhtTFN2NkE2UTNiTDZlR043cXI2NzFweTFQZ3E4TTVNbm1iTS9mSW44?=
- =?utf-8?B?RmY1MlQ5ZXBybHduclFsblN2SGRuSlVkNXNzZHZNd0JTWXQ5SEptTUdud3VY?=
- =?utf-8?B?amhKVGNFV2k3R1B0L3JJTlhHTkF0V1dGVzJhY1hLbGlxRWkwV3FyZkR6eXZj?=
- =?utf-8?B?VzNPODAyQmlaU2l2dkZKTjk5bks1alJWSFBiRU9FdTdLRHI2VDhuZVRUOVhh?=
- =?utf-8?B?VjhMNDc1VlpZYUVOVk94cGVGb012cjNiVEZWSFpYSHoyZ1FwYnlJV0lFWDFC?=
- =?utf-8?B?UGxuNnVyN3Q5Tk1UNXBqT0w0U1psQTBLbXBMRTRBd2p1Rk54WWlmamQvYUhC?=
- =?utf-8?B?ODJuMXcvM2FlYzUrSFRNcWFkRG44TXQxV044ZVRieUZndGx0eTVmOXNsY0po?=
- =?utf-8?B?NGFKOTRWVitHLzhjbDNWY2pEcEpYQkJrN0M4RVlnREowbzZXTGVHellCMXV2?=
- =?utf-8?B?bXNFQzFoQWhyTGR3S1F2K2ErQ0Znb0MzOEphKzBVVW85ZktQcndIQXltREp6?=
- =?utf-8?B?S1d0ZlNXcG9NTSt5bzlKVW1xTHdsejdydW00REVmd1ljSUxlbnNqYTh0dDBS?=
- =?utf-8?B?L2lHMWJTL2xDSkpqYlJnT1FvOWtaamRyMTNFZ1BFUm9jMm51UEZHV0U2WVZF?=
- =?utf-8?B?aWFhekhObWFFbE0xR0VyVHRYdnNyMXl4eVczSzJBN1dMRjZqMUs5S1FPTzFx?=
- =?utf-8?B?a1gwUzFKeXBQdDFwaHZ0VXg1cW83SitjWDM2aG5WTStnWUlIdzJtelBWRzVm?=
- =?utf-8?B?NUFlSk5ZeHAyZXU4YWhkTlhIVUg2bGVaTHlYQjRUL1hwSjd4RDk3Um1qZG9z?=
- =?utf-8?B?REZvbnIvVTZIT0kzS3Q4UGlrNlpHZk5VV0pJMC8zQzFUd2lzTmZNeDlJR2gr?=
- =?utf-8?B?NWhEbVlDb2ZjY3hBRjZndDg2aHZycEYzanFKQkw1b1VzbFRmUUxlcHdOTk9X?=
- =?utf-8?B?MFNESU5uZHA2cHRxNlE0TGlSakV1cDJzTGNROTVCU3NiMDZmeHl3SVJCMHR1?=
- =?utf-8?B?REg4Vk9UQzZSQVQ1bXYwdlhNNGx1dDlWTkxqWjNmTE11eHVKM3ZiN2Y0WDY1?=
- =?utf-8?B?L25odUJyNTlyMEE1V2syalBqSXBqK3JpMzRiOEVjeFlubWN2Mjg0aVdxcHM0?=
- =?utf-8?B?ai9aTTBBTmlRTlR5aEU2aGZPYkJaVjR4OStwQXdXMTZNbWZDWGVaRXRpdWpB?=
- =?utf-8?B?eGtFS2UxdnhtMjlpcEZWTVVRdW5zWDloQnl5VUJSL2QyM1VXdVF5SGRadXRD?=
- =?utf-8?B?VVk1MkhWZWtaV1lOZXM5RkQvdE1zUGZzRzZGQkE0WUFPUkRIS1VMMDJTNW9y?=
- =?utf-8?B?dHNMd09UZEQ3dUcvN1BRTlloV0VkQmxHNG8vUmtTeURBKzJyaVdSZVhyZ1Nx?=
- =?utf-8?B?WmloMURwN3pReUQrV3N2RnVubTh2Q2lFRWFNV21mTFM1L0NvVVBiYlBMZEZy?=
- =?utf-8?B?ZmlNSDU5VWk2SHdLNmliemo1Z2hUbDk5THkxc2lnVitjZStCNHVXbFQ5b3ZQ?=
- =?utf-8?B?eEFESFYxcE9iNlFQN0EzSUpyTCtoL2tjc1Z0bEVLVXhYUUZGZllMWTQ1bGRn?=
- =?utf-8?B?eW1wVnp1alBmUnlsQmllVkgvb1JZTnpZZDhwTTlUT1NzMTAzN2F3U3FmSzc2?=
- =?utf-8?B?TjcxdnVVdStKaTBCMzVPTmhhQithUjJYSmdYVVlDZzdNcTgvc3c3bXllTXJp?=
- =?utf-8?B?L1pjUzFtRkQ2eFhEWDVLMzBkSEhHQUNkRDcrY0FhMERMNmQydlBZeHVUSTJ6?=
- =?utf-8?B?dGkvL21tdzhoVmxVS25RYXprRDNiQnpnK2hXM2syaFBtN01YTDhnSDhhSDZa?=
- =?utf-8?B?OENvSWJieEFNMzh1bXQ4TTg1V1hPTDRBcHhmZ1QrOUNwdnRaVFZaTEp3K0Fh?=
- =?utf-8?B?ZmY2dzdJaC9XamkwRzJKM2FKdnNyY0tYZUhIVm10SzR1SkgvOFlPZXVQaUJN?=
- =?utf-8?B?RUlQay9ua0VZSGU2R21IR2w5T2Zqc2p6ZE4xR2cvd2hOV3FTQmlwMDhMWU5H?=
- =?utf-8?B?VzF3S3lsQTJWRFFYRHc4OTE4Rys2TU1DQlB3dGFMVWJRL1ZlZUV6cktjdnhZ?=
- =?utf-8?Q?YcjI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3997.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dWJnQ2NiWnJmT2J5RkFQSjNSeGhPQW53WHNOUTJZTU96SkVWSzgxb0hVYXgx?=
- =?utf-8?B?ZThKOEdMK1NzRTBxZ2hNbkdjSjVDaHdSYWdTRTZSZVpCRHd1cVIxbmJnaUlT?=
- =?utf-8?B?N05nLzFzOFVIZWVTem90SG9xVXBLdndUbzZ0RWp5K1ZJWTFxSVBRblFUcTNO?=
- =?utf-8?B?WUZtM0JOUmtid0xDdEN6djQvZWlsek1tdW9OZklQVXc0cFJVQ1pEd1Z5RWRB?=
- =?utf-8?B?TUk2dm9ITjVsT2p6VGVKU2JQTE10bmtqWm14TzdIZHJrQk1EMXZxN2g0aTN5?=
- =?utf-8?B?OUNkdWJCT0VNMnE2cEswbTg0SjdaaktXbGZHV0Z5YlNqRVZ1N25CVnJZUzJE?=
- =?utf-8?B?Lzc4cm5LQVAxQ3FoQTBDVWEyVWN1NnM0c3RmeDg1Y2ljSzVCNzg0ZjNWWjYr?=
- =?utf-8?B?M1F6aHl3U1pqelpTb3U5UnpxSGduQW15djJjd040RzBzaytDYUxkekt5Qkg4?=
- =?utf-8?B?YWo5QXZsMENRVGJCamY4Mnh2WmdmcVlIeU9BUkdzR1k2QVlxRVlvYXBsUEpV?=
- =?utf-8?B?UHRjL3dVWEJzRnp1T1ZFWXBqL3M0SmJGamRpdDhuVTVEVCs3aWxuUk9mSjdl?=
- =?utf-8?B?dUdUSlRnSkREVnd4eVg5NEVCY09HZVozaFdXeXFJcXB4K3h3VE9KTzhZKzF5?=
- =?utf-8?B?OW9JK2o0N0piUFhheXAwTlQ5akJrckNwUW9KMkc0ZXZDanlrT1BZSmlKN3Y2?=
- =?utf-8?B?dTdrblM3UVBpQjNVd0JZQUg2YnpMV2FGeDIzSk0vZTdISlV0WVRqT0dnODdn?=
- =?utf-8?B?RzFBSi9BMzJOK3l5NytmNTNWYlFkRFFJZUlic2FDUFdPaGFzVWVjemRNMFJJ?=
- =?utf-8?B?V3QvTkMwa1V4ZDFuT1NCbnhpRk5zNGxsaGZCL21nbUFCUXVMQkQ3Y1hGVTVS?=
- =?utf-8?B?VGNzc1RLOGhKbWd1VkxmKzh1YmwrM2R0ZnJKQnVYWGhESUhhYVIyd3V6c2NY?=
- =?utf-8?B?VC9MYjlKRGxRRjVBQWx1ZTh2SitvN3pQdlpSanQwZktpaGFtb1pEejB2TGFE?=
- =?utf-8?B?NWs1OENUaWRCM1NkcTNVeTRkZXNkbW01czI0NlNtbEpTaEZjODBPV0lKejA3?=
- =?utf-8?B?eXd3MzJNMGNOdEh3N0hXZ0lva3RlTFk2RWlzWnNYblJ5TGwrUkdZdnE0bXFk?=
- =?utf-8?B?ZkhIbXduWm56L1lJeW9DalFIWVBkTjB2OWJtc3lGZVVGYVltekxnZEFzQ1Jj?=
- =?utf-8?B?V2lWcWhkZkdYdlF6SEpYMEh3U2ZlWWNMblBJRzRIQkhtb1l3RVVkTzI2VnlU?=
- =?utf-8?B?Vmlyd05zTmEycUpuUHdyRVpWR3hHRWk4eGRJSDBlWkxnWDg1UE9URk5ERXdh?=
- =?utf-8?B?MjlPOXpOWVZVQnFGVEVWZno5NE9naE84NmRHQzdQcGlIc2xxTmFGdFd1dnRM?=
- =?utf-8?B?eXhkSXJmODh6SVlxSjkvaW0raDJ2MDVhL2tMNVVkdmVtRTl6bFBwVmtXYVM0?=
- =?utf-8?B?dWJiY3ZRdnRlSUMvVUcvVGhkdTBMMEZhdG82VW5pYTRrS2ZaQjk3Rk1uNUh0?=
- =?utf-8?B?MC95Nkw2RzdFNklsVXZvQjRJMFMxbkVUYTJVdURlanZyaDZYdHM0Tk1IblE4?=
- =?utf-8?B?Z2VMS0pKWHd3aDBZRkdad2J2STNLNXZOc1hKOUE4Y3VubUFMbXpWTE05SXhH?=
- =?utf-8?B?Y0dtVFZiWjhkampaalBPbTFpUGxzOEdyL2JwVVBybWNhWUh2MzFLQUlCczFz?=
- =?utf-8?B?YitqcWpRQlMxVlJudGx5QzFncHJsVEdTNjhlUzg3aHdyelRzZHpManNnWGVY?=
- =?utf-8?B?R09tZnMvWjh6NlpXd0hNQjlNbm11Q1BRZ3RrdnBLbzFoMzZDZ0I2U2lNYmdq?=
- =?utf-8?B?R2hlQW9YWVVxUnFzVmxOQ2ovRHY4T2tBMWIxanVUZ2pJVFVQdFBiS1crMDlv?=
- =?utf-8?B?NFNZSEgrN3hDeUFrSDd6b1FMWGZEYXhmMjNyei9IcU16MExwcm1aUjR6RUEw?=
- =?utf-8?B?MG1RTEtHOVJxVlhvdSt4TmxpQkN1eGt3RmJBcmpnR21ST2VnVlpmSlNmaWxi?=
- =?utf-8?B?UlRZR0NzdXA3NUJHVE5YSk5VczdCK3QvTGhrU2dPZ2paNVlNaG1QQXI0YTJp?=
- =?utf-8?B?YU9tMHczanpoZEpWZWkzNy8zeFBQVjYxd1N1Vy90WmlJSzNKRktsSTRkblV2?=
- =?utf-8?B?TmZMdDIzZ0Faa1o1cFlCTi9wK09abnlpdGR4ajVFWWt1MkZ0UzZUT25vNXFY?=
- =?utf-8?B?bUw1VkhiRjNhc0dtLzBET3ZNY2p1S1NNRzlMZnR0KytwRkxJWnJaODUwemd6?=
- =?utf-8?B?WXQvWERqd2NsQ3g3ZDJZZG1sVGsrUWVMTnlOM3Zyd3g0bmZ5dU5uQnM5TWlm?=
- =?utf-8?B?SjQ3aWJjcXdONTVnZm4xV1lVV2F4bXJ5Nktic1dlVGtXd0x1UHJabGM0VU9y?=
- =?utf-8?Q?NO6xOZEcOFsfQPheUbeX1u85q5FIkfDpSih9CSLZl+RAU?=
-X-MS-Exchange-AntiSpam-MessageData-1: sA0nL4lLLCHXhQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28b04390-2eef-43c1-5881-08de5fcc80f1
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3997.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 06:55:09.2536
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0K3OvO5AlZgmqppJQ3WFYSoNaSfmhsWWW6CHWMtqBYu+TyU8+jJYtAVZrczOW5FGjFGIgbr8woQIpgctdeKlkw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7580
+References: <20260121223933.1568682-1-lyude@redhat.com> <20260121223933.1568682-7-lyude@redhat.com>
+In-Reply-To: <20260121223933.1568682-7-lyude@redhat.com>
+From: David Gow <davidgow@google.com>
+Date: Fri, 30 Jan 2026 15:43:00 +0800
+X-Gm-Features: AZwV_Qix_tOdpHs2A_-d_t05BDfAxPRfya-QHo39WowvL4WjNlhpatQYJUsdw1I
+Message-ID: <CABVgOSnXP_7dR72XtjiCUX5L8s85KZ6DzeqsOVV5RGE70yZ6og@mail.gmail.com>
+Subject: Re: [PATCH v17 06/16] irq: Add KUnit test for refcounted interrupt enable/disable
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000002c4211064996204f"
 
-On Thu Jan 29, 2026 at 11:10 PM JST, Gary Guo wrote:
-> On Thu Jan 29, 2026 at 8:00 AM GMT, Alexandre Courbot wrote:
->> On Thu Jan 29, 2026 at 1:16 AM JST, Gary Guo wrote:
->>> On Wed Jan 28, 2026 at 2:37 AM GMT, Alexandre Courbot wrote:
->>>> Add a macro for defining hardware register types with I/O accessors.
->>>>
->>>> Each register field is represented as a `Bounded` of the appropriate b=
-it
->>>> width, ensuring field values are never silently truncated.
->>>>
->>>> Fields can optionally be converted to/from custom types, either fallib=
-ly
->>>> or infallibly.
->>>>
->>>> The address of registers can be direct, relative, or indexed, supporti=
-ng
->>>> most of the patterns in which registers are arranged.
->>>>
->>>> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
->>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>>> ---
->>>>  rust/kernel/io.rs          |    1 +
->>>>  rust/kernel/io/register.rs | 1287 +++++++++++++++++++++++++++++++++++=
-+++++++++
->>>>  2 files changed, 1288 insertions(+)
->>>>
->>>> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
->>>> index 056a3ec71647..112f43ecbf88 100644
->>>> --- a/rust/kernel/io.rs
->>>> +++ b/rust/kernel/io.rs
->>>> @@ -11,6 +11,7 @@
->>>> =20
->>>>  pub mod mem;
->>>>  pub mod poll;
->>>> +pub mod register;
->>>>  pub mod resource;
->>>> =20
->>>>  pub use resource::Resource;
->>>> diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
->>>> new file mode 100644
->>>> index 000000000000..fc85dcd1f09a
->>>> --- /dev/null
->>>> +++ b/rust/kernel/io/register.rs
->>>> @@ -0,0 +1,1287 @@
->>>> +// SPDX-License-Identifier: GPL-2.0
->>>> +
->>>> +//! A macro to define register layout and accessors.
->>>> +//!
->>>> +//! A single register typically includes several fields, which are ac=
-cessed through a combination
->>>> +//! of bit-shift and mask operations that introduce a class of potent=
-ial mistakes, notably because
->>>> +//! not all possible field values are necessarily valid.
->>>> +//!
->>>> +//! The [`register!`] macro in this module provides an intuitive and =
-readable syntax for defining a
->>>> +//! dedicated type for each register. Each such type comes with its o=
-wn field accessors that can
->>>> +//! return an error if a field's value is invalid.
->>>> +//!
->>>> +//! [`register!`]: kernel::register!
->>>> +
->>>> +use core::ops::Deref;
->>>> +
->>>> +use crate::io::{
->>>> +    IoCapable,
->>>> +    IoKnownSize, //
->>>> +};
->>>> +
->>>> +/// Trait providing a base address to be added to the offset of a rel=
-ative register to obtain
->>>> +/// its actual offset.
->>>> +///
->>>> +/// The `T` generic argument is used to distinguish which base to use=
-, in case a type provides
->>>> +/// several bases. It is given to the `register!` macro to restrict t=
-he use of the register to
->>>> +/// implementors of this particular variant.
->>>> +pub trait RegisterBase<T> {
->>>> +    /// Base address to which register offsets are added.
->>>> +    const BASE: usize;
->>>> +}
->>>> +
->>>> +/// Trait providing I/O read/write operations for register storage ty=
-pes.
->>>> +///
->>>> +/// This trait is implemented for all integer types on which I/O can =
-be performed, allowing the
->>>> +/// `register!` macro to generate appropriate I/O accessor methods ba=
-sed on the register's storage
->>>> +/// type.
->>>> +pub trait RegisterIo: Sized {
->>>
->>> Is this trait intended for public usage or just internal detail of `reg=
-ister!()`
->>> macro?
->>>
->>> If it's the former, then we should probably just put the method into `I=
-oCapable`
->>> and allow generic-read in Io. If it's the latter, let's `#[doc(hidden)]=
-` this so
->>> it won't get abused.
->>
->> It is an internal detail of `register!()` and not supposed to be used by=
- anyone
->> else.
->>
->>>
->>>> +    /// Read a value from the given offset in the I/O region.
->>>> +    fn read<T, I>(io: &T, offset: usize) -> Self
->>>> +    where
->>>> +        T: Deref<Target =3D I>,
->>>> +        I: IoKnownSize + IoCapable<Self>;
->>>
->>> I think generally `Deref` bound shouldn't be exposed to user. What smar=
+--0000000000002c4211064996204f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, 22 Jan 2026 at 06:43, Lyude Paul <lyude@redhat.com> wrote:
+>
+> While making changes to the refcounted interrupt patch series, at some
+> point on my local branch I broke something and ended up writing some kuni=
 t
->>> pointers are involved here, and can we implement forwarding impls of `I=
-o`?
->>
->> Removing the requirement for `Deref` in the `RegisterIo` trait is simple=
- - we
->> can just call `Deref` in the register IO accessors.
+> tests for testing refcounted interrupts as a result. So, let's include
+> these tests now that we have refcounted interrupts.
 >
-> The issue with `Deref` bound here is that now you *require* a level of
-> indirection. If something implements `Io` directly, you cannot use it wit=
-h the
-> method. While `&Bar` is accepted, `&Mmio` is not because `Mmio` is a dire=
-ct
-> implementor of `Io` and not deref to it.
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 >
-> A `Deref` bound also does not help if, say, a type is `Arc<Bar>` which ne=
-eds two
-> level of dereffing before it is Io. For consistency I think it's best to =
-avoid
-> `Deref` call all together
+> ---
 
-Do you mean that `Bar` should implement `Io`, `IoKnownSize`, and all the
-required `IoCapable`s? That's a lot of boilerplate I'm afraid, and that
-would need to be repeated for all other I/O proxy types.
+Looks good to me. Not sure if it'd make sense to move this into
+kernel/irq/irq_test.c alongside other IRQs, or if you like having it
+separate. I'm happy either way.
 
-No, I'm starting to believe that the fundamental issue is that the
-register interface does its I/O backwards, and that design issue is only
-exacerbated by the recent I/O redesign. I.e. instead of doing
+Reviewed-by: David Gow <davidgow@google.com>
 
-  regs::NV_PMC_BOOT_0::read(bar);
+Cheers,
+-- David
 
-We should really do
 
-  bar.read_reg::<regs::NV_PMC_BOOT_0>();
-
-Because that way we can use deref coercion.
-
-That's quite a big redesign though, which means I don't believe
-`register!` can make it this cycle... I'll give it a try though.
-
-<snip>
->>>> +        $vis struct $name($storage);
->>>> +
->>>> +        #[allow(dead_code)]
->>>> +        impl $name {
->>>> +            /// Creates a bitfield from a raw value.
->>>> +            $vis const fn from_raw(value: $storage) -> Self {
->>>> +                Self(value)
->>>> +            }
->>>> +
->>>> +            /// Creates a zeroed bitfield value.
->>>> +            ///
->>>> +            /// This is a const alternative to the `Zeroable::zeroed(=
-)` trait method.
->>>> +            $vis const fn zeroed() -> Self {
->>>> +                Self(0)
->>>> +            }
->>>
->>> All types that impl `Zeroable` automatically have the `::zeroed()` fn p=
-rovided
->>> via the trait.
->>
->> Yes, but that method from the trait cannot be used in const context, and
->> `zeroed` is the starting point for building register values from scratch=
- (and
->> thus constant values).
+> V13:
+> * Add missing MODULE_DESCRIPTION/MODULE_LICENSE lines
+> * Switch from kunit_test_suites(=E2=80=A6) to kunit_test_suite(=E2=80=A6)
 >
-> `pin_init:::zeroed()` is a const function.
+>  kernel/irq/Makefile                  |   1 +
+>  kernel/irq/refcount_interrupt_test.c | 109 +++++++++++++++++++++++++++
+>  2 files changed, 110 insertions(+)
+>  create mode 100644 kernel/irq/refcount_interrupt_test.c
+>
+> diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
+> index 6ab3a40556670..7b5bb5510b110 100644
+> --- a/kernel/irq/Makefile
+> +++ b/kernel/irq/Makefile
+> @@ -20,3 +20,4 @@ obj-$(CONFIG_SMP) +=3D affinity.o
+>  obj-$(CONFIG_GENERIC_IRQ_DEBUGFS) +=3D debugfs.o
+>  obj-$(CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR) +=3D matrix.o
+>  obj-$(CONFIG_IRQ_KUNIT_TEST) +=3D irq_test.o
+> +obj-$(CONFIG_KUNIT) +=3D refcount_interrupt_test.o
+> diff --git a/kernel/irq/refcount_interrupt_test.c b/kernel/irq/refcount_i=
+nterrupt_test.c
+> new file mode 100644
+> index 0000000000000..b4f224595f261
+> --- /dev/null
+> +++ b/kernel/irq/refcount_interrupt_test.c
+> @@ -0,0 +1,109 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * KUnit test for refcounted interrupt enable/disables.
+> + */
+> +
+> +#include <kunit/test.h>
+> +#include <linux/interrupt_rc.h>
+> +
+> +#define TEST_IRQ_ON() KUNIT_EXPECT_FALSE(test, irqs_disabled())
+> +#define TEST_IRQ_OFF() KUNIT_EXPECT_TRUE(test, irqs_disabled())
+> +
+> +/* =3D=3D=3D=3D=3D Test cases =3D=3D=3D=3D=3D */
+> +static void test_single_irq_change(struct kunit *test)
+> +{
+> +       local_interrupt_disable();
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_enable();
+> +}
+> +
+> +static void test_nested_irq_change(struct kunit *test)
+> +{
+> +       local_interrupt_disable();
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_disable();
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_disable();
+> +       TEST_IRQ_OFF();
+> +
+> +       local_interrupt_enable();
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_enable();
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_enable();
+> +       TEST_IRQ_ON();
+> +}
+> +
+> +static void test_multiple_irq_change(struct kunit *test)
+> +{
+> +       local_interrupt_disable();
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_disable();
+> +       TEST_IRQ_OFF();
+> +
+> +       local_interrupt_enable();
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_enable();
+> +       TEST_IRQ_ON();
+> +
+> +       local_interrupt_disable();
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_enable();
+> +       TEST_IRQ_ON();
+> +}
+> +
+> +static void test_irq_save(struct kunit *test)
+> +{
+> +       unsigned long flags;
+> +
+> +       local_irq_save(flags);
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_disable();
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_enable();
+> +       TEST_IRQ_OFF();
+> +       local_irq_restore(flags);
+> +       TEST_IRQ_ON();
+> +
+> +       local_interrupt_disable();
+> +       TEST_IRQ_OFF();
+> +       local_irq_save(flags);
+> +       TEST_IRQ_OFF();
+> +       local_irq_restore(flags);
+> +       TEST_IRQ_OFF();
+> +       local_interrupt_enable();
+> +       TEST_IRQ_ON();
+> +}
+> +
+> +static struct kunit_case test_cases[] =3D {
+> +       KUNIT_CASE(test_single_irq_change),
+> +       KUNIT_CASE(test_nested_irq_change),
+> +       KUNIT_CASE(test_multiple_irq_change),
+> +       KUNIT_CASE(test_irq_save),
+> +       {},
+> +};
+> +
+> +/* (init and exit are the same */
+> +static int test_init(struct kunit *test)
+> +{
+> +       TEST_IRQ_ON();
+> +
+> +       return 0;
+> +}
+> +
+> +static void test_exit(struct kunit *test)
+> +{
+> +       TEST_IRQ_ON();
+> +}
+> +
+> +static struct kunit_suite refcount_interrupt_test_suite =3D {
+> +       .name =3D "refcount_interrupt",
+> +       .test_cases =3D test_cases,
+> +       .init =3D test_init,
+> +       .exit =3D test_exit,
+> +};
+> +
+> +kunit_test_suite(refcount_interrupt_test_suite);
+> +MODULE_AUTHOR("Lyude Paul <lyude@redhat.com>");
+> +MODULE_DESCRIPTION("Refcounted interrupt unit test suite");
+> +MODULE_LICENSE("GPL");
+> --
+> 2.52.0
+>
+>
 
-Ah, I thought about using `Zeroable::zeroed()` at first, but indeed we
-can use the function instead.
+--0000000000002c4211064996204f
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-Strangely though, I expected to be able to do
-
-  const V: BOOT_0 =3D pin_init::zeroed()
-
-and have the compiler infer the generic type, but for some reason I have
-to specify it explicitly:
-
-  const V: BOOT_0 =3D pin_init::zeroed::<BOOT_0>()
-
-Not a big deal, but a const method would reduce this to=20
-
-  const V: BOOT_0 =3D BOOT_0::zeroed()
-
-(for variables `let v: BOOT_0 =3D pin_init::zeroed()` works fine.)
+MIIUnQYJKoZIhvcNAQcCoIIUjjCCFIoCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
+4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
+mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
+KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
+VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
+ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
+vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
+BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
+OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
+1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
+ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
+BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
+18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
+bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
+AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
+BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
+A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
+MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
+jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
+0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
+jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
+jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
+C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
+NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
+zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
+A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
+hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+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
+Dxz3AgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
+/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFHZtY3XkWtC2
+e2Idfk+0JyK7BLzzMFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
+MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
+LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
+bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
+FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQBo
+hqjbVaHxZoT6HHUuwQcTlbgXpuVi59bQPrSwb/6Pn1t3h3SLeuUCvOYpoQjxlWy/FexsPW+nWS0I
+PUmWpt6sxbIRTKPfb7cPk32XezfnA0jexucybiXzkZKTrbI7zoMOzDIWpTKYZAonB9Zzi7Dso4An
+ZOtz/E3yhdR/q1MK30d5fiCS0vorEd0Oy8Jzcc7TJ2HGMzEEXiFFvVrJYJHvfYOeXE4ywAG6YWO0
+x78+bXeB9vkeWHhOYKyYXuAXrnHASddEICg1QlJCHDAISMC1Wn/tjqTMTt3sDAe+dhi9V1FEGTbG
+g9PxPVP4huJEMIBu/MWNMzHfiW4E7eCHVPrmtX7CFDlMik7qsgQBbO5h6EcxBamhIflfMgoISsRJ
+Vyll2E5BNVwkNstMgU3WMg5yIaQcuGFgFnMTrQcaLEEFPV3cCP9pgXovYDirnB7FKNdCZNHfeBY1
+HEXJ2jIPDP6nWSbYoRry0TvPgxh5ZeM5+sc1L7kY75C8U4FV3t4qdC+p7rgqfAggdvDPa5BJbTRg
+KAzwyf3z7XUrYp38pXybmDnsEcRNBIOEqBXoiBxZXaKQqaY921nWAroMM/6I6CVpTnu6JEeQkoi4
+IgGIEaTFPcgAjvpDQ8waLJL84EP6rbLW6dop+97BXbeO9L/fFf40kBhve6IggpJSeU9RdCQ5czGC
+Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
+BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAYQLf/BIzLow9kWqD8My
+PzANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgF8eZJ7dGnXJOQViApVfsNTijB6NR
+60V3RcRF0okoZpkwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjYw
+MTMwMDc0MzEzWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
+AQEBBQAEggEAMjWlYSA9+vY34agM76OKlTOHSHaYjZOYFyfHKJX42/pl+ywggunsmlzamHTuCVPi
++d0OsChETUxqlsYgRTK21YG/CmqeLjq3kt21ilZgNlPg1nQlxJdtGRbB60LLyVq50ZDpL/pjGHtM
++TC2fIbEs91bYxtJi/EC+DNZBMzMEEII5F3dqHXzxoQrXLg51rsStDQVOgKrtK36s4z8ASBBjabK
+PHtYRLDtNZrmHlew4eUHps5wE+YzR2KQmZBcq9Rk51yJFBLu4BmLxivT4bRSd/riJOQ+2iddnWrM
+HLWVy1puZRqoKWgp/OSpa7Yyw5lMy+bXvUu2EcA2GVWtD2c+Og==
+--0000000000002c4211064996204f--
