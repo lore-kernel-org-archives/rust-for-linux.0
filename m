@@ -1,88 +1,137 @@
-Received: from mail.cock.li (unknown [37.120.193.123])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF612FBDED;
-	Sat, 31 Jan 2026 08:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.120.193.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202F11BD9D0;
+	Sat, 31 Jan 2026 09:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769846812; cv=none; b=qn5SWJQuEi+0WvRbBTmW+aT1q+230nzOkmXvr7ACJfH6PBdF+opindlM1eBfsa4DVo9WhqawyuWThNCP/yPzUBcRbiTcUN3duCPFQLzQdFLqdigX0gWrj67sKAqvQGj1bebxJvuDDPOPXOt6Osa9dRNNyfW1Etip5wCfkErYHTk=
+	t=1769851099; cv=none; b=LWaz5Xs8+FCQDzMxWNDUyMNqOlgIbleauRBms649ILEikVihk+H+3Z6Zn67RK0jBAUZMCAcHwtlzBTKI8BcMBh8biaSar9qI2TEDBqY9gHd6cLPxWnlV3eVQZ1dWDLnhDMa3bX+HFzLRQNlmevQ7irgnOBNKOYmjUbTYXx+KmXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769846812; c=relaxed/simple;
-	bh=PNZhCR+/pggdZ+eX2S14oEhix7kpixYkOW4FSi+tsAY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQ2nBsZhhX3JIb1/ob78fcP08O3hjl27M86u+CaXRf4n+eubn1UWA+/qM5eb9/FkKZSIb1eqcRr+Sb3MLBIsBbioUFObw4B/Q3JDhjSpSnOE5R+wUNzVUWytyqfGqw4+6HVHKMOjbNRNAYUNfZhPCj+WOrDY0htlezR35rqbkQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li; spf=pass smtp.mailfrom=cock.li; dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b=E+RlKPKm; arc=none smtp.client-ip=37.120.193.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cock.li
+	s=arc-20240116; t=1769851099; c=relaxed/simple;
+	bh=Kb7VjzqM6dLDgKkYTNxquF86NIbpjxv0poCPEvi+eag=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kENRglZ563CV7i2RWpw2tkEJMIEHQ8WmM6DwrpP6h6YkdEEQfyMYc+7FCtPG4i3Lif5d1wYwV7OWq/+YdnVHr+y0IstOxdCIpFMSqhVVzLVz6cJOKELOvU08dt+I4g51i1e2MKQAANQj/0XYY9V6xGBuJzT9BGGV71yWwy7n1Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fErq2rTz; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b="E+RlKPKm"
-From: Shivam Kalra <shivamklr@cock.li>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cock.li; s=mail;
-	t=1769846808; bh=PNZhCR+/pggdZ+eX2S14oEhix7kpixYkOW4FSi+tsAY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+RlKPKmE2TrcAQdio+JMUEPy8fSYOhrpK3HhLrqFBBF2SjZMFZVmkYp0S9jRRTvH
-	 y6fDpP81T/7LLH+mZ4GAGJ6yr6RCwdDw33e9Pnjtsfbm6YmHKGgh/O7W2sr6cvApQC
-	 fdg+I72zrExDA/E0wPy1K6x2RltEsbLncch/miqLcHDxe58P3RoHAGqTO2hcBGzz5A
-	 ere2LWvvChORrhmm0T6XRHcq70E+rn+Qhl5bsJZuCkwJDoMdgGPEap3fzM2lYSSTj3
-	 XkHJ+G6X6ylgmSa4Lj34JOHZg0bp2Mxc3gGaDLjTkAOoRU4fIyk1pQ/OTojs9uN1rG
-	 a4JC04qJT4MzQ==
-To: dakr@kernel.org,
-	cmllamas@google.com,
-	gregkh@linuxfoundation.org
-Cc: aliceryhl@google.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Shivam Kalra <shivamklr@cock.li>
-Subject: [PATCH v1 3/3] binder: context: shrink all_procs vector to reclaim memory
-Date: Sat, 31 Jan 2026 13:36:14 +0530
-Message-ID: <20260131080614.264242-2-shivamklr@cock.li>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260131080614.264242-1-shivamklr@cock.li>
-References: <20260131080614.264242-1-shivamklr@cock.li>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fErq2rTz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769851098; x=1801387098;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Kb7VjzqM6dLDgKkYTNxquF86NIbpjxv0poCPEvi+eag=;
+  b=fErq2rTz1zsKQZisDwZ0EgqiIapuiskJxgoDSK0l0wVE49GSup73ROWE
+   FMd0NJwDM9t2BLr4eWlbg0+4TplsboPeuiHuaNYT4n9NovKCmLHS5otbg
+   F6YudYmt9jLYOZyFxozLQhwQiUr3J2OmP4hE1a0zMGDzIbSPp47QrJuJU
+   LmM/U3aBHTV1Ydaa2LHDMDfHXiOJ8lNcBtQ1Rd16DnexvnorF0YbqNj6X
+   TiXmBH4gX5QXTJSBygyY+Q3TIrd6mQqVEEtAKRl23wWmVdt9S5rHFn+72
+   b/4+MV2K5SkISoLBS14t+UDeUjs+jQtgTPnE1JGQsVzev73ws7b4tYXEP
+   g==;
+X-CSE-ConnectionGUID: WbtZKIH/ROOwsGgKb8q9hA==
+X-CSE-MsgGUID: LxMR0pRIThmSs+ppGc5s1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11687"; a="71128321"
+X-IronPort-AV: E=Sophos;i="6.21,264,1763452800"; 
+   d="scan'208";a="71128321"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2026 01:18:17 -0800
+X-CSE-ConnectionGUID: UNC0jd1aRy6u3m9kyjmkvg==
+X-CSE-MsgGUID: xU22GiErSSqETlTsD7eK5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,264,1763452800"; 
+   d="scan'208";a="209451089"
+Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
+  by fmviesa009.fm.intel.com with ESMTP; 31 Jan 2026 01:18:14 -0800
+Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vm77M-000000002ft-0ir8;
+	Sat, 31 Jan 2026 09:18:12 +0000
+Date: Sat, 31 Jan 2026 10:17:30 +0100
+From: kernel test robot <lkp@intel.com>
+To: Zijing Zhang <zijing.zhang@ry.rs>, dakr@kernel.org,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, bhelgaas@google.com,
+	kwilczynski@kernel.org, ojeda@kernel.org, gary@garyguo.net,
+	Zijing Zhang <zijing.zhang@ry.rs>
+Subject: Re: [PATCH 2/2] samples: rust: pci: exercise capability lookup
+Message-ID: <202601311056.PVHRBER5-lkp@intel.com>
+References: <20260131040200.1242566-3-zijing.zhang@ry.rs>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260131040200.1242566-3-zijing.zhang@ry.rs>
 
-After removing a process from the all_procs list, shrink the vector
-if it has significant unused capacity. Specifically, if the capacity
-exceeds 128 and the length is less than half the capacity, shrink
-the vector to its current length.
+Hi Zijing,
 
-This prevents unbounded memory retention in long-running systems where
-the number of binder processes fluctuates significantly over time.
+kernel test robot noticed the following build errors:
 
-Link: https://lore.kernel.org/rust-for-linux/aW4DWebqCg1c8Fgb@google.com/
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Shivam Kalra <shivamklr@cock.li>
----
- drivers/android/binder/context.rs | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+[auto build test ERROR on next-20260130]
+[cannot apply to pci/next pci/for-linus v6.19-rc7 v6.19-rc6 v6.19-rc5 linus/master v6.16-rc1]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
-index 9cf437c025a20..f2505fbf17403 100644
---- a/drivers/android/binder/context.rs
-+++ b/drivers/android/binder/context.rs
-@@ -94,6 +94,16 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
-         }
-         let mut manager = self.manager.lock();
-         manager.all_procs.retain(|p| !Arc::ptr_eq(p, proc));
-+
-+        // Shrink the vector if it has significant unused capacity.
-+        // Only shrink if capacity > 128 to avoid repeated reallocations for small vectors.
-+        let len = manager.all_procs.len();
-+        let cap = manager.all_procs.capacity();
-+        if cap > 128 && len < cap / 2 {
-+            // Shrink to current length. Ignore allocation failures since this is just an
-+            // optimization; the vector remains valid even if shrinking fails.
-+            let _ = manager.all_procs.shrink_to(len, GFP_KERNEL);
-+        }
-     }
- 
-     pub(crate) fn set_manager_node(&self, node_ref: NodeRef) -> Result {
+url:    https://github.com/intel-lab-lkp/linux/commits/Zijing-Zhang/rust-pci-add-capability-lookup-helpers/20260131-120935
+base:   next-20260130
+patch link:    https://lore.kernel.org/r/20260131040200.1242566-3-zijing.zhang%40ry.rs
+patch subject: [PATCH 2/2] samples: rust: pci: exercise capability lookup
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260131/202601311056.PVHRBER5-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260131/202601311056.PVHRBER5-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601311056.PVHRBER5-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -fno-crash-diagnostics -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
+   make: Entering directory '/kbuild/src/consumer'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in samples/rust/rust_driver_pci.rs:138:
+                ("SR-IOV", bindings::PCI_EXT_CAP_ID_SRIOV as u16),
+            ] {
+                if let Some(pos) = pdev.find_ext_capability(id) {
+   -                dev_info!(pdev.as_ref(), "pci-testdev {name} ext cap @ 0x{:04x}\n", pos);
+   +                dev_info!(
+   +                    pdev.as_ref(),
+   +                    "pci-testdev {name} ext cap @ 0x{:04x}\n",
+   +                    pos
+   +                );
+                } else {
+                    dev_info!(pdev.as_ref(), "pci-testdev has no {name} ext capability\n");
+                }
+   Diff in samples/rust/rust_driver_pci.rs:177:
+                    );
+                }
+            } else {
+   -            dev_info!(pdev.as_ref(), "pci-testdev selfcheck: no ext config space\n");
+   +            dev_info!(
+   +                pdev.as_ref(),
+   +                "pci-testdev selfcheck: no ext config space\n"
+   +            );
+            }
+        }
+    }
+   make[2]: *** [Makefile:1902: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src/consumer'
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
