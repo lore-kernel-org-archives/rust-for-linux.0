@@ -1,130 +1,117 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B0E271A71
-	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 12:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DC024729A;
+	Sat, 31 Jan 2026 12:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769861071; cv=none; b=ZaIhqLV+15Wq+9f+5xe5O5Fdqtst0vY5L+ql8cjEQbqVcq/aSmTDcvVrNYkG1fD5aQIq1UrUtAQV8Sn6d8H+7SzH9q9vAKgkqBs6uofUEkyhXzGpfn+G5cOGTViLZKPhS0cdNZbN4rZhtDWgPMG0gkY/XiKZtTcKnBfi+5T05IM=
+	t=1769862433; cv=none; b=IPZW5m/0Jvo9+8xuGzB3bAEF8rdBdDQWHswdFq+3X8XiGdETzUtJGgKC46S8yzrHYX3wPiy+XCiJOuR9iqTNP3t+ZrdQ4iMgaFOx3MbfPPM4rQ+ILvD8hxtmeIKOuYpL53aGSA9osguvf6ChKuvb1mv4H6McCmmyE0arsIzV7nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769861071; c=relaxed/simple;
-	bh=pQtGoWTf/kP7oWRtNw04OSR02CvadRIpfDDbFfx2CZA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kN2LTQhH85RmX2lOpcORqw+SnBxaN+hJEkzpu/iiEcAN1nDCqruepPdnXCAKPxBh3Pj3+sK+hr0r+ShLjb5XgL1AgJ1R3LqWgmXA1iKkuaBg4lyARyLPvQa6Y4OKXTO5V2GEc9875wyIb44I40Yp9eWCPfPTMFkda29NbA+PLcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BcsXyEBG; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769862433; c=relaxed/simple;
+	bh=2fTkhAUP5p8/EG0o4I2HX5HD4RSHs9zkMP98Fcb/6XM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=rWloAdGrNZFWJOWXcfnjZ1asuno7tWdzv+jq4MWDxeAws/3hbFM4f0i8V1lNnA8Ier0ZucPlyi4ap/QF3W1l6WOuterNo4poI4T9gVj8dQHKHDDrCdYHxa7aV0VakE3TZXPTjdalyBBUM8SJ8hNu4Ux16rEvNX9PXQST6q4tRzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHJeQ0It; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BcsXyEBG"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-352f60d6c2fso1909497a91.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 04:04:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769861069; x=1770465869; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9oJs0CNczZrgoZIEepOSl4LgDQSPruQiihq3nw1O9hE=;
-        b=BcsXyEBG5QAQ/zgRUZ8ylYlXAIBdFAMvp+5goONbTW5Tc03pdPNAbjxcZ83F9uV/oh
-         NSarX6rNK6yPkjlcqfp3bkCluzgv7DehEOJxiHOh4aMwyFJwJOTgqaJ3ij3enm01nbTV
-         aYHhhWOesK0CQ03rI6eLGdGY7qRJdYIHiM/yrLzpBClsv/tu4uzyG5oErMA7fH4/vOSv
-         Im2FGQv9Al6J0PgEcdfsRFj8YfZkfBbvzuhWofg5HlYCrB5gmkxvmlBzk/YN4dsrPmBN
-         zzDOHCsMPZyhxjFZR/5w2Ee7H7kOX37WexZHPsAit5O1V71Ah3kW2vJZu0gDyKnhKsH5
-         Aw8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769861069; x=1770465869;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9oJs0CNczZrgoZIEepOSl4LgDQSPruQiihq3nw1O9hE=;
-        b=stHRqCBX/+WU7a3LpShEHIgQdO8VZihpRLbDtsKk5dqqQcvjCi8L1ShibTWhAIx0uE
-         89H0jSDgi9ok1pEjL0nVLf88zEMZg4RdFFmYtIYMBQty5aOAirpJCuEJmY5iG1g2o6Lr
-         YV8v0ooZhpv9HSj7pU+OGr0URF/jxbJciMrWan1L9FTeQ2/6F68/Kja9WK9d3P1FLI4J
-         qivBPcr3rjPqnnPDnpRWvFLWWst+ADGNiaxLldWvFbbGmrk/SprgG/HgLZxLOQbrrHMN
-         iRkYFDonETvskK6rZmACT9NbZgSEj2ZYeAisz281xHYoXebZ0uR+v6FVhNn6RtJFbPwK
-         7QNg==
-X-Forwarded-Encrypted: i=1; AJvYcCXp8a5HYVnwVFl/pJPGXFUNq5Xb9MmRaQxOmZ4he7sF90ShU8xc7lpnsHWuY4nXw8hPWLoeZHezDMIpKU7+zw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqtBL1PL1SuJrZk8GHyziWMZgRu1rlXDsEi3VCaju4+WD7SC1K
-	c7y4cVJnJVQPv//1S/AkRXVXDkDd5Z71e0/JWwuLQ2Zv9qOVg+kzSFM5
-X-Gm-Gg: AZuq6aKRNJ4Mfr4oqvh2zAe5DXGNWpIxZlnixcmmX2konAPjIAoTjTnp6WDtpPiM9lS
-	UnxVyjHXo+3aCopK0aXRvfzkux4SOPNAxzyMLv9M3fkiM7ouqq4QA8j/2nsFOrR3a83b4pyXigH
-	o6K6CgpsH9tcTTrMeRBSz8OcQg1IK0Jyl2gb8APEC87cIv/aV9VZ9XdI1hnzDYhSiFBhUcyY+W+
-	19WwtTqR2md/LBRjOsQJ5B7mdBHfGthlUA+jzv+cdwZ5U0LW7WDI+KIJ2nEkoFoz93cC7EgrvmB
-	ajNsi+4vIXRmP0btXLHpeEtMgU/EX5qj0oz1YaxKjMPbukpuLz3oQxDBnk2t6RcT+DYEOzf8uYo
-	MlbQHq9CEHoiW3sX3qaYEpW0QjcAwZ6G/xoSnVKTCZeSeRgpsBSCPswuVPfx0SlcY2waokjzNpH
-	mwS5J1XvCiB6qJ/6YQLokN5d3ngGw=
-X-Received: by 2002:a17:90b:3f0c:b0:340:d569:d295 with SMTP id 98e67ed59e1d1-3543b39413amr6046384a91.24.1769861069151;
-        Sat, 31 Jan 2026 04:04:29 -0800 (PST)
-Received: from shankari-IdeaPad.. ([2409:40f2:7:99c2:2d1f:8664:c99b:8d4e])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6427da8441sm9184975a12.9.2026.01.31.04.04.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Jan 2026 04:04:28 -0800 (PST)
-From: Shankari Anand <shankari.ak0208@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: Re: [PATCH v2 4/4] rust: types: remove temporary re-exports of ARef and AlwaysRefCounted
-Date: Sat, 31 Jan 2026 17:34:08 +0530
-Message-Id: <20260131120408.7173-1-shankari.ak0208@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <<DFIONMNAAA7L.790NWN6D7VS4@kernel.org>>
-References: <<DFIONMNAAA7L.790NWN6D7VS4@kernel.org>>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHJeQ0It"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5EFC19421;
+	Sat, 31 Jan 2026 12:27:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769862432;
+	bh=2fTkhAUP5p8/EG0o4I2HX5HD4RSHs9zkMP98Fcb/6XM=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=EHJeQ0ItVPSJjv4Jmi+vbS4l02KXRVHbuPygJkkFwtXr/bXADaVsDAgBcvTjog/zi
+	 MnL0byblG1dhDo4GmZ4xiinVA3SW+Qq7nXDPipRavAjiim9Kg9JShwQRWcgnYhSK1x
+	 HoHqWiXSdA2DLJJDPqmxxueUORw6vAKKrXnOQz/XeMHrrVQgcKFgtttGg5CZUyTMa6
+	 +sDqrpjbbST5XynxHPuh+5/Tcf2bu6Rr6Crxoawt/tCrm5bSGeN0tB79mM7p75qS4J
+	 VbuKNHuo7vffsGmjuY8XNP8uIGsNk/odg6PPIRoutntFMOUb/5pTU2mpy8raWq2/iK
+	 +/caWR1/xwcpw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 31 Jan 2026 13:27:06 +0100
+Message-Id: <DG2RVAALGX4W.1L637C8NXXEEM@kernel.org>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 0/9] rust: dma: add CoherentArray for compile-time sized
+ allocations
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Robin Murphy"
+ <robin.murphy@arm.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, <lyude@redhat.com>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>
+References: <20260130-coherent-array-v1-0-bcd672dacc70@nvidia.com>
+In-Reply-To: <20260130-coherent-array-v1-0-bcd672dacc70@nvidia.com>
 
-On Wed, Jan 07, 2026 at 10:42:44PM +0100, Danilo Krummrich wrote:
+(Cc: Lyude)
 
->  
-> This is because the failing build was against the staging tree, which
-> (obviously) does not contain all the relevant patches to remove the temporary
-> re-export.
-> 
-> Now, I have no idea why the bot pulled this series to build it against the
-> staging tree though. But it should help to use --base when running git
-> format-patch.
+On Fri Jan 30, 2026 at 9:34 AM CET, Eliot Courtney wrote:
+> This series extends the DMA coherent allocation API to support compile-ti=
+me
+> known sizes. This lets bounds checking to be moved from runtime to build
+> time, which is useful to avoid runtime panics from index typos. It also
+> removes the need for a Result return type in some places.
 >
+> The compile time size is specified via a marker type: StaticSize<N>.
+> Statically sized allocations can decay to runtime sized ones via deref
+> coercion for code that doesn't need to know the size at compile time, or =
+to
+> avoid having to carry around extra type parameters. The implementation
+> follows a similar pattern to Device/DeviceContext.
+>
+> The series defines three type aliases: CoherentSlice<T> (for runtime size=
+),
+> CoherentArray<T, N> (for compile-time size N), and CoherentObject<T> (for
+> single object allocations). It also adds infallible dma_read!/dma_write!
+> macros and methods to CoherentArray, while prefixing the existing fallibl=
+e
+> methods and macros with `try_`.
+>
+> The macros keep the same syntax (i.e.
+> coherent_allocation[index].optional_fields =3D expression) even for
+> CoherentObject, because the [] syntax is needed to know where to split th=
+e
+> actual CoherentAllocation object from the fields. This means that
+> CoherentObject is indexed with [0] in dma_write!/dma_read! macros. The
+> alternative is defining a separate macro for single object access, but it
+> still would need a way to delineate between the allocation and the fields=
+,
+> perhaps by using commas (dma_read_obj!(object, fields),
+> dma_write_obj!(object, fields, value)). This would be inconsistent with t=
+he
+> array/slice syntax.
 
-Ah, I see. I'll ensure to include the base commit henceforth!
- 
-> Also, note that this patch can only be landed after all other patches went from
-> their corresponding subsystem trees into Linus' tree.
+We've just generalized I/O to support arbitrary I/O backends (busses, backi=
+ng
+storage, etc.).
 
-Yes, agreed. Hoping other patches get picked up soon so this clean up 
-will be completed soon!
+With this we can wire up the I/O traits to DMA and generalize the dma_read(=
+) and
+dma_write() macros accordingly. I.e. we can extend the I/O traits with
+field_write() and field_read().
 
-Thanks everyone,
-Shankari
+(Lyude is going to work on this as a more integrated alternative to iosys_m=
+ap.
+It would be good to align with her regarding this work.)
+
+This has the advantage that we don't have to duplicate all this infrastruct=
+ure
+for I/O memory, DMA, etc.
+
+I also think that CoherentSlice is too specific of a type. I'd rather have =
+a
+generic type, maybe UnsafeSlice or IoSlice, that just uses the I/O backend =
+for
+accesses.
