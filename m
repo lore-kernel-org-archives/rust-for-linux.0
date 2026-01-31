@@ -1,242 +1,172 @@
-Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D94E25F7B9
-	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 13:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009DB352C42;
+	Sat, 31 Jan 2026 13:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769866450; cv=none; b=Cxu31jeBmQngAX/o+aHC7Lwx6ysWqu0oi5qymc7E4SDc5zIqEH+sfsLf4WyZmu4HsaGUcu6P4Quqp6JaJ3wmIv9nJepOar4Yat/0xGI3+QDVCrtwAUesdUHZ6LfmniztYOTSKJG1C1l7mDEuIG+tE0EqUL1KfD0SdMthbco7PyY=
+	t=1769866451; cv=none; b=Z8QpDBytP1DhahG63Kar7SOFBDf3vj0blqaG2RMmyrSjLylTy3lJrCdn//D+UW9bpC8Gh95zJfBqjB13Z7CcHuA6xmDa/6AChyI6qfIVVX8FX4nFVEhL+0FL4M4oMnubYhzhycR3JvrsOjgCLX5eycEsrRMKmkC/VfSxpy3/K1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769866450; c=relaxed/simple;
-	bh=B3tW+T3+xTqFN7KjQ7CwQXAjt+4LE0T30rQy08uzlD8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Pxe8DjNRfAiyj0iOX4fMGYp7G0U+43klkO/j4bmtLGZbIK0vVBuEwFciDpQkqcsqOv6Zc/WRQgQlzqkqAuslhlp1+H7YP3lI5uEZMJwwuC+zBKiT+sfddbmFKwZmgf3yVCAJ822mXXWNwdjZtdt0YGZmSPn2pIb4xFLsT1Q1/qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nr9uV/2v; arc=none smtp.client-ip=209.85.221.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769866451; c=relaxed/simple;
+	bh=OSALxL5+MFk5Sj9+OTgyZflH86KfchG0tfgD4nghV9o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pjdIxpxXt7+MDEJxw5U+HIuPwPxywkpCC62wLIkOU+u/62J4QTidrq73KO+L135wUrQc02hd0m19ozjaAVjdQbWXytQ/poBVYDAOYGd8nUVoR55Lz6FcjfjCc6nkONqkRo3q10Zawj0pIM1oEIy60vl4SeLnyUum0h2niKqWV0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmiDtb2b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nr9uV/2v"
-Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-432755545fcso1961872f8f.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 05:34:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769866447; x=1770471247; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+GMDkRHv2Khx/Muzvkcr6QDmiyEqHb/dntZQAQVhjCU=;
-        b=nr9uV/2vtw2hD3wZzckrmHpKRl8EL1jFiH8752JizKUiDudOce7+QJIsd7mvl4tGz+
-         rZ4O8mvxaHgkG/uLa/KItDVKxj0bf/Me2Dk7R4yPyIX70ghoOgBlSXjldLwsbFt0t/OW
-         4LLccSwYwYs7coFG17ZYr2Zk/US9TALaFNxXKlANjc874FaTJfiEKFX+HM1b+zgMKPuV
-         RH1QTSP377/Zf4vqbTKIVjjKh/DBUAxEq89di7ZFBROjikumMNjewAtmWeuH9t59wGkZ
-         OgcIpnZVpy8Jz8yOETB/7wmHd8IY0BuBmYQK6xY6gyFkMdtxcu4/VP5fQTNyGkTOSO+8
-         iVRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769866447; x=1770471247;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+GMDkRHv2Khx/Muzvkcr6QDmiyEqHb/dntZQAQVhjCU=;
-        b=U4ax1FXkNgxb42+sFYmtsF82q4qbmEUBAY5lEGNeQLslnRdcbyiy9Jmhrb1RiPnpiz
-         xXM0o9+na1fQRra3D0lh6NQGj24NHhiHWmfambQIoBGoR2mqryo0DuTE9DmBGj3lPaRA
-         NgeFDdjxJK3woajCpzMRTGb4c1tG5JTj0ddLuYlq0S9rVCvEtndbm45319X6SnW7vFXj
-         5wBqeyYcW3A+JJ67qciMinHZe9X2sKW1cxSIo6SGbcpV+JkQXX3NqJOG8NEEbaXeYJY5
-         x36lqJ786BeKg7a2vIoA692N/axE+wTPVQOdVaePGmI7G9lIZAAZkuDMiK2wd9y24wFk
-         uIBA==
-X-Forwarded-Encrypted: i=1; AJvYcCWIE45rSM1bEnzu0pPC0NLNAC8HXpHkBYKCNgc5b3cx7ezVHAsN12dS6rJ3r0hU4BuU32t3TR9SEM53NxpV9g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvDdgF0CIobNWxEcz4FtdbJkDal+8KKSyIf+DgorJQRYoZkvRv
-	GHKpMb6JGz1oMMlNb4naswm/VBPmqX3lkm3qgeB5Wi5/s3Qksck6bqh9
-X-Gm-Gg: AZuq6aJD5QH+UuRZWANT0+XUfsy1fI13tCtmO33/Sqlpa6hbghL3mp217yKdF2400eD
-	jS20RtzTQSNWxbAtpOn+WxtEu0H8cDAIirkwRpYpREgu6f4gyWEd/UFnQqbN3oVFjZdOq0D6DJz
-	2COT15QH9L49WIlPg3cf5+iP6JknnDijZn3ZqPDS5MC9yCPfh3N+n0+XEaDqE+b9JN8FTewdwcD
-	hevc/ZzT04af/Cejk6+Hsj52wPXWXN/0VqZ48BiJvqv2b00dcMphXDZEkOpxtI60Efa4w559rFu
-	zTdLbFuFBUywQrz/YWwrwzYgKZ4JqJNyKFCU5nZRyRC/Ubk2aYateZepJV+K9RTW+HqYY9x7TF9
-	c6OhEibBTV33cn1Muo/gR+ijBPW4JHHUoqKWrNB2nutTkobdSzv4pdxeoBJvRcJQNWL+2oIO+Y9
-	mSiczvSMu6H+r4cctZ6/cLYRJSs5BcsqKNoFY6ctIHGg0DkwEAqaYDcLz5AsrGJ/uuNzfJrrat4
-	NFBoLI0qpOHg3Ko0168bIq5TUXRAg7L2JqyTEibIp9H3w==
-X-Received: by 2002:a05:6000:26c3:b0:435:bbd7:18e1 with SMTP id ffacd0b85a97d-435f3a6f621mr8477082f8f.9.1769866446676;
-        Sat, 31 Jan 2026 05:34:06 -0800 (PST)
-Received: from ?IPV6:2003:df:bf2d:e300:fa3c:28af:ecab:143f? (p200300dfbf2de300fa3c28afecab143f.dip0.t-ipconnect.de. [2003:df:bf2d:e300:fa3c:28af:ecab:143f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e13235f5sm29300881f8f.29.2026.01.31.05.34.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 31 Jan 2026 05:34:06 -0800 (PST)
-Message-ID: <49693073-e49e-4b5f-849b-6dd5fd3de712@gmail.com>
-Date: Sat, 31 Jan 2026 14:34:05 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmiDtb2b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9EBC4CEF1;
+	Sat, 31 Jan 2026 13:34:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769866450;
+	bh=OSALxL5+MFk5Sj9+OTgyZflH86KfchG0tfgD4nghV9o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CmiDtb2bRU0cdHgidAIfD3SQmhVHJXWiIMRTu8RVPlXgzcSU47b11OFJYfX+EhFov
+	 2HycDkjTxGWdkXRYZt0i5GwgeNvRDgm4lll9IZtH41A5Jxx1nlud6hPMJ9SXQbk0Nv
+	 c6Mf0wYakAvmTRR3h8GwwEzxzj5x8EobRQajzXHo8wykxY+N6M5iMeX9UIQzBt6Jho
+	 RCEmQt8ccIx0HfHvHsqQ6VXbgdkBhaB8J0Z1TQbJH+rSQ4jK5yrnzvKJbD4jKUMwuP
+	 DMFkG4py0t7xx2laHrS+2o+0JVaZk8ip3uW4qyz3m/0rN1Zd+1ZA9A5lYjfLbEI7VK
+	 7rIDzrBrGoM4Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: page: add volatile memory copy methods
+In-Reply-To: <aX2tyn9nBUEKM-SN@tardis.local>
+References: <a8nHDdzac5l20akcxjjf9w7huObjn4eIHjUI-A17aKEwWl1N-4vvLBiVdqTQbBHwypMIA6gNkzm8YFXmMl44ew==@protonmail.internalid>
+ <DG1ZJ1350EMS.1S1360PA496QG@garyguo.net>
+ <874io3rwl3.fsf@t14s.mail-host-address-is-not-set>
+ <iFJVkpTMbd-NR24OHYTJj8lr4dw7MwCQ9rJWiuRZFgK3JRDhIIAcpf5Z24viL5qHhkrPzpnKfvX7JS6X_VO2vg==@protonmail.internalid>
+ <DG20LKAHMXMZ.262Y7NAC1A1Z9@garyguo.net>
+ <871pj7ruok.fsf@t14s.mail-host-address-is-not-set>
+ <-9VZ2SJWMomnT82Xqo2u9cSlvCYkjqUqNxfwWMTxKmah9afzYQsZfNeCs24bgYBJVw2kTN2K3YSLYGr6naR_YA==@protonmail.internalid>
+ <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
+ <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
+ <aX0lcVngRcRwqgd5@tardis.local>
+ <SEV7bR_nyQNtvtgoO8X80HMkMTPLW_6roBSxJ-MpKHHNmkZQyVxSS9k1iFV7-bgAlHSLM566L8EqtRBnht65uA==@protonmail.internalid>
+ <aX2tyn9nBUEKM-SN@tardis.local>
+Date: Sat, 31 Jan 2026 14:34:02 +0100
+Message-ID: <87ms1trjn9.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Dirk Behme <dirk.behme@gmail.com>
-Subject: Re: [PATCH 2/2] samples: rust: pci: exercise capability lookup
-To: Zijing Zhang <zijing.zhang@ry.rs>, dakr@kernel.org,
- linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
-Cc: bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org,
- gary@garyguo.net
-References: <20260131040200.1242566-1-zijing.zhang@ry.rs>
- <20260131040200.1242566-3-zijing.zhang@ry.rs>
-Content-Language: de-AT-frami
-In-Reply-To: <20260131040200.1242566-3-zijing.zhang@ry.rs>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 31.01.26 05:02, Zijing Zhang wrote:
-> Use the new pci::Device capability helpers to locate a few common
-> capabilities (standard and extended).
-> 
-> Also try a best-effort self-check to exercise the `Some(offset)` path
-> when the device advertises a standard capability list or an ext-cap header.
-> 
-> Signed-off-by: Zijing Zhang <zijing.zhang@ry.rs>
-> ---
->  samples/rust/rust_driver_pci.rs | 90 +++++++++++++++++++++++++++++++++
->  1 file changed, 90 insertions(+)
-> 
-> diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-> index 4dfb8a6a4707..195d37edff2c 100644
-> --- a/samples/rust/rust_driver_pci.rs
-> +++ b/samples/rust/rust_driver_pci.rs
-> @@ -5,6 +5,7 @@
->  //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
->  
->  use kernel::{
-> +    bindings,
->      device::Bound,
->      device::Core,
->      devres::Devres,
-> @@ -89,6 +90,95 @@ fn config_space(pdev: &pci::Device<Bound>) {
->              "pci-testdev config space read32 BAR 0: {:x}\n",
->              config.read32(0x10)
->          );
-> +
-> +        for (name, id) in [
-> +            ("PM", bindings::PCI_CAP_ID_PM as u8),
-> +            ("MSI", bindings::PCI_CAP_ID_MSI as u8),
-> +            ("PCIe", bindings::PCI_CAP_ID_EXP as u8),
+"Boqun Feng" <boqun@kernel.org> writes:
 
+> On Fri, Jan 30, 2026 at 01:41:05PM -0800, Boqun Feng wrote:
+>> On Fri, Jan 30, 2026 at 05:20:11PM +0100, Andreas Hindborg wrote:
+>> [...]
+>> > >> In the last discussions we had on this, the conclusion was to use
+>> > >> `volatile_copy_memory` whenever that is available, or write a volatile
+>> > >> copy function in assembly.
+>> > >>
+>> > >> Using memcpy_{from,to}io is the latter solution. These functions are
+>> > >> simply volatile memcpy implemented in assembly.
+>> > >>
+>> > >> There is nothing special about MMIO. These functions are name as they
+>> > >> are because they are useful for MMIO.
+>> > >
+>> > > No. MMIO are really special. A few architectures require them to be accessed
+>> > > completely differently compared to normal memory. We also have things like
+>> > > INDIRECT_IOMEM. memory_{from,to}io are special as they use MMIO accessor such as
+>> > > readb to perform access on the __iomem pointer. They should not be mixed with
+>> > > normal memory. They must be treated as if they're from a completely separate
+>> > > address space.
+>> > >
+>> > > Normal memory vs DMA vs MMIO are all distinct, and this is demonstrated by the
+>> > > different types of barriers needed to order things correctly for each type of
+>> > > memory region.
+>> > >
+>> > > Userspace-mapped memory (that is also mapped in the kernel space, not __user) is
+>> > > the least special one out of these. They could practically share all atomic infra
+>> > > available for the kernel, hence the suggestion of using byte-wise atomic memcpy.
+>> >
+>> > I see. I did not consider this.
+>> >
+>> > At any rate, I still don't understand why I need an atomic copy function, or why I
+>> > need a byte-wise copy function. A volatile copy function should be fine, no?
+>> >
+>>
+>> but memcpy_{from,to}io() are not just volatile copy functions, they have
+>> additional side effects for MMIO ;-)
+>>
+>
+> For example, powerpc's memcpy_fromio() has eioio() in it, which we don't
+> need for normal (user -> kernel) memory copy.
 
-Would it make sense to drop the direct usage of `bindings` by the
-user? And add an abstraction for this in pci.rs? E.g. an enum?
+Ok, I see. Thanks for explaining. I was only looking at the x86
+implementation, which is of course not enough.
 
+>
+>> > And what is the exact problem in using memcpy_{from,to}io. Looking at
+>
+> I think the main problem of using memcpy_{from,to}io here is not that
+> they are not volatile memcpy (they might be), but it's because we
+> wouldn't use them for the same thing in C, because they are designed for
+> memory copying between MMIO and kernel memory (RAM).
+>
+> For MMIO, as Gary mentioned, because they are different than the normal
+> memory, special instructions or extra barriers are needed.
 
-> +        ] {
-> +            if let Some(pos) = pdev.find_capability(id) {
-> +                dev_info!(pdev.as_ref(), "pci-testdev {name} cap @ 0x{:02x}\n", pos);
+I see, I was not aware.
 
+>
+> For DMA memory, it can be almost treated as external normal memory,
+> however, different archictures/systems/platforms may have different
+> requirement regarding cache coherent between CPU and devices, specially
+> mapping or special instructions may be needed.
 
-Just as a heads up, using `as_ref()`in the `dev_*` prints should be
-obsolete soon:
+Cache flushing and barriers, got it.
 
-https://lore.kernel.org/rust-for-linux/20260120181152.3640314-2-gary@kernel.org/
+>
+> For __user memory, because kernel is only given a userspace address, and
+> userspace can lie or unmap the address while kernel accessing it,
+> copy_{from,to}_user() is needed to handle page faults.
 
+Just to clarify, for my use case, the page is already mapped to kernel
+space, and it is guaranteed to be mapped for the duration of the call
+where I do the copy. Also, it _may_ be a user page, but it might not
+always be the case.
 
-> +            } else {
-> +                dev_info!(pdev.as_ref(), "pci-testdev has no {name} capability\n");
-> +            }
-> +        }
-> +
-> +        // Best-effort self-check to exercise the `Some(offset)` path:
-> +        // If the device advertises a standard capability list, read the first capability ID
-> +        // directly from config space and verify that `find_capability()` returns an offset.
-> +        let status = config.read16(bindings::PCI_STATUS as usize);
-> +        if (status & bindings::PCI_STATUS_CAP_LIST as u16) != 0 {
-> +            let pos = config.read8(bindings::PCI_CAPABILITY_LIST as usize);
+>
+> Your use case (copying between userspace-mapped memory and kernel
+> memory) is, as Gary said, the least special here. So using
+> memcpy_{from,to}io() would be overkill and probably misleading.
 
+Ok, I understand.
 
-An other heads up: This should use the `register!()` macro soon:
+> I
+> suggest we use `{read,write}_volatile()` (unless I'm missing something
+> subtle of course), however `{read,write}_volatile()` only works on Sized
+> types,
 
-https://lore.kernel.org/rust-for-linux/20260128-register-v4-6-aee3a33d9649@nvidia.com/
+We can copy as u8? Or would it be more efficient to copy as a larger size?
 
+You suggested atomic in the other email, did you abandon that idea?
 
-> +            if pos != 0 {
-> +                let id = config.read8(pos as usize + bindings::PCI_CAP_LIST_ID as usize);
-> +                match pdev.find_capability(id) {
-> +                    Some(found) => dev_info!(
-> +                        pdev.as_ref(),
-> +                        "pci-testdev selfcheck: cap id 0x{:02x} @ 0x{:02x} (find -> 0x{:02x})\n",
-> +                        id,
-> +                        pos,
-> +                        found
-> +                    ),
-> +                    None => dev_info!(
-> +                        pdev.as_ref(),
-> +                        "pci-testdev selfcheck: cap id 0x{:02x} @ 0x{:02x} (find -> none)\n",
-> +                        id,
-> +                        pos
-> +                    ),
-> +                }
-> +            } else {
-> +                dev_info!(pdev.as_ref(), "pci-testdev selfcheck: empty cap list\n");
-> +            }
-> +        } else {
-> +            dev_info!(pdev.as_ref(), "pci-testdev selfcheck: no cap list\n");
-> +        }
+> so we may have to use `bindings::memcpy()` or
+> core::intrinsics::volatile_copy_memory() [1]
 
+I was looking at this one, but it is unstable behind `core_intrinsics`.
+I was uncertain about pulling in additional unstable features. This is
+why I was looking for something in the C kernel to use.
 
-Could the indentation and nesting level of this block be reduced by
-moving this to a helper function, e.g. `check_standard_capability()`,
-and in that use early returns?
-
-Same for the extended capabilities below (e.g.
-`check_extended_capability()`).
-
-And, going even one step further: I don't know much about PCI, but is
-this a common pattern several users / drivers might need? If so it
-might make sense to move some of this `check_*_capability()` to pci.rs?
-
-Best regards
-
-Dirk
+I think `bindings::memcpy` is not guaranteed to be implemented as inline
+assembly, so it may not have volatile semantics?
 
 
-> +        for (name, id) in [
-> +            ("DSN", bindings::PCI_EXT_CAP_ID_DSN as u16),
-> +            ("SR-IOV", bindings::PCI_EXT_CAP_ID_SRIOV as u16),
-> +        ] {
-> +            if let Some(pos) = pdev.find_ext_capability(id) {
-> +                dev_info!(pdev.as_ref(), "pci-testdev {name} ext cap @ 0x{:04x}\n", pos);
-> +            } else {
-> +                dev_info!(pdev.as_ref(), "pci-testdev has no {name} ext capability\n");
-> +            }
-> +        }
-> +
-> +        // Best-effort self-check for extended capabilities.
-> +        //
-> +        // If the device has PCIe extended configuration space, verify that
-> +        // `find_ext_capability()` can find the ID from the first extended
-> +        // capability header (which is located right after the 256-byte legacy
-> +        // configuration space).
-> +        if let Ok(config_ext) = pdev.config_space_extended() {
-> +            let hdr = config_ext.read32(bindings::PCI_CFG_SPACE_SIZE as usize);
-> +            if hdr != 0 && hdr != u32::MAX {
-> +                let id = (hdr & 0xffff) as u16;
-> +                match pdev.find_ext_capability(id) {
-> +                    Some(found) => dev_info!(
-> +                        pdev.as_ref(),
-> +                        "pci-testdev selfcheck: ext cap id 0x{:04x} @ 0x{:04x} (find -> 0x{:04x})\n",
-> +                        id,
-> +                        bindings::PCI_CFG_SPACE_SIZE,
-> +                        found
-> +                    ),
-> +                    None => dev_info!(
-> +                        pdev.as_ref(),
-> +                        "pci-testdev selfcheck: ext cap id 0x{:04x} @ 0x{:04x} (find -> none)\n",
-> +                        id,
-> +                        bindings::PCI_CFG_SPACE_SIZE
-> +                    ),
-> +                }
-> +            } else {
-> +                dev_info!(
-> +                    pdev.as_ref(),
-> +                    "pci-testdev selfcheck: no ext cap header @ 0x{:04x}\n",
-> +                    bindings::PCI_CFG_SPACE_SIZE
-> +                );
-> +            }
-> +        } else {
-> +            dev_info!(pdev.as_ref(), "pci-testdev selfcheck: no ext config space\n");
-> +        }
->      }
->  }
->  
+Best regards,
+Andreas Hindborg
+
+
 
