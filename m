@@ -1,88 +1,95 @@
-Received: from mail-108-mta130.mxroute.com (mail-108-mta130.mxroute.com [136.175.108.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9A23093C1
-	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 02:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65081EBFF7
+	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 02:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769826210; cv=none; b=QbFHat7vKq5veziAmdU/XIlXA+PPancG6YTPe7RQKCB7PhHG+sFjy+iyaxVeASArqsdyzbw+8PGkC0MpFO7J4j06fogtPKpLcO/tatWPX//h+oZRn04KFQnhcGqaSYayV4vSn4Ej7xnuPgclYuE4GjIfexxfJ3dPbR8KamNWXZc=
+	t=1769826349; cv=none; b=nezSVhELhHqiGYEVhfYeVSIX2fEJ8dur719WfZiS9UUKBvr96nZArupFMDsyLFH+2Wu/ycIksgO3FJYs2kyjGKX+k2sfNeCXcakT884llZCgyvEbEQRt7wOMIPcSD0W/qt1NdpYHmGkDsidn2N/+ZyD2rHwjfuQEGv1CUJDLc6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769826210; c=relaxed/simple;
-	bh=mYLu/kKuwG/6AdpUKPdy7IW9x3/OQFEdELFUHhpE9w8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W2mWpdN44wFuTcjzyA6KeByvCL8eS71dYVeM3M+h/KTm2/c5BgV4uOG3tm5hqhj2ELeyFBCsvLGUJKLCVTnzF9s7Jhk6mVEVPmNpMR9OPci2VwTOrYv1FMrPWL+GQbVKE9nwGkTeZvyS9sZa7jwcl+hC04FTktVKAElJCbgGujw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs; spf=pass smtp.mailfrom=ry.rs; dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b=LacrvBTD; arc=none smtp.client-ip=136.175.108.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ry.rs
+	s=arc-20240116; t=1769826349; c=relaxed/simple;
+	bh=AlRrt1++X8RQvr+5pBWD/usm0305T4/ENaeNzHqdSdI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Q4rKFQRutj4aEH/A5N99isMFRCirTr0b0J6qCu5f8VeziLgxcE//hrb/oorCizDuQkdgqnP0fCFXmwX3OaRnbjurtDBRYgzen+oN3jRzJ5HcJIN5vptADySwuEMOzMDXqzRy3pmF5OhKe4sc3KI63Op2+4U5hfk6zZgxzRlj2pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=NwBzp9MA; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b="LacrvBTD"
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta130.mxroute.com (ZoneMTA) with ESMTPSA id 19c11d7f9d40009140.00f
- for <rust-for-linux@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sat, 31 Jan 2026 02:18:12 +0000
-X-Zone-Loop: 8086a704080c269ca61655a755e0804a1ca46c385e16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ry.rs; s=x;
-	h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:
-	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=mYLu/kKuwG/6AdpUKPdy7IW9x3/OQFEdELFUHhpE9w8=; b=LacrvBTDJ5mwMPv0RxYSCPqqWL
-	YzGc6O4b1RQ1LQa2+3K0KA8nflx7JfM2si3t5MchCpNLl3kdm1BIAoP52hRyIrflx+grF0sK3vYaC
-	BgpWfLJz2KjZbf248VrT0uG2AH2TlNM+RFOh7UW58beaAVYXG+U1yi0YYVnsI1vvlI+hI6n7+53py
-	JwgxhyLNlF3+0HlSpdzAfuCbob91lOxiUse5r0soOqWKei5t6/j9WwBFpRypKEzT37J6q+MW27XmA
-	fXzZPrKSlIz4KouANSaBZh+Z59ceYgQwuIgERESfGFQwxwOGhY1q8zcDmhMJ2Pl/MatSU8rCiZYU4
-	upedWscg==;
-From: Zijing Zhang <zijing.zhang@ry.rs>
-To: charmitro@posteo.net
-Cc: dakr@kernel.org,
-	ojeda@kernel.org,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] rust: pci: add config space accessors (and a small in-tree user)
-Date: Sat, 31 Jan 2026 02:18:03 +0000
-Message-ID: <20260131021803.1146484-1-zijing.zhang@ry.rs>
-In-Reply-To: <87sebmzk0i.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="NwBzp9MA"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id DF2FD240101
+	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 03:25:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
+	t=1769826345; bh=AlRrt1++X8RQvr+5pBWD/usm0305T4/ENaeNzHqdSdI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=NwBzp9MAFBT1FCNrRaTOfsvPKUbhYcMRNzqNJ3FECDDAX1eZFg668oFczqsJeibVw
+	 09yWupybUQT0jFlDTYfrJy5QV8FL3Eo029nCpcst4ASX34AEeZgSQU03Bu5rESl1oV
+	 QvV4hSfG9toYvXkupoDnBFzIi2fEL9nm6PirkcvJU1EN/Cu8ttRBTIVW1Tfi2BKBc9
+	 iJKrg8GbPgaN204uC5zE626bjXs7gVeyIsH3a6zqdKIIe7VNekhdLXflsz7X3P3CCl
+	 yEi3BfiO7WQ/X1SY88GBtIpz/fpnJxN0eXIZ9AEiHY66EGAt6veV7iDCaXvr/BLkyu
+	 /6gjQNMw4OAlA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4f2xYz0cjTz6tsf;
+	Sat, 31 Jan 2026 03:25:43 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Zijing Zhang <zijing.zhang@ry.rs>
+Cc: dakr@kernel.org,  ojeda@kernel.org,  bhelgaas@google.com,
+  kwilczynski@kernel.org,  boqun.feng@gmail.com,  gary@garyguo.net,
+  bjorn3_gh@protonmail.com,  lossin@kernel.org,  a.hindborg@kernel.org,
+  aliceryhl@google.com,  tmgross@umich.edu,  linux-pci@vger.kernel.org,
+  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/2] rust: pci: add config space accessors (and a
+ small in-tree user)
+In-Reply-To: <20260131021803.1146484-1-zijing.zhang@ry.rs>
 References: <87sebmzk0i.fsf@posteo.net>
+	<20260131021803.1146484-1-zijing.zhang@ry.rs>
+Date: Sat, 31 Jan 2026 02:25:45 +0000
+Message-ID: <87h5s2zffe.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: zijing.zhang@ry.rs
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Charalampos,
+Zijing Zhang <zijing.zhang@ry.rs> writes:
 
-Thanks a lot for the review and for testing the RFC series (and for the Tested-by).
-Much appreciated.
+> Hi Charalampos,
+>
+> Thanks a lot for the review and for testing the RFC series (and for the T=
+ested-by).
+> Much appreciated.
+>
+> It turns out I missed that PCI config space support for Rust has already =
+landed via
+> Zhi Wang=E2=80=99s series:
+> https://lore.kernel.org/rust-for-linux/20260121202212.4438-1-zhiw@nvidia.=
+com/
+>
+> So my RFC is redundant and I=E2=80=99ll stop pushing it to avoid wasting =
+reviewers=E2=80=99 time.
+> Sorry for the noise.
 
-It turns out I missed that PCI config space support for Rust has already landed via
-Zhi Wang’s series:
-https://lore.kernel.org/rust-for-linux/20260121202212.4438-1-zhiw@nvidia.com/
+Mistakes happen, I also missed it myself.
 
-So my RFC is redundant and I’ll stop pushing it to avoid wasting reviewers’ time.
-Sorry for the noise.
+Cheers,
+C. Mitrodimas
 
-However, Gary pointed out a real usability/doc issue in the current API: while
-`ConfigSpaceKind`/`ConfigSpaceSize` are re-exported from `kernel::pci`, the
-`ConfigSpace` struct itself is not, which makes it hard to name the returned type
-from `Device::config_space*()` and also affects rustdoc.
-
-I’ll send a small follow-up patch to re-export `ConfigSpace` from `kernel::pci`
-shortly.
-
-Thanks again,
-Zijing
+>
+> However, Gary pointed out a real usability/doc issue in the current API: =
+while
+> `ConfigSpaceKind`/`ConfigSpaceSize` are re-exported from `kernel::pci`, t=
+he
+> `ConfigSpace` struct itself is not, which makes it hard to name the retur=
+ned type
+> from `Device::config_space*()` and also affects rustdoc.
+>
+> I=E2=80=99ll send a small follow-up patch to re-export `ConfigSpace` from=
+ `kernel::pci`
+> shortly.
+>
+> Thanks again,
+> Zijing
