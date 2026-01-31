@@ -1,137 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta28.mxroute.com (mail-108-mta28.mxroute.com [136.175.108.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202F11BD9D0;
-	Sat, 31 Jan 2026 09:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C202FFFAB
+	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 09:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769851099; cv=none; b=LWaz5Xs8+FCQDzMxWNDUyMNqOlgIbleauRBms649ILEikVihk+H+3Z6Zn67RK0jBAUZMCAcHwtlzBTKI8BcMBh8biaSar9qI2TEDBqY9gHd6cLPxWnlV3eVQZ1dWDLnhDMa3bX+HFzLRQNlmevQ7irgnOBNKOYmjUbTYXx+KmXs=
+	t=1769853388; cv=none; b=RpBIEaz1eYcn8cbnw0RXsYP1kMgvWLZDGobBQgOh5vjJt/NrgNGuWBFP16cU5xAjufXnNyLmGBTDOTxO1jJIWRo2Ygdb5sgNXQFg5Lje4Tz+9rKjUrHotXZtZout5TZ/r8TjQLWzqSIlKzm5qtEhd7pm7QhHpELfW9nYvkYYebo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769851099; c=relaxed/simple;
-	bh=Kb7VjzqM6dLDgKkYTNxquF86NIbpjxv0poCPEvi+eag=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kENRglZ563CV7i2RWpw2tkEJMIEHQ8WmM6DwrpP6h6YkdEEQfyMYc+7FCtPG4i3Lif5d1wYwV7OWq/+YdnVHr+y0IstOxdCIpFMSqhVVzLVz6cJOKELOvU08dt+I4g51i1e2MKQAANQj/0XYY9V6xGBuJzT9BGGV71yWwy7n1Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fErq2rTz; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1769853388; c=relaxed/simple;
+	bh=a+nw1+hfaoc5pIFOnKAmXoYlRYD13bYV+7poAQx4XQA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fvo2wQClgghPYk2PhT2mdYbfs2rTqKkeDNT2CsouM6Nt1B3r7unvbu4fSxjvdCDAIXxOCAsA1L36j9JKevSAVetz1StTW/PfnkaZYCT5cn2O15UdRaopxt+GtWaZefnsnVuUjqnjV8D4ADsb1yJyXafUcGD6N2oE2noDLUhZ3fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs; spf=pass smtp.mailfrom=ry.rs; dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b=o+Gh6tDN; arc=none smtp.client-ip=136.175.108.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ry.rs
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fErq2rTz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769851098; x=1801387098;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Kb7VjzqM6dLDgKkYTNxquF86NIbpjxv0poCPEvi+eag=;
-  b=fErq2rTz1zsKQZisDwZ0EgqiIapuiskJxgoDSK0l0wVE49GSup73ROWE
-   FMd0NJwDM9t2BLr4eWlbg0+4TplsboPeuiHuaNYT4n9NovKCmLHS5otbg
-   F6YudYmt9jLYOZyFxozLQhwQiUr3J2OmP4hE1a0zMGDzIbSPp47QrJuJU
-   LmM/U3aBHTV1Ydaa2LHDMDfHXiOJ8lNcBtQ1Rd16DnexvnorF0YbqNj6X
-   TiXmBH4gX5QXTJSBygyY+Q3TIrd6mQqVEEtAKRl23wWmVdt9S5rHFn+72
-   b/4+MV2K5SkISoLBS14t+UDeUjs+jQtgTPnE1JGQsVzev73ws7b4tYXEP
-   g==;
-X-CSE-ConnectionGUID: WbtZKIH/ROOwsGgKb8q9hA==
-X-CSE-MsgGUID: LxMR0pRIThmSs+ppGc5s1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11687"; a="71128321"
-X-IronPort-AV: E=Sophos;i="6.21,264,1763452800"; 
-   d="scan'208";a="71128321"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2026 01:18:17 -0800
-X-CSE-ConnectionGUID: UNC0jd1aRy6u3m9kyjmkvg==
-X-CSE-MsgGUID: xU22GiErSSqETlTsD7eK5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,264,1763452800"; 
-   d="scan'208";a="209451089"
-Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
-  by fmviesa009.fm.intel.com with ESMTP; 31 Jan 2026 01:18:14 -0800
-Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vm77M-000000002ft-0ir8;
-	Sat, 31 Jan 2026 09:18:12 +0000
-Date: Sat, 31 Jan 2026 10:17:30 +0100
-From: kernel test robot <lkp@intel.com>
-To: Zijing Zhang <zijing.zhang@ry.rs>, dakr@kernel.org,
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, bhelgaas@google.com,
-	kwilczynski@kernel.org, ojeda@kernel.org, gary@garyguo.net,
+	dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b="o+Gh6tDN"
+Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta28.mxroute.com (ZoneMTA) with ESMTPSA id 19c1376b6b30009140.007
+ for <rust-for-linux@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Sat, 31 Jan 2026 09:51:13 +0000
+X-Zone-Loop: 9598ddb86bafb1a1ff901c89910af4b35739d07174b1
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ry.rs; s=x;
+	h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=7vpF7Hn5BqgJ2gb4QbWYXUkLTdyKNemYuDL0XwzOIJU=; b=o+Gh6tDNEqyvHrx0vP6E60coqX
+	DpMkj4BpK8z/M+SakkYZ7BocvqYe4RdJAmtxzihM7CstOnr5PlhA30+VuqQOdeRp52CEGb9fJDnig
+	BZQHJWc6HWt0WAcPpZvpjs7hPrE7VGxyRsgi0mBhfUYc4SQRP40+TR2mJ9Seji7WDvAPdj2oD3Wya
+	AuW72TVQk7cmvYe6S6Ksa3cYifx1rer5t4GrMl4iLgsC9ALEZPhTf8x09sQRI46SxuIvII9AuZOO6
+	irZK+gpEt4GXgQ0bwKyQVhExENIEDjB2nATiCWMspyuxHbgh39f8pMeG0WrFlVxZXCTWWJDEtm8Mg
+	dtgEPjxA==;
+From: Zijing Zhang <zijing.zhang@ry.rs>
+To: dakr@kernel.org,
+	linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	ojeda@kernel.org,
+	gary@garyguo.net,
 	Zijing Zhang <zijing.zhang@ry.rs>
-Subject: Re: [PATCH 2/2] samples: rust: pci: exercise capability lookup
-Message-ID: <202601311056.PVHRBER5-lkp@intel.com>
-References: <20260131040200.1242566-3-zijing.zhang@ry.rs>
+Subject: [PATCH v2 0/2] rust: pci: add capability lookup helpers
+Date: Sat, 31 Jan 2026 09:51:00 +0000
+Message-ID: <20260131095102.1273392-1-zijing.zhang@ry.rs>
+In-Reply-To: <20260131040200.1242566-1-zijing.zhang@ry.rs>
+References: <20260131040200.1242566-1-zijing.zhang@ry.rs>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260131040200.1242566-3-zijing.zhang@ry.rs>
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: zijing.zhang@ry.rs
 
-Hi Zijing,
+Changes in v2:
+  - Run rustfmt on samples/rust/rust_driver_pci.rs to fix rustfmtcheck.
 
-kernel test robot noticed the following build errors:
+This series adds small helpers to locate PCI capabilities from Rust.
 
-[auto build test ERROR on next-20260130]
-[cannot apply to pci/next pci/for-linus v6.19-rc7 v6.19-rc6 v6.19-rc5 linus/master v6.16-rc1]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+It introduces `pci::Device::{find_capability, find_ext_capability}`, thin
+wrappers around the PCI core helpers (`pci_find_capability()` and
+`pci_find_ext_capability()`), returning the config-space offset when
+present.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zijing-Zhang/rust-pci-add-capability-lookup-helpers/20260131-120935
-base:   next-20260130
-patch link:    https://lore.kernel.org/r/20260131040200.1242566-3-zijing.zhang%40ry.rs
-patch subject: [PATCH 2/2] samples: rust: pci: exercise capability lookup
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260131/202601311056.PVHRBER5-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260131/202601311056.PVHRBER5-lkp@intel.com/reproduce)
+An in-tree user is added to the Rust PCI sample driver to exercise the
+new API.
+The sample attempts to locate a few common capabilities (standard and
+extended) and prints whether they are present. It also includes best-effort
+self-checks to try to hit the `Some(offset)` path when the device
+advertises a standard capability list or has PCIe extended config space.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601311056.PVHRBER5-lkp@intel.com/
+This patchset intentionally stays policy-free: no Rust-only
+range/alignment checks, and no capability parsing.
 
-All errors (new ones prefixed by >>):
+Testing
 
-   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -fno-crash-diagnostics -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
-   make: Entering directory '/kbuild/src/consumer'
-   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
->> Diff in samples/rust/rust_driver_pci.rs:138:
-                ("SR-IOV", bindings::PCI_EXT_CAP_ID_SRIOV as u16),
-            ] {
-                if let Some(pos) = pdev.find_ext_capability(id) {
-   -                dev_info!(pdev.as_ref(), "pci-testdev {name} ext cap @ 0x{:04x}\n", pos);
-   +                dev_info!(
-   +                    pdev.as_ref(),
-   +                    "pci-testdev {name} ext cap @ 0x{:04x}\n",
-   +                    pos
-   +                );
-                } else {
-                    dev_info!(pdev.as_ref(), "pci-testdev has no {name} ext capability\n");
-                }
-   Diff in samples/rust/rust_driver_pci.rs:177:
-                    );
-                }
-            } else {
-   -            dev_info!(pdev.as_ref(), "pci-testdev selfcheck: no ext config space\n");
-   +            dev_info!(
-   +                pdev.as_ref(),
-   +                "pci-testdev selfcheck: no ext config space\n"
-   +            );
-            }
-        }
-    }
-   make[2]: *** [Makefile:1902: rustfmt] Error 123
-   make[2]: Target 'rustfmtcheck' not remade because of errors.
-   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'rustfmtcheck' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'rustfmtcheck' not remade because of errors.
-   make: Leaving directory '/kbuild/src/consumer'
+Build:
+  - x86_64 defconfig-based kernel with Rust enabled
+    (out-of-tree build: `make O=...`).
+  - `CONFIG_SAMPLES_RUST=y`
+  - `CONFIG_SAMPLE_RUST_DRIVER_PCI=y`
+
+Runtime:
+  - QEMU x86_64 with `-device pci-testdev`
+    (capability lists are not advertised in this configuration).
+  - QEMU x86_64 (q35) with an NVMe device
+    (exercised the `Some(offset)` path via
+     `find_capability(PCI_CAP_ID_EXP)` returning `Some(0x80)`).
+
+
+Zijing Zhang (2):
+  rust: pci: add capability lookup helpers
+  samples: rust: pci: exercise capability lookup
+
+ rust/kernel/pci.rs              | 36 ++++++++++++
+ samples/rust/rust_driver_pci.rs | 97 +++++++++++++++++++++++++++++++++
+ 2 files changed, 133 insertions(+)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.52.0
+
