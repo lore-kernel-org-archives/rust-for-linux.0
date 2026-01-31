@@ -1,301 +1,190 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012016.outbound.protection.outlook.com [52.101.48.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84ED02DAFA9
-	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 00:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769818597; cv=none; b=TAJmgm60ePINx1qCcFXZ2rDIklg3hniw66gOW0KDsLHSUkhPI9tMjwzo+nU/oMsTkwmY5cJLgT4dVTUaEFczton0pD2h8syRCvc81yHJJxzFlUlQD7IVQQQLDQmV7wu5U82qx/sKjf+jWI3d9GmLHgtw4SPbqtCy7+hCBXriek4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769818597; c=relaxed/simple;
-	bh=x6BkJw6QGJ2oa0Vs3ckvYkRN78d3lMcvw/PideCkfcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tg1m4AvQFDqBN3hU0YU1wtE01J0LnVMPyFQIzFLTti1BWqv0VXoAVgmmqZgU3kzDEE5OGN8yqNUMJsiIBRcOOJbqSzqJQFdxD7E/vxHlq0MtCJnD2Jkm4GT4WRe4L+yANWOxiVVJ/prKdvTwY5nSLyPAwNaJQ5yw3ErHhnMEl6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fL9h94c3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D752F0673
+	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 00:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769818598; cv=fail; b=hWqeaAxGlLdx+3/TK94C+VsSh7sVruL4fG9IRW4EDSBwndi1ItXCt0FIJJ8Vpu9oxk8Aw1KAmzRwEHeRgvLQAB+s4N9+6/xfwYXzyr4ocddkVdTg1AlRCl8C0T42iLC924kcIIbH+josMMfPLILAaYFF7EazEXWsOCcKt/vMU+4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769818598; c=relaxed/simple;
+	bh=Do5FIf/8yDuZpfRI5UoWgIMQbDI0m1tVsOOodqJ3adQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=OLDTXPCfiytiaaFoAU1bDxfAbXRFaVr6hkK/yLm+1vj2sVy8zUPOHzbeolc91+OOqHYxYydnDm98VidHcAWoEbGYgS+xrwISaFfy1BlpUg87tGiTcmZ5IlrzWByxUONIMMOJz5mubGsc6fRj1KNs/HdH5TxJAy4rvoQslH3OR24=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gnh5eUCM; arc=fail smtp.client-ip=52.101.48.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fL9h94c3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769818594;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I4xaYhUpLXOBwZoEHLADcBcWiGEAuhBq9dyW2GYPd4M=;
-	b=fL9h94c3hGvHEJYZbM8FptgMq4ptj3zHjV4v/Ep31uL4KMGmp1pP4OsXK6K8I19FKy4Xp9
-	3DWf6HZSVR4Shf6YAOPMGlIYrvXmiUVaY5iLPYxh5ZQl5dyOkGoC8IbyzOthzXJwJ0hwfE
-	KdnvjNkzWGaJpuK31+IeQa3IEYw0AKM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-155-SPkFFwgKPVKNflvsfufnaA-1; Fri,
- 30 Jan 2026 19:16:31 -0500
-X-MC-Unique: SPkFFwgKPVKNflvsfufnaA-1
-X-Mimecast-MFC-AGG-ID: SPkFFwgKPVKNflvsfufnaA_1769818589
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C4AA41954B06;
-	Sat, 31 Jan 2026 00:16:28 +0000 (UTC)
-Received: from GoldenWind.lan (unknown [10.22.81.64])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CA693180097D;
-	Sat, 31 Jan 2026 00:16:26 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: nouveau@lists.freedesktop.org,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	"Simona Vetter" <simona@ffwll.ch>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Shankari Anand" <shankari.ak0208@gmail.com>,
-	"David Airlie" <airlied@gmail.com>,
-	"Benno Lossin" <lossin@kernel.org>,
-	"Asahi Lina" <lina+kernel@asahilina.net>,
-	"Daniel Almeida" <daniel.almeida@collabora.com>,
-	"Lyude Paul" <lyude@redhat.com>
-Subject: [PATCH v5 2/4] rust/drm: Don't setup private driver data until registration
-Date: Fri, 30 Jan 2026 19:13:31 -0500
-Message-ID: <20260131001602.2095470-3-lyude@redhat.com>
-In-Reply-To: <20260131001602.2095470-1-lyude@redhat.com>
-References: <20260131001602.2095470-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gnh5eUCM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TtC84euT7RmbQXxRHEn4GMy10Fw2061Ps/yvAKMlg7owDzVTiESXeo0+QmMTSwrPUa752WA+IPVKVGfiyvrMEhLnLUZhgdDw28zYqcsyBM5AGjzxtYK/Iu6xzbs+iKq/E+rIAHAknEJ2gtp01XVSTm7zNxmwjNDEAFZvdfDmSAkg+x+a24zDX13YBiDiZ1qVr3p2aNPr+rLAaLL91DrPaOeQyX7tqCZx3i78XLbJ3ZvNhneLuRrZHf6ySWalTh6xvWhVmEYEqQ6QZWUts2Z798Yg57AD0O1U7up0R0gPNPa/OXG7MsuHVvEt1hrjuA9INbIE92aAUMnCk3l8vM/UIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BP8PS+Pi8mc189PISAggAKpqw3p2gaPUopWi5ChPnTY=;
+ b=pJdsFBHPuG4vMTQrsEwQq+YW0nmLWvZWBC0uZhSSjZPssASVhffB4wGT2VdhsibHUiVS4w52HCiZi8oAu/IqG159PexamrQ7hKZA7LFza6A/kC5E+yNyM3R/NepJy4leXfG43KIYtWa6UB73RftjIiz55LClozd5b7fGjMNB/kcZkzTUFxGW1zlYS1F/J2rQbQSezz4tevWXveMDh5f5UeobwNdkPkyPyJ0ceTxfgxMx+pv/YJZhdr8XjlKkNfxxMGod1idNWwxMqZ4mZ/5s0EWDlpDM1kW7xEPZ1ec/Rx+nEPD0YLU1EUOhmzvXV7wY/ZOS/0IY4JAMibarVE+Sew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BP8PS+Pi8mc189PISAggAKpqw3p2gaPUopWi5ChPnTY=;
+ b=gnh5eUCMUQZZeWsGZAebKAPzB9UzEPIHPbqdhKARRk5cP3f5TD5ngKHYSjXeaHcc8OE95JGmIYQyMwQ+1V4ypE1lT+HrvJnp4JmSd8/lCJEE7JDRTJ61HzJr6ntMb/Qtn5bS28yJfxUSm2xAorPgK6wqW9HeFNYQvCdMewadjMfAHg0XIzFhP3UzvjiHOMkglOlmZy45JcfpqKwFlJsZVHqcejPC/k7ZvetTD9ZUPHXdqsRpd8ZqYaRc0Cfhn4b1nYjppFghTIfoCYspPiLzPvHLMP2SQV4u5mxzuZ/zAvlktNGgMDfChXeXqmoE6K30kRA4WthaWJCLyISSiTQuEw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ DS7PR12MB8229.namprd12.prod.outlook.com (2603:10b6:8:ea::21) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.8; Sat, 31 Jan 2026 00:16:29 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9564.007; Sat, 31 Jan 2026
+ 00:16:29 +0000
+Message-ID: <ab90ca9a-a721-41a5-9b28-2af73fda3212@nvidia.com>
+Date: Fri, 30 Jan 2026 16:16:20 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 7/7] gpu: nova-core: create GSP-RM logging buffers
+ debugfs entries
+To: Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: Timur Tabi <ttabi@nvidia.com>, "mmaurer@google.com" <mmaurer@google.com>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ "aliceryhl@google.com" <aliceryhl@google.com>,
+ Alexandre Courbot <acourbot@nvidia.com>
+References: <20260129022837.4133832-1-ttabi@nvidia.com>
+ <20260129022837.4133832-8-ttabi@nvidia.com>
+ <95b913a1d344f603d17abc7f6d78da166068bc91.camel@nvidia.com>
+ <DG2BY691US2F.36NWWJ18OPTBP@garyguo.net>
+ <DG2C7G44QD5C.BY4U4HG7XBJM@kernel.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DG2C7G44QD5C.BY4U4HG7XBJM@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0118.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::33) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS7PR12MB8229:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f61bacf-48a9-4f54-f7e9-08de605dfae7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?a2pVYUlVVlNaUE9jODBFYmh5d0ZhcTJXR0VoUEtZbGRYcDU0dW1uSDJhaS9u?=
+ =?utf-8?B?ZUx2UUhsdEwzVE4xWGNYZ2pIaml2eURIM1AzYWVaMGh4UGg5dmZnTzI1TStI?=
+ =?utf-8?B?MTA4ZXM5VzdrVnIwbFc2VlFRZWlTQWlBTVlBd1pxQmpheHJKTVpzeXZ6KzB2?=
+ =?utf-8?B?R21JWGVOMlVlcmN6bFViQjJtZGNJclJWZDNEMk9wR0lwd05ubW10V0tHZFZQ?=
+ =?utf-8?B?ZmxLUUpxeTB3TDdpREZLN2NxYkMraW96NzhaMHI5TU5UOHhYL2w2SndoWjFs?=
+ =?utf-8?B?NnlrNHRyUnZ4NmlTRm9QZVFVMEltZ1dDdTFmTUczSFRSaHRFVURiMCtVVDZM?=
+ =?utf-8?B?dzRkSGJETTNpallsblZVQnVwVzNDaGpOLzN1emVGL2RqUC9YYVFVejJuRUNT?=
+ =?utf-8?B?bUJBcjJuMms1d0tzUjh0WUlZKzhZNFdpdlZwTExlNFJvak5NYTBONUhDRzNw?=
+ =?utf-8?B?b0lQUTNVMkkyc0trRkdoNGd4dG5LeTZQOUZNek5TZWRSVFkydW44MmhwQWNZ?=
+ =?utf-8?B?VVFFczRudnV1c0Y3dTd1a3lkUUJwUUJ4RnpxQTdOcHRFbEVBUk9LUlBYcWht?=
+ =?utf-8?B?WERJcFR4QVovZzBjREgvcUtDMm9LVjZpZEpmTzZwTWs3Rk0zTHhvTEFZZ2N0?=
+ =?utf-8?B?VnhMN2htVEU4Z2FOczdnc0ZKNllIU2hTaVdtTW4zUE5ITUQzZG1HSHpZWnBw?=
+ =?utf-8?B?K0laaDh2L1NtaHJEMGFJbDhvalRLam1pNmZrUGxMbS9rVnh6NEtDRHVrQXNo?=
+ =?utf-8?B?bEtIU2RPbGJOUlRidVpNQnZJeWtxOVg2R3VBVS9RNy95THdCQTlyb0FSMS9C?=
+ =?utf-8?B?bEhEbGNoWkhTVTQwNVJqQVFMVkFvOHBudDNxekRBM1YxZXZFbU8xZ1JTYnZi?=
+ =?utf-8?B?MUpDQ1RXYllGRTBqVEQyMm5LV3ZIMWRSRy9ZdllmNVViUGRpME1pajFPa0pa?=
+ =?utf-8?B?cEYvd0FPQ0hYR05YTWhDN2JUcFpQcHpDeUpETmVCODV3Z2xWb3pXVDVlSEl3?=
+ =?utf-8?B?ZncxR21WL2tVcWJRYU8zR0JQVUFsUDdBTkcwV1g2QXhoTmZVOFpGcG4vWXo5?=
+ =?utf-8?B?bmpFNTNaWTFzYk9TMFdvdlQ3K0o0bXRTTkJseCtPUFRGVDE2b1IzZXVuU1Zn?=
+ =?utf-8?B?NzdIQWhKaXM5cmFvYnRYaHdLSEdoSkRsVTFrSlpXNWtMN3gwNURXK3BVZ21x?=
+ =?utf-8?B?ekY1aFk3blU2eVdtSzJyRUF0ak93cVN2MzIrc1I3NmhLREdOZTVRZDlCSUN1?=
+ =?utf-8?B?NzcvME5mUE5EVW0rT1k5aHREa2ZSSjNGd0FyUVBtNHVEZ2JzZW5IYndkSjBF?=
+ =?utf-8?B?KzZkZmNYUGRlWmdqM3NhbzI4eTFqRnNYNFdWdHlzMDA4SzNUamxYcldVeTdN?=
+ =?utf-8?B?aXRJd2pEUEc2QkplakZOZHRTenRUK2xHcnpHQjRld2k2SlVYNXRIYSsxdWdi?=
+ =?utf-8?B?ZkhFVFlVYTBnQ0lsUFRmb0xjVTZaNkZYM0djQmNiNE9lT2NiQUU2bis3cnZ4?=
+ =?utf-8?B?c3JVWllhRW53MlkydzlrTHUybHNzRjY0bU1jUXNzYml1Wk1MQzNVcElyTFlK?=
+ =?utf-8?B?SFQyZVNjR1k2b092NXRsbVlzQzgrZGdieHREaTVHMGMzSW9yZFNJRks5N0RY?=
+ =?utf-8?B?dlhLbFZDcUk5K0FZbzJGQWxHZDcyU3llL3pjZ3QrcVA3Yi9DalJNTlpvclMv?=
+ =?utf-8?B?bVhMMTNpSWMrNG9TWEpiaTI3RHdSTWFSVXF6bFpCaWtCVi9DampYdmRITkx0?=
+ =?utf-8?B?Nm1HVlZtamxqL09ma0FST2Ezb1k2YlBUcXZhTzNkQ0gvVWJxeHNQVGhIWFB4?=
+ =?utf-8?B?RHFZVm0yRjJQYm1SaTlRNXJta2N4WE5YWHJlbmx0eTNGc203dWdnbUpRdjdI?=
+ =?utf-8?B?ejNDYVRGd1l0eFpmaVpSMjMzVnY1SUtkeldTVC9MalA0c1RheE04NUd0MUhB?=
+ =?utf-8?B?eGEwQVJTcU8vVnR1eWtNdFNiSlZUU1g1ZFBoS1R5VUNhVkNDL2VaWExlNGk1?=
+ =?utf-8?B?ZW1wUU1SK2lHVWxXejBKYXBWNWREdk9JOWlEa0UrbWJldVJrZ0g3elc5YWJS?=
+ =?utf-8?B?MFAyVUw3U1d4bkNtMU93RXZZME5PRnNiRW5BbHhWSWFUTnl1Tlk3UGd2VkVr?=
+ =?utf-8?Q?jbyQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?azBPZkRpSVVFRFhtVUczSm1tUW9Gdm1rTlo4aXdZZkVOa3d6bEc1c2xEWDlE?=
+ =?utf-8?B?VkRYNFo1L2V2cHVoT0o0NFZubTNRZWlvQWczK25STUx6bWUyeG45N1J1b2NQ?=
+ =?utf-8?B?a2o0T3k0TjhnQmoxaGZpdUYxTDJLY2U3dlFMeXp4NTFNSFJXS0dBSkZJYnpw?=
+ =?utf-8?B?ellxeHdjcXJTMDc4RXN0VDRMeDFrcjNVdWFlZGhJSEZQQ01UdEx5ZTBNZXNs?=
+ =?utf-8?B?ME52WlFGT2F0WmZ2ay8rb2U2eFlsNnBoVi9taHRvQWNXMWdMZzQ2aWNybWJI?=
+ =?utf-8?B?K1NudXpoZUZhR2kxSDduTkRqMnZxRFRsYlM0ZnVIalZQa2FYZEtOcnNlYkl2?=
+ =?utf-8?B?MnYrM0dsVCt4TmF6WFNMN1FVVzJEZGpxblBIRDdiUHpEUHBRbEhPejdIVTF4?=
+ =?utf-8?B?MmlMcklHeHI1S1RvNVhnWmJpUktTYkZpa3c5NHU4d0tvU3pjUjV0dFlkZ0g5?=
+ =?utf-8?B?a2hvWmN4dlcvdjVtUlJQTFVMMnZvS0VhRUsrNE9iSUZjOTdXQjRVTzRRNVc4?=
+ =?utf-8?B?WnVVdGhZdUt6UzhWSVIyaWFQT1IxNUR2RWVmemswOWFYU0sxUDBFOEIyMEtX?=
+ =?utf-8?B?WGVoZytWak9PUHlsdmZTUHdHd2FESkxIRmxGK0tDbkRFUHZJWTkvSFBWa0Yx?=
+ =?utf-8?B?dkFOay9MMUpFWExCa1ljTVlsV1lNcTViQWxha3FOL0MwZ2xvNTRsc2tPcGNr?=
+ =?utf-8?B?N2FYc3RZRDRyR0ZPaEVoVDkvMWJsTWMwa1NRZ1FUTkhHRkJHbHAvSi9tOCt4?=
+ =?utf-8?B?KzFDaDVHRDBVQkNTQitibU5Ma3V6QlRUMWdpaGxxS21BYVArY3g4RlZycGxQ?=
+ =?utf-8?B?Q2JsWC90NnVFYnVoY1piTjlYSTJ2YnpUN1BBS0R3TU9PcldIWXgrNUJLQmlZ?=
+ =?utf-8?B?ZDV0QWVmQUJPR2RoaVdESDlNTVh3TjdFY0RVRktXWFkvdkNyRHRLajcvUlVL?=
+ =?utf-8?B?UktwWERzS1BZT2NmRittLzNrcnRGTXpoNXJXci8wTGs1SDk4Vnp4M2g4S1NR?=
+ =?utf-8?B?SW80QjBSaDVReGtUbFVxajlIRTR2VkRQSlFDM0Rpc3lRak9iZlo1czQwVjMz?=
+ =?utf-8?B?Qm9ieWo3dHMrZWQrZ2dEMGxHS3pubDMrSGRqK0RBOEVWSXhLUm1mUjk2YnRS?=
+ =?utf-8?B?WGMwb3N3UnR3R1FwSEIwYStKamI3NGdLUEQvWXM4bDVjYUhobStPM1I4ZmtU?=
+ =?utf-8?B?bXpBV1Zab2NoRW5JNHdhWWpINUVFTkpncnNQZnM0cmJCMWFtL29tVkZld1dO?=
+ =?utf-8?B?bEpnTVZuV2xaYVdtU2VHNzRWRCtRcnlxTGJuOGxGNG9BTTZMZ3J6bXl1WkQy?=
+ =?utf-8?B?WmFvMDNlRnVSZnpaeXlWR1Jxb1BFR1pKTXl4c1MxekFRL2FEYmtlREhJcktx?=
+ =?utf-8?B?dENjTU03aEFXZU10dmZBVks0MzhNSUpUMUFEUHpnQys4cGtsWXJoUmhjZFlp?=
+ =?utf-8?B?SllQS1lSNThjZkVNVnlkdDJtYjJvN3ZjcnhSNGV6T0E2M0MzMkxuN2F1R2E1?=
+ =?utf-8?B?ekh6ZFVGS3ZzcnJRTEVtTEh5WVgwU2M2VDhNb3YzYW0rTUozOWkxSCtsMWNF?=
+ =?utf-8?B?cTJGZXdDZ3RKVzBFUjBnZ1U2UytYRXRXeUdhQndncWdBRng4c0tNcXpuMkVI?=
+ =?utf-8?B?djliM0tReFRDc09rNkg3YjE1bWtNV1ZjQ05vTnRRYW5rZWtyd0lDWk1ldFJT?=
+ =?utf-8?B?aDQ5WTg2R2taTE51cFh5RXlNMDE3Z2Z2UUk1a3J0T05HM1dBMisyeEpyUFZW?=
+ =?utf-8?B?Yld3Ym5ZVFpHbUg2UnpTOEI5dVEzRXJIZlR3eEhFYThOSkFhcGhpWDF4OE84?=
+ =?utf-8?B?Nmd5Yi9VOHc5VUVTZFExemJUVFZpamRVUjl2UWx6U1BqVjFEekNGNEw1YmQx?=
+ =?utf-8?B?UTY2aE9xRGlBYkV1Y0RibUxzUjVtU1JrcEQ2ZEJETExFZU12b3FwT0hGQ0pj?=
+ =?utf-8?B?a2JjWmw4SmQ2OC9OQmtaMWxjTXdNS1VWQjk3cUpzR0psV0F6WVVQUktDcUFs?=
+ =?utf-8?B?VzdoQ0V5ZXd0R3UyTEY2d2l5TTZFUjJUckJNWXFsZWN1MXFMcFk2NFpOblJR?=
+ =?utf-8?B?MUZXWEFIODVGV0Fya3VkMkh3ZDhhbm10S3BXRlFPbVhwdXpyUjBCejc5Q1Bm?=
+ =?utf-8?B?WVkvUzAxanBqVXA0ekZZdnREN2FvYVp1ZEVXUmxha1pLV1YwRkFOR3NmR2cy?=
+ =?utf-8?B?T2Rsa2p4dWdJSmU2ZFpUTTFLVS9lR0hvSDZaYVU4Q05iVkFrd3dsZFkyUnVz?=
+ =?utf-8?B?Z0lLTXRlWCt3Z2hXa0U4RW83a2krSTdSMVpMV2lsK2RSVWVrZWZEalZFU0d6?=
+ =?utf-8?B?d3dpb3lqY00rYzd0VFQxYmtRTEczL2FjWWVKS1diaUw4bnVxVFpYQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f61bacf-48a9-4f54-f7e9-08de605dfae7
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2026 00:16:29.2623
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gEBdJRrvvM2gU63+Cf6pcnHexAoybnczDviYNqCOn50+Y8MNAYNuMKXdXTg8aP50yDJa99A+NVUk1xG/BpDUdg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8229
 
-Now that we have a DeviceContext that we can use to represent whether a
-Device is known to have been registered, we can make it so that drivers can
-create their Devices but wait until the registration phase to assign their
-private data to the Device. This is desirable as some drivers need to make
-use of the DRM device early on before finalizing their private driver data.
+On 1/30/26 4:10 PM, Danilo Krummrich wrote:
+> On Sat Jan 31, 2026 at 12:58 AM CET, Gary Guo wrote:
+>> On Fri Jan 30, 2026 at 11:36 PM GMT, Timur Tabi wrote:
+>>> I think there might be a problem with this code that I don't know how to resolve.
+...
+> There is no need for CONFIG_NOVA_CORE_DEBUGFS in the first place. The only
+> Kconfig we need is for retaining the GSP log buffers after driver unbind.
 
-As such, this change makes it so that the driver's private data can
-currently only be accessed through Device<T, Registered> types and not
-Device<T, Uninit>.
+Interesting. And in fact...I think we can live without that feature,
+especially if it complicates things here. If someone is debugging,
+and they need logs, they can usually (always?) find a way to leave
+the driver bound long enough to get them, or so I believe after
+some experience doing this. Yes?
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
-V4:
-* Remove accidental double-aliasing &mut in Device::release()
----
- drivers/gpu/drm/nova/driver.rs |  4 +--
- drivers/gpu/drm/tyr/driver.rs  |  4 +--
- rust/kernel/drm/device.rs      | 64 +++++++++++++++++++++-------------
- rust/kernel/drm/driver.rs      | 19 ++++++++--
- 4 files changed, 59 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index 99d6841b69cbc..8cea5f68c3b04 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -56,8 +56,8 @@ impl auxiliary::Driver for NovaDriver {
-     fn probe(adev: &auxiliary::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
-         let data = try_pin_init!(NovaData { adev: adev.into() });
- 
--        let drm = drm::UnregisteredDevice::<Self>::new(adev.as_ref(), data)?;
--        let drm = drm::Registration::new_foreign_owned(drm, adev.as_ref(), 0)?;
-+        let drm = drm::UnregisteredDevice::<Self>::new(adev.as_ref())?;
-+        let drm = drm::Registration::new_foreign_owned(drm, adev.as_ref(), data, 0)?;
- 
-         Ok(Self { drm: drm.into() })
-     }
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 0d479b5d7bd62..b574ee1c24587 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -133,8 +133,8 @@ fn probe(
-                 gpu_info,
-         });
- 
--        let tdev = drm::UnregisteredDevice::<Self>::new(pdev.as_ref(), data)?;
--        let tdev = drm::driver::Registration::new_foreign_owned(tdev, pdev.as_ref(), 0)?;
-+        let tdev = drm::UnregisteredDevice::<Self>::new(pdev.as_ref())?;
-+        let tdev = drm::driver::Registration::new_foreign_owned(tdev, pdev.as_ref(), data, 0)?;
- 
-         let driver = TyrDriver {
-             _device: tdev.into(),
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index 8f1780b8f0196..a1d9b0e92f3fd 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -26,13 +26,15 @@
- };
- use core::{
-     alloc::Layout,
-+    cell::UnsafeCell,
-     marker::PhantomData,
--    mem,
--    ops::Deref,
--    ptr::{
-+    mem::{
-         self,
--        NonNull, //
-+        MaybeUninit, //
-     },
-+    ops::Deref,
-+    ptr::NonNull,
-+    sync::atomic::*,
- };
- 
- #[cfg(CONFIG_DRM_LEGACY)]
-@@ -141,7 +143,7 @@ impl DeviceContext for Uninit {}
- ///
- /// The device in `self.0` is guaranteed to be a newly created [`Device`] that has not yet been
- /// registered with userspace until this type is dropped.
--pub struct UnregisteredDevice<T: drm::Driver>(ARef<Device<T, Uninit>>, NotThreadSafe);
-+pub struct UnregisteredDevice<T: drm::Driver>(pub(crate) ARef<Device<T, Uninit>>, NotThreadSafe);
- 
- impl<T: drm::Driver> Deref for UnregisteredDevice<T> {
-     type Target = Device<T, Uninit>;
-@@ -188,7 +190,7 @@ impl<T: drm::Driver> UnregisteredDevice<T> {
-     /// Create a new `UnregisteredDevice` for a `drm::Driver`.
-     ///
-     /// This can be used to create a [`Registration`](kernel::drm::Registration).
--    pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<Self> {
-+    pub fn new(dev: &device::Device) -> Result<Self> {
-         // `__drm_dev_alloc` uses `kmalloc()` to allocate memory, hence ensure a `kmalloc()`
-         // compatible `Layout`.
-         let layout = Kmalloc::aligned_layout(Layout::new::<Self>());
-@@ -207,22 +209,6 @@ pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<S
-         .cast();
-         let raw_drm = NonNull::new(from_err_ptr(raw_drm)?).ok_or(ENOMEM)?;
- 
--        // SAFETY: `raw_drm` is a valid pointer to `Self`.
--        let raw_data = unsafe { ptr::addr_of_mut!((*raw_drm.as_ptr()).data) };
--
--        // SAFETY:
--        // - `raw_data` is a valid pointer to uninitialized memory.
--        // - `raw_data` will not move until it is dropped.
--        unsafe { data.__pinned_init(raw_data) }.inspect_err(|_| {
--            // SAFETY: `raw_drm` is a valid pointer to `Self`, given that `__drm_dev_alloc` was
--            // successful.
--            let drm_dev = unsafe { Device::into_drm_device(raw_drm) };
--
--            // SAFETY: `__drm_dev_alloc()` was successful, hence `drm_dev` must be valid and the
--            // refcount must be non-zero.
--            unsafe { bindings::drm_dev_put(drm_dev) };
--        })?;
--
-         // SAFETY: The reference count is one, and now we take ownership of that reference as a
-         // `drm::Device`.
-         // INVARIANT: We just created the device above, but have yet to call `drm_dev_register`.
-@@ -253,7 +239,15 @@ pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<S
- #[repr(C)]
- pub struct Device<T: drm::Driver, C: DeviceContext = Registered> {
-     dev: Opaque<bindings::drm_device>,
--    data: T::Data,
-+
-+    /// Keeps track of whether we've initialized the device data yet.
-+    pub(crate) data_is_init: AtomicBool,
-+
-+    /// The Driver's private data.
-+    ///
-+    /// This must only be written to from [`drm::Registration::new`].
-+    pub(crate) data: UnsafeCell<MaybeUninit<T::Data>>,
-+
-     _ctx: PhantomData<C>,
- }
- 
-@@ -304,6 +298,22 @@ extern "C" fn release(ptr: *mut bindings::drm_device) {
-         // SAFETY: `ptr` is a valid pointer to a `struct drm_device` and embedded in `Self`.
-         let this = unsafe { Self::from_drm_device(ptr) };
- 
-+        // SAFETY:
-+        // - Since we are in release(), we are guaranteed that no one else has access to `this`.
-+        // - We confirmed above that `this` is a valid pointer to an initialized `Self`.
-+        let is_init = unsafe { &*this }.data_is_init.load(Ordering::Relaxed);
-+        if is_init {
-+            // SAFETY:
-+            // - We confirmed we have unique access to this above.
-+            // - We confirmed that `data` is initialized above.
-+            let data_ptr = unsafe { &mut (*this).data };
-+
-+            // SAFETY:
-+            // - We checked that the data is initialized above.
-+            // - We do not use `data` any point after calling this function.
-+            unsafe { data_ptr.get_mut().assume_init_drop() };
-+        }
-+
-         // SAFETY:
-         // - When `release` runs it is guaranteed that there is no further access to `this`.
-         // - `this` is valid for dropping.
-@@ -322,11 +332,15 @@ pub(crate) unsafe fn assume_ctx<NewCtx: DeviceContext>(&self) -> &Device<T, NewC
-     }
- }
- 
--impl<T: drm::Driver, C: DeviceContext> Deref for Device<T, C> {
-+impl<T: drm::Driver> Deref for Device<T, Registered> {
-     type Target = T::Data;
- 
-     fn deref(&self) -> &Self::Target {
--        &self.data
-+        // SAFETY:
-+        // - `data` is initialized before any `Device`s with the `Registered` context are available
-+        //   to the user.
-+        // - `data` is only written to once in `Registration::new()`, so this read will never race.
-+        unsafe { (&*self.data.get()).assume_init_ref() }
-     }
- }
- 
-diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-index 55b01ee088548..cfb8884ece700 100644
---- a/rust/kernel/drm/driver.rs
-+++ b/rust/kernel/drm/driver.rs
-@@ -15,7 +15,8 @@
- };
- use core::{
-     mem,
--    ptr::NonNull, //
-+    ptr::NonNull,
-+    sync::atomic::*, //
- };
- 
- /// Driver use the GEM memory manager. This should be set for all modern drivers.
-@@ -127,7 +128,18 @@ pub trait Driver {
- pub struct Registration<T: Driver>(ARef<drm::Device<T>>);
- 
- impl<T: Driver> Registration<T> {
--    fn new(drm: drm::UnregisteredDevice<T>, flags: usize) -> Result<Self> {
-+    fn new(
-+        drm: drm::UnregisteredDevice<T>,
-+        data: impl PinInit<T::Data, Error>,
-+        flags: usize,
-+    ) -> Result<Self> {
-+        // SAFETY:
-+        // - `raw_data` is a valid pointer to uninitialized memory.
-+        // - `raw_data` will not move until it is dropped.
-+        unsafe { data.__pinned_init(drm.0.data.get().cast()) }?;
-+
-+        drm.data_is_init.store(true, Ordering::Relaxed);
-+
-         // SAFETY: `drm.as_raw()` is valid by the invariants of `drm::Device`.
-         to_result(unsafe { bindings::drm_dev_register(drm.as_raw(), flags) })?;
- 
-@@ -150,6 +162,7 @@ fn new(drm: drm::UnregisteredDevice<T>, flags: usize) -> Result<Self> {
-     pub fn new_foreign_owned<'a>(
-         drm: drm::UnregisteredDevice<T>,
-         dev: &'a device::Device<device::Bound>,
-+        data: impl PinInit<T::Data, Error>,
-         flags: usize,
-     ) -> Result<&'a drm::Device<T>>
-     where
-@@ -159,7 +172,7 @@ pub fn new_foreign_owned<'a>(
-             return Err(EINVAL);
-         }
- 
--        let reg = Registration::<T>::new(drm, flags)?;
-+        let reg = Registration::<T>::new(drm, data, flags)?;
-         let drm = NonNull::from(reg.device());
- 
-         devres::register(dev, reg, GFP_KERNEL)?;
+thanks,
 -- 
-2.52.0
+John Hubbard
 
