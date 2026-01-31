@@ -1,103 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9293B2D6E6F
-	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 00:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02EA283686
+	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 00:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769818497; cv=none; b=sVM8BpJl4qMnb/+puEWHQ/MJwg2B9ExlGDlUpwnMt+5tJw7Lv0uoQ23VHn8qgw2leGo+zbP8FcbhH+tKj4yNu7uaGjksx0sW/lA64cnvLF9moet2jCLikrmNu5pLSC/kN6hX0sdqUHmOVDkI+jVjuSssdtef4nK9TFxR5KDEuy0=
+	t=1769818585; cv=none; b=TVJUmTGzruVYRFPHntJhsN8FZwKjiO5PqftkmtpJs2aiW40tBZWtNf6qNPLXK4tT62ZArgMJrMi6tD1o9PJ10GzFiFu+XfFrDUgocPpBxmqjW7p0jodFX1ILTe6ADYR5l+WHzUlz8arPBIhk8MM46Kl8psYBI0XM0CJ8A4BzrGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769818497; c=relaxed/simple;
-	bh=ZoI+iqcGgdae+p1gydlMNbQ0hxd1od8WckPfjNXZWJw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=bYli+H/kF3GKEc4PIIgproTkhiBiUzQvH5r9+NqL7skes8/kfQF3fs+bmCw9Z//9qSWjmjF8NTiXdJym04kPcieHPD5zEjPF6wPoMkiBG9EuIL4wbYJ9cF3ladTAO0q0i3syKlKXAodKqrvFC7TDtz/v8ltVHEjLzp1wp+lEzP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AaGGZFUb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769818585; c=relaxed/simple;
+	bh=udUEgdoa4BYJqsyeqT0Af+ZyGwllfyt4fiYjC4fWYSc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oMcWa8BfZ9vYh8zmigqB4aHfmynsfXRuMAX2tcsnujxiKxPwf88E53ApEu2BAc514EzVwTPGZg5vmL7Y464mK7+9DxjxbWErJmYSqZE01emE/4//pzWOrNkLsnIelPAM8liWt2siacykBNvOlz0sGQNmBXpR7NFmq2jBkw6Xoxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VfT50lDS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AaGGZFUb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0911CC4CEF7;
-	Sat, 31 Jan 2026 00:14:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769818496;
-	bh=ZoI+iqcGgdae+p1gydlMNbQ0hxd1od8WckPfjNXZWJw=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=AaGGZFUbd4ACQjN1xiENPYTqIQwGB3DdInquu6A4JbNWpePzoCtAbQg7KAoiVZ2bI
-	 AJbnPka3j09sI5uyIIXSP5ChY4FUqqDVj+bEoActgFuqmi9m1kqIedsCPJNaDTu7ve
-	 pwGXJ+wOMERcRwUU5Vsw0R9W5/5DMMPCc8+edEPg1BEwWSMj1nB9sLL25n5Q3VlNf1
-	 gnJMFfJl2M96CXBX+6QvXAaxqrB9Gv5PB0Fjk/tUBcREJvQR3qVUYLtLh1e1x/HiRr
-	 AZOrCbsi6j6hiNWLloHlTi3e3D/lPbwyfXvYJxGwAriDwKT0ehvdM9/yJSBU0W9ENA
-	 es01X2Ya5wk4A==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VfT50lDS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769818581;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DUlHZCO3uYHyEV1uv7j6n5bPLjINc4Q3Eh1O4mdV7Bg=;
+	b=VfT50lDSmRyKv4ohT6gQI2Q2imBnORF1xkO/rMNCpavYLVcIpUFRDK2/AVwpfTcK09Dni5
+	bMaSVKe5AJVrQavX7ROEGiwT0SypJsLjtDXQ0Rl2gGqfXWljwmikGLAcI4WlVWqEpaiG7b
+	SbNJa+vIWnu+6TK2TExRjGsbn9TExDI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-zlw75-UyNGmfOJGcqocEnw-1; Fri,
+ 30 Jan 2026 19:16:16 -0500
+X-MC-Unique: zlw75-UyNGmfOJGcqocEnw-1
+X-Mimecast-MFC-AGG-ID: zlw75-UyNGmfOJGcqocEnw_1769818574
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 351AB180044D;
+	Sat, 31 Jan 2026 00:16:14 +0000 (UTC)
+Received: from GoldenWind.lan (unknown [10.22.81.64])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1676A18002A6;
+	Sat, 31 Jan 2026 00:16:11 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: nouveau@lists.freedesktop.org,
+	"Miguel Ojeda" <ojeda@kernel.org>,
+	"Simona Vetter" <simona@ffwll.ch>,
+	"Alice Ryhl" <aliceryhl@google.com>,
+	"Shankari Anand" <shankari.ak0208@gmail.com>,
+	"David Airlie" <airlied@gmail.com>,
+	"Benno Lossin" <lossin@kernel.org>,
+	"Asahi Lina" <lina+kernel@asahilina.net>,
+	"Daniel Almeida" <daniel.almeida@collabora.com>,
+	"Lyude Paul" <lyude@redhat.com>
+Subject: [PATCH v5 0/4] Introduce DeviceContext
+Date: Fri, 30 Jan 2026 19:13:29 -0500
+Message-ID: <20260131001602.2095470-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 31 Jan 2026 01:14:53 +0100
-Message-Id: <DG2CANK7QMY0.2W8S2R1ZML3UW@kernel.org>
-Cc: "Gary Guo" <gary@garyguo.net>, "Alice Ryhl" <aliceryhl@google.com>,
- <mmaurer@google.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-To: "Timur Tabi" <ttabi@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v6 2/7] rust: uaccess: add write_dma() for copying from
- DMA buffers to userspace
-References: <20260129022837.4133832-1-ttabi@nvidia.com>
- <20260129022837.4133832-3-ttabi@nvidia.com>
-In-Reply-To: <20260129022837.4133832-3-ttabi@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu Jan 29, 2026 at 3:28 AM CET, Timur Tabi wrote:
-> +    /// Writes raw data to this user pointer from a DMA coherent allocat=
-ion.
-> +    ///
-> +    /// Returns error if the offset+count exceeds the allocation size.
-> +    ///
-> +    /// Fails with [`EFAULT`] if the write happens on a bad address, or =
-if the write goes out of
-> +    /// bounds of this [`UserSliceWriter`]. This call may modify the ass=
-ociated userspace slice
-> +    /// even if it returns an error.
-> +    ///
-> +    /// Note: The memory may be concurrently modified by hardware (e.g.,=
- DMA). In such cases,
-> +    /// the copied data may be inconsistent, but this does not cause und=
-efined behavior.
-> +    pub fn write_dma(
-> +        &mut self,
-> +        alloc: &CoherentAllocation<u8>,
-> +        offset: usize,
-> +        count: usize,
-> +    ) -> Result {
-> +        let len =3D alloc.count();
-> +        if offset.checked_add(count).ok_or(EOVERFLOW)? > len {
-> +            return Err(ERANGE);
-> +        }
-> +
-> +        // SAFETY: `start_ptr()` returns a valid pointer to a memory reg=
-ion of `count()` bytes,
-> +        // as guaranteed by the `CoherentAllocation` invariants. The che=
-ck above ensures
-> +        // `offset + count <=3D len`.
-> +        let src_ptr =3D unsafe { alloc.start_ptr().add(offset) };
-> +
-> +        // SAFETY: `src_ptr` is valid for reads of `count` bytes per the=
- above.
-> +        let res =3D unsafe {
-> +            bindings::copy_to_user(self.ptr.as_mut_ptr(), src_ptr.cast::=
-<c_void>(), count)
-> +        };
-> +        if res !=3D 0 {
-> +            return Err(EFAULT);
-> +        }
-> +
-> +        self.ptr =3D self.ptr.wrapping_byte_add(count);
-> +        self.length -=3D count;
-> +
-> +        Ok(())
-> +    }
+Previous version of this patch series:
+  https://patchwork.freedesktop.org/series/160217/#rev3
 
-I think the idea was to have a common read_slice_raw() method that can be s=
-hared
-between write_dma() and write_slice(). Can you please factor this out?
+One of the unsolved issues we still have with the rust DRM bindings is
+the ability to limit certain Device operations to contexts where we can
+guarantee that a Device has been fully initialized and registered with
+userspace, or vice-versa (e.g. must be unregistered).
+
+While the previous solution for this that I had was simply not exposing
+drm::Device at all until the device has been registered with userspace,
+unfortunately this isn't enough since:
+
+* As we found out with Tyr, drivers occasionally need to be able to
+  create GEM objects before device registration
+* We would still need to be able to handle KMS callbacks which could be
+  invoked after KMS init but before userspace registration (not handled
+  in this series specifically, but DeviceContext will be required for
+  handling this).
+
+This patch series provides a pretty nice solution to this, by
+implementing a very similar solution to kernel::device::DeviceContext:
+introducing our own DeviceContext type state.
+
+This patch series depends on the two pre-requisite patch series:
+
+* https://patchwork.freedesktop.org/series/160523/
+
+                          Series-wide changes
+
+V2:
+* s/DeviceCtx/DeviceContext/ for consistency
+* Move private driver-data availability to the Registration
+  DeviceContext
+* s/AnyCtx/Init/
+V4:
+* Split out DriverAllocImpl into it's own patch
+
+More changes described in each patch description.
+
+Lyude Paul (3):
+  rust/drm: Introduce DeviceContext
+  rust/drm: Don't setup private driver data until registration
+  rust/drm/gem: Use DeviceContext with GEM objects
+
+Lyude Paul (4):
+  rust/drm: Introduce DeviceContext
+  rust/drm: Don't setup private driver data until registration
+  rust/drm/gem: Add DriverAllocImpl type alias
+  rust/drm/gem: Use DeviceContext with GEM objects
+
+ drivers/gpu/drm/nova/driver.rs |  10 +-
+ drivers/gpu/drm/nova/gem.rs    |  11 +-
+ drivers/gpu/drm/tyr/driver.rs  |  12 +-
+ drivers/gpu/drm/tyr/gem.rs     |   3 +-
+ rust/kernel/drm/device.rs      | 250 +++++++++++++++++++++++++--------
+ rust/kernel/drm/driver.rs      |  52 +++++--
+ rust/kernel/drm/gem/mod.rs     |  64 ++++++---
+ rust/kernel/drm/mod.rs         |   4 +
+ 8 files changed, 305 insertions(+), 101 deletions(-)
+
+
+base-commit: cea7b66a80412e2a5b74627b89ae25f1d0110a4b
+prerequisite-patch-id: ddb20be75c8fc92ba2d48a5c4aa8e724202de1ff
+prerequisite-patch-id: 87e69cd89a806392d3275b19fbfb160d44d957c9
+-- 
+2.52.0
+
