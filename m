@@ -1,31 +1,31 @@
 Received: from mail.cock.li (unknown [37.120.193.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17888318ECC;
-	Sat, 31 Jan 2026 15:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1B8331206;
+	Sat, 31 Jan 2026 15:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.120.193.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769874087; cv=none; b=kMRI80g9OTgMOHrhkDMUDdMbBXD0hBLafYWOkIxZwToaj82Y8GuYd0osySNzouxM/fzNAwgjvuZdsdzJhOBbVTiHIYK8i4PqCWcLTE8n2nr8XDCGshfCKxDxvRhR23+sHptCz+hii8TxxCIv4A8uESaSPBlTTr+DoTsPMHyOy0g=
+	t=1769874089; cv=none; b=sccKNrbxkR31Hf3vuWFcdM+xbL7F25J2rY6b5n1/y4rsI5Q56CiFlUYnDb7Z4hTp9vtoEfb+vkiQrfT9XoSIM1R3oHmrm7MILaDGqBO65/37GvaDv71qqQ7nc7/5OSN8iQLcZZPlUnetxmbWonPQmrstaHNN5rnzNtvboJHu22g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769874087; c=relaxed/simple;
-	bh=esEcNNEfTcgzbfPBBZyLIznR/0jROJnXakLmAGgUkA4=;
+	s=arc-20240116; t=1769874089; c=relaxed/simple;
+	bh=ypJSZsd2gkd3H9jZrx749RhEDkv5ZqvN4gf27waZnjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZWeDhXq11hAhCkS0YsTZYv1RyAx2C7GPFxTq/7qSzppqypmy7yAKqyhbhCsANA3UniqwGb0s3TMFGZ2+FctydG0CyqaHKehAN4cQEGqcBQ1vz7Hg1exOiwjHQlJ+IOAxUBRhBDMSs3Efl5EQrUqTuH6Z9wOn8HkybJ3K31PALs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li; spf=pass smtp.mailfrom=cock.li; dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b=R2Lv3Uc4; arc=none smtp.client-ip=37.120.193.123
+	 MIME-Version; b=n+pST5jHBfzSNnGC5s3B/2QAOdrAZMCAUyiyo/9fc5rth4flC7KcIOgcYgWWssFanI6rIGFQMmXz/2DGMyNrRKSxy9asdHE8Q7ihszhVEPd/TR7Qn0Ote4gd9PoHPUBenTjZdiSAGn8/Fy4VC5zUpzUcdizl76fNqr/y9tbbNfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li; spf=pass smtp.mailfrom=cock.li; dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b=YDCO8sdg; arc=none smtp.client-ip=37.120.193.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cock.li
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b="R2Lv3Uc4"
+	dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b="YDCO8sdg"
 From: Shivam Kalra <shivamklr@cock.li>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cock.li; s=mail;
-	t=1769874082; bh=esEcNNEfTcgzbfPBBZyLIznR/0jROJnXakLmAGgUkA4=;
+	t=1769874085; bh=ypJSZsd2gkd3H9jZrx749RhEDkv5ZqvN4gf27waZnjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2Lv3Uc4LSXiR0EPJ/wFVLRCPzqjqunIO52HjjFnwwdOoGFyV/t3u29AQ81Kocgen
-	 gpJVVikVp+260FGW5pEzzcBOO2BP0rG9nz9NQQTHufcHpPwhZ+XuAhX6L75uLfPfoh
-	 eUjaVWqy8FQSFb3pSqGPQPMJLntf1a/Pgz+0NTtqUdx1eOsqXNqNhhhMmtxyPRW8iX
-	 2hPz5IrmwhOlAXUpPPD3NBffl8KvWysZtSlejeGTP8VK+/5b/dVku82RIYsQ6oT/jB
-	 PJwJTxKyJtgsLwqLvHiPAx/LZpvapCoVSdZof9kDoeC2u8DPxx2hbM47iV6pDfQ+B6
-	 R/elSjj6/o0Og==
+	b=YDCO8sdgoGcMq8UwjUMLjhkmoBn7Ou+JmXzk7pZLIsAxkiGnAh1tY3zuhs2xnQiQJ
+	 cXwLNg+X798hthqIqGwzq6l8lejdb4c0EQVW8qWAGrpSzyiShaeFnC+2Xo0uBA3R/e
+	 +Kf0g1akWzv790gDSExZ74EvAOBzgdVyq8/pwmzdYPlPkxS/Ez43UpK7Z6SWlaSuxW
+	 cYbBNv8vgNjgVYsh3v1xELYDIIuVokwGy8Uf+zyYGxjgSdOdLvfNPSF2XEgyllaZmD
+	 TAhp3bxpgOQLKbBggLllAtU4iRf2rj+3sZzPCLrr6PBsGs0ZdPUsLicMD5n+Iy4XSz
+	 4sEnknIyWSr/g==
 To: dakr@kernel.org,
 	cmllamas@google.com,
 	gregkh@linuxfoundation.org
@@ -33,9 +33,9 @@ Cc: aliceryhl@google.com,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Shivam Kalra <shivamklr@cock.li>
-Subject: [PATCH v2 1/3] rust: alloc: Add shrink_to and shrink_to_fit methods to Vec
-Date: Sat, 31 Jan 2026 21:10:13 +0530
-Message-ID: <20260131154016.270385-2-shivamklr@cock.li>
+Subject: [PATCH v2 2/3] rust: alloc: add KUnit tests for Vec shrinking
+Date: Sat, 31 Jan 2026 21:10:14 +0530
+Message-ID: <20260131154016.270385-3-shivamklr@cock.li>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260131154016.270385-1-shivamklr@cock.li>
 References: <20260131154016.270385-1-shivamklr@cock.li>
@@ -47,149 +47,99 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add methods to shrink the capacity of a Vec to free excess memory.
-This is useful for drivers that experience variable workloads and want
-to reclaim memory after spikes.
+Add comprehensive KUnit tests for Vec::shrink_to() and
+Vec::shrink_to_fit() to verify that capacity is reduced correctly.
 
-- `shrink_to(min_capacity, flags)`: Shrinks the capacity of the vector
-  with a lower bound. The capacity will remain at least as large as
-  both the length and the supplied value.
+The tests cover:
+- shrinking from excess capacity
+- correct handling of empty vectors
+- no-op behavior when capacity is already optimal
+- respecting the minimum capacity limit for shrink_to()
+- no growth when the requested minimum exceeds current capacity
 
-- `shrink_to_fit(flags)`: Shrinks the capacity of the vector as much
-  as possible.
+Testing:
+- KUnit tests pass locally (command above).
+- Built with CONFIG_RUST=y on x86_64 (user-mode testing via --arch um).
 
-This implementation guarantees shrinking (unless already optimal),
-because the kernel allocators don't support in-place shrinking,
-a new allocation is always made.
-
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Shivam Kalra <shivamklr@cock.li>
 ---
- rust/kernel/alloc/kvec.rs | 111 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 111 insertions(+)
+ rust/kernel/alloc/kvec.rs | 65 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
 diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index ac8d6f763ae81..9c02734ced88f 100644
+index 9c02734ced88f..5ab78d6c03e40 100644
 --- a/rust/kernel/alloc/kvec.rs
 +++ b/rust/kernel/alloc/kvec.rs
-@@ -733,6 +733,117 @@ pub fn retain(&mut self, mut f: impl FnMut(&mut T) -> bool) {
+@@ -1509,4 +1509,69 @@ fn add(value: &mut [bool]) {
+             func.push_within_capacity(false).unwrap();
          }
-         self.truncate(num_kept);
      }
 +
-+    /// Shrinks the capacity of the vector with a lower bound.
-+    ///
-+    /// The capacity will remain at least as large as both the length
-+    /// and the supplied value.
-+    ///
-+    /// If the current capacity is less than the lower limit, this is a no-op.
-+    ///
-+    /// This requires allocating a new buffer and copying the elements, then freeing
-+    /// the old buffer.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let mut v = KVec::with_capacity(100, GFP_KERNEL)?;
-+    /// v.push(1, GFP_KERNEL)?;
-+    /// v.push(2, GFP_KERNEL)?;
-+    /// assert!(v.capacity() >= 100);
-+    ///
-+    /// v.shrink_to(50, GFP_KERNEL)?;
-+    /// assert!(v.capacity() >= 50);
-+    /// assert!(v.capacity() < 100);
-+    ///
-+    /// v.shrink_to(0, GFP_KERNEL)?;
-+    /// assert!(v.capacity() >= 2);
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn shrink_to(&mut self, min_capacity: usize, flags: Flags) -> Result<(), AllocError> {
-+        // Calculate the target capacity: max(len, min_capacity).
-+        let target_cap = core::cmp::max(self.len(), min_capacity);
++    #[test]
++    fn test_shrink_to_fit() {
++        // Create a vector with excess capacity.
++        let mut v: KVec<u32> = KVec::with_capacity(100, GFP_KERNEL).unwrap();
++        v.push(1, GFP_KERNEL).unwrap();
++        v.push(2, GFP_KERNEL).unwrap();
++        v.push(3, GFP_KERNEL).unwrap();
 +
-+        // If we're already within limits, nothing to do.
-+        if self.capacity() <= target_cap {
-+            return Ok(());
-+        }
++        assert!(v.capacity() >= 100);
++        assert_eq!(v.len(), 3);
 +
-+        // ZSTs have no allocation to shrink.
-+        if Self::is_zst() {
-+            return Ok(());
-+        }
++        // Shrink with 0 (equivalent to shrink_to_fit).
++        v.shrink_to(0, GFP_KERNEL).unwrap();
 +
-+        // Handle empty vector or target capacity 0: just free the allocation and reset.
-+        if target_cap == 0 {
-+            // Only free if we actually have an allocation.
-+            if !self.layout.is_empty() {
-+                // SAFETY:
-+                // - `self.ptr` was previously allocated with `A`.
-+                // - `self.layout` matches the `ArrayLayout` of the preceding allocation.
-+                unsafe { A::free(self.ptr.cast(), self.layout.into()) };
-+            }
-+            self.ptr = NonNull::dangling();
-+            self.layout = ArrayLayout::empty();
-+            return Ok(());
-+        }
++        // Capacity should now equal length.
++        assert_eq!(v.capacity(), 3);
++        assert_eq!(v.len(), 3);
++        assert_eq!(&v, &[1, 2, 3]);
 +
-+        // Create a new layout that exactly fits the target capacity.
-+        // SAFETY: `target_cap` is guaranteed to be <= `self.capacity()`, and the original
-+        // capacity was validated, so `target_cap * size_of::<T>() <= isize::MAX`.
-+        let new_layout = unsafe { ArrayLayout::<T>::new_unchecked(target_cap) };
++        // Shrink empty vector.
++        let mut v: KVec<u32> = KVec::with_capacity(50, GFP_KERNEL).unwrap();
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++        assert_eq!(v.capacity(), 0);
 +
-+        // Allocate a new, smaller buffer.
-+        let new_ptr = A::alloc(new_layout.into(), flags, NumaNode::NO_NODE)?;
-+
-+        // SAFETY:
-+        // - `self.as_ptr()` is valid for reads of `self.len` elements by the type invariant.
-+        // - `new_ptr` is valid for writes of `self.len` elements (we just allocated it).
-+        // - The regions do not overlap (different allocations).
-+        // - Both pointers are properly aligned.
-+        unsafe {
-+            ptr::copy_nonoverlapping(self.as_ptr(), new_ptr.as_ptr().cast::<T>(), self.len);
-+        }
-+
-+        // Free the old buffer.
-+        // SAFETY:
-+        // - `self.ptr` was previously allocated with `A`.
-+        // - `self.layout` matches the `ArrayLayout` of the preceding allocation.
-+        unsafe { A::free(self.ptr.cast(), self.layout.into()) };
-+
-+        // SAFETY: `new_ptr.as_ptr()` is non-null because `A::alloc` succeeded.
-+        self.ptr = unsafe { NonNull::new_unchecked(new_ptr.as_ptr().cast::<T>()) };
-+        self.layout = new_layout;
-+
-+        Ok(())
++        // Shrink already optimal (no-op).
++        let mut v: KVec<u32> = KVec::new();
++        v.push(1, GFP_KERNEL).unwrap();
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++        assert!(v.capacity() >= 1);
 +    }
 +
-+    /// Shrinks the capacity of the vector as much as possible.
-+    ///
-+    /// The capacity will be reduced to match the length, freeing any excess memory.
-+    /// This requires allocating a new buffer and copying the elements, then freeing
-+    /// the old buffer.
-+    ///
-+    /// If the allocation of the new buffer fails, the vector is left unchanged and
-+    /// an error is returned.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let mut v = KVec::with_capacity(100, GFP_KERNEL)?;
-+    /// v.push(1, GFP_KERNEL)?;
-+    /// v.push(2, GFP_KERNEL)?;
-+    /// v.push(3, GFP_KERNEL)?;
-+    /// assert!(v.capacity() >= 100);
-+    ///
-+    /// v.shrink_to_fit(GFP_KERNEL)?;
-+    /// assert_eq!(v.capacity(), 3);
-+    /// assert_eq!(&v, &[1, 2, 3]);
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn shrink_to_fit(&mut self, flags: Flags) -> Result<(), AllocError> {
-+        self.shrink_to(0, flags)
++    #[test]
++    fn test_shrink_to_min() {
++        let mut v: KVec<u32> = KVec::with_capacity(100, GFP_KERNEL).unwrap();
++        for i in 0..10 {
++            v.push(i, GFP_KERNEL).unwrap();
++        }
++        assert_eq!(v.len(), 10);
++        assert!(v.capacity() >= 100);
++
++        // Shrink to a specific minimum higher than len.
++        v.shrink_to(50, GFP_KERNEL).unwrap();
++        assert!(v.capacity() >= 50);
++        assert!(v.capacity() < 100); // Should have shrunk
++        assert_eq!(v.len(), 10);
++        assert_eq!(v[0], 0);
++        assert_eq!(v[9], 9);
++
++        // Shrink to a minimum lower than len (should stop at len).
++        v.shrink_to(5, GFP_KERNEL).unwrap();
++        assert_eq!(v.capacity(), 10);
++        assert_eq!(v.len(), 10);
++    }
++
++    #[test]
++    fn test_shrink_to_no_growth() {
++        let mut v: KVec<u32> = KVec::with_capacity(10, GFP_KERNEL).unwrap();
++        v.push(1, GFP_KERNEL).unwrap();
++        let cap = v.capacity();
++
++        // Requesting larger capacity should NOT grow the vector.
++        v.shrink_to(100, GFP_KERNEL).unwrap();
++        assert_eq!(v.capacity(), cap);
 +    }
  }
- 
- impl<T: Clone, A: Allocator> Vec<T, A> {
 -- 
 2.43.0
 
