@@ -1,38 +1,38 @@
-Received: from mail-108-mta28.mxroute.com (mail-108-mta28.mxroute.com [136.175.108.28])
+Received: from mail-108-mta82.mxroute.com (mail-108-mta82.mxroute.com [136.175.108.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C202FFFAB
-	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 09:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A57F33B6E8
+	for <rust-for-linux@vger.kernel.org>; Sat, 31 Jan 2026 09:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769853388; cv=none; b=RpBIEaz1eYcn8cbnw0RXsYP1kMgvWLZDGobBQgOh5vjJt/NrgNGuWBFP16cU5xAjufXnNyLmGBTDOTxO1jJIWRo2Ygdb5sgNXQFg5Lje4Tz+9rKjUrHotXZtZout5TZ/r8TjQLWzqSIlKzm5qtEhd7pm7QhHpELfW9nYvkYYebo=
+	t=1769853393; cv=none; b=Tm285VicJEWUlQAEYMXa8TJWu+53RFPFhEHTXKgmM7AKF7TO7C8O7wtAkc7khO8AD1kWnYGDVCFvCJi6Owc5bJSVydEpdI0IPHQR45z4Ow6GfUfUoOb/FcMsIleySbXFQygKmQppscl17XmSulb2dt+odSjVbayIFBspCbod6Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769853388; c=relaxed/simple;
-	bh=a+nw1+hfaoc5pIFOnKAmXoYlRYD13bYV+7poAQx4XQA=;
+	s=arc-20240116; t=1769853393; c=relaxed/simple;
+	bh=U8X5iZrcRXev4hMmnKbQ0WAVCh2hbJ7lc+kZJYEAaQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvo2wQClgghPYk2PhT2mdYbfs2rTqKkeDNT2CsouM6Nt1B3r7unvbu4fSxjvdCDAIXxOCAsA1L36j9JKevSAVetz1StTW/PfnkaZYCT5cn2O15UdRaopxt+GtWaZefnsnVuUjqnjV8D4ADsb1yJyXafUcGD6N2oE2noDLUhZ3fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs; spf=pass smtp.mailfrom=ry.rs; dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b=o+Gh6tDN; arc=none smtp.client-ip=136.175.108.28
+	 MIME-Version; b=BCp5U8PoO/RTxJ7FK+dZFZcCZ0zuTy5xFkzXzUdnAuVN8fHs8Z0mZ/u7pHp1BbIbKkzskeFsvLx+XBmwbWr1GtTGo2VXrVgWGJQaJi1GhWye6wDppacJP1UX3L4DDw34WubIi2vu3jkBAJBsKDBahMGQw0sh+GDIz43PzGCIDCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs; spf=pass smtp.mailfrom=ry.rs; dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b=UUP7YhAC; arc=none smtp.client-ip=136.175.108.82
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ry.rs
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b="o+Gh6tDN"
+	dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b="UUP7YhAC"
 Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta28.mxroute.com (ZoneMTA) with ESMTPSA id 19c1376b6b30009140.007
+ by mail-108-mta82.mxroute.com (ZoneMTA) with ESMTPSA id 19c1376c2560009140.007
  for <rust-for-linux@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sat, 31 Jan 2026 09:51:13 +0000
-X-Zone-Loop: 9598ddb86bafb1a1ff901c89910af4b35739d07174b1
+ Sat, 31 Jan 2026 09:51:16 +0000
+X-Zone-Loop: 9c71dbe0f6560fd82b6a3ff5a1e89f10775f45edd246
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ry.rs; s=x;
 	h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Date:Subject:
 	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=7vpF7Hn5BqgJ2gb4QbWYXUkLTdyKNemYuDL0XwzOIJU=; b=o+Gh6tDNEqyvHrx0vP6E60coqX
-	DpMkj4BpK8z/M+SakkYZ7BocvqYe4RdJAmtxzihM7CstOnr5PlhA30+VuqQOdeRp52CEGb9fJDnig
-	BZQHJWc6HWt0WAcPpZvpjs7hPrE7VGxyRsgi0mBhfUYc4SQRP40+TR2mJ9Seji7WDvAPdj2oD3Wya
-	AuW72TVQk7cmvYe6S6Ksa3cYifx1rer5t4GrMl4iLgsC9ALEZPhTf8x09sQRI46SxuIvII9AuZOO6
-	irZK+gpEt4GXgQ0bwKyQVhExENIEDjB2nATiCWMspyuxHbgh39f8pMeG0WrFlVxZXCTWWJDEtm8Mg
-	dtgEPjxA==;
+	bh=UYshDzny91YOlbggSMdhns/l4ceWMlg44U6XZVzkHqg=; b=UUP7YhACwkAaK9FAvN6vAZRC8L
+	CKwzs+mJQuJRclXUK0v4UWLcAVi4MXIPKMDGO9bVLA3DtXLeh7BcEJpiE2hnQrt2fnWz4B76H2TSV
+	52FLaPFIFFaelr9wH+n5tEALP4krDJn3nJBpa6X9JyERfPoT3EYNGLR+pqAgOJrn7dUfBcm3UuU2x
+	zOGIb4BHc/0K09eMF8W9Pr5f97x7ryR0KmDfsHPtHYH6aM5cOy+Z3XdZijeovHz+j/JMXg3CwuNcT
+	3e09s7pvZhOL12JvVu0Ijypz6SNObnP1mQFf7hyGC5Bx2VmcTKr5ldcqJiuNAPla5jzWtkwQ3sxS4
+	kD7B/LcQ==;
 From: Zijing Zhang <zijing.zhang@ry.rs>
 To: dakr@kernel.org,
 	linux-pci@vger.kernel.org,
@@ -42,11 +42,12 @@ Cc: bhelgaas@google.com,
 	ojeda@kernel.org,
 	gary@garyguo.net,
 	Zijing Zhang <zijing.zhang@ry.rs>
-Subject: [PATCH v2 0/2] rust: pci: add capability lookup helpers
-Date: Sat, 31 Jan 2026 09:51:00 +0000
-Message-ID: <20260131095102.1273392-1-zijing.zhang@ry.rs>
-In-Reply-To: <20260131040200.1242566-1-zijing.zhang@ry.rs>
+Subject: [PATCH v2 1/2] rust: pci: add capability lookup helpers
+Date: Sat, 31 Jan 2026 09:51:01 +0000
+Message-ID: <20260131095102.1273392-2-zijing.zhang@ry.rs>
+In-Reply-To: <20260131095102.1273392-1-zijing.zhang@ry.rs>
 References: <20260131040200.1242566-1-zijing.zhang@ry.rs>
+ <20260131095102.1273392-1-zijing.zhang@ry.rs>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,50 +57,64 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Id: zijing.zhang@ry.rs
 
-Changes in v2:
-  - Run rustfmt on samples/rust/rust_driver_pci.rs to fix rustfmtcheck.
+Add thin wrappers around pci_find_capability() and
+pci_find_ext_capability().
 
-This series adds small helpers to locate PCI capabilities from Rust.
+The helpers return the capability offset in config space, or None if the
+capability is not present.
 
-It introduces `pci::Device::{find_capability, find_ext_capability}`, thin
-wrappers around the PCI core helpers (`pci_find_capability()` and
-`pci_find_ext_capability()`), returning the config-space offset when
-present.
+Signed-off-by: Zijing Zhang <zijing.zhang@ry.rs>
+---
+ rust/kernel/pci.rs | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-An in-tree user is added to the Rust PCI sample driver to exercise the
-new API.
-The sample attempts to locate a few common capabilities (standard and
-extended) and prints whether they are present. It also includes best-effort
-self-checks to try to hit the `Some(offset)` path when the device
-advertises a standard capability list or has PCIe extended config space.
-
-This patchset intentionally stays policy-free: no Rust-only
-range/alignment checks, and no capability parsing.
-
-Testing
-
-Build:
-  - x86_64 defconfig-based kernel with Rust enabled
-    (out-of-tree build: `make O=...`).
-  - `CONFIG_SAMPLES_RUST=y`
-  - `CONFIG_SAMPLE_RUST_DRIVER_PCI=y`
-
-Runtime:
-  - QEMU x86_64 with `-device pci-testdev`
-    (capability lists are not advertised in this configuration).
-  - QEMU x86_64 (q35) with an NVMe device
-    (exercised the `Some(offset)` path via
-     `find_capability(PCI_CAP_ID_EXP)` returning `Some(0x80)`).
-
-
-Zijing Zhang (2):
-  rust: pci: add capability lookup helpers
-  samples: rust: pci: exercise capability lookup
-
- rust/kernel/pci.rs              | 36 ++++++++++++
- samples/rust/rust_driver_pci.rs | 97 +++++++++++++++++++++++++++++++++
- 2 files changed, 133 insertions(+)
-
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index af74ddff6114..2bec354cf620 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -443,6 +443,42 @@ pub fn pci_class(&self) -> Class {
+         // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
+         Class::from_raw(unsafe { (*self.as_raw()).class })
+     }
++
++    /// Finds a PCI capability by ID and returns its config-space offset.
++    ///
++    /// Returns `None` if the capability is not present.
++    ///
++    /// This is a thin wrapper around `pci_find_capability()`.
++    #[inline]
++    pub fn find_capability(&self, id: u8) -> Option<u8> {
++        // SAFETY: By its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`.
++        let offset = unsafe { bindings::pci_find_capability(self.as_raw(), id.into()) };
++
++        if offset == 0 {
++            None
++        } else {
++            Some(offset)
++        }
++    }
++
++    /// Finds an extended capability by ID and returns its config-space offset.
++    ///
++    /// Returns `None` if the capability is not present.
++    ///
++    /// This is a thin wrapper around `pci_find_ext_capability()`.
++    #[inline]
++    pub fn find_ext_capability(&self, id: u16) -> Option<u16> {
++        // SAFETY: By its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`.
++        let offset = unsafe { bindings::pci_find_ext_capability(self.as_raw(), id.into()) };
++
++        if offset == 0 {
++            None
++        } else {
++            Some(offset)
++        }
++    }
+ }
+ 
+ impl Device<device::Core> {
 -- 
 2.52.0
 
