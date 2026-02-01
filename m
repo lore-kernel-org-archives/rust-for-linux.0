@@ -1,38 +1,38 @@
-Received: from mail-108-mta125.mxroute.com (mail-108-mta125.mxroute.com [136.175.108.125])
+Received: from mail-108-mta149.mxroute.com (mail-108-mta149.mxroute.com [136.175.108.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2FC19DFAB
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Feb 2026 07:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469281DF74F
+	for <rust-for-linux@vger.kernel.org>; Sun,  1 Feb 2026 07:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769930427; cv=none; b=rF3tIszkdgGnFZkroq9hKmARAYLZAtHQqbEb8al6JV2W7lnCrgjSVpd8bxrZEwUerhGAm6snUPaZUsK7ONY1timaOBaXZBhT1eb4xFcXuy6NsVk+UqjjhBXU6UHLIpKO/JdE9vy7lPFXrVvUrnV4R7L1uJQfSfCNbSfURgE0K9U=
+	t=1769930428; cv=none; b=Jb80ZTqp4aSFuYec7LxnBJtUmLIlmKx9HnVxA2lUoFpY2ee77W0vOZQRp0hv4iqkPJLBqA9ujnPd49Ti0ofrEnhTIB2XLiofzUH9kYdJhUcxCgDHLnzm9v4rx2YY/OliLrS3C2kZ+kXGvlLHhnaUkMvLsPBsien/xulu3zD8hoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769930427; c=relaxed/simple;
-	bh=naaqr5oSPsZmHXJbNGkL/+hHnf2ha/9/unfio7jc1XY=;
+	s=arc-20240116; t=1769930428; c=relaxed/simple;
+	bh=cDZ9vK2JQkMvSaTZBANIu2xz+XIxKsxI3QoAR0buVvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9aY/tJCpDruc+Aj4eASMpuzQoo7eAdoR4p3B6K4oY7aT1UTEF0r/UU1c4D/YxdSFT3BdLUuw5lBuMckDOLoeELgibP9pgTQ81+JEcr+uD20zQHqPMSlgbhXN7J6PQylsuDqL7levg7l6R6EvAud0Uz0zgfLUHAfPhejDNg1LQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs; spf=pass smtp.mailfrom=ry.rs; dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b=LDl5YWhL; arc=none smtp.client-ip=136.175.108.125
+	 MIME-Version; b=gZv3Ereu4gEEbkdHXJl5MXkBtth6YspqTp5SWhFn0rnrgrw9ekYmkjrAkOEmtCPhgbHXzK+lI8dDGhTNh9LgWNHKIXkM/QFPFwwlGelbDasIYEMzWL0kPwDf6AmpzmvQsT2ZL6c4rzq51je93aiSLl2F0VX3ZRBtb0/sNm4H+Vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs; spf=pass smtp.mailfrom=ry.rs; dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b=AwUDzAEo; arc=none smtp.client-ip=136.175.108.149
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ry.rs
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ry.rs
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b="LDl5YWhL"
+	dkim=pass (2048-bit key) header.d=ry.rs header.i=@ry.rs header.b="AwUDzAEo"
 Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta125.mxroute.com (ZoneMTA) with ESMTPSA id 19c180e520c0009140.007
+ by mail-108-mta149.mxroute.com (ZoneMTA) with ESMTPSA id 19c180e49080009140.007
  for <rust-for-linux@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sun, 01 Feb 2026 07:15:17 +0000
-X-Zone-Loop: 3ed5a05fc653223cf9fd9a6f2fb100458da822ccec44
+ Sun, 01 Feb 2026 07:15:15 +0000
+X-Zone-Loop: 92b9cc12e914db56b996395f961248037a0e98bfe8a3
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ry.rs; s=x;
 	h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Date:Subject:
 	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=PM6IuKknbJYVQ+DwwxG68XMaPOyRLNSgfoH56fhEJSs=; b=LDl5YWhLEGsHSakI/l/E9zMIyF
-	diywAq+zj1En2zJIxF5UPpq2ebilfdFzFuwNc/tyc9BpBiyaJUvs6G4LFUpCEVuaLlBTV04oQn1LT
-	GSSF2GacUxFeEe8I7jkZYxl4acRIeNUwDZHj677fhaziDhTW+wKPgNUPhQpSxrUNr60ycnThOgp/+
-	/sX2KcGhQDsRv7uWLp6Vpybp1N3Ntq88QUtLa1WO5t7g09OoHoMPxrdW9hTNiOP0xnqPoisRuW0R8
-	xDt+fq8d1whYPurLzDb963nP5RSew9rYrwsfuSrY/XtKB420HQm1IQ8CDd8koMN0L1/bJxNZCHwqM
-	40wP2Yvw==;
+	bh=+8wIznUtqGxD2TC4tykk95lFz4YHbzHFHWhxZ+BnXIk=; b=AwUDzAEogeG+TTTgfHIK0qpqGn
+	DI43AEH6kPXttlZ+2tUslw8BOYl4Zj0vliem3MivIbtZhvFvV6Ru/CBYGZk7azZPYWnurQS4x4kRm
+	hiOZVT1xLW0VZJgohbPfNBkmJiyWTyn9Alkxues8+knyE4pmds7A+Jfu2G8dkhHHoK/C67pBqXjo8
+	F4evNckj3UIDGB5LkK/ttyHPzHNKbhYBh8yLMhi73vB2oW7v+VA6bspW6t6rBCuwVz6xAtBFnJpsR
+	gEM34DAC475fMmITUAfBldLSY6C5qTAV+Z1BYMFqzKAN+txCUDI4VGiGwQasP3Y64sgE4j20KLRi3
+	b22ZkKyw==;
 From: Zijing Zhang <zijing.zhang@ry.rs>
 To: dakr@kernel.org,
 	linux-pci@vger.kernel.org,
@@ -42,9 +42,9 @@ Cc: bhelgaas@google.com,
 	ojeda@kernel.org,
 	gary@garyguo.net,
 	Zijing Zhang <zijing.zhang@ry.rs>
-Subject: [PATCH v4 2/2] samples: rust: pci: exercise capability lookup
-Date: Sun,  1 Feb 2026 07:14:50 +0000
-Message-ID: <20260201071450.1614172-3-zijing.zhang@ry.rs>
+Subject: [PATCH v4 1/2] rust: pci: add capability lookup helpers
+Date: Sun,  1 Feb 2026 07:14:49 +0000
+Message-ID: <20260201071450.1614172-2-zijing.zhang@ry.rs>
 In-Reply-To: <20260201071450.1614172-1-zijing.zhang@ry.rs>
 References: <20260201071450.1614172-1-zijing.zhang@ry.rs>
 Precedence: bulk
@@ -56,62 +56,189 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Id: zijing.zhang@ry.rs
 
-Use the new `pci::Device` capability helpers to locate a few common
-capabilities (standard and extended).
+Add thin wrappers around `pci_find_capability()` and
+`pci_find_ext_capability()`.
 
-Also try a best-effort self-check to exercise the `Some(offset)` path
-when the device advertises a standard capability list or an ext-cap header.
+The helpers return the capability offset in config space, or `None` if the
+capability is not present.
+
+Introduce `CapabilityId` and `ExtendedCapabilityId` newtypes so drivers can
+use named constants without importing raw bindgen constants, while still
+allowing uncommon IDs via `from_raw()`.
 
 Signed-off-by: Zijing Zhang <zijing.zhang@ry.rs>
 ---
- samples/rust/rust_driver_pci.rs | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ rust/kernel/pci.rs | 150 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 150 insertions(+)
 
-diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-index 5823787bea8e..184b3b4a9453 100644
---- a/samples/rust/rust_driver_pci.rs
-+++ b/samples/rust/rust_driver_pci.rs
-@@ -58,6 +58,31 @@ fn testdev(index: &TestIndex, bar: &Bar0) -> Result<u32> {
- 
-         Ok(bar.read32(Regs::COUNT))
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 82e128431f08..d50a1efd64c4 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -41,6 +41,119 @@
+     Vendor, //
+ };
+ pub use self::io::Bar;
++
++/// A standard PCI capability ID.
++///
++/// This is a thin wrapper around the underlying numeric capability ID.
++#[repr(transparent)]
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
++pub struct CapabilityId(u8);
++
++impl CapabilityId {
++    /// Creates a [`CapabilityId`] from a raw value.
++    #[inline]
++    pub const fn from_raw(id: u8) -> Self {
++        Self(id)
++    }
++
++    /// Returns the raw value.
++    #[inline]
++    pub const fn as_raw(self) -> u8 {
++        self.0
++    }
++
++    /// Power Management.
++    pub const PM: Self = Self(bindings::PCI_CAP_ID_PM as u8);
++    /// Accelerated Graphics Port.
++    pub const AGP: Self = Self(bindings::PCI_CAP_ID_AGP as u8);
++    /// Vital Product Data.
++    pub const VPD: Self = Self(bindings::PCI_CAP_ID_VPD as u8);
++    /// Slot Identification.
++    pub const SLOTID: Self = Self(bindings::PCI_CAP_ID_SLOTID as u8);
++    /// Message Signalled Interrupts.
++    pub const MSI: Self = Self(bindings::PCI_CAP_ID_MSI as u8);
++    /// CompactPCI HotSwap.
++    pub const CHSWP: Self = Self(bindings::PCI_CAP_ID_CHSWP as u8);
++    /// PCI-X.
++    pub const PCIX: Self = Self(bindings::PCI_CAP_ID_PCIX as u8);
++    /// HyperTransport.
++    pub const HT: Self = Self(bindings::PCI_CAP_ID_HT as u8);
++    /// Vendor-Specific.
++    pub const VNDR: Self = Self(bindings::PCI_CAP_ID_VNDR as u8);
++    /// Debug port.
++    pub const DBG: Self = Self(bindings::PCI_CAP_ID_DBG as u8);
++    /// CompactPCI Central Resource Control.
++    pub const CCRC: Self = Self(bindings::PCI_CAP_ID_CCRC as u8);
++    /// PCI Standard Hot-Plug Controller.
++    pub const SHPC: Self = Self(bindings::PCI_CAP_ID_SHPC as u8);
++    /// Bridge subsystem vendor/device ID.
++    pub const SSVID: Self = Self(bindings::PCI_CAP_ID_SSVID as u8);
++    /// AGP 8x.
++    pub const AGP3: Self = Self(bindings::PCI_CAP_ID_AGP3 as u8);
++    /// Secure Device.
++    pub const SECDEV: Self = Self(bindings::PCI_CAP_ID_SECDEV as u8);
++    /// PCI Express.
++    pub const EXP: Self = Self(bindings::PCI_CAP_ID_EXP as u8);
++    /// MSI-X.
++    pub const MSIX: Self = Self(bindings::PCI_CAP_ID_MSIX as u8);
++    /// Serial ATA Data/Index Configuration.
++    pub const SATA: Self = Self(bindings::PCI_CAP_ID_SATA as u8);
++    /// PCI Advanced Features.
++    pub const AF: Self = Self(bindings::PCI_CAP_ID_AF as u8);
++    /// PCI Enhanced Allocation.
++    pub const EA: Self = Self(bindings::PCI_CAP_ID_EA as u8);
++}
++
++/// A PCIe extended capability ID.
++///
++/// This is a thin wrapper around the underlying numeric capability ID.
++#[repr(transparent)]
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
++pub struct ExtendedCapabilityId(u16);
++
++impl ExtendedCapabilityId {
++    /// Creates an [`ExtendedCapabilityId`] from a raw value.
++    #[inline]
++    pub const fn from_raw(id: u16) -> Self {
++        Self(id)
++    }
++
++    /// Returns the raw value.
++    #[inline]
++    pub const fn as_raw(self) -> u16 {
++        self.0
++    }
++
++    /// Advanced Error Reporting.
++    pub const ERR: Self = Self(bindings::PCI_EXT_CAP_ID_ERR as u16);
++    /// Virtual Channel.
++    pub const VC: Self = Self(bindings::PCI_EXT_CAP_ID_VC as u16);
++    /// Device Serial Number.
++    pub const DSN: Self = Self(bindings::PCI_EXT_CAP_ID_DSN as u16);
++    /// Vendor-Specific Extended Capability.
++    pub const VNDR: Self = Self(bindings::PCI_EXT_CAP_ID_VNDR as u16);
++    /// Access Control Services.
++    pub const ACS: Self = Self(bindings::PCI_EXT_CAP_ID_ACS as u16);
++    /// Alternate Routing-ID Interpretation.
++    pub const ARI: Self = Self(bindings::PCI_EXT_CAP_ID_ARI as u16);
++    /// Address Translation Services.
++    pub const ATS: Self = Self(bindings::PCI_EXT_CAP_ID_ATS as u16);
++    /// Single Root I/O Virtualization.
++    pub const SRIOV: Self = Self(bindings::PCI_EXT_CAP_ID_SRIOV as u16);
++    /// Resizable BAR.
++    pub const REBAR: Self = Self(bindings::PCI_EXT_CAP_ID_REBAR as u16);
++    /// Latency Tolerance Reporting.
++    pub const LTR: Self = Self(bindings::PCI_EXT_CAP_ID_LTR as u16);
++    /// Downstream Port Containment.
++    pub const DPC: Self = Self(bindings::PCI_EXT_CAP_ID_DPC as u16);
++    /// L1 PM Substates.
++    pub const L1SS: Self = Self(bindings::PCI_EXT_CAP_ID_L1SS as u16);
++    /// Precision Time Measurement.
++    pub const PTM: Self = Self(bindings::PCI_EXT_CAP_ID_PTM as u16);
++    /// Designated Vendor-Specific Extended Capability.
++    pub const DVSEC: Self = Self(bindings::PCI_EXT_CAP_ID_DVSEC as u16);
++}
++
+ pub use self::irq::{
+     IrqType,
+     IrqTypes,
+@@ -427,6 +540,43 @@ pub fn pci_class(&self) -> Class {
+         // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
+         Class::from_raw(unsafe { (*self.as_raw()).class })
      }
 +
-+    fn log_capabilities(pdev: &pci::Device<Core>) {
-+        for (name, id) in [
-+            ("PM", pci::CapabilityId::PM),
-+            ("MSI", pci::CapabilityId::MSI),
-+            ("PCIe", pci::CapabilityId::EXP),
-+        ] {
-+            if let Some(pos) = pdev.find_capability(id) {
-+                dev_info!(pdev, "pci-testdev {name} cap @ 0x{:02x}\n", pos);
-+            } else {
-+                dev_info!(pdev, "pci-testdev has no {name} capability\n");
-+            }
++    /// Finds a PCI capability by ID and returns its config-space offset.
++    ///
++    /// Returns `None` if the capability is not present.
++    ///
++    /// This is a thin wrapper around `pci_find_capability()`.
++    #[inline]
++    pub fn find_capability(&self, id: CapabilityId) -> Option<u8> {
++        // SAFETY: By its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`.
++        let offset = unsafe { bindings::pci_find_capability(self.as_raw(), id.as_raw().into()) };
++
++        if offset == 0 {
++            return None;
 +        }
 +
-+        for (name, id) in [
-+            ("DSN", pci::ExtendedCapabilityId::DSN),
-+            ("SR-IOV", pci::ExtendedCapabilityId::SRIOV),
-+        ] {
-+            if let Some(pos) = pdev.find_ext_capability(id) {
-+                dev_info!(pdev, "pci-testdev {name} ext cap @ 0x{:04x}\n", pos);
-+            } else {
-+                dev_info!(pdev, "pci-testdev has no {name} ext capability\n");
-+            }
++        Some(offset)
++    }
++
++    /// Finds an extended capability by ID and returns its config-space offset.
++    ///
++    /// Returns `None` if the capability is not present.
++    ///
++    /// This is a thin wrapper around `pci_find_ext_capability()`.
++    #[inline]
++    pub fn find_ext_capability(&self, id: ExtendedCapabilityId) -> Option<u16> {
++        // SAFETY: By its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`.
++        let offset =
++            unsafe { bindings::pci_find_ext_capability(self.as_raw(), id.as_raw().into()) };
++
++        if offset == 0 {
++            return None;
 +        }
++
++        Some(offset)
 +    }
  }
  
- impl pci::Driver for SampleDriver {
-@@ -89,6 +114,8 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl PinInit<Self, Er
-                         "pci-testdev data-match count: {}\n",
-                         Self::testdev(info, bar)?
-                     );
-+
-+                    Self::log_capabilities(pdev);
-                 },
-                 pdev: pdev.into(),
-             }))
+ impl Device<device::Core> {
 -- 
 2.52.0
 
