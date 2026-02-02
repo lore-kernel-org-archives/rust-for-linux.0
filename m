@@ -1,118 +1,231 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C863366DAC
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 13:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929D72628D
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 13:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770038510; cv=none; b=GGAZaUeHRGe9r5Zb2b5FjpXrgpUs59pakp5St1vPcBgl5UDp6M//eRB3xJU0r0XRE1Tvf5N/OPL/LjHe/i8jQOwI2wBWO1eICfCj4Z/kxBkzIJ+GDL2UJiHI+HkYLaB0ppbY6sOls7iYedYWKpvnwVSEDe7o7Dojf/mxYQFJq8Y=
+	t=1770040342; cv=none; b=Xh1d2Wfd1Dni4WmKbF/590MfyIgK2XWEjCQUbr7bQ1WCzsq7r8CJO4cMSBJybQnVK971y969dFwWqHTY9eMoDcVXq+VhxF1+ii9lXV5AECBDizdPz1NXUQ1NGnszDQT8VM/i9GBviKf8FXRCx5YIwxkYiqVEAeZyBA9YLy0lE2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770038510; c=relaxed/simple;
-	bh=FqXQYRZYmqIBixULrrVa+eEZKmy3PXhlCAE3r5OaLEM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZQDmp2onITboGxOQm+je6mLqUyCv2J2jGkLUTaXgaOfDea0RsJZvfadexKhmBck0skmXIvjGjz2rEcmuJcpT3sotGWVY0/qTVOFpSplrQDx9+ioJkNFk68akmkQbNSYARw0pGEDbhNIXmI1SAB3XJ4ptWOMUbdXs8V2TriwTMvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T30zEBDb; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770040342; c=relaxed/simple;
+	bh=SK3/J5Ituv01MVS/sDHMV2/fPNcx5eIjRXmqRyWMvoE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JUmtmRB07tiebuKIPCLtjF53XHLu7X2VTdAMjeWdIQQyi9xs9XsjzAHOGfJazl5kUXJzjhboso2yyjE12VtY0VbqEwF+5yPIf/LXduRVuVD0anZDecKS22CZCVYTPvUGvf5HoiF8snkMslCAxLDv0ABBkj295Foj4bqLzvxFvpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=D0zR4SMT; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T30zEBDb"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29f30233d8aso28231375ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Feb 2026 05:21:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770038509; x=1770643309; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HucOyefr0+DyglbTjyjmO2oyIxVd3mwUnC9ssIIiMtI=;
-        b=T30zEBDbCp/amjBeUxmfuFp6GNx4nihecdA/y8tFdiiEHcn8XQorzw/7M7VjaobMf5
-         Yy5586gkzq740Uwryzpqa3A/026YZc3ce0RJ4rCD5PXADXkLXJu6sUdT9TXj2s3uYc1/
-         4M24b7ILEMVoa0TOV+WS3Mbu//cGtWrYEvE0kd6KyyfI1LcGVLCLrUc7Lmv62r/pMmR4
-         L5dlGEkm5APXCi55CjQRCZKffdiLJlP3dsIavOfGQsxfc7FspI08/uRwPrhb7zA7qPSi
-         KVkrwnHdeFIWkzOU0t3usVfiy/TxJ7TV098af7uPGOvyU1K8GILmTruiiB2CivN4+YJd
-         KwlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770038509; x=1770643309;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HucOyefr0+DyglbTjyjmO2oyIxVd3mwUnC9ssIIiMtI=;
-        b=U6nvk3bqNZhx1SMrD79UikzZe7C+bRorl+9Y0S23d6IYmdcCze5pRQT757+pr3a9wE
-         6oNWjA7VFozC2i4LyQACo2lQHmszSB36o3dPcnp5LsaV6eyNq8OyBfVYG09os8dzmFmN
-         A5Vyhvozw5dtIbf2Rzzhx5/ylF+wiB5Q3jAOcYUcEECC+Xx7DRR9CW1pM9SmGbIbbGrr
-         Bg7QuntrJJwYki+qRBisoA4y9PgmcwbqSRJOehMCIOHn1mtQVOAlmHes/I75qM6ewhcx
-         SrE+y8/UU2Ip3+xe1dAl8QPOlmj5+JWGOxr9jzaSIk1gX1R7WBv3+uy0LQA7j3nA0zK3
-         uYVw==
-X-Forwarded-Encrypted: i=1; AJvYcCUQAelYzqnHm7ORtmrrP1gHHBYkv5tgON/T97amTjEM5PZMBknJqSpl00FxNAut5PITCef+tFzKK8/kCJIwMg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxutGxMW3Br/HtrHL5jb0v5nomT5VvrSFubqjl0X/1eDOYK/4GU
-	4wj65X9BXyCb3L1PsQFSEpM2Bs22U9lW2nUgCP4P94P+0iCoDZDEg4ec
-X-Gm-Gg: AZuq6aJ0DqxUi+M9bomRbj80FIKaEOOsRRBr2mVYoTlPbYANKqtv2AhA1BdSo3qc/Nz
-	VI1A8ZMtd4ur/QevAbjGngGQsG1MIOx+XG4ESkhKzZp0ylihBwcZReBxOZuoqLgPyZX/nrW9NPs
-	o8hXHWremuxDG26u037RalKXcvHzb1oRG2+04POE6ccLJcsMYQ7F2e+fTvk1NWDLvkkMYZCAnKH
-	Dw58ciS/kaDOPeQfDT9EU27BEZtF2lQhFsUEIGFHXJh6N9k4KPcY5FR5pzpvfGj30QIUdluIboa
-	imJTC+Wj8EjJ6i74YOpya57LsFopWQ8kUMWAQp1o2Dy2BPqBkeYto5RhquU1+Sdi89JAFzD7PBi
-	uoIUYtlVc8dQAm1BngokGzs/c18M7gKaQ504nQhqNWOZLSEvfQxe2LloXXyzXevC9eoY9M+Z6Fg
-	1bQ9nMSh1XQqgDwA==
-X-Received: by 2002:a17:902:e801:b0:2a0:d59e:3c9e with SMTP id d9443c01a7336-2a8d80382dfmr121202625ad.33.1770038508821;
-        Mon, 02 Feb 2026 05:21:48 -0800 (PST)
-Received: from misys ([58.120.241.145])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a8c3a23e40sm119569895ad.90.2026.02.02.05.21.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 05:21:48 -0800 (PST)
-From: HeeSu Kim <mlksvender@gmail.com>
-To: ojeda@kernel.org
-Cc: boqun@google.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	HeeSu Kim <mlksvender@gmail.com>
-Subject: [PATCH] rust: Makefile: apply fixed-x18 workaround only on arm64
-Date: Tue,  3 Feb 2026 07:21:44 +0900
-Message-ID: <20260202222144.2689495-1-mlksvender@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="D0zR4SMT"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 08452240106
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 14:52:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1770040339; bh=+BF4QbuMA531R+4C2w46k7sZ/yalnR3rbtvrSCnTz5Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=D0zR4SMTEEAw9CfBbkF5cefHt2Ztogxnw8viMkkEye0yOVmDaAHCmnGlaK8x58A56
+	 83mmSK++F6c0kL/iVeDXRBuDLt5f1RbpV96KCOFiiw2uq4jNQQ9xauq2NnaaL9nr/D
+	 jYS21PtX5QQrgsb1MoY98jEnsrlyPzWS73JUyFFUM4cxMwleOmlro+Xzq2QID7ct7u
+	 8knAhsFwrnQyxyhUUWMmguWIdHA1VHOWqFwkgM8F+jpsfhFMevQC8YJjXqtec0CelT
+	 +XrODFBH9TOU+bgyRSQedRMlOCzM1Lsq0U+PtECk7X90vXdwFzDlBr4rapBi8qTvdt
+	 5YmnYfJOv09nw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4f4SjC28Fkz6twh;
+	Mon,  2 Feb 2026 14:52:15 +0100 (CET)
+From: Markus Probst <markus.probst@posteo.de>
+Subject: [PATCH v11 0/3] rust: leds: add led classdev abstractions
+Date: Mon, 02 Feb 2026 13:52:17 +0000
+Message-Id: <20260202-rust_leds-v11-0-585d1c8be20c@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAN2rgGkC/13MQQqDMBCF4atI1k3JqImZrnqPUkowkxooKomVF
+ vHujYIQupzHfP/CIgVPkV2KhQWaffRDnw6AU8HazvRP4t6mgZWilABQ8/CO0+NFNnKDEl3Tlq5
+ xyNL/GMj5zx673dPd+TgN4bu3Z72tR0VmlVlzwS2aGlwlpaz0dRziRMPZEtsqM+YSc4lJatWCt
+ AZQqOpfgjioEiBUTkEkS8KAVLXWtcPcruv6A6SdZjUZAQAA
+X-Change-ID: 20251114-rust_leds-a959f7c2f7f9
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3949;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=SK3/J5Ituv01MVS/sDHMV2/fPNcx5eIjRXmqRyWMvoE=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBpgKwEjeJ3FJ52E03anXiL+RLJaXuV2F4vhW0eE
+ hwEwiyNx2aJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaYCsBBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9JdhxAAiW1nZMr+YreBU8V1RU6K69ard50ocdt
+ KGnCq+y72E/c/z6LWOCJXxk0MEyX+WbX7ZUSt17x6jj7Yhc7UWXAKusxJZkZ0YOX60iFYbYvD/K
+ H9TustHPSiFkpflLbWTwKf/R4h/7ogZU4XJoWQaMCsDoZpwBnF+GGvceAGZIFAVqyBRjLQx4kXu
+ aqnLLrEdIESTlbC6R21zB2M7tq2upuHoLlYSfLszLKDAT6tsB9BjcCY7OxI/DX98++eFKLbZ6MV
+ 4/Mlw6An1TEY1xVIAgbkLHG/K2GyJ43y/1m9OOH6CeduvtmjNrR601PVq3DVGFfG85xzT8wFEyK
+ bXwWVAKiAg3CHijH6xeJWSudDWy4wyoEMQ4LzT7jzP2/QxduizjRhyJGyOZdEwq+PKVzVQYj92M
+ 2/hk2TpMb7svopwISI9dSV3K38QImNZxNfZQ/ulgRl+qn9WPYLVFu6dg+P8dTa7Xc25Xu7NkrkL
+ rdFQon2WRFJ5fr7Aghl8/vqaqI7XaTGu8VkZuTItLk6nGccZchbb524X/3kvD0KJvyhWNKCLewt
+ JheNxP23wEicxY51mYxQv4F498hkKbQbrCwlXR8XV7d/Hu+s9DpNpgZQUyb/64n1LkxB6JaGU77
+ boo9Y7cDHBDDFXOsMXNUYA2dmRKlxSFNQYdNmEfwFh/vuIE+e71A=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-The `-Cunsafe-allow-abi-mismatch=fixed-x18` option is a workaround for
-a rustdoc issue (rust-lang/rust#144521) where target modifiers were not
-properly saved. This affects both rustdoc and doctests builds.
+This patch series has previously been contained in
+https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.probst@posteo.de/T/#t
+which added a rust written led driver for a microcontroller via i2c.
 
-However, `fixed-x18` is an ARM64-specific ABI modifier related to the
-x18 register reservation (used for Shadow Call Stack). Currently, this
-workaround is applied unconditionally on all architectures, which is
-incorrect and may cause issues on non-ARM64 builds.
+As the reading and writing to the i2c client via the register!
+macro has not been implemented yet [1], the patch series will only
+contain the additional abstractions required.
 
-Restrict the workaround to only apply when building for arm64
-(SRCARCH=arm64).
+[1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kernel.org/
 
-Fixes: 68e8e79e1bdc ("rust: fix `rustdoc` target modifiers")
-Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
+The following changes were made:
+* add basic led classdev abstractions to register and unregister leds
+
+* add basic led classdev abstractions to register and unregister
+  multicolor leds
+
+Changes since v10:
+* allow in-place initialization of `LedOps`
+* run rustfmt for code inside `try_pin_init!`
+
+Changes since v9:
+* add missing periods in documentation
+* duplicate `led::Device` and `led::Adapter` instead of using a complex
+  trait
+* fix imports not using prelude
+* adapt to CStr change
+* documented `led::Color::Multi` and `led::Color::Rgb`
+
+Changes since v8:
+* accept `Option<ARef<Fwnode>>` in `led::InitData::fwnode()`
+* make functions in `MultiColorSubLed` const
+* drop the "rust: Add trait to convert a device reference to a bus
+  device reference" patch, as it has been picked into driver-core
+
+Changes since v7:
+* adjusted import style
+* added classdev parameter to callback functions in `LedOps`
+* implement `led::Color`
+* extend `led::InitData` with
+  - initial_brightness
+  - default_trigger
+  - default_color
+* split generic and normal led classdev abstractions up (see patch 3/4)
+* add multicolor led class device abstractions (see patch 4/4)
+* added MAINTAINERS entry
+
+Changes since v6:
+* fixed typos
+* improved documentation
+
+Changes since v5:
+* rename `IntoBusDevice` trait into `AsBusDevice`
+* fix documentation about `LedOps::BLOCKING`
+* removed dependency on i2c bindings
+* added `AsBusDevice` implementation for `platform::Device`
+* removed `device::Device` fallback implementation
+* document that `AsBusDevice` must not be used by drivers and is
+  intended for bus and class device abstractions only.
+
+Changes since v4:
+* add abstraction to convert a device reference to a bus device
+  reference
+* require the bus device as parent device and provide it in class device
+  callbacks
+* remove Pin<Vec<_>> abstraction (as not relevant for the led
+  abstractions)
+* fixed formatting in `led::Device::new`
+* fixed `LedOps::BLOCKING` did the inverse effect
+
+Changes since v3:
+* fixed kunit tests failing because of example in documentation
+
+Changes since v2:
+* return `Devres` on `led::Device` creation
+* replace KBox<T> with T in struct definition
+* increment and decrement reference-count of fwnode
+* make a device parent mandatory for led classdev creation
+* rename `led::Handler` to `led::LedOps`
+* add optional `brightness_get` function to `led::LedOps`
+* use `#[vtable]` instead of `const BLINK: bool`
+* use `Opaque::cast_from` instead of casting a pointer
+* improve documentation
+* improve support for older rust versions
+* use `&Device<Bound>` for parent
+
+Changes since v1:
+* fixed typos noticed by Onur Özkan
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
- rust/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Markus Probst (3):
+      rust: leds: add basic led classdev abstractions
+      rust: leds: split generic and normal led classdev abstractions up
+      rust: leds: add multicolor classdev abstractions
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 5c0155b83..2bd547611 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -136,7 +136,8 @@ pin_init-flags := \
- 
- # `rustdoc` did not save the target modifiers, thus workaround for
- # the time being (https://github.com/rust-lang/rust/issues/144521).
--rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
-+# The `fixed-x18` modifier is ARM64-specific, so only apply it there.
-+rustdoc_modifiers_workaround := $(if $(filter arm64,$(SRCARCH)),$(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18))
- 
- # Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
- doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
--- 
-2.52.0
+ MAINTAINERS                     |   8 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/led.rs              | 300 +++++++++++++++++++++++++++++++
+ rust/kernel/led/multicolor.rs   | 382 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/led/normal.rs       | 226 ++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 6 files changed, 918 insertions(+)
+---
+base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
+change-id: 20251114-rust_leds-a959f7c2f7f9
 
