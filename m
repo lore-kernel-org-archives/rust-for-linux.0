@@ -1,134 +1,101 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C0635EDC9
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 13:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E16236AB63
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 13:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770040569; cv=none; b=twpWOmB1wu/HSchyprXER6dVwruO9h4kzKR9w7WXmANy+21VJjTuw4yzLM7eCDKQz8RaUIQa32mQn5TYLlzITvbxxwrN0AUxjig0bM0ffdBn+Ewovv+qEsIUboxCJ+05ZNf4AkFQ0zQi2ky18AQ0kFotNe8u2rFMsx+RUw/PMQA=
+	t=1770040798; cv=none; b=ktDkba7PSzFPm1ga0sW3al4n22MGkutHWXeCFlffZs5cNLKVoxAA6/Jb+z5RtiLi+4nz06fWXHXZuP2o2iq4rnULKu5Qpcf8a2dr9lC4fNA8kOEkX0akcqAjv97BL2kVVvffw64f1pyFj1tkhIZsGDKvhxGUB3UFfZBsEQnWVXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770040569; c=relaxed/simple;
-	bh=I3hdn0is2B4hFR7yLjTdMqo1s5U6WpPHWCgDsrJ45Ww=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhPbbIAtWe/hFGn7bc3vmKIoqpbyppHTYsUmxFByaz4UB+6D+eDNLaWqDA9xIWxJRIw0YtlHAX41bZSXjN8uNlcUWhR/zfi89yifGw1B7ekphlsSaHNTbeiAceDFg/js54xooPOhADU/cIwWSfMscflIUQHPddGPUIfLJpvATlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DJDCR7JZ; arc=none smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770040798; c=relaxed/simple;
+	bh=ZHDZ+1d+Nu1W6KsVOQzLxug/HqhWlvuTJLfR4nkkJIc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=aHZzHO4rFKKe+wGCH3Jsd/bdyzaZteKMQ/+t9Sa8YJ6Dp6fm8wSkn1ptGoRRyvm8GTjknpQM55Yj15A2ECKioXvGXBleFYl1hTSDfXdbNsdvz+UqcYp3IDOqVph8N8hpjVltrOshzdNq5NKTzDVU1hYw+cmPJnsZc6mVGX0JUeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=MKF0dmhx; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DJDCR7JZ"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b71557299dso4519723eec.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Feb 2026 05:56:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770040567; x=1770645367; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4szHbuFxqmXA3vP2xDtj9lQOqQZM7yRsk7nkYjSTgFc=;
-        b=DJDCR7JZOwmfHQpgS0YLUzotns4Z90sOQs+l6vwsHmu2EnsiLVn+K1NhaWMlqhJZHZ
-         gQYMAD9Xqt58VfDUY90ws4ZGNNCinpk6+tEm2vwKHyR6HA3/+CGr0E8sP9/CslQ24Zz6
-         vBfAwMthU7sSflCkl4CS1h36jY/u5r9L7/wD08zEDYeS/DScrvs1omD1vCPLua2JqHKW
-         nW/VAu/K2t8zUiJl+owwTPXGjEevfEs/XgVxOp7bhTN0GxytuhCDxj61DJp/vlqbAoyo
-         0ZoXeJctbnqeD/fTWxrxwNOs+lHx5KwLOwQy4mLMWn1oOzjFlzArvsl5vlRTzwwIszNc
-         ZOCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770040567; x=1770645367;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4szHbuFxqmXA3vP2xDtj9lQOqQZM7yRsk7nkYjSTgFc=;
-        b=JC5/TJEO157Fq+1unbPKixjT3VjpBg6jNZQrFDZTGtXbJIzSj89xC3Q6I179caYaEt
-         Q6CvYjY0J6FVbcein9DgmfjCwGIE35oJuMsx28eLd70Ol+60FxqrsZlHCEwl81gObX/2
-         z/zagZ12kjwOhl3xL1T8ggxced3Kt5GkvTF8i6jNcM2uUt3PXY9Nvs0xiB8VcmWmFPY+
-         rpixkzCjLnd1KvgCVfv8flLR0NErBku2Ia6D5lLToCPeVoX+xcJDMQA2s8LiDnYKw9Vh
-         uHyYwYA+mz1LhMUjYgj12RvNQtXehE4+0VQbBviLOC95i03VT7e2LfuIOP2mwDnMQ1rb
-         Q39A==
-X-Forwarded-Encrypted: i=1; AJvYcCUl69CwYZHDu+bGTXj3v969j7Hsv8kRVuGDW55jVTxaObtmpz8t8RyuzLjH2k6YTfVySn8ZBdMSYsw4lb0bjQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLiXf9mLJkHHto7beP5pGWMkaL+nxdwMBeFcrmoVikF0cfuGSl
-	/1nTMGs+O2e61xE0MXERdDE2FJudIVIdXE9hOBgRnmTyeA+Pn2mlSx0fhvRA5g==
-X-Gm-Gg: AZuq6aJ1hsHiqRGHg0aOeDJqdj4O/LBZa5XyP0qqAcXcjPuVBmBCV8dvW16d8Q3+Wjz
-	+j+VyK518xISVVdQxQgZSGOQB1b6kUerFtDcrHPhz7ZoO+o0wEjNs6eXPeYQytGlycwAIzhoSx3
-	t2pIEVWJ89lDGuxUsggkIjrQ3cJDi9+av6X2hIbwxQcOIw6Q4JtzQzUTamp9a7vC+x7inGb0vNl
-	sHi28o6bXCAi7gg+rZB30RdFSNucdY7uRmi+rcGqjbpY/g/26trOPeu2PK9EurtjBpoShTumpuC
-	uzVQYtRzditH8mzr09Wc+q8CPaFJV3wkl8AYpUZYElYKJYCm8lm/GeK77tiup+qPz+uPFrsw4Gc
-	s/w4SC5KJm0V77FO/shThad//UaKxtx6+C5yntxs7lJNSxnSR43X9/5nY9C49OpxeWg7dR2NWeV
-	Lh/5sPG8xjK6gx2tQhNIXBBxYZJ6FpgVx5g8UkpqY7Xee9r4XxkU4+E0q6G8XPAA==
-X-Received: by 2002:a05:7300:8ca0:b0:2b6:aa89:4b59 with SMTP id 5a478bee46e88-2b7c892cbb8mr5770852eec.36.1770040566836;
-        Mon, 02 Feb 2026 05:56:06 -0800 (PST)
-Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:4339:af89:9643:898])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a16cfa25sm20061490eec.5.2026.02.02.05.56.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 05:56:06 -0800 (PST)
-From: Jason Hall <jason.kei.hall@gmail.com>
-To: Joe Perches <joe@perches.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jason Hall <jason.kei.hall@gmail.com>
-Subject: [PATCH v4] scripts: checkpatch: warn on Rust panicking methods
-Date: Mon,  2 Feb 2026 06:56:02 -0700
-Message-ID: <20260202135602.1886134-1-jason.kei.hall@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <14d95956-05dd-4c9b-b748-894c1d474c1c@de.bosch.com>
-References: <14d95956-05dd-4c9b-b748-894c1d474c1c@de.bosch.com>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="MKF0dmhx"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id B3000240103
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 14:59:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
+	t=1770040795; bh=to0E3ZmaejSRmlLvwm+2sGiwpYMPL1aJScsJZPk04as=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=MKF0dmhxqAbJBwMDRIQrxSrfR3XljNY6LlYrpNTUIKsTj1Jr245Z+8ejQeqLuTtxd
+	 vHQDcFdQqq3L00rbdD8rY3hRoJl1sMgwPy6O0uBFGNCdPTT4njx3T1868UMGnmFoJf
+	 cT4DOH6wzH5F5PP4zzeRwlyrL9BstbsfxSoQQETOE8LBSQYF6K3NHjhYcJMg7Ol4UY
+	 5siimDOe5GB1NR8ovCVG1o4LZiM/vkIDUI01QtiVUx4z1sixaCsWJGTyen5hMQ1EIw
+	 q3+pUCHJTkM8+Zrh8hwyIZzXojAJoo1+luHw8DMa2Bxf2SNyw3lMrcdnmEpK9KjaPj
+	 747SosVNSbEjw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4f4St10cpkz6tsf;
+	Mon,  2 Feb 2026 14:59:53 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: HeeSu Kim <mlksvender@gmail.com>
+Cc: ojeda@kernel.org,  boqun@google.com,  gary@garyguo.net,
+  bjorn3_gh@protonmail.com,  lossin@kernel.org,  a.hindborg@kernel.org,
+  aliceryhl@google.com,  tmgross@umich.edu,  dakr@kernel.org,
+  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: Makefile: apply fixed-x18 workaround only on arm64
+In-Reply-To: <20260202222144.2689495-1-mlksvender@gmail.com>
+References: <20260202222144.2689495-1-mlksvender@gmail.com>
+Date: Mon, 02 Feb 2026 13:59:54 +0000
+Message-ID: <87h5rz8cvb.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Add regex check in checkpatch.pl for common Rust panicking methods
-like unwrap() and expect().
+HeeSu Kim <mlksvender@gmail.com> writes:
 
-Allow an exception if the line contains a '// PANIC:' comment.
+> The `-Cunsafe-allow-abi-mismatch=fixed-x18` option is a workaround for
+> a rustdoc issue (rust-lang/rust#144521) where target modifiers were not
+> properly saved. This affects both rustdoc and doctests builds.
+>
+> However, `fixed-x18` is an ARM64-specific ABI modifier related to the
+> x18 register reservation (used for Shadow Call Stack). Currently, this
+> workaround is applied unconditionally on all architectures, which is
+> incorrect and may cause issues on non-ARM64 builds.
+>
+> Restrict the workaround to only apply when building for arm64
+> (SRCARCH=arm64).
+>
+> Fixes: 68e8e79e1bdc ("rust: fix `rustdoc` target modifiers")
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-linux/linux/issues/1191
-Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
----
-Hi Dirk,
+Are we sure this is in the correct commit hash? It is not present on
+mainline.
 
-Now using imperative mood.  I decided to keep that logic stateless
-unless its agreed that we need to add state.  Adding checks for #[test]
-and other test identifiers will make this much more complicated.  There
-is already a check for // PANIC: that works fine.
+Maybe it should be this one?
 
-v4:
- - Use imperative mood in commit description.
- - Fix patch formatting and placement of '---' separator.
-v3:
- - Use non-capturing groups (?:) to optimize regex.
-v2:
- - Switch from \b to (\.|::) to avoid false positives in strings.
- - Add : to PANIC comment check.
+      Fixes: abbf9a449441 ("rust: workaround `rustdoc` target modifiers bug")
 
- scripts/checkpatch.pl | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Cheers,
+C. Mitrodimas
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index c0250244cf7a..37bdf602e7e7 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3834,6 +3834,17 @@ sub process {
- # check we are in a valid source file if not then ignore this hunk
- 		next if ($realfile !~ /\.(h|c|rs|s|S|sh|dtsi|dts)$/);
- 
-+# check for Rust unwrap/expect
-+		if ($realfile =~ /\.rs$/ && $line =~ /^\+/) {
-+			if ($line =~ /(?:\.|::)(?:unwrap|expect)\s*\(/ &&
-+				$rawline !~ /\/\/\s*PANIC:/ &&
-+				$line !~ /^\+\s*\/\// &&
-+				$line !~ /^\+\s*assert/) {
-+				WARN("RUST_UNWRAP",
-+					"Avoid unwrap() or expect() in Rust code; use proper error handling (Result) or justify with a '// PANIC: ...' comment.\n" . $herecurr);
-+			}
-+		}
-+
- # check for using SPDX-License-Identifier on the wrong line number
- 		if ($realline != $checklicenseline &&
- 		    $rawline =~ /\bSPDX-License-Identifier:/ &&
--- 
-2.43.0
-
+> Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
+> ---
+>  rust/Makefile | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 5c0155b83..2bd547611 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -136,7 +136,8 @@ pin_init-flags := \
+>  
+>  # `rustdoc` did not save the target modifiers, thus workaround for
+>  # the time being (https://github.com/rust-lang/rust/issues/144521).
+> -rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
+> +# The `fixed-x18` modifier is ARM64-specific, so only apply it there.
+> +rustdoc_modifiers_workaround := $(if $(filter arm64,$(SRCARCH)),$(if
+> $(call
+> rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18))
+>  
+>  # Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
+>  doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if
+> $(call rustc-min-version,109100),$(comma)sanitizer)
