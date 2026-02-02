@@ -1,142 +1,127 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BCD28506F
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 07:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F98F72617
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 07:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770016903; cv=pass; b=SCkH1gcAP6ajqPmGB5BvmIyPUeH9wKfO9bERN13qgPLuZ5S6wtK+qgtAfKG5ZnnY16PElIQsw5sdoAimJrTGc928yl4+EMMa8iOgNdUTz9cuJPdUwxE8zwjGcS+XWHNaXEzBclA3WWRYq68YAaQxO9S8CIYf8IU90yftTEj73ns=
+	t=1770016912; cv=pass; b=ikVmaZoHZI1Wwi0SUzpru0SvvYArGaBaDJ2L0b9HtdoJIK+EgNQvwiP7sZQNgbCzeoaI3mfPjQVl/i8JA/eJrQsmp35ZTB8iuUj8QkHdvmXsn3gqulflnGjxeXLppeXwuEOcJkfhv2DKpSHkFy24OjZwWY/D5Q1QOI3d0oluU98=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770016903; c=relaxed/simple;
-	bh=+KRdNhUsOclhfCEeomHUa6mQoiWSUxWc9rU9olZnvuk=;
+	s=arc-20240116; t=1770016912; c=relaxed/simple;
+	bh=Qh0yKpQkVJy5XXHDedS61+Oe9MjNrWtGzOftaWfnmrM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uSEnnSfqHMUVlcdKVOuK2Z5kDAZyqEzOe/hk/opQjlkfy3sEPYXU9XtSFFcJ8e+T3FOwnP+pjbcuzALn3jayI39RE6YrBBd1Q3aLxRumOSHoU8MGsutQIxlizGmlcTs1oMlI4yAc/hR4lfaOLmeyUwHCSz2w7xBsv7hX25//hMU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bvTFtHYY; arc=pass smtp.client-ip=74.125.82.171
+	 To:Cc:Content-Type; b=XvS4pimtaYHizb5GjKxN9UqRIelwUNLoor1PcWhCy3qizuM/Maw1WaOhJGMgX3ssRHaBTHaSf9xEO7SlQA6lt1uEVXvMaKOt9DBI6+c3BmOa9Qk6rT9Hgs46RpZWchDffgOs/ONSQO3x3P8g0/NCK4Kc6f+4s8xL5QqCbKSYJ8Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C10iyM04; arc=pass smtp.client-ip=74.125.82.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bvTFtHYY"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b6aa67a792so532757eec.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 01 Feb 2026 23:21:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770016901; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C10iyM04"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2b78c97f57bso198307eec.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 01 Feb 2026 23:21:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770016910; cv=none;
         d=google.com; s=arc-20240605;
-        b=JfN9BTAHi0P2pFawP8Md97gAIkUngfhwUwxtCsue0WUsvRC4DrX4Qb4fw7oJfw2Yze
-         6asbJN6nsSttnSaVfkubCaay0I4R8yiwg9eYioSm3o0A98/KmRm8s6KEIZQQMAS+3s+B
-         EeLtL088UtqQ1s9wXcAnYVXKFK12n5snlTSBHiY5tLhtmkcwN+ye129BP5YBC1lOyFqT
-         RM6Wszv+bvovp0CorvZdf6jkis8FhWSaLPhQbJZV1N4cdxmtnzPVY4lZ3ePtgjU6Kl2H
-         h/zMMJRNDLqIZDeKmjc10cYxJ2o+6BDsZQp8n7G/DT/gkBQeT3JPrF0QfQBUTEoafQC0
-         uUIg==
+        b=SksGuKZ05+KhUpy0RK3N7uuKu05DSqx+Qm2nMLK3CMSgLzH1VgkGksv+MwVKHB80vq
+         W/OGEhkqzIQ8YUh7bjJIYzIcWiyvNo5fsVUYmVDAQm3njgECnY331vtFNtrQ/tfSbrfW
+         Mqk/XtvWfQgwGw5FLcMgvmCk+ALDEmJzwrdv8bflVUBw/EP7izQdBH0SXRzcNwkYrRZY
+         +K6nCKxkpwaBZ8DSYzNwljg1AaF0/R8t1tVEPQ+/FxBEnev0g1HdSDN4TvSAZJZx533O
+         qUWG73mpa1Dj6u3lSrBJjKnDfXnfS00q3tZVmpfjsjZn77cqAkBQlYiCR7NdVrvfZzL+
+         FEvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=4KG5V/gg9ddRbVKR3G8jxKDS5tmc0X/k00VtKOTvaoY=;
-        fh=trhKLXFE83SvFjBP0uq/7H0jExTxhLO5gZ45314/1tQ=;
-        b=E0U7kAVKk2D9AwajhpuXzLrUTkQhPGEl5de1rnsHGlnWWWKioqzFUYkcqkhWl7pxGo
-         DvdB5W3LA3XNJ8SJSAFkUI/BlqA6/7O4f/xdMuxnCv7QwyGZTMSeQ1fy5lTBQhKoEIym
-         szHMANx3wIfBy5SwXc4ryDwSuKOZX6fJjIT/hiTePF7esKFUQ3nNWmpnyAQfewlWM9SC
-         ZWQrZPvjgEeeVZ2qrmBj/hs3St10nU93rhSgNvX96xr9TidMoS+s08eE6Oe+emwndNmK
-         /Ahk6KfkT/qAjNcTk8Y6pb/+mkWN20gY6jFMkO87mUsVMmk9HEsbHtLW8KeRDX2uLSVw
-         94Yw==;
+        bh=mPEJobanAs7q9hbhAsHwX5LU72XuDG+jrFHXl0MG2gc=;
+        fh=s0/noY7o5zUoeg2pOI+GHwqjcUU3MrtppyrgfOs9Iys=;
+        b=HFSdG396hjou/kU7fI0lnR1oOOVeCyP+TOIOsnvKOn09zt7uoojExqDOLq/W7xN9hO
+         975GU7hL6C1gtogZgdQVo+IkpNJ/59ozXNpuE9qAkZoOjM9r2rSniai7wLp6SgXSwsj2
+         nLrX/+B1EFrDW7X0BGM8lzyhKlzsW4KWAFKJjn6jHoqBTsYwA/TbqKHLCe4xqVESsCQK
+         utyvrAIcyBI6VyKWXxFiHu2fHRg5keizGOzxjRQH1T8ACCPWuY6DXly/CjZKlRr2Gowy
+         D8acR9ipvoOetvelCq2SXCYu7rWiOBEOV4CizhCdmJ7OpbySEAk00X9lmrb2kNjdylFt
+         secA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770016901; x=1770621701; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1770016910; x=1770621710; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4KG5V/gg9ddRbVKR3G8jxKDS5tmc0X/k00VtKOTvaoY=;
-        b=bvTFtHYYyhTomV2v7arG4kZJz8fyH3ZUVFrWYcaCzl9sAj8/e2AAAk0teFkBvJRfCt
-         m1hT2Nj69N1pJN+f2BzwNzCv5d6WtWyrU0ehVOi/SUnH5fObmkv8JHW/Q2+vb8dZuA7c
-         gEXZZBPaYXLz1UL5Tb1hwIAx2Uy14UEY+KzhcmkwvVNkRzOB3eAca7E18PnJUvC4ghEh
-         1BOQDqljHril9HdYXEJiMY9pkV1AJfcRvI7il8YPAAPUV3EyWv+WZU/cAAZauS9u3d1z
-         mglMdOxetWpd0Puezw8qnRxN0LkHWwQFqdLKnTN/3H+clWXI+wqemGVfvHv47I1ghTkL
-         jzGw==
+        bh=mPEJobanAs7q9hbhAsHwX5LU72XuDG+jrFHXl0MG2gc=;
+        b=C10iyM04Ad9WH+8cKOtLg+Wjavc7TAfOUDTFvk+VbV/IxdN9t8nSxW5+yIO+7jMuvl
+         BWWrLluID/R4fxngG5uZ09DvKwA5eyl1/jP0pl4oXTSrINGqXPUeeH51Q06hfeCFLBRH
+         btrkDvJAThBkm5QX/KJKp+5KVq6Ge/vdVkVAHkAXIzh+Y72ZkABACqtezUXFTdeZABXc
+         xi2MF58jXvV7Scgc1ptGisIJ82OHOBTNvRTfr1VoTNXxoyXhh6BTxCZYSz/fRPxwtUR5
+         ENSCPX/qBDbEcWUMXRUwvKMRotrd6N5ZByLePHSq3PIN832czJqxIAE4P1QZNmR8lI8e
+         KBsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770016901; x=1770621701;
+        d=1e100.net; s=20230601; t=1770016910; x=1770621710;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=4KG5V/gg9ddRbVKR3G8jxKDS5tmc0X/k00VtKOTvaoY=;
-        b=uDLg8ymEaWw1233jE8x69Ow5COw2M1cRIU7ETOlXqi5lOGTEbMSxeh5gOaDe6QQopa
-         J0ZuOwK1Hh/aX9x21HCa/p7zf8JP5ek9e+3yaMyz50Oix64T/EzZUvqpj+CmT7pDY20t
-         xCZMJsfYh/dHXT/4MKybavaGanYEvTcPI6kUR0cTYFznR1vc1xA7DKtfrOQQ3c1kopw6
-         +2Y6TUvMd5TSsZk+KfpC24LFw5Ez2d3PfJ0D9Ak5rH1VaohRtMIqFl+3eY5Y2NP8IYnm
-         /TsXIWOAmJLt8J7l2llzL/QO9SCQxrmfP7WRaWuzZlpzhr+GGcbk507TWE1Vb9cZ+8K4
-         kViw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8QeEVghC2Lj9gFwoquWY717gNnqNv80n8g/dboSCIR/IAjZbg0PVM/VxwKepnuj2femdKIyt0rrh4H2ru6w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMWZyeF8rZ5YzRtqLSCj1ax+wzwAopq8w9e8jVHPoD+Ls7pYQq
-	0GZhAVd3/K89AOc1sb4loP1hpkknp8+kmzLjSrUzeQE9V29Hm5q6F5EsJQo9+b8O5sxtRPxtKsk
-	9hrZC99o72NIhU3g6QhOY2oc0gL7G7iY=
-X-Gm-Gg: AZuq6aK4RU8dJdcK7sF9LHbhmmZP8EHh/WqvEPHYV/oMlqE5RSk3thNDBX3OZ7FRJce
-	m9G/1JnU0huZUtSDBweIbJ7H2DHEKadN1oV6oe9cvOxmUWgPxVrh6Tq71uwLqNXY3tTSO8jUi86
-	Hg06j8NulhZLtOOK+ouvH0qyHEpgw8bZoROOmSgkl6LqBpCAaOEyGxHo+KeKb+GyXjTJcvJwg/s
-	4WobIu/jMFi5/7R0OCm1WZiDfRS4Fx00pMUcEpWho9gedo6ghAv9cQwZiyePsxxk2ovoIZzBA5P
-	HMlzLOJrtG5TFVQPoZJpXZuCScasgdNC5DPIGz6WLz4Xds1zR8/oDWznH1Fw9vXPQ6RWIh0Z+WP
-	Ksi49mzz5Dos2
-X-Received: by 2002:a05:7300:6d21:b0:2b7:121a:99f with SMTP id
- 5a478bee46e88-2b7c8523f57mr2521839eec.0.1770016901440; Sun, 01 Feb 2026
- 23:21:41 -0800 (PST)
+        bh=mPEJobanAs7q9hbhAsHwX5LU72XuDG+jrFHXl0MG2gc=;
+        b=D3J2l8x9jP9p2hZUHmOOpxIoU82NOviiccTAy0sRiqKN285pee9/rK86d/qxvfBqMh
+         OXwbmHnt8H3U2kaGTe5js430XeVU1Nwe6Nf0UIyo3DdxhGNmVpz2uKWmVnQYDdX2LL4q
+         3n7fz75MfhfGzJdOUTB6tlRvFQ1v6XoZdcsK7YhmdHGN2kiByPzOdiVHIqRwXlyTwKuE
+         +Y8ooYYO+bMHDlTpuPlytHJXueIqqO5qXohJ9yDunVoo4SbWIYfUKUkKR3a6cAPaYpuh
+         3Uk41zyLNnAKq0M5GreHjGqt1v/elyt4c+db/5fs83G/6bYUbC4s7h3GE/sESVGRYbru
+         8dMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/e490NDKeaiXtLAneUSn8eLupNlViECAl2P4ZwvgZB9etT95JlNkIWqcJCg+KV13rs5haxQTZRsAf2IOQKA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3D10dambE0ablfYndy1VRXon50yiNMWbzn7x68oG98S45lNAQ
+	SXVZ05A0/F5g3fZZWPbyBxfbNuZTjT6Ug6Sp3wWnWyMx0C2QeD3P5+RT/ONwV6kTqQrpwRYDH8Z
+	Sl2HnkoWLjdN3WQMg8CL/wQBsOrP8U60=
+X-Gm-Gg: AZuq6aKFmJ5T8XbaeoxhxYrp0RcHcjuSVGaKkDcBYjPKcg5dsQkb1ctBDW7YMQdng+u
+	172U/5sEz+izKl75gpaRfSVl5JmekvFFBd4Hsi7CAPXglykgHsrYYxz1YHYYpDi05m3tjs2X5hk
+	6Gt57cO1d3HRH8ztC9y8j7K076Zkw+u0HBdgAqylc5bmKP3jYTCJ96qe5RDM86xEBVfldDozcgF
+	s1nxB9ffUQIi/9kHVqWf+UvSf5zbIkMeP1i6nOGvRHq/lW1lAb/iPpKnyz3TzzDHv8ASMw2TdUn
+	LsZO+fPKUt6lPZQcbMcJGAAu5M+08AOnD5LDE+WVtG6PIEgzeBPI+V5BxPyPMUCySGoHSd4KVP4
+	RouqmOfoaQEG9
+X-Received: by 2002:a05:7301:3d0f:b0:2b7:3678:2d1a with SMTP id
+ 5a478bee46e88-2b7c88e8ff4mr2657519eec.6.1770016910244; Sun, 01 Feb 2026
+ 23:21:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260117-feat-add-bitmask-macro-v9-1-45ea1f00f846@gmail.com>
-In-Reply-To: <20260117-feat-add-bitmask-macro-v9-1-45ea1f00f846@gmail.com>
+References: <20251007215034.213779-1-ritvikfoss@gmail.com>
+In-Reply-To: <20251007215034.213779-1-ritvikfoss@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 2 Feb 2026 08:21:29 +0100
-X-Gm-Features: AZwV_QiJmnmQnlyUoO6FpRP-2gbUSQ362hKEtdx7e19OPG286AFIFKiftrq3J0g
-Message-ID: <CANiq72k0J9iMU4bYGkrOO_e9_4TtCUy4ovCUYWfGNMjtCYko5Q@mail.gmail.com>
-Subject: Re: [PATCH v9] rust: add new macro for common bitflag operations
-To: Filipe Xavier <felipeaggger@gmail.com>
+Date: Mon, 2 Feb 2026 08:21:36 +0100
+X-Gm-Features: AZwV_Qj0UAYTMklsAx-AMUJxqpPH5ulX386bpjJeiq9sPidi-KsF0dN1ZHM_hHY
+Message-ID: <CANiq72=A4e-jJagpTB0pGkjBWzcJ5Yhaxg8HjThv5+0vrEKZxg@mail.gmail.com>
+Subject: Re: [PATCH v6] rust: kernel: introduce `unsafe_precondition_assert!` macro
+To: Ritvik Gupta <ritvikfoss@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, daniel.almeida@collabora.com, 
-	rust-for-linux@vger.kernel.org, felipe_life@live.com, 
-	linux-kernel@vger.kernel.org, Lyude Paul <lyude@redhat.com>
+	Danilo Krummrich <dakr@kernel.org>, skhan@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 17, 2026 at 11:41=E2=80=AFAM Filipe Xavier <felipeaggger@gmail.=
-com> wrote:
+On Tue, Oct 7, 2025 at 11:53=E2=80=AFPM Ritvik Gupta <ritvikfoss@gmail.com>=
+ wrote:
 >
-> We have seen a proliferation of mod_whatever::foo::Flags
-> being defined with essentially the same implementation
-> for BitAnd, BitOr, contains and etc.
+> Introduce a new `safety` module containing `unsafe_precondition_assert!`
+> macro. It is a wrapper around `debug_assert!`, intended for validating
+> pre-conditions of unsafe function.
 >
-> This macro aims to bring a solution for this,
-> allowing to generate these methods for user-defined structs.
-> With some use cases in KMS and upcoming GPU drivers.
+> When `CONFIG_RUST_DEBUG_ASSERTIONS` flag is enabled, this macro performs
+> runtime checks to ensure that the preconditions for unsafe function hold.
+> Otherwise, the macro is a no-op.
 >
-> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General=
-/topic/We.20really.20need.20a.20common.20.60Flags.60.20type
-> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Suggested-by: Lyude Paul <lyude@redhat.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
-> Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1162
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library=
+/topic/.60unsafe_precondition_assert.60.20macro/with/528457452
+> Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
 
 Applied to `rust-next` -- thanks everyone!
 
-    [ Implemented missing `BitXorAssign<$flag> for $flags`. Sorted
-      `impl`s. Removed prelude addition for now -- I asked the team and the=
-y
-      also felt it wasn't needed. We can always add it later on if needed.
-      Fixed intra-doc link (by removing the sentence since it was superfluo=
-us
-      anyway). Simplified `empty()` title. Reworded commit slightly. Added
-      docs to enum variants in example to avoid 'missing_docs' lint when us=
-ed
-      in actual code. - Miguel ]
-
-I wonder if we should check the values that the passed `enum` has,
-e.g. about zero. Anyway, we can discuss that later.
+    [ Added trailing periods, intra-doc link, "a" in "is a no-op" and `()`
+      to function reference. Removed plural in assertion message and title
+      of macro. Reworded slightly. - Miguel ]
 
 Cheers,
 Miguel
