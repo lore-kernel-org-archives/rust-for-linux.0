@@ -1,47 +1,46 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013004.outbound.protection.outlook.com [52.101.83.4])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012010.outbound.protection.outlook.com [52.101.66.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04651F94F;
-	Mon,  2 Feb 2026 05:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF7D288C86;
+	Mon,  2 Feb 2026 06:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770010743; cv=fail; b=tb8IQ3plwiB6egTwIjeNPFKSLPiHTyey05DJ+4t4sSjeO7KMzLtTK58Eciiip2hhJHURTavoVy9M+NX6YO8mcb/vfa2dja09ONh3gqRZHv/EfvD4xQ77RKz2PVvz9BSkxXROlyUgQBmcvxVRZ9ikdDv+bunKk7j38tK2ChUOimc=
+	t=1770014443; cv=fail; b=YEUc98rhs6YCot6B5R0KDFwrwofTWlvw0AzRzL+Ba+eyDYUJOO/l1Bq+yNGqw7R6Qb9Lv14SIK8j7gKhpjmvGGSYAX/Xk81kgDUfGx3BIL0+JIvJpuRpnILEFpShLiKWf8fy5CmVF2zTjPhvgOkEuFheemFbsX58MJwSBkp/ttY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770010743; c=relaxed/simple;
-	bh=N1l+ynl8s1rB6LC8gR/qnGDuylHolB+Ba8NZ9Dd+Yew=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=if32Mut1b8Su857AYaLtwDzZeE98ZKIMbcRZFeFbAc5rgM1yfxXJsk/nB+1eaYoY3L3F1WKpl2E15rdG8yJuRm8z/WFjqci7pHRpjc9QMBNGCUI0YUhXuKgWgYIN5qSeeJU46tsLSWI3nF/mDX97JMEgkjgXBaqHOOHSQbioVuY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=MUPpYQML; arc=fail smtp.client-ip=52.101.83.4
+	s=arc-20240116; t=1770014443; c=relaxed/simple;
+	bh=lX7lUf2W89HWGXPSGxOnpQqGjuN15WWjzZeYaWAF8lk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eBDZJ+dopJdO3QzVulqM1H7Mu398s2FCKCFSMFhM2znOL1ZHkkY7Ron9bsTDtNEIwL6hpTESTM+2r7/wrUc7F/lW+LsBO3eGkQ6In6+F3/+Y3mTM6t2LoYyT8hNl3qc1ELlad1xIJxCVZUOOcPyZ7r4aUTfXfsgCEuNuXdsgxU0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=EeRw7hLs; arc=fail smtp.client-ip=52.101.66.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="MUPpYQML"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="EeRw7hLs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FA+GE5NYv1pBQA+Oa2KzU/5BDjo1jRbZCXAcTNJuLsYTAMlRIVBrvbHrooOs3xRbfBZo+ZKJcQs66pz+f5ugD37TEdmcNX2aV5f3zSkitR49IkAjcgZlUYaiA31UK348uNCRvo4Ni3AwVf2WqKm1s1E0fx1NX5SBH3/8Symzb2LlPqJAjs8lg/1JyGUG4ux3A28ws9jTiDCWui6wARHrFtY/E8niPDc/e6rHawV6tVwRJaLI/c/xeg2z0kfOnekSpLzr80JPy42FaIFjdr9jGOxU0HZxeF3tlIHlVr/IO+G0wN8f2SVm1TND/UdKy481u5WvB+aXdnOl5lMo+Z0+lw==
+ b=Msoj4Htltj6CL097t7EVjsgR+j2iecomrVae2FzptSe5p7aOmSOax7VFli/L8vVCcpQVdbWdgFSE5Fxk05K2wotaGpN/4JI3BRM1csj81OVUzdGO6IT/1K4e/LySy1+PIS7Br31dKthXSaT4vM+BwtYf/mekXp+COfMgNPUmXP2s3aiR18UwWwsRwXb7vmYPx3txbWQmMaJNbzCXtnJ3etfIx73H54av5V0C+a5HAdkxyorC/64LlZbqGCpimVlg3MNJ3dewfKY+RPZQpTtqpBCX7QmjWhd+fmTS+webRxI+vEvxyubrZ7ffRKyqdquUwxP4if7iKTlBAMbk1EPjmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4veQ0Rc9XqFTvP3wsXnRaZZORn99y9SfYc5u8TBfDfM=;
- b=tIDtT9CZlwf57LNvGWKzz/rbjhtrQF6Q+AlJK1RBXaRrT8Ky85BFyk6RWENxpt0tUWgpmy3efLVegERbaM9D5eG5zTh8yWyHQ0K2g0PPlHlB9ssfKpvu91AhLGiSl6sVGDGu1yniXZL7PTMh4FU+8OfuBxaS17JNNduUy8DiB7TJ/x7Ca9N7O1EXTEXbvEZ220BEnVZ+txgvYMWrcsuuqlv05SkO8BCes3kOPdpdop+dAr3UAYgFDOCrbAvr2V+LZoZ+xXx9Jdk+euC8IHWIXjQhR0rDfahgV4Z5DLTvk4VLTmKWjWyKHswvW3VTRaRL2AK3tgQmkF9a1IqNgKWqHg==
+ bh=itfPUBV6R9ZUVdmA3EgMcpE2PW2f+D3sztOy5hwKet4=;
+ b=BlXFFkFnd790PW8DvsqKRtDx8BrAvIGgXH++8cSN19haRTyG7f2JJkC6/YM6qKAuviok1QF71bNK+z2JGaVXtlqIMj893EOepTKJbY/3skdGgzd6mUpwS5+nQySPDeyAF50uKloTnINgRltLtujn+YTzDf4kzmEKKNFl5eRgSphM+FWcHqEIyWEkArHumwLxVGltkxpcsKBGFB31WEtZQs0A1E4Kpz4e5dzxEffSy4fCMcGToiijwi8sObKbXnX0bgbLO8iMqvL/HuAyJTsrtGHyRgwvEYI6kl1cBU6jt+WMNgxXIIPpKlKwmQbUWvwXRotHbeqoL4LcuN9uozfvEg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
+ 139.15.153.206) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
  dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4veQ0Rc9XqFTvP3wsXnRaZZORn99y9SfYc5u8TBfDfM=;
- b=MUPpYQMLM3z58ewdn0lAZ9pZHGTrftCrS7HvlFO02ILGi4iODjjskMR+OOnnIUTOLe2NP1Q/c3bGZ2G98sS2USR7VyCWGrRUizIRe6n/mTI6XgF3I+6n+KLM4wiH2a9xJNIZrNJRiHngjeoWn/W5p6cl5Aa7AVBqtebeYQo4UmUwFPAiMqgjV60AFMRfdMevBLuDrP9Z9K4BJ0QSbS5LpShgwPh7F+ANjPU6N14YKLJS/vtiCjYIoQmHtg9WWuT+2NfA1f59nrm8WBgKgdRxU897PDeRMSesD028qqGSpYksd1Ku/mKgQK0ugWqBX6iiOLKCDgdQ3/36Z7v1ifyS9w==
-Received: from AM8P251CA0005.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:21b::10)
- by DB9PR10MB5354.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:338::11) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=itfPUBV6R9ZUVdmA3EgMcpE2PW2f+D3sztOy5hwKet4=;
+ b=EeRw7hLsH32zIWrLHXB6cyQJpTHnsmTAubu+VGVx9lu0v2Dt08Wtl+rg7c/Yqd91+oLlU56hd//Unb4F4/JbN8A+NIAtBkfLyxrGz5kr1VjAlatoGDessxFPxDQNmKw7hmwlIqz0JE9nAYzitxX17cILT7x5yRJd7WzuLqtsPUJphQWh1OrnxWn4orOzWCoi+49WBVWIH0PxS2Sp0Atp+u4n3ake3Zc9jhuoVkNI7ITDyRBjw1HZzsClfaAiCGHpusn2PAMBYWKt1RvXc+jTZ7o+/Uj42A4WTCw5z5v+A5dUNvJ7FrN5yZw49fDqWfOTBEbvwhhzNlXSUS9wH6Sj6g==
+Received: from DUZPR01CA0192.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b6::15) by VI0PR10MB9768.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:800:338::9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
- 2026 05:38:55 +0000
-Received: from AM1PEPF000252E0.eurprd07.prod.outlook.com
- (2603:10a6:20b:21b:cafe::87) by AM8P251CA0005.outlook.office365.com
- (2603:10a6:20b:21b::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.13 via Frontend Transport; Mon,
- 2 Feb 2026 05:38:27 +0000
+ 2026 06:40:36 +0000
+Received: from DU6PEPF0000A7DD.eurprd02.prod.outlook.com
+ (2603:10a6:10:4b6:cafe::50) by DUZPR01CA0192.outlook.office365.com
+ (2603:10a6:10:4b6::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.16 via Frontend Transport; Mon,
+ 2 Feb 2026 06:40:36 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
  smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=de.bosch.com;
@@ -49,162 +48,131 @@ Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
  139.15.153.206 as permitted sender) receiver=protection.outlook.com;
  client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
 Received: from eop.bosch-org.com (139.15.153.206) by
- AM1PEPF000252E0.mail.protection.outlook.com (10.167.16.58) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Mon, 2 Feb 2026 05:38:54 +0000
+ DU6PEPF0000A7DD.mail.protection.outlook.com (10.167.8.37) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9587.10 via Frontend Transport; Mon, 2 Feb 2026 06:40:36 +0000
 Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
  (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 2 Feb
- 2026 06:38:39 +0100
-Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ 2026 07:40:35 +0100
+Received: from HI7-C-0001H.de.bosch.com (10.34.220.0) by smtp.app.bosch.com
  (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 2 Feb
- 2026 06:38:39 +0100
-Message-ID: <14d95956-05dd-4c9b-b748-894c1d474c1c@de.bosch.com>
-Date: Mon, 2 Feb 2026 06:38:32 +0100
+ 2026 07:40:34 +0100
+From: Dirk Behme <dirk.behme@de.bosch.com>
+To: <rust-for-linux@vger.kernel.org>, <gary@garyguo.net>, <dakr@kernel.org>
+CC: <dirk.behme@de.bosch.com>, <ojeda@kernel.org>,
+	<linux-pci@vger.kernel.org>, <kwilczynski@kernel.org>, <bhelgaas@google.com>
+Subject: [PATCH] samples: rust: pci: Remove some additional `.as_ref()` for `dev_*` print
+Date: Mon, 2 Feb 2026 07:40:01 +0100
+Message-ID: <20260202064001.176787-1-dirk.behme@de.bosch.com>
+X-Mailer: git-send-email 2.48.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v3] scripts: checkpatch: warn on Rust panicking methods
-To: Jason Hall <jason.kei.hall@gmail.com>, <joe@perches.com>
-CC: <charmitro@posteo.net>, <foster.ryan.r@gmail.com>, <ojeda@kernel.org>,
-	<gary@garyguo.net>, <rust-for-linux@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <875x8gqt3y.fsf@posteo.net>
- <20260201195737.1715632-2-jason.kei.hall@gmail.com>
-Content-Language: en-GB
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20260201195737.1715632-2-jason.kei.hall@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM1PEPF000252E0:EE_|DB9PR10MB5354:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67650f9a-6792-4667-dcbb-08de621d5ab8
+X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7DD:EE_|VI0PR10MB9768:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7650df8d-fe0f-4780-e6b8-08de6225f921
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013|13003099007|7053199007;
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bFBKMGNMMWZPbkZtdTdGbHRCU21uVlA3WXVvKzZidVFkQjBMN3RBQ2xoZ2Qz?=
- =?utf-8?B?R2dIYUZXOVhBS3lVRE0yT2hmZDBMTTRJK1ZqeUsydzZoeUpaeWZCcURXemgw?=
- =?utf-8?B?UVo1U2NYbjJ1eVRMa1VPeHI2QkcydXNNenUvUzhDNFYvZGlhMzhMbmNvV2dj?=
- =?utf-8?B?UlRoTlRBMzRxblVOektDalEyYzBtVVNlRElvNE1qbDFBNmM4M0ZEeXRRbzJG?=
- =?utf-8?B?SEJnNXZvcWowelgwVGNPSThBYkFvbHFRZXdXQUIvb05uR0dMaHlscDF5a1Q5?=
- =?utf-8?B?RmVURHNpOUxwdUFkZmFLbmJMSUcvNjFLR0JaWjJwT1RsTWhrM0Q4ajhYdVN5?=
- =?utf-8?B?ZVlIWUpGcDVFMzl0L3FJOGlmbVM1a3owcXN6bzFuQmE2c0xYNWhNT1FSWEEv?=
- =?utf-8?B?N1JGc084SUhKRWVLZnJVd1VleXZzcnJHVkdXWHpVWkFuWjJYclJhVTlmL3h1?=
- =?utf-8?B?aG1uanRYM3QxYWtMYlAyVnVIamMxU2g0NDJ0U0E1TGlsOFB4ekpQMGovNUVZ?=
- =?utf-8?B?Sjc3MkV5eEdPT0loaG1XUlBlSGZaTm9aY09nWlZDQ3hFV1E3emY3OWtjRmFh?=
- =?utf-8?B?VlRoRWgvVVE1aVJYNGtJL1BGTWdNK084a2FQOHZVaUFadlRwZHVNeHNXUXg4?=
- =?utf-8?B?ODRPZWM3bUh3ZXBSQUlBNzVOaGJSdWl0V3p3Q0h6OXYrRTZJOGt3WTVyZDVp?=
- =?utf-8?B?MTdvWUtrQlEwTzFPaU9ORlMyUzBhSWJKa1E4U0EwQVYybWtTaFpwWGl4Yi9s?=
- =?utf-8?B?dG9QaHlmTm84UHRHOEdRWHRENEo4SDhDbEFja1p1UXFqbXlmVytpUDhlTGkr?=
- =?utf-8?B?eTcwWVVVcmxmUkNUZFJBNXliS2VZQWM5Qzk5c0hjdjFsQVZ3OEx4MmNqeW1G?=
- =?utf-8?B?WEMvcjJla1BHZGl0dkh2ZWRuYXRCTDBwS2F6N20wcEhNOGxoYzVNZHcvOE1K?=
- =?utf-8?B?WnBibmhxenVZMjNuZlhMbVNxSHJPUU8zSzYrTFlySnZIU2RXU1NEMVZKVStU?=
- =?utf-8?B?SDBNVi9uaXlsVXl0Y1hmUWZ2ZHcvMlZXVkpRelhCYU13SDNxSWxHdTY5UFZ0?=
- =?utf-8?B?TFI0TlJZTW14Z2RUU1QySDMvcW5mUWF0UHhtcVVNUG1JYStzV1RaT1VEMHFM?=
- =?utf-8?B?ZmcrK3o5WWx1amZham5PbnVPVjNYR0VyOWQvaGxwSFF6VEVIMnVHeThLcEFy?=
- =?utf-8?B?a001TzFwNW9SNkRIeTZVL3FzbmlCRldIcWNoM1ZBUW5XNDZtMEdhbENjbGhj?=
- =?utf-8?B?a1ozOFlEWHdNN3V6NWVodDMwZXZEQTk4YU9ERDY0SVkwd05ObWt2Z0JBeVY0?=
- =?utf-8?B?aVlBdm5DWUVEMldmMFFVQzlHY2FQS3NSWVdEbkdMdFpRRkdlWjQyZW52c2Jv?=
- =?utf-8?B?SlY3NUxnRVdRWjBoNUQ5Sm00SE5NVW5wZ0FpL003TThwZTF5VmNDRXZNMENI?=
- =?utf-8?B?Y3A1UG9rLzFXTEVncVhBY21QQ2NpdVczOGFiSlFUbXBzUE5xOFFWenI0RFp5?=
- =?utf-8?B?NVJ4MmJjaVNtWW1KVWRPWHB0eHpJL3dEQk0xY29HZy9SdE1tWkNiUWU1d29i?=
- =?utf-8?B?dlBKbURhalhkWU4zbUhydHYycU1ENDhvV3EydzBIZWlyeVI0R0tBaHIvSXI5?=
- =?utf-8?B?NUY5OHU3RTR5dkZmTzdwemUzMUU2RDk3RHdxRGFuYTlYSWdXZURITzRBS2Zo?=
- =?utf-8?B?bE1FdUwzamlBaHdSTXphOWVCRGJaSEJqdFZqRE8vSDl0eFZMRUhtVGxENUtJ?=
- =?utf-8?B?SnFwRHAwbmQraW01cU5uUm10YXFxdWFCek45bnM5bUZ3bzh0OEtkLzEzRENw?=
- =?utf-8?B?WjBheGRvaE9zQTF3QWhsdG12Q0lKRE5iZEgzREt5TFg2R2NUUFZOZFJsZUl6?=
- =?utf-8?B?Yy9UZ1Z6c2ZLUS9HSGVyTGJOLzRSdjhOMlJjL3NDazllWks0dldvM3YxeXhK?=
- =?utf-8?B?NXNBYyt2R2FIL3JjMU1HNEFZL1BETWlFTUdRM2YzREUyU0Vwci9FVG50T0Fz?=
- =?utf-8?B?a2xneWpNZldZK3R0VVlRZEIxemFGcXRWN3ZPSFVIMVM3eGRxZ1o1cUd1d0dr?=
- =?utf-8?B?Vit3YWhIR2FaZFQ3YWxTOGNubmNnRVpsVDh1dEp6Q3hEVCtxaGVheGV4dzJi?=
- =?utf-8?B?emVPclZvMlRGTWw0LzRuNStjWlJ6amRJZEdhZzgxMDkrQkNGWTZHYkN0bk0z?=
- =?utf-8?Q?D/QEe+QZydIiwovs95M9d+I=3D?=
+	=?us-ascii?Q?jEVqxWAn4sDyvswL3fSfvuIww7xyfcyMMY2nGrXXl8//DRAkv3c0R359YsMC?=
+ =?us-ascii?Q?bTnHpDT0ZN4lTGJEwFtWdXEEEkPR9ZT1C+AK/BdUuoTyI9WzLBFhz4zy4Pog?=
+ =?us-ascii?Q?Xu6j0RSQ/vrOwFlhSzYkvrKBD3MvrjetguYXE2Aq2pKQFZH13hzZzFIOTlw8?=
+ =?us-ascii?Q?B3P3fw2gEfO6V2wbSGBwjL0KW9LqeVwSzCCthcr+C65OVEdDLimq/1wLGs/T?=
+ =?us-ascii?Q?sZF/ApJpSOn22bRCukVmM+rXQAEFWMBsO5+35z7CTDXiVizIn5FYxJgZbokJ?=
+ =?us-ascii?Q?sKXKGVpD4Zcx0hCGFVOneXTlDotp1MLPqVUAAVKFB4eEeSdDwafUjWqCwmOP?=
+ =?us-ascii?Q?5//IsJ3dprcojXo3I3XkNHrIBP2bM2WQV9WN46PU4Bfztmks+OQYCVRW1swb?=
+ =?us-ascii?Q?OCQC+BtwOx9Eltcod4HyGwbySdR3oFcWzpyUmzQNxB+Y37UWdd92X6YrWlqP?=
+ =?us-ascii?Q?Er0lMxc71n6goJxLv0+oil/8YEgwG5lvxtmBWMzeqwaiPZ66DlPWzPtL+vj9?=
+ =?us-ascii?Q?Tswk8l+oFvBwQuR6bIdwPdMoOnyKnaRdbSO72IgjjEsc/0wvmvC6XwIuwu+f?=
+ =?us-ascii?Q?kcKTYfpmAXczUIg7houdLrPJWOIdBoBI34Hy6KY9XAbOE8ZeUOrpgvqFpT6n?=
+ =?us-ascii?Q?mnP0nB8NUaKZaledUqUKAEnHuQVBoelLjFPkxV/E/Qm4Wx9C9bgSMA8AdErQ?=
+ =?us-ascii?Q?Fc4JN8d+sJoczYMtlVtxNSG1rgxvce76ZiAnIWGAagwTEsm/a14+zPcnSREd?=
+ =?us-ascii?Q?A3ID4qQnHimKkEwTqKT9t2kZ58ZeN1T7D6WmHaxtDg9/TCqmF+Sr0iX2lJuE?=
+ =?us-ascii?Q?+kPZ6O8Ylv0ceZDI9eKsgRtR086Q5GGSIwTy8Ts62U8I3dz4+b9J/7+bULum?=
+ =?us-ascii?Q?q5onwnLQ+//fp8CwKYWeZQmU+RgZRbxG1qhLAlj4sgkbfwzKtpnjxxokj6Lh?=
+ =?us-ascii?Q?NWEG4ltDZ1YM6dKXh9cx+apI4hFeV3hKJdD2QBManb+SK95Zi9ntPMe+xXNc?=
+ =?us-ascii?Q?uGLe3vNm0qQ7Nq61IBdVMoIvSIY4SuyVLGIS7z+dLqyg8I/Zj8zFaM7P2T4S?=
+ =?us-ascii?Q?KMS2gdpRIrlrz/PGSts5q5bi3uMCiKZBoeUrsfgIJ4i1LiQRsjYlQmcCgu/n?=
+ =?us-ascii?Q?uMgmCNzxeGW+5HQKl49BW449eK42YcaZewie4nOyO7OPfARztQRd0IY7qH4T?=
+ =?us-ascii?Q?4wi0sBhgFonWPn7GxFKn3e08E8lAoS8vYB8cl8SmwCIAO3dh2Anr7cac9zAL?=
+ =?us-ascii?Q?jkWh9xPpinsX9ny9JyjmV6AdT+wEm0wT743K9LO3m3YSwlK3MnQ3wjQsRuH6?=
+ =?us-ascii?Q?K2TJ+SXmu3OkR02GRcXcDa7KgQmeuX7USfXKm2xgGW9+UiGKEIOUeIS67CSI?=
+ =?us-ascii?Q?j//XP7L5g2TayYkcY2h5z3ISaC075G2N77gtA+jDockOUrH3vlbkz7XWXs9y?=
+ =?us-ascii?Q?7Gd5cNkgGSwWiLuCfo97RGPQuskx+PuoHl9JnlsHkcT1jWDTsRhCaykjrpQI?=
+ =?us-ascii?Q?cyhvtHqw82aQQAcOz+OSn3YNalqW+ceDFfrsw1hpLLWaJM29GFzBLuW30X9E?=
+ =?us-ascii?Q?cb6OezobXaDc/dN40lkUhgX3sz4gmb8EkYFy0x9dP8jXcn8LFSzTa1g8AzaC?=
+ =?us-ascii?Q?IwDpUkzCfQvoGD2mBMSbZOel5qgXWTJGgq36FZb9DgZwRYEqBdtquV77lQ14?=
+ =?us-ascii?Q?+DuUjA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013)(13003099007)(7053199007);DIR:OUT;SFP:1101;
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	/GNEj4n9oPZNsD8Eep8VerKCk8ARdF3TZj+9Sb10C6u2fW6gISviEhx37Fq3bnmZ+4AZ8FFy0OoS3eh6aufZ3/Jg3nczTJBxWCwnjW+pYO76TyjEu6zIq71aGdkSr4a7lwU6IU5ExkWd1P1MCTSVu+/7lfcP4bZNnEZFYe29Qu57xfjSmrIvICJ7Hh4Tx9R1UcP/wG8BJ+4UOQiFPuNHYZs7dAQIIk+ZIyV5mgs/Qe0qT2syytwwD525gG9n/tpoB3Um4TugwhyNYFBJQkmdxDA++h0q4vHbaQKkjdIjyGC3VSOrR0atyf1CpZy4eLH6JiBJQuN2uY/Uo44UsVn4eNZ2bA8WIIjtHir18tjMrnQ2QkaUt45SgOlRpezuV6rSdB2WYq24Q03PpoRfmawloxcpQ4ORDEbXuOxPx41KTpkwW9Qf3Ky9olqYH+Q1Tgp1
+	6AL8A90bJLqwy9GwELFkYku5PquYgHlE2KV2e8sTx4di6VqKHVv/dzqxZ8HBBWUPBSm9qnbI17euT9xLzmHvuZDO+L2pRQxd0BpjmA7JeMw7cytzCM//4RpAvSM7ezJMJgOqOvDkv4o/41H/DC8s4ReS2b6rv1wCzzgjmgrwnAI+yX7D6Zgz2jHdqXUZbRd5FtUHcON8QehmPgZVHne05E+aGf7mlYRwZ9YB9LrO4YcMBr/jqdv7iXujATSno6kI/TANoLxhMb11PfOTjAnrUWAbN/Vfgp7+AEvKQxLlO+bMJPPyoGtnEbmYnYkElI50M1fcdLDeerVEeRx74oTEYpCixtrDkoTJ1RZJgeADxUHIyPXWC1GTxy8qoU7fgUhv0TpbsJKQEGKz1sP1a63NgZe0jiwCCOnDoQUF5JY3PgSYVRY14cyfamFe+Fez88xX
 X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 05:38:54.8104
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 06:40:36.5116
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67650f9a-6792-4667-dcbb-08de621d5ab8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7650df8d-fe0f-4780-e6b8-08de6225f921
 X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	AM1PEPF000252E0.eurprd07.prod.outlook.com
+	DU6PEPF0000A7DD.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR10MB5354
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR10MB9768
 
-Hi Jason,
+The commit 600de1c008b2 ("rust: pci: remove redundant `.as_ref()` for `dev_*`
+print") removed `.as_ref()` for `dev_*` prints. Nearly at the same time
+the commit e62e48adf76c ("sample: rust: pci: add tests for config space
+routines") was merged. Which missed this removal, then.
 
-On 01/02/2026 20:57, Jason Hall wrote:
-> Added regex check in checkpatch.pl for common Rust panicking methods
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+---
 
-Describe your changes in imperative mood. Added -> Add
+This is based on next-20260130
 
-> like unwrap() and expect().
-> 
-> Allowed an exception if the line contains a '// PANIC:' comment.
+I don't think its worth a `Fixes:` tag as both ways work and this is
+an optimization / clean up only.
 
-I recently came across that using `.unwrap()` in `tests` seems to be 
-fine. E.g.:
+ samples/rust/rust_driver_pci.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/alloc/kvec.rs#n1364
-
-Is this covered here?
-
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-linux/linux/issues/1191
-> Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
-
-Something with the formatting seems to be wrong here? `---` is missing here?
-
-Best regards
-
-Dirk
-
-> Hi, Joe,
-> 
-> I updated the regex, and I looked at Ryan Foster's patch.  These two PANIC
-> checks don't seem to interfere with each other as far as I can see.
-> ---
-> v3:
->   - Using non-capturing groups (?:) to optimize regex.
-> v2:
->   - Switched from \b to (\.|::) to avoid false positives in strings.
->   - Added : to PANIC comment check.
->   scripts/checkpatch.pl | 11 +++++++++++
->   1 file changed, 11 insertions(+)
-> 
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index c0250244cf7a..37bdf602e7e7 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -3834,6 +3834,17 @@ sub process {
->   # check we are in a valid source file if not then ignore this hunk
->   		next if ($realfile !~ /\.(h|c|rs|s|S|sh|dtsi|dts)$/);
->   
-> +# check for Rust unwrap/expect
-> +		if ($realfile =~ /\.rs$/ && $line =~ /^\+/) {
-> +			if ($line =~ /(?:\.|::)(?:unwrap|expect)\s*\(/ &&
-> +				$rawline !~ /\/\/\s*PANIC:/ &&
-> +				$line !~ /^\+\s*\/\// &&
-> +				$line !~ /^\+\s*assert/) {
-> +				WARN("RUST_UNWRAP",
-> +					"Avoid unwrap() or expect() in Rust code; use proper error handling (Result) or justify with a '// PANIC: ...' comment.\n" . $herecurr);
-> +			}
-> +		}
-> +
->   # check for using SPDX-License-Identifier on the wrong line number
->   		if ($realline != $checklicenseline &&
->   		    $rawline =~ /\bSPDX-License-Identifier:/ &&
+diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
+index 4dfb8a6a4707..d3d4a7931deb 100644
+--- a/samples/rust/rust_driver_pci.rs
++++ b/samples/rust/rust_driver_pci.rs
+@@ -73,19 +73,19 @@ fn config_space(pdev: &pci::Device<Bound>) {
+         // TODO: use the register!() macro for defining PCI configuration space registers once it
+         // has been move out of nova-core.
+         dev_info!(
+-            pdev.as_ref(),
++            pdev,
+             "pci-testdev config space read8 rev ID: {:x}\n",
+             config.read8(0x8)
+         );
+ 
+         dev_info!(
+-            pdev.as_ref(),
++            pdev,
+             "pci-testdev config space read16 vendor ID: {:x}\n",
+             config.read16(0)
+         );
+ 
+         dev_info!(
+-            pdev.as_ref(),
++            pdev,
+             "pci-testdev config space read32 BAR 0: {:x}\n",
+             config.read32(0x10)
+         );
+-- 
+2.34.1
 
