@@ -1,226 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9C41B983F;
-	Mon,  2 Feb 2026 13:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C863366DAC
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 13:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770037514; cv=none; b=droSrRzpMh2Sr0yL0CImf6d0ZSCKMCAdMSBnLr75h7xHU8oyY0i63ITInyd2h7kSUoMNMT9rqMeVert5ILbV+BHPpeMQofrToR3nSJBuOwT5rsqudb9h6X9uB/RaPcgHtOh5+jC3Jf65ml8s9NKIP/nOeN1AegxQlhe5HasjVK4=
+	t=1770038510; cv=none; b=GGAZaUeHRGe9r5Zb2b5FjpXrgpUs59pakp5St1vPcBgl5UDp6M//eRB3xJU0r0XRE1Tvf5N/OPL/LjHe/i8jQOwI2wBWO1eICfCj4Z/kxBkzIJ+GDL2UJiHI+HkYLaB0ppbY6sOls7iYedYWKpvnwVSEDe7o7Dojf/mxYQFJq8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770037514; c=relaxed/simple;
-	bh=EA8qmHxvlMjKBeqgsh6FoAR2kX5IcYCMu3Q/fDbz/zg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=i/7/S3k7phNfyeUz5YQsqtcL4LrlEBn4t7N4Bqk2BpGlNRGcWtD0Q55LydG2XPvxEknSvOCiNo40MNeVc1Q+oh7NBKvbh2zQjyRVUdb+5JAhWNIeVgGeaSNjtn+pixOq4qhlMcFgxkI8rPMqhJ1LFtgV6m15ek7yN9a4wTuOsOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FdM2WSOE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770038510; c=relaxed/simple;
+	bh=FqXQYRZYmqIBixULrrVa+eEZKmy3PXhlCAE3r5OaLEM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZQDmp2onITboGxOQm+je6mLqUyCv2J2jGkLUTaXgaOfDea0RsJZvfadexKhmBck0skmXIvjGjz2rEcmuJcpT3sotGWVY0/qTVOFpSplrQDx9+ioJkNFk68akmkQbNSYARw0pGEDbhNIXmI1SAB3XJ4ptWOMUbdXs8V2TriwTMvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T30zEBDb; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FdM2WSOE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5443BC116C6;
-	Mon,  2 Feb 2026 13:05:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770037514;
-	bh=EA8qmHxvlMjKBeqgsh6FoAR2kX5IcYCMu3Q/fDbz/zg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FdM2WSOEpeVQ0G9EyU21z1S0Lc0i5nKom3jrdf4XT0vgxVkmSvVv01d7Bbqzor4Fr
-	 CKetcy6KuujlK1hofUqZhdONhdECK3R68Fs7v//6QJguXupZST0CUs8zTOP9DioDPT
-	 IUnmq8kMggsi9hM/2sWsGOulgfdLPcK393LWYJkIgu+PxzntGjJR8JkaKZmODhjqMr
-	 4Ea8+agyrb3fZaidYMXZ95Vvnc/vkji4291P5tmXEeFMR/upeh++8DYO0R1c5Phm5z
-	 UTz1+AHlfwlF8f9Wzh344oXZckqGRPiIKrhA4666Jd7Zkj638nJsu/G51PO4f0Yq98
-	 RRwcBhArrCJpQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Oliver Mangold
- <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, Danilo
- Krummrich <dakr@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
- <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
- Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
- Kara <jack@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam
- R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>,
- Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, Paul
- Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Asahi
- Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v13 1/4] rust: types: Add Ownable/Owned types
-In-Reply-To: <DG4H66NZ5ME0.3M9CQY1ER4Q0X@garyguo.net>
-References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me>
- <20251117-unique-ref-v13-1-b5b243df1250@pm.me>
- <20251201155135.2b9c4084.gary@garyguo.net>
- <87343jqydo.fsf@t14s.mail-host-address-is-not-set>
- <rHWhMe7C5fnwgGCnKS4N7G90SrX0Ao8332cwKPH2o-Em_lCBG3lm_erDn9dtg55SpjMFQQoJ_hhDU3bKOdYfAQ==@protonmail.internalid>
- <DG4H66NZ5ME0.3M9CQY1ER4Q0X@garyguo.net>
-Date: Mon, 02 Feb 2026 14:04:56 +0100
-Message-ID: <87o6m7pa87.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T30zEBDb"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29f30233d8aso28231375ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Feb 2026 05:21:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770038509; x=1770643309; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HucOyefr0+DyglbTjyjmO2oyIxVd3mwUnC9ssIIiMtI=;
+        b=T30zEBDbCp/amjBeUxmfuFp6GNx4nihecdA/y8tFdiiEHcn8XQorzw/7M7VjaobMf5
+         Yy5586gkzq740Uwryzpqa3A/026YZc3ce0RJ4rCD5PXADXkLXJu6sUdT9TXj2s3uYc1/
+         4M24b7ILEMVoa0TOV+WS3Mbu//cGtWrYEvE0kd6KyyfI1LcGVLCLrUc7Lmv62r/pMmR4
+         L5dlGEkm5APXCi55CjQRCZKffdiLJlP3dsIavOfGQsxfc7FspI08/uRwPrhb7zA7qPSi
+         KVkrwnHdeFIWkzOU0t3usVfiy/TxJ7TV098af7uPGOvyU1K8GILmTruiiB2CivN4+YJd
+         KwlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770038509; x=1770643309;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HucOyefr0+DyglbTjyjmO2oyIxVd3mwUnC9ssIIiMtI=;
+        b=U6nvk3bqNZhx1SMrD79UikzZe7C+bRorl+9Y0S23d6IYmdcCze5pRQT757+pr3a9wE
+         6oNWjA7VFozC2i4LyQACo2lQHmszSB36o3dPcnp5LsaV6eyNq8OyBfVYG09os8dzmFmN
+         A5Vyhvozw5dtIbf2Rzzhx5/ylF+wiB5Q3jAOcYUcEECC+Xx7DRR9CW1pM9SmGbIbbGrr
+         Bg7QuntrJJwYki+qRBisoA4y9PgmcwbqSRJOehMCIOHn1mtQVOAlmHes/I75qM6ewhcx
+         SrE+y8/UU2Ip3+xe1dAl8QPOlmj5+JWGOxr9jzaSIk1gX1R7WBv3+uy0LQA7j3nA0zK3
+         uYVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQAelYzqnHm7ORtmrrP1gHHBYkv5tgON/T97amTjEM5PZMBknJqSpl00FxNAut5PITCef+tFzKK8/kCJIwMg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxutGxMW3Br/HtrHL5jb0v5nomT5VvrSFubqjl0X/1eDOYK/4GU
+	4wj65X9BXyCb3L1PsQFSEpM2Bs22U9lW2nUgCP4P94P+0iCoDZDEg4ec
+X-Gm-Gg: AZuq6aJ0DqxUi+M9bomRbj80FIKaEOOsRRBr2mVYoTlPbYANKqtv2AhA1BdSo3qc/Nz
+	VI1A8ZMtd4ur/QevAbjGngGQsG1MIOx+XG4ESkhKzZp0ylihBwcZReBxOZuoqLgPyZX/nrW9NPs
+	o8hXHWremuxDG26u037RalKXcvHzb1oRG2+04POE6ccLJcsMYQ7F2e+fTvk1NWDLvkkMYZCAnKH
+	Dw58ciS/kaDOPeQfDT9EU27BEZtF2lQhFsUEIGFHXJh6N9k4KPcY5FR5pzpvfGj30QIUdluIboa
+	imJTC+Wj8EjJ6i74YOpya57LsFopWQ8kUMWAQp1o2Dy2BPqBkeYto5RhquU1+Sdi89JAFzD7PBi
+	uoIUYtlVc8dQAm1BngokGzs/c18M7gKaQ504nQhqNWOZLSEvfQxe2LloXXyzXevC9eoY9M+Z6Fg
+	1bQ9nMSh1XQqgDwA==
+X-Received: by 2002:a17:902:e801:b0:2a0:d59e:3c9e with SMTP id d9443c01a7336-2a8d80382dfmr121202625ad.33.1770038508821;
+        Mon, 02 Feb 2026 05:21:48 -0800 (PST)
+Received: from misys ([58.120.241.145])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a8c3a23e40sm119569895ad.90.2026.02.02.05.21.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 05:21:48 -0800 (PST)
+From: HeeSu Kim <mlksvender@gmail.com>
+To: ojeda@kernel.org
+Cc: boqun@google.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	HeeSu Kim <mlksvender@gmail.com>
+Subject: [PATCH] rust: Makefile: apply fixed-x18 workaround only on arm64
+Date: Tue,  3 Feb 2026 07:21:44 +0900
+Message-ID: <20260202222144.2689495-1-mlksvender@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Gary Guo" <gary@garyguo.net> writes:
+The `-Cunsafe-allow-abi-mismatch=fixed-x18` option is a workaround for
+a rustdoc issue (rust-lang/rust#144521) where target modifiers were not
+properly saved. This affects both rustdoc and doctests builds.
 
-> On Mon Feb 2, 2026 at 9:37 AM GMT, Andreas Hindborg wrote:
->> Gary Guo <gary@garyguo.net> writes:
->>
->>> On Mon, 17 Nov 2025 10:07:40 +0000
->>> Oliver Mangold <oliver.mangold@pm.me> wrote:
->>>
->>>> From: Asahi Lina <lina+kernel@asahilina.net>
+However, `fixed-x18` is an ARM64-specific ABI modifier related to the
+x18 register reservation (used for Shadow Call Stack). Currently, this
+workaround is applied unconditionally on all architectures, which is
+incorrect and may cause issues on non-ARM64 builds.
 
-<cut>
+Restrict the workaround to only apply when building for arm64
+(SRCARCH=arm64).
 
->>>> +impl<T: Ownable> Owned<T> {
->>>> +    /// Creates a new instance of [`Owned`].
->>>> +    ///
->>>> +    /// It takes over ownership of the underlying object.
->>>> +    ///
->>>> +    /// # Safety
->>>> +    ///
->>>> +    /// Callers must ensure that:
->>>> +    /// - `ptr` points to a valid instance of `T`.
->>>> +    /// - Ownership of the underlying `T` can be transferred to the `Self<T>` (i.e. operations
->>>> +    ///   which require ownership will be safe).
->>>> +    /// - No other Rust references to the underlying object exist. This implies that the underlying
->>>> +    ///   object is not accessed through `ptr` anymore after the function call (at least until the
->>>> +    ///   the `Self<T>` is dropped.
->>>
->>> Is this correct? If `Self<T>` is dropped then `T::release` is called so
->>> the pointer should also not be accessed further?
->>
->> I can't follow you point here. Are you saying that the requirement is
->> wrong because `T::release` will access the object by reference? If so,
->> that is part of `Owned<_>::drop`, which is explicitly mentioned in the
->> comment (until .. dropped).
->
-> I meant that the `Self<T>` is dropped, the object is destroyed so it should also
-> not be accessed further. Perhaps just remove the "(at least ...)" part from
-> comment.
+Fixes: 68e8e79e1bdc ("rust: fix `rustdoc` target modifiers")
+Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
+---
+ rust/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Right, got it. The "until.." is in place to allow reuse of the
-allocation. There is no requirement here to drop `T` via the `release`
-method when an `Owned<T>` is dropped. Implementers are free to implement
-schemes that reuse the object without drop and re-init. This can be used
-in object caches such as for the block request cache.
-
->
->>
->>>
->>>> +    /// - The C code follows the usual shared reference requirements. That is, the kernel will never
->>>> +    ///   mutate or free the underlying object (excluding interior mutability that follows the usual
->>>> +    ///   rules) while Rust owns it.
->>>
->>> The concept "interior mutability" doesn't really exist on the C side.
->>> Also, use of interior mutability (by UnsafeCell) would be incorrect if
->>> the type is implemented in the rust side (as this requires a
->>> UnsafePinned).
->>>
->>> Interior mutability means things can be mutated behind a shared
->>> reference -- however in this case, we have a mutable reference (either
->>> `Pin<&mut Self>` or `&mut Self`)!
->>>
->>> Perhaps together with the next line, they could be just phrased like
->>> this?
->>>
->>> - The underlying object must not be accessed (read or mutated) through
->>>   any pointer other than the created `Owned<T>`.
->>>   Opt-out is still possbile similar to a mutable reference (e.g. by
->>>   using p`Opaque`]).
->>>
->>> I think we should just tell the user "this is just a unique reference
->>> similar to &mut". They should be able to deduce that all the `!Unpin`
->>> that opts out from uniqueness of mutable reference applies here too.
->>
->> I agree. I would suggest updating the struct documentation:
->>
->>     @@ -108,7 +108,7 @@ pub unsafe trait Ownable {
->>         unsafe fn release(this: NonNull<Self>);
->>     }
->>
->>     -/// An owned reference to an owned `T`.
->>     +/// An mutable reference to an owned `T`.
->>     ///
->>     /// The [`Ownable`] is automatically freed or released when an instance of [`Owned`] is
->>     /// dropped.
->>
->> And then the safety requirement as
->>
->>  An `Owned<T>` is a mutable reference to the underlying object. As such,
->>  the object must not be accessed (read or mutated) through any pointer
->>  other than the created `Owned<T>`. Opt-out is still possbile similar to
->>  a mutable reference (e.g. by using [`Opaque`]).
->
-> Sounds good to me.
-
-OK.
-
->
->>
->>
->>>> +    /// - In case `T` implements [`Unpin`] the previous requirement is extended from shared to
->>>> +    ///   mutable reference requirements. That is, the kernel will not mutate or free the underlying
->>>> +    ///   object and is okay with it being modified by Rust code.
->>>
->>> - If `T` implements [`Unpin`], the structure must not be mutated for
->>>   the entire lifetime of `Owned<T>`.
->>
->> Would it be OK to just write "If `T: Unpin`, the ..."?
->>
->> Again, opt out is possible, right?
->>
->
-> When the "mutable reference" framing above I think you can just drop this part.
-
-Agreed.
-
->
->>>
->>>> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
->>>
->>> This needs a (rather trivial) INVARIANT comment.
->>
->> OK.
->>
->>>
->>>> +        Self {
->>>> +            ptr,
->>>> +        }
->>>> +    }
->>>> +
->>>> +    /// Consumes the [`Owned`], returning a raw pointer.
->>>> +    ///
->>>> +    /// This function does not actually relinquish ownership of the object. After calling this
->>>
->>> Perhaps "relinquish" isn't the best word here? In my mental model
->>> this function is pretty much relinquishing ownership as `Owned<T>` no
->>> longer exists. It just doesn't release the object.
->>
->> How about this:
->>
->>
->>     /// Consumes the [`Owned`], returning a raw pointer.
->>     ///
->>     /// This function does not drop the underlying `T`. When this function returns, ownership of the
->>     /// underlying `T` is with the caller.
->
-> SGTM.
-
-OK.
-
-
-Best regards,
-Andreas Hindborg
-
+diff --git a/rust/Makefile b/rust/Makefile
+index 5c0155b83..2bd547611 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -136,7 +136,8 @@ pin_init-flags := \
+ 
+ # `rustdoc` did not save the target modifiers, thus workaround for
+ # the time being (https://github.com/rust-lang/rust/issues/144521).
+-rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
++# The `fixed-x18` modifier is ARM64-specific, so only apply it there.
++rustdoc_modifiers_workaround := $(if $(filter arm64,$(SRCARCH)),$(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18))
+ 
+ # Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
+ doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
+-- 
+2.52.0
 
