@@ -1,72 +1,64 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022091.outbound.protection.outlook.com [52.101.101.91])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020112.outbound.protection.outlook.com [52.101.196.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C6B1E1A17;
-	Mon,  2 Feb 2026 14:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3AC36C5A3;
+	Mon,  2 Feb 2026 14:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770042154; cv=fail; b=EY+CRsCgvtVmkU+blv57O2a7rbJOPxSG0FWvJL2nSm15NKxEz4MsziaVqyaSPdrr/f7DZ6TbZ9RQ7A9upXnry4JIBa2RA5fDC33PUWO0GGtP7gUAXiWMwzeYm1MU+CrJVPTWDhzMkQr0H7bLdVK6jywrg3Ded14Ib5KH4UGtk7Y=
+	t=1770042278; cv=fail; b=DoCgM0ufiAXznEr9+IxE+CBRbaWZSneNJ3a7qTHbEd2veRZUwxp1nf9TixdsZKZRh90AgNet3jatnOYURymLbBNpWxGoFOOU9/tPb32rZa2YJ5AgL6GwSbwO/FTMKTsx2/1Worv4ZzER8S4d4/ye3Tc70kohbjg97r0ByseBgys=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770042154; c=relaxed/simple;
-	bh=a5uOQi+aKLxWEBUKtmsOB1IFMAOMpMfe2emMuOAMqy8=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=cu43xt+cw4JvratDTaWtpdrGQ6SnerWnXnlVqMFrzcn13BnKwGlySFqFU/mjg6eIfBZ9o6S4PiBz4hmiink1tOtapugoIJ7X0/i/nbnysjRi1k6uQaTnLgwELmeUDs6GGceMpFV2pZFD2mNZDrIrasQZUiaHL0MEKB2iY0QUDdU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=sd5e9QGY; arc=fail smtp.client-ip=52.101.101.91
+	s=arc-20240116; t=1770042278; c=relaxed/simple;
+	bh=irXG/A4ocDxwC1uOV5EOwteBmFaY3rlNhof8+GhPujo=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=WZcJpGj7LcxmaEQZftRPLr9kDjAvMAi2mg2mM7Ovg/JnwLjnSbG1SxoTwJ8ebYn8R0PYPWK4mdvzplui/D18yxYU75Bjj4/LHsWvIZmU0tnrkSE8lZXGqVl3wUPiiAUkGU5bsZghyhFQskiwZ+8/Cg8xksICYED4pLTNogCMeKw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=HGmph4ak; arc=fail smtp.client-ip=52.101.196.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="sd5e9QGY"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="HGmph4ak"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ia1GSsGBcbolXHnURyikopQFS5Z4XeJSctQ1Z25yCHmnKR0zux8VPBDju0AHiDMXHXX42tMwamHqQXp34rH9DDSr+yVGPAdo+okar46irTtzoM+L5RyTPK/vJr/xOZBn4LAoG7e2ZUumG+WTZANpt4lMmi/jfOo1xIQkIUgVRAhBOA0+duN6c5KWX7DEBxrQ2HAY+2EUUaLGRJUZVQNtEggqMIHrcrGu4/fm6k+vVngIDdbD523thf1fW8j/a7sCgS7GbJlEDCEPxcbt7BpGXBcAW0lIafV59ALeAHMz1ArutEPnsjR1Li+PGTrMScyHdn0zfMqfM3kMFuKkYWVPQA==
+ b=oEsV/z60SdWE6xX6GnIShG0Qd1YkCyCjl4ZalBTrtxuGRU6eskQkDw/crBoB28iyRf7U8dwir2OEHRmTsxu5rk6F4QrB4F6K43TmeOSCjevUjxdeVpNQXA5TNq2oofCBe5DV5EnKgX5/QBD47WgtoKE5oI7z75W8JpGzHHvqBuDHCV5Yx3E9YGGMjXxlujuuP8+ehxUvRggc7LzMZX9wY2aJvKOMpIHadhqFbwnh2kSlBKWheEw6RanzAct/eKYhlrLrVHTusTY1CAhan3aUrYm9zYnpvBUY9nHaMT7d9LUBBHfarBckuMJDAjioeMJquVz7QAhF3bKfETf75mrXzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LzEVbulHNCV0l9Koz8I3Fns9Ac+dNgg9IFy2GfYmH4g=;
- b=PfEnEuerXAcTBNzld6ZDhYIzBwZyBUSM+XjMMEwmAM/lbMQJUg6dnoqu4xZSHyAE1p+3ziClhzFPEyJv3JdrqWiX4uoj4WJPx5evTt1kfPdCMIREPX3g5ktuv/ViXWyoLX1gbYHI9Q0Iqp2imX/CZ/j8UQsUYQffWP7H249TAn4vywRreWE1lsM8hgbqUepa3YOJnbrbawmW1ymqgtZUnKcM8zXfj59haz8q3uIiCLcz5oNtDh0J43pG+2BN9qfeCyO+80ARcZFkUvZr4RW7Ao9MPa2+Ivhy91UviAQcQPsvZliJDjVtUFrLrwY8ZXCKRk6XHc9UDNHGj0RYpjQctA==
+ bh=QLah55MyapPIyZg9IPFPDYktlfDBOxC32ERc8J3UtUY=;
+ b=R+iBFgIbHpDqRR81sBDfaAcePB70WfLYAhREEdUACn/K4ohy8Vsi+ZqSk4eOsu+JCqowKtMZO4oohFprCiI2lLMxxuBdR7l6SdhWnUlhj6PHPlG3il9oQYK68NCN5O7Rj5xYxuP33NOZkJfqWYfssp5Xk5tkqL9S8H4fGtj4wA0J/lsagNiPXaXsfZV/7NMm7VrTqxr+e1tFClAWJdUNpPFA8SobkU3njmSuBj6I6TfWQ//7eVywiIQFi+gtj4vvoewAX7VaPU8pyqCJbDenGq8Ukuif6IRDp4BDrpvtwdv12e+/XVXLTHI7xHA3ylEW6+7l7c8IiBi50IAUIwpMqg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LzEVbulHNCV0l9Koz8I3Fns9Ac+dNgg9IFy2GfYmH4g=;
- b=sd5e9QGYNYKw5cKPPfwG2mLYYrtok2VODHl9FCMpT4kHIGRE0TDdzVR7hvK8mq0dfnopklIyxLUGQoq/SvRNqJj57zb6EldHxkr4l7Yu3ZVjc0SXvLUUAUjtHzozFyh6Y3MmHGYU7YJ00umHXEejcZWdbnskZOl8a6ahp/agwHg=
+ bh=QLah55MyapPIyZg9IPFPDYktlfDBOxC32ERc8J3UtUY=;
+ b=HGmph4akNCnUVafkGvZoAxn0a2lp1+uyFc9yvtSUq13F4ruFm/4SeYnVulTtvR7gig8lIkWpSqvIyUilZ+dOoEVbdw8DJMq+2ddNbR5Lwnfwi0y7WMqazUP5U6c1Sqo9dt4mijrhkMxeYrdAxooO2pWwZrJF5GYNjisTIWBKZ5E=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB7368.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:201::8) with
+ by LOVP265MB8725.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
- 2026 14:22:25 +0000
+ 2026 14:24:31 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
- 14:22:25 +0000
+ 14:24:31 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Feb 2026 14:22:24 +0000
-Message-Id: <DG4JKNN0NWNP.51QYIKZ74VVK@garyguo.net>
-Cc: <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 0/9] rust: dma: add CoherentArray for compile-time sized
- allocations
+Date: Mon, 02 Feb 2026 14:24:31 +0000
+Message-Id: <DG4JM9PU51M0.1YRGM9HVTY24U@garyguo.net>
+To: "HeeSu Kim" <mlksvender@gmail.com>, <ojeda@kernel.org>
+Cc: <boqun@google.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: Makefile: apply fixed-x18 workaround only on
+ arm64
 From: "Gary Guo" <gary@garyguo.net>
-To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Robin Murphy"
- <robin.murphy@arm.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>
 X-Mailer: aerc 0.21.0
-References: <20260130-coherent-array-v1-0-bcd672dacc70@nvidia.com>
-In-Reply-To: <20260130-coherent-array-v1-0-bcd672dacc70@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0676.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:351::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260202222144.2689495-1-mlksvender@gmail.com>
+In-Reply-To: <20260202222144.2689495-1-mlksvender@gmail.com>
+X-ClientProxiedBy: LNXP123CA0009.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:d2::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -75,193 +67,147 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB7368:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02809bfe-9dc7-4cb4-bfdd-08de62667cb5
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOVP265MB8725:EE_
+X-MS-Office365-Filtering-Correlation-Id: b70640d0-ceb9-492e-2256-08de6266c806
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|10070799003|921020;
+	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UGZxdXZnczQrTUEycmVpMzFDbUg5Z3c5ZTcycFpYUnhjbk5UZ3hOaU9GQmQ4?=
- =?utf-8?B?TFUvQnJQclZ3ZDRzcWF1UzNPUkpVSEhyOU1WRy9obHI3cHpLcHFrZEZZUEdZ?=
- =?utf-8?B?ZDNpWWRBS2txL1JndzJhQUxra3Vsd1dhSWxlbGVndFA4djkvMmhTNGVWTHJa?=
- =?utf-8?B?NlVSQWxUSGdpOGRFU0Q5ZjBvYTlwdm92TG1MM0hPNjAvd1J4cHMrb1g0V3Rx?=
- =?utf-8?B?UkZ3WDNIWnY5bWFwRXhuTE5rRlhhMDIwYmVTN0dmSXFvQ1dFUXNHQWZ0aWFJ?=
- =?utf-8?B?UERTU2ZaeXdlOWIzM2VkaGZsakpqOHRGb1BNQktHelE0TTFzSklYZ0xsY2sr?=
- =?utf-8?B?bk51eE82c0ZCMVNWVDdXclppWVl0VUFWMUtJak9GQTdIeVowQll4M0Jma3Nx?=
- =?utf-8?B?TlZoZTJLNEE1b1NGbWxJQVdjT3ZNZzZZR3BwRkFBcGxlb0NOb0RnY0U3b2xY?=
- =?utf-8?B?SWZZaklJbDN3RTJzdEp1SmoyNEtPUG4xbFluY2hMQktsZnRITE0yNG5KRm80?=
- =?utf-8?B?NUNUTXhreUgwd2VIMksyOHlTSlZOcFp3bGNRK2NkQUYvNDNaTWx2cFBHbHdX?=
- =?utf-8?B?RHJjVVBrUXpqTWF6SXprSmFtQzRwbTlIVDlSSERiTFFYWkd1cDdXTVhvaWpq?=
- =?utf-8?B?ZXBlT3NIdVZDS2wvS2pEeExkNXNMT0tPQnZCT0xDUmVnekdSc2t3OHRwVFVn?=
- =?utf-8?B?SW8vZ2hlTktRSVA3TG9GdWZaOFdqenVyWGJ5K08rTlpLeVNKcVcyQ1JSVkNn?=
- =?utf-8?B?M0Y5d3JXelVzcjl5a0xacUpUZjlwc05xNm5mS2JUUm82YVd5YmJ6YmtJYXJM?=
- =?utf-8?B?dW4ySGxkdmo2WGd5QWtLRExvbVhDV3dIYnBpTDdNcGlhNmdPTS92M3Z4NlNi?=
- =?utf-8?B?eG1sMElTK1ZBVUNvVGdxbDZGclAvcGdiSVppZ1dQcy9zMmk4VDZXZjV2MU1Q?=
- =?utf-8?B?b2NDSVpyUDJ2aWI2aXptK1lxMHFYWlNHMVpFMS9leit4blZzN1RzaGJPeVA5?=
- =?utf-8?B?NFcvbzEyajl4Q3lYNG1JL09oTEZ0dnNhMDBpVW51VUxyK3lBeHhhUjd5WXVq?=
- =?utf-8?B?OFFLVXhwakxmVzNpSlJXWG1YQi8rb0EydUhCTiswWVZrVExUelRpNStoTU45?=
- =?utf-8?B?dHlXWnd0Yjg5M0EwMXpuOVNLR2wrRTlJSG12NldtYlpmSlB0cWtIL2F5blVr?=
- =?utf-8?B?YXZkRmg3S3ppdTdpVDRWdTM3bG10N2p3Z0dObVdleUxISWV1V1FOeUYxdXdR?=
- =?utf-8?B?aHdLMVVibXp4bmxLVUE0VFBRRVlGZU0wQlZZNWN6a29KMXNmZ2ZPVE9waWlC?=
- =?utf-8?B?S3htbHc5cFNxTFlYVnZmdktxUGxMY0ViSEJuT3RuZXhMYWVRNkE2T3A4UTVZ?=
- =?utf-8?B?ZlFWUFF6VVhPcHpLejNVL1dMeW93WHB4NUpRbHVJU2d4dE9PTWFWRnV0OXN5?=
- =?utf-8?B?VkUwTTBlRW9Va1RiM2EwQ2dqWEhrUHRtMjc4Ui8rVVkzejFzWVBjRGEvSmU4?=
- =?utf-8?B?ak9zSnhhbGo3bGoxUEhEd2drQTBJVjlYWC8xcngyRnpqTlBJZ1hGMXNsc0xD?=
- =?utf-8?B?R1J5MGZ5ZkdqRVQ3bHFjRlJjRTQvUzRjdFNQOXRVZXhOaC9tMWNRUlpEdm1O?=
- =?utf-8?B?Q05qNElGT0lQMTRRMm9GN29JV2JucW9vR21GUXJEV1I5ZGg4VWRCWGxkeFoy?=
- =?utf-8?B?dWREdllXN1h4SXBBY1drL1lDYW9vTmt5TmVBWllLS2pqUFBXSFpzZXladnU1?=
- =?utf-8?B?U3B6L0Y0eTRXcldXMFRDeWNwcFBkZXRUa2dZTkpRaGE2a0ZGb2dvUTRRVVlT?=
- =?utf-8?B?MlNQSjZjUVVBNndUd1JFNG9SYXM5Q0ltdlpTbHhLZzRJaGF1elJIZGUrTUVq?=
- =?utf-8?B?d2RkOGVtV2FDWVhoaHIrbjFYc2RFRi9mSzRNVkpOd3RNWWdCRjNRL0owTzd1?=
- =?utf-8?B?TFdSemIzVWNVckRXeHNjR2IrcnY2WHo3aWlyLzljZFEvYlQ4VzNrZ2kyc1Nw?=
- =?utf-8?B?THp6UUZhNnJueDkrdUtiajg1QkdPdDdrYzY3aVlTbXNiTHpucDZoY2VyblNE?=
- =?utf-8?B?T0pwSHhnZ0lCZjRQcXdrK2ZBUW1IQzN6VTJpM2M2VkFsbklybWpGRXJLZFRR?=
- =?utf-8?Q?CAqI=3D?=
+	=?utf-8?B?RGNhbjgrQWtqYytZWFdoZmhRM0plYldvOTlHcVhYbngyM2dzSEdvTGNoSFBt?=
+ =?utf-8?B?NG9VL2NrNE8wRitreUk2bUFKbzFxSmRrZHZPZXlINStoYUh6UDFjNzlpMGlv?=
+ =?utf-8?B?dU5USXY0bmFKNERYSUd0Ukp4aWs4RVRicklvai9XWHQ4eHFlMlJ6c1FaL2tT?=
+ =?utf-8?B?Z1BBcXR4dDloa0dpVU1mOGowZ3NEUVMrYjVEbGNYQWdpTk1uQjdZN0FtSmVi?=
+ =?utf-8?B?STh1d0xPcnp0djdxL1JRbUNOY3dnQnRYa2dtekowemtobVpRMEFRTTk5bW1h?=
+ =?utf-8?B?cmh0K3J2QjVlamR4UWk0ZEVsZlM1NjlqQkVscUFVQWJ5UzFJYUlOaGIwYXFz?=
+ =?utf-8?B?MjdLZEcvcEdQSkV6WUNyQ1hZcDNEMWdPRWE0M3VlaEw4NWZTc1JhZUdLTWQ4?=
+ =?utf-8?B?UFYveUpQN210Q3pOKzI2MWd1YXZQU08zV1RZNDdvZnZpYjcvcFFNT01Gc2Y3?=
+ =?utf-8?B?clQxb01rOWVUU3gvNFdYS1h5Z1BtVzVuL0MvUHhsVkdMWUI5SEdUSjlqdW94?=
+ =?utf-8?B?V2VuWEZpR2NPcmtxUmV2RE8zK0ZFK1U5c2k5VkFLUXFJQ3NBcTB4VkVKQkdK?=
+ =?utf-8?B?UHJKOFQ5Mnhudi9VWml3bnVxckZ6Ym94TVY4VG9vcTBwd0NvaW13QW5ZbWNy?=
+ =?utf-8?B?YU9McFBtRDBwNXQwR3Rzb243ZXcxU3BoYWQzdFNzaFR5eWRhckkzVWtteHVB?=
+ =?utf-8?B?SmNwMjhzdytJWlJjRTlKRk1YSnVHR2l5VERmWEZzQWZQUHVVVmQ0SHVvZkF0?=
+ =?utf-8?B?R1lhMG0vUUtpKy9YZ1dOYldtcW5GT0FkRTY3SE1tdldhanczaHBJai96alZK?=
+ =?utf-8?B?T1JtRVBKeE9VUVdrazdSYUZXZHM1WTF4NmhJdWFqVFk2TzFYQ1l3RnZ3dlZk?=
+ =?utf-8?B?OGd5MGQ0aDU4Zkh6eXBLeFFLbmROZzk0S1Nidk4yUTZjbXlPTzE0bnJRek9k?=
+ =?utf-8?B?bEhXUFNGcUlSSVFnZWZHT3dMNTB1c1M2cHRzVlNpcHMrb3AvRkQxK2hxeEV5?=
+ =?utf-8?B?Ly96Zy9wWWJsV21PUERmY09Ha1c1MWZ2UW1BdUlSTWRFdjdIUjdpVWFEQ3VN?=
+ =?utf-8?B?eGFLU29KbDFVMm9SNkVNSFJoSzl5eFZCOWw5cnZSRlFSSWRZR1JhUnZwY1My?=
+ =?utf-8?B?MnFhM3N1STFlaTVoNkx4RUlJS2N0Q0JqTkpUTDVtMTdzN1lPRzRqOHl4dXBM?=
+ =?utf-8?B?VWg3bE5aVzU0aWxQSUx6OWtqT2hvSzFMQzNyQ3ByeitObEl0ZzgxUFVtdXh6?=
+ =?utf-8?B?ZkdqRXl3d01ZbURtLzdiS1loRlhzM2dtSy9maWlyNS9BOXdvc1lJOFErbnhU?=
+ =?utf-8?B?QWI4TUlUSGFndHAvazcxckJHMkJOU084VTJzRERHTkdtMjlVU1dxL2JsMEJa?=
+ =?utf-8?B?ODJYbDVXQ05TeGtvTzFWSEE1N25MQmRoNDZmZTdydjZPMGhpN0NUTFVUdDB4?=
+ =?utf-8?B?L1d2bVlCeWNCd2h3RGQxZ1l4SjhQSkVtK3JoRGs5dzZvT3plRUpjRFE2dlNV?=
+ =?utf-8?B?aEs0aEdsaXVCaGhLMGV1dUd1L1BMTU1iMG5DamhFaEh5NTVoR1pxREdZbG9h?=
+ =?utf-8?B?a2dneFNsa203dEVseGo0NUNBWE1iMTY5NzdaMFFCRHlZaUFDQ3BBbitRclhM?=
+ =?utf-8?B?T2kyR3Bha1VqZWdDUGhqZXJqWnpyYTByWUMvWlpTbUFnQ2Ntc043MnEzNHVD?=
+ =?utf-8?B?UkJ6TmhmWWJmWUZVK1kvTVJ0bWl3SEswNWdINlVPT1h1VnRGYzNSakltZzZS?=
+ =?utf-8?B?WnNsMFFWbGFoa1QwV2c0bVQ5Nml1bjc1ZFN5MDJLMzZGL1hFSy8vU24zVlRi?=
+ =?utf-8?B?TTRGeDZpMWpMa1o0NHBoMlNReEJmdTU0VDUzNlU5TGx0L2UrT1dTWlRLVGUz?=
+ =?utf-8?B?T1dMZWN5elhSeEJqL2twUVd0SGRXTXpmL05vdnA2Tk9FZWhQVDVYblY1WGF0?=
+ =?utf-8?B?TE5paFRZdEsrNFlOTFZtVzlUeWpOZVBQSzBVMFdoZ0I4RGU5WXNvZnBBckhV?=
+ =?utf-8?B?ajY1bEtia0QzSXhwd3UrSnlBcmV1V1l5dHNHbUM2dUR1Y3FlSngycENXYTgy?=
+ =?utf-8?B?cjRBb0t4UXdNQko0WitwRlQyR3pvWEdoN3dWZldQNEhyaE5XY2s0dWNFWm1J?=
+ =?utf-8?Q?gD6A=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(10070799003)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bWpldWlsQmJKRXdBVmFvZlUyTVYxbEYxeWZNMHF5Z29ESVFOVllSTkozRE1y?=
- =?utf-8?B?WXRWbkR2UU5qbFN0eHFUblJFRkIxMDBwc2gyRnYzZE9Ba2RtOWk2Z1BnOUsz?=
- =?utf-8?B?dCs2b2VGbDNMSTloN0FuaWkxTFZVR1R6K1F5a0kyaUgxSjJjcUUvV1lrOHdT?=
- =?utf-8?B?djJNL3dQWmNxdHd0QnE1M1lid1FmYXdEaFJLd3d3SlVnSzhaMENhbExtWEx2?=
- =?utf-8?B?aW15MGkvNk9kYnkveDFZd29CalFhOC84MGgxZEhwYmZ5SU4xOEVvZktDOFU0?=
- =?utf-8?B?SXpqaFBWQnpuMlVvdHBGZVVMWkNaM0VWdm9IRkpiSGx2R3VHR1M1SDE0b3RU?=
- =?utf-8?B?dG9PSENTNVVIL3l2dUc0N3FSZmxvUk5ueFJqRk8rbXFQUDNMYTNueXgzdWp0?=
- =?utf-8?B?MjN3Q2g3ajcwb29MaVBjd3VZbHJPbjEwSXh5UEVRMTRGaUJEVjVjQjNML0N0?=
- =?utf-8?B?S1ZqMkJLaE9RZzN3YkNmaUVaeURndGVEZ3lFUjdRVGh6WDRDTUVCRUU3N2Vq?=
- =?utf-8?B?Qk9RcTRFK0ZOZ1hnYmhpblV4TGRJN2tHSFM4SEJnRWtwMTk0ckx5aDBDVDZq?=
- =?utf-8?B?UUhzem5heTVqVTVSWSt3SHdyZkZyMTJ5a3FWT2J3cjVsbjZ4YldoKzFoM2tu?=
- =?utf-8?B?RHFFN1BNWk1zeXBTNGdJMlFHOVUwVytxRkJST0V6aUxqZENwclpjRXJJdkZX?=
- =?utf-8?B?a2RSY0w0aG95WEpRK09jYk5pdXJqcXk3Y2ZJa0hkSGkycXR2WG1kN1lKSXFs?=
- =?utf-8?B?UXB3YTB4WmRDWmEyZWtHZkJ5dDBYWEZLNFlwMzhCQSt1OStpMzlPd0VmZlRQ?=
- =?utf-8?B?OFVSVndBTllZeHMxK3czTERSR3U1bWFiV0J4NnZXd2FJSGNJbFRuMEtUbGk3?=
- =?utf-8?B?bXZJUEpwVWkwZ284N0JvNGNMV0NHZ3UwSW45TEljdDkwY21kZVV5VkZRZUZU?=
- =?utf-8?B?SWd2VmhxN0RtOXFEU05uMGd0UjBEWWxka3h0aVpXQVkyL1VSWEVaQ2UzenBT?=
- =?utf-8?B?bGNpZkdnT1ZyZkplTTl0QXlnSWEyZFJVT3FvMmZ6d1N0SkNMdHRpNnJhUHZu?=
- =?utf-8?B?Tlg5TDUzNHo1SEVCcEZVZkI3ZU8rNDBHVWtZRkNmb2FMaThnTjJrZ0grMXls?=
- =?utf-8?B?aVhMdmVQd1BDWE1pYVkralhaZkNJRjlCazlDby9oL2JmRzlmQTJLbG45cnZZ?=
- =?utf-8?B?QmRCYnU2MGV6dmRmaXp5MG5Hc3FBRVFTczhzT05DWGh5Y09SZ2srTnYxVUtD?=
- =?utf-8?B?YWNyVVlXdU0zRkcvcXc4TnhadU1FV2huOTg4Y0lGTHRqcStDQW9Zb09kZTc0?=
- =?utf-8?B?aDduZGtzSmM2U1dXa0NDeVZBdTA4a3h0a1NVZ1NxRVE1TU1uQnlvcEtFVEdt?=
- =?utf-8?B?TlZ3cUxXVlMybWN2TGJZalE2VXVZWkZmTEVUOC9FVHgraVBtTHFyalVTYmxM?=
- =?utf-8?B?Vk1sUkFVa0pQVUphRkJqQ21raG1lRUh0RGExbWlkNUVGZEt6NDhnY09lZ0lM?=
- =?utf-8?B?eDRST2VwaHVoVVMxbnQ0VEVOT1NoRW1tbk9aWjRhWk16SDRWZmI0TXJZT2tC?=
- =?utf-8?B?RS80VG1KN01Zd2NwWlZpdWlkSGVMdm5Vend1QTN5Y0RDZjBTVVRWWTlyeklQ?=
- =?utf-8?B?S3JXKzJjM1d6K0UxNjdlMEhjaXA4aVkxYkdsSjVqUEtEdFFBYm1zcGVWWDI1?=
- =?utf-8?B?eWIvdWw2aUh5UjVyT09BMCtJbi9rQmZpeDRQenorVnFvenJaZ3hJVUFvdEI1?=
- =?utf-8?B?Y0YxOGNpVnlNSmQ3NUpGTW1Db0RPenhNWDFNUTJjcUVCQjE2bTc3bUpNR0pq?=
- =?utf-8?B?aWdMN0sxdlhEelZtQkhIYkZUckJLeWJNeVBxbDVMZUpiY3VzeDZPNVRERVlN?=
- =?utf-8?B?M2R1Lzhldldoc09xbVhUZjNSUFQ0YVpmT2xBbU5QYlVWWVVoUXhqQ295MTc1?=
- =?utf-8?B?ek4zYjlNalpabFQxcVpqK1VGelpiaElSQlI1dDJyaVBUbER3RDdWR3ZCUVFp?=
- =?utf-8?B?eGtVTFNGZjg0NnJHaWN6VW1DK1hDS0FkKzlwbDJhdzVnTGxobDRUdUtLc2px?=
- =?utf-8?B?d2VBOU5hVXVuWXlGNEVlY2pkVTRPejhnNUpyNEVIaENwYU1GWENVRnpIZHlv?=
- =?utf-8?B?UGFPbEcyRTl2bHY5eHljb1BxcitjMWdMay91WUtUVVN2V0hwVVZjZmxTUC9t?=
- =?utf-8?B?MVlPZFM0VFVnOEw5NEIxdTFocWFCQ2Y4RmhHWVhVMk9GbXl1Z1g5UmRPK3U1?=
- =?utf-8?B?UGlsZnJxMDFiYjlxQVozaytKK2tnb05GUHBTVTVpVWFocjc1akhRMmZ6a2p2?=
- =?utf-8?B?elc3RStQRGJiNHRPQ1ZudHZCa2ttdEJaa3JMVU9RNU1PZ3poV0VSQT09?=
+	=?utf-8?B?TmF0SjJ5V3d1aEY2cit6UWJSYXFDeTU2VlpsTWt5UWhkR0Zpc09oMDF1N2xn?=
+ =?utf-8?B?WCsvUFJoQ0hjUjQvajlqRXdKUWZ4aVM2Z2RUOW40eVB5ME9xZ0tsUmVlRGd2?=
+ =?utf-8?B?U0UxenZjSFF6V25LalVjcUJHYmREd2FiQUd0aXloQ250N2Z1cUE1NkozVjRP?=
+ =?utf-8?B?amlPMVlhTmxYZ3RadVM4ZDlyTlY0SDg1MWZRdm5zejNtRlE4WkJNMkU0Znp6?=
+ =?utf-8?B?anlKWU5iRXppUTZUeUlBK1pzWENqSzVLdmlIditJZnkrcXprVUVVWjNGZzFt?=
+ =?utf-8?B?RTZ2NC9WRjFWbTNYOGtBNzROS3V1UDJwZENBNWlKZ0xCL0lTcGRJWU9RWDlO?=
+ =?utf-8?B?Y09wNC9sNndTbndVbk0rODdJSXJHbU9UWmlyZzlncWx3N1JKcjBIbE8rYWZz?=
+ =?utf-8?B?ekNmNEp6Qy9xRGh4R2YvSTBsUnVnNjdmSmdmQzVxcGo3VUthTk10Q0F3MmF3?=
+ =?utf-8?B?c1NBNDFvYkZHd3VpVlBGVjJoN3IyLzFrWnAyb3JnMzFCTlQ2VTBEMStOMGkw?=
+ =?utf-8?B?eHJ3ZTRFaVErWmpkV0pRSDhxSGd4ck92SkZaVWgzd1ovV0xTM0s3SzB1L0oy?=
+ =?utf-8?B?c2JqR0RRYkJyUlFmME5KQUJxZ3N2Vjd6NWg3TGI0U3Z1cUFSbWtNT3haMU8w?=
+ =?utf-8?B?dWNqSXVkdVk5M2ZieG5hZ3Mxazl6TmdyREdLc1hEY0xyamRFRzEraEF3V1NF?=
+ =?utf-8?B?MlBNTXMwd1gxUVFaWmFpM1Rtd1Fabm9RRk1oYWhDMkxrNGVGT25GM2hMRjI5?=
+ =?utf-8?B?WFdjdHNOQXdJNjEvaXYwUTdwL1NaS29ST3pWSmlCUjRtSzdKT1RIelRvVTll?=
+ =?utf-8?B?cmJibDdhU1djQkFXY0VITWpuSlJUeWZJRGk5Y1dIenIwYVhONFE5amFpTHl2?=
+ =?utf-8?B?LzRaYUdOdUJqZTh5QWdiaVFQNlRLNU1jWWZXRG01ZU5HajRjOTNVYUlLMXBk?=
+ =?utf-8?B?YXYwR1pyZ1kxUVJxajlNc0lXYjZJMDdFb2czMHVRbStaYy94VzZFK0tRYmlB?=
+ =?utf-8?B?enVTWks2Yksvb1locmFGdm1NTnFycG90YUFLSkJHWGExT2xVTFJKRlJuZDRo?=
+ =?utf-8?B?L3FoaU1VU3dNOEZrUzh1Tmt1QlVnZmluMzdPVkxRMjdUbFRpN0dtanBmTGRr?=
+ =?utf-8?B?aC92ZTJJaC84K2RoKzYwZUhuNkJ2aUhQTGZUV3kyM1BJaGFtc1JvK2lURmdY?=
+ =?utf-8?B?UUhxTmVjZjFwTjZ6Syt3WWNrNnZ1NzllRG11YTRUSGJINEVGS2x6bUkwMmty?=
+ =?utf-8?B?WWZ5N3RxaGRZeVYxRGw4UzFqUXNhUW5rNVRMVXY0RGYvUG9FTG9WVmRmQUQ0?=
+ =?utf-8?B?VDJNdm1PdEN4RE5KdEJJUzRiQlZIS3lCakV6WjBEM2k5eThPRDhhbW1YOWl1?=
+ =?utf-8?B?Q2VUaGhJYlNTWUhmYmhNUllmR0hFekRublNIeFFNVEZPSWhqT0lKQ3BDYVpH?=
+ =?utf-8?B?bml6SWxwaGN3ZFVDa3dJaFFQSGRuTFZ6VW1aYUJaY3ZKMG9qeTBFdFFEeEw5?=
+ =?utf-8?B?dStUdWhJeGZGMS9pTlNQMWl3NGtkUzFFQm1iOXFmT00wWkNrc1NTR2x0c1Fm?=
+ =?utf-8?B?aUJZYWFoSTNOdWRxR2k4L01jeXdsQVlHZXpOcC9sNFhJaXN4TS95NkcrRmdW?=
+ =?utf-8?B?aEx0TGF6YUdsNDEzTmpSY2hmb3Z1QU91WVZJTEIyT1QyamtTaC9KWWlNMk1J?=
+ =?utf-8?B?L0k0Z0pVS1p5UldWQVEwTXl3dGxWUjd6Z1Z1QjhFQUFFT1VSQzF4QlpPeUVM?=
+ =?utf-8?B?M1FJTnFlMm15WFE5N1hyV3ZiV0VQUjBja1ZEZGRqNWhUei9wQnMvc3F3R3l1?=
+ =?utf-8?B?RUlobGZxZzJlRzRBVEFzRFdkaCt5dXE3Q0g2VndXZHNuV1ptWU5nS0ZFc1JY?=
+ =?utf-8?B?aTYzODZDUWgzeUV1MnROcys5K0I3RGl6dVRLR3pnNXJTODhqMmFPcklCWlp3?=
+ =?utf-8?B?ZHR3VERTTGlyMnNTN1FFT3dxcllSbUhHcERNYnlrT2dFb3RoWmdlNkIrMk1p?=
+ =?utf-8?B?aWxlREZGT2NKaktVbWorS3BlTVdxaXlNOExvVVdtWlVVYkIvRUxKRU0zbEp6?=
+ =?utf-8?B?Q2RMWlZGMWZwbVZNb2RITFBud3F5S1B2U2J0dUhFQk8rT3ZFSDVkbTdGWE1S?=
+ =?utf-8?B?ZEZDejdBaFNCTDhBMGtMMFU3TVZpQVZOOFVGTW85SE5FMGhUdkE3RG1jUFJJ?=
+ =?utf-8?B?c3dNUy85bEVWZVlJWjNhSS96UVF2UXpLL3c2NjFLRDZuVDNvb2xrQkpMRjVK?=
+ =?utf-8?B?MENKTER3aGdVRzNhckphQUdZRlN6djk1cjAwTlB5K3RqTytvbGNVNFRJUmx2?=
+ =?utf-8?B?OGNqa1JXREFOb25VcjR4WmhBaHRJRit3Zmc4WktKUWFYcjBwQmRxZz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02809bfe-9dc7-4cb4-bfdd-08de62667cb5
+X-MS-Exchange-CrossTenant-Network-Message-Id: b70640d0-ceb9-492e-2256-08de6266c806
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 14:22:25.2397
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 14:24:31.5859
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2evaWRiJlxrl584Pe8e/s4Ksz1kxGa6m0aipw/hbEwS9eaGNhdifLYvNB/J8ZW6SL1n9Vj90m/J0peybGg5Leg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7368
+X-MS-Exchange-CrossTenant-UserPrincipalName: sP928j9NKBCnjd0UAiVPn2VQtsDQ4qp4b4kXFx1c3sz5tmH6qqqcBtjFtBbWHrFpwDOpQzWyQ04wqHN95LRBmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOVP265MB8725
 
-On Fri Jan 30, 2026 at 8:34 AM GMT, Eliot Courtney wrote:
-> This series extends the DMA coherent allocation API to support compile-ti=
-me
-> known sizes. This lets bounds checking to be moved from runtime to build
-> time, which is useful to avoid runtime panics from index typos. It also
-> removes the need for a Result return type in some places.
+On Mon Feb 2, 2026 at 10:21 PM GMT, HeeSu Kim wrote:
+> The `-Cunsafe-allow-abi-mismatch=3Dfixed-x18` option is a workaround for
+> a rustdoc issue (rust-lang/rust#144521) where target modifiers were not
+> properly saved. This affects both rustdoc and doctests builds.
 >
-> The compile time size is specified via a marker type: StaticSize<N>.
-> Statically sized allocations can decay to runtime sized ones via deref
-> coercion for code that doesn't need to know the size at compile time, or =
-to
-> avoid having to carry around extra type parameters. The implementation
-> follows a similar pattern to Device/DeviceContext.
+> However, `fixed-x18` is an ARM64-specific ABI modifier related to the
+> x18 register reservation (used for Shadow Call Stack). Currently, this
+> workaround is applied unconditionally on all architectures, which is
+> incorrect and may cause issues on non-ARM64 builds.
 >
-> The series defines three type aliases: CoherentSlice<T> (for runtime size=
-),
-> CoherentArray<T, N> (for compile-time size N), and CoherentObject<T> (for
-> single object allocations). It also adds infallible dma_read!/dma_write!
-> macros and methods to CoherentArray, while prefixing the existing fallibl=
-e
-> methods and macros with `try_`.
+> Restrict the workaround to only apply when building for arm64
+> (SRCARCH=3Darm64).
 >
-> The macros keep the same syntax (i.e.
-> coherent_allocation[index].optional_fields =3D expression) even for
-> CoherentObject, because the [] syntax is needed to know where to split th=
-e
-> actual CoherentAllocation object from the fields. This means that
-> CoherentObject is indexed with [0] in dma_write!/dma_read! macros. The
-> alternative is defining a separate macro for single object access, but it
-> still would need a way to delineate between the allocation and the fields=
-,
-> perhaps by using commas (dma_read_obj!(object, fields),
-> dma_write_obj!(object, fields, value)). This would be inconsistent with t=
-he
-> array/slice syntax.
+> Fixes: 68e8e79e1bdc ("rust: fix `rustdoc` target modifiers")
+> Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
+> ---
+>  rust/Makefile | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> The last patch in the series may be useful as an example of what this
-> looks like to use. Also, there is probably a better name than
-> CoherentSlice. I found that specifying a default of RuntimeSize on
-> CoherentAllocation stopped the compiler from being able to resolve
-> which alloc_attrs to call in usages like e.g.
-> CoherentAllocation<u8>::alloc_attrs. Also, we probably want to encourage
-> people to use the statically sized one if possible, so it may be nice to
-> avoid defaulting CoherentAllocation to RuntimeSize.
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 5c0155b83..2bd547611 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -136,7 +136,8 @@ pin_init-flags :=3D \
+> =20
+>  # `rustdoc` did not save the target modifiers, thus workaround for
+>  # the time being (https://github.com/rust-lang/rust/issues/144521).
+> -rustdoc_modifiers_workaround :=3D $(if $(call rustc-min-version,108800),=
+-Cunsafe-allow-abi-mismatch=3Dfixed-x18)
+> +# The `fixed-x18` modifier is ARM64-specific, so only apply it there.
+> +rustdoc_modifiers_workaround :=3D $(if $(filter arm64,$(SRCARCH)),$(if $=
+(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=3Dfixed-x18))
 
-I've already posted an example on Zulip but for visibility I'll post it her=
-e
-too:
+It looks like this bug has been fixed upstream already. While you're at it,
+would you mind also add code so that we stop applying the workaround for
+versions with bug fixed already?
 
-I think the design should be `CoherentObject<T: ?Sized>` so that if you nee=
-d a
-`CoherentArray`, it's `CoherentObject<[T; N]>`, and `CoherentSlice<T>` is
-`CoherentObject<[T]>`. The existing `Io` that has a fixed minimum size but
-variable actual size can be abstracted as a new type.
-
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/t=
-opic/Generic.20I.2FO.20backends/near/571228593
-
-Best,
+Thanks,
 Gary
 
->
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
-> Eliot Courtney (9):
->       rust: dma: rename CoherentAllocation fallible methods
->       rust: dma: parameterize CoherentAllocation with AllocationSize
->       rust: dma: add CoherentArray for compile-time sized allocations
->       rust: dma: simplify try_dma_read! and try_dma_write!
->       rust: dma: rename try_item_from_index to try_ptr_at
->       rust: dma: add dma_read! and dma_write! macros
->       rust: dma: implement decay from CoherentArray to CoherentSlice
->       rust: dma: add CoherentObject for single element allocations
->       gpu: nova-core: migrate to CoherentArray and CoherentObject
->
->  drivers/gpu/nova-core/dma.rs            |  10 +-
->  drivers/gpu/nova-core/falcon.rs         |   2 +-
->  drivers/gpu/nova-core/firmware/fwsec.rs |   4 +-
->  drivers/gpu/nova-core/gsp.rs            |  44 +--
->  drivers/gpu/nova-core/gsp/boot.rs       |   6 +-
->  drivers/gpu/nova-core/gsp/cmdq.rs       |  20 +-
->  drivers/gpu/nova-core/gsp/fw.rs         |  12 +-
->  rust/kernel/dma.rs                      | 555 +++++++++++++++++++++++++-=
-------
->  samples/rust/rust_dma.rs                |  14 +-
->  9 files changed, 489 insertions(+), 178 deletions(-)
-> ---
-> base-commit: c71257394bc9c59ea727803f6e55e83fe63db74e
-> change-id: 20260128-coherent-array-0321eb723d4c
->
-> Best regards,
+> =20
+>  # Similarly, for doctests (https://github.com/rust-lang/rust/issues/1464=
+65).
+>  doctests_modifiers_workaround :=3D $(rustdoc_modifiers_workaround)$(if $=
+(call rustc-min-version,109100),$(comma)sanitizer)
 
