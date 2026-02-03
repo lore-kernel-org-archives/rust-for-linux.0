@@ -1,253 +1,114 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.cock.li (unknown [37.120.193.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778063254AE
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 17:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770140288; cv=pass; b=cZYOwy5L82LkFxpzbdVWnl2wqfE1PbSP62M7afZG9gbk+4LDfUB05ucZdQRu2TncarpzIUDXYDIRuDu0Vov52Ouh2TUTZ82IrSv1jxGipIggbtnpJGCtz6M7CNzdbXQRdDPNZRBI34QmUYyFGqILgW/B8hlmu0dSnEtjJx79+6M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770140288; c=relaxed/simple;
-	bh=4YzknxHBfsROI3oe/0Gw8Zry6luJZkfAyc2iFek3R2c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CeccdDFj2lHQl8xguah6xyPx3VZQgnqga3aWz9iFhLuHmeUS4IacqyXejFJsfZkkom2K2g/LUwtdBpuoOxpwQZNM4vat/hE+f9vJmtasj9MTHuxu3QGvIPBDXufQjIn/MPWqmPB9PDOCrvalti6nFkWJYqATtOIfgT1E4TYDGeM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0j6yyqgN; arc=pass smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69F286348;
+	Tue,  3 Feb 2026 17:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.120.193.123
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770140911; cv=none; b=GqvU5wnN3di1ok4A6sXmmOr/yTfJVZ3XwGL93put2sli5M2+C4bhFmn2jHsZMmwq7jY/fNPlIttnDcwBqBccaCfY7GZdjRbFeA+lqSP5vznQVlj00cpDz30ARqMvjuJOrDmvBj1gyUiRTIIsVYl4w/YgedqKAeJf6Ta1lOaziT0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770140911; c=relaxed/simple;
+	bh=RzhQz/6PmdrQAW/9kQ9deMnwz3nhAMY81C5KrLGbxuk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=izM7J+Opa/h3MjugQfUMejF6urf2SkikU031KWZBXqm8JbZug9WKS1CtoyENJOeioKHRcG8ZOYvXYTwVcbM/khwDg3Tu/ti6KQp4gijQc7UAqOpZeo8PaDh/Sy2kfblrHZkZNkdpNmnxVX5POSINXjE+IVFlo3pjwjkkZ9JaZbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li; spf=pass smtp.mailfrom=cock.li; dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b=DWeWyiW0; arc=none smtp.client-ip=37.120.193.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cock.li
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0j6yyqgN"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-652fe3bf65aso12157a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 09:38:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770140285; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PvtjL0rWIixcqhMfF7TTcngZxwHJCTqDGTYywJpddrdHEtwN+UfUZaqA7W19Y/vTpW
-         UDV5z5K9w38aV0jt/pPnvlGCCHjf/q2YSmXznQpibYK45mhCO3d1N82njqRLpMAS2O7A
-         1sHivzJGbylGogOut4lqal4D6lFWDyt81UuOk/UDTvUqFCZYr+MjpduLiLuSoVCv5qw+
-         wtHpukitw8N1cM2yhg0U07G2E9NBuWsQeFx4sSrbkKPeQwAzalGfFgUZIEYMCSRq0Zc3
-         7rY54aTKhXHM8GAPlhb8GGu4ZTQxp7twBujkxH7LapMBdNY4CiI0v46Qy2g6/GPanzcE
-         VA9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=j4q33YjRLQ15ajYRux/jBaFbRViw55ylugUQtfD14xM=;
-        fh=flppQgVHnqleLuLklROUHSHLmiFzUodOTOCu+7aNT4I=;
-        b=GtJGJmHkWPWG/9EXjTzwDZATnYOcCn7zJ21ULtNGd2oPR1JJaE7JRV6R4ZLp0q+NRF
-         1+L6g8QQ5wVmFm18og6vWyJWfTJ4Jqnb2mTQbH0FSvQQARBVGbAIBJZcsux0XRq8A/U2
-         YORAGz20ejbgv21kynT3Gw0KLaMppsIZ495jBWvNz4FegG4BRXhmv7MEKmuUr/6EAB7h
-         alP1T30YkbJrRQFM5DJ9ozGZXNb5bHbOfGKgzwf7sSHbX/jlcRWfAYva/IIx/JV2lVl1
-         +xSIZ9mBux/MTN5o0kipavuIXRsWlw5AsqKnokQQdJqAldD/L7hCRyx0dANRQ8UYL5PZ
-         rttw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770140285; x=1770745085; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j4q33YjRLQ15ajYRux/jBaFbRViw55ylugUQtfD14xM=;
-        b=0j6yyqgNgfMuyQjAhaiZKIEp76zEYzKPM7YtpLIPKFoJRpL2eeHqQTfXu2kippPwrl
-         9AUpt6POE/3ryJYTH9PjKRHhv1wZ1dKD7nZ+0/dcbKmlpKz+22q571dOV2ZA4Vv8hSjE
-         jyVcOTpT/xMFALZ6h/rbSouqDalRfUOlYOlB/xtJ7aCvl5vpTZUpNTcikPiAvhVqTTwl
-         kKw33KIt2eNk3/Ts9mzJjCAovvyP7yxZJc59t+f5cPW0Yno9QsAt1F8MZMUb3QMRp8JX
-         zdDgDAYR2iSO/l3vgq539E6fBsYhQTDelvk9EW9cYOfxd+ScXREVhzxZ/KPL8VMiAZFT
-         6oJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770140285; x=1770745085;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=j4q33YjRLQ15ajYRux/jBaFbRViw55ylugUQtfD14xM=;
-        b=XPQTZ7s6XTLW3+Kvy8oe4+JTHvPEtn7ZWKKshYzEh6HT5tHw7GFjWk+h3Ifsr0i8G8
-         830DLaj+yQpL7xtlhKiC1gPBj9dAmr5TOidjVZpVaFeZpMH31PZBUh9hOhNnmDIrm+k7
-         f6j7zKI7CC5OXwoh56DCp4LN7vw2E9GybJ6kB7vMXUsG7srSDdK8aRYDsXwReiGKkE9v
-         ZgqPwk97yP23XPG/yNc5ii5sxG657HcOSWohx+W1z38Xo9hrhDYcuNU/hedtgID+sazP
-         06dFsY0m+gH3yMYgmhTdov4mkGLZ3LvArev2g+DliIVkaoG+Px3vWnn2xv1VTpoaR2iB
-         XS/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUGxejHLvjFgX4R86HMvk44PYCJBny2roJ8dvfELiQk/nQuS9cdGzwIfyZlDkrkCv8L3wqy7w30uEgadxnkDg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yypgt7PRMcOk6vKhs6WyvUztOr9mgv5s0Gw5d2sdMpmxXU8G4D4
-	93KkKGj06bHOXmc7CMMzxkERmunVPlOY2t8ZUWBbgZsT7nwNQsR89Jm34YenzIS8STX4JzgzyMk
-	cGYwgtj6d3UDwKabJsNOcV5HXwhq20/na05QfdM8K
-X-Gm-Gg: AZuq6aLKp8jMM2EGzwLPv1ekhUL4ksEPS5aaOgdqN5MUyEejDhrPxdVRP161VeIp5Lf
-	JSJXQshE5M8KDaYdEW1KfvxztFYytw1tMtcA4SWQKieFKk3vgZx2JBc4MWJYuRzjWMv9F4Kyf5N
-	cqscA1kWKmWCcDsfVpRiIKLOKuuq0NaGUaC0O7YCuNPqiJa9nIoXMPYcgTNOcE463hb/+B826Ft
-	htyo//C8XXo1SDLu86NizbFntgQ2zTk6A/HqewgywrLD+Ott5NMFI+PeI0mNvJ0gv/RHB9TzJ1j
-	suLMmJMgUVjU75/Ted6RfDVBJA==
-X-Received: by 2002:aa7:d355:0:b0:658:bd2d:929c with SMTP id
- 4fb4d7f45d1cf-6594a33abd0mr5612a12.12.1770140284581; Tue, 03 Feb 2026
- 09:38:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b="DWeWyiW0"
+Message-ID: <8006f30e-b794-4852-bc10-2981b5d010d8@cock.li>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cock.li; s=mail;
+	t=1770140903; bh=RzhQz/6PmdrQAW/9kQ9deMnwz3nhAMY81C5KrLGbxuk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DWeWyiW01PSqdMuT54auvFGLW9wSj+zFUJ6csKdvIrsKDL/7lNwFpDcmWGDWjjaIc
+	 MLIHJZyDAy4Tj3E+2WBbKQ28Rf86av+INzuJq0DBpoSNAZZB9JB7Af3jR8H06dCiX5
+	 HKpgQA5fTary2yGH5ni9j+Ix46UNonoyYan538bcX+iNu0zHPJoU/oBQ2DFWMe2SJB
+	 oyr4IybJ88aLG068k2LGQRVNucvHzWuctR8CfiEHvBkuY25ButlBlUgarvloqxPqGP
+	 O2DEB7pgZLIUfp8L/Ac3rlnZ1cBihvAw4xUsLTRnwtb3sG9bLYZpQie52yBuet/vWP
+	 61S9a6p0DKs5A==
+Date: Tue, 3 Feb 2026 23:18:17 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260203-qcom-socinfo-v2-0-d6719db85637@google.com>
- <20260203-qcom-socinfo-v2-6-d6719db85637@google.com> <2026020315-conch-trickle-2d84@gregkh>
-In-Reply-To: <2026020315-conch-trickle-2d84@gregkh>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Tue, 3 Feb 2026 09:37:50 -0800
-X-Gm-Features: AZwV_Qib0Xwq7jvSK8YoP13KkCRLNUErONN49KXCI4YsJMCfMFPdjadu_r-_mhs
-Message-ID: <CAGSQo03Ok1sv4myQk2Ch68rET19ypq4Mm-=82Ue-T-2Z8kaGmA@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] soc: qcom: socinfo: Convert to Rust
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Satya Durga Srinivasu Prabhala <satyap@quicinc.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Michal Wilczynski <m.wilczynski@samsung.com>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Trilok Soni <tsoni@quicinc.com>, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, linux-pwm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] rust: alloc: Add shrink_to and shrink_to_fit
+ methods to Vec
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Cc: cmllamas@google.com, gregkh@linuxfoundation.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com,
+ urezki@gmail.com
+References: <20260131154016.270385-1-shivamklr@cock.li>
+ <20260131154016.270385-2-shivamklr@cock.li>
+ <DG5FEPO6RCK4.17KOY7PRLNFKV@kernel.org> <aYIWd9wzPIRa4gZc@google.com>
+ <DG5FWZ2CA3DR.2WBZ27YUYS705@kernel.org>
+Content-Language: en-US
+From: Shivam Kalra <shivamklr@cock.li>
+In-Reply-To: <DG5FWZ2CA3DR.2WBZ27YUYS705@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 3, 2026 at 8:28=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Feb 03, 2026 at 03:46:35PM +0000, Matthew Maurer wrote:
-> > Convert the socinfo driver to Rust for a number of improvements:
-> > * Accessing IO mapped regions through the IO subsystem, rather than
-> >   through regular memory accesses.
->
-> That's good, but the C code could also be "fixed" to do this, right?
+On 03/02/26 21:13, Danilo Krummrich wrote:
+> On Tue Feb 3, 2026 at 4:38 PM CET, Alice Ryhl wrote:
+>> On Tue, Feb 03, 2026 at 04:19:14PM +0100, Danilo Krummrich wrote:
+>>> On Sat Jan 31, 2026 at 4:40 PM CET, Shivam Kalra wrote:
+>>>> This implementation guarantees shrinking (unless already optimal),
+>>>> because the kernel allocators don't support in-place shrinking,
+>>>> a new allocation is always made.
+>>>
+>>> I'm not sure we should go in this direction. There is a reason why krealloc()
+>>> does not migrate memory between kmalloc buckets, i.e. the cost of migration vs.
+>>> memory saving.
+>>>
+>>> For Vmalloc buffers the story is a bit different though. When I wrote vrealloc()
+>>> I left some TODO comments [1][2].
+>>>
+>>>   (1) If a smaller buffer is requested we can shrink the vm_area, i.e. unmap and
+>>>       free unused pages.
+>>>
+>>>   (2) If a bigger buffer is requested we can grow the vm_area, i.e. allocate and
+>>>       map additional pages. (At least as long as we have enough space in the
+>>>       virtual address space.)
+>>>
+>>> So, I think we should just use A::realloc(), leave the rest to the underlying
+>>> specific realloc() implementations and address the TODOs in vrealloc() if
+>>> necessary.
+>>>
+>>> [1] https://elixir.bootlin.com/linux/v6.18.6/source/mm/vmalloc.c#L4162
+>>> [2] https://elixir.bootlin.com/linux/v6.18.6/source/mm/vmalloc.c#L4192
+>>
+>> If kvrealloc() does the right thing, then let's use it.
+> 
+> It should once the TODOs of vrealloc() are addressed. The reason I left them as
+> TODOs was that I didn't want to implement all the shrink and grow logic for
+> struct vm_area without having a user that actually needs it.
+> 
+> If binder needs it, I think we should do it.
+Hi Danilo, Alice,
 
-Yes, nothing stops the C code from being fixed to do all of this - all
-of this is representable in C code.
+Thanks for the detailed feedback - I hadn't considered the kmalloc bucket
+migration costs.
 
->
-> > * Binds the device as an auxiliary device rather than a platform device=
-,
-> >   ensuring the mapped IO regions cannot be accessed after the smem
-> >   device is removed.
->
-> I'm all for this, but is this really an aux device?  What is the
-> "parent" device of this aux device?  Where are the "siblings"?  What
-> does sysfs look like before/after this?
+Given that:
+- krealloc() intentionally avoids migrating data to smaller buckets when
+shrinking
+- vrealloc() has TODOs for in-place shrinking
+- The immediate need is binder, which uses KVec (could use either allocator)
 
-The parent of this aux device is qcom-smem. In the prior
-implementation, qcom-smem loads this device through
-`platform_device_register_data` and `platform_device_unregister`,
-holding a reference in its global struct to release it when being
-released. The probe table for the qcom-socinfo driver was empty, so it
-would not probe without an explicit registration.
+I'm thinking the pragmatic path is:
 
->
-> > * Adds bounds-checking to all accesses, hardening against a repeat of
-> >   CVE-2024-58007
->
-> How do you now "know" that the bounds checking is correct?  The C
-> version also had this, it was just "not correct" :)
+1. For v3: Simplify shrink_to() to use A::realloc() instead of
+   alloc+copy+free. This ensures we get whatever optimization
+   the allocator provides (including the bucket preservation for kmalloc).
 
-While it's technically possible for the Rust code to have an error
-here, the error would not be in the driver, but in the kernel crate.
-The advantage here is that the bounds checking is all centralized, so
-we get it right once, for the entire kernel, instead of needing to get
-it right every time.
+2. The vrealloc() in-place shrinking could be a separate follow-up
+   series, as it's a larger change to the allocator itself.
 
->
-> And which accesses are you referring to?  From userspace?  From the
-> kernel?  That CVE looks very odd, it's probably not even a real one and
-> should be revoked, right?
->
+Does this approach make sense, or would you prefer I tackle the
+vrealloc TODOs first?
 
-That CVE looks like this:
-1. qcom_smem_get returns an object of size N
-2. When initializing the `serial_number` field of
-soc_device_attributes, the offset of the serial number field was
-checked as <=3D N, rather than the *end* of the serial number field.
-3. This resulted in the driver exposing through sysfs whatever data
-was mapped afterwards, interpreted as a number.
-
-I agree that the severity seems oddly high, given that in practice,
-this will expose the remainder of the IO mapped page - I don't believe
-it crosses a page boundary, so it can't even *really* leak anything.
-
->
-> > diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-> > index fef840b5457407a85051ded0e835430dbebfe8bb..dcea2d7f37067b0b6f801b3=
-d2b457422ad9f342c 100644
-> > --- a/drivers/soc/qcom/smem.c
-> > +++ b/drivers/soc/qcom/smem.c
-> > @@ -4,6 +4,7 @@
-> >   * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
-> >   */
-> >
-> > +#include <linux/auxiliary_bus.h>
-> >  #include <linux/hwspinlock.h>
-> >  #include <linux/io.h>
-> >  #include <linux/module.h>
-> > @@ -279,7 +280,6 @@ struct qcom_smem {
-> >       struct hwspinlock *hwlock;
-> >
-> >       u32 item_count;
-> > -     struct platform_device *socinfo;
-> >       struct smem_ptable *ptable;
-> >       struct smem_partition global_partition;
-> >       struct smem_partition partitions[SMEM_HOST_COUNT];
-> > @@ -675,6 +675,32 @@ static void *qcom_smem_get_private(struct qcom_sme=
-m *smem,
-> >       return ERR_PTR(-EINVAL);
-> >  }
-> >
-> > +/**
-> > + * qcom_smem_get_aux() - resolve ptr of size of a smem item
-> > + * @aux:        an aux device that should be our child
-> > + * @host:    the remote processor, or -1
-> > + * @item:    smem item handle
-> > + * @size:    pointer to be filled out with size of the item
-> > + *
-> > + * Looks up smem item and returns pointer to it. Size of smem
-> > + * item is returned in @size.
-> > + *
-> > + * The caller may take the loaded state of the provided aux device as
-> > + * an acceptable proxy for this memory being valid.
-> > + *
-> > + * Return: a pointer to an SMEM item on success, ERR_PTR() on failure.
-> > + */
-> > +void *qcom_smem_get_aux(struct auxiliary_device *aux, unsigned int hos=
-t,
-> > +             unsigned int item, size_t *size)
-> > +{
-> > +     if (IS_ERR(__smem))
-> > +             return __smem;
-> > +     if (aux->dev.parent !=3D __smem->dev)
-> > +             return ERR_PTR(-EINVAL);
-> > +     return qcom_smem_get(host, item, size);
->
-> So you are returning a void pointer?  But don't you really know the
-> "type" of what is being asked here?  It's a memory chunk, so u8?  Or
-> something else?  void * feels "rough" here.
->
-> > +}
-> > +EXPORT_SYMBOL_GPL(qcom_smem_get_aux);
-> > +
-> >  /**
-> >   * qcom_smem_get() - resolve ptr of size of a smem item
-> >   * @host:    the remote processor, or -1
-> > @@ -684,6 +710,9 @@ static void *qcom_smem_get_private(struct qcom_smem=
- *smem,
-> >   * Looks up smem item and returns pointer to it. Size of smem
-> >   * item is returned in @size.
-> >   *
-> > + * It is up to the caller to ensure that the qcom_smem device remains
-> > + * loaded by some mechanism when accessing returned memory.
->
-> What do you mean by "loaded"?  You are saying that the caller needs to
-> rely on this driver remaining in memory for that memory to be "valid"?
->
-> If this is the case, why not take a reference count?
->
-> > +impl Smem {
-> > +    pub(crate) fn access<'a>(&'a self, dev: &'a Device<Bound>) -> Opti=
-on<&'a Mmio> {
-> > +        if *dev !=3D *self.dev {
->
-> How can this ever happen?
->
-> thanks,
->
-> greg k-h
+Thanks,
+Shivam
