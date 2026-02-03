@@ -1,114 +1,84 @@
-Received: from mail.cock.li (unknown [37.120.193.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69F286348;
-	Tue,  3 Feb 2026 17:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.120.193.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E6F2F5487;
+	Tue,  3 Feb 2026 17:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770140911; cv=none; b=GqvU5wnN3di1ok4A6sXmmOr/yTfJVZ3XwGL93put2sli5M2+C4bhFmn2jHsZMmwq7jY/fNPlIttnDcwBqBccaCfY7GZdjRbFeA+lqSP5vznQVlj00cpDz30ARqMvjuJOrDmvBj1gyUiRTIIsVYl4w/YgedqKAeJf6Ta1lOaziT0=
+	t=1770141599; cv=none; b=Vnp5H9s3zS1qlZOKrcepOged9ffMXyCW/2PLLXN242ViOOAgDANf5hfvviMJLybLDnj/MiFDjni++B2FVlrylY+cFQA7pHTVrWDWEgYj/5ZLJkMlfoQSdHsb2rVVMorGn87mijVQLTp9TjF0HiRBn4uqUh16iOMGEierLeLG+ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770140911; c=relaxed/simple;
-	bh=RzhQz/6PmdrQAW/9kQ9deMnwz3nhAMY81C5KrLGbxuk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=izM7J+Opa/h3MjugQfUMejF6urf2SkikU031KWZBXqm8JbZug9WKS1CtoyENJOeioKHRcG8ZOYvXYTwVcbM/khwDg3Tu/ti6KQp4gijQc7UAqOpZeo8PaDh/Sy2kfblrHZkZNkdpNmnxVX5POSINXjE+IVFlo3pjwjkkZ9JaZbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li; spf=pass smtp.mailfrom=cock.li; dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b=DWeWyiW0; arc=none smtp.client-ip=37.120.193.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cock.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cock.li
+	s=arc-20240116; t=1770141599; c=relaxed/simple;
+	bh=djqumMHdPK4b2u3nULQU7T3jLxiGWNZFX/0cO0Gwfkw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=dO2LbATlHGsGCID83eTy89SJ4L0sCv5BDy+t7huGLJmUsYeljYjf8ibJ6q7Fr+2avg4m2GH6+uld14D/fT/jaQjspsmaXL1ivUwp5OtqDh0H8DQMx4QFm61fOdQXnxO9HsqEEpwAMNQPk1DNT8cr2jlYSx/YgflC5AMXZR8BCgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYV88Kq/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cock.li header.i=@cock.li header.b="DWeWyiW0"
-Message-ID: <8006f30e-b794-4852-bc10-2981b5d010d8@cock.li>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cock.li; s=mail;
-	t=1770140903; bh=RzhQz/6PmdrQAW/9kQ9deMnwz3nhAMY81C5KrLGbxuk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DWeWyiW01PSqdMuT54auvFGLW9wSj+zFUJ6csKdvIrsKDL/7lNwFpDcmWGDWjjaIc
-	 MLIHJZyDAy4Tj3E+2WBbKQ28Rf86av+INzuJq0DBpoSNAZZB9JB7Af3jR8H06dCiX5
-	 HKpgQA5fTary2yGH5ni9j+Ix46UNonoyYan538bcX+iNu0zHPJoU/oBQ2DFWMe2SJB
-	 oyr4IybJ88aLG068k2LGQRVNucvHzWuctR8CfiEHvBkuY25ButlBlUgarvloqxPqGP
-	 O2DEB7pgZLIUfp8L/Ac3rlnZ1cBihvAw4xUsLTRnwtb3sG9bLYZpQie52yBuet/vWP
-	 61S9a6p0DKs5A==
-Date: Tue, 3 Feb 2026 23:18:17 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYV88Kq/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A12C116D0;
+	Tue,  3 Feb 2026 17:59:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770141599;
+	bh=djqumMHdPK4b2u3nULQU7T3jLxiGWNZFX/0cO0Gwfkw=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=HYV88Kq/dyKjYqxpquD1Bii3I/VinqzaJv27QlmKDIPb203qKq+IpgQ1TPX3xBKQk
+	 mzpoLx5emOj08xtP/v74kc/s1UzGgDPoaR1n4VFUUDp8ziSaXMEci6LvD6JhiGU7DP
+	 qJq/4+8v6RgCvO9pVDF0jJyeCgKyagUz+onwSbfUQgb7VmsRKExcHgZMeOYPHl2drr
+	 DXsSnWOMkgjubIy9fp66MiUnS9rz74YL/46NOI0725ZpHOF6SqtG+Q0edJJnN571yQ
+	 BENoAHDmhTOF/HpmSiKzZhcmVM7HkmEJTDoveN1eoYCxrfgauITSrcjde7rRoJw+zc
+	 ZOs4JLlALIvjg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] rust: alloc: Add shrink_to and shrink_to_fit
- methods to Vec
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Cc: cmllamas@google.com, gregkh@linuxfoundation.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com,
- urezki@gmail.com
-References: <20260131154016.270385-1-shivamklr@cock.li>
- <20260131154016.270385-2-shivamklr@cock.li>
- <DG5FEPO6RCK4.17KOY7PRLNFKV@kernel.org> <aYIWd9wzPIRa4gZc@google.com>
- <DG5FWZ2CA3DR.2WBZ27YUYS705@kernel.org>
-Content-Language: en-US
-From: Shivam Kalra <shivamklr@cock.li>
-In-Reply-To: <DG5FWZ2CA3DR.2WBZ27YUYS705@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 03 Feb 2026 18:59:52 +0100
+Message-Id: <DG5ITP7I2CQO.DOQM3MZKKPS9@kernel.org>
+Subject: Re: [PATCH v2 6/6] soc: qcom: socinfo: Convert to Rust
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Matthew Maurer"
+ <mmaurer@google.com>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konradybcio@kernel.org>, "Satya Durga Srinivasu Prabhala"
+ <satyap@quicinc.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Michal Wilczynski" <m.wilczynski@samsung.com>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Trilok Soni" <tsoni@quicinc.com>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-pwm@vger.kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260203-qcom-socinfo-v2-0-d6719db85637@google.com>
+ <20260203-qcom-socinfo-v2-6-d6719db85637@google.com>
+ <2026020315-conch-trickle-2d84@gregkh>
+ <DG5H119NY68Q.TWLCK3W36CM5@kernel.org>
+ <2026020347-sneak-embark-1b36@gregkh>
+ <DG5HGZG62NNS.18BCSOO6TR70G@kernel.org>
+ <DG5HX5K2T371.3JGY5PQIV554K@garyguo.net>
+In-Reply-To: <DG5HX5K2T371.3JGY5PQIV554K@garyguo.net>
 
-On 03/02/26 21:13, Danilo Krummrich wrote:
-> On Tue Feb 3, 2026 at 4:38 PM CET, Alice Ryhl wrote:
->> On Tue, Feb 03, 2026 at 04:19:14PM +0100, Danilo Krummrich wrote:
->>> On Sat Jan 31, 2026 at 4:40 PM CET, Shivam Kalra wrote:
->>>> This implementation guarantees shrinking (unless already optimal),
->>>> because the kernel allocators don't support in-place shrinking,
->>>> a new allocation is always made.
->>>
->>> I'm not sure we should go in this direction. There is a reason why krealloc()
->>> does not migrate memory between kmalloc buckets, i.e. the cost of migration vs.
->>> memory saving.
->>>
->>> For Vmalloc buffers the story is a bit different though. When I wrote vrealloc()
->>> I left some TODO comments [1][2].
->>>
->>>   (1) If a smaller buffer is requested we can shrink the vm_area, i.e. unmap and
->>>       free unused pages.
->>>
->>>   (2) If a bigger buffer is requested we can grow the vm_area, i.e. allocate and
->>>       map additional pages. (At least as long as we have enough space in the
->>>       virtual address space.)
->>>
->>> So, I think we should just use A::realloc(), leave the rest to the underlying
->>> specific realloc() implementations and address the TODOs in vrealloc() if
->>> necessary.
->>>
->>> [1] https://elixir.bootlin.com/linux/v6.18.6/source/mm/vmalloc.c#L4162
->>> [2] https://elixir.bootlin.com/linux/v6.18.6/source/mm/vmalloc.c#L4192
->>
->> If kvrealloc() does the right thing, then let's use it.
-> 
-> It should once the TODOs of vrealloc() are addressed. The reason I left them as
-> TODOs was that I didn't want to implement all the shrink and grow logic for
-> struct vm_area without having a user that actually needs it.
-> 
-> If binder needs it, I think we should do it.
-Hi Danilo, Alice,
+On Tue Feb 3, 2026 at 6:17 PM CET, Gary Guo wrote:
+> PS. Personally I think this check (and the one in Devres::access) should =
+use
+> assertion rather than `EINVAL`, because it is a bad driver bug when this =
+is hit,
+> and adding failing code path for something that is a bug is something I r=
+eally
+> dislike... It should at least be a `WARN`.
 
-Thanks for the detailed feedback - I hadn't considered the kmalloc bucket
-migration costs.
+I don't think we should panic in this case, as it can happen too easily.
 
-Given that:
-- krealloc() intentionally avoids migrating data to smaller buckets when
-shrinking
-- vrealloc() has TODOs for in-place shrinking
-- The immediate need is binder, which uses KVec (could use either allocator)
+	// Let's assume the resource is owned by the parent.
+	fn foo(adev: &auxiliary::Device<Bound>, res: &Devres<Resource>) {
+	    let res =3D res.access(dev.parent()); // OK
+	    let res =3D res.access(dev.as_ref()); // panic()
+	}
 
-I'm thinking the pragmatic path is:
-
-1. For v3: Simplify shrink_to() to use A::realloc() instead of
-   alloc+copy+free. This ensures we get whatever optimization
-   the allocator provides (including the bucket preservation for kmalloc).
-
-2. The vrealloc() in-place shrinking could be a separate follow-up
-   series, as it's a larger change to the allocator itself.
-
-Does this approach make sense, or would you prefer I tackle the
-vrealloc TODOs first?
-
-Thanks,
-Shivam
+Printing a warning is probably a good idea though.
