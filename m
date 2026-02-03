@@ -1,283 +1,101 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FF33B8D4C
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 15:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8605286341
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 15:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770132515; cv=none; b=kkTo3xvv0g0d94zXDG9jBDfOdIUk8IbZuAgeJpx4HL4Yvh5S+E1a81SA4vha2U+PmNVmvNncoinRsrlVWI4r5qzGpKlR8bmKTIWdDllsOwtU1wPU6SDYiTAAma9S4jomxK7E2IaQqHmSPDQ0ss0bft0RBhuiOEa7IfTn9SckR4w=
+	t=1770133114; cv=none; b=HOd9iJzLM5xxnXLF6UHP/nfh1Q5xzz25dJjUg50ajv0+nF+i+v4bvAGU4U1+yZDnRZuJZv/KBs+VqyWz2rFLeoKpufuQFChV2tpqQ2TUviIh3L91xWhoYeWJODXuXLZZkj/Se2lsb7FFWDFDMosT6C9QS1BHEJAwVqSYQz42mmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770132515; c=relaxed/simple;
-	bh=5P1OoHaY7/L+xB5tVS0KbkGK2mda/BzFZpi996e8uBI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLKBaJhB5E8BkrWWMA1lezL1y8IQPGdDLZGJlVcu4lgh9SpTByBpDsPURLkYjDyetcU9ob4Jm3DW7cEW8/E3PMaUgGRJGLUga9PypZJDVDuvKCb0t2TBM2QWHuYaFSrbGVVzoNy8s6X/Tx1UY/wM+LMpcvWc08KE6f6HtdrwfOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QGqUT2Jj; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1770133114; c=relaxed/simple;
+	bh=9dkOL9WCsK0uU5ILftSBFEZ1TlCgDoh6q/l5wlxwtlQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=a/10QbypRelVydNxPVSExCChkbMEBYteOIsECCgt1ZCr/HZfvEgGZCxJenoyaobtTTQ74LSjPTH55lG71VwGrOLaOxxd1EiG3J8VWd+pQGi/SI1/nW6rsqiESHzxAFU+U3YzXXapLNr83lyepNYcVJBES3mSUttTba6p68lDgCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JKtjImyk; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QGqUT2Jj"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47ee76e8656so77246365e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 07:28:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JKtjImyk"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-480717a8e05so57549315e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 07:38:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1770132512; x=1770737312; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=evrCydrxXcTH9gOn4p6qQgFP3yUlzzT31yKuNCq7gFI=;
-        b=QGqUT2JjSRP2MnPdieFrHUlek9tf0zS1nu9yej/oxpVIp3WjoFbnlzy4MkxJc5IMFo
-         p6dJ5GoQ9oST3zu0qMz1JwDQF3kNuqmdkod3UGEVxASbiWCM0H1bU4RMuesQDRd4ADSD
-         VYJqAzrC4mKLCXZXMEXHQ/DXudw2zxyjU9MDQNpnli55Ls68lLlwarRD9xYwgI6q++FX
-         WkdNdAxLMGVCO3Qqao/OD5H4NyK6TUK9Kn4KVzoM960RhSH575VWpJh3i7fYNeUVYuk4
-         jI2jCGY/2zGwy92LoV9LLUCHmiswjz9Z1mH9Ejly4xco/94XVnM7yhqYAHUZ9dNfFh/L
-         vMjA==
+        d=google.com; s=20230601; t=1770133112; x=1770737912; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5h76k9K3qFcgY90MofiTdAnuRfQxtWeUNCZad/0hgRE=;
+        b=JKtjImykoutBQTj5Xfd5HwCS5KRPipLcJWpo7gxagdp95+EuGgiGDF4emQCMqhhPKi
+         JEvKl19o8P14+q+BqB8kiyz5wFB6qsUMbLBbBN9Wmk/yM7I7H5YGP5oElTym9X9FCqc8
+         7NtZSO/qXdmYO5U+OPGeAi0tT0xXaRSBmRtvXlNrLQYjcZ02Ykpbdfz1eri5g4McI7x2
+         h2X0m0D1ZbIvD1aLRZU79Lpyh7XgT6iJ4uhx2kCmtiHlB3XwdEfU0Ertv28lhmHysC++
+         RsxylX1h2U4FnvoUJXh1UddTvupGqcp2jD72wZxX5S9TcD6NGZ9gM7PXl/hcuXtz7/5O
+         5s3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770132512; x=1770737312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=evrCydrxXcTH9gOn4p6qQgFP3yUlzzT31yKuNCq7gFI=;
-        b=M1KRmsbXzB6iTiVhu4fxQ+lZ+YB1/d7QnjnLRKVkD7u9xZeGAB7GaB8Z9g9c0/JLLD
-         lORS+5QQ98HbQ8AMX8P+14+jtMWLGzAwrizxyrCh7txO10AdB8NLSPNeR9qK3bO+II+D
-         BmnfeJTFcAL8QI+zj9RIqZqr16lRxEp9WA1PpEBj7gDz7X23dek7SDVwlDfYKhssylst
-         /btyz+3pNcPGsIbEI8JFStNLKzINmogjMNqhXGKxpWksELjT5wMxv7/hil8UJFlawoMw
-         ZMp1PEpogeaa2NnTnACgCK9LzsmNYh/msY0g9JNLFMDrjC59Gg2bYVgAfrSq4wtho4va
-         H1tw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfOa4yB9R+N73UVnpVC46gCeQjXPCc0/E7hvEJb02h+9pm5SH7bRyR/RzLyDWdt+ybXFF+lhZn4d45mmk/gw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMUeMdNPkZf2rRmenGmbgEweMMLlZrFeHg+kzY0Kp9/nOIteEy
-	gWDei56VgIajW8QMT5uVnWyNZGaYfZMRI75+OrMOP9c/Wq/7g/CpSPLprAii5gI4Ucw=
-X-Gm-Gg: AZuq6aKMdJ3T6FflRstG2VS+0Saj9BzyVmNwYDFhqCjRHFaxef2uLZqiQnsQeEy9pQm
-	Ah68IylDGIvpzWAwcEwYdAXzByT7zLM8FZVXwTBMgnymJi4P0R5Yt69j1jlpWqBVhgivUx7lvIg
-	nIhmQQbA6Wx9UgACiGO7WvwagwuXPSVJkK+M2GzVpbUaBc1Qi1iLsTM50ggzOr5VYtSU6EN4hhO
-	HCpf3WbCIdiGp/iq6JvSOH1cb4qSGzzgPHBo3QnyYxY2BeB/W0EWl4R6lk169CoJhLV2ErJY/+H
-	oi3gbViiwnIzRcF8sonxh5VXaFrl5mb5JPar/Wn7+i/Pr7G3mKVnZ3E2OkAHGLsXsXLs02MTKln
-	1e7oSCum2404JYyITaVihsKdTE2L1QamHJ7NYhKfcv3DjoThdYhkdzhaStwuqbFiQJiNcna27an
-	VhkYTuBOmsRIc30rWpBKByp6BB5A==
-X-Received: by 2002:a05:600c:1e1d:b0:47d:73a4:45a7 with SMTP id 5b1f17b1804b1-4830e966bb1mr163915e9.24.1770132512356;
-        Tue, 03 Feb 2026 07:28:32 -0800 (PST)
-Received: from linux.fritz.box ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483050dd79fsm71316005e9.0.2026.02.03.07.28.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 07:28:32 -0800 (PST)
-From: Marco Crivellari <marco.crivellari@suse.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH v4 2/2] rust: add system_percpu() and per-cpu enqueue functions
-Date: Tue,  3 Feb 2026 16:28:17 +0100
-Message-ID: <20260203152818.317806-3-marco.crivellari@suse.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260203152818.317806-1-marco.crivellari@suse.com>
-References: <20260203152818.317806-1-marco.crivellari@suse.com>
+        d=1e100.net; s=20230601; t=1770133112; x=1770737912;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5h76k9K3qFcgY90MofiTdAnuRfQxtWeUNCZad/0hgRE=;
+        b=RtpwszEW58sKEdtqz+Jj/VqO846Os+41cfGeVIgf8BW3jSsD6Xe8VQ6+Fw+48eW+IE
+         XcEhqwZOyihfM5P6iWL7/oPvigJc2smTPdvm0vfiw8R2DaZana6yAoBZifK0b0VJ99h3
+         AVKCrG/BiIo7+5mpL53sqCsTXkvsQNi7KO9FuWm3zuQj0M7FHbsFL7/61JSYzdUBzy8x
+         7k9VVdoT+YdtPgzXIt/6aTPtro9/x0KIPhBwSsQ/3VyJlfPU2B8CD6ctbHPo+UF18dH9
+         eipnV852rEbERt8oqFCFqfRtGq+WnpDqTmMNFvY/Ms/KrZazSxZhwLrb2Do1BjZBUqsi
+         zcvw==
+X-Forwarded-Encrypted: i=1; AJvYcCX/BQgy1S0yOSUwFRhbGSvIYroKoSAo6KupJuMf1BnWUB1c3hSJy/nkUDA9M+Z4c54pgbsfJ2ldD9uod/U7PQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/afSUvPRKTs/yuN9rZbXtemEWs35MqQbe8TZCjwhqj5LPT1Ne
+	FuJ9PtxkXKia4Iy9MfCVRWEWAyYigltDceloofBizBIGGKumVFXmD59GytKbq/zB1VvnIa6UVnW
+	D1qTCG1VSkfFna5RHJA==
+X-Received: from wmby20.prod.google.com ([2002:a05:600c:c054:b0:480:68eb:6c8d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:c16d:b0:47e:e87b:af8 with SMTP id 5b1f17b1804b1-4830e9667d2mr583395e9.21.1770133112080;
+ Tue, 03 Feb 2026 07:38:32 -0800 (PST)
+Date: Tue, 3 Feb 2026 15:38:31 +0000
+In-Reply-To: <DG5FEPO6RCK4.17KOY7PRLNFKV@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260131154016.270385-1-shivamklr@cock.li> <20260131154016.270385-2-shivamklr@cock.li>
+ <DG5FEPO6RCK4.17KOY7PRLNFKV@kernel.org>
+Message-ID: <aYIWd9wzPIRa4gZc@google.com>
+Subject: Re: [PATCH v2 1/3] rust: alloc: Add shrink_to and shrink_to_fit
+ methods to Vec
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Shivam Kalra <shivamklr@cock.li>, cmllamas@google.com, gregkh@linuxfoundation.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com, 
+	urezki@gmail.com
+Content-Type: text/plain; charset="utf-8"
 
-The C code defines 2 new workqueues: system_percpu_wq and system_dfl_wq,
-respectively the futures replacement for system_wq and system_unbound_wq.
+On Tue, Feb 03, 2026 at 04:19:14PM +0100, Danilo Krummrich wrote:
+> On Sat Jan 31, 2026 at 4:40 PM CET, Shivam Kalra wrote:
+> > This implementation guarantees shrinking (unless already optimal),
+> > because the kernel allocators don't support in-place shrinking,
+> > a new allocation is always made.
+> 
+> I'm not sure we should go in this direction. There is a reason why krealloc()
+> does not migrate memory between kmalloc buckets, i.e. the cost of migration vs.
+> memory saving.
+> 
+> For Vmalloc buffers the story is a bit different though. When I wrote vrealloc()
+> I left some TODO comments [1][2].
+> 
+>   (1) If a smaller buffer is requested we can shrink the vm_area, i.e. unmap and
+>       free unused pages.
+> 
+>   (2) If a bigger buffer is requested we can grow the vm_area, i.e. allocate and
+>       map additional pages. (At least as long as we have enough space in the
+>       virtual address space.)
+> 
+> So, I think we should just use A::realloc(), leave the rest to the underlying
+> specific realloc() implementations and address the TODOs in vrealloc() if
+> necessary.
+> 
+> [1] https://elixir.bootlin.com/linux/v6.18.6/source/mm/vmalloc.c#L4162
+> [2] https://elixir.bootlin.com/linux/v6.18.6/source/mm/vmalloc.c#L4192
 
-This change introduce system_percpu(), that use the new system_percpu_wq.
+If kvrealloc() does the right thing, then let's use it.
 
-In order to enqueue on a specific CPU, two new functions have been added
-to the Queue implementation:
-
-    enqueue_cpu()         - that receive a u32 CPU id as 2nd argument
-    enqueue_delayed_cpu() - that receive a u32 CPU id as 3rd argument
-
-system_wq (and so workqueue::system()) will be removed in a future
-release cycle and should not be used.
-
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
----
- rust/kernel/sync/completion.rs |  2 +-
- rust/kernel/workqueue.rs       | 96 +++++++++++++++++++++++++++++++---
- 2 files changed, 91 insertions(+), 7 deletions(-)
-
-diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completion.rs
-index c50012a940a3..ee6aa8f18507 100644
---- a/rust/kernel/sync/completion.rs
-+++ b/rust/kernel/sync/completion.rs
-@@ -38,7 +38,7 @@
- ///             done <- Completion::new(),
- ///         }), GFP_KERNEL)?;
- ///
--///         let _ = workqueue::system().enqueue(this.clone());
-+///         let _ = workqueue::system_percpu().enqueue(this.clone());
- ///
- ///         Ok(this)
- ///     }
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 300cc2bfe012..81a68d5062b7 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -67,7 +67,7 @@
- //! /// This method will enqueue the struct for execution on the system workqueue, where its value
- //! /// will be printed.
- //! fn print_later(val: Arc<MyStruct>) {
--//!     let _ = workqueue::system().enqueue(val);
-+//!     let _ = workqueue::system_percpu().enqueue(val);
- //! }
- //! # print_later(MyStruct::new(42).unwrap());
- //! ```
-@@ -121,11 +121,11 @@
- //! }
- //!
- //! fn print_1_later(val: Arc<MyStruct>) {
--//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 1>(val);
-+//!     let _ = workqueue::system_percpu().enqueue::<Arc<MyStruct>, 1>(val);
- //! }
- //!
- //! fn print_2_later(val: Arc<MyStruct>) {
--//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 2>(val);
-+//!     let _ = workqueue::system_percpu().enqueue::<Arc<MyStruct>, 2>(val);
- //! }
- //! # print_1_later(MyStruct::new(24, 25).unwrap());
- //! # print_2_later(MyStruct::new(41, 42).unwrap());
-@@ -171,13 +171,13 @@
- //! /// This method will enqueue the struct for execution on the system workqueue, where its value
- //! /// will be printed 12 jiffies later.
- //! fn print_later(val: Arc<MyStruct>) {
--//!     let _ = workqueue::system().enqueue_delayed(val, 12);
-+//!     let _ = workqueue::system_percpu().enqueue_delayed(val, 12);
- //! }
- //!
- //! /// It is also possible to use the ordinary `enqueue` method together with `DelayedWork`. This
- //! /// is equivalent to calling `enqueue_delayed` with a delay of zero.
- //! fn print_now(val: Arc<MyStruct>) {
--//!     let _ = workqueue::system().enqueue(val);
-+//!     let _ = workqueue::system_percpu().enqueue(val);
- //! }
- //! # print_later(MyStruct::new(42).unwrap());
- //! # print_now(MyStruct::new(42).unwrap());
-@@ -292,6 +292,39 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
-         }
-     }
- 
-+    /// Enqueues a work item on a specific CPU.
-+    ///
-+    /// This may fail if the work item is already enqueued in a workqueue.
-+    ///
-+    /// The work item will be submitted on cpu_id.
-+    pub fn enqueue_cpu<W, const ID: u64>(&self, w: W, cpu_id: u32) -> W::EnqueueOutput
-+    where
-+        W: RawWorkItem<ID> + Send + 'static,
-+    {
-+        let queue_ptr = self.0.get();
-+
-+        // SAFETY: We only return `false` if the `work_struct` is already in a workqueue. The other
-+        // `__enqueue` requirements are not relevant since `W` is `Send` and static.
-+        //
-+        // The call to `bindings::queue_work_on` will dereference the provided raw pointer, which
-+        // is ok because `__enqueue` guarantees that the pointer is valid for the duration of this
-+        // closure.
-+        //
-+        // Furthermore, if the C workqueue code accesses the pointer after this call to
-+        // `__enqueue`, then the work item was successfully enqueued, and `bindings::queue_work_on`
-+        // will have returned true. In this case, `__enqueue` promises that the raw pointer will
-+        // stay valid until we call the function pointer in the `work_struct`, so the access is ok.
-+        unsafe {
-+            w.__enqueue(move |work_ptr| {
-+                bindings::queue_work_on(
-+                    cpu_id as ffi::c_int,
-+                    queue_ptr,
-+                    work_ptr,
-+                )
-+            })
-+        }
-+    }
-+
-     /// Enqueues a delayed work item.
-     ///
-     /// This may fail if the work item is already enqueued in a workqueue.
-@@ -328,6 +361,42 @@ pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::Enqu
-         }
-     }
- 
-+    /// Enqueues a delayed work item on a specific CPU.
-+    ///
-+    /// This may fail if the work item is already enqueued in a workqueue.
-+    ///
-+    /// The work item will be submitted on cpu_id.
-+    pub fn enqueue_delayed_cpu<W, const ID: u64>(&self, w: W, delay: Jiffies, cpu_id: u32) -> W::EnqueueOutput
-+    where
-+        W: RawDelayedWorkItem<ID> + Send + 'static,
-+    {
-+        let queue_ptr = self.0.get();
-+
-+        // SAFETY: We only return `false` if the `work_struct` is already in a workqueue. The other
-+        // `__enqueue` requirements are not relevant since `W` is `Send` and static.
-+        //
-+        // The call to `bindings::queue_delayed_work_on` will dereference the provided raw pointer,
-+        // which is ok because `__enqueue` guarantees that the pointer is valid for the duration of
-+        // this closure, and the safety requirements of `RawDelayedWorkItem` expands this
-+        // requirement to apply to the entire `delayed_work`.
-+        //
-+        // Furthermore, if the C workqueue code accesses the pointer after this call to
-+        // `__enqueue`, then the work item was successfully enqueued, and
-+        // `bindings::queue_delayed_work_on` will have returned true. In this case, `__enqueue`
-+        // promises that the raw pointer will stay valid until we call the function pointer in the
-+        // `work_struct`, so the access is ok.
-+        unsafe {
-+            w.__enqueue(move |work_ptr| {
-+                bindings::queue_delayed_work_on(
-+                    cpu_id as ffi::c_int,
-+                    queue_ptr,
-+                    container_of!(work_ptr, bindings::delayed_work, work),
-+                    delay,
-+                )
-+            })
-+        }
-+    }
-+
-     /// Tries to spawn the given function or closure as a work item.
-     ///
-     /// This method can fail because it allocates memory to store the work item.
-@@ -934,17 +1003,32 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Pin<KBox<T>>
- {
- }
- 
--/// Returns the system work queue (`system_wq`).
-+/// Returns the per-cpu system work queue (`system_wq`).
- ///
- /// It is the one used by `schedule[_delayed]_work[_on]()`. Multi-CPU multi-threaded. There are
- /// users which expect relatively short queue flush time.
- ///
- /// Callers shouldn't queue work items which can run for too long.
-+///
-+/// Note: `system_wq` will be removed in a future release cycle. Use [`system_percpu_wq`] instead.
- pub fn system() -> &'static Queue {
-     // SAFETY: `system_wq` is a C global, always available.
-     unsafe { Queue::from_raw(bindings::system_wq) }
- }
- 
-+/// Returns the per-cpu system work queue (`system_percpu_wq`).
-+///
-+/// It is the one used by `schedule[_delayed]_work[_on]()`. Multi-CPU multi-threaded. There are
-+/// users which expect relatively short queue flush time.
-+///
-+/// Callers shouldn't queue work items which can run for too long.
-+///
-+/// Note: `system_percpu_wq` will replace `system_wq` in a future release cycle.
-+pub fn system_percpu() -> &'static Queue {
-+    // SAFETY: `system_percpu_wq` is a C global, always available.
-+    unsafe { Queue::from_raw(bindings::system_percpu_wq) }
-+}
-+
- /// Returns the system high-priority work queue (`system_highpri_wq`).
- ///
- /// It is similar to the one returned by [`system`] but for work items which require higher
--- 
-2.52.0
-
+Alice
