@@ -1,367 +1,151 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C60337BE9C;
-	Mon,  2 Feb 2026 16:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DE937E310
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Feb 2026 16:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770048647; cv=none; b=fhfBnEmg4sRsfMUaRWjs8cpz68oP4dZrAQ9cH/LAGUA/W6hBdrITCeMuS7UwR/iGbLhh6ndcdLgvUj3nub5VRlqnbiNbkcyDgMC7y/SVJRQSURSc8TRZiNR5Xj//449CTjSqND+WKfKj7Py2Kb4EHJhfdpl0avGZRV4C2iuSL9Y=
+	t=1770050778; cv=none; b=qx4hfmNYW4b93eMGQE4uHz9myyNVacUjGmgb1ZwifR3E2DV5y3pbf6NQ7VS7AUIL4MbR722iFGmoaRvYxR5dMRAAuuPguAFFkFrZDSseB3q5uP7TQ+f9cF6eqXxqQl47kpoX/XwplPz+WMP5AdaPRx1wGU0fw7USSt/TV0lbqEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770048647; c=relaxed/simple;
-	bh=lgY3xynBWS6qvcthiKOlOb+Ph9aFwmFt+rqDpKZo9aU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VpfxNWeb2wKyqcp9t1qm0RGVVpDKJZy2FDD9UBCowBi1y0dXBPV/pPfY+JZRIqHLe2NE+XHvxyrTe6D3X9Yc4p7CHzPgSNCEt8LO7fLxr+y2E5ILcgXX3mMkiy3+m1aE77I/1p5CZbSIWbinyvps5myhY2m0P3S8MxK2k9Jo9yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=oKR4m0Bx; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1770050778; c=relaxed/simple;
+	bh=Usnw3Gatub1oxTffhK0WXeLvi39STFWovIQLvfzLBCM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jOevJm1msYH8kLN5cJXHSIiq2J2PEH+O5GDIoiv2Re4l6+LQ4WqXjfv+/lfvh+4R+3nxs52OlfZdRhivrMqs4y2ZkLL9jG+UZL6IScQHqm6EbdaXnrA0yDwsuTzNj7coKEIVrFALeVAj5z3MX1CKygn2G0hJ1pgqyAJCaSJ+EJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GFYww28O; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="oKR4m0Bx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770048644;
-	bh=lgY3xynBWS6qvcthiKOlOb+Ph9aFwmFt+rqDpKZo9aU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oKR4m0BxCDsa35AvV87Kxi/T/JWn5q4Ecpk6cUo92FWRlCbwT4HqyHkBMhvEG8RKd
-	 mypR1b41lYkA4yWB2LMkRnEsdKOGY1FfcxlCciJJmkxsa3l3MGxULKYEj0l5NJYdvo
-	 xRejKT2rdZ35FS/eGhoB7hGmQieY+C/v7ghRk32W3+GW6NHMHW9dIl59zBcB4sbaW/
-	 ivFu04K66tIv6RSOCIb2D+jJdBNWrXId91JTE3sV3Os46pRZYO2uuxjL/JVNuce6aC
-	 v+pi6oit7ec+V5OD1u5kt1HZGhLti/0AC+BEWd7pxVjMQNdhRz3vepa+UDyXk+B05P
-	 P1tOI/Pxhz4qg==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 205B217E1274;
-	Mon,  2 Feb 2026 17:10:43 +0100 (CET)
-Date: Mon, 2 Feb 2026 17:10:38 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Danilo
- Krummrich" <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Drew
- Fustini" <fustini@kernel.org>, "Guo Ren" <guoren@kernel.org>, "Fu Wei"
- <wefu@redhat.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
- <ukleinek@kernel.org>, "Michael Turquette" <mturquette@baylibre.com>,
- "Stephen Boyd" <sboyd@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-riscv@lists.infradead.org>,
- <linux-pwm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
-Message-ID: <20260202171038.10e51e18@fedora>
-In-Reply-To: <DFSMRQFIYQPO.1A38Y84XZ1GZO@garyguo.net>
-References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
-	<20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com>
-	<DFSMRQFIYQPO.1A38Y84XZ1GZO@garyguo.net>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GFYww28O"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a8a7269547so44982085ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Feb 2026 08:46:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770050776; x=1770655576; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cvR2bhtkwHdzvpnOA5ZJ9EggNv6gPLY0gAmo2EM4ZPc=;
+        b=GFYww28OQF8Dt84Qq7csZWIgO2vhu9SOwyI6XVChd0pfU96XGkMYq6Agk7NJfC7Dvj
+         zGzbXup7E7vH3ke55ih/rNk62b/v0JI1qY6Fn+p1QHnOp+vCVSUW0vmS6EPQ5nC3aIIV
+         3o0eMRccaZ2eYrrPy9rr6RQ7+bKjr2veApxyv84HbiIpdFC0TT01STJJDcGhnI6N4O0c
+         +rqE3LWL/cMQPP3O+iyshlASpINeJx4EWaaLgrxFsqTvE/OScwkfTmFdBO9EbNG+QkAL
+         9SOYfEhJNTpqubDwx5phWZn5wEpf1ltVrOpngDcEONeGX4zbQRcU2fOUQMKTofsKWOWb
+         jupQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770050776; x=1770655576;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cvR2bhtkwHdzvpnOA5ZJ9EggNv6gPLY0gAmo2EM4ZPc=;
+        b=UxVryBr3eYpkmTaQb7sCKoULduiPPBueoy/CPDuGPHDAFZvBcNp6+vz05QV0R7tCKU
+         H/7cQk/LNoySOejBgjbVIoOLJZ9DA8UXMyJsgBbIjKjug1jvJWOnifIYoV7XAiBxa7j7
+         GwuW/ryRrQ10Zp+OEFAsMN5Dz/JtjNnEc+5s3tG5VwfVBr8x38QB+b7DioXc7ClfT1SR
+         7F+tZzeCkx9YR9szcYm77/TLzFMzNelwyMQOIIZvNdPrGlpAoJYI37WNE6fhlucjXEB/
+         /XdRqEO4SEyaKDhXfCWe9Xs8Sx0Yd9KRgwGljIeq1ntlD/4+L8vXafVZxRGCI5WGuRE1
+         j43w==
+X-Forwarded-Encrypted: i=1; AJvYcCWvOqux11JgwqJq9LuwJdd6Mv4gh5iPziCyNEFPnm5DP6kEqViJdSZwGKEempLi3mhrwK6Ul2gLrypXbfkCSA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFXKuxAInOAq7Lq7XezG/mhUiN07cO6FKTMVohvjNXfFe7pvp2
+	PWS3JHrWcxuA3wwAblR5FjSb5k8jXocgfrU4u4BEZuf4qWAxaIau2jXv
+X-Gm-Gg: AZuq6aJxLgwa4Uyel8tYOHxkiMEJ2wLOONfTj96uBS7IUn+Xxtspbpo/6ce8Q37ee1i
+	GdSgTcdil+YZhbzAVRMOx3x/GZsS8CCH2LroVeFV3C08eh1CXBabDcXRMlpdHh4gTOr+dc8FBJ6
+	Mo7iNp4ksW545EqH/V3xc6IlUsK/7yVj4yCBCabm98LkrU2nk+hOTIaR0Z/sb49o9xIO+QX/mI0
+	wT5TvNbeaqS4tJ3xqUW8bDXWbWmakvXAu7zePhP/J2dbYJPmU7zSSFgzIINSCuFvTq/qnu//9iv
+	/LMLnC3JkGN/BQpN5S+bN0jlybQVmPS+CwG6ZpFygd8biGXTf805xuuhor55GIAJTYh0TI9K+ze
+	bUB6PsvtE+rmgzKjaPMLTQW/11+3ciiV20p1UYRzyGvU1fUBSc4l/GUZXs4UXtstp1yI5xt03IG
+	ZUDPI=
+X-Received: by 2002:a17:903:2b07:b0:29d:7b9b:515b with SMTP id d9443c01a7336-2a8d96b1051mr138969065ad.20.1770050776360;
+        Mon, 02 Feb 2026 08:46:16 -0800 (PST)
+Received: from misys ([58.120.241.145])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a8bd74e9bbsm129294195ad.95.2026.02.02.08.46.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 08:46:16 -0800 (PST)
+From: HeeSu Kim <mlksvender@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@google.com,
+	charmitro@posteo.net,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	mlksvender@gmail.com,
+	nathan@kernel.org,
+	nsc@kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH v2] rust: Makefile: bound rustdoc workaround to affected versions
+Date: Tue,  3 Feb 2026 10:46:13 +0900
+Message-ID: <20260203014613.2708234-1-mlksvender@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com>
+References: <CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 19 Jan 2026 14:20:43 +0000
-"Gary Guo" <gary@garyguo.net> wrote:
+On Mon, 3 Feb 2026, Miguel Ojeda wrote:
+> On Mon, Feb 3, 2025 at 1:09 AM HeeSu Kim <mlksvender@gmail.com> wrote:
+> >
+> > The `-Cunsafe-allow-abi-mismatch=fixed-x18` workaround was added to
+> > handle a rustdoc bug (rust-lang/rust#144521) where target modifiers
+> > were not properly saved.
+> >
+> > This bug was fixed in Rust 1.90.0 (rust-lang/rust#144523). Restrict
+>
+> We tend to use `Link:` tags for these. Typically we write a line like:
+>
+>     Link: https://github.com/rust-lang/rust/issues/144521
+>
+> If you want to reference it inline, you can also just put the full URL.
+>
+> > Suggested-by: Gary Guo <gary@garyguo.net>
+>
+> Please add a `Link:` tag after this one pointing to his message.
+>
+> > Fixes: abbf9a449441 ("rust: workaround `rustdoc` target modifiers bug")
+>
+> I am not so sure this is a fix -- after all, when you use `1.88` or
+> `1.89`, nothing would change. So it is more of a feature? i.e. the
+> ability to use `1.90`.
+>
+> But I guess it could also be understood as "we should have applied
+> this only for affected versions to begin with", but then it would be
+> from a "code documentation" perspective, which is fine, but it is not
+> something that e.g. we would need to backport. So I am leaning towards
+> not having a `Fixes:` here.
+>
+> And this has another issue (though a different patch): the `sanitizer`
+> modifier.
+>
+> By the way, I wonder if we would want at least a `rustc-max-version`
+> (or an `-until` variant, or whatever) so that we can easily express
+> that range in a single call, and document the bounds together (I could
+> imagine that we could end up with a few of these over time, and then
+> they start to shift versions, they get spread across lines, etc.).
+>
+> Perhaps the Kbuild maintainers can comment on whether that would be a
+> good idea or whether they already have something.
+>
+> Cheers,
+> Miguel
 
-> On Wed Jan 7, 2026 at 3:09 PM GMT, Daniel Almeida wrote:
-> > The current Clk abstraction can still be improved on the following issues:
-> >
-> > a) It only keeps track of a count to clk_get(), which means that users have
-> > to manually call disable() and unprepare(), or a variation of those, like
-> > disable_unprepare().
-> >
-> > b) It allows repeated calls to prepare() or enable(), but it keeps no track
-> > of how often these were called, i.e., it's currently legal to write the
-> > following:
-> >
-> > clk.prepare();
-> > clk.prepare();
-> > clk.enable();
-> > clk.enable();
-> >
-> > And nothing gets undone on drop().
-> >
-> > c) It adds a OptionalClk type that is probably not needed. There is no
-> > "struct optional_clk" in C and we should probably not add one.
-> >
-> > d) It does not let a user express the state of the clk through the
-> > type system. For example, there is currently no way to encode that a Clk is
-> > enabled via the type system alone.
-> >
-> > In light of the Regulator abstraction that was recently merged, switch this
-> > abstraction to use the type-state pattern instead. It solves both a) and b)
-> > by establishing a number of states and the valid ways to transition between
-> > them. It also automatically undoes any call to clk_get(), clk_prepare() and
-> > clk_enable() as applicable on drop(), so users do not have to do anything
-> > special before Clk goes out of scope.
-> >
-> > It solves c) by removing the OptionalClk type, which is now simply encoded
-> > as a Clk whose inner pointer is NULL.
-> >
-> > It solves d) by directly encoding the state of the Clk into the type, e.g.:
-> > Clk<Enabled> is now known to be a Clk that is enabled.
-> >
-> > The INVARIANTS section for Clk is expanded to highlight the relationship
-> > between the states and the respective reference counts that are owned by
-> > each of them.
-> >
-> > The examples are expanded to highlight how a user can transition between
-> > states, as well as highlight some of the shortcuts built into the API.
-> >
-> > The current implementation is also more flexible, in the sense that it
-> > allows for more states to be added in the future. This lets us implement
-> > different strategies for handling clocks, including one that mimics the
-> > current API, allowing for multiple calls to prepare() and enable().
-> >
-> > The users (cpufreq.rs/ rcpufreq_dt.rs) were updated by this patch (and not
-> > a separate one) to reflect the new changes. This is needed, because
-> > otherwise this patch would break the build.
-> >
-> > Link: https://crates.io/crates/sealed [1]
-> > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > ---
-> >  drivers/cpufreq/rcpufreq_dt.rs |   2 +-
-> >  drivers/gpu/drm/tyr/driver.rs  |  31 +---
-> >  drivers/pwm/pwm_th1520.rs      |  17 +-
-> >  rust/kernel/clk.rs             | 399 +++++++++++++++++++++++++++--------------
-> >  rust/kernel/cpufreq.rs         |   8 +-
-> >  5 files changed, 281 insertions(+), 176 deletions(-)
-> >
-> > diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-> > index 31e07f0279db..f1bd7d71ed54 100644
-> > --- a/drivers/cpufreq/rcpufreq_dt.rs
-> > +++ b/drivers/cpufreq/rcpufreq_dt.rs
-> > @@ -41,7 +41,7 @@ struct CPUFreqDTDevice {
-> >      freq_table: opp::FreqTable,
-> >      _mask: CpumaskVar,
-> >      _token: Option<opp::ConfigToken>,
-> > -    _clk: Clk,
-> > +    _clk: Clk<kernel::clk::Unprepared>,
-> >  }
-> >  
-> >  #[derive(Default)]
-> > diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-> > index 09711fb7fe0b..5692def25621 100644
-> > --- a/drivers/gpu/drm/tyr/driver.rs
-> > +++ b/drivers/gpu/drm/tyr/driver.rs
-> > @@ -2,7 +2,7 @@
-> >  
-> >  use kernel::c_str;
-> >  use kernel::clk::Clk;
-> > -use kernel::clk::OptionalClk;
-> > +use kernel::clk::Enabled;
-> >  use kernel::device::Bound;
-> >  use kernel::device::Core;
-> >  use kernel::device::Device;
-> > @@ -37,7 +37,7 @@ pub(crate) struct TyrDriver {
-> >      device: ARef<TyrDevice>,
-> >  }
-> >  
-> > -#[pin_data(PinnedDrop)]
-> > +#[pin_data]
-> >  pub(crate) struct TyrData {
-> >      pub(crate) pdev: ARef<platform::Device>,
-> >  
-> > @@ -92,13 +92,9 @@ fn probe(
-> >          pdev: &platform::Device<Core>,
-> >          _info: Option<&Self::IdInfo>,
-> >      ) -> impl PinInit<Self, Error> {
-> > -        let core_clk = Clk::get(pdev.as_ref(), Some(c_str!("core")))?;
-> > -        let stacks_clk = OptionalClk::get(pdev.as_ref(), Some(c_str!("stacks")))?;
-> > -        let coregroup_clk = OptionalClk::get(pdev.as_ref(), Some(c_str!("coregroup")))?;
-> > -
-> > -        core_clk.prepare_enable()?;
-> > -        stacks_clk.prepare_enable()?;
-> > -        coregroup_clk.prepare_enable()?;
-> > +        let core_clk = Clk::<Enabled>::get(pdev.as_ref(), Some(c_str!("core")))?;  
-> 
-> Ah, more turbofish.. I'd really want to avoid them if possible.
-> 
-> Any disadvantage on just ask the user to chain `.get().prepare_enable()?`? This
-> way it is also clear that some action is performed.
+Thanks for the detailed feedback.
 
-I've just disc
+For v3, I will:
+- Use full Link: tags for GitHub references instead of shorthand
+- Add Link: tag after Suggested-by pointing to Gary's lore message
+- Remove the Fixes: tag
+- Add Cc: stable@vger.kernel.org # Useful in 6.18.y and later.
 
-> 
-> Alternatively, I think function names that mimick C API is also fine, e.g.
-> `Clk::get_enabled`.
-> 
-> > +        let stacks_clk = Clk::<Enabled>::get_optional(pdev.as_ref(), Some(c_str!("stacks")))?;
-> > +        let coregroup_clk = Clk::<Enabled>::get_optional(pdev.as_ref(), Some(c_str!("coregroup")))?;
-> >  
-> >          let mali_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c_str!("mali"))?;
-> >          let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c_str!("sram"))?;
-> > @@ -145,17 +141,6 @@ impl PinnedDrop for TyrDriver {
-> >      fn drop(self: Pin<&mut Self>) {}
-> >  }
-> >  
-> > -#[pinned_drop]
-> > -impl PinnedDrop for TyrData {
-> > -    fn drop(self: Pin<&mut Self>) {
-> > -        // TODO: the type-state pattern for Clks will fix this.
-> > -        let clks = self.clks.lock();
-> > -        clks.core.disable_unprepare();
-> > -        clks.stacks.disable_unprepare();
-> > -        clks.coregroup.disable_unprepare();
-> > -    }
-> > -}
-> > -
-> >  // We need to retain the name "panthor" to achieve drop-in compatibility with
-> >  // the C driver in the userspace stack.
-> >  const INFO: drm::DriverInfo = drm::DriverInfo {
-> > @@ -181,9 +166,9 @@ impl drm::Driver for TyrDriver {
-> >  
-> >  #[pin_data]
-> >  struct Clocks {
-> > -    core: Clk,
-> > -    stacks: OptionalClk,
-> > -    coregroup: OptionalClk,
-> > +    core: Clk<Enabled>,
-> > +    stacks: Clk<Enabled>,
-> > +    coregroup: Clk<Enabled>,
-> >  }
-> >  
-> >  #[pin_data]
-> > diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-> > index 043dc4dbc623..f4d03b988533 100644
-> > --- a/drivers/pwm/pwm_th1520.rs
-> > +++ b/drivers/pwm/pwm_th1520.rs
-> > @@ -23,7 +23,7 @@
-> >  use core::ops::Deref;
-> >  use kernel::{
-> >      c_str,
-> > -    clk::Clk,
-> > +    clk::{Clk, Enabled},
-> >      device::{Bound, Core, Device},
-> >      devres,
-> >      io::mem::IoMem,
-> > @@ -90,11 +90,11 @@ struct Th1520WfHw {
-> >  }
-> >  
-> >  /// The driver's private data struct. It holds all necessary devres managed resources.
-> > -#[pin_data(PinnedDrop)]
-> > +#[pin_data]
-> >  struct Th1520PwmDriverData {
-> >      #[pin]
-> >      iomem: devres::Devres<IoMem<TH1520_PWM_REG_SIZE>>,
-> > -    clk: Clk,
-> > +    clk: Clk<Enabled>,
-> >  }
-> >  
-> >  impl pwm::PwmOps for Th1520PwmDriverData {
-> > @@ -299,13 +299,6 @@ fn write_waveform(
-> >      }
-> >  }
-> >  
-> > -#[pinned_drop]
-> > -impl PinnedDrop for Th1520PwmDriverData {
-> > -    fn drop(self: Pin<&mut Self>) {
-> > -        self.clk.disable_unprepare();
-> > -    }
-> > -}
-> > -
-> >  struct Th1520PwmPlatformDriver;
-> >  
-> >  kernel::of_device_table!(
-> > @@ -326,9 +319,7 @@ fn probe(
-> >          let dev = pdev.as_ref();
-> >          let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
-> >  
-> > -        let clk = Clk::get(dev, None)?;
-> > -
-> > -        clk.prepare_enable()?;
-> > +        let clk = Clk::<Enabled>::get(dev, None)?;
-> >  
-> >          // TODO: Get exclusive ownership of the clock to prevent rate changes.
-> >          // The Rust equivalent of `clk_rate_exclusive_get()` is not yet available.
-> > diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
-> > index d192fbd97861..6323b40dc7ba 100644
-> > --- a/rust/kernel/clk.rs
-> > +++ b/rust/kernel/clk.rs
-> > @@ -80,17 +80,78 @@ fn from(freq: Hertz) -> Self {
-> >  mod common_clk {
-> >      use super::Hertz;
-> >      use crate::{
-> > -        device::Device,
-> > +        device::{Bound, Device},
-> >          error::{from_err_ptr, to_result, Result},
-> >          prelude::*,
-> >      };
-> >  
-> > -    use core::{ops::Deref, ptr};
-> > +    use core::{marker::PhantomData, mem::ManuallyDrop, ptr};
-> > +
-> > +    mod private {
-> > +        pub trait Sealed {}
-> > +
-> > +        impl Sealed for super::Unprepared {}
-> > +        impl Sealed for super::Prepared {}
-> > +        impl Sealed for super::Enabled {}
-> > +    }  
-> 
-> I guess it's time for me to work on a `#[sealed]` macro...
-> 
-> > +
-> > +    /// A trait representing the different states that a [`Clk`] can be in.
-> > +    pub trait ClkState: private::Sealed {
-> > +        /// Whether the clock should be disabled when dropped.
-> > +        const DISABLE_ON_DROP: bool;
-> > +
-> > +        /// Whether the clock should be unprepared when dropped.
-> > +        const UNPREPARE_ON_DROP: bool;
-> > +    }
-> > +
-> > +    /// A state where the [`Clk`] is not prepared and not enabled.  
-> 
-> Do we want to make it explicit that it's "not known to be prepared or
-> enabled"?
-> 
-> > +    pub struct Unprepared;
-> > +
-> > +    /// A state where the [`Clk`] is prepared but not enabled.
-> > +    pub struct Prepared;
-> > +
-> > +    /// A state where the [`Clk`] is both prepared and enabled.
-> > +    pub struct Enabled;
-> > +
-> > +    impl ClkState for Unprepared {
-> > +        const DISABLE_ON_DROP: bool = false;
-> > +        const UNPREPARE_ON_DROP: bool = false;
-> > +    }
-> > +
-> > +    impl ClkState for Prepared {
-> > +        const DISABLE_ON_DROP: bool = false;
-> > +        const UNPREPARE_ON_DROP: bool = true;
-> > +    }
-> > +
-> > +    impl ClkState for Enabled {
-> > +        const DISABLE_ON_DROP: bool = true;
-> > +        const UNPREPARE_ON_DROP: bool = true;
-> > +    }
-> > +
-> > +    /// An error that can occur when trying to convert a [`Clk`] between states.
-> > +    pub struct Error<State: ClkState> {
-> > +        /// The error that occurred.
-> > +        pub error: kernel::error::Error,
-> > +
-> > +        /// The [`Clk`] that caused the error, so that the operation may be
-> > +        /// retried.
-> > +        pub clk: Clk<State>,
-> > +    }  
-> 
-> I wonder if it makes sense to add a general `ErrorWith` type for errors that
-> carries error code + data.
-> 
-> Best,
-> Gary
+Regarding rustc-max-version, it would be useful for reading the code.
+I'll wait for Kbuild maintainers' reply.
 
+Best regards,
+HeeSu Kim
