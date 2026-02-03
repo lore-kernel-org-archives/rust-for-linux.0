@@ -1,80 +1,80 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5655D2D2493
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 17:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778063254AE
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 17:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770139597; cv=pass; b=lMKt7bR/EEwQ+y+mIYt2YGBw0+53yHLPwgTj1vPCl7xvO7Ip1eJHjXe2WaxwcwnSqSHYt/Y9h0936Gy46aAM9ugOh5H/QJX9SNwuVBg/AhyLwiPmNbJsxjbteJ/cOpuwtj81oolFa1k30OZHj/qdwNFsZxm/SIZIeB+74Q6RSlM=
+	t=1770140288; cv=pass; b=cZYOwy5L82LkFxpzbdVWnl2wqfE1PbSP62M7afZG9gbk+4LDfUB05ucZdQRu2TncarpzIUDXYDIRuDu0Vov52Ouh2TUTZ82IrSv1jxGipIggbtnpJGCtz6M7CNzdbXQRdDPNZRBI34QmUYyFGqILgW/B8hlmu0dSnEtjJx79+6M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770139597; c=relaxed/simple;
-	bh=BVSKK1sQZS2pD9gylNFVpwd3l9Oh8g0ThiOWKnSHB+8=;
+	s=arc-20240116; t=1770140288; c=relaxed/simple;
+	bh=4YzknxHBfsROI3oe/0Gw8Zry6luJZkfAyc2iFek3R2c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HRzOxyiJdOPhXhC7JYhKmIXbckjc+23bZaFdE+iUyGgcYeo03j5xRRuj/OXER7tpG7GxGdb2f7z6Pgm2XI1nmfQxabEZi/UHliECrWPHSbBCKD2ifFuKoMN3UNhK6u1Kmio3/yu/ZeP5wwvubnF4YQsl1OQR7mpm1Cqv+oYv4vE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cRVtDvHK; arc=pass smtp.client-ip=209.85.208.43
+	 To:Cc:Content-Type; b=CeccdDFj2lHQl8xguah6xyPx3VZQgnqga3aWz9iFhLuHmeUS4IacqyXejFJsfZkkom2K2g/LUwtdBpuoOxpwQZNM4vat/hE+f9vJmtasj9MTHuxu3QGvIPBDXufQjIn/MPWqmPB9PDOCrvalti6nFkWJYqATtOIfgT1E4TYDGeM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0j6yyqgN; arc=pass smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cRVtDvHK"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-65821afe680so12320a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 09:26:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770139595; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0j6yyqgN"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-652fe3bf65aso12157a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 09:38:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770140285; cv=none;
         d=google.com; s=arc-20240605;
-        b=VZuAq0k4rBbsmN0PJNWRuDZO8oDd7SnlaUX076dWTw97+agiEff0saP/99fJ/EfNJb
-         3nbLjtfHULyB7bjNlLk8Iq9C1PPCN2frTYot0sFYPuVkY/zmcz/BteUFEgpr1QPyiZxi
-         NC0kQuFXC73gYp4VXTjrWdQQKh8uS8+7hrfUE938DLiIESYZ/veeJuaaXB5THeDVMbQo
-         +jn9sJyIF5HW2pBlJKPZKQ+o8UbROfhjTWsipfThK6vkG11njtythjf9SjKdkeCHZyrj
-         rl0ubQJW/LgPI3R68pMYCWqQFL77Cktbwx9kQ44xJ7u1mnlvi6n2bdQHoZl0beyOJpNi
-         gvug==
+        b=PvtjL0rWIixcqhMfF7TTcngZxwHJCTqDGTYywJpddrdHEtwN+UfUZaqA7W19Y/vTpW
+         UDV5z5K9w38aV0jt/pPnvlGCCHjf/q2YSmXznQpibYK45mhCO3d1N82njqRLpMAS2O7A
+         1sHivzJGbylGogOut4lqal4D6lFWDyt81UuOk/UDTvUqFCZYr+MjpduLiLuSoVCv5qw+
+         wtHpukitw8N1cM2yhg0U07G2E9NBuWsQeFx4sSrbkKPeQwAzalGfFgUZIEYMCSRq0Zc3
+         7rY54aTKhXHM8GAPlhb8GGu4ZTQxp7twBujkxH7LapMBdNY4CiI0v46Qy2g6/GPanzcE
+         VA9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=TNaiJtMpISY5S0HDy1ONbkfjtxu0QVlIHfgawUN5ajQ=;
-        fh=Hx3m9YYSeTLs5WpHYje1ba1x6UNxZFnVDhIiP+iQUIc=;
-        b=iZS2TcCT6L7fjxZ7gP02hVUtCrHVEwNQcKI5rp8DJkYdQSuX8j2tSsphzVpMEIBLb8
-         /rgLli8xcPgY4JjenwJ8eIBdaZgbeWGfi/A/fE4W+79VfppCU48exrm3XuVe6tsx+rvp
-         MSm8MWvCQiM3r84OZrWWNm7RD2WRBh/v9k7Hj9RH0JG1jJ9+0IUkaV8BKU3q9yha8WqP
-         Zbf3dctZVVYzBiPzDRuaEo4NcBJCduBLy66RWIu9RAGlV45weGJptBgoHyUeVQd5L8Vs
-         W11pc6vgyk4XWTbDsplgGwkJrVLHG0sTxUwm8xwOkuwR3HGYoKcBwTWyPIMIc1wcJMiH
-         /yWw==;
+        bh=j4q33YjRLQ15ajYRux/jBaFbRViw55ylugUQtfD14xM=;
+        fh=flppQgVHnqleLuLklROUHSHLmiFzUodOTOCu+7aNT4I=;
+        b=GtJGJmHkWPWG/9EXjTzwDZATnYOcCn7zJ21ULtNGd2oPR1JJaE7JRV6R4ZLp0q+NRF
+         1+L6g8QQ5wVmFm18og6vWyJWfTJ4Jqnb2mTQbH0FSvQQARBVGbAIBJZcsux0XRq8A/U2
+         YORAGz20ejbgv21kynT3Gw0KLaMppsIZ495jBWvNz4FegG4BRXhmv7MEKmuUr/6EAB7h
+         alP1T30YkbJrRQFM5DJ9ozGZXNb5bHbOfGKgzwf7sSHbX/jlcRWfAYva/IIx/JV2lVl1
+         +xSIZ9mBux/MTN5o0kipavuIXRsWlw5AsqKnokQQdJqAldD/L7hCRyx0dANRQ8UYL5PZ
+         rttw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770139595; x=1770744395; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1770140285; x=1770745085; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TNaiJtMpISY5S0HDy1ONbkfjtxu0QVlIHfgawUN5ajQ=;
-        b=cRVtDvHKZ1hdi45l0mFK8144ns71gJBBgjK3D1LMEfl2bvFjbt/ehm0NEStPMHiJyp
-         iJ/lmieawSJefy6IZqH8V0Gn0u2OFKSr/u5OKQxUBdkBO4XdMGy9EnGz02PSJstaQTkW
-         xzBcGKsgsUe609B6tuYJWxirpt2S6SkaLwWELFo/26Ok/yGFEL+XxSeS84fQ/jasDoBy
-         tYykMdPrUrS0ZkalnHJndY9czeea81uLfyPZXPtCZalQu4tlrRDKLCRtUoaA45FfXJYE
-         /VpQovQlN1c+CtRlqw98f3jIKUXXCm5zHQjF7/c8KZTRRU2bBlwv3cIeLgyCy8ZEYmTH
-         VNlg==
+        bh=j4q33YjRLQ15ajYRux/jBaFbRViw55ylugUQtfD14xM=;
+        b=0j6yyqgNgfMuyQjAhaiZKIEp76zEYzKPM7YtpLIPKFoJRpL2eeHqQTfXu2kippPwrl
+         9AUpt6POE/3ryJYTH9PjKRHhv1wZ1dKD7nZ+0/dcbKmlpKz+22q571dOV2ZA4Vv8hSjE
+         jyVcOTpT/xMFALZ6h/rbSouqDalRfUOlYOlB/xtJ7aCvl5vpTZUpNTcikPiAvhVqTTwl
+         kKw33KIt2eNk3/Ts9mzJjCAovvyP7yxZJc59t+f5cPW0Yno9QsAt1F8MZMUb3QMRp8JX
+         zdDgDAYR2iSO/l3vgq539E6fBsYhQTDelvk9EW9cYOfxd+ScXREVhzxZ/KPL8VMiAZFT
+         6oJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770139595; x=1770744395;
+        d=1e100.net; s=20230601; t=1770140285; x=1770745085;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TNaiJtMpISY5S0HDy1ONbkfjtxu0QVlIHfgawUN5ajQ=;
-        b=Gujk6j5FhdE8s0NWA2DPBwPL/NVAT+SgCcawxS+Zj465d1AlW0e+1r0oECcvbI8aK0
-         pSiVx9foauEiHBoU0n5hz5htWTUYcHYzWBV887JqJF5bYrxHThnqQ0it9/WZ8jhlkwzS
-         xFmRElPomrkPNJjJ9FR45qulfq+KlIBNXx7nbtUw/kyHaLgBeU180Jpw+3Fau2JYs928
-         kYI+pjRG3FFjLjolk3HlUXBDjHUbdw03uMMGZxz6F+p0DN6JthkrHPQjUFqaaJ6wyPwv
-         IcEZOppCnigxyoizlD9lBcDc8TSzzdxWMBtRNvMpCicBxqjc6iM/2KNJKrjYHEh+0pqv
-         wcnA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwnyWdNO2L1A4GPlFt2na7/nXGX8vOG3lpuXgae6yLFhJ1mZACJx8jZC8/3UFKOmva32dTubpf/E9duTxIow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWrePieEsPna+L5GO5hhQPsLzJog0xIY83s9sDmrfES1fn3Lg7
-	QXLlcgOhohGgeFhvftfXtcS4RUptXIlgSrBLc8wGPdA/jPSN5UO/LnBJt2V6+XoxDKGLsKWnYyo
-	c46Kvrr3VZA7jHEw9GN6evCahYiH9zQ21uNnkFtzo
-X-Gm-Gg: AZuq6aLTC0K9RVCqmZbLCXBKV7avNcGaB2660+nbJlHCtoLFc3t9z2LWDkU8BitYNI2
-	fcvS3oeIY4bCAfl4Hm3BxfuEbYhIEJkHBqUG10h6FQ4iMQ/EY71E7pez/L08UqQN0paLII33eyZ
-	0Zf+X7EU/xWxf5ggLXwzfGH1RfV35YEffYtKlfvnF0N637iPzB1aClLNHIsbdkEx05OfY3eKqzL
-	NrnBF4OBvb8sUyEq8Pdugk7FPEe0z7Q+HRcOmuT5rTYoy/1JOkaIkfkgtoAk3dyc6BQSvVFZ/yq
-	oDncvj3qL8TebuhDwCQhZ+FJcw==
-X-Received: by 2002:a05:6402:3098:b0:64f:8fc5:251c with SMTP id
- 4fb4d7f45d1cf-6594a353279mr5513a12.18.1770139594461; Tue, 03 Feb 2026
- 09:26:34 -0800 (PST)
+        bh=j4q33YjRLQ15ajYRux/jBaFbRViw55ylugUQtfD14xM=;
+        b=XPQTZ7s6XTLW3+Kvy8oe4+JTHvPEtn7ZWKKshYzEh6HT5tHw7GFjWk+h3Ifsr0i8G8
+         830DLaj+yQpL7xtlhKiC1gPBj9dAmr5TOidjVZpVaFeZpMH31PZBUh9hOhNnmDIrm+k7
+         f6j7zKI7CC5OXwoh56DCp4LN7vw2E9GybJ6kB7vMXUsG7srSDdK8aRYDsXwReiGKkE9v
+         ZgqPwk97yP23XPG/yNc5ii5sxG657HcOSWohx+W1z38Xo9hrhDYcuNU/hedtgID+sazP
+         06dFsY0m+gH3yMYgmhTdov4mkGLZ3LvArev2g+DliIVkaoG+Px3vWnn2xv1VTpoaR2iB
+         XS/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUGxejHLvjFgX4R86HMvk44PYCJBny2roJ8dvfELiQk/nQuS9cdGzwIfyZlDkrkCv8L3wqy7w30uEgadxnkDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yypgt7PRMcOk6vKhs6WyvUztOr9mgv5s0Gw5d2sdMpmxXU8G4D4
+	93KkKGj06bHOXmc7CMMzxkERmunVPlOY2t8ZUWBbgZsT7nwNQsR89Jm34YenzIS8STX4JzgzyMk
+	cGYwgtj6d3UDwKabJsNOcV5HXwhq20/na05QfdM8K
+X-Gm-Gg: AZuq6aLKp8jMM2EGzwLPv1ekhUL4ksEPS5aaOgdqN5MUyEejDhrPxdVRP161VeIp5Lf
+	JSJXQshE5M8KDaYdEW1KfvxztFYytw1tMtcA4SWQKieFKk3vgZx2JBc4MWJYuRzjWMv9F4Kyf5N
+	cqscA1kWKmWCcDsfVpRiIKLOKuuq0NaGUaC0O7YCuNPqiJa9nIoXMPYcgTNOcE463hb/+B826Ft
+	htyo//C8XXo1SDLu86NizbFntgQ2zTk6A/HqewgywrLD+Ott5NMFI+PeI0mNvJ0gv/RHB9TzJ1j
+	suLMmJMgUVjU75/Ted6RfDVBJA==
+X-Received: by 2002:aa7:d355:0:b0:658:bd2d:929c with SMTP id
+ 4fb4d7f45d1cf-6594a33abd0mr5612a12.12.1770140284581; Tue, 03 Feb 2026
+ 09:38:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,23 +83,20 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260203-qcom-socinfo-v2-0-d6719db85637@google.com>
  <20260203-qcom-socinfo-v2-6-d6719db85637@google.com> <2026020315-conch-trickle-2d84@gregkh>
- <DG5H119NY68Q.TWLCK3W36CM5@kernel.org> <2026020347-sneak-embark-1b36@gregkh>
- <DG5HGZG62NNS.18BCSOO6TR70G@kernel.org> <DG5HX5K2T371.3JGY5PQIV554K@garyguo.net>
-In-Reply-To: <DG5HX5K2T371.3JGY5PQIV554K@garyguo.net>
+In-Reply-To: <2026020315-conch-trickle-2d84@gregkh>
 From: Matthew Maurer <mmaurer@google.com>
-Date: Tue, 3 Feb 2026 09:26:23 -0800
-X-Gm-Features: AZwV_Qh4ac161-isyLFn5NPWx7VX7FdmQ6d8uiNuPee-beDbNAjAyPPpvPjCwQs
-Message-ID: <CAGSQo01qf4i6LDyi1umH6-6vjiE-VrFc1dd+qLxDXkjiYLcOCA@mail.gmail.com>
+Date: Tue, 3 Feb 2026 09:37:50 -0800
+X-Gm-Features: AZwV_Qib0Xwq7jvSK8YoP13KkCRLNUErONN49KXCI4YsJMCfMFPdjadu_r-_mhs
+Message-ID: <CAGSQo03Ok1sv4myQk2Ch68rET19ypq4Mm-=82Ue-T-2Z8kaGmA@mail.gmail.com>
 Subject: Re: [PATCH v2 6/6] soc: qcom: socinfo: Convert to Rust
-To: Gary Guo <gary@garyguo.net>
-Cc: Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
 	Satya Durga Srinivasu Prabhala <satyap@quicinc.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
 	Michal Wilczynski <m.wilczynski@samsung.com>, Dave Ertman <david.m.ertman@intel.com>, 
 	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Trilok Soni <tsoni@quicinc.com>, 
 	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
@@ -108,87 +105,149 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundati
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 3, 2026 at 9:17=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
+On Tue, Feb 3, 2026 at 8:28=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Tue Feb 3, 2026 at 4:56 PM GMT, Danilo Krummrich wrote:
-> > On Tue Feb 3, 2026 at 5:48 PM CET, Greg Kroah-Hartman wrote:
-> >> On Tue, Feb 03, 2026 at 05:35:24PM +0100, Danilo Krummrich wrote:
-> >>> On Tue Feb 3, 2026 at 5:28 PM CET, Greg Kroah-Hartman wrote:
-> >>> > On Tue, Feb 03, 2026 at 03:46:35PM +0000, Matthew Maurer wrote:
-> >>> >> +impl Smem {
-> >>> >> +    pub(crate) fn access<'a>(&'a self, dev: &'a Device<Bound>) ->=
- Option<&'a Mmio> {
-> >>> >> +        if *dev !=3D *self.dev {
-> >>> >
-> >>> > How can this ever happen?
-> >>>
-> >>> You are right, since this resource is local to the driver, it should =
-not be
-> >>> possible to have another devce from somewhere else (especially not a
-> >>> &Device<Bound>).
-> >>>
-> >>> However, from a Rust perspective I think not having this check would =
-be unsound,
-> >>> as the method by itself would not be able guarantee correct behavor a=
-nymore.
-> >>>
-> >>
-> >> I don't really understand this last sentence, sorry.  If this is "not
-> >> possible" why would that at the same time be "unsound"?
+> On Tue, Feb 03, 2026 at 03:46:35PM +0000, Matthew Maurer wrote:
+> > Convert the socinfo driver to Rust for a number of improvements:
+> > * Accessing IO mapped regions through the IO subsystem, rather than
+> >   through regular memory accesses.
+>
+> That's good, but the C code could also be "fixed" to do this, right?
 
-The code as it stands doesn't do anything that would grant `Smem`
-objects to something that exceeds the lifetime of the device. The goal
-of bindings APIs like these are that it should be impossible for
-someone to write Rust code without the word `unsafe` in it that breaks
-its invariants. Without that check, someone could do:
+Yes, nothing stops the C code from being fixed to do all of this - all
+of this is representable in C code.
 
-let smem =3D Smem::get(dev)?;
-let f =3D move |offset| smem.try_copy(offset);
-some_other_driver_or_subsystem(f);
+>
+> > * Binds the device as an auxiliary device rather than a platform device=
+,
+> >   ensuring the mapped IO regions cannot be accessed after the smem
+> >   device is removed.
+>
+> I'm all for this, but is this really an aux device?  What is the
+> "parent" device of this aux device?  Where are the "siblings"?  What
+> does sysfs look like before/after this?
 
-That other region of the code would now have ownership over that
-function, and expect to be able to call it safely. We're not doing
-that, but we're trying to design the unsafe API in bindings so that
-you can't mess it up even if you wanted to.
+The parent of this aux device is qcom-smem. In the prior
+implementation, qcom-smem loads this device through
+`platform_device_register_data` and `platform_device_unregister`,
+holding a reference in its global struct to release it when being
+released. The probe table for the qcom-socinfo driver was empty, so it
+would not probe without an explicit registration.
 
+>
+> > * Adds bounds-checking to all accesses, hardening against a repeat of
+> >   CVE-2024-58007
+>
+> How do you now "know" that the bounds checking is correct?  The C
+> version also had this, it was just "not correct" :)
+
+While it's technically possible for the Rust code to have an error
+here, the error would not be in the driver, but in the kernel crate.
+The advantage here is that the bounds checking is all centralized, so
+we get it right once, for the entire kernel, instead of needing to get
+it right every time.
+
+>
+> And which accesses are you referring to?  From userspace?  From the
+> kernel?  That CVE looks very odd, it's probably not even a real one and
+> should be revoked, right?
+>
+
+That CVE looks like this:
+1. qcom_smem_get returns an object of size N
+2. When initializing the `serial_number` field of
+soc_device_attributes, the offset of the serial number field was
+checked as <=3D N, rather than the *end* of the serial number field.
+3. This resulted in the driver exposing through sysfs whatever data
+was mapped afterwards, interpreted as a number.
+
+I agree that the severity seems oddly high, given that in practice,
+this will expose the remainder of the IO mapped page - I don't believe
+it crosses a page boundary, so it can't even *really* leak anything.
+
+>
+> > diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
+> > index fef840b5457407a85051ded0e835430dbebfe8bb..dcea2d7f37067b0b6f801b3=
+d2b457422ad9f342c 100644
+> > --- a/drivers/soc/qcom/smem.c
+> > +++ b/drivers/soc/qcom/smem.c
+> > @@ -4,6 +4,7 @@
+> >   * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+> >   */
 > >
-> > It would be considered unsound because the function itself can not guar=
-antee
-> > that it does not produce undefined behavior, i.e. it would otherwise be=
-comes
-> > unsafe.
+> > +#include <linux/auxiliary_bus.h>
+> >  #include <linux/hwspinlock.h>
+> >  #include <linux/io.h>
+> >  #include <linux/module.h>
+> > @@ -279,7 +280,6 @@ struct qcom_smem {
+> >       struct hwspinlock *hwlock;
 > >
-> > But I'm not an expert on this, I'll let Benno and Gary jump in.
+> >       u32 item_count;
+> > -     struct platform_device *socinfo;
+> >       struct smem_ptable *ptable;
+> >       struct smem_partition global_partition;
+> >       struct smem_partition partitions[SMEM_HOST_COUNT];
+> > @@ -675,6 +675,32 @@ static void *qcom_smem_get_private(struct qcom_sme=
+m *smem,
+> >       return ERR_PTR(-EINVAL);
+> >  }
+> >
+> > +/**
+> > + * qcom_smem_get_aux() - resolve ptr of size of a smem item
+> > + * @aux:        an aux device that should be our child
+> > + * @host:    the remote processor, or -1
+> > + * @item:    smem item handle
+> > + * @size:    pointer to be filled out with size of the item
+> > + *
+> > + * Looks up smem item and returns pointer to it. Size of smem
+> > + * item is returned in @size.
+> > + *
+> > + * The caller may take the loaded state of the provided aux device as
+> > + * an acceptable proxy for this memory being valid.
+> > + *
+> > + * Return: a pointer to an SMEM item on success, ERR_PTR() on failure.
+> > + */
+> > +void *qcom_smem_get_aux(struct auxiliary_device *aux, unsigned int hos=
+t,
+> > +             unsigned int item, size_t *size)
+> > +{
+> > +     if (IS_ERR(__smem))
+> > +             return __smem;
+> > +     if (aux->dev.parent !=3D __smem->dev)
+> > +             return ERR_PTR(-EINVAL);
+> > +     return qcom_smem_get(host, item, size);
 >
-> Yes, in this code, `Smem::access` is using the passed-in `&'a Device<Boun=
-d>` as
-> a proof that the device is still bound.
+> So you are returning a void pointer?  But don't you really know the
+> "type" of what is being asked here?  It's a memory chunk, so u8?  Or
+> something else?  void * feels "rough" here.
 >
-> If the check is not present, the user of this API can give in a reference=
- of a
-> different device, and now you're pontentially providing access to the MMI=
-O
-> region to a device that is not bound anymore. A important property we wan=
-t to
-> enforce is that UB cannot happen no matter how an API is misused (it may =
-still
-> oops, which is bad, but better than UB).
+> > +}
+> > +EXPORT_SYMBOL_GPL(qcom_smem_get_aux);
+> > +
+> >  /**
+> >   * qcom_smem_get() - resolve ptr of size of a smem item
+> >   * @host:    the remote processor, or -1
+> > @@ -684,6 +710,9 @@ static void *qcom_smem_get_private(struct qcom_smem=
+ *smem,
+> >   * Looks up smem item and returns pointer to it. Size of smem
+> >   * item is returned in @size.
+> >   *
+> > + * It is up to the caller to ensure that the qcom_smem device remains
+> > + * loaded by some mechanism when accessing returned memory.
 >
-> This particular code, though, probably should use `Devres` as Danilo sugg=
-ested.
-
-Mentioned on the other thread, but I didn't use `Devres` because it
-being PinInit is problematic and I would need to encode an additional
-invariant anyways.
-
+> What do you mean by "loaded"?  You are saying that the caller needs to
+> rely on this driver remaining in memory for that memory to be "valid"?
 >
-> PS. Personally I think this check (and the one in Devres::access) should =
-use
-> assertion rather than `EINVAL`, because it is a bad driver bug when this =
-is hit,
-> and adding failing code path for something that is a bug is something I r=
-eally
-> dislike... It should at least be a `WARN`.
+> If this is the case, why not take a reference count?
 >
-> Best,
-> Gary
+> > +impl Smem {
+> > +    pub(crate) fn access<'a>(&'a self, dev: &'a Device<Bound>) -> Opti=
+on<&'a Mmio> {
+> > +        if *dev !=3D *self.dev {
+>
+> How can this ever happen?
+>
+> thanks,
+>
+> greg k-h
