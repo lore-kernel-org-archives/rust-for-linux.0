@@ -1,54 +1,54 @@
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
+Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06743BFE50
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 15:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015053C1960
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 15:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770133605; cv=none; b=Py0InDxs/3sjhFxZft8PS21Z2Xm2TfN3psYW1Pk/q8IR4OTd/tHl9Hx8aGnXhSCXnWUjhM9LYxub7RCF1nHBgi2Xw56KwUG4uUc7Fa7iA4hVivx6HRZRQRGd5/bGfVCwIpWG8XJCDQXKQp2zYgXT6B2I54CVh7qOFJjVCedB0No=
+	t=1770133611; cv=none; b=QNiea4DaldotzIMXR76x/ae+UQyUMimCMfZYmqflwKfrooIAeR3iPdZQAXVT224QPVlAJ8b/q393jojQO/a4PEGt3EWWoZC1rBIbM7bu3mmkssfpVYq+IdRJlas/rqqvrp2n9mqx81Wes9/xSnbxgYMeGoqrCxTSv/J3cwikadc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770133605; c=relaxed/simple;
-	bh=sLbxFTX2mTYV2vSHOwak0YCZYcQva6hVw82FQCeYKlk=;
+	s=arc-20240116; t=1770133611; c=relaxed/simple;
+	bh=WtZdKvjX12D2Jmn1kMkn/+vs+NvlqXqrgcd1O83Ixd4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oSGgwmzn+TAquK8jG100JWyF7yXXaf6+bUamVmP8NZo4BJYJtMOJF8BO+h7h0v1UAbLAnj0WezqcBsyeNOkj7jSjFXlEEYIf5VRHicaeKh4gfJxNPu5ethdNPBAaAEx8htCEE3N+pUJeYTuWi5NUY5l5HW1F2NLIf8AxG8JATJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o47zouml; arc=none smtp.client-ip=74.125.82.202
+	 To:Cc:Content-Type; b=CDIgiaNKP2MR7x7kkXvweCSHkdd0y+3bfobWaRsc8tyJhVNuYtCGkJPilX9YN+03iZGCU0yRAlOe3ZL78Cj8lneHBmdv31ddu4fSWLgugpvHoaNu/95TlJ50AFHAVbqkD+c284pHbPREuoLq7/4AM4MrPrRKKkwo3DDx88luvEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JMhDliBQ; arc=none smtp.client-ip=74.125.82.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o47zouml"
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2b708fa4093so18384953eec.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 07:46:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JMhDliBQ"
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2b71d3ac508so5518404eec.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 07:46:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770133602; x=1770738402; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1770133604; x=1770738404; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yriD2nT/Os7MHztKIgeqU92FBaPsLQ1akZyLJCP9KTY=;
-        b=o47zoumlJdrRlPy6ZNnwUnLc/OELYrP8hjk4+NsdIelT0dGOyfVWUtWoByfnCo+ubt
-         U6Nvufmiict84IsqfV/SmComuIvgXZu/ywEpnNzbL8RyThvn3LgaK5sgfV3cVSyl/B6k
-         jbPXn/q8cMFIC+8bQMQ6AWijqDRKi6bIekaJxx1JzexituXxJ+lISMQDNKPFhwPuA9UY
-         cnwKY5ZtsQCukha4vODVvtUiYDsCSJBmK0Iz/eyPOkBjsHEec96kfOT3rLMfhUTk3+M7
-         3V0zMVa28w+kNPLgRBpS3oPHUbyUrAqKK/IUAPN6zhino3tzd6q3famHirNjIWgDKxnz
-         CIXw==
+        bh=Wdhof5UcFa0LauNDEG7A5hw9JfGF2S2FIbHiIBJlkVI=;
+        b=JMhDliBQdB401m4c4C0KNuAymBVfVm7HIC3RuXQTEm/8bbPFzsTTksVSBFYkqmOyas
+         TXkhkwlbVMspSvdCp5nC0BM718ZtxV7B48osVyq9e1zAuefYTAuJogGA5DHYFgwoxQ6w
+         xcMWnRMmRdSShoDOXPoQLtJ+C+H2dnQr6FndrE1wF7Ql7lTZ/kYzmsVGqNdTLUxlo0Ja
+         a7QdvpZKPZnEUyFzXIvct+1HAHp+4atlbE5lFJJbF2SIgOCQ4MS5BAqTvbO1Q8VxgH4z
+         u4EbCQjPrPxXbgmM+oVuRXGuHU84jceziqxUbHg2fIGaFLSa0+mB+oiPSypwmS2vmRCU
+         MKmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770133602; x=1770738402;
+        d=1e100.net; s=20230601; t=1770133604; x=1770738404;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yriD2nT/Os7MHztKIgeqU92FBaPsLQ1akZyLJCP9KTY=;
-        b=FameS5apiH/LKi7aUCjofUs0gwBu7fy1k24DfgELXI+FXO9fRPUd4mZi56gvOFSTrZ
-         ZWRSFDBKfgG8LUwCY1pvxPeyFpNJFAdoDxTfuaxf5kbTFzUzH361qH8pghJtzzoIdieK
-         YfHcUuV97kLRjRHh/xfw+TnzOE7gqvc+ZAKJkTjARU/6C+lnjjrjX20YpNbciWiUuq+Q
-         yLWpwaF4bkJxHjdG7XMXCKX98Jfy10aXrFK6CV/kprMXMTzODz8MU+vdOvoWVMypQtZA
-         mlJDjOBBeKEGyQoweBbDcPIBsCnZ/6iMmcLw/KjyT/QIiWWJU0E1Bteiogl6WZHaDiPC
-         RcWw==
-X-Forwarded-Encrypted: i=1; AJvYcCXHRGNEj8jOyB+T7ZY4bYyIehK3AgmmTfjmKYg5jbOO33YjE5Vz8H3fJAo6fz9w9/pHBP3qiiYz7E5VK35VRA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUl+DqioPKqef6YQObBP2U/jdTJPG6xbtXtEtb5nDpc1Nx3oTE
-	PNRX28VBg3mdExcIEX7qV+xevvxL6fk8V3lv1ilFybmoLL5mLVxMdVxSNDdO4oK9jJtc7yJcQvW
-	fUduWO/r7Iw==
-X-Received: from dybhk18.prod.google.com ([2002:a05:7301:2892:b0:2b7:d91:b4a2])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:7491:b0:2b7:f28d:c8c1
- with SMTP id 5a478bee46e88-2b8327328c7mr4126eec.0.1770133601984; Tue, 03 Feb
- 2026 07:46:41 -0800 (PST)
-Date: Tue, 03 Feb 2026 15:46:33 +0000
+        bh=Wdhof5UcFa0LauNDEG7A5hw9JfGF2S2FIbHiIBJlkVI=;
+        b=pT8SIDFDzvA75sutpeWtIYyqgHZSMz9iwLBjQg5QGYabbRoGwMdKd8rqoOv/l76KDm
+         nc5Z6fwlO+2LLcZL8dO0Zy844RQh/y7v905AVKc8HwXoNcLSTbxLzjGyQTk/b/UNG7WV
+         5Y9jNRtnFaszbZETUuoLvl9lRUEgNYV6JQKjbu7SqY1iCiQsA2QVewvYZSNvBhXpYT7N
+         hwj9t2nVByH8W0kah5+k9pb6w20v0DQetrmoJFJPNbhjhw5/Q14Z2yYcbfsVxmY/hgrq
+         Mj8e2Og6mmkHSgXqWDcBWSoOQT68PQFEGesqIrJlMbb3LYB2YqyERQKeNjUyHPeFEyvX
+         mNGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVE00AdZ4kuz2X11gTCFf26jhy24o4fYRJxagGyq+sgOlisFKA/B5Q2VB7gbMhO0SnHybOv92m8ShnYqWE6Ig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEv3gPJvcPLxJWa3gYQhitjHZ/Q5e0/RBHBfBd/bmTY3899muX
+	KOtpR9UzV0CgNXFFcqkg/nCRu9OzonidhtlwfGKzX+YK2QnFl46RvtL02Ma/AJVZtJDOUmnJifd
+	7nsx8HOId0w==
+X-Received: from dlcip4.prod.google.com ([2002:a05:7023:c084:b0:124:a6e8:e9eb])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:6281:b0:11b:9386:8271
+ with SMTP id a92af1059eb24-125c10081bamr8120436c88.46.1770133603693; Tue, 03
+ Feb 2026 07:46:43 -0800 (PST)
+Date: Tue, 03 Feb 2026 15:46:34 +0000
 In-Reply-To: <20260203-qcom-socinfo-v2-0-d6719db85637@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,13 +58,14 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260203-qcom-socinfo-v2-0-d6719db85637@google.com>
 X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770133593; l=1096;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770133593; l=2442;
  i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=sLbxFTX2mTYV2vSHOwak0YCZYcQva6hVw82FQCeYKlk=; b=lrUfeO8BzxGoH2q0cLzXZitIHc5mxhrmhIP1EvIGlTolROpSubzosdu4ukDgERhXMbVdgqt6B
- hy4MuPfZ3YMDwryq+n6Z7b1/52uJBUTXJBD7xC/OlPQKkhC26hmI+cu
+ bh=WtZdKvjX12D2Jmn1kMkn/+vs+NvlqXqrgcd1O83Ixd4=; b=y1zunl2p/I9o6cmWUb2NnYfAPstnO8iv9BQaW1CxpWleUmklNBei8N2Of6dN4lKwNKIrkORJy
+ w7+q2IWbzENDidaJ41cve7e/37dXsY/YHczM8JnE76IbaJ4tUPyi7qM
 X-Mailer: b4 0.14.2
-Message-ID: <20260203-qcom-socinfo-v2-4-d6719db85637@google.com>
-Subject: [PATCH v2 4/6] rust: auxiliary: Support accessing raw aux pointer
+Message-ID: <20260203-qcom-socinfo-v2-5-d6719db85637@google.com>
+Subject: [PATCH v2 5/6] rust: debugfs: Allow access to device in
+ Devres-wrapped scopes
 From: Matthew Maurer <mmaurer@google.com>
 To: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
 	Satya Durga Srinivasu Prabhala <satyap@quicinc.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -83,32 +84,71 @@ Cc: Trilok Soni <tsoni@quicinc.com>, linux-kernel@vger.kernel.org,
 	linux-pwm@vger.kernel.org, Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-While it's preferable to add bindings in the kernel crate rather than
-using raw pointers where possible, access to the raw aux pointer is
-required to pass it to C interfaces provided by a driver.
+This adds support for creating a DebugFS directory which is aware that
+it is bound to a device. As a result, callbacks under that directory
+have access to a bound device which gives them efficient access to other
+Devres, ability to use dev_err! and friends, etc.
 
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
- rust/kernel/auxiliary.rs | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ rust/kernel/debugfs.rs | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-index 93c0db1f66555c97ec7dc58825e97c47c0154e54..1a88277f0fd9ea5ff32cc534dfe5682009de94c2 100644
---- a/rust/kernel/auxiliary.rs
-+++ b/rust/kernel/auxiliary.rs
-@@ -237,7 +237,11 @@ pub struct Device<Ctx: device::DeviceContext = device::Normal>(
- );
- 
- impl<Ctx: device::DeviceContext> Device<Ctx> {
--    fn as_raw(&self) -> *mut bindings::auxiliary_device {
-+    /// Returns the underlying auxiliary device
-+    ///
-+    /// Prefer to add bindings in the kernel crate for any use other than calling driver-specific
-+    /// functions.
-+    pub fn as_raw(&self) -> *mut bindings::auxiliary_device {
-         self.0.get()
+diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
+index d7b8014a6474698235203f2b7d8fec96f2bb43f8..ac614d693fa73929d095b669e9ba61958bec609e 100644
+--- a/rust/kernel/debugfs.rs
++++ b/rust/kernel/debugfs.rs
+@@ -11,6 +11,11 @@
+ #[cfg(CONFIG_DEBUG_FS)]
+ use crate::sync::Arc;
+ use crate::{
++    device::{
++        Bound,
++        Device, //
++    },
++    devres::Devres,
+     fmt,
+     prelude::*,
+     str::CStr,
+@@ -722,3 +727,38 @@ fn new(name: &CStr) -> ScopedDir<'data, 'static> {
+         }
      }
- 
+ }
++
++impl<'a, T: 'a + Send> Devres<Scope<T>> {
++    /// Creates a new scope, which is a directory at the root of the debugfs filesystem,
++    /// associated with some data `T`, enclosed in a [`Devres`] for the provided device.
++    ///
++    /// The `init` closure is called to populate the directory with files and subdirectories. These
++    /// files can reference the data stored in the scope. Because it is stored inside a `Devres`,
++    /// the init method is granted access to a `&Device<Bound>`.
++    ///
++    /// This can be used for cheaply accessing device-protected data inside DebugFS methods or
++    /// accessing device-specific methods (e.g. [`dev_err!`]).
++    ///
++    /// The entire directory tree created within the scope will be removed when the returned
++    /// `Scope` handle is dropped.
++    pub fn dir<E: 'a, F>(
++        dev: &'a Device<Bound>,
++        data: impl PinInit<T, E> + 'a,
++        name: &'a CStr,
++        init: F,
++    ) -> impl PinInit<Self, Error> + 'a
++    where
++        F: for<'data, 'dir> FnOnce(&'data T, &'data Device<Bound>, &'dir ScopedDir<'data, 'dir>)
++            + 'a,
++        Error: From<E>,
++    {
++        Devres::new(
++            dev,
++            Scope::new(data, |data| {
++                let scoped = ScopedDir::new(name);
++                init(data, dev, &scoped);
++                scoped.into_entry()
++            }),
++        )
++    }
++}
 
 -- 
 2.53.0.rc2.204.g2597b5adb4-goog
