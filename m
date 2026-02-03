@@ -1,105 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92743D3489;
-	Tue,  3 Feb 2026 16:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770137206; cv=none; b=FrL/TGietCKcd6g+ZWcxTxAhZBdBb37VpS4DcBnhJ1tZ6niq/zDuXs+pdsAVKTCSr7sxI8kdNRwD0kdda/xELxjJSLP1JrqYD0pWtpRgQUHBw6PJI9KMwFEHpdBWGSqZ136UyUsWgYCGQcV7Nf4YmsExCh+S+iqIw9SpJlWtxWs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770137206; c=relaxed/simple;
-	bh=SN3mq4DneEguOI8zzgWysg+fcRGURMTHTYxbyoFa1/M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=quP+sv5YIN9ngrUz7BxhuYwqkpynLt7iiGT+zigcCSu/V5V4So4yVNNJPATh8BTgKDzIPcyWhTgtONcGgHcQaLxHHjZPtCiHayLgz9vf2iMMRtS/xgmzJxc/Ho3O5ZdikIeu/xo74h6R9Q+cMGboOaevSjIhyceWbBdHonYTvWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRTMR4oN; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3483B8D42;
+	Tue,  3 Feb 2026 16:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770137219; cv=pass; b=Tsc9vVcK69eJEwrJX6cuQuEZCd0Ds3bBLIjhRGLKsT5m+Fuu/E+YMW3BGFGxykPyfBRpT61wP2L0cxha1/MRGp1P5CYOpsg69YRTRPtNZahpayXbpvOLCN1h/I36wXKbtv7B27UMoeZgBM3wruPrQFsc4fp+z42pECrR6OPeBl4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770137219; c=relaxed/simple;
+	bh=sOO/NTikyFWHprUrN67XWhQBmm1w0at9aLr7VVmOVFA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=AC8BBhI0bszvYyzJDTocpqrZzjcEMpzpq6NQojLzdKfR+sWC1XdO/FA2t8tV9eq7DvrxJV52mgRl0EMJMVqDf5oTINNuAOzQDeZcg/bXCVYtngTZbgjwe1K4MfeVqj2n+Mf6HRERn1xmXGht9D714LvVh6dgd7DaAEfDPM4xoUs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=eYY7BcjN; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRTMR4oN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F66BC2BCB7;
-	Tue,  3 Feb 2026 16:46:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770137206;
-	bh=SN3mq4DneEguOI8zzgWysg+fcRGURMTHTYxbyoFa1/M=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=MRTMR4oNnQwjKFji63iZnjCbODzO67FUaFCb82HB3Bg1qRDJ5K2FaflXFWUVS6Le/
-	 5aDwl3Ze0/50Lr9lNN5mg7rvfhZK4kXAZRQdNIA3pmcQ1JprqxDQtfkm63kPF774kX
-	 b0eDwwNZfHLAMLfa8q6pAjhoyNMLe3NP7EesSqqwh0Sl+mQ6Rblj3jQlT2PljwSJKX
-	 cCUdEfvMh/HSp5Jx5YxGOIMOc4/fwjz/LK5glYHcmc6LkpDozYtaKvxXaGSwebzdBv
-	 CU6SERbxxptO48aTaV0nw+/FuYnWJ+H7HLGtTkfzAavwwZ1eVEPAclrFpsxaNaVySA
-	 M51SqFPMP4F5A==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="eYY7BcjN"
+ARC-Seal: i=1; a=rsa-sha256; t=1770137201; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=aIyt7CQn1G5YpGXLa9fUIsrue7M65891fPaH/ttL3/z1g7eElBkZOo1TgwoatRGNSUIcIb0Qjzvoc5Z5o8h08wFX+E3uaA4LUGwkFrCElBUtA/f8NvZPzkBjzXsRcamSi+TxtuXCNhyGC1HHXWufm/TVqzk2Wp1O7ils8MYYpE0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770137201; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=sOO/NTikyFWHprUrN67XWhQBmm1w0at9aLr7VVmOVFA=; 
+	b=CdjYP7CILPQirEDp/1k7ROC9NO9N/oJ3W8RSQCZhY+g/IAtWVxqBCRA4dCI30c+Mkma+pCC0f0WiS4sPBKVN1DNgib4WlTZCFOPEdU0H7nxxWKhlvhrZGwlXn2sq3uymxN/GDdAbqtcfgJaOEM65MGi+ALAIhUZZQ0IkrRaarno=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770137201;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=sOO/NTikyFWHprUrN67XWhQBmm1w0at9aLr7VVmOVFA=;
+	b=eYY7BcjN60OHr59xqh4Sj1X7vFzRkK/XxVc6s5lkzLYA36l+2twveR2hEcfxoLjc
+	5LwBfpiljX6+BnLjw0FC6BqWnrf9FS0Wum4zcx9Zu+i7CfcW9hRMxgundSXFJDZvFue
+	+R2XWoG5NrMkTetJVvPE+R6MgFMCgWrHusNu6oA4=
+Received: by mx.zohomail.com with SMTPS id 1770137200372615.2678443427375;
+	Tue, 3 Feb 2026 08:46:40 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [RFC PATCH 0/4] Add dma_fence abstractions and DRM Jobqueue
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260203081403.68733-2-phasta@kernel.org>
+Date: Tue, 3 Feb 2026 13:46:23 -0300
+Cc: David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Gary Guo <gary@garyguo.net>,
+ Benno Lossin <lossin@kernel.org>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Feb 2026 17:46:39 +0100
-Message-Id: <DG5H9N9QKZUW.3KLJW09OBNRD0@kernel.org>
-Subject: Re: [PATCH v2 3/6] rust: device: Support testing devices for
- equality
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Satya
- Durga Srinivasu Prabhala" <satyap@quicinc.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Michal Wilczynski" <m.wilczynski@samsung.com>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Trilok Soni" <tsoni@quicinc.com>,
- <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-pwm@vger.kernel.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260203-qcom-socinfo-v2-0-d6719db85637@google.com>
- <20260203-qcom-socinfo-v2-3-d6719db85637@google.com>
- <2026020338-gratitude-overplay-98b0@gregkh>
- <DG5GWC5MR1ZC.3VFVRL0G0NMUW@kernel.org>
- <2026020342-dime-sharply-3fd4@gregkh>
-In-Reply-To: <2026020342-dime-sharply-3fd4@gregkh>
+Message-Id: <20310585-5124-4CFA-BFB0-4F07DA2CD300@collabora.com>
+References: <20260203081403.68733-2-phasta@kernel.org>
+To: Philipp Stanner <phasta@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue Feb 3, 2026 at 5:40 PM CET, Greg Kroah-Hartman wrote:
-> On Tue, Feb 03, 2026 at 05:29:16PM +0100, Danilo Krummrich wrote:
->> On Tue Feb 3, 2026 at 5:17 PM CET, Greg Kroah-Hartman wrote:
->> > And I don't see what patch in this series uses this, am I missing it?
->>=20
->> 	impl Smem {
->> 	    pub(crate) fn access<'a>(&'a self, dev: &'a Device<Bound>) -> Optio=
-n<&'a Mmio> {
->> 	        if *dev !=3D *self.dev {
->> 	            return None;
->> 	        }
->> =09
->> 	        // SAFETY: By our invariant, this was a subrange of what was re=
-turned by smem_aux_get, for
->> 	        // self.dev, and by our above check, that auxdev is still avail=
-able.
->> 	        Some(unsafe { Mmio::from_raw(&self.raw) })
->> 	    }
->> 	}
->>=20
->> It's used to ensure that the Smem provided by the auxiliary parent can o=
-nly be
->> accessed as long as the auxiliary parent device is bound.
->
-> But how can a parent device ever bevome "unbound"?
+Hi Phillipp,
 
-It can't, that's why auxiliary::Device::parent() returns a &Device<Bound>, =
-i.e.
-as long as the child is bound the parent is guaranteed to be bound as well.
+Fantastic, thanks a lot for this work! I will take some couple of weeks =
+to test
+that on the Tyr prototype and report back.
 
-The point in this implementation is that we need to prove to the resource
-container (Smem) that we are allowed to access the resource, since it is on=
-ly
-valid to access for the duration the parent is bound.
-
-In the end this is equivalent to Devres::access(), which bypasses the Revoc=
-able
-if we can prove that we are in a &Device<Bound> scope.
-
-Having that said, the code should probably just use Devres instead. :)
+=E2=80=94 Daniel=
