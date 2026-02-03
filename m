@@ -1,87 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A191E51EE
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 00:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D792C1E25F9;
+	Tue,  3 Feb 2026 00:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770078972; cv=none; b=r85iPrvkUdTz7oxcbElwnCY9b92R7j0781kadOBlE9jcKaTRDakYb4TYtirh3m1DPWi0OE3VNmYjtKsV9iqVZctJHtw5gyUCP5XRZZabIasMqU8scaYVChje1BVYNMY5wpGNvRVEj4xq9b4MTrHPFV++DVUN6GgtcsPP9sYofwg=
+	t=1770080193; cv=none; b=YxgampClU0On3W2erE20KJsjIYuOKBsE8mmbAYZAthS1z0TAXG6mr7p4zwYzLeuI33wOcOtj4Pu4FN4Kf6YeG1QiNp0mVe/v4/RHSXe/W3KGurE4Tybvg4zgDJaw0cNCJOMSYz7CcZ1OvaDj8RBdRRwnXplaeJOEtJV+E7jg+sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770078972; c=relaxed/simple;
-	bh=r8kZeIUrkmePQHV8nMwKPEmQzPPpMePIgGMfz8D9xXM=;
+	s=arc-20240116; t=1770080193; c=relaxed/simple;
+	bh=IEROZKNnye2Bnwr6loqgyMgmPZIh2tbissFXhX7Jf5w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NiKeGE1djmBS5zSXhbZWDQWhmWgh6F/cpyoMKmB/8mPdvtvypZs+kzVBUQ7V4ytaxiXpgidUst0qoEazxZNRu0HUCjRPhC/4H8cCA9zXBmDUz+oj+av//HNFndQeCJ1Ogx+ynMoYiD4XyNw3nYOD/VkFYsxCNH2aoNJOGjusd/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b60t6gDC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xw6cwHWWi+NDHkrQSfBU9bd+LYNe1a8ETArMVqBZ/fhOFGLR0GumyS7kXr+XrGDLDwCq0pu9LEePEUPZrdC+3Wueo4UVzCVl//N678OOPqekATR8VhcFBYx0LEELe/LDOixCGHpa++0WhVqrg3ALgoOe4qlJK9AKqDNfjm8Lx8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IeUQi5Z0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b60t6gDC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C39C19421;
-	Tue,  3 Feb 2026 00:36:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IeUQi5Z0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B26CC116C6;
+	Tue,  3 Feb 2026 00:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770078971;
-	bh=r8kZeIUrkmePQHV8nMwKPEmQzPPpMePIgGMfz8D9xXM=;
+	s=k20201202; t=1770080193;
+	bh=IEROZKNnye2Bnwr6loqgyMgmPZIh2tbissFXhX7Jf5w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b60t6gDC9DEV0NLckhSF1QALOnSmvUiPqPb41/nMsVR4bLdyAMt52YCcdsl6WP4NM
-	 TyPEq+jeciwILWe43zLAO9xMhRCfKbQN4fHNoCmWty4+R3ea4zC0MbLTi3H14LttSD
-	 BUiSSA61z8RZu3lUQSsl4bNxvrqhaR+iMwnvHOPMja04L4+9QbY7/u24hBopZkvRa5
-	 18H7PI/iERj5PShvE9WTv0FWLJ9+5bpKqTTRrLXb9QoZzQ76F/cytbpSdoQ+ZdMges
-	 Uqo3jWa/WydV5ypl47qv+0JcP6UI8wyKPE4oqkR4yvsSzn808AiJV5hbaQ5kAqt/Lt
-	 /wOiW7jafJIQg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6A27FF4006C;
-	Mon,  2 Feb 2026 19:36:10 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 02 Feb 2026 19:36:10 -0500
-X-ME-Sender: <xms:-kKBaRi195qDXx_MZJOl9QJxcXcsvRfkIkHW3gdxk53XjEzl4rzuRA>
-    <xme:-kKBaUaVvp0iowVeRTphqV4YXYOVVBCWTExaFHf7vEYh-jdcrRYxxVnm9AK_a-8Ik
-    f343IQYCdvUCI-0ENTsAI14qAkaBlPedSTw-VPH2hc14276XtHSIA>
-X-ME-Received: <xmr:-kKBadErNjDBuWzTW2YUAyxX7O6p5raQqXhFMorPeRXVqGc3YXNdoESmaIxqQEyGvG8Q3tdBPKJgAy6EaLWvgG2UKWYIwhjx>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeeltdelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    elueehtefhtddtgfejvdejueehhfekteevueeuueekgeetieeggeehvdffhefhhfenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
-    rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
-    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homhdprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehr
-    uhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopegurghnihgvlh
-    drrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehojhgvuggr
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrih
-    hlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
-X-ME-Proxy: <xmx:-kKBaZYEdpVxV6EP0DMboqrtwAnH8vjYs93camhtsp0gLifo14ljwg>
-    <xmx:-kKBaW3ZcAP4XsDPjBLo6zj4ZFH9e6DgE3lq_VeMQMWdkDoCvwMRKQ>
-    <xmx:-kKBaZc175qGEw7p78XhaYoyvf-g6Sf4Ggjypzt20H_E5wd-BRP__g>
-    <xmx:-kKBaQCJ7blfqlig3vtHIa51OE7dGCqpcQArYwslz1WDB1TXqXl4vA>
-    <xmx:-kKBaT0GC3207t5qxQfztNU3kD_zcobpN8svMKWhssSQVQ_0Ito3psIy>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Feb 2026 19:36:09 -0500 (EST)
-Date: Mon, 2 Feb 2026 16:36:08 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH v17 00/16] Refcounted interrupts, SpinLockIrq for rust
-Message-ID: <aYFC-DmbuHt9IF7k@tardis.local>
-References: <20260121223933.1568682-1-lyude@redhat.com>
- <aXeTl7fihxD57STk@tardis.local>
+	b=IeUQi5Z0OtzC0qy4SfdpfAJE6fsndMc2BQ/NRV1Inr0zwnQLQcxjUTvnH7rw9abp0
+	 pXl5tyAheNwQa2VAdMvkRmOdjwol2Sv5RuByCq61eVxbo1JCE6OJMA7q803Ix/NOnP
+	 FYWHftZ4SnA03vlHJnEu1nnjU8eRhWUZW/mNDr6Jk/IBl6sWdCbGKg5ZdYMhzr//mf
+	 YnC3H4OOc8poz2X9GF4x8tgpHQNPMfVojtASpPwgG4YH9xkOKJ/BYv4cv+Zmp8XtCh
+	 8HY+8Km0M8g4H3INKVVABXAU0rQ0o+EEUKjDN11O0W4cykYgqVZg6Qpn+t6jzpcY1F
+	 qJb0mc+ARtJwA==
+Date: Mon, 2 Feb 2026 17:56:27 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: HeeSu Kim <mlksvender@gmail.com>, Nicolas Schier <nsc@kernel.org>,
+	ojeda@kernel.org, gary@garyguo.net, charmitro@posteo.net,
+	a.hindborg@kernel.org, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, boqun@google.com, dakr@kernel.org,
+	lossin@kernel.org, tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Subject: Re: [PATCH v2] rust: Makefile: bound rustdoc workaround to affected
+ versions
+Message-ID: <20260203005627.GB52989@ax162>
+References: <20260202222144.2689495-1-mlksvender@gmail.com>
+ <20260203002116.2703251-1-mlksvender@gmail.com>
+ <CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -90,31 +50,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aXeTl7fihxD57STk@tardis.local>
+In-Reply-To: <CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com>
 
-On Mon, Jan 26, 2026 at 08:17:27AM -0800, Boqun Feng wrote:
-> On Wed, Jan 21, 2026 at 05:39:03PM -0500, Lyude Paul wrote:
-> > This is the latest patch series for adding rust bindings for controlling
-> > local processor interrupts, adding support for spinlocks in rust that
-> > are acquired with local processor interrupts disabled, and implementing
-> > local interrupt controls through refcounting in the kernel.
-> > 
+On Mon, Feb 02, 2026 at 05:00:59PM +0100, Miguel Ojeda wrote:
+> By the way, I wonder if we would want at least a `rustc-max-version`
+> function or instead a range-based one for this sort of test. It is not
+> a blocker for this patch, but we may want to limit other workarounds
+> too (e.g. the one below this one).
 > 
-> If there is no objection, I plan to queue patch #1 to #6 and patch #16
+> Cc'ing Kbuild since I don't recall we have that for C compilers, so
+> there may be a reason for that.
 
-Hearing none, I just queued them into rust-sync:
+I don't think there is any particular reason for this. It is probably
+more that for C, we generally prefer feature or bug checks in Kconfig to
+catch problems or enable features for both compilers when they are
+detected or we do the version checks with the actual operators from
+Kconfig rather than doing something in Kbuild.
 
-	https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/ rust-sync
+Both a "max" version and a range-based macro make sense to me since the
+range-based one could just use the min max macros under the hood.
 
-For more tests and reviews. Thanks!
+In lieu of a separate macro, couldn't this still use 'rustc-min-version'
+for both parts if it was willing to unwrap the nested ifs (which I find
+kind of unreadable in their current form):
 
-@Lyude, for the rest of them, please resolve comments and rebase on
-rust-sync. Thank you for the great work!
+  # The bug was fixed in Rust 1.90.0, so only apply for 1.88.x and 1.89.x.
+  ifeq ($(call rustc-min-version,108800)_$(call rustc-min-version,109000),y_)
+  rustdoc_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18
+  endif
 
-Regards,
-Boqun
-
-> first, hence kindly ping for any review on these.
-> 
-> Regards,
-> Boqun
+Cheers,
+Nathan
