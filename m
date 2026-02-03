@@ -1,126 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA1834AAE3;
-	Tue,  3 Feb 2026 13:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770124090; cv=none; b=mNqwdRrvtJtwIEX0zw05RqreJgVn7xmp84CVnGWRAy6bQPBbFa3wQODGfRSwSeU5NYb9gEVmGMCrGyMIy2W3Y5AY4VaBuqUedf+PgpFTzRzyckzEhy+UxJZV18ZiuTfsvwO/2FjkQGAok/1bdlML7xQgKbYgiuk7Vb8TuYFmohM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770124090; c=relaxed/simple;
-	bh=hEXExQ+Aaoy9aGEVE6ZgHuM+rrh7xW8e6dPrzQGdruo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iime2eRdOvO+sOoHKqNubL7rVx7kw59i7as5/JtR0dG9E52jWOXLjrB5ZKnmSMWBEzFF2MpKMvLqebe2TSOdlU1DgUqA2hYy+ejh2eHDABYGwvY/91acr0NrdOj60yabRkDSfoOkCbZv7VOafirt2q0q2uI0TCdQQmjRI12l9BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eyoqnNOQ; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9631C38E110;
+	Tue,  3 Feb 2026 13:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770125668; cv=pass; b=dHVK1UsfdMO2R+2r8Tf+7FQf0GiOrNblTcaGLlb1vz8W8Ov3jKA9JoRm02lJuwGgefi+TQ6Tl8V9sngm9QzonlZRHnO0EUZ5Ph4+Alf7qVDZJOqEgcHvwFe0k6julxUTiOzVKCF0oMrQk58vlg7wsVIv49XaBK9rNH8ZNJs4DO4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770125668; c=relaxed/simple;
+	bh=ChalByCuTihRfVeCZWRZnvLKjLssr1aGB5DOv9CjXV8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=KGsu2yybnmKRELptOym5fFm2BTG9UD+kTfNLDsdBNp/ESn82JmDNpcib1z4Bn0gK9bO0bm7xcaWCJSjJYWzusPMZv47x2YETi/+lsF/cmyW2uJTwMEdjxvSC4Mo/v5CYHMTNHOMypLeb1I6wa1aSP2F+Hiq83q79+g8kC3GWnhQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=OA7UxvT7; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eyoqnNOQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0BEC116D0;
-	Tue,  3 Feb 2026 13:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770124090;
-	bh=hEXExQ+Aaoy9aGEVE6ZgHuM+rrh7xW8e6dPrzQGdruo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyoqnNOQ7i8Q3F1mCEEiG8xTvBIufNOiDZ1FuQAc7z59LUhu+EcUiwU4JD5cZXVlW
-	 lXXtUFoBqvtptIMkriHFibLi52Yl57+6Ssud2Ji+qxP8GChE3lkiGJUX+qGDjJ5/WY
-	 H6fHhUycIChLBsLNru0T9WNWl/Zwfcd29x4aujtLU/eYg3/iTe6q5b4bjqw3bHt3KL
-	 5ZxXGS89xX/pZ4wwKv3YXu+pB6SJmUQlX6J/RrLRw/WqM4SxPyykkzGzFCE/BH1n76
-	 r8oEdzTIoZsmMP7bwQ5pYylgWkkK3zJ7cf4v6OayiJF1kRKkv+dRsrWgcdD9hozoI8
-	 ZtO1VOeJe8/6g==
-From: Gary Guo <gary@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Panagiotis Foliadis <pfoliadis@posteo.net>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Tamir Duberstein <tamird@kernel.org>
-Cc: kernel test robot <lkp@intel.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] rust: disallow use of `CStr::as_ptr` and `CStr::from_ptr`
-Date: Tue,  3 Feb 2026 13:06:27 +0000
-Message-ID: <20260203130745.868762-2-gary@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260203130745.868762-1-gary@kernel.org>
-References: <20260203130745.868762-1-gary@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="OA7UxvT7"
+ARC-Seal: i=1; a=rsa-sha256; t=1770125637; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=C1GbKPfFkTdX3EQDiy0qa9/CKZhWiApFO8NLGPDE6I8dBZr+hSDQJjBYjD31uKofyr4BKwbxxzHy8In87h6bMY1wNCN8bcAxmsKbIUrWXCXS52Edu6f3aMgYCMgdWmxsKtw9XTlgFkjP26XQ1TQKpDrFJ7oYRU5upEkDtiBGjRM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770125637; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=HyBOdQqWUtuQacZEEr3ql23BswwmLu6r6afyPnxrMoA=; 
+	b=N2r0FU1b18zkOKUUhM4R7bNfxM8CRkG9/BoQJNg6pFKNLIfmNbzwCZ1Ui5mCUfzsDA0cVUgYDD981n6nvWwuf0ocKvEIpSZ39v/PuqKz6I2Ni/BDaX02EShynz35Uus3gdhAy27jYUFSxjXv0/2PMVJbjNRzC6lsk/UFDAJ7YcI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770125637;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=HyBOdQqWUtuQacZEEr3ql23BswwmLu6r6afyPnxrMoA=;
+	b=OA7UxvT7iiUq1OUz1gxbHI8H2/t6OL0y+g8hem3/mGpjMJ37P3mnyQWH28GnvFKs
+	NkbuY3U7FX8T5dN3q8TC6MzsJU/jZxX2IknKIZIpHar1udK5OXVCW5S949s0L9cKpRn
+	84RC8g3iE9sRI4ni8Dn3rt9Odhx5CpN3FL93OcXM=
+Received: by mx.zohomail.com with SMTPS id 1770125634489679.9066983046164;
+	Tue, 3 Feb 2026 05:33:54 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260203113902.501e5803@fedora>
+Date: Tue, 3 Feb 2026 10:33:34 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Drew Fustini <fustini@kernel.org>,
+ Guo Ren <guoren@kernel.org>,
+ Fu Wei <wefu@redhat.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ linux-riscv@lists.infradead.org,
+ linux-pwm@vger.kernel.org,
+ linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E7286D12-0BD9-4726-B072-FE5A040312B1@collabora.com>
+References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
+ <20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com>
+ <20260108-delectable-fennec-of-sunshine-ffca19@houat>
+ <98CD0BF6-3350-40B9-B8A9-F569AE3E3220@collabora.com>
+ <20260119-thundering-tested-robin-4be817@houat> <aW4lCfUyumOKRRJm@google.com>
+ <20260203113902.501e5803@fedora>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-From: Gary Guo <gary@garyguo.net>
+Hi Boris,
 
-As kernel always use unsigned char and not the platform ABI's default, an
-user should always use `as_char_ptr` provided via `CStrExt` instead.
-Therefore configure `disallow-methods` feature of clippy to catch incorrect
-usage.
+> On 3 Feb 2026, at 07:39, Boris Brezillon =
+<boris.brezillon@collabora.com> wrote:
+>=20
+> On Mon, 19 Jan 2026 12:35:21 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+>> On Mon, Jan 19, 2026 at 11:45:57AM +0100, Maxime Ripard wrote:
+>>> On Thu, Jan 08, 2026 at 11:14:37AM -0300, Daniel Almeida wrote: =20
+>>>>> For example, it's quite typical to have (at least) one clock for =
+the bus
+>>>>> interface that drives the register, and one that drives the main
+>>>>> component logic. The former needs to be enabled only when you're
+>>>>> accessing the registers (and can be abstracted with
+>>>>> regmap_mmio_attach_clk for example), and the latter needs to be =
+enabled
+>>>>> only when the device actually starts operating.
+>>>>>=20
+>>>>> You have a similar thing for the prepare vs enable thing. The =
+difference
+>>>>> between the two is that enable can be called into atomic context =
+but
+>>>>> prepare can't.
+>>>>>=20
+>>>>> So for drivers that would care about this, you would create your =
+device
+>>>>> with an unprepared clock, and then at various times during the =
+driver
+>>>>> lifetime, you would mutate that state. =20
+>>=20
+>> The case where you're doing it only while accessing registers is
+>> interesting, because that means the Enable bit may be owned by a =
+local
+>> variable. We may imagine an:
+>>=20
+>>    let enabled =3D self.prepared_clk.enable_scoped();
+>>    ... use registers
+>>    drop(enabled);
+>>=20
+>> Now ... this doesn't quite work with the current API - the current
+>> Enabled stated owns both a prepare and enable count, but the above =
+keeps
+>> the prepare count in `self` and the enabled count in a local =
+variable.
+>> But it could be done with a fourth state, or by a closure method:
+>>=20
+>>    self.prepared_clk.with_enabled(|| {
+>>        ... use registers
+>>    });
+>>=20
+>> All of this would work with an immutable variable of type =
+Clk<Prepared>.
+>=20
+> Hm, maybe it'd make sense to implement Clone so we can have a =
+temporary
+> clk variable that has its own prepare/enable refs and releases them
+> as it goes out of scope. This implies wrapping *mut bindings::clk in =
+an
+> Arc<> because bindings::clk is not ARef, but should be relatively easy
+> to do. Posting the quick experiment I did with this approach, in case
+> you're interested [1]
+>=20
+> =
+[1]https://gitlab.freedesktop.org/bbrezillon/linux/-/commit/d5d04da4f4f619=
+2b6e6760d5f861c69596c7d837
 
-Similarly, the dual `from_ptr` is also disallowed.
+The problem with what you have suggested is that the previous state is =
+not
+consumed if you can clone it, and consuming the previous state is a =
+pretty key
+element in ensuring you cannot misuse it. For example, here:
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
-Changes since v2:
-- Also disallow `CStr::from_ptr`
----
- .clippy.toml       | 10 ++++++++++
- rust/kernel/str.rs |  3 +++
- 2 files changed, 13 insertions(+)
+let enabled_clk =3D prepared_clk.clone().enable()?;
+// do stuff
+// enabled_clk goes out of scope and releases the enable
+// ref it had
 
-diff --git a/.clippy.toml b/.clippy.toml
-index 137f41d203de..a51de9a46380 100644
---- a/.clippy.toml
-+++ b/.clippy.toml
-@@ -9,3 +9,13 @@ disallowed-macros = [
-     # it here, see: https://github.com/rust-lang/rust-clippy/issues/11303.
-     { path = "kernel::dbg", reason = "the `dbg!` macro is intended as a debugging tool", allow-invalid = true },
- ]
-+
-+[[disallowed-methods]]
-+path = "core::ffi::CStr::as_ptr"
-+replacement = "kernel::prelude::CStrExt::as_char_ptr"
-+reason = "kernel's `char` is always unsigned, use `as_char_ptr` instead"
-+
-+[[disallowed-methods]]
-+path = "core::ffi::CStr::from_ptr"
-+replacement = "kernel::prelude::CStrExt::from_char_ptr"
-+reason = "kernel's `char` is always unsigned, use `from_char_ptr` instead"
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index fa87779d2253..97bf9427af59 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -189,6 +189,7 @@ macro_rules! b_str {
- //
- // - error[E0379]: functions in trait impls cannot be declared const
- #[inline]
-+#[expect(clippy::disallowed_methods, reason = "internal implementation")]
- pub const fn as_char_ptr_in_const_context(c_str: &CStr) -> *const c_char {
-     c_str.as_ptr().cast()
- }
-@@ -319,6 +320,7 @@ unsafe fn to_bytes_mut(s: &mut CStr) -> &mut [u8] {
- 
- impl CStrExt for CStr {
-     #[inline]
-+    #[expect(clippy::disallowed_methods, reason = "internal implementation")]
-     unsafe fn from_char_ptr<'a>(ptr: *const c_char) -> &'a Self {
-         // SAFETY: The safety preconditions are the same as for `CStr::from_ptr`.
-         unsafe { CStr::from_ptr(ptr.cast()) }
-@@ -334,6 +336,7 @@ unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &mut [u8]) -> &mut Self {
-     }
- 
-     #[inline]
-+    #[expect(clippy::disallowed_methods, reason = "internal implementation")]
-     fn as_char_ptr(&self) -> *const c_char {
-         self.as_ptr().cast()
-     }
--- 
-2.51.2
+prepared_clk is still alive. Now, this may not be the end of the world =
+in this
+particular case, but for API consistency, I'd say we should probably =
+avoid this
+behavior.
 
+I see that Alice suggested a closure approach. IMHO, we should use that
+instead.
+
+=E2=80=94 Daniel=
