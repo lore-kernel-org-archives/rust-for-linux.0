@@ -1,24 +1,25 @@
-Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
+Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E268D38F250
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 06:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E756A38F25B
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 06:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770101994; cv=none; b=Tzg4Sqk8DSILMUxDRiGd6p3qh1q+QENysPkL8tY+Ietf02t/chDc8OXJvKh2GFjz8v5DWO9SVHEw15Kbn/CwnFtiKTsmhAzXZrhAe4Mdpnfq+dPSUVwa6Va6rauAQZow9rfYqP/D5ss9SOM/iTJmb6nfiPTA04CBY3f2WFogZao=
+	t=1770102000; cv=none; b=Rlw/LdEnLorptTaZMWh5SxHEwPsEEiKYHhKAK+bD/w+gdIgQhAH3HZT8OtqLtu/B3+UuyXrPX4gP2LafEQjWvu3QTXWwiuWUtWqPXOeUS5FxVhJST3ruxpIou40gq85dVCnE5alvMVfWXBt5rHnCR5EJjSSBXadexVYH+Kk7NlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770101994; c=relaxed/simple;
-	bh=9G9DrXeATMpIREFZyCuNEP08tqdRUpt15rMak3jGC8I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zv5/kVzoa1aWO/XG7IXevY14RFSe1Jw/8EiQacXwzItaSjTZ5QDcSYTbqzEwnOF8WC5JucSli8Il2q6wzxYV3MTT8w918oZUsyK4I5nstgN7C4K99U+8G96eMpIuY080w7tuN/c16CsLxFgUVYPtC07svQpXcYv9++68mY1Vxps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.51
+	s=arc-20240116; t=1770102000; c=relaxed/simple;
+	bh=P7WjAbVVqWcwENynMn8xN4GwbSfceckV/AKNtt70Es8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=I4EMYQ03QWH2GAHyblX1Y7MLQalH4vSTJzRjLMTbY864fbnzcjyFgmYpmQr+Ws/i5lqOo/98puXfyKkr/DqatoHNEifx/4P/37iDQ82moVkTtJvb3zNojdZq4et20NbJlj6e5GUZ+hZGWTK3zLhOBK0g/3kDFmEr3YtNTs4sO+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
 Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
-	by 156.147.23.51 with ESMTP; 3 Feb 2026 15:59:45 +0900
+	by 156.147.23.53 with ESMTP; 3 Feb 2026 15:59:48 +0900
 X-Original-SENDERIP: 156.147.1.121
 X-Original-MAILFROM: jongan.kim@lge.com
 Received: from unknown (HELO jongan-kim-nissan-cdc.bee-live.svc.cluster.local) (10.159.44.48)
-	by 156.147.1.121 with ESMTP; 3 Feb 2026 15:59:45 +0900
+	by 156.147.1.121 with ESMTP; 3 Feb 2026 15:59:48 +0900
 X-Original-SENDERIP: 10.159.44.48
 X-Original-MAILFROM: jongan.kim@lge.com
 From: jongan.kim@lge.com
@@ -51,10 +52,12 @@ Cc: jongan.kim@lge.com,
 	sanghun.lee@lge.com,
 	seulgi.lee@lge.com,
 	sunghoon.kim@lge.com
-Subject: [PATCH v3 0/3] binder: handle PID namespace conversion for freeze operation
-Date: Tue,  3 Feb 2026 15:59:25 +0900
-Message-Id: <20260203065928.4736-1-jongan.kim@lge.com>
+Subject: [PATCH v3 1/3] binder: handle PID namespace conversion for freeze operation
+Date: Tue,  3 Feb 2026 15:59:26 +0900
+Message-Id: <20260203065928.4736-2-jongan.kim@lge.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260203065928.4736-1-jongan.kim@lge.com>
+References: <20260203065928.4736-1-jongan.kim@lge.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,61 +68,130 @@ Content-Transfer-Encoding: 8bit
 
 From: JongAn Kim <jongan.kim@lge.com>
 
-This patch series fixes PID namespace handling in binder's freeze operation
-for both C and Rust implementations.
+Currently, when a freeze is attempted from a non-init PID namespace,
+there is a possibility that the wrong process in the init namespace
+may be frozen due to PID collision across namespaces.
 
-Changes in v3
+For example, if a container with PID namespace has a process with
+PID 100 (which maps to PID 5000 in init namespace), attempting to
+freeze PID 100 from the container could incorrectly match a different
+process with PID 100 in the init namespace.
 
-1. Patch 1/3
-- change to use task->tgid instead of task_tgid_nr_ns()
+This patch fixes the issue by:
+1. Converting the caller's PID from their namespace to init namespace
+2. Matching against binder_proc->pid (which stores init namespace TGID)
+3. Returning -EINVAL for invalid PIDs and -ESRCH for not-found processes
 
-2. Patch 2/3
-- Add Send/Sync traits for Pid
-- Add AlwaysRefCounted for Pid with rust_helper_get_pid
-- Add from_raw() constructor to Pid and Task
-- Rename find_vpid_with_guard -> find_vpid
-- Rename pid_task_with_guard -> pid_task 
-- Convert init_pid_ns() to PidNamespace::init_ns()
-- Add PartialEq/Eq for PidNamespace (Alice)
-- Add rust/helpers/pid.c for get_pid() wrapper
+This change ensures correct PID handling when binder freeze occurs in
+non-init PID namespace.
 
-3. Patch 3/3
-- Use task::Pid typedef instead of u32/i32
-- Use PidNamespace::init_ns() instead of init_pid_ns() 
-- Compare PidNamespace directly with == instead of raw pointers
-- Use Pid::find_vpid() and pid.pid_task() (dropped _with_guard suffix)
-- Fix rustfmt import ordering (rcu before Arc)
-- Rename TaskPid alias to PidT for clearer pid_t type indication
-- Use task.group_leader().pid() instead of tgid_nr_ns() for consistency 
-  with C
+Signed-off-by: JongAn Kim <jongan.kim@lge.com>
+---
+v2 -> v3 : change to use task->tgid instead of task_tgid_nr_ns()
 
-History
+ drivers/android/binder.c | 53 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 50 insertions(+), 3 deletions(-)
 
-v1 : https://lore.kernel.org/lkml/20251203024140.175952-1-jongan.kim@lge.com/T/#u
-
-v2 : https://lore.kernel.org/lkml/20260129084119.32994-1-jongan.kim@lge.com/T/#u
-- add two more patches to implement the same logic in Rust binder
-
-
-HeeSu Kim (2):
-  rust: pid: add Pid abstraction and init_ns helper
-  rust_binder: handle PID namespace conversion for freeze operation
-
-JongAn Kim (1):
-  binder: handle PID namespace conversion for freeze operation
-
- drivers/android/binder.c          |  53 +++++++++++-
- drivers/android/binder/process.rs |  37 +++++++-
- rust/helpers/helpers.c            |   1 +
- rust/helpers/pid.c                |   9 ++
- rust/kernel/lib.rs                |   1 +
- rust/kernel/pid.rs                | 138 ++++++++++++++++++++++++++++++
- rust/kernel/pid_namespace.rs      |  17 ++++
- rust/kernel/task.rs               |  13 +++
- 8 files changed, 262 insertions(+), 7 deletions(-)
- create mode 100644 rust/helpers/pid.c
- create mode 100644 rust/kernel/pid.rs
-
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 535fc881c8da..4c4366089ecb 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -5609,6 +5609,41 @@ static bool binder_txns_pending_ilocked(struct binder_proc *proc)
+ 	return false;
+ }
+ 
++/**
++ * binder_convert_to_init_ns_tgid() - Convert pid to global pid(init namespace)
++ * @pid:    pid from user space
++ *
++ * Converts a process ID (TGID) from the caller's PID namespace to the
++ * corresponding TGID in the init namespace.
++ *
++ * Return: On success, returns TGID in init namespace (positive value).
++ *         On error, returns -EINVAL if pid <= 0, or -ESRCH if process
++ *         not found or not visible in init namespace.
++ */
++static int binder_convert_to_init_ns_tgid(u32 pid)
++{
++	struct task_struct *task;
++	int init_ns_pid = 0;
++
++	/* already in init namespace */
++	if (task_is_in_init_pid_ns(current))
++		return pid;
++
++	if (pid == 0)
++		return -EINVAL;
++
++	rcu_read_lock();
++	task = pid_task(find_vpid(pid), PIDTYPE_PID);
++	if (task)
++		init_ns_pid = task->tgid;
++	rcu_read_unlock();
++
++	if (!init_ns_pid)
++		return -ESRCH;
++
++	return init_ns_pid;
++}
++
+ static void binder_add_freeze_work(struct binder_proc *proc, bool is_frozen)
+ {
+ 	struct binder_node *prev = NULL;
+@@ -5717,13 +5752,18 @@ static int binder_ioctl_get_freezer_info(
+ 	struct binder_proc *target_proc;
+ 	bool found = false;
+ 	__u32 txns_pending;
++	int init_ns_pid = 0;
+ 
+ 	info->sync_recv = 0;
+ 	info->async_recv = 0;
+ 
++	init_ns_pid = binder_convert_to_init_ns_tgid(info->pid);
++	if (init_ns_pid < 0)
++		return init_ns_pid;
++
+ 	mutex_lock(&binder_procs_lock);
+ 	hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
+-		if (target_proc->pid == info->pid) {
++		if (target_proc->pid == init_ns_pid) {
+ 			found = true;
+ 			binder_inner_proc_lock(target_proc);
+ 			txns_pending = binder_txns_pending_ilocked(target_proc);
+@@ -5869,6 +5909,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		struct binder_freeze_info info;
+ 		struct binder_proc **target_procs = NULL, *target_proc;
+ 		int target_procs_count = 0, i = 0;
++		int init_ns_pid = 0;
+ 
+ 		ret = 0;
+ 
+@@ -5877,9 +5918,15 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 			goto err;
+ 		}
+ 
++		init_ns_pid = binder_convert_to_init_ns_tgid(info.pid);
++		if (init_ns_pid < 0) {
++			ret = init_ns_pid;
++			goto err;
++		}
++
+ 		mutex_lock(&binder_procs_lock);
+ 		hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
+-			if (target_proc->pid == info.pid)
++			if (target_proc->pid == init_ns_pid)
+ 				target_procs_count++;
+ 		}
+ 
+@@ -5900,7 +5947,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		}
+ 
+ 		hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
+-			if (target_proc->pid != info.pid)
++			if (target_proc->pid != init_ns_pid)
+ 				continue;
+ 
+ 			binder_inner_proc_lock(target_proc);
 -- 
 2.25.1
 
