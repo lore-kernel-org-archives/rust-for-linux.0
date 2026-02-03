@@ -1,60 +1,59 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912F933122D;
-	Tue,  3 Feb 2026 11:45:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B4A334698;
+	Tue,  3 Feb 2026 11:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770119111; cv=none; b=fgEOLBrfnnk9UtktsVPppFEE5Ep8CdWnZbyFSiR7TauCccvjpDSLRGS3avuw2R7mnXzxIiqcjdqyvU5ZKvcyM379F4xfbmQDLpaQ1jRRb6vejDf0N1QuWrqOEld3ohobOsZkdSXWNjbzVKYrpASdD9Wc4Wn9mUUMfQlItGvnNrQ=
+	t=1770119356; cv=none; b=AuS39bqJgmD8td5IPEJscpyemtTCEA7KOdaNUUcM7xiwcV1mJKUs1JFm0GcK2VMb282ryFRPtG6dqJwDcXQ8HAE7NkbW3HbJpaltf6N6afBu2UC/Owakb8StP8QaMHhICYUFNY6OLs/JgpB5ElSHNar3j9gs/BGIPrTLntVKNzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770119111; c=relaxed/simple;
-	bh=RRyf2yCDek79sohIuA8Vw3sWxZzJLPToDHLuC5lva/s=;
+	s=arc-20240116; t=1770119356; c=relaxed/simple;
+	bh=7ILxXahiaRMCy7sKKUTza8oVYDmH7ThnLjrpTuldxdU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wgl+fcSorHDV2EwpegO1IBFoEVdy2ACi8QusWRg/Gy64jbQlK6TF/y+pTWaXwt+HwAtv+JH/QcbPTbXOwsmY+7KsHXPpsRrf0wpDeim5LOQy3/kMfL0vYHQ4pt31Ihvz4NptRsocCgu+S2B+0tE9swwFtmkDoXj9gwLLsvwXnBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=HvrBCtWW; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=GhHIXO/qSork9Xjx9oeFExb4UceEf2DeO0aqPj5EG5/fbDCOqXcfpTk9/g/C0/j0tyM1yt9kbBL4sW4kRnvIg5EWTEJmA2D8BzZl6aOiN/3XBrG8ft3uyITokfVdTcu/I5cM42fNKDT+Zc0SY5RTAEHuKjE0ArytxwYS8QO/l8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXE8xwf0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HvrBCtWW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=LR3HjUK84qfeoHheC7+8/wuZwv7pqiTfWIPpSHMUMiI=; b=HvrBCtWW14gJDUkTKXGbvjRCC/
-	94i88ecKEsrwrtcJfmDZyqTXM2Uf+0q9rYxHqbU49ru7xFjE5piew/kYCrOCzCEIGqItIR0zClavX
-	1QQO3hF0Swy8YIi9s6MtzAO5yoZRX/hDCbyE7qvPP4nYCDdvYUw5VCfRY338S+9lH9Ywe/hO9V1WI
-	e9u+Zc4PE9inHbRm4CUr7F5/wgoj+4appc3TZdHohRhI6Qy0FtMyJVXD697cYiHouAHi0Se/nkI15
-	anBVBxIKFZYJaKP1ZJkpOkuAKi562xpOzbKmMaUAeAFDy22LDWjgwA6EI77vN9pCnuI8nsQx/fm2D
-	GEjWnHPw==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vnEq0-0000000G9uK-109R;
-	Tue, 03 Feb 2026 11:44:56 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 74AB5300FA6; Tue, 03 Feb 2026 12:44:54 +0100 (CET)
-Date: Tue, 3 Feb 2026 12:44:54 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXE8xwf0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BBCC116D0;
+	Tue,  3 Feb 2026 11:49:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770119356;
+	bh=7ILxXahiaRMCy7sKKUTza8oVYDmH7ThnLjrpTuldxdU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lXE8xwf0Zxg7pR6+SwMV7ZeqkDpDkpFRX72NUdtij1MSMa3eH1pD4d4O9NBz0c97d
+	 Zw0puwGCIdDoNCUr53faZV3Eqigm7YApD1DLt235tCF/X48vqHB39XlTPTcvOIGNui
+	 CVQj9IwB9GzGjEwGbBpIhsyxzj5VBzzvQVUwfTM2NpKnoEjsn5iREidDAhemHufU/i
+	 P3e9ywqpC3FU2jT6L/O0i55jYqnuKXN+3yqNmiva/WPCXVnAbi9IZPbHMoIwQicXy4
+	 vM4x3xccLWokfQ1mlHqS4/YtVcqaUFUvVA0d4gTFX4d4UJ1pzXm4eBBJewlTPQsQab
+	 Ot5sdSVYUgSKg==
+Date: Tue, 3 Feb 2026 11:49:08 +0000
+From: Will Deacon <will@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: Re: [PATCH v17 02/16] preempt: Track NMI nesting to separate per-CPU
- counter
-Message-ID: <20260203114454.GM1282955@noisy.programming.kicks-ass.net>
-References: <20260121223933.1568682-1-lyude@redhat.com>
- <20260121223933.1568682-3-lyude@redhat.com>
+	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
+	Matthew Maurer <mmaurer@google.com>, elver@google.com
+Subject: Re: [PATCH v2 1/3] kbuild: rust: add
+ `CONFIG_RUSTC_CLANG_LLVM_COMPATIBLE`
+Message-ID: <aYHgtJ_xLeo5W-lZ@willie-the-truck>
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+ <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,18 +62,54 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260121223933.1568682-3-lyude@redhat.com>
+In-Reply-To: <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
 
-On Wed, Jan 21, 2026 at 05:39:05PM -0500, Lyude Paul wrote:
-
-> diff --git a/kernel/softirq.c b/kernel/softirq.c
-> index 77198911b8dd4..af47ea23aba3b 100644
-> --- a/kernel/softirq.c
-> +++ b/kernel/softirq.c
-> @@ -88,6 +88,8 @@ EXPORT_PER_CPU_SYMBOL_GPL(hardirqs_enabled);
->  EXPORT_PER_CPU_SYMBOL_GPL(hardirq_context);
->  #endif
+On Tue, Feb 03, 2026 at 11:34:08AM +0000, Alice Ryhl wrote:
+> From: Gary Guo <gary@garyguo.net>
+> 
+> This config detects if Rust and Clang have matching LLVM major version.
+> All IR or bitcode operations (e.g. LTO) rely on LLVM major version to be
+> matching, otherwise it may generate errors, or worse, miscompile
+> silently due to change of IR semantics.
+> 
+> It's usually suggested to use the exact same LLVM version, but this can
+> be difficult to guarantee. Rust's suggestion [1] is also major-version
+> only, so I think this check is sufficient for the kernel.
+> 
+> Link: https://doc.rust-lang.org/rustc/linker-plugin-lto.html [1]
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  init/Kconfig | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/init/Kconfig b/init/Kconfig
+> index e95d43457851862afc8313389777e4dd9348c178..0e900d3d8be7874a33e0f44754a8d038e68d7e65 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -82,6 +82,21 @@ config RUSTC_LLVM_VERSION
+>  	int
+>  	default $(rustc-llvm-version)
 >  
-> +DEFINE_PER_CPU(unsigned int, nmi_nesting);
+> +config RUSTC_LLVM_MAJOR_VERSION
+> +	int
+> +	default $(shell,expr $(rustc-llvm-version) / 10000)
+> +
+> +config RUSTC_CLANG_LLVM_COMPATIBLE
+> +	bool
+> +	default y if CC_IS_CLANG && RUSTC_LLVM_MAJOR_VERSION = $(shell,expr $(cc-version) / 10000)
+> +	help
+> +	  This indicates whether Rust and Clang use LLVM of the same major
+> +	  version.
+> +
+> +	  Operations involving handling LLVM IR or bitcode (e.g. cross-language
+> +	  LTO) requires the same LLVM major version to work properly. For best
+> +	  compatibility it is recommended that the exact same LLVM is used.
 
-What happened with putting this in the same line as preempt_count?
+Is cross-language LTO something we're actually looking at doing for the
+kernel, or is this just stale help text given what you're using it for
+in this series?
+
+Will
