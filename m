@@ -1,202 +1,103 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021093.outbound.protection.outlook.com [52.101.95.93])
+Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E130C3939C9;
-	Tue,  3 Feb 2026 14:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.93
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770130614; cv=fail; b=TQX2SYYvpQnjYZ3mqxv4VhO8mtqn0WVFZRbIhpqBiQiMJXkjiBLEVsY2Z2wR6jaa53kPfK32DXoeoeMXMXA79Ck2rKkk2257pxi9ywt00FTC+pQ9az2Raq6CtWPtnYvA/woojDkYlSjuIpy52r+9VTaufdApfDzQDTTFp75/jLA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770130614; c=relaxed/simple;
-	bh=EtxXxvcBBaPAdbTBeZPECpE+YnDbdi8yoYzIZoPXpGM=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Czr0CG5FU/pmDQnBUErKKJokYjJ+8O9EV+JPN9b+ZxF/WhgbOUNncYfBVGT9VrAkcHzfzfu8YtdO/T1QaHgvt9S0tJRRBIh8JN+TyViFAIX/rl6Wplq0kAAIMrt3hPWpXiz/JY2JYKbKoNGafZLd4ePThV9ygoXxumnOfgGPZsQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=dsmx+Miv; arc=fail smtp.client-ip=52.101.95.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF102D47EF;
+	Tue,  3 Feb 2026 15:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770131329; cv=none; b=dUBcE8UPF3oh1Q8GFt0mn8UvYdKqwS8hwSjG5qe7TrICKoG/ieHvfVAqV4T6GRVVrkCF4Kwi1drW8CByLb+5zZiPKbr2sKMYOR3/cgSrskpyKI/Q9E675RyomU9Xv7sGf+hnwiR959rqW2WnAYuvyoCQ1GXwtZ2Ht2U08eveZuI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770131329; c=relaxed/simple;
+	bh=8HScTAY3H4SHB2hD4B/A5OkaVfpVOaS1ffNmLu8ZVtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NjgixalJpECJztjAxsgl0D6UD0GO7r4tOZpz1OjIrnbK2eI1z5Ar8NQtfaJnJh9vhlK4M8wrMqldUWnPyX2aXcjEU9nRnVlaVKZTXDw0NF4Ce4TWZqbue5XsPO82o1IZxnOi8c44sAVkIwTPKPcnmskDCJ5eKhN4aQ5+qq+19VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=EBKUa2Bh; arc=none smtp.client-ip=178.154.239.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="dsmx+Miv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Czy3uRBuBvIrb8eRwj08x2lMETYan/+z18/o8WOaRdEc4fbW1SuQU/bFzy61WsNVHM/tTuf/2LjUI8r+FdhFy+r2EH1INzFRdc6dtQfapFXUznaF3VkeOmjiQ675ZZ5uTpWQfH3uMVZvbtWQFMLTecpLknKsQEjVwXChf4fu4oYEjYREEKVxtdVgRaU1yz6eaNZ335lu+J6Qdj3jc/xKZwfBLvqlWuGtT9fiEg/vxS5s/HWtnkUf6wns1qu9zu61X+FhHm+X4I8iCMuzCR9V7VLG813XhxZBmlIrqIES3N/vJIRBMWgGwaRn70741Pu8XhxK2/n+R8RQNR1mCYEsdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v+Tl85DUmlzlm/mkzTfoHHCvx+PRHMMNTzyPODQCV4M=;
- b=xiFHoE0/kyUvaIeUEMAy482n4Cq5b/sJv6dV9tuQcfLMjB+uOcQbRPKUW3dCcvGHcIHygNfaEXBb/rSFlZSpTTQQoULjPwzmdmS3+U3aK/2NupdJP4z00Oy0Iv4QD38cAadnH7sM1gtambuw+vJM/9FTepMnfnQt8zB/50eaot1jKzzbR/5QLdD7sYvmuOZbD6uyEy/rQeC2TkzwwjfmdZQwnyajvhGld32CvSwqU5KRKxiP/8/Pb+DI77AKkqenRiR0H1bp0ZpmMfkaWocPJzQWMqbMwmG6UlxizenSEatyKbQl6Vwf330NJgUY+jWUzdqfcxTlnoSBpqkN3I9RUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v+Tl85DUmlzlm/mkzTfoHHCvx+PRHMMNTzyPODQCV4M=;
- b=dsmx+MivGWOaXfxOJ79bcjtSr17hlFUcE3dqMBFPy5FEei180Dt7+V+g/ou7gWfY5gMAyHJYIbeaSgEJF77TpBrpa05TIhfDqTBkfPvQnBMmQK0TBm/HsaMdGJ8R21FiKW4dImGSwlER37NAs2lNHErMpw51acYoAM5s4HmkY2A=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CW1P265MB7806.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:203::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
- 2026 14:56:45 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Tue, 3 Feb 2026
- 14:56:44 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Feb 2026 14:56:44 +0000
-Message-Id: <DG5EXHDFRTWZ.WLWRUDWF9NSM@garyguo.net>
-Cc: <ojeda@kernel.org>, <gary@garyguo.net>, <charmitro@posteo.net>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <bjorn3_gh@protonmail.com>, <boqun@google.com>, <dakr@kernel.org>,
- <lossin@kernel.org>, <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Linux Kbuild mailing list"
- <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH v2] rust: Makefile: bound rustdoc workaround to affected
- versions
-From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "HeeSu Kim"
- <mlksvender@gmail.com>, "Nathan Chancellor" <nathan@kernel.org>, "Nicolas
- Schier" <nsc@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260202222144.2689495-1-mlksvender@gmail.com>
- <20260203002116.2703251-1-mlksvender@gmail.com>
- <CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com>
-In-Reply-To: <CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com>
-X-ClientProxiedBy: LO4P123CA0386.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18f::13) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="EBKUa2Bh"
+Received: from mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:eaca:0:640:4fc0:0])
+	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 05524C1AF8;
+	Tue, 03 Feb 2026 18:02:46 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id c2qrbAEHxKo0-ctWBflKb;
+	Tue, 03 Feb 2026 18:02:44 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1770130965;
+	bh=8HScTAY3H4SHB2hD4B/A5OkaVfpVOaS1ffNmLu8ZVtw=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=EBKUa2BhdK14byadQrg9kHXuNt00bIm/Z/gHbkdaCjZgQ6yeiC7iruZenfequBTp+
+	 +LgYElZtV3xR9Z1Ssl9u9u72DpeP8BNDhYz1HKjzFR+ZAkRYIuTJC5gv0LHO6XOHqw
+	 udUl5gSIMUnnfYcT0iOEQXHz0Qwqe3GTmCmd0f8w=
+Authentication-Results: mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Tue, 3 Feb 2026 18:02:36 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: rust-for-linux@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, mingo@redhat.com,
+ will@kernel.org, longman@redhat.com, felipe_life@live.com,
+ daniel@sedlak.dev, thomas.hellstrom@linux.intel.com,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 1/7] rust: add C wrappers for ww_mutex inline
+ functions
+Message-ID: <20260203180236.13323563@nimda>
+In-Reply-To: <45626ED1-9684-4FA0-8AB6-FFBB0D2BA2FE@collabora.com>
+References: <20260103073554.34855-1-work@onurozkan.dev>
+	<20260103073554.34855-2-work@onurozkan.dev>
+	<45626ED1-9684-4FA0-8AB6-FFBB0D2BA2FE@collabora.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7806:EE_
-X-MS-Office365-Filtering-Correlation-Id: da312011-cfbb-46ab-1e5d-08de633472ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eERDdW85RGlzaldSWFFyWjM2dzBQSkhxN3dJNTV2QVlTYVFRd0lSNlFsdmhq?=
- =?utf-8?B?aDlSMk1JOElseU1OOTJvcjBIQUZnVEY1QnVuOWhudGJya0k0TWN4dVlERVJ3?=
- =?utf-8?B?eEdvb0lEZGR6SEpCMVF5b2E0dUozWXd5RVgxZW5vdnlVdG0xNXRkdXFmUVdo?=
- =?utf-8?B?TTg4RHlXcWg2c3lxbXhjVFI4THo0SzY1Si9Sd3FCUktRWHpVVzRzWXBDS2tX?=
- =?utf-8?B?U3hpT3VJaDFkRi96ak9rUVdYSWhxZldqTXlDUHhYWklqR1ZzMVJ4SEhycnF4?=
- =?utf-8?B?ZUMyVzU1Z3BBdkR6R3N2T08zLzBad0IxODdYY2tHVDVUUVpodVZiMWMxcUpp?=
- =?utf-8?B?VEJwcnRVK09sQzBtb0Riak1DdEp0S0dVVWRtZ1IwVVQrTTd3NHdSVnNVbWJa?=
- =?utf-8?B?QWVFZzI5NGxoOWtuQzhsMk8xc2ZCOFQrT2xVZGdzU3lSbFQyRHBoNHpKbjNo?=
- =?utf-8?B?N1RRQ0pYcVpRcFd3K216N3c1L2JCVTVKNURXT3pJbE9jd3dDUnlLTHVSV3pY?=
- =?utf-8?B?SDA2Q3FEcVA2bnhJWkcyRUw1eUwzVFRiOFdSS0RtcVpYQUo5VElKWFczNDB1?=
- =?utf-8?B?YytzS2xieFdnNko0NHdGb3NibzA2MEhiNk9yMWdwMDFpVWpHVGQwSTVpekho?=
- =?utf-8?B?YXFidjVSQWNwdkdCTGpydktSbnZwMGdQYVBJN1IyTTIvVEZpQ0owQ2Z2NWVH?=
- =?utf-8?B?dHppYzFRT1UrWG93Vit1aVdDVnZQS2thZEtpQUllWVk2eFhuSmNtcDBrem5I?=
- =?utf-8?B?MDN6aVNDN2VOcGxXR1IwWFdYVWxGWG5pQS84MS9tak55L3BaRUhNelcrYnhp?=
- =?utf-8?B?T0lteC9ZSXBtT0w0Y1ROZUhOc2pzK241UU93alVITUM2M3FDZ3ludXJQS3Ft?=
- =?utf-8?B?aVJVWVhTVzhuaklvbStyWjFvREc4Y3NhUkQ1WTFTMnlTcElyVkpubXlrd0JM?=
- =?utf-8?B?VjRFRm5reWo1dHB3a0FMRWRHK250UUpRWFJ5Y1N0amJhOUQreVFIUFFyT0Rm?=
- =?utf-8?B?WkR1M3k0aGlBdDQ5dnhCTkQxV3BNTC93ejFCeGZCVTYvcGhUWGRsSDJsYVBD?=
- =?utf-8?B?Z0xpUC9OVWhiVCtRSlhwclh0WHE4MXZwdkM0aVpSdHVVOWlBSEE3RlNqai95?=
- =?utf-8?B?RWlrT2pxSzlIcHpKbXpYSDhXSG5CVHc2RTJSQWVFNVBjaTdXTDJxN1hRMEJu?=
- =?utf-8?B?bkorbkdRcXpEenVrSFlJVnBRUVlZcGQ3Yjg1L054QmkzOE83Z2FiK1N6UmN6?=
- =?utf-8?B?R2xqNkpzWlFBdDdlaUJxeVdxVWVtVENHTE01bmNmTnRMdTZRRy83cWVybFl6?=
- =?utf-8?B?ZHZZMVgyOVRIZjFXcW9WUmR0b1lvcVlEZlA3OXVpZmk0UEpRNkw0bUtjZ3dR?=
- =?utf-8?B?b3I4cEVHMHR4Y2hISk5LVlRIN2Fsa0lLQXFhM0ZOSkhwY3dnL0FVY2lULzNr?=
- =?utf-8?B?UFoxblJuMlpOMzNyd1kwL1BhcDJRc2FsQVNKYUh2ZGpCNVVnTThOMzA2TWJW?=
- =?utf-8?B?aHF1ZUlEQWpUZjdNUkNFU0J3d21oSFpTQWI3UWoyR1llQVZiNHlIUUZtMVVR?=
- =?utf-8?B?Ujdsd3BPcWRkZExReXp3WVEvQ1ZLTlFJRDJabEh4blFONTFRQjNnckFFbmlC?=
- =?utf-8?B?Tlk3dEZVWjExYmFUTEplNGQ2MU1ibU16ckM3TklYMTRUUU5qSi83aWlSaG1W?=
- =?utf-8?B?NDBpVmM2MGFaR1dlUWpjYWd5NXBRNjN0cDdmeGZGaW92SWFRa2M2RzQvZWpZ?=
- =?utf-8?B?eFc0VTdSTzBsZVBTTTl0NUhwZHd2TnZjRzF5aFJRcmJEQlhsYUZYdEl5cVht?=
- =?utf-8?B?T1RFRVVHM1BkQXh1THVMLzU2UnRlQXlvRWVTRVUreEx1QmQwTTRqeldCcnFq?=
- =?utf-8?B?YzA3Y25Qam1pQW5iWmJiVWFjS0RUTS9Zc21MaXlaUTZFR0FxMUhhV21nVCtI?=
- =?utf-8?B?RXBiWU1tSUVaajNKYXlVU1ZzVXdxYWxLN0ZlT1BEYURRZUxYSVoxZG9WckY2?=
- =?utf-8?B?aGJsTFZjRklBbHFVNVdGNVdNaHB3aUE3Z3NMMWNNdGNYMGxmYjZERW9TQTQ3?=
- =?utf-8?B?Vm5ObXVsWncyb1c0em82OUcwRjA3bGQxNWRXcnNrM1l1RDJiRkRaKzBYVVlE?=
- =?utf-8?Q?Jalo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q2FUV00wY2VRTmhpQ2dhQ0xySmhFczZhc25Sb2FuNG9ld1p4YWsyVVFKRlgv?=
- =?utf-8?B?ZjNGZVpuU2FpQnNsRDdoNmZNSG94Vm5OaTZqSnpBdWdHWHFER3JiR1lHNkRR?=
- =?utf-8?B?TVpVbXVwT1FjR0VWd1FyREM2eDM1amtEOS9hSE1pcDY4WnpGSlpQUVF1Qnlo?=
- =?utf-8?B?WXNaTG53Q2FKaU5VYzdTQ05UYnMvSE56M3o1UFpvVjhUa1ZSV0dUNjl3Vm1o?=
- =?utf-8?B?ZHBSZXJwN1ZwYWhKTk5GNzFXMEJoVmsyelRzVHd3YmZyWWIzRVVlSU0yVFNj?=
- =?utf-8?B?MHhrOW1MY2l4Njgyc3h5WUcwUHRWV3Z2bVYxd0tDd2taTnhqc01FWGVxVG1J?=
- =?utf-8?B?L3RXd1E2VW5aOTJYWUFQTWdqTUxQQzdpWHgxVGJNSmNSZUhHelIrRW41dytC?=
- =?utf-8?B?RDJ3UEtJNjB2ek81MTBabFMxTzF2c3lCUEhDak9VN2ltc1BrMFkrQTJ0ZHRJ?=
- =?utf-8?B?eWlrQ3ROR29oMDB0eUVLa3pzRjNERmszMkNWSXpWYmJMS0RvL3JxUDF0ckpl?=
- =?utf-8?B?dEljaXJPS3ppdVRENXNLa2NWN2hnbnFYQWNCMWxZMUVmVWYrTGZubFZjRnA4?=
- =?utf-8?B?Q3R6aTN4d0pvMjdqdS84VEplZjdMUzl1TjFheU9jcGV6cC8yNFhpYXJVVHpY?=
- =?utf-8?B?a1JXbEhUVjQvNnNQc2p2eDM4V3pRRkFjc0lML0E0bU5EM0pHQnBaY1NnVGJi?=
- =?utf-8?B?aHp5alFwNHhac3kwOFk4ZGxXME5VSkRSSmpGVWNsYWJyYmN2MFR1cDVvQ2Z5?=
- =?utf-8?B?R3dtS0ZCTGh6WHhnSEJiUG4rTHk2VnJCVzVWTkxHTjhIQnRYWnYra3AyaEYx?=
- =?utf-8?B?dlhtMXhNQythbmg1NXJDdWxrOWY3Ty9mZ09rZzY3NDJ4TEtrekdXODYvaHpE?=
- =?utf-8?B?bmllRUFuSU1xSjFRN0Q4V3R1ekwraVdNaHc0Z212emZsRGRFYzlJTzIzejkx?=
- =?utf-8?B?T0h6V28wc1UrNFVZZjR5MWZ5OUY4NFE2WlhrMVN1eUVGcDZSN25yamF0QTdw?=
- =?utf-8?B?ekRyV0RaM3BtMkJpN0ZvR1hNK1NIS3NaejBwQjdsMnRUcUMvVTA3VXUzaDFu?=
- =?utf-8?B?RmRxamFVYUhJdWtDa0doaDI3K0lWdmlaWld6U0JaS0ptWXpsa3BDU2xsajBy?=
- =?utf-8?B?OEJGUFlvNy9SOTZCMVhkRFVtc1pIaWliTkZXQzNXWmJHM2FIa2pRR1JEL0l0?=
- =?utf-8?B?U3ZGT0hBMG8zKzVHbzlzQmgwTGI5T2NveHl5TmZxTCtVODdMYTR0Q2NkWDJy?=
- =?utf-8?B?RmdLazhBZ1QzOEFCd1RTbWdNazl0eUNSWjRBS0ZoSWVpZ0kxc1FWdlFIMHFo?=
- =?utf-8?B?MkQ4cWg1M0IvSXBFVTJKQzZkWUJ1Rm5qZmJzZWVSdWFFL2dVQmZzZVpra3JZ?=
- =?utf-8?B?MmZKYVdPMHdwYkdRY0xGVG1zaXJWWStJaHZMc2JQZHloczh2ck14KzQ1SC9W?=
- =?utf-8?B?T0dJU3M0M0grZ25TZ25ucXFyV3YvcWVLcDYrTUZWWGREcmtTdEUyUzdiTnRD?=
- =?utf-8?B?UmlySDc0cGpYa21kK3ZzRkdiNE9xQTkzUGYzSGd6WGw5WnI4VnUxdmQ1c3RK?=
- =?utf-8?B?VlovRHlqdTE4V2VVaUVnNFhBMGJmaWxNZ3YyYmlWMzlxOGRXTlBsYTJvZTVK?=
- =?utf-8?B?NXFETzEyMlFUdXBqNk1GaXNVc09qVWk3REh0WVdSTnhIMFdId2ZDYmZLZHJp?=
- =?utf-8?B?RC9YbjVVZlBSeWhEOFpOMmJISndNL0QyTGhRYmxWWVhiR0dEMXZuODNweFNN?=
- =?utf-8?B?Z1B3QzJoQjhrTVFVWnphVmxSUDhXYTBSWW9lTnJxdWdIVlJydWxHakgrUTMr?=
- =?utf-8?B?cVp4VmZHbzRwR1JYVmhUMEFnU1NWVzRzblAwOVlleDhwalptM3RIRzFWeWJi?=
- =?utf-8?B?UGg4RXpwQ3llR3IwVjdaeEtTSkNPQnY3a0phMmVJYzhyZEZDWXhqeXM2eU9C?=
- =?utf-8?B?TzcrVE8za1ZnZnpsY0R5ZlRsOE5peW96ZVZkYXhmNDF0UjlaU0pkUmdtcTFO?=
- =?utf-8?B?cUtJdWNTV3lsWDlUVXRzNGw3M2JmeENQcm5tZDhrSS8rSWhKdlFtS0NsUDdq?=
- =?utf-8?B?Uzh5cStMMkpUdWVEQzFsL2RQVXFZVzM5dG9LSFloR1luYTBqV0dqVlFBU1Ni?=
- =?utf-8?B?WGE3dFFaZ1hILzYrQ1d4LzkxbXdaWmthRGVONUF3SExFWEMyWTFJNGpzOE1E?=
- =?utf-8?B?Yy8wQk02Q0t1aDEvNFJyTzh4VmdmOC85eE5YVFRNS2s3aU5PUG14NVNHaHpq?=
- =?utf-8?B?ZkNBZTc5VTZoSDluWVBoMWlrSHJpazd1KzJqa2tmRERQSGlBR29DVS85Q2Fp?=
- =?utf-8?B?c2pobHRNOTVjdVQ3UHNIVU9RMEpLZUtUYXlVeERNSnpBd0FxcXM3QT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: da312011-cfbb-46ab-1e5d-08de633472ac
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 14:56:44.7882
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 07BvsVpQf5MAKGIZ1hkA78jlUHfWEnreKaROUsLafoYrNrX+fTlC7YCK4PPsPl2GzKj42xNw+yG+lrDWsWoBuQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7806
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Feb 2, 2026 at 4:00 PM GMT, Miguel Ojeda wrote:
-> On Mon, Feb 2, 2026 at 4:21=E2=80=AFPM HeeSu Kim <mlksvender@gmail.com> w=
-rote:
->>
->> This bug was fixed in Rust 1.90.0 (rust-lang/rust#144523). Restrict
->
-> Normally these references should be full links (i.e. a tag), since we
-> do not have "autolinking" like GitHub e.g.
->
->   Link: https://........ [1]
->
-> Then you can use [1] above instead of the parenthesis.
->
->> are affected by the bug, avoiding unnecessary flags on newer compiler
->
-> To clarify a bit: avoiding the flags is good, but I think avoiding the
-> skipping of the checks that the flag does is what is more important
-> (i.e. if it were just the former advantage, I would say it is not
-> worth the complexity of the added tests).
+On Tue, 3 Feb 2026 10:45:12 -0300
+Daniel Almeida <daniel.almeida@collabora.com> wrote:
 
-I think skipping workarounds when possible is in general good, as it serves=
- a
-good reference that it can be removed whenever the toolchain minimum versio=
-n is
-bumped above that (and with the help with LKP, it means that it's also been
-actually widely tested that the workaround is indeed not necessary).
+> Hi Onur,
+>=20
+> Sorry for the delay, I=E2=80=99m finally getting back to this series.
+>=20
 
-Best,
-Gary
+No worries, thanks for looking on this.
+
+>=20
+> > On 3 Jan 2026, at 04:35, Onur =C3=96zkan <work@onurozkan.dev> wrote:
+> >=20
+> > Some of the kernel's `ww_mutex` functions are implemented as
+> > `static inline`, so they are inaccessible from Rust as bindgen
+> > can't generate code on them. This patch provides C function wrappers
+> > around these inline implementations, so bindgen can see them and
+> > generate the corresponding Rust code.
+> >=20
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+>=20
+> My comment remains the same as v8 [0]: did you forget to pick up
+> tags? There=E2=80=99s an r-b here in v7 [1].
+>=20
+> Or perhaps I=E2=80=99m missing something?
+>=20
+
+I didn't forget, the patch in this file is changed since that (see
+__rust_helper prefixes).
+
+Regards,
+Onur
+
+> =E2=80=94 Daniel
+>=20
+> [0]:
+> https://lore.kernel.org/rust-for-linux/2F879792-3C12-4C8F-8EF1-122F44EF2B=
+19@collabora.com/
+> [1]:
+> https://lore.kernel.org/rust-for-linux/34A2E775-A47E-4D4E-A292-E12489F079=
+87@collabora.com/
+>=20
+>=20
+
