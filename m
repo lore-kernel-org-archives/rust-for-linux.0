@@ -1,103 +1,146 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF102D47EF;
-	Tue,  3 Feb 2026 15:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7241231C56D
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 15:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770131329; cv=none; b=dUBcE8UPF3oh1Q8GFt0mn8UvYdKqwS8hwSjG5qe7TrICKoG/ieHvfVAqV4T6GRVVrkCF4Kwi1drW8CByLb+5zZiPKbr2sKMYOR3/cgSrskpyKI/Q9E675RyomU9Xv7sGf+hnwiR959rqW2WnAYuvyoCQ1GXwtZ2Ht2U08eveZuI=
+	t=1770131713; cv=none; b=Eoe51jDGNsAFE2mx5oz9744vdisKnHr70JhWRvewxvpwMzw4wMWPfft36bKbx2QZzFImCpw6EwOTz96zRV3v0zaR0Pylufxr3qnf3q4T/yj2j1asLk+Ud1U6K++hDkrcPR3uo1OvpYy398edE+6rNmP7xtgH7hX1jystnbeqGpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770131329; c=relaxed/simple;
-	bh=8HScTAY3H4SHB2hD4B/A5OkaVfpVOaS1ffNmLu8ZVtw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjgixalJpECJztjAxsgl0D6UD0GO7r4tOZpz1OjIrnbK2eI1z5Ar8NQtfaJnJh9vhlK4M8wrMqldUWnPyX2aXcjEU9nRnVlaVKZTXDw0NF4Ce4TWZqbue5XsPO82o1IZxnOi8c44sAVkIwTPKPcnmskDCJ5eKhN4aQ5+qq+19VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=EBKUa2Bh; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1770131713; c=relaxed/simple;
+	bh=+Otgw8oOyICZrCSD3VtDB0krKc/oDhFZvaRHuKhv+sM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AbwDKYG7oRK9+EpvL3DVI9HJgvKK3bu7ByKhguWln2TSpkxqXA9TeFBhfKLDIN5QbLoS0WT5vuAw7x9ltBM1V/NphSTZrL26o/KYFH3gknpm4tvZKuvVuOJuTrJQ1RRejFdNKxLIi8i0dXLX8Jx4mhQkTS9GXZhZ8NAe1PMouEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HWjDHTEF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="EBKUa2Bh"
-Received: from mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:eaca:0:640:4fc0:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 05524C1AF8;
-	Tue, 03 Feb 2026 18:02:46 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id c2qrbAEHxKo0-ctWBflKb;
-	Tue, 03 Feb 2026 18:02:44 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1770130965;
-	bh=8HScTAY3H4SHB2hD4B/A5OkaVfpVOaS1ffNmLu8ZVtw=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=EBKUa2BhdK14byadQrg9kHXuNt00bIm/Z/gHbkdaCjZgQ6yeiC7iruZenfequBTp+
-	 +LgYElZtV3xR9Z1Ssl9u9u72DpeP8BNDhYz1HKjzFR+ZAkRYIuTJC5gv0LHO6XOHqw
-	 udUl5gSIMUnnfYcT0iOEQXHz0Qwqe3GTmCmd0f8w=
-Authentication-Results: mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 3 Feb 2026 18:02:36 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: rust-for-linux@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, mingo@redhat.com,
- will@kernel.org, longman@redhat.com, felipe_life@live.com,
- daniel@sedlak.dev, thomas.hellstrom@linux.intel.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 1/7] rust: add C wrappers for ww_mutex inline
- functions
-Message-ID: <20260203180236.13323563@nimda>
-In-Reply-To: <45626ED1-9684-4FA0-8AB6-FFBB0D2BA2FE@collabora.com>
-References: <20260103073554.34855-1-work@onurozkan.dev>
-	<20260103073554.34855-2-work@onurozkan.dev>
-	<45626ED1-9684-4FA0-8AB6-FFBB0D2BA2FE@collabora.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HWjDHTEF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8D8C2BC87
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 15:15:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770131712;
+	bh=+Otgw8oOyICZrCSD3VtDB0krKc/oDhFZvaRHuKhv+sM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HWjDHTEFYljPpODH10eGy6OyPyqMsLjHRWXPG+um0RrQYhS0KDOcA55UUZRD5GmyO
+	 PFsZ3M2pAvJ9DSmm1Xxx5uUxgjn3NkeCkmTa8F3T3dAFhScJP/eWiaWHeNDrrNJPzs
+	 hZOoloV0MLJm24o63IhouIGYQQMXWLe5ByseTc5tUYIX9le11nAHS9z5brqdB7QEn1
+	 DoGxw5uYJRT3i5KKKKMi+sh6JZ5Jy2eNB4KYjA80C/8RHuxnb0jc2AdvDEfA0dSs1m
+	 guOxVXzhBxOEabF8K32ukEv13BDH3iXqLTzqhGvuTtpJuOo/24IpT5sIrI4+T6hXL1
+	 a+vJN3ALgTIfA==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38305d006faso49502311fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 07:15:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUUJ7UaTK1PKWhCO96sGqnR9kp8DYhU0qKgMa1hYdCQ3JlkIDsAo30qJc1mP/+kgJpDbFL9aXsdzm0g/rztiA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YywfWSdwc9uLzYKyrokchWeie3a/E8dd68favpUn1X5N55ia3ql
+	yY2pm2HYTuQrtXaF4roZHgKB9H4Wgv29cLyt/KLypfFeOlg6eT2z239MGGwfT/yzn/Us41Y4WeG
+	ZyHbFlMfa0AVwb/0GH9q7T09GYYQmVEk=
+X-Received: by 2002:a2e:ab0f:0:b0:383:1d66:c1fa with SMTP id
+ 38308e7fff4ca-386465399c8mr50708911fa.10.1770131711461; Tue, 03 Feb 2026
+ 07:15:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260203130745.868762-1-gary@kernel.org> <20260203130745.868762-2-gary@kernel.org>
+In-Reply-To: <20260203130745.868762-2-gary@kernel.org>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 3 Feb 2026 10:14:35 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9kDoD8yXpLAm4K9V9+SzKC7+zd+Rg1eMrPMbz9Yr2uzeA@mail.gmail.com>
+X-Gm-Features: AZwV_QhFaqRXnSlnIul4HoIQssvVKM_GXGPoeISjAKEVkgzXzP1DW1fGNi8akUI
+Message-ID: <CAJ-ks9kDoD8yXpLAm4K9V9+SzKC7+zd+Rg1eMrPMbz9Yr2uzeA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] rust: disallow use of `CStr::as_ptr` and `CStr::from_ptr`
+To: Gary Guo <gary@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Panagiotis Foliadis <pfoliadis@posteo.net>, 
+	Shankari Anand <shankari.ak0208@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	kernel test robot <lkp@intel.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 3 Feb 2026 10:45:12 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+On Tue, Feb 3, 2026 at 8:08=E2=80=AFAM Gary Guo <gary@kernel.org> wrote:
+>
+> From: Gary Guo <gary@garyguo.net>
+>
+> As kernel always use unsigned char and not the platform ABI's default, an
+> user should always use `as_char_ptr` provided via `CStrExt` instead.
+> Therefore configure `disallow-methods` feature of clippy to catch incorre=
+ct
+> usage.
+>
+> Similarly, the dual `from_ptr` is also disallowed.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-> Hi Onur,
->=20
-> Sorry for the delay, I=E2=80=99m finally getting back to this series.
->=20
+Reviewed-by: Tamir Duberstein <tamird@kernel.org>
 
-No worries, thanks for looking on this.
-
->=20
-> > On 3 Jan 2026, at 04:35, Onur =C3=96zkan <work@onurozkan.dev> wrote:
-> >=20
-> > Some of the kernel's `ww_mutex` functions are implemented as
-> > `static inline`, so they are inaccessible from Rust as bindgen
-> > can't generate code on them. This patch provides C function wrappers
-> > around these inline implementations, so bindgen can see them and
-> > generate the corresponding Rust code.
-> >=20
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
->=20
-> My comment remains the same as v8 [0]: did you forget to pick up
-> tags? There=E2=80=99s an r-b here in v7 [1].
->=20
-> Or perhaps I=E2=80=99m missing something?
->=20
-
-I didn't forget, the patch in this file is changed since that (see
-__rust_helper prefixes).
-
-Regards,
-Onur
-
-> =E2=80=94 Daniel
->=20
-> [0]:
-> https://lore.kernel.org/rust-for-linux/2F879792-3C12-4C8F-8EF1-122F44EF2B=
-19@collabora.com/
-> [1]:
-> https://lore.kernel.org/rust-for-linux/34A2E775-A47E-4D4E-A292-E12489F079=
-87@collabora.com/
->=20
->=20
-
+> ---
+> Changes since v2:
+> - Also disallow `CStr::from_ptr`
+> ---
+>  .clippy.toml       | 10 ++++++++++
+>  rust/kernel/str.rs |  3 +++
+>  2 files changed, 13 insertions(+)
+>
+> diff --git a/.clippy.toml b/.clippy.toml
+> index 137f41d203de..a51de9a46380 100644
+> --- a/.clippy.toml
+> +++ b/.clippy.toml
+> @@ -9,3 +9,13 @@ disallowed-macros =3D [
+>      # it here, see: https://github.com/rust-lang/rust-clippy/issues/1130=
+3.
+>      { path =3D "kernel::dbg", reason =3D "the `dbg!` macro is intended a=
+s a debugging tool", allow-invalid =3D true },
+>  ]
+> +
+> +[[disallowed-methods]]
+> +path =3D "core::ffi::CStr::as_ptr"
+> +replacement =3D "kernel::prelude::CStrExt::as_char_ptr"
+> +reason =3D "kernel's `char` is always unsigned, use `as_char_ptr` instea=
+d"
+> +
+> +[[disallowed-methods]]
+> +path =3D "core::ffi::CStr::from_ptr"
+> +replacement =3D "kernel::prelude::CStrExt::from_char_ptr"
+> +reason =3D "kernel's `char` is always unsigned, use `from_char_ptr` inst=
+ead"
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index fa87779d2253..97bf9427af59 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -189,6 +189,7 @@ macro_rules! b_str {
+>  //
+>  // - error[E0379]: functions in trait impls cannot be declared const
+>  #[inline]
+> +#[expect(clippy::disallowed_methods, reason =3D "internal implementation=
+")]
+>  pub const fn as_char_ptr_in_const_context(c_str: &CStr) -> *const c_char=
+ {
+>      c_str.as_ptr().cast()
+>  }
+> @@ -319,6 +320,7 @@ unsafe fn to_bytes_mut(s: &mut CStr) -> &mut [u8] {
+>
+>  impl CStrExt for CStr {
+>      #[inline]
+> +    #[expect(clippy::disallowed_methods, reason =3D "internal implementa=
+tion")]
+>      unsafe fn from_char_ptr<'a>(ptr: *const c_char) -> &'a Self {
+>          // SAFETY: The safety preconditions are the same as for `CStr::f=
+rom_ptr`.
+>          unsafe { CStr::from_ptr(ptr.cast()) }
+> @@ -334,6 +336,7 @@ unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &m=
+ut [u8]) -> &mut Self {
+>      }
+>
+>      #[inline]
+> +    #[expect(clippy::disallowed_methods, reason =3D "internal implementa=
+tion")]
+>      fn as_char_ptr(&self) -> *const c_char {
+>          self.as_ptr().cast()
+>      }
+> --
+> 2.51.2
+>
