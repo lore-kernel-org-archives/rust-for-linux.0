@@ -1,61 +1,63 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330282741A0
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 15:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104F73B8D42
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Feb 2026 15:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770132513; cv=none; b=sQkJulTwO+XxuD9pertRQd3mkUYdW90Klj5du0b8JRnLHlOojxRL9gNaWlGW6fk7mlwG8NHRauRw961h5XfeqVxfvDAiNpLEJCwMtEBcULwKKs/6T404y4/ZAsJQaQmHbaVXcknz3ypYK4o5Wv/vVb8W6hmZzbo1CQ6BDdMPoL8=
+	t=1770132514; cv=none; b=dvPO8ibaFNHYMI+a+HiGfHNQ3gFajo41dJ7dDZPfyLDWxY9vJ9O4bIZZouzLDMBL/cAdo8vZf0sz5js1fdP+uY1e5ouBl7JSOJNVNJOJtohUcN+u0AimqDDvjl09H9voGjl1U4+iiCeyJdjVBzi4th5mhZaxddZpMAisBTijQi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770132513; c=relaxed/simple;
-	bh=feGXy78gm+sEIjpsQUguh5JqEfrMuxOqqTwjgBzwnqQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h7HK14BAqNb2Va8FnZPrbBu/OT/bvCT9I4yn/02KefXW0/aI74SFUcWevqL8o/Pvkl0hzmLTSgVjUsjT2jz/vnx6ZvqN5zlf00r/pkypXZEIsY5DkLsq86vOfU41vHD5oPbbBl4n9YzE6pyA9o60ALj4A3COwDL++sW87rdEY3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Y9WCsSY8; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1770132514; c=relaxed/simple;
+	bh=VjzLcMYnMGzKi+vu/uescVXSKcvPTOypNKURUrKD0zg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dIDRWv+bJ+eIbygTvWn/2pHRfWFgjrxtu7nQSPkhpiv1sQH0QhuGaaZ9/SHqTBHK0NqPMPvqr7uF7zbB2xfzfGcLSMzI7qZW6ZRxX5I+HWJ9oAAqZnBzWEg1YxXHxUxjb3dvZTmo4StOkBztEdROKKMtp+KGjYDGC0BnsOKj3vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=GQq/6thX; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Y9WCsSY8"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47fedb7c68dso58952475e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 07:28:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="GQq/6thX"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4807068eacbso48118545e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 07:28:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1770132510; x=1770737310; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aNBZWsXLQ30/V+1KNzhQFPY8Mm+yHT82xL2yQosJWYI=;
-        b=Y9WCsSY89ZLbvwNK1OI+VjEIqCF5uuWdMFnbmRjSCKhSxr6o+sxVdCHjl8KoHXOrBe
-         FgnJLDOHy+0Tia3GCq9xxrO9HP8u3UMymxeM/kYrQb76Vwfk0HWKUdfNNoiXuMIrN85s
-         R3/GVrEjMHOpl2bvh3VozBxnNao4RwgFHkS6g1ixgAkuoJo9vTewx9Q74o3bt0Tibhd7
-         BXoICDeg4B/xTnWSf05koyt8PFDoY4erVty4zwmZjrWshE234S/wcRh3rM1ll3H8AOqs
-         sYWDS2tBAkwoafI2k+9P9X1Uyg2Ge7QGAoPShyWHMapuZsvCTm9e1Aqico2ThrdiN/EG
-         7uLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770132510; x=1770737310;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=suse.com; s=google; t=1770132511; x=1770737311; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aNBZWsXLQ30/V+1KNzhQFPY8Mm+yHT82xL2yQosJWYI=;
-        b=jNxuHiX6/D0I2sAJU2xwjhMNy+lePtLL63la4p3mDmQKhxJVRt7d6wBuBdmnC/GQUU
-         dpm8nSbVECbdLC5rjcto8U6zGbUrUDfKEG72SdrEx6H/SSoGH/tkRIcAXMoj6Ynl/SO2
-         hB6ezKHmDw0NbgIH2MAWFU7f5Tps3PEZhHGXM1vm0kDryQ9GkxTGzQ2FfSPOn3Mi+pAP
-         ZkskEy06FD+xFJJcoiPc2/LzggVC1luXYcAhPyqxFtAQCieIsDofpxoxOFWFLZ4w31m7
-         zI9uPC8ZOHOKA8Ad3pxNFDHkrCY9GIoZ79wtZKGDJHOzOCyO2uvWqm9bNLA1Lz0uqiDP
-         +jZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVeLyZW7EMyBxm2Kgprqw6Z1LqU2KVKTvZfN/JrGdqEGINQwc4x0wD2/lVWOHI4SVVrDQjNkIxbAsPHnLQrZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+sj8rAFwGAlYaFwqxvopmLp8tYtEmZQnUwLgWwihuY9XwvSZT
-	3puCGNURgeN9KtxXelo11Au5t1w5/eyu9Hy2kfS7yFRK6B1ZDpvhcR0l5e+TpBAhzPE=
-X-Gm-Gg: AZuq6aI7RWzPcCWL0C7nMB02oMyLRa2CXoEBLpfKprRlmUwt+CBhaor4cHA/a1ezf5i
-	7Mhq5EnmXq6jVVx2fJRvOPomzPu4Oir40pEWFhpKYUQBO5PAoNHVD1zR98DAgaFhzL0p9g7l/c+
-	nyAx7u5Wq8N5tN2BIaZ7r6JseKmhX2moZ53yiQVMXvlA2Avz6ocTMn08dUXthYYDTLqg5BobvoT
-	25XvwINuE91z5qKLNG1FKG9hqjAXiXW4iTFyr49I32K6M9x53Ftt0NrhZ210QJN+Zojv/jedvAf
-	LG2hcsOpE1VhdymhJM8iD8t5C7TZEA8cNWcEA8j7ESDrWwsBCSWAu2Cc/qukKvXYbFIwhvW7t4T
-	lmXwKw/O+qmuwsTTJW90m6J6KAuXEn0ec9nBZp2tiorhrMQPW761m8tsVKbKuYCUdB1Wm6nP19h
-	DqrISbkHuSYQP7amsnjc5TZZcxqA==
-X-Received: by 2002:a05:600c:154c:b0:480:4c20:6a06 with SMTP id 5b1f17b1804b1-4830e96adbfmr164095e9.17.1770132510478;
-        Tue, 03 Feb 2026 07:28:30 -0800 (PST)
+        bh=jptYRhOowxSmX36W8by/N3vMS3FFkCDr4M7jwT5m6nk=;
+        b=GQq/6thXahLRrplzKuyBshQHOLW+RobAKmuZvK2fq3g4wkjHm7zNq+Wdc+RI1G5+y4
+         d0zSrEC95E32QadKehXxUdTkDRDSRuigqyyD+ylyAkgToyZqMGLxaL2qkAW7EouNF+HA
+         peP6hv5QMHaUN64K+LZ8yvlXByRBgJY3PFu3PDS1aDxjrTrXaiCbL8I+/3dZ1PcL24G7
+         XSZsiDk2ROGy8tKGN7d3ut1mvsGZ+t5HwydS6mE2+me9lkEAU59DVk7l4FcjQsiO/6op
+         PNXHidwK8qvsDFy0HwxSQ/N4pMiz+fKBGmfq/bhc9ez5Ozoq/XLxxX2s2to7dRqOiEUS
+         0zNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770132511; x=1770737311;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jptYRhOowxSmX36W8by/N3vMS3FFkCDr4M7jwT5m6nk=;
+        b=C5xtnkLVk2NWRYYfxR8jPW+CagLB7fLzSenFKpXABiaN6M6zV6b2TAo5EkIuGi5Yw1
+         o9d5JuP2TBOyNVKL74Q4H3GiiW1tQk4+mMx5cekm6EdIGySnXSK8ZQ0mCgkfGekCPpqu
+         0LBhz3+pJ9kWY51AbENIpN8beSO9Gl676HN/wj59hLS3H77eXESJHR4Ac/E7D5o181LY
+         ir1zjjPY/a0AQthHVt6A/arHpz7UJn9Omm+kEGoget7Sy1L6Hyu2Px0hMyWD9Q0buSvx
+         DEsQXuLP7WMGObiUiSz6STyPKxYDbl459HQgtRh1KnJ03/hixrXLQlPTqtl/USTYAizl
+         fmhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVqSB+l9tp1q0EwBLunwGrEwDcw+8HaIHJfnnCHEUckkSPRjDtxjDlXDL8D0KaFgvUq2w2rSTqbMVNOFTobtw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywgd+n7kJNAwKCbcYLi/uxqo6abCVKvpqIKe7L8o0Gj9hKfeWCq
+	UvEaIQtKwXcpngfVGTDjnxS6LbqLSACzgY0rFHMr5Nzbn6VUL+Ep/oZ2aF5yXvixTGI=
+X-Gm-Gg: AZuq6aJyi3N7jyIt82m5uuEOQ9EVImPOuTy9IoA1S2ed95ZSMeChEiGm8BWbMkU1wMW
+	mGmkjssBOO4uOIsW6+WW7NWJo0m1nyliX+IQa3o4liu/Ae+l/S8k+iwiuLPECPmK7wgDXRgjtJl
+	OnT16ehvaSuJs7VotVY8sa/p6dLYsuYd9fB0gwcBn6jrbHHtAayJdR3UUAYMQTiOqAirk+9vwI+
+	FPbrhg+Id0uTlZBSTpY7eAySa+EJeEcWF2YtAPMrB041QvO4XJhUCxGQCVbL/BMwMn1vQZpU73h
+	umMPsCFURMgZTcymAJc6fEfKrrINwctkzpmY4a7KjKUSDXNsMgTG9tuKQm4ElIHrPs+nBWSLit0
+	9VjtK0+Zy51eO4GB79j/qbqQw/u/yXAnNv1QGY4X4mYUTr0PbMaU+KTvz/0+iW34X3+yfGd7ttg
+	97jjKUy4+aDNG6ELbztV3AkPqZF8aYa1qRbBsp
+X-Received: by 2002:a05:600c:5491:b0:480:46c6:bf4b with SMTP id 5b1f17b1804b1-4830e92a73bmr467905e9.5.1770132511405;
+        Tue, 03 Feb 2026 07:28:31 -0800 (PST)
 Received: from linux.fritz.box ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483050dd79fsm71316005e9.0.2026.02.03.07.28.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483050dd79fsm71316005e9.0.2026.02.03.07.28.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 07:28:30 -0800 (PST)
+        Tue, 03 Feb 2026 07:28:31 -0800 (PST)
 From: Marco Crivellari <marco.crivellari@suse.com>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
@@ -68,10 +70,12 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH v4 0/2] Add new workqueue wrapper and enqueue on cpu functions
-Date: Tue,  3 Feb 2026 16:28:15 +0100
-Message-ID: <20260203152818.317806-1-marco.crivellari@suse.com>
+Subject: [PATCH v4 1/2] rust: add system_dfl() around the new system_dfl_wq
+Date: Tue,  3 Feb 2026 16:28:16 +0100
+Message-ID: <20260203152818.317806-2-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260203152818.317806-1-marco.crivellari@suse.com>
+References: <20260203152818.317806-1-marco.crivellari@suse.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,60 +84,50 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+The C code defines 2 new workqueues: system_percpu_wq and system_dfl_wq,
+respectively the futures replacement for system_wq and system_unbound_wq.
 
-Recently the workqueue code has been changed introducing two new workqueue,
-system_percpu_wq and system_dfl_wq, as a future replacement for system_wq and
-system_unbound_wq respectively.
+This change introduce system_dfl(), that use the new system_dfl_wq.
 
-The change has been introduced by:
-    'commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")'
+system_unbound_wq will be replaced in a future release cycle and should
+not be used.
 
-The old workqueue(s) will be removed in a next release cycle.
-
-=== Introduced Changes by this series ===
-
-1) [P 1] Add wrapper for the new system_dfl_wq
-  -   This change introduce two new Rust functions in order to add a wrapper for
-      the new wq(s) defined in the C code.
-
-2) [P 2] Add wrapper for system_percpu_wq and two new functions
-  -   The new functions added are enqueue_cpu() and enqueue_delayed_cpu() and
-      are accepting a u32 parameter, the id of the CPU on which the work should
-      be scheduled on.
-
-
-Thanks!
-
+Suggested-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 ---
-Changes in v4:
-- two new function added in the Queue implementation:
-  * enqueue_cpu()
-  * enqueue_delayed_cpu()
+ rust/kernel/workqueue.rs | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-  These functions receive a u32 CPU id in order to schedule work on that CPU.
-
-  More info can be found in the v3 discussion:
-  https://lore.kernel.org/all/CAAofZF6jcCAdDjRp-7w7+_ZgOG4k3apxbSiKvGoUDVf5hw0GhA@mail.gmail.com/
-
-Changes in v3:
-- added a proper comment documenting the new added functions.
-
-Changes in v2:
-- added system_percpu() and system_dfl() in order to use the new
-  wq defined in the C code.
-
-- fixed misleading paragraph in the commit log (no warnings are currently
-  present).
-
-Marco Crivellari (2):
-  rust: add system_dfl() around the new system_dfl_wq
-  rust: add system_percpu() and per-cpu enqueue functions
-
- rust/kernel/sync/completion.rs |   2 +-
- rust/kernel/workqueue.rs       | 110 +++++++++++++++++++++++++++++++--
- 2 files changed, 105 insertions(+), 7 deletions(-)
-
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 706e833e9702..300cc2bfe012 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -968,11 +968,25 @@ pub fn system_long() -> &'static Queue {
+ /// Workers are not bound to any specific CPU, not concurrency managed, and all queued work items
+ /// are executed immediately as long as `max_active` limit is not reached and resources are
+ /// available.
++///
++/// Note: `system_unbound_wq` will be removed in a future release cycle. Use [`system_dfl_wq`] instead.
+ pub fn system_unbound() -> &'static Queue {
+     // SAFETY: `system_unbound_wq` is a C global, always available.
+     unsafe { Queue::from_raw(bindings::system_unbound_wq) }
+ }
+ 
++/// Returns the system unbound work queue (`system_dfl_wq`).
++///
++/// Workers are not bound to any specific CPU, not concurrency managed, and all queued work items
++/// are executed immediately as long as `max_active` limit is not reached and resources are
++/// available.
++///
++/// Note: `system_dfl_wq` will replace in a future release cycle [`system_unbound_wq`].
++pub fn system_dfl() -> &'static Queue {
++    // SAFETY: `system_dfl_wq` is a C global, always available.
++    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
++}
++
+ /// Returns the system freezable work queue (`system_freezable_wq`).
+ ///
+ /// It is equivalent to the one returned by [`system`] except that it's freezable.
 -- 
 2.52.0
 
