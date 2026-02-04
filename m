@@ -1,112 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-e106.zoho.com (sender4-pp-e106.zoho.com [136.143.188.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDFC3D413D;
-	Wed,  4 Feb 2026 14:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217186; cv=none; b=TH8r2Xm5t/Kk2+iiFQcnmibyzcJEsYd+xO3FbvruxBXF3qiGktQYMDgHc0FqZWydh+kDcmKE6KtZrthzj3mxumZxCaBciGixcSMgMcWWa49AT8qhc10uKdTXJt9DJfq+AGANRXFSF0ypUuBFUgYAinuZ2vEuvFccKGiZy74u3t4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217186; c=relaxed/simple;
-	bh=GbES7aG2mQfMLb3/jx1ri1+13Q6gUPgKpMi3ZlKcqM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=G2LYjGU1A9QEySuFKQ/la9qxO1gY0ertZzlUktO0iS+1TUmlvXUOzQK0+X1s0000Vyv6ZIiy14tAuW7L5Cg5/DW5YFkg/5a4zii4N/V+gyQS0T5yqgHfjMT6o2B2YgCUfHRfENiK2njT8aQPeEoEoPCePjGGj4r5QNKuoUdy7Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9eYd4Oe; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDEF285404;
+	Wed,  4 Feb 2026 15:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.106
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770217262; cv=pass; b=R4N8ibu1A9NHTmVVhO3NAD5MyKARl58sz30kJQpm948D1rRsaqBgH3p69V0WYvEuSFZ52ZX/AoHqLcE+BoatG42CT2967gxEiy7NszLixV0y9v8pf+4S7N/kjUpZoHqLrMwwNHdYBVLqSJwhY3ZaLvrCct5jHALGzrramUn2TGw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770217262; c=relaxed/simple;
+	bh=SuL6GDe9u99Pic+D6yF6G+7xbdRs0e7NhtkVcVixgZg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=RcjQrQIC9BwAcSSjT8aTpOtZ6gIQOAcXYAZp82vZnYRWkZ/IKI2VIVC22Fd0Q4nYXD9+FnsnWpMA53B8BM8bgMbBc37Fgrah4csYfcYEPXSlHbHBfTEIN4NoJ6E0nIdWqBzDuCOLu/KFyKtIAYKJ3r1MT8I3xFY+qlJ4M+imrCo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=AE3xhG4J; arc=pass smtp.client-ip=136.143.188.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9eYd4Oe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A67DC116C6;
-	Wed,  4 Feb 2026 14:59:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770217186;
-	bh=GbES7aG2mQfMLb3/jx1ri1+13Q6gUPgKpMi3ZlKcqM4=;
-	h=Date:From:To:Cc:Subject:From;
-	b=K9eYd4Oew63OwUq5vuBIejtNgo9tFS9zq4rAEAgvGwr70liFuFKfzfU0eVCvA+2TP
-	 RKX92TL2ELzFFuqCRDxlkVmVa/0nbRrBX+xtP2wRUWFoPX3ovIe8ZxM8ngBogsoFFR
-	 GiW51RLvdog5LUBqHVwDhShv1r98XJ0+GPhYp62FZGwhxam/1T7DL6m9vokhhzYhR8
-	 W3BG+fNOdWm1Vdv1wzu0lURXAjmtv3fptmYGKgGRp2ZO6501LUzevr+N2B5RlQCVpA
-	 vO81KlyAOnmbpxUyREW5Vt3xiW74PnQuTbHOA6OnNyEm88wKvICWW2wDMqgqWaYovZ
-	 MU+BoGIVX4rsQ==
-Date: Wed, 4 Feb 2026 14:59:42 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Linux Next Mailing List <linux-next@vger.kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org
-Subject: linux-next: Tree for Feb 4
-Message-ID: <aYNe3khJcKy-N1ga@sirena.org.uk>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="AE3xhG4J"
+ARC-Seal: i=1; a=rsa-sha256; t=1770217234; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=lpBz/qTbF8vKosrFDbiN75V13G0IO6+hQX38EiKODMjmKjBNXKTPIOHS0iAAy8fz9k7pRYU1lY0MtpdPPc8X/b+SdcoiIRFRAuDDKOHpFyn4YCfoK297Vy5WC4vJXCsdVxlhjyDQX8HSGj1v5CtFuaJX5mlMizslX3hupOSjUgE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770217234; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=pweZ7QgQzfYiYd/GcOGqcHQ4SaTbilLC6NRVhQTWwJA=; 
+	b=GukGS8YRFCSt4M8Grf1ZIqmjO8cv9KIfAPAUpqQo8dt5U3TPfCdAb57x8uoXqVs4J4SxF2e7jXFPPDil/O3on9txC5kVXTQmLrvfHiWwMn6QAG11sO7ZKEXSKcNq/gYlum8yFp7CIBaL5dd0nM51h76dz/LuFqLBtaXcqHnS66U=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770217234;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=pweZ7QgQzfYiYd/GcOGqcHQ4SaTbilLC6NRVhQTWwJA=;
+	b=AE3xhG4JfU6AjG6KT4GReBxtIiBQJA7gMn/1p+yrWKeF3VQKNVUt1ugsY6c/DJsX
+	K7og0dFQwAaw/19LgwHXX1YAHoqgH2IpE3RQaApYGTv++NjcupTl5K+W/uk7Qr8ykBj
+	IYPt6kB5Bo35MGkb9+mKXJuOG71bGU6ZxvzszagM=
+Received: by mx.zohomail.com with SMTPS id 1770217233327908.9116052510911;
+	Wed, 4 Feb 2026 07:00:33 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fg4z2F3rYwFbJl6Z"
-Content-Disposition: inline
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 2/6] rust: io: mem: use non-relaxed I/O ops in examples
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260202-io-v1-2-9bb2177d23be@nvidia.com>
+Date: Wed, 4 Feb 2026 12:00:17 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ Zhi Wang <zhiw@nvidia.com>,
+ Lyude Paul <lyude@redhat.com>,
+ Eliot Courtney <ecourtney@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B50EAE3F-A424-4DC9-A2B0-7D9A8529B496@collabora.com>
+References: <20260202-io-v1-0-9bb2177d23be@nvidia.com>
+ <20260202-io-v1-2-9bb2177d23be@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
 
---fg4z2F3rYwFbJl6Z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-Hi all,
+> On 2 Feb 2026, at 05:13, Alexandre Courbot <acourbot@nvidia.com> =
+wrote:
+>=20
+> The `_relaxed` I/O variant methods are about to be replaced by a =
+wrapper
+> type exposing this access pattern with the regular methods of the `Io`
+> trait. Thus replace the examples to use the regular I/O methods.
+>=20
+> Since these are examples, we want them to use the most standard ops
+> anyway, and the relaxed variants were but an addition that was
+> MMIO-specific.
+>=20
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+> rust/kernel/io/mem.rs | 10 ++++++----
+> 1 file changed, 6 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+> index 620022cff401..7dc78d547f7a 100644
+> --- a/rust/kernel/io/mem.rs
+> +++ b/rust/kernel/io/mem.rs
+> @@ -54,6 +54,7 @@ pub(crate) unsafe fn new(device: &'a Device<Bound>, =
+resource: &'a Resource) -> S
+>     /// use kernel::{
+>     ///     bindings,
+>     ///     device::Core,
+> +    ///     io::Io,
+>     ///     of,
+>     ///     platform,
+>     /// };
+> @@ -78,9 +79,9 @@ pub(crate) unsafe fn new(device: &'a Device<Bound>, =
+resource: &'a Resource) -> S
+>     ///       let io =3D iomem.access(pdev.as_ref())?;
+>     ///
+>     ///       // Read and write a 32-bit value at `offset`.
+> -    ///       let data =3D io.read32_relaxed(offset);
+> +    ///       let data =3D io.read32(offset);
+>     ///
+> -    ///       io.write32_relaxed(data, offset);
+> +    ///       io.write32(data, offset);
+>     ///
+>     ///       # Ok(SampleDriver)
+>     ///     }
+> @@ -117,6 +118,7 @@ pub fn iomap_exclusive_sized<const SIZE: usize>(
+>     /// use kernel::{
+>     ///     bindings,
+>     ///     device::Core,
+> +    ///     io::Io,
+>     ///     of,
+>     ///     platform,
+>     /// };
+> @@ -141,9 +143,9 @@ pub fn iomap_exclusive_sized<const SIZE: usize>(
+>     ///
+>     ///       let io =3D iomem.access(pdev.as_ref())?;
+>     ///
+> -    ///       let data =3D io.try_read32_relaxed(offset)?;
+> +    ///       let data =3D io.try_read32(offset)?;
+>     ///
+> -    ///       io.try_write32_relaxed(data, offset)?;
+> +    ///       io.try_write32(data, offset)?;
+>     ///
+>     ///       # Ok(SampleDriver)
+>     ///     }
+>=20
+> --=20
+> 2.52.0
+>=20
+>=20
 
-The KUnit coverage now runs with CONFIG_RUST=y
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Changes since 20260203:
-
-The tip tree acquired a conflict with the pm tree.
-
-The leds-lj lost it's build failure.
-
-The nvdimm tree acquired a conflict with the vhost tree.
-
-Non-merge commits (relative to Linus' tree): 10777
- 10460 files changed, 596349 insertions(+), 221690 deletions(-)
-
-----------------------------------------------------------------------------
-
-I have created today's linux-next tree at
-git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-(patches at http://www.kernel.org/pub/linux/kernel/next/ ).  If you
-are tracking the linux-next tree using git, you should not use "git pull"
-to do so as that will try to merge the new linux-next release with the
-old one.  You should use "git fetch" and checkout or reset to the new
-master.
-
-You can see which trees have been included by looking in the Next/Trees
-file in the source.  There is also the merge.log file in the Next
-directory.  Between each merge, the tree was built with a defconfig
-for arm64, an allmodconfig for x86_64, a multi_v7_defconfig for arm,
-an arm64 build of various kselftests, a KUnit build and run on arm64,
-and a native build of tools/perf.  After the final fixups (if any), I do
-an x86_64 modules_install followed by builds for x86_64 allnoconfig,
-arm64 allyesconfig, powerpc allnoconfig (32 and 64 bit),
-ppc44x_defconfig and pseries_le_defconfig and i386, s390, sparc and
-sparc64 defconfig and htmldocs.
-
-Below is a summary of the state of the merge.
-
-I am currently merging 405 trees (counting Linus' and 121 trees of bug
-fix patches pending for the current release).
-
-Stats about the size of the tree over time can be seen at
-http://neuling.org/linux-next-size.html .
-
-Thanks to Paul Gortmaker for triage and bug fixes.
-
---fg4z2F3rYwFbJl6Z
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmDXt0ACgkQJNaLcl1U
-h9A8OQf/bq/LFBg924nn7AdH03pLYU+Da94xfABh2XI3COTdgquT86ouZ7F82X4d
-LMazwqT2d5u6LgTwRjOAA9YG0+aYAoVDawhFRrBU3Qrg67QwrLL75PQOm9JXAvyK
-mWXNoFKxc2yG3F0YtWbRKSwUEuI+YycNapo1/e3xppDiUpqNH+j4OjYykPERCB/i
-d/r120c6Lf06WCxrjXu6sircZiCtwfr0pAQQEEML3kIt+ltvhOdOjLKgAhoLyZaQ
-hntRx0TMAoETWrMr/0qt6Mct449YFMJzd5I5s1dL8rYAOEJdn4/VahY1z8RoxFDe
-dXYB5N0dhmAa5jWROXvg7RZ6Nuw9jw==
-=H6Ce
------END PGP SIGNATURE-----
-
---fg4z2F3rYwFbJl6Z--
