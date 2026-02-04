@@ -1,90 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1E13033EC;
-	Wed,  4 Feb 2026 16:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E29338910;
+	Wed,  4 Feb 2026 16:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770223620; cv=none; b=ox08H25JRFw8N9euMqED2JnSx0NhOmyell6dpVdIKUTfCGFsFqVqKPGp79e2B05VsvOa5K3RKvurrECtOsvV4KnalXP3INnzmWubZ7zKWxN2PdiOAaaRJ1xUZtr1/SzZ3YqhQG/0JcGUrU2DeMws3wLd2fu6jm6b9jqUVTZxGow=
+	t=1770223643; cv=none; b=LFztyoYCFCdI2+9YwU9IYL3VWwWY4EziSkxTKNVU1d37dhgAG3K3eHMLrgtETyeCOxwhxX3PJEIGMbkMEb2er99UlRhvtod1TnBjsJ2PZQlKSE0dmHjsoZ/RryzanIaAXm3n1CoiPDgjs4gaonFnmv6HCxOTNEhDhQLfE4FAyow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770223620; c=relaxed/simple;
-	bh=dy73/9OQI/HuBvsd+ptSVtFrF/SFQ/zEvH4RIO0j4i4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=lJeBf6qZ0mZnnXmkTJWUxamZjm8G2ZET1S1TiGOEFK0khtCKwEzHyiMglAA3emjRbp+9QAhQ9ehSPsGOU2kQbpupQ83FmvJ474gXIBvcqVihBO6oJv8xgZVIa+KEEVljjyLnvZxiNqjFmUvaKVlfm1tV4TtFjoOvcBj5+j0MBMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHj8q1Uc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770223643; c=relaxed/simple;
+	bh=dZi5zbISUaPpdOjD3mQysirbe0qI35CATtWjGq/MdDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fKZz9nKQ47ODHbO999lihsGFAi4gD0CiKn49+rACMmvy6XCGkOMlLmpPFLA5S7zvjg6msBg8CfbV+xA+Tte7dCsMbLwC0MgyUYRyPbhU5JWA4vDvd2w/PGvSLt49FNK6rLbg5x1I4V12VlMYZWQRGBd/0ZRv7D9WfrwkELefsR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YjAi/G54; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7TvO6NL6; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHj8q1Uc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF418C4CEF7;
-	Wed,  4 Feb 2026 16:46:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770223620;
-	bh=dy73/9OQI/HuBvsd+ptSVtFrF/SFQ/zEvH4RIO0j4i4=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=ZHj8q1Ucvt7QcaZcn9QuPYACGDPfU/YL82+e6kQIaszjDn8/K3Lk25/ytj8Malksx
-	 QTrROJpGVUsMkMWTzjQvp0wcUGKl69dlGdw+uM4ZXkcku66CUCCFf+JntNkoa9XeFK
-	 UBAoEJloaJHzf8XjFtFKSgZDr+rjjdpxj021cT2FEEhwdvxmV1QnS69elAgBlCG2S1
-	 5VpdKtuK+x95jkiRP0Q0olnVlaCNxNMiWvM9N5rJSdpQVInfdYkjh/kMwVzxggH0vt
-	 xi4ko64jYM5R0Fh8vdICZWmXXV6iTywKSpHzFCGMppUp7E+ZJ8jy9VLrS1L5oDN6Sy
-	 z8aQSzU00WK2A==
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YjAi/G54";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7TvO6NL6"
+Date: Wed, 4 Feb 2026 17:47:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1770223635;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NNsV874Ht9gBigLKrZ7cMSwSHKZYBxzSEwX2eW4xZY0=;
+	b=YjAi/G54xY6oQePWOyTdpCLMZSGf1ODJfLE1i1lJYJGFV4246ti++ifseySlybOrFpvuVF
+	gr9kEylZuO+2VfryTBDqTs99sxhkzN4TYLu54I0KikE7J8dhzeYTZAoNVjwpcdG9ivrl7S
+	rW0tdx+3+eJ0jcz1X0BejiJFCaXPzWiIdsNLOgcmGmsanoI7sMxpFVvRPCUmBU0mmPbpP4
+	mxGcvPSLy6f6M3IK/6gmMb5A2aszFb5mOhtHcIttC+fz0+rVLVktXB5gjFOvf6fG4iiDfA
+	zTSiJI4Q+xT3kqLJrsOjXkzf1vr3+UVnq3UgJuiM6Va2RQeC/BY3N1NrMfRZAA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1770223635;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NNsV874Ht9gBigLKrZ7cMSwSHKZYBxzSEwX2eW4xZY0=;
+	b=7TvO6NL6uluQamW5aaEDezLOwdI+SqqwlTfLM/NUlhUS4KwvJ8v+0y+N6twgq069JvIj2z
+	VtkHRuNjzn0akpAQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Marco Crivellari <marco.crivellari@suse.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Subject: Re: [PATCH v5 1/2] rust: add system_default() around the new
+ system_dfl_wq
+Message-ID: <20260204164713.omijmiTB@linutronix.de>
+References: <20260204155037.325482-1-marco.crivellari@suse.com>
+ <20260204155037.325482-2-marco.crivellari@suse.com>
+ <aYNxkG3gCspeeW9_@google.com>
+ <CAAofZF5GZ9UBLNH_+NRSyXW1114d++TfEc3EuBiCpPkdwK1pUw@mail.gmail.com>
+ <CAH5fLgjwz_WmkWDJrZ1d_HZ228-whdgQkMb4WnmKu+g3ktEskw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Feb 2026 17:46:51 +0100
-Message-Id: <DG6BWC5SOHUG.2K1ZXGYNVB69V@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v14 1/9] rust: types: Add Ownable/Owned types
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>, "Serge
- Hallyn" <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner"
- <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>, "Igor Korotin"
- <igor.korotin.linux@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Viresh Kumar" <vireshk@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Stephen
- Boyd" <sboyd@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, "Asahi Lina" <lina+kernel@asahilina.net>
-References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
- <20260204-unique-ref-v14-1-17cb29ebacbb@kernel.org>
- <7uftlTZxNVxMw7VNqETbf9dBIWLrQ1Px16pM3qnAcc6FPgQj-ERdWfAACc5aDSAdeHM5lLTdSBZYkcOIgu7mWA==@protonmail.internalid> <DG6AIA0QK77C.EKG7X4NBEJ00@kernel.org> <87fr7gpk6d.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87fr7gpk6d.fsf@t14s.mail-host-address-is-not-set>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAH5fLgjwz_WmkWDJrZ1d_HZ228-whdgQkMb4WnmKu+g3ktEskw@mail.gmail.com>
 
-On Wed Feb 4, 2026 at 5:06 PM CET, Andreas Hindborg wrote:
-> It is my understanding that the SoB needs confirmation from the author
-> if the code was changed. I changed the code and did not want to bother
-> the original author, because it is my understanding they do not wish to
-> be contacted. I did not want to misrepresent the original author, and so
-> I did not change the "From:" line.
+On 2026-02-04 17:38:54 [+0100], Alice Ryhl wrote:
+> I think the ideal would be to rename it to default in C too. :)
 
-Frankly, I don't know what's the correct thing to do in this case; maybe th=
-e
-correct thing is to just keep the SoB, but list all the changes that have b=
-een
-made.
+| $ git grep system_dfl_wq next-20260204  | wc -l
+| 115
 
-Technically, the same thing is common practice when maintainers (including
-myself) apply (minor) changes to a patch when applying them to their tree.
+> Alice
 
-> How would you prefer to account for the work by Abdiel and Boqun?
-
-I mean, I don't have a preference and if I would have one, it wouldn't be
-relevant. :) I just wanted to bring it up since the very first version was =
-sent
-by the two of them. So, I think we should just ask.
+Sebastian
