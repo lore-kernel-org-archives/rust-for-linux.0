@@ -1,136 +1,196 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from luna.linkmauve.fr (luna.linkmauve.fr [82.65.109.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7D6286D5C
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 02:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D76F23D7DC;
+	Wed,  4 Feb 2026 03:05:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770170823; cv=none; b=NUAOzvs232Vlv9Ehx8zRHrE4r6zV69dLwxllR4L+XlBqaiFwgYOY6TG486oKH/MdQKuXE+LZnoF/C/hvQTvacmU2vzEQbhgMXAmOuBQGu/GD3GxtXTX2UCPsw2RiO+szhuE0BYN4aTAGBaCMeqQYnWSEvBBJhN05CpEAqKEsfhM=
+	t=1770174332; cv=none; b=ahmYOf3vxDxsQULwVznz9mOXprl+C2WTFm7ZHx07nMI3ToPvhEBO1Mxp9CvPLdYlz6WGq1b2ct2qgmKt07FRiHjtLmwqepLLNTw7GqnZUZnA/qGkZp5ERcD1QvcDo22f1xpBnPtsCyKfzSyMhINIjkeHipyBnoEAoIw7X9ruDQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770170823; c=relaxed/simple;
-	bh=OmadtR8LX8+TtK7CAHoBlD5U8CMSVir0JGVYr3z2zKU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=diLy8dybqujFNYl368uHj0xY1RVttgaUegCXRW2hzsuApqJ7h+eAaVKV8EZxB8Kt/mCkBpM+pObxaYYomkCJor2WliAd2emGcMqs3mf2BBNfLZeSS2OYn91BfFxDd+QNxjcK/LD0osZEmbWf9JkGw0FZbJp73G9ICMMQgzDSQ3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AY+3hqDh; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AY+3hqDh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770170821; x=1801706821;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OmadtR8LX8+TtK7CAHoBlD5U8CMSVir0JGVYr3z2zKU=;
-  b=AY+3hqDhtZZMZ4Oxr1NlKt3ktdQUQGbFxsqucO8T7FY46vbU6HHPaaaO
-   8++jnaQhaXABvoyrh6por6eCvo0gEUso8pinNtIpUQUNkaviaz9Tfaplz
-   TH71O4Xv2Qp6874Yh8ogkn6vv8PFzOm8Ksc3HxA82pt3JCUpgwhQq9e9a
-   Tg7KNTOGyEjsEIQJ7OgWXwdHHYtSUD++qD8z5RVvcNj5cDOtSuBdMjEKF
-   eyN/I1qywPpxG4ZzK7hFJ36CugcmYYCwa9fn9dVw+XVkxVzmHk9O7N5cw
-   v9pkuMs+EPGqZjdEXNcWJc/DnOLamCg8b5LtBihAq2DM7qM/PIZMLo6JU
-   g==;
-X-CSE-ConnectionGUID: CBDxf2MKSKmhUsIiSkvjgw==
-X-CSE-MsgGUID: zNvNhUE1S0mfsjbst76JTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82465249"
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="82465249"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 18:07:00 -0800
-X-CSE-ConnectionGUID: k2IXUSdOQUGl1mM2blfv+g==
-X-CSE-MsgGUID: 94/gl3siSvqat+fDqmgjvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="214181742"
-Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
-  by orviesa003.jf.intel.com with ESMTP; 03 Feb 2026 18:06:57 -0800
-Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vnSIA-000000003Xh-09Br;
-	Wed, 04 Feb 2026 02:06:54 +0000
-Date: Wed, 4 Feb 2026 03:06:23 +0100
-From: kernel test robot <lkp@intel.com>
-To: Timur Tabi <ttabi@nvidia.com>, Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>, mmaurer@google.com,
+	s=arc-20240116; t=1770174332; c=relaxed/simple;
+	bh=cgCjVwbypryUVqc9Sw/brcR+Z7pSXhymG5eJERS31LM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cP7RUTrF/H+7pGvwOxZ1lqTgzi1DUteN5/4febRLFSNMV/+S7CJkF6fgrPe6OEGTkCfFBvtZa90ysYog+7m51gVtOiAmaUqJCbemqJm7nOtuV/rTQCqosM0oq4EjP3znek6RyVgNVwOvFrpM7dRdV7FfFG4Pl+JVFHSc64Ahm/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id 081FBF43B32; Wed, 04 Feb 2026 04:05:19 +0100 (CET)
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: rust-for-linux@vger.kernel.org
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v7 2/7] rust: uaccess: add write_dma() for copying from
- DMA buffers to userspace
-Message-ID: <202602040350.sw6i2Sp2-lkp@intel.com>
-References: <20260203224757.871729-3-ttabi@nvidia.com>
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jason Baron <jbaron@akamai.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	llvm@lists.linux.dev,
+	officialTechflashYT@gmail.com,
+	Ash Logan <ash@heyquark.com>,
+	Roberto Van Eeden <rw-r-r-0644@protonmail.com>,
+	=?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+Subject: [PATCH] rust: Add PowerPC support
+Date: Wed,  4 Feb 2026 04:05:04 +0100
+Message-ID: <20260204030507.8203-1-linkmauve@linkmauve.fr>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203224757.871729-3-ttabi@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Timur,
+For now only Big Endian 32-bit PowerPC is supported, as that is the only
+hardware I have.  This has been tested on the Nintendo Wii so far, but I
+plan on also using it on the GameCube, Wii U and Apple G4.
 
-kernel test robot noticed the following build errors:
+These changes aren’t the only ones required to get the kernel to compile
+and link on PowerPC, libcore will also have to be changed to not use
+integer division to format u64, u128 and core::time::Duration, otherwise
+__udivdi3() and __umoddi3() will have to be added.  I have tested this
+change by replacing the three implementations with unimplemented!() and
+it linked just fine.
 
-[auto build test ERROR on cea7b66a80412e2a5b74627b89ae25f1d0110a4b]
+Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+---
+ Documentation/rust/arch-support.rst   |  1 +
+ arch/powerpc/Kconfig                  |  1 +
+ arch/powerpc/Makefile                 |  2 ++
+ arch/powerpc/include/asm/jump_label.h | 16 ++++++++++------
+ rust/Makefile                         |  4 +++-
+ scripts/generate_rust_target.rs       | 10 ++++++++++
+ 6 files changed, 27 insertions(+), 7 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Timur-Tabi/rust-device-add-device-name-method/20260204-065057
-base:   cea7b66a80412e2a5b74627b89ae25f1d0110a4b
-patch link:    https://lore.kernel.org/r/20260203224757.871729-3-ttabi%40nvidia.com
-patch subject: [PATCH v7 2/7] rust: uaccess: add write_dma() for copying from DMA buffers to userspace
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260204/202602040350.sw6i2Sp2-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260204/202602040350.sw6i2Sp2-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602040350.sw6i2Sp2-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -fno-crash-diagnostics -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
-   make: Entering directory '/kbuild/src/consumer'
-   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
->> Diff in rust/kernel/uaccess.rs:471:
-            // - `ptr` is valid for reading `len` bytes as required by this function's safety contract.
-            // - `copy_to_user` validates the userspace address at runtime and returns non-zero on
-            //   failure (e.g., bad address or unmapped memory).
-   -        let res = unsafe {
-   -            bindings::copy_to_user(self.ptr.as_mut_ptr(), ptr.cast::<c_void>(), len)
-   -        };
-   +        let res =
-   +            unsafe { bindings::copy_to_user(self.ptr.as_mut_ptr(), ptr.cast::<c_void>(), len) };
-            if res != 0 {
-                return Err(EFAULT);
-            }
->> Diff in rust/kernel/uaccess.rs:471:
-            // - `ptr` is valid for reading `len` bytes as required by this function's safety contract.
-            // - `copy_to_user` validates the userspace address at runtime and returns non-zero on
-            //   failure (e.g., bad address or unmapped memory).
-   -        let res = unsafe {
-   -            bindings::copy_to_user(self.ptr.as_mut_ptr(), ptr.cast::<c_void>(), len)
-   -        };
-   +        let res =
-   +            unsafe { bindings::copy_to_user(self.ptr.as_mut_ptr(), ptr.cast::<c_void>(), len) };
-            if res != 0 {
-                return Err(EFAULT);
-            }
-   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
-   make[2]: *** [Makefile:1871: rustfmt] Error 123
-   make[2]: Target 'rustfmtcheck' not remade because of errors.
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'rustfmtcheck' not remade because of errors.
-   make: Target 'rustfmtcheck' not remade because of errors.
-   make: Leaving directory '/kbuild/src/consumer'
-
+diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+index 6e6a515d0899..70b9e192a7a0 100644
+--- a/Documentation/rust/arch-support.rst
++++ b/Documentation/rust/arch-support.rst
+@@ -18,6 +18,7 @@ Architecture   Level of support  Constraints
+ ``arm``        Maintained        ARMv7 Little Endian only.
+ ``arm64``      Maintained        Little Endian only.
+ ``loongarch``  Maintained        \-
++``powerpc``    Maintained        32-bit Big Endian only.
+ ``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
+ ``um``         Maintained        \-
+ ``x86``        Maintained        ``x86_64`` only.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 9537a61ebae0..17db23b82e91 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -283,6 +283,7 @@ config PPC
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RELIABLE_STACKTRACE
+ 	select HAVE_RSEQ
++	select HAVE_RUST			if PPC32
+ 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+ 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+ 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index a58b1029592c..9fd82c75dcbd 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -61,6 +61,8 @@ else
+ KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
+ endif
+ 
++KBUILD_RUSTFLAGS += --target=powerpc-unknown-linux-gnu
++
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
+ KBUILD_CPPFLAGS	+= -mlittle-endian
+ KBUILD_LDFLAGS	+= -EL
+diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include/asm/jump_label.h
+index d4eaba459a0e..238f0f625a36 100644
+--- a/arch/powerpc/include/asm/jump_label.h
++++ b/arch/powerpc/include/asm/jump_label.h
+@@ -15,14 +15,18 @@
+ #define JUMP_ENTRY_TYPE		stringify_in_c(FTR_ENTRY_LONG)
+ #define JUMP_LABEL_NOP_SIZE	4
+ 
++/* This macro is also expanded on the Rust side. */
++#define ARCH_STATIC_BRANCH_ASM(key, label)		\
++	"1:\n\t"					\
++	"nop # arch_static_branch\n\t"			\
++	".pushsection __jump_table,  \"aw\"\n\t"	\
++	".long 1b - ., " label " - .\n\t"		\
++	 JUMP_ENTRY_TYPE key " - .\n\t"			\
++	 ".popsection \n\t"
++
+ static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
+ {
+-	asm goto("1:\n\t"
+-		 "nop # arch_static_branch\n\t"
+-		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 ".long 1b - ., %l[l_yes] - .\n\t"
+-		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
+-		 ".popsection \n\t"
++	asm goto(ARCH_STATIC_BRANCH_ASM("%c0", "%l[l_yes]")
+ 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
+ 
+ 	return false;
+diff --git a/rust/Makefile b/rust/Makefile
+index 5c0155b83454..377e6fd68524 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -400,13 +400,15 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
+ 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
+ 	-fzero-init-padding-bits=% -mno-fdpic \
+-	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
++	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference \
++	-ffixed-r2 -mmultiple -mno-readonly-in-sdata
+ 
+ # Derived from `scripts/Makefile.clang`.
+ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+ BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
+ BINDGEN_TARGET_arm	:= arm-linux-gnueabi
+ BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
++BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
+ BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
+ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+ 
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 38b3416bb979..0054880ba0ea 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -188,6 +188,16 @@ fn main() {
+         panic!("arm uses the builtin rustc target");
+     } else if cfg.has("ARM64") {
+         panic!("arm64 uses the builtin rustc aarch64-unknown-none target");
++    } else if cfg.has("PPC32") {
++        ts.push("arch", "powerpc");
++        ts.push("data-layout", "E-m:e-p:32:32-Fn32-i64:64-n32");
++        ts.push("features", "+soft-float");
++        ts.push("llvm-target", "powerpc-unknown-eabi");
++        if cfg.rustc_version_atleast(1, 91, 0) {
++            ts.push("target-pointer-width", 32);
++        } else {
++            ts.push("target-pointer-width", "32");
++        }
+     } else if cfg.has("RISCV") {
+         if cfg.has("64BIT") {
+             panic!("64-bit RISC-V uses the builtin rustc riscv64-unknown-none-elf target");
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.52.0
+
