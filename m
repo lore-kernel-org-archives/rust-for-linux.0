@@ -1,163 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BF12222C5;
-	Wed,  4 Feb 2026 13:16:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200483AA1AD
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 13:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770211007; cv=none; b=hVxNRt+PLHafNT6f7cOspqt/a76eNTczjfj4PdMntabfbRVb2EK5j2fgU+YcVoegsXYdT6zS3yotVqPc8nuQLLMTEa5b2oIigB1t7WZMd943WwwMIU4nEN1Tmv6HSf9VP0QnlpaZALmuwtJxqjRJ07M2/9Sr0lSo9QmSfhwTtPM=
+	t=1770212214; cv=none; b=SJBaNEbwYTExpxGVE56XGHjJPqUJJMDDYf/S172Ibf3LiESLSZM6ulFgZWNSFmRkoPWEI6Te/LzlgZWzZcvUqSXDKvcHVGuK3tokaEW4RwROoEy+ZuubQQBP0GaGPcKvVZC6KJmriwfjLx3bX5Y8G+HPECotMjAz4EG2LgdR6L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770211007; c=relaxed/simple;
-	bh=U65dLrebsUvHoLgUboK8QjnppPopUTT702V9iDjRq/c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Bm+pIiQRXuhy1vU6sSHY/NfvJWGIcUa5AoztJRzxDNYeCLGP17yB55q5/8y67Ch7oIWSGVl8RTaeiiF8UdnidqyaqAqyYBNIc3V8mCDiwWXKzVV04DaWZRoOsh+sZTSVoUNRo/COKIMyK1WT86OmZO8tGK7WBxa5GryFKwcBpbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLqvIPTg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770212214; c=relaxed/simple;
+	bh=Ek8/E1uf8JioxwC17102C6P6AwOf+FpydRqado7kk28=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=JHKBxMkBtn9LIObNROkruYqFEm6gEoKPvXJImDdANgf90T26rsLwHaTvNNGpjUOGErReEHBuBOMHxql0iWN8P55MwfcgUINceILk5N69aIpzqc+pLiqSRyCGFoWqIAd48SqUVw4zC31g4LRwx2A9TFbVisxT7R1kTtGusIuXW5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UEAUvTk0; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLqvIPTg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04119C4CEF7;
-	Wed,  4 Feb 2026 13:16:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770211007;
-	bh=U65dLrebsUvHoLgUboK8QjnppPopUTT702V9iDjRq/c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TLqvIPTgXEv96WN+eCtentVGfATIvpIxujtjtrndQR2J+tWvrud6Umx5DXM34Yayr
-	 APy5tjLiHooNJekVXn/XywSjycdheJleK9/di4M3bvG7Y+c91Z4Qmn7JbpryGZxq5m
-	 PkbZfo9W2TWBDD2Hlm5V1Q+pvYXeCxdT5q2MhJvIPE8l3GdGTmAt8F91npen3QYRl8
-	 OFOw9nClvoCRBTgRGnbTTdlfSXfYiMbJzQi0F6Id2BFVNV9wSfPxenVPrc7SxqTHZ8
-	 jCRuPVt9mnUjvkbMNcUtLO0z5LtVAsrnaWN6+BG/ViTAp3N2RfqhfpEjUU5G0ysVvc
-	 zJ1Wu6ydxLkNw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, linux-mm@kvack.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: page: add volatile memory copy methods
-In-Reply-To: <aYFKbWfQmTInYy91@tardis.local>
-References: <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
- <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
- <aX0lcVngRcRwqgd5@tardis.local>
- <SEV7bR_nyQNtvtgoO8X80HMkMTPLW_6roBSxJ-MpKHHNmkZQyVxSS9k1iFV7-bgAlHSLM566L8EqtRBnht65uA==@protonmail.internalid>
- <aX2tyn9nBUEKM-SN@tardis.local>
- <87ms1trjn9.fsf@t14s.mail-host-address-is-not-set>
- <gKLHFGuJqzRyjCupif-LFYn2ZY6OmhkyYj6idYTOnN4zMmNacFLBD1G9zzsYpTJn13GGvL0i-7JA-lIlBgakgQ==@protonmail.internalid>
- <DG2WLWJD8V5W.2I24LZKS6JG6Q@garyguo.net>
- <87bji9r0cp.fsf@t14s.mail-host-address-is-not-set>
- <878qddqxjy.fsf@t14s.mail-host-address-is-not-set>
- <aYFKbWfQmTInYy91@tardis.local>
-Date: Wed, 04 Feb 2026 14:16:37 +0100
-Message-ID: <87ldh8ps22.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UEAUvTk0"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4806e7c4220so9170415e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Feb 2026 05:36:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770212212; x=1770817012; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fIR6EBMCAqXb340DYxL2KRHd/O9FP1A+6HPiKAJmpBg=;
+        b=UEAUvTk05UlKoVMpM4xJJH9xlWz1T77Kqe/cInVIi5sUYi61puCULFCDvP1PUEmJXx
+         yEqMKTj2HrUWLC9/gmbaHard8dmyNC5xxFTRmPgVVnuKlTKOpDXgvu2X80uzOeAkU2Pn
+         x/z5/r/tNdRUG7yJWgoOFZZfiXciz12kcBg+mKF09sD3eGFF7Z7uQhw21ATCX/IWRzDE
+         GFc1lb+y6k9+xCU68CU9OMrTDm2R52/hiPKy/hDBSP9XV6OlzOucliKD91BJPv6xvj7U
+         TLpC5e7btBifxf/r2RYY65Vp7uieaEVUC0ygzwiXvdTZ8vh4ZT08OpryptdmUFNSVp2T
+         WX3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770212212; x=1770817012;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fIR6EBMCAqXb340DYxL2KRHd/O9FP1A+6HPiKAJmpBg=;
+        b=SqFVZYTD9scy0G0uwN53xRYk6yvaor08BYI7FztPyQk0hhYmhnq1e9wCCQEltUVAvg
+         mzmTWWHr46BmIaZPKoSbEY04Dv2Fzz7kVsdKxMsUdwLHA/yrO9H/TTia7UYuLAbPIMVF
+         GkL60nPfmwrAn1VA9WAf3SSFZiNDoCGGevnAHRhyhCHgwWLOs76zZdaQCSYBN28odvKx
+         KbV4tJFwzA3Xz6yW7B3S25ysLnCNY8nqC9QRlb7z64sm1HNji41ugwX61Od0Q5DaGP/B
+         2FJZZuUdXyfev7rOrVkMdXEGGqi3nu+uoWJFnlh/kxYFvQLBDE37JZFwXLBnrViCNXdW
+         v7tw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQaCb2GQiBRZC4tX93oO1pVMh9Ith/1/KMqI3vs2ipJJFYAovnRKQgCOqbbRVP5HdNX/j/5jOATWhaF8ROJg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRVa76RdCjvpRO13NEVOIRoB4euK8hXoEdC/TzxHglh36n+CwK
+	mSIo/cmctThLXb5QEjLYgDPdHN3MW9rMeFGw5gkAt+z48lOgHswJ1cb5rjlt4eNbPIEcQZG4Jds
+	6rgG5hX1r+Ws1nL9DKA==
+X-Received: from wmqu6.prod.google.com ([2002:a05:600c:19c6:b0:480:4a03:7b76])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c17:b0:480:5951:fc1e with SMTP id 5b1f17b1804b1-4830e930f73mr44864985e9.11.1770212212161;
+ Wed, 04 Feb 2026 05:36:52 -0800 (PST)
+Date: Wed, 4 Feb 2026 13:36:50 +0000
+In-Reply-To: <20260204130653.GH2995752@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20260204030507.8203-1-linkmauve@linkmauve.fr> <aYMiXcy33YEVkgYM@google.com>
+ <DG66KRKI62WA.3GILMBH1UCYB@garyguo.net> <aYNBtc2Jbtg9sLIE@google.com> <20260204130653.GH2995752@noisy.programming.kicks-ass.net>
+Message-ID: <aYNLcqEo45oWpRYi@google.com>
+Subject: Re: [PATCH] rust: Add PowerPC support
+From: Alice Ryhl <aliceryhl@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Gary Guo <gary@garyguo.net>, Link Mauve <linkmauve@linkmauve.fr>, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	llvm@lists.linux.dev, officialTechflashYT@gmail.com, 
+	Ash Logan <ash@heyquark.com>, Roberto Van Eeden <rw-r-r-0644@protonmail.com>, 
+	"Jonathan =?utf-8?Q?Neusch=C3=A4fer?=" <j.neuschaefer@gmx.net>
+Content-Type: text/plain; charset="utf-8"
 
-Boqun Feng <boqun@kernel.org> writes:
+On Wed, Feb 04, 2026 at 02:06:53PM +0100, Peter Zijlstra wrote:
+> On Wed, Feb 04, 2026 at 12:55:17PM +0000, Alice Ryhl wrote:
+> 
+> > Is there any reason to not make it Rust-only but for all Rust code?
+> > Making the / operator work seems like it would be a good idea.
+> 
+> Why would it be a good idea to have it work on non-native types in Rust?
+> 
+> The reason we don't have them in C is because non-native divisions are
+> expensive and doing them should be a conscious choice. The very same
+> argument should be true for Rust code too.
 
-> On Sat, Jan 31, 2026 at 10:31:13PM +0100, Andreas Hindborg wrote:
-> [...]
->> >>>>
->> >>>> For __user memory, because kernel is only given a userspace address, and
->> >>>> userspace can lie or unmap the address while kernel accessing it,
->> >>>> copy_{from,to}_user() is needed to handle page faults.
->> >>>
->> >>> Just to clarify, for my use case, the page is already mapped to kernel
->> >>> space, and it is guaranteed to be mapped for the duration of the call
->> >>> where I do the copy. Also, it _may_ be a user page, but it might not
->> >>> always be the case.
->> >>
->> >> In that case you should also assume there might be other kernel-space users.
->> >> Byte-wise atomic memcpy would be best tool.
->> >
->> > Other concurrent kernel readers/writers would be a kernel bug in my use
->> > case. We could add this to the safety requirements.
->> >
->> 
->> Actually, one case just crossed my mind. I think nothing will prevent a
->> user space process from concurrently submitting multiple reads to the
->> same user page. It would not make sense, but it can be done.
->> 
->> If the reads are issued to different null block devices, the null block
->> driver might concurrently write the user page when servicing each IO
->> request concurrently.
->> 
->> The same situation would happen in real block device drivers, except the
->> writes would be done by dma engines rather than kernel threads.
->> 
->
-> Then we better use byte-wise atomic memcpy, and I think for all the
-> architectures that Linux kernel support, memcpy() is in fact byte-wise
-> atomic if it's volatile. Because down the actual instructions, either a
-> byte-size read/write is used, or a larger-size read/write is used but
-> they are guaranteed to be byte-wise atomic even for unaligned read or
-> write. So "volatile memcpy" and "volatile byte-wise atomic memcpy" have
-> the same implementation.
->
-> (The C++ paper [1] also says: "In fact, we expect that existing assembly
-> memcpy implementations will suffice when suffixed with the required
-> fence.")
->
-> So to make thing move forward, do you mind to introduce a
-> `atomic_per_byte_memcpy()` in rust::sync::atomic based on
-> bindings::memcpy(), and cc linux-arch and all the archs that support
-> Rust for some confirmation? Thanks!
+I suppose that's fair. Perhaps one way to go about it could be to create
+a clippy lint for 64-bit divisions telling you to use an explicit
+division method?
 
-There is a few things I do not fully understand:
+This way cases such as `core` that use division can still use the slash
+operator because the lint is not enabled when building core. And normal
+kernel code would be told to use the explicit method instead. Or kernel
+code could explicitly choose to silence the lint on a specific method if
+they want to perform a lot of divisions and know what they are doing.
 
- - Does the operation need to be both atomic and volatile, or is atomic enough on its
-   own (why)?
- - The article you reference has separate `atomic_load_per_byte_memcpy`
-   and `atomic_store_per_byte_memcpy` that allows inserting an acquire
-   fence before the load and a release fence after the store. Do we not
-   need that?
- - It is unclear to me how to formulate the safety requirements for
-   `atomic_per_byte_memcpy`. In this series, one end of the operation is
-   the potential racy area. For `atomic_per_byte_memcpy` it could be
-   either end (or both?). Do we even mention an area being "outside the
-   Rust AM"?
-
-First attempt below. I am quite uncertain about this. I feel like we
-have two things going on: Potential races with other kernel threads,
-which we solve by saying all accesses are byte-wise atomic, and reaces
-with user space processes, which we solve with volatile semantics?
-
-Should the functin name be `volatile_atomic_per_byte_memcpy`?
-
-/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
-///
-/// This copy operation is volatile.
-///
-/// # Safety
-///
-/// Callers must ensure that:
-///
-/// * The source memory region is readable and reading from the region will not trap.
-/// * The destination memory region is writable and writing to the region will not trap.
-/// * No references exist to the source or destination regions.
-/// * If the source or destination region is within the Rust AM, any concurrent reads or writes to
-///   source or destination memory regions by the Rust AM must use byte-wise atomic operations.
-pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
-    // SAFETY: By the safety requirements of this function, the following operation will not:
-    //  - Trap.
-    //  - Invalidate any reference invariants.
-    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
-    //    operation and all operations by the Rust AM use byte-wise atomic semantics.
-    //
-    //  Further, as `bindings::memcpy` is a volatile operation, the operation will not race with any
-    //  read or write operation to the source or destination area if the area can be considered to
-    //  be outside the Rust AM.
-    unsafe { bindings::memcpy(dst.cast::<kernel::ffi::c_void>(), src.cast::<kernel::ffi::c_void>(), len) };
-}
-
-
-Best regards,
-Andreas Hindborg
-
-
+Alice
