@@ -1,134 +1,105 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33BA34A77D
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 18:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770231267; cv=pass; b=tuKq4qTp0hD/onL+wr94CciIh7FUjhpXiVnmuQEqb5JKMwja607AMv8SKw0AtejlXYgnKT2Mwnp9daYwRxKtg0HcKifPyUzZKvU7dnx+I7bHdVrbqiFhhQz2b1G8FwBykijFThOQ/nz+RVG8GBeHJcTE3obOIlpn0SMrRGjdDc8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770231267; c=relaxed/simple;
-	bh=1RPD11HPFnCejVcKGso6kkcyi791BttWY+zwBXmHJDg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qpDwg2YvyccMeS1jd5giJyntxmo52oKT/qIWkKUy4/KzMznJF9/FSPnCu7RcBz5y724kKq+/shw0eW8UwRHW7ssbQ+e7ZJMCOO7Wo/B5qXgzldiE4UvYOKrfOV7Sz1dR6GizM8T/sGrgkTXc6RAqexX0FiLoDqafwxu57tzntko=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y/3lfc/t; arc=pass smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y/3lfc/t"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2b7063004daso4705eec.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Feb 2026 10:54:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770231267; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GgaFIuWn960rR4tp0XXB/YbGIDkUTbi/TN40a1HgqkG/8wwPGyWlrd3cfFfcs3k3q0
-         YcRMicunPxinAAT3ZQsj6vtdtAz2cUFKBCaq8CmSr6xwulC7pTgSg+0Xl/yxfnzAe7zL
-         PauH0DKa+8C5WLQUIX192jDmfG44dtXb6O3AR3DiM7gAcaIEEjzG5uN1+7e2IFL16X2r
-         Kaom1bCJEc9nT4Jok7/jhzRgPIuaaCRCmTGQKooSu1gB88d4dGOz8tycYppN7KE7hkKn
-         FAmT+9jzIj4QnDrkY40xRC9VAcGfRKz9vl0epMXWz/Nq6nkfBrE/7PZyjGGBa71JPhF9
-         yK7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1RPD11HPFnCejVcKGso6kkcyi791BttWY+zwBXmHJDg=;
-        fh=Kef8FUNCVAcRmDrV9zR03f2CXE86jx/ELLEytDrpnG0=;
-        b=Iup9TwQYUF4SjgQPW17WieO20XUAsVPFzf/F65t1sGA7ip0cNhQKiqiBqIXkSncTPw
-         Ocuj8Pp7cXQ1ar9eOrGxFBbAELr31RJY1vG7Cb6WST3bPUIDU+FV2C2Gle/OPloDuxbC
-         INA06ZYL4c3rCfzL+ban92vyN3Bu1UKlm8z/2KaF3whDHXZUglk0MaP5JErqusQrMOY7
-         Ku9TIJ3zJv3H9/c2RP9I1w+4eJs7eiRGO2B9pmNGQ4Xxr9I06psb05kPuZEMA9BzbJoo
-         Q5zp2rWAiIwjn9d+7qSJ1KuhLgi33W8lSA5TruNHfLmm/Ogj3IcJ7hK2iP+5gKeVFd49
-         Rn8A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770231267; x=1770836067; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1RPD11HPFnCejVcKGso6kkcyi791BttWY+zwBXmHJDg=;
-        b=Y/3lfc/t8wdTgu/7IRK65Mkk1fN4Du5djPZAE3GFqfZaBxaXqFb/WgBvyCR+GihNsJ
-         vm9iE32tc+RVTtMsdd82tlKNPxbSTjxuQLvV/GhTxdU4i6tjLU0j5rBX/IU+O5cROVht
-         Qu1hlu/mTCeV++7eHymGToAghoddqyZ2vz9C9QMN5hgdSI57tCE7qMOKi57QiajEO5sA
-         O2b99Ng3eLM8GqsDktHeXV1CZ0oD5m0wa3KSTb2syrALFuEUjA/yeZkbocDWfRvjhYRG
-         3k2m/aqrOBzXVru4dUCTPjJVLuRuy4QjnIReNrwTFwqPd6BVoeriJHDMIQEfDnwHw5uH
-         3FWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770231267; x=1770836067;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1RPD11HPFnCejVcKGso6kkcyi791BttWY+zwBXmHJDg=;
-        b=QGYVVGbOAzW5VnThjYEixvXP/PvnqIf0oWEFsnuZ9qtseX9yMmRg5YaW6wlwNxeAso
-         3ytQUFnZPsH/v0yLnD1opglOUoHGX7isdRpAAMprnYADjh1OwJ+yBHP8nBihhqxOK6lo
-         mhQnkXTLUZNVEuoQ+HGiME+qIsx9oV7BzLLDE50LAmem602GkjXfuSigYMlXJ+R6pBdH
-         czzhfj48fLdRGEVyXhQyccI+hmtaeguu90w+9rje7VITyEfTMbN+XRTx0w8EHowdoH+Z
-         VdGmU9d+I8/j2L/XFAhlGIhy4EwDvqf6Bfkja14egavpstXlo/vIEEtI6W8dLpAkVuRF
-         fa7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWtug6Qd7xo5mXJGhuxJ0qdLVXlHxmYH09Yjm0frbqAHlY20P7zgs2I5DSUKaYELCk7pgd/X72YZesvF4wRww==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx36msKMeWEjbMbnv+zV0W/i1Oem/aKcO9md+f7PPn9I+mX2tPG
-	DpmiJ+FBILdxhI223RGqIO6nwdDSS4cCoXX226fg1rvDxjxz/5JlTzv5hJxgpLTQ+JLXLlWSTOo
-	wjTpQtu7pbOneAjj3ahAzLLwF1B6TFmM=
-X-Gm-Gg: AZuq6aKqiGIwX/h+P6F5vSVzlxUrd3z8jKabsT1OzYHmm5zwcUzrJzhI/6dGGX28SuE
-	IFE59/qnnfmdDCTmTqD1GRefQMXLvKhqBsDmMdJhvv1kx+VeLAvdL1SrVOXdG0xgIxNxhWFvvm4
-	ADrgqCRs/DEV25BoW7fqBbCvSCY+/xIXItN4QMP71bi+GvkyLexqjMm+NKCPpN39FHkO1enmii5
-	HaCbzdzwQojhdUc6KP11cVQKI+V188cBtWp6f4DMFiZcF6upIMGKCSfymvUtx96qTDJtN/7xHHO
-	E/di6SS2vMdxezXzf6VKRZQ8n7RLfd126e4u1xoE4kAwtDDz4EUNqQtdmMEO6IQHYgPy2FWqxhR
-	5a7lODD2XCNHc
-X-Received: by 2002:a05:7301:fa07:b0:2b7:f145:a66 with SMTP id
- 5a478bee46e88-2b832895203mr863567eec.2.1770231266769; Wed, 04 Feb 2026
- 10:54:26 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B442652A2;
+	Wed,  4 Feb 2026 19:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770232114; cv=none; b=nyPLL7DiNAbC3iyxt2gaLUtE+kgHViKVwD8EIbyuFz7hp689DKpoN1j8ldKFPVdkGtpq0RhKGS+DVVMCXBqqmPoBlWwnDKe6hHLH9CdoMKL2/Yk78bJOmVh5R4xEorrH3U0nw6tnxWZBqpjDJYpayZicrkm38z9rvYMAjeoOY0M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770232114; c=relaxed/simple;
+	bh=WBt345mg2cTlzF+FKAkjpVgOE0wd4ZZ8l5lbQ2bcL74=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dAXItbjBN8KS53SMNe0lz0/kfgb10TT0tUFMbPcipODNLOMmmnrY2J9QUnKBPd8Psu1BEhyom/vdqbDjHWXRF5M2A9ENOz6JM0rNmM3vvyX04Wmc7JXorBfMkM0IPKreZhRYcawsSY9PUHTDMtSSh+P0HeWCEKYqjlH7bUfTe8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BD9A1B131D;
+	Wed,  4 Feb 2026 19:08:26 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf07.hostedemail.com (Postfix) with ESMTPA id B7B7520030;
+	Wed,  4 Feb 2026 19:08:23 +0000 (UTC)
+Message-ID: <a798e6a368639f7a1ce633a6dfecd088d6ed4123.camel@perches.com>
+Subject: Re: [PATCH v4] scripts: checkpatch: warn on Rust panicking methods
+From: Joe Perches <joe@perches.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Dirk Behme
+	 <dirk.behme@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, Onur =?ISO-8859-1?Q?=D6zkan?=
+	 <work@onurozkan.dev>, Jkhall81 <jason.kei.hall@gmail.com>, 
+	dirk.behme@de.bosch.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Wed, 04 Feb 2026 11:08:22 -0800
+In-Reply-To: <CANiq72=J5LBxfawu3MtQpcukaXcw+pRyMWd9ueDE=od4X99R3w@mail.gmail.com>
+References: <288d4aeb-af0d-4d50-bb0d-7a046abaaf10@de.bosch.com>
+		 <20260203152542.45017-1-jason.kei.hall@gmail.com>
+		 <20260203184933.23c92f8f@nimda> <DG5GBHGZV86X.2XKAU6WLWCL7Z@garyguo.net>
+		 <20260203193240.68bb136e@nimda> <DG5HFQ1JHRA1.QTLZFE4GDZT8@garyguo.net>
+		 <c150ba95-a60b-404d-823a-316710035dfd@gmail.com>
+		 <CANiq72=J5LBxfawu3MtQpcukaXcw+pRyMWd9ueDE=od4X99R3w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126202305.2526618-1-joelagnelf@nvidia.com>
- <20260126202305.2526618-2-joelagnelf@nvidia.com> <DG0607SU943F.1FDOPYPN38FCS@kernel.org>
- <259bdacf-d16e-4fff-9f6b-f860feb40aa8@nvidia.com> <DG0N5PNS1ZQ0.13WMT4XYDXNUS@kernel.org>
- <8859d68f-ca38-469e-8345-84059573ac97@nvidia.com> <DG5OGLH0BHNE.2XSVBQHAAXHGI@nvidia.com>
-In-Reply-To: <DG5OGLH0BHNE.2XSVBQHAAXHGI@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 4 Feb 2026 19:54:14 +0100
-X-Gm-Features: AZwV_Qga4SHaJVbqnKL6-k_z0NAbFWIYrZ90umh2b3m2XbOK6FLc8RcS6JCVOMk
-Message-ID: <CANiq72nhzix4Dr9_gbaFwZQQq=3cDY=oAYVgG5hDAmMgaYKQJg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] gpu: nova-core: use checked arithmetic in FWSEC
- firmware parsing
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Alistair Popple <apopple@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, Simona Vetter <simona@ffwll.ch>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Dirk Behme <dirk.behme@gmail.com>, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: tztyr9qt3z443xzhzg1rmot6r73rbem5
+X-Rspamd-Server: rspamout02
+X-Rspamd-Queue-Id: B7B7520030
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1+NL9Rca/XqBqPr3wv1lzV+So7qTeS5JNQ=
+X-HE-Tag: 1770232103-495341
+X-HE-Meta: U2FsdGVkX19tgG0dSqlT4mh0MjxuRlTNiaBC6esZTjuFiskbHWkIotZtxxsc8Cc4bM4YE6ljKLAy4BaKAqUX6mTOI1B37KCA0W+TX5sTX+ra1XP08oGfEFhgat0HQbTxBOdNXfiwzTrvc4mi0FdB93PnlpNTIn68rwByC8ghUmrMUvVTQj1q8HT7sirfluyZwy1MgUzardBNbvlzjNR2vM3yTNQUN6qSUtQ9le/gtq9gereJkclYVJntQZ80t+DWwX4Gxt62PYGnuITqalBK6XXNrkANjKpu0hPwPMpRWBTPBX1Vae8a+e6A5lWp/oBToqbvZ5fgy+Y2CCkRVYgpTpbgiAJHePB5IxXNsiqpCid1YUQJb99ZWA==
 
-On Tue, Feb 3, 2026 at 11:25=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
->
-> Thus for anything non-trivial, I'd like to keep a `// CALC: ` header
-> describing the intended operation. I also noticed that LLMs check that
-> the code is in accordance with comments, which provides an additional
-> layer of checking.
+On Wed, 2026-02-04 at 19:10 +0100, Miguel Ojeda wrote:
+> On Wed, Feb 4, 2026 at 4:56=E2=80=AFPM Dirk Behme <dirk.behme@gmail.com> =
+wrote:
+> >=20
+> > The question is if we could find a way to make it *consistent*?
+> >=20
+> > I mean how should a developer know if the warning (he gets once, or
+> > even if he checks an existing file with -f always) is relevant or not?
+> > We introduce the warning because we want to discourage the use of
+> > `unwrap()`. At the same time there are places where its usage is
+> > allowed or even needed. How to know what is valid? The warning or the
+> > usage?
+>=20
+> I think usually developers use `checkpatch.pl` mostly on patches, not
+> existing files; plus it doesn't make the build fail. Thus I see
+> `checkpatch.pl` as a tool that can have way more false positives than
+> a linter that we need to keep strictly clean.
+>=20
+> The idea with the `checkpatch.pl` warning was to have something we
+> could land easily before we got the new Clippy lints, and perhaps to
+> apply it in more cases than the eventual Clippy lint (since false
+> positives are not as concerning).
+>=20
+> I have some context in
+> https://github.com/rust-lang/rust-clippy/issues/15895 -> "Additional
+> context", and a few other issues linked in
+> https://github.com/Rust-for-Linux/linux/issues/349 for the new lints.
 
-Yeah, it is the same reason why documentation as well as other tagged
-comments like `// SAFETY:` comments enable to catch mistakes even if
-they may be redundant in a certain sense.
+Maybe adding something like this to checkpatch so rust
+specific checks and possibly other execs could be added
+relatively easily in checkpatch's process()=20
 
-I wouldn't mind having those tagged comments after a certain
-complexity -- perhaps it could be possible to define a heuristic for a
-threshold where such a comment is required, and get Clippy to warn
-about it (we are trying to get other tagged comments implemented, so
-it is a good opportunity).
+	process_rust() if ($realfile =3D~ /\.rs$/);
 
-I guess a fancy IDE could perhaps render the math expression on hover as we=
-ll.
+---
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index e56374662ff79..bd9daa77470a5 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -20,6 +20,8 @@ my $D =3D dirname(abs_path($P));
+=20
+ my $V =3D '0.32';
+=20
++require "$D/rust_checkpatch.pl";
++
+ use Getopt::Long qw(:config no_auto_abbrev);
+=20
+ my $quiet =3D 0;
 
-Cheers,
-Miguel
+
