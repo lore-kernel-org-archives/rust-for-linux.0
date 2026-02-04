@@ -1,406 +1,136 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4352027F195
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 01:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7D6286D5C
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 02:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770169170; cv=none; b=UONA8gj7C46iO8ySzcHs5x6gp9LxDYBxgKDOrjhPdp//FMezsDQGRU9B803TuoQyD4CRZQ35Bm2veCOyvzK6ycSN8MjRFEeQ5ZkUT+mqQwt0qq6BSdZD8HwRRuoE2KgFywG1mCFmwjbOeqGjtvgVQfdFcVnvXBkBDTFuVw9st4s=
+	t=1770170823; cv=none; b=NUAOzvs232Vlv9Ehx8zRHrE4r6zV69dLwxllR4L+XlBqaiFwgYOY6TG486oKH/MdQKuXE+LZnoF/C/hvQTvacmU2vzEQbhgMXAmOuBQGu/GD3GxtXTX2UCPsw2RiO+szhuE0BYN4aTAGBaCMeqQYnWSEvBBJhN05CpEAqKEsfhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770169170; c=relaxed/simple;
-	bh=Our/6nyRNo6VBshaXF0gSADbEe7iRhYxB5f/gcmxazM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HISFp1ekqH20szPCCR2eUz7LExbM4ajlZjIZtGzQaddOvGUQ3fGje4wqR2NmSBLcvr2mPm8Itd/00VyjaNlMbbrA6XVtuA1KnI1ZMrW5j4XTIBR68lVSsfozxS3eqUIEmx8I14NdaIKHYc2irsTisbwKSOE3xNcBj5IOPe89zLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=BThm3kd1; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1770170823; c=relaxed/simple;
+	bh=OmadtR8LX8+TtK7CAHoBlD5U8CMSVir0JGVYr3z2zKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=diLy8dybqujFNYl368uHj0xY1RVttgaUegCXRW2hzsuApqJ7h+eAaVKV8EZxB8Kt/mCkBpM+pObxaYYomkCJor2WliAd2emGcMqs3mf2BBNfLZeSS2OYn91BfFxDd+QNxjcK/LD0osZEmbWf9JkGw0FZbJp73G9ICMMQgzDSQ3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AY+3hqDh; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="BThm3kd1"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 1432E240103
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 02:39:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
-	t=1770169160; bh=oBgqI+VBW8wZUzN9yU8OLzr9ztRwa1vmMdnAFjnoY18=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=BThm3kd1OcPDdd2q0dq9JOKXewVe2eO8ffGABmX1D+7lPIGDrTTYHEmjDjSCUOtMP
-	 J/zqSHlRcxB6UfxEHQ4MY5X0ycH+1oPTrPleW2du11m5m9FRdLBVDtMj82Y6Ue2Nd8
-	 ljlZcOyBJ38dabldthvqYobHhDS7EhaiJs0VjaePUIw6BriioxAZMA4yr5Xbm35vbP
-	 /8CJk57Cua0s2+dkKm/lJjGJJqemmfArTGN+XUiaOG15EevaNvFMU7jr+uYOnmW7ws
-	 kAnhBT1qvsUYauJXbTkMPPBeGru3n2c3XQU0PztojhoIqm3x8bX5NxquPwgWYg1Lnl
-	 c0bGA6zyECm3A==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4f5NLY5y2Mz9rxF;
-	Wed,  4 Feb 2026 02:39:17 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: y.j3ms.n@gmail.com
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Boqun Feng <boqun.feng@gmail.com>,
-  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  Benno Lossin <lossin@kernel.org>,  Andreas Hindborg
- <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross
- <tmgross@umich.edu>,  Danilo Krummrich <dakr@kernel.org>,  Alexandre
- Courbot <acourbot@nvidia.com>,  linux-kernel@vger.kernel.org,
-  rust-for-linux@vger.kernel.org,  nouveau@lists.freedesktop.org
-Subject: Re: [PATCH v5 2/4] rust: macros: add derive macro for `TryFrom`
-In-Reply-To: <20260129-try-from-into-macro-v5-2-dd011008118c@gmail.com>
-References: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
-	<20260129-try-from-into-macro-v5-2-dd011008118c@gmail.com>
-Date: Wed, 04 Feb 2026 01:39:19 +0000
-Message-ID: <87h5rxuw1n.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AY+3hqDh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770170821; x=1801706821;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OmadtR8LX8+TtK7CAHoBlD5U8CMSVir0JGVYr3z2zKU=;
+  b=AY+3hqDhtZZMZ4Oxr1NlKt3ktdQUQGbFxsqucO8T7FY46vbU6HHPaaaO
+   8++jnaQhaXABvoyrh6por6eCvo0gEUso8pinNtIpUQUNkaviaz9Tfaplz
+   TH71O4Xv2Qp6874Yh8ogkn6vv8PFzOm8Ksc3HxA82pt3JCUpgwhQq9e9a
+   Tg7KNTOGyEjsEIQJ7OgWXwdHHYtSUD++qD8z5RVvcNj5cDOtSuBdMjEKF
+   eyN/I1qywPpxG4ZzK7hFJ36CugcmYYCwa9fn9dVw+XVkxVzmHk9O7N5cw
+   v9pkuMs+EPGqZjdEXNcWJc/DnOLamCg8b5LtBihAq2DM7qM/PIZMLo6JU
+   g==;
+X-CSE-ConnectionGUID: CBDxf2MKSKmhUsIiSkvjgw==
+X-CSE-MsgGUID: zNvNhUE1S0mfsjbst76JTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82465249"
+X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
+   d="scan'208";a="82465249"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 18:07:00 -0800
+X-CSE-ConnectionGUID: k2IXUSdOQUGl1mM2blfv+g==
+X-CSE-MsgGUID: 94/gl3siSvqat+fDqmgjvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
+   d="scan'208";a="214181742"
+Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
+  by orviesa003.jf.intel.com with ESMTP; 03 Feb 2026 18:06:57 -0800
+Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vnSIA-000000003Xh-09Br;
+	Wed, 04 Feb 2026 02:06:54 +0000
+Date: Wed, 4 Feb 2026 03:06:23 +0100
+From: kernel test robot <lkp@intel.com>
+To: Timur Tabi <ttabi@nvidia.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, mmaurer@google.com,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v7 2/7] rust: uaccess: add write_dma() for copying from
+ DMA buffers to userspace
+Message-ID: <202602040350.sw6i2Sp2-lkp@intel.com>
+References: <20260203224757.871729-3-ttabi@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203224757.871729-3-ttabi@nvidia.com>
 
-Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org> writes:
+Hi Timur,
 
-> From: Jesung Yang <y.j3ms.n@gmail.com>
->
-> Introduce a procedural macro `TryFrom` to automatically implement the
-> `TryFrom` trait for unit-only enums.
->
-> This reduces boilerplate in cases where numeric values need to be
-> interpreted as relevant enum variants. This situation often arises when
-> working with low-level data sources. A typical example is the `Chipset`
-> enum in nova-core, where the value read from a GPU register should be
-> mapped to a corresponding variant.
->
-> The macro not only supports primitive types such as `bool` or `i8`, but
-> also `Bounded`, a wrapper around integer types limiting the number of
-> bits usable for value representation. This accommodates the shift toward
-> more restrictive register field representations in nova-core where
-> values are constrained to specific bit ranges.
->
-> Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
-> ---
->  rust/macros/convert.rs |  64 ++++++++++++++++++
->  rust/macros/lib.rs     | 176 +++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 240 insertions(+)
->
-> diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
-> index 096e3c9fdc1b..a7a43b1a2caf 100644
-> --- a/rust/macros/convert.rs
-> +++ b/rust/macros/convert.rs
-> @@ -34,6 +34,10 @@ pub(crate) fn derive_into(input: DeriveInput) -> syn::Result<TokenStream> {
->      derive(DeriveTarget::Into, input)
->  }
->  
-> +pub(crate) fn derive_try_from(input: DeriveInput) -> syn::Result<TokenStream> {
-> +    derive(DeriveTarget::TryFrom, input)
-> +}
-> +
->  fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream> {
->      let data_enum = match input.data {
->          Data::Enum(data) => data,
-> @@ -129,18 +133,21 @@ fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream>
->  #[derive(Clone, Copy, Debug)]
->  enum DeriveTarget {
->      Into,
-> +    TryFrom,
->  }
->  
->  impl DeriveTarget {
->      fn get_trait_name(&self) -> &'static str {
->          match self {
->              Self::Into => "Into",
-> +            Self::TryFrom => "TryFrom",
->          }
->      }
->  
->      fn get_helper_name(&self) -> &'static str {
->          match self {
->              Self::Into => "into",
-> +            Self::TryFrom => "try_from",
->          }
->      }
->  }
-> @@ -186,6 +193,7 @@ fn derive_for_enum(
->  ) -> TokenStream {
->      let impl_fn = match target {
->          DeriveTarget::Into => impl_into,
-> +        DeriveTarget::TryFrom => impl_try_from,
->      };
->  
->      let qualified_repr_ty: syn::Path = parse_quote! { ::core::primitive::#repr_ty };
-> @@ -238,6 +246,54 @@ fn from(#param: #enum_ident) -> #input_ty {
->          }
->      }
->  
-> +    fn impl_try_from(
-> +        enum_ident: &Ident,
-> +        variants: &[Ident],
-> +        repr_ty: &syn::Path,
-> +        input_ty: &ValidTy,
-> +    ) -> TokenStream {
-> +        let param = Ident::new("value", Span::call_site());
-> +
-> +        let overflow_assertion = emit_overflow_assert(enum_ident, variants, repr_ty, input_ty);
-> +        let emit_cast = |variant| {
-> +            let variant = ::quote::quote! { #enum_ident::#variant };
-> +            match input_ty {
-> +                ValidTy::Bounded(inner) => {
-> +                    let base_ty = inner.emit_qualified_base_ty();
-> +                    let expr = parse_quote! { #variant as #base_ty };
-> +                    inner.emit_new(&expr)
-> +                }
-> +                ValidTy::Primitive(ident) if ident == "bool" => {
-> +                    ::quote::quote! { ((#variant as #repr_ty) == 1) }
-> +                }
-> +                qualified @ ValidTy::Primitive(_) => ::quote::quote! { #variant as #qualified },
-> +            }
-> +        };
-> +
-> +        let clauses = variants.iter().map(|variant| {
-> +            let cast = emit_cast(variant);
-> +            ::quote::quote! {
-> +                if #param == #cast {
-> +                    ::core::result::Result::Ok(#enum_ident::#variant)
-> +                } else
-> +            }
-> +        });
-> +
-> +        ::quote::quote! {
-> +            #[automatically_derived]
-> +            impl ::core::convert::TryFrom<#input_ty> for #enum_ident {
-> +                type Error = ::kernel::prelude::Error;
-> +                fn try_from(#param: #input_ty) -> Result<#enum_ident, Self::Error> {
-> +                    #overflow_assertion
-> +
-> +                    #(#clauses)* {
-> +                        ::core::result::Result::Err(::kernel::prelude::EINVAL)
+kernel test robot noticed the following build errors:
 
-What happens if we need a different error type here? For example, a
-quick look around in nova-core's "Chipset" enum, an unrecognized chipset
-ID warrants ENODEV rather than EINVAL, since it's about device
-identification.
+[auto build test ERROR on cea7b66a80412e2a5b74627b89ae25f1d0110a4b]
 
-Not sure if it fits the design, just wondering if this flexibility would
-be useful, but would something like an optional
+url:    https://github.com/intel-lab-lkp/linux/commits/Timur-Tabi/rust-device-add-device-name-method/20260204-065057
+base:   cea7b66a80412e2a5b74627b89ae25f1d0110a4b
+patch link:    https://lore.kernel.org/r/20260203224757.871729-3-ttabi%40nvidia.com
+patch subject: [PATCH v7 2/7] rust: uaccess: add write_dma() for copying from DMA buffers to userspace
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260204/202602040350.sw6i2Sp2-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260204/202602040350.sw6i2Sp2-lkp@intel.com/reproduce)
 
-    error = <ERROR>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602040350.sw6i2Sp2-lkp@intel.com/
 
-in the
+All errors (new ones prefixed by >>):
 
-   #[try_from(...)]
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -fno-crash-diagnostics -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
+   make: Entering directory '/kbuild/src/consumer'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in rust/kernel/uaccess.rs:471:
+            // - `ptr` is valid for reading `len` bytes as required by this function's safety contract.
+            // - `copy_to_user` validates the userspace address at runtime and returns non-zero on
+            //   failure (e.g., bad address or unmapped memory).
+   -        let res = unsafe {
+   -            bindings::copy_to_user(self.ptr.as_mut_ptr(), ptr.cast::<c_void>(), len)
+   -        };
+   +        let res =
+   +            unsafe { bindings::copy_to_user(self.ptr.as_mut_ptr(), ptr.cast::<c_void>(), len) };
+            if res != 0 {
+                return Err(EFAULT);
+            }
+>> Diff in rust/kernel/uaccess.rs:471:
+            // - `ptr` is valid for reading `len` bytes as required by this function's safety contract.
+            // - `copy_to_user` validates the userspace address at runtime and returns non-zero on
+            //   failure (e.g., bad address or unmapped memory).
+   -        let res = unsafe {
+   -            bindings::copy_to_user(self.ptr.as_mut_ptr(), ptr.cast::<c_void>(), len)
+   -        };
+   +        let res =
+   +            unsafe { bindings::copy_to_user(self.ptr.as_mut_ptr(), ptr.cast::<c_void>(), len) };
+            if res != 0 {
+                return Err(EFAULT);
+            }
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[2]: *** [Makefile:1871: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src/consumer'
 
-attribute make sense? e.g.
-
-   #[try_from(u32, error = ENODEV)]
-
-defaulting ofcourse to EINVAL if unspecified.
-
---
-C. Mitrodimas
-
-> +                    }
-> +                }
-> +            }
-> +        }
-> +    }
-> +
->      fn emit_overflow_assert(
->          enum_ident: &Ident,
->          variants: &[Ident],
-> @@ -360,6 +416,14 @@ fn emit_from_expr(&self, expr: &Expr) -> TokenStream {
->          }
->      }
->  
-> +    fn emit_new(&self, expr: &Expr) -> TokenStream {
-> +        let Self { base_ty, bits, .. } = self;
-> +        let qualified_name: syn::Path = parse_str(Self::QUALIFIED_NAME).expect("valid path");
-> +        ::quote::quote! {
-> +            #qualified_name::<#base_ty, #bits>::new::<{ #expr }>()
-> +        }
-> +    }
-> +
->      fn emit_qualified_base_ty(&self) -> TokenStream {
->          let base_ty = &self.base_ty;
->          ::quote::quote! { ::core::primitive::#base_ty }
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index 8842067d1017..893adecb9080 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -657,3 +657,179 @@ pub fn derive_into(input: TokenStream) -> TokenStream {
->          .unwrap_or_else(syn::Error::into_compile_error)
->          .into()
->  }
-> +
-> +/// A derive macro for generating an implementation of the [`TryFrom`] trait.
-> +///
-> +/// This macro automatically derives the [`TryFrom`] trait for a given enum. Currently,
-> +/// it only supports [unit-only enum]s.
-> +///
-> +/// [unit-only enum]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.unit-only
-> +///
-> +/// # Notes
-> +///
-> +/// - The macro generates [`TryFrom`] implementations that:
-> +///   - Return `Ok(VARIANT)` when the input corresponds to a variant.
-> +///   - Return `Err(EINVAL)` when the input does not correspond to any variant.
-> +///     (where `EINVAL` is from [`kernel::error::code`]).
-> +///
-> +/// - The macro uses the `try_from` custom attribute or `repr` attribute to generate
-> +///   [`TryFrom`] implementations. `try_from` always takes precedence over `repr`.
-> +///
-> +/// - Currently, the macro does not support `repr(C)` fieldless enums since the actual
-> +///   representation of discriminants is defined by rustc internally, and documentation
-> +///   around it is not yet settled. See [Rust issue #124403] and [Rust PR #147017]
-> +///   for more information.
-> +///
-> +/// - The macro generates a compile-time assertion for every variant to ensure its
-> +///   discriminant value fits within the type being converted from.
-> +///
-> +/// [`kernel::error::code`]: ../kernel/error/code/index.html
-> +/// [Rust issue #124403]: https://github.com/rust-lang/rust/issues/124403
-> +/// [Rust PR #147017]: https://github.com/rust-lang/rust/pull/147017
-> +///
-> +/// # Supported types in `#[try_from(...)]`
-> +///
-> +/// - [`bool`]
-> +/// - Primitive integer types (e.g., [`i8`], [`u8`])
-> +/// - [`Bounded`]
-> +///
-> +/// [`Bounded`]: ../kernel/num/bounded/struct.Bounded.html
-> +///
-> +/// # Examples
-> +///
-> +/// ## Without Attributes
-> +///
-> +/// Since [the default `Rust` representation uses `isize` for the discriminant type][repr-rust],
-> +/// the macro implements `TryFrom<isize>`:
-> +///
-> +/// [repr-rust]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.discriminant.repr-rust
-> +///
-> +/// ```rust
-> +/// # use kernel::prelude::*;
-> +/// use kernel::macros::TryFrom;
-> +///
-> +/// #[derive(Debug, Default, PartialEq, TryFrom)]
-> +/// enum Foo {
-> +///     #[default]
-> +///     A,
-> +///     B = 0x7,
-> +/// }
-> +///
-> +/// assert_eq!(Err(EINVAL), Foo::try_from(-1_isize));
-> +/// assert_eq!(Ok(Foo::A), Foo::try_from(0_isize));
-> +/// assert_eq!(Ok(Foo::B), Foo::try_from(0x7_isize));
-> +/// assert_eq!(Err(EINVAL), Foo::try_from(0x8_isize));
-> +/// ```
-> +///
-> +/// ## With `#[repr(T)]`
-> +///
-> +/// The macro implements `TryFrom<T>`:
-> +///
-> +/// ```rust
-> +/// # use kernel::prelude::*;
-> +/// use kernel::macros::TryFrom;
-> +///
-> +/// #[derive(Debug, Default, PartialEq, TryFrom)]
-> +/// #[repr(u8)]
-> +/// enum Foo {
-> +///     #[default]
-> +///     A,
-> +///     B = 0x7,
-> +/// }
-> +///
-> +/// assert_eq!(Ok(Foo::A), Foo::try_from(0_u8));
-> +/// assert_eq!(Ok(Foo::B), Foo::try_from(0x7_u8));
-> +/// assert_eq!(Err(EINVAL), Foo::try_from(0x8_u8));
-> +/// ```
-> +///
-> +/// ## With `#[try_from(...)]`
-> +///
-> +/// The macro implements `TryFrom<T>` for each `T` specified in `#[try_from(...)]`,
-> +/// which always overrides `#[repr(...)]`:
-> +///
-> +/// ```rust
-> +/// # use kernel::prelude::*;
-> +/// use kernel::{
-> +///     macros::TryFrom,
-> +///     num::Bounded, //
-> +/// };
-> +///
-> +/// #[derive(Debug, Default, PartialEq, TryFrom)]
-> +/// #[try_from(bool, i16, Bounded<u8, 4>)]
-> +/// #[repr(u8)]
-> +/// enum Foo {
-> +///     #[default]
-> +///     A,
-> +///     B,
-> +/// }
-> +///
-> +/// assert_eq!(Err(EINVAL), Foo::try_from(-1_i16));
-> +/// assert_eq!(Ok(Foo::A), Foo::try_from(0_i16));
-> +/// assert_eq!(Ok(Foo::B), Foo::try_from(1_i16));
-> +/// assert_eq!(Err(EINVAL), Foo::try_from(2_i16));
-> +///
-> +/// assert_eq!(Ok(Foo::A), Foo::try_from(false));
-> +/// assert_eq!(Ok(Foo::B), Foo::try_from(true));
-> +///
-> +/// assert_eq!(Ok(Foo::A), Foo::try_from(Bounded::<u8, 4>::new::<0>()));
-> +/// assert_eq!(Ok(Foo::B), Foo::try_from(Bounded::<u8, 4>::new::<1>()));
-> +/// ```
-> +///
-> +/// ## Compile-time Overflow Assertion
-> +///
-> +/// The following examples do not compile:
-> +///
-> +/// ```compile_fail
-> +/// # use kernel::macros::TryFrom;
-> +/// #[derive(TryFrom)]
-> +/// #[try_from(u8)]
-> +/// enum Foo {
-> +///     // `256` is larger than `u8::MAX`.
-> +///     A = 256,
-> +/// }
-> +/// ```
-> +///
-> +/// ```compile_fail
-> +/// # use kernel::macros::TryFrom;
-> +/// #[derive(TryFrom)]
-> +/// #[try_from(u8)]
-> +/// enum Foo {
-> +///     // `-1` cannot be represented with `u8`.
-> +///     A = -1,
-> +/// }
-> +/// ```
-> +///
-> +/// ## Unsupported Cases
-> +///
-> +/// The following examples do not compile:
-> +///
-> +/// ```compile_fail
-> +/// # use kernel::macros::TryFrom;
-> +/// // Tuple-like enums or struct-like enums are not allowed.
-> +/// #[derive(TryFrom)]
-> +/// enum Foo {
-> +///     A(u8),
-> +///     B { inner: u8 },
-> +/// }
-> +/// ```
-> +///
-> +/// ```compile_fail
-> +/// # use kernel::macros::TryFrom;
-> +/// // Structs are not allowed.
-> +/// #[derive(TryFrom)]
-> +/// struct Foo(u8);
-> +/// ```
-> +///
-> +/// ```compile_fail
-> +/// # use kernel::macros::TryFrom;
-> +/// // `repr(C)` enums are not allowed.
-> +/// #[derive(TryFrom)]
-> +/// struct Foo(u8)
-> +/// ```
-> +#[proc_macro_derive(TryFrom, attributes(try_from))]
-> +pub fn derive_try_from(input: TokenStream) -> TokenStream {
-> +    let input = parse_macro_input!(input as DeriveInput);
-> +    convert::derive_try_from(input)
-> +        .unwrap_or_else(syn::Error::into_compile_error)
-> +        .into()
-> +}
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
