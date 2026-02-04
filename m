@@ -1,103 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766FA37F8B3
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 07:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5275214A64;
+	Wed,  4 Feb 2026 07:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770189484; cv=none; b=pjVEU6e3meQQ4N1o18lgxHeYp8A3ybyTRDBC9+u03jk89BjEXvelKJd1Ju4jj2RVm/df8yZGb6W7hnTibw5EX+6R8qYE0UBNTpeEVKlXSJmIHNjb1eXNcEtG39AsIhEbCM7iBQU3LeZZeYLlCjd0VQ4F9xpAcg6UpM6zkzjT2c0=
+	t=1770191354; cv=none; b=q8CWrfzSvSmKSJwndFYdi28hXUara9Sd3eo+a4U1pIdo09rC8Vaxk7t+fcqZxZmN8f80+KFcyA252udUNS+/DxApuHhaI2DViIVMCAMUxawAUS/TKxd+0Gmf9CnsHCi6Xa2J/V87IBZ+XHFe8F5ti0Q7VTjHT0COYicg9bXpVU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770189484; c=relaxed/simple;
-	bh=xqEaS4t9FRnmZ36Z7kk86sLrpTUR7ghxRnVs3pmlOYk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KcX8T6drko4niuJrPu41BVs0umVZFRaNNVgDLpuYQt14efsOLFwLBub/VEJHbzUjaV95glJty4X1n0JOKBW8qy55GcGBHdJ8pWXc8Xh1zsCD6Dz5JNcjTtclSPgnnvkL10Eokn0XWnZPk4sgwXZGmO3r163KdLj1xtXjhFa+XZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lJcdTvQv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770191354; c=relaxed/simple;
+	bh=l8CMDKqpA7OSQPeAnkGdqjodxHHnVe32+QEnCx30yA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hy8QB2rM3lqpyFm5DwEX9CPCkzQgVu8Op5oic45N2bo6k14Ckim97r6hhwenopb8b1nrjXqefEcEXyhSXp8pFQfXnXPZOhJ5wgrornNY27U2p0iQv5fmnDYX5q0JoyevPXqsMq69BYUwDZiwW41q+/OP6g2VTcYmSJo5fGHd1w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ygfyh3Wv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lJcdTvQv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F06EC2BCB3
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 07:18:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ygfyh3Wv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EA2C4CEF7;
+	Wed,  4 Feb 2026 07:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770189484;
-	bh=xqEaS4t9FRnmZ36Z7kk86sLrpTUR7ghxRnVs3pmlOYk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lJcdTvQvg9F2T0iytEUshtCCgKZ2bo867fdv+DxB2zOBVUDINCNEP2UIx/QKBqvh6
-	 uKKLJuKeDOIgQNY8yI7tdgxL5zgGT7jfVCbOYsCXwwcV5S4FKtWbYcPDbt4HxiVngN
-	 jjYmTnZwE1Um+OoyBsuKteBUoSNCUqC9fg4/YsGuij5vcFg191U5cgxCjtBA6cCPQn
-	 p4VrC91Lgej3IBLPGwisbLOee5Gb7+Qm+6D9rYfMo3n89M7Oh9Jf+gi3PNcnKQaxmM
-	 rWeEWKu51NYblEJ3cSdODH3tdwMcFf+qmopnXnIwY/ByYEe6K4OswLgNwF6G/ltDwL
-	 0gCWBz3ADXVcg==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-382fe06aa94so54833341fa.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Feb 2026 23:18:04 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXIZeR2wwny8f7fC0yFse1dgDiIa4+BecX+T5CFP1KK5lpB/yztI5/DnZor8lxpich/KK0/ns1WwZMfZCg36g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxkr9OfATq2KZuqzlMDvf+u6GTfvvxShbDXe7y3X6rZNc1aiiId
-	QbiHPg3wftYJIiNprFQPmt+skOZ7RMoUmw2JvOT5MuT9dWLXscYilKWKULfaiRr4uHUOR28VS7o
-	cI2PWvvXZH0bVeMthxf71SZ36PaMH9oU=
-X-Received: by 2002:a05:651c:41d6:b0:37a:316c:2ae6 with SMTP id
- 38308e7fff4ca-38691c6ddfbmr8511521fa.1.1770189482784; Tue, 03 Feb 2026
- 23:18:02 -0800 (PST)
+	s=k20201202; t=1770191353;
+	bh=l8CMDKqpA7OSQPeAnkGdqjodxHHnVe32+QEnCx30yA4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ygfyh3Wv9wk76QsAndIJVnTvANIcRlvdoh3wBJuMgrDagRfH/LMDHU6cB8v8APABF
+	 jgWlX29M7nCqL8QnGTP5AT27keykRtc70rIXaaMyIebpna1jE+ahAI1vPJMKZWkV7O
+	 dbJYN0B6n83jbDZxFD2xqMQPSIvaJ+ON54oUxYuvbSeytpOynrnhEblPxIUc9oMxc3
+	 tlFoQw4DOGFZSqcAje/RkocIDE44of794Av5Ywh8dD6vCHnKRrzmYL2Q7mCuiYrLXi
+	 xNUMCP/8Y8rowx/xkqEEdhLAt21kjckkColNDZ2Ud8cdai4GUFdNxxjYOV6yCA1HJJ
+	 lPsmZBcozJgnw==
+Date: Wed, 4 Feb 2026 00:49:09 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: kconfig: Don't require RUST_IS_AVAILABLE for
+ rustc-option
+Message-ID: <20260204074909.GC1632007@ax162>
+References: <20250909-docrem-v1-1-dcc69059a5cb@google.com>
+ <177016418652.1146354.981060291224113155.b4-ty@kernel.org>
+ <CAK7LNASdG9P90Hnc3M4zK67S_kRtcs5kv8MX7n_B6S5x=FKENw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250909-docrem-v1-1-dcc69059a5cb@google.com> <177016418652.1146354.981060291224113155.b4-ty@kernel.org>
-In-Reply-To: <177016418652.1146354.981060291224113155.b4-ty@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 4 Feb 2026 16:17:26 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASdG9P90Hnc3M4zK67S_kRtcs5kv8MX7n_B6S5x=FKENw@mail.gmail.com>
-X-Gm-Features: AZwV_Qhv3WtNNvxTUQ-d1mg7cmq3K4RcHgjbMWmfHATCGGsacJpyjJqqJ61h2Uc
-Message-ID: <CAK7LNASdG9P90Hnc3M4zK67S_kRtcs5kv8MX7n_B6S5x=FKENw@mail.gmail.com>
-Subject: Re: [PATCH] rust: kconfig: Don't require RUST_IS_AVAILABLE for rustc-option
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK7LNASdG9P90Hnc3M4zK67S_kRtcs5kv8MX7n_B6S5x=FKENw@mail.gmail.com>
 
-On Wed, Feb 4, 2026 at 9:16=E2=80=AFAM Nathan Chancellor <nathan@kernel.org=
-> wrote:
->
-> On Tue, 09 Sep 2025 18:14:20 +0000, Matthew Maurer wrote:
-> > The final version of this macro does not fail in the absence of an
-> > invokable `$(RUSTC)`, so we don't need to be careful not to invoke it.
+On Wed, Feb 04, 2026 at 04:17:26PM +0900, Masahiro Yamada wrote:
+> On Wed, Feb 4, 2026 at 9:16 AM Nathan Chancellor <nathan@kernel.org> wrote:
+> >
+> > On Tue, 09 Sep 2025 18:14:20 +0000, Matthew Maurer wrote:
+> > > The final version of this macro does not fail in the absence of an
+> > > invokable `$(RUSTC)`, so we don't need to be careful not to invoke it.
+> > >
+> > >
+> >
+> > Applied to
+> >
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git kbuild-next
+> >
+> > Thanks!
+> >
+> > [1/1] rust: kconfig: Don't require RUST_IS_AVAILABLE for rustc-option
+> >       https://git.kernel.org/kbuild/c/f2445d6f264c6
+> >
+> > Please look out for regression or issue reports or other follow up
+> > comments, as they may result in the patch/series getting dropped or
+> > reverted. Patches applied to an "unstable" branch are accepted pending
+> > wider testing in -next and any post-commit review; they will generally
+> > be moved to the main branch in a week if no issues are found.
+> >
+> > Best regards,
+> > --
+> > Nathan Chancellor <nathan@kernel.org>
 > >
 > >
->
-> Applied to
->
->   https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git kbuild=
--next
->
-> Thanks!
->
-> [1/1] rust: kconfig: Don't require RUST_IS_AVAILABLE for rustc-option
->       https://git.kernel.org/kbuild/c/f2445d6f264c6
->
-> Please look out for regression or issue reports or other follow up
-> comments, as they may result in the patch/series getting dropped or
-> reverted. Patches applied to an "unstable" branch are accepted pending
-> wider testing in -next and any post-commit review; they will generally
-> be moved to the main branch in a week if no issues are found.
->
-> Best regards,
-> --
-> Nathan Chancellor <nathan@kernel.org>
->
->
+> 
+> Removing this comment is correct, but please note
+> the commit description is not accurate.
+> 
+> Kconfig evaluates all $(shell ...) macros before deciding the
+> value of RUSAT_IS_AVAILABLE.
+> You cannot prevent Kconfig from evaluating $(shell ...).
+> The author of c42297438aee7 did not read
+> Documentation/kbuild/kconfig-macro-language.rst
 
-Removing this comment is correct, but please note
-the commit description is not accurate.
+Ugh, yes, sorry, I should have caught that too because I just recently
+looked at this in another thread :(
 
-Kconfig evaluates all $(shell ...) macros before deciding the
-value of RUSAT_IS_AVAILABLE.
-You cannot prevent Kconfig from evaluating $(shell ...).
-The author of c42297438aee7 did not read
-Documentation/kbuild/kconfig-macro-language.rst
+  https://lore.kernel.org/20260129232535.GD844102@ax162/
 
+I'd rather not rebase at this point but I appreciate you clarifying this
+for the record.
 
-
---
-Best Regards
-
-Masahiro Yamada
+Cheers,
+Nathan
