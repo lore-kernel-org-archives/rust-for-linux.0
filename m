@@ -1,252 +1,97 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6574C41B37C;
-	Wed,  4 Feb 2026 15:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218710; cv=pass; b=tAsbz9Hhgye4bp0uxKOo2pG7djOSWM2orRlJ+QFcC5GnInkGYfW+2jMPO0FyRSZIlVWBBJXZpE5CCnmLsrh1kXdEJVVWnLHvYY9+MeK5o5MFsvYvd5D2aEluoXWfJ9+EVztoiEV6is4EOoS6HSuUzuZv4Gr+CZWLKbswJIh4TMs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218710; c=relaxed/simple;
-	bh=RPqYTK/y2ujPnoPeUSzfPjt+gosXp2N7lUWfg4PlWj8=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=bOA6WTWKi2HF5IPaMN00ByPiZvirUt7Sj7RowTLPbjboGnIc4lJjLktnNmbOtoOpwbgkY4O6+2JU1CUT500W1tqpS6bMKtLIhGvY+9bYwd1EN2xuwUd8wYKqZdD4QO9RkxbRbv6+r82MMMyPBrKLC6sE2AJnQay/jMMvIzlkhWM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=aaohjDiu; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC6F3D994;
+	Wed,  4 Feb 2026 15:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770219697; cv=none; b=Zgh+u3j5aYTP/nbi+tqHdDmsHHpggvAirWz9TkSN4Ul0R2GqCoxUHqoair+P/Hcii8E/HskE9BiapCmX06wY74i5d6fj19jr2n1vtImWdGOx5XB7rqoaG/zjjp68g+VvmR2CBbArx6jdjgGr6POlgc7g1ZfkSGUnqQLwp7KDUjY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770219697; c=relaxed/simple;
+	bh=RmfM/AZglZOEG9CAOPaE0engWdOby0R8qOmmSRG9PzY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Ef9qVNbbIlZjYyUdJSWfoxCaEH4heCzoDaaK9YNPPbD1ElJEl846AJrARtdNuWHetFpmHI43z4NU+ZJrC1yOMxxVT/REUfg1yHkColr1gc7uTmvFuWs/e/YtdP82bAas6U0CGiRXOcF5sjyXYdUuFD3aavCTL9SfSA6qEUo0v7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YblZPv9N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="aaohjDiu"
-ARC-Seal: i=1; a=rsa-sha256; t=1770218691; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=UlJbbTl+XgSvU1U4ck1IeBhJo9fUj7k44Ecf6mObl6D7X+iaF+Czznz9pxgSpjtzCnc6dQ8NXRLsI02l7ZXBhusLiEzVVq9iMM03mypoDJxuMHWu5SMKRMKoV2zcCRQGvToLF9OtiS0HnEJSeCxjO6XkQDeEfXJIPLBANo6Y7V4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770218691; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=B4qfH/T4q4e9+r5e5ubWLPqS87SXP+L7lfrd2Hlwlqk=; 
-	b=RaKHvcyUSZFNEjcezUflsD9a1P64nfz53pvPRrNNHfCk77jVCv/y1s1BEJ57wcTH1ZwDuSGYqW4jlNXOHzls8z+s7kN9zhubUjxoxMALp49C/rd7lNoXg+oPKSUGG3KjaSYP9B6/dZIZKvJizosdyrBei+SJs0Aq1D7E1MmXRbk=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770218691;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=B4qfH/T4q4e9+r5e5ubWLPqS87SXP+L7lfrd2Hlwlqk=;
-	b=aaohjDiutJx0kWR++KbIBUxypK+ZHgl2MELmoTZuvtDkph1Rm0LpBXelGWRgNPNE
-	1uNfSk2RjIHWnXRxYtr4PQ4ws8jxUiq3/6jC99iHY5DHJODxpVWXaP7uAfHFTARvsbk
-	qXOx8dCpHWagYQgqiglwagKiPXM8rKuwR+ZvpXuM=
-Received: by mx.zohomail.com with SMTPS id 1770218690792659.1519027180708;
-	Wed, 4 Feb 2026 07:24:50 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YblZPv9N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E497AC19423;
+	Wed,  4 Feb 2026 15:41:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770219697;
+	bh=RmfM/AZglZOEG9CAOPaE0engWdOby0R8qOmmSRG9PzY=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=YblZPv9NZoOzZEJVNv8HA1+4sFt1ES94BtjWj/jwWQhsxY3vxHvf7DqTQjEjeqbo2
+	 FJ58mPfgwvoLWUwCabHSjaw7P9XfHuXBYHi9pP4P0EN9anoZf58friJHJvHzYEZKJ3
+	 YSf1Sg9av7M3sW/wxmVSYf+8H9OQTpsN4hyu1DXefDBPyPxBT/EDgF1GIkrJNmKzE2
+	 /Pn7KQINq88+5nWE0xyysbbTiRv94r/J9PC/wIXx0LkQ+Rexm9iDVw8wj4CY3cOtm3
+	 yjgIAK1AFaVnQOwfUfyNh0bCF4+GnX9NHHcHDgSINoTEsHr0Scg8O22oJZ0KOaSpVZ
+	 FhpluNISWJfGg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 5/6] rust: pci: io: remove overloaded Io methods of
- ConfigSpace
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260202-io-v1-5-9bb2177d23be@nvidia.com>
-Date: Wed, 4 Feb 2026 12:24:34 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- driver-core@lists.linux.dev,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org,
- Zhi Wang <zhiw@nvidia.com>,
- Lyude Paul <lyude@redhat.com>,
- Eliot Courtney <ecourtney@nvidia.com>
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <919702DB-9992-476C-882B-94443C97C0F0@collabora.com>
-References: <20260202-io-v1-0-9bb2177d23be@nvidia.com>
- <20260202-io-v1-5-9bb2177d23be@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Feb 2026 16:41:28 +0100
+Message-Id: <DG6AIA0QK77C.EKG7X4NBEJ00@kernel.org>
+Subject: Re: [PATCH v14 1/9] rust: types: Add Ownable/Owned types
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>, "Serge
+ Hallyn" <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner"
+ <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>, "Igor Korotin"
+ <igor.korotin.linux@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Viresh Kumar" <vireshk@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Stephen
+ Boyd" <sboyd@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, "Asahi Lina" <lina+kernel@asahilina.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
+ <20260204-unique-ref-v14-1-17cb29ebacbb@kernel.org>
+In-Reply-To: <20260204-unique-ref-v14-1-17cb29ebacbb@kernel.org>
 
+On Wed Feb 4, 2026 at 12:56 PM CET, Andreas Hindborg wrote:
+> From: Asahi Lina <lina+kernel@asahilina.net>
+>
+> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+> (typically C FFI) type that *may* be owned by Rust, but need not be. Unli=
+ke
+> `AlwaysRefCounted`, this mechanism expects the reference to be unique
+> within Rust, and does not allow cloning.
+>
+> Conceptually, this is similar to a `KBox<T>`, except that it delegates
+> resource management to the `T` instead of using a generic allocator.
+>
+> This change is a derived work based on work by Asahi Lina
+> <lina+kernel@asahilina.net> [1] and Oliver Mangold <oliver.mangold@pm.me>=
+.
+>
+> Link: https://lore.kernel.org/rust-for-linux/20250202-rust-page-v1-1-e317=
+0d7fe55e@asahilina.net/ [1]
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
+Given the From: line above, this needs Lina's SoB.
 
-> On 2 Feb 2026, at 05:13, Alexandre Courbot <acourbot@nvidia.com> =
-wrote:
->=20
-> Since `ConfigSpace` now has the relevant implementations of =
-`IoCapable`,
-> the default methods of `Io` can be used in place of the overloaded =
-ones.
-> Remove them as well as the macros generating them.
->=20
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
-> rust/kernel/io.rs     |  3 ---
-> rust/kernel/pci/io.rs | 70 =
----------------------------------------------------
-> 2 files changed, 73 deletions(-)
->=20
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index e1094a237ff7..0e8031dfe0f0 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -226,8 +226,6 @@ macro_rules! define_read {
->         }
->     };
-> }
-> -pub(crate) use define_read;
-> -
-> macro_rules! define_write {
->     (infallible, $(#[$attr:meta])* $vis:vis $name:ident, =
-$call_macro:ident($c_fn:ident) <-
->      $type_name:ty) =3D> {
-> @@ -259,7 +257,6 @@ macro_rules! define_write {
->         }
->     };
-> }
-> -pub(crate) use define_write;
->=20
-> /// Checks whether an access of type `U` at the given `offset`
-> /// is valid within this region.
-> diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
-> index 8c8aab2e3f22..ae78676c927f 100644
-> --- a/rust/kernel/pci/io.rs
-> +++ b/rust/kernel/pci/io.rs
-> @@ -8,8 +8,6 @@
->     device,
->     devres::Devres,
->     io::{
-> -        define_read,
-> -        define_write,
->         Io,
->         IoCapable,
->         IoKnownSize,
-> @@ -85,63 +83,6 @@ pub struct ConfigSpace<'a, S: ConfigSpaceKind =3D =
-Extended> {
->     _marker: PhantomData<S>,
-> }
->=20
-> -/// Internal helper macros used to invoke C PCI configuration space =
-read functions.
-> -///
-> -/// This macro is intended to be used by higher-level PCI =
-configuration space access macros
-> -/// (define_read) and provides a unified expansion for infallible vs. =
-fallible read semantics. It
-> -/// emits a direct call into the corresponding C helper and performs =
-the required cast to the Rust
-> -/// return type.
-> -///
-> -/// # Parameters
-> -///
-> -/// * `$c_fn` =E2=80=93 The C function performing the PCI =
-configuration space write.
-> -/// * `$self` =E2=80=93 The I/O backend object.
-> -/// * `$ty` =E2=80=93 The type of the value to read.
-> -/// * `$addr` =E2=80=93 The PCI configuration space offset to read.
-> -///
-> -/// This macro does not perform any validation; all invariants must =
-be upheld by the higher-level
-> -/// abstraction invoking it.
-> -macro_rules! call_config_read {
-> -    (infallible, $c_fn:ident, $self:ident, $ty:ty, $addr:expr) =3D> =
-{{
-> -        let mut val: $ty =3D 0;
-> -        // SAFETY: By the type invariant `$self.pdev` is a valid =
-address.
-> -        // CAST: The offset is cast to `i32` because the C functions =
-expect a 32-bit signed offset
-> -        // parameter. PCI configuration space size is at most 4096 =
-bytes, so the value always fits
-> -        // within `i32` without truncation or sign change.
-> -        // Return value from C function is ignored in infallible =
-accessors.
-> -        let _ret =3D unsafe { bindings::$c_fn($self.pdev.as_raw(), =
-$addr as i32, &mut val) };
-> -        val
-> -    }};
-> -}
-> -
-> -/// Internal helper macros used to invoke C PCI configuration space =
-write functions.
-> -///
-> -/// This macro is intended to be used by higher-level PCI =
-configuration space access macros
-> -/// (define_write) and provides a unified expansion for infallible =
-vs. fallible read semantics. It
-> -/// emits a direct call into the corresponding C helper and performs =
-the required cast to the Rust
-> -/// return type.
-> -///
-> -/// # Parameters
-> -///
-> -/// * `$c_fn` =E2=80=93 The C function performing the PCI =
-configuration space write.
-> -/// * `$self` =E2=80=93 The I/O backend object.
-> -/// * `$ty` =E2=80=93 The type of the written value.
-> -/// * `$addr` =E2=80=93 The configuration space offset to write.
-> -/// * `$value` =E2=80=93 The value to write.
-> -///
-> -/// This macro does not perform any validation; all invariants must =
-be upheld by the higher-level
-> -/// abstraction invoking it.
-> -macro_rules! call_config_write {
-> -    (infallible, $c_fn:ident, $self:ident, $ty:ty, $addr:expr, =
-$value:expr) =3D> {
-> -        // SAFETY: By the type invariant `$self.pdev` is a valid =
-address.
-> -        // CAST: The offset is cast to `i32` because the C functions =
-expect a 32-bit signed offset
-> -        // parameter. PCI configuration space size is at most 4096 =
-bytes, so the value always fits
-> -        // within `i32` without truncation or sign change.
-> -        // Return value from C function is ignored in infallible =
-accessors.
-> -        let _ret =3D unsafe { bindings::$c_fn($self.pdev.as_raw(), =
-$addr as i32, $value) };
-> -    };
-> -}
-> -
-> /// Implements [`IoCapable`] on [`ConfigSpace`] for `$ty` using =
-`$read_fn` and `$write_fn`.
-> macro_rules! impl_config_space_io_capable {
->     ($ty:ty, $read_fn:ident, $write_fn:ident) =3D> {
-> @@ -190,17 +131,6 @@ fn addr(&self) -> usize {
->     fn maxsize(&self) -> usize {
->         self.pdev.cfg_size().into_raw()
->     }
-> -
-> -    // PCI configuration space does not support fallible operations.
-> -    // The default implementations from the Io trait are not used.
-> -
-> -    define_read!(infallible, read8, =
-call_config_read(pci_read_config_byte) -> u8);
-> -    define_read!(infallible, read16, =
-call_config_read(pci_read_config_word) -> u16);
-> -    define_read!(infallible, read32, =
-call_config_read(pci_read_config_dword) -> u32);
-> -
-> -    define_write!(infallible, write8, =
-call_config_write(pci_write_config_byte) <- u8);
-> -    define_write!(infallible, write16, =
-call_config_write(pci_write_config_word) <- u16);
-> -    define_write!(infallible, write32, =
-call_config_write(pci_write_config_dword) <- u32);
-> }
->=20
-> impl<'a, S: ConfigSpaceKind> IoKnownSize for ConfigSpace<'a, S> {
->=20
-> --=20
-> 2.52.0
->=20
->=20
+This patch was also originally posted by Abdiel and Boqun and I think we sh=
+ould
+account for this. I mentioned this in a couple of previous versions already=
+,
+e.g. in [1]. I think we should account for this.
 
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+[1] https://lore.kernel.org/all/cc28d048-5e0f-4f0e-b0f2-1b9e240f639b@kernel=
+.org/
