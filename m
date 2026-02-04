@@ -1,74 +1,47 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDC936A027;
-	Wed,  4 Feb 2026 08:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B624E394469
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 08:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770192672; cv=none; b=rl4E/+zUXhQHwa6PSyjqbcf2fec5qwyvZABWCdt+Y72hysCNsQ3xYdi/nrHbgwmm8euXT+bFiy6q0YvqFAKq2g3P5Ol6HWC9S1C3EnVIKBqjAJftYd6B82MnbU9P8NaiTqObDNKNqdUttgcpuQrch3C50Qc7KEuS9xL4ES5PBxE=
+	t=1770194099; cv=none; b=SIkjyIRhy4ZGZUmecd862+koJfUBwwKoEsP3ean7chM6iCTQmDM8mXW/mc2lEX36dwdVmYRAzYGBSk/Xh0rLfLQ/rrBfdWr1OoCH/8GuHOBYGprRBoFCEZH6gv8cee9N+b6LcOotgacnzjmSCwUCiHHrABSeIHPnQpBaM22EUkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770192672; c=relaxed/simple;
-	bh=8j8R8MPrfWY6vBRRIpvDiircDbGhdSwDxXfuiVs5GeI=;
+	s=arc-20240116; t=1770194099; c=relaxed/simple;
+	bh=S539VUjPKJOISaRuCvVzZgVIORN48iX4j7g9m1M/SUA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=njr3Td8ocY2hdwhpuEjoCl2LtemEFzWZUSWnT4ypP8igm5JuQHnWcYoPyrVJwoNt8t6dpVfd3FuTVLJ2UBFf+OCeD4OVX5knf3Ru2d35mS+g/2AQrfIRgnRIYH9qC+8aK/pYldPSirN+DeMv7bB1bPTkjNiJRDrMLRWiAxYnvN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=DsEFJ3Nh; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version:Content-Type; b=BPf6W7pzLFzAwUuYScr//snNdwXluioPTj+ARRCbSb6yItq0ibdnj418+I8NQVqoTCFCbrfBomlR6i6ImQeU9mqA28pq7g++e5u34cvswAp0J9xoQ+bDQd5PfM8Pkx4kvma5sGahFILyJyrA+LkCqUgQ6Pez61iAXzU1+dIdEgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=gnviAn8V; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="DsEFJ3Nh"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="gnviAn8V"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770192670;
-	bh=8j8R8MPrfWY6vBRRIpvDiircDbGhdSwDxXfuiVs5GeI=;
+	s=mail; t=1770194097;
+	bh=S539VUjPKJOISaRuCvVzZgVIORN48iX4j7g9m1M/SUA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DsEFJ3Nhca0gHPn0WW46xPuzuZwRmLNuOpKTYci/Grpz+8iFbAUufcYWOTdolbhe4
-	 4Rju+q4X4pcKmAjKivkByu4y4dJjqVFYuCz5WFEYfcwMkREFh1aD8b/HUnDvbBGA4O
-	 K1Tom/wQJod9y9Z6en141msQx34QphBNYgjipqSBG0XBBmR/FBZVfKVSfxPegpTbfj
-	 w4RljDBo2vI4n3721FrPdjwSS+bIn9ahzDlJQUGlfuXZledsqf1PdT+3XYuZqoD+lC
-	 i/NCr5O3feDTRIiu+CdMizfBKEWtDKIfpGXKb9i0DyOQihsMQ5R5bLUkGRJ15nhaFH
-	 ZJJ99EmmtpDZA==
+	b=gnviAn8VOpCQvAbz+CFRxQypz7qvcpfjOb2G2wJRWOh/+lMebqB5hk83JLnqsQJ1S
+	 zWnIzMxhynU9qrALblyY56qJ/2A+PAGpZLX+uyw8UtzOynUioZf3UmBdjiMri6KXzN
+	 eFO8yHoYxzP5ZaDzJLz8Y4hWql0BJUJBCmHSv1JvJL9oSPZDZFoGH38Xmd6W9Hjqnp
+	 a1kGqR8zY1r2P29KKmhLcTchLYj/bPc5emTgX2Z/cCCDUJrNInZ39T+++IRq87Lr9P
+	 B+lhlY++yuvP4guImejnwA0WodXh0P1Dbi37G1Vt8UREoI0H9IUnvo9zXV9xvw7Q8J
+	 WeuPWB75z966w==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id AE37317E114C;
-	Wed,  4 Feb 2026 09:11:09 +0100 (CET)
-Date: Wed, 4 Feb 2026 09:11:04 +0100
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id BEDE117E0E90;
+	Wed,  4 Feb 2026 09:34:56 +0100 (CET)
+Date: Wed, 4 Feb 2026 09:34:53 +0100
 From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Maxime Ripard" <mripard@kernel.org>, "Rafael J.
- Wysocki" <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Drew Fustini" <fustini@kernel.org>, "Guo Ren"
- <guoren@kernel.org>, "Fu Wei" <wefu@redhat.com>, Uwe =?UTF-8?B?S2xlaW5l?=
- =?UTF-8?B?LUvDtm5pZw==?= <ukleinek@kernel.org>, "Michael Turquette"
- <mturquette@baylibre.com>, "Stephen Boyd" <sboyd@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <linux-pm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linux-riscv@lists.infradead.org>, <linux-pwm@vger.kernel.org>,
- <linux-clk@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
-Message-ID: <20260204091104.0a9c4a13@fedora>
-In-Reply-To: <DG5M5MVHTNS4.1CUD61S0PD9NU@garyguo.net>
-References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
-	<20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com>
-	<20260108-delectable-fennec-of-sunshine-ffca19@houat>
-	<98CD0BF6-3350-40B9-B8A9-F569AE3E3220@collabora.com>
-	<20260119-thundering-tested-robin-4be817@houat>
-	<aW4lCfUyumOKRRJm@google.com>
-	<20260203113902.501e5803@fedora>
-	<E7286D12-0BD9-4726-B072-FE5A040312B1@collabora.com>
-	<20260203150855.77c93e22@fedora>
-	<4DD13AE1-C85F-450F-93F2-C7C75766E518@collabora.com>
-	<DG5HJPIYMS7B.152WPGG9MZZJ5@garyguo.net>
-	<B94452FD-5F6F-44D4-80D8-4D4B7004C4B5@collabora.com>
-	<DG5M5MVHTNS4.1CUD61S0PD9NU@garyguo.net>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ daniel.almeida@collabora.com, aliceryhl@google.com
+Subject: Re: [PATCH] drm/tyr: Use vertical style for imports
+Message-ID: <20260204093453.1b5130d0@fedora>
+In-Reply-To: <20260204013331.427210-1-deborah.brouwer@collabora.com>
+References: <20260204013331.427210-1-deborah.brouwer@collabora.com>
 Organization: Collabora
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -77,105 +50,229 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Gary, Daniel,
+On Tue,  3 Feb 2026 17:33:31 -0800
+Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 
-On Tue, 03 Feb 2026 20:36:30 +0000
-"Gary Guo" <gary@garyguo.net> wrote:
+> Currently Tyr uses rustfmt style for imports, but the kernel uses a
+> vertical layout that makes it easier to resolve conflicts and rebase.
+> 
+> Import guidelines are documented here:
+> 	https://docs.kernel.org/rust/coding-guidelines.html#imports
+> 
+> Change all of Tyr's imports to use the vertical layout. This will
+> ease the introduction of additional Tyr patches upstream.
+> 
+> There should be no functional changes in this patch.
+> 
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-> On Tue Feb 3, 2026 at 7:26 PM GMT, Daniel Almeida wrote:
-> > =20
-> >>=20
-> >> I think it's fine to have all of these:
-> >> * `Clone` impl
-> >> * `enable` which consumes `Clk<Prepared>` by value and spit out `Clk<E=
-nabled>`
-> >> * `with_enabled` that gives `&Clk<Enabled>`
-> >>=20
-> >> This way, if you only want to enable in short time, you can do `with_e=
-nabled`.
-> >> If the closure callback wants to keep clock enabled for longer, it can=
- just do
-> >> `.clone()` inside the closure and obtain an owned `Clk<Enabled>`.
-> >>=20
-> >> If the user just have a reference and want to enable the callback they=
- can do
-> >> `prepared_clk.clone().enable()` which gives an owned `Clk<Enabled>`. T=
-houghts?
-> >>=20
-> >> Best,
-> >> Gary =20
-> >
-> >
-> > I=E2=80=99m ok with what you proposed above. The only problem is that i=
-mplementing
-> > clone() is done through an Arc<*mut bindings::clk>  in Boris=E2=80=99 c=
-urrent
-> > design, so this requires an extra allocation. =20
->=20
-> Hmm, that's a very good point. `struct clk` is already a reference into
-> clk_core, so having to put another level of indirection over is not ideal.
-> However, if we're going to keep C code unchanged and do a zero-cost abstr=
-action
-> on the Rust side, then we won't be able to have have multiple prepare/ena=
-ble to
-> the same `struct clk` with the current design.
->=20
-> It feels like we can to do a trade-off and choose from:
-> 1. Not be able to have multiple prepare/enable calls on the same `clk` (t=
-his can
->    limit users that need dynamically enable/disable clocks, with the very=
- limited
->    exception that closure-callback is fine).
-> 2. Do an extra allocation
-> 3. Put lifetime on types that represent a prepared/enabled `Clk`
-> 4. Change C to make `struct clk` refcounted.
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
-It probably comes to no surprise that I'd be more in favor of option 2
-or 4. Maybe option 2 first, so we can get the user-facing API merged
-without too much churn, and then we can see if the clk maintainers are
-happy adding a refcnt to struct clk to optimize things.
+> ---
+>  drivers/gpu/drm/tyr/driver.rs | 62 ++++++++++++++++++++---------------
+>  drivers/gpu/drm/tyr/file.rs   | 18 ++++++----
+>  drivers/gpu/drm/tyr/gem.rs    | 13 +++++---
+>  drivers/gpu/drm/tyr/gpu.rs    | 38 ++++++++++++---------
+>  drivers/gpu/drm/tyr/regs.rs   | 14 +++++---
+>  5 files changed, 88 insertions(+), 57 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+> index 568cb89aaed8..46b65e004a15 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -1,31 +1,41 @@
+>  // SPDX-License-Identifier: GPL-2.0 or MIT
+>  
+> -use kernel::clk::Clk;
+> -use kernel::clk::OptionalClk;
+> -use kernel::device::Bound;
+> -use kernel::device::Core;
+> -use kernel::device::Device;
+> -use kernel::devres::Devres;
+> -use kernel::drm;
+> -use kernel::drm::ioctl;
+> -use kernel::io::poll;
+> -use kernel::new_mutex;
+> -use kernel::of;
+> -use kernel::platform;
+> -use kernel::prelude::*;
+> -use kernel::regulator;
+> -use kernel::regulator::Regulator;
+> -use kernel::sizes::SZ_2M;
+> -use kernel::sync::aref::ARef;
+> -use kernel::sync::Arc;
+> -use kernel::sync::Mutex;
+> -use kernel::time;
+> -
+> -use crate::file::File;
+> -use crate::gem::TyrObject;
+> -use crate::gpu;
+> -use crate::gpu::GpuInfo;
+> -use crate::regs;
+> +use kernel::{
+> +    clk::{
+> +        Clk,
+> +        OptionalClk, //
+> +    },
+> +    device::{
+> +        Bound,
+> +        Core,
+> +        Device, //
+> +    },
+> +    devres::Devres,
+> +    drm,
+> +    drm::ioctl,
+> +    io::poll,
+> +    new_mutex,
+> +    of,
+> +    platform,
+> +    prelude::*,
+> +    regulator,
+> +    regulator::Regulator,
+> +    sizes::SZ_2M,
+> +    sync::{
+> +        aref::ARef,
+> +        Arc,
+> +        Mutex, //
+> +    },
+> +    time, //
+> +};
+> +
+> +use crate::{
+> +    file::File,
+> +    gem::TyrObject,
+> +    gpu,
+> +    gpu::GpuInfo,
+> +    regs, //
+> +};
+>  
+>  pub(crate) type IoMem = kernel::io::mem::IoMem<SZ_2M>;
+>  
+> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+> index 0ef432947b73..48bff4476d74 100644
+> --- a/drivers/gpu/drm/tyr/file.rs
+> +++ b/drivers/gpu/drm/tyr/file.rs
+> @@ -1,12 +1,16 @@
+>  // SPDX-License-Identifier: GPL-2.0 or MIT
+>  
+> -use kernel::drm;
+> -use kernel::prelude::*;
+> -use kernel::uaccess::UserSlice;
+> -use kernel::uapi;
+> -
+> -use crate::driver::TyrDevice;
+> -use crate::TyrDriver;
+> +use kernel::{
+> +    drm,
+> +    prelude::*,
+> +    uaccess::UserSlice,
+> +    uapi, //
+> +};
+> +
+> +use crate::{
+> +    driver::TyrDevice,
+> +    TyrDriver, //
+> +};
+>  
+>  #[pin_data]
+>  pub(crate) struct File {}
+> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+> index 1273bf89dbd5..8f2d23e3c093 100644
+> --- a/drivers/gpu/drm/tyr/gem.rs
+> +++ b/drivers/gpu/drm/tyr/gem.rs
+> @@ -1,9 +1,14 @@
+>  // SPDX-License-Identifier: GPL-2.0 or MIT
+>  
+> -use crate::driver::TyrDevice;
+> -use crate::driver::TyrDriver;
+> -use kernel::drm::gem;
+> -use kernel::prelude::*;
+> +use kernel::{
+> +    drm::gem,
+> +    prelude::*, //
+> +};
+> +
+> +use crate::driver::{
+> +    TyrDevice,
+> +    TyrDriver, //
+> +};
+>  
+>  /// GEM Object inner driver data
+>  #[pin_data]
+> diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+> index bfbf2a1d80e6..affca5b0dc6c 100644
+> --- a/drivers/gpu/drm/tyr/gpu.rs
+> +++ b/drivers/gpu/drm/tyr/gpu.rs
+> @@ -1,20 +1,28 @@
+>  // SPDX-License-Identifier: GPL-2.0 or MIT
+>  
+> -use core::ops::Deref;
+> -use core::ops::DerefMut;
+> -use kernel::bits::genmask_u32;
+> -use kernel::device::Bound;
+> -use kernel::device::Device;
+> -use kernel::devres::Devres;
+> -use kernel::io::poll;
+> -use kernel::platform;
+> -use kernel::prelude::*;
+> -use kernel::time::Delta;
+> -use kernel::transmute::AsBytes;
+> -use kernel::uapi;
+> -
+> -use crate::driver::IoMem;
+> -use crate::regs;
+> +use core::ops::{
+> +    Deref,
+> +    DerefMut, //
+> +};
+> +use kernel::{
+> +    bits::genmask_u32,
+> +    device::{
+> +        Bound,
+> +        Device, //
+> +    },
+> +    devres::Devres,
+> +    io::poll,
+> +    platform,
+> +    prelude::*,
+> +    time::Delta,
+> +    transmute::AsBytes,
+> +    uapi, //
+> +};
+> +
+> +use crate::{
+> +    driver::IoMem,
+> +    regs, //
+> +};
+>  
+>  /// Struct containing information that can be queried by userspace. This is read from
+>  /// the GPU's registers.
+> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+> index f46933aaa221..a7672fffbba5 100644
+> --- a/drivers/gpu/drm/tyr/regs.rs
+> +++ b/drivers/gpu/drm/tyr/regs.rs
+> @@ -7,11 +7,15 @@
+>  // does.
+>  #![allow(dead_code)]
+>  
+> -use kernel::bits::bit_u32;
+> -use kernel::device::Bound;
+> -use kernel::device::Device;
+> -use kernel::devres::Devres;
+> -use kernel::prelude::*;
+> +use kernel::{
+> +    bits::bit_u32,
+> +    device::{
+> +        Bound,
+> +        Device, //
+> +    },
+> +    devres::Devres,
+> +    prelude::*, //
+> +};
+>  
+>  use crate::driver::IoMem;
+>  
 
-If we really feel that the indirection/memory overhead is going to
-hurt us, we can also start with option 1, and extend it to 2 and/or 4
-(needed to add a Clone support) when it becomes evident we can't do
-without it. But as I was saying in my previous reply to Daniel, I
-expect the extra indirection/memory overhead to be negligible since:
-
-1. clks are usually not {prepared,enabled}/{disabled,unprepared} in a
-   hot path
-2. in the rare occasions where they might be ({dev,cpu}freq ?), this
-   clk state change is usually one operation in an ocean of other
-   slower operations (regulator reconfiguration, for instance, which
-   usually goes over a slow I2C bus, or a
-   relatively-faster-but-still-slow SPI one, at least when we compare
-   it to an IoMem access for in-SoCs clks). So overall, the clk state
-   change might account for a very small portion of the CPU cycles
-   spent in this bigger operation
-3. if I focus solely on the clk aspect, and look at the existing
-   indirections in the clk framework (clk -> clk_core -> clk_{hw,ops} ->
-   clk_methods), I'd expect the Arc indirection to be just noise in
-   this pre-existing overhead
-4. in term of memory, we're talking about 16 more bytes allocated per
-   Clk on a 64-bit architecture (refcount is an int, but the alignment
-   for the clk pointer forces 4 bytes of padding on most
-   architectures). On a 64 bit arch, struct clk is 72 bytes if my math
-   is correct, so that's a 22% overhead, compared to 11% overhead if
-   the refcount was in struct clk (or in a struct
-   refcounted_clk variant if we don't want C users to pay the price).
-   Not great, but not terrible either
-
-So yeah my gut feeling is that we might be overthinking this extra
-allocation/indirection issue. This being said, one thing I'd really like
-to avoid is us being dragged into infinite discussions about a perfect
-implementation causing the merging of these changes to be delayed and
-other contributions being blocked on this (perfect is the enemy of
-good). I mean, option #1 is already an improvement compared to the raw
-functions we have at the moment, so if that's the middle-ground we
-agree on, I'm happy to give it my R-b.
-
-Regards,
-
-Boris
