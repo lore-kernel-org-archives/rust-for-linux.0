@@ -1,21 +1,21 @@
 Received: from luna.linkmauve.fr (luna.linkmauve.fr [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9FC18DF9D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B5A1EDA2B;
 	Wed,  4 Feb 2026 04:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770177912; cv=none; b=C3KZQ8duNQNNIWx0xNOT6hGa4zYzFR3jAzo/Abo4OsJWwhoeED68qJHcaoF7Ea+z8CvVUpda9Z38DXfFoxEzLALgQ1mpWyhSWBLOUyDq1+tQznkcHtgQICnQtMGZpZ3q0Xu/HVNJF3Q6uNX3C+Q+AvyZKESNp/6x3kDU4O6mr8g=
+	t=1770177913; cv=none; b=DtcsV83wm9Fdf39UkvQAU+YBrlFzdP6BtbkKzsO6lwYtWYhBXQRtAdLHPB0qEmJdeefXF8FBeJf9YBthIqsp6/FPbNBaDlMEmEoKoXsk2lP87ZePA+JuMO01I0nZMVsAMsCqVasNkg8sn6lKiO+0DKSNT6U6FpgX+B1C8tJawJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770177912; c=relaxed/simple;
-	bh=ID/e4DrwQ85n/9a+ACgHDCPIBAXh23ub43sRYUtSBO0=;
+	s=arc-20240116; t=1770177913; c=relaxed/simple;
+	bh=slNkKm0yRV2q6+pcCcsATZKyQSaIL+u8wuuFViefyBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ji4c6k7MuqYE1qkZfXAZK/lBBKTtpjSNMkjpLC5OEVRDSJ5Yw01Qgnl5lGumiWv2iSZsTaGHKCn2QR2pc21brrkzvAOD+CDe9Ne+ww8pU39qBdE3Ze8+9qPT1fXwynJpRqz1S1GzJVWfUEBE5HT/YjP8h9yzzPygG2LYc1Vorcg=
+	 MIME-Version:Content-Type; b=ZudIe9L7ADwvxPfRvXI02LC1EL97re1KxZnMJjqokUmKDy8CHGByEjQWVEB/lvpkJaq+7VmrEqIWRX9/KJDHrKmQZuXImjnncbX3aLSjhiL3owFE3oHXcuKB4C8tGXkVmdRpGXeLXC20eBHJp+hdU1QMHi4r/vLQVbp6JsBtcrg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
 Received: by luna.linkmauve.fr (Postfix, from userid 1000)
-	id 10FA7F43B49; Wed, 04 Feb 2026 05:05:08 +0100 (CET)
+	id D26EAF43B4A; Wed, 04 Feb 2026 05:05:08 +0100 (CET)
 From: Link Mauve <linkmauve@linkmauve.fr>
 To: rust-for-linux@vger.kernel.org
 Cc: Link Mauve <linkmauve@linkmauve.fr>,
@@ -50,9 +50,9 @@ Cc: Link Mauve <linkmauve@linkmauve.fr>,
 	Ash Logan <ash@heyquark.com>,
 	Roberto Van Eeden <rw-r-r-0644@protonmail.com>,
 	=?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-Subject: [PATCH v2 1/4] rust: io: Add big-endian read and write functions
-Date: Wed,  4 Feb 2026 05:04:58 +0100
-Message-ID: <20260204040505.8447-2-linkmauve@linkmauve.fr>
+Subject: [PATCH v2 2/4] rust: nvmem: Add an abstraction for nvmem providers
+Date: Wed,  4 Feb 2026 05:04:59 +0100
+Message-ID: <20260204040505.8447-3-linkmauve@linkmauve.fr>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204040505.8447-1-linkmauve@linkmauve.fr>
 References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
@@ -62,106 +62,218 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Another option would be to call u32::swap_bytes() on the data being
-read/written, but these helpers make the Rust code as ergonomic as the C
-code.
+This is my very first Rust abstraction in the kernel, I took inspiration
+from various other abstractions that had already been written.
+
+I only implemented enough to rewrite a very simple driver I wrote in the
+past, in order to test the API and make sure it’s at least as ergonomic
+as the C version, without any unsafe at all.
 
 Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
 ---
- rust/helpers/io.c | 34 ++++++++++++++++++++++++++++++++++
- rust/kernel/io.rs | 18 ++++++++++++++++++
- 2 files changed, 52 insertions(+)
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/nvmem.rs            | 163 ++++++++++++++++++++++++++++++++
+ 3 files changed, 166 insertions(+)
+ create mode 100644 rust/kernel/nvmem.rs
 
-diff --git a/rust/helpers/io.c b/rust/helpers/io.c
-index c475913c69e6..514ad0377327 100644
---- a/rust/helpers/io.c
-+++ b/rust/helpers/io.c
-@@ -40,6 +40,23 @@ u64 rust_helper_readq(const void __iomem *addr)
- }
- #endif
- 
-+u16 rust_helper_ioread16be(const void __iomem *addr)
-+{
-+	return ioread16be(addr);
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index a067038b4b42..522a76b2e294 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -65,6 +65,7 @@
+ #include <linux/mdio.h>
+ #include <linux/mm.h>
+ #include <linux/miscdevice.h>
++#include <linux/nvmem-provider.h>
+ #include <linux/of_device.h>
+ #include <linux/pci.h>
+ #include <linux/phy.h>
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 696f62f85eb5..97f3fc1e8e12 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -118,6 +118,8 @@
+ #[cfg(CONFIG_NET)]
+ pub mod net;
+ pub mod num;
++#[cfg(CONFIG_NVMEM)]
++pub mod nvmem;
+ pub mod of;
+ #[cfg(CONFIG_PM_OPP)]
+ pub mod opp;
+diff --git a/rust/kernel/nvmem.rs b/rust/kernel/nvmem.rs
+new file mode 100644
+index 000000000000..4b81fd65c9a7
+--- /dev/null
++++ b/rust/kernel/nvmem.rs
+@@ -0,0 +1,163 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! nvmem framework provider.
++//!
++//! Copyright (C) 2026 Link Mauve <linkmauve@linkmauve.fr>
++
++use crate::build_error;
++use crate::device::Device;
++use crate::error::{from_result, VTABLE_DEFAULT_ERROR};
++use crate::prelude::*;
++use core::marker::PhantomData;
++use macros::vtable;
++
++/// The possible types for a nvmem provider.
++#[derive(Default)]
++#[repr(u32)]
++pub enum Type {
++    /// The type of memory is unknown.
++    #[default]
++    Unknown = bindings::nvmem_type_NVMEM_TYPE_UNKNOWN,
++
++    /// Electrically erasable programmable ROM.
++    Eeprom = bindings::nvmem_type_NVMEM_TYPE_EEPROM,
++
++    /// One-time programmable memory.
++    Otp = bindings::nvmem_type_NVMEM_TYPE_OTP,
++
++    /// This memory is backed by a battery.
++    BatteryBacked = bindings::nvmem_type_NVMEM_TYPE_BATTERY_BACKED,
++
++    /// Ferroelectric RAM.
++    Fram = bindings::nvmem_type_NVMEM_TYPE_FRAM,
 +}
 +
-+u32 rust_helper_ioread32be(const void __iomem *addr)
-+{
-+	return ioread32be(addr);
++/// nvmem configuration.
++///
++/// Rust abstraction for the C `struct nvmem_config`.
++#[derive(Default)]
++#[repr(transparent)]
++pub struct NvmemConfig<T: NvmemProvider + Default> {
++    inner: bindings::nvmem_config,
++    _p: PhantomData<T>,
 +}
 +
-+#ifdef CONFIG_64BIT
-+u64 rust_helper_ioread64be(const void __iomem *addr)
-+{
-+	return ioread64be(addr);
++impl<T: NvmemProvider + Default> NvmemConfig<T> {
++    /// NvmemConfig's read callback.
++    ///
++    /// SAFETY: Called from C. Inputs must be valid pointers.
++    extern "C" fn reg_read(
++        context: *mut c_void,
++        offset: u32,
++        val: *mut c_void,
++        bytes: usize,
++    ) -> i32 {
++        from_result(|| {
++            let context = context.cast::<T::Priv>();
++            // SAFETY: context is a valid T::Priv as set in Device::nvmem_register().
++            let context = unsafe { &*context };
++            let val = val.cast::<u8>();
++            // SAFETY: val should be non-null, and allocated for bytes bytes.
++            let data = unsafe { core::slice::from_raw_parts_mut(val, bytes) };
++            T::read(context, offset, data).map(|()| 0)
++        })
++    }
++
++    /// NvmemConfig's write callback.
++    ///
++    /// SAFETY: Called from C. Inputs must be valid pointers.
++    extern "C" fn reg_write(
++        context: *mut c_void,
++        offset: u32,
++        // TODO: Change val from void* to const void* in the C API!
++        val: *mut c_void,
++        bytes: usize,
++    ) -> i32 {
++        from_result(|| {
++            let context = context.cast::<T::Priv>();
++            // SAFETY: context is a valid T::Priv as set in Device::nvmem_register().
++            let context = unsafe { &*context };
++            let val = val.cast::<u8>().cast_const();
++            // SAFETY: val should be non-null, and allocated for bytes bytes.
++            let data = unsafe { core::slice::from_raw_parts(val, bytes) };
++            T::write(context, offset, data).map(|()| 0)
++        })
++    }
++
++    /// Optional name.
++    pub fn with_name(mut self, name: &CStr) -> Self {
++        self.inner.name = name.as_char_ptr();
++        self
++    }
++
++    /// Type of the nvmem storage
++    pub fn with_type(mut self, type_: Type) -> Self {
++        self.inner.type_ = type_ as u32;
++        self
++    }
++
++    /// Device is read-only.
++    pub fn with_read_only(mut self, read_only: bool) -> Self {
++        self.inner.read_only = read_only;
++        self
++    }
++
++    /// Device is accessibly to root only.
++    pub fn with_root_only(mut self, root_only: bool) -> Self {
++        self.inner.root_only = root_only;
++        self
++    }
++
++    /// Device size.
++    pub fn with_size(mut self, size: i32) -> Self {
++        self.inner.size = size;
++        self
++    }
++
++    /// Minimum read/write access granularity.
++    pub fn with_word_size(mut self, word_size: i32) -> Self {
++        self.inner.word_size = word_size;
++        self
++    }
++
++    /// Minimum read/write access stride.
++    pub fn with_stride(mut self, stride: i32) -> Self {
++        self.inner.stride = stride;
++        self
++    }
 +}
-+#endif
 +
- void rust_helper_writeb(u8 value, void __iomem *addr)
- {
- 	writeb(value, addr);
-@@ -62,6 +79,23 @@ void rust_helper_writeq(u64 value, void __iomem *addr)
- }
- #endif
- 
-+void rust_helper_iowrite16be(u16 value, void __iomem *addr)
-+{
-+	iowrite16be(value, addr);
++impl Device {
++    /// Register a managed nvmem provider on the given device.
++    pub fn nvmem_register<T>(&self, mut config: NvmemConfig<T>, priv_: &T::Priv)
++    where
++        T: NvmemProvider + Default,
++    {
++        // FIXME: The last cast to mut indicates some unsoundness here.
++        config.inner.priv_ = core::ptr::from_ref(priv_).cast::<c_void>().cast_mut();
++        config.inner.dev = self.as_raw();
++        config.inner.reg_read = Some(NvmemConfig::<T>::reg_read);
++        config.inner.reg_write = Some(NvmemConfig::<T>::reg_write);
++        // SAFETY: Both self and config can’t be null here, and should have the correct type.
++        unsafe { bindings::devm_nvmem_register(self.as_raw(), &config.inner) };
++    }
 +}
 +
-+void rust_helper_iowrite32be(u32 value, void __iomem *addr)
-+{
-+	iowrite32be(value, addr);
++/// Helper trait to define the callbacks of a nvmem provider.
++#[vtable]
++pub trait NvmemProvider {
++    /// The type passed into the context for read and write functions.
++    type Priv;
++
++    /// Callback to read data.
++    #[inline]
++    fn read(_context: &Self::Priv, _offset: u32, _data: &mut [u8]) -> Result {
++        build_error!(VTABLE_DEFAULT_ERROR)
++    }
++
++    /// Callback to write data.
++    #[inline]
++    fn write(_context: &Self::Priv, _offset: u32, _data: &[u8]) -> Result {
++        build_error!(VTABLE_DEFAULT_ERROR)
++    }
 +}
-+
-+#ifdef CONFIG_64BIT
-+void rust_helper_iowrite64be(u64 value, void __iomem *addr)
-+{
-+	iowrite64be(value, addr);
-+}
-+#endif
-+
- u8 rust_helper_readb_relaxed(const void __iomem *addr)
- {
- 	return readb_relaxed(addr);
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 98e8b84e68d1..e6912e7ff036 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -256,6 +256,15 @@ fn io_addr_assert<U>(&self, offset: usize) -> usize {
-         readq -> u64
-     );
- 
-+    define_read!(read16be, try_read16be, ioread16be -> u16);
-+    define_read!(read32be, try_read32be, ioread32be -> u32);
-+    define_read!(
-+        #[cfg(CONFIG_64BIT)]
-+        read64be,
-+        try_read64be,
-+        ioread64be -> u64
-+    );
-+
-     define_read!(read8_relaxed, try_read8_relaxed, readb_relaxed -> u8);
-     define_read!(read16_relaxed, try_read16_relaxed, readw_relaxed -> u16);
-     define_read!(read32_relaxed, try_read32_relaxed, readl_relaxed -> u32);
-@@ -276,6 +285,15 @@ fn io_addr_assert<U>(&self, offset: usize) -> usize {
-         writeq <- u64
-     );
- 
-+    define_write!(write16be, try_write16be, iowrite16be <- u16);
-+    define_write!(write32be, try_write32be, iowrite32be <- u32);
-+    define_write!(
-+        #[cfg(CONFIG_64BIT)]
-+        write64be,
-+        try_write64be,
-+        iowrite64be <- u64
-+    );
-+
-     define_write!(write8_relaxed, try_write8_relaxed, writeb_relaxed <- u8);
-     define_write!(write16_relaxed, try_write16_relaxed, writew_relaxed <- u16);
-     define_write!(write32_relaxed, try_write32_relaxed, writel_relaxed <- u32);
 -- 
 2.52.0
 
