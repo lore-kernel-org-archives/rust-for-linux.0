@@ -1,74 +1,90 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E29338910;
-	Wed,  4 Feb 2026 16:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD8E33B966
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 16:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770223643; cv=none; b=LFztyoYCFCdI2+9YwU9IYL3VWwWY4EziSkxTKNVU1d37dhgAG3K3eHMLrgtETyeCOxwhxX3PJEIGMbkMEb2er99UlRhvtod1TnBjsJ2PZQlKSE0dmHjsoZ/RryzanIaAXm3n1CoiPDgjs4gaonFnmv6HCxOTNEhDhQLfE4FAyow=
+	t=1770223798; cv=none; b=N/d/x0JNBuzERwCP0FXfo86WiBy1rSrtG8WFu0aId8fxgue8Y5D8QqXPkVtnxJrxPGcPIGBiqZzt3o6M5jSU574FLEGBK5UV2CHiFha40Q7fXnTbDqIhQg5pZow93j4Gj8BP4d2/FKcabCcgveWJTh7dXJdz8xM7g2bJbea1Wi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770223643; c=relaxed/simple;
-	bh=dZi5zbISUaPpdOjD3mQysirbe0qI35CATtWjGq/MdDk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fKZz9nKQ47ODHbO999lihsGFAi4gD0CiKn49+rACMmvy6XCGkOMlLmpPFLA5S7zvjg6msBg8CfbV+xA+Tte7dCsMbLwC0MgyUYRyPbhU5JWA4vDvd2w/PGvSLt49FNK6rLbg5x1I4V12VlMYZWQRGBd/0ZRv7D9WfrwkELefsR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YjAi/G54; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7TvO6NL6; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1770223798; c=relaxed/simple;
+	bh=xm432Lcy+Vg/DVbgPpqk0++wflxIp7iQuBgLv1K8QUI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jbPLuXep9R3oY9yEk3yBeOd6AIBJrMUloDkSwB0Xt7QuYNiZgp27D2VDvu7iZsirIBK39NuLUuemag9xHyPyFmqUQnovtCwYu40u31hA9OE9V1J4oL3IzMfIOOFwOriLcsDaoF10Ig6dUcIxgLFuD3+Gyx0v3qeppdAch+d4vGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Gh8iS+sd; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YjAi/G54";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7TvO6NL6"
-Date: Wed, 4 Feb 2026 17:47:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1770223635;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Gh8iS+sd"
+Message-ID: <93559442-38a9-4b6b-9cbb-7bb500ab1738@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770223784;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NNsV874Ht9gBigLKrZ7cMSwSHKZYBxzSEwX2eW4xZY0=;
-	b=YjAi/G54xY6oQePWOyTdpCLMZSGf1ODJfLE1i1lJYJGFV4246ti++ifseySlybOrFpvuVF
-	gr9kEylZuO+2VfryTBDqTs99sxhkzN4TYLu54I0KikE7J8dhzeYTZAoNVjwpcdG9ivrl7S
-	rW0tdx+3+eJ0jcz1X0BejiJFCaXPzWiIdsNLOgcmGmsanoI7sMxpFVvRPCUmBU0mmPbpP4
-	mxGcvPSLy6f6M3IK/6gmMb5A2aszFb5mOhtHcIttC+fz0+rVLVktXB5gjFOvf6fG4iiDfA
-	zTSiJI4Q+xT3kqLJrsOjXkzf1vr3+UVnq3UgJuiM6Va2RQeC/BY3N1NrMfRZAA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1770223635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NNsV874Ht9gBigLKrZ7cMSwSHKZYBxzSEwX2eW4xZY0=;
-	b=7TvO6NL6uluQamW5aaEDezLOwdI+SqqwlTfLM/NUlhUS4KwvJ8v+0y+N6twgq069JvIj2z
-	VtkHRuNjzn0akpAQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Marco Crivellari <marco.crivellari@suse.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Subject: Re: [PATCH v5 1/2] rust: add system_default() around the new
- system_dfl_wq
-Message-ID: <20260204164713.omijmiTB@linutronix.de>
-References: <20260204155037.325482-1-marco.crivellari@suse.com>
- <20260204155037.325482-2-marco.crivellari@suse.com>
- <aYNxkG3gCspeeW9_@google.com>
- <CAAofZF5GZ9UBLNH_+NRSyXW1114d++TfEc3EuBiCpPkdwK1pUw@mail.gmail.com>
- <CAH5fLgjwz_WmkWDJrZ1d_HZ228-whdgQkMb4WnmKu+g3ktEskw@mail.gmail.com>
+	bh=qZ3yaEuYA8SSB4hotfyih7rLcKK4+CgU/6Dm8mx7YIc=;
+	b=Gh8iS+sdMLguHEZ0Zg7yQa/OWzlkt9sbfbX1ZhXBD/EVbEU0SHJUWWErzJfarQSiBj/xd7
+	7mgPUSmwmi2D0fVTl0b44m0nAx71Dabm4RwujU6T1kYXgO/vEhyrHNXJ9y2MxEJwULK1gH
+	cpJ8j1Mu/BYOFGlhQIrpmyKMY+Kk+Kc=
+Date: Wed, 4 Feb 2026 16:49:41 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAH5fLgjwz_WmkWDJrZ1d_HZ228-whdgQkMb4WnmKu+g3ktEskw@mail.gmail.com>
+Subject: Re: [PATCH 4/5] rust: i2c: add I2C wrappers
+To: Markus Probst <markus.probst@posteo.de>, igor.korotin.linux@gmail.com,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-i2c@vger.kernel.org
+References: <20260131-i2c-adapter-v1-0-5a436e34cd1a@gmail.com>
+ <20260131-i2c-adapter-v1-4-5a436e34cd1a@gmail.com>
+ <4b6d9f389862aa4d2c43394cdacde059c4cbba5e.camel@posteo.de>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Igor Korotin <igor.korotin@linux.dev>
+In-Reply-To: <4b6d9f389862aa4d2c43394cdacde059c4cbba5e.camel@posteo.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 2026-02-04 17:38:54 [+0100], Alice Ryhl wrote:
-> I think the ideal would be to rename it to default in C too. :)
+Hello Markus
 
-| $ git grep system_dfl_wq next-20260204  | wc -l
-| 115
+On 1/31/2026 2:28 PM, Markus Probst wrote:
+> I think I2CClient should implement the IO [1] trait instead, as
+> suggested by Danilo [2].
 
-> Alice
+I'm not sure it is appropriate to use IO and register! here. I2C devices
+are different. Not all of them use register like access. For example 
+EEPROM I2C devices allow random read/write operations inside their 
+address space. After all I2C doesn't implement the same way of accessing 
+its memory space as for example PCI devices.
 
-Sebastian
+> Also I think it is a little odd that read and write is possible, on
+> I2CClient<Normal> and not I2CClient<Bound>. Shouldn't the assigned
+> driver have exclusive read and write access to the device?
+
+`Bound` can be safely dereferenced to `Normal`. Since `Normal` represents
+the minimal required typestate for device operations, any API that works
+with `Normal` automatically works with `Bound` or `Core` as well. Requiring
+`Bound` would unnecessarily restrict the API and force duplication or 
+unsafe casts.
+
+> Thanks
+> - Markus Probst
+> 
+> [1]
+> https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git/commit/?h=driver-core-testing&id=121d87b28e1d9061d3aaa156c43a627d3cb5e620
+> [2]
+> https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kernel.org/
+Cheers
+Igor
