@@ -1,119 +1,90 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E27310785
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 16:39:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770223148; cv=pass; b=LkQQhnqSPYitARkZq+fB97LS8DR/9LURPOHK+6LcSAbLFXvbjD8R0LU9ElwOjSqZayuhNMJ8tdwif1lV10wDQjjL+XqX3JjY8EAJDuptUkkMOxUdICkhpOIkqq7Dz1EvmKj3Mpn4RJyqeepww6TdCq8yJzsiVqnYXLaJc9taFAE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770223148; c=relaxed/simple;
-	bh=pQfKx/zZMb/5GQiL5/rdCk26CG+Eyom1R6Rljvs2ix8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iwz4FnL6IDWPtw6AbEuQP/aYmojArsHJMfNPgjUq6Ch9RwEVBj3PEM6PV81U0fUORwyq0imVxP/10z2ECJQmN3WvntkTmOz13kJ9ZujZIzgelM6vcRTcFfkJ4zzDVdA7s1E0ustGS3uFwMDf+BKVBMZ/NbmDf543AwUmA+yjbik=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R79zRngP; arc=pass smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1E13033EC;
+	Wed,  4 Feb 2026 16:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770223620; cv=none; b=ox08H25JRFw8N9euMqED2JnSx0NhOmyell6dpVdIKUTfCGFsFqVqKPGp79e2B05VsvOa5K3RKvurrECtOsvV4KnalXP3INnzmWubZ7zKWxN2PdiOAaaRJ1xUZtr1/SzZ3YqhQG/0JcGUrU2DeMws3wLd2fu6jm6b9jqUVTZxGow=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770223620; c=relaxed/simple;
+	bh=dy73/9OQI/HuBvsd+ptSVtFrF/SFQ/zEvH4RIO0j4i4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=lJeBf6qZ0mZnnXmkTJWUxamZjm8G2ZET1S1TiGOEFK0khtCKwEzHyiMglAA3emjRbp+9QAhQ9ehSPsGOU2kQbpupQ83FmvJ474gXIBvcqVihBO6oJv8xgZVIa+KEEVljjyLnvZxiNqjFmUvaKVlfm1tV4TtFjoOvcBj5+j0MBMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHj8q1Uc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R79zRngP"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-435a517be33so43765f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Feb 2026 08:39:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770223146; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZdmEEaG3jMxcb4PC9N3pp/mE7C0Ocqa4+EKdGOxhPclFTDoK1hKnta8Y10zEUraYwa
-         4ZT8E4rCNL6KFVRtyWkB70WvQBHpXQHUToLOUcqGI9ixPB30+kvLcMDZYRABiJNqoy7z
-         N36z7XIHBfSIfH6hObm1kX7hMsNpKJCXD5Cwn0CM51BqLTQNBjEcbQ+VoVsXimlWqnr3
-         UwDfhpC6Ck1OZ+wXbynKvqlcxB/7vr6ags+86tBbpaWTKBxwaa/75SeIIAjjvVrDDCBF
-         P4TtlvRAeyyeadnAtYLeqhiBvEKV7JLIfVlT9PmmBslkywfmT/hdhBhSRw9S0FqD5Fcl
-         xMwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pQfKx/zZMb/5GQiL5/rdCk26CG+Eyom1R6Rljvs2ix8=;
-        fh=VXGSl30iz4SdUf61cvQ0mLkWvjIzrzksYNJRv0axD8Y=;
-        b=eAYeyKETPNc5wAoKDgHgf5pvTC2HqN9NaV1p8+kuYHfIupPsxGSYyzihmckiDrH5ll
-         bhT1JbOzLcTN5vr1QTqFnnShfiMcHtL2GkRQSkLBl3+cPBSU0fFpaxU5EgrHbUzUQDmA
-         WUF67Fsk3YNw+A4OKtrHKVJs94QJMB4auoZliyZAwrX4lcdx9vS6WXvQKqAJ7e2T08l8
-         vmUMgjtrTOHZyDRONQV/HS9TjrBkgh1h8GW9OXxgsMkdbqAUL1g5GNP3QHIG/ceH+h3E
-         0FJXEq6XsT2sNnLZiZEPZ7tfB+z9AzE2BA7tgtPxL+q0h/+2FbHX/LdYiNCoUas0vfMe
-         +ZRw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770223146; x=1770827946; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pQfKx/zZMb/5GQiL5/rdCk26CG+Eyom1R6Rljvs2ix8=;
-        b=R79zRngP/iN6pir+oLTkmTruLADdHs3DIFOnUv7IswZJzQxMnNwpxQslmdbwFc31o3
-         6S6ABzrHzGj+aBOS+lsqQik4qJr9CZbkr4uKX6OD/Q0Meowl278JhW0QEB1Cpuo4TREE
-         DI3aW5+dzqxXxxf96XEPinfjNn7mTCCsReV+So92g20fxMdgrhi7yWJepfj4FHAqqUbH
-         lFiNbSMBZH+Efe5zicAE7PiPLzM9xziVATGpSmcv/fjEgiIpTP/jL5WOsiDylvHQ46jo
-         LDuelY/djUVH59u/Mb1pATpZa/OPmEVeC8l5+vOAYukqaMIVqhoeQ6vhSgG4dPKrp/8k
-         pz8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770223146; x=1770827946;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pQfKx/zZMb/5GQiL5/rdCk26CG+Eyom1R6Rljvs2ix8=;
-        b=iBWEUef2zj5Cg3h8b9cZxwStpJ3VKzc11WEj4qm6TGKpRQOqi9hfD7J3QmxI48FkZP
-         kYkGXBVndicF6T/wM5HXKyahfwZ/mE3BOLRR2Aq4xUwDOy6/GvaCftFTg7wZ+umE6L/z
-         Qet1aWJTX5pCszat5GKo3A5ypRtP1rJjpk92spq86fc4oeM6wTFZT1OQRmkUZT5ssAl9
-         8+ibF7Zb2hzFDqm58q6EPekbn/EZ4bbZrV6MHsgjA76lYURCNNfy9XThPJ8jFL+3HVo0
-         cKpGQeTzW4vh+OofRV546LxqwJwVLm26HQhcCx8O2t3DmzyqqakbXbAeZ3vwny2bF0ct
-         cOqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGjPdkfOtQt1sI9Q++KjxeNaDEnUMfWwWLGQPIzdxReVnF1uW+GJkp9SqNVhkTvFiymSemaLL3xPpUxuFP+g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXHgYe5RpYtQOlZYtNRumqKHBeHjkBUTaMhDO6fNnZgaaBiWIE
-	BDVLJpfShiIKw81jsrejqy82GFv4JiTXl3iCmrQqOn1pZLwse4/UCRrOUCq894iey0wjxS/zU6o
-	zkvLIwd8NjUBDkOC1ak/sUAapF1LiuGlJXNHWcu1FshcNke7EsE/3/LDb
-X-Gm-Gg: AZuq6aLH2Bm6LpeBH2pAGA/rgIW5V++I2tCx1d66aCJcvrs0zMWoxPeel/9GRj3wTpt
-	3BOWCMWD/B54UQMjzzANvmuCrgS8lEju1XWPCem8r9FyOwXwMgFtCk+1CRtJTh4C9cGK1gJDN/4
-	jRXLRNgF2ZihsZfah1DfT6hVQdyecIDgVlaEkZHcl+GU9L1FSpNK/RGlyKS4Vp5BoZ3AuZfBp61
-	aPXkZZSmIYi+PXmHVqNfrvJrBByZHfQ16qxxtFJ1uknSWotrWWeWder/FdewET1FbAHEBA8TeGR
-	q2jVKikukxgaDc8lYErALVJPMg==
-X-Received: by 2002:a05:6000:250e:b0:429:b751:7935 with SMTP id
- ffacd0b85a97d-4361806302cmr5078621f8f.56.1770223145871; Wed, 04 Feb 2026
- 08:39:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHj8q1Uc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF418C4CEF7;
+	Wed,  4 Feb 2026 16:46:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770223620;
+	bh=dy73/9OQI/HuBvsd+ptSVtFrF/SFQ/zEvH4RIO0j4i4=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=ZHj8q1Ucvt7QcaZcn9QuPYACGDPfU/YL82+e6kQIaszjDn8/K3Lk25/ytj8Malksx
+	 QTrROJpGVUsMkMWTzjQvp0wcUGKl69dlGdw+uM4ZXkcku66CUCCFf+JntNkoa9XeFK
+	 UBAoEJloaJHzf8XjFtFKSgZDr+rjjdpxj021cT2FEEhwdvxmV1QnS69elAgBlCG2S1
+	 5VpdKtuK+x95jkiRP0Q0olnVlaCNxNMiWvM9N5rJSdpQVInfdYkjh/kMwVzxggH0vt
+	 xi4ko64jYM5R0Fh8vdICZWmXXV6iTywKSpHzFCGMppUp7E+ZJ8jy9VLrS1L5oDN6Sy
+	 z8aQSzU00WK2A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260204155037.325482-1-marco.crivellari@suse.com>
- <20260204155037.325482-2-marco.crivellari@suse.com> <aYNxkG3gCspeeW9_@google.com>
- <CAAofZF5GZ9UBLNH_+NRSyXW1114d++TfEc3EuBiCpPkdwK1pUw@mail.gmail.com>
-In-Reply-To: <CAAofZF5GZ9UBLNH_+NRSyXW1114d++TfEc3EuBiCpPkdwK1pUw@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 4 Feb 2026 17:38:54 +0100
-X-Gm-Features: AZwV_Qi_j4XbbfYL6mzBs61MD9PKdztNwxp6ft8mZwmCZgIsGXGTfutStOMDMNI
-Message-ID: <CAH5fLgjwz_WmkWDJrZ1d_HZ228-whdgQkMb4WnmKu+g3ktEskw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] rust: add system_default() around the new system_dfl_wq
-To: Marco Crivellari <marco.crivellari@suse.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Feb 2026 17:46:51 +0100
+Message-Id: <DG6BWC5SOHUG.2K1ZXGYNVB69V@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v14 1/9] rust: types: Add Ownable/Owned types
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>, "Serge
+ Hallyn" <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner"
+ <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>, "Igor Korotin"
+ <igor.korotin.linux@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Viresh Kumar" <vireshk@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Stephen
+ Boyd" <sboyd@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, "Asahi Lina" <lina+kernel@asahilina.net>
+References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
+ <20260204-unique-ref-v14-1-17cb29ebacbb@kernel.org>
+ <7uftlTZxNVxMw7VNqETbf9dBIWLrQ1Px16pM3qnAcc6FPgQj-ERdWfAACc5aDSAdeHM5lLTdSBZYkcOIgu7mWA==@protonmail.internalid> <DG6AIA0QK77C.EKG7X4NBEJ00@kernel.org> <87fr7gpk6d.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87fr7gpk6d.fsf@t14s.mail-host-address-is-not-set>
 
-On Wed, Feb 4, 2026 at 5:29=E2=80=AFPM Marco Crivellari
-<marco.crivellari@suse.com> wrote:
->
-> On Wed, Feb 4, 2026 at 5:19=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
-wrote:
-> > [...]
-> > I don't think we should use different naming than C.
->
-> mmmh I think I misunderstood you here then:
->
-> https://lore.kernel.org/all/aYMk5skDB0Rk7vWS@google.com/
->
-> What do you meant?
->
-> Thank you!
+On Wed Feb 4, 2026 at 5:06 PM CET, Andreas Hindborg wrote:
+> It is my understanding that the SoB needs confirmation from the author
+> if the code was changed. I changed the code and did not want to bother
+> the original author, because it is my understanding they do not wish to
+> be contacted. I did not want to misrepresent the original author, and so
+> I did not change the "From:" line.
 
-I think the ideal would be to rename it to default in C too. :)
+Frankly, I don't know what's the correct thing to do in this case; maybe th=
+e
+correct thing is to just keep the SoB, but list all the changes that have b=
+een
+made.
 
-Alice
+Technically, the same thing is common practice when maintainers (including
+myself) apply (minor) changes to a patch when applying them to their tree.
+
+> How would you prefer to account for the work by Abdiel and Boqun?
+
+I mean, I don't have a preference and if I would have one, it wouldn't be
+relevant. :) I just wanted to bring it up since the very first version was =
+sent
+by the two of them. So, I think we should just ask.
