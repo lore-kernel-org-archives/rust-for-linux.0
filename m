@@ -1,127 +1,84 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B0D3E9F61
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 12:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759133ECBCB;
+	Wed,  4 Feb 2026 13:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770209720; cv=none; b=fPRU2j2tYc8S47BD+HPMJ0LunOArf2oZByeZ/75/pvXsPKuyfcOaTg8ndSe3pMi2E2bSnWCEsIoVRBKrgX6IlmanDcRFrU3dU4wShqGT7ikrVt5NNJwfzm59Ti+clR6PlUpbFrkTjlEbhloF3Y/ZHMJ8pls12/vBdjvo8NmoGnA=
+	t=1770210049; cv=none; b=tKmF0JyUar2ctO3KLYkmznMYqF1LS53KaVYQWMDnsOha2gZIlj2Sk+0ImsRnXhK+6/88tyPz30cFCyi+/CmCX0iDhw2VVKazX47yXoZqLkrGkRRhzQTV7/pPBJrGha8Y0FBEAKlSPP5saSTAazITIsXTNJZyHo5bLWZ7vC6iuLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770209720; c=relaxed/simple;
-	bh=ddwM9hUErPvTXnX/Iez0I4H7U8pk9eWGlH28znHiJ80=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Q7D07upja6vtT8Bayk+wBfRk5x+y4+2RQXt4hTEoDUAhUs55+Q6+BncxgKnmpZIr3IPnWphrr4jdLyf/AJ4k4LtrhbjAX43NvZnNutd3DYCHIKuDWoLeFIT6Zx2JcBfgGXS13dEf9F/d0LETj124ebIHMKio/d/akY1uPw0l+3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ocs7Cv1B; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1770210049; c=relaxed/simple;
+	bh=OyOuC6Yzj5lVusqEOT98nkDyezVQYt+krgKJDM9W2KY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bh6uv6Gvy+03tkf+ndO6c8FD4jlU0cjDuXAHPhnvMpAUbyKl++frNv8phD8kwW32ajzTOoUHsrmbxD+x1yOHEzScoThQtYUq8f9B1dPc9ESBfloAa74KYjWTT9jrOuaogWEVJdi6o+rcp4AcZohOHegyTfuqp+YSgNV9BS7gbkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XuL5XZ9b; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ocs7Cv1B"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-432db1a9589so4949095f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Feb 2026 04:55:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770209719; x=1770814519; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D1+zqDYtEzNHH8qUq1QENLiYsBbkZqTWhXubUu0+QkU=;
-        b=ocs7Cv1BnvNtimLBaDqy6Nigr5qftE/2Sw1FY4tQbYh28+j/Iq2Wsc6QoiSgFy9k8K
-         rqW13uURgje/HvJliHoSlS4LJsnCHiKXulskQRTzmCDxR83NfLtE2+q+/2Bq/2LS2wUi
-         cG/lREMynCP2ToS5c8s0+54LLo1ew2UJH8gOqKXE6ESyEAvGnG9kmDESTQBgDOB7tA2r
-         +QEqHJX8IxarHMWWLsN6tqNj4S2yt34ehJkAQVUG0/VwnrP0uEwseSmeNY4F81OklDzb
-         Ufl19Tv16umuSXSCGbNWBCxx3Kjjuh459B7IZ5JOTIPMBN0iAqIpnlwNnAax5B7TgHRa
-         NlQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770209719; x=1770814519;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=D1+zqDYtEzNHH8qUq1QENLiYsBbkZqTWhXubUu0+QkU=;
-        b=Dvd7DBBwsu33Ogz2T2h0pYZAXG8VfVt3ih3ujPnVutBwtU2/lwE2LlyWm+oq15PR+z
-         oPESozky0pZaas5th4kK9sd8cFuImxRjYZb7hV7xwGdKE39gn5GRKGe4zF6HLYhZKOgw
-         r13vD8xwnX/GApq9wsCUcxuE0hOPxC8VrJOgwI0Ng5YQSlmKd3crqTundEXKxEZ3j36A
-         2NlRWK2xBBf9e2b/nttItVeBnRhL9vbSCUSUm/cx8974+I85CluX2gvnTticuON1gEGe
-         rSQMnkj8A8g1gMnOoGecjtU/pgz/Q5q4/MgzZyt1UHKyTOs7E0EuL1Np8GPL+ZvEta0i
-         +p4w==
-X-Forwarded-Encrypted: i=1; AJvYcCW05PpIlruYQwVvA8d7iX4hHqWktYvGr5yHnixhK4yU9cIYvmXeedaE4guPCmrBb9vYvhuGCVyIc1Et2kNInA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwS9LRgsFaJ3gQ0qBaWvVNI4ZlpkEYmi5MtOaeWFXwkSaTRqP5c
-	VBJtKdG4qwEnF1rMw1NDoo1QJmM04mUd5eZd8aXxIWeshPR1I4xhuFMP5nz4HwsaMv1YEmD3V3m
-	f42xNJjBTt2+wu2xQ2A==
-X-Received: from wmxa18-n2.prod.google.com ([2002:a05:600d:6452:20b0:480:6c6f:8c06])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b88:b0:480:4a90:1b00 with SMTP id 5b1f17b1804b1-4830e96d623mr34918315e9.20.1770209718861;
- Wed, 04 Feb 2026 04:55:18 -0800 (PST)
-Date: Wed, 4 Feb 2026 12:55:17 +0000
-In-Reply-To: <DG66KRKI62WA.3GILMBH1UCYB@garyguo.net>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XuL5XZ9b"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=z0nLVhSZZTw6JPIJc5KbjLPmcF9tsNisnhVbqYZoc04=; b=XuL5XZ9bOuukjWbVAsrYt26yzM
+	k5/ZKmLJrIFNtwPLoo5rctW0YElqkppkZhbPzMfITyOTSxogNqD28LQRsU7UaNlcyWwmVvtQ5YyRf
+	H3S9XvKHZ9tkGp0d3tXGH0DVixUcz9+apSL23Lb3Ig2Ia2NfwDPaEZeiyFEpKDXfbxxL+qocGBJLt
+	hgQPdKKRVTroH/Mv6l99CsIvV/8ErmzZGZ29PlTewROOmMmz4EiYB8n6valb/dC0tetMWv6Na6n0W
+	CtjFiRnmdAGsk1nWeBEqaNvJa67l/sTtbcv45FyxEqxNVkRN7i7UR/y8Z+MFEPE633++lmKRODWfE
+	2WK/TdbQ==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vncUf-0000000264S-0Hvn;
+	Wed, 04 Feb 2026 13:00:29 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id CC722300E8B; Wed, 04 Feb 2026 14:00:27 +0100 (CET)
+Date: Wed, 4 Feb 2026 14:00:27 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>
+Subject: Re: [PATCH v17 02/16] preempt: Track NMI nesting to separate per-CPU
+ counter
+Message-ID: <20260204130027.GE3016024@noisy.programming.kicks-ass.net>
+References: <20260121223933.1568682-1-lyude@redhat.com>
+ <20260121223933.1568682-3-lyude@redhat.com>
+ <20260203121520.GN1282955@noisy.programming.kicks-ass.net>
+ <20260204111234.GA3031506@noisy.programming.kicks-ass.net>
+ <DG66HSCEA3XP.36DNV6A9HRNOK@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260204030507.8203-1-linkmauve@linkmauve.fr> <aYMiXcy33YEVkgYM@google.com>
- <DG66KRKI62WA.3GILMBH1UCYB@garyguo.net>
-Message-ID: <aYNBtc2Jbtg9sLIE@google.com>
-Subject: Re: [PATCH] rust: Add PowerPC support
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Link Mauve <linkmauve@linkmauve.fr>, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	llvm@lists.linux.dev, officialTechflashYT@gmail.com, 
-	Ash Logan <ash@heyquark.com>, Roberto Van Eeden <rw-r-r-0644@protonmail.com>, 
-	"Jonathan =?utf-8?Q?Neusch=C3=A4fer?=" <j.neuschaefer@gmx.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DG66HSCEA3XP.36DNV6A9HRNOK@garyguo.net>
 
-On Wed, Feb 04, 2026 at 12:36:38PM +0000, Gary Guo wrote:
-> On Wed Feb 4, 2026 at 10:41 AM GMT, Alice Ryhl wrote:
-> > On Wed, Feb 04, 2026 at 04:05:04AM +0100, Link Mauve wrote:
-> >> For now only Big Endian 32-bit PowerPC is supported, as that is the on=
-ly
-> >> hardware I have.  This has been tested on the Nintendo Wii so far, but=
- I
-> >> plan on also using it on the GameCube, Wii U and Apple G4.
+On Wed, Feb 04, 2026 at 12:32:45PM +0000, Gary Guo wrote:
+> On Wed Feb 4, 2026 at 11:12 AM GMT, Peter Zijlstra wrote:
+> > On Tue, Feb 03, 2026 at 01:15:21PM +0100, Peter Zijlstra wrote:
+> >> But I'm really somewhat sad that 64bit can't do better than this.
 > >
-> > Super cool!
-> >
-> >> These changes aren=E2=80=99t the only ones required to get the kernel =
-to compile
-> >> and link on PowerPC, libcore will also have to be changed to not use
-> >> integer division to format u64, u128 and core::time::Duration, otherwi=
-se
-> >> __udivdi3() and __umoddi3() will have to be added.  I have tested this
-> >> change by replacing the three implementations with unimplemented!() an=
-d
-> >> it linked just fine.
-> >
-> > Uh oh this seems tricky. How is this not a problem on arm32 too?
-> >
-> > Perhaps we should just be providing __udivdi3() and __umoddi3() in
-> > general?
->=20
-> I think there is some concern that if this is provided, then C side that =
-uses
-> the divide operator instead of dividing function doesn't get linker error
-> anymore.
->=20
-> However, a proper way is to do this via the hooks that we already have in
-> `compiler_builtins.rs`.
->=20
-> This can either be replace these with panics or actual implementation, bu=
-t for
-> libcore.o only.
+> > Here, the below builds and boots (albeit with warnings because printf
+> > format crap sucks).
+> 
+> Hi Peter,
+> 
+> I am not sure if it's worth the complexity to do this for the NMI code path.
+> I don't think NMI code path is hot enough that this is necessary?
 
-Is there any reason to not make it Rust-only but for all Rust code?
-Making the / operator work seems like it would be a good idea.
-
-Alice
+Perf uses NMI. Also, the 64bit code is actually simpler.
