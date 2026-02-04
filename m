@@ -1,275 +1,406 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AC426B741
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 01:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770168837; cv=pass; b=pcORENSkqhbRYQLUO9fzIxJTnqjgn697vWu97M7HnOjNtb9fpGhffZu0FfyiiilyY/RWbKNNcnsXvKX99zPLZGfGr6Ig/d8wEFP14r5BcF5KXhy9BAvKrpK54FnJlQ4FtgHybvuOWoIakopAXo3SM6L4Ggh8h0VprrZJHpKmS5I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770168837; c=relaxed/simple;
-	bh=j3dO+6RCdgO1Lsmu1NzrRrU0Jf0varf5ajFTfMXYsVg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MY73uXoMsOGXa67lC+PEEeK0e0S3fv7sZPpZejcUhX183fAUpagenQoimHFhKOZxOSWAutOiJ0Jt7+1/UfNBYjq1PxBsCHKdFSs3lIK0pyDOXf5frhFOZGwdmcFJ0QkO0+qXdJmjeW8bNpdwmEITp3+AB26TqG5/6DCNjOB+E5Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=Q6l7BUyI; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4352027F195
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 01:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770169170; cv=none; b=UONA8gj7C46iO8ySzcHs5x6gp9LxDYBxgKDOrjhPdp//FMezsDQGRU9B803TuoQyD4CRZQ35Bm2veCOyvzK6ycSN8MjRFEeQ5ZkUT+mqQwt0qq6BSdZD8HwRRuoE2KgFywG1mCFmwjbOeqGjtvgVQfdFcVnvXBkBDTFuVw9st4s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770169170; c=relaxed/simple;
+	bh=Our/6nyRNo6VBshaXF0gSADbEe7iRhYxB5f/gcmxazM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HISFp1ekqH20szPCCR2eUz7LExbM4ajlZjIZtGzQaddOvGUQ3fGje4wqR2NmSBLcvr2mPm8Itd/00VyjaNlMbbrA6XVtuA1KnI1ZMrW5j4XTIBR68lVSsfozxS3eqUIEmx8I14NdaIKHYc2irsTisbwKSOE3xNcBj5IOPe89zLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=BThm3kd1; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="Q6l7BUyI"
-ARC-Seal: i=1; a=rsa-sha256; t=1770168831; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=cOMZBIjAul4IicJzjAoYSMzS6G7R9P+pJCFg2Qcuq7UdjTjiotep3ps5JAaIJBPC+VX7Ur5B+cM64Z7wu9SpD63+NAnGw+kCFKIq8nS8FTRkOwZCC2FDEi9qZ3OYzC7S0KGCZKq8EiVIvVkRoJ8pABqlLnl9EixIrPbmLeDwm5w=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770168831; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=NDoSooHbOWHoq6B3Jez/qE8a+VrhFjKPk4qtNUSiX+k=; 
-	b=Zg6dG8R15tRNJGN/gagjlbbM0rfiAWYLP9CjTdyb9GIp7V25Emjv61QUf9LyzorwdCwchO3/o65NAQig+Z6mi6JIsC5D+/NxiFINijZqMQFrHBB5lI5tnLgk/kTJHfPMZwmUdx6pRIhIG7qz3gDqEECscFiO7x0X7JG0tgpUzow=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770168831;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=NDoSooHbOWHoq6B3Jez/qE8a+VrhFjKPk4qtNUSiX+k=;
-	b=Q6l7BUyIRkgpZii66fr70eNAfubf+jYXwESaZHenBzmfB4o7Ds2XuWMPLuQlIl0n
-	cB+eJDpZsGVOZxYbezvM4WtyX9lwLTMrZJMA+lNg++UiFjCop4q2r80gfrFk77vg5PN
-	RoZSjd4yr3vy/EQ+yoAudC95npaKVA+wYdZ/+WJE=
-Received: by mx.zohomail.com with SMTPS id 1770168829632966.9758230964605;
-	Tue, 3 Feb 2026 17:33:49 -0800 (PST)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Cc: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	boris.brezillon@collabora.com,
-	Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH] drm/tyr: Use vertical style for imports
-Date: Tue,  3 Feb 2026 17:33:31 -0800
-Message-ID: <20260204013331.427210-1-deborah.brouwer@collabora.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="BThm3kd1"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 1432E240103
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 02:39:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
+	t=1770169160; bh=oBgqI+VBW8wZUzN9yU8OLzr9ztRwa1vmMdnAFjnoY18=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=BThm3kd1OcPDdd2q0dq9JOKXewVe2eO8ffGABmX1D+7lPIGDrTTYHEmjDjSCUOtMP
+	 J/zqSHlRcxB6UfxEHQ4MY5X0ycH+1oPTrPleW2du11m5m9FRdLBVDtMj82Y6Ue2Nd8
+	 ljlZcOyBJ38dabldthvqYobHhDS7EhaiJs0VjaePUIw6BriioxAZMA4yr5Xbm35vbP
+	 /8CJk57Cua0s2+dkKm/lJjGJJqemmfArTGN+XUiaOG15EevaNvFMU7jr+uYOnmW7ws
+	 kAnhBT1qvsUYauJXbTkMPPBeGru3n2c3XQU0PztojhoIqm3x8bX5NxquPwgWYg1Lnl
+	 c0bGA6zyECm3A==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4f5NLY5y2Mz9rxF;
+	Wed,  4 Feb 2026 02:39:17 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: y.j3ms.n@gmail.com
+Cc: Miguel Ojeda <ojeda@kernel.org>,  Boqun Feng <boqun.feng@gmail.com>,
+  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Benno Lossin <lossin@kernel.org>,  Andreas Hindborg
+ <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross
+ <tmgross@umich.edu>,  Danilo Krummrich <dakr@kernel.org>,  Alexandre
+ Courbot <acourbot@nvidia.com>,  linux-kernel@vger.kernel.org,
+  rust-for-linux@vger.kernel.org,  nouveau@lists.freedesktop.org
+Subject: Re: [PATCH v5 2/4] rust: macros: add derive macro for `TryFrom`
+In-Reply-To: <20260129-try-from-into-macro-v5-2-dd011008118c@gmail.com>
+References: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
+	<20260129-try-from-into-macro-v5-2-dd011008118c@gmail.com>
+Date: Wed, 04 Feb 2026 01:39:19 +0000
+Message-ID: <87h5rxuw1n.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Currently Tyr uses rustfmt style for imports, but the kernel uses a
-vertical layout that makes it easier to resolve conflicts and rebase.
+Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org> writes:
 
-Import guidelines are documented here:
-	https://docs.kernel.org/rust/coding-guidelines.html#imports
+> From: Jesung Yang <y.j3ms.n@gmail.com>
+>
+> Introduce a procedural macro `TryFrom` to automatically implement the
+> `TryFrom` trait for unit-only enums.
+>
+> This reduces boilerplate in cases where numeric values need to be
+> interpreted as relevant enum variants. This situation often arises when
+> working with low-level data sources. A typical example is the `Chipset`
+> enum in nova-core, where the value read from a GPU register should be
+> mapped to a corresponding variant.
+>
+> The macro not only supports primitive types such as `bool` or `i8`, but
+> also `Bounded`, a wrapper around integer types limiting the number of
+> bits usable for value representation. This accommodates the shift toward
+> more restrictive register field representations in nova-core where
+> values are constrained to specific bit ranges.
+>
+> Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
+> ---
+>  rust/macros/convert.rs |  64 ++++++++++++++++++
+>  rust/macros/lib.rs     | 176 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 240 insertions(+)
+>
+> diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
+> index 096e3c9fdc1b..a7a43b1a2caf 100644
+> --- a/rust/macros/convert.rs
+> +++ b/rust/macros/convert.rs
+> @@ -34,6 +34,10 @@ pub(crate) fn derive_into(input: DeriveInput) -> syn::Result<TokenStream> {
+>      derive(DeriveTarget::Into, input)
+>  }
+>  
+> +pub(crate) fn derive_try_from(input: DeriveInput) -> syn::Result<TokenStream> {
+> +    derive(DeriveTarget::TryFrom, input)
+> +}
+> +
+>  fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream> {
+>      let data_enum = match input.data {
+>          Data::Enum(data) => data,
+> @@ -129,18 +133,21 @@ fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream>
+>  #[derive(Clone, Copy, Debug)]
+>  enum DeriveTarget {
+>      Into,
+> +    TryFrom,
+>  }
+>  
+>  impl DeriveTarget {
+>      fn get_trait_name(&self) -> &'static str {
+>          match self {
+>              Self::Into => "Into",
+> +            Self::TryFrom => "TryFrom",
+>          }
+>      }
+>  
+>      fn get_helper_name(&self) -> &'static str {
+>          match self {
+>              Self::Into => "into",
+> +            Self::TryFrom => "try_from",
+>          }
+>      }
+>  }
+> @@ -186,6 +193,7 @@ fn derive_for_enum(
+>  ) -> TokenStream {
+>      let impl_fn = match target {
+>          DeriveTarget::Into => impl_into,
+> +        DeriveTarget::TryFrom => impl_try_from,
+>      };
+>  
+>      let qualified_repr_ty: syn::Path = parse_quote! { ::core::primitive::#repr_ty };
+> @@ -238,6 +246,54 @@ fn from(#param: #enum_ident) -> #input_ty {
+>          }
+>      }
+>  
+> +    fn impl_try_from(
+> +        enum_ident: &Ident,
+> +        variants: &[Ident],
+> +        repr_ty: &syn::Path,
+> +        input_ty: &ValidTy,
+> +    ) -> TokenStream {
+> +        let param = Ident::new("value", Span::call_site());
+> +
+> +        let overflow_assertion = emit_overflow_assert(enum_ident, variants, repr_ty, input_ty);
+> +        let emit_cast = |variant| {
+> +            let variant = ::quote::quote! { #enum_ident::#variant };
+> +            match input_ty {
+> +                ValidTy::Bounded(inner) => {
+> +                    let base_ty = inner.emit_qualified_base_ty();
+> +                    let expr = parse_quote! { #variant as #base_ty };
+> +                    inner.emit_new(&expr)
+> +                }
+> +                ValidTy::Primitive(ident) if ident == "bool" => {
+> +                    ::quote::quote! { ((#variant as #repr_ty) == 1) }
+> +                }
+> +                qualified @ ValidTy::Primitive(_) => ::quote::quote! { #variant as #qualified },
+> +            }
+> +        };
+> +
+> +        let clauses = variants.iter().map(|variant| {
+> +            let cast = emit_cast(variant);
+> +            ::quote::quote! {
+> +                if #param == #cast {
+> +                    ::core::result::Result::Ok(#enum_ident::#variant)
+> +                } else
+> +            }
+> +        });
+> +
+> +        ::quote::quote! {
+> +            #[automatically_derived]
+> +            impl ::core::convert::TryFrom<#input_ty> for #enum_ident {
+> +                type Error = ::kernel::prelude::Error;
+> +                fn try_from(#param: #input_ty) -> Result<#enum_ident, Self::Error> {
+> +                    #overflow_assertion
+> +
+> +                    #(#clauses)* {
+> +                        ::core::result::Result::Err(::kernel::prelude::EINVAL)
 
-Change all of Tyr's imports to use the vertical layout. This will
-ease the introduction of additional Tyr patches upstream.
+What happens if we need a different error type here? For example, a
+quick look around in nova-core's "Chipset" enum, an unrecognized chipset
+ID warrants ENODEV rather than EINVAL, since it's about device
+identification.
 
-There should be no functional changes in this patch.
+Not sure if it fits the design, just wondering if this flexibility would
+be useful, but would something like an optional
 
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
- drivers/gpu/drm/tyr/driver.rs | 62 ++++++++++++++++++++---------------
- drivers/gpu/drm/tyr/file.rs   | 18 ++++++----
- drivers/gpu/drm/tyr/gem.rs    | 13 +++++---
- drivers/gpu/drm/tyr/gpu.rs    | 38 ++++++++++++---------
- drivers/gpu/drm/tyr/regs.rs   | 14 +++++---
- 5 files changed, 88 insertions(+), 57 deletions(-)
+    error = <ERROR>
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 568cb89aaed8..46b65e004a15 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -1,31 +1,41 @@
- // SPDX-License-Identifier: GPL-2.0 or MIT
- 
--use kernel::clk::Clk;
--use kernel::clk::OptionalClk;
--use kernel::device::Bound;
--use kernel::device::Core;
--use kernel::device::Device;
--use kernel::devres::Devres;
--use kernel::drm;
--use kernel::drm::ioctl;
--use kernel::io::poll;
--use kernel::new_mutex;
--use kernel::of;
--use kernel::platform;
--use kernel::prelude::*;
--use kernel::regulator;
--use kernel::regulator::Regulator;
--use kernel::sizes::SZ_2M;
--use kernel::sync::aref::ARef;
--use kernel::sync::Arc;
--use kernel::sync::Mutex;
--use kernel::time;
--
--use crate::file::File;
--use crate::gem::TyrObject;
--use crate::gpu;
--use crate::gpu::GpuInfo;
--use crate::regs;
-+use kernel::{
-+    clk::{
-+        Clk,
-+        OptionalClk, //
-+    },
-+    device::{
-+        Bound,
-+        Core,
-+        Device, //
-+    },
-+    devres::Devres,
-+    drm,
-+    drm::ioctl,
-+    io::poll,
-+    new_mutex,
-+    of,
-+    platform,
-+    prelude::*,
-+    regulator,
-+    regulator::Regulator,
-+    sizes::SZ_2M,
-+    sync::{
-+        aref::ARef,
-+        Arc,
-+        Mutex, //
-+    },
-+    time, //
-+};
-+
-+use crate::{
-+    file::File,
-+    gem::TyrObject,
-+    gpu,
-+    gpu::GpuInfo,
-+    regs, //
-+};
- 
- pub(crate) type IoMem = kernel::io::mem::IoMem<SZ_2M>;
- 
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 0ef432947b73..48bff4476d74 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -1,12 +1,16 @@
- // SPDX-License-Identifier: GPL-2.0 or MIT
- 
--use kernel::drm;
--use kernel::prelude::*;
--use kernel::uaccess::UserSlice;
--use kernel::uapi;
--
--use crate::driver::TyrDevice;
--use crate::TyrDriver;
-+use kernel::{
-+    drm,
-+    prelude::*,
-+    uaccess::UserSlice,
-+    uapi, //
-+};
-+
-+use crate::{
-+    driver::TyrDevice,
-+    TyrDriver, //
-+};
- 
- #[pin_data]
- pub(crate) struct File {}
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 1273bf89dbd5..8f2d23e3c093 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -1,9 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0 or MIT
- 
--use crate::driver::TyrDevice;
--use crate::driver::TyrDriver;
--use kernel::drm::gem;
--use kernel::prelude::*;
-+use kernel::{
-+    drm::gem,
-+    prelude::*, //
-+};
-+
-+use crate::driver::{
-+    TyrDevice,
-+    TyrDriver, //
-+};
- 
- /// GEM Object inner driver data
- #[pin_data]
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index bfbf2a1d80e6..affca5b0dc6c 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -1,20 +1,28 @@
- // SPDX-License-Identifier: GPL-2.0 or MIT
- 
--use core::ops::Deref;
--use core::ops::DerefMut;
--use kernel::bits::genmask_u32;
--use kernel::device::Bound;
--use kernel::device::Device;
--use kernel::devres::Devres;
--use kernel::io::poll;
--use kernel::platform;
--use kernel::prelude::*;
--use kernel::time::Delta;
--use kernel::transmute::AsBytes;
--use kernel::uapi;
--
--use crate::driver::IoMem;
--use crate::regs;
-+use core::ops::{
-+    Deref,
-+    DerefMut, //
-+};
-+use kernel::{
-+    bits::genmask_u32,
-+    device::{
-+        Bound,
-+        Device, //
-+    },
-+    devres::Devres,
-+    io::poll,
-+    platform,
-+    prelude::*,
-+    time::Delta,
-+    transmute::AsBytes,
-+    uapi, //
-+};
-+
-+use crate::{
-+    driver::IoMem,
-+    regs, //
-+};
- 
- /// Struct containing information that can be queried by userspace. This is read from
- /// the GPU's registers.
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index f46933aaa221..a7672fffbba5 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -7,11 +7,15 @@
- // does.
- #![allow(dead_code)]
- 
--use kernel::bits::bit_u32;
--use kernel::device::Bound;
--use kernel::device::Device;
--use kernel::devres::Devres;
--use kernel::prelude::*;
-+use kernel::{
-+    bits::bit_u32,
-+    device::{
-+        Bound,
-+        Device, //
-+    },
-+    devres::Devres,
-+    prelude::*, //
-+};
- 
- use crate::driver::IoMem;
- 
--- 
-2.52.0
+in the
 
+   #[try_from(...)]
+
+attribute make sense? e.g.
+
+   #[try_from(u32, error = ENODEV)]
+
+defaulting ofcourse to EINVAL if unspecified.
+
+--
+C. Mitrodimas
+
+> +                    }
+> +                }
+> +            }
+> +        }
+> +    }
+> +
+>      fn emit_overflow_assert(
+>          enum_ident: &Ident,
+>          variants: &[Ident],
+> @@ -360,6 +416,14 @@ fn emit_from_expr(&self, expr: &Expr) -> TokenStream {
+>          }
+>      }
+>  
+> +    fn emit_new(&self, expr: &Expr) -> TokenStream {
+> +        let Self { base_ty, bits, .. } = self;
+> +        let qualified_name: syn::Path = parse_str(Self::QUALIFIED_NAME).expect("valid path");
+> +        ::quote::quote! {
+> +            #qualified_name::<#base_ty, #bits>::new::<{ #expr }>()
+> +        }
+> +    }
+> +
+>      fn emit_qualified_base_ty(&self) -> TokenStream {
+>          let base_ty = &self.base_ty;
+>          ::quote::quote! { ::core::primitive::#base_ty }
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index 8842067d1017..893adecb9080 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -657,3 +657,179 @@ pub fn derive_into(input: TokenStream) -> TokenStream {
+>          .unwrap_or_else(syn::Error::into_compile_error)
+>          .into()
+>  }
+> +
+> +/// A derive macro for generating an implementation of the [`TryFrom`] trait.
+> +///
+> +/// This macro automatically derives the [`TryFrom`] trait for a given enum. Currently,
+> +/// it only supports [unit-only enum]s.
+> +///
+> +/// [unit-only enum]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.unit-only
+> +///
+> +/// # Notes
+> +///
+> +/// - The macro generates [`TryFrom`] implementations that:
+> +///   - Return `Ok(VARIANT)` when the input corresponds to a variant.
+> +///   - Return `Err(EINVAL)` when the input does not correspond to any variant.
+> +///     (where `EINVAL` is from [`kernel::error::code`]).
+> +///
+> +/// - The macro uses the `try_from` custom attribute or `repr` attribute to generate
+> +///   [`TryFrom`] implementations. `try_from` always takes precedence over `repr`.
+> +///
+> +/// - Currently, the macro does not support `repr(C)` fieldless enums since the actual
+> +///   representation of discriminants is defined by rustc internally, and documentation
+> +///   around it is not yet settled. See [Rust issue #124403] and [Rust PR #147017]
+> +///   for more information.
+> +///
+> +/// - The macro generates a compile-time assertion for every variant to ensure its
+> +///   discriminant value fits within the type being converted from.
+> +///
+> +/// [`kernel::error::code`]: ../kernel/error/code/index.html
+> +/// [Rust issue #124403]: https://github.com/rust-lang/rust/issues/124403
+> +/// [Rust PR #147017]: https://github.com/rust-lang/rust/pull/147017
+> +///
+> +/// # Supported types in `#[try_from(...)]`
+> +///
+> +/// - [`bool`]
+> +/// - Primitive integer types (e.g., [`i8`], [`u8`])
+> +/// - [`Bounded`]
+> +///
+> +/// [`Bounded`]: ../kernel/num/bounded/struct.Bounded.html
+> +///
+> +/// # Examples
+> +///
+> +/// ## Without Attributes
+> +///
+> +/// Since [the default `Rust` representation uses `isize` for the discriminant type][repr-rust],
+> +/// the macro implements `TryFrom<isize>`:
+> +///
+> +/// [repr-rust]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.discriminant.repr-rust
+> +///
+> +/// ```rust
+> +/// # use kernel::prelude::*;
+> +/// use kernel::macros::TryFrom;
+> +///
+> +/// #[derive(Debug, Default, PartialEq, TryFrom)]
+> +/// enum Foo {
+> +///     #[default]
+> +///     A,
+> +///     B = 0x7,
+> +/// }
+> +///
+> +/// assert_eq!(Err(EINVAL), Foo::try_from(-1_isize));
+> +/// assert_eq!(Ok(Foo::A), Foo::try_from(0_isize));
+> +/// assert_eq!(Ok(Foo::B), Foo::try_from(0x7_isize));
+> +/// assert_eq!(Err(EINVAL), Foo::try_from(0x8_isize));
+> +/// ```
+> +///
+> +/// ## With `#[repr(T)]`
+> +///
+> +/// The macro implements `TryFrom<T>`:
+> +///
+> +/// ```rust
+> +/// # use kernel::prelude::*;
+> +/// use kernel::macros::TryFrom;
+> +///
+> +/// #[derive(Debug, Default, PartialEq, TryFrom)]
+> +/// #[repr(u8)]
+> +/// enum Foo {
+> +///     #[default]
+> +///     A,
+> +///     B = 0x7,
+> +/// }
+> +///
+> +/// assert_eq!(Ok(Foo::A), Foo::try_from(0_u8));
+> +/// assert_eq!(Ok(Foo::B), Foo::try_from(0x7_u8));
+> +/// assert_eq!(Err(EINVAL), Foo::try_from(0x8_u8));
+> +/// ```
+> +///
+> +/// ## With `#[try_from(...)]`
+> +///
+> +/// The macro implements `TryFrom<T>` for each `T` specified in `#[try_from(...)]`,
+> +/// which always overrides `#[repr(...)]`:
+> +///
+> +/// ```rust
+> +/// # use kernel::prelude::*;
+> +/// use kernel::{
+> +///     macros::TryFrom,
+> +///     num::Bounded, //
+> +/// };
+> +///
+> +/// #[derive(Debug, Default, PartialEq, TryFrom)]
+> +/// #[try_from(bool, i16, Bounded<u8, 4>)]
+> +/// #[repr(u8)]
+> +/// enum Foo {
+> +///     #[default]
+> +///     A,
+> +///     B,
+> +/// }
+> +///
+> +/// assert_eq!(Err(EINVAL), Foo::try_from(-1_i16));
+> +/// assert_eq!(Ok(Foo::A), Foo::try_from(0_i16));
+> +/// assert_eq!(Ok(Foo::B), Foo::try_from(1_i16));
+> +/// assert_eq!(Err(EINVAL), Foo::try_from(2_i16));
+> +///
+> +/// assert_eq!(Ok(Foo::A), Foo::try_from(false));
+> +/// assert_eq!(Ok(Foo::B), Foo::try_from(true));
+> +///
+> +/// assert_eq!(Ok(Foo::A), Foo::try_from(Bounded::<u8, 4>::new::<0>()));
+> +/// assert_eq!(Ok(Foo::B), Foo::try_from(Bounded::<u8, 4>::new::<1>()));
+> +/// ```
+> +///
+> +/// ## Compile-time Overflow Assertion
+> +///
+> +/// The following examples do not compile:
+> +///
+> +/// ```compile_fail
+> +/// # use kernel::macros::TryFrom;
+> +/// #[derive(TryFrom)]
+> +/// #[try_from(u8)]
+> +/// enum Foo {
+> +///     // `256` is larger than `u8::MAX`.
+> +///     A = 256,
+> +/// }
+> +/// ```
+> +///
+> +/// ```compile_fail
+> +/// # use kernel::macros::TryFrom;
+> +/// #[derive(TryFrom)]
+> +/// #[try_from(u8)]
+> +/// enum Foo {
+> +///     // `-1` cannot be represented with `u8`.
+> +///     A = -1,
+> +/// }
+> +/// ```
+> +///
+> +/// ## Unsupported Cases
+> +///
+> +/// The following examples do not compile:
+> +///
+> +/// ```compile_fail
+> +/// # use kernel::macros::TryFrom;
+> +/// // Tuple-like enums or struct-like enums are not allowed.
+> +/// #[derive(TryFrom)]
+> +/// enum Foo {
+> +///     A(u8),
+> +///     B { inner: u8 },
+> +/// }
+> +/// ```
+> +///
+> +/// ```compile_fail
+> +/// # use kernel::macros::TryFrom;
+> +/// // Structs are not allowed.
+> +/// #[derive(TryFrom)]
+> +/// struct Foo(u8);
+> +/// ```
+> +///
+> +/// ```compile_fail
+> +/// # use kernel::macros::TryFrom;
+> +/// // `repr(C)` enums are not allowed.
+> +/// #[derive(TryFrom)]
+> +/// struct Foo(u8)
+> +/// ```
+> +#[proc_macro_derive(TryFrom, attributes(try_from))]
+> +pub fn derive_try_from(input: TokenStream) -> TokenStream {
+> +    let input = parse_macro_input!(input as DeriveInput);
+> +    convert::derive_try_from(input)
+> +        .unwrap_or_else(syn::Error::into_compile_error)
+> +        .into()
+> +}
