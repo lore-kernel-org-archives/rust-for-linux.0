@@ -1,21 +1,21 @@
 Received: from luna.linkmauve.fr (luna.linkmauve.fr [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B5A1EDA2B;
-	Wed,  4 Feb 2026 04:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378962F0C79;
+	Wed,  4 Feb 2026 04:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770177913; cv=none; b=DtcsV83wm9Fdf39UkvQAU+YBrlFzdP6BtbkKzsO6lwYtWYhBXQRtAdLHPB0qEmJdeefXF8FBeJf9YBthIqsp6/FPbNBaDlMEmEoKoXsk2lP87ZePA+JuMO01I0nZMVsAMsCqVasNkg8sn6lKiO+0DKSNT6U6FpgX+B1C8tJawJE=
+	t=1770177914; cv=none; b=UTa7vQ96HOrmsJOFZBXVqLNznNXn0lslyajPjIhcgwvCM+P4ZXzDprBwkrsuycvXXmGN+G1SQze9J1IVvQyE2N8uDr1TJaBVdjl61tVU5Np7LwatEpKvPmgJf54gdu5Dtn4csZH0e9cY+CevlZ6l05lbebd3lAsU+5R12pa+4gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770177913; c=relaxed/simple;
-	bh=slNkKm0yRV2q6+pcCcsATZKyQSaIL+u8wuuFViefyBU=;
+	s=arc-20240116; t=1770177914; c=relaxed/simple;
+	bh=i6B46l/QNgnb/riKaNTbsLdUqBhxpAy8DRQFk+QCLqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZudIe9L7ADwvxPfRvXI02LC1EL97re1KxZnMJjqokUmKDy8CHGByEjQWVEB/lvpkJaq+7VmrEqIWRX9/KJDHrKmQZuXImjnncbX3aLSjhiL3owFE3oHXcuKB4C8tGXkVmdRpGXeLXC20eBHJp+hdU1QMHi4r/vLQVbp6JsBtcrg=
+	 MIME-Version:Content-Type; b=QBJTOIj6CTU+0ZFZLic1RMCzyK02jx7FYfYzxxDhVu9qLhWMHDx5uGXRiPmeCre/VeTi4VYGYkRrkCMvm/9AtvcW1PL11usmecqHtwAORPI1B0G8ivrjO9S9wM+MKq0e/Hm1Y0InLMoFtC4283st3TNqhe/Mqif4bNJkPoB5ihA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
 Received: by luna.linkmauve.fr (Postfix, from userid 1000)
-	id D26EAF43B4A; Wed, 04 Feb 2026 05:05:08 +0100 (CET)
+	id 9C58BF43B4C; Wed, 04 Feb 2026 05:05:10 +0100 (CET)
 From: Link Mauve <linkmauve@linkmauve.fr>
 To: rust-for-linux@vger.kernel.org
 Cc: Link Mauve <linkmauve@linkmauve.fr>,
@@ -50,9 +50,9 @@ Cc: Link Mauve <linkmauve@linkmauve.fr>,
 	Ash Logan <ash@heyquark.com>,
 	Roberto Van Eeden <rw-r-r-0644@protonmail.com>,
 	=?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-Subject: [PATCH v2 2/4] rust: nvmem: Add an abstraction for nvmem providers
-Date: Wed,  4 Feb 2026 05:04:59 +0100
-Message-ID: <20260204040505.8447-3-linkmauve@linkmauve.fr>
+Subject: [PATCH v2 4/4] powerpc: wii_defconfig: Enable Rust
+Date: Wed,  4 Feb 2026 05:05:01 +0100
+Message-ID: <20260204040505.8447-5-linkmauve@linkmauve.fr>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204040505.8447-1-linkmauve@linkmauve.fr>
 References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
@@ -65,215 +65,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is my very first Rust abstraction in the kernel, I took inspiration
-from various other abstractions that had already been written.
-
-I only implemented enough to rewrite a very simple driver I wrote in the
-past, in order to test the API and make sure it’s at least as ergonomic
-as the C version, without any unsafe at all.
+The nintendo-otp driver now depends on Rust, so let’s enable it on this
+platform.
 
 Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
 ---
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/lib.rs              |   2 +
- rust/kernel/nvmem.rs            | 163 ++++++++++++++++++++++++++++++++
- 3 files changed, 166 insertions(+)
- create mode 100644 rust/kernel/nvmem.rs
+ arch/powerpc/configs/wii_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index a067038b4b42..522a76b2e294 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -65,6 +65,7 @@
- #include <linux/mdio.h>
- #include <linux/mm.h>
- #include <linux/miscdevice.h>
-+#include <linux/nvmem-provider.h>
- #include <linux/of_device.h>
- #include <linux/pci.h>
- #include <linux/phy.h>
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 696f62f85eb5..97f3fc1e8e12 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -118,6 +118,8 @@
- #[cfg(CONFIG_NET)]
- pub mod net;
- pub mod num;
-+#[cfg(CONFIG_NVMEM)]
-+pub mod nvmem;
- pub mod of;
- #[cfg(CONFIG_PM_OPP)]
- pub mod opp;
-diff --git a/rust/kernel/nvmem.rs b/rust/kernel/nvmem.rs
-new file mode 100644
-index 000000000000..4b81fd65c9a7
---- /dev/null
-+++ b/rust/kernel/nvmem.rs
-@@ -0,0 +1,163 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! nvmem framework provider.
-+//!
-+//! Copyright (C) 2026 Link Mauve <linkmauve@linkmauve.fr>
-+
-+use crate::build_error;
-+use crate::device::Device;
-+use crate::error::{from_result, VTABLE_DEFAULT_ERROR};
-+use crate::prelude::*;
-+use core::marker::PhantomData;
-+use macros::vtable;
-+
-+/// The possible types for a nvmem provider.
-+#[derive(Default)]
-+#[repr(u32)]
-+pub enum Type {
-+    /// The type of memory is unknown.
-+    #[default]
-+    Unknown = bindings::nvmem_type_NVMEM_TYPE_UNKNOWN,
-+
-+    /// Electrically erasable programmable ROM.
-+    Eeprom = bindings::nvmem_type_NVMEM_TYPE_EEPROM,
-+
-+    /// One-time programmable memory.
-+    Otp = bindings::nvmem_type_NVMEM_TYPE_OTP,
-+
-+    /// This memory is backed by a battery.
-+    BatteryBacked = bindings::nvmem_type_NVMEM_TYPE_BATTERY_BACKED,
-+
-+    /// Ferroelectric RAM.
-+    Fram = bindings::nvmem_type_NVMEM_TYPE_FRAM,
-+}
-+
-+/// nvmem configuration.
-+///
-+/// Rust abstraction for the C `struct nvmem_config`.
-+#[derive(Default)]
-+#[repr(transparent)]
-+pub struct NvmemConfig<T: NvmemProvider + Default> {
-+    inner: bindings::nvmem_config,
-+    _p: PhantomData<T>,
-+}
-+
-+impl<T: NvmemProvider + Default> NvmemConfig<T> {
-+    /// NvmemConfig's read callback.
-+    ///
-+    /// SAFETY: Called from C. Inputs must be valid pointers.
-+    extern "C" fn reg_read(
-+        context: *mut c_void,
-+        offset: u32,
-+        val: *mut c_void,
-+        bytes: usize,
-+    ) -> i32 {
-+        from_result(|| {
-+            let context = context.cast::<T::Priv>();
-+            // SAFETY: context is a valid T::Priv as set in Device::nvmem_register().
-+            let context = unsafe { &*context };
-+            let val = val.cast::<u8>();
-+            // SAFETY: val should be non-null, and allocated for bytes bytes.
-+            let data = unsafe { core::slice::from_raw_parts_mut(val, bytes) };
-+            T::read(context, offset, data).map(|()| 0)
-+        })
-+    }
-+
-+    /// NvmemConfig's write callback.
-+    ///
-+    /// SAFETY: Called from C. Inputs must be valid pointers.
-+    extern "C" fn reg_write(
-+        context: *mut c_void,
-+        offset: u32,
-+        // TODO: Change val from void* to const void* in the C API!
-+        val: *mut c_void,
-+        bytes: usize,
-+    ) -> i32 {
-+        from_result(|| {
-+            let context = context.cast::<T::Priv>();
-+            // SAFETY: context is a valid T::Priv as set in Device::nvmem_register().
-+            let context = unsafe { &*context };
-+            let val = val.cast::<u8>().cast_const();
-+            // SAFETY: val should be non-null, and allocated for bytes bytes.
-+            let data = unsafe { core::slice::from_raw_parts(val, bytes) };
-+            T::write(context, offset, data).map(|()| 0)
-+        })
-+    }
-+
-+    /// Optional name.
-+    pub fn with_name(mut self, name: &CStr) -> Self {
-+        self.inner.name = name.as_char_ptr();
-+        self
-+    }
-+
-+    /// Type of the nvmem storage
-+    pub fn with_type(mut self, type_: Type) -> Self {
-+        self.inner.type_ = type_ as u32;
-+        self
-+    }
-+
-+    /// Device is read-only.
-+    pub fn with_read_only(mut self, read_only: bool) -> Self {
-+        self.inner.read_only = read_only;
-+        self
-+    }
-+
-+    /// Device is accessibly to root only.
-+    pub fn with_root_only(mut self, root_only: bool) -> Self {
-+        self.inner.root_only = root_only;
-+        self
-+    }
-+
-+    /// Device size.
-+    pub fn with_size(mut self, size: i32) -> Self {
-+        self.inner.size = size;
-+        self
-+    }
-+
-+    /// Minimum read/write access granularity.
-+    pub fn with_word_size(mut self, word_size: i32) -> Self {
-+        self.inner.word_size = word_size;
-+        self
-+    }
-+
-+    /// Minimum read/write access stride.
-+    pub fn with_stride(mut self, stride: i32) -> Self {
-+        self.inner.stride = stride;
-+        self
-+    }
-+}
-+
-+impl Device {
-+    /// Register a managed nvmem provider on the given device.
-+    pub fn nvmem_register<T>(&self, mut config: NvmemConfig<T>, priv_: &T::Priv)
-+    where
-+        T: NvmemProvider + Default,
-+    {
-+        // FIXME: The last cast to mut indicates some unsoundness here.
-+        config.inner.priv_ = core::ptr::from_ref(priv_).cast::<c_void>().cast_mut();
-+        config.inner.dev = self.as_raw();
-+        config.inner.reg_read = Some(NvmemConfig::<T>::reg_read);
-+        config.inner.reg_write = Some(NvmemConfig::<T>::reg_write);
-+        // SAFETY: Both self and config can’t be null here, and should have the correct type.
-+        unsafe { bindings::devm_nvmem_register(self.as_raw(), &config.inner) };
-+    }
-+}
-+
-+/// Helper trait to define the callbacks of a nvmem provider.
-+#[vtable]
-+pub trait NvmemProvider {
-+    /// The type passed into the context for read and write functions.
-+    type Priv;
-+
-+    /// Callback to read data.
-+    #[inline]
-+    fn read(_context: &Self::Priv, _offset: u32, _data: &mut [u8]) -> Result {
-+        build_error!(VTABLE_DEFAULT_ERROR)
-+    }
-+
-+    /// Callback to write data.
-+    #[inline]
-+    fn write(_context: &Self::Priv, _offset: u32, _data: &[u8]) -> Result {
-+        build_error!(VTABLE_DEFAULT_ERROR)
-+    }
-+}
+diff --git a/arch/powerpc/configs/wii_defconfig b/arch/powerpc/configs/wii_defconfig
+index 7c714a19221e..b1172249e783 100644
+--- a/arch/powerpc/configs/wii_defconfig
++++ b/arch/powerpc/configs/wii_defconfig
+@@ -18,6 +18,7 @@ CONFIG_WII=y
+ # CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
+ CONFIG_PREEMPT=y
+ CONFIG_BINFMT_MISC=m
++CONFIG_RUST=y
+ CONFIG_KEXEC=y
+ # CONFIG_SECCOMP is not set
+ CONFIG_ADVANCED_OPTIONS=y
 -- 
 2.52.0
 
