@@ -1,100 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5275214A64;
-	Wed,  4 Feb 2026 07:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDC936A027;
+	Wed,  4 Feb 2026 08:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770191354; cv=none; b=q8CWrfzSvSmKSJwndFYdi28hXUara9Sd3eo+a4U1pIdo09rC8Vaxk7t+fcqZxZmN8f80+KFcyA252udUNS+/DxApuHhaI2DViIVMCAMUxawAUS/TKxd+0Gmf9CnsHCi6Xa2J/V87IBZ+XHFe8F5ti0Q7VTjHT0COYicg9bXpVU4=
+	t=1770192672; cv=none; b=rl4E/+zUXhQHwa6PSyjqbcf2fec5qwyvZABWCdt+Y72hysCNsQ3xYdi/nrHbgwmm8euXT+bFiy6q0YvqFAKq2g3P5Ol6HWC9S1C3EnVIKBqjAJftYd6B82MnbU9P8NaiTqObDNKNqdUttgcpuQrch3C50Qc7KEuS9xL4ES5PBxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770191354; c=relaxed/simple;
-	bh=l8CMDKqpA7OSQPeAnkGdqjodxHHnVe32+QEnCx30yA4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hy8QB2rM3lqpyFm5DwEX9CPCkzQgVu8Op5oic45N2bo6k14Ckim97r6hhwenopb8b1nrjXqefEcEXyhSXp8pFQfXnXPZOhJ5wgrornNY27U2p0iQv5fmnDYX5q0JoyevPXqsMq69BYUwDZiwW41q+/OP6g2VTcYmSJo5fGHd1w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ygfyh3Wv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770192672; c=relaxed/simple;
+	bh=8j8R8MPrfWY6vBRRIpvDiircDbGhdSwDxXfuiVs5GeI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=njr3Td8ocY2hdwhpuEjoCl2LtemEFzWZUSWnT4ypP8igm5JuQHnWcYoPyrVJwoNt8t6dpVfd3FuTVLJ2UBFf+OCeD4OVX5knf3Ru2d35mS+g/2AQrfIRgnRIYH9qC+8aK/pYldPSirN+DeMv7bB1bPTkjNiJRDrMLRWiAxYnvN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=DsEFJ3Nh; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ygfyh3Wv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EA2C4CEF7;
-	Wed,  4 Feb 2026 07:49:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770191353;
-	bh=l8CMDKqpA7OSQPeAnkGdqjodxHHnVe32+QEnCx30yA4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ygfyh3Wv9wk76QsAndIJVnTvANIcRlvdoh3wBJuMgrDagRfH/LMDHU6cB8v8APABF
-	 jgWlX29M7nCqL8QnGTP5AT27keykRtc70rIXaaMyIebpna1jE+ahAI1vPJMKZWkV7O
-	 dbJYN0B6n83jbDZxFD2xqMQPSIvaJ+ON54oUxYuvbSeytpOynrnhEblPxIUc9oMxc3
-	 tlFoQw4DOGFZSqcAje/RkocIDE44of794Av5Ywh8dD6vCHnKRrzmYL2Q7mCuiYrLXi
-	 xNUMCP/8Y8rowx/xkqEEdhLAt21kjckkColNDZ2Ud8cdai4GUFdNxxjYOV6yCA1HJJ
-	 lPsmZBcozJgnw==
-Date: Wed, 4 Feb 2026 00:49:09 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: kconfig: Don't require RUST_IS_AVAILABLE for
- rustc-option
-Message-ID: <20260204074909.GC1632007@ax162>
-References: <20250909-docrem-v1-1-dcc69059a5cb@google.com>
- <177016418652.1146354.981060291224113155.b4-ty@kernel.org>
- <CAK7LNASdG9P90Hnc3M4zK67S_kRtcs5kv8MX7n_B6S5x=FKENw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="DsEFJ3Nh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1770192670;
+	bh=8j8R8MPrfWY6vBRRIpvDiircDbGhdSwDxXfuiVs5GeI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DsEFJ3Nhca0gHPn0WW46xPuzuZwRmLNuOpKTYci/Grpz+8iFbAUufcYWOTdolbhe4
+	 4Rju+q4X4pcKmAjKivkByu4y4dJjqVFYuCz5WFEYfcwMkREFh1aD8b/HUnDvbBGA4O
+	 K1Tom/wQJod9y9Z6en141msQx34QphBNYgjipqSBG0XBBmR/FBZVfKVSfxPegpTbfj
+	 w4RljDBo2vI4n3721FrPdjwSS+bIn9ahzDlJQUGlfuXZledsqf1PdT+3XYuZqoD+lC
+	 i/NCr5O3feDTRIiu+CdMizfBKEWtDKIfpGXKb9i0DyOQihsMQ5R5bLUkGRJ15nhaFH
+	 ZJJ99EmmtpDZA==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id AE37317E114C;
+	Wed,  4 Feb 2026 09:11:09 +0100 (CET)
+Date: Wed, 4 Feb 2026 09:11:04 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Maxime Ripard" <mripard@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Drew Fustini" <fustini@kernel.org>, "Guo Ren"
+ <guoren@kernel.org>, "Fu Wei" <wefu@redhat.com>, Uwe =?UTF-8?B?S2xlaW5l?=
+ =?UTF-8?B?LUvDtm5pZw==?= <ukleinek@kernel.org>, "Michael Turquette"
+ <mturquette@baylibre.com>, "Stephen Boyd" <sboyd@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, <linux-pm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-riscv@lists.infradead.org>, <linux-pwm@vger.kernel.org>,
+ <linux-clk@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+Message-ID: <20260204091104.0a9c4a13@fedora>
+In-Reply-To: <DG5M5MVHTNS4.1CUD61S0PD9NU@garyguo.net>
+References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
+	<20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com>
+	<20260108-delectable-fennec-of-sunshine-ffca19@houat>
+	<98CD0BF6-3350-40B9-B8A9-F569AE3E3220@collabora.com>
+	<20260119-thundering-tested-robin-4be817@houat>
+	<aW4lCfUyumOKRRJm@google.com>
+	<20260203113902.501e5803@fedora>
+	<E7286D12-0BD9-4726-B072-FE5A040312B1@collabora.com>
+	<20260203150855.77c93e22@fedora>
+	<4DD13AE1-C85F-450F-93F2-C7C75766E518@collabora.com>
+	<DG5HJPIYMS7B.152WPGG9MZZJ5@garyguo.net>
+	<B94452FD-5F6F-44D4-80D8-4D4B7004C4B5@collabora.com>
+	<DG5M5MVHTNS4.1CUD61S0PD9NU@garyguo.net>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK7LNASdG9P90Hnc3M4zK67S_kRtcs5kv8MX7n_B6S5x=FKENw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 04, 2026 at 04:17:26PM +0900, Masahiro Yamada wrote:
-> On Wed, Feb 4, 2026 at 9:16 AM Nathan Chancellor <nathan@kernel.org> wrote:
-> >
-> > On Tue, 09 Sep 2025 18:14:20 +0000, Matthew Maurer wrote:
-> > > The final version of this macro does not fail in the absence of an
-> > > invokable `$(RUSTC)`, so we don't need to be careful not to invoke it.
-> > >
-> > >
-> >
-> > Applied to
-> >
-> >   https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git kbuild-next
-> >
-> > Thanks!
-> >
-> > [1/1] rust: kconfig: Don't require RUST_IS_AVAILABLE for rustc-option
-> >       https://git.kernel.org/kbuild/c/f2445d6f264c6
-> >
-> > Please look out for regression or issue reports or other follow up
-> > comments, as they may result in the patch/series getting dropped or
-> > reverted. Patches applied to an "unstable" branch are accepted pending
-> > wider testing in -next and any post-commit review; they will generally
-> > be moved to the main branch in a week if no issues are found.
-> >
-> > Best regards,
-> > --
-> > Nathan Chancellor <nathan@kernel.org>
-> >
-> >
-> 
-> Removing this comment is correct, but please note
-> the commit description is not accurate.
-> 
-> Kconfig evaluates all $(shell ...) macros before deciding the
-> value of RUSAT_IS_AVAILABLE.
-> You cannot prevent Kconfig from evaluating $(shell ...).
-> The author of c42297438aee7 did not read
-> Documentation/kbuild/kconfig-macro-language.rst
+Hi Gary, Daniel,
 
-Ugh, yes, sorry, I should have caught that too because I just recently
-looked at this in another thread :(
+On Tue, 03 Feb 2026 20:36:30 +0000
+"Gary Guo" <gary@garyguo.net> wrote:
 
-  https://lore.kernel.org/20260129232535.GD844102@ax162/
+> On Tue Feb 3, 2026 at 7:26 PM GMT, Daniel Almeida wrote:
+> > =20
+> >>=20
+> >> I think it's fine to have all of these:
+> >> * `Clone` impl
+> >> * `enable` which consumes `Clk<Prepared>` by value and spit out `Clk<E=
+nabled>`
+> >> * `with_enabled` that gives `&Clk<Enabled>`
+> >>=20
+> >> This way, if you only want to enable in short time, you can do `with_e=
+nabled`.
+> >> If the closure callback wants to keep clock enabled for longer, it can=
+ just do
+> >> `.clone()` inside the closure and obtain an owned `Clk<Enabled>`.
+> >>=20
+> >> If the user just have a reference and want to enable the callback they=
+ can do
+> >> `prepared_clk.clone().enable()` which gives an owned `Clk<Enabled>`. T=
+houghts?
+> >>=20
+> >> Best,
+> >> Gary =20
+> >
+> >
+> > I=E2=80=99m ok with what you proposed above. The only problem is that i=
+mplementing
+> > clone() is done through an Arc<*mut bindings::clk>  in Boris=E2=80=99 c=
+urrent
+> > design, so this requires an extra allocation. =20
+>=20
+> Hmm, that's a very good point. `struct clk` is already a reference into
+> clk_core, so having to put another level of indirection over is not ideal.
+> However, if we're going to keep C code unchanged and do a zero-cost abstr=
+action
+> on the Rust side, then we won't be able to have have multiple prepare/ena=
+ble to
+> the same `struct clk` with the current design.
+>=20
+> It feels like we can to do a trade-off and choose from:
+> 1. Not be able to have multiple prepare/enable calls on the same `clk` (t=
+his can
+>    limit users that need dynamically enable/disable clocks, with the very=
+ limited
+>    exception that closure-callback is fine).
+> 2. Do an extra allocation
+> 3. Put lifetime on types that represent a prepared/enabled `Clk`
+> 4. Change C to make `struct clk` refcounted.
 
-I'd rather not rebase at this point but I appreciate you clarifying this
-for the record.
+It probably comes to no surprise that I'd be more in favor of option 2
+or 4. Maybe option 2 first, so we can get the user-facing API merged
+without too much churn, and then we can see if the clk maintainers are
+happy adding a refcnt to struct clk to optimize things.
 
-Cheers,
-Nathan
+If we really feel that the indirection/memory overhead is going to
+hurt us, we can also start with option 1, and extend it to 2 and/or 4
+(needed to add a Clone support) when it becomes evident we can't do
+without it. But as I was saying in my previous reply to Daniel, I
+expect the extra indirection/memory overhead to be negligible since:
+
+1. clks are usually not {prepared,enabled}/{disabled,unprepared} in a
+   hot path
+2. in the rare occasions where they might be ({dev,cpu}freq ?), this
+   clk state change is usually one operation in an ocean of other
+   slower operations (regulator reconfiguration, for instance, which
+   usually goes over a slow I2C bus, or a
+   relatively-faster-but-still-slow SPI one, at least when we compare
+   it to an IoMem access for in-SoCs clks). So overall, the clk state
+   change might account for a very small portion of the CPU cycles
+   spent in this bigger operation
+3. if I focus solely on the clk aspect, and look at the existing
+   indirections in the clk framework (clk -> clk_core -> clk_{hw,ops} ->
+   clk_methods), I'd expect the Arc indirection to be just noise in
+   this pre-existing overhead
+4. in term of memory, we're talking about 16 more bytes allocated per
+   Clk on a 64-bit architecture (refcount is an int, but the alignment
+   for the clk pointer forces 4 bytes of padding on most
+   architectures). On a 64 bit arch, struct clk is 72 bytes if my math
+   is correct, so that's a 22% overhead, compared to 11% overhead if
+   the refcount was in struct clk (or in a struct
+   refcounted_clk variant if we don't want C users to pay the price).
+   Not great, but not terrible either
+
+So yeah my gut feeling is that we might be overthinking this extra
+allocation/indirection issue. This being said, one thing I'd really like
+to avoid is us being dragged into infinite discussions about a perfect
+implementation causing the merging of these changes to be delayed and
+other contributions being blocked on this (perfect is the enemy of
+good). I mean, option #1 is already an improvement compared to the raw
+functions we have at the moment, so if that's the middle-ground we
+agree on, I'm happy to give it my R-b.
+
+Regards,
+
+Boris
