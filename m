@@ -1,120 +1,134 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B36237F8BD
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 20:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90EF34CDD
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 21:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770238619; cv=none; b=sSD5GDafO54S5Av8YzCcL6q4JeCWIMbaz7kZImQmd+s0gxQh9vCSoNk7F0UJ/0Yyrn65kw7KMvnZ6jNd0ZPEG0GT6+WwRWvyzxG/KtulcQ4rd8+RfgwI8SZfkoKGXhEyjvh1dugJ20fh9ESovELsVEjPjN8OP8sTNh3cRTuvj34=
+	t=1770238928; cv=none; b=UiI4LYRosX9EVU9SDqSZN+Dc87uxIHQXRuATcoa4Mqg9cqGncVuMx1NpDEREyBUVOcCnQahl2F52iTQ4ibOoDvVTGnaTPk0OxuXX5p1mIKe7ycQit013vw2oARkrGCL4NR7ltOeG+0kIaa0jxDvPwAOJZipvcyIDoIef91RdRUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770238619; c=relaxed/simple;
-	bh=HNUd9rPG1BceWdGBHYZ2EDlIZvEOeylw+slLK97uJB4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oFC/sXb/Kau3Rn5KsjOhHJKMaRBAgIUNZtYElNN387h/1Hcs9WceUew65+Fib4GdTOofJfNAzxuzSZGrrRKm4lLxv2CBQzbn/Y1qo7y7XIEMhMD+U77fj4fadV1LTycVvmZwpJkRcSG9nNdxZyUXNqqjuy/97WmhZkTT3Gvl34o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JHqu4ou5; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770238928; c=relaxed/simple;
+	bh=p8JSze9MTbaCaWUpLefLyVZDUMvthf3o2UfG/zdocXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I4BNLJC165ebjNBw9wV9Bf91ui0xVOk+H07uBZjSfdYfOC0gAStF4pAU66WJIkRwjgJDJOlLLq7InOM1U0uKIFrf8ylLHt7C2UpC66GzUz/6UyblObgf/0JKBR7SiNWHhlnPJoMqLzq2oxbuRGXSlBc6z/F5uaU7LT7ahuu9rcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=giqwvfU1; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JHqu4ou5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770238618;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HNUd9rPG1BceWdGBHYZ2EDlIZvEOeylw+slLK97uJB4=;
-	b=JHqu4ou5MiXgEs0bPpXv9MIuCV3kUQOEidbmZtN1n/IQAW4LBudWM4Ym+lq0TWFh89EWF0
-	Ihr6c9b4TbgOJ1hxTIS87IwWzUv7Kx5M8y5l0iRshj2uCw8L4FiAyfsC3gNvmZ5Wufo+9G
-	b5EfcsMPAGNsd15ObBbCv3Chfmlt69g=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-322-vT5dksCcPHuRci-paZ2UtA-1; Wed, 04 Feb 2026 15:56:56 -0500
-X-MC-Unique: vT5dksCcPHuRci-paZ2UtA-1
-X-Mimecast-MFC-AGG-ID: vT5dksCcPHuRci-paZ2UtA_1770238616
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8946f51b8c8so10942886d6.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Feb 2026 12:56:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="giqwvfU1"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c626bd75628so52010a12.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Feb 2026 13:02:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770238928; x=1770843728; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2V/4lpM1tyoivo3E/+Mz0tbhlWt4A1di3YB0XAjK7Lg=;
+        b=giqwvfU1rJfocNW6dm8YXTDnxgSDxA69I8fAWLsGKpDOK9F2JXd1MN4TFaLsEfL+f5
+         gPepSxDh+EzroNYJjpwWutCkYlsK5oZkfaD+sQ1CK2AKEPPcAeTqBmB0CXXljHCPDv+/
+         sqUKHL/l7mElMAdnUC4zh6I+sHd/LtoGaUyYfvuloV4yi4tmjIqvLF669wcoBxiMrmN8
+         xkN+tt3PTxDTPMgEgRfd8/DP1wVzhy4sPhNAuquhTdCV2lw93WZSV2Jrci+tEyBYeA2f
+         LAQGyue3zrwHiJi6DuwyYcYr32pvXy84LWAi00mQP9hVUJDgE41VBPOA5OKcz/KG9WGq
+         tzeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770238616; x=1770843416;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YxG8OYua1gClXTSBhwuZi6jzgFrYOt/LM5ChTM0bqUk=;
-        b=fBEPbaxO+/9OpVGJrc71jkQEZM2e7Fttq2hHyRPAE0xitJrDtQqvD0CN8d9poK4Qwe
-         FpdcL0+hmvmm1C+3rhc/EXDmVHJtvNfrgGKLgsmxjlkCDQ2yl0Z0x9Y4UnWmaXIHnZOO
-         1wFv26Ohz7aI6Jce0APTVBx5PI6GYFooKkMv766Pg6TmSJUzRJwV5OgYdhyAWVTIHe5E
-         Tx2kTiMzeJO4VfKhwIfFL4yUgtCmxsZjt23FJgcqmAdmCekoAuuWlR2Mh7VMZDU9+dvy
-         b+XuA7dGQZcbf+UQQ2ZnxGBjZ/n5tRfTJsYXluG2bb0lV9/4O2xBXpw6v2nDDd+lwlnZ
-         LYlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7DZuZCmoQa7LacbdBgh34nJQHYIFO4pr9hmVfiYE31zwBnfBa/1gDpwDrJoscTCN6N0gRr4mRGlQDNyqYfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzchwt7ownQ5aeVLYcc13LcPEWtgxYtD1MCdpbvMkdwohzPbtwg
-	YxzjjOQi+YcGVUqPrf39LgU1phf568D7Uju12sWh5OhgHFD8K8czkb37yq9Xup74smlkkozAAqU
-	MP8UdX8ee8EKEKjWpYDCiPsVDF84xxwrc+S506ktZsakud17/NpMzKeIayoYH/nfr5LaF
-X-Gm-Gg: AZuq6aLKDpW9obQ3EacfdSMAXhqpHlQOXYpL/yVQbyjFriIIByQ6Gav1kSprfTELk35
-	mTHqmgUX0x+X2zThK31lk+ezHcLJb2dzI0A53ds/GLTffHWP+OEB+kt3eGLSGr7IUgp1JtJRxn6
-	t8wzdNGUNXnsuvLCXJzlH2pjW8yOaTTWtrRmT4zisL4elbZ30t4KOZfJKLK8Kjg3mU68sH5V/8r
-	7K/tqztGST+Mro+SPW2pPqVcv+gxYVd9RQMbe31Vv8/gAkVbJUW0cKSsWoxPAas/QQDQW5nfsUX
-	mlvV4wk0GN2fcqNgYCehejBeEG5iTIvQ4WIJPQSrWJ1eZG3ciKJCwK7lHkPYk1FFfF9M7WA/yoE
-	XYCvxQw==
-X-Received: by 2002:a05:620a:4483:b0:8ca:1107:1215 with SMTP id af79cd13be357-8ca2f80c345mr484847885a.9.1770238616314;
-        Wed, 04 Feb 2026 12:56:56 -0800 (PST)
-X-Received: by 2002:a05:620a:4483:b0:8ca:1107:1215 with SMTP id af79cd13be357-8ca2f80c345mr484843885a.9.1770238615795;
-        Wed, 04 Feb 2026 12:56:55 -0800 (PST)
-Received: from [192.168.8.4] ([100.0.180.93])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89521c00173sm27081576d6.12.2026.02.04.12.56.54
+        d=1e100.net; s=20230601; t=1770238928; x=1770843728;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2V/4lpM1tyoivo3E/+Mz0tbhlWt4A1di3YB0XAjK7Lg=;
+        b=Xttp3zvJp+KSUKs+KyWvgYgI/oBEpDkymx681aQqxvhE4wNE6OQlf5aK1TYT08OkCp
+         aFQt7qQXgrGb5a1ZQLLOYW1zw6iHj6gCpQgPCJ5I19furOswOjf+m0VkCodYJlEE3Ga9
+         onVBVmQWcJTJ/kB3n76U9yGDkzkw23kqGiiaTqDijfL+37htvG70IN1D9rClI73gnSTT
+         M5+ef2tXqtes6FyMo0v07NqNRL9f5SuDQclYjPNkJngvOqDSEGuj4+gUQRoAJ9RuhWXh
+         hVY/QnripL0JuC1BzMD8nUFnM7wl/RjGPVJSgM+OVC0xVVv0Cl2sNBd2Oxjo6dW/rIaO
+         8/LA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1u/gxcbJAVphwqHi3TWMM2PqJyX6ToMZi3LKCcTG5UqQPNn2we2ShuZaFjUW3uku3U4NH/ped6GUNWDhvyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywxw+2sESBS8BCW3OIYYdVa/mebs3FPk28ziADRMgD85+USAWv/
+	PtX8A/1zd6mLg2JjuO+fR7iCZzGkHghsb9UhW7QjrtwyUMp8Ld4+791z
+X-Gm-Gg: AZuq6aKJMbMvGNPu1iIgNaJhP6VHgWCcVaT/AXjY9li2wCdukI7E2iK23BhzDbx3NvX
+	CsbDyh19PQECpXWV0MxU1CvJiJY1ywdZcUHMJCOSg6J0A2UCRChfBjBADLiqmsnSP4eo/o6AP2G
+	P08VYTKD+Y+wMdRVfyg2MRehuul35p64wkNH8e+Bq0Gl8Nd+HyuGJq3fmNEEMulaFTgtpxCH6tk
+	anf+OyJmO4Ax0DHZXfz7hUrY5p6p3VoijGuEoYJSl9BiHAmr6TPDZUIABAcV7xMFav5j+evr9jO
+	tGKb6JNbVrQva+SJsPZ2moChLE+RD3KUOMBjM6RUB9Jz6EWfsve99LCYz5RbUv6BIRinH9Qf5kC
+	ZVfGbPDRaVktsfo2qKgiTRKwaIOEg1HGG2BJ+t0qMef0jiIZ7aCjs2OMu7zYx/GH5EwG84ly/+S
+	HfRAhqenveWj08NLo+upTQ5RDdGfvXKl/Qf3JIF/9Da95L2ehI1dqupZ6Sh3gBBRGA
+X-Received: by 2002:a17:90b:350d:b0:341:315:f4ed with SMTP id 98e67ed59e1d1-354870eb613mr3795120a91.10.1770238927704;
+        Wed, 04 Feb 2026 13:02:07 -0800 (PST)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.164.193])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8241d1bd466sm3277977b3a.20.2026.02.04.13.01.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 12:56:55 -0800 (PST)
-Message-ID: <f4504b830225a8fdb7407572d92b65daf390ac8a.camel@redhat.com>
-Subject: Re: [PATCH v5 2/4] rust/drm: Don't setup private driver data until
- registration
-From: lyude@redhat.com
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
-	nouveau@lists.freedesktop.org, Miguel Ojeda <ojeda@kernel.org>, Simona
- Vetter	 <simona@ffwll.ch>, Alice Ryhl <aliceryhl@google.com>, Shankari
- Anand	 <shankari.ak0208@gmail.com>, David Airlie <airlied@gmail.com>, Benno
- Lossin	 <lossin@kernel.org>, Asahi Lina <lina+kernel@asahilina.net>
-Date: Wed, 04 Feb 2026 15:56:54 -0500
-In-Reply-To: <95623012-BAA8-4AA5-9D34-42FAE44B0FFD@collabora.com>
-References: <20260131001602.2095470-1-lyude@redhat.com>
-	 <20260131001602.2095470-3-lyude@redhat.com>
-	 <95623012-BAA8-4AA5-9D34-42FAE44B0FFD@collabora.com>
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43)
+        Wed, 04 Feb 2026 13:02:07 -0800 (PST)
+From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+To: linkmauve@linkmauve.fr,
+	ojeda@kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	corbet@lwn.net,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	peterz@infradead.org,
+	jpoimboe@kernel.org,
+	jbaron@akamai.com,
+	rostedt@goodmis.org,
+	ardb@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+Subject: [PATCH V2 0/3] Rust support for powerpc
+Date: Thu,  5 Feb 2026 02:31:22 +0530
+Message-ID: <20260204210125.613350-1-mkchauras@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: m9uU57ipgsMbWGglqtiqor3toW_GY0T7SiHL844W_b0_1770238616
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2026-02-04 at 15:28 -0300, Daniel Almeida wrote:
-> > +=C2=A0=C2=A0=C2=A0 pub(crate) data_is_init: AtomicBool,
->=20
-> What about this?
->=20
-> =09/**
-> =09 * @registered:
-> =09 *
-> =09 * Internally used by drm_dev_register() and
-> drm_connector_register().
-> =09 */
-> =09bool registered;
->=20
-> Can=E2=80=99t we use this in lieu of this flag you=E2=80=99ve added?
+Enable experimental rust support for ppc64le and ppc32be. The patch for
+ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been 
+merged over it. ppc32 needs some toolchain fixes mentioned in the patch 
+`rust: Add PowerPC support` and the discussion for that is done here[1]. 
 
-No we couldn't unfortunately. As I said before: a lot of KMS setup has
-to happen prior to registration, and most of those callbacks
-(atomic_check, atomic_commit, etc.) can both happen before registration
-and after. And that's a lot more difficult to deal with if we don't
-have access to the private driver data for any of those callbacks.
+This has been tested on powernv9 hardware and power10 pseries qemu. I
+I request Link to test the ppc32 part as i don't have a hardware to test
+it out. 
 
-So - it really does truly need to be tracked separately.
->=20
-> > +
+[1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
+[2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
+
+Changelog:
+V1 -> V2:
+- jump label fix for rust has been moved to a separate patch
+- PPC32 support has been taken
+- rust support has been marked experimental
+- target.json dependency has been removed
+- HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
+
+Link Mauve (1):
+  rust: Add PowerPC support
+
+Mukesh Kumar Chaurasiya (IBM) (2):
+  powerpc/jump_label: adjust inline asm to be consistent
+  powerpc: Enable Rust for ppc64le
+
+ Documentation/rust/arch-support.rst   |  1 +
+ arch/powerpc/Kconfig                  |  1 +
+ arch/powerpc/Makefile                 |  9 +++++++++
+ arch/powerpc/include/asm/jump_label.h | 23 +++++++++++++----------
+ rust/Makefile                         | 11 ++++++++++-
+ 5 files changed, 34 insertions(+), 11 deletions(-)
+
+-- 
+2.52.0
 
