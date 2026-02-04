@@ -1,153 +1,184 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDE937C110
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 09:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770198244; cv=pass; b=Cphyqe9ixhA0l/2j2J/ZlnJCuuHDTNnLDb0hXG5T5U0Df6UPb5oGHxA+G2t2Sau7U5F8niXPDQy4pSUOEY1eKzSTWs+3+/9pDgy6NYyxRvQe7Nwuq81XuNj14DrJ1KdKOlqc2WOo07twLP1NSHves15Caj5J7MgUA8PwHT4Di5g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770198244; c=relaxed/simple;
-	bh=G+6S9OlWLGrCemMyi/2GVq3KyjbdLBo0AM0xRBEy5hw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dp0bwy/MzbSHj4KqdJVNMAcWHIQbgUrGr4i0XMoBZ9gHnw4smNpZ5SHYJ4y0W8EGPrSa0o3qIL20yOBo744cCYTsRtyeJi8cUK4Xt/1hiyygHUdKpH87a/aYgQYPHkZh/jgyvBhLfPyC9yejQK65qN1Qb2YxaE551NyNKKrNspI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=f1Yw4gRi; arc=pass smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE24C3D7D6E
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 10:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770201008; cv=none; b=LOJnDoY2JDaljoF8MphmEz5E0spb9kwnMYnrFVUAKeAho4LWrOS6HfPztMMqovX0liZY8q4ievYZtoSWxZJ+siU5hS6mG9xvThzqWBTbcHwONW2i9jGWIcXEBYPt9WmWcITGQFkrXZopa2kUIq8BBWzdLG61FUChtBnqJJeJE0A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770201008; c=relaxed/simple;
+	bh=2UIZKStHuem4vyD9tR6NvtzZe7OLWtG1Pj1z+tGYGA4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KM7Fc7e6NgmNq/IqxXkNuFEUXZ99yVBU6aLV7xEvWrOtV7eKC1bj7UiAC9aFN551emMODSaOZaOcaQGqE4ZeksdX5y9c02IsurMM2/09lhJLoWtgFkHWR7J6fAeVfYtaL5RuvVyi56BbMVNxDTYhHARA+if0tsTwlJIMNWFodgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c8MjBlvc; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="f1Yw4gRi"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-385e7cafef9so55038291fa.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Feb 2026 01:44:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770198242; cv=none;
-        d=google.com; s=arc-20240605;
-        b=a9WQYAr+80NHkEle/5kUKoPWTRrINSic2FV/vM2n7kZJHUPJxzbdmcbPCLc2Gz33gF
-         433q2SMM4Zlzf/ZCU6cdI0mcf1ZQVjmWQnQ7P7TaMOzoTOmgDOVmntqhHxnXcHHzs9Lz
-         NR9MyPlX0quuYR0eiscUfybiBGsRhvKK5b6qcMgn/+ss6rH6I6/pCnvct+pVH3Ss83p1
-         7Z3SiJb9wN93P7OzipIhHlNHLA1JN/vWb5C0HgRIgGBJXAmXKdMTXq3y14OvWLItWV70
-         DgLvOGU9WwLp7Q52mco9vM7KAs0fkG2aypNjFhTGjT/efevGWdTifF0TSVPsLlpvGQ74
-         1z7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=G+6S9OlWLGrCemMyi/2GVq3KyjbdLBo0AM0xRBEy5hw=;
-        fh=CDEocetG4ZyyqiA+E8bSpgcURmw7JG6E6DCKEOzzjik=;
-        b=F2rZ5hm0Qi2EhxyXww6LrDXBcOpy1xKbrnhlQgWlRNjtbGHvDz2eN6aEDzyAQeRvoy
-         AvYJq7OvXDQ6XFCtbxZA+9u9yVNCHdhVWfDg7dStJZNdqsotUE7FRTfBFy3EmLoVu2ap
-         q1WG8JFzQNgSI6znlBKr+VR0ssbkXhwum3ipjShIQE3MSO6Jg8zp7sdbD11mxQnWbT/U
-         uJNEfp9fuERHIwRORO5U4N6Qutk4VKE2HsRtDs4QN5JtYY3H4DbhgFDzBt3ewZ+dctz8
-         /B8uqIuMphRTrPc1Pu+cHmfo4YBYVTSRcIdhyyhWtAZ/sX9aWCOzQY3Acf2/soTIcBPD
-         R2Dw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c8MjBlvc"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4804157a3c9so76080475e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Feb 2026 02:30:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1770198242; x=1770803042; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G+6S9OlWLGrCemMyi/2GVq3KyjbdLBo0AM0xRBEy5hw=;
-        b=f1Yw4gRiwC2jX9kCZgFRVrBYK6887Dcb5TZ1TfWtwKIgGu/E1eJNEsoHurnFr73e4F
-         /1s2nFpKXK1y7D1uzFoN6TIwSToTmBmeY5QjGAVF6Nv/sRkcusE/6k4QGc1n0ct67EPU
-         QSs4P3biEnoCHhzo/YkgBRL83IWTJqeAEmDRL3f/jZdjhVhnNGmEOgUL3uPFEw0Nem5l
-         gYt1rzid7rkWQPXBSc35MPqcvtLmlgoPc3+J3D5OJSNNq7R68yHPGmsKXWG86WgGr/Ya
-         zFnTvLhGGuKDgWNdepDF9eahF2iTDdoniFEvIGn8e/8rgReHj6uqCUlqehxd8SmccAbK
-         5GEQ==
+        d=google.com; s=20230601; t=1770201006; x=1770805806; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8XSWebpuCWegMlwjG4hS6R8tDkiXl6gBTB7fLfLRPN4=;
+        b=c8MjBlvcqlQQCv3adiMbtOGJYaPrIvKhOwqvH4zpQKXxrAhCXpJwSw5pGcYEwVrYPz
+         AD4kna/J70h6yiObSvQnXC9Mn/ghDyOqTHxqjiB5a9zEoSnfulEFiL+X9vHSHtMghLqU
+         53sC7zgkJVF9wrOmKmBY9NrgaP9XE7fwnDrrl2gEFRuw8dXNL0Va4nrYiOGAHqZIIrXT
+         bxsKMrifNHUxHXuiFHkyquc5mYMpJ1NZWEMEMeE/cpjD9SuY3wsSWqm4kmC/f2iXlWT8
+         +YlqYVdyPw6UHVONkhy/F9mGr0EmO+gIvOk/ruAk+9v5mvL38RoP/iAl04+E4IcYIkQx
+         g8bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770198242; x=1770803042;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=G+6S9OlWLGrCemMyi/2GVq3KyjbdLBo0AM0xRBEy5hw=;
-        b=SiBiz12+p6C8qED0X2JuEbbt2m5HbscmKiId5SlTmVyrWs+3GRzj0K6TnbjqTnBhAd
-         WZPd487lkVATbE4eqTwCA85nkOOpotPprQ/3WRrHJ7gl6WknBFq02rS99LVoLM13clmv
-         at6CMuOPpB/MgL9HH/Tvw3xKUI6reKStnQpSPoJGRsJ+2EySHG0tapgOAUzqEpNIhtQY
-         hfkhn0whtjJ3pvyPv/4lgwrU9f2d3hf02oExLcm+v0yMkyESMJTBlGq3TPRvacgGWL+4
-         +eG8NKDCufb4nj9819BjA1Mjs08rGH9utqCN9+A306xbM2MlpcA5WI72LukUdZlxeZSL
-         zp0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUp9CEG+sgLJ/ZCQQbl4QWHylKIGPRD2hFlSQ76lVU8HBCDuh4ca54HOuiP0WYrUdYjU5izhANrV5CiQrSjBA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeN1e0J6LZb5dMw654/J68mZgGVWUUFYjV7RcAkDsJALAlzqQj
-	nryvIhHBQYTrJ1Z+2dxlDI3u0q/51PBXJZIX+p/5GwjHy9b5pdESXd1D/jcH5l/qfORUX94Chkw
-	htLeAhRTgHx0pTc9p+S+W9QesBQAlAIGRUsRe8/r9QA==
-X-Gm-Gg: AZuq6aIB31cZgREuwRpavhj1BHqvub+MqV7IZp78D9NWOYCOIS8HyqJx4c71em13VZH
-	Tjm3JcNkqP3Dxm4pgSOd4879uzh0+aoX1DsQijrrnIhOmbr7qQYVrhx12vWuTi7r/GxejjGB/Yy
-	Ctb8OsKQXVrQcutnUPUzRkxDQJjB/gwIKkniQ6BV72tUFsgjn7nZgZwTpk/EDsCFAZTtO9En/mC
-	OZ+g1GJcOLWkIp2OUBu0VF5a6h6AWLWwdkBCrKXLdFhHrZLIhTELWIZL7xlt8NDVNNRZXrft+at
-	KKbWzy2oYgN7eALjCImhfhkxCTqt
-X-Received: by 2002:a05:6512:39c9:b0:59e:16c8:9be3 with SMTP id
- 2adb3069b0e04-59e38c0b564mr960429e87.17.1770198242119; Wed, 04 Feb 2026
- 01:44:02 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770201006; x=1770805806;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8XSWebpuCWegMlwjG4hS6R8tDkiXl6gBTB7fLfLRPN4=;
+        b=ZMWr8LU+phCwSg/qgNWbaPHp8jnq8RTlY3eR8I8VR1MxEPKjbChj3XQZnj3KMt21jh
+         JClHASaqWG3v5GNi7RfQbXlxEMhJOFUPq17UyU5/1109XWKej0HFCCzcJpZDBigubLjT
+         FHMrWCZXqcNTPTO1ogyalwjBYvLP2/YKLt/TBHPMNuAOHrCRLfVqiugP1snk0T4hMQJq
+         mW04xieONhZ6OQld+gfC3gxHSv7reTU/Tw05ZKONRlZj2ONNKC7drMtYXek0gNtA6cj1
+         buaGTxhWFLhGkIHmck6O8rc/SyU0NEP/wF2prxsrc9o/Kr8s/vtRNWD8ZY+EoXGU1dZK
+         QYnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDOBH8IJgbIsRrAhkm0RwfPZqWBQZAb8qdvI/jGycWFxeK4dcL6ufV0Jp8Xml4jjLNSRDwzist3yZupooRMw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQqt1xTnHC23YWPexbIQj5YXIxGSCR+EEXQoQWBBUiXYH14tIV
+	WIQlLRIjnyEJ16p4v0/CM485gSN3nk1NDnO62uwij3DgfJOmwL0+4rR7BC3tcUH39FYgnPEnCVc
+	goDwFARztG9AUAIcYjA==
+X-Received: from wmber8.prod.google.com ([2002:a05:600c:84c8:b0:47e:e4a5:c5f2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c02:b0:475:dd89:acb with SMTP id 5b1f17b1804b1-4830e96fb19mr35946565e9.22.1770201006224;
+ Wed, 04 Feb 2026 02:30:06 -0800 (PST)
+Date: Wed, 4 Feb 2026 10:30:05 +0000
+In-Reply-To: <20260203081403.68733-3-phasta@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260203152818.317806-1-marco.crivellari@suse.com>
- <20260203152818.317806-2-marco.crivellari@suse.com> <DG5G52FJ0I1F.1OHNFAXKXOZ1R@garyguo.net>
-In-Reply-To: <DG5G52FJ0I1F.1OHNFAXKXOZ1R@garyguo.net>
-From: Marco Crivellari <marco.crivellari@suse.com>
-Date: Wed, 4 Feb 2026 10:43:51 +0100
-X-Gm-Features: AZwV_Qik0S7BIar-XH2gFvduyoiCvpUlFSOzC1xx1ZhYo4lyunmeZ16fUIGXLTQ
-Message-ID: <CAAofZF5pqsGvnCS5HbmQKT8b_ydEnycv2fWF=wbFkSgu+ds2gA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: add system_dfl() around the new system_dfl_wq
-To: Gary Guo <gary@garyguo.net>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260203081403.68733-2-phasta@kernel.org> <20260203081403.68733-3-phasta@kernel.org>
+Message-ID: <aYMfrT_Cv2NC-MB1@google.com>
+Subject: Re: [RFC PATCH 1/4] rust: list: Add unsafe for container_of
+From: Alice Ryhl <aliceryhl@google.com>
+To: Philipp Stanner <phasta@kernel.org>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, 
+	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, Boris Brezillon <boris.brezillon@collabora.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Feb 3, 2026 at 4:53=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
-> Hi Marco,
->
-> The Rust change looks good to me.
->
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+On Tue, Feb 03, 2026 at 09:14:00AM +0100, Philipp Stanner wrote:
+> impl_list_item_mod.rs calls container_of() without unsafe blocks at a
+> couple of places. Since container_of() is an unsafe macro / function,
+> the blocks are strictly necessary.
+> 
+> For unknown reasons, that problem was so far not visible and only gets
+> visible once one utilizes the list implementation from within the core
+> crate:
+> 
+> error[E0133]: call to unsafe function `core::ptr::mut_ptr::<impl *mut T>::byte_sub`
+> is unsafe and requires unsafe block
+>    --> rust/kernel/lib.rs:252:29
+>     |
+> 252 |           let container_ptr = field_ptr.byte_sub(offset).cast::<$Container>();
+>     |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+>     |
+>    ::: rust/kernel/drm/jq.rs:98:1
+>     |
+> 98  | / impl_list_item! {
+> 99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
+> 100 | | }
+>     | |_- in this macro invocation
+>     |
+> note: an unsafe function restricts its caller, but its body is safe by default
+>    --> rust/kernel/list/impl_list_item_mod.rs:216:13
+>     |
+> 216 |               unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+>     |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>     |
+>    ::: rust/kernel/drm/jq.rs:98:1
+>     |
+> 98  | / impl_list_item! {
+> 99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
+> 100 | | }
+>     | |_- in this macro invocation
+>     = note: requested on the command line with `-D unsafe-op-in-unsafe-fn`
+>     = note: this error originates in the macro `$crate::container_of` which comes
+>     from the expansion of the macro `impl_list_item`
+> 
+> Add unsafe blocks to container_of to fix the issue.
+> 
+> Cc: stable@vger.kernel.org # v6.17+
+> Fixes: c77f85b347dd ("rust: list: remove OFFSET constants")
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Philipp Stanner <phasta@kernel.org>
 
-Hi Gary,
+With the reason that Gary shared added to the commit message:
 
-Thanks!
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-> Is there any reason that we cannot migrate the user early by just returni=
-ng
-> `system_dfl_wq` inside `system_unbound`? (I guess the question also appli=
-es on
-> why system_unbound_wq cannot be the same pointer as system_dfl_wq).
+> ---
+>  rust/kernel/list/impl_list_item_mod.rs | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl_list_item_mod.rs
+> index 202bc6f97c13..7052095efde5 100644
+> --- a/rust/kernel/list/impl_list_item_mod.rs
+> +++ b/rust/kernel/list/impl_list_item_mod.rs
+> @@ -217,7 +217,7 @@ unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+>                  // SAFETY: `me` originates from the most recent call to `prepare_to_insert`, so it
+>                  // points at the field `$field` in a value of type `Self`. Thus, reversing that
+>                  // operation is still in-bounds of the allocation.
+> -                $crate::container_of!(me, Self, $($field).*)
+> +                unsafe { $crate::container_of!(me, Self, $($field).*) }
+>              }
+>  
+>              // GUARANTEES:
+> @@ -242,7 +242,7 @@ unsafe fn post_remove(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+>                  // SAFETY: `me` originates from the most recent call to `prepare_to_insert`, so it
+>                  // points at the field `$field` in a value of type `Self`. Thus, reversing that
+>                  // operation is still in-bounds of the allocation.
+> -                $crate::container_of!(me, Self, $($field).*)
+> +                unsafe { $crate::container_of!(me, Self, $($field).*) }
+>              }
+>          }
+>      )*};
+> @@ -270,9 +270,9 @@ unsafe fn prepare_to_insert(me: *const Self) -> *mut $crate::list::ListLinks<$nu
+>                  // SAFETY: The caller promises that `me` points at a valid value of type `Self`.
+>                  let links_field = unsafe { <Self as $crate::list::ListItem<$num>>::view_links(me) };
+>  
+> -                let container = $crate::container_of!(
+> +                let container = unsafe { $crate::container_of!(
+>                      links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+> -                );
+> +                ) };
 
-The 1st version was like you mentioned, both for system() and system_unboun=
-d().
-It's one of the request made by Alice:
+It may be cleaner to write this as:
 
-https://lore.kernel.org/all/aL1lkN5WcWkwiq3S@google.com/
+let container = unsafe {
+    $crate::container_of!(
+        links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+    )
+};
 
-To me it was ok to change with her suggestion. :-)
+Rustfmt has no effect on macro definitions, but if this was not a macro,
+then I believe that rustfmt would format it like the above.
 
-> Also, I feel that `dfl` is not a very intuitive name. I searched the list=
- and
-> the commit history for a while and cannot find the exact explaination on =
-what it
-> means? Does it mean "default" or something else?
+>  
+>                  // SAFETY: By the same reasoning above, `links_field` is a valid pointer.
+>                  let self_ptr = unsafe {
+> @@ -319,9 +319,9 @@ unsafe fn view_links(me: *const Self) -> *mut $crate::list::ListLinks<$num> {
+>              //   `ListArc` containing `Self` until the next call to `post_remove`. The value cannot
+>              //   be destroyed while a `ListArc` reference exists.
+>              unsafe fn view_value(links_field: *mut $crate::list::ListLinks<$num>) -> *const Self {
+> -                let container = $crate::container_of!(
+> +                let container = unsafe { $crate::container_of!(
+>                      links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+> -                );
+> +                ) };
 
-Yes, "dfl" means "default".
+Ditto here.
 
-There is a huge Workqueue API refactoring. We also noticed many subsystem
-used system_wq (the - now - old per-cpu workqueue) but many of them didn't
-really benefit from per-cpu work.
-
-So the idea was, at first, to refactor of the workqueue name changing syste=
-m_wq
-to system_percpu_wq and system_unbound_wq to system_dfl_wq, to make
-clear this should be the default choice.
-
-If you want other details check this discussion:
-
-https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
-
-Thank you!
-
---=20
-
-Marco Crivellari
-
-L3 Support Engineer
+Alice
