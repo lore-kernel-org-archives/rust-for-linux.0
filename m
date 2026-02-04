@@ -1,225 +1,194 @@
-Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8340B8F7D
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Feb 2026 09:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DB938F94A;
+	Wed,  4 Feb 2026 09:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770196317; cv=none; b=tbSvRjUdcznJCZL8GGhrjz7CQAqv88TFtuJCh3WgECVi6MiQXS8kfGdbzLdYHUCKy5Wb8oGQMiOlGmNRDfio62LR71E9ZcMd3hUXm4UBnISM/+lTQbWsEGu/CkVwnAFmSYl2kcmMbEXfiUBVdrfYJMAi3le1Na6b5DfzuIJC2Fs=
+	t=1770196549; cv=none; b=ZACoLWNayBUrcK145qNmzNeekpCykKGqQsFFZnjrMpWZsMSb/YFDV+e9kE7h2xoJFAwyUV5MCte+cvUgawTVEYj7uEjrI1nWN7578Fbzd9OvHot3lQH0vFzbGVyQRkVbOaQ3xDGknJeM1qJLhv/WX0X7rrEdwE2JdUUZoWFt0mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770196317; c=relaxed/simple;
-	bh=JiwbXDKYiPUiAUBJLTFuvB0IZ5YQZJ1PescOhquM91U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NedWzYyPiZ9D5jWeonNuTQsSjn+M1pRt+dXdjIrKJHzJVWBngprc7hFKwQdRGPNIdj8dAcoiavj4I01f+o9TP8tOFyAd6B3re9gNwzVcGWF5MP7crdq9Gd+8/gTKIHIEjlZIhpqDBBwAC/F5CNxILY9RrqQQrPV6taCL52syWaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
-	by 156.147.23.53 with ESMTP; 4 Feb 2026 18:11:47 +0900
-X-Original-SENDERIP: 156.147.1.121
-X-Original-MAILFROM: jongan.kim@lge.com
-Received: from unknown (HELO jongan-kim-nissan-cdc.bee-live.svc.cluster.local) (10.159.44.55)
-	by 156.147.1.121 with ESMTP; 4 Feb 2026 18:11:47 +0900
-X-Original-SENDERIP: 10.159.44.55
-X-Original-MAILFROM: jongan.kim@lge.com
-From: jongan.kim@lge.com
-To: gary@garyguo.net,
-	aliceryhl@google.com
-Cc: a.hindborg@kernel.org,
-	arve@android.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gregkh@linuxfoundation.org,
-	heesu0025.kim@lge.com,
-	ht.hong@lge.com,
-	jongan.kim@lge.com,
-	jungsu.hwang@lge.com,
-	kernel-team@android.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	sanghun.lee@lge.com,
-	seulgi.lee@lge.com,
-	sunghoon.kim@lge.com,
-	tamird@gmail.com,
-	tkjos@android.com,
-	tmgross@umich.edu,
-	viresh.kumar@linaro.org,
-	vitaly.wool@konsulko.se,
-	yury.norov@gmail.com
-Subject: Re: [PATCH v3 3/3] rust_binder: handle PID namespace conversion for freeze operation
-Date: Wed,  4 Feb 2026 18:11:47 +0900
-Message-Id: <20260204091147.32511-1-jongan.kim@lge.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <DG5CFX3ML5YL.2FE913F20LNPT@garyguo.net>
-References: <DG5CFX3ML5YL.2FE913F20LNPT@garyguo.net>
+	s=arc-20240116; t=1770196549; c=relaxed/simple;
+	bh=lS9VFPZsRSSNY0TpBWxQ7aGLcnM4yMbS/RfpIHPoP1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aThMhe85F2p+dT03zVjQyuD8fH39JUSb0o0HjabC8O0jn68Vcr0ONemGtsIsu4XrZEpjXJdbGTnllKoMCH+wJf/O1JlOYa3PJIqzpbItwygKFAj7U9U3cs8ZNRq5Ei7wdzRJDRvQqIxfKcz6AlljlhPzCWiiPvmHidx4Ug4FnKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ArXmYgvB; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ArXmYgvB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED09C4CEF7;
+	Wed,  4 Feb 2026 09:15:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770196548;
+	bh=lS9VFPZsRSSNY0TpBWxQ7aGLcnM4yMbS/RfpIHPoP1U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ArXmYgvBA36SUx1c2xvQzH24vnKr/dLJ567NvWI8RRbJPb7FUmnsBRpFh8+JxH2oH
+	 a4O2uhpoXMZd8psL8tyxV66IVOQxaWwcw5srCDnEeTkDdceL9379S/Oxt5gRc0HNJ7
+	 iJ/oyrGQu7PjoGsg2u6BjE0fqwiKT2oSeYIUj0fcCuxS3qCs8lBCIenfIZODUNIMKA
+	 cf3wiNqV/lPenBD9EtSee0hKDjnvFrhMIdEJlz3mI6gfkHraltBRkf+u3J1K6IJBkC
+	 yI9oGlZS2IVPZPE4siUHNp02gTmhORcHZJJNwUUf4gkxAizbp22DL+a2sTe9+DsbDE
+	 HjeM3nyKC2P3w==
+Date: Wed, 4 Feb 2026 10:15:45 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org, 
+	linux-pwm@vger.kernel.org, linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+Message-ID: <20260204-nickel-seal-of-poetry-8fdefb@houat>
+References: <20260108-delectable-fennec-of-sunshine-ffca19@houat>
+ <98CD0BF6-3350-40B9-B8A9-F569AE3E3220@collabora.com>
+ <20260119-thundering-tested-robin-4be817@houat>
+ <aW4lCfUyumOKRRJm@google.com>
+ <518D8B09-B9A1-4DB4-85CD-37A2DD3D5FB1@collabora.com>
+ <DFSLCI9U4NCW.2HI2UPUI7G134@kernel.org>
+ <20260119-weightless-pelican-of-anger-190db0@houat>
+ <DFSN4FDCYHMW.3J3237PEBV2ZP@kernel.org>
+ <20260122-majestic-masterful-jaguarundi-d0abde@houat>
+ <2F3D3A40-6EF9-46FC-A769-E5A3AAF67E65@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="cc3shtqnjnhks75h"
+Content-Disposition: inline
+In-Reply-To: <2F3D3A40-6EF9-46FC-A769-E5A3AAF67E65@collabora.com>
 
-On Tue Feb 3, 2026 at 12:59:45PM +0000, Gary Guo wrote:
-> On Tue Feb 3, 2026 at 6:59 AM GMT, jongan.kim wrote:
-> > From: HeeSu Kim <heesu0025.kim@lge.com>
-> >
-> > Port PID namespace conversion logic from C binder to the Rust
-> > implementation.
-> >
-> > Without namespace conversion, freeze operations from non-init namespaces
-> > can match wrong processes due to PID collision. This adds proper
-> > conversion to ensure freeze operations target the correct process.
-> >
-> > Signed-off-by: HeeSu Kim <heesu0025.kim@lge.com>
-> > ---
-> > v2 -> v3:
-> > - Use task::Pid typedef instead of u32/i32
-> > - Use PidNamespace::init_ns() instead of init_pid_ns()
-> > - Compare PidNamespace directly with == instead of raw pointers
-> > - Use Pid::find_vpid() and pid.pid_task() (dropped _with_guard suffix)
-> > - Fix rustfmt import ordering (rcu before Arc)
-> > - Rename TaskPid alias to PidT for clearer pid_t type indication
-> > - Use task.group_leader().pid() instead of tgid_nr_ns() for consistency with C
-> >
-> >  drivers/android/binder/process.rs | 37 +++++++++++++++++++++++++++----
-> >  1 file changed, 33 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-> > index 132055b4790f..ea30bfac2e0b 100644
-> > --- a/drivers/android/binder/process.rs
-> > +++ b/drivers/android/binder/process.rs
-> > @@ -22,6 +22,8 @@
-> >      id_pool::IdPool,
-> >      list::{List, ListArc, ListArcField, ListLinks},
-> >      mm,
-> > +    pid::Pid,
-> > +    pid_namespace::PidNamespace,
-> >      prelude::*,
-> >      rbtree::{self, RBTree, RBTreeNode, RBTreeNodeReservation},
-> >      seq_file::SeqFile,
-> > @@ -29,9 +31,9 @@
-> >      sync::poll::PollTable,
-> >      sync::{
-> >          lock::{spinlock::SpinLockBackend, Guard},
-> > -        Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
-> > +        rcu, Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
-> >      },
-> > -    task::Task,
-> > +    task::{Pid as PidT, Task},
-> >      types::ARef,
-> >      uaccess::{UserSlice, UserSliceReader},
-> >      uapi,
-> > @@ -1498,17 +1500,42 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
-> >      }
-> >  }
-> > 
-> > +/// Convert a PID from the current namespace to the global (init) namespace.
-> > +fn convert_to_init_ns_tgid(pid: PidT) -> Result<PidT> {
-> > +    let current = kernel::current!();
-> > +    let init_ns = PidNamespace::init_ns();
-> > +
-> > +    if current.active_pid_ns() == Some(init_ns) {
-> > +        // Already in init namespace.
-> > +        return Ok(pid);
-> > +    }
-> > +
-> > +    if pid == 0 {
-> > +        return Err(EINVAL);
-> > +    }
-> > +
-> > +    let rcu_guard = rcu::read_lock();
-> > +
-> > +    let pid_struct = Pid::find_vpid(pid, &rcu_guard).ok_or(ESRCH)?;
-> > +    let task = pid_struct.pid_task(&rcu_guard).ok_or(ESRCH)?;
-> > +
-> > +    Ok(task.group_leader().pid())
-> > +}
-> > +
-> >  fn get_frozen_status(data: UserSlice) -> Result {
-> >      let (mut reader, mut writer) = data.reader_writer();
-> > 
-> >      let mut info = reader.read::<BinderFrozenStatusInfo>()?;
-> > +
-> > +    let init_ns_pid = convert_to_init_ns_tgid(info.pid as PidT)?;
-> > +
-> >      info.sync_recv = 0;
-> >      info.async_recv = 0;
-> >      let mut found = false;
-> > 
-> >      for ctx in crate::context::get_all_contexts()? {
-> >          ctx.for_each_proc(|proc| {
-> > -            if proc.task.pid() == info.pid as _ {
-> > +            if proc.task.pid() == init_ns_pid as _ {
-> >                  found = true;
-> >                  let inner = proc.inner.lock();
-> >                  let txns_pending = inner.txns_pending_locked();
-> > @@ -1530,13 +1557,15 @@ fn get_frozen_status(data: UserSlice) -> Result {
-> >  fn ioctl_freeze(reader: &mut UserSliceReader) -> Result {
-> >      let info = reader.read::<BinderFreezeInfo>()?;
-> > 
-> > +    let init_ns_pid = convert_to_init_ns_tgid(info.pid as PidT)?;
-> > +
-> >      // Very unlikely for there to be more than 3, since a process normally uses at most binder and
-> >      // hwbinder.
-> >      let mut procs = KVec::with_capacity(3, GFP_KERNEL)?;
-> > 
-> >      let ctxs = crate::context::get_all_contexts()?;
-> >      for ctx in ctxs {
-> > -        for proc in ctx.get_procs_with_pid(info.pid as i32)? {
-> > +        for proc in ctx.get_procs_with_pid(init_ns_pid)? {
-> 
-> I think this function already has `ARef<Task>` for all the process, so it feels
-> to me that the search should be simply based on task, rather than PID.
-> 
-> I.e. instead of pid_t -> struct pid -> struct tasks -> pid_t and then search
-> with it, we first get `Task` from VPID, and then search directly with it. This
-> would also make it no longer necessary to have the init namespace check.
-> 
-> (BTW, the current impl looks quite inefficient, get_procs_with_pid returns a vec
-> which is pushed again to a vec, perhaps using a callback or simply passing in a
-> `&mut Vec` is better?)
-> 
-> Best,
-> Gary
-> 
-> >              procs.push(proc, GFP_KERNEL)?;
-> >          }
-> >      }
 
-Thank you for the suggestions for more efficient structure.
+--cc3shtqnjnhks75h
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+MIME-Version: 1.0
 
-Your proposal to use task-based search instead of PID-based search
-could simplify the logic.
+On Thu, Jan 22, 2026 at 09:29:30PM -0300, Daniel Almeida wrote:
+>=20
+>=20
+> > On 22 Jan 2026, at 10:44, Maxime Ripard <mripard@kernel.org> wrote:
+> >=20
+> > On Mon, Jan 19, 2026 at 03:37:17PM +0100, Danilo Krummrich wrote:
+> >> On Mon Jan 19, 2026 at 3:18 PM CET, Maxime Ripard wrote:
+> >>> On Mon, Jan 19, 2026 at 02:13:48PM +0100, Danilo Krummrich wrote:
+> >>>> On Mon Jan 19, 2026 at 1:54 PM CET, Daniel Almeida wrote:
+> >>>>>> On 19 Jan 2026, at 09:35, Alice Ryhl <aliceryhl@google.com> wrote:
+> >>>>>> I think that if you still want an API where you just call enable/d=
+isable
+> >>>>>> directly on it with no protection against unbalanced calls, then t=
+hat
+> >>>>>> should be the special API. Probably called RawClk and functions ma=
+rked
+> >>>>>> unsafe. Unbalanced calls seem really dangerous and use should not =
+be
+> >>>>>> encouraged.
+> >>>>=20
+> >>>> +1; and unless there is a use-case that requires otherwise, it shoul=
+d not even
+> >>>> be possible to do this at all -- at least for driver code.
+> >>>=20
+> >>> I mean, it's great, it's safe, etc. but it's also suboptimal from a PM
+> >>> perspective on many platforms. It's totally fine to provide nice, saf=
+e,
+> >>> ergonomic wrappers for the drivers that don't care (or can't, really),
+> >>> but treating a legitimate optimisation as something we should consider
+> >>> impossible to do is just weird to me.
+> >>=20
+> >> I said that an unsafe API with potentially unbalanced calls is somethi=
+ng we
+> >> should clearly avoid for drivers. This is *not* equivalent to "treatin=
+g a
+> >> legitimate optimisation as something we should consider impossible".
+> >>=20
+> >> If we discover use-cases where the current API doesn't work well, we c=
+an
+> >> invenstigate further.
+> >=20
+> > I'm not sure I'm following what you're saying, sorry. I've pointed out
+> > such a use-case already.
+> >=20
+> >>>>> I think we should discourage RawClk if at all possible. But if the =
+consensus
+> >>>>> is that we *really* need this easily-abused thing, I can provide a =
+follow-up.
+> >>>>=20
+> >>>> I think we should only do this if there are use-case with no alterna=
+tive, so far
+> >>>> there haven't been any AFAIK.
+> >>>=20
+> >>> I don't really care about which alternative we come up with, but look=
+ at
+> >>> devm_regmap_init_mmio_clk for example. It is a valid use-case that
+> >>> already exists today, and has had for more than a decade at this poin=
+t.
+> >>=20
+> >> I don't see the issue with devm_regmap_init_mmio_clk()? It takes a ref=
+erence
+> >> count of the clock and prepares it when called and unprepares the clk =
+in drops
+> >> its reference in regmap_mmio_free_context() called from the devres cal=
+lback.
+> >>=20
+> >> That something we can easily do with the current API, no?
+> >=20
+> > The current one, yes. Doing that in the API suggested here would involve
+> > some boilerplate in all those drivers they don't have right now.
+> >=20
+> > Maxime
+>=20
+> Maxime, I know you=E2=80=99ve already pointed out a use-case, but I think=
+ the
+> confusion stems from why you seem to think that the current solution cann=
+ot
+> cater to the API you mentioned in a clean way. You seem to imply that the=
+re
+> will be a lot of boilerplate involved, but we (or I) cannot see this. Per=
+haps
+> it would help if you highlighted how exactly the type state solution woul=
+d be
+> verbose using some pseudocode. I guess that would make your point clearer=
+ for
+> us.
 
-However, I have a few considerations:
-1. The current implementation maintains consistency with the existing
-C binder implementation. Any structural change here would ideally be
-reflected in the  C code as well to keep both implementations aligned.
+I'm probably missing something then, but let's assume you have a driver
+that wants its clock prepared and enabled in an hypothetical enable()
+callback, and disabled / unprepared in a disable() callback.
 
-2. Since the majority of binder usage occurs in the init namespace, the
-current early return (checking task_is_in_init_pid_ns) avoids the overhead
-of find_vpid() and pid_task() calls in the common case. If we always go
-through the task lookup path, this optimization would be lost.
+=46rom a PM management perspective, this usecase makes total sense, is a
+valid usecase, is widely used in the kernel, and is currently supported
+by both the C and Rust clk APIs.
 
-3. Regarding the search mechanism and vec efficiency improvements you
-mentioned, these seem like valuable optimizations but would represent
-a broader architectural change to the binder driver.
+The only solution to this you suggested so far (I think?) to implement
+this on top of the new clk API you propose is to have a driver specific
+enum that would store each of the possible state transition.
 
-I'd like to get input from the binder driver maintainers on whether:
-- This kind of structural change is desired for the binder driver
-- If so, whether it should be done as part of this PID namespace fix or
-as a separate refactoring effort
-- Whether both C and Rust implementations should be updated together
+That's the boilerplate I'm talking about. If every driver wanting to
+implement that pattern has to make such an enum, with all the relevant
+traits implementation that might come with it, we go from an API where
+everything works at no-cost from a code-size perspective to a situation
+where every driver has to develop and maintain that enum.
 
-Alice, could you please advise on the preferred approach here?
+Maxime
 
-Thanks,
-JongAn Kim
+--cc3shtqnjnhks75h
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaYMOQQAKCRAnX84Zoj2+
+dvrFAYCy9cMAXESi9V53Vv20SNDa4P4AXDj8RQneRDFodbIFI+G3mTEJQXOcFGkx
++lpmRa0Bf1ShS4JaHvSikZv6j6Jok+SN4hqbhT/G4nenYi5IvCNK7+Ezo+THb7dq
+SORhPzP8yg==
+=E93p
+-----END PGP SIGNATURE-----
+
+--cc3shtqnjnhks75h--
