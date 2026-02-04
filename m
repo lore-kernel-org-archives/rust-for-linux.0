@@ -1,384 +1,201 @@
-Received: from luna.linkmauve.fr (luna.linkmauve.fr [82.65.109.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D8B2EDD62;
-	Wed,  4 Feb 2026 04:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD30934F27D;
+	Wed,  4 Feb 2026 04:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770177914; cv=none; b=LdIRL9A9M/ZpIdQzfX5I3BzoeDSp9uEKv+jU2RjPUXvARk/LfrClQ3DpJj1iQgCMs24tw1UFFowRDCyCqnbKPjmPvFlQH621Lotn9CbwzhOEr5QIcfTj8XidtWLDOxjoHw+1I4bFsfOahpJOtWj2Zu4d+faPKUeQxuHInBDkICM=
+	t=1770180904; cv=none; b=MiwueRimBuLQWqpUiv25JPZHLNF9Otr1dxNugSH2mubqQmyUaz/+apIg/Z6nF8W7TI5xdOXY/EBih9u4xgGsdEpBvp9GwgqI939SicVrmP5I9QmxjCt7dfM1sJBtg+dLJF5Hn1oHa4Qhf4J1gxFmoqQglSF2MDjoFgVLo8ZSplQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770177914; c=relaxed/simple;
-	bh=Adbe+MoUbMJhR/PWn8a3amGxXBQI+E3gwE0Jto84gzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gHYumVE1mm6QxYqI126+YLae9pOvvGIVOuNej/A5k4KBK8bAfbIWHiBf4FuXACD727fjsy0cI2uJ5A1rsfW8DJ3huYKEyeyZ3kugavaOfk3VT8tg9pSOpTF0OfrsnjvuMXFIB3s2FkEC9dbbUJ/DN8KbbluwEHyZfULLy18lVFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by luna.linkmauve.fr (Postfix, from userid 1000)
-	id EE3ADF43B4B; Wed, 04 Feb 2026 05:05:09 +0100 (CET)
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: rust-for-linux@vger.kernel.org
-Cc: Link Mauve <linkmauve@linkmauve.fr>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	s=arc-20240116; t=1770180904; c=relaxed/simple;
+	bh=1Nwm7gBX7S9HdvZbxKueVgPT9oxK2NzjXtkYV1/Owhg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bl6HXeoG02lVKYwOmukJoXBZH9lW9IALtkfb16zEHXdUFU99UUYpJI1RztkKC5So1qeQc7U3dfPp4+5/05btpUz0MgZnI2Y/Uk3zFwnbX3/iFD9lmYNDM5wMFc2JLHtqLpPz33KnMsq4zL0Im0asDsCC1O8GOao/D/CcIaCTNDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a5ZLmSDS; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a5ZLmSDS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770180903; x=1801716903;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1Nwm7gBX7S9HdvZbxKueVgPT9oxK2NzjXtkYV1/Owhg=;
+  b=a5ZLmSDSPLI7unKx3VL9qpDq4gDa4qfFSi1a7EuQigFubbmZDjmFDLgZ
+   CzNSGnd0FZDP4QZOz6IeSoZXMAnOEuZY3SJJA/pkvxtMYPfTJwBvtqTDz
+   nkAqK9YxWM4T5TbNDYW7avRnb/kouHATbTaJm08oIGN2EpbMLj2Scgf/Y
+   5V1Zblc2OsNOKTP/762l3BC5+KTV/sirNCLQOu8ETKOP4m3+MY8vcXo83
+   wtU5chT1guSznRDtuU2buQ3bmPqusELlNvyzEFI1ccDVWCpLgR7EEn4HP
+   YcP0XtR90M3a0WCiUfVVHfH2KRat+eQhrzZaUmybaUatOAdnPe5+knQZB
+   A==;
+X-CSE-ConnectionGUID: BhMG2/I0TjCRjV4HhMhSOA==
+X-CSE-MsgGUID: q3di4UhbTEGgJyQR571mRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71445532"
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
+   d="scan'208";a="71445532"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 20:55:03 -0800
+X-CSE-ConnectionGUID: Go9oiR6cRXOHvtdjzaDvsw==
+X-CSE-MsgGUID: o4DANno4SB6DfMLmTjiedA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
+   d="scan'208";a="214216972"
+Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
+  by orviesa003.jf.intel.com with ESMTP; 03 Feb 2026 20:54:59 -0800
+Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vnUum-000000003aX-1MGq;
+	Wed, 04 Feb 2026 04:54:56 +0000
+Date: Wed, 4 Feb 2026 05:54:23 +0100
+From: kernel test robot <lkp@intel.com>
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	rust-for-linux@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	linuxppc-dev@lists.ozlabs.org,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>, Alban Kurti <kurti@invicto.ai>,
 	linux-kernel@vger.kernel.org,
-	officialTechflashYT@gmail.com,
-	Ash Logan <ash@heyquark.com>,
-	Roberto Van Eeden <rw-r-r-0644@protonmail.com>,
-	=?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-Subject: [PATCH v2 3/4] nvmem: Replace the Wii and Wii U OTP driver with a Rust one
-Date: Wed,  4 Feb 2026 05:05:00 +0100
-Message-ID: <20260204040505.8447-4-linkmauve@linkmauve.fr>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204040505.8447-1-linkmauve@linkmauve.fr>
-References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Subject: Re: [PATCH] workqueue: rust: add work item runtime modification
+ support
+Message-ID: <202602040543.4ixOmzHo-lkp@intel.com>
+References: <20260203215555.832171-1-hamzamahfooz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203215555.832171-1-hamzamahfooz@linux.microsoft.com>
 
-I wrote this driver long ago, and wanted to try seeing how hard it would
-be to convert it to Rust.
+Hi Hamza,
 
-It is a very simple driver, we write the address we want to read in one
-memory address, and read the data from a second memory address.  A third
-memory address can be used to disable all reads in a range until the
-system has been rebooted, but I didn’t find any reason to expose that
-feature.
+kernel test robot noticed the following build warnings:
 
-I made sure to use no unsafe in this driver, to make sure the API
-exposed in the previous commit is usable.
+[auto build test WARNING on rust/rust-next]
+[also build test WARNING on next-20260203]
+[cannot apply to linus/master v6.16-rc1]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Ideally we wouldn’t have to impl the write() function in
-NintendoOtpProvider, but currently the vtable requires both.
+url:    https://github.com/intel-lab-lkp/linux/commits/Hamza-Mahfooz/workqueue-rust-add-work-item-runtime-modification-support/20260204-060728
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20260203215555.832171-1-hamzamahfooz%40linux.microsoft.com
+patch subject: [PATCH] workqueue: rust: add work item runtime modification support
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260204/202602040543.4ixOmzHo-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260204/202602040543.4ixOmzHo-lkp@intel.com/reproduce)
 
-I have tested this driver only on a Wii so far, but I assume it will
-work the same on a Wii U, just exposing more memory banks.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602040543.4ixOmzHo-lkp@intel.com/
 
-Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
----
- drivers/nvmem/Kconfig         |   1 +
- drivers/nvmem/Makefile        |   2 +-
- drivers/nvmem/nintendo-otp.c  | 122 --------------------------------
- drivers/nvmem/nintendo_otp.rs | 127 ++++++++++++++++++++++++++++++++++
- 4 files changed, 129 insertions(+), 123 deletions(-)
- delete mode 100644 drivers/nvmem/nintendo-otp.c
- create mode 100644 drivers/nvmem/nintendo_otp.rs
+All warnings (new ones prefixed by >>):
 
-diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-index bf47a982cf62..c23d338f820a 100644
---- a/drivers/nvmem/Kconfig
-+++ b/drivers/nvmem/Kconfig
-@@ -241,6 +241,7 @@ config NVMEM_MXS_OCOTP
- 
- config NVMEM_NINTENDO_OTP
- 	tristate "Nintendo Wii and Wii U OTP Support"
-+	depends on RUST
- 	depends on WII || COMPILE_TEST
- 	help
- 	  This is a driver exposing the OTP of a Nintendo Wii or Wii U console.
-diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
-index 7252b8ec88d4..3d40a0a23f76 100644
---- a/drivers/nvmem/Makefile
-+++ b/drivers/nvmem/Makefile
-@@ -51,7 +51,7 @@ nvmem_mtk-efuse-y			:= mtk-efuse.o
- obj-$(CONFIG_NVMEM_MXS_OCOTP)		+= nvmem-mxs-ocotp.o
- nvmem-mxs-ocotp-y			:= mxs-ocotp.o
- obj-$(CONFIG_NVMEM_NINTENDO_OTP)	+= nvmem-nintendo-otp.o
--nvmem-nintendo-otp-y			:= nintendo-otp.o
-+nvmem-nintendo-otp-y			:= nintendo_otp.o
- obj-$(CONFIG_NVMEM_QCOM_QFPROM)		+= nvmem_qfprom.o
- nvmem_qfprom-y				:= qfprom.o
- obj-$(CONFIG_NVMEM_QCOM_SEC_QFPROM)	+= nvmem_sec_qfprom.o
-diff --git a/drivers/nvmem/nintendo-otp.c b/drivers/nvmem/nintendo-otp.c
-deleted file mode 100644
-index 355e7f1fc6d5..000000000000
---- a/drivers/nvmem/nintendo-otp.c
-+++ /dev/null
-@@ -1,122 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Nintendo Wii and Wii U OTP driver
-- *
-- * This is a driver exposing the OTP of a Nintendo Wii or Wii U console.
-- *
-- * This memory contains common and per-console keys, signatures and
-- * related data required to access peripherals.
-- *
-- * Based on reversed documentation from https://wiiubrew.org/wiki/Hardware/OTP
-- *
-- * Copyright (C) 2021 Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-- */
--
--#include <linux/device.h>
--#include <linux/io.h>
--#include <linux/module.h>
--#include <linux/mod_devicetable.h>
--#include <linux/nvmem-provider.h>
--#include <linux/of_device.h>
--#include <linux/platform_device.h>
--
--#define HW_OTPCMD  0
--#define HW_OTPDATA 4
--#define OTP_READ   0x80000000
--#define BANK_SIZE  128
--#define WORD_SIZE  4
--
--struct nintendo_otp_priv {
--	void __iomem *regs;
--};
--
--struct nintendo_otp_devtype_data {
--	const char *name;
--	unsigned int num_banks;
--};
--
--static const struct nintendo_otp_devtype_data hollywood_otp_data = {
--	.name = "wii-otp",
--	.num_banks = 1,
--};
--
--static const struct nintendo_otp_devtype_data latte_otp_data = {
--	.name = "wiiu-otp",
--	.num_banks = 8,
--};
--
--static int nintendo_otp_reg_read(void *context,
--				 unsigned int reg, void *_val, size_t bytes)
--{
--	struct nintendo_otp_priv *priv = context;
--	u32 *val = _val;
--	int words = bytes / WORD_SIZE;
--	u32 bank, addr;
--
--	while (words--) {
--		bank = (reg / BANK_SIZE) << 8;
--		addr = (reg / WORD_SIZE) % (BANK_SIZE / WORD_SIZE);
--		iowrite32be(OTP_READ | bank | addr, priv->regs + HW_OTPCMD);
--		*val++ = ioread32be(priv->regs + HW_OTPDATA);
--		reg += WORD_SIZE;
--	}
--
--	return 0;
--}
--
--static const struct of_device_id nintendo_otp_of_table[] = {
--	{ .compatible = "nintendo,hollywood-otp", .data = &hollywood_otp_data },
--	{ .compatible = "nintendo,latte-otp", .data = &latte_otp_data },
--	{/* sentinel */},
--};
--MODULE_DEVICE_TABLE(of, nintendo_otp_of_table);
--
--static int nintendo_otp_probe(struct platform_device *pdev)
--{
--	struct device *dev = &pdev->dev;
--	const struct of_device_id *of_id =
--		of_match_device(nintendo_otp_of_table, dev);
--	struct nvmem_device *nvmem;
--	struct nintendo_otp_priv *priv;
--
--	struct nvmem_config config = {
--		.stride = WORD_SIZE,
--		.word_size = WORD_SIZE,
--		.reg_read = nintendo_otp_reg_read,
--		.read_only = true,
--		.root_only = true,
--	};
--
--	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
--	if (!priv)
--		return -ENOMEM;
--
--	priv->regs = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(priv->regs))
--		return PTR_ERR(priv->regs);
--
--	if (of_id->data) {
--		const struct nintendo_otp_devtype_data *data = of_id->data;
--		config.name = data->name;
--		config.size = data->num_banks * BANK_SIZE;
--	}
--
--	config.dev = dev;
--	config.priv = priv;
--
--	nvmem = devm_nvmem_register(dev, &config);
--
--	return PTR_ERR_OR_ZERO(nvmem);
--}
--
--static struct platform_driver nintendo_otp_driver = {
--	.probe = nintendo_otp_probe,
--	.driver = {
--		.name = "nintendo-otp",
--		.of_match_table = nintendo_otp_of_table,
--	},
--};
--module_platform_driver(nintendo_otp_driver);
--MODULE_AUTHOR("Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>");
--MODULE_DESCRIPTION("Nintendo Wii and Wii U OTP driver");
--MODULE_LICENSE("GPL v2");
-diff --git a/drivers/nvmem/nintendo_otp.rs b/drivers/nvmem/nintendo_otp.rs
-new file mode 100644
-index 000000000000..04ba3591d674
---- /dev/null
-+++ b/drivers/nvmem/nintendo_otp.rs
-@@ -0,0 +1,127 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+//! Nintendo Wii and Wii U OTP driver
-+//!
-+//! This is a driver exposing the OTP of a Nintendo Wii or Wii U console.
-+//!
-+//! This memory contains common and per-console keys, signatures and
-+//! related data required to access peripherals.
-+//!
-+//! Based on reversed documentation from https://wiiubrew.org/wiki/Hardware/OTP
-+//!
-+//! Copyright (C) 2021 Link Mauve <linkmauve@linkmauve.fr>
-+
-+use kernel::{
-+    device::Core,
-+    devres::Devres,
-+    io::{mem::ExclusiveIoMem, Io},
-+    nvmem::{self, NvmemConfig, NvmemProvider},
-+    of::{DeviceId, IdTable},
-+    platform,
-+    prelude::*,
-+};
-+
-+const HW_OTPCMD: usize = 0;
-+const HW_OTPDATA: usize = 4;
-+const OTP_READ: u32 = 0x80000000;
-+const BANK_SIZE: u32 = 128;
-+const WORD_SIZE: u32 = 4;
-+
-+struct Info {
-+    name: &'static CStr,
-+    num_banks: u32,
-+}
-+
-+const WII_INFO: Info = Info {
-+    name: c"wii-otp",
-+    num_banks: 1,
-+};
-+
-+const WIIU_INFO: Info = Info {
-+    name: c"wiiu-otp",
-+    num_banks: 8,
-+};
-+
-+struct NintendoOtpDriver {
-+    #[expect(dead_code)]
-+    iomem: Pin<KBox<Devres<ExclusiveIoMem<8>>>>,
-+}
-+
-+kernel::of_device_table!(
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <NintendoOtpDriver as platform::Driver>::IdInfo,
-+    [
-+        (DeviceId::new(c"nintendo,hollywood-otp"), WII_INFO),
-+        (DeviceId::new(c"nintendo,latte-otp"), WIIU_INFO),
-+    ]
-+);
-+
-+#[derive(Default)]
-+struct NintendoOtpProvider;
-+
-+#[vtable]
-+impl NvmemProvider for NintendoOtpProvider {
-+    type Priv = Io<8>;
-+
-+    fn read(io: &Self::Priv, mut reg: u32, mut data: &mut [u8]) -> Result {
-+        while let Some(bytes) = data.split_off_mut(..4) {
-+            let bank = (reg / BANK_SIZE) << 8;
-+            let addr = (reg / WORD_SIZE) % (BANK_SIZE / WORD_SIZE);
-+            io.write32be(OTP_READ | bank | addr, HW_OTPCMD);
-+            let elem = io.read32be(HW_OTPDATA);
-+            bytes.copy_from_slice(&elem.to_be_bytes());
-+            reg += WORD_SIZE;
-+        }
-+
-+        Ok(())
-+    }
-+
-+    fn write(_context: &Self::Priv, _offset: u32, _data: &[u8]) -> Result {
-+        Err(ENODEV)
-+    }
-+}
-+
-+impl platform::Driver for NintendoOtpDriver {
-+    type IdInfo = Info;
-+    const OF_ID_TABLE: Option<IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe(
-+        pdev: &platform::Device<Core>,
-+        info: Option<&Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error> {
-+        let dev = pdev.as_ref();
-+
-+        let Some(Info { name, num_banks }) = info else {
-+            return Err(EINVAL);
-+        };
-+
-+        dev_info!(dev, "got '{name}', num_banks = {num_banks}\n");
-+
-+        let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
-+        let iomem = request.iomap_exclusive_sized::<8>();
-+        let iomem = KBox::pin_init(iomem, GFP_KERNEL)?;
-+        let io = iomem.access(dev)?;
-+
-+        let config = NvmemConfig::<NintendoOtpProvider>::default()
-+            .with_name(name)
-+            .with_type(nvmem::Type::Otp)
-+            .with_size((num_banks * BANK_SIZE) as i32)
-+            .with_word_size(WORD_SIZE as i32)
-+            .with_stride(WORD_SIZE as i32)
-+            .with_read_only(true)
-+            .with_root_only(true);
-+
-+        dev.nvmem_register(config, io);
-+
-+        Ok(Self { iomem })
-+    }
-+}
-+
-+kernel::module_platform_driver! {
-+    type: NintendoOtpDriver,
-+    name: "nintendo-otp",
-+    authors: ["Link Mauve <linkmauve@linkmauve.fr>"],
-+    description: "Nintendo Wii and Wii U OTP driver",
-+    license: "GPL v2",
-+}
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/workqueue.rs:443:5
+   |
+   443 | /     unsafe fn __enqueue_delayed<F>(self, queue_work_on: F) -> Self::EnqueueDelayedOutput
+   444 | |     where
+   445 | |         F: FnOnce(*mut bindings::work_struct) -> bool;
+   | |______________________________________________________^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+   = note: `-W clippy::missing-safety-doc` implied by `-W clippy::all`
+   = help: to override `-W clippy::all` add `#[allow(clippy::missing_safety_doc)]`
+--
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/workqueue.rs:558:5
+   |
+   558 |     pub unsafe fn raw_enable(this: *const Self) -> bool {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+--
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/workqueue.rs:582:5
+   |
+   582 |     pub unsafe fn raw_disable_sync(this: *const Self) -> bool {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+--
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/workqueue.rs:588:5
+   |
+   588 |     pub unsafe fn raw_disable_delayed_sync(this: *const Self) -> bool {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+--
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/workqueue.rs:594:5
+   |
+   594 |     pub unsafe fn raw_cancel(this: *const Self) -> bool {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+--
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/workqueue.rs:600:5
+   |
+   600 |     pub unsafe fn raw_cancel_delayed(this: *const Self) -> bool {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+--
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/workqueue.rs:606:5
+   |
+   606 |     pub unsafe fn raw_cancel_sync(this: *const Self) -> bool {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+--
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/workqueue.rs:612:5
+   |
+   612 |     pub unsafe fn raw_cancel_delayed_sync(this: *const Self) -> bool {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+--
+>> warning: docs for unsafe trait missing `# Safety` section
+   --> rust/kernel/workqueue.rs:664:1
+   |
+   664 | pub unsafe trait WorkHandle {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+--
+>> warning: unsafe impl missing a safety comment
+   --> rust/kernel/workqueue.rs:702:1
+   |
+   702 | unsafe impl<T, const ID: u64> WorkHandle for ArcWorkHandle<T, ID>
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider adding a safety comment on the preceding line
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
+--
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/workqueue.rs:564:5
+   |
+   564 |     pub unsafe fn raw_disable(this: *const Self) -> bool {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+..
+
 -- 
-2.52.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
