@@ -1,77 +1,117 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932392F85B;
-	Wed,  4 Feb 2026 15:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770220771; cv=pass; b=m2kDTZr3jfhzzMwtsPfCTaV36YVQH4rY1lAaA4n3ewNnN3I9SyHAd8jqErPP3Q0Cc7AJoldwJXiAY370HRiZyR4LSMtX7OWiCrk+NTgN5697JQnuMHDhafjrs4b7ws+e50fhrWA5Et2dRK2EP8i/kABfSYyMEMBA510xk7s5xnU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770220771; c=relaxed/simple;
-	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=RIkQHjIsqRZJYsUlaQKHElhUExTtN0UbUKpra0SmTe57VtMi0pRF16l2BwlHkmAVuxbPAGMYOI+0JwvnZklG+zUOZdVsj/2YmJHPiKH+fUCl8/mdFiVRGcuF8mmZ5krbL+EtabxqqZjkoIeO04VoJuCqvlPu+sNAxmFF42z1mwY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ZMGeQBoF; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FAF3D9041;
+	Wed,  4 Feb 2026 16:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770221227; cv=none; b=NxLkwWXVLd/d7F0f0e63Q/9Vuzu9AZtNwhYFNWi2KhC5mTjacYAOxNcWCh+c3s3cU3Djh4uDv5i3CpsUSANgpdQ2KrqGov54u2aGUQpC69xGM4g7J/sumqaOsEB9jeyF5YdwB1dsReTmbHkxtgokrDe/epaLbPivLzWVpWWbafg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770221227; c=relaxed/simple;
+	bh=zgeg4LpFYkGts44vRDwLwUa+VYSDlRkllv2N4lJEvvg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Rmnvxu7X9EM8twIdMN7hJDZF9xHV857es8UHiCGFQz7aHsvtGy7Fz0nurY0VlKDS0TcOjPE1pT/VfrLJsecGDaDn0Z1KO9Wleri6gHa/4imy73tkkQXknl7DJoNFhf3TVBHkKy4WlUOxFlloRs6hyp+KWaerE8ni6Ey9APSmTps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XnzGhoQx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ZMGeQBoF"
-ARC-Seal: i=1; a=rsa-sha256; t=1770220752; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=RbBmQ4/imz68yPvgd4nDvnpMwwSAdGPPiiClrXMSgbSyi7oCqmiVzrjoYKfZYtZBUup9vmCs8x8JUgHxoFsxTjR5bv8f2ZVo6YQaZI1LtFaVacPAuGSeRRqbfcxSp0B2zBafaq9r4cmhZMAaTeJYWWpM8jZgBP9j8qL1J05Ftms=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770220752; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=; 
-	b=ML8tFgVtPKDiEC/gFFef3B5IeK9yQf8OIK59V+muGDGjTQq8+S1Q40Tp410oR7XRQAG707oLZWt4Zb7nZKKVgtLQg8g5Dtv3AGZZJxnikibCFTk6nCTm9buvI7qYXJMjZwdvIHzupaF3hWokTx7Z2G6Axg4hLl4fUQQ9QDgC4jM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770220752;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
-	b=ZMGeQBoFbhsqP0JU8+8NUWL8lSATfd2lQpk2xadnudi0frcabOKnJO/xU55HhZlX
-	HVB97aj2+OJ9moCve6qc8jjtpe120a5bVO8Nk1e42adfn0EwP6wqUKIywhxOS/1GdUH
-	TVaMGv90WZkSDhZ0OLKabLDr5KU03//N369ArJm8=
-Received: by mx.zohomail.com with SMTPS id 1770220751775218.7288851516015;
-	Wed, 4 Feb 2026 07:59:11 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XnzGhoQx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1A4C19423;
+	Wed,  4 Feb 2026 16:06:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770221226;
+	bh=zgeg4LpFYkGts44vRDwLwUa+VYSDlRkllv2N4lJEvvg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=XnzGhoQxZKf3UQUh2YoZFN9qW8ovu2POoWF9WjU6+PWtF+yVh/x/ub22/QXkV9h+Y
+	 xQAB+vpKbZNTxsxvYOGjMKFs+zhQYNcpvhtzg5hwZy7PC72ma7i23uU5zASOCB3d7U
+	 JE+DG9j6685I5plBOtUzYIFke4zPfub1mdjahapJr4+/uYqYwArr2iW9Zzh+tL+4i4
+	 qocUIrDo/U8co47MA3m34ke+IGQfRBAohAjf5uTGNfYgwIiciKP9K7vnqOWNzL2cSf
+	 u0QkyK6DDvaohsw0x3RfqmciFoHurjoxlEfTbDT+pLK5v/6DvUWtiQU+mKsVxN/335
+	 +mgP920c5zjTg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
+ Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
+ <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
+ Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, Igor Korotin <igor.korotin.linux@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen
+ Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
+ =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, Asahi Lina
+ <lina+kernel@asahilina.net>
+Subject: Re: [PATCH v14 1/9] rust: types: Add Ownable/Owned types
+In-Reply-To: <DG6AIA0QK77C.EKG7X4NBEJ00@kernel.org>
+References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
+ <20260204-unique-ref-v14-1-17cb29ebacbb@kernel.org>
+ <7uftlTZxNVxMw7VNqETbf9dBIWLrQ1Px16pM3qnAcc6FPgQj-ERdWfAACc5aDSAdeHM5lLTdSBZYkcOIgu7mWA==@protonmail.internalid>
+ <DG6AIA0QK77C.EKG7X4NBEJ00@kernel.org>
+Date: Wed, 04 Feb 2026 17:06:50 +0100
+Message-ID: <87fr7gpk6d.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 6/6] rust: io: remove overloaded Io methods of Mmio
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260202-io-v1-6-9bb2177d23be@nvidia.com>
-Date: Wed, 4 Feb 2026 12:58:54 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- driver-core@lists.linux.dev,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org,
- Zhi Wang <zhiw@nvidia.com>,
- Lyude Paul <lyude@redhat.com>,
- Eliot Courtney <ecourtney@nvidia.com>
-Content-Transfer-Encoding: 7bit
-Message-Id: <50942329-2CAD-464B-AAC6-2B147ECF7385@collabora.com>
-References: <20260202-io-v1-0-9bb2177d23be@nvidia.com>
- <20260202-io-v1-6-9bb2177d23be@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+"Danilo Krummrich" <dakr@kernel.org> writes:
+
+> On Wed Feb 4, 2026 at 12:56 PM CET, Andreas Hindborg wrote:
+>> From: Asahi Lina <lina+kernel@asahilina.net>
+>>
+>> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+>> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
+>> `AlwaysRefCounted`, this mechanism expects the reference to be unique
+>> within Rust, and does not allow cloning.
+>>
+>> Conceptually, this is similar to a `KBox<T>`, except that it delegates
+>> resource management to the `T` instead of using a generic allocator.
+>>
+>> This change is a derived work based on work by Asahi Lina
+>> <lina+kernel@asahilina.net> [1] and Oliver Mangold <oliver.mangold@pm.me>.
+>>
+>> Link: https://lore.kernel.org/rust-for-linux/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/ [1]
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> Given the From: line above, this needs Lina's SoB.
+>
+> This patch was also originally posted by Abdiel and Boqun and I think we should
+> account for this. I mentioned this in a couple of previous versions already,
+> e.g. in [1]. I think we should account for this.
+>
+> [1] https://lore.kernel.org/all/cc28d048-5e0f-4f0e-b0f2-1b9e240f639b@kernel.org/
+
+I had a question about this in the cover letter.
+
+It is my understanding that the SoB needs confirmation from the author
+if the code was changed. I changed the code and did not want to bother
+the original author, because it is my understanding they do not wish to
+be contacted. I did not want to misrepresent the original author, and so
+I did not change the "From:" line.
+
+I want to be clear that I want to submit this patch the correct way,
+whatever that is. I will happily take all the guidance I can get to find
+the correct way to represent the work of the original author(s).
+
+How would you prefer to account for the work by Abdiel and Boqun?
+
+Please advise about SoB and I will correct the series.
+
+
+Best regards,
+Andreas Hindborg
+
+
