@@ -1,158 +1,203 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4012C32F753
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 20:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770324926; cv=pass; b=ekxfSMfBXGBnCx5PUDQPyIvjdWNYR0ajOOtOwFwAeMm/5wc+UAppa69W1sN6MU5KPmW7A4117qVA6USos746RhldIMQyqeamJox0NrLbXI+NSp7pGxsmeIV7NPZGSzZVQ6zcMZioUjRZF+ez7WUSXRfG6C2dOx3Ng7+mY3KLUEo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770324926; c=relaxed/simple;
-	bh=xjTm4UTRy8OKd3ez41ZxqWldIxjIWM5KqYZRXhAXsKQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NZYRNcqAZQZ6DDUl5/kaIAkXXyTnBxQH3VZT5FoeaPOffKSiX6ekpKEZJkpo8/H4vIeQ+GX/zc2+BcvByLaracOX1YFMeLi5hDwr5lSSDO2UENt4TYYcncSyQI2RIKCla77+23siw8glWNPFUISNgJeAWoaNk5wZZEqylTU8osw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=glPF4Hyz; arc=pass smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D169330338
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 21:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770325224; cv=none; b=X3Ccc6juYSX34rByzAcIxqVl1m8T4NizF58Xk/0Q4frgtivbg0dxnEC4OudD90SYpd7WkfkcjMj3Z4Zn5ip2up9L3P/mZAwCuyQJpOK99esKl2rNpblPV89m7CrfZsofrlKUuXMJryWqdM5wf4CbOsHXwEvuupSGFdCQ3H6TJbY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770325224; c=relaxed/simple;
+	bh=/zc7hnOqDaQfbuR6q2umqihJtzF+bS26O4CjMYiORPY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=cnzpE0MnZsTlrwfp5k0bq8hSHhDe+EUvAvXdxEZPyNj5A85KREO3Quv+6tyYQRjUOW2MWKGzaPBJGFseiEgY8q/krxDJ4SvtepQ/n4xjoBAZzx9L1JeVxg6ayhIMSmPKehsH0VVq0DJqGfQUMkEoHBGgGmPAoDVWlGs2OXva2Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CbFUBmIl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="glPF4Hyz"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-124a2dc92dbso63009c88.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 12:55:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770324925; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NuF4iaATe4JwSo/MsXhS2oJKDce2wd1IemITG7z7/YRwvBloDTIXc+hLuPh2qTQAPd
-         nLL5wtoqy3xZqzZa//WkhUz+8HWFedAkTBWBRb1wJEsFYMkUuoPqddmEmfhnS46XKtCo
-         sR0CJJoVcp1kwMVvQQwXj6/0TD7cUv6X1e0oVHB3Oo81OPZg4rpd1rkNwfIFH1BPs4/U
-         J9fHmTNpM6qjOAFaONscIkxug6oUeBIFxl0xyWpVwrl2rrJuSPp0HHYrDY4Rw5YG7xMF
-         YPxoDjiBrhYw0SC4VvIYH5y5w9VY9DC/gRSoV9WzMQV7tfnUPa2stWZQ4VQ3XYR7lzeS
-         c/2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XKZTuSGQUxxiUmKbMSguO9+vRoDm0aoqPfiDa3GzLUI=;
-        fh=yt3kCp48Q/Xbrkb3HMgHTFDCWhJZ0uSctOrL3tps74k=;
-        b=jpYR0X7A53ELNxrB2weEYHPDUbhOWoCaW2wUd6xKfKvQ4IO6au9X0bLkcW3OnZcy9K
-         ebedPSRLcEijwp5oVrvq6nrYgqhfagJl/IPO+tiK6t3BP1ubbQ1OzwDjfX8eXia96NZv
-         U3msZi1IqQURlf6G7T/V6a92PKOrBTHe7fbi4wcuD8qBpS+hnyqUOrP1KKx/ypgbaiwr
-         /X+bkon9mnaieDAV6Nzuf9DFPekk3+t/3CPSK8EgnMg0KqjKhApKV8OPgSKxmc/qsknv
-         B0qYrBVh1opGpsPPQu23Mp+eT8/+inGXwMP0ZItHlsjhtMOpwnj7xkPD3EOIPH5btSPv
-         +Stg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770324925; x=1770929725; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XKZTuSGQUxxiUmKbMSguO9+vRoDm0aoqPfiDa3GzLUI=;
-        b=glPF4Hyzs1TVxTuLjI/8e5VHS5F7f8nNvS7/Hxl4jmEdAPL3GRC0xSyxLHD5XhxHWv
-         9F9zz/vaQnjNoQm/7Wd6WrWcUa8Fy4DkuiOUfle691iHU24LJ97nhJGx5i/YONJB0NbV
-         ghLzrJp+1tIhegz6kx7gjofOJuB+GVNyzKiT1M/CXCvFoI2KHK0u+aV+Y4pKNy8azoj2
-         lqk8bsbr1Fm97QN34Z9U96IUZoPVxamqgRhbCw8JuFB7MZ2jGAhTvVVFgyh26RZfZvmd
-         SKMho/46TEbUuAtyfCsN8lk9Q427iV0vYQfLcQ6qUKsisfAOk18O9s3cX860AbHtgYRi
-         shbw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CbFUBmIl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770325223;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zjDxj9GBrwvwoCRGBKU1o8l9D2Apql2Zga2uAnN0TcE=;
+	b=CbFUBmIlOpLjcOptSwpjq72v1Qx/lwzgoPuS1iDjwI6nitdqwcZyB5yfnbQX+juidAp4tr
+	xn6qpFZrhY83qwGyjm5rkKLwd7K4vQXezW99fiCdIQBguxmqodgYH2uTG37pCN/jvgTxRn
+	/MJFVnfCVpxlHlwbAhOSTTcZrDa6hiY=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-135-BjFExG20NR2c2kkY0muDNg-1; Thu, 05 Feb 2026 16:00:22 -0500
+X-MC-Unique: BjFExG20NR2c2kkY0muDNg-1
+X-Mimecast-MFC-AGG-ID: BjFExG20NR2c2kkY0muDNg_1770325220
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8c538971a16so350616385a.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 13:00:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770324925; x=1770929725;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XKZTuSGQUxxiUmKbMSguO9+vRoDm0aoqPfiDa3GzLUI=;
-        b=KddD43n2UfZ0hXOkK6EizUMHnZXfbCINmy6zTfffb+GHAa8LRJ0lfF9lZ+UrwesDsm
-         RQKIilo92u4xDRzqHCcJFXvZWxJ8OZKQP8yYXoPeacc0W8bPkyINnb9BeL/Q9CP45U6N
-         AQrFORHOPxC6YZRt4Bt31UIW78jyXC3IQOFhbbleCNhHz0l4YoP/K+REDg2Lq+HSzZ7R
-         XN5qyY9DmHbr4d819lJR4lx5OUxbWrObRKY8CTluj4Gdet8sCkBgYpc+YfeAyhy4bC1o
-         zRP2jQI+uQe/zSOUPgxSjp4sCq8ZKKRyg0eoUwgBILHTdY4aFJQ/o1bzeUAJgEeWCJ72
-         6DVw==
-X-Forwarded-Encrypted: i=1; AJvYcCXTsoxX1HoxZui1wJyoQR0OdegDklP3FyyhrPn09mYxdSDCWf3u32I70VZL1Vb6RS7takTZZCEsru+/+sxN/A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR+olEy74DaytO7Y5NhW4kLeWvy/KcqTKmPvie4ywcyuGlT/Yt
-	bHKCqF1oS2l0pu+ut2bumqViRbjMexnY1pT4M/9nyY/CS4BdTyvQ+MA5XnfKyMfvuuEj7yEEyGS
-	0uCZ0jcCHe3RZyK14cFjBFBkKu+nem4I=
-X-Gm-Gg: AZuq6aLktiBsOVHJ37GBOOF2QklmdN1j9vBG8+2Uc0jYuW2ep7qna9FEgP6BJaq146d
-	M8Q/LiFM15+0n7y5tpUHdj8A5EQDxpecEpM+biZZJ4xgfagDF3YiXaxzZS404Tm1klJueIr099N
-	5iIs/AGw/OGM4PIcNLmbuk34D8W0UFmX+QzqJAXmoXTp/NTXEkbpFZxwFDkKqp8lPCU6u16Afuo
-	Y53ZQyWVHyymlEv1reWekngwwee0+GDoiw9w47TWWkqjKDQb9SM/5vbE0cQ3++OETgFjR7JgTMo
-	BTwyo42uyQGX5X+mSbXxCanOrRX8NWAvOpeZAiiMVU1MWKcwMPabcyeh/ibvteafLM9R8g6Y967
-	EddS2oX3mRDlq
-X-Received: by 2002:a05:7300:c9e:b0:2b7:24a1:865d with SMTP id
- 5a478bee46e88-2b856496e71mr93609eec.3.1770324925279; Thu, 05 Feb 2026
- 12:55:25 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770325220; x=1770930020;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zjDxj9GBrwvwoCRGBKU1o8l9D2Apql2Zga2uAnN0TcE=;
+        b=P0V8rsJ7p7IFaFZWswaVHoD8zNqcuy5PfntkemSKvsTNs1tRvjqNt3yR7DZrJ2s0b7
+         l6vkWUyuQLKnGxuyePuhoX0WyhT3Zes1eRgBBfybtd13Ec89bO+8+YanhxSHngRRQ9Ii
+         pQmS6GPKpPOcGpyGPvVG63JS1d7M/TV5Nr8C3+CmEsNlzkSWdl5jNoGumApf2x9JJ0Hc
+         ryjlFOmAZo0m4n/x9iWBUSvMZGFvJCt+3IfzJ9PmPi98CxQlrlsbwlqWB20+Af6h1OJp
+         yhClviL4tyvQhuQzjKutWtboqqSviBx6ArrADp1bc9bsvbpsSapXTCAabG57dFPfo/bq
+         xiIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDm6sJ5lNrMTTbt7fudG8OoSnAnoCwGB63H/VYpwdpuEsAg1SSzCZADyZoUSwvKXOYcL5Mg5hlvuH041+UAQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp6cJo3xjp7JAkLhAIrZTuDAb42NV+yg7kcgHpm2bGSqP/+fJh
+	7ZGTGKAb/bKby9HEr+XstGF+4APCPQrzMRgNbFu4Hc68aCan5DtJ9DpxC0jLN3vHT5NX3VBeKAy
+	j+DGNAE2YB2l1kkxgyxhYfvTeIFt1WwmEwYWy/KPI9ywJ00L8kANNlrCaToYjkY+d6aI+
+X-Gm-Gg: AZuq6aL/sdolbQccQbjedE47c9f12bKgzt2oUfdJOuyeAt1yyleyIy0WBFRWdw/k2km
+	pqK7C4n6icaZy/w5noZEvrkiixETe0g6MdhxoaqnsxlP6jPG4GjK05Q/Fbn1qFT5Q8DeMC6pYPE
+	T9jkyY+sEMjoJKFhOBmMTnF5NLchdArO4Wdmm+PZJjhcPUxnOzrulzBnV9zMT+v9hQuOztua4zR
+	vSc+XCxDQhCOS4zwNfGD4Z0xC0xXBjhFDujL3f2ZxLxVeWIPC83mxz/4r6ZPKQ8ydt98FfzSijw
+	Ak7CCDfOF2yDZUbj+CicgC9mxAp3D/7WJlJ1NS1gARiaZL5iad8EIlW0jO4mohGpkPiC9nl+Asp
+	7PzKMoL0Rse5RibQ=
+X-Received: by 2002:a05:620a:460a:b0:8c7:1952:7894 with SMTP id af79cd13be357-8caf0581494mr57918085a.23.1770325219919;
+        Thu, 05 Feb 2026 13:00:19 -0800 (PST)
+X-Received: by 2002:a05:620a:460a:b0:8c7:1952:7894 with SMTP id af79cd13be357-8caf0581494mr57908285a.23.1770325219041;
+        Thu, 05 Feb 2026 13:00:19 -0800 (PST)
+Received: from [172.16.1.8] ([2607:f2c0:b010:9000:4c85:f148:4c91:943a])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9fdf692sm17571285a.44.2026.02.05.13.00.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 13:00:18 -0800 (PST)
+From: Peter Colberg <pcolberg@redhat.com>
+Subject: [PATCH v2 00/10] rust: pci: add abstractions for SR-IOV capability
+Date: Thu, 05 Feb 2026 15:59:47 -0500
+Message-Id: <20260205-rust-pci-sriov-v2-0-ef9400c7767b@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <a798e6a368639f7a1ce633a6dfecd088d6ed4123.camel@perches.com> <20260205014218.2202385-1-jason.kei.hall@gmail.com>
-In-Reply-To: <20260205014218.2202385-1-jason.kei.hall@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 5 Feb 2026 21:55:11 +0100
-X-Gm-Features: AZwV_Qj77gMu1xEmF3bHrvD1HRLq5lq1Wbcacx1GXaqBncTZVSC4BXihbx_yDtM
-Message-ID: <CANiq72=38f0dcyt6f3XDf4cZ809cLYghWj+72p+j=w3mFLv=aA@mail.gmail.com>
-Subject: Re: [PATCH v5] scripts: checkpatch: move Rust-specific lints to
- separate file
-To: Jason Hall <jason.kei.hall@gmail.com>
-Cc: Joe Perches <joe@perches.com>, Miguel Ojeda <ojeda@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Dirk Behme <dirk.behme@de.bosch.com>, 
-	Andy Whitcroft <apw@canonical.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/13MMQ4CIRCF4atspnYMsKKLlfcwFiM7yhQuBpDEb
+ Li7RDurl7/43gqZk3CG47BC4ipZ4tLDbAbwgZY7o8y9wShjtTJ7TK9c8OkFc5JY0dN0s0pfDfE
+ IHQXJJab396/qPucf1dr906pR4TSN5HbWOXKHU+I5UNn6+IBLa+0DunqYvZ0AAAA=
+X-Change-ID: 20251026-rust-pci-sriov-ca8f501b2ae3
+To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Robin Murphy <robin.murphy@arm.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>, 
+ Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
+ Moritz Fischer <mdf@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
+ Zhi Wang <zhiw@nvidia.com>, nouveau@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
+ linux-fpga@vger.kernel.org, driver-core@lists.linux.dev, 
+ Peter Colberg <pcolberg@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>
+X-Mailer: b4 0.14.2
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: SkWAD2SMsWGTl6YsPgNw85CCBwcMnStzH9erdNKs2ao_1770325220
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 5, 2026 at 2:42=E2=80=AFAM Jason Hall <jason.kei.hall@gmail.com=
-> wrote:
->
-> Move Rust linting logic into scripts/rust_checkpatch.pl to prevent
-> further growth of the main checkpatch.pl script.
->
-> Warn against the use of .unwrap() and .expect() unless accompanied by
-> a '// PANIC:' comment. This enforces safety standards in the Rust-
-> for-Linux project until upstream Clippy lints are integrated.
->
-> Suggested-by: Joe Perches <joe@perches.com>
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-linux/linux/issues/1191
-> Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
+Add Rust abstractions for the Single Root I/O Virtualization (SR-IOV)
+capability of a PCI device. Provide a minimal set of wrappers for the
+SR-IOV C API to enable and disable SR-IOV for a device, and query if
+a PCI device is a Physical Function (PF) or Virtual Function (VF).
 
-Ideally, this would be two patches -- one performing the move and the
-other adding the new lint.
+Using the #[vtable] attribute, extend the pci::Driver trait with an
+optional bus callback sriov_configure() that is invoked when a
+user-space application writes the number of VFs to the sysfs file
+`sriov_numvfs` to enable SR-IOV, or zero to disable SR-IOV [1].
 
-Either way, the file should be added to `MAINTAINERS` -- not sure if
-Joe would want to maintain it or perhaps have a new sub-entry or
-perhaps a co-maintainer etc.
+Add a method physfn() to return the Physical Function (PF) device for a
+Virtual Function (VF) device in the bound device context. Unlike for a
+PCI driver written in C, guarantee that when a VF device is bound to a
+driver, the underlying PF device is bound to a driver, too.
 
-> +                    "Avoid unwrap() or expect() in Rust code; use proper=
- error handling (Result) or justify with a '// PANIC: ...' comment.\n" . $h=
-erecurr);
+When a device with enabled VFs is unbound from a driver, invoke the
+sriov_configure() callback to disable SR-IOV before the remove()
+callback. To ensure the guarantee is upheld, call disable_sriov()
+to remove all VF devices if the driver has not done so already.
 
-By "proper error handling", I guess you mean bubbling the error up
-with `?` or similar, right?
+For PF drivers written in C, disabling SR-IOV on remove() may be opted
+into by setting the flag managed_sriov in the pci_driver structure. For
+PF drivers written in Rust, disabling SR-IOV on unbind() is mandatory.
 
-There are also other options, like using `unsafe` sometimes etc.
+This series is based on Danilo Krummrich's series "Device::drvdata() and
+driver/driver interaction (auxiliary)" applied to driver-core-next,
+which similarly guarantees that when an auxiliary bus device is bound to
+a driver, the underlying parent device is bound to a driver, too [2, 3].
 
-I think perhaps the best is to keep the message a bit less strict
-(since there are cases where it is OK) and put the details in a link
-to, say, https://rust.docs.kernel.org/kernel/error/type.Result.html#error-c=
-odes-in-c-and-rust
-(Cc'ing Dirk who was involved in that).
+Add an SR-IOV driver sample that exercises the SR-IOV capability using
+QEMU's 82576 (igb) emulation and was used to test the abstractions [4].
 
-I am thinking of something like:
+[1] https://docs.kernel.org/PCI/pci-iov-howto.html
+[2] https://lore.kernel.org/rust-for-linux/20251020223516.241050-1-dakr@kernel.org/
+[3] https://lore.kernel.org/rust-for-linux/20260107103511.570525-7-dakr@kernel.org/
+[4] https://www.qemu.org/docs/master/system/devices/igb.html
 
-    `unwrap()` and `expect()` should generally be avoided in Rust
-kernel code modulo some exceptions (e.g. within asserts in doctests).
-If the use is intended, then please justify it with a `// PANIC:`
-comment. Please see ...
+Signed-off-by: Peter Colberg <pcolberg@redhat.com>
+---
+Changes in v2:
+- Move logic to disable SR-IOV on remove() from Rust to C.
+- Add driver flag managed_sriov to opt into disabling SR-IOV on remove().
+- Demonstrate flag managed_sriov for dfl-pci driver.
+- Uphold safety guarantee for physfn() when PF driver is written in C.
+- Let physfn() return error if driver flag managed_sriov is unset.
+- Use "kernel vertical" style on imports.
+- Use to_result() to handle error in enable_sriov().
+- Note Bound device context in SAFETY comments for {enable,disable}_sriov().
+- Demonstrate how to reach driver data of PF device from VF device.
+- Add missing #[vtable] attribute in PCI driver trait example.
+- Add missing #[vtable] attribute in nova-core driver.
+- Define struct MyDriver such that physfn() example compiles.
+- Replace VF -> PF in doc comment of is_physfn().
+- Add #[inline] to is_physfn() and is_virtfn().
+- Link to v1: https://lore.kernel.org/r/20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com
 
-But I will let others comment...
+---
+John Hubbard (1):
+      rust: pci: add is_virtfn(), to check for VFs
 
-(Also, please Cc all the maintainers/reviews of Rust and checkpatch --
-doing so here).
+Peter Colberg (9):
+      PCI: add driver flag to opt into disabling SR-IOV on remove()
+      fpga: dfl-pci: set driver flag to disable SR-IOV on remove()
+      rust: pci: add {enable,disable}_sriov(), to control SR-IOV capability
+      rust: pci: add vtable attribute to pci::Driver trait
+      rust: pci: add bus callback sriov_configure(), to control SR-IOV from sysfs
+      rust: pci: add is_physfn(), to check for PFs
+      rust: pci: add num_vf(), to return number of VFs
+      rust: pci: add physfn(), to return PF device for VF device
+      samples: rust: add SR-IOV driver sample
 
-Thanks!
+ MAINTAINERS                           |   1 +
+ drivers/fpga/dfl-pci.c                |  17 ++--
+ drivers/gpu/nova-core/driver.rs       |   1 +
+ drivers/pci/iov.c                     |  41 ++++++++-
+ drivers/pci/pci-driver.c              |   3 +-
+ drivers/pci/pci.h                     |   2 +
+ include/linux/pci.h                   |   8 ++
+ rust/kernel/pci.rs                    | 165 ++++++++++++++++++++++++++++++++++
+ samples/rust/Kconfig                  |  11 +++
+ samples/rust/Makefile                 |   1 +
+ samples/rust/rust_dma.rs              |   1 +
+ samples/rust/rust_driver_auxiliary.rs |   1 +
+ samples/rust/rust_driver_pci.rs       |   1 +
+ samples/rust/rust_driver_sriov.rs     | 127 ++++++++++++++++++++++++++
+ 14 files changed, 366 insertions(+), 14 deletions(-)
+---
+base-commit: c5048ddee936ca5ce0aeb79172ce512130779d31
+change-id: 20251026-rust-pci-sriov-ca8f501b2ae3
 
-Cheers,
-Miguel
+Best regards,
+-- 
+Peter Colberg <pcolberg@redhat.com>
+
