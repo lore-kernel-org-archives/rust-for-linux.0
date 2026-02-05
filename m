@@ -1,271 +1,318 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022106.outbound.protection.outlook.com [52.101.96.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AFA283FFB;
-	Thu,  5 Feb 2026 13:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.106
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770299072; cv=fail; b=Ks5uS0ZXvDJxiinRiyccgugG1LIjDJ5bvbso2aDv8a1ySr4xgMiyQuJWb3tt2EhaTN45CHNwAE66B7+j+QyB+9vEbBjcZDbiuOpf0rpUVQVf8m8eVG53SKC7TSXCvuTG0mhB0hskPE/inUACSjDT4g9zlBEkIe82DTWabivyBok=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770299072; c=relaxed/simple;
-	bh=sOwdvB3Epncvh/oDyYXRf+PA/7TucYc9gCZhra02FxI=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=XhRuHfelElq+2VM4vOlgh6ZOL+2joQtxKheWTIxFQauNwU/SkICbu6QRCtLl87Ng196QxFidXwmRVKl76Q/+b9Ygno8JqJXQ2ii0zP6r3hw8qU2glJ1rgEtWDgXsAXurKMPMUzrw8AvCgDs8ao+1CHeXVRdqSMHRy0KSZ7K8xV8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=uVvqzrU9; arc=fail smtp.client-ip=52.101.96.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7303B5300
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 13:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770299144; cv=none; b=K7xHpphqJyr0fa7K8i43cHbxXHZaBnD5bN4Xc1XRmmq+BvUrjwXSpJ1No337WemMElbWm/eF9GaHw+EwTEPDAUzP5TaXy0SjwbRvyVsEEFI/d7oSjDFkF87jp2oFy8NNCnBAQXz2QKwpthrc0VSjojeWgDOraR23wABIhk6F7LI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770299144; c=relaxed/simple;
+	bh=Nthldf7lbRoMz/nlz/JOadJ9gCSkTx7qUh5lKZ+u5Jo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KY0Ys0eVj7HuUjZsbPjtsCtEBJD9Wr+DgCzfkLtAjZK2tpD0uk2rd1q6UpG3YxuvSBDkGyreRE8/focGhsCmOKpwZHpY4heD8Dm334QqXnbVLNTF1j0v8EUUQCytc4Lg85EUe2Us3SC+H7zxo/orGbeqNS5iW2OXK+EPIk7YpC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pcwkjb8d; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="uVvqzrU9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SA4oc78VaDJMl9MzTkPLH1vP94g59gVNTH0kJikyjfV43m1A1PHqE+5q+1Ywj2C8XAAHucZP03Fs7owVFl3BCw11bNA5Y1yt9gjjyG8b+TG6u8wV0ApA9lbDM30DwExsLQT/dK9VFv4lNwzajnp4s8Fd/sT7LaNHh55fHcz2aCupW9bH9dnpF7kDH3a+6qVZecA/82sUbastTMK8HKB1IsEDEcx1jCF9KuQ/ufw1IaBpgCm9ipXA2AOCiSIiLLRycByQI/aktE+IIhhdtLrpMicWGNaMojuytDQXR0IvhSKnlqhwjL3lmuXoZBvaNGMKggxp47/0Hb8NKzO+gkgu2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OvqSTqOtwmZHhQr+EO/y7pZcOX2HwfOf+Xp0/0sXi7k=;
- b=OjlTUmJuaHflHjWdAoK9L1tEL4ipsV2ZDZ/fsE35XvXEADiNI9aAdezQRG+g0NURR9Z93WRip/p2ir3o1R6+vwmH9xastA4/EU1PnLzKgPbGbTIvKqCGYJELZd1eP1xa3oiKMFWb/3IVXkfykMPVhMHIGHPj4QW0CBo0oiAVdHrOF/BpLnAsOKcBtaojXn41oCTFpYsuu6znk5lvpB6t0vg6KiPc2SejlaScQh6hgEWkVKBAfCY60ChM0tv8MruZvHzyQQ61tx6FvMB51ql1qQ6zdveu1cbfChFLpwd6IN1Di7Yq4QG9pkH1+Qa2vzwL5teVKfMzDNYE+wpEMxyOeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OvqSTqOtwmZHhQr+EO/y7pZcOX2HwfOf+Xp0/0sXi7k=;
- b=uVvqzrU9booGAtxoUrz1imTbNI64BA4QNEHC4kx1wHVP1r2q0mSrM0JRQIaWnbHpqpqW9Wq1SEl3CIcCvPIvr8cWoxcI5LDkay0yl69usWeMucTxdH4xSIFR+hIzNPdJxb1Qlmz6FMj5o9nDXwdcxKRB6bUsV0SW/PXpkrU99M8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB6517.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ce::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.14; Thu, 5 Feb
- 2026 13:44:28 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Thu, 5 Feb 2026
- 13:44:28 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Feb 2026 13:44:27 +0000
-Message-Id: <DG72N8GDQ9E0.2FUX560O3I19X@garyguo.net>
-Cc: "Matthew Wilcox" <willy@infradead.org>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] gpu: nova-core: fix aux device registration for
- multi-GPU systems
-From: "Gary Guo" <gary@garyguo.net>
-To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260205041120.127106-1-jhubbard@nvidia.com>
-In-Reply-To: <20260205041120.127106-1-jhubbard@nvidia.com>
-X-ClientProxiedBy: LO4P265CA0010.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ad::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pcwkjb8d"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47edf8ba319so17364075e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 05:45:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770299142; x=1770903942; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LAmLG57j8Rj3itBaST86JcST4zg6YUNTubfQVh5YLWw=;
+        b=pcwkjb8d5Z/RbTXHqfYViJSWEmzkkM6RCaILT4xMghnOJCQST/NnFuyBQhgoyZN5wD
+         fNqg1fJA4fdTKn2cpn+kE7P3FE2bqUY7fSX46dD7gqW8h8Bfys8oPjOA5Fo9E1Q9nGsW
+         1FHjvF04I2+CDD+oc9SlHLSlK5COsL4sDraSDjincPeVZPtGpYH8URpD4MXLytXvmBhf
+         3jpwyiaL73k4DP9nq7Agw8R5KlFXdaHJSFzi3LdpMHdt8R+pam0BHkKdMC4o0EzD+bes
+         p2iWBwABn5Ixc7iJ8qNve7DClAsRDvPiA+sv0sGsghKDBvVvP9h2cKE0e5zDRVAnKC1Q
+         WA2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770299142; x=1770903942;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LAmLG57j8Rj3itBaST86JcST4zg6YUNTubfQVh5YLWw=;
+        b=UqeVL8FuC4XgG7W0y9C134yT75O6LVNJDYuus3PYRBgpbkC3xzt/no7vouBP8QMirg
+         dm4ORjmYmJNcsVk1WMrOSXJxdGoKSr1CE9+gTk0JLOlhRvQvYoVLa0aAT+p2H6xX/h1/
+         7egUbpy1E4QYhENgfKuTlfMJZPaR1SN14Xk3kxF0vuuFCbaRygdylGyIwe7UjqOhbdMC
+         +do95vXqVP5i54SPruG4LuCPNGZPthef7FnuLImyT4hy3bKvYwHj42Cx+3Isy1P2gaR9
+         k3Y8J9Ic5mzZcS5gA43SaVbXpnRp12XyHR4SKcaHs83zdLR7gpAs+CLqrJxeGiRDUgBE
+         sdRw==
+X-Forwarded-Encrypted: i=1; AJvYcCWn499oe6wt3krWbjH31xSIVSQ6N0eEKqP4ZdR53Dae0NHwLE6cmbIvloM4rO5uLmU4dGQuoUvynIx2b6qJRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnE3idM6YwlHpZSPYm1xy53AvH03DVnW+wOcQFDuxwO5w2Y9+m
+	rfcENzJmbKISVYDO2YarN/y/ZQs/1hb1Mx/Z6c2IOWdPixZ/pnEq2QKT8ku2AMsPhREYEH/wphw
+	ebgrPp+fyJ+tBZJjrMw==
+X-Received: from wrbfq11.prod.google.com ([2002:a05:6000:2a0b:b0:430:f303:97d3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:4283:b0:431:48f:f78f with SMTP id ffacd0b85a97d-43617e387a3mr8591141f8f.1.1770299141977;
+ Thu, 05 Feb 2026 05:45:41 -0800 (PST)
+Date: Thu, 5 Feb 2026 13:45:40 +0000
+In-Reply-To: <9a037fdf-1a98-437f-8b80-7fdc53d5b0fa@lucifer.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6517:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5cb40c0-6eec-4ad2-6c66-08de64bcaeb9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cyt3Y3lPYkJnWGQ2SHJlbVVZSk9PbXBsY1cxWjlobTFqbERQOXZYRVZmTGFz?=
- =?utf-8?B?S2p5VDg4Rlo3OXpZNlNCV1pHTkZYZUpjRGZ0Smk3enVuME53a256SjV5OThr?=
- =?utf-8?B?dTdBWGcreHhKeGlzZm9WN1N5TDJVbDhpVnhCQjA0OUNEOGM1QzVFYXd1VHJV?=
- =?utf-8?B?RXpGL2UxWDhMVUkrYktuMmxKd2RzemRXZjlyMEFPQWJvNnFTOEk3RXRob1Na?=
- =?utf-8?B?VU43c0tCa1FUVWtIc0lwUktLZFFCbHpxWTBwTDZTWWJFaDF5VjlYZnRoZ09q?=
- =?utf-8?B?N1Y2azhnaERTaEVkWEhvR0J1VFh3Ly90eWQyMWJTUjZJWmhaTmJ1b3dnUCtI?=
- =?utf-8?B?bjN5VG4xYUNIeDF6UXpZZHcyaEpJVytha0ZIdzRvZUwrQytDc20wZDdFTkRx?=
- =?utf-8?B?V2ZIY0s5T0FyTG9QT3NmcUJvT2JSZG1pdEtCZVQydkZlR2ozblBmaVIreEVE?=
- =?utf-8?B?cjZGems1Q2l1bTdZWXdqMDNyaXdkbzdHaWcrSE5FeWIrdkVCbWVoSkV2cTFn?=
- =?utf-8?B?dWgydVlnRTRHamJ2TDltc29jUEpOSjU0NURqSGZObEZNVkdHSjRDbzBIT09t?=
- =?utf-8?B?SjFWZE9DNkg2bVpPY0ExejIrb1hOUFFMdUd2ZmZKUUovTGp4R2JKQXRJejVW?=
- =?utf-8?B?MjBmdFZTMzVYSDRwQU40bDJGeGF5UXlnSEF6QVJpbU5MdmtrVXV1SUFCWTV3?=
- =?utf-8?B?RlBjcm8xUjJaeEhsNWY0TzBCZWhYMllhT0NZZWdBL0I1Uys3Rk9iNlJIUEov?=
- =?utf-8?B?VGxFYXkwek03Z1IxVVZtOEZmT05TUExhcHhnY0lDdG9kckljcGZDR283dGdW?=
- =?utf-8?B?T1BlYnlhUmcvc1NQeWk1c2N3V3lOYTZZLzYxN2lOdE5UN3dMTmErZkxWZE1C?=
- =?utf-8?B?dTZWZDhZTEZPSTJTUG82QXhNK3djNFdyei9XbjJRZkVWTTdTd25MbVBzZFRh?=
- =?utf-8?B?UzZEbVlra3Izc2tPdEV3bkVST3lld1liYzB6QWpDTll5NXh2YkpSMmZSY3NK?=
- =?utf-8?B?OGM3WUI4ZWpENndPQ3FRTnd0NElXWGtEbXpsZ2FqTUhiNlpPY3JyS3pBVE0y?=
- =?utf-8?B?Mk91ZW8yalpHYjRoOCtVTVJIL1U1KzE0WDVqT3I2dDJmeFZ3UE00RTUwSXFu?=
- =?utf-8?B?cmdKbmZORUp4Rm9uVnpaaGtib2xSbHowZi80ZmI4eHhOV1JzZ2FKcjkyY2pN?=
- =?utf-8?B?MGdFL2Z3aWswL3l1MldPVzFDL0l0czRMaUUycmloOU5CSkF2RWtLemZNSFpF?=
- =?utf-8?B?WmNKeE1nWkJ1K3NFQkYxZG41aWhxcTlUQUtYVW9YNzltU3c3OVRjS1lxVEsx?=
- =?utf-8?B?Z1hXUjl0RkMzdFVsMVBHeXA0c0wwSE5Delp6bFZpZ0ovUGxlR1gyNFBYVko2?=
- =?utf-8?B?Q1RsM2JESkhJQk5JQ1dPY1h1am13VUh4RW1NQ0NuN09FM2xGR1A2Z0tBTk5X?=
- =?utf-8?B?MkVTd25Bb3JROGtZNjBTSUE1TUZ0ZFhtamNqMlo2T1V0ZCt6Tkx6MHJpNnpZ?=
- =?utf-8?B?NjNzN3FtaHBtMGZVRTQ4eGNqVHhQdjNTN3NqajdoNDI5SjQyOTRYWG1kS1lV?=
- =?utf-8?B?VUVnam5ybURBd3VZTExqUHNsOTBtWjdBdlZDc0N4eStJNXVicy9RdFpwNW4z?=
- =?utf-8?B?Qjh0UitCeUZrdjJZMGpqbkxROG1ESzJrNU8ra01lcSs1NFg4czRyUWJZdkJw?=
- =?utf-8?B?aGlHbGlYRkxHZllTT1hDYlVxZ29ualA5Mi9FV1RxaGtaQjJKTXVyTW9sQ2p1?=
- =?utf-8?B?WTcyQk9icHhzczR4dXhSNlNBU2plbU1qYmRiVDBLYTJSTVRHRitWVmdEZjg5?=
- =?utf-8?B?VXdVczk4L2w2aGxKdmdTNHhYciswZlBTRUlBZjlCMFVsNEtDa0N6VUg1WGox?=
- =?utf-8?B?dkcreCtIY1duNVI4WmJDODBOM3Q2MmtFMml6M1pBVFFoNmZLTko4TzhweDVQ?=
- =?utf-8?B?d1hMSGVseDZla2pkQ3k3OGVuTXcwTlBlWXNheXRybC9ydlM2Rng2L3htRHhl?=
- =?utf-8?B?L3BHbTBpZlpUQUVmMmFoRW5xRmZ2cjJCbTlKRm1sZ2ZXbjNBYitna1o1S1FT?=
- =?utf-8?B?bW8rWWx3eW9DWUJYTklDMG9aY2dBUmhLSklpeHIrcE5wRTdtb0djVEc2K1N1?=
- =?utf-8?Q?agHM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cHNRYmlkUWp6Q28zM1hkNURqRk9qWmVpWFVhWHVvYWFCbE45cFVNN0hBWlR5?=
- =?utf-8?B?dERKWDhUaHNQRE4yS3VvcS9hZGNrUjR2TDJxWmZsUDB4b3VSSEdMZ1ZkZytG?=
- =?utf-8?B?cG9nTURNOGZlTkV2ZzhzSGZwQUM2ZG1JWW1YYjZlc1dzTHF5ZUdXMEhlQkxr?=
- =?utf-8?B?MnVycjBLK0ZXWnlvQWF3K2k0TU44RG5CTU5VVTF2czlRN1ZJVHhuNEk5cVVY?=
- =?utf-8?B?M1hXaXR2SjRLemxzd3Y2NGVaYnNvdzZaTDduQUwvMjJKL3FqMlhFc0hZTDlI?=
- =?utf-8?B?Ym9ndUhVcWVlMU4yZ2ZUV0IyNGtjZWFmbUY4cEF4TysrcUpGUkhJOTZZc0g2?=
- =?utf-8?B?NU1LcU45YUMwOENCckVzRUx4RnNKL2c2UThlZkp2b0RzT1FWc0RWd3R4aHRB?=
- =?utf-8?B?d2lYOVhrRWNBQ3BlUUhQZWY2KzJUaDI4YzdwN2xZNXhpRE5mNXhzRFc4S05E?=
- =?utf-8?B?N2ZaRkJETHBzY3dWTldZNkx1R28rc0tEYUNFNWxZTjJFaVIwWDBZZy9ERWRP?=
- =?utf-8?B?Wi9wTjUrcHBha2IySGtvOGd4OHZqczFQak9ZQWlvWDl5L1pwODhVMXR1UFpY?=
- =?utf-8?B?cXphY2JBb1crUElKU2FQODU3THl2bDJlZS9FYklqZVdSVHljM1puMTZrNUh0?=
- =?utf-8?B?YWV6SnhBNVNBdU1ZL1A1RmVCUDNHdWhQWDFBa2dQU2ZlNGtxVGZzWS9sMGxU?=
- =?utf-8?B?amZpQVhFN1gwN2dFTkpoOHQvaVFXL1Q4WFFhczY0emtEb3VjTDIwTUVRZjNu?=
- =?utf-8?B?cjF5dVhDZnhiWGhCWkZ4VVEwaEU5UkhuVmlCeHc1eTI3aHpBQlBLNGwrS0xR?=
- =?utf-8?B?TUIxRWtvR1hpZXZLQmNacEdXSC9VWG42SXZzK2JpQTNQdHQwRnpQaDR6YXNU?=
- =?utf-8?B?bndEYVE5MmJScVZPTEt4T2dOVVpFZEd1RlpxRjdBVmorSVR4aFY2NjdQQ21I?=
- =?utf-8?B?OW9hUG1ZWEtCbFFOVS9lTVUzQ21aVXF5b29zbHlqWlhBdFFETDI1VzFqNjdl?=
- =?utf-8?B?VE9UN3pmVGZ6MDlmeVphbVl5ZU9ORk9sMDZVV2RtdXZabWJ3TUtTRFdvaDI1?=
- =?utf-8?B?RUhYRTQ4ZnlqY1JFdjZycnlORHJLTjhoRzNkREFlZUwxcVNLSlVGOHB0Nnl5?=
- =?utf-8?B?YldOK2dKTEdlTlFBS1RaVkpvdE51T2xtblYyYVlzSUJKd1FtNXBsZUl1cWYr?=
- =?utf-8?B?RDNnbHVKeTN2ZkVhVUhKNnI4NUtFSFdXZUx5LzEzcDdiRDBaREpMVGJQbXR1?=
- =?utf-8?B?cUx1UFcwSmt5Y0pmWG5vNFFoTnEwZ3FZNlA0TWhxS0VqWUdpb21qNFA2eWZU?=
- =?utf-8?B?OVArQnVxTmExM2IyZVBjd1Y1SnBIeEFxb3dVR0NkSmp0N2MzYTJhbHcrYjhs?=
- =?utf-8?B?L2ZWWHNMWnN5R0toMFJ2YVZVRXpoMmhwZFFYeXZEWGpHQWNyRFZlYzcycUEw?=
- =?utf-8?B?ZXZRNjk0UjRzb21oZy9tV0RxZ1dHVGZhR01GRW1hdS9TY0w5dDk5aHplYVha?=
- =?utf-8?B?aFlSLy93ZnM1M1UreWErOEtCWDMzUVhJZFdxbDNxbnNHSVZTQkVXSlpPWXdu?=
- =?utf-8?B?TlNxNEtTYnpFTlJnU0JVd254R2Q4QzVuSm80em9ybWgxUi9IR2d4N0k4blM1?=
- =?utf-8?B?Wnd4UC9QL2pRYUxsam5WVHhyeno3UW5NU3lLTlkwQkNyVitHbndiTHpXNEc3?=
- =?utf-8?B?a0Q2S00rT0E5UkM5cnFmTUliU1BpK1hOZTdTWjZEVWNvMS9ZSWFkcURYNzQ1?=
- =?utf-8?B?RUxGTlJOcUVLcW9mb2k2SnhKY3UwL1ZuM1krZm1CUkloMG9YaHRFa21iNm01?=
- =?utf-8?B?cWpqQ3dkaHJNZ0xHbjlHWUMyQXlNbWxSellUQThtNWxEQmc2NlNiOVNmeHIw?=
- =?utf-8?B?QytNNXI5amJ2R2ZxSjU0RC9LTGo4TmR0QjVIUGgrYjNFdXFSSDQ3TjdZYTJp?=
- =?utf-8?B?bkU1aWRCRkZVU2tTMUlCOVByZUJ3M0lraWo4REJwZ0dLWHJMdy9BNzZ5Uzky?=
- =?utf-8?B?a3lXS21GSk5TSndqUFpaZVRXUThKbUtQYzRrVkxCcFVGeFQ4elo3WHpUNy9T?=
- =?utf-8?B?Q2hQWGpPOXJFNjJWVjlWbjRWblZMRlNSRVJGUWliQTJ1RldBTkJiZkgwak1H?=
- =?utf-8?B?dE9EcXBvSFprdzB6MzdkaTVjYUR2RjltMmVZQTI5YXpsSyt1bUxkVENTZFhC?=
- =?utf-8?B?Tk9zMlNmYm5BMWVYTjZUcDRVNHF5c0pUdTR6c3I5Rys5MW5zNUl2RlF3WTl2?=
- =?utf-8?B?MGdyTTVoUW5PMEVWS2FrdnZNSkcrTUhocWRlc2FUWGFTdUZRTUUyb1hZTENq?=
- =?utf-8?Q?0HY3PsZ0OiYpga5la0?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5cb40c0-6eec-4ad2-6c66-08de64bcaeb9
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 13:44:28.2448
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T0NO8dZpBhJOCkK1If4EKz8v8CAuK76kuGM6sOFI1k6fOSnmomFMIplwu6L38gpYDURGoV+xAGDQ9iwxCrXIEw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6517
+Mime-Version: 1.0
+References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
+ <20260205-binder-tristate-v1-1-dfc947c35d35@google.com> <9d0d6edd-eab4-4f31-9691-78ed48e7ad5b@lucifer.local>
+ <aYSCNur71BJJeB2Q@google.com> <9a037fdf-1a98-437f-8b80-7fdc53d5b0fa@lucifer.local>
+Message-ID: <aYSfBJA4hR4shPfI@google.com>
+Subject: Re: [PATCH 1/5] export file_close_fd and task_work_add
+From: Alice Ryhl <aliceryhl@google.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Thu Feb 5, 2026 at 4:11 AM GMT, John Hubbard wrote:
-> The auxiliary device registration was using a hardcoded ID of 0, which
-> caused probe() to fail on multi-GPU systems with:
->
->    sysfs: cannot create duplicate filename '/bus/auxiliary/devices/NovaCo=
-re.nova-drm.0'
->
-> Fix this by using an atomic counter to generate unique IDs for each
-> GPU's aux device registration. The TODO item to eventually use XArray
-> for recycling aux device IDs is retained, but for now, this works very
-> nicely.
->
-> This has the side effect of making debugfs[1] work on multi-GPU systems.
+On Thu, Feb 05, 2026 at 11:53:19AM +0000, Lorenzo Stoakes wrote:
+> On Thu, Feb 05, 2026 at 11:42:46AM +0000, Alice Ryhl wrote:
+> > On Thu, Feb 05, 2026 at 11:20:33AM +0000, Lorenzo Stoakes wrote:
+> > > On Thu, Feb 05, 2026 at 10:51:26AM +0000, Alice Ryhl wrote:
+> > > > This exports the functionality needed by Binder to close file
+> > > > descriptors.
+> > > >
+> > > > When you send a fd over Binder, what happens is this:
+> > > >
+> > > > 1. The sending process turns the fd into a struct file and stores it in
+> > > >    the transaction object.
+> > > > 2. When the receiving process gets the message, the fd is installed as a
+> > > >    fd into the current process.
+> > > > 3. When the receiving process is done handling the message, it tells
+> > > >    Binder to clean up the transaction. As part of this, fds embedded in
+> > > >    the transaction are closed.
+> > > >
+> > > > Note that it was not always implemented like this. Previously the
+> > > > sending process would install the fd directly into the receiving proc in
+> > > > step 1, but as discussed previously [1] this is not ideal and has since
+> > > > been changed so that fd install happens during receive.
+> > > >
+> > > > The functions being exported here are for closing the fd in step 3. They
+> > > > are required because closing a fd from an ioctl is in general not safe.
+> > > > This is to meet the requirements for using fdget(), which is used by the
+> > > > ioctl framework code before calling into the driver's implementation of
+> > > > the ioctl. Binder works around this with this sequence of operations:
+> > > >
+> > > > 1. file_close_fd()
+> > > > 2. get_file()
+> > > > 3. filp_close()
+> > > > 4. task_work_add(current, TWA_RESUME)
+> > > > 5. <binder returns from ioctl>
+> > > > 6. fput()
+> > > >
+> > > > This ensures that when fput() is called in the task work, the fdget()
+> > > > that the ioctl framework code uses has already been fdput(), so if the
+> > > > fd being closed happens to be the same fd, then the fd is not closed
+> > > > in violation of the fdget() rules.
+> > >
+> > > I'm not really familiar with this mechanism but you're already talking about
+> > > this being a workaround so strikes me the correct thing to do is to find a way
+> > > to do this in the kernel sensibly rather than exporting internal implementation
+> > > details and doing it in binder.
+> >
+> > I did previously submit a patch that implemented this logic outside of
+> > Binder, but I was advised to move it into Binder.
+> 
+> Right yeah that's just odd to me, we really do not want to be adding internal
+> implementation details to drivers.
+> 
+> This is based on bitter experience of bugs being caused by drivers abusing every
+> interface they get, which is basically exactly what always happens, sadly.
+> 
+> And out-of-tree is heavily discouraged.
+> 
+> Also can we use EXPORT_SYMBOL_FOR_MODULES() for anything we do need to export to
+> make it explicitly only for binder, perhaps?
+> 
+> >
+> > But I'm happy to submit a patch to extract this logic into some sort of
+> > close_fd_safe() method that can be called even if said fd is currently
+> > held using fdget().
+> 
+> Yup, especially given Christian's view on the kernel task export here I think
+> that's a more sensible approach.
+> 
+> But obviously I defer the sensible-ness of this to him as I am but an mm dev :)
 
-Hi John,
+Quick sketch of how this would look:
 
-Looks like this is something that should be achieved via IDA?
-
-Cc: Matthew Wilcox <willy@infradead.org>
-
->
-> [1] https://lore.kernel.org/20260203224757.871729-1-ttabi@nvidia.com
->
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->  drivers/gpu/nova-core/driver.rs | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
->
-> Hi,
->
-> This is based on today's (Feb 4, 2026) linux-next/master branch.
->
-> thanks,
-> John Hubbard
->
-> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driv=
-er.rs
-> index 5a4cc047bcfc..a542ec0b40fa 100644
-> --- a/drivers/gpu/nova-core/driver.rs
-> +++ b/drivers/gpu/nova-core/driver.rs
-> @@ -1,5 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
-> =20
-> +use core::sync::atomic::{AtomicU32, Ordering};
-
-We're stopping the use of Rust atomics. Please use LKMM atomics available f=
-rom
-`kernel::sync::atomic`.
-
-Best,
-Gary
-
-> +
->  use kernel::{
->      auxiliary,
->      device::Core,
-> @@ -19,6 +21,9 @@
-> =20
->  use crate::gpu::Gpu;
-> =20
-> +/// Counter for generating unique auxiliary device IDs.
-> +static AUXILIARY_ID_COUNTER: AtomicU32 =3D AtomicU32::new(0);
-> +
->  #[pin_data]
->  pub(crate) struct NovaCore {
->      #[pin]
-> @@ -85,12 +90,17 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdIn=
-fo) -> impl PinInit<Self, E
->                  GFP_KERNEL,
->              )?;
-> =20
-> +            // TODO[XARR]: Use XArray for proper ID allocation/recycling=
-; for now we use a simple
-> +            // atomic counter which never recycles IDs. A unique ID is r=
-equired for multi-GPU
-> +            // systems; without it, probe() fails for all but the first =
-GPU.
-> +            let aux_id =3D AUXILIARY_ID_COUNTER.fetch_add(1, Ordering::R=
-elaxed);
-> +
->              Ok(try_pin_init!(Self {
->                  gpu <- Gpu::new(pdev, bar.clone(), bar.access(pdev.as_re=
-f())?),
->                  _reg <- auxiliary::Registration::new(
->                      pdev.as_ref(),
->                      c"nova-drm",
-> -                    0, // TODO[XARR]: Once it lands, use XArray; for now=
- we don't use the ID.
-> +                    aux_id,
->                      crate::MODULE_NAME
->                  ),
->              }))
->
-> base-commit: 0f8a890c4524d6e4013ff225e70de2aed7e6d726
-
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index adde1e40cccd..6fb7175ff69b 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -64,7 +64,6 @@
+ #include <linux/spinlock.h>
+ #include <linux/ratelimit.h>
+ #include <linux/syscalls.h>
+-#include <linux/task_work.h>
+ #include <linux/sizes.h>
+ #include <linux/ktime.h>
+ 
+@@ -1962,68 +1961,6 @@ static bool binder_validate_fixup(struct binder_proc *proc,
+ 	return (fixup_offset >= last_min_offset);
+ }
+ 
+-/**
+- * struct binder_task_work_cb - for deferred close
+- *
+- * @twork:                callback_head for task work
+- * @file:                 file to close
+- *
+- * Structure to pass task work to be handled after
+- * returning from binder_ioctl() via task_work_add().
+- */
+-struct binder_task_work_cb {
+-	struct callback_head twork;
+-	struct file *file;
+-};
+-
+-/**
+- * binder_do_fd_close() - close list of file descriptors
+- * @twork:	callback head for task work
+- *
+- * It is not safe to call ksys_close() during the binder_ioctl()
+- * function if there is a chance that binder's own file descriptor
+- * might be closed. This is to meet the requirements for using
+- * fdget() (see comments for __fget_light()). Therefore use
+- * task_work_add() to schedule the close operation once we have
+- * returned from binder_ioctl(). This function is a callback
+- * for that mechanism and does the actual ksys_close() on the
+- * given file descriptor.
+- */
+-static void binder_do_fd_close(struct callback_head *twork)
+-{
+-	struct binder_task_work_cb *twcb = container_of(twork,
+-			struct binder_task_work_cb, twork);
+-
+-	fput(twcb->file);
+-	kfree(twcb);
+-}
+-
+-/**
+- * binder_deferred_fd_close() - schedule a close for the given file-descriptor
+- * @fd:		file-descriptor to close
+- *
+- * See comments in binder_do_fd_close(). This function is used to schedule
+- * a file-descriptor to be closed after returning from binder_ioctl().
+- */
+-static void binder_deferred_fd_close(int fd)
+-{
+-	struct binder_task_work_cb *twcb;
+-
+-	twcb = kzalloc(sizeof(*twcb), GFP_KERNEL);
+-	if (!twcb)
+-		return;
+-	init_task_work(&twcb->twork, binder_do_fd_close);
+-	twcb->file = file_close_fd(fd);
+-	if (twcb->file) {
+-		// pin it until binder_do_fd_close(); see comments there
+-		get_file(twcb->file);
+-		filp_close(twcb->file, current->files);
+-		task_work_add(current, &twcb->twork, TWA_RESUME);
+-	} else {
+-		kfree(twcb);
+-	}
+-}
+-
+ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ 					      struct binder_thread *thread,
+ 					      struct binder_buffer *buffer,
+@@ -2183,7 +2120,10 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ 						offset, sizeof(fd));
+ 				WARN_ON(err);
+ 				if (!err) {
+-					binder_deferred_fd_close(fd);
++					/*
++					 * Intentionally ignore EBADF errors here.
++					 */
++					close_fd_safe(fd, GFP_KERNEL | __GFP_NOFAIL);
+ 					/*
+ 					 * Need to make sure the thread goes
+ 					 * back to userspace to complete the
+diff --git a/fs/file.c b/fs/file.c
+index 0a4f3bdb2dec..58e3825e846c 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -21,6 +21,7 @@
+ #include <linux/rcupdate.h>
+ #include <linux/close_range.h>
+ #include <linux/file_ref.h>
++#include <linux/task_work.h>
+ #include <net/sock.h>
+ #include <linux/init_task.h>
+ 
+@@ -1525,3 +1526,47 @@ int iterate_fd(struct files_struct *files, unsigned n,
+ 	return res;
+ }
+ EXPORT_SYMBOL(iterate_fd);
++
++struct close_fd_safe_task_work {
++	struct callback_head twork;
++	struct file *file;
++};
++
++static void close_fd_safe_callback(struct callback_head *twork)
++{
++	struct close_fd_safe_task_work *twcb = container_of(twork,
++			struct close_fd_safe_task_work, twork);
++
++	fput(twcb->file);
++	kfree(twcb);
++}
++
++/**
++ * close_fd_safe - close the given fd
++ * @fd: file descriptor to close
++ * @flags: gfp flags for allocation of task work
++ *
++ * This closes an fd. Unlike close_fd(), this may be used even if the fd is
++ * currently held with fdget().
++ *
++ * Returns: 0 or an error code
++ */
++int close_fd_safe(unsigned int fd, gfp_t flags)
++{
++	struct close_fd_safe_task_work *twcb;
++
++	twcb = kzalloc(sizeof(*twcb), flags);
++	if (!twcb)
++		return -ENOMEM;
++	init_task_work(&twcb->twork, close_fd_safe_callback);
++	twcb->file = file_close_fd(fd);
++	if (!twcb->file) {
++		kfree(twcb);
++		return -EBADF;
++	}
++
++	get_file(twcb->file);
++	filp_close(twcb->file, current->files);
++	task_work_add(current, &twcb->twork, TWA_RESUME);
++	return 0;
++}
+diff --git a/include/linux/fdtable.h b/include/linux/fdtable.h
+index c45306a9f007..1c99a56c0cdf 100644
+--- a/include/linux/fdtable.h
++++ b/include/linux/fdtable.h
+@@ -111,6 +111,7 @@ int iterate_fd(struct files_struct *, unsigned,
+ 		const void *);
+ 
+ extern int close_fd(unsigned int fd);
++extern int close_fd_safe(unsigned int fd, gfp_t flags);
+ extern struct file *file_close_fd(unsigned int fd);
+ 
+ extern struct kmem_cache *files_cachep;
