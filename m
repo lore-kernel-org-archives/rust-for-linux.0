@@ -1,174 +1,172 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D456A30DD3C
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 21:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AB430DD3C
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 21:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770325590; cv=none; b=OwTLgzkkPidyYmAU0o6HRwgbqaZ3gmZDI4smLwfW2D2lJgs1pgaYIN7VxDhGCrUDbLbwqinAEaTEDWXJPEUQxEmIglaAAM6eK0+1HaP+kNwsTLhjP0ex5xkbMnkCbObfBuc9fwW5x94GQoFEgH1YWOEkCF5XmUjQ5ULWYMW0fk0=
+	t=1770325678; cv=none; b=Cz29kbwAqRQ9KY5r2NPvEha48yMNfveeEiBm0YjJcSx+OMBjf0j+EK184bdpQ/yrgCZwDhe7Mdgs2HGzvcyd9QNg+m30j80X69ORrMtkRkmoOryAKd7vPHm9G+Utx/A6YLX761WvebVChJKhzKk0cJM5uYht2i/9yy/FbcZ8ytU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770325590; c=relaxed/simple;
-	bh=HlofWzQf4nysuWsznfCeKxoDLC/TTjA612tfov2GPTE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=F0OSt1j6CN/hHDnOsjgkFB/mqD7yERN+X7CinF9MgCHaL6gkkyX/pbz5w7DE4gv79hYCofOPnkycrXd9qdp4n5aT2RdwByqoa/FAFonbSWlN94F4OcPbSxPYl4BYuD0HE7pXIMg6hGHEn2SuvvjjQnbYJEltE1Yz+xznCMLgmkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aqgb/ba9; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770325678; c=relaxed/simple;
+	bh=rV6qi9tLa8BSeGhd9naq45rlh6qRoKLszIak7MQlwuA=;
+	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
+	 To:Cc:Content-Type; b=A+aJFd6HaxWyLsmS3AUVAcLBKM+RAdz0DCfUgTwhI655FDoYjIGe8Hy8sryyoskhfZYLsCiV1jRQLyNSWGQaVbwmkIqm7P02hfIqF0McAKSwuv3YP+4/jKcQYUC7avR31BwiJPa3RBK1iCJmKWNo5O7UHvTa1+0NotjP+fleXf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CbmbXjKM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aqgb/ba9"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c6c67bc8b9eso506157a12.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 13:06:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770325589; x=1770930389; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JGeCzKcs6APgfKInQ8fPWEO6crHr4dVIgkyVJyOIJ+U=;
-        b=aqgb/ba9h80TlMv9+a6DqN6CwtPgRQAWnnHkQIwyU5xbBefP9DXKGY7RX3F6t0w3fU
-         4EDqNZ50xVOHHfNz4sqYMkxNCzcuN7htvVZMj87Sx51hwTFZDlx1rFCdhAmqTZEiuww3
-         rqHyP0S+YtPY/qwbrB5EBOLTX4AVxwFYdq+UA1amcrdAa8UP3T0HxJ2/ngUuCyJdf8QF
-         rDuy6xF1ScAfsstUH+k/w4ecM8LqdZDXnrHb5WiqHdmAM3YMzc3Tw31jibEeoCmR58Bq
-         Y0KcdxaQjJPilCtbiJXlXBvpUFrZ0jKrsOW99bZxc6wuDXtq5gz8uYaoCOvYB8ftYJwH
-         jykg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CbmbXjKM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770325677;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bysblly79RF2LtPRkhZUIzq0xEXxTiQQ0zgHTCq8A+8=;
+	b=CbmbXjKMchjFZBkcKwVyvk39fbYNd//vbzJ6mEW1i8CRifxzF8brHFrAJSNZKd+cyZxOvn
+	ppPYa6+RkqtivFiuDrNM5GWtuyN/s/SclLguLY2rg2LTjjo5TSZXYlBCrQ4Q0smlfvzpc/
+	XniejhWAjPdmd2XwQx6GiqIyjdtH3kA=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-182-NLugeLWxMOSQwA-lz00zpw-1; Thu, 05 Feb 2026 16:07:56 -0500
+X-MC-Unique: NLugeLWxMOSQwA-lz00zpw-1
+X-Mimecast-MFC-AGG-ID: NLugeLWxMOSQwA-lz00zpw_1770325676
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-89462dd72a6so52814856d6.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 13:07:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770325589; x=1770930389;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JGeCzKcs6APgfKInQ8fPWEO6crHr4dVIgkyVJyOIJ+U=;
-        b=nPy/vqr3c9iRUSBPN0ErOXBy3q9W3BDkvAhLypqPnh9lr3I0CDzW1ElbyayqgI5Bmc
-         yPesqt4x1I03ujAe7SaM1STbzpTFySC2Gld6eTDCOVJ93bs4A0M61jrU10apCENU2dA6
-         e9jllKhoTJIjHpWsS80hBByn17vJRBzsOQ8uCEiYUKTQeLuA2kz45fShecAsscnBkJxE
-         SjOUiSgFPopKjmZeloeyQRvpzCM2JVyO0qRSFBMzMT1TDCD6wyKUMtMFv/Br00pOxZpI
-         Wco/ZJP9cNhFGmKDo17Rn+vJwhD7L1iIf+GWMy97qe3EZkTfTNBmO/oI4DUrkC1sjmCj
-         JRBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVk1P+FNBRRCJkMQXNlJ1fCuwO0e1UUqXByyWA+ZRT6WyQAmBEYK42tI1qQ/7nF2+POm84Hf5RAyp2uRnZc0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsM9CN2mMT61+lLdVxT+S2FgQqQUO/atR0+YSYbuJj7KTf/06G
-	HCF6W+qB0R5GQ0a3rmhLNC/UT3sOYDFfWy31m6Asww3BKlXuNn3nlZo3
-X-Gm-Gg: AZuq6aJtGRNV0qQeUEBEAbdFYwWySplFuTsTiuXOqc69lZp0CVI7MsFGZl/NCfxIWWW
-	Z9UgVGAKugKhes/EG3ES8tmzYMwBnfL9BSkkF3YROcfboPrXdiU5E3Hcwp7s451KtKaUQPVkbvH
-	PsjGd5A6u8Lyq2r01tAvGb7GBVVLWels0ScVeEquzmaUO4KwRFze+Tv2YwUXMZId2ZBl7iFkhO4
-	c4rzzkkLPC5Rx6s54LopJ1d/6TmIv3fSDskv9UNiPZ9RLcEXSl9hdIzHDXJA6TUEfSUlOUcCt+X
-	vcl3Q8etXlVtW6pb9C+sqSHxgSYeAIYhsoI+FENMszM/F3FFNe6/+xyNUXF9B0VzlQ3a0C+Sv8k
-	kVxmnDOWVKseXkpJEk0WPfVBZRDA/8EciJynu1OZt3C6zwmIMh+0o2KNnbNSKIj6N4KcRHlxf/u
-	t3LQuB0A==
-X-Received: by 2002:a17:902:e948:b0:2a7:b412:6cbf with SMTP id d9443c01a7336-2a951951558mr4424525ad.55.1770325589187;
-        Thu, 05 Feb 2026 13:06:29 -0800 (PST)
-Received: from localhost ([112.149.32.52])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a951a644a6sm4076285ad.8.2026.02.05.13.06.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Feb 2026 13:06:28 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770325676; x=1770930476;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Bysblly79RF2LtPRkhZUIzq0xEXxTiQQ0zgHTCq8A+8=;
+        b=WLAfaL3TO97vowirI+m37OP4asXqizvwVL74c038zmFRkPFDt5jmQg6YDqZWNH42vP
+         h3iu59d2RCIKLW4F6M+TzyJb0dxwqjDZ7Jr95wIxDVTER/4nBnw+Ct7p5cCyXXyauBR8
+         lgzYKonGX6TEiiG+6dFhmNaZ26o9l5k/S5oarpbaXHb9cRYAs2KYQQBoYhtHOphTwGzs
+         otfSIVKLTE6wxCYEh4kb2aFhpOqFwTdByvMqQY0zBYKFovktY9PI0avGtkcw7/ciHTK0
+         rPGQ5RwXCe6dl1b8rDN1oAILNMA6zCQLc0Y1n26Lzbr0CzhM2Htbo0h3Unic58fE8bAX
+         MuAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWlsbxqJF8G8/R+CCqVbWeTccYkD+A7nfRocdspGcPYto3QP+ithJp6nTaOzw/H/iH1/cNQvuLcpgOuuAHK4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUl3nq1Wia6/d38+/xt70rxqAgsh7r0ur4oE2QZ3hA01Zs1heC
+	bA611cEGYQjn9GV0GVcSt3Xq1/iqPEXBZYW9opdcyvEuOWR6zdKmtTKPPneoxY2TU5rQP5OxSNP
+	k8+aKzdJ+05sh12U44UdPiuDqj+87amwUZxirLVuWduPp+x30GOs081JGoK40yMzhZEhhlIIEvg
+	hf
+X-Gm-Gg: AZuq6aLoWeASo4vn2MN3Oxxg0L/i8h4jxYB31i+8XhWCG7uYcuLyUyur3qi6jm4wPGL
+	b9T79oZeK4j0LJbSDtrKH5zKsr9+0PtyvVbxI3t2O90FLeDjk6OMU7ZwOXrTdYj0nB7VYGlY+x0
+	Ry+CqnOnl3sze74m//OGUs2TNUCx22xh0hTskB38p7iCf2cAKQLhjDVpRHxRyzOMaOojaC+FrLM
+	DpLWwmGXaUgNF/LjqjoWqHijwvUnmgCed0yQ/FzXJq+VdGJN2ygj2e95z9qeNHL0s/Gv/Gn7Rt8
+	Aw6Xe1DKfN1ZhoSmLWOx3nJWQ8O1+bXrpxLEnKUCWwKYV4xVAfQN0CMhDZRjDyxsahAY1nIXyrA
+	QJ38PM9wGKhQit7w=
+X-Received: by 2002:ad4:5ae6:0:b0:894:7798:8fc with SMTP id 6a1803df08f44-8953d0aa832mr6847526d6.58.1770325675526;
+        Thu, 05 Feb 2026 13:07:55 -0800 (PST)
+X-Received: by 2002:ad4:5c45:0:b0:882:6cd3:7f64 with SMTP id 6a1803df08f44-8953cc8c1c3mr6669906d6.44.1770325225055;
+        Thu, 05 Feb 2026 13:00:25 -0800 (PST)
+Received: from [172.16.1.8] ([2607:f2c0:b010:9000:4c85:f148:4c91:943a])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9fdf692sm17571285a.44.2026.02.05.13.00.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 13:00:22 -0800 (PST)
+From: Peter Colberg <pcolberg@redhat.com>
+Date: Thu, 05 Feb 2026 15:59:49 -0500
+Subject: [PATCH v2 02/10] fpga: dfl-pci: set driver flag to disable SR-IOV
+ on remove()
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Feb 2026 06:06:24 +0900
-Message-Id: <DG7C1LYQ4SOQ.1HBJ8WH923JHW@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
-Subject: Re: [PATCH v5 2/4] rust: macros: add derive macro for `TryFrom`
-From: "Jesung Yang" <y.j3ms.n@gmail.com>
-To: "Charalampos Mitrodimas" <charmitro@posteo.net>, <y.j3ms.n@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
- <20260129-try-from-into-macro-v5-2-dd011008118c@gmail.com>
- <87h5rxuw1n.fsf@posteo.net>
-In-Reply-To: <87h5rxuw1n.fsf@posteo.net>
+MIME-Version: 1.0
+Message-Id: <20260205-rust-pci-sriov-v2-2-ef9400c7767b@redhat.com>
+References: <20260205-rust-pci-sriov-v2-0-ef9400c7767b@redhat.com>
+In-Reply-To: <20260205-rust-pci-sriov-v2-0-ef9400c7767b@redhat.com>
+To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Robin Murphy <robin.murphy@arm.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>, 
+ Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
+ Moritz Fischer <mdf@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
+ Zhi Wang <zhiw@nvidia.com>, nouveau@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
+ linux-fpga@vger.kernel.org, driver-core@lists.linux.dev, 
+ Peter Colberg <pcolberg@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>
+X-Mailer: b4 0.14.2
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4GoX3j1k7j9CcnPD8_i4PjpDYtzVgQMF2g5hLHf0rU8_1770325676
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Wed Feb 4, 2026 at 10:39 AM KST, Charalampos Mitrodimas wrote:
-> Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org> writes:
-[...]
->> +    fn impl_try_from(
->> +        enum_ident: &Ident,
->> +        variants: &[Ident],
->> +        repr_ty: &syn::Path,
->> +        input_ty: &ValidTy,
->> +    ) -> TokenStream {
->> +        let param =3D Ident::new("value", Span::call_site());
->> +
->> +        let overflow_assertion =3D emit_overflow_assert(enum_ident, var=
-iants, repr_ty, input_ty);
->> +        let emit_cast =3D |variant| {
->> +            let variant =3D ::quote::quote! { #enum_ident::#variant };
->> +            match input_ty {
->> +                ValidTy::Bounded(inner) =3D> {
->> +                    let base_ty =3D inner.emit_qualified_base_ty();
->> +                    let expr =3D parse_quote! { #variant as #base_ty };
->> +                    inner.emit_new(&expr)
->> +                }
->> +                ValidTy::Primitive(ident) if ident =3D=3D "bool" =3D> {
->> +                    ::quote::quote! { ((#variant as #repr_ty) =3D=3D 1)=
+Set the flag managed_sriov in the pci_driver structure to show how a
+PCI driver may opt into disabling the Single Root I/O Virtualization
+(SR-IOV) capability of the device when the driver is removed.
+
+Merge the function cci_remove_feature_devs() into cci_pci_remove().
+
+Signed-off-by: Peter Colberg <pcolberg@redhat.com>
+---
+Changes in v2:
+- Demonstrate flag managed_sriov for dfl-pci driver.
+---
+ drivers/fpga/dfl-pci.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/fpga/dfl-pci.c b/drivers/fpga/dfl-pci.c
+index 602807d6afcc09af9e1d53368b41460ef86545d8..7965c307f9b79bdd2c2c3277d519ab2c4e701797 100644
+--- a/drivers/fpga/dfl-pci.c
++++ b/drivers/fpga/dfl-pci.c
+@@ -125,15 +125,6 @@ static int cci_init_drvdata(struct pci_dev *pcidev)
+ 	return 0;
  }
->> +                }
->> +                qualified @ ValidTy::Primitive(_) =3D> ::quote::quote! =
-{ #variant as #qualified },
->> +            }
->> +        };
->> +
->> +        let clauses =3D variants.iter().map(|variant| {
->> +            let cast =3D emit_cast(variant);
->> +            ::quote::quote! {
->> +                if #param =3D=3D #cast {
->> +                    ::core::result::Result::Ok(#enum_ident::#variant)
->> +                } else
->> +            }
->> +        });
->> +
->> +        ::quote::quote! {
->> +            #[automatically_derived]
->> +            impl ::core::convert::TryFrom<#input_ty> for #enum_ident {
->> +                type Error =3D ::kernel::prelude::Error;
->> +                fn try_from(#param: #input_ty) -> Result<#enum_ident, S=
-elf::Error> {
->> +                    #overflow_assertion
->> +
->> +                    #(#clauses)* {
->> +                        ::core::result::Result::Err(::kernel::prelude::=
-EINVAL)
->
-> What happens if we need a different error type here? For example, a
-> quick look around in nova-core's "Chipset" enum, an unrecognized chipset
-> ID warrants ENODEV rather than EINVAL, since it's about device
-> identification.
->
-> Not sure if it fits the design, just wondering if this flexibility would
-> be useful, but would something like an optional
->
->     error =3D <ERROR>
->
-> in the
->
->    #[try_from(...)]
->
-> attribute make sense? e.g.
->
->    #[try_from(u32, error =3D ENODEV)]
->
-> defaulting ofcourse to EINVAL if unspecified.
+ 
+-static void cci_remove_feature_devs(struct pci_dev *pcidev)
+-{
+-	struct cci_drvdata *drvdata = pci_get_drvdata(pcidev);
+-
+-	/* remove all children feature devices */
+-	dfl_fpga_feature_devs_remove(drvdata->cdev);
+-	cci_pci_free_irq(pcidev);
+-}
+-
+ static int *cci_pci_create_irq_table(struct pci_dev *pcidev, unsigned int nvec)
+ {
+ 	unsigned int i;
+@@ -425,10 +416,11 @@ static int cci_pci_sriov_configure(struct pci_dev *pcidev, int num_vfs)
+ 
+ static void cci_pci_remove(struct pci_dev *pcidev)
+ {
+-	if (dev_is_pf(&pcidev->dev))
+-		cci_pci_sriov_configure(pcidev, 0);
++	struct cci_drvdata *drvdata = pci_get_drvdata(pcidev);
+ 
+-	cci_remove_feature_devs(pcidev);
++	/* remove all children feature devices */
++	dfl_fpga_feature_devs_remove(drvdata->cdev);
++	cci_pci_free_irq(pcidev);
+ }
+ 
+ static struct pci_driver cci_pci_driver = {
+@@ -437,6 +429,7 @@ static struct pci_driver cci_pci_driver = {
+ 	.probe = cci_pci_probe,
+ 	.remove = cci_pci_remove,
+ 	.sriov_configure = cci_pci_sriov_configure,
++	.managed_sriov = true,
+ };
+ 
+ module_pci_driver(cci_pci_driver);
 
-I believe this is indeed a desired change.
+-- 
+2.52.0
 
-Back in September, an RFC [1] using the same API (i.e., without error
-customization) was sent; I took a quick look at the time and felt
-everything was OK, but in hindsight, the need for this flexibility is
-clear.
-
-Your proposed API looks good to me. Unless there are objections, I'll
-move forward with this approach.
-
-Thanks!
-
-[1] https://lore.kernel.org/rust-for-linux/20250930-nova-tryfrom-v1-1-0cc1b=
-b507047@nvidia.com/
-
-Best regards,
-Jesung
