@@ -1,158 +1,134 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9EC352942;
-	Thu,  5 Feb 2026 10:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B7B3A9620
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 10:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770286612; cv=none; b=s3Bye3Mf5OAXEedd86Y/A//Mpob4HbxLJ7Q/UpEFdtYGGuh7MYNWxOQ5PuR6Et26/6tPvQVf7sUec51sPXA7g/Enwun9WrXiyJtZ3JDA5plFOa0JJgV1KYKAoCMrE3PjQ73PDL3YCkXwAq/8/rIUEZ9Mlfy0mWNHSmHBUbJFpOM=
+	t=1770288702; cv=none; b=ugkz5pMuN/MCfzH0TG6LTwrs87ffH3s8+uWsU449VnDBCZMHo+P0C4acqwwU+RiK99P5ItBYJwJ30Y7Bwmp626Ue7HeXxPxl15xBI0D5AtIZYqcA4LXeHK6w+yXUeSeQkI+T9U7nPqAfrD5dY0gpw5Tbbpgq2DEtcQ+1s8hDDmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770286612; c=relaxed/simple;
-	bh=l8h/PbGWTGwdFjdIFUZfnYw5NfbKYVIQJATv3Vq4Lic=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QTDSemvpxJK+f/fCMRBwDD2hnxXKSENqmpQkVcFzGEncu0r6tWBVcut7HB+Eb1qIxoDh2F+0QJzwYVWIICEU9xSFXkCeOJ2BYuHB58NpI4688pHrntoIGWHabqjM1WRNM6xhgygKpqoydfpF0cHo3d48AYbtOXVG27Am9h1sVpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=TaxY6A/3; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1770288702; c=relaxed/simple;
+	bh=B35AnR3cY3KY+ESrYf5USuFHaMGr2T6vQRpPugNJCz4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nlCaILkIjSfmEtNyTMgVESGgEygKsI8ls4/P35jFNYE5xRacknhHmdHO7MU+jKDFtL70j06aEq+mtzGxWBXrWB47AKi4dZe3j7i401ucebTGMepm467kWqTAhqLtelTJMWJ4XioK91nQyl7el1sD5BBsVbaZ4D1oPDnEwf0x27c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MAy8eM2R; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="TaxY6A/3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770286610;
-	bh=l8h/PbGWTGwdFjdIFUZfnYw5NfbKYVIQJATv3Vq4Lic=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TaxY6A/3WVAas5XoIHTWRYuthe+YRj7Rt7+53LU1C1JL3BotDfrfSS80El9W9MqUm
-	 EHn35uVBnFbGN/KVHRgXSGw1y1rzi6NbZB2sgUa6xQa3zakDUMXiItZOX8EU4nSfTS
-	 OZhBI2DHZaQ5iqV/fTGyHhJKhJp+9e6TyrBE76NW/VG6mv5blpclTyt0vDAKqYCHpb
-	 vXG6EyPaLqaBZfKYWW4qhU7UO8Y50sw7rKw+uGAR8dK3NWSKsgNrdI5/p/OyeYUvHG
-	 dRN3obaSPhXfVDAMtR0JLzRp4QeXxLr6Cy/lTkgaIRw3C2f2UtX0s32ipvd2tRAefG
-	 6p57ts8Pqm0+A==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id AA59A17E00A3;
-	Thu,  5 Feb 2026 11:16:49 +0100 (CET)
-Date: Thu, 5 Feb 2026 11:16:35 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Philipp Stanner <phasta@kernel.org>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Gary
- Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, Christian
- =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Daniel Almeida
- <daniel.almeida@collabora.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
-Message-ID: <20260205111635.5307e1fa@fedora>
-In-Reply-To: <20260203081403.68733-4-phasta@kernel.org>
-References: <20260203081403.68733-2-phasta@kernel.org>
-	<20260203081403.68733-4-phasta@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MAy8eM2R"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47edfdc6c1aso6988335e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 02:51:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770288700; x=1770893500; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VLcYGJKdfae0UDgu1rmn9Sa9RDtDWULKl4q8DTm9pQw=;
+        b=MAy8eM2RokUD5JOpA3xB74t66AdGcTUdWVvPu8Q3XelUjyVlYFjhSfcReYOy9d+E6W
+         da5+by2xB71j2T6tJtw921850xMi7vGgTXyOcP0jrAS6DNVFE/+8Z/gz3KLOZzGqPrCP
+         rhsKxOp276uKOkpCsWtcovYk9unQzrtKbKB9PjCNLPTd/bSDCIFF2dNEzhrW09lrIFvT
+         sOiMtLs/lAxX9eMC28MKlrRjQ6JPEbmMsogOjGusCejlnrj+h6gq2ldn4QSnFCHTL4CH
+         AWc0OCyFjpejhpvYf5VSYiqGzLmOHXkgS1nW0mlkqc/cgyobZb64a1zfFJUJjMX8Bi2T
+         hesg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770288700; x=1770893500;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VLcYGJKdfae0UDgu1rmn9Sa9RDtDWULKl4q8DTm9pQw=;
+        b=eat4ccUtXild8iYJj5355nK2zg0y1NbesirZx5Ivxh3XB1EwQg+NxMSIDkZTJ9fQzz
+         orsBlL1LQUolhaYRb4nfcInQ2s5ScQlCrLzrKh8ky9MR48MJ5hgOTHNb/ST/XtMNoHYQ
+         9uX19wY6UhH36mY0OwWgXfSzHAcJlCUnSFoX3UR4zcWi5BdjzRI5uyAtM8zPfhv2nKx2
+         UKVsM7js7489FgmnEMiFbLvEH9reeOsAAGoanVh+ZWwZ2pyC8hND2uVN2+4eX7UZAoiI
+         2koYv9dUUxQ6octcBXzmMAxJuL2vFsT1wnE2Cg/fK+poi77+JqKaxooaKDom9KmDfnMW
+         AtbA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOMWofZ1oYvYHLkqE9mSp9HhbxWbJp9Cb3PIAW98FwEi255PXghV7HeGMSBqYgXdQdpCOMyh4EzpaFqi7rcg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEzG+gGnGjXMjpMQGCm2sEI5d1QrWf0kq9JfvSvCtDx2Xw995W
+	/tBnBrr6povPaGyQTmXpiAT8UD8WNs/RKQHsM7VsacR8aTBPNhJ2Wm/c0Dwrof2SqtKVCKvZaU1
+	xQ9UxDS85INFcks7dTg==
+X-Received: from wruy11.prod.google.com ([2002:a5d:620b:0:b0:435:ab2d:c11b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:5295:b0:477:58af:a91d with SMTP id 5b1f17b1804b1-4830e92c9c2mr72417905e9.5.1770288700302;
+ Thu, 05 Feb 2026 02:51:40 -0800 (PST)
+Date: Thu, 05 Feb 2026 10:51:25 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAC52hGkC/x3MMQqAMAxA0atIZgttEEWvIg6xjZqlSlpEKN7d4
+ viG/wskVuEEU1NA+ZYkZ6xwbQP+oLizkVANaLG3aDuzSgysJqukTJnNgCN5i46CJ6jVpbzJ8x/ n5X0/Pk2sgGEAAAA=
+X-Change-Id: 20260204-binder-tristate-729ac021adca
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1462; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=B35AnR3cY3KY+ESrYf5USuFHaMGr2T6vQRpPugNJCz4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBphHYzrqBA5nhRZndl3zcRt9KeGBwaoiOcP+yXj
+ cTUEYoiB1yJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaYR2MwAKCRAEWL7uWMY5
+ RibnD/9j3gbFLogRDIYf1C8LWr+gvE5LRxKD7sfVosY6d9Ys7W4CkF0F6hQYUFD/U6wpvqT0ok3
+ 9z7p1wFNskyBGJ+JfAGI6EwJh4sQwT/KKX/W6/Q7IE2wDDj0TsVO9osUl7hdEuh3UXRFikyHQds
+ xHKx/OiS3SGuGA1o7RtHGAdWpNnRX4Gt55C9nwh4DKWBnqVO+WpDL8B/y0TZ9DclhJrukb9BRvn
+ /QpX/9TRHlU15ACrIGJcOWsm7ebc4w0GWH/zGhg6cqNpJxp1b04N7DzeCnQOZXqYbWyYBYmPWLF
+ ZDAqOvBrhXwq7ucLR6QsSL2zZ2k3JaCtpgSMJPOxbCo81CLXSFOyeuTUw5kQSx5n1ral7Jsaifd
+ MKcD+a58cZ6rBJjC68hOa8ZRdwzE6OappKRRrJqoPLIvB6scsZ8aDkLXRoI85EVcSQEj1aDPlBQ
+ bq55rH0uAncExMiB5V+337URq0Y8dwo2ey6Sr4n/FPOdAhU4tcBu0nt8zvSyhY5w02CGfx+oJv/
+ 6JWrJUVkzPignN27tKv6rqSXBnTyAy3qw2xb5J7cAW34wJIslC24jarb2/X9T0115pKoM7mzUr/
+ HoU7eNSRHawmAT2CoExCy9WOXks3DLTBu+pUXzK0ul6an10l1wEA19p4D/F62pEImvUIFcbbjWD 3qVK2o2UeRXk75Q==
+X-Mailer: b4 0.14.2
+Message-ID: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
+Subject: [PATCH 0/5] Make Rust Binder build as a module
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue,  3 Feb 2026 09:14:01 +0100
-Philipp Stanner <phasta@kernel.org> wrote:
+Currently Binder only builds as built-in module, but in downstream
+Android branches we update the build system to make Rust Binder
+buildable as a module. The same situation applies to distros, as there
+are many distros that enable Binder for support of apps such as
+waydroid, which would benefit from the ability to build Binder as a
+module.
 
-> +/// A synchronization primitive mainly for GPU drivers.
-> +///
-> +/// DmaFences are always reference counted. The typical use case is that one side registers
-> +/// callbacks on the fence which will perform a certain action (such as queueing work) once the
-> +/// other side signals the fence.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::sync::{Arc, ArcBorrow, DmaFence, DmaFenceCtx, DmaFenceCb, DmaFenceCbFunc};
-> +/// use core::sync::atomic::{self, AtomicBool};
-> +///
-> +/// static mut CHECKER: AtomicBool = AtomicBool::new(false);
-> +///
-> +/// struct CallbackData {
-> +///     i: u32,
-> +/// }
-> +///
-> +/// impl CallbackData {
-> +///     fn new() -> Self {
-> +///         Self { i: 9 }
-> +///     }
-> +/// }
-> +///
-> +/// impl DmaFenceCbFunc for CallbackData {
-> +///     fn callback(cb: Pin<KBox<DmaFenceCb<Self>>>) where Self: Sized {
-> +///         assert_eq!(cb.data.i, 9);
-> +///         // SAFETY: Just to have an easy way for testing. This cannot race with the checker
-> +///         // because the fence signalling callbacks are executed synchronously.
-> +///         unsafe { CHECKER.store(true, atomic::Ordering::Relaxed); }
-> +///     }
-> +/// }
-> +///
-> +/// struct DriverData {
-> +///     i: u32,
-> +/// }
-> +///
-> +/// impl DriverData {
-> +///     fn new() -> Self {
-> +///         Self { i: 5 }
-> +///     }
-> +/// }
-> +///
-> +/// let data = DriverData::new();
-> +/// let fctx = DmaFenceCtx::new()?;
-> +///
-> +/// let mut fence = fctx.as_arc_borrow().new_fence(data)?;
-> +///
-> +/// let cb_data = CallbackData::new();
-> +/// fence.register_callback(cb_data);
-> +/// // fence.begin_signalling();
-> +/// fence.signal()?;
-> +/// // Now check wehether the callback was actually executed.
-> +/// // SAFETY: `fence.signal()` above works sequentially. We just check here whether the signalling
-> +/// // actually did set the boolean correctly.
-> +/// unsafe { assert_eq!(CHECKER.load(atomic::Ordering::Relaxed), true); }
-> +///
-> +/// Ok::<(), Error>(())
-> +/// ```
-> +#[pin_data]
-> +pub struct DmaFence<T> {
-> +    /// The actual dma_fence passed to C.
-> +    #[pin]
-> +    inner: Opaque<bindings::dma_fence>,
-> +    /// User data.
-> +    #[pin]
-> +    data: T,
+Note that although the situation in Android may be temporary - once we
+no longer have a C implementation, it makes sense for Rust Binder to be
+built-in. But that will both take a while, and in any case, distros
+enabling Binder will benefit from it being a module even if Android goes
+back to built-in.
 
-A DmaFence is a cross-device synchronization mechanism that can (and
-will) cross the driver boundary (one driver can wait on a fence emitted
-by a different driver). As such, I don't think embedding a generic T in
-the DmaFence and considering it's the object being passed around is
-going to work, because, how can one driver know the T chosen by the
-driver that created the fence? If you want to have some fence emitter
-data attached to the DmaFence allocation, you'll need two kind of
-objects:
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Alice Ryhl (5):
+      export file_close_fd and task_work_add
+      security: export binder symbols
+      mm: export zap_page_range_single and list_lru_add/del
+      ipc: export init_ipc_ns and put_ipc_ns
+      rust_binder: mark ANDROID_BINDER_IPC_RUST tristate
 
-- one that's type agnostic and on which you can do the callback
-  registration/unregistration, signalling checks, and generally all
-  type-agnostic operations. That's basically just a wrapper around a
-  bindings::dma_fence implementing AlwaysRefCounted.
-- one that has the extra data and fctx, with a way to transmute from a
-  generic fence to a implementer specific one in case the driver wants
-  to do something special when waiting on its own fences (check done
-  with the fence ops in C, I don't know how that translates in rust)
+ drivers/android/Kconfig | 2 +-
+ fs/file.c               | 1 +
+ ipc/msgutil.c           | 1 +
+ ipc/namespace.c         | 1 +
+ kernel/task_work.c      | 1 +
+ mm/list_lru.c           | 2 ++
+ mm/memory.c             | 1 +
+ security/security.c     | 4 ++++
+ 8 files changed, 12 insertions(+), 1 deletion(-)
+---
+base-commit: 4df29fb5bcebeea28b29386dec18355949512ca1
+change-id: 20260204-binder-tristate-729ac021adca
 
-> +    /// Marks whether the fence is currently in the signalling critical section.
-> +    signalling: bool,
-> +    /// A boolean needed for the C backend's lockdep guard.
-> +    signalling_cookie: bool,
-> +    /// A reference to the associated [`DmaFenceCtx`] so that it cannot be dropped while there are
-> +    /// still fences around.
-> +    fctx: Arc<DmaFenceCtx>,
-> +}
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
