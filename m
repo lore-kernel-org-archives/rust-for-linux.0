@@ -1,225 +1,410 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010050.outbound.protection.outlook.com [52.101.56.50])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020104.outbound.protection.outlook.com [52.101.195.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED2932FA38
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 22:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903CE336EE1;
+	Thu,  5 Feb 2026 23:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.104
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770332396; cv=fail; b=G7yarJ0BQd4FhpC2v718gvAfl7bAE9S63NDMLBsdw4U1uF2tqoBkjYQ2RQbdrD9GREAW5Ln3ewuab775pcXtBTcXTEjS0Jp4ok4RjQe9CbQnMY2CZFBuTPg3+c2pq5bOaKzlk5TXiwMuAA1tWYKrqgpPXyF0IIfJbyHdgCJaUv8=
+	t=1770333219; cv=fail; b=CNqhVaBYHPzT/+Q0cX/X/0PqU7E+2h8nsNyngBIhKJSImX1z24+IInhGFjo03UdemAoC4SLtg3l+GS90n5zyGFPxkFs49383IDtTLy5HQKL+7xwLzIHqtMGChKSylURrrqJUoMfsrMmzUCDPZ+uygtIKsNO9F2YIfDACCXgIzrI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770332396; c=relaxed/simple;
-	bh=vLJ7XfSbDAg7X/gJOkRa7p1Vdgnrc8Nc1j/neb+2fG0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CNED0CzTVnK7juTB1yCfhssmWOXsXDG15s5Ggjm8L6Slwk8Ta4pM6CDxH6Bm4MUAe2AyeoUPuFImQ1oWsiaSeRD/L2X5LhQcGWQQ4aZA5GabhvSs7irPTltF1pWZx6Xq9hqooekWhOGY0i84uHDoKdWa6/ZdcZE5AMgLXu9aP0I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IQrTLCds; arc=fail smtp.client-ip=52.101.56.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1770333219; c=relaxed/simple;
+	bh=/rM8fDFaprjOiBW5YbURKhIFdSLwIBHG+qcoqkLzAJg=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=AqnLOg/Ewzro+uXBaBecOpqj/+ULqtrViqGxay8x6HgsNPBzfO/kB2eu6s3wrGPeie6k+bl2n6VQa/ZKt5ofrW2lBBxB/EpvEsQZXAvS6hvEolmHynMscNt8MiJdaShFHq85QodpR6/Mehvd42XJSDxTN65M2jOyHoNYKrW0ffc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=QgdYv5Kf; arc=fail smtp.client-ip=52.101.195.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IQrTLCds"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="QgdYv5Kf"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wdXhknUbezX0wlFK86+JT4ehhFYFEk5dYeWfeblljRCFIWuC7ZMCpcpGOCH+n83V77GO2qVZR+kfG2u/xJLqvf5RBkFRnX0+rcYjrVyGpyA2rugP+3HvIyvgtBdj8nETTmvz9SN4XCVQCIKKsL4HqkNYRju6SVBFkP+kgp9PW6FgxrGG6ywV609PjXY9bNN96wlqCuQIIRhBGUOqhdH2u5crOUqDJwaY1X8HFWh5LCePaWcRX2LoHG1zzwr8Zrbd8ibfFhkem+ZM9grRPtjfM2Reb9CqQx185wN41wZKx69Ygf38hUkvlFpl84T7Bz/HvB9wlYVPCgixQU0y8DRunA==
+ b=x/F02zGpL7p4ganhU3iJ4vab3JxqpYPQ2C3b7CrMVESroIbIQMgjS/ygYP+1zSClyN6j9o7ViB0vG6PVdAu03tU0KvdjQxeBAELfPpLK7qo2nD9FnY1rughIyzEyE/VKAckySJzRsgaS3pgMvNPkAPXhN8RNAFyxgNNC8rf0b0gI5wSOGVaNLa9ydKM2xf7u7Gey8eQOjUrduPy2g3EVZam8b35gjWq/AutRjS1/3FxxnKNbT/gykzQpfCajaqzMSslSJ55lAliZ1LHvU7NsUugReGFWNU+h+XcIxosoUqzOKHJCbMJQZcnKzrHxHQxJqnKluyJcH4GXEEhryIVBjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ADyt52Nub/ifir2QqN8RY99p8M0KyTo+amymCcXfplI=;
- b=EwoLGLds3q/+oWiexQPKpg3yFjEabg/QSNCDamOJGavCDnrGXT54sb7dOVEACa8MVKeB903ndvKT5dT1bF+Kt+wG4w0T+GcUZB2Sa6HO2MPwr5PCfIJGv7EIalAUOuktHa+ivmOCEdNDrXQxdT9G1uUjYXIw7mA2A5jqnizqB/6I0RGkNHs9phQRQy+9hujQMIjNy12M9kdY83nw+FfUmeulNyQE8rGmYZBt/Ayi4G7gdtr0gxQSYkgOklIGfGwK92jSYJH1/DE+LcbvzkRz5q7A1KapP5RQACfwSNES7oS/lnCqqf1CJRxLEOh4J9u2Q3MzBJ0nxtrmSHr0iJUDZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=lists.freedesktop.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=1ZfPGKTRulg7ShN9K087c+o3tEwrvp0g3+jB1DfikhA=;
+ b=FI8bY4P3tv4KeuYGwG1nGu6Q99cmK4dNJnJujRxGL7a3AywPlkv1GvGQ/8s+vmPsdiRI3nYxjgyAHax58nEMSyZhvQhv2CqypWO2jwHhtYvObMULg6X1I/pvtJLzElnkBpzxwVf8oHjBs9XckvKXuPAcbJe3NoG3o+U+e5wmpq2lGSPylJSzToqVdHM+lB+cCgJmFhFLdcQoVWBYXZottcklAuucctrDYKk+hCzXn4KS8ViYvLqSGbEe7gR1nJydQFNGIz9RLk7yixU8d6blfpHHKMmpi4pKtaFvy97YV05nsEuZ/nPIzoW44cEnsjHRIrWdsynrswR6F+9O1ZN+wg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ADyt52Nub/ifir2QqN8RY99p8M0KyTo+amymCcXfplI=;
- b=IQrTLCdsX9A3OxCqpASMMchE+fk8o7DuI47ccoXK6genGppytKEyLcNtSb/nPzAl/N7kMWKaINFf66LeGC+/DJNfQplEr5C19KeyeKdsZQepxQpHdqpc3cWzeHG72a2ru4hblZJD+8Hf0beB6qFYMw2lFEulKygGXQXeur6BAluu56kbkwQzNKoSXr93SusvqekXkCHf1+xI78mNerP5lCijNh7VVN+hSKX+M4QZVeozcz8qG78AtGbmALaftYZMRB1pGZgJqLy/0aHDt/cHUFgtjwULw9eRFGB0V+Xv21kBpkOuvqtcgpQm4WjRWQ8q4MSUC10NEw6YghRjDowh7Q==
-Received: from BL1P221CA0014.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:2c5::26)
- by DM3PR12MB9288.namprd12.prod.outlook.com (2603:10b6:0:4a::18) with
+ bh=1ZfPGKTRulg7ShN9K087c+o3tEwrvp0g3+jB1DfikhA=;
+ b=QgdYv5KfqEp+DqcaugA7INvu88q8M165mxQilFjiv40jQhUnNC4rUBohs16FbgjJtktnycQYOMnCRsuOfZeMdvtgrXZPlKyONLZJflDopr9+q5Gf/Al2LGkWO03ENukomjtW8KGS2LjVvbeOgALqN49TeOD5te5u+gA0Y6kqVJc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWXP265MB3544.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:fb::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Thu, 5 Feb
- 2026 22:59:51 +0000
-Received: from BL6PEPF0001AB50.namprd04.prod.outlook.com
- (2603:10b6:208:2c5:cafe::2a) by BL1P221CA0014.outlook.office365.com
- (2603:10b6:208:2c5::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.15 via Frontend Transport; Thu,
- 5 Feb 2026 22:59:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF0001AB50.mail.protection.outlook.com (10.167.242.74) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Thu, 5 Feb 2026 22:59:50 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 5 Feb
- 2026 14:59:35 -0800
-Received: from ttabi.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 5 Feb
- 2026 14:59:34 -0800
-From: Timur Tabi <ttabi@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>, <nouveau@lists.freedesktop.org>,
-	<rust-for-linux@vger.kernel.org>
-Subject: [PATCH] gpu: nova-core: program_brom cannot fail
-Date: Thu, 5 Feb 2026 16:59:22 -0600
-Message-ID: <20260205225922.2158430-1-ttabi@nvidia.com>
-X-Mailer: git-send-email 2.52.0
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Thu, 5 Feb
+ 2026 23:13:34 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Thu, 5 Feb 2026
+ 23:13:34 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Feb 2026 23:13:34 +0000
+Message-Id: <DG7EQZ2NMKML.U8PMHCU81O59@garyguo.net>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>,
+ "Will Deacon" <will@kernel.org>, "Waiman Long" <longman@redhat.com>
+Subject: Re: [PATCH v18 1/5] rust: Introduce interrupt module
+From: "Gary Guo" <gary@garyguo.net>
+To: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>
+X-Mailer: aerc 0.21.0
+References: <20260205204709.528234-1-lyude@redhat.com>
+ <20260205204709.528234-2-lyude@redhat.com>
+In-Reply-To: <20260205204709.528234-2-lyude@redhat.com>
+X-ClientProxiedBy: LO4P123CA0229.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a6::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB50:EE_|DM3PR12MB9288:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ded784a-8484-4852-c236-08de650a44bf
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB3544:EE_
+X-MS-Office365-Filtering-Correlation-Id: b73ecaf1-bc72-4bac-3ef8-08de650c2f88
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007|7142099003;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?T9RgEg/MCx5t29zPgPdWeZ8ud+P/dH3ABwLOjJvOw5cFD3bcyN8O21uXiVDO?=
- =?us-ascii?Q?RQ5CPohtjqvWyPVJSaB/9pP/btYG0pRWuk8QbgqD8hF/i8mlbdNZ+o245cVk?=
- =?us-ascii?Q?sipyiWohlWbLBYPOMr+I5jHv+DLyFBLrq16E4JH44+8gCOfiUShqz3y4utBm?=
- =?us-ascii?Q?1pdSehRr2H6emZT0ETTBSO1szmCp4cJSNsM/3yq64jYU1k7UVSGRY9IxkR0C?=
- =?us-ascii?Q?dzgRcq8gefbiDsVmSzUl5OtYw5DGI397+iMHiQdS25WBzTfJdq4h90c7PXIC?=
- =?us-ascii?Q?UdOZ/uclhRwOBtF/kQ6vW+HHWf1DWkglFIOhKktCtp2NL2cM3/tOjO2dF97G?=
- =?us-ascii?Q?GcHlTmz+mbSxaeQipsAAQGIH0YFu58Ai2xXk4bpEbHZcf/0P+lRtYXnhEGta?=
- =?us-ascii?Q?/jbCbaMCuALzSCE4njQ+JrWm4dbavqVgED9moCtP8cUW17v5MOSlVwCvXC01?=
- =?us-ascii?Q?Md1Wf5jXBEffy52o3n7m/2BMuGVwX4luwex8eGDhfu9HBiugfV1blvy/htym?=
- =?us-ascii?Q?Kupxl9BnE1NOidSpSIzXWrbXjVlOXD1l6emqsaUKIxGgKOUmFw1e/PyDH+9j?=
- =?us-ascii?Q?BnF+CS77HdvXZ48fnUVNK/rWPGGewfG36U5mZnTz5/iMloK/XFKEP0YgSDXX?=
- =?us-ascii?Q?nDjJyDXown7Vc8pcZZtpM9IKtOv0ajBc91QCJU8PX+cqfEebQtPYE59L4Lww?=
- =?us-ascii?Q?eY9RL4Upmje/U4m+NzmaT7k2LOpVjXw6siGccImAtcwPk+uiIJdHEIEfPhJx?=
- =?us-ascii?Q?RKDvVRR1xqLRdanumrbxDprumrJ91YNO5qT4dKjCiQasZpJ6aGV+yn8GEbu8?=
- =?us-ascii?Q?cRIwN1/28m+wYeaNA3C7yGQW0oiHX28VhZBAPWqnoC5faW4n42DULyTEaHDE?=
- =?us-ascii?Q?ALd6PUkdJTKfh+DKDdT9Hgpp/uzCZUWk2mPI+fUdtdMRh+b3uha4uOSuADgK?=
- =?us-ascii?Q?ZChQAWMzeNrQou64PCe++oKdXjEP0y4h3BcgWYI3C9mrN7u56XVWbaE4egGv?=
- =?us-ascii?Q?U9J0mmzn+q7tZ2J4SpN0XXkcLR7m+hr15gU4qD7lbuxK4qA4WNvTa9iU/9Vb?=
- =?us-ascii?Q?5gDGX/UfwBYEOPM1ZZNYfj0pJYS+AnePxCZ6v/3xszIuBg9FHdcY7nz4Em8l?=
- =?us-ascii?Q?i4LWCsR3yppLtNcn/8qJa1fegBtlq2f23rzcUBGicM6338cTuw9YUzWTBS1J?=
- =?us-ascii?Q?RUDRwmLO7ETbZDnQ9T+wr5wBx8JEB/qkBuJn0HZww7yIAGGSP+blEr607kKe?=
- =?us-ascii?Q?OzGZI45EOD0ySrdCNxJDRQSsM3Frr3hsS2jceLe6YfQ0HxP1mMAf2OXG8KBo?=
- =?us-ascii?Q?2+s5YjGlMzeA6kDR+Jav8EIpqp7/noO7IpapPvOQ0oL6Asf1jzh0ewOwB50d?=
- =?us-ascii?Q?qP03K9ozS4HBq2guhQurkpJZmsW/jpWrQRgvdzphYLVOpynR0Np6UUy+t7h6?=
- =?us-ascii?Q?uoCsruNeoX/MVjJl4kwQQ6QdUfv9kSFinA+VMd5QcWunbmjfB1dXZkaUb657?=
- =?us-ascii?Q?eca0DChxyPQfte/2bhunezYG85Pavlbi0rmXjKT5iHWYu0RIlm43d1u/c6Th?=
- =?us-ascii?Q?fojzlbI2ouqR74E5+XO3YKNAnUjdVXjBVvooEx4e1URnjTfQ0jIvVGIjLsHt?=
- =?us-ascii?Q?LJcBHBdXZbm4J4GDkFgWTwqfXryqAzILwmy036ASCOp1e2NVZ0aahN8EGreV?=
- =?us-ascii?Q?g7cEOA=3D=3D?=
+	=?utf-8?B?WEUxcEN1L3ZPNVRKSk1MTDd1NGtDNlNEbDFFL1RvdDE0UVJSSmVBOUs1Vldv?=
+ =?utf-8?B?blQ1WGswQkwwMHFpdW8zQlNydDkxMlRsaVdBNXRVNlp6NEpzbkozWnZvYlNy?=
+ =?utf-8?B?dWlsUW9icXltVGFneEgvNlYybGt0T3NKanZ5VWFBWTRJUk5DcDhUd1hpcjdN?=
+ =?utf-8?B?YUJaUmtKYkloZjRMNzVib3ArQTRFRldXRUVKRU1kUXhRZGw5YkdVcmU2N2JC?=
+ =?utf-8?B?dVZ3RFlrNDZJYzFMRmkzZzdFWVUwUHgzalc4VWMxYlRCOWV3UFRwRUZNNGU5?=
+ =?utf-8?B?bTBNNVhvTncrKzlkMHZQU3JEbWhWVzBhWGpuSzc4aG5qbUlUeGQ3L0tNaVJU?=
+ =?utf-8?B?SDhiMm5YazBXSGo1NXFqTlJMQjNQWUE0aHVDLzJIMDM4SjJ1eEs4K2NnK0Y2?=
+ =?utf-8?B?WEVhbHV1amxMY09QdDJqOHFtUUVudnk5RjFVWDJ4R3lZYlY2cHlVTVVlZDEr?=
+ =?utf-8?B?b1AreFNvemRCbjV3SDBRaDVjUktBR0RXWndmSmt5bGtoSVdqRHQ1TGlQd3Bj?=
+ =?utf-8?B?UDRBYXpQbW1OdEltTS9TcHY1OEdTNjFWN21VMytVckVHSWZLVzZmZDladlVW?=
+ =?utf-8?B?SG0wVmFGTWdLNXI4K2h2MWJDSHNjYnlVT2VVQk53YzV6MHlOeWZRNkRCQzJ4?=
+ =?utf-8?B?Vk8xNnJ6NEVSMkprN1d0cXBES1ZnN2xFcmJkOTVrRS9SRTcwb21FOVhxaWRS?=
+ =?utf-8?B?VHhEZ1NBb1R2VFg2UUxJbkRCdkg0K1hvOGsxK244R2JlbjlCYmVQbHdFTyt4?=
+ =?utf-8?B?S1FvTmJtR3FnbjBQVTVXbU9HdXlEL09XM0l3bGtCWm1lcWlhaWxXVXoxTDYv?=
+ =?utf-8?B?TDZHQTgvSUNOUEJFMkk3c2ZXaDdsbDhCelY0QTlrcSt6M2o2OWx0d1RmMzY5?=
+ =?utf-8?B?T0I5dzdLWVN2WHZxSHdQaDYrQWpMZFJkZ2s0ZkUxMW4zT2xObzg5S203NEtE?=
+ =?utf-8?B?QkljQmVzOCsvMnZxclJCY0g5KzVIWWowWjBibWU3WUhjbU1yWURDSG9pMWk0?=
+ =?utf-8?B?NjZzNXR5WHBadzF1RWdvNGFjVnlvck1jVURXcUthU0xmdjMxaDJpZFRrNmlQ?=
+ =?utf-8?B?R1FlMktQWUVEOGRldEdiYUdJMUMzTHhUOWFtTUlWeFZRQ1RkdFZJd3ZLbjJM?=
+ =?utf-8?B?MFpYbTNsMG9iOUllQ0xIdUlaZ2syTTV0dUcyeW14c2pjSlVLcVpwcGpMODQx?=
+ =?utf-8?B?aDU5aFlDNkl1d2Z1N1RSRU9xNGRDVS9RMUtzWk9nTGUzZkt1OVJBZVp6ZXhC?=
+ =?utf-8?B?TmlTOVF0eTlMUHBSK1E1ZklJWkhnN29jb3REc2d1SDAzNmJ4MHdwbGJLbjZl?=
+ =?utf-8?B?RnNGZk1peEtuZXNYVHBkRXJOSXllajhkSGZuWEo3eElLWThKY0hDN2RBWTJQ?=
+ =?utf-8?B?cHFLd2dOeGViQkRnNnNHaTZFWWdtbzhiVFEwZGJVVm1HUzE2d3FIdjhwOFgz?=
+ =?utf-8?B?MmNsUmlvM2Jnc3pmdjI4NU9LT1VSTWNEK1MvaERzNW1ZZWxxajVhY2tNTUEx?=
+ =?utf-8?B?WlVZZE9ob0tUZEUzQVRMYms5NDhoKzR4ZnRWUnJZd1M3NTY3S0NlRVBLTWRZ?=
+ =?utf-8?B?YndQRncxVGw3M21VMXlBUVFId0ZhYU10THBydlJnbGRYYzRtSjRQVHhBcHFW?=
+ =?utf-8?B?dHhyejZXbWcrQXJhcFg3dEdlcmpKUWljQkVOUVVVOVNGY3VtTUtXY1ZFSzBv?=
+ =?utf-8?B?c2hsRmlZdmt4bHZtSkg2UkVyb1MzTEpQbm5tT1RZT1NyWDdFei9VRXVFVU5Q?=
+ =?utf-8?B?LzRPWEt5ZUxUZCt1WTFId1dxKzRSVUlHVnY4Z0RhNlIra3FGODhWcG5nQUh0?=
+ =?utf-8?B?Wmd6KzhSc1NQU2R5cE82MzJneStuWWI4WGVSNGlTbWpUTUVRSTVXd0ZSdU16?=
+ =?utf-8?B?T3dPd1hOQWxzUDVFc1pYcHJDdWFVbndBdXRLMER4NjcyRXVCZ3NpdC9PSk5H?=
+ =?utf-8?B?SFRaV3dUcG03dThGVHc0bW01OXRyc3pBMEw0bDNsL0ZWb3E1WktNNGdoWFlK?=
+ =?utf-8?B?dU4xekFCZFNBdjRNSXBvemNXVG45WGwwU0FFWXNQa1JYZmlyV3ovS3Q0blJU?=
+ =?utf-8?B?TU0zUERsMW5vTnUwZVFha2FycTUwRmRSS2lTKzVIM3ZhOEIrMXlDb2lXaDN3?=
+ =?utf-8?Q?2+XI=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007)(7142099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	QFkKqp+63skczhN2SzmKWauNRKKCeTI69lbo64RKhDVCZr03qHytJvf6up2ncfqcKIxqA0SwOG4xSspwQlMlSoIffF2o/aYjJdQcSW4O+PBIpNqqlDSCqhoDHFXsdyGmSeoBTjbIq6clqIlgmzzIhSGY5K6piWD9WcN/7Acc65qwt0pifNAKmnUYfOQnMoRGVQL3zdK7UPhmE3G8oadDjkI/BN+BqxJ611yu9mfGNNqEuAnVVO4O/jkb8pzqQkKkVwoGhTqoABsAqz5thpydVIHCrYe67s2/iHuNDJjZM74GYdnQL+K9eVcZgl7hpIsKxElXXvBAKNQGFh+yrYqHEfde7Zexk8t7SmTF0T8DOPZBhcFmpl+/+AVAQwSEpmoPgsHBob2h1pKyWGhe3FQJjDBkHlDlwR3C9FM/LOicyXEHbnkCyi4M63IGy73K7aTj
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 22:59:50.8709
+	=?utf-8?B?Z0dXbUFkYi9MZ2lEN0xFUmtnNWdjSm4rTDZOM2ptKzhVZlJKRTYwTkdDRmZ1?=
+ =?utf-8?B?QjB3ZkNXUzdyMmhjeVRFL1RBb1ZjLzNrQ3dtWlZUVzNYckNNaHJpdHR2UEc2?=
+ =?utf-8?B?cnV1VVdnRUp5d0x4Zm5FU052YXpXazBlOWNrK3I0enNUdEtEV3htc2JCc3E5?=
+ =?utf-8?B?dXI1RVFLZnk5V0lMTjR2anU1ZW92QzZiVEdQeXBBcFBXK1ZVTllsdDNkc0Ns?=
+ =?utf-8?B?M2tYYjNHT1dJVUlXQlRXSURqVmdrNlZOYmdDbkY2VGliaTVRMEU1M0ZSUFl2?=
+ =?utf-8?B?UnQxWHBQcUo5b0dTUGIzZG5XZXlibHBmNmlSOFVZVFk5YmJYK1B5YkNKY2gv?=
+ =?utf-8?B?QWRTK1psdFlaNTNuUy9NRXZFSXJGZXZlemVteHRhZ2h4cEhTMjgzTW9CdXAy?=
+ =?utf-8?B?cW45eEY2cXJHaktNTEJ0OU8wREhyaDNjbXpydFhDMUxKQVRXYjAybElNb0FK?=
+ =?utf-8?B?bFhOdnJuU2xXU0VubkxvcTVXZG5GMzE2V2RuY2ZWVXliS3lGVEFkWUVQSTlC?=
+ =?utf-8?B?SXVGaEJOaTR6TXRqNjlVTmtlWnBHN2RteDJWRHB4Y2xsZ0lob05ubGR5cFJX?=
+ =?utf-8?B?OXV6UHRRNnZWY0ZuTkFBWUF6N2l1SFZHNG5venNSbFdxaHJMWmlkdVJFdGg4?=
+ =?utf-8?B?d0czcWw2T2hKaHROTUhEajFQMkhLQW9tczZxR08raVcyZjd5OFhDQmVtZlpB?=
+ =?utf-8?B?b0g5RG4wUVY2NG52TDNrYjBQMnYyUjIzUURzWlBPTVAzR3lDeHBJckVOQyti?=
+ =?utf-8?B?eDA0emlLYm1vSkRHd0JrWWJmR3lZSmwvTGk0aEtQcktDcWtoMXE3Q2MzWGhn?=
+ =?utf-8?B?OGkwRFUrYm1ua2FuZjBJcUVjVnk4NUwvbG5aK3RZQjRrSzN0ekpjdExhdktB?=
+ =?utf-8?B?YytvMzZDcEIzd2hNVEo3dmQ4WDZ2VllUWGEwUjhyVFFCQTB2SEhZdUxuM3JT?=
+ =?utf-8?B?S2dwcE03WUowdnJLb3I2eWlsNFFMSklTSUVZUUNQSHZjSCt2NWF4MWdxcVZM?=
+ =?utf-8?B?ck5HZVk1bHpOa0VBWmZwa3ZkTTZpWFpMYVpYY0htUEhpdzRuL0E1aUFxYUxK?=
+ =?utf-8?B?YnVxK2RRMk04WURkN2svTURZZW1Sa2d0a1FGLzh2bklGMmlhSmRpVjBJWHR6?=
+ =?utf-8?B?Y0xOUHRZc0IwNytjRGFHcUlZb1huT3pPamV0eVhhY2FkUnhVM2JzZFI4STIz?=
+ =?utf-8?B?MnpQNVlHbVhWM0gzZEVMdCtZVjVISzcvTUtaclB6QjM5OStkcXdVRVBFQ1FW?=
+ =?utf-8?B?SmhZOHVyaGVSN3FWYnJiNkUyNHBTK0w0QXRrdFNDOHZMd294Qy9rdWRQMHYy?=
+ =?utf-8?B?dmFjSmpZTTVYU0dQNERCMnlNazlVdGtqUW5NZjBFYStkV3VlelV0eHRIZU1N?=
+ =?utf-8?B?ZG1rWTVCaXZjQm1HNnFWZ0h4Z1AxWndXMy9obVZWMk5CZXZIZ1FmRUJnY216?=
+ =?utf-8?B?d0xnMkRJRmNoNVFWUGhIT0tvRzg4enRscWxjU0V3N1IrZ2M1b1BsWGd3UXJy?=
+ =?utf-8?B?YUVKZ1NLRXJLdEZMaW5uNlI5NnRIaVgreGhSaG1kY0t0RnRlbW5ZU1lWSkpO?=
+ =?utf-8?B?NVJMWEszNVdLdjhydjlXRzkrNXMxK0w3enRzMjBUYWVLYittL0RIc1ZUNnVh?=
+ =?utf-8?B?b29RalFJZGw2YktJWlVtcThoTTRnbTYxT29POC8raFdPNW13eHFka2NUT0oz?=
+ =?utf-8?B?elVRbkpSWHlpakpJTjk5WE90NUdmR1JySDRWMWRQTGRPaE9QYUwyeDJSOFdW?=
+ =?utf-8?B?c0Z4WDV5Yll4SWJESmhZMnFaa2pSbzQ4ZFdiYjhOM0dpNFZEYXZKeUZ6dkFM?=
+ =?utf-8?B?WmJNbGZqL0VDak93M0xGRnpMK3F3NW81bWw0RFpyQnFYRUhNZUpZT0NOUnZY?=
+ =?utf-8?B?K1JjUGh1UHh5WVg2WWVibVVpZzRxZnVmT3QzNUJySlRyelQ5VW0xMUkyZ21l?=
+ =?utf-8?B?WmZaQWtRdHFYakJZbC9XRE1uK2dEYTgraEhJL3lFRDN2eUdIaG14MHpUUEhp?=
+ =?utf-8?B?aHNTZi9QeHdsQmVKRUZqVzV2aElQK1FLNWdkNVNVVzdMRWlNTXRoNDVHcjlN?=
+ =?utf-8?B?cnVuMUwzbzRLT1JkSHp6RUNUbVZmaGtQN1hCaFNaWndaWUFQamtOUnU0d3hu?=
+ =?utf-8?B?VkRFMUpmMnhwaVhrUk1ZajVOYWUyV21QekpYM0IrY1hHNjBTcHYvMnNQeEV4?=
+ =?utf-8?B?b1duSFBCcU45b3hDZEhZWXA5bU40QU1rM3lSL0FIa3BTYkpidWJXWXQ3WjNJ?=
+ =?utf-8?B?VW56VEZLZ2pOaWRkd1dWWXZXRFFXQ3I1Wmhnc2FwOVZyMlEyU002cDZhT2pY?=
+ =?utf-8?Q?+moyfYgXPXpTSiL7gn?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: b73ecaf1-bc72-4bac-3ef8-08de650c2f88
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 23:13:34.6300
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ded784a-8484-4852-c236-08de650a44bf
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB50.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9288
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xIL0996+7PJb4Q5hdWvjLZ6gxCoFZghpUriq78PYAnBeaRy0fQvg4qf2OEx/Vj7WhCIu5Z2UJIZxX9eDXhBW6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3544
 
-Change the signature of the program_brom HAL method to not return
-anything.  None of the implementations can actually fail, so they
-always return Ok(()).
+On Thu Feb 5, 2026 at 8:44 PM GMT, Lyude Paul wrote:
+> This introduces a module for dealing with interrupt-disabled contexts,
+> including the ability to enable and disable interrupts along with the
+> ability to annotate functions as expecting that IRQs are already
+> disabled on the local CPU.
+>
+> [Boqun: This is based on Lyude's work on interrupt disable abstraction,
+> I port to the new local_interrupt_disable() mechanism to make it work
+> as a guard type. I cannot even take the credit of this design, since
+> Lyude also brought up the same idea in zulip. Anyway, this is only for
+> POC purpose, and of course all bugs are mine]
+>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> ---
+>
+> V10:
+> * Fix documentation typos
+> V11:
+> * Get rid of unneeded `use bindings;`
+> * Move ASSUME_DISABLED into assume_disabled()
+> * Confirm using lockdep_assert_irqs_disabled() that local interrupts are =
+in
+>   fact disabled when LocalInterruptDisabled::assume_disabled() is called.
+> V18:
+> * Add missing __rust_helper annotations
+>
+>  rust/helpers/helpers.c   |  1 +
+>  rust/helpers/interrupt.c | 18 +++++++++
+>  rust/helpers/sync.c      |  5 +++
+>  rust/kernel/interrupt.rs | 86 ++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs       |  1 +
+>  5 files changed, 111 insertions(+)
+>  create mode 100644 rust/helpers/interrupt.c
+>  create mode 100644 rust/kernel/interrupt.rs
+>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index a3c42e51f00a0..ff628e9c5ffdd 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -32,6 +32,7 @@
+>  #include "err.c"
+>  #include "irq.c"
+>  #include "fs.c"
+> +#include "interrupt.c"
+>  #include "io.c"
+>  #include "jump_label.c"
+>  #include "kunit.c"
+> diff --git a/rust/helpers/interrupt.c b/rust/helpers/interrupt.c
+> new file mode 100644
+> index 0000000000000..51b319bd4c006
+> --- /dev/null
+> +++ b/rust/helpers/interrupt.c
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/spinlock.h>
+> +
+> +__rust_helper void rust_helper_local_interrupt_disable(void)
+> +{
+> +	local_interrupt_disable();
+> +}
+> +
+> +__rust_helper void rust_helper_local_interrupt_enable(void)
+> +{
+> +	local_interrupt_enable();
+> +}
+> +
+> +__rust_helper bool rust_helper_irqs_disabled(void)
+> +{
+> +	return irqs_disabled();
+> +}
+> diff --git a/rust/helpers/sync.c b/rust/helpers/sync.c
+> index 82d6aff73b04f..4f474fe847c41 100644
+> --- a/rust/helpers/sync.c
+> +++ b/rust/helpers/sync.c
+> @@ -11,3 +11,8 @@ __rust_helper void rust_helper_lockdep_unregister_key(s=
+truct lock_class_key *k)
+>  {
+>  	lockdep_unregister_key(k);
+>  }
+> +
+> +__rust_helper void rust_helper_lockdep_assert_irqs_disabled(void)
+> +{
+> +	lockdep_assert_irqs_disabled();
+> +}
+> diff --git a/rust/kernel/interrupt.rs b/rust/kernel/interrupt.rs
+> new file mode 100644
+> index 0000000000000..6c8d2f58bca70
+> --- /dev/null
+> +++ b/rust/kernel/interrupt.rs
+> @@ -0,0 +1,86 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Interrupt controls
+> +//!
+> +//! This module allows Rust code to annotate areas of code where local p=
+rocessor interrupts should
+> +//! be disabled, along with actually disabling local processor interrupt=
+s.
+> +//!
+> +//! # =E2=9A=A0=EF=B8=8F Warning! =E2=9A=A0=EF=B8=8F
+> +//!
+> +//! The usage of this module can be more complicated than meets the eye,=
+ especially surrounding
+> +//! [preemptible kernels]. It's recommended to take care when using the =
+functions and types defined
+> +//! here and familiarize yourself with the various documentation we have=
+ before using them, along
+> +//! with the various documents we link to here.
+> +//!
+> +//! # Reading material
+> +//!
+> +//! - [Software interrupts and realtime (LWN)](https://lwn.net/Articles/=
+520076)
+> +//!
+> +//! [preemptible kernels]: https://www.kernel.org/doc/html/latest/lockin=
+g/preempt-locking.html
+> +
+> +use kernel::types::NotThreadSafe;
 
-Signed-off-by: Timur Tabi <ttabi@nvidia.com>
----
- drivers/gpu/nova-core/falcon.rs           | 2 +-
- drivers/gpu/nova-core/falcon/hal.rs       | 2 +-
- drivers/gpu/nova-core/falcon/hal/ga102.rs | 8 +++-----
- drivers/gpu/nova-core/falcon/hal/tu102.rs | 4 +---
- 4 files changed, 6 insertions(+), 10 deletions(-)
+I think we currently more commonly use `crate::`, although I personally wou=
+ldn't
+mind to use `kernel::`.
 
-diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index 37bfee1d0949..14a789ac625a 100644
---- a/drivers/gpu/nova-core/falcon.rs
-+++ b/drivers/gpu/nova-core/falcon.rs
-@@ -532,7 +532,7 @@ fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F) -> Result
-         self.dma_wr(bar, fw, FalconMem::ImemSecure, fw.imem_sec_load_params())?;
-         self.dma_wr(bar, fw, FalconMem::Dmem, fw.dmem_load_params())?;
- 
--        self.hal.program_brom(self, bar, &fw.brom_params())?;
-+        self.hal.program_brom(self, bar, &fw.brom_params());
- 
-         // Set `BootVec` to start of non-secure code.
-         regs::NV_PFALCON_FALCON_BOOTVEC::default()
-diff --git a/drivers/gpu/nova-core/falcon/hal.rs b/drivers/gpu/nova-core/falcon/hal.rs
-index 89babd5f9325..c8480e8afe0b 100644
---- a/drivers/gpu/nova-core/falcon/hal.rs
-+++ b/drivers/gpu/nova-core/falcon/hal.rs
-@@ -46,7 +46,7 @@ fn signature_reg_fuse_version(
-     ) -> Result<u32>;
- 
-     /// Program the boot ROM registers prior to starting a secure firmware.
--    fn program_brom(&self, falcon: &Falcon<E>, bar: &Bar0, params: &FalconBromParams) -> Result;
-+    fn program_brom(&self, falcon: &Falcon<E>, bar: &Bar0, params: &FalconBromParams);
- 
-     /// Check if the RISC-V core is active.
-     /// Returns `true` if the RISC-V core is active, `false` otherwise.
-diff --git a/drivers/gpu/nova-core/falcon/hal/ga102.rs b/drivers/gpu/nova-core/falcon/hal/ga102.rs
-index 8f62df10da0a..478823311c83 100644
---- a/drivers/gpu/nova-core/falcon/hal/ga102.rs
-+++ b/drivers/gpu/nova-core/falcon/hal/ga102.rs
-@@ -75,7 +75,7 @@ fn signature_reg_fuse_version_ga102(
-     Ok(u16::BITS - reg_fuse_version.leading_zeros())
- }
- 
--fn program_brom_ga102<E: FalconEngine>(bar: &Bar0, params: &FalconBromParams) -> Result {
-+fn program_brom_ga102<E: FalconEngine>(bar: &Bar0, params: &FalconBromParams) {
-     regs::NV_PFALCON2_FALCON_BROM_PARAADDR::default()
-         .set_value(params.pkc_data_offset)
-         .write(bar, &E::ID, 0);
-@@ -88,8 +88,6 @@ fn program_brom_ga102<E: FalconEngine>(bar: &Bar0, params: &FalconBromParams) ->
-     regs::NV_PFALCON2_FALCON_MOD_SEL::default()
-         .set_algo(FalconModSelAlgo::Rsa3k)
-         .write(bar, &E::ID);
--
--    Ok(())
- }
- 
- pub(super) struct Ga102<E: FalconEngine>(PhantomData<E>);
-@@ -115,8 +113,8 @@ fn signature_reg_fuse_version(
-         signature_reg_fuse_version_ga102(&falcon.dev, bar, engine_id_mask, ucode_id)
-     }
- 
--    fn program_brom(&self, _falcon: &Falcon<E>, bar: &Bar0, params: &FalconBromParams) -> Result {
--        program_brom_ga102::<E>(bar, params)
-+    fn program_brom(&self, _falcon: &Falcon<E>, bar: &Bar0, params: &FalconBromParams) {
-+        program_brom_ga102::<E>(bar, params);
-     }
- 
-     fn is_riscv_active(&self, bar: &Bar0) -> bool {
-diff --git a/drivers/gpu/nova-core/falcon/hal/tu102.rs b/drivers/gpu/nova-core/falcon/hal/tu102.rs
-index 7de6f24cc0a0..c38a556d1565 100644
---- a/drivers/gpu/nova-core/falcon/hal/tu102.rs
-+++ b/drivers/gpu/nova-core/falcon/hal/tu102.rs
-@@ -44,9 +44,7 @@ fn signature_reg_fuse_version(
-         Ok(0)
-     }
- 
--    fn program_brom(&self, _falcon: &Falcon<E>, _bar: &Bar0, _params: &FalconBromParams) -> Result {
--        Ok(())
--    }
-+    fn program_brom(&self, _falcon: &Falcon<E>, _bar: &Bar0, _params: &FalconBromParams) {}
- 
-     fn is_riscv_active(&self, bar: &Bar0) -> bool {
-         let cpuctl = regs::NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS::read(bar, &E::ID);
+> +
+> +/// A guard that represents local processor interrupt disablement on pre=
+emptible kernels.
+> +///
+> +/// [`LocalInterruptDisabled`] is a guard type that represents that loca=
+l processor interrupts have
+> +/// been disabled on a preemptible kernel.
+> +///
+> +/// Certain functions take an immutable reference of [`LocalInterruptDis=
+abled`] in order to require
+> +/// that they may only be run in local-interrupt-disabled contexts on pr=
+eemptible kernels.
+> +///
+> +/// This is a marker type; it has no size, and is simply used as a compi=
+le-time guarantee that local
+> +/// processor interrupts are disabled on preemptible kernels. Note that =
+no guarantees about the
+> +/// state of interrupts are made by this type on non-preemptible kernels=
+.
+> +///
+> +/// # Invariants
+> +///
+> +/// Local processor interrupts are disabled on preemptible kernels for a=
+s long as an object of this
+> +/// type exists.
+> +pub struct LocalInterruptDisabled(NotThreadSafe);
+> +
+> +/// Disable local processor interrupts on a preemptible kernel.
+> +///
+> +/// This function disables local processor interrupts on a preemptible k=
+ernel, and returns a
+> +/// [`LocalInterruptDisabled`] token as proof of this. On non-preemptibl=
+e kernels, this function is
+> +/// a no-op.
+> +///
+> +/// **Usage of this function is discouraged** unless you are absolutely =
+sure you know what you are
+> +/// doing, as kernel interfaces for rust that deal with interrupt state =
+will typically handle local
+> +/// processor interrupt state management on their own and managing this =
+by hand is quite error
+> +/// prone.
 
-base-commit: cea7b66a80412e2a5b74627b89ae25f1d0110a4b
--- 
-2.52.0
+#[inline] for this and other small wrapping functions.
+
+This is a non-generic function. While newer version of Rust compiler starts=
+ to
+automatically mark things inline for small functions when it sees fit, we s=
+hould
+still ensure that trivial functions are annotated as such.
+
+> +pub fn local_interrupt_disable() -> LocalInterruptDisabled {
+> +    // SAFETY: It's always safe to call `local_interrupt_disable()`.
+> +    unsafe { bindings::local_interrupt_disable() };
+> +
+> +    LocalInterruptDisabled(NotThreadSafe)
+> +}
+> +
+> +impl Drop for LocalInterruptDisabled {
+> +    fn drop(&mut self) {
+> +        // SAFETY: Per type invariants, a `local_interrupt_disable()` mu=
+st be called to create this
+> +        // object, hence call the corresponding `local_interrupt_enable(=
+)` is safe.
+> +        unsafe { bindings::local_interrupt_enable() };
+> +    }
+> +}
+> +
+> +impl LocalInterruptDisabled {
+> +    /// Assume that local processor interrupts are disabled on preemptib=
+le kernels.
+> +    ///
+> +    /// This can be used for annotating code that is known to be run in =
+contexts where local
+> +    /// processor interrupts are disabled on preemptible kernels. It mak=
+es no changes to the local
+> +    /// interrupt state on its own.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// For the whole life `'a`, local interrupts must be disabled on pr=
+eemptible kernels. This
+> +    /// could be a context like for example, an interrupt handler.
+> +    pub unsafe fn assume_disabled<'a>() -> &'a LocalInterruptDisabled {
+> +        const ASSUME_DISABLED: &LocalInterruptDisabled =3D &LocalInterru=
+ptDisabled(NotThreadSafe);
+> +
+> +        // Confirm they're actually disabled if lockdep is available
+> +        // SAFETY: It's always safe to call `lockdep_assert_irqs_disable=
+d()`
+> +        unsafe { bindings::lockdep_assert_irqs_disabled() };
+> +
+> +        ASSUME_DISABLED
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index f812cf1200428..fbe830c4c54e4 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -101,6 +101,7 @@
+>  pub mod i2c;
+>  pub mod id_pool;
+>  pub mod init;
+> +pub mod interrupt;
+>  pub mod io;
+>  pub mod ioctl;
+>  pub mod iov;
 
