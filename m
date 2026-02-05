@@ -1,129 +1,135 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84193921DA;
-	Thu,  5 Feb 2026 08:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEC73A1E9B
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 09:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770281854; cv=none; b=MtL7onSRbj2whT5ffibj4kmHQ84MAkIUJU2XjC7OQgwCOf+FVdOBZJDgijKnyJhIHyTPI/UobX3NhWZVj9mfh2NbZ8f1oitI0idoEhBSO1+ErrUSlyBase8ISDQuNW1iJEpLCPSENUtubC0bAA7TVgsDqjqwr8DyQEK22nTYPPs=
+	t=1770285286; cv=none; b=F7Ypmjv2Q5f1orwF/da6Daa4kwWmXzwX045OBkQj6HMFP2jEyAFRFWS8msaXJ7iWdxzTTEI12w4JsZ0agLoAaXWN5/4MAWbGxI8H67q1OzSjfIXatB4vb53DukaTCR6yBMrqPC5b12yC0UPEvndpWiwf3VP/6rapymC1kHNCfwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770281854; c=relaxed/simple;
-	bh=ievRL1UrAqDbcV4FouDDI6LBWuW8kiFgJWc5S1huqZQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u8r3k/koM5CzXY6+FaxACXdOSVT4vQ6fYyUmFWW4fW48lKHtimB5y2msOeGJL8FGRAQj+4LvS/ldHg1cNf3lihBkIs832F/bXqDIva3wu4XjQNQqKh56ROvAnWep9GTaIFVjaU9q3kTbjAkP6WOXA3ROgwN17xbgwUTsQNCSSL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=JftojCoU; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1770285286; c=relaxed/simple;
+	bh=+gH07T7gJ7+X3xesrNA2+Bs3sMLJhA4gaSIsoseJoFk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f08utrXbOV3zGb/QOzOSeYY4bD43dkB82J08MqdvrOuqxohRkC+1c0qpPVx9bN1pyItTNsPIJcYLA4OCFyPFVzwoGOaBuVWx99ssAMRtWYwIjrdXCtR6q0tNXwh052kKwbv18aPSDGzl9VT1vapw2qQMmQVSfmWM8lulcgEAwek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OIztZXVg; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="JftojCoU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770281852;
-	bh=ievRL1UrAqDbcV4FouDDI6LBWuW8kiFgJWc5S1huqZQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JftojCoUDqcMhG7mjifhPlZ4N8LGER57VVo2KZZfCV+WpKua0hxWhjPTf7lARbKMl
-	 6j+8pzOsBi4FpiFWdChry3SjCPXKNVbVDN5YANsHL1wF4I5BfXPo1EQRJlqNpEHxc5
-	 xj9tUTZSpebz2PgoVy1oVk3G+syoWwNMjeBaRvf0QINw7+hOucCxT8US6aR/zjd89F
-	 VydDglp1+uUBayx/78rHKrW0MEUWGWVDHS3eysFvgotPSWYHGmdPlZ2/A4RXkaSPZP
-	 txj6zWGoEMeHE3ctPuWr3YUCRT8tB+llc71kNYa+X3Zff23xgdniGC83vubilCwmQz
-	 0OMa6occpwDjQ==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7131017E1299;
-	Thu,  5 Feb 2026 09:57:31 +0100 (CET)
-Date: Thu, 5 Feb 2026 09:57:27 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Philipp Stanner <phasta@kernel.org>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Gary
- Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, Christian
- =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Daniel Almeida
- <daniel.almeida@collabora.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
-Message-ID: <20260205095727.4c3e2941@fedora>
-In-Reply-To: <20260203081403.68733-4-phasta@kernel.org>
-References: <20260203081403.68733-2-phasta@kernel.org>
-	<20260203081403.68733-4-phasta@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OIztZXVg"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-354a18c48b5so526067a91.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 01:54:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1770285286; x=1770890086; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9xBIY0mav+3IAaN2sDOZsKW4O0cnUlRHLSnJJ3/BuhM=;
+        b=OIztZXVg1hLazuEkmqd8LlclnaLE4rA0fxlphw3KvArdlCYxrvdQZyDtKojtlalHtG
+         1a66CHSgueLHo3e7wgPFL5SSykTdE+DP/Wqo/IzjGPPDm4GcyVlPjTjvAduAfl8knaW9
+         NrADuUlm153qtL+TZOZwB02E5FIxQEvXf8VcuyXxGRlrop4XdAcCjNyZpmvoKpOXaqx5
+         iTqPuOKTZ61EEAXWEtUzcfKjsOfoqd6olMTXQbZ52wRe3LltSc6K1bAuQ04//rTzOU9I
+         efFMVyoMMVC/Y1sfaoxEqpR0CYhnFWHReEGc2mHEIYgZfGzJCicUald9h2trI26NPIf1
+         gaXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770285286; x=1770890086;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9xBIY0mav+3IAaN2sDOZsKW4O0cnUlRHLSnJJ3/BuhM=;
+        b=jwMrg2HIuWV5+bzFtTdnri3oMjo8cgVyF4jw8MZZlFM3kK9FDGJBgaLkx88FU1yf2L
+         lwKbf60bkcS3D+dihbGQOlGoLhHE2bifJhb69VLTGSTqvzamyuCHa648jyPok1EjQBd7
+         dBwwalLChqPvPh0UGgJFB6bx+tmxrtTjrkY+wK12VrE2AbrumDvi5IxHDUhT2yKil2W1
+         etcLb+jWusnM05X96aXfMyExOc/owwQrPWg5v2Zz0s3RNx4HYxzOYqjP51tu9U+/VTIb
+         zR0BEiOiQB1DSAptgK+oOY0kr9O9GPzpvd1aBW9YUTYn51Gt6wKlDSyrKiFqn71wAnzO
+         1yEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWdz45FpIw1wtuUgUrCLnu9BWeHQZJfKOMteqPZTf+H0svUinEbhF6Ip2fYNq0f6Zs8mNUUFjTffJ+G1pipEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YybUGiMvu+1ZtzKeJpwxJsNcIKRkZlIUTZrBbZ6fEWUFMsLq3uO
+	1VelWHxjdR8Xqvi99V2PkQ6qzo+Yv5MNQgcVgyNHdPvezX+SmCGKPu3yhPMdRbqp8SE=
+X-Gm-Gg: AZuq6aJtWbrneETr+UxYNHaZ+t1YEdEQq/LffUaQfrp1hyEy9dJnBhVVHQiOZM7B8y8
+	sf52x4KGOvAbPMoZskuOaZz/RtzbvjHfx4CZGFKoAGBlEaDt07bgRC2A0mgNjGcLYBMVuwo2yIR
+	VisXj7jFfvA/8e93c+4YfJPhyMXEoBug9uJSWRn/ZuAkJZQitpGE2EJVCCjXuBXPY3/L3SZD8cy
+	Lg1LedwB7y3BmfCAYOoiC04hm1JVaZpiOSow7QpbzlDjeR2p7pzTzfkFcIZJ/zp0/ZmMRf1XBEX
+	2LIaTnfgCO5Zkxo1o6JqOlTb17VsOe574guMjI6aB7VyTwXk+uXFA3kHJhX0YLgk+a00JDEgvq1
+	/mydpkMsxVQepFVbI6ujRXFo4E8cKYp1+ZX0EubepEAGZfBqNfepkw8BxUIlkUboHBJFuJT+mkm
+	lIkJNY7P5PUw0=
+X-Received: by 2002:a17:90a:c110:b0:354:a05d:9dc2 with SMTP id 98e67ed59e1d1-354a05da864mr1522955a91.9.1770285285886;
+        Thu, 05 Feb 2026 01:54:45 -0800 (PST)
+Received: from localhost ([122.172.80.63])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-354894533dbsm2000361a91.7.2026.02.05.01.54.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 01:54:45 -0800 (PST)
+Date: Thu, 5 Feb 2026 15:24:42 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Igor Korotin <igor.korotin.linux@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
+	Oliver Mangold <oliver.mangold@pm.me>
+Subject: Re: [PATCH v14 2/9] rust: rename `AlwaysRefCounted` to `RefCounted`.
+Message-ID: <xh3iuwlz4wapmgzojg4v3sen4oezfua4vsedskvrqhc7ryyclj@jggikwra6dmj>
+References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
+ <20260204-unique-ref-v14-2-17cb29ebacbb@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260204-unique-ref-v14-2-17cb29ebacbb@kernel.org>
 
-Hi Philipp,
-
-On Tue,  3 Feb 2026 09:14:01 +0100
-Philipp Stanner <phasta@kernel.org> wrote:
-
-
+On 04-02-26, 12:56, Andreas Hindborg wrote:
+> diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
+> index a760fac287655..06fe2ca776a4f 100644
+> --- a/rust/kernel/opp.rs
+> +++ b/rust/kernel/opp.rs
+> @@ -16,8 +16,8 @@
+>      ffi::{c_char, c_ulong},
+>      prelude::*,
+>      str::CString,
+> -    sync::aref::{ARef, AlwaysRefCounted},
+> -    types::Opaque,
+> +    sync::aref::RefCounted,
+> +    types::{ARef, AlwaysRefCounted, Opaque},
+>  };
+>  
+>  #[cfg(CONFIG_CPU_FREQ)]
+> @@ -1041,7 +1041,7 @@ unsafe impl Send for OPP {}
+>  unsafe impl Sync for OPP {}
+>  
+>  /// SAFETY: The type invariants guarantee that [`OPP`] is always refcounted.
+> -unsafe impl AlwaysRefCounted for OPP {
+> +unsafe impl RefCounted for OPP {
+>      fn inc_ref(&self) {
+>          // SAFETY: The existence of a shared reference means that the refcount is nonzero.
+>          unsafe { bindings::dev_pm_opp_get(self.0.get()) };
+> @@ -1053,6 +1053,10 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+>      }
+>  }
+>  
+> +// SAFETY: We do not implement `Ownable`, thus it is okay to obtain an `ARef<OPP>` from an
+> +// `&OPP`.
+> +unsafe impl AlwaysRefCounted for OPP {}
 > +
-> +    /// Mark the beginning of a DmaFence signalling critical section. Should be called once a fence
-> +    /// gets published.
-> +    ///
-> +    /// The signalling critical section is marked as finished automatically once the fence signals.
-> +    pub fn begin_signalling(&mut self) {
-> +        // FIXME: this needs to be mutable, obviously, but we can't borrow mutably. *sigh*
-> +        self.signalling = true;
-> +        // TODO: Should we warn if a user tries to do this several times for the same
-> +        // fence? And should we ignore the request if the fence is already signalled?
-> +
-> +        // SAFETY: `dma_fence_begin_signalling()` works on global lockdep data and calling it is
-> +        // always safe.
-> +        self.signalling_cookie = unsafe { bindings::dma_fence_begin_signalling() };
+>  impl OPP {
+>      /// Creates an owned reference to a [`OPP`] from a valid pointer.
+>      ///
 
-Maybe it's me misunderstanding what's happening here, but I don't think
-you can tie the signalling section to the fence [published -> signalled]
-timeframe. DmaFence signalling critical section is a section of code, in
-a thread, that's needed for any previously published fence to be signalled,
-and as such, has constraints on memory allocation types and locks it can
-acquire (any lock taken while a blocking allocation happens can't be taken
-in the DmaFence signalling path for instance).
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-But here, you're going to flag the thread doing the submission as
-being in the signalling path, and this will likely be dropped in a
-different thread (because the signalling will happen asynchronously,
-when the job is done or cancelled). Think about this sequence for
-instance:
-
-	thread A				thread B (workqueue thread)
-	
-	iocl(SUBMIT_xxx) {
-		create(job)
-		arm(job->fence)							<- fence signalling section starts here
-		queue(job)
-	}
-
-	ioctl(xxxx) {
-		kmalloc(GFP_KERNEL)						<- BOOM, can't do blocking alloc in a
-										   fence signalling path
-	}
-
-						job_done_work() {
-							...
-							signal(job->fence)	<- fence signalling section supposedly ends here in
-										   a completely different thread it was started
-						}
-
-Unfortunately, I don't know how to translate that in rust, but we
-need a way to check if any path code path does a DmaFence.signal(),
-go back to the entry point (for a WorkItem, that would be
-WorkItem::run() for instance), and make it a DmaFenceSignallingPath.
-Not only that, but we need to know all the deps that make it so
-this path can be called (if I take the WorkItem example, that would
-be the path that leads to the WorkItem being scheduled).
-
-Hopefully Alice and other rust experts can come up with some ideas
-to handle that.
-
-Regards,
-
-Boris
+-- 
+viresh
