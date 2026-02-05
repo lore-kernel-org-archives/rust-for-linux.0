@@ -1,346 +1,273 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022122.outbound.protection.outlook.com [52.101.101.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B60C33122C;
-	Thu,  5 Feb 2026 22:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770330337; cv=none; b=fGYTZAGmbbvsUPLPs6NIBOEXtBTCh5r22zc2DxbQVhRhH+KFNvBPoWvNrqz/pkiwkXQVrCpcyV5X9UZgFT1QwxShfn72LBeJvBQloYe1dhMOOJXDahKgnDje+vxpZaKwciRTA4qVCcY+6a/TkwA0DOXHXP6xpGn9NY0EBDgaG60=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770330337; c=relaxed/simple;
-	bh=btmKdfjFPn5NfY0+i6My0843wsK7td+yEPoAGjjYYI4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XGKRoq04mZJw4Lx/WhSNrb41uohyvIAYC0s77ZmpSqWC49tVtdwFt6c2ShcPuR7xWa3FcadC5N5Locc3w0k9mUSUFQwfo2qtF371l9IUKvkdLqKpegewL0mcNKSQOtElckW0cuM5by5G1F9LgysVnz79wAYFlTzj+A8t2+fGbs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KqwsLUQA; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003F0331A4B;
+	Thu,  5 Feb 2026 22:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.122
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770330685; cv=fail; b=p8jzCcfqMcoR46LHsc74xaFLc0+4+k/dEIQgL60Fyaq4dfgUHfGgWqJRuRFTUZ1ThWoeRqNekorWuHFfnCSnoFRMIDsbvRkHLnnx6KD4YmKNJIP7l0E0sGytDNAQhvTTZjGhGnK6+y9rnURZjoCwAEeDBt7bqDBATeFr+Cy75HA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770330685; c=relaxed/simple;
+	bh=B7tWC6xBVKHlurWyarzzqwutMILakg4nYtvwGXCgSQw=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=UTnml7lmQqwWAegfMZoQOkqylCqD2FuJOLsM87nk4CVmcE2i6YVei4vXvRCX1/YJhloXa63DgtpBWuC85HkCk79a5nLWdZWROR50+d+87VwNL6aOEkbQmFWu+FwKtFZCw4l6pson1rhRB/wRrXLMXa/cYzAm4VsF7JbK0shmaY0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=jT4b4fW6; arc=fail smtp.client-ip=52.101.101.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KqwsLUQA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC04C4CEF7;
-	Thu,  5 Feb 2026 22:25:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770330336;
-	bh=btmKdfjFPn5NfY0+i6My0843wsK7td+yEPoAGjjYYI4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KqwsLUQAaMZIiQbeIWT5DPniWwf/qn6ctw12udiHA5zTntIlrPcWGx6+yIkveRPtI
-	 ofaOYvZ/XIX8+mDlaQU4UpI0ThK0haCnFl6RtjGpmvTeV86DIwhE9yvp+4kBdi4Mfv
-	 vz5uXcJsqWtsIZDnCXmebQ0/BXb8gXrKNxgGCM+q0E3DiTpI/bA2XKzJxabh1mnTMn
-	 utprm+ehyESqobyDo+cwbjM8tO6yJ7E4fjqWUM8Ejb22AuCzmAChMl4xNLAcDlASdi
-	 ANH8C4uStevdccmQcrl6NSrdSGGCUGGi4Y+Xg0JtFKKoOgC3OM4jh79lbup7D2xXiC
-	 UcRUnc/Yu1eFQ==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Markus Probst <markus.probst@posteo.de>
-Subject: [PATCH] rust: devres: fix race condition due to nesting
-Date: Thu,  5 Feb 2026 23:25:15 +0100
-Message-ID: <20260205222529.91465-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="jT4b4fW6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iepIm0tvSPrUk/r96HUtgxun4R27HmBhzkedjsrVvq8dPo9B9sNd+gavrCZQmCKqjbQPzM4BaWfaxbqGxCUIjo/cVGYEOyP25ltTep6zpeiRFnnKyVCszzHNXrMLeBwPSJJtDJueAKBIqwllgEfT8hG2e2i66IG2k4mQ6jUJ+PH25w+vPuuuzxx8LIDlCPH/FIzFg6Xa4q2VIqvglWQVBbQAgh2PLohg6mqnlp3AfQwr+Gang5fYaQ6Kgn/joR3t8F3GF/8m/hsnHWh6KoMPmt7S32VEiKkyK3vNMSB7qnOgteVfVTy8d1UywYzmeU0plx6eNQ415rp6tQXRlEwpdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KS83uiuF2cI1EHYv52i2+VVIIWzuzTKjkqhmQEcgMM4=;
+ b=RWWssPs61cuQfO51Tx6YiMGr6LhgkooC6Doun/c8PUolqexSuJ1E/aC6IaLXRsYPVgvg73+pQOOH0n8/ndLbvafKWDKcbXoDMWYGFTEcEFSxU24GNupsWHYbj59GkDB6TaNbwx5XN0AtLJjTrhMIQNHGTLXeRmyiaxQXvEVbSLIVK9MqFdreRZueKvj7O9qIT7DwNAi1ibPu05IeOz92t6iQ6nFoTicq5CbB4xqIsR3ZXq0xG4rmYwCWtx3N1D403mVig5Y8DPsETimbrNufRmJ3xFTwfdSSJ15AuwDwRJeEDbYDckNFUmDE1KosLLIiDPCMpT/z0eY/YWnvb5qG6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KS83uiuF2cI1EHYv52i2+VVIIWzuzTKjkqhmQEcgMM4=;
+ b=jT4b4fW629VDcDgD5RMmAmiM680vC6xi+TmV1/vBajTxRHnBvcT8V3k41oC+twn/ld7CGNBgDE+C3nllvRD3G+9c0FCY6TL7+jKLGVcMUN7ECA7oJogr8HoPlq56TyKB0d8+097ByMpXIopQoOeqAJrEuj56v09Swxz+l7qrUIs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO3P265MB1948.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:be::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Thu, 5 Feb
+ 2026 22:31:21 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Thu, 5 Feb 2026
+ 22:31:21 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Feb 2026 22:31:20 +0000
+Message-Id: <DG7DUN9M4YIU.KNRN6FM1K687@garyguo.net>
+Cc: "Gary Guo" <gary@garyguo.net>, "Link Mauve" <linkmauve@linkmauve.fr>,
+ <rust-for-linux@vger.kernel.org>, "Madhavan Srinivasan"
+ <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>, "Nicholas
+ Piggin" <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, "Srinivas Kandagatla" <srini@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Ard
+ Biesheuvel" <ardb@kernel.org>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, "Eric Biggers" <ebiggers@google.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Lyude Paul"
+ <lyude@redhat.com>, "Asahi Lina" <lina+kernel@asahilina.net>, "Viresh
+ Kumar" <viresh.kumar@linaro.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
+ <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+ <officialTechflashYT@gmail.com>, "Ash Logan" <ash@heyquark.com>, "Roberto
+ Van Eeden" <rw-r-r-0644@protonmail.com>,
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+Subject: Re: [PATCH v2 1/4] rust: io: Add big-endian read and write
+ functions
+From: "Gary Guo" <gary@garyguo.net>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>
+X-Mailer: aerc 0.21.0
+References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
+ <20260204040505.8447-2-linkmauve@linkmauve.fr>
+ <DG6A0WRA0JZC.SPDT9WEXF92K@kernel.org>
+ <EC479D9E-ADBF-461C-BEA6-06EA2D4FD8A6@collabora.com>
+ <DG74LUHX3NPX.3BLARQEIFG1DD@garyguo.net>
+ <D6227AA2-A727-4F29-B7CD-BE0AAB0A13F1@collabora.com>
+ <DG79GRI3NOLS.3ASMS9RJ80IXM@kernel.org>
+In-Reply-To: <DG79GRI3NOLS.3ASMS9RJ80IXM@kernel.org>
+X-ClientProxiedBy: LO4P302CA0030.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c1::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO3P265MB1948:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90da5a6a-ec92-4565-d905-08de650649b8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZVpvM0dGRTJPeEhYWThNOGN6ekFKMWU4V2drVU84TWNLMlNJWDFEaHUwZXZ5?=
+ =?utf-8?B?cVF4OUJZRGtBMlpTNkIyWHowWDV1QytMSlUycUxCNDBIMmE5L1ZBdDZKSUdu?=
+ =?utf-8?B?cUgvNzJlQW94c2RXS0oxWlJOSWFLcy9wVlVMa2YxMGlJc2EwNzBicXhGVHUv?=
+ =?utf-8?B?cWtrTnlDRHF1a1N1eGJGeVk3SWZXVWt3V3J1NFZCcDloUzlWTFUrK3ltc0Mz?=
+ =?utf-8?B?TmxkNXl0RU1EZTBQZklvcXFTeDdRbHhuMW9FdVB4WitnU2J6S2NXRkRrZ3Vy?=
+ =?utf-8?B?S2EvTG1QSHp0RnlhRFNLdnRYYmJZM21taVZqdDRnRVRZWGhqUnczQmpFN0ZG?=
+ =?utf-8?B?WGZsV2hqYjAwWnFHdHpWNUU5ZkgxV1VGMWZlVTgxWTBQd0FKU0NUTjFzMEZQ?=
+ =?utf-8?B?T2ljckQ4Tkw2aFQ1aHFsMXMyT1dFeUo1TG1lRGw5eWcwR3I3SjlhUjlYbjUv?=
+ =?utf-8?B?Z3ZwNkFnYWNmS1BkZytwOGJYWTlWZW5SZ0lQZS9WQXJ2RzRZekxKOWQ0ZGp5?=
+ =?utf-8?B?aDFJcHFxQ3I1RzFIbVBrb0ZnbDYvaUhDTlNaRk1naTUwTExGbEhRVm5NZmZm?=
+ =?utf-8?B?L1QzR2RaQ0FuUXVnNVBEbDV1WXlmRWk3TzZ5YUQ0NDBJeFpialZXaE92QXNI?=
+ =?utf-8?B?dzYyMmlwZkxCcXordFVnOVdHYlNiVGdrTHJvUFBHZDRyb1RjSWZkMHBUL2RZ?=
+ =?utf-8?B?VWZNeDhleUltQW40ZkZkaDdmYyttZm9XaFVKaVBRWDdMNlpvMXpPZE9ia1dv?=
+ =?utf-8?B?WllUQlk5dDFGTFFFSUQxN0YzYWxucm54Qkl2NTZPQkl6OERuRlBubjN1WnhE?=
+ =?utf-8?B?TGVkUTdTNTIwVzc4STRKL1E2VWZKVThBbEhBWlNhcEFReFpDa216OGlUNHZp?=
+ =?utf-8?B?VWMrcXJvK0V6dGlEWUF6ZlMvVnpOV3ZYVEQvVTg5S3pFaDRRVVI4K1hGYndx?=
+ =?utf-8?B?Y2FUem1zU29nbDQ3MUF3R0dGRmNuOWoydWkrNi9kNkp0QVBuYmxJWWZBQ3Fs?=
+ =?utf-8?B?cnZhTWIrK3N3UTFlcHdsektqeEFIN0NCMEhJa3lJRm94NXpyVmxMaTZQQjUv?=
+ =?utf-8?B?RnN0aTdzVU5rWG5GWG5KcDc4MjZSellqL3k1U2dxK09qakhmVE9aZ0o3TVox?=
+ =?utf-8?B?YVZaT3NkTXdjSjB2aFA1SzF3UUo2eXF1VllCMmhEQmhackVzU05TSjFZVEN3?=
+ =?utf-8?B?MzkrWDRudm5zeDl2Ty9hOG10ZkYzTDFOcUlqVStnVUVTa2xlMVV4bE02bFhM?=
+ =?utf-8?B?R1lzSms3NWE1eEwybStFS2EyellEamx0Vk45VWNQSXIzVmhVNHNWSWxsSExv?=
+ =?utf-8?B?SWFvRzI4UXhSbU9aM1VQWHNEVzFqbllCRkcya1BVNGovMldGNTl6cFBPR0h6?=
+ =?utf-8?B?bHk3VVRhZzRLWkptdXNURUtES0l3alVXSy9NdHIzRjZhOFVIOHBzQUtOcDlQ?=
+ =?utf-8?B?SnVKUStjc1M1MG9HcjNHcnBhU3FVajE0bGtVekx5Z3BPbjFCbG5UL1pZeGVM?=
+ =?utf-8?B?MlJTWXJHTXdEWUxqamQzaDVJZ0h4VjQrMUFLcitSY2JvRkg0Ky8va0wvT1lz?=
+ =?utf-8?B?dDdUQmYzTjVNUitOUWs1aTVvVUZuQkxZdHUyckxyUUNQR2k1ZXcybWs5VGpy?=
+ =?utf-8?B?anpsais5T3pIVzhiTzdxNjhEakFHMWhFQ1RMUitIeUtsdEw4WjJzWmprTTVO?=
+ =?utf-8?B?dzVLL0x0NXhNcmZxcmtvT1dvaWdoMGVxRjczK01kMVRBaDR2MkN3NjBlVWx2?=
+ =?utf-8?B?Q2NuWmphT2ZETFhibnNlZWpRUWRZTGNESmx2ZFo5U0g0NG9SMm05S1JLZ2Uw?=
+ =?utf-8?B?SVd4SFBhT1I0MC8xTkprUXhvVHorL242ZjdTWlZKQkVXMFI1RTVUSnRtZVU2?=
+ =?utf-8?B?aVZ5RGo0UGJ2c0h4L29vT2Z6NFNDUmQ5K3ByT0FGdG5Ja2g4SUUwZSttNVNm?=
+ =?utf-8?B?WjhvQkg5YUVIZVlPd2NMSVRicXdsVEZaR0dITnhmd1RJcGI3YXFadlVCVnpS?=
+ =?utf-8?B?NnZLOSszbHcvb1BVd0dmQ2I2ZVZ1MGVXamZ6U0o4ZWs4eElRb3dubGRBci9R?=
+ =?utf-8?B?NW0wOVNmT1B3UzBPLzZVUmlxRWx2N1UzN0x3OS9ZdVYyOGdUN0FjYlhnaHRk?=
+ =?utf-8?Q?tInQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UTg0aUtwWmlNU05oUWoycWFBRThPQWRYMGZhMkdESXVhU0FhMDhIOFFSdEcz?=
+ =?utf-8?B?cFlGR2VZMlNFZ2NwNjRxTXd3MGRvdkpEYTRIUFVRdFVoeGJ5cUwvd1VtOUM0?=
+ =?utf-8?B?K0NrdDRlT0doVkw3cHUyT0thY3gwWTJ3UkxnckxHSW1McndJK1NFZWJ0dko4?=
+ =?utf-8?B?emdLRVhWMHcwWTJ0VVY3bzRKYXNKY2JQQUZ1N045YndPSFpOOHNZaFNpbjRh?=
+ =?utf-8?B?NGgzM3dCNFVSQXJhSklGbWRKbU90ZzFwYlBYcEszcGNlOS9VUU1RSGVHN1pq?=
+ =?utf-8?B?RG1wY0xnbTNHTGZ0eUF6R0FUVTd1WDBhVWRuVzEycUo3cWhkNzhBdHpVaGZq?=
+ =?utf-8?B?VngzSTdGQTdpWXpnKzJKeEIrbGEzd0hUUkdVcGZJc3F4M0F3cmdqbVRwd3Yz?=
+ =?utf-8?B?NnNIRTZ5bFU5MmxuUzF5L0VVOE9Ea25YYU1jT2RvRUtkbTIyTWpiMmsxK2JO?=
+ =?utf-8?B?U25jNkFWaHJFTmFWN1ZmbTJadGQzc3V0QzgwZlNXS0xKbDAzWkFjK1VjWEtL?=
+ =?utf-8?B?MjEwZE5XZWs3eHZGNXR1WUdLOWprL25SSWpYREE0OURDeW1SNTFtOCtqMXpB?=
+ =?utf-8?B?Q3lqa1VQMHEzY3U4ZGhIaDJCbCtIRnFzdVRkMFJEbVNwWnhMWm4vaDhxblB3?=
+ =?utf-8?B?K1dwaUZFTUprQ3FIemx0bGgvb1FqaHEvbENObnBxNHMrcTRXcGRGbk1Pbmhy?=
+ =?utf-8?B?WnBDbWtlTU9CNlZmY0hpTHNrNU5aYllzcjhvUHFwZCt4SUhRaitrRjhwVWZv?=
+ =?utf-8?B?aHRNajNDNmxSRWM3WDdqR0dsMlMyNVUxd3lBSWdOc1N2ZDcycml5RjlRR2pr?=
+ =?utf-8?B?UnlENVBRZndtbjc3V2VqdzUrWjFuWUhSdU5haitmalhRM0h1amxSUWJZZ2lu?=
+ =?utf-8?B?d293WUhmUVh6K0R1c3p4TFZRYkNCUEpPS0NwcUc1Uzl3RFo0ZnhNYkkrSG81?=
+ =?utf-8?B?ZU5yVDBEUXhLWnJibGt3UmFtRDZKZWhHaEJ6M3JVSTVaUytCYVFWSnVVVitV?=
+ =?utf-8?B?M1RHS2ZQUHNEcEt3SDFHWFBKQTU4bzJQRXIwOVZ1alFpRnBMcFBQcEdzUDJv?=
+ =?utf-8?B?MGZYSTR6VDFkUDlJR2E3N0YwZ3FibnBobElJS3dOLzNwTnlyRE1pYnJBTUVL?=
+ =?utf-8?B?cFN5WklCVUJLT1ZBcWVDeTlWblBUWU9CSjBRZndaWDlUZWNCc0M1SElmZzJ3?=
+ =?utf-8?B?MGFSNEM3M3BRM3UweC9obVFFZUJaY2lXNmpsUjlwRGpGVThFNTlaWFFrbWVC?=
+ =?utf-8?B?TW5VSThrMUUyRGMvbjlJUTZiTDR2eko1bjhYZTJEeXpPb3VmZmpMQ2ZHcjI1?=
+ =?utf-8?B?cUxEcTB3b1ErNGdqTy96M0kvdFRmVVVwQkRtM2JocUdvS0U5UmtrZ0NiQThX?=
+ =?utf-8?B?aVB0Q3gwbXUwN2J4Lzc2dytpWVI4cTEwS0V1ODhRNGJPNDNnUEhlN24wMGxU?=
+ =?utf-8?B?dE5NYXA5Y0l0VzZSeDZCQWhvbmpRUGNRSGxsalAwclFqa0w3bEt2Q1l6czdZ?=
+ =?utf-8?B?MUoydGVJVEpUU3E1Mjh0V2tqRVlhZlc2c2syc2F4WnNrN09aWHVISU15YU5C?=
+ =?utf-8?B?cjArWTIwSVlhOUNmWGNrcG1JWGNWcnMrcUNBMjI3UEJWUWlqbmVXZHU4RDJP?=
+ =?utf-8?B?OFZoZFZwYnBmYzJyd1dSa0FJS1piQThqVGtKTzJnWEczaUk0K1JKYTVybTEw?=
+ =?utf-8?B?Vkt5UDBEVkkwNjUxMkhlOEhvWG9JSGZ3RUFIdDJSTnI4dDlxUm1ZRVdLclh1?=
+ =?utf-8?B?ZmlZZTF2RFRSTEliWStNOHJMMHNVS3ovdElWZXpBUUJOTG4vQ1doOVJ2Q1Q5?=
+ =?utf-8?B?dGxlUkJJY0FBQTdhbWhzNklRc0JPaWFPMkpqa1loNEdHVkw2OTFDK2lSZXJq?=
+ =?utf-8?B?dFFrZXA0MTR3a0czZGVqWmNxNDlsVUN5UTlFRVhLK3R3RGZFa1dac09Da0wv?=
+ =?utf-8?B?ejFJV3ZpcEt1K0FzUmN5Q1ZsQjlZcENFRy9GODVoN1pvNFN3WklwU0JZc1Zv?=
+ =?utf-8?B?b2pSeHZHZEQrNHZDWlhBTU41TUc1YWpUZ2xVNVllcEJUVlNEdjRNVmJwL0R5?=
+ =?utf-8?B?eDZKNGk4ZTdVWjNOdUtUeFZ4RTJLNWQyK1pxTitQaHdLOVZja1RFN00vOFB2?=
+ =?utf-8?B?YnhXYlN5Uk9RRzBwQzk0bUZlYlhJcWtHUU9tSkx0TVJwN3M4Z1FWWEtibEJP?=
+ =?utf-8?B?aFl0YnNLWWRYU3dJZE1aNHZqNXBEd1BOOGwwaHFqM3FjZkV2TXRQbkZ1UzEw?=
+ =?utf-8?B?Z3lGNWpJOEZ1RXBFcXZzMXJndDRRVHBzcUR6QURSMElqUGRid0dOYktpamEw?=
+ =?utf-8?Q?wj9PlDzgfNahpTjrZm?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90da5a6a-ec92-4565-d905-08de650649b8
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 22:31:21.5237
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +VNx1AkxX5FdfXpQmZGjLapgL+OQBYntgwVZrwovPbvdDOozQkct4vFd+DbO/qPrEVdHROD3CN2cYqUwI2u1Ag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1948
 
-Commit f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc") did
-attempt to optimize away the internal reference count of Devres.
+On Thu Feb 5, 2026 at 7:05 PM GMT, Danilo Krummrich wrote:
+> On Thu Feb 5, 2026 at 6:28 PM CET, Daniel Almeida wrote:
+>>> On 5 Feb 2026, at 12:16, Gary Guo <gary@garyguo.net> wrote:
+>>> I think we should have everything default to little endian, and have wr=
+apper
+>>> types that do big endian which require expicit construction, similar to
+>>> RelaxedMmio in Alex's series.
+>>
+>> Ah yes, the RelaxedMmio pattern is definitely a good one. I agree that w=
+e
+>> should head in this direction.
+>
+> I strongly disagree.
+>
+> This is a great pattern for relaxed ordering because:
+>
+>   (1) We need both strict and relaxed ordering.
+>
+>   (2) Relaxed ordering is rare, hence it doesn't hurt to write e.g.
+>
+> 	io.relaxed().write()
+>
+>   (3) If you by accident just write
+>
+> 	io.write()
+>
+>       i.e. forget to call relaxed() it s not a bug, nothing bad happens.
+>
+> Whereas for endianness it is a bad pattern because:
+>
+>   (1) Devices are either little-endian or big-endian. Hence, having to wr=
+ite
+>
+> 	io.big_endian().write()
+>
+>       is excessive, we always want big-endian for a big-endian device.
 
-However, without an internal reference count, we can't support cases
-where Devres is indirectly nested, resulting into a deadlock.
+You don't need to always write this. You just need to do `big_endian()` onc=
+e
+when you obtain the io, and then keep using `BigEndian<Mmio>` instead of ju=
+st
+`Mmio`, and the rest of code is still `.write()`.
 
-Such indirect nesting easily happens in the following way:
+I proposed the wrapper type because majority of devices won't need BE suppo=
+rt,
+so adding complexity to Mmio itself is not ideal. It is also generic, so it=
+ can
+work with any IO backends, so for example, you can have `BigEndian<Pio>` an=
+d
+`BigEndian<Mmio>` and you don't need to duplicate your endianness support f=
+or
+both backends.
 
-A registration object (which is guarded by devres) hold a reference
-count of an object that holds a device resource guarded by devres
-itself.
+>
+>   (2) It is error prone, if you forget to call big_endian() first, it is =
+a bug.
 
-For instance a drm::Registration holds a reference of a drm::Device. The
-drm::Device itself holds a device resource in its private data.
+Moot point when `big_endian()` is only done once.
 
-When the drm::Registration is dropped by devres, and it happens that it
-did hold the last reference count of the drm::Device, it also drops the
-device resource, which is guarded by devres itself.
+>
+>   (3) It is unergonomic in combination with relaxed ordering.
+>
+> 	io.big_endian().relaxed().write()
 
-Thus, resulting into a deadlock in the Devres destructor of the device
-resource, as in the following backtrace.
+This might be an issue, as `RelaxedMmio`, unless `BigEndian`, cannot be
+implemented as wrapper that just reverse byteorder. Although I am not sure =
+that
+we even need that support, given that there's no be_relaxed functions on C =
+side
+anyway.
 
-	sysrq: Show Blocked State
-	task:rmmod           state:D stack:0     pid:1331  tgid:1331  ppid:1330   task_flags:0x400100 flags:0x00000010
-	Call trace:
-	 __switch_to+0x190/0x294 (T)
-	 __schedule+0x878/0xf10
-	 schedule+0x4c/0xcc
-	 schedule_timeout+0x44/0x118
-	 wait_for_common+0xc0/0x18c
-	 wait_for_completion+0x18/0x24
-	 _RINvNtCs4gKlGRWyJ5S_4core3ptr13drop_in_placeINtNtNtCsgzhNYVB7wSz_6kernel4sync3arc3ArcINtNtBN_6devres6DevresmEEECsRdyc7Hyps3_15rust_driver_pci+0x68/0xe8 [rust_driver_pci]
-	 _RINvNvNtCsgzhNYVB7wSz_6kernel6devres16register_foreign8callbackINtNtCs4gKlGRWyJ5S_4core3pin3PinINtNtNtB6_5alloc4kbox3BoxINtNtNtB6_4sync3arc3ArcINtB4_6DevresmEENtNtB1A_9allocator7KmallocEEECsRdyc7Hyps3_15rust_driver_pci+0x34/0xc8 [rust_driver_pci]
-	 devm_action_release+0x14/0x20
-	 devres_release_all+0xb8/0x118
-	 device_release_driver_internal+0x1c4/0x28c
-	 driver_detach+0x94/0xd4
-	 bus_remove_driver+0xdc/0x11c
-	 driver_unregister+0x34/0x58
-	 pci_unregister_driver+0x20/0x80
-	 __arm64_sys_delete_module+0x1d8/0x254
-	 invoke_syscall+0x40/0xcc
-	 el0_svc_common+0x8c/0xd8
-	 do_el0_svc+0x1c/0x28
-	 el0_svc+0x54/0x1d4
-	 el0t_64_sync_handler+0x84/0x12c
-	 el0t_64_sync+0x198/0x19c
+Best,
+Gary
 
-In order to fix this, re-introduce the internal reference count.
-
-Reported-by: Boris Brezillon <boris.brezillon@collabora.com>
-Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/.E2.9C.94.20Deadlock.20caused.20by.20nested.20Devres/with/571242651
-Reported-by: Markus Probst <markus.probst@posteo.de>
-Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/.E2.9C.94.20Devres.20inside.20Devres.20stuck.20on.20cleanup/with/571239721
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Closes: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/56#note_3282757
-Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/devres.rs | 148 +++++++++++-------------------------------
- 1 file changed, 39 insertions(+), 109 deletions(-)
-
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index cdc49677022a..ff66f561740a 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -21,30 +21,11 @@
-     sync::{
-         aref::ARef,
-         rcu,
--        Completion, //
--    },
--    types::{
--        ForeignOwnable,
--        Opaque,
--        ScopeGuard, //
-+        Arc, //
-     },
-+    types::ForeignOwnable,
- };
- 
--use pin_init::Wrapper;
--
--/// [`Devres`] inner data accessed from [`Devres::callback`].
--#[pin_data]
--struct Inner<T: Send> {
--    #[pin]
--    data: Revocable<T>,
--    /// Tracks whether [`Devres::callback`] has been completed.
--    #[pin]
--    devm: Completion,
--    /// Tracks whether revoking [`Self::data`] has been completed.
--    #[pin]
--    revoke: Completion,
--}
--
- /// This abstraction is meant to be used by subsystems to containerize [`Device`] bound resources to
- /// manage their lifetime.
- ///
-@@ -121,18 +102,13 @@ struct Inner<T: Send> {
- /// # fn no_run(dev: &Device<Bound>) -> Result<(), Error> {
- /// // SAFETY: Invalid usage for example purposes.
- /// let iomem = unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD)? };
--/// let devres = KBox::pin_init(Devres::new(dev, iomem), GFP_KERNEL)?;
-+/// let devres = Devres::new(dev, iomem)?;
- ///
- /// let res = devres.try_access().ok_or(ENXIO)?;
- /// res.write8(0x42, 0x0);
- /// # Ok(())
- /// # }
- /// ```
--///
--/// # Invariants
--///
--/// `Self::inner` is guaranteed to be initialized and is always accessed read-only.
--#[pin_data(PinnedDrop)]
- pub struct Devres<T: Send> {
-     dev: ARef<Device>,
-     /// Pointer to [`Self::devres_callback`].
-@@ -140,14 +116,7 @@ pub struct Devres<T: Send> {
-     /// Has to be stored, since Rust does not guarantee to always return the same address for a
-     /// function. However, the C API uses the address as a key.
-     callback: unsafe extern "C" fn(*mut c_void),
--    /// Contains all the fields shared with [`Self::callback`].
--    // TODO: Replace with `UnsafePinned`, once available.
--    //
--    // Subsequently, the `drop_in_place()` in `Devres::drop` and `Devres::new` as well as the
--    // explicit `Send` and `Sync' impls can be removed.
--    #[pin]
--    inner: Opaque<Inner<T>>,
--    _add_action: (),
-+    data: Arc<Revocable<T>>,
- }
- 
- impl<T: Send> Devres<T> {
-@@ -155,74 +124,47 @@ impl<T: Send> Devres<T> {
-     ///
-     /// The `data` encapsulated within the returned `Devres` instance' `data` will be
-     /// (revoked)[`Revocable`] once the device is detached.
--    pub fn new<'a, E>(
--        dev: &'a Device<Bound>,
--        data: impl PinInit<T, E> + 'a,
--    ) -> impl PinInit<Self, Error> + 'a
-+    pub fn new<E>(dev: &Device<Bound>, data: impl PinInit<T, E>) -> Result<Self>
-     where
--        T: 'a,
-         Error: From<E>,
-     {
--        try_pin_init!(&this in Self {
--            dev: dev.into(),
--            callback: Self::devres_callback,
--            // INVARIANT: `inner` is properly initialized.
--            inner <- Opaque::pin_init(try_pin_init!(Inner {
--                    devm <- Completion::new(),
--                    revoke <- Completion::new(),
--                    data <- Revocable::new(data),
--            })),
--            // TODO: Replace with "initializer code blocks" [1] once available.
--            //
--            // [1] https://github.com/Rust-for-Linux/pin-init/pull/69
--            _add_action: {
--                // SAFETY: `this` is a valid pointer to uninitialized memory.
--                let inner = unsafe { &raw mut (*this.as_ptr()).inner };
-+        let callback = Self::devres_callback;
-+        let data = Arc::pin_init(Revocable::new(data), GFP_KERNEL)?;
- 
--                // SAFETY:
--                // - `dev.as_raw()` is a pointer to a valid bound device.
--                // - `inner` is guaranteed to be a valid for the duration of the lifetime of `Self`.
--                // - `devm_add_action()` is guaranteed not to call `callback` until `this` has been
--                //    properly initialized, because we require `dev` (i.e. the *bound* device) to
--                //    live at least as long as the returned `impl PinInit<Self, Error>`.
--                to_result(unsafe {
--                    bindings::devm_add_action(dev.as_raw(), Some(*callback), inner.cast())
--                }).inspect_err(|_| {
--                    let inner = Opaque::cast_into(inner);
-+        // SAFETY:
-+        // - `dev.as_raw()` is a pointer to a valid bound device.
-+        // - `data` is guaranteed to be a valid for the duration of the lifetime of `Self`.
-+        // - `devm_add_action()` is guaranteed not to call `callback` for the entire lifetime of
-+        //   `dev`.
-+        to_result(unsafe {
-+            bindings::devm_add_action(
-+                dev.as_raw(),
-+                Some(callback),
-+                Arc::as_ptr(&data).cast_mut().cast(),
-+            )
-+        })?;
- 
--                    // SAFETY: `inner` is a valid pointer to an `Inner<T>` and valid for both reads
--                    // and writes.
--                    unsafe { core::ptr::drop_in_place(inner) };
--                })?;
--            },
--        })
--    }
-+        // Take additional reference count for `devm_add_action()`.
-+        core::mem::forget(data.clone());
- 
--    fn inner(&self) -> &Inner<T> {
--        // SAFETY: By the type invairants of `Self`, `inner` is properly initialized and always
--        // accessed read-only.
--        unsafe { &*self.inner.get() }
-+        Ok(Self {
-+            dev: dev.into(),
-+            callback,
-+            data,
-+        })
-     }
- 
-     fn data(&self) -> &Revocable<T> {
--        &self.inner().data
-+        &self.data
-     }
- 
-     #[allow(clippy::missing_safety_doc)]
-     unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
--        // SAFETY: In `Self::new` we've passed a valid pointer to `Inner` to `devm_add_action()`,
--        // hence `ptr` must be a valid pointer to `Inner`.
--        let inner = unsafe { &*ptr.cast::<Inner<T>>() };
-+        // SAFETY: In `Self::new` we've passed a valid pointer of `Revocable<T>` to
-+        // `devm_add_action()`, hence `ptr` must be a valid pointer to `Revocable<T>`.
-+        let data = unsafe { Arc::from_raw(ptr.cast::<Revocable<T>>()) };
- 
--        // Ensure that `inner` can't be used anymore after we signal completion of this callback.
--        let inner = ScopeGuard::new_with_data(inner, |inner| inner.devm.complete_all());
--
--        if !inner.data.revoke() {
--            // If `revoke()` returns false, it means that `Devres::drop` already started revoking
--            // `data` for us. Hence we have to wait until `Devres::drop` signals that it
--            // completed revoking `data`.
--            inner.revoke.wait_for_completion();
--        }
-+        data.revoke();
-     }
- 
-     fn remove_action(&self) -> bool {
-@@ -234,7 +176,7 @@ fn remove_action(&self) -> bool {
-             bindings::devm_remove_action_nowarn(
-                 self.dev.as_raw(),
-                 Some(self.callback),
--                core::ptr::from_ref(self.inner()).cast_mut().cast(),
-+                core::ptr::from_ref(self.data()).cast_mut().cast(),
-             )
-         } == 0)
-     }
-@@ -313,31 +255,19 @@ unsafe impl<T: Send> Send for Devres<T> {}
- // SAFETY: `Devres` can be shared with any task, if `T: Sync`.
- unsafe impl<T: Send + Sync> Sync for Devres<T> {}
- 
--#[pinned_drop]
--impl<T: Send> PinnedDrop for Devres<T> {
--    fn drop(self: Pin<&mut Self>) {
-+impl<T: Send> Drop for Devres<T> {
-+    fn drop(&mut self) {
-         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
-         // anymore, hence it is safe not to wait for the grace period to finish.
-         if unsafe { self.data().revoke_nosync() } {
-             // We revoked `self.data` before the devres action did, hence try to remove it.
--            if !self.remove_action() {
--                // We could not remove the devres action, which means that it now runs concurrently,
--                // hence signal that `self.data` has been revoked by us successfully.
--                self.inner().revoke.complete_all();
--
--                // Wait for `Self::devres_callback` to be done using this object.
--                self.inner().devm.wait_for_completion();
-+            if self.remove_action() {
-+                // SAFETY: In `Self::new` we have taken an additional reference count of `self.data`
-+                // for `devm_add_action()`. Since `remove_action()` was successful, we have to drop
-+                // this additional reference count.
-+                drop(unsafe { Arc::from_raw(Arc::as_ptr(&self.data)) });
-             }
--        } else {
--            // `Self::devres_callback` revokes `self.data` for us, hence wait for it to be done
--            // using this object.
--            self.inner().devm.wait_for_completion();
-         }
--
--        // INVARIANT: At this point it is guaranteed that `inner` can't be accessed any more.
--        //
--        // SAFETY: `inner` is valid for dropping.
--        unsafe { core::ptr::drop_in_place(self.inner.get()) };
-     }
- }
- 
-
-base-commit: f55ae0bfa00e446ea751d09f468daeafc303e03f
--- 
-2.52.0
+>
+>       (Does the other way around work as well? :)
+>
+> It makes much more sense to define once when we request the I/O memory wh=
+ether
+> the device is litte-endian or big-endian.
+>
+> This could be done with different request functions, a const generic or a
+> function argument, but it should be done at request time.
 
