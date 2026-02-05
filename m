@@ -1,245 +1,347 @@
-Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391CC21FF33
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 05:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D767B36072B
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 07:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770269458; cv=none; b=oiCuK/NfpkirqVdL4p/OeJUQ5qFijx+NTAN2r3SZGDO4BFiSIxzf4whc8TecwRmQH+bd94wb5hQWQgUWbGhvmOeyALKIhZpRVGqVHaeseiDy27Pto2tzxMAs/21G71wnDunRGgg5gm35Rsn2hTgj1RVrAub5GkQ1TitpQpG1iMo=
+	t=1770278310; cv=none; b=lwP2oTJwRrP6tTmySiKrskywoj/e0fByMp7MOQQplCKRd6oMCs1uU4Ke8foOKezCoXo/trBrL6cF/mUFUvBT32/EBFb4qZvDYWuUmEZHLymCEqhMRKGzqd+ai7tBnE9lw4qhrZfkg4N3yBqWvXSZHh//N5dTOVcM765UaUZBE28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770269458; c=relaxed/simple;
-	bh=oe6A5r55xoooQKGwF3nMnh4RMhHO8HoYGCesTF3O7Xg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=po52UNn3iNFnC3QYeeRUBXaHo+VS9PYotuam0BwsDrwqkomgmjW9JknsJRlyeIrY5P2Lush28FZ7lu9lAoeDqNV95w3aS/J9YLG2LAdeN5BIblx37JfhPjQdxa9b1Pi6hQ55hh8nNnrAO7fKJihpneHjBlkzLPxEadsjQV3jjeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
-	by 156.147.23.53 with ESMTP; 5 Feb 2026 14:30:55 +0900
-X-Original-SENDERIP: 156.147.1.121
-X-Original-MAILFROM: jongan.kim@lge.com
-Received: from unknown (HELO jongan-kim-nissan-cdc.bee-live.svc.cluster.local) (10.159.44.110)
-	by 156.147.1.121 with ESMTP; 5 Feb 2026 14:30:55 +0900
-X-Original-SENDERIP: 10.159.44.110
-X-Original-MAILFROM: jongan.kim@lge.com
-From: jongan.kim@lge.com
-To: ynorov@nvidia.com
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	arve@android.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	heesu0025.kim@lge.com,
-	ht.hong@lge.com,
-	jongan.kim@lge.com,
-	jungsu.hwang@lge.com,
-	kernel-team@android.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	sanghun.lee@lge.com,
-	seulgi.lee@lge.com,
-	sunghoon.kim@lge.com,
-	tamird@gmail.com,
-	tkjos@android.com,
-	tmgross@umich.edu,
-	viresh.kumar@linaro.org,
-	vitaly.wool@konsulko.se,
-	yury.norov@gmail.com
-Subject: Re: [PATCH v3 1/3] binder: handle PID namespace conversion for freeze operation
-Date: Thu,  5 Feb 2026 14:30:54 +0900
-Message-Id: <20260205053054.19465-1-jongan.kim@lge.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <aYN8EeZKIw4_QHRa@yury>
-References: <aYN8EeZKIw4_QHRa@yury>
+	s=arc-20240116; t=1770278310; c=relaxed/simple;
+	bh=ptAcM1gM58Nm0V37+Eq1edqMJKZWrADPfv1pNEPRI8s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=m5wrRoKoh8bJAbAuIOzE7PcAqoSzRykREhAHG7dsI9coFx3kNiXUxTrQ/LRtsCdN87WWM6OKI9q1aQymLTC2hFVc/s453ZNW9PYl9sRUpry6BCAoBxpL+pkaRNnFg2AgYZpE/BA4bBU0kwxx3VjgmUqvD2V3SX33zBVMHtKKCt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8220bd582ddso532486b3a.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Feb 2026 23:58:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770278309; x=1770883109;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HE7NZfN8SYBkdlro3Yz/WBuY2L67Vpyed03RGLeB47w=;
+        b=w7WtSawbFed6TU48B9metc5g0fkaTLb71YjicwYPAvttDp/gao969+5ClZTJ1/DTZ+
+         zmFVSKjHB43L1N9jKPDECVvFtdDe7T8+wKSiDFLkpYEHgeB8atPg/KvkCI/6JMxfTLf7
+         lWETk4v8GrPnJawPMWYObM8vjc/weGpmS57rHcEn15hIIC4VUcMLX5OD4amoqidodWyX
+         AOl+uosyOxZCzF//iuIQiFPbVNqbZEIZw/rYWcVZQfyQT7jx9FFHh2D1mJcVRXir3vGs
+         utavQhHefWMXeDAkg25QqxG2rwxlRWpbBoOO1lP6RCdWaYLH7jErMsuSfdklEERNZ1do
+         Fscw==
+X-Gm-Message-State: AOJu0YzDyaCl2gKc49BRQ4VO5Lr/QDR+bd7eBcLVv4lqfIq2/BhkGHRy
+	QPnPQD9A/pnibhE80022wxfKU9rVgrzSXTjFkDo3NpxWwUgawZeNuEwn
+X-Gm-Gg: AZuq6aILeuF7ys1lp7m4lXKWaQWg47pyVpKwMrlJqt6tcM9slgBKz5MK/hrYKAd7KnN
+	xVSf3P/f91OFSehyaSD8f0tO9U9nMx5MVT8qTQz0FJxLvSVrMVKYuHorNpk1C5YiL6WZ0Orx7Vl
+	DyLbDYzs3zVut/bZ2lJZTot8Wpi7FsCIYQ+5dQXNIJG2KhANQpXz7MkLyPtIa+rWKqyeCfaLSeN
+	qEhAddHlgX6dAiw88TWF705EuTKld5yTVerfxzSZqS2zYyJ0rdiszehl7+SXbclEP/e92gwLb0/
+	DHOjFLBC9cixqxl9WZ+E6DAwTHskf60O9hmkyJ55JZzRDpQ83gqkEQdpA1XniZSePUBoVz4uU8w
+	jDSDn1vjDYjRStkpTXr64vbUfTMB7qtbNzx7VekGUMHND+hq6+53Wyv8MjD8JaUwu2GA=
+X-Received: by 2002:a05:6a00:84c:b0:823:7c4:d81d with SMTP id d2e1a72fcca58-8241c19d012mr5383125b3a.6.1770278309099;
+        Wed, 04 Feb 2026 23:58:29 -0800 (PST)
+Received: from [127.0.1.1] ([2403:2c80:6::30e6])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8241d435319sm4812933b3a.33.2026.02.04.23.58.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 23:58:28 -0800 (PST)
+From: Ke Sun <sunke@kylinos.cn>
+Date: Thu, 05 Feb 2026 15:57:13 +0800
+Subject: [PATCH v11] rust: fmt: add safe pointer formatting support
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260205-hashedptr-v11-1-bd0fec7fe6f1@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAFhNhGkC/x2MQQqAIBAAvyJ7TlDTwr4SHSS33IuJRgTi35OOM
+ wxToWAmLLCwChkfKnTFDlIODPbg4omcfBeghJqEEoYHVwL6dGeurdTeWuPMOEPvU8aD3n+2bq1
+ 9GumdG1wAAAA=
+X-Change-ID: 20260205-hashedptr-4914d995a537
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Ke Sun <sunke@kylinos.cn>
+X-Mailer: b4 0.14.3
 
-On Wed, Feb 04, 2026 at 12:04:17PM -0500, Yury Norov wrote:
-> On Wed, Feb 04, 2026 at 06:05:21PM +0900, jongan.kim@lge.com wrote:
-> > On Tue, Feb 03, 2026 at 03:38:59PM -0500, Yury Norov wrote:
-> > > On Tue, Feb 03, 2026 at 03:59:26PM +0900, jongan.kim@lge.com wrote:
-> > > > From: JongAn Kim <jongan.kim@lge.com>
-> > > >
-> > > > Currently, when a freeze is attempted from a non-init PID namespace,
-> > > > there is a possibility that the wrong process in the init namespace
-> > > > may be frozen due to PID collision across namespaces.
-> > > >
-> > > > For example, if a container with PID namespace has a process with
-> > > > PID 100 (which maps to PID 5000 in init namespace), attempting to
-> > > > freeze PID 100 from the container could incorrectly match a different
-> > > > process with PID 100 in the init namespace.
-> > > >
-> > > > This patch fixes the issue by:
-> > > > 1. Converting the caller's PID from their namespace to init namespace
-> > > > 2. Matching against binder_proc->pid (which stores init namespace TGID)
-> > > > 3. Returning -EINVAL for invalid PIDs and -ESRCH for not-found processes
-> > > >
-> > > > This change ensures correct PID handling when binder freeze occurs in
-> > > > non-init PID namespace.
-> > > >
-> > > > Signed-off-by: JongAn Kim <jongan.kim@lge.com>
-> > > > ---
-> > > > v2 -> v3 : change to use task->tgid instead of task_tgid_nr_ns()
-> > > >
-> > > >  drivers/android/binder.c | 53 +++++++++++++++++++++++++++++++++++++---
-> > > >  1 file changed, 50 insertions(+), 3 deletions(-)
-> > > >
-> > > > diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-> > > > index 535fc881c8da..4c4366089ecb 100644
-> > > > --- a/drivers/android/binder.c
-> > > > +++ b/drivers/android/binder.c
-> > > > @@ -5609,6 +5609,41 @@ static bool binder_txns_pending_ilocked(struct binder_proc *proc)
-> > > >        return false;
-> > > >  }
-> > > >
-> > > > +/**
-> > > > + * binder_convert_to_init_ns_tgid() - Convert pid to global pid(init namespace)
-> > >
-> > > For global PIDs we've got task_pid_nr(), see include/linux/pid.h:
-> > >
-> > >  /*
-> > >   * the helpers to get the task's different pids as they are seen
-> > >   * from various namespaces
-> > >   *
-> > >   * task_xid_nr()     : global id, i.e. the id seen from the init namespace;
-> > >   * task_xid_vnr()    : virtual id, i.e. the id seen from the pid namespace of
-> > >   *                     current.
-> > >   * task_xid_nr_ns()  : id seen from the ns specified;
-> > >   *
-> > >   * see also pid_nr() etc in include/linux/pid.h
-> > >   */
-> > >
-> > > I think task_tgid_nr(current) would work for you. Or I misunderstand
-> > > something?
-> > >
-> > > If your "binder_convert" returns something not covered by one from
-> > > the above, please put your function in include/linux/pid.h and give
-> > > it a proper name.
-> >
-> > Thank you for the suggestion. However, task_tgid_nr(current) returns the TGID
-> > of the *current* process, not the target process we want to freeze.
-> >
-> > What we need is to convert a TGID from the caller's PID namespace to the
-> > corresponding TGID in the init namespace for a *different* process (the one
-> > being frozen). The flow is:
-> >
-> > 1. User space passes a TGID in their own namespace
-> > 2. We find the task_struct for that TGID via find_vpid()
-> > 3. We return task->tgid, which is always in init namespace
-> >
-> > This differs from the existing task_xid_nr() family because we're converting
-> > a PID from one namespace (caller's) to init namespace for a different task.
-> 
-> OK, I think I see now. Thanks for the explanation. Maybe add it in commit
-> message?
-> 
-> > > > + * @pid:    pid from user space
-> > > > + *
-> > > > + * Converts a process ID (TGID) from the caller's PID namespace to the
-> > > > + * corresponding TGID in the init namespace.
-> > >
-> > > Process ID (PID) is not the same as TGID, but you use the names
-> > > interchangeably. This is very confusing. Can you reword?
-> >
-> > Binder driver handles TGID for bind freeze operation.
-> > To avoid confusion, I will unify the variable names and terminology to use
-> > "TGID" consistently.
-> >
-> > > > + * Return: On success, returns TGID in init namespace (positive value).
-> > > > + *         On error, returns -EINVAL if pid <= 0, or -ESRCH if process
-> > > > + *         not found or not visible in init namespace.
-> > > > + */
-> > > > +static int binder_convert_to_init_ns_tgid(u32 pid)
-> > >
-> > > This should use pid_t.
-> >
-> > Ok. I will change to use pid_t for next patch.
-> > 
-> > > > +{
-> > > > +     struct task_struct *task;
-> > > > +     int init_ns_pid = 0;
-> > > > +
-> > > > +     /* already in init namespace */
-> > > > +     if (task_is_in_init_pid_ns(current))
-> > > > +             return pid;
-> > > > +
-> > > > +     if (pid == 0)
-> > > > +             return -EINVAL;
-> > >
-> > > Can you comment what is wrong with pid == 0?
-> >
-> > Since find_vpid() always returns NULL when the input value is 0, it returns
-> > an EINVAL error before calling rcu_read_lock().
-> 
-> OK, so it's a performance trick. Can you discuss performance impact
-> then? I just wonder how often this function is called with the pid
-> of idle task?  If no performance impact, maybe it's worth to keep
-> code simpler?
-> 
-> This also adds inconsistency: if you're running on behalf of root ns,
-> you return 0 if pid == 0, otherwise you return an error. That's weird
-> because idle is 0 for any namespace. If it's intended, can you explicitly
-> mention it?
-> 
-> If you still want to bail out early for pid == 0, maybe:
->  
->              if (pid == 0 || task_is_in_init_pid_ns(current))
->                      return pid;
+Add Pointer trait and HashedPtr pointer wrapper type for safe pointer
+formatting:
 
-You're right about the inconsistency. This function is not called frequently,
-and I agree with your opinion.(make simple)
+- Pointer trait: A copy of core::fmt::Pointer that, together with the
+  Adapter type and fmt! macro, ensures raw pointers are automatically
+  formatted using HashedPtr instead of being formatted directly.
 
-However, I've received feedback from the binder maintainer(Alice) suggesting
-a different approach: instead of converting TGIDs, we should use the 
-task_struct pointer directly for comparison.
-https://lore.kernel.org/lkml/20260205050128.17532-1-jongan.kim@lge.com/
-I'm planning to update the patch to implement this approach for both the C
-and Rust code.
+- HashedPtr: Formats pointers with kernel hashing (corresponds to %p).
+  This is now the default behavior when formatting raw pointers with
+  "{:p}", preventing kernel memory layout information leakage.
 
-This means the current TGID conversion function will likely not be used in the
-final implementation. Nevertheless, I really appreciate your detailed review
-and valuable suggestions.
+Link: https://github.com/Rust-for-Linux/linux/issues/1219
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+---
+v11:
+- Fix inaccurate or inappropriate descriptions in comments
+- Use as_char_ptr instead of as_ptr so that a *const u8 pointer is
+  always passed to scnprintf on all architectures
+- Per Tamir's suggestion, replace doctests with mod tests and adjust
+  test content to make the tests more meaningful
+- Remove the RawPtr wrapper type: it and HashedPtr use different
+  formatting mechanisms (HashedPtr uses scnprintf and pad; RawPtr would
+  call core's Pointer impl directly). This series focuses on fixing the
+  issue that without it {:p} would output the pointer's stack address,
+  and on using HashedPtr to safely format raw pointers and avoid leaking
+  kernel address space layout information
 
-Thank you again for your time and thorough review.
-Jong An, Kim.
+v10: https://lore.kernel.org/rust-for-linux/20260121050059.2315091-1-sunke@kylinos.cn/
+- Merge all patches into a single patch
+- Improve `kernel::fmt::Pointer` trait implementation
 
-> > > > +     rcu_read_lock();
-> > > > +     task = pid_task(find_vpid(pid), PIDTYPE_PID);
-> > > > +     if (task)
-> > > > +             init_ns_pid = task->tgid;
-> > >
-> > > So I've been replying with the same suggestion to v2, but you did it
-> > > in this v3 yourself.
-> > >
-> > > > +     rcu_read_unlock();
-> > > > +
-> > > > +     if (!init_ns_pid)
-> > > > +             return -ESRCH;
-> > >
-> > > You can assign init_ns_pid to -ESRCH at declaration and drop this chunk.
-> > >
-> > > > +
-> > > > +     return init_ns_pid;
-> > > > +}
-> > >
-> > > Thanks,
-> > > Yury
-> >
-> > Thanks for suggestion. I will apply it (init_ns_pid = -ESRCH) in the next
-> > patch.
-> >
-> > Thanks,
-> > JongAn Kim.
+v9: https://lore.kernel.org/rust-for-linux/20260119033006.1453006-1-sunke@kylinos.cn/
+- Refactor implementation to use Pointer trait and Adapter pattern
+  instead of exporting ptr_to_hashval() from lib/vsprintf.c. Use
+  scnprintf directly in Rust for pointer hashing, eliminating the
+  need for C function export
+- Move pointer wrapper types from rust/kernel/ptr.rs to
+  rust/kernel/fmt.rs
+- Split implementation into more granular patches: Pointer trait
+  foundation, HashedPtr type, raw pointer default behavior, and
+  RawPtr type
+- Remove documentation patch, integrate examples into code doctests
+- Simplify API and improve code organization following Display trait
+  pattern
+
+v8: https://lore.kernel.org/rust-for-linux/20260101081605.1300953-1-sunke@kylinos.cn/
+- Remove RestrictedPtr (%pK) support: only export ptr_to_hashval() with
+  EXPORT_SYMBOL_NS_GPL using "RUST_INTERNAL" namespace, provide only two
+  pointer wrapper types (HashedPtr, RawPtr) for %p and %px
+- Change API from HashedPtr::from(ptr) to HashedPtr(ptr) for direct
+  construction
+
+v7: https://lore.kernel.org/rust-for-linux/20251229072157.3857053-1-sunke@kylinos.cn/
+- Refactor kptr_restrict handling: extract kptr_restrict_value() from
+  restricted_pointer() in lib/vsprintf.c and export it for Rust use, and
+  improve RestrictedPtr::fmt() implementation to directly handle
+  kptr_restrict_value() return values (0, 1, 2, -1) for better code
+  clarity
+- Remove Debug derive from pointer wrapper types (HashedPtr,
+  RestrictedPtr, RawPtr)
+
+v6: https://lore.kernel.org/rust-for-linux/20251227033958.3713232-1-sunke@kylinos.cn/
+- Fix placeholder formatting to use `f.pad()` instead of `f.write_str()`
+  in format_hashed_ptr(), ensuring width, alignment, and padding options
+  are correctly applied to PTR_PLACEHOLDER
+
+v5: https://lore.kernel.org/rust-for-linux/20251226140751.2215563-1-sunke@kylinos.cn/
+- Format use statements in rust/kernel/ptr.rs and rust/kernel/fmt.rs
+  using kernel vertical style with alphabetical ordering
+- Remove unnecessary SAFETY comment in rust/kernel/ptr.rs (addressed
+  Clippy warning)
+- Update type ordering to alphabetical (HashedPtr, RawPtr,
+  RestrictedPtr) in fmt.rs macro invocation
+
+v4: https://lore.kernel.org/rust-for-linux/20251225225709.3944255-1-sunke@kylinos.cn/
+- Use Pointer::fmt() instead of write!(f, "{:p}", ...) to preserve
+  formatting options (width, alignment, padding characters)
+- Improve code structure: reduce unsafe block scope, use early return
+  pattern
+- Add doctests with formatting option tests for all pointer wrapper
+  types
+- Enhance documentation with detailed formatting options section,
+  including examples for width, alignment, and padding
+- Fix RestrictedPtr example to use pr_info! instead of seq_print! in
+  docs
+
+v3: https://lore.kernel.org/rust-for-linux/20251224081315.729684-1-sunke@kylinos.cn/
+- Export ptr_to_hashval() from lib/vsprintf.c for Rust pointer hashing
+- Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) in
+  rust/kernel/ptr.rs corresponding to %p, %pK, and %px
+- Make raw pointers automatically use HashedPtr when formatted with {:p}
+- Add documentation for pointer wrapper types
+
+v2: https://lore.kernel.org/rust-for-linux/20251223033018.2814732-1-sunke@kylinos.cn/
+- Disabled {:p} raw pointer printing by default to prevent accidental
+  information leaks
+
+v1: https://lore.kernel.org/rust-for-linux/20251218032709.2184890-1-sunke@kylinos.cn/
+- Initial implementation that directly printed raw pointers
+---
+ rust/kernel/fmt.rs | 145 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 143 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
+index 1e8725eb44ed7..11a0508a7fd08 100644
+--- a/rust/kernel/fmt.rs
++++ b/rust/kernel/fmt.rs
+@@ -5,6 +5,7 @@
+ //! This module is intended to be used in place of `core::fmt` in kernel code.
+ 
+ pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
++use kernel::str::CStrExt;
+ 
+ /// Internal adapter used to route and allow implementations of formatting traits for foreign types.
+ ///
+@@ -27,8 +28,8 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+     };
+ }
+ 
+-use core::fmt::{Binary, LowerExp, LowerHex, Octal, Pointer, UpperExp, UpperHex};
+-impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, Pointer, LowerExp, UpperExp);
++use core::fmt::{Binary, LowerExp, LowerHex, Octal, UpperExp, UpperHex};
++impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, LowerExp, UpperExp);
+ 
+ /// A copy of [`core::fmt::Display`] that allows us to implement it for foreign types.
+ ///
+@@ -90,3 +91,143 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+     {<T: ?Sized>} crate::sync::Arc<T> {where crate::sync::Arc<T>: core::fmt::Display},
+     {<T: ?Sized>} crate::sync::UniqueArc<T> {where crate::sync::UniqueArc<T>: core::fmt::Display},
+ );
++
++/// A copy of [`core::fmt::Pointer`] to prevent raw pointers from being
++/// formatted directly.
++///
++/// Together, the [`Adapter`] type, [`fmt!`] macro, and this trait ensure
++/// that raw pointers (`*const T` and `*mut T`) are automatically
++/// formatted using [`HashedPtr`] instead of being formatted directly,
++/// preventing kernel memory layout information leakage.
++///
++/// [`fmt!`]: crate::prelude::fmt!
++pub trait Pointer {
++    /// Same as [`core::fmt::Pointer::fmt`].
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result;
++}
++
++impl<T: ?Sized + Pointer> Pointer for &T {
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++        Pointer::fmt(*self, f)
++    }
++}
++
++impl<T: ?Sized + Pointer> core::fmt::Pointer for Adapter<&T> {
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++        let Self(t) = self;
++        Pointer::fmt(t, f)
++    }
++}
++
++macro_rules! impl_hashed_pointer {
++    ($($ptr_ty:ty),* $(,)?) => {
++        $(
++            impl<T> Pointer for $ptr_ty {
++                fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++                    Pointer::fmt(&HashedPtr(*self), f)
++                }
++            }
++        )*
++    };
++}
++
++impl_hashed_pointer!(*const T, *mut T);
++
++/// A pointer that will be hashed when printed (corresponds to `%p`).
++///
++/// This is the default behavior for kernel pointers - they are hashed to
++/// prevent leaking information about the kernel memory layout.
++#[derive(Copy, Clone)]
++pub struct HashedPtr<T>(pub *const T);
++
++impl<T> Pointer for HashedPtr<T> {
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++        let ptr = self.0;
++        // The default width for %p is 2 * sizeof(ptr) (see lib/vsprintf.c:
++        // pointer_string() and ptr_to_id()), which is 16 characters on
++        // 64-bit systems. With the "0x" prefix and null terminator, this
++        // is at most 19 characters. 32 bytes is sufficient for all pointer
++        // formats including hash values.
++        let mut buf = [0u8; 32];
++
++        // SAFETY: scnprintf never writes more than size-1 characters, so
++        // len is at most buf.len() - 1.
++        let len =
++            unsafe { bindings::scnprintf(buf.as_mut_ptr(), buf.len(), c"0x%p".as_char_ptr(), ptr) };
++        // SAFETY: scnprintf with "%p" format always produces valid ASCII
++        // output, which can be directly converted to UTF-8.
++        let formatted = unsafe { core::str::from_utf8_unchecked(&buf[..len as usize]) };
++
++        // Use pad() to respect width and alignment.
++        f.pad(formatted)
++    }
++}
++
++#[macros::kunit_tests(rust_kernel_fmt)]
++mod tests {
++    use crate::{
++        bindings,
++        prelude::fmt,
++        str::CString, //
++    };
++
++    #[test]
++    fn test_ptr_formatting() -> core::result::Result<(), crate::error::Error> {
++        // SAFETY: no_hash_pointers is a global variable.
++        let no_hash_pointers = unsafe { bindings::no_hash_pointers };
++
++        #[cfg(CONFIG_64BIT)]
++        {
++            let ptr = 0xffffffffdeadbeef as *const u8;
++
++            // SAFETY: no_hash_pointers is a global variable.
++            unsafe { bindings::no_hash_pointers = false };
++            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
++            let formatted = cstr.to_str()?;
++            // On 64-bit systems, hashed pointers start with 0x00000000.
++            assert!(formatted.starts_with("0x00000000"));
++            assert_ne!(formatted, "0xffffffffdeadbeef");
++
++            // SAFETY: no_hash_pointers is a global variable.
++            unsafe { bindings::no_hash_pointers = true };
++            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
++            // When hashing is disabled, fmt outputs the raw pointer directly.
++            assert_eq!(cstr.to_str()?, "0xffffffffdeadbeef");
++
++            // HashedPtr uses scnprintf and pad to format pointers. The pad
++            // method does not support zero-padding.
++            let cstr = CString::try_from_fmt(fmt!("{:032p}", ptr))?;
++            assert_eq!(cstr.to_str()?, "0xffffffffdeadbeef              ");
++        }
++
++        #[cfg(not(CONFIG_64BIT))]
++        {
++            let ptr = 0xdeadbeef as *const u8;
++
++            // SAFETY: no_hash_pointers is a global variable.
++            unsafe { bindings::no_hash_pointers = false };
++            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
++            let formatted = cstr.to_str()?;
++            // On 32-bit systems, hashed pointers start with 0x, but the
++            // content differs from the original pointer.
++            assert!(formatted.starts_with("0x"));
++            assert_ne!(formatted, "0xdeadbeef");
++
++            // SAFETY: no_hash_pointers is a global variable.
++            unsafe { bindings::no_hash_pointers = true };
++            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
++            // When hashing is disabled, fmt outputs the raw pointer directly.
++            assert_eq!(cstr.to_str()?, "0xdeadbeef");
++
++            // HashedPtr uses scnprintf and pad to format pointers. The pad
++            // method does not support zero-padding.
++            let cstr = CString::try_from_fmt(fmt!("{:016p}", ptr))?;
++            assert_eq!(cstr.to_str()?, "0xdeadbeef      ");
++        }
++
++        // SAFETY: no_hash_pointers is a global variable.
++        unsafe { bindings::no_hash_pointers = no_hash_pointers };
++
++        Ok(())
++    }
++}
+
+---
+base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
+change-id: 20260205-hashedptr-4914d995a537
+
+Best regards,
+-- 
+Ke Sun <sunke@kylinos.cn>
+
