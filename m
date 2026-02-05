@@ -1,184 +1,299 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E8D3054FB
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 18:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770314702; cv=none; b=NlVkcM+BB1FE1r2YTTlsaclYEs7AMDPeCqxRmKrx6isflrfTp7tMLZltlYJT3Z1sHq4uEs5l4QsLUWqMI2Y8FXJ3iIjSgisG07b2D6psdeVW545+gbxHnTCSUHtP5i/EbEEbYSmhL/W6Bef+sti5yTjJTSeMk3lenGPMwHkyqSA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770314702; c=relaxed/simple;
-	bh=EzpOrLbanzoU/XKFGITxt6Om/X66hVN2Cw+4bKLo8ws=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g4MUy2N0R7hcf/GDbUt1YFBs40cwCUo1pf+bb6zbOuiTiS2L/nrsFrxmv/s05XwwKEgtU46M3dBKjAvu7DieMIWaqU2HSLQc8VgcfRxUPrqK/NAMRUmOUwlVR1GfAkdCAlQFkpJ/2WSv5QTyj7U1LCYcEum2HRUWpp2pFp4czN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DxxhDSRT; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B188279DB3
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 18:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770317971; cv=pass; b=orvIaFB8SRhXyXiYIT2Y7czx9GwP1EgAFsf+ZxnneXWHeLFiH/unxLAi6PzMksRDV5FB2lTXo3FyurBXbybyy796UaLvG/qeyG4yL42pov3XTZ24GwHJyX730krdAMNQUMY85GYV9QtTfhwsfoReSAPZzxYaz7gFMhsbziAcSHE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770317971; c=relaxed/simple;
+	bh=CYlsNViPVbuTdRW0dW3mj2bBY6YVnUMPCFBYicm6m6o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fM7jO9PeNFrAJPe1gUKVBoPb9DB6iloMlbe+tYbkBKDaVsjuJVmWv7Vg6zKBwCY5xQlI+giTmKE1ZJtdYtUVLVBAZW3mghNvHrMTxG7s0aqgGsKVaRV4Kty62aUpTs1/JWoErmfE/VETv4guyheWNYYsKQM/wj7WVcrXB6SWpAc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=TjM3Zvjf; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DxxhDSRT"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-81f4e136481so721925b3a.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 10:05:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770314702; x=1770919502; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5JEXFfn5owLVtRFRZ2oa7tX5z5wOjOt9hQA1ZlR21y4=;
-        b=DxxhDSRTRbdjwDuyVTwNWxzodVoiLshVLsR42nvRKnuv5R8jzr1NioCCHQaixFRru7
-         Hsi3GbAPBpvbF0XopxTatAA71mBFzScDXNV+Ge+nG50jpI7P2KodXJUMo6AO/QZAYbDd
-         Q0D9AEjrCy4TFhaTxvqyFaSa85hIEfh3ai0YnwwTxSf8wloIF2TBvKpnH85YOlDO7nKx
-         TV6JriVPVK8t+tK5am/bDQYeSFaW+8/nK/WMLx8ciftnbKOsX0lDguqW65IHz5NMmTbh
-         UkNAkzfwYf+sXCOw5BCjPLlA7cRSwt+8Fy5joHmmjqEuIxz47GyuFzcznQBQKNPc3HCW
-         LrVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770314702; x=1770919502;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5JEXFfn5owLVtRFRZ2oa7tX5z5wOjOt9hQA1ZlR21y4=;
-        b=dbqihyA5T4h9QkGiXS/5YNGbQzAd3KsxONsviAsQsHQ5ovntC9OMJNRNpjU1ljEtsT
-         k+2kuzFDUP50/LWnWoklrDjGlbFYMc/98cOZGXXEl5KsVDsmyAQbOeUvEDYchw8D1u7/
-         nwapxc34emcFzq0EcjjiE2MKzpBgDBCi6KQou6TGC2MBX9bZUgE0x78yMUaikeedsk0k
-         +iqGMu4KURZ6VO0TIlMmdpHpdaUPees7hwHgRa2VNufWofg/9KUjWSB2GPsTotJirwt8
-         7lcRU0in/XivfFXASFvOX5Z3S92ITXUkO0ImRRk9kjcouVQQo9h+byzeayvafaKiO5Mx
-         I2CA==
-X-Forwarded-Encrypted: i=1; AJvYcCXb//tBXKOz3NwLxI9X3bUXxy9CLhNJISKmDgfaO8e3Ka+Cz0uuwAbKBoqeF8oabgYdkZTQ9orM79om5yyQkQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbiVAc/ff85eTq25iQPrzRAlbjLVEWeCh2wY/KMXHw8W1MMZlm
-	3SEaxOqsFifpVeHeBCmoHoWJjU8CzcGgu82xpqqmIKL1Ce7K/PYcCBmD
-X-Gm-Gg: AZuq6aJhn04iOB3b2l/2LidEh1STtfWU3TnMnBp5RBiqDf3Si39dT8x0jPP8bRlLOt3
-	wPy7NI1vl1YB9AK55PronAeC2KIwDfQ1YS1wAGE/nsnGTGxR6EA4VI6j9fXoe9tOWridH3jFIFV
-	SFs7gEVCdDQN1clX4rMBfbcwHmJEKzUrqQHrLjSDwsk4Hio46bC7GgZ+jDtsEFUCYn32bDOR7RX
-	5uXpT8RCBxmmf+qIywGbZ6YhAw5Ywsn1Lszy0nEgNKg7fRC8gB4YIr6smCID/GDMBsfYKbwjOjE
-	c0NXGmce88qb2/rY7ON3B6QNZkjaLLigcCcaNPSlRe3wb8kzAWPbPszBhtcFiccy7xe6L0a8coL
-	KgBMz2PQZRAJPgzkn9xGxHqyQCY40GzgJjrh6DTHBtG9h6DBpu3bfTmResAu2CJ6xlUSG7jqyL9
-	Esh5WWbEesOb4Y+LWkCTkjsCxGfQsLfYXaNspHv5HEq5KJ8bpMZiellky+rUEpknOpYI+pWrBG
-X-Received: by 2002:a05:6a21:a89:b0:392:e5eb:f0f with SMTP id adf61e73a8af0-393ad3b6c44mr176743637.68.1770314701789;
-        Thu, 05 Feb 2026 10:05:01 -0800 (PST)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.167.8])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6dcb5436c5sm99812a12.15.2026.02.05.10.04.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 10:05:01 -0800 (PST)
-From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-To: linkmauve@linkmauve.fr,
-	ojeda@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="TjM3Zvjf"
+ARC-Seal: i=1; a=rsa-sha256; t=1770317967; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=NPnhZkxTKaYZvpoXRQcs30fKVXQTFz8M4u194IviirLJbVaYWUvDyqG/Dubt/7rhXhn0EglXpitqtgGFkYnYW4VFOrE+5TbQ73KubjwRHG/gz8erpgDHx+JRLd3tb4Nhj61UUo3k1Nxe0BaRrY65TbJEKL1lwK1LJAN58t87S0E=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770317967; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=TmAPvr3RcS2q8RnP0UGbBBcU9Td/ChW5ZpGtYLIqW4U=; 
+	b=kDu/oxqOUt9PJm9m5s56ZfsvJQ1KutW7xMT8PnRFh4VMTu5f7u5oCuqKtWsTZ/1IZvyuHVrOM7fFSNdwxRkxcR80pG4SoA1qaec1tzbhKxNKDsc3JtmR35I8hfjbRmuz00Ql1wDXJ2l1Cqw4xMnPIea1xRmZUEKIB69gWR3pEGI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770317967;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=TmAPvr3RcS2q8RnP0UGbBBcU9Td/ChW5ZpGtYLIqW4U=;
+	b=TjM3ZvjfdRdwjY9FrfaqhFOkxeU91iO4vmQ+rh4PJHwnfRBcaEQwPoBAEq2YfWZb
+	zlMUvJoXPKnPAy1BdWyh8XVmsVkp5+tm7i6SfEjOdE4CphO8gi7B3BrFp+otEHIyW8Q
+	9Nvcv7y6JfznVoEbjnXPTW92UrtxnIdqn+4UYDm0=
+Received: by mx.zohomail.com with SMTPS id 1770317966012407.96049564945486;
+	Thu, 5 Feb 2026 10:59:26 -0800 (PST)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Cc: daniel.almeida@collabora.com,
 	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	corbet@lwn.net,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	peterz@infradead.org,
-	jpoimboe@kernel.org,
-	jbaron@akamai.com,
-	rostedt@goodmis.org,
-	ardb@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Subject: [PATCH V3 2/3] rust: Add PowerPC support
-Date: Thu,  5 Feb 2026 23:34:28 +0530
-Message-ID: <20260205180429.3280657-3-mkchauras@gmail.com>
+	boris.brezillon@collabora.com,
+	Deborah Brouwer <deborah.brouwer@collabora.com>
+Subject: [PATCH] drm/tyr: Clarify driver/device type names
+Date: Thu,  5 Feb 2026 10:59:06 -0800
+Message-ID: <20260205185906.40940-1-deborah.brouwer@collabora.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260205180429.3280657-1-mkchauras@gmail.com>
-References: <20260205180429.3280657-1-mkchauras@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Link Mauve <linkmauve@linkmauve.fr>
+Currently the `TyrDriver` struct implements both `platform::Driver` and
+`drm::Driver`. For clarity, split up these two roles:
+ - Introduce `TyrPlatformDeviceData` to implement `platform::Driver`, and
+ - Introduce `TyrDrmDriver` to implement `drm::Driver`.
 
-For now only Big Endian 32-bit PowerPC is supported, as that is the only
-hardware I have.  This has been tested on the Nintendo Wii so far, but I
-plan on also using it on the GameCube, Wii U and Apple G4.
+Also rename other variables to reflect their roles in the DRM context:
+- Rename `TyrDevice` to `TyrDrmDevice`
+- Rename `TyrData` to `TyrDrmDeviceData`
+- Rename `File` to `TyrDrmFileData`
+- Rename `DrmFile` to `TyrDrmFile`
 
-These changes aren’t the only ones required to get the kernel to compile
-and link on PowerPC, libcore will also have to be changed to not use
-integer division to format u64, u128 and core::time::Duration, otherwise
-__udivdi3() and __umoddi3() will have to be added.  I have tested this
-change by replacing the three implementations with unimplemented!() and
-it linked just fine.
+No functional changes are intended.
 
-Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
-Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- Documentation/rust/arch-support.rst | 1 +
- arch/powerpc/Kconfig                | 1 +
- arch/powerpc/Makefile               | 2 ++
- rust/Makefile                       | 4 +++-
- 4 files changed, 7 insertions(+), 1 deletion(-)
+This patch depends on:
+https://lore.kernel.org/rust-for-linux/20260204013331.427210-1-deborah.brouwer@collabora.com/
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index 6e6a515d0899..e26a94808e97 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -18,6 +18,7 @@ Architecture   Level of support  Constraints
- ``arm``        Maintained        ARMv7 Little Endian only.
- ``arm64``      Maintained        Little Endian only.
- ``loongarch``  Maintained        \-
-+``powerpc``    Experimental      32-bit Big Endian only.
- ``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
- ``um``         Maintained        \-
- ``x86``        Maintained        ``x86_64`` only.
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 9537a61ebae0..17db23b82e91 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -283,6 +283,7 @@ config PPC
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE
- 	select HAVE_RSEQ
-+	select HAVE_RUST			if PPC32
- 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index a58b1029592c..9fd82c75dcbd 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -61,6 +61,8 @@ else
- KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
- endif
+ drivers/gpu/drm/tyr/driver.rs | 40 ++++++++++++++++++-----------------
+ drivers/gpu/drm/tyr/file.rs   | 17 +++++++--------
+ drivers/gpu/drm/tyr/gem.rs    |  9 +++-----
+ drivers/gpu/drm/tyr/tyr.rs    |  4 ++--
+ 4 files changed, 34 insertions(+), 36 deletions(-)
+
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 46b65e004a15..5e51eab48e39 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -30,7 +30,7 @@
+ };
  
-+KBUILD_RUSTFLAGS += --target=powerpc-unknown-linux-gnu
+ use crate::{
+-    file::File,
++    file::TyrDrmFileData,
+     gem::TyrObject,
+     gpu,
+     gpu::GpuInfo,
+@@ -39,16 +39,18 @@
+ 
+ pub(crate) type IoMem = kernel::io::mem::IoMem<SZ_2M>;
+ 
++pub(crate) struct TyrDrmDriver;
 +
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- KBUILD_CPPFLAGS	+= -mlittle-endian
- KBUILD_LDFLAGS	+= -EL
-diff --git a/rust/Makefile b/rust/Makefile
-index 4dcc2eff51cb..ae22f2c5f0b3 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -384,13 +384,15 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
- 	-fzero-init-padding-bits=% -mno-fdpic \
- 	-fdiagnostics-show-context -fdiagnostics-show-context=% \
--	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
-+	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference \
-+	-ffixed-r2 -mmultiple -mno-readonly-in-sdata
+ /// Convenience type alias for the DRM device type for this driver.
+-pub(crate) type TyrDevice = drm::Device<TyrDriver>;
++pub(crate) type TyrDrmDevice = drm::Device<TyrDrmDriver>;
  
- # Derived from `scripts/Makefile.clang`.
- BINDGEN_TARGET_x86	:= x86_64-linux-gnu
- BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
- BINDGEN_TARGET_arm	:= arm-linux-gnueabi
- BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
-+BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
- BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+ #[pin_data(PinnedDrop)]
+-pub(crate) struct TyrDriver {
+-    _device: ARef<TyrDevice>,
++pub(crate) struct TyrPlatformDeviceData {
++    _device: ARef<TyrDrmDevice>,
+ }
  
+ #[pin_data(PinnedDrop)]
+-pub(crate) struct TyrData {
++pub(crate) struct TyrDrmDeviceData {
+     pub(crate) pdev: ARef<platform::Device>,
+ 
+     #[pin]
+@@ -71,9 +73,9 @@ pub(crate) struct TyrData {
+ // that it will be removed in a future patch.
+ //
+ // SAFETY: This will be removed in a future patch.
+-unsafe impl Send for TyrData {}
++unsafe impl Send for TyrDrmDeviceData {}
+ // SAFETY: This will be removed in a future patch.
+-unsafe impl Sync for TyrData {}
++unsafe impl Sync for TyrDrmDeviceData {}
+ 
+ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
+     regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
+@@ -92,14 +94,14 @@ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
+ kernel::of_device_table!(
+     OF_TABLE,
+     MODULE_OF_TABLE,
+-    <TyrDriver as platform::Driver>::IdInfo,
++    <TyrPlatformDeviceData as platform::Driver>::IdInfo,
+     [
+         (of::DeviceId::new(c"rockchip,rk3588-mali"), ()),
+         (of::DeviceId::new(c"arm,mali-valhall-csf"), ())
+     ]
+ );
+ 
+-impl platform::Driver for TyrDriver {
++impl platform::Driver for TyrPlatformDeviceData {
+     type IdInfo = ();
+     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
+ 
+@@ -129,7 +131,7 @@ fn probe(
+ 
+         let platform: ARef<platform::Device> = pdev.into();
+ 
+-        let data = try_pin_init!(TyrData {
++        let data = try_pin_init!(TyrDrmDeviceData {
+                 pdev: platform.clone(),
+                 clks <- new_mutex!(Clocks {
+                     core: core_clk,
+@@ -143,10 +145,10 @@ fn probe(
+                 gpu_info,
+         });
+ 
+-        let tdev: ARef<TyrDevice> = drm::Device::new(pdev.as_ref(), data)?;
+-        drm::driver::Registration::new_foreign_owned(&tdev, pdev.as_ref(), 0)?;
++        let ddev: ARef<TyrDrmDevice> = drm::Device::new(pdev.as_ref(), data)?;
++        drm::driver::Registration::new_foreign_owned(&ddev, pdev.as_ref(), 0)?;
+ 
+-        let driver = TyrDriver { _device: tdev };
++        let driver = TyrPlatformDeviceData { _device: ddev };
+ 
+         // We need this to be dev_info!() because dev_dbg!() does not work at
+         // all in Rust for now, and we need to see whether probe succeeded.
+@@ -156,12 +158,12 @@ fn probe(
+ }
+ 
+ #[pinned_drop]
+-impl PinnedDrop for TyrDriver {
++impl PinnedDrop for TyrPlatformDeviceData {
+     fn drop(self: Pin<&mut Self>) {}
+ }
+ 
+ #[pinned_drop]
+-impl PinnedDrop for TyrData {
++impl PinnedDrop for TyrDrmDeviceData {
+     fn drop(self: Pin<&mut Self>) {
+         // TODO: the type-state pattern for Clks will fix this.
+         let clks = self.clks.lock();
+@@ -182,15 +184,15 @@ fn drop(self: Pin<&mut Self>) {
+ };
+ 
+ #[vtable]
+-impl drm::Driver for TyrDriver {
+-    type Data = TyrData;
+-    type File = File;
++impl drm::Driver for TyrDrmDriver {
++    type Data = TyrDrmDeviceData;
++    type File = TyrDrmFileData;
+     type Object = drm::gem::Object<TyrObject>;
+ 
+     const INFO: drm::DriverInfo = INFO;
+ 
+     kernel::declare_drm_ioctls! {
+-        (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, File::dev_query),
++        (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, TyrDrmFileData::dev_query),
+     }
+ }
+ 
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index 48bff4476d74..ddf0584f1faf 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -8,29 +8,28 @@
+ };
+ 
+ use crate::{
+-    driver::TyrDevice,
+-    TyrDriver, //
++    driver::TyrDrmDriver, //
+ };
+ 
+ #[pin_data]
+-pub(crate) struct File {}
++pub(crate) struct TyrDrmFileData {}
+ 
+ /// Convenience type alias for our DRM `File` type
+-pub(crate) type DrmFile = drm::file::File<File>;
++pub(crate) type TyrDrmFile = drm::file::File<TyrDrmFileData>;
+ 
+-impl drm::file::DriverFile for File {
+-    type Driver = TyrDriver;
++impl drm::file::DriverFile for TyrDrmFileData {
++    type Driver = TyrDrmDriver;
+ 
+     fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
+         KBox::try_pin_init(try_pin_init!(Self {}), GFP_KERNEL)
+     }
+ }
+ 
+-impl File {
++impl TyrDrmFileData {
+     pub(crate) fn dev_query(
+-        tdev: &TyrDevice,
++        tdev: &drm::Device<TyrDrmDriver>,
+         devquery: &mut uapi::drm_panthor_dev_query,
+-        _file: &DrmFile,
++        _file: &TyrDrmFile,
+     ) -> Result<u32> {
+         if devquery.pointer == 0 {
+             match devquery.type_ {
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index 8f2d23e3c093..514524ae07ef 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -5,19 +5,16 @@
+     prelude::*, //
+ };
+ 
+-use crate::driver::{
+-    TyrDevice,
+-    TyrDriver, //
+-};
++use crate::driver::TyrDrmDriver;
+ 
+ /// GEM Object inner driver data
+ #[pin_data]
+ pub(crate) struct TyrObject {}
+ 
+ impl gem::DriverObject for TyrObject {
+-    type Driver = TyrDriver;
++    type Driver = TyrDrmDriver;
+ 
+-    fn new(_dev: &TyrDevice, _size: usize) -> impl PinInit<Self, Error> {
++    fn new(_dev: &kernel::drm::Device<TyrDrmDriver>, _size: usize) -> impl PinInit<Self, Error> {
+         try_pin_init!(TyrObject {})
+     }
+ }
+diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+index 861d1db43072..6eaa2135fe07 100644
+--- a/drivers/gpu/drm/tyr/tyr.rs
++++ b/drivers/gpu/drm/tyr/tyr.rs
+@@ -5,7 +5,7 @@
+ //! The name "Tyr" is inspired by Norse mythology, reflecting Arm's tradition of
+ //! naming their GPUs after Nordic mythological figures and places.
+ 
+-use crate::driver::TyrDriver;
++use crate::driver::TyrPlatformDeviceData;
+ 
+ mod driver;
+ mod file;
+@@ -14,7 +14,7 @@
+ mod regs;
+ 
+ kernel::module_platform_driver! {
+-    type: TyrDriver,
++    type: TyrPlatformDeviceData,
+     name: "tyr",
+     authors: ["The Tyr driver authors"],
+     description: "Arm Mali Tyr DRM driver",
 -- 
 2.52.0
 
