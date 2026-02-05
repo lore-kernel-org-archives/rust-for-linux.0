@@ -1,54 +1,54 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5473A9D8B
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 10:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FEA3AA1B8
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 10:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770288709; cv=none; b=AT1CIi21eBYJ+HRMIUCu2czHQlnc4Y2Q6k3tVguRD7WJVC3vZRTbzsxh64Gh0favfPLdnBCC2xJw5forWOFtRAcVYZX0Z+SfdVbhp52R/zZ2zkVm7E3+F+ViGQ68fhffY3MoYUur3wsBu649L8UCOCwnCeX0gLcfj+9wisqC56c=
+	t=1770288711; cv=none; b=In7kOmlFLTaXjSVnbgmNyWWnh1NFD4rS85hC4Y9KfFh9kIHHMzDdca+FcmKaObCosOwrb4PUV3c0XFk1MsVxUmumj85xaraCdoq6eZOtSjfmA81JeI7Hg2ERqs5DfXJ6n69QNiYgjb6m7v/2qZ/ibXio0oT5T8s/WHehSkIROQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770288709; c=relaxed/simple;
-	bh=ZUybTZ8FVCkafIsHSFbfu9SLz5ANj6JGje2uaPHESaU=;
+	s=arc-20240116; t=1770288711; c=relaxed/simple;
+	bh=u7tNOSUp16XQ9Cw8SF0QUGSikFb1+CWkD1yI1QkYzoo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HYbhfC0YleL2OXmpO6psX18TAlfx2BSDqzdi1sW3+aGeiVtEuQakkYjCS39dMWfo7AtAoJkL4vK9bZK4AcbDQKOWOjKxDXqQgd/uyjIWWbuMUWmAsM2RAlWeKeLbcNMoiW4eyFmwJ+VmrdoPBZgds9MgJ5pi8tWR7YFzT+ZGde0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kqpZJP7U; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=POyQEzFCZwAoA8rgXDG2Ea5AqQ50SIJR9nVPdshE032u4yEmQS9jhwZn/Rg88BVAQ3NSfXH1b3QK4LyMzjS3IG3d8lAtT93wuZDFCRLCjj1bSo3E5agtmyLLXzoN2uq2/PBetWvUO97YIXz8EnqYd++fleNjv9dLG5V68Zry5Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X2VWNekv; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kqpZJP7U"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48071615686so7005875e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 02:51:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X2VWNekv"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-435ab9ed85dso729570f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 02:51:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770288707; x=1770893507; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1770288709; x=1770893509; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wazCAdh5UgcB5estAlNP9lpZPIwk5UhZor5+EOBIZsE=;
-        b=kqpZJP7U2TlmC/6cR1KI3Tdlkl51g004POIaw2ohBfOEHUaVFi8HpiGEuwXo4i/uNs
-         pdCgnwkeeEAQrYT2ABWdoEXaDvvudHlh2l1zu1MKHWViZFSx07TZOYBg6inOZnvWd/4m
-         Lb/O1RQ7am4I9KuctNKaBMk+Pk/saZlXOWr2BrcNW70Lwo/YyVjt/1GSLmCvltAga/Pi
-         ghAaNtEvj8YkUjIvZjd+6OiSdOpFakoyiq3pD+Qnu8YA+P9XFv2+RXBSHaIEP0MYFa6X
-         WAhD7YkqOVzqNHMb8N+47n/0l8PtI1T9sbJvgBBPjCBeAuDI9fYkkG81TKduTtGMhdBy
-         7zFQ==
+        bh=kpaIYad0WHN8wTh3ZSTIrnFcA9kAsyJ24DcP542BHNk=;
+        b=X2VWNekvFtfxlT+CUnUG8A9//ETNne86b+tMqmys512g0BDoy1OKeh0pSH17s42dGs
+         aAxfTpZ6JsdsFekbz3r2iJAqZi958gYfnTWnnXjfyZ1XNgyLr31rl/Ge6bjMn5nmdfsV
+         eqgkf5rgy5mywQEe8ZhVMoI8ljNL8WQiCQ6oJZS+n3XkBKr7KaCG0VE0RzKD5n1nXzJq
+         7Rf/K2VyGTgHFPrVikUNgbujLPt6FyZU68vCN6wZaDpQiKcP4b/NVwX5XTdImOrJxQzo
+         UHoRB8P48oN3DmVOdCoQX1Vb6qH+WlrX+7kSumVk1CSELF4mWCjAOmGy5z7CC7/1r+xF
+         CHLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770288707; x=1770893507;
+        d=1e100.net; s=20230601; t=1770288709; x=1770893509;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wazCAdh5UgcB5estAlNP9lpZPIwk5UhZor5+EOBIZsE=;
-        b=u4aBv5BtqfvjJY/g8WJL2kKiZDK7IrnPmZBULy+vStcHJkWulaJSWCtTfzg0iJGfnz
-         1dtg1gPD9yKR2fQ+5POMHFhj+Kqq0zRiCJmmaPsXYmOaNnX8nPNziT1VAWQmq1tbQRT5
-         2YB42PQTb4OFEnr0VYib4+iktjnTUyd28LvVfgVYFTCjlqAFFw+KUDtF+CYHQM6rbfFA
-         VcKoVJIE0mtGvHO53OEue5UOYFnIyT62xEdtEMDTGI0ReHSyQSZzcEeuL7sRDQrsxjCB
-         Evekq++Y3XSIhNJ2ilt/tJhQlak+cyawN5uV53EoB5OzSVnLHFtr/Y8CWGa/nOGIL92g
-         3Tlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbaRN4SndPdr25JLLgsE6NqY/kr8am9V09ocSVy0blzbDqq317i6+4x/yhsiTSZwBXIc+p2YWt8jmRKmxuPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXXK1RPS0aEjaQ0UQhsM9n+/4KtpnZ50PGDlH/ZVuJwsXWnabg
-	GvDA8g6fpMPR7dNKvK9+vk+DkqPLE5JNvJEpJ/SPkuxMM74c/3hG7UgpSVfuLf0myx5s4FvoPIW
-	TGw9sHvp7HrIwBqvVfA==
-X-Received: from wmmr8.prod.google.com ([2002:a05:600c:4248:b0:480:1b84:b6e])
+        bh=kpaIYad0WHN8wTh3ZSTIrnFcA9kAsyJ24DcP542BHNk=;
+        b=mO9YJ3wvXeriV8HaseFTM0IYMnd7bN13myIR2UhzEpum0nvIEp//9y39vTyu9XQ5Di
+         oWvnLZZK33KKDn/FVDGa8SFmkpFDetMsfFvq5W3MOFcrUjTm6oLQfnW47EAgX+EyNob7
+         NdfrqcZjqXiVA0xaTIUkL6K5ZCymty3kZ1GgTtrwCmBswNkmGqPhC05DYp0Gvxd8Bhi0
+         DOTysEA8PX3AhbBuVy00JaV4KAAndpPFpO7JxbIbOK/A3dzHNRfve01f6N3xRSlHAuhl
+         wg5xYE+OTVg1irjT3Q8p9mIIZfgbOa1HMJ+F3tbqildx0vkSWbNdSmrdwJC6zuipWnre
+         Olqg==
+X-Forwarded-Encrypted: i=1; AJvYcCUjlfuVTHUkdxaLN52SIvgFVXjfHizWnJli0xyxgRTYixEntTVrL8icAgZAbIH+E1sPUQU2SVygbgCJrH5RmQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yynn0ZkO/yAIaJqYeCuhQkTBgp0NNySZYRjpmtk1GTZRqe+r/IU
+	uY+2L5Cv+v8OvmvWYbdK+PqoU7qKD7ZMDDIdKT0o5zJnqX9YeUIiu6LMTvJsMYiTggbYUh701It
+	26oVR7IOgqqub4heIGw==
+X-Received: from wrd12.prod.google.com ([2002:a05:6000:4a0c:b0:435:9538:ee5d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3514:b0:477:b734:8c22 with SMTP id 5b1f17b1804b1-4830e92a7a9mr89953605e9.8.1770288707220;
- Thu, 05 Feb 2026 02:51:47 -0800 (PST)
-Date: Thu, 05 Feb 2026 10:51:29 +0000
+ 2002:a05:6000:c0b:b0:436:19b1:c15a with SMTP id ffacd0b85a97d-43619b1c171mr5602426f8f.21.1770288709279;
+ Thu, 05 Feb 2026 02:51:49 -0800 (PST)
+Date: Thu, 05 Feb 2026 10:51:30 +0000
 In-Reply-To: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,22 +58,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1060; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=ZUybTZ8FVCkafIsHSFbfu9SLz5ANj6JGje2uaPHESaU=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBphHY5UiLUswz39KqBhHpeX2xIwcn8Oq7WgVuCN
- 6qlYNhg4peJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaYR2OQAKCRAEWL7uWMY5
- RrC/EACaH/NwT7xKuwuN3MecASBmi9sF5WLKGr/aOsN9x+VVGOQWNcCz930/ZijztwT5T197Til
- wSVJS5LzKRV6rWMo0D7Vo6S6samyRUH1a3ZiDMa/giFTTrQs44r/Ph41BzSfPa0wWLOzBSaYWuU
- AmgMBo0+NGS9nqEOgTIGNAbxzSuMMVXvT6c5TtGeckYWfZ6vFjt+yI/jgsUhxFZ/jSCbUV3f7ZS
- kwbX3KgW3p6gbT+VnRci3kOwssFbZ7sNLTr78qtwmbNvI30b4v4jEUuU/C7parTf7LMIVzCqqDv
- nBta4IqMi8wqL8Dzsef7IpowXzq/mmV9brjxqUfgo3owxWj9fOUDVlw3fo3QrqrGPir/x03hNcd
- DlD07GP+M15auwzqri/MVlh0HcR/w1aNAqTSjZEM8+owD61r175YHqmlv2FtTCrnPE50VP8ddMN
- FN4H/uPH+K4lEjTHUIs51s8h1NlbGxFti65qOi4xKsTxYyEUI8VF8ceegUm9m8PNI/mBwryG8wd
- LFX/cBaXNkOe4dpuMfYhQqDd1jTzxwSbevCNqa275wy6QuQCzbCF2s9pKe3G8zDJfDws5QKM5bL
- y5oeKQkmFafvjThVLyen/QCXN5pIFkiSVDUETMSZE6cp/hmCaPgrf85ZSqIxz//JGZRhBCtPERL HEaoFDqsHlGyvQw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1997; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=u7tNOSUp16XQ9Cw8SF0QUGSikFb1+CWkD1yI1QkYzoo=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBphHY5pD8xrMoCMSi7/YAo0zBpNGTkGFDOlicJv
+ SsWF7lHACqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaYR2OQAKCRAEWL7uWMY5
+ RvK4D/9Sqg7OAbaqsJt4VhIwElaxQsfFl0bkBDgM9NE0JgEtF//U3IWNLFyiDbFjyU/eYNk4vqA
+ /EoImWS8mnYl49c7B4DXLibsoNeVIXCKk41En9QlYRydj2O+rGS4BRARaos3d5GjPSmcd5W/WY3
+ JlN5F7KIYDwQtbzfPsAucG07Nj7n5ooKrD9vFmhSUlQOWltfSNAyris0RP0nsl1k//en5nczqcN
+ Vls40YLjS1+M/48o87Ba3YvvlYh4DUWI2J5AdR9/ty4DwW+6LUYqAGimnOQ9vT1wZwyFqKs/5nV
+ usl0vrnOojmKlNEIKXAhY+2Jv94Ssv0sX3Ngw5CLUFOCvPfiyzNHu609QvruEX8SKNeqwadY9NS
+ YeHUBm0PnQkjoPqhJZmFyAdz9Fs30oPy9KItXYWvVWiggE0bDgPE0hsZX2WyOxOXk8z45ZYDY1L
+ h4IUhPo4C9JFqzerdHy9DKCF98umsdKRVGW3CC+osSf91NbYzBFxsNQTTVNLm0Kj4WbJupA5VZY
+ TAgoS3a4p2E7fv7C/DDR8exECeiis8FHGKgaP41bzhBB3p7kP9Z8L0JR1j/tZvGv28Hh0R7HOJJ
+ XXjDToIdX6vm1owhmFCg8aoVz06WZ9aWdPGYaSfEgHmo2lybieLTgIshWP31cp0hOUQm9tffRSO VAuNvPd3riiG9ww==
 X-Mailer: b4 0.14.2
-Message-ID: <20260205-binder-tristate-v1-4-dfc947c35d35@google.com>
-Subject: [PATCH 4/5] ipc: export init_ipc_ns and put_ipc_ns
+Message-ID: <20260205-binder-tristate-v1-5-dfc947c35d35@google.com>
+Subject: [PATCH 5/5] rust_binder: mark ANDROID_BINDER_IPC_RUST tristate
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
@@ -93,39 +93,47 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-These symbols are used by binderfs as part of the info stored with the
-file system.
+Currently Binder only builds as built-in module, but in downstream
+Android branches we update the build system to make Rust Binder
+buildable as a module. The same situation applies to distros, as there
+are many distros that enable Binder for support of apps such as
+waydroid, which would benefit from the ability to build Binder as a
+module.
+
+Note that although the situation in Android may be temporary - once we
+no longer have a C implementation, it makes sense for Rust Binder to be
+built-in. But that will both take a while, and in any case, distros
+enabling Binder will benefit from it being a module even if Android goes
+back to built-in.
+
+This doesn't mark C Binder buildable as a module. That would require
+more intrusive Makefile changes as it's built from multiple objects, and
+I'm not sure there's any way to produce a file called 'binder.ko'
+containing all of those objects linked together without renaming
+'binder.c', as right now there will be naming conflicts between the
+object built from binder.c, and the object that results from linking
+binder.o,binderfs.o,binder_alloc.o and so on together. (As an aside,
+this issue is why the Rust Binder entry-point is called
+rust_binder_main.rs instead of just rust_binder.rs)
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- ipc/msgutil.c   | 1 +
- ipc/namespace.c | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/android/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/ipc/msgutil.c b/ipc/msgutil.c
-index e28f0cecb2ec942a4f6ee93df8384716bd026011..024faedd07c333b23f1e8733833b84ecf5aed9a7 100644
---- a/ipc/msgutil.c
-+++ b/ipc/msgutil.c
-@@ -30,6 +30,7 @@ struct ipc_namespace init_ipc_ns = {
- 	.ns = NS_COMMON_INIT(init_ipc_ns),
- 	.user_ns = &init_user_ns,
- };
-+EXPORT_SYMBOL(init_ipc_ns);
+diff --git a/drivers/android/Kconfig b/drivers/android/Kconfig
+index e2e402c9d1759c81591473ad02ab7ad011bc61d0..3c1755e53195b0160d0ed244f078eed96e16272c 100644
+--- a/drivers/android/Kconfig
++++ b/drivers/android/Kconfig
+@@ -15,7 +15,7 @@ config ANDROID_BINDER_IPC
+ 	  between said processes.
  
- struct msg_msgseg {
- 	struct msg_msgseg *next;
-diff --git a/ipc/namespace.c b/ipc/namespace.c
-index 535f16ea40e187a9152a03a7345e00b6c5611dbe..c6355020641a74c3be7737b9da15022b961d8f2a 100644
---- a/ipc/namespace.c
-+++ b/ipc/namespace.c
-@@ -210,6 +210,7 @@ void put_ipc_ns(struct ipc_namespace *ns)
- 			schedule_work(&free_ipc_work);
- 	}
- }
-+EXPORT_SYMBOL(put_ipc_ns);
- 
- static struct ns_common *ipcns_get(struct task_struct *task)
- {
+ config ANDROID_BINDER_IPC_RUST
+-	bool "Rust version of Android Binder IPC Driver"
++	tristate "Rust version of Android Binder IPC Driver"
+ 	depends on RUST && MMU && !ANDROID_BINDER_IPC
+ 	help
+ 	  This enables the Rust implementation of the Binder driver.
 
 -- 
 2.53.0.rc2.204.g2597b5adb4-goog
