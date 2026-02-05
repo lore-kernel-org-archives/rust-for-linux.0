@@ -1,70 +1,98 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1926E3A9624
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 12:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770293965; cv=none; b=Sz4P3EB5UCfGq2BpYO+0ngZYFwNBTfhvtdwsE05mcr21jhi8M5DhgPYB46XcG705xJ6/Mz6rKRMMwHXPAApfsYJOK7SdY4rcaVZQo/N0lhqPlmmrxNq4eNvIHNGwqOxEI02uK83JUI2jkrdZnRZMrFVMkizc3/h8PP9H0sT73MQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770293965; c=relaxed/simple;
-	bh=jTOOlJM9SM62Nbi8NEcvFMVTGFfdGPEdNCXAy/8F3qY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ofJHQ2r5fLD4UDkk88Atfu/3N9Lt5+/brtCUPkjivATinbmOPLnHhgVr1nSLorVXKz1a3yIaWh7KXvUhNuQidY1H0cq/2m3CWw5rK3IRB6V1PVPHT1Qnd6peCx5Nn11VAq+QawKzW9cOiUvQ9ppx0m3iX0g2PTxPaoDeE0mDjEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JkNTiBNF; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ECC3D349F
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 12:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770294263; cv=pass; b=GikyaoaUUREduJUT99mACDw1AdAQEbpiOqS5CzoqrbzDZEPA9iooPhcCZJ3TEbl3papxEYdYRIIWF+c6c0ZtV5XpQHyeL+L2KgMioIEFj7FTQnn0CRWgCN9HSY45N6myfm0NU3I0lFMGS+bAVH4ikOgw9AOL+i6A7ecukIm0r7k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770294263; c=relaxed/simple;
+	bh=ZYfglyr8WBVX6WQ6sjuoZun+RCx3dM35uvyj1qgWTPs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R0ZnAT0WA4TvDDTn7P3mIXFmAXuGJvu6nr2gvelS0YBJKZm5VpG2pzXBRifjZe7U7YftxKOsDoJxEGRonMsvTXYlQsv94FMUgLbMkJuT5HATbZEPSGEpTMHdXcAn8GOCnOHoGwqLwTYlWBQNQRf2vJVsp9KuEx6qR9fXp+m6HNA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XnU8kDqr; arc=pass smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JkNTiBNF"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47edf8ba319so15936105e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 04:19:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XnU8kDqr"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b807f85e10so93472eec.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 04:24:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770294262; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RlfW0eieMmCw2re7qHYhcIf+QbyQYzFSN1y/Gp8zBQ9j/V6EFn+Bwd8bguzL8Sh4t/
+         Q8wjhwEoPtF/U+Vh44t+GPw9cr+/LMp1OjTh6logpdYUSWS8DSJA8r63UItWL+Cg6656
+         A0vvDJF3S8MLTu2K4euv6FFB0mMKUc+SjReS3K8op6NQHq3ol+DGBqNoDd/0OGMKuqvq
+         JiwT/38RsFs48+xLu3wh4PIsgQqInIuBeHn/kPukDG9wOb8y4rsQ/K5STJCht8rc2IeQ
+         sJy6S+TvT/2CyjMeM/gMujbLTJ8aETgz+jg9AFEozsqu3s44wTYvH2nFRsKxS4ztn1/5
+         amjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZYfglyr8WBVX6WQ6sjuoZun+RCx3dM35uvyj1qgWTPs=;
+        fh=kfn5cmCqYZCh/wUoogJwNibhTFFPH6nhphJEo2GQuCg=;
+        b=dqjDhdzFlK+3wJihXFcfDoziIEOfsP2dDZvniRZtVaPpsGgxsqgLoIv9nqdpG8emL0
+         6DueH1PqglyaS1Bq0ZLWEkAKbnW0zSSDfU68TAAldkv7a6UBO5W+9Q510KcMbu2dxJVN
+         irop6O4gJufBS2DIZ/7F8WVdKtfpP9njMaJUlueljXjl++PL+FOzhHg1QS76+73Fd66t
+         /FdOM6M3OxEep/KFJVRij5eWVltD+hZAG1Mgx9cYCW0AoSIUDWXbwCLDdx9C1oYnBPbg
+         Y7YSeRuWzkWOoA+r5CEhstzXzm4tCWd/eoCTibgVlpEfnC5KXINYsClOHDpn+WHr5zd+
+         kWQg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770293963; x=1770898763; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P8VHEdoXvHCSSaRGXtsdIdrKYHnRM+3rTei5HgbDzfs=;
-        b=JkNTiBNFP0NFHqPYYcMXgk0uuWV5/J+ofqckOWsz4+E4ei9Uve4MZU276BLHV43qjh
-         ElA+JWwKPMxbVdymu1gPlFQXT3J7HM0wZoUoISGrujvbObwR7X2XOpSiFRMBizSteOS4
-         j/Z0Ei0GdW1xk4BsHZWs/42Ra7Y83bFUBFmAXBy3e5x+/zL5qz0M0upF/PJFlL8/yryZ
-         RjqFQjewbYpvRNgll+M35BM4/43M2ivnwar6q7BkGby9ugQ9Jo3o995Q0FKlyQrdU35S
-         MIiMYTfzMuAwZju3YDMSmD4cHkzPLzJUWy0uHa/IRM373Di+Y3l+DBeeNlhVGU3hhqqR
-         lzTw==
+        d=gmail.com; s=20230601; t=1770294262; x=1770899062; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZYfglyr8WBVX6WQ6sjuoZun+RCx3dM35uvyj1qgWTPs=;
+        b=XnU8kDqrS2YhYpPsk5DKy0ZhYzpXsTa4XvtAPQJXk2jWUaD6NACbVjw3wt+4PKy59s
+         G3RY7K+FnXaDMtPalbxDHtxFeB6IMJ13tBy/OFHe1OZNf+KfI7SgRC6aK6ErLuE+sXSJ
+         l6bASrhO91s+p4BE7QlHRt23d5YFeov4A9mDmL2LgV8QkOUvdEmgmZM5gcyJwsV+ncXf
+         ll28toMSo9yvX7hDub0AVwMh/V3uPzZ4wcvQnUNiYakKgT9Gzgt5lo2S31Us5gzaUj42
+         lRsYqnaY3pC1RNC+I0oU8wnMtBxglbgg9d0BsIjO4v1/MmEaEIrN7w9jOyVg2x058E9S
+         hD8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770293963; x=1770898763;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P8VHEdoXvHCSSaRGXtsdIdrKYHnRM+3rTei5HgbDzfs=;
-        b=ZfLJcIpncd/JI4D7nlxyA2hg5wfjfXSYQ6yA9wsI3QaS8o2yrurVyQxxMTW0+qgt0g
-         kMO2fr8dEI85ZieU9Txg+wqRdlfI6SqNahmW+tmvtbN915pG9kXds4Vh2BDqNGlCXD74
-         fCoKB+BYJsn1Hxd0lv6xQN7q3nJdgtOWkCWgMHKfHga47/YKsqIVdtm/9M8G216YRQzB
-         tND+U1cabAdRjZSTcgEZqWzYLfYtZM0h5WPLlIZQ0NZL+ebRVAgTMvAlgKAebbEEPD99
-         /1+92qfBGcTJU743maYxbGJdfCbacw7Kyd2NzmqhCGz/2L2kQWbMx2pSYeKtCkLHPcwh
-         OokQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXdfXRg2FmxYP76mpSbhPbCremCw5gvlUJAJMCt/4gge/LwEkVEazX1hC9ESaIum+IToG+szChP9Vrl5ObOTw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlO93i9hICZfaZkTIgxJvuAWvfwwm3WYUoj7OVJY58JwtYHsjv
-	KM/jLb9SGMgY4iOAPpFSrMIzeaV17pTZZaY4SRs7FQV5fH72isArHDPJjY0TiVAWuD6jgvlWm6p
-	pJCvgQelkl1jyu5qjTA==
-X-Received: from wmbgy21.prod.google.com ([2002:a05:600c:8815:b0:480:4a03:7b5a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4513:b0:47d:18b0:bb9a with SMTP id 5b1f17b1804b1-4830e97a05bmr85132145e9.33.1770293963417;
- Thu, 05 Feb 2026 04:19:23 -0800 (PST)
-Date: Thu, 5 Feb 2026 12:19:22 +0000
-In-Reply-To: <8856c839-1a94-4e4d-9ded-d3b1627cd2cc@kernel.org>
+        d=1e100.net; s=20230601; t=1770294262; x=1770899062;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZYfglyr8WBVX6WQ6sjuoZun+RCx3dM35uvyj1qgWTPs=;
+        b=LNyUvF349Vyu13pL6Vxvpu2J5eNKGYQ0EosZplumue+T+P5hLVRjGBJjGCs8LS7W+i
+         en+5e2sFXlPjuEkTo50C8suW3+fs4l0VRzQIstcFWoyV40zsdW4n7xChvEkMNAA7VDfy
+         4BZWrZ01ndg0XwGqzZNLx8VOL8Lsz1HX8LpeEv4UUv7UEcOMxF4KDe/5JCrWlIKW93Es
+         w6psjNDGQBY54P2UJu/eC0tzQvj4zHzshzC5qhHl/Eq5BW4MRjqngRYL1qq6p8duIvs2
+         PcM22NF5AaMdcJvD+h5vZXBWi2EWI4c+lvoS6hgOapYSrx5t8oG8GEOTXmZ2zsjK4ulB
+         VRhw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJqTWUHqCJlSKmQ2t3++PpGatgyYWNUOi3KWUVx+2wkAON2o8OPvR9XhQqwFl73/BLkljZFQ27KNGXtgDBEA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yygs+t1TEWCZ1AXOFG5nO3adLhAefy0w9jCws/eL0c2K5hnVVrW
+	PVeBgXQeughf5aMtwF4zTmVWuXHrU75T0JT7NkrD2cXEekQ6d6WPOLsgeiWBJQNVAcwvmBb/D2x
+	AppbZnQfg+h5jFVCERSi8eRWQe5F55lo=
+X-Gm-Gg: AZuq6aKUibTHazaIFePDyp1tAckuLMpTz4NE7sSIY5VYhZCGAUWsUjBsQpG+8/ECmFV
+	vXbLL+MoYom4YKhnx5v4cMHW44ideW1N68ldhHkI2pTZKTpczWYsrq3TwFY6v+tX+SkvmRlLzxc
+	dCisogv4IV1vxktaU/6oVL4U6CkXAeKY3P5x5FUG5IejotR88+n8Y3QT9vRY2OujW3QXCiER7Eg
+	EDgUeoqx+KWoF86iPc8rUsy+3IZ5Sqp3CAlBqmSYcHevz4vR5udcqRbMvY2P68AXPBVVl2fdUFB
+	oH6TLtraEIJ5OUxCPsq5xOHF7cy8HtlLJJ9actk+69QdnxGrVD/phmNzADVxXB3d3jKnjYutbwl
+	vEFOhRniDajXx
+X-Received: by 2002:a05:7300:c29:b0:2b7:b88d:b75d with SMTP id
+ 5a478bee46e88-2b832743f4dmr1457533eec.0.1770294262402; Thu, 05 Feb 2026
+ 04:24:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
  <20260205-binder-tristate-v1-3-dfc947c35d35@google.com> <02801464-f4cb-4e38-8269-f8b9cf0a5965@lucifer.local>
- <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org> <aYSFyH-1kkW92M2N@google.com>
- <e7247f3e-8a88-4b46-91ba-cb73cce1346a@lucifer.local> <8856c839-1a94-4e4d-9ded-d3b1627cd2cc@kernel.org>
-Message-ID: <aYSKyr7StGpGKNqW@google.com>
+ <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org> <ab63390c-9e75-4a45-9bf4-4ceb112ef07f@lucifer.local>
+In-Reply-To: <ab63390c-9e75-4a45-9bf4-4ceb112ef07f@lucifer.local>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 5 Feb 2026 13:24:09 +0100
+X-Gm-Features: AZwV_QjQOk6KBIhhGsJHJbikCfRdoq7wVHVjUzF565W0EbHofNdnPpSD4f5sZ4A
+Message-ID: <CANiq72=ybFtqsh18zkC3e1iyR-RoffcL_ZDr-fU7SjzJiFERHw@mail.gmail.com>
 Subject: Re: [PATCH 3/5] mm: export zap_page_range_single and list_lru_add/del
-From: Alice Ryhl <aliceryhl@google.com>
-To: "David Hildenbrand (arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "David Hildenbrand (arm)" <david@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
 	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
@@ -74,32 +102,43 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Christoph Hellwig <hch@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 05, 2026 at 01:13:57PM +0100, David Hildenbrand (arm) wrote:
-> On 2/5/26 13:10, Lorenzo Stoakes wrote:
-> > On Thu, Feb 05, 2026 at 11:58:00AM +0000, Alice Ryhl wrote:
-> > > On Thu, Feb 05, 2026 at 12:43:03PM +0100, David Hildenbrand (arm) wrote:
-> > > > 
-> > > > I don't expect anybody to set zap_details, but yeah, it could be abused.
-> > > > It could be abused right now from anywhere else in the kernel
-> > > > where we don't build as a module :)
-> > > > 
-> > > > Apparently we export a similar function in rust where we just removed the last parameter.
-> > > 
-> > > To clarify, said Rust function gets inlined into Rust Binder, so Rust
-> > > Binder calls the zap_page_range_single() symbol directly.
-> > 
-> > Presumably only for things compiled into the kernel right?
-> 
-> Could Rust just use zap_vma_ptes() or does it want to zap things in VMAs
-> that are not VM_PFNMAP?
+On Thu, Feb 5, 2026 at 12:58=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> What??
+>
+> Alice - can you confirm rust isn't exporting stuff that isn't explicitly =
+marked
+> EXPORT_SYMBOL*() for use by other rust modules?
+>
+> It's important we keep this in sync, otherwise rust is overriding kernel =
+policy.
 
-The VMA is VM_MIXEDMAP, not VM_PFNMAP.
+Currently, Rust GPL-exports every mangled symbol from the `kernel`
+crate. To call something you would need to be a Rust caller (not C --
+that is not supported at all, even if technically you could hack
+something up) and the Rust API would then need to give you access to
+it (i.e. you need to be able to pass the Rust language rules, e.g.
+being public etc.).
 
-Alice
+In this case if we are talking about the `VmaRef` type, someone that
+can get a reference to a value of that type could then call the
+`zap_page_range_single` method. That in turns would try to call the C
+one, but that one is not exported, right? So it should be fine.
+
+In the future, for Rust, we may specify whether a particular crate
+exports or not (and perhaps even allow to export non-GPL, but
+originally it was decided to only export GPL stuff to be on the safe
+side; and perhaps in certain namespaces etc.).
+
+Cheers,
+Miguel
