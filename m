@@ -1,124 +1,174 @@
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF104328B55
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 21:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770325261; cv=pass; b=aluIc+zA8vBZgrsbSDUpDNzZfXuaFtaGcIghRUcHwmLJAPDmAYtq219EaIgC17ABGGm15kDObfelPkBcY0/FnTqOYolL/CiA//ersjNZ7Hkn8kiYJ9KfdcMB7lqVAGzqnwW+GFoF6DWRMKQWUn2gzSWyuqt00kTYSDt0qbTL7Zw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770325261; c=relaxed/simple;
-	bh=c9UY20GGm+skos7cmWC/LlM5NZnvYPqwPleg1uCvakc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MI4ufr10n2Ch3px05Eud+auw0BKBQ7UVhonYF/pyGsYP+Qvdl5oRH8ENeVc2UOo77sS7CK2LWvTROGEvSXLn+UJHzJXVW+hWffEdRmSzUuWYw7ynJWitbLnGRievTbbvQbB2TszHv2sWGcZYxciRCNxSMDmRGGz3x6iYxQyMV7s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MDJ1lJ57; arc=pass smtp.client-ip=74.125.82.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D456A30DD3C
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 21:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770325590; cv=none; b=OwTLgzkkPidyYmAU0o6HRwgbqaZ3gmZDI4smLwfW2D2lJgs1pgaYIN7VxDhGCrUDbLbwqinAEaTEDWXJPEUQxEmIglaAAM6eK0+1HaP+kNwsTLhjP0ex5xkbMnkCbObfBuc9fwW5x94GQoFEgH1YWOEkCF5XmUjQ5ULWYMW0fk0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770325590; c=relaxed/simple;
+	bh=HlofWzQf4nysuWsznfCeKxoDLC/TTjA612tfov2GPTE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=F0OSt1j6CN/hHDnOsjgkFB/mqD7yERN+X7CinF9MgCHaL6gkkyX/pbz5w7DE4gv79hYCofOPnkycrXd9qdp4n5aT2RdwByqoa/FAFonbSWlN94F4OcPbSxPYl4BYuD0HE7pXIMg6hGHEn2SuvvjjQnbYJEltE1Yz+xznCMLgmkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aqgb/ba9; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MDJ1lJ57"
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-124abf957dcso42736c88.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 13:01:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770325260; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZoqEEQV44YXnM/dmanQP0UILwmfVntge5hqO6jOaJeuYFpiJxy1ZBsaMJyv6rKtrYs
-         Z2wzK6GS+tMekFY3GmO71c1S9QHWQx9u3rBXSQvrNwdR3WD0AOPp27q4HCiWmc2qWEGl
-         9V5aHcLm0zj7SyX+BrSv5Q0uTk14PZKeOjSGK1N4/sFMnDqjWUQ+3gFPD1O8Az1Syn86
-         Z8Ev5j5imdSA6CPN1g6AnqD7tDdSJiQ50rkLiUUvWotjzPB+yMMhkw1bOrpoMqUhTzhG
-         Qq4RqV+mYpZsWk7Lm+H3Qe7QsoEojjBAWpV/R9ou4ExvvEq2eDB9/bY3RAqheG+ecqLl
-         p7GQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=c9UY20GGm+skos7cmWC/LlM5NZnvYPqwPleg1uCvakc=;
-        fh=gHMbmCZdo3YE11nF5qSHK93aEeNla4F4KS9Li/nA/Zc=;
-        b=NFB7xmTlsihVZYcmyrpGDjpWjN45gmm2DLccPG0TtIROx0/Px4dDB9yTwfjIcFX0md
-         99la86wnO/tPng3rhX37Q6efM75euMfDVfQi1MhT0bfzCjnR6zwZJr2JVX8l699He4kg
-         0DlFWb8T21mOCklYiujaoD5hW4QOBYYghq5lXk9jl+ftIlx7i4HzraqH6g5dRiDq9dZ4
-         IDyjGXrLnbDi3/7csXvijXbVVv9rdXsiTH/PzTa5JwFQlXspYYWKRvx0o63HoSddZCrj
-         OaRRe/eZ5JlaPRqOEVgjoUesNg5aRvV9yWxDXuFzluxPtaK9DPJFCugGQaXaEHE/IlO7
-         C8lg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aqgb/ba9"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c6c67bc8b9eso506157a12.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 13:06:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770325260; x=1770930060; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770325589; x=1770930389; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c9UY20GGm+skos7cmWC/LlM5NZnvYPqwPleg1uCvakc=;
-        b=MDJ1lJ57wO0Kf+AG8lF3YkOo2KKQTnbiJKTUT9hvvS+1iNcAs/7gdSM+C21vKleIcV
-         EeH1XrERsVsJ8PM3mwEJSe0ErJFGheeHlAotZN4BGe2TrHrJ/eAM6eFCxeeSatPUxx9g
-         jb4uTEKjExO6uhr4Tng3jC+yMKhHb7I45aF/5iTWjHGOz8v7dyO9zjvxjGkWWQSCOXcq
-         bI6DR/eN4Rq+fXzWnlSSf3Wn2olOtnLWeMuCt8GipdI2aPARVK7NGUdQXuoQRJNV91MQ
-         BpfdpxzCqb/lybariLdeBdJiv5ZnMuWRZXTm2OTI49WPPKC8/gjKcD/g3kSaywqf7q0D
-         4XnQ==
+        bh=JGeCzKcs6APgfKInQ8fPWEO6crHr4dVIgkyVJyOIJ+U=;
+        b=aqgb/ba9h80TlMv9+a6DqN6CwtPgRQAWnnHkQIwyU5xbBefP9DXKGY7RX3F6t0w3fU
+         4EDqNZ50xVOHHfNz4sqYMkxNCzcuN7htvVZMj87Sx51hwTFZDlx1rFCdhAmqTZEiuww3
+         rqHyP0S+YtPY/qwbrB5EBOLTX4AVxwFYdq+UA1amcrdAa8UP3T0HxJ2/ngUuCyJdf8QF
+         rDuy6xF1ScAfsstUH+k/w4ecM8LqdZDXnrHb5WiqHdmAM3YMzc3Tw31jibEeoCmR58Bq
+         Y0KcdxaQjJPilCtbiJXlXBvpUFrZ0jKrsOW99bZxc6wuDXtq5gz8uYaoCOvYB8ftYJwH
+         jykg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770325260; x=1770930060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=c9UY20GGm+skos7cmWC/LlM5NZnvYPqwPleg1uCvakc=;
-        b=jyqKfOv2us2H83yivumsDo7Vif46yKXQrtIHTs8CB52lW/CUxQ8ibJ92colVWhxvvI
-         Ea3ZYARPfT4ygNbOaEkdeTd00Hefk7lqWbsuA7y/f/+3xBFHkBVHvXilF1UMNId7a+2l
-         Lsk/wy8Cv89w970FqlEENOB2BlKIMvGVDhfX/UgIRjwih55RDpgjxjgsPphRLJ2BMoSU
-         yGK4wAunq/RRmgjN9289aZDq7Jc2qTHTBC/U49ke0m1VFxYR3OhpbMkwwcqpIZnbJkvk
-         T+tY2p4RQAD+J4j5HxASITQV/iTggwea3vuUHj8dk/Yn+8XyDzXcIMcy4aADufbVb56w
-         Bbvw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCQ2leb4SRCtl+ygf3VdMgopCGby5Yv3dDfk2O6ZwgTcDJv92CDKY5lyyFh86oyYE1gWS/VZI4verto/Xc7g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4KL2piaKRdQXBINLFU+/6wmUMs64wPa9tqUFOtO0fnPWTYvrq
-	hWRHPmYfuLwN9dETR/yQdmK9krWSgcaeeciz4GA4tNEJBUs8/zeZCmAAXS2+PTe9M+DPQwyNyE4
-	STPrhw9xOwebwFehKaBZm4uT2VQyjNIw=
-X-Gm-Gg: AZuq6aI6UjuolemDFR8c6xB+IvrlOG+MLgT/vivqrs+imgFjuBzvHGKhzapu+00YAAU
-	GRNjoyIyoeqXQiVKKecgX1+5CEJ6T7xGOVpTAfeSH74OqAcwxVD8mZoOUn7MYVMA+oX7nTC7kTr
-	2L4irZd6dCCgCMm8PeOCUbZc+ILG058CpW8HmhO3X6vpG8m80yCngIDZFIWHZrWZP/0RwgrkSlA
-	L1TS8fVUKP31kXPwBl0Lzvi/ZMMbo8JFmlpesj9fjnWvfMEt/HPNFHW6G+KNcn6DqZdxqDPh8Vh
-	SwVy7Gd2Fx5dFgsalkY5Yb4BxWj7dBI/er04DFvd3rWgoC7HmEQGqPvGtgXUGMRm+8wK8+s9gCd
-	eXg23LKBkX7ot
-X-Received: by 2002:a05:7022:6ba3:b0:11b:98e8:624e with SMTP id
- a92af1059eb24-12703fb0931mr141282c88.4.1770325259631; Thu, 05 Feb 2026
- 13:00:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770325589; x=1770930389;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JGeCzKcs6APgfKInQ8fPWEO6crHr4dVIgkyVJyOIJ+U=;
+        b=nPy/vqr3c9iRUSBPN0ErOXBy3q9W3BDkvAhLypqPnh9lr3I0CDzW1ElbyayqgI5Bmc
+         yPesqt4x1I03ujAe7SaM1STbzpTFySC2Gld6eTDCOVJ93bs4A0M61jrU10apCENU2dA6
+         e9jllKhoTJIjHpWsS80hBByn17vJRBzsOQ8uCEiYUKTQeLuA2kz45fShecAsscnBkJxE
+         SjOUiSgFPopKjmZeloeyQRvpzCM2JVyO0qRSFBMzMT1TDCD6wyKUMtMFv/Br00pOxZpI
+         Wco/ZJP9cNhFGmKDo17Rn+vJwhD7L1iIf+GWMy97qe3EZkTfTNBmO/oI4DUrkC1sjmCj
+         JRBg==
+X-Forwarded-Encrypted: i=1; AJvYcCVk1P+FNBRRCJkMQXNlJ1fCuwO0e1UUqXByyWA+ZRT6WyQAmBEYK42tI1qQ/7nF2+POm84Hf5RAyp2uRnZc0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsM9CN2mMT61+lLdVxT+S2FgQqQUO/atR0+YSYbuJj7KTf/06G
+	HCF6W+qB0R5GQ0a3rmhLNC/UT3sOYDFfWy31m6Asww3BKlXuNn3nlZo3
+X-Gm-Gg: AZuq6aJtGRNV0qQeUEBEAbdFYwWySplFuTsTiuXOqc69lZp0CVI7MsFGZl/NCfxIWWW
+	Z9UgVGAKugKhes/EG3ES8tmzYMwBnfL9BSkkF3YROcfboPrXdiU5E3Hcwp7s451KtKaUQPVkbvH
+	PsjGd5A6u8Lyq2r01tAvGb7GBVVLWels0ScVeEquzmaUO4KwRFze+Tv2YwUXMZId2ZBl7iFkhO4
+	c4rzzkkLPC5Rx6s54LopJ1d/6TmIv3fSDskv9UNiPZ9RLcEXSl9hdIzHDXJA6TUEfSUlOUcCt+X
+	vcl3Q8etXlVtW6pb9C+sqSHxgSYeAIYhsoI+FENMszM/F3FFNe6/+xyNUXF9B0VzlQ3a0C+Sv8k
+	kVxmnDOWVKseXkpJEk0WPfVBZRDA/8EciJynu1OZt3C6zwmIMh+0o2KNnbNSKIj6N4KcRHlxf/u
+	t3LQuB0A==
+X-Received: by 2002:a17:902:e948:b0:2a7:b412:6cbf with SMTP id d9443c01a7336-2a951951558mr4424525ad.55.1770325589187;
+        Thu, 05 Feb 2026 13:06:29 -0800 (PST)
+Received: from localhost ([112.149.32.52])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a951a644a6sm4076285ad.8.2026.02.05.13.06.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Feb 2026 13:06:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <288d4aeb-af0d-4d50-bb0d-7a046abaaf10@de.bosch.com>
- <20260203152542.45017-1-jason.kei.hall@gmail.com> <20260203184933.23c92f8f@nimda>
- <DG5GBHGZV86X.2XKAU6WLWCL7Z@garyguo.net> <20260203193240.68bb136e@nimda>
- <DG5HFQ1JHRA1.QTLZFE4GDZT8@garyguo.net> <c150ba95-a60b-404d-823a-316710035dfd@gmail.com>
- <CANiq72=J5LBxfawu3MtQpcukaXcw+pRyMWd9ueDE=od4X99R3w@mail.gmail.com> <1ef96145-9d58-4b61-a3bb-045dee6e4fd5@de.bosch.com>
-In-Reply-To: <1ef96145-9d58-4b61-a3bb-045dee6e4fd5@de.bosch.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 5 Feb 2026 22:00:44 +0100
-X-Gm-Features: AZwV_QjiKyQOVWh5xrAIujyXprv5UPUEUO2dHCdmH2kmKq5DiT5bcMTdC9OSpac
-Message-ID: <CANiq72mcJWPLrOtDPQpZcOO5Uwaw8+5z+StX-LMTVSDPvaVwjg@mail.gmail.com>
-Subject: Re: [PATCH v4] scripts: checkpatch: warn on Rust panicking methods
-To: Dirk Behme <dirk.behme@de.bosch.com>, Andy Whitcroft <apw@canonical.com>, 
-	Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc: Dirk Behme <dirk.behme@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Jkhall81 <jason.kei.hall@gmail.com>, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Feb 2026 06:06:24 +0900
+Message-Id: <DG7C1LYQ4SOQ.1HBJ8WH923JHW@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
+Subject: Re: [PATCH v5 2/4] rust: macros: add derive macro for `TryFrom`
+From: "Jesung Yang" <y.j3ms.n@gmail.com>
+To: "Charalampos Mitrodimas" <charmitro@posteo.net>, <y.j3ms.n@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
+ <20260129-try-from-into-macro-v5-2-dd011008118c@gmail.com>
+ <87h5rxuw1n.fsf@posteo.net>
+In-Reply-To: <87h5rxuw1n.fsf@posteo.net>
 
-On Thu, Feb 5, 2026 at 2:24=E2=80=AFPM Dirk Behme <dirk.behme@de.bosch.com>=
- wrote:
+On Wed Feb 4, 2026 at 10:39 AM KST, Charalampos Mitrodimas wrote:
+> Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org> writes:
+[...]
+>> +    fn impl_try_from(
+>> +        enum_ident: &Ident,
+>> +        variants: &[Ident],
+>> +        repr_ty: &syn::Path,
+>> +        input_ty: &ValidTy,
+>> +    ) -> TokenStream {
+>> +        let param =3D Ident::new("value", Span::call_site());
+>> +
+>> +        let overflow_assertion =3D emit_overflow_assert(enum_ident, var=
+iants, repr_ty, input_ty);
+>> +        let emit_cast =3D |variant| {
+>> +            let variant =3D ::quote::quote! { #enum_ident::#variant };
+>> +            match input_ty {
+>> +                ValidTy::Bounded(inner) =3D> {
+>> +                    let base_ty =3D inner.emit_qualified_base_ty();
+>> +                    let expr =3D parse_quote! { #variant as #base_ty };
+>> +                    inner.emit_new(&expr)
+>> +                }
+>> +                ValidTy::Primitive(ident) if ident =3D=3D "bool" =3D> {
+>> +                    ::quote::quote! { ((#variant as #repr_ty) =3D=3D 1)=
+ }
+>> +                }
+>> +                qualified @ ValidTy::Primitive(_) =3D> ::quote::quote! =
+{ #variant as #qualified },
+>> +            }
+>> +        };
+>> +
+>> +        let clauses =3D variants.iter().map(|variant| {
+>> +            let cast =3D emit_cast(variant);
+>> +            ::quote::quote! {
+>> +                if #param =3D=3D #cast {
+>> +                    ::core::result::Result::Ok(#enum_ident::#variant)
+>> +                } else
+>> +            }
+>> +        });
+>> +
+>> +        ::quote::quote! {
+>> +            #[automatically_derived]
+>> +            impl ::core::convert::TryFrom<#input_ty> for #enum_ident {
+>> +                type Error =3D ::kernel::prelude::Error;
+>> +                fn try_from(#param: #input_ty) -> Result<#enum_ident, S=
+elf::Error> {
+>> +                    #overflow_assertion
+>> +
+>> +                    #(#clauses)* {
+>> +                        ::core::result::Result::Err(::kernel::prelude::=
+EINVAL)
 >
-> And how would a developer know that a `checkpatch.pl` warning on
-> `unwrap()` is a false positive or not (i.e. is to be fixed)?
+> What happens if we need a different error type here? For example, a
+> quick look around in nova-core's "Chipset" enum, an unrecognized chipset
+> ID warrants ENODEV rather than EINVAL, since it's about device
+> identification.
+>
+> Not sure if it fits the design, just wondering if this flexibility would
+> be useful, but would something like an optional
+>
+>     error =3D <ERROR>
+>
+> in the
+>
+>    #[try_from(...)]
+>
+> attribute make sense? e.g.
+>
+>    #[try_from(u32, error =3D ENODEV)]
+>
+> defaulting ofcourse to EINVAL if unspecified.
 
-It depends on the context, like some other `checkpatch.pl`
-errors/warnings, i.e. there is always some degree of developer
-discretion. Or, at least, that is the way I think about
-`checkpatch.pl` warnings, but maybe the maintainers think otherwise
-(Cc'ing).
+I believe this is indeed a desired change.
 
-To give concrete advice, we could perhaps link to
-https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c=
--and-rust,
-for instance. (Please see my other reply on v5 about it).
+Back in September, an RFC [1] using the same API (i.e., without error
+customization) was sent; I took a quick look at the time and felt
+everything was OK, but in hindsight, the need for this flexibility is
+clear.
 
-Cheers,
-Miguel
+Your proposed API looks good to me. Unless there are objections, I'll
+move forward with this approach.
+
+Thanks!
+
+[1] https://lore.kernel.org/rust-for-linux/20250930-nova-tryfrom-v1-1-0cc1b=
+b507047@nvidia.com/
+
+Best regards,
+Jesung
