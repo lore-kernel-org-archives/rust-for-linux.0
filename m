@@ -1,86 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371E113D638;
-	Thu,  5 Feb 2026 22:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D06C33A007;
+	Thu,  5 Feb 2026 22:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770331584; cv=none; b=uGJqOxweYPgBuEgYF+jBFG0g61CTO22XVN87MVBwoNAoOOzk8nhhCJky8pPqf5nnyx5guKdFQpOl6Hqtr1Witoj0q0XPSTuE4L/7R37Vc04Zv9xXQJH2HccPPu7ZhafEcNQxdnbH3uG1W8gdvkNdSm9M0DHXVqEIohTFQF9/Zlg=
+	t=1770331671; cv=none; b=hI+KJvSFQBw04xU0TeJZKNsNCawqSnP6XCtbsyMc3brwdLLDRDxDBCVdYoZs+pRbL/S8FnJyqgAlh9DCN82X2dUzZZakcrjBAlp4AN60nEUKUTSYwROKCpjiYL7lYtiP/jZUduLxCkCKtWtIR95YFoqAgVkJAx2lK3oqI9lj2Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770331584; c=relaxed/simple;
-	bh=c8fYKE9+ySvvwxeHCgDhSW7zyQfsh6rfatxRSof4wjY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=tPSkg4ezE8uXU2ZFgUppe3mr/13VcJNYoE0akRVRDgZy+NHes8g72iASHc5gP1roJcsjZuUkpPeJNQpkYt0TFfXy01d3z8FcDHdfB/GaF0fLzg6nMZtPQi6iYw5Vmt190U467/qNvIqBIZPl/I/SSUgkn+ZMgnVA8545Go0j3Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kQKEJqY/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770331671; c=relaxed/simple;
+	bh=e8wSTiiTvERd3xcoRzudPKhHazcf1heFtzfB7SYEFKI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dAEmdTfh9HhfvgW5TOaPsTIbiAC/ABJJMwhHqPFTL+fpIf3rz/JA6OqtOxK8IIHl6xJYmPykkIpBv1MlAS4wqPKWuRRuu3xwqf3SHf9B9toQGSxKIGIUAJ9D9tnXyMXRBb/xQO8RxLTtSGH0FIhHs7KVcoD1Y8SjFzld6Y8ybIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRbgMMkV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kQKEJqY/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F64C4CEF7;
-	Thu,  5 Feb 2026 22:46:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRbgMMkV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91ACC4CEF7;
+	Thu,  5 Feb 2026 22:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770331583;
-	bh=c8fYKE9+ySvvwxeHCgDhSW7zyQfsh6rfatxRSof4wjY=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=kQKEJqY/sSJofCBVy05YcB0R4FCbORXgvKp/q/B19cu8EKvBJ0sqe9LDii6MoegmP
-	 xZlPV5jlxVR2E05BAV4FqG4gneXmp4YbOaw/k9Ld22vViu1Yh1iZJyAP2EoZPzgdH7
-	 UzB8O3sJNpDSbm5zWkFOeeGHcVdulpEWlYKJNy+UF3/HW+gcCEmUkQatjyhhR3jXQp
-	 l61f7crCSqlnGfnzW6RvzQ89p7RlSkpamkPAlSnVEHVN/DDsCGZdkXWnfRHAAkVCzh
-	 9sFB/1He6ChWkrcFYkkHV4ii0o/VqE3YS+mRIHoljL1SLNR+mXGEJuVOssOR7bcPhG
-	 oiFVtyqY+YU9A==
+	s=k20201202; t=1770331670;
+	bh=e8wSTiiTvERd3xcoRzudPKhHazcf1heFtzfB7SYEFKI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DRbgMMkV21y18LdkgVJFjq0GfdB6Z1voyHDt55/gzCo85RON+V4tC4IkErN57cwvw
+	 NzB8nVARsSdF05KBKecZdDWjIvhSaXY1WtKlzBnYOaus5evBf0oom9fbaWJ0qwDTxu
+	 06gm5es2Z1MXTguVzsFk+rc2Q4Pm5Q3COZqgvoo57sd+gh3tuw38ZjmAPXZZu3p/nT
+	 IFtkMDuH4aJA9/ZF2/O00OzjgS4AvrBte+UfxTAEzyWoT2xKgcvEmfzWPCA+PP7q9j
+	 nvz9N8lSix3rhACL2Ngo8gZ4tQIEvOWM9sIFxcWSc+s1xRrgU3U2WCm7m+M/O5vvDQ
+	 vVPEmNyIsLTFQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	ojeda@kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Cc: driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 0/5] Use struct devres_node in Devres<T>
+Date: Thu,  5 Feb 2026 23:31:23 +0100
+Message-ID: <20260205224706.91996-2-dakr@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Feb 2026 23:46:15 +0100
-Message-Id: <DG7E62FRLFG8.2WLEEY8VX9PRO@kernel.org>
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Link Mauve"
- <linkmauve@linkmauve.fr>, <rust-for-linux@vger.kernel.org>, "Madhavan
- Srinivasan" <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>, "Srinivas Kandagatla" <srini@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Ard
- Biesheuvel" <ardb@kernel.org>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, "Eric Biggers" <ebiggers@google.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Lyude Paul"
- <lyude@redhat.com>, "Asahi Lina" <lina+kernel@asahilina.net>, "Viresh
- Kumar" <viresh.kumar@linaro.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
- <officialTechflashYT@gmail.com>, "Ash Logan" <ash@heyquark.com>, "Roberto
- Van Eeden" <rw-r-r-0644@protonmail.com>,
- =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/4] rust: io: Add big-endian read and write
- functions
-References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
- <20260204040505.8447-2-linkmauve@linkmauve.fr>
- <DG6A0WRA0JZC.SPDT9WEXF92K@kernel.org>
- <EC479D9E-ADBF-461C-BEA6-06EA2D4FD8A6@collabora.com>
- <DG74LUHX3NPX.3BLARQEIFG1DD@garyguo.net>
- <D6227AA2-A727-4F29-B7CD-BE0AAB0A13F1@collabora.com>
- <DG79GRI3NOLS.3ASMS9RJ80IXM@kernel.org>
- <DG7DUN9M4YIU.KNRN6FM1K687@garyguo.net>
-In-Reply-To: <DG7DUN9M4YIU.KNRN6FM1K687@garyguo.net>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu Feb 5, 2026 at 11:31 PM CET, Gary Guo wrote:
-> I proposed the wrapper type because majority of devices won't need BE sup=
-port,
-> so adding complexity to Mmio itself is not ideal. It is also generic, so =
-it can
-> work with any IO backends, so for example, you can have `BigEndian<Pio>` =
-and
-> `BigEndian<Mmio>` and you don't need to duplicate your endianness support=
- for
-> both backends.
+Currently, the Devres<T> container uses devm_add_action() to register a
+devres callback.
 
-That implies that we swap bytes manually? That would be a waste if the CPU =
-and
-device are big-endian.
+devm_add_action() allocates a struct action_devres, which on top of
+struct devres_node, just keeps a data pointer and release function
+pointer.
+
+This is an unnecessary indirection, given that analogous to struct
+devres, the Devres<T> container can just embed a struct devres_node
+directly without an additional allocation.
+
+In contrast to struct devres, we don't need to force an alignment of
+ARCH_DMA_MINALIGN (as struct devres does to account for the worst case)
+since we have generics in Rust. I.e. the compiler already ensures
+correct alignment of the embedded T in Devres<T>.
+
+Thus, get rid of devm_add_action() and instead embed a struct
+devres_node directly.
+
+This patch series is based on [1] and [2].
+
+[1] https://lore.kernel.org/lkml/20260205222529.91465-1-dakr@kernel.org/
+[2] https://lore.kernel.org/lkml/20260202235210.55176-1-dakr@kernel.org/
+
+Danilo Krummrich (5):
+  devres: move struct devres_node into base.h
+  devres: export devres_node_init() and devres_node_add()
+  devres: add devres_node_remove()
+  devres: rename and export set_node_dbginfo()
+  rust: devres: embed struct devres_node directly
+
+ drivers/base/base.h   |  18 +++++++
+ drivers/base/devres.c |  54 +++++++++++--------
+ rust/kernel/devres.rs | 123 ++++++++++++++++++++++++++----------------
+ 3 files changed, 127 insertions(+), 68 deletions(-)
+
+
+base-commit: c98d3727720db5f74bf40a8cd1c2da05081845ee
+-- 
+2.52.0
+
