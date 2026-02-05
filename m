@@ -1,299 +1,120 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B188279DB3
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 18:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770317971; cv=pass; b=orvIaFB8SRhXyXiYIT2Y7czx9GwP1EgAFsf+ZxnneXWHeLFiH/unxLAi6PzMksRDV5FB2lTXo3FyurBXbybyy796UaLvG/qeyG4yL42pov3XTZ24GwHJyX730krdAMNQUMY85GYV9QtTfhwsfoReSAPZzxYaz7gFMhsbziAcSHE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770317971; c=relaxed/simple;
-	bh=CYlsNViPVbuTdRW0dW3mj2bBY6YVnUMPCFBYicm6m6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fM7jO9PeNFrAJPe1gUKVBoPb9DB6iloMlbe+tYbkBKDaVsjuJVmWv7Vg6zKBwCY5xQlI+giTmKE1ZJtdYtUVLVBAZW3mghNvHrMTxG7s0aqgGsKVaRV4Kty62aUpTs1/JWoErmfE/VETv4guyheWNYYsKQM/wj7WVcrXB6SWpAc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=TjM3Zvjf; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF363093A6;
+	Thu,  5 Feb 2026 19:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770318316; cv=none; b=b+NIe/LLNQ2/m/GHE3MzbmFAvr1wUVkmYEQk4/ucxRmOd1QgIHHBB6EAT2lB3PtuDwnquD85pbIot9fNNefikZcVr1KbmHsG2dJMWt/gk0DmZyfdKUPFDDipVamNx/Y1ab9UJDr9MkEuIjBtQPwrJog31C/k2kgq8VnZKzwTAqc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770318316; c=relaxed/simple;
+	bh=+lGXg9aKGgu5PYXE6zY8ByxlH1ZZ9v8LToFwBmv61P4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=utL2xkTUBvPIKScy/zNMfE0i3BQwNdTJ3UjYi5rwmKsM1tREvPYakXPNnJ0GzKX0feXpBF1GvZdY2Z13Q1xwh7Ch21HvVL8M3Uhqj9gAht3U6Xu0pak/sBOQfwtSA8CQ5T5xJ6bEGsRS78j8TAi6lDOEod88x+0hZeJMPxdrxsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=njnq9icf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="TjM3Zvjf"
-ARC-Seal: i=1; a=rsa-sha256; t=1770317967; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=NPnhZkxTKaYZvpoXRQcs30fKVXQTFz8M4u194IviirLJbVaYWUvDyqG/Dubt/7rhXhn0EglXpitqtgGFkYnYW4VFOrE+5TbQ73KubjwRHG/gz8erpgDHx+JRLd3tb4Nhj61UUo3k1Nxe0BaRrY65TbJEKL1lwK1LJAN58t87S0E=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770317967; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=TmAPvr3RcS2q8RnP0UGbBBcU9Td/ChW5ZpGtYLIqW4U=; 
-	b=kDu/oxqOUt9PJm9m5s56ZfsvJQ1KutW7xMT8PnRFh4VMTu5f7u5oCuqKtWsTZ/1IZvyuHVrOM7fFSNdwxRkxcR80pG4SoA1qaec1tzbhKxNKDsc3JtmR35I8hfjbRmuz00Ql1wDXJ2l1Cqw4xMnPIea1xRmZUEKIB69gWR3pEGI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770317967;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=TmAPvr3RcS2q8RnP0UGbBBcU9Td/ChW5ZpGtYLIqW4U=;
-	b=TjM3ZvjfdRdwjY9FrfaqhFOkxeU91iO4vmQ+rh4PJHwnfRBcaEQwPoBAEq2YfWZb
-	zlMUvJoXPKnPAy1BdWyh8XVmsVkp5+tm7i6SfEjOdE4CphO8gi7B3BrFp+otEHIyW8Q
-	9Nvcv7y6JfznVoEbjnXPTW92UrtxnIdqn+4UYDm0=
-Received: by mx.zohomail.com with SMTPS id 1770317966012407.96049564945486;
-	Thu, 5 Feb 2026 10:59:26 -0800 (PST)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Cc: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	boris.brezillon@collabora.com,
-	Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH] drm/tyr: Clarify driver/device type names
-Date: Thu,  5 Feb 2026 10:59:06 -0800
-Message-ID: <20260205185906.40940-1-deborah.brouwer@collabora.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="njnq9icf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D38C4CEF7;
+	Thu,  5 Feb 2026 19:05:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770318316;
+	bh=+lGXg9aKGgu5PYXE6zY8ByxlH1ZZ9v8LToFwBmv61P4=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=njnq9icfLpWLGyFLUKKHz/g2QNTILw6j8z+lYIjhL+qZaGzzpZl2YYIjaVrHVDyG5
+	 Cvnb1uBsh91jaUR0XB1eXAJyAt5Qbe1DUqrx4yBaSV0YzGqEjsNO1MulCyas3bH5U2
+	 85h/ZSo2fzv8b0wglNRiB+fB27EKuPWFRolX1Sp8ikXls0XlSrGtQnuptrXT7glIBX
+	 vDLcpbqi/HdZnIt13E5gSs7C+Sk8WSc6h08osKSCUsXYcjlq/E5pcWe2P4z9r1S69W
+	 xmJE+zd4JENgz2YwncaWYqb5xdZpRtKotSnJ56y+vie/r4qUaguz7RcifOzAfBv7PK
+	 YyNbHkn1AqbPA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Feb 2026 20:05:08 +0100
+Message-Id: <DG79GRI3NOLS.3ASMS9RJ80IXM@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 1/4] rust: io: Add big-endian read and write
+ functions
+Cc: "Gary Guo" <gary@garyguo.net>, "Link Mauve" <linkmauve@linkmauve.fr>,
+ <rust-for-linux@vger.kernel.org>, "Madhavan Srinivasan"
+ <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>, "Nicholas
+ Piggin" <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, "Srinivas Kandagatla" <srini@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Ard
+ Biesheuvel" <ardb@kernel.org>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, "Eric Biggers" <ebiggers@google.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Lyude Paul"
+ <lyude@redhat.com>, "Asahi Lina" <lina+kernel@asahilina.net>, "Viresh
+ Kumar" <viresh.kumar@linaro.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
+ <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+ <officialTechflashYT@gmail.com>, "Ash Logan" <ash@heyquark.com>, "Roberto
+ Van Eeden" <rw-r-r-0644@protonmail.com>,
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
+ <20260204040505.8447-2-linkmauve@linkmauve.fr>
+ <DG6A0WRA0JZC.SPDT9WEXF92K@kernel.org>
+ <EC479D9E-ADBF-461C-BEA6-06EA2D4FD8A6@collabora.com>
+ <DG74LUHX3NPX.3BLARQEIFG1DD@garyguo.net>
+ <D6227AA2-A727-4F29-B7CD-BE0AAB0A13F1@collabora.com>
+In-Reply-To: <D6227AA2-A727-4F29-B7CD-BE0AAB0A13F1@collabora.com>
 
-Currently the `TyrDriver` struct implements both `platform::Driver` and
-`drm::Driver`. For clarity, split up these two roles:
- - Introduce `TyrPlatformDeviceData` to implement `platform::Driver`, and
- - Introduce `TyrDrmDriver` to implement `drm::Driver`.
+On Thu Feb 5, 2026 at 6:28 PM CET, Daniel Almeida wrote:
+>> On 5 Feb 2026, at 12:16, Gary Guo <gary@garyguo.net> wrote:
+>> I think we should have everything default to little endian, and have wra=
+pper
+>> types that do big endian which require expicit construction, similar to
+>> RelaxedMmio in Alex's series.
+>
+> Ah yes, the RelaxedMmio pattern is definitely a good one. I agree that we
+> should head in this direction.
 
-Also rename other variables to reflect their roles in the DRM context:
-- Rename `TyrDevice` to `TyrDrmDevice`
-- Rename `TyrData` to `TyrDrmDeviceData`
-- Rename `File` to `TyrDrmFileData`
-- Rename `DrmFile` to `TyrDrmFile`
+I strongly disagree.
 
-No functional changes are intended.
+This is a great pattern for relaxed ordering because:
 
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
-This patch depends on:
-https://lore.kernel.org/rust-for-linux/20260204013331.427210-1-deborah.brouwer@collabora.com/
+  (1) We need both strict and relaxed ordering.
 
- drivers/gpu/drm/tyr/driver.rs | 40 ++++++++++++++++++-----------------
- drivers/gpu/drm/tyr/file.rs   | 17 +++++++--------
- drivers/gpu/drm/tyr/gem.rs    |  9 +++-----
- drivers/gpu/drm/tyr/tyr.rs    |  4 ++--
- 4 files changed, 34 insertions(+), 36 deletions(-)
+  (2) Relaxed ordering is rare, hence it doesn't hurt to write e.g.
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 46b65e004a15..5e51eab48e39 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -30,7 +30,7 @@
- };
- 
- use crate::{
--    file::File,
-+    file::TyrDrmFileData,
-     gem::TyrObject,
-     gpu,
-     gpu::GpuInfo,
-@@ -39,16 +39,18 @@
- 
- pub(crate) type IoMem = kernel::io::mem::IoMem<SZ_2M>;
- 
-+pub(crate) struct TyrDrmDriver;
-+
- /// Convenience type alias for the DRM device type for this driver.
--pub(crate) type TyrDevice = drm::Device<TyrDriver>;
-+pub(crate) type TyrDrmDevice = drm::Device<TyrDrmDriver>;
- 
- #[pin_data(PinnedDrop)]
--pub(crate) struct TyrDriver {
--    _device: ARef<TyrDevice>,
-+pub(crate) struct TyrPlatformDeviceData {
-+    _device: ARef<TyrDrmDevice>,
- }
- 
- #[pin_data(PinnedDrop)]
--pub(crate) struct TyrData {
-+pub(crate) struct TyrDrmDeviceData {
-     pub(crate) pdev: ARef<platform::Device>,
- 
-     #[pin]
-@@ -71,9 +73,9 @@ pub(crate) struct TyrData {
- // that it will be removed in a future patch.
- //
- // SAFETY: This will be removed in a future patch.
--unsafe impl Send for TyrData {}
-+unsafe impl Send for TyrDrmDeviceData {}
- // SAFETY: This will be removed in a future patch.
--unsafe impl Sync for TyrData {}
-+unsafe impl Sync for TyrDrmDeviceData {}
- 
- fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-     regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
-@@ -92,14 +94,14 @@ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
- kernel::of_device_table!(
-     OF_TABLE,
-     MODULE_OF_TABLE,
--    <TyrDriver as platform::Driver>::IdInfo,
-+    <TyrPlatformDeviceData as platform::Driver>::IdInfo,
-     [
-         (of::DeviceId::new(c"rockchip,rk3588-mali"), ()),
-         (of::DeviceId::new(c"arm,mali-valhall-csf"), ())
-     ]
- );
- 
--impl platform::Driver for TyrDriver {
-+impl platform::Driver for TyrPlatformDeviceData {
-     type IdInfo = ();
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
- 
-@@ -129,7 +131,7 @@ fn probe(
- 
-         let platform: ARef<platform::Device> = pdev.into();
- 
--        let data = try_pin_init!(TyrData {
-+        let data = try_pin_init!(TyrDrmDeviceData {
-                 pdev: platform.clone(),
-                 clks <- new_mutex!(Clocks {
-                     core: core_clk,
-@@ -143,10 +145,10 @@ fn probe(
-                 gpu_info,
-         });
- 
--        let tdev: ARef<TyrDevice> = drm::Device::new(pdev.as_ref(), data)?;
--        drm::driver::Registration::new_foreign_owned(&tdev, pdev.as_ref(), 0)?;
-+        let ddev: ARef<TyrDrmDevice> = drm::Device::new(pdev.as_ref(), data)?;
-+        drm::driver::Registration::new_foreign_owned(&ddev, pdev.as_ref(), 0)?;
- 
--        let driver = TyrDriver { _device: tdev };
-+        let driver = TyrPlatformDeviceData { _device: ddev };
- 
-         // We need this to be dev_info!() because dev_dbg!() does not work at
-         // all in Rust for now, and we need to see whether probe succeeded.
-@@ -156,12 +158,12 @@ fn probe(
- }
- 
- #[pinned_drop]
--impl PinnedDrop for TyrDriver {
-+impl PinnedDrop for TyrPlatformDeviceData {
-     fn drop(self: Pin<&mut Self>) {}
- }
- 
- #[pinned_drop]
--impl PinnedDrop for TyrData {
-+impl PinnedDrop for TyrDrmDeviceData {
-     fn drop(self: Pin<&mut Self>) {
-         // TODO: the type-state pattern for Clks will fix this.
-         let clks = self.clks.lock();
-@@ -182,15 +184,15 @@ fn drop(self: Pin<&mut Self>) {
- };
- 
- #[vtable]
--impl drm::Driver for TyrDriver {
--    type Data = TyrData;
--    type File = File;
-+impl drm::Driver for TyrDrmDriver {
-+    type Data = TyrDrmDeviceData;
-+    type File = TyrDrmFileData;
-     type Object = drm::gem::Object<TyrObject>;
- 
-     const INFO: drm::DriverInfo = INFO;
- 
-     kernel::declare_drm_ioctls! {
--        (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, File::dev_query),
-+        (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, TyrDrmFileData::dev_query),
-     }
- }
- 
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 48bff4476d74..ddf0584f1faf 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -8,29 +8,28 @@
- };
- 
- use crate::{
--    driver::TyrDevice,
--    TyrDriver, //
-+    driver::TyrDrmDriver, //
- };
- 
- #[pin_data]
--pub(crate) struct File {}
-+pub(crate) struct TyrDrmFileData {}
- 
- /// Convenience type alias for our DRM `File` type
--pub(crate) type DrmFile = drm::file::File<File>;
-+pub(crate) type TyrDrmFile = drm::file::File<TyrDrmFileData>;
- 
--impl drm::file::DriverFile for File {
--    type Driver = TyrDriver;
-+impl drm::file::DriverFile for TyrDrmFileData {
-+    type Driver = TyrDrmDriver;
- 
-     fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
-         KBox::try_pin_init(try_pin_init!(Self {}), GFP_KERNEL)
-     }
- }
- 
--impl File {
-+impl TyrDrmFileData {
-     pub(crate) fn dev_query(
--        tdev: &TyrDevice,
-+        tdev: &drm::Device<TyrDrmDriver>,
-         devquery: &mut uapi::drm_panthor_dev_query,
--        _file: &DrmFile,
-+        _file: &TyrDrmFile,
-     ) -> Result<u32> {
-         if devquery.pointer == 0 {
-             match devquery.type_ {
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 8f2d23e3c093..514524ae07ef 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -5,19 +5,16 @@
-     prelude::*, //
- };
- 
--use crate::driver::{
--    TyrDevice,
--    TyrDriver, //
--};
-+use crate::driver::TyrDrmDriver;
- 
- /// GEM Object inner driver data
- #[pin_data]
- pub(crate) struct TyrObject {}
- 
- impl gem::DriverObject for TyrObject {
--    type Driver = TyrDriver;
-+    type Driver = TyrDrmDriver;
- 
--    fn new(_dev: &TyrDevice, _size: usize) -> impl PinInit<Self, Error> {
-+    fn new(_dev: &kernel::drm::Device<TyrDrmDriver>, _size: usize) -> impl PinInit<Self, Error> {
-         try_pin_init!(TyrObject {})
-     }
- }
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index 861d1db43072..6eaa2135fe07 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -5,7 +5,7 @@
- //! The name "Tyr" is inspired by Norse mythology, reflecting Arm's tradition of
- //! naming their GPUs after Nordic mythological figures and places.
- 
--use crate::driver::TyrDriver;
-+use crate::driver::TyrPlatformDeviceData;
- 
- mod driver;
- mod file;
-@@ -14,7 +14,7 @@
- mod regs;
- 
- kernel::module_platform_driver! {
--    type: TyrDriver,
-+    type: TyrPlatformDeviceData,
-     name: "tyr",
-     authors: ["The Tyr driver authors"],
-     description: "Arm Mali Tyr DRM driver",
--- 
-2.52.0
+	io.relaxed().write()
 
+  (3) If you by accident just write
+
+	io.write()
+
+      i.e. forget to call relaxed() it s not a bug, nothing bad happens.
+
+Whereas for endianness it is a bad pattern because:
+
+  (1) Devices are either little-endian or big-endian. Hence, having to writ=
+e
+
+	io.big_endian().write()
+
+      is excessive, we always want big-endian for a big-endian device.
+
+  (2) It is error prone, if you forget to call big_endian() first, it is a =
+bug.
+
+  (3) It is unergonomic in combination with relaxed ordering.
+
+	io.big_endian().relaxed().write()
+
+      (Does the other way around work as well? :)
+
+It makes much more sense to define once when we request the I/O memory whet=
+her
+the device is litte-endian or big-endian.
+
+This could be done with different request functions, a const generic or a
+function argument, but it should be done at request time.
