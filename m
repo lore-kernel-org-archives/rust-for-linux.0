@@ -1,129 +1,193 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5924D25B1C7
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 20:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770322545; cv=pass; b=W05qHWjmN57orOxVyxnyDrRhT9IxRoOgxLBFhLRWTPoz5ZVhtKpYuYLFGopqhfBFLVT7PDs7VNPm4WUx/r4yE2X7VmoA4Yk9Y57V8NF1XZlyxSS2Tpb7IeVG92CQOc/AJa39/RKufGwcP/aTc+98+ouCV4jGP0TjQwcS3mAlFnE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770322545; c=relaxed/simple;
-	bh=cvmMOG/Nbs2y01Em99NJUpodsaB5RsOB6Nm2Q6MYBKw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QYbfKDbHr/SDQO10UuiIzG+KSrmbpfSFrHrSiIAg/Fcm1+BKtE6TXFk07/vCWNMPmrIggo6DrAW5ZQcOuomFb6u5VCizO99yC7y1jG7kH7rbrkceAuGpYsAlHZgVia2i2HCqOD4S6T0wi321cmFDLNWsDi9RFXJ8tg3zQNLOpNo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SkRbydmW; arc=pass smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395FF32549A
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 20:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770324444; cv=none; b=oxiotCL6q3SVjp27NqBDyB6GWxmGai2aUjFcePO2/fy802vDYJpfQwVcGUUX+WWfws/hclJqKSXSoQT3n5KdG3N9STz9zyRZ5V+Ot2HAfARw1fjrlHi982usbLdZ3hV/+wsjqIa6TQmyaeW6Bh7hzKRiLopTmVU+Kk1p4hw5kA0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770324444; c=relaxed/simple;
+	bh=Ma0T30di0RA7ur4n05oEk18sOGf6UZh7NzQHEdI9TYg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ABLeIxH8q6JgbZXDwI5SxmRehnIrQB9TMoqmCfhnc3ay+AaGRBnlf583i6nJ18poEfgg/GMHmjdyt4gwk9l2ICUNBQBcWYvdu5Kb4y0TMJfJ2GzeqJuNsxE9sDlEoK1U4IU4FiOGG9W+fJr+g1MAhs3vFjkx7/1bwyqAj8tIoG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aFip8JIJ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SkRbydmW"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b703e04984so168900eec.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 12:15:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770322544; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IZYQcIwtHc+IPbj9nfeXAJ4tpRE5rRsQNIe64Kf5ykErb4hchkAtie47xc6vAT0b0/
-         nCn9ED6iJbcDjGWUJ6L+HvP0FuPV/GAMfQag8DnWTO10m8jQksqb7RjsqYdyEIaVql8i
-         sH8EAavbe6tE8ekD0xYboE8l7IGarPyAi1D1t1o8DeT/wHxb3swfMQ6wlCOMBSntt80J
-         oFcMwpjGoy6DYLhrocsRt1chYZiZYIsaNhGKbMZQqn2rNmrfzDT2+epKWmjpjq9loYhb
-         zopFiIvbWcokiZ98f9bLX4m2MoA2tcin0UPjJc4MWUvpuuGOizQFe+vOENXpZZbIgHI3
-         i3fA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cvmMOG/Nbs2y01Em99NJUpodsaB5RsOB6Nm2Q6MYBKw=;
-        fh=bcfqkSMYVinj1sFChcfRUzMBeFJKMWXYmMlQJ7csF5g=;
-        b=hBAGZs4MUFXE+5VYEKK6kamyam5O1xcfQulTGZ+DOFVEZHGxaUhHDaGMvSvKN0rXpV
-         Xo7+tgzuqIVOKUGkI3Ddg541QRVacXfU/2sENzSlEY2IF/khuOlHxhT34mYT++PRW4lz
-         DB+3L6muq68EQHQyQumxhwEsZNhOVeSDhcOMbIu6U+H6AxVl2ygADQkEIMwWZ1I5vmjx
-         0TTq/RPdIZiVHEpVF+y1fBOW9QVJhrP5EbZOUOwTUEhZECF1xkP0sfJ2D/oj6Cv8d1kk
-         qyNO9dQdgCD+63GGIpYo0rUCkOMD52bqWbucq1GCaU4B+JP5Qp7oDpLJMiI7IkGTycl8
-         1S0w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770322544; x=1770927344; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cvmMOG/Nbs2y01Em99NJUpodsaB5RsOB6Nm2Q6MYBKw=;
-        b=SkRbydmWc40sUZraebaYWCGOsX7MAxsD/UVl1MSQbXWJ78XVD0xmQYTgGf8ixXUGz6
-         uJcAnntvcAil3yZ9kfyEPQPrHsViLBpiwkp3T1nwWPKkWoua1sGxQp7MvEckBW94VTyN
-         qGO/FjxlrmrxWPy62tZnu7W7c3AtXJ/Fbd77pToG1TFNRDiRuJceHpraT3Lozv9MIHgG
-         Azv+/X5vTMn52uIQLKITWNMNdILpAkLpHVAeMOFmh3ZM55S2rzlkzZo/chUv5+HG+Dy7
-         wTrOK4zjuxg3eOM0uVp3HnCVt+cbmFy/FqLU39ewN2lqb8wKU00n4Uotv7raVp8suw/Y
-         FSSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770322544; x=1770927344;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cvmMOG/Nbs2y01Em99NJUpodsaB5RsOB6Nm2Q6MYBKw=;
-        b=fXRE2VgbtZriZGzpoxbF20cGOKAXylWTcrcIaCY9RIFHAbedtcK1yskv7XW5Aj6QlW
-         qApJIT55WC5bBj/hw+chPCr/0zXfZCodxJO0f6vuBx1JfG7k/i3WpBNJuQGmjIuiZlTG
-         YyMOsxNk3t428QonSZEyklGTthjTXrqm9UAGh9qjDkIMcHMX6POVDae3WGpvrCdMHJAM
-         Ed9ifoQ/28wW0iSfEHCljprRKWU7o/SsgPlXM3tcFENLshhbTWmHXpXb84Ka+9493NFi
-         xg4eN5tDuNc+xjP3Z/VnFhttvU0rWp86TVvdKe/EgA/aX1ZGyN1jwlYWK2og7dXbIX0l
-         MqYw==
-X-Forwarded-Encrypted: i=1; AJvYcCXxpFviKfhRFoh2wOOXIlxdsrshYyHDXi2Fc2BZ06sOTj2CM+YqrxjW/piCWwnCyg5daOQglPzLm1g7+LdjnA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnDcp20vGAmU8oHegoejID+8VC8YWtxiSlmD2wdHRmr0Z98dDM
-	H8uWFdJFfQuV0kNR1gaVLUDhjVF8/we11KLC3ijK8ZW7BTKbCykNAGhFw+dgc0D5F2WGfObjYKS
-	4D1Ps9DK9G5lyz2CxaXxNA0vXnLcQqMY=
-X-Gm-Gg: AZuq6aLPingP3V3O/hPRe17dlp09cx64st+j0MWqnjIC5d350BujgfGMdx7O3VxhjKp
-	ABef+tiBrW4tE0gnf0XRl/vCM1WU1aXglgyu+CLNUQaR/U23J1RZAin+9H/lHh/MTQpO6dpYt2m
-	+FewMC+0UavIyGwNq/f0p5AHc9zSorEClOB8gWiAHEb2+TbkAzrgByWfGziP+yh3Ki7os3noFQK
-	1ie6GZ0fEKeFuyPTyZRVIR2uGmnrYUkvuvcCjktwaZGl2WcW7NwcRgijhxz3YLeetZy72o3vnHT
-	BAVTo2M/HVhOH1Thxmb74K8GgqxHzXlW5liD5hW2ckCRB8ybiFaEyzXF1lHCcDT2tTDqtogCgPO
-	alfoZlWXb9tmYWqkd9PMU4PE=
-X-Received: by 2002:a05:7301:290a:b0:2b7:1008:9f2e with SMTP id
- 5a478bee46e88-2b8565170b8mr67598eec.7.1770322544408; Thu, 05 Feb 2026
- 12:15:44 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aFip8JIJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770324443;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eTBHCHOjQvnz3/U27BfpDFLcEjs+UPKBR+ZNiBo6LKg=;
+	b=aFip8JIJ6UNxlVb0s2V/XmSbXEWSqD9F26fCuMUxJLJ2ZyMMHEPZ7hGF9Ft8+l5MJgZmWK
+	Hk7HjtQZLCEDQjKqF3OuwVaxsiInHDziHCi4Q1UNwoFyRs0gHtumnXxaV9JkHzjzFu8KW6
+	upnXJoESuldHo3lDSDm8LjMMiXBlsdU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553--27iCD0hOlaIl_IvQKDQpg-1; Thu,
+ 05 Feb 2026 15:47:17 -0500
+X-MC-Unique: -27iCD0hOlaIl_IvQKDQpg-1
+X-Mimecast-MFC-AGG-ID: -27iCD0hOlaIl_IvQKDQpg_1770324435
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0A2341956094;
+	Thu,  5 Feb 2026 20:47:15 +0000 (UTC)
+Received: from GoldenWind.lan (unknown [10.22.82.65])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1B21219560A7;
+	Thu,  5 Feb 2026 20:47:10 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH v18 0/5] SpinLockIrq for rust
+Date: Thu,  5 Feb 2026 15:44:26 -0500
+Message-ID: <20260205204709.528234-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260204210125.613350-1-mkchauras@gmail.com> <20260204210125.613350-4-mkchauras@gmail.com>
- <aYSgjPD5KRcNN0j4@luna> <1ed12a72-06e4-461b-907e-2581e25e3e38@linux.ibm.com>
- <aYS2oWCE0ZCC3don@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <CANiq72mi-V_SF+JErMJu1wZEd27HPHqhsxE8dELtd5e3ZEaA4w@mail.gmail.com> <20260205200222.GA1298159@ax162>
-In-Reply-To: <20260205200222.GA1298159@ax162>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 5 Feb 2026 21:15:32 +0100
-X-Gm-Features: AZwV_QgYb-zr50IKZRngiPF2__DedHoXx9O8lOBxwz2l3ih7SO-AZRhJAl3SJvE
-Message-ID: <CANiq72mqVNGJSFAm2UhjXRV=5cWQ1Z4xN2aVeYQ5Tn-veym3+g@mail.gmail.com>
-Subject: Re: [PATCH V2 3/3] powerpc: Enable Rust for ppc64le
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Jubilee Young <workingjubilee@gmail.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, 
-	Link Mauve <linkmauve@linkmauve.fr>, ojeda@kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, chleroy@kernel.org, peterz@infradead.org, 
-	jpoimboe@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	clang-built-linux <llvm@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: GwVy1OeVID868vAv3dsjm71K6oA137qY4p3jsjYRTuY_1770324435
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 5, 2026 at 9:02=E2=80=AFPM Nathan Chancellor <nathan@kernel.org=
-> wrote:
->
-> Thanks for the CC, I had not seen that issue. LLVM 22 is currently in
-> the -rc phase and I see that the fix has been merged into the
-> release/22.x branch as of yesterday so it should be in LLVM 21.1.0-rc3
-> when it get released on February 10. LLVM 21.1.8 was the last release of
-> the 21.x series (hard to keep up with all the numbers...) and it sounds
-> like this is only a regression from the LLVM 22 development cycle.
+This is the latest patch series for adding rust bindings for controlling
+local processor interrupts, adding support for spinlocks in rust that
+are acquired with local processor interrupts disabled, and implementing
+local interrupt controls through refcounting in the kernel.
 
-Yeah, sorry, mixed up 21.1.9 with the potential 22.1.9 in summer this year,=
- bah!
+The previous version of this patch series can be found here:
 
-Fixed my comment in the issue to avoid confusion.
+  https://lore.kernel.org/all/20260121223933.1568682-1-lyude@redhat.com/
 
-Thanks!
+This patch series applies on top of boqun's rust-sync branch:
 
-Cheers,
-Miguel
+  https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/?h=rust-sync
+
+Now that we've gotten the C-side of these changes in, this patch series
+is now exclusively concerned with the rust side of these changes. For
+more information on how we came to the design for the C side of the API,
+see the explanation in the previous version of the patch series.
+
+Boqun Feng (1):
+  rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+
+Lyude Paul (4):
+  rust: Introduce interrupt module
+  rust: sync: use super::* in spinlock.rs
+  rust: sync: Add SpinLockIrq
+  rust: sync: Introduce SpinLockIrq::lock_with() and friends
+
+			    FULL CHANGELOG:
+
+Series-wide:
+  V15:
+    * Added a patch for fixing build erors introduced on OpenRISC
+  V17:
+    * Squash:
+      - "rust: sync: Introduce lock::Backend::Context"
+      - "rust: sync: lock: Add `Backend::BackendInContext`"
+      With BackendWithContext being a separate trait, it no longer makes
+      sense for these patches to be separate.
+  V18:
+    * Add "rust: sync: use super::* in spinlock.rs"
+
+Patch-specific:
+  * rust: Introduce interrupt module
+    V10:
+      * Fix documentation typos
+    V11:
+      * Get rid of unneeded `use bindings;`
+      * Move ASSUME_DISABLED into assume_disabled()
+      * Confirm using lockdep_assert_irqs_disabled() that local interrupts are
+        in fact disabled when LocalInterruptDisabled::assume_disabled() is called.
+  * rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+    V18:
+      * Add missing __rust_helper annotations
+  * rust: sync: Add SpinLockIrq
+    V10:
+      * Also add support to GlobalLock
+      * Documentation fixes from Dirk
+    V11:
+      * Add unit test requested by Daniel Almeida
+    V14:
+      * Improve rustdoc for SpinLockIrqBackend
+    V18:
+      * Add missing __rust_helper annotations
+  * rust: sync: Introduce SpinLockIrq::lock_with() and friends
+    V10:
+      * Fix typos - Dirk
+    V17:
+      * Introduce `BackendWithContext`, move context-related bits into there and
+        out of `Backend`.
+      * Add missing #[must_use = …] for try_lock_with()
+      * Remove all unsafe code from lock_with() and try_lock_with():
+        Somehow I never noticed that literally none of the unsafe code in these
+        two functions is needed with as_lock_in_context()...
+    V18:
+      * Drop the traits, just implement this on SpinLockIrq
+  * rust: sync: Expose lock::Backend
+    V10:
+      * Fix typos - Dirk/Lyude
+      * Since we're adding support for context locks to GlobalLock as well, let's
+        also make sure to cover try_lock while we're at it and add try_lock_with
+      * Add a private function as_lock_in_context() for handling casting from a
+        Lock<T, B> to Lock<T, B::BackendInContext> so we don't have to duplicate
+        safety comments
+    V11:
+      * Fix clippy::ref_as_ptr error in Lock::as_lock_in_context()
+    V14:
+      * Add benchmark results, rewrite commit message
+  * rust: sync: lock/global: Rename B to G in trait bounds
+  * rust: sync: Add a lifetime parameter to lock::global::GlobalGuard
+  * rust: sync: lock/global: Add Backend parameter to GlobalGuard
+    V17:
+      * Add default parameter for generic `B` to `GlobalGuard`
+  * rust: sync: lock/global: Add ContextualBackend support to GlobalLock
+  * locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+    V10:
+      * Add PREEMPT_RT build fix from Guangbo Cui
+
+ rust/helpers/helpers.c            |   1 +
+ rust/helpers/interrupt.c          |  18 ++
+ rust/helpers/spinlock.c           |  15 ++
+ rust/helpers/sync.c               |   5 +
+ rust/kernel/interrupt.rs          |  86 ++++++++
+ rust/kernel/lib.rs                |   1 +
+ rust/kernel/sync.rs               |   4 +-
+ rust/kernel/sync/lock/global.rs   |   3 +
+ rust/kernel/sync/lock/spinlock.rs | 313 +++++++++++++++++++++++++++++-
+ 9 files changed, 440 insertions(+), 6 deletions(-)
+ create mode 100644 rust/helpers/interrupt.c
+ create mode 100644 rust/kernel/interrupt.rs
+
+
+
+base-commit: de718b2ca866e10e2a26c259ab0493a5af411879
+-- 
+2.53.0
+
