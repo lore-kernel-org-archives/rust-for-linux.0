@@ -1,172 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA33334C35
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 22:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5BB331A41;
+	Thu,  5 Feb 2026 22:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770329264; cv=none; b=A1XtP5gz0Mqqa+LXS/TaeuVLugfVoaOAUnbB9arcJV0T6UblQ3Pz3GkOd6l0kmm98n8iWPM7Fcbey6YX21ZvUKa0UVWHiEhWKIG3wUveCMKRQjKncbujoLbHOoqP++Avs7PyqEK8bfs9qtFk/8TbcNjYjmlazrbEXvGXtHrLjiA=
+	t=1770329478; cv=none; b=gs4Pf4H2ZlZfbnG8xKF8OilcFGpJn0uKhETMm6nm57cAr1Tw054Ndv9YM8rTxVwekIwgsk4w5Ya2hpWTWgM8LNaoLrn8BJK036CN6iRvksrZ1mo/af6xl+E5egYSkuNw5IHDyL4ypfdCVrP2LIAk9j+HitR0Q8Q+QjxKMerrAtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770329264; c=relaxed/simple;
-	bh=hlT4wa+bnKQ92ZzrPZUb/vbH+3YiWNNzj8TtOrlZTSg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K6CfO7ZQdZNy6f9vhojRhUYXKYVJthHE68MZfJ9um7lLGZJoJVhbHC7PylMm3LB1icGaCQ7J5HMhujHC9egeZtId68O0FoWdi8wrULdVpgDrQor1hh8z2zxC2wPdhFGBeHREOmNq13ZgHBVtVRRXKEpi3O+FcXzYhKvoSQ/fWSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4vkRFE2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770329478; c=relaxed/simple;
+	bh=O5BY+2fDILkckJlYVL7ebFJsmdn+yduZ1kv/oO3M2gg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=lbyh2Ave/Zenaam1eCAdhHyy1/smYSbZ1OMmlM4hAXo9/FdHtVwlsD9AlrOLxR5MzqPViinwWiU6sjdTacQ/p+EMkIW97R/ICjRyWdh6bNnK78f7YCfuZ3BgddY4DjhluqauYPO4Jo1t3vMZ8S1qK6iw6FwrmHPargKOcprP4CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MCAmsHXW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4vkRFE2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CE5C4AF0C;
-	Thu,  5 Feb 2026 22:07:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MCAmsHXW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2902C4CEF7;
+	Thu,  5 Feb 2026 22:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770329264;
-	bh=hlT4wa+bnKQ92ZzrPZUb/vbH+3YiWNNzj8TtOrlZTSg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k4vkRFE2N0Hn/8xgUWbVQWtFg65+XdZfMSod0Ks0QQXYM4pj5kI4DtKn1RnQp9QDK
-	 GzSFyYuua8b6rjQNqJwLpU0YaFnkVT+EBjBT+/yiFWoPnuYfvOtY9VM816/Gna4w0V
-	 82tVDxedWmDpkMqXbI13VqjejngNSlNNogKF22B8QkY2dra5pANX3lwwJF29A05san
-	 RtuHfgCgGSQJum8s1/9LKd5dlOjjlEfOMWts90moknyhU0hMF/mpZ6GqkgQU8zLmvp
-	 yZMZccdmSbuJe7c6ueTyHQP9Tz5c8HnLHOd3HkjSlEdPXO1sKAO3p2dKXDL6vDPPh6
-	 6hSbciSqgJfNA==
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8B328F40070;
-	Thu,  5 Feb 2026 17:07:42 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Thu, 05 Feb 2026 17:07:42 -0500
-X-ME-Sender: <xms:rhSFadC7rz-1jNLKtnerfddreiGapHfgbVrqUTPQz1GXfdgWZszYFg>
-    <xme:rhSFac2IISI7ot7y-UQLHxhvmLrt3BTzWVZKmDcymDVPV7Y5y-oQzT7AjynG9e00n
-    rjpRp__QfihCT8ipftzE2lHToJY0wtVbBCXyvHO2qrwBPr9BtQhKJY>
-X-ME-Received: <xmr:rhSFadNxWidRhdmBRumowIPGmcgRti7kMfeCWjQ8U5FHonUxv9vTeW9X4Ispp-BLPfGd_D72R6Y_i_-R6o5t_F0Pdu9CtbqB>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeeigeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
-    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
-    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
-    hnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgv
-    thgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhihuhguvgesrhgvug
-    hhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdr
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrh
-    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidr
-    uggvpdhrtghpthhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpth
-    htohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsghorhgrrdgtohhmpdhrtghp
-    thhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrg
-    ihnhhorhesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:rhSFaaewBZdDJJeU49jkjnph8uyfaCCjsjFgt_uKXSdLkiNjZEiL5A>
-    <xmx:rhSFaZPeO1wbN-y8F6D1jm0m90WuiEBS_GXaEo11mMTsomHXEn4KNg>
-    <xmx:rhSFacadZtRvkQYsSFY-fdMcxdLZ8wKqJmqgI1HSuRklrlnX9h81rw>
-    <xmx:rhSFadtUt5yeItjw7-Ltn-PVgES0IapBMPHXer_vEv5JXnkCZZXeHg>
-    <xmx:rhSFaTo6aKrYBCCR2SYt6zKtbT3oIsFiSqC8QE5U2LbokJzzzR_TQWgv>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Feb 2026 17:07:41 -0500 (EST)
-Date: Thu, 5 Feb 2026 14:07:40 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: Re: [PATCH v17 02/16] preempt: Track NMI nesting to separate per-CPU
- counter
-Message-ID: <aYUUrHQliNIoe9eQ@tardis.local>
-References: <20260121223933.1568682-1-lyude@redhat.com>
- <20260121223933.1568682-3-lyude@redhat.com>
- <20260203121520.GN1282955@noisy.programming.kicks-ass.net>
- <20260204111234.GA3031506@noisy.programming.kicks-ass.net>
+	s=k20201202; t=1770329477;
+	bh=O5BY+2fDILkckJlYVL7ebFJsmdn+yduZ1kv/oO3M2gg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=MCAmsHXWoe5lR7RQu5P7UuEF5LB4RL62vE8gYbxpJPQjDzDoQvBtdR32cgmoJsfnJ
+	 gLKSLOfOD05Nl6Mr8bzfzLluch5Hu5AT5mdWx20t+VNJcmS7y7tgUB3xXDnouLSJV0
+	 OnmoHVqGCsihSWk7yoCrNbFclQJOKBKKqjpgj24IE2NS6ZyA4XIc9WwR4L6OJ+sMI4
+	 ZXOurYAlggozL3rJV4lk5ab/uIp9J+6l669Rs1ZlKX+yCBpXWWFPeZJsqyny93UZZM
+	 h+95OKv/zdiaJlVm7yarudSITILz/eFpeJ8Vg2sXOVSl/m6ueuipHrD/Tx8AFH34fc
+	 Zs5X8QQHe6UEg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260204111234.GA3031506@noisy.programming.kicks-ass.net>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Feb 2026 23:11:10 +0100
+Message-Id: <DG7DF76OVGTS.WMT6W8XPG4LK@kernel.org>
+Subject: Re: [PATCH v2 1/4] rust: io: Add big-endian read and write
+ functions
+Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Gary Guo"
+ <gary@garyguo.net>, <rust-for-linux@vger.kernel.org>, "Madhavan Srinivasan"
+ <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>, "Nicholas
+ Piggin" <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, "Srinivas Kandagatla" <srini@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Ard
+ Biesheuvel" <ardb@kernel.org>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, "Eric Biggers" <ebiggers@google.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Lyude Paul"
+ <lyude@redhat.com>, "Asahi Lina" <lina+kernel@asahilina.net>, "Viresh
+ Kumar" <viresh.kumar@linaro.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
+ <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+ <officialTechflashYT@gmail.com>, "Ash Logan" <ash@heyquark.com>, "Roberto
+ Van Eeden" <rw-r-r-0644@protonmail.com>,
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+To: "Link Mauve" <linkmauve@linkmauve.fr>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
+ <20260204040505.8447-2-linkmauve@linkmauve.fr>
+ <DG6A0WRA0JZC.SPDT9WEXF92K@kernel.org>
+ <EC479D9E-ADBF-461C-BEA6-06EA2D4FD8A6@collabora.com>
+ <DG74LUHX3NPX.3BLARQEIFG1DD@garyguo.net>
+ <D6227AA2-A727-4F29-B7CD-BE0AAB0A13F1@collabora.com>
+ <DG79GRI3NOLS.3ASMS9RJ80IXM@kernel.org> <aYUJuF8bI7mwD4ON@luna>
+In-Reply-To: <aYUJuF8bI7mwD4ON@luna>
 
-On Wed, Feb 04, 2026 at 12:12:34PM +0100, Peter Zijlstra wrote:
-[...]
->  DEFINE_PER_CPU_CACHE_HOT(unsigned long, cpu_current_top_of_stack) = TOP_OF_INIT_STACK;
-> diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
-> index d57cab4d4c06..77defd9624bf 100644
-> --- a/include/linux/hardirq.h
-> +++ b/include/linux/hardirq.h
-> @@ -108,15 +108,14 @@ void irq_exit_rcu(void);
->  	do {							\
->  		lockdep_off();					\
->  		arch_nmi_enter();				\
-> -		BUG_ON(in_nmi() == NMI_MASK);			\
-> -		__preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);	\
-> +		__preempt_count_nmi_enter();			\
->  	} while (0)
->  
->  #define nmi_enter()						\
->  	do {							\
->  		__nmi_enter();					\
->  		lockdep_hardirq_enter();			\
-> -		ct_nmi_enter();				\
-> +		ct_nmi_enter();					\
->  		instrumentation_begin();			\
->  		ftrace_nmi_enter();				\
->  		instrumentation_end();				\
-> @@ -125,7 +124,7 @@ void irq_exit_rcu(void);
->  #define __nmi_exit()						\
->  	do {							\
->  		BUG_ON(!in_nmi());				\
-> -		__preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);	\
-> +		__preempt_count_nmi_exit();			\
->  		arch_nmi_exit();				\
->  		lockdep_on();					\
->  	} while (0)
-> diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-> index d964f965c8ff..7617ca97f442 100644
-> --- a/include/linux/preempt.h
-> +++ b/include/linux/preempt.h
-[...]
-> @@ -132,6 +145,27 @@ static __always_inline unsigned char interrupt_context_level(void)
->  # define in_task()		(!(preempt_count() & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET)))
->  #endif
->  
-> +#ifndef CONFIG_PREEMPT_LONG
-> +DECLARE_PER_CPU(unsigned int, nmi_nesting);
-> +
-> +#define __preempt_count_nmi_enter()				\
-> +	do {							\
-> +		unsigned int _o = NMI_MASK + HARDIRQ_OFFSET;	\
-> +		__this_cpu_inc(nmi_nesting);			\
-> +		_o -= (preempt_count() & NMI_MASK);		\
-> +		__preempt_count_add(_o);			\
-> +	} while (0)
-> +
-> +#define __preempt_count_nmi_exit()				\
-> +	do {							\
-> +		unsigned int _o = HARDIRQ_OFFSET;		\
-> +		if (!__this_cpu_dec_return(nmi_nesting))	\
-> +			_o += NMI_MASK;				\
-> +		__preempt_count_sub(_o);			\
-> +	} while (0)
-> +
-> +#endif
-> +
+(Cc: Rob, Saravana)
 
-We need to move it into include/linux/hardirq.h because percpu is not
-included in <linux/preempt.h>.
+On Thu Feb 5, 2026 at 10:20 PM CET, Link Mauve wrote:
+> On Thu, Feb 05, 2026 at 08:05:08PM +0100, Danilo Krummrich wrote:
+>> On Thu Feb 5, 2026 at 6:28 PM CET, Daniel Almeida wrote:
+>> >> On 5 Feb 2026, at 12:16, Gary Guo <gary@garyguo.net> wrote:
+>> >> I think we should have everything default to little endian, and have =
+wrapper
+>> >> types that do big endian which require expicit construction, similar =
+to
+>> >> RelaxedMmio in Alex's series.
+>> >
+>> > Ah yes, the RelaxedMmio pattern is definitely a good one. I agree that=
+ we
+>> > should head in this direction.
+>>=20
+>> I strongly disagree.
+>>=20
+>> This is a great pattern for relaxed ordering because:
+>>=20
+>>   (1) We need both strict and relaxed ordering.
+>>=20
+>>   (2) Relaxed ordering is rare, hence it doesn't hurt to write e.g.
+>>=20
+>> 	io.relaxed().write()
+>>=20
+>>   (3) If you by accident just write
+>>=20
+>> 	io.write()
+>>=20
+>>       i.e. forget to call relaxed() it s not a bug, nothing bad happens.
+>>=20
+>> Whereas for endianness it is a bad pattern because:
+>>=20
+>>   (1) Devices are either little-endian or big-endian. Hence, having to w=
+rite
+>>=20
+>> 	io.big_endian().write()
+>>=20
+>>       is excessive, we always want big-endian for a big-endian device.
+>>=20
+>>   (2) It is error prone, if you forget to call big_endian() first, it is=
+ a bug.
+>>=20
+>>   (3) It is unergonomic in combination with relaxed ordering.
+>>=20
+>> 	io.big_endian().relaxed().write()
+>>=20
+>>       (Does the other way around work as well? :)
+>>=20
+>> It makes much more sense to define once when we request the I/O memory w=
+hether
+>> the device is litte-endian or big-endian.
+>>=20
+>> This could be done with different request functions, a const generic or =
+a
+>> function argument, but it should be done at request time.
+>
+> Could this ever be done in the device tree?  I understand this would
+> mean having to change all drivers and all device trees that do big
+> endian, but it seems to be the natural location for this information.  I
+> have no idea how to structure that though.
 
-Regards,
-Boqun
-
->  /*
->   * The following macros are deprecated and should not be used in new code:
->   * in_softirq()   - We have BH disabled, or are processing softirqs
+I think that's a good idea, for newly supported devices we could probably d=
+o
+that. For existing ones that might not work. IIRC, there is an expectation =
+that
+driver should still work with older device trees.
