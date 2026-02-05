@@ -1,79 +1,79 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2258E32FA17
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 21:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC5F335063
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 21:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770325238; cv=none; b=q2csQzBd521swdeVfJRlSqGcwDGuXgEru4+MpsZb2Xv+qX9OjKRGNWF9YfOabUz2ekBFFYIv85DXdf4GAFeF2Ai+UOrsr3LG31pNyZEipYed4tzRfplPdtHK2DEQNcgaFSCxOetxEFcp3cRF9/LA5OCE+q/dByioyO92Ha8kL2w=
+	t=1770325241; cv=none; b=bFi2AD9KJ3Nm409RNYNCznM2B9TYRQkus7dM/C5qJkFaTNvFSmVragXVcP0tXuf+zNXa1t/IigeTELbk4Z+YOhnkJ7g5/UvUXNjZkUNK+XnYTuT8QF+o1+OpYI8lblKhuHLbs9ZcnR1b8WEDHfplIkYO0qDUc5D5oytCSzFyRxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770325238; c=relaxed/simple;
-	bh=0n3HUB5a0dbq5Vp3zcn3fKughLCja0FW1cbYz+y6V0c=;
+	s=arc-20240116; t=1770325241; c=relaxed/simple;
+	bh=zYEg72eTegIm4aBsUkMl8q2KG4rMnFZIPR9seQA5Ej8=;
 	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
-	 To:Cc:Content-Type; b=rE5v6FD6UnRWCexdWwh5slQJ9H6rzrE6gksQmGCNbZy7y+5Cw2fiQVidDoSqf8lH6KdoLBMi2xGWJm5+WxQboclsGQ0ivuZZKFx0yB16G2gjjtGT6WX84nNYckFI/acstlTeCW+XY9IWnPtVLkGwKuSd0NCtvFG6vvnj9ixMjxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S5Bnq9Zw; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=OAJuHCQ7+UXHZvFt1bKFy4jPbywQfsKgl+y1MvdGFFzTzQQ8caeVqzPiWhY/7+p8XyBvg10DFLHK98otpKmxF4O7rBhboAwdkPPypqMy09L3b8gqWKYKw4Wngh3VWPN4gkfShQ+qbEQ4+x2+37CC6XdIE0BnD2cokf0LdD/Su0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gfvdjlNX; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S5Bnq9Zw"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gfvdjlNX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770325237;
+	s=mimecast20190719; t=1770325240;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2gGPFCPOPX/fBbf5qQfZiwEzewT+3Ulk7LVkRWF8dEo=;
-	b=S5Bnq9ZwrCaHAWjhsveZG8+FeBF8WPKG05djIc2YY5sjWU6PJ0DHkEWWaVjkacvJCpynza
-	colUDhZgNV1Sk5epkD4tZQYrlGbgMatF1pFQHGAiwfNxm3ZFpsGLxkHFkuj/Bnsg5vyW12
-	s01Crg7fOXDOmkXzS14aVhhxR3PUFtM=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=iChE2sHYyL+SE0NwtrGJ4SsAVC7actOKSXH6xK1kyOw=;
+	b=gfvdjlNXLyYqwvQ1GxBILsJ26obKSZldv+dBuFw6geYhbv6zplUKvhNNEpliTsKM4RpOch
+	1m0BiK0GIvbod7GMQ6VjW4ckC1joBtoI8ask6nH0ZCUm3VqPm00jkWKxNlxcCgsWomAnrB
+	rgImUSTvSnEqPlIahgl6UzncAZ7G9Js=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-500-hBHPqXMsO-6W121YNHkkVg-1; Thu, 05 Feb 2026 16:00:36 -0500
-X-MC-Unique: hBHPqXMsO-6W121YNHkkVg-1
-X-Mimecast-MFC-AGG-ID: hBHPqXMsO-6W121YNHkkVg_1770325236
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c7166a4643so399889685a.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 13:00:36 -0800 (PST)
+ us-mta-301-aiBD_23XM9qwE-CbcNRiXw-1; Thu, 05 Feb 2026 16:00:38 -0500
+X-MC-Unique: aiBD_23XM9qwE-CbcNRiXw-1
+X-Mimecast-MFC-AGG-ID: aiBD_23XM9qwE-CbcNRiXw_1770325238
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8c6ae763d03so172540185a.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 13:00:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770325236; x=1770930036;
+        d=1e100.net; s=20230601; t=1770325238; x=1770930038;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=2gGPFCPOPX/fBbf5qQfZiwEzewT+3Ulk7LVkRWF8dEo=;
-        b=r/odKlcmADe0osTzVgyDDlbVjgQEVnlN5zwjkcD5fbIRYxaQTkHE4f4tYm6p5YY/bx
-         9qKRcac21heTF5M261/Tq7AgGIsEC5VCrwd8+ZxOehK/zaOvZtGXKkQK+MVzxDiPqi/5
-         PFQAcLg4rxUHyqf9b1MXaiL36kWqSH9lxPumSiJwsZGZBzDET7VVDifOhRt2tnbY0VVM
-         a8k3qBr9F1M1LIiq4xpiIiAhRKHRmESyqsg3i7ORSz+iKajuAZichlX6ias+eE/uupiF
-         neS69AFjYy83nvw1vDzb4nVXfJIjp1JN38T0arJvVuoqicD2+Djc715x05uCQurGx5bi
-         Nc7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXvi9OvNBHZyTrL98SaWFuvMwOKphc+IUHBTvvtq76LzVbIAwvs1fIapiDTLDnUdtPGFNp1GrnnH8DGxmFmoA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzbQwv0kIpW3W3czMj64SqnierVrAmcJ03ZRAkPErBIizVrcHA
-	GfGG5AezDJGldVPrVQxsVdVWoqCfG9XjUzz3Y24EGFfATJbJ68RfI80a4LS34FNbt2rXD2IFhrP
-	6xPYN106OuD4oSivt7LVTXRI/QCC8cV+3lWhtPG5jKTujoHK0Ld7dE4UxGLwu5taZNPhQ
-X-Gm-Gg: AZuq6aJrX7UqyIca+Hg/SXrskCE2DuxLm8Ah1mP97Tk/4ZMqgN6CEsMaWU5BME8d/Ck
-	CmKp3sBVYZfAlMTWsp/k4B9TrE8XQooBPH7t4CFNZlZfnVH3V2ZmsIT9EcWBCaMaJ+UTO5aGZEJ
-	R9VHdUECTjyGsi0zFrAKFM0XqSTFuIrWgXvSyAprE5Asv9QiVBMEPPh9yJKd1z9E9lh0zunGaUL
-	acc9DPpIdPqf+x9E6yf5hZB8Zo+slcl4yyE2UAq/GuLHjXTydgxfUZtDfhov8uZpkMcekNSW06W
-	S8j/dpTEz0uguV+dunIgAL7GJC6DavQ4NTozjkbjjCHCnVEGkMRgvXCzx17uUxQD/B/qHszI5in
-	C6vdIN2Qbs7ykthM=
-X-Received: by 2002:a05:620a:1a04:b0:8ca:4438:b8f4 with SMTP id af79cd13be357-8caf13fedb3mr61791285a.67.1770325235658;
-        Thu, 05 Feb 2026 13:00:35 -0800 (PST)
-X-Received: by 2002:a05:620a:1a04:b0:8ca:4438:b8f4 with SMTP id af79cd13be357-8caf13fedb3mr61780085a.67.1770325234922;
-        Thu, 05 Feb 2026 13:00:34 -0800 (PST)
+        bh=iChE2sHYyL+SE0NwtrGJ4SsAVC7actOKSXH6xK1kyOw=;
+        b=lbzAtcgqJrtliJ/HhPhM6YTrMzZMDzt/DBk9sItOdn/hmfBmVY5g4gH5GQJw1cz/lX
+         x/YgiUoaRq6olF510CTPXTQfnW6S16xtJeXCogmkTWzfAz2rUO8LaV94ZZttvCQA/B3A
+         Zz+5TwX17VVNtdZ7WQmSdqOEu3w6DyeIEbQ0kgLej5S66WY29OtBmkvW7Flg+LBrWmuj
+         vbxHTCca38yWtwwBQ6ujsvMZpNiOipA1pDiH8XdDwEw8UX/mN6TVG4bfssRGm8k9lTmg
+         1TEF+t7eQ4jevZuxArJYkkVsoKb+BcbfLj6jyTQ4UpK39HJ0YRt6YIdWGKz0UlDtEL6O
+         X/YA==
+X-Forwarded-Encrypted: i=1; AJvYcCXkPiPYFlFd3kwiaxN5bqfUzTrnP4CBUqOc9TvXWtannWsF0HTn78iajBLaYX3ofDFqq3FXy5pjPS58S8DELA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2sek5QqJL98vFadYwPHKtKAPkojauNnbx2z/BoXnwPMPI+At2
+	sRTcryHDml73VFryLnRLCMGMnZF99ExEIX8j67WgR9+7qha67aOa769XTDuss3feKbWqJ3mjU7n
+	30LrGDpSHKhtQ+AkRCgzzdpZbFQ/DmpQX9NvjiB/Ee3aUDlG/QrIugOuxwi0YKeYCzFBI
+X-Gm-Gg: AZuq6aI4egq9sbMej1j0gaAA5GKLQpOir/kze3buyX5iau7CmQClHboGWdBgMu1+rMj
+	on1tb9ybBPDe8EEikyVTGtOeFqFW43lojNFgKcieHcUX7VimwyfJu4KeaoyoWcjE4RVc1L1AN8r
+	taguy9JYDGppm3843VGppTbAPVfqB+1AWBzxrkP1WAINWba4Ayh3yUot1gqLeXWthI6kst55mIE
+	RNot5TT60wzhEk+y4LRdkJ/n30wEZp86qNuXoKKr+6bzagSNYiGF1a3ATmEH5jdEVcbEUu606l9
+	rfm1ewWWro9jXqSKK+vSm/jCn7MCSIRI78wQthqVthrdB2tjaMh97sLnjG+y09ARbQ2jYUWFmKV
+	TufVqbWMhhCkJYlQ=
+X-Received: by 2002:a05:620a:44cf:b0:8c5:3067:903c with SMTP id af79cd13be357-8caeeb50f3emr72339285a.11.1770325237576;
+        Thu, 05 Feb 2026 13:00:37 -0800 (PST)
+X-Received: by 2002:a05:620a:44cf:b0:8c5:3067:903c with SMTP id af79cd13be357-8caeeb50f3emr72328985a.11.1770325236916;
+        Thu, 05 Feb 2026 13:00:36 -0800 (PST)
 Received: from [172.16.1.8] ([2607:f2c0:b010:9000:4c85:f148:4c91:943a])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9fdf692sm17571285a.44.2026.02.05.13.00.33
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9fdf692sm17571285a.44.2026.02.05.13.00.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 13:00:34 -0800 (PST)
+        Thu, 05 Feb 2026 13:00:36 -0800 (PST)
 From: Peter Colberg <pcolberg@redhat.com>
-Date: Thu, 05 Feb 2026 15:59:54 -0500
-Subject: [PATCH v2 07/10] rust: pci: add is_physfn(), to check for PFs
+Date: Thu, 05 Feb 2026 15:59:55 -0500
+Subject: [PATCH v2 08/10] rust: pci: add num_vf(), to return number of VFs
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <20260205-rust-pci-sriov-v2-7-ef9400c7767b@redhat.com>
+Message-Id: <20260205-rust-pci-sriov-v2-8-ef9400c7767b@redhat.com>
 References: <20260205-rust-pci-sriov-v2-0-ef9400c7767b@redhat.com>
 In-Reply-To: <20260205-rust-pci-sriov-v2-0-ef9400c7767b@redhat.com>
 To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
@@ -102,41 +102,37 @@ Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
  Peter Colberg <pcolberg@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailer: b4 0.14.2
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WzSYf876p6Ulcp6kVVMq7pbOax-ov9Le_KmEA_PCBac_1770325236
+X-Mimecast-MFC-PROC-ID: -xH4-yw7QpCNTN1uwS6wCg8NEdRFu9BUHXvNDa_ScbM_1770325238
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Add a method to check if a PCI device is a Physical Function (PF).
+Add a method to return the number of Virtual Functions (VF) enabled for
+a Physical Function (PF).
 
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
 Signed-off-by: Peter Colberg <pcolberg@redhat.com>
----
-Changes in v2:
-- Replace VF -> PF in doc comment of is_physfn().
-- Add #[inline] to is_physfn().
 ---
  rust/kernel/pci.rs | 7 +++++++
  1 file changed, 7 insertions(+)
 
 diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index db05641186c3a42922e2b6a463de9c1b099a4673..df39ad3f0d5fd898b034609efb03368f83c2a2e9 100644
+index df39ad3f0d5fd898b034609efb03368f83c2a2e9..581930d0afe98ccc29d729e4d9aab75b4144e46c 100644
 --- a/rust/kernel/pci.rs
 +++ b/rust/kernel/pci.rs
-@@ -484,6 +484,13 @@ pub fn resource_start(&self, bar: u32) -> Result<bindings::resource_size_t> {
-         Ok(unsafe { bindings::pci_resource_start(self.as_raw(), bar.try_into()?) })
+@@ -498,6 +498,13 @@ pub fn is_virtfn(&self) -> bool {
+         unsafe { (*self.as_raw()).is_virtfn() != 0 }
      }
  
-+    /// Returns `true` if this device is a Physical Function (PF).
-+    #[inline]
-+    pub fn is_physfn(&self) -> bool {
++    /// Returns the number of Virtual Functions (VF) enabled for a Physical Function (PF).
++    #[cfg(CONFIG_PCI_IOV)]
++    pub fn num_vf(&self) -> i32 {
 +        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
-+        unsafe { (*self.as_raw()).is_physfn() != 0 }
++        unsafe { bindings::pci_num_vf(self.as_raw()) }
 +    }
 +
-     /// Returns `true` if this device is a Virtual Function (VF).
-     #[inline]
-     pub fn is_virtfn(&self) -> bool {
+     /// Returns the size of the given PCI BAR resource.
+     pub fn resource_len(&self, bar: u32) -> Result<bindings::resource_size_t> {
+         if !Bar::index_is_valid(bar) {
 
 -- 
 2.52.0
