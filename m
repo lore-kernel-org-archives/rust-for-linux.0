@@ -1,191 +1,269 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013040.outbound.protection.outlook.com [52.101.83.40])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022117.outbound.protection.outlook.com [52.101.96.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF9C3A9621;
-	Thu,  5 Feb 2026 13:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82C91F63CD;
+	Thu,  5 Feb 2026 13:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.117
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770297847; cv=fail; b=Wh1cRxeolYtOSEJFXMCWqUVWSHrHSKA9Krkwm6L9275zmRE8dPljlbphvVtDbOHjc8jWkkkEpqBMA4JcWZUSPJ0gcq2k6qmICPjp/aaHr1eiSiagArZRIb2EHiw+yr8E2uuTaJTafX/K81/0rp4lxZckCU7eN6jNWS05ldyv1m4=
+	t=1770298165; cv=fail; b=ULc2sV7HbmqeIJxqTUTT4fJKftXn0gvn5yjkPbch6v9029Uq1ifPh6odXuQGhjzs5105on3RTlVC88+Tv3Jbc6vI2BOuxFrbegYkvM5rhb5ZYKWHypofGTA9MbGCiDm3ZcPLq/Ddw0xY7fVxGAHqBNYU+2+JdtLysUYQnzvMdIQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770297847; c=relaxed/simple;
-	bh=DdqeNGHrIU4tq41L4MSde1BProGdlTXV2yBBYMKHg/c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=muvqkFDbibXJcktuJ7rQjNVTznFkQsGQvDNU8zEBl5hbhNx51NcVUdEUTFT6pAiIXw15cfnJcYO3mfzXEK75egIWyTyDNPbzAUEbRe1axuwxcXB3OGkJasjBU1Y8c+yhLaLEJkNsVEdHRL9/z4nLgY3C1aSTxBfC53lQVEDZ2ak=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=rQorK5Uq; arc=fail smtp.client-ip=52.101.83.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	s=arc-20240116; t=1770298165; c=relaxed/simple;
+	bh=sAiWjQOuErn/ACd2NqScFH9zHxV+V9/QCEpf77e9vjw=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=nYbcgrEcRERQdlYEpjGXf/EFVEiOfMm6hKzQtG4u6XeVk9x1mwjAdmWkHoRVcDCXIymPpdx9ffnGPwyw5XX6fILO6Z7PZJTNVgu7bAM89VVedOh0sJv3Y+W9wCUMeBTpVwdhgQTm0g3yEoy0Tj8t8kkvKcIomUeF6UzOJyO/Uhc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=N07nRev6; arc=fail smtp.client-ip=52.101.96.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="rQorK5Uq"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="N07nRev6"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bGsuh0oyVyh+u8G0QDjt3/U0Q+jn6j9BVfB7/C7z8+PODKDRWjcLFHMFA4SZp6CTn9oJOnnxA1loLlY0j8trOaYtyXkkkuPZD1cQZHkmxb2/yyr1M6+H7YBZeRIrCkjE+c3kzaxoAqhwrTeWVrkZ2WTdDK0B0z4JMCs6UkfwXme8PoTKn6Yt/ZWSBebiiW2U8OgGPKAeThFIz7DmMIE7IN7eOmLSQ+MY8AwqOWkF2TAzG8pAsC3+Wn1nGJ30lU56HyLqIofAeA84tDFsds3t4q22J5N0oQjSSezCyEprq696kC6vz6kcvk6iPQudtXS/bOC8ccZSo6FVO7Y+Oozoig==
+ b=smtuzSasVWMuloYktOLbFhDE3NhmehGEk5BkaswkrLzXz68M9oJ6tD3+43LWO1dvy2GKCsD6GcmC95lm8NAVkmXpzneUETqDyMsgeYUTmkiyyDlzgkgZSxfpLSQjh7NZMZnAsVaqqjymSTClcnFuz5fZJXCU/bmDxq8vCs21uBzOZSDQvIA8bDZMyC2YiZSuBy982s5PXpW5n/PylS3gnnxUs8qHyFijMgJVC2+eI0jT3+8G+LTAmGgKWJkQolN2ak3XD5m1OUx9XbLb3lF/KMS26XMIrZBcaw1mO9IHToxEPkG1j5aLIvGTBwbdA5lv47ON2jqo5+dymfGNkMGBrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vl3wHTvatO1i2vrujGequJqRDJ28G4n1DFslS4k76mU=;
- b=O2U69xjGYiFPGCCbTmBmRFWweSeGQ4J5TVQfxjj6kmGU2B5/ff5u9tfHQ/une1VDsYSySungt5IWzlMXxRNLOa3ihlPfZAgmrIFUUqQq1XxSi6LV/KSX7mMQbozBkXgZIf140pmnthLzWbJnB1R5sfaQufFU3ClL0pE4TJGTRgy0KD9Qb82Cc9MoyuTKxZK3ipYH+RA2ieolwVRGRNXShLS3z3YD9P0LbuaEHGtLdHcgtPU27BffqiS2T1GLWSqFuKu2wvOVzQild2yVzdafDAoSOfgPHbb2Z/L9QI0IWd/OyX1GR3b6jOVhSb0Q6D3yMBhiocQEs1C3aHIwUGXz+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
+ bh=AM7h6TDaVhvSa64ov5YSSwaylLDR6nBkf9jlzlUZFso=;
+ b=SUz74P2JH3YyrQa2WFAiFxlrQsbCx6FW0REOf+RirTJD7XqGrbHZZAel1sk0OXSlvgmY/xfeXInkKzppB4VoxSJNARQ32UEk/gJkM6XO2vgUjtFx0Lt9MgLa5+Iw3ONJaDR1SX7Y3MNlpb365Xeu2Zr8I4tZVsBInxiAw4lRVJLqTOeWTPCw+ZnwhugrQnfqrIMQsmTEhfTQFnf8/YH4kfNsR7JDwImtvt8qYO1fhnIIqdpkMUmfldQ/Y/DcdVOadaQXQ/RGPpuVodGI+fC9RbH/r8qqSbz7aof93chVpKudaQR1Fyzwb8GSwCIxbjaq3r+qM8DtsB2o711gFDnIdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vl3wHTvatO1i2vrujGequJqRDJ28G4n1DFslS4k76mU=;
- b=rQorK5UqgaAONjTL1k9VYKsCzSTkQ2SvNoEKuZ2xgg3zsZ77XhONHfHOrkzgD04zB7T6zp59sSrVWwBJemuIJPFVMosccsDLZ1vIcO/L+mRGl68PN7j88OkF/NsXu65J3A1Wb8vvDqugnzcIJgviDO4XfV6WA6j/38HRlt/TfQ7wl+q5AFOoL+ORQv1NuazKc0A0Q4YOJ3z774MxtiM5VZFZ1Ycl8qvEAaolhET70Jvt34IZNmI0Kv3X/ODNoEiDvrjpiIZwDnAC2Jl442CYmOHNcJ71yKvUSaJymNluKQrrlBMRMMyWksnMT/eKGaKCD4bG6j7VNMCAdvcge23fRw==
-Received: from AM8P251CA0017.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:21b::22)
- by AS2PR10MB7226.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:60a::12) with
+ bh=AM7h6TDaVhvSa64ov5YSSwaylLDR6nBkf9jlzlUZFso=;
+ b=N07nRev6e4W2iS38vBur2Lr+JT3vUTYrvBu5s/QbkteoAUHlA++wgRh9qeW8wDy/37JJB4QrV4GPmjWtz5aOiFJkVBChZ+m5Azvoe880n8knXacGW11LWKrUoRGvNsHM+AeLt4wwiqrMr00I5uiths0zjOAM1XX/IDItVsKYrxA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO4P265MB6154.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:27a::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Thu, 5 Feb
- 2026 13:23:59 +0000
-Received: from AMS0EPF000001B4.eurprd05.prod.outlook.com
- (2603:10a6:20b:21b:cafe::52) by AM8P251CA0017.outlook.office365.com
- (2603:10a6:20b:21b::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.14 via Frontend Transport; Thu,
- 5 Feb 2026 13:23:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- AMS0EPF000001B4.mail.protection.outlook.com (10.167.16.168) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Thu, 5 Feb 2026 13:23:59 +0000
-Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Thu, 5 Feb
- 2026 14:23:53 +0100
-Received: from [10.34.184.244] (10.34.184.244) by smtp.app.bosch.com
- (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Thu, 5 Feb
- 2026 14:23:52 +0100
-Message-ID: <1ef96145-9d58-4b61-a3bb-045dee6e4fd5@de.bosch.com>
-Date: Thu, 5 Feb 2026 14:23:41 +0100
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.14; Thu, 5 Feb
+ 2026 13:29:20 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Thu, 5 Feb 2026
+ 13:29:17 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Feb 2026 13:29:16 +0000
+Message-Id: <DG72BM2I3QKI.1SCBV7WL5B1TG@garyguo.net>
+Subject: Re: [PATCH v14 1/9] rust: types: Add Ownable/Owned types
+From: "Gary Guo" <gary@garyguo.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Dave Ertman" <david.m.ertman@intel.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Leon Romanovsky" <leon@kernel.org>,
+ "Paul Moore" <paul@paul-moore.com>, "Serge Hallyn" <sergeh@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Alexander Viro"
+ <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>, "Jan
+ Kara" <jack@suse.cz>, "Igor Korotin" <igor.korotin.linux@gmail.com>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Viresh Kumar" <vireshk@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Stephen
+ Boyd" <sboyd@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, "Asahi Lina" <lina+kernel@asahilina.net>
+X-Mailer: aerc 0.21.0
+References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
+ <20260204-unique-ref-v14-1-17cb29ebacbb@kernel.org>
+In-Reply-To: <20260204-unique-ref-v14-1-17cb29ebacbb@kernel.org>
+X-ClientProxiedBy: LO4P123CA0520.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:272::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] scripts: checkpatch: warn on Rust panicking methods
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Dirk Behme
-	<dirk.behme@gmail.com>
-CC: Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Onur_=C3=96zkan?=
-	<work@onurozkan.dev>, Jkhall81 <jason.kei.hall@gmail.com>, <joe@perches.com>,
-	<ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <288d4aeb-af0d-4d50-bb0d-7a046abaaf10@de.bosch.com>
- <20260203152542.45017-1-jason.kei.hall@gmail.com>
- <20260203184933.23c92f8f@nimda> <DG5GBHGZV86X.2XKAU6WLWCL7Z@garyguo.net>
- <20260203193240.68bb136e@nimda> <DG5HFQ1JHRA1.QTLZFE4GDZT8@garyguo.net>
- <c150ba95-a60b-404d-823a-316710035dfd@gmail.com>
- <CANiq72=J5LBxfawu3MtQpcukaXcw+pRyMWd9ueDE=od4X99R3w@mail.gmail.com>
-Content-Language: en-GB
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <CANiq72=J5LBxfawu3MtQpcukaXcw+pRyMWd9ueDE=od4X99R3w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF000001B4:EE_|AS2PR10MB7226:EE_
-X-MS-Office365-Filtering-Correlation-Id: c75a5fc5-07a7-456d-2097-08de64b9d280
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB6154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 975ef89d-3cce-4e35-7232-08de64ba9026
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024|13003099007;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|921020|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YlNoK1ZSVjhEYlIxNzVlRGNoSkQwOG9CbGhuUmZldExFNjc2RlhScTlIZWJI?=
- =?utf-8?B?eGxGb2t4ZDQ4QnMxMlU3a0hPZkVTNDI5OFVRSkwrZDZ0RE9ndW4zQTEwUWNK?=
- =?utf-8?B?SG1NQUh5WE1kMzNML1V1VTJxNnh6MnFWWktSWU9BZFlIb2xhUkY1NUp4Z0JD?=
- =?utf-8?B?SEFLQ3IyY1c3emZ6c3JpQkZ1WExaUWp1OXRRSHdZVTFRRHRBM2RtOG5EcG1R?=
- =?utf-8?B?bUptWjk1VVkvZXVRZmE2SHYrNHFYdVExOU1nZmcwN3lvMXNOTk4wRTEzZFV2?=
- =?utf-8?B?SjhjbGpZaTYyYy8yWFg1dFF0WGc5dGpUd0Z1ODMvQzM2SFpjcDNEZWJTRk4w?=
- =?utf-8?B?dG8vU3JzVWJEMjdVK1VLaGNuQmRNeEdaSFhRSXhSM2VVWU43Y0hMNVpuSHhD?=
- =?utf-8?B?NlZ3TTllY29EWnJuczFrK1diMEFXTmxtUm9nRUZxMmhYYWdsYkphUE5VSTFt?=
- =?utf-8?B?N29PNlVxSkRMWkg0Q3ZWTUZWOUZLbndtZmFmMUhyYzRleWNKMjJvNlZCeDdp?=
- =?utf-8?B?UDF1Zk9wSG5rZU1jT1p3b2xLS0tPS29yMTkvaU9HTFVEa3lMd01BaGRycE1P?=
- =?utf-8?B?MnFGK2s3b1ZZYzl1dU9VRStjRDZ3aVQ4ajlLUTBBL3NBdjliRFVoNTdpM1Zx?=
- =?utf-8?B?bDg5R2tXTldhYVFhYnRPSUFYR2hxby85NmV1U2VodlRpNndKL2haZWpLVUxM?=
- =?utf-8?B?dkFZU0t0djd3eVZkTk9tZFNHMFkxRDIramVHNWgxeWgwQlN2dlllaVY3OWJY?=
- =?utf-8?B?VVRwYW1IUUdwRE83OEg4bElvaWVsN0d4a2JxNS9seXZaZXQvUUJtOFFMS2RQ?=
- =?utf-8?B?bFlwcWppN0htN2k0VGNUbEI3S0FiVmU2bzE5akxYWUtYUG85U1hZNUZKOFZ4?=
- =?utf-8?B?aGJxeDV3bTlMdlVHNFl3a0VzNmdBZ1VJcjVKL3h4SUswYk1HcFd1LzEySHgx?=
- =?utf-8?B?UHg4NHFuYk1VWUtocUV3S2dacDhKSE5NNzQ3bmRDcmsxQUg2RkVIbjN6SEhK?=
- =?utf-8?B?K2ZkRU5Fc3BVeGVxbEh6Y1VCVXJqRFZZRXlSVzBpM0tYUmZ3WTJ3Z2NnUkow?=
- =?utf-8?B?TWRCNUZDNk01R2NkU3c3bUo2aWpCZFcyR3FMZnlqbnFZdlU4ZnNZWVoxdjE3?=
- =?utf-8?B?NmlaQ04wTGE4Y0ZuUGd6QVNMWU81cTZnb2F3eHFlS011UzB0Uk00bHBBL1Z0?=
- =?utf-8?B?eDBrR2UrM3daV2VVZlBRRHV0clJ5WDl5dWd3K1dkaUhrellaNWFELzVGQ0pB?=
- =?utf-8?B?NlN1NG83RW8vdUIrU0p6eUUybDZrdDRmNGFXYjcvaERaaXdBWFNIbnlvU2VN?=
- =?utf-8?B?UmFEVDBuV1pBMmNRclJCUWpHZ0VCT2U1UkdjQTd4VWRlbVRselRxM2dTaCt5?=
- =?utf-8?B?K2Z4N2pUWGM5Y1VlemxRaE96V0lnQzV0K0FBM1J3QmloVkE0Q1I2YXZKdGJk?=
- =?utf-8?B?eVFYN0RvcHNWZnpoN3NxczZwMjZ0cHJtUmFOWUVkbDdkbGpSOElzeEY0Z3o5?=
- =?utf-8?B?ZklOQWFqbGVWeFprdXp0bFNYVFU3blZhVmovcytXL0hOdFRLSlpETGpmZWFm?=
- =?utf-8?B?MTJ3TGxNVGxMODFsTW5ucHZrU1hRb3dzNTEwNmNnaU1OcWQreERDOE1weTRD?=
- =?utf-8?B?YWNTYkY5dlZjM2pGZ3c0R3kxay9yeXlnRGppY2ZHMld0b0RUc1ZCRk1XS3lx?=
- =?utf-8?B?RFdkUG1vaS9naHZlN29SUWdlcStJbFc1amVEcHhWcmV3WW5uYkdKQlZnQVVZ?=
- =?utf-8?B?US9GOGN5OGt2NzB4Z0xiM0EzOUJpQW5tT2RJUXQ0UFJXTDFQV0h0UnVLVnBL?=
- =?utf-8?B?OFV2V0c4S1VVTnVtV20rZzNCU3kyWlFqM0dWSlRWZlpRby8wdmNweUw2aVE3?=
- =?utf-8?B?eHk1RzJFWjJMbVBuZ3ZweVdGcEpSenR4Y1VwMGpzcnNxeVBENkpIQUZhMFlj?=
- =?utf-8?B?SDU3TlExN1BZaXRwZlUrTTBYUDFuZjJKaEZNaFlBQmEzTWIxK29FVVJuR0hS?=
- =?utf-8?B?dlFScFRqWjFKTTNiZU1SejYzOURNL3RsTnZDSktkRlI3dXh0dmlYakFGaURr?=
- =?utf-8?B?WGpOTkgrNS8zR3FoUjd0VWJPdjlXMHcyc1hPNjB0MkFwUnZuc0Flc2V4dTlq?=
- =?utf-8?B?ajNMdmZQRjV0RkhtU1B5cG1FdUk5aDhVWkRWaStNb2ZBdkJWWWd6N1NLZ25F?=
- =?utf-8?B?Rjc1KzRCNmNmK04zYWFpUVFDUkcvVHc2NSs3ckFHOU94Q3Q0enhzaHl2dHpq?=
- =?utf-8?Q?WwslZq1bZc83VdeU3tC5Hbh41MyNNX3pIfiRd/m3P8=3D?=
+	=?utf-8?B?aWN0VUgxYlJnVlBKUlBpRTN0MVdHUnJkR2xHdnpxd1FGNXVQM1dtM3RFTFRu?=
+ =?utf-8?B?QnZLY21xV2dXaTR0MXFlOTJKZk5kcnk5bkNKTlpiYnFzTU5Gc29ickhxQ042?=
+ =?utf-8?B?eWw5bGVxZU5JazFiWU5LeThsSVBXUjA2UlQyWktRdGt5dFdVNHRSVHc2Undk?=
+ =?utf-8?B?MElvcGlSMCswMVcxdVA4bFRYWnFGMVR4M3VOOWc3K0gvTHVWUm5sWVJjYzdu?=
+ =?utf-8?B?NjBYUHBlL2VNU0VZOGVzNDJDSFZpbEh3YjU0aTl4ZGpHSFlYbDZQNDI4ckw5?=
+ =?utf-8?B?VXR3UjRKeW9ENVpUT3lqRjE1V1ZyS0NtL2k5ME91bDZLU0FjMG5oRmp5M1pC?=
+ =?utf-8?B?b3ZIQXV5RDBOQm9YaHpaUng0ejBIbFl0Rm9mOURQdkd3dzNhL2N5bnpuTmZR?=
+ =?utf-8?B?MFM4dlRCa2JxUlpMVlRnV1hTM2ZsMUIxQjVaL3VBNFE4Q1V4TXNYdzFuUUg1?=
+ =?utf-8?B?VjF1bjdNbEg1ay9JUEMxT0poTk4rMlN0OGsxaTkraTMzeEdxVVJGL3BuTVRS?=
+ =?utf-8?B?N0VIMUlnYXhqc2xCT1hWYU5adk9zUXF2Q05VLzNJeVZuU0tCaFdNbGM2RXZH?=
+ =?utf-8?B?TkxMSzVYUHlDTkxFV3JDZkFYZkhFSkd6cTcwZm9XbVhyeFBFUzdXSW1aMDR4?=
+ =?utf-8?B?NHRIT1MrdHZ2bWovdWhOeHNkYlNqUTIxclVTSnhsVXBaTjU2S0JIbGNLZnZq?=
+ =?utf-8?B?R2g5MmI5ZGF0dThoZGNwSFdrajdLTWFEOGxETHdodjBvZzlvOXlRS3NHdG9z?=
+ =?utf-8?B?cWhvL0lUUmlHSTF6ZjhibnBudVp6R1N0M1Z4UnlkbmVGN3NObnhVbit1eXlW?=
+ =?utf-8?B?WStld3pKYmpHbHpSTmFYRDJvNjFEL010QTFVcHRHRjZKc21OMU5tZ1VRRlVn?=
+ =?utf-8?B?VE1Jalh4UnVNR09DQ1krZXl6bXAybVp2SEtoVTlRVi9FVDFNTEpTSExmMzZW?=
+ =?utf-8?B?Qk1nYWlOcXEwSG1sdWtKOEs3d2VFc0RyWGpINXNsOHNHSEgxQTQ3c2tDL0No?=
+ =?utf-8?B?QUlsbHo4N25JbUtQUkhkZ3ZOSUJ4TGFyenptVDQrN1B3UkNhVlNhQS9NRCsr?=
+ =?utf-8?B?cHR3Y0hrMkJJb0F6aGh5ZFc2QWNqOC9nNWcvb21uU0VjOEYrV0hIRkdwTXhq?=
+ =?utf-8?B?a3hmc0dKeW9TdUt1dVo2am0wZDVGUG9HWC9naFlQZk12MHBubXFKVktFS0ZE?=
+ =?utf-8?B?RXViUFZwbmVPRWtKWjU5OFZWQ2Rtblg4K1pSOVlOTlpsQThRbWRwNUZTWXZS?=
+ =?utf-8?B?VUI3c3FDaDl1a2tCczR5OHJtTmZzWWNGL2tGaXlmV2VHVXVLVkFxc0k4Vlps?=
+ =?utf-8?B?QmZzZkk3YittUThSNW5GUjBPQU5NS2haV3NCTFJ0djgrZFBQR01VMHZvekx6?=
+ =?utf-8?B?UVJEaDVLSFBaSEZmaHVPYjRTV3U1TmF2SE42Q3R4WHhZUm5JOFUyK0dOT1NG?=
+ =?utf-8?B?d2RqSzZua2xYb05pK2k1TW1rYmJRYmhHZTlsNk9YWHIrMUM4MHZnSWpTVWtH?=
+ =?utf-8?B?cUZ5OUE1OUNnZlFtZUlRejROMW9GU2VEZVJJMXFHWUdicDYwU1pRcWFNc1Iw?=
+ =?utf-8?B?blhGMFJUWnNqQmRTelN4TEU2cG52U1NNWk5YZlFsOG1MTy96UDRmc1QwcVVN?=
+ =?utf-8?B?UXhSMUpsRHZ5WnpndDZqai9GR1FGK3YyaWE3RUk4eEcyWWR4dFdBZFpCUndz?=
+ =?utf-8?B?RzVJQ2FST2lXc2VtWC9XUE1zUWErRWlwNHVidnFocUd3dmRRL1dqRElNMWNB?=
+ =?utf-8?B?REFuZ3FiS2E2TWtpSXB4QjJGQTJNTnNGazA2R2ptcnZxUFJSeUp2RVFiT2pK?=
+ =?utf-8?B?cEdMQ2JDWUFJaTdDaEZBQmpBRmJ5N2lBMTlKbmJMYWJ0QzBzWEpWWTZSVWc5?=
+ =?utf-8?B?RTNiaGsrSmU1Y2doZFJ6SXFEdVI1bS9LUEQ3ZEVRL2hJOW12ZHMvYTdGam1U?=
+ =?utf-8?B?UlBneWpTQ2IxQThEaXdHQ3FDZFNPOGs5SnJUYXg1YWZzWDlVN0VvblEzWWRt?=
+ =?utf-8?B?bXd3ZVFOTlV1Mkx6c0x0b0hkdy9QM2FBa1dNdDZhQzdJbTVDSldoMEg0REdI?=
+ =?utf-8?B?bHZnMUpOa3gxWWZ5WFNWK2d5RVhaODlXK3cwT09DWTJnWW5zT2h1c0FsS2FE?=
+ =?utf-8?B?d3ZNblFjYjVLOHR5cEdzRkpLTzh1Lzl2ZXE2b1MzYWhRbUlVR2FtRS9pZ3Yz?=
+ =?utf-8?B?cXc9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(921020)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	yNjyIiVgRqtlU9ApD5o7kFbsrUoCUrHq+x4KnuKRKq732uL2nmSjamFPbtqAPl4pyDm5Pq3upbMJa/ZSN3i7F7qCHSafKAqfGgu/I+g1XJhPNi8btLUcaCt0/BW5Tu/dPuk/MKj0lygmTP0AWrZ9Un9qXlvGnAZXmhVYORul4JCVKMOqzAm3h/j8gTmIvbrHzguGNgKajzKRRcIXpcgOTF7+b5Ye3WmrhdL9SleB4qaBPk4WfgxJM6F+a2mQyQTS30NGCnRbtHc8AWf8STcZAjjMdAp+NmR7nTIM25RP4SqsZPf81qk07W9sjKiP8UvDAefS4fly4eMvmvoRnV3OZOJ5CKK69V3E8IiW2pRBbJL2EmmSaolhTAL2H/qgO0rbjjDM2szcbafqjGuj6eKRIPQVaEY1G6F+vy+Zh5VBi+nfXqsOQkS8rnrcojCSQnRi
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 13:23:59.5758
+	=?utf-8?B?eDdJRGtYbHM4MVA5cUZtUzFEb1Y4dEdWOU5JMXJIYUNxaFhBU3RoNy9uREVJ?=
+ =?utf-8?B?ZURrT3Zyd2JoMTdsVzd2ZWNlZmdmR0RhQWlhL3doVC85bnZkb1AxTmx2SE5k?=
+ =?utf-8?B?VGdaWXpnV1VxS3NGWE1qRWlBSlZERlVpZnE5RnJuUzhtQ1VoNWdmMVlBWDR4?=
+ =?utf-8?B?S1o2QkxFZGRFUEUveCs1OE1HNmlvbEllNVd0Und4ZWhwdlFtWEdOMGxxRVFE?=
+ =?utf-8?B?MTUrdk4vY0IvMnRZWkdONDZKajgzcXRDWTB2ZG5LMVp6dW9pbG9STzBITWJJ?=
+ =?utf-8?B?T1paVGEvVVdyVWFWdzh4VDZzdDIxVGRaVVowU2ZjTk5NQmFUNDdTVkRqTFR3?=
+ =?utf-8?B?Y2xLZlZ0TnZlSVVrVUVQMmFubjM2bEhmQ21mYW1tWngxVXFuZmtqR2d2ZWxv?=
+ =?utf-8?B?M1I2MDZxSWpuZWFYQ2V4WlZmSitEaXNaNy8xRmFHdEhyUlZoVVRpUGZ2emJa?=
+ =?utf-8?B?VFNkZ3ozd2ZEdWNlVVJBZDdZTU1ObHVmQSs0eU1TOElrYkFoTGN6Mk5WSmtj?=
+ =?utf-8?B?Q0VWRG4rUlVZUmQ0QU5FM0dhbDV4TUtZOURlNmVRQ0txM0k2b0RWNjJKTlpa?=
+ =?utf-8?B?aHl0NnFnUXRGbktzcTNCak9YcmM0Q3lvSHJ3NHFIUVQrME1ZWmNtNXpNVllV?=
+ =?utf-8?B?aEc3ZmlQQk9ZMkV3cGV5M3pVSG5GMllERHNwRWNBOUtzTTZOODlwMUdIcDlq?=
+ =?utf-8?B?dENlRTQzZFZTZktHUVlUSE4yQWF6TE1DaTNHaGpwR2R0Y2s0V1hQR3dna2VW?=
+ =?utf-8?B?aks4VVdUTEpSVlhCUFNNWkZYRGtjWFFJb09NeTdqbENiclkzMER2b0dSUVhl?=
+ =?utf-8?B?Sys3TnFsbCtqQ3BjNC9YL2daczYvQ0tiTCtOSDUwOXNrZDk3eit1a0pGN1Bx?=
+ =?utf-8?B?STJmN0NjZzV5V20vbkV5YlRFU0d0QUk4U2hCVjErckI3Vm9Rb2xmcE1lSlR1?=
+ =?utf-8?B?MWd4aTNrZ2dxWWxiT2l2eXZiZzRITGR5SUpYY0FFQ2J5dFREY2tKM0ZnMDJo?=
+ =?utf-8?B?dmpvL2VQMlVyWlhTSEZxd2N0dXNmR09XNXRqQ0FXNTVQRnlZY1B5N29WQWVq?=
+ =?utf-8?B?SUNYUDNKQTAzN1EvMXRxS2xzMERzWEtJc0tDeFBobGtISWU2S1RBWS9LZ2FM?=
+ =?utf-8?B?TFNTN1BxSWVmWWlGTkJlb1c0dDhaejJOTHdCVHpnbjh1dS8wRGRMRGxGdUww?=
+ =?utf-8?B?dWVXeDNrWDNWSTJLeXhCa250Wm5kNWsrTFhiV0VqSlljOTdPMmV1eUlYbEJC?=
+ =?utf-8?B?MnBsZFRhWlk4SHVZb3dEbDUrbFYvRFNwOS8wK1h0SkRuTDZzSlRCSlkyTFpQ?=
+ =?utf-8?B?NnNNeE4yMzNmN2dTUTl2SS9YK0hzWUFueFpOcnY5Y3Y0c0tuN3hiTGVGSUFl?=
+ =?utf-8?B?d1FCekxiTmVxcXVHbHErdXJEVDRtN211MW1ndzVOWVlRM1gwZUxHN0JtNUpv?=
+ =?utf-8?B?SkRLblgyNnk3WUtFd2gzNTRxUnhXN2lWUjcydTliWlZ3b0xmRGI3aFhON0pK?=
+ =?utf-8?B?dWZ0bnNRUWZxekxKNWZYYWVLTU8rdGNsck9ETE9TSGo3ckVQeXYxeTN0d3gy?=
+ =?utf-8?B?QlRTK01UaFZHeS92SDR5blVwd0Rhc2ZLYU9tUmhYY1ZRRlVKbjc3NjNDeE45?=
+ =?utf-8?B?UVU5SlgrelJhWi9STlpRbm1GSWpkV2cwL3c0Z1VYdjc4bnM3anhNa0V5OVlF?=
+ =?utf-8?B?TkNnN0paR1kvZHd5ek5qM2RjUE5pbCtuOE0zWG5lUjdCcmZlWlhqMTFiK3pO?=
+ =?utf-8?B?dHZlYzJRdTNTSGkwcmsvR0xKTjc0c3IwSnNrOUhFM2E1VHVnR0doNk5icCtS?=
+ =?utf-8?B?bDRNQ3ZMQk5ib0JSaWIyOUFmSUV6eVpjWU9wcXJtcG1idFY3WnZ0MGFTZXhU?=
+ =?utf-8?B?bmVjc3ZFN1pVeUtNQ0lmcFNLUGtERmsrT0Y0bnR3b3VQN1FxblR2bmMydFpG?=
+ =?utf-8?B?ZGF1R0pMTEptOXVtNlR0SE5ibVNKdlZVQTJ5ZDV0bk15SUV1WFhhNzVSd1hN?=
+ =?utf-8?B?RGphSHpJT2lyc1RpUUhTbUNJaHZUZzFzd1hDWGM3OUlZMU9ROVhyOWdaTnNX?=
+ =?utf-8?B?UHBZTFg5VkJtVlEyTnVvUGVBaXV2ZEQrT2l6SVFkZC96ZmZnVXNQZFNJOXI0?=
+ =?utf-8?B?ZDJ6Q1Y5Z1R1bkl2eFFaeWxOOWtSSS9qUlljZGpwSUtld0N3TGJkbXNHbFYw?=
+ =?utf-8?B?R3lVZnlhRGVCMno3QWNuY1lwMkpNVjdGRUtDSTh5aldBYytTVGF1T2c4Zyti?=
+ =?utf-8?B?bXdVRHI0WGRSK0pkbzJsemRoTVBuZFI5OXFkWE91UGZ3R3c5YmpZV3R6N25z?=
+ =?utf-8?Q?xtSONwYeuF6XQhCYQU?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 975ef89d-3cce-4e35-7232-08de64ba9026
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 13:29:17.9198
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c75a5fc5-07a7-456d-2097-08de64b9d280
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS0EPF000001B4.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR10MB7226
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9bZy44iNRSYVdI0vSTXqe23t6eDGqMbVhBymOP43dZ5aj11dmR/Cwtu5hLwd8Od7JU9GQxYUe+ZoUvkIG83YtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6154
 
-On 04.02.2026 19:10, Miguel Ojeda wrote:
-> On Wed, Feb 4, 2026 at 4:56 PM Dirk Behme <dirk.behme@gmail.com> wrote:
->>
->> The question is if we could find a way to make it *consistent*?
->>
->> I mean how should a developer know if the warning (he gets once, or
->> even if he checks an existing file with -f always) is relevant or not?
->> We introduce the warning because we want to discourage the use of
->> `unwrap()`. At the same time there are places where its usage is
->> allowed or even needed. How to know what is valid? The warning or the
->> usage?
-> 
-> I think usually developers use `checkpatch.pl` mostly on patches, not
-> existing files; plus it doesn't make the build fail. Thus I see
-> `checkpatch.pl` as a tool that can have way more false positives than
-> a linter that we need to keep strictly clean.
+On Wed Feb 4, 2026 at 11:56 AM GMT, Andreas Hindborg wrote:
+> From: Asahi Lina <lina+kernel@asahilina.net>
+>
+> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+> (typically C FFI) type that *may* be owned by Rust, but need not be. Unli=
+ke
+> `AlwaysRefCounted`, this mechanism expects the reference to be unique
+> within Rust, and does not allow cloning.
+>
+> Conceptually, this is similar to a `KBox<T>`, except that it delegates
+> resource management to the `T` instead of using a generic allocator.
+>
+> This change is a derived work based on work by Asahi Lina
+> <lina+kernel@asahilina.net> [1] and Oliver Mangold <oliver.mangold@pm.me>=
+.
+>
+> Link: https://lore.kernel.org/rust-for-linux/20250202-rust-page-v1-1-e317=
+0d7fe55e@asahilina.net/ [1]
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/lib.rs       |   1 +
+>  rust/kernel/owned.rs     | 196 +++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  rust/kernel/sync/aref.rs |   5 ++
+>  rust/kernel/types.rs     |  11 ++-
+>  4 files changed, 212 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index f812cf1200428..96a3fadc3377a 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -119,6 +119,7 @@
+>  pub mod of;
+>  #[cfg(CONFIG_PM_OPP)]
+>  pub mod opp;
+> +pub mod owned;
+>  pub mod page;
+>  #[cfg(CONFIG_PCI)]
+>  pub mod pci;
+> diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
+> new file mode 100644
+> index 0000000000000..fe30580331df9
+> --- /dev/null
+> +++ b/rust/kernel/owned.rs
+> <snip>
+> +
+> +    /// Get a pinned mutable reference to the data owned by this `Owned<=
+T>`.
+> +    pub fn get_pin_mut(&mut self) -> Pin<&mut T> {
+> +        // SAFETY: The type invariants guarantee that the object is vali=
+d, and that we can safely
+> +        // return a mutable reference to it.
+> +        let unpinned =3D unsafe { self.ptr.as_mut() };
+> +
+> +        // SAFETY: We never hand out unpinned mutable references to the =
+data in
+> +        // `Self`, unless the contained type is `Unpin`.
+> +        unsafe { Pin::new_unchecked(unpinned) }
+> +    }
 
-And how would a developer know that a `checkpatch.pl` warning on 
-`unwrap()` is a false positive or not (i.e. is to be fixed)?
+Probably should be name `as_pin_mut` instead.
 
-Thanks
+With name changed and SOB fixed:
 
-Dirk
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
+Best,
+Gary
 
-> The idea with the `checkpatch.pl` warning was to have something we
-> could land easily before we got the new Clippy lints, and perhaps to
-> apply it in more cases than the eventual Clippy lint (since false
-> positives are not as concerning).
-> 
-> I have some context in
-> https://github.com/rust-lang/rust-clippy/issues/15895 -> "Additional
-> context", and a few other issues linked in
-> https://github.com/Rust-for-Linux/linux/issues/349 for the new lints.
-> 
-> Cheers,
-> Miguel
-
+> +}
+> +
+> +// SAFETY: It is safe to send an [`Owned<T>`] to another thread when the=
+ underlying `T` is [`Send`],
+> +// because of the ownership invariant. Sending an [`Owned<T>`] is equiva=
+lent to sending the `T`.
+> +unsafe impl<T: Ownable + Send> Send for Owned<T> {}
+> +
+> +// SAFETY: It is safe to send [`&Owned<T>`] to another thread when the u=
+nderlying `T` is [`Sync`],
+> +// because of the ownership invariant. Sending an [`&Owned<T>`] is equiv=
+alent to sending the `&T`.
+> +unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
+> +
