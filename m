@@ -1,310 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA531335540
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 21:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770325244; cv=none; b=Pl6/Sm/Gz6XX/qAX1iXvqJBJirxoP0MUsqmAhkHoZ0ZsgfCsxBwS6/u+DthcwAHyTjYYeJ/SAHcbZ4zTr4ju14ID/ESHADX/xlb4zykS3QxplTBRD6a2Ht3n4BWsG6+tHaLrES8gu1N3vjF0JU8xvGJzd2tkpdkGguv4ypAVFKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770325244; c=relaxed/simple;
-	bh=DsoH5kljF8z69G5m/2pqjtsvxAd0CBzUg2OXfZWFlWQ=;
-	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
-	 To:Cc:Content-Type; b=R02ZC/xNhwS5tSwpjNQyK3u61DzuGb84EOiaFmk+dGqruNWk8f8h46RW0xtdy0wC/3djGpeGHA2APUOrILYbtuDbCbP2QXbd0VREy2c4PCmoJqs4dWZqEfS+fprkH9QbISGzmNDQpJ8SPqzZIAA5gDQGdAw7jOIv8wJVChxdLgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FPMn4KQw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF104328B55
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 21:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770325261; cv=pass; b=aluIc+zA8vBZgrsbSDUpDNzZfXuaFtaGcIghRUcHwmLJAPDmAYtq219EaIgC17ABGGm15kDObfelPkBcY0/FnTqOYolL/CiA//ersjNZ7Hkn8kiYJ9KfdcMB7lqVAGzqnwW+GFoF6DWRMKQWUn2gzSWyuqt00kTYSDt0qbTL7Zw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770325261; c=relaxed/simple;
+	bh=c9UY20GGm+skos7cmWC/LlM5NZnvYPqwPleg1uCvakc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MI4ufr10n2Ch3px05Eud+auw0BKBQ7UVhonYF/pyGsYP+Qvdl5oRH8ENeVc2UOo77sS7CK2LWvTROGEvSXLn+UJHzJXVW+hWffEdRmSzUuWYw7ynJWitbLnGRievTbbvQbB2TszHv2sWGcZYxciRCNxSMDmRGGz3x6iYxQyMV7s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MDJ1lJ57; arc=pass smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FPMn4KQw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770325243;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BMqbQ59ZEPX4CdhRYiH6E8cBHnvUegI817wkrdE94SY=;
-	b=FPMn4KQwmZNXeuAr8sNW6WPxBDpRpriID8WzbvdMYaxY0NX0l6kzkYcm6LvAIxlEZn2Cac
-	SGl4ptaD5jgKBvN5RUtuSUWO8v+CgqVrU7fV7CaVglrt9/SdpMP1WI7I7b5AYrtNhpvGpP
-	Jg0CvBm+5xr6fWqiWCBO2ZIk7vZVnJY=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-364-3rQtjlmnO3-r_vWA_xuHww-1; Thu, 05 Feb 2026 16:00:42 -0500
-X-MC-Unique: 3rQtjlmnO3-r_vWA_xuHww-1
-X-Mimecast-MFC-AGG-ID: 3rQtjlmnO3-r_vWA_xuHww_1770325242
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c882774f0dso375466685a.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 13:00:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MDJ1lJ57"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-124abf957dcso42736c88.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 13:01:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770325260; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZoqEEQV44YXnM/dmanQP0UILwmfVntge5hqO6jOaJeuYFpiJxy1ZBsaMJyv6rKtrYs
+         Z2wzK6GS+tMekFY3GmO71c1S9QHWQx9u3rBXSQvrNwdR3WD0AOPp27q4HCiWmc2qWEGl
+         9V5aHcLm0zj7SyX+BrSv5Q0uTk14PZKeOjSGK1N4/sFMnDqjWUQ+3gFPD1O8Az1Syn86
+         Z8Ev5j5imdSA6CPN1g6AnqD7tDdSJiQ50rkLiUUvWotjzPB+yMMhkw1bOrpoMqUhTzhG
+         Qq4RqV+mYpZsWk7Lm+H3Qe7QsoEojjBAWpV/R9ou4ExvvEq2eDB9/bY3RAqheG+ecqLl
+         p7GQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=c9UY20GGm+skos7cmWC/LlM5NZnvYPqwPleg1uCvakc=;
+        fh=gHMbmCZdo3YE11nF5qSHK93aEeNla4F4KS9Li/nA/Zc=;
+        b=NFB7xmTlsihVZYcmyrpGDjpWjN45gmm2DLccPG0TtIROx0/Px4dDB9yTwfjIcFX0md
+         99la86wnO/tPng3rhX37Q6efM75euMfDVfQi1MhT0bfzCjnR6zwZJr2JVX8l699He4kg
+         0DlFWb8T21mOCklYiujaoD5hW4QOBYYghq5lXk9jl+ftIlx7i4HzraqH6g5dRiDq9dZ4
+         IDyjGXrLnbDi3/7csXvijXbVVv9rdXsiTH/PzTa5JwFQlXspYYWKRvx0o63HoSddZCrj
+         OaRRe/eZ5JlaPRqOEVgjoUesNg5aRvV9yWxDXuFzluxPtaK9DPJFCugGQaXaEHE/IlO7
+         C8lg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770325260; x=1770930060; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c9UY20GGm+skos7cmWC/LlM5NZnvYPqwPleg1uCvakc=;
+        b=MDJ1lJ57wO0Kf+AG8lF3YkOo2KKQTnbiJKTUT9hvvS+1iNcAs/7gdSM+C21vKleIcV
+         EeH1XrERsVsJ8PM3mwEJSe0ErJFGheeHlAotZN4BGe2TrHrJ/eAM6eFCxeeSatPUxx9g
+         jb4uTEKjExO6uhr4Tng3jC+yMKhHb7I45aF/5iTWjHGOz8v7dyO9zjvxjGkWWQSCOXcq
+         bI6DR/eN4Rq+fXzWnlSSf3Wn2olOtnLWeMuCt8GipdI2aPARVK7NGUdQXuoQRJNV91MQ
+         BpfdpxzCqb/lybariLdeBdJiv5ZnMuWRZXTm2OTI49WPPKC8/gjKcD/g3kSaywqf7q0D
+         4XnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770325241; x=1770930041;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BMqbQ59ZEPX4CdhRYiH6E8cBHnvUegI817wkrdE94SY=;
-        b=gFv8sS+94LDAM2nag2kb7CGlmU0dBMZCm9RwgaJ2M7Qs2chsqYo9IqWomQaDvf4uS3
-         R6Ipcx9Ipz/BjbgqtbsqH/OX+Tgg6Ef6bvykafBFk+vwNhvNslmDfoC+UF0WCu/lRvSP
-         laSSk63bbFcOXJ8PNvRdgx6MEB2p0G5OUS7wrDjpcWb+folL6CCYutXhaA5RHEnouS+k
-         Xvb85YL/hpFIrRw+/ff/P6Lb/AJT2STNAP+0JIvN+i9YR0EXQGlL+XnTpKgb1nbdspt7
-         HaXFi1KO2wV4InkoJztFKJtLHslxEUVdbZQlFkGCpVWUdRvOIx+kQX66OM9uVcy792OH
-         lbag==
-X-Forwarded-Encrypted: i=1; AJvYcCUV0FbRaYwe3gu2JrfXEZzSpZ9w8tqP05xVDFMvWCP6Rqm58akP1RmzKdYxynSLjInH5zwwNvcAp0XJn8r1Qw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjmGfpVU+ikAoBCr6m7sfeGtghpAcEK2BYXxbLX03YTgatOUhZ
-	PLrpso24augv5UGCPGMK4JjqXrAbabHzwBMHzEVjGE+xLjz3GVz4S2Yr+DzmC6VFMilTs38XDKg
-	jcykmXbS4LSDJQr/ZQaOkCDKFfwhFcKqyUCjLmdlAwwd1pKG28aTfgaZd9XrKrX1PmvuK
-X-Gm-Gg: AZuq6aIzKpqhOnByUUfnFaajr2/YykBgXcS3wNo65WRiRugKryHUDCto6wM3SRXpirm
-	rShSWevatvogaVibOJSLHH6e8JmT3xfFu7Z/yT+Sj/o87J503eFDZss7ijcDs5e9/LYqUW7yMeN
-	xZEJiD1PLtUVL011xolDtCzCBpu7c4/r21ZkCBNra9WFIC6Ij0crckk3Xekxp8JqcYMvSHhLpVv
-	LdOjpHOYCTVJPow9lj4a6k9bt7IYQJRh3P/TzDwmmctrDCcHo01RqknWaW+bDqbGfyBt9F+X37j
-	RJztzKOBQSgAnwtiHonMaKjGnzbZccGiEl37WEp9fsgAyRpZr2Rw0jYdIXcCxh7M+0QAtkdqy2E
-	ev68amgPenBfQFJE=
-X-Received: by 2002:a05:620a:28c5:b0:8ca:3854:8110 with SMTP id af79cd13be357-8caf130789cmr57432085a.72.1770325241394;
-        Thu, 05 Feb 2026 13:00:41 -0800 (PST)
-X-Received: by 2002:a05:620a:28c5:b0:8ca:3854:8110 with SMTP id af79cd13be357-8caf130789cmr57425985a.72.1770325240837;
-        Thu, 05 Feb 2026 13:00:40 -0800 (PST)
-Received: from [172.16.1.8] ([2607:f2c0:b010:9000:4c85:f148:4c91:943a])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9fdf692sm17571285a.44.2026.02.05.13.00.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 13:00:40 -0800 (PST)
-From: Peter Colberg <pcolberg@redhat.com>
-Date: Thu, 05 Feb 2026 15:59:57 -0500
-Subject: [PATCH v2 10/10] samples: rust: add SR-IOV driver sample
+        d=1e100.net; s=20230601; t=1770325260; x=1770930060;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=c9UY20GGm+skos7cmWC/LlM5NZnvYPqwPleg1uCvakc=;
+        b=jyqKfOv2us2H83yivumsDo7Vif46yKXQrtIHTs8CB52lW/CUxQ8ibJ92colVWhxvvI
+         Ea3ZYARPfT4ygNbOaEkdeTd00Hefk7lqWbsuA7y/f/+3xBFHkBVHvXilF1UMNId7a+2l
+         Lsk/wy8Cv89w970FqlEENOB2BlKIMvGVDhfX/UgIRjwih55RDpgjxjgsPphRLJ2BMoSU
+         yGK4wAunq/RRmgjN9289aZDq7Jc2qTHTBC/U49ke0m1VFxYR3OhpbMkwwcqpIZnbJkvk
+         T+tY2p4RQAD+J4j5HxASITQV/iTggwea3vuUHj8dk/Yn+8XyDzXcIMcy4aADufbVb56w
+         Bbvw==
+X-Forwarded-Encrypted: i=1; AJvYcCXCQ2leb4SRCtl+ygf3VdMgopCGby5Yv3dDfk2O6ZwgTcDJv92CDKY5lyyFh86oyYE1gWS/VZI4verto/Xc7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4KL2piaKRdQXBINLFU+/6wmUMs64wPa9tqUFOtO0fnPWTYvrq
+	hWRHPmYfuLwN9dETR/yQdmK9krWSgcaeeciz4GA4tNEJBUs8/zeZCmAAXS2+PTe9M+DPQwyNyE4
+	STPrhw9xOwebwFehKaBZm4uT2VQyjNIw=
+X-Gm-Gg: AZuq6aI6UjuolemDFR8c6xB+IvrlOG+MLgT/vivqrs+imgFjuBzvHGKhzapu+00YAAU
+	GRNjoyIyoeqXQiVKKecgX1+5CEJ6T7xGOVpTAfeSH74OqAcwxVD8mZoOUn7MYVMA+oX7nTC7kTr
+	2L4irZd6dCCgCMm8PeOCUbZc+ILG058CpW8HmhO3X6vpG8m80yCngIDZFIWHZrWZP/0RwgrkSlA
+	L1TS8fVUKP31kXPwBl0Lzvi/ZMMbo8JFmlpesj9fjnWvfMEt/HPNFHW6G+KNcn6DqZdxqDPh8Vh
+	SwVy7Gd2Fx5dFgsalkY5Yb4BxWj7dBI/er04DFvd3rWgoC7HmEQGqPvGtgXUGMRm+8wK8+s9gCd
+	eXg23LKBkX7ot
+X-Received: by 2002:a05:7022:6ba3:b0:11b:98e8:624e with SMTP id
+ a92af1059eb24-12703fb0931mr141282c88.4.1770325259631; Thu, 05 Feb 2026
+ 13:00:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <20260205-rust-pci-sriov-v2-10-ef9400c7767b@redhat.com>
-References: <20260205-rust-pci-sriov-v2-0-ef9400c7767b@redhat.com>
-In-Reply-To: <20260205-rust-pci-sriov-v2-0-ef9400c7767b@redhat.com>
-To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Robin Murphy <robin.murphy@arm.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>, 
- Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
- Moritz Fischer <mdf@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>, 
- Alistair Popple <apopple@nvidia.com>, 
- Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
- Zhi Wang <zhiw@nvidia.com>, nouveau@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
- linux-fpga@vger.kernel.org, driver-core@lists.linux.dev, 
- Peter Colberg <pcolberg@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>
-X-Mailer: b4 0.14.2
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: r6H5zpQFISTAss1oQLr4ytf82ZhJ8A9aATwmBxnxxTc_1770325242
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <288d4aeb-af0d-4d50-bb0d-7a046abaaf10@de.bosch.com>
+ <20260203152542.45017-1-jason.kei.hall@gmail.com> <20260203184933.23c92f8f@nimda>
+ <DG5GBHGZV86X.2XKAU6WLWCL7Z@garyguo.net> <20260203193240.68bb136e@nimda>
+ <DG5HFQ1JHRA1.QTLZFE4GDZT8@garyguo.net> <c150ba95-a60b-404d-823a-316710035dfd@gmail.com>
+ <CANiq72=J5LBxfawu3MtQpcukaXcw+pRyMWd9ueDE=od4X99R3w@mail.gmail.com> <1ef96145-9d58-4b61-a3bb-045dee6e4fd5@de.bosch.com>
+In-Reply-To: <1ef96145-9d58-4b61-a3bb-045dee6e4fd5@de.bosch.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 5 Feb 2026 22:00:44 +0100
+X-Gm-Features: AZwV_QjiKyQOVWh5xrAIujyXprv5UPUEUO2dHCdmH2kmKq5DiT5bcMTdC9OSpac
+Message-ID: <CANiq72mcJWPLrOtDPQpZcOO5Uwaw8+5z+StX-LMTVSDPvaVwjg@mail.gmail.com>
+Subject: Re: [PATCH v4] scripts: checkpatch: warn on Rust panicking methods
+To: Dirk Behme <dirk.behme@de.bosch.com>, Andy Whitcroft <apw@canonical.com>, 
+	Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc: Dirk Behme <dirk.behme@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Jkhall81 <jason.kei.hall@gmail.com>, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a new SR-IOV driver sample that demonstrates how to enable and
-disable the Single Root I/O Virtualization capability for a PCI device.
+On Thu, Feb 5, 2026 at 2:24=E2=80=AFPM Dirk Behme <dirk.behme@de.bosch.com>=
+ wrote:
+>
+> And how would a developer know that a `checkpatch.pl` warning on
+> `unwrap()` is a false positive or not (i.e. is to be fixed)?
 
-The sample may be exercised using QEMU's 82576 (igb) emulation.
+It depends on the context, like some other `checkpatch.pl`
+errors/warnings, i.e. there is always some degree of developer
+discretion. Or, at least, that is the way I think about
+`checkpatch.pl` warnings, but maybe the maintainers think otherwise
+(Cc'ing).
 
-Link: https://www.qemu.org/docs/master/system/devices/igb.html
-Signed-off-by: Peter Colberg <pcolberg@redhat.com>
----
-Changes in v2:
-- Use "kernel vertical" style on imports.
-- Demonstrate how to reach driver data of PF device from VF device.
----
- MAINTAINERS                       |   1 +
- samples/rust/Kconfig              |  11 ++++
- samples/rust/Makefile             |   1 +
- samples/rust/rust_driver_sriov.rs | 127 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 140 insertions(+)
+To give concrete advice, we could perhaps link to
+https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c=
+-and-rust,
+for instance. (Please see my other reply on v5 about it).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b277baee5eb6725b3a5126cefb6eef6190b02413..96dffd777c24473063baaeda017f64b15e8c0ab9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20242,6 +20242,7 @@ F:	rust/helpers/pci.c
- F:	rust/kernel/pci.rs
- F:	rust/kernel/pci/
- F:	samples/rust/rust_driver_pci.rs
-+F:	samples/rust/rust_driver_sriov.rs
- 
- PCIE BANDWIDTH CONTROLLER
- M:	Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index c49ab910634596aea4a1a73dac87585e084f420a..f244df89c4fc9d741915f581de76107e8eb0121b 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -128,6 +128,17 @@ config SAMPLE_RUST_DRIVER_PLATFORM
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_SRIOV
-+	tristate "SR-IOV Driver"
-+	depends on PCI_IOV
-+	help
-+	  This option builds the Rust SR-IOV driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_sriov.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_DRIVER_USB
- 	tristate "USB Driver"
- 	depends on USB = y
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 6c0aaa58ccccfd12ef019f68ca784f6d977bc668..19d700f8210151e298cc049dacc249a121d0f2c4 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_I2C)		+= rust_driver_i2c.o
- obj-$(CONFIG_SAMPLE_RUST_I2C_CLIENT)		+= rust_i2c_client.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_SRIOV)		+= rust_driver_sriov.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_USB)		+= rust_driver_usb.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
-diff --git a/samples/rust/rust_driver_sriov.rs b/samples/rust/rust_driver_sriov.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..84d057629c7b03d743179a4e05ccc092f814bf6b
---- /dev/null
-+++ b/samples/rust/rust_driver_sriov.rs
-@@ -0,0 +1,127 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust SR-IOV driver sample based on QEMU's 82576 ([igb]) emulation.
-+//!
-+//! To make this driver probe, QEMU must be run with `-device igb`.
-+//!
-+//! Further, enable [vIOMMU] with interrupt remapping using, e.g.,
-+//!
-+//! `-M q35,accel=kvm,kernel-irqchip=split -device intel-iommu,intremap=on,caching-mode=on`
-+//!
-+//! and append `intel_iommu=on` to the guest kernel arguments.
-+//!
-+//! [igb]: https://www.qemu.org/docs/master/system/devices/igb.html
-+//! [vIOMMU]: https://wiki.qemu.org/Features/VT-d
-+
-+use kernel::{
-+    device::Core,
-+    pci,
-+    prelude::*,
-+    sync::aref::ARef, //
-+};
-+
-+use core::any::TypeId;
-+
-+#[pin_data(PinnedDrop)]
-+struct SampleDriver {
-+    pdev: ARef<pci::Device>,
-+    private: TypeId,
-+}
-+
-+kernel::pci_device_table!(
-+    PCI_TABLE,
-+    MODULE_PCI_TABLE,
-+    <SampleDriver as pci::Driver>::IdInfo,
-+    [
-+        // E1000_DEV_ID_82576
-+        (pci::DeviceId::from_id(pci::Vendor::INTEL, 0x10c9), ()),
-+        // E1000_DEV_ID_82576_VF
-+        (pci::DeviceId::from_id(pci::Vendor::INTEL, 0x10ca), ())
-+    ]
-+);
-+
-+#[vtable]
-+impl pci::Driver for SampleDriver {
-+    type IdInfo = ();
-+
-+    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
-+
-+    fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
-+        pin_init::pin_init_scope(move || {
-+            dev_info!(
-+                pdev.as_ref(),
-+                "Probe Rust SR-IOV driver sample (PCI ID: {}, 0x{:x}).\n",
-+                pdev.vendor_id(),
-+                pdev.device_id()
-+            );
-+
-+            if pdev.is_virtfn() {
-+                let physfn = pdev.physfn()?;
-+                let drvdata = physfn.as_ref().drvdata::<Self>()?;
-+
-+                assert!(physfn.is_physfn());
-+
-+                dev_info!(
-+                    pdev.as_ref(),
-+                    "Parent device is PF (PCI ID: {}, 0x{:x}).\n",
-+                    physfn.vendor_id(),
-+                    physfn.device_id()
-+                );
-+
-+                dev_info!(
-+                    pdev.as_ref(),
-+                    "We have access to the private data of {:?}.\n",
-+                    drvdata.private
-+                );
-+            }
-+
-+            pdev.enable_device_mem()?;
-+            pdev.set_master();
-+
-+            Ok(try_pin_init!(Self {
-+                pdev: pdev.into(),
-+                private: TypeId::of::<Self>()
-+            }))
-+        })
-+    }
-+
-+    fn sriov_configure(pdev: &pci::Device<Core>, nr_virtfn: i32) -> Result<i32> {
-+        assert!(pdev.is_physfn());
-+
-+        if nr_virtfn == 0 {
-+            dev_info!(
-+                pdev.as_ref(),
-+                "Disable SR-IOV (PCI ID: {}, 0x{:x}).\n",
-+                pdev.vendor_id(),
-+                pdev.device_id()
-+            );
-+            pdev.disable_sriov();
-+        } else {
-+            dev_info!(
-+                pdev.as_ref(),
-+                "Enable SR-IOV (PCI ID: {}, 0x{:x}).\n",
-+                pdev.vendor_id(),
-+                pdev.device_id()
-+            );
-+            pdev.enable_sriov(nr_virtfn)?;
-+        }
-+
-+        assert_eq!(pdev.num_vf(), nr_virtfn);
-+        Ok(nr_virtfn)
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for SampleDriver {
-+    fn drop(self: Pin<&mut Self>) {
-+        dev_info!(self.pdev.as_ref(), "Remove Rust SR-IOV driver sample.\n");
-+    }
-+}
-+
-+kernel::module_pci_driver! {
-+    type: SampleDriver,
-+    name: "rust_driver_sriov",
-+    authors: ["Peter Colberg"],
-+    description: "Rust SR-IOV driver",
-+    license: "GPL v2",
-+}
-
--- 
-2.52.0
-
+Cheers,
+Miguel
