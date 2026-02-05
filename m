@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2591032ED4C
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 20:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92147330332
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 20:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770324445; cv=none; b=Q8xOAUaGn/2vHMuQbiPEQHWvqhM5dYZs+9/1qo/fvMYgVYOlD9Cgnx4k0/1yhI32swxtvr+ld38Wi0cfS3w3DIRbXbpxYYwUhBLBVznpvX4HN9MQCW6XxOaZSunqpFiSdo8WJZElXFMxyyGhD6y/NqLsyji88b4Amx4geVtcx7U=
+	t=1770324448; cv=none; b=Fg2DbXp/xJiF0b97/VyuEZfjAB8XRuHtYIzu9QiO8cPTOfzzJ0zvPwMr7JIDc/WKnHnLpY5U3qm7SdLv+zwrdvnKtYrqUq5VBUiLmPIDAD2rPwgRDTOpI2SS4OcMRbpATXAJ5CNt8uh6B7VDihRg25l7tZaI7TpxmBX6LGFjT6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770324445; c=relaxed/simple;
-	bh=57fEl1N9Uu8mKCp9kNl5yxQ+dgXcvwvL+nwdxNnNveE=;
+	s=arc-20240116; t=1770324448; c=relaxed/simple;
+	bh=FtduPcQuN67B07mfoqCm2h8MmkILZqnYUbXUIOFxkeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dirbj6o8zeYg1i6apoqzix+1eksefUjzMniwL3RvkrwGJo5NCBtWrUSRtn3UHxuBSr8B9lWuqmuSLqww8H5O3GIOKPms+xqIUuXh58vdCp3wJQUcUO/NTGkTX6rZv0B8QDcVNHuimtByVZJwfOIPiDm9fjAhYdfZHT63v1lUze0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SyJZraA9; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=AH09SD9QKhBz5+FFKHQ7oVqFIFRl8GW6o6itzHdQz+dMLAo8Wvf5w5xP/OcxvcafEAVo093xoxGKrmVr+zD1holJloiZtuTCKdjVkyFUNiYTswyLX6CPYYow7dTrtSWv01jGygCFGoBNz0vzUg8yKqUFyrI7LP4d10q8Yel7RUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dr4rdD6e; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SyJZraA9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dr4rdD6e"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770324444;
+	s=mimecast20190719; t=1770324447;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SmJswXWofwwASGd6n9K5Vumh8kUWc+ZAvaIMshKpITc=;
-	b=SyJZraA9MHMZ1mBYI+6GDchOruKuAaKqR+tmu/ozImB3FI/I9/WxUuWn+JiP78kAzSA4BS
-	T+4i8VLzVmCJ5klRMLbhc+57SPBKbgI6NSgAK9uGJ7rF+sem003vbARayQKw4U14h4dmj1
-	F/dJBds781kW6Ftk8qK2fcilaDwOEg0=
+	bh=queoB1KrTbfe6g6V6rjQDB/Y4vpoSbPxULqnvxPZ6I4=;
+	b=dr4rdD6eipddsGysncTvk4Jb7T3zr7KQxzfQNRCzIlyuHNio0PAX3vvLphHdrMDyplg4Qm
+	OqywMYjT8zaLnTPyLTVlfh/XJvUNTCDE8mU9zyOf6neE9q8TS1OJwKyt/r3J7cQVlveEOQ
+	n7i9PxOsXjzAzhuiRBs1fuIwUdR8IZc=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-306-__gExafRPvSWERhfgfhX9g-1; Thu,
- 05 Feb 2026 15:47:21 -0500
-X-MC-Unique: __gExafRPvSWERhfgfhX9g-1
-X-Mimecast-MFC-AGG-ID: __gExafRPvSWERhfgfhX9g_1770324438
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-ncQLfOV4MKWv265QtOfAvg-1; Thu,
+ 05 Feb 2026 15:47:26 -0500
+X-MC-Unique: ncQLfOV4MKWv265QtOfAvg-1
+X-Mimecast-MFC-AGG-ID: ncQLfOV4MKWv265QtOfAvg_1770324444
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 104361956094;
-	Thu,  5 Feb 2026 20:47:18 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1BF6F1956088;
+	Thu,  5 Feb 2026 20:47:24 +0000 (UTC)
 Received: from GoldenWind.lan (unknown [10.22.82.65])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1AB6519560B5;
-	Thu,  5 Feb 2026 20:47:14 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 092CE19560B5;
+	Thu,  5 Feb 2026 20:47:20 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Will Deacon <will@kernel.org>,
 	Waiman Long <longman@redhat.com>
-Subject: [PATCH v18 1/5] rust: Introduce interrupt module
-Date: Thu,  5 Feb 2026 15:44:27 -0500
-Message-ID: <20260205204709.528234-2-lyude@redhat.com>
+Subject: [PATCH v18 3/5] rust: sync: use super::* in spinlock.rs
+Date: Thu,  5 Feb 2026 15:44:29 -0500
+Message-ID: <20260205204709.528234-4-lyude@redhat.com>
 In-Reply-To: <20260205204709.528234-1-lyude@redhat.com>
 References: <20260205204709.528234-1-lyude@redhat.com>
 Precedence: bulk
@@ -74,202 +74,55 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: j_0Zc9_LzzMH4mgWs8rvpiull9xKNS2bYNCtE4GkQbc_1770324438
+X-Mimecast-MFC-PROC-ID: 2N0kWAhNU3l_5E_laQckB48gaRrsk1JBc2t3HKWK_jg_1770324444
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-This introduces a module for dealing with interrupt-disabled contexts,
-including the ability to enable and disable interrupts along with the
-ability to annotate functions as expecting that IRQs are already
-disabled on the local CPU.
-
-[Boqun: This is based on Lyude's work on interrupt disable abstraction,
-I port to the new local_interrupt_disable() mechanism to make it work
-as a guard type. I cannot even take the credit of this design, since
-Lyude also brought up the same idea in zulip. Anyway, this is only for
-POC purpose, and of course all bugs are mine]
+No functional changes.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
-Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
 ---
+ rust/kernel/sync/lock/spinlock.rs | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-V10:
-* Fix documentation typos
-V11:
-* Get rid of unneeded `use bindings;`
-* Move ASSUME_DISABLED into assume_disabled()
-* Confirm using lockdep_assert_irqs_disabled() that local interrupts are in
-  fact disabled when LocalInterruptDisabled::assume_disabled() is called.
-V18:
-* Add missing __rust_helper annotations
-
- rust/helpers/helpers.c   |  1 +
- rust/helpers/interrupt.c | 18 +++++++++
- rust/helpers/sync.c      |  5 +++
- rust/kernel/interrupt.rs | 86 ++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs       |  1 +
- 5 files changed, 111 insertions(+)
- create mode 100644 rust/helpers/interrupt.c
- create mode 100644 rust/kernel/interrupt.rs
-
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index a3c42e51f00a0..ff628e9c5ffdd 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -32,6 +32,7 @@
- #include "err.c"
- #include "irq.c"
- #include "fs.c"
-+#include "interrupt.c"
- #include "io.c"
- #include "jump_label.c"
- #include "kunit.c"
-diff --git a/rust/helpers/interrupt.c b/rust/helpers/interrupt.c
-new file mode 100644
-index 0000000000000..51b319bd4c006
---- /dev/null
-+++ b/rust/helpers/interrupt.c
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/spinlock.h>
-+
-+__rust_helper void rust_helper_local_interrupt_disable(void)
-+{
-+	local_interrupt_disable();
-+}
-+
-+__rust_helper void rust_helper_local_interrupt_enable(void)
-+{
-+	local_interrupt_enable();
-+}
-+
-+__rust_helper bool rust_helper_irqs_disabled(void)
-+{
-+	return irqs_disabled();
-+}
-diff --git a/rust/helpers/sync.c b/rust/helpers/sync.c
-index 82d6aff73b04f..4f474fe847c41 100644
---- a/rust/helpers/sync.c
-+++ b/rust/helpers/sync.c
-@@ -11,3 +11,8 @@ __rust_helper void rust_helper_lockdep_unregister_key(struct lock_class_key *k)
- {
- 	lockdep_unregister_key(k);
- }
-+
-+__rust_helper void rust_helper_lockdep_assert_irqs_disabled(void)
-+{
-+	lockdep_assert_irqs_disabled();
-+}
-diff --git a/rust/kernel/interrupt.rs b/rust/kernel/interrupt.rs
-new file mode 100644
-index 0000000000000..6c8d2f58bca70
---- /dev/null
-+++ b/rust/kernel/interrupt.rs
-@@ -0,0 +1,86 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Interrupt controls
-+//!
-+//! This module allows Rust code to annotate areas of code where local processor interrupts should
-+//! be disabled, along with actually disabling local processor interrupts.
-+//!
-+//! # ⚠️ Warning! ⚠️
-+//!
-+//! The usage of this module can be more complicated than meets the eye, especially surrounding
-+//! [preemptible kernels]. It's recommended to take care when using the functions and types defined
-+//! here and familiarize yourself with the various documentation we have before using them, along
-+//! with the various documents we link to here.
-+//!
-+//! # Reading material
-+//!
-+//! - [Software interrupts and realtime (LWN)](https://lwn.net/Articles/520076)
-+//!
-+//! [preemptible kernels]: https://www.kernel.org/doc/html/latest/locking/preempt-locking.html
-+
-+use kernel::types::NotThreadSafe;
-+
-+/// A guard that represents local processor interrupt disablement on preemptible kernels.
-+///
-+/// [`LocalInterruptDisabled`] is a guard type that represents that local processor interrupts have
-+/// been disabled on a preemptible kernel.
-+///
-+/// Certain functions take an immutable reference of [`LocalInterruptDisabled`] in order to require
-+/// that they may only be run in local-interrupt-disabled contexts on preemptible kernels.
-+///
-+/// This is a marker type; it has no size, and is simply used as a compile-time guarantee that local
-+/// processor interrupts are disabled on preemptible kernels. Note that no guarantees about the
-+/// state of interrupts are made by this type on non-preemptible kernels.
-+///
-+/// # Invariants
-+///
-+/// Local processor interrupts are disabled on preemptible kernels for as long as an object of this
-+/// type exists.
-+pub struct LocalInterruptDisabled(NotThreadSafe);
-+
-+/// Disable local processor interrupts on a preemptible kernel.
-+///
-+/// This function disables local processor interrupts on a preemptible kernel, and returns a
-+/// [`LocalInterruptDisabled`] token as proof of this. On non-preemptible kernels, this function is
-+/// a no-op.
-+///
-+/// **Usage of this function is discouraged** unless you are absolutely sure you know what you are
-+/// doing, as kernel interfaces for rust that deal with interrupt state will typically handle local
-+/// processor interrupt state management on their own and managing this by hand is quite error
-+/// prone.
-+pub fn local_interrupt_disable() -> LocalInterruptDisabled {
-+    // SAFETY: It's always safe to call `local_interrupt_disable()`.
-+    unsafe { bindings::local_interrupt_disable() };
-+
-+    LocalInterruptDisabled(NotThreadSafe)
-+}
-+
-+impl Drop for LocalInterruptDisabled {
-+    fn drop(&mut self) {
-+        // SAFETY: Per type invariants, a `local_interrupt_disable()` must be called to create this
-+        // object, hence call the corresponding `local_interrupt_enable()` is safe.
-+        unsafe { bindings::local_interrupt_enable() };
-+    }
-+}
-+
-+impl LocalInterruptDisabled {
-+    /// Assume that local processor interrupts are disabled on preemptible kernels.
-+    ///
-+    /// This can be used for annotating code that is known to be run in contexts where local
-+    /// processor interrupts are disabled on preemptible kernels. It makes no changes to the local
-+    /// interrupt state on its own.
-+    ///
-+    /// # Safety
-+    ///
-+    /// For the whole life `'a`, local interrupts must be disabled on preemptible kernels. This
-+    /// could be a context like for example, an interrupt handler.
-+    pub unsafe fn assume_disabled<'a>() -> &'a LocalInterruptDisabled {
-+        const ASSUME_DISABLED: &LocalInterruptDisabled = &LocalInterruptDisabled(NotThreadSafe);
-+
-+        // Confirm they're actually disabled if lockdep is available
-+        // SAFETY: It's always safe to call `lockdep_assert_irqs_disabled()`
-+        unsafe { bindings::lockdep_assert_irqs_disabled() };
-+
-+        ASSUME_DISABLED
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index f812cf1200428..fbe830c4c54e4 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -101,6 +101,7 @@
- pub mod i2c;
- pub mod id_pool;
- pub mod init;
-+pub mod interrupt;
- pub mod io;
- pub mod ioctl;
- pub mod iov;
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index ef76fa07ca3a2..d75af32218bae 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -3,6 +3,7 @@
+ //! A kernel spinlock.
+ //!
+ //! This module allows Rust code to use the kernel's `spinlock_t`.
++use super::*;
+ 
+ /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+ ///
+@@ -82,7 +83,7 @@ macro_rules! new_spinlock {
+ /// ```
+ ///
+ /// [`spinlock_t`]: srctree/include/linux/spinlock.h
+-pub type SpinLock<T> = super::Lock<T, SpinLockBackend>;
++pub type SpinLock<T> = Lock<T, SpinLockBackend>;
+ 
+ /// A kernel `spinlock_t` lock backend.
+ pub struct SpinLockBackend;
+@@ -91,13 +92,11 @@ macro_rules! new_spinlock {
+ ///
+ /// This is simply a type alias for a [`Guard`] returned from locking a [`SpinLock`]. It will unlock
+ /// the [`SpinLock`] upon being dropped.
+-///
+-/// [`Guard`]: super::Guard
+-pub type SpinLockGuard<'a, T> = super::Guard<'a, T, SpinLockBackend>;
++pub type SpinLockGuard<'a, T> = Guard<'a, T, SpinLockBackend>;
+ 
+ // SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. `relock` uses the
+ // default implementation that always calls the same locking method.
+-unsafe impl super::Backend for SpinLockBackend {
++unsafe impl Backend for SpinLockBackend {
+     type State = bindings::spinlock_t;
+     type GuardState = ();
+ 
 -- 
 2.53.0
 
