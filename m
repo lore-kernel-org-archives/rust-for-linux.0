@@ -1,120 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF363093A6;
-	Thu,  5 Feb 2026 19:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770318316; cv=none; b=b+NIe/LLNQ2/m/GHE3MzbmFAvr1wUVkmYEQk4/ucxRmOd1QgIHHBB6EAT2lB3PtuDwnquD85pbIot9fNNefikZcVr1KbmHsG2dJMWt/gk0DmZyfdKUPFDDipVamNx/Y1ab9UJDr9MkEuIjBtQPwrJog31C/k2kgq8VnZKzwTAqc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770318316; c=relaxed/simple;
-	bh=+lGXg9aKGgu5PYXE6zY8ByxlH1ZZ9v8LToFwBmv61P4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=utL2xkTUBvPIKScy/zNMfE0i3BQwNdTJ3UjYi5rwmKsM1tREvPYakXPNnJ0GzKX0feXpBF1GvZdY2Z13Q1xwh7Ch21HvVL8M3Uhqj9gAht3U6Xu0pak/sBOQfwtSA8CQ5T5xJ6bEGsRS78j8TAi6lDOEod88x+0hZeJMPxdrxsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=njnq9icf; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B923530B53C
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 19:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770320080; cv=pass; b=AZR12noo5+o/S2C2CS3PbMwA0iz5RUyQTjr5JTf1GcXRk7OPTUIzIZtt/K3qdzQguNenWdGRzBOaxL8fw35DKleSjJZJrrL6iJY2RzyqncmPOidKR60b66/xA9psLusyLh2J8jUJS+SqHHbp4k9rKzKxS1kCqpNlbRdT8BiLFdA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770320080; c=relaxed/simple;
+	bh=Fkc9V2w5LCx5vxvCS4OBbSZnYWzsDBvR693KSERcN+g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W8s+zJQvsLxz8+dSJ0vy9hPDtQWf7UlKZe7MlGMxdymnBEj4NUrcBmZkplDOQMWekXZZ+zc+abjFs6PvOogj9q41m3WoZxL8nBSR2QZ4bekjTrpWUvgPpbueZKYU6jrpzKCFTh5AgDJYI6GUhsx1wMc+GmlHD4omoQeOAqvu9k4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pl4qgpiB; arc=pass smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="njnq9icf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D38C4CEF7;
-	Thu,  5 Feb 2026 19:05:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770318316;
-	bh=+lGXg9aKGgu5PYXE6zY8ByxlH1ZZ9v8LToFwBmv61P4=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=njnq9icfLpWLGyFLUKKHz/g2QNTILw6j8z+lYIjhL+qZaGzzpZl2YYIjaVrHVDyG5
-	 Cvnb1uBsh91jaUR0XB1eXAJyAt5Qbe1DUqrx4yBaSV0YzGqEjsNO1MulCyas3bH5U2
-	 85h/ZSo2fzv8b0wglNRiB+fB27EKuPWFRolX1Sp8ikXls0XlSrGtQnuptrXT7glIBX
-	 vDLcpbqi/HdZnIt13E5gSs7C+Sk8WSc6h08osKSCUsXYcjlq/E5pcWe2P4z9r1S69W
-	 xmJE+zd4JENgz2YwncaWYqb5xdZpRtKotSnJ56y+vie/r4qUaguz7RcifOzAfBv7PK
-	 YyNbHkn1AqbPA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pl4qgpiB"
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-124b07e5fe4so73420c88.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 11:34:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770320080; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ligSZiwao6YrE7GCku/3OH01NSEfUJkv9DQ2Y4wgouhyYwMOgWY8avR/uBw/61U0vf
+         6OzhkIfDoVNMLspoR6niU1G30lkscV+q62oZaiLpI3rHOkNkPB1FZGZHMROVwLBhJrCS
+         9hGOCXCwykanAOvlN4vV1/gcKvi3Kz8ZQYk6vYWpatoouJeGF+k5+REVNHrgEEjDv0kZ
+         JtRABq+FQRxe3BjRyXLcQ440QQvSnxXur6sahS2EN/mNfg4SRCoEm6MYJtY4PoUg0sEY
+         Oi8K3n6VPDvkObVQs+v+QYJgCoiO4RFHIVmIS5uNGX8m+candryZFANY9r40y9/2JK8R
+         u+fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Fkc9V2w5LCx5vxvCS4OBbSZnYWzsDBvR693KSERcN+g=;
+        fh=UdOKAGUUDhR6daBy8To9pfhvITDKwsRp89KW2W6UbA4=;
+        b=UM/Pa/oxidmkU3ZBwDbdMKHYw+FtnvZY/3XC9GOhqgg6z4++lq9renxGiwB3/k9cm+
+         Y/i3+iRu3DB66ME3O2qkfxIrNSapMRHbGMuGi/MscXIExgf44jiIbVn3biq+CfGv4i/r
+         VEzXxS1AEqRe7ziAshlLQn9PkYqXlKU6QcHW/qRN3V+q0QFLrguL/PsRccUscmpOyFom
+         aEF55SUv408QqPV0ihMAOCn6W0lTWn2g8P6NJ8YdBa9VYf2Bw2QNb5c1aA42LnwPTL/m
+         ctZAPy7Q5kTRWHOOfmprQBehdWV5fg+7EK3Ed7YlqLJJaZAnTrKnxvq+nEF+aNWrqUP6
+         LDOQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770320080; x=1770924880; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fkc9V2w5LCx5vxvCS4OBbSZnYWzsDBvR693KSERcN+g=;
+        b=Pl4qgpiBz3Ep0LW1nXK/Fm3tEsrOxZMWBFmPCG5C86+z2yUX0Ku4VAsBpfAk8XzfOY
+         v08Guguxr3tPQadRlI2YHWFi3gq61Zo83w0N1fBTacNuRa4oMSySxGwFwDG3YqKMxk29
+         YaC1EPR8kLZ7fewjjutcfL+dPUVl2iKwLhFa+X8Na8VKkjzQyhGZ7TWzs+nDjj/53np0
+         BGc6V5lSaGCvd9rx8iBXg9CljYxAb7yo5ndHq0E+q+pUZHI2Z41QBvb/57305j68EWYR
+         xg1IWKrAP44iMn1BV8iz61tVFRGMqG1lWYkFuAbJD+MQUjblF2c70WliYULSu1K8mU/K
+         vbrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770320080; x=1770924880;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Fkc9V2w5LCx5vxvCS4OBbSZnYWzsDBvR693KSERcN+g=;
+        b=AinFBnU7MmzjL9zkl2ErJmjTTkZwe2B1lb/nyHAOPrSJa8rcDAKFqbQLlPODYmJtQD
+         8eMwvt1jcmyY4L5mN9vhUBH5BD4CZ2ONQ5m9D2mekBKEKaqG2eGdD923kCDkRAbKaUHg
+         s1qIT/gQ8M5Pvaara+nvi/kl25JAcpO7kD7BfeRYBt717XUSP79I+Fgedj4IpqqQFjqg
+         VTDeG7AQ5ceLuIot5M0wU1fs5DuNOoOhKOTYZ26SvZO61JwYVgVGhWw0hXy/jtXoGPkR
+         BzRQgrb+Vo+x90WXqaVNlc44VLochtmNV0D3jJ+xuRuzXH02HqDScrMjF7BL1KXlDy9M
+         ELFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOYlRsNk0CFKYrJ/8Lmbwpefz7oB3WXU6t02y/TwEYF+TxzOp1xe0mNQ0vecohHVTtJy8FuszU9StpqN8fnA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVgF9SESMynza1obmw+qNcGHOZlZQkhv49escMgMgqEFwfHRXW
+	kjqZZR1zzOHokuY4RlYHlOeyRHonk/rlLPRYljisONzJDYIzwvFMrXAPWnF4ph1R0wz4scXwjHU
+	8YVdJvTm9ztp0ZBSzMMZm5cQrHJrPkxM=
+X-Gm-Gg: AZuq6aKFQMf9uO+lkKUJS0Asvvq41ZyxCEfCuwmXBhcnUk+nWJgAVSZ2nLsF05/d6Z3
+	p2tWg3ckjuBHknKKX7/0lQIfBGtwoeH51fjxuudI95EPxuexi9HEVGbf5e8bKwaa/X6lZUEawbC
+	WVaB1TsMCeAv2bUJ8Wk7chZOFmQyJiR4K7GcFQNJHEvdxHP0j7zaAtW7kXn/TrAjP+MO31eTt56
+	pREzAShGJ4DPGGt+Xf0cOvef431ceLjfimkZTmajngjvk+dAN1f1HGvmyMm1LLawG9cVam9Rzfv
+	GljT+RXbHbAhlzeuAFI62eQoSA5Sz6GlTHGUD2luqSBpPZdh8QIKp4F5wIUr5wjUBN9222tB3Z4
+	nPbix+NLxPPEW
+X-Received: by 2002:a05:7301:1f05:b0:2b7:fac6:a9f4 with SMTP id
+ 5a478bee46e88-2b856a4c965mr38975eec.4.1770320079827; Thu, 05 Feb 2026
+ 11:34:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260204210125.613350-1-mkchauras@gmail.com> <20260204210125.613350-4-mkchauras@gmail.com>
+ <aYSgjPD5KRcNN0j4@luna> <1ed12a72-06e4-461b-907e-2581e25e3e38@linux.ibm.com> <aYS2oWCE0ZCC3don@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+In-Reply-To: <aYS2oWCE0ZCC3don@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 5 Feb 2026 20:34:27 +0100
+X-Gm-Features: AZwV_QiXdOwsA6Cs9ikWk94o2hhbKT_np0MzoS_FXf6_Mvy8gIUKQAkUYwzBM0s
+Message-ID: <CANiq72mi-V_SF+JErMJu1wZEd27HPHqhsxE8dELtd5e3ZEaA4w@mail.gmail.com>
+Subject: Re: [PATCH V2 3/3] powerpc: Enable Rust for ppc64le
+To: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Jubilee Young <workingjubilee@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Link Mauve <linkmauve@linkmauve.fr>, ojeda@kernel.org, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
+	peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
+	rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, clang-built-linux <llvm@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Feb 2026 20:05:08 +0100
-Message-Id: <DG79GRI3NOLS.3ASMS9RJ80IXM@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/4] rust: io: Add big-endian read and write
- functions
-Cc: "Gary Guo" <gary@garyguo.net>, "Link Mauve" <linkmauve@linkmauve.fr>,
- <rust-for-linux@vger.kernel.org>, "Madhavan Srinivasan"
- <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>, "Nicholas
- Piggin" <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>, "Srinivas Kandagatla" <srini@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Ard
- Biesheuvel" <ardb@kernel.org>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, "Eric Biggers" <ebiggers@google.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Lyude Paul"
- <lyude@redhat.com>, "Asahi Lina" <lina+kernel@asahilina.net>, "Viresh
- Kumar" <viresh.kumar@linaro.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
- <officialTechflashYT@gmail.com>, "Ash Logan" <ash@heyquark.com>, "Roberto
- Van Eeden" <rw-r-r-0644@protonmail.com>,
- =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
- <20260204040505.8447-2-linkmauve@linkmauve.fr>
- <DG6A0WRA0JZC.SPDT9WEXF92K@kernel.org>
- <EC479D9E-ADBF-461C-BEA6-06EA2D4FD8A6@collabora.com>
- <DG74LUHX3NPX.3BLARQEIFG1DD@garyguo.net>
- <D6227AA2-A727-4F29-B7CD-BE0AAB0A13F1@collabora.com>
-In-Reply-To: <D6227AA2-A727-4F29-B7CD-BE0AAB0A13F1@collabora.com>
 
-On Thu Feb 5, 2026 at 6:28 PM CET, Daniel Almeida wrote:
->> On 5 Feb 2026, at 12:16, Gary Guo <gary@garyguo.net> wrote:
->> I think we should have everything default to little endian, and have wra=
-pper
->> types that do big endian which require expicit construction, similar to
->> RelaxedMmio in Alex's series.
+On Thu, Feb 5, 2026 at 6:29=E2=80=AFPM Mukesh Kumar Chaurasiya
+<mkchauras@gmail.com> wrote:
 >
-> Ah yes, the RelaxedMmio pattern is definitely a good one. I agree that we
-> should head in this direction.
+> use rust version nightly-2026-01-28
+>
+> the latest one has some issue. I just raised a bug for the rustc
+> here[1].
+>
+> [1] https://github.com/rust-lang/rust/issues/152177
 
-I strongly disagree.
+It appears to be a bug in LLVM 22 for ppc64, not present in 21.
 
-This is a great pattern for relaxed ordering because:
+If I understand correctly, then it may be fixed in 22.1.9 if it gets releas=
+ed.
 
-  (1) We need both strict and relaxed ordering.
+Thanks Jubilee for the quick reply there!
 
-  (2) Relaxed ordering is rare, hence it doesn't hurt to write e.g.
+Cc'ing Clang/LLVM build support, in case they didn't hear about it.
 
-	io.relaxed().write()
+I linked it in our usual lists.
 
-  (3) If you by accident just write
-
-	io.write()
-
-      i.e. forget to call relaxed() it s not a bug, nothing bad happens.
-
-Whereas for endianness it is a bad pattern because:
-
-  (1) Devices are either little-endian or big-endian. Hence, having to writ=
-e
-
-	io.big_endian().write()
-
-      is excessive, we always want big-endian for a big-endian device.
-
-  (2) It is error prone, if you forget to call big_endian() first, it is a =
-bug.
-
-  (3) It is unergonomic in combination with relaxed ordering.
-
-	io.big_endian().relaxed().write()
-
-      (Does the other way around work as well? :)
-
-It makes much more sense to define once when we request the I/O memory whet=
-her
-the device is litte-endian or big-endian.
-
-This could be done with different request functions, a const generic or a
-function argument, but it should be done at request time.
+Cheers,
+Miguel
