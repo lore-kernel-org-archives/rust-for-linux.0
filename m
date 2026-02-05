@@ -1,242 +1,143 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35D919B5A3
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Feb 2026 17:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770312437; cv=none; b=t/dENwkhmUyu8HIOmESoLFj5f98ihsfk1Oy7N6J43S/bqgthriT3+0H6CctzDlGxYwG/xY5KEYQb5mKUahKFZ+q6/0yzrF8f0xLa2lvVfPzZglKO3kjPvLDUMQ0syhBRxhwn1SsnnFCrxf6n544xsn2EdlkswAegQLUqLqxjzSo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770312437; c=relaxed/simple;
-	bh=izqBODmFAviQ2NKnu7VQeTedhjow1AWYd4vTKWMTCsg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hBALAWQafpQBGMdhH+XXbRk0mmj2qNe0C5blOg992/HqSYYcbl+bMtqj+X21COSqPrtzIgAJ5pau0rWoTMZ8/s3xjPPaBJS2AlQNF3d3+5ffYjITQ6xy3vr2Op93htYJd+9rVAWizGVG9QjnXaTOnHPDyMXFEfYH8nsTQTfVH/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AWAj4F6Z; arc=none smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C218C29E10C;
+	Thu,  5 Feb 2026 17:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770312626; cv=pass; b=Or6S4AxJt/iWPit5UaALnJ5rHmVTYqbXJh8u05e5VknYCp0sJNQAH9vkJrWux56wIE0Ohrwl9GIXix3KgxYjrvawA2IkYzvy6VJLwOlBLjg+9eGWVwLO1OEu4+FuaBn0+TnfGIDBYejDdpO5bk/O3wxBL93r4lDkvg727SEryKU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770312626; c=relaxed/simple;
+	bh=M3obdoKTXeSYmymRy2ZWHekuDCWgCx8je6+4eO2cz9k=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=D0YTsRtoLuxhxjgn62+9lN6ZyStSq6wqb3zPHomtnu6TvD+2wpMdOvs8REVQj5R3oD8PxDxFB20hXA4NQB3x/ajpiHlhRJvMOPSGfrdw3pxPK/8CRIasCbg7W6RkvuYVREsIVNGPTyJpNsofl2xvHa7rKZ51Pp1/R+kYO6tcc+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Yc9/zHHe; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AWAj4F6Z"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-11f1fb91996so771747c88.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 09:27:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770312436; x=1770917236; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Tx7GpESeBXhVOZe1lCiVB4TdYsATVnhqG/m2mu3LDKs=;
-        b=AWAj4F6Zn6uO6xukkccIDiJkfct85hUst3Dvuw/+XH5DDPK5zMHlwsrGZ/+UabVDQH
-         LeEkHhhsoEkIIgiBuuEfBACHT2RKL+TFM7QGsmhhFo8TNeuFDJw0GBohCuA6z/7H8weG
-         3lb5Cl9mtn1jOwIPj+0G2cuXUWfCfNWT8hwTsRyZzHOFcoIcMNk++w5QDkszEB5lO8fU
-         xOm+ahwrppr2xDotsVyBkaXVj42z+5HWxrqdQ498jtbzoJIH/+dAlfrjtlyGWcy5q5tl
-         7wwU+S23mLkC49pjLEwl1VUf72RAo4qH4ozg6fvhS5WF9EfnZ/rVRNZWzdsIlgAvXbNW
-         /FHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770312436; x=1770917236;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tx7GpESeBXhVOZe1lCiVB4TdYsATVnhqG/m2mu3LDKs=;
-        b=Zr1Ti3sfFvHjUg5p1Vo95Rn7e8PKxXGZ1LKQ0Afg3kahpZLfDa4PcHYcR+buVNd9t2
-         w+/IvoQVWs8zveGb1xex4ocBe9KlImTel2aZW8ClvplhV1XrZP1m8POAgeXVzluB3OGI
-         GRjqlkaNcr7v5dz8J054hCG4I44bqZ2ZybQDObrhOaVxdTuTsciit3Ff8mqh6GTnUq9H
-         /zCeF/pEwPCKvxZwyQsquYpuoF7cmqrJBznQPZez9ZRbHz3bNWvGvIHDcqwmSCHBvAoP
-         O4eNSQtfQ4XdKicV+7TXJt1pdCDA6HTNIJ0Zanxsy91F2dNKGvqB4M5nOk3PUczWeO+x
-         pUkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWp6sZ2XqNVG9rma7px+RJjtmAf4jC6je2iSagYVBu5U66OOxD1eU3ZjDzEMwZQDh79kMfEq2I1Ov47+IWq9w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3gZYxhgr0ilNgWtf9EZQC6m+qUosuh8u3aIjgfcsZj+/zkirZ
-	559kVoIU4UFsJcdr67dQKB74et8+2LhsTLi53c1Cnrm8R1nbkfVk4nLjoy2K7Q==
-X-Gm-Gg: AZuq6aI5Z7xvYqJMucu9jlSCWNuQ9rO+4YSuTWBgBmVKVqHi8soLInYXvfB6W9Y/HQ1
-	/9vul0j6S0E7JlyOCgZzyEOVEmc0p2D2eWuSGJVk+N5kaDw8JGxUZd9srsAQhT6yL6U8k/4NM4Z
-	FASgyISmSSIZGHSe62B5nWcy/doFfRaGLQ7G3EAyYdHagnvTvP4zTRy97c29W44yca5gqf4COlN
-	ZuieyYraIunRTAVVek67DZVC1eWRIgXa+sWJMeOocz6n01PM0HPMPPMNfbn5DJgfJETcZ7BkAo9
-	ItEnYB/Xm7nFU7xa6YfYTbMrrj6aE/Wmt4g9yxQ8yrAKq1aSqYvsIRJK2g1AlaHI0W3I8UzXPhz
-	ibK+TGl5Gak/q5mER0QFQ0OdDXsTOr9rYJO0pYqVvu6HnrbI5D9Hii5z1t/GnXnWf3oWQfeHRBC
-	URWPLEtsRqu9L9kN7NXyV8chmN703cE6kMsgBUmu5N5dTcEsZM2PBFaYO/
-X-Received: by 2002:a17:90b:2f90:b0:352:f2a6:334 with SMTP id 98e67ed59e1d1-35487102a6bmr6730739a91.16.1770306131994;
-        Thu, 05 Feb 2026 07:42:11 -0800 (PST)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.167.8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a933898388sm74985365ad.34.2026.02.05.07.42.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 07:42:11 -0800 (PST)
-Date: Thu, 5 Feb 2026 21:12:01 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Cc: Link Mauve <linkmauve@linkmauve.fr>, ojeda@kernel.org, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH V2 3/3] powerpc: Enable Rust for ppc64le
-Message-ID: <aYS2oWCE0ZCC3don@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260204210125.613350-1-mkchauras@gmail.com>
- <20260204210125.613350-4-mkchauras@gmail.com>
- <aYSgjPD5KRcNN0j4@luna>
- <1ed12a72-06e4-461b-907e-2581e25e3e38@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Yc9/zHHe"
+ARC-Seal: i=1; a=rsa-sha256; t=1770312503; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=KY6VO4SW0l1XxLDMZAUouQ9cD/iD79peHutQ0KQl5cAI58ncNvJiwtti9CY+/LYTVq8LVGaLx336qvFBW1nK0uYYN2FuP/dNcWPaFKQ6jtUH8q6nkX08vhqiZNfvamEqVNCEL490lsca1gNnCM+e8ABuf1gRRhdJeaEVBl/m0ds=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770312503; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=M3obdoKTXeSYmymRy2ZWHekuDCWgCx8je6+4eO2cz9k=; 
+	b=AI9TcGWkwp+RSBSUD9nITIIqJfIVXzeaXrynOiGtGCeC7xga1Mx2FZqa545SafwUkohb0usPV2V+uykcUAtSnpNwHPaADnqfWKH5kkc58PPZkwlRvwUMF96l42SKABb/Ab8vR9WJ01ZMPFDwFKGvWfLr0+koo4PQJpOuC2fqL2E=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770312503;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=M3obdoKTXeSYmymRy2ZWHekuDCWgCx8je6+4eO2cz9k=;
+	b=Yc9/zHHe5skqGxSIwFV74mpj8b7Z8wpKWECEoqUHgcOO/reDAn1SN404GZ5Hqgyx
+	WCLGah93CW5lnhrUrCd7P5HLtEWOa6Aq6dSg99urt9jhv8/vJFTRFq6KzJpIG68pkpU
+	uWM6vu+6u0jcTtdMq20BY875GeV0LtkJT1Jsjj1M=
+Received: by mx.zohomail.com with SMTPS id 1770312501926532.5023520135724;
+	Thu, 5 Feb 2026 09:28:21 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 1/4] rust: io: Add big-endian read and write functions
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DG74LUHX3NPX.3BLARQEIFG1DD@garyguo.net>
+Date: Thu, 5 Feb 2026 14:28:01 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Link Mauve <linkmauve@linkmauve.fr>,
+ rust-for-linux@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Srinivas Kandagatla <srini@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Eric Biggers <ebiggers@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Lyude Paul <lyude@redhat.com>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Tamir Duberstein <tamird@kernel.org>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ officialTechflashYT@gmail.com,
+ Ash Logan <ash@heyquark.com>,
+ Roberto Van Eeden <rw-r-r-0644@protonmail.com>,
+ =?utf-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <1ed12a72-06e4-461b-907e-2581e25e3e38@linux.ibm.com>
+Message-Id: <D6227AA2-A727-4F29-B7CD-BE0AAB0A13F1@collabora.com>
+References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
+ <20260204040505.8447-2-linkmauve@linkmauve.fr>
+ <DG6A0WRA0JZC.SPDT9WEXF92K@kernel.org>
+ <EC479D9E-ADBF-461C-BEA6-06EA2D4FD8A6@collabora.com>
+ <DG74LUHX3NPX.3BLARQEIFG1DD@garyguo.net>
+To: Gary Guo <gary@garyguo.net>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Thu, Feb 05, 2026 at 08:21:31PM +0530, Venkat Rao Bagalkote wrote:
->=20
-> On 05/02/26 7:22 pm, Link Mauve wrote:
-> > On Thu, Feb 05, 2026 at 02:31:25AM +0530, Mukesh Kumar Chaurasiya (IBM)=
- wrote:
-> > [=E2=80=A6]
-> > > diff --git a/rust/Makefile b/rust/Makefile
-> > > index ae22f2c5f0b3..c3961fd0d9a4 100644
-> > > --- a/rust/Makefile
-> > > +++ b/rust/Makefile
-> > > @@ -392,10 +392,17 @@ BINDGEN_TARGET_x86	:=3D x86_64-linux-gnu
-> > >   BINDGEN_TARGET_arm64	:=3D aarch64-linux-gnu
-> > >   BINDGEN_TARGET_arm	:=3D arm-linux-gnueabi
-> > >   BINDGEN_TARGET_loongarch	:=3D loongarch64-linux-gnusf
-> > > -BINDGEN_TARGET_powerpc	:=3D powerpc-linux-gnu
-> > >   BINDGEN_TARGET_um	:=3D $(BINDGEN_TARGET_$(SUBARCH))
-> > >   BINDGEN_TARGET		:=3D $(BINDGEN_TARGET_$(SRCARCH))
-> > > +ifdef CONFIG_PPC64
-> > > +ifdef CONFIG_CPU_LITTLE_ENDIAN
-> > > +BINDGEN_TARGET_powerpc	:=3D powerpc64le-linux-gnu
-> > > +endif
-> > > +else
-> > > +BINDGEN_TARGET_powerpc	:=3D powerpc-linux-gnu
-> > > +endif
-> > You define BINDGEN_TARGET_powerpc after BINDGEN_TARGET has been set to
-> > the value of $(BINDGEN_TARGET_$(SRCARCH)), so it is empty and bindgen
-> > then gets passed --target=3D which makes it fail here, with this error
-> > message:
-> > ```
-> > bindgen ../rust/bindings/bindings_helper.h --blocklist-type __kernel_s?=
-size_t --blocklist-type __kernel_ptrdiff_t --opaque-type xregs_state --opaq=
-ue-type desc_struct --opaque-type arch_lbr_state --opaque-type local_apic -=
--opaque-type alt_instr --opaque-type x86_msi_data --opaque-type x86_msi_add=
-r_lo --opaque-type kunit_try_catch --opaque-type spinlock --no-doc-comments=
- --blocklist-function __list_.*_report --blocklist-item ARCH_SLAB_MINALIGN =
---blocklist-item ARCH_KMALLOC_MINALIGN --with-derive-custom-struct .*=3DMay=
-beZeroable --with-derive-custom-union .*=3DMaybeZeroable --rust-target 1.68=
- --use-core --with-derive-default --ctypes-prefix ffi --no-layout-tests --n=
-o-debug '.*' --enable-function-attribute-detection -o rust/bindings/binding=
-s_generated.rs -- -Wp,-MMD,rust/bindings/.bindings_generated.rs.d -nostdinc=
- -I../arch/powerpc/include -I./arch/powerpc/include/generated -I../include =
--I./include -I../arch/powerpc/include/uapi -I./arch/powerpc/include/generat=
-ed/uapi -I../include/uapi -I./include/generated/uapi -include ../include/li=
-nux/compiler-version.h -include ../include/linux/kconfig.h -include ../incl=
-ude/linux/compiler_types.h -D__KERNEL__ -mbig-endian -m32 -I ../arch/powerp=
-c -fmacro-prefix-map=3D../=3D -std=3Dgnu11 -fshort-wchar -funsigned-char -f=
-no-common -fno-PIE -fno-strict-aliasing -msoft-float -mcpu=3Dpowerpc -mno-p=
-refixed -mno-pcrel -mno-altivec -mno-vsx -mno-mma -fno-asynchronous-unwind-=
-tables -mbig-endian -fno-delete-null-pointer-checks -Os -fno-stack-protecto=
-r -fomit-frame-pointer -ftrivial-auto-var-init=3Dzero -fno-strict-overflow =
--fno-stack-check -fno-builtin-wcslen -Wall -Wextra -Wundef -Werror=3Dimplic=
-it-function-declaration -Werror=3Dimplicit-int -Werror=3Dreturn-type -Werro=
-r=3Dstrict-prototypes -Wno-format-security -Wno-trigraphs -Wno-frame-addres=
-s -Wno-address-of-packed-member -Wmissing-declarations -Wmissing-prototypes=
- -Wframe-larger-than=3D1280 -Wno-main -Wno-dangling-pointer -Wvla-larger-th=
-an=3D1 -Wno-pointer-sign -Wcast-function-type -Wno-array-bounds -Wno-string=
-op-overflow -Wno-alloc-size-larger-than -Wimplicit-fallthrough=3D5 -Werror=
-=3Ddate-time -Werror=3Dincompatible-pointer-types -Werror=3Ddesignated-init=
- -Wenum-conversion -Wunused -Wno-unused-but-set-variable -Wno-unused-const-=
-variable -Wno-packed-not-aligned -Wno-format-overflow -Wno-format-truncatio=
-n -Wno-stringop-truncation -Wno-override-init -Wno-missing-field-initialize=
-rs -Wno-type-limits -Wno-shift-negative-value -Wno-maybe-uninitialized -Wno=
--sign-compare -Wno-unused-parameter -DGCC_PLUGINS -I../rust -Irust -DKBUILD=
-_MODFILE=3D'"rust/bindings_generated"' -DKBUILD_BASENAME=3D'"bindings_gener=
-ated"' -DKBUILD_MODNAME=3D'"bindings_generated"' -D__KBUILD_MODNAME=3Dkmod_=
-bindings_generated -w --target=3D -fno-builtin -D__BINDGEN__ -DMODULE  ; se=
-d -Ei 's/pub const RUST_CONST_HELPER_([a-zA-Z0-9_]*)/pub const /g' rust/bin=
-dings/bindings_generated.rs
-> > error: unsupported option '-mbig-endian' for target ''
-> > error: unsupported option '-mcpu=3D' for target ''
-> > error: unsupported option '-mno-prefixed' for target ''
-> > error: unsupported option '-mno-pcrel' for target ''
-> > error: unsupported option '-mno-altivec' for target ''
-> > error: unsupported option '-mno-vsx' for target ''
-> > error: unsupported option '-mno-mma' for target ''
-> > error: unsupported option '-mbig-endian' for target ''
-> > error: unknown target triple 'unknown'
-> > panicked at bindgen/ir/context.rs:562:15:
-> > libclang error; possible causes include:
-> > - Invalid flag syntax
-> > - Unrecognized flags
-> > - Invalid flag arguments
-> > - File I/O errors
-> > - Host vs. target architecture mismatch
-> > If you encounter an error missing from this list, please file an issue =
-or a PR!
-> > ```
-> >=20
-> > Did this work on PPC64?
->=20
-> On ppc64le, I am not able to get a successful Rust=E2=80=91enabled build =
-yet.
-> I am consistently hitting bindgen/libclang failures during the prepare
-> phase.
->=20
->=20
-> Build Failures:
->=20
-> error: unsupported option '-mlong-double-128' for target 'unknown'
-> error: unsupported argument 'medium' to option '-mcmodel=3D' for target
-> 'unknown'
-> error: unknown target triple 'unknown'
-> panicked at bindgen-0.72.1/ir/context.rs:562:15:
-> libclang error; possible causes include:
-> - Invalid flag syntax
-> - Unrecognized flags
-> - Invalid flag arguments
-> - File I/O errors
-> - Host vs. target architecture mismatch
->=20
-> make[2]: *** [rust/Makefile:468: rust/bindings/bindings_generated.rs] Err=
-or
-> 101
-> make[2]: *** Deleting file 'rust/bindings/bindings_generated.rs'
->=20
-> make[2]: *** [rust/Makefile:488:
-> rust/bindings/bindings_helpers_generated.rs] Error 101
-> make[2]: *** Deleting file 'rust/bindings/bindings_helpers_generated.rs'
->=20
-> make[2]: *** [rust/Makefile:474: rust/uapi/uapi_generated.rs] Error 101
-> make[2]: *** Deleting file 'rust/uapi/uapi_generated.rs'
->=20
-> make[2]: *** [rust/Makefile:643: rust/core.o] Error 1
-> make[1]: *** [/root/linux/Makefile:1320: prepare] Error 2
-> make: *** [Makefile:248: __sub-make] Error 2
->=20
->=20
-> Regards,
->=20
-> Venkat.
->=20
-hey,
 
-use rust version nightly-2026-01-28
 
-the latest one has some issue. I just raised a bug for the rustc
-here[1].
+> On 5 Feb 2026, at 12:16, Gary Guo <gary@garyguo.net> wrote:
+>=20
+> On Thu Feb 5, 2026 at 2:28 PM GMT, Daniel Almeida wrote:
+>>=20
+>>=20
+>>> On 4 Feb 2026, at 12:18, Danilo Krummrich <dakr@kernel.org> wrote:
+>>>=20
+>>> On Wed Feb 4, 2026 at 5:04 AM CET, Link Mauve wrote:
+>>>> Another option would be to call u32::swap_bytes() on the data being
+>>>> read/written, but these helpers make the Rust code as ergonomic as =
+the C
+>>>> code.
+>>>>=20
+>>>> Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+>>>=20
+>>> The I/O stuff recently changed quite significantly, please have a =
+look at the
+>>> driver-core-next branch [1] in the driver-core tree.
+>>>=20
+>>> Also, instead of providing additional *be() methods, we should just =
+create a new
+>>> type io::Endianness and use it to indicate the device endianness =
+when requesting
+>>> the I/O resource.
+>>>=20
+>>> For instance, for your driver we could have
+>>>=20
+>>> request.iomap_exclusive_sized::<8>(Endianness::Big)?
+>>=20
+>> Can we please structure this in a way that LittleEndian is the =
+default?
+>> Perhaps using a const generic that is defaulted, or something along =
+these lines.
+>=20
+> I think we should have everything default to little endian, and have =
+wrapper
+> types that do big endian which require expicit construction, similar =
+to
+> RelaxedMmio in Alex's series.
+>=20
+> Best,
+> Gary
+>=20
 
-[1] https://github.com/rust-lang/rust/issues/152177
+Ah yes, the RelaxedMmio pattern is definitely a good one. I agree that =
+we should head in this direction.
 
-Regards,
-Mukesh
+=E2=80=94 Daniel
 
-> > > +
-> > >   # All warnings are inhibited since GCC builds are very experimental,
-> > >   # many GCC warnings are not supported by Clang, they may only appea=
-r in
-> > >   # some configurations, with new GCC versions, etc.
-> > > --=20
-> > > 2.52.0
-> > >=20
-> > With this fixed:
-> > Reviewed-by: Link Mauve <linkmauve@linkmauve.fr>
-> > Tested-by: Link Mauve <linkmauve@linkmauve.fr>
-> >=20
