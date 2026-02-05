@@ -1,403 +1,439 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011027.outbound.protection.outlook.com [40.107.208.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA00E78F4A;
-	Thu,  5 Feb 2026 11:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770292634; cv=none; b=l5SPNrqkfTeTT0TEiqMe+kxIfGQYXIASRWux9uwa5aWlchEOwKnARI/VnFySZvOpxwUO3kPdVg36f+pL2sxs3aUFtBo8rycgEq4I3tNPRKwAS0vpGQ2+nXnbYDybElaRrdZ51jhVMlNuEUNKF9+UDiIXCAEHDRAhs40IGOqf0Os=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770292634; c=relaxed/simple;
-	bh=DguZDlWLWr8gBzpI5v+sNa53zJp0emvM6ED3g0V30eA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=KiWlH41ZuAGdI0gfacNoM/R/mSffVIPCpO4qYz2NMHVXRXJqxk6ksQjVYjfF+mkZWHCSPMAKgfOX6m24uwWUAPMaP96tKgAWc1vwx0RHSKm35wyPW4W2CWRz3nmSEa59GCYc+vglHBThpE7kTuktjv+ICl1ATNaWTn7AnKSBZOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RnILbkFh; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A056B3ACA71;
+	Thu,  5 Feb 2026 11:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770292666; cv=fail; b=tKhFyYjuXqdWit9ln91nuu9c5y+VqqLsbizM0ZWsy6ifJdhbdbENR43e84JtsomdoCdNOROL1vDI+x1Xm9rHrk0hM074dyR3mqKeamp+3LTQjTwtiKnZ7OCuGcDphoxiYQmOFY46NOixC+fJfSuX2FiNzuN7vqmWEtlZt6sd1bI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770292666; c=relaxed/simple;
+	bh=EO+rWNlKje0a32amTTmpDk5HHZvuTIJyIT/kjaPyfxk=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Cxh3o7CJY/ZkNssvURhDImzk2WmeAFbmNoewznDqMudj3XSZY5Plonem+Lxmv9/8k3DaRMWuLpiVMg7Vw8KF3T2QTCmcfEpsN2Szksi7ZB7N5ClNNqCBQJvHolgka6YeKvGLUSKMBQA7+TPBN0DUk8tJcoyb2qPKhB0P8qKxkBc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OgOpx+Sg; arc=fail smtp.client-ip=40.107.208.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RnILbkFh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F887C4CEF7;
-	Thu,  5 Feb 2026 11:57:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770292634;
-	bh=DguZDlWLWr8gBzpI5v+sNa53zJp0emvM6ED3g0V30eA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=RnILbkFhe9J8jDu+iWhtbRqGytBrwBvVK4SDnatGYG4lu+On62wQ90h37szLQy+e3
-	 IImIQUCBFCy0dKUZW+J7XTsfaNNwJ81h9x0Rg0AZLfsH9nuhj4NtNvX2Et3glYQHlt
-	 i/qN0rdl7mXMhnIlTiN1yfFpqRE9f8qCdBG7OaBqhzebC0IWHN3y9qhZi2f9FoPCYh
-	 ZtKJQdow2v/78XmUU/8U+F+4JYZvBPjfA/29vqOIcVpLLvpfKRKqTaGo9tkkC+cmPH
-	 Wc1LFEjjEXrqFX2bcVAz5BGau0pg+Cbxt1z9GDvsUXh9SeKqfZOtN7vQsC+SZ2ksgl
-	 GrQ+4ZyPuZO0A==
-Message-ID: <d122f9be-48d6-40b1-9da8-cec445bd8daf@kernel.org>
-Date: Thu, 5 Feb 2026 12:57:04 +0100
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OgOpx+Sg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UlT8kLuztbVRuFt8ALLEpOFR55K1VGt8YI6ht7uNuVkuaEZY7EYnYMfknBqTEHxuAbMsGAQRwDMzuHIoWqZI4qABPn6ZBL3G9H3ZrXPRW4r+XQ+Kp7mGZbhAyL2kX/aV0a7twe8rs6DY9LPAefwX1Hih20J1hbYfhYH7wWOcBP7pA9x8Trbj8MMupQi2toFvd/QDDzqulBYLQeo4kTFCIIcATB4lrhgoWqZB6LCL/vKHfYVE8fq1/aYRmlcH71pSlKz8iHlWzVYvKV4tR93ye88XMUQ45m3J2aHCiTkTOxA88+aFbsN72HG3tvO5PE/Gh/BXlkIYEf6c6m0Os3sLsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aX29Pc+cVVr86hKuFyNzfmvus6o4UTbiLAxn8LpuEr4=;
+ b=pAVWsuRnhclRcEoN5kof8GNKVRCe1tFdiigZ8cMYG3ENVNSoyXFeRYc3s/qF1Gs6VwSlULiEmKlIi/GbYxKg1dJXJD0C6Ebo8pZJEd8NiIFiQ7ZJO2cybBTgEGMz/2Qz6TtOZmPstvZTY/3fNsxA6+QThwh1oambnRxl8eO5HwSsEOcpv+/QhB+ikLzP5L9eitmOwEwgO4Pcowzmkkue/aJkVuNRTwU5sYVb6+z6G7pjYdpHaubfScBsEHTmJMO9H7TnYSoRvrU6L1tgYafX+kuKYabio2jWOgK+aBj5OQmD4blnQA2Q2I0LQUDZ0ITlk5dZUggSPOIsvePC7KPG6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=garyguo.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aX29Pc+cVVr86hKuFyNzfmvus6o4UTbiLAxn8LpuEr4=;
+ b=OgOpx+Sg4ykulexc/Pq+VeuDjihR2GTr1sM1pb815vbXndfrWS4z8GajFA2XNc4yQTFRipAKDW32Htc+a9NzshhGeiJTGJYG6OAMMNJPKieDDZuRgdW5YMpROFjQ8rGXScq4/9KYUF9a1G2s2RAY1gjChZmv0/qCPyuXbS68940loxW9LDzWWQN1fUYBLW3eqIVzyknYRUelIPCL74u63zznXnW1G5rdKLxkO1Bs9osuAjsazvaPWDHwrazCUKj5+OFvB9bNgjWc+hdGk+muwMYgG6z/xYSge2Cur8pmiNPPrrVjkezQEEfqnXW0NCb4S4x+ArzcyiyY5MagxjQc9A==
+Received: from BN0PR04CA0131.namprd04.prod.outlook.com (2603:10b6:408:ed::16)
+ by BL1PR12MB5729.namprd12.prod.outlook.com (2603:10b6:208:384::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Thu, 5 Feb
+ 2026 11:57:37 +0000
+Received: from BN3PEPF0000B072.namprd04.prod.outlook.com
+ (2603:10b6:408:ed:cafe::27) by BN0PR04CA0131.outlook.office365.com
+ (2603:10b6:408:ed::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.14 via Frontend Transport; Thu,
+ 5 Feb 2026 11:57:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BN3PEPF0000B072.mail.protection.outlook.com (10.167.243.117) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9587.10 via Frontend Transport; Thu, 5 Feb 2026 11:57:36 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 5 Feb
+ 2026 03:57:22 -0800
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 5 Feb 2026 03:57:21 -0800
+Received: from inno-thin-ubuntu (10.127.8.12) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Thu, 5 Feb 2026 03:57:15 -0800
+Date: Thu, 5 Feb 2026 13:57:14 +0200
+From: Zhi Wang <zhiw@nvidia.com>
+To: Gary Guo <gary@garyguo.net>
+CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <aliceryhl@google.com>,
+	<bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+	<alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+	<markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
+	<smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+	<kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
+	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
+	<daniel.almeida@collabora.com>
+Subject: Re: [RFC 2/2] pci: Add PCI capability infrastructure and SR-IOV
+ capability support
+Message-ID: <20260205135547.2ffc0df4@inno-thin-ubuntu>
+In-Reply-To: <DFZHE3PGMQHS.3F108QF6VQEQ7@garyguo.net>
+References: <20260126215957.541180-1-zhiw@nvidia.com>
+ <20260126215957.541180-3-zhiw@nvidia.com>
+ <DFZHE3PGMQHS.3F108QF6VQEQ7@garyguo.net>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] mm: export zap_page_range_single and list_lru_add/del
-From: "David Hildenbrand (arm)" <david@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Carlos Llamas <cmllamas@google.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Andrew Morton <akpm@linux-foundation.org>, Dave Chinner
- <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-mm@kvack.org,
- rust-for-linux@vger.kernel.org
-References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
- <20260205-binder-tristate-v1-3-dfc947c35d35@google.com>
- <02801464-f4cb-4e38-8269-f8b9cf0a5965@lucifer.local>
- <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B072:EE_|BL1PR12MB5729:EE_
+X-MS-Office365-Filtering-Correlation-Id: cddbfa01-0614-4bdb-a467-08de64adc17e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700013|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?CmFwOkCCzdLob/Cot6Rl8fep8f4HfYiIjFhypEgpQKbgASay1gArvsn4zrlw?=
+ =?us-ascii?Q?aVsIjQLoVJFliMuVjbJ8tkQjESK7O5RQeV17Lb0hPZ8tuQSsIIxrZA94mE/g?=
+ =?us-ascii?Q?ZbDoOA7NSQM7/rYsPL3gMtWt7XCSe9o48gKAbgCZNIBkD2VBjqpJwJl2A6eQ?=
+ =?us-ascii?Q?t24cJX8hrmwR+HpX/EO1eOJyGaz+b6JJ2rVZDmAF+kpKBYqgVB9E4Uypuc/i?=
+ =?us-ascii?Q?qHj4cpDzBzorxRHww1yFfnhUL2o5imVVAGALODfYcOISj0aijs0vRflQZCAx?=
+ =?us-ascii?Q?QpN3kigNWRFGd4krZJiMzurKDYSjVgVs5ig9RNntcyVJR3ZsWB3bEcWFGJe2?=
+ =?us-ascii?Q?b0wHf4LADIGwiOYDNWFBM3eGApxyuOypNXgzH3kNhAeezZwNzGASFElyPzSp?=
+ =?us-ascii?Q?0mlj0z1RP+xCBkqzorN3mttLDW+LYZBUx2IeGBVO3IHLusFXsgtIFrAHpzCo?=
+ =?us-ascii?Q?dnzMPbqTojiQgzo0OztN1GiVSSQ12kSrXABkcS6witQo+qrm9FnSObpSyxhO?=
+ =?us-ascii?Q?4UdgCpviVGKsSRq7Iq9bIZn+rPOX/4eCscQeRnjP7WkwRIDClQ9ykvTBT6Yo?=
+ =?us-ascii?Q?n5Mqxi5ArS0bIpaMxMhR/JvvL26zZD9aIWGS19WrRJ+Y//t4yL/2yJN6ZYSC?=
+ =?us-ascii?Q?991fB2b5jh5Jiu3/nVOylIpdxW3SDsPTAMonEyaykKWkLs4TFa/tXM1d82/3?=
+ =?us-ascii?Q?tZUGJnqqVxRkOI/pIB06HPXbif7SKCfZj4x119Ob04BJZTU2o/fWzb7UFqQZ?=
+ =?us-ascii?Q?kuH4smZYBVRdZt1Uhv2gqmnNd8GdQDXZr0/ytOW4IHHO+Zc8jPKEo+Iqnbjw?=
+ =?us-ascii?Q?RGkCCLpWUKWyOrctfHYalmtIwIWp4S1DCLVUkjd45ewLAQxznyTPIW9ZsydA?=
+ =?us-ascii?Q?engyesRT0FdbwKxP9JLMrkTKtVlHLFWljP3foVJRxDzll51OqCt9K9/SGZ1u?=
+ =?us-ascii?Q?EdwnhLlS49vFlbLii7tmn6vibC9mP6419O94R7xz1RtO+qZKlcM3foQmQECN?=
+ =?us-ascii?Q?ndeQBVs1IXlmN+YRKqlgeGxXeodKmgdBYPD2jBS9ULBiv2up9m1YlUeHDlMR?=
+ =?us-ascii?Q?7E+G+jYlqjA3Fql7Io6gK76MbcV97NXJS5dMe9amcf8Hf1c2c/bt1/3F32Re?=
+ =?us-ascii?Q?qznm01nWAQgkd1+G0MugU50/I/QHZUtujme4dXFUaRmBnO7rN0OmwPjAjJoP?=
+ =?us-ascii?Q?0XUdk357MSkWEY3Weztq7ClNtt+xnSzsx5a3qJVOl9nL46TT1ieXK4hfdI63?=
+ =?us-ascii?Q?4rQlAYYHbL6eCJF9K+CqkrOiQ/S3a2LGGqoagpUl0Ul5nJBmM0tSGhJqXgHp?=
+ =?us-ascii?Q?woax71XjwU+exAXHCaFf+wgPSQRcS2bXKNmmp28ufs/HCM7bWuoJ4MOhwbDf?=
+ =?us-ascii?Q?uEmx3B81mSS3U4oW8WHY/zDwmlcCcbJX93Z7YGWoKYqgldgvqR3b22ZoUQuU?=
+ =?us-ascii?Q?9fQXUacSYwXjXBNyLiB9iGGQnkb+QGzu9pm62e2TVt89KUpQ/YqJtpSz5IzO?=
+ =?us-ascii?Q?/n2ZlvEI76mGU1l2ZRhP62gjpOAu+QOGdr+d3jlgUt2dY7kZsIPglbm4YXWY?=
+ =?us-ascii?Q?PU2Suc7yiKKGykOfkhJKMS0thiyFG9HwMkGlbHOjvMNUkl1lWVrEEf7/ZLoE?=
+ =?us-ascii?Q?AZ0G9X3QaOplMEf4K/qL4uKiRlgiESfIfdqctDpdJQmWc0NRk/rnD1zxaCsZ?=
+ =?us-ascii?Q?zVbuig=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700013)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	JJ6M1l04QZfmn/oMpfQYuuCGuNb7i19tvv+HO0pgIapCFNZHdEVX5++PwZ1UZa5hpChkSiOAppuaemtQ58FGTiVvVp1oMpmzuRwLccmpYB8KcrrSj+eZCRPVWarnPDc7SRPDIVEpN6WzGhqPmtUga00jYgiFSDlPTTJtZLmKHPsHiy1RANePTeFaXBMtKgI6IRsiqGf1+OBi7fj/5qjvlkQqN/sc4Qc3zVmQ57QHgTHiGHysuen9zm0pzXX+AjUC76ZfZZepuEbDYkFqdwZr5vsik5rQtaCD94c5T0o+jOTHG4SW4D/XGVIF3ZCHbLFnXNNTba+5VntuakZIby9X5VunHzu8c6/qW4qzxANmd9KNAgRd0JA3KPcTha3J+yw/jPOYg4mT5EnjpgOqIt5geXQn9ihJa0rmkt7URrnftTZ58EGoiyGil44w0YRrq7ae
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 11:57:36.9827
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cddbfa01-0614-4bdb-a467-08de64adc17e
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B072.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5729
 
-On 2/5/26 12:43, David Hildenbrand (arm) wrote:
-> On 2/5/26 12:29, Lorenzo Stoakes wrote:
->> On Thu, Feb 05, 2026 at 10:51:28AM +0000, Alice Ryhl wrote:
->>> These are the functions needed by Binder's shrinker.
->>>
->>> Binder uses zap_page_range_single in the shrinker path to remove an
->>> unused page from the mmap'd region. Note that pages are only removed
->>> from the mmap'd region lazily when shrinker asks for it.
->>>
->>> Binder uses list_lru_add/del to keep track of the shrinker lru list, and
->>> it can't use _obj because the list head is not stored inline in the page
->>> actually being lru freed, so page_to_nid(virt_to_page(item)) on the list
->>> head computes the nid of the wrong page.
->>>
->>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->>> ---
->>>   mm/list_lru.c | 2 ++
->>>   mm/memory.c   | 1 +
->>>   2 files changed, 3 insertions(+)
->>>
->>> diff --git a/mm/list_lru.c b/mm/list_lru.c
->>> index 
->>> ec48b5dadf519a5296ac14cda035c067f9e448f8..bf95d73c9815548a19db6345f856cee9baad22e3 100644
->>> --- a/mm/list_lru.c
->>> +++ b/mm/list_lru.c
->>> @@ -179,6 +179,7 @@ bool list_lru_add(struct list_lru *lru, struct 
->>> list_head *item, int nid,
->>>       unlock_list_lru(l, false);
->>>       return false;
->>>   }
->>> +EXPORT_SYMBOL_GPL(list_lru_add);
->>>
->>>   bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
->>>   {
->>> @@ -216,6 +217,7 @@ bool list_lru_del(struct list_lru *lru, struct 
->>> list_head *item, int nid,
->>>       unlock_list_lru(l, false);
->>>       return false;
->>>   }
->>> +EXPORT_SYMBOL_GPL(list_lru_del);
->>
->> Same point as before about exporting symbols, but given the _obj 
->> variants are
->> exported already this one is more valid.
->>
->>>
->>>   bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
->>>   {
->>> diff --git a/mm/memory.c b/mm/memory.c
->>> index 
->>> da360a6eb8a48e29293430d0c577fb4b6ec58099..64083ace239a2caf58e1645dd5d91a41d61492c4 100644
->>> --- a/mm/memory.c
->>> +++ b/mm/memory.c
->>> @@ -2168,6 +2168,7 @@ void zap_page_range_single(struct 
->>> vm_area_struct *vma, unsigned long address,
->>>       zap_page_range_single_batched(&tlb, vma, address, size, details);
->>>       tlb_finish_mmu(&tlb);
->>>   }
->>> +EXPORT_SYMBOL(zap_page_range_single);
->>
->> Sorry but I don't want this exported at all.
->>
->> This is an internal implementation detail which allows fine-grained 
->> control of
->> behaviour via struct zap_details (which binder doesn't use, of course :)
+On Tue, 27 Jan 2026 15:36:29 +0000
+"Gary Guo" <gary@garyguo.net> wrote:
+
+snip
+
+> > +/// Marker for normal (legacy) PCI capabilities.
+> > +impl CapabilityKind for Normal {
+> > +    type IdType = u8;
+> > +    const START_OFFSET: usize = bindings::PCI_CAPABILITY_LIST as
+> > usize; +}
+> > +
+> > +/// Marker for extended PCI capabilities.
+> > +impl CapabilityKind for Extended {
+> > +    type IdType = u16;
+> > +    const START_OFFSET: usize = bindings::PCI_CFG_SPACE_SIZE as
+> > usize; +}
+> > +
+> > +/// A PCI capability.
+> > +///
+> > +/// This type represents a discovered PCI capability and provides
+> > safe access +/// to its registers. All I/O operations are relative
+> > to the capability's +/// base offset in configuration space.
+> > +pub struct Capability<'a, S: ConfigSpaceKind, K: CapabilityKind> {
+> > +    config_space: &'a ConfigSpace<'a, S>,
+> > +    offset: usize,
+> > +    id: K::IdType,
+> > +    size: usize,
+> > +}
 > 
-> I don't expect anybody to set zap_details, but yeah, it could be abused.
-> It could be abused right now from anywhere else in the kernel
-> where we don't build as a module :)
+> Some thoughts about this: given that the IDs are different for PCI
+> capability and PCI extended capabilities, it feels that we shouldn't
+> overlap them into the same type.
 > 
-> Apparently we export a similar function in rust where we just removed 
-> the last parameter.
+
+Make sense. Sorry for the late reply as I was evaluating what would be
+the impact of IoCapable trait refinement to this patch.
+
+> The `offset` and `size` feels like it can be something more generic,
+> something like
 > 
-> I think zap_page_range_single() is only called with non-NULL from mm/ 
-> memory.c.
+>     /// A subview into I/O.
+>     pub struct IoView<T> {
+>         io: T,
+>         offset: usize,
+>         size: usize,
+>     }
 > 
-> So the following makes likely sense even outside of the context of this 
-> series:
+>     impl<T: IO> IoView<T> {
+>         // ....
+>     }
+> 
+> This is just like a slice, but act on arbitrary IO.
+> 
+> The capability enumeration can just be something like
+> 
+>     fn capabilities(&self) -> impl Iterator<Item = (CapabilityId,
+> IoView<&Self>)>
+> 
+> and another method for capabilities_ext.
+> 
 
-The following should compile :)
+I actually had a version of that, but dropped it. The C side already
+handles finding capabilities by ID, so a Rust iterator seemed redundant
+for the common case. Unless we need to handle multiple capabilities
+with the same ID (which is rare). IMO, it might be better we add it when
+a rust driver really need this.
 
- From b1c35afb1b819a42f4ec1119564b3b37cceb9968 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (arm)" <david@kernel.org>
-Date: Thu, 5 Feb 2026 12:42:09 +0100
-Subject: [PATCH] mm/memory: remove "zap_details" parameter from
-  zap_page_range_single()
+> If you want to add typed capabilities, an option is to have
+> 
+>     enum Capability<'a> {
+>         SpecificParsedCapability,
+>         Other(CapabilityId, IoView<&ConfigSpace<...>>),
+>     }
+> 
 
-Nobody except memory.c should really set that parameter to non-NULL. So
-let's just drop it and make unmap_mapping_range_vma() use
-zap_page_range_single_batched() instead.
+But given that the kernel's C API favors looking up by ID, usage of an
+enum might be slightly awkward here (e.g., calling find_capability(ID)
+and still having to unwrap an enum)?
 
-Signed-off-by: David Hildenbrand (arm) <david@kernel.org>
----
-  arch/s390/mm/gmap_helpers.c    |  2 +-
-  drivers/android/binder_alloc.c |  2 +-
-  include/linux/mm.h             |  5 ++---
-  kernel/bpf/arena.c             |  3 +--
-  kernel/events/core.c           |  2 +-
-  mm/madvise.c                   |  3 +--
-  mm/memory.c                    | 16 ++++++++++------
-  net/ipv4/tcp.c                 |  5 ++---
-  rust/kernel/mm/virt.rs         |  2 +-
-  9 files changed, 20 insertions(+), 20 deletions(-)
+> Thoughts?
+> 
+> Best,
+> Gary
+> 
+> 
+> > +
+> > +impl<'a, S: ConfigSpaceKind, K: CapabilityKind> Capability<'a, S,
+> > K> {
+> > +    /// Creates a new capability handle.
+> > +    fn new(
+> > +        config_space: &'a ConfigSpace<'a, S>,
+> > +        offset: usize,
+> > +        id: K::IdType,
+> > +        size: usize,
+> > +    ) -> Self {
+> > +        Self {
+> > +            config_space,
+> > +            offset,
+> > +            id,
+> > +            size,
+> > +        }
+> > +    }
+> > +
+> > +    /// Returns the offset of this capability in configuration
+> > space.
+> > +    pub fn offset(&self) -> usize {
+> > +        self.offset
+> > +    }
+> > +
+> > +    /// Returns the capability ID.
+> > +    pub fn id(&self) -> K::IdType {
+> > +        self.id
+> > +    }
+> > +
+> > +    /// Returns the size of this capability in bytes.
+> > +    pub fn size(&self) -> usize {
+> > +        self.size
+> > +    }
+> > +}
+> > +
+> > +// Implement IoCapable for Capability
+> > +impl<'a, S: ConfigSpaceKind, K: CapabilityKind> IoCapable<u8> for
+> > Capability<'a, S, K> {} +impl<'a, S: ConfigSpaceKind, K:
+> > CapabilityKind> IoCapable<u16> for Capability<'a, S, K> {}
+> > CapabilityKind> +impl<'a, S: ConfigSpaceKind, K: CapabilityKind>
+> > CapabilityKind> IoCapable<u32> for Capability<'a, S, K> {}
+> > +
+> > +// Implement Io trait for Capability using fallible methods
+> > (runtime checks) +impl<'a, S: ConfigSpaceKind, K: CapabilityKind>
+> > Io for Capability<'a, S, K> {
+> > +    const MIN_SIZE: usize = S::SIZE; // Use config space size for
+> > fallible bounds checking +
+> > +    #[inline]
+> > +    fn addr(&self) -> usize {
+> > +        0  // Offsets are relative to capability base, not absolute
+> > +    }
+> > +
+> > +    #[inline]
+> > +    fn maxsize(&self) -> usize {
+> > +        self.size()
+> > +    }
+> > +
+> > +    // Only implement fallible methods (no IoKnownSize, so
+> > infallible methods not available)
+> > +    define_read!(fallible, try_read8, call_cap_read(try_read8) ->
+> > u8);
+> > +    define_read!(fallible, try_read16, call_cap_read(try_read16)
+> > -> u16);
+> > +    define_read!(fallible, try_read32, call_cap_read(try_read32)
+> > -> u32); +
+> > +    define_write!(fallible, try_write8, call_cap_write(try_write8)
+> > <- u8);
+> > +    define_write!(fallible, try_write16,
+> > call_cap_write(try_write16) <- u16);
+> > +    define_write!(fallible, try_write32,
+> > call_cap_write(try_write32) <- u32); +}
+> > +
+> > +impl<'a> ConfigSpace<'a, Extended> {
+> > +    /// Finds a specific extended capability by ID using the
+> > kernel's `pci_find_ext_capability`.
+> > +    pub fn find_ext_capability(&self, id: u16) ->
+> > Option<Capability<'_, Extended, Extended>> {
+> > +        // SAFETY: pdev is valid by ConfigSpace invariants
+> > +        let offset = unsafe {
+> > bindings::pci_find_ext_capability(self.pdev.as_raw(), id as i32) };
+> > +
+> > +        if offset == 0 {
+> > +            return None;
+> > +        }
+> > +
+> > +        let size = self.calculate_ext_cap_size(offset as usize);
+> > +        Some(Capability::new(self, offset as usize, id, size))
+> > +    }
+> > +
+> > +    fn calculate_ext_cap_size(&self, offset: usize) -> usize {
+> > +        // Extended capability header: [31:20] = next capability
+> > offset
+> > +        // Use 0xffc mask (not 0xfff) to match kernel's
+> > PCI_EXT_CAP_NEXT macro
+> > +        let header = self.try_read32(offset).unwrap_or(0);
+> > +        let next_ptr = ((header >> 20) & 0xffc) as usize;
+> > +
+> > +        if next_ptr == 0 {
+> > +            // Last capability, size goes to end of config space
+> > +            self.pdev.cfg_size().into_raw() - offset
+> > +        } else {
+> > +            // Size is distance to next capability
+> > +            next_ptr - offset
+> > +        }
+> > +    }
+> > +
+> > +    /// Finds the next occurrence of a specific extended
+> > capability starting from a given position.
+> > +    pub fn find_next_ext_capability(
+> > +        &self,
+> > +        start_pos: u16,
+> > +        id: u16,
+> > +    ) -> Option<Capability<'_, Extended, Extended>> {
+> > +        // SAFETY: pdev is valid by ConfigSpace invariants
+> > +        let offset = unsafe {
+> > +
+> > bindings::pci_find_next_ext_capability(self.pdev.as_raw(),
+> > start_pos, id as i32)
+> > +        };
+> > +
+> > +        if offset == 0 {
+> > +            return None;
+> > +        }
+> > +
+> > +        // Calculate real capability size
+> > +        let size = self.calculate_ext_cap_size(offset as usize);
+> > +        Some(Capability::new(self, offset as usize, id, size))
+> > +    }
+> > +}
+> > +
+> > +/// SR-IOV register offsets (relative to the capability base).
+> > +mod sriov_offsets {
+> > +    use crate::bindings;
+> > +
+> > +    /// First VF Offset register offset
+> > +    pub(super) const VF_OFFSET: usize =
+> > bindings::PCI_SRIOV_VF_OFFSET as usize;
+> > +    /// VF BAR0 register offset (first of 6 VF BARs)
+> > +    pub(super) const VF_BAR0: usize = bindings::PCI_SRIOV_BAR as
+> > usize; +}
+> > +
+> > +/// SR-IOV capability structure.
+> > +///
+> > +/// This structure provides typed access to the SR-IOV extended
+> > capability +/// registers using the PCI configuration space backend.
+> > +pub struct SriovCapability<'a> {
+> > +    cap: Capability<'a, Extended, Extended>,
+> > +}
+> > +
+> > +impl<'a> SriovCapability<'a> {
+> > +    /// Creates a new SR-IOV capability from an extended
+> > capability.
+> > +    pub fn new(cap: Capability<'a, Extended, Extended>) ->
+> > Result<Self> {
+> > +        if cap.id() != ExtCapabilityId::SRIOV as u16 {
+> > +            return Err(EINVAL);
+> > +        }
+> > +        Ok(Self { cap })
+> > +    }
+> > +
+> > +    /// Tries to find and create an SR-IOV capability from a
+> > config space.
+> > +    pub fn from_config_space(config_space: &'a ConfigSpace<'a,
+> > Extended>) -> Result<Self> {
+> > +        let cap = config_space
+> > +            .find_ext_capability(ExtCapabilityId::SRIOV as u16)
+> > +            .ok_or(ENODEV)?;
+> > +        Self::new(cap)
+> > +    }
+> > +
+> > +    /// Returns the offset of this capability in configuration
+> > space.
+> > +    pub fn offset(&self) -> usize {
+> > +        self.cap.offset()
+> > +    }
+> > +
+> > +    /// Reads the First VF Offset register.
+> > +    pub fn read_vf_offset(&self) -> Result<u16> {
+> > +        self.cap.try_read16(sriov_offsets::VF_OFFSET)
+> > +    }
+> > +
+> > +    /// Reads a VF BAR register (32-bit).
+> > +    /// Returns the 32-bit value of the specified VF BAR register.
+> > +    pub fn read_vf_bar(&self, bar_index: usize) -> Result<u32> {
+> > +        if bar_index >= 6 {
+> > +            return Err(EINVAL);
+> > +        }
+> > +        self.cap.try_read32(sriov_offsets::VF_BAR0 + bar_index * 4)
+> > +    }
+> > +
+> > +    /// Reads a 64-bit VF BAR register.
+> > +    /// Returns the 64-bit address combining BAR[n] (low) and
+> > BAR[n+1] (high).
+> > +    pub fn read_vf_bar64(&self, bar_index: usize) -> Result<u64> {
+> > +        if bar_index >= 5 {
+> > +            return Err(EINVAL);
+> > +        }
+> > +        let low = self.read_vf_bar(bar_index)?;
+> > +        let high = self.read_vf_bar(bar_index + 1)?;
+> > +        Ok((u64::from(high) << 32) | u64::from(low))
+> > +    }
+> > +}
+> 
 
-diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-index d41b19925a5a..859f5570c3dc 100644
---- a/arch/s390/mm/gmap_helpers.c
-+++ b/arch/s390/mm/gmap_helpers.c
-@@ -102,7 +102,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
-  		if (!vma)
-  			return;
-  		if (!is_vm_hugetlb_page(vma))
--			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr, NULL);
-+			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
-  		vmaddr = vma->vm_end;
-  	}
-  }
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-index 979c96b74cad..b0201bc6893a 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -1186,7 +1186,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
-  	if (vma) {
-  		trace_binder_unmap_user_start(alloc, index);
-  
--		zap_page_range_single(vma, page_addr, PAGE_SIZE, NULL);
-+		zap_page_range_single(vma, page_addr, PAGE_SIZE);
-  
-  		trace_binder_unmap_user_end(alloc, index);
-  	}
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index f0d5be9dc736..5764991546bb 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2621,11 +2621,10 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
-  void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
-  		  unsigned long size);
-  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
--			   unsigned long size, struct zap_details *details);
-+			   unsigned long size);
-  static inline void zap_vma_pages(struct vm_area_struct *vma)
-  {
--	zap_page_range_single(vma, vma->vm_start,
--			      vma->vm_end - vma->vm_start, NULL);
-+	zap_page_range_single(vma, vma->vm_start, vma->vm_end - vma->vm_start);
-  }
-  void unmap_vmas(struct mmu_gather *tlb, struct ma_state *mas,
-  		struct vm_area_struct *start_vma, unsigned long start,
-diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-index 872dc0e41c65..242c931d3740 100644
---- a/kernel/bpf/arena.c
-+++ b/kernel/bpf/arena.c
-@@ -503,8 +503,7 @@ static void zap_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
-  	struct vma_list *vml;
-  
-  	list_for_each_entry(vml, &arena->vma_list, head)
--		zap_page_range_single(vml->vma, uaddr,
--				      PAGE_SIZE * page_cnt, NULL);
-+		zap_page_range_single(vml->vma, uaddr, PAGE_SIZE * page_cnt);
-  }
-  
-  static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 8cca80094624..1dfb33c39c2f 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6926,7 +6926,7 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
-  #ifdef CONFIG_MMU
-  	/* Clear any partial mappings on error. */
-  	if (err)
--		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE, NULL);
-+		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE);
-  #endif
-  
-  	return err;
-diff --git a/mm/madvise.c b/mm/madvise.c
-index b617b1be0f53..abcbfd1f0662 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -1200,8 +1200,7 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
-  		 * OK some of the range have non-guard pages mapped, zap
-  		 * them. This leaves existing guard pages in place.
-  		 */
--		zap_page_range_single(vma, range->start,
--				range->end - range->start, NULL);
-+		zap_page_range_single(vma, range->start, range->end - range->start);
-  	}
-  
-  	/*
-diff --git a/mm/memory.c b/mm/memory.c
-index da360a6eb8a4..82985da5f7e6 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2155,17 +2155,16 @@ void zap_page_range_single_batched(struct mmu_gather *tlb,
-   * @vma: vm_area_struct holding the applicable pages
-   * @address: starting address of pages to zap
-   * @size: number of bytes to zap
-- * @details: details of shared cache invalidation
-   *
-   * The range must fit into one VMA.
-   */
-  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
--		unsigned long size, struct zap_details *details)
-+		unsigned long size)
-  {
-  	struct mmu_gather tlb;
-  
-  	tlb_gather_mmu(&tlb, vma->vm_mm);
--	zap_page_range_single_batched(&tlb, vma, address, size, details);
-+	zap_page_range_single_batched(&tlb, vma, address, size, NULL);
-  	tlb_finish_mmu(&tlb);
-  }
-  
-@@ -2187,7 +2186,7 @@ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
-  	    		!(vma->vm_flags & VM_PFNMAP))
-  		return;
-  
--	zap_page_range_single(vma, address, size, NULL);
-+	zap_page_range_single(vma, address, size);
-  }
-  EXPORT_SYMBOL_GPL(zap_vma_ptes);
-  
-@@ -2963,7 +2962,7 @@ static int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long add
-  	 * maintain page reference counts, and callers may free
-  	 * pages due to the error. So zap it early.
-  	 */
--	zap_page_range_single(vma, addr, size, NULL);
-+	zap_page_range_single(vma, addr, size);
-  	return error;
-  }
-  
-@@ -4187,7 +4186,12 @@ static void unmap_mapping_range_vma(struct vm_area_struct *vma,
-  		unsigned long start_addr, unsigned long end_addr,
-  		struct zap_details *details)
-  {
--	zap_page_range_single(vma, start_addr, end_addr - start_addr, details);
-+	struct mmu_gather tlb;
-+
-+	tlb_gather_mmu(&tlb, vma->vm_mm);
-+	zap_page_range_single_batched(&tlb, vma, start_addr,
-+				      end_addr - start_addr, details);
-+	tlb_finish_mmu(&tlb);
-  }
-  
-  static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index d5319ebe2452..9e92c71389f3 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2052,7 +2052,7 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
-  		maybe_zap_len = total_bytes_to_map -  /* All bytes to map */
-  				*length + /* Mapped or pending */
-  				(pages_remaining * PAGE_SIZE); /* Failed map. */
--		zap_page_range_single(vma, *address, maybe_zap_len, NULL);
-+		zap_page_range_single(vma, *address, maybe_zap_len);
-  		err = 0;
-  	}
-  
-@@ -2217,8 +2217,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
-  	total_bytes_to_map = avail_len & ~(PAGE_SIZE - 1);
-  	if (total_bytes_to_map) {
-  		if (!(zc->flags & TCP_RECEIVE_ZEROCOPY_FLAG_TLB_CLEAN_HINT))
--			zap_page_range_single(vma, address, total_bytes_to_map,
--					      NULL);
-+			zap_page_range_single(vma, address, total_bytes_to_map);
-  		zc->length = total_bytes_to_map;
-  		zc->recv_skip_hint = 0;
-  	} else {
-diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-index da21d65ccd20..b8e59e4420f3 100644
---- a/rust/kernel/mm/virt.rs
-+++ b/rust/kernel/mm/virt.rs
-@@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
-          // sufficient for this method call. This method has no requirements on the vma flags. The
-          // address range is checked to be within the vma.
-          unsafe {
--            bindings::zap_page_range_single(self.as_ptr(), address, size, core::ptr::null_mut())
-+            bindings::zap_page_range_single(self.as_ptr(), address, size)
-          };
-      }
-  
--- 
-2.43.0
-
-
--- 
-Cheers,
-
-David
