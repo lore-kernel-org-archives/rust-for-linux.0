@@ -1,242 +1,146 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020099.outbound.protection.outlook.com [52.101.196.99])
+Received: from sender4-pp-f119.zoho.com (sender4-pp-f119.zoho.com [136.143.188.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477EA2FE044;
-	Fri,  6 Feb 2026 22:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4441E86E;
+	Fri,  6 Feb 2026 22:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.119
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770416924; cv=fail; b=DUKjDhruV4v6V7NGxnoCoE0ECKBjtJdh96PvX9r5Yd+6tTVPUwHG/WNg00FUicZ+G01m5fGlqltfcxDlUfjwKES5Ht0fVyXHEDbrPj5H5dRXvgFtwXtECAs47ha471VOLRep1opupI+WvVCWjijoQENChL//3eksDg+6S2d5GBs=
+	t=1770417262; cv=pass; b=l2+paK39srRPQLGeUN1cQ21y42GkQxF5oATQb3QaUaRkC8N5odLv1aJynDTn6JtG3ZxXx+Rf7ON+YYfDf4q6LuxOYRh4pnNs+OdsZJtaTmmOsfZT2E4HwkB7uK9a/22KRs6qZDkpJUp2eA7ItuuDhqgUYmKbeFQqlLrcJ7iWydE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770416924; c=relaxed/simple;
-	bh=pLJLz8f2MSI/EUiz3qpqPX4W/bf9/HuV4+VHKO3yTuI=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=WfMF+HwY8I0ttSgUMBUIDgF1TpMZl7T7lAetCGPhQxAEURFOIVH6FgqtfZ9O0lrjQKZrU4yI4R+mp/4lKUtrIDHAzpBH7F/HiHcU1MM6zenH/PS7nZ8rJ3XvyQyVxd02L8V568N9XtsceertBAUJgkI5KsxNNIBCOb3mYv3Xp0U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=dlrCncrE; arc=fail smtp.client-ip=52.101.196.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1770417262; c=relaxed/simple;
+	bh=nwjhQnmuEp1LuAUXAWUvtthxUjfgsoNmRvkb+Zsoafc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=gyIJdOUBz0pUwwHZYGrjXVwzkRfijxoNY7MaWk2vvXYO+uFDtZLqEmxrT6GApua6GHCQsbXYqr7lLt0/Q0Uh38K/6AZTLbtp6ICeBQhA4IXZougATEd2+74+uK0BDJc27IpC3oO6thZpN/WCIGXfyxXg6Y66eatJ1pl5pddter0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LxHZZ03J; arc=pass smtp.client-ip=136.143.188.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="dlrCncrE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O6bPmQzqPRaUMCTc5X10plzPFYnsZuuS4cFGJfYfTTPB/ulvqh2pNGwixKmSz2nslS5a+N3AFKjghifPrIxrESvCnuAXH2lwJbDKzJv+MQ7QvJ/UUlEapAI7uyEN0bR0il9x7aW7hoDbAEhhcz/MrYix93z8KdJ8Zna7oslEEElPq74YVNx/0o0lYAmt5P13Qlm43zBmwQS9Vv7X8EWhY2A3nFrvta14Tejchk5olTuZHAQQGKdoDJXnnA7MqtX0H3co6vfC8kyA1P2Kb0Li1k0PwAfzeaq5VvO2ri+HDvq7fEvLdfZA/NOSULZHPyGzJ0QEJEcQB2kKyJCQZbpiHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V5kAFHK6/i2k+im+lCp+PL+bdkj+bLYLS7slrnUx0GA=;
- b=cg9qeOP1OFF+SY6wmdq7bFkorFuaKE74RXiLfn78/wsU/OzLcUfuT2PoJP6PZV2wzQWDkN7BrGQ8aNop8NJiNjzp/D/squTOFRONREMMQebFlUqmZAVAAidPD2Ppj/60sS2nFTkuk5S9j0WkyJZriSfRTGURwVYDey7j6WWXKTrVbuQAMiLVFD9yZD6DXhjsx704B9GZIBpXlg+ctVlP7gzaIMhkIwpJqS3mNWfVXCovNAKDX6tRHkuWjjhGAz3DdFywV8WfFoymbv4dh1guo3BwMkFqIwgR8AGbY0f1YcfAKdCOFAAVdfDPtN9v7Hr7CkpPH/xai9AaNjGYXpxomA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V5kAFHK6/i2k+im+lCp+PL+bdkj+bLYLS7slrnUx0GA=;
- b=dlrCncrEEhln1gsCRUDc+luUVcqO1smc28qt11DgDnQVMBdAd7HuDVNz3aO8hNg0EvTq1pAmu5To1xh4rhpyZkJ0bq7b9OsT/iYTDR2cGe041hnqDd1cUMpTNBJPkPUY/JZd24N1sNYqiroIWqYwhtyAwx3X1zmAbvcmjWsrp1o=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO2P265MB2879.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:17b::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Fri, 6 Feb
- 2026 22:28:41 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Fri, 6 Feb 2026
- 22:28:41 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Feb 2026 22:28:40 +0000
-Message-Id: <DG88F5B5IAA2.1XXMBH517NDBW@garyguo.net>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH 2/2] rust: add `const_assert!` macro
-From: "Gary Guo" <gary@garyguo.net>
-To: "John Hubbard" <jhubbard@nvidia.com>, "Gary Guo" <gary@garyguo.net>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Yury Norov" <yury.norov@gmail.com>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260206171253.2704684-1-gary@kernel.org>
- <20260206171253.2704684-2-gary@kernel.org>
- <e137e948-e44a-455e-b3a1-717865ed15aa@nvidia.com>
-In-Reply-To: <e137e948-e44a-455e-b3a1-717865ed15aa@nvidia.com>
-X-ClientProxiedBy: LO2P123CA0004.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:a6::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LxHZZ03J"
+ARC-Seal: i=1; a=rsa-sha256; t=1770417234; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=RiExs3bv4Y8H0GNaO34C2uPapynSVMRbvsT5doKr4cOkDCxxL3Hjgim05gX+l6zfycGBZ2ExaPDbNl/o2DN0HNRn4pT/1/vErz3mGPkwjoyc1Is8t6VBysJ9jFz2LGbzGO4aK6GJjcSmGg3OTZb2FINL6mSpNg9jeqewzdXz6lM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770417234; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=tc02K9ea6k3a52rZLvnILRHeI4xxmaVSZwRgjd+aJI4=; 
+	b=JT+j+YUNy2cWcpE6v/9YDklaQqixjWMof+qoB8V9LQThjMKDcV7e6TVmKIWAWCCiNhUIHWYcm+amncZP+Ad4FrHbGYf4fd6TDjZ8ULczWdJeGqdae29BpL+YtcayHWGETrbT5j8hjAwLY5u09LCs97H4K+VXC9A8wkwiQvC29Go=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770417234;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=tc02K9ea6k3a52rZLvnILRHeI4xxmaVSZwRgjd+aJI4=;
+	b=LxHZZ03JDNpDc+8PFnHHYRltxbF/8YH5RjJUuPQHRAC/7Sf1UXgxB2yT7gQd/t+e
+	oVa+fMJpJ/Uvp4FX6oa9pKZ5mgQBrNSwAil+Mlu0bTHqCuvOW4lgTGYDEvoAs5fMd5d
+	FISZyzqUUxMOdGD7sAsyHylnFw5C4xWLXRRutqqM=
+Received: by mx.zohomail.com with SMTPS id 1770417231622597.8188882201408;
+	Fri, 6 Feb 2026 14:33:51 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB2879:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0f6e98b-c937-4146-c949-08de65cf1475
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TzZUa3RhM0JsRTVOcWw5ak1RcStWUW56d3lwSHMzU0RKeGc5NU1TZjdxNXNt?=
- =?utf-8?B?SlpzVEVLbThsVU4vakdnc1RUN2tUZzdUcnVkWFZaQVFYQ0JSYTRGRHVaYkFV?=
- =?utf-8?B?YWZydUJJMHM2enFZT1E0Z1dBYVpabW8raUMvcXQzaUdIb3Bhbzh6QjVzemoz?=
- =?utf-8?B?ckk2SDRiRWhWOThJNkFsbm5XQmtoQlFyRzgyS2JsOFFLUkpBeEtvRXlZbzB2?=
- =?utf-8?B?U0FQNW9pUWwvMnNFaS80QkYxOWZEbjQyRHAybW5UMS8veENYVDJWdnd5WFRX?=
- =?utf-8?B?VzF5VHRGa3FvKzJzb1daVWU2VGV0ZkRPb3dmTitUVE9OTDd1M0YwSEJJT0xx?=
- =?utf-8?B?ZlV3dEp5d0ZNYnBDZDJwTHFSWHVxUmVrSUl1Ky8yT0RVT0FpSS81MWJGU2tN?=
- =?utf-8?B?NkNQQUUrdnkyOStkd09YbENKYXlLL0oxbURWWlpYMzdCcnlqZ3hNb1M1c2F4?=
- =?utf-8?B?TGt2ekJmV3BsY0k4a1hybmNYTmJORDNpc2ZxMVRjaFo3ZDVobWJ2OHlCcUZL?=
- =?utf-8?B?czRRQ0ZsNEJaa0NtOERSdit5NUlZVENvS0JlT1JJcnVGbWdYclQyZlJoMlJG?=
- =?utf-8?B?eHhOWDlTR1pTVlQzRFhaSGU5YkVYc3pyTFQwVkZucHNsaGlVMS91aXJoTXMx?=
- =?utf-8?B?WE1JYmxEZlNLbjN5OEwxamZKU0VJOEVoVjQxYlZwNE1RS0lTaUVWWnZuTUkz?=
- =?utf-8?B?cXUycWcyZUlOL251RWFqeWV0Q1p0dmFaRGdzSFhGVERLK2xMQXl2dnpyOHNu?=
- =?utf-8?B?amY0a3dSa1c5aGc1Zk9KZlJBeGYvc1oxczFRSVBtKzk1bkZRYXNoZGNhNHJ6?=
- =?utf-8?B?Z1dUVFpnM1lPREtHKytsVEp2NDZQbTJycktmdjhiblpsZC94Mi9KVmViYmo5?=
- =?utf-8?B?UVBsc2JUYjhXRVZFalJrV0paT0FMQkV1c3BZS1A0N29xL2FBTlhvWlpHKytU?=
- =?utf-8?B?UUpIN2FyR3dwdG1TMjUyQy9pTkhuV1E1SjllRFF3elByVkxZdmpNclkraXpT?=
- =?utf-8?B?UG9KOU1WWHdyMTJkSlNqOFlscmVXSm05cml2VUN3RjQ3blE1WVFiN2NrcnFw?=
- =?utf-8?B?NkxGVzI4YUt2VUdLejk2aGc4NjQwSmZIUGEvaWN6VDQyeXdYOVM5Uld6bUN1?=
- =?utf-8?B?ZVpCNlI0c0NZNkY5SGx4QUsyejhJNzFRNENYNGFTZHR0eWYzdERuSFpmU1RJ?=
- =?utf-8?B?dG1GSjV2akRwMVhtcVJsU0ZWaWNzT2VQV3NKQldTcmc3OCt4NTByd3dsY2x1?=
- =?utf-8?B?ZlBWRFVBWERELzNwL2VTeWE4eXhqQ2R2VFBCTXFrRGNjNGxJdlk5bXdJblZY?=
- =?utf-8?B?NEw3RzF5d3RXdTQ5SlA0cmh6bjRnbE9JWi8wdlBnVWxnNkdYUVhvQUZNenA1?=
- =?utf-8?B?dVd3KzFSZzR1YTYwKzJONy9UT0tXK2xMR2hWRUhTYVBzTnI0Wk9aR0xzS3Fr?=
- =?utf-8?B?R2VkNnFJdnJ0TWRZcUxvVUNJQ1pQYlVTWGJmSEZkNlNVS1pTUHJaS0VRblph?=
- =?utf-8?B?dUdTYktMSUtST2IyZWk4N2UwdW13emdKVzg2R24yc1M4cFczVWt6ZTdUVkdK?=
- =?utf-8?B?MmhUeUdraVF3ZUtnSVVnenllYjdRYTBzVlJIZGhnZEw1UWl5WXpNN0ZWMnpJ?=
- =?utf-8?B?NENyZWozUnE2WHlvMUI4Y2hNQU52alI2RFU3RlNPdmsydUxpR1h0emlWbWl4?=
- =?utf-8?B?RmxnaXRBU0FaUXE2dGN2eWxqQjEwOS8wRW9Bb1ltZTdKTGdySDJaTGNMY0JI?=
- =?utf-8?B?TE94Y3NYMFZYcnFONHBBT2x1QjhRc1pFNGJZdU9taCs3cmZtQVA2ci84aFZt?=
- =?utf-8?B?SjR3MEVHelJObE1rY0xCdXNHOHJnQUpleFdoZ2d2WVNaOWQwZzM1REtvYm4v?=
- =?utf-8?B?STdWOGllbCtpVnZmOFRuSWpMQmRoYTUyR2VRcGNKNDAwdnJvSnhyY05mTzVI?=
- =?utf-8?B?QnJIczJreE90bVZiMUc0Z2k0NC9sUzE3aEM4clZUN1J5QUtPRDdaMThONVJ2?=
- =?utf-8?B?U2NiZlVPSEd4SnVVdlo3d0JWbWhWQ2xtazF1YjJWdWRXWWdacUMvVHd5VnNs?=
- =?utf-8?B?MmFDOG91V0VVTFkxV2swbEpkM3Q0NXdWa3RvTElsNDF3eEFBK3FRaDJPaXI2?=
- =?utf-8?B?NmFZODRQTTR1NXQzNU4vd3N5bmVRY1R0YTVwaXpQeWZCYSs3UnRKNGczR3Fm?=
- =?utf-8?B?S0E9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SHozN1NhTUZmMlhJc25LNk5LWmYvamI4R2paN2swbzlkVHVlQXpWS1RkSU1s?=
- =?utf-8?B?NzVlUTVPN3JuZ05XTkZrYkkwWnBKS1BEaVFlOVRsZ2ZiL0JCaVVYbXRENnlP?=
- =?utf-8?B?V1R3NFhPTlhMWEJQa2pzbmJPaUFIcWtyWmhOK3lmTkZ1eXIzci92cTRGcUhk?=
- =?utf-8?B?bjd1TU9USTQwS2U2elphNzRrV3JYZW9tOVFYMFltTk9PbDBPdjZWNDI0R3A5?=
- =?utf-8?B?VHRnbkpJR2FHZDVGR2RmOGZJYmN5WG9RRldmYWh4NU5KdS9HYVZNa3FkSjdr?=
- =?utf-8?B?R0hoN1dTMlI2cWJva1ZXZkhZWTRIWFFUdHEvR2RKNVRZUHAyM0VQb0xDWUtL?=
- =?utf-8?B?ays0eEttQVU2YWFsc1liRUVicGptaXY0TlBRSUNNRUVERUErS3JkYStPOGp1?=
- =?utf-8?B?czIrTmx0QkhsM29zMzdZcDRnZ0ZCc3F5SmFUOXlVcXVMRFNYcnhlL3k4Q0Js?=
- =?utf-8?B?WlUxMmx2NW1wUkdwaEdEMVRic003K0xCMHdHd1Nvb0FqcUEzZjRrVFppOTZk?=
- =?utf-8?B?dEd6TVBkeWhCVGtRZ0N2bVB3S0pud2picUc2WUc3VDdYRjc4QVBITmw4OGk2?=
- =?utf-8?B?eFcwcFNIZmphR1IweXkvN2pZTmVSNTlaTlM2VEVjV2VzODJPYU9Hb1o2b3hn?=
- =?utf-8?B?M0ZsT2tlV0tYT2h4NE83Qng1ellVcDZ3MFFtY1NYeks5NmtMUHZVTml4ZkJn?=
- =?utf-8?B?ZHlHQStUeGN5RndxUG16a0lIZG1pSzlRTkJJYWFqcThXMkF0MHJOY0F1L0J1?=
- =?utf-8?B?cmY3N0tBb0hlYkdXOW12ZHFDSlMyTnBQS1c0UCtRZ2VzTTErY1hwcExCNEIw?=
- =?utf-8?B?Q01MYjJRNlNlbysxRGxZME1GVEZLYzB3VEN6RHlDTzUrdTRsc28vTE1BbWwy?=
- =?utf-8?B?UjZQaWJYYmo3WjZqVVVDL3RNMjV2YjZJMTljdVZpai94VWxJKytobWg4LzBr?=
- =?utf-8?B?TFA5NVJuaXYrYUZCR09NcUErOTVmR0FzR3I3dldWdEx6ZGk3cXd1RmMrOW40?=
- =?utf-8?B?WndNUkp3MzBhUVd6aFphNDJWc2F2ZFdEUEsxRzVIN1hKRlJRejhWWnUrUGtT?=
- =?utf-8?B?WFQwV3V4Sm1kSGtFN0NkUkJlSllxVi9CTDcyTXVWbVlBcHhhaktNOHB0VWNr?=
- =?utf-8?B?d1ZWSE9zbUlsbUF3aHFIR2FUS0h6aENzcGJvdjBmcGVrM21ickkyczFDL1Vq?=
- =?utf-8?B?UWFjOWZyalpyd21LelVaTWNBUXNodUJqTWhLRWIyUXJaZnR6aGcxa0ZLSHR3?=
- =?utf-8?B?aUxCa29wZlJZMkY3RFNrclFjMDVPekVvdjNIcGh3eGI1RmhEMmFBcml2Q21R?=
- =?utf-8?B?UEZpREFCZHVPK1o1QTBSL08rZEpMUXFqallBRStES0F2RzJkSVZoczNLNm1S?=
- =?utf-8?B?NzNPOHlJWnRsUnZWeXhCZ3l5ck5QeVFub01KOWNHQ3ViSWtLdDlBVGZqS2xS?=
- =?utf-8?B?ajkyUVY2OTEvL2REN3ZDVGtkMG1wQzdGcFd5a3NzOCtER0ZHY3ZyZ0czS1dQ?=
- =?utf-8?B?WVFYL3U4QXgzZ3o1aTBFa2Z4MWlTejNkUTN3a3c3QUU5YkpsTEpZMUFySzhJ?=
- =?utf-8?B?VkJhS2lnRkZnblVpN1FLOHZrQ3BRMDJWMkozU3dHQk5ycDEyeC9EMXJnVEpk?=
- =?utf-8?B?WkhCbmorbDFGZW5nUHJpR1NhSW15K1FRY1V0b2Y4T1JkaHlCRmNKVkxhVVdM?=
- =?utf-8?B?N0NkRG5OZTZZLzFaKzc5aGt2YnQweEJoMWY2ejhJcEU5b005WElWSkxDVnpz?=
- =?utf-8?B?b0JWK21VOWtheDQ3SXVEUmlHSDR4SmlUd3RZTGdvbW9aNWlMSytBZFY0YTdH?=
- =?utf-8?B?VCtXdDZ0dy9vTG1xdzJwNjdLRlR0dlhCdUtjYy9BcFVJQUtjanZ6WFJhRkMr?=
- =?utf-8?B?Q2FRelhGWXBWemFVbDIrTFYvWjBaYzdkRDF5OGVkRUU5YjRBc3gwSWVpZ1F4?=
- =?utf-8?B?QTRET3hXdE1LcmJpVnpXY1ZmcXk0SW5IWm5aV0lFWGVhc05KeE1hb3ZJa3NT?=
- =?utf-8?B?cTgxNUdRV2J3czZSZHZKT0xOZStWYzhDZkZ5b2hmb1RKL0FtVlJMMWRDdWlS?=
- =?utf-8?B?ZHhuWC83ZkE1RlpBaXYrQytHNzRtaFVma2ZUVEJVS1FqYmtLWFNOMzhZM0N5?=
- =?utf-8?B?SXZBMnFOTEJXL1ZJQ2kyUmMvU05yL2JMWFJZTXR1bjRUTHBkcWJYQlRROXZZ?=
- =?utf-8?B?QUc5REMycnlvV1VhQ2VkeVJjQ285cXRIejY3aE5zdEdyeG9iS0hDWjArakV0?=
- =?utf-8?B?SUZ2UnovbnRwWU1hMzV4TTJ5WUZ0YkxHMzlLRXNQMnFwbkxyYTVCMGFCTUt4?=
- =?utf-8?B?bmJpOXgwQ0o3K0UxWk1WUGtFWXRyaE9kcmc1ZGhWaEJiZ1pFQXNHZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0f6e98b-c937-4146-c949-08de65cf1475
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 22:28:41.0125
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Kao6Ds8hTpdf3ZOQrNRx7EVbRYTaUj8zjvTvl1DicdroYV5DyR4TkkgX4XHrYzcTC2n88jNVTR9hHSy9qEsdVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2879
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH -next v7 1/2] rust: clist: Add support to interface with C
+ linked lists
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <983b7db3-b0e6-45d6-866e-f001b64abde1@nvidia.com>
+Date: Fri, 6 Feb 2026 19:33:27 -0300
+Cc: linux-kernel@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Helge Deller <deller@gmx.de>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Andrea Righi <arighi@nvidia.com>,
+ Andy Ritger <aritger@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>,
+ Philipp Stanner <phasta@kernel.org>,
+ Elle Rhumsaa <elle@weathered-steel.dev>,
+ joel@joelfernandes.org,
+ nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4A87E3FC-6A04-4A92-9230-4782D75FC05F@collabora.com>
+References: <20260206004110.1914814-1-joelagnelf@nvidia.com>
+ <20260206004110.1914814-2-joelagnelf@nvidia.com>
+ <73B64D35-6574-4776-962D-865465C40226@collabora.com>
+ <7ed85eca-2a5e-4e8f-8356-e7fbbf7d3a8f@nvidia.com>
+ <E846F3BB-DE64-4E6B-ACA3-00F965038478@collabora.com>
+ <983b7db3-b0e6-45d6-866e-f001b64abde1@nvidia.com>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Fri Feb 6, 2026 at 10:21 PM GMT, John Hubbard wrote:
-> On 2/6/26 9:12 AM, Gary Guo wrote:
->> From: Gary Guo <gary@garyguo.net>
 >>=20
->> The macro is a more powerful version of `static_assert!` for use inside
->> function contexts. This is powered by inline consts, so enable the featu=
-re
->> for old compiler versions that does not have it stably.
->
-> This is nice. A nit below about documentation.
->
 >>=20
->> The `build_assert!` doc is refined to recommend it where possible.
->
-> Another piece of the puzzle...see below to continue the treasure
-> hunt.
->
->>=20
->> While it is possible already to write `const { assert!(...) }`, this
->> provides a short hand that is more uniform with other assertions. It als=
-o
->> formats nicer with rustfmt where it will not be formatted into multiple
->> lines.
->>=20
->> Two users that would route via the Rust tree are converted.
->>=20
->> Signed-off-by: Gary Guo <gary@garyguo.net>
->> ---
->>  rust/kernel/build_assert.rs | 55 +++++++++++++++++++++++++++++++++----
->>  rust/kernel/num/bounded.rs  | 24 ++++++----------
->>  rust/kernel/prelude.rs      |  2 +-
->>  rust/kernel/ptr.rs          | 18 ++++++------
->>  scripts/Makefile.build      |  3 +-
->>  5 files changed, 71 insertions(+), 31 deletions(-)
->>=20
->> diff --git a/rust/kernel/build_assert.rs b/rust/kernel/build_assert.rs
->> index d464494d430a..e40f0227e1ef 100644
->> --- a/rust/kernel/build_assert.rs
->> +++ b/rust/kernel/build_assert.rs
->> @@ -41,6 +41,45 @@ macro_rules! static_assert {
->>      };
->>  }
->> =20
->> +/// Assertion during constant evaluation.
->> +///
->> +/// This is a more powerful version of `static_assert` that can refer t=
-o generics inside functions
->> +/// or implementation blocks. However, it also have a limitation where =
-it can only appear in places
->> +/// where statements can appear; for example, you cannot use it as an i=
-tem in the module.
->> +///
->> +/// [`static_assert!`] should be preferred where possible.
->
-> Over what? There are 3 different assertion types. If it is actually
-> possible to list a clear order of preference, then let's list all
-> 3 in order, rather than having a scattering around of "A is=20
-> better than B", "C is sometimes worse than A", and then the
-> reader has to play treasure hunt to work it out. haha :)
+>> Yeah, but my point being: is there a reason why the underlying list =
+has to
+>> remain read-only? Is this a safety requirement or an invariant that =
+is established
+>> by the code above?
+> I'm not fully sure if it's an invariant or a safety requirement, but =
+anyone
+> creating a C list head on the rust side must guarantee that it is not =
+modified.
+> Since rust has no visibility on the C side, I believe it is a Rust =
+invariant
+> here that the existence of CListHead assumes that the list cannot be =
+modified
+> once Rust has access over it.  That is up to the creator (user) of the =
+CListHead
+> to guarantee. In the DRM buddy case, once the list is allocated and =
+accessible
+> from Rust, C code will not modify it while the Rust object exists.
+>=20
+> Does that make sense, or is there a better way to document this?
+>=20
+> --
+> Joel Fernandes
 
-I am trying to avoid listing all assertion macros in all assertions macros,
-that's just going to be duplications.
 
-How about remove `#[doc(hidden)]` on `mod build_assert` and enumerate all
-assertions in the module documentation and give them rankings there?
+In which case, I recommend moving this to a safety requirement when
+creating the list.
 
-Best,
-Gary
+I assume the purpose of not modifying the list on the C side is to avoid
+corrupting the list in Rust somehow?
+
+=E2=80=94 Daniel=
