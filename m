@@ -1,218 +1,196 @@
-Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA08334E751
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 08:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E3E30ACE3;
+	Fri,  6 Feb 2026 09:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770368047; cv=none; b=UmOHrGTDmfOPI8CGZakAKwBXfb9VwuOt1EsJ7CBoykj4FwzuqTQ1o5Qm1jKdCPzywd/cOJsZuwSVUZU8haKGFXTnozMMGAMQcDPV+TzqVQc28N50Q0s+W/U/znUGzeU5aUawLezGB3SNnYuW8PZ1hBHurjaF129HsZ+utTd3Hns=
+	t=1770370374; cv=none; b=PBUx07HLaAwDtsRYEQHUqdZ3IXEMVTHVQvjzPuJA30VfOgZm2kCBhd7o/wp4VXJa/mdyKnqpZuBrbFvPifJWYlpBS1rfs3dgEkQdC16fvQEYnMfjrnHbTSJozcZUDYe9LCGASOMhm+InSi59Q1l2vf9Aw5Bph1mLYPYOisZdu9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770368047; c=relaxed/simple;
-	bh=TppHh4d+/RTRG23OsLSEeiB4TSBuygqqnhEizD9h76A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lR8VBU+m7ZotemiLkutaWsoMj/Xj2u2oQUfXDYsE2i0kW2S1mC9qOpjHBd1BP6gbtxhlC6gPN6RAEyi/PS4TgtqmTtNGIXfo4hcPC3ZM0LeofDAEk39jH+RpcyAFYV1tBPqCpRXhvTGO2H9mTJWPTbRbZfoxkudTW9AbyjdZq5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
-	by 156.147.23.53 with ESMTP; 6 Feb 2026 17:54:04 +0900
-X-Original-SENDERIP: 156.147.1.121
-X-Original-MAILFROM: jongan.kim@lge.com
-Received: from unknown (HELO jongan-kim-nissan-cdc.bee-live.svc.cluster.local) (10.159.44.57)
-	by 156.147.1.121 with ESMTP; 6 Feb 2026 17:54:04 +0900
-X-Original-SENDERIP: 10.159.44.57
-X-Original-MAILFROM: jongan.kim@lge.com
-From: jongan.kim@lge.com
-To: aliceryhl@google.com,
-	a.hindborg@kernel.org,
-	arve@android.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	tamird@gmail.com,
-	tkjos@android.com,
-	tmgross@umich.edu,
-	viresh.kumar@linaro.org,
-	vitaly.wool@konsulko.se,
-	yury.norov@gmail.com,
-	ojeda@kernel.org,
-	lossin@kernel.org
-Cc: heesu0025.kim@lge.com,
-	ht.hong@lge.com,
-	jongan.kim@lge.com,
-	jungsu.hwang@lge.com,
-	kernel-team@android.com,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	sanghun.lee@lge.com,
-	seulgi.lee@lge.com,
-	sunghoon.kim@lge.com
-Subject: [PATCH v4 3/3] rust_binder: fix PID namespace collision for freeze operation
-Date: Fri,  6 Feb 2026 17:53:36 +0900
-Message-Id: <20260206085336.32819-4-jongan.kim@lge.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260206085336.32819-1-jongan.kim@lge.com>
-References: <20260206085336.32819-1-jongan.kim@lge.com>
+	s=arc-20240116; t=1770370374; c=relaxed/simple;
+	bh=wpJ1OPH3epcw90aUkWDmPY4+J7x8sdtPfxDe3Y9vRHw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iiVKRtYAiIPCLjQysZQzFziluolqHf+WhK+OW/xYCLJutsuJEgCF8OtKXJdMcTgn9O+WsXp5pn23r0f8HRmEhfDpshdi0ZDPmZKUst0CBFbGGLHuUr27ayv3dP2VJAJVfNyXfM9Vi2fjZkP5UoBzup+iW6EAZpzEKD46UaxDgos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=abxZ6bvf; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="abxZ6bvf"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4f6plw4p46z9tpC;
+	Fri,  6 Feb 2026 10:32:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1770370364; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fAFhVmmwigZehhMFWD9AUSYXd2DpExwQIgAcNMsKsgg=;
+	b=abxZ6bvfId+OVQ5olSdmRpHoLL1RjKjqx62ZrOucEaHd5CrmsMJD/eyn0ySoUEZgIkA5gn
+	A+OTtKlrHdiUY8jZ2gz0ujOlx6WcKkv3xFC1WfezAcGYcaakAVqx0T9/8Cbehjo8NwzMBx
+	Sw+RWwpt/YCU2XPAHrs2JFtT5RHgQgmz2DEmAuZuUAcwJbEtnAR7cJQjFyJJ32yBZGHcDW
+	N2Im4X1oT/gyZmoT27islZoMMTORHeu4XceKlt+1Ejbxdk6Ar0WGbDQz39OEPhTzmNsn1L
+	xoWRntJ8tG25DIuPauxobDaXfsdwZ5tSBcN2jpI/4HviBftcyAt9dqy6SIYIWw==
+Message-ID: <62b82ffdd40d568d822bda8cdea83cd030851f68.camel@mailbox.org>
+Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Gary Guo <gary@garyguo.net>, Boris Brezillon
+ <boris.brezillon@collabora.com>,  Philipp Stanner <phasta@kernel.org>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Benno Lossin <lossin@kernel.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
+ <christian.koenig@amd.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,  rust-for-linux@vger.kernel.org
+Date: Fri, 06 Feb 2026 10:32:38 +0100
+In-Reply-To: <DG721WEFTFZY.2CSCXBQ8H0Y1A@garyguo.net>
+References: <20260203081403.68733-2-phasta@kernel.org>
+	 <20260203081403.68733-4-phasta@kernel.org> <20260205111635.5307e1fa@fedora>
+	 <DG721WEFTFZY.2CSCXBQ8H0Y1A@garyguo.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: uwrhoghfu5fgzspwmd3gedu94i9msomy
+X-MBO-RS-ID: d1c55b22c0f954b8976
 
-From: HeeSu Kim <heesu0025.kim@lge.com>
+On Thu, 2026-02-05 at 13:16 +0000, Gary Guo wrote:
+> On Thu Feb 5, 2026 at 10:16 AM GMT, Boris Brezillon wrote:
+> > On Tue,=C2=A0 3 Feb 2026 09:14:01 +0100
+> > Philipp Stanner <phasta@kernel.org> wrote:
+> >=20
+> > >=20
 
-Port PID namespace conversion logic from C binder to the Rust
-implementation.
+[=E2=80=A6]
 
-Without namespace conversion, freeze operations from non-init namespaces
-can match wrong processes due to PID collision. This adds proper
-conversion to ensure freeze operations target the correct process.
+> > > +#[pin_data]
+> > > +pub struct DmaFence<T> {
+> > > +=C2=A0=C2=A0=C2=A0 /// The actual dma_fence passed to C.
+> > > +=C2=A0=C2=A0=C2=A0 #[pin]
+> > > +=C2=A0=C2=A0=C2=A0 inner: Opaque<bindings::dma_fence>,
+> > > +=C2=A0=C2=A0=C2=A0 /// User data.
+> > > +=C2=A0=C2=A0=C2=A0 #[pin]
+> > > +=C2=A0=C2=A0=C2=A0 data: T,
+> >=20
+> > A DmaFence is a cross-device synchronization mechanism that can (and
+> > will)
+> >=20
 
-This patch fixes the issue by:
-- Add get_task_from_vpid() to translate VPID to Task reference
-- Add Context::get_procs_with_task() for Task-based process lookup
-  using &mut KVec parameter to avoid intermediate allocations
-- Update get_frozen_status() and ioctl_freeze() to use Task comparison
+I'm not questioning the truth behind this statement. They are designed
+to do that. But is that actually being done, currently? I recently
+found that the get_driver_name() callback intended to inform the
+consumer of a fence about who actually issued the fence is only ever
+used by i915.
 
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DG5CFX3ML5YL.2FE913F20LNPT@garyguo.net/
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/lkml/aXs5Y3xAFKyZr6nd@google.com/
-Signed-off-by: Heesu Kim <heesu0025.kim@lge.com>
----
-v3 -> v4
-- change subject name more clearly
-- Use Task pointer comparison instead of PID number comparison
-- Remove PidNamespace dependency entirely
-- Use &mut KVec parameter to avoid intermediate allocation
-- Merge context.rs and process.rs changes into single patch
- 
-v2 -> v3:
-- Use task::Pid typedef instead of u32/i32
-- Use PidNamespace::init_ns() instead of init_pid_ns()
-- Compare PidNamespace directly with == instead of raw pointers
-- Use Pid::find_vpid() and pid.pid_task() (dropped _with_guard suffix)
-- Fix rustfmt import ordering (rcu before Arc)
-- Rename TaskPid alias to PidT for clearer pid_t type indication
-- Use task.group_leader().pid() instead of tgid_nr_ns() for consistency with C
+Who actually uses that feature? Who needs fences from another driver?
 
- drivers/android/binder/context.rs | 16 +++++++++++++++-
- drivers/android/binder/process.rs | 25 +++++++++++++++++++------
- 2 files changed, 34 insertions(+), 7 deletions(-)
+Just out of curiousity
 
-diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
-index 3d135ec03ca7..1fc779e4d9ce 100644
---- a/drivers/android/binder/context.rs
-+++ b/drivers/android/binder/context.rs
-@@ -9,7 +9,7 @@
-     security,
-     str::{CStr, CString},
-     sync::{Arc, Mutex},
--    task::Kuid,
-+    task::{Kuid, Task},
- };
- 
- use crate::{error::BinderError, node::NodeRef, process::Process};
-@@ -177,4 +177,18 @@ pub(crate) fn get_procs_with_pid(&self, pid: i32) -> Result<KVec<Arc<Process>>>
-         }
-         Ok(backing)
-     }
-+
-+    pub(crate) fn get_procs_with_task(
-+        &self,
-+        target: &Task,
-+        out: &mut KVec<Arc<Process>>,
-+    ) -> Result {
-+        let lock = self.manager.lock();
-+        for proc in &lock.all_procs {
-+            if core::ptr::eq(&*proc.task, target) {
-+                out.push(Arc::from(proc), GFP_KERNEL)?;
-+            }
-+        }
-+        Ok(())
-+    }
- }
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 132055b4790f..58e816f8873f 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -22,6 +22,7 @@
-     id_pool::IdPool,
-     list::{List, ListArc, ListArcField, ListLinks},
-     mm,
-+    pid::Pid,
-     prelude::*,
-     rbtree::{self, RBTree, RBTreeNode, RBTreeNodeReservation},
-     seq_file::SeqFile,
-@@ -29,9 +30,9 @@
-     sync::poll::PollTable,
-     sync::{
-         lock::{spinlock::SpinLockBackend, Guard},
--        Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
-+        rcu, Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
-     },
--    task::Task,
-+    task::{Pid as PidT, Task},
-     types::ARef,
-     uaccess::{UserSlice, UserSliceReader},
-     uapi,
-@@ -1498,17 +1499,29 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
-     }
- }
- 
-+/// Get Task reference from VPID with refcount increment.
-+fn get_task_from_vpid(pid: PidT) -> Result<ARef<Task>> {
-+    let rcu_guard = rcu::read_lock();
-+    let pid_struct = Pid::find_vpid(pid, &rcu_guard).ok_or(ESRCH)?;
-+    let task = pid_struct.pid_task(&rcu_guard).ok_or(ESRCH)?;
-+
-+    Ok(ARef::from(task))
-+}
-+
- fn get_frozen_status(data: UserSlice) -> Result {
-     let (mut reader, mut writer) = data.reader_writer();
- 
-     let mut info = reader.read::<BinderFrozenStatusInfo>()?;
-+
-+    let target_task = get_task_from_vpid(info.pid as PidT)?;
-+
-     info.sync_recv = 0;
-     info.async_recv = 0;
-     let mut found = false;
- 
-     for ctx in crate::context::get_all_contexts()? {
-         ctx.for_each_proc(|proc| {
--            if proc.task.pid() == info.pid as _ {
-+            if core::ptr::eq(&*proc.task, &*target_task) {
-                 found = true;
-                 let inner = proc.inner.lock();
-                 let txns_pending = inner.txns_pending_locked();
-@@ -1530,15 +1543,15 @@ fn get_frozen_status(data: UserSlice) -> Result {
- fn ioctl_freeze(reader: &mut UserSliceReader) -> Result {
-     let info = reader.read::<BinderFreezeInfo>()?;
- 
-+    let target_task = get_task_from_vpid(info.pid as PidT)?;
-+
-     // Very unlikely for there to be more than 3, since a process normally uses at most binder and
-     // hwbinder.
-     let mut procs = KVec::with_capacity(3, GFP_KERNEL)?;
- 
-     let ctxs = crate::context::get_all_contexts()?;
-     for ctx in ctxs {
--        for proc in ctx.get_procs_with_pid(info.pid as i32)? {
--            procs.push(proc, GFP_KERNEL)?;
--        }
-+        ctx.get_procs_with_task(&target_task, &mut procs)?;
-     }
- 
-     for proc in procs {
--- 
-2.25.1
+
+> >  cross the driver boundary (one driver can wait on a fence emitted
+> > by a different driver). As such, I don't think embedding a generic T in
+> > the DmaFence and considering it's the object being passed around is
+> > going to work, because, how can one driver know the T chosen by the
+> > driver that created the fence? If you want to have some fence emitter
+> > data attached to the DmaFence allocation, you'll need two kind of
+> > objects:
+> >=20
+> > - one that's type agnostic and on which you can do the callback
+> > =C2=A0 registration/unregistration, signalling checks, and generally al=
+l
+> > =C2=A0 type-agnostic operations. That's basically just a wrapper around=
+ a
+> > =C2=A0 bindings::dma_fence implementing AlwaysRefCounted.
+> > - one that has the extra data and fctx, with a way to transmute from a
+> > =C2=A0 generic fence to a implementer specific one in case the driver w=
+ants
+> > =C2=A0 to do something special when waiting on its own fences (check do=
+ne
+> > =C2=A0 with the fence ops in C, I don't know how that translates in rus=
+t)
+>=20
+> If `data` is moved to the end of struct and `DmaFence<T>` changed to
+> `DmaFence<T: ?Sized>`, you would also gain the ability to coerce `DmaFenc=
+e<T>`
+> to `DmaFence<dyn Trait>`, e.g. `DmaFence<dyn Any>`.
+
+
+I think we should go one step back here and question the general
+design.
+
+I only included data: T because it was among the early feedback that
+this is how you do it in Rust.
+
+I was never convinced that it's a good idea. Jobqueue doesn't need the
+'data' field. Can anyone think of anyone who would need it?
+
+What kind of data would be in there? It seems a driver would store its
+equivalent of C's
+
+struct my_fence {
+   struct dma_fence f;
+   /* other driver data */
+}
+
+which is then accessed in C with container_of.
+
+But that data is only ever needed by that very driver.
+
+
+My main point here is:
+dma_fence's are a synchronization primitive very similar to
+completions: informing about that something is done, executing every
+registrants callbacks.
+
+They are *not* a data transfer mechanism. It seems very wrong design-
+wise to transfer generic data T from one driver to another. That's not
+a fence's purpose. Another primitive should be used for that.
+
+If another driver could touch / consume / see / use the emitter's data:
+T, that would grossly decouple us from the original dma_fence design.
+It would be akin to doing a container_of to consume foreign driver
+data.
+
+Like Xe  doing a
+
+struct nouveau_fence *f =3D container_of(generic_fence, =E2=80=A6);
+
+Why would that ever be done? Seems totally broken.
+
+So I strongly think that we'd either want to drop data: T, or we should
+think about possibilities to hide it from other drivers.
+
+I've got currently no idea how that could be addressed in Rust, though=20
+
+:)
+:(
+
+
+P.
+
+>=20
+> Best,
+> Gary
+>=20
+> >=20
+> > > +=C2=A0=C2=A0=C2=A0 /// Marks whether the fence is currently in the s=
+ignalling critical section.
+> > > +=C2=A0=C2=A0=C2=A0 signalling: bool,
+> > > +=C2=A0=C2=A0=C2=A0 /// A boolean needed for the C backend's lockdep =
+guard.
+> > > +=C2=A0=C2=A0=C2=A0 signalling_cookie: bool,
+> > > +=C2=A0=C2=A0=C2=A0 /// A reference to the associated [`DmaFenceCtx`]=
+ so that it cannot be dropped while there are
+> > > +=C2=A0=C2=A0=C2=A0 /// still fences around.
+> > > +=C2=A0=C2=A0=C2=A0 fctx: Arc<DmaFenceCtx>,
+> > > +}
+>=20
 
