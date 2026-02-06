@@ -1,146 +1,126 @@
-Received: from sender4-pp-f119.zoho.com (sender4-pp-f119.zoho.com [136.143.188.119])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4441E86E;
-	Fri,  6 Feb 2026 22:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.119
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770417262; cv=pass; b=l2+paK39srRPQLGeUN1cQ21y42GkQxF5oATQb3QaUaRkC8N5odLv1aJynDTn6JtG3ZxXx+Rf7ON+YYfDf4q6LuxOYRh4pnNs+OdsZJtaTmmOsfZT2E4HwkB7uK9a/22KRs6qZDkpJUp2eA7ItuuDhqgUYmKbeFQqlLrcJ7iWydE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770417262; c=relaxed/simple;
-	bh=nwjhQnmuEp1LuAUXAWUvtthxUjfgsoNmRvkb+Zsoafc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=gyIJdOUBz0pUwwHZYGrjXVwzkRfijxoNY7MaWk2vvXYO+uFDtZLqEmxrT6GApua6GHCQsbXYqr7lLt0/Q0Uh38K/6AZTLbtp6ICeBQhA4IXZougATEd2+74+uK0BDJc27IpC3oO6thZpN/WCIGXfyxXg6Y66eatJ1pl5pddter0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LxHZZ03J; arc=pass smtp.client-ip=136.143.188.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E687D2E54AA
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 22:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770417333; cv=none; b=aaIEq2tzHi+qmceixMxAQxJL3uN/NcUyMTA/lqNkJFaIqpOkLMmRsFFUp8YwzURoPVi4Jga5GL6mHunRvGN6gymvjoVVu1oUJKNyALPq+xkKbZC+Rjnw2MkP9f5/USROwH2ZSCuP//w6CKF5v3lKsgFB7tFSrLM4GZwt5LCFD/E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770417333; c=relaxed/simple;
+	bh=hgvNMTRXd/FXFTBRwHn6ZpZgLxMMBaAxd3nsMmMNjoY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aY3vNR6qRtuGGmWKifNsvCeiS5fBPz2acAxushHsBnb8rrdE7NB19FGgXrDDf3ZXTWrFUMrEhKWF+5NZYtYYHAO3mgIFtE1VGpFJiEURQ8JbsUgXTfZ41aBFReu05GNigj62dTO8jiuhbz+QZhDfrWkeb2dzfizp4sy2+ImTBGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EsCUwntX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LxHZZ03J"
-ARC-Seal: i=1; a=rsa-sha256; t=1770417234; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=RiExs3bv4Y8H0GNaO34C2uPapynSVMRbvsT5doKr4cOkDCxxL3Hjgim05gX+l6zfycGBZ2ExaPDbNl/o2DN0HNRn4pT/1/vErz3mGPkwjoyc1Is8t6VBysJ9jFz2LGbzGO4aK6GJjcSmGg3OTZb2FINL6mSpNg9jeqewzdXz6lM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770417234; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=tc02K9ea6k3a52rZLvnILRHeI4xxmaVSZwRgjd+aJI4=; 
-	b=JT+j+YUNy2cWcpE6v/9YDklaQqixjWMof+qoB8V9LQThjMKDcV7e6TVmKIWAWCCiNhUIHWYcm+amncZP+Ad4FrHbGYf4fd6TDjZ8ULczWdJeGqdae29BpL+YtcayHWGETrbT5j8hjAwLY5u09LCs97H4K+VXC9A8wkwiQvC29Go=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770417234;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=tc02K9ea6k3a52rZLvnILRHeI4xxmaVSZwRgjd+aJI4=;
-	b=LxHZZ03JDNpDc+8PFnHHYRltxbF/8YH5RjJUuPQHRAC/7Sf1UXgxB2yT7gQd/t+e
-	oVa+fMJpJ/Uvp4FX6oa9pKZ5mgQBrNSwAil+Mlu0bTHqCuvOW4lgTGYDEvoAs5fMd5d
-	FISZyzqUUxMOdGD7sAsyHylnFw5C4xWLXRRutqqM=
-Received: by mx.zohomail.com with SMTPS id 1770417231622597.8188882201408;
-	Fri, 6 Feb 2026 14:33:51 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EsCUwntX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770417331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Le3aiYwi9QA3jxc/i9wr8UlZrE+EEzProIFjlbUe4qA=;
+	b=EsCUwntX++G3DledkA4SlF7w6QV2ZbMQuTXn8WVPPI1kLh3JSZJf1J0ZyFOpeR+Rf83hft
+	2pHcFj71i9698Fd9tg5PQ81gf+av30bBpVOvw0OOdyaFMAqtwbixYyssqkGiyFi68EOUXq
+	ShYD5ZLKcGlkZOwr8WxSZg9F8CQMs00=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-4jPKyixaMymbbkTAC_xJwA-1; Fri,
+ 06 Feb 2026 17:35:28 -0500
+X-MC-Unique: 4jPKyixaMymbbkTAC_xJwA-1
+X-Mimecast-MFC-AGG-ID: 4jPKyixaMymbbkTAC_xJwA_1770417327
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 800E41955F27;
+	Fri,  6 Feb 2026 22:35:26 +0000 (UTC)
+Received: from GoldenWind.redhat.com (unknown [10.22.64.226])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D357619373D8;
+	Fri,  6 Feb 2026 22:35:24 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: nouveau@lists.freedesktop.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Gary Guo <gary@garyguo.net>,
+	Benno Lossin <lossin@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Janne Grunau <j@jannau.net>
+Subject: [PATCH v7 0/7] Rust bindings for gem shmem + iosys_map
+Date: Fri,  6 Feb 2026 17:34:24 -0500
+Message-ID: <20260206223431.693765-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH -next v7 1/2] rust: clist: Add support to interface with C
- linked lists
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <983b7db3-b0e6-45d6-866e-f001b64abde1@nvidia.com>
-Date: Fri, 6 Feb 2026 19:33:27 -0300
-Cc: linux-kernel@vger.kernel.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Jonathan Corbet <corbet@lwn.net>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Helge Deller <deller@gmx.de>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- John Hubbard <jhubbard@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>,
- Edwin Peer <epeer@nvidia.com>,
- Alexandre Courbot <acourbot@nvidia.com>,
- Andrea Righi <arighi@nvidia.com>,
- Andy Ritger <aritger@nvidia.com>,
- Zhi Wang <zhiw@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>,
- Philipp Stanner <phasta@kernel.org>,
- Elle Rhumsaa <elle@weathered-steel.dev>,
- joel@joelfernandes.org,
- nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org,
- amd-gfx@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4A87E3FC-6A04-4A92-9230-4782D75FC05F@collabora.com>
-References: <20260206004110.1914814-1-joelagnelf@nvidia.com>
- <20260206004110.1914814-2-joelagnelf@nvidia.com>
- <73B64D35-6574-4776-962D-865465C40226@collabora.com>
- <7ed85eca-2a5e-4e8f-8356-e7fbbf7d3a8f@nvidia.com>
- <E846F3BB-DE64-4E6B-ACA3-00F965038478@collabora.com>
- <983b7db3-b0e6-45d6-866e-f001b64abde1@nvidia.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: LcuKWnXb0YiXeYFL9KRaq5AX_coPeq-ro7Ke6JHyLUE_1770417327
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
->>=20
->>=20
->> Yeah, but my point being: is there a reason why the underlying list =
-has to
->> remain read-only? Is this a safety requirement or an invariant that =
-is established
->> by the code above?
-> I'm not fully sure if it's an invariant or a safety requirement, but =
-anyone
-> creating a C list head on the rust side must guarantee that it is not =
-modified.
-> Since rust has no visibility on the C side, I believe it is a Rust =
-invariant
-> here that the existence of CListHead assumes that the list cannot be =
-modified
-> once Rust has access over it.  That is up to the creator (user) of the =
-CListHead
-> to guarantee. In the DRM buddy case, once the list is allocated and =
-accessible
-> from Rust, C code will not modify it while the Rust object exists.
->=20
-> Does that make sense, or is there a better way to document this?
->=20
-> --
-> Joel Fernandes
+This is the next version of the shmem backed GEM objects series
+originally from Asahi, previously posted by Daniel Almeida.
+
+One of the major changes in this patch series is a much better interface
+around vmaps, which we achieve by introducing a new set of rust bindings
+for iosys_map.
+
+The previous version of the patch series can be found here:
+
+https://patchwork.freedesktop.org/series/156093/
+
+This patch series may be applied on top of the
+driver-core/driver-core-testing branch:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git/log/?h=driver-core-testing
+
+Changelogs are per-patch
+
+Asahi Lina (2):
+  rust: helpers: Add bindings/wrappers for dma_resv_lock
+  rust: drm: gem: shmem: Add DRM shmem helper abstraction
+
+Lyude Paul (5):
+  rust: drm: gem: Add raw_dma_resv() function
+  rust: gem: Introduce DriverObject::Args
+  rust: drm: gem: Introduce shmem::SGTable
+  rust: Introduce iosys_map bindings
+  rust: drm/gem: Add vmap functions to shmem bindings
+
+ drivers/gpu/drm/nova/gem.rs     |   5 +-
+ drivers/gpu/drm/tyr/gem.rs      |   3 +-
+ rust/bindings/bindings_helper.h |   3 +
+ rust/helpers/dma-resv.c         |  13 +
+ rust/helpers/drm.c              |  56 +++-
+ rust/helpers/helpers.c          |   2 +
+ rust/helpers/iosys_map.c        |  34 +++
+ rust/kernel/drm/gem/mod.rs      |  28 +-
+ rust/kernel/drm/gem/shmem.rs    | 467 ++++++++++++++++++++++++++++++++
+ rust/kernel/iosys_map.rs        | 210 ++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 11 files changed, 815 insertions(+), 7 deletions(-)
+ create mode 100644 rust/helpers/dma-resv.c
+ create mode 100644 rust/helpers/iosys_map.c
+ create mode 100644 rust/kernel/drm/gem/shmem.rs
+ create mode 100644 rust/kernel/iosys_map.rs
 
 
-In which case, I recommend moving this to a safety requirement when
-creating the list.
+base-commit: 21bab791346e5b7902a04709231c0642ff6d69bc
+prerequisite-patch-id: c631986f96e2073263e97e82a65b96fc5ada6924
+prerequisite-patch-id: ae853e8eb8d58c77881371960be4ae92755e83c6
+prerequisite-patch-id: 0ab78b50648c7d8f66b83c32ed2af0ec3ede42a3
+prerequisite-patch-id: 8d20a8db8cf4660c682ee91f3db04e640c144e33
+prerequisite-patch-id: 299de9cd2789c19c22e2816f7c817d80d5a4f1db
+prerequisite-patch-id: 661ee334905f359daa8fb8d808ed5f4a8085f5c9
+prerequisite-patch-id: 05aef545e564948160354e498a3d3c5fd5bbfacb
+-- 
+2.53.0
 
-I assume the purpose of not modifying the list on the C side is to avoid
-corrupting the list in Rust somehow?
-
-=E2=80=94 Daniel=
