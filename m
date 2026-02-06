@@ -1,176 +1,84 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-g121.zoho.com (sender4-pp-g121.zoho.com [136.143.188.121])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624483451D4
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 13:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F49F3ACA4E;
+	Fri,  6 Feb 2026 13:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.121
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770384966; cv=pass; b=IvOJVWVmOJjt8LFcsNpNA407kpnJr2GQuAnkkjymRrqZiZ6U1/tAP/WLLQ27i65yD1/XvoTPJ1srqo83LmtKIcY6R4CzzSEUuOkiZ16Siun+fgmfVTKS2qktbTlpjKHir6d+9Dk+Vlf06nvViIKCSEF9wldxP25UuAch9rsD07o=
+	t=1770385594; cv=pass; b=az+VlbNBzcr0hPmzoE7LR1cyD5FM3FBHTLWJb8/En6cBVJTy6GpzvY7pa4k3SN+2fIT4//ydUipkTXln3tt3Is9AgSURAVs+r0ZXVEqWYNPg9VfTUN5W0XKbJDEx4u0ygz1d/4NbQFcZvMyw+75AJjEhUw4H8lwq3G3qsHcz4ZM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770384966; c=relaxed/simple;
-	bh=B4wo7bz46IWb5STejM/RV7+exK3z33y53ajLExf832s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YPRk/PUu2rcRKZBTXbcazv372ostvitIsyq8rfuBgz38yxKLf9NxbhAEi63xXoKhEm8HwGUjG4sDZEfHtReliMMw+RV0bN6xJ6G2/OVrCdNyJ30qyrCwJsV7Hzfc31AvgcRJ3rOr4wAUd60LPM8Qn3ZJsVIOJy7wm0VxzLx9I70=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BzEXbDT/; arc=pass smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1770385594; c=relaxed/simple;
+	bh=qwGdMNlmUxKpd1zQRy07bkqgOHklVo/X4zPc0eLQGXc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=hmxjfjNwGXFoCqwkeGTGUQ60axs7bD/ochCtf3jIWAuke4DugGDBZJFM5nX8P8Xz3TK7OvIR5/F/4Xnlh90lXftEfkMiC5qy2wIreAJOlMLBxAcgnrM1150+TftUWQdUeTRLB7zNemhMO0ApOLXyROl0G2nW8jOTTdQQMlL6+LQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Sb45cyqK; arc=pass smtp.client-ip=136.143.188.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BzEXbDT/"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-436234ef0f0so1125477f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Feb 2026 05:36:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770384965; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lkQp+Mn3rYD3O4opAPsbRcsh7ymGiECGg2TLEhrE9yC75vItTK+IhWSUZQ0rUFb/1N
-         z5CYDNBgnPp5/ZZtRJ8LoyjUKHMyQSiGywAtuTN3FboczQmhKrGiOG79x9yelJcfpxlm
-         8/vcuNZ3ZtRj2y/0lOS7JfvQezWleCUxYHCWGfLoGIa9RoGzau5jEhHs6O0AtqU6LjzI
-         AJSMU25GHhkQaj0Y6uWW21S9Zh6bICF/OMegR3DfV5ebxb94rXWVHveqH8fhwgPjRU+Q
-         8Ukxu8puJOpWxb8cfhounwYffsbaSudZVUe1/nxV1HkuY6acZ2ZwaG3dTH+QDNUuhlB+
-         G+UQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Lu4swG8oa8yIWuIllYhwtyx7jJ4M+hbyB3/+/m/7kB4=;
-        fh=68DxOWLhRe5+XzNNelg/ExhrrHLWdcLb+eu5mhl7i/o=;
-        b=PR+ldAWhBWhUGEEnbr4bvxYl91Rp2DVe+c4QGZ6dHzAJTjU/rjgLJJaXqjQ1e1G65n
-         TEvdajm0sz3/XnucW3PSAT7Fi3+bfDLbOIVqNycTG2P41U9gLiHZvOJzNAVAfeU4sS6z
-         NQzuousEdqNnCkG3qkRd13/JEmJY8E5MIprSlK+ibfZ9F+U+5RSFCc52nqv4vZ7JFdNv
-         491GZHzK5DYiT2PT5EzE2a6qpgEovWg7YxjecI5qxIc7+85QX8D11KU1KCNoarmgeGU1
-         oP30x1oQNQQsyLNwzCS0sfGVRCcRExlsO+Ytz1iqTNpYVlKlThe5uOVvIlfZycoBvMKN
-         sd9A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770384965; x=1770989765; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lu4swG8oa8yIWuIllYhwtyx7jJ4M+hbyB3/+/m/7kB4=;
-        b=BzEXbDT/V0g6wKwt1sz9wykxOGiO3EcCIwgNsk8OQvGWEJs3/zfUzKnLVEiwB7TX6C
-         g7yyppFCoT3vxNwek8I0SYiBN+Rcbb8h8BFUfhtiXDTI8rCRi7E/d8XvHHpzxTDxvaOX
-         LlAp+Ce26zD95RXupf1/49utdwrWJ1vhzJpC9JGII2fo8Z2txw8eSptV5HGMYjB71Po+
-         l0uzXWDc9YtsWFGNYOaIQiOK/x8qsc/eIzt2gdZXbRKeyMRzNAnZBNz0Y1B52NV0F5NF
-         xG6sMWdm8lLj8SyFxEs7bKp5wmNjoE7afkHiE22Gc8Sq9Bwd+f93BhaMJzbASCgG8yLC
-         He4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770384965; x=1770989765;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Lu4swG8oa8yIWuIllYhwtyx7jJ4M+hbyB3/+/m/7kB4=;
-        b=ji9a+JJQQP1NXmW6MwKeeGoo197uWkJabJZ0c7hj9w2YZhENVm2tDrEbgEhWeQ7szv
-         1i65XPVhENlPKvdvh97kSlu9LiuaO/KPFcEwdy5KrggLlfIQvvK5lQUWQtDI2+6vwC8Z
-         Hp9Ui5B+DEGKxvceDLp6f18VSOA/bGcuit+LMhjNsxxwB/fo0bAfQfgD7e7izKhqzotJ
-         T8T4ie65sr80y4lCtBIgxWRQ7jm1hfNHoA2Jgej8VwyqYROWYw+MonkB9H7bBxwiogOk
-         hcUsGm00UxHQTwXOJ4+QQynIkC2tFs1lvRQ8+mP7JWL7ErpiVWi7rRcveCgSJhIs/kW7
-         efTw==
-X-Forwarded-Encrypted: i=1; AJvYcCWi6AdlE6bChAYkV5CcnIT0jH1JQpTz7pnXtBVr+sh8YYtJiXiPCWAmOVPc0lReBDvyb4w+zd+HESTJzF+rWw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYP/QXFIyxCO8oXyiWx2LgDzZESFc3Pc4vVSSF9rC5HAiWs59M
-	wRpkCi4y6nHPqsu6jGtz8pryCd87YmYRUybJGtNXll3H60dsV/isCUJhJFDsuVwcSSzT0DNx1u+
-	++SEz1CQt4yavGbseFwXxMF2xOsNyPGaCzu2vWM9Z
-X-Gm-Gg: AZuq6aKjA7nS1P569gZ0NIfALLDXtXlZ2gPvovvXW58P4hk/csVmV+zM9z/nvOammtx
-	FgxIllIbM0cJel0UJK00N0Pv6eEfJs/AweZa0WiJRrvngl6IPxc4ghA9MWLpS7X7qkOwPWOXnWy
-	KFFBDLKKVQESVdOYNQrNp9l3rVtG7Tl8pxFPNq9+hWeAuATzEGWwE1vLe31f+fimO5Tizj5SLeT
-	b50+t3wb49E6HFL6+63T9rh8lWMnikTT//R9T97q6d34zSWH2i632kGlvDFrD1p/IsJkTBzoOPi
-	kDVVmB+wCJk5zRmRawQ0Q6Bl5ueewEtQqSJ8
-X-Received: by 2002:a5d:5f83:0:b0:435:a3c5:a526 with SMTP id
- ffacd0b85a97d-43629658283mr4332188f8f.14.1770384964416; Fri, 06 Feb 2026
- 05:36:04 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Sb45cyqK"
+ARC-Seal: i=1; a=rsa-sha256; t=1770385585; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=bYrsqXyxh2adE/va+HbL2hL1RyIBilD7Up1xYXKSCrqgCYHYqZHmvp6juLTds9bTD0Q+PQrXeuQceHHV/VgGDN2MOhwRgMOmS5URYbg7xIasfUm/LcWg7praszUcq4B1kq9FAXLlY7WFakU1uMLZXz37roJpc6Vmd/5Xz9mjRPE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770385585; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=jII4uV7+Vs0Ibvaq1++auXI/SyWNRdG9jXgAmegXSN0=; 
+	b=V/xmudkZdfPYVrmJNW1jkkFf8IsNj9p+8l38OASid1Tb6uYUGsiDozmWxk11YkbV/bvIH7/TfuD9pGzlrzUbpmc+ajPJyxFPVDfcK7qj7+o/xw0ue8nHXDPqJp1WJVoTYIww3P8nSZ3JBG9dgQSmW7xpYd/u0pa3M7qwY1QFyiY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770385585;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=jII4uV7+Vs0Ibvaq1++auXI/SyWNRdG9jXgAmegXSN0=;
+	b=Sb45cyqKPMZ/rkdzUKdv1wwbs4cJWLRZnWalNlAC6/Qf9Oaw9uMWPBDHW7xn7Bx1
+	YmEW3a9O2iu5qISAvyxddLKYYkmSFhixfIRkI4HqF8vu1A33eBdOVEQWV3V5HeiEU0Q
+	Eo5mvT/HFK1rEOGKiufdfHcvFjbUEL7rljkpyvQo=
+Received: by mx.zohomail.com with SMTPS id 1770385582739892.3909061737788;
+	Fri, 6 Feb 2026 05:46:22 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260205224706.91996-2-dakr@kernel.org> <20260205224706.91996-4-dakr@kernel.org>
- <DG7TFGPVWGAL.3IXTEQW3K5TFR@kernel.org> <2026020633-democrat-moisten-631a@gregkh>
- <DG7UGTYDW2G0.37554HSAB6IXY@kernel.org> <CAH5fLgjS+QEGdGnxUBCeMFCapeErRJ6n1rDenbF1ahc5xsJv+Q@mail.gmail.com>
- <2026020642-consent-showman-25a8@gregkh> <DG7WO1ZQZXUL.1BBSOAP7U2CHG@kernel.org>
- <CAH5fLgifC=K1wssW-nWR3wvL9OHEQ9x2hPd2+ENj_mqtgEhyxA@mail.gmail.com>
- <2026020618-congress-tuition-8893@gregkh> <DG7X1LYSZ1IC.2Q4CYXM97A62A@kernel.org>
-In-Reply-To: <DG7X1LYSZ1IC.2Q4CYXM97A62A@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 6 Feb 2026 14:35:53 +0100
-X-Gm-Features: AZwV_Qif7hDzpSahBrdxC13G57b51wYhzQZmYj3nD2Tj3TDS2mn-KjrevwXcrOI
-Message-ID: <CAH5fLggPi1zhQdUjt3WqDVUEWy1KVPK=iiQfbNSig697J7HS=g@mail.gmail.com>
-Subject: Re: [PATCH 2/5] devres: export devres_node_init() and devres_node_add()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org, ojeda@kernel.org, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v5 2/4] rust/drm: Don't setup private driver data until
+ registration
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260131001602.2095470-3-lyude@redhat.com>
+Date: Fri, 6 Feb 2026 10:46:07 -0300
+Cc: linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
+ nouveau@lists.freedesktop.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Shankari Anand <shankari.ak0208@gmail.com>,
+ David Airlie <airlied@gmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Asahi Lina <lina+kernel@asahilina.net>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <C1C710F6-CB04-4A44-BE3C-EBD12A87701D@collabora.com>
+References: <20260131001602.2095470-1-lyude@redhat.com>
+ <20260131001602.2095470-3-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Fri, Feb 6, 2026 at 2:33=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> On Fri Feb 6, 2026 at 2:25 PM CET, Greg KH wrote:
-> > On Fri, Feb 06, 2026 at 02:20:06PM +0100, Alice Ryhl wrote:
-> >> On Fri, Feb 6, 2026 at 2:16=E2=80=AFPM Danilo Krummrich <dakr@kernel.o=
-rg> wrote:
-> >> >
-> >> > On Fri Feb 6, 2026 at 1:34 PM CET, Greg KH wrote:
-> >> > > That's fine, because the rust driver core code should also be buil=
-t into
-> >> > > the kernel, not as a module, right?
-> >> >
-> >> > Yes, but the Rust compiler may still choose to put some of the core =
-code into
-> >> > the module.
-> >> >
-> >> > Especially with generic types and functions the Rust compiler may mo=
-ve some the
-> >> > generated code for a certain type instance into the module that inst=
-anciates the
-> >> > type.
-> >> >
-> >> > For instance, even though rust/kernel/devres.rs is *always* built-in=
-, we get the
-> >> > following error when devres_node_init() is not exported when the use=
-rs of this
-> >> > built-in code are built as module.
-> >> >
-> >> >         ERROR: modpost: "devres_node_init" [drivers/pwm/pwm_th1520.k=
-o] undefined!
-> >> >         ERROR: modpost: "devres_node_init" [drivers/gpu/drm/tyr/tyr.=
-ko] undefined!
-> >> >         ERROR: modpost: "devres_node_init" [drivers/gpu/nova-core/no=
-va_core.ko] undefined!
-> >> >         ERROR: modpost: "devres_node_init" [samples/rust/rust_dma.ko=
-] undefined!
-> >> >         ERROR: modpost: "devres_node_init" [samples/rust/rust_driver=
-_pci.ko] undefined!
-> >> >         ERROR: modpost: "devres_node_init" [samples/rust/rust_driver=
-_auxiliary.ko] undefined!
-> >> >         make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] =
-Error 1
-> >> >
-> >> > However, sprinkling "raw" EXPORT_SYMBOL_GPL() due to that is not gre=
-at at all.
-> >> > Hence, we could do something like in [1] instead. I don't know if th=
-ere are
-> >> > other options that may be better though.
-> >> >
-> >> > [1] https://lore.kernel.org/all/DG7UR3WWZB4V.2MYMJJH1VDHH@kernel.org=
-/
-> >>
-> >> You can use #[inline(never)] to prevent this.
-> >
-> > Ah, good!
->
-> I tried this before, but it doesn't work. It might prevent inlining, but =
-it does
-> not prevent the compiler to move the function into the module binary.
->
-> For instance, even with #[inline(never)] on Devres::new() I see this:
->
->         $ objdump -t drivers/pwm/pwm_th1520.o | grep " F " | grep Devres =
-| grep new
->
->         0000000000000000 g     F .text  00000000000001d0 _RINvMNtCsgzhNYV=
-B7wSz_6kernel6devresINtB3_6DevresINtNtNtB5_2io3mem5IoMemKjb0_EE3newNtNtB5_5=
-error5ErrorINtNtCs4gKlGRWyJ5S_4core6result6ResultBK_B1i_EECsjBm7MKWXKwW_10p=
-wm_th1520
 
-Because it's generic, see my sibling reply.
+
+> +
+> +    /// Keeps track of whether we've initialized the device data yet.
+> +    pub(crate) data_is_init: AtomicBool,
+
+Oh well, I was unable to think of a better plan than this ^
+
+Nit: you=E2=80=99ve added a few pub(crate), consider whether these could
+be pub(in path) or, better yet, pub(super).
+
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
