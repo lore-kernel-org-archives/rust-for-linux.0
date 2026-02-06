@@ -1,127 +1,146 @@
-Received: from sender4-pp-g125.zoho.com (sender4-pp-g125.zoho.com [136.143.188.125])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FFC2C1598;
-	Fri,  6 Feb 2026 13:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.125
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770385733; cv=pass; b=f0+lF48c1sihsXT8hkFcZtsfp9AV+oatphvXLoZUe712ZCER7V4XoaWlbS8ITnMgZZQ1n044IPOsd+91G/BSikngks810JyzSeTaGpCfTap1+A/aD+5a+SxArhweEv/pHOwzc/cVdtiUfxdef0Z13WQKOrooGEaxzPRQgOLUc8o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770385733; c=relaxed/simple;
-	bh=mxwMRxdTtjDiUY01HfEp0Pw5qQLztrrrSzp65YzYK7M=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=T/riTx5TzZxhAyaF3I/gNQUDVCmuwLh4hLKzh1EX95bEMfsXl2vPdTCYeZXTqIW5yBsb3uqBcGcICehEF7pr1tHmtxGDRDLN0HI0/fXTkgKUS1i1bxfCiOKHovbQgBPXO+mgb05fHh//hXhW0htExq8eZy3OJHfVe3xD9M6Spw8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=JsBG5J0O; arc=pass smtp.client-ip=136.143.188.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7173B36BCC5;
+	Fri,  6 Feb 2026 13:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770386155; cv=none; b=lG1gYSrHxkTYe5qkrr3e6RHMXt8lXoZrgYD/273rEizchG8AmkQXbWAAgFG1xfF11d2Xiv4T7yJuSh+1eQDfgxGQziQS6vnF+c5GD5ww6EosDXPuheisFIGStly9dUbsFE3gjXIUXhub1Yf1/bIEh2isu/fDZnhrNSEi/t/CNS4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770386155; c=relaxed/simple;
+	bh=/RTP1a1GRRWEUuPb7p7qoXPD7R18r0X5lN0PkV9oDAU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GJw+VjBJJd9ssg/JC0KXq5pEe+xG0Taq9eVnPIO5O+GJlkWzIbpKz07hBmVPOQL895YPVee35LjIZy8XXl8C3BqDtc49jNw6DzfCcszpZlF2odqe9y0R/e9KGo2TwJmMaKaQsrczS6CxPIIyXu/ftv2oKbQuJk3sdUFu0iunbCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZjjYvRI+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="JsBG5J0O"
-ARC-Seal: i=1; a=rsa-sha256; t=1770385725; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=eLADfDh5ZCG7FahJ0WDSoJJw3WG/E6sg1kBr91d1CAzJzJ2jBLLP6x/vNsE4+Lc8NOBnhgScH7CmbgStQf0dToSoI4t52hv9Fpke68kF2sLnsGzZPvwKmwcwHVWhv27+iG6IURND31icveANQAM5OCqsNx1UXPk27d/Nl9B0J0g=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770385725; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=LzPiNNptRxNCTQFdfUnfCjZ/Da5/h5a44gaaAAfD6Fw=; 
-	b=JgPcy0BcL0k3sj0DyP25viHH4BRI+G8gSzMN4xxbs9akM4YPfWaqZSODzOFEaNJppwwm3+snAJiidoEEvLgHAOYTNRF6rYem5GOyW2UDsArwbarvmWtvlixcAcG4SOPq4qi891kKVO4r1vsmdF/rEx6EpGgmYjDYKEnrnoHjPqM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770385725;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=LzPiNNptRxNCTQFdfUnfCjZ/Da5/h5a44gaaAAfD6Fw=;
-	b=JsBG5J0OosF+DKNKjZbozUujKQ83cvNeSAEIpFjnr1nBs3MLdCZdPc/sLPg3XhkF
-	JwfBYIopxkego5nPuPgCIrgm8ZXW5PHh79J7vSnhLBGulBYZfN3lHtYPem8CZWoconL
-	gh92Sir9qISd08fibtCSWiWb+zfQcsz03uLfA3oo=
-Received: by mx.zohomail.com with SMTPS id 1770385723877534.8156522665855;
-	Fri, 6 Feb 2026 05:48:43 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjjYvRI+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7EBC116C6;
+	Fri,  6 Feb 2026 13:55:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770386155;
+	bh=/RTP1a1GRRWEUuPb7p7qoXPD7R18r0X5lN0PkV9oDAU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZjjYvRI+8QdQmfkFMb8tzlQmOp341c1wTHvQCJE47Yqeqn58IAleuDFxyCvFgygIF
+	 +db3oXPj4nPEldYw+/+yUknL7F0bBdYr4sRjgvBS4aFWQ1npQEVOto0MBCScaXdzmp
+	 6n0JTW7ksjZNyy4yc1e6m7NLY8TUsXRfAuVM2vPw=
+Date: Fri, 6 Feb 2026 14:55:50 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, rafael@kernel.org, ojeda@kernel.org,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
+	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/5] devres: export devres_node_init() and
+ devres_node_add()
+Message-ID: <2026020633-foe-etching-e464@gregkh>
+References: <20260205224706.91996-2-dakr@kernel.org>
+ <20260205224706.91996-4-dakr@kernel.org>
+ <DG7TFGPVWGAL.3IXTEQW3K5TFR@kernel.org>
+ <2026020633-democrat-moisten-631a@gregkh>
+ <DG7UGTYDW2G0.37554HSAB6IXY@kernel.org>
+ <CAH5fLgjS+QEGdGnxUBCeMFCapeErRJ6n1rDenbF1ahc5xsJv+Q@mail.gmail.com>
+ <2026020642-consent-showman-25a8@gregkh>
+ <DG7WO1ZQZXUL.1BBSOAP7U2CHG@kernel.org>
+ <2026020616-hardhat-french-4dac@gregkh>
+ <aYXtwXYAELSIoxXE@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v5 3/4] rust/drm/gem: Add DriverAllocImpl type alias
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260131001602.2095470-4-lyude@redhat.com>
-Date: Fri, 6 Feb 2026 10:48:27 -0300
-Cc: linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
- nouveau@lists.freedesktop.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Simona Vetter <simona@ffwll.ch>,
- Alice Ryhl <aliceryhl@google.com>,
- Shankari Anand <shankari.ak0208@gmail.com>,
- David Airlie <airlied@gmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Asahi Lina <lina+kernel@asahilina.net>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A3285F15-8EE1-45C9-B54F-703C7BC4E161@collabora.com>
-References: <20260131001602.2095470-1-lyude@redhat.com>
- <20260131001602.2095470-4-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aYXtwXYAELSIoxXE@google.com>
 
-
-
-> On 30 Jan 2026, at 21:13, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> This is just a type alias that resolves into the AllocImpl for a given
->  T: drm::gem::DriverObject
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
-> rust/kernel/drm/gem/mod.rs | 9 +++++++--
-> 1 file changed, 7 insertions(+), 2 deletions(-)
->=20
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index b4199945db378..ad74c5159f725 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -33,6 +33,11 @@
-> /// [`DriverFile`]: drm::file::DriverFile
-> pub type DriverFile<T> =3D drm::File<<<T as DriverObject>::Driver as =
-drm::Driver>::File>;
->=20
-> +/// A type alias for retrieving the current [`AllocImpl`] for a given =
-[`DriverObject`].
-> +///
-> +/// [`Driver`]: drm::Driver
-> +pub type DriverAllocImpl<T> =3D <<T as DriverObject>::Driver as =
-drm::Driver>::Object;
-> +
-> /// GEM object functions, which must be implemented by drivers.
-> pub trait DriverObject: Sync + Send + Sized {
->     /// Parent `Driver` for this object.
-> @@ -42,12 +47,12 @@ pub trait DriverObject: Sync + Send + Sized {
->     fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl =
-PinInit<Self, Error>;
->=20
->     /// Open a new handle to an existing object, associated with a =
-File.
-> -    fn open(_obj: &<Self::Driver as drm::Driver>::Object, _file: =
-&DriverFile<Self>) -> Result {
-> +    fn open(_obj: &DriverAllocImpl<Self>, _file: &DriverFile<Self>) =
--> Result {
->         Ok(())
+On Fri, Feb 06, 2026 at 01:33:53PM +0000, Alice Ryhl wrote:
+> On Fri, Feb 06, 2026 at 02:22:42PM +0100, Greg KH wrote:
+> > On Fri, Feb 06, 2026 at 02:16:05PM +0100, Danilo Krummrich wrote:
+> > > On Fri Feb 6, 2026 at 1:34 PM CET, Greg KH wrote:
+> > > > That's fine, because the rust driver core code should also be built into
+> > > > the kernel, not as a module, right?
+> > > 
+> > > Yes, but the Rust compiler may still choose to put some of the core code into
+> > > the module.
+> > 
+> > What exactly do you mean by "the module"?
+> > 
+> > > Especially with generic types and functions the Rust compiler may move some the
+> > > generated code for a certain type instance into the module that instanciates the
+> > > type.
+> > 
+> > Ah, that's a mess.  why?  The code lives in the .rs file in the kernel
+> > core, right?
+> 
+> It might still be inlined into downstream compilation units. Rust has no
+> equivalent to 'static inline' function in a header file, after all.
+> 
+> > > For instance, even though rust/kernel/devres.rs is *always* built-in, we get the
+> > > following error when devres_node_init() is not exported when the users of this
+> > > built-in code are built as module.
+> > > 
+> > > 	ERROR: modpost: "devres_node_init" [drivers/pwm/pwm_th1520.ko] undefined!
+> > > 	ERROR: modpost: "devres_node_init" [drivers/gpu/drm/tyr/tyr.ko] undefined!
+> > > 	ERROR: modpost: "devres_node_init" [drivers/gpu/nova-core/nova_core.ko] undefined!
+> > > 	ERROR: modpost: "devres_node_init" [samples/rust/rust_dma.ko] undefined!
+> > > 	ERROR: modpost: "devres_node_init" [samples/rust/rust_driver_pci.ko] undefined!
+> > > 	ERROR: modpost: "devres_node_init" [samples/rust/rust_driver_auxiliary.ko] undefined!
+> > > 	make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
+> > 
+> > This feels like a compiler bug, how is the compiler reaching into
+> > devres.rs and sucking out code to put into the module?  Doesn't the
+> > build/link boundry stay at the .rs boundry?
+> 
+> It's quite intentional.
+> 
+> It used to be the case that only functions marked #[inline] could be
+> inlined like this, but it was changed so that small functions without
+> any marker are also eligible for inlining. Now you need #[inline(never)]
+> to ensure it does not happen.
+> 
+> Note that this analysis only applies to non-generic code. If you call
+> devres_node_init() from within this function:
+> 
+> impl Devres<T> {
+>     fn new() -> Self {
+>         ... devres_node_init() ...
 >     }
->=20
->     /// Close a handle to an existing object, associated with a File.
-> -    fn close(_obj: &<Self::Driver as drm::Driver>::Object, _file: =
-&DriverFile<Self>) {}
-> +    fn close(_obj: &DriverAllocImpl<Self>, _file: &DriverFile<Self>) =
-{}
 > }
->=20
-> /// Trait that represents a GEM object subtype
-> --=20
-> 2.52.0
->=20
+> 
+> then since `new()` is generic over T, it is duplicated for each type T
+> it is used with (via monomorphisation, like C++ templates). So the
+> actual `new` function might be instantiated in the crate that uses
+> Devres<MyDriverType>, and in this case it ends up in the module even
+> with #[inline(never)].
+> 
+> So you'd need a non-generic Rust function with #[inline(never)] in this
+> case, and have Devres::<T>::new() call that function.
+> 
+> > > However, sprinkling "raw" EXPORT_SYMBOL_GPL() due to that is not great at all.
+> > > Hence, we could do something like in [1] instead. I don't know if there are
+> > > other options that may be better though.
+> > > 
+> > > [1] https://lore.kernel.org/all/DG7UR3WWZB4V.2MYMJJH1VDHH@kernel.org/
+> > 
+> > That's a start, but still messy.  There's no compiler options to prevent
+> > this "lifting" of the code out of devres.rs?  If not, this is not going
+> > to be the only problem that drivers run into like this in the future.
+> 
+> Because of how monomorphisation, as-is the code actually lives in the
+> module to begin with.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+Ok, but again, that is going to cause all sorts of "the symbol is
+undefined" type of problems going forward as a developers just "assumes"
+that the place where the symbol is exported will actually have the
+symbol exported from it, not that this place will be copied inline into
+somewhere else.
+
+Think about the interaction between module symbol namespaces here.  This
+isn't going to scale, and will trip people up and cause us to be forced
+to export way more than we really want to (like this patch series shows,
+I don't want to export any of these...)
+
+thanks,
+
+greg k-h
