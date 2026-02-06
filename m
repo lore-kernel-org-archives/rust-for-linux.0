@@ -1,152 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C2D360741
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 15:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7831F2DA742;
+	Fri,  6 Feb 2026 15:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770391695; cv=none; b=IiOp2019dAcvmdDvdTFrkeXSyf7q4UB43ffHf+y88BoMUD8+Bgm50dQ6AA5f3aiLBUoy0e3aCfih0Ta6c0C+5+/qVgbLraljfUr6UXuO6I+c9JqxD3gN3bgQes05P/aS5B/9iIlySFmjomNFQdp9BMDzqE/nGyFX8xXgr8PgGyw=
+	t=1770393238; cv=none; b=bCG5LmHTRMuMSGNayI0+K/LQe+WI0hEmsHZXsoGeuTskzqPeuQQU8oLK2cREL2VJgKdZxk5qPq8Tf+ChrmNqLjZv1wVv/uriSRLpaRUJsIU2H4TsERlXXu7WI/mjwFgAdqfyYyDKHmYMUqEhADNOrM1QCZrHUzDAHPBKAby/8Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770391695; c=relaxed/simple;
-	bh=5y1J7IXW/31BRrX1yvw3LOd51yBtFg/ShOLvS3Zwtuk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JacL+c/lEwVLCPtIzNTba6bZkD0EShMK1L71NM0hgDCCWXG9dOn2HOlKDdotQGKOsFNIJqABd5NoZT3pZpr1OX6lO5OVre4GAq3N6CJ4JxRYZOsze96wFCB0agsh2znh/ujCH8xCEhl4uWP47myddspz1KsIf+zLC/QQApLYIbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tVbwG4QG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770393238; c=relaxed/simple;
+	bh=ze8RjpWv8yTJ+WjIu3XKMrMfT9jYoz3Ax+Xr197aMQM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ohhu4LpZjKq6lpYYisdxY7ppT83SElcqgfKc7aE+P8suRMByAetH6koqVatsGv0aIT0vVJx7D4XLUFwO6hJm0spVol6QBiKx/mXTtJ5/Dq5KkJOpUSjGW/OhHtzbchHC99eye5NY2SKRXCOuP6l4Glaaf+yy1ecfQ4GgQdoLzhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FkZnrD/o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tVbwG4QG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D53C19422;
-	Fri,  6 Feb 2026 15:28:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FkZnrD/o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA6BC116C6;
+	Fri,  6 Feb 2026 15:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770391694;
-	bh=5y1J7IXW/31BRrX1yvw3LOd51yBtFg/ShOLvS3Zwtuk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tVbwG4QGJ1HfHMe7/3SGfvqqLyEcJ9UVKiwBsgeCdUAf/JOBRKqsrJwUSQHD3BOpU
-	 0wB8L3q51qHGF8JEP/k7xg0nw8rZ9YqLxMjO89D8pE77y8xd50Ll1rSg9t7Wr13OrU
-	 h7I9W6mvp2Lt4vTxAzRMfNy4IU33YHQ8LhAFGLh03S/BRRenVUBRk+9b9mgnwopF4s
-	 KkX4NPCPpoTPZsQ2ar0TVb2awhnqXarzWBeKnSgGGg/r4O0iQ/A3oArLuM+odF1Lqq
-	 Jz2yz0yuEoA0rJ21SDiM2RXA3CWm4aGKoNgTPhIN4Mz4uDuwjCADGfRQrRs7tulRPH
-	 Y0y3pI+Kh4m0Q==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8C0CDF40068;
-	Fri,  6 Feb 2026 10:28:13 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 06 Feb 2026 10:28:13 -0500
-X-ME-Sender: <xms:jQiGaSONHp3Bt5a9RbE-P1eo7WfI2AkMlQSXsCJID0lCaTAbpc41Aw>
-    <xme:jQiGaSQ75WzkohSKIUzz2P5_Czg3HgVG4FUstJdi3i0m9Gp8C5znF6boc9vt_726X
-    Rv2KMZQpicP8KnhGFw9gFcON3D3obud_gS1rBsmHDmkG1FLt1OdQw>
-X-ME-Received: <xmr:jQiGad6KG6m7Tjm-erPWvTNMUKAY9y8ip2pWHJFph_nBmwX6YjgK5M8g7WBwP6pva7dirbFvaEYBamHb1pM3C_XCWeRRqFer>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeekheefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    efhefgffelkefhheeifeeggefhgeeuieevueegfeeugfeuffeludeuhefhleeggeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
-    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
-    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
-    hnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepjhho
-    vghlrghgnhgvlhhfsehnvhhiughirgdrtghomhdprhgtphhtthhopehpvghtvghriiesih
-    hnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtgho
-    mhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtph
-    htthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopegurghn
-    ihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehojh
-    gvuggrsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:jQiGaVY84fJ4JeYkaCALfTlFP3n-hWiBDhW65EFvQM2ITptpE7u6lg>
-    <xmx:jQiGaRaSiT8sry59Ns80ROz1pr7mLnNMJFZS19kPCppOnyPnvJlyLA>
-    <xmx:jQiGaY2-h4KAIitaJph_VJQm8St4YADWGG6h5jshF4klZwle47p3ww>
-    <xmx:jQiGaZYTuU2viwPBPb6WusGnAEQmrjO5kyAN9rLUW-8TGm7cWOZ69Q>
-    <xmx:jQiGadlx5pfEuL4sKEJ8NG8b7PVyS6RvPMjK3_u2vtBBkL8dcdnsK_oZ>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Feb 2026 10:28:11 -0500 (EST)
-Date: Fri, 6 Feb 2026 07:28:10 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Lyude Paul <lyude@redhat.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH v17 02/16] preempt: Track NMI nesting to separate per-CPU
- counter
-Message-ID: <aYYIikXcrXFOZDra@tardis.local>
-References: <aYVXQVwOZapVbnP5@tardis.local>
- <6792E792-2043-4BF5-952B-90847703F23F@nvidia.com>
+	s=k20201202; t=1770393238;
+	bh=ze8RjpWv8yTJ+WjIu3XKMrMfT9jYoz3Ax+Xr197aMQM=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=FkZnrD/oa9GtTvMAdifPkms3Wa2QVBnFodZ7xitHhc1s9KkRwwcoYLF0ecmJSskB7
+	 qeDNYKEQYz+l5Jcu3IxZBVpluiEeCGi5y6VjEYMLM3+KdVRzOnN7+/3BvItxTMM+Tz
+	 JClwqsQv/MCqbahtuBihb6AijUCm3S7rIKYY3VIgb3140k6gtZsyyiUp7giy/FPqvQ
+	 WxLb9xC9qzwJcB9LRPLhbkL3hYGTlu9jrv+9jwwpTFefk6U/jgDSGLvrlRyAaNCETU
+	 erXhxJQ9whT6WQJUhkxpLOSCQygzOAyUC2J6h9/jl457b5Rcql9PmSSgT4ajwtk/oW
+	 ZpzbSTyGfIvkw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6792E792-2043-4BF5-952B-90847703F23F@nvidia.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Feb 2026 16:53:48 +0100
+Message-Id: <DG800TDA6OXQ.275PMMS19F1EX@kernel.org>
+Subject: Re: [PATCH -next v7 1/2] rust: clist: Add support to interface with
+ C linked lists
+Cc: "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan Corbet"
+ <corbet@lwn.net>, "Alex Deucher" <alexander.deucher@amd.com>,
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Jani Nikula"
+ <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
+ <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
+ "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang Rui" <ray.huang@amd.com>,
+ "Matthew Auld" <matthew.auld@intel.com>, "Matthew Brost"
+ <matthew.brost@intel.com>, "Lucas De Marchi" <lucas.demarchi@intel.com>,
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ "Helge Deller" <deller@gmx.de>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer"
+ <epeer@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Andrea
+ Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>, "Philipp Stanner"
+ <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, <joel@joelfernandes.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <amd-gfx@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
+ <intel-xe@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260206004110.1914814-1-joelagnelf@nvidia.com>
+ <20260206004110.1914814-2-joelagnelf@nvidia.com>
+ <DG7ZF1UT98RQ.3F42J3ULGV2OC@garyguo.net>
+In-Reply-To: <DG7ZF1UT98RQ.3F42J3ULGV2OC@garyguo.net>
 
-On Fri, Feb 06, 2026 at 03:13:40AM -0500, Joel Fernandes wrote:
-[..]
-> >>> 
-> >>> PREEMPT_LONG is an architecture-specific way to improve the performance
-> >>> IMO. Just to be clear, do you object it at all, or do you object
-> >>> combining it with your original patch? If it's the latter, I could make
-> >>> another patch as a follow to enable PREEMPT_LONG.
-> >> 
-> >> When I looked at the alternative patch, I did consider that it was
-> >> overcomplicated and it should be justified. Otherwise, I don't object to it. It
-> > 
-> > I don't think that's overcomplicated. Note that people have different
-> > goals, for us (you, Lyude and me), we want to have a safer
-> > interrupt-disabling lock API, hence this patchset.
-> 
-> I was also coming from the goal of long term kernel code maintainability. If
-> we decide to have additional preempt count flags in the future, does special
-> casing 32 bit add even more complexity? (not rhetorical, really asking)
-> 
+On Fri Feb 6, 2026 at 4:25 PM CET, Gary Guo wrote:
+> On Fri Feb 6, 2026 at 12:41 AM GMT, Joel Fernandes wrote:
+>> diff --git a/drivers/gpu/Kconfig b/drivers/gpu/Kconfig
+>> index 22dd29cd50b5..2c3dec070645 100644
+>> --- a/drivers/gpu/Kconfig
+>> +++ b/drivers/gpu/Kconfig
+>> @@ -1,7 +1,14 @@
+>>  # SPDX-License-Identifier: GPL-2.0
+>> =20
+>> +config RUST_CLIST
+>> +	bool
+>> +	depends on RUST
+>> +	help
+>> +	  Rust abstraction for interfacing with C linked lists.
+>
+> I am not sure if we need extra config entry. This is fully generic so sho=
+uldn't
+> generate any code unless there is an user.
 
-First, given what preempt count is, I don't think that'll happen
-frequently. Also I think the reality is that we care about 64bit
-performance more than 32bit, in that sense, if this "conditional 32 bit
-preempt count case" becomes an issue, the reasonable action to me is
-just making all preempt count 64bit (using an irq disabling critical
-section for 32bit or plus a special locking), and this would make things
-simpler. That's the long term view from me. (Now think about this, the
-NMI tracking we proposed in this patch is actually a special case of
-that ;-))
+I also don't think we need a Kconfig for this.
 
-> > I think Peter on the
-> > other hand while agreeing with us on the necessity, but wants to avoid
-> > potential performance lost (maybe in general also likes the idea of
-> > preempt_count being 64bit on 64bit machines ;-)) That patch looks
-> > "overcomplicated" because it contains both goals (it actually contains
-> > patch #1 and #2 along with the improvement). If you look them
-> > separately, it would be not that complicated (Peter's diff against patch
-> > 1 + 2 will be relatively small).
-> 
-> On further looking, I think my hesitation is mostly around the extra
-> config option and special casing of 32 bit as mentioned above. But
-> answering your other question, if it is decided to go with Peter's
-> patch, you can use my codevelop tag.
-> 
+In any case, it shouln't be in drivers/gpu/Kconfig.
 
-Thank you! But I realized more things are needed, so we probably should
-add PREEMPT_LONG as a follow-up (for example, should_resched() should
-take a long instead of int, and the print format issues that Peter
-mentioned).
+>> +
+>>  config GPU_BUDDY
+>>  	bool
+>> +	select RUST_CLIST if RUST
 
-Regards,
-Boqun
+If we will have a Kconfig for this, this belongs in the GPU buddy patch.
 
-> -- 
-> Joel Fernandes
-> 
+>>  	help
+>>  	  A page based buddy allocator for GPU memory.
