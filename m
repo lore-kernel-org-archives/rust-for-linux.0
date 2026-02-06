@@ -1,325 +1,203 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245802D97AB;
-	Fri,  6 Feb 2026 16:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876FD2DB7B0;
+	Fri,  6 Feb 2026 17:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770396968; cv=none; b=PMQ1hfeOx349b16/iycHYYoZDYFY1Tprn87dgMB0KuHxUzqBBzJbHqKSjabpKJ6kQEI0ttpBvVreCuaGdCDF/l5fPq5c0QzvEOjtni01mkcl5iiOJ86AGLBpi0vUfrlWwPWLaXQDdcwzqIbsMk9lgg4EXbgfumkdoYUCSSGd+Lg=
+	t=1770397865; cv=none; b=KbmgnaANnrohln9yvipc8XpZnNr89qiYCFy1CSiXqZnXOqvteblyBBM7A8XZnPr47W2DoE1uFrtCqeZqGtsmQcBvBC47BaBbTua/zSGXX6shW2YnkLq3FLRLW2NbA2vY8AAdKL+YxA+AhXsY9TdgTRV2eOM3VgUkTNYNWKf7VkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770396968; c=relaxed/simple;
-	bh=LsNBcsYpQWNxZY+OYcBUkLQDjrOQsTsu3TCa53EHVOY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=uXfWOBr/lOD2qqQ3NahE14YxGoO8lKho4jdOtYdlKbG2auHTIAXW5mzz56KcIEy03JUYfkopoElnevLi9lBX9Tq85nDVtkJ3LiKLZVWp4l3ZEgogcl4+CcS8TBdPIa1ILTZAiP3dI4ODufQHdYcWA3a/zoEYJ4z+cJ8JgqdAFAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CQ5AcyTN; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1770397865; c=relaxed/simple;
+	bh=gmjqrEbxxdGkv5kHhDNMaeFccnJBmW6pLzhmWhZ00TA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Nk3B0XDsJvfXZSxf+eKQEI7vyqZkCvhjfSZKiwdQW7ENQ4SR1Qo4IsXuRfLpDeEs0Q5UO9lIsirWYyyR5ycB9Y4mEwKLh08v0xDa60iUqyRUFZzqPXJTu9ROv7snnYagHw2nNHrazszYZKupIZdURbdhq7HnqY2hisSj/Fq9G1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlqrUTo3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CQ5AcyTN"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6168kGFG030403;
-	Fri, 6 Feb 2026 16:55:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=WDHuhm
-	ii8UVkJ/u8uQhZujlayEcsbkKUhzG4qNcIQjA=; b=CQ5AcyTN4H06maY9nH2FS4
-	7GMcCXQ1/qBxmFKoGlzFPdyx+USKHv8TznXLFuHFMriZdI4rjVxHO11d1mvYBWz8
-	wFTMqpCCyPVViA5RD/8My7Dc7hfHDQ7t7s2tCdj6JkGCdn/XTewQCnWtGu++MonF
-	sEhtAeEtnQIu4q1+QDsGsxxWSdOekL4nRYmdTykhWGkWhsXD83DsQz0YZs8Qtz6i
-	7kGp74JVlDksLqKgxjpSsYEwfssEWWBdYUyhXVmXeRNKovOgGfe2wh2/u6+zu5xQ
-	uUdZjF12UeFKn5CVmqSBI+PpqwdTb1vbJl1SCUC/mjdXa4HMCgNOt89K39YlU3zA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19cwh9fu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Feb 2026 16:55:32 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 616GtVYL022433;
-	Fri, 6 Feb 2026 16:55:31 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19cwh9fs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Feb 2026 16:55:31 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 616FwN8T009156;
-	Fri, 6 Feb 2026 16:55:31 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c1veyf2p6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Feb 2026 16:55:31 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 616GtUnW31654490
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Feb 2026 16:55:30 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4453D58052;
-	Fri,  6 Feb 2026 16:55:30 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9BE758065;
-	Fri,  6 Feb 2026 16:55:22 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.249.149])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  6 Feb 2026 16:55:22 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlqrUTo3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB62C116C6;
+	Fri,  6 Feb 2026 17:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770397865;
+	bh=gmjqrEbxxdGkv5kHhDNMaeFccnJBmW6pLzhmWhZ00TA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=AlqrUTo3T+8vluGBiUH+3ZlpxvmK4yJrZfClxiG5nF76FU9pdiUTtNo8sN8sL/cZn
+	 khGI8o5nIGoAH9m5SUuFo123nNU/5m4+8F17aX0T0zPRTSowyXKORAVhWduyIhBHtr
+	 HFNxNqa+V2ua8eZmsw9qptMg1K/CiqdCUJfTGLAKrPKOvcIsBVbzwLL2JKG8usp5+9
+	 f60GkFVnAXS+xizClUuV4C5ircZ7ArSoOa8aHWXCzMBxyCvgMolb4qZd2OsCZTYTaR
+	 tWksSF+nD+gy1PDuAwYUe0M0QuB9Um5/FNYSND+jHgV9bqXpcR2x/3yKz//XG98RCT
+	 AVxcSjpBsT6eQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 06 Feb 2026 18:10:45 +0100
+Subject: [PATCH] rust: xarray: fix false positive lockdep warnings
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH V3 0/3] Rust support for powerpc
-From: Venkat <venkat88@linux.ibm.com>
-In-Reply-To: <20260205180429.3280657-1-mkchauras@gmail.com>
-Date: Fri, 6 Feb 2026 22:25:09 +0530
-Cc: linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com,
-        gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-        a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-        dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
-        peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com,
-        rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F9EAA7DA-7CD3-43CB-8C6A-671E519BC963@linux.ibm.com>
-References: <20260205180429.3280657-1-mkchauras@gmail.com>
-To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA2MDEyMyBTYWx0ZWRfXwQTrGuZHHBJd
- rJ/l6bwnIOM33g7LpWXX1Sf23d9MANX9kF+jOK8SopJVeeAsYCm3oUOt47JyvRBoWb/PV5Ccewj
- r21oBgsA+KHDBOnXwMPwD2WeBbOhjb0MDgjR83F09QzHrHP8r8TLkbFzl6svvqXOEnZwY2xEn8A
- di8O1weRYpZxe+Fa36aUQ/uW+keWXRc4/qZA55LggQTIQjxBbFses6ZaAECyeezx3x4vT901MWt
- yKLniss4i/ptrhFadDUiqcYqt2bSo9aJLkJfTpoPY/WMmGV/GEUZAI1MVgqJcP8cagHeNDMwtuK
- BIpf1fxZdK4B5Keg+lRP1ciI1jACGOKf/jbaroPydSmy4rCz0CgfiugY1hUBv1l5NxLjlDIGsmx
- u4j5L0VAp5Tt5D8ETIJmYZi6j+m0Xy0afSBI6eRxDx5JDL14V43nZcb2QjNmc7A1nWehoQEC/6Z
- OVWJ82DaqWszZqw07nQ==
-X-Authority-Analysis: v=2.4 cv=UuRu9uwB c=1 sm=1 tr=0 ts=69861d04 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=2MjLW5cuPvDTUXhGF14A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: rKAbCXQU6ntD18MJSrVnl-2QzwLCgd6Q
-X-Proofpoint-GUID: cQ4oq6Q_JzgXBg9zPMTZqe32qENXp67y
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-06_05,2026-02-05_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 adultscore=0 clxscore=1015 phishscore=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2602060123
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260206-xarray-lockdep-fix-v1-1-13315951b836@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAJQghmkC/x2MQQqAIBAAvyJ7bkGFLPpKdBBdaylKVogi+nvSc
+ QZmHigkTAUG9YDQyYWPvYJpFITF7zMhx8pgtXXaaoeXF/E3bkdYI2VMfKHRyYTgempjBzXMQlX
+ /03F63w/WrI+SZAAAAA==
+X-Change-ID: 20260206-xarray-lockdep-fix-10f1cc68e5d7
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Tamir Duberstein <tamird@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4891; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=gmjqrEbxxdGkv5kHhDNMaeFccnJBmW6pLzhmWhZ00TA=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBphiCZ38K1dwIjclPlYU0B2jEId7rEhceqfCh+e
+ IbZq4woWzaJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYYgmQAKCRDhuBo+eShj
+ dymREACdM7J4fIHBRYyyjidK0s698BTjOYKXyq0LCyxRtBePwbyJHFNndhOpA8ieF05kcM0Iaab
+ fCleQaZ6sPNrwN3AgMc0xkMGCqdeTox24oYSjxjvsVSIC2G22JP3yl8HlQ24M/Kgk+cNm6+BRDa
+ WhpGvoZMykTGHIUlTuQkcGWVwW0OoQWNx0Ia945pwhfCPKp+G57DeM4c99tYuOIGNb38RDg6dOs
+ 4VAX2UrnVVQXEPUjSGt1Yq7UuZGHWknnp6zAEsv87L3oYwRwATJEbFn6kip1koh1YSQ5h01ahTP
+ RJo76n/62P0K+3p/cGs5kls+qHOi6StdJdUYrxVBO0YSa9cAgKpAzJCJKoyTmt/toanLNVNm57z
+ nvyD6Gx7bGRNwMSu4r/jltu41ATm1WxtXlxJ81dhaemYgW8Z//XbGK2ozDegL8ZkGfof/cZeDDc
+ SX7BEBZuZ8bnVr42SQ0Evb1Izok2EhzCnBHXvns8M/Syzi55b2s4IzissllWC+Egr0Qnm4lCcLr
+ bvDwOQ31gj8EzWjITd5dCRbzhi9ejwmOp/hcClqcW/i1c0zVP+igh+f1n7kvi8gz81eD9iIXisY
+ Tg88zdXuo8QYORdcohIHDbdsOxn+WqvmOYkB3ACAGzZN+ZbvHrCYUCDd+Eit6EeFe7mEVDyFxWl
+ 4TiHGROVE3E0UPg==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+
+Replace the `xa_init_flags` helper with direct initialization of XArray
+structures using `__spin_lock_init`. This allows each XArray to have
+its own lock class key for lockdep, preventing false positive warnings
+about lock ordering violations.
+
+Add a `new_xarray!` macro that automatically generates a unique lock
+class key for each XArray instantiation site. The macro accepts an
+optional name parameter and uses the `optional_name!` and
+`static_lock_class!` macros to generate appropriate names and lock
+classes.
+
+Update the `XArray::new` method signature to accept explicit name and
+lock class key parameters. This enables proper lockdep tracking while
+maintaining flexibility for advanced use cases.
+
+Remove `rust_helper_xa_init_flags` as it is now dead code.
+
+This was previously part of the series at [1]
+
+Link: https://lore.kernel.org/r/20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org [1]
+Fixes: 210b81578efbe ("rust: xarray: Add an abstraction for XArray")
+Acked-by: Tamir Duberstein <tamird@gmail.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/helpers/xarray.c |  5 -----
+ rust/kernel/xarray.rs | 43 +++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 37 insertions(+), 11 deletions(-)
+
+diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
+index 60b299f11451d..644b8b35b1bee 100644
+--- a/rust/helpers/xarray.c
++++ b/rust/helpers/xarray.c
+@@ -7,11 +7,6 @@ int rust_helper_xa_err(void *entry)
+ 	return xa_err(entry);
+ }
+ 
+-void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
+-{
+-	return xa_init_flags(xa, flags);
+-}
+-
+ int rust_helper_xa_trylock(struct xarray *xa)
+ {
+ 	return xa_trylock(xa);
+diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+index a49d6db288458..62a2b2ebfb0bf 100644
+--- a/rust/kernel/xarray.rs
++++ b/rust/kernel/xarray.rs
+@@ -8,11 +8,31 @@
+     alloc, bindings, build_assert,
+     error::{Error, Result},
+     ffi::c_void,
++    str::CStr,
++    sync::LockClassKey,
+     types::{ForeignOwnable, NotThreadSafe, Opaque},
+ };
+-use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
++use core::{
++    iter,
++    marker::PhantomData,
++    pin::Pin,
++    ptr::{null_mut, NonNull},
++};
+ use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
+ 
++/// Creates a [`XArray`] initialiser with the given name and a newly-created lock class.
++///
++/// It uses the name if one is given, otherwise it generates one based on the file name and line
++/// number.
++#[macro_export]
++macro_rules! new_xarray {
++    ($kind:expr $(, $name:literal)? $(,)?) => {
++        $crate::xarray::XArray::new(
++            $kind, $crate::optional_name!($($name)?), $crate::static_lock_class!())
++    };
++}
++pub use new_xarray;
++
+ /// An array which efficiently maps sparse integer indices to owned objects.
+ ///
+ /// This is similar to a [`crate::alloc::kvec::Vec<Option<T>>`], but more efficient when there are
+@@ -27,9 +47,10 @@
+ ///
+ /// ```rust
+ /// use kernel::alloc::KBox;
+-/// use kernel::xarray::{AllocKind, XArray};
++/// use kernel::xarray::{new_xarray, AllocKind, XArray};
+ ///
+-/// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc1), GFP_KERNEL)?;
++/// let xa: Pin<KBox<XArray<KBox<u32>>>> =
++///     KBox::pin_init(new_xarray!(AllocKind::Alloc1), GFP_KERNEL)?;
+ ///
+ /// let dead = KBox::new(0xdead, GFP_KERNEL)?;
+ /// let beef = KBox::new(0xbeef, GFP_KERNEL)?;
+@@ -86,7 +107,11 @@ pub enum AllocKind {
+ 
+ impl<T: ForeignOwnable> XArray<T> {
+     /// Creates a new initializer for this type.
+-    pub fn new(kind: AllocKind) -> impl PinInit<Self> {
++    pub fn new(
++        kind: AllocKind,
++        name: &'static CStr,
++        key: Pin<&'static LockClassKey>,
++    ) -> impl PinInit<Self> {
+         let flags = match kind {
+             AllocKind::Alloc => bindings::XA_FLAGS_ALLOC,
+             AllocKind::Alloc1 => bindings::XA_FLAGS_ALLOC1,
+@@ -95,8 +120,14 @@ pub fn new(kind: AllocKind) -> impl PinInit<Self> {
+             // SAFETY: `xa` is valid while the closure is called.
+             //
+             // INVARIANT: `xa` is initialized here to an empty, valid [`bindings::xarray`].
+-            xa <- Opaque::ffi_init(|xa| unsafe {
+-                bindings::xa_init_flags(xa, flags)
++            xa <- Opaque::ffi_init(|xa: *mut bindings::xarray| unsafe {
++                bindings::__spin_lock_init(
++                    &raw mut (*xa).xa_lock,
++                    name.as_ptr().cast(),
++                    key.as_ptr(),
++                );
++                (*xa).xa_flags = flags;
++                (*xa).xa_head = null_mut();
+             }),
+             _p: PhantomData,
+         })
+
+---
+base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
+change-id: 20260206-xarray-lockdep-fix-10f1cc68e5d7
+
+Best regards,
+-- 
+Andreas Hindborg <a.hindborg@kernel.org>
 
 
-
-> On 5 Feb 2026, at 11:34=E2=80=AFPM, Mukesh Kumar Chaurasiya (IBM) =
-<mkchauras@gmail.com> wrote:
->=20
-> Enable experimental rust support for ppc64le and ppc32be. The patch =
-for
-> ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has =
-been=20
-> merged over it. ppc32 needs some toolchain fixes mentioned in the =
-patch=20
-> `rust: Add PowerPC support` and the discussion for that is done =
-here[1].=20
->=20
-> This has been tested on powernv9 hardware and power10 pseries qemu. I
-> I request Link to test the ppc32 part as i don't have a hardware to =
-test
-> it out.=20
->=20
-> [1] =
-https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
-> [2] =
-https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
->=20
-> Changelog:
-> V2 -> V3:
-> - Splited HAVE_RUST in 2 lines
-> - BINDGEN_TARGET_powerpc initialized before assigning the same to
->  BINDGEN_TARGET
-> V2: =
-https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
->=20
-> V1 -> V2:
-> - jump label fix for rust has been moved to a separate patch
-> - PPC32 support has been taken
-> - rust support has been marked experimental
-> - target.json dependency has been removed
-> - HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
->=20
-> Link Mauve (1):
->  rust: Add PowerPC support
->=20
-> Mukesh Kumar Chaurasiya (IBM) (2):
->  powerpc/jump_label: adjust inline asm to be consistent
->  powerpc: Enable Rust for ppc64le
->=20
-> Documentation/rust/arch-support.rst   |  1 +
-> arch/powerpc/Kconfig                  |  2 ++
-> arch/powerpc/Makefile                 |  9 +++++++++
-> arch/powerpc/include/asm/jump_label.h | 23 +++++++++++++----------
-> rust/Makefile                         | 12 +++++++++++-
-> 5 files changed, 36 insertions(+), 11 deletions(-)
->=20
-> --=20
-> 2.52.0
->=20
-
-Tested this patch set, by applying on mainline kernel. Attached is the =
-.config file used.
-
-Please add below tag.
-
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-
-Logs:
-
-rustc --version
-rustc 1.95.0-nightly (e96bb7e44 2026-01-27)
-
-llvm-18.1.8-3.el9.ppc64le
-
-sudo insmod samples/rust/rust_minimal.ko
-[   39.532119] rust_minimal: loading out-of-tree module taints kernel.
-[   39.532132] rust_minimal: module verification failed: signature =
-and/or required key missing - tainting kernel
-[   39.532856] rust_minimal: Rust minimal sample (init)
-[   39.532860] rust_minimal: Am I built-in? false
-[   39.532864] rust_minimal: test_parameter: 1
-# dmesg | tail -n 30
-[    3.418850] systemd[1]: Mounted Kernel Trace File System.
-[    3.419194] systemd[1]: Finished Create List of Static Device Nodes.
-[    3.419482] systemd[1]: modprobe@configfs.service: Deactivated =
-successfully.
-[    3.419647] systemd[1]: Finished Load Kernel Module configfs.
-[    3.419913] systemd[1]: modprobe@drm.service: Deactivated =
-successfully.
-[    3.420056] systemd[1]: Finished Load Kernel Module drm.
-[    3.420405] systemd[1]: Finished Read and set NIS domainname from =
-/etc/sysconfig/network.
-[    3.420694] systemd[1]: Finished Generate network units from Kernel =
-command line.
-[    3.422214] systemd[1]: Mounting Kernel Configuration File System...
-[    3.423543] systemd[1]: Finished Apply Kernel Variables.
-[    3.424011] systemd[1]: Mounted Kernel Configuration File System.
-[    3.430589] systemd[1]: Started Journal Service.
-[    3.477706] fuse: init (API version 7.45)
-[    3.548678] EXT4-fs (sda3): re-mounted =
-78691517-64fe-451b-9009-14359b774643 r/w.
-[    3.556791] systemd-journald[640]: Received client request to flush =
-runtime journal.
-[    3.681167] Adding 10485696k swap on /dev/sda2.  Priority:-1 =
-extents:1 across:10485696k SS
-[    3.693490] pseries_rng: Registering IBM pSeries RNG driver
-[    3.693904] cryptd: max_cpu_qlen set to 1000
-[    4.702590] RPC: Registered named UNIX socket transport module.
-[    4.702604] RPC: Registered udp transport module.
-[    4.702607] RPC: Registered tcp transport module.
-[    4.702609] RPC: Registered tcp-with-tls transport module.
-[    4.702612] RPC: Registered tcp NFSv4.1 backchannel transport module.
-[    6.701147] block sda: the capability attribute has been deprecated.
-[   10.150485] fbcon: Taking over console
-[   39.532119] rust_minimal: loading out-of-tree module taints kernel.
-[   39.532132] rust_minimal: module verification failed: signature =
-and/or required key missing - tainting kernel
-[   39.532856] rust_minimal: Rust minimal sample (init)
-[   39.532860] rust_minimal: Am I built-in? false
-[   39.532864] rust_minimal: test_parameter: 1
-# sudo rmmod rust_minimal
-[ 4125.461822] rust_minimal: My numbers are [72, 108, 200]
-[ 4125.461839] rust_minimal: Rust minimal sample (exit)
-# sudo insmod samples/rust/rust_print.ko
-[ 4142.492146] rust_print: Rust printing macros sample (init)
-[ 4142.492158] rust_print: Emergency message (level 0) without args
-[ 4142.492161] rust_print: Alert message (level 1) without args
-[ 4142.492163] rust_print: Critical message (level 2) without args
-[ 4142.492166] rust_print: Error message (level 3) without args
-[ 4142.492169] rust_print: Warning message (level 4) without args
-[ 4142.492171] rust_print: Notice message (level 5) without args
-[ 4142.492174] rust_print: Info message (level 6) without args
-[ 4142.492176] rust_print: A line that is continued without args
-[ 4142.492181] rust_print: Emergency message (level 0) with args
-[ 4142.492185] rust_print: Alert message (level 1) with args
-[ 4142.492188] rust_print: Critical message (level 2) with args
-[ 4142.492190] rust_print: Error message (level 3) with args
-[ 4142.492193] rust_print: Warning message (level 4) with args
-[ 4142.492195] rust_print: Notice message (level 5) with args
-[ 4142.492197] rust_print: Info message (level 6) with args
-[ 4142.492200] rust_print: A line that is continued with args
-[ 4142.492205] rust_print: 1
-[ 4142.492206] rust_print: "hello, world"
-[ 4142.492208] rust_print: [rust_print_main.rs:35:5] c =3D "hello, =
-world"
-[ 4142.492213] rust_print: Arc<dyn Display> says 42
-[ 4142.492214] rust_print: Arc<dyn Display> says hello, world
-# dmesg | tail -n 50
-[    3.419913] systemd[1]: modprobe@drm.service: Deactivated =
-successfully.
-[    3.420056] systemd[1]: Finished Load Kernel Module drm.
-[    3.420405] systemd[1]: Finished Read and set NIS domainname from =
-/etc/sysconfig/network.
-[    3.420694] systemd[1]: Finished Generate network units from Kernel =
-command line.
-[    3.422214] systemd[1]: Mounting Kernel Configuration File System...
-[    3.423543] systemd[1]: Finished Apply Kernel Variables.
-[    3.424011] systemd[1]: Mounted Kernel Configuration File System.
-[    3.430589] systemd[1]: Started Journal Service.
-[    3.477706] fuse: init (API version 7.45)
-[    3.548678] EXT4-fs (sda3): re-mounted =
-78691517-64fe-451b-9009-14359b774643 r/w.
-[    3.556791] systemd-journald[640]: Received client request to flush =
-runtime journal.
-[    3.681167] Adding 10485696k swap on /dev/sda2.  Priority:-1 =
-extents:1 across:10485696k SS
-[    3.693490] pseries_rng: Registering IBM pSeries RNG driver
-[    3.693904] cryptd: max_cpu_qlen set to 1000
-[    4.702590] RPC: Registered named UNIX socket transport module.
-[    4.702604] RPC: Registered udp transport module.
-[    4.702607] RPC: Registered tcp transport module.
-[    4.702609] RPC: Registered tcp-with-tls transport module.
-[    4.702612] RPC: Registered tcp NFSv4.1 backchannel transport module.
-[    6.701147] block sda: the capability attribute has been deprecated.
-[   10.150485] fbcon: Taking over console
-[   39.532119] rust_minimal: loading out-of-tree module taints kernel.
-[   39.532132] rust_minimal: module verification failed: signature =
-and/or required key missing - tainting kernel
-[   39.532856] rust_minimal: Rust minimal sample (init)
-[   39.532860] rust_minimal: Am I built-in? false
-[   39.532864] rust_minimal: test_parameter: 1
-[ 4125.461822] rust_minimal: My numbers are [72, 108, 200]
-[ 4125.461839] rust_minimal: Rust minimal sample (exit)
-[ 4142.492146] rust_print: Rust printing macros sample (init)
-[ 4142.492158] rust_print: Emergency message (level 0) without args
-[ 4142.492161] rust_print: Alert message (level 1) without args
-[ 4142.492163] rust_print: Critical message (level 2) without args
-[ 4142.492166] rust_print: Error message (level 3) without args
-[ 4142.492169] rust_print: Warning message (level 4) without args
-[ 4142.492171] rust_print: Notice message (level 5) without args
-[ 4142.492174] rust_print: Info message (level 6) without args
-[ 4142.492176] rust_print: A line that is continued without args
-[ 4142.492181] rust_print: Emergency message (level 0) with args
-[ 4142.492185] rust_print: Alert message (level 1) with args
-[ 4142.492188] rust_print: Critical message (level 2) with args
-[ 4142.492190] rust_print: Error message (level 3) with args
-[ 4142.492193] rust_print: Warning message (level 4) with args
-[ 4142.492195] rust_print: Notice message (level 5) with args
-[ 4142.492197] rust_print: Info message (level 6) with args
-[ 4142.492200] rust_print: A line that is continued with args
-[ 4142.492205] rust_print: 1
-[ 4142.492206] rust_print: "hello, world"
-[ 4142.492208] rust_print: [rust_print_main.rs:35:5] c =3D "hello, =
-world"
-[ 4142.492213] rust_print: Arc<dyn Display> says 42
-[ 4142.492214] rust_print: Arc<dyn Display> says hello, world
-# sudo rmmod rust_print
-[ 4142.492217] rust_print: "hello, world"
-[ 4153.334714] rust_print: Rust printing macros sample (exit)
-
-# sudo rmmod rust_debugfs
-
-Regards,
-Venkat.=
