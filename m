@@ -1,153 +1,354 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020092.outbound.protection.outlook.com [52.101.195.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4853D523B
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 17:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513CB30FC3C;
+	Fri,  6 Feb 2026 17:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.92
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770399705; cv=pass; b=M/RscSVQVMJmf4faaqIsdNehHUn9JSyevpt8Fo+XIT65Abkml3qK4Ovle9GKtp6APKFWzq2136jb/knVnrC15ziH4DKRcNdNiwwxpi8w//wCMaPJVSjXYrUqWtdKADd26cEQfR32lzivJ3lIViKpTbUmibvclBrkR0cdSImWIco=
+	t=1770399829; cv=fail; b=qxbqKx8tFdAFkK7+E7hW6aicMrDBsYD84JGpMY5uC9XCpfdyFrZZsA3AhNgQXFvSNCY/MHTq4Qwn9EOA5ACqvfK9+otEDIlv5eD1PWpdMfjvjC5+iKBMO8IOoODZUJ2kmk17YSB4Cw4vvn76ptO+3aYumRJCLS3bpSyfx423Zxg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770399705; c=relaxed/simple;
-	bh=3hFk9tuwrkkOOs5SqqxrKl4UDT5JfXcKqblsr1N+udw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pGcSkoTjWHZGcdVTEtbNSS/qQS8HBpfPoC4gV71+WdIi1G76aQHvp07XjGGjq9J7KH2HZRvK38YLv9gHD0Sz3hVSucNLpzh47m3b6TpDAnkkJc79esMvlpB33Ob/hhLWNumvlVQ2WMH8wi2RdQ+Wf9gZdOzHBTqJieOmlADNXkE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jlqrFvMg; arc=pass smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770399829; c=relaxed/simple;
+	bh=oRKId5ULplv99b2R8ibXiH0T9fQLzKlYYraTJoZ1Xz4=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=gUtWQ+Ps4KNydxf4/kcNx3xOGgVqf48UBaqUKZloQa7CDGuBc7/vASAWVofk8GjN/iHlWlqk8hbP6mf70mcApsrEmODwYXbATk1mg5pUcDf1Xv7zP5Se+VUuVHoaaznM7js6zS2clq23lCeYeYsTwmk7OMpZk5KsRGs/+/P28mg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Y79/Cvxc; arc=fail smtp.client-ip=52.101.195.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jlqrFvMg"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59b9fee27ccso410531e87.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Feb 2026 09:41:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770399703; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YdJIc74kXSXHsohliXbDD702+IWaiHyCu/Fk84XUlC7H3drEiOmiYjDF1fLJG/3jk4
-         i3syu6PD7rgjlBZGIdLzk2BHmdBAa9ZMv+clge3V1jUkSKhRWVuOK7BSGebtAPB1os46
-         f68ewH0nWW6sR1JAn070/ZsKW7MugbTxfU1FmVRvGe+TSZo/tLNUBBvUrDXWTwRwl8tL
-         j1OsVqgXXa033JPB93PvTjTd3pHQC1nFgBcMmKlAuOXVZQn35S5lb0dwHVH+fODk3Mxz
-         Ptcvn/BBjYZLfzsoI2nScIjPlyMvrGTmdS4G4OirjdJaUFYHuD9NRNl40BmVjiaGzyGn
-         RLYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3hFk9tuwrkkOOs5SqqxrKl4UDT5JfXcKqblsr1N+udw=;
-        fh=HjZLMryQ/DBzyp7Tblovpa9thbLnA6Uicvi2k3TyWks=;
-        b=fl/F5B1r8mkGNRgz9nDIe56wR3vdUhIDwlIqiDvWBdUfq78ocnSm6LPBBg9FAf9uF4
-         BH17CmxyfjwaGECm49jMN81qcaOATH8WrmrqrPnlA1cZQJ5OdgX0MbPyn0W9NIWHQfhC
-         Y3ILE4HACmxIaLYJ6/OjYCQG7maxMGjfuBaV2LH10d/CNWc2PCkX+dMKFlEiS1999CLv
-         W+X2qjaZBkazf9X+ITSfLkQ1S5XJ7mOD5ZxA5AnYvMfLCOM7flV9GIePlWrX4ZxsJY0k
-         Rg1wmc5bAFQWIHk3E2IhrCEusgQZXGh9HzrvnJv31Eq8t5AS89IhcMc1bFDgY/Yggtpm
-         I04Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770399703; x=1771004503; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3hFk9tuwrkkOOs5SqqxrKl4UDT5JfXcKqblsr1N+udw=;
-        b=jlqrFvMgaRtE0H30rnoeg+fvK0bjPeHO6ve4n0IsDFqBZdzE9co3Vv4qv0WIlSrzRo
-         pNMtzEszxmMXZb5+1cRgnP2Va4OHOXzV+ZShpPAA4H1OzsvIbndjH1YkRPsGrNvsNBbJ
-         +wuNNAQxQnXNpPv1qv8Zrs3KesQ7tQZeqET0qIGg3c4C+MiIsOoHqSM2sGDO5WVkNRBv
-         Z0sVBs0Ez6yoTws29dEjl4SrMvVEgaS1DUrA7YaqYLadGGLHE9INc3NplD+79+5kPJqd
-         VT8zg4j7bdvsF6TyYNW4LNmht93bxgZ3dMnrn8lJtYk2vQJLVDKygZ7jmO0U5z7IGvSV
-         rHAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770399703; x=1771004503;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3hFk9tuwrkkOOs5SqqxrKl4UDT5JfXcKqblsr1N+udw=;
-        b=Vj97q3y0F+T8gGjqh1Bx2Wy/SfGvjo+aUCoDpwXEFT9H43clOSOkrp6Z0sePQMNUO9
-         2zqApeAQ3m3YryWvIITQs4rjhk1nzqk+g8+trzgwRP99MXxvCPzTBkpKiKgKl/1ZbPYu
-         bRLoFmQNipCHCs7228VcbYinredzgSDlasetbk9WdryE/BgXv+y7KVjwYI1dPd49OVSL
-         56uYLhilmg+Or2b0QU/ve4rZ5JjGzB9ZYzoAXVgG5w12KnYoiUiXbj8XmvVnFOQooyu0
-         F8eJxxejmfoYt8L2BUm+EMRK9UsSMDl+KH28ALpN2eO/PlPzBSEt/1KZtNXhMD4sHni6
-         GpIg==
-X-Forwarded-Encrypted: i=1; AJvYcCW2Iw5SoXZX2+1W6dUbbNxp0U2T9i12CiTA3YZOISRCPwxSQCpGDW9B2il6b6M1emykyY661iiHOOXHq9HXEA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5EsjAzePnc9g1Tig4eRcSjFWXhviQEiAEWk+q07e+BRAJ6UmK
-	yEVu8J+eQgEM3eYdA9/XqY20M9MDe7hvqw6E31M06rjZ1Qj6aA+bO46c+GgNpEq+GkC0fMS3Avg
-	0fLz3bJY8Qk53UuABwuUDzwlIJ8ZOWVQ=
-X-Gm-Gg: AZuq6aK4O/zoSZtQ+gtxBPs6dVItQGcdLIkZOc1UEp2LinqsGcbRK11jz2OGBTpNk3S
-	3cMRcUkBaZZme9NAgtsN2601o4mPdFYTBXsxYOMIPE7aH1Txs1RwWk19152wucXUIEBy+H7YRzJ
-	Wzh23vUyX/usMjI7n8F20iJ5rb1+pSEDJg/f5Lst34tUNongl1cxqas8vicip1ME5Z+N6wOiQ7z
-	eWvjr+vmvG7ybDOAkMn1fvA7d+6UF3+bpAN2GaVa5Bys7SuyAUTLGggfTeX4taefw0A6ydliWy/
-	+tZvqCQ0OB0qvAMQxrvWbyJ13Oaq6fTZZNGukng8oDKCnqquxlTiSgKKgZ0WYGPCgBy9T/Csx/9
-	qtK3kkraXgJDd
-X-Received: by 2002:ac2:5683:0:b0:59e:3ad9:f6b8 with SMTP id
- 2adb3069b0e04-59e45161827mr614789e87.3.1770399703245; Fri, 06 Feb 2026
- 09:41:43 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Y79/Cvxc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I6JgwTpsG9SbUj3S3Alr74qGWVhPx+hUQmzK85TFJlQueBA6yvggXn3wXHpJq6pgAmMqdzauHS0UgLz7pwgV946CKjTxtzuMon01tP7m10lCgoUrESxPwIK2+Cq5v38o27vNuE0E18MzEcgSsL9MFtfF6GbO5Q6rN2d/yAJAT4s7kpM4ztTTdhdiOJk6LDSsUP6wgeZxDzQxN9JWoLUmngo35Ak0+P6e2+DzfLSy5mQ/+XmGyHFt6DxuHvsWMxWeIz7Ik0j9zWnX0k444MaZajFfwKenPSpWy7N00MrgMH88OC2ikA4b63fdzhLyKuRmjqasxgT9jVooCZK21vNkMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Xiw6g4ODdCZJDhz5Dt/NyfR2GG65oth41zNdSg3qDH0=;
+ b=ZsuQwsoRn9P7yNCty35jyuti20pW0AVl+daJFS+4J7wi/nH76aDR5OU+6zRE1Aj9pMXnyw/3692tvtaYjbZqElgtsV4XPiwCIBjiwEi2zm6SehsGGQGbec6VAbB2NZnoVg0uh7ksTdYCcNz+y07mzJrcUx2bkNNUDvGPzMeToR8hSMtfsc/TfRqv9QIAUFpsPBUCLOvU3xBVtM5coRmNHYGRu784ogLAd9SahYT0zYzFli1SyQoNCkcMWzhYtjQwyotazwUX/AJGHfa8Cx4EW12k/Ur4Fhc7DG9hqKvELTGPWCFKr0KOlyAQ4SvR0+Q2Tpf+CdJnu0FhRl8reVVkMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xiw6g4ODdCZJDhz5Dt/NyfR2GG65oth41zNdSg3qDH0=;
+ b=Y79/CvxcJZeuLlUJgPQImG4xIBWRWV7AlvkT3gRycd53y2gmDA5RDoJ5zObT0ZA5fR57LFOJkcoeZj2w9cYAdjK37U7mHFF1ae3I+x9VWzhBQC5vs25QNkXY8xa88tMFXxu0DC4ksLTPlIrCyVkarsYIkaQaTe4zucq/+hKt6nM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWLP265MB5282.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1c1::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Fri, 6 Feb
+ 2026 17:43:45 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Fri, 6 Feb 2026
+ 17:43:45 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Feb 2026 17:43:45 +0000
+Message-Id: <DG82CZTISPBF.2B59PSYVD8Z00@garyguo.net>
+Cc: "Matthew Wilcox" <willy@infradead.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: xarray: fix false positive lockdep warnings
+From: "Gary Guo" <gary@garyguo.net>
+To: "Tamir Duberstein" <tamird@kernel.org>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260206-xarray-lockdep-fix-v1-1-13315951b836@kernel.org>
+ <CAJ-ks9kUO3VNeOD2Qo5rpUj3sr2HW53dgx=YxpnPEupDP_0J4Q@mail.gmail.com>
+In-Reply-To: <CAJ-ks9kUO3VNeOD2Qo5rpUj3sr2HW53dgx=YxpnPEupDP_0J4Q@mail.gmail.com>
+X-ClientProxiedBy: LNXP265CA0092.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:76::32) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <a798e6a368639f7a1ce633a6dfecd088d6ed4123.camel@perches.com>
- <20260205014218.2202385-1-jason.kei.hall@gmail.com> <CANiq72=38f0dcyt6f3XDf4cZ809cLYghWj+72p+j=w3mFLv=aA@mail.gmail.com>
- <4c278599-66ff-4b56-a66e-1c7c94eba469@de.bosch.com>
-In-Reply-To: <4c278599-66ff-4b56-a66e-1c7c94eba469@de.bosch.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 6 Feb 2026 18:41:27 +0100
-X-Gm-Features: AZwV_QgAUmKz6gbrHABCZ2NEJot3YIZUU4Ncq8hTCw-2PWWUkTh56og8P6_PHP4
-Message-ID: <CANiq72=68-daT3J_NVvp+7NkGFWFPGQmwoXn4m54VYeRKPUkbA@mail.gmail.com>
-Subject: Re: [PATCH v5] scripts: checkpatch: move Rust-specific lints to
- separate file
-To: Dirk Behme <dirk.behme@de.bosch.com>, Gary Guo <gary@garyguo.net>
-Cc: Jason Hall <jason.kei.hall@gmail.com>, Joe Perches <joe@perches.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Andy Whitcroft <apw@canonical.com>, 
-	Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB5282:EE_
+X-MS-Office365-Filtering-Correlation-Id: d8705243-3087-4f68-9b7e-08de65a746d9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Wk9ZZTl1VXdCT2NzY0ZHVVg4VjJmODVEOWllaFhoTGJ4a1lFSnpvV05jbER4?=
+ =?utf-8?B?OEd6dHpnVGlDdVovZTJPUmlBWnBvVWRZZFB6dGZWRjd5d25qOHhBdHpBdjBq?=
+ =?utf-8?B?MG1ld0RYRFlOYi9CS0V1L0ttaUZLTHFDb1lqa01HTEJjWnRQZmJPSVNMbXB3?=
+ =?utf-8?B?T2EvV0ltY0hJTnNiY0pIWGx5QkVlcWlNcUtEL0tmUGdqbGNQdUNpT0pBUG83?=
+ =?utf-8?B?eVR4TE5aUHdhZ3U5ajJ0TDV3d25wUnhlVUI2MStLUlozS3R1UFkwUVFINk0z?=
+ =?utf-8?B?aGIzc20ySUtjUkNOekJKTEg4YTRRR0FZWGlPL1ZHS3F5eWRUVkczUFM3Z0Vt?=
+ =?utf-8?B?c3NrZExFSlFsdkV6aEtTS21wVGtyQUp5TWpablE3MHBuZS80cnpLWVcySklU?=
+ =?utf-8?B?eVJDbkRNWDZPZFJGMk9nWnI1WjF1bEVRK2ZTQUZGMVpaOTFoSzNhSmZabnJk?=
+ =?utf-8?B?MlI1enFiM25GYTVtNGsydHhKemV1SmdGTlYyay9adittaTNVQTYrUkZKbXND?=
+ =?utf-8?B?OSs2ckk4Mmcxd1p6VGdTVklLZVdtZUVLVlhtdnhQUFloczdOQkkxOVk1djR5?=
+ =?utf-8?B?aGt2VERDS0JtUWsxZXJMaDRGbFpOaG9aTUlMa25HNGRxcGdZSXNVTU5XdFQ4?=
+ =?utf-8?B?MjROeU82QnBIdXZoZ243K0ZjUG9rc3BzNStNMmpWTWVpWEt0Tk56VXRIeXJi?=
+ =?utf-8?B?dTg0KzFuRFVucSt5TUxGT0F6UDZ1RGpDZDE4SGRNTmVpRkphR3NiV2ZuYVYx?=
+ =?utf-8?B?NU1mNytPanBnSkZuL1VRblFHNU5uZXpjV1BWK0tFWnFMR2Y1Z1F0SmlVWkZp?=
+ =?utf-8?B?QWhrSGI4OVcrbnRkOTJRYWQvQTRadnc3QkdhYlVNNEUxeVJkQWhTVWo5a2k4?=
+ =?utf-8?B?SHlSVFgzQmtpV2VZQmdPNzg5Sk5ObzJkMU9XR0dNbFRnMk80Kzd0WFJObWpr?=
+ =?utf-8?B?WThSMW1DY0hoZWhvT0hmL1JMYlFXU2VHeFRVbTlsTnh3NUxpWXhJUlpqWDRO?=
+ =?utf-8?B?dGU1REVCNEtUS3J6QUlzUy9rbUR0RmxCYVhoNHl4M0I5bDBEd1hwdDNObERq?=
+ =?utf-8?B?Y05ybDhzTVIwS01uM0NFN3pkbkFqMm1zTThyTFByMW9Oclc5ak9VYjAvVk9R?=
+ =?utf-8?B?U3VXVGFTa1NLbCs1aTBMdlFlV3h2L3Z6NmhRUTU3U2hGWVpTUlBmWktIeEdx?=
+ =?utf-8?B?bmVhQ01nbnZuVm4xTEhwRnBzMjRHTHJEYVY0enptQWNUZnpQYWhja0ZBZzFB?=
+ =?utf-8?B?cVpGbEpOVnd2MVdGbWlWZjBNWDR0NzZ1d3UzNEExeThHUXFlM3NIYXM0dDl4?=
+ =?utf-8?B?WGZYdEh4WGdkRlFxTkk5K291Y3llMzdZOVQ3emgzOGFjOGdmbnN4amtPeTJG?=
+ =?utf-8?B?UUlUekhKMzRiL3BQUHd5VTBlRXl4WlF1NEhmcHB5VEJyd2tSTmx1LzNIcmdX?=
+ =?utf-8?B?WkpvYUN4alBUc2pvdEV0VTN4Sm55bTZmeTAvZ004Q1pRMXBYci90M0lLNW1Z?=
+ =?utf-8?B?d0s4VC8rL1ZFN2VnQThCTFJFcVFhcmlURHRWVXJ6NGM0ZzNNdUE1SGZ1cFhG?=
+ =?utf-8?B?M0V5akdrMHFGb0J2UHNudWs0K0pqL09XUURBeVYxVk53SDFNdXVhTDQ2VjNj?=
+ =?utf-8?B?K21jeE1Fb0xFRDJ2Y1doR0dRZWp5T0tsY2JVOWExaWROa1pjU0hyU1pReDFM?=
+ =?utf-8?B?L1VGOUE2OVdtT0JoU01OMlFwSUUwWk9PK2xHc0NEY1A0ZnRFWHlVYTZzRTVD?=
+ =?utf-8?B?S1FMWUk4SGxUdXF3SVZVSlRQR1BKZWNCY0ZYV3hOdHRxSm90UFI2RHJpNnU1?=
+ =?utf-8?B?WUN4akpKOE9sZ3ZDVHBVSU1oUWZxd3JWdi9rY2NzTFJPSUJ2WVVxeGQ3QjZ6?=
+ =?utf-8?B?Uk4wZXVhako5ZGxXeWR5bkViMkJqTXg1T3RuOVY3empTVEs0ZmtNcnMyWlMx?=
+ =?utf-8?B?UHhwWEhwdXVIcmd5ME9wakc3aUxZS2Ztdkt5ZnZ4RmJFbElmU3FGcGpIWkw4?=
+ =?utf-8?B?UHBpMWRxZTQwcS9JY0JDaGFrdGhXQVplbmxBbjZIMjhpK3pjbUtnZFZOMWxm?=
+ =?utf-8?B?U0VwWGVkWi9kb205SHZRV0pKdGF2bEJXOVd1amhKZE1IbkQwNU1iYzBGN09Y?=
+ =?utf-8?Q?kbVk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RElZQlN3WGwrb0NDWEVqT0tzeHhncHF2c1ZzdFF6UVo5dmY4MkJNSmRaQUdK?=
+ =?utf-8?B?S3FXMnlVRWNtenFEYXkwaVhucnBVNUdDSTdlUkhVSGpteW1mYlh1OE5wRFVu?=
+ =?utf-8?B?OFVqZ3JaVkwrS2dKNEphSWNaMEtXTjBnQ09Cb21FY2lvZFZsWXlmVWdNVXVY?=
+ =?utf-8?B?VnlTd0Z5Qnk0NCtwOVYvRE8xTHBoZW9lcUVNNDVqcGU5TFk2NWs5bkl0Y0lL?=
+ =?utf-8?B?dWRyTEcvZ2V1ZjJoS3NQcG5Jc01UMmJlTzZKM2UxRXhXZ0E2ZTl4ZHU4amxJ?=
+ =?utf-8?B?emZMdEE1MWQ2WTJjeXB6UkVQVjRzcjQydE81MmJYSEFjeHg1aCttUmN2Um5E?=
+ =?utf-8?B?VG90bWFyWWJDSlVYRktuTkFVVTBUWnhLa2JCblFidFVLUjBYUTJLTFNwa3RE?=
+ =?utf-8?B?TnpwTFMwbUxOcUNTRG5wYnBYNWhlM0xkd0RhYjhDdHFGODVBMWtiazlWUTdE?=
+ =?utf-8?B?U3lxWnUxR0tmTUN6ODlubWRMVW5idGFaVVZiMTNTdzV6YzFTbkRLMUx1Rm5w?=
+ =?utf-8?B?QThGYW9jNGZOakNsUjk2dHZZclgyak1icEg4Q3hXUFlaZkJQNWhFS0RscXcr?=
+ =?utf-8?B?MnFQQTBSb0t4STdCc3dQeTd4MlREY2lOb2tRNFphRmt6LzZuNWJDVk1aNWFT?=
+ =?utf-8?B?Sm5ma1BFZCt6S0xscXFIb0g1SFJIdzNWV0NyNWZzZDFQODYrbTdqWkJaVytI?=
+ =?utf-8?B?RWsvRk5IZ3JBTThlVDdCUFB2VWlJUkNtVld4UnlUV3haazRaQ3VuUjFvbndK?=
+ =?utf-8?B?WlRGbjZmdnZNblRmWVEwSHZnMUVnbXQrRGJ4Z2d1SGdFR2dtK3BRb0c3Y0FV?=
+ =?utf-8?B?Y04wSHVwOU5qaEtlcTRuMkxkOG5LanlMelRzVmQ5cE9wSThBQVJweUtqb08v?=
+ =?utf-8?B?Z3BlOXJFdW80ZWFIblJyMEJUSHBkeTJlV25wSjRUaTJJMk0xVHZMTDU5d015?=
+ =?utf-8?B?aysrVWlsZjRJS3JTVkoxV0EyN1ovUS81aU5UdnVDSk5Pam94R25Ja1BQQ1ZG?=
+ =?utf-8?B?QXlONTdPV3V0RWdPa3Z5ZDltcS9VYStvd2JmeDhRQzhuUlBoVHZJTTA0T01U?=
+ =?utf-8?B?QnBGNkhlTlpvZXlmVDFFNTRUcEdaYVEvMGV4NE5sTmRyNk9IUVRUS0IwRkxB?=
+ =?utf-8?B?V1JkalJIU3FxN2xwTklmcUlkcUVrWHpHb3B2a2dsYyt4M1MyRXlSTlVONzly?=
+ =?utf-8?B?Zlp1cnMyNHlNR0ZsakVDcSs0bjRTSG1zWUduNm1FdzI1RmlramN4VTA0K1Fm?=
+ =?utf-8?B?dmF0SWRXSnFPejAyQUlWdkQ4MVdoT09kNlIvVDlUUHljeStDaldsbFIxTFJG?=
+ =?utf-8?B?cTUyWGM4clRIcEMzcHlCTWlXellSc2lqMjN3eW5CMTNzVGZIbjV6WEI4dGU4?=
+ =?utf-8?B?S1kyb3RzcUxITFNwMmVMRXhKVUdmUjhhL2ZMUzdpSFpDcGMxTjhBZ0UwS1Jk?=
+ =?utf-8?B?T1lRSlArS1NYbDUyL0lScndPY1JrNUdZQXkrZVRKN1NVdUQ4dk1JbEw4MTBP?=
+ =?utf-8?B?Q3E5RXZHSWdrYk1wM0ZoeUlBQXdlZ2FoTGM0Rk5tVGREdHRxZmNSN1k3M0t1?=
+ =?utf-8?B?M09RWE05MmNFbGd2My9IL2RRbzNQejVsRlJudXVXRHAxSFNaOFhpYW55UHNP?=
+ =?utf-8?B?Rmtpc2t5Nnd3RVlPY01IZkNtU2wwS0JRak93UnEwM0x4am1hUHAwby9iOFZm?=
+ =?utf-8?B?cVFBelpjZFZGSDRBYm05S2dJNmJKOHhGRStIcmFKUmorSDZnRkdIZVpBNVFR?=
+ =?utf-8?B?VERKSzhvM0JWcjA0dlg2VmV6aHN6WTR1TlZ1L0srL2NPWDQrcFowdDgzR1JX?=
+ =?utf-8?B?WHN5MS9MbUJjSmpwcEVCUEs5dXEwSjU3T3MvRGh5Z3FQa3h6RWZMWnA1djY3?=
+ =?utf-8?B?cnpkYkI2Uk5hZzNpMEV4RkJOcktoRFNzWDkxS0pzTXIrTGE4aGsvTkV4eWFD?=
+ =?utf-8?B?TlVUbXl2OVJoNDMvaDVmUTVXRWxSZDE2NFdrQ04vVWI4NzcxM1dmb2V3VDAx?=
+ =?utf-8?B?TURXWDgvYVhZcU5hendlTWZFZWhudjJxYmwrZk5TZnpxRWlVcnhyWmIvYnNo?=
+ =?utf-8?B?TTdycFdHUFJYRk44RnZaVllpNThtUjJ0T2xUZzN6Yy9hcFQvZHIxQ0c4YVhB?=
+ =?utf-8?B?SVV5Z1lpekRGNzh5ejh3R3c0Zm9jN2E2ZUlvQXVuK0JFL0RveWx5aWhpNXRI?=
+ =?utf-8?B?NTZZRUNpdW9lV01oQXZlVis3aXYxNjg3OWVDRmh5ZThiVllaclEvYmZrK3VG?=
+ =?utf-8?B?TDE1eWNEVzVsbDN1cGZUSEdEaXJjYlcwaGVaYWZJSXNjMVg4bXF4UHFZMUtt?=
+ =?utf-8?B?dWw4S25xNG1tZHppS0VydWNPMktQaXgyTVU2UFYxc3EvWFpLMFNQZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8705243-3087-4f68-9b7e-08de65a746d9
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 17:43:45.6527
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: STIK5WFNUg9KxieFiAtwvh2p74XOxEuLjHnbcSDJ83sDiHVd9dXVR/gKeRNkxnNm6+P7+mAw1P4EM4sux5r6GQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5282
 
-On Fri, Feb 6, 2026 at 9:32=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com>=
- wrote:
+On Fri Feb 6, 2026 at 5:19 PM GMT, Tamir Duberstein wrote:
+> On Fri, Feb 6, 2026 at 12:11=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> Replace the `xa_init_flags` helper with direct initialization of XArray
+>> structures using `__spin_lock_init`. This allows each XArray to have
+>> its own lock class key for lockdep, preventing false positive warnings
+>> about lock ordering violations.
+>>
+>> Add a `new_xarray!` macro that automatically generates a unique lock
+>> class key for each XArray instantiation site. The macro accepts an
+>> optional name parameter and uses the `optional_name!` and
+>> `static_lock_class!` macros to generate appropriate names and lock
+>> classes.
+>>
+>> Update the `XArray::new` method signature to accept explicit name and
+>> lock class key parameters. This enables proper lockdep tracking while
+>> maintaining flexibility for advanced use cases.
+>>
+>> Remove `rust_helper_xa_init_flags` as it is now dead code.
+>>
+>> This was previously part of the series at [1]
+>>
+>> Link: https://lore.kernel.org/r/20251203-xarray-entry-send-v1-0-9e5ffd5e=
+3cf0@kernel.org [1]
+>> Fixes: 210b81578efbe ("rust: xarray: Add an abstraction for XArray")
+>> Acked-by: Tamir Duberstein <tamird@gmail.com>
 >
-> Gary had some concerns about `expect()` in
+> Please replace with:
+>
+> Acked-by: Tamir Duberstein <tamird@kernel.org>
+>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  rust/helpers/xarray.c |  5 -----
+>>  rust/kernel/xarray.rs | 43 +++++++++++++++++++++++++++++++++++++------
+>>  2 files changed, 37 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
+>> index 60b299f11451d..644b8b35b1bee 100644
+>> --- a/rust/helpers/xarray.c
+>> +++ b/rust/helpers/xarray.c
+>> @@ -7,11 +7,6 @@ int rust_helper_xa_err(void *entry)
+>>         return xa_err(entry);
+>>  }
+>>
+>> -void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
+>> -{
+>> -       return xa_init_flags(xa, flags);
+>> -}
+>
+> I like Alice's suggestion in the previous version of doing the
+> initialization here. It gives a natural place to explain why
+> xa_init_flags cannot be used directly and avoids introducing a second
+> user of `bindings:: __spin_lock_init` which seems like something we
+> should discourage direct use of.
 
-Yeah, for `expect()` in `checkpatch.pl`, the current message does not
-make much sense, i.e. perhaps we want a slightly different one,
-without the `// PANIC` bit.
+Or perhaps we should just add __xa_init_flags which accepts explicit lock
+classes, and replace `xa_init_flags` to use it with a fresh lock class key.
 
-Or perhaps, like Gary says, we don't warn for that one, at least for
-now. I think we discussed pros/cons of using `expect()` to begin with
-recently -- Gary?
+I think C users benefit from having a fresh lock class key per xarray rathe=
+r
+than a single one per compilation unit, too.
 
-> I'm totally fine with this. In consequence do we agree that this will
-> result in some follow up patches annotating the existing "allowed"
-> exceptional / intended cases (e.g. in doctests and tests) with `//
-> PANIC:` comments?
+Cc: Matthew Wilcox <willy@infradead.org>
 
-Those are the ones that would not need annotations, i.e. they would be
-false positives.
+Matthew, for context, the current xa_init_flags have an issue where, becaus=
+e it
+is static inline function instead of macro, all users inside a single
+compilation unit ended up get a single lock class key. For C users this mea=
+ns
+that each .c file gets a single key, and this is more problematic for Rust =
+as we
+invoke via helpers, so all of Rust users share a single lockdep key.
 
-As far as I remember, the idea with the Clippy lint was to allow it in
-certain places like e.g. `assert()`s inside doctests for sure (and
-perhaps in doctests in general). Thus no `// PANIC:` needed for
-certain cases.
+Link: https://lore.kernel.org/all/DFUI6LMASTMK.2WI00LMY5FTSP@garyguo.net/
 
-And here for `checkpatch.pl`, if it were to trigger in a similar
-situation, then it would be a false positive, and thus the developer
-should not add it. But the patch here skips if it is inside a comment
-(or doctest), no?
+Best,
+Gary
 
-So the remaining concern if I understand correctly is too many false
-positives inside `#[test]`s but outside an `assert()`s? Yeah, we may
-need to track if we have seen `kunit_tests` (and reset if we go out of
-the test module), to skip a bunch of warnings.
+>
+>> -
+>>  int rust_helper_xa_trylock(struct xarray *xa)
+>>  {
+>>         return xa_trylock(xa);
+>> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+>> index a49d6db288458..62a2b2ebfb0bf 100644
+>> --- a/rust/kernel/xarray.rs
+>> +++ b/rust/kernel/xarray.rs
+>> @@ -8,11 +8,31 @@
+>>      alloc, bindings, build_assert,
+>>      error::{Error, Result},
+>>      ffi::c_void,
+>> +    str::CStr,
+>> +    sync::LockClassKey,
+>>      types::{ForeignOwnable, NotThreadSafe, Opaque},
+>>  };
+>> -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
+>> +use core::{
+>> +    iter,
+>> +    marker::PhantomData,
+>> +    pin::Pin,
+>> +    ptr::{null_mut, NonNull},
+>> +};
+>>  use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
+>>
+>> +/// Creates a [`XArray`] initialiser with the given name and a newly-cr=
+eated lock class.
+>> +///
+>> +/// It uses the name if one is given, otherwise it generates one based =
+on the file name and line
+>> +/// number.
+>> +#[macro_export]
+>> +macro_rules! new_xarray {
+>> +    ($kind:expr $(, $name:literal)? $(,)?) =3D> {
+>> +        $crate::xarray::XArray::new(
+>> +            $kind, $crate::optional_name!($($name)?), $crate::static_lo=
+ck_class!())
+>> +    };
+>> +}
+>> +pub use new_xarray;
+>> +
+>>  /// An array which efficiently maps sparse integer indices to owned obj=
+ects.
+>>  ///
+>>  /// This is similar to a [`crate::alloc::kvec::Vec<Option<T>>`], but mo=
+re efficient when there are
+>> @@ -27,9 +47,10 @@
+>>  ///
+>>  /// ```rust
+>>  /// use kernel::alloc::KBox;
+>> -/// use kernel::xarray::{AllocKind, XArray};
+>> +/// use kernel::xarray::{new_xarray, AllocKind, XArray};
+>>  ///
+>> -/// let xa =3D KBox::pin_init(XArray::new(AllocKind::Alloc1), GFP_KERNE=
+L)?;
+>> +/// let xa: Pin<KBox<XArray<KBox<u32>>>> =3D
+>> +///     KBox::pin_init(new_xarray!(AllocKind::Alloc1), GFP_KERNEL)?;
+>>  ///
+>>  /// let dead =3D KBox::new(0xdead, GFP_KERNEL)?;
+>>  /// let beef =3D KBox::new(0xbeef, GFP_KERNEL)?;
+>> @@ -86,7 +107,11 @@ pub enum AllocKind {
+>>
+>>  impl<T: ForeignOwnable> XArray<T> {
+>>      /// Creates a new initializer for this type.
+>> -    pub fn new(kind: AllocKind) -> impl PinInit<Self> {
+>> +    pub fn new(
+>> +        kind: AllocKind,
+>> +        name: &'static CStr,
+>> +        key: Pin<&'static LockClassKey>,
+>> +    ) -> impl PinInit<Self> {
+>>          let flags =3D match kind {
+>>              AllocKind::Alloc =3D> bindings::XA_FLAGS_ALLOC,
+>>              AllocKind::Alloc1 =3D> bindings::XA_FLAGS_ALLOC1,
+>> @@ -95,8 +120,14 @@ pub fn new(kind: AllocKind) -> impl PinInit<Self> {
+>>              // SAFETY: `xa` is valid while the closure is called.
+>>              //
+>>              // INVARIANT: `xa` is initialized here to an empty, valid [=
+`bindings::xarray`].
+>> -            xa <- Opaque::ffi_init(|xa| unsafe {
+>> -                bindings::xa_init_flags(xa, flags)
+>> +            xa <- Opaque::ffi_init(|xa: *mut bindings::xarray| unsafe {
+>> +                bindings::__spin_lock_init(
+>> +                    &raw mut (*xa).xa_lock,
+>> +                    name.as_ptr().cast(),
+>> +                    key.as_ptr(),
+>> +                );
+>> +                (*xa).xa_flags =3D flags;
+>> +                (*xa).xa_head =3D null_mut();
+>>              }),
+>>              _p: PhantomData,
+>>          })
+>>
+>> ---
+>> base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
+>> change-id: 20260206-xarray-lockdep-fix-10f1cc68e5d7
+>>
+>> Best regards,
+>> --
+>> Andreas Hindborg <a.hindborg@kernel.org>
+>>
+>>
 
-By the way, I would prefer we expand the comment on top of the line
-explaining what it is supposed to cover, in order to evaluate whether
-the regexes etc. are doing what we expect or not.
-
-Thanks Dirk et al. for diving into this -- we do need to move forward
-this topic, and there have been some disagreements on how much is too
-much to warn about :)
-
-Cheers,
-Miguel
