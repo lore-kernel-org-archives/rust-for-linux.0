@@ -1,146 +1,166 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D1A22A4E9
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 01:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770340045; cv=pass; b=f2T8lPva+S/aRlbp41CHahjASDjDthjUejBv8WWSUMBaQHSGb5RNoMpdQkWkEXqa70kDXnvOVTIY+yLSwTotqjGpmQ2UW/2NdVrSbcSEDx1sG9/3c+3lo1Xj335zVzXCv1nwStgC9vFs8wKy/T9cLy44PtcboCvENq3hIlfUY/w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770340045; c=relaxed/simple;
-	bh=wDWVWFCQyt41m36By+1mg9Tz8HGxZTNBLIvQ/XOM2S4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pZD7/9qNJ6TkCHxiXDmjhdAia3swjPnkQiUpTQ3LiZKnVMDQgUDvy5y6mKF/9WhR+g6V1ZuOGg/3lbZD2go3CrIjei3+wnZZGgXpPkCf3bpy3FruZmtCHE7FvpjuaVWxRytRvRN/qCZ3LcZGYGueuDPyfyHoMbw99ZVMQEyxTNw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QBSUUK+p; arc=pass smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D4322652D;
+	Fri,  6 Feb 2026 01:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770340454; cv=none; b=E/Ytk6GIjK4AuRbAo2UzgLTRk8WpOgDWpR/hVD10OvcrURHXTNMB6rq4lIZUd1Or278MZwCGm+Pk1jhqg5MzezCujNPbnrJfKTp2r2dnDRCRRlJkJ8QOyZrtOH54tSWpnDfoamjUFH0UYbnHzRtlMOEYXNYKns/CSl55Ok7UeXQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770340454; c=relaxed/simple;
+	bh=4UpTdyrkiGXHLFaMnkI07hwEnr+ztKXXmWkYzgoIFfc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bZGmPvt9vVyXW5FzW7je4LeYjsyMUVVL8kI4BjeGvLhTdGBtRaNkODEi75k0Ol8NYyIs6ctY8yxJ3/IZUaNqAWHNMN3iFN9cj5NCXpD6ngngdDcmIJUJZMLrJUAHEnbm69gKYQWTkhzOiNw9DUAP9dFagEfJx8UQ/HnKF/wajwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diXUQUgi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QBSUUK+p"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-88a2e3bd3cdso21544666d6.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Feb 2026 17:07:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770340044; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Uf3u/L8+AFGIHoWGVF2DO2hfSUXXnQ3/73VsbuzJvyKZVKVi5g0MNmPNtBl32a9u5U
-         XKNlYrpqkOVTzcuYRJ1ysL5zWMcFSiJmtdIT9DbnCUR6TyyBS/YLxteg96vNZMc1gbaw
-         Z6/on+ENFzGyEx4C7raVsScMCIsAgGj8rXHbr06KjhvPdT50e5W9mawVhgm+The27EX6
-         O8CvrX4NRlrAv0VcmAE3LTp3/XxH+A7g9EzkFqVtdFz4c+cUZlnQUbULOxJ0lVFvfbOz
-         kdCq+wwbjr66/Q7Y1RwGNWZ7xC4GhKb8N/GzOwTb8wBt0peyw95+WIUlUbcALe31qw8y
-         qU3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=wDWVWFCQyt41m36By+1mg9Tz8HGxZTNBLIvQ/XOM2S4=;
-        fh=kq3ygaXsAejh902uMPvRGet4is2Z2V+zICkJXbKfsY0=;
-        b=LVam+SDtS5SrHONoyNUMdNAoB9o1o25MwF94cwD51cTHH+GOsEUuJEAJz6XhxhUcP7
-         ydLsgZkLU/iylWGmYyTSsZCZXp11Dn/u2wFqDsoh4nAD2aj1q6V2Uxc+8/DO6kMXWYbj
-         zZxCXi08tRlrvpE/uYABY71q/cDDAZYiNDCfhqZolGX+k2zTH06HM+CPNsAFd7WXEa77
-         cLqk12HI4UStnuPlWKUk5OVlHr2/ByGtJd+gUeQnPtGGPZEbL9pDez7X17Fm41fKla3o
-         QCq/LIev5UMfHks99DMHTaS/KErLnmRxeJZaIgIC6nBk9cxGzZiXL+krcj/BluK7JvB1
-         TzPg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770340044; x=1770944844; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wDWVWFCQyt41m36By+1mg9Tz8HGxZTNBLIvQ/XOM2S4=;
-        b=QBSUUK+pHEQKVDWqU7aVtVvNN+Z5y3qfTInfv+o7/d+2U/Uh98z2l3j5dJzMDHo3Zp
-         7KKRnsvL51LzOWN+hUhOeIfyuKXIdl1AsuQ+9ImzT10RJQrmJhcU/ERBypEEGwG3/5i8
-         sny6S4hqC9OojiB3yjMI/4xI0HaVn/ERoMhuAmXv58idmsWrURwif8g/EEhH1jV6AfGQ
-         jln7vpt5QNkBk8Q829AqmRYgQsGCqOzIKNZyRNh+XVEmsmC19nnmfcuVySZZZKgwA0EA
-         aam044VkgskRdJrJcg3J5Fex8XYRGFJKrLcV5M0IwV4LGKHYlwhHmqs+v1frn9zxK6TE
-         oTWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770340044; x=1770944844;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wDWVWFCQyt41m36By+1mg9Tz8HGxZTNBLIvQ/XOM2S4=;
-        b=sphCbvgylwYDT7AQ+8M4QXW6VKGa66W5vCKOH3IDMD4zixFX4BXRhyY33Tc1T1uIQS
-         +QRKpRzbGKr+zzhxcbO6a07NV/PEUyTp1vUVDgFsO4rXBDMAR3qr06zSwbTq3UxcGaoh
-         hGCuYpgEaLrz8Ct98KnItTTYWUmpd2KX/w3TmkzUleNYJ4keLtsJpdBnoHfOuwkbiqeV
-         6CGaatoHBC/ATs9cxLAkV3c68cDE86QpKmFdbUbeE358m/XygUQhSBY/MpWTaTKVu6QY
-         kJ5aK0pvtzw4UVCmzUUkP6hCEz9VUMp7eAKqyHbcIEvhC5ftpoGpNq5FVuZbIFMXu3JG
-         zZQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUCwfMUWCnxCcKb/ENp3Um2pEwtrGku9L/O4cCkLcsSJS4uZ5+1v3hwWYPVAFU2v7AVh5rSkiUTVgws1Dipug==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4Z9aO2Z05dxtPzJem3ib1D7Z9qqA9V/jh57XuN/8rFWttKyKi
-	pSIEtoAneUDgUQ4DVgiazHIr3GbEiB7AkJpR5RHAr4hhaD30snATgdwY1C0TOgW2q/UKcct+nKC
-	l+DDzvYNeVMTJ+Vu5ah5ml6gRLfyAmms=
-X-Gm-Gg: AZuq6aITuGyUvcM//pMnfS7Tku1xZN/FoQUjm0Lt8Al/tJAKaJTP/YEn5irTkqoBKsE
-	7mJeFBlYgsSHRr3vO8bibtRm7//r4znlvsYKCiQf67jYkqa6slrrlYs19JkvkQq0TB8m30lkvrM
-	AMP5Bur5m8GML7DsIiBHdVyVZYeEqDlek5CfKC0foTwuZ3OdExwp0XSp5uVh7s/XfUItnjCT0Mb
-	2FKwhv/7LZ9r6PeG/CWLFXnA37bYAREj7F7XXyz1Vo3P44HwHPpB1cbSv0f9d/L/ZgFCV1QYA4g
-	KBxC58u82uJp7cUTOUk6zKcZimQxivyZ0h2kMY4CSJxJq4H09FrpQiY=
-X-Received: by 2002:a05:6214:c29:b0:88a:44c8:fe30 with SMTP id
- 6a1803df08f44-8953000350fmr75404466d6.10.1770340043910; Thu, 05 Feb 2026
- 17:07:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diXUQUgi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88982C19421;
+	Fri,  6 Feb 2026 01:14:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770340454;
+	bh=4UpTdyrkiGXHLFaMnkI07hwEnr+ztKXXmWkYzgoIFfc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=diXUQUgira0IDhJDKcYMpMTtviqg2WZ+mi02MeNkeyCUR/WibOhkYS9NVubMPQkGQ
+	 mFcKsTaZ5bKTWk6z/YIowpdazV1hjl86BkhyQMi43Jz4GNGjWqlCWuhyBgUSgSEQJb
+	 cWcqnKDGlsVafW/K7DJQPHQvE949jBqA39c4WfmnCua+2EVqOdiCO/kiuKi/a9L/SK
+	 cKG3D3ZZTnQi8GmygJq9woyCi7Hk0XiwFxz7r90N5FBSCbdijtfvPoHb8HiyO9Imd7
+	 CoGO9otLdF/GjOM+LCtLRpNC6E/nd2heY5K2gnuBaWS2urid/DMIJZOXE38Op/GzjE
+	 29yQq7Bg9UMVA==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7F3C7F4006A;
+	Thu,  5 Feb 2026 20:14:12 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Thu, 05 Feb 2026 20:14:12 -0500
+X-ME-Sender: <xms:ZECFaetZLCZ4stShInvfg29DOdQvaMICmmf1-fUKe2AfHErYKhMdng>
+    <xme:ZECFaUwcIWZ-6MAbJ8nzoauzw983sjTjZ2KcOvpoLgjDX_oAO3YXc5gxIMHsM3Awg
+    gwrpwC0qGAsd05BPGoh0pb-lGGC2v3DmWTvzWdq0VdMLnnDcG1P0Q>
+X-ME-Received: <xmr:ZECFaeZYxNQ6P-_ujDcN9yXRhIYRcLbMYRBmD3PcdVfqIQ6Ok88OyOnXm6JWCtu8LJl14aZlaazCeLITDZdRGpKUTBqKf_VP>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeeikedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    elueehtefhtddtgfejvdejueehhfekteevueeuueekgeetieeggeehvdffhefhhfenucff
+    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
+    rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
+    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddvpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehjohgvlhgrghhnvghlfhesnhhvihguihgrrd
+    gtohhmpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghp
+    thhtoheplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfoh
+    hrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
+    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglh
+    igsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepsghoqhhunhdrfhgvnhhgsehg
+    mhgrihhlrdgtohhmpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllh
+    grsghorhgrrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:ZECFab4lPBLNZ4iuzCWmx0DKajuXwyXgagksZIcO13tLCBLWdJ9q3g>
+    <xmx:ZECFaV5j0qJDk7PaoOW7bnNr11I7q8o87oDXDHNH6FcqryTmpIV4eQ>
+    <xmx:ZECFaTWK75Ljk3pGWlQpA3VDNz9SnJa2NPpvhf_e3jZIHm0xpF6vEA>
+    <xmx:ZECFaR66w_l_Spqml_nmSJVDGNMIfuKangE9QkfmEHKUClglmO4AVQ>
+    <xmx:ZECFacGJbd8_ZVcjkMjN7L5AnSik-YYuu3GA5w2S9ycZSirvGKMNbfOZ>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Feb 2026 20:14:11 -0500 (EST)
+Date: Thu, 5 Feb 2026 17:14:10 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Lyude Paul <lyude@redhat.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH v17 02/16] preempt: Track NMI nesting to separate per-CPU
+ counter
+Message-ID: <aYVAYq1oM78glL7w@tardis.local>
+References: <20260121223933.1568682-1-lyude@redhat.com>
+ <20260121223933.1568682-3-lyude@redhat.com>
+ <20260203121520.GN1282955@noisy.programming.kicks-ass.net>
+ <20260204111234.GA3031506@noisy.programming.kicks-ass.net>
+ <aYUOME2XV_ZmRk3F@tardis.local>
+ <1a332333-0706-4548-8fbe-d65956f70f99@nvidia.com>
+ <44507281-87bc-4548-b542-addf3477921c@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260120204303.3229303-1-joelagnelf@nvidia.com>
- <20260120204303.3229303-3-joelagnelf@nvidia.com> <CAPM=9tz5iXoFQ3+4hPFW+tZCL2zWe0WJ07-oFkP8TNVL_J_SSg@mail.gmail.com>
- <44542f0b-be3d-4e82-aacf-0bf19ab69954@nvidia.com>
-In-Reply-To: <44542f0b-be3d-4e82-aacf-0bf19ab69954@nvidia.com>
-From: Dave Airlie <airlied@gmail.com>
-Date: Fri, 6 Feb 2026 11:07:12 +1000
-X-Gm-Features: AZwV_QjEIAozPEFJ7NdCW81HEOLtXZUhxCZzFmSJOZbp-SMcdPX-QLYah3tkGzE
-Message-ID: <CAPM=9tzafj_-L+ia8q=tL5DBWZU9PdSq9vaCAD7ituoMR+CaQg@mail.gmail.com>
-Subject: Re: [PATCH RFC v6 02/26] gpu: Move DRM buddy allocator one level up
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>, 
-	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>, 
-	Matthew Auld <matthew.auld@intel.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Lucas De Marchi <lucas.demarchi@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Helge Deller <deller@gmx.de>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, John Hubbard <jhubbard@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Andrea Righi <arighi@nvidia.com>, 
-	Andy Ritger <aritger@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, Alexey Ivanov <alexeyi@nvidia.com>, 
-	Balbir Singh <balbirs@nvidia.com>, Philipp Stanner <phasta@kernel.org>, 
-	Elle Rhumsaa <elle@weathered-steel.dev>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	joel@joelfernandes.org, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
-	linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <44507281-87bc-4548-b542-addf3477921c@nvidia.com>
 
-On Fri, 6 Feb 2026 at 11:04, Joel Fernandes <joelagnelf@nvidia.com> wrote:
->
->
->
-> On 2/5/2026 3:55 PM, Dave Airlie wrote:
-> > On Wed, 21 Jan 2026 at 06:44, Joel Fernandes <joelagnelf@nvidia.com> wrote:
+On Thu, Feb 05, 2026 at 07:50:03PM -0500, Joel Fernandes wrote:
+> 
+> 
+> On 2/5/2026 5:17 PM, Joel Fernandes wrote:
+> > 
+> > 
+> > On 2/5/2026 4:40 PM, Boqun Feng wrote:
+> >> On Wed, Feb 04, 2026 at 12:12:34PM +0100, Peter Zijlstra wrote:
+> >>> On Tue, Feb 03, 2026 at 01:15:21PM +0100, Peter Zijlstra wrote:
+> >>>> But I'm really somewhat sad that 64bit can't do better than this.
+> >>>
+> >>> Here, the below builds and boots (albeit with warnings because printf
+> >>> format crap sucks).
+> >>>
 > >>
-> >> Move the DRM buddy allocator one level up so that it can be used by GPU
-> >> drivers (example, nova-core) that have usecases other than DRM (such as
-> >> VFIO vGPU support). Modify the API, structures and Kconfigs to use
-> >> "gpu_buddy" terminology. Adapt the drivers and tests to use the new API.
-> >>
-> >> The commit cannot be split due to bisectability, however no functional
-> >> change is intended. Verified by running K-UNIT tests and build tested
-> >> various configurations.
-> >>
-> >> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> >
-> > I suggested this and think it's a good idea.
-> >
-> > Reviewed-by: Dave Airlie <airlied@redhat.com>
-> Thanks, Dave!
+> >> Thanks! I will drop patch #1 and #2 and use this one (with a commit log
+> >> and some more tests), given it's based on the work of Joel, Lyude and
+> >> me, would the following tags make sense to all of you?
+> >>> Co-developed-by: Joel Fernandes <joelagnelf@nvidia.com>
+> > 
+> > I don't know, I am not a big fan of the alternative patch because it adds a
+> > per-cpu counter anyway if !CONFIG_PREEMPT_LONG [1]. And it is also a much bigger
+> > patch than the one I wrote. Purely from an objective perspective, I would still
+> > want to keep my original patch because it is simple. What is really the
+> > objection to it?
+> > 
 
-I'm going to apply this to drm-misc-next today but I'll move some of it around.
+PREEMPT_LONG is an architecture-specific way to improve the performance
+IMO. Just to be clear, do you object it at all, or do you object
+combining it with your original patch? If it's the latter, I could make
+another patch as a follow to enable PREEMPT_LONG.
 
-Dave.
+> > [1]
+> > +#ifndef CONFIG_PREEMPT_LONG
+> > +/*
+> > + * Any 32bit architecture that still cares about performance should
+> > + * probably ensure this is near preempt_count.
+> > + */
+> > +DEFINE_PER_CPU(unsigned int, nmi_nesting);
+> > +#endif
+> > 
+> If the objection to my patch is modifying a per-cpu counter, isn't NMI a slow
+> path? If we agree, then keeping things simple is better IMO unless we have data
+
+I guess Peter was trying to say it's not a slow path if you consider
+perf event interrupts on x86? [1]
+
+> showing that it is an issue. This is code is already quite convoluted, let us
+> not convolute it more with 32-bit specific things.
+> 
+> I had tried moving it to DEFINE_PER_CPU_CACHE_HOT, but ISTR that did not work
+> out (I think something about a limit to how many things could be moved to cache
+> hot).
+> 
+> Happy to revise patch again with any other suggestions,
+> 
+
+[1]: https://lore.kernel.org/rust-for-linux/20260204130027.GE3016024@noisy.programming.kicks-ass.net/
+
+Regards,
+Boqun
+
+> --
+> Joel Fernandes
+> 
