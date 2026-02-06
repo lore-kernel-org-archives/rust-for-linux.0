@@ -1,299 +1,217 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8569232A3DA;
-	Fri,  6 Feb 2026 17:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F57314B94
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 17:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770398007; cv=none; b=S81IilJ1ygV28fntG7Lobh8ZGVGAscH3anBEqQr1nQZHns3f5tJdfGx0S4UBWgfeQ/V7SmVJc+S9XQxlhDGDjl2Pp2c79GmCfF0MIaso/IiOysHh1vhRINrVPMaZUplaZc0VueEO+93m9aZ2vnrtH4nCx3xjfQmAsm+VxoqTelU=
+	t=1770398429; cv=none; b=oBu24vd6JWGiczm4BrPnN3aJYCdWodnVxUb6hWYCXBiM4ogyRmNPGCXxcQi17/EgmDsuA64BkIVrNSRuWnCte6B3cZbC+s1JADFfvvCRL29fKm+9V7uD4pKn/8tNGhmFW9qxN4j/b5yNLKqWPdfoWgQqK3e+agYzoXBRBVdv/c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770398007; c=relaxed/simple;
-	bh=hO4tBjygwuiiOOuexB7mNw6dGV6JHgqb6JKdmAirzMw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbVS2OjDrUAiW+Cgn8OPBA07sSvhb0Qo07v1XI/YH1VZ+cSazUUKOrwrjwieY/j9QQ0IgYVgR8HYIp7QDRgWXT3QRe7JFTXYwrUaGhTjaS8pzP88JXUJCFN0L9/nJrY4qHDA3ZSpBE66Uqdf/2MB9hoOTG6Zbw607H34WkjmNMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmgqY6VG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770398429; c=relaxed/simple;
+	bh=MggoUQowMSOgUaCPV745sqYA2AoXvvghPps9ruYPUrc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u2SK/Woadk2wCR2XiCEVZjoPlZDN2dYALs8eyerOVfM8qtbEBaTWH5SOURXp24HakmbFfRsUtobL5RqmRgOHzI9AcoGIndVShyEACZZ2UyWAgGP59Ys3SUWZKLoaVnJsKf/FLc5Rd68pXR6SO3JUqU1kuu8dOT9Xs1+qJvQ2wcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JDSZMu21; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmgqY6VG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54097C116C6;
-	Fri,  6 Feb 2026 17:13:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JDSZMu21"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1436FC19423
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 17:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770398007;
-	bh=hO4tBjygwuiiOOuexB7mNw6dGV6JHgqb6JKdmAirzMw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=JmgqY6VGMLAAX43tKAyNqzdhzHywAhdnJtnJ6HEbonDQZKJj55tgl6YTY1cM12bXf
-	 1Zm4Gcg0JtjauB2um06P5E459fQWSQYpDp8otaAUohQaYCjqLFb3wYu/0UFBNJP/T+
-	 llMqZR5Brx5RNVjt7BmTh6KJgmYdZ1sSxNa+ymIthEvhGtKuXZN8v7uD56ZRrVF6Px
-	 Pohcfg/NLbyq/L8MpGlfULgA/my1SQYTsk6OaADSdud2m2jW3KjwnxZAmXvcFyTXNp
-	 YFzzOj0QSFHoNR7R0sFJV6E7mv0F/EoXA3VvlWPo5tS1ZlFJVbel+3ltgq+MdXiWjA
-	 XWVLVsBvPPXZA==
-From: Gary Guo <gary@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH 2/2] rust: add `const_assert!` macro
-Date: Fri,  6 Feb 2026 17:12:50 +0000
-Message-ID: <20260206171253.2704684-2-gary@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260206171253.2704684-1-gary@kernel.org>
-References: <20260206171253.2704684-1-gary@kernel.org>
-Reply-To: Gary Guo <gary@garyguo.net>
+	s=k20201202; t=1770398429;
+	bh=MggoUQowMSOgUaCPV745sqYA2AoXvvghPps9ruYPUrc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=JDSZMu21G08ufAuuLkXfSUJ0yu7W6BKOFjoPGSDNzfMhOOqs8XBSVmRQv2sPeHxKC
+	 wHYEFYLWTn1FClGwdD1X4cZMrEl8AwiBa1gVmADN4eJPQ+HGMwdq6GrjKiM4nG2TqM
+	 +bpbQCNik9FRV/eHcRQOhPiYIkz+ks3w0m5qQQXLfLo7BC1bXb7aEHpFfqI3AIBj6W
+	 fqMqzv4EwipVQ+3dfvqAhDOOrDNhem1GJdzFWvg+1xH2FpAhPjnidXGNZPNW+STlAm
+	 33Aqku9xeCF7Ug4oTgv8fLVTnVP4t5WNYmHYTfK3oCCVFDvCmMDMUFw3OTlX9Yh0XF
+	 GrDVKX4OjmYXA==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-382fe06a9c4so7815691fa.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 06 Feb 2026 09:20:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX5B2Ufoft+lMCsY61TLbT5F6E6gyoBV25JY9LxX0GoKIi6P6kmGQlGFwmNYkG02Ql3VPGU6beEdOadUolkLg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmsFcNm24b4wY5T42gz7BeFU03QeG0SFCjPcfbyQn6EkXyeACj
+	awkkj2LXjVYHLDY/AjtFg5fnp394WKPHGUKUapCHGhUt7Pp3AwM6vqftNMaJboiuu69v/RvZSrg
+	0yZxT+71/YgQ7uX0odXarBMUiC1y6lh0=
+X-Received: by 2002:a05:651c:1541:b0:385:f235:51c5 with SMTP id
+ 38308e7fff4ca-386b512f3afmr11572471fa.35.1770398427639; Fri, 06 Feb 2026
+ 09:20:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260206-xarray-lockdep-fix-v1-1-13315951b836@kernel.org>
+In-Reply-To: <20260206-xarray-lockdep-fix-v1-1-13315951b836@kernel.org>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Fri, 6 Feb 2026 12:19:51 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9kUO3VNeOD2Qo5rpUj3sr2HW53dgx=YxpnPEupDP_0J4Q@mail.gmail.com>
+X-Gm-Features: AZwV_QjD_DSZdiJrJsPc2vSIqxMo5hoYBDyIL61qHo7dw7Zq5CquyxY6kWG-Ah8
+Message-ID: <CAJ-ks9kUO3VNeOD2Qo5rpUj3sr2HW53dgx=YxpnPEupDP_0J4Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: xarray: fix false positive lockdep warnings
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Gary Guo <gary@garyguo.net>
+On Fri, Feb 6, 2026 at 12:11=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> Replace the `xa_init_flags` helper with direct initialization of XArray
+> structures using `__spin_lock_init`. This allows each XArray to have
+> its own lock class key for lockdep, preventing false positive warnings
+> about lock ordering violations.
+>
+> Add a `new_xarray!` macro that automatically generates a unique lock
+> class key for each XArray instantiation site. The macro accepts an
+> optional name parameter and uses the `optional_name!` and
+> `static_lock_class!` macros to generate appropriate names and lock
+> classes.
+>
+> Update the `XArray::new` method signature to accept explicit name and
+> lock class key parameters. This enables proper lockdep tracking while
+> maintaining flexibility for advanced use cases.
+>
+> Remove `rust_helper_xa_init_flags` as it is now dead code.
+>
+> This was previously part of the series at [1]
+>
+> Link: https://lore.kernel.org/r/20251203-xarray-entry-send-v1-0-9e5ffd5e3=
+cf0@kernel.org [1]
+> Fixes: 210b81578efbe ("rust: xarray: Add an abstraction for XArray")
+> Acked-by: Tamir Duberstein <tamird@gmail.com>
 
-The macro is a more powerful version of `static_assert!` for use inside
-function contexts. This is powered by inline consts, so enable the feature
-for old compiler versions that does not have it stably.
+Please replace with:
 
-The `build_assert!` doc is refined to recommend it where possible.
+Acked-by: Tamir Duberstein <tamird@kernel.org>
 
-While it is possible already to write `const { assert!(...) }`, this
-provides a short hand that is more uniform with other assertions. It also
-formats nicer with rustfmt where it will not be formatted into multiple
-lines.
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/helpers/xarray.c |  5 -----
+>  rust/kernel/xarray.rs | 43 +++++++++++++++++++++++++++++++++++++------
+>  2 files changed, 37 insertions(+), 11 deletions(-)
+>
+> diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
+> index 60b299f11451d..644b8b35b1bee 100644
+> --- a/rust/helpers/xarray.c
+> +++ b/rust/helpers/xarray.c
+> @@ -7,11 +7,6 @@ int rust_helper_xa_err(void *entry)
+>         return xa_err(entry);
+>  }
+>
+> -void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
+> -{
+> -       return xa_init_flags(xa, flags);
+> -}
 
-Two users that would route via the Rust tree are converted.
+I like Alice's suggestion in the previous version of doing the
+initialization here. It gives a natural place to explain why
+xa_init_flags cannot be used directly and avoids introducing a second
+user of `bindings:: __spin_lock_init` which seems like something we
+should discourage direct use of.
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- rust/kernel/build_assert.rs | 55 +++++++++++++++++++++++++++++++++----
- rust/kernel/num/bounded.rs  | 24 ++++++----------
- rust/kernel/prelude.rs      |  2 +-
- rust/kernel/ptr.rs          | 18 ++++++------
- scripts/Makefile.build      |  3 +-
- 5 files changed, 71 insertions(+), 31 deletions(-)
-
-diff --git a/rust/kernel/build_assert.rs b/rust/kernel/build_assert.rs
-index d464494d430a..e40f0227e1ef 100644
---- a/rust/kernel/build_assert.rs
-+++ b/rust/kernel/build_assert.rs
-@@ -41,6 +41,45 @@ macro_rules! static_assert {
-     };
- }
- 
-+/// Assertion during constant evaluation.
-+///
-+/// This is a more powerful version of `static_assert` that can refer to generics inside functions
-+/// or implementation blocks. However, it also have a limitation where it can only appear in places
-+/// where statements can appear; for example, you cannot use it as an item in the module.
-+///
-+/// [`static_assert!`] should be preferred where possible.
-+///
-+/// # Examples
-+///
-+/// When the condition refers to generic parameters [`static_assert!`] cannot be used.
-+/// Use `const_assert!` in this scenario.
-+/// ```
-+/// fn foo<const N: usize>() {
-+///     // `static_assert!(N > 1);` is not allowed
-+///     const_assert!(N > 1); // Compile-time check
-+///     build_assert!(N > 1); // Build-time check
-+///     assert!(N > 1); // Run-time check
-+/// }
-+/// ```
-+///
-+/// Note that `const_assert!` cannot be used when referring to function parameter, then
-+/// `const_assert!` cannot be used even if the function is going to be called during const
-+/// evaluation. Use `build_assert!` in this case.
-+/// ```
-+/// const fn foo(n: usize) {
-+///     // `const_assert!(n > 1);` is not allowed
-+///     build_assert!(n > 1);
-+/// }
-+///
-+/// const _: () = foo(2); // Evaluate during const evaluation
-+/// ```
-+#[macro_export]
-+macro_rules! const_assert {
-+    ($condition:expr $(,$arg:literal)?) => {
-+        const { ::core::assert!($condition $(,$arg)?) };
-+    };
-+}
-+
- /// Fails the build if the code path calling `build_error!` can possibly be executed.
- ///
- /// If the macro is executed in const context, `build_error!` will panic.
-@@ -74,7 +113,8 @@ macro_rules! build_error {
- /// will panic. If the compiler or optimizer cannot guarantee the condition will
- /// be evaluated to `true`, a build error will be triggered.
- ///
--/// [`static_assert!`] should be preferred to `build_assert!` whenever possible.
-+/// [`static_assert!`] or [`const_assert!`] should be preferred to `build_assert!` whenever
-+/// possible.
- ///
- /// # Examples
- ///
-@@ -84,24 +124,27 @@ macro_rules! build_error {
- /// ```ignore
- /// fn foo() {
- ///     static_assert!(1 > 1); // Compile-time error
-+///     const_assert!(1 > 1); // Compile-time error
- ///     build_assert!(1 > 1); // Build-time error
- ///     assert!(1 > 1); // Run-time error
- /// }
- /// ```
- ///
--/// When the condition refers to generic parameters or parameters of an inline function,
--/// [`static_assert!`] cannot be used. Use `build_assert!` in this scenario.
-+/// When the condition refers to generic parameters [`static_assert!`] cannot be used.
-+/// `build_assert!` is usable in this scenario, however you should prefer `const_assert!`.
- /// ```
- /// fn foo<const N: usize>() {
- ///     // `static_assert!(N > 1);` is not allowed
-+///     const_assert!(N > 1); // Compile-time check
- ///     build_assert!(N > 1); // Build-time check
- ///     assert!(N > 1); // Run-time check
- /// }
- /// ```
- ///
--/// When a condition depends on a function argument, the function must be annotated with
--/// `#[inline(always)]`. Without this attribute, the compiler may choose to not inline the
--/// function, preventing it from optimizing out the error path.
-+/// When the condition refers to parameters of an inline function, neither [`static_assert!`] or
-+/// [`const_assert!`] can be used. You may use `build_assert!` in this scenario, however you must
-+/// annotate the function `#[inline(always)]`. Without this attribute, the compiler may choose to
-+/// not inline the function, preventing it from optimizing out the error path.
- /// ```
- /// #[inline(always)]
- /// fn bar(n: usize) {
-diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
-index fa81acbdc8c2..54d0ce3ba595 100644
---- a/rust/kernel/num/bounded.rs
-+++ b/rust/kernel/num/bounded.rs
-@@ -255,9 +255,7 @@ impl<const N: u32> Bounded<$type, N> {
-             /// ```
-             pub const fn new<const VALUE: $type>() -> Self {
-                 // Statically assert that `VALUE` fits within the set number of bits.
--                const {
--                    assert!(fits_within!(VALUE, $type, N));
--                }
-+                const_assert!(fits_within!(VALUE, $type, N));
- 
-                 // SAFETY: `fits_within` confirmed that `VALUE` can be represented within
-                 // `N` bits.
-@@ -287,12 +285,10 @@ impl<T, const N: u32> Bounded<T, N>
-     /// The caller must ensure that `value` can be represented within `N` bits.
-     const unsafe fn __new(value: T) -> Self {
-         // Enforce the type invariants.
--        const {
--            // `N` cannot be zero.
--            assert!(N != 0);
--            // The backing type is at least as large as `N` bits.
--            assert!(N <= T::BITS);
--        }
-+        // `N` cannot be zero.
-+        const_assert!(N != 0);
-+        // The backing type is at least as large as `N` bits.
-+        const_assert!(N <= T::BITS);
- 
-         // INVARIANT: The caller ensures `value` fits within `N` bits.
-         Self(value)
-@@ -406,12 +402,10 @@ pub fn get(self) -> T {
-     /// assert_eq!(larger_v, v);
-     /// ```
-     pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
--        const {
--            assert!(
--                M >= N,
--                "Requested number of bits is less than the current representation."
--            );
--        }
-+        const_assert!(
-+            M >= N,
-+            "Requested number of bits is less than the current representation."
-+        );
- 
-         // SAFETY: The value did fit within `N` bits, so it will all the more fit within
-         // the larger `M` bits.
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index c7e91b80d301..75c52b5879e3 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -29,7 +29,7 @@
- 
- pub use pin_init::{init, pin_data, pin_init, pinned_drop, InPlaceWrite, Init, PinInit, Zeroable};
- 
--pub use super::{build_assert, build_error, static_assert};
-+pub use super::{build_assert, build_error, const_assert, static_assert};
- 
- // `super::std_vendor` is hidden, which makes the macro inline for some reason.
- #[doc(no_inline)]
-diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
-index 5b6a382637fe..0b6acd112c4f 100644
---- a/rust/kernel/ptr.rs
-+++ b/rust/kernel/ptr.rs
-@@ -2,8 +2,12 @@
- 
- //! Types and functions to work with pointers and addresses.
- 
--use core::mem::align_of;
--use core::num::NonZero;
-+use core::{
-+    mem::align_of,
-+    num::NonZero, //
-+};
-+
-+use crate::const_assert;
- 
- /// Type representing an alignment, which is always a power of two.
- ///
-@@ -38,12 +42,10 @@ impl Alignment {
-     /// ```
-     #[inline(always)]
-     pub const fn new<const ALIGN: usize>() -> Self {
--        const {
--            assert!(
--                ALIGN.is_power_of_two(),
--                "Provided alignment is not a power of two."
--            );
--        }
-+        const_assert!(
-+            ALIGN.is_power_of_two(),
-+            "Provided alignment is not a power of two."
-+        );
- 
-         // INVARIANT: `align` is a power of two.
-         // SAFETY: `align` is a power of two, and thus non-zero.
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 0c838c467c76..204e58dd1bb0 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -308,6 +308,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
- 
- # The features in this list are the ones allowed for non-`rust/` code.
- #
-+#   - Stable since Rust 1.79.0: `feature(inline_const)`.
- #   - Stable since Rust 1.81.0: `feature(lint_reasons)`.
- #   - Stable since Rust 1.82.0: `feature(asm_const)`,
- #     `feature(offset_of_nested)`, `feature(raw_ref_op)`.
-@@ -317,7 +318,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
- #
- # Please see https://github.com/Rust-for-Linux/linux/issues/2 for details on
- # the unstable features in use.
--rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg
-+rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,inline_const,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg
- 
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
--- 
-2.51.2
-
+> -
+>  int rust_helper_xa_trylock(struct xarray *xa)
+>  {
+>         return xa_trylock(xa);
+> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> index a49d6db288458..62a2b2ebfb0bf 100644
+> --- a/rust/kernel/xarray.rs
+> +++ b/rust/kernel/xarray.rs
+> @@ -8,11 +8,31 @@
+>      alloc, bindings, build_assert,
+>      error::{Error, Result},
+>      ffi::c_void,
+> +    str::CStr,
+> +    sync::LockClassKey,
+>      types::{ForeignOwnable, NotThreadSafe, Opaque},
+>  };
+> -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
+> +use core::{
+> +    iter,
+> +    marker::PhantomData,
+> +    pin::Pin,
+> +    ptr::{null_mut, NonNull},
+> +};
+>  use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
+>
+> +/// Creates a [`XArray`] initialiser with the given name and a newly-cre=
+ated lock class.
+> +///
+> +/// It uses the name if one is given, otherwise it generates one based o=
+n the file name and line
+> +/// number.
+> +#[macro_export]
+> +macro_rules! new_xarray {
+> +    ($kind:expr $(, $name:literal)? $(,)?) =3D> {
+> +        $crate::xarray::XArray::new(
+> +            $kind, $crate::optional_name!($($name)?), $crate::static_loc=
+k_class!())
+> +    };
+> +}
+> +pub use new_xarray;
+> +
+>  /// An array which efficiently maps sparse integer indices to owned obje=
+cts.
+>  ///
+>  /// This is similar to a [`crate::alloc::kvec::Vec<Option<T>>`], but mor=
+e efficient when there are
+> @@ -27,9 +47,10 @@
+>  ///
+>  /// ```rust
+>  /// use kernel::alloc::KBox;
+> -/// use kernel::xarray::{AllocKind, XArray};
+> +/// use kernel::xarray::{new_xarray, AllocKind, XArray};
+>  ///
+> -/// let xa =3D KBox::pin_init(XArray::new(AllocKind::Alloc1), GFP_KERNEL=
+)?;
+> +/// let xa: Pin<KBox<XArray<KBox<u32>>>> =3D
+> +///     KBox::pin_init(new_xarray!(AllocKind::Alloc1), GFP_KERNEL)?;
+>  ///
+>  /// let dead =3D KBox::new(0xdead, GFP_KERNEL)?;
+>  /// let beef =3D KBox::new(0xbeef, GFP_KERNEL)?;
+> @@ -86,7 +107,11 @@ pub enum AllocKind {
+>
+>  impl<T: ForeignOwnable> XArray<T> {
+>      /// Creates a new initializer for this type.
+> -    pub fn new(kind: AllocKind) -> impl PinInit<Self> {
+> +    pub fn new(
+> +        kind: AllocKind,
+> +        name: &'static CStr,
+> +        key: Pin<&'static LockClassKey>,
+> +    ) -> impl PinInit<Self> {
+>          let flags =3D match kind {
+>              AllocKind::Alloc =3D> bindings::XA_FLAGS_ALLOC,
+>              AllocKind::Alloc1 =3D> bindings::XA_FLAGS_ALLOC1,
+> @@ -95,8 +120,14 @@ pub fn new(kind: AllocKind) -> impl PinInit<Self> {
+>              // SAFETY: `xa` is valid while the closure is called.
+>              //
+>              // INVARIANT: `xa` is initialized here to an empty, valid [`=
+bindings::xarray`].
+> -            xa <- Opaque::ffi_init(|xa| unsafe {
+> -                bindings::xa_init_flags(xa, flags)
+> +            xa <- Opaque::ffi_init(|xa: *mut bindings::xarray| unsafe {
+> +                bindings::__spin_lock_init(
+> +                    &raw mut (*xa).xa_lock,
+> +                    name.as_ptr().cast(),
+> +                    key.as_ptr(),
+> +                );
+> +                (*xa).xa_flags =3D flags;
+> +                (*xa).xa_head =3D null_mut();
+>              }),
+>              _p: PhantomData,
+>          })
+>
+> ---
+> base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
+> change-id: 20260206-xarray-lockdep-fix-10f1cc68e5d7
+>
+> Best regards,
+> --
+> Andreas Hindborg <a.hindborg@kernel.org>
+>
+>
