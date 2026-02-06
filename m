@@ -1,25 +1,25 @@
 Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E072134E743
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 08:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA08334E751
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 08:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770368044; cv=none; b=A2sNiUYSs1OprjAHx/oiByltXh5VM/0J8ENkXHijySdEh+OIgexPwMG4WzEkKKFKfvDcGUf295aWwrj3t6Y2aq6cT4ZGe2DcpECs/MDpuoOS4Zgc1MpZvNI4I3uHxmtGncFl5AUByIctghhYL6czcFS0q4TlPq5vEovTSSyyp+A=
+	t=1770368047; cv=none; b=UmOHrGTDmfOPI8CGZakAKwBXfb9VwuOt1EsJ7CBoykj4FwzuqTQ1o5Qm1jKdCPzywd/cOJsZuwSVUZU8haKGFXTnozMMGAMQcDPV+TzqVQc28N50Q0s+W/U/znUGzeU5aUawLezGB3SNnYuW8PZ1hBHurjaF129HsZ+utTd3Hns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770368044; c=relaxed/simple;
-	bh=mtCZJUO/R6b7KZ3hjZajoGvgJPMHeo/lMbvQKPTceho=;
+	s=arc-20240116; t=1770368047; c=relaxed/simple;
+	bh=TppHh4d+/RTRG23OsLSEeiB4TSBuygqqnhEizD9h76A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q2vtfFmE61EegISl4Ei8YRDyoZMFVtnx8X+GiOacnux/f/Kd05T2/Y8CiBiWgJwu7lxcI7iQeU2sGdm3p0b8ebJSc7IJGNgalxHob9Tq63bxUVXxdnzxHV7NzeQ523ssB86KyFy8wR/pFdfiUA/we5P+VbqwFkSZAtWYVOBkYC8=
+	 MIME-Version; b=lR8VBU+m7ZotemiLkutaWsoMj/Xj2u2oQUfXDYsE2i0kW2S1mC9qOpjHBd1BP6gbtxhlC6gPN6RAEyi/PS4TgtqmTtNGIXfo4hcPC3ZM0LeofDAEk39jH+RpcyAFYV1tBPqCpRXhvTGO2H9mTJWPTbRbZfoxkudTW9AbyjdZq5Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
 Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
-	by 156.147.23.53 with ESMTP; 6 Feb 2026 17:54:02 +0900
+	by 156.147.23.53 with ESMTP; 6 Feb 2026 17:54:04 +0900
 X-Original-SENDERIP: 156.147.1.121
 X-Original-MAILFROM: jongan.kim@lge.com
 Received: from unknown (HELO jongan-kim-nissan-cdc.bee-live.svc.cluster.local) (10.159.44.57)
-	by 156.147.1.121 with ESMTP; 6 Feb 2026 17:54:02 +0900
+	by 156.147.1.121 with ESMTP; 6 Feb 2026 17:54:04 +0900
 X-Original-SENDERIP: 10.159.44.57
 X-Original-MAILFROM: jongan.kim@lge.com
 From: jongan.kim@lge.com
@@ -52,9 +52,9 @@ Cc: heesu0025.kim@lge.com,
 	sanghun.lee@lge.com,
 	seulgi.lee@lge.com,
 	sunghoon.kim@lge.com
-Subject: [PATCH v4 2/3] rust: pid: add Pid abstraction and init_ns helper
-Date: Fri,  6 Feb 2026 17:53:35 +0900
-Message-Id: <20260206085336.32819-3-jongan.kim@lge.com>
+Subject: [PATCH v4 3/3] rust_binder: fix PID namespace collision for freeze operation
+Date: Fri,  6 Feb 2026 17:53:36 +0900
+Message-Id: <20260206085336.32819-4-jongan.kim@lge.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260206085336.32819-1-jongan.kim@lge.com>
 References: <20260206085336.32819-1-jongan.kim@lge.com>
@@ -68,290 +68,151 @@ Content-Transfer-Encoding: 8bit
 
 From: HeeSu Kim <heesu0025.kim@lge.com>
 
-Add a new Pid abstraction in rust/kernel/pid.rs that wraps the
-kernel's struct pid and provides safe Rust interfaces for:
-- find_vpid: Find a pid by number under RCU protection
-- pid_task: Get the task associated with a pid under RCU protection
+Port PID namespace conversion logic from C binder to the Rust
+implementation.
 
-Also add init_ns() associated function to PidNamespace to get
-a reference to the init PID namespace.
+Without namespace conversion, freeze operations from non-init namespaces
+can match wrong processes due to PID collision. This adds proper
+conversion to ensure freeze operations target the correct process.
 
-These abstractions use lifetime-bounded references tied to RCU guards
-to ensure memory safety when accessing RCU-protected data structures.
+This patch fixes the issue by:
+- Add get_task_from_vpid() to translate VPID to Task reference
+- Add Context::get_procs_with_task() for Task-based process lookup
+  using &mut KVec parameter to avoid intermediate allocations
+- Update get_frozen_status() and ioctl_freeze() to use Task comparison
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/lkml/aXs3OjlGzQVABAwR@google.com/
 Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/lkml/DG15B78C8IK4.ITL5HKRZ1QKP@garyguo.net/
-Signed-off-by: HeeSu Kim <heesu0025.kim@lge.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/rust-for-linux/DG5CFX3ML5YL.2FE913F20LNPT@garyguo.net/
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/lkml/aXs5Y3xAFKyZr6nd@google.com/
+Signed-off-by: Heesu Kim <heesu0025.kim@lge.com>
 ---
-v3 -> v4:
-- Add __rust_helper annotation to rust_helper_get_pid
-
+v3 -> v4
+- change subject name more clearly
+- Use Task pointer comparison instead of PID number comparison
+- Remove PidNamespace dependency entirely
+- Use &mut KVec parameter to avoid intermediate allocation
+- Merge context.rs and process.rs changes into single patch
+ 
 v2 -> v3:
-- Add Send/Sync traits for Pid
-- Add AlwaysRefCounted for Pid with rust_helper_get_pid
-- Add from_raw() constructor to Pid and Task
-- Rename find_vpid_with_guard -> find_vpid
-- Rename pid_task_with_guard -> pid_task
-- Convert init_pid_ns() to PidNamespace::init_ns()
-- Add PartialEq/Eq for PidNamespace
-- Add rust/helpers/pid.c for get_pid() wrapper
+- Use task::Pid typedef instead of u32/i32
+- Use PidNamespace::init_ns() instead of init_pid_ns()
+- Compare PidNamespace directly with == instead of raw pointers
+- Use Pid::find_vpid() and pid.pid_task() (dropped _with_guard suffix)
+- Fix rustfmt import ordering (rcu before Arc)
+- Rename TaskPid alias to PidT for clearer pid_t type indication
+- Use task.group_leader().pid() instead of tgid_nr_ns() for consistency with C
 
- rust/helpers/helpers.c       |   1 +
- rust/helpers/pid.c           |  13 ++++
- rust/kernel/lib.rs           |   1 +
- rust/kernel/pid.rs           | 138 +++++++++++++++++++++++++++++++++++
- rust/kernel/pid_namespace.rs |  17 +++++
- rust/kernel/task.rs          |  13 ++++
- 6 files changed, 183 insertions(+)
- create mode 100644 rust/helpers/pid.c
- create mode 100644 rust/kernel/pid.rs
+ drivers/android/binder/context.rs | 16 +++++++++++++++-
+ drivers/android/binder/process.rs | 25 +++++++++++++++++++------
+ 2 files changed, 34 insertions(+), 7 deletions(-)
 
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 79c72762ad9c..3138b88df24f 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -38,6 +38,7 @@
- #include "of.c"
- #include "page.c"
- #include "pci.c"
-+#include "pid.c"
- #include "pid_namespace.c"
- #include "platform.c"
- #include "poll.c"
-diff --git a/rust/helpers/pid.c b/rust/helpers/pid.c
-new file mode 100644
-index 000000000000..1fb1502da819
---- /dev/null
-+++ b/rust/helpers/pid.c
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/pid.h>
-+
-+#ifndef __rust_helper
-+#define __rust_helper
-+#endif
-+
-+/* Get a reference on a struct pid. */
-+__rust_helper struct pid *rust_helper_get_pid(struct pid *pid)
-+{
-+	return get_pid(pid);
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index f812cf120042..60a518d65d0e 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -122,6 +122,7 @@
- pub mod page;
- #[cfg(CONFIG_PCI)]
- pub mod pci;
-+pub mod pid;
- pub mod pid_namespace;
- pub mod platform;
- pub mod prelude;
-diff --git a/rust/kernel/pid.rs b/rust/kernel/pid.rs
-new file mode 100644
-index 000000000000..253dbf689383
---- /dev/null
-+++ b/rust/kernel/pid.rs
-@@ -0,0 +1,138 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Process identifiers (PIDs).
-+//!
-+//! C header: [`include/linux/pid.h`](srctree/include/linux/pid.h)
-+
-+use crate::{
-+    bindings,
-+    sync::{aref::AlwaysRefCounted, rcu},
-+    task::Task,
-+    types::Opaque,
-+};
-+use core::ptr::NonNull;
-+
-+/// Wraps the kernel's `struct pid`.
-+///
-+/// This structure represents the Rust abstraction for a C `struct pid`.
-+/// A `Pid` represents a process identifier that can be looked up in different
-+/// PID namespaces.
-+#[repr(transparent)]
-+pub struct Pid {
-+    inner: Opaque<bindings::pid>,
-+}
-+
-+// SAFETY: `struct pid` is safely accessible from any thread.
-+unsafe impl Send for Pid {}
-+
-+// SAFETY: `struct pid` is safely accessible from any thread.
-+unsafe impl Sync for Pid {}
-+
-+impl Pid {
-+    /// Returns a raw pointer to the inner C struct.
-+    #[inline]
-+    pub fn as_ptr(&self) -> *mut bindings::pid {
-+        self.inner.get()
-+    }
-+
-+    /// Creates a reference to a [`Pid`] from a valid pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
-+    /// returned [`Pid`] reference.
-+    #[inline]
-+    pub unsafe fn from_raw<'a>(ptr: *const bindings::pid) -> &'a Self {
-+        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
-+        // `Pid` type being transparent makes the cast ok.
-+        unsafe { &*ptr.cast() }
-+    }
-+
-+    /// Finds a `struct pid` by its pid number within the current task's PID namespace.
-+    ///
-+    /// Returns `None` if no such pid exists.
-+    ///
-+    /// The returned reference is only valid for the duration of the RCU read-side
-+    /// critical section represented by the `rcu::Guard`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::pid::Pid;
-+    /// use kernel::sync::rcu;
-+    ///
-+    /// let guard = rcu::read_lock();
-+    /// if let Some(pid) = Pid::find_vpid(1, &guard) {
-+    ///     pr_info!("Found pid 1\n");
-+    /// }
-+    /// ```
-+    ///
-+    /// Returns `None` for non-existent PIDs:
-+    ///
-+    /// ```
-+    /// use kernel::pid::Pid;
-+    /// use kernel::sync::rcu;
-+    ///
-+    /// let guard = rcu::read_lock();
-+    /// // PID 0 (swapper/idle) is not visible via find_vpid.
-+    /// assert!(Pid::find_vpid(0, &guard).is_none());
-+    /// ```
-+    #[inline]
-+    pub fn find_vpid<'a>(nr: i32, _rcu_guard: &'a rcu::Guard) -> Option<&'a Self> {
-+        // SAFETY: Called under RCU protection as guaranteed by the Guard reference.
-+        let ptr = unsafe { bindings::find_vpid(nr) };
-+        if ptr.is_null() {
-+            None
-+        } else {
-+            // SAFETY: `find_vpid` returns a valid pointer under RCU protection.
-+            Some(unsafe { Self::from_raw(ptr) })
-+        }
-+    }
-+
-+    /// Gets the task associated with this PID.
-+    ///
-+    /// Returns `None` if no task is associated with this PID.
-+    ///
-+    /// The returned reference is only valid for the duration of the RCU read-side
-+    /// critical section represented by the `rcu::Guard`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::pid::Pid;
-+    /// use kernel::sync::rcu;
-+    ///
-+    /// let guard = rcu::read_lock();
-+    /// if let Some(pid) = Pid::find_vpid(1, &guard) {
-+    ///     if let Some(task) = pid.pid_task(&guard) {
-+    ///         pr_info!("Found task for pid 1\n");
-+    ///     }
-+    /// }
-+    /// ```
-+    #[inline]
-+    pub fn pid_task<'a>(&'a self, _rcu_guard: &'a rcu::Guard) -> Option<&'a Task> {
-+        // SAFETY: Called under RCU protection as guaranteed by the Guard reference.
-+        let task_ptr = unsafe { bindings::pid_task(self.as_ptr(), bindings::pid_type_PIDTYPE_PID) };
-+        if task_ptr.is_null() {
-+            None
-+        } else {
-+            // SAFETY: `pid_task` returns a valid pointer under RCU protection.
-+            Some(unsafe { Task::from_raw(task_ptr) })
-+        }
-+    }
-+}
-+
-+// SAFETY: The type invariants guarantee that `Pid` is always refcounted.
-+unsafe impl AlwaysRefCounted for Pid {
-+    #[inline]
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
-+        unsafe { bindings::get_pid(self.as_ptr()) };
-+    }
-+
-+    #[inline]
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-+        unsafe { bindings::put_pid(obj.cast().as_ptr()) }
-+    }
-+}
-diff --git a/rust/kernel/pid_namespace.rs b/rust/kernel/pid_namespace.rs
-index 979a9718f153..fc815945d614 100644
---- a/rust/kernel/pid_namespace.rs
-+++ b/rust/kernel/pid_namespace.rs
-@@ -38,6 +38,15 @@ pub unsafe fn from_ptr<'a>(ptr: *const bindings::pid_namespace) -> &'a Self {
-         // `PidNamespace` type being transparent makes the cast ok.
-         unsafe { &*ptr.cast() }
+diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
+index 3d135ec03ca7..1fc779e4d9ce 100644
+--- a/drivers/android/binder/context.rs
++++ b/drivers/android/binder/context.rs
+@@ -9,7 +9,7 @@
+     security,
+     str::{CStr, CString},
+     sync::{Arc, Mutex},
+-    task::Kuid,
++    task::{Kuid, Task},
+ };
+ 
+ use crate::{error::BinderError, node::NodeRef, process::Process};
+@@ -177,4 +177,18 @@ pub(crate) fn get_procs_with_pid(&self, pid: i32) -> Result<KVec<Arc<Process>>>
+         }
+         Ok(backing)
      }
 +
-+    /// Returns a reference to the init PID namespace.
-+    ///
-+    /// This is the root PID namespace that exists throughout the lifetime of the kernel.
-+    #[inline]
-+    pub fn init_ns() -> &'static Self {
-+        // SAFETY: `init_pid_ns` is a global static that is valid for the lifetime of the kernel.
-+        unsafe { Self::from_ptr(&raw const bindings::init_pid_ns) }
++    pub(crate) fn get_procs_with_task(
++        &self,
++        target: &Task,
++        out: &mut KVec<Arc<Process>>,
++    ) -> Result {
++        let lock = self.manager.lock();
++        for proc in &lock.all_procs {
++            if core::ptr::eq(&*proc.task, target) {
++                out.push(Arc::from(proc), GFP_KERNEL)?;
++            }
++        }
++        Ok(())
 +    }
  }
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 132055b4790f..58e816f8873f 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -22,6 +22,7 @@
+     id_pool::IdPool,
+     list::{List, ListArc, ListArcField, ListLinks},
+     mm,
++    pid::Pid,
+     prelude::*,
+     rbtree::{self, RBTree, RBTreeNode, RBTreeNodeReservation},
+     seq_file::SeqFile,
+@@ -29,9 +30,9 @@
+     sync::poll::PollTable,
+     sync::{
+         lock::{spinlock::SpinLockBackend, Guard},
+-        Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
++        rcu, Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
+     },
+-    task::Task,
++    task::{Pid as PidT, Task},
+     types::ARef,
+     uaccess::{UserSlice, UserSliceReader},
+     uapi,
+@@ -1498,17 +1499,29 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
+     }
+ }
  
- // SAFETY: Instances of `PidNamespace` are always reference-counted.
-@@ -63,3 +72,11 @@ unsafe impl Send for PidNamespace {}
- // SAFETY: It's OK to access `PidNamespace` through shared references from other threads because
- // we're either accessing properties that don't change or that are properly synchronised by C code.
- unsafe impl Sync for PidNamespace {}
++/// Get Task reference from VPID with refcount increment.
++fn get_task_from_vpid(pid: PidT) -> Result<ARef<Task>> {
++    let rcu_guard = rcu::read_lock();
++    let pid_struct = Pid::find_vpid(pid, &rcu_guard).ok_or(ESRCH)?;
++    let task = pid_struct.pid_task(&rcu_guard).ok_or(ESRCH)?;
 +
-+impl PartialEq for PidNamespace {
-+    fn eq(&self, other: &Self) -> bool {
-+        self.as_ptr() == other.as_ptr()
-+    }
++    Ok(ARef::from(task))
 +}
 +
-+impl Eq for PidNamespace {}
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 49fad6de0674..92a7d27ac3b3 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -204,6 +204,19 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
-         self.0.get()
+ fn get_frozen_status(data: UserSlice) -> Result {
+     let (mut reader, mut writer) = data.reader_writer();
+ 
+     let mut info = reader.read::<BinderFrozenStatusInfo>()?;
++
++    let target_task = get_task_from_vpid(info.pid as PidT)?;
++
+     info.sync_recv = 0;
+     info.async_recv = 0;
+     let mut found = false;
+ 
+     for ctx in crate::context::get_all_contexts()? {
+         ctx.for_each_proc(|proc| {
+-            if proc.task.pid() == info.pid as _ {
++            if core::ptr::eq(&*proc.task, &*target_task) {
+                 found = true;
+                 let inner = proc.inner.lock();
+                 let txns_pending = inner.txns_pending_locked();
+@@ -1530,15 +1543,15 @@ fn get_frozen_status(data: UserSlice) -> Result {
+ fn ioctl_freeze(reader: &mut UserSliceReader) -> Result {
+     let info = reader.read::<BinderFreezeInfo>()?;
+ 
++    let target_task = get_task_from_vpid(info.pid as PidT)?;
++
+     // Very unlikely for there to be more than 3, since a process normally uses at most binder and
+     // hwbinder.
+     let mut procs = KVec::with_capacity(3, GFP_KERNEL)?;
+ 
+     let ctxs = crate::context::get_all_contexts()?;
+     for ctx in ctxs {
+-        for proc in ctx.get_procs_with_pid(info.pid as i32)? {
+-            procs.push(proc, GFP_KERNEL)?;
+-        }
++        ctx.get_procs_with_task(&target_task, &mut procs)?;
      }
  
-+    /// Creates a reference to a [`Task`] from a valid pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
-+    /// returned [`Task`] reference.
-+    #[inline]
-+    pub unsafe fn from_raw<'a>(ptr: *const bindings::task_struct) -> &'a Self {
-+        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
-+        // `Task` type being transparent makes the cast ok.
-+        unsafe { &*ptr.cast() }
-+    }
-+
-     /// Returns the group leader of the given task.
-     pub fn group_leader(&self) -> &Task {
-         // SAFETY: The group leader of a task never changes after initialization, so reading this
+     for proc in procs {
 -- 
 2.25.1
 
