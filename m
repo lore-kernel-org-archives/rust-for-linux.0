@@ -1,166 +1,211 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021108.outbound.protection.outlook.com [52.101.100.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D4322652D;
-	Fri,  6 Feb 2026 01:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770340454; cv=none; b=E/Ytk6GIjK4AuRbAo2UzgLTRk8WpOgDWpR/hVD10OvcrURHXTNMB6rq4lIZUd1Or278MZwCGm+Pk1jhqg5MzezCujNPbnrJfKTp2r2dnDRCRRlJkJ8QOyZrtOH54tSWpnDfoamjUFH0UYbnHzRtlMOEYXNYKns/CSl55Ok7UeXQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770340454; c=relaxed/simple;
-	bh=4UpTdyrkiGXHLFaMnkI07hwEnr+ztKXXmWkYzgoIFfc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bZGmPvt9vVyXW5FzW7je4LeYjsyMUVVL8kI4BjeGvLhTdGBtRaNkODEi75k0Ol8NYyIs6ctY8yxJ3/IZUaNqAWHNMN3iFN9cj5NCXpD6ngngdDcmIJUJZMLrJUAHEnbm69gKYQWTkhzOiNw9DUAP9dFagEfJx8UQ/HnKF/wajwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diXUQUgi; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6669A1339B1;
+	Fri,  6 Feb 2026 01:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.108
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770340588; cv=fail; b=u9b0u4sDWf6NiuhZytQzIU1DgkUC2nm4HhLAqr/6h8xeCUu9mr8zCL/kY84cxWLgnhGgXIfiIatE9Hm4f7hZt72Wd7+Zjo3vM742ZcX/PsceNHmmRoHMgDs+9QPw4CON+tEqgQdUBy4mH2i6dM2ndbRm8xo75wSHZemQPzijKTI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770340588; c=relaxed/simple;
+	bh=VNdRiB8R756+B8mQOyjRCjKlZ5Nhi3vsrotFNA64GDY=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=neYd9IBTNqQj6wzKDKB0Uenag8WKBJbvDCI+Y9/PdByHP/XQ+5JewjtbVF1C1QtYCoaSv/cwzcV9YpDEqFTgofa1Ca7d/4Icf60y6ubiA8TQMpv+ixp5GG/7RdRrV0gma/PYPYZE+rAmJ8QJCtwzCxJLgCxlmVtPMsmnaotNDIQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=vrYmGVib; arc=fail smtp.client-ip=52.101.100.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diXUQUgi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88982C19421;
-	Fri,  6 Feb 2026 01:14:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770340454;
-	bh=4UpTdyrkiGXHLFaMnkI07hwEnr+ztKXXmWkYzgoIFfc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=diXUQUgira0IDhJDKcYMpMTtviqg2WZ+mi02MeNkeyCUR/WibOhkYS9NVubMPQkGQ
-	 mFcKsTaZ5bKTWk6z/YIowpdazV1hjl86BkhyQMi43Jz4GNGjWqlCWuhyBgUSgSEQJb
-	 cWcqnKDGlsVafW/K7DJQPHQvE949jBqA39c4WfmnCua+2EVqOdiCO/kiuKi/a9L/SK
-	 cKG3D3ZZTnQi8GmygJq9woyCi7Hk0XiwFxz7r90N5FBSCbdijtfvPoHb8HiyO9Imd7
-	 CoGO9otLdF/GjOM+LCtLRpNC6E/nd2heY5K2gnuBaWS2urid/DMIJZOXE38Op/GzjE
-	 29yQq7Bg9UMVA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7F3C7F4006A;
-	Thu,  5 Feb 2026 20:14:12 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Thu, 05 Feb 2026 20:14:12 -0500
-X-ME-Sender: <xms:ZECFaetZLCZ4stShInvfg29DOdQvaMICmmf1-fUKe2AfHErYKhMdng>
-    <xme:ZECFaUwcIWZ-6MAbJ8nzoauzw983sjTjZ2KcOvpoLgjDX_oAO3YXc5gxIMHsM3Awg
-    gwrpwC0qGAsd05BPGoh0pb-lGGC2v3DmWTvzWdq0VdMLnnDcG1P0Q>
-X-ME-Received: <xmr:ZECFaeZYxNQ6P-_ujDcN9yXRhIYRcLbMYRBmD3PcdVfqIQ6Ok88OyOnXm6JWCtu8LJl14aZlaazCeLITDZdRGpKUTBqKf_VP>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeeikedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    elueehtefhtddtgfejvdejueehhfekteevueeuueekgeetieeggeehvdffhefhhfenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
-    rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
-    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddvpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehjohgvlhgrghhnvghlfhesnhhvihguihgrrd
-    gtohhmpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghp
-    thhtoheplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfoh
-    hrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglh
-    igsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepsghoqhhunhdrfhgvnhhgsehg
-    mhgrihhlrdgtohhmpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllh
-    grsghorhgrrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:ZECFab4lPBLNZ4iuzCWmx0DKajuXwyXgagksZIcO13tLCBLWdJ9q3g>
-    <xmx:ZECFaV5j0qJDk7PaoOW7bnNr11I7q8o87oDXDHNH6FcqryTmpIV4eQ>
-    <xmx:ZECFaTWK75Ljk3pGWlQpA3VDNz9SnJa2NPpvhf_e3jZIHm0xpF6vEA>
-    <xmx:ZECFaR66w_l_Spqml_nmSJVDGNMIfuKangE9QkfmEHKUClglmO4AVQ>
-    <xmx:ZECFacGJbd8_ZVcjkMjN7L5AnSik-YYuu3GA5w2S9ycZSirvGKMNbfOZ>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Feb 2026 20:14:11 -0500 (EST)
-Date: Thu, 5 Feb 2026 17:14:10 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Lyude Paul <lyude@redhat.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH v17 02/16] preempt: Track NMI nesting to separate per-CPU
- counter
-Message-ID: <aYVAYq1oM78glL7w@tardis.local>
-References: <20260121223933.1568682-1-lyude@redhat.com>
- <20260121223933.1568682-3-lyude@redhat.com>
- <20260203121520.GN1282955@noisy.programming.kicks-ass.net>
- <20260204111234.GA3031506@noisy.programming.kicks-ass.net>
- <aYUOME2XV_ZmRk3F@tardis.local>
- <1a332333-0706-4548-8fbe-d65956f70f99@nvidia.com>
- <44507281-87bc-4548-b542-addf3477921c@nvidia.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="vrYmGVib"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kGaKFJ/2WkFKz3GJvex6Qa+WTzGf+DzO+dxZEJusbz78QUF12FOEvsNoE8Fmwxkq5u1U/Zdew7WI+rf3UI9d867ZdgNhn/Uz/qGdharwoA++3nFQnJ7tG7v9V3sBVdHBUzZtHb8Je7KNXSj/w1auYNXLvTN+E5DLisVgMXp94BtZHSp1bayecBhSGjU/WNsueulXkWz3Isxt1onGo3blHT48Mp3+pCuLZ6tWnYRFarscdEPSafvW0G4hmDxaFA51WZZ+4+MlAp+uVmsj6zpShvIE0nTiNtU8gVYl1iBEKucKrXRovzBXlxyiD76IPSJKVNYpQl5qdlesuxLOl6doLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gMnbAHmJjz6791GDNsDlsCF6HxnA9fQ1l7uY0Jo8R5c=;
+ b=lI5HEyY9Ui2m3FOmQDpXkMPds6fq/K0NEnSICQg9/b0o/ELRkHIu8k1wOJ/dizdlI0G9xAu3T5swX2x2fyF5CvYcoB3+dz8OZ4dpwjPpHhcOUrmiUOqDq5akL6Ba+bKsAJG24zP6qnStg+MiM6NCSZiK7wsRu5FacAAZ1G5aVeMZJQeV3c/0omkDUscH0KnP8KG12zvC5IHTEJa0Bz2lmqLSek374TKIKfStNJDq3F0st7DaPGj49lUwdFRCATozwuj3AkJroVvx6N6JomQxweZnmABVZTm09P8qDm8chUDkbeLu4imZNfYRYs4g8xH36lG1lYta/wp4gV3rBnd1dw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gMnbAHmJjz6791GDNsDlsCF6HxnA9fQ1l7uY0Jo8R5c=;
+ b=vrYmGVibRBULu4HtN5kex7ykJdHDSTpW6OMAeBNwkGxb8x39yJLllL5GSHllmqhSiCpxJrZj57NjF9VnBy6eOI1Vwuea0HQMAx8VDIwDcjdps5QGVuWq/xOC9BNW3+50EzxdlCk5mt4AQ3lh6cV2dkF04AodE1i8pS4OWJ7Qndc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWXP265MB3013.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:c9::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Fri, 6 Feb
+ 2026 01:16:23 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Fri, 6 Feb 2026
+ 01:16:23 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Feb 2026 01:16:23 +0000
+Message-Id: <DG7HD0DPWUB1.2UAHI0CVE0MJZ@garyguo.net>
+Cc: "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Eliot
+ Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <nouveau@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] gpu: nova-core: fix aux device registration for
+ multi-GPU systems
+From: "Gary Guo" <gary@garyguo.net>
+To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <20260205221758.219192-1-jhubbard@nvidia.com>
+In-Reply-To: <20260205221758.219192-1-jhubbard@nvidia.com>
+X-ClientProxiedBy: LO6P123CA0007.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:338::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <44507281-87bc-4548-b542-addf3477921c@nvidia.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB3013:EE_
+X-MS-Office365-Filtering-Correlation-Id: bec61608-4077-47d1-e31e-08de651d57d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YzNSRHdITlJwbjM1TGFCd3gwa09vWUNLZGRMa3R4RGozVThVOStXOWFONisw?=
+ =?utf-8?B?UjZUY0lhcjE1QUlDY0FzaTZHbWRlNzFJNnk1d3NHdVZmYmlXUXVwNVNQalZT?=
+ =?utf-8?B?bEdqR3VwZVRiNVFGV3hqM1NLU3JrblQ5TW4yNjkvaGZ5c0NZS3dGQzBxaDRk?=
+ =?utf-8?B?dW1SQlZBUGtST3pwaGp5MmR2SDdGc1FUdWU5T2lGQzBhRjI0OG5MRzFKWXdT?=
+ =?utf-8?B?amVoVWFIWEw3RlVMUGN6VE9UZXhTK3BrUmEzaHFuS1h0MEp4VFJZUnRZczRs?=
+ =?utf-8?B?angrZGZ6ZU00SlZOSW1ldWd1Z2JHYWlQQjdNaWt0RjB4NTFuZUVYa01IcTZO?=
+ =?utf-8?B?ZUJCYkpRY1RJaUs1bDM5cm5ZY1FBbGZwcWdGcXBqZ0R1RXVDS0RTc3poQWg1?=
+ =?utf-8?B?ZXVuR2VnbVJZZDkwTHN4UU5lMVllR2tUTk41d0pTVlJsYkVTMmtpbU5sUEpy?=
+ =?utf-8?B?azQyWVFWbGUvYm1kaFBKVkNncHVoSFdQcFdWU2Vyc2Y5UVZoNnNhZzFuNG9X?=
+ =?utf-8?B?Tkt1OU55SlB1b1N6NkNPRC95eFdrYWd5SkwyS2t6SEcwYlY0V253SDZiQ2tO?=
+ =?utf-8?B?c1VsSGtKSjg4V2V3UE9DeDBheU1pNnFPd1ZoWEwwMFJxZ0F3bkRWMm9pWllx?=
+ =?utf-8?B?Z2FnMmtyMVp2SDZDclZFODJNbktJSUFhUk5MTW4zc2hhSGc4U2FQZ3R0OFNR?=
+ =?utf-8?B?TGV3aEY0Z2xqSnJjK3Foblk3eFFsMXpOZTJWWUFHcTRMclBGdVlXOUpDeGtR?=
+ =?utf-8?B?ZGFJQjlMM3oxNGRPRlBSelBjYnFuN1ZDYWZiOUlDOWZEOFQ1aFA3RVNaNnVV?=
+ =?utf-8?B?SUJmeXJEekhVc2dLSnRLRVg0dHUvQis1U3Z1Nmg0bWZTS242ak4xVGhBZGxR?=
+ =?utf-8?B?QW9vRU9KbEwzMGVNTURPNGxtNjMyb0x6NTJYeFduQ3lZbUI3azQvWFByRjha?=
+ =?utf-8?B?aXk5WC9uNXZYdXFXOXM4WmRpclpEak5Pdlp2ZUhaU25rMXJvRllHT2hpZWxO?=
+ =?utf-8?B?MmpFbGU2V3gwWGREWVRUSVRoNjNxdkNodkFCbHRobVdjTGVtQzlHT1V3SmhD?=
+ =?utf-8?B?ODdqSkxhdE10UEF5dHV0SnA3OVJJbFFzckNIeHd4L0wxdTB6RkpaSXBLOFd4?=
+ =?utf-8?B?OExFWGhEb3RnbmVOSkJiNThFUkdjRm9vdzNCNUFPcUlCaXp3ZmNwVEtSQ3p1?=
+ =?utf-8?B?Q0QyWGwzeHdMcTZQRnorRFZrdTlaQ1huZ2V0Ri9OOXVPejJpcWVaaGhtVDdq?=
+ =?utf-8?B?bStTR3pyZ3MvRUFXd2NhcVhuSDMzbFdYSktnMm9ka1UvbEwwR25KeVI3Y3d1?=
+ =?utf-8?B?K3FVbU1RaHZIYnF4ZjF0VFRrdzRndzB1THZ1NUV1NkkrdHdIY01XN3d6enpv?=
+ =?utf-8?B?bGRXdG5XQW9tOG5vVFloMG53cGdEenBOeE5LTDJZem5pWVhsMktMcjlCd1JY?=
+ =?utf-8?B?VzE0Y1RTemRUd0hOZFkwUzRNRDNObFZPREl5bTNkZk1qQUl1SVFtSklJeU5l?=
+ =?utf-8?B?SmI3VHFGL1hiL21WYnhVdEhGVElhTVo4YUdrMEFITzJkdFpVdHBzbGhMbVZk?=
+ =?utf-8?B?aUt2bXlXZFR2eG9RVzJuVnRaTzdIYXZZMFVBZmExblk3Y21oZDNMTXB2Ui9i?=
+ =?utf-8?B?dmVnVGVwVWhMd1ZtN2hqS0U1cHROS21Wd2xZWDBUQlJ6OFJ3ZVVocXFoVWpJ?=
+ =?utf-8?B?TmJzaG1CMVZ4VUZqR3lNUGc1aHRqMzFqLzB6Y2h5a04rYzRQbkVMV0JtZlls?=
+ =?utf-8?B?eXcyckwxQnByM3BudHljeDl5dVFEWVg1S0ZScXZ6UmprVHREYWsrMSsvc0xa?=
+ =?utf-8?B?NUpQMUd5ZGcvT3c5d1J4R2pmMUJ5bW92TEpkRFQxeGxFZ1pwTTdnalJ1V1RW?=
+ =?utf-8?B?ai9hd3lJb3c3VE1VbXgybzlqMytxS1hLbWswYWg1aWs3cXpFcFQ5aTV6M0Yx?=
+ =?utf-8?B?aDFzQlZGWXdEY0xIYWttWTVVd0ZWelFwSHdwMEhjY3NPZkhvQW1WWGo5Y0Iy?=
+ =?utf-8?B?YS9zUno4b3BtVm5RMHVxMUFFMk9EdGpKUlYwRHE2R3psSXRaamlQT3MwNWUy?=
+ =?utf-8?B?amFrNWd5NzZCdUxWMGVlNEpLa2RGTWRtQ1V1bXNZRS9idkpscmRGdThBaFpp?=
+ =?utf-8?Q?a6gs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZzdzQmZWZjF5UVZZLzQzR21vWGhBV2ZDSENrdHJnMDM2azBjOTB3YjNoaDhn?=
+ =?utf-8?B?Zzg4SGxJa2dROStWRjJRdWRmVzJGa0U5UzlyYU5VeFRyNzNOdUhieDNBcTRJ?=
+ =?utf-8?B?Rjc2U1Q3ZUxna21YTEpkOTM0K0NJQTMvWThqRUZQVk1wektGaEtKdllHNWp5?=
+ =?utf-8?B?VExPR3VGQzBHQ0swcE1VYWV4dXlJV2lXYzR3NUFCZ09SWG9hejh4UXZuSFh3?=
+ =?utf-8?B?WjU3R1gxZnlZalh3ZjhoTGR4ODc4WjVGQjF0MStyWC81NEV4TmFPbjRNZS94?=
+ =?utf-8?B?Z0dCWDNQNmJSZExhOVkzZWc4blg0NC9KRjJaREs5anRGb0JFTzJQYTNZZksr?=
+ =?utf-8?B?RHkwVlRHMXMvMUwrNnVRM2JpV2txKzVlNDRiSUhlR3lhc1U5b0I0eFZ5Vk02?=
+ =?utf-8?B?REdpSWxjM3p5bUNHSkdKWjkrWFZkSkFicWJpeVZkWEd2bXovOHlXNmdyTGlZ?=
+ =?utf-8?B?WjM4d3NveEx1N00vMVBvU2JCbk5ITnpGM2pSMk0wWnIvSTlTQ01BeXMwS3Ru?=
+ =?utf-8?B?WUZBdU9OZHc1TDlHdUxnNHYrQ3YxY2wrSzVaL1ByY013UDNlQUt6eWhUOXpk?=
+ =?utf-8?B?MzBSWmhaNXR1a3lVeXJuWmF0ZjFoYkZJenhiSElyUTZJRW5NMFFRZldDcFlF?=
+ =?utf-8?B?S0lYSFJBd3FzVFVzWDdWb0taRnhqenQ1M0orU0FtT0RVTFR2UXZTRmlwV3N1?=
+ =?utf-8?B?ODZZWHNKclJkSUxzaEx0TDJGOXg2cFFSWFM3Qk9LUXJYaEsreW5MQlBPbkdh?=
+ =?utf-8?B?TkRmTE40V1lHTGphR3orb09aQ1pSYzU1WFlzNnYvREJNYXhQVVZ6SmxPK2dP?=
+ =?utf-8?B?dk10Q1hJaHp1d3U2UUc3OEEzL2tta0ZiaU96cE9BT0l4VmNxWHJDL3NxNTVl?=
+ =?utf-8?B?UzMvc0ZDY1VzYXZxZmdvZDY5bFhvcW1xdjg5eWZJOGhkcnJEa0F1ZUcvUms4?=
+ =?utf-8?B?RW9GbFBwbm5oNS9Ja01VejBhUWlCdFY2SEpBT2dodjFqcGppNWtJeG1zNksv?=
+ =?utf-8?B?cXI5ek9jRzRFS2k0aURPMGpJUmVUZE5peG9rQmVHbTlUaXBrZXY2YnZTZUda?=
+ =?utf-8?B?cnVFU0RaU25mZUQ5MWVLZVJkYUI0Z1liU2hwd1ZHNnZUemFzS0YyOUxTVDZZ?=
+ =?utf-8?B?aU9kV05JSDVZMWhCcG5QZERwWHpJQk9FeUY1Qk9mWTRIVW9ISnczc2F3Q2Nu?=
+ =?utf-8?B?YlFBaVozT1VFeGtwRVZ2Kzhzd0NWZ0x0N2N4ZDJwZVdrOTRYcktmRExZdFdn?=
+ =?utf-8?B?WnR5a3NSdVd6RHFnc1hpOXhWUUkrbTRXVjhhV3ZGR1dORGFnS3AxY2FCeXVX?=
+ =?utf-8?B?eVVLMmVLN2xuRVpNNFd5SlBGdm5rVmdwTUJxNUl2UUFWd3hLc3lncnNKekRh?=
+ =?utf-8?B?cTZOUUlzNnJKK1Ivb1lXSFRoSWZTUEh0bjQ1RmJxYmgzOFordlpHR3JYWjBJ?=
+ =?utf-8?B?ZWw4dXRLU0hZTXBlVEUyVGhPM2tLSXVrV1ZxSFlOWG4xVHZWYjNhUk5HcFNR?=
+ =?utf-8?B?MC82MnIxdHI2MFh3aXh2eXR3bGM4STZWVUh2T0I2T1hkTGoyVmpiUHJiZEhV?=
+ =?utf-8?B?NzM0aHJrQWUxNVM4dFZNK0pBQjZqYmZuV0VxT1FURjRiU01NV2tjTmxmeTZ1?=
+ =?utf-8?B?TkVPQnd5N1Nrd1pHQlY5Tkd6d1NBYmdEMjBzRlphd3JRWEs3ZnIxZnh5cVhF?=
+ =?utf-8?B?RWRTWm9ra1B2SkNGS2lRUmdGYVZ0WlFXanl3SnVXR1RpMm5mbVFXUk82YXhH?=
+ =?utf-8?B?TDZaM1VCNUd6eTVETko5YytacDJiUy9SOHRjelpKcGRPOCt0OUw4d3BWeXNX?=
+ =?utf-8?B?QmZacHd1b1dkSmVMRUxFcjFQTXJuTzhSbnFmcGJSTnR0dmxOSmtUaFRkbW5Q?=
+ =?utf-8?B?bWVSVVNOQmg3WXBSaHVxVzg0SjcyZWJzdjFwS3ljRXVMY291NkVrMW90VEpI?=
+ =?utf-8?B?SVFYSUZkNWhlZDluK3lVd0l0eGlKdWZIWFB6SzVURDh5UE82aFo1UllpWHdJ?=
+ =?utf-8?B?UUZkeTRjWDN4WUloU3IzN2dwdzgvcWk0U1NsTERGcmhPLzBuZnArRFNHYnFJ?=
+ =?utf-8?B?c1RJemxJVHNNS2xrOEZpR0pIN0NnbGYwV202QWh1Ly9NbXNtR0JOOVRNN3pp?=
+ =?utf-8?B?Q1E5bGo2bHltZ0VHVkhRMmVZc3hVMkJWbkFmTE1iYkI5b0U4S2tQbDdCQktx?=
+ =?utf-8?B?SGtWZlJWOEd5U2wvYWR2SW14aUZHcVMzQk1zM0R5VC9LVm5aVVFTa2dubmpw?=
+ =?utf-8?B?NWgyZFZKZ1JRZEVpTCtWWTF6RFdVRHN5TXByeTZjdjhiSk9LNnJPdm5KN1FV?=
+ =?utf-8?Q?0qSL2sJ+An1fchPo4u?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: bec61608-4077-47d1-e31e-08de651d57d6
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 01:16:23.6143
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 84RtToFKz+if/UNhBzxwzlEx5mgx+32rGKJaUYK1m10W+78ZEqKGasj3vO/615STf4JfsC06RgZtvIuET+gaNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3013
 
-On Thu, Feb 05, 2026 at 07:50:03PM -0500, Joel Fernandes wrote:
-> 
-> 
-> On 2/5/2026 5:17 PM, Joel Fernandes wrote:
-> > 
-> > 
-> > On 2/5/2026 4:40 PM, Boqun Feng wrote:
-> >> On Wed, Feb 04, 2026 at 12:12:34PM +0100, Peter Zijlstra wrote:
-> >>> On Tue, Feb 03, 2026 at 01:15:21PM +0100, Peter Zijlstra wrote:
-> >>>> But I'm really somewhat sad that 64bit can't do better than this.
-> >>>
-> >>> Here, the below builds and boots (albeit with warnings because printf
-> >>> format crap sucks).
-> >>>
-> >>
-> >> Thanks! I will drop patch #1 and #2 and use this one (with a commit log
-> >> and some more tests), given it's based on the work of Joel, Lyude and
-> >> me, would the following tags make sense to all of you?
-> >>> Co-developed-by: Joel Fernandes <joelagnelf@nvidia.com>
-> > 
-> > I don't know, I am not a big fan of the alternative patch because it adds a
-> > per-cpu counter anyway if !CONFIG_PREEMPT_LONG [1]. And it is also a much bigger
-> > patch than the one I wrote. Purely from an objective perspective, I would still
-> > want to keep my original patch because it is simple. What is really the
-> > objection to it?
-> > 
+On Thu Feb 5, 2026 at 10:17 PM GMT, John Hubbard wrote:
+> The auxiliary device registration was using a hardcoded ID of 0, which
+> caused probe() to fail on multi-GPU systems with:
+>=20
+>    sysfs: cannot create duplicate filename '/bus/auxiliary/devices/NovaCo=
+re.nova-drm.0'
+>=20
+> Fix this by using an LKMM atomic counter to generate unique IDs for each
+> GPU's aux device registration. The TODO item to eventually use XArray
+> for recycling aux device IDs is retained (and modified slightly: IDA
+> might be better) but for now, this works very nicely.
+>=20
+> This has the side effect of making debugfs[1] work on multi-GPU systems.
+>=20
+> [1] https://lore.kernel.org/20260203224757.871729-1-ttabi@nvidia.com
+>=20
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: Gary Guo <gary@garyguo.net>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
-PREEMPT_LONG is an architecture-specific way to improve the performance
-IMO. Just to be clear, do you object it at all, or do you object
-combining it with your original patch? If it's the latter, I could make
-another patch as a follow to enable PREEMPT_LONG.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-> > [1]
-> > +#ifndef CONFIG_PREEMPT_LONG
-> > +/*
-> > + * Any 32bit architecture that still cares about performance should
-> > + * probably ensure this is near preempt_count.
-> > + */
-> > +DEFINE_PER_CPU(unsigned int, nmi_nesting);
-> > +#endif
-> > 
-> If the objection to my patch is modifying a per-cpu counter, isn't NMI a slow
-> path? If we agree, then keeping things simple is better IMO unless we have data
+> ---
+>  drivers/gpu/nova-core/driver.rs | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
+>=20
+> Changes in v2:
+>=20
+> * Use LKMM atomics (kernel::sync::atomic::Atomic<u32>) instead of Rust
+>   standard library atomics (core::sync::atomic::AtomicU32).
+>=20
+> * Fix vertical import formatting (add rustfmt guard comment).
+>=20
+> * Remove stray "we" from TODO comment.
+>=20
 
-I guess Peter was trying to say it's not a slow path if you consider
-perf event interrupts on x86? [1]
-
-> showing that it is an issue. This is code is already quite convoluted, let us
-> not convolute it more with 32-bit specific things.
-> 
-> I had tried moving it to DEFINE_PER_CPU_CACHE_HOT, but ISTR that did not work
-> out (I think something about a limit to how many things could be moved to cache
-> hot).
-> 
-> Happy to revise patch again with any other suggestions,
-> 
-
-[1]: https://lore.kernel.org/rust-for-linux/20260204130027.GE3016024@noisy.programming.kicks-ass.net/
-
-Regards,
-Boqun
-
-> --
-> Joel Fernandes
-> 
