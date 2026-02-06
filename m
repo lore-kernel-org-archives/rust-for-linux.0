@@ -1,354 +1,611 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020092.outbound.protection.outlook.com [52.101.195.92])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513CB30FC3C;
-	Fri,  6 Feb 2026 17:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10449393DCB;
+	Fri,  6 Feb 2026 17:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770399829; cv=fail; b=qxbqKx8tFdAFkK7+E7hW6aicMrDBsYD84JGpMY5uC9XCpfdyFrZZsA3AhNgQXFvSNCY/MHTq4Qwn9EOA5ACqvfK9+otEDIlv5eD1PWpdMfjvjC5+iKBMO8IOoODZUJ2kmk17YSB4Cw4vvn76ptO+3aYumRJCLS3bpSyfx423Zxg=
+	t=1770400242; cv=pass; b=Ardy3Ib9nuVVYjhNJvabFj8juQW3cWnBp5rrXXqbXuTfeYWC5lcZoKWAjeI3PBWq/5X0sYyPzcLigk54X9xsU8bMXTpwsRGYNCJ9CMurUA5nN8cl6EXnOXchV9DNSj28rCbMYdqLF3WZ4wMLZvTGKfeGeG/hPm5duM9X+Z0Ox5c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770399829; c=relaxed/simple;
-	bh=oRKId5ULplv99b2R8ibXiH0T9fQLzKlYYraTJoZ1Xz4=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=gUtWQ+Ps4KNydxf4/kcNx3xOGgVqf48UBaqUKZloQa7CDGuBc7/vASAWVofk8GjN/iHlWlqk8hbP6mf70mcApsrEmODwYXbATk1mg5pUcDf1Xv7zP5Se+VUuVHoaaznM7js6zS2clq23lCeYeYsTwmk7OMpZk5KsRGs/+/P28mg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Y79/Cvxc; arc=fail smtp.client-ip=52.101.195.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1770400242; c=relaxed/simple;
+	bh=g3SrEnzpXU9gu+YTD93NINkPkxETBBjByGaLGUOM6Qc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=rvEIMxYsXhfcd3qoJOQC5lWwJnIgbiVo5dPz3UInIsCgJ8UQLBINy/jfo5vt24cKsUrowodSp5yTM3XcigvqAyibQy8QPUh+TipRkdBqZKgBUbBqwGc777zQc4rAj5NJYIaIqCWJZA6c4p/Ag/EzFoeuESUVrE4LsahHSO+dnVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=P383PlC4; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Y79/Cvxc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I6JgwTpsG9SbUj3S3Alr74qGWVhPx+hUQmzK85TFJlQueBA6yvggXn3wXHpJq6pgAmMqdzauHS0UgLz7pwgV946CKjTxtzuMon01tP7m10lCgoUrESxPwIK2+Cq5v38o27vNuE0E18MzEcgSsL9MFtfF6GbO5Q6rN2d/yAJAT4s7kpM4ztTTdhdiOJk6LDSsUP6wgeZxDzQxN9JWoLUmngo35Ak0+P6e2+DzfLSy5mQ/+XmGyHFt6DxuHvsWMxWeIz7Ik0j9zWnX0k444MaZajFfwKenPSpWy7N00MrgMH88OC2ikA4b63fdzhLyKuRmjqasxgT9jVooCZK21vNkMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xiw6g4ODdCZJDhz5Dt/NyfR2GG65oth41zNdSg3qDH0=;
- b=ZsuQwsoRn9P7yNCty35jyuti20pW0AVl+daJFS+4J7wi/nH76aDR5OU+6zRE1Aj9pMXnyw/3692tvtaYjbZqElgtsV4XPiwCIBjiwEi2zm6SehsGGQGbec6VAbB2NZnoVg0uh7ksTdYCcNz+y07mzJrcUx2bkNNUDvGPzMeToR8hSMtfsc/TfRqv9QIAUFpsPBUCLOvU3xBVtM5coRmNHYGRu784ogLAd9SahYT0zYzFli1SyQoNCkcMWzhYtjQwyotazwUX/AJGHfa8Cx4EW12k/Ur4Fhc7DG9hqKvELTGPWCFKr0KOlyAQ4SvR0+Q2Tpf+CdJnu0FhRl8reVVkMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xiw6g4ODdCZJDhz5Dt/NyfR2GG65oth41zNdSg3qDH0=;
- b=Y79/CvxcJZeuLlUJgPQImG4xIBWRWV7AlvkT3gRycd53y2gmDA5RDoJ5zObT0ZA5fR57LFOJkcoeZj2w9cYAdjK37U7mHFF1ae3I+x9VWzhBQC5vs25QNkXY8xa88tMFXxu0DC4ksLTPlIrCyVkarsYIkaQaTe4zucq/+hKt6nM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB5282.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1c1::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Fri, 6 Feb
- 2026 17:43:45 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Fri, 6 Feb 2026
- 17:43:45 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Feb 2026 17:43:45 +0000
-Message-Id: <DG82CZTISPBF.2B59PSYVD8Z00@garyguo.net>
-Cc: "Matthew Wilcox" <willy@infradead.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: xarray: fix false positive lockdep warnings
-From: "Gary Guo" <gary@garyguo.net>
-To: "Tamir Duberstein" <tamird@kernel.org>, "Andreas Hindborg"
- <a.hindborg@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260206-xarray-lockdep-fix-v1-1-13315951b836@kernel.org>
- <CAJ-ks9kUO3VNeOD2Qo5rpUj3sr2HW53dgx=YxpnPEupDP_0J4Q@mail.gmail.com>
-In-Reply-To: <CAJ-ks9kUO3VNeOD2Qo5rpUj3sr2HW53dgx=YxpnPEupDP_0J4Q@mail.gmail.com>
-X-ClientProxiedBy: LNXP265CA0092.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:76::32) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="P383PlC4"
+ARC-Seal: i=1; a=rsa-sha256; t=1770400196; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=PPFnk9iC0mi3ySuY65jHVOGkas7xITXj5j0TXC0WiZe14RObD31SAlRLtAJbCX5+SDHnu95VLqcr0MnUf8RxLxqb/f/+yqjHrjOmvLgOMZdM5LJKkCO8lK/bO81RpWuMJ2LL3ceHcS2zIULICr+DDhrxcC/knoSsNc9xyln3PbY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770400196; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=GfLekabmRXth4qz2KuW77WOFt1A3/2EOeqveH8O/zPI=; 
+	b=X52iPeXjW31MEhtP2sjrzPIEiSCveSpPSVGTFVhM542ful56k9ZP2WdUPAU6ghOSlT5PkdYTdFdYHq/rPU+Xo3uHREgiW4cftiGXQjsjgR9dXDtgZVmGnM9oUO2VPcALoR3hiCKOr/DQCWLL3YJekQdeBvQPgFQbzDRLjrm0KI0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770400196;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=GfLekabmRXth4qz2KuW77WOFt1A3/2EOeqveH8O/zPI=;
+	b=P383PlC4Gb2f3Xh4s0Y1ksbPZF8sEE6c9DqvdpAAO0SUMqyWaQaUNHQSfW6W7Y4H
+	CTxaBhGa2FD0+I/4q5Ie6LPL3ffsrBKdEppBACVCIDrJAFYNSlamHMof2L+E6WCdv+Q
+	85qo27im2I9qZfFfZnuoFWWAT6qF02o0WVYEwGfA=
+Received: by mx.zohomail.com with SMTPS id 1770400193868370.7925643447186;
+	Fri, 6 Feb 2026 09:49:53 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB5282:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8705243-3087-4f68-9b7e-08de65a746d9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Wk9ZZTl1VXdCT2NzY0ZHVVg4VjJmODVEOWllaFhoTGJ4a1lFSnpvV05jbER4?=
- =?utf-8?B?OEd6dHpnVGlDdVovZTJPUmlBWnBvVWRZZFB6dGZWRjd5d25qOHhBdHpBdjBq?=
- =?utf-8?B?MG1ld0RYRFlOYi9CS0V1L0ttaUZLTHFDb1lqa01HTEJjWnRQZmJPSVNMbXB3?=
- =?utf-8?B?T2EvV0ltY0hJTnNiY0pIWGx5QkVlcWlNcUtEL0tmUGdqbGNQdUNpT0pBUG83?=
- =?utf-8?B?eVR4TE5aUHdhZ3U5ajJ0TDV3d25wUnhlVUI2MStLUlozS3R1UFkwUVFINk0z?=
- =?utf-8?B?aGIzc20ySUtjUkNOekJKTEg4YTRRR0FZWGlPL1ZHS3F5eWRUVkczUFM3Z0Vt?=
- =?utf-8?B?c3NrZExFSlFsdkV6aEtTS21wVGtyQUp5TWpablE3MHBuZS80cnpLWVcySklU?=
- =?utf-8?B?eVJDbkRNWDZPZFJGMk9nWnI1WjF1bEVRK2ZTQUZGMVpaOTFoSzNhSmZabnJk?=
- =?utf-8?B?MlI1enFiM25GYTVtNGsydHhKemV1SmdGTlYyay9adittaTNVQTYrUkZKbXND?=
- =?utf-8?B?OSs2ckk4Mmcxd1p6VGdTVklLZVdtZUVLVlhtdnhQUFloczdOQkkxOVk1djR5?=
- =?utf-8?B?aGt2VERDS0JtUWsxZXJMaDRGbFpOaG9aTUlMa25HNGRxcGdZSXNVTU5XdFQ4?=
- =?utf-8?B?MjROeU82QnBIdXZoZ243K0ZjUG9rc3BzNStNMmpWTWVpWEt0Tk56VXRIeXJi?=
- =?utf-8?B?dTg0KzFuRFVucSt5TUxGT0F6UDZ1RGpDZDE4SGRNTmVpRkphR3NiV2ZuYVYx?=
- =?utf-8?B?NU1mNytPanBnSkZuL1VRblFHNU5uZXpjV1BWK0tFWnFMR2Y1Z1F0SmlVWkZp?=
- =?utf-8?B?QWhrSGI4OVcrbnRkOTJRYWQvQTRadnc3QkdhYlVNNEUxeVJkQWhTVWo5a2k4?=
- =?utf-8?B?SHlSVFgzQmtpV2VZQmdPNzg5Sk5ObzJkMU9XR0dNbFRnMk80Kzd0WFJObWpr?=
- =?utf-8?B?WThSMW1DY0hoZWhvT0hmL1JMYlFXU2VHeFRVbTlsTnh3NUxpWXhJUlpqWDRO?=
- =?utf-8?B?dGU1REVCNEtUS3J6QUlzUy9rbUR0RmxCYVhoNHl4M0I5bDBEd1hwdDNObERq?=
- =?utf-8?B?Y05ybDhzTVIwS01uM0NFN3pkbkFqMm1zTThyTFByMW9Oclc5ak9VYjAvVk9R?=
- =?utf-8?B?U3VXVGFTa1NLbCs1aTBMdlFlV3h2L3Z6NmhRUTU3U2hGWVpTUlBmWktIeEdx?=
- =?utf-8?B?bmVhQ01nbnZuVm4xTEhwRnBzMjRHTHJEYVY0enptQWNUZnpQYWhja0ZBZzFB?=
- =?utf-8?B?cVpGbEpOVnd2MVdGbWlWZjBNWDR0NzZ1d3UzNEExeThHUXFlM3NIYXM0dDl4?=
- =?utf-8?B?WGZYdEh4WGdkRlFxTkk5K291Y3llMzdZOVQ3emgzOGFjOGdmbnN4amtPeTJG?=
- =?utf-8?B?UUlUekhKMzRiL3BQUHd5VTBlRXl4WlF1NEhmcHB5VEJyd2tSTmx1LzNIcmdX?=
- =?utf-8?B?WkpvYUN4alBUc2pvdEV0VTN4Sm55bTZmeTAvZ004Q1pRMXBYci90M0lLNW1Z?=
- =?utf-8?B?d0s4VC8rL1ZFN2VnQThCTFJFcVFhcmlURHRWVXJ6NGM0ZzNNdUE1SGZ1cFhG?=
- =?utf-8?B?M0V5akdrMHFGb0J2UHNudWs0K0pqL09XUURBeVYxVk53SDFNdXVhTDQ2VjNj?=
- =?utf-8?B?K21jeE1Fb0xFRDJ2Y1doR0dRZWp5T0tsY2JVOWExaWROa1pjU0hyU1pReDFM?=
- =?utf-8?B?L1VGOUE2OVdtT0JoU01OMlFwSUUwWk9PK2xHc0NEY1A0ZnRFWHlVYTZzRTVD?=
- =?utf-8?B?S1FMWUk4SGxUdXF3SVZVSlRQR1BKZWNCY0ZYV3hOdHRxSm90UFI2RHJpNnU1?=
- =?utf-8?B?WUN4akpKOE9sZ3ZDVHBVSU1oUWZxd3JWdi9rY2NzTFJPSUJ2WVVxeGQ3QjZ6?=
- =?utf-8?B?Uk4wZXVhako5ZGxXeWR5bkViMkJqTXg1T3RuOVY3empTVEs0ZmtNcnMyWlMx?=
- =?utf-8?B?UHhwWEhwdXVIcmd5ME9wakc3aUxZS2Ztdkt5ZnZ4RmJFbElmU3FGcGpIWkw4?=
- =?utf-8?B?UHBpMWRxZTQwcS9JY0JDaGFrdGhXQVplbmxBbjZIMjhpK3pjbUtnZFZOMWxm?=
- =?utf-8?B?U0VwWGVkWi9kb205SHZRV0pKdGF2bEJXOVd1amhKZE1IbkQwNU1iYzBGN09Y?=
- =?utf-8?Q?kbVk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RElZQlN3WGwrb0NDWEVqT0tzeHhncHF2c1ZzdFF6UVo5dmY4MkJNSmRaQUdK?=
- =?utf-8?B?S3FXMnlVRWNtenFEYXkwaVhucnBVNUdDSTdlUkhVSGpteW1mYlh1OE5wRFVu?=
- =?utf-8?B?OFVqZ3JaVkwrS2dKNEphSWNaMEtXTjBnQ09Cb21FY2lvZFZsWXlmVWdNVXVY?=
- =?utf-8?B?VnlTd0Z5Qnk0NCtwOVYvRE8xTHBoZW9lcUVNNDVqcGU5TFk2NWs5bkl0Y0lL?=
- =?utf-8?B?dWRyTEcvZ2V1ZjJoS3NQcG5Jc01UMmJlTzZKM2UxRXhXZ0E2ZTl4ZHU4amxJ?=
- =?utf-8?B?emZMdEE1MWQ2WTJjeXB6UkVQVjRzcjQydE81MmJYSEFjeHg1aCttUmN2Um5E?=
- =?utf-8?B?VG90bWFyWWJDSlVYRktuTkFVVTBUWnhLa2JCblFidFVLUjBYUTJLTFNwa3RE?=
- =?utf-8?B?TnpwTFMwbUxOcUNTRG5wYnBYNWhlM0xkd0RhYjhDdHFGODVBMWtiazlWUTdE?=
- =?utf-8?B?U3lxWnUxR0tmTUN6ODlubWRMVW5idGFaVVZiMTNTdzV6YzFTbkRLMUx1Rm5w?=
- =?utf-8?B?QThGYW9jNGZOakNsUjk2dHZZclgyak1icEg4Q3hXUFlaZkJQNWhFS0RscXcr?=
- =?utf-8?B?MnFQQTBSb0t4STdCc3dQeTd4MlREY2lOb2tRNFphRmt6LzZuNWJDVk1aNWFT?=
- =?utf-8?B?Sm5ma1BFZCt6S0xscXFIb0g1SFJIdzNWV0NyNWZzZDFQODYrbTdqWkJaVytI?=
- =?utf-8?B?RWsvRk5IZ3JBTThlVDdCUFB2VWlJUkNtVld4UnlUV3haazRaQ3VuUjFvbndK?=
- =?utf-8?B?WlRGbjZmdnZNblRmWVEwSHZnMUVnbXQrRGJ4Z2d1SGdFR2dtK3BRb0c3Y0FV?=
- =?utf-8?B?Y04wSHVwOU5qaEtlcTRuMkxkOG5LanlMelRzVmQ5cE9wSThBQVJweUtqb08v?=
- =?utf-8?B?Z3BlOXJFdW80ZWFIblJyMEJUSHBkeTJlV25wSjRUaTJJMk0xVHZMTDU5d015?=
- =?utf-8?B?aysrVWlsZjRJS3JTVkoxV0EyN1ovUS81aU5UdnVDSk5Pam94R25Ja1BQQ1ZG?=
- =?utf-8?B?QXlONTdPV3V0RWdPa3Z5ZDltcS9VYStvd2JmeDhRQzhuUlBoVHZJTTA0T01U?=
- =?utf-8?B?QnBGNkhlTlpvZXlmVDFFNTRUcEdaYVEvMGV4NE5sTmRyNk9IUVRUS0IwRkxB?=
- =?utf-8?B?V1JkalJIU3FxN2xwTklmcUlkcUVrWHpHb3B2a2dsYyt4M1MyRXlSTlVONzly?=
- =?utf-8?B?Zlp1cnMyNHlNR0ZsakVDcSs0bjRTSG1zWUduNm1FdzI1RmlramN4VTA0K1Fm?=
- =?utf-8?B?dmF0SWRXSnFPejAyQUlWdkQ4MVdoT09kNlIvVDlUUHljeStDaldsbFIxTFJG?=
- =?utf-8?B?cTUyWGM4clRIcEMzcHlCTWlXellSc2lqMjN3eW5CMTNzVGZIbjV6WEI4dGU4?=
- =?utf-8?B?S1kyb3RzcUxITFNwMmVMRXhKVUdmUjhhL2ZMUzdpSFpDcGMxTjhBZ0UwS1Jk?=
- =?utf-8?B?T1lRSlArS1NYbDUyL0lScndPY1JrNUdZQXkrZVRKN1NVdUQ4dk1JbEw4MTBP?=
- =?utf-8?B?Q3E5RXZHSWdrYk1wM0ZoeUlBQXdlZ2FoTGM0Rk5tVGREdHRxZmNSN1k3M0t1?=
- =?utf-8?B?M09RWE05MmNFbGd2My9IL2RRbzNQejVsRlJudXVXRHAxSFNaOFhpYW55UHNP?=
- =?utf-8?B?Rmtpc2t5Nnd3RVlPY01IZkNtU2wwS0JRak93UnEwM0x4am1hUHAwby9iOFZm?=
- =?utf-8?B?cVFBelpjZFZGSDRBYm05S2dJNmJKOHhGRStIcmFKUmorSDZnRkdIZVpBNVFR?=
- =?utf-8?B?VERKSzhvM0JWcjA0dlg2VmV6aHN6WTR1TlZ1L0srL2NPWDQrcFowdDgzR1JX?=
- =?utf-8?B?WHN5MS9MbUJjSmpwcEVCUEs5dXEwSjU3T3MvRGh5Z3FQa3h6RWZMWnA1djY3?=
- =?utf-8?B?cnpkYkI2Uk5hZzNpMEV4RkJOcktoRFNzWDkxS0pzTXIrTGE4aGsvTkV4eWFD?=
- =?utf-8?B?TlVUbXl2OVJoNDMvaDVmUTVXRWxSZDE2NFdrQ04vVWI4NzcxM1dmb2V3VDAx?=
- =?utf-8?B?TURXWDgvYVhZcU5hendlTWZFZWhudjJxYmwrZk5TZnpxRWlVcnhyWmIvYnNo?=
- =?utf-8?B?TTdycFdHUFJYRk44RnZaVllpNThtUjJ0T2xUZzN6Yy9hcFQvZHIxQ0c4YVhB?=
- =?utf-8?B?SVV5Z1lpekRGNzh5ejh3R3c0Zm9jN2E2ZUlvQXVuK0JFL0RveWx5aWhpNXRI?=
- =?utf-8?B?NTZZRUNpdW9lV01oQXZlVis3aXYxNjg3OWVDRmh5ZThiVllaclEvYmZrK3VG?=
- =?utf-8?B?TDE1eWNEVzVsbDN1cGZUSEdEaXJjYlcwaGVaYWZJSXNjMVg4bXF4UHFZMUtt?=
- =?utf-8?B?dWw4S25xNG1tZHppS0VydWNPMktQaXgyTVU2UFYxc3EvWFpLMFNQZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8705243-3087-4f68-9b7e-08de65a746d9
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 17:43:45.6527
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: STIK5WFNUg9KxieFiAtwvh2p74XOxEuLjHnbcSDJ83sDiHVd9dXVR/gKeRNkxnNm6+P7+mAw1P4EM4sux5r6GQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5282
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH -next v7 1/2] rust: clist: Add support to interface with C
+ linked lists
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260206004110.1914814-2-joelagnelf@nvidia.com>
+Date: Fri, 6 Feb 2026 14:49:31 -0300
+Cc: linux-kernel@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Helge Deller <deller@gmx.de>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Andrea Righi <arighi@nvidia.com>,
+ Andy Ritger <aritger@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>,
+ Philipp Stanner <phasta@kernel.org>,
+ Elle Rhumsaa <elle@weathered-steel.dev>,
+ joel@joelfernandes.org,
+ nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <73B64D35-6574-4776-962D-865465C40226@collabora.com>
+References: <20260206004110.1914814-1-joelagnelf@nvidia.com>
+ <20260206004110.1914814-2-joelagnelf@nvidia.com>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Fri Feb 6, 2026 at 5:19 PM GMT, Tamir Duberstein wrote:
-> On Fri, Feb 6, 2026 at 12:11=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
->>
->> Replace the `xa_init_flags` helper with direct initialization of XArray
->> structures using `__spin_lock_init`. This allows each XArray to have
->> its own lock class key for lockdep, preventing false positive warnings
->> about lock ordering violations.
->>
->> Add a `new_xarray!` macro that automatically generates a unique lock
->> class key for each XArray instantiation site. The macro accepts an
->> optional name parameter and uses the `optional_name!` and
->> `static_lock_class!` macros to generate appropriate names and lock
->> classes.
->>
->> Update the `XArray::new` method signature to accept explicit name and
->> lock class key parameters. This enables proper lockdep tracking while
->> maintaining flexibility for advanced use cases.
->>
->> Remove `rust_helper_xa_init_flags` as it is now dead code.
->>
->> This was previously part of the series at [1]
->>
->> Link: https://lore.kernel.org/r/20251203-xarray-entry-send-v1-0-9e5ffd5e=
-3cf0@kernel.org [1]
->> Fixes: 210b81578efbe ("rust: xarray: Add an abstraction for XArray")
->> Acked-by: Tamir Duberstein <tamird@gmail.com>
->
-> Please replace with:
->
-> Acked-by: Tamir Duberstein <tamird@kernel.org>
->
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/helpers/xarray.c |  5 -----
->>  rust/kernel/xarray.rs | 43 +++++++++++++++++++++++++++++++++++++------
->>  2 files changed, 37 insertions(+), 11 deletions(-)
->>
->> diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
->> index 60b299f11451d..644b8b35b1bee 100644
->> --- a/rust/helpers/xarray.c
->> +++ b/rust/helpers/xarray.c
->> @@ -7,11 +7,6 @@ int rust_helper_xa_err(void *entry)
->>         return xa_err(entry);
->>  }
->>
->> -void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
->> -{
->> -       return xa_init_flags(xa, flags);
->> -}
->
-> I like Alice's suggestion in the previous version of doing the
-> initialization here. It gives a natural place to explain why
-> xa_init_flags cannot be used directly and avoids introducing a second
-> user of `bindings:: __spin_lock_init` which seems like something we
-> should discourage direct use of.
+Hi Joel,
 
-Or perhaps we should just add __xa_init_flags which accepts explicit lock
-classes, and replace `xa_init_flags` to use it with a fresh lock class key.
+> On 5 Feb 2026, at 21:41, Joel Fernandes <joelagnelf@nvidia.com> wrote:
+>=20
+> Add a new module `clist` for working with C's doubly circular linked
+> lists. Provide low-level iteration over list nodes.
+>=20
+> Typed iteration over actual items is provided with a `clist_create`
+> macro to assist in creation of the `CList` type.
+>=20
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+> ---
+> MAINTAINERS            |   7 +
+> drivers/gpu/Kconfig    |   7 +
+> rust/helpers/helpers.c |   1 +
+> rust/helpers/list.c    |  21 +++
+> rust/kernel/clist.rs   | 315 +++++++++++++++++++++++++++++++++++++++++
+> rust/kernel/lib.rs     |   2 +
+> 6 files changed, 353 insertions(+)
+> create mode 100644 rust/helpers/list.c
+> create mode 100644 rust/kernel/clist.rs
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 900fc00b73e6..310bb479260c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -23204,6 +23204,13 @@ S: Maintained
+> T: git https://github.com/Rust-for-Linux/linux.git rust-analyzer-next
+> F: scripts/generate_rust_analyzer.py
+>=20
+> +RUST TO C LIST INTERFACES
+> +M: Joel Fernandes <joelagnelf@nvidia.com>
+> +M: Alexandre Courbot <acourbot@nvidia.com>
+> +L: rust-for-linux@vger.kernel.org
+> +S: Maintained
+> +F: rust/kernel/clist.rs
+> +
+> RXRPC SOCKETS (AF_RXRPC)
+> M: David Howells <dhowells@redhat.com>
+> M: Marc Dionne <marc.dionne@auristor.com>
+> diff --git a/drivers/gpu/Kconfig b/drivers/gpu/Kconfig
+> index 22dd29cd50b5..2c3dec070645 100644
+> --- a/drivers/gpu/Kconfig
+> +++ b/drivers/gpu/Kconfig
+> @@ -1,7 +1,14 @@
+> # SPDX-License-Identifier: GPL-2.0
+>=20
+> +config RUST_CLIST
+> + bool
+> + depends on RUST
+> + help
+> +  Rust abstraction for interfacing with C linked lists.
+> +
+> config GPU_BUDDY
+> bool
+> + select RUST_CLIST if RUST
+> help
+>  A page based buddy allocator for GPU memory.
+>=20
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index a3c42e51f00a..724fcb8240ac 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -35,6 +35,7 @@
+> #include "io.c"
+> #include "jump_label.c"
+> #include "kunit.c"
+> +#include "list.c"
+> #include "maple_tree.c"
+> #include "mm.c"
+> #include "mutex.c"
+> diff --git a/rust/helpers/list.c b/rust/helpers/list.c
+> new file mode 100644
+> index 000000000000..3390b154fa36
+> --- /dev/null
+> +++ b/rust/helpers/list.c
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Helpers for C Circular doubly linked list implementation.
+> + */
+> +
+> +#include <linux/list.h>
+> +
+> +#ifndef __rust_helper
+> +#define __rust_helper
+> +#endif
+> +
+> +__rust_helper void rust_helper_INIT_LIST_HEAD(struct list_head *list)
+> +{
+> + INIT_LIST_HEAD(list);
+> +}
+> +
+> +__rust_helper void rust_helper_list_add_tail(struct list_head *new, =
+struct list_head *head)
+> +{
+> + list_add_tail(new, head);
+> +}
+> diff --git a/rust/kernel/clist.rs b/rust/kernel/clist.rs
+> new file mode 100644
+> index 000000000000..1f6d4db13c1d
+> --- /dev/null
+> +++ b/rust/kernel/clist.rs
+> @@ -0,0 +1,315 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! A C doubly circular intrusive linked list interface for rust =
+code.
+> +//!
+> +//! # Examples
+> +//!
+> +//! ```
+> +//! use kernel::{
+> +//!     bindings,
+> +//!     clist_create,
+> +//!     types::Opaque, //
+> +//! };
+> +//! # // Create test list with values (0, 10, 20) - normally done by =
+C code but it is
+> +//! # // emulated here for doctests using the C bindings.
+> +//! # use core::mem::MaybeUninit;
+> +//! #
+> +//! # /// C struct with embedded `list_head` (typically will be =
+allocated by C code).
+> +//! # #[repr(C)]
+> +//! # pub(crate) struct SampleItemC {
+> +//! #     pub value: i32,
+> +//! #     pub link: bindings::list_head,
+> +//! # }
+> +//! #
+> +//! # let mut head =3D MaybeUninit::<bindings::list_head>::uninit();
+> +//! #
+> +//! # let head =3D head.as_mut_ptr();
+> +//! # // SAFETY: head and all the items are test objects allocated in =
+this scope.
+> +//! # unsafe { bindings::INIT_LIST_HEAD(head) };
+> +//! #
+> +//! # let mut items =3D [
+> +//! #     MaybeUninit::<SampleItemC>::uninit(),
+> +//! #     MaybeUninit::<SampleItemC>::uninit(),
+> +//! #     MaybeUninit::<SampleItemC>::uninit(),
+> +//! # ];
+> +//! #
+> +//! # for (i, item) in items.iter_mut().enumerate() {
+> +//! #     let ptr =3D item.as_mut_ptr();
+> +//! #     // SAFETY: pointers are to allocated test objects with a =
+list_head field.
+> +//! #     unsafe {
+> +//! #         (*ptr).value =3D i as i32 * 10;
+> +//! #         // addr_of_mut!() computes address of link directly as =
+link is uninitialized.
+> +//! #         =
+bindings::INIT_LIST_HEAD(core::ptr::addr_of_mut!((*ptr).link));
 
-I think C users benefit from having a fresh lock class key per xarray rathe=
-r
-than a single one per compilation unit, too.
+Shoudn=E2=80=99t this be &raw mut?
 
-Cc: Matthew Wilcox <willy@infradead.org>
+> +//! #         bindings::list_add_tail(&mut (*ptr).link, head);
+> +//! #     }
+> +//! # }
+> +//!
+> +//! // Rust wrapper for the C struct.
+> +//! // The list item struct in this example is defined in C code as:
+> +//! //   struct SampleItemC {
+> +//! //       int value;
+> +//! //       struct list_head link;
+> +//! //   };
+> +//! //
+> +//! #[repr(transparent)]
+> +//! pub(crate) struct Item(Opaque<SampleItemC>);
+> +//!
+> +//! impl Item {
+> +//!     pub(crate) fn value(&self) -> i32 {
+> +//!         // SAFETY: [`Item`] has same layout as [`SampleItemC`].
+> +//!         unsafe { (*self.0.get()).value }
+> +//!     }
+> +//! }
+> +//!
+> +//! // Create typed [`CList`] from sentinel head.
+> +//! // SAFETY: head is valid, items are [`SampleItemC`] with embedded =
+`link` field.
+> +//! let list =3D unsafe { clist_create!(head, Item, SampleItemC, =
+link) };
+> +//!
+> +//! // Iterate directly over typed items.
+> +//! let mut found_0 =3D false;
+> +//! let mut found_10 =3D false;
+> +//! let mut found_20 =3D false;
+> +//!
+> +//! for item in list.iter() {
+> +//!     let val =3D item.value();
+> +//!     if val =3D=3D 0 { found_0 =3D true; }
+> +//!     if val =3D=3D 10 { found_10 =3D true; }
+> +//!     if val =3D=3D 20 { found_20 =3D true; }
+> +//! }
+> +//!
+> +//! assert!(found_0 && found_10 && found_20);
+> +//! ```
+> +
+> +use core::{
+> +    iter::FusedIterator,
+> +    marker::PhantomData, //
+> +};
+> +
+> +use crate::{
+> +    bindings,
+> +    types::Opaque, //
+> +};
+> +
+> +use pin_init::PinInit;
+> +
+> +/// Wraps a `list_head` object for use in intrusive linked lists.
+> +///
+> +/// # Invariants
+> +///
+> +/// - [`CListHead`] represents an allocated and valid `list_head` =
+structure.
+> +/// - Once a [`CListHead`] is created in Rust, it will not be =
+modified by non-Rust code.
 
-Matthew, for context, the current xa_init_flags have an issue where, becaus=
-e it
-is static inline function instead of macro, all users inside a single
-compilation unit ended up get a single lock class key. For C users this mea=
-ns
-that each .c file gets a single key, and this is more problematic for Rust =
-as we
-invoke via helpers, so all of Rust users share a single lockdep key.
+> +/// - All `list_head` for individual items are not modified for the =
+lifetime of [`CListHead`].
 
-Link: https://lore.kernel.org/all/DFUI6LMASTMK.2WI00LMY5FTSP@garyguo.net/
+Can you expand on the two points above?
 
-Best,
-Gary
+> +#[repr(transparent)]
+> +pub(crate) struct CListHead(Opaque<bindings::list_head>);
+> +
+> +impl CListHead {
+> +    /// Create a `&CListHead` reference from a raw `list_head` =
+pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `ptr` must be a valid pointer to an allocated and =
+initialized `list_head` structure.
+> +    /// - `ptr` must remain valid and unmodified for the lifetime =
+`'a`.
+> +    #[inline]
+> +    pub(crate) unsafe fn from_raw<'a>(ptr: *mut bindings::list_head) =
+-> &'a Self {
+> +        // SAFETY:
+> +        // - [`CListHead`] has same layout as `list_head`.
+> +        // - `ptr` is valid and unmodified for 'a.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    /// Get the raw `list_head` pointer.
+> +    #[inline]
+> +    pub(crate) fn as_raw(&self) -> *mut bindings::list_head {
+> +        self.0.get()
+> +    }
+> +
+> +    /// Get the next [`CListHead`] in the list.
+> +    #[inline]
+> +    pub(crate) fn next(&self) -> &Self {
+> +        let raw =3D self.as_raw();
+> +        // SAFETY:
+> +        // - `self.as_raw()` is valid per type invariants.
+> +        // - The `next` pointer is guaranteed to be non-NULL.
+> +        unsafe { Self::from_raw((*raw).next) }
+> +    }
+> +
+> +    /// Check if this node is linked in a list (not isolated).
+> +    #[inline]
+> +    pub(crate) fn is_linked(&self) -> bool {
+> +        let raw =3D self.as_raw();
+> +        // SAFETY: self.as_raw() is valid per type invariants.
+> +        unsafe { (*raw).next !=3D raw && (*raw).prev !=3D raw }
 
->
->> -
->>  int rust_helper_xa_trylock(struct xarray *xa)
->>  {
->>         return xa_trylock(xa);
->> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
->> index a49d6db288458..62a2b2ebfb0bf 100644
->> --- a/rust/kernel/xarray.rs
->> +++ b/rust/kernel/xarray.rs
->> @@ -8,11 +8,31 @@
->>      alloc, bindings, build_assert,
->>      error::{Error, Result},
->>      ffi::c_void,
->> +    str::CStr,
->> +    sync::LockClassKey,
->>      types::{ForeignOwnable, NotThreadSafe, Opaque},
->>  };
->> -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
->> +use core::{
->> +    iter,
->> +    marker::PhantomData,
->> +    pin::Pin,
->> +    ptr::{null_mut, NonNull},
->> +};
->>  use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
->>
->> +/// Creates a [`XArray`] initialiser with the given name and a newly-cr=
-eated lock class.
->> +///
->> +/// It uses the name if one is given, otherwise it generates one based =
-on the file name and line
->> +/// number.
->> +#[macro_export]
->> +macro_rules! new_xarray {
->> +    ($kind:expr $(, $name:literal)? $(,)?) =3D> {
->> +        $crate::xarray::XArray::new(
->> +            $kind, $crate::optional_name!($($name)?), $crate::static_lo=
-ck_class!())
->> +    };
->> +}
->> +pub use new_xarray;
->> +
->>  /// An array which efficiently maps sparse integer indices to owned obj=
-ects.
->>  ///
->>  /// This is similar to a [`crate::alloc::kvec::Vec<Option<T>>`], but mo=
-re efficient when there are
->> @@ -27,9 +47,10 @@
->>  ///
->>  /// ```rust
->>  /// use kernel::alloc::KBox;
->> -/// use kernel::xarray::{AllocKind, XArray};
->> +/// use kernel::xarray::{new_xarray, AllocKind, XArray};
->>  ///
->> -/// let xa =3D KBox::pin_init(XArray::new(AllocKind::Alloc1), GFP_KERNE=
-L)?;
->> +/// let xa: Pin<KBox<XArray<KBox<u32>>>> =3D
->> +///     KBox::pin_init(new_xarray!(AllocKind::Alloc1), GFP_KERNEL)?;
->>  ///
->>  /// let dead =3D KBox::new(0xdead, GFP_KERNEL)?;
->>  /// let beef =3D KBox::new(0xbeef, GFP_KERNEL)?;
->> @@ -86,7 +107,11 @@ pub enum AllocKind {
->>
->>  impl<T: ForeignOwnable> XArray<T> {
->>      /// Creates a new initializer for this type.
->> -    pub fn new(kind: AllocKind) -> impl PinInit<Self> {
->> +    pub fn new(
->> +        kind: AllocKind,
->> +        name: &'static CStr,
->> +        key: Pin<&'static LockClassKey>,
->> +    ) -> impl PinInit<Self> {
->>          let flags =3D match kind {
->>              AllocKind::Alloc =3D> bindings::XA_FLAGS_ALLOC,
->>              AllocKind::Alloc1 =3D> bindings::XA_FLAGS_ALLOC1,
->> @@ -95,8 +120,14 @@ pub fn new(kind: AllocKind) -> impl PinInit<Self> {
->>              // SAFETY: `xa` is valid while the closure is called.
->>              //
->>              // INVARIANT: `xa` is initialized here to an empty, valid [=
-`bindings::xarray`].
->> -            xa <- Opaque::ffi_init(|xa| unsafe {
->> -                bindings::xa_init_flags(xa, flags)
->> +            xa <- Opaque::ffi_init(|xa: *mut bindings::xarray| unsafe {
->> +                bindings::__spin_lock_init(
->> +                    &raw mut (*xa).xa_lock,
->> +                    name.as_ptr().cast(),
->> +                    key.as_ptr(),
->> +                );
->> +                (*xa).xa_flags =3D flags;
->> +                (*xa).xa_head =3D null_mut();
->>              }),
->>              _p: PhantomData,
->>          })
->>
->> ---
->> base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
->> change-id: 20260206-xarray-lockdep-fix-10f1cc68e5d7
->>
->> Best regards,
->> --
->> Andreas Hindborg <a.hindborg@kernel.org>
->>
->>
+I wonder if this is duplicating some C helper?
+
+> +    }
+> +
+> +    /// Pin-initializer that initializes the list head.
+> +    pub(crate) fn new() -> impl PinInit<Self> {
+> +        // SAFETY: `INIT_LIST_HEAD` initializes `slot` to a valid =
+empty list.
+> +        unsafe {
+> +            pin_init::pin_init_from_closure(move |slot: *mut Self| {
+> +                bindings::INIT_LIST_HEAD(slot.cast());
+> +                Ok(())
+> +            })
+> +        }
+> +    }
+> +}
+> +
+> +// SAFETY: [`CListHead`] can be sent to any thread.
+> +unsafe impl Send for CListHead {}
+> +
+> +// SAFETY: [`CListHead`] can be shared among threads as it is not =
+modified
+> +// by non-Rust code per type invariants.
+> +unsafe impl Sync for CListHead {}
+> +
+> +impl PartialEq for CListHead {
+> +    fn eq(&self, other: &Self) -> bool {
+> +        core::ptr::eq(self, other)
+> +    }
+> +}
+> +
+> +impl Eq for CListHead {}
+> +
+> +/// Low-level iterator over `list_head` nodes.
+> +///
+> +/// An iterator used to iterate over a C intrusive linked list =
+(`list_head`). Caller has to
+> +/// perform conversion of returned [`CListHead`] to an item (using =
+`container_of` macro or similar).
+> +///
+> +/// # Invariants
+> +///
+> +/// [`CListHeadIter`] is iterating over an allocated, initialized and =
+valid list.
+> +struct CListHeadIter<'a> {
+> +    /// Current position in the list.
+> +    current: &'a CListHead,
+> +    /// The sentinel head (used to detect end of iteration).
+> +    sentinel: &'a CListHead,
+> +}
+> +
+> +impl<'a> Iterator for CListHeadIter<'a> {
+> +    type Item =3D &'a CListHead;
+> +
+> +    #[inline]
+> +    fn next(&mut self) -> Option<Self::Item> {
+> +        // Check if we've reached the sentinel (end of list).
+> +        if core::ptr::eq(self.current, self.sentinel) {
+> +            return None;
+> +        }
+
+I was under the impression that CListHeads implemented PartialEq/Eq?
+
+> +
+> +        let item =3D self.current;
+> +        self.current =3D item.next();
+> +        Some(item)
+> +    }
+> +}
+> +
+> +impl<'a> FusedIterator for CListHeadIter<'a> {}
+> +
+> +/// A typed C linked list with a sentinel head.
+> +///
+> +/// A sentinel head represents the entire linked list and can be used =
+for
+> +/// iteration over items of type `T`, it is not associated with a =
+specific item.
+> +///
+> +/// The const generic `OFFSET` specifies the byte offset of the =
+`list_head` field within
+> +/// the struct that `T` wraps.
+> +///
+> +/// # Invariants
+> +///
+> +/// - The [`CListHead`] is an allocated and valid sentinel C =
+`list_head` structure.
+> +/// - `OFFSET` is the byte offset of the `list_head` field within the =
+struct that `T` wraps.
+> +/// - All the list's `list_head` nodes are allocated and have valid =
+next/prev pointers.
+> +#[repr(transparent)]
+> +pub(crate) struct CList<T, const OFFSET: usize>(CListHead, =
+PhantomData<T>);
+> +
+> +impl<T, const OFFSET: usize> CList<T, OFFSET> {
+> +    /// Create a typed [`CList`] reference from a raw sentinel =
+`list_head` pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `ptr` must be a valid pointer to an allocated and =
+initialized `list_head` structure
+> +    ///   representing a list sentinel.
+> +    /// - `ptr` must remain valid and unmodified for the lifetime =
+`'a`.
+> +    /// - The list must contain items where the `list_head` field is =
+at byte offset `OFFSET`.
+> +    /// - `T` must be `#[repr(transparent)]` over the C struct.
+> +    #[inline]
+> +    pub(crate) unsafe fn from_raw<'a>(ptr: *mut bindings::list_head) =
+-> &'a Self {
+> +        // SAFETY:
+> +        // - [`CList`] has same layout as [`CListHead`] due to =
+repr(transparent).
+> +        // - Caller guarantees `ptr` is a valid, sentinel `list_head` =
+object.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    /// Check if the list is empty.
+> +    #[inline]
+> +    #[expect(dead_code)]
+> +    pub(crate) fn is_empty(&self) -> bool {
+
+Why can=E2=80=99t this be pub?
+
+> +        !self.0.is_linked()
+> +    }
+> +
+> +    /// Create an iterator over typed items.
+> +    #[inline]
+> +    pub(crate) fn iter(&self) -> CListIter<'_, T, OFFSET> {
+> +        let head =3D &self.0;
+> +        CListIter {
+> +            head_iter: CListHeadIter {
+> +                current: head.next(),
+> +                sentinel: head,
+> +            },
+> +            _phantom: PhantomData,
+> +        }
+> +    }
+> +}
+> +
+> +/// High-level iterator over typed list items.
+> +pub(crate) struct CListIter<'a, T, const OFFSET: usize> {
+> +    head_iter: CListHeadIter<'a>,
+> +    _phantom: PhantomData<&'a T>,
+> +}
+> +
+> +impl<'a, T, const OFFSET: usize> Iterator for CListIter<'a, T, =
+OFFSET> {
+> +    type Item =3D &'a T;
+> +
+> +    fn next(&mut self) -> Option<Self::Item> {
+> +        let head =3D self.head_iter.next()?;
+> +
+> +        // Convert to item using OFFSET.
+> +        // SAFETY: `item_ptr` calculation from `OFFSET` (calculated =
+using offset_of!)
+> +        // is valid per invariants.
+> +        Some(unsafe { &*head.as_raw().byte_sub(OFFSET).cast::<T>() })
+> +    }
+> +}
+> +
+> +impl<'a, T, const OFFSET: usize> FusedIterator for CListIter<'a, T, =
+OFFSET> {}
+> +
+> +/// Create a C doubly-circular linked list interface `CList` from a =
+raw `list_head` pointer.
+> +///
+> +/// This macro creates a `CList<T, OFFSET>` that can iterate over =
+items of type `$rust_type`
+> +/// linked via the `$field` field in the underlying C struct =
+`$c_type`.
+> +///
+> +/// # Arguments
+> +///
+> +/// - `$head`: Raw pointer to the sentinel `list_head` object (`*mut =
+bindings::list_head`).
+> +/// - `$rust_type`: Each item's rust wrapper type.
+> +/// - `$c_type`: Each item's C struct type that contains the embedded =
+`list_head`.
+> +/// - `$field`: The name of the `list_head` field within the C =
+struct.
+> +///
+> +/// # Safety
+> +///
+> +/// This is an unsafe macro. The caller must ensure:
+> +///
+> +/// - `$head` is a valid, initialized sentinel `list_head` pointing =
+to a list that remains
+> +///   unmodified for the lifetime of the rust `CList`.
+> +/// - The list contains items of type `$c_type` linked via an =
+embedded `$field`.
+> +/// - `$rust_type` is `#[repr(transparent)]` over `$c_type` or has =
+compatible layout.
+> +///
+> +/// # Examples
+> +///
+> +/// Refer to the examples in this module's documentation.
+> +#[macro_export]
+> +macro_rules! clist_create {
+> +    ($head:expr, $rust_type:ty, $c_type:ty, $($field:tt).+) =3D> {{
+> +        // Compile-time check that field path is a list_head.
+> +        let _: fn(*const $c_type) -> *const =
+$crate::bindings::list_head =3D
+> +            |p| &raw const (*p).$($field).+;
+> +
+> +        // Calculate offset and create `CList`.
+> +        const OFFSET: usize =3D ::core::mem::offset_of!($c_type, =
+$($field).+);
+> +        $crate::clist::CList::<$rust_type, OFFSET>::from_raw($head)
+> +    }};
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 3da92f18f4ee..8439c30f40b5 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -75,6 +75,8 @@
+> pub mod bug;
+> #[doc(hidden)]
+> pub mod build_assert;
+> +#[cfg(CONFIG_RUST_CLIST)]
+> +pub(crate) mod clist;
+> pub mod clk;
+> #[cfg(CONFIG_CONFIGFS_FS)]
+> pub mod configfs;
+> --=20
+> 2.34.1
+>=20
+>=20
 
