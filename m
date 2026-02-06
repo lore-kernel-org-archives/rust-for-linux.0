@@ -1,83 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565932FF164;
-	Fri,  6 Feb 2026 14:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018B9212542;
+	Fri,  6 Feb 2026 14:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770386938; cv=none; b=lOJx8B9sq2YttjkWn0y+abG62jALNvV2ORTTchR/h24GbsrCPgVe/TP2q9dW9oDH0tPR0UCVYOyRqQs8fv9RQ5/sPU+UwomVRwLvvRjN0JXFR164v6LOU+usYYcS6EhltwQLZ5ICnUmdcJNT+kQNz3RMyWlBMTYq18e4ihPgEGE=
+	t=1770387783; cv=none; b=Losoa7xlOQopQzLZxb9orKHGzPtdSfOis5I+WOm0Re3TRdwnY2Cln2KEHspAo6GWpy56qjUfG6CP2V3AFF3tNx+WfhG/yt/y7lj+nzlVt34wWVZQ/g5HOsVENjJKqICGLoQTsi2TyWuWZ63fUYt4gY0O3SIeOBDFTNjiYBmD1Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770386938; c=relaxed/simple;
-	bh=ihqUWaIxEMxGhChc0YKeFMkqg2LvL2uNC1T6KGdTj2U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=k1RLKacVtMeJ0LGcaNIy59NqwBwcvx5uE+XuY05w3EgVfJtXaKQCUjvPZzUkL5P7kOoohCXtMN8Kw04gWwg2OCPYBUs5YLrpd4l99lDGslhnNTRg96ndjSJMRs4+1BQzZvYtyzs+V4cDQK9l5Mzn4H1zhBqPLIkSouvv2Ebre9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NN9UVqYS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770387783; c=relaxed/simple;
+	bh=bnahifZNk51FppvxbQ2koJj/3DHUYqBV87Z29vXkmbw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gJRG5Bnlm3vf7alZFgnA/wibcXB5E4PAzxYy1/QUv5Ge+VabMbMXVjcSIasntKcFvauJ279NLPbBm2NhdHtE0tzyWpeq0VSt6F5DuH7J49NFb3/3Pe23sbcndGnobvurSeWC9wd9RMBUdPdiHZ0ByuKDWRGVrsbghyzn3p0aRIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N6YQ+1tj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NN9UVqYS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6383DC116C6;
-	Fri,  6 Feb 2026 14:08:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N6YQ+1tj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB573C116C6;
+	Fri,  6 Feb 2026 14:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770386937;
-	bh=ihqUWaIxEMxGhChc0YKeFMkqg2LvL2uNC1T6KGdTj2U=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=NN9UVqYSlyEF3k5l+zQk4vYXQm/ylb1flYuqCuPF8JD8qC4zZkVpWLB1xTbhHOHar
-	 Last0xDZGc5tHV+47eR/aMb2EOV6V8pq2illegQl5EkZov9CevJcpJRULxuAntOGuI
-	 QpOepAwlJ22h9QxZ0wKPGCMmqthQIA9uhDytj/T10dJ4Ui5WAxTIkrCz5FMfl09cZ9
-	 25GKnwwO32HkkqWqkE0JdNoluuRKXRm4Zn+0082VG6/FP9kml0Mg2GgxC/cN7SvLpI
-	 1mjh/HdK+3TsRyBs+Cj8cGEl7a1tIFH0Iavz+2dH+W7MmnTnK01+Wpr11RhDPWM7yR
-	 dH5VQzDVx8apA==
+	s=k20201202; t=1770387782;
+	bh=bnahifZNk51FppvxbQ2koJj/3DHUYqBV87Z29vXkmbw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=N6YQ+1tjcqdE+wb1e9H3UVuleBIVsgAm85YjCnZFEa3Sd0JEV04RrkGVsVUHaS1v9
+	 gvo+7oTAjzwK6t80YQtmU6cuk19vH26gqPN7WGntoAXzKXggadimhHW2fgTsqmZHJj
+	 ZaqOEcW1v+jN4C0h2q6WXU5pbSR+YFRgAEXPdH69mq2aCwiggogqZC0q/EkDZGo/cs
+	 5AmzalO6gQT+tY6h4J3qgH4M75rJIuVVYz/5O8TOZBU9g7wTGcLoeZ7kKATq94IgjR
+	 yyiuTP56VD0MgEaj9bm3o7Pt5/0Ko9M8xwWuIwP5q39KkZx0luLepYpWvgyowjr/GU
+	 gs3QHMJSJQy3A==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 10/10] rust: xarray: fix false positive lockdep warnings
+In-Reply-To: <aXHr5kxJgogHHW1o@google.com>
+References: <20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org>
+ <20251203-xarray-entry-send-v1-10-9e5ffd5e3cf0@kernel.org>
+ <aXHr5kxJgogHHW1o@google.com>
+Date: Fri, 06 Feb 2026 15:21:20 +0100
+Message-ID: <87cy2iosv3.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Feb 2026 15:08:54 +0100
-Message-Id: <DG7XSHZ4G0QN.1T6T20R4GCF52@kernel.org>
-Subject: Re: [PATCH 2/5] devres: export devres_node_init() and
- devres_node_add()
-Cc: "Greg KH" <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <ojeda@kernel.org>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260205224706.91996-2-dakr@kernel.org>
- <20260205224706.91996-4-dakr@kernel.org>
- <DG7TFGPVWGAL.3IXTEQW3K5TFR@kernel.org>
- <2026020633-democrat-moisten-631a@gregkh>
- <DG7UGTYDW2G0.37554HSAB6IXY@kernel.org>
- <CAH5fLgjS+QEGdGnxUBCeMFCapeErRJ6n1rDenbF1ahc5xsJv+Q@mail.gmail.com>
- <2026020642-consent-showman-25a8@gregkh>
- <DG7WO1ZQZXUL.1BBSOAP7U2CHG@kernel.org>
- <2026020616-hardhat-french-4dac@gregkh> <aYXtwXYAELSIoxXE@google.com>
-In-Reply-To: <aYXtwXYAELSIoxXE@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Fri Feb 6, 2026 at 2:33 PM CET, Alice Ryhl wrote:
-> So you'd need a non-generic Rust function with #[inline(never)] in this c=
-ase,
-> and have Devres::<T>::new() call that function.
+Alice Ryhl <aliceryhl@google.com> writes:
 
-Then we should probably figure out how we can teach bindgen to apply
-#[inline(never)] for functions that are not exported. Because I don't think=
- we
-always want to write such wrappers by hand.
+> On Wed, Dec 03, 2025 at 11:26:40PM +0100, Andreas Hindborg wrote:
+>> Replace the `xa_init_flags` helper with direct initialization of XArray
+>> structures using `__spin_lock_init`. This allows each XArray to have
+>> its own lock class key for lockdep, preventing false positive warnings
+>> about lock ordering violations.
+>> 
+>> Add a `new_xarray!` macro that automatically generates a unique lock
+>> class key for each XArray instantiation site. The macro accepts an
+>> optional name parameter and uses the `optional_name!` and
+>> `static_lock_class!` macros to generate appropriate names and lock
+>> classes.
+>> 
+>> Update the `XArray::new` method signature to accept explicit name and
+>> lock class key parameters. This enables proper lockdep tracking while
+>> maintaining flexibility for advanced use cases.
+>> 
+>> Remove `rust_helper_xa_init_flags` as it is now dead code.
+>> 
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> IMO this should have a Fixes: tag and probably land separately from the
+> rest of this series.
 
-	#[inline(never)]
-	#[allow(clippy::missing_safety_doc)]
-	unsafe fn devres_node_init(
-	    node: *mut bindings::devres_node,
-	    release: bindings::dr_node_release_t,
-	    free: bindings::dr_node_free_t,
-	) {
-	    // SAFETY: `devres_node_init()` inherits the safety requirements of
-	    //         `bindings::devres_node_init()`.
-	    unsafe { bindings::devres_node_init(node, release, free) };
-	}
+Ok.
 
-(I could probably abstract it on a higher level, but it would still create =
-quite
-some (unsafe) churn.)
+>
+> There is a similar situation with workqueue, which was solved by using a
+> custom helper. See rust/helpers/workqueue.c for details.
+
+I don't think coding a custom helper in C is better than open codng the
+initalization in rust?
+
+
+Best regards,
+Andreas Hindborg
+
+
