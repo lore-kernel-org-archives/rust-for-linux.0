@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282B831352F;
-	Fri,  6 Feb 2026 21:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087BF30DED7;
+	Fri,  6 Feb 2026 21:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770412296; cv=none; b=LdQBme4gdpNRixI1XskuOqonCFTEU+FnNJ5YS+lXxYtL4VF8AR0B0+x7funzCaCFL7niKZOO/WUMk5adTqaTYWDSz4KhMjlnKw3IHyzNsL9gCYXChpTCm+s1tkr8CaPvRiVkaQfKI0X+4PhFICFk5/eR4IC/wdbGDpl1qNDl6/A=
+	t=1770412303; cv=none; b=meAH4yFuQSjv/4PM4DFKamzdUeTUm5tZadCeF+PnqDTidWkOPlQmkCYTdm8xu348Yea9yrG0smY9JWbYLzDijdisgPGSCq46Gf44/n5ZxNr0m1aAL4EuhU3Kok2sUjiGJOVm03wgXo+dBfmvvMesQnyFr8D56LJ2xpu0+Xa49JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770412296; c=relaxed/simple;
-	bh=PrcApbk7BCNSPsQwnef2I6IdaZ2i07Y2ln8fzlwV9sQ=;
+	s=arc-20240116; t=1770412303; c=relaxed/simple;
+	bh=ziAsziTOC+GzNf139Ut4jKaT94DhutbUW+Q40shocZ0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cV/tsSjP6jauulWv5E8ePYT8o64dqje4gz4ooUO91tRUXhclnwbk1mc6+8uRdCBi9CFlKW5EWld8p4QlSNOE/sDOAIofvUZ9wWGA6EAlSGBWiHugmWA9W52MjPjtTYpeua8IyyswQ0VjSlnfuexnl8pS2i2qU/HGbaSTdkCrTaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HQqlC174; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=bftm63M7i/FRXScfEdBc5fgwOhCHpdhkOk7s6jxNSSQvkQCQVs/30juSaC2Mw84HRTzHU3lzUEkMSNoLhPgXb+Az5/FCuOsSJ/SLLtuOqvu40orpA3DlExKcH7m3x/rm3l9iDiYqvaNv2Yvxraf7+UecB/2lc15ysaEQif9Bzy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LgnSA+7b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HQqlC174"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3089EC16AAE;
-	Fri,  6 Feb 2026 21:11:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LgnSA+7b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DB3C16AAE;
+	Fri,  6 Feb 2026 21:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770412295;
-	bh=PrcApbk7BCNSPsQwnef2I6IdaZ2i07Y2ln8fzlwV9sQ=;
+	s=k20201202; t=1770412300;
+	bh=ziAsziTOC+GzNf139Ut4jKaT94DhutbUW+Q40shocZ0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=HQqlC174WwKjwtjLP1BUTMoxieROheLgxdft+OGqysEcip0EvNQ1MMicLZBsg6Ygl
-	 0iHMxOT9CHUgO55F77L5XNmNSzdo81rEEkzGE8xd5XuR6dcrtxvo41iJmz0jZbvVi/
-	 /FmqFiqb4mU+1saT1ogpOGPmK9eg+Wcu12rbxKwb/QuDF6Z0bdlVNhtRICOa91zibI
-	 AIIEZ1BL3GbaC1kvTZ2uVx1GtrsSirEUpeT+AWr9yXPjeC/cU67gaWt6VMSh06H69b
-	 KgYPNteuFvt6eYQY5iRbMOTdIXUD5GbtjQlWL4kd1XifwIFIYNRcae9LeIdBkEE6kW
-	 JUi5yQkVOrlvw==
+	b=LgnSA+7bY0qxDvdMzITJ+FXZElGwsDv68y49w/cMLIlIBvXk+1Tzi5v7YD1gwAjZj
+	 I+winp0JvJ2kd6OyT58TLMLbPUrvwC4wYIzvaXFb3IpiwzThADBBzwIKAWGYpRHmdI
+	 3vQanmMlFSsfzLrGSxQnjvsI2n8ic8y1y6CGE03/gGNs5tN8Z1sn4E50azERG+OM5F
+	 eVr+3JX4ZL0qo7ngGbxA1WPy1rVJYOVqrW6/donr6nWD4Zw6+GBPdg9iEnyPYUo38v
+	 1lX+h/R5cW5ZzZRp1N5+md3aCSrIAH4/pKBthbX9JDw8VzudKOQxA/nwxAV8+Djqd6
+	 PQZKmchAO5C+w==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 06 Feb 2026 22:10:49 +0100
-Subject: [PATCH v2 03/11] rust: xarray: add `contains_index` method
+Date: Fri, 06 Feb 2026 22:10:53 +0100
+Subject: [PATCH v2 07/11] rust: xarray: add `find_next` and `find_next_mut`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260206-xarray-entry-send-v2-3-91c41673fd30@kernel.org>
+Message-Id: <20260206-xarray-entry-send-v2-7-91c41673fd30@kernel.org>
 References: <20260206-xarray-entry-send-v2-0-91c41673fd30@kernel.org>
 In-Reply-To: <20260206-xarray-entry-send-v2-0-91c41673fd30@kernel.org>
 To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -55,64 +55,121 @@ Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1538; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=PrcApbk7BCNSPsQwnef2I6IdaZ2i07Y2ln8fzlwV9sQ=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBphljjynnLtfrU8Iiz9Gm5FPAFGgN+NLu89L3zu
- FUdyPDQUsCJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYZY4wAKCRDhuBo+eShj
- d1WtD/0dSV1caS9hKFf19rq5n4cibJ7yErP+DuvjTNfhG+cx9BGtQf/Ivg9WhmB6dKF1/Ff/ZNE
- fD7LuuYM708jMZ/Ag3QLJ6bZhYFCBVFMXU7uc1O6puBKeYx/LAuPoocpO5LcFPP/bt1ZEw8WUF0
- m7zzmtHnXb+6ujkjd2gl6hBhGgSgOGhvdJyYX3ULUUkVXe8vN5TpwXq/IlUw+Os6dWO0Z8QNI9L
- 49N/R7i9NuiZ19l2L7xKVsv9nEZmAAA6gJmAdAoeINuz0Q+e9PxyqMi9Ew1aBErPXVPOxMOchq7
- 4ohQLw/lItGvp12xabHAIbxlKUV9FMDxccovc/mki8TucfkGlQtmlMhLwGS+iQtmMw6havc9ndR
- Pf5qTpoqj69CNxpXyvsSUWI+xc49m7weMQ8a5zeIO/g2XlBsFrLQwnVtrhsHGKtxqg4Qo02NclV
- CmO6qLnLmsf4hNzCsYGRhK5mdwew7WujEbd5hlufx+YNqZ6a8kGCXRhAvh0c2OPAgDXd0RCHtnG
- Qy4kA65FWIqUx5woBVUWuCup53T3cNzSUyNmaXvwWMoXZyaDn7aJaQ+HLJyHHR3bZ7tqvodt018
- KGZAdtO2i563HF4hHXqFw6msci9S/h4ojJZJCwvUaxYItpXWU1zcyOWq3rFcLZwLhGoZnQSJbel
- nenKo4yG1+Wh9Yw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4023; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=ziAsziTOC+GzNf139Ut4jKaT94DhutbUW+Q40shocZ0=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBphljnlh0PwhOjbdwrAoJpOnH1unnfNaF62jnVf
+ OpMfNpflSuJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYZY5wAKCRDhuBo+eShj
+ d8lxD/96tdOwjEygElTB5W6BwdRyLgvYB/hCTUV/zpbiLgUPQl0pzk+j00jlWUivFwhQBOnlwrE
+ YEgUGsY/y5uzXaAiw5NXnitAZoS6ZGWv2tpbAHvUCwwc/flX1p5Uu6leUtXPY6T8t+ok4lz9DR1
+ fGSwg7Gb4f1ffmZkq62vlMR9FqECeE+RmhnAT3e9r2m86CSHMgXP5/qHqmzJlmSLxx+3YXqBR6U
+ Yrh1rib85R+ov46tLBhvLSAKzrL6BSdNV8tklv3VD6n6gsCV7q7/JX3FgKFSw24OOX2x6sbc8oo
+ zGsiXe2tpDo6CRpW9wavJsKgtq/VDBtvN7UohRxYDjmJXzRuYW88v4vMnUfPhOz5zgpYbbOEuZC
+ M+vfJ29OIKm2qyjV2440+qdZP3PQFKHf4qOfOowsUnl/l6cBO2mj3GvbRXQ9I/1YcSj/Lt8mBIf
+ hx9fybxfvq/KPIruXbehNTsdyXANogQmXTM5FNNbNLzYWLRarWRxU5cLHl38aMYDJLZwSfYQYlT
+ fP5dvm4HKTSK0uw6wgVIg0dKjwug2PyccQwuqOtW71GIX20wNp89kFn3Dvh16L15xMTuxvxwjMd
+ AltU2qTF9HFwtjnkMPV7R0bERe3P/+XCRDU64hmmiITp7fSgoqnSVu+poZABp+Ue1z5gi/tT4sH
+ gUswhjAe8geVmNg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Add a convenience method `contains_index` to check whether an element
-exists at a given index in the XArray. This method provides a more
-ergonomic API compared to calling `get` and checking for `Some`.
+Add methods to find the next element in an XArray starting from a
+given index. The methods return a tuple containing the index where the
+element was found and a reference to the element.
+
+The implementation uses the XArray state API via `xas_find` to avoid taking
+the rcu lock as an exclusive lock is already held by `Guard`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/xarray.rs | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ rust/kernel/xarray.rs | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
 diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index d9762c6bef19c..ede48b5e1dba3 100644
+index e654bf56dc97c..656ec897a0c41 100644
 --- a/rust/kernel/xarray.rs
 +++ b/rust/kernel/xarray.rs
-@@ -218,6 +218,27 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
-         Some(f(ptr))
+@@ -251,6 +251,67 @@ pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
+         Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
      }
  
-+    /// Checks if the XArray contains an element at the specified index.
++    fn load_next(&self, index: usize) -> Option<(usize, NonNull<c_void>)> {
++        XArrayState::new(self, index).load_next()
++    }
++
++    /// Finds the next element starting from the given index.
 +    ///
 +    /// # Examples
 +    ///
 +    /// ```
-+    /// # use kernel::{alloc::{flags::GFP_KERNEL, kbox::KBox}, xarray::{AllocKind, XArray}};
-+    /// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    ///
++    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
++    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
 +    /// let mut guard = xa.lock();
-+    /// assert_eq!(guard.contains_index(42), false);
 +    ///
-+    /// guard.store(42, KBox::new(0u32, GFP_KERNEL)?, GFP_KERNEL)?;
++    /// guard.store(10, KBox::new(10u32, GFP_KERNEL)?, GFP_KERNEL)?;
++    /// guard.store(20, KBox::new(20u32, GFP_KERNEL)?, GFP_KERNEL)?;
 +    ///
-+    /// assert_eq!(guard.contains_index(42), true);
++    /// if let Some((found_index, value)) = guard.find_next(11) {
++    ///     assert_eq!(found_index, 20);
++    ///     assert_eq!(*value, 20);
++    /// }
++    ///
++    /// if let Some((found_index, value)) = guard.find_next(5) {
++    ///     assert_eq!(found_index, 10);
++    ///     assert_eq!(*value, 10);
++    /// }
 +    ///
 +    /// # Ok::<(), kernel::error::Error>(())
 +    /// ```
-+    pub fn contains_index(&self, index: usize) -> bool {
-+        self.get(index).is_some()
++    pub fn find_next(&self, index: usize) -> Option<(usize, T::Borrowed<'_>)> {
++        self.load_next(index)
++            // SAFETY: `ptr` came from `T::into_foreign`.
++            .map(|(index, ptr)| (index, unsafe { T::borrow(ptr.as_ptr()) }))
 +    }
 +
-     /// Provides a reference to the element at the given index.
-     pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
-         self.load(index, |ptr| {
++    /// Finds the next element starting from the given index, returning a mutable reference.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
++    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
++    /// let mut guard = xa.lock();
++    ///
++    /// guard.store(10, KBox::new(10u32, GFP_KERNEL)?, GFP_KERNEL)?;
++    /// guard.store(20, KBox::new(20u32, GFP_KERNEL)?, GFP_KERNEL)?;
++    ///
++    /// if let Some((found_index, mut_value)) = guard.find_next_mut(5) {
++    ///     assert_eq!(found_index, 10);
++    ///     *mut_value = 0x99;
++    /// }
++    ///
++    /// assert_eq!(guard.get(10).copied(), Some(0x99));
++    ///
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn find_next_mut(&mut self, index: usize) -> Option<(usize, T::BorrowedMut<'_>)> {
++        self.load_next(index)
++            // SAFETY: `ptr` came from `T::into_foreign`.
++            .map(move |(index, ptr)| (index, unsafe { T::borrow_mut(ptr.as_ptr()) }))
++    }
++
+     /// Removes and returns the element at the given index.
+     pub fn remove(&mut self, index: usize) -> Option<T> {
+         // SAFETY:
+@@ -354,6 +415,13 @@ fn load(&mut self) -> Option<NonNull<c_void>> {
+         let ptr = unsafe { bindings::xas_load(&raw mut self.state) };
+         NonNull::new(ptr.cast())
+     }
++
++    fn load_next(&mut self) -> Option<(usize, NonNull<c_void>)> {
++        // SAFETY: `self.state` is always valid by the type invariant of
++        // `XArrayState` and the we hold the xarray lock.
++        let ptr = unsafe { bindings::xas_find(&raw mut self.state, usize::MAX) };
++        NonNull::new(ptr).map(|ptr| (self.state.xa_index, ptr))
++    }
+ }
+ 
+ // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
 
 -- 
 2.51.2
