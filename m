@@ -1,134 +1,325 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B7E146A66
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Feb 2026 16:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245802D97AB;
+	Fri,  6 Feb 2026 16:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770395467; cv=none; b=BAAWem+xxP3YskXA+fyHrGyButwY0dERwlfkX90PE8xBODyL1wBCdKfdsZDdmNBI53buz9BiXxNinCl75UmIjCfRlhltTsb/KjCQ6GoMNKNNt90x+t7suLfV98xRqsYXcrxpRJwac2bVQ2CkOeB/FzMXVPHC9Nu0sv8m3jAoung=
+	t=1770396968; cv=none; b=PMQ1hfeOx349b16/iycHYYoZDYFY1Tprn87dgMB0KuHxUzqBBzJbHqKSjabpKJ6kQEI0ttpBvVreCuaGdCDF/l5fPq5c0QzvEOjtni01mkcl5iiOJ86AGLBpi0vUfrlWwPWLaXQDdcwzqIbsMk9lgg4EXbgfumkdoYUCSSGd+Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770395467; c=relaxed/simple;
-	bh=2wwgwWCzkU1/uJtgqBNz6l48jquoQD3I3uL/trcljCc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZXk+ybLPvO0buamwSXClzxgzxYSIotKkEoy4vGMndePx+bELYRdY6ixTufJ6WoT029uMOztfg5JMu4pSUYYEu/zCu0xjus2m796V4rd8/h7pQALH8Quf+n6KrAoDBf/1bdXkhFZ17fkWWwMR9wTMgOf/hwKtUE+U/gIXXeqtJnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d6fenC/H; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1770396968; c=relaxed/simple;
+	bh=LsNBcsYpQWNxZY+OYcBUkLQDjrOQsTsu3TCa53EHVOY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=uXfWOBr/lOD2qqQ3NahE14YxGoO8lKho4jdOtYdlKbG2auHTIAXW5mzz56KcIEy03JUYfkopoElnevLi9lBX9Tq85nDVtkJ3LiKLZVWp4l3ZEgogcl4+CcS8TBdPIa1ILTZAiP3dI4ODufQHdYcWA3a/zoEYJ4z+cJ8JgqdAFAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CQ5AcyTN; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d6fenC/H"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-482eec44485so19369505e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Feb 2026 08:31:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770395466; x=1771000266; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ExqTOkqsO8eK7E0o5abiZmMLMVjxuERqrY13GtOt0ak=;
-        b=d6fenC/HQ0F93MBggZCZGIzndN5dFscRpWGYDPhg8KKTuuetADn7WAIcPFoRNyzkUS
-         yhQy9oEPHDw3z40tjf5aLBBH8dsAKShqcZEkpPiOiwgO74Zz1XWbc9wKmCg8l3or81Y7
-         EZLUPue5EVVrk458mlaRQqE1UJCiy8hKBnApvzjtWfsynASK/1T7n7OIByEYqLvrj0Jv
-         Z2XjiZC5NAp4Pil/UfWMAYZSMu/Cujt4nJkX0K1rKjNeZ/p5EplBSjACbEWx1le17t6Z
-         R4YJxBz8Zlb2taH1hv/x0rZqGrQxyfRbPXI9UuC1rHoe8bXfJsKQI2kaYGpVgraf2tM4
-         7Esg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770395466; x=1771000266;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ExqTOkqsO8eK7E0o5abiZmMLMVjxuERqrY13GtOt0ak=;
-        b=AAEBYRahqRhoWXEfAOBKVnUZm+v6o9eniVqJ/YEY8WfClRhysL6kdJR5eC1T7Mv6ae
-         xcvbKR03xJkRVM3FyvVryWgj5NJjdvL7DKGbAY9+Ftvc19BvbXDyq/IzYNAD8U70y7Mj
-         Gw595WeyFyJGVUdmLN7LQI7ME8sgIhhqczjuWpRVuGQjNIBlVa+qDhc9OkjlvrUXenxk
-         fFP6744c/8NLjhYoIOJEvAbCwSRuL4yGtxDev/8gZX/hi3DZvSpnkfKrhIgFf3eb/eA2
-         FZ//+eh9mUCq8WIykuhcRpvU2J9PKYsrzmKnOr0TZDd4dIjaoJcmj14k6P/8izs+SDyF
-         /BTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEX0aDSMrB0n8MAlSB45TZx166jf0ZDMhNrkJwbaxg3qY9OYFOvUb6ZFEesmxaCe2dpmkTSOowGDO9tyAz8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCozdufqX/JQQIuTJlR0FI5Jt0mR+tQfrNTxbJ+uaU50s56eUX
-	0wfHvt1ybHbQ4lcsMhg15KTqK9dUGtzFslsVqdwwKj67pXPTQNiDj5Gy0KMUJOqMPHCf0biNhCZ
-	U6QHEX3RYKooY0O5hKg==
-X-Received: from wmjf11.prod.google.com ([2002:a7b:cd0b:0:b0:47a:8fa6:6a57])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8489:b0:477:73e9:dc17 with SMTP id 5b1f17b1804b1-48320229cdamr51034695e9.35.1770395465775;
- Fri, 06 Feb 2026 08:31:05 -0800 (PST)
-Date: Fri, 6 Feb 2026 16:31:04 +0000
-In-Reply-To: <aYYEFRwotF5AL_Ch@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CQ5AcyTN"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6168kGFG030403;
+	Fri, 6 Feb 2026 16:55:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WDHuhm
+	ii8UVkJ/u8uQhZujlayEcsbkKUhzG4qNcIQjA=; b=CQ5AcyTN4H06maY9nH2FS4
+	7GMcCXQ1/qBxmFKoGlzFPdyx+USKHv8TznXLFuHFMriZdI4rjVxHO11d1mvYBWz8
+	wFTMqpCCyPVViA5RD/8My7Dc7hfHDQ7t7s2tCdj6JkGCdn/XTewQCnWtGu++MonF
+	sEhtAeEtnQIu4q1+QDsGsxxWSdOekL4nRYmdTykhWGkWhsXD83DsQz0YZs8Qtz6i
+	7kGp74JVlDksLqKgxjpSsYEwfssEWWBdYUyhXVmXeRNKovOgGfe2wh2/u6+zu5xQ
+	uUdZjF12UeFKn5CVmqSBI+PpqwdTb1vbJl1SCUC/mjdXa4HMCgNOt89K39YlU3zA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19cwh9fu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 16:55:32 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 616GtVYL022433;
+	Fri, 6 Feb 2026 16:55:31 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19cwh9fs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 16:55:31 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 616FwN8T009156;
+	Fri, 6 Feb 2026 16:55:31 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c1veyf2p6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 16:55:31 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 616GtUnW31654490
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Feb 2026 16:55:30 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4453D58052;
+	Fri,  6 Feb 2026 16:55:30 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B9BE758065;
+	Fri,  6 Feb 2026 16:55:22 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.249.149])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri,  6 Feb 2026 16:55:22 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <DG7TFGPVWGAL.3IXTEQW3K5TFR@kernel.org> <2026020633-democrat-moisten-631a@gregkh>
- <DG7UGTYDW2G0.37554HSAB6IXY@kernel.org> <CAH5fLgjS+QEGdGnxUBCeMFCapeErRJ6n1rDenbF1ahc5xsJv+Q@mail.gmail.com>
- <2026020642-consent-showman-25a8@gregkh> <DG7WO1ZQZXUL.1BBSOAP7U2CHG@kernel.org>
- <2026020616-hardhat-french-4dac@gregkh> <aYXtwXYAELSIoxXE@google.com>
- <2026020633-foe-etching-e464@gregkh> <aYYEFRwotF5AL_Ch@google.com>
-Message-ID: <aYYXSPtndNSPZDH-@google.com>
-Subject: Re: [PATCH 2/5] devres: export devres_node_init() and devres_node_add()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, rafael@kernel.org, 
-	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, driver-core@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH V3 0/3] Rust support for powerpc
+From: Venkat <venkat88@linux.ibm.com>
+In-Reply-To: <20260205180429.3280657-1-mkchauras@gmail.com>
+Date: Fri, 6 Feb 2026 22:25:09 +0530
+Cc: linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com,
+        gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+        a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+        dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
+        peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com,
+        rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F9EAA7DA-7CD3-43CB-8C6A-671E519BC963@linux.ibm.com>
+References: <20260205180429.3280657-1-mkchauras@gmail.com>
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA2MDEyMyBTYWx0ZWRfXwQTrGuZHHBJd
+ rJ/l6bwnIOM33g7LpWXX1Sf23d9MANX9kF+jOK8SopJVeeAsYCm3oUOt47JyvRBoWb/PV5Ccewj
+ r21oBgsA+KHDBOnXwMPwD2WeBbOhjb0MDgjR83F09QzHrHP8r8TLkbFzl6svvqXOEnZwY2xEn8A
+ di8O1weRYpZxe+Fa36aUQ/uW+keWXRc4/qZA55LggQTIQjxBbFses6ZaAECyeezx3x4vT901MWt
+ yKLniss4i/ptrhFadDUiqcYqt2bSo9aJLkJfTpoPY/WMmGV/GEUZAI1MVgqJcP8cagHeNDMwtuK
+ BIpf1fxZdK4B5Keg+lRP1ciI1jACGOKf/jbaroPydSmy4rCz0CgfiugY1hUBv1l5NxLjlDIGsmx
+ u4j5L0VAp5Tt5D8ETIJmYZi6j+m0Xy0afSBI6eRxDx5JDL14V43nZcb2QjNmc7A1nWehoQEC/6Z
+ OVWJ82DaqWszZqw07nQ==
+X-Authority-Analysis: v=2.4 cv=UuRu9uwB c=1 sm=1 tr=0 ts=69861d04 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=2MjLW5cuPvDTUXhGF14A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: rKAbCXQU6ntD18MJSrVnl-2QzwLCgd6Q
+X-Proofpoint-GUID: cQ4oq6Q_JzgXBg9zPMTZqe32qENXp67y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-06_05,2026-02-05_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 adultscore=0 clxscore=1015 phishscore=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602060123
 
-On Fri, Feb 06, 2026 at 03:09:09PM +0000, Alice Ryhl wrote:
-> On Fri, Feb 06, 2026 at 02:55:50PM +0100, Greg KH wrote:
-> > On Fri, Feb 06, 2026 at 01:33:53PM +0000, Alice Ryhl wrote:
-> > > On Fri, Feb 06, 2026 at 02:22:42PM +0100, Greg KH wrote:
-> > > > On Fri, Feb 06, 2026 at 02:16:05PM +0100, Danilo Krummrich wrote:
-> > > > > However, sprinkling "raw" EXPORT_SYMBOL_GPL() due to that is not great at all.
-> > > > > Hence, we could do something like in [1] instead. I don't know if there are
-> > > > > other options that may be better though.
-> > > > > 
-> > > > > [1] https://lore.kernel.org/all/DG7UR3WWZB4V.2MYMJJH1VDHH@kernel.org/
-> > > > 
-> > > > That's a start, but still messy.  There's no compiler options to prevent
-> > > > this "lifting" of the code out of devres.rs?  If not, this is not going
-> > > > to be the only problem that drivers run into like this in the future.
-> > > 
-> > > Because of how monomorphisation, as-is the code actually lives in the
-> > > module to begin with.
-> > 
-> > Ok, but again, that is going to cause all sorts of "the symbol is
-> > undefined" type of problems going forward as a developers just "assumes"
-> > that the place where the symbol is exported will actually have the
-> > symbol exported from it, not that this place will be copied inline into
-> > somewhere else.
-> > 
-> > Think about the interaction between module symbol namespaces here.  This
-> > isn't going to scale, and will trip people up and cause us to be forced
-> > to export way more than we really want to (like this patch series shows,
-> > I don't want to export any of these...)
-> 
-> Hmm. I don't know how to reconcile namespaces operating on symbols with
-> monomorphisation.
-> 
-> We should probably think about what to do about ... :)
 
-Matthew Maurer pointed out to me that behavior-wise exporting and
-namespaces behave almost exactly the same as how Rust handles unstable
-language features.
 
-In the Rust standard library, all functions are marked with one of:
+> On 5 Feb 2026, at 11:34=E2=80=AFPM, Mukesh Kumar Chaurasiya (IBM) =
+<mkchauras@gmail.com> wrote:
+>=20
+> Enable experimental rust support for ppc64le and ppc32be. The patch =
+for
+> ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has =
+been=20
+> merged over it. ppc32 needs some toolchain fixes mentioned in the =
+patch=20
+> `rust: Add PowerPC support` and the discussion for that is done =
+here[1].=20
+>=20
+> This has been tested on powernv9 hardware and power10 pseries qemu. I
+> I request Link to test the ppc32 part as i don't have a hardware to =
+test
+> it out.=20
+>=20
+> [1] =
+https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
+> [2] =
+https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
+>=20
+> Changelog:
+> V2 -> V3:
+> - Splited HAVE_RUST in 2 lines
+> - BINDGEN_TARGET_powerpc initialized before assigning the same to
+>  BINDGEN_TARGET
+> V2: =
+https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
+>=20
+> V1 -> V2:
+> - jump label fix for rust has been moved to a separate patch
+> - PPC32 support has been taken
+> - rust support has been marked experimental
+> - target.json dependency has been removed
+> - HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
+>=20
+> Link Mauve (1):
+>  rust: Add PowerPC support
+>=20
+> Mukesh Kumar Chaurasiya (IBM) (2):
+>  powerpc/jump_label: adjust inline asm to be consistent
+>  powerpc: Enable Rust for ppc64le
+>=20
+> Documentation/rust/arch-support.rst   |  1 +
+> arch/powerpc/Kconfig                  |  2 ++
+> arch/powerpc/Makefile                 |  9 +++++++++
+> arch/powerpc/include/asm/jump_label.h | 23 +++++++++++++----------
+> rust/Makefile                         | 12 +++++++++++-
+> 5 files changed, 36 insertions(+), 11 deletions(-)
+>=20
+> --=20
+> 2.52.0
+>=20
 
-	#[unstable(feature = "feature_name_here")]
-	#[stable]
+Tested this patch set, by applying on mainline kernel. Attached is the =
+.config file used.
 
-when you use a #[stable] method, all is good. But if you use an unstable
-method, then that's a compiler error unless you have
+Please add below tag.
 
-	#![feature(feature_name_here)]
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 
-at the crate root.
+Logs:
 
-This seems equivalent to our situation here, if we consider:
+rustc --version
+rustc 1.95.0-nightly (e96bb7e44 2026-01-27)
 
-* EXPORT_SYMBOL_GPL symbols are #[stable]
-* un-exported symbols are #[unstable(feature = "core_kernel")]
-* other namespaces are #[unstable(feature = "namespace_name_here")]
+llvm-18.1.8-3.el9.ppc64le
 
-Of course the way this is enforced is through an entirely different
-mechanism than symbol exports.
+sudo insmod samples/rust/rust_minimal.ko
+[   39.532119] rust_minimal: loading out-of-tree module taints kernel.
+[   39.532132] rust_minimal: module verification failed: signature =
+and/or required key missing - tainting kernel
+[   39.532856] rust_minimal: Rust minimal sample (init)
+[   39.532860] rust_minimal: Am I built-in? false
+[   39.532864] rust_minimal: test_parameter: 1
+# dmesg | tail -n 30
+[    3.418850] systemd[1]: Mounted Kernel Trace File System.
+[    3.419194] systemd[1]: Finished Create List of Static Device Nodes.
+[    3.419482] systemd[1]: modprobe@configfs.service: Deactivated =
+successfully.
+[    3.419647] systemd[1]: Finished Load Kernel Module configfs.
+[    3.419913] systemd[1]: modprobe@drm.service: Deactivated =
+successfully.
+[    3.420056] systemd[1]: Finished Load Kernel Module drm.
+[    3.420405] systemd[1]: Finished Read and set NIS domainname from =
+/etc/sysconfig/network.
+[    3.420694] systemd[1]: Finished Generate network units from Kernel =
+command line.
+[    3.422214] systemd[1]: Mounting Kernel Configuration File System...
+[    3.423543] systemd[1]: Finished Apply Kernel Variables.
+[    3.424011] systemd[1]: Mounted Kernel Configuration File System.
+[    3.430589] systemd[1]: Started Journal Service.
+[    3.477706] fuse: init (API version 7.45)
+[    3.548678] EXT4-fs (sda3): re-mounted =
+78691517-64fe-451b-9009-14359b774643 r/w.
+[    3.556791] systemd-journald[640]: Received client request to flush =
+runtime journal.
+[    3.681167] Adding 10485696k swap on /dev/sda2.  Priority:-1 =
+extents:1 across:10485696k SS
+[    3.693490] pseries_rng: Registering IBM pSeries RNG driver
+[    3.693904] cryptd: max_cpu_qlen set to 1000
+[    4.702590] RPC: Registered named UNIX socket transport module.
+[    4.702604] RPC: Registered udp transport module.
+[    4.702607] RPC: Registered tcp transport module.
+[    4.702609] RPC: Registered tcp-with-tls transport module.
+[    4.702612] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    6.701147] block sda: the capability attribute has been deprecated.
+[   10.150485] fbcon: Taking over console
+[   39.532119] rust_minimal: loading out-of-tree module taints kernel.
+[   39.532132] rust_minimal: module verification failed: signature =
+and/or required key missing - tainting kernel
+[   39.532856] rust_minimal: Rust minimal sample (init)
+[   39.532860] rust_minimal: Am I built-in? false
+[   39.532864] rust_minimal: test_parameter: 1
+# sudo rmmod rust_minimal
+[ 4125.461822] rust_minimal: My numbers are [72, 108, 200]
+[ 4125.461839] rust_minimal: Rust minimal sample (exit)
+# sudo insmod samples/rust/rust_print.ko
+[ 4142.492146] rust_print: Rust printing macros sample (init)
+[ 4142.492158] rust_print: Emergency message (level 0) without args
+[ 4142.492161] rust_print: Alert message (level 1) without args
+[ 4142.492163] rust_print: Critical message (level 2) without args
+[ 4142.492166] rust_print: Error message (level 3) without args
+[ 4142.492169] rust_print: Warning message (level 4) without args
+[ 4142.492171] rust_print: Notice message (level 5) without args
+[ 4142.492174] rust_print: Info message (level 6) without args
+[ 4142.492176] rust_print: A line that is continued without args
+[ 4142.492181] rust_print: Emergency message (level 0) with args
+[ 4142.492185] rust_print: Alert message (level 1) with args
+[ 4142.492188] rust_print: Critical message (level 2) with args
+[ 4142.492190] rust_print: Error message (level 3) with args
+[ 4142.492193] rust_print: Warning message (level 4) with args
+[ 4142.492195] rust_print: Notice message (level 5) with args
+[ 4142.492197] rust_print: Info message (level 6) with args
+[ 4142.492200] rust_print: A line that is continued with args
+[ 4142.492205] rust_print: 1
+[ 4142.492206] rust_print: "hello, world"
+[ 4142.492208] rust_print: [rust_print_main.rs:35:5] c =3D "hello, =
+world"
+[ 4142.492213] rust_print: Arc<dyn Display> says 42
+[ 4142.492214] rust_print: Arc<dyn Display> says hello, world
+# dmesg | tail -n 50
+[    3.419913] systemd[1]: modprobe@drm.service: Deactivated =
+successfully.
+[    3.420056] systemd[1]: Finished Load Kernel Module drm.
+[    3.420405] systemd[1]: Finished Read and set NIS domainname from =
+/etc/sysconfig/network.
+[    3.420694] systemd[1]: Finished Generate network units from Kernel =
+command line.
+[    3.422214] systemd[1]: Mounting Kernel Configuration File System...
+[    3.423543] systemd[1]: Finished Apply Kernel Variables.
+[    3.424011] systemd[1]: Mounted Kernel Configuration File System.
+[    3.430589] systemd[1]: Started Journal Service.
+[    3.477706] fuse: init (API version 7.45)
+[    3.548678] EXT4-fs (sda3): re-mounted =
+78691517-64fe-451b-9009-14359b774643 r/w.
+[    3.556791] systemd-journald[640]: Received client request to flush =
+runtime journal.
+[    3.681167] Adding 10485696k swap on /dev/sda2.  Priority:-1 =
+extents:1 across:10485696k SS
+[    3.693490] pseries_rng: Registering IBM pSeries RNG driver
+[    3.693904] cryptd: max_cpu_qlen set to 1000
+[    4.702590] RPC: Registered named UNIX socket transport module.
+[    4.702604] RPC: Registered udp transport module.
+[    4.702607] RPC: Registered tcp transport module.
+[    4.702609] RPC: Registered tcp-with-tls transport module.
+[    4.702612] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    6.701147] block sda: the capability attribute has been deprecated.
+[   10.150485] fbcon: Taking over console
+[   39.532119] rust_minimal: loading out-of-tree module taints kernel.
+[   39.532132] rust_minimal: module verification failed: signature =
+and/or required key missing - tainting kernel
+[   39.532856] rust_minimal: Rust minimal sample (init)
+[   39.532860] rust_minimal: Am I built-in? false
+[   39.532864] rust_minimal: test_parameter: 1
+[ 4125.461822] rust_minimal: My numbers are [72, 108, 200]
+[ 4125.461839] rust_minimal: Rust minimal sample (exit)
+[ 4142.492146] rust_print: Rust printing macros sample (init)
+[ 4142.492158] rust_print: Emergency message (level 0) without args
+[ 4142.492161] rust_print: Alert message (level 1) without args
+[ 4142.492163] rust_print: Critical message (level 2) without args
+[ 4142.492166] rust_print: Error message (level 3) without args
+[ 4142.492169] rust_print: Warning message (level 4) without args
+[ 4142.492171] rust_print: Notice message (level 5) without args
+[ 4142.492174] rust_print: Info message (level 6) without args
+[ 4142.492176] rust_print: A line that is continued without args
+[ 4142.492181] rust_print: Emergency message (level 0) with args
+[ 4142.492185] rust_print: Alert message (level 1) with args
+[ 4142.492188] rust_print: Critical message (level 2) with args
+[ 4142.492190] rust_print: Error message (level 3) with args
+[ 4142.492193] rust_print: Warning message (level 4) with args
+[ 4142.492195] rust_print: Notice message (level 5) with args
+[ 4142.492197] rust_print: Info message (level 6) with args
+[ 4142.492200] rust_print: A line that is continued with args
+[ 4142.492205] rust_print: 1
+[ 4142.492206] rust_print: "hello, world"
+[ 4142.492208] rust_print: [rust_print_main.rs:35:5] c =3D "hello, =
+world"
+[ 4142.492213] rust_print: Arc<dyn Display> says 42
+[ 4142.492214] rust_print: Arc<dyn Display> says hello, world
+# sudo rmmod rust_print
+[ 4142.492217] rust_print: "hello, world"
+[ 4153.334714] rust_print: Rust printing macros sample (exit)
 
-Alice
+# sudo rmmod rust_debugfs
+
+Regards,
+Venkat.=
