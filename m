@@ -1,353 +1,243 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011012.outbound.protection.outlook.com [40.93.194.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A77314B73;
-	Fri,  6 Feb 2026 07:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770364436; cv=none; b=QT3FlYADj3Qt40hPjBPzXD7zVIOTnbeHqBFSLtoE6hxm9gDNLEZwVhF245EusYHy6Vu/xu/5r+Mabwi86U5T0q8wqsh3jLoiPFqklQs0UhfQWP0LHqVWVSPVTDX4ypev5OhxT5EWpUTz8UMjj1yw4Wz/G1x0Yo9PfyOAkAL+mRI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770364436; c=relaxed/simple;
-	bh=m4cWgc4LDTHareEHz+5x97wcVU4nLN++KhsOx8f9moE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mn+U8J7JIc4WU+cMfrmkoHR/LV8cIrmUQtI/tozFJzxWSzoZxCfq9gRDpQ0Xy669wob743Eo8GdPmpxN+cGgNI3IYXZCm/2uuUn/OdpJqxaRTSagpj0j8LVkDn+WoyBqZyby6znQSU4ZlrhfS9cWwMbMnzqgskeXgElk7vWrFfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=IG0hvRYu; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E8B347BA7;
+	Fri,  6 Feb 2026 08:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770365630; cv=fail; b=W+YUVXuDPRfkfQlaN+B9o0M2193tG1DCvsVynb9HHyHQvLIC+CpteUerRC4wuFT7lSdpwgQUE5YEzXJVq2u4twstot+Dl7RPiWwXtdnV7/kEgFFU3mCUp0wgK/CqqgzrP53Bbu9dqe63DvWNTThtRsYmgWVjVBHPPvptrDyJ7b0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770365630; c=relaxed/simple;
+	bh=CbXzpXLR1Le6p3gwfe77XkjxY6UbyPx4hTmp4kTAR9A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=PBHIN7plxhofKelie2C4ARWvSMZ2arT5Z0tuF35lV1y7+yj8iHxjlkrzf81ACMe8oQAIhxFWQUn86wKqtH5p2ehyUjQoHyEKOdDxeCOF2ap1lgvl0BS5MAoHdZwTc386St0X5v91EBQrDbkKupeqloppbeVfh+EACneBJzbZp1Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PDLnXz6/; arc=fail smtp.client-ip=40.93.194.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="IG0hvRYu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770364427;
-	bh=m4cWgc4LDTHareEHz+5x97wcVU4nLN++KhsOx8f9moE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IG0hvRYuypLCsp5pSJ0MxEFpRT/GNK9i61V+0v2ZrhG56EjbzdihbbLRlVqvQ9qCt
-	 9VeZRzTaPYkZtkgeqXypDe2qcTGS585KnWnEC5EWhwOsCLsC/B+mJAbvIOwe6g8YMT
-	 mLNG1ZlFNz1LJsqF4F6vHumcMKK1Ica+WrqoziVxWHCLmmgRtC0aX2gbnwKVB2nJIK
-	 V/QWvJcvv8n/QggPW3aS2LnmJW4bWHz67hQy+sF2E/QtT6v8ef/r8vNtjHcDC+Q1dK
-	 rd1esEeaH65v+eoKkbHNRK+SQ1UGaIhbGH8ePTPnssehUsrRmBOlVoeAFcnuJEp4Qw
-	 u6EnuVuIjewXA==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1E0BB17E1301;
-	Fri,  6 Feb 2026 08:53:47 +0100 (CET)
-Date: Fri, 6 Feb 2026 08:53:42 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, driver-core@lists.linux.dev,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Markus Probst
- <markus.probst@posteo.de>
-Subject: Re: [PATCH] rust: devres: fix race condition due to nesting
-Message-ID: <20260206085342.609ab3a1@fedora>
-In-Reply-To: <20260205222529.91465-1-dakr@kernel.org>
-References: <20260205222529.91465-1-dakr@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PDLnXz6/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PMIr6FO4O6j70Nsq06MclFdU4BVLfa4RSmGXdfeNFMWarWuhfK6JcBD3p8BiaEj5j9WKf/uwuaONfuyYJJ5u291isL8p77rvThgpOt+DsTeyXMTaNrSuP9L8MOtZiVfnnjm/Y73jYPbHJQPBu6tFN9XHXF4I/WLq6pYcOgQBXnJfGz2HGcjNIg4WQvqZQfWwGAhTWiR+z8E2q0WJgyo9S+j61lj7+FVFv2jBqq0ojocCJlW6NXtjWRDYEpULM//flX+nLzuoTgLfaheKwQ4iU3bPPEDXGOqPCmC0DYDoYwG3bTDdTVMlSgN5jqtHtknjs+nIyMa2fXLcS7u1yZcoKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eU9H3VMaEOWFMajC/v4uv0N2ax78OM0d0Y/Hyg9qAmE=;
+ b=MhuIKjq0yaGgD/UDOckGr5AQEstFjvRKgQF3TRW6IjnuGztBiVLsGQdYboPdHxH65T57sdAklLWL+yblrbnF2BCT/lh0lipE2toV1Dgw0/riDDGuqr4YChvYnpkand1A4UXJWFv59152sxRyh3tekdFrJZF95AoXm+aQzf7Mq7bJuJZQ+v8ujUvAwCp3vwhbS/iGJaKbvfFpzPLMfcU7lJVLdabr8XWy8C4tIrN42ks8Xr4LkOTHLq4sDrBoXNcPOEHWuIZbzR9L8L03VlLTV2bB62yvHxZOizNJFsmYHvXL0gVbJqguj1T/ybpJrqFgarQo0PkeqhaiJXTQr/IDdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eU9H3VMaEOWFMajC/v4uv0N2ax78OM0d0Y/Hyg9qAmE=;
+ b=PDLnXz6/c/OcfPji80ZVrBuF0menNNnNVsnY2B9ighV+DcEdl+6WyjCfIWqBTo5UU/tnZahFpFZONkTFdAQ4iBMRxZA09Sjylq8cqJWxsunlk97NlDUn3IY7eJqI8pkRQ2IyXsD0ahzw2fJ5ycbY5GiWouCRgEMkPo1md3bGoIa35g3hYuBRzYaezRRswTcnCE6RNcHvtsFRFdSODdBAriroqf9jWB7FFd+r22JeTctVB01KvW/Tqv61UhF4yAaOjBQzcJOYf8tr4w3lB4rnykBA9hmaQQpa3Zmc11sG6eeF0TXvaiKwuxL89ejikByoIVzU37o5s46kFZI4dQBJ+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ BN7PPFEE0F400A9.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6e9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Fri, 6 Feb
+ 2026 08:13:45 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9587.010; Fri, 6 Feb 2026
+ 08:13:42 +0000
+Date: Fri, 6 Feb 2026 03:13:40 -0500
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Lyude Paul <lyude@redhat.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH v17 02/16] preempt: Track NMI nesting to separate per-CPU
+ counter
+Message-ID: <6792E792-2043-4BF5-952B-90847703F23F@nvidia.com>
+References: <aYVXQVwOZapVbnP5@tardis.local>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aYVXQVwOZapVbnP5@tardis.local>
+X-ClientProxiedBy: BL0PR01CA0003.prod.exchangelabs.com (2603:10b6:208:71::16)
+ To DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|BN7PPFEE0F400A9:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7143ef29-8739-4518-144c-08de6557a44c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UFpUcVhiMjRzSm15dFI2WFE4MTFWa01mWnlRNVNYTjhpSnZ5SEJJRGRkeXo2?=
+ =?utf-8?B?ODRvNEttSUpEN2lFYjFRdGV1c2wrMm5nblpmWmFJZ1h0NFdwNG4vdEdMR1kz?=
+ =?utf-8?B?SXhSeWpMN2Z2d3RCRk1PaHJmTjVhUjJyNjFPTEk4UVhBYThuVnJ4S2FSeU9k?=
+ =?utf-8?B?WFFEa0ozaEZWai8rTXNGVUpIanFDWmZ4QWZ0TnBjWXRpR0p5Unc5VkYzakYr?=
+ =?utf-8?B?L0lXbGE2VkRPS2c5MEl2bUtjY2JFWlVob1ZPdzhXZW83NFU3VTJqaWRNU2ZH?=
+ =?utf-8?B?NGpCOHdYL0RXbGo4ZEI1MS82VERhUGpzOU1vWUNacmkrZGdRcGhWa0lPQzJZ?=
+ =?utf-8?B?dWhvTjFGeFFDeFlWajY5aVhpOEpaWjNJQXBvRlJNZjZueXlpTEtyUVpOcWRN?=
+ =?utf-8?B?R3hjNTdqdVVGOEF0WlA0Y0JkcGpjT0IySWhsMGNwOFRpUXF3QjhwRGRMLzhH?=
+ =?utf-8?B?QnlPUk5EZTdPc1kraUlOZnloMFg0Z2s3QllpUkJsTTNCZ2s0ZUp5dHAyVWRv?=
+ =?utf-8?B?RUhlVzRMeFl2SDR0NjByeHVNZTRFK3ArYW85MmJveXBWd0ZJeDRZR0liV0V6?=
+ =?utf-8?B?ODhtT3hkaXpLaXQxbUIrdWFHMllBUFVWa3BFVVBDWDBOTlBQOGZHQXBKc29s?=
+ =?utf-8?B?WUN3NjBadVZGcjQybm9OWmlxS2N0WHNBNzM2NC9NOWVaazhKMjJRU2l6bnN1?=
+ =?utf-8?B?ckkrYTFRYnkwT2Z3UVl6TTVQcXEwQnpsWjhhRlp6dDMvSW4zc1FLem9CTkVu?=
+ =?utf-8?B?LzJHQ3R1TENTck5DQXBGT3VlOWxUa1Nqb081MkNncEx3UmluT3VHenc5eVIz?=
+ =?utf-8?B?TmNkdmg4dHdnYVh2ZE1oZ1ZHQVNZdDc4Q1J3Mk9XZjlpakg4b3J0a1hJT3NZ?=
+ =?utf-8?B?ZTVWSG5SM0x2ZExNSnE5d1hRNGszYWtUQ1BYbU1zSWF2S1BQL3FqajNVckcw?=
+ =?utf-8?B?MUN2YVdRZFpLb0VIQ2V6YnVVV2IxN3FoRHVrWGlXZUZjeGdLZ2VONmdGdXAr?=
+ =?utf-8?B?L0RQTzM5OFlRQkZRZGFJZjI2YkI1ZE8rTGxjeW5iZkdzcHdPSlJtTjhyM3BD?=
+ =?utf-8?B?MEJvaW9idzFtSElpU3hCM3FvOTFrd0hpT0V5Q1d4QlliK2JOYkoycGlOOVRx?=
+ =?utf-8?B?eVRPenRsMFpkb25QS0ZhUGpwTUtHcHd4ano0ckQwbHpGNkV5VzVrZkQzaytR?=
+ =?utf-8?B?QThnaE5mcWtQWmR2RnBHVFVEaWVRc2orUlRCNUFyMjhBVTBlMWVSbzdRcG9P?=
+ =?utf-8?B?R256aDJ6Njd3VTFQcGxIOXRwc09vRjQ1YTZPRi9veG5ScHNuUzFlbmYvLzMy?=
+ =?utf-8?B?VnN5VXByamREdndHTVR2c29TQlJ6bUtNSDRVbDA1ZUFUZWZYb1EySzM0SFdM?=
+ =?utf-8?B?NTJPRVZQQVBGcmlRVmVNYWlDeGlVYkdOMXlZdlh1dFRHQ1p6dkFCZkl5enR6?=
+ =?utf-8?B?U25GS21STlluU0VvM0ZFMWZqM0ZnZzladzE2WStScmRuR09BNHo2UFJ2dmVv?=
+ =?utf-8?B?Ti9LUGI0b1hwWHFPM2duYlcwdnZZVWpUcngyVVJLZERleE9TdFhab3VZTGpG?=
+ =?utf-8?B?bUJoT3lpUys0dXcvRlFmVU5aNzZWcWM4dk8ycml0dDk2L09jMy9pS3RhVTBL?=
+ =?utf-8?B?TWc3V01RZmhLMUNCTGRJTEhtWG14RmJlQXVGWUI0dGJyczFiMjJ0Ym96dTFB?=
+ =?utf-8?B?QzEwMHNSZDZwNk5HMFN2MUdBaUExMFJCWCsrUFdVUlMrYWkrVnY2TVptRkpn?=
+ =?utf-8?B?UVhsUDNBbTFpd1ppYUt1Q1dndWNKZnRMTml6emtUeVBTcXRXRHZjK1RZL2Zm?=
+ =?utf-8?B?aXVMQ2IrK3hwRUorTUNYMGtOMXdBczBnVGJvYTJVUlV3cVduT1BrVnc4WXFy?=
+ =?utf-8?B?VEJWd0E0WGRybXRCRWw1aU9KS3hFdnBLZ1hJT1JJdVRvOWE4OHhTTHVVdUZ4?=
+ =?utf-8?B?WlBuMmJDVmpuZjV4L0EzUnpJZFE3M2Z2UkdidDJJVWlMVStrdDNLSlBXaG40?=
+ =?utf-8?B?NG1tZWtEb0xBdWZ1ZCtrNHUzWFhuOTdQREs2OGl1Y2cwUGJmT1drZmVTNldO?=
+ =?utf-8?B?OXJKVUR1RDV1WHFldUpZaXZzMWl6dy9rcURSbmhwcU11ZjBEQUVPNFNWRGcx?=
+ =?utf-8?Q?RRSI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YS93ZkxNaXAyaitoQ0lXOUZLanlhWDU0Kzcza2p0YlBJQVBJbUN3aVV6L2U4?=
+ =?utf-8?B?dkdmVjYwSDV5NFJDbWNsQlhsa1lmN1hkekhCRTJSS3dOT1hrVHlFNm9DWC9F?=
+ =?utf-8?B?dk0rNjhmTGNaQ002eWxsNkhpcG4xb25IUzRHM3pOM1pmMGJUclIrd1k2a0Vn?=
+ =?utf-8?B?clRIWWxna05wSEU0dDRhSEl3REowbG5hZFgyVEtxK2dReW54cW0vM1FTdG1N?=
+ =?utf-8?B?NTdVc2R4N29yLy9hU29Ra1NOWS9kK3Y3Z1FFQ0ZTYWpiVURsOEQ2dTE5WXJt?=
+ =?utf-8?B?WE9SWDdqL1h5SDA0K2cyYzVPNy90UFRQVDlNVDY3TDR6Wnh3STlWMXRZbWNG?=
+ =?utf-8?B?czFJVkdTdkV2SW8zR0loZGd6OHE0dU9NOVpoc0REM3ExcW5oTWhwWkRMUFBs?=
+ =?utf-8?B?UmlHSEtSbUVtY0RzWjJGZlBvZDNiaDM3YVNrLzNsWWV2aTlqWm1UMHR4emdn?=
+ =?utf-8?B?TjBLNmc5OVhHcUpKVUJnZ05Ba3VsUE5yUlhCR0VtemNMbm1JUXlsR25EUjA4?=
+ =?utf-8?B?clA0Y1dsY21YbmNhM0I4VUNEaHJIU1NlZml2NzI0K0ZJODdwa3o0OVZ4MGJG?=
+ =?utf-8?B?cVVOVWNFYjgrazJEdmNRRk1IV3N4OUFRRk1QSllOeWhTN0pHdGJVRjRWVXdP?=
+ =?utf-8?B?S3l6V0Vld1FrdVlEek1pQUVxRmRTL0hhak1xZTl4c0FSY2JrSzg2SzB6OWQ0?=
+ =?utf-8?B?TVBXWmNKdkQyYVdwY1dnbkE5THNURnE5RXcwdkxhenUvRVlVbTByNEIrZU5k?=
+ =?utf-8?B?TGZ4OVhsaWhjdmluSnpCcWgrdDQrR2t0Nm11TmJWcXZ0ZlNtQitKUmJEaEZW?=
+ =?utf-8?B?MlowWmNwSk1vVCsxVUpMSERLYUVrckErcTVJSnd2RWdBczZVRGZsNmQvYUNv?=
+ =?utf-8?B?WmIzY1Vyb2R4VEw4SUpRSnJHdlNRV1BLejlzRjJFU3VZcGdnbm9XeW04ZDVN?=
+ =?utf-8?B?Q0VnQmJVNHp5K0tTeTJDNUJYemF4NUtOMVQzNTVpTytFbzZJblh6ejVoalVY?=
+ =?utf-8?B?cHh0ZDExTldLVWhyV0J4M0Frb3c3aHl3cGJRZ2pibnRpbmNDZ1RGVGRnai9u?=
+ =?utf-8?B?MGhsQ3B6TGJsWDFJZkNhZGk1ZERiN1lOTlVTNlhuYlRsREF2dENhSVNRV0ZX?=
+ =?utf-8?B?MzBJUGNLa05XRDZZUW44bk5VVkdPeE1KdS9OVllZK0NZZ2doc0dhS3YrZ2ZS?=
+ =?utf-8?B?TS9QR0Vybzg1Skl2bmpqVTBVMjRQMUZqMHJJWGloSHJmL3JsRWZmbXRMUnY2?=
+ =?utf-8?B?VHZSSjArdDJMMWN6TG1WcWMzMkd4SHlZbkNnMDY5c1g0R3V6QzhIbDRTUzFz?=
+ =?utf-8?B?TEVRdHVUWkJKNXFZOHV1RXd1Y2FJYzFYVHVUSHFLOU94dU9JczRtU2V3bDhr?=
+ =?utf-8?B?SnBOb1hxZFZ3UU5wNndrbm5NNTFsY1d4bERMVXd3ZFBNTnBWWi9ZVG96RUt4?=
+ =?utf-8?B?NUtlTUFQSEw4eXZqWk9yZnI4VGtDVGF5WTIySXNiVm9yUnhPZzVwMmQ0eVM0?=
+ =?utf-8?B?UEg0czA0SUxmSlM5THZIZDBVTEkwQXI1c1JvSWpTSU1kMTZybHRmbzJoT1pF?=
+ =?utf-8?B?WkpmWGM1RGdLWmZON0dwMk5rWFBBV1o4UlVvWmdscUlDREF3dTQ3RTBCRGtr?=
+ =?utf-8?B?WURlV3VhbURZTVFoNE1ac1VQYUUyWXRlaUJ3WUZaUVZUdVV6SWtQNmFTTktJ?=
+ =?utf-8?B?d1ZQRHVrSXJvU1NTSzA4QlorTGV5ZENFbGNNK3lDRzQrcEpOdmJLSnNtZHdV?=
+ =?utf-8?B?WUxhbkhkRkpxV3NtT2V6RTZVVTNPNngzQWJobmY2WjBpRTNiRnBLeTJrTE1s?=
+ =?utf-8?B?anJDRzFjZmtkOGpCenRIcjZwVFRBcy9Odmp5Z2RYRGlraVNNU3pDUXZsa2FR?=
+ =?utf-8?B?ZVdWQzdVMldaV1RFSXFVcDYrZk5KT0VJU2RLa1JlTnY3UkRFZEY2TXdKY0lu?=
+ =?utf-8?B?RFdxYzkxVXpwYlhtRldRNm9XS25xT1FmcFBSRFFvQStBMXMyOWYwNHNCWkFi?=
+ =?utf-8?B?LzJ3eHlHYVNoYW1ZSmJranRYeEYzWVQ5UHp3VDNQamR0dWdRUk1EZXVGNzhF?=
+ =?utf-8?B?N0hPMkR4M2pCVUdubThFSjc1RWxmTGcrLzJHaWF3a29FeVkzSWl3aWcyOHF6?=
+ =?utf-8?B?YnBicVhZS01TbUZYbXFlL2h4cDJiandkWEpCbWM2RHlwcmlzY2hqTU91dUZk?=
+ =?utf-8?B?WTdVOW9GTi9Bd3o4VVJ5Rm81bkVUU1hjTWpmSlVZRXJFVVFvU21VK29uUWlq?=
+ =?utf-8?B?QlROMmx0N29RVERXTEhHZmluTlpIZk42OWpmb2lRRHk3eVVncS9RZXRWZzNu?=
+ =?utf-8?B?WU5RSFFnWU1GODJuVnFpWkdOcHNJZTRtMEpWK3hHOHpibTVDbUVpdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7143ef29-8739-4518-144c-08de6557a44c
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 08:13:42.8254
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mVjHomqQTBObN7ffYw5aC8E4cgjCdNWLemzuvEQjH6tdadBaTLZaTRMcPfY7IVZKTha+Kjl1IH6L+o0eUTslvQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFEE0F400A9
 
-On Thu,  5 Feb 2026 23:25:15 +0100
-Danilo Krummrich <dakr@kernel.org> wrote:
+> On Feb 5, 2026, at 9:51 PM, Boqun Feng <boqun@kernel.org> wrote:
+> 
+> On Thu, Feb 05, 2026 at 08:24:40PM -0500, Joel Fernandes wrote:
+>> 
+>> 
+>>> On 2/5/2026 8:14 PM, Boqun Feng wrote:
+>>> On Thu, Feb 05, 2026 at 07:50:03PM -0500, Joel Fernandes wrote:
+>>>> 
+>>>> 
+>>>> On 2/5/2026 5:17 PM, Joel Fernandes wrote:
+>>>>> 
+>>>>> 
+>>>>> On 2/5/2026 4:40 PM, Boqun Feng wrote:
+>>>>>> On Wed, Feb 04, 2026 at 12:12:34PM +0100, Peter Zijlstra wrote:
+>>>>>>> On Tue, Feb 03, 2026 at 01:15:21PM +0100, Peter Zijlstra wrote:
+>>>>>>>> But I'm really somewhat sad that 64bit can't do better than this.
+>>>>>>> 
+>>>>>>> Here, the below builds and boots (albeit with warnings because printf
+>>>>>>> format crap sucks).
+>>>>>>> 
+>>>>>> 
+>>>>>> Thanks! I will drop patch #1 and #2 and use this one (with a commit log
+>>>>>> and some more tests), given it's based on the work of Joel, Lyude and
+>>>>>> me, would the following tags make sense to all of you?
+>>>>>>> Co-developed-by: Joel Fernandes <joelagnelf@nvidia.com>
+>>>>> 
+>>>>> I don't know, I am not a big fan of the alternative patch because it adds a
+>>>>> per-cpu counter anyway if !CONFIG_PREEMPT_LONG [1]. And it is also a much bigger
+>>>>> patch than the one I wrote. Purely from an objective perspective, I would still
+>>>>> want to keep my original patch because it is simple. What is really the
+>>>>> objection to it?
+>>>>> 
+>>> 
+>>> PREEMPT_LONG is an architecture-specific way to improve the performance
+>>> IMO. Just to be clear, do you object it at all, or do you object
+>>> combining it with your original patch? If it's the latter, I could make
+>>> another patch as a follow to enable PREEMPT_LONG.
+>> 
+>> When I looked at the alternative patch, I did consider that it was
+>> overcomplicated and it should be justified. Otherwise, I don't object to it. It
+> 
+> I don't think that's overcomplicated. Note that people have different
+> goals, for us (you, Lyude and me), we want to have a safer
+> interrupt-disabling lock API, hence this patchset.
 
-> Commit f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc") did
-> attempt to optimize away the internal reference count of Devres.
-> 
-> However, without an internal reference count, we can't support cases
-> where Devres is indirectly nested, resulting into a deadlock.
-> 
-> Such indirect nesting easily happens in the following way:
-> 
-> A registration object (which is guarded by devres) hold a reference
-> count of an object that holds a device resource guarded by devres
-> itself.
-> 
-> For instance a drm::Registration holds a reference of a drm::Device. The
-> drm::Device itself holds a device resource in its private data.
-> 
-> When the drm::Registration is dropped by devres, and it happens that it
-> did hold the last reference count of the drm::Device, it also drops the
-> device resource, which is guarded by devres itself.
-> 
-> Thus, resulting into a deadlock in the Devres destructor of the device
-> resource, as in the following backtrace.
-> 
-> 	sysrq: Show Blocked State
-> 	task:rmmod           state:D stack:0     pid:1331  tgid:1331  ppid:1330   task_flags:0x400100 flags:0x00000010
-> 	Call trace:
-> 	 __switch_to+0x190/0x294 (T)
-> 	 __schedule+0x878/0xf10
-> 	 schedule+0x4c/0xcc
-> 	 schedule_timeout+0x44/0x118
-> 	 wait_for_common+0xc0/0x18c
-> 	 wait_for_completion+0x18/0x24
-> 	 _RINvNtCs4gKlGRWyJ5S_4core3ptr13drop_in_placeINtNtNtCsgzhNYVB7wSz_6kernel4sync3arc3ArcINtNtBN_6devres6DevresmEEECsRdyc7Hyps3_15rust_driver_pci+0x68/0xe8 [rust_driver_pci]
-> 	 _RINvNvNtCsgzhNYVB7wSz_6kernel6devres16register_foreign8callbackINtNtCs4gKlGRWyJ5S_4core3pin3PinINtNtNtB6_5alloc4kbox3BoxINtNtNtB6_4sync3arc3ArcINtB4_6DevresmEENtNtB1A_9allocator7KmallocEEECsRdyc7Hyps3_15rust_driver_pci+0x34/0xc8 [rust_driver_pci]
-> 	 devm_action_release+0x14/0x20
-> 	 devres_release_all+0xb8/0x118
-> 	 device_release_driver_internal+0x1c4/0x28c
-> 	 driver_detach+0x94/0xd4
-> 	 bus_remove_driver+0xdc/0x11c
-> 	 driver_unregister+0x34/0x58
-> 	 pci_unregister_driver+0x20/0x80
-> 	 __arm64_sys_delete_module+0x1d8/0x254
-> 	 invoke_syscall+0x40/0xcc
-> 	 el0_svc_common+0x8c/0xd8
-> 	 do_el0_svc+0x1c/0x28
-> 	 el0_svc+0x54/0x1d4
-> 	 el0t_64_sync_handler+0x84/0x12c
-> 	 el0t_64_sync+0x198/0x19c
-> 
-> In order to fix this, re-introduce the internal reference count.
-> 
-> Reported-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/.E2.9C.94.20Deadlock.20caused.20by.20nested.20Devres/with/571242651
-> Reported-by: Markus Probst <markus.probst@posteo.de>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/.E2.9C.94.20Devres.20inside.20Devres.20stuck.20on.20cleanup/with/571239721
-> Reported-by: Alice Ryhl <aliceryhl@google.com>
-> Closes: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/56#note_3282757
-> Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+I was also coming from the goal of long term kernel code maintainability. If
+we decide to have additional preempt count flags in the future, does special
+casing 32 bit add even more complexity? (not rhetorical, really asking)
 
-Tested-by: Boris Brezillon <boris.brezillon@collabora.com>
+> I think Peter on the
+> other hand while agreeing with us on the necessity, but wants to avoid
+> potential performance lost (maybe in general also likes the idea of
+> preempt_count being 64bit on 64bit machines ;-)) That patch looks
+> "overcomplicated" because it contains both goals (it actually contains
+> patch #1 and #2 along with the improvement). If you look them
+> separately, it would be not that complicated (Peter's diff against patch
+> 1 + 2 will be relatively small).
 
-> ---
->  rust/kernel/devres.rs | 148 +++++++++++-------------------------------
->  1 file changed, 39 insertions(+), 109 deletions(-)
-> 
-> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> index cdc49677022a..ff66f561740a 100644
-> --- a/rust/kernel/devres.rs
-> +++ b/rust/kernel/devres.rs
-> @@ -21,30 +21,11 @@
->      sync::{
->          aref::ARef,
->          rcu,
-> -        Completion, //
-> -    },
-> -    types::{
-> -        ForeignOwnable,
-> -        Opaque,
-> -        ScopeGuard, //
-> +        Arc, //
->      },
-> +    types::ForeignOwnable,
->  };
->  
-> -use pin_init::Wrapper;
-> -
-> -/// [`Devres`] inner data accessed from [`Devres::callback`].
-> -#[pin_data]
-> -struct Inner<T: Send> {
-> -    #[pin]
-> -    data: Revocable<T>,
-> -    /// Tracks whether [`Devres::callback`] has been completed.
-> -    #[pin]
-> -    devm: Completion,
-> -    /// Tracks whether revoking [`Self::data`] has been completed.
-> -    #[pin]
-> -    revoke: Completion,
-> -}
-> -
->  /// This abstraction is meant to be used by subsystems to containerize [`Device`] bound resources to
->  /// manage their lifetime.
->  ///
-> @@ -121,18 +102,13 @@ struct Inner<T: Send> {
->  /// # fn no_run(dev: &Device<Bound>) -> Result<(), Error> {
->  /// // SAFETY: Invalid usage for example purposes.
->  /// let iomem = unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD)? };
-> -/// let devres = KBox::pin_init(Devres::new(dev, iomem), GFP_KERNEL)?;
-> +/// let devres = Devres::new(dev, iomem)?;
->  ///
->  /// let res = devres.try_access().ok_or(ENXIO)?;
->  /// res.write8(0x42, 0x0);
->  /// # Ok(())
->  /// # }
->  /// ```
-> -///
-> -/// # Invariants
-> -///
-> -/// `Self::inner` is guaranteed to be initialized and is always accessed read-only.
-> -#[pin_data(PinnedDrop)]
->  pub struct Devres<T: Send> {
->      dev: ARef<Device>,
->      /// Pointer to [`Self::devres_callback`].
-> @@ -140,14 +116,7 @@ pub struct Devres<T: Send> {
->      /// Has to be stored, since Rust does not guarantee to always return the same address for a
->      /// function. However, the C API uses the address as a key.
->      callback: unsafe extern "C" fn(*mut c_void),
-> -    /// Contains all the fields shared with [`Self::callback`].
-> -    // TODO: Replace with `UnsafePinned`, once available.
-> -    //
-> -    // Subsequently, the `drop_in_place()` in `Devres::drop` and `Devres::new` as well as the
-> -    // explicit `Send` and `Sync' impls can be removed.
-> -    #[pin]
-> -    inner: Opaque<Inner<T>>,
-> -    _add_action: (),
-> +    data: Arc<Revocable<T>>,
->  }
->  
->  impl<T: Send> Devres<T> {
-> @@ -155,74 +124,47 @@ impl<T: Send> Devres<T> {
->      ///
->      /// The `data` encapsulated within the returned `Devres` instance' `data` will be
->      /// (revoked)[`Revocable`] once the device is detached.
-> -    pub fn new<'a, E>(
-> -        dev: &'a Device<Bound>,
-> -        data: impl PinInit<T, E> + 'a,
-> -    ) -> impl PinInit<Self, Error> + 'a
-> +    pub fn new<E>(dev: &Device<Bound>, data: impl PinInit<T, E>) -> Result<Self>
->      where
-> -        T: 'a,
->          Error: From<E>,
->      {
-> -        try_pin_init!(&this in Self {
-> -            dev: dev.into(),
-> -            callback: Self::devres_callback,
-> -            // INVARIANT: `inner` is properly initialized.
-> -            inner <- Opaque::pin_init(try_pin_init!(Inner {
-> -                    devm <- Completion::new(),
-> -                    revoke <- Completion::new(),
-> -                    data <- Revocable::new(data),
-> -            })),
-> -            // TODO: Replace with "initializer code blocks" [1] once available.
-> -            //
-> -            // [1] https://github.com/Rust-for-Linux/pin-init/pull/69
-> -            _add_action: {
-> -                // SAFETY: `this` is a valid pointer to uninitialized memory.
-> -                let inner = unsafe { &raw mut (*this.as_ptr()).inner };
-> +        let callback = Self::devres_callback;
-> +        let data = Arc::pin_init(Revocable::new(data), GFP_KERNEL)?;
->  
-> -                // SAFETY:
-> -                // - `dev.as_raw()` is a pointer to a valid bound device.
-> -                // - `inner` is guaranteed to be a valid for the duration of the lifetime of `Self`.
-> -                // - `devm_add_action()` is guaranteed not to call `callback` until `this` has been
-> -                //    properly initialized, because we require `dev` (i.e. the *bound* device) to
-> -                //    live at least as long as the returned `impl PinInit<Self, Error>`.
-> -                to_result(unsafe {
-> -                    bindings::devm_add_action(dev.as_raw(), Some(*callback), inner.cast())
-> -                }).inspect_err(|_| {
-> -                    let inner = Opaque::cast_into(inner);
-> +        // SAFETY:
-> +        // - `dev.as_raw()` is a pointer to a valid bound device.
-> +        // - `data` is guaranteed to be a valid for the duration of the lifetime of `Self`.
-> +        // - `devm_add_action()` is guaranteed not to call `callback` for the entire lifetime of
-> +        //   `dev`.
-> +        to_result(unsafe {
-> +            bindings::devm_add_action(
-> +                dev.as_raw(),
-> +                Some(callback),
-> +                Arc::as_ptr(&data).cast_mut().cast(),
-> +            )
-> +        })?;
->  
-> -                    // SAFETY: `inner` is a valid pointer to an `Inner<T>` and valid for both reads
-> -                    // and writes.
-> -                    unsafe { core::ptr::drop_in_place(inner) };
-> -                })?;
-> -            },
-> -        })
-> -    }
-> +        // Take additional reference count for `devm_add_action()`.
-> +        core::mem::forget(data.clone());
->  
-> -    fn inner(&self) -> &Inner<T> {
-> -        // SAFETY: By the type invairants of `Self`, `inner` is properly initialized and always
-> -        // accessed read-only.
-> -        unsafe { &*self.inner.get() }
-> +        Ok(Self {
-> +            dev: dev.into(),
-> +            callback,
-> +            data,
-> +        })
->      }
->  
->      fn data(&self) -> &Revocable<T> {
-> -        &self.inner().data
-> +        &self.data
->      }
->  
->      #[allow(clippy::missing_safety_doc)]
->      unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
-> -        // SAFETY: In `Self::new` we've passed a valid pointer to `Inner` to `devm_add_action()`,
-> -        // hence `ptr` must be a valid pointer to `Inner`.
-> -        let inner = unsafe { &*ptr.cast::<Inner<T>>() };
-> +        // SAFETY: In `Self::new` we've passed a valid pointer of `Revocable<T>` to
-> +        // `devm_add_action()`, hence `ptr` must be a valid pointer to `Revocable<T>`.
-> +        let data = unsafe { Arc::from_raw(ptr.cast::<Revocable<T>>()) };
->  
-> -        // Ensure that `inner` can't be used anymore after we signal completion of this callback.
-> -        let inner = ScopeGuard::new_with_data(inner, |inner| inner.devm.complete_all());
-> -
-> -        if !inner.data.revoke() {
-> -            // If `revoke()` returns false, it means that `Devres::drop` already started revoking
-> -            // `data` for us. Hence we have to wait until `Devres::drop` signals that it
-> -            // completed revoking `data`.
-> -            inner.revoke.wait_for_completion();
-> -        }
-> +        data.revoke();
->      }
->  
->      fn remove_action(&self) -> bool {
-> @@ -234,7 +176,7 @@ fn remove_action(&self) -> bool {
->              bindings::devm_remove_action_nowarn(
->                  self.dev.as_raw(),
->                  Some(self.callback),
-> -                core::ptr::from_ref(self.inner()).cast_mut().cast(),
-> +                core::ptr::from_ref(self.data()).cast_mut().cast(),
->              )
->          } == 0)
->      }
-> @@ -313,31 +255,19 @@ unsafe impl<T: Send> Send for Devres<T> {}
->  // SAFETY: `Devres` can be shared with any task, if `T: Sync`.
->  unsafe impl<T: Send + Sync> Sync for Devres<T> {}
->  
-> -#[pinned_drop]
-> -impl<T: Send> PinnedDrop for Devres<T> {
-> -    fn drop(self: Pin<&mut Self>) {
-> +impl<T: Send> Drop for Devres<T> {
-> +    fn drop(&mut self) {
->          // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
->          // anymore, hence it is safe not to wait for the grace period to finish.
->          if unsafe { self.data().revoke_nosync() } {
->              // We revoked `self.data` before the devres action did, hence try to remove it.
-> -            if !self.remove_action() {
-> -                // We could not remove the devres action, which means that it now runs concurrently,
-> -                // hence signal that `self.data` has been revoked by us successfully.
-> -                self.inner().revoke.complete_all();
-> -
-> -                // Wait for `Self::devres_callback` to be done using this object.
-> -                self.inner().devm.wait_for_completion();
-> +            if self.remove_action() {
-> +                // SAFETY: In `Self::new` we have taken an additional reference count of `self.data`
-> +                // for `devm_add_action()`. Since `remove_action()` was successful, we have to drop
-> +                // this additional reference count.
-> +                drop(unsafe { Arc::from_raw(Arc::as_ptr(&self.data)) });
->              }
-> -        } else {
-> -            // `Self::devres_callback` revokes `self.data` for us, hence wait for it to be done
-> -            // using this object.
-> -            self.inner().devm.wait_for_completion();
->          }
-> -
-> -        // INVARIANT: At this point it is guaranteed that `inner` can't be accessed any more.
-> -        //
-> -        // SAFETY: `inner` is valid for dropping.
-> -        unsafe { core::ptr::drop_in_place(self.inner.get()) };
->      }
->  }
->  
-> 
-> base-commit: f55ae0bfa00e446ea751d09f468daeafc303e03f
+On further looking, I think my hesitation is mostly around the extra
+config option and special casing of 32 bit as mentioned above. But
+answering your other question, if it is decided to go with Peter's
+patch, you can use my codevelop tag.
+
+-- 
+Joel Fernandes
 
