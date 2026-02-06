@@ -1,71 +1,125 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6883644DB;
-	Fri,  6 Feb 2026 13:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770384518; cv=pass; b=PJFAgu6deBOOYEnamFbKlhYeI/IwP0ijNlAsMhkUCQE9m6/aMRUiXJMu9k35AMY+I/UkUTJLaMw0vUTk5GOUfOfTAiucx4y7p6zxjPcnY5vAJOb3mo/wdSqDKElP4j+thOZtXbzAdwOKSbmkXRtsP0U2454Sl6AgcIaytr/EUbw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770384518; c=relaxed/simple;
-	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=J7R3arC8NiGkoh298Gfj7UvjhyG4/8sPcvvceysmwZ4aNBpFhWMXoej4btQAp34SLWXdlB6WGp333f0Ha+PtlU4omeZTRf6gBUy+U9wkzqucZyFyZapyA4ImQ8OPVKELomcR2ja8aZ6YsL8LvLAec/hqHH4MunCN6Z4cUPLMlOI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=O7vHgqbv; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194FD22F01;
+	Fri,  6 Feb 2026 13:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770384831; cv=none; b=mPj/OqnRgDEGo/MLqq/zlT8YcxoNQicjQw88E17aunGHFr4kKijLMMxE1EbQtQArdSwXXqYagBRTbCa+J/QY6OrcGvoJH3GTvm9+FwJpLAdk8U0rtVJC5km959N5ef1FoRNAjSX07ykg2uXKv4mWkc8BOgqiFZeSOGi00271Zhw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770384831; c=relaxed/simple;
+	bh=1jKCP6SsxZfuhMhvUTJmujxPIXbuq/F3Ryh/qRwY49U=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=KX2cRwIeICsQUY1EEhwmD4wcXhEMvm2sDFfyuuj3FLyOHrpUuR94hokMRiGlSYbbPgyrhNsvsTWL+oDwrUEMuGvpgvkG9AQcz6Fgs2xwjj17TscA63mDy3s084YgKrr+XK2YavhazHgiwEGOnlEd3/nIpW4nHTwHxzlDC/P1hzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRSKZo2X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="O7vHgqbv"
-ARC-Seal: i=1; a=rsa-sha256; t=1770384509; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=VvflCfu5Tlwx84cmJdYAuQfS2uvXaUWEaAod4Yk6BB5QtEPQjE2HOXRJjz+lBhAS/XGdE4SiNG+xpR5/AM3ISc76a94DBLhp0C4FuQc6gLYNcwKZvpg/6wTZpHso+q2wSaE2FmWDnUh2GnGsC75iDEkzR4/FJKPGeWTib2+aDmk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770384509; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=; 
-	b=EfZok/MurEDRcV1mDJp4vz9cTk4a2xijlpkpmdsVGM6P9m8C7+PMkA6HEV7bucRciNnajsbVOWz063mLHKErmITDQ/Xa9VIJg65dBrRMxQgus5HDU52AT+uvO5K+rh6BohrayDR662XP15bLxt5RAgsMJdm4MJMjV2ayPcz3qbg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770384509;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
-	b=O7vHgqbv6LjWjy6Jmk+Y49oY1nH3B84GIMEaiiLmr2vgzCF1u4R965JzKG6WauAv
-	122Yn0PEJcQsKSPFhKGqDHNcwb6wwWgOaHVlbc+p4rTpw64OwIU0nJ0M9Idyvu2oq41
-	FEVxovs7mLRSqkQlBooHMIgLqiB+4ew0nniNg4Gg=
-Received: by mx.zohomail.com with SMTPS id 1770384507352128.09159677504636;
-	Fri, 6 Feb 2026 05:28:27 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRSKZo2X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4868BC116C6;
+	Fri,  6 Feb 2026 13:33:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770384830;
+	bh=1jKCP6SsxZfuhMhvUTJmujxPIXbuq/F3Ryh/qRwY49U=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=GRSKZo2XBB9p4Yx/Un/dkMw6qIXWcVB+Ej+TFEEKvaCD9sfHJ32tG3nBxjEVICvxP
+	 fAR0YyM5x1BxlP43jAvUEWdmT+6e3v31EWYU0e89oS71k6LLWeUVnCiCXppw7tJgCM
+	 2D0kNNTFuld85tEWFdQhmgPwuAr0R9e48Q3c93amEONmIV34DY3d07E/m270oyP39N
+	 /A5IIsKFx9AW/UPk6veuPsF5srMtW+E3WRrj5kkLErY2pZGHmSCxGrpU4sVERZqf9n
+	 rSfyKhuv1wiGp/8f6534YMlOcASqb997jLtfgqg8YV1APrR+sK5PNSzRft8sXtXdTe
+	 x40n8Se/Xnn6g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v5 1/4] rust/drm: Introduce DeviceContext
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260131001602.2095470-2-lyude@redhat.com>
-Date: Fri, 6 Feb 2026 10:28:10 -0300
-Cc: linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
- nouveau@lists.freedesktop.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Simona Vetter <simona@ffwll.ch>,
- Alice Ryhl <aliceryhl@google.com>,
- Shankari Anand <shankari.ak0208@gmail.com>,
- David Airlie <airlied@gmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Asahi Lina <lina+kernel@asahilina.net>
-Content-Transfer-Encoding: 7bit
-Message-Id: <5C67228A-B017-42E7-944B-CAE517F7AACD@collabora.com>
-References: <20260131001602.2095470-1-lyude@redhat.com>
- <20260131001602.2095470-2-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Feb 2026 14:33:47 +0100
+Message-Id: <DG7X1LYSZ1IC.2Q4CYXM97A62A@kernel.org>
+Subject: Re: [PATCH 2/5] devres: export devres_node_init() and
+ devres_node_add()
+Cc: <rafael@kernel.org>, <ojeda@kernel.org>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Greg KH" <gregkh@linuxfoundation.org>, "Alice Ryhl"
+ <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260205224706.91996-2-dakr@kernel.org>
+ <20260205224706.91996-4-dakr@kernel.org>
+ <DG7TFGPVWGAL.3IXTEQW3K5TFR@kernel.org>
+ <2026020633-democrat-moisten-631a@gregkh>
+ <DG7UGTYDW2G0.37554HSAB6IXY@kernel.org>
+ <CAH5fLgjS+QEGdGnxUBCeMFCapeErRJ6n1rDenbF1ahc5xsJv+Q@mail.gmail.com>
+ <2026020642-consent-showman-25a8@gregkh>
+ <DG7WO1ZQZXUL.1BBSOAP7U2CHG@kernel.org>
+ <CAH5fLgifC=K1wssW-nWR3wvL9OHEQ9x2hPd2+ENj_mqtgEhyxA@mail.gmail.com>
+ <2026020618-congress-tuition-8893@gregkh>
+In-Reply-To: <2026020618-congress-tuition-8893@gregkh>
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+On Fri Feb 6, 2026 at 2:25 PM CET, Greg KH wrote:
+> On Fri, Feb 06, 2026 at 02:20:06PM +0100, Alice Ryhl wrote:
+>> On Fri, Feb 6, 2026 at 2:16=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
+> wrote:
+>> >
+>> > On Fri Feb 6, 2026 at 1:34 PM CET, Greg KH wrote:
+>> > > That's fine, because the rust driver core code should also be built =
+into
+>> > > the kernel, not as a module, right?
+>> >
+>> > Yes, but the Rust compiler may still choose to put some of the core co=
+de into
+>> > the module.
+>> >
+>> > Especially with generic types and functions the Rust compiler may move=
+ some the
+>> > generated code for a certain type instance into the module that instan=
+ciates the
+>> > type.
+>> >
+>> > For instance, even though rust/kernel/devres.rs is *always* built-in, =
+we get the
+>> > following error when devres_node_init() is not exported when the users=
+ of this
+>> > built-in code are built as module.
+>> >
+>> >         ERROR: modpost: "devres_node_init" [drivers/pwm/pwm_th1520.ko]=
+ undefined!
+>> >         ERROR: modpost: "devres_node_init" [drivers/gpu/drm/tyr/tyr.ko=
+] undefined!
+>> >         ERROR: modpost: "devres_node_init" [drivers/gpu/nova-core/nova=
+_core.ko] undefined!
+>> >         ERROR: modpost: "devres_node_init" [samples/rust/rust_dma.ko] =
+undefined!
+>> >         ERROR: modpost: "devres_node_init" [samples/rust/rust_driver_p=
+ci.ko] undefined!
+>> >         ERROR: modpost: "devres_node_init" [samples/rust/rust_driver_a=
+uxiliary.ko] undefined!
+>> >         make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Er=
+ror 1
+>> >
+>> > However, sprinkling "raw" EXPORT_SYMBOL_GPL() due to that is not great=
+ at all.
+>> > Hence, we could do something like in [1] instead. I don't know if ther=
+e are
+>> > other options that may be better though.
+>> >
+>> > [1] https://lore.kernel.org/all/DG7UR3WWZB4V.2MYMJJH1VDHH@kernel.org/
+>>=20
+>> You can use #[inline(never)] to prevent this.
+>
+> Ah, good!
+
+I tried this before, but it doesn't work. It might prevent inlining, but it=
+ does
+not prevent the compiler to move the function into the module binary.
+
+For instance, even with #[inline(never)] on Devres::new() I see this:
+
+	$ objdump -t drivers/pwm/pwm_th1520.o | grep " F " | grep Devres | grep ne=
+w
+
+	0000000000000000 g     F .text  00000000000001d0 _RINvMNtCsgzhNYVB7wSz_6ke=
+rnel6devresINtB3_6DevresINtNtNtB5_2io3mem5IoMemKjb0_EE3newNtNtB5_5error5Err=
+orINtNtCs4gKlGRWyJ5S_4core6result6ResultBK_B1i_EECsjBm7MKWXKwW_10pwm_th1520
