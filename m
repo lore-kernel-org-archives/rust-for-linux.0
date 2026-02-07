@@ -1,62 +1,63 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B962E5B09
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Feb 2026 21:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB9833D4E9
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Feb 2026 21:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770498520; cv=none; b=KwVlWyIgdAvlNfFKD34bppPU8+VYG+PCC55+WXRRDYDoaLHYdBSQfP81PJPtPURgpglo5ByaviVvNUbEE4B8UUjBEKZGlLCom1l4CiraK5QOa3ZnsrZ7LkK+NCywkuJWUNf3FyvMpE8ewWtHQixABHSfMviC3UqzFuTtPacZiFE=
+	t=1770498522; cv=none; b=ijAsBA3Oj5ey8O//iyvgxiZzZi/mgk1ZlRqTIOpSHTb6hmizMKul0onnCV0MuzyK1b1+en2tvBmzII/GeGjTO0aXG0KMqqNiDcRF3iFbkK8c+9DvbARFuFm3lG9sadOQxutQ/pcw775PzqS1IWcl8AV+O7wW9av5Z0COMMNBn0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770498520; c=relaxed/simple;
-	bh=AunIjG+WvPw3jaoOCt9Td/J+fOTkDCvMfl+8Ss01jVw=;
+	s=arc-20240116; t=1770498522; c=relaxed/simple;
+	bh=ZIlr47XYC6O3tGdR2UH0kFG4K374+y+PTnueSMvm5ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SKiW4xGDXSLa3i8eDSujSjOXGa/Uo5yGcH9Qf25nQXsSCH8SzBduTQ9QzZMJ/LhOQ05iEPR6SN8rAQdkx3eTmLcEjE2GSgNBQxjcWS0gGjydY56WpCfrVac2C6gSKc7GJl9ERhVyP/8nUY2Mgq/AavgMTr9oZnFmAfdRz97hCoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=in7e8IMx; arc=none smtp.client-ip=74.125.82.44
+	 MIME-Version; b=YwKDj3r8TiIQ3pSmwG99WBP1vmV6dH7u18KKB1sdUhb6XhNCwQofgGt3uNpYu6ow6F+U8Gjoo7SNBuEsuy3sLAgmOayHjkyM8qml6ISJiGNFsTwLjQk1IAr3w62XcL9zzkGNnHxLu2MLN+B3pnAs804mjAWayjznFV9M2oCYkME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CkTzTKsl; arc=none smtp.client-ip=74.125.82.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="in7e8IMx"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-124afd03fd1so2490511c88.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Feb 2026 13:08:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CkTzTKsl"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1270ac5d3efso1312516c88.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Feb 2026 13:08:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770498519; x=1771103319; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1770498522; x=1771103322; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jN8gIxAIY/WkY3mj0CU+KMW5LDh07gG6C2pZFbFuGHM=;
-        b=in7e8IMxjFZXNujY+mItUXdu3KMdbTNdcx/qbRF4NSFtnzUtQjWD02PkI/aSF6wZm6
-         NK5msY4TlWY/1wu7cwKRWGVUJPr8FaypB1XrDQO+/hW4goCJSzoaSnJztQujocxsmYhQ
-         0HuyP5JAxHnBu1hR/qdlf07X/Qo8LzN3zVZt4vpi9owAkWfkgn8NAAPYteBx0Z6lZ9p4
-         KvrhTNpLVPAw3v9TsWV1kiE3tJ09hlEwjDi6OF0RRKOVjCfqnLEUyBrIqAR7Z2icvr7B
-         0e0CWLxYwmwU+6C+fO1jCcDQNZXSvh/TfxV1KRDyXVZvO9EdBepyJ959KkcU4qtdQPYH
-         xj1A==
+        bh=kCBIlVtV+zq8f7gfIO2xxsTQyhC9pk+Xjp2VgrBosxw=;
+        b=CkTzTKsl5YZaXwwVIq/Q/XCExA6+YYmFqpzLtbMB752vVe4TlPSsPrmWlZZQ357U4D
+         x+mJ4Q0x8+3Hf3yVhp6sZaqL2X4tczPkn6TmtB0c+1bEWrGdPZG3HC+Qhi1huYZSprH+
+         agO0H06nVPQyv0aGjopibodNhDfWupERT2Kb5bRcEi+oy4444EU6TGNS5gFAQjHtnFn0
+         8dPkKBl4ZBrzMUWPEDjPwi4SNlvpNG2cArx+w5wa2aTqOjgwkXXj9ts1x7MN/MgrCn4q
+         DKLiZWZPD6I72WRQRQDKZNrO7t0zoPCH7lX/G14x1iFum90Ew74ta59qc5upN8sXmaQl
+         YH8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770498519; x=1771103319;
+        d=1e100.net; s=20230601; t=1770498522; x=1771103322;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jN8gIxAIY/WkY3mj0CU+KMW5LDh07gG6C2pZFbFuGHM=;
-        b=qrlCHwGwIh6cpwx2GZfT5tmiShi/3deBAEtKrWr2QX80s0h2j5aWuQdxtrATFFrG9X
-         w5BcsBf0Ukud4xnveKiZNVfLzckR9Z/MC0lpni6GN9LJyjNxshtd/tOnDUVpfuh1BVXr
-         TkuPrFIzcdkS4rz8NBLHJtm2nKBCEcyyC0wKNrc8VIDYAzF5ZX3HCRg1aK61VTvd48Gf
-         JOErvlg1RjQdv/ilNE6AaTs9ITGSMjd6Lx3ZZeHYgmtcXxcL00zp5zbaQjZM/IxO/9iZ
-         KhZSWGCeSOZT3rI/dXg2diocnIxv16sP8Nz2HuaZd+X82Eg3pMgqg7SZ3wr4EzkcGzM4
-         qcwg==
-X-Gm-Message-State: AOJu0YyozDjoNQCkDyAzctqJHY52o8vlHikbo40UzEYVWNrkyQeFDhtM
-	QlEy4sBfNdMfB7crPZw3cwFnKh6K5pPsgZmWFOzbruWVcCptq/nGUBGd
-X-Gm-Gg: AZuq6aLyORm+GtsN+u9bbC9egWZtciusf6MZcRj9oo/EvUN3SXyTLY+e1lgy4Xm0DzZ
-	B5wl2ZahK9Jev/+kStg2lm1qp0MSllc6hPA1vdVvjiwbRdGiu/gh7sMRwxZjZ9bFFa/kunKBC+x
-	WER8mcadgUKMJhEnsMql2IxeTQFMaAPqYgt2szpKqdJm/jRv+Q1xmd6Yd+kKvepaVVhvEi2Htk1
-	4qxvubjqhSrS6R/SREGujgzQNHeUu7Z0VYNwsGYyi8aiQbbReMHGPn8uMppqSFIfWkoiYsGatAi
-	zhb10u43FemLb/78ygq2jqoPm1mcgzZZgRwCWm+w0KHNEjb9CImiLmHfZmw6diW9jzSTK4J/5qE
-	Qi090183MDF7BuOLerc5HSGA7rwp2iQdS+TeyAE/fIWR+fmKpV915g2YOizKetLwMYbqq/WmIqQ
-	Dz2G+r8CBb7FMAAmY1jFjg8kPs5jzie2TkN7Zr9n5XBWe/tQYDgRmg8gWD4AfBnbmB
-X-Received: by 2002:a05:693c:3105:b0:2b8:1d16:9728 with SMTP id 5a478bee46e88-2b85644edbemr2980689eec.5.1770498518864;
-        Sat, 07 Feb 2026 13:08:38 -0800 (PST)
+        bh=kCBIlVtV+zq8f7gfIO2xxsTQyhC9pk+Xjp2VgrBosxw=;
+        b=eHGLG2Gk9KiFXuX1590FH3OpV38BUWzSLKdL2NI3BnIhqNHd1W1JIX646PeYETihrr
+         Lm7+a93QKUZiWOEw13Yz7HPMObmdCbUKogIb0zrxjEh89vSTIrYxKEBMjJ3/a1pRLmSK
+         K2Vn6Pff3lg+vnU9d8PiAXDiQ622e2jUkCzVdQ+naJj8WSfDKeOyg8X/7uQLpPAzbiGh
+         EjJCTm7rMfI6z7zSB1SHzQBbZ/lO4tw01QWhzV9zdXZ5OWe2SL/7+e1Bctn0lWfVYG2V
+         glkMlwKyr1/lE3Xn6navNow6ry32p/jqidigmlVqPpSQt5SEu5IjzNL1tO2NfSItffDl
+         xC7A==
+X-Gm-Message-State: AOJu0Yz8rGL6f6P6aHs/tS0yNTAcTsd8EljDDolSexI5Z1swuNfZnpED
+	1QxwEBtJtKNeCkJgjOm21vjZSBH/j/lALhGPTXEVfEXJ/sbvpEI63HFz
+X-Gm-Gg: AZuq6aI4LhZ7hJFJeKQ6gY4Tl8YlcV1fkKNEvhp5AbkMPDS8WsymgoE+VKA/4pfZKP0
+	jRV4JqklrTch5bD8I4yPSx6gaMd0vy4VqQqNLXoqOrhXslmt9fEjpwD2nJMIixlBIJ+UyF+CQAE
+	ruSxxdYywEbuk2DYV8JiLvNRuf89S1QGotOpFgjGor4BwbxXvSSwA/o0bfyRwBSbjt9HP4Dut8V
+	8z0/+XU/Na623Ybk8kaU3uuFJ7KzvzzJgm9s1xdOpv6C/EidpraeYAImJLBdAS4xpM7GomcYpC7
+	ALnin94Sck9IQGLWVJaA4ukKZALb9YxBnwcTV5dL4e9VmvPFpZ1y7RSENMUw8yezTcwECN4SJNU
+	0XByjhA+ry72uVigbhlnmxURFfIZio12SQZu6S6tMk8DPstj+mI7yWATGFIhPwhzE0/JPG4xzzz
+	8iKUYHhxwjLXE6E8LQnRdXkZ+J85v0TueJOySsCSYBNnKOjee3IG27UlqQuBuZs0a/geNJLtPH8
+	BY=
+X-Received: by 2002:a05:7300:7b94:b0:2b0:5028:bafd with SMTP id 5a478bee46e88-2b856453d5cmr2860785eec.8.1770498521927;
+        Sat, 07 Feb 2026 13:08:41 -0800 (PST)
 Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:987e:6d8e:7cd5:6e71])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855afdbfbsm4504628eec.11.2026.02.07.13.08.37
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855afdbfbsm4504628eec.11.2026.02.07.13.08.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Feb 2026 13:08:38 -0800 (PST)
+        Sat, 07 Feb 2026 13:08:41 -0800 (PST)
 From: Jason Hall <jason.kei.hall@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Joe Perches <joe@perches.com>
@@ -74,9 +75,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	Dwaipayan Ray <dwaipayanray1@gmail.com>,
 	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
 	Jason Hall <jason.kei.hall@gmail.com>
-Subject: [PATCH v8 1/2] scripts: checkpatch: move Rust-specific lints to separate file
-Date: Sat,  7 Feb 2026 14:07:45 -0700
-Message-ID: <20260207210805.196759-2-jason.kei.hall@gmail.com>
+Subject: [PATCH v8 2/2] scripts: checkpatch: add RUST_UNWRAP lint
+Date: Sat,  7 Feb 2026 14:07:46 -0700
+Message-ID: <20260207210805.196759-3-jason.kei.hall@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260207210805.196759-1-jason.kei.hall@gmail.com>
 References: <CANiq72kXaFkL34g0V3isOp39VqfN5Oaj9O_A0o1ipERFWhWi2w@mail.gmail.com>
@@ -87,168 +88,46 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Create scripts/rust_checkpatch.pl for Rust-specific linting logic.
-Add a conditional loading hook in scripts/checkpatch.pl to call it.
-This will allow Rust linting logic to be maintained independently.
+Warn against the use of .unwrap() and .expect() unless accompanied by
+a '// PANIC:' comment. This enforces safety standards in the Rust-
+for-Linux project until upstream Clippy lints are integrated.
 
-Add a new entry to the MAINTAINERS file to track this new file.
-
-Suggested-by: Joe Perches <joe@perches.com>
 Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-linux/linux/issues/1191
 Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
 ---
- MAINTAINERS                | 22 ++++++++++++++--------
- scripts/checkpatch.pl      | 14 ++++++++++++++
- scripts/rust_checkpatch.pl | 16 ++++++++++++++++
- 3 files changed, 44 insertions(+), 8 deletions(-)
- create mode 100644 scripts/rust_checkpatch.pl
+ scripts/rust_checkpatch.pl | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f6bc65de83c7..57831dc30e6b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4109,7 +4109,7 @@ F:	drivers/input/touchscreen/atmel_mxt_ts.c
- ATOMIC INFRASTRUCTURE
- M:	Will Deacon <will@kernel.org>
- M:	Peter Zijlstra <peterz@infradead.org>
--M:	Boqun Feng <boqun.feng@gmail.com>
-+M:	Boqun Feng <boqun@kernel.org>
- R:	Mark Rutland <mark.rutland@arm.com>
- R:	Gary Guo <gary@garyguo.net>
- L:	linux-kernel@vger.kernel.org
-@@ -4500,7 +4500,7 @@ F:	lib/sbitmap.c
- 
- BLOCK LAYER DEVICE DRIVER API [RUST]
- M:	Andreas Hindborg <a.hindborg@kernel.org>
--R:	Boqun Feng <boqun.feng@gmail.com>
-+R:	Boqun Feng <boqun@kernel.org>
- L:	linux-block@vger.kernel.org
- L:	rust-for-linux@vger.kernel.org
- S:	Supported
-@@ -5880,6 +5880,12 @@ R:	Lukas Bulwahn <lukas.bulwahn@gmail.com>
- S:	Maintained
- F:	scripts/checkpatch.pl
- 
-+CHECKPATCH RUST LINTS
-+M:	Jason Hall <jason.kei.hall@gmail.com>
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	scripts/rust_checkpatch.pl
-+
- CHECKPATCH DOCUMENTATION
- M:	Dwaipayan Ray <dwaipayanray1@gmail.com>
- M:	Lukas Bulwahn <lukas.bulwahn@gmail.com>
-@@ -11264,7 +11270,7 @@ F:	tools/testing/selftests/timers/
- 
- DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
- M:	Andreas Hindborg <a.hindborg@kernel.org>
--R:	Boqun Feng <boqun.feng@gmail.com>
-+R:	Boqun Feng <boqun@kernel.org>
- R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
- R:	Frederic Weisbecker <frederic@kernel.org>
- R:	Lyude Paul <lyude@redhat.com>
-@@ -14559,7 +14565,7 @@ M:	Alan Stern <stern@rowland.harvard.edu>
- M:	Andrea Parri <parri.andrea@gmail.com>
- M:	Will Deacon <will@kernel.org>
- M:	Peter Zijlstra <peterz@infradead.org>
--M:	Boqun Feng <boqun.feng@gmail.com>
-+M:	Boqun Feng <boqun@kernel.org>
- M:	Nicholas Piggin <npiggin@gmail.com>
- M:	David Howells <dhowells@redhat.com>
- M:	Jade Alglave <j.alglave@ucl.ac.uk>
-@@ -14718,7 +14724,7 @@ LOCKING PRIMITIVES
- M:	Peter Zijlstra <peterz@infradead.org>
- M:	Ingo Molnar <mingo@redhat.com>
- M:	Will Deacon <will@kernel.org>
--M:	Boqun Feng <boqun.feng@gmail.com> (LOCKDEP & RUST)
-+M:	Boqun Feng <boqun@kernel.org> (LOCKDEP & RUST)
- R:	Waiman Long <longman@redhat.com>
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
-@@ -21912,7 +21918,7 @@ M:	Frederic Weisbecker <frederic@kernel.org> (kernel/rcu/tree_nocb.h)
- M:	Neeraj Upadhyay <neeraj.upadhyay@kernel.org> (kernel/rcu/tasks.h)
- M:	Joel Fernandes <joelagnelf@nvidia.com>
- M:	Josh Triplett <josh@joshtriplett.org>
--M:	Boqun Feng <boqun.feng@gmail.com>
-+M:	Boqun Feng <boqun@kernel.org>
- M:	Uladzislau Rezki <urezki@gmail.com>
- R:	Steven Rostedt <rostedt@goodmis.org>
- R:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-@@ -22362,7 +22368,7 @@ RESTARTABLE SEQUENCES SUPPORT
- M:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
- M:	Peter Zijlstra <peterz@infradead.org>
- M:	"Paul E. McKenney" <paulmck@kernel.org>
--M:	Boqun Feng <boqun.feng@gmail.com>
-+M:	Boqun Feng <boqun@kernel.org>
- L:	linux-kernel@vger.kernel.org
- S:	Supported
- F:	include/trace/events/rseq.h
-@@ -22885,7 +22891,7 @@ F:	tools/verification/
- 
- RUST
- M:	Miguel Ojeda <ojeda@kernel.org>
--R:	Boqun Feng <boqun.feng@gmail.com>
-+R:	Boqun Feng <boqun@kernel.org>
- R:	Gary Guo <gary@garyguo.net>
- R:	Björn Roy Baron <bjorn3_gh@protonmail.com>
- R:	Benno Lossin <lossin@kernel.org>
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index c0250244cf7a..f75cb70ad0dd 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -20,6 +20,12 @@ my $D = dirname(abs_path($P));
- 
- my $V = '0.32';
- 
-+my $rust_checkpatch_available = 0;
-+if (-e "$D/rust_checkpatch.pl") {
-+	require "$D/rust_checkpatch.pl";
-+	$rust_checkpatch_available = 1;
-+}
-+
- use Getopt::Long qw(:config no_auto_abbrev);
- 
- my $quiet = 0;
-@@ -2947,6 +2953,14 @@ sub process {
- 
- 		$cnt_lines++ if ($realcnt != 0);
- 
-+# Check for Rust-specific lints
-+		if ($rust_checkpatch_available && $realfile =~ /\.rs$/) {
-+			my ($type, $msg) = process_rust($line, $rawline, $herecurr);
-+			if ($type) {
-+				WARN($type, $msg);
-+			}
-+		}
-+
- # Verify the existence of a commit log if appropriate
- # 2 is used because a $signature is counted in $commit_log_lines
- 		if ($in_commit_log) {
 diff --git a/scripts/rust_checkpatch.pl b/scripts/rust_checkpatch.pl
-new file mode 100644
-index 000000000000..56c1bc29d3f2
---- /dev/null
+index 56c1bc29d3f2..9a4e256a4ec4 100644
+--- a/scripts/rust_checkpatch.pl
 +++ b/scripts/rust_checkpatch.pl
-@@ -0,0 +1,16 @@
-+#!/usr/bin/env perl
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# (c) 2026, Jason Hall <jason.kei.hall@gmail.com>
-+
-+use strict;
-+use warnings;
-+
-+sub process_rust {
-+    my ($line, $rawline, $herecurr) = @_;
-+
-+    # Reserve for future Rust-specific lints
-+    return ();
-+}
-+
-+1;
+@@ -9,7 +9,21 @@ use warnings;
+ sub process_rust {
+     my ($line, $rawline, $herecurr) = @_;
+ 
+-    # Reserve for future Rust-specific lints
++    # Check for Rust unwrap/expect usage.
++    # We skip lines that are already comments, assert macros (common in tests),
++    # or have a '// PANIC:' justification.
++    if ($line =~ /^\+/) {
++        if ($line =~ /(?:\.|::)(?:unwrap|expect)\s*\(/ &&
++            $rawline !~ /\/\/\s*PANIC:/ &&
++            $line !~ /^\+\s*\/\// &&
++            $line !~ /^\+\s*assert/) {
++            return ("RUST_UNWRAP",
++                    "unwrap() and expect() should generally be avoided in Rust kernel code.\n" .
++                    "If the use is intended, please justify it with a '// PANIC:' comment.\n" .
++                    "See: https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust\n" .
++                    $herecurr);
++        }
++    }
+     return ();
+ }
+ 
 -- 
 2.43.0
 
