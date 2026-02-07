@@ -1,173 +1,199 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9679F3382E4
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Feb 2026 16:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29EF2F1FEF;
+	Sat,  7 Feb 2026 17:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770483190; cv=none; b=goYZzGvZXNzmVJ1ampNMyh4YfOzrHR03/3TBIpJSGwir1GWRORvFhioOLQysIURZHOxFPZrqxTHXWUbPQ/XMyPI0AGCp7pgLV3Tcag2ihRhJdRBH3Bmyl7ZTHweLN+zKotpr1CJCWBEOEQd7jNX6C3Z9tYt6KPLKd2KsNw4gyhA=
+	t=1770484992; cv=none; b=WdVWtuZznBJxAXI50ctakAuh7wBrZwxGRu8I5MdcQvum5PqpqBBTF0mGPgwTpXvEoTk/zcYVq/tluSBUZmM1gzDVdyrf0MzijY4eha7W86RTnkdFZKVy8aQ2E4fhsptA7mz3iGu2xEKqTNK7iZtM2Kvn+HL/uYqwP878XjSJRUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770483190; c=relaxed/simple;
-	bh=1PFEnQSQHK+HxFV+EnhDucivwjFM9S83+Z/X8r6YxYQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yn4ivdmJs6AMt68zeg0cv4bCGDIcnS7OiwZVwiG1yHlIQYIVexabctZNcGKFEc7tXrTJ4IvL+naGqCKxxnldJDCqPdfv0VYlzYrM8q/mhHcLAa6GUs2GwhzquzysPUuqJsZkzRL6+bovndTWBReIgpNaZHHZow/23fSFeyUHU8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NAO94GJ+; arc=none smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770484992; c=relaxed/simple;
+	bh=Ttcxe8/1hOA+BYfLLbdeSrZPazFYl5UiwlHlKmZvAkI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=bIoC+Or0f9nNZnE3Swraa9eXgRdTSfofGFHKBnvttpfEUvWSzgsnJwOiDfopmX/P2szDnU5Gk3ZKM8qrbtjL+TInqwr4V/1Oo66unggJ9j73HR3crMqDceaPyvHNRX5SOQNVq/NgWcjVGiDLtDxFp6t0k4cNWQkljxghtTHOjts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jguw9qss; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NAO94GJ+"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b785801c93so4353337eec.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Feb 2026 08:53:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770483190; x=1771087990; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9bn5hyN+m1LqNXQxKRBXBAhoYRIb38PYsM30rn8LzHo=;
-        b=NAO94GJ+upNZ1xjZlVEaTmcENOuVfl6cQgqcd+gWHkWBG/ydmYzNkZSE3/vJ+gXpbc
-         POa7BjOQE000A/6lhy9QVLbqBXoPiPuJchhE4iigqksloLvUqjYCwZGqaQW/myWPBRIi
-         yy50ijtjBHly1sn7n5Ot6n7LxGEahdizUeWt8lnTXlTshzt1wqOaGoT/bLR4Sgbxnxf2
-         9S0pPOvIo4APKQUCrppHywmYjbjoDBOXzkZFJYlTvH+IngnBYdRT4W0R/8+AGYZB/dNz
-         +poNtOkDnAKs6vpj62sjYK0nLzn77bmijFRGjttRAwFes++CisW1qptO+DRuuGhfri1f
-         9WoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770483190; x=1771087990;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9bn5hyN+m1LqNXQxKRBXBAhoYRIb38PYsM30rn8LzHo=;
-        b=mmBJ2bHBHyI424B1GNFPxyA/T0RIIklqJzmn/dGTRIbKC3oNLzsvWa2zGtQEhyqmig
-         ZzKsjWtTAfBMT1XblGC6Qg7cktTxGBKJzPckE1RbSyvHlzMODfQxFY2S69fv9TCYTyl1
-         M9XEX500DsYmN3xJnnps6hdOGKqdbwSdizb1TNkilMz1J6qNPlbSuZA+kafSG4sY8VEl
-         tY84qzriild1wBdsZq1l7g0QwOSjcU/cuR+58KbruhsGCnLn+DKMulGFHxiaIr86P8U3
-         A/T3GIbfo9PrR3pw4ssB3zRzLY1A7ZJVmSp6A8hjgDRZc2W1KTl9CTox5HPknDeiBMjr
-         a7vA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpm9euvHEZGT59JLYyIF2kaPgLE4p5rZ+KTrXZt/Ih5tbEnsMQXoQcnGLMmOUddtg7APbwFybQ3Exksn+RZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx13jER6QtrPCskq+tb85h5WPwuCrTdBzfnrBg5WsCSskXKYo8y
-	VyxebtUcUfaEOfJNKaJW9E1IT4BHa8/4Hqcd9DRPSLucC5rPGhJoMxmt
-X-Gm-Gg: AZuq6aKzmsQmfyQ4NjmcidRSEWN/a5Z6WbKLdPjRzQ5VEhnEww9tcdY4XmHbJGeWjrv
-	8RdwwyeGRZid5Y6DVLS+28Ack1KYY24ASVtsXSvyZcY7PfZ6qotTP2ZAlWIKCjE0tafOtNlG8gr
-	iVLbGuCy/RIeVsgWHGnx+aDcbmQvpFCny9a6KxVo8DOw0EzWUTOePEHy39xYtxSjVxxWuj492bM
-	GMyGLy0SObWvMNraPLsClgS/rUkPN4xLJIl7CXgkeoLCy1h+RJm0JPFlF066QIdFhdZca4U25h/
-	hFpkLxz1qsWCTkXf5yzi8EZoCBBNvrnGPLHfm7KLfN1Abm8UFMIFNfxOlgrb8YpVxuHUixow6mf
-	ua6BiCRDni34z8cEwOYkiGuQVXAyQgUsNCFYu6SLT8FyXBJltLaE0l+tFBzzmMDMn69LKSgkSjq
-	CJwPdY9Oo2h4VgfATOOK1U4g6eZ1IZWcZtT2MeHP5iObtkBZJWa/ULcXdb6ZJmTtPB
-X-Received: by 2002:a05:693c:60c3:b0:2b8:6b32:1cf1 with SMTP id 5a478bee46e88-2b86b3224fdmr781427eec.29.1770483189514;
-        Sat, 07 Feb 2026 08:53:09 -0800 (PST)
-Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:22c3:7b0e:5e40:3e51])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855ad8da2sm4438907eec.5.2026.02.07.08.53.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Feb 2026 08:53:08 -0800 (PST)
-From: Jason Hall <jason.kei.hall@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Joe Perches <joe@perches.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jason Hall <jason.kei.hall@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH v7] scripts: checkpatch: move Rust-specific lints to separate file
-Date: Sat,  7 Feb 2026 09:53:05 -0700
-Message-ID: <20260207165305.129822-1-jason.kei.hall@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CANiq72n+C1xU43ZjiAE35rx-NHWAOZyNHK0_kuYAGCpo4BkU_g@mail.gmail.com>
-References: <CANiq72n+C1xU43ZjiAE35rx-NHWAOZyNHK0_kuYAGCpo4BkU_g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jguw9qss"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F47C116D0;
+	Sat,  7 Feb 2026 17:23:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770484991;
+	bh=Ttcxe8/1hOA+BYfLLbdeSrZPazFYl5UiwlHlKmZvAkI=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=Jguw9qss6MqpWHFRmhstwWMlY5LPBGZGo8+L5+GaKCP2DqeyFICKZvbmdN9yGX6GD
+	 anzuRYtsYn8hFxvqA+CgeSqtG/i7jkB+Dthn33VqDOV6rKhXtKakrgRgpjCcu8wQoe
+	 LPq48Rd0pT0+iw3m6h2dCvfIlVBICMdPkKP4QUiu/buDbwjIITB2kbicBdR4O0HfOq
+	 OkZcvT/kS+5nJfSVUVuYZXvdQl3jkxQJav2cltO9ROSrmXJDHb9aAbrYIxDJl2HCZ7
+	 /RY37woGUDBGKSiU4bGkdKUXZh8forwYG42Sk0QOspyZPrqF897sg/kfLNpQ6CQshg
+	 NYA4xUR1oeFsQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 07 Feb 2026 18:23:05 +0100
+Message-Id: <DG8WJPYVA0H1.1PO95BAW0TK3Y@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 2/4] rust: kvec: implement shrink_to and
+ shrink_to_fit for Vec
+Cc: <shivamklr@cock.li>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=
+ <arve@android.com>, "Todd Kjos" <tkjos@android.com>, "Christian Brauner"
+ <brauner@kernel.org>, "Carlos Llamas" <cmllamas@google.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Shivam Kalra via B4 Relay" <devnull+shivamklr.cock.li@kernel.org>
+References: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
+ <20260207-binder-shrink-vec-v3-v3-2-8ff388563427@cock.li>
+In-Reply-To: <20260207-binder-shrink-vec-v3-v3-2-8ff388563427@cock.li>
 
-Create scripts/rust_checkpatch.pl for Rust-specific linting logic.
-Add a conditional loading hook in scripts/checkpatch.pl to call it.
-This will allow Rust linting logic to be maintained independently.
+On Sat Feb 7, 2026 at 12:32 PM CET, Shivam Kalra via B4 Relay wrote:
+> +impl<T, A: Shrinkable> Vec<T, A> {
 
-Add a new entry to the MAINTAINERS file to track this new file.
+I don't think we should have a Shrinkable trait with is_shrinkable(). This =
+is a
+decision taken by the backing Allocator's realloc() function already.
 
-Suggested-by: Joe Perches <joe@perches.com>
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
+Instead, shrink_to() should be a normal method of Vec<A, T> and just call
+A::realloc().
 
----
----
- MAINTAINERS                |  6 ++++++
- scripts/checkpatch.pl      | 14 ++++++++++++++
- scripts/rust_checkpatch.pl | 16 ++++++++++++++++
- 3 files changed, 36 insertions(+)
- create mode 100644 scripts/rust_checkpatch.pl
+For the temporary workaround we can have a temporary ShrinkQuirk trait that=
+ has
+methods that take the same arguments as shrink_to().
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2c0bdd08b74c..57831dc30e6b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5880,6 +5880,12 @@ R:	Lukas Bulwahn <lukas.bulwahn@gmail.com>
- S:	Maintained
- F:	scripts/checkpatch.pl
- 
-+CHECKPATCH RUST LINTS
-+M:	Jason Hall <jason.kei.hall@gmail.com>
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	scripts/rust_checkpatch.pl
-+
- CHECKPATCH DOCUMENTATION
- M:	Dwaipayan Ray <dwaipayanray1@gmail.com>
- M:	Lukas Bulwahn <lukas.bulwahn@gmail.com>
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index c0250244cf7a..f75cb70ad0dd 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -20,6 +20,12 @@ my $D = dirname(abs_path($P));
- 
- my $V = '0.32';
- 
-+my $rust_checkpatch_available = 0;
-+if (-e "$D/rust_checkpatch.pl") {
-+	require "$D/rust_checkpatch.pl";
-+	$rust_checkpatch_available = 1;
-+}
-+
- use Getopt::Long qw(:config no_auto_abbrev);
- 
- my $quiet = 0;
-@@ -2947,6 +2953,14 @@ sub process {
- 
- 		$cnt_lines++ if ($realcnt != 0);
- 
-+# Check for Rust-specific lints
-+		if ($rust_checkpatch_available && $realfile =~ /\.rs$/) {
-+			my ($type, $msg) = process_rust($line, $rawline, $herecurr);
-+			if ($type) {
-+				WARN($type, $msg);
-+			}
-+		}
-+
- # Verify the existence of a commit log if appropriate
- # 2 is used because a $signature is counted in $commit_log_lines
- 		if ($in_commit_log) {
-diff --git a/scripts/rust_checkpatch.pl b/scripts/rust_checkpatch.pl
-new file mode 100644
-index 000000000000..56c1bc29d3f2
---- /dev/null
-+++ b/scripts/rust_checkpatch.pl
-@@ -0,0 +1,16 @@
-+#!/usr/bin/env perl
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# (c) 2026, Jason Hall <jason.kei.hall@gmail.com>
-+
-+use strict;
-+use warnings;
-+
-+sub process_rust {
-+    my ($line, $rawline, $herecurr) = @_;
-+
-+    # Reserve for future Rust-specific lints
-+    return ();
-+}
-+
-+1;
--- 
-2.43.0
+In Vec::shrink_to() we can then hook in before calling A::realloc() and app=
+ly
+the quirk.
+
+	fn shrink_to() {
+	    if self.shrink_needs_quirk() {
+	        return self.shrink_quirk();
+	    }
+
+	    // Allocator backend decides.
+	    A::realloc();
+	}
+
+> +    pub fn shrink_to(&mut self, min_capacity: usize, flags: Flags) -> Re=
+sult<(), AllocError> {
+> +        let target_cap =3D core::cmp::max(self.len(), min_capacity);
+> +
+> +        if self.capacity() <=3D target_cap {
+> +            return Ok(());
+> +        }
+> +
+> +        if Self::is_zst() {
+> +            return Ok(());
+> +        }
+> +
+> +        // SAFETY: `self.ptr` is valid by the type invariant.
+> +        if !unsafe { A::is_shrinkable(self.ptr.cast()) } {
+> +            return Ok(());
+> +        }
+> +
+> +        // Only shrink if we would free at least one page.
+> +        let current_size =3D self.capacity() * core::mem::size_of::<T>()=
+;
+> +        let target_size =3D target_cap * core::mem::size_of::<T>();
+> +        let current_pages =3D current_size.div_ceil(PAGE_SIZE);
+> +        let target_pages =3D target_size.div_ceil(PAGE_SIZE);
+
+This is the specific heuristic we use for the Vmalloc shrink workaround
+(including when for KVmalloc is_vmalloc_addr() is true) and it doesn't belo=
+ng
+into the common code path.
+
+But this goes away anyways with the above changes.
+
+> +        if current_pages <=3D target_pages {
+> +            return Ok(());
+> +        }
+> +
+> +        if target_cap =3D=3D 0 {
+> +            if !self.layout.is_empty() {
+> +                // SAFETY: `self.ptr` was allocated with `A`, layout mat=
+ches.
+> +                unsafe { A::free(self.ptr.cast(), self.layout.into()) };
+> +            }
+> +            self.ptr =3D NonNull::dangling();
+> +            self.layout =3D ArrayLayout::empty();
+> +            return Ok(());
+> +        }
+> +
+> +        // SAFETY: `target_cap <=3D self.capacity()` and original capaci=
+ty was valid.
+> +        let new_layout =3D unsafe { ArrayLayout::<T>::new_unchecked(targ=
+et_cap) };
+> +
+> +        // TODO: Once vrealloc supports in-place shrinking (mm/vmalloc.c=
+:4316), this
+> +        // explicit alloc+copy+free can potentially be replaced with rea=
+lloc.
+> +        let new_ptr =3D A::alloc(new_layout.into(), flags, NumaNode::NO_=
+NODE)?;
+> +
+> +        // SAFETY: Both pointers are valid, non-overlapping, and properl=
+y aligned.
+> +        unsafe {
+> +            ptr::copy_nonoverlapping(self.as_ptr(), new_ptr.as_ptr().cas=
+t::<T>(), self.len);
+> +        }
+> +
+> +        // SAFETY: `self.ptr` was allocated with `A`, layout matches.
+> +        unsafe { A::free(self.ptr.cast(), self.layout.into()) };
+> +
+> +        // SAFETY: `new_ptr` is non-null because `A::alloc` succeeded.
+> +        self.ptr =3D unsafe { NonNull::new_unchecked(new_ptr.as_ptr().ca=
+st::<T>()) };
+> +        self.layout =3D new_layout;
+> +
+> +        Ok(())
+> +    }
+> +
+> +    /// Shrinks the capacity of the vector as much as possible.
+> +    ///
+> +    /// This is equivalent to calling `shrink_to(0, flags)`. See [`Vec::=
+shrink_to`] for details.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::alloc::allocator::Vmalloc;
+> +    ///
+> +    /// let elements_per_page =3D kernel::page::PAGE_SIZE / core::mem::s=
+ize_of::<u32>();
+> +    /// let mut v: Vec<u32, Vmalloc> =3D Vec::with_capacity(elements_per=
+_page * 4, GFP_KERNEL)?;
+
+You can just use VVec<u32>.
+
+> +    /// v.push(1, GFP_KERNEL)?;
+> +    /// v.push(2, GFP_KERNEL)?;
+> +    /// v.push(3, GFP_KERNEL)?;
+> +    ///
+> +    /// v.shrink_to_fit(GFP_KERNEL)?;
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn shrink_to_fit(&mut self, flags: Flags) -> Result<(), AllocErr=
+or> {
+> +        self.shrink_to(0, flags)
+> +    }
+> +}
+> +
+>  impl<T: Clone, A: Allocator> Vec<T, A> {
+>      /// Extend the vector by `n` clones of `value`.
+>      pub fn extend_with(&mut self, n: usize, value: T, flags: Flags) -> R=
+esult<(), AllocError> {
+>
+> --=20
+> 2.43.0
 
