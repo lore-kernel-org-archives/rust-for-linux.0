@@ -1,55 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E72B3112A5;
-	Sat,  7 Feb 2026 02:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0672EC0BF;
+	Sat,  7 Feb 2026 05:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770430480; cv=none; b=Tv06Mj+eoCAogOUztQrpt1yoEG5MC4OsHXQ1hV+uc0HvQNEafA0ZLo3JsrV0Fqb/up4UQwEjJL//fZfrzGk/3uvIRi8nDlCkStriAAHPH0mQdiOBUwfHSnN/a2TmwNY26xvGZ8BEkxgHhwE6gUjE8cmOIaeM7s2mGibg02eobmQ=
+	t=1770440676; cv=none; b=UVmkUMSGRD5K1vx0ddkOPR8WjF/p0usoOt43IIMdqW97mUXnSLaQRdpymG/jLh/hDSqFxge2Txp3onLucZK5t7VFsO75WHhfHpcFi3fx0m/AmJA78a1iFClb8y2lZXlzr/vu57jo1sKbOcTDGgecqyM5wm0v/0y+tk/43XFKGds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770430480; c=relaxed/simple;
-	bh=OEjT4HxALXPPLTmo+di6DcKpomkocH1iLSu2/u1s81A=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=T7eSIoOpsBJsiuGaA2yfjlA6tRe62UsrpxDqveMVS1L0+YC9O9grsb3mVcO5QKbN93frWLCpBLqhNyKGgZaZuaKNTaRnhQfVxJj2FgqpYiWtZCRO8gFf1eOw7mRoaS8ccRKgPUwm0aQgj2gyWTUkzpm8ZJVxRRNqQvxbPwNDf6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hpyioGes; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770440676; c=relaxed/simple;
+	bh=ngYaAqvtxnSUbIiuZTs7bVh1k+OObb19G2nulu3ITjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SxTAKHuXnEotqD+kSBDxHQ7IYKC7mSwiulzKVG9FjVhAHZebdy7E2yWmZZbZKFVKKXDgRtFVDw1Imf7cg3IEvCSgqWP5KMw1E82Nyj8ClMKf6Op62OsElNnxR8nu4CcKJdtd917IEM87U4+cVnTTPdgKU61midm2ymYKzDv5g+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RRGNusUw; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hpyioGes"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A9BC116C6;
-	Sat,  7 Feb 2026 02:14:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770430479;
-	bh=OEjT4HxALXPPLTmo+di6DcKpomkocH1iLSu2/u1s81A=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=hpyioGesrtpQPfejYfpajx6J5u6arwNDd8ObuTLQWn14v8RyLCX8yBknjrWby2/x7
-	 +BB1vzXcjM7vyaIWDsmNvPRwKMuk8H54ydKvGzXU3+KCFD1aOA8ITpZK3KVXuiELhr
-	 TqvC3IoGJiXoGJ1k07PJaJVOoIz6CjwVJ6MN5i6J3vewg3meah3m2BFWZU78fD48a1
-	 zNo/p+aiosj3Ww9F7vHdo6/dTGvzI4tgI+rUOvpa+m8ER/GyQ0KnZTWHEv8/iLsLqL
-	 K7q1E3YK4BQh6SHOZUquKizNjPPHBrdDO0cJW3LOe+ZjnHZEFUxelInVWo5YJBIqkS
-	 CEXCSwEcxtyRA==
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RRGNusUw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770440676; x=1801976676;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ngYaAqvtxnSUbIiuZTs7bVh1k+OObb19G2nulu3ITjQ=;
+  b=RRGNusUwHzrFr634TQx/nmo248bWDX+qJXb+uXSnc3Qn70K8J20WYYNy
+   T6H8kFwZFYozQIozutcYyS5idxN+2TMlIQ3jvuZDnkqtxjMNt8veMk6Ii
+   jFVTjP1Q7E/TBxS7NlAIpTjfCfuM3OywD1ynQpgPXtOFFe3C/4rLg75VF
+   u3S2m7pQsZkNq8gZPxaRQ4U3kfbKzWCWh+oGCzsUPp24AFFv6OPw/9igA
+   PghHRMOlkHlJUFEU/3axmOa/TqDouCAP85YOvvwZyxjyYcHiPrGrhFkXQ
+   g3VEDzC7fs+8kgy1S0iR16zBqMKsbDq7fwxFM5ZiHgek/gjBKl0K+JDSh
+   Q==;
+X-CSE-ConnectionGUID: Rmd+xssDQXqHGDXpMyNmRA==
+X-CSE-MsgGUID: lHEOagmuS0CyRdAQCBLjBA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11693"; a="71547746"
+X-IronPort-AV: E=Sophos;i="6.21,277,1763452800"; 
+   d="scan'208";a="71547746"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 21:04:36 -0800
+X-CSE-ConnectionGUID: AQ6xvpxDQgOxgrsduql4fA==
+X-CSE-MsgGUID: F95+kT66TyiVclkjb3H2oQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,277,1763452800"; 
+   d="scan'208";a="215567363"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 06 Feb 2026 21:04:30 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1voaUd-00000000lOq-1wWT;
+	Sat, 07 Feb 2026 05:04:27 +0000
+Date: Sat, 7 Feb 2026 13:04:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux-foundation.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: Re: [PATCH v2 11/11] rust: xarray: add preload API
+Message-ID: <202602071349.6yvINDvm-lkp@intel.com>
+References: <20260206-xarray-entry-send-v2-11-91c41673fd30@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260105-define-rust-helper-v2-4-51da5f454a67@google.com>
-References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com> <20260105-define-rust-helper-v2-4-51da5f454a67@google.com>
-Subject: Re: [PATCH v2 04/27] rust: clk: add __rust_helper to helpers
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Michael Turquette <mturquette@baylibre.com>, linux-clk@vger.kernel.org
-To: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Date: Fri, 06 Feb 2026 18:14:37 -0800
-Message-ID: <177043047727.54237.3425297132138561114@lazor>
-User-Agent: alot/0.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260206-xarray-entry-send-v2-11-91c41673fd30@kernel.org>
 
-Quoting Alice Ryhl (2026-01-05 04:42:17)
-> This is needed to inline these helpers into Rust code.
->=20
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+Hi Andreas,
 
-Acked-by: Stephen Boyd <sboyd@kernel.org>
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 18f7fcd5e69a04df57b563360b88be72471d6b62]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Hindborg/rust-xarray-minor-formatting-fixes/20260207-051500
+base:   18f7fcd5e69a04df57b563360b88be72471d6b62
+patch link:    https://lore.kernel.org/r/20260206-xarray-entry-send-v2-11-91c41673fd30%40kernel.org
+patch subject: [PATCH v2 11/11] rust: xarray: add preload API
+config: arm64-randconfig-001-20260207 (https://download.01.org/0day-ci/archive/20260207/202602071349.6yvINDvm-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260207/202602071349.6yvINDvm-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602071349.6yvINDvm-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0432]: unresolved import `kernel::mm::sheaf`
+   --> rust/kernel/xarray.rs:33:9
+   |
+   33 |     mm::sheaf::{
+   |         ^^^^^ could not find `sheaf` in `mm`
+   |
+   note: found an item that was configured out
+   --> rust/kernel/mm.rs:22:9
+   |
+   22 | pub mod sheaf;
+   |         ^^^^^
+   note: the item is gated here
+   --> rust/kernel/mm.rs:21:1
+   |
+   21 | #[cfg(not(any(CONFIG_SLUB_TINY, CONFIG_SLUB_DEBUG)))]
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--
+>> error[E0433]: failed to resolve: could not find `sheaf` in `mm`
+   --> rust/kernel/xarray.rs:75:18
+   |
+   75 | impl kernel::mm::sheaf::KMemCacheInit<XArrayNode> for XArrayNode {
+   |                  ^^^^^ could not find `sheaf` in `mm`
+   |
+   note: found an item that was configured out
+   --> rust/kernel/mm.rs:22:9
+   |
+   22 | pub mod sheaf;
+   |         ^^^^^
+   note: the item is gated here
+   --> rust/kernel/mm.rs:21:1
+   |
+   21 | #[cfg(not(any(CONFIG_SLUB_TINY, CONFIG_SLUB_DEBUG)))]
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
