@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AD323B63C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE15F33E34C;
 	Sat,  7 Feb 2026 11:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770464223; cv=none; b=W0dG8r07js0QCrYBBj/QjUVpssxfsG6dERBF3TyjCNBB27ZBmzkjPDRcKLUuN8KUw0BOs2tdFl7ooTjQ9MPyTIiz3V/d75brTNqvG800rukIG9wmp/Q14dS833QBdZJudsotiFdBfR53cVTMiUUI1OqvzaV7DMWotS6aqfcPC6o=
+	t=1770464223; cv=none; b=T92+78AoSOTAs2we+TM212Tj9ifnAlos4/lsYQ/p+6mPLdb7zKjZosLoKUHGVURhqJfiM0wJhVZdn3l7XlTGnQWfi7MIRhTKepI1UwNZV9ALnc4n7nqyxmJJpLaowrGTihLq4dlyKATZijCAkR/75ZBeT9Ga36etl2WJKQu7HWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770464223; c=relaxed/simple;
-	bh=eH8P3luXJow3f4Sscg7g8kVmMaP2GpouRTc5nqbiE74=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pV0Ndij8C2dI64VQ1O3O9ByF+o/ifLz0zqAxAmJ7caqjvIqHU5S1nRxEp9g9cAGELdQh6C3EV4WCUWUEwSNeWs6SN3XDU1P7SzB3Md2PWOSTXWmYcFSsbsWOMEWB8Qd4A/G/UMb0fw06EQi1cyHmRXGYOPT/nVB0+yPyzsEac4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QKtW20e9; arc=none smtp.client-ip=10.30.226.201
+	bh=Vu6LCkHLEagnBlnc2yB95toUMOvp1Ep3fa6cqun+Mxw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bHB9iDj0jWTXD2p/D+o6cbmdRWGe3JqCz7e7vOA4mTOlw4GM7LjtXu5xCfkiRi4/AlrXRKeQvTgoV26W03VtbO5+HfZcmozrh14Sg0nMVhYNKzRZH7Jay8Bag9rM1HF5QxpApxJlZN3yIfzOxTA0sO+EiTjIticQYMndzeHtTic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BvAg59y2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QKtW20e9"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 61C5CC116D0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BvAg59y2"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 74AEAC19422;
 	Sat,  7 Feb 2026 11:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1770464223;
-	bh=eH8P3luXJow3f4Sscg7g8kVmMaP2GpouRTc5nqbiE74=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=QKtW20e95HY2imgr6qsy5ZxxIusHmIEwAGqULK85SJDRcpQCZKZpUzlNPZqwTfmuo
-	 1REtNGiNVYl8Kgjpx0DfSoQzMGDCEcfcXk9GXe4XDl6WYwgT30/KzOVkBhKlro6oFS
-	 FxxeDN/8phK02m9hzMgYSd+kkMdGO4e4T32KbGZsGBjWfAHHYOKEZaOg4QobygTvtg
-	 O7QhYxg1KGhAPRHuaafGMqv7dYRV1pWf5nOi3nW2lJDxG+JhUpVOIcIGCb/AgGFReV
-	 3K1Ses8cn0g8B6KuwLDaT/dsQXfrtGx4EQi5C6FW6cTEK+p6QMtVDuAr6I0nAV1Er+
-	 KLMY5xHmNMgMQ==
+	bh=Vu6LCkHLEagnBlnc2yB95toUMOvp1Ep3fa6cqun+Mxw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=BvAg59y2Ggc9mD6wdNKjrbo2e14P+XEwLFZilNYgfwFr8UeME2p6iWYofE27rRn+o
+	 ob8yD/XdWSvp3WIbzkq2IxY1O9TEOjYPt+ZTdTVWx7PUQGSgA8x8uASm7reuc0G3kz
+	 jGrn09fkoy2NdZGKzDJLpCHewCgpmib6JcwdZJanyyzQ0+CNiHe4o0XMuHDhtiCf2O
+	 NmMd+dpVfFMILQJPzifx5s1zBfk0PLTspYshtgIpdd/+MgaR1b2uxQcJHOMmi6rxDU
+	 aSkhJHsZKvy5b1WIzzLylA5NCSKyO31JA5bVR82OlxhhH1AxxwpnZH8U5NYwTdgbg3
+	 IADxXTaGDaTFQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DF57EE0ADC;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62CA5EE0ADA;
 	Sat,  7 Feb 2026 11:37:03 +0000 (UTC)
 From: Shivam Kalra via B4 Relay <devnull+shivamklr.cock.li@kernel.org>
-Subject: [PATCH v3 0/4] rust: alloc: add Vec shrinking methods
-Date: Sat, 07 Feb 2026 17:02:46 +0530
-Message-Id: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
+Date: Sat, 07 Feb 2026 17:02:47 +0530
+Subject: [PATCH v3 1/4] rust: alloc: introduce Shrinkable trait
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,10 +40,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAN8ih2kC/x3MMQqAMAxA0auUzAZCqxa8ijhYGzUIVVIognh3i
- +Mb/n8gswpnGMwDykWynKnCNQaWfU4bo8RqsGR7suQxSIqsmHeVdGDhBYvDrqW2i94HYg81vZR
- Xuf/tOL3vB0wNex9mAAAA
-X-Change-ID: 20260207-binder-shrink-vec-v3-54045d77b0e7
+Message-Id: <20260207-binder-shrink-vec-v3-v3-1-8ff388563427@cock.li>
+References: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
+In-Reply-To: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
 To: Danilo Krummrich <dakr@kernel.org>, 
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
  Vlastimil Babka <vbabka@suse.cz>, 
@@ -60,11 +59,11 @@ To: Danilo Krummrich <dakr@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Shivam Kalra <shivamklr@cock.li>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770464219; l=3163;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770464219; l=3225;
  i=shivamklr@cock.li; s=20260206; h=from:subject:message-id;
- bh=eH8P3luXJow3f4Sscg7g8kVmMaP2GpouRTc5nqbiE74=;
- b=Pn2AmBL/pIMTm18HamnRx0tEmXtA9rx2/AgFaKiCYzM2GrskmEjFtixxEOLAN2IeIBEcw0MIv
- TvoW9tj0pAhDC8eGX96FRlVu4TgMmnN/5Ea+uf7hjDQYC3uT01rsXbw
+ bh=jpKzN865IppJi7C0CyvO1g4N4Vl1EkzCBuFHxaHO0OE=;
+ b=zhIqUwyAdly7/oTkm+yQc7lOMHTvmT3Eo+4h5sTrfCeCRighkyX4B4LuahXY3vuFS4AiuoOh5
+ KZTu2KbaoCsA/CSSM/LXWseQ3QK9QxZ/Y+AZtY+8JRmdF6nL8f4hLnk
 X-Developer-Key: i=shivamklr@cock.li; a=ed25519;
  pk=vMC4wm7HuB8IdkiHldCdtuViW0NTnShcRaMF50MWRFQ=
 X-Endpoint-Received: by B4 Relay for shivamklr@cock.li/20260206 with
@@ -72,75 +71,87 @@ X-Endpoint-Received: by B4 Relay for shivamklr@cock.li/20260206 with
 X-Original-From: Shivam Kalra <shivamklr@cock.li>
 Reply-To: shivamklr@cock.li
 
-This series adds shrink_to() and shrink_to_fit() methods to Vec<T, A>
-(and by extension KVVec, KVec, VVec) to allow explicit capacity
-reduction for memory reclamation.
+From: Shivam Kalra <shivamklr@cock.li>
 
-Problem:
-When elements are removed from a KVVec, the allocated capacity is not
-reduced. The underlying C allocators (krealloc/kvrealloc) don't shrink
-memory in-place. This can cause significant memory waste in scenarios
-with variable workloads.
+Introduce the `Shrinkable` trait to identify allocators that can
+meaningfully reclaim memory when an allocation is shrunk.
 
-Solution:
-- Patch 1: Introduces the `Shrinkable` marker trait to identify allocators
-  that can meaningfully reclaim memory when shrinking (e.g., Vmalloc but
-  not Kmalloc, since Kmalloc uses fixed-size buckets).
-- Patch 2: Implements shrink_to(min_capacity, flags) and
-  shrink_to_fit(flags)  methods. Shrinking only occurs when
-  the allocator is shrinkable AND the operation would free at least
-  one page of memory.
-- Patch 3: Adds KUnit tests for the new methods across different allocator
-  backends (Vmalloc and KVmalloc).
-- Patch 4: Uses shrink_to() in the Rust binder driver to reclaim memory
-  when processes are deregistered. Shrinking is triggered only when the
-  vector capacity exceeds 128 elements and less than half is used.
+In the kernel, the slab allocator (`Kmalloc`) uses fixed-size buckets,
+meaning a "shrink" operation often results in the same bucket size being
+used, yielding no actual memory savings. However, page-based allocators
+like `Vmalloc` can reclaim physical pages when the size reduction
+crosses a page boundary.
 
-Testing:
-- KUnit tests pass (rust_kvec test suite).
-- Kernel boots successfully in QEMU with CONFIG_ANDROID_BINDER_IPC_RUST=y.
-
-Changes since v2:
-- Introduced new `Shrinkable` marker trait to distinguish allocators that
-  benefit from shrinking (Vmalloc) from those that don't (Kmalloc).
-- Shrinking now only occurs for vmalloc-backed buffers when at least one
-  page can be freed, avoiding unnecessary work for kmalloc buffers.
-  (Suggested by Danilo Krummrich)
-- Split into 4 patches: Shrinkable trait introduction is now a
-  separate patch to improve reviewability.
-- Uses explicit alloc+copy+free since vrealloc doesn't yet support
-  in-place shrinking; TODO added for future optimization when vrealloc
-  gains that capability. (Discussed with Danilo Krummrich)
-- Fixed minor KVVec/KVec terminology (binder uses KVVec not KVec).
-- Expanded KUnit tests to cover different allocator backends and
-  page-boundary shrinking behavior.
-
-Changes since v1:
-- Resend with correct threading (no code changes).
-- Removed base-commit.
-- Added explicit lore link to dependency in cover letter.
-
-[1] https://lore.kernel.org/lkml/20260130205424.261700-1-shivamklr@cock.li/
-[2] https://lore.kernel.org/lkml/20260131154016.270385-1-shivamklr@cock.li/
+This marker trait allows generic containers (like `KVec` or `KVVec`) to
+determine at compile-time or run-time (via `is_shrinkable`) if a
+shrinking operation is worth performing.
 
 Signed-off-by: Shivam Kalra <shivamklr@cock.li>
 ---
-Shivam Kalra (4):
-      rust: alloc: introduce Shrinkable trait
-      rust: kvec: implement shrink_to and shrink_to_fit for Vec
-      rust: alloc: add KUnit tests for Vec shrink operations
-      rust: binder: shrink all_procs when deregistering processes
+ rust/kernel/alloc/allocator.rs | 48 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
- drivers/android/binder/context.rs |  10 ++
- rust/kernel/alloc/allocator.rs    |  48 +++++++
- rust/kernel/alloc/kvec.rs         | 296 +++++++++++++++++++++++++++++++++++++-
- 3 files changed, 352 insertions(+), 2 deletions(-)
----
-base-commit: 3c4ae63073d84abee5d81ce46d86a94e9dae9c89
-change-id: 20260207-binder-shrink-vec-v3-54045d77b0e7
+diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+index 63bfb91b36712..615799b680b55 100644
+--- a/rust/kernel/alloc/allocator.rs
++++ b/rust/kernel/alloc/allocator.rs
+@@ -251,6 +251,54 @@ unsafe fn realloc(
+     }
+ }
+ 
++/// Marker trait for allocators that support meaningful shrinking.
++///
++/// Shrinking is only meaningful for allocators that can actually reclaim memory. The slab
++/// allocator (`Kmalloc`) uses fixed-size buckets and cannot reclaim memory when shrinking,
++/// so it does not implement this trait.
++///
++/// For `Vmalloc`, shrinking always makes sense since it uses page-granularity allocations.
++/// For `KVmalloc`, shrinking only makes sense if the allocation is backed by vmalloc (checked
++/// at runtime via `is_vmalloc_addr`).
++///
++/// # Note
++///
++/// Currently, shrinking vmalloc allocations requires explicit alloc+copy+free because
++/// `vrealloc` does not support in-place shrinking (see TODO at `mm/vmalloc.c:4316`).
++/// Once `vrealloc` gains this capability, the shrink implementation can be simplified.
++///
++/// # Safety
++///
++/// Implementors must ensure that [`Shrinkable::is_shrinkable`] returns `true` only when
++/// shrinking the allocation would actually reclaim memory.
++pub unsafe trait Shrinkable: Allocator {
++    /// Returns whether shrinking an allocation at the given pointer would reclaim memory.
++    ///
++    /// # Safety
++    ///
++    /// `ptr` must be a valid pointer to an allocation made by this allocator.
++    unsafe fn is_shrinkable(ptr: NonNull<u8>) -> bool;
++}
++
++// SAFETY: `Vmalloc` always uses vmalloc, which allocates at page granularity. Shrinking a
++// vmalloc allocation by at least one page will reclaim that memory.
++unsafe impl Shrinkable for Vmalloc {
++    #[inline]
++    unsafe fn is_shrinkable(_ptr: NonNull<u8>) -> bool {
++        true
++    }
++}
++
++// SAFETY: `KVmalloc` may use either kmalloc or vmalloc. We check at runtime using
++// `is_vmalloc_addr` to determine if shrinking would be meaningful.
++unsafe impl Shrinkable for KVmalloc {
++    #[inline]
++    unsafe fn is_shrinkable(ptr: NonNull<u8>) -> bool {
++        // SAFETY: `ptr` is a valid pointer by the safety requirements of this function.
++        unsafe { bindings::is_vmalloc_addr(ptr.as_ptr().cast()) }
++    }
++}
++
+ #[macros::kunit_tests(rust_allocator)]
+ mod tests {
+     use super::*;
 
-Best regards,
 -- 
-Shivam Kalra <shivamklr@cock.li>
+2.43.0
 
 
