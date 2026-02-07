@@ -1,126 +1,155 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1277341044
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Feb 2026 15:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770477760; cv=pass; b=bwKnwONPpMlrWkB0p3/EDjrvxVyfRB8UWMJ3PVc8g69H9ryKYYvN9t/WUZtuL7Mbx8V86qlDvmMU+X2hrr97zrcAoQgaGbEHXvSD7nwIw5rBLnk99Ht5uNYc2aLiWjlF9AJ/W6zoC4crRKXT5TP3keBRo2WPpkIfeVKgkpGb3r8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770477760; c=relaxed/simple;
-	bh=WDZJqIG3WSFtF9/bJ5L1DSjSTILWykbHAEJcNCsu2+c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qiXYldOErmd6azB0cjgimdOVrk7lVGM96xmTN1TaiByLOyDBsRnNFjyHlyALzk7j1Z/mtQ7ymV05N1YSKdnHGpTeDvLyW7VsW2LHrTe+oHSKSWpx1ZfC4tS+t2ncp/NwaHcgcPX36tcLDtrhLyUwSo+rrfGeTij34jeBZmFCpRo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cvmOTq18; arc=pass smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD620335098
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Feb 2026 15:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770479792; cv=none; b=NSGgGHUwgxHTlLCl6HW3HzWY4xc3QDi9NH8kFi0LsHDgInX4aj3KM8oIQe83RbaDZrjGnQzPUj+L6H1yBppb5Zf1fGES7QyfBd+QtUTeINwMmnUF5+uE/udUb+YkMIKZA5v6XgUczgxsVdoprwfxWLBPeXczY/sSyx1RFrUMm50=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770479792; c=relaxed/simple;
+	bh=tNxQ5d5F+0pxCQ53H68eMaj+7EH1agNEupPGgbTvKZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bP6rK5K95OZ7WuxScUAzXbS3KrWkTTFaIt9SGui6JHiP8OLmqqhAYF1jNHpTthiVtM7YSdjwMAbYv+H93UdcFfYqzMAnvVTKagAe5lP3IIAJAGzmpg8g+YpEMIge+fRM38EuiwdPY6LsemuL2u454pSjDevQ3XWc/lefSdCfwwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OqFnCkjx; arc=none smtp.client-ip=74.125.82.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cvmOTq18"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-124b07e5fe4so212951c88.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Feb 2026 07:22:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770477759; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Frtp5SeXJknETSzBMkEXfplRqVkugFkomT7sKcallmAlBisN/GAgU0nvW2ZUX37+e4
-         i1qLgPg8fmjxVIhkKjmre1hzhdTi+Jk2NF4R5Y+cUcQ7ssFsdntPBzlOCti36RpZjvES
-         T8hDJoQnYpq2SeRi7tSeEd3lPoZpNqLnUIwWsUcB2PhFPPqGAO8uorfe31NamG1SMM7D
-         CRIu3hX/LRH86he038f8jIPtPkDVDuPtcKFaXsABdWkusAiH/69/AYLgXX5uRN+zKYjd
-         IyPoREPNNRT9CVYHulgu4fxnKPdag1AH+PgId5/gm2XvxVrd727CgOIub0/2qaE1yKBk
-         EYQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=clWv6MMAerLjp6KJnFnGBnvJGSBom/0zmYqwMTULdjU=;
-        fh=JvwWZ65VZ6C6zsEcS0jDyVpPlbNbl0ACAcH8nH2WiAs=;
-        b=Ng55svqXx13bTkMLuBRCFL/11KTS7UyMklT5FzKu/X/nkxnBMYxQsQAD1uKxIxncsF
-         8sEPvFyOazQ67s32TM/6e/ycmACSFLjTGR1uc//Iq767czpFVlwRdyulxmuc8q7mEPmb
-         +ORyUQ7/LLfTmRgJnp9DsF0VT8iU9syXa5M6ioy/pA67Mgjv5UHueI8Z6bh17FPqAp5b
-         U/5H97+5BD8F+nEUAMdkZ4ovmFpbON4NVbSkVX5a+HX2by65qLXOa6ZCFQbb73QDvtTI
-         wCZlDV9SYeBuIevHTvnhDKC6Tn98BIm3YjY54vo0/H11z61HYSupYAxEudHceydG44o5
-         bfSA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OqFnCkjx"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2b81ebac5d6so3707519eec.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Feb 2026 07:56:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770477759; x=1771082559; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770479792; x=1771084592; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=clWv6MMAerLjp6KJnFnGBnvJGSBom/0zmYqwMTULdjU=;
-        b=cvmOTq18h95t0oaXfV6DtRcnpk58Rbh7ApjoLPDxjbQtql9hVMRE5TIpQKZ7a7IDAK
-         GpBKr4Zr3myotadw3ci8rC1ZTUZuINn6uYXKLFqZ28LIedORMDzcfaa2+YiNSLhcUzkP
-         yHMx1h5hMpIMqzzeC+5gX1AK98Jhh1OBpHP1C+1xGMWPlCAVBM3cE+IKbf6DPiLX4ZOB
-         vEnDQWIPYR/KjnIvqKM8fVkHFhVGY180TWuaI0YDkjfOnqgyAypptFoJ1qW3HLUbAuy9
-         pgpuMC5//lQV7XgMB6m9ZCUbuhEidlkE6ECY1JZNbYvCRnxebuRUYaT38VWvrSzOSVWO
-         R32Q==
+        bh=Lsv3J6NdVcTt1SFQJ7wC7ZpknXmPlIZzamEjxZSqFto=;
+        b=OqFnCkjxbAKqBIHsmPzF7/eFF3vvfFjCDONgjECD86gXPRAkbDDXbr1GKVQa15oRc8
+         9shKwPViU/xMvsXC7l1d2SYSVp+8KTARoh4ZwpkQglEOwi5M02OdNZJAn+ke7xxsgtiS
+         5YGFDlMXphedym+tompZ1865AQgBa4jXisTfIHrS2uXu10AwhHccqeFvLvAFqIi8+qIJ
+         AL81A+3PWaZIh4f3q0CO8zLAGcZOaUT4abN/rvhSXpdBx7CMCBlfiJ9AhPXBbXI5Pw9n
+         PWhiT/ligQue6vocGH9J5rJp4OPG6mMwFTC51+g/GdmhgZw2Tu3+4Klg/nhrspQ8yZzU
+         uLOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770477759; x=1771082559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1770479792; x=1771084592;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=clWv6MMAerLjp6KJnFnGBnvJGSBom/0zmYqwMTULdjU=;
-        b=I44+b1LRMicoHl6jCAEnHNu9bXp6E2Gaohrw5UwXZXsvzeri5wlZ4M53tK1yULB+GW
-         2yhN0QBbkcQKah5Cb+q02/eeFBG45uk0sZO//Q9EuTG2kTWXC5ySN0fplhE+0E27o3KE
-         z6pB3x60d6WXw3oYGQoTkU2o4dguMesVG0+6nrX48yvj3IWeP02vB3RMgsfEgjvV+FHG
-         XbcftPpFyYHZK402RnKMuxW8vogpPIR6V9G232WBjNxDUWX9bT41tVXaaPylwnXwa2iR
-         e2PkF4L8FyyXuhikRv9fA53VUa2s/QYj4rz0wDydoyXP6//Fys8TRy0EhaMBNwrPKUGJ
-         eRQA==
-X-Forwarded-Encrypted: i=1; AJvYcCW4PVJBhwWaTVN3oyceveYpO86RjF12Fw/r80sIYfteiR5g2wVtKzb7NUL8t6IfG04linfbofFp5v7v5SXr9w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvchvIXH4CBDdQAvB7gKq+cYorA5jtk9swWv3ilHAM9AqjCARV
-	TEtm5YAixDki3IzrtMZef8KJzeSFF94cIbPAdVyNTPIYb/ofWeKhG6PqMVIeqz8Q7t0V9nlctFt
-	3KgDpls3MFujzt7OmNrK3eWk9pq7oeKg=
-X-Gm-Gg: AZuq6aJDYOIHXasS39HM0cdf+AEydoGezD5dryuna2BkEPynQ3mLSIRIAB0l2aHs0DB
-	RXLtXTXm0+z7wGZx5zc5mpDf4piFa4Qarpa8/DKlHYZrhpcou0/IXZaObyrsUA3rdxEXoBG6Uyb
-	I1kaeOnGIr0/qrDrWzIkUyx8vr7JLPL/3F4Vr+04z1ALgEKDmAWUJAIS1XiYaXJUfc+mOmqocaq
-	P2Pio3Gur2Sr610ZxJJCnTfU9L1RyU8P70ePMsrmZe0OcxixVkG0+Xi00pJ3426yg8GvgLxRngX
-	k0lY9W5AOUlA802kVimjf25maAjcCRdh99DeQBPrGSdSGcvfO90D26P76M4QD/Q7L8+NDPHRgdr
-	GtC9KyrH87DWtdVWceptt6Vw3GVcC1Ua9/fY=
-X-Received: by 2002:a05:7301:2b87:b0:2ab:ca55:8940 with SMTP id
- 5a478bee46e88-2b856c577d4mr1666254eec.7.1770477758946; Sat, 07 Feb 2026
- 07:22:38 -0800 (PST)
+        bh=Lsv3J6NdVcTt1SFQJ7wC7ZpknXmPlIZzamEjxZSqFto=;
+        b=sV7RC9hOTBxkY00UWg6qfISH08gWm0bo8PES0iF4h0J6QBaKwjnnhb5TXJCLZyh3Yx
+         xo9/EDwHs9gKxzI/F08k+PvrdgKCweBl42YTlSheoAi0mk8eJrD5EG0NzEt5x6eauEcl
+         gIoBIfsT+Rbs3/ilte+vyIS2eFZ5Y12r7/QCYohJGV97J/D1m7h5jMsTuV41deolTJG+
+         NZGlo97FU83B+YBaR58PnhbZfIEGBOh5n/hJmIdi1umO+ZmmJRNhS5G1fbYzBZioN+ZB
+         y4EqkUI7G4HYK7Zy2oqbgmNc3Js/xlPRaZNpOmA3jqwGZRjUdQuUyo48iosdSqdWsUFb
+         eCdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXfJOsuDbOd2dNaJ4ZNLd2CvtDanaDAioDbXylCOqqb297zHxk70dgsDpTYU8yGqtAh5NBgcTfnR4yUHBCSDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCbG6LsGYXF0PQft2RngNUJXM7Gdby0i6gcepoZ98dRdmJUYWU
+	09YJrz4uHGGIXitt+V/wyiS1/Ev5nybUiNxWcNcNh5mIT+7kZCLEzPYq
+X-Gm-Gg: AZuq6aLzdtmiu/qScCrSVBeJbb/X8rb3pjPhs5IGp8F0AJN7Sm/WHOz7j0Zj4oGklEA
+	Qr8ZEAg3yrZAIV/s8/3t2VIqNhmLCrGR9CHBHdyDnpkx1DgTzmffe1hrDD3pTDyaSz5NfNgGoev
+	dBnF4lan5JsU9+/mVkrGstqbRzaegqG4vOxh0s9rL8ssOtDTktEsNU7BypyoL17dIdQ/79Z5rL3
+	y001z04N5MQP167U2O6ZH23NydE0tKqjBRf1Di/yF/pa3HX1MuMEGabuE1QsAe9/kIAJqoNu3Qq
+	nSgQi4Ia1tuh5MCPRVrDFnp6Q72EedubRikiWsmd/SHSZM+tlEkVxukxeanmaPlRxh6EfO7/gsn
+	ZIDBRiVoCNQox6UTQ6cd5Saym1VuljaOtdh7iPx32aOvRnA890OWPymEb5t5fSfHopMAUm5WwGU
+	UZ3miCeetY65sYAJTAFcYQZBkCGFNl+ChYZFJxaLx66+0ZTKZhzOKlc+naijxdMZo1e1aqHVAHW
+	x0=
+X-Received: by 2002:a05:7300:a494:b0:2ae:5e93:b6d with SMTP id 5a478bee46e88-2b856a3bcacmr3153653eec.38.1770479791680;
+        Sat, 07 Feb 2026 07:56:31 -0800 (PST)
+Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:22c3:7b0e:5e40:3e51])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855c3db4asm4936561eec.18.2026.02.07.07.56.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Feb 2026 07:56:30 -0800 (PST)
+From: Jason Hall <jason.kei.hall@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Joe Perches <joe@perches.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Gary Guo <gary@garyguo.net>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jason Hall <jason.kei.hall@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH v6] scripts: checkpatch: move Rust-specific lints to separate file
+Date: Sat,  7 Feb 2026 08:56:27 -0700
+Message-ID: <20260207155627.122810-1-jason.kei.hall@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CANiq72=68-daT3J_NVvp+7NkGFWFPGQmwoXn4m54VYeRKPUkbA@mail.gmail.com>
+References: <CANiq72=68-daT3J_NVvp+7NkGFWFPGQmwoXn4m54VYeRKPUkbA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260207144356.3063613-1-gary@kernel.org>
-In-Reply-To: <20260207144356.3063613-1-gary@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 7 Feb 2026 16:22:25 +0100
-X-Gm-Features: AZwV_Qh-JsCh-9gqmkPwE8cNcW2MhjKv6BPVBI2JdNpRu_vDXQpIgbQ4c7F3rAI
-Message-ID: <CANiq72mhhSKV=CecnZnqhKrt9tpGdMu1hePJtGDgRiD4JG902A@mail.gmail.com>
-Subject: Re: [PATCH] rust: build: remap path to avoid absolute path
-To: Gary Guo <gary@garyguo.net>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Janne Grunau <j@jannau.net>, Asahi Lina <lina+kernel@asahilina.net>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Feb 7, 2026 at 3:44=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
->
-> So, fix this by remap all absolute paths to srctree to relative path
-> instead.
+Create scripts/rust_checkpatch.pl for Rust-specific linting logic.
+Add a conditional loading hook in scripts/checkpatch.pl to call it.
+This will allow Rust linting logic to be maintained independently.
 
-In case it matters to Kbuild, we had a relatively recent revert
-related to this flag:
+Add a new entry to the MAINTAINERS file to track this new file.
 
-  dbdffaf50ff9 ("kbuild, rust: use -fremap-path-prefix to make paths relati=
-ve")
-  8cf5b3f83614 ("Revert "kbuild, rust: use -fremap-path-prefix to make
-paths relative"")
+Suggested-by: Joe Perches <joe@perches.com>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-linux/linux/issues/1191
+Signed-off-by: Jason Hall <jason.kei.hall@gmail.com>
 
-  https://lore.kernel.org/rust-for-linux/20250511-kbuild-revert-file-prefix=
--map-v1-0-9ba640c8411e@weissschuh.net/
+---
+---
+ MAINTAINERS                |  6 ++++++
+ scripts/rust_checkpatch.pl | 15 +++------------
+ 2 files changed, 9 insertions(+), 12 deletions(-)
 
-From what I see in the thread (but I didn't get a confirmation back
-then), the issue was some developers relying on invoking the debugger
-in a different working directory than the `srctree`.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2c0bdd08b74c..57831dc30e6b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5880,6 +5880,12 @@ R:	Lukas Bulwahn <lukas.bulwahn@gmail.com>
+ S:	Maintained
+ F:	scripts/checkpatch.pl
+ 
++CHECKPATCH RUST LINTS
++M:	Jason Hall <jason.kei.hall@gmail.com>
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++F:	scripts/rust_checkpatch.pl
++
+ CHECKPATCH DOCUMENTATION
+ M:	Dwaipayan Ray <dwaipayanray1@gmail.com>
+ M:	Lukas Bulwahn <lukas.bulwahn@gmail.com>
+diff --git a/scripts/rust_checkpatch.pl b/scripts/rust_checkpatch.pl
+index 69db5ded7371..56c1bc29d3f2 100644
+--- a/scripts/rust_checkpatch.pl
++++ b/scripts/rust_checkpatch.pl
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env perl
+ # SPDX-License-Identifier: GPL-2.0
+ #
+-# (c) 2026, Jason K. Hall <jason.kei.hall@gmail.com>
++# (c) 2026, Jason Hall <jason.kei.hall@gmail.com>
+ 
+ use strict;
+ use warnings;
+@@ -9,17 +9,8 @@ use warnings;
+ sub process_rust {
+     my ($line, $rawline, $herecurr) = @_;
+ 
+-    # check for Rust unwrap/expect
+-    if ($line =~ /^\+/) {
+-        if ($line =~ /(?:\.|::)(?:unwrap|expect)\s*\(/ &&
+-            $rawline !~ /\/\/\s*PANIC:/ &&
+-            $line !~ /^\+\s*\/\// &&
+-            $line !~ /^\+\s*assert/) {
+-            return ("RUST_UNWRAP",
+-                    "Avoid unwrap() or expect() in Rust code; use proper error handling (Result) or justify with a '// PANIC: ...' comment.\n" . $herecurr);
+-        }
+-    }
++    # Reserve for future Rust-specific lints
+     return ();
+ }
+ 
+-1;
+\ No newline at end of file
++1;
+-- 
+2.43.0
 
-Thanks Gary!
-
-Cheers,
-Miguel
