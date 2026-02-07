@@ -1,80 +1,46 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0672EC0BF;
-	Sat,  7 Feb 2026 05:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BDF279DAB;
+	Sat,  7 Feb 2026 07:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770440676; cv=none; b=UVmkUMSGRD5K1vx0ddkOPR8WjF/p0usoOt43IIMdqW97mUXnSLaQRdpymG/jLh/hDSqFxge2Txp3onLucZK5t7VFsO75WHhfHpcFi3fx0m/AmJA78a1iFClb8y2lZXlzr/vu57jo1sKbOcTDGgecqyM5wm0v/0y+tk/43XFKGds=
+	t=1770450924; cv=none; b=fpKCN3bJINUbRBUTTRObU0k0fAuQs1XkTiXUuquVHpw5sw6CTc2stfZY/E4CnIrrtCTqQcD1erWAhf9s5qyPFwXhA/QXLMpbKNsXtcNuq62fzss2dXrHHAJcrcs5Fc7OHh3YRSUDyi74ARWBS3MpKCUSe4b3sxNw/2If4yOI1yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770440676; c=relaxed/simple;
-	bh=ngYaAqvtxnSUbIiuZTs7bVh1k+OObb19G2nulu3ITjQ=;
+	s=arc-20240116; t=1770450924; c=relaxed/simple;
+	bh=uw4oMfnDHnjeg17cVPyrWV/dLPWO1ilGSLjGKagVj2c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SxTAKHuXnEotqD+kSBDxHQ7IYKC7mSwiulzKVG9FjVhAHZebdy7E2yWmZZbZKFVKKXDgRtFVDw1Imf7cg3IEvCSgqWP5KMw1E82Nyj8ClMKf6Op62OsElNnxR8nu4CcKJdtd917IEM87U4+cVnTTPdgKU61midm2ymYKzDv5g+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RRGNusUw; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=WkHjGMCfUJjs8AdgDZO2gA6Ysk6nl8GaZuKs5aTHAjloPIl0Jf2CbNE05bbU9712hA53jkEcQgUNdRrcoOVRiuO1YEVUKj3QUWI6PfnoYj9Ndf9X9fFAztlxKS3cj6D+fwB3AuX1LmSuDX8yRfbdQMQI1xLc1iATw5jZyjq1ngc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mINqwlol; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RRGNusUw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770440676; x=1801976676;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ngYaAqvtxnSUbIiuZTs7bVh1k+OObb19G2nulu3ITjQ=;
-  b=RRGNusUwHzrFr634TQx/nmo248bWDX+qJXb+uXSnc3Qn70K8J20WYYNy
-   T6H8kFwZFYozQIozutcYyS5idxN+2TMlIQ3jvuZDnkqtxjMNt8veMk6Ii
-   jFVTjP1Q7E/TBxS7NlAIpTjfCfuM3OywD1ynQpgPXtOFFe3C/4rLg75VF
-   u3S2m7pQsZkNq8gZPxaRQ4U3kfbKzWCWh+oGCzsUPp24AFFv6OPw/9igA
-   PghHRMOlkHlJUFEU/3axmOa/TqDouCAP85YOvvwZyxjyYcHiPrGrhFkXQ
-   g3VEDzC7fs+8kgy1S0iR16zBqMKsbDq7fwxFM5ZiHgek/gjBKl0K+JDSh
-   Q==;
-X-CSE-ConnectionGUID: Rmd+xssDQXqHGDXpMyNmRA==
-X-CSE-MsgGUID: lHEOagmuS0CyRdAQCBLjBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11693"; a="71547746"
-X-IronPort-AV: E=Sophos;i="6.21,277,1763452800"; 
-   d="scan'208";a="71547746"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 21:04:36 -0800
-X-CSE-ConnectionGUID: AQ6xvpxDQgOxgrsduql4fA==
-X-CSE-MsgGUID: F95+kT66TyiVclkjb3H2oQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,277,1763452800"; 
-   d="scan'208";a="215567363"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 06 Feb 2026 21:04:30 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1voaUd-00000000lOq-1wWT;
-	Sat, 07 Feb 2026 05:04:27 +0000
-Date: Sat, 7 Feb 2026 13:04:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mINqwlol"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BF7C116D0;
+	Sat,  7 Feb 2026 07:55:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770450924;
+	bh=uw4oMfnDHnjeg17cVPyrWV/dLPWO1ilGSLjGKagVj2c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mINqwlolIAkxXsjr9jWr3yhF4wdEGmQpatco6MBflxLUOGbCBWz0yCz4osJz+hN2y
+	 20to2g5rP6ytNtPi4h0jdvGLv145QkHXy+7JeuqErk+wu0lRDp/LY7mVNN26gBrPpy
+	 412I3aHslCR7LfycSvGC+AwY8vRP9OKQKJ4TbQ1Q=
+Date: Sat, 7 Feb 2026 08:55:21 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux-foundation.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: Re: [PATCH v2 11/11] rust: xarray: add preload API
-Message-ID: <202602071349.6yvINDvm-lkp@intel.com>
-References: <20260206-xarray-entry-send-v2-11-91c41673fd30@kernel.org>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>, Alban Kurti <kurti@invicto.ai>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] workqueue: rust: add work item runtime modification
+ support
+Message-ID: <2026020748-italicize-joyride-cb57@gregkh>
+References: <20260203215555.832171-1-hamzamahfooz@linux.microsoft.com>
+ <2026020440-herbs-tranquil-d0a5@gregkh>
+ <aYZX+8tHkjmBflnh@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,64 +49,27 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260206-xarray-entry-send-v2-11-91c41673fd30@kernel.org>
+In-Reply-To: <aYZX+8tHkjmBflnh@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 
-Hi Andreas,
+On Fri, Feb 06, 2026 at 01:07:07PM -0800, Hamza Mahfooz wrote:
+> On Wed, Feb 04, 2026 at 06:24:18AM +0100, Greg KH wrote:
+> > On Tue, Feb 03, 2026 at 01:55:55PM -0800, Hamza Mahfooz wrote:
+> > > This feature is required for our Hyper-V VMBus reimplementation effort.
+> > > As it provides the ability to modify the running state of work items at
+> > > runtime.
+> > 
+> > This is great, BUT we need to see the user of this new code at the same
+> > time before adding it to the kernel tree.  Why not just submit this as
+> > part of your patch series for the rust hyperv stuff?
+> 
+> I don't have the rest fully fleshed out quite yet. So, mostly just
+> working on getting the prerequistes in a good state. I can mark it as an
+> RFC if that is preferable.
 
-kernel test robot noticed the following build errors:
+Just send it all when you feel it is ready, no need to ask us to review
+an api when you don't even have working code that uses it for you to
+determine if it works or not :)
 
-[auto build test ERROR on 18f7fcd5e69a04df57b563360b88be72471d6b62]
+thanks,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Hindborg/rust-xarray-minor-formatting-fixes/20260207-051500
-base:   18f7fcd5e69a04df57b563360b88be72471d6b62
-patch link:    https://lore.kernel.org/r/20260206-xarray-entry-send-v2-11-91c41673fd30%40kernel.org
-patch subject: [PATCH v2 11/11] rust: xarray: add preload API
-config: arm64-randconfig-001-20260207 (https://download.01.org/0day-ci/archive/20260207/202602071349.6yvINDvm-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260207/202602071349.6yvINDvm-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602071349.6yvINDvm-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0432]: unresolved import `kernel::mm::sheaf`
-   --> rust/kernel/xarray.rs:33:9
-   |
-   33 |     mm::sheaf::{
-   |         ^^^^^ could not find `sheaf` in `mm`
-   |
-   note: found an item that was configured out
-   --> rust/kernel/mm.rs:22:9
-   |
-   22 | pub mod sheaf;
-   |         ^^^^^
-   note: the item is gated here
-   --> rust/kernel/mm.rs:21:1
-   |
-   21 | #[cfg(not(any(CONFIG_SLUB_TINY, CONFIG_SLUB_DEBUG)))]
-   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
---
->> error[E0433]: failed to resolve: could not find `sheaf` in `mm`
-   --> rust/kernel/xarray.rs:75:18
-   |
-   75 | impl kernel::mm::sheaf::KMemCacheInit<XArrayNode> for XArrayNode {
-   |                  ^^^^^ could not find `sheaf` in `mm`
-   |
-   note: found an item that was configured out
-   --> rust/kernel/mm.rs:22:9
-   |
-   22 | pub mod sheaf;
-   |         ^^^^^
-   note: the item is gated here
-   --> rust/kernel/mm.rs:21:1
-   |
-   21 | #[cfg(not(any(CONFIG_SLUB_TINY, CONFIG_SLUB_DEBUG)))]
-   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+greg k-h
