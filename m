@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE15F33E34C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0E733E346;
 	Sat,  7 Feb 2026 11:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770464223; cv=none; b=T92+78AoSOTAs2we+TM212Tj9ifnAlos4/lsYQ/p+6mPLdb7zKjZosLoKUHGVURhqJfiM0wJhVZdn3l7XlTGnQWfi7MIRhTKepI1UwNZV9ALnc4n7nqyxmJJpLaowrGTihLq4dlyKATZijCAkR/75ZBeT9Ga36etl2WJKQu7HWc=
+	t=1770464223; cv=none; b=NpBTy2hwAfaem4CWNGEsGD7cQLcReEG+5Xb1eDSN1AYamoT9PA3r4keW6bYnuReVGDhwtG2TpEqFg81zYWyXQsRpfl/aA2R0Lv9ubTZNLBhRxOm7HCrZ07Glz0VLXaX1NsekWLO5HZ4axRT6tUvjOkMnNqp4r5Har6ko7iwwZds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770464223; c=relaxed/simple;
-	bh=Vu6LCkHLEagnBlnc2yB95toUMOvp1Ep3fa6cqun+Mxw=;
+	bh=FyMsfRksnV7rJFrVFyGIsI8M1GFYOiy/knSgCLU8ejo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bHB9iDj0jWTXD2p/D+o6cbmdRWGe3JqCz7e7vOA4mTOlw4GM7LjtXu5xCfkiRi4/AlrXRKeQvTgoV26W03VtbO5+HfZcmozrh14Sg0nMVhYNKzRZH7Jay8Bag9rM1HF5QxpApxJlZN3yIfzOxTA0sO+EiTjIticQYMndzeHtTic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BvAg59y2; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=UlTInetkMDsQmcGpy5ulJBfNwDNdMtyBnV9bL6MSQvjVmEmtu5Rpmes1ZKi5LK9Tm6IgtTUt4QdqcAPxA5OcyzPLja4ylcPLUNn6rE1c+n5hL/AW20Xx8i/PsxdMYMBcXX+NnvcteEOw/zY7C9ofutRSh3QpqOVzfyxrC0P0Xbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSv0tQ5d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BvAg59y2"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 74AEAC19422;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSv0tQ5d"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AB2EFC2BCB0;
 	Sat,  7 Feb 2026 11:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1770464223;
-	bh=Vu6LCkHLEagnBlnc2yB95toUMOvp1Ep3fa6cqun+Mxw=;
+	bh=FyMsfRksnV7rJFrVFyGIsI8M1GFYOiy/knSgCLU8ejo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=BvAg59y2Ggc9mD6wdNKjrbo2e14P+XEwLFZilNYgfwFr8UeME2p6iWYofE27rRn+o
-	 ob8yD/XdWSvp3WIbzkq2IxY1O9TEOjYPt+ZTdTVWx7PUQGSgA8x8uASm7reuc0G3kz
-	 jGrn09fkoy2NdZGKzDJLpCHewCgpmib6JcwdZJanyyzQ0+CNiHe4o0XMuHDhtiCf2O
-	 NmMd+dpVfFMILQJPzifx5s1zBfk0PLTspYshtgIpdd/+MgaR1b2uxQcJHOMmi6rxDU
-	 aSkhJHsZKvy5b1WIzzLylA5NCSKyO31JA5bVR82OlxhhH1AxxwpnZH8U5NYwTdgbg3
-	 IADxXTaGDaTFQ==
+	b=eSv0tQ5donQ1Lb7xGH99sej03Ekn1+JuxQpWnLFcYkW4aeBFUSX4xI6oCfxCjh8it
+	 WvX94G+/Tu58329tnap+sP4aeFvwbWdC+Wh975hN7f+0mU1oWPc/ih5orXsV7m+cyc
+	 bnPQeL26xiR7HiqERrQflBkKN9yKiyim341DOPWereupX0YspcMIhLznjmMF9dDm/f
+	 VXk+5+liUOyuxS1a0m1v7NOfEKf1ckJrXhzlD6iPS355nQSpnY1SbumC+fpkhWrU/4
+	 EhK1qxOvxK16R51f4rEYYjMMcQTr8w3WL0Afet/qJdJ0kaWm3EXom++neEiwu9nrcu
+	 LOPZJJY01Cy8Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62CA5EE0ADA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EC67EE0ADA;
 	Sat,  7 Feb 2026 11:37:03 +0000 (UTC)
 From: Shivam Kalra via B4 Relay <devnull+shivamklr.cock.li@kernel.org>
-Date: Sat, 07 Feb 2026 17:02:47 +0530
-Subject: [PATCH v3 1/4] rust: alloc: introduce Shrinkable trait
+Date: Sat, 07 Feb 2026 17:02:49 +0530
+Subject: [PATCH v3 3/4] rust: alloc: add KUnit tests for Vec shrink
+ operations
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260207-binder-shrink-vec-v3-v3-1-8ff388563427@cock.li>
+Message-Id: <20260207-binder-shrink-vec-v3-v3-3-8ff388563427@cock.li>
 References: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
 In-Reply-To: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
 To: Danilo Krummrich <dakr@kernel.org>, 
@@ -59,11 +60,11 @@ To: Danilo Krummrich <dakr@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Shivam Kalra <shivamklr@cock.li>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770464219; l=3225;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770464219; l=8169;
  i=shivamklr@cock.li; s=20260206; h=from:subject:message-id;
- bh=jpKzN865IppJi7C0CyvO1g4N4Vl1EkzCBuFHxaHO0OE=;
- b=zhIqUwyAdly7/oTkm+yQc7lOMHTvmT3Eo+4h5sTrfCeCRighkyX4B4LuahXY3vuFS4AiuoOh5
- KZTu2KbaoCsA/CSSM/LXWseQ3QK9QxZ/Y+AZtY+8JRmdF6nL8f4hLnk
+ bh=NHTvS6dyqkW3XRY4+kOP853dlPQBD1euqXKRvwPwRzM=;
+ b=e0veNa+pVF5XE5buNoXhgDCwpn/qL2W0am/1lsecsDXVsQ3QhZYkH+iDPcmf7Aexl2WmqDJ/u
+ Tic5PXAM7jKCEOJNGA4JSox4fJ3Hb/vdbpxEuqs7Nos+tGBJYwCMTtj
 X-Developer-Key: i=shivamklr@cock.li; a=ed25519;
  pk=vMC4wm7HuB8IdkiHldCdtuViW0NTnShcRaMF50MWRFQ=
 X-Endpoint-Received: by B4 Relay for shivamklr@cock.li/20260206 with
@@ -73,83 +74,222 @@ Reply-To: shivamklr@cock.li
 
 From: Shivam Kalra <shivamklr@cock.li>
 
-Introduce the `Shrinkable` trait to identify allocators that can
-meaningfully reclaim memory when an allocation is shrunk.
+Add comprehensive KUnit tests for `shrink_to` and `shrink_to_fit` methods
+across different allocator backends (Vmalloc and KVmalloc).
 
-In the kernel, the slab allocator (`Kmalloc`) uses fixed-size buckets,
-meaning a "shrink" operation often results in the same bucket size being
-used, yielding no actual memory savings. However, page-based allocators
-like `Vmalloc` can reclaim physical pages when the size reduction
-crosses a page boundary.
+The tests verify:
+- Basic shrinking from multiple pages to less than one page
+- Data integrity preservation after shrinking
+- No-op behavior when shrinking would not free pages
+- Empty vector shrinking
+- Partial shrinking with min_capacity constraints
+- Consecutive shrink operations
+- KVVec shrinking behavior for both small (kmalloc-backed) and large
+  (vmalloc-backed) allocations
 
-This marker trait allows generic containers (like `KVec` or `KVVec`) to
-determine at compile-time or run-time (via `is_shrinkable`) if a
-shrinking operation is worth performing.
+These tests ensure that the shrinking logic correctly identifies when
+memory can be reclaimed and that the `Shrinkable` trait implementation
+works as expected.
 
 Signed-off-by: Shivam Kalra <shivamklr@cock.li>
 ---
- rust/kernel/alloc/allocator.rs | 48 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ rust/kernel/alloc/kvec.rs | 185 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 185 insertions(+)
 
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index 63bfb91b36712..615799b680b55 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -251,6 +251,54 @@ unsafe fn realloc(
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index 22a327d69c06..e7d4ba11c2b0 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -1505,4 +1505,189 @@ fn add(value: &mut [bool]) {
+             func.push_within_capacity(false).unwrap();
+         }
      }
++
++    /// Test basic shrink_to functionality for VVec.
++    ///
++    /// Verifies that:
++    /// - Shrinking from multiple pages to less than one page works correctly.
++    /// - Data integrity is preserved after shrinking.
++    /// - Shrinking an already-optimal vector is a no-op.
++    /// - Requesting a min_capacity larger than current capacity is a no-op.
++    #[test]
++    fn test_shrink_to_vmalloc() {
++        use crate::page::PAGE_SIZE;
++
++        let elements_per_page = PAGE_SIZE / core::mem::size_of::<u32>();
++        let initial_pages = 4;
++        let initial_capacity = elements_per_page * initial_pages;
++
++        let mut v: VVec<u32> = VVec::with_capacity(initial_capacity, GFP_KERNEL).unwrap();
++
++        for i in 0..10 {
++            v.push(i, GFP_KERNEL).unwrap();
++        }
++
++        assert!(v.capacity() >= initial_capacity);
++        assert_eq!(v.len(), 10);
++
++        // Shrink from 4 pages to less than 1 page.
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++
++        // Verify data integrity.
++        assert_eq!(v.len(), 10);
++        for i in 0..10 {
++            assert_eq!(v[i], i as u32);
++        }
++
++        assert!(v.capacity() >= 10);
++        assert!(v.capacity() < initial_capacity);
++
++        // Already optimal: should be a no-op.
++        let cap_after_shrink = v.capacity();
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++        assert_eq!(v.capacity(), cap_after_shrink);
++
++        // min_capacity > capacity: should be a no-op (never grows).
++        v.shrink_to(initial_capacity * 2, GFP_KERNEL).unwrap();
++        assert_eq!(v.capacity(), cap_after_shrink);
++    }
++
++    /// Test that shrink_to is a no-op when no pages would be freed.
++    ///
++    /// Verifies that:
++    /// - When current and target capacity both fit in one page, no shrink occurs.
++    /// - The shrink_to_fit wrapper behaves identically to shrink_to(0).
++    #[test]
++    fn test_shrink_to_vmalloc_no_page_savings() {
++        use crate::page::PAGE_SIZE;
++
++        let elements_per_page = PAGE_SIZE / core::mem::size_of::<u32>();
++
++        let mut v: VVec<u32> = VVec::with_capacity(elements_per_page, GFP_KERNEL).unwrap();
++
++        for i in 0..(elements_per_page / 2) {
++            v.push(i as u32, GFP_KERNEL).unwrap();
++        }
++
++        let cap_before = v.capacity();
++
++        // No page savings: capacity unchanged.
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++        assert_eq!(v.capacity(), cap_before);
++
++        // shrink_to_fit wrapper: same behavior.
++        v.shrink_to_fit(GFP_KERNEL).unwrap();
++        assert_eq!(v.capacity(), cap_before);
++    }
++
++    /// Test shrink_to on an empty VVec.
++    ///
++    /// Verifies that shrinking an empty vector to capacity 0 frees the allocation.
++    #[test]
++    fn test_shrink_to_vmalloc_empty() {
++        use crate::page::PAGE_SIZE;
++
++        let elements_per_page = PAGE_SIZE / core::mem::size_of::<u32>();
++        let initial_capacity = elements_per_page * 2;
++
++        let mut v: VVec<u32> = VVec::with_capacity(initial_capacity, GFP_KERNEL).unwrap();
++        assert!(v.capacity() >= initial_capacity);
++
++        // Shrink empty vector: frees allocation.
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++        assert_eq!(v.capacity(), 0);
++        assert_eq!(v.len(), 0);
++    }
++
++    /// Test partial shrink and consecutive shrink operations.
++    ///
++    /// Verifies that:
++    /// - Shrinking with min_capacity > len but still saving pages works.
++    /// - Consecutive shrink calls maintain data integrity.
++    #[test]
++    fn test_shrink_to_vmalloc_partial_and_consecutive() {
++        use crate::page::PAGE_SIZE;
++
++        let elements_per_page = PAGE_SIZE / core::mem::size_of::<u32>();
++
++        let mut v: VVec<u32> = VVec::with_capacity(elements_per_page * 4, GFP_KERNEL).unwrap();
++
++        // Fill with ~2.5 pages worth of elements.
++        let target_elements = elements_per_page * 2 + elements_per_page / 2;
++        for i in 0..target_elements {
++            v.push(i as u32, GFP_KERNEL).unwrap();
++        }
++
++        // Partial shrink: 4 pages -> 3 pages (min_capacity > len).
++        let min_cap_3_pages = elements_per_page * 3;
++        v.shrink_to(min_cap_3_pages, GFP_KERNEL).unwrap();
++        assert!(v.capacity() >= min_cap_3_pages);
++        assert!(v.capacity() < elements_per_page * 4);
++        assert_eq!(v.len(), target_elements);
++
++        for i in 0..target_elements {
++            assert_eq!(v[i], i as u32);
++        }
++
++        // Consecutive shrink: verify layout remains consistent.
++        let cap_before = v.capacity();
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++        assert!(v.capacity() >= target_elements);
++        assert!(v.capacity() <= cap_before);
++
++        for i in 0..target_elements {
++            assert_eq!(v[i], i as u32);
++        }
++    }
++
++    /// Test KVVec shrink with small allocation (kmalloc-backed).
++    ///
++    /// KVmalloc uses kmalloc for small allocations. Since kmalloc cannot reclaim
++    /// memory when shrinking, shrink_to should be a no-op for small KVVec.
++    #[test]
++    fn test_shrink_to_kvvec_small() {
++        // Small allocation: likely kmalloc-backed, shrink should be no-op.
++        let mut v: KVVec<u32> = KVVec::with_capacity(10, GFP_KERNEL).unwrap();
++        for i in 0..5 {
++            v.push(i, GFP_KERNEL).unwrap();
++        }
++
++        let cap_before = v.capacity();
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++
++        // Kmalloc-backed: capacity unchanged (is_shrinkable returns false).
++        assert_eq!(v.capacity(), cap_before);
++        assert_eq!(v.len(), 5);
++    }
++
++    /// Test KVVec shrink with large allocation (vmalloc-backed).
++    ///
++    /// KVmalloc falls back to vmalloc for large allocations. When vmalloc-backed
++    /// and page savings are possible, shrink_to should actually shrink.
++    #[test]
++    fn test_shrink_to_kvvec_large() {
++        use crate::page::PAGE_SIZE;
++
++        let elements_per_page = PAGE_SIZE / core::mem::size_of::<u32>();
++        let initial_capacity = elements_per_page * 4;
++
++        // Large allocation: likely vmalloc-backed.
++        let mut v: KVVec<u32> = KVVec::with_capacity(initial_capacity, GFP_KERNEL).unwrap();
++        for i in 0..10 {
++            v.push(i, GFP_KERNEL).unwrap();
++        }
++
++        assert!(v.capacity() >= initial_capacity);
++
++        // Shrink from 4 pages to <1 page.
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++
++        // Vmalloc-backed with page savings: should shrink.
++        // Note: If allocation happened to use kmalloc, capacity won't change.
++        // This test verifies the path works; actual behavior depends on allocator.
++        assert_eq!(v.len(), 10);
++        for i in 0..10 {
++            assert_eq!(v[i], i as u32);
++        }
++    }
  }
- 
-+/// Marker trait for allocators that support meaningful shrinking.
-+///
-+/// Shrinking is only meaningful for allocators that can actually reclaim memory. The slab
-+/// allocator (`Kmalloc`) uses fixed-size buckets and cannot reclaim memory when shrinking,
-+/// so it does not implement this trait.
-+///
-+/// For `Vmalloc`, shrinking always makes sense since it uses page-granularity allocations.
-+/// For `KVmalloc`, shrinking only makes sense if the allocation is backed by vmalloc (checked
-+/// at runtime via `is_vmalloc_addr`).
-+///
-+/// # Note
-+///
-+/// Currently, shrinking vmalloc allocations requires explicit alloc+copy+free because
-+/// `vrealloc` does not support in-place shrinking (see TODO at `mm/vmalloc.c:4316`).
-+/// Once `vrealloc` gains this capability, the shrink implementation can be simplified.
-+///
-+/// # Safety
-+///
-+/// Implementors must ensure that [`Shrinkable::is_shrinkable`] returns `true` only when
-+/// shrinking the allocation would actually reclaim memory.
-+pub unsafe trait Shrinkable: Allocator {
-+    /// Returns whether shrinking an allocation at the given pointer would reclaim memory.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` must be a valid pointer to an allocation made by this allocator.
-+    unsafe fn is_shrinkable(ptr: NonNull<u8>) -> bool;
-+}
-+
-+// SAFETY: `Vmalloc` always uses vmalloc, which allocates at page granularity. Shrinking a
-+// vmalloc allocation by at least one page will reclaim that memory.
-+unsafe impl Shrinkable for Vmalloc {
-+    #[inline]
-+    unsafe fn is_shrinkable(_ptr: NonNull<u8>) -> bool {
-+        true
-+    }
-+}
-+
-+// SAFETY: `KVmalloc` may use either kmalloc or vmalloc. We check at runtime using
-+// `is_vmalloc_addr` to determine if shrinking would be meaningful.
-+unsafe impl Shrinkable for KVmalloc {
-+    #[inline]
-+    unsafe fn is_shrinkable(ptr: NonNull<u8>) -> bool {
-+        // SAFETY: `ptr` is a valid pointer by the safety requirements of this function.
-+        unsafe { bindings::is_vmalloc_addr(ptr.as_ptr().cast()) }
-+    }
-+}
-+
- #[macros::kunit_tests(rust_allocator)]
- mod tests {
-     use super::*;
 
 -- 
 2.43.0
