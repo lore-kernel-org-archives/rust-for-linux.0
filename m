@@ -1,161 +1,208 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675801E8337
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Feb 2026 14:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B800318A93F
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Feb 2026 14:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770559273; cv=none; b=j5EWTbNi9aZAI11byUvVrnlVCVgaoFtHGBHP1EGeCjEyM7ruuoYlTBfC6uJp0/n/xU03OtkNZoBppS1q/YS5dKozM2GLsu0tDZwe+yhhrZcnTu+iYrp+hCKBOLYPa6g69o6mchF0Otwp6+EXM9BJojiK68+DCcEgY91AVBxXemw=
+	t=1770561063; cv=none; b=mlmDSm+6+MQOlOfx+ggNmsR8VjJPjyrihk06KyS2dFoT07qnIX6JVKiJZB9qe0QocsNsRC5bBvZBMlFJBmRgDx5+kzibMmvt+sF46mFFIICzu+ypndVrzWU2ONqeBnb2BgkCcU9WAM8pOrboqwZLQisYhAdSxlO0l3IQgKaUOsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770559273; c=relaxed/simple;
-	bh=umceI7vizZ4P181DAwDZX2JP5p8gIIHrTMmWUxzt7os=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9x1XoIZAzjpHn3QYUmXW7CxV6pQw4ZLiEg1zhO9Zg1OYg5p3MWWBmUtW/siFJXFrUKOiqATPYyFotdqvCTY2yWBV9rkZ2cuC6ZrN9h7HeUhzH5HNGrqNeqBF4B7O5Y6ndt113E6fiKWLfSq6h0zJ+Hw2rWUYSHJElEWa6t2zSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kfRa+KPf; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770561063; c=relaxed/simple;
+	bh=pbCkEkWa1lWZlwrhkBS8CLXpb2GK6lzpuJAYBPRvdqo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aSL/1u8mn9RhDwEXf7m5sFhd2wwYc57jSHrgYUbyXVncNB036oKVPaaLjmG0PJJNUurwCJIOZeaTukCeI331IwHGTaajKcK9w3HhgknOW1vbLe3Zorty2QvblIUoXm8wjrpZI9vtBme97fUz62Jon3GXEbnjsKXCH+oZsudXOtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=l2uPh3Y+; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kfRa+KPf"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b6b0500e06so3450458eec.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Feb 2026 06:01:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770559272; x=1771164072; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MrmAJYa1aBa1Jp5ZX6d6/0/lVj7Z617W41SQYUSKTTM=;
-        b=kfRa+KPfIkjsk/RaM74wb16Yh4QaTFtb23PP+IZujvQ6MErSlGM1BQeZapLBR1tII1
-         eEdv+ewTeTeHXB6WUl1g3KwnllFTSYE3Hr4V9VD4QkfnlrIkPv6dmr6fmsnC53lcQb1k
-         MS2kuhPSUS5qAm2yzP8fhT1ampUVu4uamG3iaS1mqrnR/r6h/SZJcHLSFcWt4qXgG8iE
-         NRvTo7S8E1PEXwsAwst+r+wDAstghZrLhSUZpUBUDFPK4pBb6itvL6tQO/VKT+S2/wHW
-         kvog3bWdrEzhU7NvcR6VpnxCuJtjb+GZA59xuI2YHQQ6Pwqc7M5HZugvbGKDI7RTepGy
-         ip0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770559272; x=1771164072;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MrmAJYa1aBa1Jp5ZX6d6/0/lVj7Z617W41SQYUSKTTM=;
-        b=GG6bBtRmHLGTwxdFtXgQYpYQy3yN+OQx18E3Ry48/uhjkvozPwoXXTHconNNQMGoaK
-         D5LQgzv5piqdH5GQbIExLIkR7tmpM1IjN8PRI8ACU5tSZ0bFSpmvn7uuu8+pdNwSyYhA
-         Yl0xIHgonIRUYIIGhdVSU2buSo/p7+fT+HK8TVHNkkB4M07Psq+JUoG343DYexp78Ex4
-         5cT/zkqodOiThZV0Nk4sBw2UFpMOmOk2bgkIYgc6Uh9cJenSnG4RkqAUoy34lDGkd8Bj
-         Ku5bPxnDPJTVZPFe+62+6ljnKelvsc7oUd7gbEur9mTsKA/js1UrDCD2gTTy8Eqb+RWo
-         nEpA==
-X-Forwarded-Encrypted: i=1; AJvYcCWaRBdtGEdTprNvLy7zzhmyEs0DxmpYordnhF2X7yVvUckvyvmFd0nT5vRjOO7kl0Y4qZ79tQLiYwJTM8eZHw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5JcGNOAbaDCIn1NAEslv3PDHxQJaVbLjtyvio0CkBHEyHFIFI
-	OPf1gs7iaYzTDtLSXZOs5R0g8Nfvy4YNiwdLPyzz4idahGKBnG+Jn7Kn
-X-Gm-Gg: AZuq6aJ6KBCfp/EwSDlej8MrLxcRTINQGakL3oRxDi/9UksFrPftPOK9st+iZzXhkg9
-	4lpjTK82bPeothObSfLdh4F149N/Z6CrP91LPnWieL4wwsk0D/MaYQpz4IycCGBi0G0c/2QbZPi
-	3qADAQevB7507l8KQS0YY9PyQJoz/ChpLkKKaHdhmGwgCuTNW2iX4UBp7hjHFx1rU0Kg1JVzyaY
-	XgHh/zxqrDkwwzNxLJULa0YBXOQemq3nnqKhYK9qzfgghwMTEvscgzsOb3z5JOK5dak8pAYZXPv
-	92rtxnWUEAWJFoDGP/36FQI5FbRSLp+l19FBZ+LYm3W43S3cdr0Iyji5MQtu7afIDhC3hszcbr+
-	0XAvWdgspanpsl6LjunfLOkmmltKPCrWvgkCsvzUbnV6zRt4w7Ncvd3sETuZwhB7/LgvnWih2pK
-	D5CVsXEjOU0/TcJ2D+QnNoH9JPXVgHbvjberl/j/HUJQSFIXoK3S8c4kCjnv1ADP0=
-X-Received: by 2002:a05:7300:4347:b0:2ba:6c13:bcc1 with SMTP id 5a478bee46e88-2ba6c1410d1mr525091eec.13.1770559272332;
-        Sun, 08 Feb 2026 06:01:12 -0800 (PST)
-Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:b70:255d:b0d5:dc80])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855af7806sm5799442eec.10.2026.02.08.06.01.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Feb 2026 06:01:11 -0800 (PST)
-From: Jason Hall <jason.kei.hall@gmail.com>
-To: Dirk Behme <dirk.behme@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 2/2] scripts: checkpatch: add RUST_UNWRAP lint
-Date: Sun,  8 Feb 2026 07:01:10 -0700
-Message-ID: <20260208140110.258311-1-jason.kei.hall@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <9ecadaa2-0f6b-411f-9faf-0ecc93b26bc2@gmail.com>
-References: <9ecadaa2-0f6b-411f-9faf-0ecc93b26bc2@gmail.com>
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="l2uPh3Y+"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id C9ECF240106
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Feb 2026 15:30:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1770561054; bh=RtHV67lTv9EOToX4HKMd2z97lTyUYkFAyY7IYrI5Y8I=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=l2uPh3Y+kPzBi7z6hYTwkrkklWN3se3S9vD+T9PpRXVr+GW2EfsFXyrne+VRRlZ8Z
+	 /VBc8+DoIN3QiRLKT0SXyV5gX4ay3hszaEUu9w1S8JmoqjUW+ouSKS00bgNR2dlG0L
+	 hSSeu9UbQqtr3SqWXVg66BHurN+DAhEiCnq83tM+cnXKBCZyseaEs5ZN3hIq4Hqc+H
+	 6QUfxLATgR7WMvTDqscycBLi2G2zSCLhRnuw/K17NK6n5YuF5uQhPd8EADa0u+cFh8
+	 ZorhDxHzNY2Ltk/yuFG1MKjTwTR/CzJzomGBr+I//C8/WAVCqzKcQ4lDE8jWgL6fK0
+	 nzoN7p5bGYNaA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4f89H04cDxz6tw2;
+	Sun,  8 Feb 2026 15:30:52 +0100 (CET)
+Message-ID: <40a161f055ad3410bba82c1a07fb3c674241c599.camel@posteo.de>
+Subject: Re: [PATCH RFC 2/4] rust: add basic serial device bus abstractions
+From: Markus Probst <markus.probst@posteo.de>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Kari Argillander <kari.argillander@gmail.com>, Rob Herring
+ <robh@kernel.org>,  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri
+ Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,  Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>,
+ linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Date: Sun, 08 Feb 2026 14:30:54 +0000
+In-Reply-To: <DFNN75KWL8B9.1YHK1ZRV43W7O@kernel.org>
+References: <20251220-rust_serdev-v1-0-e44645767621@posteo.de>
+	 <20251220-rust_serdev-v1-2-e44645767621@posteo.de>
+	 <CAC=eVgSmD+bYh48gZteAaqwSHvcHes3CFmbUUBu=6UQ6fKCUJg@mail.gmail.com>
+	 <76491897ad6e0ff2749935c39702b93adc9951d6.camel@posteo.de>
+	 <DFNN75KWL8B9.1YHK1ZRV43W7O@kernel.org>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-eJFpwtfDL2KVNYqwXGEV"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Hi Dirk,
 
-I have been playing around with the lint logic. It now identifies 
-when we enter a test-related block (like mod tests, #[test], or KUnit 
-macros) and suppresses the warning for that specific context. 
+--=-eJFpwtfDL2KVNYqwXGEV
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This handles the false positives you encountered in the Binder patch 
-while still catching "lazy" unwraps in production logic.
+On Tue, 2026-01-13 at 18:37 +0100, Danilo Krummrich wrote:
+> On Tue Jan 13, 2026 at 5:15 PM CET, Markus Probst wrote:
+> > > > +impl<T: Driver + 'static> Adapter<T> {
+> > > > +    const OPS: &'static bindings::serdev_device_ops =3D &bindings:=
+:serdev_device_ops {
+> > > > +        receive_buf: if T::HAS_RECEIVE {
+> > > > +            Some(Self::receive_buf_callback)
+> > > > +        } else {
+> > > > +            None
+> > > > +        },
+> > > > +        write_wakeup: if T::HAS_WRITE_WAKEUP {
+> > > > +            Some(Self::write_wakeup_callback)
+> > > > +        } else {
+> > > > +            Some(bindings::serdev_device_write_wakeup)
+> > > > +        },
+> > > > +    };
+> > > > +    const INITIAL_OPS: &'static bindings::serdev_device_ops =3D &b=
+indings::serdev_device_ops {
+> > > > +        receive_buf: Some(Self::initial_receive_buf_callback),
+> > > > +        write_wakeup: if T::HAS_WRITE_WAKEUP_INITIAL {
+> > > > +            Some(Self::initial_write_wakeup_callback)
+> > > > +        } else {
+> > > > +            Some(bindings::serdev_device_write_wakeup)
+> > > > +        },
+> > > > +    };
+> > > > +    const NO_OPS: &'static bindings::serdev_device_ops =3D &bindin=
+gs::serdev_device_ops {
+> > > > +        receive_buf: None,
+> > > > +        write_wakeup: Some(bindings::serdev_device_write_wakeup),
+> > > > +    };
+> > > > +
+> > > > +    extern "C" fn probe_callback(sdev: *mut bindings::serdev_devic=
+e) -> kernel::ffi::c_int {
+> > > > +        // SAFETY: The serial device bus only ever calls the probe=
+ callback with a valid pointer to
+> > > > +        // a `struct serdev_device`.
+> > > > +        //
+> > > > +        // INVARIANT: `sdev` is valid for the duration of `probe_c=
+allback()`.
+> > > > +        let sdev =3D unsafe { &*sdev.cast::<Device<device::CoreInt=
+ernal>>() };
+> > > > +        let info =3D <Self as driver::Adapter>::id_info(sdev.as_re=
+f());
+> > > > +
+> > > > +        from_result(|| {
+> > > > +            let data =3D try_pin_init!(Drvdata {
+> > > > +                driver <- T::probe(sdev, info),
+> > > > +                initial_data: Some(Default::default()).into(),
+> > > > +                late_probe_data: None.into(),
+> > > > +            });
+> > > > +
+> > > > +            sdev.as_ref().set_drvdata(data)?;
+>=20
+> This does not work, a driver can obtain its device private data with
+> Device::<Bound>::drvdata() [1].
+>=20
+> For this the driver must assert the correct type, but since you use a pri=
+vate
+> type instead of the type given by the driver, i.e. T, Device::<Bound>::dr=
+vdata()
+> will always fail for the driver.
+>=20
+> [1] https://rust.docs.kernel.org/kernel/device/struct.Device.html#method.=
+drvdata
+>=20
+What do you suggest as alternative? Besides from the "initial data"
+debate, I still need to store at least one `Completion` to ensure
+safety.
 
-I tested the scenarios laid out below.
+Thanks
+- Markus Probst
 
-Proposed Logic:
+--=-eJFpwtfDL2KVNYqwXGEV
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-my $in_rust_test_context = 0;
+-----BEGIN PGP SIGNATURE-----
 
-sub process_rust {
-    my ($line, $rawline, $herecurr) = @_;
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmmIng8bFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSzswP/ik5HY82phd018DfnX1G
+dDFSTHX2EnWIE7yRL42WXt0dw5xSggMdJyYgurH96oew8etCbOezIgBUBoSZA5cP
+JvKdKKljBmIaRmI/b+A2+oaWFAuYytlhjINTfGwkwZ2wN32il5L2dSK9EMO5MPFi
+KoZfOpUCUG9jbN3iCW9+0CvwrZoOTrc+4As740hxTkKIFDpGNcJ3zM6upw8y0jNG
+XQHVoZ+Mu14QEsCH8gZzG0d/aCgDkymkCCCtpToHhtEkIbzmrY61hZP4/FY+yNmi
+gzeFonPcDoSdltvgb+uU89vcbeJq3whIzIkB4TlqB1iK8CwxUfEFJb7kCLXgqYoI
+h7JbIOe5uvOCo0cljuOs+p46n3lqEOr77p1YMjCCNeyY/OIPotDn9jGVb/Xcujjy
+GUN5RM8ImVLsKUL/F57+hvS25Uqc6uBZhqFqtadXlMNGsnXYh7DKOXLnR2qKKKwO
+Tms1ZEjgtq7AOrLbWD3s92Y2jOhzMxiwnPe4WZvb7a4WaCtGy1X6MTzp3vYNy1WB
+pzn0GJDKqkrLS+3/ZU4FCy7z8WbHMvyKXkeesH/7Fi07yvCgcA2s8vQyev9TmmUM
+mruB6OirajYGsdT9i/AAs3JnISaveF736Tup5EtKK8JMl5ejtOVTGHXQBneGbRoD
+Ri8nrvr4pIyt46SuB5ftiBfY
+=iIVa
+-----END PGP SIGNATURE-----
 
-    if ($rawline =~ /^(?:@@|diff --git)/) {
-        $in_rust_test_context = 0;
-    }
-
-    if ($line =~ /^\+\s*(?:mod\s+tests|#\[.*(?:test|kunit))/) {
-        $in_rust_test_context = 1;
-    }
-
-    if ($line =~ /^\+/ && !$in_rust_test_context) {
-        if ($line =~ /(?:\.|::)(?:unwrap|expect)\s*\(/ &&
-            $rawline !~ /\/\/\s*PANIC:/ &&
-            $line !~ /^\+\s*\/\// &&
-            $line !~ /^\+\s*assert/) {
-            return ("RUST_UNWRAP", "...");
-        }
-    }
-    return ();
-}
-
-Scenarios:
-
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -42,6 +42,7 @@
-     pub fn new_with_data() -> Self {
--        let x = Some(1);
-+        // Scenario 1: Production code (SHOULD WARN)
-+        let val = some_kernel_function().unwrap();
-         Vec { ptr: NonNull::dangling(), len: 0 }
-     }
- 
-@@ -150,6 +151,13 @@
-+    // Scenario 2: Explicitly justified (SHOULD NOT WARN)
-+    pub fn proof_of_concept() {
-+        let x = core::ptr::NonNull::new(ptr).unwrap(); // PANIC: ptr is never null here
-+    }
-+
-+    // Scenario 3: Already a comment (SHOULD NOT WARN)
-+    // let x = something.unwrap();
-+
-@@ -200,10 +208,20 @@
-+#[test]
-+fn scenario_4_standalone_test() {
-+    // SHOULD NOT WARN because of #[test] above
-+    let v: KVec<u32> = KVec::with_capacity(1, GFP_KERNEL).unwrap();
-+}
-+
-+#[macros::kunit_tests(rust_kvec)]
-+mod tests {
-+    use super::*;
-+
-+    fn test_internal_logic() {
-+        // Scenario 5: Inside KUnit mod (SHOULD NOT WARN)
-+        // Dirk's specific 21 warnings happened in a block like this.
-+        let mut v = KVec::new();
-+        v.push(1, GFP_KERNEL).unwrap();
-+        assert_eq!(v.pop().unwrap(), 1);
-+    }
-+}
-
-If this looks okay, I can resubmit the patch series with this.
-
-Best regards,
-Jason
+--=-eJFpwtfDL2KVNYqwXGEV--
