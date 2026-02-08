@@ -1,43 +1,42 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65563358B1
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Feb 2026 12:34:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4481B4138
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Feb 2026 12:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770554099; cv=none; b=D1L/F7pma16UWUpNUJaPNyZJCjNZic5N0LiAAkhV4XryBSLEhOcjoEX3gAOEWherlUyx7HZLoX1OOmcbM3Cg4xX4xMHFL46JD2viCs8tKvsDOCFHcz7O80i7n5M8clINDU2A/deCL3FOAKOtWHuEuYLrNlu/SdBJtDGnJBo81aw=
+	t=1770554710; cv=none; b=r41gCZmLdULdS6OvyMvcFxHlM8/MpJfvIIFMV2KJheDuaYy+CHUL+tlhLKYcBi/SF8OAcOliq+6J9dalrsoQAG2ymJnDVuw/n2RqQ4OYa6tumSt1Y0DsK/5v1Zp5Md44n9FQdEBXUUdQAJc8NpT9P8QAQGCL6SAlk1cv4aYqxjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770554099; c=relaxed/simple;
-	bh=juguovnNh5Dyvmv7EuaALJ6VLYEM93Of1tPlNEETgPY=;
+	s=arc-20240116; t=1770554710; c=relaxed/simple;
+	bh=D+EUYBUZjIsc6u5gxPTv8LEey3MhOBiiMYBJSL6skcc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R9kfeIi2VbP2lU5LKTLDlO4eFzkGoTL0MB1lNxWmXLc2rs8R9MQHJGsbuIvjY2wWA5UbYG0Y3LLYQVuDSzQHbpL8U62FcfA3WseMjCS7FL7jo+thQEULZr89HHbB96XQo6zQygKpWvsJxTDxzmFwYME9IxaCSPCbneHjZdJQ+N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z5ZEDnby; arc=none smtp.client-ip=91.218.175.182
+	 In-Reply-To:Content-Type; b=GBCySgMA8Yb8aQsFEWh/caoJmclAXMKEZaub5c/KbwjJHq7Gi9v2TLaySqM8BAImCOB0llkuXuJt81kTzlGzFVl+apIw9YWUQCkzxNnUmzNEqs1QjVzPeuoBQyfOGwyL964zuG3iOdJNRqhkJ7Wm7f9sIxV96dS4Wu5hs+o1/zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YaxASlQ5; arc=none smtp.client-ip=91.218.175.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Z5ZEDnby"
-Message-ID: <70302f35-918e-4dc8-b4f4-30b86064251c@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YaxASlQ5"
+Message-ID: <00b38d6a-a334-4e9b-b8ae-172f3ea16cb1@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770554096;
+	t=1770554698;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5TQyY62mNFaoAbw8K8f9cLsQDP0nS5guZ05j72G3wQM=;
-	b=Z5ZEDnbyEthFJv1Cd2qyVLTaRevsYYIR7T6PuG+KvaIb/hsHF/q+5uVYypHvtakASn2TU/
-	Y9z2a8+oGx/O7wZ/f570iZZo5JbsJzzjwNJAMxn3x2ZHTaBpA+4rEjw2KwV8z+pL0E2o9E
-	k+FA5wkeDVa8/mqQTkMUlj0z6Zp83v8=
-Date: Sun, 8 Feb 2026 12:34:46 +0000
+	bh=R5pvPzHQRA687G7iFYxf5JKbuac/N6m1mxI8gk+AN1s=;
+	b=YaxASlQ5lRZKoMi6lSwCy9V49yUvk5iKJt/vIGNlhUU7fzxTg7f4wSAaYU9Zbz1TRb6wNC
+	qZ8nmTkzTxMOR1t8nc+xZBzRJfuf2WYpj0BKz6nMK9dOKZU7qOkOzIsgjstoRY/zaFI5zg
+	+iOk6/44udOClRGPUxo9YrY+wN5Z7+E=
+Date: Sun, 8 Feb 2026 12:44:53 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/5] rust: extend I2C functionality
-To: Danilo Krummrich <dakr@kernel.org>,
- Igor Korotin via B4 Relay <devnull+igor.korotin.linux.gmail.com@kernel.org>
-Cc: igor.korotin.linux@gmail.com,
+Subject: Re: [PATCH 4/5] rust: i2c: add I2C wrappers
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Markus Probst <markus.probst@posteo.de>, igor.korotin.linux@gmail.com,
  Daniel Almeida <daniel.almeida@collabora.com>,
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
@@ -46,60 +45,60 @@ Cc: igor.korotin.linux@gmail.com,
  Trevor Gross <tmgross@umich.edu>,
  Wolfram Sang <wsa+renesas@sang-engineering.com>,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-i2c@vger.kernel.org, markus.probst@posteo.de, brgl@kernel.org,
- gregkh@linuxfoundation.org, rafael@kernel.org, driver-core@lists.linux.dev
+ linux-i2c@vger.kernel.org
 References: <20260131-i2c-adapter-v1-0-5a436e34cd1a@gmail.com>
- <DG2UELGNDQDS.1LR5TLOZTSC29@kernel.org>
+ <20260131-i2c-adapter-v1-4-5a436e34cd1a@gmail.com>
+ <4b6d9f389862aa4d2c43394cdacde059c4cbba5e.camel@posteo.de>
+ <93559442-38a9-4b6b-9cbb-7bb500ab1738@linux.dev>
+ <DG6C66CP0EB4.25ZLDO70LFB7K@kernel.org>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Igor Korotin <igor.korotin@linux.dev>
-In-Reply-To: <DG2UELGNDQDS.1LR5TLOZTSC29@kernel.org>
+In-Reply-To: <DG6C66CP0EB4.25ZLDO70LFB7K@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
 Hello Danilo
 
-On 1/31/2026 2:26 PM, Danilo Krummrich wrote:
-> (Cc: Bartosz, Greg, Rafael, driver-core)
+On 2/4/2026 4:59 PM, Danilo Krummrich wrote:
+> On Wed Feb 4, 2026 at 5:49 PM CET, Igor Korotin wrote:
+>> I'm not sure it is appropriate to use IO and register! here. I2C devices
+>> are different. Not all of them use register like access. For example
+>> EEPROM I2C devices allow random read/write operations inside their
+>> address space. After all I2C doesn't implement the same way of accessing
+>> its memory space as for example PCI devices.
 > 
-> On Sat Jan 31, 2026 at 3:12 PM CET, Igor Korotin via B4 Relay wrote:
->> This patch series extend the existing I2C functionality with:
->> - Abstractions allowing to implement I2C algorithms used by I2C adapters;
->> - Abstractions allowing to create and add new I2C adapters;
->> - Safe wrappers upon I2C and SMbus transferring C API: read/write
->>    bytes/words/byte arrays.
->>
->> The patch series contains additional new sample driver `rust_i2c_adapter`
->> presenting the new functionality.
+> Conceptually, it is not different, it is some device memory connected through
+> some bus.
 > 
-> The i2c_adapter code on the C side has some lifetime issues, Bartosz looks into
-> resolving.
+> Memory mapped I/O allows "random read/write operations" as well, see
+> memcpy_fromio() and memcpy_toio().
 > 
-> My biggest concern is that struct i2c_adapter is a bus device implementation,
-> but does not use the reference count of the embedded struct device.
+> The same thing is true for DMA memory. While it's not owned by the device, it's
+> still shared with a device.
 > 
-> Instead, I2C bus drivers embedd the i2c_adapter in their driver specific
-> structure, which is typically freed in the I2C bus driver's remove() callback.
+> Gary just started working on a generic IoView<'io, T> type which will serve as a
+> general abstraction to interact with any kind of memory that is shared between a
+> device and the CPU [1].
 > 
-> This violates struct device reference counts.
+> So, for I2C this would mean that if you have register like accesses you can use
+> the register!() abstractions. If you want random read/write operations, you can
+> use IoView to copy from / to system memory or even to a user buffer directly.
 > 
-> Until this is fixed, the Rust abstractions should probably work around this, to
-> subsequent painful rework.
+> Of course you can also still use Io::read32() and friends.
+> 
+> [1] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Generic.20I.2FO.20backends/with/571786051
 
-just to clarify what is currently implemented on the Rust side.
+thanks, that makes sense.
 
-The Rust I2cAdapter is required to be bound to a parent Device<Bound>. 
-The implementation keeps a reference to the embedded struct device 
-inside struct i2c_adapter for the entire lifetime of the Rust adapter, 
-so its lifetime is tied to the device model.
+I don’t have a strong prior opinion on how this should look yet, so I’m 
+fine aligning the I2C abstractions with the generic direction you 
+describe. Using register!() for register-like accesses and IoView for 
+more general read/write patterns seems reasonable.
 
-I am not entirely sure which specific lifetime or refcounting scenario 
-you are referring to. If you have a concrete case in mind where this 
-would still be problematic, could you please point it out?
+At this point I’ll treat this as the intended model and adjust the I2C 
+side accordingly once IoView is in place and its API settles.
 
-Cheers
+Regards,
 Igor
-
-
-
