@@ -1,157 +1,125 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99828346797
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Feb 2026 10:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA2C2BD59C
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Feb 2026 11:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770546965; cv=pass; b=QfGqIT9WB8pWPhX5B0TlXf8TO7QmcS8Z/RoHR2h/CqP4HL/PhM1V4NIvJz3IITYyab1JVIO25Hp94aBV4yUX2QBD1AkL40ilJWFOyypQDu6/fZxLC1xk9Uyxl5+x6d8ZwGEaPgE8xpFavnInoOKHpXIu1wcGghyos2mVfwx+XU4=
+	t=1770548650; cv=pass; b=A1nOCgGswjfOC3TtVXLfJOO9ochYmqQOOmoGRBV8rMYsEqdI9EfXW5lS8axGZlW9EsBpL4uun8oIlbPnji54chAJlke3LYXZGUrDRE+xtsBNo9kMZfDVzLHKpbfJaNNFHhPgWhKQtp5s1LKkGexyUPsbK97FibWDcpH0PWuHmFo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770546965; c=relaxed/simple;
-	bh=9O1wrWh3odojrrpWa3rmcifMg4603V9NZnEbcjcOIp0=;
+	s=arc-20240116; t=1770548650; c=relaxed/simple;
+	bh=CsNWPa8nRGpboGQ5lGfmNf4LauhVBQGyeKOsESLX8uY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BOTnJ/IOuVJPkIO5Kkq3QxrlZZOWrEl2wg80C1cMeX/5CEgi808b88QKLD1LBwSbd1mgBodvsHNI7v9FaLCJroaYOzQuWZED6nDH2XJtBIOSIMId8jzIGx6fHb1PTqCCig+mzF23sh7UIdGZ6QMdLVbqLItMPkrulm2xFy6wo6g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WP0LvGkM; arc=pass smtp.client-ip=74.125.82.182
+	 To:Cc:Content-Type; b=o0EzcbQmXUOLoQOA1vEeGsH2djtHssrpXmHj8hi/vOafHaqWAIwYav2Xs5TwvJHWBUIShunpQ1+le8Oq1WIIt+zRsbrJIDMUVFvLMOrRI6/WviCCeFFe1/JJi/Q2abNw+fuSl/jO6HjZ08yxlwaJhx8pJ5nlRVU3v6AS69SELR0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CxiBwl43; arc=pass smtp.client-ip=74.125.82.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WP0LvGkM"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2ba6904dd88so17191eec.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Feb 2026 02:36:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770546965; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CxiBwl43"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2ba6737fafbso16054eec.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Feb 2026 03:04:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770548649; cv=none;
         d=google.com; s=arc-20240605;
-        b=QeBQlkEnaaUfqz0g3jtlOcPv7L8+TdwEChhFSSIYC0DfPAVSUE8YyGjIVtbjSid8/A
-         M2uXgrCJHRsqV+D3FbvpLFjV5DYYz/jOXZlZBm36bgxc/EpNvkB20mLL6zhLT2YD5cdY
-         cHsiW7R/tdCdu5DWvBHLhwJePYPOpNWQzC53HwjbAyr/46aMACyI1fCt2KD59buE0gaC
-         sedtYBt6p8tR8ZKHU4NiusMNKhOaQDWDqjtqizhusaIqVZXZY25nCqLKDFU5IywarKid
-         wsHJrR8IxxEtoXVajNXezO7lZnq3MMvrQr+SWWJiX1qnHn0lgKYfuHhfHtVEtxts0PXO
-         htow==
+        b=foosMBbIKz0bm3+VlC/vFJNVEdr5poy8ZVQ54WN6kpUBK+ty27YdTqrvu4NGyDvn8B
+         gFgnIz0IAel7cgATJ+87ddfll4SYMjedqYZARsNqOoyk+5QQb5l9LIfVLVFPafcJSbco
+         K/eJa49961xut4kI9asVDHAzpzKRHC2YJCbckEG18MjTuzWSaAkCJq0G0oiVbOm9Y5Cl
+         zv6W7N/MKqTX870IM3KwpyvVIGdoLbXUgl1+pxV3pG4UzcNVCWXfsD1WuXekDD9xUrjW
+         xdJDr/e8bN43/r8TQAcaQq9LPJeTKocns1dgv+VVhuD02LshXZ6zN20hczfNG7qZMTOe
+         +VMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=9O1wrWh3odojrrpWa3rmcifMg4603V9NZnEbcjcOIp0=;
-        fh=1d2ptVGrK5vO69v06KzoZeiXzGZa1cl82G+p325mKIs=;
-        b=SsaeKdrrp08JdhzcmS0uKnRTQu2yWx1CwOqYgg8yEUe7vn4koKLLwSoaMfRYAipRXg
-         ScpJaa+xNQ8NgMMoJ3oPN6uRNjboaBbSPs++rZM3QbgYNfYz3lySPv52f62dQICbzGG+
-         Tu/bT1pSeKZpitupQP/zCR33NggwgIHNf2crCW+UFT7Q2O+v0YvEbtLUKuOqzHPk9jJ7
-         +l5iXCCMn52vEEyw2sQBOjqyD2YyG4brcN8NFX5RHroz/wFykXGnhQva+ZnCCr994U8z
-         bk5sgpxKLhs+tUNEQKzuBT2YdQCrhURutbhLjsbjdTBZMFzFuS+tx8OsMi3pO1CA/Wo3
-         mgMw==;
+        bh=CsNWPa8nRGpboGQ5lGfmNf4LauhVBQGyeKOsESLX8uY=;
+        fh=el1ou1GCi1Chn/vd4JHtrjexN2Dd7G9JuDGA7ETTpWI=;
+        b=b5npV1csJJcYf4tHpS3mo13+RZX1kc9T9kssOF7IiKNzV0am3WTqrLIow/F2sA2kNl
+         RMZJLwJsW1LwSEc6fDxc1s7uN62No80y97D0sNCpllkVtJhDF6HqF/6rmWPJpx81v6A1
+         LHt1GV+Y8FTZp/f9LuvxAr7yrbcOioyhVVoDeLgxXTpScjti6NbgzLS8FBxK+9RKzEW3
+         SgWEbtTfSQGuyOPkYZcJcHpCbaNFoUaSHyY+BpWNOMzqFUJasoCuYU2DFzpLs2f09eOu
+         ZGp8Qg6SrOMZqLTJG69ajt34oUq8uUTSgkfRXp0XNDn6Yrm81Rs5Ij5E4kOQTGfTB3lB
+         gFaQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770546965; x=1771151765; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1770548649; x=1771153449; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9O1wrWh3odojrrpWa3rmcifMg4603V9NZnEbcjcOIp0=;
-        b=WP0LvGkMM7mVQRJhYIoXk1xKtuc467gglERL7CkEyKEZTdJk7O3QGPA+Rip8tHJXbb
-         y9FKCb9ED/o0LFKD+CQSwBIN2CckVgPagXTdWVx6a/EwFhkhuO/iDrzf4hKgFNP4OT3P
-         bR4X0YUgBAjAgRUd2QPXozHJ8taE3KMDXPiXHWIYv/+eiwoduHnTPkdiyPjCVh6E7ldc
-         1mt6sj02lxcux24QcXESd2z1TUTCkOxfYfwwDdLfE4b4VsD4KpVhCjPSMkoV1cvBGGnz
-         5a0M5LTL2txTgOHaYT87pmPP+NSa1B7XYMPgmxN7oN17QzE3eP61odYZ1m48zllAmhXz
-         t/0Q==
+        bh=CsNWPa8nRGpboGQ5lGfmNf4LauhVBQGyeKOsESLX8uY=;
+        b=CxiBwl43vYWh1Iy4jF482fZhT/7NgLPHS6Wec9LU+OmS4C54ozZVScHh4n07XTDNVg
+         1oFCOemnOZhEUiAw+3LVnxmBDa4Q4hAs6Bacsb8t4ihO0Yq5N1VAJsFO6Y2lvA2lkw60
+         7yQPL8q+QK7f8eb0KD/dIctC2mzXhb734kHsBng+CR3K9EuzUp+pwONlJLdvqSnzsrr/
+         ken+FekfO5lHJduNsHClbnaqHdme9d1J0Tjj5VRSylEJrW75iPnxfogNwkIE0NyF6toZ
+         zUbA5S6BtkcJKwb9BGRSAwKGTUWWtWtYU0uDdwme/rOVUUDYOgrsCcoxsWRy9j5/rolP
+         LibA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770546965; x=1771151765;
+        d=1e100.net; s=20230601; t=1770548649; x=1771153449;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9O1wrWh3odojrrpWa3rmcifMg4603V9NZnEbcjcOIp0=;
-        b=gw5Moo9DPVbuRNTKQ1PUn1K9KioL7YVd7/rnedUFs91NQIf4fSXM9e/yjKTrpEvhXD
-         YL96YA1upAhqYQP5biqEkOFYWbz2edPLN6n1xBlnIWYY4bJmD8aZQKYToPA46kekQKwx
-         +FE4shX38pfuUvwfFmDdFhW1cGsz9jkvTqMZSC8XEpJMFQ+UqX4jRcUerltBwchTip8i
-         lVpWLvxuc+ZJSx/hnNu8qjQxrlYudiPLgY0JUQgZOo26Ea5zk5z7lxP748MSJLhlzwra
-         oIp/gw9jC1cbGmT4ZHiyutubUBmGr1MovBOoidx7id2lUvDCenuMjiJFqEjOR7AoWSO/
-         egpw==
-X-Forwarded-Encrypted: i=1; AJvYcCVzL+HBdt9gMUrDuLUubyMA6o5l/nkGEJow/FFCEUDkEQ5Ghpn/gC8yQxyGj2zLyra7qwpMCrcawdQVE04sAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx43M6UArNgZ52ZuVMVQiraT36+Z2Hk0VLRfSVfyoi72vsuJXd1
-	ERxH4yHgEuCo3CO0cnba90OkYF/qFjY/AaS6hgpRJwtAiDYTW2nNUNrYJJcQqDj+ZfNgntISzAV
-	t9EoHJlb+/wbo2R1AkCyBNCTaGy9Dkxs=
-X-Gm-Gg: AZuq6aInP8vBnC4yPf+fSBvl6Kh43PoMZaGiWDPgwhly6DQecoMrldnBF7BNSjwvOV6
-	19bXfUl/VXTr0fSWrjebZ7QHF1J6lEom7gMrlsrn3UuSSYttGDzIq1wJC4dg3oqjSVJ9thUmw7A
-	va+XKDwNH8r8lE4n593bF33lBUdUFQTlqud3fSef/pjma2HHKARAgmWl/6+MlRIPbt4cgN8SvHy
-	TcZGIUh9MSA/rlzagNJCJ0styp8j8KY0yPfQzjwhS41G+D3hOISHc9mCtADeDElKqyvRuzjCaoG
-	vA1fJdHOfK922QGLTIkA/yUofZCrCts0AMJgNavjPrNAowhyACm/MUIq6XHCl5ZjAcefI3D9RMe
-	VoZIRN36jl4wp
-X-Received: by 2002:a05:7301:2f96:b0:2ba:705c:c8b5 with SMTP id
- 5a478bee46e88-2ba705cdee0mr51988eec.0.1770546964617; Sun, 08 Feb 2026
- 02:36:04 -0800 (PST)
+        bh=CsNWPa8nRGpboGQ5lGfmNf4LauhVBQGyeKOsESLX8uY=;
+        b=kSEqjKLZirKOT+6svNltza+DGjnHZzwLJBlVf9ysUY9UHt5IwvTaeWAMy//wOD+C5Q
+         F3/xVRfkXsRr0ANwHGW/7zrBuFq4l6VQsVkVxV7dhf9jZoFeA065aDyeGeYreZxBS+qS
+         YyNGby9zdFtTgLYt4t2VdqypKdnEyyU+H/Zi/+JtSYnjeSuQKexJO0G2cFcfN0xTR9Ja
+         8elmprQeiuH9bNCwFtuqoCRXLkJhDT0BxilzaVzQNYqH99mRVd79spddqlwPbxNd0zVL
+         +jIIVD6mApcity8N3jQD4HTrNk1PetRPTtlcqjNUJvVFjmJkA+kHIJflYM2oXwaugA2J
+         HS+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV5nCKra4nlxZG3CNaGPDjA+yHT8YW89XdVxPt7kefkGcruxqgQgVhEbk8xc/ENy250DejQWIvlbmpDuFJNNA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVNmEQzrL8zgLGUXGLLpphbnwcos2rA0PNVuJUtEuVygptovXf
+	58AtrfXcSgOLKfFU4OvnUuz9oVG3pxV3nLcJdfSZpdFVcCsYnSkayz2BKGUJRSP7/gDbMRvMjjb
+	0i9IbhKWNgJjMnCstkECgRUpmud/APM4=
+X-Gm-Gg: AZuq6aKrFo1sKmDYTK6HEJ/r8EdQM6YBWLX8v+7RTCCywz2VQwDO+21jWCcTsDqOb5R
+	+Ff8tJkbqd6tH0qnVPvN6YMycL1azowTVcnIkeF6mI12i2qdIraTZQDNBaZ6wP9iPdwH09Nk6v8
+	faeI8x6WOaDGdUXMI+18QF7/dOiYtZcPeCi/sfipurDtASggKo2T5RBxS/GBNo7n77d8f02V8AF
+	+GZCSD1/t7SRRsgAe7Ml5ECFRS9D36I8LZvNLlD1siheyzg8XRobbvnxdx1tO1PEzm1bMP5604F
+	8+1cUV4ZkAELXm/e+05VQzdNQDVuLnCNMGplXOd70uZrV13ipp3kMpdqPkeVnsBc4A8wbMUXe6c
+	QqG5TffJowwHd
+X-Received: by 2002:a05:7301:2b87:b0:2b7:f145:a98 with SMTP id
+ 5a478bee46e88-2b8563eb1c9mr1959257eec.2.1770548649242; Sun, 08 Feb 2026
+ 03:04:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260206171253.2704684-1-gary@kernel.org> <20260206171253.2704684-2-gary@kernel.org>
- <DG876SZYRBXB.CO3YI3HOE3FR@kernel.org> <DG87KRN75MKZ.1O0TZI77MLIBT@garyguo.net>
- <aYgmENPRTdD4wCVF@yury>
-In-Reply-To: <aYgmENPRTdD4wCVF@yury>
+References: <20260207144356.3063613-1-gary@kernel.org> <CANiq72mhhSKV=CecnZnqhKrt9tpGdMu1hePJtGDgRiD4JG902A@mail.gmail.com>
+ <DG8VP6BH1MPV.13AHBBEMZHOF4@garyguo.net> <20260207220543.GA1670883@ax162> <DG93P7TMCWCH.3ACJU31B2HELW@garyguo.net>
+In-Reply-To: <DG93P7TMCWCH.3ACJU31B2HELW@garyguo.net>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 8 Feb 2026 11:35:51 +0100
-X-Gm-Features: AZwV_Qj9Du_jkMva36ZyaDnahvdaMWuW_Dr2E9c8WWpcJW3fs4Mc_FBQ-9Oqr3A
-Message-ID: <CANiq72k4D0ZPDzBCHY7xq=qOmERHk3e7P8CcKtVHjjjOQhJ+2w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: add `const_assert!` macro
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+Date: Sun, 8 Feb 2026 12:03:55 +0100
+X-Gm-Features: AZwV_QiGAqvY777lSs0t_vpiNfu3S-LU0xFEazl0B1d7VPzfby1MCczbD-EY7Zw
+Message-ID: <CANiq72nwU7C9+atAXoyKbVjM=4coMjxMSLD8YmECUVuw6Jp=_w@mail.gmail.com>
+Subject: Re: [PATCH] rust: build: remap path to avoid absolute path
+To: Gary Guo <gary@garyguo.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Janne Grunau <j@jannau.net>, Asahi Lina <lina+kernel@asahilina.net>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 8, 2026 at 6:58=E2=80=AFAM Yury Norov <ynorov@nvidia.com> wrote=
-:
+On Sat, Feb 7, 2026 at 11:59=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> This is confusing. You begin with "const_assert!() is more powerful",
-> and finally recommend to use a less powerful option.
+> Unfortunately, using remap-path-scope does not give the expected result i=
+n older
+> Rust compiler versions, so the issue reports that I linked will not be re=
+solved
+> with it. It looks like remap-path-scope is working as intended only since
+> https://github.com/rust-lang/rust/pull/149709, so Rust 1.94+ (I haven't
+> double-checked the exact Rust version, but in latest nightly Rust, the re=
+map is
+> working as intended).
 
-The goal is that users use the least powerful one that applies, not
-the other way around, because the least powerful ones fail earlier and
-are generally more robust.
+Linked the stabilization and noted the fix 1.94 PR that we likely need
+and this thread in the `-Zremap-path-scope` entry in
+https://github.com/Rust-for-Linux/linux/issues/2.
 
-I think the first example is intended to show the different ones, but
-I think the wording can be improved -- the one in the existing
-`build_assert!` docs is a bit clearer.
-
-Gary: perhaps we could factor out the explanation/examples to the
-module-level docs, and then link to it from all the three asserts.
-
-> I don't think this compiler implementation details should sneak into
-> the kernel. The compiler may get changed, or whatever else, and this
-> all will become just non-relevant.
-
-How do they sneak into the kernel? Gary is explaining why it is not
-called "link time", precisely because that would expose more details,
-not less.
-
-Regardless, that "link-time" vs. "build-time" discussion is
-independent of this patch, because those docs already exist in the
-tree.
-
-> On the C side we've got similar statically_true() and const_true()
-> macros, but they seemingly have a different meaning:
-
-> Is it possible to maintain consistency with C on rust side? If not,
-> can you take those C comments as the reference for what level of
-> detalization is desired? Maybe pick different names then?
-
-Please explain what inconsistency you are seeing here.
-
-Also, please note that two of the three names have been for years in
-the kernel tree, and that standard C also uses `static_assert` as a
-name. `const_assert` fits the pattern and it literally expands to what
-it says.
-
-Moreover, `const` in C is not the same as `const` in Rust. `constexpr`
-in C is closer to `const` in Rust.
-
-By the way, I am not sure why you suggested `const_true` for the name
-of that C macro -- I think it should be `constexpr_true` instead,
-which is closer to what it does, and it fits the pattern on the C side
-better, too. So that would be more consistent.
+And since it is now stabilized, moved to
+https://github.com/Rust-for-Linux/linux/issues/1223, which I just had
+to create due to GitHub's 64k limit on issue text...
 
 Cheers,
 Miguel
