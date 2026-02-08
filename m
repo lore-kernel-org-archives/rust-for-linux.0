@@ -1,167 +1,161 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7A313957E;
-	Sun,  8 Feb 2026 13:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770559034; cv=pass; b=MxVVy9mfH2kd4ucpF8/eLwCPmucfjKwMh8azuxkBOomfY7N8R/X+wNM9eDxaGlIFxlGvgxbTSz7WuxRavvWx0MAKdORW8Sn5r6iy2urNeiGvGkmK2QUzn7+l1YosqN4L5yMGEPfnYHr8NOd/AmoevIuuaHIAW5CRdYo8HzIOKxM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770559034; c=relaxed/simple;
-	bh=2aqg+v+uPg2CrfFBvLIh8hbrwuy9d5oEUnUfngpB/nE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=M+W3CN1Ol56jL5D15rEwGAhjDnXqgBsJoVF4FArVxLPG4GFjQfoBGzUiaHNzKol1YjClIKon8uTvCRsgz4uC4mq6TX00ZOoHqW6Sk5b+z6KQy0JerbrJqUmoQYfYLQERm0GFwrV9pb/kZsbpXSW4dB0RZlQ6TbR922n6NzXhi6w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=XCmvQzRX; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675801E8337
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Feb 2026 14:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770559273; cv=none; b=j5EWTbNi9aZAI11byUvVrnlVCVgaoFtHGBHP1EGeCjEyM7ruuoYlTBfC6uJp0/n/xU03OtkNZoBppS1q/YS5dKozM2GLsu0tDZwe+yhhrZcnTu+iYrp+hCKBOLYPa6g69o6mchF0Otwp6+EXM9BJojiK68+DCcEgY91AVBxXemw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770559273; c=relaxed/simple;
+	bh=umceI7vizZ4P181DAwDZX2JP5p8gIIHrTMmWUxzt7os=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=s9x1XoIZAzjpHn3QYUmXW7CxV6pQw4ZLiEg1zhO9Zg1OYg5p3MWWBmUtW/siFJXFrUKOiqATPYyFotdqvCTY2yWBV9rkZ2cuC6ZrN9h7HeUhzH5HNGrqNeqBF4B7O5Y6ndt113E6fiKWLfSq6h0zJ+Hw2rWUYSHJElEWa6t2zSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kfRa+KPf; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="XCmvQzRX"
-ARC-Seal: i=1; a=rsa-sha256; t=1770559000; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=JD+0ucMyq2fSurQdg3s79C9VSWJNTWEm8CHe+pu5e8Nzq7y0L+Qb5iytr9YBCJL38dLTanugeCbzuGE1qin1pcwfuEPVjNGB/lXhLOj4u7K+4zWnn0sU88Z+y2UZp3To/fohg3Ru9663aAS2R8zAnw8J1zyzVHoCfkQK8gj5VHo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770559000; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=D3Ks0nXNLCBbay3x5s9T/occqM3ti1EHzUn6BOU1osY=; 
-	b=TfORmAGnNLLuzzRgDZK+mJxAIIj53gBIChdCpSbsVxqs0d+ImiJ+Gf//BeNZ8MfccOa5aGIr8BnVfIYuW2nv3KqqnAy5EdJsxcj+c6EIss4xecjIA6CR9m8PHW9yN8EiTGrtwfmLPio8eyASS9QkZhIc+KVUcpk+gC18WS+VgdE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770559000;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=D3Ks0nXNLCBbay3x5s9T/occqM3ti1EHzUn6BOU1osY=;
-	b=XCmvQzRXuF/U5TonyG6kPYmRbepfn+vJAY0UMTWW6yOMm21vHs1Nr6Ya+3XO1dBJ
-	dgdUhqg8zpzt31xuLfcIDU3cNTvo94H7nnPReGvoqP/JHKq1msW7iCF2NamGICTQ9Dd
-	W1spJDTsIxaRu6wfdaXrDX9zNyVyVfSZukHBiSRE=
-Received: by mx.zohomail.com with SMTPS id 1770558997471764.0545265752776;
-	Sun, 8 Feb 2026 05:56:37 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kfRa+KPf"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b6b0500e06so3450458eec.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Feb 2026 06:01:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770559272; x=1771164072; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MrmAJYa1aBa1Jp5ZX6d6/0/lVj7Z617W41SQYUSKTTM=;
+        b=kfRa+KPfIkjsk/RaM74wb16Yh4QaTFtb23PP+IZujvQ6MErSlGM1BQeZapLBR1tII1
+         eEdv+ewTeTeHXB6WUl1g3KwnllFTSYE3Hr4V9VD4QkfnlrIkPv6dmr6fmsnC53lcQb1k
+         MS2kuhPSUS5qAm2yzP8fhT1ampUVu4uamG3iaS1mqrnR/r6h/SZJcHLSFcWt4qXgG8iE
+         NRvTo7S8E1PEXwsAwst+r+wDAstghZrLhSUZpUBUDFPK4pBb6itvL6tQO/VKT+S2/wHW
+         kvog3bWdrEzhU7NvcR6VpnxCuJtjb+GZA59xuI2YHQQ6Pwqc7M5HZugvbGKDI7RTepGy
+         ip0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770559272; x=1771164072;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MrmAJYa1aBa1Jp5ZX6d6/0/lVj7Z617W41SQYUSKTTM=;
+        b=GG6bBtRmHLGTwxdFtXgQYpYQy3yN+OQx18E3Ry48/uhjkvozPwoXXTHconNNQMGoaK
+         D5LQgzv5piqdH5GQbIExLIkR7tmpM1IjN8PRI8ACU5tSZ0bFSpmvn7uuu8+pdNwSyYhA
+         Yl0xIHgonIRUYIIGhdVSU2buSo/p7+fT+HK8TVHNkkB4M07Psq+JUoG343DYexp78Ex4
+         5cT/zkqodOiThZV0Nk4sBw2UFpMOmOk2bgkIYgc6Uh9cJenSnG4RkqAUoy34lDGkd8Bj
+         Ku5bPxnDPJTVZPFe+62+6ljnKelvsc7oUd7gbEur9mTsKA/js1UrDCD2gTTy8Eqb+RWo
+         nEpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWaRBdtGEdTprNvLy7zzhmyEs0DxmpYordnhF2X7yVvUckvyvmFd0nT5vRjOO7kl0Y4qZ79tQLiYwJTM8eZHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5JcGNOAbaDCIn1NAEslv3PDHxQJaVbLjtyvio0CkBHEyHFIFI
+	OPf1gs7iaYzTDtLSXZOs5R0g8Nfvy4YNiwdLPyzz4idahGKBnG+Jn7Kn
+X-Gm-Gg: AZuq6aJ6KBCfp/EwSDlej8MrLxcRTINQGakL3oRxDi/9UksFrPftPOK9st+iZzXhkg9
+	4lpjTK82bPeothObSfLdh4F149N/Z6CrP91LPnWieL4wwsk0D/MaYQpz4IycCGBi0G0c/2QbZPi
+	3qADAQevB7507l8KQS0YY9PyQJoz/ChpLkKKaHdhmGwgCuTNW2iX4UBp7hjHFx1rU0Kg1JVzyaY
+	XgHh/zxqrDkwwzNxLJULa0YBXOQemq3nnqKhYK9qzfgghwMTEvscgzsOb3z5JOK5dak8pAYZXPv
+	92rtxnWUEAWJFoDGP/36FQI5FbRSLp+l19FBZ+LYm3W43S3cdr0Iyji5MQtu7afIDhC3hszcbr+
+	0XAvWdgspanpsl6LjunfLOkmmltKPCrWvgkCsvzUbnV6zRt4w7Ncvd3sETuZwhB7/LgvnWih2pK
+	D5CVsXEjOU0/TcJ2D+QnNoH9JPXVgHbvjberl/j/HUJQSFIXoK3S8c4kCjnv1ADP0=
+X-Received: by 2002:a05:7300:4347:b0:2ba:6c13:bcc1 with SMTP id 5a478bee46e88-2ba6c1410d1mr525091eec.13.1770559272332;
+        Sun, 08 Feb 2026 06:01:12 -0800 (PST)
+Received: from jason-hall-A520-B.. ([2600:8800:41a0:8000:b70:255d:b0d5:dc80])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855af7806sm5799442eec.10.2026.02.08.06.01.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Feb 2026 06:01:11 -0800 (PST)
+From: Jason Hall <jason.kei.hall@gmail.com>
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 2/2] scripts: checkpatch: add RUST_UNWRAP lint
+Date: Sun,  8 Feb 2026 07:01:10 -0700
+Message-ID: <20260208140110.258311-1-jason.kei.hall@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <9ecadaa2-0f6b-411f-9faf-0ecc93b26bc2@gmail.com>
+References: <9ecadaa2-0f6b-411f-9faf-0ecc93b26bc2@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 2/5] rust: bits: add define_flags macro
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260131-i2c-adapter-v1-2-5a436e34cd1a@gmail.com>
-Date: Sun, 8 Feb 2026 10:56:22 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-i2c@vger.kernel.org,
- markus.probst@posteo.de
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FC15901F-F607-40E8-928F-5EA7F364B0CE@collabora.com>
-References: <20260131-i2c-adapter-v1-0-5a436e34cd1a@gmail.com>
- <20260131-i2c-adapter-v1-2-5a436e34cd1a@gmail.com>
-To: igor.korotin.linux@gmail.com
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Igor,
+Hi Dirk,
 
-> On 31 Jan 2026, at 11:12, Igor Korotin via B4 Relay =
-<devnull+igor.korotin.linux.gmail.com@kernel.org> wrote:
->=20
-> From: Igor Korotin <igor.korotin.linux@gmail.com>
->=20
-> introduce define_flags macro that incorporates BitOr BitAnd and Not
-> implementations.
->=20
-> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
-> ---
-> rust/kernel/bits.rs | 57 =
-+++++++++++++++++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 57 insertions(+)
->=20
-> diff --git a/rust/kernel/bits.rs b/rust/kernel/bits.rs
-> index 553d50265883..6750aef18708 100644
-> --- a/rust/kernel/bits.rs
-> +++ b/rust/kernel/bits.rs
-> @@ -201,3 +201,60 @@ pub const fn [<genmask_ $ty>](range: =
-RangeInclusive<u32>) -> $ty {
->     /// assert_eq!(genmask_u8(0..=3D7), u8::MAX);
->     /// ```
-> );
-> +
-> +/// defines flags
-> +#[macro_export]
-> +macro_rules! define_flags {
-> +    (
-> +        $gen_name:ident($gen_type:ident),
-> +        $($variant:ident =3D $binding:expr,)+
-> +    ) =3D> {
-> +        /// Flags that can be combined with the operators `|`, `&`, =
-and `!`.
-> +        ///
-> +        /// Values can be used from the [`flags`] module.
-> +        #[derive(Clone, Copy, PartialEq)]
-> +        pub struct $gen_name($gen_type);
-> +
-> +        impl $gen_name {
-> +            /// Get the raw representation of this flag.
-> +            pub(crate) fn as_raw(self) -> $gen_type {
-> +                self.0
-> +            }
-> +
-> +            /// Check whether `flags` is contained in `self`.
-> +            pub fn contains(self, flags: $gen_name) -> bool {
-> +                (self & flags) =3D=3D flags
-> +            }
-> +        }
-> +
-> +        impl core::ops::BitOr for $gen_name {
-> +            type Output =3D $gen_name;
-> +            fn bitor(self, rhs: Self) -> Self::Output {
-> +                Self(self.0 | rhs.0)
-> +            }
-> +        }
-> +
-> +        impl core::ops::BitAnd for $gen_name {
-> +            type Output =3D $gen_name;
-> +            fn bitand(self, rhs: Self) -> Self::Output {
-> +                Self(self.0 & rhs.0)
-> +            }
-> +        }
-> +
-> +        impl core::ops::Not for $gen_name {
-> +            type Output =3D $gen_name;
-> +            fn not(self) -> Self::Output {
-> +                Self(!self.0)
-> +            }
-> +        }
-> +
-> +        #[allow(missing_docs)]
-> +        pub mod flags {
-> +            use super::$gen_name;
-> +            $(
-> +                #[allow(missing_docs)]
-> +                pub const $variant: $gen_name =3D $gen_name($binding =
-as $gen_type);
-> +            )+
-> +        }
-> +    }
-> +}
->=20
-> --=20
-> 2.43.0
->=20
->=20
->=20
+I have been playing around with the lint logic. It now identifies 
+when we enter a test-related block (like mod tests, #[test], or KUnit 
+macros) and suppresses the warning for that specific context. 
 
-Please drop this patch in favor of the patch from Filipe Xavier. It does =
-the same thing.
+This handles the false positives you encountered in the Binder patch 
+while still catching "lazy" unwraps in production logic.
 
-=E2=80=94 Daniel=
+I tested the scenarios laid out below.
+
+Proposed Logic:
+
+my $in_rust_test_context = 0;
+
+sub process_rust {
+    my ($line, $rawline, $herecurr) = @_;
+
+    if ($rawline =~ /^(?:@@|diff --git)/) {
+        $in_rust_test_context = 0;
+    }
+
+    if ($line =~ /^\+\s*(?:mod\s+tests|#\[.*(?:test|kunit))/) {
+        $in_rust_test_context = 1;
+    }
+
+    if ($line =~ /^\+/ && !$in_rust_test_context) {
+        if ($line =~ /(?:\.|::)(?:unwrap|expect)\s*\(/ &&
+            $rawline !~ /\/\/\s*PANIC:/ &&
+            $line !~ /^\+\s*\/\// &&
+            $line !~ /^\+\s*assert/) {
+            return ("RUST_UNWRAP", "...");
+        }
+    }
+    return ();
+}
+
+Scenarios:
+
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -42,6 +42,7 @@
+     pub fn new_with_data() -> Self {
+-        let x = Some(1);
++        // Scenario 1: Production code (SHOULD WARN)
++        let val = some_kernel_function().unwrap();
+         Vec { ptr: NonNull::dangling(), len: 0 }
+     }
+ 
+@@ -150,6 +151,13 @@
++    // Scenario 2: Explicitly justified (SHOULD NOT WARN)
++    pub fn proof_of_concept() {
++        let x = core::ptr::NonNull::new(ptr).unwrap(); // PANIC: ptr is never null here
++    }
++
++    // Scenario 3: Already a comment (SHOULD NOT WARN)
++    // let x = something.unwrap();
++
+@@ -200,10 +208,20 @@
++#[test]
++fn scenario_4_standalone_test() {
++    // SHOULD NOT WARN because of #[test] above
++    let v: KVec<u32> = KVec::with_capacity(1, GFP_KERNEL).unwrap();
++}
++
++#[macros::kunit_tests(rust_kvec)]
++mod tests {
++    use super::*;
++
++    fn test_internal_logic() {
++        // Scenario 5: Inside KUnit mod (SHOULD NOT WARN)
++        // Dirk's specific 21 warnings happened in a block like this.
++        let mut v = KVec::new();
++        v.push(1, GFP_KERNEL).unwrap();
++        assert_eq!(v.pop().unwrap(), 1);
++    }
++}
+
+If this looks okay, I can resubmit the patch series with this.
+
+Best regards,
+Jason
