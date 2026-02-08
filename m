@@ -1,108 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315955FDA7;
-	Sun,  8 Feb 2026 08:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770540231; cv=none; b=mKfiofJ4XoPN8YAd93eIfPVcbyAAV+mVeyRMZWDbdbfCOtWcJc6Vxty9lkfROp6aiNgXM6Z731ifr5mg7stEtXbwltA5a3O2cx0iKcg8vQwL8IrIb6SBGZxO45qy5xyki+1e2+0dlroGA9bntSty86J6luZz2U1SXCsDjTqQ4uo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770540231; c=relaxed/simple;
-	bh=qp4LcygetQ4w7VJzBUP8EVokdZaZZfpkPa5NgD/Lhhs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eZdMsgpILM5b3qNG7/NIPZSFzFnPusljpP/ixrxBahCdRXXRliYoZc1u9cGDvpb8xWJYLG7aIWyAo6IEKtbjqK3DZDiKO2ocM+ETMGW2yuKbH7Ft4GJYwNdgGXcdHWjVQ6sg7ehpAEd4OSNClffPbLsAfByEqr9nAPYXuZilfqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1b2OSfv7; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99828346797
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Feb 2026 10:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770546965; cv=pass; b=QfGqIT9WB8pWPhX5B0TlXf8TO7QmcS8Z/RoHR2h/CqP4HL/PhM1V4NIvJz3IITYyab1JVIO25Hp94aBV4yUX2QBD1AkL40ilJWFOyypQDu6/fZxLC1xk9Uyxl5+x6d8ZwGEaPgE8xpFavnInoOKHpXIu1wcGghyos2mVfwx+XU4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770546965; c=relaxed/simple;
+	bh=9O1wrWh3odojrrpWa3rmcifMg4603V9NZnEbcjcOIp0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BOTnJ/IOuVJPkIO5Kkq3QxrlZZOWrEl2wg80C1cMeX/5CEgi808b88QKLD1LBwSbd1mgBodvsHNI7v9FaLCJroaYOzQuWZED6nDH2XJtBIOSIMId8jzIGx6fHb1PTqCCig+mzF23sh7UIdGZ6QMdLVbqLItMPkrulm2xFy6wo6g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WP0LvGkM; arc=pass smtp.client-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1b2OSfv7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322C8C4CEF7;
-	Sun,  8 Feb 2026 08:43:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770540230;
-	bh=qp4LcygetQ4w7VJzBUP8EVokdZaZZfpkPa5NgD/Lhhs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1b2OSfv7tLGFJZFSiQ7W/MESg4nvJoqJhcv0KBwMT4/ytP601VN/uGz+dI0BMYHKp
-	 OTil67iLcr0gnx92BgNCjX0XUtX0LaKliYs1VktdRBBVIN7kCwaLvFX0JTnDqjGRx4
-	 M4kC/JNjCV1TAt6I4TE+v+hSEjKhEYzdxcYe8e6I=
-Date: Sun, 8 Feb 2026 07:43:04 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jason Hall <jason.kei.hall@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Joe Perches <joe@perches.com>, Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn.roy.baron@gmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Andy Whitcroft <apw@canonical.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: Re: [PATCH v9 0/2] modularize Rust lints and add RUST_UNWRAP check
-Message-ID: <2026020851-unranked-passport-5c34@gregkh>
-References: <CANiq72mB0N3GDe+w8qT_VU1ieMQSRBiEPaFdSVa-2GLDiDMEZw@mail.gmail.com>
- <20260207224907.234815-1-jason.kei.hall@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WP0LvGkM"
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2ba6904dd88so17191eec.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Feb 2026 02:36:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770546965; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QeBQlkEnaaUfqz0g3jtlOcPv7L8+TdwEChhFSSIYC0DfPAVSUE8YyGjIVtbjSid8/A
+         M2uXgrCJHRsqV+D3FbvpLFjV5DYYz/jOXZlZBm36bgxc/EpNvkB20mLL6zhLT2YD5cdY
+         cHsiW7R/tdCdu5DWvBHLhwJePYPOpNWQzC53HwjbAyr/46aMACyI1fCt2KD59buE0gaC
+         sedtYBt6p8tR8ZKHU4NiusMNKhOaQDWDqjtqizhusaIqVZXZY25nCqLKDFU5IywarKid
+         wsHJrR8IxxEtoXVajNXezO7lZnq3MMvrQr+SWWJiX1qnHn0lgKYfuHhfHtVEtxts0PXO
+         htow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9O1wrWh3odojrrpWa3rmcifMg4603V9NZnEbcjcOIp0=;
+        fh=1d2ptVGrK5vO69v06KzoZeiXzGZa1cl82G+p325mKIs=;
+        b=SsaeKdrrp08JdhzcmS0uKnRTQu2yWx1CwOqYgg8yEUe7vn4koKLLwSoaMfRYAipRXg
+         ScpJaa+xNQ8NgMMoJ3oPN6uRNjboaBbSPs++rZM3QbgYNfYz3lySPv52f62dQICbzGG+
+         Tu/bT1pSeKZpitupQP/zCR33NggwgIHNf2crCW+UFT7Q2O+v0YvEbtLUKuOqzHPk9jJ7
+         +l5iXCCMn52vEEyw2sQBOjqyD2YyG4brcN8NFX5RHroz/wFykXGnhQva+ZnCCr994U8z
+         bk5sgpxKLhs+tUNEQKzuBT2YdQCrhURutbhLjsbjdTBZMFzFuS+tx8OsMi3pO1CA/Wo3
+         mgMw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770546965; x=1771151765; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9O1wrWh3odojrrpWa3rmcifMg4603V9NZnEbcjcOIp0=;
+        b=WP0LvGkMM7mVQRJhYIoXk1xKtuc467gglERL7CkEyKEZTdJk7O3QGPA+Rip8tHJXbb
+         y9FKCb9ED/o0LFKD+CQSwBIN2CckVgPagXTdWVx6a/EwFhkhuO/iDrzf4hKgFNP4OT3P
+         bR4X0YUgBAjAgRUd2QPXozHJ8taE3KMDXPiXHWIYv/+eiwoduHnTPkdiyPjCVh6E7ldc
+         1mt6sj02lxcux24QcXESd2z1TUTCkOxfYfwwDdLfE4b4VsD4KpVhCjPSMkoV1cvBGGnz
+         5a0M5LTL2txTgOHaYT87pmPP+NSa1B7XYMPgmxN7oN17QzE3eP61odYZ1m48zllAmhXz
+         t/0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770546965; x=1771151765;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9O1wrWh3odojrrpWa3rmcifMg4603V9NZnEbcjcOIp0=;
+        b=gw5Moo9DPVbuRNTKQ1PUn1K9KioL7YVd7/rnedUFs91NQIf4fSXM9e/yjKTrpEvhXD
+         YL96YA1upAhqYQP5biqEkOFYWbz2edPLN6n1xBlnIWYY4bJmD8aZQKYToPA46kekQKwx
+         +FE4shX38pfuUvwfFmDdFhW1cGsz9jkvTqMZSC8XEpJMFQ+UqX4jRcUerltBwchTip8i
+         lVpWLvxuc+ZJSx/hnNu8qjQxrlYudiPLgY0JUQgZOo26Ea5zk5z7lxP748MSJLhlzwra
+         oIp/gw9jC1cbGmT4ZHiyutubUBmGr1MovBOoidx7id2lUvDCenuMjiJFqEjOR7AoWSO/
+         egpw==
+X-Forwarded-Encrypted: i=1; AJvYcCVzL+HBdt9gMUrDuLUubyMA6o5l/nkGEJow/FFCEUDkEQ5Ghpn/gC8yQxyGj2zLyra7qwpMCrcawdQVE04sAg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx43M6UArNgZ52ZuVMVQiraT36+Z2Hk0VLRfSVfyoi72vsuJXd1
+	ERxH4yHgEuCo3CO0cnba90OkYF/qFjY/AaS6hgpRJwtAiDYTW2nNUNrYJJcQqDj+ZfNgntISzAV
+	t9EoHJlb+/wbo2R1AkCyBNCTaGy9Dkxs=
+X-Gm-Gg: AZuq6aInP8vBnC4yPf+fSBvl6Kh43PoMZaGiWDPgwhly6DQecoMrldnBF7BNSjwvOV6
+	19bXfUl/VXTr0fSWrjebZ7QHF1J6lEom7gMrlsrn3UuSSYttGDzIq1wJC4dg3oqjSVJ9thUmw7A
+	va+XKDwNH8r8lE4n593bF33lBUdUFQTlqud3fSef/pjma2HHKARAgmWl/6+MlRIPbt4cgN8SvHy
+	TcZGIUh9MSA/rlzagNJCJ0styp8j8KY0yPfQzjwhS41G+D3hOISHc9mCtADeDElKqyvRuzjCaoG
+	vA1fJdHOfK922QGLTIkA/yUofZCrCts0AMJgNavjPrNAowhyACm/MUIq6XHCl5ZjAcefI3D9RMe
+	VoZIRN36jl4wp
+X-Received: by 2002:a05:7301:2f96:b0:2ba:705c:c8b5 with SMTP id
+ 5a478bee46e88-2ba705cdee0mr51988eec.0.1770546964617; Sun, 08 Feb 2026
+ 02:36:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260207224907.234815-1-jason.kei.hall@gmail.com>
+References: <20260206171253.2704684-1-gary@kernel.org> <20260206171253.2704684-2-gary@kernel.org>
+ <DG876SZYRBXB.CO3YI3HOE3FR@kernel.org> <DG87KRN75MKZ.1O0TZI77MLIBT@garyguo.net>
+ <aYgmENPRTdD4wCVF@yury>
+In-Reply-To: <aYgmENPRTdD4wCVF@yury>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 8 Feb 2026 11:35:51 +0100
+X-Gm-Features: AZwV_Qj9Du_jkMva36ZyaDnahvdaMWuW_Dr2E9c8WWpcJW3fs4Mc_FBQ-9Oqr3A
+Message-ID: <CANiq72k4D0ZPDzBCHY7xq=qOmERHk3e7P8CcKtVHjjjOQhJ+2w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: add `const_assert!` macro
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 07, 2026 at 03:49:05PM -0700, Jason Hall wrote:
-> This series moves Rust-specific linting logic into a separate file to
-> prevent further growth of the main scripts/checkpatch.pl script and
-> introduces a new lint to enforce safety standards.
-> 
-> The first patch creates the infrastructure for scripts/rust_checkpatch.pl
-> and adds a conditional loading hook in the main checkpatch script. It
-> also updates the MAINTAINERS file to track this new file.
-> 
-> The second patch introduces the  RUST_UNWRAP lint, which warns against
-> the use of .unwrap() and .expect() unless they are accompanied by a 
-> '// PANIC:' justification comment.
-> 
-> Jason Hall (2):
->   scripts: checkpatch: move Rust-specific lints to separate file
->   scripts: checkpatch: add RUST_UNWRAP lint
-> 
->  MAINTAINERS                |  6 ++++++
->  scripts/checkpatch.pl      | 14 ++++++++++++++
->  scripts/rust_checkpatch.pl | 30 ++++++++++++++++++++++++++++++
->  3 files changed, 50 insertions(+)
->  create mode 100644 scripts/rust_checkpatch.pl
-> 
-> -- 
-> 2.43.0
-> 
-> 
+On Sun, Feb 8, 2026 at 6:58=E2=80=AFAM Yury Norov <ynorov@nvidia.com> wrote=
+:
+>
+> This is confusing. You begin with "const_assert!() is more powerful",
+> and finally recommend to use a less powerful option.
 
-Hi,
+The goal is that users use the least powerful one that applies, not
+the other way around, because the least powerful ones fail earlier and
+are generally more robust.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+I think the first example is intended to show the different ones, but
+I think the wording can be improved -- the one in the existing
+`build_assert!` docs is a bit clearer.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+Gary: perhaps we could factor out the explanation/examples to the
+module-level docs, and then link to it from all the three asserts.
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
+> I don't think this compiler implementation details should sneak into
+> the kernel. The compiler may get changed, or whatever else, and this
+> all will become just non-relevant.
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+How do they sneak into the kernel? Gary is explaining why it is not
+called "link time", precisely because that would expose more details,
+not less.
 
-thanks,
+Regardless, that "link-time" vs. "build-time" discussion is
+independent of this patch, because those docs already exist in the
+tree.
 
-greg k-h's patch email bot
+> On the C side we've got similar statically_true() and const_true()
+> macros, but they seemingly have a different meaning:
+
+> Is it possible to maintain consistency with C on rust side? If not,
+> can you take those C comments as the reference for what level of
+> detalization is desired? Maybe pick different names then?
+
+Please explain what inconsistency you are seeing here.
+
+Also, please note that two of the three names have been for years in
+the kernel tree, and that standard C also uses `static_assert` as a
+name. `const_assert` fits the pattern and it literally expands to what
+it says.
+
+Moreover, `const` in C is not the same as `const` in Rust. `constexpr`
+in C is closer to `const` in Rust.
+
+By the way, I am not sure why you suggested `const_true` for the name
+of that C macro -- I think it should be `constexpr_true` instead,
+which is closer to what it does, and it fits the pattern on the C side
+better, too. So that would be more consistent.
+
+Cheers,
+Miguel
