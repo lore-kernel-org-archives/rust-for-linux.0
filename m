@@ -1,138 +1,147 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DB634D912
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 12:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770638553; cv=pass; b=BzyuTqkb8x1dYcMP9psu/t3Sexh+MWKpdwztBp39Dg880aafUmniX0WhDjyoIbd9/AXFpKQn8cF1iQRJLFaJtiyU2xxmijxbdRhHiC3dIliokK1b97fDRrogU00LhO3TaR6p/8jDBDs+0KWFfx/FhEh+EnLt4oXB63Si4dPQFRg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770638553; c=relaxed/simple;
-	bh=4aNQGxtrrEdzV2sLkA1xkh3R9gSFeyePvFhc254cg14=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ajf77F5pVz4Lq99UxGl3SOwhwogiHpTWPtzOpYMH7jwlA2bBCtEYY4z+iuNIJfS65pRgIUJ9lKpTMTz1pw7PXKZYRTyvGYiV4Q5SirT5hqTONnUvijhu/deY2eMqoRcVbJxiAMN3gMOK+d2AH5MsTKtzBy3DjLfxdbpLfcoQ9vE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AXimIWKl; arc=pass smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F0836BCDB
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 12:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770638846; cv=none; b=Lu81Rc6abv7nVsFcJiPXt3J/Pv28bRGULWnKeSn84WHZC5Nl9I9mks0ZHR0AtAcCFJb8bdsRzxney+waAB8cgfbQUpbJBCvoznWL0pgxLyTsdkMK2TCVjTdTNEDsprZ7ugoX5yN2l9Fobe+thaaB0I++ARcmeeMRFGRqeb7j16o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770638846; c=relaxed/simple;
+	bh=JeXjuc2EgfmYsHtTB7Ub0A6vQcD+zKshMdd4AuJ3WqM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XllPyFMxvOwGD3VTDWx/EtztFY8HZVx++0UcEkB/gn1ZuYq+kh6ZLeecgv3PwRdrWXQTXu+FTwBSG4QRwiNbLsewqyV62l6nKIi2WeD618Tx84hzEDKHoGNQbgSkhNzPkeB/FC8RK+4x8bGJrhU8hUdXvMNikjUWOqpiyJMjMPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f11n8RHn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AXimIWKl"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2ba76d64d14so35383eec.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Feb 2026 04:02:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770638553; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bvPmkuo61TFh6WXn9+Z1ysrdUUUILt8WU0RkuT9V74A5+zNQkfosdpIu7cdkA0Qo1n
-         VpLFgwX6us4ct9uKrpgppb4TbDoOezj2DjyDdaUWoPig4o5KTetEx6meOeySCDLRsICO
-         yt8xtsKFVCIFqM5ZK4/a1Xsb2j2mvnObIOheyNdppvFn3uxabmKN4h8zujHYzafHCtaa
-         /JPST8tTRuN+X3qFQRW1CdXajJNX8xfPevTyB/IlY1n/gQJASzKHvVleeSFikUgy7e1y
-         k8y8SzyjC5C/psJm1oDdtQRRv8bqOoPTY96Cr5lrGvPrhMQwg64C9zKp+dIMj4vD6B+o
-         /Caw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dZhWDaNsdwvI4rNW3NtCt5JiKEi9H9HsfZTRb8EfKk0=;
-        fh=lTuX6BnJPUBC1EgAqupHWsWdXaGbiSzAybbHFgY1pZc=;
-        b=doi486tqiIvZbbdvqMow6FlLuVUBGK/SHdFWsjkBui6L8UBpJoWNnN340/3A1UtKbG
-         BPDEfH9zWxDR2eBEg1YPBuib/TAF5/xkSrGw4Ve8Tq3QWKx2f83P3+gS4DrHFq8JbsJs
-         GoopimrDmEamvRLOV8V0VgV2T9Ue/CW0MMPoDWRz/ruz9EbEdtsdbiMZFfoQFkvBsvda
-         jxvqta/UfLnkcID87Ojv9dPnGUOmG4vI4619YrmWHwbPkVPZsZf8FvGvkvHjic9No3Te
-         07ZftpzIwcFrUONI+JuaJa+oP/mUnza0zXG8abg2eaceULxyV6vP74oB0apcm5e2Y4Gn
-         tDQA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770638553; x=1771243353; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dZhWDaNsdwvI4rNW3NtCt5JiKEi9H9HsfZTRb8EfKk0=;
-        b=AXimIWKlJR8bH1ueiSRf8KqGT7rZyKXn3uTki1QyUFxYIjL3PZ+r8XUw1BR8bWYbgJ
-         1MMLrz1I3GcroR4GYPWhu4XZlqhl+cvP31FWcDWk2k9XTwN2HkiJWC+Dw+tWvf3bhtEG
-         RL+pP5pq4nD+y25mSViXOsnOj5og4j3+BcmJiUSLQx6nEWTYehSGMfByJAggpybZKAzD
-         2O3/oqLyC1RKQJE4xu4sP7Yw7f2muJF2qZXqGzldRXdDiAyAr8A5bOf5/MYdDMpeGn/i
-         ICfvMi9o4xgMg1Dia7v4Y//bpCnsJi02Rr5MECLJ9GKrOn61ZKD6kWX92DruN45Z33je
-         gENw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770638553; x=1771243353;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dZhWDaNsdwvI4rNW3NtCt5JiKEi9H9HsfZTRb8EfKk0=;
-        b=bDQVpx2TxBYcxRYUEjIBjZaQqbXeGCpN8L1pK67LJmkaRuAbNiB+OfdmJ+VCzB7kZx
-         mj+fu1UqoIZb+a+abGleKyhoQuwsSozDoWE6ePcNIeROwvIld6CmtMrnzvqTQlGnrNgu
-         IQqYts2ty0oX/sFhHtVpcFwWt1H9B7HPhTRsa0XeLBAMzUAs5w9Rmx2D42rntL1/qqoS
-         lvEYK6GRB6EUzMyBdFe0PMN2gyJq600MNY3Z1fMy9yS33jyPD+dQ/fqNjeheiXtPmMIp
-         2i/mUW8NIPbNBCuf9igkWiadjKYq/grbpOESYTGWLpWDgz8k0i0rVUONeSz2mMU8yDQ6
-         gLJw==
-X-Forwarded-Encrypted: i=1; AJvYcCVFFOQPPjv5GZpu3sRzfn/fB324Qi6AVb7GWIs0pEsqD9rA2F5NeNOwi1B3plX+0a577yKbtv7fRlHNgrWdug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YySj1oB/jfS7o33HPqVVzevab9vuQTgMwifF6dcN9P9FY3EMVLU
-	uuO+Ijvw4FEbjJlIghQaqwkwLKPfKYvcxyioBaz4PCXoc2C5RfWfF+3lQuVhAFiCBoj9R5GCAmH
-	rTWyksonoD3G2JHMBokrnSTavGpMzGQA=
-X-Gm-Gg: AZuq6aJAh4JmBVUZyMTcyGni3xcHIQ89sfE505CQIfGvdMUYOIOQ3ktInXxrUghp1Lv
-	vO99gqw4gFz6Rtb27WPxEvl5jBrQ1RX5Lv+Q7R1b1TozHyzZt8VbcL/KXrtS9iB8/tnlht5mhZI
-	n/B3Kn9AWenSLpbmxtX4NCZZ3z9VDtwg7Kx7UMsfqKS4uoqCsGtvhtvc1n/i4bbtF4eyhwj4EyL
-	Z5gzUTYBzgVJu+PVVh8fhdNzyqCkrVEyJua3Bsl0wMEIqp5sgrYiR1sgJxzLBz4iF2wpwLkdZ2L
-	dE1cOalFacDR3iz9WOeUQQZxQYsnG3DRtPkBEGZFD+4lH4oV47UyoGhv/CBXE7aHdkYnpaRivjI
-	9EBiOtEG8i98H
-X-Received: by 2002:a05:693c:6085:b0:2b9:ddef:2c13 with SMTP id
- 5a478bee46e88-2b9ddef3bcdmr780273eec.5.1770638552639; Mon, 09 Feb 2026
- 04:02:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f11n8RHn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEC3C116C6;
+	Mon,  9 Feb 2026 12:07:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770638845;
+	bh=JeXjuc2EgfmYsHtTB7Ub0A6vQcD+zKshMdd4AuJ3WqM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=f11n8RHnwEZpcoL8NaWPdtMJ7PyA2pc1op4/1ln6OrpfPzQBzvgBfkTwTNKWPRrF5
+	 ecawlYh3I58cQDLta28K9+oAGTOTiUKc3YXDrJrusiOAVMHyngdDd0dg5DJxrP3E0k
+	 zxLEgFoeTOuq95xZ9at1bsD9SI9cRnWTBd8iWcpSopjIcq+Bx3D65zUUSRu2eUL6qw
+	 I2Q8UkzuylJlLHu3VZXypO9/ZeZVe6fJqQ9IUBPt6rXgciDEkOB1cCHqo6KwuCtmVn
+	 LvIcVGr6YMBiCXGNomtPnbN5cx9OLeaL1RpsxmDtERdiZ/3tU90Y/QO4GlR7RcJSSu
+	 rq6CVIfWh2pyw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: std_vendor: add `{likely,unlikely,cold_path}()`
+In-Reply-To: <DGA6GUR58QJ7.1XZZ0P4VZNW86@garyguo.net>
+References: <20260208224659.18406-1-ojeda@kernel.org>
+ <20260208224659.18406-3-ojeda@kernel.org>
+ <loMX2c-d-q0qiOw4sfLMKLAt-D5giBVKFD-iqhC7j9DJxvEGyhJkgtUfpEipAmkoLRU37FUhKkB6Mz0xz-MGqQ==@protonmail.internalid>
+ <DGA6GUR58QJ7.1XZZ0P4VZNW86@garyguo.net>
+Date: Mon, 09 Feb 2026 13:07:09 +0100
+Message-ID: <87o6lyunma.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260209105456.1551677-1-mkchauras@gmail.com> <20260209105456.1551677-3-mkchauras@gmail.com>
-In-Reply-To: <20260209105456.1551677-3-mkchauras@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Feb 2026 13:02:20 +0100
-X-Gm-Features: AZwV_Qj0qLrj8jckFchFsbULIvtu6ZjFQsKyUw2LAuw6MCkfc5efrXbsku0JQ84
-Message-ID: <CANiq72nqH=H4a_Yo17KPmku5pPRMVRBADgj8j+=TcR=3r0vOdQ@mail.gmail.com>
-Subject: Re: [PATCH V4 2/3] rust: Add PowerPC support
-To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Cc: linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, chleroy@kernel.org, peterz@infradead.org, 
-	jpoimboe@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Feb 9, 2026 at 11:55=E2=80=AFAM Mukesh Kumar Chaurasiya (IBM)
-<mkchauras@gmail.com> wrote:
+"Gary Guo" <gary@garyguo.net> writes:
+
+> On Sun Feb 8, 2026 at 10:46 PM GMT, Miguel Ojeda wrote:
+>> `cold_path` is becoming stable [1] in the upcoming Rust 1.95.0 (expected
+>> 2026-04-16).
+>>
+>> `cold_path()` can be used directly, but it also allows us to provide
+>> `likely()` and `unlikely()`, based on `cold_path()`, similar to the C
+>> side ones.
+>>
+>> For instance, given:
+>>
+>>     fn f1(a: i32) -> i32 {
+>>         if a < 0 {
+>>             return 123;
+>>         }
+>>
+>>         42
+>>     }
+>>
+>>     fn f2(a: i32) -> i32 {
+>>         if likely(a < 0) {
+>>             return 124;
+>>         }
+>>
+>>         42
+>>     }
+>>
+>>     fn f3(a: i32) -> i32 {
+>>         if unlikely(a < 0) {
+>>             return 125;
+>>         }
+>>
+>>         42
+>>     }
+>>
+>> LLVM emits the same code it would for similar C functions:
+>>
+>>     f1:
+>>             test   %edi,%edi
+>>             mov    $0x7b,%ecx
+>>             mov    $0x2a,%eax
+>>             cmovs  %ecx,%eax
+>>             ret
+>>
+>>     f2:
+>>             mov    $0x7c,%eax
+>>             test   %edi,%edi
+>>         /-- jns    <f2+0xa>
+>>         |   ret
+>>         \-> mov    $0x2a,%eax
+>>             ret
+>>
+>>     f3:
+>>             test   %edi,%edi
+>>         /-- js     <f3+0xa>
+>>         |   mov    $0x2a,%eax
+>>         |   ret
+>>         \-> mov    $0x7d,%eax
+>>             ret
+>>
+>> The feature itself, `feature(cold_path)`, was added in Rust 1.86.0
+>> [2]. For context, Rust 1.85.0 is likely going to be our next minimum
+>> supported version.
+>>
+>> Previously, a PR in Rust 1.84.0 [3] fixed a number of issues with the
+>> `likely()` and `unlikely()` intrinsics (by implementing them on top of
+>> the new `cold_path()` intrinsic).
+>>
+>> Thus add support for `cold_path()` by applying several approaches:
+>>
+>>   - For Rust >= 1.86.0, `use` directly `core`'s `cold_path()`.
+>>
+>>   - For Rust >= 1.84.0, we could choose to provide a no-op, but given Rust
+>>     1.85.0 will likely be our next minimum, do some effort to support the
+>>     feature by vendoring `core`'s implementation based on the intrinsic.
 >
-> These changes aren=E2=80=99t the only ones required to get the kernel to =
-compile
-> and link on PowerPC
+> Instead of using the intrinsics, we could use this instead:
+>
+> #[inline(always)]
+> #[cold]
+> pub const fn cold_path() {}
+>
+> This works all the way back to very old Rust versions, and the codegen seems
+> identical, too.
 
-Is this patch not complete, then? It is up to the PowerPC maintainers
-what they want to merge, of course, but I don't think we should add
-the line in `Documentation/` if it does not work yet.
+Allowing `feature(core_intrinsics)` is allowing a lot more than just
+`cold_path`, like `volatile_copy_memory`. I don't think it's a good idea
+to allow all these in.
 
-By the way, regarding that:
 
-> +``powerpc``    Experimental      32-bit Big Endian only.
+Best regards,
+Andreas Hindborg
 
-These levels are mapped to `MAINTAINERS` ones:
 
-    Below is a general summary of architectures that currently work. Level =
-of
-    support corresponds to ``S`` values in the ``MAINTAINERS`` file.
 
-But there is no "Experimental" level there. The idea is to know if
-there is someone being paid to work on this, or not, etc.
-
-This should also be changed in the other patch that adds ppc64le --
-e.g. Mukesh, is IBM supporting this?
-
-I guess it may be simpler to not add this line here until it works
-properly, and only add the ppc64le one in the next patch, with a fixed
-level to one of the `MAINTAINERS` ones.
-
-Thanks!
-
-Cheers,
-Miguel
