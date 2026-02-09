@@ -1,79 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C94376BD3;
-	Mon,  9 Feb 2026 12:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C441C23A566
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 12:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770640170; cv=none; b=kK1J/LesfFaiFITkuSZhQZnuXEUiJxH4KSYLP0NMYkAnK8Gb14jon3ul4Gu9iXvTDjKcSBOID+nLEjJwWOFlSD6t6tZAvU5C3z568FzYNkCUVS2HTFt/GMiHOJJ5Ucafgc+g/YBIhPcnBc+nJlIs8mFP3Bz9e8Xm7T+1+lfootQ=
+	t=1770640831; cv=none; b=Mpogici+FdVmUFfhvVNAgcsb0iLZFufcNfoLjIV7QzupZLa+YSzuqKpp7Yd1VCyW0yNJNwnlOvP1/2T6CqwfhyqkRSSFeGnVZSN2h4RwjFVrOA3wTksBBso1JbWp1yq6fVEgjZ9Ereg+wmoJ4HXHzp2zY58J76ZI9KYvm+CY6fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770640170; c=relaxed/simple;
-	bh=rZJsEwJQERROgyEOKeX0VRgi9ahkckCIU8JBoz0SPhE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=en3MtBWFFamLz+vkMulaYb7iS1h4BZU/1o9J2SbnuznPKcej4gQWjlx5ncefm2LlD7/pFEchQG5NMSyGJjmEvHpbeZSjQqvY8fpK5d+pFbpkIR4qHPc4+wM247kF/L314rZc4MFSNNi+YY0Fg0bIi8+Syogl+BhezFJDTcusBQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FimbCrO3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770640831; c=relaxed/simple;
+	bh=70/F9nMIbk2fbakPSR0w38ShjRA8v7pUBIMtrpstYYU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=u+/xtKi++nc4T4dRIU14ws32kr7nZXeUBZTfcvQ/TWvfOtdNUqy+86h9B6QwV3oYF8Plk3HFzOXyRSublbf1WzwyNNeI2Y3uMvrAQXiEhrNciPUPU5hl5O5pYMyg73J0BZdJ42ePjxyKjqsrWm4i27Ucgsf5J3zjOuzZABprbfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dN74hCV8; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FimbCrO3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C81C116C6;
-	Mon,  9 Feb 2026 12:29:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770640170;
-	bh=rZJsEwJQERROgyEOKeX0VRgi9ahkckCIU8JBoz0SPhE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FimbCrO3xbNLl5zpKdTswhL+5udkXP3NNz5ny++NqpSl/moVIpiBsyBJNHKVz8oa/
-	 0JHXWuH2LZ4q/bluRskbXFtGjkVLrn6R4QLRS4pJICtH+6ARlhGx2G5U3ryk2hyYAo
-	 ohWvOc3Sljf3NS896r5wx0UP9sRBwjQRHD/9AaSTDwDtYOScrnzOJiHSz8DfnoZ6Oh
-	 cVOxeouAZOeeAJEh/6pMNtlucg6Qh2GK4OIgKTwqWes+06LVnRW1h/DvwRlm/Q7Jxq
-	 T9jfjyLbCXQOBSWvcafVgW0zQhNFe+8eT48ZC5IHsyyq/xww4t8p5RQv2+0uYczpFV
-	 fN3sdbLB4g1kQ==
-Message-ID: <b07f1bc6-c63e-4b97-95d6-c639186a89dd@kernel.org>
-Date: Mon, 9 Feb 2026 13:29:22 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dN74hCV8"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-482d8e6e13aso33034935e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Feb 2026 04:40:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770640829; x=1771245629; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=70/F9nMIbk2fbakPSR0w38ShjRA8v7pUBIMtrpstYYU=;
+        b=dN74hCV88fcQXI5YfPJ5uzhXuK8oVqqHvFljihMluq5srEhD/cqf8FY3IdQbsvx44W
+         BuEng62+dJsTLDENXYdyA89yZRU7mAGztkWAULxblnHde6b9HYM5b7AdPUekkTIPZYh0
+         Wl12JnyAj05SEne08VvTx6b+2r8zgciWhU6ZMSJYrHf588pUSwH0mD4CRoSCajYRj0vi
+         sBQncQhOI1+X+B5ylvgJQ9FXPufp7QFajuSNUJ/5NW0K2rTd4hHWMp4TaRgy/g9JOskt
+         FLE7nilqGyFs4Hog4cFgCRrBleSksy1N7upFRFjWqrgYkj0WXxkuB0mRWznnwtGgi1pF
+         6wzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770640829; x=1771245629;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=70/F9nMIbk2fbakPSR0w38ShjRA8v7pUBIMtrpstYYU=;
+        b=JsvqdUJaNqRsY3zun57GX/ZUtF4IhKmsMnjJc/8GZ95HxtAKGhNIFfHSILOg9VBQXJ
+         RcCiLJWWP4x1UYOxUSXw+YY1kyQQXvYHIsCmOYRjzsDTwyM/9sWkU3/EbDrtKizJlw6I
+         cyIab+qAbpFUdoeF/C7UgG1SJQhjhd1QZhic+Xz09qTOqvEEiBJjIzfVnB9QzdTwAY7+
+         9HHSN2EuMB6KE6d8JMACECrUlQ6Yg+C4gV614ti9FT7HpmLPCx5t2z0+TRQWf3T8PPA7
+         2ggshHLPsqRY6R/8PqSPmlnfWARilqQ8+tgfhLpJhgtQx2gAovdbvYgbQeTb8I3fMEZl
+         dcaA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2zO5IyXktpGlS4y+k+1bCGocnI+9DiMc2NyGoNYZoSvxxRwrY3mENgriQjfkXPdC02X/hrQ9n2Xb8KeznMQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL2Kv7IQixkQ5HPTgU+iwLkhsHg0xpvYVzJFPcak0Om4i/R1U2
+	YxROApOPMF2nYSG7rZ9sue5CKLMdAjeP8h9t3gwsRMI/MjTzKXTIZOG+w2D2zAqGd4CyxLp8f1p
+	j855z2DybmKMGZngo2A==
+X-Received: from wmjv20.prod.google.com ([2002:a7b:cb54:0:b0:477:9d5d:3b50])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f4d:b0:47f:f952:d207 with SMTP id 5b1f17b1804b1-4832096698bmr152297515e9.19.1770640829288;
+ Mon, 09 Feb 2026 04:40:29 -0800 (PST)
+Date: Mon, 9 Feb 2026 12:40:28 +0000
+In-Reply-To: <20260206223431.693765-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 2/3] rust: Add PowerPC support
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Cc: linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, peterz@infradead.org, jpoimboe@kernel.org,
- jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org,
- rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <20260209105456.1551677-1-mkchauras@gmail.com>
- <20260209105456.1551677-3-mkchauras@gmail.com>
- <CANiq72nqH=H4a_Yo17KPmku5pPRMVRBADgj8j+=TcR=3r0vOdQ@mail.gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <CANiq72nqH=H4a_Yo17KPmku5pPRMVRBADgj8j+=TcR=3r0vOdQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260206223431.693765-1-lyude@redhat.com> <20260206223431.693765-2-lyude@redhat.com>
+Message-ID: <aYnVvFwBk1SfiJGQ@google.com>
+Subject: Re: [PATCH v7 1/7] rust: drm: gem: Add raw_dma_resv() function
+From: Alice Ryhl <aliceryhl@google.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
+	nouveau@lists.freedesktop.org, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Janne Grunau <j@jannau.net>
+Content-Type: text/plain; charset="utf-8"
 
+On Fri, Feb 06, 2026 at 05:34:25PM -0500, Lyude Paul wrote:
+> Reviewed-by: Janne Grunau <j@jananu.net>
 
+I think this email is misspelled?
 
-Le 09/02/2026 à 13:02, Miguel Ojeda a écrit :
-> On Mon, Feb 9, 2026 at 11:55 AM Mukesh Kumar Chaurasiya (IBM)
-> <mkchauras@gmail.com> wrote:
->>
->> These changes aren’t the only ones required to get the kernel to compile
->> and link on PowerPC
-> 
-> Is this patch not complete, then? It is up to the PowerPC maintainers
-> what they want to merge, of course, but I don't think we should add
-> the line in `Documentation/` if it does not work yet.
-
-As far as I understand the patch is complete, the problem is outside the 
-kernel, it is in the libcore provided by rust or the rust compiler.
-
-That libcore seems to call __udivdi3() and __umoddi3() which are not 
-provided by the kernel. Instead if should call the functions do_div() 
-and friends provided by include/asm-generic/div64.h, or provide 
-__udivdi3() and __umoddi3() on its own.
-
-Christophe
