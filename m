@@ -1,147 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F0836BCDB
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 12:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770638846; cv=none; b=Lu81Rc6abv7nVsFcJiPXt3J/Pv28bRGULWnKeSn84WHZC5Nl9I9mks0ZHR0AtAcCFJb8bdsRzxney+waAB8cgfbQUpbJBCvoznWL0pgxLyTsdkMK2TCVjTdTNEDsprZ7ugoX5yN2l9Fobe+thaaB0I++ARcmeeMRFGRqeb7j16o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770638846; c=relaxed/simple;
-	bh=JeXjuc2EgfmYsHtTB7Ub0A6vQcD+zKshMdd4AuJ3WqM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=XllPyFMxvOwGD3VTDWx/EtztFY8HZVx++0UcEkB/gn1ZuYq+kh6ZLeecgv3PwRdrWXQTXu+FTwBSG4QRwiNbLsewqyV62l6nKIi2WeD618Tx84hzEDKHoGNQbgSkhNzPkeB/FC8RK+4x8bGJrhU8hUdXvMNikjUWOqpiyJMjMPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f11n8RHn; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D562459EA
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 12:18:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770639531; cv=pass; b=tccjvV1M2XzKFtXd0x+lncR1M6kDIqe7HxpGfovH4eemSlKtMriJlin6fAYuKBoJZ9XvuCkHfNCrdKi22UQ/Ag8x2okSdt/oMQRNCk5PlqITPMAFkyD2jjP51F7f0q8Z5ozy+eUZEWk8N1b+adkavVZdEbsk23luVL7vJKEtBOU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770639531; c=relaxed/simple;
+	bh=7MrpdEF7VkCfyj16OKpvMsW1vNKDAG3wfTAEXikVHWQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J6ArNsAE46dLx5cAFu6J4D/3FjA6E8K9XxyT7KU/qTZVE0qK9Rm0dtR6Vd3p8Vw28TvQ3mtz9eFvP/SpVdgjGJqLw/tBrelBQQP40csRknLwkEHesYakgkEI9JK2Gl2sBbBVmZWv2pingkWFTXJcnYsz2wbhLSc/Ol8KUSN8ZXE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nQjQeWgc; arc=pass smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f11n8RHn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEC3C116C6;
-	Mon,  9 Feb 2026 12:07:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770638845;
-	bh=JeXjuc2EgfmYsHtTB7Ub0A6vQcD+zKshMdd4AuJ3WqM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=f11n8RHnwEZpcoL8NaWPdtMJ7PyA2pc1op4/1ln6OrpfPzQBzvgBfkTwTNKWPRrF5
-	 ecawlYh3I58cQDLta28K9+oAGTOTiUKc3YXDrJrusiOAVMHyngdDd0dg5DJxrP3E0k
-	 zxLEgFoeTOuq95xZ9at1bsD9SI9cRnWTBd8iWcpSopjIcq+Bx3D65zUUSRu2eUL6qw
-	 I2Q8UkzuylJlLHu3VZXypO9/ZeZVe6fJqQ9IUBPt6rXgciDEkOB1cCHqo6KwuCtmVn
-	 LvIcVGr6YMBiCXGNomtPnbN5cx9OLeaL1RpsxmDtERdiZ/3tU90Y/QO4GlR7RcJSSu
-	 rq6CVIfWh2pyw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: std_vendor: add `{likely,unlikely,cold_path}()`
-In-Reply-To: <DGA6GUR58QJ7.1XZZ0P4VZNW86@garyguo.net>
-References: <20260208224659.18406-1-ojeda@kernel.org>
- <20260208224659.18406-3-ojeda@kernel.org>
- <loMX2c-d-q0qiOw4sfLMKLAt-D5giBVKFD-iqhC7j9DJxvEGyhJkgtUfpEipAmkoLRU37FUhKkB6Mz0xz-MGqQ==@protonmail.internalid>
- <DGA6GUR58QJ7.1XZZ0P4VZNW86@garyguo.net>
-Date: Mon, 09 Feb 2026 13:07:09 +0100
-Message-ID: <87o6lyunma.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nQjQeWgc"
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2ba6737fafbso39959eec.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Feb 2026 04:18:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770639530; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SDEpXkdDxyqyQiS2wq4OYA4vnNfZTui0vXauuK9MKNhb28E3xY1SuKcWoteSXRMRZZ
+         vosFRhH6UkhIVSgxHbSu1P4XCy0MS7ADDcXla3zApKCzy+VWXuxnYgBgYkg5lNjRCzUf
+         N+Uzs+ItsNGnWm7Q184PHTwes85TeWEwtlh2STGGmUKWKkKRBnfLRUOksPd5ylxLNSl4
+         l86AYiUcBlTKW1HPT/8FSCCWM/D9stkECLs1bBgPkdNIuuUNpZAXVwYqJ/0sZPXuVOw5
+         UOufybIe7DkCEFwOtoA1aPPDAxzRhK3CPICLipGkzwMTxoLX6uTYv+/1WpVXK1HvIH3p
+         h9yQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7MrpdEF7VkCfyj16OKpvMsW1vNKDAG3wfTAEXikVHWQ=;
+        fh=WYnWlZCCaw71dv0ibK3BvHs1hRLRe9FCTmdd0prw7ms=;
+        b=e1kOJ3ervllOGSHdA0wOyTN6LViK3bMZiCv2vB7gdZWlbmI8LgYQPdYKOkKfIbA34E
+         Cuq5MomyWNvbw4TPnAclEeJpIZlRdviUMgVd9g4rE9bzd15r32xKuB7Y0+yDAsghiwxk
+         0jmFghbfcPg1eMjUnPK/Yf3dLyetSlJDHPPV5vBCi19dNahkH6R7gcg7J73ZMh8vX/jX
+         32mQHK3Ws6aJLumG2SnVqf+2ORI1N5igiY7AeRCx2mxSB79xgztMjtuW73HFDQOo4ggy
+         q1PBs+pJp6rrfie1yVIlsIN2ysTzHySZGeYxtx54BDzLrHQO8PDTpSkDfcbg0QYGqQMQ
+         5cDw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770639530; x=1771244330; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7MrpdEF7VkCfyj16OKpvMsW1vNKDAG3wfTAEXikVHWQ=;
+        b=nQjQeWgc7Y3wOnWRIJrW4v1O2jVEQiK9ICEYxHTauwjIEyuf7r/T2pKTjKF+ehCctb
+         cgIZhztL1XBXM/8hj1g1KxbHBo8B6d6MKFkcNw4mg0Wmq3Pwkeg/aOIRT1Rpk7MC3YSz
+         w8zsKI80FTyIWXVQeOEEqDdPlEa1YAr+HF/0/Eh/XPnhYPfWV/HrrYEdh8UYmMN1dGKt
+         /AAP1k9YqcRS3qDJA3I2ILZDX+mgbIrKUIe0N7z7JktespFO7AoG6wbTzhXhQV6SmWhN
+         rKM9tSZUp3fN/ue7ic1McZsrpn74JB9EIZmQj8rKg65PYBlJoBuhrFzb5MZaXPIDXO4h
+         jmvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770639530; x=1771244330;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7MrpdEF7VkCfyj16OKpvMsW1vNKDAG3wfTAEXikVHWQ=;
+        b=ZZqFEu7f6/8+LPU+OOJmDzuHHTHfDFMkWoJUg2Rh6rQ5n4X34s1ZExRGSixD/ribpw
+         nq1/+Umu7wXwg683/1/hr8jVdmnqoYAFqFxLwlERvkRcNh1KUdlN2HNO3qiMQ+fGtMsb
+         ZzduwVuh292lt1yNXEJkimaBJwKr1V/KPBFykBXQf4hWpYhf+aAIa5oQU7zoi5Zfby4H
+         fRY5P5lAEViPnDogu1Ok8ng+LfuJ19F3DhPXZ80rWBytBvs3kRO9g8T2QuYdzCWgcIIe
+         TBHfk/XAvcNYqsLpfft/ebKzQ5qAtR3OwIJ/zv1CA/P7yfGniDYQOGWB2lfpWM85AuQB
+         b1PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWvBbNDPnTvwh+5LiPxsPAYkH1Tb61wig1dD0QwPj/ZANRAx2JMAYjlvNoxZBa9MwAf2GsqjGP6qqZCuEPZ2A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0Eht/TeDwochqO5fg1jWbct8LB6BAfHN8vs9byCS16/9vqGBO
+	nGXZjwDoDFyMWxfSuEqG76h116aVvfLoVtXb4+p0oEPh8Tn33zdBWatcJ0dJeTbxNwSkfhbNctH
+	mjDTCqpJvJcHSqJbSouRV5sxtpGau6NY=
+X-Gm-Gg: AZuq6aIiKRmG5jInwC+ot+X3VyC6NQqui63IBe00ULpl1waLKv5giDJbHApLFy92nHW
+	OX0RbSybk3anFQcG7jDAb1dPg7FvmGSmnvJwvwS5TFpcv6htKQbFaopnv33NxknSVC06UQzq24v
+	lXkoLYOyPN7khfWW8vuEcTByC3PGFZXKpj5SIwgnEECgQvPLjLCRYVUE/qcJfICzqjyfkW3FhUE
+	/mr8fjE3c2By0JYvlDpcEpVGErI3pRxlL7UGDJKghhtzTvYHkj1TEzP4Ekyg2vEuwYqsz3OWMFd
+	xw1MmqdKtOJdDEdtbwNPVGtluYSiVWv7Zea61wd8Pe0nCPoSvq9e272DcfgXfbdoI+ZP/SCD4sd
+	S332MbB28u823
+X-Received: by 2002:a05:7300:8812:b0:2ba:6978:2b0 with SMTP id
+ 5a478bee46e88-2ba697806damr580664eec.4.1770639530238; Mon, 09 Feb 2026
+ 04:18:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260208224659.18406-1-ojeda@kernel.org> <20260208224659.18406-3-ojeda@kernel.org>
+ <loMX2c-d-q0qiOw4sfLMKLAt-D5giBVKFD-iqhC7j9DJxvEGyhJkgtUfpEipAmkoLRU37FUhKkB6Mz0xz-MGqQ==@protonmail.internalid>
+ <DGA6GUR58QJ7.1XZZ0P4VZNW86@garyguo.net> <87o6lyunma.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87o6lyunma.fsf@t14s.mail-host-address-is-not-set>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Feb 2026 13:18:38 +0100
+X-Gm-Features: AZwV_Qgvzz6KTR36NruSe0KIn6jokR70xnTNxWZVmJz7h37aUspSQi1nyfinwT0
+Message-ID: <CANiq72kNXMFriYor9z6rYj_HJO=ORRsVFes_Znt-HK5NYdQRuA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: std_vendor: add `{likely,unlikely,cold_path}()`
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Gary Guo" <gary@garyguo.net> writes:
-
-> On Sun Feb 8, 2026 at 10:46 PM GMT, Miguel Ojeda wrote:
->> `cold_path` is becoming stable [1] in the upcoming Rust 1.95.0 (expected
->> 2026-04-16).
->>
->> `cold_path()` can be used directly, but it also allows us to provide
->> `likely()` and `unlikely()`, based on `cold_path()`, similar to the C
->> side ones.
->>
->> For instance, given:
->>
->>     fn f1(a: i32) -> i32 {
->>         if a < 0 {
->>             return 123;
->>         }
->>
->>         42
->>     }
->>
->>     fn f2(a: i32) -> i32 {
->>         if likely(a < 0) {
->>             return 124;
->>         }
->>
->>         42
->>     }
->>
->>     fn f3(a: i32) -> i32 {
->>         if unlikely(a < 0) {
->>             return 125;
->>         }
->>
->>         42
->>     }
->>
->> LLVM emits the same code it would for similar C functions:
->>
->>     f1:
->>             test   %edi,%edi
->>             mov    $0x7b,%ecx
->>             mov    $0x2a,%eax
->>             cmovs  %ecx,%eax
->>             ret
->>
->>     f2:
->>             mov    $0x7c,%eax
->>             test   %edi,%edi
->>         /-- jns    <f2+0xa>
->>         |   ret
->>         \-> mov    $0x2a,%eax
->>             ret
->>
->>     f3:
->>             test   %edi,%edi
->>         /-- js     <f3+0xa>
->>         |   mov    $0x2a,%eax
->>         |   ret
->>         \-> mov    $0x7d,%eax
->>             ret
->>
->> The feature itself, `feature(cold_path)`, was added in Rust 1.86.0
->> [2]. For context, Rust 1.85.0 is likely going to be our next minimum
->> supported version.
->>
->> Previously, a PR in Rust 1.84.0 [3] fixed a number of issues with the
->> `likely()` and `unlikely()` intrinsics (by implementing them on top of
->> the new `cold_path()` intrinsic).
->>
->> Thus add support for `cold_path()` by applying several approaches:
->>
->>   - For Rust >= 1.86.0, `use` directly `core`'s `cold_path()`.
->>
->>   - For Rust >= 1.84.0, we could choose to provide a no-op, but given Rust
->>     1.85.0 will likely be our next minimum, do some effort to support the
->>     feature by vendoring `core`'s implementation based on the intrinsic.
+On Mon, Feb 9, 2026 at 1:07=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
 >
-> Instead of using the intrinsics, we could use this instead:
->
-> #[inline(always)]
-> #[cold]
-> pub const fn cold_path() {}
->
-> This works all the way back to very old Rust versions, and the codegen seems
-> identical, too.
+> Allowing `feature(core_intrinsics)` is allowing a lot more than just
+> `cold_path`, like `volatile_copy_memory`. I don't think it's a good idea
+> to allow all these in.
 
-Allowing `feature(core_intrinsics)` is allowing a lot more than just
-`cold_path`, like `volatile_copy_memory`. I don't think it's a good idea
-to allow all these in.
+It doesn't really allow "all these in". It is just for two fixed
+versions, thus other versions would complain if you try to use them.
 
+And, in any case, just allowing a feature doesn't imply we are OK with
+everyone in the `kernel` crate can happily use everything in the
+feature.
 
-Best regards,
-Andreas Hindborg
-
-
-
+Cheers,
+Miguel
