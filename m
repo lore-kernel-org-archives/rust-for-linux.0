@@ -1,126 +1,144 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFB82D7394
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 10:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770633920; cv=pass; b=remhP06n9zRfMppe+aAlf+jpOo5POkaXE1GAfXcva74hHqDURpOWZljqIgZW310OQz1NvHMgH2rM2MiGTy3I50w3AZkZjBRqqNA5WMCk1cM9GfAsKOzQDDvvQtoZlLo/H1aiScOcKj5uk3mO8+UOv1m+W6ULZCwK8lHnykZn/Ag=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770633920; c=relaxed/simple;
-	bh=hdoWyEBSfzPVnW0gPvG4K2YGowzekBI2D6ClbLg5wVk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RVA4JwfIzF1+RddHw5gErGQHsPmLIJqU7zo8zTi2PsTZ7hMicHjjfUPJsjzwuajNl4KXNChSg8mDxeOiyZTA7GZNzmnNkxPrc48ny9K7s5FZXyUTRtaCOJWZh501dytpjBE79xxNK0dHMvCNKhAWwXd6Ofa56UlL2KyapaU+KCU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WM+EaUYy; arc=pass smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E4136829E
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 10:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770634508; cv=none; b=qDjpqXlOrv1HRBXt3BH8tF+9zJgCxF0NSRvJ3eXxTEI1c28y5Ryi9yh/M86k3Y2IEKYzqq4pH8fAVafTwrPTMR6uMBKi3mzKrDycHuLU1hztYclv6aD37LWCctJi+ExsG27JtZx+BxQqotSGBSSatlZpmdF6/57HDGpjFQLETh4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770634508; c=relaxed/simple;
+	bh=1eLU8G1BLPMcyqLdbIe/q+DIa1xk84N2EQx0B+Jda2U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gBlDWMN64omW+U8U4jHgmitAZHg+3TPg6ssxVYfjjfgNjmARKUDtHViEBP4vngx+NVXOE7moTMsfgqRLHoYzJdsUL5B0CIvbe7c0xmnyQWlbKiVjDp5HVdRuH0oqJvy10+YT9Z3XPBeaqF3H6m+JxyVzuoVwpn4Z+l2IG84/qTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BjWBdGuA; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WM+EaUYy"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2ba7eb6022eso16632eec.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Feb 2026 02:45:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770633919; cv=none;
-        d=google.com; s=arc-20240605;
-        b=W6t6fkXR25RLB2UaE3RloWuF7iVDLUiGDRs9V585Po606oKNRfQjYqbv8AvrivXtEn
-         RTl2MMW7gyowpun54SLx4TJwCW3tXTScEuVJ9d/JegNWJJoh7L7P8Oug52JzAMTPq9+W
-         IAG1HMwWLhO2KkvjYAv5Ac5uBbUf/45DL4ubGX7gWGd0ohYR9b263U7zyQHWzYzGsSqr
-         Cpl6Rnoe1AZ6oWPK5Sfp7kZBMAHJQ0h/tJK9NdW/UA2RepkE1e3nXLGROuzKn0f6Nl3y
-         ugIGcB3Q0zkVu/t2WVg/aWSyIAsSflXPaFP6/2LSMYRF9+IJ+C3WD1uP7jKMa65bTfxU
-         a+SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OQ+zj5yCqVDGCQMDIhhAeFu/f4Yt8z0Q2y0QTEMA7l4=;
-        fh=CEF9tw1nLA/yGIVj2N3GZ5KMMvMKOibzN/wu/n8vrVs=;
-        b=JuS3VPETqZlJFm7lSFC056EQe/yGoUblcD/hCWG5rsO38BKHN4/nvqysbN5ND/5GMe
-         tb6cHmLkGeIdCr17hdYdcKVwRdkdcwM5cJeOa8vBqiS+6sNJ7spsxiG8L/cWfBiPdCQC
-         WSlGlS/W9qiIlaw1mKyGsw2q+v+oExERFYBMm7Zx+Qi1PQuFPcZJXHYMyCD7U4kCdKG+
-         pHUEZajbm+npC+S6nGm4wnMPm16/Bq1NjA8tK+VQjNpum3xd0DrVNGh6ICtxAbvMPzEc
-         SRlJXGKT3cymjmRQZaOUezcCys1dlSyq8Y0tF11uxJqxBSAN6DmFJhkjb8tCsZVZCC/h
-         X5Gw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BjWBdGuA"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a79ded11a2so29229965ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Feb 2026 02:55:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770633919; x=1771238719; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OQ+zj5yCqVDGCQMDIhhAeFu/f4Yt8z0Q2y0QTEMA7l4=;
-        b=WM+EaUYyZNlHnVMFvc8KLlnLdkIKxNOj3VdSS9bxzEAtScI+AloLPiCzsVcuxwxpKe
-         g54LDkFlLp0751hM4J9FJ6GOigRx/wTU6k4WPoY7Ho6C2DX4AvlFJC3X3lVG4QRAXRsX
-         11tB5rYdu4ec0YqiV9v6XqR+/Ch2Hg1AUi4KiHkXcmzs3GmmlmdZlruDk+FjlG7QvAa3
-         8y43YDkXNFsvqpYj+yJaOH7c8UsxnL123uMMTKHlsNwAaKJZltYXWYoTcQ0ohI0BgYiZ
-         eDgxVCVCUAri/9iKZCgZpP7GDvjTsaKWuE3WtCUP/4gxrHnznktNjHartgLrKCagEXXX
-         ZCBQ==
+        d=gmail.com; s=20230601; t=1770634508; x=1771239308; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aNqlTbhyZ28IS/AUv7WMI6I0SLBfjfBNRSCAUq4S/FA=;
+        b=BjWBdGuAl6GBQUWK6A3v3iwrldwbNszaCSBKk5DfGqvao2biDc1UdyaGpL0SjFVq1+
+         Sxt3ySwVDgQ0XMPmQRTKz7ucWB9CCi+jItJdDsMfRIFbKmoIFnh81fS7+GygBMDtqZ18
+         pqTLV4eXxND4EHxMpO9tBjK4dxNMH0LedVUi8yeHNI80e6AxybPdvcLumX+aGeUIRDEn
+         VL2dt0196n/2AgZhTLsZC/lRhp8OysuGP/oP46jAHzRTxW6m+leV9nCTnn1mH4QJOfZ7
+         bDFDE/VO2uCPdd5QGulqHgpQEC9Cq8RbwqnUBw8dzrvh/W/nixre3/ahRSdp7LkvJnhB
+         9f3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770633919; x=1771238719;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OQ+zj5yCqVDGCQMDIhhAeFu/f4Yt8z0Q2y0QTEMA7l4=;
-        b=QoJFsdMyVchgcb3ouaZPTU7eo2ENH3DUgGYqAcFpfc5S6xIhiih7iXBPXAu837W0vW
-         oqfWADGTVBAR+la7a1ZJIrRW7agQ/vYFACU0DalOLJi8KTe70ER0aCOVGHg2oWbAJBXU
-         jwmaoLUQUZy9KVMzqNIjfc+ZnzkK4pRydVjjxiPVF0avnymyCmILj7Fv3sBI7lXwcsup
-         WjJ3diAnYizzg4Xc8FYO80Q3A/kg6s4gvrBM4uYXq3HA7YNYVxLeLTEFppMy63+27n2b
-         lW2OR5pWCKycYBV5kpxb6ehNx3ebDHp/iTGjfZvi1jn52w6q/lHo3Y5xFqRfhBuKpfux
-         JEuA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4eZJ6PPNE9HquXJzEE3selghWPczaHpRukE4QzHIxsF8qzZErveE4g5O9GV0YWUNoBeuhubbxpL6kkW0RPQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1btaGJP9l9/C1Nrp+T8Kzp1nb/8OKZi3prlK4c6qny6vCAhgT
-	hiYtSOHzQaKFkKlYpqhvzDhfsvDQkp2bbqHiEjUEgkwSnVhyxE7HVDEBysaY47tBTaS61lBptiK
-	W2bhXMdWK1dCi1arQImUHjROGkxfh2QE=
-X-Gm-Gg: AZuq6aIDOccdJvUANyJf4EYs/uDpfgJj9snc2KVODulOOKjHcm3VS6sTWEGYGME17cf
-	Di3c7YoFelYs467Xvp2/MS15HOtv1FJs9RfZR/4V9oDYPu83/Rk30SMsyod/o06drJ0d0lIhmhl
-	je6IIzP+V8Ufv562+sok0sSuO+BRfKdcYzi/n6BWhg5HX7FqscWuv446pFDK9NSPgXBkmguLumN
-	RIN7P6RVOrP3p4FXlTLRwB0PDIuxKLevWICQ5PyVZD3Wpp/oY0KHBR4kZRWAUuPlHegmfJ0hk/L
-	81pHzveUR5+Qak16Nqd9onMFQ5RTb87yQA8uvxRujfNN2lC+zm47s6PYHDF9bEwEeICp1JZn1a1
-	HT+JFEj9WAZWz
-X-Received: by 2002:a05:7300:5794:b0:2ae:605b:d530 with SMTP id
- 5a478bee46e88-2b856c56d5fmr2755426eec.6.1770633919351; Mon, 09 Feb 2026
- 02:45:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770634508; x=1771239308;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aNqlTbhyZ28IS/AUv7WMI6I0SLBfjfBNRSCAUq4S/FA=;
+        b=E0O4o46kF6PW4gIwv6y0B0WXlry5iW3kekVh+tdSu1y1lEWfXNOpneIHSUuh64LoNr
+         dBd7hFmoLA/cMwzqslZTVsLbtbr/lWaw6SqgSu5HxSFcanAtRG6qtYIy6nu55FX7jYmp
+         /HdYY0c6u0eEAtYotEvZnn6qwUFHFMm8si8tAZZwPTHbIUmy3SE8b2dlzscSI/+hvANY
+         ep06HktecpV/zkli6AkksX18Zw3EKEk4y9to6kV9hiY7UmOH2fjFkIKpFUbtjxi9DMpP
+         djXCNbKfXRTAgYr2eXpF+Ekj2rf/7bdkoANfmUHI2qHYK/s9YIImTdhHflsE7cQasMlx
+         dYQw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsqqnt2uW3nvnJbkNHnvmAcK55/1emh/c7PksEYuZKFLXIEcvhJzczDu+xx1CMrsnDmgYRS0cQNC3yS6pBag==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYSiifdoj3VU49TFcQTzirZbG5pVbJtohqTXxgMsHQ6/Ouu54E
+	PR5OtO8/sM5pDWLi96tXSVwQzPWN8GCOkzWgZ/9HuHaw0TZFTnw26ZwP
+X-Gm-Gg: AZuq6aLNjebhgC8TzRiYQY/42OgBCmY5/2uqfjp/6dNwk3J1hAn8slDl8axwLY4HPv1
+	YSzaPpCNAdBX80CRtnaQrxfhe+2p2F9cm8QeSA0cUgzR226VMCozh/AqjPosbeq9o0MKJLoUSAp
+	BaMG237L7wPR+Mdrti+hbvT3JJJug5DDYhLV9fdBOxHC0uedZQhqon32ZpOg5zdyaKYJUx7HnMH
+	vQlf9PRSxuZNFMZdPlERCEONlnqHRVKAJyBYkWLbU8EmG3KcBVEq/LhQUg9xN44WjSwwDR9o2fb
+	c5AD2rEGMGox+5It9qOGVpKD5IsLc9UWDv7ijK4+w4HZPIA0bH9c043uAsKGZD2djjWqYylPd0K
+	tSWd2ZEq0L5AcASa2JNuN2nLOIt7BU6Yp/yTgxenl/HYKb5k5bur/45tvEl+GHS3VwQPQCLY5J1
+	rSpVDi7nOyumEGjG8NnMZht8UPqPMSOnjaLP7l21qFxjLbk8sXUvh22SHXH7E=
+X-Received: by 2002:a17:903:3c68:b0:2a3:c667:e0a0 with SMTP id d9443c01a7336-2a9516d5821mr101672885ad.29.1770634507668;
+        Mon, 09 Feb 2026 02:55:07 -0800 (PST)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.in.ibm.com ([129.41.58.2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-824418b31c2sm10635974b3a.50.2026.02.09.02.55.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 02:55:07 -0800 (PST)
+From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+To: linkmauve@linkmauve.fr,
+	ojeda@kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	corbet@lwn.net,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	peterz@infradead.org,
+	jpoimboe@kernel.org,
+	jbaron@akamai.com,
+	rostedt@goodmis.org,
+	ardb@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+Subject: [PATCH V4 0/3] Rust support for powerpc
+Date: Mon,  9 Feb 2026 16:24:53 +0530
+Message-ID: <20260209105456.1551677-1-mkchauras@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260209093432.17190-2-phasta@kernel.org>
-In-Reply-To: <20260209093432.17190-2-phasta@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Feb 2026 11:45:06 +0100
-X-Gm-Features: AZwV_QiHWqi_ROFSnn_lrcJXExlxQN4kOMphih_9CH-TnKs3N6CI_nQtq6dZh2w
-Message-ID: <CANiq72=wQ0o6Rt1kdyn0=VNPEiZ4NTdjt0-URSTkK037zUEvSQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: list: Add unsafe for container_of
-To: Philipp Stanner <phasta@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
-	Christian Schrefl <chrisi.schrefl@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 9, 2026 at 10:34=E2=80=AFAM Philipp Stanner <phasta@kernel.org>=
- wrote:
->
-> [PATCH v2] rust: list: Add unsafe for container_of
+Enable experimental rust support for ppc64le and ppc32be. The patch for
+ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been 
+merged over it. ppc32 needs some toolchain fixes mentioned in the patch 
+`rust: Add PowerPC support` and the discussion for that is done here[1]. 
 
-Isn't this v3?
+This has been tested on powernv9 hardware and power10 pseries qemu. I
+I request Link to test the ppc32 part as i don't have a hardware to test
+it out. 
 
-> -                let container =3D $crate::container_of!(
-> +                let container =3D unsafe { $crate::container_of!(
->                      links_field, $crate::list::ListLinksSelfPtr<Self, $n=
-um>, inner
-> -                );
-> +                ) };
+[1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
+[2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
 
-This one and another one below need a `// SAFETY:` comment -- I
-mentioned it in v2:
+Changelog:
+V3 -> V4:
+- Co-developed-by header added in patch 1
+V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gmail.com
 
-  https://lore.kernel.org/rust-for-linux/CANiq72md+0Lerj+kqr6QiU6ySR3XjRzmu=
-BiLjkpWWieM72wyeQ@mail.gmail.com/
+V2 -> V3:
+- Splited HAVE_RUST in 2 lines
+- BINDGEN_TARGET_powerpc initialized before assigning the same to
+  BINDGEN_TARGET
+V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
 
-Thanks for fixing the commit message and resending this!
+V1 -> V2:
+- jump label fix for rust has been moved to a separate patch
+- PPC32 support has been taken
+- rust support has been marked experimental
+- target.json dependency has been removed
+- HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
 
-Cheers,
-Miguel
+Link Mauve (1):
+  rust: Add PowerPC support
+
+Mukesh Kumar Chaurasiya (IBM) (2):
+  powerpc/jump_label: adjust inline asm to be consistent
+  powerpc: Enable Rust for ppc64le
+
+ Documentation/rust/arch-support.rst   |  1 +
+ arch/powerpc/Kconfig                  |  2 ++
+ arch/powerpc/Makefile                 |  9 +++++++++
+ arch/powerpc/include/asm/jump_label.h | 23 +++++++++++++----------
+ rust/Makefile                         | 12 +++++++++++-
+ 5 files changed, 36 insertions(+), 11 deletions(-)
+
+-- 
+2.53.0
+
