@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF19D37BE78;
-	Mon,  9 Feb 2026 14:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B2E37BE78;
+	Mon,  9 Feb 2026 14:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647981; cv=none; b=Q7vaplIsI7LV1R2BL6THV+PHeBE72a5ZgAe56hMX5IiGF+YrVPUfKt0DA0/7OcTEvk6D5r2L/yPkr31csqZy2awFuj2BwE73aXQYpOA0sLddCDcODVjbYyL/5NuuR4bb4WOYy06g4j9/DVFw76oBwsyMwxWJeWcT6EkOSKajAS0=
+	t=1770647988; cv=none; b=B7OnlfKHujulMtLw6mDpE51Z+HVNkT/M6iVK7A6wXheNVfRSUyf4tKeVwIkVGwoBo0iIHFvLCc7ZjaM5Pge38PhNsSQ4HfrKO2fidna0ywUOXKUWUV9309unqWidfFtoXvlQogSBeUHvOml4p1G1eifh7lH1FJ6dIC7v1dEWLEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647981; c=relaxed/simple;
-	bh=VslDN1mPgFIPh4fOyBZhDN58qjpQH9gwwiiN+krVdpc=;
+	s=arc-20240116; t=1770647988; c=relaxed/simple;
+	bh=SUnEj4f1l9mHuLlzJWz0dNzh+/snH5Ql51wel6NI7LE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ga0olbyWDmbrE25PO+c3WZrZ7sXsyvEbG3VYXkPgoC6PVcc9rN0aEyOxIYD4dXzJd/WxbMgWQMSW709YevUdYKDDSHt2xLjZpE1ZK4TJAPF9gg82GP6FbBM8LsgBHGVyKxp53mh/DmeKs2eT/Onz51lY8BA2H/Y5HclCRivaOE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i41dtz0x; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ZVryf4lUm8agEcCnraR/5VVtubHu+mT/vvbxY/4uY+3RZN3MVct8JWxBi7MHPKmh77sVVBrqRiU5vSjpq6rU2PW3J04TS68N/WP/ZPn4kmMR5nrUzi49CoiGTYhLKnWnpix8Z1v5NBK5YMEPHmrWNW0ZdEdJZtUeDLfxZIkz190=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GNMvntLz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i41dtz0x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDF3C19425;
-	Mon,  9 Feb 2026 14:39:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GNMvntLz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A21C19422;
+	Mon,  9 Feb 2026 14:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770647981;
-	bh=VslDN1mPgFIPh4fOyBZhDN58qjpQH9gwwiiN+krVdpc=;
+	s=k20201202; t=1770647987;
+	bh=SUnEj4f1l9mHuLlzJWz0dNzh+/snH5Ql51wel6NI7LE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=i41dtz0xskrUok+uzr6C0WdKfzIZ4fXVrLBlLxCOk6zIViA9IMUrZWbY4l1jTHyiH
-	 8q39lKA1o3D7s+vHLG0Y0d55CSJg07xGLYt2EcioMSRA26dHW4F2IpGpyZF3YbfTJ4
-	 IatdZL1SyBG9AcRmkDKbpQ4Vk1r5jImqLCmctbbD/RjqXMg/ZALLuDtp9oXJ+/ET8B
-	 diWzf5VRTxiBdln3n3NORvW5jFAxjCw9DzAj5uhdNlAh8GPJ8VQ2TFstZ4QbYZ72LL
-	 8n1pq7Sd4Tu4Ru6x8Lqf+X3j6sD6mG11ePNDnEAZAYar+jyK0vGujiBqYt/t9d4En0
-	 77w3TEOXo83XQ==
+	b=GNMvntLzZ2YxBuqe49g3RUNZCw6QPe0fv8HqUkyAajaigNKTo50KAkjyYvbdCbgPC
+	 Ow0bOv8NCQOrPKJUiXzlg6w+tFmXrHx9MGDCtGalADkaZk3jX5QpGXqxlfnCSpfWLq
+	 u43MgZRFVnV3M2AcH5AbrYFFU4wPIoo7VlGwR0LjITIk5J4+zlAkAmuQxsxz9bhsyO
+	 wKyvORoVhnS6q5TAy+J3W3DF1FrVPTD09nceFC0kTYUien2RPzfa1BXJ0PqNighoeG
+	 6DjJJcGVCtqV7xiKpKEf85eE/qzvawVTXt/AP3bFdMSysLgGEYtt7iUGGkQxlAtd56
+	 kLDDvwXNSJUQg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 09 Feb 2026 15:38:16 +0100
-Subject: [PATCH v3 11/12] xarray, radix-tree: enable sheaf support for
- kmem_cache
+Date: Mon, 09 Feb 2026 15:38:11 +0100
+Subject: [PATCH v3 06/12] rust: xarray: simplify `Guard::load`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260209-xarray-entry-send-v3-11-f777c65b8ae2@kernel.org>
+Message-Id: <20260209-xarray-entry-send-v3-6-f777c65b8ae2@kernel.org>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
 In-Reply-To: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
 To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -54,60 +53,78 @@ To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
 Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Andreas Hindborg <a.hindborg@kernel.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
+ Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1243; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=VslDN1mPgFIPh4fOyBZhDN58qjpQH9gwwiiN+krVdpc=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpifFex2+rby13jaJSZme2/vU05ZzvMRP5UT6SK
- VJQYMHYp8qJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYnxXgAKCRDhuBo+eShj
- d7xHD/48WEALFQfX+iMYXsiR/Mvn723D+YBjt2TOR/yfD7Sul4d8Iv02lIm3LGfCJsyUqsx0R/m
- Qk2ZkCueXt8bvCuSssHdX0jFMrBRDz9DFgMbk5SHMC2hLN/W0x/AY4rHDH4HxWqA/09V2h9kX9l
- by7veoXmADET0BEbdp15OIZLrP4+TbK6Md7Y98gcZZZZgKfyOgrWD9O+wZSe1jT4JSNrdw0pHhK
- WEiy/1R+bNnLAmMOP7AjVxTRKZ5SQafFzXZwe1+F6+mZe2saG8I5hrDR+VxNKisA7vQl9/z3gF1
- XuYWSv6bLte0vcgMNpzi5111T1Tky95jqKotdLtHq7sO+hUg0IAm1sGAzEr848kitJXmQWyyp8z
- RtkHcd0kwQ/15cx2EZjuMGm32TRs79hH6cCTfvmf4CweWaQmqV+mC5uohtBCP7piEWMy/RrA1lx
- Lk8TicZ76wcecqeZ8TeDdarQAI/oVX1NO6bP4HKm3wcdjn2HDq2AW5m3Ss2RyH1ZoffhLt7eyAY
- HG8F4YbEif5r2ab7bGc75ROxcp9b9NTzghH7dtSdy8YrkyjeZNU9Uc1uq1KyyHMibe/jKSjYmPP
- debQlj5Vy7aICDbaFtI+SvG1jp8hcOSvnmatndAdy79kxiL25JYhXQRUaqy4lc6Xcs8Um0+KbQA
- EVG3kWV3B6ysnbw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2076; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=SUnEj4f1l9mHuLlzJWz0dNzh+/snH5Ql51wel6NI7LE=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpifFaKdOChhRuevCXo/AyFuqJpjt9pI2F9DYSY
+ GB02zlFWYqJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYnxWgAKCRDhuBo+eShj
+ dzDZD/92MQDGevDXbOVb/99y5TakQLCirDQL22LaLohFi7zXhh3Sk30nKFNQWW2EI02c/GE3R1V
+ Z6EDG5Vp5Me0WyCQecPlnATdKXOdn2r34nc0rhIO20n1Jn89B4QAUB++YtWLTwT4vESv4B6r6qU
+ Ms+5lXL2uAdKHD2EZc9F+I89JzMRJ6CGdhn48XsdHTXufxLGo2gmtKGVE0hTfGRAW8nyhlBbt3l
+ dgZSoEmEOZFV5EwStKxhoNh4K1DZ3xGgjbJK+BPVBNRTU+BEC3z4T5lQOOglFuegkiu2BIBwQ3O
+ 5w/MQWZlBbYrrcQd/CGdSLmTmhOoZouxKvyJc/OK9OOuXmacPuaZZjAdPL48sVDBeEF2FimAU1l
+ NUpA0UKfsNRTWFRlGTvl6keLMEPRDA0UHNZhwntuZI7efvLcWDFAwgikoNsZPeW69NV5Ug7a8W8
+ YIWjGbfYE1GwF5Ewsl56Fxjo9NaEP8X2EbDEtNcEvpLmXSfE2NOKwsr4EiwIoSBbUqUi5fyQtRg
+ FDQJmqz7iGKIkYEh3ufL0aB/XjVrf9Mi1xhn8pbYlT2YqScSYAZTHQnLlsc3b79IMc4M+xn9qrF
+ UK9jaydcY0Z2kUTpBMERJPQew4QWcfB9ZmFK+KcyMk5RfEE3CQ1BcrZHUhYqK0ZgClNrm64x0Vp
+ L6BjmJfPZxCL7uQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-The rust null block driver plans to rely on preloading xarray nodes from
-the radix_tree_node_cachep kmem_cache.
+Simplify the implementation by removing the closure-based API from
+`Guard::load` in favor of returning `Option<NonNull<c_void>>` directly.
 
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- lib/radix-tree.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ rust/kernel/xarray.rs | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/lib/radix-tree.c b/lib/radix-tree.c
-index 976b9bd02a1b5..1cf0012b15ade 100644
---- a/lib/radix-tree.c
-+++ b/lib/radix-tree.c
-@@ -1598,10 +1598,16 @@ void __init radix_tree_init(void)
- 	BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT > 32);
- 	BUILD_BUG_ON(ROOT_IS_IDR & ~GFP_ZONEMASK);
- 	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
--	radix_tree_node_cachep = kmem_cache_create("radix_tree_node",
--			sizeof(struct radix_tree_node), 0,
--			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
--			radix_tree_node_ctor);
+diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+index eadddafb180ec..e654bf56dc97c 100644
+--- a/rust/kernel/xarray.rs
++++ b/rust/kernel/xarray.rs
+@@ -211,12 +211,8 @@ fn from(value: StoreError<T>) -> Self {
+ }
+ 
+ impl<'a, T: ForeignOwnable> Guard<'a, T> {
+-    fn load<F, U>(&self, index: usize, f: F) -> Option<U>
+-    where
+-        F: FnOnce(NonNull<c_void>) -> U,
+-    {
+-        let mut state = XArrayState::new(self, index);
+-        Some(f(state.load()?))
++    fn load(&self, index: usize) -> Option<NonNull<c_void>> {
++        XArrayState::new(self, index).load()
+     }
+ 
+     /// Checks if the XArray contains an element at the specified index.
+@@ -242,18 +238,17 @@ pub fn contains_index(&self, index: usize) -> bool {
+ 
+     /// Provides a reference to the element at the given index.
+     pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
+-        self.load(index, |ptr| {
+-            // SAFETY: `ptr` came from `T::into_foreign`.
+-            unsafe { T::borrow(ptr.as_ptr()) }
+-        })
++        let ptr = self.load(index)?;
++        // SAFETY: `ptr` came from `T::into_foreign`.
++        Some(unsafe { T::borrow(ptr.as_ptr()) })
+     }
+ 
+     /// Provides a mutable reference to the element at the given index.
+     pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
+-        self.load(index, |ptr| {
+-            // SAFETY: `ptr` came from `T::into_foreign`.
+-            unsafe { T::borrow_mut(ptr.as_ptr()) }
+-        })
++        let ptr = self.load(index)?;
 +
-+	struct kmem_cache_args args = {
-+		.ctor = radix_tree_node_ctor,
-+		.sheaf_capacity = 64,
-+	};
-+
-+	radix_tree_node_cachep = kmem_cache_create(
-+		"radix_tree_node", sizeof(struct radix_tree_node), &args,
-+		SLAB_PANIC | SLAB_RECLAIM_ACCOUNT);
-+
- 	ret = cpuhp_setup_state_nocalls(CPUHP_RADIX_DEAD, "lib/radix:dead",
- 					NULL, radix_tree_cpu_dead);
- 	WARN_ON(ret < 0);
++        // SAFETY: `ptr` came from `T::into_foreign`.
++        Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
+     }
+ 
+     /// Removes and returns the element at the given index.
 
 -- 
 2.51.2
