@@ -1,250 +1,126 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C353366054;
-	Mon,  9 Feb 2026 09:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770630661; cv=none; b=V7kuQsFYLz3TaGl8qlqpPKItfRq4t1RY3US6gBzjNkAyj8bOs6v+dfuHjQ9e+4jny0qAm6AdVhaKqUuiNB5w5BEYSLVlAsz6nTtK9dtx/VVr4Dyngb7E9IO93Cy6fYnoEcuh4yMvrGUHj6/NJPwaYJhNsZX1j1+2pqpNhN+QmRw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770630661; c=relaxed/simple;
-	bh=lg8CE3wdX+dcJL6yDeqGzT+IDyDi7+zFMbcdS7bHqvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SL64xOU/lhztYU2quyLTJhPytfmKQEwNM9+v69emsPTFHDrG20e3BNoCx+mfGyNM6hXe9H2Ak/nHec+2gduTJO8xudfR/n7lRXT0Q+rdca42Q1r3GxGjSWKH8IuG/ho0EQWakppUeJg9jFcmoEYrO8VfFqtQUr8WGZ5ArsB1RNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=GAl5PSI0; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFB82D7394
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 10:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770633920; cv=pass; b=remhP06n9zRfMppe+aAlf+jpOo5POkaXE1GAfXcva74hHqDURpOWZljqIgZW310OQz1NvHMgH2rM2MiGTy3I50w3AZkZjBRqqNA5WMCk1cM9GfAsKOzQDDvvQtoZlLo/H1aiScOcKj5uk3mO8+UOv1m+W6ULZCwK8lHnykZn/Ag=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770633920; c=relaxed/simple;
+	bh=hdoWyEBSfzPVnW0gPvG4K2YGowzekBI2D6ClbLg5wVk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RVA4JwfIzF1+RddHw5gErGQHsPmLIJqU7zo8zTi2PsTZ7hMicHjjfUPJsjzwuajNl4KXNChSg8mDxeOiyZTA7GZNzmnNkxPrc48ny9K7s5FZXyUTRtaCOJWZh501dytpjBE79xxNK0dHMvCNKhAWwXd6Ofa56UlL2KyapaU+KCU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WM+EaUYy; arc=pass smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="GAl5PSI0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770630653;
-	bh=lg8CE3wdX+dcJL6yDeqGzT+IDyDi7+zFMbcdS7bHqvY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GAl5PSI0gxZCB4fRfIXmb+OCpJY8qNOwXLz9veN8T1muQZoP1SLZuyEN5jFkvF2vC
-	 ipEp3b4sMip86VDrIuyv0saU6cadpiIbCjLXvBVVbeZAQqEsKVjT0taFlrKIdQOG5o
-	 OZQLZf2qXFX+xYlx0veU9pFtFvMJZFR5drDK3SDbpdlXo4c3lYspdavKG7jiw9NlZW
-	 xa/6D7KeI3iQ35tMqN3uTY1pHR6VVhFsLSaG8GVpX+qBCwtkSmIJAVf9ZN5odCFfCe
-	 6XncsOBtXX+6Ns4d6I4xWWAvxrKDHBZuGV6cEunws0xUFhCtHMLYrEcFSnZW8x55/J
-	 GOPQBqzU8Vu7A==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id F334C17E12C5;
-	Mon,  9 Feb 2026 10:50:51 +0100 (CET)
-Date: Mon, 9 Feb 2026 10:50:47 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich
- <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Drew Fustini <fustini@kernel.org>, Guo Ren
- <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Uwe =?UTF-8?B?S2xlaW5lLUs=?=
- =?UTF-8?B?w7ZuaWc=?= <ukleinek@kernel.org>, Michael Turquette
- <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org,
- linux-pwm@vger.kernel.org, linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
-Message-ID: <20260209105047.693f2515@fedora>
-In-Reply-To: <20260204-angelic-vermilion-beagle-fd1507@houat>
-References: <20260119-thundering-tested-robin-4be817@houat>
-	<aW4lCfUyumOKRRJm@google.com>
-	<518D8B09-B9A1-4DB4-85CD-37A2DD3D5FB1@collabora.com>
-	<DFSLCI9U4NCW.2HI2UPUI7G134@kernel.org>
-	<20260119-weightless-pelican-of-anger-190db0@houat>
-	<DFSN4FDCYHMW.3J3237PEBV2ZP@kernel.org>
-	<20260122-majestic-masterful-jaguarundi-d0abde@houat>
-	<2F3D3A40-6EF9-46FC-A769-E5A3AAF67E65@collabora.com>
-	<20260204-nickel-seal-of-poetry-8fdefb@houat>
-	<91A92D84-1F2E-45F3-82EC-6A97D32E2A78@collabora.com>
-	<20260204-angelic-vermilion-beagle-fd1507@houat>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WM+EaUYy"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2ba7eb6022eso16632eec.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Feb 2026 02:45:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770633919; cv=none;
+        d=google.com; s=arc-20240605;
+        b=W6t6fkXR25RLB2UaE3RloWuF7iVDLUiGDRs9V585Po606oKNRfQjYqbv8AvrivXtEn
+         RTl2MMW7gyowpun54SLx4TJwCW3tXTScEuVJ9d/JegNWJJoh7L7P8Oug52JzAMTPq9+W
+         IAG1HMwWLhO2KkvjYAv5Ac5uBbUf/45DL4ubGX7gWGd0ohYR9b263U7zyQHWzYzGsSqr
+         Cpl6Rnoe1AZ6oWPK5Sfp7kZBMAHJQ0h/tJK9NdW/UA2RepkE1e3nXLGROuzKn0f6Nl3y
+         ugIGcB3Q0zkVu/t2WVg/aWSyIAsSflXPaFP6/2LSMYRF9+IJ+C3WD1uP7jKMa65bTfxU
+         a+SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OQ+zj5yCqVDGCQMDIhhAeFu/f4Yt8z0Q2y0QTEMA7l4=;
+        fh=CEF9tw1nLA/yGIVj2N3GZ5KMMvMKOibzN/wu/n8vrVs=;
+        b=JuS3VPETqZlJFm7lSFC056EQe/yGoUblcD/hCWG5rsO38BKHN4/nvqysbN5ND/5GMe
+         tb6cHmLkGeIdCr17hdYdcKVwRdkdcwM5cJeOa8vBqiS+6sNJ7spsxiG8L/cWfBiPdCQC
+         WSlGlS/W9qiIlaw1mKyGsw2q+v+oExERFYBMm7Zx+Qi1PQuFPcZJXHYMyCD7U4kCdKG+
+         pHUEZajbm+npC+S6nGm4wnMPm16/Bq1NjA8tK+VQjNpum3xd0DrVNGh6ICtxAbvMPzEc
+         SRlJXGKT3cymjmRQZaOUezcCys1dlSyq8Y0tF11uxJqxBSAN6DmFJhkjb8tCsZVZCC/h
+         X5Gw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770633919; x=1771238719; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OQ+zj5yCqVDGCQMDIhhAeFu/f4Yt8z0Q2y0QTEMA7l4=;
+        b=WM+EaUYyZNlHnVMFvc8KLlnLdkIKxNOj3VdSS9bxzEAtScI+AloLPiCzsVcuxwxpKe
+         g54LDkFlLp0751hM4J9FJ6GOigRx/wTU6k4WPoY7Ho6C2DX4AvlFJC3X3lVG4QRAXRsX
+         11tB5rYdu4ec0YqiV9v6XqR+/Ch2Hg1AUi4KiHkXcmzs3GmmlmdZlruDk+FjlG7QvAa3
+         8y43YDkXNFsvqpYj+yJaOH7c8UsxnL123uMMTKHlsNwAaKJZltYXWYoTcQ0ohI0BgYiZ
+         eDgxVCVCUAri/9iKZCgZpP7GDvjTsaKWuE3WtCUP/4gxrHnznktNjHartgLrKCagEXXX
+         ZCBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770633919; x=1771238719;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OQ+zj5yCqVDGCQMDIhhAeFu/f4Yt8z0Q2y0QTEMA7l4=;
+        b=QoJFsdMyVchgcb3ouaZPTU7eo2ENH3DUgGYqAcFpfc5S6xIhiih7iXBPXAu837W0vW
+         oqfWADGTVBAR+la7a1ZJIrRW7agQ/vYFACU0DalOLJi8KTe70ER0aCOVGHg2oWbAJBXU
+         jwmaoLUQUZy9KVMzqNIjfc+ZnzkK4pRydVjjxiPVF0avnymyCmILj7Fv3sBI7lXwcsup
+         WjJ3diAnYizzg4Xc8FYO80Q3A/kg6s4gvrBM4uYXq3HA7YNYVxLeLTEFppMy63+27n2b
+         lW2OR5pWCKycYBV5kpxb6ehNx3ebDHp/iTGjfZvi1jn52w6q/lHo3Y5xFqRfhBuKpfux
+         JEuA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4eZJ6PPNE9HquXJzEE3selghWPczaHpRukE4QzHIxsF8qzZErveE4g5O9GV0YWUNoBeuhubbxpL6kkW0RPQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1btaGJP9l9/C1Nrp+T8Kzp1nb/8OKZi3prlK4c6qny6vCAhgT
+	hiYtSOHzQaKFkKlYpqhvzDhfsvDQkp2bbqHiEjUEgkwSnVhyxE7HVDEBysaY47tBTaS61lBptiK
+	W2bhXMdWK1dCi1arQImUHjROGkxfh2QE=
+X-Gm-Gg: AZuq6aIDOccdJvUANyJf4EYs/uDpfgJj9snc2KVODulOOKjHcm3VS6sTWEGYGME17cf
+	Di3c7YoFelYs467Xvp2/MS15HOtv1FJs9RfZR/4V9oDYPu83/Rk30SMsyod/o06drJ0d0lIhmhl
+	je6IIzP+V8Ufv562+sok0sSuO+BRfKdcYzi/n6BWhg5HX7FqscWuv446pFDK9NSPgXBkmguLumN
+	RIN7P6RVOrP3p4FXlTLRwB0PDIuxKLevWICQ5PyVZD3Wpp/oY0KHBR4kZRWAUuPlHegmfJ0hk/L
+	81pHzveUR5+Qak16Nqd9onMFQ5RTb87yQA8uvxRujfNN2lC+zm47s6PYHDF9bEwEeICp1JZn1a1
+	HT+JFEj9WAZWz
+X-Received: by 2002:a05:7300:5794:b0:2ae:605b:d530 with SMTP id
+ 5a478bee46e88-2b856c56d5fmr2755426eec.6.1770633919351; Mon, 09 Feb 2026
+ 02:45:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260209093432.17190-2-phasta@kernel.org>
+In-Reply-To: <20260209093432.17190-2-phasta@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Feb 2026 11:45:06 +0100
+X-Gm-Features: AZwV_QiHWqi_ROFSnn_lrcJXExlxQN4kOMphih_9CH-TnKs3N6CI_nQtq6dZh2w
+Message-ID: <CANiq72=wQ0o6Rt1kdyn0=VNPEiZ4NTdjt0-URSTkK037zUEvSQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: list: Add unsafe for container_of
+To: Philipp Stanner <phasta@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Maxime,
+On Mon, Feb 9, 2026 at 10:34=E2=80=AFAM Philipp Stanner <phasta@kernel.org>=
+ wrote:
+>
+> [PATCH v2] rust: list: Add unsafe for container_of
 
-On Wed, 4 Feb 2026 15:34:29 +0100
-Maxime Ripard <mripard@kernel.org> wrote:
+Isn't this v3?
 
-> On Wed, Feb 04, 2026 at 09:43:55AM -0300, Daniel Almeida wrote:
-> > > I'm probably missing something then, but let's assume you have a driv=
-er
-> > > that wants its clock prepared and enabled in an hypothetical enable()
-> > > callback, and disabled / unprepared in a disable() callback.
-> > >=20
-> > > From a PM management perspective, this usecase makes total sense, is a
-> > > valid usecase, is widely used in the kernel, and is currently support=
-ed
-> > > by both the C and Rust clk APIs.
-> > >=20
-> > > The only solution to this you suggested so far (I think?) to implement
-> > > this on top of the new clk API you propose is to have a driver specif=
-ic
-> > > enum that would store each of the possible state transition. =20
-> >=20
-> > Yes, you need an enum _if_ you want to model transitions at runtime. II=
-UC you
-> > only need two variants to implement the pattern you described. I do not
-> > consider this  =E2=80=9Cboilerplate=E2=80=9D, but rather a small cost t=
-o pay. =20
->=20
-> A maintenance cost to pay by every driver is kind of the textbook
-> definition of boilerplate to me.
->=20
-> > I would understand if this was some elaborate pattern that had to be
-> > implemented by all drivers, but a two-variant enum is as
-> > straightforward as it gets. =20
->=20
-> And yet, that framework has dozens of helpers that do not remove
-> anything from drivers but a couple of lines. So surely its users must
-> find value in reducing that boilerplate as much as possible. And you do
-> implement some of them, so you must find value in that too.
->=20
-> > > That's the boilerplate I'm talking about. If every driver wanting to
-> > > implement that pattern has to make such an enum, with all the relevant
-> > > traits implementation that might come with it, we go from an API where
-> > > everything works at no-cost from a code-size perspective to a situati=
-on
-> > > where every driver has to develop and maintain that enum. =20
-> >
-> > There are no "traits that come with it". It's just an enum, with two
-> > variants.
-> >  =20
-> > > API where everything works at no-cost =20
-> >=20
-> > The previous API was far from =E2=80=9Ceverything works=E2=80=9D. It wa=
-s fundamentally
-> > broken by design in multiple ways, i.e.: =20
->=20
-> Out of context and not what I meant, but ok.
->=20
-> > > a) It only keeps track of a count to clk_get(), which means that user=
-s have
-> > > to manually call disable() and unprepare(), or a variation of those, =
-like
-> > > disable_unprepare().
-> > >=20
-> > > b) It allows repeated calls to prepare() or enable(), but it keeps no=
- track
-> > > of how often these were called, i.e., it's currently legal to write t=
-he
-> > > following:
-> > >=20
-> > > clk.prepare();
-> > > clk.prepare();
-> > > clk.enable();
-> > > clk.enable();
-> > >=20
-> > > And nothing gets undone on drop(). =20
-> >=20
-> > IMHO, what we have here is an improvement that has been long overdue. =
-=20
->=20
-> Nothing is absolute. It is indeed an improvement on the refcounting side
-> of things and general safety of the API for the general case. I don't
-> think I ever questionned that.
->=20
-> However, for the use-cases we've been discussing (and dozens of drivers
-> implementing it), it also comes with a regression in the amount of code
-> to create and maintain. They used to be able to only deal with the Clk
-> structure, and now they can't anymore.
->=20
-> You might find that neglible, you might have a plan to address that in
-> the future, etc. and that's fine, but if you can't acknowledge that it's
-> indeed happening, there's no point in me raising the issue and
-> continuing the discussion.
+> -                let container =3D $crate::container_of!(
+> +                let container =3D unsafe { $crate::container_of!(
+>                      links_field, $crate::list::ListLinksSelfPtr<Self, $n=
+um>, inner
+> -                );
+> +                ) };
 
+This one and another one below need a `// SAFETY:` comment -- I
+mentioned it in v2:
 
-Okay, let's see if I can sum-up the use case you'd like to support. You
-have some PM hooks, which I'm assuming are (or will be) written in
-rust. It will probably take the form of some Device{Rpm,Pm} trait to
-implement for your XxxDeviceData (Xxx being the bus under which is
-device is) object (since I've only recently joined the R4L effort, I
-wouldn't be surprised if what I'm describing already exists or is
-currently being proposed/reviewed somewhere, so please excuse my
-ignorance if that's the case :-)).
+  https://lore.kernel.org/rust-for-linux/CANiq72md+0Lerj+kqr6QiU6ySR3XjRzmu=
+BiLjkpWWieM72wyeQ@mail.gmail.com/
 
-The way I see it, rather than having one enum per clk/regulator/xxx
-where we keep track of each state individually, what we could have is a
+Thanks for fixing the commit message and resending this!
 
-trait DevicePm {
-	type ResumedState;
-	type SuspendedState;
-
-	fn resume(&self, state: SuspendedState) -> Result<ResumedState, Error<Susp=
-endedState>>;
-	fn suspend(&self, state: SuspendedState) -> Result<SuspendedState, Error<R=
-esumedState>>;
-};
-
-enum DeviceState<T: DevicePm> {
-	Resumed(T::ResumedState),
-	Suspended(T::SuspendedState),
-};
-
-and then in your driver:
-
-MySuspendedDeviceResources {
-	xxx_clk: Clk<Unprepared>,
-};
-
-MyResumedDeviceResources {
-	xxx_clk: Clk<Enabled>,
-};
-
-implem DevicePm for MyDevice {
-	type ResumedState =3D MyResumedDeviceResources;
-	type SuspendedState =3D MySuspendedDeviceResources;
-
-	fn resume(&self, state: SuspendedState) -> Result<ResumedState, Error<Susp=
-endedState>> {
-		// FIXME: error propagation not handled
-		let enabled_clk =3D state.xxx_clk.clone().prepare()?.enable()?;
-
-		Ok(ResumedState {
-			xxx_clk: enabled_clk,
-		});
-	}
-
-	fn suspend(&self, state: ResumedState) -> Result<SuspendedState, Error<Res=
-umedState>> {
-		// FIXME: error propagation not handled
-		let unprep_clk =3D state.xxx_clk.clone().disable().unprepare();
-
-		Ok(SuspendedState {
-			xxx_clk: unprep_clk,
-		});
-	}
-};
-
-With this model, I don't think Daniel's refactor goes in the way of more
-generalization at the core level, it's just expressed differently than
-it would be if it was written in C. And I say that as someone who struggles
-with his C developer bias every time I'm looking at or trying to write
-rust code.
-
-As others have said in this thread (Danilo and Gary), and after having
-played myself with both approaches in Tyr, I do see this shift from manual
-prepare/enable to an RAII approach as an improvement, so I hope we can
-find a middle-ground where every one is happy.
-
-Regards,
-
-Boris
+Cheers,
+Miguel
