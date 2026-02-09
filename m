@@ -1,132 +1,160 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738AA363C5A
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 09:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE170205E26;
+	Mon,  9 Feb 2026 09:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770629089; cv=none; b=rMW0qAYGKVeG9gT13Ucy45C5qOJK80/Inyd0HCx2kef0K7RquYyhoeCSwPt7pVt0ty7jYl4VVZGzEAatQN9n0IiJ0suhsA5xWhYQpcm4ZDu9hMHWijzHU9qn/FsjeW6qabB0+UkH5Fd5x6SKnwGJIca48g6ilK4fLF94l2J0sw0=
+	t=1770629695; cv=none; b=HQJJVPcgHKJ6FK4V4E5h6e9mXeI8jV1HgcRkf2gys/vp4Xoa5mrwJmngUybnfvloarOdkwcoa9ruoWNYXFIOsJecBjEJ7A6zXj8UznmWTWh83fklRN3Eq64OGY35nOL2Zqe2q/GHxzYVUEIV1h9u1KqUSf6h7He0boXrO2bj+hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770629089; c=relaxed/simple;
-	bh=XCybjjRlATwkkRYEOhpYbFY55cfMbblBjqPGWhErD2s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=Z1lqE6OlHybgWN8x78Thx99NNr9rt7s/v3AocDEopt26PCHy7SmEuyz+cyycEN3G+KJPvvQBEBnFYwvUj0XDDL+27HZ3kGa6CFExLFJFLsu4Id9NwmEjwKoRscJ1eVwXF8QUhNuuphFY/eAmfBP177+yVmiH0Rv00u8vuUOYwOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=YsAlTuFa; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1770629695; c=relaxed/simple;
+	bh=LGwf+hfMsPyDS27fugz8eoNWwNfBcyc2TpeqWfnjdUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ROOFP3NQUqZxifbUVZ2qmOOz77dnHUXDbImuqxl2zChVHOSBR3crnCXTZwV5Cn31hzkxol3Qcp86IN0IIi3HzkDM9wZDr17aU8U4YwMamvPjHZZsmpJyACy4G1oH6lvvVoRSN4swlFAXL+yOd3A/NO0HjjV0hciFLMO3GROH0o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C2YYJdE2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="YsAlTuFa"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260209092439euoutp02bf582aa8e83dbb6a1de72d5f67717048~SicRN8jWO1553915539euoutp02G
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Feb 2026 09:24:39 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260209092439euoutp02bf582aa8e83dbb6a1de72d5f67717048~SicRN8jWO1553915539euoutp02G
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1770629079;
-	bh=Yg65QpvqB2HJv2/a96JfNi6PVWJKkv4zQcF3Q3T/5kE=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=YsAlTuFaZD9NcYx38vryleR5Modk95FuLL6T0EtmFUar6SJBP9QOCDPX3qmoBPoFl
-	 nrc5F7L+/Kuo6Rf21lzPdSTrGLqR7lcC2zuFVzKDZ1KElU0V4s0V+fzIFH52oAaCOv
-	 mKtYaLbI+0AK5KQrHFsTPDyunzI6Y8D6BOP/rC/Q=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260209092438eucas1p156e66a9eaba6af88ac5fd5dede932436~SicQg12A41795617956eucas1p1b;
-	Mon,  9 Feb 2026 09:24:38 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260209092437eusmtip2a51af5d68e14937533a7edf95b5d10c5~SicPW4Yzg2096620966eusmtip28;
-	Mon,  9 Feb 2026 09:24:37 +0000 (GMT)
-Message-ID: <4e843ff5-89f6-41a0-8a35-b4e31291e621@samsung.com>
-Date: Mon, 9 Feb 2026 10:24:37 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C2YYJdE2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E8FC116C6;
+	Mon,  9 Feb 2026 09:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770629695;
+	bh=LGwf+hfMsPyDS27fugz8eoNWwNfBcyc2TpeqWfnjdUo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=C2YYJdE2TvlP37CWeVk55w5pv/80P8TqqFVJ3lHr+LQ9Ua3s2voJCN/nzdMh/ee6q
+	 JqlPbUXZEw3wkLvMGsZ9tFoZ0TcJFKz/OuHLR2YcXKEYVGscWedeCNVYT3m6ZL+d7B
+	 vosn2iRZgi0xH6KILnrMT7uJNZxDe6uKcyD0tl2Z2zCUtA0sE/z4DDZHCjkzD8bpF8
+	 Y6L47O5Kjbc7UmYS68NLDDd/35HE5sNYYdDsUpDqLC58yeqv1pPUrQ9cyv3Uk7Gjkc
+	 bCGvnWUQiVd1uMuWClnp/e/AjubUtu+ZCa1HjTHnhEkDtf74i7PxU/knb1cBUW2V0R
+	 GlL/6iP2UWmAw==
+From: Philipp Stanner <phasta@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Philipp Stanner <phasta@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] rust: list: Add unsafe for container_of
+Date: Mon,  9 Feb 2026 10:34:33 +0100
+Message-ID: <20260209093432.17190-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] pwm: th1520: fix `CLIPPY=1` warning
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, Miguel
-	Ojeda <ojeda@kernel.org>
-Cc: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei
-	<wefu@redhat.com>, linux-riscv@lists.infradead.org, Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
-	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
-	<dakr@kernel.org>, rust-for-linux@vger.kernel.org, Mark Brown
-	<broonie@kernel.org>, linux-pwm@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <aYmgjEWaLrdsubKM@monoceros>
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260209092438eucas1p156e66a9eaba6af88ac5fd5dede932436
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260209085719eucas1p262f0590167a1193533dd0a55cbff063e
-X-EPHeader: CA
-X-CMS-RootMailID: 20260209085719eucas1p262f0590167a1193533dd0a55cbff063e
-References: <20260121183719.71659-1-ojeda@kernel.org>
-	<CGME20260209085719eucas1p262f0590167a1193533dd0a55cbff063e@eucas1p2.samsung.com>
-	<aYmgjEWaLrdsubKM@monoceros>
 
+impl_list_item_mod.rs calls container_of() without unsafe blocks at a
+couple of places. Since container_of() is an unsafe macro / function,
+the blocks are strictly necessary.
 
+The problem was so far not visible because the "unsafe-op-in-unsafe-fn"
+check is a linter rather than a compiler check. Rust suppresses lint
+checks triggered inside of a macro from another crate. Thus, the error
+becomes only visible once someone from without the core crate tries to
+use linked lists:
 
-On 2/9/26 09:56, Uwe Kleine-König wrote:
-> Hello Miguel,
-> 
-> On Wed, Jan 21, 2026 at 07:37:19PM +0100, Miguel Ojeda wrote:
->> The Rust kernel code should be kept `CLIPPY=1`-clean [1].
->>
->> Clippy reports:
->>
->>     error: this pattern reimplements `Option::unwrap_or`
->>       --> drivers/pwm/pwm_th1520.rs:64:5
->>        |
->>     64 | /     (match ns.checked_mul(rate_hz) {
->>     65 | |         Some(product) => product,
->>     66 | |         None => u64::MAX,
->>     67 | |     }) / NSEC_PER_SEC_U64
->>        | |______^ help: replace with: `ns.checked_mul(rate_hz).unwrap_or(u64::MAX)`
->>        |
->>        = help: for further information visit https://protect2.fireeye.com/v1/url?k=4a8755d5-151b7cff-4a86de9a-000babe598f7-51498316c06f2766&q=1&e=b527c3ac-a0b8-4074-9bc4-c3497f7913a5&u=https%3A%2F%2Frust-lang.github.io%2Frust-clippy%2Frust-1.92.0%2Findex.html%23manual_unwrap_or
->>        = note: `-D clippy::manual-unwrap-or` implied by `-D warnings`
->>        = help: to override `-D warnings` add `#[allow(clippy::manual_unwrap_or)]`
->>
->> Applying the suggestion then triggers:
->>
->>     error: manual saturating arithmetic
->>       --> drivers/pwm/pwm_th1520.rs:64:5
->>        |
->>     64 |     ns.checked_mul(rate_hz).unwrap_or(u64::MAX) / NSEC_PER_SEC_U64
->>        |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider using `saturating_mul`: `ns.saturating_mul(rate_hz)`
->>        |
->>        = help: for further information visit https://protect2.fireeye.com/v1/url?k=7fd7ef65-204bc64f-7fd6642a-000babe598f7-c6165289323e3bed&q=1&e=b527c3ac-a0b8-4074-9bc4-c3497f7913a5&u=https%3A%2F%2Frust-lang.github.io%2Frust-clippy%2Frust-1.92.0%2Findex.html%23manual_saturating_arithmetic
->>        = note: `-D clippy::manual-saturating-arithmetic` implied by `-D warnings`
->>        = help: to override `-D warnings` add `#[allow(clippy::manual_saturating_arithmetic)]`
->>
->> Thus fix it by using saturating arithmatic, which simplifies the code
->> as well.
->>
->> Link: https://protect2.fireeye.com/v1/url?k=3f9f72c4-60035bee-3f9ef98b-000babe598f7-ce3556202281f48e&q=1&e=b527c3ac-a0b8-4074-9bc4-c3497f7913a5&u=https%3A%2F%2Frust-for-linux.com%2Fcontributing%23submit-checklist-addendum [1]
->> Fixes: e03724aac758 ("pwm: Add Rust driver for T-HEAD TH1520 SoC")
->> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
->> ---
-> 
-> Looks good to me. I'll wait for Michal to add his blessing and then when
-> picking it up tend to drop the Fixes line. Or do we also care about
-> CLIPPY-cleanness in stable?
+error[E0133]: call to unsafe function `core::ptr::mut_ptr::<impl *mut T>::byte_sub`
+is unsafe and requires unsafe block
+   --> rust/kernel/lib.rs:252:29
+    |
+252 |           let container_ptr = field_ptr.byte_sub(offset).cast::<$Container>();
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+   ::: rust/kernel/drm/jq.rs:98:1
+    |
+98  | / impl_list_item! {
+99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
+100 | | }
+    | |_- in this macro invocation
+    |
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> rust/kernel/list/impl_list_item_mod.rs:216:13
+    |
+216 |               unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: rust/kernel/drm/jq.rs:98:1
+    |
+98  | / impl_list_item! {
+99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
+100 | | }
+    | |_- in this macro invocation
+    = note: requested on the command line with `-D unsafe-op-in-unsafe-fn`
+    = note: this error originates in the macro `$crate::container_of` which comes
+    from the expansion of the macro `impl_list_item`
 
-Hmm I'm pretty sure at the time of the writing building with CLIPPY
-didn't trigger this warning, so I guess it's either a newer version of
-CLIPPY that I used or in the meantime CLIPPY was updated.
+Add unsafe blocks to container_of to fix the issue.
 
-Anyway 
-Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: stable@vger.kernel.org
+Fixes: c77f85b347dd ("rust: list: remove OFFSET constants")
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+  - Tidy up commit message and provide exact reason for the error.
+  - Add Reviewed-bys.
+---
+ rust/kernel/list/impl_list_item_mod.rs | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-> 
-> Best regards
-> Uwe
-
-Best regards,
+diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl_list_item_mod.rs
+index 202bc6f97c13..7052095efde5 100644
+--- a/rust/kernel/list/impl_list_item_mod.rs
++++ b/rust/kernel/list/impl_list_item_mod.rs
+@@ -217,7 +217,7 @@ unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+                 // SAFETY: `me` originates from the most recent call to `prepare_to_insert`, so it
+                 // points at the field `$field` in a value of type `Self`. Thus, reversing that
+                 // operation is still in-bounds of the allocation.
+-                $crate::container_of!(me, Self, $($field).*)
++                unsafe { $crate::container_of!(me, Self, $($field).*) }
+             }
+ 
+             // GUARANTEES:
+@@ -242,7 +242,7 @@ unsafe fn post_remove(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+                 // SAFETY: `me` originates from the most recent call to `prepare_to_insert`, so it
+                 // points at the field `$field` in a value of type `Self`. Thus, reversing that
+                 // operation is still in-bounds of the allocation.
+-                $crate::container_of!(me, Self, $($field).*)
++                unsafe { $crate::container_of!(me, Self, $($field).*) }
+             }
+         }
+     )*};
+@@ -270,9 +270,9 @@ unsafe fn prepare_to_insert(me: *const Self) -> *mut $crate::list::ListLinks<$nu
+                 // SAFETY: The caller promises that `me` points at a valid value of type `Self`.
+                 let links_field = unsafe { <Self as $crate::list::ListItem<$num>>::view_links(me) };
+ 
+-                let container = $crate::container_of!(
++                let container = unsafe { $crate::container_of!(
+                     links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+-                );
++                ) };
+ 
+                 // SAFETY: By the same reasoning above, `links_field` is a valid pointer.
+                 let self_ptr = unsafe {
+@@ -319,9 +319,9 @@ unsafe fn view_links(me: *const Self) -> *mut $crate::list::ListLinks<$num> {
+             //   `ListArc` containing `Self` until the next call to `post_remove`. The value cannot
+             //   be destroyed while a `ListArc` reference exists.
+             unsafe fn view_value(links_field: *mut $crate::list::ListLinks<$num>) -> *const Self {
+-                let container = $crate::container_of!(
++                let container = unsafe { $crate::container_of!(
+                     links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+-                );
++                ) };
+ 
+                 // SAFETY: By the same reasoning above, `links_field` is a valid pointer.
+                 let self_ptr = unsafe {
 -- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+2.49.0
+
