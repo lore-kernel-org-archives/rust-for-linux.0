@@ -1,210 +1,221 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012045.outbound.protection.outlook.com [52.101.48.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC9A2E7637;
-	Tue, 10 Feb 2026 10:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770720416; cv=fail; b=NWNQIL7HLkOe0nKLQqjHsyKOWIRPmFPd+AIRj/YsZBfFvyQnde7QHJeTTcApaDdwkDFiIt26n93XRQdpq0J7Jd8mYIX3FDQHtuHwG3Jrsxz0u1YyjkL0w+vlcsnUwv3+3fL1KS0JGNqBra3f0gujWwHwB9gIjUxKnIkKlVdfQSo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770720416; c=relaxed/simple;
-	bh=u+tp2bm0RSIgLEZOx8PHjsPqyc7YwcyD2AtkXneLh+M=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=eUfynDYNVJ8uCX1CMjk6ceXteH0XdDZqHDGybx/nfBFM8ycldam4a1hdmfAuxS8VjgFJUfbFcDnmW9w3B3vBFEX1ifXF36eAnq7189/sLozMn/eaLkkvaXRuxqnPxcfhQNlrIAFVi+g8BlvtM3XfRiN6Gra7BCY0hyzYMAUg6qE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1bzGWKmG; arc=fail smtp.client-ip=52.101.48.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AA8311587
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 11:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770721314; cv=none; b=a7NweV1CFaX5WN0Sxua+C9nDXyRt3zov7yfynSddk9OBCFG9nGCzUFNux9KnmsM5EgkGN2pcGywnBlXD9OMK/dcA/pt2rj0aDxliXmrf1hL6Ak7p2o01jSy+FXuLNxiyyLE/Xm8PQiYNjYjxPX50MkEuaLEi5GPyP8uW1B2vRIY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770721314; c=relaxed/simple;
+	bh=TeX6FpDhYE6FSzmi7IBpjgfnly62UeaRLnW4YBkuyHg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ND0RGKQj+UzFtKOIOE+DjazoHX8gUdS9YKD4myZOv33WneSUhGl/otFxf43fknnn4OWz07CMXaDi5dB3eNkPZltGzqnZ2UsB6bTrulsphA8dKfuiuiXz9PdZt7LMdwXhGAYPow6oAVV06zck+X4OiI/VlELJP7UNQNLxwjWKAe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rbu5YUyV; arc=none smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1bzGWKmG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XY7v5ic8OAJjc98H46qVjAaJZRJ+VUfvTPqdTo6iwWs56d7ry/BLwEhiFI7EHJct32Lj3/h/qDSvL6rMiubYa0//Jj3dsZTfWiw7aFr7trYV4juW71W6rcWj2MH2Hc4LtfyPLBOwUUwzwxfckd7h4iW/zsn6R7ClGydH61wxVveOsEG4ALqag8cn4a8kY4AatY36m/tbjENd8q/UUANCueuDqWS3lpSeSWX06pSMUFel+NUbdTCheW1A/dbOHC9FxkuJUW4FZUCVxTZFfosGY/BtpVfnXqsfFUkwHR83pbDXjHOVEgi/fLTpHM1q1+0tgDoO7lV4uegoxngHI2tk7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vgDECb91bK1rGG8Ns7Gy0AMjm+UZ7B0hD1h0LciLkC8=;
- b=oy2UhC8JylcacxYMc7sAMuDhtuW1ZrGtKX40Xtgbsa8zzeYf+NHhGu3XQQKac5MXLkrW7hthTnxT1dVYLVVQZemwoz8W5KQJrutrZbHMp8PNhbgGhj3iWOvxk2WiVgIL7Sd4oH5VhID9+Z6G1VnoHcvcMYGG/BCDDXtMIDqaHtPA8HSfbI43JZWYAb+MZK/NaoobsEdfKd3mlqciO6J+bXCY4wKCwDedGhHwZMbK0XpfaJoOI7UG1ma33WGqmI7J9cmJGWjsWbcHZvVI+OJQPREMCy0+bbG8tEqqfRL9QY8bkVfSGs4S383Q4AeQMcPXj3VGBKJE7NYG5njD5qAk5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vgDECb91bK1rGG8Ns7Gy0AMjm+UZ7B0hD1h0LciLkC8=;
- b=1bzGWKmGDRt5hdgP3vZQX+bIGKvxeGD2QekzjeaHdpQQyQZY2COK1Meab23Bu4dLcp6y2wi9YC1v+PK8cloUm7T7IBeoDRxGrcSI0cRNPSSruDzHNWi5lwiVplAKL6aHMYNhN/V3V9kFhLURwPtM+EL56P4T68rAhrGh9bEUkz0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by CH1PPF2D39B31FF.namprd12.prod.outlook.com (2603:10b6:61f:fc00::60a) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Tue, 10 Feb
- 2026 10:46:53 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9611.006; Tue, 10 Feb 2026
- 10:46:52 +0000
-Message-ID: <4e84306c-5cec-4048-a7eb-a364788baa89@amd.com>
-Date: Tue, 10 Feb 2026 11:46:44 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Philipp Stanner <phasta@mailbox.org>, phasta@kernel.org,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-References: <20260203081403.68733-2-phasta@kernel.org>
- <20260203081403.68733-4-phasta@kernel.org> <20260205095727.4c3e2941@fedora>
- <DG7SZND1GWR4.3C5NLKY4SYC0M@kernel.org>
- <bb57b6837aa8044e679dad5f2589c2e0ba84c221.camel@mailbox.org>
- <20260209155843.725dcfe1@fedora>
- <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com> <aYruaIxn8sMXVI0r@google.com>
- <20260210101525.7fb85f25@fedora> <aYsFKOVrsMQeAHoi@google.com>
- <DGB7RWKMPJQZ.2PHB127O6MVVN@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <DGB7RWKMPJQZ.2PHB127O6MVVN@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BN9P222CA0025.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:408:10c::30) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rbu5YUyV"
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-45f04f1348cso2475204b6e.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 03:01:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770721312; x=1771326112; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fIJz3kYN33qG3Fl2V6Bqi8+KcSudbe9ldFTSf7iXp3g=;
+        b=Rbu5YUyVSaSGzdXM6khf9X6rbfVhcucgIUhDoiktjFScz5tHOdHxmtPs1hI5YnECbx
+         IHGsq46wyr6B/b2E2lGXKz5VzJyYLQTfndPCjmuczbP/gkE05TXVz4b9990tFrujOTTM
+         4P9GX/Y2QK6O6KdXqin7k+aORgQepvHTQ0xDNcVW3FZAI8s6/kP2JtiShN4Wmschk+jp
+         pyNiZ8PoKETHDFXQ9korXFzM5KvJDGO1XLxyO1QVjK/Cm5D6NbVww6kpnptxKhVkIDMV
+         5U8gTcYau+ITmFixgsGYg5aXjW9zfYQ9rNmblyJZelGrgqICTajUXM2zuEWgLZOSY5Nz
+         LH1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770721312; x=1771326112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fIJz3kYN33qG3Fl2V6Bqi8+KcSudbe9ldFTSf7iXp3g=;
+        b=i6s+7x9VDyg6eMIdON3Zw0pmrFglGU6ava4faGmPXJMJ+JMqr8MqEJNKgXRY/4fUiY
+         bAx/ObqfKTbTfRjrzyK9+bJ0ucUBTRe3SONXRbq/lTFvvuPOt1SVBU4rcpZkAeoK4ck6
+         gEDE27VJYnowsth4obFKFsYrFaFvUD8gUIlOlc8S57fxGjETcmVeIDX5DfD0jqCcwoV8
+         zflu9hmsVEwO6Ues4h3xskoxQ5FkLULusqYZ0GSkkkPYnxDD9foITkN6O9qrXK4hQNS0
+         xrMSUpJxYHDCnyUqbZIBB9pCGLpWeZFwcVPt+OJ3cRR1CAf/SHuPmPhFz6zR1TQdNe0Y
+         dAmw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4mZUCIUjOl7H4LNQgse28FN41dpHI8HRuUddsj68QF5v4wJivbPicoJTsK4udDLujkhw0yFgrt3noMGVBNA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8LQTBExXrDUgR9rZNTvlwcH0JHlu+ZcruXuCWy0avYOZIla/g
+	Ru0y5l0ANuTxB21IAf+q/S/Sro51LTnwnE1RZEzncUD1hpjgkw2ooJKd5v0aMg==
+X-Gm-Gg: AZuq6aIp35hkBh5mUkCOGbTViEcn96DzXGyKXIo81FK5ioqw/3ggsr/yIO40FPjADRu
+	ToapL7Tw4NGGpybDk/UCOmagsLvfuinTAD0uXtVoXeUNtBvXkma4aCh6qseAdcYoyiwxQleNDui
+	lsPvqwGn2HUsZdzaD2yuuMYQrNvp9EdpOkiN22D8p9REYwxcpCUoEZr/x7RzdXokcYBvikr/YlF
+	4+Yk4GqTPNXulYAYOf6oLrN6xzowScgFsIBu53qOLFp/HDZFk9opabC0fy0H1R4oc/DhBJrS2vI
+	ywYrbk6AWwsN6haJIauMsZtHoinqe1NurMVdT8u+RPsjHHcApXn1CWPDEESbyVdMslPwWLZ7EjM
+	goIXs85rhD39eYcu7/FGkPqNjQ2LN0fhNrg/IFdw+VCEB+WT1H3XU8Slj/y8RV1ONlbHj8wt8fM
+	gxIwKknRqy7Yg+uCMqe6aXJG+qRTkTVh8tF/9fuAYhjjKPzts4VocRSRyCk92ro19b01Lrl8U=
+X-Received: by 2002:a17:903:b4e:b0:2a0:fe9f:1884 with SMTP id d9443c01a7336-2a95194aaeamr120907585ad.55.1770714055465;
+        Tue, 10 Feb 2026 01:00:55 -0800 (PST)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.in.ibm.com ([129.41.58.2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a951c7a342sm129536605ad.26.2026.02.10.01.00.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Feb 2026 01:00:55 -0800 (PST)
+From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+To: linkmauve@linkmauve.fr,
+	ojeda@kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	corbet@lwn.net,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	peterz@infradead.org,
+	jpoimboe@kernel.org,
+	jbaron@akamai.com,
+	rostedt@goodmis.org,
+	ardb@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [PATCH V6 3/3] powerpc: Enable Rust for ppc64le
+Date: Tue, 10 Feb 2026 14:30:22 +0530
+Message-ID: <20260210090023.2587534-4-mkchauras@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260210090023.2587534-1-mkchauras@gmail.com>
+References: <20260210090023.2587534-1-mkchauras@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|CH1PPF2D39B31FF:EE_
-X-MS-Office365-Filtering-Correlation-Id: 404298aa-28b9-4726-e2bf-08de6891b39f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UFVDWkx1Y2U4Z0YybGdmZTIyWE1Rb0RpVmtYY2FvaHFhQjJOMnUrUXZRNEFE?=
- =?utf-8?B?K05iYjlkQ0ZWQUUrTWtSMDI1SDR6dXo0a0dtNnkwYlJIcWx4UEZBTDJpZ0ZW?=
- =?utf-8?B?cXdteURHdkpaa2VQZUhaQ292ZEZXYWxwN2I3MnNGSWFFa0U1aHRMcXliOEUw?=
- =?utf-8?B?MnJZRExKOUNNSStWM2dSeEFxU0ZORFZFMkhleEE2S3FjVHZJdXpTNjBWdkdu?=
- =?utf-8?B?TGl3NHZmWjBMOUpCZVNrR2M2L2tNVk5YR1p0cmdOQ0xSVThhN3RMMkt6bThK?=
- =?utf-8?B?ODJUM0EwS2JhQTQ1Sy9CRjg5NXFxdjgwMjZNUWt5QUY5OXpHQ0o4bmpVZnFX?=
- =?utf-8?B?VFBldC9MOHlmZE0xano2citkTmkxck1qazN6Ulh0OFZGQitXT09qeXJvVXBC?=
- =?utf-8?B?NitJV1ZodlpwaWo2MVBzRXNVZEthYkFRVjQ3cUR0OTRmSHBtelluWExIbExW?=
- =?utf-8?B?VUl2MHFLK25PR0hJZVg3SnFKV2hzRWJWa0R6ci96b3JtV0hTTGIwNVBQc01O?=
- =?utf-8?B?NjdUeHpoODdVbzhndVNRbzBjaE5hOUFWVEphSmZDdENJcEpaZ3dJWEpNMmdI?=
- =?utf-8?B?dTR6aW01aldCMm1jaE9Gc0YyclpuNW5VbitaSnY3TWpKT2JGYk84YkFMODVZ?=
- =?utf-8?B?eFZNZnNPeGYwWmhBd1MzaitqZzFQclFsMFcwNWRPakxrcGJ3Q0tCU29mNm01?=
- =?utf-8?B?LzY4SHdLNlNvRmZYSnFGOHNNbEpVZEl0dzZjVUltSHNyak5YcFRJMVBUaEtZ?=
- =?utf-8?B?T0JCSExWZUNockpNS2xtMjB3OEhQaVg5MDk0WEhUM2FPQVp2NlRPbmpOWjZP?=
- =?utf-8?B?MGFxWWpLVUZQOEl6T0F0cFgxZkFQNVpndUIxZm51RnJQODNRMTNkbkMvQVV0?=
- =?utf-8?B?dHhtUE1qTWd5ZmZpSVlpTGgxYkRXUXVWUkF0MVd6cjlnL3VuYVlHN2FRTTVW?=
- =?utf-8?B?MVpyMU14VHpjMHd3QkpjTEFycE1nZmd4NnJBSWxZTHhuMGVKeEo5eHZTb1Zy?=
- =?utf-8?B?SE0zckd5YW96VWRaVEVockVhaW9mZkxTcGpuRzVJUVpGNU5wcW1OaHFnMzlL?=
- =?utf-8?B?YnNsNGRTK05TRHIzYWNkSjU3SWk0ekFlUlZQL3d3TDBENGhsVVJ1S05rZVZa?=
- =?utf-8?B?OW5BZWd4akJGdDdvY2Zsd09uWGxpN3J3YzRyQUpvV3I2L0YxdzBvbzVtSWlo?=
- =?utf-8?B?RkViM3B3eEJvSEFackNHZ1ZTQ2E1WjRkNURaMm1LUEJVODlBcC9pak5janJz?=
- =?utf-8?B?Y0ZCcWdnZ3BoMmc3S1Njc2dGbng0b00rUFV0N09GTW9QMHZiWExzS21QSTlZ?=
- =?utf-8?B?cUtRK1lRdllXSnRNSEd0b1hBZWROSkpoMzd5LzljeGxvekp5V0NVajVSeTJl?=
- =?utf-8?B?QmVVR25CNkczNXBHMDR2cC9aa3JkNTJZS1pXTmJBbmJNcjVmYjBWNkdERlBW?=
- =?utf-8?B?TzdianZoOXB0ZlJrOXl0VC9DQ3poOHBGajg1S2ZRcy9scytUUHIrS0ViQlo0?=
- =?utf-8?B?SXZ2dEhCQ3BFYkd6djgwNTZxTFF6bVlsK0dZZGRzcnJpcExJQUtaeEJyMHNs?=
- =?utf-8?B?eXpsaWMxS0d0NzhibWwzVTBESUhJM2FOK1RReGdwbm1Fd3R2MHhRQlh1VllQ?=
- =?utf-8?B?amI4aHdhWHZEbnRhMEdyUmxBb296eWxVR1FIOVpVcEc2UEMzN3NpUUUySlkr?=
- =?utf-8?B?a1RsMEgyV0d4Z0Y0QitTYXNMY3NvSWREQngrU0RTV3RUR1pKdlJ1VVNTVWJG?=
- =?utf-8?B?azN2aXFDUUYyczBkeEZZTis2TC80L0poNnlTVm5oMzNiZXVEMHVsSmt4L2hK?=
- =?utf-8?B?OWg3eDdRWHl3dkZqZjFCM3VnWjVFbHpuNktuY1lrTEt5UURVUjJaUGswL1R5?=
- =?utf-8?B?akdNQndUbmdnZ3JGY2lzT1VmUVN3MVI2SDRYSUEwL0NRbHA1SjJ3YXl0dGVY?=
- =?utf-8?B?UUFmUGlJZXlkRmZ5OTcyRnQvMFYxekN6N1RFZU1ka0hFd0tHdi9lS3MzVWVt?=
- =?utf-8?B?a3pUTmZwV0FXai8yTU1LSElBVGFPQlhNTTlKdHptN1BXMTc2VU5JWWVYR2Z3?=
- =?utf-8?B?MzFjalF3cUNtcmJHNjNtY0J6c1hNYkFSNHFqbXZhNG5hZk1SdHpObURibXox?=
- =?utf-8?Q?gr0I=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MXNERlFxbHpRclRTaG91WlJiTGIyMnRpTVNzSHNWb1NxeWdlbHFyVzRFUXZs?=
- =?utf-8?B?WlBpeHR0R0w0TUlXWVNYYnNCNmZZYTI1VW1ZU095Q2hHalhsa0Y3NEhzL0ZS?=
- =?utf-8?B?VWtZZkxJenlnUW5XUG10cTdOdk9KalNIaEUwRjZ1d2l0eW91N2hFQkJjb1R1?=
- =?utf-8?B?UHhCOEgwVzR5aGRXS3BvZURrRGJ2dFR4WW81RmhkQ0MyWnd4THVOSU00SEVQ?=
- =?utf-8?B?S2tDL0JYY2VsdjNrZU1vNU5VOWZibGJ3MVZJdllLL1g0aTJoQml4ZHk1YmlT?=
- =?utf-8?B?S2pDYWNlWmZiMzVOQlc1WEplTVA4Z1ZaNUI1VEJqUG42aDU0TFBvVFdrak1n?=
- =?utf-8?B?L3o2RWIvZCtkRm9lOEVJbDNGOVM3MkdJcjBOaVhSZldHWW0xYXZGUVRVQS9z?=
- =?utf-8?B?amtScUM3YTdETVR2Z0R0VVRpaU9WeDJuSS9UUWo3TWJYUnpaMi90Ni85akdk?=
- =?utf-8?B?QU5Kc2JveFpRRFB4ekxDZ2txcWo3bnBxT1NPYzN3bXlDd296KzdBblY4SE9K?=
- =?utf-8?B?WDJOK2ZpMW1jUFBFRVZYc0FjWTJVbyt4K1VGNFIrbExDelhBL3hVVjBVazVx?=
- =?utf-8?B?aDJmWDl0MnhUT3JIbkVKT2MvSGFzUlJxakEwbkF2bXMvdllYWFFzRGRmM2pu?=
- =?utf-8?B?dDRrSXJXRzlWV3B6Yzk5VmkwdXM3L002TzF1aFNiblVjelk4MCtzKzc1MDBO?=
- =?utf-8?B?MUl2U1QxU1dmenhncUNLU1ZzTDRTaXNsdkRxVmpDVHlvV2p3WnFtWXN2TW5E?=
- =?utf-8?B?Y1FQczRLZFNWZmovM1FuR0w1a25ic01UN281TlZvbm9WK3pPSVFoU2w5VmtI?=
- =?utf-8?B?azN5NWx4cWpGeTdvU3VEdFlUT2RuUVhEYjhVMFFyS2U1T1Exb1dlR1d3Z1VN?=
- =?utf-8?B?aGE2ekRRVE5uclgxV1VxYWtoY0tnMTlOaVp6Zk1RdnUwam5QOEYvaEFQd0VU?=
- =?utf-8?B?dEI1eGk3bzdqbThsR2ZTRll1TE1KMjBCL2tjYnB3SXlpSE10NjlFektMU2xt?=
- =?utf-8?B?dkhrczlaYzFtOXNTcXp2bFpnZGhTVlY2SldtUVM0Tk5ieVNvK0FZSWNINTZD?=
- =?utf-8?B?ajQxSnVmZTN0TzdDdGcwR05nMVlPaHQzbGNNMFJTbDZvMmdPNmI3WUVvVERM?=
- =?utf-8?B?Yk04Q3lLQlljWG9GZmFYZE5FRnBkYlZqejF4eEVubjZSanh4WlZ0S3lSTEM2?=
- =?utf-8?B?QUZQVy9uaVJNdjIySGpualp3UjE2Tlg5aXJzY3pVUVlKU2tienRvUjE0bVlm?=
- =?utf-8?B?RVhGc2paQXhBYWdIOHVWSEZnU2hhaVdQWnRLMTVJRS95K1NvL210UmE3RGFu?=
- =?utf-8?B?MjJ2bURJK056TDlBWWdBWDVtYW03aUhmb3pPcWZ0WWl2cUJ2alNwTEU4QWFs?=
- =?utf-8?B?TzBGQXdYYUhZTzRrVldtMHFlK1NGbW9za2NmdFhrUjFjZUJTSHBtQWVPeUxT?=
- =?utf-8?B?VTYzdGs2TjZ4RlBidUpia1VYdktwYjRDMlFmOXV6MkltMFBMS2dONVo5TWh0?=
- =?utf-8?B?THJmS0RETGZ4N2xicEZmRGp1MDF5R1BwMjFlNFlsYWVOMy9yOG5rZWdHMTFV?=
- =?utf-8?B?UHkvOTd3Y0k2TVBmbXRZcWxRVmMwMHJtUVN2THRSNjJXOHFLUlhPOWd6T1hP?=
- =?utf-8?B?OVJ2cTM1ejdKV1RLRzMwQU9ZdFRLY2dGQ0RNdE04TzdleEozVk0xbVU1a3Bz?=
- =?utf-8?B?ZGpmOWpPQlYvU1VZWnoxQ2pJSlQwamJsWW16Zmhxblhab1l2Z1NHR2ZaVmg1?=
- =?utf-8?B?K3pEZEJVMVBMUnZVdzhETU9YSWN0endCd0JlSTVsUVZDQzg2Skk4L2VVSmgv?=
- =?utf-8?B?ckVaTmlXb2xycklRS3BzckMyWkZYUzBESzVzeWlJL21Fa01KcEdsYnB1Qytt?=
- =?utf-8?B?NHR6ZGNiaG5LU2ZmOXhXSVFOMTUybGhHNWxnSGFtYzNZUWZ0Q05IOTh1aGtk?=
- =?utf-8?B?NGZVTVFLVkMyRGFXMVoxenlUSFZicmFic3lLNGZGMTlTTGNXTEpRYzZTOVI4?=
- =?utf-8?B?V2I1eDk1MWZGZER2ZmFGcVM2SCt1Nyt2b2ZqUUIxdXpNU1NxZDdkQWtUVjlX?=
- =?utf-8?B?VVNzYmMwL3hTUHZZeFo3elM1eVlkLzJBd3MyT2hweDU0YitZdURnamJJUFlh?=
- =?utf-8?B?blREVE1mLytjN3AzZEZtK042a25ZeEdKRWlZeWJNNThURGhQSWxTZlkyaU1a?=
- =?utf-8?B?RlhpUXoyYU5pa0JXUHhIRCt3dFBiS01DV2paZG9aRHptTGRjbkpWZTZBOWFN?=
- =?utf-8?B?eDF5djBySGQ2ZnBLcnNNb3lkU2JwYTlmMmVqSnJqSUJORnBsaXA2alpIWm5Z?=
- =?utf-8?Q?RRSvrBB6QB6aC7jCvs?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 404298aa-28b9-4726-e2bf-08de6891b39f
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 10:46:52.8260
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L4QC+tPXKXZgvF7KAJp1R8SYMeubXKcDDg0AlSxfJjo3ES/2n1GAhkYJUFl2uYL4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF2D39B31FF
+Content-Transfer-Encoding: 8bit
 
-On 2/10/26 11:36, Danilo Krummrich wrote:
-> On Tue Feb 10, 2026 at 11:15 AM CET, Alice Ryhl wrote:
->> One way you can see this is by looking at what we require of the
->> workqueue. For all this to work, it's pretty important that we never
->> schedule anything on the workqueue that's not signalling safe, since
->> otherwise you could have a deadlock where the workqueue is executes some
->> random job calling kmalloc(GFP_KERNEL) and then blocks on our fence,
->> meaning that the VM_BIND job never gets scheduled since the workqueue
->> is never freed up. Deadlock.
-> 
-> Yes, I also pointed this out multiple times in the past in the context of C GPU
-> scheduler discussions. It really depends on the workqueue and how it is used.
-> 
-> In the C GPU scheduler the driver can pass its own workqueue to the scheduler,
-> which means that the driver has to ensure that at least one out of the
-> wq->max_active works is free for the scheduler to make progress on the
-> scheduler's run and free job work.
-> 
-> Or in other words, there must be no more than wq->max_active - 1 works that
-> execute code violating the DMA fence signalling rules.
+Enabling rust support for ppc64le only.
 
-*And* the workqueue must be created with WQ_MEM_RECLAIM so that work items can also start under memory pressure and not potentially cycle back into the memory management to wait for a dma_fence to signal.
+Tested on powernv9:
 
-But apart from that your explanation is perfectly correct, yes.
+$ uname -rm
+6.19.0-rc8+ ppc64le
 
-Thanks,
-Christian.
+$ sudo modprobe rust_minimal
+[  632.890850] rust_minimal: Rust minimal sample (init)
+[  632.890881] rust_minimal: Am I built-in? false
+[  632.890898] rust_minimal: test_parameter: 1
 
-> This is also why the JobQ needs its own workqueue and relying on the system WQ
-> is unsound.
-> 
-> In case of an ordered workqueue, it is always a potential deadlock to schedule
-> work that does non-atomic allocations or takes a lock that is used elsewhere for
-> non-atomic allocations of course.
+$ sudo rmmod rust_minimal
+[  648.272832] rust_minimal: My numbers are [72, 108, 200]
+[  648.272873] rust_minimal: Rust minimal sample (exit)
+
+$ sudo modprobe rust_print
+[  843.410391] rust_print: Rust printing macros sample (init)
+[  843.410424] rust_print: Emergency message (level 0) without args
+[  843.410451] rust_print: Alert message (level 1) without args
+[  843.410477] rust_print: Critical message (level 2) without args
+[  843.410503] rust_print: Error message (level 3) without args
+[  843.410530] rust_print: Warning message (level 4) without args
+[  843.410557] rust_print: Notice message (level 5) without args
+[  843.410594] rust_print: Info message (level 6) without args
+[  843.410617] rust_print: A line that is continued without args
+[  843.410646] rust_print: Emergency message (level 0) with args
+[  843.410675] rust_print: Alert message (level 1) with args
+[  843.410691] rust_print: Critical message (level 2) with args
+[  843.410727] rust_print: Error message (level 3) with args
+[  843.410761] rust_print: Warning message (level 4) with args
+[  843.410796] rust_print: Notice message (level 5) with args
+[  843.410821] rust_print: Info message (level 6) with args
+[  843.410854] rust_print: A line that is continued with args
+[  843.410892] rust_print: 1
+[  843.410895] rust_print: "hello, world"
+[  843.410924] rust_print: [samples/rust/rust_print_main.rs:35:5] c = "hello, world"
+[  843.410977] rust_print: Arc<dyn Display> says 42
+[  843.410979] rust_print: Arc<dyn Display> says hello, world
+
+$ sudo rmmod rust_print
+[  843.411003] rust_print: "hello, world"
+[  888.499935] rust_print: Rust printing macros sample (exit)
+
+Reviewed-by: Link Mauve <linkmauve@linkmauve.fr>
+Tested-by: Link Mauve <linkmauve@linkmauve.fr>
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+---
+ Documentation/rust/arch-support.rst | 2 +-
+ arch/powerpc/Kconfig                | 1 +
+ arch/powerpc/Makefile               | 7 ++++++-
+ rust/Makefile                       | 6 ++++++
+ 4 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+index 70b9e192a7a0..70bcd726ad0e 100644
+--- a/Documentation/rust/arch-support.rst
++++ b/Documentation/rust/arch-support.rst
+@@ -18,7 +18,7 @@ Architecture   Level of support  Constraints
+ ``arm``        Maintained        ARMv7 Little Endian only.
+ ``arm64``      Maintained        Little Endian only.
+ ``loongarch``  Maintained        \-
+-``powerpc``    Maintained        32-bit Big Endian only.
++``powerpc``    Maintained        64-bit Little Endian. 32-bit Big Endian.
+ ``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
+ ``um``         Maintained        \-
+ ``x86``        Maintained        ``x86_64`` only.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 17db23b82e91..954af27e10c5 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -284,6 +284,7 @@ config PPC
+ 	select HAVE_RELIABLE_STACKTRACE
+ 	select HAVE_RSEQ
+ 	select HAVE_RUST			if PPC32
++	select HAVE_RUST			if PPC64 && CPU_LITTLE_ENDIAN
+ 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+ 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+ 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 9fd82c75dcbd..9385db478c59 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -61,7 +61,12 @@ else
+ KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
+ endif
+ 
+-KBUILD_RUSTFLAGS += --target=powerpc-unknown-linux-gnu
++ifdef CONFIG_PPC64
++KBUILD_RUSTFLAGS	+= --target=powerpc64le-unknown-linux-gnu
++KBUILD_RUSTFLAGS	+= -Ctarget-feature=-mma,-vsx,-hard-float,-altivec
++else
++KBUILD_RUSTFLAGS	+= --target=powerpc-unknown-linux-gnu
++endif
+ 
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
+ KBUILD_CPPFLAGS	+= -mlittle-endian
+diff --git a/rust/Makefile b/rust/Makefile
+index ae22f2c5f0b3..0aef472c6cf5 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -392,7 +392,13 @@ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+ BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
+ BINDGEN_TARGET_arm	:= arm-linux-gnueabi
+ BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
++
++ifdef CONFIG_PPC64
++BINDGEN_TARGET_powerpc	:= powerpc64le-linux-gnu
++else
+ BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
++endif
++
+ BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
+ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+ 
+-- 
+2.53.0
 
