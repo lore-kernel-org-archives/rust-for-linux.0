@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC243382D6;
-	Tue, 10 Feb 2026 21:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296D2331A5C;
+	Tue, 10 Feb 2026 21:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770757814; cv=none; b=EwirOnxER11hzg6ofhZqh/ZEr1z7IryMFHVPae2hCReClJZ2Bez8qDy83Qe4v/YfeCSYfp/b386DaC/wLhC51NfoJrBstSGEdH/peqaZY07YPLawjDt6Kug1SMp8s3C9/RtTPBGpR76rOZir2HkFPzjqjnh6xVs71hAOxJKy3Ws=
+	t=1770757924; cv=none; b=L+5s8m8xu5Vvr0FkuN/H3fZ91/jD4ML0S4/JV8AfiizlTTcxFoEHESu+QUHGXRPKoE9ztOUJsD6fCmXcnKD3WSRAOcobe07AucXP4EfFeOJwUcvYwdxCEiL7syromwIkAfk9yyGZVz/wz9vi8xzCEW9CAiGzAbJMZy5iSTT54IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770757814; c=relaxed/simple;
-	bh=UWSb7wjpHsusRVvieXLpHdxv/4zDaCUkIgy7QUYN+Qw=;
+	s=arc-20240116; t=1770757924; c=relaxed/simple;
+	bh=7zk7bofSmyragoKzz6B1piVZiTdvpMcKVBRV2xUKc6E=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=PTkPu1SfvLpVugE15GTACVlBUbXaxb+5KwQzAUZyL6+QMylXFYIgxG/AxkefyTkcxyQCB7oAmDfKWWXLFUkMErFTsiZQlOeyUwQvDXSj1omHI9IEB53/xCfTP5iDpwLpDpObTTKp36mIGeAaRxV1FWYNucxb0vs/IIm0nHxN1YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3bgbA3B; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=C7KMkp+XrHWkUbWm8q40CFLTBMuHMRxtNkEU4VaWek6bMddmSOcrF3aRPI80TP0VU5JjERjDENQACvFEPYQezqt+w9w4Xflbu5/C7wZUELXNAokP0aw38mMbdvf8HfBE2+XDXJ5yEJbJ+RvjwxzCCq1fS3PspTq+4xJRcQiBLHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKHXY06B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3bgbA3B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5337C116C6;
-	Tue, 10 Feb 2026 21:10:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKHXY06B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A89C116C6;
+	Tue, 10 Feb 2026 21:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770757814;
-	bh=UWSb7wjpHsusRVvieXLpHdxv/4zDaCUkIgy7QUYN+Qw=;
+	s=k20201202; t=1770757923;
+	bh=7zk7bofSmyragoKzz6B1piVZiTdvpMcKVBRV2xUKc6E=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=e3bgbA3BYcAKRl8iwbdJVkgrkS7A1nttqBdEge3iUnUgQ4wnLXe5M9C/gQST9Vazx
-	 mTI9eXXs9l8hK1+3phBxmaosKEOsPCLxUv5EoIxnCTNTBXSuoHSTgXEX0nmjSSlBZX
-	 etqvR3ijBk3JxLIBdOJr71PBelaIdS29Pmh3twzOnqsJQaHHOvHi5vSYlOe+9p0kul
-	 amTGI376pQKDV+W8QZ05JdpeYMoYXT6yjUSFUxUT538ypdEgXgY3IbkeRQMh1ipnz5
-	 4JBp6ySOVNWzst9QfT3XNGf2Nm6PjMXLJK3bbMV+LMDWQxjUetTaCqnbm7f9wN/NfH
-	 NKHT6RpV1wiCA==
+	b=mKHXY06B6M7GKSuZPNPrS/vZ8MHrZZMEpXHySoql1KKY2w1uVq/dU0H12wLLiFN/3
+	 6yHrpXSglToQErLct/LvdzaUXD69E++vKRy9r0uVaVV3Eg1XNqsh24+dNAGBzGwmWS
+	 +eTBKpNtw37thoptNVrUFJjzfnZ4EzVg3TjwMxxGzf+LESVG3go6K0TY8gsRv02lIL
+	 l20pjjLSPvEQe0/m3NvS70AanaEUqCDEIoxc9mB8I38IEP9Txcml6aV7irxfDNQL5m
+	 DtAUbKq9ReWSgv4jpmtIlBYx3i9Ay+yFz3GBUBqE/SqEdCLAh+8yAxaGljdLcxn4kX
+	 wmNodreFa63xg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,112 +34,100 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Feb 2026 22:10:02 +0100
-Message-Id: <DGBL94I0E5UB.4LNH3JODOKPV@kernel.org>
-Subject: Re: [PATCH -next v8 2/3] rust: gpu: Add GPU buddy allocator
- bindings
-Cc: <linux-kernel@vger.kernel.org>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan Corbet"
- <corbet@lwn.net>, "Alex Deucher" <alexander.deucher@amd.com>,
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Jani Nikula"
- <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
- <joonas.lahtinen@linux.intel.com>, "Vivi Rodrigo" <rodrigo.vivi@intel.com>,
- "Tvrtko Ursulin" <tursulin@ursulin.net>, "Rui Huang" <ray.huang@amd.com>,
- "Matthew Auld" <matthew.auld@intel.com>, "Matthew Brost"
- <matthew.brost@intel.com>, "Lucas De Marchi" <lucas.demarchi@intel.com>,
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- "Helge Deller" <deller@gmx.de>, "Alice Ryhl" <aliceryhl@google.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer"
- <epeer@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Andrea
- Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>, "Philipp Stanner"
- <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, <joel@joelfernandes.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <amd-gfx@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
- <intel-xe@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>
+Date: Tue, 10 Feb 2026 22:11:57 +0100
+Message-Id: <DGBLALCUGY7N.383JKRKNCRDW5@kernel.org>
+Subject: Re: [PATCH v3 0/4] rust: alloc: add Vec shrinking methods
+Cc: "Shivam Kalra" <shivamkalra98@gmail.com>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, "Todd Kjos"
+ <tkjos@android.com>, "Christian Brauner" <brauner@kernel.org>, "Carlos
+ Llamas" <cmllamas@google.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260209214246.2783990-1-joelagnelf@nvidia.com>
- <20260209214246.2783990-3-joelagnelf@nvidia.com>
- <DGB9G697GSWO.3VBFGU5MKFPMR@kernel.org>
- <1770754015.1979311.8126@nvidia.com>
-In-Reply-To: <1770754015.1979311.8126@nvidia.com>
+References: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
+ <0d336a3f-f317-4a70-942a-d87a3faa3a89@gmail.com>
+ <aYs5L1aG5S34teKT@google.com> <DGBDHMI9Z4JK.3QHCOS1O8WGLB@kernel.org>
+ <CAH5fLghy3_J_in-o=y8yh94+RLn6XihNOTzTiT2kk9DkXBMPVA@mail.gmail.com>
+ <DGBKOL8Y6OH8.1X5RHNGCQAMC4@kernel.org>
+ <DGBKWSS3PEGY.20YKV5CO7DCKT@kernel.org>
+ <CAH5fLgg9sDW+MCK15yVyZ59BzXind+1vRj+PQ2xHQ8Bg7sxLRA@mail.gmail.com>
+In-Reply-To: <CAH5fLgg9sDW+MCK15yVyZ59BzXind+1vRj+PQ2xHQ8Bg7sxLRA@mail.gmail.com>
 
-On Tue Feb 10, 2026 at 9:09 PM CET, Joel Fernandes wrote:
->>> +impl GpuBuddyInner {
->>> +    /// Create a pin-initializer for the buddy allocator.
->>> +    fn new(params: &GpuBuddyParams) -> impl PinInit<Self, Error> {
->>=20
->> I think we can just pass them by value, they shouldn't be needed anymore=
- after
->> the GpuBuddy instance has been constructed.
+On Tue Feb 10, 2026 at 9:58 PM CET, Alice Ryhl wrote:
+> On Tue, Feb 10, 2026 at 9:54=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
+> wrote:
+>>
+>> On Tue Feb 10, 2026 at 9:43 PM CET, Danilo Krummrich wrote:
+>> > On Tue Feb 10, 2026 at 9:05 PM CET, Alice Ryhl wrote:
+>> >> On Tue, Feb 10, 2026 at 4:05=E2=80=AFPM Danilo Krummrich <dakr@kernel=
+.org> wrote:
+>> >>>
+>> >>> On Tue Feb 10, 2026 at 2:57 PM CET, Alice Ryhl wrote:
+>> >>> > On Tue, Feb 10, 2026 at 07:08:09PM +0530, Shivam Kalra wrote:
+>> >>> >> This is a follow-up to my v3 series:
+>> >>> >> https://lore.kernel.org/rust-for-linux/20260207-binder-shrink-vec=
+-v3-v3-0-8ff388563427@cock.li/
+>> >>> >>
+>> >>> >> Hi all,
+>> >>> >>
+>> >>> >> Thanks for the feedback on v3. Before I respin, I want to confirm
+>> >>> >> the direction for v4 to avoid unnecessary iterations.
+>> >>> >>
+>> >>> >> Proposed changes for v4:
+>> >>> >>
+>> >>> >> 1. Drop the Shrinkable trait entirely. Make shrink_to() a normal
+>> >>> >>    method on Vec<T, A> that calls A::realloc(). (Danilo)
+>> >>> >>
+>> >>> >> 2. Add a temporary ShrinkQuirk trait to handle the vmalloc workar=
+ound
+>> >>> >>    (page-boundary check + manual alloc+copy+free) until vrealloc
+>> >>> >>    gains in-place shrinking support. (Danilo)
+>> >>> >
+>> >>> > I don't think you want any new traits at all. What types would eve=
+n
+>> >>> > implement the trait? The special code can go in the realloc() meth=
+od of
+>> >>> > Vmalloc struct in rust/kernel/alloc/allocator.rs.
+>> >>>
+>> >>> I did not propose to move this into the realloc() functions of the c=
+orresponding
+>> >>> allocators intentionally, as there is a difference between calling r=
+ealloc() and
+>> >>> shrink_to().
+>> >>>
+>> >>> I don't want that some user of e.g. Vmalloc::realloc() experiences p=
+age wise
+>> >>> shrinking by copy. This is acceptable for Vec::shrink_to(), but not =
+for
+>> >>> realloc() in general.
+>> >>
+>> >> Ok. In that case we can add a method on KVVec directly for this
+>> >> purpose, but I still don't think we need a trait?
+>> >
+>> > KVVec::realloc() should not have this behavior either, we only want it=
+ for
+>>
+>> s/KVVec::realloc()/KVec::shrink_to()/
+>>
+>> > VVec::shrink_to() and KVVec::shrink_to(), so I think we need a tempora=
+ry quirk
+>> > trait.
+>>
+>> Unless you mean to implement shrink_to() for VVec and KVVec only, that w=
+ould be
+>> fine with me as well.
 >
-> Dave Airlie specifically reviewed this in RFC v6 and recommended passing =
-by
-> reference rather than by value [2]:
->
->   "maybe we should pass them as non-mutable references, but I don't think
->    there is any point in passing them by value ever."
->
-> The params are also reused in practice -- the doc examples show the same
-> `GpuBuddyParams` being used repeatedly. References
-> avoid unnecessary copies for this reuse pattern.
+> Yes that's what I meant. Only provide shrink_to() for those. After
+> all, if Kmalloc never actually shrinks when you call realloc, what's
+> the point of having KVec::shrink_to()?
 
-Well, that's for GpuBuddyAllocParams, those are indeed reused and shouldn't=
- be
-copied all the time.
-
-But my comment was about GpuBuddyParams, I don't see a reason those are reu=
-sed
-(neither are they in the example), so it makes more sense to pass them by v=
-alue,
-such that they are consumed. (I.e.  I'm not asking for adding Copy/Clone.)
-
->
-> [2] https://lore.kernel.org/all/CAPM=3D9tyL_Cq3+qWc4A41p7eqnNDLS1APUEeUba=
-QyJ46YDkipVw@mail.gmail.com/
->
->>> +    pub fn new(params: &GpuBuddyParams) -> Result<Self> {
->>=20
->> Same here, we should be able to take this by value.
->
-> Same reasoning as above.
->
->>> +    pub fn alloc_blocks(&self, params: &GpuBuddyAllocParams) -> Result=
-<Arc<AllocatedBlocks>> {
->>=20
->> Why do we force a reference count here? I think we should just return
->> impl PinInit<AllocatedBlocks, Error> and let the driver decide where to
->> initialize the object, no?
->>=20
->> I.e. what if the driver wants to store additional data in a driver priva=
-te
->> structure? Then we'd need two allocations otherwise and another referenc=
-e count
->> in the worst case.
->
-> Good point. The reason I had `Arc` was to anticipate potential shared own=
-ership
-> use cases, but at the moment there is no such use case
-> in nova-core -- each `AllocatedBlocks` has a single owner.
-
-Sure, but drivers can always pass an impl PinInit to Arc::pin_init() themse=
-lves.
-
-> I'll change this to return `impl PinInit<AllocatedBlocks, Error>` in the =
-next
-> version. If a shared ownership use case arises later, we
-> can always add an `Arc`-returning convenience wrapper.
-
-I don't think we should, don't give drivers a reason to go for more allocat=
-ions
-they actually need for convinience.
+Nothing, but eventually we want a generic impl of shrink_to() with A::reall=
+oc().
+But again, for now that's fine.
