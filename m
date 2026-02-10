@@ -1,68 +1,58 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011057.outbound.protection.outlook.com [52.101.52.57])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010058.outbound.protection.outlook.com [52.101.193.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8028926ED48;
-	Mon,  9 Feb 2026 21:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D052C1EA7F4;
+	Tue, 10 Feb 2026 02:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770673391; cv=fail; b=IRztt/j+uPZ/ZbkGi4YUqbbw//l5ni4u2pl21/wVReYip25HRKKOJu+Ap66yMxHiK35fZtc6afuGw0A1LZNVylogg9vxyP55et4x3TMPtyy5zL0A0jHV/X1Ghgt5kCPN0qayCxEIbRRx8WFjGBiVl4PHUHJd4gGQXOqQ00OIzeI=
+	t=1770691570; cv=fail; b=rxrqPNmP07jzv5URzysWxpKzYOJDKXMVbUmhtyMIcDaMKjTe/gsojVFI8TADtHCyMx4ugeBO8DXqD4NaCBqYODSiSoDFr5O7yZRx7DrD3XWs/8fCNPDHAxj1hQsxyFlbLrNFPcbxpnMbu8Dk9t3auMdNRG7huVPhPn7/4h1yZrI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770673391; c=relaxed/simple;
-	bh=PQTsbUT7plG0wUVrGnrjr48gEbTYrvubPlz9iIm+HdY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UbtDDDj0wlCJc1vxndHgqgkSgNBm/69ocl3/cM6RV5Wr1iMx6s63ceja5FGiuQg5s+bN8WzSsWVeDhX4eAYuqvBJ6hj2iIkKOKoNN7/3LJ4V8Nstfhf57JxcvM7rpYfDm78TzbqvhTJ1frnnrCNG+ZFSJ61MIkl4ehdO9UyK6Io=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MojgspjM; arc=fail smtp.client-ip=52.101.52.57
+	s=arc-20240116; t=1770691570; c=relaxed/simple;
+	bh=I6j1UqWRQQbZHU0HNC/lYWbNyge5FeJ4OnLvvFt3FUg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Q5kMEk7Ygrwo0k4YV002EXfJkB5UOWzDPhMGp1p+o+dOHlVOWM80KlE7WLsf02FUDK74S5a0KKy1AMoUOGIPIy59EPiM9s7naScfOoxYbO73Xcdy0DDXuO+Gr+Ee1PkJptsWX7ADo455LebooDx+VQjAtIEcFbLRRkbgQdNZYhs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kMFU0c5H; arc=fail smtp.client-ip=52.101.193.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MojgspjM"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kMFU0c5H"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Tf0x/P6TXnQuwUp/THPS24LEIEyYUqZ8C9r2NyvTjNrUXcgma5A8AWBnbipo7gLySnzBNC2N10klIz4zSqZn9o/pR2JZdGl8wDeFH9dqoSXdVnMLexUuFgaCGOTWfPheWljbJeDFvpDZf+kOkydKTN33s+cWeMg7tagQsEO55uF/tbyP/w+C+nuWQnm6IM6qX9AcKPcOQun5seHBET8Zikj23MlUI7/If8dVdUTbFTZud3dF/SvVAQbZtwHyU56csSKbDP1MVR2XuQ1YZrU2/bbPynktCPBr+O+S4PGwNMJzb28MgbpyBBAFUVaEnHCHfZm1w3TcuHFKcP1wPQCx/g==
+ b=cnbAoT0g7+SfAqjcxSm6Pig0qp0NOSL6mCIIIK0n9KaGJ/XDUcOy8gVV4gRuUSy1mm+2aKsdsVmld7AthkPAGsBu8CvjpeeYh5NBblk2XtKQhN4WW4Dcuz75l/jQGWraLTDXUnCrvRnx6bQYGNzzyxRxXLx8gNrQneLc61GaW8lKgG4Nk7tPuMu7HAcb23oRCS0zT7NZfDRNBuy9Pdx/Kou6RttegkqAd16AyWN5ZiV3W28nRJUPiPe/oDd1zAFFM/wyOvuimGwPpwt8j7cy+iJsTZ/8iujMaARFMdOQDK2C0gBWjZW03LnoYYchnQ8CU9PctJY5NBj54sru00zO6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=etkSDa6lu5kXrrUuZnzh7GkzN5919YLao+lGLA9tXZE=;
- b=Dw3PFT8GOldF3eSTUQd6mCeGU9Ih4rTaYTlP3GwWzWZNvYIzRyWf+2BTBYnRQMYFsBygOfzmvLC5t3O1Cz8+C6CI22GTElu7YVW7Ce1kN3ZEHNneGkpsklRYBdR51pfTQiGSjQzO/xXz21TrnaQcfVjmsNT4yuyj1B4HqgWt/kKQI5B6tQNaXFg2VgXtThsLsgyOjugc5MMm2/b57R0P7sKME+gF/gwYWzkLmQJnEsqO97RFmjR+Ghib+kDuNvTVBbSErAU8jG39JQ9t9byts4J6FM74mjZPPxuAZ+8aLlCURtojy1bV+vYvgWXkomEm9VqpzHzlgH/kxc+OwAa1SA==
+ bh=f3X10GppR3M7xhRsBNQgTxoeA9gciFvVGAF55tWNNHc=;
+ b=ImkVyY/JnbbfFpHbNJRFr64lF+tQKYk9sv0t/PG4J7jK3CsHAecRe7B5J2OxsuG7PAfuCo5Rjc5UuQLnxzsqOi5k62p54OSxShWVkmNTqtbHTLOB3RmQ6PajRXtJXZVu7q4josq7cIV8pdpiIc9p0VSRzjIvnPWyaCQh+dVWrm4JGl0KwUbRSj8HxYOmdc8Ewgu7xel62VlLH6phAyaERWaZeI9r3lEreV7g63I7CHfSOpRTyVrabF6jc5sEGGC8iKNfYD8ZCxFdCJ0vJ10qzJhQfpk7mS+WS36rKjosdYr7o97Qy50MwH+AgxGPui8Ov9jNgodWclmRZKMCz8WJgQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=etkSDa6lu5kXrrUuZnzh7GkzN5919YLao+lGLA9tXZE=;
- b=MojgspjM6iWt/Z9uCJjOGsHEaRq2v1HksTOKgvnUZqGig5yiAf6VbQDbxYP6j1zq8jFCkHXw2Y05dZcC+Crxdo3tyQAewmON9SE3jFtkXgu9qhP5bIBTOlpK707w9hQorJAZUNnLlRUCkonZOzCjRt2d13i6KDi1CICE6rIhmuVMyhKjFQfv0E9AaLf9ebNvORKzXwyctadxnWS9uA+YyL+XhZmPwySdtcwWc+DeVr/2lkPqPkMkMjhQQQbiY9TOvYsAJuXYWdQwLYsLNlIhuVelhmB3hcQvsWEgwRUhY0x3Jx24z1kBHPnI8b4/1pEPTXTwQwC9TA6BXQiakOCcKw==
+ bh=f3X10GppR3M7xhRsBNQgTxoeA9gciFvVGAF55tWNNHc=;
+ b=kMFU0c5H7eRnyBJHxvkYJhGbIMtztpcvQ6JrVdSwaFKWAEo24OFOvtfGmVfOeLalNCl+L8Bf12L+AX+uzv1dP8rLye6FcxipxyaoTYAFb6ok6kK++naQtTpyi6bLCIXBn0bIxJXAPKqYVWBqD6Amqmi+0SYkZopKioc6flLIOdjWEBxvU8r8GRUvb5y4B0eARI9zCGwF0qsiUj6e34waSita8wpW4r9IiijuQ1Ffhiok4302TBw/Jo6d+nFB6AhIvMilGov+FLWdum4ZIIn4xqsCJBwrh3boHwOfreAonbRzhWl+unDRsXbIdGGyk8mFNKwRlXZR7q//UoxG7hoGrw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- CY5PR12MB6108.namprd12.prod.outlook.com (2603:10b6:930:27::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.19; Mon, 9 Feb 2026 21:42:57 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
- 21:42:57 +0000
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: linux-kernel@vger.kernel.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ PH0PR12MB8797.namprd12.prod.outlook.com (2603:10b6:510:28d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Tue, 10 Feb
+ 2026 02:46:04 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
+ 02:46:04 +0000
+From: John Hubbard <jhubbard@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>,
 	David Airlie <airlied@gmail.com>,
 	Simona Vetter <simona@ffwll.ch>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Helge Deller <deller@gmx.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -70,40 +60,24 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Edwin Peer <epeer@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Andy Ritger <aritger@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Elle Rhumsaa <elle@weathered-steel.dev>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	joel@joelfernandes.org,
 	nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org,
-	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: [PATCH -next v8 2/3] rust: gpu: Add GPU buddy allocator bindings
-Date: Mon,  9 Feb 2026 16:42:45 -0500
-Message-Id: <20260209214246.2783990-3-joelagnelf@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260209214246.2783990-1-joelagnelf@nvidia.com>
-References: <20260209214246.2783990-1-joelagnelf@nvidia.com>
+	LKML <linux-kernel@vger.kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH v4 01/33] gpu: nova-core: pass pdev directly to dev_* logging macros
+Date: Mon,  9 Feb 2026 18:45:28 -0800
+Message-ID: <20260210024601.593248-2-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260210024601.593248-1-jhubbard@nvidia.com>
+References: <20260210024601.593248-1-jhubbard@nvidia.com>
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: IA4P220CA0011.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:558::11) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+X-ClientProxiedBy: BY3PR05CA0048.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::23) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -111,733 +85,189 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|CY5PR12MB6108:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9210bdc7-8398-48fa-1a0d-08de6824306e
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|PH0PR12MB8797:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5a78e7d-72db-4854-5e74-08de684e88c5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7c8UBbaNT2uRrl8MC6aJGg9Mg/cA3HR+MIxrxzaBcki3jFOF8nYPHwkWY5g6?=
- =?us-ascii?Q?mALh73fX1y+DdsgbWpVnvPRM1NzzOxT9irXLmt1PVdCXr1/YTDwOCmFgAia+?=
- =?us-ascii?Q?Z8QXtGlzrI6lnwDm6z8mZphjTsKOdMjAxltoCAtxSMZFY7nb9/HOzjaf/FW3?=
- =?us-ascii?Q?2h22ttDdqB67EJV1Ex5ZNbTgj2UwDtG0I7VsK8Ow14fBlTt4GzimQYcayfRV?=
- =?us-ascii?Q?1NQdM2ByZKzQnyGlyPRKT1U6x4wmkOlHgXHvOPMLXBggce7WSlu6RmDJkClb?=
- =?us-ascii?Q?LyaQa5+wiF2sM2hF42ZMiqbDq9DyqaZEJw9cXmB1hUVgg9HuQbOJTDq20gOJ?=
- =?us-ascii?Q?CL1lD14dTbeH/hpPEHWfdDZD017QFCqacFc9uv1YESHitkKYX5rT4S13iVQp?=
- =?us-ascii?Q?ZxjKK4uvsM74m/y0QAI2w9ODuG4qswI7WAfpXED081Guaet14Nc53qqNVTn2?=
- =?us-ascii?Q?vNFbEwwh8aRrnG5/FE9zZR+gkUH+wA7PQq4Ul9wKtiq7BLT5SlPbWyvtEtoo?=
- =?us-ascii?Q?hwa0eOr1d55SITLJTEPPVEbX+Z0kh9u0BzumQemCRb90PtMy7ghgPdez4cST?=
- =?us-ascii?Q?ckoYkwiuG4xw4RAK/L1tEpwNvGANku7DHWovyqVRG0Bx8fcmz/O/4NLBWrIK?=
- =?us-ascii?Q?c0mBI3EmO/MvfN1S65ohLDXCbpN2xvx7efGJpr4GXMRD0VEVsqbRR6LDx0b6?=
- =?us-ascii?Q?ZqcsJ6Cwv1+N5CSZvK17mnFGLyU6zFQFnqmmSTRMKFh5X/SZ38iI/IpdcR9X?=
- =?us-ascii?Q?EWtCvcDtbjWmqmuoqbhQUVWo/vbv3Vb6RK8t6rpQCeVLzm+1Loc/4mFc5foP?=
- =?us-ascii?Q?NGTNTLAmybOoe4XJ961/edyqgFFrfdMFoO7mUd0UonYiFm6G2bp/kVxvn+J4?=
- =?us-ascii?Q?kdfK+n0uCosZ+DM2oQpSKzy70K4GAO7jLAjyAOuTl+gXY1775iY33Tbrts8g?=
- =?us-ascii?Q?bpsx6/Nc06YXwOVUiTODNreWhjlGKJeQFfVUWZSdxVTTa/uCxjVbFTVOMjEJ?=
- =?us-ascii?Q?6OOQGEnxXibvyVgc6TS59QvJNjXKb+J83bBsfbMbX79DFB0TlboHiMRec5bw?=
- =?us-ascii?Q?npc1NY44+H99fELhK04N6tZLUNM+D9zLK+6x2+AMVldUcFH9nYTC6sotQYOa?=
- =?us-ascii?Q?Btl8Ippri+ub8PmQs0sjWQVA7tcOdCyQTx1Cr6nkDGn4xadQ6x4KYwIsyOyc?=
- =?us-ascii?Q?wpROKtICLyEjqB+loe516RngENFqNQU+BV9bvuXcBSkp2LyGqnyim+vzCDBZ?=
- =?us-ascii?Q?g1PLX1YkgKQ0xTClxbNhdeUOavzMxGnlp+DXGP/MlT8gfG4UFc/ZWvODptDm?=
- =?us-ascii?Q?6FdqwR04LUb/Nx5xWgCPoHEyHwvpRysALehTO0G05RS+I1RYLF8jS/1O6gVa?=
- =?us-ascii?Q?3v+keOuKZf2RfR6E1Jh+xGbEOqgeCgNnOtKRsDbxlDOMT8SwAR8p9NYj5Yp6?=
- =?us-ascii?Q?4cLX9+o/1bvicYWozHfOze6mO9FgKKEHZ3YgQ9SsKKnNG0ezrI3k/56/jNn0?=
- =?us-ascii?Q?tImjFuOzp+w4WmGgvAk0oUUwjiSV0gHUg8rnQPKCDfAWQYKxM2/9rvWfxKjN?=
- =?us-ascii?Q?NCjkpozv699a0zetPMk=3D?=
+	=?us-ascii?Q?hJQnEih3C53+QZi/79kDqDkbIzNbFzt8Lbp+CB8CmkLGnx00ZOgL63qkxgBk?=
+ =?us-ascii?Q?/OGWSCB7sxZdoW3+l/spLuVJ64jIP8UWNX4dhM9JGGbMVMx5yB3JAWd0Ro+F?=
+ =?us-ascii?Q?ymfiU9L9aqmqgzs41GafBl6sRjmsaoK27piNOSh9AijXkOUkv1JENdahXTz3?=
+ =?us-ascii?Q?++vnUCU6ea6+i/LHJpxJKjISC9m3t0gVHjSoTqzMKnwOqKM9guSnPQzOoMWG?=
+ =?us-ascii?Q?rwlcC7/4NurTWA/OnJrX4RyQ2ls37ibqpXP3Wz4jwrsr4eOwjLV8BXSZk1GX?=
+ =?us-ascii?Q?8ZbF39GMDEoHbgPaEEp15R8VHxB0YorXplhsaxenrvLbcmUL2mFxpcal83yH?=
+ =?us-ascii?Q?xpXG+YgU2jBf71MaN3jbxumb/oFhcgj836vKS7Bigo+pZNxUqi/X8mGZ9suu?=
+ =?us-ascii?Q?KfWXWb/OFedYSy7b8m3Sy++e6NlCzT250LHMf4rMngL3gwI3wdzUqf2K8s2P?=
+ =?us-ascii?Q?r4eoib9Rj6yNzn4TL/2DLGy4LuUS5W3GoryqALCFmHS1scO4ckpW0Om8Fo2K?=
+ =?us-ascii?Q?DXkhKv9r4bsBTI5I1x9y2BdnIL4O8svNxIt4Sr58kKannhjouytf6R9dNLj3?=
+ =?us-ascii?Q?SFOm2uTK8AaER+/u0VEu4SNE3WjWDdtlpZQY95gYXans18MpkJHG2c5xPRuq?=
+ =?us-ascii?Q?oPUtOayMUZC/MC90gejn/1Rhskbj4c6De/Uk1jrRAEmkC2EAyBxLJrTGtWrt?=
+ =?us-ascii?Q?11Fsumxab0EJdEEY/sJaDIXTQkAejHjS1/bTHDFR+bCX8vi2gA4hmnU9Mnzu?=
+ =?us-ascii?Q?efXt+tDlghOaAq4folHaVbV/wy6XRc+zqJf6u+cnWq9nUvUw48UyeZaPEBZJ?=
+ =?us-ascii?Q?XNt3wT/InWWKpoIsRD8pfyLT/YlGoIuKD6n9aNQyMyDVvbM/nZSffivdwWdZ?=
+ =?us-ascii?Q?1eI2Zx6Ni9TjCIyBOyx/0J7SdO9aFUSuRgDRoWMLq4lz7uf/PysTiasDwi4+?=
+ =?us-ascii?Q?8PG8Bt3H9NllVI3NDesINlEaUlAB3El1oeJpDvQzXygaVBkczwi8HPeXXcC6?=
+ =?us-ascii?Q?Tqd3UBHcX5TFgrPOpffM4mDpAcaXFIXwLeUofb4/6GMogN9QvdmONgjcJpWb?=
+ =?us-ascii?Q?2DR23W776oo0Fg0HE9pvcoWARFd2uYjZdm0B9x1e4Sr2/ckWFxheFU4nkRIU?=
+ =?us-ascii?Q?jDNSAIgQK24hmSx6LD1ML5uTPExQ5WTxC3T3Irjtpk477b2nsAdUd6wieC2v?=
+ =?us-ascii?Q?VrMy0G2w/tZzCHNak7ZwdgdrQTQTSodvv62yEE5hVTFzojftSCksyMlv3All?=
+ =?us-ascii?Q?3ql7/UcRnNkbKTnRYKCKRDFqbTdPRvY6NC6z9ciag9iNyw8AET8jlMdJtv5d?=
+ =?us-ascii?Q?f0s2vzdizWUWDxri95RWUfjrv5JbArfUAhsE96qPNx0XgIKc70Q2x1fce1Ci?=
+ =?us-ascii?Q?Yjxr93owTSVSHj0di90W/tB+RHXt9geSp7gC+LxxcIYmqjsdwPo1TI5lkrm/?=
+ =?us-ascii?Q?cPsCqKlpdIFu9bAjuREfdinIVe28oNAKQlu8S8DWHll9eNJ2DNEhFjE+pCOs?=
+ =?us-ascii?Q?WqE+qxWaJs5gajcCT0PTKErSKZL6ijoKbsTWyjSTvIG6p4sFwPm0SeC2w1o0?=
+ =?us-ascii?Q?KOgnwOhMWe0RnuA+tGM=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?L4exT8iJ3d4y1csajQWtKlkyxih6+qw98b6XvYnIKtBn+/y6MIfib13LHRQU?=
- =?us-ascii?Q?0ugQRLRXXkdnJ8gFhEAHB4MLDsOWNszZdKN8AesBaWA5aHUlydKI8+FMlyfE?=
- =?us-ascii?Q?ZRzRwM8bD9PidFSfhQv5XNRUL+qcaFeVJh5UfwIyCmmNZVAw+Fmz4OeBKVOx?=
- =?us-ascii?Q?WLJwC93w0UgZijS7ZhYzLZyDW4MSUafZcTF1FJG5mg9+Q8QoIKobw6rA/pey?=
- =?us-ascii?Q?eSIkswmmF6/JvOqkEgBWfrxzxsx9bQwCSFMynP6vWBOBy8cASRO2xubSBo3A?=
- =?us-ascii?Q?8GC1zBwkQh22+hIkDoLSTXItKV1is5LxmxS3eclRrHRPuvMCDgxoGt25HSVB?=
- =?us-ascii?Q?dZ+n8eVAWDaQDUa94jFEwkc7R+6b2mPGs379eN6UzLj6vzBiBz00crDpfVAH?=
- =?us-ascii?Q?EuwDTLpTnV3Ma3YSkkbKk4FHgXNvUiAeQO7E5AbPlxvdWpgBE78vIkKcrWIi?=
- =?us-ascii?Q?1QYrPyIOWFgbBsWYCoDiyeoT96cC425Zp8iEbL2pSgSyxqw7y+5WI+LhGiT7?=
- =?us-ascii?Q?ifWSHK4yoHQArQ6siSer+spG5WvT0qI16zGZ5pTxPykZcnD/Hqcu2fne3jB6?=
- =?us-ascii?Q?qY2ZVoaok0Z1YAeYXVGUJvFgqumxfL3BhtHL8EDw0lDIBQ9IxhydSp0IrvDh?=
- =?us-ascii?Q?XZQ0u+pvuA4YawjiYkcS6qrk2rH27X1HBS0sZCV5zuXMCtRjHmwxBqLfB0rc?=
- =?us-ascii?Q?FqHmCvP5C9vjWzUAm7r78IfldzMMTPlBJOm0Uc08BzHzYYEzePmoPhVUTDBA?=
- =?us-ascii?Q?1O/Pt9oE9M26Bl/q4wIYx18K3dhHK/xTHz5cNEt9J0Gj6tPiA9CdwLgFgK/5?=
- =?us-ascii?Q?mDz9ufpVlul4lo5/DIsu6FOfYN6fx87Yol5Am3+KlOzQVoW2g7LaB5xNyX1M?=
- =?us-ascii?Q?zw03UTxoCxG8nbrocUXc4Ao7jca5BubJvb9pYjWtEP90pMAukmcwGpxUjbam?=
- =?us-ascii?Q?zX6u8l8LqCnBI8QtpU5kt+O07T4negn7HFfcuEikZngVSTv9+SQudWd7Ramx?=
- =?us-ascii?Q?BuHXaWwiov4nL5XDc+xrALZKY+dBql+IeTGtckey4Mce2tmW5KUs1P/xq8NC?=
- =?us-ascii?Q?bQQqwtEpYP9sPC/3q/7IIw/KpsUzcOG0fnfbHQZETinl6QHOHzip9h6Zm13l?=
- =?us-ascii?Q?VxWmmqXIn91ENhVMs5vdsw4y5DRDNxM5dzBBWfhukHBmUGELadM8Iq/Apl/i?=
- =?us-ascii?Q?W2xSyrM62jUuxCHr5HCs9qeNqMgJvyuL2y05JKr/fjS5hZjkuhbqCCF/QTr1?=
- =?us-ascii?Q?IdHHcquqQjoMrIHuzjISwjwjNWze/LWpCk5xrQUfb4w3B4smV5UaODVM9ioe?=
- =?us-ascii?Q?c1JIMUm/di0+h8j3EjDtyiCvr1hFfqV2ZGzxZ+fdKMctHg4qh2x36L66zuyF?=
- =?us-ascii?Q?Up0fS8aCxFjp7cUAbfU9AGBoxo+qFNgmmgr5KtLQ0qmXhBfmYJ0PidXL6TTL?=
- =?us-ascii?Q?eWAob0P/WjAv4YPclIN5k6q7UkpV0pRMp1Y2FYpIHL6yzIVhYrceSisrok9m?=
- =?us-ascii?Q?0EaHl70pdrNbHhFHUWj6DM7biuZi44TUGrMKpZjvgeVVFMf9Q/QdC2e0E0b4?=
- =?us-ascii?Q?vittD2Mwe+FvqEy3JAISxp2EP9if2meSIliPBAqTe+6kC6oBpJjBNhHgt52Q?=
- =?us-ascii?Q?7hApjRWjHzcDXvgAP7ehTe4wbdtg457bHA5T3nD3GYIjRTBuCL6Eu8ErTv89?=
- =?us-ascii?Q?mWpfiLVEnV95g7AZVm7PgdwFR5/2ATSHsUSp6mNnEhcrHGCv/ZFi/Rdg9q8G?=
- =?us-ascii?Q?g4W1ES9qjA=3D=3D?=
+	=?us-ascii?Q?fI+VsTD9DLmP7c5hsNf8/lKqIlA2JGW0NC7CJy+4rXaDGhTdFktAIPAsnaW7?=
+ =?us-ascii?Q?R4OSL78+oOq5eOA9o2zCM2wmTjNdAnH/hzukyyGtNDlquPT1v9WYjcic3Ng5?=
+ =?us-ascii?Q?FMOCLs9PpoXPU5DcMxfPs9SgNzri6cwtAkG7zmutHwF0mHnVplwgOa2KE7Si?=
+ =?us-ascii?Q?YOQrr34qALyot/XSAcZC3Q+Y9W4AXV7mPXrqpH276ukNFoKdWdQ8g1eAbqsr?=
+ =?us-ascii?Q?Jdh94ED1/mFPPBw5tPa7pSw4M+uoY/uIkIOvlo0ZgSNVoOjdKZZUFoVi0+kC?=
+ =?us-ascii?Q?z5lhEwawR34/dfTy8j1YUNleDGy76LagwErffr1r0ByMnPAL21Ekp95H7L1F?=
+ =?us-ascii?Q?SkAS2aWQ2/d6jHu368TZKno4luFe1gRUFCUjkMyiu5JcOmXEPT04rIwztGhh?=
+ =?us-ascii?Q?nfRoLy6UFj+7bykKbIlDBWmKdcvK6ln/tBtGHT1joUaUBLKcSpb0bVCVHYwF?=
+ =?us-ascii?Q?UGYAPq3zLudq0bmV5AZNytyyJ6DnveTOfP//GD1z3c9iboB3X7dEC4VbenC7?=
+ =?us-ascii?Q?/esmuI5+dV3crDiduY9QwWxeac35ok2yPGb6BcdW8b30kUaXtQGv9/jD+9BU?=
+ =?us-ascii?Q?6HKnzzTCVh6SIJ9WEzBE4F0AR5SNBi6h7BNJH1i72NwjE2z2iABjVy2tZ7wp?=
+ =?us-ascii?Q?e9j7FMxL18DbRkJgiiS7bOiivdSGJ/uMABF2A8x6lLR/kjfIY8dJtXV7O21p?=
+ =?us-ascii?Q?oMiJaHy9SLpg7ttsKXeeH9Ke5oox0NYCe4v8hgo3J9FvuQov2VY4hOoDQFU7?=
+ =?us-ascii?Q?lVtEmtUx6DTlSdVeDI2lCtfEbS0GCvPZBDJjEAbw3gLp1A+0KsmUHkLest5s?=
+ =?us-ascii?Q?IGwI4O9x6N1EzycNexwJxsGVYTdF7sFuClUThx737T6l3YtDmFWv5viLuGnf?=
+ =?us-ascii?Q?dnIAK+0gyznzoz1gCcPUooUAo2t1lg7lY/Xu0cOVqp5kJA6a4c3tG8hkVvCY?=
+ =?us-ascii?Q?7Rtuyc5WhRNxZBbvnkx/xYZIDMtEaun8PLsrb6Qpi1IhNbQJvT+ryCRMqtqF?=
+ =?us-ascii?Q?jBQ9klhTP+O9JNOIMi/DCh+i6unP4r64qlK0H5ze4a9CyhGInUE6rXMaoUso?=
+ =?us-ascii?Q?hISzOnHcjWnYWfjwX1/Y966bNLCLoANU7GbeSKmzZPNfnvPTytoxZ46aG0YZ?=
+ =?us-ascii?Q?pEa7YZB0eBp0QpJ3f51fQJYntq6bFMPugbkobaxfmL9OdlC4KQGkBMzRz/B/?=
+ =?us-ascii?Q?Gcp8ezRaEA+lP+95uWc59q6AeNO66g0wA00h7OC0Oss4AQGjbv2r3ZbHbSIL?=
+ =?us-ascii?Q?ZFye9sBlhkPvgnfKdxS8fXO/JWsNnnvgnG4Tp8H8ZEwG7lqa3nA5wgegY//O?=
+ =?us-ascii?Q?nuEhCij9DEoBLe3EK7lGnPDi+8f4bORW8Qds37IgIUwuJRCmwB4zpPtlU6aC?=
+ =?us-ascii?Q?j4EKoV4ipiCamf3Fbp9H3CeWhSXDowQG9If3vfZauJuvOq468dDrJ5FctN3+?=
+ =?us-ascii?Q?yKSvK4vul+0wCKRSNkLicC61+yr3R4wk+mnBM0+uxfbIAg21MqXD7xEZ6zor?=
+ =?us-ascii?Q?22iBS03VD3B0hWWOLwPcuJ1ArCMxgOb/+MUzUsFm7PvlmVr86sM20N4MfUjX?=
+ =?us-ascii?Q?Y+UItqF0jSueTzgHQj1m4eZTd4g7f2RkZR58JZ32hsadBQ72KCYoh0HmgJTc?=
+ =?us-ascii?Q?DI7G6rQEKDVeBH/m5j9EN3fO+jUnerZJ/ciWbYvTnhlGCPPfiR0Cz5V30Sk3?=
+ =?us-ascii?Q?R0l/cANvopKpY2jbw3cE3Qsd2YWQXmZEn8qTWTWeqhXwacZhpoOrzK0UYg/v?=
+ =?us-ascii?Q?bb++ePZayQ=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9210bdc7-8398-48fa-1a0d-08de6824306e
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5a78e7d-72db-4854-5e74-08de684e88c5
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 21:42:57.6462
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 02:46:04.6305
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RS9IgiI73grSYc00PDOCRcxsistFLXHbPkXneSDiVsLZoXjqm+u1UH0P5LeBdLqnXGvm0aCT57F7ouOIpQAGQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6108
+X-MS-Exchange-CrossTenant-UserPrincipalName: rFustEt+2BKhqDo7GhgnrbPPYdKB/czw6E7cqYvDy3bwCJO88b45gHu4GQ5YnPDfX+6nkPbBKEiHC5HZLbPHUA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8797
 
-Add safe Rust abstractions over the Linux kernel's GPU buddy
-allocator for physical memory management. The GPU buddy allocator
-implements a binary buddy system useful for GPU physical memory
-allocation. nova-core will use it for physical memory allocation.
+The dev_dbg!, dev_info!, dev_err!, and dev_warn! macros now accept
+pci::Device directly without requiring an explicit .as_ref()
+conversion to device::Device, thanks to commit a38cd1fea989
+("rust: device: support `dev_printk` on all devices").
 
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- rust/bindings/bindings_helper.h |  11 +
- rust/helpers/gpu.c              |  23 ++
- rust/helpers/helpers.c          |   1 +
- rust/kernel/gpu/buddy.rs        | 530 ++++++++++++++++++++++++++++++++
- rust/kernel/gpu/mod.rs          |   5 +
- rust/kernel/lib.rs              |   2 +
- 6 files changed, 572 insertions(+)
- create mode 100644 rust/helpers/gpu.c
- create mode 100644 rust/kernel/gpu/buddy.rs
- create mode 100644 rust/kernel/gpu/mod.rs
+ drivers/gpu/nova-core/driver.rs   |  2 +-
+ drivers/gpu/nova-core/gpu.rs      |  4 ++--
+ drivers/gpu/nova-core/gsp/boot.rs | 14 +++++++-------
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 083cc44aa952..dbb765a9fdbd 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -29,6 +29,7 @@
- #include <linux/hrtimer_types.h>
+diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+index 5a4cc047bcfc..e39885c0d5ca 100644
+--- a/drivers/gpu/nova-core/driver.rs
++++ b/drivers/gpu/nova-core/driver.rs
+@@ -70,7 +70,7 @@ impl pci::Driver for NovaCore {
  
- #include <linux/acpi.h>
-+#include <linux/gpu_buddy.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_file.h>
-@@ -146,6 +147,16 @@ const vm_flags_t RUST_CONST_HELPER_VM_MIXEDMAP = VM_MIXEDMAP;
- const vm_flags_t RUST_CONST_HELPER_VM_HUGEPAGE = VM_HUGEPAGE;
- const vm_flags_t RUST_CONST_HELPER_VM_NOHUGEPAGE = VM_NOHUGEPAGE;
+     fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
+         pin_init::pin_init_scope(move || {
+-            dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
++            dev_dbg!(pdev, "Probe Nova Core GPU driver.\n");
  
-+#if IS_ENABLED(CONFIG_GPU_BUDDY)
-+const unsigned long RUST_CONST_HELPER_GPU_BUDDY_RANGE_ALLOCATION = GPU_BUDDY_RANGE_ALLOCATION;
-+const unsigned long RUST_CONST_HELPER_GPU_BUDDY_TOPDOWN_ALLOCATION = GPU_BUDDY_TOPDOWN_ALLOCATION;
-+const unsigned long RUST_CONST_HELPER_GPU_BUDDY_CONTIGUOUS_ALLOCATION =
-+								GPU_BUDDY_CONTIGUOUS_ALLOCATION;
-+const unsigned long RUST_CONST_HELPER_GPU_BUDDY_CLEAR_ALLOCATION = GPU_BUDDY_CLEAR_ALLOCATION;
-+const unsigned long RUST_CONST_HELPER_GPU_BUDDY_CLEARED = GPU_BUDDY_CLEARED;
-+const unsigned long RUST_CONST_HELPER_GPU_BUDDY_TRIM_DISABLE = GPU_BUDDY_TRIM_DISABLE;
-+#endif
-+
- #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
- #include "../../drivers/android/binder/rust_binder.h"
- #include "../../drivers/android/binder/rust_binder_events.h"
-diff --git a/rust/helpers/gpu.c b/rust/helpers/gpu.c
-new file mode 100644
-index 000000000000..38b1a4e6bef8
---- /dev/null
-+++ b/rust/helpers/gpu.c
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/gpu_buddy.h>
-+
-+#ifdef CONFIG_GPU_BUDDY
-+
-+__rust_helper u64 rust_helper_gpu_buddy_block_offset(const struct gpu_buddy_block *block)
-+{
-+	return gpu_buddy_block_offset(block);
-+}
-+
-+__rust_helper unsigned int rust_helper_gpu_buddy_block_order(struct gpu_buddy_block *block)
-+{
-+	return gpu_buddy_block_order(block);
-+}
-+
-+__rust_helper u64 rust_helper_gpu_buddy_block_size(struct gpu_buddy *mm,
-+						   struct gpu_buddy_block *block)
-+{
-+	return gpu_buddy_block_size(mm, block);
-+}
-+
-+#endif /* CONFIG_GPU_BUDDY */
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 724fcb8240ac..a53929ce52a3 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -32,6 +32,7 @@
- #include "err.c"
- #include "irq.c"
- #include "fs.c"
-+#include "gpu.c"
- #include "io.c"
- #include "jump_label.c"
- #include "kunit.c"
-diff --git a/rust/kernel/gpu/buddy.rs b/rust/kernel/gpu/buddy.rs
-new file mode 100644
-index 000000000000..00290ce53aeb
---- /dev/null
-+++ b/rust/kernel/gpu/buddy.rs
-@@ -0,0 +1,530 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! GPU buddy allocator bindings.
-+//!
-+//! C header: [`include/linux/gpu_buddy.h`](srctree/include/linux/gpu_buddy.h)
-+//!
-+//! This module provides Rust abstractions over the Linux kernel's GPU buddy
-+//! allocator, which implements a binary buddy memory allocator.
-+//!
-+//! The buddy allocator manages a contiguous address space and allocates blocks
-+//! in power-of-two sizes, useful for GPU physical memory management.
-+//!
-+//! # Examples
-+//!
-+//! ```
-+//! use kernel::{
-+//!     gpu::buddy::{BuddyFlags, GpuBuddy, GpuBuddyAllocParams, GpuBuddyParams},
-+//!     prelude::*,
-+//!     sizes::*, //
-+//! };
-+//!
-+//! // Create a 1GB buddy allocator with 4KB minimum chunk size.
-+//! let buddy = GpuBuddy::new(&GpuBuddyParams {
-+//!     base_offset_bytes: 0,
-+//!     physical_memory_size_bytes: SZ_1G as u64,
-+//!     chunk_size_bytes: SZ_4K as u64,
-+//! })?;
-+//!
-+//! // Verify initial state.
-+//! assert_eq!(buddy.size(), SZ_1G as u64);
-+//! assert_eq!(buddy.chunk_size(), SZ_4K as u64);
-+//! let initial_free = buddy.free_memory_bytes();
-+//!
-+//! // Base allocation params - mutated between calls for field overrides.
-+//! let mut params = GpuBuddyAllocParams {
-+//!     start_range_address: 0,
-+//!     end_range_address: 0,   // Entire range.
-+//!     size_bytes: SZ_16M as u64,
-+//!     min_block_size_bytes: SZ_16M as u64,
-+//!     buddy_flags: BuddyFlags::try_new(BuddyFlags::RANGE_ALLOCATION)?,
-+//! };
-+//!
-+//! // Test top-down allocation (allocates from highest addresses).
-+//! params.buddy_flags = BuddyFlags::try_new(BuddyFlags::TOPDOWN_ALLOCATION)?;
-+//! let topdown = buddy.alloc_blocks(&params)?;
-+//! assert_eq!(buddy.free_memory_bytes(), initial_free - SZ_16M as u64);
-+//!
-+//! for block in topdown.iter() {
-+//!     assert_eq!(block.offset(), (SZ_1G - SZ_16M) as u64);
-+//!     assert_eq!(block.order(), 12); // 2^12 pages
-+//!     assert_eq!(block.size(), SZ_16M as u64);
-+//! }
-+//! drop(topdown);
-+//! assert_eq!(buddy.free_memory_bytes(), initial_free);
-+//!
-+//! // Allocate 16MB - should result in a single 16MB block at offset 0.
-+//! params.buddy_flags = BuddyFlags::try_new(BuddyFlags::RANGE_ALLOCATION)?;
-+//! let allocated = buddy.alloc_blocks(&params)?;
-+//! assert_eq!(buddy.free_memory_bytes(), initial_free - SZ_16M as u64);
-+//!
-+//! for block in allocated.iter() {
-+//!     assert_eq!(block.offset(), 0);
-+//!     assert_eq!(block.order(), 12); // 2^12 pages
-+//!     assert_eq!(block.size(), SZ_16M as u64);
-+//! }
-+//! drop(allocated);
-+//! assert_eq!(buddy.free_memory_bytes(), initial_free);
-+//!
-+//! // Test non-contiguous allocation with fragmented memory.
-+//! // Create fragmentation by allocating 4MB blocks at [0,4M) and [8M,12M).
-+//! params.end_range_address = SZ_4M as u64;
-+//! params.size_bytes = SZ_4M as u64;
-+//! params.min_block_size_bytes = SZ_4M as u64;
-+//! let frag1 = buddy.alloc_blocks(&params)?;
-+//! assert_eq!(buddy.free_memory_bytes(), initial_free - SZ_4M as u64);
-+//!
-+//! params.start_range_address = SZ_8M as u64;
-+//! params.end_range_address = (SZ_8M + SZ_4M) as u64;
-+//! let frag2 = buddy.alloc_blocks(&params)?;
-+//! assert_eq!(buddy.free_memory_bytes(), initial_free - SZ_8M as u64);
-+//!
-+//! // Allocate 8MB without CONTIGUOUS - should return 2 blocks from the holes.
-+//! params.start_range_address = 0;
-+//! params.end_range_address = SZ_16M as u64;
-+//! params.size_bytes = SZ_8M as u64;
-+//! let fragmented = buddy.alloc_blocks(&params)?;
-+//! assert_eq!(buddy.free_memory_bytes(), initial_free - (SZ_16M) as u64);
-+//!
-+//! let (mut count, mut total) = (0u32, 0u64);
-+//! for block in fragmented.iter() {
-+//!     // The 8MB allocation should return 2 blocks, each 4MB.
-+//!     assert_eq!(block.size(), SZ_4M as u64);
-+//!     total += block.size();
-+//!     count += 1;
-+//! }
-+//! assert_eq!(total, SZ_8M as u64);
-+//! assert_eq!(count, 2);
-+//! drop(fragmented);
-+//! drop(frag2);
-+//! drop(frag1);
-+//! assert_eq!(buddy.free_memory_bytes(), initial_free);
-+//!
-+//! // Test CONTIGUOUS failure when only fragmented space available.
-+//! // Create a small buddy allocator with only 16MB of memory.
-+//! let small = GpuBuddy::new(&GpuBuddyParams {
-+//!     base_offset_bytes: 0,
-+//!     physical_memory_size_bytes: SZ_16M as u64,
-+//!     chunk_size_bytes: SZ_4K as u64,
-+//! })?;
-+//!
-+//! // Allocate 4MB blocks at [0,4M) and [8M,12M) to create fragmented memory.
-+//! params.start_range_address = 0;
-+//! params.end_range_address = SZ_4M as u64;
-+//! params.size_bytes = SZ_4M as u64;
-+//! let hole1 = small.alloc_blocks(&params)?;
-+//!
-+//! params.start_range_address = SZ_8M as u64;
-+//! params.end_range_address = (SZ_8M + SZ_4M) as u64;
-+//! let hole2 = small.alloc_blocks(&params)?;
-+//!
-+//! // 8MB contiguous should fail - only two non-contiguous 4MB holes exist.
-+//! params.start_range_address = 0;
-+//! params.end_range_address = 0;
-+//! params.size_bytes = SZ_8M as u64;
-+//! params.buddy_flags = BuddyFlags::try_new(BuddyFlags::CONTIGUOUS_ALLOCATION)?;
-+//! let result = small.alloc_blocks(&params);
-+//! assert!(result.is_err());
-+//! drop(hole2);
-+//! drop(hole1);
-+//!
-+//! # Ok::<(), Error>(())
-+//! ```
-+
-+use crate::{
-+    bindings,
-+    clist::CListHead,
-+    clist_create,
-+    error::to_result,
-+    new_mutex,
-+    prelude::*,
-+    sync::{
-+        lock::mutex::MutexGuard,
-+        Arc,
-+        Mutex, //
-+    },
-+    types::Opaque,
-+};
-+
-+/// Flags for GPU buddy allocator operations.
-+///
-+/// These flags control the allocation behavior of the buddy allocator.
-+#[derive(Clone, Copy, Default, PartialEq, Eq)]
-+pub struct BuddyFlags(usize);
-+
-+impl BuddyFlags {
-+    /// Range-based allocation from start to end addresses.
-+    pub const RANGE_ALLOCATION: usize = bindings::GPU_BUDDY_RANGE_ALLOCATION;
-+
-+    /// Allocate from top of address space downward.
-+    pub const TOPDOWN_ALLOCATION: usize = bindings::GPU_BUDDY_TOPDOWN_ALLOCATION;
-+
-+    /// Allocate physically contiguous blocks.
-+    pub const CONTIGUOUS_ALLOCATION: usize = bindings::GPU_BUDDY_CONTIGUOUS_ALLOCATION;
-+
-+    /// Request allocation from the cleared (zeroed) memory. The zero'ing is not
-+    /// done by the allocator, but by the caller before freeing old blocks.
-+    pub const CLEAR_ALLOCATION: usize = bindings::GPU_BUDDY_CLEAR_ALLOCATION;
-+
-+    /// Disable trimming of partially used blocks.
-+    pub const TRIM_DISABLE: usize = bindings::GPU_BUDDY_TRIM_DISABLE;
-+
-+    /// Mark blocks as cleared (zeroed) when freeing. When set during free,
-+    /// indicates that the caller has already zeroed the memory.
-+    pub const CLEARED: usize = bindings::GPU_BUDDY_CLEARED;
-+
-+    /// Create [`BuddyFlags`] from a raw value with validation.
-+    ///
-+    /// Use `|` operator to combine flags if needed, before calling this method.
-+    pub fn try_new(flags: usize) -> Result<Self> {
-+        // Flags must not exceed u32::MAX to satisfy the GPU buddy allocator C API.
-+        if flags > u32::MAX as usize {
-+            return Err(EINVAL);
-+        }
-+
-+        // `TOPDOWN_ALLOCATION` only works without `RANGE_ALLOCATION`. When both are
-+        // set, `TOPDOWN_ALLOCATION` is silently ignored by the allocator. Reject this.
-+        if (flags & Self::RANGE_ALLOCATION) != 0 && (flags & Self::TOPDOWN_ALLOCATION) != 0 {
-+            return Err(EINVAL);
-+        }
-+
-+        Ok(Self(flags))
-+    }
-+
-+    /// Get raw value of the flags.
-+    pub(crate) fn as_raw(self) -> usize {
-+        self.0
-+    }
-+}
-+
-+/// Parameters for creating a GPU buddy allocator.
-+pub struct GpuBuddyParams {
-+    /// Base offset in bytes where the managed memory region starts.
-+    /// Allocations will be offset by this value.
-+    pub base_offset_bytes: u64,
-+    /// Total physical memory size managed by the allocator in bytes.
-+    pub physical_memory_size_bytes: u64,
-+    /// Minimum allocation unit / chunk size in bytes, must be >= 4KB.
-+    pub chunk_size_bytes: u64,
-+}
-+
-+/// Parameters for allocating blocks from a GPU buddy allocator.
-+pub struct GpuBuddyAllocParams {
-+    /// Start of allocation range in bytes. Use 0 for beginning.
-+    pub start_range_address: u64,
-+    /// End of allocation range in bytes. Use 0 for entire range.
-+    pub end_range_address: u64,
-+    /// Total size to allocate in bytes.
-+    pub size_bytes: u64,
-+    /// Minimum block size for fragmented allocations in bytes.
-+    pub min_block_size_bytes: u64,
-+    /// Buddy allocator behavior flags.
-+    pub buddy_flags: BuddyFlags,
-+}
-+
-+/// Inner structure holding the actual buddy allocator.
-+///
-+/// # Synchronization
-+///
-+/// The C `gpu_buddy` API requires synchronization (see `include/linux/gpu_buddy.h`).
-+/// The internal [`GpuBuddyGuard`] ensures that the lock is held for all
-+/// allocator and free operations, preventing races between concurrent allocations
-+/// and the freeing that occurs when [`AllocatedBlocks`] is dropped.
-+///
-+/// # Invariants
-+///
-+/// The inner [`Opaque`] contains a valid, initialized buddy allocator.
-+#[pin_data(PinnedDrop)]
-+struct GpuBuddyInner {
-+    #[pin]
-+    inner: Opaque<bindings::gpu_buddy>,
-+    #[pin]
-+    lock: Mutex<()>,
-+    /// Base offset for all allocations (does not change after init).
-+    base_offset: u64,
-+    /// Cached chunk size (does not change after init).
-+    chunk_size: u64,
-+    /// Cached total size (does not change after init).
-+    size: u64,
-+}
-+
-+impl GpuBuddyInner {
-+    /// Create a pin-initializer for the buddy allocator.
-+    fn new(params: &GpuBuddyParams) -> impl PinInit<Self, Error> {
-+        let base_offset = params.base_offset_bytes;
-+        let size = params.physical_memory_size_bytes;
-+        let chunk_size = params.chunk_size_bytes;
-+
-+        try_pin_init!(Self {
-+            inner <- Opaque::try_ffi_init(|ptr| {
-+                // SAFETY: ptr points to valid uninitialized memory from the pin-init
-+                // infrastructure. gpu_buddy_init will initialize the structure.
-+                to_result(unsafe { bindings::gpu_buddy_init(ptr, size, chunk_size) })
-+            }),
-+            lock <- new_mutex!(()),
-+            base_offset: base_offset,
-+            chunk_size: chunk_size,
-+            size: size,
-+        })
-+    }
-+
-+    /// Lock the mutex and return a guard for accessing the allocator.
-+    fn lock(&self) -> GpuBuddyGuard<'_> {
-+        GpuBuddyGuard {
-+            inner: self,
-+            _guard: self.lock.lock(),
-+        }
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for GpuBuddyInner {
-+    fn drop(self: Pin<&mut Self>) {
-+        let guard = self.lock();
-+
-+        // SAFETY: guard provides exclusive access to the allocator.
-+        unsafe {
-+            bindings::gpu_buddy_fini(guard.as_raw());
-+        }
-+    }
-+}
-+
-+// SAFETY: [`GpuBuddyInner`] can be sent between threads.
-+unsafe impl Send for GpuBuddyInner {}
-+
-+// SAFETY: [`GpuBuddyInner`] is `Sync` because the internal [`GpuBuddyGuard`]
-+// serializes all access to the C allocator, preventing data races.
-+unsafe impl Sync for GpuBuddyInner {}
-+
-+/// Guard that proves the lock is held, enabling access to the allocator.
-+///
-+/// # Invariants
-+///
-+/// The inner `_guard` holds the lock for the duration of this guard's lifetime.
-+pub(crate) struct GpuBuddyGuard<'a> {
-+    inner: &'a GpuBuddyInner,
-+    _guard: MutexGuard<'a, ()>,
-+}
-+
-+impl GpuBuddyGuard<'_> {
-+    /// Get a raw pointer to the underlying C `gpu_buddy` structure.
-+    fn as_raw(&self) -> *mut bindings::gpu_buddy {
-+        self.inner.inner.get()
-+    }
-+}
-+
-+/// GPU buddy allocator instance.
-+///
-+/// This structure wraps the C `gpu_buddy` allocator using reference counting.
-+/// The allocator is automatically cleaned up when all references are dropped.
-+///
-+/// # Invariants
-+///
-+/// The inner [`Arc`] points to a valid, initialized GPU buddy allocator.
-+pub struct GpuBuddy(Arc<GpuBuddyInner>);
-+
-+impl GpuBuddy {
-+    /// Create a new buddy allocator.
-+    ///
-+    /// Creates a buddy allocator that manages a contiguous address space of the given
-+    /// size, with the specified minimum allocation unit (chunk_size must be at least 4KB).
-+    pub fn new(params: &GpuBuddyParams) -> Result<Self> {
-+        Ok(Self(Arc::pin_init(
-+            GpuBuddyInner::new(params),
-+            GFP_KERNEL,
-+        )?))
-+    }
-+
-+    /// Get the base offset for allocations.
-+    pub fn base_offset(&self) -> u64 {
-+        self.0.base_offset
-+    }
-+
-+    /// Get the chunk size (minimum allocation unit).
-+    pub fn chunk_size(&self) -> u64 {
-+        self.0.chunk_size
-+    }
-+
-+    /// Get the total managed size.
-+    pub fn size(&self) -> u64 {
-+        self.0.size
-+    }
-+
-+    /// Get the available (free) memory in bytes.
-+    pub fn free_memory_bytes(&self) -> u64 {
-+        let guard = self.0.lock();
-+        // SAFETY: guard provides exclusive access to the allocator.
-+        unsafe { (*guard.as_raw()).avail }
-+    }
-+
-+    /// Allocate blocks from the buddy allocator.
-+    ///
-+    /// Returns an [`Arc<AllocatedBlocks>`] structure that owns the allocated blocks
-+    /// and automatically frees them when all references are dropped.
-+    ///
-+    /// Takes `&self` instead of `&mut self` because the internal [`Mutex`] provides
-+    /// synchronization - no external `&mut` exclusivity needed.
-+    pub fn alloc_blocks(&self, params: &GpuBuddyAllocParams) -> Result<Arc<AllocatedBlocks>> {
-+        let buddy_arc = Arc::clone(&self.0);
-+
-+        // Create pin-initializer that initializes list and allocates blocks.
-+        let init = try_pin_init!(AllocatedBlocks {
-+            buddy: Arc::clone(&buddy_arc),
-+            list <- CListHead::new(),
-+            flags: params.buddy_flags,
-+            _: {
-+                // Lock while allocating to serialize with concurrent frees.
-+                let guard = buddy.lock();
-+
-+                // SAFETY: `guard` provides exclusive access to the buddy allocator.
-+                to_result(unsafe {
-+                    bindings::gpu_buddy_alloc_blocks(
-+                        guard.as_raw(),
-+                        params.start_range_address,
-+                        params.end_range_address,
-+                        params.size_bytes,
-+                        params.min_block_size_bytes,
-+                        list.as_raw(),
-+                        params.buddy_flags.as_raw(),
-+                    )
-+                })?
-+            }
-+        });
-+
-+        Arc::pin_init(init, GFP_KERNEL)
-+    }
-+}
-+
-+/// Allocated blocks from the buddy allocator with automatic cleanup.
-+///
-+/// This structure owns a list of allocated blocks and ensures they are
-+/// automatically freed when dropped. Use `iter()` to iterate over all
-+/// allocated [`Block`] structures.
-+///
-+/// # Invariants
-+///
-+/// - `list` is an initialized, valid list head containing allocated blocks.
-+/// - `buddy` references a valid [`GpuBuddyInner`].
-+#[pin_data(PinnedDrop)]
-+pub struct AllocatedBlocks {
-+    #[pin]
-+    list: CListHead,
-+    buddy: Arc<GpuBuddyInner>,
-+    flags: BuddyFlags,
-+}
-+
-+impl AllocatedBlocks {
-+    /// Check if the block list is empty.
-+    pub fn is_empty(&self) -> bool {
-+        // An empty list head points to itself.
-+        !self.list.is_linked()
-+    }
-+
-+    /// Iterate over allocated blocks.
-+    ///
-+    /// Returns an iterator yielding [`AllocatedBlock`] references. The blocks
-+    /// are only valid for the duration of the borrow of `self`.
-+    pub fn iter(&self) -> impl Iterator<Item = AllocatedBlock<'_>> + '_ {
-+        // SAFETY: list contains gpu_buddy_block items linked via __bindgen_anon_1.link.
-+        let clist = unsafe {
-+            clist_create!(
-+                self.list.as_raw(),
-+                Block,
-+                bindings::gpu_buddy_block,
-+                __bindgen_anon_1.link
-+            )
-+        };
-+
-+        clist
-+            .iter()
-+            .map(|block| AllocatedBlock { block, alloc: self })
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for AllocatedBlocks {
-+    fn drop(self: Pin<&mut Self>) {
-+        let guard = self.buddy.lock();
-+
-+        // SAFETY:
-+        // - list is valid per the type's invariants.
-+        // - guard provides exclusive access to the allocator.
-+        // CAST: BuddyFlags were validated to fit in u32 at construction.
-+        unsafe {
-+            bindings::gpu_buddy_free_list(
-+                guard.as_raw(),
-+                self.list.as_raw(),
-+                self.flags.as_raw() as u32,
-+            );
-+        }
-+    }
-+}
-+
-+/// A GPU buddy block.
-+///
-+/// Transparent wrapper over C `gpu_buddy_block` structure. This type is returned
-+/// as references from [`CListIter`] during iteration over [`AllocatedBlocks`].
-+///
-+/// # Invariants
-+///
-+/// The inner [`Opaque`] contains a valid, allocated `gpu_buddy_block`.
-+#[repr(transparent)]
-+pub struct Block(Opaque<bindings::gpu_buddy_block>);
-+
-+impl Block {
-+    /// Get a raw pointer to the underlying C block.
-+    fn as_raw(&self) -> *mut bindings::gpu_buddy_block {
-+        self.0.get()
-+    }
-+
-+    /// Get the block's offset in the address space.
-+    pub(crate) fn offset(&self) -> u64 {
-+        // SAFETY: self.as_raw() is valid per the type's invariants.
-+        unsafe { bindings::gpu_buddy_block_offset(self.as_raw()) }
-+    }
-+
-+    /// Get the block order.
-+    pub(crate) fn order(&self) -> u32 {
-+        // SAFETY: self.as_raw() is valid per the type's invariants.
-+        unsafe { bindings::gpu_buddy_block_order(self.as_raw()) }
-+    }
-+}
-+
-+// SAFETY: `Block` is a transparent wrapper over `gpu_buddy_block` which is not
-+// modified after allocation. It can be safely sent between threads.
-+unsafe impl Send for Block {}
-+
-+// SAFETY: `Block` is a transparent wrapper over `gpu_buddy_block` which is not
-+// modified after allocation. It can be safely shared among threads.
-+unsafe impl Sync for Block {}
-+
-+/// An allocated block with access to the allocation list.
-+///
-+/// # Invariants
-+///
-+/// - `block` is a valid reference to an allocated [`Block`].
-+/// - `alloc` is a valid reference to the [`AllocatedBlocks`] that owns this block.
-+pub struct AllocatedBlock<'a> {
-+    block: &'a Block,
-+    alloc: &'a AllocatedBlocks,
-+}
-+
-+impl AllocatedBlock<'_> {
-+    /// Get the block's offset in the address space.
-+    ///
-+    /// Returns the absolute offset including the allocator's base offset.
-+    /// This is the actual address to use for accessing the allocated memory.
-+    pub fn offset(&self) -> u64 {
-+        self.alloc.buddy.base_offset + self.block.offset()
-+    }
-+
-+    /// Get the block order (size = chunk_size << order).
-+    pub fn order(&self) -> u32 {
-+        self.block.order()
-+    }
-+
-+    /// Get the block's size in bytes.
-+    pub fn size(&self) -> u64 {
-+        self.alloc.buddy.chunk_size << self.block.order()
-+    }
-+}
-diff --git a/rust/kernel/gpu/mod.rs b/rust/kernel/gpu/mod.rs
-new file mode 100644
-index 000000000000..8f25e6367edc
---- /dev/null
-+++ b/rust/kernel/gpu/mod.rs
-@@ -0,0 +1,5 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! GPU subsystem abstractions.
-+
-+pub mod buddy;
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index fe711d34ca1e..02ec5b9b22c8 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -98,6 +98,8 @@
- pub mod firmware;
- pub mod fmt;
- pub mod fs;
-+#[cfg(CONFIG_GPU_BUDDY)]
-+pub mod gpu;
- #[cfg(CONFIG_I2C = "y")]
- pub mod i2c;
- pub mod id_pool;
+             pdev.enable_device_mem()?;
+             pdev.set_master();
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index 9b042ef1a308..f5907c31a66d 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -262,13 +262,13 @@ pub(crate) fn new<'a>(
+     ) -> impl PinInit<Self, Error> + 'a {
+         try_pin_init!(Self {
+             spec: Spec::new(pdev.as_ref(), bar).inspect(|spec| {
+-                dev_info!(pdev.as_ref(),"NVIDIA ({})\n", spec);
++                dev_info!(pdev, "NVIDIA ({})\n", spec);
+             })?,
+ 
+             // We must wait for GFW_BOOT completion before doing any significant setup on the GPU.
+             _: {
+                 gfw::wait_gfw_boot_completion(bar)
+-                    .inspect_err(|_| dev_err!(pdev.as_ref(), "GFW boot did not complete\n"))?;
++                    .inspect_err(|_| dev_err!(pdev, "GFW boot did not complete\n"))?;
+             },
+ 
+             sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.chipset)?,
+diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
+index be427fe26a58..bd6e6dc57e85 100644
+--- a/drivers/gpu/nova-core/gsp/boot.rs
++++ b/drivers/gpu/nova-core/gsp/boot.rs
+@@ -171,14 +171,14 @@ pub(crate) fn boot(
+             Some((libos_handle >> 32) as u32),
+         )?;
+         dev_dbg!(
+-            pdev.as_ref(),
++            pdev,
+             "GSP MBOX0: {:#x}, MBOX1: {:#x}\n",
+             mbox0,
+             mbox1
+         );
+ 
+         dev_dbg!(
+-            pdev.as_ref(),
++            pdev,
+             "Using SEC2 to load and run the booter_load firmware...\n"
+         );
+ 
+@@ -191,7 +191,7 @@ pub(crate) fn boot(
+             Some((wpr_handle >> 32) as u32),
+         )?;
+         dev_dbg!(
+-            pdev.as_ref(),
++            pdev,
+             "SEC2 MBOX0: {:#x}, MBOX1{:#x}\n",
+             mbox0,
+             mbox1
+@@ -199,7 +199,7 @@ pub(crate) fn boot(
+ 
+         if mbox0 != 0 {
+             dev_err!(
+-                pdev.as_ref(),
++                pdev,
+                 "Booter-load failed with error {:#x}\n",
+                 mbox0
+             );
+@@ -217,7 +217,7 @@ pub(crate) fn boot(
+         )?;
+ 
+         dev_dbg!(
+-            pdev.as_ref(),
++            pdev,
+             "RISC-V active? {}\n",
+             gsp_falcon.is_riscv_active(bar),
+         );
+@@ -239,8 +239,8 @@ pub(crate) fn boot(
+         // Obtain and display basic GPU information.
+         let info = commands::get_gsp_info(&mut self.cmdq, bar)?;
+         match info.gpu_name() {
+-            Ok(name) => dev_info!(pdev.as_ref(), "GPU name: {}\n", name),
+-            Err(e) => dev_warn!(pdev.as_ref(), "GPU name unavailable: {:?}\n", e),
++            Ok(name) => dev_info!(pdev, "GPU name: {}\n", name),
++            Err(e) => dev_warn!(pdev, "GPU name unavailable: {:?}\n", e),
+         }
+ 
+         Ok(())
 -- 
-2.34.1
+2.53.0
 
