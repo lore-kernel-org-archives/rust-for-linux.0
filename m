@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9977B318ECD;
-	Tue, 10 Feb 2026 16:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFE61DFF7;
+	Tue, 10 Feb 2026 16:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770741975; cv=none; b=h9ylAuX0YmaTQz5h+MXhPePDxTNjk27MpgNHF1CyCuRsUrSdSgkNWyGj2WiwUoG0FYIsC1IieSIc0nnlpFffznCn5AVHRLvLlW49uvY+uKOPS86UGrfD+kIUmJwsFomaufW8YXTjR2nhG1sJcaMwDjE4w48H8D5wDI2lQ7PTtgQ=
+	t=1770742103; cv=none; b=LScb+qcHEjErKtvjjXVPOFPx2ZbB6W2C2sjZbW6Sap05SSMqBIA3xSd37dyuySBatoqhe6DLwSw8xr2sqeUbqQRcif8wRROrdF4bl/gkq8abHR1vf87DZ5/l5ok94sg/iwyNxxe0vU4Rb8ivw4V7hOs7dKBLueiRJ+KwDxcvhE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770741975; c=relaxed/simple;
-	bh=okQlxFXHr0GfUR5XxlHMtgJeovD4r1bYBEfmdHEJlfk=;
+	s=arc-20240116; t=1770742103; c=relaxed/simple;
+	bh=dbU65BlIpoty7iANfnMUj5LC3wQ9NypEMYFqKBMtFNM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aQDmCmto1UgRFLOBUYkf5VIAsyC852xzgvopCAnDSShcQbqFW/kAayf2ARJuGuSjNnb+DdGWkwm/VMkE1Q1WiIIQa9fEsfpTH95DIebExdEdPABHI5oQ3DFjfWAIxsioMR/wCwqV7jkG+tlNh/x4Uk6oq7nWVM1hgAkHS3rn1fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSbhl9ly; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tQ9MLrqiaAGelp6vfCxJVrAOZa7uUPigvYkWGlz+6sLDTVGontM/HcfsNH5/fpHD79K502C2eOOzEXk/uWk0WFzeAedIbjBneKZxwdQlMF9h2qjaMge2lSV3WbA63nRFZFGaJd0r5uAbULSYtVRPlyVjlDpAUnNWMWsRwPOSfnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duEGMgzn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSbhl9ly"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50ECC4AF0E;
-	Tue, 10 Feb 2026 16:46:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duEGMgzn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098CAC116C6;
+	Tue, 10 Feb 2026 16:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770741975;
-	bh=okQlxFXHr0GfUR5XxlHMtgJeovD4r1bYBEfmdHEJlfk=;
+	s=k20201202; t=1770742103;
+	bh=dbU65BlIpoty7iANfnMUj5LC3wQ9NypEMYFqKBMtFNM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eSbhl9ly8KVez1VkctsxefkJpbufNq4t6g9QBlIUUa8AYzca9bgSc8WbWFFQj2QaU
-	 3uv11VUaQcGvMpAa3QM3XpgE0nCej6ypvl45zNfN2OOqSNU4M0cXFXqnZklv0dgMtZ
-	 7vy2lz0Rnc/bNmD1o5ku35WIn1OHhgS8zjO7qeq41M690SRe03XaxUZ1PwoMQqh7OH
-	 N9XZBRQ1MU0hXn61L7FoEdhGaBtdfhtSJl3IEBTMamz4IclH18uFExmxXI/GnlI+If
-	 V+WLnW/4G1A8rcOd3Errr40Bp5O0RFvZ9/lMVP1lLwMcytrj3MEnsDfAMXDuOH/Az7
-	 EAqzhhaSVr2lA==
-Date: Tue, 10 Feb 2026 17:46:09 +0100
+	b=duEGMgznopIsNjn7WQGLrZdYtLHW88WzN9tTcIXtOsQON/YFK27PpTV4y/PMxcmPV
+	 vyC0sd9d09b5lzjdooeuwg3IDXZxdOe70puulAmC9peMETXOLWlBOg8Vpzzzyg0HSo
+	 WWaMMuhuJWnneGxOzGa5mcSKKzIW0/RZcepXWobvi4VVKKqMGiBPKoKYYiHeZseXIt
+	 471PwB+TaYtKdfQgBYFsNYYfx1MLUEOUKfdbT0fmyspmoJcG/hmFbzZPqipuCfUzs0
+	 a4cBvqzRQjEoAXUj4am/BRTzfrIqcQ/TGsoRbJef/jjauCcrpafiGesOelQIjlJSru
+	 5VrvrVKJNpEpw==
+Date: Tue, 10 Feb 2026 17:48:18 +0100
 From: Daniel Gomez <da.gomez@kernel.org>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -39,10 +39,10 @@ Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
 	Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org
-Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
-Message-ID: <aYtW-Hg-ItQI7v9-@macos>
+Subject: Re: [PATCH v3 04/12] rust: xarray: add `XArrayState`
+Message-ID: <aYtcdGk8zcwaHfsd@macos>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,50 +51,49 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
+In-Reply-To: <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
 
 On 2026-02-09 15:38, Andreas Hindborg wrote:
-> Add a convenience method `contains_index` to check whether an element
-> exists at a given index in the XArray. This method provides a more
-> ergonomic API compared to calling `get` and checking for `Some`.
+> Add `XArrayState` as internal state for XArray iteration and entry
+> operations. This struct wraps the C `xa_state` structure and holds a
+> reference to a `Guard` to ensure exclusive access to the XArray for the
+> lifetime of the state object.
+> 
+> The `XAS_RESTART` constant is also exposed through the bindings helper
+> to properly initialize the `xa_node` field.
+> 
+> The struct and its constructor are marked with `#[expect(dead_code)]` as
+> there are no users yet. We will remove this annotation in a later patch.
+
+It makes sense to me to merge patch 4 and 5 to avoid this.
+
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > ---
->  rust/kernel/xarray.rs | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/kernel/xarray.rs           | 41 ++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 41 insertions(+), 1 deletion(-)
 > 
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index d9762c6bef19c..ede48b5e1dba3 100644
-> --- a/rust/kernel/xarray.rs
-> +++ b/rust/kernel/xarray.rs
-> @@ -218,6 +218,27 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
->          Some(f(ptr))
->      }
->  
-> +    /// Checks if the XArray contains an element at the specified index.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// # use kernel::{alloc::{flags::GFP_KERNEL, kbox::KBox}, xarray::{AllocKind, XArray}};
-> +    /// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc), GFP_KERNEL)?;
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index a067038b4b422..58605c32e8102 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+...
+> @@ -319,6 +322,42 @@ pub fn store(
+...
+> +impl<'a, 'b, T: ForeignOwnable> XArrayState<'a, 'b, T> {
+> +    #[expect(dead_code)]
+> +    fn new(access: &'b Guard<'a, T>, index: usize) -> Self {
+> +        let ptr = access.xa.xa.get();
+> +        // INVARIANT: We initialize `self.state` to a valid value below.
+> +        Self {
+> +            _access: PhantomData,
+> +            state: bindings::xa_state {
+> +                xa: ptr,
+> +                xa_index: index,
+> +                xa_shift: 0,
+> +                xa_sibs: 0,
+> +                xa_offset: 0,
 
-Side comment: I'd also update the examples to the new coding style. And it'd
-probably be cleaner in the first commit.
-
-> +    ///
-> +    /// let mut guard = xa.lock();
-> +    /// assert_eq!(guard.contains_index(42), false);
-> +    ///
-> +    /// guard.store(42, KBox::new(0u32, GFP_KERNEL)?, GFP_KERNEL)?;
-> +    ///
-> +    /// assert_eq!(guard.contains_index(42), true);
-> +    ///
-> +    /// # Ok::<(), kernel::error::Error>(())
-> +    /// ```
-> +    pub fn contains_index(&self, index: usize) -> bool {
-
-Nit. The method name may imply there's a contains_*() variant. I'd rename it to
-contains() so we are consistent with the rest of the API.
-
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+To match C XArray __XA_STATE() we should also pass shift and sibs. Even if the
+only use case we have currently is setting these to 0 (XA_STATE()).
