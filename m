@@ -1,280 +1,125 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4FA326D46;
-	Tue, 10 Feb 2026 17:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021F538A9A8
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 17:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770745974; cv=fail; b=uOHb4KyMnygH6Ka8BDO+k/0VlIBca1H71v1oUJBLeelbSOyXbjtbA45TPrr2mIUeLDbRfi07U9XzfhoEXIwe/Mm1l8w5EFrtz0+92b9nK86I+2jI9XXcyAR2wODDH/HHQb+ijvUg2Dzyn1XUZRSY0I21nPaYpeC2YsNxS/vOt9s=
+	t=1770746114; cv=pass; b=I7YEIlw/gyX/qVdyR6ypCICKdwiLW9ZCNQGOfNHfu9ygk0QLWL2muYizyuPqoBTp5UrW5hbqd6V2sNhqRsEgAWD4lsfZ0c5GwmdKwiIh+Hz2uvEJic154ricHDGhK1/B5OcwBLla5bTQdBNpXE9Vp0YAw7cvAX+Fw8TONF8zpYc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770745974; c=relaxed/simple;
-	bh=q09c6SbJo7LYOV3RdyEln02mkjSYZjlO/vLDYiS9upQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bLNyZZolsnhP1vAzT8sUcouJSmfhsk9B48xw0V09T0E5Y3bs60a2WXIGZHfI27zzmn1YbBSxg19UD5pSRkm4hz+nK+FzHLT563VD0gFrR5AEl9wGbyn+6vapbya39phrId71Yl3/4XPzxDDcbOW8AnAHac+MPQ7IoAkyQwPiseg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=VT+Tp5q3; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=QccE/fXK; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1770746114; c=relaxed/simple;
+	bh=B+poLTmejxVbfYcsSOzRvcKefsrqWl5laZb8BFe0X7o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AkoCl6Uw6doFuea5qACUdFkb7BuCaT4kNcEaEheJRUty8jlKw0Ox1xQlCDIePA9Q8X4Dt8ZnGE4ua+UjcFu+oKkSlYsF4Gdk4KrFfHCrZUz+kx6STi+7w6EhTsArsNfKR91jLqc+ySnXI+7XFPESaFK5YepOtYcl9loh4/w8iQ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B2w1LZx2; arc=pass smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="VT+Tp5q3";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="QccE/fXK"
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61AGjweN3810310;
-	Tue, 10 Feb 2026 17:52:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=eBK88/pJcK6y5OOaXa
-	lTDRegASjdn3F3jwGLyzwbLnw=; b=VT+Tp5q3N+ToGep8/GvN/oxuxAwykGOerA
-	zTyEQ6Bd/vvfwaQRRuFplTBCKsUg8JseeYvtcMTADAPIVNCL51qdmGf1/bZGUus5
-	/NPW/mstAk0CaVC8VgT6p+u73x7i+5X6V2s3HCV6Ya5yfa0qzJDPAf8dRY77e7jI
-	A9DrRRmDrP4e+89zKStkPG6oKQ9I11tSptaO8/Xrb01FT5MIYK5SNTeCPrinIQxO
-	U1E3+aIKwdGx/0SN61eFgJs4arO1ZGTB2sYFS8OJIhYcsM0ImOXrXJAaJyxbzIM2
-	zblJz+bNUo2CgzYC67z8vh5wfF80KqcTK3H5etxuIJHKgsu6Vv2Q==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c88fv0441-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 17:52:13 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61AGHhqh013085;
-	Tue, 10 Feb 2026 17:52:12 GMT
-Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012015.outbound.protection.outlook.com [52.101.48.15])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c826yb1aq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 17:52:12 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TfGGlaNCKRsG0lq/chkQ6goVXb7gKRNjdg9QgjYdswyDxnwqBwj3iSRSN27Jhqos/moNM0U/jC6OHpmGC4oCB+RxHA7pUx5+mJIjtIc6VabFxeg0maWyMxBhAVb0TQfgflmcngq57WUCPMuKtipPeuCTTvlZPLEklg0JdHCyjvrs/b4IrholnmcRDJRnTP3ce7v31rUduEbr4oy1EQMFe6R6wjWPOCKVdr0/2cU1RSjrdJ76FQ8+WkpAOefGweQU+EzSl+ToPjgN5ebBG1AN6WXkeNz1E2xFVEbi9+ws1vH7ulA54YzSGzA8u59S8KxKO9WO98qwDFtWdrEWwFOMNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eBK88/pJcK6y5OOaXalTDRegASjdn3F3jwGLyzwbLnw=;
- b=ds5lsrD5NDWx3WmY/6dJN8yyu+VstckaKAB1E7ogEcg8J19LSIqaW0ZDNZI3hYVTCIIA8kPAIpJul8j4QohZszUcrw3hxirmjr5T6N3PLlnjrxK7wlvqjNYH3H8EDGWazWEEpm0mFEf3pO61vs2P75B4Y85/lxoNILWEgedXs9lcl2j0kjsxMPO1AwVC37bgnGcDHdLkyKZzSPpmC6fQsK0NSGpK7wjmKdOCvyUH2bAmmdYvk9XPlSutyUgvnFoiAiR82AfF2quqHUbSyzrFKLlFtLl2xEAh7G9vPMwyn+LId9QHfqd6khHpJXvcBZm8iZis1dMMNPBRw2GBkY9RUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B2w1LZx2"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1270fde1739so167165c88.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 09:55:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770746112; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RyvDkB8SSlZZpMtC/b1xYIVGIZ4qTwNGpga0XPcwYgyBmpO+n5lZ6+dR7ztGXNDlAz
+         cTSBIMrrz/eyQuBn8Osr4IGZRxkyMhGR2PY0ciRklWoUBt20+XFXu3Gm6zw15ziscaXi
+         IgNyxx7lO2YSglx6T/t29kUgwro5+NMeFmZPHKofXq36KDmGGhKwkuLYabeRUmYTSoGo
+         Mm7owGLdQDDNJYy9m/kdtDA8C/2QItep6xmHSAi9fR1MoD96ia0ClrVugA0exMz8NAk2
+         ddkgreOObVbIkMdtx14dU9sEq22jIR6Q+iycHvgVfleJaLCzQsDTsxAQlWPG85CKWKhE
+         TydQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=B+poLTmejxVbfYcsSOzRvcKefsrqWl5laZb8BFe0X7o=;
+        fh=KIvRCCrW30o1G1oycpLPOv9xV1hyDQhRa1TqY8L46Co=;
+        b=g9mCHxgMQ9iDkeGYzmvQb9tDzIboB8jpCzNPU2SlNZTJmwi0ts98ZnAICUPkL1+YxZ
+         sHQPGb3LxEmIoyySVGDVKps0TF8Bld6g9iH014NnmurIfJBMjVsq5L7JeufIzc8nzx/I
+         sh34YaauPv3d336n8SANAvTIolu72Zj/2tc1CMx3mutmReXRsy6h/2nBGFr+dVeUYDrJ
+         ae7G3guaykVmYDlEi37blyuOHkZ0SlatLWjPiaT8naBLMDAGwA2493RRrzIqeRHXNRTJ
+         K/EUxe2x/QsQW9UF0sjRhsZTDkyuWwI7I/JJ8s9kdkf+Sk30Xv9V67M2A4v9MZIDn3ys
+         79nw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eBK88/pJcK6y5OOaXalTDRegASjdn3F3jwGLyzwbLnw=;
- b=QccE/fXKyTNpoj8ILV16/OGJPDPQpC7oLv5JigmVwsHRkxr1mT93nQFjICXvg0VJzNIld3w7ZBYue5KzZ4Z4cGqzbiBVb83uA9HjAyC68CzXags3iMg9H11Jp0sUQkE1JOb1f4YdhSLPbMhxfRAung32eEom8BEC7E8x3k84N00=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by CH3PR10MB7307.namprd10.prod.outlook.com (2603:10b6:610:12f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Tue, 10 Feb
- 2026 17:52:07 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
- 17:52:07 +0000
-Date: Tue, 10 Feb 2026 17:52:03 +0000
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-        Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Harry Yoo <harry.yoo@oracle.com>, Daniel Gomez <da.gomez@kernel.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
-Message-ID: <q43rzzvpfh6ke74eyn3nypiek2ihaq6nat552asiobqge4vxmn@knwkb5dexnga>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YT4P288CA0044.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d3::26) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+        d=gmail.com; s=20230601; t=1770746112; x=1771350912; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B+poLTmejxVbfYcsSOzRvcKefsrqWl5laZb8BFe0X7o=;
+        b=B2w1LZx2UubJP1lM4muBZnwzZ7lJFZP22QOVyBttc5Xhr0zwrNHL1FNNgjEeD+x1nx
+         +yFBx3wZrDY4/7h7g1qQG9UnTVMvZutJavXQyAYxbtp6gfQrfARTjz7hHMidcITdyGsD
+         5HdrhtHBi9oGe/QEtoZbhOxQSXW4tyRMujmEpttC0dYGUgsmcJnJUsj1RF/svfDTzBqq
+         4g0FMSojPJDGl8FHMhX5gpWqeEPiE+kx+NEmiRVhKmY3kL3HZSUFr8BvLqFjxZxg9/M8
+         AJGY41KiV12xexyOkerEia5iDLBvQ3QDBiYbqkxLsXYfVA2RIbOVBThGE4t5hKMac7Rr
+         8NPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770746112; x=1771350912;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=B+poLTmejxVbfYcsSOzRvcKefsrqWl5laZb8BFe0X7o=;
+        b=Xgw7LFgyrp8zd1pJP4vYijRy/jrBVr1kb8YkxDDtjSuoJd43WIkA3tv3ZtiO2KN5FZ
+         FgRMzAQNq/Km4AJaqC8WaywbZNuS0266SywgXEtazHpMnVbur6j4MVFORDKB3mzBTASC
+         NhdJvKIaCEUI3LcOJbIPy/3I/9MIgTew2zwRwOWv8XalxNojL0nudLk/lRUvzLmLHeiW
+         PK+moQU8IncycJ41EJljWypMV4uD01Ag1PS0S3eJqF/Zs3XDm8kM4Ti0NNZilPJRhjfr
+         Rlfs1ILfZqMFnYEpXorOnN3+3ZQTX62dRfnClHMs6uvCk3/pJ2Uxx9x+uD0yfH2uThkL
+         0tkg==
+X-Gm-Message-State: AOJu0YxDUx+ECecCDeER+U7QvTE4FwWQPis8GNSVjPjFT6nuE4+bo7yo
+	KOPkLrQldSz4kVpgCWNMTp7wc+GCQVHKrnOsGcCNSJrLsZdqEJaj9e7Bl297iEfqyC+V61FyuvB
+	/AWoS2rRr/GEsiyjEamBmieXBk0jfXrM=
+X-Gm-Gg: AZuq6aJC6gyMckBf0kvMx5rFK/aqPXxbVYxz0Q82X8/BcOowTsaSfAZbcCc57WhlqTy
+	dgzw5Mc40WJ0CnVB+wbXmcAMKhL3KYbmO+css+E9puxey9HalM8FvePX8uxHpVNOT5GQUCfKfhn
+	MJDCWPyZBlFulOQXR9Ytne9dqJlH5xbwig3CxKjn6gejRJYlKFdkzXh9rgMuEHzoND7ePOiqkA/
+	yzR8d8m0CUEFNNEbZ8JefZAlSojxOcnKHwGthxkX8nBzbxWQVqHuyS0F/E5upFYV6e0gIfyNRyK
+	TmV5fEaxjrRFQ58PuVbaQe3YuVeIIGCU5zmoSt8gzAi39Vy8/ozOm9aB/Qq4NAfNhFNbzb+0qba
+	3ateV3PgE8LprY9+ZGNrTeJDZ
+X-Received: by 2002:a05:7300:5728:b0:2b7:1008:9f2e with SMTP id
+ 5a478bee46e88-2ba8cdc7a85mr628301eec.7.1770746111885; Tue, 10 Feb 2026
+ 09:55:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|CH3PR10MB7307:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3bda800-8eb7-4dee-e287-08de68cd1b7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7fu2wqAYGXzKKC7RTrPLiAZDCH7PbyhnDLBVcPQtUrofEJJG4wkR2KAvILJh?=
- =?us-ascii?Q?EZDs7DAdCz/Y3Z/H+zMcyVSjj7/nceV4Yo/+0u4LbT+BmQu4zzfFg2OVdAPu?=
- =?us-ascii?Q?gcaNq3fjDJBwbpQn/RcxZVbW5mD7XrwCKcrZqIX6B8VnH6EtlOlDZf9HbfIi?=
- =?us-ascii?Q?CvDrzMulm6P3k0kVB/kk8W5MYc3CuaucjenF+Usxg8vXTyTono/ZGyDzQ6dH?=
- =?us-ascii?Q?yrIGqrcZcvLDZUNitZBQDCPRkj2XOp/xXbj/HbtBQsbbYM5A642a89Wkg0ks?=
- =?us-ascii?Q?n09Ow/R+zpdxGfmuoA071+LTJrRKtnDCPxqslXHlpA4LpSyQ7zq93Au8tScM?=
- =?us-ascii?Q?PMq8WlWHPprzO6ywGUkrRqFzQNQKwGfQHXbqVPvdz7jrTulkg1eEYX3QD3UF?=
- =?us-ascii?Q?u9x2ILgjKFRNeo7EEbdU4wbHGLhctHeeM+VIx4fOBidXhplQIeU3d1evbEcX?=
- =?us-ascii?Q?LgmBlZ9CcD/sgsQntgcMH+z5Qt4B4OKSRisXFog5Dd5WwEcqiRD4763+SP+C?=
- =?us-ascii?Q?VNfGt4vt4Q9Nr8JrqHg5sJW6TWnzGSXbJ85dsqqjMTEiS3we7r7vhiqb4cb9?=
- =?us-ascii?Q?c9Wgf+JKMUbKrhhEwwqGE2Rq/7k8TmEFJcUkMVYayXbpzJHwg1pyYYembinr?=
- =?us-ascii?Q?E100/WqVydL+fUxEeBiwG6PiWPR4XE+XBffyei+xZyOP2ClWxkFYJvZMF/sc?=
- =?us-ascii?Q?etp/HYgyAc2QyezJMJDKqc0W4UFClPHfkahUaIxwEVQ7tbj0Vxc2Oq1bMvvp?=
- =?us-ascii?Q?FCh71+rMAsyMHhjKXzq0fMKjWSELmdrp9m7ppBPpEq8Osim559PoTnzlIIpZ?=
- =?us-ascii?Q?zgtbhVWSHbK8SgeWAAi8oePJdfFDY/Vq7zavJqjtxWiMUSrNzlGI77rQ0737?=
- =?us-ascii?Q?CM17pDlEZnFpYGYrT9pqvaMngJFKPIAbDTyWfQ5d48ki+W4CwDpOKqHi2+4/?=
- =?us-ascii?Q?/VFZMSo12a4lUMnvUfsAhcVGkXUDVYLRWrm6JK0JHgEOAQxAuUlWx+c6Fj0P?=
- =?us-ascii?Q?9JMiUFDj7tsEfhOmrdCd1zJ1s2bQoVarF2Vld/SqKzBxc8q1JwSuddMPQXuZ?=
- =?us-ascii?Q?BGPMR74yRLRgkWCIdPxWi3ybQ02yn5b9cZne2hyTPSXCpq//sqT2XzGUkFBi?=
- =?us-ascii?Q?WlPL3FIEY0Zw4v4XMBayaTWsHsQb3MfSbQxBvQ+EmU0SwEVyvsDlSNAwjunI?=
- =?us-ascii?Q?j5ImPQE4jcZ7F7nmy7jWl4CtXSJ4+EoJP3/mE4Sow7ghSkzw+PpEIjmqdyAr?=
- =?us-ascii?Q?p3KRX+++AFnbDIeNUjqu6//o4pvsMErcT9xM/nSQJ7XARyPCLgYDXRAql5oZ?=
- =?us-ascii?Q?B4uVQBRqcvl+oRIp1gRfai1WaFkyAL10AkimwMp6Zy5f03HiZHKuxkk+SrfR?=
- =?us-ascii?Q?dLeYzy9akIKpnLMfYiPmc8SO6JchZgbvud9CLiKWA5nJ9GdOIqJcgKfSUdXg?=
- =?us-ascii?Q?mgRTQSI8YhEJDCLm4JV7Acnqgb4//NYUQb0lW9xiVeMWBIYv2r5hpSai+P0W?=
- =?us-ascii?Q?WtshS5Gg5VPK8xg5Mn9n19QLVpNq8rD5XU24HJUNF/VbtIxxZ6hmF/A30Mbp?=
- =?us-ascii?Q?T9ulqBlqDFAKOLI9i/w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5LFh6AoUxCOsF5VKFk2JcrQoF+K034Q8jpW424GFbmIHV9P2d9qrliEQXBX6?=
- =?us-ascii?Q?I7AIuK3B1/yeVdoKwG7UEO/EhAWws78OPo76fcH6nns53fIlFkM4hcpK89yG?=
- =?us-ascii?Q?qYn6HAubD4C4e9iNORgiH92OcrbE8MjWX6uAF85HCAAL0rbJmE2Wc7v+elFe?=
- =?us-ascii?Q?YF07sU3D8qsfn5k0JjSqzzeu42yyQfa0MEJdPvCvOzjU/kdiET2WZ4/b7sMR?=
- =?us-ascii?Q?ssnVIEvYnO9RhwUiHVGJqL86tYeUazzHwPTXiJJb24mtdB4FR2wNweJSlc5e?=
- =?us-ascii?Q?3eAF4+5cwDkI0kzSr31RJyyWUFujvnC4X7zQg2wChmX+ePqL08QyIifhFgvr?=
- =?us-ascii?Q?IVdXbWfosy60e40vYoSaqrtBVRjK8HWUcIJ113s9ekIJvUVefwyo3XZpWfYw?=
- =?us-ascii?Q?fKg+QQIqayKTSAqT++GvLG2/9e6GTFBMSVwnYOIHENGKxggJNJ+oUMW9g6Kq?=
- =?us-ascii?Q?fUWaove4ycQkcAszlFy1EbWo5dgFqIywQQDbF5xNk+rnU0f/B5xUDacxPjmh?=
- =?us-ascii?Q?7hl8sJJyL/GW9OizBIjerp23yGOgJci3O40DAwlgnKlXRAQBr6N7wwFnTNau?=
- =?us-ascii?Q?TINE5B2fGYApxVyFcwQ2/mIJ9adknXicIdhNamcobh3JLojnoIAb7JUgDSdo?=
- =?us-ascii?Q?PdF9tXdJzozFWPKssDPuZgWfewMjWa3yKVvBpXU/M8I5PSaED/F2nIuhkQ2A?=
- =?us-ascii?Q?qmZ0RfrlivWve5KIbbxnv01+uHlhBHD71v/Wk97f/aBp++6an8KQukOO/GwS?=
- =?us-ascii?Q?ogfg0myL8rUmhzE+ECTDZIQrVhunV1inoU0taneeHonPBwt/HNvnYTGD1ODP?=
- =?us-ascii?Q?4Ay9ZJ9MovbnPwtQGi3z/NY7uIRnrjDhPnSXkp995XUXyw4RG830wiIUVG9z?=
- =?us-ascii?Q?a5cLIZ38SBXKJMW6dNra/7GVrv3tpy1lHrvvkb2Xr5vrfcBuKfEvE/E2JFW0?=
- =?us-ascii?Q?C5QlNTOiZQX25tdinEiGMVFf41QfjXH/U0DQSb+ouAd8hfDwQkxigA0e94vT?=
- =?us-ascii?Q?j+tfFH6hYuaYFKhZgBM7q6hfu/uFKgw0xywCiGQCKZd9G8nMnnOqu0z1hrmt?=
- =?us-ascii?Q?doi2+iQVUZfP+0UkpklZsycSuPEgP3RqczBpTAV8mJ6h4U3yhrRVma2BXbAO?=
- =?us-ascii?Q?OXPyrZHUUjGWiuJW/iXC+iPjr+Bm7e+Kp9pXsrUflY7kY9AnCwt58ayBoD3t?=
- =?us-ascii?Q?zvwBv8KntL+WOAXpeeSH/QjiYyyig3zkjVI5KX6adJd6g85EHm0JHriv5Ukb?=
- =?us-ascii?Q?6Z1sMeAEzKbkU+3eHTWfbJpIugiC4UZWEJcKoxRP/V4iqFKnOHWhFY7B1sOe?=
- =?us-ascii?Q?4NGaUBuwxd1Dw6G8ubTHnd36wqe3HAzKp2chJKCExWJ2vsAp4UHeL9u9FCQB?=
- =?us-ascii?Q?qWgKIsa2Iryy+ydHlFqaaSEsUUNIt8mQADlurE2vteNoEAcZnLb3Ytukoxpb?=
- =?us-ascii?Q?YCIpR77Lt4YbgBVUm/RXGArCjMdHtK8+JcZb0qZJDqHbCksrOJ4vZSvFmt6N?=
- =?us-ascii?Q?SSqJmSOPfr+BUGMCeWBpbz5oIwWpzXLRiNdK9+c6vLxrZSJQrZZL1tv699WM?=
- =?us-ascii?Q?n25Rdc4wV61xJzfBqyp/R/9u7ovk/tGn6xftweKmJN6I4OWwt1zbF+vtXPhv?=
- =?us-ascii?Q?c8ETFziajXkOpURM4JChSevpwYYHDLjT/Usrt2E+/FIP9LQoNne0pXWbrjtr?=
- =?us-ascii?Q?5l2WUAu92SncX03TvFZwCFx0dqmbt6GwkWep9hWCtHXkS73MvG0Ddwj05CRk?=
- =?us-ascii?Q?pmnekP6vgw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	ksLBGc2L6Lje9TvVnaz9/nMdrTRqIoyLWQJZvmyuGWFAhUcpmOJVP4I9jjH8GBvA45q0wnYVPKFIZ5Xrjfq2yFznbGjkei/fxhlUI64Ge0rLivDOdgRzCcCnXI+8WcFauzKF1fEpGL5oZ5bwFofyekJwyOThRSDbh7m8Txhajy2TWI+uIZc1geDpwe5rfC8F1UpSyFps5gYTUfsVIjzF4yAn7kwwTlDd/DiqRpdBVNYjBlgSxc5szV2ZZ4YtfEys387PKbVa+Hox/+wXz2hFCBBo5SqB/n0ukJuVODj/lBh+s0hnTat8g7ymma5jxIJxhlpjF0fpUrpY1jtN8BLx1+zvP39SjMPsdgUjYi+KRigfXj7khpKZFVE5ewf184Anwyn6DWY4MTEiovtNAjFKkjyqw6zClXA42NaBg0sNSSdDR1jIqe7QermsZZLVyVC0LxxauY/MVy6VXoB9d637LOe6lBTAck+4J7RBXw4IpnZM0JogDMSLhqrFYHoc7FUijziXvzL2lX2zRl9+RGZXskP/qaZLQNwQnASAiDLBDIjNxKdr+HhSCMaBsZXRFvKfr7xNYugZwRopEqxyCX+p8q7wcsOVz1wt764bpZuyF1g=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3bda800-8eb7-4dee-e287-08de68cd1b7b
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 17:52:07.2720
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kLxzZty2FiFmKqCIGU+lrlgy6Cp1gOJZoBtVOh3iZiKK0QQYeI07KeRyyj2kMDVc40CPozGpK9dZ+MgvwGpbAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7307
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-10_02,2026-02-10_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
- adultscore=0 phishscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2602100149
-X-Proofpoint-ORIG-GUID: Io_wWHCPcGIhVQmZjwAam7SBjFWg3tdd
-X-Authority-Analysis: v=2.4 cv=Qchrf8bv c=1 sm=1 tr=0 ts=698b704e b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=c-wpql0DFEiiU-M0XAMA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:13697
-X-Proofpoint-GUID: Io_wWHCPcGIhVQmZjwAam7SBjFWg3tdd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDE0OSBTYWx0ZWRfX1Ch3C1rga7uG
- Ve9yCIdZbGwdZdE2EgXaThozlPPkHihPcOMZWfJkLYuncMo2HlKxDvHlHeTSMbr4z50uH0RmZOS
- aC2oR1H70ZLy+b2uzMfieorrnbbooO9+kSyn4CYqMQIfN+ASonJNUIuOGtkbZbw350jfJUD/F4P
- X3SM5XeKiz/oLEHUHgj6KpWKH3/O403LuyWO0P5w1orgtyVkr7j34DeR/9UDcSOoIM8AkJUFpsK
- tKBusewwQMjBRKO+I5m6cXdH0R3i3funriev0PeOdlOKXxvKIwGpPcIGhcxh0U9S6w2Vnue8Uf9
- mESXFJlEAE9UfZMEX+AzpeC9aW1vHSkwerV+6XZVAv/pAZScnP1ejQRZtzpvyjYxNJDCjYZ7P/z
- 8tvi1L7cNpWjDPpzYdgGgc656NlLdL/BIOaxjPTaOQUDjkwOZbeUBVaH8TLQsQQ3CRwuFcILCrH
- oOPMrlRTr1dxw2gnZxGz1RaRJzofySbSAMEhjWUw=
+References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com> <20260105-define-rust-helper-v2-9-51da5f454a67@google.com>
+In-Reply-To: <20260105-define-rust-helper-v2-9-51da5f454a67@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Feb 2026 18:54:59 +0100
+X-Gm-Features: AZwV_Qg0i0d6Gg0RtB9w2suS8u2wGLp4f8ZY6GbC3pc07HiorcLgIJCxJjCkYHk
+Message-ID: <CANiq72=-Xh3wVA=nu7eYOEqR9V8jpLziaVHTFXh2n3jYAsrzvA@mail.gmail.com>
+Subject: Re: [PATCH v2 09/27] rust: jump_label: add __rust_helper to helpers
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-* Andreas Hindborg <a.hindborg@kernel.org> [260209 14:38]:
-> Add a convenience method `contains_index` to check whether an element
-> exists at a given index in the XArray. This method provides a more
-> ergonomic API compared to calling `get` and checking for `Some`.
-
-I think this is going to result in less efficient code for most uses.
-
-Most users use the results returned, not just checking if there is or is
-not a value.  So if you find the value an xarray state and then just
-throw it away and find it again, it'll be less efficient.
-
-If there are users that do use the xarray to just check if something
-exists or not (which there probably are?), then it should be in a
-wrapper for that code and not the generic API.  Otherwise we will have
-users pop up to use this method when they should not.
-
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Mon, Jan 5, 2026 at 2:08=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> This is needed to inline these helpers into Rust code.
+>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/kernel/xarray.rs | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index d9762c6bef19c..ede48b5e1dba3 100644
-> --- a/rust/kernel/xarray.rs
-> +++ b/rust/kernel/xarray.rs
-> @@ -218,6 +218,27 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
->          Some(f(ptr))
->      }
->  
-> +    /// Checks if the XArray contains an element at the specified index.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// # use kernel::{alloc::{flags::GFP_KERNEL, kbox::KBox}, xarray::{AllocKind, XArray}};
-> +    /// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc), GFP_KERNEL)?;
-> +    ///
-> +    /// let mut guard = xa.lock();
-> +    /// assert_eq!(guard.contains_index(42), false);
-> +    ///
-> +    /// guard.store(42, KBox::new(0u32, GFP_KERNEL)?, GFP_KERNEL)?;
-> +    ///
-> +    /// assert_eq!(guard.contains_index(42), true);
-> +    ///
-> +    /// # Ok::<(), kernel::error::Error>(())
-> +    /// ```
-> +    pub fn contains_index(&self, index: usize) -> bool {
-> +        self.get(index).is_some()
-> +    }
-> +
->      /// Provides a reference to the element at the given index.
->      pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
->          self.load(index, |ptr| {
-> 
-> -- 
-> 2.51.2
-> 
-> 
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+> Cc: Jason Baron <jbaron@akamai.com>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+
+This one is the last one -- I guess if new ones were added during the
+merge window, we can have a v3 next cycle with this one plus any new
+ones.
+
+Otherwise, I guess I will end up applying it after -rc1 -- and
+Acked-by would be nice.
+
+Thanks!
+
+Cheers,
+Miguel
