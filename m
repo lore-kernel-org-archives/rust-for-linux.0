@@ -1,117 +1,169 @@
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9579833CEA2
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 08:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770711771; cv=pass; b=pxi1sxdVkI6T5O0i4ckRyOtIlbcaZ2i3/GeQQqVEpP1cKqHyqXodcfXsrp47xq/McUaXHfvg/g8cqlK9tBc5Xug5M6MtrhXysEvBJQUQOH6SOJkAPM0k1c+Oobdh8+Ri2GAk6Jq4wOWbN//5Xs6meNDaWp00qdmABzIf6ZJP8oA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770711771; c=relaxed/simple;
-	bh=F+AYKdYj2aQz6nJ8e+WKOgPI6YaSnBpesxFCe70pCfs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OarB6nbPgQeEStu/cVOH958JQE5G9uCofrEmpFSZgtWcv0lNzHU/gP3km6peWeQwnEymNq9JvFgN+iF18VMN2+auAgbTpGpoYjfspyoopR041M1S7a2NNlV29fi7BCir+V11ui+UJDG+qHT/AwegOYI9gzXEjLzABBxgLFO7toI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CyHvt9lc; arc=pass smtp.client-ip=74.125.82.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109FE33D505
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 08:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770712684; cv=none; b=puyuKKw8aniV2226da2Yo0gWvpT5lZCdqXWXXJoxUEeSDdJ2uuy1oWCcsWSw9U1OzTitOO+UffrWmfqWyPc/6iTXLIC4Hs0TbhD/9s6Czp7k1i4kXAkcrQGxei25lKGlpoRa4DbB6AbUp6pSIpWFquJUuXYxDFBditof/ZQ5Q4g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770712684; c=relaxed/simple;
+	bh=gKNCdt1HK2+FkXbKFKDdQHtbIa2A6WpbYbsJZlakwak=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iBO2cELb2rumFak+o/mM6HSxYANdmBJJMajCjXweosyr6Bg6AczlhzUdda12HkIMwRybC6DWBkEcTmKBZPPENM/yW4jx62zkzIjdyNIuHhk5V0NEACbYDws2+/fBixHU13bzDuaRP4KJJXz9gogaARDnhv2wybMURoWRL1oSEw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QTiL8Bte; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CyHvt9lc"
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-124a55b7bfbso185742c88.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 00:22:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770711770; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cb/kfSOb9Zd8Rod7DP4hLMgPOvokDU0o+KQEy9RS8FkeDXrr9zQOtyXzcekxT772Pu
-         HbdWujkkXBvlpkLiCoYq2yTyahaQt2BjJbJ5fE7lr+ZfyO4GjN4B7j7Q3MG2mWRSxRJx
-         KKi9aasQ+OGg2K4dkM1e1BVlDiyOSpnF+/vl3y5GdGDciyqmP6FxoQ7k28Lyzx38qjOg
-         LlEMtERqsaIGWIjnLjDrnUQAncG8hX97nIm7DWWuF8jly9BTZdb1tBORiktvLEbTBilV
-         RTGR6OsDjD3g/2JCEUYpfR1Lx+NI9UbM4k6cfgxnjLyQAWOqVdJtrWC4Sj9HCFZbP4k2
-         5Fqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=shjJtnASrnoyuISaERAPsmt/LqCJ0MRRnyZEjLgNklY=;
-        fh=vm81tOLbPyssGA4Oj5xalBl1S0QlArGRxUPrsEaeLok=;
-        b=RyLDywANe3BVAB31gbCZ38RTUbR6DW5d97d0lLSRYwzQoFefVvW4CDtjpItPjuZP9S
-         IuWlID4DXO8sm8XmjhjjjP7yQCDyj0JTKOt2BaL313hU9Uz9EJcLsuxTEucHx5YbjvOQ
-         TNuhK6K5ppvE/DTcpwOpu0pQUSdXcR3G667iUGS7Lf7l3r5q6jgILx2SQKjnGbzXEgjT
-         paSjAa2A3zQfdZFWAe5EbR3RO6b8OUh95rxyfJjCT1lLd3+Ty9aRTU8o6hUFA+XXzhIC
-         Xtigefgt96fqVKYs9yaAxBixXJ6sNVz0Fkn9+Jy0LCKNBG3zcBEaqmUETmWajL4JyClk
-         d5PQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QTiL8Bte"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-4376b624589so1214725f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 00:38:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770711770; x=1771316570; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=shjJtnASrnoyuISaERAPsmt/LqCJ0MRRnyZEjLgNklY=;
-        b=CyHvt9lcZdhkePq81jZfs3kQID5qH1fXl6W53uxESQy/JWy7NUlqIGzDLoTsh5so6P
-         IbaYEBuOXw2jgkzWjacnMxzVm2aKDAzyWMc59Wii4/83cNYmJLbz+yK2xHoHfjiNI8U+
-         Jbihtul1GXSEJgGeykaVBh9GgMnFRIBMUvO1jHFdMQS5HhLv0msJUO8qOKaGwqiiQM3I
-         dYlpXlvlGQgaZbwDZ/j9ILTk5zWyxIKdTumeZ1MhtJOR5a01V9FbPMmZidV4LgO18R8n
-         eEOyOy1k1agumSYnsN/Ys9ltD2jdmTqedVSWpvyMRG7rwYW+zuf2zrGG2+y1ZKu5eTL8
-         6IHg==
+        d=google.com; s=20230601; t=1770712681; x=1771317481; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eIR/nLMNJopzZi8r6OqBl96KsfB3I1gZxHx9GRbTuCE=;
+        b=QTiL8Bte20Yyf02d3bGqv1woOjPdW0sO6vtbaY+y2Z4aKDv5W62UQVv5wTKzsmrYKI
+         He8GR9vni3TxgLSRu59je9JdCIXvLxXtBShIJQFkEIs0Ld4TBcQ+21cjZ5VxL/77KAfG
+         RGfyEfToFz+9+XjjC4QmH73SUoeyNMp9JlePRLI96WlVcRN92Z0FuyLQqIPMhuDySKJQ
+         fO7Ok7IdP2RBD+U9HrLA3hLJ2QKJDnilIEaMwjrrz8pg5Y1ITcyxlpbpha0o/PisOI4o
+         +KBNPeu36yBOBpbxoFZRVCKzi/CaKJQhRK+LiU0IxST5r8k3gPgzjIwFgk4seIhoRgkH
+         BQAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770711770; x=1771316570;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=shjJtnASrnoyuISaERAPsmt/LqCJ0MRRnyZEjLgNklY=;
-        b=GX+p64YBDDCk+fMOHimSPJ9BxB1i1oxMA7BpB8WWFrhxt95RFqNUCknxO8iApoM0Sm
-         2Q5ryF4/2Cuy7gm/Qc+Q3KaY5D95v+cRfcsgZtg2u1IxAC3Ak8G4V0QdZDA5LyxqInXW
-         YAwNtN1V5HMfDi/y0mMTJABq9tSzIX1Bjf1VmuDgEN6fYrDPeh60Xw4DoAnkNRl57f1o
-         lIPLdrTkEQR6XqjMnSR0Id2vWiiRsRZFcCGeRWIzj1KO6xIFBadfUiUFxEOtOd6EpZ4j
-         uoCY9/fuX0xayb6uxO3GRb8qrsoOqSyrz6FN++6lc2gCaB8zQM4YBqIs8kyfrf/h+F2R
-         93MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUbVLI+NWiHUCk5rF/LARLBrlUHfM1apUnZs8bSqI7K5My46K0wukWG3gmHCJUL6QFtOoUu6cmXbArr3bkHOQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeDLTCsALbE9CGpfgykp0uUT0huJ4WJZhXMbU9mUIu7evqokjh
-	NjkfbLEW8lBBPJtWcaGe9w9ec8rK+sABGi/ikrj3T/g6daANG9K/bK+K4rE4MCvNr6kIlAVeuvS
-	2ed/LtTN7EiGEwjYoSw25nnZwoi3h96o=
-X-Gm-Gg: AZuq6aK2FQqco/EsfNZpKCzQYr68w6b4ZDLATGhg4/DtQAXPQCQhuaw8dXUb8qdCVvE
-	RC+GXjFrxMAEFHCRUBr67hOZhJvLtzvnv+f5xUK1Y76u2v/axe8eoyiQyVVd+A4gQtR0j057ywh
-	Fjb/zGmY2BHnwrw8TQTrOv0hmaqiDdRjI2s5pLqOY/5HuoOtnXlYUYwDb3KnDJs2luh71YzURBf
-	joKxIqZW+S5jJhxiyhMCFGbEFYmUgY1WsRJw4/IiOH9LJjQJq4+xS3Aqp0HjT4CT0Bv30cKM6G4
-	PUu+sIsidEMm7bikLBP7Nh1McIa2FgEV/nlxOOXiKm3pbfCuopdOygWaGCKhe97gHd1Qe5cvES2
-	WyAfibaWoE9KIwjJ+TYI4MzPg
-X-Received: by 2002:a05:7300:3721:b0:2ba:7322:6bcd with SMTP id
- 5a478bee46e88-2ba8cc89047mr179670eec.3.1770711769563; Tue, 10 Feb 2026
- 00:22:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770712681; x=1771317481;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eIR/nLMNJopzZi8r6OqBl96KsfB3I1gZxHx9GRbTuCE=;
+        b=b3df5l/n645nLepX9Ja9OU+nWGiVqtzOqyGZeqBhyk2o6eEqC++f/hkq8wgZ/N+DJN
+         4QvqjRF0G20Je5+WwY8MCE3u5wnVYwIS0zLbVwbDJPDNV1MedX/mfv6ERTBNhC27wW8M
+         2l63dRe6cmvrLY/Z5HUTYFtZcLaJj8mi6xjkHCqQC8qSIgxp5xWCc6MM1RsHNEcQz8AC
+         uEgVcTQpLMqB1ioCFwbcbcAWceQwDEr6wXTnammscLNzhLKGSEPj0dXJS2iY+oXg9gtQ
+         z2sI+Y+y0kd5ZRenToLKOxBi4yf7fnvgHcWlWYg74jv1HFNoCf6KnMWjmLcgoSbW2Uem
+         ni6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW83kZKjdvImVCyHBsQuQTQEMVqsTkK00LyB361gX6cbitnlUHUTtXKOjv5/Y0FZUWLXrpEAFMeMNxIvRdq3Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxyo4BD82BkWKDAEQhEIcbsBeCnCZRT9Bhzh8hxPW+FByzz57mB
+	yxtE0s7aRyULMjeEknu7pCNWCNiYkNd4LIy8cpH+K/kaKHZQAWrYXFN7CSi9dUe7j4OEWQ4+RCb
+	ycAJpTIrIDhviPhPrbg==
+X-Received: from wrbeh2.prod.google.com ([2002:a05:6000:4102:b0:437:66b4:44d3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2012:b0:437:72d8:7dd7 with SMTP id ffacd0b85a97d-4377a5953e0mr1903500f8f.43.1770712681191;
+ Tue, 10 Feb 2026 00:38:01 -0800 (PST)
+Date: Tue, 10 Feb 2026 08:38:00 +0000
+In-Reply-To: <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260210053756.2088302-1-mkchauras@gmail.com> <20260210053756.2088302-4-mkchauras@gmail.com>
-In-Reply-To: <20260210053756.2088302-4-mkchauras@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Feb 2026 09:22:36 +0100
-X-Gm-Features: AZwV_Qj75jgKNxxldUxP7x9MHEjb0UnbouefGOQsNNhG76ZuqB3-iYmqrnpWbNI
-Message-ID: <CANiq72=nc901311qq3C_Lg7rZObFjTkZ7sQoCP1UpufOOkp3eQ@mail.gmail.com>
-Subject: Re: [PATCH V5 3/3] powerpc: Enable Rust for ppc64le
-To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Cc: linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, chleroy@kernel.org, peterz@infradead.org, 
-	jpoimboe@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260203081403.68733-2-phasta@kernel.org> <20260203081403.68733-4-phasta@kernel.org>
+ <20260205095727.4c3e2941@fedora> <DG7SZND1GWR4.3C5NLKY4SYC0M@kernel.org>
+ <bb57b6837aa8044e679dad5f2589c2e0ba84c221.camel@mailbox.org>
+ <20260209155843.725dcfe1@fedora> <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com>
+Message-ID: <aYruaIxn8sMXVI0r@google.com>
+Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, Philipp Stanner <phasta@mailbox.org>, phasta@kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 10, 2026 at 8:18=E2=80=AFAM Mukesh Kumar Chaurasiya (IBM)
-<mkchauras@gmail.com> wrote:
->
-> -``powerpc``    Experimental      32-bit Big Endian only.
-> +``powerpc``    Experimental      64-bit Little Endian. 32-bit Big Endian=
-.
+On Tue, Feb 10, 2026 at 09:16:34AM +0100, Christian K=C3=B6nig wrote:
+> On 2/9/26 15:58, Boris Brezillon wrote:
+> > On Mon, 09 Feb 2026 09:19:46 +0100
+> > Philipp Stanner <phasta@mailbox.org> wrote:
+> >=20
+> >> On Fri, 2026-02-06 at 11:23 +0100, Danilo Krummrich wrote:
+> >>> On Thu Feb 5, 2026 at 9:57 AM CET, Boris Brezillon wrote: =20
+> >>>> On Tue,=C2=A0 3 Feb 2026 09:14:01 +0100
+> >>>> Philipp Stanner <phasta@kernel.org> wrote:
+> >>>> Unfortunately, I don't know how to translate that in rust, but we
+> >>>> need a way to check if any path code path does a DmaFence.signal(),
+> >>>> go back to the entry point (for a WorkItem, that would be
+> >>>> WorkItem::run() for instance), and make it a DmaFenceSignallingPath.
+> >>>> Not only that, but we need to know all the deps that make it so
+> >>>> this path can be called (if I take the WorkItem example, that would
+> >>>> be the path that leads to the WorkItem being scheduled). =20
+> >>>
+> >>> I think we need a guard object for this that is not Send, just like f=
+or any
+> >>> other lock.
+> >>>
+> >>> Internally, those markers rely on lockdep, i.e. they just acquire and=
+ release a
+> >>> "fake" lock. =20
+> >>
+> >> The guard object would be created through fence.begin_signalling(), wo=
+uldn't it?
+> >=20
+> > It shouldn't be a (&self)-method, because at the start of a DMA
+> > signaling path, you don't necessarily know which fence you're going to
+> > signal (you might actually signal several of them).
+> >=20
+> >> And when it drops you call dma_fence_end_signalling()?
+> >=20
+> > Yep, dma_fence_end_signalling() should be called when the guard is
+> > dropped.
+> >=20
+> >>
+> >> How would that ensure that the driver actually marks the signalling re=
+gion correctly?
+> >=20
+> > Nothing, and that's a problem we have in C: you have no way of telling
+> > which code section is going to be a DMA-signaling path. I can't think
+> > of any way to make that safer in rust, unfortunately. The best I can
+> > think of would be to
+> >=20
+> > - Have a special DmaFenceSignalWorkItem (wrapper a WorkItem with extra
+> >   constraints) that's designed for DMA-fence signaling, and that takes
+> >   the DmaSignaling guard around the ::run() call.
+> > - We would then need to ensure that any code path scheduling this work
+> >   item is also in a DMA-signaling path by taking a ref to the
+> >   DmaSignalingGuard. This of course doesn't guarantee that the section
+> >   is wide enough to prevent any non-authorized operations in any path
+> >   leading to this WorkItem scheduling, but it would at least force the
+> >   caller to consider the problem.
+>=20
+> On the C side I have a patch set which does something very similar.
+>=20
+> It's basically a WARN_ON_ONCE() which triggers as soon as you try to
+> signal a DMA fence from an IOCTL, or more specific process context.
+>=20
+> Signaling a DMA fence from interrupt context, a work item or kernel
+> thread is still allowed, there is just the hole that you can schedule
+> a work item from process context as well.
+>=20
+> The major problem with that patch set is that we have tons of very
+> hacky signaling paths in drivers already because we initially didn't
+> knew how much trouble getting this wrong causes.
+>=20
+> I'm strongly in favor of getting this right for the rust side from the
+> beginning and enforcing strict rules for every code trying to
+> implement a DMA fence.
 
-As I mentioned in the previous version, this is not a valid level
-(same in the previous patch).
+Hmm. Could you say a bit more about what the rules are? I just re-read
+the comments in dma-fence.c, but I have some questions.
 
-Thanks!
+First, how does the signalling annotation work when the signalling path
+crosses thread boundaries? For example, let's say I call an ioctl to
+perform an async VM_BIND, then the dma fence signalling critical path
+starts in the ioctl, but then it moves into a workqueue and finishes
+there, right?
 
-Cheers,
-Miguel
+Second, it looks like we have the same challenge as with irq locks where
+you must properly nest dma_fence_begin_signalling() regions, and can't
+e.g. do this:
+
+c1 =3D dma_fence_begin_signalling()
+c2 =3D dma_fence_begin_signalling()
+dma_fence_end_signalling(c1)
+dma_fence_end_signalling(c2)
+
+Alice
