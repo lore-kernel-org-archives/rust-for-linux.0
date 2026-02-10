@@ -1,123 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583B032B99C;
-	Tue, 10 Feb 2026 05:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F93E2DC334
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 05:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770700352; cv=none; b=b4h189z7JauVYoh7TuG9PGODkYRrDSaBEESsyZQ9kU7ghAVDZvFiitE99W/2oCwePJ2l0SuCj1vY/tXsnb9nwV1E6ec0GfTLCK0sB8HvekxYLoO+GQbA5+3mrS48x4HmySjoQ7WgE4LtciwMPyrm4L0+Hlqs4SBQmzFCxF3ZPPs=
+	t=1770701275; cv=none; b=D+JJLLGvXL0YUNOgbwuc1AsRyUd1auftwhdUV8YyBEObQcsanPw3mrQvnIbZlgH+TIq1V4pflrykvYcJJZjADagbU96k6qsxctdZtg/xO05Cf2bJzfj1b5rPAOXtwsa+Zbl2r0fuGSqlRVD43HU5q0PeN6mgHtWtKnTyQxh9rVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770700352; c=relaxed/simple;
-	bh=3UNd5cxLJqz/3s1NIEI3vT5VGVl5sklAlpXeEWdBoZY=;
+	s=arc-20240116; t=1770701275; c=relaxed/simple;
+	bh=gpfZXIL26yw0eoRgI8npQoF9UhYTLxkdrNdj9WNyQgo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lH/B6UpbHERRPLCd1rYgLYTcTCzRhzERrua7+jDvXkYKqdhQnhZTK760U7Wh7ETY28aJaGTGeAfydRWKOhUY2vdnMM4W03iqFxNolquOaV9qg9WmUQHBhwszgurBjaM/Ou2eVUQDbRXd8dVcmdRQQ5tGtzUkfR/O6ETqC6sH00M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i1tneYIG; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=CiaVygbjsUwmS+biEDfEmeQ4qp1SjDuSnEKvW02U20s6EX3rk9zOhHP0k9OGxrDFazkidHWtxghLsDYOUPXr5ZN/0xtKG5cdYlminz+5nRUOvBwHmgv9Df6NUdpLab/Tm8RMlO4Se8EUdgArSzqHESwm/x6fegkz5WHlPXMEVfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g3tqk5WT; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i1tneYIG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770700350; x=1802236350;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3UNd5cxLJqz/3s1NIEI3vT5VGVl5sklAlpXeEWdBoZY=;
-  b=i1tneYIGtMuJq57FJmP8AhQSpzTvi2+As5lp9M6IT9GTHH1bq7083r2T
-   uQN24Cw6itllkPEeWXbgNBUctbyJrmhKUOxXAZGlOKEzgyCptaHPL18Wy
-   zm3GUEaaeSoaL9v3gGr/lR2HBFdplgZXQecPmJikoqzA/ID1H9eKgZ4H7
-   Z2UMPtqIcFFgbBbS44cBXlLxbrFJ0/lekSiH9wzk/qS8OVilQZUyDH3O2
-   A04C0fQojy0OHcqb9YJcUIV+8DeLkXBg4R5K1CRciasE8FeuFtB6roq0q
-   EYctWvMq7iNZn7nUabBvxKz7vH2mxkvArXWiak12Y9rimAvReB4gBPuZk
-   Q==;
-X-CSE-ConnectionGUID: Hb20PsggQAu+IbvkvwlVqA==
-X-CSE-MsgGUID: 22bRJQn+RjmpVXsprzLe8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="74425762"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="74425762"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 21:12:29 -0800
-X-CSE-ConnectionGUID: PE/oxs8ATIetyQVLsPYhpQ==
-X-CSE-MsgGUID: zIgjYMXuS/mOmpPCoKhmbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="210907238"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 09 Feb 2026 21:12:23 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vpg2v-00000000of2-0EFa;
-	Tue, 10 Feb 2026 05:12:21 +0000
-Date: Tue, 10 Feb 2026 13:11:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
-	linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
-	peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com,
-	rostedt@goodmis.org, ardb@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	"Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g3tqk5WT"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8220bd582ddso271283b3a.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Feb 2026 21:27:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770701273; x=1771306073; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ub/c+5nle4jo1LOlgEbt6FoOGItUZ21Wn4ncWd1nj3w=;
+        b=g3tqk5WTsL5G3YX7Twdf8G2kCrcWSu02cSOL11a+o5To1Lhi96PMJ4yjHHrLV+TDU8
+         9Jyv7BE78m8QJI+bZTj7jdL2ii3BPy7vRB2bDr2TpEQ7MaMGTyNeBVaZldB4dXHbNxPp
+         SL5zig9zOALSswWU7fIilsL2omxODY9184t/Pob7esLN0VomU0fHWboXYkgFYoumQip+
+         /5UaTXaiNtY0lQYNAdFhRwumjpE+94G2274lQycWaDoDhnTAx9LqGSwB4AqCKuw2HUaR
+         R2Zb9C9tX0NJMpiCxhEoiEK0TTjOePfuAEHjqsIT24nMG2A0m9KIHX7OjgVHNnBmQqf7
+         bRzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770701273; x=1771306073;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ub/c+5nle4jo1LOlgEbt6FoOGItUZ21Wn4ncWd1nj3w=;
+        b=AH+jFVeVIkXy9BSqTpjzq7R7/FvhPC/t+Z5ubY0eXkT3gtQeprgDeFOiQuoixfsnEi
+         BTs+EvJ6X0ldDzRC3nJDF3N7JOLyK2CMo1YM7uQ0dETFRMdGhHK2Cb7GOqDt+xEw/8CA
+         zIOa1dCtbo/HEZqKogn6Ghhw9gJcAhuM4o+lpXBSC8UOU6TJSopWPrK+VpJDI7qqoL+V
+         i4/jasAJomcbyn25VnJ7zIUlil59spWj66uZrnQm0ZGVUixBNdA4XtGzB7gu/MJe+hVW
+         I5bvtkC9L2MkwotmKzEfa02/0OezCs0pc1fahaheeAtFcNKfG5cs3tMzrsbaHIZFURLy
+         lemA==
+X-Forwarded-Encrypted: i=1; AJvYcCUtPHtGhZQkagiUnvm4/2nPpWzowPnLAm8bm2LklrPWwfDq2mbfzEc8XHesyn8Zqb3wNx7G28XBNbmjecrgJA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzmuob4NLQ00My/JFp6Yx2PjONVXfhtiCd0Ptqnqt0CvW8RFD7W
+	XlX7oycLCJE3REdVFvPW9PLS7rJ+RDSsNtrkKMdJB44E68uuD9VXdqyO
+X-Gm-Gg: AZuq6aIPBlX7HFDoE/euqM9bpcCjhwjvLIaB8xPNsA4KhpXvk1IuM2YAWZGz+FhwT4R
+	sY7YbWC553g60NKvhNyN1WswNEvvXEBn5YtfI5BwaXONeKiRw/d8sj1xOKWKusg9ujisCEbJ6Wj
+	5edJkj6TymnVqjImG8pccv9xSWv2Usn+xy9YQ0RP9Ur0XfNVYCiE7CgJFTIw6yd/zdvuaNJbvFQ
+	WAhXul8upM98jm5DMufHU4nfdcq1R8Ij9PzQm5LDmTutOeYseKaDpZuZiaUInDaVyhVImEm4Q+F
+	6gmTBfoGDMm1Ed8Ni7s+snxE3wfkMspMRVrOzhHWec3MxUgkBsO+reAZkELarOTKvcFflIClSd/
+	O3S5GVvBoWANBkN1DUUSqYCPyNGnsQOsUweRVw1r9Rhhzy/7kiDjratP6qQ7KLBBGtcIvEUmTth
+	EIPLQ2PA/zOzeC4TSuUaPcWmAIPaldGl3TdlxqU2AhguM+ohU6Vv42Ysc0TJ1ogH2Z8as=
+X-Received: by 2002:a05:6a00:2381:b0:7e8:43f5:bd39 with SMTP id d2e1a72fcca58-824416f2b42mr12082799b3a.37.1770701273149;
+        Mon, 09 Feb 2026 21:27:53 -0800 (PST)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8244152456asm12794630b3a.0.2026.02.09.21.27.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 21:27:52 -0800 (PST)
+Date: Tue, 10 Feb 2026 10:57:44 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, npiggin@gmail.com, peterz@infradead.org, jpoimboe@kernel.org, 
+	jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH V4 2/3] rust: Add PowerPC support
-Message-ID: <202602101353.da6BkK6l-lkp@intel.com>
-References: <20260209105456.1551677-3-mkchauras@gmail.com>
+Message-ID: <aYrBU52OBCgR-chY@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260209105456.1551677-1-mkchauras@gmail.com>
+ <20260209105456.1551677-3-mkchauras@gmail.com>
+ <CANiq72nqH=H4a_Yo17KPmku5pPRMVRBADgj8j+=TcR=3r0vOdQ@mail.gmail.com>
+ <b07f1bc6-c63e-4b97-95d6-c639186a89dd@kernel.org>
+ <CANiq72nkVmE_91yz82e1cRuJK8F9SPP5GpD1mT=NYLBbRTL8OQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260209105456.1551677-3-mkchauras@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nkVmE_91yz82e1cRuJK8F9SPP5GpD1mT=NYLBbRTL8OQ@mail.gmail.com>
 
-Hi Mukesh,
+On Mon, Feb 09, 2026 at 01:48:01PM +0100, Miguel Ojeda wrote:
+> On Mon, Feb 9, 2026 at 1:29 PM Christophe Leroy (CS GROUP)
+> <chleroy@kernel.org> wrote:
+> >
+> > As far as I understand the patch is complete, the problem is outside the
+> > kernel, it is in the libcore provided by rust or the rust compiler.
+> >
+> > That libcore seems to call __udivdi3() and __umoddi3() which are not
+> > provided by the kernel. Instead if should call the functions do_div()
+> > and friends provided by include/asm-generic/div64.h, or provide
+> > __udivdi3() and __umoddi3() on its own.
+> 
+> Yeah, but what I mean is, should we add this if it doesn't link,
+> especially without a note or comment of some kind? (Perhaps to your
+> tracking issue in GitHub?)
+> 
+Hey,
 
-kernel test robot noticed the following build errors:
+I'll put this as a note in out rust support issue on github.
 
-[auto build test ERROR on v6.19]
-[also build test ERROR on linus/master next-20260209]
-[cannot apply to powerpc/next powerpc/fixes rust/rust-next ah-configfs/configfs-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mukesh-Kumar-Chaurasiya-IBM/powerpc-jump_label-adjust-inline-asm-to-be-consistent/20260209-185801
-base:   v6.19
-patch link:    https://lore.kernel.org/r/20260209105456.1551677-3-mkchauras%40gmail.com
-patch subject: [PATCH V4 2/3] rust: Add PowerPC support
-config: powerpc-randconfig-r073-20260210 (https://download.01.org/0day-ci/archive/20260210/202602101353.da6BkK6l-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-smatch version: v0.5.0-8994-gd50c5a4c
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260210/202602101353.da6BkK6l-lkp@intel.com/reproduce)
+> i.e. if I understand correctly, you prefer to not add the panicking
+> intrinsics to `rust/compiler_builtins.rs`, which I agree isn't ideal.
+> By the way, it would be nice if IBM could join one of the meetings
+> with have with upstream Rust to raise this topic again with them.
+> 
+Sure, i'll try to join the call and bring this up.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602101353.da6BkK6l-lkp@intel.com/
+> In any case, it is up to you, of course. My only concern on the Rust
+> bits is on the docs side, the rest looks fine.
+> 
+> Thanks!
+> 
+> Cheers,
+> Miguel
 
-All error/warnings (new ones prefixed by >>):
-
-   clang: error: unsupported option '-fsanitize=thread' for target 'powerpc-unknown-linux-gnu'
-   make[3]: *** [rust/Makefile:624: rust/helpers/helpers.o] Error 1
->> clang diag: arch/powerpc/include/uapi/asm/ioctl.h:5:9: warning: '_IOC_SIZEBITS' macro redefined [-Wmacro-redefined]
->> clang diag: arch/powerpc/include/uapi/asm/ioctl.h:6:9: warning: '_IOC_DIRBITS' macro redefined [-Wmacro-redefined]
->> clang diag: arch/powerpc/include/uapi/asm/ioctl.h:8:9: warning: '_IOC_NONE' macro redefined [-Wmacro-redefined]
->> clang diag: arch/powerpc/include/uapi/asm/ioctl.h:10:9: warning: '_IOC_WRITE' macro redefined [-Wmacro-redefined]
->> error[E0658]: inline assembly is not stable yet on this architecture
-   --> rust/kernel/sync/barrier.rs:19:14
-   |
-   19 |     unsafe { core::arch::asm!("") };
-   |              ^^^^^^^^^^^^^^^^^^^^
-   |
-   = note: see issue #93335 <https://github.com/rust-lang/rust/issues/93335> for more information
-   = help: add `#![feature(asm_experimental_arch)]` to the crate attributes to enable
-   = note: this compiler was built on 2025-06-23; consider upgrading it if it is out of date
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+Mukesh
