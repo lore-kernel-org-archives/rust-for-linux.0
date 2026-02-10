@@ -1,184 +1,111 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9E8330B2B
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 09:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A183133F363;
+	Tue, 10 Feb 2026 09:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770714051; cv=none; b=bOquV/gGuVkD3Iygt2ptm4VvJAhmYGyAGCp9j7z3urNG5o6k30nJ8zVZZCC+r1jsBh8kxD1TO8wVUWHAhAw5ziaB7rlcQIcvVXYrKgqhcWgx3ZN+GttwBilD8ZwzWRdg9iSlPLEC6nEUy36GzG+0W/QAYboJEehNAsvx9m3vo+0=
+	t=1770714400; cv=none; b=XFryb+JgXtCtzR2gGY/UNu2tkVjWRzUIzPOd0HRZz0Sf3y5Ir3Hl3AGjcFrr0tfeFitpyj6y0kOLhHrPt8any8jS9rTIivvDlCULEsMLtA5cP3Tgn4Ka9rBsDv71evjUopHynXZqEXkHFhP8lytWYvpiEtTHIIAYa0UjbXFUN/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770714051; c=relaxed/simple;
-	bh=omBRkQaShskC9IciTdYbrBKzRVSNwpeAiX7J4UHmgpo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vAccuAA9q8u4HK7m2hP0ro9dMBfzX8DanQ8HlzisyMGCNTrZrWAzdj2ah3GbhYU7Tm89Bnf7ikYsgvTJpZA4XD6tthXeD5KyFJRGI3A/mZgh6yh5Nfyc1nVzA9jiGN5kF4bSIwsUgvj1rN4qVfX5fECmiiL2B1UfBrcUmTrc0dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FmUUVjZp; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770714400; c=relaxed/simple;
+	bh=KoL0DF6UjdxcWuqn+iTCS0biVJL6+6OXe/SqA60fXm4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rxpzGRAIjW7DO82Yo5IajkIehcrqb9MJjc4sUTPGEojtFOlNRsFkO4pLYa7nQJT7C32gJj6QBfWo2Wji2y+c1kv/bbAydxON3mIo5YIX29bXavObVHRZ7l1InwOIcvc8XX4/3/1v57bgCp4e9Fn/SnIM8gRM1YGoNSX08IPpqTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=dzBEltuz; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FmUUVjZp"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a102494058so29582315ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 01:00:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770714049; x=1771318849; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XeR+VJLK+vbEiDYRs1UKox7LMnlGVq/UQvIDhBD1Vlc=;
-        b=FmUUVjZpNFmneolCddJrwzx/14sabBkiUDjvdt0o0RY/VAD5ZdCZOEFbeQAwxNsA3E
-         UGKL93C59yGa4m1cy8qEUE7OWxXuhHaM7lsG40AJN4SXOYrbKEiOzmcF91bvskAX8uA7
-         9e5+VNOVbU/zalFHj/9MAFt2PcD9XAh3GXPoJYgVcS5P7QZTl1FxgprVc8ev5vCH9prQ
-         9jCG0Qu2IpuEzpSKYgFzmFSxjA0izyXUhNh1M1M+Q6+KfKzGR0XvECyIpXf7h2MPNgeI
-         QOccX6Fzd12qeF9b6M1FLMFRyyUxS0vz6BTNeAY/F5hSMhA0hv5C5lcjfAa7ulfhEKsA
-         M8hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770714049; x=1771318849;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XeR+VJLK+vbEiDYRs1UKox7LMnlGVq/UQvIDhBD1Vlc=;
-        b=WyzYF1WDfx6uM3ffO3TKSjM1BFT5wvNkgN5+GkBY5h3PfYWwtVakY0DMf8tIlQyACb
-         mhR7TPoQMNIoHNY67gznbEHTxpy9jJcOLB/hY5++kHkM3qzUyQJbH09x3l3RbzCsTRBL
-         nggejMCkMK6AW1L7CjY61dHswqkou07919/3A04kiTO//3G+umARvD1fgo/3K3oWnrN/
-         QXEt2fIQPWmvFpmwUBsCQo8zwq+w/s0IZ97bsN3CciPK4jTtw3afCMYfmhtqOT6YEOc+
-         h8rMjJKJP7xDsGEINN5I3ZJUsGXY05/w5AJv8Ich3SxtROHtAwF46rTbjlt+cJOpDWhB
-         hNnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXfI5pWlVweAA9hUByq6Qp3yPxr8OREM4DEJrEKQxy4sQ4cMg6IsAY3VQLq2yv5CK/+gkcSfRIek8CxJDwe2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjKYA+kyKs1XFDH55qXWzEAPK+ZcMMCcrwwPvSFdZbFipwRxst
-	i7PH8yak7//baWWUyX4LAPZhFaxrzxYHMoGkBOQPFxlSOib3cPoCkaHU
-X-Gm-Gg: AZuq6aLX95sezwRPiIuRIuxMG4HUOT47T9gl/s0ClS22zZvY1HLA1B+WTlqmfSn2AQz
-	N05zZqs/TyWTKkgwfYMuN+T8kYG1w3pmz0UT5kfJqA1lO/p5etYFZJiQA93nxPlGzueT+aHiiEf
-	oaA8XKXMXh1Ys2+NkS0iXcvu6RFX3QCYiNA4yVMPJeeztB7Ai9YYVzsUS79QBAmUj3bb3RgsA/t
-	a3MLxz28NkZ6HRLsJPAjAhGv3vumLohd9MJAH1/uONt3gAmoG46jaGLUBFc0nS00jtZe2+5dytq
-	jO6Xv3E+jCiy1u2ZQpOFuiNjWM5m5nYP7DJtl2RgM7ph15K9ahdmTEe87F+ILXV8XGqtZSoFxPd
-	pL3+YXTCH1BQE7svB1+EYCA8msb3nkG+PXTg7DaRJvkEe8iZIsmeAfEoylT1NuI4+J7UTPhr4Ps
-	N7SQwONDaRv8BnDMttx8xv+vB4M7Q5TVTMXW5/aUCxGvlK/LC23AgyTHYAy+TiBFM/h2HP+7E=
-X-Received: by 2002:a17:903:246:b0:2aa:f5b4:9a2e with SMTP id d9443c01a7336-2ab0fc899c1mr17797535ad.11.1770714048254;
-        Tue, 10 Feb 2026 01:00:48 -0800 (PST)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.in.ibm.com ([129.41.58.2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a951c7a342sm129536605ad.26.2026.02.10.01.00.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 01:00:47 -0800 (PST)
-From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-To: linkmauve@linkmauve.fr,
-	ojeda@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	corbet@lwn.net,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	peterz@infradead.org,
-	jpoimboe@kernel.org,
-	jbaron@akamai.com,
-	rostedt@goodmis.org,
-	ardb@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Subject: [PATCH V6 2/3] rust: Add PowerPC support
-Date: Tue, 10 Feb 2026 14:30:21 +0530
-Message-ID: <20260210090023.2587534-3-mkchauras@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260210090023.2587534-1-mkchauras@gmail.com>
-References: <20260210090023.2587534-1-mkchauras@gmail.com>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="dzBEltuz"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4f9Fzj0fRhz9vMW;
+	Tue, 10 Feb 2026 10:06:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1770714385; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KoL0DF6UjdxcWuqn+iTCS0biVJL6+6OXe/SqA60fXm4=;
+	b=dzBEltuzFxm2uaTXZtNeEqAH1DKiXW2gmx8t6zDbjox61gUxSdfNEd8ElIfRPPPCbVdCQp
+	ihAFn1mrZI4kfnKjT9fDIfLcIywheVfFjKtaxI3jhtrjHBngQurzHWFTkaIvZZd89U+qpm
+	hJ+VTJEIi78kLw73VA1Xe0pzqoWQnvkNazyHBHh6neO75hfFmzBDY7Wl1PJUBZfsLgZ0a2
+	Px8AzunYxx6frFZKYJdr1HzPpLZ3+rZibODzqHoXdTGPJj6Le0caJlWfi0PVUELy/PgIwr
+	F3Le2KaL9ao4ihKREr3vIcG0q8RgeIUWb95x/jzMu5NXybg4Yh4IckL0lhig0w==
+Message-ID: <29712ecf50a8dbd6ec13865ab4313a745ea16c14.camel@mailbox.org>
+Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Alice Ryhl <aliceryhl@google.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
+	 <christian.koenig@amd.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, phasta@kernel.org, 
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Gary Guo <gary@garyguo.net>, Benno Lossin
+ <lossin@kernel.org>,  Daniel Almeida <daniel.almeida@collabora.com>, Joel
+ Fernandes <joelagnelf@nvidia.com>,  linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,  rust-for-linux@vger.kernel.org
+Date: Tue, 10 Feb 2026 10:06:19 +0100
+In-Reply-To: <aYruaIxn8sMXVI0r@google.com>
+References: <20260203081403.68733-2-phasta@kernel.org>
+	 <20260203081403.68733-4-phasta@kernel.org> <20260205095727.4c3e2941@fedora>
+	 <DG7SZND1GWR4.3C5NLKY4SYC0M@kernel.org>
+	 <bb57b6837aa8044e679dad5f2589c2e0ba84c221.camel@mailbox.org>
+	 <20260209155843.725dcfe1@fedora>
+	 <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com>
+	 <aYruaIxn8sMXVI0r@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: 1n83koemthymty6o5gddcb7ucmorhu4c
+X-MBO-RS-ID: beb1d6f231ff3455abf
 
-From: Link Mauve <linkmauve@linkmauve.fr>
+On Tue, 2026-02-10 at 08:38 +0000, Alice Ryhl wrote:
+> On Tue, Feb 10, 2026 at 09:16:34AM +0100, Christian K=C3=B6nig wrote:
+> >=20
+> >=20
+> > On the C side I have a patch set which does something very similar.
+> >=20
+> > It's basically a WARN_ON_ONCE() which triggers as soon as you try to
+> > signal a DMA fence from an IOCTL, or more specific process context.
+> >=20
+> > Signaling a DMA fence from interrupt context, a work item or kernel
+> > thread is still allowed, there is just the hole that you can schedule
+> > a work item from process context as well.
+> >=20
+> > The major problem with that patch set is that we have tons of very
+> > hacky signaling paths in drivers already because we initially didn't
+> > knew how much trouble getting this wrong causes.
+> >=20
+> > I'm strongly in favor of getting this right for the rust side from the
+> > beginning and enforcing strict rules for every code trying to
+> > implement a DMA fence.
+>=20
+> Hmm. Could you say a bit more about what the rules are? I just re-read
+> the comments in dma-fence.c, but I have some questions.
 
-For now only Big Endian 32-bit PowerPC is supported, as that is the only
-hardware I have.  This has been tested on the Nintendo Wii so far, but I
-plan on also using it on the GameCube, Wii U and Apple G4.
+The rules need to be written down. Elaborately and in detail, once and
+for all.
 
-These changes aren’t the only ones required to get the kernel to compile
-and link on PowerPC, libcore will also have to be changed to not use
-integer division to format u64, u128 and core::time::Duration, otherwise
-__udivdi3() and __umoddi3() will have to be added.  I have tested this
-change by replacing the three implementations with unimplemented!() and
-it linked just fine.
+We're having those discussions about the mysterious "dma fence rules"
+for years, but no one has ever seen them, despite knowing that they
+exist.
 
-Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
-Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
----
- Documentation/rust/arch-support.rst | 1 +
- arch/powerpc/Kconfig                | 1 +
- arch/powerpc/Makefile               | 2 ++
- rust/Makefile                       | 4 +++-
- 4 files changed, 7 insertions(+), 1 deletion(-)
+They seem to live only in the heads of a small number of GPU developers
+who figured out through long years of experience what works and what
+doesn't.
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index 6e6a515d0899..70b9e192a7a0 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -18,6 +18,7 @@ Architecture   Level of support  Constraints
- ``arm``        Maintained        ARMv7 Little Endian only.
- ``arm64``      Maintained        Little Endian only.
- ``loongarch``  Maintained        \-
-+``powerpc``    Maintained        32-bit Big Endian only.
- ``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
- ``um``         Maintained        \-
- ``x86``        Maintained        ``x86_64`` only.
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 9537a61ebae0..17db23b82e91 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -283,6 +283,7 @@ config PPC
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE
- 	select HAVE_RSEQ
-+	select HAVE_RUST			if PPC32
- 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index a58b1029592c..9fd82c75dcbd 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -61,6 +61,8 @@ else
- KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
- endif
- 
-+KBUILD_RUSTFLAGS += --target=powerpc-unknown-linux-gnu
-+
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- KBUILD_CPPFLAGS	+= -mlittle-endian
- KBUILD_LDFLAGS	+= -EL
-diff --git a/rust/Makefile b/rust/Makefile
-index 4dcc2eff51cb..ae22f2c5f0b3 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -384,13 +384,15 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
- 	-fzero-init-padding-bits=% -mno-fdpic \
- 	-fdiagnostics-show-context -fdiagnostics-show-context=% \
--	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
-+	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference \
-+	-ffixed-r2 -mmultiple -mno-readonly-in-sdata
- 
- # Derived from `scripts/Makefile.clang`.
- BINDGEN_TARGET_x86	:= x86_64-linux-gnu
- BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
- BINDGEN_TARGET_arm	:= arm-linux-gnueabi
- BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
-+BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
- BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
- 
--- 
-2.53.0
+There are reasons why the state writes the laws on paper somewhere. So
+that you can read them and have a source of authority..
 
+That would end much of our endless misunderstandings and repetitive
+discussions.
+
+
+P.
