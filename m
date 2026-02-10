@@ -1,133 +1,144 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296D2331A5C;
-	Tue, 10 Feb 2026 21:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101A6331238
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 21:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770757924; cv=none; b=L+5s8m8xu5Vvr0FkuN/H3fZ91/jD4ML0S4/JV8AfiizlTTcxFoEHESu+QUHGXRPKoE9ztOUJsD6fCmXcnKD3WSRAOcobe07AucXP4EfFeOJwUcvYwdxCEiL7syromwIkAfk9yyGZVz/wz9vi8xzCEW9CAiGzAbJMZy5iSTT54IA=
+	t=1770758592; cv=none; b=YAh6nj0/9iDVrwvnR5WH3tZ7HO43dF9cVABG3PeZtTea+J2x/Zv3DxYOU/4RDk8yFxmRW3VhU1u11Ps34Jth/d09jUzdgrHwoZa4XnITeGyQeR44Q0ssGhNb5FEO6xj/1iv0NSpbdg5E1Hl6qas/UoVnymf/KND/VZZ3+J9vsvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770757924; c=relaxed/simple;
-	bh=7zk7bofSmyragoKzz6B1piVZiTdvpMcKVBRV2xUKc6E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=C7KMkp+XrHWkUbWm8q40CFLTBMuHMRxtNkEU4VaWek6bMddmSOcrF3aRPI80TP0VU5JjERjDENQACvFEPYQezqt+w9w4Xflbu5/C7wZUELXNAokP0aw38mMbdvf8HfBE2+XDXJ5yEJbJ+RvjwxzCCq1fS3PspTq+4xJRcQiBLHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKHXY06B; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770758592; c=relaxed/simple;
+	bh=4AT+RXGXSCyro2xakJSwLzTq0XsfHO41wcMZUtz2SOQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=IQSkmVoecrrZhG7VrzBSaK4tm3+Brq6t+aUd1/DFX6XMOhyVNl1x08BiCRZYZ/fhe0+FiVerHdCTh/qd8H/bkCw+8u/RlKyzie+pBVqISZ4lkFL1OFbl2rj6sn0q48TQXKoHzII2LvjBULyKtgmxVH4mMnpnzJks2PqB0E3kSCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q0cDRD8m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKHXY06B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A89C116C6;
-	Tue, 10 Feb 2026 21:11:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q0cDRD8m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5601C2BCB0
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 21:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770757923;
-	bh=7zk7bofSmyragoKzz6B1piVZiTdvpMcKVBRV2xUKc6E=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=mKHXY06B6M7GKSuZPNPrS/vZ8MHrZZMEpXHySoql1KKY2w1uVq/dU0H12wLLiFN/3
-	 6yHrpXSglToQErLct/LvdzaUXD69E++vKRy9r0uVaVV3Eg1XNqsh24+dNAGBzGwmWS
-	 +eTBKpNtw37thoptNVrUFJjzfnZ4EzVg3TjwMxxGzf+LESVG3go6K0TY8gsRv02lIL
-	 l20pjjLSPvEQe0/m3NvS70AanaEUqCDEIoxc9mB8I38IEP9Txcml6aV7irxfDNQL5m
-	 DtAUbKq9ReWSgv4jpmtIlBYx3i9Ay+yFz3GBUBqE/SqEdCLAh+8yAxaGljdLcxn4kX
-	 wmNodreFa63xg==
+	s=k20201202; t=1770758591;
+	bh=4AT+RXGXSCyro2xakJSwLzTq0XsfHO41wcMZUtz2SOQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:From;
+	b=q0cDRD8mtEGWivMSLFYqUgHyW9VQVCSGtBXgVyD0aW6HcIaXSxV9EGhF3Yhl3z7nS
+	 +K8aT6MGliLiyKiRge3PyaMU5vLukQ7ED8BgrxaAupsAlgu2Nsp05FZMfg5Aa+Qf3g
+	 8mvb1LRF0YUGmMnKExfL5QQ1X+erIzyIOvgkZenTyHzQvVkDO4PK+/SJHr91k5A8Ua
+	 kVaWFLnuP+F+hvS62coIQI+ne1F6V4vfArdiFtpLKUa+C9n3vMf/3U+sVeFKXq+Ucx
+	 dvt8IOYhgKXE7LOPcbfOBlJpS5lxGmIycV31LNIyIHaUNj80Km/Y+xaIIRPE+kTAs2
+	 sCuPaYnIuB1ig==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-385da75c6e6so44704401fa.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 13:23:11 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW/o3SGVSMazPedW76MLqzM3Vb6NkKjuVfY/KugrGCvwBDlHXaLdXugD9xKWjMwVRzik/NO77If+PpApUD5iw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXCPQUczAkKhM78dSfhGx1t6GqRPaU9/5c/DZjGdkeK9gTffoc
+	oDzu6hmKquzyFFrNcwos+IkWI9e+h4p2lFsXUrl5e3VPxMKbeFgVUxiJvCXnZHr2ImBHxmysgrv
+	3vWkSkYzvdCoINcocNOOwTc6yCtfz9wk=
+X-Received: by 2002:a2e:be8f:0:b0:383:26ac:4fd8 with SMTP id
+ 38308e7fff4ca-38702e9bf3dmr998591fa.0.1770758590169; Tue, 10 Feb 2026
+ 13:23:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-5-f777c65b8ae2@kernel.org> <zqo3qcdqlrxnqxl63kqeuvdacpbbywdrcir2kfwh7j6zvbfuq5@wspy4e75axfz>
+ <CAJ-ks9njGhT85pgUSahki989Y9vn3XOBNO5wxB8wE+KvbL00wA@mail.gmail.com> <6sd4numrxigibwynr2lfmtdj5uabggrx2l57igtjbnq4uwddrm@wipmwcmqbkjn>
+In-Reply-To: <6sd4numrxigibwynr2lfmtdj5uabggrx2l57igtjbnq4uwddrm@wipmwcmqbkjn>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 10 Feb 2026 16:22:33 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9knC3pKpiMaG6f3C1Kr6su9p26hM7YvVMzsVwYVHGtm2Q@mail.gmail.com>
+X-Gm-Features: AZwV_QhdvZH0ulXOwC7qepwpvm2i9242YLhbIsO38rOa_1y-e9PY-uFALj98NOE
+Message-ID: <CAJ-ks9knC3pKpiMaG6f3C1Kr6su9p26hM7YvVMzsVwYVHGtm2Q@mail.gmail.com>
+Subject: Re: [PATCH v3 05/12] rust: xarray: use `xas_load` instead of
+ `xa_load` in `Guard::load`
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Feb 2026 22:11:57 +0100
-Message-Id: <DGBLALCUGY7N.383JKRKNCRDW5@kernel.org>
-Subject: Re: [PATCH v3 0/4] rust: alloc: add Vec shrinking methods
-Cc: "Shivam Kalra" <shivamkalra98@gmail.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, "Todd Kjos"
- <tkjos@android.com>, "Christian Brauner" <brauner@kernel.org>, "Carlos
- Llamas" <cmllamas@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
- <0d336a3f-f317-4a70-942a-d87a3faa3a89@gmail.com>
- <aYs5L1aG5S34teKT@google.com> <DGBDHMI9Z4JK.3QHCOS1O8WGLB@kernel.org>
- <CAH5fLghy3_J_in-o=y8yh94+RLn6XihNOTzTiT2kk9DkXBMPVA@mail.gmail.com>
- <DGBKOL8Y6OH8.1X5RHNGCQAMC4@kernel.org>
- <DGBKWSS3PEGY.20YKV5CO7DCKT@kernel.org>
- <CAH5fLgg9sDW+MCK15yVyZ59BzXind+1vRj+PQ2xHQ8Bg7sxLRA@mail.gmail.com>
-In-Reply-To: <CAH5fLgg9sDW+MCK15yVyZ59BzXind+1vRj+PQ2xHQ8Bg7sxLRA@mail.gmail.com>
 
-On Tue Feb 10, 2026 at 9:58 PM CET, Alice Ryhl wrote:
-> On Tue, Feb 10, 2026 at 9:54=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
-> wrote:
->>
->> On Tue Feb 10, 2026 at 9:43 PM CET, Danilo Krummrich wrote:
->> > On Tue Feb 10, 2026 at 9:05 PM CET, Alice Ryhl wrote:
->> >> On Tue, Feb 10, 2026 at 4:05=E2=80=AFPM Danilo Krummrich <dakr@kernel=
-.org> wrote:
->> >>>
->> >>> On Tue Feb 10, 2026 at 2:57 PM CET, Alice Ryhl wrote:
->> >>> > On Tue, Feb 10, 2026 at 07:08:09PM +0530, Shivam Kalra wrote:
->> >>> >> This is a follow-up to my v3 series:
->> >>> >> https://lore.kernel.org/rust-for-linux/20260207-binder-shrink-vec=
--v3-v3-0-8ff388563427@cock.li/
->> >>> >>
->> >>> >> Hi all,
->> >>> >>
->> >>> >> Thanks for the feedback on v3. Before I respin, I want to confirm
->> >>> >> the direction for v4 to avoid unnecessary iterations.
->> >>> >>
->> >>> >> Proposed changes for v4:
->> >>> >>
->> >>> >> 1. Drop the Shrinkable trait entirely. Make shrink_to() a normal
->> >>> >>    method on Vec<T, A> that calls A::realloc(). (Danilo)
->> >>> >>
->> >>> >> 2. Add a temporary ShrinkQuirk trait to handle the vmalloc workar=
-ound
->> >>> >>    (page-boundary check + manual alloc+copy+free) until vrealloc
->> >>> >>    gains in-place shrinking support. (Danilo)
->> >>> >
->> >>> > I don't think you want any new traits at all. What types would eve=
-n
->> >>> > implement the trait? The special code can go in the realloc() meth=
-od of
->> >>> > Vmalloc struct in rust/kernel/alloc/allocator.rs.
->> >>>
->> >>> I did not propose to move this into the realloc() functions of the c=
-orresponding
->> >>> allocators intentionally, as there is a difference between calling r=
-ealloc() and
->> >>> shrink_to().
->> >>>
->> >>> I don't want that some user of e.g. Vmalloc::realloc() experiences p=
-age wise
->> >>> shrinking by copy. This is acceptable for Vec::shrink_to(), but not =
-for
->> >>> realloc() in general.
->> >>
->> >> Ok. In that case we can add a method on KVVec directly for this
->> >> purpose, but I still don't think we need a trait?
->> >
->> > KVVec::realloc() should not have this behavior either, we only want it=
- for
->>
->> s/KVVec::realloc()/KVec::shrink_to()/
->>
->> > VVec::shrink_to() and KVVec::shrink_to(), so I think we need a tempora=
-ry quirk
->> > trait.
->>
->> Unless you mean to implement shrink_to() for VVec and KVVec only, that w=
-ould be
->> fine with me as well.
+On Tue, Feb 10, 2026 at 12:59=E2=80=AFPM Liam R. Howlett
+<Liam.Howlett@oracle.com> wrote:
 >
-> Yes that's what I meant. Only provide shrink_to() for those. After
-> all, if Kmalloc never actually shrinks when you call realloc, what's
-> the point of having KVec::shrink_to()?
+> * Tamir Duberstein <tamird@kernel.org> [260210 19:54]:
+> > On Tue, Feb 10, 2026 at 10:16=E2=80=AFAM Liam R. Howlett
+> > <Liam.Howlett@oracle.com> wrote:
+> > >
+> > > * Andreas Hindborg <a.hindborg@kernel.org> [260209 14:39]:
+> > > > Replace the call to `xa_load` with `xas_load` in `Guard::load`. The
+> > > > `xa_load` function takes the RCU lock internally, which we do not n=
+eed,
+> > > > since the `Guard` already holds an exclusive lock on the `XArray`. =
+The
+> > > > `xas_load` function operates on `xa_state` and assumes the required=
+ locks
+> > > > are already held.
+> > > >
+> > > > This change also removes the `#[expect(dead_code)]` annotation from
+> > > > `XArrayState` and its constructor, as they are now in use.
+> > >
+> > > I don't understand the locking here.
+> > >
+> > > You are saying that, since you hold the xarray write lock, you won't =
+be
+> > > taking the rcu read lock, but then you change the api of load?  That
+> > > seems wrong to me.
+> >
+> > This patch doesn't change the API of load. Andreas is saying that the
+> > type system already requires the caller to hold the xarray spin lock
+> > when load is called, meaning acquiring the RCU lock isn't necessary.
+>
+> What I mean is that the API can no longer be called when holding the RCU
+> read lock.  You seem to imply this is already the case though.
+>
+> >
+> > >
+> > > Any readers of the api that calls load will now need to hold the rcu
+> > > read lock externally.  If you're doing this, then you should indicate
+> > > that is necessary in the function name, like the C side does.  Otherw=
+ise
+> > > you are limiting the users to the advanced API, aren't you?
+> >
+> > The existing API already requires users to hold the xarray lock.
+> >
+> > >
+> > > Or are you saying that xarray can only be used if you hold the exclus=
+ive
+> > > lock, which is now a read and write lock?
+> >
+> > Yes - except for the word "now"; I'm not sure what you mean by it.
+>
+> I'm trying to understand the locking on the rust side.
+>
+> I think you answered it by telling me that all readers and writers use
+> the spinlock.
 
-Nothing, but eventually we want a generic impl of shrink_to() with A::reall=
-oc().
-But again, for now that's fine.
+Indeed. The current API doesn't expose load on the xarray at all; load
+is only available on the "guard" type. An instance of "guard" can
+exist only when the lock is held. The lock is unlocked when the guard
+is dropped.
+
+>
+> Is this a temporary limitation?
+
+Maybe? I don't think RfL has good abstractions for RCU yet. For
+example, exposing load directly on the xarray using xa_load would
+require a way to guarantee that the returned pointer's target isn't
+being concurrently mutated (e.g. under the xarray lock). I'm not aware
+of anyone asking for this, though.
+
+
+>
+> Thanks,
+> Liam
