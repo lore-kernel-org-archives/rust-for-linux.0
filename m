@@ -1,248 +1,73 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012061.outbound.protection.outlook.com [52.101.48.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9806F2F2;
-	Tue, 10 Feb 2026 15:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770738622; cv=fail; b=MgfmrfzETqoI/Df4JH8aaCje2hK0cVOXZOrM7JwYoSvvj7H7vYi05QzDLDxFYbvOropKzxPjNxf8XVu8/EjORCnWpoQmyjfHv8qGdpFde0k/7R26e+XfctpFui4JsXv/0xlSwc5Mmo8+zORu/03eSnAONtNRY9RykJRv2jg6qH8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770738622; c=relaxed/simple;
-	bh=RKOS1LVNRcxmEKkfPtgVBysp+4bJp4BGPRyBUHVHLYQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Tf9NS3dNKjCrNHLM8nZRUR9iLym7Jd4zUxDvVALRTysLvP1sa3nEFDADzjRd89Ky9m0f69l1w5N0JVhyCrjljpKcmKwCzA5IJAKti6FjMwpEnb5hKtey/cd1HgZvUCt8g8a0Fq2tLF318JWrjQsEku+vC5Oc5v8IqBToUV13wWU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=nOiLoXMN; arc=fail smtp.client-ip=52.101.48.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC6F30EF94;
+	Tue, 10 Feb 2026 16:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770741893; cv=none; b=jMvE3djA2gcVGcKN1+Y4KrDjOWcXHxb/gINzj+4METoBLWh7nrOFcg8cegk1FLRMQm2iC3PIOC+w58KCcU16/XxGZrZYw0m2Bf+wOi/qSTZ3PNiN/zYv3nBgUUR+9sfdwXgLSv6s3wg0fzwnspcVC36hq/a9Dwz15olgTfOe+lE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770741893; c=relaxed/simple;
+	bh=ORE3cLC1BF2Tpcff5rGilSnuUUkcmfnBkr0UpJFyaho=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dHo0XiZGJqbC2Ghmk2Pztrl8jWD9deBieKiG+MJ0EhpE8X0f9wbwcuuXD09mUOBLh8QLtejX7oYHs7TS6qqnm6EltvIH4iNmEeOsdanpvv77BPnaqndi4VzdCAvi1SIk598mysxeA3v9yDvALLvxUeQJa4Xx0nwe6lXCDaT6v00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t5cIAjV0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="nOiLoXMN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wciCKrpidVRSNrYxw0F3msv3Xiz5uUTLPMNiQ+w82bB5TYUeI3/f7jVhRSrgMqTB4O9QVqxTCDch6cGfgCIkz1IOkF2Q2gvoKeHl01kxZ0GXrr+gRcoNGby5EiI7ahlARIZEWRPAYGS8PsSKPhzcTdhvWEWv96IX5t5SAex5CRCwsSzL/ti6ICj6fPXJvX177NV9//uFjZvVjGIC5jeUYuKwX9VmE9iefnBm7E/JxgkfZS1YzagESchbxM/1Z6KtWzHV4JNc3NMyzIaNQeZhZyxFbTpTxN8cqgOD6lCyK22oGYhfGQsESsK3OJTKz6ocNaiDQXZ8kIFZc/Gbx54YcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6Fofyb9TwdUlW5mw999TUh4eVHCoaQGzU3Nowi0N+oU=;
- b=LuTT+jbbxJlbMIRuNl9GWnQrCDY64PWDnPvHbzTZgRlFokPN/TUuKps2GvwjuNUNLA8q6+wylwytgE5koIWYE9RO2akpsCifr9/tEKbnOpP7kx7JHnRX+ec928aQSo5/0uyTn9Q6R6VpvOeJR0douZur7xtwVrL0YFC/Q3rqN73GTrKqnKmlRFURJSMWZ+Y+D9kRP/cES8OiIDySVvPhClWcxBCGYOFI88OJ6CRyCkZGz5Dqrx7RAW72k1QJjlG5tFrKRx7NiuA3qeCDwnO/5kDjSa7zmRqeaY46kG3ob3muvlls74PKM9br9tVFPi5eav8pKwu8/gyqSEO2AO4V4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6Fofyb9TwdUlW5mw999TUh4eVHCoaQGzU3Nowi0N+oU=;
- b=nOiLoXMNlW2Tkjcx3MgVsi9DuQA9kor1VNVKOhUcMroaBIUs3mxdgPHb/05JzQgbo7WL7PINXzjbFkT/UKAvEva71TWSWHPWHxrNmYUigIdKaSbJZWxFl5k7+F3IgEfdRPJadEBwFuKPpqAz4fV7NNmIBEuuyQuK+iwFf32xfEc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by IA1PR12MB8360.namprd12.prod.outlook.com (2603:10b6:208:3d8::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Tue, 10 Feb
- 2026 15:50:15 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9611.006; Tue, 10 Feb 2026
- 15:50:13 +0000
-Message-ID: <4f3f36cb-3af7-4461-9852-9ababcc9b6cf@amd.com>
-Date: Tue, 10 Feb 2026 16:50:08 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
-To: phasta@kernel.org, Alice Ryhl <aliceryhl@google.com>,
- Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Gary Guo <gary@garyguo.net>,
- Benno Lossin <lossin@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-References: <DG7SZND1GWR4.3C5NLKY4SYC0M@kernel.org>
- <bb57b6837aa8044e679dad5f2589c2e0ba84c221.camel@mailbox.org>
- <20260209155843.725dcfe1@fedora>
- <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com> <aYruaIxn8sMXVI0r@google.com>
- <20260210101525.7fb85f25@fedora> <aYsFKOVrsMQeAHoi@google.com>
- <20260210133617.0a4be958@fedora> <aYsvc3Q8h-Gg27-g@google.com>
- <20260210142631.6f8a3411@fedora> <aYs3VVH_UXMFa5oC@google.com>
- <f4c32d9a-7303-4a50-aafc-8039102fbd3e@amd.com>
- <fe2f97ae271116e7544be778a1d1aaace529dfec.camel@mailbox.org>
- <c1d4ad2a-44a0-4c04-b0b4-94d6242d4ae8@amd.com>
- <a8cf272158df69dbb3c856d8be248d525dc0a4c6.camel@mailbox.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <a8cf272158df69dbb3c856d8be248d525dc0a4c6.camel@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BN0PR02CA0007.namprd02.prod.outlook.com
- (2603:10b6:408:e4::12) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t5cIAjV0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F198C19425;
+	Tue, 10 Feb 2026 16:44:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770741893;
+	bh=ORE3cLC1BF2Tpcff5rGilSnuUUkcmfnBkr0UpJFyaho=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t5cIAjV0w0eD3o/U5mUoo0u3nku/rYzUWjSKXhM2/DL1t+1YrAP2bGDy+6xOyTnhX
+	 KAQhWxdiByuJpc48yB7KFtG4nS8BD3aNUPFJPuq3TlQ/fmRbUSkadxjBtmuIdzamwm
+	 eX82YuhwxEzllhbvIf+xGdiUBVcbdPUGL3ngw1eFAQ+VEzHB+lLiuzo8xeLyqSxinp
+	 gH+OKsMXE9LsjfFSknw5OEI577OLOcVlsxd7P1sX7NrNsoS7S/VvxIcokb9aZq82sq
+	 KRsZvfc9d+4oZrBRU+W1LJEPSkr4KUu9EuxRS30uJpB2MdIHXs3cOTsJfeoFFCVH04
+	 I/ddVaMz1z71w==
+Date: Tue, 10 Feb 2026 17:44:47 +0100
+From: Daniel Gomez <da.gomez@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 01/12] rust: xarray: minor formatting fixes
+Message-ID: <aYr8WL_neMB3Crt_@macos>
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-1-f777c65b8ae2@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|IA1PR12MB8360:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7bb43767-419d-4cb6-ea39-08de68bc13c6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eitLUUlheHVoZEp2TUZXRkMvSGdWaXhKMHJrM0VBejNyRDF2Qlhxenl1MGFC?=
- =?utf-8?B?WFJPd1FQOCtTemo0b1JOUW9Eb2N0MERhTHdaSG5qa3FWS0dFbmNMam9DK0RB?=
- =?utf-8?B?SXQzblBETll4NFdScHk4NUIzbWtHMVlVS214eVhyN1NjV1RNWkI1bnVwSXln?=
- =?utf-8?B?aEQyVnhxK2t3QmU4emFiL3hib3BnWFB0SG42K1cwQTh6VFBDU0pOOWI3K2VP?=
- =?utf-8?B?bW94cURaT3hueVBDRmI0QnNSY29kRVYvbCtiaEQ5cHNnbVJtNm8wS0NkZjJC?=
- =?utf-8?B?eGxRR1ZLcEZhY0ZhRTFPUERCQkJnendzeEI3TE5yNDlQN01uSkhESTM5cStn?=
- =?utf-8?B?blFKSzVUZ3pkZUFzL1lhZmN5RU9adXhaWmhwQnVZT2xKaGs3Z0lQUklNZTBV?=
- =?utf-8?B?R0oxOTVUM1dOdVY2S1VkK0NNOWF1TUlaUlpiN0EyK1d0WHBVNG9DcTIyaWRK?=
- =?utf-8?B?bW1HOXdkQ1QvL3N5Z1Y4UXF0dElGUkFVTXdtcU5Xa2c1bXU4UVNOZjkzejhv?=
- =?utf-8?B?MmhQNURCM1pLK2lYWXVienplOVdvVTVVQTBkdVNwMkZuWUxWSWNYanpkQTVu?=
- =?utf-8?B?NHk1TTdUUG5FTDJDSmhmV2pQQVU4NHltakxLelN5bXZibDNDbEl3MmhuMkdw?=
- =?utf-8?B?R3VyMTJ1SHhVRlVCZ1BkSEo1WmNGT2FnK2pTR0FkQmcxemRXYWkwemJ5a0Qv?=
- =?utf-8?B?d1NlT2RVa05sWDA2SWlNaGVnYTBJemVOL2hPSjBlUnRraUdXV0RIcmxvM3I4?=
- =?utf-8?B?S1RsMlQ2eFhKdWY5eW1Qd1gwaS8zcHRCMkVXL0w2WStyRTg5NHlFdzdvaDQ0?=
- =?utf-8?B?TlNhWHMxMUN5U0FSR3VSelVtQWlRV2R5SVNhM0NSVXM0L1pCWkptUzVOUmxr?=
- =?utf-8?B?WUJtV1RQMitqOGZHMHFRREFpUXg3YVk2eGlNWncraFhzODdlNG40b1NPWHNn?=
- =?utf-8?B?eVVZTzd4QnZ0MmVnVXppdG1LektteFRZNFBDSlE4bFh2SlBjOGx2cE15MDhr?=
- =?utf-8?B?SFB0WnZHcFkyTFAwcWhuaUNoemE4dzB0S0xWKzVKaWcycGYvbHg4dXJudmJE?=
- =?utf-8?B?Yzl2MitDaWErNkh1K3Bpa25Udm8vd1FnODd4U0ZmbGRmdGFzaDVMUWpPM1Nr?=
- =?utf-8?B?NUY1N09ndzFZT2Uyc0hUYXJ1d0tBcHF1U04vZUxUVHRUeW14V0RXYjRUckVa?=
- =?utf-8?B?U1A0azdLcE95aDB5dVlqdHVvM0dmUGF3UXMxeUpJQUlyODYwTEFMak9EcC9h?=
- =?utf-8?B?S2o5ZHBXait0V1kyb0lKakcrb1hnenZkcTJ4T2dzQlRmWWZWTzhlRUhsaVJY?=
- =?utf-8?B?Znc1QnBBYlR6M2psaGJEMUxIVXJIVWZCSi8ydDNjOStPY3ZZd1lUZmw0R2lZ?=
- =?utf-8?B?UG4zczhNSllQMnJxMDhVN1dBZDRiNjNIeVlxVEhrK3lzWDZjTjlOQnMyT2xh?=
- =?utf-8?B?WG5QQzljQi93SVRrcmRZRk1iTU1rNmFUUGlrZzFpUGlJeVNoRVM0ZGs5WWVl?=
- =?utf-8?B?N1dXZE9mU2c1Q0EyZFgxais5aU8zNUZTN1FoNklYNlozV0ZvM3Zvdm1jSUU2?=
- =?utf-8?B?WGFSLzhrdmFnWERCWm81cElFRDVEbUtXL2d4bEI5UWNzaWs1bFdoYUFhUjBp?=
- =?utf-8?B?dGcwSlNKNnRIekdxaGY1V1YvTGloUXgySDcwNmlFL1AwUlpQdFFGbGI3MEhk?=
- =?utf-8?B?aEZxc3JaSlpJTGtZcllIb0xqbzVaVzN4V0NLS2VtbU1IK3plNk1Wb1NHeXpR?=
- =?utf-8?B?eWV5eVdSNVZ2MWFmb2thNkNZeWxEVjhWM2R6WVRDc29oVEZXZk5wa050c2Jv?=
- =?utf-8?B?d3JiV0FkOVZPSm9SWU5uTnB1T3NFNUovdXE1TG1qN0NZOHdQRDhqR055eGRm?=
- =?utf-8?B?SEJuMVkzQldPVFdaUUtYcU95L0pzZEw0cDdXYUdWNXlucDVHVGVUN2xXaEJM?=
- =?utf-8?B?ell2dXhBV3hpbGJrOHRJcWFVK1VhRWd5eUtVREE3YnBxU2t2RTNRaS9LL1h5?=
- =?utf-8?B?OUpWSkhEbGxwcEtUUHcvTExsTDBndmhyd1N1V3QyR1RlRzdVbWNXd0dWYlY2?=
- =?utf-8?B?SHhwdVRiRWFEM1FiWFNRVXZYMmd5UlhsYkxzU2dXUnVraGNPTDI5TkF2bkFY?=
- =?utf-8?Q?vGaY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MUxaTEtsTGRIeXhHM3hiempIZFBvWm5CMGZBT2JTeElpYmlHYXozVllkUXl1?=
- =?utf-8?B?RWRFV213bUVSU1dITG9uTVJkREp4OUYwY00yWXlyQzJDR0lGSjl1WEhTQ1Z3?=
- =?utf-8?B?Y2J6eldZb1EzSEk4ZnlOelNRSmR1VlNaZkNQSk1tL3ljWENGNWRMdGdCRStD?=
- =?utf-8?B?MlFkR21HS2NwSkIxb1I5d0tZcHFHaGhYeFZSWkFPemI2SlJ6WWRWWjNwditK?=
- =?utf-8?B?RE43WkR5c0xYYmtLUW8rcWZJdVl5U29ITDB2VStSbEhPUFQ0VHhlTVA3RUNm?=
- =?utf-8?B?MmxxTURpWTNCY0ZtTWJVZkhQdTdyMlpzeDNpUmRLRkFoRWltZVhPTlU5WmNX?=
- =?utf-8?B?ZVJqYkorT1FSMFFUUTZwb3N6dlhObE1OZFQ2K1Jsd1l3c1dFTDlHaHJTdWc5?=
- =?utf-8?B?RUE5Um5lWnlIMjlHd1ZUNkxPdUIyQ09xU1hXMTZVL1V1TWQ2RUZyODlPczEr?=
- =?utf-8?B?dEwxcW5iT3NCYXhaMUNDV0ZkSU9HeDFxVEd6OFlTb1l5alRMakJFMU9ZcG9G?=
- =?utf-8?B?ZUh3MzJ0L2V4aVI5OWRWTmJiRDd5MDJrS1dER2JTWlJtdEp5cWpQeVRsWU1v?=
- =?utf-8?B?KzBKZmxNaENXUzVyWDVCeVE2d2FtTTMvTFVXY0RaQkxjZklUUzk5M3RkSXBS?=
- =?utf-8?B?R3YvYmRzV0pFYzVCOGp3NGZqakpZTWZXRmdHNFNXMis4cUhsSmhMQjU0eVJF?=
- =?utf-8?B?eE9rNFZMUmVFUHJsT2YrY0Vkc1ZuL25XcUY5VzRNVjI0UDd1TnVuUldXZito?=
- =?utf-8?B?NzdPaXJ0QmtzZHNNVFhjd3hQMmJURHpKZThRWGlmSHZsWUlWdHo0dzQvK3lV?=
- =?utf-8?B?cFdUZ3RuNmduM1lQaHRVZTNxZTIwb3VKd1VRaDVMV2t6Q055VmlXQjZadUJB?=
- =?utf-8?B?Kzd6aWx1V1hwMVFuQWxKODhwNGlja0VHZUxVR0c5Ti9sTW5lQUF6L1FiaXFR?=
- =?utf-8?B?dDJCVUZXMmwyNjVLbjh6dmpBVkJBdnhkN3BJenhTdm5lY1R4V0VpRXV0UE82?=
- =?utf-8?B?VW5UZFpxT25VVFpMRjUwek4ySWJRM1N2TUMwUklBYXdBdW1ha0dCdHdiS1FS?=
- =?utf-8?B?M0JCejVaZnVaczNRQTJnQTRtcGhqZGpCRHUyTzRna2dQM1Fya1pmYWpSTDlP?=
- =?utf-8?B?bHliTWNFdFBOc3RRYUU1djdYTXhXRTB3cFVKOUw3Ti9tZGd4Y3hMWkdhUEpm?=
- =?utf-8?B?K0JabXd6N2R3MDEvR2ZqN1RucE5ERzlCVzhnZjhwMGR2SjMrckVWQk1vc085?=
- =?utf-8?B?TitDcXU4RjZZbFc2UXg3Vm1OcS9xeUgwTkozT0diSFkvRXUwcExmU2tPM2xn?=
- =?utf-8?B?Rm5MNTFWeTBTdWQwNG1HNC9JZHB6bk9GVzY0QnlydkhVZ09WZktiOWswcFhZ?=
- =?utf-8?B?UkhxTXZRM1dQMWpaWFZOUXdjR0xsZDhHeUwwKytkT0Rrd1dtQlhabmVuUFEy?=
- =?utf-8?B?VkJuak1MQTJER3hIQnh6ck5YZXRrQUJDOWEyamtvVWorNUhzc3BUZENDcGZa?=
- =?utf-8?B?QWlKWU1RZ1BkZFZQZUU2NjNYdkVqMG55SmQ2RlNFZ2xmeVJHOFJlQUVWNWdF?=
- =?utf-8?B?WDBvbXhDOW1TZEFaL2tQMjhNOHJnQ2FKTnZzWUdQU3FJcmhteVovcmorL2R1?=
- =?utf-8?B?ZVYzYWxPL1U2RGJVZ2NWS0xac1NtNktUbXp4Y0h6YjZZSzJHcEE0VXZzTzdh?=
- =?utf-8?B?c0Y3MEhzeC9oSEJ6STNrczYxSDRuQjdGMkpoSXVYbmhqY3FTU2dEZHkvU0c2?=
- =?utf-8?B?OWZzTnBlZHdYY29QVS9aMDU3eVRqQ1M2bm1LWU5LRVRYV0pYZnNFZUNEdmdK?=
- =?utf-8?B?a3AyYXRSMTFvbjJseU9jZk1laWpmNjdTZk1oLzhUU3FjV1RUcFRtVEgzbVVF?=
- =?utf-8?B?eG16L28yc05qWWdNV1RXbFpmZG9qcW5nYmlhdGpRWjR1RUNZajN2V05NMXRa?=
- =?utf-8?B?VFF6V3FZZHZaazc5RVNRc2QzYThKU0NEMldwclNhZFRuY1QrQStxanM2MFJQ?=
- =?utf-8?B?UTdBQ0hjelJsbEk2WHVScWtrMThKaW9ZVWFVU05UQ0o5MzZ1VmhabXgvUkZn?=
- =?utf-8?B?U1lXT282ZXhEYjIzODY0aytMemNRVW9hb250ZlNicHZUbE1EdXVHTW4veFBP?=
- =?utf-8?B?L1R2eVh2ZUxSVFk5RHFWVlZobFIrTk5STjRETHpoN21vNkEzTEkvVCtVeWFh?=
- =?utf-8?B?dUpZQjNZSjNpTkpLUG5MaUg0dGJBUlFlTDNPa2ZQT214d0NRM2pyTXBTM0Fp?=
- =?utf-8?B?bmZqNzd2TnY2ZGdwQzZ1UURrQ21ESSt1L3pSeUJFemNZcDAzbkFLZWxLWFRB?=
- =?utf-8?Q?W14woUPn5GXXh5BJlX?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bb43767-419d-4cb6-ea39-08de68bc13c6
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 15:50:13.0341
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NgdfNZdANL2u2TFbk6kSAILptGKJFTBDIceW+y1BkhNPh+d81G3mmrdo7ss4iBFz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8360
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260209-xarray-entry-send-v3-1-f777c65b8ae2@kernel.org>
 
-On 2/10/26 16:32, Philipp Stanner wrote:
-> On Tue, 2026-02-10 at 15:06 +0100, Christian König wrote:
->> On 2/10/26 15:00, Philipp Stanner wrote:
->>> On Tue, 2026-02-10 at 14:56 +0100, Christian König wrote:
->>>> On 2/10/26 14:49, Alice Ryhl wrote:
->>>>> On Tue, Feb 10, 2026 at 02:26:31PM +0100, Boris Brezillon wrote:
->>>>>> On Tue, 10 Feb 2026 13:15:31 +0000
->>>>>> Alice Ryhl <aliceryhl@google.com> wrote:
->>>>>>
->>>>>>
->>>>>>
->>>
->>> […]
->>>
->>>>>> I mean, the timeout handler should also be considered a DMA-signalling
->>>>>> path, and the same rules should apply to it.
->>>>>
->>>>> I guess that's fair. Even with a timeout you want both to be signalling
->>>>> path.
->>>>>
->>>>> I guess more generally, if a fence is signalled by mechanism A or B,
->>>>> whichever happens first, you have the choice between:
->>>>
->>>> That doesn't happen in practice.
->>>>
->>>> For each fence you only have one signaling path you need to guarantee forward progress for.
->>>>
->>>> All other signaling paths are just opportunistically optimizations which *can* signal the fence, but there is no guarantee that they will.
->>>
->>> Are you now referring to the fast-path callbacks like fence->ops-
->>>> is_signaled()? Or are you talking about different reference holders
->>> which might want to signal?
->>
->> Yes, I'm referring to the is_signaled() callback.
->>
->> When you have multiple reference holders which can all signal the fence by calling dma_fence_signal then there is clearly something going wrong.
+On 2026-02-09 15:38, Andreas Hindborg wrote:
+> Fix formatting in xarray module to comply with kernel coding
+> guidelines:
 > 
-> From our previous discussions it always seemed to me that there is
-> already something wrong when is_signaled() fastpaths are being
-> utilized. Remember the mess we have in Nouveau because of that?
-
-Yeah, but that is Nouveau specific. In other words Nouveau has a problem with that because it doesn't like to have already signaled fences on its pending list but still wants to use the fast path.
-
-> I agree that it sounds very sane to just have 1 party that can signal a
-> fence.
+> - Update use clauses to use vertical layout with each import on its
+>   own line.
+> - Add trailing empty comments to preserve formatting and prevent
+>   rustfmt from collapsing imports.
+> - Break long assert_eq! statement in documentation across multiple
+>   lines for better readability.
 > 
-> However, that also implies that the fastpath is wrong because
-> 
-> a) a consumer of a fence can use that to poll on the fence and
-> b) because it breaks good naming pattern, where a check whether a fence
-> is signaled can result in the fence being signaled.
-> 
-> So I would kill that fast path for good.
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+> Acked-by: Tamir Duberstein <tamird@gmail.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Yeah that is not something we can do, some use cases completely rely on that.
-
-E.g. on mobile devices it is normal to not enable fence interrupts and rely on repeating interrupts or timeouts to signal the fences.
-
-> In the past you mentioned that you had users who were wondering why
-> there fences are not signalling (like yeah, if you don't call
-> dma_fence_signal(), then your fence will not signal). What ever the
-> confusion was, this time we have the chance to set it straight.
-
-Not sure what you mean with that.
-
-Christian.
-
-> 
-> P.
-
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+ 
