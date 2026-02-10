@@ -1,211 +1,128 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCC5318BA0
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 16:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680793816FA;
+	Tue, 10 Feb 2026 17:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770742679; cv=pass; b=l7sZwI07kz/fiJ/Ac+OkYUVJKQtigsKzAacr0It4SmpvyMmOHmawSWLAhdxGE0o7zJPCUYveL3yAWHP7ml7C9t0UD6k8eRHCO0kGrpALT2gBP3qWyUNguGIO18HCRZFkuZu/6puk/CvkSdgAbKD70YbsOvK+IIDln3b5MW2adhk=
+	t=1770743783; cv=pass; b=aH/szPetY+A4GHF3Lrkd/XNl2uHS+hEYXIHOP3aXXFvIj4+7jPyVQaPM8UWfhsIapnITRb61XnopCZS3v9bU+j1ZsrNLDwz+Xb5q/FYY4HdBUPllfGZzTlpwmLz1ITHtVZq5XKoxIg1iGcbD2GkpZSjTteN9P1t5fwGZluKk964=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770742679; c=relaxed/simple;
-	bh=WP61RW8xgJYKXlcfVEA8A2UCYSHnijD5eRB2joWPVOY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aceQuI8AA7yMzhDrTB5rinF1Th+pmxiYGFHqjvQHBFglq4vCLvrLxLjoewj8UGvvA9ejHVcbbTqfhWEwLNNkaVxHQXi7Jc5QvwBcbxhN45wQOPCoTVNqeyJNUn9SXcfeitsTjUV9JbqsPNq8lArZnZNoY6sYsDAkTTh19za3AZk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VtlWDarI; arc=pass smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770743783; c=relaxed/simple;
+	bh=zSELdI3ZMpySApTCSKxcbm8f2Q19XBDVxgpRrF5SUPU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=O2icVGDe0YB5zqGEvFn3UOTheUdKpsun9cjslen8KGOwYVKIa+UF/GmB0IaWOOy3EIWGs5rkRAhuuCXnIC1AG6RMNg9SB+Fe2sqyaTQEP0FPkfDmwQDIkzIDW7HfZqvhittcnZGVVdxexZomI7XaW7S/VVcxm4qDSkvUlSHsXY4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=DMMK2B2O; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VtlWDarI"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-385d9fb297dso9829081fa.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 08:57:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770742676; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Lx7wl8ClBHG94PKGtMjgg579Hgf5v4CP+bYE4y6zaWIWZGwSNICqrYMGPlI30lTHMo
-         9BZZwWPGyAf8Su9dmjd0flsVxQTLElLGD5r2mOoYLR1dE8Cutw7OgYnabCUbDZ/9s6gz
-         uQVcQpLTUNntX8PPSA+SQdopMzZPAURM+LSJZ2BN4z1Eox6pjDPndQWxDemzlp22TQU4
-         Dia9UPBAuSc7O1U7wTKhQjHqy94y3c7mQYj7NoXZCnHf3KSasa4V6c8WEvkQihH3slek
-         KhL464/OaC4qZhYet5/hpQxqHRrsIM0xnpbqEoMrFQKNy1vAntd8pyeXfsjXjVcHQ5sS
-         xjmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JuTr1v7vZJwrCLefGdygjnFVcvKYo7h+RejLuFTqn2c=;
-        fh=b9kBsAzQkCsIwG/aFMI8PyMHF6XOq0LfJSC1Y+WL7vg=;
-        b=DsBIXzh7LgX/4/k4heW3QapfQYeaJpXuQgubRDrOXv1nKxjqSnF4uzlGOBiX7EZN97
-         LzdTpLlO/ELP8JXC8vNMiHQxCh3hDeS6YAoO6aM8pEos194YtsBEWOoeZtm2u/Ac6j/i
-         2PhhMOM2q/edn9prl6AZQRa3evsc20Ae3LFKJEOEKGEmxMk0ei8YydtMH/wrU6WEA7YH
-         nL0Jmp+/QE0JGTagPsGTVuIQAgirLMIvDAQrVGFN7U0ATrvhmC39VSiE1OxiKZNgE4vH
-         yrcZT5Vb7pTGtxywhn7H+YuehoHIbpWTRLbaNNJAyVRO+BDly2ACceckmDdr6fePIu6u
-         y5kg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770742676; x=1771347476; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JuTr1v7vZJwrCLefGdygjnFVcvKYo7h+RejLuFTqn2c=;
-        b=VtlWDarIqMGNa8QzueNjC5cCqVTuqm7rSipvI6eq/dfkN0VGumN0D7zcJvDmvObwC5
-         RLKUGSp9SGf2jacPXNVStv5UUeF2B+jwGEWSTInTVyQjy8EIZsh80Sk+OBBYZOqYyGjT
-         fzS89lw+4zEW8HLl7siCDvwFCCkIcX5i/EwDBn0YgsjSytWwueTtKmMXCGZUctIQUncn
-         ZBefp5iUam/DXP9lIQzVn5vGAdpcqIMdi+w3HuTKO0aQlu+mbBMI8wBCiCGK/bDDxW1c
-         oHjjufN8yCif5CNGpjy43iYUcUEyqh6qTPY3kEDkW7+XTtS2XxMA5SXFqwn28C6XaTz8
-         wAZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770742676; x=1771347476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JuTr1v7vZJwrCLefGdygjnFVcvKYo7h+RejLuFTqn2c=;
-        b=S/tEIz3uqUAVqSmBiqbOjGPgUjnch6RQTG6UP6s+4dg6U2HKvmgqBTfrecTizz88qX
-         lZlW76XCdfUmUwg2rKWuTrNle+WBamRiVpVcelsLp5jZcJ+z0pHPd0p0ct9zcuMUyKm5
-         He2Z0rFYPhthxBOnnwLu4IxQeqnzZ6ylU3yH55EQZQlOuYWsFmY1XOeTPgOL1EVcDr7D
-         QvnA7q6MSDsSgMBBAXY8nVXN6Nuf3guNYYr996sqqwTIGQ9AZh8xJOjAneQT8gliNj00
-         DC4mebzjLh/eI7Ts7MUW3Wn4rzDSbjDbXvEtVV3EtR3b32itXYPuFhDVi+Oxcl4e49W3
-         iVUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgGW6kcojLc3K0GDThiWokZAFd7Jj7JhA3qFYkPk5u7ILA4oB9Q+LiwhwfIcnudfdn6XUvva7/BsqMN6VJWg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YycZrcqUmVnArfGDMvfY08x1F3x8jPrkP1Hz2ZH1QZlJFkzEByk
-	dQJ21CjCw078yGUyVuPSYYsj4w5+TnVDqh8lqxM+bWkaZHr9RxykvwltJkbdZUvClQCzisLR55U
-	v/SPSVaCrWCYh7gqC3jbGYoCiEt5tJeI=
-X-Gm-Gg: AZuq6aIcKdPvpA1BW7cf6xTmEPfZNYMsUt3KGDkMX02CcGB0LnN74cE7/hJZKabjZaV
-	zcw/HeRXk77Pq5/ifwCgeJZ39TjEWjjet3R4oMoXCRRLkvM050zWpwdUnfeWpshaNKvOxmesqRX
-	trJdZucXk46AdFCaAsvQ36FjSZ3nGB0Iwjm2Xb5LskYlm9WbMiNVO0kPEpcM2GNcCDD2hhxbUI9
-	dny68D7pSEVtfBb7BwMO0Optb3c1nHI4ZAcyMT0M2q8M/79fkAxBBIL41OQDXDYaZOG9aGzhEtt
-	ENhbQBN5A3l09tgpu4ej4pekW/rPAU7XdHTvj1t6oLrhJSVTRoSaOiOHgHjVS7LJFTc+o51HwhS
-	t4NCm6YL9fPwv79lI8xiL
-X-Received: by 2002:a2e:a5cb:0:b0:386:8f97:d0b8 with SMTP id
- 38308e7fff4ca-386b5106ef5mr52202351fa.20.1770742675630; Tue, 10 Feb 2026
- 08:57:55 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="DMMK2B2O"
+ARC-Seal: i=1; a=rsa-sha256; t=1770743748; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=oB4nalvkcbhXErv16Lon26JqfcLOZ5ehE97TOB//5CRQ3KQtK0gQCoM42op5oq+gLlSjwDBUmkO8pgKldPM+KPUazv4ZAVR2TB5YZInJt8Rnxr2fwQlEgte1ahbPcycxtYkD4PR6d8H2HnqQRJvXlrurz3tFolD4jJmpgzSAwqo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770743748; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=zSELdI3ZMpySApTCSKxcbm8f2Q19XBDVxgpRrF5SUPU=; 
+	b=lDDpkILviLfO+RLG7wytd2BjFYFLeiuci2TEOH/2pk2pOyFTPMilgR1FS2MBbpKYfkbEyEEV890F6CTVbl/egUpxFA+rnMvERInW6TCtKqvsvZj4WvvGs7DFv/tfdnZQdjjo71L2AOZ1s+VEF+7t7wiM1a0D9EkHkwT+X6hpXJ0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770743748;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=zSELdI3ZMpySApTCSKxcbm8f2Q19XBDVxgpRrF5SUPU=;
+	b=DMMK2B2OWuhve9GdZRwnlRvNGEokHlylADfDk1zNEwhM+ss8D6Ge67KI9oVqOICN
+	wiro7iMOSJBJT2R2jeDorMK/X0Z+qLvebFA+S3Sb1Ro/xlrL4MCLiynLXfm3tK5Nlxo
+	3D3NLhWWc58CgZSSqIbuqZmPojmqV4B0Tca3b5UU=
+Received: by mx.zohomail.com with SMTPS id 1770743746604450.9668358133772;
+	Tue, 10 Feb 2026 09:15:46 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org> <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
-In-Reply-To: <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 10 Feb 2026 11:57:18 -0500
-X-Gm-Features: AZwV_QjO2-EsPct575RPXi7JROMwJ92pVr3PLA-_MmegBYrDreR1XZieS5jWe_Q
-Message-ID: <CAJ-ks9=hWB2eFcEj1obfsoLvK15=YR9y=hifxVyeB=mJOz+gXQ@mail.gmail.com>
-Subject: Re: [PATCH v3 04/12] rust: xarray: add `XArrayState`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH -next v8 1/3] rust: clist: Add support to interface with C
+ linked lists
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260209214246.2783990-2-joelagnelf@nvidia.com>
+Date: Tue, 10 Feb 2026 14:15:23 -0300
+Cc: linux-kernel@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Helge Deller <deller@gmx.de>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Andrea Righi <arighi@nvidia.com>,
+ Andy Ritger <aritger@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>,
+ Philipp Stanner <phasta@kernel.org>,
+ Elle Rhumsaa <elle@weathered-steel.dev>,
+ joel@joelfernandes.org,
+ nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <7DC3EF8A-B660-44CC-90DD-1461B7C2DBF0@collabora.com>
+References: <20260209214246.2783990-1-joelagnelf@nvidia.com>
+ <20260209214246.2783990-2-joelagnelf@nvidia.com>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Mon, Feb 9, 2026 at 6:39=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
->
-> Add `XArrayState` as internal state for XArray iteration and entry
-> operations. This struct wraps the C `xa_state` structure and holds a
-> reference to a `Guard` to ensure exclusive access to the XArray for the
-> lifetime of the state object.
->
-> The `XAS_RESTART` constant is also exposed through the bindings helper
-> to properly initialize the `xa_node` field.
->
-> The struct and its constructor are marked with `#[expect(dead_code)]` as
-> there are no users yet. We will remove this annotation in a later patch.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/bindings/bindings_helper.h |  1 +
->  rust/kernel/xarray.rs           | 41 +++++++++++++++++++++++++++++++++++=
-+++++-
->  2 files changed, 41 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index a067038b4b422..58605c32e8102 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -117,6 +117,7 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT =3D XA_P=
-RESENT;
->
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC =3D XA_FLAGS_ALLOC;
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 =3D XA_FLAGS_ALLOC1;
-> +const size_t RUST_CONST_HELPER_XAS_RESTART =3D (size_t)XAS_RESTART;
+Hi Joel,
 
-Please add a comment to explain the cast.
+> On 9 Feb 2026, at 18:42, Joel Fernandes <joelagnelf@nvidia.com> wrote:
+>=20
+> Add a new module `clist` for working with C's doubly circular linked
+> lists. Provide low-level iteration over list nodes.
+>=20
+> Typed iteration over actual items is provided with a `clist_create`
+> macro to assist in creation of the `CList` type.
+>=20
+> Acked-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+>=20
 
->
->  const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE =3D VM_MERGEABLE;
->  const vm_flags_t RUST_CONST_HELPER_VM_READ =3D VM_READ;
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index ede48b5e1dba3..d1246ec114898 100644
-> --- a/rust/kernel/xarray.rs
-> +++ b/rust/kernel/xarray.rs
-> @@ -8,7 +8,10 @@
->      iter,
->      marker::PhantomData,
->      pin::Pin,
-> -    ptr::NonNull, //
-> +    ptr::{
-> +        null_mut,
-> +        NonNull, //
-> +    },
->  };
->  use kernel::{
->      alloc,
-> @@ -319,6 +322,42 @@ pub fn store(
->      }
->  }
->
-> +/// Internal state for XArray iteration and entry operations.
-> +///
-> +/// # Invariants
-> +///
-> +/// - `state` is always a valid `bindings::xa_state`.
-> +#[expect(dead_code)]
-> +pub(crate) struct XArrayState<'a, 'b, T: ForeignOwnable> {
-> +    /// Holds a reference to the lock guard to ensure the lock is not dr=
-opped
-> +    /// while `Self` is live.
-> +    _access: PhantomData<&'b Guard<'a, T>>,
-> +    state: bindings::xa_state,
-> +}
-> +
-> +impl<'a, 'b, T: ForeignOwnable> XArrayState<'a, 'b, T> {
-> +    #[expect(dead_code)]
-> +    fn new(access: &'b Guard<'a, T>, index: usize) -> Self {
-> +        let ptr =3D access.xa.xa.get();
-> +        // INVARIANT: We initialize `self.state` to a valid value below.
-> +        Self {
-> +            _access: PhantomData,
-> +            state: bindings::xa_state {
-> +                xa: ptr,
-> +                xa_index: index,
-> +                xa_shift: 0,
-> +                xa_sibs: 0,
-> +                xa_offset: 0,
-> +                xa_pad: 0,
-> +                xa_node: bindings::XAS_RESTART as *mut bindings::xa_node=
-,
-> +                xa_alloc: null_mut(),
-> +                xa_update: None,
-> +                xa_lru: null_mut(),
-> +            },
-> +        }
-> +    }
-> +}
-> +
->  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `=
-T` is `Send`.
->  unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
->
->
-> --
-> 2.51.2
->
->
+
+Sorry for not replying to your question on v7, I=E2=80=99ve been a bit =
+sick recently.
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+
