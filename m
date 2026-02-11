@@ -1,53 +1,53 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7CB367F4D;
-	Wed, 11 Feb 2026 10:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC76367F36;
+	Wed, 11 Feb 2026 10:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770805258; cv=none; b=LtcbJqHIEhfEJGQoqNZQg5lhitb6qcrxfOhFk6cSTbW3BAcfSf6SPRrIFv1Fh0v5ccIfUd9bnGUH2xv7lbZK0foTBiVKHNlPy7nvqhQMETxCDrRK4TO6f7sbqJfR5qduKLxjU3HiMxTD1P6RUHA7iu9EXgkNeiVxgTsj+1mnItk=
+	t=1770805690; cv=none; b=O83exInwAjx52Nwy6NlBLap2d4fVxstvK6uCmfZSSYVfYWRrzOs/6aglGBACtGMK2omHdgYoFFbtM7e9Y15NHuJeAiEcnl+xFO08c+35DJBBboojvqG95bfC/eKR/lkFM1Ai3mxonmQth46TGK5MJqNkEtF/CgjYcM9fssnftXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770805258; c=relaxed/simple;
-	bh=45pfldhdQt4T85eRrojkPS8/DdzI6gG/B7+MIFv4muM=;
+	s=arc-20240116; t=1770805690; c=relaxed/simple;
+	bh=N2ZPQqBSVooHIEfIdVe8c+HxQQL2Bv5AOu+mpnqjVBM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nKSzrIIodoUlkDMmBGeM6U+II1qvhHescDuUpwyHYTU5og0jgjj6ZMMI6Ynz6Qlix6AleEzk0n5nyj4mkcbbARSg8/kkn/3nfGX5CcpnOQDwEaznJQkdWulPVAncuVXnacHVZ4wWWWm2xivqerACJlstOcwS/xi9g+ZaFBMf438=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=H4zxtajf; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version:Content-Type; b=gsazClqloRyQZx9mNY2WveZHmI04GzGhdmRdKUqHp1gHKeFfxfy2HoopFfkcnCWodb6xSgURba4SAvHAs8gqL+htptR6OJ7j15Q0gsy83EUssHZV3058BnYTKi8e88aZx1E2mWdAP9XW/k6ed7HQfJoEiJzvUWJZ7BfhIuCura4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=jfLtLllk; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="H4zxtajf"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="jfLtLllk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770805254;
-	bh=45pfldhdQt4T85eRrojkPS8/DdzI6gG/B7+MIFv4muM=;
+	s=mail; t=1770805687;
+	bh=N2ZPQqBSVooHIEfIdVe8c+HxQQL2Bv5AOu+mpnqjVBM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=H4zxtajfqECIycH3sO3zivvzj1OVPoLEddAY7m4nJ5dTjjy1Rjn8/HnC1Lapde9WE
-	 dXG/0QY23yPReUt7NvqqR1u6ZWbNyIm4BV+3NRBpE83WBrEO8SE7SC+PnaS+XfkEyp
-	 BACnj6VSqpJ7xCSAK9fgmK0rulpBofw0r45on5gk75spSz7XpUDSbrqr+GhQwVSIc6
-	 s7h7ssBLjGXDLwjKFZa6abk2TXhNeT+ouxXO+ckRhNsVD+Jc52fNeps0FKZVc0GZfH
-	 ZKg0VhEN/7d+vQF2Uop5uswPgphah2ttwRTQx6mmHLmHUhcnca4lC0vF2CwArfCXMb
-	 rIoRiJ4b5EVCw==
+	b=jfLtLllkMcmN2WDx0wFAGYXIAnd7+iP9dQlEUvkJmoyzbgZqlv9V0JaL0iP3EzovU
+	 BovgheorJDxSruldxWpTP3XSQcEQrh+T2i6HiCwn5TO9GR7aSNjF8PS3rs8CNWwUFC
+	 s1ARzPKJxwVbZaLUWXNPIzMJnhi5cQPg8a23AXHxW/wmRALdr2uc2XpYKewb1hC/Fr
+	 8Z7gWlmYUiwRDBWXDJ+vlu3p6ADqYVPb9zKt4U6b2V68UvrMUkj3sLIjBH/2dWVDdO
+	 yw9SUwu8/mBdsmcaxvT3j1q+oEsDpT8d4NwmZrQe3ZpQnFugFmuYQXocNLDDXtJ/9o
+	 E7uZxKyYISf4A==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0094E17E1301;
-	Wed, 11 Feb 2026 11:20:53 +0100 (CET)
-Date: Wed, 11 Feb 2026 11:20:49 +0100
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 8BA0717E13E0;
+	Wed, 11 Feb 2026 11:28:06 +0100 (CET)
+Date: Wed, 11 Feb 2026 11:28:02 +0100
 From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, "Philipp Stanner" <phasta@mailbox.org>,
- <phasta@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Gary Guo" <gary@garyguo.net>, "Benno Lossin"
- <lossin@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <lucas.demarchi@intel.com>, <thomas.hellstrom@linux.intel.com>,
- <rodrigo.vivi@intel.com>
+To: Philipp Stanner <phasta@mailbox.org>
+Cc: phasta@kernel.org, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Gary Guo <gary@garyguo.net>, Benno Lossin
+ <lossin@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Joel
+ Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ lucas.demarchi@intel.com, thomas.hellstrom@linux.intel.com,
+ rodrigo.vivi@intel.com
 Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
-Message-ID: <20260211112049.089b2656@fedora>
-In-Reply-To: <DGC1KP1DT6YV.3LQWZXMA22L5A@kernel.org>
+Message-ID: <20260211112802.2956132f@fedora>
+In-Reply-To: <5f777c33469ef5c34467a12609233d72064a9297.camel@mailbox.org>
 References: <20260205095727.4c3e2941@fedora>
 	<DG7SZND1GWR4.3C5NLKY4SYC0M@kernel.org>
 	<bb57b6837aa8044e679dad5f2589c2e0ba84c221.camel@mailbox.org>
@@ -60,6 +60,7 @@ References: <20260205095727.4c3e2941@fedora>
 	<4e84306c-5cec-4048-a7eb-a364788baa89@amd.com>
 	<aYsZHhX2IVO2kOSm@google.com>
 	<DGC1KP1DT6YV.3LQWZXMA22L5A@kernel.org>
+	<5f777c33469ef5c34467a12609233d72064a9297.camel@mailbox.org>
 Organization: Collabora
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -71,75 +72,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Feb 2026 10:57:27 +0100
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+On Wed, 11 Feb 2026 11:08:55 +0100
+Philipp Stanner <phasta@mailbox.org> wrote:
 
-> (Cc: Xe maintainers)
+> On Wed, 2026-02-11 at 10:57 +0100, Danilo Krummrich wrote:
+> > (Cc: Xe maintainers)
+> >=20
+> > On Tue Feb 10, 2026 at 12:40 PM CET, Alice Ryhl wrote: =20
+> > > On Tue, Feb 10, 2026 at 11:46:44AM +0100, Christian K=C3=B6nig wrote:=
+ =20
+> > > > On 2/10/26 11:36, Danilo Krummrich wrote: =20
+> > > > > On Tue Feb 10, 2026 at 11:15 AM CET, Alice Ryhl wrote: =20
+> > > > > >  =20
 >=20
-> On Tue Feb 10, 2026 at 12:40 PM CET, Alice Ryhl wrote:
-> > On Tue, Feb 10, 2026 at 11:46:44AM +0100, Christian K=C3=B6nig wrote: =
-=20
-> >> On 2/10/26 11:36, Danilo Krummrich wrote: =20
-> >> > On Tue Feb 10, 2026 at 11:15 AM CET, Alice Ryhl wrote: =20
-> >> >> One way you can see this is by looking at what we require of the
-> >> >> workqueue. For all this to work, it's pretty important that we never
-> >> >> schedule anything on the workqueue that's not signalling safe, since
-> >> >> otherwise you could have a deadlock where the workqueue is executes=
- some
-> >> >> random job calling kmalloc(GFP_KERNEL) and then blocks on our fence,
-> >> >> meaning that the VM_BIND job never gets scheduled since the workque=
-ue
-> >> >> is never freed up. Deadlock. =20
-> >> >=20
-> >> > Yes, I also pointed this out multiple times in the past in the conte=
-xt of C GPU
-> >> > scheduler discussions. It really depends on the workqueue and how it=
- is used.
-> >> >=20
-> >> > In the C GPU scheduler the driver can pass its own workqueue to the =
-scheduler,
-> >> > which means that the driver has to ensure that at least one out of t=
-he
-> >> > wq->max_active works is free for the scheduler to make progress on t=
-he
-> >> > scheduler's run and free job work.
-> >> >=20
-> >> > Or in other words, there must be no more than wq->max_active - 1 wor=
-ks that
-> >> > execute code violating the DMA fence signalling rules. =20
-> >
-> > Ouch, is that really the best way to do that? Why not two workqueues? =
-=20
+> [=E2=80=A6]
 >=20
-> Most drivers making use of this re-use the same workqueue for multiple GPU
-> scheduler instances in firmware scheduling mode (i.e. 1:1 relationship be=
-tween
-> scheduler and entity). This is equivalent to the JobQ use-case.
+> > > > >=20
+> > > > > Or in other words, there must be no more than wq->max_active - 1 =
+works that
+> > > > > execute code violating the DMA fence signalling rules. =20
+> > >=20
+> > > Ouch, is that really the best way to do that? Why not two workqueues?=
+ =20
+> >=20
+> > Most drivers making use of this re-use the same workqueue for multiple =
+GPU
+> > scheduler instances in firmware scheduling mode (i.e. 1:1 relationship =
+between
+> > scheduler and entity). This is equivalent to the JobQ use-case.
+> >=20
+> > Note that we will have one JobQ instance per userspace queue, so sharin=
+g the
+> > workqueue between JobQ instances can make sense. =20
 >=20
-> Note that we will have one JobQ instance per userspace queue, so sharing =
-the
-> workqueue between JobQ instances can make sense.
+> Why, what for?
 
-Definitely, but I think that's orthogonal to allowing this common
-workqueue to be used for work items that don't comply with the
-dma-fence signalling rules, isn't it?
-
->=20
-> Besides that, IIRC Xe was re-using the workqueue for something else, but =
-that
-> doesn't seem to be the case anymore. I can only find [1], which more seem=
-s like
-> some custom GPU scheduler extention [2] to me...
-
-Yep, I think it can be the problematic case. It doesn't mean we can't
-schedule work items that don't signal fences, but I think it'd be
-simpler if we were forcing those to follow the same rules (no blocking
-alloc, no locks taken that are also taken in other paths were blocking
-allocs happen, etc) regardless of this wq->max_active value.
-
->=20
-> [1] https://elixir.bootlin.com/linux/v6.18.6/source/drivers/gpu/drm/xe/xe=
-_gpu_scheduler.c#L40
-> [2] https://elixir.bootlin.com/linux/v6.18.6/source/drivers/gpu/drm/xe/xe=
-_gpu_scheduler_types.h#L28
-
+Because, even if it's not necessarily a 1:N relationship between queues
+and threads these days (with the concept of shared worker pools), each
+new workqueue usually imply the creation of new threads/resources, and
+we usually don't need to have this level of parallelization (especially
+if the communication channel with the FW can't be accessed
+concurrently).
