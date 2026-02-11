@@ -1,25 +1,25 @@
-Received: from lgeamrelo13.lge.com (lgeamrelo13.lge.com [156.147.23.53])
+Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C82528505E
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 10:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B36367F54
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 10:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770805063; cv=none; b=ZY1uA9uIrC/npBu3aNYQ0M3LuVfji0l47x5BEX3w9/DSN3o2rB4QtkfauugBFzclTtMa9kbKk3KVd4a/K3jb4NxbNpisYlgL2Rf3bCx9HV6qGI3Rk/MLFHpLCO3b4Un43gIncxLOFFDcAdEaR4dppFh6HJg9fp76LIY2fhEt3Fo=
+	t=1770805067; cv=none; b=qmo0XRIIOkTQ5zKxJIxNZ7zreyG6TZHsR1p0bP1QOD9+PNXxRoMmrFHCo8+6OiLmlGJ4YwdnsUpDPtowOXbY7sLJhsSvBT2sQqrIxcdJ8gplHRLTFsoy57Gh5m+R572zNc+KDvQYIf/Xv47mce3nBO5973LpfSfoQUd03uQrwVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770805063; c=relaxed/simple;
+	s=arc-20240116; t=1770805067; c=relaxed/simple;
 	bh=m/7S+3GmL/7WBP+XLZZofi8JPLL4O6QKPSQKesLlrug=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YWknd7Qdqy/OYP/V4AJo7dJnmh8Ek+zvZUbMD2z1x+ZB4v8lPeMKd54T7oTVwpE3R/6uUrlL7NXz2U/eLWyA95tpa+28wBuVn0YJFCXP4PBpam7u8xpku/0WbineLidwxz6P5U/KaEfZSkckU/gpUVY2EYHi4J+38gEx5LyePwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.53
+	 MIME-Version; b=D5vfdDUQMqrOI/mXwjq6/bswLymbeABXDUrx43VHDy2rJDL1YBA0UsKSPwE5y3HEoa5dxPu17p/E6TNd+SXhMlp8X9gIcDKMOU7fmREGkrfHbCr7DMm6AGDzh+tlaQM2PfAYjUiVb79FgtcneLoAVBuFCRaG9qpP69hntabFpPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
 Received: from unknown (HELO lgemrelse7q.lge.com) (156.147.1.151)
-	by 156.147.23.53 with ESMTP; 11 Feb 2026 19:17:30 +0900
+	by 156.147.23.51 with ESMTP; 11 Feb 2026 19:17:37 +0900
 X-Original-SENDERIP: 156.147.1.151
 X-Original-MAILFROM: jongan.kim@lge.com
 Received: from unknown (HELO jongan-kim-nissan-cdc.bee-live.svc.cluster.local) (10.159.44.112)
-	by 156.147.1.151 with ESMTP; 11 Feb 2026 19:17:30 +0900
+	by 156.147.1.151 with ESMTP; 11 Feb 2026 19:17:37 +0900
 X-Original-SENDERIP: 10.159.44.112
 X-Original-MAILFROM: jongan.kim@lge.com
 From: jongan.kim@lge.com
@@ -53,8 +53,8 @@ Cc: a.hindborg@kernel.org,
 	vitaly.wool@konsulko.se,
 	yury.norov@gmail.com
 Subject: Re: [PATCH v4 1/3] binder: fix PID namespace collision for freeze operation
-Date: Wed, 11 Feb 2026 19:17:30 +0900
-Message-Id: <20260211101730.5654-1-jongan.kim@lge.com>
+Date: Wed, 11 Feb 2026 19:17:37 +0900
+Message-Id: <20260211101737.5703-1-jongan.kim@lge.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260206085336.32819-2-jongan.kim@lge.com>
 References: <20260206085336.32819-2-jongan.kim@lge.com>
