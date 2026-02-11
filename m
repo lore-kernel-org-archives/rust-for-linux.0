@@ -1,215 +1,152 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18C031ED80
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 08:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CBF313545;
+	Wed, 11 Feb 2026 08:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770797802; cv=none; b=jQhG9gb9zIOXVoHWWVT6K0x8t3KyUA0mSbtVUR9HNVBee/alw3sEoXRpgd6WDMQO5OyQgd+RFO7lAvfLin14y9Mdfcvq0w/3JonzGd/lTgfeXbxHDVyyUI0+rHfvNyJ77qwvUqH+6dVTUT/icTRWVXNlieik7CesKjWH/BEIofk=
+	t=1770797815; cv=none; b=YFGfRkMngCfxAJlbpQfZ2FKMM/GloS95CIZcTrcHVorPqTDACdZVm2Ef5ogXRl6NYyAXJZQbiMQj6/qimNe+qRZz/lUzEKstymfm1FislAqpyI3k3A9ET0DI+CfRDi6TvNH6BLtMo6p9HPl/QNas1JD7TJxCw8ff5Vb7/Wv+v5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770797802; c=relaxed/simple;
-	bh=M72G2mLh/ZPjBJntqxGSFJRmCzo8n+rp9WMe5eYHyJ0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AC5u8Wkhvw2M7FkIf3mrWVUHH5nerIsO40LNT5KjN7Lpi185TucQCQf7WnAuHn8RsJe+i91vhsXMAUdnRbklYVg6IWGLJXCGi/hL4JVCd1+VIj3h08+N4nD67rIRS6Z85OWhsAwtj8gbxvmQ6XavCHidB+SacTXCDnz9MvidNpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uUmeK6My; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1770797815; c=relaxed/simple;
+	bh=426ZDZGofBwxHLpEmst7OBBrGakVWAN5i5sXpTY1j9Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ueWvm4VzXLG+ktTnzn7wl49AnTFA7mNTi+sF2as7F400ZIm7hbBDkEhBAturREriIIeUYtmeusxlnyUlLAo3+rXyEtVdDPX37waSFiu7m8i1spNgu71VtQc285kYvaPCLesNPGE3QL88wVmqpGUn8MwH6ahf/JB3Z/Xb+6TaySg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=rk2JusSx; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uUmeK6My"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-65a7dd40026so108508a12.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 00:16:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770797799; x=1771402599; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9T4h+/rjLr1sBmgdVrcdKQN1OfKBnfrGuf/DCV1l4ug=;
-        b=uUmeK6MyEoPJS/vI/D94KPpJ7Ta2/dULs7MziI5289bmf8HnPB2YsykJZZX0JXFtUm
-         fkay+EAGNqLad7TOp+yQyLaHLZfIw3a7hgJMcMOb+n1lFdMFXfzf+bcoUE6X4hZilqA5
-         y6rZ+zh79GsZ0onNaU+E1vHmV0Y5x/PyYpWT7ZC3EYK81GB4QKV+PRuE4TIJbR6zLp1d
-         4P5hfZHav1Y3HeQyKkrr+vuzRFn7ihizCOiJhcSlTjuEytfmE+PZWGyFJjjvBEixHyuu
-         PQ7AW/4PiwyNm4a2avo9UYiEEivNMng1S5j+POOIDLVIWz65jmDMz6OFmDucuacpigta
-         gdSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770797799; x=1771402599;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9T4h+/rjLr1sBmgdVrcdKQN1OfKBnfrGuf/DCV1l4ug=;
-        b=Vs0CUPb2CAd2jot4XW8v6bQHZnhjLKm9gQjb0ei0AbuXUzWzUizAauFR4pId5RKCfJ
-         LrwlVg40Y/GP1IEoksI9h4OHRdZp5QROj6tkVvLCS+IuG/EZmwWbZ8YuIpMZAzd1+jyy
-         /6msUH4aUTsfme++mkBSP/SQowP09jhks4rw6d79teB5u8k2i7aPRZn5UMbNFp5EfMLV
-         rpvfIO9w8hxlRv2pw/ZVTPAdVkFn+vuUbJl2iGNuKpBxnm9tdPu6vJl91O43Poe0irzO
-         kTpn9waeBvAKCjP4wpiJxXWBjnftv1BEuCWjgN5RKa5wkn9DISsbEk3BpXt4EoSLp1rY
-         i0XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV9ob4H7Zb+iuckfRDuSriEDIiUXrmnWG1oFaGHcqaykL8QqWCjN6wnIeXkbG8M7ROkwRBgjuS8jC2c4WSNqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIA2GLbFWKU0xGqKvqcnABNcCkHVil3YxyG/dTZEsb7W6LVi1R
-	X94lbzYQAGh/eVseI155Fy0J4paDlIbHtmu5FrPVGTYAPF8jpU0ksOwKsJFih0s7gnMhAqrbbRx
-	fki0vqEFQTHlZObyFeg==
-X-Received: from edhr9.prod.google.com ([2002:a50:8d89:0:b0:65a:3735:74dd])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:5110:b0:659:7d96:f715 with SMTP id 4fb4d7f45d1cf-65a4024118amr505843a12.26.1770797798924;
- Wed, 11 Feb 2026 00:16:38 -0800 (PST)
-Date: Wed, 11 Feb 2026 08:16:38 +0000
-In-Reply-To: <20260210155025.1b9ad2f1@fedora>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="rk2JusSx"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4f9rqv0n0jz9tnP;
+	Wed, 11 Feb 2026 09:16:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1770797803; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=426ZDZGofBwxHLpEmst7OBBrGakVWAN5i5sXpTY1j9Q=;
+	b=rk2JusSxVELkduHAaUz5zTt/ynvy2eBlnuGc/X4AHHc4bl5EjQ2wFbiixK4LXpS7IMPfwc
+	Ixu9Ghuk8fd+bTt3R6j6cITlLnvHTPu/zYH+HhkXq1gu0r9yy58r1mbGfnNZQd5wAsPs6O
+	h7FUAvh3/HK9NAxdSHGzKft0WNx2FGdvqbibyltpV2ldPoF3IkRbqcWGM8BEOwszncPQof
+	UzD16fhh8AFkKfTB0VVyA2N9tkCrg+h4hbwCqVTRdpXBvDTDz2mvkti3eiHICiCnvBbE0x
+	ig0V8uZKnkuxNBTjajd0P0uEYWIJ7uX/XhzzBcmS7gV87aTtkeL7fESUFCemrQ==
+Message-ID: <18bd737f07773edbf56ee011cd76f953290d1188.camel@mailbox.org>
+Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Alice
+ Ryhl <aliceryhl@google.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, phasta@kernel.org, 
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Gary Guo <gary@garyguo.net>, Benno Lossin
+ <lossin@kernel.org>,  Daniel Almeida <daniel.almeida@collabora.com>, Joel
+ Fernandes <joelagnelf@nvidia.com>,  linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,  rust-for-linux@vger.kernel.org
+Date: Wed, 11 Feb 2026 09:16:37 +0100
+In-Reply-To: <d9e00d8c-93c0-45f8-95f2-3235fb781e7a@amd.com>
+References: <20260209155843.725dcfe1@fedora>
+	 <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com>
+	 <aYruaIxn8sMXVI0r@google.com> <20260210101525.7fb85f25@fedora>
+	 <aYsFKOVrsMQeAHoi@google.com> <20260210133617.0a4be958@fedora>
+	 <aYsvc3Q8h-Gg27-g@google.com> <20260210142631.6f8a3411@fedora>
+	 <aYs3VVH_UXMFa5oC@google.com>
+	 <f4c32d9a-7303-4a50-aafc-8039102fbd3e@amd.com>
+	 <aYtJznZcCEYBffil@google.com>
+	 <d9e00d8c-93c0-45f8-95f2-3235fb781e7a@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260209155843.725dcfe1@fedora> <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com>
- <aYruaIxn8sMXVI0r@google.com> <20260210101525.7fb85f25@fedora>
- <aYsFKOVrsMQeAHoi@google.com> <20260210134913.33cb674f@fedora>
- <aYsyGAwy4rq-H7Hd@google.com> <20260210145156.108ab292@fedora>
- <aYs8gN34IVPQiqLk@google.com> <20260210155025.1b9ad2f1@fedora>
-Message-ID: <aYw65omhksM7jjQi@google.com>
-Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: "Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, Philipp Stanner <phasta@mailbox.org>, phasta@kernel.org, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MBO-RS-META: exstjuh1ygpncwnffutx8y3jectu1355
+X-MBO-RS-ID: b0bbf20f2d7ec6e37fe
 
-On Tue, Feb 10, 2026 at 03:50:25PM +0100, Boris Brezillon wrote:
-> On Tue, 10 Feb 2026 14:11:12 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
-> 
-> > On Tue, Feb 10, 2026 at 02:51:56PM +0100, Boris Brezillon wrote:
-> > > On Tue, 10 Feb 2026 13:26:48 +0000
-> > > Alice Ryhl <aliceryhl@google.com> wrote:
-> > >   
-> > > > On Tue, Feb 10, 2026 at 01:49:13PM +0100, Boris Brezillon wrote:  
-> > > > > On Tue, 10 Feb 2026 10:15:04 +0000
-> > > > > Alice Ryhl <aliceryhl@google.com> wrote:
-> > > > >     
-> > > > > > /// The owner of this value must ensure that this fence is signalled.
-> > > > > > struct MustBeSignalled<'fence> { ... }
-> > > > > > /// Proof value indicating that the fence has either already been
-> > > > > > /// signalled, or it will be. The lifetime ensures that you cannot mix
-> > > > > > /// up the proof value.
-> > > > > > struct WillBeSignalled<'fence> { ... }    
-> > > > > 
-> > > > > Sorry, I have more questions, unfortunately. Seems that
-> > > > > {Must,Will}BeSignalled are targeting specific fences (at least that's
-> > > > > what the doc and 'fence lifetime says), but in practice, the WorkItem
-> > > > > backing the scheduler can queue 0-N jobs (0 if no jobs have their deps
-> > > > > met, and N > 1 if more than one job is ready). Similarly, an IRQ
-> > > > > handler can signal 0-N fences (can be that the IRQ has nothing to do we
-> > > > > job completion, or, it can be that multiple jobs have completed). How
-> > > > > is this MustBeSignalled object going to be instantiated in practice if
-> > > > > it's done before the DmaFenceWorkItem::run() function is called?    
-> > > > 
-> > > > The {Must,Will}BeSignalled closure pair needs to wrap the piece of code
-> > > > that ensures a specific fence is signalled. If you have code that
-> > > > manages a collection of fences and invokes code for specific fences
-> > > > depending on outside conditions, then that's a different matter.
-> > > > 
-> > > > After all, transfer_to_wq() has two components:
-> > > > 1. Logic to ensure any spawned workqueue job eventually gets to run.
-> > > > 2. Once the individual job runs, logic specific to the one fence ensures
-> > > >    that this one fence gets signalled.  
-> > > 
-> > > Okay, that's a change compared to how things are modeled in C (and in
-> > > JobQueue) at the moment: the WorkItem is not embedded in a specific
-> > > job, it's something that's attached to the JobQueue. The idea being
-> > > that the WorkItem represents a task to be done on the queue itself
-> > > (check if the first element in the queue is ready for execution), not on
-> > > a particular job. Now, we could change that and have a per-job WorkItem,
-> > > but ultimately, we'll have to make sure jobs are dequeued in order
-> > > (deps on JobN can be met before deps on Job0, but we still want JobN to
-> > > be submitted after Job0), and we'd pay the WorkItem overhead once per
-> > > Job instead of once per JobQueue. Probably not the end of the world,
-> > > but it's worth considering, still.  
-> > 
-> > It sounds like the fix here is to have transfer_to_job_queue() instead
-> > of trying to do it at the workqueue level.
-> 
-> Hm, so Job would be something like that (naming/trait-def are just
-> suggestions to get the discussion going):
-> 
-> trait JobConsumer {
-> 	type FenceType;
-> 	type JobData;
-> 
-> 	fn run(self: MustBeSignalled<T::FenceType>) -> Result<WillBeSignaled<Self::FenceType>>;
-> }
-> 
-> struct Job<T: JobConsumer> {
-> 	fence: MustBeSignalled<T::FenceType>,
-> 	data: T::JobData,
-> }
+On Tue, 2026-02-10 at 16:45 +0100, Christian K=C3=B6nig wrote:
+> On 2/10/26 16:07, Alice Ryhl wrote:
+> > >=20
 
-The fence field of Job would be PublishedFence or PrivateFence (or just
-DriverDmaFence). The MustBeSignalled/WillBeSignaled types should only
-exist temporarily in a function scope.
+[=E2=80=A6]
 
-Any time you transfer from one function scope to another (like our
-transfer_to_job_queue() or transfer_to_wq() examples), that results in
-finishing the MustBeSignalled/WillBeSignaled scope on one thread and
-creating a new MustBeSignalled/WillBeSignaled scope on another thread.
+> > > That doesn't happen in practice.
+> > >=20
+> > > For each fence you only have one signaling path you need to guarantee
+> > > forward progress for.
+> > >=20
+> > > All other signaling paths are just opportunistically optimizations
+> > > which *can* signal the fence, but there is no guarantee that they
+> > > will.
+> > >=20
+> > > We used to have some exceptions to that, especially around aborting
+> > > submissions, but those turned out to be a really bad idea as well.=C2=
+=A0=20
+> > >=20
+> > > Thinking more about it you should probably enforce that there is only
+> > > one signaling path for each fence signaling.
+> >=20
+> > I'm not really convinced by this.
+> >=20
+> > First, the timeout path must be a fence signalling path because the
+> > reason you have a timeout in the first place is because the hw might
+> > never signal the fence. So if the timeout path deadlocks on a
+> > kmalloc(GFP_KERNEL) and the hw never comes around to wake you up, boom.
+>=20
+> Mhm, good point. On the other hand the timeout handling should probably b=
+e considered part of the normal signaling path.
+>=20
+> In other words the timeout handler either disables the normal signaling p=
+ath (e.g. by disabling the interrupt) and then reset the HW or it tells the=
+ HW to force signal some work and observes the result.
+>=20
+> So it can be that the timeout handler finishes only after the fence is si=
+gnaled from the normal signaling paths.
 
-One could imagine a model where there is no lifetime and you can carry
-it around as you wish. That model works okay in most regards, but it
-gives up the ability to ensure that dma_fence_lockdep_map is properly
-configured to catch mistakes.
+I would say since we are designing all this (for now) for modern and
+future hardware, the timeout handling regarding GPUs can be considered
+trivial?
 
-The lifetime prohibits you from using the normal ownership semantics to
-e.g. transfer the MustBeSignalled into a random workqueue, enforcing
-that you can only transfer it into a workqueue by using the provided
-methods, which sets up the lockdep dependencies correctly and ensures
-that dma_fence_lockdep_map is taken in the workqueue job too.
+A timeout event as far as JobQueue is concerned is a mere instruction
+to drop the entire queue and close the ring. Further signaling should
+either not occur at all anymore (because the ring is blocked by a
+broken shader) =E2=80=93 or if a racy job still finishes while a timeout is
+firing, your problem, then the ring shall still be terminated. It would
+then result in that last blocking job being completed for userspace,
+and the subsequent once being signalled with -ECANCELED.
 
-> I guess that would do.
-> 
-> And then we need to flag the WorkItem that's exposed by the
-> JobQueue as a DmaFenceWorkItem so that
-> bindings::dma_fence_begin_signalling() is called before entry and
-> lockdep can do its job and check that nothing forbidden happens in
-> this WorkItem.
+In a timeout handler, a driver would just drop its jobqueue, resulting
+in all access being revoked, and the JQ deregistering its events from
+all fences. Deadlock is being accounted for by RCU.
 
-In the case of JobQueue, it may make sense to just have the job queue
-implementation do that manually. I do not think the workqueue-level API
-can fully enforce that the job queue can't make mistakes here.
 
-> > > > And {Must,Will}BeSignalled exists to help model part (2.). But what you
-> > > > described with the IRQ callback falls into (1.) instead, which is
-> > > > outside the scope of {Must,Will}BeSignalled (or at least requires more
-> > > > complex APIs).  
-> > > 
-> > > For IRQ callbacks, it's not just about making sure they run, but also
-> > > making sure nothing in there can lead to deadlocks, which is basically
-> > > #2, except it's not scoped to a particular fence. It's just a "fences
-> > > can be signaled from there" marker. We could restrict it to "fences of
-> > > this particular implementation can be signaled from there" but not
-> > > "this particular fence instance will be signaled next, if any", because
-> > > that we don't know until we've walked some HW state to figure out which
-> > > job is complete and thus which fence we need to signal (the interrupt
-> > > we get is most likely multiplexing completion on multiple GPU contexts,
-> > > so before we can even get to our per-context in-flight-jobs FIFO, we
-> > > need to demux this thing).  
-> > 
-> > All I can say is that this is a different use-case for the C api
-> > dma_fence_begin_signalling(). This different usage also seems useful,
-> > but it would be one that does not involve {Must,Will}BeSignalled
-> > arguments at all.
-> > 
-> > After all, dma_fence_begin_signalling() only requires those arguments if
-> > you want to convert a PrivateFence into a PublishedFence. (I guess a
-> > better name is PublishableFence.) If you're not trying to prove that a
-> > specific fence will be signalled, then you don't need the
-> > {Must,Will}BeSignalled arguments.
-> 
-> Okay, so that would be another function returning some sort of guard
-> then? What I find confusing is the fact
-> dma_fence::dma_fence_begin_signalling() matches the C function name
-> which is not per-fence, but just this lock-guard model flagging a
-> section from which any fence can be signalled, so maybe we should
-> name your dma_fence_begin_signalling() proposal differently, dunno.
+So no problem here, or am I missing something?
 
-Yes we would need multiple methods that call dma_fence_begin_signalling()
-depending on why you are calling it.
+>=20
+> > Second, for the reasons I mentioned you also want the signal-from-irq
+> > path to be a fence signalling critical path, because if we allow you to
+> > kmalloc(GFP_KERNEL) on the path from getting notification from hardware
+> > to signalling the fence, then you may deadlock until the timeout
+> > triggers ... even if the deadlock is only temporary, we should still
+> > avoid such cases IMO. Thus, the hw signal path should also be a fence
+> > signalling critical path.
+>=20
+> As far as I remember we didn't had any of such cases.
+>=20
+> You can't call kmalloc(GFP_KERNEL) from an interrupt handler, so you woul=
+d need something like irq->work item->kmalloc(GFP_KERNEL)->signaling and I =
+think that's unlikely to be implemented this way.
+>=20
+> But yeah, it is still something which should be prevented somehow.
 
-Alice
+Just as a side note, we want to ask ourselves what kinds of potential
+problems we want to make impossible. 100% might get really work
+intensive. I'm in general a fan of the 20-80-Rule, so I'd like to know
+what the most severe and most common misuses of dma_fences are.
+
+
+P.
