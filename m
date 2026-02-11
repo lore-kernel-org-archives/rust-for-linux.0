@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4447F33893D;
-	Wed, 11 Feb 2026 10:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729DD2B9B7;
+	Wed, 11 Feb 2026 10:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770804578; cv=none; b=XpscE+b/99prBpZhSsL9dRDZTNYLouMqECWalqfI044EpyJI8rn9uGGrcDttL9KhudkaXAwuU5AgR2iVKJ8JHuR8szT6+AZy7DhSh5cGJklFv505SRBw0pBOTtk81Qzc4DOwO8l6c5VhHlhvVhERrvpWb4QNdpFiMBQdG0VhzSc=
+	t=1770804971; cv=none; b=a9swLotBIckM3yBr2pKmp0HO9aMeafm+y6cfxNeAG84eSTdqPWHt0B/+M/NG72QiaX3D9Xbjj8jG3qTcZUCUL9qWutK9dLBhr1TWTKkX0P+CnUz/TtY6MC8kiuO1wKTFF0Sk+zIwx/Yxw3+jlnNXXaREFaeSlIbUFXA+HDO6dCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770804578; c=relaxed/simple;
-	bh=2yJOMJwE5inPXsHc0h7m9YI+MYkeBDhtxdnF0857w/0=;
+	s=arc-20240116; t=1770804971; c=relaxed/simple;
+	bh=/ptKmBy7kspACRVtX9kbf2ZmQcL19HctAf/KjpLPts0=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=JSbXGvhWc5+O3pTFfnVrSDS3KfH8d948/CwNrgWuEGUOsk9QK0U1KSB1huF9SlqhZSzxGLa7qSRHXIySePuDy959jWoqdM8aDLpvcKvT0qO1UO83IG3F1iiW2uyeFM/JOtZwhmxriQ88TT0r8EvLL37SKCqH6Ztlc+v+E/K/CAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uM/31P3l; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=dHH/dJsInRHYQ+YPLGGiWTrMSeySQmHIqBzSFdMT0yRhuXBrQWrzXLsar9MpMOL0tUcuvLNJsVxapiIel+jdDUWVd18uR5bHKRc0R66VYYHxRYfCGG/zlGkPqgIsLp2G+GEB53BGMnKZ/TTcCaqmlE9qLOJ0b4qIoR48nV9ZvCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ip8Ufoey; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uM/31P3l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3334C4CEF7;
-	Wed, 11 Feb 2026 10:09:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ip8Ufoey"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32C4C4CEF7;
+	Wed, 11 Feb 2026 10:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770804578;
-	bh=2yJOMJwE5inPXsHc0h7m9YI+MYkeBDhtxdnF0857w/0=;
+	s=k20201202; t=1770804971;
+	bh=/ptKmBy7kspACRVtX9kbf2ZmQcL19HctAf/KjpLPts0=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=uM/31P3lxo9J/yDXLyViLzKLcLemaqmBgbsfuzlUMzId6n5WwzWxJxX8TZ2y9A83e
-	 QNNCI8VYgqK2mm//d9+lroGncVKoOju6opLPcZDPgEov3vk07Rmfh2ZxHmp+INcmCT
-	 ukK1lNBj4ewuD5LJi7oJQKriWSBXZxS+8uMcbXRpb6N9NGw8JkpVx5v18Db5LHVnoX
-	 e6co55exzIvePw/NWBSMpRC09ht2WCMK4Obxjl3JgTDnRootIsMdQ2GnjzapeOb3/f
-	 bpMUTmHXZO88NtRnbO0IlU5pW/d6duZ1jte733eKos0+2JtDxzXUds07RsgSZM432x
-	 oEY3ED8ip55BQ==
+	b=Ip8Ufoeyby11wAsjwYyvFDjNYqcI8kJO7NhL15LOyxWYhM563UAUktV7Q7RF9gzWR
+	 14FuH7SLoYie5I3eEKi8d98d3Y85Pg+Ornkxdt9iVw8f6majr9bAktffe7CT4X+Lgj
+	 ORgzBzTYoNVyo2AX+xCugSvD1EL0Z+eTqY8DYuVjZHPwvOLpHkvtZkpCp5Y9tonoEz
+	 YpkR9Af7qfCvntVTtMHKdrIFVxKj2e8LCei4LXzQqEx9G73RsLKuiR/Yo0Fb6Ky1hl
+	 tqLP6tIUPIg/Lrr7ZAVa5/8vUcSCnWp/bwU5Tr2P0wX6kUpEDl+nSNLZD4jNxPcFxb
+	 4/fsIgVnsCNGA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,10 +34,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Feb 2026 11:09:32 +0100
-Message-Id: <DGC1TY0BINGC.3THSKW6E6OJLQ@kernel.org>
-Subject: Re: [PATCH v4 09/33] gpu: nova-core: Hopper/Blackwell: skip GFW
- boot waiting
+Date: Wed, 11 Feb 2026 11:16:05 +0100
+Message-Id: <DGC1YYNXOV10.3P1P49DNY20K7@kernel.org>
+Subject: Re: [PATCH v4 05/33] gpu: nova-core: factor .fwsignature* selection
+ into a new get_gsp_sigs_section()
 Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
  <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
  <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
@@ -53,53 +53,33 @@ Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
 To: "John Hubbard" <jhubbard@nvidia.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20260210024601.593248-1-jhubbard@nvidia.com>
- <20260210024601.593248-10-jhubbard@nvidia.com>
-In-Reply-To: <20260210024601.593248-10-jhubbard@nvidia.com>
+ <20260210024601.593248-6-jhubbard@nvidia.com>
+In-Reply-To: <20260210024601.593248-6-jhubbard@nvidia.com>
 
 On Tue Feb 10, 2026 at 3:45 AM CET, John Hubbard wrote:
-> Hopper and Blackwell GPUs use FSP-based secure boot and do not require
-> waiting for GFW_BOOT completion. Skip this step for these architectures.
+> Keep Gsp::new() from getting too cluttered, by factoring out the
+> selection of .fwsignature* items. This will continue to grow as we add
+> GPUs.
 >
+> Reviewed-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 > ---
->  drivers/gpu/nova-core/gpu.rs | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
+>  drivers/gpu/nova-core/firmware/gsp.rs | 60 ++++++++++++++-------------
+>  1 file changed, 31 insertions(+), 29 deletions(-)
 >
-> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-> index 24feb0e8723e..f04e2a795e90 100644
-> --- a/drivers/gpu/nova-core/gpu.rs
-> +++ b/drivers/gpu/nova-core/gpu.rs
-> @@ -304,10 +304,19 @@ pub(crate) fn new<'a>(
->          let chipset =3D spec.chipset();
+> diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-cor=
+e/firmware/gsp.rs
+> index bc2243450989..10761716ed93 100644
+> --- a/drivers/gpu/nova-core/firmware/gsp.rs
+> +++ b/drivers/gpu/nova-core/firmware/gsp.rs
+> @@ -146,6 +146,36 @@ pub(crate) struct GspFirmware {
+>  }
 > =20
->          try_pin_init!(Self {
-> -            // We must wait for GFW_BOOT completion before doing any sig=
-nificant setup on the GPU.
-> +            // Turing, Ampere, Ada: we must wait for GFW_BOOT completion=
- before doing any
-> +            // significant setup on the GPU.
-> +            //
-> +            // Hopper/Blackwell: skip GFW_BOOT completion waiting entire=
-ly, and use the simpler FSP
-> +            // Chain of Trust boot path (elsewhere) instead.
->              _: {
-> -                gfw::wait_gfw_boot_completion(bar)
-> -                    .inspect_err(|_| dev_err!(pdev, "GFW boot did not co=
-mplete\n"))?;
-> +                if matches!(
-> +                    chipset.arch(),
-> +                    Architecture::Turing | Architecture::Ampere | Archit=
-ecture::Ada
+>  impl GspFirmware {
+> +    fn get_gsp_sigs_section(chipset: Chipset) -> Option<&'static str> {
 
-I assume Blackwell is not an exception and we expect this to be the case fo=
-r
-future architectures as well? I.e. checking for "!Architecture::Blackwell" =
-makes
-no sense?
+Please don't use the 'get' prefix, as it commonly indicates taking a refere=
+nce
+count.
 
-> +                ) {
-> +                    gfw::wait_gfw_boot_completion(bar)
-> +                        .inspect_err(|_| dev_err!(pdev, "GFW boot did no=
-t complete\n"))?;
-> +                }
->              },
+Let's use something like find_gsp_sigs_section().
