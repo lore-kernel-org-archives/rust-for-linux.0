@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49953EBF1D;
-	Wed, 11 Feb 2026 07:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CCD42048;
+	Wed, 11 Feb 2026 07:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770795783; cv=none; b=rbopUZkVsiFiLaAuOdqz6HAAlh3n7cUFGkMqlMGPSrMCgVKfsQaDr9jm7sljbEnRmQQr0DjYXpExOKmi4esjEfCcUZHY+So5GDomL11MR41LnPkN+VbI/pUd5xAtkghU80zSePsqFvWfTicl8zj6hM1+I0erdQwEXO5D9PKiyl8=
+	t=1770795962; cv=none; b=p/n5EPfSxRzI6evdgTBCk7N8gcpqEUEUcdCjffpveHlzFRTylo9LB20p/oMdL8cCFiyxni3jNDpxK1UhgYvPh/q7Y8YQgfa0/0+/jvGr8cgoryG/ePgUprPWZBZg0L/7UZz5ikFR/IfKG9T8m+BeUzo12S2RktEObalImfkhnA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770795783; c=relaxed/simple;
-	bh=ica1Ebj/m1NL4pYs6l4iDuSVu6qcBN3gjo8gIeyJWkA=;
+	s=arc-20240116; t=1770795962; c=relaxed/simple;
+	bh=hau6d3ZhCXyylwP7O8OXnAGlNr0yKooB+0BVaN+WS84=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=r/gFkU89At5EWBjRiv2eRqBTnBEcdofAUCviDphsrTBTLuUe7PLt5/NAkXWL7k2g0gL4EADI1XpQ6e+ZQZ66wfv1gc8eFPpKBkATUcBGOMlkSOQwP3aflrvljCINuT2hwxpuMif2Y0FSxc045ukTrsizqWSFV72ZKXFHbsOKhsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVhm/HRD; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Nd5RbjJeAHBuXoKchpjPEcmPM23tfXi8XLH1jUZbZBPytg3FqSCE/6JFsh1wgWoFolVADb/ht2FaOsu55jygVE1OtCUgXXAj5YvJueCGIaIxCeHYZAFs9dtgUuPyh7zKEkiBBYBxyVw9R+6U95/xeRqWZuwTwfanfmht7lBkVdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WjoXhLin; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVhm/HRD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2682DC4CEF7;
-	Wed, 11 Feb 2026 07:42:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WjoXhLin"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358C9C16AAE;
+	Wed, 11 Feb 2026 07:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770795783;
-	bh=ica1Ebj/m1NL4pYs6l4iDuSVu6qcBN3gjo8gIeyJWkA=;
+	s=k20201202; t=1770795961;
+	bh=hau6d3ZhCXyylwP7O8OXnAGlNr0yKooB+0BVaN+WS84=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=rVhm/HRDb0EmeUqovVDPd7UlILZrIz5H7xyocmof1XPFUQjsyHTeZAhql8GLZrEcw
-	 2+kZMr6lvN/VuC+dDLcfOyXpoRahv5qMzU9Fityj9/dmJvls8NcwT4j+PlA1sKA5t4
-	 GkeHF5kSqkvjF+S3pe85Zub0ITcs1ioJxjezXv1m/HOxJSMnCyy6ng5M3WfjWpQtTx
-	 QuHAhbA1dQngY93qiR8h6C8i+1axp+Wqh3mpG8wCtDXFWTrWi3D3M0YSV9rvVDrF8r
-	 MfzSB/ya/xDQTzU+wupQZFTzzKjLQKkLUGVBu0XGM/HWaWjl5LwsOLmXzhiDUYRpIY
-	 ueB8yoQlz/TMg==
+	b=WjoXhLinl3f1PL5VSdMkEFx7huQUHpF/rhUM44BTvCN82ViE3apyK8REuLM9j/DZ/
+	 e8GNF9PyhxwXU8PfxztL1juUg/eYmbdAeUPvSETxtxhc7dLQOs+k4/8daYlOnUVKxv
+	 e9ee+fqB7o01kNZ3+6h8bSkqp3k3iveXaqCxjQ16w8spJA6jz5zy2npWbbVFPgj2up
+	 q9G5gnVVo0RczCvDFRaOU1Cxe43loYU4HJDWiso8DOJgySlYXQmy+P5K73dalB61mr
+	 NEYpfidta5sUar5G1LDYJuC2u8Nbnwnb2rJUxoqs/ked56KpiUdeTYKR5pFJv3uHp+
+	 6D9cGFXqV6ljA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Daniel Gomez <da.gomez@kernel.org>
 Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
@@ -39,14 +39,16 @@ Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
  <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, David
  Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
  Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 04/12] rust: xarray: add `XArrayState`
-In-Reply-To: <aYtcdGk8zcwaHfsd@macos>
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, "Matthew Wilcox
+ (Oracle)" <willy@infradead.org>
+Subject: Re: [PATCH v3 11/12] xarray, radix-tree: enable sheaf support for
+ kmem_cache
+In-Reply-To: <aYrsR5VYH9JHeIoZ@macos>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
- <aYtcdGk8zcwaHfsd@macos>
-Date: Wed, 11 Feb 2026 08:42:50 +0100
-Message-ID: <87cy2bvi85.fsf@t14s.mail-host-address-is-not-set>
+ <20260209-xarray-entry-send-v3-11-f777c65b8ae2@kernel.org>
+ <aYrsR5VYH9JHeIoZ@macos>
+Date: Wed, 11 Feb 2026 08:45:52 +0100
+Message-ID: <87a4xfvi33.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,21 +60,41 @@ Content-Type: text/plain
 Daniel Gomez <da.gomez@kernel.org> writes:
 
 > On 2026-02-09 15:38, Andreas Hindborg wrote:
->> Add `XArrayState` as internal state for XArray iteration and entry
->> operations. This struct wraps the C `xa_state` structure and holds a
->> reference to a `Guard` to ensure exclusive access to the XArray for the
->> lifetime of the state object.
+>> The rust null block driver plans to rely on preloading xarray nodes from
+>> the radix_tree_node_cachep kmem_cache.
 >> 
->> The `XAS_RESTART` constant is also exposed through the bindings helper
->> to properly initialize the `xa_node` field.
+>> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  lib/radix-tree.c | 14 ++++++++++----
+>>  1 file changed, 10 insertions(+), 4 deletions(-)
 >> 
->> The struct and its constructor are marked with `#[expect(dead_code)]` as
->> there are no users yet. We will remove this annotation in a later patch.
+>> diff --git a/lib/radix-tree.c b/lib/radix-tree.c
+>> index 976b9bd02a1b5..1cf0012b15ade 100644
+>> --- a/lib/radix-tree.c
+>> +++ b/lib/radix-tree.c
+>> @@ -1598,10 +1598,16 @@ void __init radix_tree_init(void)
+>>  	BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT > 32);
+>>  	BUILD_BUG_ON(ROOT_IS_IDR & ~GFP_ZONEMASK);
+>>  	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
+>> -	radix_tree_node_cachep = kmem_cache_create("radix_tree_node",
+>> -			sizeof(struct radix_tree_node), 0,
+>> -			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
+>> -			radix_tree_node_ctor);
+>> +
+>> +	struct kmem_cache_args args = {
+>> +		.ctor = radix_tree_node_ctor,
+>> +		.sheaf_capacity = 64,
+>> +	};
 >
-> It makes sense to me to merge patch 4 and 5 to avoid this.
+> Is the sheaf_capacity matching the number of slots in an XArray node? If so,
+> this should be bindings::XA_CHUNK_SIZE.
 
-It's always a balance. When I merge things I tend to get comments that I
-should split things out to make them easier to digest and review.
+It is not, it is arbitrarily chosen to large enough to gain an advantage
+but small enough to not waste too much memory.
+
+For rust null block, it needs to be at least large enough to insert two
+leaf nodes.
 
 
 Best regards,
