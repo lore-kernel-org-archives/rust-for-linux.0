@@ -1,240 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53ECF224F3;
-	Wed, 11 Feb 2026 19:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFEA2EDD62;
+	Wed, 11 Feb 2026 19:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770839162; cv=none; b=sjjfY6jootrpw7Y9iOqVdcasTP+ygVIGBEHez01Bw9sVEMORs4Y+PEL8bQPsato5GlyNcIFwByvySQB17sS5B1ctBeLkWfRlsvDn7snn/uw7amet+zmi+izXh8JL8N2KMPq5Wt2+YD/NNUhstOBiKO7IBhh315IYeNcMCYATm/8=
+	t=1770839699; cv=none; b=PInytty98VOP/muOpxq5O6DxnWJDih/uQp99KFPep/NAE0W+THqBT4QyCDgbtD0V7kyS+6IUtNGcXcco3DLc1pJlqBYXoACtQlL71oWjneGOWiIfK/GVDD2lz1fPWw0H4igeziUxyPJMb2Jdfd6K0Ygy/KVw8c6Ia4wNHqZmHTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770839162; c=relaxed/simple;
-	bh=HaxVebRUVDnlA69yJZ31bR4UMU60zYr0ZNnrO2CdKa8=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ms5XVsAX0941vtu1zaJLNzsIw0G4sp0TvCmJE/udweF9binswZK2U4+ZoUho7CrdI0EucG7Ax4uAleS2EjrS0v3y5dGyvDo+4Jz9/OAt3sap4WWERVr+N04cLgHODg48H6lFQFuSZJSxSwX+PmFdN9/1h1njlD7HXxoBgkxV45g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VoAVf92+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770839699; c=relaxed/simple;
+	bh=zGHlXKDYrJluZ5MkoqttAQNx/xy0GXIVqTPejTbV/V8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B7rhBtoOnH6x9TGbtYOkQv44xUF2ECKL6MiJH8QUJoNzSi1sjwcC3DMupBp5QkrQeA0XkWS6ErZptU2XF+5WVmEDM+1tKFLT5BMeLMNCfy8y4jNBsHNdYS91vctH99rhNN1zQ93z6ze7b8MmpYVGZnKZ9mz3Ke6Lo2g65u7Fh4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ca2b7sBP; arc=none smtp.client-ip=178.154.239.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VoAVf92+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBF6C4CEF7;
-	Wed, 11 Feb 2026 19:46:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770839161;
-	bh=HaxVebRUVDnlA69yJZ31bR4UMU60zYr0ZNnrO2CdKa8=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=VoAVf92+flHHG9etFTngOAiULtwcdVtLv5rskVpY5yUkBmx7VZ7Roi9GwABICq27f
-	 kgFZeyoY7D7A1Tdf3vCqKudnIrNzZHV+ziMnQCmWLOWeQBi7eFsPoKeo3jh88msYDm
-	 LFJHd+UOwh81HXe3zbhM9gCcFksLiHU/FeQ0D7euedFSaR9wIEepgnZLzQ9jvt9Tgi
-	 apT4iTq7oO9JEoZzJfaSTwO79w6abnJEMtZbIGOyTqxYOfFlhpDYnCTmnpgROjWPTH
-	 8ZD9ssdo4Y+KeVyMdQctEa9FWfTSeOTJzm6AMDWolNnq+fxwNOwIFq+NwCwoBeMUX1
-	 B5TjeHCFNRNWg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 57657F4006E;
-	Wed, 11 Feb 2026 14:46:00 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 11 Feb 2026 14:46:00 -0500
-X-ME-Sender: <xms:eNyMab3Cq8HUvmOl61nU1w4hI_a4h7HwEIaoRKhDhfBDyMJA2-B8fg>
-    <xme:eNyMaVHJL6Wj4ii1RATklZDxnu2ZTpI_gAf0YBK89PD2cB-m4Au2YyoUOfJss-AZb
-    tDZhsM8mZ5Rg0EQqLMGSIdCywJ0Lm5JtMHzYWUo4hOuPgNHQeYhYw>
-X-ME-Received: <xmr:eNyMaSjQq-ePJBXJbQjHdr6L6YPaz6EjLr9W5a0a61qL1NukpvW10SvONI9j9ezzubb_Yv1PB2fMeONdJ1P0-1awxMZJYtvH>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdefgedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvffukfhfgggtugfgjgesthekrodttddtjeenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ejieehffdvveeuffevieeigeehkeehgfevhfeivdetudefhfetieelgedtvdetffenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
-    rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
-    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdehpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlh
-    gvrdgtohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhr
-    tghpthhtohepthgrmhhirhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhih
-    hnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthgrmhhirhgusehgmhgr
-    ihhlrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegsohhq
-    uhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihgh
-    huohdrnhgvth
-X-ME-Proxy: <xmx:eNyMaeeiVJWEwxzv3VRxZUmOMg1T14Jsl9roVWXypW4YdyT3EaN_yg>
-    <xmx:eNyMaYwMSm7ZQvgNtZxJMxEsJ07uDn-dVec2OK18izYnlB4HocDkKA>
-    <xmx:eNyMaYZOf86EVdJOpd3kQMz3Xm1f6FAkO39cRt7Udy1w8B7FDGY0Xw>
-    <xmx:eNyMaWIfkwwyhR2qAZ9P8wV3EgG9pO8fG1TtJ5SuZeF7nDAbYCxI-g>
-    <xmx:eNyMaf0DiwZRdikJ0WB5P-Sr96s-IAbbwe9RNVtZaDaEIIdBi2DV2IaZ>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Feb 2026 14:45:59 -0500 (EST)
-Date: Wed, 11 Feb 2026 11:45:58 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 05/12] rust: xarray: use `xas_load` instead of
- `xa_load` in `Guard::load`
-Message-ID: <aYzcdqiNMtCSOlxA@tardis.local>
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-5-f777c65b8ae2@kernel.org>
- <zqo3qcdqlrxnqxl63kqeuvdacpbbywdrcir2kfwh7j6zvbfuq5@wspy4e75axfz>
- <CAJ-ks9njGhT85pgUSahki989Y9vn3XOBNO5wxB8wE+KvbL00wA@mail.gmail.com>
- <6sd4numrxigibwynr2lfmtdj5uabggrx2l57igtjbnq4uwddrm@wipmwcmqbkjn>
- <CAJ-ks9knC3pKpiMaG6f3C1Kr6su9p26hM7YvVMzsVwYVHGtm2Q@mail.gmail.com>
- <CAH5fLghKwNEdVeRi3H3LQ9NTPYprpAeY41-jgfq8YEST9PaGdw@mail.gmail.com>
- <hq46fcdy6zvwcwlbtbjynqadiwy3wjs7raxioime2et5amzez6@wvzzlkiijwvf>
- <aYzDzeh1cTN2TEVz@tardis.local>
- <55jeqjcqqldnvkpnmigc5pbys5ee5xfdo3in7fhbxe7uqnm634@xsykemyms4sy>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ca2b7sBP"
+Received: from mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:1ba8:0:640:1638:0])
+	by forward103b.mail.yandex.net (Yandex) with ESMTPS id 3D5B8C005E;
+	Wed, 11 Feb 2026 22:54:48 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 9sZcv22Hu8c0-yYzEm5xR;
+	Wed, 11 Feb 2026 22:54:47 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1770839687;
+	bh=tVROmgJcpnBTWH2agRberTX2KctPC87mIpAm+yAPRQI=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=Ca2b7sBPC3FyX/Y1dRNRBOVQgvzeVK8iUQflDo2aNUZPtX9TXQxIbntmY5sBu2vmZ
+	 nKtqlNxAhD6N/Wg/ivMpAuvDbLhBSsVwoeOKF32NzxDa870eAwCr30AKmdjmZjitd3
+	 FeL78K6dEA9eDbXt8z2NKaWtI0f87ZYgpEQfmmYE=
+Authentication-Results: mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: daniel.almeida@collabora.com,
+	aliceryhl@google.com,
+	dakr@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v1] drm/tyr: make SRAM supply optional like panthor
+Date: Wed, 11 Feb 2026 22:54:06 +0300
+Message-ID: <20260211195406.289634-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <55jeqjcqqldnvkpnmigc5pbys5ee5xfdo3in7fhbxe7uqnm634@xsykemyms4sy>
 
-On Wed, Feb 11, 2026 at 01:55:43PM -0500, Liam R. Howlett wrote:
-> * Boqun Feng <boqun@kernel.org> [260211 13:00]:
-> > On Wed, Feb 11, 2026 at 09:32:36AM -0500, Liam R. Howlett wrote:
-> > > * Alice Ryhl <aliceryhl@google.com> [260210 16:34]:
-> > > > On Tue, Feb 10, 2026 at 10:23 PM Tamir Duberstein <tamird@kernel.org> wrote:
-> > > > >
-> > > > > On Tue, Feb 10, 2026 at 12:59 PM Liam R. Howlett
-> > > > > <Liam.Howlett@oracle.com> wrote:
-> > > > > > Is this a temporary limitation?
-> > > > >
-> > > > > Maybe? I don't think RfL has good abstractions for RCU yet. For
-> > > > > example, exposing load directly on the xarray using xa_load would
-> > > > > require a way to guarantee that the returned pointer's target isn't
-> > 
-> > Well, if we only return a pointer, we don't need to guarantee that,
-> > right? Because it's up to the user to provide that guarantee. So we
-> > could have XArray::load() (not Guard::load()) that just calls xa_load().
-> > Also see below.
-> > 
-> > > > > being concurrently mutated (e.g. under the xarray lock). I'm not aware
-> > > > > of anyone asking for this, though.
-> > > > 
-> > > > It's relatively easy to add an rcu-backed load using the RCU
-> > > > abstractions we have today. I already shared an RFC containing such a
-> > > > method for the maple tree, and it would not be much different for
-> > > > xarray.
-> > > > https://lore.kernel.org/all/20260116-rcu-box-v1-0-38ebfbcd53f0@google.com/
-> > 
-> > I need to point out a difference between xas_load() and Alice's usage
-> > (also what Tamir mentioned above) there, what Alice needs (at least from
-> > her patchset) is the existence of the object is protected by RCU, i.e.
-> > if there is someone else dropping the object, a RCU read lock would
-> > still guarantee the access to the object is valid.
-> > 
-> > However, the internal RCU usage of both xarray and maple tree is to
-> > protect the *internal* data structure if I'm not missing anything, i.e.
-> > an writer may change the array or the tree while a reader is reading,
-> > the internal structure itself is still consistent and valid. But the
-> > nothing guarantees the object you read is still valid. For example, you
-> > can have an xa_erase() racing with an xa_load():
-> > 
-> > 	<writer>			<reader>
-> > 	ptr = xa_erase(xa, idx);
-> > 					ptr = xa_load(xa, idx);
-> > 	reclaim(ptr);
-> > 					use(ptr); // <- object may be gone
-> > 
-> > the users of xarray needs to use other mechanism to guarantee the
-> > existence of the object.
-> > 
-> > In Alice's case, she in fact used an RCU read side critical section with
-> > a larger scope to protect the object as well, which is definitely nice
-> > to have, but not only way of using maple/xarray.
-> 
-> The lock surrounding the ptr is only useful if your ptr is rcu
-> protected, which isn't always the case.  So having the rcu read side
+On rk3588s, `dmesg | grep 'tyr'` logs:
 
-Right, so what Alice had in her patchset linked was introducing an RCU
-protected type wrapper for an object, so that is particularly for the
-case where the object is under RCU protection. (I would like to arrange
-the implementation and API in a slight different way for that patchset,
-but the idea is solid)
+  tyr fb000000.gpu: supply SRAM not found, using dummy regulator
 
-> critical section extended to the life of the ptr means you've extended
-> the rcu window for no reason when the ptr is protected in another way.
-> This may perform poorly, depending on the situation.
-> 
-> > 
-> > > > 
-> > > 
-> > > It would probably be worth having two loads then, one that does
-> > > rcu_read_lock()/unlock() and one for writer/advanced users like we have
-> > > on the C side of things.
-> > > 
-> > 
-> > Agreed. But we may need more ;-)
-> > 
-> > Here IIUC that Andreas does is adding a `load()` for `Guard` of
-> > `XArray`, which is the load for a writer and most certainly you won't
-> > need to take an RCU read lock for that. The load of a reader can be
-> > added as I suggested above (similar as your "rcu_read_lock()/unlock()"
-> > suggestion above), but no object existence guarantee. We likely
-> > need a third API that can provide the object existence similar to what
-> > Alice had in maple tree.
-> > 
-> > > Or at least name the load() function to indicate which is implemented
-> > > today?
-> > > 
-> > 
-> > It's a namespace thing ;-) , the function in this patch is
-> > kernel::xarray::Guard::load(), and as I suggest here
-> > kernel::xarray::XArray::load() should be the same as xa_load().
-> 
-> Ah, okay.. this might be hard to follow in code, but I guess the
-> compiler will catch the wrong user.  That is, Guard::load() would not be
-> written out, we'd just see array.load() in both cases?
-> 
+This happens because Tyr calls Regulator<Enabled>::get() for SRAM,
+which goes through the non-optional regulator_get() path. If the
+device tree doesn't provide sram-supply, regulator core falls back
+to a dummy regulator and writes that log.
 
-For `Guard::load()` case, you will need to write:
+Panthor handles SRAM as optional and tolerates missing sram-supply.
+This patch matches that behavior in Tyr by using optional regulator
+lookup and storing SRAM as Option<Regulator<Enabled>> which avoids
+dummy-regulator fallback/noise when SRAM is not described inside
+the device tree.
 
-	let ptr = xa.lock().load();
+Link: https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/573210018
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ drivers/gpu/drm/tyr/driver.rs |  5 +++--
+ rust/kernel/regulator.rs      | 40 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+), 2 deletions(-)
 
-or
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 0389c558c036..e0856deb83ec 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -113,7 +113,8 @@ fn probe(
+         coregroup_clk.prepare_enable()?;
+ 
+         let mali_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c_str!("mali"))?;
+-        let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c_str!("sram"))?;
++        let sram_regulator =
++            Regulator::<regulator::Enabled>::get_optional(pdev.as_ref(), c_str!("sram"))?;
+ 
+         let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
+         let iomem = Arc::pin_init(request.iomap_sized::<SZ_2M>(), GFP_KERNEL)?;
+@@ -201,5 +202,5 @@ struct Clocks {
+ #[pin_data]
+ struct Regulators {
+     mali: Regulator<regulator::Enabled>,
+-    sram: Regulator<regulator::Enabled>,
++    sram: Option<Regulator<regulator::Enabled>>,
+ }
+diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
+index 2c44827ad0b7..8d95e5e80051 100644
+--- a/rust/kernel/regulator.rs
++++ b/rust/kernel/regulator.rs
+@@ -283,6 +283,29 @@ fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
+         })
+     }
+ 
++    fn get_optional_internal(dev: &Device, name: &CStr) -> Result<Option<Regulator<T>>> {
++        // SAFETY: It is safe to call `regulator_get_optional()`, on a
++        // device pointer received from the C code.
++        let inner = from_err_ptr(unsafe {
++            bindings::regulator_get_optional(dev.as_raw(), name.as_char_ptr())
++        });
++
++        let inner = match inner {
++            Ok(inner) => inner,
++            Err(ENODEV) => return Ok(None),
++            Err(err) => return Err(err),
++        };
++
++        // SAFETY: We can safely trust `inner` to be a pointer to a valid
++        // regulator if `ERR_PTR` was not returned.
++        let inner = unsafe { NonNull::new_unchecked(inner) };
++
++        Ok(Some(Self {
++            inner,
++            _phantom: PhantomData,
++        }))
++    }
++
+     fn enable_internal(&self) -> Result {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+         to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })
+@@ -300,6 +323,11 @@ pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
+         Regulator::get_internal(dev, name)
+     }
+ 
++    /// Obtains an optional [`Regulator`] instance from the system.
++    pub fn get_optional(dev: &Device, name: &CStr) -> Result<Option<Self>> {
++        Regulator::get_optional_internal(dev, name)
++    }
++
+     /// Attempts to convert the regulator to an enabled state.
+     pub fn try_into_enabled(self) -> Result<Regulator<Enabled>, Error<Disabled>> {
+         // We will be transferring the ownership of our `regulator_get()` count to
+@@ -329,6 +357,18 @@ pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
+             .map_err(|error| error.error)
+     }
+ 
++    /// Obtains an optional [`Regulator`] instance from the system and enables it.
++    pub fn get_optional(dev: &Device, name: &CStr) -> Result<Option<Self>> {
++        match Regulator::<Disabled>::get_optional_internal(dev, name)? {
++            Some(regulator) => {
++                let enabled_regulator =
++                    regulator.try_into_enabled().map_err(|error| error.error)?;
++                Ok(Some(enabled_regulator))
++            }
++            None => Ok(None),
++        }
++    }
++
+     /// Attempts to convert the regulator to a disabled state.
+     pub fn try_into_disabled(self) -> Result<Regulator<Disabled>, Error<Enabled>> {
+         // We will be transferring the ownership of our `regulator_get()` count
+-- 
+2.51.2
 
-	let guard = xa.lock();
-	let ptr = guard.load();
-
-for `XArray::load()` case, you will need to write:
-
-	let ptr = xa.load();
-
-> It's also more confusing with the borrowck false positive issue in play.
-> That is, using Guard::load() will do more work than necessary, I believe?
-> 
-
-I'm not following that thread closely, but seem so.
-
-> It is odd that only one of these exist, especially considering we have
-> users for both on the C side.  I guess the other one will be added once
-> it's needed.
-> 
-
-Yeah, this is the place where I don't agree with the "you must have a
-user to upstream an API" rule ;-) A reader's `load()`, even with no
-user, would completes the concept of what an XArrary is.
-
-Regards,
-Boqun
-
-> Thanks,
-> Liam
