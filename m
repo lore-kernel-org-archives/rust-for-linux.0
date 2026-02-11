@@ -1,73 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2293148DD;
-	Wed, 11 Feb 2026 11:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACCA23D2B1;
+	Wed, 11 Feb 2026 11:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770808422; cv=none; b=pc5YPHaQE5C9r9s35oQXJ1Xv0Hh5JAoXDqasaCFTsH1MjBZHJhXW7R04hDys5+AekWmTk3oVcQqqEjRmWi/+YfbNKuerd5u7rwwnZnZj///QhJg5sX9GQY5a3SHpV7n2kEdb2SuAtkHyNUtvdIQ5isU8NEJYXxO8Y1ATzJkY9Gs=
+	t=1770808749; cv=none; b=nMa4ct0g5hdL0X1pDFCwnSKXefkQVcHyiRJa8okMtkvIeVRYbsGfpf3qS4M67R++vbkU2RCP18s8GEwNsVve298txxrS8orJ89dMm1Fub91TJCPtqQGxfNFlEnsKyocj/NLF3/v346gP6byxIhATODE0rlkDXnDOVcidFr3nOAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770808422; c=relaxed/simple;
-	bh=ae7W4zNihIELFm0uT4GPZhG4pdL4USqe7UGXMZP4dLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NQVnS3bkWTZ61PCTFq3LIVtw0yATNdzKc0O4mYz25mjrrtlbztEZ0ggYGHWooRXCw44SqGbgB7QndC0pqwgWP9NxWB8b7Q0FYGjJrEA5+AdBAZh/zdEfnoiDMgJJIG8+s6g4TNOt9csycZqq3cuiv0pTAfyOygjCCGHc1jQj06w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siIYxAhE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770808749; c=relaxed/simple;
+	bh=qtxCyNgeZ05m263Dy1FBKMUpBgiseOelYdUHJ0n9q+E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Sit0BXZfjOoqslLOw10S03LxbTuaPV5cphar+Q77fTzjFRT/WCDcrrA9sGDXVG4j5DeMdUeVFJ5FCdZdg/Fpow2cKs/YiKFEbzvzsEnHN4AAaYQE05lib6KaUO1Qq9t/b3zVWkE5L2q63VSKZURahECYD2xjU+asjl8kFb5KEBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7nIuy2K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siIYxAhE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3DEC19421;
-	Wed, 11 Feb 2026 11:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770808422;
-	bh=ae7W4zNihIELFm0uT4GPZhG4pdL4USqe7UGXMZP4dLI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=siIYxAhE9agV0m3hezmuB7e4qDsos+p7qEUDgMb5dNmFZp0b/Y14zk4m27RPIqzps
-	 L8l1OrfFkLj6v2jD06xNCayUkByQZgguCX6HvXeCW9nziDpYetA9QaoNm8dWUtuR+7
-	 PJLX2jiyq6E+RAomnWvcwsRVWuItri5UyjJY7N6w=
-Date: Wed, 11 Feb 2026 12:13:38 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: jongan.kim@lge.com
-Cc: aliceryhl@google.com, arve@android.com, brauner@kernel.org,
-	cmllamas@google.com, tkjos@android.com, a.hindborg@kernel.org,
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
-	daniel.almeida@collabora.com, gary@garyguo.net,
-	heesu0025.kim@lge.com, ht.hong@lge.com, jungsu.hwang@lge.com,
-	kernel-team@android.com, linux-kernel@vger.kernel.org,
-	lossin@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org,
-	sanghun.lee@lge.com, seulgi.lee@lge.com, sunghoon.kim@lge.com,
-	tamird@gmail.com, tmgross@umich.edu, viresh.kumar@linaro.org,
-	vitaly.wool@konsulko.se, yury.norov@gmail.com
-Subject: Re: [PATCH v4 1/3] binder: fix PID namespace collision for freeze
- operation
-Message-ID: <2026021121-guiding-finalize-0c4a@gregkh>
-References: <20260206085336.32819-2-jongan.kim@lge.com>
- <20260211101737.5703-1-jongan.kim@lge.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7nIuy2K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1F1C4CEF7;
+	Wed, 11 Feb 2026 11:19:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770808749;
+	bh=qtxCyNgeZ05m263Dy1FBKMUpBgiseOelYdUHJ0n9q+E=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Z7nIuy2KkHqyMoZsjQDn6ZqCnVTuhrUg1n9YyzSb1ldWM4yhzC07HCnYNs5fcxvY1
+	 df5ybHPo9ITgImZlKzYjMQ8VHat7snd5Q0hXrHPZhoxVQtU3MHPi4cyLqjqJ/St2wr
+	 v+SqApBISXsTyjZLRq7XdwVowfIwW6j7WSBnnYJUgUymTXVtUJH0OkOAG5oUYWFecq
+	 2fOI3gp3JQRJAqQhk52BNp/lW1+R66aETitjVi9+BaqM5Fe23RUVfB1DQYUSmO8lZO
+	 rLrM+TTBSl3niNLIXHZmkVAXsKZ7ay39IdFtkTiDaawy0ZJ1syuCi2oWOO00u49pV2
+	 V21r/zWNhkNPA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260211101737.5703-1-jongan.kim@lge.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Feb 2026 12:19:04 +0100
+Message-Id: <DGC3B6XIY3DW.M3CRU3IAUKOJ@kernel.org>
+Subject: Re: [RFC PATCH 3/4] rust/drm: Add DRM Jobqueue
+Cc: "Philipp Stanner" <phasta@mailbox.org>, <phasta@kernel.org>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Gary Guo" <gary@garyguo.net>, "Benno Lossin"
+ <lossin@kernel.org>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Boris Brezillon" <boris.brezillon@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260203081403.68733-2-phasta@kernel.org>
+ <20260203081403.68733-5-phasta@kernel.org> <20260210155750.5cdbe6cc@fedora>
+ <8ea48ce49f2c7b6fd715dd54c24e755e8ac3262c.camel@mailbox.org>
+ <20260211120742.0e9e7122@fedora>
+In-Reply-To: <20260211120742.0e9e7122@fedora>
 
-On Wed, Feb 11, 2026 at 07:17:37PM +0900, jongan.kim@lge.com wrote:
-> On Fri, Feb 06 2026 at 17:53:34PM +0900, jongan.kim@lge.com wrote:
+On Wed Feb 11, 2026 at 12:07 PM CET, Boris Brezillon wrote:
+> I try to avoid using concepts the language I rely on is not friendly
+> with.
 
-<snip>
+It's not really a language limitation. For instance, you can implement list=
+s the
+exact same way as they can be implemented in C. It's more that a memory saf=
+e
+list implementation is quite tricky in general.
 
-> Dear Alice and Android Driver Maintainers,
-> 
-> I would appreciate it if you could review patch v4.
-
-It has been less than 1 week since you sent this, and we are in the
-middle of the merge window when nothing can be accepted at all until
-after -rc1 is out.
-
-Please relax, there is no rush here.  If you wish to help out, please
-help in reviewing other patches that have been submitted for review, as
-that will allow your changes to go up the stack.
-
-thanks,
-
-greg k-h
+Lists clearly do have their place. In this specific case, it probably doesn=
+'t
+matter too much, but in general I'd abstain from not using a list (where it=
+ is
+the best fit) just because they are tricky in getting them implemented in a
+memory safe way.
