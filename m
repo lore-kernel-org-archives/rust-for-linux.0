@@ -1,63 +1,63 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFB5345CAF
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 03:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7043B3446AD
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 03:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770780668; cv=none; b=BpfQ2mW6wHwg1ZIybiC6UTs6xbdpqjYfjCqJHiVE+faHPAh4CwgcmK7Q/v4PvhaBE3NsCHh2Z3Kq0y2io2FrJrGKfbMCfMLRxNujdw/rciFw96D+jsSmgpfm3HHCUe0GenP1KIV/km36GZ4xH+W0LgJYgaaH90ZtLwMBfZ/kqAA=
+	t=1770780673; cv=none; b=R1dhvat4NlplMbQQw1tXfpSYkAXj//qZf+2RIrimR0MaZikSHREQax/R6QOt42tazm7UFtNuS4r5+QmIeCiMD2id2UoMoYfjPv/+A/gKPJglnVIdg9rBu+JlC91hiaBM+xFzEnSNe/OJDsj3PAFIRV2fCrO4AubA/3tMZ/8hSZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770780668; c=relaxed/simple;
-	bh=nEGbuxBRykRFhxcsk3nfLY/F3Mx9sTgZjjxcuTK+f0E=;
+	s=arc-20240116; t=1770780673; c=relaxed/simple;
+	bh=ggZ0casIP8pm1D8jNoCOP6ICbzQ2CQUo7npwmTUPjDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9cyNRoWQPf44KPCuwB66738w14CDGkpDkWNzowGzyydFFxFqg9oPnQR3/5iHD5KtWOEhpxe5BxZm3QAHwGdfJj9fRBA35VxtEeS+4Wpev3zyC/mfhGVMr2/tNZHZrI+b1GLBCrGDKX7XhoZEwo/N4bI5B1eda1bpvuRcjOwXFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fxj5BO4g; arc=none smtp.client-ip=209.85.215.174
+	 MIME-Version; b=RWSpUFWnPZS+YiqPzexxCmTJtoCRhlCefRGfyz8lbJ7R7m8BMvU2H1bbbw8nyJ48omLghQ3Ys9tA0uI/mlC/HM2qTRZKlqjiiY3p4YlDdDHSb5LX4BDO9IsoBF/o6IdtgIzf4fILmxMtCX7W+acGWq0b2LuiQAzV08UJhKv+iQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lun180/L; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fxj5BO4g"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c0c24d0f4ceso1719755a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 19:31:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lun180/L"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-824a2888de5so6073b3a.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Feb 2026 19:31:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770780665; x=1771385465; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1770780672; x=1771385472; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+2+pbfB22AAo9Fg9A+J5YEYX8Vl3inVVO54MfCnuT58=;
-        b=fxj5BO4gvTnsK0Ow4irLuMjhcMEnmpMTKmsZ2CX15z4h3bJqNgmF7KCQtoCiSp7F2a
-         HclUnhNiVZBN0RDU/OUElTj2nbpF4SDIymOgR9ctUC9GSxuHQtAoh7iz5ovrh6zv6PGF
-         0UR2un9DwAWdNHUQLRfzvjwQiguF2cigxszJGDOx5xEa6jSbb89d/UbmGhR+gBhcdkNJ
-         cHD5IF1SR+Ioy5Jow4wvFfjZBahegKdHQ+azHU7ArQ9nFJIlJME1Dwf6sqVAUE9lr/WP
-         5ZZmXEqer6iEm2nVvdX7V5hrvX0lD5gBGOjaejoldugfTCnj0mKp+C/lE7T8nzGHrtct
-         ml2w==
+        bh=Nd79arduRCDAlNKbcxg57zbXwsYD/G+5bc7S2bWrry0=;
+        b=lun180/LZBG+3fBHdkLXtA5NoQ+zx/YEXDY5uu4QqgO9FXm9EY7TLORS76aLtNALIn
+         F3fJG9WmBliLBy5Oo7jMyCZK5knu2RT0wTi77PQZpR4dKb8Gi8gqWKKOrN9+7TlxQQHq
+         tUhjZPz/vSph5gxwkgCUyp+G0fvYrKSAcmKm8t8IeBWHVs1aAKDzywVjyS3n4aCbj5fj
+         3hUtI0zLAdKVS7YPC/uni85TCHhJRMdYLnDVGgdTb6QUcevaNSnVTopUximr4xq7uSJp
+         iaeNRCFZ12hqIopzkkdAJCw2jnK5Nr7dGrvWdwsDq6akbBpXLwVnG9E+T6JfCCbKAEw7
+         IH4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770780665; x=1771385465;
+        d=1e100.net; s=20230601; t=1770780672; x=1771385472;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=+2+pbfB22AAo9Fg9A+J5YEYX8Vl3inVVO54MfCnuT58=;
-        b=AvDaHWUpWrqj7EDbqHyoN5OiROmOyp2FjT2Gmgcz5PSYQjHQ5Pbz4IBfYVrNcPDWV/
-         0Ss/aeZTKhR+Hh0RJrr9e1f0NM/ZPS0zMWOCXby38GN9QRB5VBOijrI1GNte21TXGmqe
-         aEdNW2wPdSYHSGCqiFBq/bVKnDoBhlfhgfXQ2Syw1ENrGx06oe3+p/jp8udNjJFWcbtS
-         /TQBTN6JJtUZql4lI8or8eMp6tkt11H2h+JBBnaLnwdqWHjX/hyEN8rU56zKjt8VtjQo
-         oEqHgrEpHk+9J1N6zXc1uzKD9YNWse3fNl4mZLI6RiM0zfI23bgT57d9JO3xjiufTRJh
-         xPSg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1sn49yObzEhVxqaBghj9eEjt+BblimxDebxfeZ2hNUKoH5utVVcc+SiLV70+KsiJ5NWtCwW0RtpcyVPgalw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5ey8N84IKbzKugbPsW0ZZLhoSepRszZP2k7dACTsjmQfp+peZ
-	nGdXj+fqYSnRb4qjxqugq3jIvb9QzD+qJHxRSsd18IBBZoFDX3QUGKU1
-X-Gm-Gg: AZuq6aIeIH7V/Mikhe9OhpU1S+Os7SfJdqMoffyQk2+YJk0ZvkA280po71qUeico/Y4
-	AdNqbh/WRFilBaY0z6UJV7UpzFFmsz36/rWTvEIY/1DhC7SQcJNLFTa+cg/fwPr+ZSov8Z+lOEh
-	GIQQJIk/moeBSYcSCUabLt39O+FVJwWd+QFRtOGdKqpHhNOOYDuj1WQe4BJIt5zre7kky/wqAeL
-	HJmsomBZ70u4goQJB92UtVVRbaMIpgxHQs8CwAoLKrgbqkcokCW5duTOrEzXuY8lVrkXHFDDpz+
-	+27wSe477NjwZyWIrLxQU12Ptp+93ehHNHfhAQRpxgrk62xxKJGDW6nite9EIS21V+VXXCcJZjv
-	3jhKQDdGhr3z2rg/rfsnqcKvhZ/ktxFrBLBzSjErKHEMTTBc3ywjY27c2f8sJvae4xRfA2t5d77
-	4QuKYECoFdZCPhpI8EvT7S3nmnyDZdRpw2Xcppn1NXXza6LRi1ho49
-X-Received: by 2002:a05:6a20:4308:b0:34f:2f38:cad9 with SMTP id adf61e73a8af0-3942e6994f7mr1430450637.53.1770780664657;
-        Tue, 10 Feb 2026 19:31:04 -0800 (PST)
+        bh=Nd79arduRCDAlNKbcxg57zbXwsYD/G+5bc7S2bWrry0=;
+        b=A7C4dzKL38DNcKPhiLiImpDa0KmS+/1FAO3Bt07L3yyXekcFXvMEMMN2i1ZJeCFm8r
+         h1F+Hl6Go4dkvwa6+tvadPnPCEpL2glQLSE10pr181kkZLZChwkeoIDExom/zxjr5sv8
+         xJphJZ/+NJwHsCUZyj31q75R0CpXuywk1+QTQjSEx2LfFDaEtuuyE1jeKSYJLWyNX5Pu
+         iBTZAqaNdDy6XtO2O7CU2rGm4Iew0O01MWWBOl3v4ajkZ00b3GDdZlBt2kGSIkDgdRJI
+         dyhb4gdSuW0cf9/ZN9+BmnUFGFCQ2FCmOxLtW1Go/a/WlLvx+EE7SUbdyTCuMMJ5fhdE
+         dEkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWnz9Y09OuLMCHHDQB+L54Ep3an62WJ4+GZFtwKDlR4xcbzwcJY5KvFKR8jAIoB2I8Ci6UQW5P4n8WJW2qBFw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGPtkPZ5P7y8MbUiKlKDUDIc1iTopscWCypaW2HqsJi+05WnPY
+	deyLmjmbVjkWBYYAy2n+n3+OxjclIh1jJLMk9Adkdv2yz7HXW+0B1htk
+X-Gm-Gg: AZuq6aIV+Tuq9qzipAaqdKdCVvXFzgGCiPtzXwGgTA1fnao0wUJOrpn934phoPNm9vw
+	DhpWqiHQAsSxIeG5iEIAKwQZVfGLgSy1uJX4kze7Psp+AJ4ayRu3QJ4pcVF5QOD4HslQWV9K8sM
+	Td8ZU97amxGaLrlxIMwdhTwXi7/Z2IKISEqdO69ICCGn+t/E9A6KzkK5JC73HgIq2APo9kkgqEe
+	q5CD1PU9OkpI2f4TM9qNULFtSXJMFRcOZJ3r1h7m1K6nvLyF7GpBd64xFYQWxrE+EZ+muqpwkwp
+	97scrmabaOjZJ655xXwycbfAjsrMVnPVjC8luLO8KxH+oPc+4+OuNGQeqTdRqdZLfKui6BVngh2
+	YJsa8o/bfrkMqpAolbpIwaLODrIwDP5eZghTW29jb0iJSfnH2/7It7NmolrJ+vIWCc3FEm00gFO
+	yz+WQLxbyMY4QEJ3P4FSomciW0Fbm2PsJh2+XJXtwfjg==
+X-Received: by 2002:a05:6a20:2585:b0:38e:95f9:8cc1 with SMTP id adf61e73a8af0-39415bdbdbdmr4618591637.12.1770780671775;
+        Tue, 10 Feb 2026 19:31:11 -0800 (PST)
 Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:6209:4521:6813:45b7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6e197d63c9sm464856a12.20.2026.02.10.19.30.58
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6e197d63c9sm464856a12.20.2026.02.10.19.31.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 19:31:04 -0800 (PST)
+        Tue, 10 Feb 2026 19:31:11 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: bhelgaas@google.com,
@@ -79,10 +79,10 @@ Cc: alex.gaynor@gmail.com,
 	ojeda@kernel.org,
 	wilfred.mallawa@wdc.com,
 	aliceryhl@google.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [RFC v3 11/27] PCI/CMA: Reauthenticate devices on reset and resume
-Date: Wed, 11 Feb 2026 13:29:18 +1000
-Message-ID: <20260211032935.2705841-12-alistair.francis@wdc.com>
+	Alistair Francis <alistair@alistair23.me>
+Subject: [RFC v3 12/27] lib: rspdm: Support SPDM get_version
+Date: Wed, 11 Feb 2026 13:29:19 +1000
+Message-ID: <20260211032935.2705841-13-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260211032935.2705841-1-alistair.francis@wdc.com>
 References: <20260211032935.2705841-1-alistair.francis@wdc.com>
@@ -94,140 +94,244 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Alistair Francis <alistair@alistair23.me>
 
-CMA-SPDM state is lost when a device undergoes a Conventional Reset.
-(But not a Function Level Reset, PCIe r6.2 sec 6.6.2.)  A D3cold to D0
-transition implies a Conventional Reset (PCIe r6.2 sec 5.8).
+Support the GET_VERSION SPDM command.
 
-Thus, reauthenticate devices on resume from D3cold and on recovery from
-a Secondary Bus Reset or DPC-induced Hot Reset.
-
-The requirement to reauthenticate devices on resume from system sleep
-(and in the future reestablish IDE encryption) is the reason why SPDM
-needs to be in-kernel:  During ->resume_noirq, which is the first phase
-after system sleep, the PCI core walks down the hierarchy, puts each
-device in D0, restores its config space and invokes the driver's
-->resume_noirq callback.  The driver is afforded the right to access the
-device already during this phase.
-
-To retain this usage model in the face of authentication and encryption,
-CMA-SPDM reauthentication and IDE reestablishment must happen during the
-->resume_noirq phase, before the driver's first access to the device.
-The driver is thus afforded seamless authenticated and encrypted access
-until the last moment before suspend and from the first moment after
-resume.
-
-During the ->resume_noirq phase, device interrupts are not yet enabled.
-It is thus impossible to defer CMA-SPDM reauthentication to a user space
-component on an attached disk or on the network, making an in-kernel
-SPDM implementation mandatory.
-
-The same catch-22 exists on recovery from a Conventional Reset:  A user
-space SPDM implementation might live on a device which underwent reset,
-rendering its execution impossible.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Alistair Francis <alistair@alistair23.me>
 ---
- drivers/pci/cma.c        | 15 +++++++++++++++
- drivers/pci/pci-driver.c |  1 +
- drivers/pci/pci.c        | 12 ++++++++++--
- drivers/pci/pci.h        |  2 ++
- drivers/pci/pcie/err.c   |  3 +++
- 5 files changed, 31 insertions(+), 2 deletions(-)
+ lib/rspdm/consts.rs    | 17 +++++++++++
+ lib/rspdm/lib.rs       |  6 +++-
+ lib/rspdm/state.rs     | 58 ++++++++++++++++++++++++++++++++++--
+ lib/rspdm/validator.rs | 67 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 144 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/cma.c b/drivers/pci/cma.c
-index e974d489c7a2..f2c435b04b92 100644
---- a/drivers/pci/cma.c
-+++ b/drivers/pci/cma.c
-@@ -195,6 +195,21 @@ void pci_cma_init(struct pci_dev *pdev)
- 	spdm_authenticate(pdev->spdm_state);
+diff --git a/lib/rspdm/consts.rs b/lib/rspdm/consts.rs
+index 40ce60eba2f3..38f48f0863e2 100644
+--- a/lib/rspdm/consts.rs
++++ b/lib/rspdm/consts.rs
+@@ -7,6 +7,20 @@
+ //! Rust implementation of the DMTF Security Protocol and Data Model (SPDM)
+ //! <https://www.dmtf.org/dsp/DSP0274>
+ 
++use crate::validator::SpdmHeader;
++use core::mem;
++
++/* SPDM versions supported by this implementation */
++pub(crate) const SPDM_VER_10: u8 = 0x10;
++#[allow(dead_code)]
++pub(crate) const SPDM_VER_11: u8 = 0x11;
++#[allow(dead_code)]
++pub(crate) const SPDM_VER_12: u8 = 0x12;
++pub(crate) const SPDM_VER_13: u8 = 0x13;
++
++pub(crate) const SPDM_MIN_VER: u8 = SPDM_VER_10;
++pub(crate) const SPDM_MAX_VER: u8 = SPDM_VER_13;
++
+ pub(crate) const SPDM_REQ: u8 = 0x80;
+ pub(crate) const SPDM_ERROR: u8 = 0x7f;
+ 
+@@ -115,3 +129,6 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+         Ok(())
+     }
+ }
++
++pub(crate) const SPDM_GET_VERSION: u8 = 0x84;
++pub(crate) const SPDM_GET_VERSION_LEN: usize = mem::size_of::<SpdmHeader>() + 255;
+diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
+index 2bb716140e0a..08abcbb21247 100644
+--- a/lib/rspdm/lib.rs
++++ b/lib/rspdm/lib.rs
+@@ -108,7 +108,11 @@
+ /// Return 0 on success or a negative errno.  In particular, -EPROTONOSUPPORT
+ /// indicates authentication is not supported by the device.
+ #[no_mangle]
+-pub unsafe extern "C" fn spdm_authenticate(_state: &'static mut SpdmState) -> c_int {
++pub unsafe extern "C" fn spdm_authenticate(state: &'static mut SpdmState) -> c_int {
++    if let Err(e) = state.get_version() {
++        return e.to_errno() as c_int;
++    }
++
+     0
  }
  
-+/**
-+ * pci_cma_reauthenticate() - Perform CMA-SPDM authentication again
-+ * @pdev: Device to reauthenticate
-+ *
-+ * Can be called by drivers after device identity has mutated,
-+ * e.g. after downloading firmware to an FPGA device.
-+ */
-+void pci_cma_reauthenticate(struct pci_dev *pdev)
-+{
-+	if (!pdev->spdm_state)
-+		return;
+diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
+index 68861f30e3fa..3ad53ec05044 100644
+--- a/lib/rspdm/state.rs
++++ b/lib/rspdm/state.rs
+@@ -8,6 +8,7 @@
+ //! <https://www.dmtf.org/dsp/DSP0274>
+ 
+ use core::ffi::c_void;
++use core::slice::from_raw_parts_mut;
+ use kernel::prelude::*;
+ use kernel::{
+     bindings,
+@@ -15,8 +16,10 @@
+     validate::Untrusted,
+ };
+ 
+-use crate::consts::{SpdmErrorCode, SPDM_ERROR, SPDM_REQ};
+-use crate::validator::{SpdmErrorRsp, SpdmHeader};
++use crate::consts::{
++    SpdmErrorCode, SPDM_ERROR, SPDM_GET_VERSION_LEN, SPDM_MAX_VER, SPDM_MIN_VER, SPDM_REQ,
++};
++use crate::validator::{GetVersionReq, GetVersionRsp, SpdmErrorRsp, SpdmHeader};
+ 
+ /// The current SPDM session state for a device. Based on the
+ /// C `struct spdm_state`.
+@@ -61,7 +64,7 @@ pub(crate) fn new(
+             transport_sz,
+             keyring,
+             validate,
+-            version: 0x10,
++            version: SPDM_MIN_VER,
+         }
+     }
+ 
+@@ -217,4 +220,53 @@ pub(crate) fn spdm_exchange(
+ 
+         Ok(length)
+     }
 +
-+	spdm_authenticate(pdev->spdm_state);
++    /// Negoiate a supported SPDM version and store the information
++    /// in the `SpdmState`.
++    pub(crate) fn get_version(&mut self) -> Result<(), Error> {
++        let mut request = GetVersionReq::default();
++        request.version = self.version;
++
++        // SAFETY: `request` is repr(C) and packed, so we can convert it to a slice
++        let request_buf = unsafe {
++            from_raw_parts_mut(
++                &mut request as *mut _ as *mut u8,
++                core::mem::size_of::<GetVersionReq>(),
++            )
++        };
++
++        let mut response_vec: KVec<u8> = KVec::with_capacity(SPDM_GET_VERSION_LEN, GFP_KERNEL)?;
++        // SAFETY: `request` is repr(C) and packed, so we can convert it to a slice
++        let response_buf =
++            unsafe { from_raw_parts_mut(response_vec.as_mut_ptr(), SPDM_GET_VERSION_LEN) };
++
++        let rc = self.spdm_exchange(request_buf, response_buf)?;
++
++        // SAFETY: `rc` is the length of data read, which will be smaller
++        // then the capacity of the vector
++        unsafe { response_vec.inc_len(rc as usize) };
++
++        let response: &mut GetVersionRsp = Untrusted::new_mut(&mut response_vec).validate_mut()?;
++
++        let mut foundver = false;
++        for i in 0..response.version_number_entry_count {
++            // Creating a reference on a packed struct will result in
++            // undefined behaviour, so we operate on the raw data directly
++            let unaligned = core::ptr::addr_of_mut!(response.version_number_entries) as *mut u16;
++            let addr = unaligned.wrapping_add(i as usize);
++            let version = (unsafe { core::ptr::read_unaligned::<u16>(addr) } >> 8) as u8;
++
++            if version >= self.version && version <= SPDM_MAX_VER {
++                self.version = version;
++                foundver = true;
++            }
++        }
++
++        if !foundver {
++            pr_err!("No common supported version\n");
++            to_result(-(bindings::EPROTO as i32))?;
++        }
++
++        Ok(())
++    }
+ }
+diff --git a/lib/rspdm/validator.rs b/lib/rspdm/validator.rs
+index a0a3a2f46952..f69be6aa6280 100644
+--- a/lib/rspdm/validator.rs
++++ b/lib/rspdm/validator.rs
+@@ -7,6 +7,7 @@
+ //! Rust implementation of the DMTF Security Protocol and Data Model (SPDM)
+ //! <https://www.dmtf.org/dsp/DSP0274>
+ 
++use crate::bindings::{__IncompleteArrayField, __le16};
+ use crate::consts::SpdmErrorCode;
+ use core::mem;
+ use kernel::prelude::*;
+@@ -15,6 +16,8 @@
+     validate::{Unvalidated, Validate},
+ };
+ 
++use crate::consts::SPDM_GET_VERSION;
++
+ #[repr(C, packed)]
+ pub(crate) struct SpdmHeader {
+     pub(crate) version: u8,
+@@ -64,3 +67,67 @@ pub(crate) struct SpdmErrorRsp {
+     pub(crate) error_code: SpdmErrorCode,
+     pub(crate) error_data: u8,
+ }
++
++#[repr(C, packed)]
++pub(crate) struct GetVersionReq {
++    pub(crate) version: u8,
++    pub(crate) code: u8,
++    pub(crate) param1: u8,
++    pub(crate) param2: u8,
 +}
 +
- void pci_cma_destroy(struct pci_dev *pdev)
- {
- 	if (!pdev->spdm_state)
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index a9590601835a..d1a574e21b0b 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -589,6 +589,7 @@ static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
- 	pci_pm_power_up_and_verify_state(pci_dev);
- 	pci_restore_state(pci_dev);
- 	pci_pme_restore(pci_dev);
-+	pci_cma_reauthenticate(pci_dev);
- }
- 
- static void pci_pm_bridge_power_up_actions(struct pci_dev *pci_dev)
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 13dbb405dc31..7f03e07150a0 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4887,8 +4887,16 @@ static int pci_reset_bus_function(struct pci_dev *dev, bool probe)
- 
- 	rc = pci_dev_reset_slot_function(dev, probe);
- 	if (rc != -ENOTTY)
--		return rc;
--	return pci_parent_bus_reset(dev, probe);
-+		goto done;
++impl Default for GetVersionReq {
++    fn default() -> Self {
++        GetVersionReq {
++            version: 0,
++            code: SPDM_GET_VERSION,
++            param1: 0,
++            param2: 0,
++        }
++    }
++}
 +
-+	rc = pci_parent_bus_reset(dev, probe);
++#[repr(C, packed)]
++pub(crate) struct GetVersionRsp {
++    pub(crate) version: u8,
++    pub(crate) code: u8,
++    param1: u8,
++    param2: u8,
++    reserved: u8,
++    pub(crate) version_number_entry_count: u8,
++    pub(crate) version_number_entries: __IncompleteArrayField<__le16>,
++}
 +
-+done:
-+	/* CMA-SPDM state is lost upon a Conventional Reset */
-+	if (!probe)
-+		pci_cma_reauthenticate(dev);
++impl Validate<&mut Unvalidated<KVec<u8>>> for &mut GetVersionRsp {
++    type Err = Error;
 +
-+	return rc;
- }
- 
- static int cxl_reset_bus_function(struct pci_dev *dev, bool probe)
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 1ab1a39e8df3..f87a4b7c92b8 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -602,9 +602,11 @@ static inline void pci_doe_disconnected(struct pci_dev *pdev) { }
- #ifdef CONFIG_PCI_CMA
- void pci_cma_init(struct pci_dev *pdev);
- void pci_cma_destroy(struct pci_dev *pdev);
-+void pci_cma_reauthenticate(struct pci_dev *pdev);
- #else
- static inline void pci_cma_init(struct pci_dev *pdev) { }
- static inline void pci_cma_destroy(struct pci_dev *pdev) { }
-+static inline void pci_cma_reauthenticate(struct pci_dev *pdev) { }
- #endif
- 
- #ifdef CONFIG_PCI_NPEM
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index bebe4bc111d7..700663c38e31 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -151,6 +151,9 @@ static int report_slot_reset(struct pci_dev *dev, void *data)
- 	pci_ers_result_t vote, *result = data;
- 	const struct pci_error_handlers *err_handler;
- 
-+	/* CMA-SPDM state is lost upon a Conventional Reset */
-+	pci_cma_reauthenticate(dev);
++    fn validate(unvalidated: &mut Unvalidated<KVec<u8>>) -> Result<Self, Self::Err> {
++        let raw = unvalidated.raw_mut();
++        if raw.len() < mem::size_of::<GetVersionRsp>() {
++            return Err(EINVAL);
++        }
 +
- 	device_lock(&dev->dev);
- 	pdrv = dev->driver;
- 	if (!pci_dev_set_io_state(dev, pci_channel_io_normal) ||
++        let version_number_entries = *(raw.get(5).ok_or(ENOMEM))? as usize;
++        let total_expected_size = version_number_entries * 2 + 6;
++        if raw.len() < total_expected_size {
++            return Err(EINVAL);
++        }
++
++        let ptr = raw.as_mut_ptr();
++        // CAST: `GetVersionRsp` only contains integers and has `repr(C)`.
++        let ptr = ptr.cast::<GetVersionRsp>();
++        // SAFETY: `ptr` came from a reference and the cast above is valid.
++        let rsp: &mut GetVersionRsp = unsafe { &mut *ptr };
++
++        // Creating a reference on a packed struct will result in
++        // undefined behaviour, so we operate on the raw data directly
++        let unaligned = core::ptr::addr_of_mut!(rsp.version_number_entries) as *mut u16;
++        for version_offset in 0..version_number_entries {
++            let addr = unaligned.wrapping_add(version_offset);
++            let version = unsafe { core::ptr::read_unaligned::<u16>(addr) };
++            unsafe { core::ptr::write_unaligned::<u16>(addr, version.to_le()) }
++        }
++
++        Ok(rsp)
++    }
++}
 -- 
 2.52.0
 
