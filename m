@@ -1,52 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FAA2BD587;
-	Wed, 11 Feb 2026 07:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49953EBF1D;
+	Wed, 11 Feb 2026 07:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770795684; cv=none; b=XNEgM+YvMtX6p9D+M0agN9gXq6q+PEdjBC/R77o1OVhtpoqoqNqQpE5EeSxbXS/x3ek5mniN9lb2EFZBsEdy6H3sWH+UlaxNX0b76f4S8yTDS04qv+mGu6S51x4pgOeupaHFkceQbPAfIve+lE179iztJTTZ8fAjaxumdw5u0B8=
+	t=1770795783; cv=none; b=rbopUZkVsiFiLaAuOdqz6HAAlh3n7cUFGkMqlMGPSrMCgVKfsQaDr9jm7sljbEnRmQQr0DjYXpExOKmi4esjEfCcUZHY+So5GDomL11MR41LnPkN+VbI/pUd5xAtkghU80zSePsqFvWfTicl8zj6hM1+I0erdQwEXO5D9PKiyl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770795684; c=relaxed/simple;
-	bh=6AY7gjXvSQQSCITnjIyWYDj0BZ2Owzifq01hOOgMo4M=;
+	s=arc-20240116; t=1770795783; c=relaxed/simple;
+	bh=ica1Ebj/m1NL4pYs6l4iDuSVu6qcBN3gjo8gIeyJWkA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AnVGPKt1+mYyvDcG+z7AjPgUflsqOgKpO7tvZfMzbTcEiniMOdSbYO9dgbeVuQtPgzmAhmoVzbiR4bpQVnIgorix8Jn0GPFkH9CCpFTyfkipGTw6vzptbdFGiIDrWvesZ8TaC6IO3d5P7/i4CdtUm17GbWyu/mUe4Sm3fgC9ZGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RriaZAzx; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=r/gFkU89At5EWBjRiv2eRqBTnBEcdofAUCviDphsrTBTLuUe7PLt5/NAkXWL7k2g0gL4EADI1XpQ6e+ZQZ66wfv1gc8eFPpKBkATUcBGOMlkSOQwP3aflrvljCINuT2hwxpuMif2Y0FSxc045ukTrsizqWSFV72ZKXFHbsOKhsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVhm/HRD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RriaZAzx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4343DC4CEF7;
-	Wed, 11 Feb 2026 07:41:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVhm/HRD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2682DC4CEF7;
+	Wed, 11 Feb 2026 07:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770795683;
-	bh=6AY7gjXvSQQSCITnjIyWYDj0BZ2Owzifq01hOOgMo4M=;
+	s=k20201202; t=1770795783;
+	bh=ica1Ebj/m1NL4pYs6l4iDuSVu6qcBN3gjo8gIeyJWkA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=RriaZAzxE9qwBIfNXdcaeV/8IOoG1YBuN0+DyKycmOKjAWzD0nBnKiUTdtBpEbsXE
-	 44SzrIyW4+a3MglOx+md0jlBa7HzbYgitehcWkCU9Tdj7JWolTayOjAdlrmPlb30V4
-	 NdkUkxCgKQQc6O6vwkaKomjtR3vTp5WDE19jCpso/MiQtMtcvNI/oOVX1NDqaO3OK+
-	 UjsfoNAJ3lIROZJlf8Dd9sJtQK1R7Cv+KnxqWnQGHKPTnYZpvdUUxMVTUDlxwnZX5i
-	 AHrZ70+Y5dg/hmQ4YucjMc7RJd+5QOv9PKzakwmpG+9umYjqW6rHFlfmjgLwrwEvme
-	 pg1Kxb2y1RG1A==
+	b=rVhm/HRDb0EmeUqovVDPd7UlILZrIz5H7xyocmof1XPFUQjsyHTeZAhql8GLZrEcw
+	 2+kZMr6lvN/VuC+dDLcfOyXpoRahv5qMzU9Fityj9/dmJvls8NcwT4j+PlA1sKA5t4
+	 GkeHF5kSqkvjF+S3pe85Zub0ITcs1ioJxjezXv1m/HOxJSMnCyy6ng5M3WfjWpQtTx
+	 QuHAhbA1dQngY93qiR8h6C8i+1axp+Wqh3mpG8wCtDXFWTrWi3D3M0YSV9rvVDrF8r
+	 MfzSB/ya/xDQTzU+wupQZFTzzKjLQKkLUGVBu0XGM/HWaWjl5LwsOLmXzhiDUYRpIY
+	 ueB8yoQlz/TMg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Daniel Gomez <da.gomez@kernel.org>
 Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>,
  Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, Christoph
- Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman
- Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Andrew Morton
+ <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, David
+ Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
-In-Reply-To: <q43rzzvpfh6ke74eyn3nypiek2ihaq6nat552asiobqge4vxmn@knwkb5dexnga>
+Subject: Re: [PATCH v3 04/12] rust: xarray: add `XArrayState`
+In-Reply-To: <aYtcdGk8zcwaHfsd@macos>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
- <q43rzzvpfh6ke74eyn3nypiek2ihaq6nat552asiobqge4vxmn@knwkb5dexnga>
-Date: Wed, 11 Feb 2026 08:41:14 +0100
-Message-ID: <87fr77viat.fsf@t14s.mail-host-address-is-not-set>
+ <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
+ <aYtcdGk8zcwaHfsd@macos>
+Date: Wed, 11 Feb 2026 08:42:50 +0100
+Message-ID: <87cy2bvi85.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,45 +55,27 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Liam R. Howlett" <Liam.Howlett@oracle.com> writes:
+Daniel Gomez <da.gomez@kernel.org> writes:
 
-> * Andreas Hindborg <a.hindborg@kernel.org> [260209 14:38]:
->> Add a convenience method `contains_index` to check whether an element
->> exists at a given index in the XArray. This method provides a more
->> ergonomic API compared to calling `get` and checking for `Some`.
+> On 2026-02-09 15:38, Andreas Hindborg wrote:
+>> Add `XArrayState` as internal state for XArray iteration and entry
+>> operations. This struct wraps the C `xa_state` structure and holds a
+>> reference to a `Guard` to ensure exclusive access to the XArray for the
+>> lifetime of the state object.
+>> 
+>> The `XAS_RESTART` constant is also exposed through the bindings helper
+>> to properly initialize the `xa_node` field.
+>> 
+>> The struct and its constructor are marked with `#[expect(dead_code)]` as
+>> there are no users yet. We will remove this annotation in a later patch.
 >
-> I think this is going to result in less efficient code for most uses.
->
-> Most users use the results returned, not just checking if there is or is
-> not a value.  So if you find the value an xarray state and then just
-> throw it away and find it again, it'll be less efficient.
->
-> If there are users that do use the xarray to just check if something
-> exists or not (which there probably are?), then it should be in a
-> wrapper for that code and not the generic API.  Otherwise we will have
-> users pop up to use this method when they should not.
+> It makes sense to me to merge patch 4 and 5 to avoid this.
 
-I agree in that I would prefer matching on the result of a lookup and
-using that result. This is not always possible due to a limitation in
-the current implementation of the borrow checker. Please see my response
-to Tamir [1], it has all the pointers.
+It's always a balance. When I merge things I tend to get comments that I
+should split things out to make them easier to digest and review.
 
-Since we cannot use a match statement in certain situations, we have to
-fall back to something that does not borrow from the collections, like
-`array.get(index).is_some()`. I would argue that
-
-  if array.contains_index(foo) { ... }
-
-is easier to read than
-
-  if array.get(foo).is_some() { ... }
-
-And I don't think `array.contains()` is going to have worse codegen than
-`array.get(index).is_some()`.
 
 Best regards,
 Andreas Hindborg
 
-
-[1] https://lore.kernel.org/rust-for-linux/20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org/T/#m95fb90870c511491f4f487dbf852c689cd0733f4
 
