@@ -1,102 +1,169 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399AE262FC1;
-	Wed, 11 Feb 2026 13:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DDF29E115;
+	Wed, 11 Feb 2026 14:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770818041; cv=none; b=aikQUTE8zn0E1Qh1paixsRJmoQ/S98Uzz8dup9UpIyoWBFmY9I9BvSUbQHn8BBOG/TBEgBYspd6tcDoht7rrIYxXYFouv+F5dPDVdlxSQjGiqY7Ew/lvN/HY9Sx1mVo7TaE9QVUHH5bIZALKGvF3ll2Sx6dfOyc9mwR9aRyzavo=
+	t=1770818866; cv=none; b=rGFCXY73Bn+HmeemQQLGLydXbxWlAj3FXcZ8dJb5dO7Po+16nLRg/kVvxFhjtLVFZzg+WSKwaI6U0k89cbzG3l2BKzz2rjtRgs1dRHrUBeHGFrflZ3vGSX37960xR+II1rymCg9GR/WHlUH8yUYlGo73V0z36PFc6D5zHa6TuFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770818041; c=relaxed/simple;
-	bh=YMMDA1BaSe6r+JjJIbOpvhc0hja6eg+QaZo9U6mphZo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D7IjYChEpSVvyILLKKyxWticM0TzNJsgh2rgqHpaoSop6YOl7b7H1D6NrQEi6RHtB3b04MEUvlzziyci4+gXpYqgXrNQ2GEIMlUJptEfHwbsQWDf0DcUKjbzVx25RLJq/8biBHpgG+XQkbk1RYpw7+kZBi1qnyU8yYTjBR0MxZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=KuJa1X+U; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1770818866; c=relaxed/simple;
+	bh=zymFyWB1i9bpCZtAij0v0RD6V026ENlBOWVqUgQQujM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NKrqeivS+Jm9Vp45xuAJ78mtkDvAPkxgcZsUWUQwy4tZ/ikVVqu4nKZMZH03eeCa2cKElITEa7A+fhuO/M1OUMBEVOl/UPZIvVWDLKtFQAnopM1T2MVqS1W3owr06Dte960rpreyIswxp/5IGnF6rsok7k3f8yufTGlwt/kLgmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=hMpVAZPD; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="KuJa1X+U"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="hMpVAZPD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1770818863;
+	bh=zymFyWB1i9bpCZtAij0v0RD6V026ENlBOWVqUgQQujM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hMpVAZPDmoG5rR69sgP2ygrmhoB6fQZghIuwZFJm055FPGzglzG0Lz2fKN2pkTLXZ
+	 q0lY9XoBHLa68magnhu2PZHnKt4g5E4h5c2eE8Imi9L6v57wIHzYCsIl/NBU9Xloes
+	 nqtlUuJ5bcsu2gwf+eRHIgxSns4SQaPMlC2uH6yMhQfW3e0Ri0T9EeDliQZUPtXX/E
+	 B9AkZ4N6ZpIKx6iWLF6KpMW+kXb5uTQA0qJ5R2EeqydkPmUBnD+4YTzIG5ONAubDn+
+	 wjz+9i0eilD/uE2gXa1FdD2oZjvmJCVU3CUwb3KDf4yekqxtqOREhLesV9A34D//uR
+	 ee5Y7nGJDrFZg==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4fB0Jy3VYYz9vBg;
-	Wed, 11 Feb 2026 14:53:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1770818034; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YMMDA1BaSe6r+JjJIbOpvhc0hja6eg+QaZo9U6mphZo=;
-	b=KuJa1X+U9mnN7rCIY65TdVjhrjF9uDXDDiUVuZX2txKfC2PJfWA4YP3wvh3Ow/nk3eVSyu
-	8DNWpA5CcAl4TQS7LIoELD2UY2KIEFcOP8BNTIop6A+0fFtSOC02nfwMzUS4KJiquM2gSD
-	siwKEyoFqfxz9PJzB8Kv0o18mPM6aJXsrKHW49AKQcO6s3Hm/0o9+P9EVtDqvHsMjxc00c
-	2Ld8aac1XJB7BE4XG0LYNYHmq5GOesa9D34lNvxmIXCufRMwGw+sIulJCLKUOe8xWlgjC/
-	NE6U+U0OtmzpiAhMJDYuxy/NOm858U4rFa0QfeqRa9fBn//ChHTbFLbeqPL1hg==
-Message-ID: <535d0c8637319f14f2d104a928a75ae872be8786.camel@mailbox.org>
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id E798817E13A5;
+	Wed, 11 Feb 2026 15:07:42 +0100 (CET)
+Date: Wed, 11 Feb 2026 15:07:38 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, <phasta@kernel.org>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Benno Lossin" <lossin@kernel.org>, Christian
+ =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
 Subject: Re: [RFC PATCH 3/4] rust/drm: Add DRM Jobqueue
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Alice Ryhl <aliceryhl@google.com>, phasta@kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Danilo Krummrich
- <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Benno Lossin
- <lossin@kernel.org>,  Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
- Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org,  rust-for-linux@vger.kernel.org
-Date: Wed, 11 Feb 2026 14:53:49 +0100
-In-Reply-To: <aYx7d21_hIWP93XW@google.com>
+Message-ID: <20260211150738.049af4bb@fedora>
+In-Reply-To: <DGC6FE14C91M.1BMCS7XHRVP6J@garyguo.net>
 References: <20260203081403.68733-2-phasta@kernel.org>
-	 <20260203081403.68733-5-phasta@kernel.org> <20260210155750.5cdbe6cc@fedora>
-	 <8ea48ce49f2c7b6fd715dd54c24e755e8ac3262c.camel@mailbox.org>
-	 <20260211120742.0e9e7122@fedora>
-	 <f3d2e3b370bed55cc2a95287b3c257f878b5e92b.camel@mailbox.org>
-	 <aYx0a-2eANbM_vnd@google.com>
-	 <e4f3ff81338dd738e1c6d81e255c129c07e9c7fb.camel@mailbox.org>
-	 <aYx7d21_hIWP93XW@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	<20260203081403.68733-5-phasta@kernel.org>
+	<20260210155750.5cdbe6cc@fedora>
+	<8ea48ce49f2c7b6fd715dd54c24e755e8ac3262c.camel@mailbox.org>
+	<20260211120742.0e9e7122@fedora>
+	<f3d2e3b370bed55cc2a95287b3c257f878b5e92b.camel@mailbox.org>
+	<aYx0a-2eANbM_vnd@google.com>
+	<DGC6FE14C91M.1BMCS7XHRVP6J@garyguo.net>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 80e0c499da5b6706640
-X-MBO-RS-META: cetihdejqmi5azq6j1g58qw9h9ts1z1y
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-02-11 at 12:52 +0000, Alice Ryhl wrote:
+On Wed, 11 Feb 2026 21:45:37 +0800
+"Gary Guo" <gary@garyguo.net> wrote:
+
+> On Wed Feb 11, 2026 at 8:22 PM CST, Alice Ryhl wrote:
+> > On Wed, Feb 11, 2026 at 12:19:56PM +0100, Philipp Stanner wrote: =20
+> >> On Wed, 2026-02-11 at 12:07 +0100, Boris Brezillon wrote: =20
+> >> > On Wed, 11 Feb 2026 11:47:27 +0100
+> >> > Philipp Stanner <phasta@mailbox.org> wrote:
+> >> >  =20
+> >> > > On Tue, 2026-02-10 at 15:57 +0100, Boris Brezillon wrote: =20
+> >> > > > On Tue,=C2=A0 3 Feb 2026 09:14:02 +0100
+> >> > > > Philipp Stanner <phasta@kernel.org> wrote:
+> >> > > > =C2=A0  =20
+> >> > > > > +/// A jobqueue Job.
+> >> > > > > +///
+> >> > > > > +/// You can stuff your data in it. The job will be borrowed b=
+ack to your driver
+> >> > > > > +/// once the time has come to run it.
+> >> > > > > +///
+> >> > > > > +/// Jobs are consumed by [`Jobqueue::submit_job`] by value (o=
+wnership transfer).
+> >> > > > > +/// You can set multiple [`DmaFence`] as dependencies for a j=
+ob. It will only
+> >> > > > > +/// get run once all dependency fences have been signaled.
+> >> > > > > +///
+> >> > > > > +/// Jobs cost credits. Jobs will only be run if there are is =
+enough capacity in
+> >> > > > > +/// the jobqueue for the job's credits. It is legal to specif=
+y jobs costing 0
+> >> > > > > +/// credits, effectively disabling that mechanism.
+> >> > > > > +#[pin_data]
+> >> > > > > +pub struct Job<T: 'static + Send> {
+> >> > > > > +=C2=A0=C2=A0=C2=A0 cost: u32,
+> >> > > > > +=C2=A0=C2=A0=C2=A0 #[pin]
+> >> > > > > +=C2=A0=C2=A0=C2=A0 pub data: T,
+> >> > > > > +=C2=A0=C2=A0=C2=A0 done_fence: Option<ARef<DmaFence<i32>>>,
+> >> > > > > +=C2=A0=C2=A0=C2=A0 hardware_fence: Option<ARef<DmaFence<i32>>=
+>,
+> >> > > > > +=C2=A0=C2=A0=C2=A0 nr_of_deps: AtomicU32,
+> >> > > > > +=C2=A0=C2=A0=C2=A0 dependencies: List<Dependency>,=C2=A0  =20
+> >> > > >=20
+> >> > > > Given how tricky Lists are in rust, I'd recommend going for an X=
+Array,
+> >> > > > like we have on the C side. There's a bit of overhead when the j=
+ob only
+> >> > > > has a few deps, but I think simplicity beats memory-usage-optimi=
+zations
+> >> > > > in that case (especially since the overhead exists and is accept=
+ed in
+> >> > > > C).=C2=A0  =20
+> >> > >=20
+> >> > > I mean, the list is now already implemented and works. Considering=
+ the
+> >> > > XArray would have made sense during the development difficulties. =
+=20
+> >> >=20
+> >> > I'm sure it does, but that's still more code/tricks to maintain than
+> >> > what you'd have with the XArray abstraction. =20
+> >>=20
+> >> The solution than will rather be to make the linked list implementation
+> >> better.
+> >>=20
+> >> A list is the correct data structure in a huge number of use cases in
+> >> the kernel. We should not begin here to defer to other structures
+> >> because of convenience. =20
+> >
+> > Rust vs C aside, linked lists are often used in the kernel despite not
+> > being the best choice. They are extremely cache unfriendly and
+> > inefficient; most of the time a vector or xarray is far faster if you
+> > can accept an ENOMEM failure path when adding elements. I have heard
+> > several times from C maintainers that overuse of list is making the
+> > kernel slow in a death from a thousand cuts situation. =20
 >=20
-> Yes, many people assume "list widely used in kernel" implies "list is a
-> good idea". Unfortunately it is not the case.
+> I would rather argue the other way, other than very hot paths where cache
+> friendliness absolutely matters, if you do not require indexing access th=
+en the
+> list is the correct data strucutre more often than not.
 >=20
-> > > This applies to the red/black tree too, by the way.
-> >=20
-> > Can't fully follow, you mean that RB trees are supposedly overused,
-> > too?
->=20
-> When I first suggested adding red/black tree abstractions in Rust
-> several years ago I was told by Greg that I couldn't do it because the
-> red/black tree was deprecated and no new users should be added.
+> Vector have the issue where resizing requires moving, so it cannot be use=
+d with
+> pinned types. XArray doesn't require moving because it requires an indire=
+ction
+> and thus an extra allocation, but this means that if you're just iteratin=
+g over
+> all elements it also does not benefit from cache locality.
 
-Do you have a link or sth?
+Back to this particular job dependencies use case: we have to embed the
+DmaFence pointer in some wrapper with the ListLinks element anyway,
+because DmaFences can be inserted in multiple of those lists in
+parallel. This means that now the overhead is two-pointers per DmaFence
+pointer. Of course, it's not a big issue in practice, because those
+elements are short-lived, it's only 16 bytes, and if we're ending up
+having too many of those deps, we're gonna have other challenging
+scaling issues anyway. But it also means we have the extra-indirection
+that you'd have with an array of pointers or an xarray, with more
+per-item overhead, and none of the advantages a list could provide (O(1)
+removal if you have the list item, O(1) front insertion, ...) would
+really be used in this case (because we use the list as a FIFO, really).
 
-First time in my life that I hear that RB trees shouldn't be used. If
-something is deprecated for good one would hope that's obvious.
-
-What's the justification? Should everyone use the B-Tree?
-RB trees are super widely used in CS.=20
-
-P.
-
->=20
-> Later I found that this was more of a not-written-down recommendation
-> than a full deprecation, and since Rust Binder has codepaths where an
-> ENOMEM failure path is unacceptable for the map, we did end up adding a
-> Rust rb tree abstraction after all. But this is where I first heard of
-> this issue with lists and rb trees.
->=20
-> Alice
-
+So overall, I'd still lean towards an XArray here, unless there are
+strong objections. Just to make it super clear, I'm not making a case
+against all List usage, just this particular one :-).
