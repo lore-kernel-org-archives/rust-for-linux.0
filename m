@@ -1,206 +1,273 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021118.outbound.protection.outlook.com [52.101.95.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5413A25C818
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 13:45:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFA719006B;
+	Wed, 11 Feb 2026 13:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.118
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770817510; cv=pass; b=DsLWxzU+cLDKvy7J0C/MbpVUN1n3Oub0uNm13nWlwBdwpeb6es6DvgKq708JemwsU2MljjVk6fGVXTNzGJUh038DtFPxZIuaami4ZGcEZkWsCfzPkPsr6mlRocvyr/IG3nyeKUg5LBNxThivVzxV9Y60KO3+dv/vn3LeDnLHXM4=
+	t=1770817560; cv=fail; b=mz1yQkL4sk6sgRk/aDP/Er+pa6fwQX+qCa9K2V0FGJH07kSFPdwCP10BU3qNQSaO1r4FRIp9wBsPjyqAyOya0iaA/XaGvfRwbmI47X8mjYyZRKbP5Zb4dKBBPziuzRfneyeSys709HaDFnOWtdZqYjkpmOjhaj7U1hqTHIo5FLw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770817510; c=relaxed/simple;
-	bh=Drcq4cyNV6Xl9YkyzIoBbszY5LUNtzFTQi0BiMX8/TI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dfMXXkHmrgV78mTU9BU8YE17AWCIeqcoI+N8xposNVq1dRf5rBOhfqyM39WJYc8FsHFjFyuiRFWlKuMvMYyle+sGmW286atZd/H5l5aiYfI+/mnUb2StJaJ0d4YvSTPx4xU2ZYHOcI/+/QZ8iA9jNV4+2vGIePQ6BWfc2rl/vgA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RVEvtK8+; arc=pass smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770817560; c=relaxed/simple;
+	bh=NiFSZ23be77ojYnRWb7rnQxiQw9jwiTlnrJacIrSGVo=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=VI4hUOr6bJW72DFjUePPRZPh3qbMzExs2P/47pBJXpezHEZITETgwuRCOYlx2cUOZLptjKG5X9q/hKBqWkLq8tx6QYLCabRg+JWBe6i/Zkpi4X5UStOLYhCng4Uw6At8t/Xb5m18AygKqAnBHm1ylQiyms0Tah8q6T/jDKnkohA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=qxfYOe2y; arc=fail smtp.client-ip=52.101.95.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RVEvtK8+"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3870cbd6c40so2143431fa.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 05:45:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770817505; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jtzxv3FrAKzs/L0cqiCaflMTjkqAJOoi4qrDoPjmiHjg5VJysA+oMg1TGADDv/GVOg
-         qMtIp/npgYOLvEHaN5KnG/sQ7ts2QPyNuePcYEluH5QkmveeQ4Jfig1d9ua0qRs6jnpn
-         cQIOFi5mI4tWDieJUrka8dI0rdQhoJ7ou+fwLZqgv9JNasmxBT1BJyWeJXzl0EhpsJdd
-         Rt2aoJcw+qPDo+ELqIaJY8pZKjg9hB+4+va24MvNmLgK/dHsYsMV6RaYejDvz2EqYUIn
-         gjQL+6nuTbN8++kyZH4NTEh6SFYrsAoboLs9Kt9ykFGWPasWStEiUYTuX+db3IOW8oh5
-         2Q8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=84OdGKCvpeMY9UdM+lMDAnBBi5jGdAPCMt+gUfHZUZk=;
-        fh=nYpVHHGzHYmkCVIQJJ/h+rKO9ggOaRWV3hzTPNoMfyk=;
-        b=gHA3IbzzQ1i8Lnx2VQ9WlMApH52zsksOZJ5DomDyJ0Ggsq8Jf+t/I9d7RNGzHA0RDB
-         +s6QRi82TO6f4sYew/qgzNLZwQmz96JqhVoosV2OHy/wf+jHbAITprHKDZVG6V/nHCiv
-         7IgmVuy8YzeKSHQEyDUJl80f/9ahIKMPi8+rVCW2n+d94lxGt5vWyG9OvnNXiaEDgWti
-         pQYMmhtzzFAcD0wWtah/UiXRzUTj3QMyHLu4OUZ4PrhLTt5HjCY1iaBXWQl3QFlYbnIK
-         zw+00T3ySl3bOxbLJH8OrLsDFw5wAVluANL/PMHGryS7jZNPoGeNEbkslx9476vZYCiL
-         fdYg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770817505; x=1771422305; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=84OdGKCvpeMY9UdM+lMDAnBBi5jGdAPCMt+gUfHZUZk=;
-        b=RVEvtK8+e39OOf8noF7LMjm4aF9SuEmwF7twjigV6eh81cLi0RmPbvAX5L82502JjR
-         MKatzOHDLwsAhgavQ+M49MWNshYYBM+WpCh/9DwWfezm9sPIsbFu+FJWpM5P+NTILczf
-         H5hMxbnlC0tS0rEOACwxuK5pPHNYRPzZ7mLwY9hREH7Pxk33cT0AkRhuLmCl77fuvSbT
-         znrX7R2wMWe4KxSIkf7e0CryO/SOtjoHFP7cKd9rPQDmy/siw9i4NVOZkrWnlTJof1O0
-         b6k+NP+OxHducH04PN7LtnOWcHTGbjTsUm7Emwdbcr/OWKa3mVhSE/JB6NoeDCY+YO4t
-         flkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770817505; x=1771422305;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=84OdGKCvpeMY9UdM+lMDAnBBi5jGdAPCMt+gUfHZUZk=;
-        b=NNqI2SV7UPdMx6BpfhlCealzaHbFqqf2KeiJGXLJJBqDMffpfjK6pn55ADpc9ir7V8
-         7Bs6RfnERNhj18gjBcmAlxq1gO2Xe1CZ1sxK2Lni2Uq6cT/dgsKPTg5YoR96ezxxQXn1
-         DsW5Ces0923+uN/gUBX/XVGoMrjCiaimZ1mOBH5msvrTMh5k3YaafBe14goGMHLP0fND
-         hxCop78fJWIQFgZnav/H/g9puDdC9LsWoiJ6YdssGdPbbS43PKBU2PSLFK8THftgwYwQ
-         xZDdN1Bvvsdv5cWsOHuGqJkNzi1R7HEuBvFg+6eDcG7uC9hMpFBGV60thYIf7ql64ojy
-         edqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSVOW6dUPotx/zszelT8/cGk3Qbc9qYR7W5AG/GCV3C0n9wCi6Ip7kaXqp4BidDZynm1llSKc6UWVFXsuBGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEShKJU5Lr3uRcMxCztEBYMKJLXbP3TrJsepyaBtqpiazj38Am
-	K/KFWCrQOVLQZPrUD1MJWQFr3Jfn/qOEUti1v6sE67uiucatv5nfcOQEpXWjWAK0eOmZw1F2rj2
-	QgTX7SPJdVtq0Zahmt4rhLz2b2HPmjdI=
-X-Gm-Gg: AZuq6aL78z0K1ytiE4nCqvB6HHiIFVf4UmzA9xC4BhwJYLCyO5qn5gQ5O83W7zWvsZu
-	+3zQf5+ak5wJrgBZhVWWY2o3U/q9be6AslVausHcMoA7YeGxvBDO+qg32vG/Kht2t7QIaL9Cw6b
-	LthTeLcIfkWmyS8GknkLy9CaaQG+zumPH43E4Q84hZoL3mt3GAElw9TqjGYsmmHJlJPCiq2atO7
-	eC0eR2Woekc5oEpGed/NrnfGKumMU48CBfrzm/reuOrgq7ZsFFRAsa0BPZ/Ftkf9UcjkfZl7TQB
-	yqY5rtOyMPy64mggC0t7icNWcFs6nQrzq+aeJBwP
-X-Received: by 2002:a05:651c:1506:b0:383:1a8b:a330 with SMTP id
- 38308e7fff4ca-387030533d6mr7840851fa.4.1770817505016; Wed, 11 Feb 2026
- 05:45:05 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="qxfYOe2y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GyOnnU7haEbJ0LKalP0B8W9HR169JsI2gAOT2yYLivNleLssEShvm4ATEGYtrGEYYjhuf/PYctTnkXYORcJWYivKCZY4GRJFVSgXe+E6zEEoKxVWfDM5CBfSbhhmokplnP8uY4N+QmOLBtOfk7plQ7b/GU+LFgOBPKvG81cmtL2k3TqsA6WDR2a+iNCcpsdJ8dEqAM8rrXfBiXo2t1gvV+g3BfZebeu+QkGCzMQen6JCzCH5jbNv5vU+Z5V6XjkF3A6nMZ+BUDVkBN29TajIYrzlQr7p12HjZ4EEmnZSFf3NXCW7K+GpJCD0CAyN9PG/UtPNHYnUKDT6jKYoI8JoVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NiFSZ23be77ojYnRWb7rnQxiQw9jwiTlnrJacIrSGVo=;
+ b=sfS7F2z5NBRNBt2RqkrcN/noYc4crQcaY9Fth6dMO34wHTw05JSoUVD+XmBl+QldNGaFIYSrm1vg5jzJbccT1zVD7vLbd9Hfdnh5OX0tYMXthFHtQfxUyTK/PtnEGBs9ABStv08+qFsZLlAint6ZciVyvzZWa+l8mAIclTf4opsKiN0L8THh48xPWojVo/3bgiHHLiZrI5RqxtJDJ69rQzCc6CVEppU+TVVyElY6+v/7YjCYdDSk2Pq7Lb5s5LRC6rv3Vnc6rxso5KQREzej0dec/s52/7/t83SxduSxTHBP7bWwQuUzXbftlJ3267S4rxTbYAyKRb5PcQY8VtfWdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NiFSZ23be77ojYnRWb7rnQxiQw9jwiTlnrJacIrSGVo=;
+ b=qxfYOe2ycXfATmm6VWwxp37Vjf6y+MdxLLmRl3xbRk3cAe2htc5azlmZ2scuirddRSndSZFI1cJahL6Q64GnwmZ7YvIioDfgarhZ3ZR6DeheAGzYhEHxQwD4IdrJs5xXsb7tDjisXyMWViOmFsWX/+eKLEjrIOkOFV4u3RG9MFE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LOAP265MB8998.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:493::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Wed, 11 Feb
+ 2026 13:45:52 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9611.006; Wed, 11 Feb 2026
+ 13:45:51 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Feb 2026 21:45:37 +0800
+Message-Id: <DGC6FE14C91M.1BMCS7XHRVP6J@garyguo.net>
+Cc: "Boris Brezillon" <boris.brezillon@collabora.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Benno Lossin"
+ <lossin@kernel.org>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [RFC PATCH 3/4] rust/drm: Add DRM Jobqueue
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, <phasta@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260203081403.68733-2-phasta@kernel.org>
+ <20260203081403.68733-5-phasta@kernel.org> <20260210155750.5cdbe6cc@fedora>
+ <8ea48ce49f2c7b6fd715dd54c24e755e8ac3262c.camel@mailbox.org>
+ <20260211120742.0e9e7122@fedora>
+ <f3d2e3b370bed55cc2a95287b3c257f878b5e92b.camel@mailbox.org>
+ <aYx0a-2eANbM_vnd@google.com>
+In-Reply-To: <aYx0a-2eANbM_vnd@google.com>
+X-ClientProxiedBy: TY4P301CA0042.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:2be::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260205042132.40772-1-muchamadcoirulanwar@gmail.com>
- <CANiq72kc_mAko+5S=fEOF0Y-ry7rLyd5a+eC=nZiciUcO3rxXQ@mail.gmail.com>
- <CAO26r3TawBQQ6994h+wDTdiobuT8cwU1jGKDs1mh7HdUp=KpLA@mail.gmail.com> <CABLcDQBjuZc0edQnoD7SfWj8qEH=ciognT6RPfQPO4r7gcODBA@mail.gmail.com>
-In-Reply-To: <CABLcDQBjuZc0edQnoD7SfWj8qEH=ciognT6RPfQPO4r7gcODBA@mail.gmail.com>
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Date: Wed, 11 Feb 2026 20:44:52 +0700
-X-Gm-Features: AZwV_QhNcf_5KypSo8V5fg1Wx8Sm0arROkkp-WGzjyE68hGfUhkMOILe_lFNiFQ
-Message-ID: <CAO26r3Rh7WEYrH9ksD3ary=2OUSmYj372iCAGx=VsGnXAN4ySQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: print: add safety comments for %pA formatting
-To: Shivendra Sharma <shivendra02467@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, ojeda@kernel.org, boqun@kernel.org, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, tamird@kernel.org, gregkh@linuxfoundation.org, 
-	fujita.tomonori@gmail.com, andrewjballance@gmail.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOAP265MB8998:EE_
+X-MS-Office365-Filtering-Correlation-Id: 38d0f358-d5ee-4de8-5e5f-08de6973dee6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bGZ1SEtheHJYeDlHZGZDRGdkMXlESTV5Y0dIVTJrdGdINmEzeHhhMkZVZmdZ?=
+ =?utf-8?B?ckMxYXRqQnlrL2dRS2lMYzBZUzR6RTU4eU5URStrNFN4UkN5a0xGZjlCM3Rh?=
+ =?utf-8?B?NEtHaTJpM0JQQWRlMmxDN0xMemd1eGN6Y0tVdURtSHpucHhaU2orYW54dVBU?=
+ =?utf-8?B?R0FtZ0hCcHM1L2dUREsyREhSOFVibEpKbm9pRlFyTTViZnFZVVhDM3c1OVZp?=
+ =?utf-8?B?MWgwR3oxbWFNbUZzN2JBdnI2TndXTFBZQ1FwN0ZiUGxtMzBsdml6RmoybWxT?=
+ =?utf-8?B?dTVPdU8wK2FCTkFSV3R4cEhFaUY0RTM0R2xOWm5kZ2lxK0FwenhzMHZoRCt6?=
+ =?utf-8?B?WFVQd2J3TWxvcnE2UFNyL3BNVWVKQ013VEVIMzV2VTNDNlJIU3NQb3FSV3ly?=
+ =?utf-8?B?M1RHKzdKbUg2WFdoWDRWSXhFMGNaMjFiYUFVZmpUQmxlMmJxYmhkTWZDUzBh?=
+ =?utf-8?B?NEcyZ1ZuM1BnbWtHbzYyNzd2TEM0UXJBYTE2UHJtYzFzZVUxRHJGTmZ0cmRL?=
+ =?utf-8?B?VzJMcFdmazVRdVMxaDJpakdmVE1xVUVxZXh0SCszdE5FNUJBVUd1NmErVDJU?=
+ =?utf-8?B?TElWMUlDVDFTQTl1NVZXd1JmMTFXT0NnWlFqbnpWcWdaV2JPRnZYbVl6bWdO?=
+ =?utf-8?B?aDBNUXdiNjErMDRYaWdtRmZNanRHckx5VllXc3kweGJ4VkZBd2hFQ2c4ZmU3?=
+ =?utf-8?B?M1ErM2ZKd2Z3NHJjRWRMKzhDYWFjUlF2b2YwVXE4cGVFdmtsRnJ6Q3MrUlg4?=
+ =?utf-8?B?V25jMWk3aFB0WVBMQnlRUThCc3Vua1V0djlWMmxBMEJnVWNPaHJ3cXMvRGNU?=
+ =?utf-8?B?aDREa3cvUUNDMFpMS3UzVU5iT0wvN3ZYeHJDdUd3SWJvMThaZmZFRll0dldW?=
+ =?utf-8?B?RkY5UnM4bEorTXNEUVdUZ3hYazZ0QjVtZXAvdWdkMXloRFhQQXNJQ0IyeENx?=
+ =?utf-8?B?NFVnYzQrWDJiWlcvQ2tSbm1paE9NVE1tV1V4QjNZTXByMkpXQzkxVXB6VXJC?=
+ =?utf-8?B?MThLMWlsZjAxNEhIRXFtSStIVEl4ejZlQjFJUzc2SHp4ditsWS9Oc2haRjdY?=
+ =?utf-8?B?cVJQMmpHTXhqdnVFSUdGR0hJaXRocU5HRUJYUDJYTk90aGVJSDdCMkRDVFdz?=
+ =?utf-8?B?T2pZeWtRT2RIbTBiUk56TmJLZEJTYWVZNU02K0J5Z2dKL1hkamtXclRVZUZp?=
+ =?utf-8?B?cjRuZkV2RnhMbE8xbzZHWkxHYjE1K2F6WlNJTXBWMDRUbEJpTEQ5SE9wQnNR?=
+ =?utf-8?B?YnNnY2VvYWdUYktjUGYvZ2hVUDJqZHhKTXk4bVN6bWF3MW5OVklXSklZdFBt?=
+ =?utf-8?B?a0NGVzVqTHo5L1d0UlBMWUtobUlQblRxYWhUUStCRjJxUUl3K0lDblVhT3FO?=
+ =?utf-8?B?QzZ5S0xTbTJRa3l2LytFWEVIRC9VczFjWGZmcTRJZXQrd0grQUlEY2pIQitn?=
+ =?utf-8?B?SkhLNUloem9GRjBIN1lydldRZlU5OXJxMnR4N1dtN0hFdmlmSXJjaVdKc01G?=
+ =?utf-8?B?aXVKV1RVMWJKWkswb2NBOER3ZGlIamJmbDF6WnpIOE5WQ1NhMS9GSm5xUWNU?=
+ =?utf-8?B?VXA1aEhSd2NMUnc2d3JSRFVTajczSmhVWnludE1LcGhQSUJibmN3cG1kZktp?=
+ =?utf-8?B?Y0Fudm9CbFRodWFMNmtaQmNEK0FwRHNRcU1PcDFSeU43YmZDUDlqRFFFc2dv?=
+ =?utf-8?B?TkFCMkNqNDZyUE4wL3dzM3FjbUxseXZJd3dEV241OXlqYW9jdlpTZjBISloy?=
+ =?utf-8?B?Ulp6ajFWZWdQTG9GU1VXTXQ0Qk5NcHYyWllVQzJaUWhvb1RWcnBqYk55Q3Q4?=
+ =?utf-8?B?Q0E5NzlIZWFsdjNYU2JlbXJnV2tDZmo0Mko1MDhDSk9FeUhoUjhJTkdVcUtH?=
+ =?utf-8?B?MHM5MXkvVU9GUGNsZCtpZDVMYVRlTm1iTGtQWm1vMEIzaFJrczh5T3FqSG1r?=
+ =?utf-8?B?SWZUWVdLNEt0cXlteld1aVJXYzNwZzBwaUliZGFhcEJCd25YOGdOVkZFeTFK?=
+ =?utf-8?B?SE5XYmhaQmZyQ3ZHV0Y2VmR3dlY0OVV4WDFITVFSUTlwaGF0VS9ZMkk5NU5M?=
+ =?utf-8?B?MEFGQWlUNGlQNFZaUjcxY1B4aDJZNGlXV0UxVXVGY1k1MHkwOU5pc1pYTDN4?=
+ =?utf-8?Q?/lZY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RmhkQjBLRGh5VXlXMjAzSDhsNUNnTjBqWGlJcEoxajNIOG96RG1reGtVd2Ju?=
+ =?utf-8?B?aGN0eFIxZk5EajNlSWVDWUQrNzhXUnBCdU5COHJHSzcvZW1RYmVKdk9nZ01z?=
+ =?utf-8?B?RHNxS3JWWjFhR2c0S1JLL3NvZFdPV2NtcDRjenJJckU4Z09xa3J3bUdRUlEx?=
+ =?utf-8?B?NkhMOGdOSklOVU5YZVRqTjlMZy9pRDBia2xkT1p5RDBnajlNb2hOUkJlSTlt?=
+ =?utf-8?B?U1ltMzlhK3c3bTJIdjg4bUxsaU84VEZqM1U1SDNrL3ozNjZzaG51KzIyY2tQ?=
+ =?utf-8?B?SDZQWnBJRjNZZlRmbmo2ZExxWDFrTWZHMkhxam9NMGMwLzAvTE5MU3FmcTVB?=
+ =?utf-8?B?amNHQ3NmUUFoS3gxdTVtb1oycFB2MnJTRm9oNEFtRnJUdXF5ZTViZTNmcHpZ?=
+ =?utf-8?B?ajJiUXo2a1FnUHM4enRhUVJWVDM3Y2RCcFErSS9xVllTN3JGR1lUd1NmUldp?=
+ =?utf-8?B?bm82R1U5RXZjV0hXS3Z3WHhPbjRDVDJKajdRcW4rdUNQQ0ZmdzlST2hLeFBh?=
+ =?utf-8?B?ajhqZjJMTWpoeUlLZ3hVOTlRTXFWbHBya2prdjhBNXlSU2lGZUZjV0k0eE50?=
+ =?utf-8?B?UE1RVElGcTQrWHZzUUtBeDhRQ1NuRGhaV0ZlRWd2ZHJwYXJDS2pwMnBWUk5L?=
+ =?utf-8?B?VERNaXhGOXZZQ2picjE4anN6UTZZOStrcFcxNm9qSm5ud0lTZy93ZkxNS25U?=
+ =?utf-8?B?YTMvSXd3Zy94U0pHSE81b0tsZWZBUms5SHlxam5NUGtLdWNrZ3FXODJydUlN?=
+ =?utf-8?B?N2hjaXFKV1VvcU94cGJQMStzam9kN2p0cVdFZ3MzZm41ZnJlcUhKUkJ3K3Ro?=
+ =?utf-8?B?SFRNRHBlOUtsSXNiOElLMEUxRk05S0dtRDdUWDNBdHNFWVVmNnFrMGh1WGI2?=
+ =?utf-8?B?dU1kZ2YwdVBUUFpPWEc5cW96VHZudWxyTUlZRDliRnhQUHdqb29yWmFoSGRi?=
+ =?utf-8?B?dURxNmFyQ1MycTNwamZxZlF5aEFxY2E5YkVNZFovZWRoRDlJZWZyUSsxNWRG?=
+ =?utf-8?B?aTdrSVlUNG00WS9qRC9RR0o4cDRIa1poSXoraXA1TGpkcE5iQmk5QW1JTDBU?=
+ =?utf-8?B?aFZtUVVUL29Kd3BhMDhnUkZrdDhlRm5IeVJOc2RnSEJOZzdvN1hSL1lTZ3Y4?=
+ =?utf-8?B?bzhiRTl6M1lCYkI1UksydUpZSDk2M0w4NmJseWw5OFJvbm9FQ2t5OTF3cXpl?=
+ =?utf-8?B?RE5Bdmh1Z3ZzK3kzWWxhd0l5dS9RT0VydWlTZmptMzJmVHRuU1VVVmNuWUFZ?=
+ =?utf-8?B?bGFPeFFybThPYjk5Slh2OGhmVlU1Q3NlMm9tQ3Ywd2dpam5hWjJzZEg3MEJv?=
+ =?utf-8?B?Z29DaGprMEpHb2sxNndYd0lvb3M3Vys5TVZOUXJMU21rSDhlVGtPQzcvVTNp?=
+ =?utf-8?B?K3RzM21mc25Sc3RGT1BMelNyN1FvSklISHgrY3k3d1FvbWJLSXRaQ2oyWFl2?=
+ =?utf-8?B?TUs4QWdMdDZ4dDBUSTY0NnlUdm1JekhVZDRNRmkxRmVZczVjMnEzTmY5TEZt?=
+ =?utf-8?B?M3dhTFExUkRraDlmb0Z3Nm1BZXVQajB6SDZsNWh4OTEwRnRqL3UrTllsQkpU?=
+ =?utf-8?B?WFlOL0tNcWwvNVVLM2pmZnk4WGpZSmhLUEJPN2x1NmZsZWp3Q2JFSjU5a0xF?=
+ =?utf-8?B?dGRiNUVkaVRyZkcwdWpDREloaVk1Ulc2VlplYktoZU5tZVhublZsbW81eDlk?=
+ =?utf-8?B?MlpSTEp5eE9MYldDTUVwNmZzQVR5TUdpUG9oQmxidWQ4UVk5eTM2bXd4VnYz?=
+ =?utf-8?B?SitxSzFtcXpTdWJybHozNTVGbXNESE5TSWVHVTlCdWN1VUNZYzlXaVl3RGo2?=
+ =?utf-8?B?bHFIbE9YZjkzbGtlRkdMVTBPUnVkZTlTT0lDZTA3RDRWOFZTTlhPZmluRzYz?=
+ =?utf-8?B?MVdXNHNZS0ZjalJ3c2JSN0prM2Jka0dtYjNVTE5vM3N2Tk0rdFV6YkJRN3FM?=
+ =?utf-8?B?YnBoOXNMMy94WHJ2MTlQU0FXNWtmbFhpVHRlWitKSGVIVVZFcnJkMXBXb2FN?=
+ =?utf-8?B?YjNWRyt0TG02M2ExUlhVWlAwMitiTU9rL0xzTXIrVW5acUNzVjZyelVObTBE?=
+ =?utf-8?B?RFQwVFJ4OG52NjlRS0xETTduenJRZk1lQzRZWVN4dk43clVqeUpvaVRYNzBS?=
+ =?utf-8?B?cU5jZ0tRejhOQm5FVGdySlhHZlhFb1gwcmhVU05xM2NYRzYwT0lhdDVhcWZh?=
+ =?utf-8?B?WC9ab0FBdmxWdkV5Z2sxVXFMaEQyd050SW5NWXVmSi9JSTVGWnpvaVlnUXZ2?=
+ =?utf-8?B?N1prMDcwT3ppc3VBeFl2b0J6OGQ0c2k4MGdKRmgvc2ZQQ0RBLzRoN3ppeHpI?=
+ =?utf-8?B?cEx5KzlacGJVNzZpcFlNS1hVUlA5VkJicDJ3R1l4cmlicHJwMldiSzlmdlp1?=
+ =?utf-8?Q?svFD00Aa2shENZfHDav47CwoxhJBjpgJs7cwM?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38d0f358-d5ee-4de8-5e5f-08de6973dee6
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 13:45:51.8026
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8ZzXo6u6O7YPwbfdNfvyiRO4ILSlcsFjFKNFon+dqOJg7NczueyI+QOewFgQIx/MR2F4S/SiRDV3ZvcwZsdSXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOAP265MB8998
 
-Hi Shivendra,
+On Wed Feb 11, 2026 at 8:22 PM CST, Alice Ryhl wrote:
+> On Wed, Feb 11, 2026 at 12:19:56PM +0100, Philipp Stanner wrote:
+>> On Wed, 2026-02-11 at 12:07 +0100, Boris Brezillon wrote:
+>> > On Wed, 11 Feb 2026 11:47:27 +0100
+>> > Philipp Stanner <phasta@mailbox.org> wrote:
+>> >=20
+>> > > On Tue, 2026-02-10 at 15:57 +0100, Boris Brezillon wrote:
+>> > > > On Tue,=C2=A0 3 Feb 2026 09:14:02 +0100
+>> > > > Philipp Stanner <phasta@kernel.org> wrote:
+>> > > > =C2=A0=20
+>> > > > > +/// A jobqueue Job.
+>> > > > > +///
+>> > > > > +/// You can stuff your data in it. The job will be borrowed bac=
+k to your driver
+>> > > > > +/// once the time has come to run it.
+>> > > > > +///
+>> > > > > +/// Jobs are consumed by [`Jobqueue::submit_job`] by value (own=
+ership transfer).
+>> > > > > +/// You can set multiple [`DmaFence`] as dependencies for a job=
+. It will only
+>> > > > > +/// get run once all dependency fences have been signaled.
+>> > > > > +///
+>> > > > > +/// Jobs cost credits. Jobs will only be run if there are is en=
+ough capacity in
+>> > > > > +/// the jobqueue for the job's credits. It is legal to specify =
+jobs costing 0
+>> > > > > +/// credits, effectively disabling that mechanism.
+>> > > > > +#[pin_data]
+>> > > > > +pub struct Job<T: 'static + Send> {
+>> > > > > +=C2=A0=C2=A0=C2=A0 cost: u32,
+>> > > > > +=C2=A0=C2=A0=C2=A0 #[pin]
+>> > > > > +=C2=A0=C2=A0=C2=A0 pub data: T,
+>> > > > > +=C2=A0=C2=A0=C2=A0 done_fence: Option<ARef<DmaFence<i32>>>,
+>> > > > > +=C2=A0=C2=A0=C2=A0 hardware_fence: Option<ARef<DmaFence<i32>>>,
+>> > > > > +=C2=A0=C2=A0=C2=A0 nr_of_deps: AtomicU32,
+>> > > > > +=C2=A0=C2=A0=C2=A0 dependencies: List<Dependency>,=C2=A0=20
+>> > > >=20
+>> > > > Given how tricky Lists are in rust, I'd recommend going for an XAr=
+ray,
+>> > > > like we have on the C side. There's a bit of overhead when the job=
+ only
+>> > > > has a few deps, but I think simplicity beats memory-usage-optimiza=
+tions
+>> > > > in that case (especially since the overhead exists and is accepted=
+ in
+>> > > > C).=C2=A0=20
+>> > >=20
+>> > > I mean, the list is now already implemented and works. Considering t=
+he
+>> > > XArray would have made sense during the development difficulties.
+>> >=20
+>> > I'm sure it does, but that's still more code/tricks to maintain than
+>> > what you'd have with the XArray abstraction.
+>>=20
+>> The solution than will rather be to make the linked list implementation
+>> better.
+>>=20
+>> A list is the correct data structure in a huge number of use cases in
+>> the kernel. We should not begin here to defer to other structures
+>> because of convenience.
+>
+> Rust vs C aside, linked lists are often used in the kernel despite not
+> being the best choice. They are extremely cache unfriendly and
+> inefficient; most of the time a vector or xarray is far faster if you
+> can accept an ENOMEM failure path when adding elements. I have heard
+> several times from C maintainers that overuse of list is making the
+> kernel slow in a death from a thousand cuts situation.
 
-That sounds great, I agree with the plan.
+I would rather argue the other way, other than very hot paths where cache
+friendliness absolutely matters, if you do not require indexing access then=
+ the
+list is the correct data strucutre more often than not.
 
-The wording for the SAFETY comment matches exactly what Alice
-suggested, so it looks good to me.
+Vector have the issue where resizing requires moving, so it cannot be used =
+with
+pinned types. XArray doesn't require moving because it requires an indirect=
+ion
+and thus an extra allocation, but this means that if you're just iterating =
+over
+all elements it also does not benefit from cache locality. Using vectors al=
+so
+require careful management of capacity, which is a very common source of me=
+mory
+leak for long running programs in user space Rust.
 
-Please feel free to include my tags:
+Re: the ENOMEM failure path, I'd argue that even if you *can* accept a ENOM=
+EM
+failure path, it is better to not have a failing path that is unnecessary.
 
-Co-developed-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Best,
+Gary
 
-Thanks for taking the lead on the v2
+>
+> This applies to the red/black tree too, by the way.
+>
+> Alice
 
-Best regards,
-Muchamad Coirul Anwar
-
-
-Pada Rab, 11 Feb 2026 pukul 16.58 Shivendra Sharma
-<shivendra02467@gmail.com> menulis:
->
-> Hi Muchamad, Miguel,
->
-> Thanks for the response! I=E2=80=99m happy to take the lead on the v2 pat=
-ch.
->
-> Regarding the safety comments, I think Alice actually gave us the perfect=
- wording in her reply. She suggested removing the specific reference to cal=
-l_printk to make it more generic since %pA is used in other places like seq=
-_file.rs.
->
-> To keep things simple and ensure we follow her suggestion exactly, I=E2=
-=80=99ll use this text for the SAFETY comment:
->
-> // SAFETY: The C implementation of `vsprintf` (in `lib/vsprintf.c`) speci=
-fically
->
-> // calls this function ONLY when processing the `%pA` format specifier.
->
-> // On the Rust side, we always pair `%pA` with a valid pointer to
->
-> // `fmt::Arguments`.
->
-> Muchamad, if you're okay with that, I'll integrate this into the v2 along=
- with the cleanup from my previous patch and Miguel's earlier suggestions. =
-I'll include you as a Co-author.
->
-> Does that sound good to everyone?
->
-> Best regards,
->
-> Shivendra
->
->
-> On Wed, Feb 11, 2026, 3:12=E2=80=AFPM Muchamad Coirul Anwar <muchamadcoir=
-ulanwar@gmail.com> wrote:
->>
->> Hi Miguel, Shivendra,
->>
->> Thanks for the heads-up, Miguel, I'd be happy to collaborate with Shiven=
-dra on this. Hi Shivendra, I checked your patch and I really like how you h=
-andled the documentation and the C-header part. It=E2=80=99s definitely cle=
-aner than my initial attempt. That said, I just got some feedback from Alic=
-e Ryhl regarding the internal '// SAFETY' comments. She pointed out that we=
- should make the safety guarantee generic (covering `seq_file` usage too, n=
-ot just `printk`). How about we combine our work? You could take the lead o=
-n the v2 patch, and I can provide the updated safety comment text that cove=
-rs Alice's feedback. Let me know what you think.
->>
->> Best regards,
->> Muchamad Coirul Anwar
->>
->> Pada Sel, 10 Feb 2026 pukul 22.00 Miguel Ojeda <miguel.ojeda.sandonis@gm=
-ail.com> menulis:
->>>
->>> On Thu, Feb 5, 2026 at 5:23=E2=80=AFAM Muchamad Coirul Anwar
->>> <muchamadcoirulanwar@gmail.com> wrote:
->>> >
->>> > The safety comments in `rust_fmt_argument` and `call_printk` were
->>> > previously marked as TODO.
->>> >
->>> > This patch adds the missing safety documentation explaining why
->>> > dereferencing the pointers and calling the C `_printk` function
->>> > is safe in these contexts. It clarifies the contract between
->>> > `lib/vsprintf.c` and the Rust implementation regarding the `%pA`
->>> > format specifier.
->>> >
->>> > Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
->>>
->>> Related:
->>>
->>>   https://lore.kernel.org/rust-for-linux/20260128202130.196419-1-shiven=
-dra02467@gmail.com/
->>>
->>> Cc'ing Shivendra.
->>>
->>> Could you (i.e. both) please coordinate the patches, perhaps merging
->>> them into a single series? You may want to use Co-developed-by and/or
->>> have a different author per patch etc.
->>>
->>> Thanks!
->>>
->>> Cheers,
->>> Miguel
