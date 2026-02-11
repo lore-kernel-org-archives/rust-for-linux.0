@@ -1,87 +1,281 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A00D2EF64D;
-	Wed, 11 Feb 2026 15:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAF0341ADD;
+	Wed, 11 Feb 2026 16:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770825259; cv=none; b=MCGsCn30aS5sGPuVAwj26yGVxH/dFfmHdAVfS3kDHjL71VRr3cxzHBe5OAb3WL7xsMP4N468Epr4JGsyGQJHhhUyb3uqXSzJJ1a0MiZNQeOEpVflJ4KK13FiZMcHSlj7P9ZuJI1scyHmczNfI9QRVHfBnnFZw38DloiQMLPJGuQ=
+	t=1770827875; cv=none; b=ejnMYjbIinV7LvuV2kEIZzsDaWzWRFmuvfNO+T7MNgUZKX2dhrwDLsutCL1h3IrQj2gJUgEyLeyajblCFpipC+WJGbwuCHmMdH4TpJZRSlxazkESwvFLRI1wcpe+s0RCMG2UCcC4XNksxGcvGAAQsI3STP8w31BEDwd4C/mRzXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770825259; c=relaxed/simple;
-	bh=XJIA8EDuYw4A7eKIj4JUJHIaDE0zJ4PIbTD3LegeG3c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=IBzMqh2fr8P1KT2X5N40yHMWH7JcogqodCyP0dM2AW2kTMaeTCudflBgNRIzCfCk8e3UGTwRWSkTz0uC5Yh6sV1h79KBxPOUdVwQArvIydbpqm2nD1pNUCOGLO6qmYY/sj5eHzxzc6f6wGU8qK7WQfVX3P1vb2n6EqEIf/ITxoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSYf7r3u; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770827875; c=relaxed/simple;
+	bh=N4BFmuWQ/WPOUmQeIFOT/JQw3aZcuNZ5Ic0+qE7JO5A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nRud1aiIYj8+j7Hj03AaUkKx/6t4HC+af5d5rftvdm1gKnD5DTWw8qAfg2Sr6WVCD9a3XPTtAnBhMZWUn0gLXiQJ7Xnm5IkFPjt4Pu+iCPPav2ecLZKpe93wP+cZIFJq4YaZilSXUxQJ9UYVw5um5Hqj/zQnwAClYfmyyHf3FmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTrP6Ifg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSYf7r3u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9AEC4CEF7;
-	Wed, 11 Feb 2026 15:54:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTrP6Ifg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F105C4CEF7;
+	Wed, 11 Feb 2026 16:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770825258;
-	bh=XJIA8EDuYw4A7eKIj4JUJHIaDE0zJ4PIbTD3LegeG3c=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=bSYf7r3uFh8NBEonzIuBMWBoBL2QNzzVHAJLQw5gripUbEaTbSmiN6aQgjGI2Z46i
-	 pwTZ7UuS8jSCoQroik4oWWlY479jnDilqVDx++npn5j4Lc9vGV+YNziPTxmvLAY6AY
-	 6PmoSiyN/8D1d0QjZt5GANSnIgC3p8NQU8kCLY19stHIYswYUr1nS6I6pwigs8MYIg
-	 5+MahKe6a8s5O8NcS6w1SRa2zNe/eHFjc2PZ7At81OGpodImpqpJkAzsj3F4GqRfxR
-	 U0HckYkfAI+N4K//v8g8iNLLkqAZFDWvGkqsM3IOtQSC3z3PK4Fsr0zAz288YoQ1qu
-	 tE/Ts3m30/lvg==
+	s=k20201202; t=1770827875;
+	bh=N4BFmuWQ/WPOUmQeIFOT/JQw3aZcuNZ5Ic0+qE7JO5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YTrP6Ifgrg5QMICHMqBxdHlpO2tyOdVv6eoq2NRvoIBL5ZJg5/FGwIJGuQ6hTShf6
+	 QyNyhheDUm/u4Y+R2nhlRVH6fOB69LV3xfGaMcnc56Kgk1Dnx14hl9aZNNWVcPVkwS
+	 bElLBxZT1KuRNO1Y3tDFHWr+618kqWCvcsdmfotCjre41jFdSYgNAdYjbTHchFzeqe
+	 xBpgNs7DeR2zQn5CLt86nzEM1gqZrls2adrD0thGMYE1ex2V9/eqyIc83/sVgeNYJ7
+	 xAWYlp5he/08r44o/x1f4S39Pu4vU2kcTop7JcuQhtOHUwsD/Wr1BqfPMITELR+UV2
+	 bAGpo6qi4PWIw==
+Date: Wed, 11 Feb 2026 17:37:52 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org, 
+	linux-pwm@vger.kernel.org, linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+Message-ID: <20260211-flawless-feathered-boar-0b87ad@houat>
+References: <518D8B09-B9A1-4DB4-85CD-37A2DD3D5FB1@collabora.com>
+ <DFSLCI9U4NCW.2HI2UPUI7G134@kernel.org>
+ <20260119-weightless-pelican-of-anger-190db0@houat>
+ <DFSN4FDCYHMW.3J3237PEBV2ZP@kernel.org>
+ <20260122-majestic-masterful-jaguarundi-d0abde@houat>
+ <2F3D3A40-6EF9-46FC-A769-E5A3AAF67E65@collabora.com>
+ <20260204-nickel-seal-of-poetry-8fdefb@houat>
+ <91A92D84-1F2E-45F3-82EC-6A97D32E2A78@collabora.com>
+ <20260204-angelic-vermilion-beagle-fd1507@houat>
+ <20260209105047.693f2515@fedora>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="va37xmuzn6sqyd6c"
+Content-Disposition: inline
+In-Reply-To: <20260209105047.693f2515@fedora>
+
+
+--va37xmuzn6sqyd6c
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Feb 2026 16:54:14 +0100
-Message-Id: <DGC95VFNOLZI.ZGK7O5OIZVR@kernel.org>
-Subject: Re: [RFC PATCH 3/4] rust/drm: Add DRM Jobqueue
-Cc: <phasta@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Boris
- Brezillon" <boris.brezillon@collabora.com>, "Gary Guo" <gary@garyguo.net>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Benno Lossin" <lossin@kernel.org>, =?utf-8?q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Philipp Stanner" <phasta@mailbox.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260203081403.68733-2-phasta@kernel.org>
- <20260203081403.68733-5-phasta@kernel.org> <20260210155750.5cdbe6cc@fedora>
- <8ea48ce49f2c7b6fd715dd54c24e755e8ac3262c.camel@mailbox.org>
- <20260211120742.0e9e7122@fedora>
- <f3d2e3b370bed55cc2a95287b3c257f878b5e92b.camel@mailbox.org>
- <aYx0a-2eANbM_vnd@google.com> <DGC6FE14C91M.1BMCS7XHRVP6J@garyguo.net>
- <20260211150738.049af4bb@fedora> <aYydpYzd4AzFoAvZ@google.com>
- <bd6343fc39b78d4b2ba1b82a83c689cdb3a1d6fc.camel@mailbox.org>
-In-Reply-To: <bd6343fc39b78d4b2ba1b82a83c689cdb3a1d6fc.camel@mailbox.org>
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+MIME-Version: 1.0
 
-On Wed Feb 11, 2026 at 4:20 PM CET, Philipp Stanner wrote:
-> On Wed, 2026-02-11 at 15:17 +0000, Alice Ryhl wrote:
->> On Wed, Feb 11, 2026 at 03:07:38PM +0100, Boris Brezillon wrote:
->> >=20
->> > Back to this particular job dependencies use case: we have to embed th=
-e
->> > DmaFence pointer in some wrapper with the ListLinks element anyway,
->> > because DmaFences can be inserted in multiple of those lists in
->> > parallel.
->>=20
->> Okay, if that's the case, then the linked list is *really* not the right
->> tool for the job.
+On Mon, Feb 09, 2026 at 10:50:47AM +0100, Boris Brezillon wrote:
+> Hi Maxime,
+>=20
+> On Wed, 4 Feb 2026 15:34:29 +0100
+> Maxime Ripard <mripard@kernel.org> wrote:
+>=20
+> > On Wed, Feb 04, 2026 at 09:43:55AM -0300, Daniel Almeida wrote:
+> > > > I'm probably missing something then, but let's assume you have a dr=
+iver
+> > > > that wants its clock prepared and enabled in an hypothetical enable=
+()
+> > > > callback, and disabled / unprepared in a disable() callback.
+> > > >=20
+> > > > From a PM management perspective, this usecase makes total sense, i=
+s a
+> > > > valid usecase, is widely used in the kernel, and is currently suppo=
+rted
+> > > > by both the C and Rust clk APIs.
+> > > >=20
+> > > > The only solution to this you suggested so far (I think?) to implem=
+ent
+> > > > this on top of the new clk API you propose is to have a driver spec=
+ific
+> > > > enum that would store each of the possible state transition. =20
+> > >=20
+> > > Yes, you need an enum _if_ you want to model transitions at runtime. =
+IIUC you
+> > > only need two variants to implement the pattern you described. I do n=
+ot
+> > > consider this  =E2=80=9Cboilerplate=E2=80=9D, but rather a small cost=
+ to pay. =20
+> >=20
+> > A maintenance cost to pay by every driver is kind of the textbook
+> > definition of boilerplate to me.
+> >=20
+> > > I would understand if this was some elaborate pattern that had to be
+> > > implemented by all drivers, but a two-variant enum is as
+> > > straightforward as it gets. =20
+> >=20
+> > And yet, that framework has dozens of helpers that do not remove
+> > anything from drivers but a couple of lines. So surely its users must
+> > find value in reducing that boilerplate as much as possible. And you do
+> > implement some of them, so you must find value in that too.
+> >=20
+> > > > That's the boilerplate I'm talking about. If every driver wanting to
+> > > > implement that pattern has to make such an enum, with all the relev=
+ant
+> > > > traits implementation that might come with it, we go from an API wh=
+ere
+> > > > everything works at no-cost from a code-size perspective to a situa=
+tion
+> > > > where every driver has to develop and maintain that enum. =20
+> > >
+> > > There are no "traits that come with it". It's just an enum, with two
+> > > variants.
+> > >  =20
+> > > > API where everything works at no-cost =20
+> > >=20
+> > > The previous API was far from =E2=80=9Ceverything works=E2=80=9D. It =
+was fundamentally
+> > > broken by design in multiple ways, i.e.: =20
+> >=20
+> > Out of context and not what I meant, but ok.
+> >=20
+> > > > a) It only keeps track of a count to clk_get(), which means that us=
+ers have
+> > > > to manually call disable() and unprepare(), or a variation of those=
+, like
+> > > > disable_unprepare().
+> > > >=20
+> > > > b) It allows repeated calls to prepare() or enable(), but it keeps =
+no track
+> > > > of how often these were called, i.e., it's currently legal to write=
+ the
+> > > > following:
+> > > >=20
+> > > > clk.prepare();
+> > > > clk.prepare();
+> > > > clk.enable();
+> > > > clk.enable();
+> > > >=20
+> > > > And nothing gets undone on drop(). =20
+> > >=20
+> > > IMHO, what we have here is an improvement that has been long overdue.=
+ =20
+> >=20
+> > Nothing is absolute. It is indeed an improvement on the refcounting side
+> > of things and general safety of the API for the general case. I don't
+> > think I ever questionned that.
+> >=20
+> > However, for the use-cases we've been discussing (and dozens of drivers
+> > implementing it), it also comes with a regression in the amount of code
+> > to create and maintain. They used to be able to only deal with the Clk
+> > structure, and now they can't anymore.
+> >=20
+> > You might find that neglible, you might have a plan to address that in
+> > the future, etc. and that's fine, but if you can't acknowledge that it's
+> > indeed happening, there's no point in me raising the issue and
+> > continuing the discussion.
+>=20
+>=20
+> Okay, let's see if I can sum-up the use case you'd like to support. You
+> have some PM hooks, which I'm assuming are (or will be) written in
+> rust. It will probably take the form of some Device{Rpm,Pm} trait to
+> implement for your XxxDeviceData (Xxx being the bus under which is
+> device is) object (since I've only recently joined the R4L effort, I
+> wouldn't be surprised if what I'm describing already exists or is
+> currently being proposed/reviewed somewhere, so please excuse my
+> ignorance if that's the case :-)).
+>=20
+> The way I see it, rather than having one enum per clk/regulator/xxx
+> where we keep track of each state individually, what we could have is a
+>=20
+> trait DevicePm {
+> 	type ResumedState;
+> 	type SuspendedState;
+>=20
+> 	fn resume(&self, state: SuspendedState) -> Result<ResumedState, Error<Su=
+spendedState>>;
+> 	fn suspend(&self, state: SuspendedState) -> Result<SuspendedState, Error=
+<ResumedState>>;
+> };
+>=20
+> enum DeviceState<T: DevicePm> {
+> 	Resumed(T::ResumedState),
+> 	Suspended(T::SuspendedState),
+> };
+>=20
+> and then in your driver:
+>=20
+> MySuspendedDeviceResources {
+> 	xxx_clk: Clk<Unprepared>,
+> };
+>=20
+> MyResumedDeviceResources {
+> 	xxx_clk: Clk<Enabled>,
+> };
+>=20
+> implem DevicePm for MyDevice {
+> 	type ResumedState =3D MyResumedDeviceResources;
+> 	type SuspendedState =3D MySuspendedDeviceResources;
+>=20
+> 	fn resume(&self, state: SuspendedState) -> Result<ResumedState, Error<Su=
+spendedState>> {
+> 		// FIXME: error propagation not handled
+> 		let enabled_clk =3D state.xxx_clk.clone().prepare()?.enable()?;
+>=20
+> 		Ok(ResumedState {
+> 			xxx_clk: enabled_clk,
+> 		});
+> 	}
+>=20
+> 	fn suspend(&self, state: ResumedState) -> Result<SuspendedState, Error<R=
+esumedState>> {
+> 		// FIXME: error propagation not handled
+> 		let unprep_clk =3D state.xxx_clk.clone().disable().unprepare();
+>=20
+> 		Ok(SuspendedState {
+> 			xxx_clk: unprep_clk,
+> 		});
+> 	}
+> };
+
+I'm not sure we need to associate this with the suspend/resume state either.
+
+> With this model, I don't think Daniel's refactor goes in the way of more
+> generalization at the core level, it's just expressed differently than
+> it would be if it was written in C. And I say that as someone who struggl=
+es
+> with his C developer bias every time I'm looking at or trying to write
+> rust code.
 >
-> We have to distinguish what we are talking about here.
->
-> For the JobQueue, it takes over a cloned DmaFence and stuffs that into
-> its own list. Problem solved.
+> As others have said in this thread (Danilo and Gary), and after having
+> played myself with both approaches in Tyr, I do see this shift from manual
+> prepare/enable to an RAII approach as an improvement, so I hope we can
+> find a middle-ground where every one is happy.
 
-You mean it wraps the ARef<DmaFence> into a struct Dependency which has its=
- own
-ListLinks.
+I do think we can find a compromise though. Miguel suggested for example
+to make the current enable/prepare/disable/unprepare function unsafe,
+and that's totally reasonable to me.
 
-But this requires an additional allocation for every dependency, whereas wi=
-th
-xarray you can just store the pointer directly in the xarray with
-ARef::into_raw().
+Then we can implement the "managed" clock version on that unsafe API,
+and we would end up with a "raw", unsafe, version kind of equivalent to
+the one we have today, and where callers would have to justify why their
+usage of the API is actually safe, or the new, managed, variant that is
+safe and can be easily used by most drivers.
 
-I.e. it scales much better than lists for this use-case.
+And we can call these RawClk vs Clk, or Clk vs ManagedClk, or whatever.
+
+How does that sound?
+
+Maxime
+
+--va37xmuzn6sqyd6c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaYywWgAKCRAnX84Zoj2+
+diFgAX9NbiTV8lVrQ44u9f4DSVUDq686eOaj7uci6rHY5OPcA0wNpSJTAhKA8TuV
+919XgiwBgM5+jjSrFFfXQ56tF54ch32+uMVDYbpBRp2fx+0+OfxMqCuAQkASAYrZ
+mfHt8q7GSg==
+=MEar
+-----END PGP SIGNATURE-----
+
+--va37xmuzn6sqyd6c--
