@@ -1,174 +1,123 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6201D7E42
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 12:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770814331; cv=none; b=lSbCP57aITqFxfH8Y41NISlOQpB+7W8RzMI9JC6jAqpcCnNQYv1iNieybpMwAxEsvPuW188d0n7QFGhGsRr2reWRMYUNRxxsn424JqwXjIGc1mtw0CbYu0BMBJIytk/4ZHqgKdNQm+B1r7FGsO2ZcB/7z9B31CNJXs2/Sxhxqj4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770814331; c=relaxed/simple;
-	bh=x3Lbw63yOI0dsAlzCOoI4S/tRd2ag22kVmVpghQuSY8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PLWjcpARqxFgcUG71jWUzhfjsGN5H9cA8sogOlmg+0s021/gn+i7KFWNLNgHc9DMVPIZ2D2DHT6uL19F5tU8NRp+RfoFP0m1kzeGhCj91CiouqvMINO4bmCYVv4oyVgN6cH6dudP5xCctHxgIBM6HkXYHldSRWot2ds/Jif6F9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zcBcXY21; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C6F244186
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 13:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770816433; cv=pass; b=OPTlfWYKQ6sisUDENTUf9rbmy2SiNAjBUu4LjG+6ujNqyd/GnMoqgqJ+31lmE46lZv7/ABjPpAJWiiUczpGaCvgZIg1ZvzTRG2+ka8pWS81FkiUb7DhdaDzPUu6S1IOOZW6MPP9unHMIE0tlJPkkZUm0jztNJKNASzQo1u6nhnI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770816433; c=relaxed/simple;
+	bh=4FDrHCkVWXS/VwYkhc6RadyjTesUf/W239JfUi/CFQU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nB1RwWZFyPTGz9OFQZ4Dm0WhUynvay88ASRL5RZHUovCCbx/kC91QHmgCnPycwsnykG3NIHR316XOY4o98+k4MYfhVsDSltMFG6BGliONIJAWpeKsqpC5j9zJN3gER34RLODAOTs5OlerGI63GuyjYk8kxwRGa3fGQiTTJ9+ExA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZnsteEVk; arc=pass smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zcBcXY21"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-65828f603ecso7331234a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 04:52:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZnsteEVk"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ba4f9df1b4so206786eec.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 05:27:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770816432; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Z4OSZTKmOkFxx5H9r8zXHMB9qBQwsgXouR9wUwEiLX57BvIpiYcTv/Z7W3fq7PRe69
+         J+BJCLPSX3Z/uYszid75TpKSBixNy+tk3zfQ7yMPc9q6M5DAJlEjuQ2mtSyWsBe4d1Qr
+         VtL+FEqERETUpHDItHAw1eZtd9WqKhvkjqpRNHU3MgZtlEo0lh4WINfQ4Hf6+VwBHfo8
+         2ZJX1kzdR9TFP2heIVQglUOa8Fnl2veuUM1284M8bTm6UiDybRvntfQXWw11Z8R5yRas
+         qJSws+oxEBsVJp4+jnWfo6DOUu/1owddjm7VkovnwLb3WAdqThMQ7tV7HkMREGNlNCzz
+         wCcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ydXgQTl/HrsorvtS7pbkIpZLZb4j7VznGUWQKvfye24=;
+        fh=GcTVBIyUgCjJrfEDR+xiuQ/rUbpgNH6VkAjQR99a/Sc=;
+        b=KsfzO4cjRe5heasNnb8PGglY44VsHwyX6mstaMnXn6QR/YNiIoyZtQU7KDc2f4YtQP
+         XNaF6jLvCVOPwIIMMOdlPwd9JgfJbd3rex5wYZ6atlbOILYepDrDD5mGigFu9n61wybX
+         8dTpzBi3vNwxbPi0ZWICLoWiQ6e9wXZamcVoAlprowjAgrpZLXXdfdRAVtMXDvoLnDwl
+         osGniLMz9esv1GqRtoE8wnp6dclYAsiyG49eSuRZ7nDBvWA1BhiRjo3m8J3psQStL6xN
+         Wmw7Ml27nztMXDhJJsdzTqj4ZveZRJcOVf4XQUzZ/paT93qFwID32H/nQHRiBpMNTljD
+         0EIA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770814329; x=1771419129; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x3Lbw63yOI0dsAlzCOoI4S/tRd2ag22kVmVpghQuSY8=;
-        b=zcBcXY21IZI+Mc5xi9G74LLQVbQ4AB3CUr5/g5+l+UjVROz4q2C9ww033Xi0Udl07z
-         20GwPVg4iJu7Ga2PMDeX2IW+ukm8cNMRtZaWoY6m8ZMT8z8xr23UrPG8w8zz/LzFxei/
-         WrjvnAqwgxxUYNNXZeWY+zDh9zSH1jixdzK8aAdZYFmI/ZlWsCfvMJJ49VMze7UE/d/o
-         x/xMwwTiZ30hibaD/WJg/9JqbzPevOBruaFUAavy8r9zI6sY9DR86cvbD9jV19HfcA8u
-         Lz1Sv/BW3dI9/UaxopBhLBTYvfnGTaKFKk6hPBJydlSB2Sm2IlIhalI+jVoIJfc56Eev
-         J5yA==
+        d=gmail.com; s=20230601; t=1770816432; x=1771421232; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ydXgQTl/HrsorvtS7pbkIpZLZb4j7VznGUWQKvfye24=;
+        b=ZnsteEVk/50084WLn7LwpbafnELspFOTMI72fIbPrHewRyb11mP5NdBNRLucZWjU7Z
+         mWcO3EUpDAHXCZxO5yIKcq+Je6IudP94EsLX5Y2n68lWVOdwwzQPosgpf0sL5VxgtkR+
+         DIS9Lz8lllN3Om27ApJ4XZnZsQ6rBisG+Pb3vi4+hed+nZE/aJiHrA9yI+kJ26qq8Lu6
+         +6+kPDcu/K/CkGDJjB68/VxVZmSeZBf4zOudOmKm6zal3Qwuy0i+CU03HvAUjIbjOfHN
+         6lE6Jdh2dhN3KNEljxmwidNS+QxTXzVFMAvLkyz7teeVEW5fzTPmXZUjp1sTDuyMPEIY
+         JnYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770814329; x=1771419129;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=x3Lbw63yOI0dsAlzCOoI4S/tRd2ag22kVmVpghQuSY8=;
-        b=J78iU5QVQwD2BpJO5p/5BEUxRyIDxUDL8EeF0w4O3Wnt2LavtvsHo91MXUPZNVHZVJ
-         +m3bJFyxBbKzBVT09CkFUZf/XpZ2YevtayT1RXrHw+mjpSQzy5iBtkvHf3vWGQOu56zg
-         to9EWRUR6h4tRjblwKO0jVRk78OEd7dPnmt09lpmDweJNzKp9EilzduPLtkNc1XuX6sU
-         P0+TZ6cp/eM1GZvGpC1hbEV/cuwpnP+/vFSaN2mI6R8oFM8X5HhTHDAqi70aPUQDMjMj
-         WEq2rdpGASdpaScxJZ9FIfXOC6L2CbhQtGJByfPMvYCyt22+rBFGyk42rx6/uHV66SnP
-         KS3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUeLU1QjSpJqWG0bXjZZERYeebfFjF7mYBI230tn/xiDjfzGCDm0e3JYLDW9rq8cIgQk5N9Q2QLXaZdVgzUMQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz41fQlXIY3q1lqcPefTMCw9PnRajURu4qhK9CRC4et/YJ/WOzp
-	ck9rc/vD3GI7/F2vSwBHrs0FNJciXEXRqCuavQqxkni4T4EipAGEbVQYQ/ciWoCbTr+qEhmkip6
-	9aIQSPlg0CX5Qe8lLpg==
-X-Received: from edqh19.prod.google.com ([2002:aa7:c613:0:b0:64d:3c2c:6061])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:34d3:b0:65a:4209:f83b with SMTP id 4fb4d7f45d1cf-65a4209f97bmr706226a12.29.1770814328687;
- Wed, 11 Feb 2026 04:52:08 -0800 (PST)
-Date: Wed, 11 Feb 2026 12:52:07 +0000
-In-Reply-To: <e4f3ff81338dd738e1c6d81e255c129c07e9c7fb.camel@mailbox.org>
+        d=1e100.net; s=20230601; t=1770816432; x=1771421232;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ydXgQTl/HrsorvtS7pbkIpZLZb4j7VznGUWQKvfye24=;
+        b=hsSFPUoEo5RrdokUK3JPzpSdprKrCfx6qj0fr6SFcmiDaCrmyvw0oqzfvNsBxLSjfT
+         WLyHpMCnQQOfsAliTH0JmDVw9euC1JlOb12gie7D0Ka8KYjOt7r7zSw1e9KTjJt116Cn
+         aPDahU6ePY3sAlTv8itGcq5SVYPFJUfboxYiaaR0RkLTPgFfbs7XwC8CSu2qMEqHCjja
+         wA/WMbaVirg7/M9Vp77WevdoAFID+Wf5z0Fd4XPjNfNzj444dLzlHLZd1pw1NaS7r5tO
+         TIKAyW6UNSi2oz2cvxcpy0Bv/cIl5odLl2tguBqwXeiwo18tkDg3Vmv1NvbWuNEm41qE
+         Ivxw==
+X-Forwarded-Encrypted: i=1; AJvYcCVmaXpZ8iLINUIOncbFJwfy9mo/3yrMkwbBtDcc8eIVsfdL6qIU4v7PLgAvL8a5mB1U+jHbM+C7I0GJn0J6pA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwoGKDfxrfNhkfqwcyuUa9+8X3JF0OzsqPojERTQeSSK5tPu5f
+	saCQH1pRTIeiIUzGRXHGNxkbUwMaw6H7Lahzl+OYmtOj6okEjDore1xc74moeSKas1wzAtTmFQC
+	YX+tPi9vPz0HIgyIvn1kvg5ifAfyt8y0=
+X-Gm-Gg: AZuq6aLICokwltgrk5SEaa8VVePtr3u8XjglIj64dWcwsK4sAxVT9vhicz1qrurk1IP
+	3M/Rmgyd7yb3WrE4i3VWdgzA9fHH+2HxbzUMUWwWvwDK64f1HkZ6slfwjlQeC7M/LxGKBO0sXKG
+	yIIXSM5e4mT2xtJTpZThjBvLtjB/+SCb1u2/8OgkZk8Rty4S2jO7I1ickJ8QbeDKm6h2LPWE33V
+	WKCwjsAB8S14FruZD7nPhmb/O3EvGlTHF7ELfUsi6lz8PIP3el43GI+kOefqGjWrR3XBVPAgr97
+	NNGQ10EmFZbfAQwysG/fXCkV5hk3M3zpqDMGdU10EWlrk7FNb/zyh58e/MI8lj5ZeaC9K2aGMnt
+	dBL8m4X3sFCPcaa/g37fvxL7/
+X-Received: by 2002:a05:7300:7c0f:b0:2b7:3678:2d1a with SMTP id
+ 5a478bee46e88-2ba9e160d88mr408678eec.6.1770816431570; Wed, 11 Feb 2026
+ 05:27:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260203081403.68733-2-phasta@kernel.org> <20260203081403.68733-5-phasta@kernel.org>
- <20260210155750.5cdbe6cc@fedora> <8ea48ce49f2c7b6fd715dd54c24e755e8ac3262c.camel@mailbox.org>
- <20260211120742.0e9e7122@fedora> <f3d2e3b370bed55cc2a95287b3c257f878b5e92b.camel@mailbox.org>
- <aYx0a-2eANbM_vnd@google.com> <e4f3ff81338dd738e1c6d81e255c129c07e9c7fb.camel@mailbox.org>
-Message-ID: <aYx7d21_hIWP93XW@google.com>
-Subject: Re: [RFC PATCH 3/4] rust/drm: Add DRM Jobqueue
-From: Alice Ryhl <aliceryhl@google.com>
-To: phasta@kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <lossin@kernel.org>, 
-	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260122-rust-analyzer-fd-leak-v1-1-945577813b20@kernel.org>
+ <CANiq72=+2s48M5imZ7tZj-0SN==f_mLmw_2cWfQYKtBhD1ROCA@mail.gmail.com> <CAJ-ks9kps0L-VenCoHdYuTvRphe7-dk75koutbiRfNUKGi5zjA@mail.gmail.com>
+In-Reply-To: <CAJ-ks9kps0L-VenCoHdYuTvRphe7-dk75koutbiRfNUKGi5zjA@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 11 Feb 2026 14:26:58 +0100
+X-Gm-Features: AZwV_Qjw77-MwLOLcUdccsuyFc9ezvElnVTszg7lVmI6AHWii4FLt9UmkdDWYxE
+Message-ID: <CANiq72n3OzakTkdWPhxS_nTAtN-9ddeaE3iNcGLnKfqV_4rgnQ@mail.gmail.com>
+Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: avoid FD leak
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boris-Chengbiao Zhou <bobo1239@web.de>, Kees Cook <kees@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Fiona Behrens <me@kloenk.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 11, 2026 at 01:44:56PM +0100, Philipp Stanner wrote:
-> On Wed, 2026-02-11 at 12:22 +0000, Alice Ryhl wrote:
-> > On Wed, Feb 11, 2026 at 12:19:56PM +0100, Philipp Stanner wrote:
-> > > On Wed, 2026-02-11 at 12:07 +0100, Boris Brezillon wrote:
-> > > > On Wed, 11 Feb 2026 11:47:27 +0100
-> > > > Philipp Stanner <phasta@mailbox.org> wrote:
-> > > >=20
-> > > > > On Tue, 2026-02-10 at 15:57 +0100, Boris Brezillon wrote:
-> > > > > > On Tue,=C2=A0 3 Feb 2026 09:14:02 +0100
-> > > > > > Philipp Stanner <phasta@kernel.org> wrote:
-> > > > > > =C2=A0=20
-> > > > > > > +/// A jobqueue Job.
-> > > > > > > +///
-> > > > > > > +/// You can stuff your data in it. The job will be borrowed =
-back to your driver
-> > > > > > > +/// once the time has come to run it.
-> > > > > > > +///
-> > > > > > > +/// Jobs are consumed by [`Jobqueue::submit_job`] by value (=
-ownership transfer).
-> > > > > > > +/// You can set multiple [`DmaFence`] as dependencies for a =
-job. It will only
-> > > > > > > +/// get run once all dependency fences have been signaled.
-> > > > > > > +///
-> > > > > > > +/// Jobs cost credits. Jobs will only be run if there are is=
- enough capacity in
-> > > > > > > +/// the jobqueue for the job's credits. It is legal to speci=
-fy jobs costing 0
-> > > > > > > +/// credits, effectively disabling that mechanism.
-> > > > > > > +#[pin_data]
-> > > > > > > +pub struct Job<T: 'static + Send> {
-> > > > > > > +=C2=A0=C2=A0=C2=A0 cost: u32,
-> > > > > > > +=C2=A0=C2=A0=C2=A0 #[pin]
-> > > > > > > +=C2=A0=C2=A0=C2=A0 pub data: T,
-> > > > > > > +=C2=A0=C2=A0=C2=A0 done_fence: Option<ARef<DmaFence<i32>>>,
-> > > > > > > +=C2=A0=C2=A0=C2=A0 hardware_fence: Option<ARef<DmaFence<i32>=
->>,
-> > > > > > > +=C2=A0=C2=A0=C2=A0 nr_of_deps: AtomicU32,
-> > > > > > > +=C2=A0=C2=A0=C2=A0 dependencies: List<Dependency>,=C2=A0=20
-> > > > > >=20
-> > > > > > Given how tricky Lists are in rust, I'd recommend going for an =
-XArray,
-> > > > > > like we have on the C side. There's a bit of overhead when the =
-job only
-> > > > > > has a few deps, but I think simplicity beats memory-usage-optim=
-izations
-> > > > > > in that case (especially since the overhead exists and is accep=
-ted in
-> > > > > > C).=C2=A0=20
-> > > > >=20
-> > > > > I mean, the list is now already implemented and works. Considerin=
-g the
-> > > > > XArray would have made sense during the development difficulties.
-> > > >=20
-> > > > I'm sure it does, but that's still more code/tricks to maintain tha=
-n
-> > > > what you'd have with the XArray abstraction.
-> > >=20
-> > > The solution than will rather be to make the linked list implementati=
-on
-> > > better.
-> > >=20
-> > > A list is the correct data structure in a huge number of use cases in
-> > > the kernel. We should not begin here to defer to other structures
-> > > because of convenience.
-> >=20
-> > Rust vs C aside, linked lists are often used in the kernel despite not
-> > being the best choice. They are extremely cache unfriendly and
-> > inefficient; most of the time a vector or xarray is far faster if you
-> > can accept an ENOMEM failure path when adding elements. I have heard
-> > several times from C maintainers that overuse of list is making the
-> > kernel slow in a death from a thousand cuts situation.
->=20
-> Interesting. Valid points.
->=20
-> It might be a self-accelerating thing. More people have lists on their
-> mind because they are so common, with RB trees et al. being relatively
-> rare, so they instinctively use them, making them more common=E2=80=A6
+On Tue, Jan 27, 2026 at 2:39=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
+> wrote:
+>
+> I'm not sure how CPython could close the FD immediately - it would
+> require the GC to run, at least? Anyway, agree with you below:
 
-Yes, many people assume "list widely used in kernel" implies "list is a
-good idea". Unfortunately it is not the case.
+At least it looked to be immediately closed from a quick test I did.
 
-> > This applies to the red/black tree too, by the way.
->=20
-> Can't fully follow, you mean that RB trees are supposedly overused,
-> too?
+I assume it knows because the temporary goes away and thus the
+refcount goes to zero, without needing a GC run:
 
-When I first suggested adding red/black tree abstractions in Rust
-several years ago I was told by Greg that I couldn't do it because the
-red/black tree was deprecated and no new users should be added.
+  https://docs.python.org/3/reference/datamodel.html
 
-Later I found that this was more of a not-written-down recommendation
-than a full deprecation, and since Rust Binder has codepaths where an
-ENOMEM failure path is unacceptable for the map, we did end up adding a
-Rust rb tree abstraction after all. But this is where I first heard of
-this issue with lists and rb trees.
+> Thanks for reviewing!
 
-Alice
+You're welcome!
+
+Cheers,
+Miguel
