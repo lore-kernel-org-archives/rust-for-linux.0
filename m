@@ -1,168 +1,211 @@
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013019.outbound.protection.outlook.com [40.107.201.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFEA2EDD62;
-	Wed, 11 Feb 2026 19:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.150
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770839699; cv=none; b=PInytty98VOP/muOpxq5O6DxnWJDih/uQp99KFPep/NAE0W+THqBT4QyCDgbtD0V7kyS+6IUtNGcXcco3DLc1pJlqBYXoACtQlL71oWjneGOWiIfK/GVDD2lz1fPWw0H4igeziUxyPJMb2Jdfd6K0Ygy/KVw8c6Ia4wNHqZmHTY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770839699; c=relaxed/simple;
-	bh=zGHlXKDYrJluZ5MkoqttAQNx/xy0GXIVqTPejTbV/V8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B7rhBtoOnH6x9TGbtYOkQv44xUF2ECKL6MiJH8QUJoNzSi1sjwcC3DMupBp5QkrQeA0XkWS6ErZptU2XF+5WVmEDM+1tKFLT5BMeLMNCfy8y4jNBsHNdYS91vctH99rhNN1zQ93z6ze7b8MmpYVGZnKZ9mz3Ke6Lo2g65u7Fh4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ca2b7sBP; arc=none smtp.client-ip=178.154.239.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AA01632E7;
+	Wed, 11 Feb 2026 21:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770844200; cv=fail; b=A+4NM6Ib6//I0MBHPPat89rcBx0zgqdOq0fCC0GASDYgWTLdwxaeznbcSiC6WyaWqm3nT7Q1dl0OaM8uJlylAEKEQMbzc4vFFz37ee5pQUMO6Xr4dLQimFvimdyIPiADqhisRppdbPHghlaf42Rs98eHYMwcmn+4dZkZsyEZyrM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770844200; c=relaxed/simple;
+	bh=yKQxCHF2GHMNFx7jDEUdfs0H3W6ZQ6LHhtdcpGetjME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Zjlza6/H0WjTmuxIp9sg7BoGDWEtFdgGHRPj7Du1fX1noOO+RgutQFv4Ky3OUnWCvWB5fbRo7dE8GiHQQf9MchPSXUPM5f2prFVEtgteg85pRmTS4nZV73KANvYgqeHi9/KY2rX3pE8ZNxAV5oi5POqOv+iw3vEqmBeKPEuDQLk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Vwxlpt/2; arc=fail smtp.client-ip=40.107.201.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ca2b7sBP"
-Received: from mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:1ba8:0:640:1638:0])
-	by forward103b.mail.yandex.net (Yandex) with ESMTPS id 3D5B8C005E;
-	Wed, 11 Feb 2026 22:54:48 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 9sZcv22Hu8c0-yYzEm5xR;
-	Wed, 11 Feb 2026 22:54:47 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1770839687;
-	bh=tVROmgJcpnBTWH2agRberTX2KctPC87mIpAm+yAPRQI=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=Ca2b7sBPC3FyX/Y1dRNRBOVQgvzeVK8iUQflDo2aNUZPtX9TXQxIbntmY5sBu2vmZ
-	 nKtqlNxAhD6N/Wg/ivMpAuvDbLhBSsVwoeOKF32NzxDa870eAwCr30AKmdjmZjitd3
-	 FeL78K6dEA9eDbXt8z2NKaWtI0f87ZYgpEQfmmYE=
-Authentication-Results: mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	dakr@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v1] drm/tyr: make SRAM supply optional like panthor
-Date: Wed, 11 Feb 2026 22:54:06 +0300
-Message-ID: <20260211195406.289634-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Vwxlpt/2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KHC0+bauQI9QiOmn1Nav/pWKqqFIhJFy1bOUsFMG3OX1YvlQtZhPF+Rwr+H8RJj/gZ5IaQ6cm4aBuMed8UVb29eaMuvI/QjC9MgdaOCBSkJ+3dT2HKLp9EgOBOkQ7XOGl7jxQbIFWH/0z/KCTd/8Kjgf62h7Vc+PFWBcvLaoa6bf8N8Us1gzZxEMbncC4GKC+Aqx6N5+HQGp61KF+3LzavYhbjRrt/VO8DcY2mmXR21RmWuy+XA4LxO55cR7GQTqLfXp+FNQ1fT0KxxZ8r5Y049LXz4Ijh7iXONXNTHLbmw/wNkKpXXa/yZZPXMqwun6iVmyJEr7J6XMzj3kIYOvzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V7NItHoL8gxNs73+pSKuSEEB0crjNkdf0RUVsGEeAL8=;
+ b=PLv9yIgB12QxCFE/QJ2JlNz9d2rlyvGVxVKn9TN1ZVsRQFqhz/xN9sp0rEf+wHQP7KoOhoWdlAnWmucYC74Kw8MEnK73hkd/PfMmTkHe8ynXjks/hDOznM2pgyHhX3BZGeCArdJUcXvQJ68xKWKs3XiwkGAVb93L+azfqyuG4VO9Frg6flu7sJwahwImrmyI8ebWGjh1+GRN9Wub+vuAij2EOop/gItvlC7HyjIrodz1tHI/Nl3koeykk28OCBe9cYWLjamLacQZhItQZkHhJkFjyGGaSXkHGtaogsq6X27qATxoiJ4MHJWmP2oVlyz+3LT59aorz7q+FHSqkSqSVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V7NItHoL8gxNs73+pSKuSEEB0crjNkdf0RUVsGEeAL8=;
+ b=Vwxlpt/2iXyTfyyMDAfewLXxAqp+jppFFLjsFzSGcjDBDDSbyEWwd8NqoIGP2Cem37KUnAxBTHioYHmjVugdzDy6InAQsaj0xi3sVT+3gOf1c+8ZsuVxm/d6pvVUP+UeEk4MHGtlNw6xBKjaUW/43i1/bT6XpKcZ4gtBcdhQ7FwClYcKHQ4OZPh8MyzeTb1ts2QyAT4U7FBPus+O+fR8HldtP3J3TScD9tTh8FiepiIh2SH6UHQEGFn7cSt/Sg1p/sTdq8oRGIKQFymmlVQyhMyGv0xy0ghYW3Ho/zUNwek3iV8+TfUOxv1TnkGTilcfC85ZQWU+poUvQolXfJaPHg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ SJ2PR12MB8737.namprd12.prod.outlook.com (2603:10b6:a03:545::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.16; Wed, 11 Feb
+ 2026 21:09:54 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9611.008; Wed, 11 Feb 2026
+ 21:09:53 +0000
+Date: Wed, 11 Feb 2026 16:09:52 -0500
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Helge Deller <deller@gmx.de>, Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Alistair Popple <apopple@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Andrea Righi <arighi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Elle Rhumsaa <elle@weathered-steel.dev>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	joel@joelfernandes.org, nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH -next v8 1/3] rust: clist: Add support to interface with
+ C linked lists
+Message-ID: <20260211210952.GA3632639@joelbox2>
+References: <20260209214246.2783990-1-joelagnelf@nvidia.com>
+ <20260209214246.2783990-2-joelagnelf@nvidia.com>
+ <DGB75XMWML8M.DFZY5L52EBQF@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DGB75XMWML8M.DFZY5L52EBQF@kernel.org>
+X-ClientProxiedBy: MN0PR02CA0017.namprd02.prod.outlook.com
+ (2603:10b6:208:530::35) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|SJ2PR12MB8737:EE_
+X-MS-Office365-Filtering-Correlation-Id: d00de529-7934-4f5d-7067-08de69b1e6d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?jnCfBESEkoPfzjz5+hh3wcsyIKg3eZcatPaJlPKndk6phrh8IeMc+9qsUabg?=
+ =?us-ascii?Q?H5Htigjt1YaHVqo934o06QAXXxg4W2DFUnEooHZUkPe/t3umtHS5nK82Jkpq?=
+ =?us-ascii?Q?FIFBwKcbOqnwNMNQoE3AO++gbANLW10/0HvXb/I+dgY9xSqZq/qQz7fE6gAO?=
+ =?us-ascii?Q?l96vT+3HU9g2JiPZGwiWV8MrXwJeA4PkwJdFLq1vFKx/fSzrJ7fnn8tlD0XF?=
+ =?us-ascii?Q?nlcBoG4uTu7fRiF42cYjdCt8CeMvCTZXydcNwxrqvU+VXbYFaMm9rIByHU7l?=
+ =?us-ascii?Q?WogZGedo3fkBY4oYmiMO4hfW8ONz01gqOOODOirBju0TXjr9tku9pDdKTjYD?=
+ =?us-ascii?Q?8jOWM7sINMrg7pcJtSaOcvUz0W5Zfx1Ddv0m4UUc2AdWfAeTRO0OgL0IWvzw?=
+ =?us-ascii?Q?C0PimN8+3gEy+Rq48fS+W11chLX8S7w9inIV0vkoEgG4hqi8pww2I8lVClht?=
+ =?us-ascii?Q?bf1ZI74QmvAfQBCP9RWVNXdboJqwNQ60P+KXOjDt8dIaqWfp3YynZAs3fVO0?=
+ =?us-ascii?Q?Hcsx8wBTFHltDAO7OC2vMenIPB7IK0ifgwWkYzd/VGTJRx27OUzGmJ/vaHNX?=
+ =?us-ascii?Q?BkLdS9IIZh1//G5w9yuAjfrKuaZbuHRYegQpdntO7pf1OzQPsQ+fr1jFIBF0?=
+ =?us-ascii?Q?2uor35lFiS7DyXgj5bvnHdlhv540h5rTFVsiCKOWCgs+GGNNdyx71GjWxBMG?=
+ =?us-ascii?Q?pJX3HNvLhCyPCJNcWELKfzokMpWoyxa5qNQTQTnklWQUNEshGN7Q/0B09y/v?=
+ =?us-ascii?Q?MJ8m1d/BC0nf434eLUFeF5ntSjxp3PPaHX4mp0WogPD/Qf+R01m3k723eSu+?=
+ =?us-ascii?Q?0gVKvBA/Mmipaov2gVd5i71YiRX2Ytc4AczW9rjb0S0+xnjM3S+GyV+PhR2W?=
+ =?us-ascii?Q?1lF+q2hZvXWouHCG5zqfKjbfl7942oh/zAhvIXQFGPvz8Fxuq3H39ljdpr3M?=
+ =?us-ascii?Q?06yHwdmprSNfiA5oVjyZNY1fDELNipP1WqLirTL56h3sS/18oa4DHZ1G+sLf?=
+ =?us-ascii?Q?U9NHXKo9AqHKgLmwlRbwEOoRRIa4vlFMvnUpTmdbNC6GS2v936ITUSgavKdO?=
+ =?us-ascii?Q?KxAYICZpkQptdCHh9VJ1oggW7FP+Hhump6ZDCgt27vyaeh6P2y84i89OeLu7?=
+ =?us-ascii?Q?Tf5Yu7acCdCnUiA1PPwbokwNwljQYEMPnBAKfRrPZv7KtHP080pWiq7yC5qm?=
+ =?us-ascii?Q?aZMzyUHqpHspJlLk8XjzGbCrVrswuAvJJWrwZsHrWdzb/dJ/n7/BbzGL2j7i?=
+ =?us-ascii?Q?aSWJuo4s//Rn5ckDyfxwMfKdMuYCFutdE0hnVedpMNMc23gTnI1Xaapx8XnS?=
+ =?us-ascii?Q?VxkhfucK22qRui6rAeCs20RiumWBSAx9TXCX8Wz1YHTq4e72YcUxEt6o0UNJ?=
+ =?us-ascii?Q?mz8OGlmWjCVgJELH3hhAHAVeu/NkyuoTzpJ71X6r9b//sElJYVto3QgUumH6?=
+ =?us-ascii?Q?HAhcHiZRKQIKYmnwg7A/3ZO7/6rT+ZtXmqMTNi1urOUPA1rV1NOuDwrYCdVf?=
+ =?us-ascii?Q?D2ZnntIaype3zzZv9ig7N2qW4AWQR3opTUD69Cfmqwgm5VBHW8gGGbprh5b0?=
+ =?us-ascii?Q?rgXH+L1lGZV3boFOHdg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0O/U+DoOiK5nL7dqmD6Es7vEs0WKpE1JVB3SJ1eEv7I2ALDv8jcP/U8popgb?=
+ =?us-ascii?Q?aApqb9AgYXEMpP2dsDLSsRH4e6Y9j+8Bvo/Ss+2l64gPfUFrfAXZFP54fb1b?=
+ =?us-ascii?Q?NPgHA/HD1jGGgZPyalMrF9G5oeqbVLHtpWm6c51JKeGJku9EFpEA93F8O64i?=
+ =?us-ascii?Q?HuO/aVR74XrlBHuL2ykxasjSuBrfPElTgOcPyAq87NzoGJPDNweMcOJ8l5U2?=
+ =?us-ascii?Q?IzM9EgyY0aAS07q5jrR2/YDtrJ8f7hrsAhv72e37P7gQmrMXfAJK29m8fQXE?=
+ =?us-ascii?Q?1GtNf/zPpglJpqmmlZTFdoA0LURysml634Sd80OSnwTipqsB40pSSoT2Gcrt?=
+ =?us-ascii?Q?1KCnzQGbByuRvLUwEdLZXitr6Eobeesrgw9feEDcbZfDo4Jw85RegfSNprUt?=
+ =?us-ascii?Q?jVb91H9dE4KSRbSGrb7V1odwOlOhTtSTE/o0W93sW30EWdnPPqf51iJ9usM3?=
+ =?us-ascii?Q?iTn0oMQXJm4YfcAXHs0YhF0CUKTj8qj5WCAyDB8NGSC3LS2p9KgWSA3w1SCX?=
+ =?us-ascii?Q?m2TEbQnbCWdh6HaPldkSmWistbUvSCyZ+95WgW8eJQyYbiY9xM2dP04+1g6z?=
+ =?us-ascii?Q?E9V72sctzsaE8/qAnilKZP0pAdc7UDiHCnlNiUj84wbcJiiCThLKzXiU6Uce?=
+ =?us-ascii?Q?KXchEZ7FPIC4rp8sHXMO3LOfb7/stVkyytMxq0GMDppVzcsKFtmLTFeCUf5q?=
+ =?us-ascii?Q?ThWdr9XkaPErBIaoFjFcyV4vSxGfmmP3+C8HczEvi7Ikd0+ONewCWr70+ZBT?=
+ =?us-ascii?Q?Oid2KOhaWIU3BrXebB6x1mQPliT24JF0KPcoUe2TpXud2EK4uPHRNWGktZzb?=
+ =?us-ascii?Q?Dpc89obmom1FZ85Gc+L2l9e9dGiMdKq+EN+MjzosFucIohlSg/IppNpEQXrQ?=
+ =?us-ascii?Q?JpP0lhDC1I+z4APkdFx5HiOTZfczXA3teP4ChW3bmNedG4NkgtAfiuNvESRo?=
+ =?us-ascii?Q?VEvqA8bfVEc6OwtLj8iEd9gpx1TlT3mePvGHFoTiNNiC4AjEYP74sn5gLuW+?=
+ =?us-ascii?Q?J8rPeW9bOkZ4/Hrwa0783bc5pNSQTHAfJWVCMEydr1y010Km7GXgOT1XvjJN?=
+ =?us-ascii?Q?GeMGe8bqj8lH3ZUpBCKxWSDHf1qy+KYXoty64mcH9Kfw82uzpY9A5oQ4SDnp?=
+ =?us-ascii?Q?hvYauRQCRHXIEqzappzIaUVj6KrfKQ+V/fu1SOnvJiIBlygs1mW2C/CsaYnW?=
+ =?us-ascii?Q?bzVB+tvGzN1IN3i+54cyKEh6BT4yzgo4Ni/sG+V+lSfYtYTLrjLK+q4BiC7z?=
+ =?us-ascii?Q?4I0p0dAmkmu1qk/B2vrJd8pLO8wYH25W8XEAUuhUx0EFZoUNn77snq9rzZhW?=
+ =?us-ascii?Q?TMgtseiariR/0Ring3ZfdQghZfFy1Ql5ePHIDzqANrldh/Nd2IOadkXKJeav?=
+ =?us-ascii?Q?fcW9S+FMNo43WGORKyHz3SkJSsQn9XqnT4bAaVuuglCru62iVO/N9Vuvjzhv?=
+ =?us-ascii?Q?NHMaE4irO2VNPLMYhZJlFp7WBLFPHPXmqfE6YB0v0OQBWSTPD3t9MzsWfyb5?=
+ =?us-ascii?Q?yF46oa/B6r4KNC0MSOhSOqpmSCEO1Frzqb9g2gBWseQBxO0QVfhqQPI5Xepz?=
+ =?us-ascii?Q?UsfBq65zjga3MOlwtp03t5OTVMSP5Fqv/PU6BCcyB8JnF8Xi+EQXNMRuYPVN?=
+ =?us-ascii?Q?bPeD1KilTqZCUK9uV09/tho943o+ABQ9Rr+8/cbKjTddTEG/0ajiM8vkZeFO?=
+ =?us-ascii?Q?+gBGlwK1m8lglV6sa9fQZ5q3ojSCGGHHaavKwowoD0MRe1nw4L1Ydras8rCq?=
+ =?us-ascii?Q?TBJ5Y4I4yA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d00de529-7934-4f5d-7067-08de69b1e6d6
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 21:09:53.8366
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TkCbhmDP0EEcyjHN3uiQF0rWTL1BjYHsGCXHlHQzLXWlFnFgawQU/8S5UlXBabuM3xrvnPb4VmYUtHRau5+1YQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8737
 
-On rk3588s, `dmesg | grep 'tyr'` logs:
+On Tue, Feb 10, 2026 at 11:07:37AM +0100, Danilo Krummrich wrote:
+> On Mon Feb 9, 2026 at 10:42 PM CET, Joel Fernandes wrote:
+> >  rust/kernel/clist.rs   | 320 +++++++++++++++++++++++++++++++++++++++++
+> 
+> I think we should move this under rust/kernel/ffi/ to make it obvious that this
+> is FFI infrastructure.
+> 
+> > diff --git a/rust/kernel/clist.rs b/rust/kernel/clist.rs
+> > new file mode 100644
+> > index 000000000000..8aa72b5d54be
+> > --- /dev/null
+> > +++ b/rust/kernel/clist.rs
+> > @@ -0,0 +1,320 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! A C doubly circular intrusive linked list interface for rust code.
+> 
+> Here and in the struct documentation, I'd suggest to clearly point out the
+> use-cases, i.e. that this infrastructure is for FFI use-cases only and should
+> not be used otherwise in drivers, etc
 
-  tyr fb000000.gpu: supply SRAM not found, using dummy regulator
+I am curious why we would not want to have drivers be able to use CList. I
+thought that was the point of making it pub at the module/item level as well.
+I think it is possible a rust driver may have a reference to a CList in the
+future.
 
-This happens because Tyr calls Regulator<Enabled>::get() for SRAM,
-which goes through the non-optional regulator_get() path. If the
-device tree doesn't provide sram-supply, regulator core falls back
-to a dummy regulator and writes that log.
+But I will update the current usecase above, as you suggested, good point.
 
-Panthor handles SRAM as optional and tolerates missing sram-supply.
-This patch matches that behavior in Tyr by using optional regulator
-lookup and storing SRAM as Option<Regulator<Enabled>> which avoids
-dummy-regulator fallback/noise when SRAM is not described inside
-the device tree.
+thanks,
 
-Link: https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/573210018
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- drivers/gpu/drm/tyr/driver.rs |  5 +++--
- rust/kernel/regulator.rs      | 40 +++++++++++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 0389c558c036..e0856deb83ec 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -113,7 +113,8 @@ fn probe(
-         coregroup_clk.prepare_enable()?;
- 
-         let mali_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c_str!("mali"))?;
--        let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c_str!("sram"))?;
-+        let sram_regulator =
-+            Regulator::<regulator::Enabled>::get_optional(pdev.as_ref(), c_str!("sram"))?;
- 
-         let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
-         let iomem = Arc::pin_init(request.iomap_sized::<SZ_2M>(), GFP_KERNEL)?;
-@@ -201,5 +202,5 @@ struct Clocks {
- #[pin_data]
- struct Regulators {
-     mali: Regulator<regulator::Enabled>,
--    sram: Regulator<regulator::Enabled>,
-+    sram: Option<Regulator<regulator::Enabled>>,
- }
-diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
-index 2c44827ad0b7..8d95e5e80051 100644
---- a/rust/kernel/regulator.rs
-+++ b/rust/kernel/regulator.rs
-@@ -283,6 +283,29 @@ fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
-         })
-     }
- 
-+    fn get_optional_internal(dev: &Device, name: &CStr) -> Result<Option<Regulator<T>>> {
-+        // SAFETY: It is safe to call `regulator_get_optional()`, on a
-+        // device pointer received from the C code.
-+        let inner = from_err_ptr(unsafe {
-+            bindings::regulator_get_optional(dev.as_raw(), name.as_char_ptr())
-+        });
-+
-+        let inner = match inner {
-+            Ok(inner) => inner,
-+            Err(ENODEV) => return Ok(None),
-+            Err(err) => return Err(err),
-+        };
-+
-+        // SAFETY: We can safely trust `inner` to be a pointer to a valid
-+        // regulator if `ERR_PTR` was not returned.
-+        let inner = unsafe { NonNull::new_unchecked(inner) };
-+
-+        Ok(Some(Self {
-+            inner,
-+            _phantom: PhantomData,
-+        }))
-+    }
-+
-     fn enable_internal(&self) -> Result {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
-         to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })
-@@ -300,6 +323,11 @@ pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
-         Regulator::get_internal(dev, name)
-     }
- 
-+    /// Obtains an optional [`Regulator`] instance from the system.
-+    pub fn get_optional(dev: &Device, name: &CStr) -> Result<Option<Self>> {
-+        Regulator::get_optional_internal(dev, name)
-+    }
-+
-     /// Attempts to convert the regulator to an enabled state.
-     pub fn try_into_enabled(self) -> Result<Regulator<Enabled>, Error<Disabled>> {
-         // We will be transferring the ownership of our `regulator_get()` count to
-@@ -329,6 +357,18 @@ pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
-             .map_err(|error| error.error)
-     }
- 
-+    /// Obtains an optional [`Regulator`] instance from the system and enables it.
-+    pub fn get_optional(dev: &Device, name: &CStr) -> Result<Option<Self>> {
-+        match Regulator::<Disabled>::get_optional_internal(dev, name)? {
-+            Some(regulator) => {
-+                let enabled_regulator =
-+                    regulator.try_into_enabled().map_err(|error| error.error)?;
-+                Ok(Some(enabled_regulator))
-+            }
-+            None => Ok(None),
-+        }
-+    }
-+
-     /// Attempts to convert the regulator to a disabled state.
-     pub fn try_into_disabled(self) -> Result<Regulator<Disabled>, Error<Enabled>> {
-         // We will be transferring the ownership of our `regulator_get()` count
--- 
-2.51.2
+ - Joel
 
