@@ -1,97 +1,118 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB49232B989;
-	Wed, 11 Feb 2026 12:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FF53358B8;
+	Wed, 11 Feb 2026 12:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770811822; cv=none; b=O3N/DflEworY0YFqOrkDOKIq4xs3ImRY6s99g0IoGFSYJFNoXwheHWHhNapX7ITr429sMBW2UqBr8fCs2xZZghyQ37uZ/ASEtMUKAfUN+eKOO3BvaJbcARFS3qyh4VDdaJQ6pKJz7fBdNQ4Ww3ux5bZYvDw72/mD24V6r5ZJ5N8=
+	t=1770811920; cv=none; b=PRHTEOzuyYzAvbV9xlmDh38h78uY4ZYl/CLZuBuT/VUTlNRcPqza6KlpeHzsnBa100XQnIndgv1OASRjoN0kfTza8Q1dczbgO08Cx8bGpQepERXkQEMXrTzBRXUCELOwOP+sNflmfG4SiZ3dOLDTpoeUHq5mldyk8JkDl0GP9GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770811822; c=relaxed/simple;
-	bh=P3p1xktT0pu9lAayEx7pZPThoKCYb789KGT+yGz4pgs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OIhmsxfGLjWB0jeVOoU8/ujL6mAqGgeD6caI8NqLDHE6wGY5cY+7189J4nphF08RBAa+Y+QTpObx9LbQ5wXFutU818wJneTHUdXXWxUA0UmGhJmu+V3LOTBBZskYyIXUBuRaUwHQnrSuvNBY5TrO99JA+Ux7dGUHIDoeTl7xk3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=nUtqJfHG; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1770811920; c=relaxed/simple;
+	bh=RwLK5y3Skh5p3fRZnWmIlHH1BHA4Od56ZDdBS0vCTgY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gilDcQjzGN2TX0mO1t3AdZCzVPf74TKjxRoDuDxuV60yXMzhe2A3ciTgyyJqF9NwWxPCGkhyEb/8QZp+3zZIv/jFmf3S5jRt9qXghZyjFksdiYK4m8pW73o1M5jOVG7rJcTq8ztYjQutfZlCc2hjnX9rR072LCrI7/uKWrEET9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+waG3NT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="nUtqJfHG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770811819;
-	bh=P3p1xktT0pu9lAayEx7pZPThoKCYb789KGT+yGz4pgs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nUtqJfHGW/VdrzUhq/iDU1B2hd6zX59NQ4mJfrsT2c5dw04DR4DnEhGCmF9AokKnF
-	 C+CMF5PPdJjMz5SW5qegYgrqo1IodYKgoyvnjoFeW5LGO/e2i0+D5oU07UHpg+1Fbe
-	 viwI5ypcndC9O651GCdPHh+jVfwrp9UbrEuj6JyWCH1lniKSuKQuTyhCaJ2thrkl84
-	 7A4Slnfa51Zl4D1RdA1ygpmRwNmhG2lcXY5TVqTt7J6GdC7rzF3YJJHQ2U3L7hbR2b
-	 SD+lRbMfgzs9yLUqVNMf3dmLqjvwfWWGdHKC1zZHCmkjiGToIAQTY/52WYOSO44RZF
-	 10+eUMekqxotA==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id B7DB717E1274;
-	Wed, 11 Feb 2026 13:10:18 +0100 (CET)
-Date: Wed, 11 Feb 2026 13:10:15 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Philipp Stanner" <phasta@mailbox.org>, <phasta@kernel.org>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Alice
- Ryhl" <aliceryhl@google.com>, "Gary Guo" <gary@garyguo.net>, "Benno Lossin"
- <lossin@kernel.org>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [RFC PATCH 3/4] rust/drm: Add DRM Jobqueue
-Message-ID: <20260211131015.7bf38cf9@fedora>
-In-Reply-To: <DGC3B6XIY3DW.M3CRU3IAUKOJ@kernel.org>
-References: <20260203081403.68733-2-phasta@kernel.org>
-	<20260203081403.68733-5-phasta@kernel.org>
-	<20260210155750.5cdbe6cc@fedora>
-	<8ea48ce49f2c7b6fd715dd54c24e755e8ac3262c.camel@mailbox.org>
-	<20260211120742.0e9e7122@fedora>
-	<DGC3B6XIY3DW.M3CRU3IAUKOJ@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+waG3NT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B15C4CEF7;
+	Wed, 11 Feb 2026 12:11:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770811919;
+	bh=RwLK5y3Skh5p3fRZnWmIlHH1BHA4Od56ZDdBS0vCTgY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I+waG3NTFD3zNMo4kAnHXWgk0Ry1K4epb4o4XgIU63pqdFbpMV6kWMAqgmMMFj+vF
+	 /AIb3HyZNEtGv3sFA7pvqZB3AxtPukqS9JIbIRc0TSt2GD1/+0Q3MXUy6kF13+zUKM
+	 Bg08+h7ibn7DHQNvcAo8RAq+qDdvNRczwWEcbflqMeu0AFuskX5fG0O7rXMWCRuvHu
+	 ie7VDNwDCtmKCqfPeM6jrMa5Ph250vkt8YJehlkGSE2+EgoQVRKa8mmQWrtBvyJTxL
+	 x46ukoypQfsWf97f7XwcwrxTW5GyhynGiiemHYtiGC3QPUEUyaJZJn90al/Q477dLV
+	 F782zC/Y9WULQ==
+Date: Wed, 11 Feb 2026 09:11:55 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Dmitrii Dolgov <9erthalion6@gmail.com>,
+	linux-perf-users@vger.kernel.org,
+	Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Subject: Re: [PATCH v1] tools build: Fix feature test for rust compiler
+Message-ID: <aYxyCypnmSuXSYYD@x1>
+References: <20260211095807.132855-1-9erthalion6@gmail.com>
+ <CANiq72mFBaFm9QVotxeDB0TanKxQRko7ZFhuF-RHq-8WCemCTQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mFBaFm9QVotxeDB0TanKxQRko7ZFhuF-RHq-8WCemCTQ@mail.gmail.com>
 
-On Wed, 11 Feb 2026 12:19:04 +0100
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+On Wed, Feb 11, 2026 at 11:41:06AM +0100, Miguel Ojeda wrote:
+> On Wed, Feb 11, 2026 at 10:58 AM Dmitrii Dolgov <9erthalion6@gmail.com> wrote:
+> > Currently a dummy rust code is compiled to detect if the rust feature
+> > could be enabled. It turns out that in this case rust emits a dependency
+> > file without any external references:
 
-> On Wed Feb 11, 2026 at 12:07 PM CET, Boris Brezillon wrote:
-> > I try to avoid using concepts the language I rely on is not friendly
-> > with.  
-> 
-> It's not really a language limitation. For instance, you can implement lists the
-> exact same way as they can be implemented in C. It's more that a memory safe
-> list implementation is quite tricky in general.
+> >     /perf/feature/test-rust.d: test-rust.rs
 
-That's what I mean by trickier to use, they are because of rust safety.
-And again, that's not a case for saying "nah, rust is not a good fit, it
-can't do easy-to-use-lists", but rather a good opportunity to think
-twice about the containers we want to use.
+> >     /perf/feature/test-rust.bin: test-rust.rs
 
-> 
-> Lists clearly do have their place. In this specific case, it probably doesn't
-> matter too much, but in general I'd abstain from not using a list (where it is
-> the best fit) just because they are tricky in getting them implemented in a
-> memory safe way.
+> >     test-rust.rs:
 
-Read my other reply. I'm not saying "don't ever use a list in rust!",
-I'm saying, "if there are valid alternatives, and they make things
-slightly simpler, why not use these alternatives". And that's the case
-here I think, especially since the C side does exactly that (using an
-xarray over a list). Note how I didn't mention the list under the
-JobQueue, because for that one, I'm not too sure XArray is a good fit
-(jobs might be moved around between lists depending on their progress at
-some point).
+> > This can lead to a situation, when rustc was removed after a successful build,
+> > but the build process still thinks it's there and the feature is enabled on
+> > subsequent runs.
 
+> > Instead simply check the compiler presence to detect the feature, as
+> > suggested by Arnaldo Carvalho de Melo. This way no actual test-rust.bin
+> > will be created, meaning the feature check will not be cached and always
+> > performed. That's exactly what we want, and the overhead of doing this
+> > every time is minimal.
+
+> > Tested with multiple rounds of install/remove of the rust package.
+
+> > Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
+ 
+> Not sure if Kbuild covers this given it is `tools/`, but just in case
+> given the `MAINTAINERS` file, Cc'ing them, as well as rust-for-linux
+> since we try to use it as an index of Rust-related things there within
+> the kernel.
+
+Right, this started with Dmitrii wanting to help with data-type
+profiling in Rust, as Namhyung mentioned in his LPC talk that there was
+work to be done to support other languages.
+
+Since he had tested it and it seemed to work, I suggested he turned his
+recent experience into a 'perf test' for data-type profiling on a Rust
+workload and this series came out of that.
+
+This has even caught a regression already, namely:
+
+  64ea7a4620008652 ("perf annotate: Fix register usage in data type profiling")
+
+https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/commit/?h=64ea7a4620008652
+
+Now it is the first, AFAIK, experience with rust in tools/, as this
+shows:
+
+⬢ [acme@toolbx linux]$ find tools -name "*.rs"
+tools/build/feature/test-rust.rs
+tools/perf/tests/workloads/code_with_type.rs
+⬢ [acme@toolbx linux]$
+
+With the above patch we'll be left with just
+tools/perf/tests/workloads/code_with_type.rs, that is linked into perf,
+if rust is available, and we need to figure out to reduce the impact in
+the size of perf, which is noticeable, but as it is not a strict
+requirement, we can have this addressed in later work.
+
+Hopefully this helps pave the way for more Rust tooling to flourish in
+tools/.
+
+- Arnaldo
