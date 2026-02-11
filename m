@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5151A1BBBE5;
-	Wed, 11 Feb 2026 08:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1418B311597;
+	Wed, 11 Feb 2026 09:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770800233; cv=none; b=IfPAsyOh3OcHvucfOaF0TKa3Ml1LLBQIK1cYZEO2zedekFfRb5f9Lsf1S8Q6V5bcuSHd98+RNajm3n+pv1mJznpinPX8InWJNYJsr4KBFvS/mh3JEShpcliR1oeCrAQoBhMGdsOsJIgT5TARSbJeDhmAUVW8t+Q9otcxMSMSTgU=
+	t=1770801561; cv=none; b=sbidF6NaTEy4G0bzsEs7taF4uWjPB5r5OGfnCfulbWqqAWAxgVPjYYYnPkSKCceVSXAhg9dVewJRcAtIFWSBDgrJZVVEqhKvZNitVhYmtQAiG4p9P6jcqcxciJAXRGEP6CbkZnOENYqnkNMkIJpzy1uMaQ8/ngpC/fQ3jryTiY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770800233; c=relaxed/simple;
-	bh=Lpr7mHVLPqi7ZhTCmGZjyHCoNOXFZOGegRUnq9MfowI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=SRiq734lyVAxyt6H/cZLQKXHtDj4aQqOJTJ9cCroelfG5Vb85Vqi1BCfdabITjnUDmP3z98piCR21WxW7KwLq9WGGGrusKixocqm2OhRK2PAGWCDuw5AmLNzyt3nM5CE97TCdQE543C33t2H4ZS2QSxFexi+J81+XFWze/uSNP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p4dsld15; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770801561; c=relaxed/simple;
+	bh=78vTmn6thDBzfMtB97lbGjUwbhyWjHfpO01rDAwelEE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=KZISYO2d1UTcXUWMn3Nm1PApW4bldVTF4j5j+4rfZw0XBzt2uU2GGVbwgasIOyhg/iignWKATra9bSqypPAFlTC6zYwtphWsjCD6hqeLX4ebU3ROnAJA3cT3gELGIPOS/NkBetG4RqYslH8BV3R5K7/HRVt3B0e9xg6Je76dqkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aVn6Hz7e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4dsld15"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A807C4CEF7;
-	Wed, 11 Feb 2026 08:57:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aVn6Hz7e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC37CC4CEF7;
+	Wed, 11 Feb 2026 09:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770800232;
-	bh=Lpr7mHVLPqi7ZhTCmGZjyHCoNOXFZOGegRUnq9MfowI=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=p4dsld15Kfh1+9uBaflQPx0iAhipZZrh2Lq1UmArN3HLuI2N03dRRFJse9Kqw+pli
-	 WO5q1rPa0nosfxRrMYIzPHIQ6of7QRNxU1kh5PWF2C/MDVaFRYek2gEbwECeGFn0LY
-	 /C2L0oC3is4QYuG8EQCLg08wxVPg62naHlmbpRc16zbTS5iMaQVhm2NCz+8z6IGN0v
-	 9IXcNtzxcP4Du1EAq1l5pwpn0uauZzuyBX9w+b/edi31Q++74qHdmnCsTyx8MeoHGq
-	 DHPq4vJ2+yci+yYoXnb2KAhgywJ7X1+rHu+CdBIXsodroxxlkpB49Z/YSMKD/wsZES
-	 laQ00s+hm2jkA==
+	s=k20201202; t=1770801560;
+	bh=78vTmn6thDBzfMtB97lbGjUwbhyWjHfpO01rDAwelEE=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=aVn6Hz7exp0YJcrbUnRdD+gd17f1RCAA1sl62249pmqhZS29AgnCdsbpjMH8vQ6gs
+	 cSQv5HLMWxo2QDS1hKjJFEG/YQ3uBYw43zlB4S1skWSy39hiqhsDcP+QPulot0nfxO
+	 N8j7Uh02sfUFF5Jhx0zgR69nlFtP2B/SzwZCUn2oP0aJmSZAl8Ua0YFXABPQFIKkDM
+	 A5yL2AFL3lts4OTxoYgANVJoQuhUr1/6YkJ2GPgK/rEbSvM6fi6j8ESdROE7LSLGad
+	 OUlqfK9D+aK85lrsm9/ouuaH1cbTAOZNYb2LkVWX8e2xjyzD6r3ZBk4ldQggiNdhql
+	 8+jd/QPt2oy9w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,34 +34,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Feb 2026 09:57:10 +0100
-Message-Id: <DGC0AJ9L0ZP1.20IV8O6FT1PTD@kernel.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Shivam Kalra" <shivamkalra98@zohomail.in>
+Date: Wed, 11 Feb 2026 10:19:09 +0100
+Message-Id: <DGC0RDIBDEYB.195QJ6S6GF9WL@kernel.org>
+Subject: Re: [PATCH -next v9 0/3] rust: Add CList and GPU buddy allocator
+ bindings
+Cc: <linux-kernel@vger.kernel.org>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Simona Vetter" <simona@ffwll.ch>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Alex Deucher" <alexander.deucher@amd.com>,
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Jani Nikula"
+ <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
+ <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
+ "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang Rui" <ray.huang@amd.com>,
+ "Matthew Auld" <matthew.auld@intel.com>, "Matthew Brost"
+ <matthew.brost@intel.com>, "Lucas De Marchi" <lucas.demarchi@intel.com>,
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ "Helge Deller" <deller@gmx.de>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Alistair Popple" <apopple@nvidia.com>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "Andrea Righi"
+ <arighi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Philipp Stanner"
+ <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "David Airlie"
+ <airlied@gmail.com>, "Edwin Peer" <epeer@nvidia.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Balbir Singh"
+ <balbirs@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <joel@joelfernandes.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+ <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
+ <linux-fbdev@vger.kernel.org>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 0/4] rust: alloc: add Vec shrinking methods
-References: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
- <0d336a3f-f317-4a70-942a-d87a3faa3a89@gmail.com>
- <aYs5L1aG5S34teKT@google.com> <DGBDHMI9Z4JK.3QHCOS1O8WGLB@kernel.org>
- <CAH5fLghy3_J_in-o=y8yh94+RLn6XihNOTzTiT2kk9DkXBMPVA@mail.gmail.com>
- <DGBKOL8Y6OH8.1X5RHNGCQAMC4@kernel.org>
- <DGBKWSS3PEGY.20YKV5CO7DCKT@kernel.org>
- <CAH5fLgg9sDW+MCK15yVyZ59BzXind+1vRj+PQ2xHQ8Bg7sxLRA@mail.gmail.com>
- <DGBLALCUGY7N.383JKRKNCRDW5@kernel.org>
- <1312bba9-442b-410a-9cb4-fe67879d2dcb@gmail.com>
- <CAH5fLgjwWQSHydyM6AMPiziBQjeO4rcNaOzuNV=CrHxRvYuaVw@mail.gmail.com>
- <af90cbe5-dcfa-46da-83b3-e903134c7f93@zohomail.in>
-In-Reply-To: <af90cbe5-dcfa-46da-83b3-e903134c7f93@zohomail.in>
+References: <20260210233204.790524-1-joelagnelf@nvidia.com>
+In-Reply-To: <20260210233204.790524-1-joelagnelf@nvidia.com>
 
-On Wed Feb 11, 2026 at 9:41 AM CET, Shivam Kalra wrote:
-> Thanks Alice. I'll go with the standalone helper function approach
-> with separate impl blocks for Vec<T, Vmalloc> and Vec<T, KVmalloc>.
+On Wed Feb 11, 2026 at 12:32 AM CET, Joel Fernandes wrote:
+> Link to v8: https://lore.kernel.org/all/20260209214246.2783990-1-joelagne=
+lf@nvidia.com/
+> Link to v7: https://lore.kernel.org/all/20260206004110.1914814-1-joelagne=
+lf@nvidia.com/
 
-If it's only needed for KVmalloc, which apparently is the case, let's just =
-add
-it for KVVec only.
+I already asked about this in [1], can you please add a changlog to your se=
+ries?
 
-Also, please make sure to add a TODO comment mentioning why this workaround
-exists and what it should be replaced with, i.e. a generic shrink_to() that
-calls into A::realloc().
+[1] https://lore.kernel.org/all/DG0MRL6T7ACW.25G3GLJMP7PN1@kernel.org/
