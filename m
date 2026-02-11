@@ -1,219 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EA0219FC;
-	Wed, 11 Feb 2026 12:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2F61D5CEA;
+	Wed, 11 Feb 2026 12:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770813106; cv=none; b=c4VcQXlftNzKpUQkBf6ZWoftUCjopv9QR857EmDtfQS4IQwLLvkbxqIEPfGwxAMvZ978WFGEzDXwO1oCwHFGmBBISCfGso+2AIslpC9a5eHM23nEMSwtjLdMqt1Hk9BnJW6wmaDyIhvcPQv6LW57qORSKMiV+GyU0aUtCdy7oCg=
+	t=1770813150; cv=none; b=BXlYGGZneidUfmLfgU6DAwPFN39rq2ME435j5Yrup93GU6ehE1IQLNw+w/yXtWdnDhpCSFp7sGNBY4BGpyzZjAazPKvgu7/YWQvPfBTSb2BS7iJPGIPeUi02+tlSkhyhYkatzu7yM+5mHG38TzgQjbx517AFJ3GsNjgJ8JhlROw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770813106; c=relaxed/simple;
-	bh=ENlGDnCCpVbCweAatB+Bj6R2+QrSPPC9d8pacjFF0Tg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQvcU84zRHlwaz5usyqdyXci9yamvjfY1Ud5msqLJjlxkqMJfaIodISzKW+CrRNrSjJIGe4a78xWZZ5qWrlG7GNISI4oLWSYa7BNqKJq4t48fHtKVmOrfpQZ2QcvpMNmmVIo/FLVy28B4VaN3kD19dj+YZtu5pXZuJq1cO6y7wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CR/9dh3/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770813150; c=relaxed/simple;
+	bh=45hvgsjd20dG13SZJx1xNNTWjt2+41qUKeuB63ppTMg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=V59QasDpMp9PYZQRhKBE8xQmmdAkqBBcA6WPnYCtMMSeuGXAMI2iBiszcoo6s9RLOmiLasHVyNm/U6FGA+C7xwdk4jm2mRwYP/gWsVciKrKRZKvH3/xWtO0Xu6hdsEyCWj+2VQDfiPw8YBUQ3Fx/rEmAoTNrJmcqSHg3kuKQy8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyjNWZHV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CR/9dh3/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D039BC19421;
-	Wed, 11 Feb 2026 12:31:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyjNWZHV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2AAC19421;
+	Wed, 11 Feb 2026 12:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770813106;
-	bh=ENlGDnCCpVbCweAatB+Bj6R2+QrSPPC9d8pacjFF0Tg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CR/9dh3/it36j2UWHDJuoG3MWY8i3jdeA9fp1soqleCxEB4wjC3YdrQzGO8bkBUGG
-	 CrOek9imnPaRkud0Q3/61neX/RQLrLcRlowDfpYwJRjS9QZ6eQWtAlb4zRdZ7Vg5RZ
-	 i6DuQLsAMI6S1SHGVoq04uspz4QfbwlBZy3FYwJMXg3NQGN/3SEMITnadRmqQcS9QI
-	 wX1uqkkO3xOFRhsSrAKbajvF0CbvFQXHnu9rQ/uhPWUuCvSifUB4P32oVhApj7N9q3
-	 vH8cFUtsUdeefi3tbd/kHcADtB0bg95YOvaQN6sGBzR2fihdWIcdix9xmHUeyuiLWm
-	 qQ2kOcc4IFVzg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	lossin@kernel.org,
-	gary@garyguo.net,
-	linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.18] rust: cpufreq: always inline functions using build_assert with arguments
-Date: Wed, 11 Feb 2026 07:30:26 -0500
-Message-ID: <20260211123112.1330287-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260211123112.1330287-1-sashal@kernel.org>
-References: <20260211123112.1330287-1-sashal@kernel.org>
+	s=k20201202; t=1770813150;
+	bh=45hvgsjd20dG13SZJx1xNNTWjt2+41qUKeuB63ppTMg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=UyjNWZHVyDkWoJc/nle5HmmWqqMzusulrTP9FRU5Oeh7/utD67EwrobO/E9JtmOFf
+	 xG8Rl6+oj4ZPj7bj6uxVkWwfYpQjOFzXNUnkDPQzWDIg/7e7bj1UT+zdYg94+WwEKk
+	 OFK7I9NIQx1IMqMT/oNGA8hB0PxEqWvAyD9q9HaRwQgsx6zy0dXaQeTBwDuBVhmnqZ
+	 WBPKgNmDn+H9mXWuobXrxfqvWqBeV52vkDaPQm4w61GVLfMDq+aOVdppF4QAxDyxLW
+	 HpFlQZTfnICx33fIwHzagMaTHgtGKm2LOcD0fJn5HolNekBsZyLhUsW2AYzWomtTOC
+	 iMJMjyX+E+sNA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Feb 2026 13:32:26 +0100
+Message-Id: <DGC4VCT5JRD8.32Y99ERIGUTSW@kernel.org>
+Subject: Re: [RFC PATCH 3/4] rust/drm: Add DRM Jobqueue
+Cc: "Philipp Stanner" <phasta@mailbox.org>, <phasta@kernel.org>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Gary Guo" <gary@garyguo.net>, "Benno Lossin"
+ <lossin@kernel.org>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Boris Brezillon" <boris.brezillon@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260203081403.68733-2-phasta@kernel.org>
+ <20260203081403.68733-5-phasta@kernel.org> <20260210155750.5cdbe6cc@fedora>
+ <8ea48ce49f2c7b6fd715dd54c24e755e8ac3262c.camel@mailbox.org>
+ <20260211120742.0e9e7122@fedora> <DGC3B6XIY3DW.M3CRU3IAUKOJ@kernel.org>
+ <20260211131015.7bf38cf9@fedora>
+In-Reply-To: <20260211131015.7bf38cf9@fedora>
 
-From: Alexandre Courbot <acourbot@nvidia.com>
+On Wed Feb 11, 2026 at 1:10 PM CET, Boris Brezillon wrote:
+> On Wed, 11 Feb 2026 12:19:04 +0100
+> "Danilo Krummrich" <dakr@kernel.org> wrote:
+>
+>> On Wed Feb 11, 2026 at 12:07 PM CET, Boris Brezillon wrote:
+>> > I try to avoid using concepts the language I rely on is not friendly
+>> > with. =20
+>>=20
+>> It's not really a language limitation. For instance, you can implement l=
+ists the
+>> exact same way as they can be implemented in C. It's more that a memory =
+safe
+>> list implementation is quite tricky in general.
+>
+> That's what I mean by trickier to use, they are because of rust safety.
 
-[ Upstream commit 8c8b12a55614ea05953e8d695e700e6e1322a05d ]
+Yeah, we agree on this. What I don't agree with is the "avoid using concept=
+s"
+part, because it came across in an unconditional way.
 
-`build_assert` relies on the compiler to optimize out its error path.
-Functions using it with its arguments must thus always be inlined,
-otherwise the error path of `build_assert` might not be optimized out,
-triggering a build error.
+> And again, that's not a case for saying "nah, rust is not a good fit, it
+> can't do easy-to-use-lists", but rather a good opportunity to think
+> twice about the containers we want to use.
 
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Now I have all the information needed for a thorough analysis. Here is
-my assessment:
-
----
-
-## Analysis: `rust: cpufreq: always inline functions using build_assert
-with arguments`
-
-### 1. What the Commit Does
-
-This commit adds `#[inline(always)]` (plus explanatory comment) to the
-`const fn copy_name()` function in `rust/kernel/cpufreq.rs`. This
-function uses `build_assert!` to validate that a driver name string fits
-within `CPUFREQ_NAME_LEN`.
-
-### 2. The Bug Mechanism (Build Fix)
-
-The `build_assert!` macro works by calling `build_error()` on the error
-path. `build_error()` (defined in `rust/build_error.rs`) is exported
-with the symbol name `rust_build_error`. Crucially, in the Makefile:
-
-```25:26:rust/Makefile
-always-$(CONFIG_RUST) += build_error.o
-endif
-```
-
-When `CONFIG_RUST_BUILD_ASSERT_ALLOW` is NOT set (the default),
-`build_error.o` is compiled but **not linked** into the kernel. This
-means any reference to `rust_build_error` in the final binary causes a
-**linker error** -- this is the deliberate mechanism that turns
-`build_assert!` into a build-time check.
-
-The problem: if `copy_name()` is not inlined, the compiler generates a
-standalone function body where the `name` parameter is opaque. It cannot
-prove that `src.len() <= CPUFREQ_NAME_LEN` will always hold, so it
-preserves the `build_error()` call. This creates a reference to the
-deliberately-missing `rust_build_error` symbol, causing a **build
-failure**.
-
-With `#[inline(always)]`, the function body is always expanded at the
-call site where the actual argument (`T::NAME`) is a known const value.
-The compiler can then evaluate the condition, prove it's true, and
-eliminate the error path -- allowing successful linking.
-
-### 3. Established Pattern -- Sibling Patches Were All Tagged for Stable
-
-This commit is part of a broader effort by Alexandre Courbot to fix all
-`build_assert!`-using functions that lack `#[inline(always)]`. The
-**four sibling patches** (all with identical commit messages) that fix
-this in other files **all have** `Cc: stable@vger.kernel.org` and
-`Fixes:` tags:
-
-- `d6ff6e870077a` - `rust: sync: refcount` -- **Cc: stable, Fixes:
-  bb38f35b35f9**
-- `09c3c9112d71c` - `rust: bits` -- **Cc: stable, Fixes: cc84ef3b88f4**
-- `5d9c4c272ba06` - `rust: irq` -- **Cc: stable, Fixes: 746680ec6696**
-- `33d19f621641d` - `rust: io` -- **Cc: stable, Fixes: ce30d94e6855**
-
-The cpufreq variant likely lacks the stable tag because it was sent
-through a different maintainer tree (Viresh Kumar's cpufreq tree, not
-the Rust or DRM trees), not because it's less important.
-
-### 4. Consistency with Existing Code
-
-Identical patterns in the codebase **already have** `#[inline(always)]`:
-- `i2c.rs:45` - `pub const fn new()` with `build_assert!` on string
-  length
-- `acpi.rs:38` - `pub const fn new()` with `build_assert!` on string
-  length
-- `ioctl.rs:12` - `const fn _IOC()` with multiple `build_assert!` calls
-- `bits.rs:31-32` - `bit_*` and `genmask_*` functions
-- `irq/flags.rs:100-101` - `const fn new()`
-- `io/resource.rs:230-231` - `const fn new()`
-- `num/bounded.rs:369-370` - `from_expr()`
-
-The `cpufreq.rs` `copy_name` function is the exact same pattern (const
-fn taking an argument, using `build_assert!` on it) but was missing the
-annotation -- clearly an oversight.
-
-### 5. Affected Stable Trees
-
-The file `rust/kernel/cpufreq.rs` was introduced in v6.16. I confirmed
-the vulnerable `copy_name` function (without `#[inline(always)]`) exists
-in:
-- **v6.18.9** (latest 6.18 stable)
-- **v6.17.13** (latest 6.17 stable)
-- **v6.16** (and its stable updates)
-
-### 6. Risk Assessment
-
-- **Change size**: 2 lines (1 comment + 1 attribute annotation)
-- **Behavioral change**: Zero runtime change. `#[inline(always)]` only
-  affects compilation.
-- **Regression risk**: Effectively zero. The function was likely already
-  being inlined by the optimizer; this just guarantees it, matching the
-  established pattern.
-- **Benefit**: Prevents potential build failures that could occur with
-  different Rust compiler versions, optimization levels, or future code
-  changes that affect inlining decisions.
-
-### 7. Classification
-
-This is a **build fix** -- one of the categories explicitly approved for
-stable backporting. It prevents a linker error that could occur when the
-compiler decides not to inline `copy_name`. The sibling fixes were all
-explicitly tagged for stable by the author and maintainers.
-
-### 8. Dependencies
-
-None. This is a self-contained 2-line change with no dependencies on
-other patches.
-
-### Conclusion
-
-This is a minimal, zero-risk build fix that follows an established
-pattern across the Rust kernel codebase. Every sibling patch from the
-same author fixing the exact same class of issue was tagged `Cc:
-stable@vger.kernel.org`. The affected code exists in 6.16.y, 6.17.y, and
-6.18.y stable trees. The only reason this specific patch lacks the
-stable tag is likely that it went through a different maintainer tree.
-The fix is obviously correct, small, and prevents potential build
-failures.
-
-**YES**
-
- rust/kernel/cpufreq.rs | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index f968fbd228905..0879a79485f8e 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -1015,6 +1015,8 @@ impl<T: Driver> Registration<T> {
-         ..pin_init::zeroed()
-     };
- 
-+    // Always inline to optimize out error path of `build_assert`.
-+    #[inline(always)]
-     const fn copy_name(name: &'static CStr) -> [c_char; CPUFREQ_NAME_LEN] {
-         let src = name.to_bytes_with_nul();
-         let mut dst = [0; CPUFREQ_NAME_LEN];
--- 
-2.51.0
-
+I think I never implied that you were saying anything along the lines of "r=
+ust
+is not a good fit" in any way. No idea where this comes from. :)
