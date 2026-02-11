@@ -1,105 +1,112 @@
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE35356A09
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Feb 2026 09:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770802584; cv=pass; b=fnT/go6Q5o13PRDHgkmbk4RxAtdsYKvpBIu9rsfRv0c9gabw4hRJIUBFPu9ntl7M584UZs1ccSyAB49WgHz/sGtEfZaDQcxTbBHwtx+bHVfgMAfmogb6KN7Dz5DJ83x2grXR9UT9L/bYP1gVpcvtGY43k1yEl3rkqSuRlxZXkVo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770802584; c=relaxed/simple;
-	bh=WZv5jlN4zadCd5e2MjU5h4HlNNnSbpBWL7qfPiMmG+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ld5lT38lOJ75v6ZNPLHZummNJeKMzeWsiDHIJ//fjSsd3MRYWuNwFzHPPDA6hK2Oi/nSvjY9YFJ0ibBn0gaA+6vJbng2Xr/ZZj6ax1rH7nPK4NTOy6VFOMlmYgfZ13ofp8DOK8wqvnQF6Kogpo42WtsnqIpyMoNa2TG/4ak0ho4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b=hx2oHccp; arc=pass smtp.client-ip=103.117.158.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6FF28A72F;
+	Wed, 11 Feb 2026 09:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770803852; cv=none; b=PHLE8dNCv9pBbmffhOpcQfXjPavf9y2A0JgyRQ+06mlMUkAzUATw9HCdAHkQIPd86UgR0KYiQc9f/1Cqk+GS3NuWPr3zpvoo9dEucgXIUranA22fSXdH10fKmkNX3PACmlIJH1gHbJ4eyQZcRP2QBe4Hl9NXbwtkM+3LB7sur0I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770803852; c=relaxed/simple;
+	bh=UBgpfxg902aoW870xOV+hwMSmO6DTVJ0XdLPOKLXDEE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=twvLkQs9Ig3Xj00OwH+5Enn7Zni9/2obdgeuJSr4bP2LkcYT+nZ9TFAZPfeLqELOcdvZPpmV545uzuGkuxvO8wfta4h51/+KX9RSH8dplvX1h6YWR7nOIBMVj5Ttp7X9dsqeFsmwEI17wSFBwPGFAD4GNjwhGBeB3P3djgH9Zng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKSVyD/j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b="hx2oHccp"
-ARC-Seal: i=1; a=rsa-sha256; t=1770802557; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=cYFSsA2O5iG7BAP9JDWI27rUEfCE86eXFaEIbmFkPTdnu5Lq4I4OJxo3EAzzmjJT7ORKP/W0iLLjioItjMtkTIWCHktLSaOj0jHM853Y+bkLrm30p4DF3pzwnBfOySea/qs9PtHPuH9F++SigB6Bp5vRGPjDXMoKUAAIFWm3uDY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1770802557; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=hG8W87yCXt0ssy6KuwVfWY01LdRukPjuXwocfyq7lqg=; 
-	b=Y4k8A/5kWmBEbUAatSCfH6LTx8KbAnnXKQnq+eB9a2WSX8VmtgYsoSz1tm8Bi9cb7gtx0G7y8YXpMpvHYupjbufvLCDhSak6QVK9yZZWSfuS+HMp5hRZbedS3CN0/DRyZoVUHnMX97tEQIniinKy2zPb0zk/hz1+slq1Ylc2mzg=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770802556;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=hG8W87yCXt0ssy6KuwVfWY01LdRukPjuXwocfyq7lqg=;
-	b=hx2oHccpVVHbEjHzCQ4tnYlNMXOiuyjgiVUQKEmB9BvkQ9G54jxmrgnds0lZc4aF
-	qkV70cct6ft85V0M/yCcibXNetdh48gApXLWAUwQeDP8o/VZnb4xHva2dCuZwqOY5w5
-	5GWo7mYRSuLPQ6npxTvzaOvIFGAIQUs0/wHf/0jc=
-Received: by mx.zoho.in with SMTPS id 1770802554029569.2961951817317;
-	Wed, 11 Feb 2026 15:05:54 +0530 (IST)
-Message-ID: <91744c4e-d014-4fc8-856b-fafbd4ede284@zohomail.in>
-Date: Wed, 11 Feb 2026 15:05:52 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKSVyD/j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2DFC4CEF7;
+	Wed, 11 Feb 2026 09:57:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770803852;
+	bh=UBgpfxg902aoW870xOV+hwMSmO6DTVJ0XdLPOKLXDEE=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=XKSVyD/jlYxSyAQQzxg1VhCxqYxs5R8DWrjW6PuzuHgwsyIL5jkhYBWeslmI2ADd/
+	 W1H7v3WlAWtJkzuDW/rkx0gDmgDrs/60iNj2RT+NxSJgFdyfALPuIfNmQp/vqvHg3O
+	 UWlnIrGYGT8pF3dstbMEl7KUtUxNAPVeWGMTvlJbHkph3bRZdisiib50vmNWrbCBRO
+	 tg7JvovCdnXUx9VFpEJnUPOKHZ6kGhP0A8vQhGFItgHyjECu5hCJ2S6erOwpzhwPFU
+	 ywvoPweKt4AigCHFJoit0Um08k9aVjd8yEBQYxBL4sIMBEsTghGr0AKJzDwPeRihBA
+	 OzeluWTW09t+Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] rust: alloc: add Vec shrinking methods
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li>
- <0d336a3f-f317-4a70-942a-d87a3faa3a89@gmail.com>
- <aYs5L1aG5S34teKT@google.com> <DGBDHMI9Z4JK.3QHCOS1O8WGLB@kernel.org>
- <CAH5fLghy3_J_in-o=y8yh94+RLn6XihNOTzTiT2kk9DkXBMPVA@mail.gmail.com>
- <DGBKOL8Y6OH8.1X5RHNGCQAMC4@kernel.org>
- <DGBKWSS3PEGY.20YKV5CO7DCKT@kernel.org>
- <CAH5fLgg9sDW+MCK15yVyZ59BzXind+1vRj+PQ2xHQ8Bg7sxLRA@mail.gmail.com>
- <DGBLALCUGY7N.383JKRKNCRDW5@kernel.org>
- <1312bba9-442b-410a-9cb4-fe67879d2dcb@gmail.com>
- <CAH5fLgjwWQSHydyM6AMPiziBQjeO4rcNaOzuNV=CrHxRvYuaVw@mail.gmail.com>
- <af90cbe5-dcfa-46da-83b3-e903134c7f93@zohomail.in>
- <DGC0AJ9L0ZP1.20IV8O6FT1PTD@kernel.org>
-Content-Language: en-US
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-In-Reply-To: <DGC0AJ9L0ZP1.20IV8O6FT1PTD@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Date: Wed, 11 Feb 2026 10:57:27 +0100
+Message-Id: <DGC1KP1DT6YV.3LQWZXMA22L5A@kernel.org>
+Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
+Cc: =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Boris
+ Brezillon" <boris.brezillon@collabora.com>, "Philipp Stanner"
+ <phasta@mailbox.org>, <phasta@kernel.org>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Gary Guo"
+ <gary@garyguo.net>, "Benno Lossin" <lossin@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <lucas.demarchi@intel.com>,
+ <thomas.hellstrom@linux.intel.com>, <rodrigo.vivi@intel.com>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260205095727.4c3e2941@fedora>
+ <DG7SZND1GWR4.3C5NLKY4SYC0M@kernel.org>
+ <bb57b6837aa8044e679dad5f2589c2e0ba84c221.camel@mailbox.org>
+ <20260209155843.725dcfe1@fedora>
+ <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com>
+ <aYruaIxn8sMXVI0r@google.com> <20260210101525.7fb85f25@fedora>
+ <aYsFKOVrsMQeAHoi@google.com> <DGB7RWKMPJQZ.2PHB127O6MVVN@kernel.org>
+ <4e84306c-5cec-4048-a7eb-a364788baa89@amd.com>
+ <aYsZHhX2IVO2kOSm@google.com>
+In-Reply-To: <aYsZHhX2IVO2kOSm@google.com>
 
-On 11/02/26 14:27, Danilo Krummrich wrote:
-> On Wed Feb 11, 2026 at 9:41 AM CET, Shivam Kalra wrote:
->> Thanks Alice. I'll go with the standalone helper function approach
->> with separate impl blocks for Vec<T, Vmalloc> and Vec<T, KVmalloc>.
-> 
-> If it's only needed for KVmalloc, which apparently is the case, let's just add
-> it for KVVec only.
-> 
-> Also, please make sure to add a TODO comment mentioning why this workaround
-> exists and what it should be replaced with, i.e. a generic shrink_to() that
-> calls into A::realloc().
-Thanks for the discussion on v3. The direction for v4 is now clear.
-Summary of changes for v4:
-1. Drop the Shrinkable trait entirely. (Danilo)
-2. Implement shrink_to() only for KVVec (impl<T> Vec<T, KVmalloc>),
-   since that covers the actual use case (binder). No new traits
-   needed. (Danilo,Alice)
-3. Add a TODO comment explaining this is a temporary workaround
-   (page-boundary check + manual alloc+copy+free) that should be
-   replaced with a generic Vec<T, A>::shrink_to() calling
-   A::realloc() once vrealloc gains in-place shrinking. (Danilo)
-4. In the binder patch, use a less aggressive shrink strategy to
-   avoid shrink-then-regrow oscillation: (Alice)
-     if len < cap / 4 {
-         shrink_to(cap / 2);
-     }
-5. Fix commit prefix to rust_binder: instead of rust: binder:. (Alice)
+(Cc: Xe maintainers)
 
-Also noting that starting from v4, I will be sending patches from
-a new email address: shivamkalra98@zohomail.in
-I previously sent patches as shivamklr@cock.li, then briefly from
-shivamkalra98@gmail.com. Both accounts ran out of quota, so all
-future patches (v4+) will come from this address.
-Thanks,
-Shivam
+On Tue Feb 10, 2026 at 12:40 PM CET, Alice Ryhl wrote:
+> On Tue, Feb 10, 2026 at 11:46:44AM +0100, Christian K=C3=B6nig wrote:
+>> On 2/10/26 11:36, Danilo Krummrich wrote:
+>> > On Tue Feb 10, 2026 at 11:15 AM CET, Alice Ryhl wrote:
+>> >> One way you can see this is by looking at what we require of the
+>> >> workqueue. For all this to work, it's pretty important that we never
+>> >> schedule anything on the workqueue that's not signalling safe, since
+>> >> otherwise you could have a deadlock where the workqueue is executes s=
+ome
+>> >> random job calling kmalloc(GFP_KERNEL) and then blocks on our fence,
+>> >> meaning that the VM_BIND job never gets scheduled since the workqueue
+>> >> is never freed up. Deadlock.
+>> >=20
+>> > Yes, I also pointed this out multiple times in the past in the context=
+ of C GPU
+>> > scheduler discussions. It really depends on the workqueue and how it i=
+s used.
+>> >=20
+>> > In the C GPU scheduler the driver can pass its own workqueue to the sc=
+heduler,
+>> > which means that the driver has to ensure that at least one out of the
+>> > wq->max_active works is free for the scheduler to make progress on the
+>> > scheduler's run and free job work.
+>> >=20
+>> > Or in other words, there must be no more than wq->max_active - 1 works=
+ that
+>> > execute code violating the DMA fence signalling rules.
+>
+> Ouch, is that really the best way to do that? Why not two workqueues?
+
+Most drivers making use of this re-use the same workqueue for multiple GPU
+scheduler instances in firmware scheduling mode (i.e. 1:1 relationship betw=
+een
+scheduler and entity). This is equivalent to the JobQ use-case.
+
+Note that we will have one JobQ instance per userspace queue, so sharing th=
+e
+workqueue between JobQ instances can make sense.
+
+Besides that, IIRC Xe was re-using the workqueue for something else, but th=
+at
+doesn't seem to be the case anymore. I can only find [1], which more seems =
+like
+some custom GPU scheduler extention [2] to me...
+
+[1] https://elixir.bootlin.com/linux/v6.18.6/source/drivers/gpu/drm/xe/xe_g=
+pu_scheduler.c#L40
+[2] https://elixir.bootlin.com/linux/v6.18.6/source/drivers/gpu/drm/xe/xe_g=
+pu_scheduler_types.h#L28
