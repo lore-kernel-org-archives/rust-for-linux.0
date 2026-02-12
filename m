@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F35145355;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AA21D61BC;
 	Thu, 12 Feb 2026 08:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770884729; cv=none; b=fKr7emPuWJvPX6+JjlKdi6mU8A+mqnu+183PGjYBj/5R99+7KkDYA0hVVnLnqj52rC/X36P6BuOMNSc7W3nSqZUZFs5b8uyCNad7fezQ6tFdjT6tsNm1KrxkfGAggqcRTjMsb0kW+2oppWgWOpkPYZ2HTpR68VRWMqw5lFbmzCo=
+	t=1770884729; cv=none; b=XwFY9LxOi5yVagj7LjmPcDEsAV0t0uapijjxPTFAYfTply7L5ymXxeEmTuL11TShbEy4jiZmV7ZIqJaGzinvQdwFVjpH7M3LZo7ZrZsEVMXzbx50ha1wPETkIL2plAjCgMnetyzLtc+dAMTO+Beluw8yF3zl5Rbvit3rp4Pyf/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770884729; c=relaxed/simple;
-	bh=bKZOD/0QCyNVBBQrjHN3Q70Hx7RbUjlqHSRCGKdOX4Q=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HukjyUogFStxSFnagzaZJHTbczWOwKGdpaBmVJ2AkVVyru6BKUSm3FuXhLX0LvkOJvFzNdnNQkOD7sEJzQfd2kqIhnG67VThtaKF/gjDwDGtVAt37XocwUW/zaT1CtplfPvPz6bad1tlMajAx7MVIi3Y492bjNo5ZHBG/li1oe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BYrXu9jG; arc=none smtp.client-ip=10.30.226.201
+	bh=Nhuwb8Qlgw/27lqKry0LC8M8GZuoPjdo0qzwMJep4DY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=cxVFjdeFxGAEtkhrfSE0Ej/Y5EFqvDNT73AolNAeH+9lmvQqljq9J/UzjxSPbXuWUtEvwgn9vGk3HzFdqa/tBWkJC2kRczzNiA31DCLOiur3vPE3sH/EAZunXSar6tTIlGnkKSkY5qjAZWG6k8RM5mq68Ifs0sNkW+BGSo6w2JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+DJ8f1m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BYrXu9jG"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6D3C9C4CEF7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+DJ8f1m"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A5102C19424;
 	Thu, 12 Feb 2026 08:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1770884729;
-	bh=bKZOD/0QCyNVBBQrjHN3Q70Hx7RbUjlqHSRCGKdOX4Q=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=BYrXu9jG7kGiHaSZmW6oaEZJSEl5g49JPQBq2hsyzSEOmazlM1RaGvHYtIDiWIUJU
-	 jew4SzjMZWHcZ5uOy4Z/8zyGlTwg3AA0iDHhD1wvVK/SFpoLXERrsw6zRvslBzRU/R
-	 qHOZo/r9vq573s+1ynD0VsUzkpw+gasfQqgp0kRqYAExcCfEvm6yFSzP+2Ao8TMxke
-	 7J2hNMfFWEqalu3mmUycK3cuB2rZ/AyCUs/SfRr2kcwrJgpPvE+epmGYGSpkKKJuRe
-	 ciPl/Okl1cv/JaPbDOaxgaTIydDzEp23XL8+v6biho+8c1RSdZcMseFxbptQ3lr15f
-	 1eoHZLxjxtKeA==
+	bh=Nhuwb8Qlgw/27lqKry0LC8M8GZuoPjdo0qzwMJep4DY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=N+DJ8f1mfzd+O+7QHJro0FqopHlwpWTeSLMeA5JxE7PIkIUl7GNgroQSamWudnc3T
+	 O9EX+vwtSJUmYGGbZ5GYwU3lwF19tDT+2+KXH/Pjn626YNVzBXEzSBL2lM/3rnfVZm
+	 ZA8YB58l+fg14+D6e0Ze3sfLb7O+URMmCpNN7r50y/Da2nyfZWPI74hTmSOvboidu7
+	 P70N7Si3Sv70rcPv3tdFOf58fxyVJBuM1vBdneHYg26+jUdGv9hRhmzitz9N4dkvXI
+	 RTehYhTxb+aerP2p4JwIZ/hSYE5COBbJLw7YC0JN0Tr6DwS+JAgz90E6P4BkZIt5c9
+	 EXbz59zDpvohg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E169EDF059;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95605EDF05A;
 	Thu, 12 Feb 2026 08:25:29 +0000 (UTC)
 From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Subject: [PATCH v4 0/3] rust: alloc: add KVVec shrinking method
-Date: Thu, 12 Feb 2026 13:47:06 +0530
-Message-Id: <20260212-binder-shrink-vec-v3-v4-0-bd02f06bf2cd@zohomail.in>
+Date: Thu, 12 Feb 2026 13:47:08 +0530
+Subject: [PATCH v4 2/3] rust: alloc: add KUnit tests for KVVec shrink_to
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,10 +40,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIKMjWkC/x3MQQqAIBBA0avIrBtIjYquEi1KxxoCixEkCO+et
- HyL/19IJEwJJvWCUObEV6zoGgXuWONOyL4aTGv61miDG0dPgukQjidmcpgtutFpbTWFLQxQ01s
- o8PNv56WUD6fXl/FmAAAA
-X-Change-ID: 20260212-binder-shrink-vec-v3-c8c1131efbf7
+Message-Id: <20260212-binder-shrink-vec-v3-v4-2-bd02f06bf2cd@zohomail.in>
+References: <20260212-binder-shrink-vec-v3-v4-0-bd02f06bf2cd@zohomail.in>
+In-Reply-To: <20260212-binder-shrink-vec-v3-v4-0-bd02f06bf2cd@zohomail.in>
 To: Danilo Krummrich <dakr@kernel.org>, 
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
  Vlastimil Babka <vbabka@suse.cz>, 
@@ -60,11 +59,11 @@ To: Danilo Krummrich <dakr@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Shivam Kalra <shivamkalra98@zohomail.in>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770884727; l=4256;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770884727; l=4784;
  i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
- bh=bKZOD/0QCyNVBBQrjHN3Q70Hx7RbUjlqHSRCGKdOX4Q=;
- b=oUzTjmE4lwxmDEfXx9BrqBlGKyqRmES21wey+36aL89hhPYY2AXLmwSrWPIaHfIGLuUkN7KHQ
- ubSw81jihuwAdiO3t14r9NQWUzn1LoTx/bZuWAQx8hAjyapIIgAz5Nh
+ bh=2QVEAhtM4EYkLAdeVfP5HSGd+aJKKYsshbr35ZHZtV8=;
+ b=6/UvYjHgkd/gQqNE/CED2qqQ1s3tKidz79s7gC1vRIYMT0KgVhFjf6Fzz0S4dZKjbNT1bqvyA
+ zZuEFu5bgU5D9tRG0no+6Q8JpB9QyHS3EYJw9Wn9INDeGxkVN6y2N6h
 X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
  pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
 X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
@@ -72,95 +71,147 @@ X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
 X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
 Reply-To: shivamkalra98@zohomail.in
 
-This series adds a shrink_to() method to KVVec to allow explicit
-capacity reduction for memory reclamation.
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-Problem:
-When elements are removed from a KVVec, the allocated capacity is not
-reduced. The underlying C allocators (krealloc/kvrealloc) don't shrink
-memory in-place. This can cause significant memory waste in scenarios
-with variable workloads.
-
-Solution:
-- Patch 1: Implements shrink_to(min_capacity, flags) method specifically
-  for KVVec (Vec<T, KVmalloc>). Shrinking only occurs when the operation
-  would free at least one page of memory. The implementation uses
-  explicit alloc+copy+free since vrealloc doesn't yet support in-place
-  shrinking. A TODO comment marks this for future replacement with a
-  generic implementation using A::realloc() once allocators properly
-  support shrinking.
-- Patch 2: Adds KUnit tests for the new shrink_to method, verifying
-  page-based shrinking, empty vector handling, no-op behavior, and
-  min_capacity respect.
-- Patch 3: Uses shrink_to() in the Rust binder driver to reclaim memory
-  when processes are deregistered. Uses a conservative shrinking
-  strategy (trigger at len < cap / 4, shrink to cap / 2) to avoid
-  shrink-then-regrow oscillation.
-
-Testing:
-- KUnit tests pass (rust_kvec test suite).
-- Kernel boots successfully in QEMU with CONFIG_ANDROID_BINDER_IPC_RUST=y.
-
-Changes since v3:
-- Dropped the Shrinkable trait entirely - it was not needed for the
-  KVVec-specific implementation. (Danilo Krummrich)
-- Removed shrink_to_fit() method. Only shrink_to() is implemented.
-  (Danilo Krummrich)
-- Implemented shrink_to() only for KVVec (impl<T> Vec<T, KVmalloc>)
-  instead of as a generic method, since that covers the actual use
-  case in binder. (Danilo Krummrich, Alice Ryhl)
-- Added TODO comment explaining this is a temporary KVVec-specific
-  implementation that should be replaced with a generic
-  Vec<T, A>::shrink_to() calling A::realloc() once the underlying
-  allocators properly support shrinking via realloc. (Danilo Krummrich)
-- Changed binder shrink strategy to be less aggressive to avoid
-  shrink-then-regrow oscillation: now triggers when len < cap / 4 and
-  shrinks to cap / 2. (Alice Ryhl)
-- Removed the cap > 128 threshold check in binder. (Alice Ryhl)
-- Fixed commit prefix from "rust: binder:" to "rust_binder:".
-  (Alice Ryhl)
-- Updated test suite to focus on KVVec-specific behavior.
-
-Changes since v2:
-- Introduced new Shrinkable marker trait to distinguish allocators that
-  benefit from shrinking (Vmalloc) from those that don't (Kmalloc).
-- Shrinking now only occurs for vmalloc-backed buffers when at least one
-  page can be freed, avoiding unnecessary work for kmalloc buffers.
-  (Suggested by Danilo Krummrich)
-- Split into 4 patches: Shrinkable trait introduction is now a
-  separate patch to improve reviewability.
-- Uses explicit alloc+copy+free since vrealloc doesn't yet support
-  in-place shrinking; TODO added for future optimization when vrealloc
-  gains that capability. (Discussed with Danilo Krummrich)
-- Fixed minor KVVec/KVec terminology (binder uses KVVec not KVec).
-- Expanded KUnit tests to cover different allocator backends and
-  page-boundary shrinking behavior.
-
-Changes since v1:
-- Resend with correct threading (no code changes).
-- Removed base-commit.
-- Added explicit lore link to dependency in cover letter.
-
-[1] https://lore.kernel.org/lkml/20260130205424.261700-1-shivamklr@cock.li/
-[2] https://lore.kernel.org/lkml/20260131154016.270385-1-shivamklr@cock.li/
-[3] https://lore.kernel.org/lkml/20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li/
+Add comprehensive KUnit tests for the shrink_to method for KVVec.
+The tests verify:
+- Basic shrinking from multiple pages to fewer pages with data integrity
+  preservation
+- Empty vector shrinking to zero capacity
+- No-op behavior when shrinking to a larger capacity than current
+- Respect for min_capacity parameter when larger than vector length
+These tests ensure that the shrinking logic correctly identifies when
+memory can be reclaimed (by freeing at least one page) and that data
+integrity is maintained throughout shrink operations.
 
 Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
 ---
-Shivam Kalra (3):
-      rust: kvec: implement shrink_to for KVVec
-      rust: alloc: add KUnit tests for KVVec shrink_to
-      rust_binder: shrink all_procs when deregistering processes
+ rust/kernel/alloc/kvec.rs | 112 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 112 insertions(+)
 
- drivers/android/binder/context.rs |  11 +++
- rust/kernel/alloc/kvec.rs         | 190 +++++++++++++++++++++++++++++++++++++-
- 2 files changed, 200 insertions(+), 1 deletion(-)
----
-base-commit: 3c4ae63073d84abee5d81ce46d86a94e9dae9c89
-change-id: 20260212-binder-shrink-vec-v3-c8c1131efbf7
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index 8524f9f3dff0..d28f8fccd30f 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -1474,4 +1474,116 @@ fn add(value: &mut [bool]) {
+             func.push_within_capacity(false).unwrap();
+         }
+     }
++
++    #[test]
++    fn test_kvvec_shrink_to() {
++        use crate::page::PAGE_SIZE;
++
++        // Calculate elements per page for u32.
++        let elements_per_page = PAGE_SIZE / core::mem::size_of::<u32>();
++
++        // Create a vector with capacity spanning multiple pages.
++        let mut v = KVVec::<u32>::with_capacity(elements_per_page * 4, GFP_KERNEL).unwrap();
++
++        // Add a few elements.
++        v.push(1, GFP_KERNEL).unwrap();
++        v.push(2, GFP_KERNEL).unwrap();
++        v.push(3, GFP_KERNEL).unwrap();
++
++        let initial_capacity = v.capacity();
++        assert!(initial_capacity >= elements_per_page * 4);
++
++        // Shrink to a capacity that would free at least one page.
++        v.shrink_to(elements_per_page, GFP_KERNEL).unwrap();
++
++        // Capacity should have been reduced.
++        assert!(v.capacity() < initial_capacity);
++        assert!(v.capacity() >= elements_per_page);
++
++        // Elements should be preserved.
++        assert_eq!(v.len(), 3);
++        assert_eq!(v[0], 1);
++        assert_eq!(v[1], 2);
++        assert_eq!(v[2], 3);
++
++        // Shrink to zero (should shrink to len).
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++
++        // Capacity should be at least the length.
++        assert!(v.capacity() >= v.len());
++
++        // Elements should still be preserved.
++        assert_eq!(v.len(), 3);
++        assert_eq!(v[0], 1);
++        assert_eq!(v[1], 2);
++        assert_eq!(v[2], 3);
++    }
++
++    #[test]
++    fn test_kvvec_shrink_to_empty() {
++        use crate::page::PAGE_SIZE;
++
++        let elements_per_page = PAGE_SIZE / core::mem::size_of::<u64>();
++
++        // Create a vector with large capacity but no elements.
++        let mut v = KVVec::<u64>::with_capacity(elements_per_page * 4, GFP_KERNEL).unwrap();
++
++        assert!(v.is_empty());
++        let initial_capacity = v.capacity();
++
++        // Shrink empty vector to zero.
++        v.shrink_to(0, GFP_KERNEL).unwrap();
++
++        // Should have freed the allocation.
++        assert!(v.capacity() < initial_capacity);
++        assert!(v.is_empty());
++    }
++
++    #[test]
++    fn test_kvvec_shrink_to_no_op() {
++        use crate::page::PAGE_SIZE;
++
++        let elements_per_page = PAGE_SIZE / core::mem::size_of::<u32>();
++
++        // Create a small vector.
++        let mut v = KVVec::<u32>::with_capacity(elements_per_page, GFP_KERNEL).unwrap();
++        v.push(1, GFP_KERNEL).unwrap();
++
++        let capacity_before = v.capacity();
++
++        // Try to shrink to a capacity larger than current - should be no-op.
++        v.shrink_to(capacity_before + 100, GFP_KERNEL).unwrap();
++
++        assert_eq!(v.capacity(), capacity_before);
++        assert_eq!(v.len(), 1);
++        assert_eq!(v[0], 1);
++    }
++
++    #[test]
++    fn test_kvvec_shrink_to_respects_min_capacity() {
++        use crate::page::PAGE_SIZE;
++
++        let elements_per_page = PAGE_SIZE / core::mem::size_of::<u32>();
++
++        // Create a vector with large capacity.
++        let mut v = KVVec::<u32>::with_capacity(elements_per_page * 4, GFP_KERNEL).unwrap();
++
++        // Add some elements.
++        for i in 0..10 {
++            v.push(i, GFP_KERNEL).unwrap();
++        }
++
++        // Shrink to a min_capacity larger than length.
++        let min_cap = elements_per_page * 2;
++        v.shrink_to(min_cap, GFP_KERNEL).unwrap();
++
++        // Capacity should be at least min_capacity.
++        assert!(v.capacity() >= min_cap);
++
++        // All elements preserved.
++        assert_eq!(v.len(), 10);
++        for i in 0..10 {
++            assert_eq!(v[i as usize], i);
++        }
++    }
+ }
 
-Best regards,
 -- 
-Shivam Kalra <shivamkalra98@zohomail.in>
+2.43.0
 
 
