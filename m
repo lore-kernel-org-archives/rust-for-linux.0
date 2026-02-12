@@ -1,144 +1,279 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D880F35EDA7
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 22:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770934343; cv=none; b=HCp6BRcX/0uQrPIlskLxNWcb4Xoc3eWtu893knEtUEzRmKK6shKwowlwuAm2wNdRnF3aM537XmgxaoRSwnld9K6h8iQzofpB/UQP3V/5AFXPBzNeNum6sJ06y9wbbvCZ5lZWfD4F463lqsWqwHnqcUBP4+dGTys40fWNsvAhnr8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770934343; c=relaxed/simple;
-	bh=7V2N6dp2rjo7koplHKhlgc4XVo2ZSpj3B/T/irCiBIU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OeYszNWznafZuH/oBhOyC85lLozlkb6ylG3poX3a27V51j7ORYxxL2jdLEZeH+bZG+QsyOpfzYSf7wBaxPpcrmQaAkSSs1V9i8NY/nxl4TvmnuI2SUmjY0azJVnETOHps5pcnNYc394881WarJzXhu9CXl3K2w5rQr0JG7GHeUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KJcVylDS; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABA53EBF1B;
+	Thu, 12 Feb 2026 23:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770939575; cv=pass; b=Jq3MeSjJpvafB3f4CO/HqAGlhb7X8ByqiKG0CC0SsHGC6BRnZhwIKAlzMi7F/NdqLH4OiMVIwK9X21UwUi7u3iTcBqCzS2bN6HU4HIjjIeXb1BS2WpdxNUUe6id1QuVMyLRmy0gIzNK2kJpu1PdNUUqkg/jKyXCPifddStxagQo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770939575; c=relaxed/simple;
+	bh=VdKrPHvd0NL69YFvtj1j9P+6Udm4UkfCgwKFZNO3Jxg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QMXGHXR1xAXZxZi9FzLr2OOlLBDKxwYVK932nmPG59wbcxTJexpuZj5djihy3ERLKeKIVvCO1VWfiXbV5gllcNN0KUvgTEnVSU7PS9vKpPy4VV7ahjVBS9Rgzi6JwLJGTIcxt53wpZZ37RY+FdenahsPpLFbMLLx7reoWcBgEX4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=H4Pw6SUO; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KJcVylDS"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4806b0963a9so10535e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 14:12:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770934340; x=1771539140; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Fe2Y/SZJ5x/5lMCQoOZFFno/AsLWveHnxx6IJQErxeI=;
-        b=KJcVylDSySiSj65nW6r98Ss8e+Jv3XVnwiLIiAb23HIiw8HFl7ARKD1MqWi1ELrRUz
-         xBzPpNv66mAAYlPo9GrZz/DpunEkOtrV5iANTx+AN8XmpTk6ye0npWAumRhMr9HPtq3U
-         InYnZoP4KjAe0lVIcsXwjodq76tbkB9Nf1iCI4WZkPPbCwRoD2Iq3APp/1fifAPwC0Uw
-         zaibWO5GzqrbNzEjqrT7ALS2X3iVZveTk9fURqXdTQo26n1c2TcRBOy2MLCtfXrKzK0e
-         hGKwbuEChMyQEqzI6v9BfdGZk96WvyaYRSwiztdcwubyA7loj4jdb53ZBz3xuVlM5Dij
-         9Ylw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770934340; x=1771539140;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Fe2Y/SZJ5x/5lMCQoOZFFno/AsLWveHnxx6IJQErxeI=;
-        b=BBBtHv1pzZxuog84ZQ8zzzl1vQElIvfuKsXDxzg4/NkroDGGFjAsqwx4okHbj3DoLD
-         O2PfjeoAn5/K2uDa799ELUq1+Woge6eZcXWrfAHPc0y0M5I0ANIHURitv+D5VstjPNBx
-         1475Ed+TTNfjLfbc+fCxNAK4wQ5NO+WqEttdF09AQ+gzUknsugLcGLBPHjNaKUIKI8RI
-         hvV++/ZOXTsWWnC1OuzcNhYjYJsF18s8vZAckYv9E60xZ3HLclbylVErYN4AVcpF+ql0
-         k5qITKZXcESf41kdgBleTfVePurmfGKcQ/uw/kLsKVLtpUhK80tfjJ8mW30wRXHtUvlU
-         G98w==
-X-Forwarded-Encrypted: i=1; AJvYcCWNgo90zZAMoBL31Md8regWjiFuJvHTKu3s15d5JuDToZZijs+dmSC10OdKgaCbMntXOYEvjWODHPRb5F/zbw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUfCkra3lqUDFUU6r1K+/FBRrcxWn+rsFMaw8yxS/GL/GzxLZj
-	RG0FkiU5xzJtktTUY/tLqZaNrOw0V4j2b7cMZOBi9aJnrtoH7WfSRJ7cx5wzaXe6Ug==
-X-Gm-Gg: AZuq6aJ9wLcGNuuu9BHtEufPzicuX5XFMjwZAb4qcTAfBLaZ5Nd7w0M81GjWsshPJjY
-	f3UT1G+CkBr8OxWGcCdGqQNGXc5hqNdbYjjxSCEaajKjJLH8q2CIM5i+S2CMB+xsQkEvJD/0eIG
-	phmCyJM2TgaY7JYkCusB9qbWVKZc49egqegNMFp2XrMDoAuehlvRDh/W3dcelh6IqDFn6xR0Oe+
-	5R8rCvZEZyngR5SgnTlxpGz+QjeysQ1nBPCS5joiRs354Yc5s0xK1khHZvioDY1WWbWoVQlOCIN
-	Oa/D364TD2TL9emnFOlleAIeyNWnFCsIN8pzHhivdXHJkQd6cWhUiyM58dv06/GwlLqA8Nw4yJd
-	xOYNOnWgy/gyjPD8GQHMrVdmFiJblngYmg1SnmbpxHEjAZnkND9ZLxoearckRH8uWZl+Bz5MZa3
-	J+505X4Q0gk7foY0J1ortDo14pzUCQryHeGQ4prkncJanbJg1Zy4s=
-X-Received: by 2002:a05:600c:3b8b:b0:477:95a8:2562 with SMTP id 5b1f17b1804b1-48371cd4764mr77525e9.13.1770934339797;
-        Thu, 12 Feb 2026 14:12:19 -0800 (PST)
-Received: from localhost ([2a00:79e0:288a:8:c531:3fec:ad3b:1a8d])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-43796abc85csm773992f8f.22.2026.02.12.14.12.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 14:12:18 -0800 (PST)
-From: Jann Horn <jannh@google.com>
-Date: Thu, 12 Feb 2026 23:12:07 +0100
-Subject: [PATCH v2 2/2] rust: task: use atomic read for pid()
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="H4Pw6SUO"
+ARC-Seal: i=1; a=rsa-sha256; t=1770939563; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MfCz8JVpSV4ma2KPw7fQU/VTe5XqYAu1ZRfOlawlxcUB0gclZMwBan+VaP2NT7ffOr8AqH8Usy3abotpppmybp1/h/kmAzegsDVsNnefPCCAJNJzVHFzKN5mGRcehzTwQQVUlwZI1u/bbVnfTObw385LtyGNMdD2ShsLgoU0jzc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770939563; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=KSGqdwB2INO7AZ5yz2CWObiENSQtPtFcGfPWj50oan0=; 
+	b=Am0Fu0HZbr97j19qFvU5bUK2C419Z6Ehy3+wUvtJPSacwLoQhjMaOWL1paXPcwBkOYGUMhmOzvCdC6hiDZ39f83sWj7iU5Cx2A/d9tSYMFYhx1ND0FFUVTD0SdQbg+ARSoao2VjYDNR904m1opiRouwczvPHD1f2v912f3sH0Wc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770939563;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=KSGqdwB2INO7AZ5yz2CWObiENSQtPtFcGfPWj50oan0=;
+	b=H4Pw6SUO6d57ADm2m8CHAvD7D0SS+G4wclfRgWz74He7rmO1ZRS2zXAEXUTFsHLs
+	0CzIXFZF6CXpYLHQMhjeASrrn3Z05O8pJbN4j5Ch7FmUWXj6VnXeQi7OEK1pOK39EFb
+	hdSrN16lQWOaN1kCCk22iFitC33xld56WwyOF9Vo=
+Received: by mx.zohomail.com with SMTPS id 1770939561006170.56587937999575;
+	Thu, 12 Feb 2026 15:39:21 -0800 (PST)
+Date: Thu, 12 Feb 2026 15:39:20 -0800
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	nouveau@lists.freedesktop.org, Miguel Ojeda <ojeda@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>, Alice Ryhl <aliceryhl@google.com>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	David Airlie <airlied@gmail.com>, Benno Lossin <lossin@kernel.org>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v5 1/4] rust/drm: Introduce DeviceContext
+Message-ID: <aY5kqALwqOVl9V7e@um790>
+References: <20260131001602.2095470-1-lyude@redhat.com>
+ <20260131001602.2095470-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260212-rust-de_thread-v2-2-7d274c4fd02e@google.com>
-References: <20260212-rust-de_thread-v2-0-7d274c4fd02e@google.com>
-In-Reply-To: <20260212-rust-de_thread-v2-0-7d274c4fd02e@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: Wedson Almeida Filho <walmeida@microsoft.com>, 
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770934330; l=1995;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=7V2N6dp2rjo7koplHKhlgc4XVo2ZSpj3B/T/irCiBIU=;
- b=4fc49eYXZWYTuHDde4f87z/If6iB+RrHcXKLQz6Nn0RyvL4RVi6DcHMdRnlpDHtC5kby6UFDU
- LkUtCBYobLwB0b8lyDokLxInpJtyEI+di+sWngPIGzxkb7z2JltPgIC
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260131001602.2095470-2-lyude@redhat.com>
 
-(Note: This is not a bugfix, it just cleans up an incorrect assumption.)
+Hi Lyude,
 
-Task::pid() wrongly assumes that task::pid remains constant until the task
-refcount drops to zero.
+On Fri, Jan 30, 2026 at 07:13:30PM -0500, Lyude Paul wrote:
+> One of the tricky things about DRM bindings in Rust is the fact that
+> initialization of a DRM device is a multi-step process. It's quite normal
+> for a device driver to start making use of its DRM device for tasks like
+> creating GEM objects before userspace registration happens. This is an
+> issue in rust though, since prior to userspace registration the device is
+> only partly initialized. This means there's a plethora of DRM device
+> operations we can't yet expose without opening up the door to UB if the DRM
+> device in question isn't yet registered.
+> 
+> Additionally, this isn't something we can reliably check at runtime. And
+> even if we could, performing an operation which requires the device be
+> registered when the device isn't actually registered is a programmer bug,
+> meaning there's no real way to gracefully handle such a mistake at runtime.
+> And even if that wasn't the case, it would be horrendously annoying and
+> noisy to have to check if a device is registered constantly throughout a
+> driver.
+> 
+> In order to solve this, we first take inspiration from
+> `kernel::device::DeviceContext` and introduce `kernel::drm::DeviceContext`.
+> This provides us with a ZST type that we can generalize over to represent
+> contexts where a device is known to have been registered with userspace at
+> some point in time (`Registered`), along with contexts where we can't make
+> such a guarantee (`Uninit`).
+> 
+> It's important to note we intentionally do not provide a `DeviceContext`
+> which represents an unregistered device. This is because there's no
+> reasonable way to guarantee that a device with long-living references to
+> itself will not be registered eventually with userspace. Instead, we
+> provide a new-type for this: `UnregisteredDevice` which can
+> provide a guarantee that the `Device` has never been registered with
+> userspace. To ensure this, we modify `Registration` so that creating a new
+> `Registration` requires passing ownership of an `UnregisteredDevice`.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> 
+> ---
+> V2:
+> * Make sure that `UnregisteredDevice` is not thread-safe (since DRM device
+>   initialization is also not thread-safe)
+> * Rename from AnyCtx to Uninit, I think this name actually makes a bit more
+>   sense.
+> * Change assume_registered() to assume_ctx()
+>   Since it looks like in some situations, we'll want to update the
+>   DeviceContext of a object to the latest DeviceContext we know the Device
+>   to be in.
+> * Rename Init to Uninit
+>   When we eventually add KMS support, we're going to have 3 different
+>   DeviceContexts - Uninit, Init, Registered. Additionally, aside from not
+>   being registered there are a number of portions of the rest of the Device
+>   which also aren't usable before at least the Init context - so the naming
+>   of Uninit makes this a little clearer.
+> * s/DeviceContext/DeviceContext/
+>   For consistency with the rest of the kernel
+> * Drop as_ref::<Device<T, Uninit>>() for now since I don't actually think
+>   we need this quite yet
+> V3:
+> * Get rid of drm_dev_ctx!, as we don't actually need to implement Send or
+>   Sync ourselves
+> * Remove mention of C function in drm::device::Registration rustdoc
+> * Add more documentation to the DeviceContext trait, go into detail about
+>   the various setup phases and such.
+> * Add missing period to comment in `UnregisteredDevice::new()`.
+> V4:
+> * Address some comments from Danilo I missed last round:
+>   * Remove leftover rebase detritus from new_foreign_owned()
+>     (the seemingly useless cast)
+>   * Remove no-op mention in Registered device context
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+>  drivers/gpu/drm/nova/driver.rs |   8 +-
+>  drivers/gpu/drm/tyr/driver.rs  |  10 +-
+>  rust/kernel/drm/device.rs      | 178 +++++++++++++++++++++++++++------
+>  rust/kernel/drm/driver.rs      |  35 +++++--
+>  rust/kernel/drm/mod.rs         |   4 +
+>  5 files changed, 190 insertions(+), 45 deletions(-)
+> 
+...
+> --- a/rust/kernel/drm/device.rs
+> +++ b/rust/kernel/drm/device.rs
+...
 
-However, Linux has a special quirk where, when execve() is called by a
-thread other than the thread group leader (the main thread), the thread
-calling execve() swaps its identity with the thread group leader's,
-becoming the new thread group leader. This means task::pid can't be assumed
-to be immutable for non-current tasks.
-(The actual swapping of PIDs is implemented in exchange_tids().)
+> +pub struct UnregisteredDevice<T: drm::Driver>(ARef<Device<T, Uninit>>, NotThreadSafe);
+> +
+> +impl<T: drm::Driver> Deref for UnregisteredDevice<T> {
+> +    type Target = Device<T, Uninit>;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.0
+> +    }
+>  }
+>  
+> -impl<T: drm::Driver> Device<T> {
+> +impl<T: drm::Driver> UnregisteredDevice<T> {
+>      const VTABLE: bindings::drm_driver = drm_legacy_fields! {
+>          load: None,
+>          open: Some(drm::File::<T::File>::open_callback),
+>          postclose: Some(drm::File::<T::File>::postclose_callback),
+>          unload: None,
+> -        release: Some(Self::release),
+> +        release: Some(Device::<T>::release),
+>          master_set: None,
+>          master_drop: None,
+>          debugfs_init: None,
+> @@ -108,8 +185,10 @@ impl<T: drm::Driver> Device<T> {
+>  
+>      const GEM_FOPS: bindings::file_operations = drm::gem::create_fops();
+>  
+> -    /// Create a new `drm::Device` for a `drm::Driver`.
+> -    pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<ARef<Self>> {
+> +    /// Create a new `UnregisteredDevice` for a `drm::Driver`.
+> +    ///
+> +    /// This can be used to create a [`Registration`](kernel::drm::Registration).
+> +    pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<Self> {
+>          // `__drm_dev_alloc` uses `kmalloc()` to allocate memory, hence ensure a `kmalloc()`
+>          // compatible `Layout`.
+>          let layout = Kmalloc::aligned_layout(Layout::new::<Self>());
+> @@ -117,12 +196,12 @@ pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<A
+>          // SAFETY:
+>          // - `VTABLE`, as a `const` is pinned to the read-only section of the compilation,
+>          // - `dev` is valid by its type invarants,
+> -        let raw_drm: *mut Self = unsafe {
+> +        let raw_drm: *mut Device<T, Uninit> = unsafe {
+>              bindings::__drm_dev_alloc(
+>                  dev.as_raw(),
+>                  &Self::VTABLE,
+>                  layout.size(),
+> -                mem::offset_of!(Self, dev),
+> +                mem::offset_of!(Device<T, Uninit>, dev),
+>              )
+>          }
+>          .cast();
 
-Signed-off-by: Jann Horn <jannh@google.com>
----
- rust/kernel/task.rs | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+When I was testing this series with Tyr, I got this kernel Oops:
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 91ad88cdfd3b..de0d90b47862 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -10,6 +10,8 @@
-     mm::MmWithUser,
-     pid_namespace::PidNamespace,
-     sync::aref::ARef,
-+    sync::atomic::ordering::Relaxed,
-+    sync::atomic::Atomic,
-     types::{NotThreadSafe, Opaque},
- };
- use core::{
-@@ -206,9 +208,13 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
- 
-     /// Returns the PID of the given task.
-     pub fn pid(&self) -> Pid {
--        // SAFETY: The pid of a task never changes after initialization, so reading this field is
--        // not a data race.
--        unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
-+        // SAFETY: The pid of a task almost never changes after initialization,
-+        // so reading this field is usually not a data race.
-+        // The exception is a race where the task is part of a process that
-+        // goes through execve(), see exchange_tids().
-+        // A temporary mutable pointer is created, but only actually used for
-+        // a load.
-+        unsafe { Atomic::from_ptr(&raw mut (*self.as_ptr()).pid).load(Relaxed) }
-     }
- 
-     /// Returns the UID of the given task.
+[   31.351423] tyr fb000000.gpu: mali-unknown id 0xa867 major 0x67 minor 0x0 status 0x5
+[   31.352324] tyr fb000000.gpu: Features: L2:0x7120306 Tiler:0x809 Mem:0x301 MMU:0x2830 AS:0xff
+[   31.353299] tyr fb000000.gpu: shader_present=0x0000000000050005 l2_present=0x0000000000000001 tiler_present=0x0000000000000001
+[   31.357585] Unable to handle kernel paging request at virtual address ffff003064726553
+[   31.358324] Mem abort info:
+[   31.358579]   ESR = 0x0000000096000005
+[   31.358956]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   31.359592]   SET = 0, FnV = 0
+[   31.359898]   EA = 0, S1PTW = 0
+[   31.360185]   FSC = 0x05: level 1 translation fault
+[   31.360620] Data abort info:
+[   31.360882]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+[   31.361370]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   31.361832]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   31.361839] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000002926000
+[   31.361847] [ffff003064726553] pgd=0000000000000000, p4d=18000002fffff403, pud=0000000000000000
 
--- 
-2.53.0.273.g2a3d683680-goog
+[   31.364156] Internal error: Oops: 0000000096000005 [#1]  SMP
+[   31.365050] Modules linked in: tyr(+) soundcore sha256 cfg80211 rfkill pci_endpoint_test fuse dm_mod ipv6
+[   31.366212] CPU: 3 UID: 0 PID: 254 Comm: (udev-worker) Not tainted 6.19.0-rc5 #281 PREEMPT
+[   31.366942] Hardware name: Radxa ROCK 5B (DT)
+[   31.367325] pstate: 00400009 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   31.367935] pc : drmm_kmalloc+0x34/0x128
+[   31.368286] lr : drm_gem_init+0x70/0xb8
+[   31.368627] sp : ffff800081ec3250
+[   31.368918] x29: ffff800081ec3250 x28: ffff800082c01000 x27: ffff800081ec3420
+[   31.369549] x26: ffff000100dc8a00 x25: ffff0001009ab960 x24: ffff000107a14840
+[   31.370179] x23: ffff0001009ab7e0 x22: 0000000000000138 x21: 0000000000000dc0
+[   31.370808] x20: ffff000100a801d0 x19: ffff000100a801d0 x18: 0000000000000003
+[   31.371438] x17: 0000000000000000 x16: ffffc82e1355a228 x15: ffff000107c08978
+[   31.372068] x14: ffffffffffffffff x13: 0000000000000044 x12: 0000000000000000
+[   31.372697] x11: 0000000000000030 x10: ffffc82e12bd2db0 x9 : ffff003064726163
+[   31.373327] x8 : 00000000000001b8 x7 : ffffc82e107c8dc8 x6 : 0000000000000000
+[   31.373956] x5 : 0000000000000000 x4 : 0000000000000003 x3 : 0000000000000000
+[   31.374591] x2 : 0000000000000dc0 x1 : 0000000000000dc0 x0 : 00000000000001b8
+[   31.375221] Call trace:
+[  OK  ] Listening on systemd-hostnamed.sock[   31.375438]  drmm_kmalloc+0x34/0x128 (P)
+et - Hostname Service Socket.
+[   31.376264]  drm_gem_init+0x70/0xb8
+[   31.376838]  drm_dev_init+0x27c/0x30c
+[   31.377164]  __drm_dev_alloc+0x44/0x88
+[   31.377496]  _RNvMs3_NtNtCs8pcx3nCgX4X_6kernel3drm6deviceINtB5_18UnregisteredDeviceNtNtCs5CCNNSUyUK_3tyr6driver12TyrDrmDriverE3newB19_+0x50/0xe4 [tyr]
+[   31.378690]  _RNvXs0_NtCs5CCNNSUyUK_3tyr6driverNtB5_21TyrPlatformDeviceDataNtNtCs8pcx3nCgX4X_6kernel8platform6Driver5probe+0x30c/0x4ec [tyr]
+[   31.379794]  _RNvMs0_NtCs8pcx3nCgX4X_6kernel8platformINtB5_7AdapterNtNtCs5CCNNSUyUK_3tyr6driver21TyrPlatformDeviceDataE14probe_callbackBT_+0x60/0x220 [tyr]
+[   31.381010]  platform_probe+0x5c/0x9c
+[   31.381337]  really_probe+0x154/0x43c
+[   31.381665]  __driver_probe_device+0xa4/0x118
+[   31.382052]  driver_probe_device+0x40/0x230
+[   31.382423]  __driver_attach+0xf8/0x288
+[   31.382764]  bus_for_each_dev+0xec/0x144
+[   31.383112]  driver_attach+0x24/0x30
+[   31.383430]  bus_add_driver+0x14c/0x2a0
+[   31.383771]  driver_register+0x68/0x100
+[   31.384109]  __platform_driver_register+0x20/0x2c
+[   31.384524]  init_module+0x84/0xfa0 [tyr]
+[   31.384885]  do_one_initcall+0x104/0x35c
+[   31.385235]  do_init_module+0x58/0x228
+[   31.385569]  load_module+0x16f4/0x18f8
+[   31.385901]  __arm64_sys_finit_module+0x24c/0x368
+[   31.386317]  invoke_syscall+0x40/0xcc
+[   31.386646]  el0_svc_common+0x80/0xd8
+[   31.386652]  do_el0_svc+0x1c/0x28
+[  OK  ] Reached target sockets.target -[   31.387270]  el0_svc+0x54/0x1d4
+ Socket Units.
+[   31.388011]  el0t_64_sync_handler+0x84/0x12c
+[   31.388509]  el0t_64_sync+0x198/0x19c
+[   31.388838] Code: 54000682 f9400689 aa0803e0 2a1503e1 (b943f122)
+[   31.389372] ---[ end trace 0000000000000000 ]---
+[   31.396698] Unable to handle kernel paging request at virtual address 0030303030306266
+
+I just fixed it by changing the layout size from Self -> Device<T, Uninit>
+
+After this fix, it's working great to load the firmware with the
+Unregistered Device.
+
+thanks,
+Deborah
 
