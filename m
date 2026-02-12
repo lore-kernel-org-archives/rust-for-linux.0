@@ -1,202 +1,334 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AA8226165
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 08:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770884193; cv=none; b=FLUqWxnRCGjie0zc9adS2e/nfCTzuO4ZXRR9bd/hufMYoR7RiE7yLLCF1GIi2U4HZsMQMtHwI7sVLUbIgkpE9A8ROsLqR1zmkWQjXjhPT1VNGjWA3Ysr5qf/t+xn5YoSI3Risryn2UjzxKwSsIRKjWAQrBsJeoEMJCvi6ymG1cs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770884193; c=relaxed/simple;
-	bh=YgMCnMRXuxLnijeVbtKnc4LzIsS0QcXtZba8gNfJIVc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rFPfU1FuY0zek4jrQWgKaSKe7SABIbD6Iy0VvrDdZhKbYMK+2+PXX7A2A3hascw443ILpiDatNihNALLY5K2OlXWHcrU4MDn1W2/mlgmSC5Umje8Utz7yVY2svXbn6nkudnlu6h0eZ25xIBYEUi2Y8juG9PARPwRpf8Ts2jELnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=mX7PQdYO; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64022C031B
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 08:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770884226; cv=pass; b=e+MsrI0FQBliYqU1ajOrJDwNjr9WJacptlPYk2Gxkp9hTQ1paBhPYiszJKmG2O4t1rnVUsyPnVEwbChn2lXVLnVgjvb/QueqCG8v9ke1npcEnZml7GAgu8exC+LVqF9zyrM2WqPbS2GqTE1ghdqfGrJt57Ll+gXQEkzt2g43bhU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770884226; c=relaxed/simple;
+	bh=S3M88NLOx2+3TFb0/rxwMjCXvmBBor+LBjD5ln2DfrM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SQanpN+0XlrTk3ozK7X1J33PdG7hFhe1UnidxNeZAAdPPMydIDP94kwKMXcgwmajw1JeZE+oqyUOX4jbP+kUMG4KUUfi04LXVjK43FiYEDzGQf5lfx2kiTMmhf538GTB0AzG4Mg7+hSwR7/mWdSfK1hIuatgf0OX68pGUM8FGTE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DUcK714m; arc=pass smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="mX7PQdYO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770884189;
-	bh=YgMCnMRXuxLnijeVbtKnc4LzIsS0QcXtZba8gNfJIVc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mX7PQdYOPWlSOuIwslZTGPIpTHXS1s4Ow1a9ah1GqiuutDD4HR0gDO+DSILad2Axi
-	 TcakDn70JWbDPS1ONhqO0tw1B3j6foRD7MZNcYrv7JmKeg5urQwQQQsLFVrq2XwB5N
-	 8uRjtJ3pED6EC9MhsKHUpvaSaW63yP6WhWyb39ydDsTe7ZRd3qHtvRpE+OBca1ds4+
-	 OxpBhWXPsXukZ0Ih/47RozMiFyRlbc7S1JWxUdTd+AvpCmyiHw+f+v2IguN5E4tx9o
-	 OmdxGklIuwhzp27B2h5bsEwjr7BTvVB9C8bUhXUXK3kNUgdSjQTXMGXjnanF0fdE97
-	 bhGBleq+Rklmw==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 812FE17E0097;
-	Thu, 12 Feb 2026 09:16:29 +0100 (CET)
-Date: Thu, 12 Feb 2026 09:16:24 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- daniel.almeida@collabora.com, aliceryhl@google.com,
- beata.michalska@arm.com, lyude@redhat.com
-Subject: Re: [PATCH 05/12] drm/tyr: add MMU address space registers
-Message-ID: <20260212091624.3deda2ea@fedora>
-In-Reply-To: <20260212013713.304343-6-deborah.brouwer@collabora.com>
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
-	<20260212013713.304343-6-deborah.brouwer@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DUcK714m"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43591b55727so5611824f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 00:17:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770884223; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FSOJDhoPGPpUCJHEPu1nOvB+hfW6lhNOv9SEFSDjg3I7cfopMoHz5Qdj6F/mLhj+9m
+         DNJmn8jN+vBTXA5pRBfdEb7w6wJRJKqb/6y5aM5/v8xYZHmOtWtrcqwP389JUO8AckLm
+         EcWIFgWHcNVu5LixF3w9TR/rVoeV06mPzJwgDmr/8knDNJt6K86kgmpQOILDcm2ny3Em
+         A18benJGijCqlIhc7yhbZDTG8vLfpwjhUYkd2NIZ9TOHmFLo1csZiJwkmv7SmlHLYs53
+         yVSg1Y5Imv0ON9rxNvD8JBM5m4XrILZL9ff/aKW4UKAfeMhEtHkG5psygn1X5LhJUDU1
+         LtnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NpjJ+bXgoJAJdq6/RHAgpjIs0bFSGiAauGnbv0NC43o=;
+        fh=Ipu/LjVxgZx4tiGXZyTUur/wk7FLcEt1xuONGUgFj4Q=;
+        b=fk+XmytQa6vEglnlIqmBoQwc5P1YVNVh36Kc8eZYKak20BhcFIopZWL6fIpZQfdaCn
+         imuZAaL+YUXqb3ojcnrsZAsVlwiHpsLz9aF9BwtHj7WgwaBwSNCVqNL8sPBYsnblQYYf
+         rBCBoPpEhOLnDe1nEp2LOW+AQsgaH19CHRlYMHk7b7UR1MWJs3Xb4jASzGI2tgxVFD5+
+         oqc0h+0t9z93l8kNsZ7N8hFsHx9YYFz7RUoISYiF6swlzLw1F3W57OUx+bRvpPk761fp
+         fsxqGWEJlzMVZgD17o/Qe6O4vXGG0Jt270MOm/OG4mGL7YAfikF6t4Lt7RX2vxtJQTKW
+         bdNA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770884223; x=1771489023; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NpjJ+bXgoJAJdq6/RHAgpjIs0bFSGiAauGnbv0NC43o=;
+        b=DUcK714mjOBKzFSnAQinbxouj+L6rdPZtvVxBg7o9Ayys3so0n9us8r8KP3ZSoaGwJ
+         YPWUkWG7TDKgQA61EOMAUg8WjbdpYAiZ4gZJA2O6w102qY69/qBDWxlt3Y2y6q6L5SRH
+         f4Bd60K1TDN91wUNQUHpyILwdQqvWKrJFq8XCUCq+FcAJrkceBvU/OwGI0pfPIrI87pK
+         XM6P5c9XSOSPI3FCjBYkHD5gaja3w5uI5MYrL/G+BYCtW4wRTmlCOeF7pYG88Mc1sWP6
+         40KzZ3p6Ewv9Y6Tpl5FxzNTiCWdjtWLMNHs7rJ/MA6ez2cDOCjyTEKQPzbKwwhrAAZly
+         ka/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770884223; x=1771489023;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NpjJ+bXgoJAJdq6/RHAgpjIs0bFSGiAauGnbv0NC43o=;
+        b=mRdMvGVPEUHLJSRrTUUsc9nSj9vVg0og8+GhYuasMG20Yj3EpcrQniPwztlT4q7K0L
+         d5r19nQsWd8j8dyvJs1dRmBESAvjr/ADf8+f4RO2V25aSh4p/dehC19GelFX0rfoehx7
+         Fdf1Q4el7fNS/mZp/ZE2xIGkC+vCspfd9y0uub3HTBmFMSS2UMc0wkVuDQLEqxLwNUkA
+         UJ9XyHW6cVYD5pdAaeQ3P4jTM5LCQAZ5fEmg0dzlY05rGvbfkMV1o52T3YYzrHappN2s
+         +lQL1U8RAKeyzgIdKStJ12kGe8L6X7rleymnX+oKgw6JVkPNoTpUNo/XcZAF1YekGpm/
+         QuWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUEsO7Gl0T60efOD9c3iH2igdBncrg38EjptqvGQi+ZCjbcaKjOsEzZV1ImnpGF+xZ+elO7kd9RPEfzKkGSug==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDirw7ByPEpZLejM8+cdPM5vI6jutgSk/9CfZJFQ5pycR+/CSc
+	II3FTXtD3wJMaappBSGwuTmsA46OsRYG0yVpPXob1vDzIljwBU3wmnsRqg6Pcq1DOT6yvo/alg3
+	GrTn1jNzSCwbUW6HVyoqJLTd1j843mBj67PbCmgel
+X-Gm-Gg: AZuq6aLc21nGc35271HYoIc8lQobs6lr1sa8+Wd2mu4J/xHkdRD7VqNfQUQow1PtfUV
+	Jp4xzrC8HiFV2fYYZVWC9tLaRLV31MSIhCRVaIwncNpadxfLL3BK6S/vnThRKiGxfhFub3ekPXp
+	tT9UY3yDWGEBGNGw2LqjLAwOdhMEeYQOS07Pz+jCJaPM6ZTSNtHFar9ItYhbsdyMH5sZtMHVUrr
+	w+Tmvahj7wq+NcPqjMHSDZ4FTY5dHp2S1eCa8HFKc3D6QrjHy83cNuzqOxO8gOfv83xXwnw4Lzk
+	QtB1A3kZ6XJmica2o63M1NqiZV7BzWVCYnv7Zw==
+X-Received: by 2002:a05:6000:1a89:b0:437:678b:83ca with SMTP id
+ ffacd0b85a97d-4378ac99f00mr3631820f8f.50.1770884222766; Thu, 12 Feb 2026
+ 00:17:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <518D8B09-B9A1-4DB4-85CD-37A2DD3D5FB1@collabora.com>
+ <DFSLCI9U4NCW.2HI2UPUI7G134@kernel.org> <20260119-weightless-pelican-of-anger-190db0@houat>
+ <DFSN4FDCYHMW.3J3237PEBV2ZP@kernel.org> <20260122-majestic-masterful-jaguarundi-d0abde@houat>
+ <2F3D3A40-6EF9-46FC-A769-E5A3AAF67E65@collabora.com> <20260204-nickel-seal-of-poetry-8fdefb@houat>
+ <91A92D84-1F2E-45F3-82EC-6A97D32E2A78@collabora.com> <20260204-angelic-vermilion-beagle-fd1507@houat>
+ <20260209105047.693f2515@fedora> <20260211-flawless-feathered-boar-0b87ad@houat>
+In-Reply-To: <20260211-flawless-feathered-boar-0b87ad@houat>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 12 Feb 2026 09:16:51 +0100
+X-Gm-Features: AZwV_QinKyXJ-A463YThqNsT1M__XmmPzGQJrynVFHR1tMFsQH08Zqmn37iT6Tc
+Message-ID: <CAH5fLgiQE7mJBpAxv6xTVKKFWadg2GdVe31hRM6gNk3Vah61MA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Drew Fustini <fustini@kernel.org>, 
+	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org, 
+	linux-pwm@vger.kernel.org, linux-clk@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Feb 2026 17:37:06 -0800
-Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
+On Wed, Feb 11, 2026 at 5:37=E2=80=AFPM Maxime Ripard <mripard@kernel.org> =
+wrote:
+>
+> On Mon, Feb 09, 2026 at 10:50:47AM +0100, Boris Brezillon wrote:
+> > Hi Maxime,
+> >
+> > On Wed, 4 Feb 2026 15:34:29 +0100
+> > Maxime Ripard <mripard@kernel.org> wrote:
+> >
+> > > On Wed, Feb 04, 2026 at 09:43:55AM -0300, Daniel Almeida wrote:
+> > > > > I'm probably missing something then, but let's assume you have a =
+driver
+> > > > > that wants its clock prepared and enabled in an hypothetical enab=
+le()
+> > > > > callback, and disabled / unprepared in a disable() callback.
+> > > > >
+> > > > > From a PM management perspective, this usecase makes total sense,=
+ is a
+> > > > > valid usecase, is widely used in the kernel, and is currently sup=
+ported
+> > > > > by both the C and Rust clk APIs.
+> > > > >
+> > > > > The only solution to this you suggested so far (I think?) to impl=
+ement
+> > > > > this on top of the new clk API you propose is to have a driver sp=
+ecific
+> > > > > enum that would store each of the possible state transition.
+> > > >
+> > > > Yes, you need an enum _if_ you want to model transitions at runtime=
+. IIUC you
+> > > > only need two variants to implement the pattern you described. I do=
+ not
+> > > > consider this  =E2=80=9Cboilerplate=E2=80=9D, but rather a small co=
+st to pay.
+> > >
+> > > A maintenance cost to pay by every driver is kind of the textbook
+> > > definition of boilerplate to me.
+> > >
+> > > > I would understand if this was some elaborate pattern that had to b=
+e
+> > > > implemented by all drivers, but a two-variant enum is as
+> > > > straightforward as it gets.
+> > >
+> > > And yet, that framework has dozens of helpers that do not remove
+> > > anything from drivers but a couple of lines. So surely its users must
+> > > find value in reducing that boilerplate as much as possible. And you =
+do
+> > > implement some of them, so you must find value in that too.
+> > >
+> > > > > That's the boilerplate I'm talking about. If every driver wanting=
+ to
+> > > > > implement that pattern has to make such an enum, with all the rel=
+evant
+> > > > > traits implementation that might come with it, we go from an API =
+where
+> > > > > everything works at no-cost from a code-size perspective to a sit=
+uation
+> > > > > where every driver has to develop and maintain that enum.
+> > > >
+> > > > There are no "traits that come with it". It's just an enum, with tw=
+o
+> > > > variants.
+> > > >
+> > > > > API where everything works at no-cost
+> > > >
+> > > > The previous API was far from =E2=80=9Ceverything works=E2=80=9D. I=
+t was fundamentally
+> > > > broken by design in multiple ways, i.e.:
+> > >
+> > > Out of context and not what I meant, but ok.
+> > >
+> > > > > a) It only keeps track of a count to clk_get(), which means that =
+users have
+> > > > > to manually call disable() and unprepare(), or a variation of tho=
+se, like
+> > > > > disable_unprepare().
+> > > > >
+> > > > > b) It allows repeated calls to prepare() or enable(), but it keep=
+s no track
+> > > > > of how often these were called, i.e., it's currently legal to wri=
+te the
+> > > > > following:
+> > > > >
+> > > > > clk.prepare();
+> > > > > clk.prepare();
+> > > > > clk.enable();
+> > > > > clk.enable();
+> > > > >
+> > > > > And nothing gets undone on drop().
+> > > >
+> > > > IMHO, what we have here is an improvement that has been long overdu=
+e.
+> > >
+> > > Nothing is absolute. It is indeed an improvement on the refcounting s=
+ide
+> > > of things and general safety of the API for the general case. I don't
+> > > think I ever questionned that.
+> > >
+> > > However, for the use-cases we've been discussing (and dozens of drive=
+rs
+> > > implementing it), it also comes with a regression in the amount of co=
+de
+> > > to create and maintain. They used to be able to only deal with the Cl=
+k
+> > > structure, and now they can't anymore.
+> > >
+> > > You might find that neglible, you might have a plan to address that i=
+n
+> > > the future, etc. and that's fine, but if you can't acknowledge that i=
+t's
+> > > indeed happening, there's no point in me raising the issue and
+> > > continuing the discussion.
+> >
+> >
+> > Okay, let's see if I can sum-up the use case you'd like to support. You
+> > have some PM hooks, which I'm assuming are (or will be) written in
+> > rust. It will probably take the form of some Device{Rpm,Pm} trait to
+> > implement for your XxxDeviceData (Xxx being the bus under which is
+> > device is) object (since I've only recently joined the R4L effort, I
+> > wouldn't be surprised if what I'm describing already exists or is
+> > currently being proposed/reviewed somewhere, so please excuse my
+> > ignorance if that's the case :-)).
+> >
+> > The way I see it, rather than having one enum per clk/regulator/xxx
+> > where we keep track of each state individually, what we could have is a
+> >
+> > trait DevicePm {
+> >       type ResumedState;
+> >       type SuspendedState;
+> >
+> >       fn resume(&self, state: SuspendedState) -> Result<ResumedState, E=
+rror<SuspendedState>>;
+> >       fn suspend(&self, state: SuspendedState) -> Result<SuspendedState=
+, Error<ResumedState>>;
+> > };
+> >
+> > enum DeviceState<T: DevicePm> {
+> >       Resumed(T::ResumedState),
+> >       Suspended(T::SuspendedState),
+> > };
+> >
+> > and then in your driver:
+> >
+> > MySuspendedDeviceResources {
+> >       xxx_clk: Clk<Unprepared>,
+> > };
+> >
+> > MyResumedDeviceResources {
+> >       xxx_clk: Clk<Enabled>,
+> > };
+> >
+> > implem DevicePm for MyDevice {
+> >       type ResumedState =3D MyResumedDeviceResources;
+> >       type SuspendedState =3D MySuspendedDeviceResources;
+> >
+> >       fn resume(&self, state: SuspendedState) -> Result<ResumedState, E=
+rror<SuspendedState>> {
+> >               // FIXME: error propagation not handled
+> >               let enabled_clk =3D state.xxx_clk.clone().prepare()?.enab=
+le()?;
+> >
+> >               Ok(ResumedState {
+> >                       xxx_clk: enabled_clk,
+> >               });
+> >       }
+> >
+> >       fn suspend(&self, state: ResumedState) -> Result<SuspendedState, =
+Error<ResumedState>> {
+> >               // FIXME: error propagation not handled
+> >               let unprep_clk =3D state.xxx_clk.clone().disable().unprep=
+are();
+> >
+> >               Ok(SuspendedState {
+> >                       xxx_clk: unprep_clk,
+> >               });
+> >       }
+> > };
+>
+> I'm not sure we need to associate this with the suspend/resume state eith=
+er.
+>
+> > With this model, I don't think Daniel's refactor goes in the way of mor=
+e
+> > generalization at the core level, it's just expressed differently than
+> > it would be if it was written in C. And I say that as someone who strug=
+gles
+> > with his C developer bias every time I'm looking at or trying to write
+> > rust code.
+> >
+> > As others have said in this thread (Danilo and Gary), and after having
+> > played myself with both approaches in Tyr, I do see this shift from man=
+ual
+> > prepare/enable to an RAII approach as an improvement, so I hope we can
+> > find a middle-ground where every one is happy.
+>
+> I do think we can find a compromise though. Miguel suggested for example
+> to make the current enable/prepare/disable/unprepare function unsafe,
+> and that's totally reasonable to me.
+>
+> Then we can implement the "managed" clock version on that unsafe API,
+> and we would end up with a "raw", unsafe, version kind of equivalent to
+> the one we have today, and where callers would have to justify why their
+> usage of the API is actually safe, or the new, managed, variant that is
+> safe and can be easily used by most drivers.
+>
+> And we can call these RawClk vs Clk, or Clk vs ManagedClk, or whatever.
+>
+> How does that sound?
 
-> From: Boris Brezillon <boris.brezillon@collabora.com>
+If you make the raw API unsafe, then that's okay but any use of an
+unsafe API from a driver will receive very hard scrutiny. Yes, there
+are occasionally good reasons to use unsafe from drivers, but the
+entire point of this Rust exercise is to isolate unsafe code outside
+of drivers as much as possible.
 
-I'm pretty sure I got that from Daniel's branch, and only tweaked a few
-minor things to make it work (I probably messed up authorship when
-doing that). I'd prefer to attribute that work to Daniel, if you don't
-mind.
+If Daniel's proposal is inconvenient for some drivers, it would be far
+better to have a third API that is both safe and convenient for those
+drivers.
 
-> 
-> Add register definitions and constants for managing MMU address space,
-> including:
->   - Address space translation configuration (page table format, attributes)
->   - Memory attributes (cacheability, shareability)
->   - Address space commands (update, lock, flush)
->   - AsRegister helper for per-AS register access
-> 
-> These will be used by the MMU/VM manager to configure page tables and
-> control address space operations.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> ---
->  drivers/gpu/drm/tyr/regs.rs | 101 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 100 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-> index 611870c2e6af..9cb7ab0c806a 100644
-> --- a/drivers/gpu/drm/tyr/regs.rs
-> +++ b/drivers/gpu/drm/tyr/regs.rs
-> @@ -8,7 +8,10 @@
->  #![allow(dead_code)]
->  
->  use kernel::{
-> -    bits::bit_u32,
-> +    bits::{
-> +        bit_u32,
-> +        bit_u64, //
-> +    },
->      device::{
->          Bound,
->          Device, //
-> @@ -111,3 +114,99 @@ pub(crate) fn write(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>, value: u3
->  pub(crate) const MMU_IRQ_CLEAR: Register<0x2004> = Register;
->  pub(crate) const MMU_IRQ_MASK: Register<0x2008> = Register;
->  pub(crate) const MMU_IRQ_STAT: Register<0x200c> = Register;
-> +
-> +pub(crate) const AS_TRANSCFG_ADRMODE_UNMAPPED: u64 = bit_u64(0);
-> +pub(crate) const AS_TRANSCFG_ADRMODE_AARCH64_4K: u64 = bit_u64(2) | bit_u64(1);
-> +pub(crate) const AS_TRANSCFG_PTW_MEMATTR_WB: u64 = bit_u64(25);
-> +pub(crate) const AS_TRANSCFG_PTW_RA: u64 = bit_u64(30);
-> +
-> +pub(crate) const fn as_transcfg_ina_bits(x: u64) -> u64 {
-> +    x << 6
-> +}
-> +
-> +pub(crate) const AS_MEMATTR_AARCH64_SH_MIDGARD_INNER: u32 = 0 << 4;
-> +pub(crate) const AS_MEMATTR_AARCH64_INNER_OUTER_NC: u32 = 1 << 6;
-> +pub(crate) const AS_MEMATTR_AARCH64_INNER_OUTER_WB: u32 = 2 << 6;
-> +
-> +pub(crate) fn as_memattr_aarch64_inner_alloc_expl(w: bool, r: bool) -> u32 {
-> +    (3 << 2) | (u32::from(w)) | ((u32::from(r)) << 1)
-> +}
-> +
-> +pub(crate) const AS_COMMAND_UPDATE: u32 = 1;
-> +pub(crate) const AS_COMMAND_LOCK: u32 = 2;
-> +pub(crate) const AS_COMMAND_FLUSH_PT: u32 = 4;
-> +pub(crate) const AS_COMMAND_FLUSH_MEM: u32 = 5;
-> +
-> +pub(crate) const AS_STATUS_ACTIVE: u32 = bit_u32(0);
-> +
-> +pub(crate) const AS_LOCK_REGION_MIN_SIZE: u32 = bit_u32(15);
-> +
-> +/// Maximum number of hardware address space slots.
-> +/// The actual number of slots available is usually much lower.
-> +pub(crate) const MAX_AS_REGISTERS: usize = 32;
-> +
-> +const MMU_BASE: usize = 0x2400;
-> +const MMU_AS_SHIFT: usize = 6;
-> +
-> +const fn mmu_as(as_nr: usize) -> usize {
-> +    MMU_BASE + (as_nr << MMU_AS_SHIFT)
-> +}
-> +
-> +pub(crate) struct AsRegister(usize);
-> +
-> +impl AsRegister {
-> +    fn new(as_nr: usize, offset: usize) -> Result<Self> {
-> +        Ok(AsRegister(mmu_as(as_nr) + offset))
-> +    }
-> +
-> +    #[inline]
-> +    pub(crate) fn read(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<u32> {
-> +        let value = (*iomem).access(dev)?.try_read32(self.0)?;
-> +        Ok(value)
-> +    }
-> +
-> +    #[inline]
-> +    pub(crate) fn write(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>, value: u32) -> Result {
-> +        (*iomem).access(dev)?.try_write32(value, self.0)?;
-> +        Ok(())
-> +    }
-> +}
-> +
-> +pub(crate) fn as_transtab_lo(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0x0)
-> +}
-> +
-> +pub(crate) fn as_transtab_hi(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0x4)
-> +}
-> +
-> +pub(crate) fn as_memattr_lo(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0x8)
-> +}
-> +
-> +pub(crate) fn as_memattr_hi(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0xc)
-> +}
-> +
-> +pub(crate) fn as_lockaddr_lo(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0x10)
-> +}
-> +
-> +pub(crate) fn as_lockaddr_hi(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0x14)
-> +}
-> +
-> +pub(crate) fn as_command(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0x18)
-> +}
-> +
-> +pub(crate) fn as_status(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0x28)
-> +}
-> +
-> +pub(crate) fn as_transcfg_lo(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0x30)
-> +}
-> +pub(crate) fn as_transcfg_hi(as_nr: usize) -> Result<AsRegister> {
-> +    AsRegister::new(as_nr, 0x34)
-> +}
-
+Alice
