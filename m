@@ -1,65 +1,66 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8120F32C924
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 22:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC2F35E558
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 22:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770934338; cv=none; b=P6KvNbL0D+5f0aLiCr6M1gHOJ0uNpYfQNwSnRzgiY7ooSPO/l+yAJypk4JyA8z/b3PEgq1X1G44ci9eXlKcSM/SaLjVo8qCGuAqX6ZtCpxTwpif2UZ+wY/aNj/3UylWo61WeJN0fHgL99LrtcxLY4rfBS/54P0BJ/gR8/1vU7+4=
+	t=1770934340; cv=none; b=hcilOB5kDdhgpkxSdrMAA+/Gm+nXvcfbHx+c0ul2Now9sVElH3jDjZMq3ITTss8MtwEokqt+/nADwTlP8Hm4PGskXlAgcrOfsBzCNJmo6c45kt1CitlCPJDeRsEIbQq0lTmfOlMIAF+e4d107JOTmKyn0z/oNgs+wF1S6mgLZyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770934338; c=relaxed/simple;
-	bh=GF6lofjVwO8F2sO2S/yR98Ft0GCJ/p8OaGLlVtdB1pY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Eq/UbYshrgOzKwgiRPM9MGCag6rWGj4uHLWwF12xdEkAXYOGepPfqSH+h3Y3VI0l3FoZhil73OGWvBJmV5SXKl7/IWu+x6u10H60kKX/IlZ/Aza7CjMC+gpO37OFQS4vpAkNgpXv8FyPJTYoOOTXe5HcZReRNdnHX0cGJSINNlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LodzLqmd; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1770934340; c=relaxed/simple;
+	bh=WLZFrFNJUZZbzdI3MvDzzs0Zz5CI6Ca3g0rhOXh5p+8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=n0+ZdJsVtQzpmaQDIx8fwUc2n9u/TaKRaYqCFJkhO0ThQhqWHk6Hl4HDgZJzgetgV5wSJ1YSRbzH78xme638sgK8uzTjTP5d7ZHmqu9VIxMioZlfPZXZXDmTcSRs7CtsfeiR6jI/8airMs+mXfXafVbW9f+IcNp4bsFlu0aYIY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UM/L+H+Y; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LodzLqmd"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4806b0963a9so10435e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 14:12:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UM/L+H+Y"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4806b0963a9so10505e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 14:12:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770934336; x=1771539136; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=T5/73lXmUAGDF9goRsJB5ka+EvsW4ckCoSu6Noq3UtA=;
-        b=LodzLqmdJisZk7R1Xf7eOpabvMr5jWhqhvZNbcKgNhD1PtRU3vHVAsIKFxmFFNCXAm
-         iSTEu0xCOr7yzoDuyWr724ZwG0WxmOC8K3ETXR7p2TvIUOkCvf9MnAt4jTGb8Qd4NBEi
-         zuy+WPOUpkgSZStJ7L0Ed6X84edfc/4z5bXKc83yVBquJ7skEhayafh/QCiHFiWN2jkK
-         rE8Hj67+j4aEBouQZEBbnQfJhrp9OJ+FbLzNfU/xBKQwFUQKpAsHSD6GLodt4DZawCiT
-         yUmDfZiBj1JrXzFiQCPz9zvgw3y4FhmJPnjOtnp3rtrrp1I72aBdSrr3vlwVzNgl+sTu
-         h2yg==
+        d=google.com; s=20230601; t=1770934338; x=1771539138; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xq8Akz2Pc6zq198eJ9mNj+KA928E8lN2gMAzGlMh/yM=;
+        b=UM/L+H+Y0dj1569uRHlGkuZGhmgDScM9486EZ52mVOaWAS0wWoHb5H3H78AgXYnhDZ
+         KTQAszVGvYfaIda3h5IvUliR3E5hJPXpbSn6X0a3INxM4+nDzk4yEgenU1Uh4DShPu6u
+         4GbfTDBoyrw/nq8GGgPoXoQEVLP40Nh8bmmUgeNy4KRZ87L5+tMXd3kKA+ja3XXh1dxY
+         fwKb6H4SY9xABK+fc/6FzKMFPz0QzrqVKw2UmcjQhppfRqQ9f0UQtXwJ9OItnZ8eeAii
+         E96vgZ9bCrF7xYzeU/elNdWq2eZcpeQdGr80A/TTxEbhkBDUcNiYx0dqp1NZrUAlK2ob
+         LqaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770934336; x=1771539136;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T5/73lXmUAGDF9goRsJB5ka+EvsW4ckCoSu6Noq3UtA=;
-        b=k+le+kwANySMY60+Il26vnX0w20UBgjnVJX644V24g4e+0b9UqMsRwclQJgJwrPeGJ
-         QjMhHg46W8dFrQatWxs0x/Vmu6/qV9AvHhXkyxpzcenM7TBKPXoEdV7E2KX8THAbdiYy
-         mOQA//sMXilIcfzl4SRMvXYiSMQYaPQb8G6Su7Q8ik0FW2zZUvM6Vh6n7wA6wXIPSe4S
-         sYdiksXC5BPuGTMWhzu9pFOrBaOOYXPa+HzivIou6DlLepA9Ebw3hSkmS5ZYvrtR4+2O
-         IvdzVIV+6vyaQMQBA0rSvinGqgDg9zLQWirFGmLM1YptJumyklo7e5yiTe62HInugqHE
-         4iqA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCiB4oRzAOaIKPPLhnX62lsE2XSt8xcPDzmJfUMh1hj38UixyBmvyTCcmbJ5SaUv8P4BFYds0tkjezev1c5w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yztce8w8v+u44doO6kEY9vq5q8pFWkuxXauXpUTexudpPoGDBHy
-	0M8otRT6kxyhwhuqK3tHcqDEKJyiIJIpQReYpkvH5cDJ/HeVsF5sFBeW8o3EE+pg3w==
-X-Gm-Gg: AZuq6aIb6En0snl+8HeMdPRHS6T30q67YLIq8kiIlF15tIeiyJCGfpQXGGa2RhfxnYR
-	aFiImYK4XFsr/NTqoKy3B9Uqg3FAqu/avKN0XiLvLQvA+236AYniKx7B9d9Y00V/9q6+sS5tZP5
-	udz+6SVD7VL/9/Gn5k/UEMiHgNRR8C9Nq3YzNjpx7XkM9oJGISp/FN3N4Q65XSoVtiDFqt/JQch
-	zW49huNJo9qlbgWvu0TpJbO1m3nE1fiR6joxStVRrHRFXAvLy0F0lgFybZZz1TDuCCvaxZYoJx+
-	ks5t01cSqj+awozG9Tl6eCxMSnQ9jND3X4kVvzFNa2go6vEuL6rXrDOQ+yxG1S970wqZ8ZlQ12O
-	32fvdsZiGIHTXmHIKlL/NNr2Hk2J3uLyUh4RdPG4eYXDOI3namGe3JngAA97q24xqTBXLXya64n
-	OgcnsyOEuhFWPVF78+FsN7YlnmckQdjUnzkLSmseW8a6TcikBdSZjO7l1t+477Tw==
-X-Received: by 2002:a7b:cc97:0:b0:477:2f6f:44db with SMTP id 5b1f17b1804b1-48371ccb619mr38345e9.5.1770934335328;
-        Thu, 12 Feb 2026 14:12:15 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770934338; x=1771539138;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Xq8Akz2Pc6zq198eJ9mNj+KA928E8lN2gMAzGlMh/yM=;
+        b=hdCcbnNLwZMPMLjTCZW2SibpJwKB3FQhk/xLK3rCxmHI7B5cueSGRyWmkZzVUmjCYL
+         YmNMvdciNzP0UdW23INAfDfyEIRPfgLn4HpNoQJVlpxUvJJXMyhoiuZofc7eBw2/X32M
+         gQ9oREc6ChxzhhTcrF4wegOE2rvQ8HFQpR3vBoUiQtfeIrF+lW5aIpxqCEMkKtvkJ0wl
+         1Y5KO6iDLzshBEwc2lLmF7Qu2buxL+IHXw9DISW1VmyTf9XXDBESe014hoh//swWhkYu
+         M0dgD8D3/61n99+OmifuCjN1fPMuX2ZvZNCOyx9HHEUzrdyh96Xb4rHLxppcmMLyUOL2
+         OASA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVRCpBXg//a1SyiqmlD7uigtpMq72p43jSdBo7cJSjtOjln9rmTePnBZABVMBauIgURXDA8frZFXD2XmEcyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTsDn+zOX7cQ8r48a/NXPmCS/C12d6QPab3WVwCONoFriPePlZ
+	D7qQFRcu9oaF17dhH6iaKm0tLRJK6dd1fJQw0U9e+2qB+8x73nDw1TnLA5Ce0znCFg==
+X-Gm-Gg: AZuq6aJBo34K6tSHyUPqb0wormxMx095B7mP3wrGdpWFaXrJyiZ6ZjZRZHkTLvH937Z
+	OPnMMH0uUiifOn8VE+C/uX3lXVOtvYH0VmQRQwn4DM+uClP+MzJlhA+WJO0EIzqQohRIC6xldEZ
+	za1CotZpj5PkSySDHYel97B5GVdfg3mZaOzIoEbKpkBm6JtorJ45+2wuf28EX6yA+ASu0CYM5Az
+	iq7xJ2s0z52DAxG1k8HGahCn5LiahMrOhf9YKCbm66ugMtskg/jL/XytLjhbQxlPw5+aZEuteJJ
+	1uYeHSx7sVqPg7jOfvd738kE8daAgj84V4vrOznp1cWGGRrqP4uz+++nAunIXcxgU6wWyD4ZSDd
+	xFSPJyF8HjU/QvqKfbgO3GE01+PUbSHpM8XYIwAu6NcD/pzgU5fJsJJeGAj7klsMTqJqWoc+q5G
+	d+FywdItE1Z9LNUgo3OHogSzjgR8XJwaBUsrBShbDy0tmy98TxEbLHGhDycZIP6Q==
+X-Received: by 2002:a05:600c:a59c:b0:47d:7304:d759 with SMTP id 5b1f17b1804b1-48371cd4901mr24245e9.15.1770934337474;
+        Thu, 12 Feb 2026 14:12:17 -0800 (PST)
 Received: from localhost ([2a00:79e0:288a:8:c531:3fec:ad3b:1a8d])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-43796a74704sm806687f8f.16.2026.02.12.14.12.13
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-43796a5acaasm903029f8f.6.2026.02.12.14.12.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 14:12:13 -0800 (PST)
+        Thu, 12 Feb 2026 14:12:16 -0800 (PST)
 From: Jann Horn <jannh@google.com>
-Subject: [PATCH v2 0/2] rust: task: clean up safety issues wrt de_thread()
-Date: Thu, 12 Feb 2026 23:12:05 +0100
-Message-Id: <20260212-rust-de_thread-v2-0-7d274c4fd02e@google.com>
+Date: Thu, 12 Feb 2026 23:12:06 +0100
+Subject: [PATCH v2 1/2] rust: task: limit group_leader() to current
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,10 +69,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADVQjmkC/3XM0QrCIBTG8VcZ5zpDD25kV71HjHDzTIWaoSbF8
- N2z3Xf5/+D7bZAoekpw7jaIVHzyYW2Bhw5mp1dLzJvWgBwHjgJZfKXMDN2yi6QN49oo0UtNZuL
- QTs9Ii3/v4HVs7XzKIX52v4jf+pcqggmm5GnpJ6VwQHmxIdg7HefwgLHW+gVBzJFdrQAAAA==
-X-Change-ID: 20260212-rust-de_thread-0ad9154aedb0
+Message-Id: <20260212-rust-de_thread-v2-1-7d274c4fd02e@google.com>
+References: <20260212-rust-de_thread-v2-0-7d274c4fd02e@google.com>
+In-Reply-To: <20260212-rust-de_thread-v2-0-7d274c4fd02e@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -83,37 +83,88 @@ Cc: Wedson Almeida Filho <walmeida@microsoft.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Jann Horn <jannh@google.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770934330; l=883;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770934330; l=3390;
  i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=GF6lofjVwO8F2sO2S/yR98Ft0GCJ/p8OaGLlVtdB1pY=;
- b=g98iJ8I5OHvAqt+o8QHwhnFyhQ42KmzZmqXtWLF5UkUld7x1jW7oOGb0cmGrU1uPt8p+KNEnt
- Z61Pw/oNGnxB4RFWEfom/iYH1WiUirZu5oFt5/YYT8scpWAoVNXYNg/
+ bh=WLZFrFNJUZZbzdI3MvDzzs0Zz5CI6Ca3g0rhOXh5p+8=;
+ b=7+Y0mIogC+d0XpSQoKvJFg+oEOYeZLmZghkPOS/M3DTG1DGeic1rkKymaB2aA14mlBBXgT71W
+ lxuWFaFNKBHARoKuChKuzqhSNg7FruPVrHJ3aYJBGDDFgsSfyHZ2c2y
 X-Developer-Key: i=jannh@google.com; a=ed25519;
  pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-Task::pid() and Task::group_leader() wrongly assume that task::pid and
-task::group_leader remain constant until the task refcount drops to zero,
-but those members can actually change due to concurrent de_thread().
-Fix those assumptions.
+(Note: This is not a bugfix, it just cleans up an incorrect assumption.)
+
+Task::group_leader() assumes that task::group_leader remains constant until
+the task refcount drops to zero.
+
+However, Linux has a special quirk where, when execve() is called by a
+thread other than the thread group leader (the main thread), de_thread()
+swaps the current thread's identity with the thread group leader's,
+making the current thread the new thread group leader.
+This means task::group_leader can't be assumed to be immutable for
+non-current tasks.
+
+For reference, you can see that accessing the ->group_leader of some random
+task requires extra caution in the prlimit64() syscall, which grabs the
+tasklist_lock and has a comment explaining that this is done to prevent
+races with de_thread().
 
 Signed-off-by: Jann Horn <jannh@google.com>
 ---
-Changes in v2:
-- split into two patches (Boqun)
-- use relaxed atomic load instead of volatile load (Boqun)
-- Link to v1: https://lore.kernel.org/r/20260212-rust-de_thread-v1-1-948f5b992624@google.com
+ rust/kernel/task.rs | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
----
-Jann Horn (2):
-      rust: task: limit group_leader() to current
-      rust: task: use atomic read for pid()
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 49fad6de0674..91ad88cdfd3b 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -103,7 +103,7 @@ macro_rules! current {
+ unsafe impl Send for Task {}
+ 
+ // SAFETY: It's OK to access `Task` through shared references from other threads because we're
+-// either accessing properties that don't change (e.g., `pid`, `group_leader`) or that are properly
++// either accessing properties that don't change or that are properly
+ // synchronised by C code (e.g., `signal_pending`).
+ unsafe impl Sync for Task {}
+ 
+@@ -204,18 +204,6 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
+         self.0.get()
+     }
+ 
+-    /// Returns the group leader of the given task.
+-    pub fn group_leader(&self) -> &Task {
+-        // SAFETY: The group leader of a task never changes after initialization, so reading this
+-        // field is not a data race.
+-        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
+-
+-        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
+-        // and given that a task has a reference to its group leader, we know it must be valid for
+-        // the lifetime of the returned task reference.
+-        unsafe { &*ptr.cast() }
+-    }
+-
+     /// Returns the PID of the given task.
+     pub fn pid(&self) -> Pid {
+         // SAFETY: The pid of a task never changes after initialization, so reading this field is
+@@ -345,6 +333,18 @@ pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
+         // `release_task()` call.
+         Some(unsafe { PidNamespace::from_ptr(active_ns) })
+     }
++
++    /// Returns the group leader of the current task.
++    pub fn group_leader(&self) -> &Task {
++        // SAFETY: The group leader of the current task never changes in syscall
++        // context (except in the implementation of execve()).
++        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
++
++        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
++        // and given that a task has a reference to its group leader, we know it must be valid for
++        // the lifetime of the returned task reference.
++        unsafe { &*ptr.cast() }
++    }
+ }
+ 
+ // SAFETY: The type invariants guarantee that `Task` is always refcounted.
 
- rust/kernel/task.rs | 38 ++++++++++++++++++++++----------------
- 1 file changed, 22 insertions(+), 16 deletions(-)
----
-base-commit: 192c0159402e6bfbe13de6f8379546943297783d
-change-id: 20260212-rust-de_thread-0ad9154aedb0
-
---  
-Jann Horn <jannh@google.com>
+-- 
+2.53.0.273.g2a3d683680-goog
 
