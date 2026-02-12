@@ -1,142 +1,223 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward103d.mail.yandex.net (forward103d.mail.yandex.net [178.154.239.214])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B21298CC4;
-	Thu, 12 Feb 2026 09:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81A52DFA2D;
+	Thu, 12 Feb 2026 09:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770888203; cv=none; b=SD+59MQQnQcgnNsw/eFyAvjUz1mGO0Ma8SeBvV8MPt0bUsB8de03j68FvS06et8E5Tv+hCSQAW3qSEUUBZnEgsXDeiW5M1H59K4Pdu6jMfrP0v//wFBnIuLGeC7HOvX89Z0/gB7sOsnxWpcYQwwWdpTnEnWWHd2i/uU5Ef+d4I0=
+	t=1770889060; cv=none; b=c1tccn3bVUODdJvt1m1GiWazLnVkrpdodVdmtE/Km12D23/dOLyqin2cltzKgSO1eS4581kthFPwm8F/6gS3PZ888bA2Btx9my64pT4iYdKTWxZvk2GeYT6uQlamI+0NFcNaFLCS/BwEyXigEdiagpdaLfBjUjsCGg8DSoRB3pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770888203; c=relaxed/simple;
-	bh=Bd0vkkESwpTKZrM6Vj4/m5riIZawL87UTsB4+AHYnNg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=YMqr7qObt1zlBvRYqkD1Smt3gkTB53nMyg4y+hc9E7aNd19Oosts61RwgQQiyIQYWq9mH9M9qGCvHWhcfVKLFDs7+4CeQyKLTSkYJXkuKLoCk46nI+2KrDUq40H104wtQPuuoUYqT6FxXB8uMLtWvWifkgp86Z0AlqHqbzupntE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tu8+kgNT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770889060; c=relaxed/simple;
+	bh=uk678cBU7Y9S+bp/R4SsWgNONVsaGQ4lQbgTB4WK5qE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BoDRV8m9GIKXT2CoGvJrNz0phLF7YX0SimWqGOLnt9x9DK165HWZMILDqNgf06qsPEZ4EuLcoL71P0QFRDYWAs2OnQwTLBk6pc6crd+13pGD9C8ExSAKOkDXfgbSIj21Rb3tjruvH3jdmge8sW1mV4u5MztXAypnMsJTd9r5X78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=N4zxHgoe; arc=none smtp.client-ip=178.154.239.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tu8+kgNT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A151BC19424;
-	Thu, 12 Feb 2026 09:23:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770888203;
-	bh=Bd0vkkESwpTKZrM6Vj4/m5riIZawL87UTsB4+AHYnNg=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=tu8+kgNTsI25fjEIsePbpW59UwxIvafjlf1pasP2zMu512PKeIgPylM/1OArUzV6T
-	 vf/ycxcTeVizc6s4S3CnGwKJS4UDfVhHqOj4BHC3HIVQdyfjr3HbQTM+iPghBAGWsc
-	 vUIzJH4quJs90SP6wD5GFiadmkJlIRKdmOjuYZx0KcOjryG0S5fq4+lhH3yrEEHP8n
-	 WoFhQqjaPatTkRju6OnjsCIWDVehxF8EiDB8nrUdvlRm5PNubZV6+hPXWC4wtMYwqf
-	 DeYNpb4bIDz8lByRQXpC/fVg8EmZfmZozq0mNVeOGBi5y/RK+4jkixgwHk15ZDoYK5
-	 r0Q42I2WSLPXg==
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="N4zxHgoe"
+Received: from mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:9407:0:640:8fbc:0])
+	by forward103d.mail.yandex.net (Yandex) with ESMTPS id 5F61EC46DC;
+	Thu, 12 Feb 2026 12:37:29 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id PbQlX87GCeA0-UERPmDVy;
+	Thu, 12 Feb 2026 12:37:28 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1770889048;
+	bh=w39PK5ahU618vaBalKGUKLougqCsZIXwtjYe/AMNTAM=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=N4zxHgoeaeqHqcYQMR8aTQDWvxzWtgEGyYU3WKWdDG1VRRQo6rVEA2ASMgZ5uUABV
+	 vgreM03UbtoR20G4uCQ/zo5zn7/YcxQMr/KuTwG909YdXHKDA6QgH5uKyVnB9unM9+
+	 RuKqiJ11ynx0aG0E1nthm9DYLqSLAxR/JXAKaUYo=
+Authentication-Results: mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Thu, 12 Feb 2026 12:37:23 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Charalampos Mitrodimas <charmitro@posteo.net>
+Cc: daniel.almeida@collabora.com, aliceryhl@google.com, dakr@kernel.org,
+ airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
+ ojeda@kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v1] drm/tyr: make SRAM supply optional like panthor
+Message-ID: <20260212123723.0d028472@nimda>
+In-Reply-To: <87bjhu67kr.fsf@posteo.net>
+References: <20260211195406.289634-1-work@onurozkan.dev>
+	<87bjhu67kr.fsf@posteo.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Feb 2026 10:23:16 +0100
-Message-Id: <DGCVH2B2OSFR.1C912TO7G7DGL@kernel.org>
-Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
-Cc: "Boris Brezillon" <boris.brezillon@collabora.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Viresh Kumar"
- <viresh.kumar@linaro.org>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Drew Fustini" <fustini@kernel.org>, "Guo Ren"
- <guoren@kernel.org>, "Fu Wei" <wefu@redhat.com>,
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, "Michael
- Turquette" <mturquette@baylibre.com>, "Stephen Boyd" <sboyd@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-riscv@lists.infradead.org>,
- <linux-pwm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Maxime Ripard" <mripard@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260119-weightless-pelican-of-anger-190db0@houat>
- <DFSN4FDCYHMW.3J3237PEBV2ZP@kernel.org>
- <20260122-majestic-masterful-jaguarundi-d0abde@houat>
- <2F3D3A40-6EF9-46FC-A769-E5A3AAF67E65@collabora.com>
- <20260204-nickel-seal-of-poetry-8fdefb@houat>
- <91A92D84-1F2E-45F3-82EC-6A97D32E2A78@collabora.com>
- <20260204-angelic-vermilion-beagle-fd1507@houat>
- <20260209105047.693f2515@fedora>
- <20260211-flawless-feathered-boar-0b87ad@houat>
- <DGCAAE4YEDLO.299F5M641E90B@kernel.org>
- <20260212-obedient-faithful-koel-d8aaf6@houat>
-In-Reply-To: <20260212-obedient-faithful-koel-d8aaf6@houat>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu Feb 12, 2026 at 8:59 AM CET, Maxime Ripard wrote:
-> On Wed, Feb 11, 2026 at 05:47:09PM +0100, Danilo Krummrich wrote:
->> On Wed Feb 11, 2026 at 5:37 PM CET, Maxime Ripard wrote:
->> > I do think we can find a compromise though. Miguel suggested for examp=
-le
->> > to make the current enable/prepare/disable/unprepare function unsafe,
->> > and that's totally reasonable to me.
->> >
->> > Then we can implement the "managed" clock version on that unsafe API,
->>=20
->> What do you mean with "managed" clock? Do you mean devres managed? If so=
-, I
->> don't think there is any reason to switch to the unsafe API to be able t=
-o
->> implement devres managed APIs (see also [1]).
->>=20
->> [1] https://lore.kernel.org/all/DFVW9MS5YLON.CVJDBYQKJ0P6@kernel.org/
->
-> By that, I mean what Daniel has been proposing to achieve with this serie=
-s.
->
->> > and we would end up with a "raw", unsafe, version kind of equivalent t=
-o
->> > the one we have today, and where callers would have to justify why the=
-ir
->> > usage of the API is actually safe, or the new, managed, variant that i=
-s
->> > safe and can be easily used by most drivers.
->> >
->> > And we can call these RawClk vs Clk, or Clk vs ManagedClk, or whatever=
-.
->> >
->> > How does that sound?
->>=20
->> What about we just wait until we have a user that really requires an uns=
-afe API
->> for some reason? And if it never appears, even better. :)
->
-> It works *today*.
->
-> And the "oh but driver is using the API" is kind of ironic in the
-> context of the Rust bindings which have globally been in that situation
-> for years. You can't argue it both ways.
+On Thu, 12 Feb 2026 02:04:23 +0000
+Charalampos Mitrodimas <charmitro@posteo.net> wrote:
 
-I can't remember ever advocating for merging code that does not have at lea=
-st a
-user in prospect.
+> Onur =C3=96zkan <work@onurozkan.dev> writes:
+>=20
+> > On rk3588s, `dmesg | grep 'tyr'` logs:
+> >
+> >   tyr fb000000.gpu: supply SRAM not found, using dummy regulator
+> >
+> > This happens because Tyr calls Regulator<Enabled>::get() for SRAM,
+> > which goes through the non-optional regulator_get() path. If the
+> > device tree doesn't provide sram-supply, regulator core falls back
+> > to a dummy regulator and writes that log.
+> >
+> > Panthor handles SRAM as optional and tolerates missing sram-supply.
+> > This patch matches that behavior in Tyr by using optional regulator
+> > lookup and storing SRAM as Option<Regulator<Enabled>> which avoids
+> > dummy-regulator fallback/noise when SRAM is not described inside
+> > the device tree.
+> >
+> > Link:
+> > https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/5732=
+10018
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev> ---
+> >  drivers/gpu/drm/tyr/driver.rs |  5 +++--
+> >  rust/kernel/regulator.rs      | 40
+> > +++++++++++++++++++++++++++++++++++ 2 files changed, 43
+> > insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/gpu/drm/tyr/driver.rs
+> > b/drivers/gpu/drm/tyr/driver.rs index 0389c558c036..e0856deb83ec
+> > 100644 --- a/drivers/gpu/drm/tyr/driver.rs
+> > +++ b/drivers/gpu/drm/tyr/driver.rs
+> > @@ -113,7 +113,8 @@ fn probe(
+> >          coregroup_clk.prepare_enable()?;
+> > =20
+> >          let mali_regulator =3D
+> > Regulator::<regulator::Enabled>::get(pdev.as_ref(),
+> > c_str!("mali"))?;
+> > -        let sram_regulator =3D
+> > Regulator::<regulator::Enabled>::get(pdev.as_ref(),
+> > c_str!("sram"))?;
+> > +        let sram_regulator =3D
+> > +
+> > Regulator::<regulator::Enabled>::get_optional(pdev.as_ref(),
+> > c_str!("sram"))?; let request =3D
+> > pdev.io_request_by_index(0).ok_or(ENODEV)?; let iomem =3D
+> > Arc::pin_init(request.iomap_sized::<SZ_2M>(), GFP_KERNEL)?; @@
+> > -201,5 +202,5 @@ struct Clocks { #[pin_data]
+> >  struct Regulators {
+> >      mali: Regulator<regulator::Enabled>,
+> > -    sram: Regulator<regulator::Enabled>,
+> > +    sram: Option<Regulator<regulator::Enabled>>,
+> >  }
+> > diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
+> > index 2c44827ad0b7..8d95e5e80051 100644
+> > --- a/rust/kernel/regulator.rs
+> > +++ b/rust/kernel/regulator.rs
+> > @@ -283,6 +283,29 @@ fn get_internal(dev: &Device, name: &CStr) ->
+> > Result<Regulator<T>> { })
+> >      }
+> > =20
+> > +    fn get_optional_internal(dev: &Device, name: &CStr) ->
+> > Result<Option<Regulator<T>>> {
+> > +        // SAFETY: It is safe to call `regulator_get_optional()`,
+> > on a
+> > +        // device pointer received from the C code.
+> > +        let inner =3D from_err_ptr(unsafe {
+> > +            bindings::regulator_get_optional(dev.as_raw(),
+> > name.as_char_ptr())
+> > +        });
+>=20
+> Hello,
+>=20
+> When CONFIG_REGULATOR is disabled, regulator_get_optional() becomes a
+> static inline stub in consumer.h, and bindgen cannot export it as a
+> symbol. The other regulator functions all have C helpers for this but
+> regulator_get_optional() is missing one.
+>=20
+> So it causes a E0425 with CONFIG_REGULATOR not set.
+>=20
+>   error[E0425]: cannot find function `regulator_get_optional` in
+> crate `bindings` --> rust/kernel/regulator.rs:290:23
+>        |
+>    290 |             bindings::regulator_get_optional(dev.as_raw(),
+> name.as_char_ptr()) |                       ^^^^^^^^^^^^^^^^^^^^^^
+> help: a function with a similar name exists: `regulator_get_voltage`
 
-> Either way, I'm not sure what the point of that submission was if you
-> will just dismiss diverging opinions, including attempts to compromise.
+Yeah, I missed that.
 
-Sorry -- I'm a bit confused here, since I did not submit this code.
+>=20
+> > +
+> > +        let inner =3D match inner {
+> > +            Ok(inner) =3D> inner,
+> > +            Err(ENODEV) =3D> return Ok(None),
+> > +            Err(err) =3D> return Err(err),
+> > +        };
+> > +
+> > +        // SAFETY: We can safely trust `inner` to be a pointer to
+> > a valid
+> > +        // regulator if `ERR_PTR` was not returned.
+> > +        let inner =3D unsafe { NonNull::new_unchecked(inner) };
+> > +
+> > +        Ok(Some(Self {
+> > +            inner,
+> > +            _phantom: PhantomData,
+> > +        }))
+> > +    }
+>=20
+> The Regulator struct invariant currently says:
+>=20
+>   /// - `inner` is a non-null wrapper over a pointer to a `struct
+>   ///   regulator` obtained from [`regulator_get()`].
+>=20
+> Since get_optional_internal() creates a Regulator from
+> regulator_get_optional(), should we also update it to mention it?
 
-I'm also not dismissing your opinion; I just have a different one.
-
-In particular, I don't think we need an unsafe API until we see a concrete
-example where the proposed safe API does not work (and no other safe API wo=
-uld
-work either).
-
-Framing a difference in opinion as "dismissing diverging opinions" doesn't =
-feel
-fair to me.
-
-> Do whatever you want, but it's really hard to root for you some times.
-
-I'm starting to wonder if the mail is addressed to me in the first place.
+I think we should, will send v2 and cover both changes.
 
 Thanks,
-Danilo
+Onur
+
+>=20
+>=20
+> Cheers,
+> C. Mitrodimas
+>=20
+> > +
+> >      fn enable_internal(&self) -> Result {
+> >          // SAFETY: Safe as per the type invariants of `Regulator`.
+> >          to_result(unsafe {
+> > bindings::regulator_enable(self.inner.as_ptr()) }) @@ -300,6
+> > +323,11 @@ pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
+> > Regulator::get_internal(dev, name) }
+> > =20
+> > +    /// Obtains an optional [`Regulator`] instance from the system.
+> > +    pub fn get_optional(dev: &Device, name: &CStr) ->
+> > Result<Option<Self>> {
+> > +        Regulator::get_optional_internal(dev, name)
+> > +    }
+> > +
+> >      /// Attempts to convert the regulator to an enabled state.
+> >      pub fn try_into_enabled(self) -> Result<Regulator<Enabled>,
+> > Error<Disabled>> { // We will be transferring the ownership of our
+> > `regulator_get()` count to @@ -329,6 +357,18 @@ pub fn get(dev:
+> > &Device, name: &CStr) -> Result<Self> { .map_err(|error|
+> > error.error) }
+> > =20
+> > +    /// Obtains an optional [`Regulator`] instance from the system
+> > and enables it.
+> > +    pub fn get_optional(dev: &Device, name: &CStr) ->
+> > Result<Option<Self>> {
+> > +        match Regulator::<Disabled>::get_optional_internal(dev,
+> > name)? {
+> > +            Some(regulator) =3D> {
+> > +                let enabled_regulator =3D
+> > +                    regulator.try_into_enabled().map_err(|error|
+> > error.error)?;
+> > +                Ok(Some(enabled_regulator))
+> > +            }
+> > +            None =3D> Ok(None),
+> > +        }
+> > +    }
+> > +
+> >      /// Attempts to convert the regulator to a disabled state.
+> >      pub fn try_into_disabled(self) -> Result<Regulator<Disabled>,
+> > Error<Enabled>> { // We will be transferring the ownership of our
+> > `regulator_get()` count
+
