@@ -1,113 +1,64 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0AF1A0712;
-	Thu, 12 Feb 2026 03:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0633EBF0C;
+	Thu, 12 Feb 2026 03:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770867426; cv=none; b=HwvqF3YyF/qpghkGwqmSS4EeiImGmXBAvtxtq60LEU0QQGGi3W0HivITJ3FuyJfra8e9SJYcDT2XyKTbw+BBDGL8px6Jb9E2z/bzvyy8waUtZb43A+I/T6HEA6z7Poz9cd6Fc68ouALvTR9Ml1Egfj47gmJmQ9RpAL00rNb1LcM=
+	t=1770868719; cv=none; b=oylPNcoYJfm/H9ow3sg7/+EqGqQUK5DQNo3PL5T2VUhR3pnLs0xCKA5Y8ecdEjA0cAJ2JTZHK24DDMorEz6QaZYbzlZW0LnEXycCLz6H4MiiIYe0KmAznR3O6G1wUOQZJUpc6N3HSHHsQfuuLAb5DqL0NYfu78J6r90Q3FC3ZpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770867426; c=relaxed/simple;
-	bh=NKfao1ygz76tzoQRBfZlrExWua32iDkEJOkINJcRurs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kYUzczi2xHa8TjduatRX65Odjkw95eaWkKj5Ry+b3iZ9rOMYGJdtSMMoi8TCfU861ZGlJf7+4EAyzho7csA5dZkHii4MxJ0uWrGDaDjktiqRaT6/SewtZguFohkpHExMUhJZAJkYNC2hNM7jQxIyFUMUf9KhLsP4TrX6PwdKteg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OIiZXz7K; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1770868719; c=relaxed/simple;
+	bh=xnNMOsTDCtLE4CdETGczZPyM2+341qh8R+bQBD1t8X8=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=CV2ERxDf+PZBKcN3DHq+ASpA0UYuRQsYxs9oSdAN36UjHeiFoJnqlGgs+gXuxFvhH4rQQAHF9hflMWIR84Y4am+/dL8PfX4RRapT9PCKEcjYU2BxDFlQu55wZRGEEcJ/f93q7zgrUhr5Rf72d4t7NmE/bckmAEXqYPwNLiCPjlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SOXPAL9X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OIiZXz7K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770867426; x=1802403426;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NKfao1ygz76tzoQRBfZlrExWua32iDkEJOkINJcRurs=;
-  b=OIiZXz7KeF/bIJo6KBDHFV33oIy4of0XsT5g+YU5V2qHynisTKFoW7Oi
-   CUvb8NhpzS/6fQFJVFjE84JacIGQnAoBRg1pJ6tiTYy+ywG77UwEdQ/wi
-   IUa5LK9xi0Z74AxFen+/d3KfyZkhnAUzRuBSMoXoLaoucc8MVuh6X1K+W
-   XE4KMJjwzGGVQ3tOuDHIZF+9SFB5U12SPETK5Oiuaux/hyT7Fjkpu+I3s
-   sEqn532EsdkhFSUEZtl9exxt1oW+FsaCLOO1mCfb3yc8fGrReK/WXJBqs
-   leODtXfOVxOrh2s+KWDL/K5Kw4Nv1WnWTBXoV7l63Hey5WdaY6QpE0/Wg
-   w==;
-X-CSE-ConnectionGUID: jhjdAs7rQFqjVJmLvMFE1g==
-X-CSE-MsgGUID: TLCM+RH4T+mr+/lYUiYBDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="89437583"
-X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="89437583"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 19:37:05 -0800
-X-CSE-ConnectionGUID: 4UDyxZNkRe+pwwQEoO+3Yw==
-X-CSE-MsgGUID: k1ubzEQYRAmfo7N5rhdgsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="211554495"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 11 Feb 2026 19:37:02 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vqNVj-00000000qc0-1kpV;
-	Thu, 12 Feb 2026 03:36:59 +0000
-Date: Thu, 12 Feb 2026 11:36:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	daniel.almeida@collabora.com, aliceryhl@google.com, dakr@kernel.org,
-	airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, lgirdwood@gmail.com,
-	broonie@kernel.org, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH v1] drm/tyr: make SRAM supply optional like panthor
-Message-ID: <202602121116.499PMsGK-lkp@intel.com>
-References: <20260211195406.289634-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SOXPAL9X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE6DC19424;
+	Thu, 12 Feb 2026 03:58:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770868719;
+	bh=xnNMOsTDCtLE4CdETGczZPyM2+341qh8R+bQBD1t8X8=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=SOXPAL9Xcdt5xwZ5Hj1fIAnwjWQjmBqYI6G4eHmIQbF0XW6b882O4GapoedcfoVDR
+	 Yt67hr3gB0mpLW2u85MckeO4d564qwv6HtNwna0vj1ZwnBTZXSuowHg2cTjuPymhT1
+	 ZZhe80MicloNpi7D//wEeSLMFWa9o8VrDhK2DtXIs20jw3X6huhjY9xB7Kas8G62MO
+	 rNC4+MA0+ZLF41BUnbtCwKnF9s4zS79aAkYE77Cs1CYXiJ+CiGFSzCVvdxLcFljfpO
+	 fbdRsmGAR5/kbcIubZwJ/KBT/Udq5zcqeSOi2lshnHNKs1El1vAC9ZmZGw0QEKASk6
+	 Oxpm7hTJGR7UQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4838E39EF966;
+	Thu, 12 Feb 2026 03:58:35 +0000 (UTC)
+Subject: Re: [GIT PULL] Driver core changes for 7.0-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <DGCIBIK52SF8.3FVF3GR1R2302@kernel.org>
+References: <DGCIBIK52SF8.3FVF3GR1R2302@kernel.org>
+X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
+X-PR-Tracked-Message-Id: <DGCIBIK52SF8.3FVF3GR1R2302@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git tags/driver-core-7.0-rc1
+X-PR-Tracked-Commit-Id: ba268514ea14b44570030e8ed2aef92a38679e85
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c6e62d002b7f0613f02d8707c80f2a7bd66808a0
+Message-Id: <177086871398.893578.12813280577174864290.pr-tracker-bot@kernel.org>
+Date: Thu, 12 Feb 2026 03:58:33 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Saravana Kannan <saravanak@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260211195406.289634-1-work@onurozkan.dev>
 
-Hi Onur,
+The pull request you sent on Thu, 12 Feb 2026 00:04:46 +0100:
 
-kernel test robot noticed the following build errors:
+> git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git tags/driver-core-7.0-rc1
 
-[auto build test ERROR on broonie-regulator/for-next]
-[also build test ERROR on drm-i915/for-linux-next drm-i915/for-linux-next-fixes v6.19]
-[cannot apply to drm-misc/drm-misc-next daeinki-drm-exynos/exynos-drm-next drm/drm-next drm-tip/drm-tip linus/master next-20260211]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c6e62d002b7f0613f02d8707c80f2a7bd66808a0
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Onur-zkan/drm-tyr-make-SRAM-supply-optional-like-panthor/20260212-035718
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
-patch link:    https://lore.kernel.org/r/20260211195406.289634-1-work%40onurozkan.dev
-patch subject: [PATCH v1] drm/tyr: make SRAM supply optional like panthor
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260212/202602121116.499PMsGK-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260212/202602121116.499PMsGK-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602121116.499PMsGK-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0425]: cannot find function `regulator_get_optional` in crate `bindings`
-   --> rust/kernel/regulator.rs:287:23
-   |
-   287  |             bindings::regulator_get_optional(dev.as_raw(), name.as_char_ptr())
-   |                       ^^^^^^^^^^^^^^^^^^^^^^ help: a function with a similar name exists: `regulator_get_voltage`
-   |
-   ::: rust/bindings/bindings_helpers_generated.rs:1306:5
-   |
-   1306 |     pub fn regulator_get_voltage(regulator: *mut regulator) -> ffi::c_int;
-   |     ---------------------------------------------------------------------- similarly named function `regulator_get_voltage` defined here
+Thank you!
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
