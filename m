@@ -1,592 +1,291 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED5A146588
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 10:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EB82DEA8F;
+	Thu, 12 Feb 2026 10:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770891082; cv=none; b=etMdDNkLO9OhVt8xhaK0CylR2eTHvhCEHuunfYDUR8r70l27vwFRoM9iWa7ov9+CtFV/+AXD4WhZY8UPzaxbbSIE3AxiI7Z4E6pWW74b7fyZUis6PkJhYF4Tq+SKyvMKpGiJTpcWjXul34McG82/geRzjUlvYKSn7AxL4NDWPDY=
+	t=1770891372; cv=none; b=rB9X8KFywfVD8e3mGoQ8BY0+p1vt2QvvcYCkNWIzuOlQF41roBxHJXotycVzMOlXe41g5ufVdZ/ZiqRFwBQ8jmwmdH2lk7/V+dpQ44HztdXvNfyXvzWA6phYukj3Sfkb4EYC0jnPQegZ3/MS28xCMMEDs/CL9NjsCoLi8X3ZYhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770891082; c=relaxed/simple;
-	bh=VprCGkuFxTOByIMTnEJQf/qSW/TfAt3oIFF+fOrLCKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SfPu2uhWWxRiYTUIoBJpY0Hb/F8+P+9+WFhfY2bbVw3jjb1+B1gTVLaOLJ0z14bSlanL9S/OGWOdsw25iBUWtjF9tgQ3J2S4JD+1t0mVY8Vyzu8tfgnshOYWaO6onD7gArQ9Z/AZy6qFv3rwDvDsiaYOM2aH36HJTVtqRHLfa08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=QR4Q5cXm; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1770891372; c=relaxed/simple;
+	bh=Anw/zAKs/yWaaKeJqaGci5bM5iIQjct6iTbsy5dXriU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ofV7/VMrj/P2uOSZe2l8Ad4MWjsD1ZpWeAiciweq/f5xtqRKouI0YROaT5GzCJzMY8FBB41o4ZxBnb8mRkJ/Q2rw+coeAOMxU1X5HEcWu2IbjRt0GW+lXrK9S05ZtpIdcLvF2Ge5GGXKamo/BS686YNqnEZFxWOL7eagzDu9KSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OIARi67/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="QR4Q5cXm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770891078;
-	bh=VprCGkuFxTOByIMTnEJQf/qSW/TfAt3oIFF+fOrLCKI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QR4Q5cXm+3vjKB54R+J3qt96H2yTRdTBjL+RvTh5PP+SufqhI3qt9KTb7BIBqsnmO
-	 pOodo1vgngLUchWoSTRA3AtuHM7DVbm0m7bP4hHZvg94H2PGo+53Qk0nQ2mitY7bLy
-	 7XJnFV/ySaPrVEHOYd20m3fs1M5eypiWJp2fa9j8JwMJ8j9ej58dVZEpaQuhkH9bbj
-	 ydLkahTsy4WcGEJx8AH/DUcf9WO3NYUTSgELT+6WdSxlDiDSYe5kk/gtqMW7m9T3ue
-	 Hl7pzEEbIYUepxZcy8o/pFCAtWETe5r9KjlaAugge3KfOiLDd0E3YO3hpAo2fituq+
-	 gVpUG2umxk52Q==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 52FDF17E110D;
-	Thu, 12 Feb 2026 11:11:18 +0100 (CET)
-Date: Thu, 12 Feb 2026 11:11:13 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- daniel.almeida@collabora.com, aliceryhl@google.com,
- beata.michalska@arm.com, lyude@redhat.com
-Subject: Re: [PATCH 07/12] drm/tyr: Add generic slot manager
-Message-ID: <20260212111113.68778819@fedora>
-In-Reply-To: <20260212013713.304343-8-deborah.brouwer@collabora.com>
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
-	<20260212013713.304343-8-deborah.brouwer@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OIARi67/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C959C19422;
+	Thu, 12 Feb 2026 10:16:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770891371;
+	bh=Anw/zAKs/yWaaKeJqaGci5bM5iIQjct6iTbsy5dXriU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=OIARi67/5AMasX93xPnqxJLX/xDN5MF1nk6kUsZuNE3cv3DR79RkQkLsdFaDZxY0P
+	 tbLZSxzUEATMlPDPNElgUgOMyBK3sYY+n0g68rBh+QF//5+Qw9xEDiMKK8ySFcLgJs
+	 f9Age7rUiu18MWt0UmYoJb8HYb5+ijnpiA1Ti+Pc2JIwpqLhS1BtYH1SVwgS0UgEIo
+	 MO2AOSzDqXWe+Q9lsolLCfJQJ5fb8vOuqenkrOEXXERMc5HguXWN3eLIF28OpiPYUd
+	 OMlf6F7BVKrggzngoQCcseBuwRFnbfSh+5hD2KzZ6+RYcKWyEpO38D0lCzIW6Sa3hN
+	 NVUAIOpdZcJhA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, Daniel
+ Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
+In-Reply-To: <gta2wjt4tkcvyu7g56gqyipiigbmbk2ca3biqzmxc2npch3rk7@ccwzwgnk7mcz>
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
+ <q43rzzvpfh6ke74eyn3nypiek2ihaq6nat552asiobqge4vxmn@knwkb5dexnga>
+ <87fr77viat.fsf@t14s.mail-host-address-is-not-set>
+ <fU1FEYt6-SY0KlyJy4VClCr5j6P4d5-wukzc_9TkSDSBuQNlY26xyOIprMbHEVMv-H-nrAJ1iN_9tcfIXEI1iw==@protonmail.internalid>
+ <gta2wjt4tkcvyu7g56gqyipiigbmbk2ca3biqzmxc2npch3rk7@ccwzwgnk7mcz>
+Date: Thu, 12 Feb 2026 11:15:58 +0100
+Message-ID: <87y0kytggx.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Wed, 11 Feb 2026 17:37:08 -0800
-Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
+"Liam R. Howlett" <Liam.Howlett@oracle.com> writes:
 
-> From: Boris Brezillon <boris.brezillon@collabora.com>
-> 
-> Introduce a generic slot manager to dynamically allocate limited hardware
-> slots to software "seats". It can be used for both address space (AS) and
-> command stream group (CSG) slots.
-> 
-> The slot manager initially assigns seats to its free slots. It then
-> continues to reuse the same slot for a seat, as long as another seat
-> did not start to use the slot in the interim.
-> 
-> When contention arises because all of the slots are allocated, the slot
-> manager will lazily evict and reuse slots that have become idle (if any).
-> 
-> The seat state is protected using the LockedBy pattern with the same lock
-> that guards the SlotManager. This ensures the seat state stays consistent
-> across slot operations.
-> 
-> Hardware specific behaviour can be customized using the slot manager's
-> `SlotOperations` trait.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> ---
->  drivers/gpu/drm/tyr/slot.rs | 359 ++++++++++++++++++++++++++++++++++++
->  drivers/gpu/drm/tyr/tyr.rs  |   1 +
->  2 files changed, 360 insertions(+)
->  create mode 100644 drivers/gpu/drm/tyr/slot.rs
-> 
-> diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
-> new file mode 100644
-> index 000000000000..37bf8800a225
-> --- /dev/null
-> +++ b/drivers/gpu/drm/tyr/slot.rs
-> @@ -0,0 +1,359 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +
-> +//! Slot management abstraction for limited hardware resources.
-> +//!
-> +//! This module provides a generic [`SlotManager`] that assigns limited hardware
-> +//! slots to logical "seats". A seat represents an entity (such as a vm address
-> +//! space) that needs access to a hardware slot.
-> +//!
-> +//! The [`SlotManager`] tracks slot allocation using sequence numbers to detect
-> +//! when a seat's binding has been invalidated. When a seat requests activation,
-> +//! the manager will either reuse the seat's existing slot (if still valid),
-> +//! allocate a free slot (if any are available), or evict the oldest idle slot if any
-> +//! slots are idle.
-> +//!
-> +//! Hardware-specific behavior is customized by implementing the [`SlotOperations`]
-> +//! trait, which allows callbacks when slots are activated or evicted.
-> +//!
-> +//! This is primarily used for managing address space slots in the GPU, where
-> +//! the number of hardware address space slots is limited.
+> * Andreas Hindborg <a.hindborg@kernel.org> [260211 02:41]:
+>> "Liam R. Howlett" <Liam.Howlett@oracle.com> writes:
+>>
+>> > * Andreas Hindborg <a.hindborg@kernel.org> [260209 14:38]:
+>> >> Add a convenience method `contains_index` to check whether an element
+>> >> exists at a given index in the XArray. This method provides a more
+>> >> ergonomic API compared to calling `get` and checking for `Some`.
+>> >
+>> > I think this is going to result in less efficient code for most uses.
+>> >
+>> > Most users use the results returned, not just checking if there is or is
+>> > not a value.  So if you find the value an xarray state and then just
+>> > throw it away and find it again, it'll be less efficient.
+>> >
+>> > If there are users that do use the xarray to just check if something
+>> > exists or not (which there probably are?), then it should be in a
+>> > wrapper for that code and not the generic API.  Otherwise we will have
+>> > users pop up to use this method when they should not.
+>>
+>> I agree in that I would prefer matching on the result of a lookup and
+>> using that result. This is not always possible due to a limitation in
+>> the current implementation of the borrow checker. Please see my response
+>> to Tamir [1], it has all the pointers.
+>>
+>> Since we cannot use a match statement in certain situations, we have to
+>> fall back to something that does not borrow from the collections, like
+>> `array.get(index).is_some()`. I would argue that
+>>
+>>   if array.contains_index(foo) { ... }
+>>
+>> is easier to read than
+>>
+>>   if array.get(foo).is_some() { ... }
+>>
+>> And I don't think `array.contains()` is going to have worse codegen than
+>> `array.get(index).is_some()`.
+>
+> This is probably my lack of rust knowledge...
+>
+>
+> My concern is around API usage.  I am concerned people will use xas as a
+> throw-away lookup with this API and cause more walks of the xarray to
+> the same location.
+>
+> In the normal API, we have lookups like this; you take a lock, look
+> something up, drop the lock and return it.  Since the life cycle of the
+> stored information is outside the scope of the xarray, the user is
+> dependent on the entry being stable by some other means after the xarray
+> lock is dropped.
 
-I'd probably mention that we intend to use it for other stuff (Csg
-slots), hence the generalization done here.
+As discussed elsewhere, the current Rust XArray API only has fully
+exclusive access, no reader/writer separation.
 
-> +//!
-> +//! [SlotOperations]: crate::slot::SlotOperations
-> +//! [SlotManager]: crate::slot::SlotManager
+After a lookup the returned object is bound to the lifetime of lock. So
+you cannot drop the lock while holding a mutable reference to something
+in the collection, and the "other means" part of your paragraph is
+automatically handled in Rust.
 
-Thanks a lot for adding some docs to my barebone initial implementation
-and fixing the stuff I got wrong along the way. :D
+> In the advanced API, we do more within the locked area, usually.
+>
+> Usually, applications don't just print out there is a value, they do
+> something with it.  So I would expect a real example to be something
+> like (this horrible psudo-c/rust mangled mess):
+>
+> let entry = array.get_mut(foo);
+>
+> if (entry.is_some()) {
+>         /* do something with entry */
+>         send_to_party(entry);
+> } else {
+>         /* deal with it not existing */
+> }
+>
+> What I don't want to do:
+>
+> if (array.contains_index(foo)) {
+>         entry = array.get_mut(foo);
+> } else {
+>         ...
+> }
+>
+> Where contains_index(foo) sets up an xas, walks to the location, returns
+> the entry (or not) and then translates into a boolean.. then if it's
+> true we set up another xas to walk to the same location.
+>
+> That is, the worst code gen would come from this:
+> if (array.get(foo).is_some()) { array.get_mut(foo).. }
 
-> +#![allow(dead_code)]
-> +
-> +use core::{
-> +    mem::take,
-> +    ops::{
-> +        Deref,
-> +        DerefMut, //
-> +    }, //
-> +};
-> +
-> +use kernel::{
-> +    prelude::*,
-> +    sync::LockedBy, //
-> +};
-> +
+You are completely right, this causes two walks to the same location,
+which is not great.
 
-Don't know what the doc rules are in rust, but for this sort of generic
-layer, maybe we should provide extensive docs around objects, fields
-and public functions. I see that most struct fields are documented, but
-not the struct themselves. the enum doesn't seem to be documented, and
-some of the public functions are not either. And that's all my fault,
-because I gave you this raw piece of code without much doc (you added a
-lot already). Just saying that, maybe now that things have settled
-down, is a good time to add proper doc where it's missing.
+> From what you said here and the link, you are saying we need to do this
+> in certain situations due to rust's borrow checker and the lifetime, but
+> I cannot see why we would need to walk the xarray twice from the example
+> provided.
+
+Let me try to explain with an example using user space Rust. Consider a
+situation where we have two two key-value mapping data structures. Since
+we are in user space, I'll go with BTreeMap from the standard library,
+but it could be XArray in the kernel.
+
+If we want to implement a transaction across these two KV maps, we
+probably need to take a lock to get mutable access to them. Let's
+represent this with a `struct Maps` that has two fields `a` and `b` for
+these two mutable references:
 
 
-/// Seat information.
-///
-/// This can't be accessed directly by the element embedding a `Seat`,
-/// but is used by the generic slot manager logic to control residency
-/// of a certain object on a hardware slot.
-> +pub(crate) struct SeatInfo {
-> +    /// Slot used by this seat.
-       ///
-       /// This index is only valid if the slot pointed by this index
-       /// has its `SlotInfo::seqno` match SeatInfo::seqno. Otherwise,
-       /// it means the object has been evicted from the hardware slot,
-       /// and a new slot needs to be acquired to make this object
-       /// resident again.
-> +    slot: u8,
-> +
-> +    /// Sequence number encoding the last time this seat was active.
-> +    /// We also use it to check if a slot is still bound to a seat.
-> +    seqno: u64,
-> +}
-> +
+  use std::collections::{
+      BTreeMap,
+      btree_map::{Entry, OccupiedEntry},
+  };
 
-/// Seat state
-///
-/// This is meant to be embedded in the object that wants to acquire
-/// hardware slots. It also starts in the `Seat::NoSeat` state, and
-/// the slot manager will change the object value when an active/evict
-/// request to is issued. 
-> +#[derive(Default)]
-> +pub(crate) enum Seat {
-> +    #[expect(clippy::enum_variant_names)]
-       /// Resource is not resident.
-       ///
-       /// All objects start with a seat in that state. The seat also
-       /// gets back to that state if the user requests eviction. It
-       /// can also end up in that state next time an operation is done
-       /// on an `Seat::Idle` seat and the slot managers finds out this
-       /// object has been evicted from the slot.
-> +    #[default]
-> +    NoSeat,
+  type MapType = BTreeMap<u32, u32>;
 
-       /// Resource is actively used and resident.
-       ///
-       /// When a seat is in that state, it can't be evicted, and the
-       /// slot pointed by `SlotInfo::slot` is guaranteed to be reserved
-       /// for this object as long as the seat stays active.
-> +    Active(SeatInfo),
+  struct Maps<'a> {
+      a: &'a mut MapType,
+      b: &'a mut MapType,
+  }
 
-       /// Resource is idle and might or might not be resident.
-       ///
-       /// When a seat is in that state, we can't know for sure if the
-       /// object is resident or evicted until the next request we issue
-       /// to the slot manager. This tells the slot manager it can
-       /// reclaim the underlying slot if needed.
-       /// In order for the hardware to use this object again, the seat
-       /// needs to be turned into an `Seat::Active` state again
-       /// with a `SlotManager::activate()` call.
-> +    Idle(SeatInfo),
-> +}
-> +
-> +impl Seat {
-       /// Get the slot index this seat is pointing to.
-       ///
-       /// If the seat is not `Seat::Active` we can't trust the
-       /// `SeatInfo`. In that case `None` is returned, otherwise
-       /// `Some(SeatInfo::slot)` is returned.
-> +    pub(super) fn slot(&self) -> Option<u8> {
-> +        match self {
-> +            Self::Active(info) => Some(info.slot),
-> +            _ => None,
-> +        }
-> +    }
-> +}
-> +
+Now we have two locked data structures and we can implement our
+transaction over them. Let's say the algorithm is the following:
 
-/// Trait describing the slot-related operations.
-> +pub(crate) trait SlotOperations {
-> +    type SlotData;
-> +
-> +    /// Called when a slot is being activated for a seat.
-> +    ///
-> +    /// This callback allows hardware-specific actions to be performed when a slot
-> +    /// becomes active, such as updating hardware registers or invalidating caches.
-> +    fn activate(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
-> +        Ok(())
-> +    }
-> +
-> +    /// Called when a slot is being evicted and freed.
-> +    ///
-> +    /// This callback allows hardware-specific cleanup when a slot is being
-> +    /// completely freed, either explicitly or when an idle slot is being
-> +    /// reused for a different seat. Any hardware state should be invalidated.
-> +    fn evict(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
-> +        Ok(())
-> +    }
-> +}
-> +
+ - Given a key, if that key exists in map A, return a mutable reference
+   to the value for that key in map A.
+ - Else, move the key and value for the lowest ordered key from map A to
+   map B and return a mutable reference the that value in map B.
 
-/// Data attached to a slot.
-> +struct SlotInfo<T> {
-> +    /// Type specific data attached to a slot
-> +    slot_data: T,
-> +
-> +    /// Sequence number from when this slot was last activated
-> +    seqno: u64,
-> +}
-> +
+My first attempt at implementing this algorithm would be something like
+this:
 
-/// Slot state.
-> +#[derive(Default)]
-> +enum Slot<T> {
-    /// Slot is free.
-    ///
-    /// All slots start in this state when the slot manager is created.
-> +    #[default]
-> +    Free,
+  fn transaction_impl1<'a>(maps: &'a mut Maps, key: u32) -> &'a mut u32 {
+      if let Entry::Occupied(o) = maps.a.entry(key) {
+          o.into_mut()
+      } else {
+          let value = maps.a.first_entry().expect("Not empty").remove();
+          maps.b.entry(key).or_insert(value)
+      }
+  }
 
-    /// Slot is active.
-    ///
-    /// When is that state, the slot is guaranteed to stay active
-    /// for as long as the resource bound to it has its seat in the
-    /// `Seat::Active` state. No new resource can be bound to it.
-> +    Active(SlotInfo<T>),
+However, this does not compile.
 
-    /// Slot is idle.
-    ///
-    /// Happens when the underlying resource has been flagged
-    /// `Seat::Idle`. When in that state, the slot manager is allowed
-    /// to evict the resource and re-assign the slot to someone else.
-    /// This process involves updating the `SlotInfo::seqno` which
-    /// will be checked against the `SeatInfo::seqno` in case the idle
-    /// resource wants to become active again.
-> +    Idle(SlotInfo<T>),
-> +}
-> +
+  error[E0499]: cannot borrow `*maps.a` as mutable more than once at a time
+    --> src/main.rs:51:21
+     |
+  47 |   fn transaction_impl1<'a>(maps: &'a mut Maps, key: u32) -> &'a mut u32 {
+     |                        -- lifetime `'a` defined here
+  48 |       if let Entry::Occupied(o) = maps.a.entry(key) {
+     |       -                           ------ first mutable borrow occurs here
+     |  _____|
+     | |
+  49 | |         o.into_mut()
+  50 | |     } else {
+  51 | |         let value = maps.a.first_entry().expect("Not empty").remove();
+     | |                     ^^^^^^ second mutable borrow occurs here
+  52 | |         maps.b.entry(key).or_insert(value)
+  53 | |     }
+     | |_____- returning this value requires that `*maps.a` is borrowed for `'a`
 
-/// Generic slot manager object.
-///
-/// It abstracts away all the churn around activeness/idleness tracking
-/// and let the implementer of the SlotOperations trait focus on how to
-/// make a resource active or evict it.
-> +pub(crate) struct SlotManager<T: SlotOperations, const MAX_SLOTS: usize> {
-> +    /// Manager specific data
-> +    manager: T,
-> +
-> +    /// Number of slots actually available
-> +    slot_count: usize,
-> +
-> +    /// Slots
-> +    slots: [Slot<T::SlotData>; MAX_SLOTS],
-> +
-> +    /// Sequence number incremented each time a Seat is successfully activated
-> +    use_seqno: u64,
-> +}
-> +
-> +// A `Seat` protected by the same lock that is used to wrap the `SlotManager`.
 
-Should this be
 
-/// A `Seat` ....
+The `into_mut()` on line 49 captures the lifetime of `o`, and because the
+value is returned from the function, it must live for `'a`, which is
+till the end of the function.
 
-?
+As far as I understand, this is a borrow checker limitation. It is easy
+for us to look at this code and decide that the borrow on line 51 will
+never alias with the borrow on line 49.
 
-> +type LockedSeat<T, const MAX_SLOTS: usize> = LockedBy<Seat, SlotManager<T, MAX_SLOTS>>;
-> +
-> +impl<T: SlotOperations, const MAX_SLOTS: usize> Unpin for SlotManager<T, MAX_SLOTS> {}
+If we change the code so that we do not capture the lifetime of the
+returned object across the if/else, the code will compile:
 
-Do we really need to explicitly flag this type Unpin? I thought this
-was the default if the struct is not pinned (and it's not AFAICT).
 
-> +
-> +impl<T: SlotOperations, const MAX_SLOTS: usize> SlotManager<T, MAX_SLOTS> {
-    /// Creates a new slot manager.
-> +    pub(crate) fn new(manager: T, slot_count: usize) -> Result<Self> {
-> +        if slot_count == 0 {
-> +            return Err(EINVAL);
-> +        }
-> +        if slot_count > MAX_SLOTS {
-> +            return Err(EINVAL);
-> +        }
-> +        Ok(Self {
-> +            manager,
-> +            slot_count,
-> +            slots: [const { Slot::Free }; MAX_SLOTS],
-> +            use_seqno: 1,
-> +        })
-> +    }
-> +
-> +    fn record_active_slot(
-> +        &mut self,
-> +        slot_idx: usize,
-> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-> +        slot_data: T::SlotData,
-> +    ) -> Result {
-> +        let cur_seqno = self.use_seqno;
-> +
-> +        *locked_seat.access_mut(self) = Seat::Active(SeatInfo {
-> +            slot: slot_idx as u8,
-> +            seqno: cur_seqno,
-> +        });
-> +
-> +        self.slots[slot_idx] = Slot::Active(SlotInfo {
-> +            slot_data,
-> +            seqno: cur_seqno,
-> +        });
-> +
-> +        self.use_seqno += 1;
-> +        Ok(())
-> +    }
-> +
-> +    fn activate_slot(
-> +        &mut self,
-> +        slot_idx: usize,
-> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-> +        slot_data: T::SlotData,
-> +    ) -> Result {
-> +        self.manager.activate(slot_idx, &slot_data)?;
-> +        self.record_active_slot(slot_idx, locked_seat, slot_data)
-> +    }
-> +
-> +    fn allocate_slot(
-> +        &mut self,
-> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-> +        slot_data: T::SlotData,
-> +    ) -> Result {
-> +        let slots = &self.slots[..self.slot_count];
-> +
-> +        let mut idle_slot_idx = None;
-> +        let mut idle_slot_seqno: u64 = 0;
-> +
-> +        for (slot_idx, slot) in slots.iter().enumerate() {
-> +            match slot {
-> +                Slot::Free => {
-> +                    return self.activate_slot(slot_idx, locked_seat, slot_data);
-> +                }
-> +                Slot::Idle(slot_info) => {
-> +                    if idle_slot_idx.is_none() || slot_info.seqno < idle_slot_seqno {
-> +                        idle_slot_idx = Some(slot_idx);
-> +                        idle_slot_seqno = slot_info.seqno;
-> +                    }
-> +                }
-> +                Slot::Active(_) => (),
-> +            }
-> +        }
-> +
-> +        match idle_slot_idx {
-> +            Some(slot_idx) => {
-> +                // Lazily evict idle slot just before it is reused
-> +                if let Slot::Idle(slot_info) = &self.slots[slot_idx] {
-> +                    self.manager.evict(slot_idx, &slot_info.slot_data)?;
-> +                }
-> +                self.activate_slot(slot_idx, locked_seat, slot_data)
-> +            }
-> +            None => {
-> +                pr_err!(
-> +                    "Slot allocation failed: all {} slots in use\n",
-> +                    self.slot_count
-> +                );
-> +                Err(EBUSY)
-> +            }
-> +        }
-> +    }
-> +
-> +    fn idle_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-> +        let slot = take(&mut self.slots[slot_idx]);
-> +
-> +        if let Slot::Active(slot_info) = slot {
-> +            self.slots[slot_idx] = Slot::Idle(SlotInfo {
-> +                slot_data: slot_info.slot_data,
-> +                seqno: slot_info.seqno,
-> +            })
-> +        };
-> +
-> +        *locked_seat.access_mut(self) = match locked_seat.access(self) {
-> +            Seat::Active(seat_info) | Seat::Idle(seat_info) => Seat::Idle(SeatInfo {
-> +                slot: seat_info.slot,
-> +                seqno: seat_info.seqno,
-> +            }),
-> +            Seat::NoSeat => Seat::NoSeat,
-> +        };
-> +        Ok(())
-> +    }
-> +
-> +    fn evict_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-> +        match &self.slots[slot_idx] {
-> +            Slot::Active(slot_info) | Slot::Idle(slot_info) => {
-> +                self.manager.evict(slot_idx, &slot_info.slot_data)?;
-> +                take(&mut self.slots[slot_idx]);
-> +            }
-> +            _ => (),
-> +        }
-> +
-> +        *locked_seat.access_mut(self) = Seat::NoSeat;
-> +        Ok(())
-> +    }
-> +
-> +    // Checks and updates the seat state based on the slot it points to
-> +    // (if any). Returns a Seat with a value matching the slot state.
-> +    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Seat {
-> +        let new_seat = match locked_seat.access(self) {
-> +            Seat::Active(seat_info) => {
-> +                let old_slot_idx = seat_info.slot as usize;
-> +                let slot = &self.slots[old_slot_idx];
-> +
-> +                if kernel::warn_on!(
-> +                    !matches!(slot, Slot::Active(slot_info) if slot_info.seqno == seat_info.seqno)
-> +                ) {
-> +                    Seat::NoSeat
-> +                } else {
-> +                    Seat::Active(SeatInfo {
-> +                        slot: seat_info.slot,
-> +                        seqno: seat_info.seqno,
-> +                    })
-> +                }
-> +            }
-> +
-> +            Seat::Idle(seat_info) => {
-> +                let old_slot_idx = seat_info.slot as usize;
-> +                let slot = &self.slots[old_slot_idx];
-> +
-> +                if !matches!(slot, Slot::Idle(slot_info) if slot_info.seqno == seat_info.seqno) {
-> +                    Seat::NoSeat
-> +                } else {
-> +                    Seat::Idle(SeatInfo {
-> +                        slot: seat_info.slot,
-> +                        seqno: seat_info.seqno,
-> +                    })
-> +                }
-> +            }
-> +
-> +            _ => Seat::NoSeat,
-> +        };
-> +
-> +        // FIXME: Annoying manual copy. The original idea was to not add Copy+Clone to SeatInfo,
-> +        // so that only slot.rs can change the seat state, but there might be better solutions
-> +        // to prevent that.
+  fn transaction_impl2<'a>(maps: &'a mut Maps, key: u32) -> &'a mut u32 {
+      if maps.a.contains_key(&key) {
+          maps.a.get_mut(&key).expect("Key is present")
+      } else {
+          let value = maps.a.first_entry().expect("Not empty").remove();
+          maps.b.entry(key).or_insert(value)
+      }
+  }
 
-Okay, I guess we want some inputs from Daniel and/or Alice on that one.
+But now we do two walks in `maps.a` in the taken path, which is not efficient.
 
-> +        match &new_seat {
-> +            Seat::Active(seat_info) => {
-> +                *locked_seat.access_mut(self) = Seat::Active(SeatInfo {
-> +                    slot: seat_info.slot,
-> +                    seqno: seat_info.seqno,
-> +                })
-> +            }
-> +            Seat::Idle(seat_info) => {
-> +                *locked_seat.access_mut(self) = Seat::Idle(SeatInfo {
-> +                    slot: seat_info.slot,
-> +                    seqno: seat_info.seqno,
-> +                })
-> +            }
-> +            _ => *locked_seat.access_mut(self) = Seat::NoSeat,
-> +        }
-> +
-> +        new_seat
-> +    }
-> +
+>
+> And making it easier to do this could result in a lot more users
+> doubling xarray walks without realising that it's a bad idea (unless
+> it's this special case).
+>
+> ...
+>>
+>> [1] https://lore.kernel.org/rust-for-linux/20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org/T/#m95fb90870c511491f4f487dbf852c689cd0733f4
+>>
+>
+> I have trouble following 'the taken arm' in your link.  I think you mean
+> one of the branches based on the existence of the entry, but I don't
+> know which is the 'taken' and how 'self' is out of scope.
+>
+> Other links off the above link seem to indicate it is a problem with the
+> rust borrow checking hitting a false positive.
+>
+> It seems we need to look up things twice to work around the false
+> positive - or implement something like get_or_insert()?
+>
+> Or, wait for the new checker to be released - but that doesn't fix all
+> the false positives, just this one?
+>
+> So, do all users of the xarray suffer from this false positive?
 
-    /// Make a resource active on any available/reclaimable slot.
-    ///
-    /// Will return an error if no slot is available/reclaimable, or if
-    /// the reclaim failed.
-> +    pub(crate) fn activate(
-> +        &mut self,
-> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-> +        slot_data: T::SlotData,
-> +    ) -> Result {
-> +        let seat = self.check_seat(locked_seat);
-> +        match seat {
-> +            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
-> +                // With lazy eviction, if seqno matches, the hardware state is still
-> +                // valid for both Active and Idle slots, so just update our records
-> +                self.record_active_slot(seat_info.slot as usize, locked_seat, slot_data)
-> +            }
-> +            _ => self.allocate_slot(locked_seat, slot_data),
-> +        }
-> +    }
-> +
-    /// Flag a resource idle.
-    ///
-    /// The slot manager can decide to reclaim the slot this resource
-    /// was bound to at any point after function returns.
-> +    // The idle() method will be used when we start adding support for user VMs
-> +    #[expect(dead_code)]
-> +    pub(crate) fn idle(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-> +        let seat = self.check_seat(locked_seat);
-> +        if let Seat::Active(seat_info) = seat {
-> +            self.idle_slot(seat_info.slot as usize, locked_seat)?;
-> +        }
-> +        Ok(())
-> +    }
-> +
-> +    /// Evict a seat from its slot, freeing up the hardware resource.
+Not all users will suffer from this. The following code compiles fine:
 
-I think I'd go:
+  fn transaction_impl3<'a>(maps: &'a mut Maps, key: u32, value: u32) -> &'a mut u32 {
+      if let Entry::Occupied(o) = maps.a.entry(key) {
+          o.into_mut()
+      } else {
+          maps.b.entry(key).or_insert(value)
+      }
+  }
 
-    /// Evict a resource from its slot, and make this slot free again
-    /// for other users.
+This is valid because the lifetime captured by `o.into_mut()` is not
+used on the other match arm.
 
-> +    pub(crate) fn evict(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-> +        let seat = self.check_seat(locked_seat);
-> +
-> +        match seat {
-> +            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
-> +                let slot_idx = seat_info.slot as usize;
-> +
-> +                self.evict_slot(slot_idx, locked_seat)?;
-> +            }
-> +            _ => (),
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl<T: SlotOperations, const MAX_SLOTS: usize> Deref for SlotManager<T, MAX_SLOTS> {
-> +    type Target = T;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        &self.manager
-> +    }
-> +}
-> +
-> +impl<T: SlotOperations, const MAX_SLOTS: usize> DerefMut for SlotManager<T, MAX_SLOTS> {
-> +    fn deref_mut(&mut self) -> &mut Self::Target {
-> +        &mut self.manager
-> +    }
-> +}
-> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-> index 6eaa2135fe07..f54b997355e0 100644
-> --- a/drivers/gpu/drm/tyr/tyr.rs
-> +++ b/drivers/gpu/drm/tyr/tyr.rs
-> @@ -12,6 +12,7 @@
->  mod gem;
->  mod gpu;
->  mod regs;
-> +mod slot;
->  
->  kernel::module_platform_driver! {
->      type: TyrPlatformDeviceData,
+I hope this helps clarify the situation.
+
+
+Best regards,
+Andreas Hindborg
+
 
