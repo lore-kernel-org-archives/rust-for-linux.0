@@ -1,161 +1,138 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE49B4A02
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 18:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C75271440;
+	Thu, 12 Feb 2026 18:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770919261; cv=none; b=VIBOFur97zUi5/Xr0xmjPtUeCCBGLrXbRRjH+I24kmLmLHvouYG2bblNB1s0bflepnNY2ohgwRS9XVyham23gGcsI1IjNE4HUdMHiwkDKZn7zZyckNg7vhdi5sAXPK8nkJ8d/olJZ1KrVS8p7PXJrUNwj9+tUUkgFRC5k0PiRME=
+	t=1770921501; cv=none; b=TwyULzWRPZsCmi5yaPghwkLklc6BMYdty4qnbGptWf1Z1rMkwSd/V3NJoPa/H1ehCNZpGYxWdrSmdytcbvNUgHrmLBUt8PDDbDLuBjbkK2AWTAqHq/rb37tJbknS0oYu+477DIcLOPAKcXJxhiXUEMp7gWfj5V/7sdPalOwANgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770919261; c=relaxed/simple;
-	bh=ej0RY+FuHEgA0KT10wzva5i8NGoO/QxeSqlWKr+amPk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lIjtnxUjDi83QFc1laM3pzwMINpNZ7ANIbELvXIEYCG+Sepc8AhQOuERWfoU2pqUDsIY9rhK8LmX+dhV2eUVgNuBhYtDFu3dSZkfPnNhp5rquR3KaDBwnygw3/GZ+BZ/LHsAOEmcG3LSax0PfgU0czp0DyB4zv+Yp9a9Xw7dUrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3W20vMuD; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1770921501; c=relaxed/simple;
+	bh=mm6dK2xHHTgAphJ8RKc+fYugGjllxOCor2r0dUYhC14=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iL1PKhjdTQ7C3ZRLBBLmLaeAbkyEpub0zbPzOa7HJsU1pUS49Jgwkqypz/3IG1dHTEkT9hnolAGnFSulAiVf5g0FNH4vT/j+2j72LwHcSrx4aYD69IrVmdHoCTV4pb/dxnek6ZBGQLCeaBwOhenvknzADRkq+iFdjPW+6Za0sX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=LOeb/DNA; arc=none smtp.client-ip=178.154.239.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3W20vMuD"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4806b0963a9so3235e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 10:00:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770919258; x=1771524058; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pl/cLN4GI/TuYiyS1grr0MRZDEkOTzvjCuNXUWtNefA=;
-        b=3W20vMuDtq7cmxy9lA0FYA7cAI5TVzSQ3rKKRmxxAAdpvEoAX74hCvT0FHaG9WKS4T
-         it50EC9iz19MzFCnvn41SpGGiuT6JXHDwWA3IIvGVGMbeIBRY8IZu5DH+E2HuEVwAMSn
-         vZBMwQt2yWHWx9lAq0ui9yUs5Vxfd5iJqc4EkMs1AmpqiY8StyoPcjj6+/f6lBVhjXYm
-         EJqj/UHFxl04X2r0HtUEDnl6hLcDTq0dy4RtFmH1/bbew2YbjvG1QgVsH9EVPNqmO2GZ
-         ZEkvHwCYxJvDJ7AgzJaGyBwBmJ+ns9NTfNRud1gOyXEp/kWXTZd7I5WX6/jU8g9EP90T
-         5kGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770919258; x=1771524058;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pl/cLN4GI/TuYiyS1grr0MRZDEkOTzvjCuNXUWtNefA=;
-        b=mQZXMuafpTEHhEje7xHngtmWg9KBfXW/IT6ChucE5YjLgRaLdRohwyNW1/obSFSgQb
-         qtk/zRZ9azi4v6VWjJHNReRMFHskW9LPlkjxbeV3is2F+vzPFQYB0d4DadoTBCEwMLgL
-         Qgw5rWhPp6zWPlAiX6S7PdqytFEbv/0ZBBMgfQSo99+/v1LOJO+54lJum2BEmc1ER0Pi
-         mVnFWc2rfiMVbt01ViDWirc+968DfN3LH7iq9pCzBTH86B3q1nNswdOIE2vtcGKDE8uL
-         BmBMDgJhIlqdHXW/UzLHfxbDV2ynk7EJTYkchaUx+ZxG+Xtxz6RGBv/O8tzt07B8nIok
-         tq7w==
-X-Forwarded-Encrypted: i=1; AJvYcCU8gDqTuhjLm1pBYYe9coL1aXCDsWnzsXHO89k8ESOZbGfhXrVl7/5lN53Q+M9rajtWLSGZkVLfT0XZ2nHpoQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyn7kznP/AQbc5t8fmCv5ZqChf7VwEUrJql2VQACcq+7Ni9WM3C
-	O8XyivNQAPATBjuJjI7w4rzy7ZC/7zHe2qU2jc+dWw2NzAW02oNQ1q6Z2J0kO2DbJg==
-X-Gm-Gg: AZuq6aIk/+0w3AvakW9a128humhibGYcethU14whnf+y53DSZAA1+PV0TMbDNhCl0fg
-	6KFVCs9qeDdLBarp2DkAayEUJWRyo3afBvrJOyYLo1yrVsOg1XNnuOcIxY/RwAUXSi5/L0LPBXX
-	bWmXg0BLR0ISnJgCHu17LW84l3trZJuhvBIan4Q20LpdIKFyp11LQF3/HfjD+yLRAGkufF5Sa6i
-	fSvl8X5PUflahe5B0dFicxdeWNuagoe9fcvGg9Mn0iM9TOH236WekjLb0ir8+AYdlN/CmsPjjGU
-	WK11x1MsyWStI4dQGbIpDZPP8UqbTZ4Iv6Z7wZIJ2PyVJpt7awZmgLqz/kE+sxpRdQrzo7PcG3K
-	Vw3XEBPyZGrxnf05GMwecvZYFjvQDDzBHd9/evCgRklQNTNpKAHS1jsOJX8lc5cng9YnnJ79hn6
-	Bw6t+YUxfbG3cLY6/iTmJSn+XrO8r8km3UuON8LLkzjkrOu+Yp/h4=
-X-Received: by 2002:a05:600c:a14:b0:480:4a7b:228 with SMTP id 5b1f17b1804b1-48366d1fd3amr875395e9.1.1770919257888;
-        Thu, 12 Feb 2026 10:00:57 -0800 (PST)
-Received: from localhost ([2a00:79e0:288a:8:11ea:f041:437e:7de8])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4834d5ebd34sm221155765e9.7.2026.02.12.10.00.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 10:00:56 -0800 (PST)
-From: Jann Horn <jannh@google.com>
-Date: Thu, 12 Feb 2026 19:00:49 +0100
-Subject: [PATCH] rust: task: clarify comments on task UID accessors
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="LOeb/DNA"
+Received: from mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:3cca:0:640:f0e1:0])
+	by forward502d.mail.yandex.net (Yandex) with ESMTPS id AF055C124B;
+	Thu, 12 Feb 2026 21:30:17 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id CUZN5e0GuCg0-zq4VRrB7;
+	Thu, 12 Feb 2026 21:30:16 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1770921017;
+	bh=M4YvMAkTJP8B12seetkzf4oSg1vwKwdO9St0DGXCR78=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=LOeb/DNAFZzkaix10hhb81Ke2HHov99I9ftIETHkcLezhQR8UxXAmWx2BBOtwNjGD
+	 tkGirgt5+3/o6FkN5yY7HXOSnlb7BWMeHoJz5Pq1JLGX48g1+AZj32v2X9Tvf2yAXF
+	 Ws7pIlWyayhSRMp9JaUqewJ5KblDhMCwxRwwVXAQ=
+Authentication-Results: mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Thu, 12 Feb 2026 21:30:10 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Mark Brown <broonie@kernel.org>, daniel.almeida@collabora.com,
+ aliceryhl@google.com, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ lgirdwood@gmail.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] drm/tyr: make SRAM supply optional like panthor
+Message-ID: <20260212213010.56db1d1d@nimda>
+In-Reply-To: <20260212145134.799bb6fa@fedora>
+References: <20260212100538.170445-1-work@onurozkan.dev>
+	<20260212100538.170445-2-work@onurozkan.dev>
+	<4b00826f-52b1-48a1-b6b5-70ee62f7c014@sirena.org.uk>
+	<20260212151644.4c179594@nimda>
+	<6704ddce-e0bb-4b50-b81a-a098816f3ba3@sirena.org.uk>
+	<20260212134601.7760f414@fedora>
+	<a76b1e27-87ea-42e0-88f3-0512b2e1ac0b@sirena.org.uk>
+	<20260212145134.799bb6fa@fedora>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260212-rust-uid-v1-1-deff4214c766@google.com>
-X-B4-Tracking: v=1; b=H4sIAFAVjmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDI0Mj3aLS4hLd0swU3TTDJONEE9NkCwMLEyWg8oKi1LTMCrBR0bG1tQC
- m9qX9WgAAAA==
-X-Change-ID: 20260212-rust-uid-f1b3a45c8084
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@google.com>, Carlos Llamas <cmllamas@google.com>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770919252; l=2635;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=ej0RY+FuHEgA0KT10wzva5i8NGoO/QxeSqlWKr+amPk=;
- b=ffWdWbX4t/7CwCD5OBpKK9/ns/QmKZruw8v3OE9d8/8pcSBK4yUr6RKBu64DgDZB98s6yN+QJ
- Gpkc4KnHZ4SB4ujrAnC3wiuo12q1RU3mD9beXkKUTmsSHYbJTPyhOtI
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-Linux has separate subjective and objective task credentials, see the
-comment above `struct cred`. Clarify which accessor functions operate on
-which set of credentials.
+On Thu, 12 Feb 2026 14:51:34 +0100
+Boris Brezillon <boris.brezillon@collabora.com> wrote:
 
-Also document that Task::euid() is a very weird operation. You can see how
-weird it is by grepping for task_euid() - binder is its only user.
-Task::euid() obtains the objective effective UID - it looks at the
-credentials of the task for purposes of acting on it as an object, but then
-accesses the effective UID (which the credentials.7 man page describes as
-"[...] used by the kernel to determine the permissions that the process
-will have when accessing shared resources [...]").
+> On Thu, 12 Feb 2026 13:13:31 +0000
+> Mark Brown <broonie@kernel.org> wrote:
+> 
+> > On Thu, Feb 12, 2026 at 01:46:01PM +0100, Boris Brezillon wrote:
+> > > Mark Brown <broonie@kernel.org> wrote:  
+> > 
+> > > > The panthor driver is buggy here and should be fixed, the
+> > > > driver should treat the supply as mandatory and let the system
+> > > > integration work out how it's actually made available.  
+> > 
+> > > > Trying to open code this just breaks the error handling.  
+> > 
+> > > Maybe, but the thing is, the DT bindings have been accepted
+> > > already, and it's not something we can easily change. What we can
+> > > do is make this sram-supply mandatory for new compatibles, but we
+> > > can't force it on older/existing SoCs without breaking
+> > > backward-DT compat.  
+> > 
+> > In practice you can because we do sub in a dummy regulator for
+> > missing supplies, it produces a warning but works fine.  If we
+> > didn't do this it'd be basically impossible to add regulator
+> > support to anything at any point after the original merge which is
+> > clearly not reasonable.
+> 
+> Okay, I guess we need to fix panthor then...
+> 
 
-For context:
-Arguably, binder's use of task_euid() is a theoretical security problem,
-which only has no impact on Android because Android has no setuid binaries
-executable by apps.
-commit 29bc22ac5e5b ("binder: use euid from cred instead of using task")
-fixed that by removing that only user of task_euid(), but the fix got
-reverted in commit c21a80ca0684 ("binder: fix test regression due to
-sender_euid change") because some Android test started failing.
+That + updating the log to something like "sram-supply is missing in
+the DT" would be quite better I think. It would make the issue more
+obvious and convey that the DT file is expected to configure that field
+explicitly. With the current log message, not many people will
+understand the problem at a glance.
 
-Signed-off-by: Jann Horn <jannh@google.com>
----
- rust/kernel/task.rs | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+As for the bug I described in this patch, we can proceed with the
+alternative solution (updating the DT file) that I mentioned in the
+Zulip thread (the link is included in the patch). Which is this simple
+diff:
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 49fad6de0674..33e6d44b9a15 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -223,14 +223,17 @@ pub fn pid(&self) -> Pid {
-         unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
-     }
- 
--    /// Returns the UID of the given task.
-+    /// Returns the objective real UID of the given task.
-     #[inline]
-     pub fn uid(&self) -> Kuid {
-         // SAFETY: It's always safe to call `task_uid` on a valid task.
-         Kuid::from_raw(unsafe { bindings::task_uid(self.as_ptr()) })
-     }
- 
--    /// Returns the effective UID of the given task.
-+    /// Returns the objective effective UID of the given task.
-+    ///
-+    /// You should probably not be using this; the effective UID is normally
-+    /// only relevant in subjective credentials.
-     #[inline]
-     pub fn euid(&self) -> Kuid {
-         // SAFETY: It's always safe to call `task_euid` on a valid task.
-@@ -363,7 +366,7 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
- }
- 
- impl Kuid {
--    /// Get the current euid.
-+    /// Get the current subjective euid.
-     #[inline]
-     pub fn current_euid() -> Kuid {
-         // SAFETY: Just an FFI call.
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
+b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
+index dafad29f9854..a30339fd2c10 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
+@@ -177,6 +177,7 @@ &gmac1_rgmii_clk
 
----
-base-commit: 192c0159402e6bfbe13de6f8379546943297783d
-change-id: 20260212-rust-uid-f1b3a45c8084
+ &gpu {
+        mali-supply = <&vdd_gpu_s0>;
++       sram-supply = <&vdd_gpu_mem_s0>;
+        status = "okay";
+ };
 
---  
-Jann Horn <jannh@google.com>
+@@ -537,7 +538,7 @@ rk806_dvs3_null: dvs3-null-pins {
+                };
 
+                regulators {
+-                       vdd_gpu_s0: dcdc-reg1 {
++                       vdd_gpu_s0: vdd_gpu_mem_s0: dcdc-reg1 {
+                                regulator-name = "vdd_gpu_s0";
+                                regulator-boot-on;
+                                regulator-min-microvolt = <550000>;
+
+Note that this only fixes the issue for the Orange Pi 5. If we want
+to go further, the same approach should be applied to many other boards
+as well. I can generate a list of the DT files (using a simple Python
+script) that need this update over the weekend.
+
+If we want to go even further and fix all DT files to properly include
+sram-supply we could also enforce that DT files do not omit sram-supply
+in the future. I am not sure this is strictly necessary but it also
+doesn't seem consistent to leave things as they are. Right now, some DT
+files include sram-supply even when there is no separate SRAM rail,
+while others do not. As a result, some boards will continue to print
+that annoying log message.
+
+It's not very clear which approach is best.
