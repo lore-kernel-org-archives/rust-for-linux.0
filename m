@@ -1,223 +1,592 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB818F4FA;
-	Thu, 12 Feb 2026 10:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED5A146588
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 10:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770890895; cv=none; b=FfKqDCb/djO1A2C0ziqZ1+uxNJAeDOz+BTXOMpwFZ1DRRFzoPaRcoYpsamw4GBZYPaB90sCXQhq6l/aiRtQUj8NfAfrANuVcpAt55KbuOPnNf1GI6ktTQ+TVGVuh511F5I4vQBgWggz4Z+TKe0ze4QBf65HlC/69Cpm5mm9kvbA=
+	t=1770891082; cv=none; b=etMdDNkLO9OhVt8xhaK0CylR2eTHvhCEHuunfYDUR8r70l27vwFRoM9iWa7ov9+CtFV/+AXD4WhZY8UPzaxbbSIE3AxiI7Z4E6pWW74b7fyZUis6PkJhYF4Tq+SKyvMKpGiJTpcWjXul34McG82/geRzjUlvYKSn7AxL4NDWPDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770890895; c=relaxed/simple;
-	bh=qPB+/xUaO2BHIvui/E9cRzjBdjbzHXf3E3P+M2lmwgM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=llPyhVWHtj9vpJCRyCI4+voxKuJznD4vbQEK/Kgl7DGkFD9GecH+ZpNXAYULQg964VdktW8V7x1dTjRqdNtV4IiIVswQbZsD1Zt026KzGddL5UrZyRnfNS/nQP9i37oh2L+fAn1CxxgjC+WP5qxp9Rqh+ZWIvYRmtGLyqM+Md8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXmycGC7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770891082; c=relaxed/simple;
+	bh=VprCGkuFxTOByIMTnEJQf/qSW/TfAt3oIFF+fOrLCKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SfPu2uhWWxRiYTUIoBJpY0Hb/F8+P+9+WFhfY2bbVw3jjb1+B1gTVLaOLJ0z14bSlanL9S/OGWOdsw25iBUWtjF9tgQ3J2S4JD+1t0mVY8Vyzu8tfgnshOYWaO6onD7gArQ9Z/AZy6qFv3rwDvDsiaYOM2aH36HJTVtqRHLfa08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=QR4Q5cXm; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXmycGC7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960C4C4CEF7;
-	Thu, 12 Feb 2026 10:08:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770890895;
-	bh=qPB+/xUaO2BHIvui/E9cRzjBdjbzHXf3E3P+M2lmwgM=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=eXmycGC7jHzdOHGBkHxhr/hOTAs2eJbM0TD2D8ZcGa3zTMqMrdsnHPKvtHFOSBOrH
-	 VT9ECudwzzRIvOTBTbPewXfLlTzNVHvH5Tn/Atgn4zRmw7V9Ld/W7/H50nP3gX6xKe
-	 3/JXLdJM5ZNWS34alqu3N+SSELPe+28apjQMYXa+dn+PgPZ2VsOjUHDheDanuYzQi3
-	 OQj0vFKZbdq4g65vEDSlxaZpZDI9UPKkZ+q8AWJv1iD840CRXNZNRtOLyBXapnCcFe
-	 VfW3YSOD0IURZe00EE5r30AtG78M3L6wu3dvgaei/Wo/k5RPPwm2Zu374j5SV3Fol+
-	 Rx7axk/tQQexQ==
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="QR4Q5cXm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1770891078;
+	bh=VprCGkuFxTOByIMTnEJQf/qSW/TfAt3oIFF+fOrLCKI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QR4Q5cXm+3vjKB54R+J3qt96H2yTRdTBjL+RvTh5PP+SufqhI3qt9KTb7BIBqsnmO
+	 pOodo1vgngLUchWoSTRA3AtuHM7DVbm0m7bP4hHZvg94H2PGo+53Qk0nQ2mitY7bLy
+	 7XJnFV/ySaPrVEHOYd20m3fs1M5eypiWJp2fa9j8JwMJ8j9ej58dVZEpaQuhkH9bbj
+	 ydLkahTsy4WcGEJx8AH/DUcf9WO3NYUTSgELT+6WdSxlDiDSYe5kk/gtqMW7m9T3ue
+	 Hl7pzEEbIYUepxZcy8o/pFCAtWETe5r9KjlaAugge3KfOiLDd0E3YO3hpAo2fituq+
+	 gVpUG2umxk52Q==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 52FDF17E110D;
+	Thu, 12 Feb 2026 11:11:18 +0100 (CET)
+Date: Thu, 12 Feb 2026 11:11:13 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ daniel.almeida@collabora.com, aliceryhl@google.com,
+ beata.michalska@arm.com, lyude@redhat.com
+Subject: Re: [PATCH 07/12] drm/tyr: Add generic slot manager
+Message-ID: <20260212111113.68778819@fedora>
+In-Reply-To: <20260212013713.304343-8-deborah.brouwer@collabora.com>
+References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
+	<20260212013713.304343-8-deborah.brouwer@collabora.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Feb 2026 11:08:09 +0100
-Message-Id: <DGCWFFTC3TNK.32I96GCV77PFH@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v4 1/3] rust: kvec: implement shrink_to for KVVec
-Cc: <shivamkalra98@zohomail.in>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=
- <arve@android.com>, "Todd Kjos" <tkjos@android.com>, "Christian Brauner"
- <brauner@kernel.org>, "Carlos Llamas" <cmllamas@google.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Shivam Kalra via B4 Relay"
- <devnull+shivamkalra98.zohomail.in@kernel.org>
-References: <20260212-binder-shrink-vec-v3-v4-0-bd02f06bf2cd@zohomail.in>
- <20260212-binder-shrink-vec-v3-v4-1-bd02f06bf2cd@zohomail.in>
-In-Reply-To: <20260212-binder-shrink-vec-v3-v4-1-bd02f06bf2cd@zohomail.in>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu Feb 12, 2026 at 9:17 AM CET, Shivam Kalra via B4 Relay wrote:
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index ac8d6f763ae81..8524f9f3dff0a 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -9,7 +9,7 @@
->  };
->  use crate::{
->      fmt,
-> -    page::AsPageIter, //
-> +    page::{AsPageIter, PAGE_SIZE},
+On Wed, 11 Feb 2026 17:37:08 -0800
+Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 
-Please keep the kernel import style [1].
-
-[1] https://docs.kernel.org/rust/coding-guidelines.html#imports
-
->  };
->  use core::{
->      borrow::{Borrow, BorrowMut},
-> @@ -734,6 +734,82 @@ pub fn retain(&mut self, mut f: impl FnMut(&mut T) -=
-> bool) {
->          self.truncate(num_kept);
->      }
->  }
-> +// TODO: This is a temporary KVVec-specific implementation. It should be=
- replaced with a generic
-> +// `shrink_to()` for `impl<T, A: Allocator> Vec<T, A>` that uses `A::rea=
-lloc()` once the
-> +// underlying allocators properly support shrinking via realloc.
-> +impl<T> Vec<T, KVmalloc> {
-> +    /// Shrinks the capacity of the vector with a lower bound.
-> +    ///
-> +    /// The capacity will remain at least as large as both the length an=
-d the supplied value.
-> +    /// If the current capacity is less than the lower limit, this is a =
-no-op.
-> +    ///
-> +    /// Shrinking only occurs if the operation would free at least one p=
-age of memory.
-
-Since this is now specific to Vec<T, KVmalloc>, the correct statement would=
- be
-that for kmalloc() allocations realloc() takes the decision and for vmalloc=
-()
-allocations it will only be shrunk if at least one page can be freed. Pleas=
-e
-also add that in the vmalloc() case, we are doing a deep copy.
-
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// // Allocate enough capacity to span multiple pages.
-> +    /// let elements_per_page =3D kernel::page::PAGE_SIZE / core::mem::s=
-ize_of::<u32>();
-> +    /// let mut v =3D KVVec::with_capacity(elements_per_page * 4, GFP_KE=
-RNEL)?;
-> +    /// v.push(1, GFP_KERNEL)?;
-> +    /// v.push(2, GFP_KERNEL)?;
-> +    ///
-> +    /// v.shrink_to(0, GFP_KERNEL)?;
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn shrink_to(&mut self, min_capacity: usize, flags: Flags) -> Re=
-sult<(), AllocError> {
-> +        let target_cap =3D core::cmp::max(self.len(), min_capacity);
+> From: Boris Brezillon <boris.brezillon@collabora.com>
+> 
+> Introduce a generic slot manager to dynamically allocate limited hardware
+> slots to software "seats". It can be used for both address space (AS) and
+> command stream group (CSG) slots.
+> 
+> The slot manager initially assigns seats to its free slots. It then
+> continues to reuse the same slot for a seat, as long as another seat
+> did not start to use the slot in the interim.
+> 
+> When contention arises because all of the slots are allocated, the slot
+> manager will lazily evict and reuse slots that have become idle (if any).
+> 
+> The seat state is protected using the LockedBy pattern with the same lock
+> that guards the SlotManager. This ensures the seat state stays consistent
+> across slot operations.
+> 
+> Hardware specific behaviour can be customized using the slot manager's
+> `SlotOperations` trait.
+> 
+> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> ---
+>  drivers/gpu/drm/tyr/slot.rs | 359 ++++++++++++++++++++++++++++++++++++
+>  drivers/gpu/drm/tyr/tyr.rs  |   1 +
+>  2 files changed, 360 insertions(+)
+>  create mode 100644 drivers/gpu/drm/tyr/slot.rs
+> 
+> diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
+> new file mode 100644
+> index 000000000000..37bf8800a225
+> --- /dev/null
+> +++ b/drivers/gpu/drm/tyr/slot.rs
+> @@ -0,0 +1,359 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
 > +
-> +        if self.capacity() <=3D target_cap {
-> +            return Ok(());
+> +//! Slot management abstraction for limited hardware resources.
+> +//!
+> +//! This module provides a generic [`SlotManager`] that assigns limited hardware
+> +//! slots to logical "seats". A seat represents an entity (such as a vm address
+> +//! space) that needs access to a hardware slot.
+> +//!
+> +//! The [`SlotManager`] tracks slot allocation using sequence numbers to detect
+> +//! when a seat's binding has been invalidated. When a seat requests activation,
+> +//! the manager will either reuse the seat's existing slot (if still valid),
+> +//! allocate a free slot (if any are available), or evict the oldest idle slot if any
+> +//! slots are idle.
+> +//!
+> +//! Hardware-specific behavior is customized by implementing the [`SlotOperations`]
+> +//! trait, which allows callbacks when slots are activated or evicted.
+> +//!
+> +//! This is primarily used for managing address space slots in the GPU, where
+> +//! the number of hardware address space slots is limited.
+
+I'd probably mention that we intend to use it for other stuff (Csg
+slots), hence the generalization done here.
+
+> +//!
+> +//! [SlotOperations]: crate::slot::SlotOperations
+> +//! [SlotManager]: crate::slot::SlotManager
+
+Thanks a lot for adding some docs to my barebone initial implementation
+and fixing the stuff I got wrong along the way. :D
+
+> +#![allow(dead_code)]
+> +
+> +use core::{
+> +    mem::take,
+> +    ops::{
+> +        Deref,
+> +        DerefMut, //
+> +    }, //
+> +};
+> +
+> +use kernel::{
+> +    prelude::*,
+> +    sync::LockedBy, //
+> +};
+> +
+
+Don't know what the doc rules are in rust, but for this sort of generic
+layer, maybe we should provide extensive docs around objects, fields
+and public functions. I see that most struct fields are documented, but
+not the struct themselves. the enum doesn't seem to be documented, and
+some of the public functions are not either. And that's all my fault,
+because I gave you this raw piece of code without much doc (you added a
+lot already). Just saying that, maybe now that things have settled
+down, is a good time to add proper doc where it's missing.
+
+
+/// Seat information.
+///
+/// This can't be accessed directly by the element embedding a `Seat`,
+/// but is used by the generic slot manager logic to control residency
+/// of a certain object on a hardware slot.
+> +pub(crate) struct SeatInfo {
+> +    /// Slot used by this seat.
+       ///
+       /// This index is only valid if the slot pointed by this index
+       /// has its `SlotInfo::seqno` match SeatInfo::seqno. Otherwise,
+       /// it means the object has been evicted from the hardware slot,
+       /// and a new slot needs to be acquired to make this object
+       /// resident again.
+> +    slot: u8,
+> +
+> +    /// Sequence number encoding the last time this seat was active.
+> +    /// We also use it to check if a slot is still bound to a seat.
+> +    seqno: u64,
+> +}
+> +
+
+/// Seat state
+///
+/// This is meant to be embedded in the object that wants to acquire
+/// hardware slots. It also starts in the `Seat::NoSeat` state, and
+/// the slot manager will change the object value when an active/evict
+/// request to is issued. 
+> +#[derive(Default)]
+> +pub(crate) enum Seat {
+> +    #[expect(clippy::enum_variant_names)]
+       /// Resource is not resident.
+       ///
+       /// All objects start with a seat in that state. The seat also
+       /// gets back to that state if the user requests eviction. It
+       /// can also end up in that state next time an operation is done
+       /// on an `Seat::Idle` seat and the slot managers finds out this
+       /// object has been evicted from the slot.
+> +    #[default]
+> +    NoSeat,
+
+       /// Resource is actively used and resident.
+       ///
+       /// When a seat is in that state, it can't be evicted, and the
+       /// slot pointed by `SlotInfo::slot` is guaranteed to be reserved
+       /// for this object as long as the seat stays active.
+> +    Active(SeatInfo),
+
+       /// Resource is idle and might or might not be resident.
+       ///
+       /// When a seat is in that state, we can't know for sure if the
+       /// object is resident or evicted until the next request we issue
+       /// to the slot manager. This tells the slot manager it can
+       /// reclaim the underlying slot if needed.
+       /// In order for the hardware to use this object again, the seat
+       /// needs to be turned into an `Seat::Active` state again
+       /// with a `SlotManager::activate()` call.
+> +    Idle(SeatInfo),
+> +}
+> +
+> +impl Seat {
+       /// Get the slot index this seat is pointing to.
+       ///
+       /// If the seat is not `Seat::Active` we can't trust the
+       /// `SeatInfo`. In that case `None` is returned, otherwise
+       /// `Some(SeatInfo::slot)` is returned.
+> +    pub(super) fn slot(&self) -> Option<u8> {
+> +        match self {
+> +            Self::Active(info) => Some(info.slot),
+> +            _ => None,
 > +        }
+> +    }
+> +}
 > +
-> +        if Self::is_zst() {
-> +            return Ok(());
+
+/// Trait describing the slot-related operations.
+> +pub(crate) trait SlotOperations {
+> +    type SlotData;
+> +
+> +    /// Called when a slot is being activated for a seat.
+> +    ///
+> +    /// This callback allows hardware-specific actions to be performed when a slot
+> +    /// becomes active, such as updating hardware registers or invalidating caches.
+> +    fn activate(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
+> +        Ok(())
+> +    }
+> +
+> +    /// Called when a slot is being evicted and freed.
+> +    ///
+> +    /// This callback allows hardware-specific cleanup when a slot is being
+> +    /// completely freed, either explicitly or when an idle slot is being
+> +    /// reused for a different seat. Any hardware state should be invalidated.
+> +    fn evict(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
+> +        Ok(())
+> +    }
+> +}
+> +
+
+/// Data attached to a slot.
+> +struct SlotInfo<T> {
+> +    /// Type specific data attached to a slot
+> +    slot_data: T,
+> +
+> +    /// Sequence number from when this slot was last activated
+> +    seqno: u64,
+> +}
+> +
+
+/// Slot state.
+> +#[derive(Default)]
+> +enum Slot<T> {
+    /// Slot is free.
+    ///
+    /// All slots start in this state when the slot manager is created.
+> +    #[default]
+> +    Free,
+
+    /// Slot is active.
+    ///
+    /// When is that state, the slot is guaranteed to stay active
+    /// for as long as the resource bound to it has its seat in the
+    /// `Seat::Active` state. No new resource can be bound to it.
+> +    Active(SlotInfo<T>),
+
+    /// Slot is idle.
+    ///
+    /// Happens when the underlying resource has been flagged
+    /// `Seat::Idle`. When in that state, the slot manager is allowed
+    /// to evict the resource and re-assign the slot to someone else.
+    /// This process involves updating the `SlotInfo::seqno` which
+    /// will be checked against the `SeatInfo::seqno` in case the idle
+    /// resource wants to become active again.
+> +    Idle(SlotInfo<T>),
+> +}
+> +
+
+/// Generic slot manager object.
+///
+/// It abstracts away all the churn around activeness/idleness tracking
+/// and let the implementer of the SlotOperations trait focus on how to
+/// make a resource active or evict it.
+> +pub(crate) struct SlotManager<T: SlotOperations, const MAX_SLOTS: usize> {
+> +    /// Manager specific data
+> +    manager: T,
+> +
+> +    /// Number of slots actually available
+> +    slot_count: usize,
+> +
+> +    /// Slots
+> +    slots: [Slot<T::SlotData>; MAX_SLOTS],
+> +
+> +    /// Sequence number incremented each time a Seat is successfully activated
+> +    use_seqno: u64,
+> +}
+> +
+> +// A `Seat` protected by the same lock that is used to wrap the `SlotManager`.
+
+Should this be
+
+/// A `Seat` ....
+
+?
+
+> +type LockedSeat<T, const MAX_SLOTS: usize> = LockedBy<Seat, SlotManager<T, MAX_SLOTS>>;
+> +
+> +impl<T: SlotOperations, const MAX_SLOTS: usize> Unpin for SlotManager<T, MAX_SLOTS> {}
+
+Do we really need to explicitly flag this type Unpin? I thought this
+was the default if the struct is not pinned (and it's not AFAICT).
+
+> +
+> +impl<T: SlotOperations, const MAX_SLOTS: usize> SlotManager<T, MAX_SLOTS> {
+    /// Creates a new slot manager.
+> +    pub(crate) fn new(manager: T, slot_count: usize) -> Result<Self> {
+> +        if slot_count == 0 {
+> +            return Err(EINVAL);
 > +        }
-
-We should check for is_vmalloc_addr() here and just call realloc() if it is
-false.
-
-The reason is that this will ensure that the semantics of this function wil=
-l be
-as close as possible to the final implementation, which will fully rely on
-realloc().
-
-I also understand that calling realloc() if !is_vmalloc_addr() seems
-superfluous, but I don't want this code to make assumptions about the seman=
-tics
-of the backing allocators.
-
-> +        // Only shrink if we would free at least one page.
-> +        let current_size =3D self.capacity() * core::mem::size_of::<T>()=
-;
-> +        let target_size =3D target_cap * core::mem::size_of::<T>();
-> +        let current_pages =3D current_size.div_ceil(PAGE_SIZE);
-> +        let target_pages =3D target_size.div_ceil(PAGE_SIZE);
-> +
-> +        if current_pages <=3D target_pages {
-> +            return Ok(());
+> +        if slot_count > MAX_SLOTS {
+> +            return Err(EINVAL);
 > +        }
+> +        Ok(Self {
+> +            manager,
+> +            slot_count,
+> +            slots: [const { Slot::Free }; MAX_SLOTS],
+> +            use_seqno: 1,
+> +        })
+> +    }
 > +
-> +        if target_cap =3D=3D 0 {
-> +            if !self.layout.is_empty() {
-> +                // SAFETY: `self.ptr` was allocated with `KVmalloc`, lay=
-out matches.
-> +                unsafe { KVmalloc::free(self.ptr.cast(), self.layout.int=
-o()) };
+> +    fn record_active_slot(
+> +        &mut self,
+> +        slot_idx: usize,
+> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
+> +        slot_data: T::SlotData,
+> +    ) -> Result {
+> +        let cur_seqno = self.use_seqno;
+> +
+> +        *locked_seat.access_mut(self) = Seat::Active(SeatInfo {
+> +            slot: slot_idx as u8,
+> +            seqno: cur_seqno,
+> +        });
+> +
+> +        self.slots[slot_idx] = Slot::Active(SlotInfo {
+> +            slot_data,
+> +            seqno: cur_seqno,
+> +        });
+> +
+> +        self.use_seqno += 1;
+> +        Ok(())
+> +    }
+> +
+> +    fn activate_slot(
+> +        &mut self,
+> +        slot_idx: usize,
+> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
+> +        slot_data: T::SlotData,
+> +    ) -> Result {
+> +        self.manager.activate(slot_idx, &slot_data)?;
+> +        self.record_active_slot(slot_idx, locked_seat, slot_data)
+> +    }
+> +
+> +    fn allocate_slot(
+> +        &mut self,
+> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
+> +        slot_data: T::SlotData,
+> +    ) -> Result {
+> +        let slots = &self.slots[..self.slot_count];
+> +
+> +        let mut idle_slot_idx = None;
+> +        let mut idle_slot_seqno: u64 = 0;
+> +
+> +        for (slot_idx, slot) in slots.iter().enumerate() {
+> +            match slot {
+> +                Slot::Free => {
+> +                    return self.activate_slot(slot_idx, locked_seat, slot_data);
+> +                }
+> +                Slot::Idle(slot_info) => {
+> +                    if idle_slot_idx.is_none() || slot_info.seqno < idle_slot_seqno {
+> +                        idle_slot_idx = Some(slot_idx);
+> +                        idle_slot_seqno = slot_info.seqno;
+> +                    }
+> +                }
+> +                Slot::Active(_) => (),
 > +            }
-> +            self.ptr =3D NonNull::dangling();
-> +            self.layout =3D ArrayLayout::empty();
-> +            return Ok(());
 > +        }
 > +
-> +        // SAFETY: `target_cap <=3D self.capacity()` and original capaci=
-ty was valid.
-> +        let new_layout =3D unsafe { ArrayLayout::<T>::new_unchecked(targ=
-et_cap) };
+> +        match idle_slot_idx {
+> +            Some(slot_idx) => {
+> +                // Lazily evict idle slot just before it is reused
+> +                if let Slot::Idle(slot_info) = &self.slots[slot_idx] {
+> +                    self.manager.evict(slot_idx, &slot_info.slot_data)?;
+> +                }
+> +                self.activate_slot(slot_idx, locked_seat, slot_data)
+> +            }
+> +            None => {
+> +                pr_err!(
+> +                    "Slot allocation failed: all {} slots in use\n",
+> +                    self.slot_count
+> +                );
+> +                Err(EBUSY)
+> +            }
+> +        }
+> +    }
 > +
-> +        // TODO: Once vrealloc supports in-place shrinking (mm/vmalloc.c=
-:4316), this
-> +        // explicit alloc+copy+free can potentially be replaced with rea=
-lloc.
-
-I'd drop this comment as it reads as if this function should be changed, ev=
-en
-though the TODO comment above already explains that it should be replaced.
-
-> +        let new_ptr =3D KVmalloc::alloc(new_layout.into(), flags, NumaNo=
-de::NO_NODE)?;
+> +    fn idle_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
+> +        let slot = take(&mut self.slots[slot_idx]);
 > +
-> +        // SAFETY: Both pointers are valid, non-overlapping, and properl=
-y aligned.
-
-If a safety comment justifies multiple things, we usually structure it as a
-list.
-
-> +        unsafe {
-> +            ptr::copy_nonoverlapping(self.as_ptr(), new_ptr.as_ptr().cas=
-t::<T>(), self.len);
-
-NIT: Please move the semicolon at the end of the unsafe block.
-
+> +        if let Slot::Active(slot_info) = slot {
+> +            self.slots[slot_idx] = Slot::Idle(SlotInfo {
+> +                slot_data: slot_info.slot_data,
+> +                seqno: slot_info.seqno,
+> +            })
+> +        };
+> +
+> +        *locked_seat.access_mut(self) = match locked_seat.access(self) {
+> +            Seat::Active(seat_info) | Seat::Idle(seat_info) => Seat::Idle(SeatInfo {
+> +                slot: seat_info.slot,
+> +                seqno: seat_info.seqno,
+> +            }),
+> +            Seat::NoSeat => Seat::NoSeat,
+> +        };
+> +        Ok(())
+> +    }
+> +
+> +    fn evict_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
+> +        match &self.slots[slot_idx] {
+> +            Slot::Active(slot_info) | Slot::Idle(slot_info) => {
+> +                self.manager.evict(slot_idx, &slot_info.slot_data)?;
+> +                take(&mut self.slots[slot_idx]);
+> +            }
+> +            _ => (),
 > +        }
 > +
-> +        // SAFETY: `self.ptr` was allocated with `KVmalloc`, layout matc=
-hes.
-
-Same here.
-
-> +        unsafe { KVmalloc::free(self.ptr.cast(), self.layout.into()) };
+> +        *locked_seat.access_mut(self) = Seat::NoSeat;
+> +        Ok(())
+> +    }
 > +
-> +        // SAFETY: `new_ptr` is non-null because `KVmalloc::alloc` succe=
-eded.
-> +        self.ptr =3D unsafe { NonNull::new_unchecked(new_ptr.as_ptr().ca=
-st::<T>()) };
-> +        self.layout =3D new_layout;
+> +    // Checks and updates the seat state based on the slot it points to
+> +    // (if any). Returns a Seat with a value matching the slot state.
+> +    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Seat {
+> +        let new_seat = match locked_seat.access(self) {
+> +            Seat::Active(seat_info) => {
+> +                let old_slot_idx = seat_info.slot as usize;
+> +                let slot = &self.slots[old_slot_idx];
+> +
+> +                if kernel::warn_on!(
+> +                    !matches!(slot, Slot::Active(slot_info) if slot_info.seqno == seat_info.seqno)
+> +                ) {
+> +                    Seat::NoSeat
+> +                } else {
+> +                    Seat::Active(SeatInfo {
+> +                        slot: seat_info.slot,
+> +                        seqno: seat_info.seqno,
+> +                    })
+> +                }
+> +            }
+> +
+> +            Seat::Idle(seat_info) => {
+> +                let old_slot_idx = seat_info.slot as usize;
+> +                let slot = &self.slots[old_slot_idx];
+> +
+> +                if !matches!(slot, Slot::Idle(slot_info) if slot_info.seqno == seat_info.seqno) {
+> +                    Seat::NoSeat
+> +                } else {
+> +                    Seat::Idle(SeatInfo {
+> +                        slot: seat_info.slot,
+> +                        seqno: seat_info.seqno,
+> +                    })
+> +                }
+> +            }
+> +
+> +            _ => Seat::NoSeat,
+> +        };
+> +
+> +        // FIXME: Annoying manual copy. The original idea was to not add Copy+Clone to SeatInfo,
+> +        // so that only slot.rs can change the seat state, but there might be better solutions
+> +        // to prevent that.
+
+Okay, I guess we want some inputs from Daniel and/or Alice on that one.
+
+> +        match &new_seat {
+> +            Seat::Active(seat_info) => {
+> +                *locked_seat.access_mut(self) = Seat::Active(SeatInfo {
+> +                    slot: seat_info.slot,
+> +                    seqno: seat_info.seqno,
+> +                })
+> +            }
+> +            Seat::Idle(seat_info) => {
+> +                *locked_seat.access_mut(self) = Seat::Idle(SeatInfo {
+> +                    slot: seat_info.slot,
+> +                    seqno: seat_info.seqno,
+> +                })
+> +            }
+> +            _ => *locked_seat.access_mut(self) = Seat::NoSeat,
+> +        }
+> +
+> +        new_seat
+> +    }
+> +
+
+    /// Make a resource active on any available/reclaimable slot.
+    ///
+    /// Will return an error if no slot is available/reclaimable, or if
+    /// the reclaim failed.
+> +    pub(crate) fn activate(
+> +        &mut self,
+> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
+> +        slot_data: T::SlotData,
+> +    ) -> Result {
+> +        let seat = self.check_seat(locked_seat);
+> +        match seat {
+> +            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
+> +                // With lazy eviction, if seqno matches, the hardware state is still
+> +                // valid for both Active and Idle slots, so just update our records
+> +                self.record_active_slot(seat_info.slot as usize, locked_seat, slot_data)
+> +            }
+> +            _ => self.allocate_slot(locked_seat, slot_data),
+> +        }
+> +    }
+> +
+    /// Flag a resource idle.
+    ///
+    /// The slot manager can decide to reclaim the slot this resource
+    /// was bound to at any point after function returns.
+> +    // The idle() method will be used when we start adding support for user VMs
+> +    #[expect(dead_code)]
+> +    pub(crate) fn idle(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
+> +        let seat = self.check_seat(locked_seat);
+> +        if let Seat::Active(seat_info) = seat {
+> +            self.idle_slot(seat_info.slot as usize, locked_seat)?;
+> +        }
+> +        Ok(())
+> +    }
+> +
+> +    /// Evict a seat from its slot, freeing up the hardware resource.
+
+I think I'd go:
+
+    /// Evict a resource from its slot, and make this slot free again
+    /// for other users.
+
+> +    pub(crate) fn evict(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
+> +        let seat = self.check_seat(locked_seat);
+> +
+> +        match seat {
+> +            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
+> +                let slot_idx = seat_info.slot as usize;
+> +
+> +                self.evict_slot(slot_idx, locked_seat)?;
+> +            }
+> +            _ => (),
+> +        }
 > +
 > +        Ok(())
 > +    }
 > +}
-> =20
->  impl<T: Clone, A: Allocator> Vec<T, A> {
->      /// Extend the vector by `n` clones of `value`.
->
-> --=20
-> 2.43.0
+> +
+> +impl<T: SlotOperations, const MAX_SLOTS: usize> Deref for SlotManager<T, MAX_SLOTS> {
+> +    type Target = T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.manager
+> +    }
+> +}
+> +
+> +impl<T: SlotOperations, const MAX_SLOTS: usize> DerefMut for SlotManager<T, MAX_SLOTS> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        &mut self.manager
+> +    }
+> +}
+> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+> index 6eaa2135fe07..f54b997355e0 100644
+> --- a/drivers/gpu/drm/tyr/tyr.rs
+> +++ b/drivers/gpu/drm/tyr/tyr.rs
+> @@ -12,6 +12,7 @@
+>  mod gem;
+>  mod gpu;
+>  mod regs;
+> +mod slot;
+>  
+>  kernel::module_platform_driver! {
+>      type: TyrPlatformDeviceData,
 
