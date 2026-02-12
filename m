@@ -1,330 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADC22253FF;
-	Thu, 12 Feb 2026 13:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770903504; cv=none; b=tI3TxwL19LQ+4bN6HCjWAPqJpBPS3UI2hAtZV/TqxXDhkV7T35kcLl9GYjIyrwqqz+YFwsB1GzaoMAogxtbJpvE++ttINRj6ekJmMit6HznHX+Bq0+VThgvwmEH3rbWvpI/l6v2/7u+4EMfRifK55jb1pZKbkev2F5XJUWYeyaE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770903504; c=relaxed/simple;
-	bh=rllsvS5vCvLouAChQEOMtRmUwKUDPEURx2urJ+uvPlY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jsCZJP3+YP1lHT7VqfwFE7j4yIrNzvCwp3v47EalbH4u7yXGEYZPRzMAGpKrSFrwX3/ELAZZWjKUnx9yraQ/BQ3X/voVg4qXQTxYctM38lcdrNwuPFlqqcT4+FQk+0kMWAocWW+qYylSafeegSTX3eCoBsDh3UivCslgJ9CsA+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dkvdZmwM; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3864435BDDC
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 13:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770903545; cv=pass; b=su6+u+pSmmbRkXtkyQPLNL2IoXMkediK0vQGIM8XNpMl933UVw2+oIC+AHDQVaE3vCtUG4DWSI4uBfnJFzfHvsyV9i/dgvMu7PfXtyb3/tEBd8CW8Vw1ESbGsUsuQDhVlc1ilmQjJGA7bj1eJtzhAxcnL0U/x+Ud11+pVLNt+iU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770903545; c=relaxed/simple;
+	bh=QKp90P+Dc8pDTwE+OqIi6Hys4inEx50M9pXSa1Wb6oM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tya84B9FOWObtg8qfHQ1+TW0BXWLAgWvP0FoZa6vNw98GAwp7FJQ10oCTIwiRMWWDvvmeSzjACFEmp+zeWeEpucNOnmGYhKH95z5mxbj8ReAjmxyv8V0PtUYnqp2fEEEFLPviQPsBJutZPofKKMhN+D/CoSG9x3P1ksbbxNF9o0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OYIKm5tw; arc=pass smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dkvdZmwM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C76C4CEF7;
-	Thu, 12 Feb 2026 13:38:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770903503;
-	bh=rllsvS5vCvLouAChQEOMtRmUwKUDPEURx2urJ+uvPlY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dkvdZmwMXBcBLaDqhrvu5KUcJ+JYQqpgg3sgFG+oGJeT7Adm+RMikI/+UKfn4xr+4
-	 72u7NAh2eFOOL+ZwVSRtIL+cksx5baiKTWNH197JEW0XnKvoCpzjsV/A5uDekKqHhb
-	 e2DpXAosQE5kKHUym/sNk1Y6evumdwGveIqZnJFbSPohj1fV1JxAlZvrcJtKrop9tP
-	 jr3OtAwdWZ/CNfjiiDUM6dyuPfeDfOF2UXMOu3mX0qp2vrxbT9y9w4a6hgf5KdfiCe
-	 6B+fKnUuMApKQk3XFo+tWM/gS8n9223P30NhMdU0H0ilMDospXdcKn3wpSkMiFPDtp
-	 KnYddVCDt5rNw==
-Date: Thu, 12 Feb 2026 14:38:20 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org, 
-	linux-pwm@vger.kernel.org, linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
-Message-ID: <20260212-lumpy-uptight-petrel-cac725@houat>
-References: <20260119-weightless-pelican-of-anger-190db0@houat>
- <DFSN4FDCYHMW.3J3237PEBV2ZP@kernel.org>
- <20260122-majestic-masterful-jaguarundi-d0abde@houat>
- <2F3D3A40-6EF9-46FC-A769-E5A3AAF67E65@collabora.com>
- <20260204-nickel-seal-of-poetry-8fdefb@houat>
- <91A92D84-1F2E-45F3-82EC-6A97D32E2A78@collabora.com>
- <20260204-angelic-vermilion-beagle-fd1507@houat>
- <20260209105047.693f2515@fedora>
- <20260211-flawless-feathered-boar-0b87ad@houat>
- <CAH5fLgiQE7mJBpAxv6xTVKKFWadg2GdVe31hRM6gNk3Vah61MA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OYIKm5tw"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2ba76e80509so326198eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 05:39:03 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770903542; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kG8lHhPsZeOIae7NnTY9F6CaPg7xWP8wFlDhpc54y0/KDjTb1Njv1RBUWmzkmMw98T
+         i62aco3KPWT9x3pESh0p3sK4mHNG6A+lARlyzyTkCqdrKVpbZXMPn8ZUh72R2E6JTt4e
+         j28fSfUh03V9yNS7JXawCamWOUUkhxOVwESMorXTbU9d93dPMyZm2osS3zy1Mcpt6OiQ
+         mQjobbUUOnutGpsKGfJLfYKzYGeE3WmgjiMSsTh4KZlqTQZA+c0DXCf0V3Z8oHZ1RZVg
+         /V3U1G3UdxvohcF0bwAvkqXP5cCXsyQLAuZmLgEgoh/Rs3/ycXmnS5MBJJM3ecGWZYT1
+         DWiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+pzdwIXepqcvBbqWx0mXLhZCkcugB8CcRlbmpxqmrsc=;
+        fh=SYb11o/oqucszhxXYMeFunAUs3UDoYQTAbQn68bP/J4=;
+        b=Ts6LdIZtaf528YL/6vj1lqbGaFxOh9DssCVwczwiKnm4GxgZTOu2/Fp56AY/ZXW2p/
+         BQd9UvcRrOSAc7B6+/NNih63wKyRGfdOv6JOF2CkWmIlWMgvMP4T0fbLaSnmHPw5AEWe
+         SYcD9dGo0ZVJC9XWqpRmVLi6MDdyczOo6WGh12Gu+BKcDYWNRsC8/JPOLGBxi6jLRAor
+         NiV5QuFzNgfEmhIeLfs9AiX/0U/WfDUtLCeSZx9NCDKpa6VTODL2db92thS8Vjsr3RKf
+         BARgkP/pC2YyeGCAqzQBbsodxC1s1LyybkRcBvGv/Zhi4GuRlFILUnLfpc1JozQL8hRm
+         FZ5Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770903542; x=1771508342; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+pzdwIXepqcvBbqWx0mXLhZCkcugB8CcRlbmpxqmrsc=;
+        b=OYIKm5twW+nzIK+fT+5Zl0Kh+pI0YB3Y4toJ56bqD6vl16hE52yVnC8kamkZ5q9d3R
+         U7fI3xtstmzTdOm9VX1sXcoed6a+QY4VU1OnTnU/BJ9RtkTaYDNrkfacyfBdux7jqKWT
+         ZwlGQFIgSZA8ZgW74/Z0/Zy5xV4fHeJVM4aY6U7eBOzdvwrJSTaK6vJdEFf+M5LpwGmt
+         rxR3T72Lfg51QDwi2En0k+TGjXmcmLbyOeyUooxr9dwi7jocqgxegkCvPVlwUHpD91zZ
+         WMTVhZsHfDXLQNQe8w5bvNq9bt7B4P+RpY4PglxgNSyprvIz4DQKq7c9VxULsys+ovss
+         qjzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770903542; x=1771508342;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+pzdwIXepqcvBbqWx0mXLhZCkcugB8CcRlbmpxqmrsc=;
+        b=tGUlOrHEIxmE66CaXahwC9564yo6gJU2ek16ON0Na+REtsbczEe51RXie7ineXFUn+
+         VZaJgK6fL2NfAzaG51EjqdM4snNixhrxP/WW7t/dEATdzcyloN7JYh19qGu9ShmStNib
+         b/kfi9i6qU3y2QRI5XystGbTO97fPYlUHs9ZDryjR6xq2WKdmfJzdTjUFE/SxLudFNTB
+         A+1iyp3lC0jKH4EruQP4Awj/JjhDlths/r/I/3E7yg/qMUhu/3Mi+Yf9D59RwddDqfFW
+         V9BQKc5Wr338neDp84V9JBrZlh2X2GpKj/sN17AIm8koPFA1W8IZ2pEkTfMij8v6JCKH
+         dR1A==
+X-Gm-Message-State: AOJu0YwNNl7I2szceQiLyxKZM2RX3DAYc1TltS8qyd7bERQWQnZ+pXwl
+	85GiWh1QhiYxCsKM2Wt5R8PE8nEaUdyawfKvXQWe/OGNq1iOs0vs0HR3EzGP+KtxnymuNyR+hzS
+	8MmgGtD7v3e4rK6S7qEYpdvPTZ+mbZpyhUPFUhqo=
+X-Gm-Gg: AZuq6aJoOeS6E7Me+m4d+cD3WXLXdeMtZvw4rLQiH/vfMJdCUq/af/IC7CvRPd51WD/
+	I9HSQnZEpAT/6IKu+LyiEA+ueg/6D5ExqlHADGj1B/JgjhYR0YFslCxJOvBnUKvvVCobQeYf6OC
+	K/OuwjPpYz6+AImyVxiwrDTj20WFdjEItUmFtQ9K+I+g4lnmGIBKk81xfRevcRCKSu+Bxoxy8UE
+	5l1F9RH6DUZNFqLoPYsqnroz6p8pP6VHelnCmOBdf4SN/oM6rXMpJVxPTCVcMMc3/4riqpq5iWb
+	WxNPSwnouY1dT6L+ioXshHFrv0vLmL6vKT9oQWSq23immGsGMlJTBXgahdsQ55h9TMYMuEaCcOv
+	TzMJe0CRrc+NhluNnMo2CBDjR
+X-Received: by 2002:a05:7301:6506:b0:2ba:7526:f74d with SMTP id
+ 5a478bee46e88-2baa7e6fa09mr586903eec.0.1770903542165; Thu, 12 Feb 2026
+ 05:39:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="txoc7rlouq7hrwvr"
-Content-Disposition: inline
-In-Reply-To: <CAH5fLgiQE7mJBpAxv6xTVKKFWadg2GdVe31hRM6gNk3Vah61MA@mail.gmail.com>
-
-
---txoc7rlouq7hrwvr
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+References: <20260212125427.122362-1-alizainuimx@gmail.com>
+In-Reply-To: <20260212125427.122362-1-alizainuimx@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 12 Feb 2026 14:38:49 +0100
+X-Gm-Features: AZwV_QiTnsLNBEFTRcINNpbOv01_SPlMvt37a8QL2WY4dE6pCvmpMcm6-AxJWv8
+Message-ID: <CANiq72nQKFVVtGs1Ra22D+xqj+f1Xtc-2Xm9aitOuhQ-31o=DA@mail.gmail.com>
+Subject: Re: [PATCH] rust: print: Document SAFETY invariants in
+ rust_fmt_argument and call_printk
+To: Ali Zain <alizainuimx@gmail.com>, Shivendra Sharma <shivendra02467@gmail.com>, 
+	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
-MIME-Version: 1.0
 
-Hi Alice,
+On Thu, Feb 12, 2026 at 1:54=E2=80=AFPM Ali Zain <alizainuimx@gmail.com> wr=
+ote:
+>
+> Replace remaining "SAFETY: TODO" comments with proper explanations.
+>
+> Document why the raw pointer cast to `fmt::Arguments` is valid
+> and clarify the invariants required when calling `_printk`
+> through FFI.
+>
+> This does not change behaviour.
+>
+> Signed-off-by: Ali Zain <alizainuimx@gmail.com>
 
-On Thu, Feb 12, 2026 at 09:16:51AM +0100, Alice Ryhl wrote:
-> On Wed, Feb 11, 2026 at 5:37=E2=80=AFPM Maxime Ripard <mripard@kernel.org=
-> wrote:
-> > On Mon, Feb 09, 2026 at 10:50:47AM +0100, Boris Brezillon wrote:
-> > > On Wed, 4 Feb 2026 15:34:29 +0100
-> > > Maxime Ripard <mripard@kernel.org> wrote:
-> > >
-> > > > On Wed, Feb 04, 2026 at 09:43:55AM -0300, Daniel Almeida wrote:
-> > > > > > I'm probably missing something then, but let's assume you have =
-a driver
-> > > > > > that wants its clock prepared and enabled in an hypothetical en=
-able()
-> > > > > > callback, and disabled / unprepared in a disable() callback.
-> > > > > >
-> > > > > > From a PM management perspective, this usecase makes total sens=
-e, is a
-> > > > > > valid usecase, is widely used in the kernel, and is currently s=
-upported
-> > > > > > by both the C and Rust clk APIs.
-> > > > > >
-> > > > > > The only solution to this you suggested so far (I think?) to im=
-plement
-> > > > > > this on top of the new clk API you propose is to have a driver =
-specific
-> > > > > > enum that would store each of the possible state transition.
-> > > > >
-> > > > > Yes, you need an enum _if_ you want to model transitions at runti=
-me. IIUC you
-> > > > > only need two variants to implement the pattern you described. I =
-do not
-> > > > > consider this  =E2=80=9Cboilerplate=E2=80=9D, but rather a small =
-cost to pay.
-> > > >
-> > > > A maintenance cost to pay by every driver is kind of the textbook
-> > > > definition of boilerplate to me.
-> > > >
-> > > > > I would understand if this was some elaborate pattern that had to=
- be
-> > > > > implemented by all drivers, but a two-variant enum is as
-> > > > > straightforward as it gets.
-> > > >
-> > > > And yet, that framework has dozens of helpers that do not remove
-> > > > anything from drivers but a couple of lines. So surely its users mu=
-st
-> > > > find value in reducing that boilerplate as much as possible. And yo=
-u do
-> > > > implement some of them, so you must find value in that too.
-> > > >
-> > > > > > That's the boilerplate I'm talking about. If every driver wanti=
-ng to
-> > > > > > implement that pattern has to make such an enum, with all the r=
-elevant
-> > > > > > traits implementation that might come with it, we go from an AP=
-I where
-> > > > > > everything works at no-cost from a code-size perspective to a s=
-ituation
-> > > > > > where every driver has to develop and maintain that enum.
-> > > > >
-> > > > > There are no "traits that come with it". It's just an enum, with =
-two
-> > > > > variants.
-> > > > >
-> > > > > > API where everything works at no-cost
-> > > > >
-> > > > > The previous API was far from =E2=80=9Ceverything works=E2=80=9D.=
- It was fundamentally
-> > > > > broken by design in multiple ways, i.e.:
-> > > >
-> > > > Out of context and not what I meant, but ok.
-> > > >
-> > > > > > a) It only keeps track of a count to clk_get(), which means tha=
-t users have
-> > > > > > to manually call disable() and unprepare(), or a variation of t=
-hose, like
-> > > > > > disable_unprepare().
-> > > > > >
-> > > > > > b) It allows repeated calls to prepare() or enable(), but it ke=
-eps no track
-> > > > > > of how often these were called, i.e., it's currently legal to w=
-rite the
-> > > > > > following:
-> > > > > >
-> > > > > > clk.prepare();
-> > > > > > clk.prepare();
-> > > > > > clk.enable();
-> > > > > > clk.enable();
-> > > > > >
-> > > > > > And nothing gets undone on drop().
-> > > > >
-> > > > > IMHO, what we have here is an improvement that has been long over=
-due.
-> > > >
-> > > > Nothing is absolute. It is indeed an improvement on the refcounting=
- side
-> > > > of things and general safety of the API for the general case. I don=
-'t
-> > > > think I ever questionned that.
-> > > >
-> > > > However, for the use-cases we've been discussing (and dozens of dri=
-vers
-> > > > implementing it), it also comes with a regression in the amount of =
-code
-> > > > to create and maintain. They used to be able to only deal with the =
-Clk
-> > > > structure, and now they can't anymore.
-> > > >
-> > > > You might find that neglible, you might have a plan to address that=
- in
-> > > > the future, etc. and that's fine, but if you can't acknowledge that=
- it's
-> > > > indeed happening, there's no point in me raising the issue and
-> > > > continuing the discussion.
-> > >
-> > >
-> > > Okay, let's see if I can sum-up the use case you'd like to support. Y=
-ou
-> > > have some PM hooks, which I'm assuming are (or will be) written in
-> > > rust. It will probably take the form of some Device{Rpm,Pm} trait to
-> > > implement for your XxxDeviceData (Xxx being the bus under which is
-> > > device is) object (since I've only recently joined the R4L effort, I
-> > > wouldn't be surprised if what I'm describing already exists or is
-> > > currently being proposed/reviewed somewhere, so please excuse my
-> > > ignorance if that's the case :-)).
-> > >
-> > > The way I see it, rather than having one enum per clk/regulator/xxx
-> > > where we keep track of each state individually, what we could have is=
- a
-> > >
-> > > trait DevicePm {
-> > >       type ResumedState;
-> > >       type SuspendedState;
-> > >
-> > >       fn resume(&self, state: SuspendedState) -> Result<ResumedState,=
- Error<SuspendedState>>;
-> > >       fn suspend(&self, state: SuspendedState) -> Result<SuspendedSta=
-te, Error<ResumedState>>;
-> > > };
-> > >
-> > > enum DeviceState<T: DevicePm> {
-> > >       Resumed(T::ResumedState),
-> > >       Suspended(T::SuspendedState),
-> > > };
-> > >
-> > > and then in your driver:
-> > >
-> > > MySuspendedDeviceResources {
-> > >       xxx_clk: Clk<Unprepared>,
-> > > };
-> > >
-> > > MyResumedDeviceResources {
-> > >       xxx_clk: Clk<Enabled>,
-> > > };
-> > >
-> > > implem DevicePm for MyDevice {
-> > >       type ResumedState =3D MyResumedDeviceResources;
-> > >       type SuspendedState =3D MySuspendedDeviceResources;
-> > >
-> > >       fn resume(&self, state: SuspendedState) -> Result<ResumedState,=
- Error<SuspendedState>> {
-> > >               // FIXME: error propagation not handled
-> > >               let enabled_clk =3D state.xxx_clk.clone().prepare()?.en=
-able()?;
-> > >
-> > >               Ok(ResumedState {
-> > >                       xxx_clk: enabled_clk,
-> > >               });
-> > >       }
-> > >
-> > >       fn suspend(&self, state: ResumedState) -> Result<SuspendedState=
-, Error<ResumedState>> {
-> > >               // FIXME: error propagation not handled
-> > >               let unprep_clk =3D state.xxx_clk.clone().disable().unpr=
-epare();
-> > >
-> > >               Ok(SuspendedState {
-> > >                       xxx_clk: unprep_clk,
-> > >               });
-> > >       }
-> > > };
-> >
-> > I'm not sure we need to associate this with the suspend/resume state ei=
-ther.
-> >
-> > > With this model, I don't think Daniel's refactor goes in the way of m=
-ore
-> > > generalization at the core level, it's just expressed differently than
-> > > it would be if it was written in C. And I say that as someone who str=
-uggles
-> > > with his C developer bias every time I'm looking at or trying to write
-> > > rust code.
-> > >
-> > > As others have said in this thread (Danilo and Gary), and after having
-> > > played myself with both approaches in Tyr, I do see this shift from m=
-anual
-> > > prepare/enable to an RAII approach as an improvement, so I hope we can
-> > > find a middle-ground where every one is happy.
-> >
-> > I do think we can find a compromise though. Miguel suggested for example
-> > to make the current enable/prepare/disable/unprepare function unsafe,
-> > and that's totally reasonable to me.
-> >
-> > Then we can implement the "managed" clock version on that unsafe API,
-> > and we would end up with a "raw", unsafe, version kind of equivalent to
-> > the one we have today, and where callers would have to justify why their
-> > usage of the API is actually safe, or the new, managed, variant that is
-> > safe and can be easily used by most drivers.
-> >
-> > And we can call these RawClk vs Clk, or Clk vs ManagedClk, or whatever.
-> >
-> > How does that sound?
->=20
-> If you make the raw API unsafe, then that's okay but any use of an
-> unsafe API from a driver will receive very hard scrutiny.
+Thanks! Please see:
 
-And that's totally fair to me. If drivers want to have a more optimal
-but potentially unsafe use of the API, then it should be flagged,
-documented and scrutinized.
+  https://lore.kernel.org/rust-for-linux/20260211182755.82220-1-shivendra02=
+467@gmail.com/
 
-> Yes, there are occasionally good reasons to use unsafe from drivers,
-> but the entire point of this Rust exercise is to isolate unsafe code
-> outside of drivers as much as possible.
-
-So, aside from the risk of fuckups, are you concerned about something
-here? Do you expect that scrutiny to be constly on the maintenance side
-of things?
-
-I guess what I'm asking is: except for the obvious "review" cost
-associated with it, why would that be a probleme if we have, say, a few
-dozen drivers using that unsafe API?
-
-> If Daniel's proposal is inconvenient for some drivers, it would be far
-> better to have a third API that is both safe and convenient for those
-> drivers.
-
-Yeah, I guess I was expecting that one to come after we have a few
-unsafe drivers using it and we do need to consolidate / make it safe.
-
-Anyway, thanks for your answer,
-Maxime
-
---txoc7rlouq7hrwvr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaY3XyAAKCRAnX84Zoj2+
-dlsCAX9YhXML2BwaihExT0HPvJLXsg7BkixgzooQn3BNo99C/1mpiA9oVlfe7oN6
-WtWXkFUBgNp/U2OwfFwHtXpmeiv3x4zUulob7WSFkpPuLmDcuRD2SCrprKpMjAff
-ouyyljoqFw==
-=j/VR
------END PGP SIGNATURE-----
-
---txoc7rlouq7hrwvr--
+Cheers,
+Miguel
