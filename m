@@ -1,138 +1,84 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521261DDA24
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 10:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770893133; cv=pass; b=GdIyi3YetEGwESjNE8asrFain/N1nO4Sm6y1SqmJDC5m7rGHyFG6OM8qaCct40E8kFD64ALuYfPzJB7v9mwPxXSox0QuzTPITkesZooqKK6L+uTwSEYr/6KawZ3K5kMh7VaRIwoeenWJ+gfJoRCQMJoRtneA8PKRIsy8d0twp8Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770893133; c=relaxed/simple;
-	bh=M8TTbL+aY2yUKkHe7XHXPPJX7/sNfOERgWKYT8fIYe4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BaEUvSSO3Wvtl/PNT9/kLVtLk9qgkbsTiXZVpKyla9W5MNn8JBNc1uNMF93Gmoh0nFPISJm3x3sKU5aA5aY0BLHe0lDqJN0iem2XpbtpQ7UNus4WHEVGDH+9kaBKaJh60bbIKMKwWBo8xaHB7yhVPP4KXBJuR4LcwyxGfCCg05Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HdXMnBnB; arc=pass smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443CA31B130;
+	Thu, 12 Feb 2026 10:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770893548; cv=none; b=N0Di9ociOM21y2yJjAqiz+io5M5LwsdZ1ECZBlcfo7ekH/hbwWujK0RxZ8FS58P48ZmhlvsNAVKmOLF/MGg2ObXfBJUpbsdMDIhehVkEYnpU5QRFwzAtweyoWz7qZONip1kBthlANGArFqZTyEVD3KodAaEKrwBDdOSYlTCh2iM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770893548; c=relaxed/simple;
+	bh=9Pyx3FcIrlIeSu7IdkFhtMfJ1XFqoVQj8E3rP5bSCnE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hMlz9qYSByJzL7WZvPBVGTiHVdkq97yWLCcyxOY6YwOXoXUR1YI0LF7VD/gZ/VNbBf3KeXVN031uWP3bk3lJA/VbIaQxYIkEPQRr3Y7isnBtKefOCpcNhQMgEncn3WMip3MYeRUuGYWSsiyLYybPCC3E+TA/KTX1Rxjy/aIprD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JGpBP+sW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HdXMnBnB"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2ba4f9df1b4so291629eec.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 02:45:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770893131; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ux8DL8ABoov9DUfq/e8Q9c6vB/UtnUVFLwLyfUu3KxINK0gP2IHx581u1n08q8iRsM
-         9M4gi0sp3NVCKatOroi3JLlz/W64QSVu0Wr5DUjmWW6phRff8v4e/+4Kn0Vfx+K8ze4j
-         KIic0WqIzKFs2R+pdXDY+k2SMQX7QHS4uO043As6KHVsfU6Uexwaog7zFip4fb/JWLIO
-         NeTxAuTqYkK43YZ6X7UPrrojuIwrmkRrS/6V/9WBnmVJL/jROHhRE4Noj/QJZDaXOqq5
-         Iy64/JJBOY09qnKDYcAz0B9mrPqASb/zuu4dknf8Mhfv0ucTjcEbM4/7GsWJiD5kkEew
-         IyGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=phpZ1LJL4LHD3Xu5bAIFwIXSGa+vgb+4IXaYk+lvQ+c=;
-        fh=r+6L4gMpSGQvkV8c+kk8g8U2cijh3nMJF0tOuJtRshM=;
-        b=HO/f65HgaJBjgJZ5qeuVSJ00T6igXOR0n4ThGTmRcZa3USH3UEp/DxuwUgfwM8Sd+p
-         LGurYkxrXj1LntKVIkR6Xdxna4wbfMSCOQSWC+GBJCUVgDtA3LKj0IDTERo8ROX+goXe
-         LhrCFE6NxDaifufEgIPCJyXHaKkWeOEinnzr8dARXW6wEhoRq8W1ko2gRQkzae4A/uAO
-         hAy19BN/wVfyPNTmxxycsU4IcEEiO/ModBFsq5oUYEp1TZj+EOQ/WZAj/k4MbaHLGisb
-         9wEcmfmrQ8UQTutgfJeBKNPy3ZUtdlrmLTzC26L7PA7IZU2n5hYneVpF5GNDqH07DaRL
-         V0qA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770893131; x=1771497931; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=phpZ1LJL4LHD3Xu5bAIFwIXSGa+vgb+4IXaYk+lvQ+c=;
-        b=HdXMnBnBRyx50HLsBUUt9GmOAr3690IiT+vOIhEpGJTwEyW3AOhI/uwrX4WhRaQZGd
-         sErwk/l4sWWuRDM6ho9DIpI9ywUGsYFe33gVqYqnj8H6qvj8lJs4nBPxmm+M0i+GabM1
-         YeT3emb5wiRgRXfUSncqqI3829tKKpcPuNgPyz3Tov7Jt0jdIKfvchheAMjAG1ot16jD
-         BWoZWZEDrUEqKb3uqGpNsNbcwpNrHMzbFScyQxHwDz/OnORz1j86u84o6l0HXEfPzWV1
-         Tt004zCHCo74Ajo20+4WLQ4PrfqtGALBVM6egNniV+yQci4Yb+XU9FXvE9qqQXq3bcaI
-         92Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770893131; x=1771497931;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=phpZ1LJL4LHD3Xu5bAIFwIXSGa+vgb+4IXaYk+lvQ+c=;
-        b=aMDsgnMdhLzPxCXFXyfi0F/jAlBg8NgX/K/IGCyUGj+ze1lglhvaB4coymykUvhIAd
-         MGY1VtBVzWzgG6Rsf+1uluBf17kSiFvuGe7GoaHEOPame8vXkbZToR7SEcqIE/tvUGPj
-         O/epnZoDiT/5uNOhpUwSH46bH8b6HpqQ290KhGmx2uAEUSl74vIfFD6NQxao6GkfOAma
-         qW1ReV18MlLT3p8z9xeCnA5D6tArJ7x8iDyDEX7YpvrI5AKYYADmIUYX6FKtIFtA3qEY
-         Aiz0jU9rVajnb92cDJGoARKdUmVuUTXV4m+zcBuGuc5f2idiWcRVoTuCdHxb//hGMeql
-         Pk2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUxwvKT8MA7EUyw0K4hWBowtEq+dy4NKSmoi2X4EW+187tayEBA+QY5hsBHDUJlLeK6x6WFHUZNYu2TcUdGjQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK+YSvXSQBzVfibH1wsH3Bx5ZlYpMxVNu+VUWgfv1lb+VCFjdY
-	jDcvGsPHE6nidCvyrHeXhzGmjlXjpitkLB4CgJ0kprHisVtA6pfjCJuRhIPIH5/+/qcKyaBYUZG
-	fygtxx3E3gWlfjtb+Y9vQGfiMgp8tEjU=
-X-Gm-Gg: AZuq6aISjaUlBB8A+B3BSBfbPYd5ASLFts8TiDMZe57D4ZaS4cjYLpTJslEEOtLg7Bt
-	2Ff9YvsOs5awhIr1k/34uC7amL0tXJW0S4cLp+iwlkm+dwd6u3i7p3qtm+jFXdzBfGNoCjM7KEr
-	YY2Jn9wk8SjLHNwhX0EiPHVtPcHtctPB1A2efVO9IjNxaD56vvV7a1C3Y1gGmxa9jIEb2OrhPyg
-	cGSq/bKXmS7usMfEw9Cy+5JKxMM309EwL2DwOhmEjIXoPU8Hv95caCv+OE+apMUnH3c1x/sCBLw
-	RC9VDcPR0FpkuvMUDM+yLJWj7JlnNOo+BKj6oWv1F7VCYAUWl/vIuYLJ4XqlztGsItF3Mo+g/wC
-	OXFdGW7ngx+A2+09Hu4N75Cal
-X-Received: by 2002:a05:7301:1011:b0:2b7:1008:9f2e with SMTP id
- 5a478bee46e88-2baa808a1a0mr502293eec.7.1770893131339; Thu, 12 Feb 2026
- 02:45:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JGpBP+sW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7046DC16AAE;
+	Thu, 12 Feb 2026 10:52:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770893547;
+	bh=9Pyx3FcIrlIeSu7IdkFhtMfJ1XFqoVQj8E3rP5bSCnE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=JGpBP+sWDLYqpKd+0n6IyYuEGPaBwrsrgq5JQr0KEeGvYVS/xpBr4LkEIuvaDCdWL
+	 ROM/xTIWczGVueTKJiSXraBFyEFLasHMYkCCbwXyPWacMsOxoH5Tj/hQxqRRtVo3Zo
+	 T0MVUvqpp4eK+tpfceNSX1b2J4apk2k72Ia2CqTjLaKVp1ge9wx7o3xBG7ksYYpGLp
+	 m/i4UWETP7rmTvSVlXJtMmnOAKwMxN/FvNRipOMlMlKgI+BVtMaZZ5gh1q56L6JTu0
+	 yf0jT1oI3jeZFkJpZKnpoRPKxY3srXx1A7o1tZxhOcJ7rIdRajAR67oTaImMyno00T
+	 LUcvb03S84W7w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, Daniel
+ Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
+In-Reply-To: <87y0kytggx.fsf@kernel.org>
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
+ <q43rzzvpfh6ke74eyn3nypiek2ihaq6nat552asiobqge4vxmn@knwkb5dexnga>
+ <87fr77viat.fsf@t14s.mail-host-address-is-not-set>
+ <fU1FEYt6-SY0KlyJy4VClCr5j6P4d5-wukzc_9TkSDSBuQNlY26xyOIprMbHEVMv-H-nrAJ1iN_9tcfIXEI1iw==@protonmail.internalid>
+ <gta2wjt4tkcvyu7g56gqyipiigbmbk2ca3biqzmxc2npch3rk7@ccwzwgnk7mcz>
+ <87y0kytggx.fsf@kernel.org>
+Date: Thu, 12 Feb 2026 11:52:16 +0100
+Message-ID: <87v7g2tesf.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
- <20260212013713.304343-8-deborah.brouwer@collabora.com> <20260212111113.68778819@fedora>
-In-Reply-To: <20260212111113.68778819@fedora>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 12 Feb 2026 11:45:17 +0100
-X-Gm-Features: AZwV_Qj0hpy9yWpoQU6BD-WczAf3MmOLS9jRC4UWcoe2oNEcIa9_Ve27ZA0Cghs
-Message-ID: <CANiq72na4OjOT+LD4E0oPoPtrV5jJXoApbhoSbVivMDOwhkPMQ@mail.gmail.com>
-Subject: Re: [PATCH 07/12] drm/tyr: Add generic slot manager
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com, 
-	aliceryhl@google.com, beata.michalska@arm.com, lyude@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Feb 12, 2026 at 11:11=E2=80=AFAM Boris Brezillon
-<boris.brezillon@collabora.com> wrote:
->
-> Don't know what the doc rules are in rust, but for this sort of generic
-> layer, maybe we should provide extensive docs around objects, fields
-> and public functions. I see that most struct fields are documented, but
-> not the struct themselves. the enum doesn't seem to be documented, and
-> some of the public functions are not either. And that's all my fault,
-> because I gave you this raw piece of code without much doc (you added a
-> lot already). Just saying that, maybe now that things have settled
-> down, is a good time to add proper doc where it's missing.
+Andreas Hindborg <a.hindborg@kernel.org> writes:
 
-Yeah, documentation is definitely welcome, and will be rendered for
-all crates in the future.
+> As far as I understand, this is a borrow checker limitation. It is easy
+> for us to look at this code and decide that the borrow on line 51 will
+> never alias with the borrow on line 49.
 
-We configure the compiler to require documentation for public items,
-and while it is not enforced for private ones, it is definitely wanted
-and expected unless unreasonable (e.g. too trivial or onerous).
-Examples are also encouraged.
+I did a bit of googling, and this seems to be a well known issue with
+the current implementation of lifetime analysis in the rust compiler.
+Apparently this kind of code used to be OK [1] but the Rust devs decided
+to remove the code that allowed this, because it was causing excessive
+compilation times [2]. The upside is that this is solved by the new
+lifetime analysis implementation called "Polonius" and it is the
+intention to replace the existing implementation with Polonius at some
+point [3].
 
-We generally try to be strict within the `kernel` crate, but we don't
-want to make things too hard either. It is a balance. Subsystems
-should decide on how strict they need/want to be on things like docs
-for private items. Some subsystems define further guidelines/rules,
-e.g. like Nova:
+Best regards,
+Andreas Hindborg
 
-  https://docs.kernel.org/gpu/nova/guidelines.html
+[1] https://github.com/rust-lang/rust/issues/51545
+[2] https://smallcultfollowing.com/babysteps/blog/2018/06/15/mir-based-borrow-check-nll-status-update/
+[3] https://rust-lang.github.io/polonius/current_status.html
 
-A few related notes at (I am writing a "coding guidelines list" to go
-along that document with simple, short notes I have been accumulating
-over the months, and that may also be useful to give to AI review
-tooling):
-
-  https://docs.kernel.org/rust/coding-guidelines.html#code-documentation
-
-I hope that helps.
-
-Cheers,
-Miguel
