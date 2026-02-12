@@ -1,88 +1,97 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C5B3C0C;
-	Thu, 12 Feb 2026 13:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325623EBF1F;
+	Thu, 12 Feb 2026 14:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770904302; cv=none; b=u2JoIK1jUZ84gcHVX4TEk4KWvqT6zCuR+6weZWH9lvtOe/bmRzudeCmGnz7c8KLFBorettpQiDAKy4eY+vNhu0sOteuC5YXfQzC9O1e3FlWHLmR2I2S6NUEFKTKN1c3SAg29IDp7ul73VLX6hfNVBEYBtm6WJdUsSnWPnMN4SKw=
+	t=1770904899; cv=none; b=nL1yv9+zeRlnCJdI4a5FtuemqSsTbativaygAwloPGuyYCYBJJHk6a0Qy2K3C7n2CvRPVfgKyya/mrgme17gVzHmnCoO7Q8zReuhoSKM9L1c5vcn+1nubYJTzW4ZWhI5xDuW6DGLcrqVy24XP9pfafgWphDVqQi4bRjzLW0nt4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770904302; c=relaxed/simple;
-	bh=KXp5PIZr2r6XgFNs8yYqQ4IvMkQUNH8siQN0UWiN4b0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P0LXGxq6iA4N/J5+ZXJ5slXK/g3I7/N6ueWFf5F1cWzNL+K+abWLwab+LBp7LLLO/taoJvS2DPpZmdP+tSG6IgDcDS9Vor6i9Pv7bTHl6bdIitsNt5p3RG1R1z8gUpE3Nh1ZFy/Eb7rQxrHtnKKcK4vWHgLeqKW66kzSoWdV2ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=UZLjdeGi; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1770904899; c=relaxed/simple;
+	bh=q255LW2NGXZnwgvkPm1VB5LcqPE0iLSjOErv9KPVwLg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=qIsgKvJzXZBCCNB/J8zG/KzudnqnL9TseE6LMf834R54iGtAVmeEC9+U4c5avlrI5/zHA2zV0WIxwcciq5iXrrllz7OAz8W15rqjxfVZ6VCUjBLOZunybCKT6EN2GmwfCkeUO48sBfNDE4DH1FYSgrsATpTrSNVZtmzJeDZ6U1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IhB2vmVh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="UZLjdeGi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770904299;
-	bh=KXp5PIZr2r6XgFNs8yYqQ4IvMkQUNH8siQN0UWiN4b0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UZLjdeGiMtMZvtQ72rGmKiH9yzJ4J2ol2Tg4wVI7ScKbt4Q0qciqdzsfnChroOPM1
-	 8U+yXsw+l9pZ41ErP71QygKf/RqzWCZIm+OSJxb5FjlThDF/13Z6FxVbuc5yR8lx9W
-	 sKA56VSF9t+ReCfBJxO4LBGGjgLWKxWL1OM/0t31AMk+rHbT5Xi2GN84RROfe03fhS
-	 6qi5GC4cD7oYV8dJ9ZPUdT5wEdy+VQ9XJD5DupfjrvqTaKibArLD6ljQhOUby64KRZ
-	 b9A/ELZo7p+ojE3ljMB7foLKFh0hvlt85p+RwpJh1yB9FAMp3urCn7y3pdn43ZUq1u
-	 cmGRqSNoR8jLg==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id C870D17E0E90;
-	Thu, 12 Feb 2026 14:51:38 +0100 (CET)
-Date: Thu, 12 Feb 2026 14:51:34 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
- daniel.almeida@collabora.com, aliceryhl@google.com, dakr@kernel.org,
- airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, lgirdwood@gmail.com, ojeda@kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] drm/tyr: make SRAM supply optional like panthor
-Message-ID: <20260212145134.799bb6fa@fedora>
-In-Reply-To: <a76b1e27-87ea-42e0-88f3-0512b2e1ac0b@sirena.org.uk>
-References: <20260212100538.170445-1-work@onurozkan.dev>
-	<20260212100538.170445-2-work@onurozkan.dev>
-	<4b00826f-52b1-48a1-b6b5-70ee62f7c014@sirena.org.uk>
-	<20260212151644.4c179594@nimda>
-	<6704ddce-e0bb-4b50-b81a-a098816f3ba3@sirena.org.uk>
-	<20260212134601.7760f414@fedora>
-	<a76b1e27-87ea-42e0-88f3-0512b2e1ac0b@sirena.org.uk>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IhB2vmVh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816CDC4CEF7;
+	Thu, 12 Feb 2026 14:01:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770904898;
+	bh=q255LW2NGXZnwgvkPm1VB5LcqPE0iLSjOErv9KPVwLg=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=IhB2vmVh93ZzFpYfLyXgfCB1XI973SeOPjXHCjdMvT2tc/eMxFyIfieVCzaYm9z17
+	 phvUwl525/GGPCwGxxssIVFbsLg9YhPKbEE3Q8vslSuE05Ax1ZJpEJPzzXHKmhnDjz
+	 GnNQ/5wPMCZA72tf8pP0BZ818qNi1T/mtVUVSj99ln+pejsM4nmFLFGEZLZffsvtb8
+	 D1hs/Pcb5sezJw9Zk+jcqSLGODjIaeyrlE3lG7EIw7afLqgzfunbQPgLoxpUamwnjH
+	 wYtae+6pWDPbVZD80Fzzap5GAkaWR8AxZZWF6V0PBAZT/zqdZ+13TP1yt0RK5k96Bo
+	 sxC/eW4sbF2Zg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 12 Feb 2026 15:01:31 +0100
+Message-Id: <DGD1E42JOSQ3.28RPL84IP5R9I@kernel.org>
+To: "Maxime Ripard" <mripard@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+Cc: "Boris Brezillon" <boris.brezillon@collabora.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Drew Fustini" <fustini@kernel.org>, "Guo Ren"
+ <guoren@kernel.org>, "Fu Wei" <wefu@redhat.com>,
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, "Michael
+ Turquette" <mturquette@baylibre.com>, "Stephen Boyd" <sboyd@kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-riscv@lists.infradead.org>,
+ <linux-pwm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+References: <20260119-weightless-pelican-of-anger-190db0@houat>
+ <DFSN4FDCYHMW.3J3237PEBV2ZP@kernel.org>
+ <20260122-majestic-masterful-jaguarundi-d0abde@houat>
+ <2F3D3A40-6EF9-46FC-A769-E5A3AAF67E65@collabora.com>
+ <20260204-nickel-seal-of-poetry-8fdefb@houat>
+ <91A92D84-1F2E-45F3-82EC-6A97D32E2A78@collabora.com>
+ <20260204-angelic-vermilion-beagle-fd1507@houat>
+ <20260209105047.693f2515@fedora>
+ <20260211-flawless-feathered-boar-0b87ad@houat>
+ <DGCAAE4YEDLO.299F5M641E90B@kernel.org>
+ <20260212-obedient-faithful-koel-d8aaf6@houat>
+ <DGCVH2B2OSFR.1C912TO7G7DGL@kernel.org>
+In-Reply-To: <DGCVH2B2OSFR.1C912TO7G7DGL@kernel.org>
 
-On Thu, 12 Feb 2026 13:13:31 +0000
-Mark Brown <broonie@kernel.org> wrote:
+On Thu Feb 12, 2026 at 10:23 AM CET, Danilo Krummrich wrote:
+> In particular, I don't think we need an unsafe API until we see a concret=
+e
+> example where the proposed safe API does not work (and no other safe API =
+would
+> work either).
 
-> On Thu, Feb 12, 2026 at 01:46:01PM +0100, Boris Brezillon wrote:
-> > Mark Brown <broonie@kernel.org> wrote:  
-> 
-> > > The panthor driver is buggy here and should be fixed, the driver should
-> > > treat the supply as mandatory and let the system integration work out
-> > > how it's actually made available.  
-> 
-> > > Trying to open code this just breaks the error handling.  
-> 
-> > Maybe, but the thing is, the DT bindings have been accepted already,
-> > and it's not something we can easily change. What we can do is make this
-> > sram-supply mandatory for new compatibles, but we can't force it on
-> > older/existing SoCs without breaking backward-DT compat.  
-> 
-> In practice you can because we do sub in a dummy regulator for missing
-> supplies, it produces a warning but works fine.  If we didn't do this
-> it'd be basically impossible to add regulator support to anything at any
-> point after the original merge which is clearly not reasonable.
+One additional note for clarification, I'm not saying that I'm against an u=
+nsafe
+API if it is necessary.
 
-Okay, I guess we need to fix panthor then...
+In fact, I have added an unsafe API for drivers myself with the dma::Device
+trait [1]. This was not an easy decision and I discussed this back and fort=
+h
+with a lot of people and, unfortunately, we had to come to the conclusion t=
+hat
+any attempt to make this safe from the Rust side of things would cause
+unreasonable overhead and can't be considered an overall improvement.
 
+But as I said, I am convinced that need clear evidence that an unsafe API i=
+s
+actually needed and that there is no reasonable alternative.
+
+[1] https://rust.docs.kernel.org/kernel/dma/trait.Device.html
