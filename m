@@ -1,216 +1,161 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968EA2770A
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 17:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770919047; cv=pass; b=bZrjiSuYQuMC38nn1PJMRnpK4fyPFvR5w9d55CvNetj41y1Ed67/9A4dPyXWAqxEEv6apA8jd4L5wC7CTaLvU8n6nT8Wbr+6hmBfvnpedR2ZSuzuWK92iPDPD6Ir9JHo/3sOoJOBiW2aKe0zaIWiBc7FSJQnuOBeIC6puCrhucY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770919047; c=relaxed/simple;
-	bh=EhXTKtRF/I3yDPHeGp0rE6kgGjFY0V5i+vd45ZXA93k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HimCIdUVj/h2b4h6/P+DeDZ4SqDIhw/XOmKCGGS9kKtvxegLHo3RL6BJSVs6Dl4uyWjJ5EhLSb889MTWGA9yRX1h+QIHeiQ0CbV/pMgyROgSONGIW6/pVcT7RCv12+gJVkBlsDuJPJYi5psr1TvM/tultpP5jB1CAIH/+TSJDhY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xcMeP+hj; arc=pass smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE49B4A02
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 18:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770919261; cv=none; b=VIBOFur97zUi5/Xr0xmjPtUeCCBGLrXbRRjH+I24kmLmLHvouYG2bblNB1s0bflepnNY2ohgwRS9XVyham23gGcsI1IjNE4HUdMHiwkDKZn7zZyckNg7vhdi5sAXPK8nkJ8d/olJZ1KrVS8p7PXJrUNwj9+tUUkgFRC5k0PiRME=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770919261; c=relaxed/simple;
+	bh=ej0RY+FuHEgA0KT10wzva5i8NGoO/QxeSqlWKr+amPk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lIjtnxUjDi83QFc1laM3pzwMINpNZ7ANIbELvXIEYCG+Sepc8AhQOuERWfoU2pqUDsIY9rhK8LmX+dhV2eUVgNuBhYtDFu3dSZkfPnNhp5rquR3KaDBwnygw3/GZ+BZ/LHsAOEmcG3LSax0PfgU0czp0DyB4zv+Yp9a9Xw7dUrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3W20vMuD; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xcMeP+hj"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-65a3a1740e7so388a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 09:57:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770919044; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kreCnVprjCnQEBAb7LYufzKe9lQeEKK4+kuY60deV/NtbDz40NH3x+4aeBvUvUsczP
-         B1ky4By96ayM16ndkxEro/GeSYvb1ZJoab6RQ8jTWemK0X41sUggPufmgA8GFzjCukIQ
-         pP/9/Y60mpG90/PBdQbCY9WxozHT3iXi2rEZO2uL8q6SkOBLJZCUoDDyJgsybRk7Z2/B
-         b28nmPkz/gRrs66hyc62h87pp8KkrqkluaMK37vvGLez0kDPgXtBXJd1u3qREJUU4cQm
-         fgVG6ceZWto6S4v2PzJMJ7EOOn4e/tJ+kuvpmYtnUHWEPJdkmLjGHxc3b6KMlE5ViWGs
-         +O6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tVlqnetEz8yUwQdQn0ClYH5vWDZI7e3GhL2usHI85V0=;
-        fh=orl5G0MfnX1YyD+KYUl7s3HSaoRhinldlmFbOcJYSJ8=;
-        b=lDYzn2KwFcByKTudUn957A3JyacrlMmxIGrJTV8T/gGU49Dt+jhl4my8R7ZjGnI0Aj
-         OtlMSe0MZtuKjdWm2N3mpSw8dsQ06guDfbpvmCszkMDS0h8h/pVR807aq4o7E6ZPULUw
-         SZ7+3l/RgHi/o8Izo0QHyH0KQqrG7Q6REPaTS5MbkirJ3oQgf1tTO+QDA3Guv3V7DM3j
-         WKD7lF/hqKMaQzTVV/F2FKpvgoAy1rLXH0nJiz0LasqkA/esresZzSNyAclD8LhwKbVE
-         VEe73N5Ch/0Nrm41a7/d2boDyRIBlLrx64pTzd6MdjjYVndqBZ3KzswC8++kANgAURwJ
-         Fy8Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3W20vMuD"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4806b0963a9so3235e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 10:00:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770919044; x=1771523844; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tVlqnetEz8yUwQdQn0ClYH5vWDZI7e3GhL2usHI85V0=;
-        b=xcMeP+hjWHcEjgA90nXluccAEN9Uhfwq5uMkwi0zN7E5Lk2atfiFV8IPNyiWzv4YTQ
-         wxKlINXmEFJTE0gqfpJpF/4Hy3EPc/Sxk2mUBbdPfFn8gtgdZvoyF/pFxnIDSh9QpBek
-         UEA2xMhadMeCrFgnF0ObmMouIcXKnFyNWxxo7CQehEahQHgsEEyK7QzyOH9HO8Ky/Kxo
-         XNkXPsa24VsBGuV84RPGFa3C+Y0nFGdIefA95AFYHh4l0TNSAUQLxe1sIpp16pkQ2y7a
-         ASSmhMt+HTK4vw4YtENKxxOwdOJ/uvBfvPBwQd6cCSQm1xv3EH2VVxdA3K8W3BzdxX2A
-         K1Lw==
+        d=google.com; s=20230601; t=1770919258; x=1771524058; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pl/cLN4GI/TuYiyS1grr0MRZDEkOTzvjCuNXUWtNefA=;
+        b=3W20vMuDtq7cmxy9lA0FYA7cAI5TVzSQ3rKKRmxxAAdpvEoAX74hCvT0FHaG9WKS4T
+         it50EC9iz19MzFCnvn41SpGGiuT6JXHDwWA3IIvGVGMbeIBRY8IZu5DH+E2HuEVwAMSn
+         vZBMwQt2yWHWx9lAq0ui9yUs5Vxfd5iJqc4EkMs1AmpqiY8StyoPcjj6+/f6lBVhjXYm
+         EJqj/UHFxl04X2r0HtUEDnl6hLcDTq0dy4RtFmH1/bbew2YbjvG1QgVsH9EVPNqmO2GZ
+         ZEkvHwCYxJvDJ7AgzJaGyBwBmJ+ns9NTfNRud1gOyXEp/kWXTZd7I5WX6/jU8g9EP90T
+         5kGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770919044; x=1771523844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tVlqnetEz8yUwQdQn0ClYH5vWDZI7e3GhL2usHI85V0=;
-        b=h2Uh6s9PdHGKEv4mwGDrao/CjyS9No5/gLH6OkMYrCedIfwq8oPHtXxU32m9g7H0lz
-         qf9EvM6jCso5EXS8V75h46k20JLOvSRS+BKKxlyX5Na8j1pIVM7Dw09u0DzRvUlYOC37
-         V58lpDDAYRv4pBSPKfeia3JcvhrjuMdUczTxUbEhE8pktvw+7xu0nvb6TyTCJ5k7hCdU
-         5c7uunJ2AFCPZ8E6EMibGchB4kBFdJ1bvSUgG1qAPCqfnKIacmpP8cPODQE4zFUjwE8q
-         GaYK3W6IYahnsenIAULk/CZ93OQHf5qRCNx2GMew29GVRJylQiU7H5D/ZC3c69aOMmxN
-         T63Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVvUA8vIFKmffH+Mu9Z/uJYQPCMEKLrAeYv17+Oi3D2p9A+2e1eJ+k248QUhwoUWMNFRgI/Se/jJ1aEm4dmOA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVEpXxELKBvopTmAgm9t+Mg5MihjTq2U4K/y76St48KlfxCBaz
-	hIbrXxE/w20GzujseVkvd+MycxS3zf4CkfP61uFok4aEUHQ10pCqxhsZC76Wrko27tBvN8EZAQ6
-	cK/t2im+KXNvZkjWwSfK4ray0x59paVQSUPHLc7q5
-X-Gm-Gg: AZuq6aJQdSCPGj3U5epd5zW7jyzYPAF7YlrT3lveIxkEcFjzBF+Z9bcsqI6CiPgvnpG
-	YlOjcs47bX7RJLf3vqQ8Uuk1HazEyLUCQhVC/+xQ6FJCEOYyHqYQWc6NxdGsF0f0TjYT0Aa8uSl
-	4ldK4pF+Gh7FA86QsLxWsoSdIyS9nAu+oUygPup+xpwi3DpXS1SbeHePGbTCmcLkqgJUU5dCX2w
-	QU+dIDkJkGHHMOOmoKsJtjEcdhSWKnvn6278ZR32SkV6BTkrSCwUiVxv3bglJXZlFswvNVgBkNm
-	vMwhXwLEQO9qcsn/T933x13LEc321nmiDAOoDg==
-X-Received: by 2002:a05:6402:3549:b0:659:785c:d3a5 with SMTP id
- 4fb4d7f45d1cf-65b9912a432mr61069a12.8.1770919043418; Thu, 12 Feb 2026
- 09:57:23 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770919258; x=1771524058;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Pl/cLN4GI/TuYiyS1grr0MRZDEkOTzvjCuNXUWtNefA=;
+        b=mQZXMuafpTEHhEje7xHngtmWg9KBfXW/IT6ChucE5YjLgRaLdRohwyNW1/obSFSgQb
+         qtk/zRZ9azi4v6VWjJHNReRMFHskW9LPlkjxbeV3is2F+vzPFQYB0d4DadoTBCEwMLgL
+         Qgw5rWhPp6zWPlAiX6S7PdqytFEbv/0ZBBMgfQSo99+/v1LOJO+54lJum2BEmc1ER0Pi
+         mVnFWc2rfiMVbt01ViDWirc+968DfN3LH7iq9pCzBTH86B3q1nNswdOIE2vtcGKDE8uL
+         BmBMDgJhIlqdHXW/UzLHfxbDV2ynk7EJTYkchaUx+ZxG+Xtxz6RGBv/O8tzt07B8nIok
+         tq7w==
+X-Forwarded-Encrypted: i=1; AJvYcCU8gDqTuhjLm1pBYYe9coL1aXCDsWnzsXHO89k8ESOZbGfhXrVl7/5lN53Q+M9rajtWLSGZkVLfT0XZ2nHpoQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyn7kznP/AQbc5t8fmCv5ZqChf7VwEUrJql2VQACcq+7Ni9WM3C
+	O8XyivNQAPATBjuJjI7w4rzy7ZC/7zHe2qU2jc+dWw2NzAW02oNQ1q6Z2J0kO2DbJg==
+X-Gm-Gg: AZuq6aIk/+0w3AvakW9a128humhibGYcethU14whnf+y53DSZAA1+PV0TMbDNhCl0fg
+	6KFVCs9qeDdLBarp2DkAayEUJWRyo3afBvrJOyYLo1yrVsOg1XNnuOcIxY/RwAUXSi5/L0LPBXX
+	bWmXg0BLR0ISnJgCHu17LW84l3trZJuhvBIan4Q20LpdIKFyp11LQF3/HfjD+yLRAGkufF5Sa6i
+	fSvl8X5PUflahe5B0dFicxdeWNuagoe9fcvGg9Mn0iM9TOH236WekjLb0ir8+AYdlN/CmsPjjGU
+	WK11x1MsyWStI4dQGbIpDZPP8UqbTZ4Iv6Z7wZIJ2PyVJpt7awZmgLqz/kE+sxpRdQrzo7PcG3K
+	Vw3XEBPyZGrxnf05GMwecvZYFjvQDDzBHd9/evCgRklQNTNpKAHS1jsOJX8lc5cng9YnnJ79hn6
+	Bw6t+YUxfbG3cLY6/iTmJSn+XrO8r8km3UuON8LLkzjkrOu+Yp/h4=
+X-Received: by 2002:a05:600c:a14:b0:480:4a7b:228 with SMTP id 5b1f17b1804b1-48366d1fd3amr875395e9.1.1770919257888;
+        Thu, 12 Feb 2026 10:00:57 -0800 (PST)
+Received: from localhost ([2a00:79e0:288a:8:11ea:f041:437e:7de8])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4834d5ebd34sm221155765e9.7.2026.02.12.10.00.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Feb 2026 10:00:56 -0800 (PST)
+From: Jann Horn <jannh@google.com>
+Date: Thu, 12 Feb 2026 19:00:49 +0100
+Subject: [PATCH] rust: task: clarify comments on task UID accessors
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260212-rust-de_thread-v1-1-948f5b992624@google.com> <aY4KTKEeljWt2NfH@tardis.local>
-In-Reply-To: <aY4KTKEeljWt2NfH@tardis.local>
-From: Jann Horn <jannh@google.com>
-Date: Thu, 12 Feb 2026 18:56:47 +0100
-X-Gm-Features: AZwV_Qh8CMbVRGVHCRCHFpXP2aXfkesrZSuIHE2Xk3K6BSrGstsa3RRSbXxjYuw
-Message-ID: <CAG48ez1Gc73rwgC8kY=6mTbx=SjVGT95pbhnjh_RAsvvyNudEg@mail.gmail.com>
-Subject: Re: [PATCH] rust: task: clean up safety issues wrt de_thread()
-To: Boqun Feng <boqun@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <walmeida@microsoft.com>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260212-rust-uid-v1-1-deff4214c766@google.com>
+X-B4-Tracking: v=1; b=H4sIAFAVjmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDI0Mj3aLS4hLd0swU3TTDJONEE9NkCwMLEyWg8oKi1LTMCrBR0bG1tQC
+ m9qX9WgAAAA==
+X-Change-ID: 20260212-rust-uid-f1b3a45c8084
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@google.com>, Carlos Llamas <cmllamas@google.com>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770919252; l=2635;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=ej0RY+FuHEgA0KT10wzva5i8NGoO/QxeSqlWKr+amPk=;
+ b=ffWdWbX4t/7CwCD5OBpKK9/ns/QmKZruw8v3OE9d8/8pcSBK4yUr6RKBu64DgDZB98s6yN+QJ
+ Gpkc4KnHZ4SB4ujrAnC3wiuo12q1RU3mD9beXkKUTmsSHYbJTPyhOtI
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-On Thu, Feb 12, 2026 at 6:13=E2=80=AFPM Boqun Feng <boqun@kernel.org> wrote=
-:
-> On Thu, Feb 12, 2026 at 05:44:15PM +0100, Jann Horn wrote:
-> > (Note: This is not a bugfix, it just cleans up incorrect assumptions.)
-> >
-> > Task::pid() and Task::group_leader() assume that task::pid and
-> > task::group_leader remain constant until the task refcount drops to zer=
-o.
-> >
-> > However, Linux has a special quirk where, when execve() is called by a
-> > thread other than the thread group leader (the main thread), the thread
-> > calling execve() swaps its identity with the thread group leader's,
-> > becoming the new thread group leader. This means task::pid and
-> > task::group_leader can't be assumed to be immutable for non-current tas=
-ks.
-> > (The actual swapping of PIDs is implemented in exchange_tids(); the cha=
-nge
-> > of leadership is in de_thread().)
-> >
-> > For reference, you can see that accessing the ->group_leader of some ra=
-ndom
-> > task requires extra caution in the prlimit64() syscall, which grabs the
-> > tasklist_lock and has a comment explaining that this is done to prevent
-> > races with de_thread().
-> >
->
-> Thank you for the patch. I think it's actually a fix to the API, so we
-> need to Cc: stable here.
+Linux has separate subjective and objective task credentials, see the
+comment above `struct cred`. Clarify which accessor functions operate on
+which set of credentials.
 
-I don't think "a fix to the API" (when talking to a kernel-internal
-API) is a reason why a patch has to go into stable.
+Also document that Task::euid() is a very weird operation. You can see how
+weird it is by grepping for task_euid() - binder is its only user.
+Task::euid() obtains the objective effective UID - it looks at the
+credentials of the task for purposes of acting on it as an object, but then
+accesses the effective UID (which the credentials.7 man page describes as
+"[...] used by the kernel to determine the permissions that the process
+will have when accessing shared resources [...]").
 
-https://docs.kernel.org/process/stable-kernel-rules.html says: "It
-must either fix a real bug that bothers people or just add a device
-ID."
+For context:
+Arguably, binder's use of task_euid() is a theoretical security problem,
+which only has no impact on Android because Android has no setuid binaries
+executable by apps.
+commit 29bc22ac5e5b ("binder: use euid from cred instead of using task")
+fixed that by removing that only user of task_euid(), but the fix got
+reverted in commit c21a80ca0684 ("binder: fix test regression due to
+sender_euid change") because some Android test started failing.
 
-In this case, I don't think the change will cause any actual change in
-userspace-visible behavior; the group_leader() change clearly has no
-effect on behavior because all existing users use it on `current`, and
-the pid() change also seems very unlikely to actually change compiler
-output in a way that makes things less safe.
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+ rust/kernel/task.rs | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-> Could you also split the patches into two? One
-> is moving the `group_leader()` into `CurrentTask` and the other is using
-> *atomic load* to read `pid` (see below)?
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 49fad6de0674..33e6d44b9a15 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -223,14 +223,17 @@ pub fn pid(&self) -> Pid {
+         unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
+     }
+ 
+-    /// Returns the UID of the given task.
++    /// Returns the objective real UID of the given task.
+     #[inline]
+     pub fn uid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_uid` on a valid task.
+         Kuid::from_raw(unsafe { bindings::task_uid(self.as_ptr()) })
+     }
+ 
+-    /// Returns the effective UID of the given task.
++    /// Returns the objective effective UID of the given task.
++    ///
++    /// You should probably not be using this; the effective UID is normally
++    /// only relevant in subjective credentials.
+     #[inline]
+     pub fn euid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_euid` on a valid task.
+@@ -363,7 +366,7 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+ }
+ 
+ impl Kuid {
+-    /// Get the current euid.
++    /// Get the current subjective euid.
+     #[inline]
+     pub fn current_euid() -> Kuid {
+         // SAFETY: Just an FFI call.
 
-I figured these two changes were semantically related enough to go in
-one patch, but sure, I'll split it up.
+---
+base-commit: 192c0159402e6bfbe13de6f8379546943297783d
+change-id: 20260212-rust-uid-f1b3a45c8084
 
-> > Signed-off-by: Jann Horn <jannh@google.com>
-> > ---
-> >  rust/kernel/task.rs | 34 ++++++++++++++++++----------------
-> >  1 file changed, 18 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> > index 49fad6de0674..989165116278 100644
-> > --- a/rust/kernel/task.rs
-> > +++ b/rust/kernel/task.rs
-> > @@ -103,7 +103,7 @@ macro_rules! current {
-> >  unsafe impl Send for Task {}
-> >
-> >  // SAFETY: It's OK to access `Task` through shared references from oth=
-er threads because we're
-> > -// either accessing properties that don't change (e.g., `pid`, `group_=
-leader`) or that are properly
-> > +// either accessing properties that don't change or that are properly
-> >  // synchronised by C code (e.g., `signal_pending`).
-> >  unsafe impl Sync for Task {}
-> >
-> > @@ -204,23 +204,13 @@ pub fn as_ptr(&self) -> *mut bindings::task_struc=
-t {
-> >          self.0.get()
-> >      }
-> >
-> > -    /// Returns the group leader of the given task.
-> > -    pub fn group_leader(&self) -> &Task {
-> > -        // SAFETY: The group leader of a task never changes after init=
-ialization, so reading this
-> > -        // field is not a data race.
-> > -        let ptr =3D unsafe { *ptr::addr_of!((*self.as_ptr()).group_lea=
-der) };
-> > -
-> > -        // SAFETY: The lifetime of the returned task reference is tied=
- to the lifetime of `self`,
-> > -        // and given that a task has a reference to its group leader, =
-we know it must be valid for
-> > -        // the lifetime of the returned task reference.
-> > -        unsafe { &*ptr.cast() }
-> > -    }
-> > -
-> >      /// Returns the PID of the given task.
-> >      pub fn pid(&self) -> Pid {
-> > -        // SAFETY: The pid of a task never changes after initializatio=
-n, so reading this field is
-> > -        // not a data race.
-> > -        unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
-> > +        // SAFETY: The pid of a task almost never changes after initia=
-lization,
-> > +        // so reading this field is usually not a data race.
-> > +        // The exception is a race where the task is part of a process=
- that
-> > +        // goes through execve(), see exchange_tids().
-> > +        unsafe { ptr::addr_of!((*self.as_ptr()).pid).read_volatile() }
->
-> Please use
->
->     Atomic::from_ptr(&raw const (*self.as_ptr()).pid).load(Relaxed)
->
-> here. Or maybe you want to use `atomic_load()` [1]? We should avoid
-> using arbitrary `read_volatile()`.
+--  
+Jann Horn <jannh@google.com>
 
-Ack, I'll change it to a relaxed load.
-
-> [1]: https://lore.kernel.org/rust-for-linux/20260120115207.55318-3-boqun.=
-feng@gmail.com/
