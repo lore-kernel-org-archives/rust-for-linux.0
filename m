@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D5742049
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 01:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6690D1E98EF
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 01:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770860264; cv=pass; b=bOouPxjykGaNIgGUpPxH9zom4AMv1/DpJfstdQNxzrxOAIYAlXimlSV/B+OflYWwjq7O2w49Ju/ydyMWpvSvHqQpkF0k7TYHfCo6xzrznbGfZS+5zZDcYmxJicvEVIIegl+0BsdoI322zDvYxbxldChJzZJ2DN6hGZcs85wDS3s=
+	t=1770860264; cv=pass; b=kPFjtihnG+o6tLIzVKFmOuTDwA1IzIubhqOf4YHjld/xcQIe306VyeR2aXn+8L1LmeYdqea/jWZgTTbp9Pcq8keCQyVypNWkn6ci0khJjAujgxGlu87QSaU6GE+l0iwRu/QZyi/BVZgUsamm08Rn3wz1qIyKDikJk0PrhyMN91w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770860264; c=relaxed/simple;
-	bh=7U/vjIXAGoGIzOnmkiEY28vvMSmszU5IiTtL2aOYCmI=;
+	bh=XrttDPh/+WaudsMHUGqEUa7XEq2rN2LVSf8xrZruiik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmX/fn6JZnQmz7Pyv9udwvpA9QmFMp2kHBe+onoKrjjfOB3ZuMYA3thMcUgQvbUUOgC39+vNYRhO7ca3zuKv+HANOqIwG58fSWbNa/FZAbYXwXmwcspiVJL/pxggf/O/rnyOnB7Xy7AAYB/D07GLQEdbeqgUTBMi15Rv6mcYzls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=hgOZQGzl; arc=pass smtp.client-ip=136.143.188.112
+	 MIME-Version; b=DNRi6YlYlDrD/BNzqm2w1D0nkAJYZ/0uejhR/psS1qH3N4yOQyyBZs2Cx65YIX3tDpZoEMGSGRdgnVlTnSsTmsacN/YRNI2eIY4LuycY7A4MucJ+lCcR9tLAusVcMuUoV5FpPsDnHaCSx36f1dRNEpxMBJ1NHVSLOnJbOICTug4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=fluhAbjt; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="hgOZQGzl"
-ARC-Seal: i=1; a=rsa-sha256; t=1770860255; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="fluhAbjt"
+ARC-Seal: i=1; a=rsa-sha256; t=1770860257; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=n1CzFEGTKviIMX/d15K2//1s9Wv5dTmRu3R9+NQOdFSm3cyPVC7XVgsSwdWA751yL0Qc+n2OFvNFFug3Y3dFYQTzmaS7WTiv+PouCW+7sBxmXmlOIfjrkGevYiTwYi73q6tsJNWIzTJAMKGnRH+tTy/4P6/oWPZqyR7ywc3ysdI=
+	b=nNKwZO+UuomSywQ4STVPvodymuZWJh2MLcZMR+2sNtsQFaBL2M3Xkw/5UwF0plw5Hl4p7J9BY6IrgLS5hFh/ePozEntF2eRhQUX/i5PF66pFuZfntMPgS5NjF5fGUUw37tT6G2nec/ciQtp2SyPFARl5Km5wqcyOMsEKiESNTuA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770860255; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Lez+oPXTsx7GivoupNNO0Y6wKAfdFgOevpV5ZU+wW0M=; 
-	b=TenFGY1TVnJe78lySi7yFk7SyIfS0mfL6oLLGfXbfaHZFhA/1IIn37zTQj2uyCYAmWW64a2SgHMyKTAyiOeaggwkKOFtCyxTl2T26Jk7kshaf5rR6Wtaw977fLXSM7twyTRNIBeibqt4RWZEDvgSAfDXhrSouliuU3k2Vcu9JWY=
+	t=1770860257; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=tABKwkCZarODDg6UBYScq6ItYwlBRtetGE5gJO5m+6Y=; 
+	b=QfwHAdpDB5DmNlPHk0kg3OfHXfvdVS4DLnY7LjJ3S73gWRlFI5v4b1fiWRpEq+fMoFSJZKGvhixsgUnjNnLccIOhtQmc3MvZ0M6D/sUbljodKXZpt4lGpgyS0fG9ddTA1RjcbxHA6G5IUraQGyTjC+FLLDID1nI02di9MlAlKR4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770860255;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770860257;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=Lez+oPXTsx7GivoupNNO0Y6wKAfdFgOevpV5ZU+wW0M=;
-	b=hgOZQGzlxu8ykY8BXzSYLBY4zU+X7LyfJo8HWghvxqCckU1F7oaO83FmNxA0zWmM
-	UOS4zn9hCN5NH8lnW9I/PgBePiwL8F+y8DjqyZYD7y0H/3Y2iAewtRzqjHyf7fVrk4F
-	+MDifukPQDGHCx264QPrbzK5bU1+mM5NiK8u8V0Y=
-Received: by mx.zohomail.com with SMTPS id 1770860253185360.3147245468143;
-	Wed, 11 Feb 2026 17:37:33 -0800 (PST)
+	bh=tABKwkCZarODDg6UBYScq6ItYwlBRtetGE5gJO5m+6Y=;
+	b=fluhAbjteISS3qL23mkDyAFDRiNvnhCT7yKa7U7U1evKNP1j7D8IxqQaJd9+QVqg
+	QBhAHGXBhHLEG0vSlQHfpqlR5KTYt4JmBio9/Vlnrn7ZODvfZWJb2Ktt1ZZd/dTNoav
+	9U9oCL2CscbgM346WqjbjIUQcvCtD9iYvF5izsuo=
+Received: by mx.zohomail.com with SMTPS id 1770860256717140.73848187285262;
+	Wed, 11 Feb 2026 17:37:36 -0800 (PST)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
@@ -45,9 +45,9 @@ Cc: daniel.almeida@collabora.com,
 	beata.michalska@arm.com,
 	lyude@redhat.com,
 	Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH 01/12] drm/tyr: select DRM abstractions in Kconfig
-Date: Wed, 11 Feb 2026 17:37:02 -0800
-Message-ID: <20260212013713.304343-2-deborah.brouwer@collabora.com>
+Subject: [PATCH 03/12] drm/tyr: rename TyrObject to BoData
+Date: Wed, 11 Feb 2026 17:37:04 -0800
+Message-ID: <20260212013713.304343-4-deborah.brouwer@collabora.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260212013713.304343-1-deborah.brouwer@collabora.com>
 References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
@@ -61,57 +61,67 @@ Content-Transfer-Encoding: 8bit
 
 From: Boris Brezillon <boris.brezillon@collabora.com>
 
-When Tyr uses GEM_SHMEM_HELPER and GPUVM, these helpers must be enabled
-or the build will fail with undefined symbol errors like:
-  "ld.lld: error: undefined symbol: drm_gem_shmem_free"
+Currently the GEM inner driver data object is called `TyrObject` which
+is a fairly generic name. To make the code easier to understand,
+rename `TyrObject` to `BoData` so that the name better reflects its
+role.
 
-Introduce DRM_TYR_STATIC_DEPS and have Tyr select the required
-abstractions to ensure that they are enabled when Tyr is built.
-
-Also add MMU and IOMMU dependencies that will be required to boot
-the firmware.
+No functional change is intended.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/Kconfig | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tyr/driver.rs | 4 ++--
+ drivers/gpu/drm/tyr/gem.rs    | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
-index 4b55308fd2eb..c521fbd950ea 100644
---- a/drivers/gpu/drm/tyr/Kconfig
-+++ b/drivers/gpu/drm/tyr/Kconfig
-@@ -1,11 +1,23 @@
- # SPDX-License-Identifier: GPL-2.0 or MIT
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 9bc6ed56c45e..e5eae5a73371 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -36,7 +36,7 @@
  
-+config DRM_TYR_STATIC_DEPS
-+	bool
-+	select DRM_GEM_SHMEM_HELPER
-+	select DRM_GPUVM
-+	help
-+	  Ensure required DRM infrastructure is built-in when enabling Tyr
-+	  even if Tyr is =m
-+
- config DRM_TYR
- 	tristate "Tyr (Rust DRM support for ARM Mali CSF-based GPUs)"
- 	depends on DRM=y
- 	depends on RUST
- 	depends on ARM || ARM64 || COMPILE_TEST
- 	depends on !GENERIC_ATOMIC64  # for IOMMU_IO_PGTABLE_LPAE
-+	depends on MMU
-+	select DRM_TYR_STATIC_DEPS
-+	select IOMMU_IO_PGTABLE_LPAE
-+	depends on IOMMU_SUPPORT
- 	default n
- 	help
- 	  Rust DRM driver for ARM Mali CSF-based GPUs.
-@@ -15,5 +27,5 @@ config DRM_TYR
- 	  Note that the Mali-G68 and Mali-G78, while Valhall architecture, will
- 	  be supported with the panfrost driver as they are not CSF GPUs.
+ use crate::{
+     file::TyrDrmFileData,
+-    gem::TyrObject,
++    gem::BoData,
+     gpu,
+     gpu::GpuInfo,
+     regs, //
+@@ -182,7 +182,7 @@ fn drop(self: Pin<&mut Self>) {}
+ impl drm::Driver for TyrDrmDriver {
+     type Data = TyrDrmDeviceData;
+     type File = TyrDrmFileData;
+-    type Object<R: drm::DeviceContext> = drm::gem::Object<TyrObject, R>;
++    type Object<R: drm::DeviceContext> = drm::gem::Object<BoData, R>;
  
--	  if M is selected, the module will be called tyr. This driver is work
-+	  If M is selected, the module will be called tyr. This driver is work
- 	  in progress and may not be functional.
+     const INFO: drm::DriverInfo = INFO;
+ 
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index c59214e3d0ef..c1208d332dea 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -12,9 +12,9 @@
+ 
+ /// GEM Object inner driver data
+ #[pin_data]
+-pub(crate) struct TyrObject {}
++pub(crate) struct BoData {}
+ 
+-impl gem::DriverObject for TyrObject {
++impl gem::DriverObject for BoData {
+     type Driver = TyrDrmDriver;
+     type Args = ();
+ 
+@@ -23,6 +23,6 @@ fn new<Ctx: DeviceContext>(
+         _size: usize,
+         _args: (),
+     ) -> impl PinInit<Self, Error> {
+-        try_pin_init!(TyrObject {})
++        try_pin_init!(BoData {})
+     }
+ }
 -- 
 2.52.0
 
