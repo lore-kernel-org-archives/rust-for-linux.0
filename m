@@ -1,275 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7892E8DE5
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 16:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB6D35D612
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 16:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770914493; cv=none; b=SR2JiNaoTat0EtnKbzOmKiEI/j7YHlRI/u4M1NMBDd9ae1cz2QcYON3VaNvFl9KQnDMq2E4cSY+bDrWUMzDhfabFfEXpnDzGtMnvXSkdJVDTMANBxPvFvYydw5nYuLdGnFRmmyjAZLu/gW8qlFxdVeRwjJ2RBF0ep12Xr/ffgDs=
+	t=1770914685; cv=none; b=gSoSe83ioBQbzDa5MLSqKjGeDRYjKTh/dIAs5jeUm7LXsRuPNRnn3581xclEUGBaZO3JuQ2+HFSCBO5iSPJEqhAWiLkYzTI1h19zKYrv1UolJy9FMwB0C/tlhYozfrTxALoqoNXJrDkGsnotEimJb9aH9A628MazZ9nd+fTzqQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770914493; c=relaxed/simple;
-	bh=/em0vycJUev//9C294rbUyjSp3KxOkQmJ43mUQLyLvM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fEUKFFoYRbFw/5RGfzeG2b6bkMTgaLbIuSQ18rHRJUg8ym3d+E4b1s5ticqg/gyEmsQKxeMCXrFXKpKpeSP34o8ZfLr+ythcL9RedI+Cf1xT9KvEzVYg+VLqkR6B89SGoGQzlmOJILwX9549J+HJAkHEIQWAL4Y/DXcjSFCNkdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iaQT7wkz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770914685; c=relaxed/simple;
+	bh=fnLASdRdlmo9w5vmeFfi3RRSbxD+NZH2u+fYKknSXzM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=H8UCAbDWSRYf0ZWViI1yXsV8EJ7heePSTlq+N+WivegK4C98K5IN48VUrtgxtH+4BLbgkXmhglZfH7nMnJMeYgH8OLCncwYyeD6flzS0T+3ZZ/bzYPMgasqkZ4ZF0fnzyi8JIe0KvljYh7I0UZggM2KS0jy/8nMOS41IAykt6UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FQHK651e; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iaQT7wkz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F01C4CEF7;
-	Thu, 12 Feb 2026 16:41:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770914493;
-	bh=/em0vycJUev//9C294rbUyjSp3KxOkQmJ43mUQLyLvM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iaQT7wkzliTomkugWH13K4WndQSukQSmwACh+aetI6PP59zOrNNkB0+u8TC7yAvm3
-	 OOt9Kg+qysoWJ8UCikAnDD2kfFhLowWlD0qbcQA+0+cbELdYUDXG8p2yFsaebNFbOE
-	 FwZg9+unhnIQqQxCaseYmflRm6FDFREcQ+A0CiIsU2WkSzow/8r9+8cW13jD7vriHG
-	 WEwYIYKInqno5BIsxs/FkPBHojUxLlA2X1hAYgFn0L/2NXiTc7QcOkn5Ta1k0sgxhG
-	 8PuvEm0adilGkJ+1npNxieQNXOR/gipdner1QQavf989Am/qSfNN1DSaP8H1xNSJiz
-	 GC1S51ISAWDwg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 95F05F4006A;
-	Thu, 12 Feb 2026 11:41:31 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 12 Feb 2026 11:41:31 -0500
-X-ME-Sender: <xms:uwKOaXffM4dwfmVWPaVG5GjQMWrO3ZXcAnD-HJmEFygmVdfw3Y5P9A>
-    <xme:uwKOaZLO06h__nKNxLLPa4nlukmyG1m5x3v6tnlPo1pj4q5us0aA2A8M0chIGA65Y
-    2RjE8fsjuRHPII0-UrbjknNUiJ7QEVBtNxeRWageViPm4hi6oI_tg>
-X-ME-Received: <xmr:uwKOaWq8P_urQ4mt5Heq_ijUOokE5UL5BlD6MqFIP3eFrR6Ql--oY4Sbf3fL6WsRm0c99fbaZBKKLmbeqlpbaH7kSV1XoQkI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdehkeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    elueehtefhtddtgfejvdejueehhfekteevueeuueekgeetieeggeehvdffhefhhfenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
-    rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
-    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudekpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghp
-    thhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpth
-    htoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopeho
-    jhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnrdhfvghnghesgh
-    hmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgt
-    phhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtth
-    hopehlohhsshhinheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:uwKOafVNyP1_fEGhdsBtZ8uW7WbjbwR8Yt3TdFu1fptJeTDTIZlUKQ>
-    <xmx:uwKOaR0C72Qbkg2MBfKH1-VEyz23hFuSdAFcXCOGeuEXwV0AeQ2lxA>
-    <xmx:uwKOaQ2QjmspmBJ_1B4qr_cjYF82HnCYeBlvP7sfi1IFNNzYtCl3Sg>
-    <xmx:uwKOaQkjuj3v8hb20-T4_aKrG9Yid48l5ye_kaVBNEyP8MH5twrKyQ>
-    <xmx:uwKOaROYIQA5q-Pp9iDjMU1mknYd5BX5K8_Kb3BcFMRjpRi7Yo1HdJyX>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Feb 2026 11:41:29 -0500 (EST)
-Date: Thu, 12 Feb 2026 08:41:28 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <aY4CuCtBfkWZne0d@tardis.local>
-References: <20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FQHK651e"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48318d08ec2so68175e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 08:44:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770914666; x=1771519466; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nn7HRp9kZ1ePRvS2UgqTH5jOXAnJnoqPXBxFpVwue5g=;
+        b=FQHK651eFG5AnKq/18Xnt9x6FEOZJeA/rIqnBND1kkxmLLwMHG7csvSkWA6J+kEo1g
+         0SwJC7tOMQ5TX91AqIDdABzxFSbpGWIOLL/4ifb411DHbqX1C1JwQZ9ir8nGwCDHUuXg
+         sMXcvzu80x/zQMgvYX270KG85VTXvRPTxvfzrmgrF2vUUGoKuY2zzj8TO96FZ7hEAU3c
+         F+fmaFNGk0pWVSA0IayxTs8EjJ9303eTEbTo/XnyKEI59P39zhhWB5cwcqdxHNdTATbC
+         lve8MCG8M0F9kAv0wHKAeaShVicMJ07u5edq5gDQAeOVX9KgFps45YvFlzlBXxeXBIM+
+         q2Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770914666; x=1771519466;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nn7HRp9kZ1ePRvS2UgqTH5jOXAnJnoqPXBxFpVwue5g=;
+        b=dxDm6wT/Rt/sbYSo3b1PsRu6Fu5TbfR8DTZG37FXWPmfTXKCcotL+omSRzAMt9FWVn
+         6rYM/DWZAM2Nn3lfny2KOnasgO14MtXe44g3LSqmzE2Ub4Koz5DxezEWLh+AVfpsAgjU
+         3afd2inpYIuW+S4ko1nELynYE/AC6ni6BVDIMdsU2W/cgRVvHfsrauKKrHGqsCtNjxNx
+         ZkAcmEWDUe4iHYMD3E1VurJF9G21gtdPxXHrbBLZkG2J2yGXYKqW9Mu5OeE7jdqBduHl
+         vmTEqy3qe8zWjRmRz8gRUf6M9XdaFkQuUdmxZWoQylVQ4uBxcEuDrXwE6TKEJ4i7LHWk
+         W/Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCXPnzhuJEBSWiGdsGujIV+yX2ip68yQvkun3ercTyGn1pTJXeQwijek4lTfzQNQ0BVJty9x01OSn2nGK4Dlhg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy65cZmZ/VAMlqrDt8iWC3kjdXsLjbnRqFodpcuSZAQHIGMu494
+	Id0SKWdl4gRJeFr3djkLpaZM+9yR0Fv2354J9i2np91mf0CeJtuJ0OvSQkTyBKLB3Q==
+X-Gm-Gg: AZuq6aIckOPzP2Oz+fKun+ZJrFrWX2j0TYD6r7pfT59wbuI5N1QQiKO1ZpZ2iKFj92b
+	D73Rhcur6eSGtbykYRYWXaceVQGGNRwAN+umMSOeowfxTJXQIDldnsF84XrBQpebje3y4qfUrNC
+	gb1uso8YvOkabawt7SQidfFQbIXbW1kR8l35yhwU14OsFPCmBGGwHhgSz9yrzxqn+YhOBjCZTGG
+	sPT4+WUFp+tTmvub2h1hB/dovVtQTggrLbFZJ3iU7gOQue6VHaFwQMS2/wWHsGlliQGFsFHQu2+
+	73yLmiSbcPHjsh5urGjeh7bNZa9AkgFxDVYgbu1KPBF2iymBDSSOeGgyXX0JpNv5ySEWqUAWyvu
+	EdeCsFeuWFibuEFo9u0Qmvp5vYkSxtsU827qY52gx8b9ZOc0Jr+KiIaOgPFRpcEuKH76SuAJyum
+	ylwxTqIZgdVKX+fQKCh8D2Llgl/ca/XsZR0eNVEDbpA4Xs7U5R7kU=
+X-Received: by 2002:a05:600c:8a0a:20b0:477:95a8:3803 with SMTP id 5b1f17b1804b1-48366d58fecmr568465e9.13.1770914665961;
+        Thu, 12 Feb 2026 08:44:25 -0800 (PST)
+Received: from localhost ([2a00:79e0:288a:8:11ea:f041:437e:7de8])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-43783e0196bsm14208731f8f.23.2026.02.12.08.44.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Feb 2026 08:44:25 -0800 (PST)
+From: Jann Horn <jannh@google.com>
+Date: Thu, 12 Feb 2026 17:44:15 +0100
+Subject: [PATCH] rust: task: clean up safety issues wrt de_thread()
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260212-rust-de_thread-v1-1-948f5b992624@google.com>
+X-B4-Tracking: v=1; b=H4sIAF4DjmkC/x3MMQqAMAxA0auUzBbaoIJeRUSqiZpFJa0iiHe3O
+ L7h/wciq3CE1jygfEmUfcvwhYFpDdvCVigb0GHt0KPVMyZLPKRVOZB1gRpflYFpdJCjQ3mW+x9
+ 2/ft+QDGN+mAAAAA=
+X-Change-ID: 20260212-rust-de_thread-0ad9154aedb0
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: Wedson Almeida Filho <walmeida@microsoft.com>, 
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770914662; l=4141;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=fnLASdRdlmo9w5vmeFfi3RRSbxD+NZH2u+fYKknSXzM=;
+ b=bHU6ABu01nN//km96QLGFubDoobsaaIXah5mXJKYiL5NIDOi9+t7JtUsQcseKhOxncbDLFoSF
+ E1oOsakHPGiAONZWR9xD5QAEKXzcjGvKD9XYWuRwEmrMGYCXpKfuFDS
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-On Thu, Feb 12, 2026 at 03:51:24PM +0100, Andreas Hindborg wrote:
-> When copying data from buffers that are mapped to user space, it is
-> impossible to guarantee absence of concurrent memory operations on those
-> buffers. Copying data to/from `Page` from/to these buffers would be
-> undefined behavior if no special considerations are made.
-> 
-> Add methods on `Page` to read and write the contents using byte-wise atomic
-> operations.
-> 
+(Note: This is not a bugfix, it just cleans up incorrect assumptions.)
 
-Thank you, but in this patch we still have "the given IO memory" and use
-memcpy_{from,to}io() as the implementation, is that intended?
+Task::pid() and Task::group_leader() assume that task::pid and
+task::group_leader remain constant until the task refcount drops to zero.
 
-Regards,
-Boqun
+However, Linux has a special quirk where, when execve() is called by a
+thread other than the thread group leader (the main thread), the thread
+calling execve() swaps its identity with the thread group leader's,
+becoming the new thread group leader. This means task::pid and
+task::group_leader can't be assumed to be immutable for non-current tasks.
+(The actual swapping of PIDs is implemented in exchange_tids(); the change
+of leadership is in de_thread().)
 
-> Also improve clarity by specifying additional requirements on
-> `read_raw`/`write_raw` methods regarding concurrent operations on involved
-> buffers.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
-> Changes in v2:
-> - Rewrite patch with byte-wise atomic operations as foundation of operation.
-> - Update subject and commit message.
-> - Link to v1: https://lore.kernel.org/r/20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org
-> ---
->  rust/kernel/page.rs        | 65 ++++++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/sync/atomic.rs | 32 +++++++++++++++++++++++
->  2 files changed, 97 insertions(+)
-> 
-> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> index 432fc0297d4a8..febe9621adee6 100644
-> --- a/rust/kernel/page.rs
-> +++ b/rust/kernel/page.rs
-> @@ -7,6 +7,7 @@
->      bindings,
->      error::code::*,
->      error::Result,
-> +    ffi::c_void,
->      uaccess::UserSliceReader,
->  };
->  use core::{
-> @@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
->      /// # Safety
->      ///
->      /// * Callers must ensure that `dst` is valid for writing `len` bytes.
-> +    /// * Callers must ensure that there are no other concurrent reads or writes to/from the
-> +    ///   destination memory region.
->      /// * Callers must ensure that this call does not race with a write to the same page that
->      ///   overlaps with this read.
->      pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
-> @@ -274,6 +277,34 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
->          })
->      }
->  
-> +    /// Maps the page and reads from it into the given IO memory region using byte-wise atomic
-> +    /// memory operations.
-> +    ///
-> +    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
-> +    /// outside of the page, then this call returns [`EINVAL`].
-> +    ///
-> +    /// # Safety
-> +    /// Callers must ensure that:
-> +    ///
-> +    /// - `dst` is valid for writes for `len` bytes for the duration of the call.
-> +    /// - For the duration of the call, other accesses to the area described by `dst` and `len`,
-> +    ///   must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
-> +    ///   function. Note that if all other accesses are atomic, then this safety requirement is
-> +    ///   trivially fulfilled.
-> +    ///
-> +    /// [`LKMM`]: srctree/tools/memory-model
-> +    pub unsafe fn read_bytewise_atomic(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
-> +        self.with_pointer_into_page(offset, len, move |src| {
-> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then
-> +            // it has performed a bounds check and guarantees that `src` is
-> +            // valid for `len` bytes.
-> +            //
-> +            // There caller guarantees that there is no data race at the source.
-> +            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
-> +            Ok(())
-> +        })
-> +    }
-> +
->      /// Maps the page and writes into it from the given buffer.
->      ///
->      /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
-> @@ -282,6 +313,7 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
->      /// # Safety
->      ///
->      /// * Callers must ensure that `src` is valid for reading `len` bytes.
-> +    /// * Callers must ensure that there are no concurrent writes to the source memory region.
->      /// * Callers must ensure that this call does not race with a read or write to the same page
->      ///   that overlaps with this write.
->      pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Result {
-> @@ -295,6 +327,39 @@ pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Res
->          })
->      }
->  
-> +    /// Maps the page and writes into it from the given IO memory region using byte-wise atomic
-> +    /// memory operations.
-> +    ///
-> +    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
-> +    /// outside of the page, then this call returns [`EINVAL`].
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that:
-> +    ///
-> +    /// - `src` is valid for reads for `len` bytes for the duration of the call.
-> +    /// - For the duration of the call, other accesses to the area described by `src` and `len`,
-> +    ///   must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
-> +    ///   function. Note that if all other accesses are atomic, then this safety requirement is
-> +    ///   trivially fulfilled.
-> +    ///
-> +    /// [`LKMM`]: srctree/tools/memory-model
-> +    pub unsafe fn write_bytewise_atomic(
-> +        &self,
-> +        src: *const u8,
-> +        offset: usize,
-> +        len: usize,
-> +    ) -> Result {
-> +        self.with_pointer_into_page(offset, len, move |dst| {
-> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then it has performed a
-> +            // bounds check and guarantees that `dst` is valid for `len` bytes.
-> +            //
-> +            // There caller guarantees that there is no data race at the destination.
-> +            unsafe { bindings::memcpy_fromio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
-> +            Ok(())
-> +        })
-> +    }
-> +
->      /// Maps the page and zeroes the given slice.
->      ///
->      /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
-> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> index 4aebeacb961a2..8ab20126a88cf 100644
-> --- a/rust/kernel/sync/atomic.rs
-> +++ b/rust/kernel/sync/atomic.rs
-> @@ -560,3 +560,35 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
->          unsafe { from_repr(ret) }
->      }
->  }
-> +
-> +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
-> +///
-> +/// This copy operation is volatile.
-> +///
-> +/// # Safety
-> +///
-> +/// Callers must ensure that:
-> +///
-> +/// - `src` is valid for reads for `len` bytes for the duration of the call.
-> +/// - `dst` is valid for writes for `len` bytes for the duration of the call.
-> +/// - For the duration of the call, other accesses to the areas described by `src`, `dst` and `len`,
-> +///   must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
-> +///   function. Note that if all other accesses are atomic, then this safety requirement is
-> +///   trivially fulfilled.
-> +///
-> +/// [`LKMM`]: srctree/tools/memory-model
-> +pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
-> +    // SAFETY: By the safety requirements of this function, the following operation will not:
-> +    //  - Trap.
-> +    //  - Invalidate any reference invariants.
-> +    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
-> +    //    operation and all operations by the Rust AM to the involved memory areas use byte-wise
-> +    //    atomic semantics.
-> +    unsafe {
-> +        bindings::memcpy(
-> +            dst.cast::<kernel::ffi::c_void>(),
-> +            src.cast::<kernel::ffi::c_void>(),
-> +            len,
-> +        )
-> +    };
-> +}
-> 
-> ---
-> base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
-> change-id: 20260130-page-volatile-io-05ff595507d3
-> 
-> Best regards,
-> -- 
-> Andreas Hindborg <a.hindborg@kernel.org>
-> 
-> 
+For reference, you can see that accessing the ->group_leader of some random
+task requires extra caution in the prlimit64() syscall, which grabs the
+tasklist_lock and has a comment explaining that this is done to prevent
+races with de_thread().
+
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+ rust/kernel/task.rs | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
+
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 49fad6de0674..989165116278 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -103,7 +103,7 @@ macro_rules! current {
+ unsafe impl Send for Task {}
+ 
+ // SAFETY: It's OK to access `Task` through shared references from other threads because we're
+-// either accessing properties that don't change (e.g., `pid`, `group_leader`) or that are properly
++// either accessing properties that don't change or that are properly
+ // synchronised by C code (e.g., `signal_pending`).
+ unsafe impl Sync for Task {}
+ 
+@@ -204,23 +204,13 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
+         self.0.get()
+     }
+ 
+-    /// Returns the group leader of the given task.
+-    pub fn group_leader(&self) -> &Task {
+-        // SAFETY: The group leader of a task never changes after initialization, so reading this
+-        // field is not a data race.
+-        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
+-
+-        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
+-        // and given that a task has a reference to its group leader, we know it must be valid for
+-        // the lifetime of the returned task reference.
+-        unsafe { &*ptr.cast() }
+-    }
+-
+     /// Returns the PID of the given task.
+     pub fn pid(&self) -> Pid {
+-        // SAFETY: The pid of a task never changes after initialization, so reading this field is
+-        // not a data race.
+-        unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
++        // SAFETY: The pid of a task almost never changes after initialization,
++        // so reading this field is usually not a data race.
++        // The exception is a race where the task is part of a process that
++        // goes through execve(), see exchange_tids().
++        unsafe { ptr::addr_of!((*self.as_ptr()).pid).read_volatile() }
+     }
+ 
+     /// Returns the UID of the given task.
+@@ -345,6 +335,18 @@ pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
+         // `release_task()` call.
+         Some(unsafe { PidNamespace::from_ptr(active_ns) })
+     }
++
++    /// Returns the group leader of the current task.
++    pub fn group_leader(&self) -> &Task {
++        // SAFETY: The group leader of the current task never changes in syscall
++        // context (except in the implementation of execve()).
++        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
++
++        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
++        // and given that a task has a reference to its group leader, we know it must be valid for
++        // the lifetime of the returned task reference.
++        unsafe { &*ptr.cast() }
++    }
+ }
+ 
+ // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+
+---
+base-commit: 192c0159402e6bfbe13de6f8379546943297783d
+change-id: 20260212-rust-de_thread-0ad9154aedb0
+
+--  
+Jann Horn <jannh@google.com>
+
