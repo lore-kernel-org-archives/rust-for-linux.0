@@ -1,154 +1,75 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0EA34D4E6
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 12:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86281341AC0;
+	Fri, 13 Feb 2026 12:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770985086; cv=none; b=op0ytR1HCfmvP1fi2SSi1Oy/WwqUX6zKlE51EoKZwxjevszTTnqW3Inx4oQTruJfZ+ss/l0FOTSKusFKOIK3YJ7ILAiLtiGn73en2gUUbFH/icOu7km+7uotwAaCk/aNjQ/Tfzca+aYkx8WD+l1+6+Qo7L6XVpmDyQ6po1nHKiM=
+	t=1770985106; cv=none; b=VghcXPV02ILG12kzIYZZSc341nR2MxkkMArFi+BtM9a25F5TqCtj+V2kNnNBFv6heMHZaDrlO7hxwD9NgUKrEzVe/2iOIXSXlC9ZxjCVdzr1NQLlOKyXV//K1JF40vAL0dfaiIW6Ye/NMtXEyhgsx3F/+wL7gcYCUKZx/tcmIEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770985086; c=relaxed/simple;
-	bh=zJWcTxfnG0dObUscgf5PA0wL77IHDbe6/5EnDU7MIL8=;
+	s=arc-20240116; t=1770985106; c=relaxed/simple;
+	bh=bA9tPEg6F6cMG3yOPhPfdhdYSRsjB1sk7KG03VOonmU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AdJmr5eKxyJeZka+2zKztu/mAebmEp5GZxh2wYD+fuNHCDnOQElTWSJ4JeBqzokdqpRuav7fIDPC5tq29D/Eiq6x4PghKlisM5+2mz+AbG7/EExaWUxWGPEl8pXTBUB3wcGcFCCKH1COsGvLn6ELEKl3BMN9Jn2Rv/IxdVzeTkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 45FEF1576
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 04:17:52 -0800 (PST)
-Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 62E003F632
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 04:17:58 -0800 (PST)
-Date: Fri, 13 Feb 2026 12:15:47 +0000
-From: Liviu Dudau <Liviu.Dudau@arm.com>
-To: Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
-	Mark Brown <broonie@kernel.org>, daniel.almeida@collabora.com,
-	aliceryhl@google.com, dakr@kernel.org, airlied@gmail.com,
-	simona@ffwll.ch, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, lgirdwood@gmail.com, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] drm/tyr: make SRAM supply optional like panthor
-Message-ID: <aY8V8xlTv0UAdyQz@e142607>
-References: <20260212100538.170445-1-work@onurozkan.dev>
- <20260212100538.170445-2-work@onurozkan.dev>
- <4b00826f-52b1-48a1-b6b5-70ee62f7c014@sirena.org.uk>
- <20260212151644.4c179594@nimda>
- <6704ddce-e0bb-4b50-b81a-a098816f3ba3@sirena.org.uk>
- <20260212134601.7760f414@fedora>
- <a76b1e27-87ea-42e0-88f3-0512b2e1ac0b@sirena.org.uk>
- <20260212145134.799bb6fa@fedora>
- <20260212213010.56db1d1d@nimda>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LV9eshw870qrhEJJAebiqGvn68L1UGp33POotnylvkmqbNZCXgqATAdTdgDa58JW+HNGrfVjHY/YO0eOAmi8i3aqlr1CcpPObVCxyX5VCRz8L7jhP5qNotoY7drA/cWCvcAkqLQn0UrsBcmpCkQJiKJZBcLckHfbqzYu0Jn1mOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9c50Un4; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9c50Un4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A39BC116C6;
+	Fri, 13 Feb 2026 12:18:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770985106;
+	bh=bA9tPEg6F6cMG3yOPhPfdhdYSRsjB1sk7KG03VOonmU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z9c50Un4muRZPCMs5BvWijkyktP3vyYCSwbHID+YTQkd8/WSGaF1eeWQdjFZQR9OE
+	 0zLyIVuNR2oq51nOiiR+twpmf/5QWrAHR2wAY39IX+ov9bW/fGCKtMGqipiWpBEjtv
+	 5TkvgfS79LOI0XmGI5yYgNiyopjXp4drKuIoBtzM=
+Date: Fri, 13 Feb 2026 13:18:17 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <2026021343-germicide-baritone-efe8@gregkh>
+References: <20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org>
+ <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260212213010.56db1d1d@nimda>
+In-Reply-To: <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
 
-On Thu, Feb 12, 2026 at 09:30:10PM +0300, Onur Özkan wrote:
-> On Thu, 12 Feb 2026 14:51:34 +0100
-> Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> 
-> > On Thu, 12 Feb 2026 13:13:31 +0000
-> > Mark Brown <broonie@kernel.org> wrote:
+On Fri, Feb 13, 2026 at 10:55:57AM +0100, Peter Zijlstra wrote:
+> On Thu, Feb 12, 2026 at 03:51:24PM +0100, Andreas Hindborg wrote:
+> > When copying data from buffers that are mapped to user space, it is
+> > impossible to guarantee absence of concurrent memory operations on those
+> > buffers. Copying data to/from `Page` from/to these buffers would be
+> > undefined behavior if no special considerations are made.
 > > 
-> > > On Thu, Feb 12, 2026 at 01:46:01PM +0100, Boris Brezillon wrote:
-> > > > Mark Brown <broonie@kernel.org> wrote:  
-> > > 
-> > > > > The panthor driver is buggy here and should be fixed, the
-> > > > > driver should treat the supply as mandatory and let the system
-> > > > > integration work out how it's actually made available.  
-> > > 
-> > > > > Trying to open code this just breaks the error handling.  
-> > > 
-> > > > Maybe, but the thing is, the DT bindings have been accepted
-> > > > already, and it's not something we can easily change. What we can
-> > > > do is make this sram-supply mandatory for new compatibles, but we
-> > > > can't force it on older/existing SoCs without breaking
-> > > > backward-DT compat.  
-> > > 
-> > > In practice you can because we do sub in a dummy regulator for
-> > > missing supplies, it produces a warning but works fine.  If we
-> > > didn't do this it'd be basically impossible to add regulator
-> > > support to anything at any point after the original merge which is
-> > > clearly not reasonable.
-> > 
-> > Okay, I guess we need to fix panthor then...
-> > 
+> > Add methods on `Page` to read and write the contents using byte-wise atomic
+> > operations.
 > 
-> That + updating the log to something like "sram-supply is missing in
-> the DT" would be quite better I think. It would make the issue more
-> obvious and convey that the DT file is expected to configure that field
-> explicitly. With the current log message, not many people will
-> understand the problem at a glance.
+> I'm completely failing to understand. What!?
 > 
-> As for the bug I described in this patch, we can proceed with the
-> alternative solution (updating the DT file) that I mentioned in the
-> Zulip thread (the link is included in the patch). Which is this simple
-> diff:
-> 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
-> b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
-> index dafad29f9854..a30339fd2c10 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
-> @@ -177,6 +177,7 @@ &gmac1_rgmii_clk
-> 
->  &gpu {
->         mali-supply = <&vdd_gpu_s0>;
-> +       sram-supply = <&vdd_gpu_mem_s0>;
->         status = "okay";
->  };
-> 
-> @@ -537,7 +538,7 @@ rk806_dvs3_null: dvs3-null-pins {
->                 };
-> 
->                 regulators {
-> -                       vdd_gpu_s0: dcdc-reg1 {
-> +                       vdd_gpu_s0: vdd_gpu_mem_s0: dcdc-reg1 {
+> There is no such thing as an 'atomic' byte load, nor does it help one
+> whit against concurrent modification of the memory you're copying.
 
-You don't need to define a new label, using the same supply for mali-supply and
-sram-supply should be fine.
+I too am totally confused when reading this patch, and the previous
+ones.  Shouldn't the "normal" copy_from_user() stuff be used here
+correctly?  Why is anything new needed?
 
->                                 regulator-name = "vdd_gpu_s0";
->                                 regulator-boot-on;
->                                 regulator-min-microvolt = <550000>;
-> 
-> Note that this only fixes the issue for the Orange Pi 5. If we want
-> to go further, the same approach should be applied to many other boards
-> as well. I can generate a list of the DT files (using a simple Python
-> script) that need this update over the weekend.
+thanks,
 
-Yes, please, but bias the script towards using the same regulator as mali-supply.
-
-> 
-> If we want to go even further and fix all DT files to properly include
-> sram-supply we could also enforce that DT files do not omit sram-supply
-> in the future. I am not sure this is strictly necessary but it also
-> doesn't seem consistent to leave things as they are. Right now, some DT
-> files include sram-supply even when there is no separate SRAM rail,
-> while others do not. As a result, some boards will continue to print
-> that annoying log message.
-> 
-> It's not very clear which approach is best.
-
-I'm in favor of the proposal here, where we make sram-supply mandatory for non-"mt8196-mali"
-SoCs and we patch the DTs to add the sram-supply for those.
-
-Best regards,
-Liviu
-
-
--- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
+greg k-h
