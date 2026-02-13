@@ -1,279 +1,197 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011012.outbound.protection.outlook.com [52.101.52.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABA53EBF1B;
-	Thu, 12 Feb 2026 23:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA7B4A32;
+	Fri, 13 Feb 2026 00:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770939575; cv=pass; b=Jq3MeSjJpvafB3f4CO/HqAGlhb7X8ByqiKG0CC0SsHGC6BRnZhwIKAlzMi7F/NdqLH4OiMVIwK9X21UwUi7u3iTcBqCzS2bN6HU4HIjjIeXb1BS2WpdxNUUe6id1QuVMyLRmy0gIzNK2kJpu1PdNUUqkg/jKyXCPifddStxagQo=
+	t=1770941369; cv=fail; b=M5YOEJm61+AkOIsy0wtAGHfORNyDX7AAgghNfA8W822HDIA9hbAX/ngfqvTvR6/VJ6hlNrFN9i0fhMdzsxuuBOhEzgme8RNOYbW2Dt//Z5wwylzlO0ygbzWd4gjsou35W8ruItdmidcKd6NSbgE1wgdwFp9MOLWUS45q4auLVho=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770939575; c=relaxed/simple;
-	bh=VdKrPHvd0NL69YFvtj1j9P+6Udm4UkfCgwKFZNO3Jxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QMXGHXR1xAXZxZi9FzLr2OOlLBDKxwYVK932nmPG59wbcxTJexpuZj5djihy3ERLKeKIVvCO1VWfiXbV5gllcNN0KUvgTEnVSU7PS9vKpPy4VV7ahjVBS9Rgzi6JwLJGTIcxt53wpZZ37RY+FdenahsPpLFbMLLx7reoWcBgEX4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=H4Pw6SUO; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1770941369; c=relaxed/simple;
+	bh=79AGYpRW3Jh68y3ujB4BjQUeCI5xwAhLbOgOls6C4Sk=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=ShVQj6oiEQ07a8mAFVAvwHpSZ1zlyfhxkB66QRdg3cNpmEhSzOqQc5RFd2JcLDaE5XuQDeTRs4RorINQi1vZHk313yqAmlY55Zh2/1S4LSGgofKA6BHEGOhBnSb0htKZeM+GP074q0wA0ZkPPIeoDPdzj7Vrdg/TpBVwPhAXRRc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fhXKO5fP; arc=fail smtp.client-ip=52.101.52.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="H4Pw6SUO"
-ARC-Seal: i=1; a=rsa-sha256; t=1770939563; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=MfCz8JVpSV4ma2KPw7fQU/VTe5XqYAu1ZRfOlawlxcUB0gclZMwBan+VaP2NT7ffOr8AqH8Usy3abotpppmybp1/h/kmAzegsDVsNnefPCCAJNJzVHFzKN5mGRcehzTwQQVUlwZI1u/bbVnfTObw385LtyGNMdD2ShsLgoU0jzc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770939563; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=KSGqdwB2INO7AZ5yz2CWObiENSQtPtFcGfPWj50oan0=; 
-	b=Am0Fu0HZbr97j19qFvU5bUK2C419Z6Ehy3+wUvtJPSacwLoQhjMaOWL1paXPcwBkOYGUMhmOzvCdC6hiDZ39f83sWj7iU5Cx2A/d9tSYMFYhx1ND0FFUVTD0SdQbg+ARSoao2VjYDNR904m1opiRouwczvPHD1f2v912f3sH0Wc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770939563;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=KSGqdwB2INO7AZ5yz2CWObiENSQtPtFcGfPWj50oan0=;
-	b=H4Pw6SUO6d57ADm2m8CHAvD7D0SS+G4wclfRgWz74He7rmO1ZRS2zXAEXUTFsHLs
-	0CzIXFZF6CXpYLHQMhjeASrrn3Z05O8pJbN4j5Ch7FmUWXj6VnXeQi7OEK1pOK39EFb
-	hdSrN16lQWOaN1kCCk22iFitC33xld56WwyOF9Vo=
-Received: by mx.zohomail.com with SMTPS id 1770939561006170.56587937999575;
-	Thu, 12 Feb 2026 15:39:21 -0800 (PST)
-Date: Thu, 12 Feb 2026 15:39:20 -0800
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Lyude Paul <lyude@redhat.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
-	nouveau@lists.freedesktop.org, Miguel Ojeda <ojeda@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>, Alice Ryhl <aliceryhl@google.com>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	David Airlie <airlied@gmail.com>, Benno Lossin <lossin@kernel.org>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH v5 1/4] rust/drm: Introduce DeviceContext
-Message-ID: <aY5kqALwqOVl9V7e@um790>
-References: <20260131001602.2095470-1-lyude@redhat.com>
- <20260131001602.2095470-2-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fhXKO5fP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t19Nblr/lJMLKjJJjNqLOhqwjxCMIGyreJQBtBnnMEl3ziBEd3ZlQifZ2G+FZP3IwDB1ye743lLnUsWjd31ixQdD2r75P75m/f3G211mIyWxjgUMPMGd+AFYEs34zh5BjAIQqGDyDt8yNQFJT/+XvmdOA77XR/ya+zGat+Om9myIn6gMuxWbr6fqcp129OAijs8meVeInTiIkfmN4Uo4vDPP/TT//ZcYHxEF5+3h6u8Zplx3uYueLFVoNcVdjet8uVQ1N/v4yXwai1exnnZ8/bq9twxdphKFgz9/RC2kj/KJ62BqBfpC0qc0NUPrrJ7t4V0QfESdTuaJgEvw9j3cnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cBJ8FqP3i9bEg2lxjvW2h3ncAkiaBIZmNtm8DAYmp1E=;
+ b=fXjJuIzxMpxk2f5Ho/0LXvsTvAM4z3vWfv9EjyzXPAMgB8W/JD0YLsOKfw6/4LXv3FsqCiJozi3fihxl3l4BTSHCuGAcRFFFfkg4Ujt4gZwAZXXa8ezxa5Rh/zCupwTzVvDRxG1/UC5JbcMlcdvV0T5rYwDPj6jRRTtsno0mA7xLAafXhDj+0VkNUPjyKxecl0X8w0EYAEs/wFRUm5DqtIkOS8y3NQX9kaw3h/f8FWwwEEfl5pFiBcSVX85ONaxwF/wm6XkO/uILEUzMzMhW4Zb2Wf3FDllIHVnMhpKHGB18yTAh3didK732o4x3aRxFKlWVqrR2+uIzhMLGjWuPtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cBJ8FqP3i9bEg2lxjvW2h3ncAkiaBIZmNtm8DAYmp1E=;
+ b=fhXKO5fPQFCUIUsMStR4zQkacytptTfxDKxOMvfVFkWgOI6GNVs6mbuw9pNugu9+YbzUqO7pE5B6KBO1IEBD5XTGtLKWHcznJ4SKPTp7628C0hYpFN5A+jq3fCxED+kr0xxcuIFr5qy2PPPtL7xNl3g9kcD/xDEBN9oYBjVVtcB/qA7IoSL1l9l+yJS+mIrwxvrnFhxUvPhjFJWH8tY15MtjEnX29d7J/Wqxe2zQ16BL58UR3MnkNsnnji+C7jKf/yGInLH4SnK+o1F8o6eDnhF3hokgVrWMl/77yq/aWXQbQvLLuB5xfB6v0jQnL9Fg69W7m55slY7PyJO1LEIzvA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SJ0PR12MB8166.namprd12.prod.outlook.com (2603:10b6:a03:4e2::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Fri, 13 Feb
+ 2026 00:09:20 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%3]) with mapi id 15.20.9611.008; Fri, 13 Feb 2026
+ 00:09:20 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 13 Feb 2026 09:09:16 +0900
+Message-Id: <DGDEBFOE9HWW.1RSKYGYF3GUEM@nvidia.com>
+To: "John Hubbard" <jhubbard@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Eliot
+ Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Simona
+ Vetter" <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] gpu: nova-core: fix aux device registration for
+ multi-GPU systems
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+References: <20260205221758.219192-1-jhubbard@nvidia.com>
+In-Reply-To: <20260205221758.219192-1-jhubbard@nvidia.com>
+X-ClientProxiedBy: TY4PR01CA0108.jpnprd01.prod.outlook.com
+ (2603:1096:405:378::18) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260131001602.2095470-2-lyude@redhat.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB8166:EE_
+X-MS-Office365-Filtering-Correlation-Id: b626194e-c6be-4bc2-5229-08de6a942284
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|7416014|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NVZrenJxVzVGeFpUSm8rSHc0TTdWNkxyQVZSVHBqc1RkUVJVNVc1MW1tL21k?=
+ =?utf-8?B?TWVvMjNHYzB1Rll5MW9CckQxbHd2NXZZZEo5bzQzdXIrb3puM3RJYmoyRktF?=
+ =?utf-8?B?cmxCWTg4OWV3Zmc5K3h0NXRsRmN3U3QvcnhFbEMxaWQ3ZHRBbjRUUS9EcUVO?=
+ =?utf-8?B?bW5zMDJhUllNcXgybjF2eVllWEYyTG9hdjZsbGRhT2xiWkduOEFzQnlHZGZh?=
+ =?utf-8?B?QVJvRjZlbmZBVzV4UVA3YW5DdnFwZlJQdUIwQ2d3K1p3VmNxSFcvWmo0bkhJ?=
+ =?utf-8?B?c2lZb1BJK1QvOWtKRXp4KzJaVnl0K0dNa0pHSkhLSGFaL1NnR3Z2STZEb29U?=
+ =?utf-8?B?OWl6NzQ4azNuUGdiak1XbXRVSG9WRmU0QnQyWDA3UVJ3c3d1MHpaL0F2L051?=
+ =?utf-8?B?ME1jazR3MmFuRFJycDFPVk1Ja0ZXRjVJb1pTVVA1SXNtK2RMRU9tSFYwc1Rs?=
+ =?utf-8?B?cXlSaHo4aFE1VndXaWM2NlFpa09LN3pCOU5PWEdOTXFQOFlXSDFZc2diREMx?=
+ =?utf-8?B?OC9aOVpvZzNhbjBBTSt3S3M0akJjK0dhUHRQdVJGajJnQ2xrV0E3d0VBWjF3?=
+ =?utf-8?B?RFY1WlAwS2JLcXdKUDUvMzhNYXhZbkZxV0xiNThEbU0vSGZNOEFPZkVmeEVF?=
+ =?utf-8?B?a2lvdzNNYW5zQ1BUR0c1UkhTc0cyVWNpc0ZJbnlHcnl0MjV0c1ZrWFQwS1lO?=
+ =?utf-8?B?amd2Tk0zaE93V1dRVERwUUhVZ3hrRDV4NjJ0REpjVkpKbktWcmg0a0VObnFn?=
+ =?utf-8?B?Nk12WFIvWVJwU2JBRVdqSlZIQkFjdEdZMEoyRkVYc3ZWYkZtcUZ6THdybmM5?=
+ =?utf-8?B?MXVaUUZyUHE4OWJ6OCtiZlFrc0dobi9CczloZTZqVytPVllOdXV5NkNqcDVm?=
+ =?utf-8?B?OUlNVzNZYkpGZERnRVN4Ty9WYVV0SkdYRGI1eG9JaHlLS2xQVDVPQ0pWMjJx?=
+ =?utf-8?B?Skk5RTlUQTR6eWlvM0lXL3NGVi9ndFIyem1BTDB2OUNHSnF6NWl4V0xUL0wx?=
+ =?utf-8?B?ZEFpd2xOcm5VZHQ1NFNFd2hhNXBXemMvNEY5cWlnNFFMd3pzbDJqaEdJQ1JM?=
+ =?utf-8?B?TjBJeE9aS2JiYlRiMnVCUS9ITm95Y2tOMCtCbDk4cGRsRUo3d3R2Q2pFNStn?=
+ =?utf-8?B?clU0eS9INGdlQUJFMDd0SXVHNHhRUEo1eTRjSG9QZUl3a2Q5QlpzQk4xOVEr?=
+ =?utf-8?B?VzhSTWhnN0FYR3hyZHNVZjNnVFYwU2o3RWRBY2lZVjFURUtidyswcm1Gd3NN?=
+ =?utf-8?B?c0hVbzB1TllDZ21yRE9BMlpENWh4ZW1FQzNTaVBYL015a3VFc1U1TmNNNG1P?=
+ =?utf-8?B?ZEhBRlRSV3NYaVNnR1RmdWFNaEZWZnh0Sm8zY1FOSXhCeHJoSTlycWFYNWR1?=
+ =?utf-8?B?b0g1VVo3NDlxZWZvbTI4cmdib3hEZjAxdDVlbEZTdGtWVmJGNHFJMXJ2dEJX?=
+ =?utf-8?B?cDRqV0VYZ0s2SVcreWN0bjZjbFo4bG15MWpZbU5tR1hKSkdXWHR5anBRU3Ay?=
+ =?utf-8?B?N2piaTc3cE5EOEt4THhDREhVdmFKSkppTGExQStWdDM1OTNQSHpMTE8vOFNE?=
+ =?utf-8?B?WmlnQldZeE45UXFIeDZRL0dhWUp4NGpXWno2cklLbHB1RzdjcHpIdUJDcmlK?=
+ =?utf-8?B?bEdkQy9tMWMwakpaVW43cHJFU3NIWi9BR1hLcTBLV0RTNGJpR2FHNVMrTTVm?=
+ =?utf-8?B?ZUZLajYvTHVuNm9IRGpzL2xKNzFtd0NTRjFmMVY5cGxjeXo2YVZtVmhSSTFR?=
+ =?utf-8?B?VG9Cc0g3dzE1QzI5YlFuN0ZScmdJWDZOajVDVTUvOHFHUDV5WjlJVkwrS1FU?=
+ =?utf-8?B?WVE4SHozdHhtUTkwWko1aFltV3JnK2JxVjBjTTBhUWNrMyt0d3J0TUhETW5H?=
+ =?utf-8?B?dld0RXZYR0JTUE1IUkxHS0FMRCs3blVkY0lBakx3NS95a3dqcitKbXBhbCtT?=
+ =?utf-8?B?RGhncVo4T2pCVHgyRlpZZ3RHbVVCQ2pYeEtFM2d3YUdwNE9uOFVlaEJ5ZjFQ?=
+ =?utf-8?B?MzZueVliWEhEbUZ2dTFlY20vT3B6UVgzUk1UTmFlN05MTmVBQnNSNUZyaG9a?=
+ =?utf-8?B?VVI3MkRaTGZPMXMyZm1JeXhqVTlzQ1VNNnduRE45SkpPdkJvV1hhbjIzbDFi?=
+ =?utf-8?Q?Aep8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UExldndUMzJlbGRMbEIzWHg3YmlFd0VwcWtRWm84d3lGUEpXcnpwdzNCZitq?=
+ =?utf-8?B?RXFLUzJCOGZSYkJZR2FGZXNPaUI3VzRhRm0yVzh2a3JacE9zS1VtMkUwTGhY?=
+ =?utf-8?B?ZU9KaXhWeHl1dEo2SGM2bVR5cFNTOFFZRFh3ckRXcnNBN0RyK0dadDhwQ2cv?=
+ =?utf-8?B?ai8rUy90SkZFZk04KzU2SFZYOHJvNkZxQkhBdURhR3lyZ3JPTU9hVDZIZFZm?=
+ =?utf-8?B?OVZXaWlSRVdKaitwN05nRjIzU1RwbE5oNEIrcGNDa2pBbWpucVc1eVBPbnBH?=
+ =?utf-8?B?V1RYVHlmTjNnTW5HU0Q5MnVCakNYRmh1NnRvMnlMWGJmdGJ2aVRkMFBIOFBB?=
+ =?utf-8?B?MUM2cCtLL2RDejlESXMxTDhYbmprZm1PQUlzb00vOXdPTitPeEJNQ3c3dmFO?=
+ =?utf-8?B?TWtOT1ZWRzhpYngzdTJTTlR5M3RHbjNoNmFQMEtpQ3lmeW95VnUyNmk5R3hD?=
+ =?utf-8?B?N25ocUVSVVlPSitHTkNPUitYRG1ZSS9ycW9FcGVGaEtWUVU0d3dub2NmUDFk?=
+ =?utf-8?B?RGdNV2FEUWI3TnI5d3YrZjlMd0E1VlAvKzJsSmRQM0F4RTkwL1RUTVhEOURr?=
+ =?utf-8?B?Z3JJS09zTEpvWDBWQTY2YjVnbXpYQS9EME5CaGlTNm0rbFdsMERUMnQxaXJn?=
+ =?utf-8?B?Q01iMzIyYnhZLzhlZ3RiaEErejRJNStIcG1qYWJ2UThyTU1BKzlBTmx5Yjlv?=
+ =?utf-8?B?REppNFBiRGdXejZMZWlBVUsxbFJTZ0M4czVpc1RFTlJ6aG15ZjZjZzBJaEFR?=
+ =?utf-8?B?S3l3Wk41aTFCaDZUQ0svKzdyVThHTTh1MmNBbkdvUzhidjM4ZmVaYjByS1Q2?=
+ =?utf-8?B?VjNONzhtWEZONlM1aTFjMzl1MkkrczF0WXN0eDRaQ2h4a2pad1VtdCs0RHlh?=
+ =?utf-8?B?MzhYUURrbU9hVUhhL0hTWGFmWno2emxZZ2taQldQUlMvNE13ellxUHdUVnpz?=
+ =?utf-8?B?M09XZXQwNDQyVkRSYWNVK1NaUytab1ExdS9sZ1ZEaWJTRFFObDhZb0o1aEov?=
+ =?utf-8?B?YjZiZGNBaU05cnVtODBWSmhSMVRlU25PbnlENW9oNVZCc25pOGpMTTduQmVw?=
+ =?utf-8?B?eUpVc2FxVXdoOFA5NW5aU092VEVmQWt4Y0FPVDVKMkhZR1NtRTBraWtHOTNU?=
+ =?utf-8?B?NzNKdVdXWXRObU1LdzJReFpTTFA5NlRLOXFYOGZuM0hpRHhQdENvWXY3NEZ2?=
+ =?utf-8?B?QzlXaEh6a1o2dWNzdHEzZUwrWFJTL3Q5OVk1ZlVoQ0NLRkZuMk1mMmNBMFZt?=
+ =?utf-8?B?SnVSb3RVV3IveDlXOWxQYUNYd0ZITjBXd0ZsSGI3ejNrTHIzU0VvTURjZkxS?=
+ =?utf-8?B?RnJkbTFSZmR0NDhlYmo0UExxTldjT1ZJdiszb0wzaVpWeHpBaTBuOXpkUUhC?=
+ =?utf-8?B?WWlLTlJFYWZQRWx3WWNoaFBldkhDRXh6VmxkTWsxQjZFWW9hRm1peDJXMGhk?=
+ =?utf-8?B?NmNNUThWYWNrbXBYK0Q3cGVQaWVwa1BJdkVCTFlrYUJudEZxRTYxUnRTYU41?=
+ =?utf-8?B?WGFPeE40SGlNVjF3aVJCc1FTeHhjWllpdmV3K3F4ck5WUXNhV0lLSzdYZ0ZP?=
+ =?utf-8?B?RWFGZzJWV1pJWmgzWHQwd1pxREhZNEY5ZUhyWmNHSC9PTVhvTnN6Ri83YnJS?=
+ =?utf-8?B?NU1sN3lTcU9QeFhRNDYvNWZLSmZkcHN4OENHK2I1ZWtWVzFwRCtidVRueE9m?=
+ =?utf-8?B?b3JNeXNyT2tNSmU5V3ZTNVZFRnZxRTNrMmlqZ0ZTaklqYmM3RGpIWEtXb2R0?=
+ =?utf-8?B?Nk1HRjJybllrQUlKS2I1dWw0Qk56VE15dHhuR0l5ZFo0R2pvaFZXdUJLbnc1?=
+ =?utf-8?B?Q28rRTBVRnVKejBlZ3NnOXdNUjR3aEJieXZ3UVdnZFI0THlYVWUrR0ExQzFw?=
+ =?utf-8?B?bGxMMU9nTmVzZzlWTFZzYmZGYVhNOEJ0VkhpSm05dlEwWW15aXhLTjMvUHZU?=
+ =?utf-8?B?a2c3N3AwYUUwdFBVNy84MGhsTmxvZTV3VHJHNmJZS2VDUGs0ZWl5NUI2SzlX?=
+ =?utf-8?B?cGl1cVZCZ0c2UnJtb0hTS2NHajJlS20ralRldzFqd2xSMkwwRnpTSUtPa2pV?=
+ =?utf-8?B?N0tjRmRJb2NZMUY2RHhPSzU1eFVKZ0ZTUFA1ZGdxMTZDSXUzL0ZYa2piWlZp?=
+ =?utf-8?B?cS9NV3BQbXA1U3FySHRsaStkYnBFUTBYNEtHVTVvakxzVWI1b3BVN1hucjVQ?=
+ =?utf-8?B?bmFHcldtNVczaDd1dDdpcXE3RHllK0Faa09OaTBKMHJYM1dpL1BjK1VhcERm?=
+ =?utf-8?B?VnhrVXZpRm9GRCtPeVVEaU5sd01NajI5ZFdadDFoQ3JMSzZDT3o3a2krQk4x?=
+ =?utf-8?B?T21ZNE9zVkVDVVgyQmZpTTNTWjhCMnIyVWI2OXorMFNGZ29DZFJ2T0Yyak1w?=
+ =?utf-8?Q?QJzyWKK+Mc+ymbUsuH8T4jKITuZ/dkCn2WqWC3cbbd4JI?=
+X-MS-Exchange-AntiSpam-MessageData-1: hLD8ANPBzHW76g==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b626194e-c6be-4bc2-5229-08de6a942284
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2026 00:09:20.3677
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yhnsDtqTiZDIaSRKStn2cBazFVtBnncd1EyrpiLfWVYqq8FvnnkxpeKPf72vGvuWrPlpywNY0VU5jphyV206gg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8166
 
-Hi Lyude,
+On Fri Feb 6, 2026 at 7:17 AM JST, John Hubbard wrote:
+> The auxiliary device registration was using a hardcoded ID of 0, which
+> caused probe() to fail on multi-GPU systems with:
+>
+>    sysfs: cannot create duplicate filename '/bus/auxiliary/devices/NovaCo=
+re.nova-drm.0'
+>
+> Fix this by using an LKMM atomic counter to generate unique IDs for each
+> GPU's aux device registration. The TODO item to eventually use XArray
+> for recycling aux device IDs is retained (and modified slightly: IDA
+> might be better) but for now, this works very nicely.
+>
+> This has the side effect of making debugfs[1] work on multi-GPU systems.
+>
+> [1] https://lore.kernel.org/20260203224757.871729-1-ttabi@nvidia.com
+>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: Gary Guo <gary@garyguo.net>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
-On Fri, Jan 30, 2026 at 07:13:30PM -0500, Lyude Paul wrote:
-> One of the tricky things about DRM bindings in Rust is the fact that
-> initialization of a DRM device is a multi-step process. It's quite normal
-> for a device driver to start making use of its DRM device for tasks like
-> creating GEM objects before userspace registration happens. This is an
-> issue in rust though, since prior to userspace registration the device is
-> only partly initialized. This means there's a plethora of DRM device
-> operations we can't yet expose without opening up the door to UB if the DRM
-> device in question isn't yet registered.
-> 
-> Additionally, this isn't something we can reliably check at runtime. And
-> even if we could, performing an operation which requires the device be
-> registered when the device isn't actually registered is a programmer bug,
-> meaning there's no real way to gracefully handle such a mistake at runtime.
-> And even if that wasn't the case, it would be horrendously annoying and
-> noisy to have to check if a device is registered constantly throughout a
-> driver.
-> 
-> In order to solve this, we first take inspiration from
-> `kernel::device::DeviceContext` and introduce `kernel::drm::DeviceContext`.
-> This provides us with a ZST type that we can generalize over to represent
-> contexts where a device is known to have been registered with userspace at
-> some point in time (`Registered`), along with contexts where we can't make
-> such a guarantee (`Uninit`).
-> 
-> It's important to note we intentionally do not provide a `DeviceContext`
-> which represents an unregistered device. This is because there's no
-> reasonable way to guarantee that a device with long-living references to
-> itself will not be registered eventually with userspace. Instead, we
-> provide a new-type for this: `UnregisteredDevice` which can
-> provide a guarantee that the `Device` has never been registered with
-> userspace. To ensure this, we modify `Registration` so that creating a new
-> `Registration` requires passing ownership of an `UnregisteredDevice`.
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> 
-> ---
-> V2:
-> * Make sure that `UnregisteredDevice` is not thread-safe (since DRM device
->   initialization is also not thread-safe)
-> * Rename from AnyCtx to Uninit, I think this name actually makes a bit more
->   sense.
-> * Change assume_registered() to assume_ctx()
->   Since it looks like in some situations, we'll want to update the
->   DeviceContext of a object to the latest DeviceContext we know the Device
->   to be in.
-> * Rename Init to Uninit
->   When we eventually add KMS support, we're going to have 3 different
->   DeviceContexts - Uninit, Init, Registered. Additionally, aside from not
->   being registered there are a number of portions of the rest of the Device
->   which also aren't usable before at least the Init context - so the naming
->   of Uninit makes this a little clearer.
-> * s/DeviceContext/DeviceContext/
->   For consistency with the rest of the kernel
-> * Drop as_ref::<Device<T, Uninit>>() for now since I don't actually think
->   we need this quite yet
-> V3:
-> * Get rid of drm_dev_ctx!, as we don't actually need to implement Send or
->   Sync ourselves
-> * Remove mention of C function in drm::device::Registration rustdoc
-> * Add more documentation to the DeviceContext trait, go into detail about
->   the various setup phases and such.
-> * Add missing period to comment in `UnregisteredDevice::new()`.
-> V4:
-> * Address some comments from Danilo I missed last round:
->   * Remove leftover rebase detritus from new_foreign_owned()
->     (the seemingly useless cast)
->   * Remove no-op mention in Registered device context
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  drivers/gpu/drm/nova/driver.rs |   8 +-
->  drivers/gpu/drm/tyr/driver.rs  |  10 +-
->  rust/kernel/drm/device.rs      | 178 +++++++++++++++++++++++++++------
->  rust/kernel/drm/driver.rs      |  35 +++++--
->  rust/kernel/drm/mod.rs         |   4 +
->  5 files changed, 190 insertions(+), 45 deletions(-)
-> 
-...
-> --- a/rust/kernel/drm/device.rs
-> +++ b/rust/kernel/drm/device.rs
-...
-
-> +pub struct UnregisteredDevice<T: drm::Driver>(ARef<Device<T, Uninit>>, NotThreadSafe);
-> +
-> +impl<T: drm::Driver> Deref for UnregisteredDevice<T> {
-> +    type Target = Device<T, Uninit>;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        &self.0
-> +    }
->  }
->  
-> -impl<T: drm::Driver> Device<T> {
-> +impl<T: drm::Driver> UnregisteredDevice<T> {
->      const VTABLE: bindings::drm_driver = drm_legacy_fields! {
->          load: None,
->          open: Some(drm::File::<T::File>::open_callback),
->          postclose: Some(drm::File::<T::File>::postclose_callback),
->          unload: None,
-> -        release: Some(Self::release),
-> +        release: Some(Device::<T>::release),
->          master_set: None,
->          master_drop: None,
->          debugfs_init: None,
-> @@ -108,8 +185,10 @@ impl<T: drm::Driver> Device<T> {
->  
->      const GEM_FOPS: bindings::file_operations = drm::gem::create_fops();
->  
-> -    /// Create a new `drm::Device` for a `drm::Driver`.
-> -    pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<ARef<Self>> {
-> +    /// Create a new `UnregisteredDevice` for a `drm::Driver`.
-> +    ///
-> +    /// This can be used to create a [`Registration`](kernel::drm::Registration).
-> +    pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<Self> {
->          // `__drm_dev_alloc` uses `kmalloc()` to allocate memory, hence ensure a `kmalloc()`
->          // compatible `Layout`.
->          let layout = Kmalloc::aligned_layout(Layout::new::<Self>());
-> @@ -117,12 +196,12 @@ pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<A
->          // SAFETY:
->          // - `VTABLE`, as a `const` is pinned to the read-only section of the compilation,
->          // - `dev` is valid by its type invarants,
-> -        let raw_drm: *mut Self = unsafe {
-> +        let raw_drm: *mut Device<T, Uninit> = unsafe {
->              bindings::__drm_dev_alloc(
->                  dev.as_raw(),
->                  &Self::VTABLE,
->                  layout.size(),
-> -                mem::offset_of!(Self, dev),
-> +                mem::offset_of!(Device<T, Uninit>, dev),
->              )
->          }
->          .cast();
-
-When I was testing this series with Tyr, I got this kernel Oops:
-
-[   31.351423] tyr fb000000.gpu: mali-unknown id 0xa867 major 0x67 minor 0x0 status 0x5
-[   31.352324] tyr fb000000.gpu: Features: L2:0x7120306 Tiler:0x809 Mem:0x301 MMU:0x2830 AS:0xff
-[   31.353299] tyr fb000000.gpu: shader_present=0x0000000000050005 l2_present=0x0000000000000001 tiler_present=0x0000000000000001
-[   31.357585] Unable to handle kernel paging request at virtual address ffff003064726553
-[   31.358324] Mem abort info:
-[   31.358579]   ESR = 0x0000000096000005
-[   31.358956]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   31.359592]   SET = 0, FnV = 0
-[   31.359898]   EA = 0, S1PTW = 0
-[   31.360185]   FSC = 0x05: level 1 translation fault
-[   31.360620] Data abort info:
-[   31.360882]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[   31.361370]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   31.361832]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   31.361839] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000002926000
-[   31.361847] [ffff003064726553] pgd=0000000000000000, p4d=18000002fffff403, pud=0000000000000000
-
-[   31.364156] Internal error: Oops: 0000000096000005 [#1]  SMP
-[   31.365050] Modules linked in: tyr(+) soundcore sha256 cfg80211 rfkill pci_endpoint_test fuse dm_mod ipv6
-[   31.366212] CPU: 3 UID: 0 PID: 254 Comm: (udev-worker) Not tainted 6.19.0-rc5 #281 PREEMPT
-[   31.366942] Hardware name: Radxa ROCK 5B (DT)
-[   31.367325] pstate: 00400009 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   31.367935] pc : drmm_kmalloc+0x34/0x128
-[   31.368286] lr : drm_gem_init+0x70/0xb8
-[   31.368627] sp : ffff800081ec3250
-[   31.368918] x29: ffff800081ec3250 x28: ffff800082c01000 x27: ffff800081ec3420
-[   31.369549] x26: ffff000100dc8a00 x25: ffff0001009ab960 x24: ffff000107a14840
-[   31.370179] x23: ffff0001009ab7e0 x22: 0000000000000138 x21: 0000000000000dc0
-[   31.370808] x20: ffff000100a801d0 x19: ffff000100a801d0 x18: 0000000000000003
-[   31.371438] x17: 0000000000000000 x16: ffffc82e1355a228 x15: ffff000107c08978
-[   31.372068] x14: ffffffffffffffff x13: 0000000000000044 x12: 0000000000000000
-[   31.372697] x11: 0000000000000030 x10: ffffc82e12bd2db0 x9 : ffff003064726163
-[   31.373327] x8 : 00000000000001b8 x7 : ffffc82e107c8dc8 x6 : 0000000000000000
-[   31.373956] x5 : 0000000000000000 x4 : 0000000000000003 x3 : 0000000000000000
-[   31.374591] x2 : 0000000000000dc0 x1 : 0000000000000dc0 x0 : 00000000000001b8
-[   31.375221] Call trace:
-[  OK  ] Listening on systemd-hostnamed.sock[   31.375438]  drmm_kmalloc+0x34/0x128 (P)
-et - Hostname Service Socket.
-[   31.376264]  drm_gem_init+0x70/0xb8
-[   31.376838]  drm_dev_init+0x27c/0x30c
-[   31.377164]  __drm_dev_alloc+0x44/0x88
-[   31.377496]  _RNvMs3_NtNtCs8pcx3nCgX4X_6kernel3drm6deviceINtB5_18UnregisteredDeviceNtNtCs5CCNNSUyUK_3tyr6driver12TyrDrmDriverE3newB19_+0x50/0xe4 [tyr]
-[   31.378690]  _RNvXs0_NtCs5CCNNSUyUK_3tyr6driverNtB5_21TyrPlatformDeviceDataNtNtCs8pcx3nCgX4X_6kernel8platform6Driver5probe+0x30c/0x4ec [tyr]
-[   31.379794]  _RNvMs0_NtCs8pcx3nCgX4X_6kernel8platformINtB5_7AdapterNtNtCs5CCNNSUyUK_3tyr6driver21TyrPlatformDeviceDataE14probe_callbackBT_+0x60/0x220 [tyr]
-[   31.381010]  platform_probe+0x5c/0x9c
-[   31.381337]  really_probe+0x154/0x43c
-[   31.381665]  __driver_probe_device+0xa4/0x118
-[   31.382052]  driver_probe_device+0x40/0x230
-[   31.382423]  __driver_attach+0xf8/0x288
-[   31.382764]  bus_for_each_dev+0xec/0x144
-[   31.383112]  driver_attach+0x24/0x30
-[   31.383430]  bus_add_driver+0x14c/0x2a0
-[   31.383771]  driver_register+0x68/0x100
-[   31.384109]  __platform_driver_register+0x20/0x2c
-[   31.384524]  init_module+0x84/0xfa0 [tyr]
-[   31.384885]  do_one_initcall+0x104/0x35c
-[   31.385235]  do_init_module+0x58/0x228
-[   31.385569]  load_module+0x16f4/0x18f8
-[   31.385901]  __arm64_sys_finit_module+0x24c/0x368
-[   31.386317]  invoke_syscall+0x40/0xcc
-[   31.386646]  el0_svc_common+0x80/0xd8
-[   31.386652]  do_el0_svc+0x1c/0x28
-[  OK  ] Reached target sockets.target -[   31.387270]  el0_svc+0x54/0x1d4
- Socket Units.
-[   31.388011]  el0t_64_sync_handler+0x84/0x12c
-[   31.388509]  el0t_64_sync+0x198/0x19c
-[   31.388838] Code: 54000682 f9400689 aa0803e0 2a1503e1 (b943f122)
-[   31.389372] ---[ end trace 0000000000000000 ]---
-[   31.396698] Unable to handle kernel paging request at virtual address 0030303030306266
-
-I just fixed it by changing the layout size from Self -> Device<T, Uninit>
-
-After this fix, it's working great to load the firmware with the
-Unregistered Device.
-
-thanks,
-Deborah
-
+Queued for merging into `drm-rust-next` when it repoens - thanks for the
+fix!
