@@ -1,76 +1,71 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011027.outbound.protection.outlook.com [40.107.208.27])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010050.outbound.protection.outlook.com [52.101.85.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EF03EBF29;
-	Fri, 13 Feb 2026 00:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC6A6BFCE;
+	Fri, 13 Feb 2026 01:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770941513; cv=fail; b=IvgDQWTBr8evIZaJKCXYdBtDQvwCHe+Cr0qkW95NWAOi51YRpdk4HrXjbluU8EIjgRfal75fzTsuBJljQvSAwQVDsAWihcdkPUNpjLeuVoZ0kz1YRjoYZcKkTonTxRpvXm+65ujPKDpYXgA9JjR+zQ1otno8TLNQOHfyJeFai/M=
+	t=1770945386; cv=fail; b=l0VSWEUqG1apOoY8v8IBXUDxRsEoah0nhlXFK9LgXNC/a+K8fCok3BeitBAy34HBCq993T/AsGUlvocnmihCg1mZhJTYpyoib6EfAJL4hr6gFErk9ViiH5Ms+8DLTEZr2meCz11xz3QB7HGUkXYCYDuFpCpmqwGvHSlNqjMbaJA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770941513; c=relaxed/simple;
-	bh=y3YxjFvZBPNgD4iWXFQb1mvAUwVtVnerhiP0vOVM26Q=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=NO9WUMr9v64YQnxneKHY/l3Fn1WtOFEr4KGMsd36KBLGiPcboBEjcPv3o7f2hlJfFY8Dgnb5dRCrgdtHuGBxbjNi4ma8Gg1q1HtfJrcyPDDGNghAg/z2q5p7ZvtG6KenZiWW9qK2D9y3Zh7ApEROTeuekl5k6ji/GbWGw2r0Gek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UD7qQqsD; arc=fail smtp.client-ip=40.107.208.27
+	s=arc-20240116; t=1770945386; c=relaxed/simple;
+	bh=GdqSr4Ka0qezI51eJAvXFfGIQ/aKtR925C5mifDn/jA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ui/FMMh9i6VbYFz3XEh1ZNtbrLCeQTMQBj/rSZ/4gl2RolOFlj+jdV0VchPEURoPXw3FAgSUqksqHKj3HU2OS765Qi91uGW71pPUqLL6qTclA083WjHGSTFrmQfLyaN9AEhBs/Mek+f2FiLR3ceLp1rYpgTtH5+R9uew9cxGSHM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=h9Y03uzr; arc=fail smtp.client-ip=52.101.85.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UD7qQqsD"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="h9Y03uzr"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xCZsARRB19TVmsOOg3tptqe1irJpkdWfzKxVnNwSeH6OHvrS/kwoY6JrYy0tNTwY2jcBJSyLiqe3OKrL+Pp4ZAOx4g7yeadETrhtjTFpmRxBdL+LycjUntkk9XjBis00oRY+4a2yG5tIdZUDEzsGrPG4iBVaFMfxpHVqDBtBVEKkS9LgSoQE8P3T3vjSkMRfud2b3kWZJ/HMwayT4ZSHM8eGbT26U5/nsyBdgOq7Ao2r6tEYHyeSADfyAMwxC91uQ/fkdNXfdAWtx/TUOpQKGwCyARb3mmR0RoUP1rOdUS6+l5CRd5mXLwt4EIhFV99PmU9G6tu+6cLiTPJW4757qg==
+ b=CRxOwWJOifQQiV2AjKeg2A41deiOeJ/eWy2qDwUfp3LikzJJ7n7QgPo5ZRjFdlv1fn5sPrCNovMaqN2dT4zUENwG8ChmU2piUntqCcuTF9z0CbCfFm1WH2L96nkDUcIAsESl5GEMPfdVApfo3/SxlA1SfcDZSmpHgsq+XUVEQR82DxtOEYVQLr4EDYLebnZKgauWCKJLVaKaeJBEqTNGTfim008jt0/O6lmapcFFGRPhpw1xlgRA8g/ShOAWdshvAgMapDWcrokB/sbucx0C7+L/szUd6J5l8PSKzns1gjQdzrd+qvv4HSIhMBi/eBXd5gVEhG2iqXTMoki7dJmlOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y3YxjFvZBPNgD4iWXFQb1mvAUwVtVnerhiP0vOVM26Q=;
- b=mU7rvEml3W7c1SKnovlT60cvOp+jjiowbbtN2m8ojUvqHHzXKa8PZEtYGB3NInuhstSvnQlcu0LM7As2Nddozajzf8kMy8gwUjt3JGcxpeQBZbJVpRU4LwuGwbKeD4TAPCFYubLgaZp5TKLhnAbETIRPNsqEY7rxNr1QMcQ0HaqWfpZwZs7cxUdg1LmvJ47B6I0UDYqYYgbBAXadUNyma1cHwHIfqUZBFYFQKGDvLKQjn5a/ZcNT0HBzoNdBOd9z7YEJvQshaSOOsdtuWsq0FDq+1cyLHKzDLXtmu/C7pxgEd0jWIulbMu6VvBRLw+jN4dbdsG2aIlYL7qJyu1Cdag==
+ bh=x29TuKrd4X/pAg3oZiXFrdKWf8FD9QBQoqQb3XGwebc=;
+ b=vp5xwKTurs8IqCqjB6q7+N6OC3iMJA/n+nx+uWo8tVddH1QKpGFmWYdDorc8jKXvzCcGFVj2NTxqUXLVAmFH3pxCGhnBZ9nLUJidxEyjglXhofLcjgryU98/zzfv1ze/8kahXi51/l+vytpl1ugpEZXQtefTnwegfp28nOkcfhMGqQm+izZiXipGTopEjjO6LXuFL9RPP4ZVrDBx1GIG/HZDOIw3FjoqipK7On0l6p6xuLYul/6IbcA5QSMeaehR3DEEai7N/YwyPW/djhuiCG2ulY5vLcmIgdrBALM+0eyxs7lywsPFGN9YwZyXfCsO1jxB4JTbZaZ0g3HiCmXrew==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y3YxjFvZBPNgD4iWXFQb1mvAUwVtVnerhiP0vOVM26Q=;
- b=UD7qQqsDu5BrekOXclKqxg4QMYMW+5TNCJAny0Q556+whr65Yz9Mj5fqESvUSPyRkQcFn8D9zi7AhOQSLYLWA9HQgt+105TfASqD0gvUrhyfJjWoeMAc+hSpFJyMsz9cB5UhWry3sgvObEs+26WhLxKyGdTBPpd+R+JFNKUgSdmbHqBtPmig5hdZQzS3XEeUw7rJPOvejFAyOa7aSiciA8gH0yyt8CSYMtvPc1guAzkpw+FXqkjP/WMxOcti0SVRl0+ZEykNIxW1iDJVaAoNqP6m4KVeCIksbrEJqtjJCrKPCguTmTukgUfdY2NMyxU5U0Gy5XsorQGWJPQJ+D9Ctg==
+ bh=x29TuKrd4X/pAg3oZiXFrdKWf8FD9QBQoqQb3XGwebc=;
+ b=h9Y03uzrm8RQqTuJwPjeyWnGmQrXE/sAPBiM7REUN9lU49Fy1W8snxwib1GFmn6VKzTANqud/BV4yanG7TzQkkl5i90z3MD47awSD2kxWCploBdsIPcau6OY2LCss4lW8gHRz6u1Ng0XG+mafhTaZO4DSL7gOrGjuHjIVcbw4QTPMeGNxMYcFunK1laNXkICHZGDuYbk7x+RaQ58v+jH1orTxF4+dj5xkhQSvtxNdo9F17fjQmvPu6M1XS6hMQjgTZQW/TDUi9CXlJ5baTCEt5ylYUcJ5nWuBVY7u/xOND9uyZOYWU3ShdN/qMN/HbBdNKn0YXkTRDxZjfEHyZIoVA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA3PR12MB7950.namprd12.prod.outlook.com (2603:10b6:806:31c::13) with
+Received: from PH0PR12MB8800.namprd12.prod.outlook.com (2603:10b6:510:26f::12)
+ by PH7PR12MB7889.namprd12.prod.outlook.com (2603:10b6:510:27f::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Fri, 13 Feb
- 2026 00:11:45 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%3]) with mapi id 15.20.9611.008; Fri, 13 Feb 2026
- 00:11:44 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Feb 2026 09:11:41 +0900
-Message-Id: <DGDEDADP80DF.2ANDW4MYXMOED@nvidia.com>
-Cc: "Gary Guo" <gary@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Simona Vetter" <simona@ffwll.ch>,
- "Paul Walmsley" <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>,
- "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-riscv@lists.infradead.org>
-Subject: Re: [PATCH v2 7/8] gpu: nova-core: remove redundant `.as_ref()` for
- `dev_*` print
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260123175854.176735-1-gary@kernel.org>
- <20260123175854.176735-7-gary@kernel.org>
- <DFWUC9ZS6CCU.3HPTNAO7CU41S@nvidia.com>
- <DFWUTANX4HBS.QIN5BJPI5MAO@kernel.org>
-In-Reply-To: <DFWUTANX4HBS.QIN5BJPI5MAO@kernel.org>
-X-ClientProxiedBy: TYCP286CA0290.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:3c8::7) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+ 2026 01:16:21 +0000
+Received: from PH0PR12MB8800.namprd12.prod.outlook.com
+ ([fe80::f79d:ddc5:2ad7:762d]) by PH0PR12MB8800.namprd12.prod.outlook.com
+ ([fe80::f79d:ddc5:2ad7:762d%4]) with mapi id 15.20.9587.017; Fri, 13 Feb 2026
+ 01:16:21 +0000
+Date: Thu, 12 Feb 2026 20:16:19 -0500
+From: Yury Norov <ynorov@nvidia.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: add `const_assert!` macro
+Message-ID: <aY57Y9WorBLiJR8E@yury>
+References: <20260206171253.2704684-1-gary@kernel.org>
+ <20260206171253.2704684-2-gary@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260206171253.2704684-2-gary@kernel.org>
+X-ClientProxiedBy: BN9PR03CA0099.namprd03.prod.outlook.com
+ (2603:10b6:408:fd::14) To PH0PR12MB8800.namprd12.prod.outlook.com
+ (2603:10b6:510:26f::12)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -78,119 +73,364 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA3PR12MB7950:EE_
-X-MS-Office365-Filtering-Correlation-Id: a39e1512-62f6-44fe-8fa4-08de6a947898
+X-MS-TrafficTypeDiagnostic: PH0PR12MB8800:EE_|PH7PR12MB7889:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4d4235e-2139-4b62-2ca8-08de6a9d7f8d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016;
+	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bEJqcnB3VENaUnZON2VnNjJqRE1NOFF4WnpkbGp1QjI2NU5BTFNlWmpRMnBn?=
- =?utf-8?B?M2I2eENkOE1ybUVmdTZ3eW15ZjdiMkZwbS9IZThaUEFocDh6Q3VmNjVhQWZ2?=
- =?utf-8?B?VE5QTFpxdFNVay9Sa1JMaEFTenhYdU5TK00rakhhNjAxYUtJcVk5bjA5Ullz?=
- =?utf-8?B?K0pyaS8yZU9VSEVNbFBmSXJmUmx5WGpPTnJIYjhtdmV4eFU5RnBqVzdsdGU5?=
- =?utf-8?B?akg3U2NzS2V4RUJFT0hhR2o3VUdoblNQTlBQVGVtdFo5T3AzWm5QSXZ2NTFW?=
- =?utf-8?B?aFEwQ1piTG1IYlV5dkdzMFFrZWluN1VvbnhONTlhODE0cWVDYSs3MXl6RGlF?=
- =?utf-8?B?bllxQ1kvN2U5bzVESTczZWlia2QydVpERVdnUlRBS2lDZ2VKeUYyMS9oMWxr?=
- =?utf-8?B?aG1aRjQ0bGVsQmVBQW84dEdPNXRXaDJpSVdCcm0vektLbHA3ZmFkaDVROXht?=
- =?utf-8?B?RHEvVmZ6ekdKaC9ENHhjaEtZaHp6Y0xnd0M5T1l0YzZvb1M5Tmpidmtkayto?=
- =?utf-8?B?Uy9hakMyeFl1RXZRalp0cCtzaWRaaDJyTUloZHBFeDE1OHI4elRSUVdoZGVL?=
- =?utf-8?B?TndiY0ZFQzM3QWRPMm9ZSUlScWMzYU1PQjBMSU5MVkU1eC8rZFZ6R2ZFUUdV?=
- =?utf-8?B?bFFGOFplcXNYMmV0T1FkNmpMWVMzUjEyVFJ0dm5DbkF5a1NpRXFCVU9Va1RV?=
- =?utf-8?B?ekp1QU5rU3ZQN21CT3AwekU0emYzM3hqZUk1NnV6c0dPOWc4ak13dlIrSGVi?=
- =?utf-8?B?cmFDa1Y1WDZrRFg1UnRhRWxmTEc0bEZEZmdlZ25yWmtPUmRRcTBrRVo3Smxi?=
- =?utf-8?B?Z1dmVEcwVENRTSs5N05Ea2RCK1d3czc3bjdvU2hWUUlKRnhnNFEvMU1DTjU1?=
- =?utf-8?B?NCtHUm8zU0NZY1VYTEpCV2tvRXZDWVhtT1l3NHNWdzRLNzVQcjA2Nk9Weklk?=
- =?utf-8?B?RG5ST2JrbGV5WFNMcEc5Mlk0WnRmeHE3QlU2QWlJSWI4TjJ4NWVCazVOcHlH?=
- =?utf-8?B?RTNJZHZIWTVrWVVlYjlybWNQMnVNZGNKd3NzRnB1VEJlSmFEeXA2bExkTzA0?=
- =?utf-8?B?WlNoS0xjR0Z6VjkycnROMUU0dWdXR0FsemR1NGN5VXYxazBWQVJweWVLQXFu?=
- =?utf-8?B?RWE3SHpCaUV3bk5aY0tzSHUrV2RVRHJnbjgzaDdZZnNTdWl4c01VSUNGMzFZ?=
- =?utf-8?B?ZE1nVS9lbC9TSnUxTTEreVBFMHhQUU02SjVFcWYrTXhDNmpMRGxsSDVxcHRG?=
- =?utf-8?B?aERXOGdzelRrdzhWU1Y4VnVPUENtYTFUTmpXNVUwV1AyRzgwcUIzc2VOL0RI?=
- =?utf-8?B?OENYQ3ZvOU9TYS9iNFNxTGFXcWUxOU5tZmRnaDRING9jSVpFNHRTMWI1MlBO?=
- =?utf-8?B?a2lJcXNJTklCR1ZFakFrUUZuMmQraDRnQlNsVUtPYTZSOEtPNzF2NTlPeE9j?=
- =?utf-8?B?TENCVG5KYks1cjJoTFRMT2JDdXY3QjFESFRBMzdLODd6UzdxRTRvdTZ4aTFh?=
- =?utf-8?B?bjRZSy9MSFd2UG9CcTdxSEd2ODBLb2xSTjlZWEZNUk4wS0VBcDhZZlloNHRm?=
- =?utf-8?B?M21JWGxyR3g0ckJlVlZhV2xLUkJ1MHRvVkd5cUJqT0RKbHV2TDh6VlpTNlFo?=
- =?utf-8?B?WUc1SlRNYSs5Tmx5OEI4aC9XQVQrQUFxQlNESlU3MFc1Q1dVWEducmpIcmM5?=
- =?utf-8?B?cmkyTzNrSDdEUXFoY3g0R2pldk8zZmx3Z1ptM3dUQ3U0NEJxTmRHanY5N0JS?=
- =?utf-8?B?WFptdEZTamd3NHljd2E0Q0FpSk5VbmdIU3hVZklNQ0RzUW1rWW9UbzAwZG5V?=
- =?utf-8?B?Z2xsMlBHZ3ZmMDdsQlJveGRNNld0VmVYWDVJWkxaZDRJbXlVUFcweW9jRC81?=
- =?utf-8?B?K056OFI4ektUYlNDZ2RIWmUzQzRQWXNEZTFuNW9XSjFVaW50Y0dxek9sNnAy?=
- =?utf-8?B?cEwvV0xRTG1aSlMzeXhDeGpkenpDZ3RaZVBtcmVVWEUvcTZOYUhYVEhqT3Nh?=
- =?utf-8?B?MUVUei9tekU1b3FLNkd0YjJjMWVSamhZUGxOSWFFdTAxSi94ZUJVQ1lCTSsy?=
- =?utf-8?B?SWppN1VoV0FLNTNaNWp4THBFQzd6V2J2eUZraG83MGtsM3ozOFpFenZKb3lz?=
- =?utf-8?Q?jsRU=3D?=
+	=?us-ascii?Q?g2jOun60rZ13L9riur//PNkf6sDcw7U6ga+dBvIflJcRLJd+ltWYvP6HotmE?=
+ =?us-ascii?Q?Ak7QmxYtm9CTv+BopubcXbHkUEeM6y13/yqFtSew9QXZCTFnpCGUy7zkoTj+?=
+ =?us-ascii?Q?VqosdB2VNkQOAKWKQYn9xkM8bUnrzl8Epbe7CwHUp6NJa4lYIxq5NZb4P1sm?=
+ =?us-ascii?Q?9VMJdkf8qcU/CZWi0IiI/91NgrX1m+IUSqENNCa0/A40Ia04yrWylZaOD75S?=
+ =?us-ascii?Q?ifc+DRXFr9WyWoqbKF2kG40v6fV+U46r+bSXfVvFI0mg4hPgnubARmpC5gML?=
+ =?us-ascii?Q?pidHYSRwBGlUy+WQWjEibfI17ODmo8ZDdmgRjwzsRIq2M8wsn+PvvqTpYjP8?=
+ =?us-ascii?Q?f/bRhzX+96osAL2GlKna48H7ztXXPUH9CRpb/QSZvDV931CiOT7IUugVbVUw?=
+ =?us-ascii?Q?EEz4+/dIr+av2mf4W7PleRThqY/ywc9slA1d2RXWYsakdZxK+IMBOGLbxCpj?=
+ =?us-ascii?Q?nw+b5SUpXMYd6TCgHOXmlwMnRFAmTD+KJGLufG19MsCHOum5WG60PVBg5Ehf?=
+ =?us-ascii?Q?iWiaYo45aowJJZ9HT1mzRt01k1Y/tCz6YBB5W0PoGe4kKQ5HUmqxIVnk0YQI?=
+ =?us-ascii?Q?DhMQhQ37Mv4nO2mbEXfhpa5IhA6EsebR01pz0gw9w3P/sMeWJqb5Hau1iM7y?=
+ =?us-ascii?Q?c1Js36+gAEBSK/TCSecKk7w/m0kJ0PQgtbOayGuzFA+SjKKQepQbFeGJBcd5?=
+ =?us-ascii?Q?7ePoGwf0a5K0snhkkWlHVso9aUkuO0AcCceqEs5cYkKMpip+TXVwBkbUl3WG?=
+ =?us-ascii?Q?3QLSwdv4ZdgsYl/L1Uy6FAM//58ylSCbAB78p81tU9Sh4Kd24k5PSCaDpcJM?=
+ =?us-ascii?Q?hWwbuLNf4okWtckEfrZwwXrqbTHGTX3nZ5lLxWBTdE5ewKxnDrX9HI/nzDM1?=
+ =?us-ascii?Q?hI4BY1kJ1nqtKIrDB+JLyQRdqu71WR3WIgZ/xDnyu083Elf34Koa/KvKvfCH?=
+ =?us-ascii?Q?2QOdUmtbvVmudGqfRPe8+d4oAy2BP+oSBzNfq/g+THXkLqadEcIP/1XP7DYT?=
+ =?us-ascii?Q?O3mFekBuA3eZA2+JU56+GHZk6qiJ02RgLEGX1A+ssp4FhoBxuqDVw5OuTMc6?=
+ =?us-ascii?Q?iYBSwMgVhL/DurEqCOhv3fz0eqyI+i1DGpTkUOJGNhWmuGG1GE/qVLwkf7s4?=
+ =?us-ascii?Q?O1gAC8qvaAETM3FUdtT6EIB5zssZCQZeCqKLAklTmhtWOnwyhvrsQe6PmVUs?=
+ =?us-ascii?Q?YZ17lLBugieAeecd+CvUKkUhZuycln0FjqeNdmDIcZsxQgjoFTS27vN2L3v8?=
+ =?us-ascii?Q?GoYjGY6qbgRCxJPYt/z8sm9goAoRxqMdr4RuPVnOnEDuSHo+soLK7sudHlBA?=
+ =?us-ascii?Q?/lAsojwrKEPbQlcdkWrySLMJ7FdRX3Ii4yJ689ARV5xVe2ensZfz3kEaScbL?=
+ =?us-ascii?Q?fKk5lGzbILj3FtCr2ne9N+Gl3RiR2Np9qbKKg7SmxDQN1idg4FMaoMgF8OFj?=
+ =?us-ascii?Q?pRYwR10tUf9UHJ+p7wJgUpb3QFUeQ7JmkcVUNBJj0o86VBgEoVsSAHs2R2uZ?=
+ =?us-ascii?Q?f2BiOgg0wDlS/9JPAe6u6hxy1ZRpax9X6+ELjdTnzUr+9hVWbPBe/ZfQLi6n?=
+ =?us-ascii?Q?X93elURwMqWvmTHi5ik=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB8800.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z0RyTWZ1UG82bzNYRGFsNi9JcXV5U2IxMUNDdWdMRnUxTWpVS0RGcW04M2gr?=
- =?utf-8?B?RVNWbWV6WHU4eFI1Mjk2aW55dGxZRWQrWEtnOGdjalNzSTN4VEkzR0VMNEhr?=
- =?utf-8?B?ZXBJaS9yOVg2T1ExTDRabWdqcjM0OUxZYm5DKzk1aVA5KzhBZW9wMHM3Tmh1?=
- =?utf-8?B?Z0N4d3VCSEhjREJuM05hZ1dqTW82TW1FOXVkeVlQUmNFN254SnV1anhwVXJF?=
- =?utf-8?B?c0thMWQzbHFTVHh5YkNSemxBdEN3ZHVlZkpBNFFmS1FHTHJGMVhTb0hVWmxK?=
- =?utf-8?B?TVNuWkNISXAyNTRaU1RJK3kxR2xaUkdYN1NlNkNNeEZZT09zVkR0MVo5YlAw?=
- =?utf-8?B?L0xGb1NCK1FSRWpQbWRkM1dhcFFqbC8wd2ZoMXNKaC8wM0pSWmNsTmxib0VV?=
- =?utf-8?B?b3JhRU5BN2R0aUxaTmFPMUtiUEVsdFJhemViRUxQeVkvMHhVclNMMzEzY0Rz?=
- =?utf-8?B?YU5CME5YRC9IK2hBTEZ1NVRhSlF1VDhHUGdmS1UwRkthbzJlbFBJdlZMZ2Jk?=
- =?utf-8?B?MTJIUU4rQnB0dWdKckFuUVVpRHRkRmZ4cmFwcUJSZ3ZIUDk3di9ZVWxFT1Qv?=
- =?utf-8?B?NXFqb1JoYVk0MHRqb1hFUDgxTU5BWGNZbEZmZmt0bnI5aTJpd2xBVkhWcktp?=
- =?utf-8?B?ZUNob0sraTB5U0FuMFNLaHY2MWJVSzBja3NINENpZE5QWGpQUHdzWTFYUGhS?=
- =?utf-8?B?d1p0bWtwTGZ5Uk5uMVhDNlV4NVdpMHBHVmF1bm8xUE5qa0RmajExbFltbnNF?=
- =?utf-8?B?QjhWZSs1TTF6WW9VWjBQOGR6N2xReVBHZzFiUVBJdWlLY0VhdUNwZWthQlNN?=
- =?utf-8?B?ZmpWTmo3aCtvMVo3U2tOY084NWFXRGV5bTlKalZLbmZUSnNmNEFiaDNXQ0NO?=
- =?utf-8?B?MGNEWkc1TlRkZFlPQ3puSndCeVNZZGVWQVRMWCtEUUo0SzgxcmNJUWRnRVhP?=
- =?utf-8?B?dkZWeU9EV0FUUURQanlPMnV2K2Nxa2JDZFkwYnAzWXV3TWkrZUtYYXBTMUFW?=
- =?utf-8?B?OU56WUMyc3RwVWlnRDhoVThPQnB6S0Z4UzhkT3N5ZUpNUGhvdmU2d0crRnhk?=
- =?utf-8?B?eWlHeWQvclpsaTdiM1QraXBPb25HczJkZzV3MGRNak1wbzdjdGNuaS9Ubmw0?=
- =?utf-8?B?eEtrbldwMHdTOUMvSDJRZ1RaT1pQUm10UmFZYytKOUFMTkZOTE9QbFArbzN0?=
- =?utf-8?B?K1pTMTd3VXFiVE93OWV1TUFHdU9QWTNWM2JkeEsyZllXZVArWFU4S3Npa3p1?=
- =?utf-8?B?MjFudmVTS2ozVUtrWE1TeS80VVFtQ2xjREZsZGxaTFdyeEdpYVJuYzk4Rno3?=
- =?utf-8?B?eE85WStRbGF6R0NFRFBhSE1teW5PMWVtQkJmZ2k4R2liaHRNcG9zaU1XS3hB?=
- =?utf-8?B?eFFXV2Y0RkZ3Q09nWmVub1ZsUWFDbkxHY3ppLzRNYzlZd2I2dC9LbmZTNjRO?=
- =?utf-8?B?cUNhZEg1NjJQQS9TUDR5SEVmbjJ5UHJmWGg1U0N5T2NSZ2FzVjJJY1hQdmEv?=
- =?utf-8?B?dGNXMHM3aHRxUURlUTNIbUJlU1BUMWJjZUJ4ZUxoT2dyWGYwa1dSY1NzTFFT?=
- =?utf-8?B?N2NtclNkSk4ya1crZHZONTcyMU1iZno0MkpybDZuQWVWR0VITGlWazFKRXUz?=
- =?utf-8?B?RjRxRXJ6aFJ0ZlMrMmVFeUJKb0JtdTV1NVd3Qk0wL3p3RjRsd3RRVW5Cc2dM?=
- =?utf-8?B?NEd6UDR4dDQwZExpUTlxdGtLZ3B0NzNraW5IYU5vRTF2NDJRbVd5ZThubzBD?=
- =?utf-8?B?TERmR21zVXZ4azNMOENCR004bzRmUnVnZjBhbEMxT3FwWWxBWHMwbXNJYmVz?=
- =?utf-8?B?STB1Sm1WYk5OS1FEbnluRlNJams3QnBQNVNEVFBBM2tYaWszbHNQZWh2cUVj?=
- =?utf-8?B?MFhxdlZ2Vk1ZNGR0MThnZmxNZEZmdVZZbFZJQmxVTVArTE8vQWxqd0tJYzJu?=
- =?utf-8?B?YkZQWUFUOS9Xd29XdHgzNEtRei9LRWUvZnFRZ0d5Q1VZQmR2cHo3bnJtZHhS?=
- =?utf-8?B?aFhHQ1N1SUUrdUtOSTVEQWpBcm9yZm1rZzFKNjJVenk3a3FFN3FrREZOQU93?=
- =?utf-8?B?VUdWN2gzRml6NFc4enk0a2FKNEpSVHZiNVFiZk1HZVhVa0hWd3JsZW5hNXl6?=
- =?utf-8?B?Z2tnM0tNQmlrcHI2RkFpVGkzK1NRdFlOTSt5VkhKSmdCM3NnN3c2VGYvRVBh?=
- =?utf-8?B?emRGMzM2M2FnMG9IU0JTd1JBNy9HeFo2MWJmM3h2NzBJQzgyWFZtUXdJb0w3?=
- =?utf-8?B?TVNVbWp3V2JXNEdBZVFOQnJSRmhIc1hUM2RwU3daTWFqTllJRG1ZejRObXhK?=
- =?utf-8?B?UkQwRHVQYmRYMmpTbzc0c0pBUXdORTlRd1dscVlWQWI1a0QrV3drNkROYStC?=
- =?utf-8?Q?eJFWvul0EDj2LzHf65SvA/TdPBmiOz6zRGp9v/MDAnG2B?=
-X-MS-Exchange-AntiSpam-MessageData-1: WKnAUl06NhiPqQ==
+	=?us-ascii?Q?uQjguTuj7+9ykQUEEnIRi4Bm5lpISElNyNhajk/p0a7UDHuDrNEsvEWUB6EM?=
+ =?us-ascii?Q?DdMMQU1F4cAJmU2LtIB21HGeEV2OtLtL5lNf2STri9N0fFdPI8U54P0xyzGz?=
+ =?us-ascii?Q?0klnwpvzFLK/F37ogev2qlCtTynm9EA0LIcvUaeDolV2DPkyDLEKCUUaQSDR?=
+ =?us-ascii?Q?/te/x35tqkn1Go+cZxkduRSwqqLmcMWYPIYPnR367FnosuNvDV8sLhqEBo0v?=
+ =?us-ascii?Q?mZIWSx1FrlhtyUdIqK04KI3cUms7a2q7ug0c4Dx8I5lOORbz/hBt5fQkGhO4?=
+ =?us-ascii?Q?0m9kQaOQTtoaVDKx6QhGyLHIRXwxXMXHLH3FWgbu4XDI/L0Xho0S8IIkpwpA?=
+ =?us-ascii?Q?EH6P621OO1Pd4qB5twpL8pJNIK/GW36XdoI5I2HfWPZESNEvacUIXtN0LuMX?=
+ =?us-ascii?Q?5o3w4fnQyd78yr/Me/KECVnVvM7twbJ/fANgRr6sA6cCoqLhz8sS4DKmwhEr?=
+ =?us-ascii?Q?ERQrEzbaj3AmeIqfyHr9BfoN2B5x8eJinngImoN9ahH+4PE/Ba81MVQFYYeE?=
+ =?us-ascii?Q?fKYEo2nl/Gt+ypoZUH8Mh2vOdMiEKItnjDqYfAqX0+aXS1xKmraSRiWjlL/p?=
+ =?us-ascii?Q?h6uLGusKdMj/XEge1LK9gblAg6N+yktj3BfPYOFLeyjaS7veOm4ZibzfQYg0?=
+ =?us-ascii?Q?IwRdUbqBWK7dDcN8M6IxqLfhx7JRBx86+3vMGoKY7UVRN+tZg1MhymAets9o?=
+ =?us-ascii?Q?M6B0jsvFMAHbhg9tivlIgLbV1gLo/bsMvKpeGczWSf2kERnkyi/Jqev+ZYiX?=
+ =?us-ascii?Q?X7F+4/y+UsbdGR2NWGFcqker4vaTdMb1QyWF4c4O/N2Rs9bKvjx39IiI0Sso?=
+ =?us-ascii?Q?izTxRNNMEcHMA5lrd9uwhGO0jcZIz2R006LBCzDaD4TQavnIJwWXG7VvD93t?=
+ =?us-ascii?Q?5GKyM5tMvTA0jN7hKuPw37ZAux1+dtpu6I4JksbFqDyqGQQlDJTJR0X6LEHx?=
+ =?us-ascii?Q?qmpr2CEeTsmwTw7FeLKbqdzaBzHTWCo+s/+NvZb5fh3UO2GiNy8FfBRkPmlJ?=
+ =?us-ascii?Q?BXp+3lfGUP4uN90a0lGMfFzacxZAn9nsxg7sxzBYNelHeXhymeXOrl8TdocY?=
+ =?us-ascii?Q?/qhUeKmm4NLWrjvr2N2ykqmM75d3SyTHNU2GqyklkP72aXJCQH8X+dOEOQf3?=
+ =?us-ascii?Q?KTP4bffMWOqKmOMt/yE2WmUdeb4p2yDsUmlDO3jJ7pjmhcsA5t/AwHN0Kt+q?=
+ =?us-ascii?Q?ueX2f0qHxVAJ9EM2gPZw8/6ZE4Sw+gPMqA1bgUFF5u4pnPcKkdbhEGDvZU+Y?=
+ =?us-ascii?Q?SqsRKIqUu98NCFtuoMU/DZBX9sGhGZkZ45aEfNL9mXPn6VVS2BS3Ffzd4HVC?=
+ =?us-ascii?Q?KuRBtB5gQQHLWpA+ot+qg+Ji0maMwH2atcSLQd/2ToVBVvH9og5emu04Kaoc?=
+ =?us-ascii?Q?MCRmuTvONe3Dz4KidaTf4EAg4Q3dBqOfLj0YZnCggbkGoAFepcns38MnCGcl?=
+ =?us-ascii?Q?V4tKlLGjc088L/FJt2tNWvwuK9YOi+GCdGHTKFMlO725SqtXgdBQsanVx0Db?=
+ =?us-ascii?Q?0dnzeaTBg5K6pmMIlavF/CWdK0JMGWYofl4223/AlYlhOQEZ7b2gD+n/uP15?=
+ =?us-ascii?Q?BzKMjn14btZ+Kobq6T2NRsDCayDkj0p3paGPywfYuHO7ghATEQaOuOqLOsWI?=
+ =?us-ascii?Q?99B1JynGvfqNV8lyfuZ5y/yb8B7mSDOpyHpiHZ8c2Wm53nDP++PL8vx10JVf?=
+ =?us-ascii?Q?6dwDgfo10fxZnirHJF+ZYwPpFfsovyz22hLsMYR5go/MKuamJbAr1Z5jM2DX?=
+ =?us-ascii?Q?fdzVlIK9wNt7XZ2VmUbUvS9bLUgO+caXwSv+wXYSaxdkYzkff8pv?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a39e1512-62f6-44fe-8fa4-08de6a947898
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4d4235e-2139-4b62-2ca8-08de6a9d7f8d
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB8800.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2026 00:11:44.5897
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2026 01:16:21.7477
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mgGOinqchIYr5QU3hCgtVTG0G9fD7ez39GUX0sfGi6uanK8c1q+pleQCnl/FM3WrD0BkBpvMm7Dx3vHJG2ytRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7950
+X-MS-Exchange-CrossTenant-UserPrincipalName: O0SQBjjL6ju8mzVjgbz9e+Xehn8hkOfWjsitf4qhDpA9wRIub1zSi3xWu+Y7LfaixvQJJjmBYnpMeOOipJO80g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7889
 
-On Sat Jan 24, 2026 at 10:29 PM JST, Danilo Krummrich wrote:
-> On Sat Jan 24, 2026 at 2:07 PM CET, Alexandre Courbot wrote:
->> On Sat Jan 24, 2026 at 2:58 AM JST, Gary Guo wrote:
->>> From: Gary Guo <gary@garyguo.net>
->>>
->>> This is now handled by the macro itself.
->>>
->>> Signed-off-by: Gary Guo <gary@garyguo.net>
->>
->> Acked-by: Alexandre Courbot <acourbot@nvidia.com>
->
-> We should take this through drm-rust in the next cycle to avoid conflicts=
-.
+On Fri, Feb 06, 2026 at 05:12:50PM +0000, Gary Guo wrote:
+> From: Gary Guo <gary@garyguo.net>
+> 
+> The macro is a more powerful version of `static_assert!` for use inside
+> function contexts. This is powered by inline consts, so enable the feature
+> for old compiler versions that does not have it stably.
+> 
+> The `build_assert!` doc is refined to recommend it where possible.
 
-Took into my queue for merging into `drm-rust-next` as soon as it
-repoens.
+This is a good place to actually explain where this thing is possible.
+ 
+> While it is possible already to write `const { assert!(...) }`, this
+> provides a short hand that is more uniform with other assertions. It also
+> formats nicer with rustfmt where it will not be formatted into multiple
+> lines.
+> 
+> Two users that would route via the Rust tree are converted.
+> 
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+>  rust/kernel/build_assert.rs | 55 +++++++++++++++++++++++++++++++++----
+>  rust/kernel/num/bounded.rs  | 24 ++++++----------
+>  rust/kernel/prelude.rs      |  2 +-
+>  rust/kernel/ptr.rs          | 18 ++++++------
+>  scripts/Makefile.build      |  3 +-
+>  5 files changed, 71 insertions(+), 31 deletions(-)
+> 
+> diff --git a/rust/kernel/build_assert.rs b/rust/kernel/build_assert.rs
+> index d464494d430a..e40f0227e1ef 100644
+> --- a/rust/kernel/build_assert.rs
+> +++ b/rust/kernel/build_assert.rs
+> @@ -41,6 +41,45 @@ macro_rules! static_assert {
+>      };
+>  }
+>  
+> +/// Assertion during constant evaluation.
+> +///
+> +/// This is a more powerful version of `static_assert` that can refer to generics inside functions
+> +/// or implementation blocks. However, it also have a limitation where it can only appear in places
+
+"However, it also has a limitation", I guess?
+
+> +/// where statements can appear; for example, you cannot use it as an item in the module.
+> +///
+> +/// [`static_assert!`] should be preferred where possible.
+> +///
+> +/// # Examples
+> +///
+> +/// When the condition refers to generic parameters [`static_assert!`] cannot be used.
+> +/// Use `const_assert!` in this scenario.
+> +/// ```
+> +/// fn foo<const N: usize>() {
+> +///     // `static_assert!(N > 1);` is not allowed
+> +///     const_assert!(N > 1); // Compile-time check
+> +///     build_assert!(N > 1); // Build-time check
+
+In the other email you say: the assertion failure mechanism is undefined
+symbol and linker error.
+
+So, maybe:
+
+     const_assert!(N > 1); // Build-time check at compilation
+     build_assert!(N > 1); // Build-time check at linkage
+
+Because compilation is a part of build process, and referring them one
+vs another may confuse. 
+
+> +///     assert!(N > 1); // Run-time check
+> +/// }
+> +/// 
+> +///
+> +/// Note that `const_assert!` cannot be used when referring to function parameter, then
+> +/// `const_assert!` cannot be used even if the function is going to be called during const
+> +/// evaluation. Use `build_assert!` in this case.
+> +/// ```
+> +/// const fn foo(n: usize) {
+> +///     // `const_assert!(n > 1);` is not allowed
+> +///     build_assert!(n > 1);
+> +/// }
+> +///
+> +/// const _: () = foo(2); // Evaluate during const evaluation
+> +/// ```
+
+This part confused me the most. But after all, parameters in rust
+are never constants, and even if foo() is used with '2' only,  it
+appears to be a non-constant from the const_assert!() POV.
+
+Seemingly, there are only 3 objects in the language that can be
+specified with the 'const': functions, items and generics. And
+const_assert!() makes sense (doesn't break the build) only for
+them.
+
+So, the difference between const vs build assertions is that const
+version is only applicable to a certain type of objects and is
+supported by language. Contrary, build_assert!() is not a part
+of the language and in fact is based on a linkage trick, while
+allows broader set of build-time expressions.
+
+And altogether they make sense and even nice.
+
+Can you please consider to add the above passage to your reply in
+the other email, and place them in the documentation?
+
+With that (or without),
+
+Reviewed-by: Yury Norov <ynorov@nvidia.com>
+
+> +#[macro_export]
+> +macro_rules! const_assert {
+> +    ($condition:expr $(,$arg:literal)?) => {
+> +        const { ::core::assert!($condition $(,$arg)?) };
+> +    };
+> +}
+> +
+>  /// Fails the build if the code path calling `build_error!` can possibly be executed.
+>  ///
+>  /// If the macro is executed in const context, `build_error!` will panic.
+> @@ -74,7 +113,8 @@ macro_rules! build_error {
+>  /// will panic. If the compiler or optimizer cannot guarantee the condition will
+>  /// be evaluated to `true`, a build error will be triggered.
+>  ///
+> -/// [`static_assert!`] should be preferred to `build_assert!` whenever possible.
+> +/// [`static_assert!`] or [`const_assert!`] should be preferred to `build_assert!` whenever
+> +/// possible.
+>  ///
+>  /// # Examples
+>  ///
+> @@ -84,24 +124,27 @@ macro_rules! build_error {
+>  /// ```ignore
+>  /// fn foo() {
+>  ///     static_assert!(1 > 1); // Compile-time error
+> +///     const_assert!(1 > 1); // Compile-time error
+>  ///     build_assert!(1 > 1); // Build-time error
+>  ///     assert!(1 > 1); // Run-time error
+>  /// }
+>  /// ```
+>  ///
+> -/// When the condition refers to generic parameters or parameters of an inline function,
+> -/// [`static_assert!`] cannot be used. Use `build_assert!` in this scenario.
+> +/// When the condition refers to generic parameters [`static_assert!`] cannot be used.
+> +/// `build_assert!` is usable in this scenario, however you should prefer `const_assert!`.
+>  /// ```
+>  /// fn foo<const N: usize>() {
+>  ///     // `static_assert!(N > 1);` is not allowed
+> +///     const_assert!(N > 1); // Compile-time check
+>  ///     build_assert!(N > 1); // Build-time check
+>  ///     assert!(N > 1); // Run-time check
+>  /// }
+>  /// ```
+>  ///
+> -/// When a condition depends on a function argument, the function must be annotated with
+> -/// `#[inline(always)]`. Without this attribute, the compiler may choose to not inline the
+> -/// function, preventing it from optimizing out the error path.
+> +/// When the condition refers to parameters of an inline function, neither [`static_assert!`] or
+> +/// [`const_assert!`] can be used. You may use `build_assert!` in this scenario, however you must
+> +/// annotate the function `#[inline(always)]`. Without this attribute, the compiler may choose to
+> +/// not inline the function, preventing it from optimizing out the error path.
+>  /// ```
+>  /// #[inline(always)]
+>  /// fn bar(n: usize) {
+> diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+> index fa81acbdc8c2..54d0ce3ba595 100644
+> --- a/rust/kernel/num/bounded.rs
+> +++ b/rust/kernel/num/bounded.rs
+> @@ -255,9 +255,7 @@ impl<const N: u32> Bounded<$type, N> {
+>              /// ```
+>              pub const fn new<const VALUE: $type>() -> Self {
+>                  // Statically assert that `VALUE` fits within the set number of bits.
+> -                const {
+> -                    assert!(fits_within!(VALUE, $type, N));
+> -                }
+> +                const_assert!(fits_within!(VALUE, $type, N));
+>  
+>                  // SAFETY: `fits_within` confirmed that `VALUE` can be represented within
+>                  // `N` bits.
+> @@ -287,12 +285,10 @@ impl<T, const N: u32> Bounded<T, N>
+>      /// The caller must ensure that `value` can be represented within `N` bits.
+>      const unsafe fn __new(value: T) -> Self {
+>          // Enforce the type invariants.
+> -        const {
+> -            // `N` cannot be zero.
+> -            assert!(N != 0);
+> -            // The backing type is at least as large as `N` bits.
+> -            assert!(N <= T::BITS);
+> -        }
+> +        // `N` cannot be zero.
+> +        const_assert!(N != 0);
+> +        // The backing type is at least as large as `N` bits.
+> +        const_assert!(N <= T::BITS);
+>  
+>          // INVARIANT: The caller ensures `value` fits within `N` bits.
+>          Self(value)
+> @@ -406,12 +402,10 @@ pub fn get(self) -> T {
+>      /// assert_eq!(larger_v, v);
+>      /// ```
+>      pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
+> -        const {
+> -            assert!(
+> -                M >= N,
+> -                "Requested number of bits is less than the current representation."
+> -            );
+> -        }
+> +        const_assert!(
+> +            M >= N,
+> +            "Requested number of bits is less than the current representation."
+> +        );
+>  
+>          // SAFETY: The value did fit within `N` bits, so it will all the more fit within
+>          // the larger `M` bits.
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index c7e91b80d301..75c52b5879e3 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -29,7 +29,7 @@
+>  
+>  pub use pin_init::{init, pin_data, pin_init, pinned_drop, InPlaceWrite, Init, PinInit, Zeroable};
+>  
+> -pub use super::{build_assert, build_error, static_assert};
+> +pub use super::{build_assert, build_error, const_assert, static_assert};
+>  
+>  // `super::std_vendor` is hidden, which makes the macro inline for some reason.
+>  #[doc(no_inline)]
+> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
+> index 5b6a382637fe..0b6acd112c4f 100644
+> --- a/rust/kernel/ptr.rs
+> +++ b/rust/kernel/ptr.rs
+> @@ -2,8 +2,12 @@
+>  
+>  //! Types and functions to work with pointers and addresses.
+>  
+> -use core::mem::align_of;
+> -use core::num::NonZero;
+> +use core::{
+> +    mem::align_of,
+> +    num::NonZero, //
+> +};
+> +
+> +use crate::const_assert;
+>  
+>  /// Type representing an alignment, which is always a power of two.
+>  ///
+> @@ -38,12 +42,10 @@ impl Alignment {
+>      /// ```
+>      #[inline(always)]
+>      pub const fn new<const ALIGN: usize>() -> Self {
+> -        const {
+> -            assert!(
+> -                ALIGN.is_power_of_two(),
+> -                "Provided alignment is not a power of two."
+> -            );
+> -        }
+> +        const_assert!(
+> +            ALIGN.is_power_of_two(),
+> +            "Provided alignment is not a power of two."
+> +        );
+>  
+>          // INVARIANT: `align` is a power of two.
+>          // SAFETY: `align` is a power of two, and thus non-zero.
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 0c838c467c76..204e58dd1bb0 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -308,6 +308,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+>  
+>  # The features in this list are the ones allowed for non-`rust/` code.
+>  #
+> +#   - Stable since Rust 1.79.0: `feature(inline_const)`.
+>  #   - Stable since Rust 1.81.0: `feature(lint_reasons)`.
+>  #   - Stable since Rust 1.82.0: `feature(asm_const)`,
+>  #     `feature(offset_of_nested)`, `feature(raw_ref_op)`.
+> @@ -317,7 +318,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+>  #
+>  # Please see https://github.com/Rust-for-Linux/linux/issues/2 for details on
+>  # the unstable features in use.
+> -rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg
+> +rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,inline_const,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg
+>  
+>  # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+>  # current working directory, which may be not accessible in the out-of-tree
+> -- 
+> 2.51.2
