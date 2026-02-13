@@ -1,484 +1,260 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125E823EAA0;
-	Fri, 13 Feb 2026 05:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39479244667;
+	Fri, 13 Feb 2026 06:43:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770961826; cv=none; b=JvBRnLgXgv2CB/yTu/pgUL+lTk33Fucu0cr0YvgywbFgsEE8BLfcwTtyNFOW8eYmm54wKxyqAJje9fZyOcP2kZzrwzDb+N1RfaAQ7aYiuySzAeCpU+AfltmTsvUVhMfu1YPf3Zk/T4iUOl8KNOUJmY/T0qaioaHrLK1Ixc7RyM8=
+	t=1770964988; cv=none; b=KrzW0sNLDyL2gDExgtjGgiXT2AWv+U/DSWhGvK75bDDBlvTpBZSqmTRmjVparmIzboh7oS50xICffx7bb54eMjtzAATXLKlDIcrkCKbGYwUn1DvLQ6pSALJhx4rb4eIlWVPnbjAUv1T+mLoLmIEtk1xTUxzcL8t8R5AeSGN5WY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770961826; c=relaxed/simple;
-	bh=Olv5FsQoJX1MZOZmz/89/ELafNm3/Vh+Aei35tGdPRI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JPKDTga5ty7qCYqpbYD78CuL1PYpACxTAaPqQEBkKaGIPQNt/ANJzZJeNi838LRLrVoO1NBKqSZwntOXSUh1K3tBgQNWbcm1/faEMiMQHI8w60hgOHI1RwiJx8U5Ojfmf5qcAD3UJd9hKqRp18xdieWeS0SavsmWgcAUVCzpQc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-ba-698ebb94cf6d
-Date: Fri, 13 Feb 2026 14:50:06 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
-	gustavo@padovan.org, christian.koenig@amd.com,
-	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mcgrof@kernel.org, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
-	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v18 34/42] dept: add module support for struct
- dept_event_site and dept_event_site_dep
-Message-ID: <20260213055006.GA55430@system.software.com>
-References: <20251205071855.72743-1-byungchul@sk.com>
- <20251205071855.72743-35-byungchul@sk.com>
- <7afb6666-43b6-4d17-b875-e585c7a5ac99@suse.com>
+	s=arc-20240116; t=1770964988; c=relaxed/simple;
+	bh=rkRKmejGZTKsqv4gfmca2YCfS5O5A6zUCPL44REt0Ww=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k+SyUrNwsf4Z7Xd7ppAP4rHHMbH1YUtrxPJyfMdDGxHQnF9io/i2sYT7IwCQwqH78343sxNfatTmS5Kg/eYW6LuwQW4VoLY6gOjFXAVCs9NO/yNkWtpSSRxpbUThlGaGs1XfJo8m5KCr5bRnTwGFCJJYpZNRJ61g/3OqfjJm5VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLknHnHW; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLknHnHW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96301C116C6;
+	Fri, 13 Feb 2026 06:43:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770964987;
+	bh=rkRKmejGZTKsqv4gfmca2YCfS5O5A6zUCPL44REt0Ww=;
+	h=From:Date:Subject:To:Cc:From;
+	b=aLknHnHWc5pxfedQscnIvN967e30fMYR1Wb6x0cNQm3iipfnVqiocDAbCddF7ZzNR
+	 AC2BXnAT8fNc4ZKVN33VwBY9d1JY61hNO30b6vw+yOBYZz+/EwdughU6ZgmTFRSGne
+	 250OU7KC8IoM9hbvXQiv+8VowNnpzm8Zc75F75kpohu06DJVktAdDgssrSMMJNqB0B
+	 tRrEi1UWlsdubLi3pfyC1rmmZB0c998A2VZHUtx+wtWgwGF82WNFeODLSORHPDqT/Y
+	 2B4lSMLe6vzPTRVCBxgY2oJPxQ6zH8auAT9BmLxn/j+WwBj1xRtPva8wEGBNX8DulT
+	 iDX+2cMkTPP+w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 13 Feb 2026 07:42:53 +0100
+Subject: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7afb6666-43b6-4d17-b875-e585c7a5ac99@suse.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SXUxTZxiA953znR8auhyri5/i2NZtGlmmbHPxvTDG3ejZBYvZLrZMk60Z
-	zWgoRYsy2ZzSKVutExmjVcswYO0P2AEpOlEoIqWwVjD8bKwqHcUUNgJCpFLSTnAezDLvnuR9
-	3ifvxcvTihp2Na/R7VPrdSqtkpVh2b3UmtcrWko1mReG0sFYchiGDO0Yfmpws2D0nGFgZM6I
-	YKG8i4MHiTscmA0IHnm7EFj6y2lwXzRQEGtcZGHSN4vAPBplYcbxPYIJ/w64N9LCQLT9u8fr
-	llw4Ze5DUDMapuFi158Ixsou0TAYfRamG1mo/sbLQH/PJIIjtgYWLFUeDP2TDykYtpRTcMGT
-	BSOOcQw9tmEMlb2DDFwujnDgueVHYLw6h6HVG8AQsNZiuNN7koPRSIiBpt4eGkJlYwh+nj7H
-	gmNuhgPDdRsG1/1TDNR6e1loPGrl4NK1EgSz5+MYvo0tMtB9op0C+4NpGn671YKgzRihoGHc
-	R8Nf1ioKfHNTFATDMQ6S4WYGgskgBcbOOL1tmzhfUorFkoEFVnSfdSPxn2Q5En1TM7RovzHF
-	it54NRaD54h4/liSEq9Yw5x4tO02Jza5MkRb6wQleuqOseLwUCsrTt+8ye186WPZlmy1VlOo
-	1m/c+qksxzpwkttj1B7wjS/gYjSYZUI8T4RNpLuTmFDKErrrXbTEWHiVxJxOSmJWWEdCoQQt
-	6SuEV8jA3XdMSMbTgiWdBJqMjOQsF7TE9+P9JV8uAInHzLQkKYQKRMzOevxksIwEzkSXmBYy
-	SGhxgpKitJBGnIu8hCnCFlJqeVsynhNeJu2/dFNShgh3U4jTVIue3LmKXHeFcBkSrE9VrU9V
-	rf9XqxFdhxQaXWGeSqPdtCGnSKc5sOGz/DwPevy4jq8f7mpGs30fdCCBR8pUeej3ExoFoyos
-	KMrrQISnlSvkL6w/rlHIs1VFX6r1+Z/o92vVBR0ojcfKlfI3419kK4TPVfvUuWr1HrX+vynF
-	p6wuRgcrD17JtNv/SE0L2sR+/41f7Vt34vc12dH9juV5iWtfnR3S7aiYJ6aN6Y+E7fmRIq2P
-	aTOsGnux1i/P9G8+bUk0zB9qfu+tgEtPJX/4kNq967S7L7Nq72RXeudt6+EjH4W9K5+fqF/r
-	33yobK/2mYhq+5p3L1cq6v5uy505nliT9ZoSF+So3sig9QWqfwGN3CeYtAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTZxTG877v/aKuy7ViuEGzZd2mToVtZiYnwW2SaLhZApmJyZKZqM16
-	AzeUSlpEWGKksLoOhZViS2zVMbDFYEUFlTFsJHTD4UdGYc5mgsDSdWOgDKF1UAprXZb5z8lz
-	zvN7Ts4fhyOqOJ3OyfoSyaDX6NSMglLkZVVl1HfXym+1jW0Bi/kIDI+GaPjZ1ENBZM5CwamL
-	Xgbirk4WLO0nafjhfiUFA23nEYxGLAiexlwEzF3LFMRtfSzMzT9gwW5CsOzrQ+AI2AgEB24Q
-	8F4xYZi9tMTApP8JAvt4iIGGCRMF057jCJxhFwsT3+fAo9FuGpZHfsdwPzqFwBNawhDq+RxB
-	3FEIXzV1JOKOvxiI3f2RQIN9AMHX4yMEnkyMIbjS9xCB71wlA79ZrxIYCr0IP0WmGei3H2Pg
-	UeAUhseXGGis9NEQuDOJ4LTLhiD8iw9DVfNFBhyn2ynoGvuWhcDkIoZhhw3D+fZcGPWEKbht
-	bcKJcxPU5TRwNVThRPkDg/1CN4Z5Tyu73Y3Ep+ZaSmztuIZF82CcEb1nvEiMLdiQOOeuIqLZ
-	mmj9U9NE/KzjkOi+PcWIC5F7jOiLNlLirSZBPPvFAhbr7maIXc4R9sPsjxXbtJJOLpUMb763
-	X1HgHPySLbboyvzhOFWBhnKrUQon8O8I3rZzJKkp/nVhtqUFJzXDrxeCwfnEnONS+deEwV+z
-	q5GCI7zjJaG/w0InmVW8TvDXzzzjlTwI0Vk7SUIq/gQS7C1t1L/GSqH/ZOiZJvxGIbg0gZNL
-	Cb9GaFnikjKF3ybUOrYmidX8q0LPtZvYipTO58LO58LO/8ONiLSiVFlfWqSRdVszjYUF5Xq5
-	LPOTA0XtKPGUnsOLdd+guaGcXsRzSP2CMnivRlbRmlJjeVEvEjiiTlW+/MYxWaXUaso/lQwH
-	9hkO6iRjL1rDUeo05QcfSftVfL6mRCqUpGLJ8J+LuZT0CpS5eNnkbmQLIq6d70bC0Swmb0p7
-	tXhxt2vFcB7dq8rPrb9Dsyd2h2M3A+6aPfqKo1hbe+i77e/f2qR9QFYdPxyJju+Y+XvD3tY/
-	m5srX8k5W1ZXsnZz1uo9O3SxtJ35JQf3WWcGxtXFnmy5xt/5mM4YrEZHy3btur4OdeK16vQz
-	aspYoHl7IzEYNf8AhlstipADAAA=
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAOzHjmkC/33NwQrCMAwG4FcZPVtpU7o5T76HeKhtuhXHOtpRl
+ LF3N9tFBJGc/j/ky8IypoCZnauFJSwhhzhSUIeK2d6MHfLgKDMQUAupBJ8MdSUOZg4DLSMX2nv
+ dai0apxidTQl9eO7k9Ua5D3mO6bV/KHJr/2BFcprWK6fw5KHWlwemEYdjTB3btAIfAST8EIAEo
+ 2p7bxsntYUvYV3XNwnOXNDzAAAA
+X-Change-ID: 20260130-page-volatile-io-05ff595507d3
+To: Alice Ryhl <aliceryhl@google.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8748; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=rkRKmejGZTKsqv4gfmca2YCfS5O5A6zUCPL44REt0Ww=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpjsftWL0YJgnkOH5vzTT47x9cfDPFsxWkwUt6X
+ BEOQP7VTd6JAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaY7H7QAKCRDhuBo+eShj
+ d+YlD/40kXJBDnl9Mx6RcvqgV2jhQENDzLqHVZFYcKd/9JZkmHgUUOJsLhRV6IjIrig/4Ee2IJF
+ OoN4NMJnNDQHxmdniDm1qvwDYoPC9oLr0FIB2Uis6Tu6ZGYOFVOjvR9DsGjTEkyVXM2zixY33VK
+ slczOXBICbgAybs4whuEzPg8VrBVdoyOr3A310njCTKbvkz07CHRB/x+NKTtmSh65S7IdaDRXFM
+ jbR7X0JxttyCnCsJq1PG5o1tEpwTEKGU9qFzY8JXcxC1cGBJ1zN6Ewo6KHR7O3y1jGVal7tofw2
+ GehBZ9idotgzD8W2ZBjCvmmK6saKRCutQVQ9wzKTVIS1eiwza5gLaEatxoHbD36PJrxeJ4lwoKm
+ oo69p3sMqUd12ziQ68e/ncNMAC+d/WPwOrf3rDo11APQBz2c8YVVnW7oluiXVgLCPc8yAsHvnMO
+ sEEHyNVnu0DsR2RLqXWq2duwTS/SPy2tBWJhLw8Jt9yJnL56c/zBYQFx6MPZRERr8fBguvCvuE5
+ zqcxRbRLmORyqlYle9+vp4sdR0GFxVr7cbX/T5MNY2xjMuWi2EyhFIIJZgx37LrB8+TS+AkjNcZ
+ aTN1ntPlmaePNRq3rb4AyMKH8XtjBqMi8lQqbxj2DFueH9Q/+G7mdyz64U0pAOwGx5398YJYDTp
+ LUfp6lftEo9D3jw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Wed, Jan 07, 2026 at 01:19:00PM +0100, Petr Pavlu wrote:
-> On 12/5/25 8:18 AM, Byungchul Park wrote:
-> > struct dept_event_site and struct dept_event_site_dep have been
-> > introduced to track dependencies between multi event sites for a single
-> > wait, that will be loaded to data segment.  Plus, a custom section,
-> > '.dept.event_sites', also has been introduced to keep pointers to the
-> > objects to make sure all the event sites defined exist in code.
-> >
-> > dept should work with the section and segment of module.  Add the
-> > support to handle the section and segment properly whenever modules are
-> > loaded and unloaded.
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> 
-> Below are a few comments from the module loader perspective.
+When copying data from buffers that are mapped to user space, it is
+impossible to guarantee absence of concurrent memory operations on those
+buffers. Copying data to/from `Page` from/to these buffers would be
+undefined behavior if no special considerations are made.
 
-Sorry about the late reply.  I've been going through some major life
-changes lately. :(
+Add methods on `Page` to read and write the contents using byte-wise atomic
+operations.
 
-Thank you sooooo~ much for your helpful feedback.  I will leave my
-opinion below.
+Also improve clarity by specifying additional requirements on
+`read_raw`/`write_raw` methods regarding concurrent operations on involved
+buffers.
 
-> > ---
-> >  include/linux/dept.h     | 14 +++++++
-> >  include/linux/module.h   |  5 +++
-> >  kernel/dependency/dept.c | 79 +++++++++++++++++++++++++++++++++++-----
-> >  kernel/module/main.c     | 15 ++++++++
-> >  4 files changed, 103 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/include/linux/dept.h b/include/linux/dept.h
-> > index 44083e6651ab..c796cdceb04e 100644
-> > --- a/include/linux/dept.h
-> > +++ b/include/linux/dept.h
-> > @@ -166,6 +166,11 @@ struct dept_event_site {
-> >       struct dept_event_site          *bfs_parent;
-> >       struct list_head                bfs_node;
-> >
-> > +     /*
-> > +      * for linking all dept_event_site's
-> > +      */
-> > +     struct list_head                all_node;
-> > +
-> >       /*
-> >        * flag indicating the event is not only declared but also
-> >        * actually used in code
-> > @@ -182,6 +187,11 @@ struct dept_event_site_dep {
-> >        */
-> >       struct list_head                dep_node;
-> >       struct list_head                dep_rev_node;
-> > +
-> > +     /*
-> > +      * for linking all dept_event_site_dep's
-> > +      */
-> > +     struct list_head                all_node;
-> >  };
-> >
-> >  #define DEPT_EVENT_SITE_INITIALIZER(es)                                      \
-> > @@ -193,6 +203,7 @@ struct dept_event_site_dep {
-> >       .bfs_gen = 0,                                                   \
-> >       .bfs_parent = NULL,                                             \
-> >       .bfs_node = LIST_HEAD_INIT((es).bfs_node),                      \
-> > +     .all_node = LIST_HEAD_INIT((es).all_node),                      \
-> >       .used = false,                                                  \
-> >  }
-> >
-> > @@ -202,6 +213,7 @@ struct dept_event_site_dep {
-> >       .recover_site = NULL,                                           \
-> >       .dep_node = LIST_HEAD_INIT((esd).dep_node),                     \
-> >       .dep_rev_node = LIST_HEAD_INIT((esd).dep_rev_node),             \
-> > +     .all_node = LIST_HEAD_INIT((esd).all_node),                     \
-> >  }
-> >
-> >  struct dept_event_site_init {
-> > @@ -225,6 +237,7 @@ extern void dept_init(void);
-> >  extern void dept_task_init(struct task_struct *t);
-> >  extern void dept_task_exit(struct task_struct *t);
-> >  extern void dept_free_range(void *start, unsigned int sz);
-> > +extern void dept_mark_event_site_used(void *start, void *end);
-> 
-> Nit: The coding style recommends not using the extern keyword with
-> function declarations.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+Changes in v3:
+- Update documentation adn safety requirements for `Page::{read,write}_bytewise_atomic`.
+- Update safety comments in `Page::{read,write}_bytewise_atomic`.
+- Call the correct copy function in `Page::{read,write}_bytewise_atomic`.
+- Link to v2: https://msgid.link/20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org
 
-I will remove 'extern's.  Thanks.
+Changes in v2:
+- Rewrite patch with byte-wise atomic operations as foundation of operation.
+- Update subject and commit message.
+- Link to v1: https://lore.kernel.org/r/20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org
+---
+ rust/kernel/page.rs        | 76 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/sync/atomic.rs | 32 +++++++++++++++++++
+ 2 files changed, 108 insertions(+)
 
-> https://www.kernel.org/doc/html/v6.19-rc4/process/coding-style.html#function-prototypes
-> 
-> >
-> >  extern void dept_map_init(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
-> >  extern void dept_map_reinit(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
-> > @@ -288,6 +301,7 @@ struct dept_event_site { };
-> >  #define dept_task_init(t)                            do { } while (0)
-> >  #define dept_task_exit(t)                            do { } while (0)
-> >  #define dept_free_range(s, sz)                               do { } while (0)
-> > +#define dept_mark_event_site_used(s, e)                      do { } while (0)
-> >
-> >  #define dept_map_init(m, k, su, n)                   do { (void)(n); (void)(k); } while (0)
-> >  #define dept_map_reinit(m, k, su, n)                 do { (void)(n); (void)(k); } while (0)
-> > diff --git a/include/linux/module.h b/include/linux/module.h
-> > index d80c3ea57472..29885ba91951 100644
-> > --- a/include/linux/module.h
-> > +++ b/include/linux/module.h
-> > @@ -29,6 +29,7 @@
-> >  #include <linux/srcu.h>
-> >  #include <linux/static_call_types.h>
-> >  #include <linux/dynamic_debug.h>
-> > +#include <linux/dept.h>
-> >
-> >  #include <linux/percpu.h>
-> >  #include <asm/module.h>
-> > @@ -588,6 +589,10 @@ struct module {
-> >  #ifdef CONFIG_DYNAMIC_DEBUG_CORE
-> >       struct _ddebug_info dyndbg_info;
-> >  #endif
-> > +#ifdef CONFIG_DEPT
-> > +     struct dept_event_site **dept_event_sites;
-> > +     unsigned int num_dept_event_sites;
-> > +#endif
-> >  } ____cacheline_aligned __randomize_layout;
-> >  #ifndef MODULE_ARCH_INIT
-> >  #define MODULE_ARCH_INIT {}
-> 
-> My understanding is that entries in the .dept.event_sites section are
-> added by the dept_event_site_used() macro and they are pointers to the
-> dept_event_site_init struct, not dept_event_site.
-> 
-> > diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-> > index b14400c4f83b..07d883579269 100644
-> > --- a/kernel/dependency/dept.c
-> > +++ b/kernel/dependency/dept.c
-> > @@ -984,6 +984,9 @@ static void bfs(void *root, struct bfs_ops *ops, void *in, void **out)
-> >   * event sites.
-> >   */
-> >
-> > +static LIST_HEAD(dept_event_sites);
-> > +static LIST_HEAD(dept_event_site_deps);
-> > +
-> >  /*
-> >   * Print all events in the circle.
-> >   */
-> > @@ -2043,6 +2046,33 @@ static void del_dep_rcu(struct rcu_head *rh)
-> >       preempt_enable();
-> >  }
-> >
-> > +/*
-> > + * NOTE: Must be called with dept_lock held.
-> > + */
-> > +static void disconnect_event_site_dep(struct dept_event_site_dep *esd)
-> > +{
-> > +     list_del_rcu(&esd->dep_node);
-> > +     list_del_rcu(&esd->dep_rev_node);
-> > +}
-> > +
-> > +/*
-> > + * NOTE: Must be called with dept_lock held.
-> > + */
-> > +static void disconnect_event_site(struct dept_event_site *es)
-> > +{
-> > +     struct dept_event_site_dep *esd, *next_esd;
-> > +
-> > +     list_for_each_entry_safe(esd, next_esd, &es->dep_head, dep_node) {
-> > +             list_del_rcu(&esd->dep_node);
-> > +             list_del_rcu(&esd->dep_rev_node);
-> > +     }
-> > +
-> > +     list_for_each_entry_safe(esd, next_esd, &es->dep_rev_head, dep_rev_node) {
-> > +             list_del_rcu(&esd->dep_node);
-> > +             list_del_rcu(&esd->dep_rev_node);
-> > +     }
-> > +}
-> > +
-> >  /*
-> >   * NOTE: Must be called with dept_lock held.
-> >   */
-> > @@ -2384,6 +2414,8 @@ void dept_free_range(void *start, unsigned int sz)
-> >  {
-> >       struct dept_task *dt = dept_task();
-> >       struct dept_class *c, *n;
-> > +     struct dept_event_site_dep *esd, *next_esd;
-> > +     struct dept_event_site *es, *next_es;
-> >       unsigned long flags;
-> >
-> >       if (unlikely(!dept_working()))
-> > @@ -2405,6 +2437,24 @@ void dept_free_range(void *start, unsigned int sz)
-> >       while (unlikely(!dept_lock()))
-> >               cpu_relax();
-> >
-> > +     list_for_each_entry_safe(esd, next_esd, &dept_event_site_deps, all_node) {
-> > +             if (!within((void *)esd, start, sz))
-> > +                     continue;
-> > +
-> > +             disconnect_event_site_dep(esd);
-> > +             list_del(&esd->all_node);
-> > +     }
-> > +
-> > +     list_for_each_entry_safe(es, next_es, &dept_event_sites, all_node) {
-> > +             if (!within((void *)es, start, sz) &&
-> > +                 !within(es->name, start, sz) &&
-> > +                 !within(es->func_name, start, sz))
-> > +                     continue;
-> > +
-> > +             disconnect_event_site(es);
-> > +             list_del(&es->all_node);
-> > +     }
-> > +
-> >       list_for_each_entry_safe(c, n, &dept_classes, all_node) {
-> >               if (!within((void *)c->key, start, sz) &&
-> >                   !within(c->name, start, sz))
-> > @@ -3337,6 +3387,7 @@ void __dept_recover_event(struct dept_event_site_dep *esd,
-> >
-> >       list_add(&esd->dep_node, &es->dep_head);
-> >       list_add(&esd->dep_rev_node, &rs->dep_rev_head);
-> > +     list_add(&esd->all_node, &dept_event_site_deps);
-> >       check_recover_dl_bfs(esd);
-> >  unlock:
-> >       dept_unlock();
-> > @@ -3347,6 +3398,23 @@ EXPORT_SYMBOL_GPL(__dept_recover_event);
-> >
-> >  #define B2KB(B) ((B) / 1024)
-> >
-> > +void dept_mark_event_site_used(void *start, void *end)
-> 
-> Nit: I suggest that dept_mark_event_site_used() take pointers to
-> dept_event_site_init, which would catch the type mismatch with
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 432fc0297d4a8..d4494a7c98401 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -260,6 +260,8 @@ fn with_pointer_into_page<T>(
+     /// # Safety
+     ///
+     /// * Callers must ensure that `dst` is valid for writing `len` bytes.
++    /// * Callers must ensure that there are no other concurrent reads or writes to/from the
++    ///   destination memory region.
+     /// * Callers must ensure that this call does not race with a write to the same page that
+     ///   overlaps with this read.
+     pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
+@@ -274,6 +276,40 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
+         })
+     }
+ 
++    /// Maps the page and reads from it into the given memory region using byte-wise atomic memory
++    /// operations.
++    ///
++    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
++    /// outside of the page, then this call returns [`EINVAL`].
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that:
++    ///
++    /// - `dst` is valid for writes for `len` bytes for the duration of the call.
++    /// - For the duration of the call, other accesses to the area described by `dst` and `len`,
++    ///   must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
++    ///   function. Note that if all other accesses are atomic, then this safety requirement is
++    ///   trivially fulfilled.
++    /// - Callers must ensure that this call does not race with a write to the source page that
++    ///   overlaps with this read.
++    ///
++    /// [`LKMM`]: srctree/tools/memory-model
++    pub unsafe fn read_bytewise_atomic(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
++        self.with_pointer_into_page(offset, len, move |src| {
++            // SAFETY:
++            // - If `with_pointer_into_page` calls into this closure, then it has performed a
++            //   bounds check and guarantees that `src` is valid for `len` bytes.
++            // - By function safety requirements `dst` is valid for writes for `len` bytes.
++            // - By function safety requirements there are no other writes to `src` during this
++            //   call.
++            // - By function safety requirements all other access to `dst` during this call are
++            //   atomic.
++            unsafe { kernel::sync::atomic::atomic_per_byte_memcpy(src, dst, len) };
++            Ok(())
++        })
++    }
++
+     /// Maps the page and writes into it from the given buffer.
+     ///
+     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
+@@ -282,6 +318,7 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
+     /// # Safety
+     ///
+     /// * Callers must ensure that `src` is valid for reading `len` bytes.
++    /// * Callers must ensure that there are no concurrent writes to the source memory region.
+     /// * Callers must ensure that this call does not race with a read or write to the same page
+     ///   that overlaps with this write.
+     pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Result {
+@@ -295,6 +332,45 @@ pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Res
+         })
+     }
+ 
++    /// Maps the page and writes into it from the given memory region using byte-wise atomic memory
++    /// operations.
++    ///
++    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
++    /// outside of the page, then this call returns [`EINVAL`].
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that:
++    ///
++    /// - `src` is valid for reads for `len` bytes for the duration of the call.
++    /// - For the duration of the call, other accesses to the areas described by `src` and `len`,
++    ///   must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
++    ///   function. Note that if all other accesses are atomic, then this safety requirement is
++    ///   trivially fulfilled.
++    /// - Callers must ensure that this call does not race with a read or write to the destination
++    ///   page that overlaps with this write.
++    ///
++    /// [`LKMM`]: srctree/tools/memory-model
++    pub unsafe fn write_bytewise_atomic(
++        &self,
++        src: *const u8,
++        offset: usize,
++        len: usize,
++    ) -> Result {
++        self.with_pointer_into_page(offset, len, move |dst| {
++            // SAFETY:
++            // - By function safety requirements `src` is valid for writes for `len` bytes.
++            // - If `with_pointer_into_page` calls into this closure, then it has performed a
++            //   bounds check and guarantees that `dst` is valid for `len` bytes.
++            // - By function safety requirements there are no other writes to `dst` during this
++            //   call.
++            // - By function safety requirements all other access to `src` during this call are
++            //   atomic.
++            unsafe { kernel::sync::atomic::atomic_per_byte_memcpy(src, dst, len) };
++            Ok(())
++        })
++    }
++
+     /// Maps the page and zeroes the given slice.
+     ///
+     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
+diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+index 4aebeacb961a2..8ab20126a88cf 100644
+--- a/rust/kernel/sync/atomic.rs
++++ b/rust/kernel/sync/atomic.rs
+@@ -560,3 +560,35 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
+         unsafe { from_repr(ret) }
+     }
+ }
++
++/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
++///
++/// This copy operation is volatile.
++///
++/// # Safety
++///
++/// Callers must ensure that:
++///
++/// - `src` is valid for reads for `len` bytes for the duration of the call.
++/// - `dst` is valid for writes for `len` bytes for the duration of the call.
++/// - For the duration of the call, other accesses to the areas described by `src`, `dst` and `len`,
++///   must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
++///   function. Note that if all other accesses are atomic, then this safety requirement is
++///   trivially fulfilled.
++///
++/// [`LKMM`]: srctree/tools/memory-model
++pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
++    // SAFETY: By the safety requirements of this function, the following operation will not:
++    //  - Trap.
++    //  - Invalidate any reference invariants.
++    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
++    //    operation and all operations by the Rust AM to the involved memory areas use byte-wise
++    //    atomic semantics.
++    unsafe {
++        bindings::memcpy(
++            dst.cast::<kernel::ffi::c_void>(),
++            src.cast::<kernel::ffi::c_void>(),
++            len,
++        )
++    };
++}
 
-IMO, this is the easiest way to get all the pointers from start to the
-end, or I can't get the number of the pointers.  It's similar to the
-initcalls section for device drivers.
+---
+base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+change-id: 20260130-page-volatile-io-05ff595507d3
 
-> module::dept_event_sites.
-> 
-> > +{
-> > +     struct dept_event_site_init **evtinitpp;
-> > +
-> > +     for (evtinitpp = (struct dept_event_site_init **)start;
-> > +          evtinitpp < (struct dept_event_site_init **)end;
-> > +          evtinitpp++) {
-> > +             (*evtinitpp)->evt_site->used = true;
-> > +             (*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
-> > +             list_add(&(*evtinitpp)->evt_site->all_node, &dept_event_sites);
-> > +
-> > +             pr_info("dept_event_site %s@%s is initialized.\n",
-> > +                             (*evtinitpp)->evt_site->name,
-> > +                             (*evtinitpp)->evt_site->func_name);
-> > +     }
-> > +}
-> > +
-> >  extern char __dept_event_sites_start[], __dept_event_sites_end[];
-> 
-> Related to the above, __dept_event_sites_start and
-> __dept_event_sites_end can already be properly typed here.
+Best regards,
+-- 
+Andreas Hindborg <a.hindborg@kernel.org>
 
-How can I get the number of the pointers?
 
-> >
-> >  /*
-> > @@ -3356,20 +3424,11 @@ extern char __dept_event_sites_start[], __dept_event_sites_end[];
-> >  void __init dept_init(void)
-> >  {
-> >       size_t mem_total = 0;
-> > -     struct dept_event_site_init **evtinitpp;
-> >
-> >       /*
-> >        * dept recover dependency tracking works from now on.
-> >        */
-> > -     for (evtinitpp = (struct dept_event_site_init **)__dept_event_sites_start;
-> > -          evtinitpp < (struct dept_event_site_init **)__dept_event_sites_end;
-> > -          evtinitpp++) {
-> > -             (*evtinitpp)->evt_site->used = true;
-> > -             (*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
-> > -             pr_info("dept_event %s@%s is initialized.\n",
-> > -                             (*evtinitpp)->evt_site->name,
-> > -                             (*evtinitpp)->evt_site->func_name);
-> > -     }
-> > +     dept_mark_event_site_used(__dept_event_sites_start, __dept_event_sites_end);
-> >       dept_recover_ready = true;
-> >
-> >       local_irq_disable();
-> > diff --git a/kernel/module/main.c b/kernel/module/main.c
-> > index 03ed63f2adf0..82448cdb8ed7 100644
-> > --- a/kernel/module/main.c
-> > +++ b/kernel/module/main.c
-> > @@ -2720,6 +2720,11 @@ static int find_module_sections(struct module *mod, struct load_info *info)
-> >                                               &mod->dyndbg_info.num_classes);
-> >  #endif
-> >
-> > +#ifdef CONFIG_DEPT
-> > +     mod->dept_event_sites = section_objs(info, ".dept.event_sites",
-> > +                                     sizeof(*mod->dept_event_sites),
-> > +                                     &mod->num_dept_event_sites);
-> > +#endif
-> >       return 0;
-> >  }
-> >
-> > @@ -3346,6 +3351,14 @@ static int early_mod_check(struct load_info *info, int flags)
-> >       return err;
-> >  }
-> >
-> > +static void dept_mark_event_site_used_module(struct module *mod)
-> > +{
-> > +#ifdef CONFIG_DEPT
-> > +     dept_mark_event_site_used(mod->dept_event_sites,
-> > +                          mod->dept_event_sites + mod->num_dept_event_sites);
-> > +#endif
-> > +}
-> > +
-> 
-> It seems to me that the .dept.event_sites section can be discarded after
-> the module is initialized. In this case, the section should be prefixed
-> by ".init" and its address can be obtained at the point of use in
-> dept_mark_event_site_used_module(), without needing to store it inside
-> the module struct.
-
-Maybe yes.  I will try.  Thank you.
-
-> Additionally, what is the reason that the dept_event_site_init data is
-> not stored in the .dept.event_sites section directly and it requires
-> a level of indirection?
-
-Maybe yes.  I will try to store dept_event_site_init in the
-.dept.event_sites section directly.
-
-> In general, for my own understanding, I also wonder whether the check to
-> determine that a dept_event_site is used needs to be done at runtime, or
-> if it could be done at build time by objtool/modpost.
-
-You are right.  I picked what I'm used to the most, among all the
-candidate methods.  However, I will try to use a better way if you
-suggest what you think it should be.
-
-Thanks for the thorough review, Petr.
-
-	Byungchul
-
-> >  /*
-> >   * Allocate and load the module: note that size of section 0 is always
-> >   * zero, and we rely on this for optional sections.
-> > @@ -3508,6 +3521,8 @@ static int load_module(struct load_info *info, const char __user *uargs,
-> >       /* Done! */
-> >       trace_module_load(mod);
-> >
-> > +     dept_mark_event_site_used_module(mod);
-> > +
-> >       return do_init_module(mod);
-> >
-> >   sysfs_cleanup:
-> 
-> --
-> Thanks,
-> Petr
