@@ -1,146 +1,169 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCDF218ACC
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 16:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08FFB8F49;
+	Fri, 13 Feb 2026 16:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770999702; cv=none; b=Sx5OGVkkrYif2yuPowiLpDRphahG/xLfD+CEiHU/4Anq5zUNCgVkhBoRSx7Pwp0lWmqmk8XBUUAV2YDxoHUp29fqB6KadyIXlg+khA52SKLRfZfjYxM6k/PQo3upPz42A/jf7EC5ERa09hVzD/uwx7Sp1JAmDGhZTs8HzX23GAI=
+	t=1771000957; cv=none; b=Xg81v6e8tIbWRi+Ctl40tIcqdmyPldGvOfe7zmBgUGPgh1v0nXmlPX8gacqmdW3Qpnt0OqKqiX21w9sv6XiFZJfwfKihlak4EKTWFTO5G+i1QOzn9Ug8tvttZ/Pu9UYp1j3ShOh41xZo6DdVWaVogkb7gSH7agvYnok78Ez1YrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770999702; c=relaxed/simple;
-	bh=89MsOZhPkqrGHPMyz3Il0w6oD2/QvatQlL6IfzX9738=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Msq+ir4weibJmJFAS0IXgH956VL4ErzxM5RAsouUxyDrG5zGakUvDq1erD8P8rQn8eyyBVXW9j+wG0KC31DjNPrBBpHc057o1DA/Hru0UmOr4EY0Xx7dIAaU22Lh+jucdYHS3yu0DqYnT6m5oGl6eT+IAqxnFJSSguoC3SIrqBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qG9Iqb6O; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1771000957; c=relaxed/simple;
+	bh=D2uPJCqU8beDKZ5LlRiC3yWLBv/9WvcYMPwKbnCeMmU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DK9yPODhhs7GfzmN/UeKb3KrGQlZl5xEHZx7p5ti6KcYfwSN/Y3E2HaG9EbiEd9gsJX2uRpZ+wZBFZ81bLnwJrINMzPMPXTD/eVp1qN7PabPX4mZ1aoyWQFULUjDpkVeVG30XSivwth4RHOxaRgerB1xKtQuzufZwWsnx5nVUE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gOG+1kXs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qG9Iqb6O"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4359849d324so1043398f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 08:21:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770999699; x=1771604499; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=89MsOZhPkqrGHPMyz3Il0w6oD2/QvatQlL6IfzX9738=;
-        b=qG9Iqb6OGU3BDdaihlo4P1q9f3Uecsz1jP7kVYpIANHghR9GvreSHycRQQTKfzD9Xh
-         OHHLoxTwYtLqQwwgvnqmzPMoxHBQABbTMsz4cpSgLfYKGSYWDwKno2I4D6YKHmFuCHPp
-         jllRim6RLa+hMPe052Lf9978cN720Lp3sXhr9cEdGlcCs44JqQq7RFnpS0ci4HXfvm7C
-         wEpJ8H7/gvqWJqHtJtZ2bYauxqnxwymgknjAKZcfe5U/Rhhh5oQ3aiJxptOjyzHpF6zr
-         93LzKyvB7FE4soD2i+DIm1UX+l8miJPvdMgtqSV7iNeRuOifuCqYbR/iymPkN0tL5BOZ
-         ltjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770999699; x=1771604499;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=89MsOZhPkqrGHPMyz3Il0w6oD2/QvatQlL6IfzX9738=;
-        b=jrLzt+6zPRK5TlMLFZ0ies9uwgk33uaRN2YpaO9U8dkYq8wDRjK+JtJd6drBWDxana
-         Z8kXyPV9J06wG2BjEHQXr12k2rcahgHLM8LNnNibqq5mX+NWXO3O8XwqvzIkuvQpcvh0
-         bDsIzFY1oQzHsgRq97OFKayHH/vMtdtWaRIIaaJRxEKchJjRORGDUfL/pHx2efxfIfQX
-         HsXdYGftd6vsOaeJyatnk5f98XdcyRyibE/foILnZqvfjKCtbDIJ0fHZwLgteuc97UpU
-         BAdrOBRyAwcddqiku4AR0MdAJRVUNP+sHnvNeJixYTVmejs5NQWp2z7db1/FrYkaV1ge
-         bOrA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRbI+mLV1Tk2kPAW9+jGjymcpSzVxPde0pZ6TCm0gXhkzPGJnEDIzmuCXrPD5gYcO59BEbVJVVwRFaRqNXvw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4nnHVqpjq50VYXQOC5rVYP5Ixhiq9TvuLmXBlHdVYMF8oIRoZ
-	ow0Z/mOOVxfZN4wAJliC6C9o0l6TD1t3KsrLt+fAV5iQ0JRj/33617z5pcUhZrgsX0cm8VRwYYR
-	ibomBt8KqTQG4uVds5w==
-X-Received: from wrpv13.prod.google.com ([2002:adf:f68d:0:b0:437:68e2:a7c0])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:24c4:b0:435:94c1:3714 with SMTP id ffacd0b85a97d-43797856d89mr4031769f8f.0.1770999698964;
- Fri, 13 Feb 2026 08:21:38 -0800 (PST)
-Date: Fri, 13 Feb 2026 16:21:38 +0000
-In-Reply-To: <CAG48ez0=4Tw-FKF5VF+MZNj4sCqi3CTnbB5PHqvC4mo=3s3Rvg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gOG+1kXs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BF6C19424;
+	Fri, 13 Feb 2026 16:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771000956;
+	bh=D2uPJCqU8beDKZ5LlRiC3yWLBv/9WvcYMPwKbnCeMmU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gOG+1kXsjHq0JaqZqfkakBAKG+9KRzBvZfnVMSx7r7MNI7q+85Ai5rfVHaurK0Qgf
+	 FpFokRlTuRWh9///2q441SKD+qVPhbagovAwUyfczIVDSLmGfs0j0Ck6q3PkU7CbMS
+	 BsZjK/hjbW6BLk3uRVX3eA16ZcAkLjlJtL1EmR0nwD6UmEFlPAUYWxziYjbysCZLi5
+	 +Q8g23sZnzWfAOb5pxzhJIEV+9B+SOToeBdbkjt/fleps0XnoH8QgwLYjh68pWn+o6
+	 fh4uTvOS7Wd+xpyDj5UV3Bor8feiWG2vuiBrzbYINaU7huvBiDJe16JY3UH8oChvPL
+	 9P5Y4WIno1E2g==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 33986F4006E;
+	Fri, 13 Feb 2026 11:42:35 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Fri, 13 Feb 2026 11:42:35 -0500
+X-ME-Sender: <xms:e1SPaTpjauIxaBYDHfuMWKw_wNdYxjnXMl8Y-EasyKmKcjtebZjKmg>
+    <xme:e1SPaZkaLwspUe4u2Vsvrnkv4MWPyhVRtl5H4N1DeAUZyAAbG1KxgjII4rVRinJ4a
+    MkjBSy1y-KA72B8UD4fvYls3AzWpolk2i20rdMEiybisJX7dDZv8g>
+X-ME-Received: <xmr:e1SPaWVl4QqsibD_vAkuuO-YwcNETuQOnkqOP0EozLyVX1j1KGAD0hS4Lt6Cm6eVkpyafAd5nXFIY5r6owJaCSmNkjip3FtE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdekjeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
+    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
+    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgv
+    thgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorh
+    hgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhl
+    vgdrtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvg
+    drtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhm
+    pdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqh
+    hunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihg
+    uhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
+    gtohhm
+X-ME-Proxy: <xmx:e1SPadTC0lTvER7xSsrApy1MHnZClXItrE2auteeAz94dtxSwZDjmA>
+    <xmx:e1SPaRAf9_jyW8HeWkrDcgEXHldLG22NAIzzllSwRpGcb2ciiaa6dg>
+    <xmx:e1SPaYQ1CSd-CcfvztZWUGpVhmhQTaCfNh8TIPkKhjkeLP4iUc7Itw>
+    <xmx:e1SPabSAT_0md2MUA7R8T7k3kX8VXYGTvQowPBoWm7yE69JTYiVfPg>
+    <xmx:e1SPaeIbhmg0Xuyvp5918E25dFmNwq11PxAaITj_K7d3uoT1GV-b9qxn>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 13 Feb 2026 11:42:34 -0500 (EST)
+Date: Fri, 13 Feb 2026 08:42:33 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <aY9UedlaCmagVmzh@tardis.local>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <20260213112837.GT2995752@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260212-rust-uid-v1-1-deff4214c766@google.com>
- <DGDPG8TL1IGS.3OVN0KU25D9YA@garyguo.net> <CAG48ez0=4Tw-FKF5VF+MZNj4sCqi3CTnbB5PHqvC4mo=3s3Rvg@mail.gmail.com>
-Message-ID: <aY9Pklev_sI30UoD@google.com>
-Subject: Re: [PATCH] rust: task: clarify comments on task UID accessors
-From: Alice Ryhl <aliceryhl@google.com>
-To: Jann Horn <jannh@google.com>
-Cc: Gary Guo <gary@garyguo.net>, Todd Kjos <tkjos@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260213112837.GT2995752@noisy.programming.kicks-ass.net>
 
-On Fri, Feb 13, 2026 at 03:43:21PM +0100, Jann Horn wrote:
-> On Fri, Feb 13, 2026 at 9:53=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote=
-:
-> > On Fri Feb 13, 2026 at 2:00 AM CST, Jann Horn wrote:
-> > > Linux has separate subjective and objective task credentials, see the
-> > > comment above `struct cred`. Clarify which accessor functions operate=
- on
-> > > which set of credentials.
-> > >
-> > > Also document that Task::euid() is a very weird operation. You can se=
-e how
-> > > weird it is by grepping for task_euid() - binder is its only user.
-> > > Task::euid() obtains the objective effective UID - it looks at the
-> > > credentials of the task for purposes of acting on it as an object, bu=
-t then
-> > > accesses the effective UID (which the credentials.7 man page describe=
-s as
-> > > "[...] used by the kernel to determine the permissions that the proce=
-ss
-> > > will have when accessing shared resources [...]").
-> > >
-> > > For context:
-> > > Arguably, binder's use of task_euid() is a theoretical security probl=
-em,
-> > > which only has no impact on Android because Android has no setuid bin=
-aries
-> > > executable by apps.
-> >
-> > If there's no setuid binary, then the `task_euid` can also just be repl=
-aced with
-> > `task_uid`?
->=20
-> That would still be wrong for binder's usecase though.
->=20
-> > > commit 29bc22ac5e5b ("binder: use euid from cred instead of using tas=
-k")
-> > > fixed that by removing that only user of task_euid(), but the fix got
-> > > reverted in commit c21a80ca0684 ("binder: fix test regression due to
-> > > sender_euid change") because some Android test started failing.
-> >
-> > What exactly is relying on the current behaviour? It'll better to fix t=
-hat and
-> > remove `task_euid` completely as I find "objective effective UID" quite
-> > confusing, even with disclaimer that it shouldn't be used.
->=20
-> I agree with that; I don't know what that failing test was. (Todd
-> would probably know.) My understanding is:
->=20
-> In the current version, the ->sender_euid reported to a transaction's
-> recipient is the EUID of the sending process *at the time the
-> transaction is received by the recipient*. (This is wrong if the
-> sending process changed credentials after sending the transaction, and
-> especially dangerous if the sending process went through a setuid
-> execution in the meantime.)
->=20
-> With the reverted fix, the ->sender_euid reported to the recipient was
-> the EUID of the sending process *when it opened /dev/binder*. (That is
-> secure, and capturing credentials at open() time is a standard
-> mechanism in Linux, but it might be surprising to userspace code that
-> calls seteuid() between opening /dev/binder and sending a transaction.
-> I guess that's probably what that failing test was about.)
->=20
-> Probably the right fix would be to capture the current_euid() in the
-> sending process when it sends a transaction.
+On Fri, Feb 13, 2026 at 12:28:37PM +0100, Peter Zijlstra wrote:
+> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
+> > When copying data from buffers that are mapped to user space, it is
+> > impossible to guarantee absence of concurrent memory operations on those
+> > buffers. Copying data to/from `Page` from/to these buffers would be
+> > undefined behavior if no special considerations are made.
+> > 
+> > Add methods on `Page` to read and write the contents using byte-wise atomic
+> > operations.
+> > 
+> > Also improve clarity by specifying additional requirements on
+> > `read_raw`/`write_raw` methods regarding concurrent operations on involved
+> > buffers.
+> 
+> 
+> > +    /// - Callers must ensure that this call does not race with a write to the source page that
+> > +    ///   overlaps with this read.
+> 
+> Yeah, but per the bit above, its user mapped, you *CANNOT* ensure this.
+> 
 
-We can certainly do that, but I don't know what the test failure was
-either. And it should probably be changed for both drivers if so. I just
-mirrored what C did.
+First, this safety requirement is actually incorrect, because of the
+user mapped case you mentioned. I believe Andreas put it to prevent
+others from racing with memcpy(), e.g.
 
-Alice
+	(I'm flipping the read/write here between normal access and
+	memcpy, but it's the same)
+
+	CPU 0				CPU 1
+	=====				=====
+	let ptr: *mut i32 = ..; // a pointer to a 32 bit integer
+					let x = 42;
+
+					memcpy(ptr, &raw x);
+	let v = *ptr; // <- the result of this is UB because of data
+		      // race.
+
+it's data race in C as well:
+
+	CPU 0				CPU 1
+	=====				=====
+	int *ptr = ..;			int x = 42;
+				
+	int r0 = *ptr;			memcpy(ptr, &x);
+
+But this is already covered by the previous safety requirement on "no
+data races". Hence this safety requirement is redundant and incorrect to
+me as well.
+
+> And same comment as for v2, none of this makes sense. Byte loads are not
+> magically atomic. And they don't actually fix anything.
+> 
+
+The problem that byte-wise atomic memcpy "solves" is the normal C
+standard memcpy() and Rust's `core::ptr::copy()` cannot race with other
+memory accesses. We didn't have our problem in our C memcpy(), because
+it's implemented in a way that at byte level, they are atomic, i.e. you
+cannot observe a teared byte.
+
+(Note, the atomic part is indeed not necessary if you only need to
+memcpy() a user mapped memory, but in Andreas use case, I believe the
+same code is shared between "copying from user mapped memory" scenario
+and "copying from in-kernel memory" scenario, for latter we need both
+sides to be byte-wise atomic to avoid data races)
+
+Of course, it's not magical on its own:
+
+* when racing with in-kernel accesses, the other accesses need to be
+  atomic or it's a read on the location the bytewise_atomic is reading
+  from.
+
+* when racing with external accesses (for example, userspace), the 
+  kernel code needs to deal with whatever the userspace can do.
+
+Regards,
+Boqun
+
+> NAK
