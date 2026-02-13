@@ -1,436 +1,400 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010050.outbound.protection.outlook.com [52.101.85.50])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC6A6BFCE;
-	Fri, 13 Feb 2026 01:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66771C8E6;
+	Fri, 13 Feb 2026 01:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770945386; cv=fail; b=l0VSWEUqG1apOoY8v8IBXUDxRsEoah0nhlXFK9LgXNC/a+K8fCok3BeitBAy34HBCq993T/AsGUlvocnmihCg1mZhJTYpyoib6EfAJL4hr6gFErk9ViiH5Ms+8DLTEZr2meCz11xz3QB7HGUkXYCYDuFpCpmqwGvHSlNqjMbaJA=
+	t=1770947969; cv=pass; b=Ih/WSugaobB2zMJQsis5lV15esLSEjoghVPalyM4qus7pCyEjoPLAwAjwQI3YINAIaTp43pxUpN3vJRh4X9lA5GmhqxtxwwxTZ+oRHOEFDjIqw7luxEjyxiF2NXij3w4bDwBxhOhBxQvMwQnEdrSTQSU6pXljysnyMqeyCImRMY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770945386; c=relaxed/simple;
-	bh=GdqSr4Ka0qezI51eJAvXFfGIQ/aKtR925C5mifDn/jA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ui/FMMh9i6VbYFz3XEh1ZNtbrLCeQTMQBj/rSZ/4gl2RolOFlj+jdV0VchPEURoPXw3FAgSUqksqHKj3HU2OS765Qi91uGW71pPUqLL6qTclA083WjHGSTFrmQfLyaN9AEhBs/Mek+f2FiLR3ceLp1rYpgTtH5+R9uew9cxGSHM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=h9Y03uzr; arc=fail smtp.client-ip=52.101.85.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1770947969; c=relaxed/simple;
+	bh=cKrtYn7xDJh+n7aL25/NSTQWfOFgzKBZMk+uN7eSjZY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fmmk1oAXtOkB7jVoV02VlBtxmbHunHftrygOCzEI2ea3ipL1hC4tjj4YEzzTckc2+Za8B8s0DUSgc+y+/yvCaoYJtekoBh7cDcWuFgOeQ7eUmjBmkFwpJ6bkBgzMOvosQAExny8YL1fKMe5ea4davgMGy9lhbEgTRViravjfThs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=aBpLo5RY; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="h9Y03uzr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CRxOwWJOifQQiV2AjKeg2A41deiOeJ/eWy2qDwUfp3LikzJJ7n7QgPo5ZRjFdlv1fn5sPrCNovMaqN2dT4zUENwG8ChmU2piUntqCcuTF9z0CbCfFm1WH2L96nkDUcIAsESl5GEMPfdVApfo3/SxlA1SfcDZSmpHgsq+XUVEQR82DxtOEYVQLr4EDYLebnZKgauWCKJLVaKaeJBEqTNGTfim008jt0/O6lmapcFFGRPhpw1xlgRA8g/ShOAWdshvAgMapDWcrokB/sbucx0C7+L/szUd6J5l8PSKzns1gjQdzrd+qvv4HSIhMBi/eBXd5gVEhG2iqXTMoki7dJmlOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x29TuKrd4X/pAg3oZiXFrdKWf8FD9QBQoqQb3XGwebc=;
- b=vp5xwKTurs8IqCqjB6q7+N6OC3iMJA/n+nx+uWo8tVddH1QKpGFmWYdDorc8jKXvzCcGFVj2NTxqUXLVAmFH3pxCGhnBZ9nLUJidxEyjglXhofLcjgryU98/zzfv1ze/8kahXi51/l+vytpl1ugpEZXQtefTnwegfp28nOkcfhMGqQm+izZiXipGTopEjjO6LXuFL9RPP4ZVrDBx1GIG/HZDOIw3FjoqipK7On0l6p6xuLYul/6IbcA5QSMeaehR3DEEai7N/YwyPW/djhuiCG2ulY5vLcmIgdrBALM+0eyxs7lywsPFGN9YwZyXfCsO1jxB4JTbZaZ0g3HiCmXrew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x29TuKrd4X/pAg3oZiXFrdKWf8FD9QBQoqQb3XGwebc=;
- b=h9Y03uzrm8RQqTuJwPjeyWnGmQrXE/sAPBiM7REUN9lU49Fy1W8snxwib1GFmn6VKzTANqud/BV4yanG7TzQkkl5i90z3MD47awSD2kxWCploBdsIPcau6OY2LCss4lW8gHRz6u1Ng0XG+mafhTaZO4DSL7gOrGjuHjIVcbw4QTPMeGNxMYcFunK1laNXkICHZGDuYbk7x+RaQ58v+jH1orTxF4+dj5xkhQSvtxNdo9F17fjQmvPu6M1XS6hMQjgTZQW/TDUi9CXlJ5baTCEt5ylYUcJ5nWuBVY7u/xOND9uyZOYWU3ShdN/qMN/HbBdNKn0YXkTRDxZjfEHyZIoVA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB8800.namprd12.prod.outlook.com (2603:10b6:510:26f::12)
- by PH7PR12MB7889.namprd12.prod.outlook.com (2603:10b6:510:27f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Fri, 13 Feb
- 2026 01:16:21 +0000
-Received: from PH0PR12MB8800.namprd12.prod.outlook.com
- ([fe80::f79d:ddc5:2ad7:762d]) by PH0PR12MB8800.namprd12.prod.outlook.com
- ([fe80::f79d:ddc5:2ad7:762d%4]) with mapi id 15.20.9587.017; Fri, 13 Feb 2026
- 01:16:21 +0000
-Date: Thu, 12 Feb 2026 20:16:19 -0500
-From: Yury Norov <ynorov@nvidia.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="aBpLo5RY"
+ARC-Seal: i=1; a=rsa-sha256; t=1770947951; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LDN+WNAUdz0SWY52JwzhhhDQRNguvsp/kUWE223sjb0r4BaXIrkMWeZ8SIsVqvgOOzfuCf6pH5npUkDBjZD6ZyaG01hHTRajKZI7Kl5LLyAfJYn15kA1IMCpbLwB+zO1Ds7yvJj9UwEhfpp7Ro3E26RkdO1AoC4qVpEz0G2TnQ0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770947951; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=C8g2vpgn9loO8Qzjl4rLA0gGBK3eJ5QEP0ztitLu7uc=; 
+	b=OVtuGyrRC+YNC4o6x4DMekKoBbweRISRzTAUVR0LuF0p9BLVCJ18HuYB/Bgu+svpruAwe9XNswF30LfDFfCTid4ppHs3RC3dROWUz3gkCbjXP902VN5Mz4kqLe1dLp5aL0FnzNKXsRgCJjdLekEHbr4oyr6BdKzcVxBDXE4aEg8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770947951;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
+	bh=C8g2vpgn9loO8Qzjl4rLA0gGBK3eJ5QEP0ztitLu7uc=;
+	b=aBpLo5RYGAkKFZRMDKOHrGB+wC/x7OwFWnUd3JhZ1pAUH/Hv5LIxHkgxL6rS87HG
+	WnhextBe14iyKxZbV901wKW6j4GUDgW11NaMHh2rLo6WjMmU47QTHaKvDou/LXRONKn
+	P1pVT0ezVb90bKRi/vdhN2mD7iPYBTE+m3d+6qzU=
+Received: by mx.zohomail.com with SMTPS id 1770947950819885.6940747393908;
+	Thu, 12 Feb 2026 17:59:10 -0800 (PST)
+Date: Thu, 12 Feb 2026 17:59:09 -0800
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	nouveau@lists.freedesktop.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: add `const_assert!` macro
-Message-ID: <aY57Y9WorBLiJR8E@yury>
-References: <20260206171253.2704684-1-gary@kernel.org>
- <20260206171253.2704684-2-gary@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260206171253.2704684-2-gary@kernel.org>
-X-ClientProxiedBy: BN9PR03CA0099.namprd03.prod.outlook.com
- (2603:10b6:408:fd::14) To PH0PR12MB8800.namprd12.prod.outlook.com
- (2603:10b6:510:26f::12)
+	Janne Grunau <j@jannau.net>
+Subject: Re: [PATCH v7 6/7] rust: Introduce iosys_map bindings
+Message-ID: <aY6FbSjQpGFk8oWK@um790>
+References: <20260206223431.693765-1-lyude@redhat.com>
+ <20260206223431.693765-7-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB8800:EE_|PH7PR12MB7889:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4d4235e-2139-4b62-2ca8-08de6a9d7f8d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?g2jOun60rZ13L9riur//PNkf6sDcw7U6ga+dBvIflJcRLJd+ltWYvP6HotmE?=
- =?us-ascii?Q?Ak7QmxYtm9CTv+BopubcXbHkUEeM6y13/yqFtSew9QXZCTFnpCGUy7zkoTj+?=
- =?us-ascii?Q?VqosdB2VNkQOAKWKQYn9xkM8bUnrzl8Epbe7CwHUp6NJa4lYIxq5NZb4P1sm?=
- =?us-ascii?Q?9VMJdkf8qcU/CZWi0IiI/91NgrX1m+IUSqENNCa0/A40Ia04yrWylZaOD75S?=
- =?us-ascii?Q?ifc+DRXFr9WyWoqbKF2kG40v6fV+U46r+bSXfVvFI0mg4hPgnubARmpC5gML?=
- =?us-ascii?Q?pidHYSRwBGlUy+WQWjEibfI17ODmo8ZDdmgRjwzsRIq2M8wsn+PvvqTpYjP8?=
- =?us-ascii?Q?f/bRhzX+96osAL2GlKna48H7ztXXPUH9CRpb/QSZvDV931CiOT7IUugVbVUw?=
- =?us-ascii?Q?EEz4+/dIr+av2mf4W7PleRThqY/ywc9slA1d2RXWYsakdZxK+IMBOGLbxCpj?=
- =?us-ascii?Q?nw+b5SUpXMYd6TCgHOXmlwMnRFAmTD+KJGLufG19MsCHOum5WG60PVBg5Ehf?=
- =?us-ascii?Q?iWiaYo45aowJJZ9HT1mzRt01k1Y/tCz6YBB5W0PoGe4kKQ5HUmqxIVnk0YQI?=
- =?us-ascii?Q?DhMQhQ37Mv4nO2mbEXfhpa5IhA6EsebR01pz0gw9w3P/sMeWJqb5Hau1iM7y?=
- =?us-ascii?Q?c1Js36+gAEBSK/TCSecKk7w/m0kJ0PQgtbOayGuzFA+SjKKQepQbFeGJBcd5?=
- =?us-ascii?Q?7ePoGwf0a5K0snhkkWlHVso9aUkuO0AcCceqEs5cYkKMpip+TXVwBkbUl3WG?=
- =?us-ascii?Q?3QLSwdv4ZdgsYl/L1Uy6FAM//58ylSCbAB78p81tU9Sh4Kd24k5PSCaDpcJM?=
- =?us-ascii?Q?hWwbuLNf4okWtckEfrZwwXrqbTHGTX3nZ5lLxWBTdE5ewKxnDrX9HI/nzDM1?=
- =?us-ascii?Q?hI4BY1kJ1nqtKIrDB+JLyQRdqu71WR3WIgZ/xDnyu083Elf34Koa/KvKvfCH?=
- =?us-ascii?Q?2QOdUmtbvVmudGqfRPe8+d4oAy2BP+oSBzNfq/g+THXkLqadEcIP/1XP7DYT?=
- =?us-ascii?Q?O3mFekBuA3eZA2+JU56+GHZk6qiJ02RgLEGX1A+ssp4FhoBxuqDVw5OuTMc6?=
- =?us-ascii?Q?iYBSwMgVhL/DurEqCOhv3fz0eqyI+i1DGpTkUOJGNhWmuGG1GE/qVLwkf7s4?=
- =?us-ascii?Q?O1gAC8qvaAETM3FUdtT6EIB5zssZCQZeCqKLAklTmhtWOnwyhvrsQe6PmVUs?=
- =?us-ascii?Q?YZ17lLBugieAeecd+CvUKkUhZuycln0FjqeNdmDIcZsxQgjoFTS27vN2L3v8?=
- =?us-ascii?Q?GoYjGY6qbgRCxJPYt/z8sm9goAoRxqMdr4RuPVnOnEDuSHo+soLK7sudHlBA?=
- =?us-ascii?Q?/lAsojwrKEPbQlcdkWrySLMJ7FdRX3Ii4yJ689ARV5xVe2ensZfz3kEaScbL?=
- =?us-ascii?Q?fKk5lGzbILj3FtCr2ne9N+Gl3RiR2Np9qbKKg7SmxDQN1idg4FMaoMgF8OFj?=
- =?us-ascii?Q?pRYwR10tUf9UHJ+p7wJgUpb3QFUeQ7JmkcVUNBJj0o86VBgEoVsSAHs2R2uZ?=
- =?us-ascii?Q?f2BiOgg0wDlS/9JPAe6u6hxy1ZRpax9X6+ELjdTnzUr+9hVWbPBe/ZfQLi6n?=
- =?us-ascii?Q?X93elURwMqWvmTHi5ik=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB8800.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uQjguTuj7+9ykQUEEnIRi4Bm5lpISElNyNhajk/p0a7UDHuDrNEsvEWUB6EM?=
- =?us-ascii?Q?DdMMQU1F4cAJmU2LtIB21HGeEV2OtLtL5lNf2STri9N0fFdPI8U54P0xyzGz?=
- =?us-ascii?Q?0klnwpvzFLK/F37ogev2qlCtTynm9EA0LIcvUaeDolV2DPkyDLEKCUUaQSDR?=
- =?us-ascii?Q?/te/x35tqkn1Go+cZxkduRSwqqLmcMWYPIYPnR367FnosuNvDV8sLhqEBo0v?=
- =?us-ascii?Q?mZIWSx1FrlhtyUdIqK04KI3cUms7a2q7ug0c4Dx8I5lOORbz/hBt5fQkGhO4?=
- =?us-ascii?Q?0m9kQaOQTtoaVDKx6QhGyLHIRXwxXMXHLH3FWgbu4XDI/L0Xho0S8IIkpwpA?=
- =?us-ascii?Q?EH6P621OO1Pd4qB5twpL8pJNIK/GW36XdoI5I2HfWPZESNEvacUIXtN0LuMX?=
- =?us-ascii?Q?5o3w4fnQyd78yr/Me/KECVnVvM7twbJ/fANgRr6sA6cCoqLhz8sS4DKmwhEr?=
- =?us-ascii?Q?ERQrEzbaj3AmeIqfyHr9BfoN2B5x8eJinngImoN9ahH+4PE/Ba81MVQFYYeE?=
- =?us-ascii?Q?fKYEo2nl/Gt+ypoZUH8Mh2vOdMiEKItnjDqYfAqX0+aXS1xKmraSRiWjlL/p?=
- =?us-ascii?Q?h6uLGusKdMj/XEge1LK9gblAg6N+yktj3BfPYOFLeyjaS7veOm4ZibzfQYg0?=
- =?us-ascii?Q?IwRdUbqBWK7dDcN8M6IxqLfhx7JRBx86+3vMGoKY7UVRN+tZg1MhymAets9o?=
- =?us-ascii?Q?M6B0jsvFMAHbhg9tivlIgLbV1gLo/bsMvKpeGczWSf2kERnkyi/Jqev+ZYiX?=
- =?us-ascii?Q?X7F+4/y+UsbdGR2NWGFcqker4vaTdMb1QyWF4c4O/N2Rs9bKvjx39IiI0Sso?=
- =?us-ascii?Q?izTxRNNMEcHMA5lrd9uwhGO0jcZIz2R006LBCzDaD4TQavnIJwWXG7VvD93t?=
- =?us-ascii?Q?5GKyM5tMvTA0jN7hKuPw37ZAux1+dtpu6I4JksbFqDyqGQQlDJTJR0X6LEHx?=
- =?us-ascii?Q?qmpr2CEeTsmwTw7FeLKbqdzaBzHTWCo+s/+NvZb5fh3UO2GiNy8FfBRkPmlJ?=
- =?us-ascii?Q?BXp+3lfGUP4uN90a0lGMfFzacxZAn9nsxg7sxzBYNelHeXhymeXOrl8TdocY?=
- =?us-ascii?Q?/qhUeKmm4NLWrjvr2N2ykqmM75d3SyTHNU2GqyklkP72aXJCQH8X+dOEOQf3?=
- =?us-ascii?Q?KTP4bffMWOqKmOMt/yE2WmUdeb4p2yDsUmlDO3jJ7pjmhcsA5t/AwHN0Kt+q?=
- =?us-ascii?Q?ueX2f0qHxVAJ9EM2gPZw8/6ZE4Sw+gPMqA1bgUFF5u4pnPcKkdbhEGDvZU+Y?=
- =?us-ascii?Q?SqsRKIqUu98NCFtuoMU/DZBX9sGhGZkZ45aEfNL9mXPn6VVS2BS3Ffzd4HVC?=
- =?us-ascii?Q?KuRBtB5gQQHLWpA+ot+qg+Ji0maMwH2atcSLQd/2ToVBVvH9og5emu04Kaoc?=
- =?us-ascii?Q?MCRmuTvONe3Dz4KidaTf4EAg4Q3dBqOfLj0YZnCggbkGoAFepcns38MnCGcl?=
- =?us-ascii?Q?V4tKlLGjc088L/FJt2tNWvwuK9YOi+GCdGHTKFMlO725SqtXgdBQsanVx0Db?=
- =?us-ascii?Q?0dnzeaTBg5K6pmMIlavF/CWdK0JMGWYofl4223/AlYlhOQEZ7b2gD+n/uP15?=
- =?us-ascii?Q?BzKMjn14btZ+Kobq6T2NRsDCayDkj0p3paGPywfYuHO7ghATEQaOuOqLOsWI?=
- =?us-ascii?Q?99B1JynGvfqNV8lyfuZ5y/yb8B7mSDOpyHpiHZ8c2Wm53nDP++PL8vx10JVf?=
- =?us-ascii?Q?6dwDgfo10fxZnirHJF+ZYwPpFfsovyz22hLsMYR5go/MKuamJbAr1Z5jM2DX?=
- =?us-ascii?Q?fdzVlIK9wNt7XZ2VmUbUvS9bLUgO+caXwSv+wXYSaxdkYzkff8pv?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4d4235e-2139-4b62-2ca8-08de6a9d7f8d
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB8800.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2026 01:16:21.7477
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O0SQBjjL6ju8mzVjgbz9e+Xehn8hkOfWjsitf4qhDpA9wRIub1zSi3xWu+Y7LfaixvQJJjmBYnpMeOOipJO80g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7889
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260206223431.693765-7-lyude@redhat.com>
 
-On Fri, Feb 06, 2026 at 05:12:50PM +0000, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
-> 
-> The macro is a more powerful version of `static_assert!` for use inside
-> function contexts. This is powered by inline consts, so enable the feature
-> for old compiler versions that does not have it stably.
-> 
-> The `build_assert!` doc is refined to recommend it where possible.
+Hi Lyude,
 
-This is a good place to actually explain where this thing is possible.
- 
-> While it is possible already to write `const { assert!(...) }`, this
-> provides a short hand that is more uniform with other assertions. It also
-> formats nicer with rustfmt where it will not be formatted into multiple
-> lines.
+On Fri, Feb 06, 2026 at 05:34:30PM -0500, Lyude Paul wrote:
+> This introduces a set of bindings for working with iosys_map in rust code
+> using the new Io traits.
 > 
-> Two users that would route via the Rust tree are converted.
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 > 
-> Signed-off-by: Gary Guo <gary@garyguo.net>
 > ---
->  rust/kernel/build_assert.rs | 55 +++++++++++++++++++++++++++++++++----
->  rust/kernel/num/bounded.rs  | 24 ++++++----------
->  rust/kernel/prelude.rs      |  2 +-
->  rust/kernel/ptr.rs          | 18 ++++++------
->  scripts/Makefile.build      |  3 +-
->  5 files changed, 71 insertions(+), 31 deletions(-)
+> V5:
+> - Fix incorrect field size being passed to iosys_map_memcpy_to()
+> - Add an additional unit test, basic_macro(), which can successfully catch
+>   the above issue so it doesn't happen again in the future.
+> V6:
+> - Drop as_slice/as_mut_slice (Alice Rhyl)
+> V7:
+> - Start using Alexandre Courbot's wonderful Io, IoCapable and IoKnownSize
+>   traits instead of trying to roll our own IO accessors. This also changes
+>   the following:
+>   - We don't have a custom AsBytes/FromBytes type that we carry around any
+>     longer with maps
+>   - We now have optional compile-time size checking
+>   - We don't need our own unit tests anymore
+>   - RawIoSysMap can be used for unsafe IO operations, because why not.
+>   - IoSysMapRef::new() can fail now since it needs to ensure SIZE is valid.
+>   - We don't implement Deref<RawIoSysMap> for IoSysMapRef any longer. The
+>     main reason for this is that we want to avoid users having to manually
+>     specify if they want the RawIoSysMap or IoSysMapRef variant functions
+>     like io_read()/io_write().
+>     This is fine IMHO, but to make sure things remain easy for APIs that
+>     wrap around iosys map we make IoSysMapRef.raw_map pub(crate).
 > 
-> diff --git a/rust/kernel/build_assert.rs b/rust/kernel/build_assert.rs
-> index d464494d430a..e40f0227e1ef 100644
-> --- a/rust/kernel/build_assert.rs
-> +++ b/rust/kernel/build_assert.rs
-> @@ -41,6 +41,45 @@ macro_rules! static_assert {
->      };
->  }
->  
-> +/// Assertion during constant evaluation.
+>  rust/helpers/helpers.c   |   1 +
+>  rust/helpers/iosys_map.c |  34 +++++++
+>  rust/kernel/iosys_map.rs | 211 +++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs       |   1 +
+>  4 files changed, 247 insertions(+)
+>  create mode 100644 rust/helpers/iosys_map.c
+>  create mode 100644 rust/kernel/iosys_map.rs
+> 
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 1d3333cc0d2a8..bd8ad237aa02e 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -31,6 +31,7 @@
+>  #include "irq.c"
+>  #include "fs.c"
+>  #include "io.c"
+> +#include "iosys_map.c"
+>  #include "jump_label.c"
+>  #include "kunit.c"
+>  #include "maple_tree.c"
+> diff --git a/rust/helpers/iosys_map.c b/rust/helpers/iosys_map.c
+> new file mode 100644
+> index 0000000000000..6861d4ec48a4b
+> --- /dev/null
+> +++ b/rust/helpers/iosys_map.c
+> @@ -0,0 +1,34 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/iosys-map.h>
+> +#include <linux/types.h>
+> +
+> +#define rust_iosys_map_rd(type__)                                                       \
+> +	__rust_helper type__                                                            \
+> +	rust_helper_iosys_map_rd_ ## type__(const struct iosys_map *map, size_t offset) \
+> +	{                                                                               \
+> +		return iosys_map_rd(map, offset, type__);                               \
+> +	}
+> +#define rust_iosys_map_wr(type__)                                                       \
+> +	__rust_helper void                                                              \
+> +	rust_helper_iosys_map_wr_ ## type__(const struct iosys_map *map, size_t offset, \
+> +					    type__ value)                               \
+> +	{                                                                               \
+> +		iosys_map_wr(map, offset, type__, value);                               \
+> +	}
+> +
+> +rust_iosys_map_rd(u8);
+> +rust_iosys_map_rd(u16);
+> +rust_iosys_map_rd(u32);
+> +
+> +rust_iosys_map_wr(u8);
+> +rust_iosys_map_wr(u16);
+> +rust_iosys_map_wr(u32);
+> +
+> +#ifdef CONFIG_64BIT
+> +rust_iosys_map_rd(u64);
+> +rust_iosys_map_wr(u64);
+> +#endif
+> +
+> +#undef rust_iosys_map_rd
+> +#undef rust_iosys_map_wr
+> diff --git a/rust/kernel/iosys_map.rs b/rust/kernel/iosys_map.rs
+> new file mode 100644
+> index 0000000000000..2070f0fb42cb8
+> --- /dev/null
+> +++ b/rust/kernel/iosys_map.rs
+> @@ -0,0 +1,211 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! IO-agnostic memory mapping interfaces.
+> +//!
+> +//! This crate provides bindings for the `struct iosys_map` type, which provides a common interface
+> +//! for memory mappings which can reside within coherent memory, or within IO memory.
+> +//!
+> +//! C header: [`include/linux/iosys-map.h`](srctree/include/linux/pci.h)
+> +
+> +use crate::{
+> +    error::code::*,
+> +    io::{
+> +        Io,
+> +        IoCapable,
+> +        IoKnownSize, //
+> +    },
+> +    prelude::*, //
+> +};
+> +use bindings;
+> +use core::marker::PhantomData;
+> +
+> +/// Raw unsized representation of a `struct iosys_map`.
 > +///
-> +/// This is a more powerful version of `static_assert` that can refer to generics inside functions
-> +/// or implementation blocks. However, it also have a limitation where it can only appear in places
-
-"However, it also has a limitation", I guess?
-
-> +/// where statements can appear; for example, you cannot use it as an item in the module.
+> +/// This struct is a transparent wrapper around `struct iosys_map`. The C API does not provide the
+> +/// size of the mapping by default, and thus this type also does not include the size of the
+> +/// mapping. As such, it cannot be used for actually accessing the underlying data pointed to by the
+> +/// mapping.
 > +///
-> +/// [`static_assert!`] should be preferred where possible.
-> +///
-> +/// # Examples
-> +///
-> +/// When the condition refers to generic parameters [`static_assert!`] cannot be used.
-> +/// Use `const_assert!` in this scenario.
-> +/// ```
-> +/// fn foo<const N: usize>() {
-> +///     // `static_assert!(N > 1);` is not allowed
-> +///     const_assert!(N > 1); // Compile-time check
-> +///     build_assert!(N > 1); // Build-time check
-
-In the other email you say: the assertion failure mechanism is undefined
-symbol and linker error.
-
-So, maybe:
-
-     const_assert!(N > 1); // Build-time check at compilation
-     build_assert!(N > 1); // Build-time check at linkage
-
-Because compilation is a part of build process, and referring them one
-vs another may confuse. 
-
-> +///     assert!(N > 1); // Run-time check
-> +/// }
-> +/// 
-> +///
-> +/// Note that `const_assert!` cannot be used when referring to function parameter, then
-> +/// `const_assert!` cannot be used even if the function is going to be called during const
-> +/// evaluation. Use `build_assert!` in this case.
-> +/// ```
-> +/// const fn foo(n: usize) {
-> +///     // `const_assert!(n > 1);` is not allowed
-> +///     build_assert!(n > 1);
-> +/// }
-> +///
-> +/// const _: () = foo(2); // Evaluate during const evaluation
-> +/// ```
-
-This part confused me the most. But after all, parameters in rust
-are never constants, and even if foo() is used with '2' only,  it
-appears to be a non-constant from the const_assert!() POV.
-
-Seemingly, there are only 3 objects in the language that can be
-specified with the 'const': functions, items and generics. And
-const_assert!() makes sense (doesn't break the build) only for
-them.
-
-So, the difference between const vs build assertions is that const
-version is only applicable to a certain type of objects and is
-supported by language. Contrary, build_assert!() is not a part
-of the language and in fact is based on a linkage trick, while
-allows broader set of build-time expressions.
-
-And altogether they make sense and even nice.
-
-Can you please consider to add the above passage to your reply in
-the other email, and place them in the documentation?
-
-With that (or without),
-
-Reviewed-by: Yury Norov <ynorov@nvidia.com>
-
-> +#[macro_export]
-> +macro_rules! const_assert {
-> +    ($condition:expr $(,$arg:literal)?) => {
-> +        const { ::core::assert!($condition $(,$arg)?) };
+> +/// With the exception of kernel crates which may provide their own wrappers around `RawIoSysMap`,
+> +/// users will typically not interact with this type directly.
+> +#[repr(transparent)]
+> +pub struct RawIoSysMap<const SIZE: usize = 0>(bindings::iosys_map);
+> +
+> +impl<const SIZE: usize> RawIoSysMap<SIZE> {
+> +    /// Convert from a raw `bindings::iosys_map`.
+> +    #[expect(unused)]
+> +    #[inline]
+> +    pub(crate) fn from_raw(val: bindings::iosys_map) -> Self {
+> +        Self(val)
+> +    }
+> +
+> +    /// Returns whether the mapping is within IO memory space or not.
+> +    #[inline]
+> +    pub fn is_iomem(&self) -> bool {
+> +        self.0.is_iomem
+> +    }
+> +
+> +    /// Convert from a `RawIoSysMap<SIZE>` to a raw `bindings::iosys_map` ref.
+> +    #[expect(unused)]
+> +    #[inline]
+> +    pub(crate) fn as_raw(&self) -> &bindings::iosys_map {
+> +        &self.0
+> +    }
+> +
+> +    /// Convert from a `RawIoSysMap<SIZE>` to a raw mutable `bindings::iosys_map` ref.
+> +    #[allow(unused)]
+> +    #[inline]
+> +    pub(crate) fn as_raw_mut(&mut self) -> &mut bindings::iosys_map {
+> +        &mut self.0
+> +    }
+> +
+> +    /// Returns the address pointed to by this iosys map.
+> +    ///
+> +    /// Note that this address is not guaranteed to be valid, and may or may not reside in I/O
+> +    /// memory.
+> +    #[inline]
+> +    pub fn addr(&self) -> usize {
+> +        (if self.is_iomem() {
+> +            // SAFETY: We confirmed above that this iosys map is contained within iomem, so it's
+> +            // safe to read vaddr_iomem
+> +            unsafe { self.0.__bindgen_anon_1.vaddr_iomem }
+> +        } else {
+> +            // SAFETY: We confirmed above that this iosys map is not contaned within iomem, so it's
+> +            // safe to read vaddr.
+> +            unsafe { self.0.__bindgen_anon_1.vaddr }
+> +        }) as usize
+> +    }
+> +}
+> +
+> +// SAFETY: As we make no guarantees about the validity of the mapping, there's no issue with sending
+> +// this type between threads.
+> +unsafe impl<const SIZE: usize> Send for RawIoSysMap<SIZE> {}
+> +
+> +impl<const SIZE: usize> Clone for RawIoSysMap<SIZE> {
+> +    fn clone(&self) -> Self {
+> +        Self(self.0)
+> +    }
+> +}
+> +
+> +macro_rules! impl_raw_iosys_map_io_capable {
+> +    ($ty:ty, $read_fn:ident, $write_fn:ident) => {
+> +        impl<const SIZE: usize> IoCapable<$ty> for RawIoSysMap<SIZE> {
+> +            #[inline(always)]
+> +            unsafe fn io_read(&self, address: usize) -> $ty {
+> +                // SAFETY: By the trait invariant `address` is a valid address for iosys map
+> +                // operations.
+> +                unsafe { bindings::$read_fn(&self.0, address) }
+> +            }
+> +
+> +            #[inline(always)]
+> +            unsafe fn io_write(&self, value: $ty, address: usize) {
+> +                // SAFETY: By the trait invariant `address` is a valid address for iosys map
+> +                // operations.
+> +                unsafe { bindings::$write_fn(&self.0, address, value) };
+> +            }
+> +        }
 > +    };
 > +}
 > +
->  /// Fails the build if the code path calling `build_error!` can possibly be executed.
->  ///
->  /// If the macro is executed in const context, `build_error!` will panic.
-> @@ -74,7 +113,8 @@ macro_rules! build_error {
->  /// will panic. If the compiler or optimizer cannot guarantee the condition will
->  /// be evaluated to `true`, a build error will be triggered.
->  ///
-> -/// [`static_assert!`] should be preferred to `build_assert!` whenever possible.
-> +/// [`static_assert!`] or [`const_assert!`] should be preferred to `build_assert!` whenever
-> +/// possible.
->  ///
->  /// # Examples
->  ///
-> @@ -84,24 +124,27 @@ macro_rules! build_error {
->  /// ```ignore
->  /// fn foo() {
->  ///     static_assert!(1 > 1); // Compile-time error
-> +///     const_assert!(1 > 1); // Compile-time error
->  ///     build_assert!(1 > 1); // Build-time error
->  ///     assert!(1 > 1); // Run-time error
->  /// }
->  /// ```
->  ///
-> -/// When the condition refers to generic parameters or parameters of an inline function,
-> -/// [`static_assert!`] cannot be used. Use `build_assert!` in this scenario.
-> +/// When the condition refers to generic parameters [`static_assert!`] cannot be used.
-> +/// `build_assert!` is usable in this scenario, however you should prefer `const_assert!`.
->  /// ```
->  /// fn foo<const N: usize>() {
->  ///     // `static_assert!(N > 1);` is not allowed
-> +///     const_assert!(N > 1); // Compile-time check
->  ///     build_assert!(N > 1); // Build-time check
->  ///     assert!(N > 1); // Run-time check
->  /// }
->  /// ```
->  ///
-> -/// When a condition depends on a function argument, the function must be annotated with
-> -/// `#[inline(always)]`. Without this attribute, the compiler may choose to not inline the
-> -/// function, preventing it from optimizing out the error path.
-> +/// When the condition refers to parameters of an inline function, neither [`static_assert!`] or
-> +/// [`const_assert!`] can be used. You may use `build_assert!` in this scenario, however you must
-> +/// annotate the function `#[inline(always)]`. Without this attribute, the compiler may choose to
-> +/// not inline the function, preventing it from optimizing out the error path.
->  /// ```
->  /// #[inline(always)]
->  /// fn bar(n: usize) {
-> diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
-> index fa81acbdc8c2..54d0ce3ba595 100644
-> --- a/rust/kernel/num/bounded.rs
-> +++ b/rust/kernel/num/bounded.rs
-> @@ -255,9 +255,7 @@ impl<const N: u32> Bounded<$type, N> {
->              /// ```
->              pub const fn new<const VALUE: $type>() -> Self {
->                  // Statically assert that `VALUE` fits within the set number of bits.
-> -                const {
-> -                    assert!(fits_within!(VALUE, $type, N));
-> -                }
-> +                const_assert!(fits_within!(VALUE, $type, N));
->  
->                  // SAFETY: `fits_within` confirmed that `VALUE` can be represented within
->                  // `N` bits.
-> @@ -287,12 +285,10 @@ impl<T, const N: u32> Bounded<T, N>
->      /// The caller must ensure that `value` can be represented within `N` bits.
->      const unsafe fn __new(value: T) -> Self {
->          // Enforce the type invariants.
-> -        const {
-> -            // `N` cannot be zero.
-> -            assert!(N != 0);
-> -            // The backing type is at least as large as `N` bits.
-> -            assert!(N <= T::BITS);
-> -        }
-> +        // `N` cannot be zero.
-> +        const_assert!(N != 0);
-> +        // The backing type is at least as large as `N` bits.
-> +        const_assert!(N <= T::BITS);
->  
->          // INVARIANT: The caller ensures `value` fits within `N` bits.
->          Self(value)
-> @@ -406,12 +402,10 @@ pub fn get(self) -> T {
->      /// assert_eq!(larger_v, v);
->      /// ```
->      pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
-> -        const {
-> -            assert!(
-> -                M >= N,
-> -                "Requested number of bits is less than the current representation."
-> -            );
-> -        }
-> +        const_assert!(
-> +            M >= N,
-> +            "Requested number of bits is less than the current representation."
-> +        );
->  
->          // SAFETY: The value did fit within `N` bits, so it will all the more fit within
->          // the larger `M` bits.
-> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-> index c7e91b80d301..75c52b5879e3 100644
-> --- a/rust/kernel/prelude.rs
-> +++ b/rust/kernel/prelude.rs
-> @@ -29,7 +29,7 @@
->  
->  pub use pin_init::{init, pin_data, pin_init, pinned_drop, InPlaceWrite, Init, PinInit, Zeroable};
->  
-> -pub use super::{build_assert, build_error, static_assert};
-> +pub use super::{build_assert, build_error, const_assert, static_assert};
->  
->  // `super::std_vendor` is hidden, which makes the macro inline for some reason.
->  #[doc(no_inline)]
-> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
-> index 5b6a382637fe..0b6acd112c4f 100644
-> --- a/rust/kernel/ptr.rs
-> +++ b/rust/kernel/ptr.rs
-> @@ -2,8 +2,12 @@
->  
->  //! Types and functions to work with pointers and addresses.
->  
-> -use core::mem::align_of;
-> -use core::num::NonZero;
-> +use core::{
-> +    mem::align_of,
-> +    num::NonZero, //
-> +};
-> +
-> +use crate::const_assert;
->  
->  /// Type representing an alignment, which is always a power of two.
->  ///
-> @@ -38,12 +42,10 @@ impl Alignment {
->      /// ```
->      #[inline(always)]
->      pub const fn new<const ALIGN: usize>() -> Self {
-> -        const {
-> -            assert!(
-> -                ALIGN.is_power_of_two(),
-> -                "Provided alignment is not a power of two."
-> -            );
-> -        }
-> +        const_assert!(
-> +            ALIGN.is_power_of_two(),
-> +            "Provided alignment is not a power of two."
-> +        );
->  
->          // INVARIANT: `align` is a power of two.
->          // SAFETY: `align` is a power of two, and thus non-zero.
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 0c838c467c76..204e58dd1bb0 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -308,6 +308,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
->  
->  # The features in this list are the ones allowed for non-`rust/` code.
->  #
-> +#   - Stable since Rust 1.79.0: `feature(inline_const)`.
->  #   - Stable since Rust 1.81.0: `feature(lint_reasons)`.
->  #   - Stable since Rust 1.82.0: `feature(asm_const)`,
->  #     `feature(offset_of_nested)`, `feature(raw_ref_op)`.
-> @@ -317,7 +318,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
->  #
->  # Please see https://github.com/Rust-for-Linux/linux/issues/2 for details on
->  # the unstable features in use.
-> -rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg
-> +rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,inline_const,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg
->  
->  # `--out-dir` is required to avoid temporaries being created by `rustc` in the
->  # current working directory, which may be not accessible in the out-of-tree
-> -- 
-> 2.51.2
+
+I think there might be a mismatch between the absolute address being
+passed to these read and write functions and the bindings helpers
+that expect an offset argument.
+
+This crashed Tyr when I tried to write the firmware in u8 chunks at
+incremental offsets. But if i just calculated the offset and passed that
+instead of the absolute address, this worked fine:
+
+  let offset = address - self.addr();
+  unsafe { bindings::$write_fn(&self.0, offset, value) };
+
+Here's some of the call trace:
+
+[   31.553727] tyr fb000000.gpu: supply sram not found, using dummy regulator
+[   31.555096] tyr fb000000.gpu: mali-unknown id 0xa867 major 0x67 minor 0x0 status 0x5
+[   31.555778] tyr fb000000.gpu: Features: L2:0x7120306 Tiler:0x809 Mem:0x301 MMU:0x2830 AS:0xff
+[   31.556521] tyr fb000000.gpu: shader_present=0x0000000000050005 l2_present=0x0000000000000001 tiler_present=0x0000000000000001
+[   31.557868] stackdepot: allocating hash table of 524288 entries via kvcalloc
+[  OK  ] Started systemd-tmpfiles-clean.tim…y Cleanup of Temporary Directories.
+[   31.562424] stackdepot: allocating space for 8192 stack pools via kvcalloc
+[  OK  ] Reached target timers.target - Timer Units.
+[   31.563676] tyr: Firmware protected mode entry not supported, ignoring
+[   31.571391] Unable to handle kernel paging request at virtual address 0000000000800069
+[   31.572762] Mem abort info:
+[   31.573027]   ESR = 0x0000000096000021
+[   31.573402]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   31.573878]   SET = 0, FnV = 0
+[   31.574157]   EA = 0, S1PTW = 0
+[   31.574442]   FSC = 0x21: alignment fault
+[  OK  ] Listening on dbus.socket - D-Bus System Message Bus Socket.
+[   31.593348] Data abort info:
+[   31.593628]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
+[   31.594117]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   31.594567]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   31.595042] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000105e50000
+[   31.595613] [0000000000800069] pgd=0000000000000000, p4d=0000000000000000
+[   31.596434] Internal error: Oops: 0000000096000021 [#1]  SMP
+[   31.596936] Modules linked in: snd tyr(+) soundcore sha256 cfg80211 rfkill pci_endpoint_test fuse dm_mod ipv6
+[   31.597830] CPU: 3 UID: 0 PID: 241 Comm: (udev-worker) Not tainted 6.19.0-rc5 #282 PREEMPT
+[   31.598561] Hardware name: Radxa ROCK 5B (DT)
+[   31.598944] pstate: 00400009 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   31.599554] pc : __d_lookup_rcu+0xbc/0x168
+[   31.599921] lr : __d_lookup_rcu+0x60/0x168
+[   31.600283] sp : ffff800081ebba00
+[   31.600574] x29: ffff800081ebba00 x28: 0000000000000049 x27: ffff00010d07002b
+[   31.601205] x26: 0000000000000081 x25: 000000000006915e x24: ffff0002f6600000
+[   31.601848] x23: ffff00010396a040 x22: ffff000102098460 x21: 000000036915e207
+[   31.601859] x20: ffff000101e10af8 x19: ffff800081ebbcac x18: 2f64662f666c6573
+[   31.601867] x17: ffffff00666c6573 x16: 00000000fffffffc x15: 0000000000003431
+[   31.601875] x14: 000000000000000f x13: 0080205100800107 x12: 0000000000800069
+[   31.601882] x11: ffffffffffffffff x10: 0000000000000018 x9 : 0000000000000003
+[   31.601890] x8 : 00000000008000a1 x7 : ffffb9d13df173c8 x6 : 0000000000000000
+[   31.601897] x5 : 0000000000000000 x4 : 0000000000000010 x3 : ffffffffffff0a00
+[   31.601905] x2 : ffff800081ebbcac x1 : ffffb9d1406be718 x0 : 0000000000000001
+[   31.601913] Call trace:
+[   31.601915]  __d_lookup_rcu+0xbc/0x168 (P)
+[   31.601922]  lookup_fast+0x98/0x174
+[   31.601929]  link_path_walk+0x280/0x528
+[   31.601935]  path_lookupat+0x60/0x1f0
+[   31.601941]  do_o_path+0x34/0xb4
+[   31.601947]  path_openat+0xccc/0xe34
+[   31.601953]  do_filp_open+0xc0/0x170
+[   31.601958]  do_sys_openat2+0x88/0x10c
+[   31.601963]  __arm64_sys_openat+0x70/0x9c
+[   31.601968]  invoke_syscall+0x40/0xcc
+[   31.601974]  el0_svc_common+0x80/0xd8
+[   31.601979]  do_el0_svc+0x1c/0x28
+[   31.601984]  el0_svc+0x54/0x1d4
+[   31.601991]  el0t_64_sync_handler+0x84/0x12c
+[   31.601997]  el0t_64_sync+0x198/0x19c
+[   31.602005] Code: 14000003 f9400108 b4000428 d100e10c (88dffd8c)
+[   31.602009] ---[ end trace 0000000000000000 ]---
+[  OK  ] Listening on sshd-unix-local.socke…temd-ssh-generator, AF_UNIX Local).
+[   31.620067] mc: Linux media interface: v0.10
+[   31.623483] [drm] Initialized panthor 1.5.0 for fb000000.gpu on minor 0
+[   31.623765] Unable to handle kernel paging request at virtual address 00802a4d0080284d
+[   31.624285] tyr fb000000.gpu: Tyr initialized correctly.
+[   31.624752] Mem abort info:
+[   31.624754]   ESR = 0x0000000096000004
+[   31.625847]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   31.626310]   SET = 0, FnV = 0
+[   31.626578]   EA = 0, S1PTW = 0
+[   31.626853]   FSC = 0x04: level 0 translation fault
+[   31.627277] Data abort info:
+[   31.627529]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[   31.628006]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   31.628447]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   31.628910] [00802a4d0080284d] address between user and kernel address ranges
+[   31.629535] Internal error: Oops: 0000000096000004 [#2]  SMP
+[   31.630030] Modules linked in: mc drm_client_lib snd tyr soundcore sha256 cfg80211 rfkill pci_endpoint_test fuse dm_mod ipv6
+[   31.631017] CPU: 4 UID: 0 PID: 225 Comm: systemd-udevd Tainted: G      D             6.19.0-rc5 #282 PREEMPT
+[   31.631877] Tainted: [D]=DIE
+[   31.632129] Hardware name: Radxa ROCK 5B (DT)
+[   31.632506] pstate: a0400009 (NzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   31.633111] pc : ___d_drop+0xd8/0x144
+[   31.633433] lr : d_invalidate+0x3c/0x110
+[   31.633776] sp : ffff800081d3ba70
+[   31.634064] x29: ffff800081d3ba90 x28: 0000000000000001 x27: ffffb9d140bfa000
+[   31.634685] x26: ffff0001039b5108 x25: ffff00010396a000 x24: ffffb9d140166275
+[   31.635305] x23: ffffb9d140bfa000 x22: ffffb9d140152f3a x21: ffff000104076000
+[   31.635925] x20: ffff00010e520098 x19: ffff00010396a000 x18: 0000000000000000
+[   31.636545] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[   31.637165] x14: 0000000000000000 x13: ffff00010792b8f0 x12: 000000000000017a
+[   31.637785] x11: 00000000008000a1 x10: 00802a4d0080284d x9 : ffff0002f6604010
+[   31.638405] x8 : ffff000105bfcd40 x7 : 0000000000000000 x6 : ffffb9d13e272c60
+[   31.639026] x5 : 0000000000000000 x4 : 0000000000000001 x3 : 0000000000000000
+[   31.639646] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff00010396a000
+[   31.640266] Call trace:
+[   31.640479]  ___d_drop+0xd8/0x144 (P)
+[   31.640800]  d_invalidate+0x3c/0x110
+[   31.641113]  proc_invalidate_siblings_dcache+0x244/0x2b8
+[   31.641577]  proc_flush_pid+0x1c/0x28
+[   31.641897]  release_task+0x560/0x668
+[   31.642218]  wait_consider_task+0x5a0/0xb44
+[   31.642582]  __do_wait+0x154/0x1f0
+[   31.642879]  do_wait+0x84/0x16c
+[   31.643154]  __arm64_sys_waitid+0xac/0x218
+[   31.643512]  invoke_syscall+0x40/0xcc
+[   31.643833]  el0_svc_common+0x80/0xd8
+[   31.644152]  do_el0_svc+0x1c/0x28
+[   31.644441]  el0_svc+0x54/0x1d4
+[   31.644718]  el0t_64_sync_handler+0x84/0x12c
+[   31.645090]  el0t_64_sync+0x198/0x19c
+[   31.645412] Code: 5280002a f85f83a0 17fffff1 a944280b (f940014c)
+[   31.645941] ---[ end trace 0000000000000000 ]---
+
+thanks,
+Deborah
+
