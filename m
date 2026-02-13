@@ -1,198 +1,146 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223BF35A94B
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 11:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30008189BB6
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 11:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770982196; cv=none; b=CcOqmfSzFfS5OfqSjafwkd3tsXhL2EkvXduir9r5dOLjnfqyWT+/KpBChzXaqKHkeJHP9Y7Wjfp+GTFQVdGTesnFp2iMd6ebyiPeLcI9b/tH9ATChwnju5HJCzece2ZQF0kb4XaJNZovU/hfxXP6EtEnxq6iTqCqLg+wH7DRHdw=
+	t=1770982653; cv=none; b=cXG16EhpApSSBjp3QrFGuglrxh0aAF48BSzZhD39ebh3ohpoT2UNTJoc6xDeGTm7HIp82BlHoMLxDzjRdT1ImQ30T+YEMkbLJ96YQTwwHaLht+5a/WzsWXP0Rl9fKtNhgtYmxMrXAKmHICkjDh1OGhX74s4u+ad7MtacSpucr5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770982196; c=relaxed/simple;
-	bh=yCEi51iwihIQ6/KNEUjlLXlerIrErSDL4RHDSmEJwqY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pCVULpTiiCFI46eZRk8inWT0tj6ckSdSjMtZjdCO+7RbHA8mJoAxykPoSeoA4bv+Y8q3jz4Vj0ph/lH59LdSTgyQ0RL4J2NBgD2cHgZPbrbzw4T6xPL01TgkvPXgouuvlmb2ZQAsmYfMz/jFZx97qEpJxvbk96Yq3Pcd/QFjm/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vkHMrw8B; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1770982653; c=relaxed/simple;
+	bh=4LTNjgJgvGqNq7J29QKVGs2V+h5UNIrd7eT8oEJbNBM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UiVn19Xsd525+fm9Z1WECiyiHJUhz1ew94K4CX+yTfmBCw/r1rSLWcEZO9QvBRiA2PcsN6XTRb87zltcGUTe0dyycuSviwMGfzTv1ge1m+HSjkcnevEc3Zd7slje7VYcQL+P58Y6woKoHsr+l6opXj7PvmaeZY8JnJ4xdRyK9Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W+P10E4L; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vkHMrw8B"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837107e0a9so4869255e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 03:29:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W+P10E4L"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b8f10615953so102527966b.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 03:37:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770982194; x=1771586994; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GpA4zks8oXTqCWt4/gqpScCP5DONS2AqVxE0dwGJ/8s=;
-        b=vkHMrw8BtdhIZdaVz4CizS5XUTtykQaoJXAqSb8k8TDQYS+P6hEbjP31QH7Pz+jfGH
-         BXm40tpqy1fuTTQszx05boexg/29PY93vFq6phgFJQbGWsAkeXXGz5wlT+pOH8jxXjIp
-         Kub3aBHbV409XueiT9UWnyev1fHH2XHz+oIOnpE5BcTXOi040JHf2O8I+9sNk26me9CN
-         k3035saJfKAXzCZ+n7DQ2erudvxuto9Dhj+hPee6TrqvQJBohmDHIp0NNAxVzJLBUlrh
-         hYYVwuEspi4jvIIiA3z1SKUTpGRcdwVirkxX8SdBirrjf/IjuC2XGXuAf458KquWX18F
-         XMtQ==
+        d=google.com; s=20230601; t=1770982650; x=1771587450; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZbOmUybxmds8ticCOAuzlWlSf0l0KDGIiJfpTQsjS6k=;
+        b=W+P10E4L/ALkpjm+/HX5HR492d3nfDnsfA8Q+Ls4ZL5t9XwmBC35/GThEIgHI6yjhH
+         cm3x3xlPpGuoLxScE87Yrz1r6iv0WMgrPQL1w2RyuQ7mbzPXTt/Fosb/VEbyutn51y0P
+         M5FTjpNERy55+WOFCXnO7rLnZUnUBgx+dMLruCC7HU8Kclr7xMOMtygWIm3mhxjGNtcN
+         zzc5MOpEI6j12Ky6E6CgVOrstOIWpUcbjRmr7uuMYKn27hGBpvtvK8OtthyG6kLOyZO+
+         auxKlfg86KVURB+BoRUCsQkgn8KWuIh5mdwtJtPqLP+At+hFDxtk8QYAxjN5U5OryPf0
+         e6Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770982194; x=1771586994;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GpA4zks8oXTqCWt4/gqpScCP5DONS2AqVxE0dwGJ/8s=;
-        b=MMfZGmcRAE//qWTMxjddlwqAOmWuRyQH1eGVzhcwhDe6OJs2S6+k+/PcgnRLziy0gd
-         7sU8IBoIBsgzUSHQ8ky/VHU4cP63MHfr4k4I2u8R3LttXAZd6RtEZAXrcnm9TE34JJUR
-         9YMWIPgUPeeP+1tueuGDnfMT7ztr+Nq3Pm8k7TAezGuOqz7nDeqzWb8f96PYzTEKaZI+
-         3sor488navFrHFIerEZqxiVvqRVJXbVzfoW67RHhBYHV9lVwKhh7XAwThmGKL13fyIeL
-         t5HcjDOGj18au0L0okJ3dc3gREXw7iFHJLVrXSDE58RJ5EfxrLEgRBwlxMzej6v4MTHz
-         RUcg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0PzsCmstqQmRGAJt8NbTp3vLGi6oP7mRDd9RytzxPw2jW5R3TTBQrjNxb57C/XcJ7GBSkYIaNJVe8MgW3ZQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8li1VmtyWtJycBg6yxJ0wdcgLjm/Y6K25i0uvU3I5vMp4VLLY
-	jsBRrLNKzpLjTUZMJ/lP5ynCrMxV5KVC8azxePDO8hPhunpjkra1x2QNajYz2QuFVP/XZbiBZjq
-	B5OTbsA0SUB/gMsdW6Q==
-X-Received: from wmoo19.prod.google.com ([2002:a05:600d:113:b0:483:6a60:3501])
+        d=1e100.net; s=20230601; t=1770982650; x=1771587450;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZbOmUybxmds8ticCOAuzlWlSf0l0KDGIiJfpTQsjS6k=;
+        b=v2fzpdRdx9F2/1MqLHsEZxPEL1YXDSa179coznP4jZmXmkb4KvNhkhFNAwFfBA1e7Q
+         RJ6rND8yULfbjY4O83zvWqXOCXSEdwii2O4aJ0zFL/U+a56YyQbR9kXCBit1X5RC4U/W
+         jzm+JQvn8hNYVdMIOvwmeL0F+K68eALFn062Co/DqwgQhqM6TgkLOlTgBZM43vLEgmGP
+         JSWvouaUIX+X3zuA5MOKsZ48RCexMKXqsW51zmugkB3hl4IJ9LIyYHNDgB/o/tRPI+5k
+         szccOFSQqakOsvkwk2CoyAe/EgYgMmtBax5UcGaWwyCfnQi3+AtmNpk4O6Ms0v71JXYj
+         GofA==
+X-Forwarded-Encrypted: i=1; AJvYcCUFgZPw8zTGuGipCpQE187xk+K2TZmJhOi4xqzXr45T8DhoyIUDgSaKP+XCJ66+oJHAf9sTiHSsb0fmgIYk4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/C12Bs9E0D/N1wui2bYcIcbnImOdqI8l8yACIFSwoio1Nh9dw
+	5keJaMNpiUFNLtDI0O4EmY2GCBB2vWmTOtrzOkrGk1wgv2jPNAHrtupaL4VPmubIacQMfjyj80v
+	tFbIeGYYwTnbySBvCeA==
+X-Received: from ejbm12.prod.google.com ([2002:a17:906:258c:b0:b88:435f:4347])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1381:b0:483:54cc:cd89 with SMTP id 5b1f17b1804b1-48373a1bbc4mr23639015e9.9.1770982193471;
- Fri, 13 Feb 2026 03:29:53 -0800 (PST)
-Date: Fri, 13 Feb 2026 11:29:42 +0000
-In-Reply-To: <20260213-upgrade-poll-v2-0-984a0fb184fb@google.com>
+ 2002:a17:907:3e2a:b0:b8e:a1a7:1a98 with SMTP id a640c23a62f3a-b8fb44dce46mr72100666b.47.1770982650069;
+ Fri, 13 Feb 2026 03:37:30 -0800 (PST)
+Date: Fri, 13 Feb 2026 11:37:26 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260213-upgrade-poll-v2-0-984a0fb184fb@google.com>
+X-B4-Tracking: v=1; b=H4sIAPUMj2kC/x2MQQqAMAzAviI9W9jmGOhXxIO6qr3M0aoI4t8dH
+ kNIHlASJoWuekDoYuU9FbB1BfM2ppWQY2FwxgXjbINy6oETp0iCWdGH2EZTlG9GKFEWWvj+h/3 wvh9lWP+KYAAAAA==
+X-Change-Id: 20260213-rust-binder-ps-46d9d060243a
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4828; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=yCEi51iwihIQ6/KNEUjlLXlerIrErSDL4RHDSmEJwqY=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpjwstSJRuzC5n7YzFvHhJ9w7Yghk3PUZ46YUSO
- jBiftZbxtqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaY8LLQAKCRAEWL7uWMY5
- Ri0MD/kBPdV56NkzCHG6F680bzzWalPBUKLu5sCgMqs54jul9o2awp86Fd+feimnaM1BB4XmJhD
- AAi0eexNVneqfUKDXDt/jp9nUB33eVaVefI7amxfI9MmsNjGLOd0qCKBkXnBpYYviOzazrlWwX7
- YpavT1iwhsiFXdkHDbE425VCAk9vJVN42nZdAXgmZ75+c2KRaLXD5lPdszMvPPMOYj90e0YFYRB
- 3TdXEEJUvl2b1V872XGL/H+ETf+ISXWDgsUFNwa1+zcFCG2uQNw6PsiN2E/r/sQFY7XArtT1bZh
- 8201kq5ltjaju/qwxebGdXA9SKsWfiLhPZCVrhydKAvxZ3ydPke3EqQGdOUGVn7AvddloGfzQQz
- gc6my5wiyNV2Nrq6rSAl/czULWbzpXgXg14jcwF0xDlFC1xtd5gv5K8iLY+bLbFabofMa+Q7jqa
- GskdLLyVphPt3lUXSRU2GUDE4P55Ztm9jbgx0u1MxKmYNpihI1ExSYDeJKBpwSRBk70gxWfbO33
- f23Idk3w+o9Tfi8TCTuBxD0RERl9ZRiWpabNMZDys6pdxHYYC9GqQJFERRaJWoT6PokEht4KkdV
- tH+oiMW1/Zs6JtQiobUVBHvtIv61hBJk45ewd0iVodLY7UompJRt3p1kko7/YpkvznVHVrhG3E5 86r/2UFDjo06v7g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2864; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=4LTNjgJgvGqNq7J29QKVGs2V+h5UNIrd7eT8oEJbNBM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpjwz4ba/pGfcwxzqFFR+EX+9yplWJyIqVLiGzY
+ TWKQYpCXKqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaY8M+AAKCRAEWL7uWMY5
+ RuEAD/9TnK7CeIaWplyYB0pi5DRRdsI4j7fa0PsvDmZC9Pk9zV7WKkSVYDNeDupwroYk3DDnaUY
+ PUMQPvXcrrf2q9TICZcC7fZY/ciPMGZg+ezb/Mw+UFrO5t4EikzbD0+0gNakrDomBBxx6ipXHmk
+ Lyu696apNAEMIfpR+ax3f7/RNEDXPRejt156KkGxzHziy0iljxNWOcBBKpo+FlNo+NBf0QmR/hY
+ pW+spq+zrhEynmJCoDQgag+y0hwLVjIp7keuMMLneHX7SjXnNv3cYXWwPQDPuZJ6euBvNEVW2Za
+ IdpF8UHZxQoR6naKT8QZsIgl4DG57Itaou0C8Ou2UTob2juIxO0NW2uJbJ36O6v7wHI0fqPoC40
+ 72hFSxNDSxvZiiXpbkT4ju6pg2xMx/cFx8ad4lsD9DRJVJFElIMrIZ9GZVg+AEy7z3PE6kYLC6X
+ 1xbH3hVixltOL2JA1SnDiNTxqMayY/qsYAwK22iSOQY26xN419wf+FVuEaM2qn0QDTxIR7V1iuo
+ Y6WnmXfQfnl/XiskB1KKPtxrJABri8kWbbtWUzKq1J1CM84hOM+nxp1ojE0pDtCB4Ug7dJHfIj2
+ +Ih0soxlqTiVaYfWmGKB3D54ky+TzZ0RoFM0Gp4oO5MRwyTjY8L2/jPYK5VZ0/CwD9bipA05B1q w0FYLdDjSHvTy3A==
 X-Mailer: b4 0.14.2
-Message-ID: <20260213-upgrade-poll-v2-2-984a0fb184fb@google.com>
-Subject: [PATCH v2 2/2] rust_binder: use UpgradePollCondVar
+Message-ID: <20260213-rust-binder-ps-v1-1-6b90f83c0b4d@google.com>
+Subject: [PATCH] rust_binder: avoid name mangling for get_work[_local]
 From: Alice Ryhl <aliceryhl@google.com>
-To: Christian Brauner <brauner@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Carlos Llamas <cmllamas@google.com>, linux-fsdevel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, 
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Most processes do not use Rust Binder with epoll, so avoid paying the
-synchronize_rcu() cost in drop for those that don't need it. For those
-that do, we also manage to replace synchronize_rcu() with kfree_rcu(),
-though we introduce an extra allocation.
+Currently ps -A shows processes waiting on schedule() in functions with
+names such as do_epoll_wait, wait_woken, and the impeccably named
+_RNvMs2_NtCs8QPsHWIn21X_16rust_binder_main6threadNtB5_6Thread8get_work.
 
-In case the last ref to an Arc<Thread> is dropped outside of
-deferred_release(), this also ensures that synchronize_rcu() is not
-called in destructor of Arc<Thread> in other places. Theoretically that
-could lead to jank by making other syscalls slow, though I have not seen
-it happen in practice.
+To improve how ps output looks, give explicit non-mangled names to the
+functions where Rust Binder calls schedule(), since these are the most
+likely places to show up on ps output.
 
+The name of rust_binder_waitlcl is truncated instead of using _local
+suffix because rust_binder_wait_local is sufficiently long that ps shows
+unaligned output.
+
+Suggested-by: Matthew Maurer <mmaurer@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/process.rs |  2 +-
- drivers/android/binder/thread.rs  | 25 ++++++++++++++++---------
- 2 files changed, 17 insertions(+), 10 deletions(-)
+ drivers/android/binder/process.rs | 1 +
+ drivers/android/binder/thread.rs  | 2 ++
+ 2 files changed, 3 insertions(+)
 
 diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 132055b4790f0ec69a87635b498909df2bf475e2..9374f1a86766c09321b57e565b6317cc290ea32b 100644
+index 132055b4790f0ec69a87635b498909df2bf475e2..cf7425e74183966063ab53114637aec7b3672ac8 100644
 --- a/drivers/android/binder/process.rs
 +++ b/drivers/android/binder/process.rs
-@@ -1684,7 +1684,7 @@ pub(crate) fn poll(
-         table: PollTable<'_>,
-     ) -> Result<u32> {
-         let thread = this.get_current_thread()?;
--        let (from_proc, mut mask) = thread.poll(file, table);
-+        let (from_proc, mut mask) = thread.poll(file, table)?;
-         if mask == 0 && from_proc && !this.inner.lock().work.is_empty() {
-             mask |= bindings::POLLIN;
+@@ -1436,6 +1436,7 @@ pub(crate) fn drop_outstanding_txn(&self) {
          }
+     }
+ 
++    #[export_name = "rust_binder_freeze"]
+     pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
+         if info.enable == 0 {
+             let msgs = self.prepare_freeze_messages()?;
 diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 82264db06507d4641b60cbed96af482a9d36e7b2..a07210405c64e19984f49777a9d2c7b218944755 100644
+index 1f1709a6a77abc1c865cc9387e7ba7493448c71d..2ca8ed8962314b58a3cfeb3ae0aa0ed60f179433 100644
 --- a/drivers/android/binder/thread.rs
 +++ b/drivers/android/binder/thread.rs
-@@ -16,8 +16,8 @@
-     seq_file::SeqFile,
-     seq_print,
-     sync::atomic::{ordering::Relaxed, Atomic},
--    sync::poll::{PollCondVar, PollTable},
--    sync::{Arc, SpinLock},
-+    sync::poll::{PollTable, UpgradePollCondVar},
-+    sync::{Arc, LockClassKey, SpinLock},
-     task::Task,
-     types::ARef,
-     uaccess::UserSlice,
-@@ -35,7 +35,7 @@
-     BinderReturnWriter, DArc, DLArc, DTRWrap, DeliverCode, DeliverToRead,
- };
- 
--use core::mem::size_of;
-+use core::{mem::size_of, pin::Pin};
- 
- /// Stores the layout of the scatter-gather entries. This is used during the `translate_objects`
- /// call and is discarded when it returns.
-@@ -412,7 +412,7 @@ pub(crate) struct Thread {
-     #[pin]
-     inner: SpinLock<InnerThread>,
-     #[pin]
--    work_condvar: PollCondVar,
-+    work_condvar: UpgradePollCondVar,
-     /// Used to insert this thread into the process' `ready_threads` list.
+@@ -514,6 +514,7 @@ pub(crate) fn has_current_transaction(&self) -> bool {
+     /// Attempts to fetch a work item from the thread-local queue. The behaviour if the queue is
+     /// empty depends on `wait`: if it is true, the function waits for some work to be queued (or a
+     /// signal); otherwise it returns indicating that none is available.
++    #[export_name = "rust_binder_waitlcl"]
+     fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
+         {
+             let mut inner = self.inner.lock();
+@@ -552,6 +553,7 @@ fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn Deliv
      ///
-     /// INVARIANT: May never be used for any other list than the `self.process.ready_threads`.
-@@ -433,6 +433,11 @@ impl ListItem<0> for Thread {
-     }
- }
- 
-+const THREAD_CONDVAR_NAME: &CStr = c"Thread::work_condvar";
-+fn thread_condvar_class() -> Pin<&'static LockClassKey> {
-+    kernel::static_lock_class!()
-+}
-+
- impl Thread {
-     pub(crate) fn new(id: i32, process: Arc<Process>) -> Result<Arc<Self>> {
-         let inner = InnerThread::new()?;
-@@ -443,7 +448,7 @@ pub(crate) fn new(id: i32, process: Arc<Process>) -> Result<Arc<Self>> {
-                 process,
-                 task: ARef::from(&**kernel::current!()),
-                 inner <- kernel::new_spinlock!(inner, "Thread::inner"),
--                work_condvar <- kernel::new_poll_condvar!("Thread::work_condvar"),
-+                work_condvar <- UpgradePollCondVar::new(THREAD_CONDVAR_NAME, thread_condvar_class()),
-                 links <- ListLinks::new(),
-                 links_track <- AtomicTracker::new(),
-             }),
-@@ -1484,10 +1489,13 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlice, wait: bool) -> Resul
-         ret
-     }
- 
--    pub(crate) fn poll(&self, file: &File, table: PollTable<'_>) -> (bool, u32) {
--        table.register_wait(file, &self.work_condvar);
-+    pub(crate) fn poll(&self, file: &File, table: PollTable<'_>) -> Result<(bool, u32)> {
-+        let condvar =
-+            self.work_condvar
-+                .poll(&self.inner, THREAD_CONDVAR_NAME, thread_condvar_class())?;
-+        table.register_wait(file, condvar);
-         let mut inner = self.inner.lock();
--        (inner.should_use_process_work_queue(), inner.poll())
-+        Ok((inner.should_use_process_work_queue(), inner.poll()))
-     }
- 
-     /// Make the call to `get_work` or `get_work_local` return immediately, if any.
-@@ -1523,7 +1531,6 @@ pub(crate) fn notify_if_poll_ready(&self, sync: bool) {
-     pub(crate) fn release(self: &Arc<Self>) {
-         self.inner.lock().is_dead = true;
- 
--        //self.work_condvar.clear();
-         self.unwind_transaction_stack();
- 
-         // Cancel all pending work items.
+     /// This must only be called when the thread is not participating in a transaction chain. If it
+     /// is, the local version (`get_work_local`) should be used instead.
++    #[export_name = "rust_binder_wait"]
+     fn get_work(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
+         // Try to get work from the thread's work queue, using only a local lock.
+         {
 
+---
+base-commit: cee73b1e840c154f64ace682cb477c1ae2e29cc4
+change-id: 20260213-rust-binder-ps-46d9d060243a
+
+Best regards,
 -- 
-2.53.0.273.g2a3d683680-goog
+Alice Ryhl <aliceryhl@google.com>
 
