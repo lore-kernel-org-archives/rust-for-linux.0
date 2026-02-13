@@ -1,165 +1,236 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22ED2773EE
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 19:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A845C213E89;
+	Fri, 13 Feb 2026 19:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771009947; cv=none; b=JVMqpnyEjFB5xeW2mThX43XJmtUyVYc/hRlBVAN+ErQKDEZM9v3dqfV+N9aiq2wYfbQp/yMM/pvLy7BZWseCdNOVgFiqBBgcMe1bd/+ny+IKMNwrCo/itD4u7Nw0nMgLH3irvjOyJuOPgddGAxnovkUr4GVUJEra9PwicRJ2YdY=
+	t=1771011690; cv=none; b=dzrJs96FLO64nqKRGZINEqES+HHd34SV5DjJL5cYh/mScO6oQSR8+FyKNHKZ7pXHvDjvzBdKY6GtLhJYgOkSgQ/xXfxDSuAxC8qALVhCmpy6aoyvEl70a9SssPIF84f3V8ufPPPKcdIzvGEDOggxW/OsPjAk/Hupyb52Xm7R2YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771009947; c=relaxed/simple;
-	bh=OcH8w7RuyScwYrcF3u0PgWhZiy0vC1nFvdfSLmhr6ao=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dFFcBUdEtvDutekua0DS+x+hT+QZM/Yrv8WwfwhmnLHQZYBgjZtehUSLnXu5aUPe/inLHIumUfoJ4xfIAOIQC9+cZa3eaxkrQCePRzcRd7oBDhtwoK2eJw4R+ji3wU9mebttSxiqp1DgyjUBPngnyoxWo5lxlgDdXb4ylB710q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KfKmG/+S; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771011690; c=relaxed/simple;
+	bh=npawl3Sh8CB9l+1ZY62uo+ipDHKFXtD/V7TZlj5J+kE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MHQUfQTjAzlKLTmozL4hLD2dFq2zyoLpm8PWn1UaFwoMjOBI6Ud5vRjZljW9kWi8X4NRBCjxjc2agmbj8qvz7Y+7T6hfdEUHpEBGSpisRHpsqbASS/Rnm/O/SW8TAHsrdJqBvLj5XR5lzHa2M4gv18XEnkxHEutd2YQAcGR6bHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfC5wtKz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KfKmG/+S"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65a3c6f587cso1747101a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 11:12:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771009944; x=1771614744; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ZpqJAf35CDxn8PSc9O1hec1UhW5JRewyjQeoYcibqk=;
-        b=KfKmG/+S5I3jS7qi+NNZtD2TJT/B/XSCTFgYBBgAkw6kMU4v8iC4KwGvE8SzVLFKAD
-         ztdL+1st3kRIDvu2auoIi/oGvDEHzV83nptV9i8K2XDb1pUMwFQopfM00UgEzMARHrdi
-         EBgxshMgO6gxZD7LzEeNxRTp4HhiBoNe9lUus+q+0F6u9SsEY0k/x93V0252j0L0CUkb
-         Liqf3qqcdwJfyjy6+6fDPueamJxgsxNzsYriXIm/rde5XNzborbmf8WRp9wvcBnkRKh0
-         SlpElXek8dEdr4hWV+4/XvzNsRcQ8e/ScRrGa3g2cnQHtscFuPklzm09pBsqJVHIQUfU
-         tT2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771009944; x=1771614744;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5ZpqJAf35CDxn8PSc9O1hec1UhW5JRewyjQeoYcibqk=;
-        b=nlqMxbT1X1LF+694V0GAWrX/hkqU6L9wPU6s+OH+ITW0IyLvxd4srEblYTu8dwcTVn
-         xxaTzIj/oThPAwcMRDmcso0ltZXIM0kNf5I5MiyCJk8O9kJzeiY9cc9k3/WK1pstg3n6
-         qf7OJ/mMpLmukvKGpL97hy1WZ+6ET7qHhzeCNgqugOjnx2DkjlrhDsrj5Epwk6yvXWr/
-         YYN/aoGbWWNrCt4b+Ivku+/SnBBxDinVVz5L6Mu6kJdGkUmrYWyP8LWKUhzYv1yseuk1
-         ipg22IiNlMeygRC+2jZvrhl9OAZJ2cd4X9pznveltoakbDX2IZlahOzHHpC3n59dBDpb
-         0KgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhTqZJxuLZjUoaQ0E/F6Y5cx4sqDvlnPzjc/nVzw+g8o2HvWeVWaEH81MxfsShH4FqKRtqELazJKJTr0VzHw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpcseLgMxCmIV4eUq9W1andri1XByaPdIQcLN9d04jHC4dk2EI
-	qmupBIKe/a5NKBuKz8FzbBsQZa+U64H2/2PqGy0Lx8ZPO8RNbm4hUuN2
-X-Gm-Gg: AZuq6aKFwgvOX8nGhor1PHUpvZKlV8/xekr86WVLur/sqXyTjj7RbGBnd1z4dlo7Zsn
-	Gt+L4LhFXsvyrrqZsXyF8SmJnkwn8cXqSHIEkdt6nlgY4C8x3JgJLWyeRTjMpL78/JbdlIJxaH/
-	YSH9Uikgpoep+AUGK2vIPIpuk1iVW59XF98hI5LdS7cHJfb9vJOQJYx5MhwE0Aig6HaF1TmQV0E
-	Bw6fxUqugzgSl3dqFXNnhdqbwua3sm/8B9eIFnL+GJ4YLqjWcMMHGB6Vb/mWVeRoIKaYH5S7qP8
-	K7Ms9X2mvqBxE3Z+KPHp9URDHbef1jr9y1qJiIq69dYkV09KxVOW8NDkgtTd6bXxRsqTrhADRKR
-	cK/c0+y6hFPNsVVr6qoYEjf1ZMWC34faK6RN1pNA8SaSYLdXJbtYJHnEtArgXjZVJzUIFThq8t5
-	+AhnxsUBbdR3bAcpKAX1tu/bY01rj6F+lpU4TiiBfXCnrPCPXzvWwdBRCJbdM/Blc4H+rBn+4Yj
-	Bl04wPVB2ZxABetuKWESjmanRDs0yY=
-X-Received: by 2002:a05:6402:398c:b0:65a:3c1b:d87d with SMTP id 4fb4d7f45d1cf-65bb10f4224mr1096630a12.6.1771009943923;
-        Fri, 13 Feb 2026 11:12:23 -0800 (PST)
-Received: from ddolgov-thinkpadt14sgen1.local (dslb-002-207-075-089.002.207.pools.vodafone-ip.de. [2.207.75.89])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65bad3f0b55sm950830a12.23.2026.02.13.11.12.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Feb 2026 11:12:23 -0800 (PST)
-From: Dmitrii Dolgov <9erthalion6@gmail.com>
-To: linux-perf-users@vger.kernel.org,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Dmitrii Dolgov <9erthalion6@gmail.com>
-Subject: [PATCH v1] tools build: Fix rust cross compilation
-Date: Fri, 13 Feb 2026 20:12:09 +0100
-Message-ID: <20260213191212.33328-1-9erthalion6@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfC5wtKz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 284E1C19424;
+	Fri, 13 Feb 2026 19:41:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771011690;
+	bh=npawl3Sh8CB9l+1ZY62uo+ipDHKFXtD/V7TZlj5J+kE=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=OfC5wtKzDjjRTMyYDLfYtHcRXqV6U0vmPI2AWkLm7EB7Z/T1v0l2abeRgzhIjaq58
+	 Z6mXUTghHGpMEJjGZqbxnUxJF/dISX+OblcR09PaWXsct7GP+lZ/WGhM61zFVZyZvJ
+	 ezgUSifRI4TocQxH7uuzPA29NB6qSsXL9rjlOscWyTxleT5wdzhWwW3O5otlF5rb9J
+	 2YKoA3hcYhfFQdQo+4Bm0KBsyTKSD2wNZYHFxA9+XYiVpAe156iAJxrwUb8AvWdFWx
+	 c4/XK2w6SNRQtN0F3WrKjQ3Wh9Vj3BkIafCdUHHajvPr+aXIG8LGqNTYuBj87TzIiK
+	 BIkMyutGBksBA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A4CEEF99D7;
+	Fri, 13 Feb 2026 19:41:30 +0000 (UTC)
+From: Tim Kovalenko via B4 Relay <devnull+tim.kovalenko.proton.me@kernel.org>
+Date: Fri, 13 Feb 2026 14:40:13 -0500
+Subject: [PATCH v2] gpu: nova-core: fix stack overflow in GSP memory
+ allocation
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260213-drm-rust-next-v2-1-aa094f78721a@proton.me>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XMQQ7CIBCF4as0s3YMjFrFlfcwXRQZLYtCM2BT0
+ 3B3sXuX/0vet0Ji8Zzg2qwgPPvkY6hBuwYeQx9ejN7VBlLUKtKETkaUd8oYeMlo2RrqmY07n6B
+ +JuGnXzbv3tUefMpRPhs/69/6T5o1ajwqczAXq4lbfZsk5hj2I0NXSvkCJpNJDqoAAAA=
+X-Change-ID: 20260212-drm-rust-next-beb92aee9d75
+To: Alexandre Courbot <acourbot@nvidia.com>, 
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Tim Kovalenko <tim.kovalenko@proton.me>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771011689; l=6183;
+ i=tim.kovalenko@proton.me; s=20260212; h=from:subject:message-id;
+ bh=TbEzlnu4V85B1wrxC0sGqgddAbgVIVV2UDPzTnjjCng=;
+ b=1765X0vwFeNKmn7aEyMFKc6c5HTP2IxuQE8XcwSTcwhN9KrHAJ9dpgfoy/Ysb4YaVm3UM3IJh
+ JbUXKzKcDEtDsz7mFSr+uHD5WK5p5zrFsDtx/d7Af6EsHRCj0EHcXNO
+X-Developer-Key: i=tim.kovalenko@proton.me; a=ed25519;
+ pk=/+OiulEpgeZifgP4mDE4e5YlV6nMeY+frze/lY/xiHI=
+X-Endpoint-Received: by B4 Relay for tim.kovalenko@proton.me/20260212 with
+ auth_id=635
+X-Original-From: Tim Kovalenko <tim.kovalenko@proton.me>
+Reply-To: tim.kovalenko@proton.me
 
-Currently no target is specified to compile rust code when needed, which
-breaks cross compilation. Detect required target and pass it via
-rust_flags to the compiler.
+From: Tim Kovalenko <tim.kovalenko@proton.me>
 
-Note that CROSS_COMPILE might be different from what rust compiler
-expects, since it may omit the target vendor value, e.g.
-"aarch64-linux-gnu" instead of "aarch64-unknown-linux-gnu". Thus
-explicitly map supported CROSS_COMPILE values to corresponding Rust
-versions, as suggested by Miguel Ojeda.
+The `Cmdq::new` function was allocating a `PteArray` struct on the stack
+and was causing a stack overflow with 8216 bytes.
 
-Tested using arm64 cross-compilation example from [1].
+Remove the `PteArray` and instead calculate and write the Page Table
+Entries directly into the coherent DMA buffer one-by-one. This reduces
+the stack usage quite a lot.
 
-[1]: https://perfwiki.github.io/main/arm64-cross-compilation-dockerfile/
-
-Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
+Signed-off-by: Tim Kovalenko <tim.kovalenko@proton.me>
 ---
- tools/build/Build.include  |  9 +++++++++
- tools/perf/Makefile.config | 14 ++++++++++++++
- tools/perf/Makefile.perf   |  2 +-
- 3 files changed, 24 insertions(+), 1 deletion(-)
+Changes in v2:
+- Missed a code formatting issue.
+- Link to v1: https://lore.kernel.org/r/20260212-drm-rust-next-v1-1-409398b12e61@proton.me
+---
+ drivers/gpu/nova-core/gsp.rs      | 50 ++++++++++++++-------------------------
+ drivers/gpu/nova-core/gsp/cmdq.rs | 27 ++++++++++++++++++---
+ 2 files changed, 42 insertions(+), 35 deletions(-)
 
-diff --git a/tools/build/Build.include b/tools/build/Build.include
-index e45b2eb0d24..cd0baa7a168 100644
---- a/tools/build/Build.include
-+++ b/tools/build/Build.include
-@@ -98,6 +98,15 @@ c_flags_2 = $(filter-out $(CFLAGS_REMOVE_$(basetarget).o), $(c_flags_1))
- c_flags   = $(filter-out $(CFLAGS_REMOVE_$(obj)), $(c_flags_2))
- cxx_flags = -Wp,-MD,$(depfile) -Wp,-MT,$@ $(CXXFLAGS) -D"BUILD_STR(s)=\#s" $(CXXFLAGS_$(basetarget).o) $(CXXFLAGS_$(obj))
+diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
+index 174feaca0a6b9269cf35286dec3acc4d60918904..316eeaf87ec5ae67422a34426eefa747c9b6502b 100644
+--- a/drivers/gpu/nova-core/gsp.rs
++++ b/drivers/gpu/nova-core/gsp.rs
+@@ -2,16 +2,14 @@
  
-+###
-+# Rust flags to be used on rule definition, includes:
-+# - global $(RUST_FLAGS)
-+# - per target Rust flags
-+# - per object Rust flags
-+rust_flags_1 = $(RUST_FLAGS) $(RUST_FLAGS_$(basetarget).o) $(RUST_FLAGS_$(obj))
-+rust_flags_2 = $(filter-out $(RUST_FLAGS_REMOVE_$(basetarget).o), $(rust_flags_1))
-+rust_flags   = $(filter-out $(RUST_FLAGS_REMOVE_$(obj)), $(rust_flags_2))
+ mod boot;
+ 
++use core::iter::Iterator;
 +
- ###
- ## HOSTCC C flags
+ use kernel::{
+     device,
+-    dma::{
+-        CoherentAllocation,
+-        DmaAddress, //
+-    },
++    dma::CoherentAllocation,
+     dma_write,
+     pci,
+-    prelude::*,
+-    transmute::AsBytes, //
++    prelude::*, //
+ };
  
-diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-index a8dc72cfe48..f40c5a70520 100644
---- a/tools/perf/Makefile.config
-+++ b/tools/perf/Makefile.config
-@@ -1163,6 +1163,20 @@ ifndef NO_RUST
-     CFLAGS += -DHAVE_RUST_SUPPORT
-     $(call detected,CONFIG_RUST_SUPPORT)
-   endif
+ pub(crate) mod cmdq;
+@@ -39,27 +37,6 @@
+ /// Number of GSP pages to use in a RM log buffer.
+ const RM_LOG_BUFFER_NUM_PAGES: usize = 0x10;
+ 
+-/// Array of page table entries, as understood by the GSP bootloader.
+-#[repr(C)]
+-struct PteArray<const NUM_ENTRIES: usize>([u64; NUM_ENTRIES]);
+-
+-/// SAFETY: arrays of `u64` implement `AsBytes` and we are but a wrapper around one.
+-unsafe impl<const NUM_ENTRIES: usize> AsBytes for PteArray<NUM_ENTRIES> {}
+-
+-impl<const NUM_PAGES: usize> PteArray<NUM_PAGES> {
+-    /// Creates a new page table array mapping `NUM_PAGES` GSP pages starting at address `start`.
+-    fn new(start: DmaAddress) -> Result<Self> {
+-        let mut ptes = [0u64; NUM_PAGES];
+-        for (i, pte) in ptes.iter_mut().enumerate() {
+-            *pte = start
+-                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
+-                .ok_or(EOVERFLOW)?;
+-        }
+-
+-        Ok(Self(ptes))
+-    }
+-}
+-
+ /// The logging buffers are byte queues that contain encoded printf-like
+ /// messages from GSP-RM.  They need to be decoded by a special application
+ /// that can parse the buffers.
+@@ -86,16 +63,25 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
+             NUM_PAGES * GSP_PAGE_SIZE,
+             GFP_KERNEL | __GFP_ZERO,
+         )?);
+-        let ptes = PteArray::<NUM_PAGES>::new(obj.0.dma_handle())?;
 +
-+  ifneq ($(CROSS_COMPILE),)
-+    RUST_TARGET_FLAGS_arm	:= arm-unknown-linux-gnueabi
-+    RUST_TARGET_FLAGS_arm64	:= aarch64-unknown-linux-gnu
-+    RUST_TARGET_FLAGS_m68k	:= m68k-unknown-linux-gnu
-+    RUST_TARGET_FLAGS_mips	:= mipsel-unknown-linux-gnu
-+    RUST_TARGET_FLAGS_powerpc	:= powerpc64le-unknown-linux-gnu
-+    RUST_TARGET_FLAGS_riscv	:= riscv64-unknown-linux-gnu
-+    RUST_TARGET_FLAGS_s390	:= s390x-unknown-linux-gnu
-+    RUST_TARGET_FLAGS_x86	:= x86_64-unknown-linux-gnu
-+    RUST_TARGET_FLAGS_x86_64	:= x86_64-unknown-linux-gnu
++        let start_addr = obj.0.dma_handle();
+ 
+         // SAFETY: `obj` has just been created and we are its sole user.
+-        unsafe {
+-            // Copy the self-mapping PTE at the expected location.
++        let pte_region = unsafe {
+             obj.0
+-                .as_slice_mut(size_of::<u64>(), size_of_val(&ptes))?
+-                .copy_from_slice(ptes.as_bytes())
++                .as_slice_mut(size_of::<u64>(), NUM_PAGES * size_of::<u64>())?
+         };
+ 
++        // As in [`DmaGspMem`], this is a  one by one GSP Page write to the memory
++        // to avoid stack overflow when allocating the whole array at once.
++        for (i, chunk) in pte_region.chunks_exact_mut(size_of::<u64>()).enumerate() {
++            let pte_value = start_addr
++                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
++                .ok_or(EOVERFLOW)?;
 +
-+    RUST_FLAGS += --target=$(RUST_TARGET_FLAGS_$(ARCH))
-+  endif
- endif
++            chunk.copy_from_slice(&pte_value.to_ne_bytes());
++        }
++
+         Ok(obj)
+     }
+ }
+diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
+index 46819a82a51adc58423502d9d45730923b843656..7a6cb261f4e62ac6210a80f9ecb61213cdb91b15 100644
+--- a/drivers/gpu/nova-core/gsp/cmdq.rs
++++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+@@ -35,7 +35,6 @@
+             MsgqRxHeader,
+             MsgqTxHeader, //
+         },
+-        PteArray,
+         GSP_PAGE_SHIFT,
+         GSP_PAGE_SIZE, //
+     },
+@@ -159,7 +158,7 @@ struct Msgq {
+ #[repr(C)]
+ struct GspMem {
+     /// Self-mapping page table entries.
+-    ptes: PteArray<{ GSP_PAGE_SIZE / size_of::<u64>() }>,
++    ptes: [u64; GSP_PAGE_SIZE / size_of::<u64>()],
+     /// CPU queue: the driver writes commands here, and the GSP reads them. It also contains the
+     /// write and read pointers that the CPU updates.
+     ///
+@@ -201,7 +200,29 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
  
- # Among the variables below, these:
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index a6d8ca3e923..f3919838243 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -271,7 +271,7 @@ ifeq ($(PYLINT),1)
-   PYLINT := $(shell which pylint 2> /dev/null)
- endif
+         let gsp_mem =
+             CoherentAllocation::<GspMem>::alloc_coherent(dev, 1, GFP_KERNEL | __GFP_ZERO)?;
+-        dma_write!(gsp_mem[0].ptes = PteArray::new(gsp_mem.dma_handle())?)?;
++        const NUM_PAGES: usize = GSP_PAGE_SIZE / size_of::<u64>();
++
++        // One by one GSP Page write to the memory to avoid stack overflow when allocating
++        // the whole array at once.
++        let item = gsp_mem.item_from_index(0)?;
++        for i in 0..NUM_PAGES {
++            let pte_value = gsp_mem
++                .dma_handle()
++                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
++                .ok_or(EOVERFLOW)?;
++
++            // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
++            // dereferenced. The compiler also further validates the expression on whether `field`
++            // is a member of `item` when expanded by the macro.
++            //
++            // Further, this is dma_write! macro expanded and modified to allow for individual
++            // page write.
++            unsafe {
++                let ptr_field = core::ptr::addr_of_mut!((*item).ptes[i]);
++                gsp_mem.field_write(ptr_field, pte_value);
++            }
++        }
++
+         dma_write!(gsp_mem[0].cpuq.tx = MsgqTxHeader::new(MSGQ_SIZE, RX_HDR_OFF, MSGQ_NUM_PAGES))?;
+         dma_write!(gsp_mem[0].cpuq.rx = MsgqRxHeader::new())?;
  
--export srctree OUTPUT RM CC CXX RUSTC LD AR CFLAGS CXXFLAGS V BISON FLEX AWK
-+export srctree OUTPUT RM CC CXX RUSTC LD AR CFLAGS CXXFLAGS RUST_FLAGS V BISON FLEX AWK
- export HOSTCC HOSTLD HOSTAR HOSTCFLAGS SHELLCHECK MYPY PYLINT
- 
- include $(srctree)/tools/build/Makefile.include
 
-base-commit: 5d1ab659fb93eed85d6d8b2937013360157032f4
+---
+base-commit: cea7b66a80412e2a5b74627b89ae25f1d0110a4b
+change-id: 20260212-drm-rust-next-beb92aee9d75
+
+Best regards,
 -- 
-2.52.0
+Tim Kovalenko <tim.kovalenko@proton.me>
+
 
