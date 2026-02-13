@@ -1,186 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F214E218ACC
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 16:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08FB14AD20
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 16:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770999561; cv=none; b=slDRLJtl1U2BOVMLLHzORO3gjlUJhpFkMGwIJYqoM6eIj3vgPYtY6+M9tMiW0D6dRhd8p+ucBjtzb+SH9gK4Y/TFTVJz6cQSYeZpUj7wTtydrw6yU8//BRG4Pyh66n9C9oRr9m2iXbUb1MlEsa9uPd+QIchad2W3PhFc28e403k=
+	t=1770999584; cv=none; b=smCxSd3NugAUU2ujdcNzMDYDxVLfADjlN6DyWOJHqCkzG3vlAsKauSstfy1ZLShkeNJacfI0zuhRNFn4+a0FjJW/TqtJmtejyiQx6z7pIyx/UOEtqsl0tf5Vzl9AdntgAlk8gEG3IQ1yHhDdtrejpXAHrwzinmGHtc/w1AonhQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770999561; c=relaxed/simple;
-	bh=6wn8Lo1FQZGQiBYxgE6s5N3YCrutqKmZ719Y7h4CCRg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HqsKTtPzS1AUoFp3ASt/OrofMQyXwGLVi07jSaq3Q8oDR9Czgch0TO2l8agTOUBZbSRYZE/no/B+E36CGsVG33LKrS5VZzvuB+pI/IeKJvrIeyxZIfW5UFPdS0PsBjQc088gO/Tq1CJh25goMuHFZxq7VpGgN8GJEoKMdjft6hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GfjFOyqp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770999584; c=relaxed/simple;
+	bh=skxGPYGF0shbk35Z+9byZsuGGwHFRooDQP2l9UO6RI4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LA4p0XJfm8/MnclD7UiFIlWU1zDRPdnEBQKCTyu3znTL6tX4STjZ/8WZmC8CaBVp2YeEAE74PlcwkJQ0v5DyBgxfdFAoX1+tITwPX8lHbXYDKuqgHOeEwBWgSdG8r+ZvJA1JhP1/krSrqBwlLj2KIo+RpBQAXIWdWUTxivt+AmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DlX80Weh; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GfjFOyqp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20983C116C6;
-	Fri, 13 Feb 2026 16:19:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770999560;
-	bh=6wn8Lo1FQZGQiBYxgE6s5N3YCrutqKmZ719Y7h4CCRg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GfjFOyqp/Vwv1QzfzshF2QizgRGwVI1ffbytrt5g0MPfm9/1CCts3iJuvJ4pK/O6Y
-	 LWYyCcZIf00lWyM+ko1o7Fd35ItJHuIl/QW6BbtwIufXyGnsz11+P4U8rEjpObKjoO
-	 VN4RORDBX0ALSP+9Ci6Inlo2H68SGxz7QJ2uSziFJioGccPjMzOF/rHV6uu94m92i/
-	 dAiLaJV1gOW5GPynoSBwAISXgtA+39FUgWEHOaoeIWVrMJkfAYqft1Fz7RcnzVPJtG
-	 gBu6QJW0FHx+myJ4rTCb+/X5e3KAbyyCLSkxru2DyTaskeOlRNz8ISQTeYLxR01YBe
-	 wPGMnrW7F6Naw==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4309FF40068;
-	Fri, 13 Feb 2026 11:19:19 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 13 Feb 2026 11:19:19 -0500
-X-ME-Sender: <xms:B0-PafpkflOTSANspNhJFJG4HD84fhmOJq0JNnXzF_s6WIVopL2uKA>
-    <xme:B0-PabAxHGDMbgdg9AwZ8KPILfWd1Wgz-BPqxaOmgrg7StcBS5E_h4xGNiz7O85qy
-    nCizerwwCIUxd8ZU1GfwdPw4llG7ut7P6GfKwaWqkp4w61Qj7ndTg>
-X-ME-Received: <xmr:B0-PaVcHnEoHlzufV6v8uWKUZkK75iZCC2CyQodwzEHq0xK9rdpGeyGEH3HSRr2z3xRuRozPPTtRSYxa3um9it0XsD1J27zv>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdekjeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ehkeeijeeggeehkeehtddthfdtgfejueefleeutdefjeegvefhhffgueeiteekfeenucff
-    ohhmrghinhepohhpvghnqdhsthgurdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
-    ohhnrghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkh
-    gvrhhnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunh
-    gurghtihhonhdrohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdr
-    ohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhho
-    rhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhhirg
-    hmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopehojhgvuggrsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:B0-PabIAMi0ukVs3yBqFnaQ1T4Zvumjsj-uzzkJcSLf69Ud4YxM73g>
-    <xmx:B0-PaVtBqECs8RQByCBbhP8hi3n5ZmdsXbXzqmyvsjLvEGdC31C6Vg>
-    <xmx:B0-PaVbzIvEfQd6Gh0kcIeWB1DK_NtHYaiPbpf6ukEboRmbun-qqSA>
-    <xmx:B0-Pad0xuKtbxBb5rjr44ozCuYS3mPB15R2zFp1rSB5LFfwPlGjKsA>
-    <xmx:B0-PaTUBrFxvR51MLnVWA3E0RiUXLi1QcM0eQnePIkqROa5i-sv_eqk4>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 13 Feb 2026 11:19:18 -0500 (EST)
-Date: Fri, 13 Feb 2026 08:19:17 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <aY9PBfx3RRV7rXZ5@tardis.local>
-References: <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
- <2026021343-germicide-baritone-efe8@gregkh>
- <877bsgu7fb.fsf@kernel.org>
- <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
- <2026021313-embody-deprive-9da5@gregkh>
- <873434u3yq.fsf@kernel.org>
- <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
- <2026021311-shorten-veal-532c@gregkh>
- <aY9HD7nH5A-DtgmR@tardis.local>
- <2026021326-stark-coastline-c5bc@gregkh>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DlX80Weh"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b844098869cso33664666b.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 08:19:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770999581; x=1771604381; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6STMy2Sn3VeXtt0dq37yqQOGqgyUcYOyF5J32Z9FjUE=;
+        b=DlX80Wehx9NR5OMphwMKo5XkK2oN2duQDbl+xzB3YRXNkfkjpitvSQ0t13Cbvzitno
+         YtqfVIiDEd9o65q4oTkNYZ6EwhxF0wd8Te6KE7rGkcpKvLfxz7ni94Rlc7KeKKuvRgWR
+         rqbaH+cq7KZ9zt9IiipHt+e8U7C0Lj0vyAdK1CPAkkJq2zBqX9KLGMGaAJiMkAnUJlGf
+         UeZZAZMpvGpq3YUnSZypkw6KsmxMvibMngJGL3pV81QSH8qPA7Z8tgJhECITtbXPsfe1
+         CGtcRlTJIFrJVD9EFlWW06W2GYxlUdrxckLPS1zNMgI6huCwpXSHhTmYIU0RievJiVRk
+         RHyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770999581; x=1771604381;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6STMy2Sn3VeXtt0dq37yqQOGqgyUcYOyF5J32Z9FjUE=;
+        b=ui5dix602GT/MisyyHF/rRu8zxhrwj7im7M2Qk09XfKru/Z3WVwmI7yRg2KW+AmD2g
+         OeUoCGBwvJV7ghAqSJ5pKd8pl8+Oye8GjsrnWzrC1ecjbm0IWtZy95+lY4oBA+gSbiz0
+         w7BnBBab5KeKiHlyWPu+gPCXlO8XwQLMmJpBUHv5uUnf9GfyoFniz08nTkWQ7xZIi3qD
+         n7e82tTQC0BLeglfagQZl1O8UP/+QZD9UCyG+mB6HW5ia6FZ/jtwv6gBMzuNkFj39IlO
+         ZJSzZ7MsSP88scuLB5ac0fNeSBXlWFm1kIJ5gp2QfeEHUa9oguZzfUMVLwwz1ALkAA5q
+         y5AQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlsJWYT/vg9jKYNHZfMf0EBzQ2UZ5hDJhjwEdOQ3F1CfEfAxEq9P2n5hNsSFKO4njW9EVk4c8ZQRdGbITCzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq33++27lO1SQ0SMZ6Kyt2iAf4mvFzWB6jnmE7NeccZjPd62M1
+	HxGPcOSYfogQNSubsqbbobCpgB3jfZeHb+nQAEOZQcI2BuVNE75YkKd1y8ppmnS4NOCk+GiQAJx
+	3ta4Il9qb2zdCkrsSCw==
+X-Received: from ejcjg26.prod.google.com ([2002:a17:907:971a:b0:b8f:99f1:6959])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:6d05:b0:b8f:6f6d:c593 with SMTP id a640c23a62f3a-b8fb44767c4mr142915066b.32.1770999580951;
+ Fri, 13 Feb 2026 08:19:40 -0800 (PST)
+Date: Fri, 13 Feb 2026 16:19:39 +0000
+In-Reply-To: <20260212-binder-shrink-vec-v3-v4-3-bd02f06bf2cd@zohomail.in>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026021326-stark-coastline-c5bc@gregkh>
+Mime-Version: 1.0
+References: <20260212-binder-shrink-vec-v3-v4-0-bd02f06bf2cd@zohomail.in> <20260212-binder-shrink-vec-v3-v4-3-bd02f06bf2cd@zohomail.in>
+Message-ID: <aY9PG909tCTZgMup@google.com>
+Subject: Re: [PATCH v4 3/3] rust_binder: shrink all_procs when deregistering processes
+From: Alice Ryhl <aliceryhl@google.com>
+To: Shivam Kalra <shivamkalra98@zohomail.in>
+Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Feb 13, 2026 at 04:58:54PM +0100, Greg KH wrote:
-> On Fri, Feb 13, 2026 at 07:45:19AM -0800, Boqun Feng wrote:
-> > On Fri, Feb 13, 2026 at 04:34:04PM +0100, Greg KH wrote:
-> > > On Fri, Feb 13, 2026 at 03:26:08PM +0100, Peter Zijlstra wrote:
-> > > > On Fri, Feb 13, 2026 at 03:13:01PM +0100, Andreas Hindborg wrote:
-> > > > 
-> > > > > C uses memcpy as seen in `bio_copy_data_iter` [1] and in the null_blk
-> > > > > driver [2].
-> > > > 
-> > > > Right. And that is *fine*.
-> > > > 
-> > 
-> > Yes, that's fine because memcpy() in C is volatile and per-byte atomic.
-> > 
-> > > > > Rust has `core::ptr::copy` and `core::ptr::copy_nonoverlapping`. I was
-> > > > > informed these are not safe to use if source or destination may incur
-> > > > > data races, and that we need an operation that is volatile or byte-wise
-> > > > > atomic [3].
-> > > > 
-> > > > Safe how? It should just copy N bytes. Whatever it thinks those bytes
-> > > > are.
-> > > > 
-> > > > Nothing can guard against concurrent modification. If there is, you get
-> > > > to keep the pieces. Pretending anything else is delusional.
-> > > > 
-> > > > Suppose the memory was 'AAAA' and while you're reading it, it is written
-> > > > to be 'BBBB'. The resulting copy can be any combination of
-> > > > '[AB][AB][AB][AB]'. Not one of them is better than the other.
-> > > > 
-> > 
-> > The idea is if using Rust's own `core::ptr::copy()` or
-> > `core::ptr::copy_nonoverlapping()`, you may get `CCCC`, because they are
-> > not semantically guaranteed atomic per byte (i.e. tearing can happen at
-> > bit level, because they are not designed for using in case of data
-> > races, and there is no defined asm implementation of them, compilers can
-> > do anything).
+On Thu, Feb 12, 2026 at 01:47:09PM +0530, Shivam Kalra wrote:
+> When a process is deregistered from the binder context, the all_procs
+> vector may have significant unused capacity. Add logic to shrink the
+> vector using a conservative strategy that prevents shrink-then-regrow
+> oscillation.
+> The shrinking strategy triggers when length drops below 1/4 of capacity,
+> and shrinks to 1/2 of capacity rather than to the exact length. This
+> provides hysteresis to avoid repeated reallocations when the process
+> count fluctuates.
+> The shrink operation uses GFP_KERNEL and is allowed to fail gracefully
+> since it is purely an optimization. The vector remains valid and
+> functional even if shrinking fails.
 > 
-> Then why not just call the proper, in-kernel, arch specific, patched and
-> tested to the end-of-the-earth, memcpy()?
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> ---
+>  drivers/android/binder/context.rs | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
+> diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
+> index 9cf437c025a20..399dab475728b 100644
+> --- a/drivers/android/binder/context.rs
+> +++ b/drivers/android/binder/context.rs
+> @@ -94,6 +94,17 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
+>          }
+>          let mut manager = self.manager.lock();
+>          manager.all_procs.retain(|p| !Arc::ptr_eq(p, proc));
+> +
+> +        // Shrink the vector if it has significant unused capacity to avoid memory waste,
+> +        // but use a conservative strategy to prevent shrink-then-regrow oscillation.
+> +        // Only shrink when length drops below 1/4 of capacity, and shrink to 1/2 capacity.
+> +        let len = manager.all_procs.len();
+> +        let cap = manager.all_procs.capacity();
+> +        if len < cap / 4 {
+> +            // Shrink to half capacity. Ignore allocation failures since this is just an
+> +            // optimization; the vector remains valid even if shrinking fails.
+> +            let _ = manager.all_procs.shrink_to(cap / 2, GFP_KERNEL);
 
-I believe you hadn't read my reply that we indeed call memcpy() here. So
-I'm not going to reply this in case you mean something else.
+Not a big deal, but perhaps we should write len*2 here instead of cap/2?
+That way, if the cap got way far away from the length, it would equalize
+right away.
 
-> > > > No byte wise volatile barrier using nonsense is going to make this any
-> > > > better.
-> > 
-> > It's byte-wise atomic [1], which should be guaranteed using asm to
-> > implement, hence at least at byte level, they are atomic (and volatile
-> > in our case).
-> > 
-> > [1]: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1478r5.html
-> 
-> Again, just use memcpy() please.
-> 
-> > > > 
-> > > 
-> > > I'm with Peter, just call memcpy() like the C code does, and you will be
-> > > "fine" (with a note that "fine" better include checking the data really
-> > 
-> > We are. See v3, we actually use `memcpy()` for the copy (as I already
-> > pointed out, Andreas made a mistake in this version), it's just
-> > because it's per-byte atomic. What this "byte-wise atomic" does is
-> > clearing things out.
-> 
-> clear what out?  It shouldn't need anything special for a memcpy.
-> 
-
-Well, in standard C, technically memcpy() has the same problem as Rust's
-`core::ptr::copy()` and `core::ptr::copy_nonoverlapping()`, i.e. they
-are vulnerable to data races. Our in-kernel memcpy() on the other hand
-doesn't have this problem. Why? Because it's volatile byte-wise atomic
-per the implementation.
-
-So here, the clearing out is needed to say: this is not Rust's `copy()`
-and this is not C's `memcpy()`, this is the kernel version, and it's
-fine not because magic or kernel people believe it, but because its
-implementation. The concept of byte-wise atomic at least describes this
-correctly.
-
-Regards,
-Boqun
-
-> thanks,
-> 
-> greg k-h
+Alice
