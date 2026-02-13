@@ -1,146 +1,154 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30008189BB6
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 11:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0EA34D4E6
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 12:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770982653; cv=none; b=cXG16EhpApSSBjp3QrFGuglrxh0aAF48BSzZhD39ebh3ohpoT2UNTJoc6xDeGTm7HIp82BlHoMLxDzjRdT1ImQ30T+YEMkbLJ96YQTwwHaLht+5a/WzsWXP0Rl9fKtNhgtYmxMrXAKmHICkjDh1OGhX74s4u+ad7MtacSpucr5E=
+	t=1770985086; cv=none; b=op0ytR1HCfmvP1fi2SSi1Oy/WwqUX6zKlE51EoKZwxjevszTTnqW3Inx4oQTruJfZ+ss/l0FOTSKusFKOIK3YJ7ILAiLtiGn73en2gUUbFH/icOu7km+7uotwAaCk/aNjQ/Tfzca+aYkx8WD+l1+6+Qo7L6XVpmDyQ6po1nHKiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770982653; c=relaxed/simple;
-	bh=4LTNjgJgvGqNq7J29QKVGs2V+h5UNIrd7eT8oEJbNBM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UiVn19Xsd525+fm9Z1WECiyiHJUhz1ew94K4CX+yTfmBCw/r1rSLWcEZO9QvBRiA2PcsN6XTRb87zltcGUTe0dyycuSviwMGfzTv1ge1m+HSjkcnevEc3Zd7slje7VYcQL+P58Y6woKoHsr+l6opXj7PvmaeZY8JnJ4xdRyK9Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W+P10E4L; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W+P10E4L"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b8f10615953so102527966b.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 03:37:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770982650; x=1771587450; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZbOmUybxmds8ticCOAuzlWlSf0l0KDGIiJfpTQsjS6k=;
-        b=W+P10E4L/ALkpjm+/HX5HR492d3nfDnsfA8Q+Ls4ZL5t9XwmBC35/GThEIgHI6yjhH
-         cm3x3xlPpGuoLxScE87Yrz1r6iv0WMgrPQL1w2RyuQ7mbzPXTt/Fosb/VEbyutn51y0P
-         M5FTjpNERy55+WOFCXnO7rLnZUnUBgx+dMLruCC7HU8Kclr7xMOMtygWIm3mhxjGNtcN
-         zzc5MOpEI6j12Ky6E6CgVOrstOIWpUcbjRmr7uuMYKn27hGBpvtvK8OtthyG6kLOyZO+
-         auxKlfg86KVURB+BoRUCsQkgn8KWuIh5mdwtJtPqLP+At+hFDxtk8QYAxjN5U5OryPf0
-         e6Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770982650; x=1771587450;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZbOmUybxmds8ticCOAuzlWlSf0l0KDGIiJfpTQsjS6k=;
-        b=v2fzpdRdx9F2/1MqLHsEZxPEL1YXDSa179coznP4jZmXmkb4KvNhkhFNAwFfBA1e7Q
-         RJ6rND8yULfbjY4O83zvWqXOCXSEdwii2O4aJ0zFL/U+a56YyQbR9kXCBit1X5RC4U/W
-         jzm+JQvn8hNYVdMIOvwmeL0F+K68eALFn062Co/DqwgQhqM6TgkLOlTgBZM43vLEgmGP
-         JSWvouaUIX+X3zuA5MOKsZ48RCexMKXqsW51zmugkB3hl4IJ9LIyYHNDgB/o/tRPI+5k
-         szccOFSQqakOsvkwk2CoyAe/EgYgMmtBax5UcGaWwyCfnQi3+AtmNpk4O6Ms0v71JXYj
-         GofA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFgZPw8zTGuGipCpQE187xk+K2TZmJhOi4xqzXr45T8DhoyIUDgSaKP+XCJ66+oJHAf9sTiHSsb0fmgIYk4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/C12Bs9E0D/N1wui2bYcIcbnImOdqI8l8yACIFSwoio1Nh9dw
-	5keJaMNpiUFNLtDI0O4EmY2GCBB2vWmTOtrzOkrGk1wgv2jPNAHrtupaL4VPmubIacQMfjyj80v
-	tFbIeGYYwTnbySBvCeA==
-X-Received: from ejbm12.prod.google.com ([2002:a17:906:258c:b0:b88:435f:4347])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3e2a:b0:b8e:a1a7:1a98 with SMTP id a640c23a62f3a-b8fb44dce46mr72100666b.47.1770982650069;
- Fri, 13 Feb 2026 03:37:30 -0800 (PST)
-Date: Fri, 13 Feb 2026 11:37:26 +0000
+	s=arc-20240116; t=1770985086; c=relaxed/simple;
+	bh=zJWcTxfnG0dObUscgf5PA0wL77IHDbe6/5EnDU7MIL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AdJmr5eKxyJeZka+2zKztu/mAebmEp5GZxh2wYD+fuNHCDnOQElTWSJ4JeBqzokdqpRuav7fIDPC5tq29D/Eiq6x4PghKlisM5+2mz+AbG7/EExaWUxWGPEl8pXTBUB3wcGcFCCKH1COsGvLn6ELEKl3BMN9Jn2Rv/IxdVzeTkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 45FEF1576
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 04:17:52 -0800 (PST)
+Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 62E003F632
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 04:17:58 -0800 (PST)
+Date: Fri, 13 Feb 2026 12:15:47 +0000
+From: Liviu Dudau <Liviu.Dudau@arm.com>
+To: Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+	Mark Brown <broonie@kernel.org>, daniel.almeida@collabora.com,
+	aliceryhl@google.com, dakr@kernel.org, airlied@gmail.com,
+	simona@ffwll.ch, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, lgirdwood@gmail.com, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] drm/tyr: make SRAM supply optional like panthor
+Message-ID: <aY8V8xlTv0UAdyQz@e142607>
+References: <20260212100538.170445-1-work@onurozkan.dev>
+ <20260212100538.170445-2-work@onurozkan.dev>
+ <4b00826f-52b1-48a1-b6b5-70ee62f7c014@sirena.org.uk>
+ <20260212151644.4c179594@nimda>
+ <6704ddce-e0bb-4b50-b81a-a098816f3ba3@sirena.org.uk>
+ <20260212134601.7760f414@fedora>
+ <a76b1e27-87ea-42e0-88f3-0512b2e1ac0b@sirena.org.uk>
+ <20260212145134.799bb6fa@fedora>
+ <20260212213010.56db1d1d@nimda>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPUMj2kC/x2MQQqAMAzAviI9W9jmGOhXxIO6qr3M0aoI4t8dH
- kNIHlASJoWuekDoYuU9FbB1BfM2ppWQY2FwxgXjbINy6oETp0iCWdGH2EZTlG9GKFEWWvj+h/3 wvh9lWP+KYAAAAA==
-X-Change-Id: 20260213-rust-binder-ps-46d9d060243a
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2864; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=4LTNjgJgvGqNq7J29QKVGs2V+h5UNIrd7eT8oEJbNBM=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpjwz4ba/pGfcwxzqFFR+EX+9yplWJyIqVLiGzY
- TWKQYpCXKqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaY8M+AAKCRAEWL7uWMY5
- RuEAD/9TnK7CeIaWplyYB0pi5DRRdsI4j7fa0PsvDmZC9Pk9zV7WKkSVYDNeDupwroYk3DDnaUY
- PUMQPvXcrrf2q9TICZcC7fZY/ciPMGZg+ezb/Mw+UFrO5t4EikzbD0+0gNakrDomBBxx6ipXHmk
- Lyu696apNAEMIfpR+ax3f7/RNEDXPRejt156KkGxzHziy0iljxNWOcBBKpo+FlNo+NBf0QmR/hY
- pW+spq+zrhEynmJCoDQgag+y0hwLVjIp7keuMMLneHX7SjXnNv3cYXWwPQDPuZJ6euBvNEVW2Za
- IdpF8UHZxQoR6naKT8QZsIgl4DG57Itaou0C8Ou2UTob2juIxO0NW2uJbJ36O6v7wHI0fqPoC40
- 72hFSxNDSxvZiiXpbkT4ju6pg2xMx/cFx8ad4lsD9DRJVJFElIMrIZ9GZVg+AEy7z3PE6kYLC6X
- 1xbH3hVixltOL2JA1SnDiNTxqMayY/qsYAwK22iSOQY26xN419wf+FVuEaM2qn0QDTxIR7V1iuo
- Y6WnmXfQfnl/XiskB1KKPtxrJABri8kWbbtWUzKq1J1CM84hOM+nxp1ojE0pDtCB4Ug7dJHfIj2
- +Ih0soxlqTiVaYfWmGKB3D54ky+TzZ0RoFM0Gp4oO5MRwyTjY8L2/jPYK5VZ0/CwD9bipA05B1q w0FYLdDjSHvTy3A==
-X-Mailer: b4 0.14.2
-Message-ID: <20260213-rust-binder-ps-v1-1-6b90f83c0b4d@google.com>
-Subject: [PATCH] rust_binder: avoid name mangling for get_work[_local]
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260212213010.56db1d1d@nimda>
 
-Currently ps -A shows processes waiting on schedule() in functions with
-names such as do_epoll_wait, wait_woken, and the impeccably named
-_RNvMs2_NtCs8QPsHWIn21X_16rust_binder_main6threadNtB5_6Thread8get_work.
+On Thu, Feb 12, 2026 at 09:30:10PM +0300, Onur Özkan wrote:
+> On Thu, 12 Feb 2026 14:51:34 +0100
+> Boris Brezillon <boris.brezillon@collabora.com> wrote:
+> 
+> > On Thu, 12 Feb 2026 13:13:31 +0000
+> > Mark Brown <broonie@kernel.org> wrote:
+> > 
+> > > On Thu, Feb 12, 2026 at 01:46:01PM +0100, Boris Brezillon wrote:
+> > > > Mark Brown <broonie@kernel.org> wrote:  
+> > > 
+> > > > > The panthor driver is buggy here and should be fixed, the
+> > > > > driver should treat the supply as mandatory and let the system
+> > > > > integration work out how it's actually made available.  
+> > > 
+> > > > > Trying to open code this just breaks the error handling.  
+> > > 
+> > > > Maybe, but the thing is, the DT bindings have been accepted
+> > > > already, and it's not something we can easily change. What we can
+> > > > do is make this sram-supply mandatory for new compatibles, but we
+> > > > can't force it on older/existing SoCs without breaking
+> > > > backward-DT compat.  
+> > > 
+> > > In practice you can because we do sub in a dummy regulator for
+> > > missing supplies, it produces a warning but works fine.  If we
+> > > didn't do this it'd be basically impossible to add regulator
+> > > support to anything at any point after the original merge which is
+> > > clearly not reasonable.
+> > 
+> > Okay, I guess we need to fix panthor then...
+> > 
+> 
+> That + updating the log to something like "sram-supply is missing in
+> the DT" would be quite better I think. It would make the issue more
+> obvious and convey that the DT file is expected to configure that field
+> explicitly. With the current log message, not many people will
+> understand the problem at a glance.
+> 
+> As for the bug I described in this patch, we can proceed with the
+> alternative solution (updating the DT file) that I mentioned in the
+> Zulip thread (the link is included in the patch). Which is this simple
+> diff:
+> 
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
+> b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
+> index dafad29f9854..a30339fd2c10 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
+> +++ b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dtsi
+> @@ -177,6 +177,7 @@ &gmac1_rgmii_clk
+> 
+>  &gpu {
+>         mali-supply = <&vdd_gpu_s0>;
+> +       sram-supply = <&vdd_gpu_mem_s0>;
+>         status = "okay";
+>  };
+> 
+> @@ -537,7 +538,7 @@ rk806_dvs3_null: dvs3-null-pins {
+>                 };
+> 
+>                 regulators {
+> -                       vdd_gpu_s0: dcdc-reg1 {
+> +                       vdd_gpu_s0: vdd_gpu_mem_s0: dcdc-reg1 {
 
-To improve how ps output looks, give explicit non-mangled names to the
-functions where Rust Binder calls schedule(), since these are the most
-likely places to show up on ps output.
+You don't need to define a new label, using the same supply for mali-supply and
+sram-supply should be fine.
 
-The name of rust_binder_waitlcl is truncated instead of using _local
-suffix because rust_binder_wait_local is sufficiently long that ps shows
-unaligned output.
+>                                 regulator-name = "vdd_gpu_s0";
+>                                 regulator-boot-on;
+>                                 regulator-min-microvolt = <550000>;
+> 
+> Note that this only fixes the issue for the Orange Pi 5. If we want
+> to go further, the same approach should be applied to many other boards
+> as well. I can generate a list of the DT files (using a simple Python
+> script) that need this update over the weekend.
 
-Suggested-by: Matthew Maurer <mmaurer@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/process.rs | 1 +
- drivers/android/binder/thread.rs  | 2 ++
- 2 files changed, 3 insertions(+)
+Yes, please, but bias the script towards using the same regulator as mali-supply.
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 132055b4790f0ec69a87635b498909df2bf475e2..cf7425e74183966063ab53114637aec7b3672ac8 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1436,6 +1436,7 @@ pub(crate) fn drop_outstanding_txn(&self) {
-         }
-     }
- 
-+    #[export_name = "rust_binder_freeze"]
-     pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
-         if info.enable == 0 {
-             let msgs = self.prepare_freeze_messages()?;
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 1f1709a6a77abc1c865cc9387e7ba7493448c71d..2ca8ed8962314b58a3cfeb3ae0aa0ed60f179433 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -514,6 +514,7 @@ pub(crate) fn has_current_transaction(&self) -> bool {
-     /// Attempts to fetch a work item from the thread-local queue. The behaviour if the queue is
-     /// empty depends on `wait`: if it is true, the function waits for some work to be queued (or a
-     /// signal); otherwise it returns indicating that none is available.
-+    #[export_name = "rust_binder_waitlcl"]
-     fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
-         {
-             let mut inner = self.inner.lock();
-@@ -552,6 +553,7 @@ fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn Deliv
-     ///
-     /// This must only be called when the thread is not participating in a transaction chain. If it
-     /// is, the local version (`get_work_local`) should be used instead.
-+    #[export_name = "rust_binder_wait"]
-     fn get_work(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
-         // Try to get work from the thread's work queue, using only a local lock.
-         {
+> 
+> If we want to go even further and fix all DT files to properly include
+> sram-supply we could also enforce that DT files do not omit sram-supply
+> in the future. I am not sure this is strictly necessary but it also
+> doesn't seem consistent to leave things as they are. Right now, some DT
+> files include sram-supply even when there is no separate SRAM rail,
+> while others do not. As a result, some boards will continue to print
+> that annoying log message.
+> 
+> It's not very clear which approach is best.
 
----
-base-commit: cee73b1e840c154f64ace682cb477c1ae2e29cc4
-change-id: 20260213-rust-binder-ps-46d9d060243a
+I'm in favor of the proposal here, where we make sram-supply mandatory for non-"mt8196-mali"
+SoCs and we patch the DTs to add the sram-supply for those.
 
 Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+Liviu
 
+
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
