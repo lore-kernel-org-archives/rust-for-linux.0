@@ -1,118 +1,128 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08FB14AD20
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 16:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317D154763
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 16:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770999584; cv=none; b=smCxSd3NugAUU2ujdcNzMDYDxVLfADjlN6DyWOJHqCkzG3vlAsKauSstfy1ZLShkeNJacfI0zuhRNFn4+a0FjJW/TqtJmtejyiQx6z7pIyx/UOEtqsl0tf5Vzl9AdntgAlk8gEG3IQ1yHhDdtrejpXAHrwzinmGHtc/w1AonhQY=
+	t=1770999656; cv=none; b=iqfVbYv8Tijjl6lx76+ZvEAW+fm6w+bOQFtgUi8n5O9mK9XWK/8keGJpf74xLZ/xY4S3VV8MKMphEOtiCSWqqxFkxDkPpPZyKtvvamlDf8+NRbFrXeO+o2Yg2B9p+m3BTzg0qKmmOHgit4ad+AhnTyhlmLRxND8tl5US3/Jy5m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770999584; c=relaxed/simple;
-	bh=skxGPYGF0shbk35Z+9byZsuGGwHFRooDQP2l9UO6RI4=;
+	s=arc-20240116; t=1770999656; c=relaxed/simple;
+	bh=E5UBTKx1R+6Rxq9EJfforiQbYLQTpCoL7W90ku/j7jY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LA4p0XJfm8/MnclD7UiFIlWU1zDRPdnEBQKCTyu3znTL6tX4STjZ/8WZmC8CaBVp2YeEAE74PlcwkJQ0v5DyBgxfdFAoX1+tITwPX8lHbXYDKuqgHOeEwBWgSdG8r+ZvJA1JhP1/krSrqBwlLj2KIo+RpBQAXIWdWUTxivt+AmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DlX80Weh; arc=none smtp.client-ip=209.85.218.73
+	 To:Cc:Content-Type; b=CUmSs4Ev4VuZOjSgXuCh1lDT5/MvYR9cSpD4tjRwRi3uwpSPLKxsTtJXl/9XlXk+R2fwbeO2jeE/c86AvsocdjbiHcSHMo5CLtCMVTHwj1BF/mRbkWp/0pha7myV9gqA/uAy6AnSVlbnq4LkcN5hpomNa45rZ+opXO4++p2Pnso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cSY4/v9m; arc=none smtp.client-ip=209.85.218.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DlX80Weh"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b844098869cso33664666b.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 08:19:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cSY4/v9m"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b8db7f340b3so40880666b.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 08:20:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770999581; x=1771604381; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1770999652; x=1771604452; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6STMy2Sn3VeXtt0dq37yqQOGqgyUcYOyF5J32Z9FjUE=;
-        b=DlX80Wehx9NR5OMphwMKo5XkK2oN2duQDbl+xzB3YRXNkfkjpitvSQ0t13Cbvzitno
-         YtqfVIiDEd9o65q4oTkNYZ6EwhxF0wd8Te6KE7rGkcpKvLfxz7ni94Rlc7KeKKuvRgWR
-         rqbaH+cq7KZ9zt9IiipHt+e8U7C0Lj0vyAdK1CPAkkJq2zBqX9KLGMGaAJiMkAnUJlGf
-         UeZZAZMpvGpq3YUnSZypkw6KsmxMvibMngJGL3pV81QSH8qPA7Z8tgJhECITtbXPsfe1
-         CGtcRlTJIFrJVD9EFlWW06W2GYxlUdrxckLPS1zNMgI6huCwpXSHhTmYIU0RievJiVRk
-         RHyg==
+        bh=DQu1gUXRp8ebxI+NO5hrCYotkgjViwiMnrHXh1J3cbE=;
+        b=cSY4/v9mdlS/B50ZtIASdslgKdujPH4ccLZ/5nGG2MEdczSCISfaTFpiSMv1NQSWjW
+         B08IRVucft98ovZPYb3Qi3KgFTu2ZdT/1OpwQotDtE2kCLqmWLrKaErsOau1yM8bjfGt
+         JjRkoT59n5FPFDviOmQ/1KGtBmRFntKRP4Y/J49cdu8TKvInBHz9LfiG3yavxsAPEbRn
+         LmYrz9s4+j/eMnUrcbVNkgbixmGOfmqXIhlxObqhaNcapz4Ckszq+q+MHXmZzPFSTigg
+         SGYyWTG7obHU9k5mZTS4UeN99In4yZ82GpKZJrXrf35Pv0znEnaV5iHncrf/sARHcyKt
+         daCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770999581; x=1771604381;
+        d=1e100.net; s=20230601; t=1770999652; x=1771604452;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6STMy2Sn3VeXtt0dq37yqQOGqgyUcYOyF5J32Z9FjUE=;
-        b=ui5dix602GT/MisyyHF/rRu8zxhrwj7im7M2Qk09XfKru/Z3WVwmI7yRg2KW+AmD2g
-         OeUoCGBwvJV7ghAqSJ5pKd8pl8+Oye8GjsrnWzrC1ecjbm0IWtZy95+lY4oBA+gSbiz0
-         w7BnBBab5KeKiHlyWPu+gPCXlO8XwQLMmJpBUHv5uUnf9GfyoFniz08nTkWQ7xZIi3qD
-         n7e82tTQC0BLeglfagQZl1O8UP/+QZD9UCyG+mB6HW5ia6FZ/jtwv6gBMzuNkFj39IlO
-         ZJSzZ7MsSP88scuLB5ac0fNeSBXlWFm1kIJ5gp2QfeEHUa9oguZzfUMVLwwz1ALkAA5q
-         y5AQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUlsJWYT/vg9jKYNHZfMf0EBzQ2UZ5hDJhjwEdOQ3F1CfEfAxEq9P2n5hNsSFKO4njW9EVk4c8ZQRdGbITCzA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq33++27lO1SQ0SMZ6Kyt2iAf4mvFzWB6jnmE7NeccZjPd62M1
-	HxGPcOSYfogQNSubsqbbobCpgB3jfZeHb+nQAEOZQcI2BuVNE75YkKd1y8ppmnS4NOCk+GiQAJx
-	3ta4Il9qb2zdCkrsSCw==
-X-Received: from ejcjg26.prod.google.com ([2002:a17:907:971a:b0:b8f:99f1:6959])
+        bh=DQu1gUXRp8ebxI+NO5hrCYotkgjViwiMnrHXh1J3cbE=;
+        b=qenYSrkudEwUMnpQPVO1DuSVimhwBXu1ZrlfeDn8xxwoqK8arEyiE3IgaLnrFr+Gdp
+         ugQmMFY9z7wO7s5jeeW908B+WBz5hFKp9rN75TvrbXYs1NX89SsCKW6mHdWUzpLFAwAp
+         xJL52KyclIxNe+8LibbBwyMm/tVQPqclx3X80WWDaFXEqnuhRKSAxz+n1cFJk0xy2hw6
+         s/1OWi/MniLdWUJ1Bic+CCyt95REwJLfnugQp2Xf7h6542HPzRPHcKtQrjnbXH1I+nQZ
+         7TeI8ZZ5KFuW/oGOiUSXi4wSm1ed01KHhJuN92SW1JwxSGv1yVK9JwNlN3nP8C+9h+Kf
+         mFQg==
+X-Forwarded-Encrypted: i=1; AJvYcCXzntMaZkz+3UdFXuKFoPkz1Z5rRHWz/X54K24xJJk1gW+2b0wjoWWg1R/4urSI1TuK+ktNkBw9BiwrhLVU1w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjP35TCLme9UufcqX0vBXautYmXDW5kJcQnjFgMq5voNxQrgrD
+	bwFHpsMRnVN8N07D02IFSpbKiJt45i01XWbYljP2FXxU4d/kWXngkI5Sid6W9djbWetcU6EjACk
+	rRns3P7HKYWNwPqRuhw==
+X-Received: from ejas18.prod.google.com ([2002:a17:906:3552:b0:b8e:f942:673b])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:6d05:b0:b8f:6f6d:c593 with SMTP id a640c23a62f3a-b8fb44767c4mr142915066b.32.1770999580951;
- Fri, 13 Feb 2026 08:19:40 -0800 (PST)
-Date: Fri, 13 Feb 2026 16:19:39 +0000
-In-Reply-To: <20260212-binder-shrink-vec-v3-v4-3-bd02f06bf2cd@zohomail.in>
+ 2002:a17:907:3e85:b0:b87:117f:b6f0 with SMTP id a640c23a62f3a-b8fb4476d29mr128328866b.30.1770999652278;
+ Fri, 13 Feb 2026 08:20:52 -0800 (PST)
+Date: Fri, 13 Feb 2026 16:20:51 +0000
+In-Reply-To: <20260212-rust-de_thread-v2-2-7d274c4fd02e@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260212-binder-shrink-vec-v3-v4-0-bd02f06bf2cd@zohomail.in> <20260212-binder-shrink-vec-v3-v4-3-bd02f06bf2cd@zohomail.in>
-Message-ID: <aY9PG909tCTZgMup@google.com>
-Subject: Re: [PATCH v4 3/3] rust_binder: shrink all_procs when deregistering processes
+References: <20260212-rust-de_thread-v2-0-7d274c4fd02e@google.com> <20260212-rust-de_thread-v2-2-7d274c4fd02e@google.com>
+Message-ID: <aY9PY9CsHjTAZ60z@google.com>
+Subject: Re: [PATCH v2 2/2] rust: task: use atomic read for pid()
 From: Alice Ryhl <aliceryhl@google.com>
-To: Shivam Kalra <shivamkalra98@zohomail.in>
-Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
+To: Jann Horn <jannh@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Feb 12, 2026 at 01:47:09PM +0530, Shivam Kalra wrote:
-> When a process is deregistered from the binder context, the all_procs
-> vector may have significant unused capacity. Add logic to shrink the
-> vector using a conservative strategy that prevents shrink-then-regrow
-> oscillation.
-> The shrinking strategy triggers when length drops below 1/4 of capacity,
-> and shrinks to 1/2 of capacity rather than to the exact length. This
-> provides hysteresis to avoid repeated reallocations when the process
-> count fluctuates.
-> The shrink operation uses GFP_KERNEL and is allowed to fail gracefully
-> since it is purely an optimization. The vector remains valid and
-> functional even if shrinking fails.
+On Thu, Feb 12, 2026 at 11:12:07PM +0100, Jann Horn wrote:
+> (Note: This is not a bugfix, it just cleans up an incorrect assumption.)
 > 
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> Task::pid() wrongly assumes that task::pid remains constant until the task
+> refcount drops to zero.
+> 
+> However, Linux has a special quirk where, when execve() is called by a
+> thread other than the thread group leader (the main thread), the thread
+> calling execve() swaps its identity with the thread group leader's,
+> becoming the new thread group leader. This means task::pid can't be assumed
+> to be immutable for non-current tasks.
+> (The actual swapping of PIDs is implemented in exchange_tids().)
+> 
+> Signed-off-by: Jann Horn <jannh@google.com>
+
+Thanks.
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
 > ---
->  drivers/android/binder/context.rs | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  rust/kernel/task.rs | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
-> index 9cf437c025a20..399dab475728b 100644
-> --- a/drivers/android/binder/context.rs
-> +++ b/drivers/android/binder/context.rs
-> @@ -94,6 +94,17 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
->          }
->          let mut manager = self.manager.lock();
->          manager.all_procs.retain(|p| !Arc::ptr_eq(p, proc));
-> +
-> +        // Shrink the vector if it has significant unused capacity to avoid memory waste,
-> +        // but use a conservative strategy to prevent shrink-then-regrow oscillation.
-> +        // Only shrink when length drops below 1/4 of capacity, and shrink to 1/2 capacity.
-> +        let len = manager.all_procs.len();
-> +        let cap = manager.all_procs.capacity();
-> +        if len < cap / 4 {
-> +            // Shrink to half capacity. Ignore allocation failures since this is just an
-> +            // optimization; the vector remains valid even if shrinking fails.
-> +            let _ = manager.all_procs.shrink_to(cap / 2, GFP_KERNEL);
-
-Not a big deal, but perhaps we should write len*2 here instead of cap/2?
-That way, if the cap got way far away from the length, it would equalize
-right away.
-
-Alice
+> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+> index 91ad88cdfd3b..de0d90b47862 100644
+> --- a/rust/kernel/task.rs
+> +++ b/rust/kernel/task.rs
+> @@ -10,6 +10,8 @@
+>      mm::MmWithUser,
+>      pid_namespace::PidNamespace,
+>      sync::aref::ARef,
+> +    sync::atomic::ordering::Relaxed,
+> +    sync::atomic::Atomic,
+>      types::{NotThreadSafe, Opaque},
+>  };
+>  use core::{
+> @@ -206,9 +208,13 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
+>  
+>      /// Returns the PID of the given task.
+>      pub fn pid(&self) -> Pid {
+> -        // SAFETY: The pid of a task never changes after initialization, so reading this field is
+> -        // not a data race.
+> -        unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
+> +        // SAFETY: The pid of a task almost never changes after initialization,
+> +        // so reading this field is usually not a data race.
+> +        // The exception is a race where the task is part of a process that
+> +        // goes through execve(), see exchange_tids().
+> +        // A temporary mutable pointer is created, but only actually used for
+> +        // a load.
+> +        unsafe { Atomic::from_ptr(&raw mut (*self.as_ptr()).pid).load(Relaxed) }
+>      }
+>  
+>      /// Returns the UID of the given task.
+> 
+> -- 
+> 2.53.0.273.g2a3d683680-goog
+> 
