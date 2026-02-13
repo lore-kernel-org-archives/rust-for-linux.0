@@ -1,159 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4273EBF02;
-	Fri, 13 Feb 2026 21:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973893EBF34
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 21:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771018490; cv=none; b=sYUkKU6AQSSqAK4s5hWqQkGzxfah+tg/vbOuH/Tvui5pwoZWEvBw/QThqmIwV1MxOdqyuuCMy2+LnQBuAeQTrNB8LmmTUnVzP/Xv7azxloNGYBykPlmdl7jMZyOgX9mKvnL/PYTu0B2EsGzEJXNdOgxdNmY3Q4872YG2ECeFI5g=
+	t=1771018666; cv=none; b=KEM+w/mVSh19pYQFXL0A9MmT5R9YT98PhPWWtFTbKiwrDNAXxGqb8aLXk+fylifIW7p0VMmYFV7ggWmmDcrdPmp/INH1uMpuCBupOiDCvys01WH+vyGCB/44Zq2cr2xHYRFHDJ6FDvQAQdO70UkDq91Y881piUvKukKoymCjV9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771018490; c=relaxed/simple;
-	bh=+w7gihi+oD0zmFHYOyTJRuntNFlfBgEmHjCvNNAPJxE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=KF8qFLY0I+lDg+t1vz2iqS06I49VlH0HRHKDM3xzsM/ZnYmEN4rd2CR4yx7l+m30Je8sA8fqpDFWRT1T/SQtRfZkc4k0U85FXDPJeoO7f7+ivo9Ix/s/ynIU/L4KqZMi2OrMtF3leYye6/mzMBKaIPr8Mtf47d/IDWm9VFC6+Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4yGwHYk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771018666; c=relaxed/simple;
+	bh=0Qv1Zhy45amk+UwexhVvvNVPsfJwy/dNV1vCWrKxHJs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=OMsL4r7U6d7GyDT1TtZxzE1EBJDMd0WgbYLJKP0EioqBUeuwc9Go1EvT4g65wjnGdxJyAV6tEHovf5MDCRZBJIXyJxErJCV6kK2A0apX8pXuFk6wVPKOkRPaZzrTQT1Qh2eZL7FdEjnH0Zjaukl5TANpAJRnhFQIMyOfCEyfz8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1qbRCQvU; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4yGwHYk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96446C116C6;
-	Fri, 13 Feb 2026 21:34:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771018489;
-	bh=+w7gihi+oD0zmFHYOyTJRuntNFlfBgEmHjCvNNAPJxE=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=L4yGwHYkWRPYjDHOMOEZr61L73WkVQc1tmydOq9QgHq0QOG85x3OSyewZzPSWadJy
-	 4A9tjGV6nT6P9HiQpUb8eDUbjoMu+yZVnVUG0YtCN84R5TUC5wojkvPp/lOFUwZutv
-	 CL36QMfOUWfzuNLTE/rq1MmJShEcTh/2Xu2RMdCB8RsD0tnqJVvbf/au/JrEnaLBSM
-	 9SJwx3mvnlDrGPB4vgqowDJbPsFwJ3vO+MnF+I+0oKB4FS0/zgVxt7pCynr4HvwHLM
-	 5e20FpeVSse8EMrPCr4AqIYVXq5l6OjVz0ADDzcRU5PHW7dOPDLLtcB0gb2rykj1TI
-	 pofDs4SygH7tA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1qbRCQvU"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48373ad38d2so3515e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 13:37:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771018661; x=1771623461; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4ID3zOB4ouLXJH9v7HyxM7TqlQKrFtlHXVt251u20qc=;
+        b=1qbRCQvU8osTIPNdNnX19L4/v6BoqJUlPpKa3bxDo4h1BkRW8zSfFzwqv7/mjWkLrz
+         Qrlp4MBTD3ynNBbnI+/9+3uxL9MSLQTLjFqu/uKntyAG2JMJ45u99GwtSX8YyA7rjoLS
+         kLZlo2Bt7++At1fbAYwBP7dvMYTj+D3hysOz1Hmt+ZqMLUjyAWQC85tCj7sB78pzohqV
+         bahKu3gei9QV9x+5zhBPlvQv8HjKlRtV9Vy3QpeWUa+7Jl+eHQMPIHt4aq8gf653MW2e
+         6hPuMLMAXcZoftCpVjAGadklT0B7FmMzOVrjLV8yOjj5pJLefy4bLdWgF7Nrnqu7OX6h
+         0VHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771018661; x=1771623461;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4ID3zOB4ouLXJH9v7HyxM7TqlQKrFtlHXVt251u20qc=;
+        b=l/nrM3Vo2BhpHzp0hbz161oyLknCWU+q3c6gA2uIVPRWheyaSIqEgr03V3Rl6DbVu4
+         1yCy2wCAsQanLwWcSGmDl/OycG2xPv65AYxQeStqtKnJn+qzjTBYNrU8LHvGrQp5XSZA
+         pSe4j5xfKphvMky07jkZFQsmNnExCd2hfMNlpmm1m3OBOONsX3L0WXpby9dJwvmXjcI8
+         DxoNnrryrOynvxQX9xkPJHoMpQnD+V3CR6L2eB9sB3pv9nXW05Q9nAO3uRUOsyZGAsFE
+         BwrtTJA15kndWkVOqNqnqoFdOVw6Kn9QbKwPTQyUMTBnBIU3BFwzUJe+raq8wG9f12XJ
+         G53w==
+X-Forwarded-Encrypted: i=1; AJvYcCUiyJtI2v87NhZNhiahMCQZBxAit8mKmo8U9/WvodH5TwxMDY0GwR/DJFCiDUzhXQ2+lK8mnhphzcrT3sWIXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPSE0uDNrPmE34Kff71LA0M4rXXQaHhcgtMg7HEyzD9lPwgd0C
+	QGlN0KlDIH+VqUhvq0d1ETDdwx/YeNXzCpqj0MizGo8Y0Q1WHXcarpl/N+HUCJU2GQ==
+X-Gm-Gg: AZuq6aK+jwQAJudLrp+j4AMGFLzWUEvEShi108sEoudFU0GiqhwG1UU3ev/hQ6x1FX5
+	EanTr54FkY1ldImVdzAkI5WCKCfoCj8ArpBovFI6HB/rZ8HDT52nZjYSB44LiFcoLw1WvpY/0DI
+	5NljjiZN+ItE9oGfdtuvP/Je6mv6VDPL7Rb4Q9SZEz/OKROJqvc29QvkB1kxKDskp3DLOIxTAST
+	eYQpFyfLr2jdaDeXfPXAnoCaIwVMREGWIl+UdcT3qUMm0skgihT5ukpn4wkLYtho6+yj1RTjrxj
+	OsMt/4JCs3iVTs9fN6REhFm8HcfOLjhoYp5I7M4eHiPugjUfnHXM81ZTo81SwX+iHpx3hEq8b5D
+	Fo2M4fsEPfHlkaBOi9bEND9gin90rK7TTwzdQ+Nxhn1J/+krhyj4Tai08lW3fTGIZFybWn2K1Da
+	P8LZzprt8rQlfCOY8FIh2swHPp0eraM+xteAwpnU1KiLQxIbu6xFM=
+X-Received: by 2002:a05:600c:6007:b0:477:86fd:fb48 with SMTP id 5b1f17b1804b1-4837b6e44fcmr7045e9.9.1771018660505;
+        Fri, 13 Feb 2026 13:37:40 -0800 (PST)
+Received: from localhost ([2a00:79e0:288a:8:989e:b55e:7170:736e])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4835dd0e327sm229975245e9.14.2026.02.13.13.37.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Feb 2026 13:37:40 -0800 (PST)
+From: Jann Horn <jannh@google.com>
+Date: Fri, 13 Feb 2026 22:37:31 +0100
+Subject: [PATCH 2/2] rust_binder: use current_euid() for transaction sender
+ identity
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Feb 2026 22:34:44 +0100
-Message-Id: <DGE5NO2W48YJ.34YKFNI6VS63A@kernel.org>
-To: "Tim Kovalenko via B4 Relay"
- <devnull+tim.kovalenko.proton.me@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2] gpu: nova-core: fix stack overflow in GSP memory
- allocation
-Cc: <tim.kovalenko@proton.me>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Alice Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-References: <20260213-drm-rust-next-v2-1-aa094f78721a@proton.me>
-In-Reply-To: <20260213-drm-rust-next-v2-1-aa094f78721a@proton.me>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260213-binder-uid-v1-2-7b795ae05523@google.com>
+References: <20260213-binder-uid-v1-0-7b795ae05523@google.com>
+In-Reply-To: <20260213-binder-uid-v1-0-7b795ae05523@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+ Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ rust-for-linux@vger.kernel.org, Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771018654; l=1290;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=0Qv1Zhy45amk+UwexhVvvNVPsfJwy/dNV1vCWrKxHJs=;
+ b=cPbLHIqb4ntFZk4lGUC9cBg+W+TcpQKS/WtpVdRYkXM7EwXL4UMdvzAaDaG+EAIfZdQ5p6s5t
+ jDwf5I08IMKAQRXeLcX1MmVDR+xR7whA+PQQBx9mp5Fe3ARbXx6OQDj
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-On Fri Feb 13, 2026 at 8:40 PM CET, Tim Kovalenko via B4 Relay wrote:
-> @@ -159,7 +158,7 @@ struct Msgq {
->  #[repr(C)]
->  struct GspMem {
->      /// Self-mapping page table entries.
-> -    ptes: PteArray<{ GSP_PAGE_SIZE / size_of::<u64>() }>,
-> +    ptes: [u64; GSP_PAGE_SIZE / size_of::<u64>()],
->      /// CPU queue: the driver writes commands here, and the GSP reads th=
-em. It also contains the
->      /// write and read pointers that the CPU updates.
->      ///
-> @@ -201,7 +200,29 @@ fn new(dev: &device::Device<device::Bound>) -> Resul=
-t<Self> {
-> =20
->          let gsp_mem =3D
->              CoherentAllocation::<GspMem>::alloc_coherent(dev, 1, GFP_KER=
-NEL | __GFP_ZERO)?;
-> -        dma_write!(gsp_mem[0].ptes =3D PteArray::new(gsp_mem.dma_handle(=
-))?)?;
-> +        const NUM_PAGES: usize =3D GSP_PAGE_SIZE / size_of::<u64>();
-> +
-> +        // One by one GSP Page write to the memory to avoid stack overfl=
-ow when allocating
-> +        // the whole array at once.
-> +        let item =3D gsp_mem.item_from_index(0)?;
-> +        for i in 0..NUM_PAGES {
-> +            let pte_value =3D gsp_mem
-> +                .dma_handle()
-> +                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
-> +                .ok_or(EOVERFLOW)?;
-> +
-> +            // SAFETY: `item_from_index` ensures that `item` is always a=
- valid pointer and can be
-> +            // dereferenced. The compiler also further validates the exp=
-ression on whether `field`
-> +            // is a member of `item` when expanded by the macro.
-> +            //
-> +            // Further, this is dma_write! macro expanded and modified t=
-o allow for individual
-> +            // page write.
-> +            unsafe {
+Binder currently uses from.process.task.euid() as the transaction sender
+EUID, where from.process.task is the main thread of the process that opened
+/dev/binder. That's not clean; use the subjective EUID of the current task
+instead.
 
-Both of the statements below are unsafe and should be within an individual
-unsafe block with their corresponding justification.
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+ drivers/android/binder/transaction.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +                let ptr_field =3D core::ptr::addr_of_mut!((*item).ptes[i=
-]);
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index cd8d8202e52d..3deaa745fe2f 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -107,7 +107,7 @@ pub(crate) fn new(
+             debug_id,
+             target_node: Some(target_node),
+             from_parent,
+-            sender_euid: from.process.task.euid(),
++            sender_euid: Kuid::current_euid(),
+             from: from.clone(),
+             to,
+             code: trd.code,
+@@ -147,7 +147,7 @@ pub(crate) fn new_reply(
+             debug_id,
+             target_node: None,
+             from_parent: None,
+-            sender_euid: from.process.task.euid(),
++            sender_euid: Kuid::current_euid(),
+             from: from.clone(),
+             to,
+             code: trd.code,
 
-This should use &raw mut instead.
+-- 
+2.53.0.273.g2a3d683680-goog
 
-> +                gsp_mem.field_write(ptr_field, pte_value);
-
-Formally, we won't be able to justify the safety requirement of this method=
-. :)
-
-The good thing is, we don't have to:
-
-I understand it seems like the problem here is that dma_read!() does not su=
-pport
-index projections. Well, it actually is a problem, which I think will be
-resolved by Gary's work. However, I think the real problem here is a differ=
-ent
-one:
-
-This code does not need volatile writes in the first place. We just allocat=
-ed
-the DMA memory and haven't published the corresponding address to the devic=
-e
-yet.
-
-So, for such initialization code we shouldn't have to use dma_write!() /
-dma_read!() in the first place.
-
-I think the proper solution for this is to provide an API that allows for
-initialization with a "normal" reference / slice.
-
-For instance, we could provide a `alloc_coherent_init()` function that take=
-s a
-closure which has `&mut [T]` argument, such that the closure can do the
-initialization before dma::CoherentAllocation::alloc_coherent() even return=
-s.
-
-Another option would be a new type, e.g. dma::InitCoherentAllocation which =
-has
-safe as_slice() and as_slice_mut() methods, but does *not* provide a method=
- to
-get the DMA address. Subsequently, it can be converted to a "real"
-dma::CoherentAllocation.
-
-With this, I would also keep the PteArray type and change PteArray::new() t=
-o
-PteArray::init() taking a &mut self.
-
-This way the PteArray init logic remains nicely structured and isolated.
-
-Thanks,
-Danilo
-
-> +            }
-> +        }
-> +
->          dma_write!(gsp_mem[0].cpuq.tx =3D MsgqTxHeader::new(MSGQ_SIZE, R=
-X_HDR_OFF, MSGQ_NUM_PAGES))?;
->          dma_write!(gsp_mem[0].cpuq.rx =3D MsgqRxHeader::new())?;
