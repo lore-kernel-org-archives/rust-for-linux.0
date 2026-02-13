@@ -1,91 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF052AE68;
-	Fri, 13 Feb 2026 15:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275D138D;
+	Fri, 13 Feb 2026 15:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770998071; cv=none; b=atrS+wbjW6xfjJ8xXTCCcyhW//xG8tf1XolVmduftf6Nu3IH9w4abRG/lUP32KG6rJkF6rsqRdUu0ngT9X0d1Qu06DIjxCSoL5VFFGd/VxHwPKubwnDeViKSB8jPENhp0jyuiy/LE6OGoRK5KiQ0QfcVq2u976Szy/nLElI6q3Q=
+	t=1770998338; cv=none; b=Cz1Rg4Aomvuamny6km9LWIOPhRM/lEy3q3rToVf+RjukokMRvqpiEncd/GMHJmVOnCn/LYPhODClYweWbXy2HKxcRTHjwUUANiHKPpY7z9PXgp9eM30trWxhISrOZZicwaWSO62zriTYNowlNIXhEoBL2gWFpFbcWy+emM5iBEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770998071; c=relaxed/simple;
-	bh=LSegEQrSOwuVPwnSlWUvlsuB3DrPeTxqGE1znf4tkxU=;
+	s=arc-20240116; t=1770998338; c=relaxed/simple;
+	bh=rS3uQKruYn5xMp4W6xkGEzUFoQUuS95ZgMsB6z8EJJI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tIzOQQuQua6pc9mBEHIs5cK70+8hi9MXVi8BOEMm9eglrWpSfucB16lLUdicN9WYSwZ+yEUOIZRHk5MYE8GzXSZuf1NelEbzw7q+F2YVNr4tShzADnJWO4dbdi8oXgWOFDn1isNLNRq/uJ4pqfAOj8eGeNTA1g52S6DQPBJ2dGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2UORqzU; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ocZD+0Bbs3AvN9vQ8CrU1Td6i3ECA4fY9N00G30cclY3/MMnLEeChOMgf1uzHmqgNayItMjl97Ap7oYdFPvcukvrKll6RILw41Dox/SDoqEODtdVECleYX5x0z9TFJ2hurepBK24qyrf+BfwZFWHY8VXV5elBKGa1n473BSoX+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuGspXNl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2UORqzU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABBFC116C6;
-	Fri, 13 Feb 2026 15:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770998071;
-	bh=LSegEQrSOwuVPwnSlWUvlsuB3DrPeTxqGE1znf4tkxU=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuGspXNl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3083BC116C6;
+	Fri, 13 Feb 2026 15:58:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770998337;
+	bh=rS3uQKruYn5xMp4W6xkGEzUFoQUuS95ZgMsB6z8EJJI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k2UORqzUWWsGbuacUdgB5VuK4KR/W/mMun7zc+tiJAW1dnSaSZJ0fWM5A/RVnpeBo
-	 U7FM822Vj6d/pmQDJ108ykmSj/5X+yTW/5rTDMLCLwjq9Mrd5lME9NAIuF5ndP2owl
-	 RC07VSGKn0aYrni6eoo0Z8mFoCmIh1WdZCTKTjHI44xDt0iNtCVe7p1HtLp81TaMki
-	 ofMGEFc2wW4NBtTCwS3yE4WybV9mn79N0C6RANf6FEPaiVP8MqvXTb9BPz8rjwo++X
-	 pg5OHrXrvfZ18SVbxWAbJ9yRXeMj6i1K/Na1tvXaLeRxiMZotb48n9h32Srp2gW7H1
-	 Zo1HeA8qJDEGg==
-Date: Fri, 13 Feb 2026 15:54:26 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Liviu Dudau <Liviu.Dudau@arm.com>
-Cc: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	daniel.almeida@collabora.com, aliceryhl@google.com, dakr@kernel.org,
-	airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, lgirdwood@gmail.com, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] drm/tyr: make SRAM supply optional like panthor
-Message-ID: <fa0f761d-45f8-4d94-b077-945b228858a8@sirena.org.uk>
-References: <20260212100538.170445-1-work@onurozkan.dev>
- <20260212100538.170445-2-work@onurozkan.dev>
- <4b00826f-52b1-48a1-b6b5-70ee62f7c014@sirena.org.uk>
- <20260212151644.4c179594@nimda>
- <6704ddce-e0bb-4b50-b81a-a098816f3ba3@sirena.org.uk>
- <aY8DrSjWm5w6Lfs-@e142607>
+	b=nuGspXNl5QtW1RDbpCeV70r18D2R/Qpb2j7Y3E7STlPudOv5+oFQOBRcCGScX5srb
+	 s+q3hxoEaHoMcRWndgCot9AH71ybpaQ1cm2oqu5U+FBn0nH2sEA0vNBxjOlRHIJ291
+	 JBoBETTmxdN4ZSgDVJcusWztbxBAcoqODP09IUgI=
+Date: Fri, 13 Feb 2026 16:58:54 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <2026021326-stark-coastline-c5bc@gregkh>
+References: <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
+ <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
+ <2026021343-germicide-baritone-efe8@gregkh>
+ <877bsgu7fb.fsf@kernel.org>
+ <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
+ <2026021313-embody-deprive-9da5@gregkh>
+ <873434u3yq.fsf@kernel.org>
+ <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
+ <2026021311-shorten-veal-532c@gregkh>
+ <aY9HD7nH5A-DtgmR@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OBu0sbjdvL7VcMH0"
-Content-Disposition: inline
-In-Reply-To: <aY8DrSjWm5w6Lfs-@e142607>
-X-Cookie: I have become me without my consent.
-
-
---OBu0sbjdvL7VcMH0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <aY9HD7nH5A-DtgmR@tardis.local>
 
-On Fri, Feb 13, 2026 at 10:57:49AM +0000, Liviu Dudau wrote:
+On Fri, Feb 13, 2026 at 07:45:19AM -0800, Boqun Feng wrote:
+> On Fri, Feb 13, 2026 at 04:34:04PM +0100, Greg KH wrote:
+> > On Fri, Feb 13, 2026 at 03:26:08PM +0100, Peter Zijlstra wrote:
+> > > On Fri, Feb 13, 2026 at 03:13:01PM +0100, Andreas Hindborg wrote:
+> > > 
+> > > > C uses memcpy as seen in `bio_copy_data_iter` [1] and in the null_blk
+> > > > driver [2].
+> > > 
+> > > Right. And that is *fine*.
+> > > 
+> 
+> Yes, that's fine because memcpy() in C is volatile and per-byte atomic.
+> 
+> > > > Rust has `core::ptr::copy` and `core::ptr::copy_nonoverlapping`. I was
+> > > > informed these are not safe to use if source or destination may incur
+> > > > data races, and that we need an operation that is volatile or byte-wise
+> > > > atomic [3].
+> > > 
+> > > Safe how? It should just copy N bytes. Whatever it thinks those bytes
+> > > are.
+> > > 
+> > > Nothing can guard against concurrent modification. If there is, you get
+> > > to keep the pieces. Pretending anything else is delusional.
+> > > 
+> > > Suppose the memory was 'AAAA' and while you're reading it, it is written
+> > > to be 'BBBB'. The resulting copy can be any combination of
+> > > '[AB][AB][AB][AB]'. Not one of them is better than the other.
+> > > 
+> 
+> The idea is if using Rust's own `core::ptr::copy()` or
+> `core::ptr::copy_nonoverlapping()`, you may get `CCCC`, because they are
+> not semantically guaranteed atomic per byte (i.e. tearing can happen at
+> bit level, because they are not designed for using in case of data
+> races, and there is no defined asm implementation of them, compilers can
+> do anything).
 
-> Please note that the sram supply is mandatory in all compatibles except
-> for the "mt8196-mali". This was to work around the fact that MTK has decided
-> to control some supplies via another method and not give Panthor control over
-> those.
+Then why not just call the proper, in-kernel, arch specific, patched and
+tested to the end-of-the-earth, memcpy()?
 
-> We should fix Panthor to check that we only treat the sram supply as
-> optional for "mt8196-mali", but that doesn't alleviate Tyr's need to support
-> optional regulators.
+> > > No byte wise volatile barrier using nonsense is going to make this any
+> > > better.
+> 
+> It's byte-wise atomic [1], which should be guaranteed using asm to
+> implement, hence at least at byte level, they are atomic (and volatile
+> in our case).
+> 
+> [1]: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1478r5.html
 
-If you know that the supply will never be present for that compatible
-then the driver shouldn't really be requesting it in the first place.
+Again, just use memcpy() please.
 
---OBu0sbjdvL7VcMH0
-Content-Type: application/pgp-signature; name="signature.asc"
+> > > 
+> > 
+> > I'm with Peter, just call memcpy() like the C code does, and you will be
+> > "fine" (with a note that "fine" better include checking the data really
+> 
+> We are. See v3, we actually use `memcpy()` for the copy (as I already
+> pointed out, Andreas made a mistake in this version), it's just
+> because it's per-byte atomic. What this "byte-wise atomic" does is
+> clearing things out.
 
------BEGIN PGP SIGNATURE-----
+clear what out?  It shouldn't need anything special for a memcpy.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmPSTEACgkQJNaLcl1U
-h9BH2Af/frL1CweswfxYTiomuQSnfzKCXtEbAxxX9OsnTb2VD/9A3iEMrwQkpGm0
-AnMCBxq1ijav/NXN326PFqMDQ6n3QzcS7v+ma92ZIHXTgyvS9viTOGbJMMk7BnFW
-6RbDc9CrcBcfJqPlJMV33uQ1Tdch53y/XPKZR9dsMckYS6YXuXivMJ+pEU5dr8cS
-HQ+MA5Y55VfvJifiImaZv9YmQNib7o/tVMpjH8dE6wgGKmr0sz37gBCrdr0IyEg7
-FCORJor2aGmKG5aehRDqCYKJ2BZcvJGeEASZkALUfbI78U1XxR2QMrKVYz0HAvAV
-9t5xafl28wVPbEB9VVdOXle6h8b6Nw==
-=zF/0
------END PGP SIGNATURE-----
+thanks,
 
---OBu0sbjdvL7VcMH0--
+greg k-h
