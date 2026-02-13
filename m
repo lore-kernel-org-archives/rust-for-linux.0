@@ -1,165 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3B8314B94
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 17:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22ED2773EE
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 19:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771004662; cv=none; b=V+w8hNT/8mS0XVxQ1yNrErwaan3sTGsL8TuorfLUh0YICeD3jCao33tuawpGxBfJ7C6YzcJ/gw8rV+NgaZdErSP6I/2feQrwEts0EIRQIQf+Uj7YaZSXX4cYpG8Dg7KnN196k8DNqJpKcQaY5THFbuMG+NWmMLFe18gHVgIKXPM=
+	t=1771009947; cv=none; b=JVMqpnyEjFB5xeW2mThX43XJmtUyVYc/hRlBVAN+ErQKDEZM9v3dqfV+N9aiq2wYfbQp/yMM/pvLy7BZWseCdNOVgFiqBBgcMe1bd/+ny+IKMNwrCo/itD4u7Nw0nMgLH3irvjOyJuOPgddGAxnovkUr4GVUJEra9PwicRJ2YdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771004662; c=relaxed/simple;
-	bh=VFAXBTc9oMi96YIx20U30QjLHc0sOwJECYK1drWpRwc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RA7KwWQgYvUrUeAoMt64QekKjflpGpjEMYhuxvUidTysvs7gKRNoS3jUnX8rWckId/L6FxZopy3c6suOjQpTNks6dXrOYvU0+tsxmnkt5VuXGgKQIUSpnQj3mrZ/YH43HLtDu1eNqcLPBHO/o3jTzkZlqrjtXwb+4lZljIuGK14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LaS2/9Ic; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771009947; c=relaxed/simple;
+	bh=OcH8w7RuyScwYrcF3u0PgWhZiy0vC1nFvdfSLmhr6ao=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dFFcBUdEtvDutekua0DS+x+hT+QZM/Yrv8WwfwhmnLHQZYBgjZtehUSLnXu5aUPe/inLHIumUfoJ4xfIAOIQC9+cZa3eaxkrQCePRzcRd7oBDhtwoK2eJw4R+ji3wU9mebttSxiqp1DgyjUBPngnyoxWo5lxlgDdXb4ylB710q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KfKmG/+S; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LaS2/9Ic"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8BA3C19421;
-	Fri, 13 Feb 2026 17:44:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771004661;
-	bh=VFAXBTc9oMi96YIx20U30QjLHc0sOwJECYK1drWpRwc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LaS2/9IcMxORLFUlVKygMy56493bI1Pi4wJrtuIkhi88GoLv6tkmTf0kGD3uGWws5
-	 /7J5UIBCPUeCduHJP7pGIu0hYk29mHeRqyo/POd69rSlmduHZ33rVMhY35K8HpcpTh
-	 tO8dMQMwcJpIrb6zy+Bcbyg4Ar4x9mqfLdP8uQAO3KwJ5/ONQ0IGKSz55KfYPq5Sqx
-	 kwX0b+yWmeC3JJ8MJTRoTSttMgbVzmyqtSbp8E1tFsuPL4pBoYx4zvYJVr2yNLhdFD
-	 b26RyHrpf34jFa/8TFsvfWvp2Bfh012M/BGSbG12Kzgg2wgn307qWHPwXr1wumo3am
-	 mO/474VtBpldQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 0C334F4006A;
-	Fri, 13 Feb 2026 12:44:20 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 13 Feb 2026 12:44:20 -0500
-X-ME-Sender: <xms:82KPackIExudVHz6pkLUWeYWNLJR1NNYzarjIn94YFbKy3CCFSKnKA>
-    <xme:82KPaXwSkFH1lToFfOT1YwX4vG8RmZLwXZgFQLtOV5qPbNcfzoN9VHqnoIoAdmAjM
-    lEGehJoOyo6vYlNZYEhkZNN54603o-X8Ur2FiMiyX7tSith5xb4UQ>
-X-ME-Received: <xmr:82KPaQzjJICnlZsLQAQ0_vn17zC2k_dmfowuc7Y9r4nywClm36bQuCPFaORxvGc3fLgJdSw90uknnmKkxpM_JVdmZMMhmR1D>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdekkeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
-    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
-    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
-    hnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprgdr
-    hhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhh
-    hlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghs
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrg
-    gtlhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrh
-    ihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohht
-    ohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:82KPae9MZ40FRtc5HKBI4BT7ebR80YEUDyuMucTplEURhImS28IabQ>
-    <xmx:82KPaY8uLj_G-SSHzudcdbz1c5U_gMBzmoX0l6ffQzc8Oz9touUFSQ>
-    <xmx:82KPaZfoeu8g5YrXZubihdOaFBha1l_j8Wt9tjWlfiu4cw1Vtaj4mQ>
-    <xmx:82KPacvRHwxQ-44xaDEJrYl1YYqGtq5MExIHpwHL3-A-WIy0vqz_Vg>
-    <xmx:9GKPaa1MR5PAaeY8OxIzmLE8aGXsB3BGGBNaIHOs-nplD-R80MPL7pp0>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 13 Feb 2026 12:44:19 -0500 (EST)
-Date: Fri, 13 Feb 2026 09:44:18 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <aY9i8rbvnxdOA9DV@tardis.local>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KfKmG/+S"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65a3c6f587cso1747101a12.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 11:12:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771009944; x=1771614744; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ZpqJAf35CDxn8PSc9O1hec1UhW5JRewyjQeoYcibqk=;
+        b=KfKmG/+S5I3jS7qi+NNZtD2TJT/B/XSCTFgYBBgAkw6kMU4v8iC4KwGvE8SzVLFKAD
+         ztdL+1st3kRIDvu2auoIi/oGvDEHzV83nptV9i8K2XDb1pUMwFQopfM00UgEzMARHrdi
+         EBgxshMgO6gxZD7LzEeNxRTp4HhiBoNe9lUus+q+0F6u9SsEY0k/x93V0252j0L0CUkb
+         Liqf3qqcdwJfyjy6+6fDPueamJxgsxNzsYriXIm/rde5XNzborbmf8WRp9wvcBnkRKh0
+         SlpElXek8dEdr4hWV+4/XvzNsRcQ8e/ScRrGa3g2cnQHtscFuPklzm09pBsqJVHIQUfU
+         tT2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771009944; x=1771614744;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5ZpqJAf35CDxn8PSc9O1hec1UhW5JRewyjQeoYcibqk=;
+        b=nlqMxbT1X1LF+694V0GAWrX/hkqU6L9wPU6s+OH+ITW0IyLvxd4srEblYTu8dwcTVn
+         xxaTzIj/oThPAwcMRDmcso0ltZXIM0kNf5I5MiyCJk8O9kJzeiY9cc9k3/WK1pstg3n6
+         qf7OJ/mMpLmukvKGpL97hy1WZ+6ET7qHhzeCNgqugOjnx2DkjlrhDsrj5Epwk6yvXWr/
+         YYN/aoGbWWNrCt4b+Ivku+/SnBBxDinVVz5L6Mu6kJdGkUmrYWyP8LWKUhzYv1yseuk1
+         ipg22IiNlMeygRC+2jZvrhl9OAZJ2cd4X9pznveltoakbDX2IZlahOzHHpC3n59dBDpb
+         0KgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhTqZJxuLZjUoaQ0E/F6Y5cx4sqDvlnPzjc/nVzw+g8o2HvWeVWaEH81MxfsShH4FqKRtqELazJKJTr0VzHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpcseLgMxCmIV4eUq9W1andri1XByaPdIQcLN9d04jHC4dk2EI
+	qmupBIKe/a5NKBuKz8FzbBsQZa+U64H2/2PqGy0Lx8ZPO8RNbm4hUuN2
+X-Gm-Gg: AZuq6aKFwgvOX8nGhor1PHUpvZKlV8/xekr86WVLur/sqXyTjj7RbGBnd1z4dlo7Zsn
+	Gt+L4LhFXsvyrrqZsXyF8SmJnkwn8cXqSHIEkdt6nlgY4C8x3JgJLWyeRTjMpL78/JbdlIJxaH/
+	YSH9Uikgpoep+AUGK2vIPIpuk1iVW59XF98hI5LdS7cHJfb9vJOQJYx5MhwE0Aig6HaF1TmQV0E
+	Bw6fxUqugzgSl3dqFXNnhdqbwua3sm/8B9eIFnL+GJ4YLqjWcMMHGB6Vb/mWVeRoIKaYH5S7qP8
+	K7Ms9X2mvqBxE3Z+KPHp9URDHbef1jr9y1qJiIq69dYkV09KxVOW8NDkgtTd6bXxRsqTrhADRKR
+	cK/c0+y6hFPNsVVr6qoYEjf1ZMWC34faK6RN1pNA8SaSYLdXJbtYJHnEtArgXjZVJzUIFThq8t5
+	+AhnxsUBbdR3bAcpKAX1tu/bY01rj6F+lpU4TiiBfXCnrPCPXzvWwdBRCJbdM/Blc4H+rBn+4Yj
+	Bl04wPVB2ZxABetuKWESjmanRDs0yY=
+X-Received: by 2002:a05:6402:398c:b0:65a:3c1b:d87d with SMTP id 4fb4d7f45d1cf-65bb10f4224mr1096630a12.6.1771009943923;
+        Fri, 13 Feb 2026 11:12:23 -0800 (PST)
+Received: from ddolgov-thinkpadt14sgen1.local (dslb-002-207-075-089.002.207.pools.vodafone-ip.de. [2.207.75.89])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65bad3f0b55sm950830a12.23.2026.02.13.11.12.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Feb 2026 11:12:23 -0800 (PST)
+From: Dmitrii Dolgov <9erthalion6@gmail.com>
+To: linux-perf-users@vger.kernel.org,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Dmitrii Dolgov <9erthalion6@gmail.com>
+Subject: [PATCH v1] tools build: Fix rust cross compilation
+Date: Fri, 13 Feb 2026 20:12:09 +0100
+Message-ID: <20260213191212.33328-1-9erthalion6@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
-[...]
-> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> index 4aebeacb961a2..8ab20126a88cf 100644
-> --- a/rust/kernel/sync/atomic.rs
-> +++ b/rust/kernel/sync/atomic.rs
-> @@ -560,3 +560,35 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
->          unsafe { from_repr(ret) }
->      }
->  }
-> +
-> +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
-> +///
+Currently no target is specified to compile rust code when needed, which
+breaks cross compilation. Detect required target and pass it via
+rust_flags to the compiler.
 
-Given Greg and Peter's feedback, I think it's better to call out why we
-need `atomic_per_byte_memcpy()` and why we use bindings::memcpy() to
-implement it. How about a paragraph as follow:
+Note that CROSS_COMPILE might be different from what rust compiler
+expects, since it may omit the target vendor value, e.g.
+"aarch64-linux-gnu" instead of "aarch64-unknown-linux-gnu". Thus
+explicitly map supported CROSS_COMPILE values to corresponding Rust
+versions, as suggested by Miguel Ojeda.
 
-/// This is the concurrent-safe version of `core::ptr::copy()` (the
-/// counterpart of standard C's `memcpy()`). Because of the atomicity at
-/// byte level, when racing with another concurrent atomic access (or
-/// a normal read races with an atomic read) or an external access (from
-/// DMA or userspace), the behavior of this function is defined:
-/// copying memory at the (at least) byte granularity.
-///
-/// Implementation note: it's currently implemented by kernel's
-/// `memcpy()`, because kernel's `memcpy()` is implemented in a way that
-/// byte-wise atomic memory load/store instructions are used.
+Tested using arm64 cross-compilation example from [1].
 
-And probably we make it a separate patch for this
-atomic_per_byte_memcpy().
+[1]: https://perfwiki.github.io/main/arm64-cross-compilation-dockerfile/
 
-Thoughts?
+Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
+---
+ tools/build/Build.include  |  9 +++++++++
+ tools/perf/Makefile.config | 14 ++++++++++++++
+ tools/perf/Makefile.perf   |  2 +-
+ 3 files changed, 24 insertions(+), 1 deletion(-)
 
-Regards,
-Boqun
+diff --git a/tools/build/Build.include b/tools/build/Build.include
+index e45b2eb0d24..cd0baa7a168 100644
+--- a/tools/build/Build.include
++++ b/tools/build/Build.include
+@@ -98,6 +98,15 @@ c_flags_2 = $(filter-out $(CFLAGS_REMOVE_$(basetarget).o), $(c_flags_1))
+ c_flags   = $(filter-out $(CFLAGS_REMOVE_$(obj)), $(c_flags_2))
+ cxx_flags = -Wp,-MD,$(depfile) -Wp,-MT,$@ $(CXXFLAGS) -D"BUILD_STR(s)=\#s" $(CXXFLAGS_$(basetarget).o) $(CXXFLAGS_$(obj))
+ 
++###
++# Rust flags to be used on rule definition, includes:
++# - global $(RUST_FLAGS)
++# - per target Rust flags
++# - per object Rust flags
++rust_flags_1 = $(RUST_FLAGS) $(RUST_FLAGS_$(basetarget).o) $(RUST_FLAGS_$(obj))
++rust_flags_2 = $(filter-out $(RUST_FLAGS_REMOVE_$(basetarget).o), $(rust_flags_1))
++rust_flags   = $(filter-out $(RUST_FLAGS_REMOVE_$(obj)), $(rust_flags_2))
++
+ ###
+ ## HOSTCC C flags
+ 
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index a8dc72cfe48..f40c5a70520 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -1163,6 +1163,20 @@ ifndef NO_RUST
+     CFLAGS += -DHAVE_RUST_SUPPORT
+     $(call detected,CONFIG_RUST_SUPPORT)
+   endif
++
++  ifneq ($(CROSS_COMPILE),)
++    RUST_TARGET_FLAGS_arm	:= arm-unknown-linux-gnueabi
++    RUST_TARGET_FLAGS_arm64	:= aarch64-unknown-linux-gnu
++    RUST_TARGET_FLAGS_m68k	:= m68k-unknown-linux-gnu
++    RUST_TARGET_FLAGS_mips	:= mipsel-unknown-linux-gnu
++    RUST_TARGET_FLAGS_powerpc	:= powerpc64le-unknown-linux-gnu
++    RUST_TARGET_FLAGS_riscv	:= riscv64-unknown-linux-gnu
++    RUST_TARGET_FLAGS_s390	:= s390x-unknown-linux-gnu
++    RUST_TARGET_FLAGS_x86	:= x86_64-unknown-linux-gnu
++    RUST_TARGET_FLAGS_x86_64	:= x86_64-unknown-linux-gnu
++
++    RUST_FLAGS += --target=$(RUST_TARGET_FLAGS_$(ARCH))
++  endif
+ endif
+ 
+ # Among the variables below, these:
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index a6d8ca3e923..f3919838243 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -271,7 +271,7 @@ ifeq ($(PYLINT),1)
+   PYLINT := $(shell which pylint 2> /dev/null)
+ endif
+ 
+-export srctree OUTPUT RM CC CXX RUSTC LD AR CFLAGS CXXFLAGS V BISON FLEX AWK
++export srctree OUTPUT RM CC CXX RUSTC LD AR CFLAGS CXXFLAGS RUST_FLAGS V BISON FLEX AWK
+ export HOSTCC HOSTLD HOSTAR HOSTCFLAGS SHELLCHECK MYPY PYLINT
+ 
+ include $(srctree)/tools/build/Makefile.include
 
-> +/// This copy operation is volatile.
-> +///
-> +/// # Safety
-> +///
-> +/// Callers must ensure that:
-> +///
-> +/// - `src` is valid for reads for `len` bytes for the duration of the call.
-> +/// - `dst` is valid for writes for `len` bytes for the duration of the call.
-> +/// - For the duration of the call, other accesses to the areas described by `src`, `dst` and `len`,
-> +///   must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
-> +///   function. Note that if all other accesses are atomic, then this safety requirement is
-> +///   trivially fulfilled.
-> +///
-> +/// [`LKMM`]: srctree/tools/memory-model
-> +pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
-> +    // SAFETY: By the safety requirements of this function, the following operation will not:
-> +    //  - Trap.
-> +    //  - Invalidate any reference invariants.
-> +    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
-> +    //    operation and all operations by the Rust AM to the involved memory areas use byte-wise
-> +    //    atomic semantics.
-> +    unsafe {
-> +        bindings::memcpy(
-> +            dst.cast::<kernel::ffi::c_void>(),
-> +            src.cast::<kernel::ffi::c_void>(),
-> +            len,
-> +        )
-> +    };
-> +}
-> 
-> ---
-> base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
-> change-id: 20260130-page-volatile-io-05ff595507d3
-> 
-> Best regards,
-> -- 
-> Andreas Hindborg <a.hindborg@kernel.org>
-> 
-> 
+base-commit: 5d1ab659fb93eed85d6d8b2937013360157032f4
+-- 
+2.52.0
+
