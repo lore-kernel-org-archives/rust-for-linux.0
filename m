@@ -1,157 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5DC17A303;
-	Fri, 13 Feb 2026 06:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770965809; cv=none; b=TGRNi5kK4yEFXpacCjm2P1JGV0OF4rL9OWdwXH7O+e8qMxb8T3oKafa884tSYbnm7JkQf456yj4QwLX/TH60sNBwZhBIA9Bjv8QD/bVmhB5m5QZC3oR/LNutE3LfSD4dTw8f6e56tGa3LMDs6n2EasKlDYYn9OqulQ8rK/8uPNw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770965809; c=relaxed/simple;
-	bh=vegqm/oeFsIY53GNgrWQP8lsZxc41ZJwRfMmlMzHjY4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TuYm0E6lKLgpJ/IFCws8zV/od1wjXkeBLJ+srr8fOVNZA9T+n3ztBDFL+8ZYnacnQqt4Shm+W3VBuAq5iz3+XaSmhEEzLJfWORvIM3crLGSYzV1DK8EbjGiVrUNL+GOMvlGcNJFgZHiVZQUZPY9NEcR+fJRZ4j7M1RqQ8ms6ZuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ktD0cFay; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66984313535
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 07:52:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770969148; cv=pass; b=AOANrHYub4uA/hIl47Un9y/cySAOPUB0ski+v0+pA9VniPFmKUobI+7zjIFDnO01R/o616hqC1DZz+9+HF1OLDOswFkTUMN6OnDW9vBkRVOotFr7vaaiIGbCreFW7U85aZomA4TG3FuiSjCH5Q2QgfC4OtMZXoII0wl7hUCbLJQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770969148; c=relaxed/simple;
+	bh=3htkjSJNStuqnZuVHOpjfrKoRgtS/hwo+mIpwKetU+o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U70Uow9Wsx+Pd8jU1i4Jh7IYhpqKXqTSlCMsHPhuw1SdSlx0zQi7h8G+D5tmo4j0WfOK9kffLlHbJclu3ijfCYmzGH2PGznhZqRaZJ5ATeAGhvlO4k6Gd+n4l6g0i2ACLYcTGHinTNM8Jn2c8JZE9pEe0b0EygsmO/oyq5CP+8k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G4JgX8ms; arc=pass smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ktD0cFay"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770965806; x=1802501806;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vegqm/oeFsIY53GNgrWQP8lsZxc41ZJwRfMmlMzHjY4=;
-  b=ktD0cFayvlsZesnekdN1IUnga+U1wFYOeUw9A6eQJeCae6OYXx2b+RRI
-   u3DYlscsmnmO74zF9bm24gNTTksO8YUqYVLJdrHqeMLI9VBXI0LcTDhVj
-   d16rweMKvc+NDZlvy8MVIRUIXXkB9wMb7MPVA1PVqj8TT0K1ofgjWj5h0
-   L3jrvYdb+xG1nMnvyoQQwA2hRs/YkeuqgfSqW2UDetCHSadVhIZO2cBtm
-   +SOtdJ4EX4+QuJvFSCqhxsSENfrw5Nzi72dG/yvmLnnyzNUG3vKg6JHlm
-   J+5dpj74pDAncSw9i3ToLqClJhxsaUaP15lbu12qh/2gjINvt/t/guPJD
-   w==;
-X-CSE-ConnectionGUID: HKFVjpZYQWiQ9nHrXjEw4g==
-X-CSE-MsgGUID: +JHIikllTX+JBVWBrWKacg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="75994806"
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; 
-   d="scan'208";a="75994806"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 22:56:45 -0800
-X-CSE-ConnectionGUID: xlzU7Pj4RWSMblhjM9D6JA==
-X-CSE-MsgGUID: fMZ0mudwSIiMspMfL4HUCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; 
-   d="scan'208";a="217312572"
-Received: from igk-lkp-server01.igk.intel.com (HELO e5404a91d123) ([10.211.93.152])
-  by fmviesa005.fm.intel.com with ESMTP; 12 Feb 2026 22:56:41 -0800
-Received: from kbuild by e5404a91d123 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vqn6V-000000001Rl-398c;
-	Fri, 13 Feb 2026 06:56:39 +0000
-Date: Fri, 13 Feb 2026 07:56:03 +0100
-From: kernel test robot <lkp@intel.com>
-To: Tim Kovalenko via B4 Relay <devnull+tim.kovalenko.proton.me@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: oe-kbuild-all@lists.linux.dev, nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Tim Kovalenko <tim.kovalenko@proton.me>
-Subject: Re: [PATCH] gpu: nova-core: fix stack overflow in GSP memory
- allocation
-Message-ID: <202602130722.99jbGBM1-lkp@intel.com>
-References: <20260212-drm-rust-next-v1-1-409398b12e61@proton.me>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G4JgX8ms"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48374014a77so2215035e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Feb 2026 23:52:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770969146; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MwPsE4wwlOE/YGM87NKGXX4sckNPWh6qWkSJS4/4Dyg17SdI/BP9lrk5n7vWN2Ptfc
+         n34vYtkacmUzvEMj63b4msEpF8aslF4ZF8h6JcoZMfZsef2tlFXMh6cHQDHDuUMwQn4V
+         poGDjlxUwYZb/yq5TOPyU6X6+IjFl8EPnsUsfz88TTR+KfMI+L/86Ey4xuf1uen4IdO1
+         TADYL5+v70Easp4RLAMTKNWrJGcEHy4OnXpFjuCogaU009JUa6bpNs22TXtnyX5XNTqI
+         5Wc2At6J1+qXM8INkNNL3HlAgreh7bI8+Q7jkoiLMFSL8kLUlIpPWWAq9KzLSY88ZNY/
+         zHyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3htkjSJNStuqnZuVHOpjfrKoRgtS/hwo+mIpwKetU+o=;
+        fh=VV/VFBbf5pmrIVvmJm1RVxpuppi/+R9cU5WRz8BpYl4=;
+        b=QriVoo5WNfXRodoU55EeJJwPNqkkjz+cUHVTgad90DySweFIak0QJlx1t5Zhdq8h2j
+         6wccua780TU6aqVNDWgqC//SCxhPQRy2IxvXX1zM/fo/Pz1tjfhlB+XfEVBEdmXAmPXY
+         RNfBb7ItM+5f9WFZ7FIyrSi686HN6cEt8aOs+W7KFvBX3WwOFLTR/ITw8mjtX2bt9yMz
+         b67XsvDmwnYlObNlsyLlb0bCMxGbscTE3LbjjSLJ+sUp39GyRgVZ+WGeTuTXrPVWRZ+F
+         rlH9h7BC1sJ0fGYknK7psPoG5OzJwAtR6NmIhfCQ3RNIPE7XKXVydsCKSzJIAP6fbyvt
+         ZQ7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770969146; x=1771573946; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3htkjSJNStuqnZuVHOpjfrKoRgtS/hwo+mIpwKetU+o=;
+        b=G4JgX8msYFY+cPXdZi7bdwP/atKaWkZHgC3nGR+PS5XJcVo8nMndaSOekZPJejSKBk
+         teMB7rvLMkis9kTfrTuULg+jRb3xCMEwwjllmgOCeyz7u700DxuCkv5bq4LT9eIURZWj
+         K5Fnc5jCt/5iaKF+KBuTLOfDFy4zGLWweFyPndA5ol8vP52s0JheA9Gtl3cD7oZDGn9/
+         um1X6bmyNw+VEsDeXj5Z903vP5GDkembkohrWDMuaXWBpJZAHF80acGctsafM006ZC/N
+         cp170Q23dSZ29ZU4aVdd1ZLxV1dP6h7z97DfPBQAH6upI3Nj1cgGv86UphlfZTlK1kBa
+         LV3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770969146; x=1771573946;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3htkjSJNStuqnZuVHOpjfrKoRgtS/hwo+mIpwKetU+o=;
+        b=NJPrOp9jHP0mBUv+017D/s6QE/VBumMQLbYW13XZTOypGwPxyibpH3CPMTGGSDG/bh
+         Kk9QCUD7XHVtAYrtMshPXPT8hnvWnJjNYc5P4OnNPqZT2YvHh2wqe1b/J7M5REuncUlB
+         djRe3dlrz8uwMsMoErYIv3UMYGV5XtTJ43N/YhqDwNF/GbANb7g8thzwKb3SJtWCFn3G
+         QXnJtnk2eZp7prDtcl5KlMCVN6LHzfbJjE3QrED9iSiLdxo0BUOpE+L6Dpg2I8pe/wt7
+         BAtRdLp+78mgz8gz0M7M4ePnaZu4P0sUStprg3+HUIA+nlt1oDdcQX1UClcAzCjLA7nJ
+         ogVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFMw4sJ5Ymbb8zZDeDxbeWsIbGeA9R2apCqEEHAYPLFCBmO126B5mgaOqfPqN+5Uk4V4Wby/XoDQS0ZltHyg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbvGgj6bZiJorqEOytkyXDHwI+6O4QS6ABTx5VKJBFdbvofc1t
+	VkuvRZFXIEh6nbPKuAJmmUjyEse1q2C3Mix97u4SJLhkN5M+AkDX9RmZXsvvAC1PC5tOwJ7NXtv
+	w3CthMWtxEAWameXTX26VDi9qhsE08ATFFtU/wmaM
+X-Gm-Gg: AZuq6aItWhwE2XjvzjgIJt5tGa3tXfjyVDuPqLVL0747xDEcfnLQqRgRMZgm9hHo1BO
+	TWJzyxSlDOqkxHyjw0C8wq1q2053JjvdOdkq532mt+wEP2fjd5Euu33aXJq3DSaBRGYnIoOWvhm
+	w1BtJuN19Rv7k/+7LDL8v9Rj075f1VW+N5rE+m7bp56XNtOMA6cCJntcQgV3/cqARq4UEnsLBca
+	HLXJwUPiRD+zuxxXTzXptfqdfDmvflspIQh97kZV6p4WGB60RlrHx91lLgdakiIle4/J845k21Q
+	sICf+vYzRkya1D1Cg1bJR8GiTRsHh3fHXUw7IQ==
+X-Received: by 2002:a05:600c:3e87:b0:480:32da:f338 with SMTP id
+ 5b1f17b1804b1-48373a0f961mr13096395e9.14.1770969145396; Thu, 12 Feb 2026
+ 23:52:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260212-drm-rust-next-v1-1-409398b12e61@proton.me>
+References: <20260212-rust-de_thread-v2-0-7d274c4fd02e@google.com> <20260212-rust-de_thread-v2-1-7d274c4fd02e@google.com>
+In-Reply-To: <20260212-rust-de_thread-v2-1-7d274c4fd02e@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 13 Feb 2026 08:52:14 +0100
+X-Gm-Features: AZwV_QgJxNomdsFzMy4DSKR5Tm1fbU_npFYTEPv5nlvC2aIUi12dDnBzDTnsNSY
+Message-ID: <CAH5fLgigf7unkEhYtCY6ZjQ1rPAgRM84f3C5qn6yh+sn_Eb-7w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: task: limit group_leader() to current
+To: Jann Horn <jannh@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Wedson Almeida Filho <walmeida@microsoft.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Tim,
+On Thu, Feb 12, 2026 at 11:12=E2=80=AFPM Jann Horn <jannh@google.com> wrote=
+:
+>
+> (Note: This is not a bugfix, it just cleans up an incorrect assumption.)
+>
+> Task::group_leader() assumes that task::group_leader remains constant unt=
+il
+> the task refcount drops to zero.
+>
+> However, Linux has a special quirk where, when execve() is called by a
+> thread other than the thread group leader (the main thread), de_thread()
+> swaps the current thread's identity with the thread group leader's,
+> making the current thread the new thread group leader.
+> This means task::group_leader can't be assumed to be immutable for
+> non-current tasks.
+>
+> For reference, you can see that accessing the ->group_leader of some rand=
+om
+> task requires extra caution in the prlimit64() syscall, which grabs the
+> tasklist_lock and has a comment explaining that this is done to prevent
+> races with de_thread().
+>
+> Signed-off-by: Jann Horn <jannh@google.com>
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on cea7b66a80412e2a5b74627b89ae25f1d0110a4b]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Tim-Kovalenko-via-B4-Relay/gpu-nova-core-fix-stack-overflow-in-GSP-memory-allocation/20260213-115022
-base:   cea7b66a80412e2a5b74627b89ae25f1d0110a4b
-patch link:    https://lore.kernel.org/r/20260212-drm-rust-next-v1-1-409398b12e61%40proton.me
-patch subject: [PATCH] gpu: nova-core: fix stack overflow in GSP memory allocation
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260213/202602130722.99jbGBM1-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260213/202602130722.99jbGBM1-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602130722.99jbGBM1-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS=\ -fno-crash-diagnostics\ -Wno-error=return-type\ -Wreturn-type\ -funsigned-char\ -Wundef\ -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck 
-   make: Entering directory '/kbuild/src/consumer'
-   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
->> Diff in drivers/gpu/nova-core/gsp/cmdq.rs:207:
-            let item = gsp_mem.item_from_index(0)?;
-            for i in 0..NUM_PAGES {
-                let pte_value = gsp_mem
-   -                    .dma_handle()
-   -                    .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
-   -                    .ok_or(EOVERFLOW)?;
-   +                .dma_handle()
-   +                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
-   +                .ok_or(EOVERFLOW)?;
-    
-                // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
-                // dereferenced. The compiler also further validates the expression on whether `field`
->> Diff in drivers/gpu/nova-core/gsp/cmdq.rs:207:
-            let item = gsp_mem.item_from_index(0)?;
-            for i in 0..NUM_PAGES {
-                let pte_value = gsp_mem
-   -                    .dma_handle()
-   -                    .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
-   -                    .ok_or(EOVERFLOW)?;
-   +                .dma_handle()
-   +                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
-   +                .ok_or(EOVERFLOW)?;
-    
-                // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
-                // dereferenced. The compiler also further validates the expression on whether `field`
->> Diff in drivers/gpu/nova-core/gsp/cmdq.rs:207:
-            let item = gsp_mem.item_from_index(0)?;
-            for i in 0..NUM_PAGES {
-                let pte_value = gsp_mem
-   -                    .dma_handle()
-   -                    .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
-   -                    .ok_or(EOVERFLOW)?;
-   +                .dma_handle()
-   +                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
-   +                .ok_or(EOVERFLOW)?;
-    
-                // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
-                // dereferenced. The compiler also further validates the expression on whether `field`
-   make[2]: *** [Makefile:1871: rustfmt] Error 123
-   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
-   make[2]: Target 'rustfmtcheck' not remade because of errors.
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'rustfmtcheck' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'rustfmtcheck' not remade because of errors.
-   make: Leaving directory '/kbuild/src/consumer'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+This has already been fixed:
+https://lore.kernel.org/all/20260107-task-group-leader-v2-1-8fbf816f2a2f@go=
+ogle.com/
