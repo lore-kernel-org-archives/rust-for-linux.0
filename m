@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D46B640;
-	Fri, 13 Feb 2026 12:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0313EBF10;
+	Fri, 13 Feb 2026 12:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770986740; cv=none; b=diCj9bXArvPPOXFQRXGkPwBKJbZCkiiE2qKyoiHGvShexL4OZC1Yb58GXNOQnCupT7S3YpvBMAudbACJUjsQKZ6MiSMx/dPBuLWR9rEeRLM20NmK1eygWNcgeuiwN8khPGXXkedvqeC7QZuwaOE6okXxgqThePrW97i50ZAY1ng=
+	t=1770987507; cv=none; b=Py9rIGOJL6qCOYz/Gxz94EIUZEPdrUHgNvJ+xtpefesChsY759LajAMcbiuJ24EHwqe49bR22S3nTQ+ebjCtplq8bMazF3nZp/FA/zIzb1eDf+/2S1t9klB2SCdayTHZwek+fVO6QbCzNnlSbjQ9XfhIliAxGOEPU2hFg26swV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770986740; c=relaxed/simple;
-	bh=KS5OyQUGwYr7RjzTwiKXxGKlic/PWFi6BwMtgn/vHxc=;
+	s=arc-20240116; t=1770987507; c=relaxed/simple;
+	bh=mr+a0c/cTqCnHJ+pfrjOEc85QJabkVXEsS2N9SJdxf8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Qw9m5jvYh7lbVTfdXzLhR+mOSAKPVxpvMzR0c2HXYvAwpR8Ij4Il93udcyNB1kr0V88CSiVzQIvVDBm/p5Y1tHilbAaUBTrkDr4vukEfvVFw0uD73SCkHzq4GUf/TiYYx5f/9DEne/9LD3HhUf6paPRjlxxZqPqTqkJequSIzcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eb3XMWT0; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=NGEz4aS/mjjPwW2Ein/d1PNEB+ih5AC01uByKunOEdHpm3d8cXiXMvv8oKjWxS7b/o2tO0WawBz2sBLYucIHiUFg+LnUoWvy5MNuWHDHBTJ9Ql02Vo5vFSIAT6segAoEcoh+GmZ0ZQiwqT2PsLP2LhmqVzq0/Q3UrCNRq4Ad6Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QKTNrLA9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eb3XMWT0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61663C116C6;
-	Fri, 13 Feb 2026 12:45:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QKTNrLA9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5BCC116C6;
+	Fri, 13 Feb 2026 12:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770986739;
-	bh=KS5OyQUGwYr7RjzTwiKXxGKlic/PWFi6BwMtgn/vHxc=;
+	s=k20201202; t=1770987507;
+	bh=mr+a0c/cTqCnHJ+pfrjOEc85QJabkVXEsS2N9SJdxf8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Eb3XMWT0Y0yEZN4X+QeqeNspRK0AUqY0KUDwdhDD8l9ocB1RlRwwd4D5bB8FpVKm+
-	 o7JKqjUp2YhxtaKxdnWUYvusu7lX9pRjxmuavV/3kJVuTwdZI1oOu08O6iXAssNTof
-	 FozvICy9uiBZ1VwthY6RGmCG1wW6/Nq/zhqp2O5d1Gwr06WByfWZLAlbLwMuMRFLwq
-	 BF+xbltbYgYOQB/l8nc29cakD0j7VXIOWN8ID+PvH1A/euiOd5FAuevJ1pfYcBgu1q
-	 r6+b7yObGCE+XcNyoBYciMMgq1jIKdnPyb6yUONwWjtK0nduyV8A0zfFSD5QIEJi5e
-	 7cjPufpBajS3w==
+	b=QKTNrLA9TWhj72HiG/JezifSgEA2dqjhTgfGUZraAunZjWYJLwtRPLiAUmi7asc1/
+	 HVB7mKnJEzs6HLVTNJlaJ4Ic8lyaJKu874XrCUyn6gMHp4yUle2R3CYRtOYns+KGq5
+	 OKBmnrDeboYfquV1SDvUhNNpSHDvnGhL/+LohiimBNONgffogL5STY6WWBOAPHQ8TR
+	 9QB2dSxeADNJjp+8AKNyBsWijB+orJR8Fx61JdBMAPa/fqCbE3s7iSAHzNiOGsxFkT
+	 cgKT5jAW4bdOj7d+5f4MxYNW/s/ilEIK920D4dWYnwfUqisvnmnJgB2Uj0PNkCLhNM
+	 1ZDqJns12e+yw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
+To: Greg KH <gregkh@linuxfoundation.org>, Peter Zijlstra <peterz@infradead.org>
 Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
  <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
@@ -38,13 +38,14 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
  Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
  linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-In-Reply-To: <20260213112837.GT2995752@noisy.programming.kicks-ass.net>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <MJX-TLnHWp9yJ9t7suTC8ExghroIz2g2epZG9Rmp6l-9W7BylahrPTqXQBI3D0EUah4xdEt3UXh6ROBa4LdEDw==@protonmail.internalid>
- <20260213112837.GT2995752@noisy.programming.kicks-ass.net>
-Date: Fri, 13 Feb 2026 13:45:28 +0100
-Message-ID: <87a4xcu80n.fsf@kernel.org>
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+In-Reply-To: <2026021343-germicide-baritone-efe8@gregkh>
+References: <20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org>
+ <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
+ <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
+ <2026021343-germicide-baritone-efe8@gregkh>
+Date: Fri, 13 Feb 2026 13:58:16 +0100
+Message-ID: <877bsgu7fb.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,42 +54,33 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Peter Zijlstra" <peterz@infradead.org> writes:
+"Greg KH" <gregkh@linuxfoundation.org> writes:
 
-> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
->> When copying data from buffers that are mapped to user space, it is
->> impossible to guarantee absence of concurrent memory operations on those
->> buffers. Copying data to/from `Page` from/to these buffers would be
->> undefined behavior if no special considerations are made.
+> On Fri, Feb 13, 2026 at 10:55:57AM +0100, Peter Zijlstra wrote:
+>> On Thu, Feb 12, 2026 at 03:51:24PM +0100, Andreas Hindborg wrote:
+>> > When copying data from buffers that are mapped to user space, it is
+>> > impossible to guarantee absence of concurrent memory operations on those
+>> > buffers. Copying data to/from `Page` from/to these buffers would be
+>> > undefined behavior if no special considerations are made.
+>> >
+>> > Add methods on `Page` to read and write the contents using byte-wise atomic
+>> > operations.
 >>
->> Add methods on `Page` to read and write the contents using byte-wise atomic
->> operations.
+>> I'm completely failing to understand. What!?
 >>
->> Also improve clarity by specifying additional requirements on
->> `read_raw`/`write_raw` methods regarding concurrent operations on involved
->> buffers.
+>> There is no such thing as an 'atomic' byte load, nor does it help one
+>> whit against concurrent modification of the memory you're copying.
 >
->
->> +    /// - Callers must ensure that this call does not race with a write to the source page that
->> +    ///   overlaps with this read.
->
-> Yeah, but per the bit above, its user mapped, you *CANNOT* ensure this.
+> I too am totally confused when reading this patch, and the previous
+> ones.  Shouldn't the "normal" copy_from_user() stuff be used here
+> correctly?  Why is anything new needed?
 
-Not all pages are user mapped. If `self` is user mapped, you cannot use
-this function. As you say, it would not be possible to satisfy the
-safety precondition.
-
-If `self` is only mapped in the kernel and if you can guarantee that
-there are no other concurrent writes to it, you can use this function.
-
->
-> And same comment as for v2, none of this makes sense. Byte loads are not
-> magically atomic. And they don't actually fix anything.
-
-I am curious about on what architectures byte loads can tear?
-
+One use for this is copying data out of a `struct bio_vec`. As far as I
+know, there is no way to know where the pages backing a bio_vec are
+mapped. They could be mapped to user space.
 
 Best regards,
 Andreas Hindborg
+
 
 
