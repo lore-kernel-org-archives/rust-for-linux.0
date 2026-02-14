@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2812521E087;
-	Sat, 14 Feb 2026 14:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E71085C4A;
+	Sat, 14 Feb 2026 14:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771080029; cv=none; b=ROpnPLbuPI8rJ8kuq8JqDrG0a5Ex75hYrzmaH1JMxrhNT6yo14q+pP/V7KmF6OJMdlA/NpnCZOuqi9oWuotV3F3IQ+2+qxGRb6v3gHm0XYjkSILZyYqSUPBhB7vazwZr8OBD5wAV19GgvKnhDXsOqxWHXt7an7/sq+iqekzEM9g=
+	t=1771080535; cv=none; b=fl+qREDyTTu3uYfujI1Ejgen3kgpRI8TpNWlciuqF7bGqhWjJy8w3uFwH6djT2htFrLIEoy47dZy7DTxVgfyZOteuOXYn8byRkZWLGNrTwplhxVWd44pWi2iHUGdQ6543N9iPY5Z+U7S0N2nxYMLjMgngaW2OIoHje2kyz+GdQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771080029; c=relaxed/simple;
-	bh=DJx8J/E/+UMRqgUMY1gHrEUtAh95aVLkeCRlpA88iHc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=A2to5Rn3AzttMcAwIdFOCQ3ZJ+BRo5S9TRBxDfcXgSFfh635rdpMmMrcHJrXvGFeTUrQVmXpGgf1AHvpOqLYiNnd7BB7SxkSdDPEuHtVVgYK9xKf3vq7aJX0nwRly/WBDn0cMUrnqjfD7U+qoB+KWtfMorUPfxmsgo6EOrKKPAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=abo2VnaB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771080535; c=relaxed/simple;
+	bh=lkmeqJrOTvnnrAXt0eSgqWhiExwRsjj40C0GWn6zxvU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=cmKdBLGyPW2/YaqY3SxyhIH8780V/8YhvYnOVWBHCJitRk79OYgPGwK7I7gCchke8GNwcUc0khzNZWA/i1KRLjatP6zt2dxSkKclhFkHUXBym7tdb9NvsCOA58q4UlExhjqBL5w+t0YNBx6WhU0agYdvvgBgPtFxf0osCit7rtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jvzi7PAk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="abo2VnaB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374D1C16AAE;
-	Sat, 14 Feb 2026 14:40:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jvzi7PAk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84ED5C16AAE;
+	Sat, 14 Feb 2026 14:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771080028;
-	bh=DJx8J/E/+UMRqgUMY1gHrEUtAh95aVLkeCRlpA88iHc=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=abo2VnaBy4/ofdxStFWcuc5wfYByG2SHFZV7RbS+yEOJf53fQ4WISKF3YYUQzmTnz
-	 7C3VxfWT+Vav8JyXRd03JoWuwHOlaFiRhOycGyMOsGWUHFseLxkmNV70EtR68bFvCT
-	 Q0tj/93puqL+wuIUsj/qWCCwy4mNY85wP637CRFkGFmEu1LRLqhOKuaCuFQuLkcXXw
-	 UTBky/cIEtK0qoKpcwBqC538pPw0jhT9xVuSAk6njiQVtmDydMe81jQ3mK/een/uFG
-	 FCi4hWyV2zJj+9Gocn72+RfNc5Q+knxrnOuL5w1pERzmkA3KLQzsOngR8lhUX6JthK
-	 mOM1HhfPomt6g==
+	s=k20201202; t=1771080535;
+	bh=lkmeqJrOTvnnrAXt0eSgqWhiExwRsjj40C0GWn6zxvU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Jvzi7PAkgyTkDf5XyFFnwG3Kp+IbA9aPDMz0mHwTp3jkuswmcgU50Fj6//e/CsVSH
+	 6s0h2h0/t2pgwz2bB+lue/WtispDIAAW/UP22W1pygoKVEJ0+wzaPwoicG6nmU/mk9
+	 UMteWudp4IjyJC2SPlCkjsQN39y2gGy2QlnUOs8tZC8+TrPAj0Lt5ZPpIJ/I9wbBHY
+	 2HYRrA/fwQ/70cK8ILLiZ3VwJ9BvYH9tj6V7xTTRs2Lv45ckz4PF3qnvaGkO7rUlIX
+	 Ksut3AoadvmyBMyuzjvlh4k/+sydImzJhSSPWB4y4NJ2KCwxZVWiML0q6D+irCnIAZ
+	 HYvDJ79/7VLAA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,87 +34,106 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 14 Feb 2026 15:40:21 +0100
-Message-Id: <DGERGXTEJ2B2.24F7OWLIZZAK7@kernel.org>
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
- <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: alloc: allow different error types in
- `KBox::pin_slice`
+Date: Sat, 14 Feb 2026 15:48:48 +0100
+Message-Id: <DGERNEDAO27Y.1MB18NY64EVHP@kernel.org>
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Andreas Hindborg"
- <a.hindborg@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>
+Subject: Re: [PATCH 1/4] rust: add projection infrastructure
 X-Mailer: aerc 0.21.0
-References: <20260214-pin-slice-init-v1-1-0b174fbb1844@kernel.org>
- <DGEQZHTOW6FC.2SWNBWY9XE3LD@kernel.org>
-In-Reply-To: <DGEQZHTOW6FC.2SWNBWY9XE3LD@kernel.org>
+References: <20260214053344.1994776-1-gary@garyguo.net>
+ <20260214053344.1994776-2-gary@garyguo.net>
+ <DGELDM5523KS.3EY7C7X5PC1V4@kernel.org>
+ <60bb58cecdef3ec4cda77cfad5c620ed@garyguo.net>
+In-Reply-To: <60bb58cecdef3ec4cda77cfad5c620ed@garyguo.net>
 
-On Sat Feb 14, 2026 at 3:17 PM CET, Danilo Krummrich wrote:
-> On Sat Feb 14, 2026 at 2:28 PM CET, Andreas Hindborg wrote:
->> @@ -333,24 +333,31 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T=
-, A>>, AllocError>
->>      /// assert_eq!(s[3].d.lock().a, 20);
->>      /// # Ok::<(), Error>(())
->>      /// ```
->> -    pub fn pin_slice<Func, Item, E>(
->> +    pub fn pin_slice<Func, Item, E, E2>(
->>          mut init: Func,
->>          len: usize,
->>          flags: Flags,
->>      ) -> Result<Pin<Box<[T], A>>, E>
->>      where
->>          Func: FnMut(usize) -> Item,
->> -        Item: PinInit<T, E>,
->> -        E: From<AllocError>,
+On Sat Feb 14, 2026 at 11:36 AM CET, Gary Guo wrote:
+> On 2026-02-14 09:53, Benno Lossin wrote:
+>> On Sat Feb 14, 2026 at 6:33 AM CET, Gary Guo wrote:
+>>> +// SAFETY: `proj` invokes `f` with valid allocation.
+>>> +unsafe impl<T> ProjectField<false> for T {
+>>> +    #[inline(always)]
+>>> +    unsafe fn proj<F>(base: *mut Self, f: impl FnOnce(*mut Self) -> *m=
+ut F) -> *mut F {
+>>> +        // Create a valid allocation to start projection, as `base` is=
+ not necessarily so.
+>>> +        let mut place =3D MaybeUninit::uninit();
+>>> +        let place_base =3D place.as_mut_ptr();
+>>> +        let field =3D f(place_base);
+>>> +        // SAFETY: `field` is in bounds from `base` per safety require=
+ment.
+>>> +        let offset =3D unsafe { field.byte_offset_from(place_base) };
+>>> +        base.wrapping_byte_offset(offset).cast()
+>>> +    }
+>>=20
+>> There are several limitations with this impl. I don't think we can do
+>> anything about them, but it's probably good to list them somewhere:
+>> 1. We do not support projecting fields of unsized types, so `MyStruct<dy=
+n Trait>`.
+>>    (note that slices are supported with `ProjectIndex`)
+>> 2. Since this creates a `MaybeUninit<T>` on the stack, only small `T`
+>>    are supported. I'm not sure how much of this will be optimized away,
+>>    but it might be the case that it is not. Projecting in the same
+>>    function call stack multiple times might result in overrunning the
+>>    stack pretty quickly.
 >
-> I think we should keep this bound and just add:
+> I've verified codegen and haven't managed to get this to actually generat=
+e `T` on the stack.
+> LLVM always figures out that the offset is the only thing that matters an=
+d optimize away
+> everything. `memoffset` crate also creates a temporary `MaybeUninit`, and=
+ given that it was
+> very widely used before `offset_of!` is stable, I think we should be able=
+ to rely on this being
+> okay even for large types.
 
-The `Into` trait bounds are the idiomatic ones for functions consuming
-things. See https://doc.rust-lang.org/std/convert/trait.Into.html:
+Oh that's neat.
 
-    Prefer using Into over From when specifying trait bounds on a
-    generic function to ensure that types that only implement Into can
-    be used as well.
+> Note that I've taken care to mark everything `#[inline(always)]` when pos=
+sible, even
+> closures passed to `proj`.
 
-I should've said something to Andreas, since he created the commit
-message (but this patch has left my L3 cache).
+Yeah I saw that.
+
+People might still encounter this issue in some fringe situation. I'm
+not too worried, since klint can warn about the stack frame being too
+large.
+
+Speaking of klint, could it be possible to have a
+`#[klint::optimized_away]` attribute that we can put on the `let place`,
+klint would then error (or warn) when it's not optimized away (the name
+isn't great :)
+
+>
+>> 3. The `wrapping_byte_offset` function generates potentially worse
+>>    codegen when `base` points into a real allocation.
+>
+> I'm highly skeptical that we'll lose any optimization, but this is indeed
+> a possibility in theory.
+
+I remember some Rust codegen expert wanting to use `offset` instead of
+`wrapping_offset` in the projection operator of `NonNull` and raw
+pointers (the original RFC I think).
+
+>>> +    ($ptr:expr, $($proj:tt)*) =3D> {{
+>>> +        let ptr =3D $ptr.cast_mut();
+>>=20
+>> This allows `$ptr` to be a random type with a `cast_mut` function. How
+>> about:
+>>=20
+>>     let ptr: *const _ =3D $ptr;
+>>     let ptr: *mut _ =3D ::core::ptr::cast_mut(ptr);
+>
+> I think `<*const _>::cast_mut($ptr)` probably would also do.
+
+That also works.
 
 Cheers,
 Benno
-
-> 	E: From<E2>,
->
->> +        Item: PinInit<T, E2>,
->> +        AllocError: Into<E>,
->> +        E2: Into<E>,
->>      {
->> -        let mut buffer =3D super::Vec::<T, A>::with_capacity(len, flags=
-)?;
->> +        let mut buffer =3D match super::Vec::<T, A>::with_capacity(len,=
- flags) {
->> +            Ok(buffer) =3D> buffer,
->> +            Err(err) =3D> return Err(err.into()),
->> +        };
->
-> This...
->
->>          for i in 0..len {
->>              let ptr =3D buffer.spare_capacity_mut().as_mut_ptr().cast()=
-;
->>              // SAFETY:
->>              // - `ptr` is a valid pointer to uninitialized memory.
->>              // - `ptr` is not used if an error is returned.
->>              // - `ptr` won't be moved until it is dropped, i.e. it is p=
-inned.
->> -            unsafe { init(i).__pinned_init(ptr)? };
->> +            match unsafe { init(i).__pinned_init(ptr) } {
->> +                Ok(()) =3D> (),
->> +                Err(err) =3D> return Err(err.into()),
->> +            }
->
-> ...and this match becomes unnecessary then.
-
