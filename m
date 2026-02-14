@@ -1,213 +1,274 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020126.outbound.protection.outlook.com [52.101.196.126])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C531A5B84;
-	Sat, 14 Feb 2026 09:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.126
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771061822; cv=fail; b=FiJHauFTu8pnxBnJrFBAkLvCx9nIH7pVJ+M4tRJrgBENZLkzcTWhh/yVPWjZNJ1yDG6Xu4g851DgQMxpWF1NvOBmohnzBYPnhtcf4s9hsoxpaqTzFRZsttvfypPKWK9yQfQWf8fJrjDB1TcV0JJtNKa8VgBZbtOXTBf3A/L3KjI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771061822; c=relaxed/simple;
-	bh=uKrPLJXjTHACo4OKJ0GixoHvqFpRKKEUKIGSa8XJQ6g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:MIME-Version; b=oHvrmEiP96OBy5n/MxuadW1d3OUkzduT2aLvEk4V/ZzN8loh/8MDmRE7y4cpWfZba+cc0BPS+Nj1X37Xt/6YasY1bdIDZ5nsoBBKRoGlO+qquJvZtLTsXiOBz7baWLaP/mF86YnVEYeqQ98JPUVpbgBykTKJVajXWiG8bpVhJZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=o/E0/5tp; arc=fail smtp.client-ip=52.101.196.126
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4F73EBF3D;
+	Sat, 14 Feb 2026 09:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771062839; cv=none; b=lOHdkog9JgWLxdngeWvPxK1r7pOIaMlHXO3qJfb+x5X+gEZjNISJk/WRHfwXAmEay2yIVdrxTsMzO7Z2c9Wmby3io5BBR+Ondu4DsKH1kiPPrmUt6EuaSYnvhn/GQUwHGMWYnmgcieDGftyfLp5cwkqPP5v0GsOT+QCl001U+kw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771062839; c=relaxed/simple;
+	bh=TLh6+wk1NgMXYkWfewhFDSAdVPFIq44wbSntJJq8xyU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=ngpPbdwx+jHlMt4PlFr7K9FQwXxY0cY9FCXqHVr3RSfAWNNmjP1ik/bPk+ZVCN+jaNJxyEiwYMB4n+0lPoKp5Eb71Z1V1blsK2oQelqzTItTreCAi/e705cxMvIvQn+4LpSuA7QvGvkGHjSPfcQxVWNmhbWp0fbHd2Xx7bFlVx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cp8Fh3uC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="o/E0/5tp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=czMCcOLBHLhI3Q292ktgwCAagPQcZzPbveEg2SQIxZbnNKRoButbMqn1LPtrxqC+ylUm1b4ddu3iZnFgyL3ncoksa72KIeA28mwOgCtCR9HpbHgNj+oPCBB/ZXJ9gkv9dSSDhPOzM460gwcwGZs/R8MEVby77zXoSNMFwhR7AZZnhhtbePCNvxBs56z/S7XvUpuycw7G5Ta6DB6kVX5+s9Js2BptJD8bJ5CUc2cOY3jM3D15OWlniEf1nzCGRjnsh5KXqA4o9sLRrE9fRgq1v/SwPYdbuqv91AmjmyVo4D5up7QSgdl6TvgKeI7kHefeh4eXYGQFHnjMqe2Y0uuPpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BwlKD//SJf1H/FEeu2bRIiAvipgRYf/CRW4Jusp/2j4=;
- b=fkAXHS/PFW1qxrCeE9Yb7AFzbfHDSeCGAqgdJs3P1KUuTwPg+o2Y3eejoi7h/iGPt3x/J9ZNnAcdKcfi+Bk9RNupvJp3T5jroDfXwgFmDU6pYsfuu3qbTV4o54HZhq+fuRm6y4bbl4xl6yRtFrDVEDspoI1vPRjgS4PmpGQmyWC3AJFzgzH1V3brF25wWkygmoqEf3NZZYclq3CEKrmriowqHg0LUIdu48Tk8H4XwKn0EvvM84s1Hxf8VqA5lcsDs6LivhlNcaR+V8u1fUSGBIDJrlg6+DPoSYWt2iGBNLIX+VjgGgGJhmjdZsSoahv0O0NTeOzu7Priwg6crbl9Rw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BwlKD//SJf1H/FEeu2bRIiAvipgRYf/CRW4Jusp/2j4=;
- b=o/E0/5tpZGVMc+12U5K3PhE6EuiXQwVI/vRRN2jsc+YH9CP+fZnUapEJ5CRli5SQNEwxNfZnyMJeYZN/5lujzKyF3B/jeYJ9zRY+RCmn8pIJPinKlmlHCKquIWFN543vKVNKSydGDSw3mluuM6klGdYRtfUEm4I6b9fdfKcygl0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOAP265MB9301.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:495::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.15; Sat, 14 Feb
- 2026 09:36:59 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9611.013; Sat, 14 Feb 2026
- 09:36:59 +0000
-Date: Sat, 14 Feb 2026 09:36:58 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: impl_flags: add method to return underlying integer
-In-Reply-To: <87zf5bsqfi.fsf@kernel.org>
-References: <20260212-impl-flags-inner-v1-1-1e2edc96e470@kernel.org>
- <b3388ec6cbd8f42532e876737e015e15@garyguo.net> <87zf5bsqfi.fsf@kernel.org>
-Message-ID: <5571a8bb387ca68b3f6f50d52509da52@garyguo.net>
-X-Sender: gary@garyguo.net
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0263.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:194::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cp8Fh3uC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88674C16AAE;
+	Sat, 14 Feb 2026 09:53:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771062839;
+	bh=TLh6+wk1NgMXYkWfewhFDSAdVPFIq44wbSntJJq8xyU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cp8Fh3uCFdBqYOhyzBtROyVR3rvD/GwKUF5snIb+h5IMXm9ANiu8WxKdg8RNI/UL/
+	 S81zAoVc2hKfgeTN6bxRi9v+Sw3ctm/KCdwe3CcZti2/Y9j0mhyUSKhMt/HUFOcSs0
+	 pfjkyFzWQZAmpJ9TV0va1+pQpo6zHPmPNxVtPdCuXxDGs8hMVmZyMjpQEc172CeEoM
+	 I5E6fhcNEpkB3NR0F1wXw5Dkxxwp0r5BdU9R4lQI1LQHvV8OoGh6KHbqzT6gThUHzJ
+	 r8e7E4Fi3U0uoKHulUudeWjeTvOByLARHvlqX4fFQDmNBSjzmVllXK00RjPDTU8UWA
+	 ZgjxKjSdlHYwQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOAP265MB9301:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ee343c3-72c5-42a9-3e16-08de6bac99d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ubqH9Aimxk7A8M+cUKFPhMsn69KMvz8hW9Pm0mWsgDmy2aeay1xPqeA6JJYx?=
- =?us-ascii?Q?WF+di4emo6vt8CAxNZpmNQyrSwosoE890sYI/BFEARHMfxtuKzdhlgfZmAi6?=
- =?us-ascii?Q?W2TDECR0afzinwWrMs44R3HWO8fqpnE/pgYJwap71Flu3am1pheCowJDTdD7?=
- =?us-ascii?Q?zTodqXzHiKXOWtzX3fno0CNLs/3MzDCFCi05Gbwr1ADUlaDHxfV66/7c5N0b?=
- =?us-ascii?Q?ae0HLHgQi7VB/VYUZC1Cs4/4b1yD5Pck3ZXUaponLTQ2XNgym09AiECm3qLx?=
- =?us-ascii?Q?+F+wTC1wstWlSr9RrrYjeQ7zmhKiiCZyf8+whQjv/uVZF12mraNWg2vcwchn?=
- =?us-ascii?Q?x73hnvjJ1IfmnGOlQxtlgnm+lZDp/2GO8qL2YB1ZlcBftZc7PgPeF6abNW2e?=
- =?us-ascii?Q?CWzJcOjKl8rmxKNWGBactyzkPjWiy5xnBr9QTXWiW7z3Aq/uwqxsDgVsmuoR?=
- =?us-ascii?Q?yhSo2Mb2lQYZJRiUIvvU83ZXcR/5sNTa4ZYwhPjx8udT6Xatcvyj+KUMkuOu?=
- =?us-ascii?Q?NOSwWqegBa4HALR4lSkyjWXF2OUVE7wqJm0zyZ32q2L5ZxFCz231PgG/SFqS?=
- =?us-ascii?Q?fRpSBURahsxBYldTZwQp9Npm/41b6zpPcWBx/ZALEU8teXzbYmGrWjopgzve?=
- =?us-ascii?Q?gVM4ktVZW3q3eRDoe7BhTQCO/4EkIbPxOrpLBMjB9BCI2VCm02+WB0YH5+CO?=
- =?us-ascii?Q?GhkNU42xAsxDNhqKPuiElw/zfXt5vvkIEmMDOWnVDqdrUCpQ6C/qEiIKeyv8?=
- =?us-ascii?Q?jvaHVGmZrmEv1TdxaDJfk3+LN/VcplBvTmev8JhhXe5YHP0aiRTRqLTBUuX7?=
- =?us-ascii?Q?vmP2dLzTtHY7rciBO+BqZtNppU7PTDdJVsLPlQy/0v9v1QeAXltdst3dHD4G?=
- =?us-ascii?Q?VpPW6wUbOr7DZUBwPIM94C4FjCg3cv/OCzqyhrE0+I5/2CjHBlyrrsHttR6k?=
- =?us-ascii?Q?zA3qP9M5XCrZ2w43HWi1OJgJtWgA+nUqFxtIU08FtIzi6w6FGfN72nh7UedL?=
- =?us-ascii?Q?k9+PbOnlEzXfPpZdw7ewo+X3pXQTas5NxGLxW+OqQs/lmq/vG2VKDLSoz5tA?=
- =?us-ascii?Q?G3P67KYNeyo5ZGZ5JZbdXw5bCNIEC5t091jvPJ1uATgxQ4cal7/pvE8ySAIG?=
- =?us-ascii?Q?mVwTEX8emnhzvd50s4XIPfvc0DXjY9eh2pHOiq+icoFtgsnzze6CksbK24lp?=
- =?us-ascii?Q?vLIEkedlZxyeKzYFDyLTGJeCZUTc1sUbT2XgFp+Mr2XDL70OsZNvFyPetnRn?=
- =?us-ascii?Q?ApdjYaZ2ANHBzhv5i3S2V1R+eFp9OyIzgYPFaYmMykjkWj5kCm60ZAISyi6E?=
- =?us-ascii?Q?9h33UnX6WwxmAthSl4TYDPtxUu26MWJCw7ghBKyDNVDNi6+tTAHLI1w+h/wQ?=
- =?us-ascii?Q?AVB52XO5tK6/0Qqv3gxd45mXGuQPuoxO9beDVrG9h/SPBe2QJWkKk02xKq8e?=
- =?us-ascii?Q?efIN5pKQtoh5lBvF6hfVH4rtxre2lIXX1T9X1o63NoqZFJQtjdDAtPDCHhRL?=
- =?us-ascii?Q?r6RhisYDHsAJxo3pW/lcZ8ps/ALCTWwcRFzI19bkX7qBO54XmGZmF1jDwltF?=
- =?us-ascii?Q?3tOPezlTqpV+WPzNdfA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XH30IJxrC3cTLhxD1rfV0JFon1db3QMgO2QV2OV/TCZWgjizpqrUvJeGqPmu?=
- =?us-ascii?Q?NhGx70o0947+VF6R4ys8MFMUjs5HJxPrVqkT5nbTqwb2/bZC8UH+V/GmdMip?=
- =?us-ascii?Q?SDVy2Qk5dz+Hb2yZ7gkJTrKkt2/HZVb0yTHYHUoPawUadljmFdX5XlekMSUu?=
- =?us-ascii?Q?Hiku3rR9idUp6tRPvpSjPfjIdn24HZXIUPzNL3ciRdRkhMKIa899sDeDAC4T?=
- =?us-ascii?Q?HPKQXwFn7SE/WB5TocQLSVsLDawxCMNMGLftYua8UVjlEjdxh+gRvMGfApSv?=
- =?us-ascii?Q?Ej2tWXpRXrralLnoZM3l4nQRQnSIshj9nwHFvQvpwOt22ZVlML8NBgiWHZjA?=
- =?us-ascii?Q?r2zbWr7JTYyz8yKtw2XcbLvvOmPTev2OyIt1P7YS6Q30u7MIlR8DCtlllVBa?=
- =?us-ascii?Q?E4NworZre5RKxoHfj+rxkgXeQfqrTooNhXP6SwUILmI8AW9LCunFL+QAFHcy?=
- =?us-ascii?Q?9nh4CpWKPr5N2WAYZDJnW0EbhVbGY7OdkzvifrCM2Qh3ySWeRTgmHVVnFVst?=
- =?us-ascii?Q?KyF5bDqXZflNyOUFwedTWuTVNrqERbChrimtkbcBzLZ+mQZG+FyUVxLm0U0U?=
- =?us-ascii?Q?CtM+kAQeDfXOFnXUOyas7aS/DtMJctfR2+Ulw0W7S3WywNkZrqlAofTLu8bo?=
- =?us-ascii?Q?MJJcVDVt3xKs+47D1an1Kq28QIgCydteQJKelEO/Vxgi4I7Ajgv1lJz/MOp5?=
- =?us-ascii?Q?tvlD2uhtjL//vZAHL8UY808mmn+gk8/M18QPEtDkgkoRo9jnGM2sDe+Pnkoq?=
- =?us-ascii?Q?TpYA1wiXeMdBR9owJtkb/DrqcVtujSUnNxcVBod6GUCzHsKftlDyb5p/ZaPu?=
- =?us-ascii?Q?C+FHT9dHoZRZ9sqHdzIYBg/oMAEbfFjrmjlWOxlYNtZFZCk1v2CK/7yf+zE9?=
- =?us-ascii?Q?gGCCkWwKyRAtCbAaBXhjEBnKb+mtm2ro7um+FpF+LwbwTeTUHV1PvVmYTbAo?=
- =?us-ascii?Q?zuESE7f3I4O9WD25jVLRzGanrg8Q7/lhRxNewaaEr0GbZEc0BjZeaG8LgfE7?=
- =?us-ascii?Q?Q3hHv2Aidek4++NBmZq3zdtbYKObETBYUpbZz2lHZE2Xyn8bBXc5cBkHm5ey?=
- =?us-ascii?Q?Vy5kGNi1M5vh2+3HQ17/POtLRu6I8IfLzaDwJUOxlxIR1qFr4djvSyHHjBp4?=
- =?us-ascii?Q?lKKKaNriOcY4wEaxMqFDPBXs5/kQpXokk+E9wn0JeXa1yYnTISOrgRgxJ3xL?=
- =?us-ascii?Q?eKA8EIzHh4jLfyGSJTEC5kkXeUg+V0KPMgtuNBI4q9fKM9IkPFwtzn3kQMue?=
- =?us-ascii?Q?T/mo35yZYrz0t4ZWM6qjrGmMZZB/oA5H8fZUj8XQtGDdFgLwq4WXDF2PWbM2?=
- =?us-ascii?Q?9ipiuTTPG//QpgfdL9DiiOYYXoR8x6nVpvhYZI7Vp2U9Ebc1qEYIa7Rha3bj?=
- =?us-ascii?Q?atchvQalcCXCePPfKApF/tLY5+y6kMQ6yOOKfvrcQIsWvQSo6DZOdl01LrPe?=
- =?us-ascii?Q?DAjCA8jcwhajkLysp3gUu32sgiUpd+gu5p/47UtCD+wV3IoeqwuuMmpOy9de?=
- =?us-ascii?Q?j34fzquIxGGSZEp7STz3vDUPRtHUcTMr8PC6DwSU2/vlG467WEJtdyLjBB8j?=
- =?us-ascii?Q?yF0+gv+3S9ad/B0yS1dQ2n+iDT6ugNCcFVv+LqicUEs5HfHR7A5xJuhIrie9?=
- =?us-ascii?Q?EPOqDi6WZzqtdU90VNMVEm/nQpfr1xwPeXd3lIzoZO0xtU2d6GHXzS2m1V8A?=
- =?us-ascii?Q?37Ycck4WU5XsLsIonH0NUzZ3oIE/FoXiTu7ZjimbH7nO5kG8ZBRemdg3ma3+?=
- =?us-ascii?Q?bR6sAVA0JA=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ee343c3-72c5-42a9-3e16-08de6bac99d3
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2026 09:36:59.3384
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QWHAAFueDeYKZY5mM011DRUUEvtnpsITDqYthQATkIAvN28LP4RzHm55TV1K12t2Rswy0rrtGgq5ZgEf0BBnOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOAP265MB9301
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 14 Feb 2026 10:53:54 +0100
+Message-Id: <DGELDM5523KS.3EY7C7X5PC1V4@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>
+Subject: Re: [PATCH 1/4] rust: add projection infrastructure
+X-Mailer: aerc 0.21.0
+References: <20260214053344.1994776-1-gary@garyguo.net>
+ <20260214053344.1994776-2-gary@garyguo.net>
+In-Reply-To: <20260214053344.1994776-2-gary@garyguo.net>
 
-On 2026-02-14 08:02, Andreas Hindborg wrote:
-> Gary Guo <gary@garyguo.net> writes:
-> 
->> On 2026-02-12 16:02, Andreas Hindborg wrote:
->>> Add a method to return the underlying integer used for flags. This is
->>> useful when using the flags with C APIs.
->>> 
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>
->> I am not sure if we want to actually expose the underlying representation
->> for all flags. It should be something up to the caller of `impl_flags` to
->> decide.
->>
->> Would it make sense to add visibility the wrapped raw type so that you
->> can do
->>
->> impl_flags! {
->>     pub struct Foo(pub u32);
->>     ...
->> }
->>
->> to make the inner accessible?
-> 
-> I don't see how that is better?
-> 
->                 bindings::blk_mq_tag_set {
->                     ...
->                     flags: flags.into_inner(),
->                     ...
->                 }
-> 
-> vs
-> 
->                 bindings::blk_mq_tag_set {
->                     ...
->                     flags: flags.0,
->                     ...
->                 }
-> 
-> 
-> I would prefer the first one.
+On Sat Feb 14, 2026 at 6:33 AM CET, Gary Guo wrote:
+> Add a generic infrastructure for performing field and index projections o=
+n
+> raw pointers. This will form the basis of performing I/O projections.
+>
+> Pointers manipulations are intentionally using the safe wrapping variants
+> instead of the unsafe variants, as the latter requires pointers to be
+> inside an allocation which is not necessarily true for I/O pointers.
+>
+> This projection macro protects against rogue `Deref` implementation, whic=
+h
+> can causes the projected pointer to be outside the bounds of starting
+> pointer. This is extremely unlikely and Rust has a lint to catch this, bu=
+t
+> is unsoundness regardless. The protection works by inducing type inferenc=
+e
+> ambiguity when `Deref` is implemented.
+>
+> The projection macro supports both fallible and infallible index
+> projections. These are described in detail inside the documentation.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-How about we expand `($inner_vis:vis $ty:ty)` to be
+Cool work!
 
-    $inner_vis fn into_inner(self) -> $ty {}
+I was wondering how you'd make this safe and general, but just having a
+primitive pointer projection macro makes a lot of sense. We'll have lots
+of projection macros that use this under the hood instead of a single
+one. I like this as a stop-gap solution until we have projections in the
+language.
 
-? This way unless you explicitly put `pub` there, users outside the module
-cannot query the bit pattern.
+I have a few comments, with those addressed:
 
-> 
-> We are going to need to be able to pass these flags into C APIs. I feel
-> like adding a method to do this is the best way to go about this. We can
-> call it something else if that communicates the purpose better.
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
-I think `bitflags` crate call this `bits`, which I think is indeed
-slightly better than `into_inner`.
+> ---
+>  rust/kernel/lib.rs        |   5 +
+>  rust/kernel/projection.rs | 269 ++++++++++++++++++++++++++++++++++++++
+>  scripts/Makefile.build    |   4 +-
+>  3 files changed, 277 insertions(+), 1 deletion(-)
+>  create mode 100644 rust/kernel/projection.rs
 
-Best,
-Gary
+> +// SAFETY: `proj` invokes `f` with valid allocation.
+> +unsafe impl<T> ProjectField<false> for T {
+> +    #[inline(always)]
+> +    unsafe fn proj<F>(base: *mut Self, f: impl FnOnce(*mut Self) -> *mut=
+ F) -> *mut F {
+> +        // Create a valid allocation to start projection, as `base` is n=
+ot necessarily so.
+> +        let mut place =3D MaybeUninit::uninit();
+> +        let place_base =3D place.as_mut_ptr();
+> +        let field =3D f(place_base);
+> +        // SAFETY: `field` is in bounds from `base` per safety requireme=
+nt.
+> +        let offset =3D unsafe { field.byte_offset_from(place_base) };
+> +        base.wrapping_byte_offset(offset).cast()
+> +    }
 
-> 
-> Best regards,
-> Andreas Hindborg
+There are several limitations with this impl. I don't think we can do
+anything about them, but it's probably good to list them somewhere:
+1. We do not support projecting fields of unsized types, so `MyStruct<dyn T=
+rait>`.
+   (note that slices are supported with `ProjectIndex`)
+2. Since this creates a `MaybeUninit<T>` on the stack, only small `T`
+   are supported. I'm not sure how much of this will be optimized away,
+   but it might be the case that it is not. Projecting in the same
+   function call stack multiple times might result in overrunning the
+   stack pretty quickly.
+3. The `wrapping_byte_offset` function generates potentially worse
+   codegen when `base` points into a real allocation.
+
+> +}
+> +
+> +// SAFETY: vacuously satisfied.
+> +unsafe impl<T: Deref> ProjectField<true> for T {
+> +    #[inline(always)]
+> +    unsafe fn proj<F>(_: *mut Self, _: impl FnOnce(*mut Self) -> *mut F)=
+ -> *mut F {
+> +        build_error!("this function is a guard against `Deref` impl and =
+is never invoked");
+> +    }
+> +}
+> +
+> +/// Create a projection from a raw pointer.
+> +///
+
+I'd add a paragraph that explains that the pointer does not need to be
+valid in any way. It should also explain that the returned pointer is
+only valid when the original pointer was valid.
+
+> +/// Supported projections include field projections and index projection=
+s.
+> +/// It is not allowed to project into types that implement custom `Deref=
+` or `Index`.
+> +///
+> +/// The macro has basic syntax of `kernel::project_pointer!(ptr, project=
+ion)`, where `ptr` is an
+> +/// expression that evaluates to a raw pointer which serves as the base =
+of projection. `projection`
+> +/// can be a projection expression of form `.field` (normally identifer,=
+ or numeral in case of
+> +/// tuple structs) or of form `[index]`.
+> +///
+> +/// If mutable pointer is needed, the macro input can be prefixed with `=
+mut` keyword, i.e.
+> +/// `kernel::project_pointer!(mut ptr, projection)`. By default, a const=
+ pointer is created.
+> +///
+> +/// `project_pointer!` macro can perform both fallible indexing and buil=
+d-time checked indexing.
+> +/// `[index]` form performs build-time bounds checking; if compiler fail=
+s to prove `[index]` is in
+> +/// bounds, compilation will fail. `[index]?` can be used to perform run=
+time bounds checking;
+> +/// `OutOfBound` error is raised via `?` if the index is out of bounds.
+> +///
+> +/// # Examples
+> +///
+> +/// Field projections are performed with `.field_name`:
+> +/// ```
+> +/// struct MyStruct { field: u32, }
+> +/// let ptr: *const MyStruct =3D core::ptr::dangling();
+
+I would only include one example that uses `dangling` and for the rest
+just define a function that projects a raw pointer.
+
+> +/// let field_ptr: *const u32 =3D kernel::project_pointer!(ptr, .field);
+> +///
+> +/// struct MyTupleStruct(u32, u32);
+> +/// let ptr: *const MyTupleStruct =3D core::ptr::dangling();
+> +/// let field_ptr: *const u32 =3D kernel::project_pointer!(ptr, .1);
+> +/// ```
+> +///
+> +/// Index projections are performed with `[index]`:
+> +/// ```
+> +/// let ptr: *const [u8; 32] =3D core::ptr::dangling();
+> +/// let field_ptr: *const u8 =3D kernel::project_pointer!(ptr, [1]);
+> +/// // This will fail the build.
+> +/// // kernel::project_pointer!(ptr, [128]);
+> +/// // This will raise an `OutOfBound` error (which is convertable to `E=
+RANGE`).
+> +/// // kernel::project_pointer!(ptr, [128]?);
+> +/// ```
+> +///
+> +/// If you need to match on the error instead of propagate, put the invo=
+cation inside a closure:
+> +/// ```
+> +/// let ptr: *const [u8; 32] =3D core::ptr::dangling();
+> +/// let field_ptr: Result<*const u8> =3D (|| -> Result<_> {
+> +///     Ok(kernel::project_pointer!(ptr, [128]?))
+> +/// })();
+> +/// assert!(field_ptr.is_err());
+> +/// ```
+> +///
+> +/// For mutable pointers, put `mut` as the first token in macro invocati=
+on.
+> +/// ```
+> +/// let ptr: *mut [(u8, u16); 32] =3D core::ptr::dangling_mut();
+> +/// let field_ptr: *mut u16 =3D kernel::project_pointer!(mut ptr, [1].1)=
+;
+> +/// ```
+> +#[macro_export]
+> +macro_rules! project_pointer {
+> +    (@gen $ptr:ident, ) =3D> {};
+> +    // Field projection. `$field` needs to be `tt` to support tuple inde=
+x like `.0`.
+> +    (@gen $ptr:ident, .$field:tt $($rest:tt)*) =3D> {
+> +        // SAFETY: the provided closure always return in bounds pointer.
+> +        let $ptr =3D unsafe {
+> +            $crate::projection::ProjectField::proj($ptr, #[inline(always=
+)] |ptr| {
+> +                // SAFETY: `$field` is in bounds, and no implicit `Deref=
+` is possible (if the
+> +                // type implements `Deref`, Rust cannot infer the generi=
+c parameter `DEREF`).
+> +                &raw mut (*ptr).$field
+> +            })
+> +        };
+> +        $crate::project_pointer!(@gen $ptr, $($rest)*)
+> +    };
+> +    // Fallible index projection.
+> +    (@gen $ptr:ident, [$index:expr]? $($rest:tt)*) =3D> {
+> +        let $ptr =3D $crate::projection::ProjectIndex::get($index, $ptr)
+> +            .ok_or($crate::projection::OutOfBound)?;
+> +        $crate::project_pointer!(@gen $ptr, $($rest)*)
+> +    };
+> +    // Build-time checked index projection.
+> +    (@gen $ptr:ident, [$index:expr] $($rest:tt)*) =3D> {
+> +        let $ptr =3D $crate::projection::ProjectIndex::index($index, $pt=
+r);
+> +        $crate::project_pointer!(@gen $ptr, $($rest)*)
+> +    };
+> +    (mut $ptr:expr, $($proj:tt)*) =3D> {{
+> +        let ptr =3D $ptr;
+
+I'd add a type ascription `let ptr: *mut _ =3D $ptr;`
+
+> +        $crate::project_pointer!(@gen ptr, $($proj)*);
+> +        ptr
+> +    }};
+> +    ($ptr:expr, $($proj:tt)*) =3D> {{
+> +        let ptr =3D $ptr.cast_mut();
+
+This allows `$ptr` to be a random type with a `cast_mut` function. How
+about:
+
+    let ptr: *const _ =3D $ptr;
+    let ptr: *mut _ =3D ::core::ptr::cast_mut(ptr);
+
+Cheers,
+Benno
+
+> +        // We currently always project using mutable pointer, as it is n=
+ot decided whether `&raw
+> +        // const` allows the resulting pointer to be mutated (see docume=
+ntation of `addr_of!`).
+> +        $crate::project_pointer!(@gen ptr, $($proj)*);
+> +        ptr.cast_const()
+> +    }};
+> +}
