@@ -1,66 +1,43 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2258A308F03
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Feb 2026 06:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771049518; cv=none; b=G1Y/6VN4/BG/rdbCah2ygyCPXT9+MZKjDPyuRPgOwdNWGpRf9MYkv0mSkOdYXD0/Q9bnwh1iCwqKM4zlMFVRMA9fXo0hq1SqRj1XKhaBPrVTNrAKRN0gNxTrh86MdXf8vIquGOfL6GDQRfP5Vu9xcJUClJgKWTnYzZIcooXANSo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771049518; c=relaxed/simple;
-	bh=BY0d32+ZzDAZ64umGmXB44D6PovXFeZOF9FQxmubx2c=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABF81EA84;
+	Sat, 14 Feb 2026 07:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771054976; cv=pass; b=Lli2boN1XecwI3htEoIa/61XwssC0AJ5n4i5KIFdNVr2bpLUGx0TI+vZpUTA/q8tk5woZEh8sOfvXQV8DndVqlkxqkEJRHlDMVbiXyzpok1wpT9jkWr72IByT0/vHllEcSLvalXD3JVKaXYDXf3lsXrfRR+EAinPJG5EfdN3k2M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771054976; c=relaxed/simple;
+	bh=IFx91vlqcpIT5vlxhfc+D2UENPZYCUNJxGooXjx9lXg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qiZieQ5EOpi005euy5+RKIpmiFYuD2P7wh5Bnn9wamtveDpBqYiaEQWtYG+4DFcDaNDnJj0lBKEy3YRMTOAXg1iyLLWaQ47S3q57bu6aPyTZn+gq48UBrdrnMt7Lbe8d6v7+ODfrC633kFNFhILX/OlEhsLOmnSasXGB78pihqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hhhIVbqV; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=KnzyBt5zEbHeTVnvhjnrpFnF3rXtFEwJsae2zoZQ3d00FM6fbxxDpzrbG9JV61lVlu8NF5rDaNGVp7wz71Ewe1LBpFbRkD/Cu28enRPpUTxxs7iKq4IrcWPREy+TsWyonJbpcbQSa6e5CEGx8qn9x5Qf0N4mnjDydnJ4TlXXp8Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b=VUNzaxET; arc=pass smtp.client-ip=103.117.158.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hhhIVbqV"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4359108fd24so1061346f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 22:11:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771049510; x=1771654310; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VgGBcvHQoegFD18ugg7yJkEg1tzSzql8ilNB2jpbr3c=;
-        b=hhhIVbqVAFRnS0aiZjmxPobjXu76E8ItdJre2eOOJa68OYt/eGzZ5JQRyY5Q7GZoWH
-         9rsBHih6Tuqe+15mjKDQaP+XDIWH4reUfXIhTWdLf/X4H46t3gvtKHuIvD0ypD4kYpF5
-         0UJbKYwKxYnTIDry5P8RwUTaVjTqT6AllyGE0ch+2DIv3KpqQbnXCQslVYyUE6twQIxk
-         ZuZ4SXcTV01J6He0HR4et+1pISKV9ukqJIsGkoCfOYKwjYhF6b9CnrksKhagv9LLFGQX
-         KHD+LlSDZRjjLTXnEhCZR5f30anSM/e0UP3H6E9+6v7WyMq8hP/JuHj9LPOl3Zto/kK0
-         83ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771049510; x=1771654310;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VgGBcvHQoegFD18ugg7yJkEg1tzSzql8ilNB2jpbr3c=;
-        b=fAXQDp2nkjL8ktsvTG/fHOatBCw4YVrOlBik4KYLbq/QPGjg2MMhbUFrMktNfteEYD
-         uJuxY3C/7d3U+/ezi8AbyI0BnX+bnLowawQ4CRONnVbhKk2tjlpO/sD5Td2Vbv+fjRUQ
-         mrEwGxNlAYo0avfFUZLQraMB6U+miJqvi8m+JgzrVQIjpU08q36Gq6pzC+93VJCxit5l
-         7T9x/zbzSz2nJ1a8HXTroGIDzKS2nfXq4QZoBHAaXqsr3lxH1x0VqQvtc9oVKsu7Dxfh
-         BuJVmbgH0kEVMNxezKc6r17q6TIEuPc0mS5AZV0beRdzjxzDMzefGSMqcmVzBX6zOFM1
-         amDQ==
-X-Gm-Message-State: AOJu0YzT7uFCPqQqrnQPxedG1RJ9x+a+RSk5BCggwAaXLk/folo6WvzV
-	y7Cw3w1p1xqvKckVkqiCLTv71pbbjSJB6LXpZORVfWulcycxQs2km04b
-X-Gm-Gg: AZuq6aKfdU5bgOpvlOwSDSRoOUx32tMdTcM58EhBFU/wZGEQHiin3vKRRCU1+pN7Yzc
-	uKXw++s+VGFybZK81hWkxeXp6LU7ES60FFesjgvpUvbtEk3VRX7yjpCIlWrQE+lHPso2ES/W1IC
-	ntT5zSEUTt2Nd9WqOmZaHGXT6ubFzMlpIPcJTSbYm7HRY0rRsDvSIKXQj3xCcPSK2oJu2TNDlKF
-	pxAVD6Tpx2AyuwYOSMNs8j2rKKBLobwcWPtRraZY2xMq7usor5JHdnzyolYYVhyd2C6X7HDwX6C
-	/GGLQ0aVfgU6PIqCcK/NOANC8vcYe0CkWi/QdUCN17rKyWm5vz32GliuDpUmO8jz/Gq+kn+7+i1
-	p7DBHfKvkFYfIMFEWs5WYF6+/RHFwfJIi2VG8IWSriSDnO/Us3ce7IB5My642nWyZCnTqqZ1Gnl
-	R1Ij7rA+LgTK33qnrcI98FFn+Gn4Y49k+LzkY6G8tly33DMgjwlQdYYn7BPo1UiDJhng35bg7+s
-	Q4UejbzBahPIedhDfpUfZDRoD24KZr4aTscdWp5f78Pp+b3sW29ZPd4SA==
-X-Received: by 2002:a05:600c:5306:b0:480:4d39:84b3 with SMTP id 5b1f17b1804b1-483739fc667mr60964125e9.6.1771049510162;
-        Fri, 13 Feb 2026 22:11:50 -0800 (PST)
-Received: from ?IPV6:2003:df:bf29:9000:b585:cc2d:57dc:3085? (p200300dfbf299000b585cc2d57dc3085.dip0.t-ipconnect.de. [2003:df:bf29:9000:b585:cc2d:57dc:3085])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4837e565f5esm7439175e9.10.2026.02.13.22.11.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Feb 2026 22:11:49 -0800 (PST)
-Message-ID: <ccbb3422-11ca-4a0f-a517-1f48b3004052@gmail.com>
-Date: Sat, 14 Feb 2026 07:11:48 +0100
+	dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b="VUNzaxET"
+ARC-Seal: i=1; a=rsa-sha256; t=1771054926; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=OuA6D1mgxTkSPEnM2ojVzZj0BkITUlSUADMI098nGvQNLatc8Xu+RDHcKiSpgwPEnTacPdIv3YDDdiNK8AAM5W5Ov5i+lNg0XeBsG3uhUO/KUCSAa5l0iqGIH1pN7Ej7io+n0UW47yam0Rd0bHfHwPodQoW3B9f1S1Ur/Doxo7g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1771054926; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=lhfYTN9oqOqvsdOUvoEUruipzvDo7M+uz4tjyp3RJUA=; 
+	b=IC1LvDmMoqxom+8qUppwkWcoLFAzwgAEsII2AbVe49Ww23f1k0fezd0v2khoARPiOxhJhOdvxEqQhC/n9SqqodjUtJaj6Pc36SmOmM1XAYXS/DHqIqacLko0U3dX8OIhc5d7fBLPV234rxOWXrttAq8/CYmmxdHQRw8pIE3yVp8=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771054926;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=lhfYTN9oqOqvsdOUvoEUruipzvDo7M+uz4tjyp3RJUA=;
+	b=VUNzaxETr7iGsPan4E7gSYJ326qzmVdM3xUC8zNsbJilGI2q4dR4ITxepuhOeeDi
+	j/E2Hu/m38wUlq9/v0rHJL8JRDuTq4fa89sMsTBTbZFwKQuVXJFO3dialMd26OaNkfM
+	C24w24JfIbDDr8nbW5Ak7tQu6XGXKy/+5rBdkgsU=
+Received: by mx.zoho.in with SMTPS id 1771054922808110.99880725998548;
+	Sat, 14 Feb 2026 13:12:02 +0530 (IST)
+Message-ID: <75202b71-e5b3-4833-9fa4-e0b279900b49@zohomail.in>
+Date: Sat, 14 Feb 2026 13:12:00 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,55 +45,74 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/2] modularize Rust lints and add RUST_UNWRAP check
-To: Jason Hall <jason.kei.hall@gmail.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Joe Perches <joe@perches.com>, Boqun Feng <boqun@kernel.org>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn.roy.baron@gmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakru@kernel.org>,
- Dirk Behme <dirk.behme@de.bosch.com>, Andy Whitcroft <apw@canonical.com>,
- Dwaipayan Ray <dwaipayanray1@gmail.com>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>
-References: <CANiq72mB0N3GDe+w8qT_VU1ieMQSRBiEPaFdSVa-2GLDiDMEZw@mail.gmail.com>
- <20260207224907.234815-1-jason.kei.hall@gmail.com>
-Content-Language: de-AT-frami, en-US
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20260207224907.234815-1-jason.kei.hall@gmail.com>
+Subject: Re: [PATCH v4 3/3] rust_binder: shrink all_procs when deregistering
+ processes
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260212-binder-shrink-vec-v3-v4-0-bd02f06bf2cd@zohomail.in>
+ <20260212-binder-shrink-vec-v3-v4-3-bd02f06bf2cd@zohomail.in>
+ <aY9PG909tCTZgMup@google.com>
+Content-Language: en-US
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+In-Reply-To: <aY9PG909tCTZgMup@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-Hi Jason and Miguel,
-
-On 07.02.26 23:49, Jason Hall wrote:
-...
-> The second patch introduces the  RUST_UNWRAP lint, which warns against
-> the use of .unwrap() and .expect() unless they are accompanied by a 
-> '// PANIC:' justification comment.
-
-While some further thinking about the discussion in this thread I'm
-under the impression that going this way somehow leaves us unhappy.
-Either it becomes complicated (again, many thanks to Jason for working
-on this!) or we will end up with several limitations and (confusing?)
-false positives.
-
-I wonder if it would be an option to change the strategy here?
-
-In the last time we have introduced several rules by "convention".
-Without checkpatch or lint support. Like "please use vertical style
-for imports", "please use `__rust_helper` for helpers" or "please drop
-`as_ref` from dev_* prints". Would it be an (easier?) option to go the
-same way here? Instead of enforcing it with checkpatch?
-
-I'm thinking about the same approach like we did with the examples
-above: We identify the "wrong" `unwrap()` usages in the existing code
-and "fix" them with patches. What would result in a clean code base.
-At the same time it will give developers an indication that the
-remaining ones are "allowed" ones which are ok. And for new code in
-the review we ask for corrections if we spot a "wrong" usage.
-
-Best regards
-
-Dirk
+On 13/02/26 21:49, Alice Ryhl wrote:
+> On Thu, Feb 12, 2026 at 01:47:09PM +0530, Shivam Kalra wrote:
+>> When a process is deregistered from the binder context, the all_procs
+>> vector may have significant unused capacity. Add logic to shrink the
+>> vector using a conservative strategy that prevents shrink-then-regrow
+>> oscillation.
+>> The shrinking strategy triggers when length drops below 1/4 of capacity,
+>> and shrinks to 1/2 of capacity rather than to the exact length. This
+>> provides hysteresis to avoid repeated reallocations when the process
+>> count fluctuates.
+>> The shrink operation uses GFP_KERNEL and is allowed to fail gracefully
+>> since it is purely an optimization. The vector remains valid and
+>> functional even if shrinking fails.
+>>
+>> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+>> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+>> ---
+>>  drivers/android/binder/context.rs | 11 +++++++++++
+>>  1 file changed, 11 insertions(+)
+>>
+>> diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
+>> index 9cf437c025a20..399dab475728b 100644
+>> --- a/drivers/android/binder/context.rs
+>> +++ b/drivers/android/binder/context.rs
+>> @@ -94,6 +94,17 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
+>>          }
+>>          let mut manager = self.manager.lock();
+>>          manager.all_procs.retain(|p| !Arc::ptr_eq(p, proc));
+>> +
+>> +        // Shrink the vector if it has significant unused capacity to avoid memory waste,
+>> +        // but use a conservative strategy to prevent shrink-then-regrow oscillation.
+>> +        // Only shrink when length drops below 1/4 of capacity, and shrink to 1/2 capacity.
+>> +        let len = manager.all_procs.len();
+>> +        let cap = manager.all_procs.capacity();
+>> +        if len < cap / 4 {
+>> +            // Shrink to half capacity. Ignore allocation failures since this is just an
+>> +            // optimization; the vector remains valid even if shrinking fails.
+>> +            let _ = manager.all_procs.shrink_to(cap / 2, GFP_KERNEL);
+> 
+> Not a big deal, but perhaps we should write len*2 here instead of cap/2?
+> That way, if the cap got way far away from the length, it would equalize
+> right away.
+> 
+> Alice
+Thanks for the feedback. Will add this in v5.
