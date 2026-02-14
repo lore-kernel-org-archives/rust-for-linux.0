@@ -1,209 +1,122 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022121.outbound.protection.outlook.com [52.101.101.121])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35382DF155;
-	Sat, 14 Feb 2026 05:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.121
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771047318; cv=fail; b=osQysB9MRoIn94LzRW/iVqLVRfk5ceeEuvm8lO/2tXclUPb74oGttpgK8Th6VCW8hbz2oshbZANpWdQxli0sd1e7YTGLGpawRljxOnG4HExBxj0wWpho9T93LIaSzr4H4sDACTi1Agh2YXfRT2+Qo8R0c6Th8GX12hC4ReDUqpY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771047318; c=relaxed/simple;
-	bh=yjFWtdCD0obdcWXukpNC+UHO548WwMu5kFzEwFOgTO8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=evt436Tmf8kTefhJrWdMsZXsmDm1gzmzh5nlGqszjLgtbQvxdJzTB9zw4IjW3q4HPGkm8aCux4JivTF2O3NTn3UNQtIfDdzu3HqSwznLUWo2jkZEmTqPMzz4TzO/rK8jyu4OAWCTc2Pullu3b1jCnCUGzH3tVi9M56z28n836Xs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=mJi7HByR; arc=fail smtp.client-ip=52.101.101.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2258A308F03
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Feb 2026 06:11:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771049518; cv=none; b=G1Y/6VN4/BG/rdbCah2ygyCPXT9+MZKjDPyuRPgOwdNWGpRf9MYkv0mSkOdYXD0/Q9bnwh1iCwqKM4zlMFVRMA9fXo0hq1SqRj1XKhaBPrVTNrAKRN0gNxTrh86MdXf8vIquGOfL6GDQRfP5Vu9xcJUClJgKWTnYzZIcooXANSo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771049518; c=relaxed/simple;
+	bh=BY0d32+ZzDAZ64umGmXB44D6PovXFeZOF9FQxmubx2c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qiZieQ5EOpi005euy5+RKIpmiFYuD2P7wh5Bnn9wamtveDpBqYiaEQWtYG+4DFcDaNDnJj0lBKEy3YRMTOAXg1iyLLWaQ47S3q57bu6aPyTZn+gq48UBrdrnMt7Lbe8d6v7+ODfrC633kFNFhILX/OlEhsLOmnSasXGB78pihqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hhhIVbqV; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="mJi7HByR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fIc8XC01L9tjPLMdzhTnVrFiKNn94MXgDtK4ZNxxs04JADGanam7WQWdyABean5tPH0617ysyDsJ3oCGlewWLLZbrRFhZ456xETb84Uy05U/UtpXEIBHUW2uBtrhbQPhwlzWGhvRGYxnpFAKgKUlIsAnpnaU5iHyf44KlEnD3MPd8iqwSgQFr+1y/Xj7N9MpRtj4jRzdY7KzvtsYEXjgt/w7yhHiEdXUiTBRgngIXTxeBQfuJOPzmfyT2HeFQBUe0evPPCatVMYjfGVxvTO536YvV9zD6fkHPD8/LAJYifKMmwoSYl8qnpOyf37CYF+wdZmVyJfqUZ7vJSg/Iv4Tmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0SQYRwVhPj3ApzaMCIbnmQEudLYqR8epCg3gT/a8YEE=;
- b=tzvSquB2xIC7PdKQdoM26PlU5Pbgg2E7FbjGnwyJR8tyFkSRipWmwpIELGkDPx62qehgIqYoyqOAu75PImMXo6Dg2Nyv2gn1nMP3AT1c3PJrZ+efOvP09rv0IAu3a/U8IC/03Q7ueDXqkx/w5TJzUzAe7k6AFyKy60v2Kon2GaFAWt1myA0V1atjqFhzzk2uQPDs+NNjggt2QB8uQgB8sZoyXRk/VG5esK/EwlvpiGsTa+l7d2wRyTJ+fRZ+hRt+IglsPiblG9cJJ3X/8wNsWm4ly7ussDjffjX7rDWIcft0D0PqVGuE4upQ3DTWFXJ/JhNhyT1P5ItXlWB7zoMYEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0SQYRwVhPj3ApzaMCIbnmQEudLYqR8epCg3gT/a8YEE=;
- b=mJi7HByRqqEV9h1G7l2XkAEZHfx/llseXz8sofOW7OOX4nDgEpwJcHp75MgGGpaezNucWRocaewS3WA494zwO4a/ec6FDINwsiwOqPon/cJkhC5CgoSyuK8Ow/RvZRuiUDL0phk/pr0GtGCZf201oMJad/ittOB5Yltc/Pa0xSE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB1781.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:34::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.14; Sat, 14 Feb
- 2026 05:35:14 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9611.013; Sat, 14 Feb 2026
- 05:35:14 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] rust: dma: remove old dma_{read,write} macro compatibility syntax
-Date: Sat, 14 Feb 2026 13:33:41 +0800
-Message-ID: <20260214053344.1994776-5-gary@garyguo.net>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260214053344.1994776-1-gary@garyguo.net>
-References: <20260214053344.1994776-1-gary@garyguo.net>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TY4PR01CA0017.jpnprd01.prod.outlook.com
- (2603:1096:405:2bf::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hhhIVbqV"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4359108fd24so1061346f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 22:11:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771049510; x=1771654310; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VgGBcvHQoegFD18ugg7yJkEg1tzSzql8ilNB2jpbr3c=;
+        b=hhhIVbqVAFRnS0aiZjmxPobjXu76E8ItdJre2eOOJa68OYt/eGzZ5JQRyY5Q7GZoWH
+         9rsBHih6Tuqe+15mjKDQaP+XDIWH4reUfXIhTWdLf/X4H46t3gvtKHuIvD0ypD4kYpF5
+         0UJbKYwKxYnTIDry5P8RwUTaVjTqT6AllyGE0ch+2DIv3KpqQbnXCQslVYyUE6twQIxk
+         ZuZ4SXcTV01J6He0HR4et+1pISKV9ukqJIsGkoCfOYKwjYhF6b9CnrksKhagv9LLFGQX
+         KHD+LlSDZRjjLTXnEhCZR5f30anSM/e0UP3H6E9+6v7WyMq8hP/JuHj9LPOl3Zto/kK0
+         83ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771049510; x=1771654310;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VgGBcvHQoegFD18ugg7yJkEg1tzSzql8ilNB2jpbr3c=;
+        b=fAXQDp2nkjL8ktsvTG/fHOatBCw4YVrOlBik4KYLbq/QPGjg2MMhbUFrMktNfteEYD
+         uJuxY3C/7d3U+/ezi8AbyI0BnX+bnLowawQ4CRONnVbhKk2tjlpO/sD5Td2Vbv+fjRUQ
+         mrEwGxNlAYo0avfFUZLQraMB6U+miJqvi8m+JgzrVQIjpU08q36Gq6pzC+93VJCxit5l
+         7T9x/zbzSz2nJ1a8HXTroGIDzKS2nfXq4QZoBHAaXqsr3lxH1x0VqQvtc9oVKsu7Dxfh
+         BuJVmbgH0kEVMNxezKc6r17q6TIEuPc0mS5AZV0beRdzjxzDMzefGSMqcmVzBX6zOFM1
+         amDQ==
+X-Gm-Message-State: AOJu0YzT7uFCPqQqrnQPxedG1RJ9x+a+RSk5BCggwAaXLk/folo6WvzV
+	y7Cw3w1p1xqvKckVkqiCLTv71pbbjSJB6LXpZORVfWulcycxQs2km04b
+X-Gm-Gg: AZuq6aKfdU5bgOpvlOwSDSRoOUx32tMdTcM58EhBFU/wZGEQHiin3vKRRCU1+pN7Yzc
+	uKXw++s+VGFybZK81hWkxeXp6LU7ES60FFesjgvpUvbtEk3VRX7yjpCIlWrQE+lHPso2ES/W1IC
+	ntT5zSEUTt2Nd9WqOmZaHGXT6ubFzMlpIPcJTSbYm7HRY0rRsDvSIKXQj3xCcPSK2oJu2TNDlKF
+	pxAVD6Tpx2AyuwYOSMNs8j2rKKBLobwcWPtRraZY2xMq7usor5JHdnzyolYYVhyd2C6X7HDwX6C
+	/GGLQ0aVfgU6PIqCcK/NOANC8vcYe0CkWi/QdUCN17rKyWm5vz32GliuDpUmO8jz/Gq+kn+7+i1
+	p7DBHfKvkFYfIMFEWs5WYF6+/RHFwfJIi2VG8IWSriSDnO/Us3ce7IB5My642nWyZCnTqqZ1Gnl
+	R1Ij7rA+LgTK33qnrcI98FFn+Gn4Y49k+LzkY6G8tly33DMgjwlQdYYn7BPo1UiDJhng35bg7+s
+	Q4UejbzBahPIedhDfpUfZDRoD24KZr4aTscdWp5f78Pp+b3sW29ZPd4SA==
+X-Received: by 2002:a05:600c:5306:b0:480:4d39:84b3 with SMTP id 5b1f17b1804b1-483739fc667mr60964125e9.6.1771049510162;
+        Fri, 13 Feb 2026 22:11:50 -0800 (PST)
+Received: from ?IPV6:2003:df:bf29:9000:b585:cc2d:57dc:3085? (p200300dfbf299000b585cc2d57dc3085.dip0.t-ipconnect.de. [2003:df:bf29:9000:b585:cc2d:57dc:3085])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4837e565f5esm7439175e9.10.2026.02.13.22.11.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Feb 2026 22:11:49 -0800 (PST)
+Message-ID: <ccbb3422-11ca-4a0f-a517-1f48b3004052@gmail.com>
+Date: Sat, 14 Feb 2026 07:11:48 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB1781:EE_
-X-MS-Office365-Filtering-Correlation-Id: 742d17a9-f4bf-4982-0fed-08de6b8ad44c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?0roYF/YCW4GkFOyuyQBj8p+aBrl+Cn05HLTCg7dS0eJAEONtjPRBPj/laJsd?=
- =?us-ascii?Q?ELc5cpz/rxBHvZV2S/qW1MyWhj+Hw065XbTBUP1AP0vuURuGWIv+oOqEiqhO?=
- =?us-ascii?Q?sZ7WfrBRyH41PkJGNgH+leThw8Cvx47S3Gvjlax17FHfuPCbQkuylP/X+ud5?=
- =?us-ascii?Q?1mjZNFfDhHBiioxoFFWH8bLXX6/pR4oHAM8x4T3RJOvGOrPwihQBs702WbWW?=
- =?us-ascii?Q?koHIraEBQxK5eCK80u6iI7ZvolP7el7NQDRQvf3Thrg0vAF3Yd1v4SoCAtgV?=
- =?us-ascii?Q?CRD0XMKDtS3F0zzOaTurA8Ct3fkafHmoNO7pzcIl6Rh3Si1l1L7AM0uts5fA?=
- =?us-ascii?Q?lIq6BU2UMaIUTwPEWnpPSIALluhj0FAex1fjcTx7wwyLC7Iv6Jo6fJ7Y7UKX?=
- =?us-ascii?Q?Nq3tQrDJ14IweNCuQeDuRgVnynj68lnAZU+l52tyAfFv1ueTYDFak61SXvA+?=
- =?us-ascii?Q?qXEGkVLBdFDmdCFjJPurjKSjQfXQslfl9vySh1LqVbUfv2r5Is+zLeWZJ7YR?=
- =?us-ascii?Q?OTstN83iRr3mlYQT3/qDfoTybz4K5LeTB10igcpNzmEREY9wi9/hcPK+qp8B?=
- =?us-ascii?Q?tknMO25CtLLNwiYi9a0QkcyEfNZKpk3GMRZjHtZDiahDt37TeTXg0OZpDjUT?=
- =?us-ascii?Q?RDXnSphMmeroxZlrbbBjAnUdRzw4DkdL51EcW38yqgIsdj6cionYogovq09U?=
- =?us-ascii?Q?506mjS6BOCqgmRNruJ5t1Bw+4C1mUD2+5HfenEt9BWK+hYh30VF4zozkFZ7e?=
- =?us-ascii?Q?jSMXrWh3dLZskfjI5EpLsLLGSlQ0EL/eXZOj9CO7xnWf8oj5llOW5MvLeklE?=
- =?us-ascii?Q?yyfE22v7SHLO21+l+4hZwEWvz+5pkj1/M8G+uN8UpRY3j/Q1VlGRPpIfojIe?=
- =?us-ascii?Q?CuPrXjTl1XAZ3LZTrIq9lj7fXuhLx5ohZuusmXdK18O8RUcHdXaImcaiuphY?=
- =?us-ascii?Q?UMHeGq0dlSKtjeDFOqvu3jAVG1X/AxAGzbx1OQVO/g8lxZuVcGPO/RVsWvzG?=
- =?us-ascii?Q?kg7o9U+L2Taf+VnUmjj6SFc0XwOqp/F4Mqk9OnXbPAx1bpPVVy1ZV/tF0Na9?=
- =?us-ascii?Q?DFhEw+Et9Y1JEyU2q0jPOyY5lTQEW8hFcnm3Ek1Cj1vgUqUqZ1+v0js8ow/t?=
- =?us-ascii?Q?r+ahfsO1eVcOL1O7r2feSKMqtlEAOIZGMAQMmF4YvgQYcnCrYK5P8/g5aJwM?=
- =?us-ascii?Q?udb2pHYnYOgU+LCcAvVOoVHkBoeLpyNpF9BqdNg7AolT+fgJhuYRZvMXBVY9?=
- =?us-ascii?Q?973HpmNAD+0MoUXAWTLHEVe+8IbBKRTfN1cXQiuHEAQ20gZaxljZ2iRZhlSZ?=
- =?us-ascii?Q?T92whUZrjrqIEDmKAP6QWAggNDwZcgsckUgNyt4uDxx3SDjQ2JI4EnZS96o9?=
- =?us-ascii?Q?ifUN7Nn1G1XxWz/aWvAn9sxCIymnvxT1P4XB8roKPKdrAH1h3IvFJKLpu0o5?=
- =?us-ascii?Q?unVTgQnRNy/I1us1iBeTMzoeF+K5QqTsHCNAcitSAEuaC8v8iB/JKnsGiqNa?=
- =?us-ascii?Q?YV0ASAkdZsoLkVCnzcXIfhBo86k4Yp53h2RxY5IOHKlMU++5IEmcsXkYyuil?=
- =?us-ascii?Q?RCJVJZUS5hOvIsYjAi+1Qe/9JPtWZCG4Ot8HRM0bFdMcCfmB/jCUhZM1i2BC?=
- =?us-ascii?Q?UQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fNAySMlfdFMBflD2r+A8LiXv3XeUDpYcGO+l7sGWgaeeQsNilLBs9KRpw4hR?=
- =?us-ascii?Q?P1rU2pq4TcMjPfy7pz+AiWDrO3BINLBtvwyTubwcTkVzoyEu0NkETIiodCDQ?=
- =?us-ascii?Q?LWwdqPHXQexrWE6YvRm4ozQ7JnNQArwN/9yxYRHP3MTsL/bVnpmRVx+Ypojd?=
- =?us-ascii?Q?OLrlOzsoIenSn9J15P5DteZeAs5L5aLIEVedMyLspmPE0kQoVPfuHnDxHQOD?=
- =?us-ascii?Q?7SGfnImrOPgbcc+EaDdB7dcrme0Ph3CS8OEotutxxma1ONGzuKjPNcs8jkay?=
- =?us-ascii?Q?yPBusXL4qlIiocliCfANkeT8DzKN9/bo+zOiCayDILjULw1c1cB7yTcz1oED?=
- =?us-ascii?Q?lG/LQkl1s604RSbPiHvhvtNkmlepFVd2TwUMq8Tc0NcG2fSj+1caZt+0BPQI?=
- =?us-ascii?Q?2f97ziDzaGVo1INw4uUpTthnN5O4CHnaI+pC4EuJy34qfOuC341TG4X9KNc0?=
- =?us-ascii?Q?YbunXw910QXPPSsNfRQQSonQUIShF+LJorUwMvgg6KKdnUuaE1rYETKk5fDt?=
- =?us-ascii?Q?WC/ufkrUMDQSwER8+2ezia3DxIzgWkZymvXsDxQy0e62GrUjCC1DKjXlrqLM?=
- =?us-ascii?Q?K1lKiIk7xjiz2zrj64HV+X6BGFdX42QOYW54VFhm4N20AlYPOT+7GQmpqa9Q?=
- =?us-ascii?Q?VstNOqqCnSSnmGdXw/fEhk+p64NYjuk6nClU3qzeksAfHteqZPF2QaCyzl7S?=
- =?us-ascii?Q?NPHUe1rEpkJ2L6A2/fTeAmguLgceW8IaBkx8UF2te+iIzbElNTgdwo9o6QxF?=
- =?us-ascii?Q?HXRy2AQ+kWJevUg+eCkBa/trZwTeUzthjPPE62tjyixAtqC2JvIwi29iafeE?=
- =?us-ascii?Q?HD1rqH9DOWqu2mO5VNJsFZUa876KF/ADkIa9A9RgQCNU2Fou6afn3BRJ4tLY?=
- =?us-ascii?Q?OupdYeksWraEVOEu39Fsiurb67RmclHDJbqvWX4VfDpa/Sk/ISP0gVINqcTH?=
- =?us-ascii?Q?5dyaHmlD7hiV5S/xWipXz5v7YXqGQZ2vMmwENyhuW1sR9jud65zjXLlRuTbg?=
- =?us-ascii?Q?oA6/VAkGD9/L1nnQzELiuIeNfzIqBLmWdalQY9MvGcIJnrGoc/g0pAgCEv12?=
- =?us-ascii?Q?+me2gaLKkkm7UfIg+d/U/r1IBTSmRr0LHTdpSe5SmIis+bY1PBKPgITHwVir?=
- =?us-ascii?Q?VpFCuRfYRZ/5H9Sh5DpyrkeoSBQkGCm0iCHzt/BfW2i2DD7gnl728gwrySOl?=
- =?us-ascii?Q?k6HP9xNROp0hrufwc8fcv63rdWdqzw77dm/6p9kqK7JlpI/RIYLavjImy/oO?=
- =?us-ascii?Q?ErPRysoFxqmYlbw8mUScp9Li9GS5aqWXJq/2GPeM+dFT8CLJvfhbNqABpFt1?=
- =?us-ascii?Q?DzAuuAWjXja0Dh8kdqNtbjzOTkz69LytJm+n3lzPeP7vfXmt+vYlk3ttYXu7?=
- =?us-ascii?Q?aXYciaKYpkrYvnW9d/TlSGqVxTB4InwU6LJnRfhhJnziKtP7yrJnfI/traAZ?=
- =?us-ascii?Q?+BdyucYvhtq4oQzXqhO+u6aCPfFRQ/e8K6ka9ZKqqfBPINUbKIZrvHoTl8MH?=
- =?us-ascii?Q?z5Y8enzt+D1iBvN27oiZbv0X3vqg3r4CxXmuX6ukE2t1lpoLvb7GhAdbxsHr?=
- =?us-ascii?Q?h8cM0k2d8xkFVcV5T9ZPc5cSif3fMDyg7KwVlpaTbEEr4weS5+QsZBwEZMYV?=
- =?us-ascii?Q?N4xfqC5loWluk5KiS6lsHLc45/3iQhKrWtPXz1KspGBS1V0H9fVfTIChNOZw?=
- =?us-ascii?Q?lF1ExaaUsEtsposkbVgxZApuhVzMIcfSYnhtrzoG06nY7fNAg2LtLA0T6s9g?=
- =?us-ascii?Q?yFUslyAN0oO5G8bVGlZgNg27zDECeeCYLv5Fhr5qi83K6PbEDlhMpNxiEJ32?=
-X-MS-Exchange-AntiSpam-MessageData-1: HAW1gjWKovu4Zw==
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 742d17a9-f4bf-4982-0fed-08de6b8ad44c
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2026 05:35:14.6415
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yKmguznZQO//SbW765nKtV0c5zMEVywBFq2M/7Sztq+u07gr8WqgCQ1AwHio2K+yHEgwX1WekDYUWrhg69JgWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB1781
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 0/2] modularize Rust lints and add RUST_UNWRAP check
+To: Jason Hall <jason.kei.hall@gmail.com>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Joe Perches <joe@perches.com>, Boqun Feng <boqun@kernel.org>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn.roy.baron@gmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakru@kernel.org>,
+ Dirk Behme <dirk.behme@de.bosch.com>, Andy Whitcroft <apw@canonical.com>,
+ Dwaipayan Ray <dwaipayanray1@gmail.com>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>
+References: <CANiq72mB0N3GDe+w8qT_VU1ieMQSRBiEPaFdSVa-2GLDiDMEZw@mail.gmail.com>
+ <20260207224907.234815-1-jason.kei.hall@gmail.com>
+Content-Language: de-AT-frami, en-US
+From: Dirk Behme <dirk.behme@gmail.com>
+In-Reply-To: <20260207224907.234815-1-jason.kei.hall@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-With users converted, the old compatibility syntax can be removed.
+Hi Jason and Miguel,
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- rust/kernel/dma.rs | 20 --------------------
- 1 file changed, 20 deletions(-)
+On 07.02.26 23:49, Jason Hall wrote:
+...
+> The second patch introduces the  RUST_UNWRAP lint, which warns against
+> the use of .unwrap() and .expect() unless they are accompanied by a 
+> '// PANIC:' justification comment.
 
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 2338dc6b9374..f55033264849 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -706,18 +706,6 @@ unsafe impl<T: AsBytes + FromBytes + Send> Send for CoherentAllocation<T> {}
- /// ```
- #[macro_export]
- macro_rules! dma_read {
--    // Compatibility for old syntax.
--    ($dma:ident [ $idx:expr ] $($proj:tt)* ) => {
--        (|| -> ::core::result::Result<_, $crate::error::Error> {
--            ::core::result::Result::Ok($crate::dma_read!($dma, [$idx]? $($proj)*))
--        })
--    };
--    ($($dma:ident).* [ $idx:expr ] $($proj:tt)* ) => {
--        (|| -> ::core::result::Result<_, $crate::error::Error> {
--            ::core::result::Result::Ok($crate::dma_write!($($dma).*, [$idx]? $($proj)*))
--        })
--    };
--
-     ($dma:expr, $($proj:tt)*) => {{
-         let ptr = $crate::project_pointer!(
-             $crate::dma::CoherentAllocation::as_ptr(&$dma), $($proj)*
-@@ -754,14 +742,6 @@ macro_rules! dma_read {
- /// ```
- #[macro_export]
- macro_rules! dma_write {
--    // Compatibility for old syntax.
--    ($dma:ident [ $idx:expr ] $(.$field:ident)* = $val:expr) => {
--        (|| -> ::core::result::Result<_, $crate::error::Error> {
--            $crate::dma_write!($dma, [$idx]? $(.$field)*, $val);
--            ::core::result::Result::Ok(())
--        })()
--    };
--
-     (@parse [$dma:expr] [$($proj:tt)*] [, $val:expr]) => {
-         let ptr = $crate::project_pointer!(
-             mut $crate::dma::CoherentAllocation::as_mut_ptr(&$dma), $($proj)*
--- 
-2.51.2
+While some further thinking about the discussion in this thread I'm
+under the impression that going this way somehow leaves us unhappy.
+Either it becomes complicated (again, many thanks to Jason for working
+on this!) or we will end up with several limitations and (confusing?)
+false positives.
 
+I wonder if it would be an option to change the strategy here?
+
+In the last time we have introduced several rules by "convention".
+Without checkpatch or lint support. Like "please use vertical style
+for imports", "please use `__rust_helper` for helpers" or "please drop
+`as_ref` from dev_* prints". Would it be an (easier?) option to go the
+same way here? Instead of enforcing it with checkpatch?
+
+I'm thinking about the same approach like we did with the examples
+above: We identify the "wrong" `unwrap()` usages in the existing code
+and "fix" them with patches. What would result in a clean code base.
+At the same time it will give developers an indication that the
+remaining ones are "allowed" ones which are ok. And for new code in
+the review we ask for corrections if we spot a "wrong" usage.
+
+Best regards
+
+Dirk
