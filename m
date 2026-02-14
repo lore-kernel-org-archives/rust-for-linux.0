@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D522614F70;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E783E28CF5F;
 	Sat, 14 Feb 2026 20:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771101331; cv=none; b=pKrvHsO5ERvSUxZS/icbskNi9RraqYM8Q39ySUv3KL0F2mdSHIg9jpzDJ02CjP3GJsrE9/MEn7Mi2KDTxePJE0sy57c4BU8Z/dMOWvwdrrjnGAf76SB4MPVRv8fcLtus8TpDREQIJcU4VT+83Mufy5kDB0xHAhQpJLjVKsmU4/A=
+	t=1771101332; cv=none; b=lwHyO2yOLSiwMl/6qslIj7iRwv8jyIlI9fi9kj4PtFovz6L6iC7js8mnRiDg2tSNTq3izI478Fsvm4cEVYbdjOG4NhsI1Aeh3ILQX6RfD52/vY2K2SIi7jvmUczFfZcVo1pEjNp1SyOxWUpM8Kr0HX91k+VJS5u2YwH9Bo9h1IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771101331; c=relaxed/simple;
-	bh=0pb984YfI4hWE24LemR2Vu+DBTMzauWF+bjlFatEY0o=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=anTmII+7wtap9JDPFR8zRBR7fQecEz5SwmZ7ZW45y9rtezy9pN/sIWKHkyHDFajDF1n/YZiWR7fhDp62gG1cnh87mLsU00GtgREvhlb71FQ2rfsDQM/3AY8iynwEMzqJnAyzulIpQteSwi7rIlCLWcDBDf5zUYV/Y6biv53bS0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mjP/3Wqt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771101332; c=relaxed/simple;
+	bh=7rTjjHmVbvTMCZ+dJlkHV6ttiO6Ve3s67Dplq47uUDw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tz7+7QMbsKfxpkA6l6oO8FpanXZ0bOnlQMeR0huNBdUUts2qJSyuB4RtBhkPqI/0pE53EZn8rncEdjYWl1Sj3tqa80TkdsdW3emV6lqJPULgNvmsJVYC7QcC+2Yw7V2LWTZ0sDI1ObYB959Kf9sM5H5ltn/MWIPqaGeU7AWLsAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dAj5hNIp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mjP/3Wqt"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 674DEC16AAE;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dAj5hNIp"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C0631C4AF0B;
 	Sat, 14 Feb 2026 20:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1771101331;
-	bh=0pb984YfI4hWE24LemR2Vu+DBTMzauWF+bjlFatEY0o=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=mjP/3WqtEFek2iln4K7IYzA5S0Ur+W5UK8FZ0QnyApqPhCR91r2vnee5F4hd/mfSr
-	 DSFpeq5e1wMiyQ0JeGRF44b+boU2x23e432UTD8mKnhq7H2Ef8yDwnoy3/hz3qrhui
-	 VwRaf3LU55LwrPN9L6xdRuINxTvZAsunjZmVIAdc7RE7B0ROxhPrgEVbFl58kDyJ1f
-	 RKmlfMMUiDE2bzoypM2G+XFdKMjeqArbyJtGs/j+VG02x44JebfW7UsazqVKEoAaJA
-	 g0K9crgoYGDa9q94QP3aLDhc/3Hu6D3jaNLgejg/u+sfYLVxbfBLX3iEG4OpaZ0Maa
-	 Ko7JgL99IN+jg==
+	bh=7rTjjHmVbvTMCZ+dJlkHV6ttiO6Ve3s67Dplq47uUDw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=dAj5hNIpKVkkfjC6+fUeDkr61GbesFldapQABZuhy5zBmUckf8ReOmA5ZyJOxu3+b
+	 3ba+Itw3Dy0du1vrVZiaK1hX/c/myjF/0SXNiLiDGcMuXnmW5B1LclL15XAVpC1G80
+	 /394/qRIR3fcEbTzHDvmtJWcUmO9l3jtcEjWP1SPO7/MRiwY5AMEwCKi/KcjwTWP3b
+	 NBJVn5RATFvRMSwGQ86A9XkJ06iPWIKRupnswmXV4g9wZ26F63xIjf7ZR0xQLryiVE
+	 mhx6XP5+48TaY35R7a8DwIsKsvEtwlC/FXzuWEPAr5wf/qeZmhZdcdOT207C7pDpG8
+	 aLnZEav22qqxg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56ECDEF5854;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1984EF584C;
 	Sat, 14 Feb 2026 20:35:31 +0000 (UTC)
 From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Subject: [PATCH v5 0/3] rust: alloc: add KVVec shrinking method
-Date: Sun, 15 Feb 2026 02:05:20 +0530
-Message-Id: <20260215-binder-shrink-vec-v3-v5-0-6e5e56d69766@zohomail.in>
+Date: Sun, 15 Feb 2026 02:05:23 +0530
+Subject: [PATCH v5 3/3] rust_binder: shrink all_procs when deregistering
+ processes
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,11 +41,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAInckGkC/4WNQQ7CIBBFr9LM2jFAazWuvIfposAgExUMGKI23
- F3sBVy+l/z3F8iUmDIcuwUSFc4cQ4PdpgPj53AhZNsYlFCjUFKh5mApYfaJwxULGSw9moORspf
- ktNtDmz4SOX6t2fPU2HN+xvReX8rws3+CZUCB2grlxKidMvb0iT7eZ75tOcBUa/0CpsmNgroAA
- AA=
-X-Change-ID: 20260212-binder-shrink-vec-v3-c8c1131efbf7
+Message-Id: <20260215-binder-shrink-vec-v3-v5-3-6e5e56d69766@zohomail.in>
+References: <20260215-binder-shrink-vec-v3-v5-0-6e5e56d69766@zohomail.in>
+In-Reply-To: <20260215-binder-shrink-vec-v3-v5-0-6e5e56d69766@zohomail.in>
 To: Danilo Krummrich <dakr@kernel.org>, 
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
  Vlastimil Babka <vbabka@suse.cz>, 
@@ -61,11 +60,11 @@ To: Danilo Krummrich <dakr@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Shivam Kalra <shivamkalra98@zohomail.in>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771101329; l=5705;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771101329; l=2050;
  i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
- bh=0pb984YfI4hWE24LemR2Vu+DBTMzauWF+bjlFatEY0o=;
- b=wXJ4psI1Cc8QnNB/Bduw3LY+4/mhGNNf/uIzzxiYS/5o2Xp5MNmb4IjtiHR0A9BELX1XILoeH
- yNRkAbsxNhHCuIzS67DvOBpfo86J7TWFdGjr3LJkOBxzoCwyCxcjZHJ
+ bh=7FV6uKzz4TJqB7MKxHeO755/zc8FAEv6EPYTU8loKcE=;
+ b=4//76mOxNdGg1G1UwGPMDljOwlmA6xOOV7+xCKJGo6mFMRYT7XcNYU5aCd8YSQWi8P83nsliy
+ xNL9aU4Df7KA4ngR+N2CbkeGPBnxfM4uoTqtxSKoC+uYxqXdVQDfEOi
 X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
  pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
 X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
@@ -73,119 +72,52 @@ X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
 X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
 Reply-To: shivamkalra98@zohomail.in
 
-This series adds a shrink_to() method to KVVec to allow explicit
-capacity reduction for memory reclamation.
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-Problem:
-When elements are removed from a KVVec, the allocated capacity is not
-reduced. The underlying C allocators (krealloc/kvrealloc) don't shrink
-memory in-place. This can cause significant memory waste in scenarios
-with variable workloads.
+When a process is deregistered from the binder context, the all_procs
+vector may have significant unused capacity. Add logic to shrink the
+vector using a conservative strategy that prevents shrink-then-regrow
+oscillation.
 
-Solution:
-- Patch 1: Implements shrink_to(min_capacity, flags) method specifically
-  for KVVec (Vec<T, KVmalloc>). For kmalloc allocations, the method
-  delegates to realloc(), letting the allocator decide whether shrinking
-  is worthwhile. For vmalloc allocations (detected via is_vmalloc_addr),
-  shrinking only occurs if at least one page of memory can be freed,
-  using an explicit alloc+copy+free (deep copy) since vrealloc does not
-  yet support in-place shrinking. A TODO comment marks this for future
-  replacement with a generic implementation using A::realloc() once
-  allocators properly support shrinking.
-- Patch 2: Adds KUnit tests for the new shrink_to method, verifying
-  page-based shrinking, empty vector handling, no-op behavior, and
-  min_capacity respect.
-- Patch 3: Uses shrink_to() in the Rust binder driver to reclaim memory
-  when processes are deregistered. Uses a conservative shrinking
-  strategy (trigger at len < cap / 4, shrink to len * 2) to avoid
-  shrink-then-regrow oscillation while equalizing capacity more
-  aggressively when it diverges far from usage.
+The shrinking strategy triggers when length drops below 1/4 of capacity,
+and shrinks to twice the current length rather than to the exact length.
+This provides hysteresis to avoid repeated reallocations when the process
+count fluctuates.
 
-Testing:
-- KUnit tests pass (rust_kvec test suite).
-- Kernel boots successfully in QEMU with CONFIG_ANDROID_BINDER_IPC_RUST=y.
+The shrink operation uses GFP_KERNEL and is allowed to fail gracefully
+since it is purely an optimization. The vector remains valid and
+functional even if shrinking fails.
 
-Changes since v4:
-- Added is_vmalloc_addr() check: kmalloc allocations now delegate to
-  realloc() directly, keeping semantics as close as possible to the
-  future generic implementation. Only vmalloc allocations use the
-  page-threshold + deep copy path. (Danilo Krummrich)
-- Updated doc comment to describe kmalloc vs vmalloc behavior
-  separately: kmalloc delegates to realloc(), vmalloc only shrinks if
-  at least one page can be freed via deep copy. (Danilo Krummrich)
-- Fixed import style to follow kernel coding guidelines (multi-line
-  block import for page::{AsPageIter, PAGE_SIZE}). (Danilo Krummrich)
-- Dropped duplicate TODO comment inside shrink_to() body; the TODO
-  above the impl block already covers this. (Danilo Krummrich)
-- Structured SAFETY comments as lists when justifying multiple
-  conditions. (Danilo Krummrich)
-- Moved semicolons outside unsafe blocks per kernel style.
-  (Danilo Krummrich)
-- Changed binder shrink target from cap / 2 to len * 2, so that
-  capacity equalizes to usage more aggressively when it has diverged
-  far from the length. (Alice Ryhl)
-
-Changes since v3:
-- Dropped the Shrinkable trait entirely - it was not needed for the
-  KVVec-specific implementation. (Danilo Krummrich)
-- Removed shrink_to_fit() method. Only shrink_to() is implemented.
-  (Danilo Krummrich)
-- Implemented shrink_to() only for KVVec (impl<T> Vec<T, KVmalloc>)
-  instead of as a generic method, since that covers the actual use
-  case in binder. (Danilo Krummrich, Alice Ryhl)
-- Added TODO comment explaining this is a temporary KVVec-specific
-  implementation that should be replaced with a generic
-  Vec<T, A>::shrink_to() calling A::realloc() once the underlying
-  allocators properly support shrinking via realloc. (Danilo Krummrich)
-- Changed binder shrink strategy to be less aggressive to avoid
-  shrink-then-regrow oscillation: now triggers when len < cap / 4 and
-  shrinks to cap / 2. (Alice Ryhl)
-- Removed the cap > 128 threshold check in binder. (Alice Ryhl)
-- Fixed commit prefix from "rust: binder:" to "rust_binder:".
-  (Alice Ryhl)
-- Updated test suite to focus on KVVec-specific behavior.
-
-Changes since v2:
-- Introduced new Shrinkable marker trait to distinguish allocators that
-  benefit from shrinking (Vmalloc) from those that don't (Kmalloc).
-- Shrinking now only occurs for vmalloc-backed buffers when at least one
-  page can be freed, avoiding unnecessary work for kmalloc buffers.
-  (Suggested by Danilo Krummrich)
-- Split into 4 patches: Shrinkable trait introduction is now a
-  separate patch to improve reviewability.
-- Uses explicit alloc+copy+free since vrealloc doesn't yet support
-  in-place shrinking; TODO added for future optimization when vrealloc
-  gains that capability. (Discussed with Danilo Krummrich)
-- Fixed minor KVVec/KVec terminology (binder uses KVVec not KVec).
-- Expanded KUnit tests to cover different allocator backends and
-  page-boundary shrinking behavior.
-
-Changes since v1:
-- Resend with correct threading (no code changes).
-- Removed base-commit.
-- Added explicit lore link to dependency in cover letter.
-
-[1] https://lore.kernel.org/lkml/20260130205424.261700-1-shivamklr@cock.li/
-[2] https://lore.kernel.org/lkml/20260131154016.270385-1-shivamklr@cock.li/
-[3] https://lore.kernel.org/lkml/20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li/
-[4] https://lore.kernel.org/lkml/20260212-binder-shrink-vec-v3-v4-0-bd02f06bf2cd@zohomail.in/
-
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
 ---
-Shivam Kalra (3):
-      rust: kvec: implement shrink_to for KVVec
-      rust: alloc: add KUnit tests for KVVec shrink_to
-      rust_binder: shrink all_procs when deregistering processes
+ drivers/android/binder/context.rs | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
- drivers/android/binder/context.rs |  11 ++
- rust/kernel/alloc/kvec.rs         | 226 +++++++++++++++++++++++++++++++++++++-
- 2 files changed, 236 insertions(+), 1 deletion(-)
----
-base-commit: 3c4ae63073d84abee5d81ce46d86a94e9dae9c89
-change-id: 20260212-binder-shrink-vec-v3-c8c1131efbf7
+diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
+index 9cf437c025a20..ddddb66b35571 100644
+--- a/drivers/android/binder/context.rs
++++ b/drivers/android/binder/context.rs
+@@ -94,6 +94,17 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
+         }
+         let mut manager = self.manager.lock();
+         manager.all_procs.retain(|p| !Arc::ptr_eq(p, proc));
++
++        // Shrink the vector if it has significant unused capacity to avoid memory waste,
++        // but use a conservative strategy to prevent shrink-then-regrow oscillation.
++        // Only shrink when length drops below 1/4 of capacity, and shrink to twice the length.
++        let len = manager.all_procs.len();
++        let cap = manager.all_procs.capacity();
++        if len < cap / 4 {
++            // Shrink to twice the current length. Ignore allocation failures since this
++            // is just an optimization; the vector remains valid even if shrinking fails.
++            let _ = manager.all_procs.shrink_to(len * 2, GFP_KERNEL);
++        }
+     }
+ 
+     pub(crate) fn set_manager_node(&self, node_ref: NodeRef) -> Result {
 
-Best regards,
 -- 
-Shivam Kalra <shivamkalra98@zohomail.in>
+2.43.0
 
 
