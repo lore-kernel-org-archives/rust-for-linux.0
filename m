@@ -1,78 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10019199FD3;
-	Sat, 14 Feb 2026 13:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500C423909C;
+	Sat, 14 Feb 2026 13:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771076241; cv=none; b=Ogd7IsaJlvp/pljyKf69x+0D1JvZVBhr3RAkYTi7au6+fERvHxcWu0JrLyRIkTkUmjwGGG6NVxV03oRbr2pl1HibM4z72puWQAY9+ofhY7e2q6rnoJZ6wLV4WYPT0+Zs2CBe4lzcdooVigu+QyfYYCi05cSrjGqCnqWEUjfbKA8=
+	t=1771077109; cv=none; b=V3NCxNOLVVR87TSHknh8Qc7Wauxzcl6dg6aDWtWDu6FMUwDDR4NzZDY6kzdQRt538ipfDp61Hppy2k9gq/tHF/rSC2WPhpgURhDUnl9ZXyZCVUqvWxEMd0E6WcDodufJ8DxwhDCfaJ5w7dFHRDLmReUQGiZSJKqHbNN+l7D6qhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771076241; c=relaxed/simple;
-	bh=yNVW9B+oLx2LhtKcbKYa43ZZHFG4G8setMR/LNuZ6Ic=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=s4+GED7TVi+PlKcdyd9YgaoL3GL/SP0LUhbYpVDnxS/64kPGnh8oLkKmzBPZoBdZWNdSNj+PbYfguEhS4W7X8GS7XB0DcgY+iXIwjyPKccWxV3muR66DL8lY7CT876JKNLuK3CUirn0KHvjzsjZmqOJOflUgd4kB10ttGVujB54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diDuaJDT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771077109; c=relaxed/simple;
+	bh=XDLLgoR3nEKyxvRWPs2m6A6yIOW1JmDtWwcJrb9VKUs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ImWlHN7MoRpmzN9/wNZrI7OUH2uMf1xJMmI4e+/R1MoQ4Tu01qlH5q1NJu3lBkVVGsrKUFTQlghuk1a4jxherapFCQD94YPICarOmCPywzi81eXFiKqAghWnBSEUL3/Yt39p1ZY1p7tt7DR/idaAfQRu4E3+vpLTV7PnvWHo9zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DOBSAx0z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diDuaJDT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98CDC16AAE;
-	Sat, 14 Feb 2026 13:37:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DOBSAx0z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEBFC16AAE;
+	Sat, 14 Feb 2026 13:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771076240;
-	bh=yNVW9B+oLx2LhtKcbKYa43ZZHFG4G8setMR/LNuZ6Ic=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=diDuaJDT9DTxkJ3k3ynwgw7uVpnPYirtXlUN/meus/zCm2Kkg0G31zyhNtDyhhGnt
-	 o/dUHP7zLddrGwag1uNniv5IrmUx32iIVisqe1D83aEfM6jp6l+s+rcEMmPhah2gqJ
-	 OLZhvlYF1KJVaD7AiISO3Wv7+HTLTtUmkHr4/5ca7k7XL5aHh0umYAc+jiZ4NUi53B
-	 1HQAsaXlRwuoftIcmZ/zzhwPDMI1t4QRsTv4RrgFl3pHSBU1yt7S+w8PU7/XDqxr0I
-	 Yu4s4NGOLu/Qin83yazfcvKes+AUOt897V0MnaHx5lVpHHw3brDYxMlP0pgYyXLAOw
-	 qSbOUDK6LTMtQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: alloc: allow different error types in
- `KBox::pin_slice`
-In-Reply-To: <20260214-pin-slice-init-v1-1-0b174fbb1844@kernel.org>
-References: <20260214-pin-slice-init-v1-1-0b174fbb1844@kernel.org>
-Date: Sat, 14 Feb 2026 14:37:12 +0100
-Message-ID: <87ldgvsayf.fsf@kernel.org>
+	s=k20201202; t=1771077108;
+	bh=XDLLgoR3nEKyxvRWPs2m6A6yIOW1JmDtWwcJrb9VKUs=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=DOBSAx0zrxnotiCOk3Cq+XAnEEjB7n9F3/oDQawEAw5bulW78pBx2bxb5XNS3hRWW
+	 3UBhVZQQ0dn9lw5SA8oMqs7Y8LUaI31zDYS3kVJx4CFXWUUjUvkB21VN9MXz4uvh1S
+	 FPZ4SsqmkSOInTAJBx8RpMv9obcoC4GYFanfHQyb8wKvCJpIggBljci8c/qBhJpkKN
+	 /FINjMMvyaQ1m6nc5l+yJiqubUAjDNCqMNTPyut8iC9hs4fcfw92KR+leyvB1NPES2
+	 AP5dXVf9HNEy6+KRNgmpdcsh7gx/pLwlFrMI/pDqr+1XcUqdWmNtjk8+NHOiewq2ES
+	 xd4Lj8yUIcp/A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 14 Feb 2026 14:51:44 +0100
+Message-Id: <DGEQFPUDVYZB.2DE9JW9CTR1T5@kernel.org>
+Subject: Re: [PATCH] rust: irq: add `'static` bounds to irq callbacks
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260214092740.3201946-1-lossin@kernel.org>
+ <DGEM0E00MCEP.130GP2WIISA3V@kernel.org>
+ <DGENZNRDFU2U.34JH68EN7YK04@kernel.org>
+ <DGEOG8J4CF1U.3EVS9UT98ORYF@kernel.org>
+ <DGEP3X3WQROR.26BFH2XI3XO0R@kernel.org>
+In-Reply-To: <DGEP3X3WQROR.26BFH2XI3XO0R@kernel.org>
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+On Sat Feb 14, 2026 at 1:49 PM CET, Benno Lossin wrote:
+> With a fixed compiler these two would also still compile. It's just that
+> the callbacks will only ever be called with `T: 'static`, since that is
+> a bound on `[Threaded]Registration`, which stores these functions in the
+> C side. So from a purely no-compile-error perspective, 29e16fcd67ee is
+> the correct fixes. But from a "good API design" perspective, we could
+> choose the two other commits.
 
-> Previously, `KBox::pin_slice` required the initializer error type to match
-> the return error type via `E: From<AllocError>`. This prevented using
-> infallible initializers like `new_mutex!` inside `pin_slice`, because
-> `Infallible` does not implement `From<AllocError>`.
->
-> Introduce a separate type parameter `E2` for the initializer error type and
-> require `AllocError: Into<E>` and `E2: Into<E>` instead. This allows the
-> initializer to return a different error type that can be converted into the
-> final error type, enabling use of infallible pin initializers in fallible
-> allocation contexts.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
-> @Benno, I would like to add your SoB and CDB tags.
+Makes sense, I will add
 
-It just occured to me that we should probably add a zulip Link as well:
+Fixes: 29e16fcd67ee ("rust: irq: add &Device<Bound> argument to irq callbac=
+ks")
 
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/.E2.9C.94.20Constructing.20Mutex.20from.20PinInit.3CT.2C.20Error.3E/with/567385936
+then.
 
-
-Best regards,
-Andreas Hindborg
-
-
+Thanks,
+Danilo
