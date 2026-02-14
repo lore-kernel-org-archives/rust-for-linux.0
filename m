@@ -1,64 +1,73 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020078.outbound.protection.outlook.com [52.101.196.78])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020086.outbound.protection.outlook.com [52.101.195.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A7A3EBF3A;
-	Sat, 14 Feb 2026 00:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2700142E83;
+	Sat, 14 Feb 2026 00:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.86
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771027988; cv=fail; b=XKFG9fNxj6iAWMPXTtQJRyH0l3iioVMgFBvo4MCaIEsQq4VVtigszZKcslrb7n/YhlmKXkAq5bdxHNaGqhxnwsDDKmA/hxFD5BQc5qM3rrdOoX0jUOkU8QtwhlIAEneGs+aquvXSdLa+Rvwb2fh+GFXiZulltANSvgUnMibBiUs=
+	t=1771028343; cv=fail; b=nV95kPoMx2yR1WRK/VaGT3kCB8w893eDRSKzeZMs5xFW3rXfQ2X++bYkyzzZuy6fksJlp/n8AO5PrgjdUx07lO7GagzZDrBZVHo5PkkTlz5O0E+e0E18NBVynBAwmH+eNblZcNWqMrXAnLRBY7VmZEmmcJmnDI1MhzSBqbMZwDM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771027988; c=relaxed/simple;
-	bh=yYNuxZNIUntp/SbZxYysBaKf8faJ+TnZHLjQjeGNHfc=;
+	s=arc-20240116; t=1771028343; c=relaxed/simple;
+	bh=+5dqiy0EH4mIikw8hfHSWFJZluwvwn7gQhUNXul4RBU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:MIME-Version; b=vFc/6A3nB/SoHZ8PdnFM4LqF00iirJYkLPM/tAzAC6oa2WWfBZ/+tGiufAb+ua4/ia4zRRbb3cwVJCcX5zolVoZAYSUmDOHbdCE5TIM+vk3eFaTx7f7vsPaHp25gPUlghzHV1OGQdhW4rlf3MgsS4bhrk8QEb8TcH+Zx0xUj5tI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ob+4itmY; arc=fail smtp.client-ip=52.101.196.78
+	 Content-Type:MIME-Version; b=CarHYjO3wy+YpjVufxFGZ31WfKa0nrNFrJx6LGLe/TWkrrgKsm5JLvyZNdEtnfLtK+3Hi/jAi7meIcHxy9maltgooMVp+HWZ+BnbmTqywjOmpZKfSVV+EPye78ucKrlxFR628KTHATLB7D+dUwDZq9Na1phxLLDTtWprGAcnj5Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=wrD5grnh; arc=fail smtp.client-ip=52.101.195.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ob+4itmY"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="wrD5grnh"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wjhZ7JFpBMWD/sR3RS3bxy4GQ6FF5esEXRXf8EJXwTtTUhZQxjv/9lr5XX/HLq69MyEppnIpU/kbjhGBUJMPalRbK7ATN9QsFVzYKoYwF9KmAYwQAA0hWFmzv0MDMvpxq6EQICHgdOkwXT+LfT8em3NOHVhx0S+qBwk7ctZhjeZHmBLqBl+aSv/tmVUmAU+MAgmo+Heu8/tgkArbhPoepgBElCV88dE96CkNxwlbSxbPxI9OHkJezsBqhFt0ANqkOHeQoNNX11CuM1V6OUhKQLK98B48aiEInnwtpkrCjb7q6cp7W0ulZGXnu4sIz7X5uW5T7rQ80Stt4SrplYJ5vg==
+ b=o5b5bspdftZ6taREPLJY9gDHXHAYENdqzlx2UTc6ZLjdqGKVdltokqKUm2H02C+JqCoUxLbqJIBy8b0SYni+fy2VBBPVLPaPdKJQtB88hNl9YsNCss9hOHmrtiAH/LGWJ8hEenVafdCO0lKzVIZpEjld6swofT5J1aTxOo6CyxHuTvyy+cy13xC00OZATHGuqQvyHWx7UpjVAs0oE7MzgmUrowvro1xLJoFGnmGkK98liMsSzekJjp88l5iToTnG1KyIBSPLOgNg6On8y3siU/MiyFAJuGq128JvnpuGv72/ZH8KNj7IrK7ZwpeIlCgBonpb0NaJxx9IaBcMULSU7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BVIHdd1mitMWxxgc0rEjPW/e11AvcBQK9TDDPjEgiTQ=;
- b=i4YkxS8vMf6DRac/F3iXyjfQI8nOur/F2WU3B94lH1QWyt+tWpRZ78F8wqsWqFphDtsjcYsXT2IstqoYMx+GPCv9+2ohMaMkKIgdDuCIRyBC/c/F3ml/3wMgxVP8iMepfVrp3TASMQSTsLUOAh47WYAF+uVLFoSV2TMGaWDKpm8kmgr6In8WkrV6iaDySa4LXLzDH1OsViS3JezQWOqdt5zutAuObUUTxTRr73QVEs6sAhgrilMlX330GrmaCxM67LUqniJ8m1ZpkWfkBGRJIvNo90izv8guaSBmbbhzfq7G3VK6eURErxjuqvXdzljygdCUffcHigXvVdhZIqqtIw==
+ bh=m2rxC3jtDVjlJC6Gw1QEHEMWcoHGtIqUt8uWss3FQqE=;
+ b=whi54kyrz1ej+yWanZA8CmktQ+rDPXyM6k3hbFuzv+1ZWu8a4VvJZoJUdD2RpJ5Z2rOh4QDuBU784aovgJD9LnElAeR8lrpI/+MY+D0Ru4UC4WItPDiPlNzb/QzUmN4ZEDPZ9wd5EqB/IXU35O6Gf/zOQBu8au1YQuG4dj1EKJdGYwkLJub9mCKoxHZdLPpAP5fmY8Mb1ZUEMz8UJyqc1CJcd4tRaq4rAmaPXvtJcPed+kjfmXV1jDxBs2SCf2S7yXFqNlzlyWx62OhOjAH7PML2JhzIvqdbpG+kj609ocqSNPh4W1leeWoyIQ02OWzditOkQjMYZH4tEa8Fqm1o3g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BVIHdd1mitMWxxgc0rEjPW/e11AvcBQK9TDDPjEgiTQ=;
- b=ob+4itmYZfPNCjI2mlUYOTXcnloKrTK6MhtmKJ+fZ2/MQ/OHFqanDMHBX63vjZXB4KTr/m8nnivHhmuIt6lnUlxf+m7/9Vn6OfVpVR4bohGE53NQdhUWn+0Jt+nxdC7UTQAI3NfSyLxQN1TxautygGJzxgoyUJ1V5C7wjdXmpFs=
+ bh=m2rxC3jtDVjlJC6Gw1QEHEMWcoHGtIqUt8uWss3FQqE=;
+ b=wrD5grnhr0u2HB59pXaaWwsrElduu7LM+oG0wWtUrFmZuzMZs5Jw+Z0eEha2QaFdVyASwx7+2FIVcNlldvXEwb8aF5K3/uW7XU26Pp3BtkPNLgeR+CD0PxdaYYfEJNeRnCyIz8+p9HP4L/V6LubQVaGVv1+9dcvLlhnhT5HhYWM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB3083.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:184::14) with
+ by CW1P265MB7675.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:21f::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.14; Sat, 14 Feb
- 2026 00:13:05 +0000
+ 2026 00:18:58 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9611.013; Sat, 14 Feb 2026
- 00:13:05 +0000
-Date: Sat, 14 Feb 2026 00:13:04 +0000
+ 00:18:58 +0000
+Date: Sat, 14 Feb 2026 00:18:57 +0000
 From: Gary Guo <gary@garyguo.net>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: impl_flags: add method to return underlying integer
-In-Reply-To: <20260212-impl-flags-inner-v1-1-1e2edc96e470@kernel.org>
-References: <20260212-impl-flags-inner-v1-1-1e2edc96e470@kernel.org>
-Message-ID: <b3388ec6cbd8f42532e876737e015e15@garyguo.net>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Tim Kovalenko via B4 Relay <devnull+tim.kovalenko.proton.me@kernel.org>,
+ tim.kovalenko@proton.me, Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl
+ <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] gpu: nova-core: fix stack overflow in GSP memory
+ allocation
+In-Reply-To: <DGE8Y55O5445.D6KRXL724153@kernel.org>
+References: <20260213-drm-rust-next-v2-1-aa094f78721a@proton.me>
+ <DGE5NO2W48YJ.34YKFNI6VS63A@kernel.org>
+ <e6df0b7ebd86d0c84ffd4b15cee15716@garyguo.net>
+ <DGE8Y55O5445.D6KRXL724153@kernel.org>
+Message-ID: <1b7adbcbb4405fdc3e8ea7d3cc0dc526@garyguo.net>
 X-Sender: gary@garyguo.net
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0174.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P123CA0143.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:193::22) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -67,133 +76,125 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB3083:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09fb383a-925f-4b98-64a7-08de6b5dd325
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7675:EE_
+X-MS-Office365-Filtering-Correlation-Id: a3a0578b-e7d1-4dd0-cb9b-08de6b5ea5a8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014|7053199007;
+	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XhBO6QzLoUZ9wZva9DTEOE+tine7XG6bxOrp7e0HX1KudnWZNSoCS7O8g/Yq?=
- =?us-ascii?Q?uA1V2kstH1KKAQLVNdcUjk5Ar72gQw5wiAhZKNIf9zsfNmFdhqV1sE0Bply8?=
- =?us-ascii?Q?YNIgKu/Aw9CKqQaBsKviUtbSXhmPCYGGpDY7MZAaoWItvfXZ2Rgsj+6ka7+2?=
- =?us-ascii?Q?jMhKQkQnXyTpB9v3EpqB631WiCv7s+YXmt8+6PJJyr9KQ0JvC9vaKlAuje0t?=
- =?us-ascii?Q?9uudYHbJ1Dldt+FGRNxTKX+ZwH8LtW1LeE1F7brfHiGT4rSVO1AAPOaDWacZ?=
- =?us-ascii?Q?E0aQiXZ/OpNLnp+Y5SYHNf/skk+GJnZArHlA65VpWdufaIXXrYi3LndMxXaZ?=
- =?us-ascii?Q?rmL9JUvy2D9j/RB2x14O5nvjFw07KbmkFbP/+PA4TQinrIMF9IHsMDf0oeKU?=
- =?us-ascii?Q?4B/zaTVJYfs2x/Y9Km46DzsSkSlRQBD8bT6BLPPVOW63/vZOVeERO6V49pry?=
- =?us-ascii?Q?By88pCnw79eweboVneHTh6XsBBlvSNttxD5ZSVDc+Y/NkOcxHUYLysc5JhEG?=
- =?us-ascii?Q?ksr2UlBBvbexw/vLMh0aVedQvKb+BERlnEIF59PhYnURe3c9TUk1WZpwZxau?=
- =?us-ascii?Q?3l2Hkm/DTk1OFJY47DmyDWc/R9NpxOk5+5Rj0RsHAwDcDGbA8G3ucH6Dbved?=
- =?us-ascii?Q?P6SWgwNEwBJVkQ71ruGvtQ5VTV6oGnSivEOt0UKZ1sTkKUGNs+pbtLF/5Czj?=
- =?us-ascii?Q?kKzp4lTeQrluXzWRi1E89W8cUIJiHFtR2c69e/EtKzQrGAOUQF3rvCcu7tUF?=
- =?us-ascii?Q?RNHcOUgcesuEami2dQo4BDNToz4LQpYgvqaDMptwGq7jnP9VG1upENz3aD4E?=
- =?us-ascii?Q?A8KspcoDs+SPfwECeOZ9J+YL6Z6CUKVJ93jFcSPnC0qzv8fEfKL0dXH6eaPl?=
- =?us-ascii?Q?mXH77NiJWOhY/qT4vydfoPu5RW+p3uUUJJgxUWSMUH9NlCjFpBxgvXJMY7xC?=
- =?us-ascii?Q?5DCLymgdkA4SK6wlGdOOb9vdkVFKH1tUMMtnz7nu8fv1UrpytggZ0BXIuZlB?=
- =?us-ascii?Q?hPVWFBRnpFjQHiU0plhlyEMCtNx4/hnW9G+I27VbnZGjhs+I70HNE1XIsxt2?=
- =?us-ascii?Q?7I6ewSOFvp6i3FEaFBEcSyS42wyPUeJQSgCz53bQ4h2yApkBFWlxmUCckIhT?=
- =?us-ascii?Q?xJbb9/LdmoReX6Bb9eYAjsdaCBinaACRFAqLk2GxYkFEC7aJgUR3suOH18PQ?=
- =?us-ascii?Q?6qpeGTGZR4fCQ9olcmuKktMKdlEIdA/wacPyDpYLM5lezK6JOJsd1UBPddrt?=
- =?us-ascii?Q?ZoG8VNyS0Dy/HdwuWRwD+/YVFP+eUnYxPJYsopAZcqGk1qxEbz4CscgJf6rX?=
- =?us-ascii?Q?z2LRFrmol50ffP/Cdz0KREEI6mu9jgSIjSbPmZcCFnnpgEEKMdom3alG8mup?=
- =?us-ascii?Q?FzpouEjrCvAf/FC2SHQSaP5YARjHbAFeplmZ2XXWz9/294mxFyDI/pz7/jCI?=
- =?us-ascii?Q?rF0uSed3I7g+LwvNJzoYjL9NJJT7UaF4jqcpNYQ3innxUai5kYFhhthWme/u?=
- =?us-ascii?Q?RgsAcvJI0YNx44tX75oF+oZsAc2eLBjlJE7DZxyFWVJ2HDWzq0xD/bFYyYVv?=
- =?us-ascii?Q?mvFYMm2uhvk2kSkNnSQ=3D?=
+	=?us-ascii?Q?qCqRCmCqpAIxcl66C3voXoC3n3PgdwwETvOxD261j3WUmAs0NrvIR0urmO8l?=
+ =?us-ascii?Q?KUDI+Yp1yvdOsuZ+SknetrDJtqDUDWk1HZOCvprzB3lw+nXihdrN1PLIOXqB?=
+ =?us-ascii?Q?m+gcBV6kCHk5JHqI2m5gLll0q/IJy4WGH2bqUMeH55+Tl8R529oSgtsBsUmU?=
+ =?us-ascii?Q?Bgo8ynzky5urVEohaiN9TcIaOJtKt+jCgbnoPXMaJIfTpr3rxvnTDzGBuKOD?=
+ =?us-ascii?Q?XtPym5zICe15OXP0MoOyg3rXmlOnOJ05tqTPr6Vc3+eYuQF+iHvlOKmETGjc?=
+ =?us-ascii?Q?TMjnxJJIgLAhGo9OeLjNZR1ClpTW5fRBmtYTFFjTmGv403aUb9VfPD5RX10y?=
+ =?us-ascii?Q?o0M1KFU6lEbROCtePdiQfSd47JTbNyR+1i/1RYXsfK3WTq0BaSev4FNInC7u?=
+ =?us-ascii?Q?VK0yQpcroD/yvha9E0EnIKog/2zhYqup3r3y7UUBHulV1E/PFjHLskB70UKh?=
+ =?us-ascii?Q?xjx7Kd0eMs5WOt3dQ/PTn1aH8VBgjMX+cgXXWZYnYjah5h1kuWGKDMkPDg9W?=
+ =?us-ascii?Q?7KiC3vqDQVUsTdqUUokNurmvZawstRGIQouNyXTNi28sotR8ZnSoE4ykjH/d?=
+ =?us-ascii?Q?Ux9TDaJEAYTZO71P92Vm1NmDNZkJKhejjqKABkikiDXBYt9SuP/uXylk5HUQ?=
+ =?us-ascii?Q?8Kc9WSkDY7c7M+q1msmES+3bFiRE5Bn9JqBXvtAH6pNo1cYC7do/LDMlTGlX?=
+ =?us-ascii?Q?5nJ4yCYR0jLl+NrOTsPe7TleUXaUpWCc/ilYMBdbT/HLuFgyXCOC8LZl6hAO?=
+ =?us-ascii?Q?AUYNHKlQACKUdLfNhxPtC5b2PzJu/gbey0YrXxXUffT5j+vwl3Ld4Rm2LoQP?=
+ =?us-ascii?Q?/CeoHmwQ8Bl5XwtnXZpoLjPAiUOc5e/f7iKafzzGvXIcZ9uhKBj9dgi8u74q?=
+ =?us-ascii?Q?pHLMCA3Agfs0paP+pVHS4gjFsyXuNsFygaAHtXMz2hNeDAhOgzI7/Bn8Vv7G?=
+ =?us-ascii?Q?hXKA1/lCreC9ATvi9+eY3vMIkcmX/W7/5knFfsK2tq7dl54JhWe8OCmxkEpM?=
+ =?us-ascii?Q?PD1Yc7nRMHS81eyGOA2nny8dvhYwz1um8pLu2H+YmCP7Zye73mLDdrUz4PL2?=
+ =?us-ascii?Q?3HkUytUfKju/Ocpme582wyDFaLm9P+qru+/R6+zdsoFaPA8mF3MvSLI2YB0w?=
+ =?us-ascii?Q?ZvC0fQe2ZMwwnieZGWm1qJDXqp6Z60Zx36u7rsbmEhXNrpIN7y3DYCUKJrc1?=
+ =?us-ascii?Q?z069ekbQKU8H76nLjNFUL46yndq4Nod0VXaf+b/yn9LeCjXTwsP0Q+S0iImd?=
+ =?us-ascii?Q?z/qrJRSiLRtot51wABaJ2bJqkeBGHzSAUyEdH8c3Rc4OszoVTu5BfcF2796a?=
+ =?us-ascii?Q?YuXRRpFgnNP8axpYSkf/4PDVb3zz/Bb8tqsxnzH1NBWEzG1FNYHsnJR/w3tF?=
+ =?us-ascii?Q?o4A/IA9ww/goIXOVTuldbGjjd4/TttBxXPSyKqS081ab36LdznVUlYImKiBN?=
+ =?us-ascii?Q?Ik1PmYTYXrjha9EphOfv6fQi5yZuDNfk5kare0T/7HUKFKoSP5NrQlpzFRRJ?=
+ =?us-ascii?Q?hjr+8r7zjnG1zTQ=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0llpPKh086gJBMCZ+kpi15Ne1qqdpIDRFwKyHjtk9shbJogHOxljS9TjEw0z?=
- =?us-ascii?Q?ia3dro7FUoWZzYN6gFWuSWMvPzLPy72VQ5GqdDoeLk1DKe2c5CabPwrfqwMS?=
- =?us-ascii?Q?M/JvoiOyJNmEGizHBvOMGwBVRHFWEjda9Q4MpZXhNUDU1NVdzZgVxJ+mJSEb?=
- =?us-ascii?Q?7AWOX84bLpcHMLR8a0XeLy/j1ydbxrieSghZL5DG2gfWvVeo6PHemKrt5cFF?=
- =?us-ascii?Q?0RYDSBQA+zPAl69JmWsUGdFtU0Bwsq2RdiB1yYcvQr56Cx2rmB4L9UQ1ALeP?=
- =?us-ascii?Q?s49NVp8GLjhFFETNsuMA8+2BRJybx8F6HJzxfEYLSgH9dmB57ix/8leqIK/w?=
- =?us-ascii?Q?WP4d4seOmvZrmRa/TVPAaOePKHeeOc3znYqetRaqNevjZVAg0mz/DuXjoam6?=
- =?us-ascii?Q?xZevRbNiddIEAaks/S+BjJ4+lr8n1PAt1fENuWT8fDRXmGNtEqjZOygfGMEs?=
- =?us-ascii?Q?QHOE3lXYFOWPfrvjGLtO8V4M8o706EpLj3wXpGb/TfHbGDmdxLtrwM0giq1R?=
- =?us-ascii?Q?MC05WeNtj4mw4dq5i+pIgmCBo7aOKHXbddqu7igDhrT5hla9IwFP/x0wgdPw?=
- =?us-ascii?Q?NM+E0KQXhfHY/2OJg3Le36oGOCCEtxYFwym5NxTaBiB5w0udo1cYMOYv81ba?=
- =?us-ascii?Q?3XXAIwibWylqRc9IJ+Mr+KVFFSE96gsMf/LCS0HR8XtN+qu8+D+mRKJxh30w?=
- =?us-ascii?Q?AsW67EKlUwT2suer5IeuyScGJAiSS/jmxqH1PhOl2dQiyUwsu9c/o9iJlWVv?=
- =?us-ascii?Q?7/d0b9Rpeyg9AdCBPWI+gE64ugNmTZnigdOM79AKBT8VpcAXYTB687acEyY0?=
- =?us-ascii?Q?MCHGRYYFMTYnwKaoByGa9kFFuQoBPeKlGHJ+/SlNR6/AB9ZT/4WmhjBBY+YX?=
- =?us-ascii?Q?2WoqtEcC41tOt2vdbKnDHxeWMHkLdIC/zUnpeSMqxfxJgyJPSGYDkKlrWoKp?=
- =?us-ascii?Q?9tADQ0ylf/UPy3yI9pMTMYoxyAwUt3m1ckBxpHcRop+Kd24thDNIoXH34L+v?=
- =?us-ascii?Q?HBnNPbEI/Aezill7uIIshLO44WfMocwf/NsoNNuK79J69kCGYygpctqDFR/6?=
- =?us-ascii?Q?H1h3+eR7IVJAeiuDjcrbgcNA8aiErAQqPzs1i6xIiC/djnfFhppTg5IeiRON?=
- =?us-ascii?Q?ikHx2+Jb8QGazzqEO0tPjSEtRiNSQ4sBnCI0aDNxBu7HBDV6zUu1zbmj8KO1?=
- =?us-ascii?Q?tJejFD0HxfFpw6sr3S9YGZVZQ8K/ieoV9cMRbursNPDeB/6o2PphRE2x0dUK?=
- =?us-ascii?Q?kNiHdkleKhcimRd9VGOUiOgymnNxrVX9VGCFBAaIFt9Mc/HG79gkjRQ4A+ci?=
- =?us-ascii?Q?Vmr/CjmoRpdR7RZBNsTg0JaBUwwv1dHrbyZaIWXMcfBs02bphyKy79qyGl05?=
- =?us-ascii?Q?st0jz3pyj60C5FTeYLN6eecZuWY7Acp5ZSxGdj/oInlMk6uXEtipcc+tKW0u?=
- =?us-ascii?Q?62mV7XIMxbfCp2xYARlYjHw9TAQvuM1+MxrF/1L3iIXO3bptyHX92FnMMkL5?=
- =?us-ascii?Q?MkG/QVfzEdRwF8WZx8tLJIoGsjNaSWXN7tdn42q+J6SgLVEL4Y49ywmo81uZ?=
- =?us-ascii?Q?aIBmDzRlWBl7jLmcg5iTDyAd8ilPPfsh8oCN0h6NfK1wjWUG3o8VlCqgoXfH?=
- =?us-ascii?Q?jQQ6Og+g38kMzHv7BhXQANIDfj34vhiUYPNqGVMu1nco4tnh7b+4PbgZCSVe?=
- =?us-ascii?Q?ADI+HtwXXdZiT3GXK74vp0GE8v8EuMSZMJTuRrKDb8xkfeBf6GTGSIYcA7+3?=
- =?us-ascii?Q?UUHpwyGhEg=3D=3D?=
+	=?us-ascii?Q?ARp0MoMJycCaRoO+vNTX5BIUGvND2cUUyNV+agv+wBx2q2EemndreVAbDC/6?=
+ =?us-ascii?Q?KOch9AxSm13kclXcTnDUCjx3JvbGhjx9Fxu8cGnW+Q7aN0iKWMM9Z3CQQvnM?=
+ =?us-ascii?Q?pgMqIqlNO8mMugH79hYqdf4IcPgEq+f7SpnCqzSBDaxK7UoP3fkupp+qX4GP?=
+ =?us-ascii?Q?AjqbcrkfXjM5kCIRhjEAs/oBM/cR16DHiV/rxiSJXSIXHnT8trw72PNRV5Y7?=
+ =?us-ascii?Q?meMm3Ks57NfuYi06F0ztxHW/LhEqu6ei7Z/mD6lyLEZozSY4lSV6DL1S1s4w?=
+ =?us-ascii?Q?/W3Vca0pQZZfb/zCB2QERiwuc4D4ho2KMDX8wH7GNabEaG6uHqg8Ht0Xj1YQ?=
+ =?us-ascii?Q?j803UG59oiSmPeCdkyb3TaiewLfjCOcwmkUQEPlCY8MWxdhhN7ERrmZG7Evw?=
+ =?us-ascii?Q?Q8q0AX+TKW+PsZgMyC7Zlo5yWByFBQQ28guQVeAoeBNTL9GeEXA0zKYka9O+?=
+ =?us-ascii?Q?dLhzHKf/ARBk+P5QF1q2Du82NWfH4v/WAxQRc3yIFJkQgAvoyXz7nUpy/IYP?=
+ =?us-ascii?Q?W4A2fjHOi291BFrxTQTueCadF+HXCs+e/BOU1zeDistd173EgnmX/xFIi4/K?=
+ =?us-ascii?Q?mmenqf0htk+EUAUFFfV8RyuwqT71nJB0Nl5wxarbG1XiO7VcJ/PXRk0h8LfP?=
+ =?us-ascii?Q?yfWRLq1qgjE8PyRYPIT8cRcS/3uYjI9VMmZWH43bmrbHjrK5BidosMv/Obbq?=
+ =?us-ascii?Q?eykCphoaGtx/R+xqrvmpzkexp0uvgEODZnJ0Wen8M+WqRC+Y/NdoltLPVO++?=
+ =?us-ascii?Q?yQTWwGTELxXmid+0Y6mA5EBD/fA86K1FK/cfHx0l9bhXIAhEloXfUVeSldUz?=
+ =?us-ascii?Q?tP/1mjq/vPDrnBA0mTzVU9VC/6TK+cLHSGDKN2ZcFuxDu1+/3ZhZZ1hX5tTG?=
+ =?us-ascii?Q?+GzS/UQPWwHleTg0EJ2Q4mvGBXc8GneAegZ3XVmT4NphY1Psdr1p7lAAX1vB?=
+ =?us-ascii?Q?dpwpF0GbSevUieUpzu1huTIAaPqKt9GX32smBAfLU4WBsBbZnCq3AGaQAQgK?=
+ =?us-ascii?Q?3KjlLFERu7ysSIj+XIAPLbL8EnKNSgo8/tIW7K1UN+csd7znJYCmd/JCVp/6?=
+ =?us-ascii?Q?eMCQFGqYDwWBTpSEzIc0i+4Mh0Oqu84GWL9IrAJJgVUdmS0q57DNjQaNiYqp?=
+ =?us-ascii?Q?szz13Xph/A/tdmykHjfCmM9mrLT/8DDkzJR3DxZR7x65jNwHxyQf0uRda8qn?=
+ =?us-ascii?Q?SVFwZ+T06rVqw48J3u3YAQJiqhy4fPP+nCC4Q6HAA1IknFR/PXFnrS95Lqs4?=
+ =?us-ascii?Q?kIdmhzaxisIqpo1HC/iTQkUvi9dY3ehgHz9YvwYP2EZBOOC704HyobUbOBaH?=
+ =?us-ascii?Q?bHraKP18/E7gYKOEHFBaNhRG2MCmJwygIH8AHLQJrS4+NAR7lYKxKUUWtrPs?=
+ =?us-ascii?Q?i1q72WuiU6VZmRiDKpE/r2XzpbqesWRUMumdHsIyfOuYt7Q3MoZf0nNcTk1d?=
+ =?us-ascii?Q?afnA2PrIcm77/M2N7ARUY1kmiLszWiUeT6KXkSOws1oi30f0WzXVW63tRSAz?=
+ =?us-ascii?Q?fZSkfN8ErhnXcvmmQzCeSFYRteN3pij6Og5uaYPmG+dps94PZMRunLPyqLe5?=
+ =?us-ascii?Q?4/VHP+83pSojIlISsSxv4z7uqIetazedHjsJxqkVvsxY4vWpllqTytVWC6Fn?=
+ =?us-ascii?Q?7EJNK6M+H81GyGjhnOO5g9sYO2qrs0ZfRnS+TxEEE22MmcWTwLcTE4EhMhQw?=
+ =?us-ascii?Q?sEet3VMq0Wimjj4qpMxrCpirXfYJz29wfA5DPdV2WyN5tTvCMoNVJTNSa6qW?=
+ =?us-ascii?Q?oL17lxCxag=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09fb383a-925f-4b98-64a7-08de6b5dd325
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3a0578b-e7d1-4dd0-cb9b-08de6b5ea5a8
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2026 00:13:05.2965
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2026 00:18:58.4281
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CkbItXl9hm6QYg20n9fNtdwO9tnKMkSXSwZv8vlxPi8S684qDCf+mC5ZqEQDJXdTDgd+NkEkZxhRirkX+1hXzw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB3083
+X-MS-Exchange-CrossTenant-UserPrincipalName: D2Zzov9igZYgYl+BV5GCOei/NpP8HJSAbn1+gZZzBBOgRCEJm/avRyGiFXnSG2wl8gFmjDnSZninU+lBkzYVqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7675
 
-On 2026-02-12 16:02, Andreas Hindborg wrote:
-> Add a method to return the underlying integer used for flags. This is
-> useful when using the flags with C APIs.
+On 2026-02-14 00:09, Danilo Krummrich wrote:
+> On Sat Feb 14, 2026 at 12:50 AM CET, gary wrote:
+>> If you prefer, I can send out a version with just improved projections 
+>> without
+>> all the generic I/O improvement stuff.
 > 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Yes, that would be great. Otherwise, we can also use as_slice_mut() to 
+> avoid
+> having to touch field_write() directly, but I much prefer the former.
+> 
+> In any case, I'd like to keep the PteArray type. It can at least 
+> provide a
+> function to calculate the value from the DMA address for a given index.
+> 
+> (Would be nice if we'd have something like a dma::Projection<T> type, 
+> such that we
+> could have PteArray::init(self: dma::Projection<Self>).)
 
-I am not sure if we want to actually expose the underlying representation
-for all flags. It should be something up to the caller of `impl_flags` to
-decide.
+I think once I/O projection work is done, this would just be
 
-Would it make sense to add visibility the wrapped raw type so that you
-can do
-
-impl_flags! {
-    pub struct Foo(pub u32);
-    ...
+impl PteArray {
+     fn init<Base>(self: io::View<'_, Base, Self>>, dma: DmaAddress)
 }
 
-to make the inner accessible?
+and the generic I/O projection is used inside.
 
 Best,
 Gary
 
-> ---
->  rust/kernel/impl_flags.rs | 6 ++++++
->  1 file changed, 6 insertions(+)
 > 
-> diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
-> index e2bd7639da12e..951598497de1d 100644
-> --- a/rust/kernel/impl_flags.rs
-> +++ b/rust/kernel/impl_flags.rs
-> @@ -267,6 +267,12 @@ pub fn contains_any(self, flags: $flags) -> bool {
->              pub fn contains_all(self, flags: $flags) -> bool {
->                  (self.0 & flags.0) == flags.0
->              }
-> +
-> +            /// Return a copy of the inner representation of the flags.
-> +            #[inline]
-> +            pub fn into_inner(self) -> $ty {
-> +                self.0
-> +            }
->          }
->      };
->  }
+>> I've already suggested that in
+>> https://rust-for-linux.zulipchat.com/#narrow/channel/509436-Nova/topic/.60Cmdq.3A.3Anew.60.20uses.20excessive.20stack.20size/near/570456463.
+>> The issue is that however the PTE array needs the actual DMA address 
+>> to
+>> initialize, which Alex and I feel that we shouldn't provide to the 
+>> initializer
+>> when `dma::CoherentAllocation` is not yet constructed.
 > 
-> ---
-> base-commit: b8d687c7eeb52d0353ac27c4f71594a2e6aa365f
-> change-id: 20260212-impl-flags-inner-c61974b27b18
+> Ah, indeed -- that sucks.
 > 
-> Best regards,
+> And yes, it would be super pointless to give out the actual DMA address 
+> in the
+> initializer, as it would defeat its whole purpose. :)
