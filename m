@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAF31DF987;
-	Sat, 14 Feb 2026 14:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FC01AA7A6;
+	Sat, 14 Feb 2026 14:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771080809; cv=none; b=clEP4VvmboHVLnzZlVoQmYYBufsf0S+VPOvnWI/4kURknKjhN6JGdcyJi4CXm+8ZVad28vmOMskR109qIgw1Auz8yIOYvwfgZy3eh7/Q9BcW1zE7w+66gQ1L3cymcE7GZlRQCwrkDe74RM2IQbiaVJjlCC6ZQjhfGGTch2rWeXQ=
+	t=1771081008; cv=none; b=lRxu2BiEGycVbT4dkWOpHCaPIb7TPjoIYqEfx0b/fZTGzm7Ru2uqJt9U0pEtD60qqSI4f7IoO0UidxqmnRtRVVm8H8NZ8Mqyjrjy0s4WZtG8kcxv8vv8lps9YbkvK4TH9RSS3PZ9oRbUakdmWbKGnviPYlxPldEhzu0mj9IXa9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771080809; c=relaxed/simple;
-	bh=B84BhG0f7VIWVg+V0e3xhcHAwzs0D8cINdqp3ahQUy8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=T633Z/6xe3T2SrSibqEoVDwnZ/1hUS4Cysu27V6R6AL1upFzTPToDp27rxHutq1yHOtQFeR2BIWZRBoGSYJZefNRVEsjBbwlJuEmRQ0+Uq2jakva2/nDro2XrLS0PZab7OFggUAGWDUVgk3njC55iaKgmGRWJhDf9wEaemgFtIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3BOsUVv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771081008; c=relaxed/simple;
+	bh=yyhrpWQxV+QCcejkqYcg4svwRB2CZp4Bur1FDdI+ZI4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=UU8y6/L8QyZDQUlO0umVgcVJ/G+sYUo73/wSniVjNvn8rUEb3CCLUYerwLXdXuWON6DeK5cXx8raH4jk+TEzu2rEl4BYuLP8txGrztZjet2dIzW5uO3Dph1YQrgmLWh9zUFIuZRrihqMv1E2nvToUtWAvO6iCE0tGtlTqEWoBxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMmkPdiV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o3BOsUVv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AA3C16AAE;
-	Sat, 14 Feb 2026 14:53:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMmkPdiV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5E5C16AAE;
+	Sat, 14 Feb 2026 14:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771080809;
-	bh=B84BhG0f7VIWVg+V0e3xhcHAwzs0D8cINdqp3ahQUy8=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=o3BOsUVvxZY9CnI+6/0hFmHgckZBcUhqk2r+rVc+OTgpKUjD6/9hXdF0tP7eh0xR8
-	 9b1uw9YvEO+++g2T+xDXK6GVf4neZ/ZhoU5adYZNprhv99Ax1K8k+txzTTMP2hY2gD
-	 bOUZy39KEGRRX+TesXEWq+fUUfohD1N7yWDd582hbjF7VMOf1VcxUNlJh7mtBtVtow
-	 igIdexZ2sj6kPestbQGqb4XDahDOmLj0qZ+tdqHXI+7yJZBHgzmI7fTjaS9G/wWhF0
-	 ytTmTtl7NzK7Jo6YiWl7WCUV3OJuK5dGSpyZvE2ZIQrNB1eFe+5svVlVVzIVWGkcIl
-	 7WUJWfxc65AHA==
+	s=k20201202; t=1771081007;
+	bh=yyhrpWQxV+QCcejkqYcg4svwRB2CZp4Bur1FDdI+ZI4=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=LMmkPdiVSYuHg1KxsQfKko2QXJg07n+MTjhEMIKZCGRIOFWXLLEy/gZcNWJzP97FI
+	 +nrGYlUdLohfkModkb57hhE97lTJXLM3KXNSsVxNF9hV7NtT53/Fhz6rffCycep/7e
+	 76o0FQ7L8wtsqjKI8XELHQtTd3OExrkmQBl51ix2nPoyFRY4m8229PzeYofIAf+q6M
+	 g7fq5ZLMuNwvZDwfCwAeNHUN1UTa/pCmmQ/8xQ8mLZK2pwC7aCZQdcbs0rLxtCooiE
+	 ULlL2G0QJWkUGKsWTEkwYa+dseenM6xprpYwBwZW5hcTVTD/PjlapSwnqa9Q9lKcru
+	 NkSu3DJd+FOSA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,105 +34,60 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 14 Feb 2026 15:53:21 +0100
-Message-Id: <DGERQW278SQX.3GIPMUSC46PQ6@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
+Date: Sat, 14 Feb 2026 15:56:43 +0100
+Message-Id: <DGERTGLMB5S2.3OE4VYDYHMJ3M@kernel.org>
+Subject: Re: [PATCH] rust: alloc: allow different error types in
+ `KBox::pin_slice`
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
+ Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/4] rust: dma: generalize `dma_{read,write}` macro
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260214053344.1994776-1-gary@garyguo.net>
- <20260214053344.1994776-3-gary@garyguo.net>
- <DGELM1R9FJNE.30QDHV2IXV0BI@kernel.org>
- <84ef050ac2c2cf858ec766f23d1fb90e@garyguo.net>
-In-Reply-To: <84ef050ac2c2cf858ec766f23d1fb90e@garyguo.net>
+To: "Benno Lossin" <lossin@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260214-pin-slice-init-v1-1-0b174fbb1844@kernel.org>
+ <DGEQZHTOW6FC.2SWNBWY9XE3LD@kernel.org>
+ <DGERGXTEJ2B2.24F7OWLIZZAK7@kernel.org>
+In-Reply-To: <DGERGXTEJ2B2.24F7OWLIZZAK7@kernel.org>
 
-On Sat Feb 14, 2026 at 11:46 AM CET, Gary Guo wrote:
-> On 2026-02-14 10:04, Benno Lossin wrote:
->> On Sat Feb 14, 2026 at 6:33 AM CET, Gary Guo wrote:
->>> +    (@parse [$dma:expr] [$($proj:tt)*] [.$field:tt $($rest:tt)*]) =3D>=
- {
->>> +        $crate::dma_write!(@parse [$dma] [$($proj)* .$field] [$($rest)=
-*])
->>> +    };
->>> +    (@parse [$dma:expr] [$($proj:tt)*] [[$index:expr]? $($rest:tt)*]) =
-=3D> {
->>> +        $crate::dma_write!(@parse [$dma] [$($proj)* [$index]?] [$($res=
-t)*])
->>> +    };
->>> +    (@parse [$dma:expr] [$($proj:tt)*] [[$index:expr] $($rest:tt)*]) =
-=3D> {
->>> +        $crate::dma_write!(@parse [$dma] [$($proj)* [$index]] [$($rest=
-)*])
->>> +    };
->>> +    ($dma:expr, $($rest:tt)*) =3D> {
->>> +        $crate::dma_write!(@parse [$dma] [] [$($rest)*])
->>>      };
->>=20
->> I'm wondering if this also works:
->>    =20
->>     ($dma:expr, $($(.$field:ident)? $([$index:expr])?)*, $val:expr) =3D>=
- {{
->>         let dma =3D &$dma;
->>         let ptr =3D $crate::project_pointer!(
->>             mut $crate::dma::CoherentAllocation::as_mut_ptr(dma),
->>             $($(.$field)? $([$index])?)*,
->>         );
->>         let val =3D $val;
->>         // SAFETY: pointer created by projection is within DMA region.
->>         unsafe { $crate::dma::CoherentAllocation::field_write(dma, ptr, =
-val) }
->>     }}
+On Sat Feb 14, 2026 at 3:40 PM CET, Benno Lossin wrote:
+> On Sat Feb 14, 2026 at 3:17 PM CET, Danilo Krummrich wrote:
+>> On Sat Feb 14, 2026 at 2:28 PM CET, Andreas Hindborg wrote:
+>>> @@ -333,24 +333,31 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<=
+T, A>>, AllocError>
+>>>      /// assert_eq!(s[3].d.lock().a, 20);
+>>>      /// # Ok::<(), Error>(())
+>>>      /// ```
+>>> -    pub fn pin_slice<Func, Item, E>(
+>>> +    pub fn pin_slice<Func, Item, E, E2>(
+>>>          mut init: Func,
+>>>          len: usize,
+>>>          flags: Flags,
+>>>      ) -> Result<Pin<Box<[T], A>>, E>
+>>>      where
+>>>          Func: FnMut(usize) -> Item,
+>>> -        Item: PinInit<T, E>,
+>>> -        E: From<AllocError>,
+>>
+>> I think we should keep this bound and just add:
 >
-> Rust would complain that the outer repetition can match empty token tree.
-
-Ah right.
-
->>> @@ -91,17 +91,17 @@ fn drop(self: Pin<&mut Self>) {
->>>          dev_info!(self.pdev, "Unload DMA test driver.\n");
->>> =20
->>>          for (i, value) in TEST_VALUES.into_iter().enumerate() {
->>> -            let val0 =3D kernel::dma_read!(self.ca[i].h);
->>> -            let val1 =3D kernel::dma_read!(self.ca[i].b);
->>> -            assert!(val0.is_ok());
->>> -            assert!(val1.is_ok());
->>> +            let result =3D (|| -> Result<_> {
->>> +                let val0 =3D kernel::dma_read!(self.ca, [i]?.h);
->>> +                let val1 =3D kernel::dma_read!(self.ca, [i]?.b);
->>> =20
->>> -            if let Ok(val0) =3D val0 {
->>>                  assert_eq!(val0, value.0);
->>> -            }
->>> -            if let Ok(val1) =3D val1 {
->>>                  assert_eq!(val1, value.1);
->>> -            }
->>> +
->>> +                Ok(())
->>> +            })();
->>=20
->> I dislike that we have to reintroduce the budget-try block here. Ideally
->> we could add something like `try` at the beginning of the macro and then
->> automatically add the try block. Feel free to make that a future series.
+> The `Into` trait bounds are the idiomatic ones for functions consuming
+> things. See https://doc.rust-lang.org/std/convert/trait.Into.html:
 >
-> I don't think this is an issue. It's visible inside the samples because
-> we are testing the values, but in practice most users would propagate the
-> errors out.
+>     Prefer using Into over From when specifying trait bounds on a
+>     generic function to ensure that types that only implement Into can
+>     be used as well.
 
-Maybe we should just have a function that returns a Result in this test
-that's called from drop.
+Yeah, but isn't this only because of [1], which does not apply to the kerne=
+l
+because our minimum compiler version is 1.78 anyways?
 
-> I also dislike that the budget-try block that we have inside `dma_read!`
-> currently hard-codes the error type.
+I.e. are there any cases where we can't implement From in the kernel and ha=
+ve to
+fall back to Into?
 
-Yeah me too.
-
-Cheers,
-Benno
+[1] https://doc.rust-lang.org/std/convert/trait.Into.html#implementing-into=
+-for-conversions-to-external-types-in-old-versions-of-rust
