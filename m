@@ -1,47 +1,47 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020137.outbound.protection.outlook.com [52.101.196.137])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020085.outbound.protection.outlook.com [52.101.196.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F931E86E;
-	Sat, 14 Feb 2026 05:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFF9256C9E;
+	Sat, 14 Feb 2026 05:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.85
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771047276; cv=fail; b=GjPy9TjfNUTjNT0X6O2fGBH8deZZCnGMDAYfccRj595ANCi1sOwgIYODtPSktP6X8nyURxheiknA0LrgNhftSn4Oi9VyfMNPxPEV+ACfxfCrZsprqZ9aBe1OVR3o79m0MwZZioYLZ5nS265cOcbjdDL47q3PgMp6kIqf8OZNwUI=
+	t=1771047302; cv=fail; b=KSxOIrI2ILgeUQ6UWMznCliOALm8M9BgxoeZQ/pW1nYVo2FJkVap3kfonrJtaRoN46kOQOfiYPF5H5gTKdIGtowboBJXwe8a+w4MZczBbGEW425d5C+piykfeGJOedKshNEZke6S5ZY+tV4Ua9hDFTdh2eef06R0VE869QBu2PY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771047276; c=relaxed/simple;
-	bh=qsUxxfbPZPrthu8Hni6d7SVvumo7S1uYNbZCt3nm8Ds=;
+	s=arc-20240116; t=1771047302; c=relaxed/simple;
+	bh=NRFbRrCNbkdKfnpEAorGGNj05aotinRUh/lHNK88g20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=l6KfLhdtVoeNwX2ePcpWGA5xK1OhVFpzPMIuB1dXnRJ2RShp3eaHPPczUxWOZB28AxbxCrEKu3NvK1pU9+xuqZydCyCCEhjmRKVAZueeelZuIqQPnxf8Ta0PIYyLzwydcM6uURq/QxHjXhKuSwDLRClkYvSfCct95+KPGZfr3JM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=eq2wTDBR; arc=fail smtp.client-ip=52.101.196.137
+	 Content-Type:MIME-Version; b=ZdVsB37SsX6uj+CdvmvYSvn8ZpoetW9KyfM3RrI24g9ZfXoiC0I1bTN4MUAJYm9ZYO/+FcBobpricHKDZ0bCFdyep1ih8R9jw1BdK/6G4b7S8bHo1nk/P5t8ohw48zb8ht+JZh0WmgWCrNKBD8CFteQbO9w0Id7nKR7uif9wvMQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=N9ENsEaa; arc=fail smtp.client-ip=52.101.196.85
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="eq2wTDBR"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="N9ENsEaa"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hexMENE011Zng0U7HB7kjLykCEZNVpBdCwe/bh2L9u2SsPdDSKlwaz+N9tnL4pt3H5cSOXDx/8Iqoy6hhO7LkPpoZ8qj3faNjGw0JJia5WW04HlN6Ufy6qHaFFuslQqlf0NFX2ujFbB+G3pGos+LO3gZ4D4Ef2nIILlzDylVSxD/foDBny0ofyCBju0JNtsHBHHDWaEbvnD/OiUn7zkaXy3YHW5Drm5Cize6KFXTrrhIDU7eruANrrfkHExuZoinGmMvQl55hQoahDT/TGqG2VxqeiToK01tb6c8RpI9Zd1iqNrBCLxvpb3pLXzLABq4jxxdNWGtHHkOofVy5esZhA==
+ b=fM63RLMDLX2xzBp424knkQxNA1TIVcfwUOQYRqacnNtd4pS5avr6hbZzPdMcHqh5x2ltRYZKOIGJZ7sd8zrr36W0x3lYL3j4xoOgDpFK5/qt6D8aWyE0bVV2Zw0cSha5DV64rx98daqIYCnXi1Ap4ugUlM0Yp+TDZnbrDLnLsl3ElZMCOIbzNhKAjGoBeUfmrVGUC9r5trX1ZWEdf3Q9u6A8qlY8oDQw3Fn9KK9FY8nCuQsZA7mH34dKP4+SU8Dz+gl1imd0y/3OikSObv7hUFh9K39Yl+Eq2bOlLhhkzBMwHy8gVeq27jCTtbSxbWS5se6nJZTMMl/VE8/gSLMJ1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8ozLXm58wmg8LZokSvMcRTCiaZ0h+PdSqkN6X2ONwag=;
- b=VTSXjkqbh/2KsGmMcsrFyVqXJMzq7yBHd13tnu7BFntS1dvrd/plTGS54JSZKHdSphNMFylC4YMBnSdiIecoEVUvXLDIx6sCMTEARTCH+v/l7hVRcfH52U7uYhB8DoOYCrxAZMtOpUUE0tG4RB3647Y2+FhNsTUr6mWnMH8pDuqVcI/+gBrcGuvl3HrkKRnF5ApP0MakNHxjqCWmmi01G7QpRWRti/lNNG0am8GBa38gZ0EA9O05Lb8kDVIYiYlQttEa2pYqzCZLZ9t0whQkGIoKSmW1ivrOfJhGOf2bzIMrm95hYek9a/s4fqcusNEA9SgC0f+dAV7YcHzsZXGDoQ==
+ bh=hYJERwcfLBYwoOqk8H5RfzM4hc765EEvtH/BAq0mpRM=;
+ b=NbhtT3/TkE3yp00qGm4Kd2YT1So1mHBD9MppdUToANVYWdOyuUcGbiZmi9fua7aCwbFm6cT+tZrU49e1MWGQeP4cDjI5BHGKTYC0Q0IJzh+5rpMBnbCVzo13pj/GWJpTlBxnpHKE58C5oQ/giUfyxGMtD51XH9M1WO78yX7aIMTLyyCwwzuwd3uobzNSXCDMrjFGLt6mYNiK2+X4y65aFJDdQyqo0Cc0JbAEDJNV9bZjW7CfHUFbTQoEGiv5/Pgx3UD5uMvZED2viI06KYIcJfyFT4tl0ym2a3hZ33kFPkYmFfaC3AeyNMNfaRdb4Jxq6I6XUK8F0GOvMUBPEVSanQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8ozLXm58wmg8LZokSvMcRTCiaZ0h+PdSqkN6X2ONwag=;
- b=eq2wTDBRGzScXq9taoTh8xivf3eaquSrEg4zZddRmPSEwK7hnbBxft0rxjlQa40o5v1jWFb45lrFg0pgDGh9aX/Z9rv0+fZYh57J51O1Eew5A6VjEmetQ02FueAaeSfklxXyW80zZk8UAm+Q1Nu3CJUajC0u8M8Yn4dBZnHW/zo=
+ bh=hYJERwcfLBYwoOqk8H5RfzM4hc765EEvtH/BAq0mpRM=;
+ b=N9ENsEaamaLxooCVtr7gkOAFDc0RNSoc24xwzYIWWqprJhSiao7SBFkvX2fYo9DGJv8Oxmacz/OTzAjMGJqOrLjR5l35xQocs8DPXjeaMPhaBceXMegmB/xnXoFK3lRRePjIwp/xyo9Ket53dLDt9CX6eyepD/DPvLZEX9E8YXo=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB2405.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:84::11) with
+ by CWXP265MB1781.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:34::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.15; Sat, 14 Feb
- 2026 05:34:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.14; Sat, 14 Feb
+ 2026 05:34:56 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9611.013; Sat, 14 Feb 2026
- 05:34:32 +0000
+ 05:34:56 +0000
 From: Gary Guo <gary@garyguo.net>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
@@ -52,15 +52,16 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>
 Cc: Alexandre Courbot <acourbot@nvidia.com>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH 1/4] rust: add projection infrastructure
-Date: Sat, 14 Feb 2026 13:33:38 +0800
-Message-ID: <20260214053344.1994776-2-gary@garyguo.net>
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/4] rust: dma: generalize `dma_{read,write}` macro
+Date: Sat, 14 Feb 2026 13:33:39 +0800
+Message-ID: <20260214053344.1994776-3-gary@garyguo.net>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260214053344.1994776-1-gary@garyguo.net>
 References: <20260214053344.1994776-1-gary@garyguo.net>
@@ -76,441 +77,327 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2405:EE_
-X-MS-Office365-Filtering-Correlation-Id: 917d1b89-d2dd-45a5-5623-08de6b8aba9b
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB1781:EE_
+X-MS-Office365-Filtering-Correlation-Id: 771254e1-0e66-4e18-fe66-08de6b8ac910
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|10070799003|7142099003|921020;
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KQ9YGtalF2cKSz2affJJ2cc6G2aeXaTu7DYlJa5y2jcy4tffZVs2nXgZsaQr?=
- =?us-ascii?Q?yGC4W6vy/iaTxTXa+CHt6nde5MjSWaFO64XTe/tKol3FY184kF6iR9wwRwlw?=
- =?us-ascii?Q?C1HZmQJJTrv7zI6CSwCETs/EppfHRQlZd7RScayWDXUMTM0+0KXZhtOpXWcU?=
- =?us-ascii?Q?zS7C7Z2QVapCN73tlivgrE8eZPofbit6mMt2QZxWI3eDzJlmDUhvXUf+CZdW?=
- =?us-ascii?Q?gW6fnbQE0Q2sQWDvQl2DyBN3vyGyiWASWnQu67XwMBKkTT0Jp0ffC3X7RFy0?=
- =?us-ascii?Q?WJIb/DbrSry79r8dc/5tqRQ6UMxsa9FNi6MGwp1hhvn6Wk/TTGql84/+TR23?=
- =?us-ascii?Q?2e3Az6Hckyd1OGvPpJXSnb5BQ2mhvZt+LpcCJ6kcfO9mbyqrz2XNFeDXd3fV?=
- =?us-ascii?Q?rJxtlFmjy8EJbFNoZdOTi18SJ0xznkdc/yJK4uwtSOWhNxVr6PiQZXHorFHj?=
- =?us-ascii?Q?kA8SnpB0AkxJHGXgm1fWttUsNL/okFNFo4wr87irmQuVxbp1eIACr/pKwiig?=
- =?us-ascii?Q?/0IG3MUI3ltteQNvviLtTWycQ0o3mFetqfg3dCGQtvYNmCITvf8FKe3UZF2r?=
- =?us-ascii?Q?+BYnBzkSp0UinW3YE1tjxfbh2Pq5FzJi7TmXmhrf0fpBzfwgvsGXMcOinmea?=
- =?us-ascii?Q?GKfMWbBfrUEfTdxaWG3ZjzxCiwWq64S1kG/WB+NuvuLd6D/SYLQjn3nxUxT0?=
- =?us-ascii?Q?SGdCuR4oVlBo2Cc+TMgLliHTtRYog8Aou5f5j1L79GA4x6WXD80sm9nis/CD?=
- =?us-ascii?Q?Bzj6AJ8NnJXQU1gVDM0fSiaFXdlfIikD0eYX8Z5rRvo3n5QMSwImyN6GCLLy?=
- =?us-ascii?Q?3zDSwco4xK2T5ql9X948VbYiZikRvVGktYIQTtsYXITMxmzJpUFyjN5+rzHw?=
- =?us-ascii?Q?a7NgnOYStDMMzFSHhBehLho5QH5RqVz3VHElY0odC0QV8TVsGJs3EEwoVqe4?=
- =?us-ascii?Q?jEJiBCFJoZCJV5LwhgefOPSx+rCHMwDmN9N87Rf2cUszXwkCNghL4JLQ0n1w?=
- =?us-ascii?Q?el/BqeUdh1n2ywFpDV4+xI+D3rosvsducp4+9SZC2TeS6OAFAha2gfzq1uf1?=
- =?us-ascii?Q?kbSh58w0fosNOKUpcpfCo00BDQOc+jDvM6mhmbGHjeGGRfteAePDEbrSVkIE?=
- =?us-ascii?Q?UWP6wP/BsfoElTD0IlGshvgDDlT+CyKaTOGFSP5HOmMkIBkrsI4UzyOYOKJk?=
- =?us-ascii?Q?ZPOQyeZffWLy8F01Si29NPfMiOGZnpwkb4Wpek8TiU4jKLR1fKVfzyTHn/Fj?=
- =?us-ascii?Q?Xtl/kluGxNIElvUKrGO0lR7bvHWJ+C3FRH/QOx/XLEYvgn5rfqZiex3rXvIG?=
- =?us-ascii?Q?EgnH3wJUEBCD6MMXKkShyYclRn2Mz8GqIsCDW6Zio5FeKcQwMXwHwzYMeez0?=
- =?us-ascii?Q?M+dbTEML8XT03RZLcpEeEpJMadzAGLC/4WtmkWVVw+U1GTNaJj3l/mqkdi6h?=
- =?us-ascii?Q?vGIUbqBg17u6l0bQZVCtz3UZaE4h1z2ANnn7ijAhEphpCzTSiBrPaxzArnf+?=
- =?us-ascii?Q?sS3xQXHSvSsvGYKwNk5xuRMA0yqitf0/eFCdhakWxnml0AP6e0ZEPOu9wRmL?=
- =?us-ascii?Q?19Wcfe0c1ikHXy2piQqmmRZCN1PCboaaDb9N2BCW8HPiNYJZCfz82jTH/Ykx?=
- =?us-ascii?Q?bQ=3D=3D?=
+	=?us-ascii?Q?qLRg8G32nQUABKzTkRiCigkOImv+HAL8M1J4UR5DT4p1L9X9BAdxOGgGjGg4?=
+ =?us-ascii?Q?G0UAgI4T1XbW0QBykYoEbxhZvUjbMJ098cQphkikpo/vIcI37u3RYt/8Rt5O?=
+ =?us-ascii?Q?9KYxcpug2FQdIVgIpljL7j3dxfYsE02xkTBwh0ELLs7JDZO7pqi8HRiPTCpx?=
+ =?us-ascii?Q?rXAl2kBrj4xJAgBx34evcTxoXeEyVWbrlvm4xEHqE6MRcqL0d5zIfrqBVMHZ?=
+ =?us-ascii?Q?ttluGCcCCTP9xyTj8OMt/6dZdxUcxF1gsEGjn5TGfFz0ywAMXHKnu6OYi4GY?=
+ =?us-ascii?Q?ASAHoevup2KJ24upJEAoWAxuqnJZ98zW3MC9rQ94Qurg0H9jfBcs3AY+pcWe?=
+ =?us-ascii?Q?MfrvFz9lKgewvcKoqy8i4BzwuG07PzWYKwi2iVv9mDnrQWywz8Ea5/KXNTh/?=
+ =?us-ascii?Q?vAbGNQMKNkDEYMuzsbhjoH6BKzC9Ksd4BWBZD0Imgjwk0dsKhh17naPko1O3?=
+ =?us-ascii?Q?I49zlKndhV/G1rsFyKczAIkzUdgtQlyMZBti0byCrNojvbHE2ZIEgWnCSUVc?=
+ =?us-ascii?Q?BopgFZ6eF/ufWuV3bpQvo11LyX4nHj5nKVbFVzkq9/ZCxEF4zTeG8KlFxnY8?=
+ =?us-ascii?Q?XQUlVWmvf+k4wm4FUUs0LW+OYpBRZoCKoJ55bKiAnJoK170t99kPSm+20EYT?=
+ =?us-ascii?Q?4LroUg0ujYX3Ptp1HuUmceILZuSxVBQ5/gQOqKlcJcA60bLb7zZ9XCLd0dZv?=
+ =?us-ascii?Q?V+aY0tao4mQ0o+kXMZKEQ8sQrD+yBV1g8BcYsMZyqDL3Yc5KogVohz8/mFC9?=
+ =?us-ascii?Q?zxgdtlUvESY/fHOYsZKIJpPtR27mkLyKkV4B8Y9rv11I+qPcdDwIFYnXyHST?=
+ =?us-ascii?Q?otWP2HfnwlfElobEqozMB68THVs7z2MOy5OnIVaGZfsxcR24rw+R3ShuJO/A?=
+ =?us-ascii?Q?f0iCp0uTYm5b5DkTh2+Ghv7XCrvNJSmYxWlZzFSmWoT0sSP1+Lo89onxWKlw?=
+ =?us-ascii?Q?VSD8iQBMTlP9IV0M6ZlSdNM/oHBrepnZWGmvUGg6Mk143PFjAlHA/I1DdNsl?=
+ =?us-ascii?Q?5ExkUO7Md0CLl3tKeB25Pd9tB3V/30hPOWkim9lXU2p6xFndjVTpCGmY70L+?=
+ =?us-ascii?Q?XhShzCtjex5reZHS1GI906JKjqpDpoxqa2iK31z/wu5T3bVG8qYRfXRrvRxw?=
+ =?us-ascii?Q?xY77Az28sZ9b3ygWZqAxSGVvYx74SgJh1GhOlWb1H7lvnZhKuBbd/ndfv0Lm?=
+ =?us-ascii?Q?IMY9FFP239NUYV0p50kaP+fVSnrvR/9XGXmb9OWAmy6yctc2T/EDTt9BZAym?=
+ =?us-ascii?Q?iEMLdSCr+6pk/s8wA5lsJGqqUeCRPV4R6vgPMMMh5tpt9ZHieFwj5Eg1rjNZ?=
+ =?us-ascii?Q?bwKbtQ3WRZbAyWE6eumEXkJbhfeh681RG2cylZzTEh7ohNWFcfjcjVqKfsfX?=
+ =?us-ascii?Q?FGfjmfeAQa+kC54AMvMi1sMsP1hOGdXWjopLLAwlbEhOsT5ZorQCRQpiIflK?=
+ =?us-ascii?Q?HENnsUd4X1NAxWzsA5DAdwOGDcTTI13IAmB9JgFHQpp5PoJS9QinGi1uxX5t?=
+ =?us-ascii?Q?dEZGpSZWW5u31Hf2HXUOxGk770vG+eXHTVSHg2REyKPzJn65gOolagnYcpM+?=
+ =?us-ascii?Q?bd7Uvnte4D2TbBdOCCpumCKsFGHeY+vUmpwIwgrKsi78wGsAXCLszRXQ1pNK?=
+ =?us-ascii?Q?ow=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(10070799003)(7142099003)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?M5nFccd0v/4WLbe3yu8NUyDYM1cG0y9CNzeu1DzFcvN+gFCNtgdSTPB5zZPT?=
- =?us-ascii?Q?rGoKklw7l6iGbs24IlfZvsanzxq5mmeccp9H1RLJcQDQEJ9Tz5JX56g41ADB?=
- =?us-ascii?Q?LGV0qUub+dwHE/QoFwFGCR4zLr9TuEviwKZonQ/TAUlHw4XYsoKciA6ab9Dx?=
- =?us-ascii?Q?vC2fA74XOP09PTuepQM6TuLkg3WEEEko9N471gVNZo+NAA5Kvfgg3ZjdqxKs?=
- =?us-ascii?Q?eZLcYNbtOVs9nP4pVKX+teI28QppZZiL8L5v0MjgXG5SSDAh0Q5L2qbj5qwO?=
- =?us-ascii?Q?QJ81GGCpjwYnKVu8Cx8cjn/Blf0AGXhAuD8M2cv5EWPWibx7omjkuacmy4YA?=
- =?us-ascii?Q?GGeND96aucz45Sp22MQ/fhSoU6VtSamJkW95A0F41vNiogTLhvL89buAhcQV?=
- =?us-ascii?Q?8NzHhVxsAXJSOYbOrTqkA1iUY6eN2YrqIjxtzm503zdrGitL/553wayiL8B0?=
- =?us-ascii?Q?yyfgec3W3vHfv4JPbDItKOw392y3tVvnSCsY7sZOd2X3bMVM+M3PuDY171bd?=
- =?us-ascii?Q?kFSWhIHB57A7quwe0nwvv2HicCoh7mhy3b3e4B8gxJBcyOFPtVhW5qM4vknd?=
- =?us-ascii?Q?EkRtPoj1XSm0nsl54JHp2AVNuYEABZUjgtPK5Z9KbDhghTI+bbcUjmWt/xPl?=
- =?us-ascii?Q?j+uL4EWQ4XGdDLCu93rhJ/JwlKWrfHFmwXNlK2KVNtG1SG0vbiDooDJ65xla?=
- =?us-ascii?Q?b9PILGymsZgi1irAxBJJ+ceqvYUywCW/DjmsRI1oS8X4CAlC6mEs/5AqrhpK?=
- =?us-ascii?Q?SfJxZV7miYKCqXiBxhvO/ZaRlIWHcjm14gny0s4OhWIXIRgbn+IbNAzwG3lQ?=
- =?us-ascii?Q?NhXJ1L6i5HGxX8/xcmtIy9iYi6CmHXcz/aBFRr3P+lpcRWdyz3+vPUkwPXbh?=
- =?us-ascii?Q?bNKE6+4Kwkzso0IDMfFjUlv3ytT1GTMTGJbOSXvcgGMaa8jrtLxICLcNMb3S?=
- =?us-ascii?Q?IBvZfATGXDdakj9Dc87GapxAr/+QaIlkmpRqf4kF8mG4OO1Mj6Pu+kj/Nbm6?=
- =?us-ascii?Q?ygOUD11dicfMCe3ts3WTfrT8fdAnUG7eoOd3zVz6mE4hoJI2scphnFDxTHYW?=
- =?us-ascii?Q?nj+Yvt+tesTuKF0pk5fKt5ujVNNUVoDno/3KNU4K6uvPoHDcT2SrEbLSAYPX?=
- =?us-ascii?Q?MywAdAWje8AY9nuwwVUcRc+O5ZfWJPgXBYwp3f1Z6BDPEAyJcv7Dk+I9VAyc?=
- =?us-ascii?Q?/urVHE7q0ITZYjsg02lntnRmCxRuYYWdOzFvVY78xf0+MV5XgS2snO2KuMLs?=
- =?us-ascii?Q?LywkZ5oyMAcuoJq2RnOgOfPkmfmvgeJEcDxARgnHD/33rpjwb944Bvv8U78l?=
- =?us-ascii?Q?5v0M/vfFxToDeUw5bvy5HViSLTw4OPn706OIw1wSny+w9WZEZqECKSKpOy7n?=
- =?us-ascii?Q?WeAu/9Pa7mW++Pm9FsSk8NC/WHzaQxqGcEhlYeSTg1g6difMMZ6SsAK6MQ69?=
- =?us-ascii?Q?fvQqkmnisQyK48wMwUhnH4kzmg6jMBXo+1rNt7M4kPhwcG/QKEarIExIqJan?=
- =?us-ascii?Q?SYjyakKO6/ZubzObDhNdsd46a0NvTMtXkfsGGQ4szuJDPOFxGe+amF/KV2nr?=
- =?us-ascii?Q?HMY6yZ5tMEXTvbxSg1+ayPQcUqcLsTg27P3JGp9JZdnSjMDrOhJ55TyJCYo3?=
- =?us-ascii?Q?tTcFba4PnrLxWOc8olU2oD1EBg/I0O96v8WWcG3Y8X8XHofAe3FuzbpKqDTJ?=
- =?us-ascii?Q?uNzriacTdzuxuyslVmZYrhlhMltE0jXwlgxZGWw4jM3XxbVrnpuJxgXqkWwr?=
- =?us-ascii?Q?BM+rzLdOuM+BimPVsDMwM9gemPQB59+kV6ieQEFQLFb6DguPR41kikLQInVM?=
-X-MS-Exchange-AntiSpam-MessageData-1: DPUWZxTBcVnFbA==
+	=?us-ascii?Q?QgTn3CnZXoUtat9+WbCv1tU0xq+vafOr0JqSJs5suL4WRhoaCWNIgQe8bTul?=
+ =?us-ascii?Q?GFQEjVfSWrD9ScmKRbUPFqrHhdqQJN70wQdki2VST+qA+QoAunm7sE9TJvT+?=
+ =?us-ascii?Q?8tOJTuNgWpUJxLnU1/b1O9cU5xeDa6Hf/snItBGrPBKIz0ImmMtrdnaBQ/7a?=
+ =?us-ascii?Q?W+XwdAT5h07vRi52YmlYDgbIhqa/9nk2BiP3CMMCzecP1p6sNKtAKMDvATPe?=
+ =?us-ascii?Q?U3taoFgnVbXgawzMWAK3B6aNHw4XtMYTT/AaHfpscO6HE0V7oHLLpdS1pn9M?=
+ =?us-ascii?Q?UdxTv610yAJJfG939LIVEOUeseNKEHfCZRZm3NfwtU76Eb26qtYZcQnJtF9E?=
+ =?us-ascii?Q?dFkTz3O4hpOW4oz+Qm4hmdlVAaCbnt7GvC3eRmPSF35hJLxZQ2pfRiYaY3mx?=
+ =?us-ascii?Q?WMagUiI3SasIeOgd5HRmGUQqZNNEpNn/uZeAZ3LARDmJFmSMQKdJJYglciOL?=
+ =?us-ascii?Q?RdKf0jSVvYDE8yNEaeZDswdDkMtaChyrT7PMnqbVtejmuJlEKY11MGWoabLg?=
+ =?us-ascii?Q?/UJUZWMYMwYvKbx3qVc0i1dBGlA3EBwYFo0t4nZOC3ookuTF9GHT8WxLTgHJ?=
+ =?us-ascii?Q?fyKzuK374GCDmziulywjLLknvaJgu2f6DBChG3SH0L0i1gQx4++g3VBqt32U?=
+ =?us-ascii?Q?rCyCxiNDK0cMrcbD4HRf8nHkmlV/u2W7Hga7IcIrFGnfBOQZdWGod1MQIjgZ?=
+ =?us-ascii?Q?NUURugNfUMJor3RWmVZo/9KTFy5FexKLh5EZXINOFJOrZ7L4J35aK1xWs7Eh?=
+ =?us-ascii?Q?ZFnfqStfVU515UramPYqzJ0g3tjVy1fXdvk1APwKjRTxL6hcTPp3Nyf1pilv?=
+ =?us-ascii?Q?X7Ao1/SxO3yFsVhLWKi4SGxbiNPI2ArEn+wHz9cpffooxx2X6Ibz12Y0uOI6?=
+ =?us-ascii?Q?5dQNH7T+/bfqgSganh2/ya/zAl7xHk810s3vL8oCuL27qvkYwjoZzkUVJSyi?=
+ =?us-ascii?Q?b4tIl5FyP7RTInvOsFKIw2T6nNAk11VOzim2P+11qh8dLxWlXumJLZopobZ4?=
+ =?us-ascii?Q?CS1+iq4pB9m0ORWkjFmAbu7R8iTSvCUSkhlL9vcWf2/aj+c2ignz/qB5RHPZ?=
+ =?us-ascii?Q?ApOzvIChBD3N4gC340+iiTRbB4no9v3vYU3jM1mKyBbrGUqJIQompcWvlE10?=
+ =?us-ascii?Q?QWm71mPaZuiIwsFW9iJvzFgDAnJAg4vz7F8gDr97ucEHP1ERxCzCs7nPxt2Y?=
+ =?us-ascii?Q?z8YtnkfTvorxJw02lt5ZHMt0PgLIUAWeDdPx0Tk+xDUSToAlDcCEv06AUILo?=
+ =?us-ascii?Q?w4sP2v+0JdkA9tiQrDDP0+2LsRzAzF3+DXBAXTaZIpWRarv7S9sAt4ZXv87D?=
+ =?us-ascii?Q?Fy0TqPpB/Ct6aXV6ud2NYPjL4O8IEHyQ+48yUcVGN3UEvPyNaZTQ4MATeFJV?=
+ =?us-ascii?Q?en2vruNvm7Trh1H6S9oQhKR2mYiWxEB2Re2YQzzIiJBvL0sO/UBENVcab5Xc?=
+ =?us-ascii?Q?juPi/FB/hLgY+ShMxLn+d8XcgCnaoyNmI4DwdYqLy8vTgHntksDPqGDGoXsQ?=
+ =?us-ascii?Q?o6RvhY6BHFXIQReJL6jgGKT8E/s6PKcyzqqQglELt03jiR9HKFIhS/3NCU+V?=
+ =?us-ascii?Q?z9M60npLSrs9PMm4gCY6MlbToBzTZ8mnWnAuCyQLhlDlNTGCEd23r02QtzO9?=
+ =?us-ascii?Q?snhqLFw18BGT7NIEmmv3Qnspkdz6rhHAWa4RhuGpZEHLj68+AaiuWB9DbA/y?=
+ =?us-ascii?Q?TW3rHgzjOXde8ZSQLa+WUhZ5yhuThYr3o3oLk6jVigGUP+0sqZMLRdWeNRkE?=
+ =?us-ascii?Q?yo23fwBpZR/y2vI6ZM10kgvt8H0nS/EWcNIPYywZxmkM8gzGiAHxeSFPT4Yi?=
+X-MS-Exchange-AntiSpam-MessageData-1: A/QM6CFKmxcqpQ==
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 917d1b89-d2dd-45a5-5623-08de6b8aba9b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 771254e1-0e66-4e18-fe66-08de6b8ac910
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2026 05:34:31.9494
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2026 05:34:56.2437
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SSt28Sa1rITuH+oa2g3LFqLRATGkMfUbGQ/+wRd85cAhyVl3n87Su6qFcFCF3GWxrsgw978HDQPcFa7HRYkTxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2405
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8X1spuBCWOlC9E4DY4sSANnLr2ZySXENmH6HNIrCxtSFRlLcJXudV5Ees5d67MUZNEytXOU8HUjTEdZ5SCTWyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB1781
 
-Add a generic infrastructure for performing field and index projections on
-raw pointers. This will form the basis of performing I/O projections.
+The current macro have
 
-Pointers manipulations are intentionally using the safe wrapping variants
-instead of the unsafe variants, as the latter requires pointers to be
-inside an allocation which is not necessarily true for I/O pointers.
+    dma_read!(a.b.c[d].e.f)
 
-This projection macro protects against rogue `Deref` implementation, which
-can causes the projected pointer to be outside the bounds of starting
-pointer. This is extremely unlikely and Rust has a lint to catch this, but
-is unsoundness regardless. The protection works by inducing type inference
-ambiguity when `Deref` is implemented.
+to mean `a.b.c` is a DMA coherent allocation and it should project into it
+with `[d].e.f` and do a read, which is confusing as it makes the indexing
+operator integral to the macro (so it will break if you have an array of
+`CoherentAllocation`, for example).
 
-The projection macro supports both fallible and infallible index
-projections. These are described in detail inside the documentation.
+This also is problematic as we would like to generalize
+`CoherentAllocation` from just slices to arbitrary types.
+
+Make the macro expects `dma_read!(path.to.dma, .path.inside.dma)` as the
+canonical syntax. The index operator is no longer special and is just one
+type of projection (in additional to field projection). Similarly, make
+`dma_write!(path.to.dma, .path.inside.dma, value)` become the canonical
+syntax for writing.
+
+Current `dma_read!`, `dma_write!` macros also use a custom
+`addr_of!()`-based implementation for projecting pointers, which has
+soundness issue as it relies on absence of `Deref` implementation on types.
+This commit migrates them to use the general pointer projection
+infrastructure, which handles these cases correctly.
+
+Another issue of the current macro is that it is always fallible. This
+makes sense with existing design of `CoherentAllocation`, but once we
+support fixed size arrays with `CoherentAllocation`, it is desirable to
+have the ability to perform infallible indexing as well, e.g. doing a `[0]`
+index of `[Foo; 2]` is okay and can be checked at build-time, so forcing
+falliblity is non-ideal. To capture this, the macro is changed to use
+`[idx]` as infallible projection and `[idx]?` as fallible index projection
+(those syntax are part of the general projection infra). A benefit of this
+is that while individual indexing operation may fail, the overall
+read/write operation is not fallible.
+
+For migration, the old syntax is still kept for now.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/lib.rs        |   5 +
- rust/kernel/projection.rs | 269 ++++++++++++++++++++++++++++++++++++++
- scripts/Makefile.build    |   4 +-
- 3 files changed, 277 insertions(+), 1 deletion(-)
- create mode 100644 rust/kernel/projection.rs
+ rust/kernel/dma.rs       | 107 +++++++++++++++++++++++----------------
+ samples/rust/rust_dma.rs |  18 +++----
+ 2 files changed, 73 insertions(+), 52 deletions(-)
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 3da92f18f4ee..50866b481bdb 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -20,6 +20,7 @@
- #![feature(generic_nonzero)]
- #![feature(inline_const)]
- #![feature(pointer_is_aligned)]
-+#![feature(slice_ptr_len)]
- //
- // Stable since Rust 1.80.0.
- #![feature(slice_flatten)]
-@@ -37,6 +38,9 @@
- #![feature(const_ptr_write)]
- #![feature(const_refs_to_cell)]
- //
-+// Stable since Rust 1.84.0.
-+#![feature(strict_provenance)]
-+//
- // Expected to become stable.
- #![feature(arbitrary_self_types)]
- //
-@@ -130,6 +134,7 @@
- pub mod prelude;
- pub mod print;
- pub mod processor;
-+pub mod projection;
- pub mod ptr;
- #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
- pub mod pwm;
-diff --git a/rust/kernel/projection.rs b/rust/kernel/projection.rs
-new file mode 100644
-index 000000000000..200d116c39e2
---- /dev/null
-+++ b/rust/kernel/projection.rs
-@@ -0,0 +1,269 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Infrastructure for handling projections.
-+
-+use core::{
-+    mem::MaybeUninit,
-+    ops::Deref, //
-+};
-+
-+use crate::{
-+    build_error,
-+    error::{
-+        code::ERANGE,
-+        Error, //
-+    }, //
-+};
-+
-+/// Error raised when a projection is attempted on array or slices out of bounds.
-+pub struct OutOfBound;
-+
-+impl From<OutOfBound> for Error {
-+    #[inline(always)]
-+    fn from(_: OutOfBound) -> Self {
-+        ERANGE
-+    }
-+}
-+
-+/// A helper trait to perform index projection.
-+///
-+/// This is similar to `core::slice::SliceIndex`, but operate on raw pointers safely and fallibly.
-+///
-+/// # Safety
-+///
-+/// `get` must return a pointer in bounds of the provided pointer.
-+#[doc(hidden)]
-+pub unsafe trait ProjectIndex<T: ?Sized>: Sized {
-+    type Output: ?Sized;
-+
-+    /// Returns an index-projected pointer, if in bounds.
-+    fn get(self, slice: *mut T) -> Option<*mut Self::Output>;
-+
-+    /// Returns an index-projected pointer; fail the build if it cannot be proved to be in bounds.
-+    #[inline(always)]
-+    fn index(self, slice: *mut T) -> *mut Self::Output {
-+        Self::get(self, slice).unwrap_or_else(|| build_error!())
-+    }
-+}
-+
-+// Forward array impl to slice impl.
-+// SAFETY: `get` returned pointers are in bounds.
-+unsafe impl<T, I, const N: usize> ProjectIndex<[T; N]> for I
-+where
-+    I: ProjectIndex<[T]>,
-+{
-+    type Output = <I as ProjectIndex<[T]>>::Output;
-+
-+    #[inline(always)]
-+    fn get(self, slice: *mut [T; N]) -> Option<*mut Self::Output> {
-+        <I as ProjectIndex<[T]>>::get(self, slice)
-+    }
-+
-+    #[inline(always)]
-+    fn index(self, slice: *mut [T; N]) -> *mut Self::Output {
-+        <I as ProjectIndex<[T]>>::index(self, slice)
-+    }
-+}
-+
-+// SAFETY: `get` returned pointers are in bounds.
-+unsafe impl<T> ProjectIndex<[T]> for usize {
-+    type Output = T;
-+
-+    #[inline(always)]
-+    fn get(self, slice: *mut [T]) -> Option<*mut T> {
-+        if self > slice.len() {
-+            None
-+        } else {
-+            Some(slice.cast::<T>().wrapping_add(self))
-+        }
-+    }
-+}
-+
-+// SAFETY: `get` returned pointers are in bounds.
-+unsafe impl<T> ProjectIndex<[T]> for core::ops::Range<usize> {
-+    type Output = [T];
-+
-+    #[inline(always)]
-+    fn get(self, slice: *mut [T]) -> Option<*mut [T]> {
-+        let new_len = self.end.checked_sub(self.start)?;
-+        if self.end > slice.len() {
-+            return None;
-+        }
-+        Some(core::ptr::slice_from_raw_parts_mut(
-+            slice.cast::<T>().wrapping_add(self.start),
-+            new_len,
-+        ))
-+    }
-+}
-+
-+// SAFETY: `get` returned pointers are in bounds.
-+unsafe impl<T> ProjectIndex<[T]> for core::ops::RangeTo<usize> {
-+    type Output = [T];
-+
-+    #[inline(always)]
-+    fn get(self, slice: *mut [T]) -> Option<*mut [T]> {
-+        (0..self.end).get(slice)
-+    }
-+}
-+
-+// SAFETY: `get` returned pointers are in bounds.
-+unsafe impl<T> ProjectIndex<[T]> for core::ops::RangeFrom<usize> {
-+    type Output = [T];
-+
-+    #[inline(always)]
-+    fn get(self, slice: *mut [T]) -> Option<*mut [T]> {
-+        (self.start..slice.len()).get(slice)
-+    }
-+}
-+
-+// SAFETY: `get` returned pointers are in bounds.
-+unsafe impl<T> ProjectIndex<[T]> for core::ops::RangeFull {
-+    type Output = [T];
-+
-+    #[inline(always)]
-+    fn get(self, slice: *mut [T]) -> Option<*mut [T]> {
-+        Some(slice)
-+    }
-+}
-+
-+/// A helper trait to perform field projection.
-+///
-+/// This trait has a `DEREF` generic parameter so it can be implemented twice for types that
-+/// implement `Deref`. This will cause an ambiguity error and thus block `Deref` types being used
-+/// as base of projection, as they can inject unsoundness.
-+///
-+/// # Safety
-+///
-+/// `proj` should invoke `f` with valid allocation, as documentation described.
-+#[doc(hidden)]
-+pub unsafe trait ProjectField<const DEREF: bool> {
-+    /// Project a pointer to a type to a pointer of a field.
-+    ///
-+    /// `f` is always invoked with valid allocation so it can safely obtain raw pointers to fields
-+    /// using `&raw mut`.
-+    ///
-+    /// This is needed because `base` might not point to a valid allocation, while `&raw mut`
-+    /// requires pointers to be in bounds of a valid allocation.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `f` must returns a pointer in bounds of the provided pointer.
-+    unsafe fn proj<F>(base: *mut Self, f: impl FnOnce(*mut Self) -> *mut F) -> *mut F;
-+}
-+
-+// SAFETY: `proj` invokes `f` with valid allocation.
-+unsafe impl<T> ProjectField<false> for T {
-+    #[inline(always)]
-+    unsafe fn proj<F>(base: *mut Self, f: impl FnOnce(*mut Self) -> *mut F) -> *mut F {
-+        // Create a valid allocation to start projection, as `base` is not necessarily so.
-+        let mut place = MaybeUninit::uninit();
-+        let place_base = place.as_mut_ptr();
-+        let field = f(place_base);
-+        // SAFETY: `field` is in bounds from `base` per safety requirement.
-+        let offset = unsafe { field.byte_offset_from(place_base) };
-+        base.wrapping_byte_offset(offset).cast()
-+    }
-+}
-+
-+// SAFETY: vacuously satisfied.
-+unsafe impl<T: Deref> ProjectField<true> for T {
-+    #[inline(always)]
-+    unsafe fn proj<F>(_: *mut Self, _: impl FnOnce(*mut Self) -> *mut F) -> *mut F {
-+        build_error!("this function is a guard against `Deref` impl and is never invoked");
-+    }
-+}
-+
-+/// Create a projection from a raw pointer.
-+///
-+/// Supported projections include field projections and index projections.
-+/// It is not allowed to project into types that implement custom `Deref` or `Index`.
-+///
-+/// The macro has basic syntax of `kernel::project_pointer!(ptr, projection)`, where `ptr` is an
-+/// expression that evaluates to a raw pointer which serves as the base of projection. `projection`
-+/// can be a projection expression of form `.field` (normally identifer, or numeral in case of
-+/// tuple structs) or of form `[index]`.
-+///
-+/// If mutable pointer is needed, the macro input can be prefixed with `mut` keyword, i.e.
-+/// `kernel::project_pointer!(mut ptr, projection)`. By default, a const pointer is created.
-+///
-+/// `project_pointer!` macro can perform both fallible indexing and build-time checked indexing.
-+/// `[index]` form performs build-time bounds checking; if compiler fails to prove `[index]` is in
-+/// bounds, compilation will fail. `[index]?` can be used to perform runtime bounds checking;
-+/// `OutOfBound` error is raised via `?` if the index is out of bounds.
-+///
-+/// # Examples
-+///
-+/// Field projections are performed with `.field_name`:
-+/// ```
-+/// struct MyStruct { field: u32, }
-+/// let ptr: *const MyStruct = core::ptr::dangling();
-+/// let field_ptr: *const u32 = kernel::project_pointer!(ptr, .field);
-+///
-+/// struct MyTupleStruct(u32, u32);
-+/// let ptr: *const MyTupleStruct = core::ptr::dangling();
-+/// let field_ptr: *const u32 = kernel::project_pointer!(ptr, .1);
-+/// ```
-+///
-+/// Index projections are performed with `[index]`:
-+/// ```
-+/// let ptr: *const [u8; 32] = core::ptr::dangling();
-+/// let field_ptr: *const u8 = kernel::project_pointer!(ptr, [1]);
-+/// // This will fail the build.
-+/// // kernel::project_pointer!(ptr, [128]);
-+/// // This will raise an `OutOfBound` error (which is convertable to `ERANGE`).
-+/// // kernel::project_pointer!(ptr, [128]?);
-+/// ```
-+///
-+/// If you need to match on the error instead of propagate, put the invocation inside a closure:
-+/// ```
-+/// let ptr: *const [u8; 32] = core::ptr::dangling();
-+/// let field_ptr: Result<*const u8> = (|| -> Result<_> {
-+///     Ok(kernel::project_pointer!(ptr, [128]?))
-+/// })();
-+/// assert!(field_ptr.is_err());
-+/// ```
-+///
-+/// For mutable pointers, put `mut` as the first token in macro invocation.
-+/// ```
-+/// let ptr: *mut [(u8, u16); 32] = core::ptr::dangling_mut();
-+/// let field_ptr: *mut u16 = kernel::project_pointer!(mut ptr, [1].1);
-+/// ```
-+#[macro_export]
-+macro_rules! project_pointer {
-+    (@gen $ptr:ident, ) => {};
-+    // Field projection. `$field` needs to be `tt` to support tuple index like `.0`.
-+    (@gen $ptr:ident, .$field:tt $($rest:tt)*) => {
-+        // SAFETY: the provided closure always return in bounds pointer.
-+        let $ptr = unsafe {
-+            $crate::projection::ProjectField::proj($ptr, #[inline(always)] |ptr| {
-+                // SAFETY: `$field` is in bounds, and no implicit `Deref` is possible (if the
-+                // type implements `Deref`, Rust cannot infer the generic parameter `DEREF`).
-+                &raw mut (*ptr).$field
-+            })
-+        };
-+        $crate::project_pointer!(@gen $ptr, $($rest)*)
-+    };
-+    // Fallible index projection.
-+    (@gen $ptr:ident, [$index:expr]? $($rest:tt)*) => {
-+        let $ptr = $crate::projection::ProjectIndex::get($index, $ptr)
-+            .ok_or($crate::projection::OutOfBound)?;
-+        $crate::project_pointer!(@gen $ptr, $($rest)*)
-+    };
-+    // Build-time checked index projection.
-+    (@gen $ptr:ident, [$index:expr] $($rest:tt)*) => {
-+        let $ptr = $crate::projection::ProjectIndex::index($index, $ptr);
-+        $crate::project_pointer!(@gen $ptr, $($rest)*)
-+    };
-+    (mut $ptr:expr, $($proj:tt)*) => {{
-+        let ptr = $ptr;
-+        $crate::project_pointer!(@gen ptr, $($proj)*);
-+        ptr
-+    }};
-+    ($ptr:expr, $($proj:tt)*) => {{
-+        let ptr = $ptr.cast_mut();
-+        // We currently always project using mutable pointer, as it is not decided whether `&raw
-+        // const` allows the resulting pointer to be mutated (see documentation of `addr_of!`).
-+        $crate::project_pointer!(@gen ptr, $($proj)*);
-+        ptr.cast_const()
-+    }};
-+}
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 32e209bc7985..3652b85be545 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -310,16 +310,18 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index 909d56fd5118..2338dc6b9374 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -461,6 +461,19 @@ pub fn size(&self) -> usize {
+         self.count * core::mem::size_of::<T>()
+     }
  
- # The features in this list are the ones allowed for non-`rust/` code.
- #
-+#   - Stable since Rust 1.79.0: `feature(slice_ptr_len)`.
- #   - Stable since Rust 1.81.0: `feature(lint_reasons)`.
- #   - Stable since Rust 1.82.0: `feature(asm_const)`,
- #     `feature(offset_of_nested)`, `feature(raw_ref_op)`.
-+#   - Stable since Rust 1.84.0: `feature(strict_provenance)`.
- #   - Stable since Rust 1.87.0: `feature(asm_goto)`.
- #   - Expected to become stable: `feature(arbitrary_self_types)`.
- #   - To be determined: `feature(used_with_arg)`.
- #
- # Please see https://github.com/Rust-for-Linux/linux/issues/2 for details on
- # the unstable features in use.
--rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg
-+rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,slice_ptr_len,strict_provenance,used_with_arg
++    /// Returns the raw pointer to the allocated region in the CPU's virtual address space.
++    #[inline]
++    pub fn as_ptr(&self) -> *const [T] {
++        core::ptr::slice_from_raw_parts(self.cpu_addr.as_ptr(), self.count)
++    }
++
++    /// Returns the raw pointer to the allocated region in the CPU's virtual address space as
++    /// a mutable pointer.
++    #[inline]
++    pub fn as_mut_ptr(&self) -> *mut [T] {
++        core::ptr::slice_from_raw_parts_mut(self.cpu_addr.as_ptr(), self.count)
++    }
++
+     /// Returns the base address to the allocated region in the CPU's virtual address space.
+     pub fn start_ptr(&self) -> *const T {
+         self.cpu_addr.as_ptr()
+@@ -670,6 +683,9 @@ unsafe impl<T: AsBytes + FromBytes + Send> Send for CoherentAllocation<T> {}
  
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
+ /// Reads a field of an item from an allocated region of structs.
+ ///
++/// The syntax is of form `kernel::dma_read!(dma, proj)` where `dma` is an expression to an
++/// [`CoherentAllocation`] and `proj` is a [projection specification](kernel::project_pointer!).
++///
+ /// # Examples
+ ///
+ /// ```
+@@ -684,36 +700,40 @@ unsafe impl<T: AsBytes + FromBytes + Send> Send for CoherentAllocation<T> {}
+ /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
+ ///
+ /// # fn test(alloc: &kernel::dma::CoherentAllocation<MyStruct>) -> Result {
+-/// let whole = kernel::dma_read!(alloc[2]);
+-/// let field = kernel::dma_read!(alloc[1].field);
++/// let whole = kernel::dma_read!(alloc, [2]?);
++/// let field = kernel::dma_read!(alloc, [1]?.field);
+ /// # Ok::<(), Error>(()) }
+ /// ```
+ #[macro_export]
+ macro_rules! dma_read {
+-    ($dma:expr, $idx: expr, $($field:tt)*) => {{
++    // Compatibility for old syntax.
++    ($dma:ident [ $idx:expr ] $($proj:tt)* ) => {
+         (|| -> ::core::result::Result<_, $crate::error::Error> {
+-            let item = $crate::dma::CoherentAllocation::item_from_index(&$dma, $idx)?;
+-            // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
+-            // dereferenced. The compiler also further validates the expression on whether `field`
+-            // is a member of `item` when expanded by the macro.
+-            unsafe {
+-                let ptr_field = ::core::ptr::addr_of!((*item) $($field)*);
+-                ::core::result::Result::Ok(
+-                    $crate::dma::CoherentAllocation::field_read(&$dma, ptr_field)
+-                )
+-            }
+-        })()
+-    }};
+-    ($dma:ident [ $idx:expr ] $($field:tt)* ) => {
+-        $crate::dma_read!($dma, $idx, $($field)*)
++            ::core::result::Result::Ok($crate::dma_read!($dma, [$idx]? $($proj)*))
++        })
+     };
+-    ($($dma:ident).* [ $idx:expr ] $($field:tt)* ) => {
+-        $crate::dma_read!($($dma).*, $idx, $($field)*)
++    ($($dma:ident).* [ $idx:expr ] $($proj:tt)* ) => {
++        (|| -> ::core::result::Result<_, $crate::error::Error> {
++            ::core::result::Result::Ok($crate::dma_write!($($dma).*, [$idx]? $($proj)*))
++        })
+     };
++
++    ($dma:expr, $($proj:tt)*) => {{
++        let ptr = $crate::project_pointer!(
++            $crate::dma::CoherentAllocation::as_ptr(&$dma), $($proj)*
++        );
++        // SAFETY: pointer created by projection is within DMA region.
++        unsafe { $crate::dma::CoherentAllocation::field_read(&$dma, ptr) }
++    }};
+ }
+ 
+ /// Writes to a field of an item from an allocated region of structs.
+ ///
++/// The syntax is of form `kernel::dma_write!(dma, proj, val)` where `dma` is an expression to an
++/// [`CoherentAllocation`] and `proj` is a [projection specification](kernel::project_pointer!),
++/// and `val` is the value to be written to the projected location.
++///
++///
+ /// # Examples
+ ///
+ /// ```
+@@ -728,37 +748,38 @@ macro_rules! dma_read {
+ /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
+ ///
+ /// # fn test(alloc: &kernel::dma::CoherentAllocation<MyStruct>) -> Result {
+-/// kernel::dma_write!(alloc[2].member = 0xf);
+-/// kernel::dma_write!(alloc[1] = MyStruct { member: 0xf });
++/// kernel::dma_write!(alloc, [2]?.member, 0xf);
++/// kernel::dma_write!(alloc, [1]?, MyStruct { member: 0xf });
+ /// # Ok::<(), Error>(()) }
+ /// ```
+ #[macro_export]
+ macro_rules! dma_write {
+-    ($dma:ident [ $idx:expr ] $($field:tt)*) => {{
+-        $crate::dma_write!($dma, $idx, $($field)*)
+-    }};
+-    ($($dma:ident).* [ $idx:expr ] $($field:tt)* ) => {{
+-        $crate::dma_write!($($dma).*, $idx, $($field)*)
+-    }};
+-    ($dma:expr, $idx: expr, = $val:expr) => {
++    // Compatibility for old syntax.
++    ($dma:ident [ $idx:expr ] $(.$field:ident)* = $val:expr) => {
+         (|| -> ::core::result::Result<_, $crate::error::Error> {
+-            let item = $crate::dma::CoherentAllocation::item_from_index(&$dma, $idx)?;
+-            // SAFETY: `item_from_index` ensures that `item` is always a valid item.
+-            unsafe { $crate::dma::CoherentAllocation::field_write(&$dma, item, $val) }
++            $crate::dma_write!($dma, [$idx]? $(.$field)*, $val);
+             ::core::result::Result::Ok(())
+         })()
+     };
+-    ($dma:expr, $idx: expr, $(.$field:ident)* = $val:expr) => {
+-        (|| -> ::core::result::Result<_, $crate::error::Error> {
+-            let item = $crate::dma::CoherentAllocation::item_from_index(&$dma, $idx)?;
+-            // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
+-            // dereferenced. The compiler also further validates the expression on whether `field`
+-            // is a member of `item` when expanded by the macro.
+-            unsafe {
+-                let ptr_field = ::core::ptr::addr_of_mut!((*item) $(.$field)*);
+-                $crate::dma::CoherentAllocation::field_write(&$dma, ptr_field, $val)
+-            }
+-            ::core::result::Result::Ok(())
+-        })()
++
++    (@parse [$dma:expr] [$($proj:tt)*] [, $val:expr]) => {
++        let ptr = $crate::project_pointer!(
++            mut $crate::dma::CoherentAllocation::as_mut_ptr(&$dma), $($proj)*
++        );
++        let val = $val;
++        // SAFETY: pointer created by projection is within DMA region.
++        unsafe { $crate::dma::CoherentAllocation::field_write(&$dma, ptr, val) }
++    };
++    (@parse [$dma:expr] [$($proj:tt)*] [.$field:tt $($rest:tt)*]) => {
++        $crate::dma_write!(@parse [$dma] [$($proj)* .$field] [$($rest)*])
++    };
++    (@parse [$dma:expr] [$($proj:tt)*] [[$index:expr]? $($rest:tt)*]) => {
++        $crate::dma_write!(@parse [$dma] [$($proj)* [$index]?] [$($rest)*])
++    };
++    (@parse [$dma:expr] [$($proj:tt)*] [[$index:expr] $($rest:tt)*]) => {
++        $crate::dma_write!(@parse [$dma] [$($proj)* [$index]] [$($rest)*])
++    };
++    ($dma:expr, $($rest:tt)*) => {
++        $crate::dma_write!(@parse [$dma] [] [$($rest)*])
+     };
+ }
+diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
+index 9c45851c876e..b772ada2c65c 100644
+--- a/samples/rust/rust_dma.rs
++++ b/samples/rust/rust_dma.rs
+@@ -68,7 +68,7 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, E
+                 CoherentAllocation::alloc_coherent(pdev.as_ref(), TEST_VALUES.len(), GFP_KERNEL)?;
+ 
+             for (i, value) in TEST_VALUES.into_iter().enumerate() {
+-                kernel::dma_write!(ca[i] = MyStruct::new(value.0, value.1))?;
++                kernel::dma_write!(ca, [i]?, MyStruct::new(value.0, value.1));
+             }
+ 
+             let size = 4 * page::PAGE_SIZE;
+@@ -91,17 +91,17 @@ fn drop(self: Pin<&mut Self>) {
+         dev_info!(self.pdev, "Unload DMA test driver.\n");
+ 
+         for (i, value) in TEST_VALUES.into_iter().enumerate() {
+-            let val0 = kernel::dma_read!(self.ca[i].h);
+-            let val1 = kernel::dma_read!(self.ca[i].b);
+-            assert!(val0.is_ok());
+-            assert!(val1.is_ok());
++            let result = (|| -> Result<_> {
++                let val0 = kernel::dma_read!(self.ca, [i]?.h);
++                let val1 = kernel::dma_read!(self.ca, [i]?.b);
+ 
+-            if let Ok(val0) = val0 {
+                 assert_eq!(val0, value.0);
+-            }
+-            if let Ok(val1) = val1 {
+                 assert_eq!(val1, value.1);
+-            }
++
++                Ok(())
++            })();
++
++            assert!(result.is_ok());
+         }
+ 
+         for (i, entry) in self.sgt.iter().enumerate() {
 -- 
 2.51.2
 
