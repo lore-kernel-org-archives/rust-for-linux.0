@@ -1,200 +1,138 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020086.outbound.protection.outlook.com [52.101.195.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2700142E83;
-	Sat, 14 Feb 2026 00:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8897915B971
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Feb 2026 00:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771028343; cv=fail; b=nV95kPoMx2yR1WRK/VaGT3kCB8w893eDRSKzeZMs5xFW3rXfQ2X++bYkyzzZuy6fksJlp/n8AO5PrgjdUx07lO7GagzZDrBZVHo5PkkTlz5O0E+e0E18NBVynBAwmH+eNblZcNWqMrXAnLRBY7VmZEmmcJmnDI1MhzSBqbMZwDM=
+	t=1771028415; cv=pass; b=JDLyCPnSNlMre7qHykJZ//vg5rIzT/uCSHVaJAJivzn35Ywa5NpS8ilQr7xvNTybKmHo6zD4jukeptdFyO5YEY3umXKVI0rwlx4w6qLz75Joj9Eu2MJI7LXypSqeDr1xnoU3DSY1+yoDafYsgxXJpVbIVUKDd576DFI1D6Wxlsk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771028343; c=relaxed/simple;
-	bh=+5dqiy0EH4mIikw8hfHSWFJZluwvwn7gQhUNXul4RBU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:MIME-Version; b=CarHYjO3wy+YpjVufxFGZ31WfKa0nrNFrJx6LGLe/TWkrrgKsm5JLvyZNdEtnfLtK+3Hi/jAi7meIcHxy9maltgooMVp+HWZ+BnbmTqywjOmpZKfSVV+EPye78ucKrlxFR628KTHATLB7D+dUwDZq9Na1phxLLDTtWprGAcnj5Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=wrD5grnh; arc=fail smtp.client-ip=52.101.195.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1771028415; c=relaxed/simple;
+	bh=8FEFz/m0WnUYbPlHlZIic2DUEE8dhI8xUoGnl35edh4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SyEvhJn0o9cFm+RFY7gApDg06tzZA5mrWtSECmY5V6blcP6WoovP72KKT3BJw3QcH1u3mMExlAmo8yvpYjKg4zMw68iByeNXSNkj0HE7MDS95tBeDR9gCtITMtoPc8CLuZPEEZSV/7Rk592e1MGohQtG3yyFb9VP/Ls9oam+Dec=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c3gx3EjB; arc=pass smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="wrD5grnh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o5b5bspdftZ6taREPLJY9gDHXHAYENdqzlx2UTc6ZLjdqGKVdltokqKUm2H02C+JqCoUxLbqJIBy8b0SYni+fy2VBBPVLPaPdKJQtB88hNl9YsNCss9hOHmrtiAH/LGWJ8hEenVafdCO0lKzVIZpEjld6swofT5J1aTxOo6CyxHuTvyy+cy13xC00OZATHGuqQvyHWx7UpjVAs0oE7MzgmUrowvro1xLJoFGnmGkK98liMsSzekJjp88l5iToTnG1KyIBSPLOgNg6On8y3siU/MiyFAJuGq128JvnpuGv72/ZH8KNj7IrK7ZwpeIlCgBonpb0NaJxx9IaBcMULSU7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m2rxC3jtDVjlJC6Gw1QEHEMWcoHGtIqUt8uWss3FQqE=;
- b=whi54kyrz1ej+yWanZA8CmktQ+rDPXyM6k3hbFuzv+1ZWu8a4VvJZoJUdD2RpJ5Z2rOh4QDuBU784aovgJD9LnElAeR8lrpI/+MY+D0Ru4UC4WItPDiPlNzb/QzUmN4ZEDPZ9wd5EqB/IXU35O6Gf/zOQBu8au1YQuG4dj1EKJdGYwkLJub9mCKoxHZdLPpAP5fmY8Mb1ZUEMz8UJyqc1CJcd4tRaq4rAmaPXvtJcPed+kjfmXV1jDxBs2SCf2S7yXFqNlzlyWx62OhOjAH7PML2JhzIvqdbpG+kj609ocqSNPh4W1leeWoyIQ02OWzditOkQjMYZH4tEa8Fqm1o3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m2rxC3jtDVjlJC6Gw1QEHEMWcoHGtIqUt8uWss3FQqE=;
- b=wrD5grnhr0u2HB59pXaaWwsrElduu7LM+oG0wWtUrFmZuzMZs5Jw+Z0eEha2QaFdVyASwx7+2FIVcNlldvXEwb8aF5K3/uW7XU26Pp3BtkPNLgeR+CD0PxdaYYfEJNeRnCyIz8+p9HP4L/V6LubQVaGVv1+9dcvLlhnhT5HhYWM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CW1P265MB7675.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:21f::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.14; Sat, 14 Feb
- 2026 00:18:58 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9611.013; Sat, 14 Feb 2026
- 00:18:58 +0000
-Date: Sat, 14 Feb 2026 00:18:57 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Tim Kovalenko via B4 Relay <devnull+tim.kovalenko.proton.me@kernel.org>,
- tim.kovalenko@proton.me, Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl
- <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] gpu: nova-core: fix stack overflow in GSP memory
- allocation
-In-Reply-To: <DGE8Y55O5445.D6KRXL724153@kernel.org>
-References: <20260213-drm-rust-next-v2-1-aa094f78721a@proton.me>
- <DGE5NO2W48YJ.34YKFNI6VS63A@kernel.org>
- <e6df0b7ebd86d0c84ffd4b15cee15716@garyguo.net>
- <DGE8Y55O5445.D6KRXL724153@kernel.org>
-Message-ID: <1b7adbcbb4405fdc3e8ea7d3cc0dc526@garyguo.net>
-X-Sender: gary@garyguo.net
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0143.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:193::22) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c3gx3EjB"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4359a316d89so1159161f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Feb 2026 16:20:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771028412; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gVE/tcpOeh1E7bSybkLJ++9l5axmHpkk/qFaun3gH+x0CfI0wvLcyiUFqi/QhSGYG6
+         p4WxUhnD3clWbPbEpyNlrLm/esqHH40+VDCS7qcwL4IaM7t6J4kruVEcGxnud2D+1mli
+         cOijPtJrD5uT+BnR827Cvv9Wa4r2lslwYpTtt/wRc3osni+j8jNQPuAf9j4ifTQyw2OW
+         t6ita2PNHT3oc4XqY2C0yFVdZ/gFa071f1JVwM8v6e2yRhnntsVLEofBc3+DhnqFruJV
+         M+ZapW2yxpz+l+druH8X7g2Q3sWskMbddQqigKZa4IdBfmebp7q4/5ta4c0lne07HcE3
+         Y3NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8FEFz/m0WnUYbPlHlZIic2DUEE8dhI8xUoGnl35edh4=;
+        fh=rlJuiBFjjdR91L3iJfe3aZHdsry+A1PfsWN0lJKVp+8=;
+        b=aIdbDHanrIVbOgF72K+eJ4K9wEqXh7TXK6hXQiLAlyRS4zwPoHmCJr/elnH7yZLaJJ
+         MgX9ZDlm3/Af4lFO3sh3CLlSFkETYc5osEFj2gA6HUBSkxooEIEfsSx1YdTTL257CMed
+         d/zZL+scwEWQfu84T120a2zkXaBNAtgetSmMKk8xeG7Xz/zaGTKkDTuZcZnSIc9HMcoV
+         guHViupQ7wFD5ZtfLIOksNyp2krNAIZMvUVNw70S5jQHEh53IenmfZtS/X+WnufafZpE
+         702BY7SzqGxCVQzHKh3/iyslAqpXR9MYDHVTj3n0zaZjDCif+Bvqkp1O/asqxa9TDCn3
+         9XGw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771028412; x=1771633212; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8FEFz/m0WnUYbPlHlZIic2DUEE8dhI8xUoGnl35edh4=;
+        b=c3gx3EjBe4YquK9/X/Z9s+1rMXOoOKpFiJpfhuHzoOGRV5I9bNj/QlURNxTcBysEGD
+         Ui0i+z9TGFZfsl0v4rh2vrJ7A8r/9YcjoSgVZ54e7Tp4LnNp6Z10doVJXQCJtjegvObI
+         7H1GTjGTL7F1uhWrknNavKQkhMD8jalNGKLMujg+g6IT9rG2hfu498o1cu3A+nYw5AmM
+         GfSGKenMmZ2mrF73i7jPBNHrGvd9duT9JBAfOPmxtpHlwfy7pRbUxwUDGy6qpCIfP55J
+         /FUrZxjCraJTe2fOadN4YRk4wgVczs2qEP8S/d+OZtUTiPm37z5vM2ZK/yrKDFgiCcoj
+         Ontw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771028412; x=1771633212;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8FEFz/m0WnUYbPlHlZIic2DUEE8dhI8xUoGnl35edh4=;
+        b=An1nSmUi/YiwaxqEJwBPxqTUOxOqrf0gfthNAKEAlKm0xeFGOKvkgJEtfTihRrWW6a
+         TYyf7dAxAme6vLF8bIwU3l3a+GcjW2so9BhuYJV7sc5RNQws8sbTVlEyc5VjXUkG3oA2
+         2ZOTbKrZMRIUMo6AoT236r6KzO/5Euead+pSm7H5LJznoTeZCNQH++9MqwCavh0PvCyD
+         2k9d25PRmWXePBpt44ZGgIANjUfidXJubotI5UsoJb/tF5/vWzCq6H0LWeDJjtd0/jAQ
+         3h05UNmRrMF91BWXu4IvbRLNPyfmF0f6F00j/PNJ7Nc8MEDET9e47sNOuKEpXtFnjpOV
+         6ROQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsDom8lQpux+JucgIKVug+/D1Ghrxxur8UqroA/TJGro683AZvNJOKbMq+8zSRkItox8UmetV6avXrdSwzKg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLNh9Pyp5UvrLdymhAKZmHxFopJNJodnZJp/JkEwGatWOvNmYD
+	PcE5BxmTU6yhTbjIQ1qPgmEgC3sCNYWTVt5+EoYN2Pk4ca4bUos6fvfSA5q8jpEdJPihvcq3WXY
+	dxFKUjKxGimOVPA0KvIx3x2nJ0w1jHz0qwuS9X8Nw
+X-Gm-Gg: AZuq6aLAA9jnf7lSq/s28Ok8IJmJoGBvpqVo+SuPqxvhl58IDXqZO9pKhZbgZPolUXL
+	fsQyGjFytm6xkOpMwwrJTZcryeIYxAO3dFUxqt1FJy0vtmHw8WYKnj8YC8D3SfzdukZ3rdI0/gP
+	Cjd7ZuYxfjvfbHPyt2Cn3OEGSzxOgkamZU5zw99KKx7yJt8Uklc/fChd0kDbuyMQbofl1Xpus+G
+	BcniO8at29iB0lgpZIq0AWO/qzRUTihLUK5EQVKJHqpx7hAM2EFahu3E9LkQBNAVpzXru5fwqEI
+	6AJ7OV0FnzxE3vR2g1r4fpjtnI135DLKi35a9w==
+X-Received: by 2002:a05:6000:2303:b0:437:6bda:d97e with SMTP id
+ ffacd0b85a97d-4379791c117mr6291279f8f.39.1771028412188; Fri, 13 Feb 2026
+ 16:20:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7675:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3a0578b-e7d1-4dd0-cb9b-08de6b5ea5a8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qCqRCmCqpAIxcl66C3voXoC3n3PgdwwETvOxD261j3WUmAs0NrvIR0urmO8l?=
- =?us-ascii?Q?KUDI+Yp1yvdOsuZ+SknetrDJtqDUDWk1HZOCvprzB3lw+nXihdrN1PLIOXqB?=
- =?us-ascii?Q?m+gcBV6kCHk5JHqI2m5gLll0q/IJy4WGH2bqUMeH55+Tl8R529oSgtsBsUmU?=
- =?us-ascii?Q?Bgo8ynzky5urVEohaiN9TcIaOJtKt+jCgbnoPXMaJIfTpr3rxvnTDzGBuKOD?=
- =?us-ascii?Q?XtPym5zICe15OXP0MoOyg3rXmlOnOJ05tqTPr6Vc3+eYuQF+iHvlOKmETGjc?=
- =?us-ascii?Q?TMjnxJJIgLAhGo9OeLjNZR1ClpTW5fRBmtYTFFjTmGv403aUb9VfPD5RX10y?=
- =?us-ascii?Q?o0M1KFU6lEbROCtePdiQfSd47JTbNyR+1i/1RYXsfK3WTq0BaSev4FNInC7u?=
- =?us-ascii?Q?VK0yQpcroD/yvha9E0EnIKog/2zhYqup3r3y7UUBHulV1E/PFjHLskB70UKh?=
- =?us-ascii?Q?xjx7Kd0eMs5WOt3dQ/PTn1aH8VBgjMX+cgXXWZYnYjah5h1kuWGKDMkPDg9W?=
- =?us-ascii?Q?7KiC3vqDQVUsTdqUUokNurmvZawstRGIQouNyXTNi28sotR8ZnSoE4ykjH/d?=
- =?us-ascii?Q?Ux9TDaJEAYTZO71P92Vm1NmDNZkJKhejjqKABkikiDXBYt9SuP/uXylk5HUQ?=
- =?us-ascii?Q?8Kc9WSkDY7c7M+q1msmES+3bFiRE5Bn9JqBXvtAH6pNo1cYC7do/LDMlTGlX?=
- =?us-ascii?Q?5nJ4yCYR0jLl+NrOTsPe7TleUXaUpWCc/ilYMBdbT/HLuFgyXCOC8LZl6hAO?=
- =?us-ascii?Q?AUYNHKlQACKUdLfNhxPtC5b2PzJu/gbey0YrXxXUffT5j+vwl3Ld4Rm2LoQP?=
- =?us-ascii?Q?/CeoHmwQ8Bl5XwtnXZpoLjPAiUOc5e/f7iKafzzGvXIcZ9uhKBj9dgi8u74q?=
- =?us-ascii?Q?pHLMCA3Agfs0paP+pVHS4gjFsyXuNsFygaAHtXMz2hNeDAhOgzI7/Bn8Vv7G?=
- =?us-ascii?Q?hXKA1/lCreC9ATvi9+eY3vMIkcmX/W7/5knFfsK2tq7dl54JhWe8OCmxkEpM?=
- =?us-ascii?Q?PD1Yc7nRMHS81eyGOA2nny8dvhYwz1um8pLu2H+YmCP7Zye73mLDdrUz4PL2?=
- =?us-ascii?Q?3HkUytUfKju/Ocpme582wyDFaLm9P+qru+/R6+zdsoFaPA8mF3MvSLI2YB0w?=
- =?us-ascii?Q?ZvC0fQe2ZMwwnieZGWm1qJDXqp6Z60Zx36u7rsbmEhXNrpIN7y3DYCUKJrc1?=
- =?us-ascii?Q?z069ekbQKU8H76nLjNFUL46yndq4Nod0VXaf+b/yn9LeCjXTwsP0Q+S0iImd?=
- =?us-ascii?Q?z/qrJRSiLRtot51wABaJ2bJqkeBGHzSAUyEdH8c3Rc4OszoVTu5BfcF2796a?=
- =?us-ascii?Q?YuXRRpFgnNP8axpYSkf/4PDVb3zz/Bb8tqsxnzH1NBWEzG1FNYHsnJR/w3tF?=
- =?us-ascii?Q?o4A/IA9ww/goIXOVTuldbGjjd4/TttBxXPSyKqS081ab36LdznVUlYImKiBN?=
- =?us-ascii?Q?Ik1PmYTYXrjha9EphOfv6fQi5yZuDNfk5kare0T/7HUKFKoSP5NrQlpzFRRJ?=
- =?us-ascii?Q?hjr+8r7zjnG1zTQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ARp0MoMJycCaRoO+vNTX5BIUGvND2cUUyNV+agv+wBx2q2EemndreVAbDC/6?=
- =?us-ascii?Q?KOch9AxSm13kclXcTnDUCjx3JvbGhjx9Fxu8cGnW+Q7aN0iKWMM9Z3CQQvnM?=
- =?us-ascii?Q?pgMqIqlNO8mMugH79hYqdf4IcPgEq+f7SpnCqzSBDaxK7UoP3fkupp+qX4GP?=
- =?us-ascii?Q?AjqbcrkfXjM5kCIRhjEAs/oBM/cR16DHiV/rxiSJXSIXHnT8trw72PNRV5Y7?=
- =?us-ascii?Q?meMm3Ks57NfuYi06F0ztxHW/LhEqu6ei7Z/mD6lyLEZozSY4lSV6DL1S1s4w?=
- =?us-ascii?Q?/W3Vca0pQZZfb/zCB2QERiwuc4D4ho2KMDX8wH7GNabEaG6uHqg8Ht0Xj1YQ?=
- =?us-ascii?Q?j803UG59oiSmPeCdkyb3TaiewLfjCOcwmkUQEPlCY8MWxdhhN7ERrmZG7Evw?=
- =?us-ascii?Q?Q8q0AX+TKW+PsZgMyC7Zlo5yWByFBQQ28guQVeAoeBNTL9GeEXA0zKYka9O+?=
- =?us-ascii?Q?dLhzHKf/ARBk+P5QF1q2Du82NWfH4v/WAxQRc3yIFJkQgAvoyXz7nUpy/IYP?=
- =?us-ascii?Q?W4A2fjHOi291BFrxTQTueCadF+HXCs+e/BOU1zeDistd173EgnmX/xFIi4/K?=
- =?us-ascii?Q?mmenqf0htk+EUAUFFfV8RyuwqT71nJB0Nl5wxarbG1XiO7VcJ/PXRk0h8LfP?=
- =?us-ascii?Q?yfWRLq1qgjE8PyRYPIT8cRcS/3uYjI9VMmZWH43bmrbHjrK5BidosMv/Obbq?=
- =?us-ascii?Q?eykCphoaGtx/R+xqrvmpzkexp0uvgEODZnJ0Wen8M+WqRC+Y/NdoltLPVO++?=
- =?us-ascii?Q?yQTWwGTELxXmid+0Y6mA5EBD/fA86K1FK/cfHx0l9bhXIAhEloXfUVeSldUz?=
- =?us-ascii?Q?tP/1mjq/vPDrnBA0mTzVU9VC/6TK+cLHSGDKN2ZcFuxDu1+/3ZhZZ1hX5tTG?=
- =?us-ascii?Q?+GzS/UQPWwHleTg0EJ2Q4mvGBXc8GneAegZ3XVmT4NphY1Psdr1p7lAAX1vB?=
- =?us-ascii?Q?dpwpF0GbSevUieUpzu1huTIAaPqKt9GX32smBAfLU4WBsBbZnCq3AGaQAQgK?=
- =?us-ascii?Q?3KjlLFERu7ysSIj+XIAPLbL8EnKNSgo8/tIW7K1UN+csd7znJYCmd/JCVp/6?=
- =?us-ascii?Q?eMCQFGqYDwWBTpSEzIc0i+4Mh0Oqu84GWL9IrAJJgVUdmS0q57DNjQaNiYqp?=
- =?us-ascii?Q?szz13Xph/A/tdmykHjfCmM9mrLT/8DDkzJR3DxZR7x65jNwHxyQf0uRda8qn?=
- =?us-ascii?Q?SVFwZ+T06rVqw48J3u3YAQJiqhy4fPP+nCC4Q6HAA1IknFR/PXFnrS95Lqs4?=
- =?us-ascii?Q?kIdmhzaxisIqpo1HC/iTQkUvi9dY3ehgHz9YvwYP2EZBOOC704HyobUbOBaH?=
- =?us-ascii?Q?bHraKP18/E7gYKOEHFBaNhRG2MCmJwygIH8AHLQJrS4+NAR7lYKxKUUWtrPs?=
- =?us-ascii?Q?i1q72WuiU6VZmRiDKpE/r2XzpbqesWRUMumdHsIyfOuYt7Q3MoZf0nNcTk1d?=
- =?us-ascii?Q?afnA2PrIcm77/M2N7ARUY1kmiLszWiUeT6KXkSOws1oi30f0WzXVW63tRSAz?=
- =?us-ascii?Q?fZSkfN8ErhnXcvmmQzCeSFYRteN3pij6Og5uaYPmG+dps94PZMRunLPyqLe5?=
- =?us-ascii?Q?4/VHP+83pSojIlISsSxv4z7uqIetazedHjsJxqkVvsxY4vWpllqTytVWC6Fn?=
- =?us-ascii?Q?7EJNK6M+H81GyGjhnOO5g9sYO2qrs0ZfRnS+TxEEE22MmcWTwLcTE4EhMhQw?=
- =?us-ascii?Q?sEet3VMq0Wimjj4qpMxrCpirXfYJz29wfA5DPdV2WyN5tTvCMoNVJTNSa6qW?=
- =?us-ascii?Q?oL17lxCxag=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3a0578b-e7d1-4dd0-cb9b-08de6b5ea5a8
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2026 00:18:58.4281
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D2Zzov9igZYgYl+BV5GCOei/NpP8HJSAbn1+gZZzBBOgRCEJm/avRyGiFXnSG2wl8gFmjDnSZninU+lBkzYVqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7675
+References: <20260213-rust-binder-ps-v1-1-6b90f83c0b4d@google.com> <fed9bf3d5d9681e1003536be6cd99088@garyguo.net>
+In-Reply-To: <fed9bf3d5d9681e1003536be6cd99088@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sat, 14 Feb 2026 01:20:00 +0100
+X-Gm-Features: AaiRm53hJmmwerWZ9r0FCNXei4zFGE1D0MF8UTqq8R50HrtPNrtidkYY6jPLcx0
+Message-ID: <CAH5fLgh7BsgJFAdayERCqP7D3688XQpj9DcfJrZci0kamPUNWA@mail.gmail.com>
+Subject: Re: [PATCH] rust_binder: avoid name mangling for get_work[_local]
+To: gary@garyguo.net
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-02-14 00:09, Danilo Krummrich wrote:
-> On Sat Feb 14, 2026 at 12:50 AM CET, gary wrote:
->> If you prefer, I can send out a version with just improved projections 
->> without
->> all the generic I/O improvement stuff.
-> 
-> Yes, that would be great. Otherwise, we can also use as_slice_mut() to 
-> avoid
-> having to touch field_write() directly, but I much prefer the former.
-> 
-> In any case, I'd like to keep the PteArray type. It can at least 
-> provide a
-> function to calculate the value from the DMA address for a given index.
-> 
-> (Would be nice if we'd have something like a dma::Projection<T> type, 
-> such that we
-> could have PteArray::init(self: dma::Projection<Self>).)
+On Sat, Feb 14, 2026 at 12:52=E2=80=AFAM <gary@garyguo.net> wrote:
+>
+> (Sorry Alice, resending as I didn't hit "Reply All". I was travelling
+> and not on my usual email setup).
+>
+> On 2026-02-13 11:37, Alice Ryhl wrote:
+> > Currently ps -A shows processes waiting on schedule() in functions with
+> > names such as do_epoll_wait, wait_woken, and the impeccably named
+> > _RNvMs2_NtCs8QPsHWIn21X_16rust_binder_main6threadNtB5_6Thread8get_work.
+> >
+> > To improve how ps output looks, give explicit non-mangled names to the
+> > functions where Rust Binder calls schedule(), since these are the most
+> > likely places to show up on ps output.
+> >
+> > The name of rust_binder_waitlcl is truncated instead of using _local
+> > suffix because rust_binder_wait_local is sufficiently long that ps
+> > shows
+> > unaligned output.
+> >
+> > Suggested-by: Matthew Maurer <mmaurer@google.com>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>
+> I don't think this the direction that we should head for. It's not
+> feasible to
+> do this for all users that can possibly call `schedule()`. In edition
+> 2024
+> forwards, `export_name` is also an unsafe attribute and it will become
+> tedious to
+> justify all usages.
+>
+> I think if the function names are demangled, it won't be too bad?
 
-I think once I/O projection work is done, this would just be
+This is mostly meant as a temporary fix. Ideally ps can demangle them.
 
-impl PteArray {
-     fn init<Base>(self: io::View<'_, Base, Self>>, dma: DmaAddress)
-}
+(Though even demangled, they are still too long for ps -A output as it
+is right now.)
 
-and the generic I/O projection is used inside.
-
-Best,
-Gary
-
-> 
->> I've already suggested that in
->> https://rust-for-linux.zulipchat.com/#narrow/channel/509436-Nova/topic/.60Cmdq.3A.3Anew.60.20uses.20excessive.20stack.20size/near/570456463.
->> The issue is that however the PTE array needs the actual DMA address 
->> to
->> initialize, which Alex and I feel that we shouldn't provide to the 
->> initializer
->> when `dma::CoherentAllocation` is not yet constructed.
-> 
-> Ah, indeed -- that sucks.
-> 
-> And yes, it would be super pointless to give out the actual DMA address 
-> in the
-> initializer, as it would defeat its whole purpose. :)
+Alice
