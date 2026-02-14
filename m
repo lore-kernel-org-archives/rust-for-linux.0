@@ -1,45 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA12B78C9C;
-	Sat, 14 Feb 2026 08:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47F378C9C;
+	Sat, 14 Feb 2026 08:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771057107; cv=none; b=CdJO/mLmx8Ix40qEThpiEVCIZOf3YL2ZqjcPHK8tlHAjKUnwr1KN/DWFVkpRdGqZrK4q8sZlmjCzft9PyzEuSWoJh9ay6fxHrZ610Hhs1nBVjWR2D9RRWWHixN32he72aUpWaMEL+92A9CuQRIQULxIMkS0PDDmCA615s3maeck=
+	t=1771057111; cv=none; b=UerVsKu1uIYbemqHWKU2SfKo6RWBOy9jV/hs0JoMVWI5V5IBczwByPhWJerDYGg22jtXlN16y4CyGcZPBUMcwdRRgd5tMoGsIuGewb9YLgeKrojqdZwVmCalo9lxuGW++aPWL3mlEXFB/CmZua5xCQPYoIlCgN/1l9++hkkz/QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771057107; c=relaxed/simple;
-	bh=tnGsM71fazkwZU0Sg5W474EIVzu07NCnoHxR0Z4YUL4=;
+	s=arc-20240116; t=1771057111; c=relaxed/simple;
+	bh=O8x1zhA6Vi8ynCREZI3k2t41Zy8F2bQqNAoQ3vIS1d0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nNzn1RC8kQOPmk5fU/0VkTBy6EylDUQmX8WsNFy1x50vAGeHriYQ+vA4fGokJVe18xmMOV+vLUeuuV85wI3AAagNBew08fwcSJPPWojDOHRLz2481SpKui0yBUiQIT9R0Wv9kiae+krWnCaH8oJx9NuPAkZmTF4MBh9yYRDgm0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iz7z95+3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=YD7z3R1KMVIzHbWo0FWMxgwSYF4hABnpxM8Rc/NpQkcwTfCyxsPFC9Ebr5KZKp2Hme/TTISRL2yV1Yk9N6ySzUiScXgGB1mmwCEnvhv0fUVaL9Pjgf35FeYO5HbIzVyLkZs8T26ZjT4v+VpLbFu5FrFoNkB2xJuRcvWPxNl2DzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jphuTcDA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iz7z95+3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEB7C19421;
-	Sat, 14 Feb 2026 08:18:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jphuTcDA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B9AC19422;
+	Sat, 14 Feb 2026 08:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771057107;
-	bh=tnGsM71fazkwZU0Sg5W474EIVzu07NCnoHxR0Z4YUL4=;
+	s=k20201202; t=1771057111;
+	bh=O8x1zhA6Vi8ynCREZI3k2t41Zy8F2bQqNAoQ3vIS1d0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=iz7z95+3FmKmtQELbykPO1iAhpT9bzN3jHPnBOkCasdhNjSiy2SKsxn5PZExGgNTr
-	 vmwJj9zg8uJmHIccft5CjHmCFvKIBVHDw/baCy2J8YpVSGo54B8gxc6rUJGRMHdLAj
-	 dDWe9NqjmLB6Dy4UXFIfBG4/rUPnbu5mu7pPzgGKMyGTqLxZcJGfF4UKRfBlKRlhMu
-	 8XU2dwA856PBgSUuRHHUIWyQgZSMT2TIJkfeYyT9QBTDUO+65qSfdL5/1p1noi/07V
-	 lEvSULuv3NUUzghzksRBvwwBx4wcHI2H56ryor1DXB7wYywtkcFTagXwhOhOkqpWFQ
-	 TnjwZGZUtqeEw==
+	b=jphuTcDAy5Kdn63OCdQdo3hS88GeN50loPFKsDm367J1Ae8LIoTFuV9m/wIFndl1r
+	 oPrst4EpmqLmkPQeMnCkyxDf3BevPduv7e/pYWtKwV5bYUy1ZdH21G1R5kI/Bn2RUb
+	 moguguPAnELKphe89Os9NnIAku04ER+ls5Hwts8SbbLz9DZ3ThOnsteukrR1EG342N
+	 I/eYYmsAIHhLhdPvqgrVzvosRbLhFIjbjxLCylsu70mBUeGFMXTZx3Bf4A62olg2Mr
+	 17P9XyBfBWUpKKRB0PCynhXj4dv2zJoJ6/K9JP0MVTCDqtmhE4NLyWPe8rgob/IBkS
+	 iEOW4OW+me2RQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+To: Boqun Feng <boqun@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
+ Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: impl_flags: add method to return underlying integer
-In-Reply-To: <b3388ec6cbd8f42532e876737e015e15@garyguo.net>
-References: <20260212-impl-flags-inner-v1-1-1e2edc96e470@kernel.org>
- <b3388ec6cbd8f42532e876737e015e15@garyguo.net>
-Date: Sat, 14 Feb 2026 09:02:57 +0100
-Message-ID: <87zf5bsqfi.fsf@kernel.org>
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+In-Reply-To: <aY9i8rbvnxdOA9DV@tardis.local>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <aY9i8rbvnxdOA9DV@tardis.local>
+Date: Sat, 14 Feb 2026 09:04:56 +0100
+Message-ID: <87wm0fsqc7.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,52 +52,45 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Gary Guo <gary@garyguo.net> writes:
+Boqun Feng <boqun@kernel.org> writes:
 
-> On 2026-02-12 16:02, Andreas Hindborg wrote:
->> Add a method to return the underlying integer used for flags. This is
->> useful when using the flags with C APIs.
->> 
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
+> [...]
+>> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+>> index 4aebeacb961a2..8ab20126a88cf 100644
+>> --- a/rust/kernel/sync/atomic.rs
+>> +++ b/rust/kernel/sync/atomic.rs
+>> @@ -560,3 +560,35 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
+>>          unsafe { from_repr(ret) }
+>>      }
+>>  }
+>> +
+>> +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
+>> +///
 >
-> I am not sure if we want to actually expose the underlying representation
-> for all flags. It should be something up to the caller of `impl_flags` to
-> decide.
+> Given Greg and Peter's feedback, I think it's better to call out why we
+> need `atomic_per_byte_memcpy()` and why we use bindings::memcpy() to
+> implement it. How about a paragraph as follow:
 >
-> Would it make sense to add visibility the wrapped raw type so that you
-> can do
+> /// This is the concurrent-safe version of `core::ptr::copy()` (the
+> /// counterpart of standard C's `memcpy()`). Because of the atomicity at
+> /// byte level, when racing with another concurrent atomic access (or
+> /// a normal read races with an atomic read) or an external access (from
+> /// DMA or userspace), the behavior of this function is defined:
+> /// copying memory at the (at least) byte granularity.
+> ///
+> /// Implementation note: it's currently implemented by kernel's
+> /// `memcpy()`, because kernel's `memcpy()` is implemented in a way that
+> /// byte-wise atomic memory load/store instructions are used.
 >
-> impl_flags! {
->     pub struct Foo(pub u32);
->     ...
-> }
->
-> to make the inner accessible?
+> And probably we make it a separate patch for this
+> atomic_per_byte_memcpy().
 
-I don't see how that is better?
+Sure, I'll queue that.
 
-                bindings::blk_mq_tag_set {
-                    ...
-                    flags: flags.into_inner(),
-                    ...
-                }
-
-vs
-
-                bindings::blk_mq_tag_set {
-                    ...
-                    flags: flags.0,
-                    ...
-                }
-
-
-I would prefer the first one.
-
-We are going to need to be able to pass these flags into C APIs. I feel
-like adding a method to do this is the best way to go about this. We can
-call it something else if that communicates the purpose better.
 
 Best regards,
 Andreas Hindborg
+
 
 
