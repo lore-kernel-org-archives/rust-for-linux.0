@@ -1,116 +1,133 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7CD1A3029
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Feb 2026 12:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771159639; cv=pass; b=YKEoSQnxleqBJzAvFLEVUWjAeVkS1pFaN6qptpiYnHuT8HThfwQPMf09XwXokc08upmEvP7+2FsE+3OHD+ID/J53ir2lURBvvO8RYNRceiNrfvM6fl+R0qa2Sie6D0lQ70W59j8o84W8uT1nwR15eGG8qsGAuDvL/CoGuH1NaLo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771159639; c=relaxed/simple;
-	bh=B4uqGI0KWBIUJL6YDXBlbt8QMQCu/u6x+jYyWmIroY4=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=tPKdm0NpMN32OUaoMJXreuU/wevLnSx4XTzgd9+OcLHqDxDtCxtMS3oF79QKY+K6C9mqNg1AifPPHPRgjPfj6KjWWi51/HsADPKq630D+Gmp5VLcKs0gbIluPlZF4f7Y1GKvHAZGQIjwuEdWtDRr94gQ04aR+eQnNkMVw7K7o2E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KnnKzklw; arc=pass smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F1025F994
+	for <rust-for-linux@vger.kernel.org>; Sun, 15 Feb 2026 12:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771160189; cv=none; b=lzOU5+4kvRluspCKSu0OmhyjihNWo5PWvaWyPrVcbuzzdci5NrWaoyl6Li1saXNfZgJ8f+5utKeMXN9cbwh8qol9nPpn2Pe55hxQpYP4sWOcwWigwSC67iC+M7yzlzjZXlb3aWHFw8y4W/PVif2hNSvW/7JjfvVZcG18bH0Y8tU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771160189; c=relaxed/simple;
+	bh=z4ISTC1FYaouMEX9Z8Lsz7jGyb53J4krldYgHFmhfog=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=dBjw2c+k+NyrX0DVoiNl6Xw7k3aKgdjcexF88OOiABOiwg7bBeITZ3NktwCYvhNRTnqJjyslwdpdIAqXeJmDCzFb+Yc0aEIymFb7Cpz51ZGmk3W5NaRf71hNx78P267udzqZ35aOGvHSRH7qWj2k+DZVP2KHLixXowhm3Nv2iGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBtnW1Rg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KnnKzklw"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2ba6737fafbso125022eec.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Feb 2026 04:47:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771159638; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h2a1cBhWp1UFNz7VwS6fgCxSu5Bz5/y0VbZwAQBExXn9kRkCFIdwOUc3h0n+M5uvBs
-         jQpY3+YFdCEf2VhF4j13GrSSDjd8Wgt9qkBHzOVDwKDwTpn2fCvvejXTSd9LpmqGMtJu
-         87MVlMu+JdLhzb7zTZGcJD2U5Xr1QCD2hu9dit+LBB1HZJfskLkJBrUvss6H/4WMHWO1
-         CQG/AEf+V+LPDBhvf8Wnx43KCB1I+Hk2r47Ao68rAO1lhbf5ifcKstReIuJ87e3HDQh/
-         +D7NLs1ZYwWAb9SoZVKOUuM2tOHDhMDRq6GVoF68ipG+rw4Mshto5uzKtPqMyeRxxE+t
-         x7Lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=555QthD3BOi0oKnL9Ait9gVqXQiUN7RsLDwjha1Lgzs=;
-        fh=5PG/RyFDQq2diSfoW5l6v6fy72gNFMgZuflr5Yj+IPg=;
-        b=BVXoT1DEyr1tR6TG2pIYhKrpzeXa8KvXAjM5X68uWIBr2baD7jR6hkjUrU5lY5+iwa
-         WMci43fdiIM1jGaduv7d4qkGmxfj6hxEaGYL2qt3ApsI/Cr9b7tDsKvSWXdz3PyfKxnk
-         zIgYGwaPtJfYpSHzAL8hIpCUYmyPPFkSj1UVg+RYsRAmS2zd192PHF/F2ZvKDwGxploa
-         F03tS3hrWe1Bs966ZK8qTPxjDrQ3SoibXgBDzawCYo1cfQEORmEEvxpDmHO8mVX3G7B3
-         pcl4qzDRSmNLKx/0cW/ZUMq+6Z9lYu3Vetk1FpRKsdBRWlxgCb5Mt2BgiU6wvuFC8DI+
-         jKmg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771159638; x=1771764438; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=555QthD3BOi0oKnL9Ait9gVqXQiUN7RsLDwjha1Lgzs=;
-        b=KnnKzklw3u3iuFemhkJWujP7NVM/bP6c232xxqHXrJi6oMlcSw2sRaQiiZglOmgofz
-         5CovYbrBC0WJa5THymEIdh7ZWuezAp5yogSwFsevtXIweCXOqra3vLkcps9MIv6juLjn
-         DoK2if9hI1QyUYV/NG/QCtPLIiZ75igrvvBKk98DOUthFfn41OA5ItsIdTiPZK8Hiu+n
-         BhXirWhrFNFEPbQ/lEatRlP/iPHqXgcYFOOIBMeT22NKcJigU/RaM8Wq3zz8joXK6A7E
-         Jtb/3iDpKio+d7JINNCMnrYGLq0msP2v2jLQbeWplEP9yZICGUuvlbdrW4hzW3twGv08
-         Wj0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771159638; x=1771764438;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=555QthD3BOi0oKnL9Ait9gVqXQiUN7RsLDwjha1Lgzs=;
-        b=pfVNqFWMfRRJlOc2hlZURcWN8isldYM9/eGPy7bjUlOhhBgGwEBW3oCJtqs8FR9BE3
-         DcUxhse3xl6mPqhZKdjAzVg2T95UpHEUXLa4NykSIvbyjUbel3h6REfRWHG+9QIYBpWs
-         s2Mgv2InzOwVuAoh2se/YBo7pm60yMkiql8pAA9wtPB+ebONw1z7ZMaed3swKv+0OYtw
-         SU0svpSQA7C9a4ox3yz7KLNjBVDzBybwH2tMkMEpN4/fah0XA2kknFeD6ViL/mX3QKuU
-         gvlwbwy+y0kOedUMs9TwPF5ySac/mp8KK/2QAzWHuyPYde5fnt3l3tNEG/rF1vkqfEfR
-         Kz8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXbUM66sQIbop54jkQL2dPPvHUBiXfurE1VIrWUgBvbHdqfvs57fDRmb8DN4wJrCrNOSHnxHSl5OFxvYmicDQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyf5/0lgoqfwFaIJ3QNTPyafBwXU4perMen4zpAIw7x9Jw8ZWpu
-	WlwRxmU6XsoOrkWbwQTekb/HTz5fw54sjCT/9XF30PJW8SbuK8jfTF5gmOaUgU4KBEielN1jzno
-	EipZzg7OzWGADIcDYapAOr9lb+A3vMZXVUoA28fg=
-X-Gm-Gg: AZuq6aKnEd7PDXF46gbGapg9HGhwY6hgb/ei2ONj+SlS/WWqbbGWzG9yMTuyCxYY/4d
-	6IUPbLyo2Xpj9imo5w1vryItHjxARbAtgOwsiOjjxelal5g3W1jJJ7VfMzlxDeCcmGn6ZYNlAz0
-	qfzJ++AIYIophwC38mTW2Oi+z1BbzH0CluX8xUD+iqLLDWzXOJTWchBvOUOfZA4FncXCifqpCdV
-	SnwRcQudSC0UlzqJ/OwA2WHSWTJKxise9EfNshLKLPnLOCsU95IW7gDvpR9YvnsGKQp/o0KbP5b
-	x6t/2OlaLQP7uZYv7PndX9QX1VfRGW8pvynOG1NfkKs3PgqJabknRkJ0tWlJ84wTu3UPV2DRT8z
-	yfLq202eES+igWu7SlVtGokenGC5IIDMB8iU=
-X-Received: by 2002:a05:693c:3747:b0:2b7:f145:a98 with SMTP id
- 5a478bee46e88-2baba010c63mr1740180eec.2.1771159637646; Sun, 15 Feb 2026
- 04:47:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBtnW1Rg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC48C4CEF7;
+	Sun, 15 Feb 2026 12:56:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771160189;
+	bh=z4ISTC1FYaouMEX9Z8Lsz7jGyb53J4krldYgHFmhfog=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=PBtnW1RgBd3PcglMBshs45gLr9zxMuo69GHALSfjycvb5vFX+NLrQCJP4JPGGIqTr
+	 AXtW/Gu8KR9yMIq9ndq2dHSauHtaNKjzlugy4jt2Oroz82srhN9M/1/nG/rl+t3tLG
+	 41oS4bjx1NLqS9/iIXzAXUxw/2RL84cXRK2b0rZPg8cPaYt1zcluhHKhV9I5F92rwN
+	 mETTmIhweNNp6XBwPkvZ03/D0yOrhcDXT1IHixj9aXjcjq/Gb7O4c03fsPWMxv97u4
+	 US0tiuqBzQZO8iyjP/ZEpRaarxfl6hT+M6OUKWiLCdS27TqGajUVGQtdkgxLHtZd6W
+	 +aTT33oCS8qCQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 15 Feb 2026 13:47:05 +0100
-X-Gm-Features: AaiRm52xhFAYmyYTEXemxfhC4DHyUHZ4W6znoAlEOviZgMAfjb63hI2InUlCZ8g
-Message-ID: <CANiq72khOYkt6t5zwMvSiyZvWWHMZuNCMERXu=7K=_5tT-8Pgg@mail.gmail.com>
-Subject: Mainline UML Rust stable io.rs unused imports
-To: David Gow <davidgow@google.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, driver-core@lists.linux.dev, 
-	linux-um <linux-um@lists.infradead.org>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 15 Feb 2026 13:56:25 +0100
+Message-Id: <DGFJVWDJUOXK.27766P8H081G2@kernel.org>
+Subject: Re: [PATCH 0/4] rust: add pointer projection infrastructure and
+ convert DMA
+Cc: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, <rust-for-linux@vger.kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260214053344.1994776-1-gary@garyguo.net>
+ <DGEM8AITP519.149B3IVELY7HA@kernel.org>
+ <CANiq72kt-it2y8iAR6uA-EuJ8pVygwvOV70MSd5+vYwq1Tp9Bg@mail.gmail.com>
+ <DGFHJP0MN0EN.254I1QVHR94VA@kernel.org>
+ <CANiq72=+orB+-sTAJHiPQmz431+pCg2S5E9NFSbuh4NNhppfLg@mail.gmail.com>
+In-Reply-To: <CANiq72=+orB+-sTAJHiPQmz431+pCg2S5E9NFSbuh4NNhppfLg@mail.gmail.com>
 
-Hi all,
+On Sun Feb 15, 2026 at 1:06 PM CET, Miguel Ojeda wrote:
+> On Sun, Feb 15, 2026 at 12:06=E2=80=AFPM Danilo Krummrich <dakr@kernel.or=
+g> wrote:
+>
+> I just want to have a reasonable review time for the first patch since
+> it is new code.
 
-In mainline and next, for UML with Rust stable (but not with Rust
-minimum), I am seeing:
+That's a bit vague as this may mean something else to different people and =
+may
+even depend on the actual patch and the people involed. I.e. we may have a
+different understandng of what is reasonable in this case. :)
 
-      RUSTC L rust/kernel.o - due to target missing
-    error: unused import: `define_read`
-       --> rust/kernel/io.rs:229:16
-        |
-    229 | pub(crate) use define_read;
-        |                ^^^^^^^^^^^
-        |
-        = note: `-D unused-imports` implied by `-D warnings`
-        = help: to override `-D warnings` add `#[allow(unused_imports)]`
+For instance, for the scope of this specific patch, given that it was sent =
+by
+Gary and already had a review pass from Benno I would not have any concerns=
+ to
+see it land within three weeks or so (assuming that it will also receive
+positive feedback from Alice).
 
-    error: unused import: `define_write`
-       --> rust/kernel/io.rs:262:16
-        |
-    262 | pub(crate) use define_write;
-        |                ^^^^^^^^^^^
+But of course it depends and as a maintainer I also constantly re-evaluate =
+when
+a patch is considered ready.
 
-Cheers,
-Miguel
+To me time is a less important measure; a more important measure for me is
+whether the key stakeholders are in agreement that things go in the right
+direction.
+
+Having that said, it is perfectly fine not to rely on the judgement of anot=
+her
+maintainer is this case. It is of course your decision if and *when* you pr=
+ovide
+the ACK for this to go through another tree. :)
+
+> That is why I asked whether there is UB "actually" happening today,
+> because I wanted to understand how urgent we were talking about.
+
+Ah, I thought you already know that there is no rush, as this topic was als=
+o
+raised by Gary in the last R4L call.
+
+>> I do not see any reason for this to be backported, but it is reasonable =
+to be
+>> included in a -fixes PR.
+>
+> The backporting part was to mention that you were right that we treat
+> soundness issues as bugs -- even to the point of backporting. I
+> introduced that policy to try to raise the bar compared to C, since we
+> want that "extra layer" of protection and to keep it up even in stable
+> kernels.
+>
+> But it is all a balance, i.e. in the C side, it wouldn't be even
+> considered a bug to begin with, unless there was an "actual issue",
+> and thus unlikely to be justified for a fixes PR. So I want to make
+> sure we don't overdo it on the Rust side.
+
+Independent of the above, this is how I see it (and treat it so far) for bo=
+th C
+and Rust code:
+
+If there is a potential bug (i.e. code that is broken, but no user experien=
+ces
+it so far) then I usually take the fix through a -fixes PR but don't flag i=
+t for
+backporting.
+
+The reason I say usually is because it is a judgement call in the end, as i=
+t
+also highly depends on where we are in the cycle.
+
+For instance, if it is early in the cycle and the fix is considered low ris=
+k, I
+rather take it (e.g. before another subsequent fix regresses due to the
+potential bug). But if it is late in the cycle, even for a low risk fix, I
+rather hold it back.
+
+To me a soundness bug (that is not yet "abused") falls into this category a=
+nd
+receives the same handling.
