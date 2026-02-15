@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365221B7F4;
-	Sun, 15 Feb 2026 23:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500292D6E74;
+	Sun, 15 Feb 2026 23:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771198086; cv=none; b=HCjZ40m7o/dD9xkYaZ5zGr3UJ+Pv3tlC82O2k9ZIf5tL5LIo6anyd3NsNfA6tJiAB/ItP9kk/p8qTQavyCq64K50J2CavSWfUxEhtdJA1/CVB0UFILtSAv7a+U0LrJDxlFD5xQmnbAdK2x4M8B/ipgWh4MtKC5hQqEWpMPOQqlk=
+	t=1771198190; cv=none; b=PineqjZo8MHUDlcs5zl3Wfa8uIxU7y0WfDnPTJ3z55MrKm6fMiN0K2dKRDAVK8cpvTzMitzkjEgEuisEG/SMBh+2fpX5Dw9oseN6nBpxOckGhz83P76Jhqx1xfEuZNbdm+SpVG7gyGwjIFyA7Eg1JjgOl2glS9HSxMsgfriw4Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771198086; c=relaxed/simple;
-	bh=agLUdmSDCrHvhMoto+La1aHGujXwuXilw2xL03ggdQE=;
+	s=arc-20240116; t=1771198190; c=relaxed/simple;
+	bh=ZyJz72d3omm0sfcpYeMyRHkraJLhp8ot2zTCeLlY+kE=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=YNftJU3durNspcCzeY3JCJQOxabY3O/X1MzioUvxHWFkvrBT3Fe5hVip9AF6EtAhEqDI8vFx2rcp2H1dDAcrVyf852LIy4PEPu4GreiCuAmhbJEZyoeeVNyE6ug2RvZ/etn6czj2HZrQRPoBJwAoku2pz3s9t0BAqpBUykWnL6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=co8FlOee; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=WzbbtYATeb6+niNlzEI/KGsJGvDcbu66ylOhgfnQeu/ed073Nva0kBtmvge96clb85zQTknN3aCmMSSGPe/zL+i5OijDKpFnBx3oRRayxoWNbo0b5LyTITTFCzOeIqJ11PPZ+6hck4In2XqN0apMw1kiQO606KSCipQ1mwdtsHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NvNlTZg4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="co8FlOee"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF81FC4CEF7;
-	Sun, 15 Feb 2026 23:28:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NvNlTZg4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE23C4CEF7;
+	Sun, 15 Feb 2026 23:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771198085;
-	bh=agLUdmSDCrHvhMoto+La1aHGujXwuXilw2xL03ggdQE=;
+	s=k20201202; t=1771198189;
+	bh=ZyJz72d3omm0sfcpYeMyRHkraJLhp8ot2zTCeLlY+kE=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=co8FlOeekokJ1egtu6/JTdLXl6PSqLhl2uR4oOQ72RybtbfvUjk4of0+yL577eTEM
-	 27NLy7H97eMeEVdb0mDhpwxMoyaB5eqZaztqi88hFvy+M5Ly21979u5mdzuXvEc23Z
-	 FCh8XNZCWZ4fIww2oWkBLuDDbL4BHzTQmO2TEAU7hB4uBMyH6rmUk9TttRJWyowDrn
-	 og0kEd3LIo0utv3WkKSCrl+agr+CVKyyJdv/uds6bfuzULp+k+APiGJ9SifR8ftAaT
-	 11w1xa0HVDr7FdsDKc7iaMs/sfqcXQzMi9JVVtrCcil8Hjg6V8SchApnMZ/3Dp1jAe
-	 tLvxK/ofZRejg==
+	b=NvNlTZg4rfhHZjh25ReI8Usg0GHyD66mUGSS5xMqNi1ZrqV+xmgu7H2zn++54+hex
+	 hyKW2/zTltefgrpoWM/b2hvo3dd8B/OC/hcuWUpM0nlMwY4GOl176rTxxlTZ442Rf0
+	 XUV+TO/9X/fjbwE13Oauk/S2xx+yR124jOpJqflCEExWsGRPmAUulQYiICQFHal9DU
+	 S8U/DpHlgtH13/aUUO/NhdikEDDWqaa7xh0VfhzvBEqpy7E4dDkRtBxvKVRMfLnLav
+	 PrIclyGOqpd0kGPp0LT8Lpygm07lfB/WSNQAv6VgeBwU4IKo94tOi66i2ftU117dOe
+	 u9CxUN+Gc2yrA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,40 +34,74 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Feb 2026 00:28:02 +0100
-Message-Id: <DGFXBHXTR8YS.3NUDRE3ZKV7Y6@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: sync: add lazy initialization methods to SetOnce
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+Date: Mon, 16 Feb 2026 00:29:45 +0100
+Message-Id: <DGFXCTGFJM6B.34VDIFSAEIJWY@kernel.org>
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+ Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: alloc: allow different error types in
+ `KBox::pin_slice`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260215-set-once-lazy-v1-1-6f5bd2efda11@kernel.org>
-In-Reply-To: <20260215-set-once-lazy-v1-1-6f5bd2efda11@kernel.org>
+References: <20260214-pin-slice-init-v1-1-0b174fbb1844@kernel.org>
+ <DGEQZHTOW6FC.2SWNBWY9XE3LD@kernel.org>
+ <DGERGXTEJ2B2.24F7OWLIZZAK7@kernel.org>
+ <DGERTGLMB5S2.3OE4VYDYHMJ3M@kernel.org>
+In-Reply-To: <DGERTGLMB5S2.3OE4VYDYHMJ3M@kernel.org>
 
-On Sun Feb 15, 2026 at 9:27 PM CET, Andreas Hindborg wrote:
-> @@ -76,10 +79,46 @@ pub fn as_ref(&self) -> Option<&T> {
->          }
->      }
-> =20
-> +    /// Get a reference to the contained object, or populate the [`SetOn=
-ce`]
-> +    /// with the value returned by `callable` and return a reference to =
-that
-> +    /// object.
-> +    pub fn as_ref_or_populate_with(&self, callable: impl FnOnce() -> Res=
-ult<T>) -> Result<&T> {
+On Sat Feb 14, 2026 at 3:56 PM CET, Danilo Krummrich wrote:
+> On Sat Feb 14, 2026 at 3:40 PM CET, Benno Lossin wrote:
+>> On Sat Feb 14, 2026 at 3:17 PM CET, Danilo Krummrich wrote:
+>>> On Sat Feb 14, 2026 at 2:28 PM CET, Andreas Hindborg wrote:
+>>>> @@ -333,24 +333,31 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box=
+<T, A>>, AllocError>
+>>>>      /// assert_eq!(s[3].d.lock().a, 20);
+>>>>      /// # Ok::<(), Error>(())
+>>>>      /// ```
+>>>> -    pub fn pin_slice<Func, Item, E>(
+>>>> +    pub fn pin_slice<Func, Item, E, E2>(
+>>>>          mut init: Func,
+>>>>          len: usize,
+>>>>          flags: Flags,
+>>>>      ) -> Result<Pin<Box<[T], A>>, E>
+>>>>      where
+>>>>          Func: FnMut(usize) -> Item,
+>>>> -        Item: PinInit<T, E>,
+>>>> -        E: From<AllocError>,
+>>>
+>>> I think we should keep this bound and just add:
+>>
+>> The `Into` trait bounds are the idiomatic ones for functions consuming
+>> things. See https://doc.rust-lang.org/std/convert/trait.Into.html:
+>>
+>>     Prefer using Into over From when specifying trait bounds on a
+>>     generic function to ensure that types that only implement Into can
+>>     be used as well.
+>
+> Yeah, but isn't this only because of [1], which does not apply to the ker=
+nel
+> because our minimum compiler version is 1.78 anyways?
+>
+> I.e. are there any cases where we can't implement From in the kernel and =
+have to
+> fall back to Into?
 
-I would name the argument `create`, but not `callable`. Same below.
+Hmm that's interesting. I'm not sure if that's the only reason. It would
+be interesting to ask the Rust folks if there 1) is a different use-case
+for `Into` today; and 2) if they could remove `Into`, would they? If the
+answer to 2 is "yes", then we could think about doing that (or at least
+document it for us).
 
 Cheers,
 Benno
 
-> +        if !self.populate_with(callable)? {
-> +            while self.init.load(Acquire) !=3D 2 {
-> +                core::hint::spin_loop();
-> +            }
-> +        }
+>
+> [1] https://doc.rust-lang.org/std/convert/trait.Into.html#implementing-in=
+to-for-conversions-to-external-types-in-old-versions-of-rust
+
