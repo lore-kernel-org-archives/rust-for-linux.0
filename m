@@ -1,113 +1,124 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7892D258CD0
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Feb 2026 20:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771186482; cv=pass; b=V4yD0O4aeoYTp7z3tsQ7AjlPwL8quUmHzDviZdj2aCEvu0VV9XKEle1Ls4r9PZMLsgva3m1yilinz5QC4AOLPJVxwZILVn4YccOGicIoGSBuNB7LH2IwSXoh5LGHBM9/3PWa1jaZTyiQBaPq+nZDpYczCH0cDjwZCpBNatR4w6k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771186482; c=relaxed/simple;
-	bh=0uTi6kWOISajCqeksZ6BiPIjxgdQakK6uX64/2tUR68=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vf8CoVauDUH3TcdO6PV7SXbwKB0UQdXBlsyICic2zOFRjhY645cV/+EcFRrcFI2XG3Xl979MhjCqt5SI+Rk78hv3Efr6KaDIexch4jL0pR4iAwjN53cHIeTu2aWSDyxDaujQRj1fUJosxQ9wTYeuVN9aVxC5u3MKPCXdVsnY3yM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CU1hW6Pw; arc=pass smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F513BB4A;
+	Sun, 15 Feb 2026 20:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771186570; cv=none; b=iK+HiGMtOjjXlebFwa2PBxTwxAy0vsYPWyqQV3J5aOs16Z8kLHNYaPD8i94GmLnPICMTISGON0y3cN+FDV9e692aFaZdmVA7Zgy3bq+ghY4CQBP79K042ztYROWpixQEtvrPFG8LKtd2gGUFjbfmdfVN4lFfNnlOa2JJ8zqHEkQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771186570; c=relaxed/simple;
+	bh=NxSUHptN1Z+yOvBDI2TPjKfUqELGTqO1roisNh8BODA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fos6UVIufWrS8/iW/VFkYU4hnBvQ+szf4jWA2lqWJuTa+WHrRfqntIKoHzpSO/v5uER2A4eKPvUJec3dA1RTBTjAwZwJfmMHhPpqQuy5xJvHVLI4SGSwgJsk64o8LFM9RILWrzWWrcS8SZtmbXKcxR3zw5bEA5di5rTUI0Uvhno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zk5q51uR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CU1hW6Pw"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2ba76e80509so190641eec.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Feb 2026 12:14:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771186481; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UKh7e4DfIKCOL6Q9pjgS0+fB5X67w+arbwzzD5bpRTHKRI47nvyxbs8+YEqzqsqtTz
-         N1+rOvF0jHB2U7CbNuRpNxA/ApCZvs5NVolPNpjjDu1JQ3K5FvHLyZxFeOunFbWP+OKt
-         tAkWqiR5Y0osAoK4ZWyVHpOkQFBj5dLY5Z913e3DsRyeBaS5SoCf76NGTuaYmSgA1px0
-         olH6EMQmDDPk51JiuucLxh6OiT+v/i49zC64R+W1Z3SnGuYPmNxryVoat8zKiCSNQOqJ
-         1t51Q2kVqQQzxCJPzauajD+FeYNAe5/i6KKE44YDaO4F3VplDuP/mlTEnN8P4w/KliCL
-         UgYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Y4GbHDjiAt+Gr+k18UppEZslZUkcTo9DoeQh4ebh+Ig=;
-        fh=rj0TXL9z2xO41EeT/hhR6nbl/1Eg28wRmCssq39xz6c=;
-        b=WjCBjgiRVH7htOHZ4KthL0GI6oufeW6hWRNw3tfyGRchkZFCZ0M4tEsCNT0PPPBMX4
-         EkRmWZM+h1K5gi0hpDn4jCbQuwH4gq1vd13g7pCHg+991RtVRfuf2YCG3CK1MNuVrt+C
-         bSxZOc/zw1Nr57WcWDJFIPuHr/p+8jntxsbRGVkmJ1pX5myfXZb2SmuUCfqDHn2c9HjV
-         UMWDBfWqtZ+bL/n5UQxGeCSEUwlAFJ2hZnrbH6jkavpz0KA7PP2nRz5yiANpBZu8aoAe
-         1dvLN1wxaGniW1dLiCOcAUNly/0G7haFYt9nksTuX2AcFFctQB+XzsnzzfShH6b95PgU
-         0KFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771186481; x=1771791281; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y4GbHDjiAt+Gr+k18UppEZslZUkcTo9DoeQh4ebh+Ig=;
-        b=CU1hW6PwmoW3NjjY26k3gswj39gje2bdV/0g6m+VY8aXE9P5wrAWOxfxyjqI9rVyld
-         w1MlP+ZJ3tShe4p6pFPJzJhu/XA6UELbwNDVWZXZj47l9BuHpvhtTO3s8CuS4qQMvFgC
-         uR9jsefoufwspU0i9aYtr8kxmifS+F4yECAUvlDzIboVj424HDmU6CGaDBv8RWkaeXK5
-         tqBDb1wCi4rkW1d/vGiSIjm4Pp1Q0GppNXJyaIJZ/TnsHwA7hMCstTNDIFqghbEP4oTz
-         xEr5QEZWgEkmZzEFA9wT5BaApbswVk3J4NCaqxrTQDYmB4yrWCC0zb/ThZYEO8YRqx2c
-         rNQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771186481; x=1771791281;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Y4GbHDjiAt+Gr+k18UppEZslZUkcTo9DoeQh4ebh+Ig=;
-        b=m3CN+ebX8ysrRlUDsNT6huiVWJhv/EA2juz0gMtxoLlH8/tBaQcRnI2wk/93MBwzT0
-         pH734szCMvg6VKwGUgNh8ebVebPdVa6L3Uo+Mv7P71G/irpQozjtUCdgOyeuNSm+xP55
-         rOVQfX68IeGrOEsMwI+jTX7FbDWekKrE16A9N9Tyw32LCQ4xrkKg2QtJ0AV0uhjm5xx9
-         jdY4l3XpeP39ETKuKwhXEYqJMuZ+0UBFkmuyLAn21gfzWkW1qW0orOebT5IQ38OuKhv7
-         6VuX65ClbUVPpFj4oZiC53KqXD30alry160YvD1iXizLct2UZRlzAdYyqyShHGODGazg
-         MV2A==
-X-Forwarded-Encrypted: i=1; AJvYcCV2BpSmy8fR6muLpTdGkfk4dPx88MXZacBbHzO9xczIp5Owc3k3Qj8I/Wp3VTKCC1/fIrMTGukA2OZUw7H99g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKBr5SMmJoiLgKm2DdBrNTyqPmniFppVjxZevdfAyy46yzbn+T
-	eGzYphq9q27l7EKnYaumuRdaj1MzFknhtz8I3mgGo4ELXzq1fN/L8kqPtCHRNNMZLTXRdBGinfp
-	vUkjE+5mlqeVBK/wXQExVlpw9ZwVxevA=
-X-Gm-Gg: AZuq6aL0VaDMlZbYp7BD9zQ3Sarmr4I+t44OLhgq48YI/OYzTExfZq8hXhVNOX3Gbww
-	bZla+0DMCCF6AAAvaPwxzbPQmbezVRhrg8qsd8fxRBNK4FrHt/RwjnjQuSuEO5j7JR9u4ATWPaO
-	OsDJbmP72mQV2rYzUXxKJDlOkF9t3cna/P7Z7rmGU41/yLSbiH5seEwVB8GJJ1KfUdfvtxG+CwA
-	igmuxeW4o9ddfixRsfdwkIadXFp8MKRig2nZUex6wz/7yCPHvxSuiawrUx+ST2d+MQe3tpzn2XV
-	8FJXNmUu/Md+hKLIi3BWf8EjzL0c4uDr1Gw+lDaPJQVS/N6xx41FUM/F3Zn50bdn6X2H23Qb0Ec
-	kgM0N1goN9IORYoxvrN6CMO7D3Lrqg/vxGoE=
-X-Received: by 2002:a05:7300:ef82:b0:2ba:6978:2b0 with SMTP id
- 5a478bee46e88-2baba0da09emr2165980eec.4.1771186480597; Sun, 15 Feb 2026
- 12:14:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zk5q51uR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B17C4CEF7;
+	Sun, 15 Feb 2026 20:16:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771186569;
+	bh=NxSUHptN1Z+yOvBDI2TPjKfUqELGTqO1roisNh8BODA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=Zk5q51uRDkbnMGTywbRoHBXfWGK6GVKBf8C/OWmR9Kg86LbaDZQ3sxZD/IcZu04nS
+	 Y8DROLc6RAYpWdNAJwOOJvAr35MiVvuWoRK3q9OD6Xjwrxga4uImH0J8WovwP/+1dc
+	 fqUxFo4AZ3yekyqa39dr7yJvnXNjHQDkwEPtTjJTbWw/Dh2pU+829qmkA6Dj/QM08X
+	 o6KNMjHQ/i/u3aC4QqRf7ErlzDIzPG7SPWShOjGn+oOJVkvtB60736HQ66JGQP4OTI
+	 Cvp6ZOTNIshAYkuW8bzTJkBetAe9umtQzyn/Jf/L9s3+0xyZrie5WM1+gIztq+xp/f
+	 N5RLIgXl/FUDQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Sun, 15 Feb 2026 21:15:59 +0100
+Subject: [PATCH] rust: sync: export lock::do_unlocked
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260215-cpu-helpers-v1-0-fab13d817a5e@kernel.org>
-In-Reply-To: <20260215-cpu-helpers-v1-0-fab13d817a5e@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 15 Feb 2026 21:14:28 +0100
-X-Gm-Features: AaiRm52jYYQ7sdwMAvtHt6Z1Jcc-e1mXHgS-AxF8e3fa3IFsaaAbNgn7-saLZN4
-Message-ID: <CANiq72kH7TforZTt6kjFKKjpgg_SmT7Yxur1UP_wcZ_x-c2dGA@mail.gmail.com>
-Subject: Re: [PATCH 0/2] rust: add a few helpers
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260215-export-do-unlocked-v1-1-f5cd2203b20f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAH4pkmkC/x3MQQqAIBBA0avErBtQK6OuEi1EpxoKDa0IorsnL
+ d/i/wcSRaYEffFApIsTB58hywLsYvxMyC4blFBaKNkg3XuIB7qAp9+CXcmhEEYb21Vt5WrI4R5
+ p4vufDuP7fsJ4endkAAAA
+X-Change-ID: 20260215-export-do-unlocked-00a6ac9373d4
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1931; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=NxSUHptN1Z+yOvBDI2TPjKfUqELGTqO1roisNh8BODA=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpkil/PbO0r0AYCgJWBnOfOzGhV66I27RudiSFQ
+ wmcbf6v8UCJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZIpfwAKCRDhuBo+eShj
+ d182EACH6Vo975Q6wkOzDgJg2pXzmPJOZrfb3uOXO0BTfDvzapbN8ofUc2eaO6Spnm5HJSRWkBM
+ f3BQqhpNeboCqzcPTMDN2KQE1pr9WVnIQmPJghLHilffljw2dRUJva+K1uc2CDO4TLaAEU9Tq/d
+ /qQVQTqZdddg9L3awpgU4QTfgOv7k1b0yFSq5MbcMaUvMEamZwAG+NHIirw7qQVOQqqqDRQoj2L
+ JtOYCkscaXaU5slBs9oycJ13dLSedBExoE/GqWkzXQQI+WxssOjQF8xU+mByJAGUjzszlJJo8H/
+ HUURgaz881bMQE0xOYlN3HBKZdXWR3uoREP8dWrsTeDm2TbLuy7wYhB6fPergRG8Ui93TBInm6K
+ pxXk/clJKvCqDBEpd/t/CMdspM/wXT6+w9lfmGlEbYZ6FCGD6MkS2mihvM54Q9XJfkD7tWZUZmJ
+ 4ozbdXCXGzvVIj11+K1jzZl2CzCywa5UGuD7/8yfmDZC5uC8SI0aokz5liXXQqp8iMqPTOxjpVR
+ jk+gn79ZuvQz8Z7qW60zCzMB11QWvBHLsuAKPsotcf1zp5645Ksdblzlov83Cy9y9Ahl/0N8/NJ
+ KAJfjgB4L9/IkH+vR1oxkt1WZtJbbJZpD2aq/sHexDCifF1xiATMGrM1lLm/dFsx63fBWbsPH0v
+ hsWwodwXaB9Dqdw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Sun, Feb 15, 2026 at 9:10=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
->  rust/kernel/lib.rs      | 17 +++++++++++++++++
+Export lock::do_unlocked publicly. Add documentation for the method.
 
-Please avoid adding things to the root of the crate.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/sync/lock.rs | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
-Also, for both patches, please mention for what it will be used for.
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 46a57d1fc309d..f390cd7ba0762 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -235,7 +235,31 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
+         self.lock
+     }
+ 
+-    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
++    /// Temporarily unlock the lock to execute the given closure.
++    ///
++    /// This method unlocks the lock before calling the closure `cb`, and re-locks it afterwards.
++    /// This is useful when you need to perform operations that are not allowed while holding
++    /// certain locks, such as allocating memory (which is prohibited while holding a spinlock).
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::{new_spinlock, prelude::*};
++    /// # use pin_init::stack_pin_init;
++    ///
++    /// stack_pin_init!{
++    ///     let lock = new_spinlock!(())
++    /// }
++    ///
++    /// let mut guard = lock.lock();
++    /// let mut buffer = KVec::new();
++    /// // Temporarily unlock to allocate memory, which should not be done while holding a spinlock.
++    ///  guard.do_unlocked(|| {
++    ///     buffer.push(5u32, GFP_KERNEL)
++    /// })?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+         // SAFETY: The caller owns the lock, so it is safe to unlock it.
+         unsafe { B::unlock(self.lock.state.get(), &self.state) };
+ 
 
-Thanks!
+---
+base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
+change-id: 20260215-export-do-unlocked-00a6ac9373d4
 
-Cheers,
-Miguel
+Best regards,
+-- 
+Andreas Hindborg <a.hindborg@kernel.org>
+
+
