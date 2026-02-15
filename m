@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5E327F010;
-	Sun, 15 Feb 2026 23:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365221B7F4;
+	Sun, 15 Feb 2026 23:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771197970; cv=none; b=O8eujAdl4iNoHTsAzwtq4Mn419Zp5krYzJ81ASa3zndPSb+OQuvE92R0Drx8vBoDL22Nt5bnrIUjMyagE/XoJ07TBfKZPq2VFGCkSXWDGtAeps1QJtq/KaLxC36aB0tDbEnO+eQi54Q2k3Vv01CkV8CZJlfAh1V5QNfpwRTwWZk=
+	t=1771198086; cv=none; b=HCjZ40m7o/dD9xkYaZ5zGr3UJ+Pv3tlC82O2k9ZIf5tL5LIo6anyd3NsNfA6tJiAB/ItP9kk/p8qTQavyCq64K50J2CavSWfUxEhtdJA1/CVB0UFILtSAv7a+U0LrJDxlFD5xQmnbAdK2x4M8B/ipgWh4MtKC5hQqEWpMPOQqlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771197970; c=relaxed/simple;
-	bh=IDQrgHU+6bxNOt9sKhUZszQ7sxXBQyVla/OvhAk/1QA=;
+	s=arc-20240116; t=1771198086; c=relaxed/simple;
+	bh=agLUdmSDCrHvhMoto+La1aHGujXwuXilw2xL03ggdQE=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=k+l5cyfEgh2OWGdbnBwi4ok6R9d1AZt2Mn0X4lYssdRsF0kAgUHf9mHqhpcbqWmZ+c7EI6U5Cl6HGrQHU3GIgY2hVHPv/IiYldPSHVW55h3sof5/ue99du3Js2bPVYy/So+6t+GAnI+ImX0RSfDA1bpOJzKKBYSbL6OLTUm1lBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8RNtXKf; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=YNftJU3durNspcCzeY3JCJQOxabY3O/X1MzioUvxHWFkvrBT3Fe5hVip9AF6EtAhEqDI8vFx2rcp2H1dDAcrVyf852LIy4PEPu4GreiCuAmhbJEZyoeeVNyE6ug2RvZ/etn6czj2HZrQRPoBJwAoku2pz3s9t0BAqpBUykWnL6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=co8FlOee; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8RNtXKf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C123C4CEF7;
-	Sun, 15 Feb 2026 23:26:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="co8FlOee"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF81FC4CEF7;
+	Sun, 15 Feb 2026 23:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771197970;
-	bh=IDQrgHU+6bxNOt9sKhUZszQ7sxXBQyVla/OvhAk/1QA=;
+	s=k20201202; t=1771198085;
+	bh=agLUdmSDCrHvhMoto+La1aHGujXwuXilw2xL03ggdQE=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=G8RNtXKfzgZ7sQzaJiMM//8JACy9iot3Apvq8oeOBQo+KL/91rkfMaqlkoSm8ntCX
-	 XyraMvNbr9oDm3dqAp//c30crZMMXmkll95TCCxE/SNR43sNt/UWw+UHGOYB1yasUg
-	 FTrA0cxRJ2cTui27ZbINsjByZrpSrhzY3fgPnC8Ppjv5VosGYWzJcHXq3VGnjM8G9U
-	 wd7+6+exmQg/+HcI/26vcvgesNLGyvtF2FZZ9TN9nMdzjKAiIPWxUwiUmsyvHLBjzj
-	 0neW0Fz+CiEjSxiWp22XxZksKTRef+QNu0FRuImVPc1mSuBSNxDBJJvlbSe8TWahLh
-	 MsBvuL8VSPqcg==
+	b=co8FlOeekokJ1egtu6/JTdLXl6PSqLhl2uR4oOQ72RybtbfvUjk4of0+yL577eTEM
+	 27NLy7H97eMeEVdb0mDhpwxMoyaB5eqZaztqi88hFvy+M5Ly21979u5mdzuXvEc23Z
+	 FCh8XNZCWZ4fIww2oWkBLuDDbL4BHzTQmO2TEAU7hB4uBMyH6rmUk9TttRJWyowDrn
+	 og0kEd3LIo0utv3WkKSCrl+agr+CVKyyJdv/uds6bfuzULp+k+APiGJ9SifR8ftAaT
+	 11w1xa0HVDr7FdsDKc7iaMs/sfqcXQzMi9JVVtrCcil8Hjg6V8SchApnMZ/3Dp1jAe
+	 tLvxK/ofZRejg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,10 +34,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Feb 2026 00:26:06 +0100
-Message-Id: <DGFXA113B8XT.2IPBLCLYT1X5O@kernel.org>
+Date: Mon, 16 Feb 2026 00:28:02 +0100
+Message-Id: <DGFXBHXTR8YS.3NUDRE3ZKV7Y6@kernel.org>
 Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: sync: add `UniqueArc::as_ptr`
+Subject: Re: [PATCH] rust: sync: add lazy initialization methods to SetOnce
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
  <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
@@ -45,45 +45,29 @@ To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
  <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
  Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260215-unique-arc-as-ptr-v1-1-bdf4b3174475@kernel.org>
-In-Reply-To: <20260215-unique-arc-as-ptr-v1-1-bdf4b3174475@kernel.org>
+References: <20260215-set-once-lazy-v1-1-6f5bd2efda11@kernel.org>
+In-Reply-To: <20260215-set-once-lazy-v1-1-6f5bd2efda11@kernel.org>
 
-On Sun Feb 15, 2026 at 9:38 PM CET, Andreas Hindborg wrote:
-> Add a method to `UniqueArc` for getting a raw pointer. The implementation
-> defers to the `Arc` implementation of the same method.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/sync/arc.rs | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 289f77abf415a..9c70fdd39bd2f 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -770,6 +770,11 @@ pub fn new_uninit(flags: Flags) -> Result<UniqueArc<=
-MaybeUninit<T>>, AllocError>
->              inner: unsafe { Arc::from_inner(KBox::leak(inner).into()) },
->          })
+On Sun Feb 15, 2026 at 9:27 PM CET, Andreas Hindborg wrote:
+> @@ -76,10 +79,46 @@ pub fn as_ref(&self) -> Option<&T> {
+>          }
 >      }
-> +
-> +    /// Return a raw pointer to the data in this unique arc.
-> +    pub fn as_ptr(&self) -> *const T {
+> =20
+> +    /// Get a reference to the contained object, or populate the [`SetOn=
+ce`]
+> +    /// with the value returned by `callable` and return a reference to =
+that
+> +    /// object.
+> +    pub fn as_ref_or_populate_with(&self, callable: impl FnOnce() -> Res=
+ult<T>) -> Result<&T> {
 
-This should be an associated function instead of an inherent method.
+I would name the argument `create`, but not `callable`. Same below.
 
 Cheers,
 Benno
 
-> +        Arc::as_ptr(&self.inner)
-> +    }
->  }
-> =20
->  impl<T> UniqueArc<MaybeUninit<T>> {
->
-> ---
-> base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
-> change-id: 20260215-unique-arc-as-ptr-32eb209dde1b
->
-> Best regards,
-
+> +        if !self.populate_with(callable)? {
+> +            while self.init.load(Acquire) !=3D 2 {
+> +                core::hint::spin_loop();
+> +            }
+> +        }
