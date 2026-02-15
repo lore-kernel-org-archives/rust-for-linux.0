@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5B42848BE;
-	Sun, 15 Feb 2026 20:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7776F285041;
+	Sun, 15 Feb 2026 20:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771187004; cv=none; b=GkE19Qr1rbDtJdIF5gmZPtuH9b60rpmvaQ8kBYt+Ik0E08LyzM76SRUxLGBchW9zLzupu9WScgNPj7Miwklmw2Hmq0iMoMzexls5pwhV3q6ygVtE7qQI6OvsTWjnnCI0K1UR8/DtXwBzw4RTtKbqXph+YFZLeX2fuYXByJCCUJE=
+	t=1771187007; cv=none; b=PyT35mV+oxr/h0ORbFW40OZfWECx4ob7Ce6ORHUmyQa7o4UC59zWtktXrCMtUH6G9QFnp7kqk7T3ZZEReHguHJvJdcgZB9zLX058P17G/KODgHRVM9ZrBW8Y5yqe0b5G8CSayEfWaoodlwRKO0rl8K+bfQuza+KrdmVzV73RhhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771187004; c=relaxed/simple;
-	bh=R2uBJkBCqv6QYfYB1lgGca4GOppibkTzmzxHVTl/yQA=;
+	s=arc-20240116; t=1771187007; c=relaxed/simple;
+	bh=IAegEq6wvSTCSwwppXsh49sbejfMYcE9NVPrJzZfXzE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Xj7SyHdhSA7zO5/Z4WqE2jzQP8qNaeztRnaB3tX5zFF6ASU4uW5clX94pZplY499n2yRqTW4dwlH16F3tP1aJLl5Oh04jggdEkBuB8hTjtObxdgK6oQn1JOAXAFozA3GISSFFBTwtf3LBZnwQc2Yi492QLhkjlmibQY7JYKa1JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3ADt1pp; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=CpA+u7chH07iuls0kCKbF8ov6zON7+lU4yRdLSEf5/yvVENZF3YiGWg6HO2OqMUj6JT9x4dpIVvpG7yHk+odl6MwXf8aba3uPOHCz8/oN0Ul3FeyrsJ6Z5k17YcNI4jzvlxDkbmKukMpIExbWoEFxPHQakmmnp4wvmgwSQZry0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBGiEjvO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3ADt1pp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB0BC4CEF7;
-	Sun, 15 Feb 2026 20:23:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBGiEjvO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF55FC4CEF7;
+	Sun, 15 Feb 2026 20:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771187004;
-	bh=R2uBJkBCqv6QYfYB1lgGca4GOppibkTzmzxHVTl/yQA=;
+	s=k20201202; t=1771187007;
+	bh=IAegEq6wvSTCSwwppXsh49sbejfMYcE9NVPrJzZfXzE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=P3ADt1ppvGIVTaiFKPB1lGQ8nTGCLNQNtwtGYugOdwP9fJGJnzpH80eDU23aLtv1j
-	 8y+u+yscHbyG9WnqUVPpzHD6JG3jSpkm1tG+4xkIeGPU+40llNCmOgKXvoS02mmScL
-	 JhDS/QJYtgMFKL56weu8ibS42EAcK93V/TtkWU4Mu5x7eUF0WZBYAt6VprLRpdRyQh
-	 FljkqMBa19iMz5qmwbP8dhDW2ro5CiQAhY8wYrOXXhuDmXn4QxWWQh8HsrkLuO6h+h
-	 CUsMSi3VTUJr+xK5GjpIJ/tBwLvcH/0H4nDeBQNDSB7nBm8r3xMArbDDq35FlGTm0T
-	 w+mUuqjWwHYqQ==
+	b=JBGiEjvO+fffztXBWoSDnzUGonTFKPwH6aj9neKV9dxerWbiS9QeSxj+K5x/juGJt
+	 vu/dD5ivWUCyyzhPmSQ9wJkM1P99PxCuI2WH4zsLOCJWvcO3Z1GaJmZEInLr3/+CC9
+	 g/NrayrkC5VUEQLhZgRA7aHGeQyA52ZcPRylBKV6C9ukPpGwnmZMiWj34jKlY2kx4N
+	 hkbI+ny9/IvVZ1KIf3v7XVPn0FHGauoaZZ1QmyG2aoTGrjHOuqn/3/vb/Oju6fcKsY
+	 UjG+CpWyfteyJZ+co//3CTAu9QKCgoao3r82gtt6L1y8TjRwnOgRq/5iqJUZYdHLsy
+	 bMbxSdQZCNvsw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Sun, 15 Feb 2026 21:22:58 +0100
-Subject: [PATCH 2/2] rust: impl_flags: add bitwise operations with the
- underlying type
+Date: Sun, 15 Feb 2026 21:22:57 +0100
+Subject: [PATCH 1/2] rust: impl_flags: add conversion functions
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260215-impl-flags-additions-v1-2-6538c8fb841c@kernel.org>
+Message-Id: <20260215-impl-flags-additions-v1-1-6538c8fb841c@kernel.org>
 References: <20260215-impl-flags-additions-v1-0-6538c8fb841c@kernel.org>
 In-Reply-To: <20260215-impl-flags-additions-v1-0-6538c8fb841c@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -49,67 +48,66 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1503; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=R2uBJkBCqv6QYfYB1lgGca4GOppibkTzmzxHVTl/yQA=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpkisy9YGCZzf/VR2auOHx03FR1C1VD032nrbx4
- 5QDTnqweX+JAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZIrMgAKCRDhuBo+eShj
- d39dEAC1PelNl8f3/hHTGHVR8WdfBubupCdUKQq70leeXMCOuUtVgZYFqx3vKHsb5V3ZRrsAZil
- BJ22sZRasvsxTA5ImXmjEB5cZWnyU9BkKeVoH/wRTD/qs15/53/62jCMQgI8nLqAPUAdz+h8Nvy
- nKmC9ga5W2nXMU5Zi00LRyLaTLR9ZrqwLni5Noe+0PpIqmPUhUGbGipFdUvkFaweElqZx1dfyI8
- f3R0apseOzP7f6RUJROqaYG79VOHAy5g0HeP094fZMdn5j+VGze+emMZBZRPnaP+T2KEayfVPkq
- vQGjt6gIkm46Isbgj8+HgIAJKb6+HFaha5xYpxAc6RErCGScdU8FLID0kW3xrPoCbH6kmyZAcPw
- fe9qt3rcNO+VaAZl7/emirm4W8TSuNkpQCBaiOGNVl7d5NN2EMdlSP1fH8/AetB0nU3zTTKXvqA
- AHRV/ucdccn8ZJrICUKDOhN99wY/cKX2CEDAOV2GKN+sz4pcHODGBgzGUxQiV7LQNap6wNg+ytk
- crwamHsN4E9XsmAq056fv6VkCMLFVG6Bt92VZJrA46D486RO8aTdAKUjvHs9r2NJXxyNp/lu9dC
- pIOItfXaV9f3E9yWRg2lTfKa0KbS5ItvRi92PFjaOxGpSsorSY15mQQCECsx2UH3nsj0rII0QJa
- ZvMmaqK9A3b2NQA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1647; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=IAegEq6wvSTCSwwppXsh49sbejfMYcE9NVPrJzZfXzE=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpkisxOJnInn1MyxUq7hWHWQlqrpwdquQpHBucA
+ fQi0eG6CGmJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZIrMQAKCRDhuBo+eShj
+ d/DGEACq4/wtWuhPd+GImXZdPujgaJLtPTK2J0qjos8ZVR3cj1UN7vE/CmZrKPCF8xO5ME+fTXn
+ HWWm8WK/91OHnYoZ24cjDdCbYhi2pTP5HZzNcHMHcyKYirxoEhvKyTz5+Nt21P9Lw0dqGRMfc5t
+ 7dV05EZ5BkC0za47vSr+9qiSrj8eG24G+VWluqcgd9rZYj7ElQ5dMNoHTYQ9l7Z+7h/zuxAC+JR
+ EFmNSfiE9kScpafQ2xtFnsry/v2hTbauUjyZYuh6Ly++QvxLOGCUXwmm1+/YiKpyaTn+SzUZAlZ
+ t1g1nhCsncLqerXsGnkmDQEWEjxeWnwsX965YlqNTk+E4b1EM5yZxKmEFY/4GaVIAUe9u6/0gxX
+ v7vnwM7VLudi2aMW3EgruBBIHAccacNLJwOUU4ReMg4C3DOC47+C9PLsAtJbs5rNPwm9IsiP2bn
+ b3LzbqH92xf+rWaucyuS0szY99uXv0oBFJPVZnhvRjJS2qtfLRMI9VSrXssrVrN1vAjPfeWU2uQ
+ fJDQm7awBwtN0grcHWUx4MmzJDCXDvaQg5LP0I8zVWPIGDM2KnN/BJBFxetlwDHAU2TVR/S35oQ
+ IlXeP2F7M+XqLpc8xewYaEIw5qzrrC8bvdGvhxh3t5CS0b2ap3PBSvtbsh0V7K6Gre8ajjiC9Kr
+ K28mvIlkghRzfPA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Add bitwise or operations between the flag value enum and the underlying
-type. This is useful when manipulating flags from C API without round
-tripping into the Rust flag container type:
+Add two conversion functions to the `impl_flags!` macro:
 
-  let mut lim: bindings::queue_limits = unsafe { core::mem::zeroed() };
-  ...
-  if self.write_cache {
-      lim.features |= request::Feature::WriteCache;
-  }
+ - A `From<_>` implementation to convert from the flag value enum to
+   underlying type.
 
-The above code would be needlessly verbose without this direct assignment
-option.
+ - A `TryFrom<_> implementation to convert from the underlying
+   representation to flag container type.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/impl_flags.rs | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ rust/kernel/impl_flags.rs | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
-index f34ecbe870d80..f829be815885e 100644
+index 9160e8ce2e126..f34ecbe870d80 100644
 --- a/rust/kernel/impl_flags.rs
 +++ b/rust/kernel/impl_flags.rs
-@@ -245,6 +245,22 @@ fn bitxor(self, rhs: $flag) -> Self::Output {
+@@ -102,6 +102,26 @@ fn from(value: $flags) -> Self {
              }
          }
  
-+        impl ::core::ops::BitOr<$flag> for $ty {
-+            type Output = Self;
-+
++        impl ::core::convert::From<$flag> for $ty {
 +            #[inline]
-+            fn bitor(self, rhs: $flag) -> Self::Output {
-+                self | <$flag as Into<Self>>::into(rhs)
++            fn from(value: $flag) -> Self {
++                // SAFETY: All `$flag` values are valid for use as `$ty`.
++                unsafe { core::mem::transmute::<$flag, $ty>(value) }
 +            }
 +        }
 +
-+        impl ::core::ops::BitOrAssign<$flag> for $ty {
-+            #[inline]
-+            fn bitor_assign(&mut self, rhs: $flag) {
-+                *self = *self | <$flag as Into<Self>>::into(rhs)
++        impl ::core::convert::TryFrom<$ty> for $flags {
++            type Error = ::kernel::error::Error;
++
++            fn try_from(value: $ty) -> Result<Self, Self::Error> {
++                match value & !$flags::all_bits() == 0 {
++                    // SAFETY: We checked above that `value` is a valid bit pattern for `$flags`.
++                    true => Ok(unsafe {::core::mem::transmute::<$ty, $flags>(value)}),
++                    false => Err(::kernel::error::code::EINVAL),
++                }
 +            }
 +        }
 +
-         impl $flags {
-             /// Returns an empty instance of `type` where no flags are set.
+         impl ::core::ops::BitOr for $flags {
+             type Output = Self;
              #[inline]
 
 -- 
