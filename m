@@ -1,132 +1,143 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C89F312821;
-	Mon, 16 Feb 2026 16:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771258852; cv=pass; b=KNQCqksP/lqzKXjP1+02gPOb7aLBzKJx7MNaX+WPsJiLOjfkPKxc/UwCWB4ui9Y8w7qr5suBymTIUb6HsXhfZTWB6kM8DDCIUCWEboqD+XrndHl32Tk3NsCnFvQi+ynFmrV75rH268+VLq3lk1VtHPQ0lX0WAmxnBRTXHqtwwzE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771258852; c=relaxed/simple;
-	bh=2cHw/k0r/xNMVAT8zTV7gtWw4/U2TkeYTxqPFQ2vmco=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=VBDZof8VHIX1wnmMdpMB+UKLPIFa8ZsBD81YozWnIBlsALY6WOkSXNmvpHFgM625GXUpRFMs3rYeviPbw4eRYYev23HmIp4HaGrMrUm5uDwh7dVnnWEuBRCGjCaoGaYxx4ubIxf+odkVK4tPcArVxHWvL1D6nraqrwTlVDhGTFw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=B4yPlamJ; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B37C2BE031;
+	Mon, 16 Feb 2026 17:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771261484; cv=none; b=apYEHKH+PHXa981INVazxFarcRUUNGdeQK2qjb8FCTyoVO8zC0IKw14xN69cAKMpHoB175OYrghVd3t+Lnpr/bWCM+EEEIRwrEXQ+hPAOo300YLmn+KWJ5CuT21r25JEeYNZNRY7on4AxvVdceIPIa8buAtPhHSsg1rxY/9Im+8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771261484; c=relaxed/simple;
+	bh=fN5JjLCjpdCRGL8UVVcChKscU8oAZ1nIYRtQqGpg8DE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=Cz+dZA2JRtcZrj+EJygvn9O3LAWlNibxkBwA1U177wZZsCEzTtrFWl8eqHsXdfAWLYtZ0OLflxey6+hEO13vFC7knFLsZftq3VIEi6TKPBSla5ZlyL/56JNeG+4IfWIyCIbS4J16zeE/wptCXgdMEJefGwJYx6tbJdvad+cAZHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDsemPcM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="B4yPlamJ"
-ARC-Seal: i=1; a=rsa-sha256; t=1771258836; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=EoEA20ToSh90rrByLbaVgbOnKe+vEJ0RThTX6JqduT5AO3hy2JyBGr9D6w/xVcPJ7URpBTGYGuMIxhTikLXQMb3qszqWh7udW9kaXxh0zX8tf7GS8LtU13Lpbi8tJbn24zTYJnJemgN/SqPCmoZuX6HgupgypR3i2h9ByvYINFY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771258836; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=P2xroIIh/DM8tp91K7Cib803UTQjy6CguhTIfspWUfA=; 
-	b=D1XD9NtKD25rF9gPU4Wr/fHjv8QyUAH8qxy6Puu4DcnZktp47eDgNuIbsl8noQIcf8EOWYfMFWbfbvmllcjdMTBk/+xy/rRVD0k5zQGp9tdKohLiLTQJlRbiUOsmrNXo9P2ARIPCU+srr+bckTLOIXn3PYXHXXFVOPmzhTenhgI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771258836;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=P2xroIIh/DM8tp91K7Cib803UTQjy6CguhTIfspWUfA=;
-	b=B4yPlamJ5+1HyYDPaa6uwLf2neNGAu6aFaS9rDnfCGuisxQNe2fhTxKqZ9Ld5jK3
-	15eze8M7E5OHl5OvhInW0Gkwm+St8sO54VkBCSdQ1qdvpz3qEC9Elr7Mcq8FARtiNQF
-	V19QgC2spoFTng33AlWrFCRbaLNKz9di+KaFKRhI=
-Received: by mx.zohomail.com with SMTPS id 1771258835129346.09214209574554;
-	Mon, 16 Feb 2026 08:20:35 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDsemPcM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F211C116C6;
+	Mon, 16 Feb 2026 17:04:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771261483;
+	bh=fN5JjLCjpdCRGL8UVVcChKscU8oAZ1nIYRtQqGpg8DE=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=SDsemPcMW0lEMvqG9LwpxHJwmCqbET1DVGEncInMhtOmczQqTgv0/1Wiu6pEp+LVl
+	 faBM25oavIloFAALlOR1DOrlqWVEUnvNm694S/AfsFxdLrQqXkMhw1tbXwfpZoqqHK
+	 UntJeOG5Z7lQoIF7csP84Tu6Wfl9Q8jKv1dFVQJ386yyFFbWbsja3fFH5QmOwpoiRh
+	 p9OFsWBQOMbHV70TvznVOPh1wVENde8qP27/l66yuCGfzI8nBjdgY62iYENsDCXx6L
+	 DANxy/CzvbwT+F3a3y+Ok+MDzjJe/KDuvqGIzHxCEoTmkOelOIgzEtAno/Nno9Fxkz
+	 qM2cAwgwqQCmg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v2 0/4] rust: Add ARef support for work items
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260204-aref-workitem-v2-0-bec25b012d2a@collabora.com>
-Date: Mon, 16 Feb 2026 13:20:15 -0300
-Cc: rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <196AEBB6-29A6-4F0F-917B-A042F422698C@collabora.com>
-References: <20260204-aref-workitem-v2-0-bec25b012d2a@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Tejun Heo <tj@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Feb 2026 18:04:38 +0100
+Message-Id: <DGGJSHVZB6U5.2V8OMF5N3KZNZ@kernel.org>
+Cc: "Gary Guo" <gary@garyguo.net>, <lyude@redhat.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 1/6] rust: io: turn IoCapable into a functional trait
+References: <20260206-io-v2-0-71dea20a06e6@nvidia.com>
+ <20260206-io-v2-1-71dea20a06e6@nvidia.com>
+ <97fc6c36933522eaf75f34f8fcd445715432fde4.camel@redhat.com>
+ <DGCYWK1UF76I.A565AK23DZXS@nvidia.com>
+ <DGD1LDCXJZR6.32S0Z7EHGYDUN@garyguo.net>
+ <DGD2GXAFO99J.1Y3BA26PBVTAC@kernel.org>
+ <DGGD4JTGJYXR.3THD2I3AA61PN@nvidia.com>
+ <DGGDHY4582D1.1GZGZ7P98OKWO@kernel.org>
+ <DGGF65JPF8S6.268LR7YDPTWMQ@nvidia.com>
+In-Reply-To: <DGGF65JPF8S6.268LR7YDPTWMQ@nvidia.com>
 
+On Mon Feb 16, 2026 at 2:27 PM CET, Alexandre Courbot wrote:
+> It doesn't - here is the implementation of Io for Mmio:
+>
+>     impl<const SIZE: usize> Io for Mmio<SIZE> {
+>         /// Returns the base address of this mapping.
+>         #[inline]
+>         fn addr(&self) -> usize {
+>             self.0.addr()
+>         }
+>
+>         /// Returns the maximum size of this mapping.
+>         #[inline]
+>         fn maxsize(&self) -> usize {
+>             self.0.maxsize()
+>         }
+>     }
+>
+> Now what prevents me from doing this:
+>
+>     impl<const SIZE: usize> Io for YoloMmio<SIZE> {
+>         fn addr(&self) -> usize {
+>             self.0.addr()
+>         }
+>
+>         fn maxsize(&self) -> usize {
+>             self.0.maxsize() + 0x10000
+>         }
+>     }
+>
+> With that, I have allowed callers to invoke the unsafe methods of
+> `IoCapable` on an extra 0x10000 bytes of I/O I don't own, without any
+> unsafe code.
 
+I don't think you did, as you only present half of your counter example; yo=
+u
+left out the IoCapable part.
 
-> On 4 Feb 2026, at 17:40, Daniel Almeida <daniel.almeida@collabora.com> =
-wrote:
->=20
-> This series adds ARef<T> support for both regular and delayed work =
-items.=20
->=20
-> - Patches 1 and 3 actually implement the support in workqueue.rs
-> - Patches 2 and 4 adds a corresponding implementation in drm::Device =
-that
->  dispatches the calls to the underlying T::Data.
->=20
-> This was tested on Tyr, and is actually needed in order to obtain a
-> &drm::Device when handling work items. This is then needed in order to
-> allocate GEM objects inside the work handler that processes the tiler =
-OOM
-> (out of memory) events. The current series sets the stage so that the =
-above
-> is possible in the future.
->=20
-> This is currently based on v6.19-rc8. I hope we can land all four =
-commits
-> on a single tree, but otherwise let me know whether I should split the
-> workqueue.rs changes from the drm::Device ones and rebase accordingly.
->=20
-> ---
-> Changes in v2:
-> - Rebased on v6.19-rc8
-> - Cc workqueue maintainers
-> - Patch 2 kept the old import style, since drm/device.rs is not yet
->  converted.
-> - Link to v1: =
-https://lore.kernel.org/r/20260115-aref-workitem-v1-0-9883e00f0509@collabo=
-ra.com
->=20
-> ---
-> Daniel Almeida (4):
->      rust: workqueue: add support for ARef<T>
->      rust: drm: dispatch work items to the private data
->      rust: workqueue: add delayed work support for ARef<T>
->      rust: drm: dispatch delayed work items to the private data
->=20
-> rust/kernel/drm/device.rs | 66 ++++++++++++++++++++++++++++++--
-> rust/kernel/workqueue.rs  | 96 =
-++++++++++++++++++++++++++++++++++++++++++++---
-> 2 files changed, 152 insertions(+), 10 deletions(-)
-> ---
-> base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
-> change-id: 20260115-aref-workitem-0f57e4fb81ca
->=20
-> Best regards,
-> --=20
-> Daniel Almeida <daniel.almeida@collabora.com>
->=20
+I.e. with what you have above cannot uphold the safety justification in the
+corresponding IoCapable implementation:
 
-Friendly ping for the workqueue maintainers here: any comments?=20
+This is the invariant on struct Mmio:
 
-=E2=80=94 Daniel
+	/// # Invariant
+	///
+	/// `addr` is the start and `maxsize` the length of valid I/O mapped memor=
+y region of size
+	/// `maxsize`.
 
+And in impl_mmio_io_capable!() you refer to this invariant:
+
+	macro_rules! impl_mmio_io_capable {
+	    ($mmio:ident, $(#[$attr:meta])* $ty:ty, $read_fn:ident, $write_fn:iden=
+t) =3D> {
+	        $(#[$attr])*
+	        impl<const SIZE: usize> IoCapable<$ty> for $mmio<SIZE> {
+	            unsafe fn io_read(&self, address: usize) -> $ty {
+	                // SAFETY: By the trait invariant `address` is a valid add=
+ress for MMIO operations.
+	                unsafe { bindings::$read_fn(address as *const c_void) }
+	            }
+=09
+	            unsafe fn io_write(&self, value: $ty, address: usize) {
+	                // SAFETY: By the trait invariant `address` is a valid add=
+ress for MMIO operations.
+	                unsafe { bindings::$write_fn(value, address as *mut c_void=
+) }
+	            }
+	        }
+	    };
+	}
+
+But your YoloMmio implementation doesn't provide this invariant (because it
+can't).
+
+So, how do you justify the unsafe call to bindings::$write_fn and
+bindings::$read_fn now that you have to call impl_mmio_io_capable!() for
+YoloMmio?
+
+Again, you can't justify it, which proves that it doesn't matter what YoloM=
+mio
+returns, it matters how you can justify it in io_read() and io_write().
