@@ -1,72 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852491DDC2B;
-	Mon, 16 Feb 2026 09:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1330D26E175;
+	Mon, 16 Feb 2026 09:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771235128; cv=none; b=AXGKKgq5qp27ZASQZrRnTHHOLIKt3VMZJJAoreLwtkPHTGXtRqU9q85vpxer/+i28JHoUJVeI35Ozh3AuZLb7m8Dv/BOyA8CAmICztyNI6zcMjdHgzzXhQ42xxJBo2UQX5Xu3VRBuB4FKQTD8ImyZ14eq/yj4eopTA8M1LW5xCY=
+	t=1771235915; cv=none; b=gOX2NZdFNRUu6OlJrgmIDAQKKdJ/mnE/xuEvUqeIolTTSd/y1GoiWFPRqnQujdruA1XAmIIHNh2+Lr5wTxMhrGIoFwSh8cPGA+jU4fc6bZ5MxTZLaUyc0fQKcssPczBTMWQZZXMNwyeuIBIKW1BP/7MiH1nMHjzk8Kvp9MFUTyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771235128; c=relaxed/simple;
-	bh=7NunW6RQ2SBImUQczKO4pkXAhCVgbYmwdk+s/Y6+W4c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E9cMKuDmrPvxcy47VcSEc9xvOyLzkcw2s1K49fjqZf/Qy0VWT2DFObH0I4pZ7bnLJWx1PwBVA4qyqpa88ER7XhMGkdmIzFSpVwjK9Vxt1KboTXOwMNIoU2twzR9ME6o36d+5nIqFaSYwMTXtSe6Hrwv9+XNMek92UXLiaPXvThQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNL5Ln/G; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771235915; c=relaxed/simple;
+	bh=Je+2BLA+vLRxPnS3i8+XJCu6/EY9qzsoEAPkWQEYgxc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=a4BJ514gWm9JIv/cOH5k/VnpmIJb5JPfHVAPMNTTzlURG73MxkJSQtl/vyup8Pm9LmCZ435ycQPO54vVFBhjHKDnExFno3gE5uECPYSKxuO5LpIzgG3UErQS2JL5LePbYtYl5ny70i3EazaO5p2j742pHWIKxBZBATugVwnM7Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LQcFS1Fb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNL5Ln/G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8543C116C6;
-	Mon, 16 Feb 2026 09:45:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771235128;
-	bh=7NunW6RQ2SBImUQczKO4pkXAhCVgbYmwdk+s/Y6+W4c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xNL5Ln/GHbKcYxO9OK9TGyqNcd/W3Shk6BTBuL2YDjBV27c6Vz4DDyLGjzv+io9hQ
-	 PdOiDxodlXjS4AQt6gi27iSLT1dCqRXkcJQqVxWZzKI70+VtmhSilMxCY2wh/9oCBZ
-	 WKCQU1RzcPAKLDryNuS/m9oJEqItky7rfCgukamY=
-Date: Mon, 16 Feb 2026 10:45:19 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>, David Gow <davidgow@google.com>,
-	stable@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
-	rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Re: Consider backporting rustdoc fixes for 6.18.y
-Message-ID: <2026021612-hazy-stank-831c@gregkh>
-References: <CANiq72n3qPsoy2u1KxfyV4ZCjJyDZLkK-54i7EesTH=TE9h1jw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LQcFS1Fb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BE8C116C6;
+	Mon, 16 Feb 2026 09:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771235914;
+	bh=Je+2BLA+vLRxPnS3i8+XJCu6/EY9qzsoEAPkWQEYgxc=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=LQcFS1Fbv4Gu9buLkY73ffGxbNIyaq9nyTTFbJcDPgawZ3u7hsqve8euWd+a08s71
+	 7EuEYr8kjGDB1NpBBe0bkIO6ooGJJy3i+HdcNIiiac0Q1mCjOoJgQRYYejoqr7dCdW
+	 QzVnjVndqFRnuVRuryd25k5sIsmvaoGt54aF4YDRjM4s/NbdpmCEZJpmhEgArbP3PN
+	 hDHp8NT1WgT6rEjj/l7Jl3dvTEoBW0LEBP/R6brPdsSbLHABH4OlbyDMxa93vB5MoG
+	 hKO37m18mVWJZLee8fdjPejTGKhMlCZlUxZPHUIiiMYZcU5wAnhQh5F+Fi9xwQlIjM
+	 wWqwqI4NcKrdg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72n3qPsoy2u1KxfyV4ZCjJyDZLkK-54i7EesTH=TE9h1jw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Feb 2026 10:58:30 +0100
+Message-Id: <DGGAQ7XIDJ3P.1Q2K9WCC25EH3@kernel.org>
+Subject: Re: [PATCH] configfs: rust: add an API for adding default groups
+ from C
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Jens Axboe" <axboe@kernel.dk>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
+ <tmgross@umich.edu>, "Breno Leitao" <leitao@debian.org>,
+ <linux-kernel@vger.kernel.org>, <linux-block@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260215-configfs-c-default-groups-v1-1-e967daef6c36@kernel.org>
+In-Reply-To: <20260215-configfs-c-default-groups-v1-1-e967daef6c36@kernel.org>
 
-On Sun, Feb 15, 2026 at 03:11:31PM +0100, Miguel Ojeda wrote:
-> Hi Greg, Sasha, David,
-> 
-> I have been seeing these warnings (errors with `WERROR=y`) in stable
-> 6.18 UML + Rust on the `rustdoc` target [1].
-> 
-> Unless David (who works around UML + Rust) or the different
-> maintainers (Cc'd) have a concern, please consider backporting:
-> 
->   a9a42f0754b6 ("rust: device: fix broken intra-doc links")
->   32cb3840386f ("rust: dma: fix broken intra-doc links")
->   4c9f6a782f60 ("rust: driver: fix broken intra-doc links to example
-> driver types")
-> 
-> They had Fixes tags, but not Cc: stable tags.
+On Sun Feb 15, 2026 at 9:33 PM CET, Andreas Hindborg wrote:
+> @@ -259,7 +269,13 @@ pub fn new(
+>          name: CString,
+>          item_type: &'static ItemType<Group<Data>, Data>,
+>          data: impl PinInit<Data, Error>,
+> +        default_groups: impl IntoIterator<Item =3D Arc<dyn CDefaultGroup=
+>>,
+>      ) -> impl PinInit<Self, Error> {
+> +        let mut dg =3D KVec::new();
+> +        for group in default_groups {
+> +            dg.push(group, GFP_KERNEL).unwrap();
 
-All now queued up, thanks.
+We should not panic the kernel on allocation failure.
 
-greg k-h
+If you wrap the function body into pin_init::pin_init_scope() you can just =
+use
+the '?' operator instead.
+
+> +        }
+> +
+>          try_pin_init!(Self {
+>              group <- pin_init::init_zeroed().chain(|v: &mut Opaque<bindi=
+ngs::config_group>| {
+>                  let place =3D v.get();
+> @@ -268,13 +284,28 @@ pub fn new(
+>                  unsafe {
+>                      bindings::config_group_init_type_name(place, name.ca=
+st(), item_type.as_ptr())
+>                  };
+> +
+> +                for default_group in &dg {
+> +                    // SAFETY: We keep the default groups alive until `S=
+elf` is dropped.
+> +                    unsafe { bindings::configfs_add_default_group(defaul=
+t_group.group_ptr(), place) }
+> +                }
+>                  Ok(())
+>              }),
+>              data <- data,
+> +            default_groups: dg,
+>          })
+>      }
+>  }
