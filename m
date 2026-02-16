@@ -1,47 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34E02475E3;
-	Mon, 16 Feb 2026 07:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86442F0C48;
+	Mon, 16 Feb 2026 07:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771226019; cv=none; b=L2sR/GyGug9AUcpMMzGTO7Xq8Q62tDB6TA9q3WnB1OCcYJ9sqdivNeSdmjS4EswPR5fdid7OhufjqtrVAxvdzf6S/Ko/rgxSXQn1k94PKYP5Ay+boWA1bzpd5qX5CPREw0qmrfashyNJ/EmjcGIVdxK9GI9ffNV5qdS6pxesRO4=
+	t=1771226090; cv=none; b=YeI0tnDzsAhyIDXRAioeuJkG1geIvI9RV3mjZukfTJeRR0is3Xeou5xlCqwzgcWb54xRCa2ojbqayh5/ewaDfIfc4zwquBZOy2Q1cqXPbVyMZRdBSEfydQ4a2Cmw8innJwKqXAlUhNYKxaTgb1TeJHb6m72UWdCYKgOMWi4pALU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771226019; c=relaxed/simple;
-	bh=njd9zmg9FLjx8to7SOsETvlRnun7BFASOBU26aGIV9Y=;
+	s=arc-20240116; t=1771226090; c=relaxed/simple;
+	bh=yiisJwR1WUfD46dfKXy4ts0PKfWaOsEvZPePjv6OE/E=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AYSrysPks5HtILieCYtW3Bg7jAuyaQ69lSlEJc3s9LhAO2ny1b/yguCFFILvb0QJd/RU2KB1NWUSkYdR9VEjVJ4vO/nZVjD6L4gZ26qnUSp+mwAP+AqPRnxwrrQGjyLa7w2GwkZCA+m24hiwfzGDQiLgPdlTAFsfY/2cPIjFz2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kD+z/RN8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=KPErK1IaWEeVBWVuXG24pcF4bR9pgnxGt4YC/65hG0822TsOZQNnEajq4iBPBS1JtQSjrWnXqRatzZbzfSG/UM1tpY9WDZjwyRoY41NPWC5C+n9UyeAi/5ChB2qUqOjcf/d7FwIV3Gqav/g1twnBFnaCwFqu3zqY3gSTpiNLeQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tjAJl54o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kD+z/RN8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B8FC19424;
-	Mon, 16 Feb 2026 07:13:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjAJl54o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D872C116C6;
+	Mon, 16 Feb 2026 07:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771226019;
-	bh=njd9zmg9FLjx8to7SOsETvlRnun7BFASOBU26aGIV9Y=;
+	s=k20201202; t=1771226090;
+	bh=yiisJwR1WUfD46dfKXy4ts0PKfWaOsEvZPePjv6OE/E=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kD+z/RN85dbhPrYi1JfvrXiYMCm4UwMLi/suz+2mc99c559wx6UZ0O0SMfSrvqyLj
-	 gK54T7aZwVzJioEGtEnxNg32zBZRXyze7b++rvEfuHObrinONyqrx7e03CVJS2ROuM
-	 kS8uFxrWu47ISijmoORFEM6QVxb9prlNxJrXqW3ws493N/zRPOrz68ATRYbAbcFRCs
-	 LcqkT9PxkNgTDBzbKypM2e2tK2TmeVgQSehsBjFZUPSMFmVchdiYIv17jtRKH9Ozs4
-	 5KCSCDEOgTce6IEUgz/8VlxkdvvBDBgQ/KpnUH/1K274dZ9enXrwRTg3cIhRmQrM2o
-	 OMk4vewgsggMQ==
+	b=tjAJl54ozcmrFU/mUyc9D/sRUSR6Xqpd1ZMG0oaYQ0se8LNQhWQZaOk/S+aRNcKj0
+	 CV2rjXo94FMJg5HVsJ3xEIlLZKdim5sowVmbXGEe+chHY5TJxCpADR2hrEoLJm76zt
+	 hOeCFxsQIOl+Kt7s1Y/gnpg25KzOXiXguOLL3ca6GIrQAwtVgiFpJnIFclduGEPyw3
+	 EcaJwxqFQOysYj22AKupXgodYpZNBq7NfGQVNfl1fp13YLmE6eYgWSiSihmrRuQAEZ
+	 JMk28d8vodQCFPkKRvlsr5D1XvOEtAJisEVjb1+gp0drV3Gpl+WI3JPQytAMXB8MSB
+	 hm3CjsAjIY/RA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: add a ring buffer implementation
-In-Reply-To: <5FC9A56C-2CC0-478E-B2F9-33C326C219B7@collabora.com>
-References: <20260215-ringbuffer-v1-1-9b359758a1b6@kernel.org>
- <pnCs7tr4HC4x4Q6QHj5MfSOQjkOJkoFHC5NMmJ4RpFXB64nd3ciS49MN2G_-z99jHJmu_OvlKDKhjx5A9M9eXA==@protonmail.internalid>
- <5FC9A56C-2CC0-478E-B2F9-33C326C219B7@collabora.com>
-Date: Mon, 16 Feb 2026 08:11:21 +0100
-Message-ID: <87ikbxduxy.fsf@t14s.mail-host-address-is-not-set>
+To: Benno Lossin <lossin@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron
+ <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: sync: export lock::do_unlocked
+In-Reply-To: <DGFX8MV58WLM.2UFDGEIRRYWLI@kernel.org>
+References: <20260215-export-do-unlocked-v1-1-f5cd2203b20f@kernel.org>
+ <BxsdI3LiC3yEHDsTew5ub3OiQyxjWc96V0V3r6yM2zIKD5r7xDUOXvvaLPxUHY9UHsy1jDZ0Y_yJjGHVo_RDgw==@protonmail.internalid>
+ <DGFX8MV58WLM.2UFDGEIRRYWLI@kernel.org>
+Date: Mon, 16 Feb 2026 08:14:42 +0100
+Message-ID: <87bjhpdusd.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,31 +50,57 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Daniel Almeida" <daniel.almeida@collabora.com> writes:
+"Benno Lossin" <lossin@kernel.org> writes:
 
-> Hi Andreas,
+> On Sun Feb 15, 2026 at 9:15 PM CET, Andreas Hindborg wrote:
+>> Export lock::do_unlocked publicly. Add documentation for the method.
+>>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
-
-<cut>
-
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
 >
-> (sorry for the formatting, replying from my phone)
->
-> We should probably make the backing memory configurable from the get go instead of hardcoding KVec. It will be cumbersome to retrofit this change later on, IMHO. I assume that others agree?
->
-> For example, we can immediately use this in Tyr if you let the backing memory be a mapped GEM object. Having it be DMA memory is probably also going to be useful for others.
+>> ---
+>>  rust/kernel/sync/lock.rs | 26 +++++++++++++++++++++++++-
+>>  1 file changed, 25 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+>> index 46a57d1fc309d..f390cd7ba0762 100644
+>> --- a/rust/kernel/sync/lock.rs
+>> +++ b/rust/kernel/sync/lock.rs
+>> @@ -235,7 +235,31 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
+>>          self.lock
+>>      }
+>>
+>> -    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+>> +    /// Temporarily unlock the lock to execute the given closure.
+>> +    ///
+>> +    /// This method unlocks the lock before calling the closure `cb`, and re-locks it afterwards.
+>> +    /// This is useful when you need to perform operations that are not allowed while holding
+>> +    /// certain locks, such as allocating memory (which is prohibited while holding a spinlock).
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{new_spinlock, prelude::*};
+>> +    /// # use pin_init::stack_pin_init;
+>> +    ///
+>> +    /// stack_pin_init!{
+>> +    ///     let lock = new_spinlock!(())
+>> +    /// }
+>> +    ///
+>> +    /// let mut guard = lock.lock();
+>> +    /// let mut buffer = KVec::new();
+>> +    /// // Temporarily unlock to allocate memory, which should not be done while holding a spinlock.
+>> +    ///  guard.do_unlocked(|| {
+>            ^
+> Spurious space.
 
-It should at least take flags.
-
-iQe can make the backing completely configurable. We could have an
-unsafe initializer that require just a pointer and size at the lowest
-level. The current version is using array indexing to access the memory.
-We could overlay a mutable slice on the pointer and continue using array
-accesses. Or we could change it to just pointer offset calculations, but
-that seems less idea.
+Thanks. Code formatting in comments is a problem in my setup. `rustfmt`
+is not much help.
 
 
 Best regards,
 Andreas Hindborg
+
 
 
