@@ -1,123 +1,144 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA06D1E32CF;
-	Mon, 16 Feb 2026 14:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CBA1E32CF
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 14:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771251696; cv=pass; b=Ia5sxuL8gzkKs7g5NFLU1imfEBPxn+ixFmD3HRI3pnLZPUvKWcXpoGIdMH/O1ztKwQZyu3oq7vD70YzwlBhf2yRqepyUTVl/QkJJymbj5vnlRCUrgjTLCSGjWXUGuxkPXv4kti9ZtR6HOVl1eYgxgWKZ/FJO+sjSPD08w7SAIms=
+	t=1771251870; cv=pass; b=ZAmjqZa+Heofx5/OPkH9DEbJi755D6uwiOpW1RezsNAT1NOZJ7KVsYJ5i4nB8nziBwA6hw3kQStDVM7erVLNsZZ8iK3++zEEsh1fH/irkOhJ3aqJpRzYu3ufXLhde4lyI27rL2LeRSL8d3WWj6nOmlVHKkd6mzAAljg0AFo3n0w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771251696; c=relaxed/simple;
-	bh=P9AWPsLWP+tw/FgtxvdmkbEH4GnF0i4SnqBN/FEAeIA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=QpH6dORSo82Ot7huHz6/gkRfnnB2fcQEnUqwirVq+ER9EMRfiLUMbA4DixGwuGSBvWeKp84jjmsY8zbpVJx5z/vhjd+APQQyPJf9Y8JEf/CWN45aKOePayGYjKeiIvqH0ABF6lOZVoIt2Re4QUYSzpeHst+26QjvT/p6L2cXhVg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=beJa32oM; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1771251870; c=relaxed/simple;
+	bh=qrtP7CyB08NWeCItHZjwkTJFLla/EWNkBnkZyFH2cj0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gsf5o7EA0kDFs6VGismRGfRpOmCoti5bd4ukqdIP2LhDCHxFkBeN7dxg5pn95Dhmd1hvVBma7Qe+pcoWxdAgjIVD8MuJEqnt2nme6nQWRAy7bRHzA5E46JooZdwA6rMLRmqEZdMD8Ym6u5JpWXZyFEudqZSOedyttyDeqnCs3FU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BjGhoUT1; arc=pass smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="beJa32oM"
-ARC-Seal: i=1; a=rsa-sha256; t=1771251684; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=KhCTDpS/VGYFoOoHsCxk8vaFYdPi3nHISkcO+Pm9COn0lVKzgFg/O4L2jNStfF51jk2H0YqPLeyxHzVFr75L5e9juMzj1ifgsjKmoQBeK8zq7eBOzvkgWIMwcYFjDU32WXokfiUyxGwXHaA7PiduyigYij/0fqgis14+0om/HUQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771251684; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=P9AWPsLWP+tw/FgtxvdmkbEH4GnF0i4SnqBN/FEAeIA=; 
-	b=g1RqC6czSgEBAtQuLtXMKalEgL8ExLVZLcVTo6g+21DSFAlpovGMyA4+ea+TlnVtLXadF1wM4yb/bVTEsj39DfcJ0nUgsd7P23cJNgwny1jZDmALKtItUTdPzm9b5bz3BSurCd3ziYoow/+4cXgCMX/LIxRI3ejA3y93SnWqwoI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771251684;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=P9AWPsLWP+tw/FgtxvdmkbEH4GnF0i4SnqBN/FEAeIA=;
-	b=beJa32oMUNwp95GSWIcptRjXzwDBpFiOjPXyFi5HYEr3aK0cfRzlFV3XLTHg5OhP
-	QaOFuYTRRMADsXLACoY2R0/fAlQIBr/Jf031/CUkU/aDQUNGJppbYs1wkkmSXfBXgKS
-	Es4D/Jfht+rJq2P68QqctiKURBkOm6JTnw4aLlNQ=
-Received: by mx.zohomail.com with SMTPS id 1771251681818735.6583029166486;
-	Mon, 16 Feb 2026 06:21:21 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BjGhoUT1"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ba716126f5so158453eec.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 06:24:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771251869; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VFmgooAoUlETjHLj1rTSmV2UQR9d9uFGK7cSM/+KKvPItUPHYL03ZjQWQeQVJIdcfl
+         cAK4eQIMTdo32HlExf0akfrKvP5X9rYvtWBUG3t5ouYAMd7lcvPIIwa1vvPA/QWngIIG
+         IuAxvlhqiTOmm+fJbC/OSASXVFy8Dzvm/846hsnKBqEc42DZ6wcTAMW1g3ITjiAzirgK
+         zxlRWKM3pDDNkfSEgsb3Bzv3ks12dE6pBR/LVSRJgClDgXwTHS+8A93SoQHsDaTDu113
+         EFG4ue5s1uPeapKS1JZ5HSoWA3IR3aTMTv8QOts/LIxoDPKrqtjvum3NExZxaJ15iHz0
+         u2cQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3fhj1NI5B8a4QzQvZdeh22acJJzxZGMx3LNXMrKwuzI=;
+        fh=DxspkEzu1bmJrXYEDV1wwV/4m9NTlXOQWf5jTlRu0ZI=;
+        b=cAWHeTHPvu8xvePnQMBBuePruZRdgNo7VWQxMXWX+gGgc6lkOGxrRJyJc2GtP3C0eN
+         MZJRYtfv2Mhfh/Byjnpvg8KXJ74ooVDUQNKfnRRoIEplVEhc/y8aoGIdc2T61wkooeq8
+         ECK+F8pBwDXqh+JfAVMKf+lj9gXzJkYj4cYE0Be0xVY5uwe6H/T40OV8hkArHvJJTZ1v
+         ny15kEelrXKdJvBS94GrCiaxVo+DZMIsVjxx/mePZyXBFxjtdMfv8IZsI9H0MvR4GSkW
+         jVsKhsf/NoCrD2jZdeL+ywIUH7PiNOFQY6NsMKgi1IwwQQrDITrKV6wFB55rhYG1sdZ8
+         sRDA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771251869; x=1771856669; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3fhj1NI5B8a4QzQvZdeh22acJJzxZGMx3LNXMrKwuzI=;
+        b=BjGhoUT1vpf4qfBSnrbR5FuZD2gH/e2+aFdvK2JfYoFMxAx4qZd7Yvh7oJZNf63ICG
+         cw5+mRR52KetH4mUdWdfJG8rwSJ0RZe+5icpVaKQz+qtypIQkvQ5WzKjS4htna0w9CLp
+         6RlCTKbntV2O1z8uBlHeSUE2GjGc0i8fafBQrDbek3psvFMVm5rDuHBctxMlQ2PLzIAW
+         UyeHGt6vitN2C5N0ozDSx6l4uz/gIVZdfRv20o9LRW8ETcSLnQTlBVK6U1GW9Wu13sOd
+         AcjYht9A8fHlVodqzll7GIWDQfw2/bSr/T6lfd9I2C3qCl+pljdZgMXRFoJ0wulG82B0
+         039A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771251869; x=1771856669;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3fhj1NI5B8a4QzQvZdeh22acJJzxZGMx3LNXMrKwuzI=;
+        b=s7Y1bap92ZvRyGmtB4jWdTCAukYSY7DXr4KOsLSeMtwWBAX1yC+FjxzmVEa7k77/Jg
+         75fNAioBzrQR0NaJ6T+EJhDWTxGYRtUrIObm74wo1UIpV5kXEG0a3PKIyikzi0t3llMF
+         cORdxQO23nb1vDkwGdIKxL83LCZOjpMQxqsSchHsSXVXFGkVQFZJkMki1mt7f4qqqEbg
+         5IwmfbqcQ2VAaauX1W8ArhCiav5YxwFE0Fl+HokATTNtXkldvfxTS3vcaWAUZyT+7N97
+         c6J/Ir5mJQAkwU6xpwJAA56hAXgsUGpMSBZn7NZND4jbb6g8QySbTi2AKlY7PjefIVNf
+         REHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXiygfChbNkAM8zjAKw3FAAqfC9DeIU2Izou4nglMmsVL2V22a8jbXxUbFqoiNPBBDPdxc0+qyM3IRIlCBhtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJJ7Vp9CGhigsvcsnn+8bX2+Fxf/7oIhCm5SMV48leaYW+5+yW
+	EeGA+DOnwsE3lEQtforpy5XFj1ap1MGgGZx0NCSm2THo8afu1ExkoIW/vBMAk4g6UftiLXQGeYO
+	PoMeQrKhx0UNAFB9Ve/A/9Thjlx9aZKY=
+X-Gm-Gg: AZuq6aICj3M/vbBGxcm5HWK9iOhOehrqvugJdzYruyuG9WO1qa+FvqsfNW4EliLFSRF
+	ssVJfd4hhNxdpmmwIJiLF+i1uW26Bp4UB/y8+hW2GmvMMsIL59KZ0IEokNQkUsOygpA3tMcaWbA
+	uiZbpNi7O/g/D1wxceES0BcIrmj8SK1rFX5JSZzBm7uyrnMW6LxfcAuhj20huGjmzyI7Fivv2IP
+	iXgtx3FKVuXdR+73HzTDYu/TvdP8qAg1COFPs6KX7kx1h3ekd0XX190Im0+9n+fIINS99dlFDoW
+	vCtr2o41HoSitqed3WG2DdtOHcMX6aINYiyuPkMb/R53M4WFdwwmeJPptrplho9PdxIJ9tohiEK
+	PUSvormychRT36PcDlCgHNw1S
+X-Received: by 2002:a05:7300:72cc:b0:2b7:b6ee:b3c6 with SMTP id
+ 5a478bee46e88-2baba0af644mr2465795eec.7.1771251868869; Mon, 16 Feb 2026
+ 06:24:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] rust: add a ring buffer implementation
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DGGFZX5JLZ22.3E1C8OVLNUDD6@kernel.org>
-Date: Mon, 16 Feb 2026 11:21:06 -0300
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
+MIME-Version: 1.0
+References: <20260215132232.1549861-1-lossin@kernel.org>
+In-Reply-To: <20260215132232.1549861-1-lossin@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 16 Feb 2026 15:24:15 +0100
+X-Gm-Features: AaiRm51y4jwxHijrwz3pk57XVJCnDrjftKmOkAxttl_LhfyzKOBo9kadO-b5zv0
+Message-ID: <CANiq72neBAezTpC__wdanNwNKXCYUd4ezst0u_P39R3LjA-RqA@mail.gmail.com>
+Subject: Re: [PATCH] rust: pin-init: replace clippy `expect` with `allow`
+To: Benno Lossin <lossin@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <3D7C5FE8-CA15-418B-B2F7-D0EA4C37E1F0@collabora.com>
-References: <20260215-ringbuffer-v1-1-9b359758a1b6@kernel.org>
- <8tULWyvUTjVb3E_HFZeW2maApI87eYLZungGtJ6k9CVT9J-C-TzIqx5ShmHA5vS30yqZRq7TmaBd0AIg5V7u6Q==@protonmail.internalid>
- <aZMMyJofDKualqXw@google.com>
- <873430es2p.fsf@t14s.mail-host-address-is-not-set>
- <C82DE0A6-17FC-4FD9-A272-257B59129A7E@collabora.com>
- <DGGFZX5JLZ22.3E1C8OVLNUDD6@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
+As we discaOn Sun, Feb 15, 2026 at 2:22=E2=80=AFPM Benno Lossin
+<lossin@kernel.org> wrote:
+>
+> `clippy` has changed behavior in [1] (Rust 1.95) where it no longer
+> warns about the `let_and_return` lint when a comment is placed between
+> the let binding and the return expression. Nightly thus fails to build,
+> because the expectation is no longer fulfilled.
+>
+> Thus replace the expectation with an `allow`.
+>
+> Link: https://github.com/rust-lang/rust-clippy/pull/16461 [1]
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
 
+Thanks for figuring out the PR upstream, that is always helpful -- I
+also noticed it in the 2026-02-13 nightly, so this saved me having to
+dig into it.
 
-> On 16 Feb 2026, at 11:06, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> On Mon Feb 16, 2026 at 2:45 PM CET, Daniel Almeida wrote:
->> With the allocation being handled by a separate component, I don=E2=80=99=
-t think
->> this is right. I think a better location is rust/kernel/io
->=20
-> I'm not sure it is reasonable to ask people who just want a ringbuffer =
-in system
-> memory to take the indirection over an I/O ringbuffer implementation =
-with
-> generic I/O backends choosing the system memory I/O backend.
->=20
-> The proposed code is simple, without comments and tests, less than 100 =
-lines of
-> code. The I/O infrastructure to make this happen is still WIP. So, I =
-think it's
-> fine to land it as VecDeque for now.
+If you want, when you decide it is ready, I can take it into rust-fixes.
 
+By the way, if you send a new version, please include the error -- it
+makes it easier for others to find it later in lore.kernel.org. In
+case you don't have it around, this is what I got in that run from a
+few days ago:
 
-Well, this is a 100 line patch, but nothing was said of how much else =
-was going
-to be added on top in the future. In order to avoiding iterating on what =
-I
-consider the wrong approach, I suggested that we start out in the right
-direction from the start, something that Andreas himself apparently =
-agreed to.
+    error: this lint expectation is unfulfilled
+        --> rust/pin-init/src/lib.rs:1279:10
+         |
+    1279 | #[expect(clippy::let_and_return)]
+         |          ^^^^^^^^^^^^^^^^^^^^^^
+         |
+         =3D note: `-D unfulfilled-lint-expectations` implied by `-D warnin=
+gs`
+         =3D help: to override `-D warnings` add
+`#[allow(unfulfilled_lint_expectations)]`
 
+    error: this lint expectation is unfulfilled
+        --> rust/pin-init/src/lib.rs:1295:10
+         |
+    1295 | #[expect(clippy::let_and_return)]
+         |          ^^^^^^^^^^^^^^^^^^^^^^
 
-> Once we have the I/O backend infrastructure, a system memory I/O =
-backend that
-> can deal with separate allocators *and* a ring buffer implementation =
-that sits
-> on top of it, we can still revisit if it makes sense to take advantage =
-of
-> synergies.
->=20
-> But for now this seems a bit premature in terms of delaying Andreas' =
-work.
-
-IIUC, and feel free to correct me on this, the I/O backends are already =
-in the
-works. What is missing is a trivial system memory backend, and similarly =
-a
-ringbuffer implementation, which is the subject of this patch. I don't =
-see this
-as a lot of work or an unreasonable ask.
-
-=E2=80=94 Daniel=
+Cheers,
+Miguel
