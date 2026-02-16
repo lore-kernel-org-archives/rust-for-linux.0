@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B3A2798EA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A6A1FF1B4;
 	Mon, 16 Feb 2026 14:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771251026; cv=none; b=OViHVQ1q5MtfQL+hR2M8eVkx+SORrzLc55eXDDGqgHj6wcFXzJmGHrFnBU4O8Yc2npevC2ys6AmBfnhHzda9+RwBxTnyQDa7ybdHv3TbfDm5jcTiJ9wO59F4A5CZy1u9Cb7nJt8N8X2UntKcd4dX4ZjKS4MKTo6e4tjI76XbrM0=
+	t=1771251026; cv=none; b=cE6/AlU3zNuZ+ZYCGxdJSTzrHiEkzDAPlnTFII4vxaR5M3k/fSU51I8oSS7edRd6X9uJsGnlgBbcQ9JpwUCXKHRpB4nEQhWp+GioHT+mrlnF6y+Bxxku66N9Nohcy5cI6QeppqzJRNe8uYmLafRzfCA9ARyCk48XUls14jyLxao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771251026; c=relaxed/simple;
-	bh=QL+b5jDczE7VfFTAK6oksb/a4JLOHdQtkdc0bZAliTc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qG3u4jz3PrFjC02XIgnE0sY3di7xhVyJRUVL1np45vzjzhBa+sn59AkaRN+0HzwrsixS6XIxWVCNni1RBWH8f7pi3s/lhj3/SRkDRof2yYKyCH5ou/WznDgzBi6t0Gf0omW6XyTS+cFGfOPRP6biBRe9ABvLMVvTPpiICiHEzZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OqMaN7Qw; arc=none smtp.client-ip=10.30.226.201
+	bh=AgpLkytILqp5XFalX4tUy0u26qDtL1NchHt6BYuns1U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Jtd+0YqUJD0L0IIpUPcaDJEL+HGJelDqq1CcDAQCadFZ07McMphcI1qY96lCnQpwT98qzvp0NKtNp1mcH0uXNp/9CcdQ4dwAqS/loGvH37lOQwud7AleVYRFm18pTPdFyNsFAKfaioKwkhO4x86tSiJVGmaAJxWZMLWy0O0x50g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZphKK1PP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OqMaN7Qw"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D2D46C116C6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZphKK1PP"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EE76EC19424;
 	Mon, 16 Feb 2026 14:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771251025;
-	bh=QL+b5jDczE7VfFTAK6oksb/a4JLOHdQtkdc0bZAliTc=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=OqMaN7QwIo8YCsXAfPipsfwr0CZe4fcE/dNUZaIRfs+0KkMZnnS1PRO80Ugg5FuZR
-	 5mGkJTYJh7QGS4PxOIdmpUbZg+WP5Rny1XcBKe/y1Cin7xJWszhjyBHVY+KgcO5e07
-	 /LTVszAgpuHvCtrxUq4axzywzJXZslrs8yxvd9PSISVcjlMHWgtSjx9rHsUXUyAagN
-	 v6SBofXMX/lvN1doHKfuf/4K28AxOdwFF9fWstO+lWjfC2WZzF+gIC4SKIoJyC0zb4
-	 jnrEIJkZwtHorb1bvNF0Lmcj8HJIaWX29O12SNh9xTrmeaMVCpCP7Dcei+OfP2ZLIj
-	 w2399ioPHOJHQ==
+	s=k20201202; t=1771251026;
+	bh=AgpLkytILqp5XFalX4tUy0u26qDtL1NchHt6BYuns1U=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ZphKK1PPXaR4ZdGx+3ArDTQnoyw/i5DVAQLH07/AhAkEGOj31fC0Gd0F9ENSI7cvx
+	 eSFnAej0hrWtD+np1AmIVkMh3vmO5ocTBPRajYQkDCWFN7oaepx/c3QkgahIX5ebZE
+	 SGv6nopKYxV6D5Ik8UyW+edu01j5oZbxBF42EokS39yt50ryDdtraWKT+edwLa2W71
+	 Zy6m6bSRwJCY+KJN2w8PMP0aCNbZeqgI/Yt3txtQ2gu5PcgKzDAbqiRpMNiPb9mNfp
+	 VNwm5Esxwr2b9dstzOhmIPlIa4zo0KXDhFuRU4OFnKx8Im/wNd8rD03zk94oP7EMhk
+	 Fig92u37rt9ng==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BBD2EE81A25;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D65FBE81A28;
 	Mon, 16 Feb 2026 14:10:25 +0000 (UTC)
 From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Subject: [PATCH v6 0/3] rust: alloc: add KVVec shrinking method
-Date: Mon, 16 Feb 2026 19:39:54 +0530
-Message-Id: <20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in>
+Date: Mon, 16 Feb 2026 19:39:55 +0530
+Subject: [PATCH v6 1/3] rust: kvec: implement shrink_to for KVVec
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,11 +40,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADIlk2kC/4XNQQ7CIBCF4as0rMUALVRdeQ/josAgExUMGKI2v
- bu0K10Yl/9L5puRZEgImeyakSQomDGGGmrVEOOHcAKKtjYRTCgmuKAag4VEs08YzrSAoaWlZmM
- 4bzk47XpST28JHD4W9nCs7THfY3ouX0o3r3/A0lFGtWXCMaWdMHb/ij5eB7ysMZCZLPKTkT8YW
- RkFEqSyatsr9c1M0/QGGSYO5AEBAAA=
-X-Change-ID: 20260212-binder-shrink-vec-v3-c8c1131efbf7
+Message-Id: <20260216-binder-shrink-vec-v3-v6-1-ece8e8593e53@zohomail.in>
+References: <20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in>
+In-Reply-To: <20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in>
 To: Danilo Krummrich <dakr@kernel.org>, 
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
  Vlastimil Babka <vbabka@suse.cz>, 
@@ -61,11 +59,11 @@ To: Danilo Krummrich <dakr@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Shivam Kalra <shivamkalra98@zohomail.in>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771251022; l=6048;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771251023; l=6422;
  i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
- bh=QL+b5jDczE7VfFTAK6oksb/a4JLOHdQtkdc0bZAliTc=;
- b=rVWY/BAaKC24BNpW0P95s9QCQwCmQkM9AMe/Ed/ko95ETCq802Ht1J+l9Xl4uYbKx47Fh4Qv2
- SsMXnaAF9yzAREPwZvkGdGYjOBY9L4hKtTCM6S+HyNFBWVsEnKSo+e3
+ bh=exX1F9hesuRNjkscJh7+rzWsyVNj6Wy6hrwe5bFtXRg=;
+ b=dgYJE8hakwJKUIQqIzke6Ye+foWFwLy7Lmu9YdmDb35sknYxlMEd62PSKuOVeeVkoSSz8kxwY
+ 4pK5vxB/Ns5DlrEMZrM43RjFc4jgzmcUkaW3e3ODGAycFjdStBR2ZlV
 X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
  pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
 X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
@@ -73,126 +71,166 @@ X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
 X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
 Reply-To: shivamkalra98@zohomail.in
 
-This series adds a shrink_to() method to KVVec to allow explicit
-capacity reduction for memory reclamation.
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-Problem:
-When elements are removed from a KVVec, the allocated capacity is not
-reduced. The underlying C allocators (krealloc/kvrealloc) don't shrink
-memory in-place. This can cause significant memory waste in scenarios
-with variable workloads.
+Implement shrink_to method specifically for `KVVec` (i.e.,
+`Vec<T, KVmalloc>`). `shrink_to` reduces the vector's capacity to a
+specified minimum.
 
-Solution:
-- Patch 1: Implements shrink_to(min_capacity, flags) method specifically
-  for KVVec (Vec<T, KVmalloc>). For kmalloc allocations, the method
-  delegates to realloc(), letting the allocator decide whether shrinking
-  is worthwhile. For vmalloc allocations (detected via is_vmalloc_addr),
-  shrinking only occurs if at least one page of memory can be freed,
-  using an explicit alloc+copy+free (deep copy) since vrealloc does not
-  yet support in-place shrinking. A TODO comment marks this for future
-  replacement with a generic implementation using A::realloc() once
-  allocators properly support shrinking.
-- Patch 2: Adds KUnit tests for the new shrink_to method, verifying
-  page-based shrinking, empty vector handling, no-op behavior, and
-  min_capacity respect.
-- Patch 3: Uses shrink_to() in the Rust binder driver to reclaim memory
-  when processes are deregistered. Uses a conservative shrinking
-  strategy (trigger at len < cap / 4, shrink to len * 2) to avoid
-  shrink-then-regrow oscillation while equalizing capacity more
-  aggressively when it diverges far from usage.
+For kmalloc-backed allocations, the method delegates to realloc(),
+letting the allocator decide whether shrinking is worthwhile. For
+vmalloc-backed allocations (detected via is_vmalloc_addr), shrinking
+only occurs if at least one page of memory can be freed, using an
+explicit alloc+copy+free since vrealloc does not yet support in-place
+shrinking.
 
-Testing:
-- KUnit tests pass (rust_kvec test suite).
-- Kernel boots successfully in QEMU with CONFIG_ANDROID_BINDER_IPC_RUST=y.
+A TODO note marks this for future replacement with a generic shrink_to
+for all allocators that uses A::realloc() once the underlying allocators
+properly support shrinking via realloc.
 
-Changes since v5:
-- Used `u8` in KUnit tests for simplicity, removing elements_per_page
-  calculations. (Danilo Krummrich)
-- Changed assert in empty shrink test to verify capacity == 0 instead
-  of just less than initial. (Danilo Krummrich)
-
-Changes since v4:
-- Added is_vmalloc_addr() check: kmalloc allocations now delegate to
-  realloc() directly, keeping semantics as close as possible to the
-  future generic implementation. Only vmalloc allocations use the
-  page-threshold + deep copy path. (Danilo Krummrich)
-- Updated doc comment to describe kmalloc vs vmalloc behavior
-  separately: kmalloc delegates to realloc(), vmalloc only shrinks if
-  at least one page can be freed via deep copy. (Danilo Krummrich)
-- Fixed import style to follow kernel coding guidelines (multi-line
-  block import for page::{AsPageIter, PAGE_SIZE}). (Danilo Krummrich)
-- Dropped duplicate TODO comment inside shrink_to() body; the TODO
-  above the impl block already covers this. (Danilo Krummrich)
-- Structured SAFETY comments as lists when justifying multiple
-  conditions. (Danilo Krummrich)
-- Moved semicolons outside unsafe blocks per kernel style.
-  (Danilo Krummrich)
-- Changed binder shrink target from cap / 2 to len * 2, so that
-  capacity equalizes to usage more aggressively when it has diverged
-  far from the length. (Alice Ryhl)
-
-Changes since v3:
-- Dropped the Shrinkable trait entirely - it was not needed for the
-  KVVec-specific implementation. (Danilo Krummrich)
-- Removed shrink_to_fit() method. Only shrink_to() is implemented.
-  (Danilo Krummrich)
-- Implemented shrink_to() only for KVVec (impl<T> Vec<T, KVmalloc>)
-  instead of as a generic method, since that covers the actual use
-  case in binder. (Danilo Krummrich, Alice Ryhl)
-- Added TODO comment explaining this is a temporary KVVec-specific
-  implementation that should be replaced with a generic
-  Vec<T, A>::shrink_to() calling A::realloc() once the underlying
-  allocators properly support shrinking via realloc. (Danilo Krummrich)
-- Changed binder shrink strategy to be less aggressive to avoid
-  shrink-then-regrow oscillation: now triggers when len < cap / 4 and
-  shrinks to cap / 2. (Alice Ryhl)
-- Removed the cap > 128 threshold check in binder. (Alice Ryhl)
-- Fixed commit prefix from "rust: binder:" to "rust_binder:".
-  (Alice Ryhl)
-- Updated test suite to focus on KVVec-specific behavior.
-
-Changes since v2:
-- Introduced new Shrinkable marker trait to distinguish allocators that
-  benefit from shrinking (Vmalloc) from those that don't (Kmalloc).
-- Shrinking now only occurs for vmalloc-backed buffers when at least one
-  page can be freed, avoiding unnecessary work for kmalloc buffers.
-  (Suggested by Danilo Krummrich)
-- Split into 4 patches: Shrinkable trait introduction is now a
-  separate patch to improve reviewability.
-- Uses explicit alloc+copy+free since vrealloc doesn't yet support
-  in-place shrinking; TODO added for future optimization when vrealloc
-  gains that capability. (Discussed with Danilo Krummrich)
-- Fixed minor KVVec/KVec terminology (binder uses KVVec not KVec).
-- Expanded KUnit tests to cover different allocator backends and
-  page-boundary shrinking behavior.
-
-Changes since v1:
-- Resend with correct threading (no code changes).
-- Removed base-commit.
-- Added explicit lore link to dependency in cover letter.
-
-[1] https://lore.kernel.org/lkml/20260130205424.261700-1-shivamklr@cock.li/
-[2] https://lore.kernel.org/lkml/20260131154016.270385-1-shivamklr@cock.li/
-[3] https://lore.kernel.org/lkml/20260207-binder-shrink-vec-v3-v3-0-8ff388563427@cock.li/
-[4] https://lore.kernel.org/lkml/20260212-binder-shrink-vec-v3-v4-0-bd02f06bf2cd@zohomail.in/
-[5] https://lore.kernel.org/lkml/20260215-binder-shrink-vec-v3-v5-0-6e5e56d69766@zohomail.in/
-
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
 ---
-Shivam Kalra (3):
-      rust: kvec: implement shrink_to for KVVec
-      rust: alloc: add KUnit tests for KVVec shrink_to
-      rust_binder: shrink all_procs when deregistering processes
+ rust/kernel/alloc/kvec.rs | 114 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 113 insertions(+), 1 deletion(-)
 
- drivers/android/binder/context.rs |  11 ++
- rust/kernel/alloc/kvec.rs         | 216 +++++++++++++++++++++++++++++++++++++-
- 2 files changed, 226 insertions(+), 1 deletion(-)
----
-base-commit: 3c4ae63073d84abee5d81ce46d86a94e9dae9c89
-change-id: 20260212-binder-shrink-vec-v3-c8c1131efbf7
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index ac8d6f763ae81..e7bc439538e49 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -9,7 +9,10 @@
+ };
+ use crate::{
+     fmt,
+-    page::AsPageIter, //
++    page::{
++        AsPageIter,
++        PAGE_SIZE, //
++    },
+ };
+ use core::{
+     borrow::{Borrow, BorrowMut},
+@@ -734,6 +737,115 @@ pub fn retain(&mut self, mut f: impl FnMut(&mut T) -> bool) {
+         self.truncate(num_kept);
+     }
+ }
++// TODO: This is a temporary KVVec-specific implementation. It should be replaced with a generic
++// `shrink_to()` for `impl<T, A: Allocator> Vec<T, A>` that uses `A::realloc()` once the
++// underlying allocators properly support shrinking via realloc.
++impl<T> Vec<T, KVmalloc> {
++    /// Shrinks the capacity of the vector with a lower bound.
++    ///
++    /// The capacity will remain at least as large as both the length and the supplied value.
++    /// If the current capacity is less than the lower limit, this is a no-op.
++    ///
++    /// For `kmalloc` allocations, this delegates to `realloc()`, which decides whether
++    /// shrinking is worthwhile. For `vmalloc` allocations, shrinking only occurs if the
++    /// operation would free at least one page of memory, and performs a deep copy since
++    /// `vrealloc` does not yet support in-place shrinking.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// // Allocate enough capacity to span multiple pages.
++    /// let elements_per_page = kernel::page::PAGE_SIZE / core::mem::size_of::<u32>();
++    /// let mut v = KVVec::with_capacity(elements_per_page * 4, GFP_KERNEL)?;
++    /// v.push(1, GFP_KERNEL)?;
++    /// v.push(2, GFP_KERNEL)?;
++    ///
++    /// v.shrink_to(0, GFP_KERNEL)?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    pub fn shrink_to(&mut self, min_capacity: usize, flags: Flags) -> Result<(), AllocError> {
++        let target_cap = core::cmp::max(self.len(), min_capacity);
++
++        if self.capacity() <= target_cap {
++            return Ok(());
++        }
++
++        if Self::is_zst() {
++            return Ok(());
++        }
++
++        // For kmalloc allocations, delegate to realloc() and let the allocator decide
++        // whether shrinking is worthwhile.
++        //
++        // SAFETY: `self.ptr` points to a valid `KVmalloc` allocation.
++        if !unsafe { bindings::is_vmalloc_addr(self.ptr.as_ptr().cast()) } {
++            let new_layout = ArrayLayout::<T>::new(target_cap).map_err(|_| AllocError)?;
++
++            // SAFETY:
++            // - `self.ptr` is valid and was previously allocated with `KVmalloc`.
++            // - `self.layout` matches the `ArrayLayout` of the preceding allocation.
++            let ptr = unsafe {
++                KVmalloc::realloc(
++                    Some(self.ptr.cast()),
++                    new_layout.into(),
++                    self.layout.into(),
++                    flags,
++                    NumaNode::NO_NODE,
++                )?
++            };
++
++            self.ptr = ptr.cast();
++            self.layout = new_layout;
++            return Ok(());
++        }
++
++        // Only shrink if we would free at least one page.
++        let current_size = self.capacity() * core::mem::size_of::<T>();
++        let target_size = target_cap * core::mem::size_of::<T>();
++        let current_pages = current_size.div_ceil(PAGE_SIZE);
++        let target_pages = target_size.div_ceil(PAGE_SIZE);
++
++        if current_pages <= target_pages {
++            return Ok(());
++        }
++
++        if target_cap == 0 {
++            if !self.layout.is_empty() {
++                // SAFETY:
++                // - `self.ptr` was previously allocated with `KVmalloc`.
++                // - `self.layout` matches the `ArrayLayout` of the preceding allocation.
++                unsafe { KVmalloc::free(self.ptr.cast(), self.layout.into()) };
++            }
++            self.ptr = NonNull::dangling();
++            self.layout = ArrayLayout::empty();
++            return Ok(());
++        }
++
++        // SAFETY: `target_cap <= self.capacity()` and original capacity was valid.
++        let new_layout = unsafe { ArrayLayout::<T>::new_unchecked(target_cap) };
++
++        let new_ptr = KVmalloc::alloc(new_layout.into(), flags, NumaNode::NO_NODE)?;
++
++        // SAFETY:
++        // - `self.as_ptr()` is valid for reads of `self.len()` elements of `T`.
++        // - `new_ptr` is valid for writes of at least `target_cap >= self.len()` elements.
++        // - The two allocations do not overlap since `new_ptr` is freshly allocated.
++        // - Both pointers are properly aligned for `T`.
++        unsafe {
++            ptr::copy_nonoverlapping(self.as_ptr(), new_ptr.as_ptr().cast::<T>(), self.len())
++        };
++
++        // SAFETY:
++        // - `self.ptr` was previously allocated with `KVmalloc`.
++        // - `self.layout` matches the `ArrayLayout` of the preceding allocation.
++        unsafe { KVmalloc::free(self.ptr.cast(), self.layout.into()) };
++
++        self.ptr = new_ptr.cast::<T>();
++        self.layout = new_layout;
++
++        Ok(())
++    }
++}
+ 
+ impl<T: Clone, A: Allocator> Vec<T, A> {
+     /// Extend the vector by `n` clones of `value`.
 
-Best regards,
 -- 
-Shivam Kalra <shivamkalra98@zohomail.in>
+2.43.0
 
 
