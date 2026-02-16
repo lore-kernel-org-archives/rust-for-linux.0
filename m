@@ -1,86 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5AA17ADE0;
-	Mon, 16 Feb 2026 09:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771234633; cv=none; b=fx/b0oODq9x+N48OZttyodYlY+0owv09E/IABxp/p3+gCD+RmaUazZCF+Jnu5igEU5V6Mn2kYKIRdEuRGSxAIG/TKE4f97b5YajP/mIonE2G4gt0no6geNFP/xSKd/76lyKTiAByQHKAik/gMjXgT7WuAAn/7oAF/zqQZo4+FA4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771234633; c=relaxed/simple;
-	bh=liuP6NnHCj4ItILIFl0ESOZ4Y4BMVijyKl3unO1FZUU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=IY8SLIv7cBOdPBChgHUgzkeZL2Ws8NZoBtv28WPr/ZpViR3AGgj81SPRFwgJTwyIf9MN/b9reMI8uazgx3iPbdhljBXRCK++igX3d2dK7fsla8/PxRWuCsuYULR0bU9fOeImC3hmIPqSvlY3TM3h9edhYqzY5+cGUhjy4IHM+/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOwQnoK4; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9A8267B89;
+	Mon, 16 Feb 2026 09:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771234982; cv=pass; b=PyXk2KpHOVw9JJD6xQzULJyOReb4LV9amFWTYFRaWWblnoT1xk66puMtc27LOu0udhcamfqq06mJe6vRaODmUuI6oiNlFrxgr0qTNW8GkqcJ6rqo+GEM++NdG3V6xIoroo/9YHHv/B2alMUDAn0g1XOHEe6CELvnX1xy3fK4KNQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771234982; c=relaxed/simple;
+	bh=B+wfT2BBfh8NHnvxlmxiAavdS0Blbk427uHO/L6o32o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WDQdVYtNcVsEsAsHsoZjdFZELX3oNEEYa4lxNYoiYLmXNYLhrErXC6vZ9vd1BkqfTyDOxPHugKBRIxeab7YhOE2IuEoh8OzHm2BWmvII3v8Gl+yi0uLRGzPo2CfU3dUoVFPNhzhTRZegErnUvd819ru2W7kTcnEVW6Ij1HlO3cY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b=cxr4MXHO; arc=pass smtp.client-ip=103.117.158.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOwQnoK4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1FBC116C6;
-	Mon, 16 Feb 2026 09:37:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771234633;
-	bh=liuP6NnHCj4ItILIFl0ESOZ4Y4BMVijyKl3unO1FZUU=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=UOwQnoK4p5NZFVzmibpH2IeZAau/vjOxvQrQ9vLmmF8GdCEcR9sR5PXFgMaHNpgme
-	 xytNxPDgCyUXOhvfLKOz5lx5+ZBGpWouQynViJ5S18tdIFzNqxKpXvsDg8lUuyXFut
-	 mlGtUfGEPYM/PvDpuFxkOtRNdiZejqzlPB9ep+AYC/jZffgqbuYC1j+zGCPWGws0oj
-	 lCuKgwm/Odi7gg7aX3fyet4DBfIqT0IqLZXx5vil3XXefor+sF9O8qr9JHuNLOYgk7
-	 e9O1nVt8496bihEvxtrI5uzPMM8tYrbJiAihKl3W7BjNKdle6/iNbFlOnD4UCSyBGM
-	 OkX2+uiMIdPIA==
+	dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b="cxr4MXHO"
+ARC-Seal: i=1; a=rsa-sha256; t=1771234921; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=Y3ogmLHfedo+/iHXtXJrPU+ifm7kP2u807eGr5QE9kb8Zy1McTEUnSHwNcZCSx5CtqMe0Pr0YxhZGdTEsqbuMiutE+UKs2FDrH2s5W9lDafz+4DSEmy4kjFvnXxGHpPwZTWpXXRYzOYDy2P3xMK1zBPfbLDmb1PHEGpj6M/5b4U=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1771234921; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=nMJ0J7TWB6v/PGG8cPtxuCYxJjGogyMNOruXQ/PyI38=; 
+	b=UOqzUu4YU2MDZHLMd9Cl9dwG9C1DXC/UQqaRi4wANadKvm1O7SKswDY571cPTMBHCU+LJSMyeJN/ycafhPkbOq00cG0QBUYv8I+Pfj6lR+PYj5fHWVWOjjw2JIXPhL6c4Gf9FBepdSPtDciZVJY2bmrj2Hs2NPnaMCLEMomc9OY=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771234921;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=nMJ0J7TWB6v/PGG8cPtxuCYxJjGogyMNOruXQ/PyI38=;
+	b=cxr4MXHOo7ODK9b62cSA+hOxudHBw2EonwoLC+I5ynLgbeEaZmpMP5KVaCHhUL+t
+	pgRyjHm67W8SvThGjs8cxSEPkr6BQhMeleXsv8Uo//Ql2UBSkE/7La2AeghUKuMrh7q
+	e5DKhGjt8M5XKi7pSI9/3QCKBjI1CaqTMT2RFenc=
+Received: by mx.zoho.in with SMTPS id 1771234917892242.5090239623105;
+	Mon, 16 Feb 2026 15:11:57 +0530 (IST)
+Message-ID: <d9cbb8fb-8e07-4b89-8fa8-cce98c388989@zohomail.in>
+Date: Mon, 16 Feb 2026 15:11:56 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/3] rust: alloc: add KVVec shrinking method
+To: Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Alice Ryhl <aliceryhl@google.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260215-binder-shrink-vec-v3-v5-0-6e5e56d69766@zohomail.in>
+ <DGFVQ8Y1LLY1.SKXJK85IK4JH@kernel.org>
+Content-Language: en-US
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+In-Reply-To: <DGFVQ8Y1LLY1.SKXJK85IK4JH@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Feb 2026 10:37:08 +0100
-Message-Id: <DGGA9UY5W4XM.1QXWP29ZW1YKE@kernel.org>
-Subject: Re: [PATCH] rust: alloc: allow different error types in
- `KBox::pin_slice`
-Cc: "Benno Lossin" <lossin@kernel.org>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260214-pin-slice-init-v1-1-0b174fbb1844@kernel.org>
- <DGEQZHTOW6FC.2SWNBWY9XE3LD@kernel.org>
- <DGERGXTEJ2B2.24F7OWLIZZAK7@kernel.org>
- <DGERTGLMB5S2.3OE4VYDYHMJ3M@kernel.org> <aZLZ69umB8rA2La2@google.com>
-In-Reply-To: <aZLZ69umB8rA2La2@google.com>
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On Mon Feb 16, 2026 at 9:48 AM CET, Alice Ryhl wrote:
-> On Sat, Feb 14, 2026 at 03:56:43PM +0100, Danilo Krummrich wrote:
->> Yeah, but isn't this only because of [1], which does not apply to the ke=
-rnel
->> because our minimum compiler version is 1.78 anyways?
->>=20
->> I.e. are there any cases where we can't implement From in the kernel and=
- have to
->> fall back to Into?
->
-> Probably not, but it's still best practice to use Into over From when
-> specifying trait bounds.
-
-I'm aware; my point is that I'm questioning this best practice in the conte=
-xt of
-a modern and self-contained project like Rust in the kernel.
-
-This patch is a very good example, as there seem to be zero downsides to a =
-From
-trait bound, while using the From trait bound allows for cleaner code.
-
-(I.e. we get rid of the matches and can use the '?' operator instead. To be
-fair, this could also be written as `.map_err(Into::into)?`, but still.)
-
-I'd even argue that using a From trait bound here is a feature and not a
-limitation. I.e. if someone would pass something that implements Into (but =
-not
-From) we'd catch it and can tell the caller to implement From instead of In=
-to,
-which is preferred and should always be possible in the kernel.
+On 16/02/26 03:43, Danilo Krummrich wrote:
+> On Sat Feb 14, 2026 at 9:35 PM CET, Shivam Kalra via B4 Relay wrote:
+>> Shivam Kalra (3):
+>>       rust: kvec: implement shrink_to for KVVec
+>>       rust: alloc: add KUnit tests for KVVec shrink_to
+> 
+> Greg, Alice, I assume you want to take this through the Android tree?
+> 
+> With the comments in patch 2 addressed,
+> 
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
+> 
+>>       rust_binder: shrink all_procs when deregistering processes
+Thanks! Will fix both in v6.
