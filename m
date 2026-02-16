@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3292FFDD5;
-	Mon, 16 Feb 2026 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCED2D060D;
+	Mon, 16 Feb 2026 14:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771249675; cv=none; b=tVW/bbwuNRmXnbzl1EIpI5NocokHrAyB64GcHyLtxeGMry+259GXGKeQfmGDhA91TJTs2UwZnLJZDsAwDLBzx/q1mprn39eTMF+el4xlV5JPd+lMDZCTrWS1ZpqHnO/ORwSWlL3/iz6aU4uJVEdMJAl8GOzqyIilL3n3aE9QT5o=
+	t=1771250780; cv=none; b=ZKoP+9pHhcQoMM6dRfd+dCdeGSZHTITsCP1284J17OmlRAKt/eFyam0sjQXVMfGH8LOldx89f6yx6yHnOEQYw4SwW/mFEzR/7LHE9WL3FOLJp68GWNqbZgtXDKPOg0aAE1DVjOdEdO9q5OQUN9ieeOI4VAnk1e6WLsuiKnYXJGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771249675; c=relaxed/simple;
-	bh=PSqCtdyKnUOY3CJ6B/b/HmLs6HPDqdmQfwI4gShBKX0=;
+	s=arc-20240116; t=1771250780; c=relaxed/simple;
+	bh=GYYz39tFETqaH88bUbstFx7BIqsWTwBMaVT96vPr1pY=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=D49l0tK40Ai7n18pjnqQL4ISysAv/g490ztpZHf5RURH9RFuhoqu87BexIqHFZke86Tm73Lbvb51j+eJyNBrzs2XRPsvHQiOikq97SIpRnTU8cseUn/gH/xEF/6gznInxuGA1eABCorgR41worTTmfXhecEHS9G6vnPG0S/XZfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEn35pZN; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=a1ZkqRGdrJlwFmKDUuDV3bADPJweQ07EfOiV7ySQtUYLI/GtWBsqKX+2StwXeKTQHDZWgXQzhOcTrHb+dh8jcu8U9y3jCE4VAT090N7tk6+NYJgq4gm327buAXI1066JyY1df6c0HMXTt7/AdAffQv4aKcRn0yUCaq5xQhoArj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPlqZB6T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEn35pZN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD57C116C6;
-	Mon, 16 Feb 2026 13:47:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPlqZB6T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875E3C116C6;
+	Mon, 16 Feb 2026 14:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771249674;
-	bh=PSqCtdyKnUOY3CJ6B/b/HmLs6HPDqdmQfwI4gShBKX0=;
+	s=k20201202; t=1771250779;
+	bh=GYYz39tFETqaH88bUbstFx7BIqsWTwBMaVT96vPr1pY=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=hEn35pZNTrmNhC3M3W93lkSHVsJnk8EkgMtY33jVPXbXzjXyzkAz1NQh6+yXgM/sE
-	 nyk1CNKBMkIvCO4mfVtYnE4oaE2AWmwdM28BTIBGLk5KND2g2aOUUvEsqrvNfbjZqf
-	 dQ6MJlkpiVdYu+fV77ysuGTyJD2rqpPW5NrxbdB7KQXckv6kG+D8X0clyr3CnxDkYv
-	 J4yGrMtwd56JzVlR09Tl6WAeLZnNCKzEEz09V2YT8WYmLMt+VdofC2+yUblyyh3VoH
-	 9Dm8lEecg+nAuaavwkIKnEvM2YjPrZUssdxcI5hToegQa1FmeR7nETlcKw0566Qw6u
-	 nSAmBjCsvAKHA==
+	b=NPlqZB6ToPC+qKUMLKaSENmosrt05joD05FrxjA0zPTbqZ0HNsEwmtiB4B8++YB4G
+	 29PswU7EKxB/pz+8JBEVYRP0tLM339WLIjOXbinVy2Rqsre1j5YV0/MWkDPOeEjFWP
+	 KrCCmIsgP6pKfU8kzaSChzpo+x24bNoO6GjQA/AjMtcq8he2tQ2pWcNN7iT5Tee1uk
+	 M4GKCuW4NA9LYnImcOYV84N5cyH4xiO/kVoN1qnrsMZ0PT5WzPYsYoT/7rneBG6vhD
+	 ot1NJYZ6U1b5jYdfZTOOwBV9FRNelDfr5jsf+ShyWBMPa3+1AtRgvPi2XHQ5HpuEKO
+	 hGIapNLwAfZfA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,54 +34,42 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Feb 2026 14:47:49 +0100
-Message-Id: <DGGFLT2LH98S.29KNXX9XG02KQ@kernel.org>
-Subject: Re: [PATCH] rust: io: macro_export io_define_read!() and
- io_define_write!()
-Cc: <aliceryhl@google.com>, <daniel.almeida@collabora.com>,
- <bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <zhiw@nvidia.com>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Miguel Ojeda"
- <miguel.ojeda.sandonis@gmail.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
+Date: Mon, 16 Feb 2026 15:06:15 +0100
+Message-Id: <DGGFZX5JLZ22.3E1C8OVLNUDD6@kernel.org>
+Subject: Re: [PATCH] rust: add a ring buffer implementation
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260216131534.65008-1-dakr@kernel.org>
- <DGGFFDUCVJX4.57KHV1JH0LWK@nvidia.com>
-In-Reply-To: <DGGFFDUCVJX4.57KHV1JH0LWK@nvidia.com>
+References: <20260215-ringbuffer-v1-1-9b359758a1b6@kernel.org>
+ <8tULWyvUTjVb3E_HFZeW2maApI87eYLZungGtJ6k9CVT9J-C-TzIqx5ShmHA5vS30yqZRq7TmaBd0AIg5V7u6Q==@protonmail.internalid> <aZMMyJofDKualqXw@google.com> <873430es2p.fsf@t14s.mail-host-address-is-not-set> <C82DE0A6-17FC-4FD9-A272-257B59129A7E@collabora.com>
+In-Reply-To: <C82DE0A6-17FC-4FD9-A272-257B59129A7E@collabora.com>
 
-On Mon Feb 16, 2026 at 2:39 PM CET, Alexandre Courbot wrote:
-> On Mon Feb 16, 2026 at 10:14 PM JST, Danilo Krummrich wrote:
->> Currently, the define_read!() and define_write!() I/O macros are crate
->> public. The only user outside of the I/O module is PCI (for the
->> configurations space I/O backend). Consequently, when CONFIG_PCI=3Dn thi=
-s
->> causes a compile time warning [1].
->>
->> In order to fix this, rename the macros to io_define_read!() and
->> io_define_write!() and use #[macro_export] to export them.
->>
->> This is better than making the crate public visibility conditional, as
->> eventually subsystems will have their own crate.
->>
->> Also, I/O backends are valid to be implemented by drivers as well. For
->> instance, there are devices (such as GPUs) that run firmware which
->> allows to program other devices only accessible through the primary
->> device through indirect I/O.
->>
->> Since the macros are now public, also add the corresponding
->> documentation.
->
-> The fix is relevant for stable kernels,
+On Mon Feb 16, 2026 at 2:45 PM CET, Daniel Almeida wrote:
+> With the allocation being handled by a separate component, I don=E2=80=99=
+t think
+> this is right. I think a better location is rust/kernel/io
 
-Not for stable, but for v7.0.
+I'm not sure it is reasonable to ask people who just want a ringbuffer in s=
+ystem
+memory to take the indirection over an I/O ringbuffer implementation with
+generic I/O backends choosing the system memory I/O backend.
 
-> but if we merge [1] these macros will disappear anyway, so is the extra
-> documentation worth the trouble?
+The proposed code is simple, without comments and tests, less than 100 line=
+s of
+code. The I/O infrastructure to make this happen is still WIP. So, I think =
+it's
+fine to land it as VecDeque for now.
 
-We are not removing it within the same release, v7.0 will remain as is, so
-proper documentation doesn't hurt.
+Once we have the I/O backend infrastructure, a system memory I/O backend th=
+at
+can deal with separate allocators *and* a ring buffer implementation that s=
+its
+on top of it, we can still revisit if it makes sense to take advantage of
+synergies.
 
-> [1] https://lore.kernel.org/all/20260206-io-v2-0-71dea20a06e6@nvidia.com/
+But for now this seems a bit premature in terms of delaying Andreas' work.
