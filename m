@@ -1,64 +1,64 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71534278753
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7CF278753
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771232120; cv=none; b=UJ0iPsYXQIwmP7Dsl/5YxuYQLgsMSQhk2RUwFSZ1IPwoBN8XR13Nfz6gjMdmFVDtqLrNNVb9s0LmLjILtP//aC76EP4J67Nr15DBlgFnOTcVA5jLhn8zZfUQt7xteiMKZhIWenm5n4EiADf82fVrRjc6bcM0hppS7NWpkSfdBbA=
+	t=1771232213; cv=none; b=qBKmkB582TXWS3xN79rR2fDTmKd2eu9VDwh1M6AZnjkmu/ar/kfVXy7AIWsgruLayaVlbe1AV282IRliJYfCiyJllwz5HdCkb9qCh7dmtEQScVGttEVKypUd4FVIhW+RoDRJM6XFLAawg0uEj4abygpFXLCxwBS3nIy/c1NK52g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771232120; c=relaxed/simple;
-	bh=G0NPfAeu8frTb2xM/sLVi66ElRp5GdIAOsIFOBjaDAo=;
+	s=arc-20240116; t=1771232213; c=relaxed/simple;
+	bh=RRworO0e0jB2L++N8t+MaRtV5KDsytl9rjBp2wDeAQ0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ezJJdO650SQWaQ8e+CJYFo7OmLdLYw4pAgMoEdT7lA22PWkmdJNy6l2vahK/osr7ghwmz/sDNPnWLU//hnvtLoiiUBOUEnm0dYmBY4e/IHyV5Jhqxn9YFi/a7HajKPszQkZfSEf53vKkB54SW/wM3LkM0yD3IM24ilb2A9n7lwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Je9P4tRo; arc=none smtp.client-ip=209.85.208.74
+	 To:Cc:Content-Type; b=jXgCH8BF3QPDegrHXARiX16VB/7o45CDA7HhTsD8PB8taU8jdrDNumny8Paw7Ofi7Txk6O9zFIvgvjDk5CpyhkgaNMwViRN/5EXOLH64UOmtwphgeEVs4Q1IxtKlPGoA3vsqBnt/mmsZ1sNgXPbYsKJRLYco+ysHp5N+1WmzpUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YCnDzinu; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Je9P4tRo"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-65a2e81ce8aso2767921a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:55:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YCnDzinu"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4837107e0a9so25897575e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:56:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771232118; x=1771836918; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771232210; x=1771837010; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iUSN/imqpTffN3xHSkVDCNUkts/L74YOZ3w3u+fOV08=;
-        b=Je9P4tRoyi5xLmP138Fi9B8DI//tVj4s12Haup+QR1vmk0TUPUcKa6/jUa05HfU1wb
-         mZrgJJAanAFBaXdmeOWPKxvUih71G9F85vtaYzuoNu6nwanW6lNMXYpLyu0D6mNlPQan
-         xgbJ9+um/e6bmxZpzU5k1yxC0MsEUZV0JXggKwENRRa9alRvgwMi+i1Gz2FMKCwnDWOL
-         IzM+PQkWkIBEW/K829TKb7YXv1zjkaK2ADaKj9/+5Hts31hKRg4IFc4gtUs+kc9IK2XB
-         5P3eujm1jc4uv3LoLKaiCBWpyke33G6Td/ilUUmaT6h2pe3R9swQrnsHVArCChdqb0yk
-         G5CA==
+        bh=/g4FBr0hx+U1hrupB09478t2hk2gU/mPpH49qC+dJe0=;
+        b=YCnDzinuapXPS7/JjZzst5cUB8vkI9G4nv+6zH2CI8jkGeKsCQekswlMqsgYXObtDw
+         ZFALackEriP7bkXqc8jW0oolr3t7NQZsy8LGQxzQRlB9B0x3Tt/ulBNcLBnJDMOpXMCc
+         7+XlFdAZaLa4gQj47fThujX4VFI0Ki/Fotj2LsjgMnLNVW7+Of28nF4TrdMfqjSlxE4T
+         WNs68f+TCVnSkDwZ9yaM9Rp5QSXBlqywCbpovA1FMOlcV7Y6cNmelSGj6HUoQSlPH0vJ
+         JORdvGX//s322vgh2fTRf5GjETg1r43HsJ9cG4F7So5w8fRoJIWvn8g5a3AD8XiY/GV/
+         UrOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771232118; x=1771836918;
+        d=1e100.net; s=20230601; t=1771232210; x=1771837010;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iUSN/imqpTffN3xHSkVDCNUkts/L74YOZ3w3u+fOV08=;
-        b=DV1ZtzWsNrOHQH060oehLZ3b+qpWPjV4NFzRikjeLos9Jn81HG7qRQ3AnT0wB5Zys1
-         zQdpqXQwwvghk/e4Rcrd9/HowACETR7gVruKbpio4KYclW6PtNRWvGBwyk0IX4jfEwoW
-         uHMJE6jzrNdSCNyyhx0hsFivPORX0Sxb3p2I0I8P9+Str9Sq+3ELjpp7SE6fpTeQR4kU
-         lcy/4iYB3CH1GEp27xQCRuBsSPBD89gZd4J3yrvJcB2SxdX3FVpCmbjpufPGhNG0yoh9
-         KPiK7vEoy3FGdJLBUwEoSKs7IYJ+BktazxJ6BQUL1/Kd/AxsqPkP7emuNh9HVcHOLMcP
-         xE6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXboavGd9sES6TfK4J/ymdaeBIrqHVFdKMw43pLwW/GJOwylwSnMWJTBB75xRNbl+QIuUpfk2TQe3xPUCsv3w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4UxvrXd66zfAgsyjRWQifvveuhGiioKEsYTsR4bcyDHxckfhw
-	xld+oOw1DQuTTrblIodI5Ucj1rgETYkF2Kt+SZ9QLB5TTJVofhZ1jwBt2N+zyoUXv4Gd4fyU6JJ
-	6xhVYLSUX4jxbtmmiGw==
-X-Received: from ejcgx19.prod.google.com ([2002:a17:906:8a53:b0:b80:292:d4f7])
+        bh=/g4FBr0hx+U1hrupB09478t2hk2gU/mPpH49qC+dJe0=;
+        b=qN/XujOLvF34WAQtU5n4R/k75EDpHtyAXpZ/rIIUJGtKzOGREGXDy9XLf3KILgFXRW
+         DbzmtPpsjTCfVnpZowHmAjYJM2qyjXc0O1yuk/Xygg4G5xodO+v6DN3JcNHNDmk0tZVl
+         hFxCecIRwTDn+S1JZirL9RTt4YTo7TFtqirDqWmqbel80oYtULqVOji3+1o9zwJ1ExUj
+         NeugDGYTpegF+Z9PiZcCm327BbeURtnZ7pukUq2JJ45zTJ/rd6qCcszW2nKtDGk0Qh7F
+         16pLiX+ozBrhEJ1JFYv+OgsVteOXnFDXXWkcCpiMbIXZR7abw2k7WSjfcPHq21UkJH77
+         /f8w==
+X-Forwarded-Encrypted: i=1; AJvYcCXfVYsSc49EHewe7oizXsoWFxEy+VjuaF/A18ddLHStmNIEIassmvx0EneJRcxD0xWRJjCNBgtXLjZ40gn0XA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzve2mpzKpUU6r7xseu02ymQg6r057UfUmDBux0VrAFKAfOAZAT
+	4fsyLbiAWsUqcdrYG26zr43D3GLkAfP3bQ7Pt3VN0unVI3VY0vi/BmtmTEoFyDUh5N8GrRvbXZT
+	4afbnKCGB+MmoMGlMmA==
+X-Received: from wmqy18.prod.google.com ([2002:a05:600c:3652:b0:483:6e28:c1a5])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:208f:b0:b8f:deff:a019 with SMTP id a640c23a62f3a-b8fdeffc44amr129833766b.0.1771232117755;
- Mon, 16 Feb 2026 00:55:17 -0800 (PST)
-Date: Mon, 16 Feb 2026 08:55:16 +0000
-In-Reply-To: <20260216-register-v6-2-eec9a4de9e9e@nvidia.com>
+ 2002:a05:600c:c172:b0:480:3a72:524a with SMTP id 5b1f17b1804b1-48373a5d591mr154526285e9.19.1771232210394;
+ Mon, 16 Feb 2026 00:56:50 -0800 (PST)
+Date: Mon, 16 Feb 2026 08:56:49 +0000
+In-Reply-To: <20260216-register-v6-4-eec9a4de9e9e@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260216-register-v6-0-eec9a4de9e9e@nvidia.com> <20260216-register-v6-2-eec9a4de9e9e@nvidia.com>
-Message-ID: <aZLbdGHHee-UoEs0@google.com>
-Subject: Re: [PATCH v6 2/9] rust: num: add `shr` and `shl` methods to `Bounded`
+References: <20260216-register-v6-0-eec9a4de9e9e@nvidia.com> <20260216-register-v6-4-eec9a4de9e9e@nvidia.com>
+Message-ID: <aZLb0VcA3oZLfYvr@google.com>
+Subject: Re: [PATCH v6 4/9] rust: num: make Bounded::get const
 From: Alice Ryhl <aliceryhl@google.com>
 To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -73,51 +73,28 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Feb 16, 2026 at 05:04:38PM +0900, Alexandre Courbot wrote:
-> Shifting a `Bounded` left or right changes the number of bits required
-> to represent the value. Add methods that perform the shift and return a
-> `Bounded` with the appropriately adjusted bit width.
+On Mon, Feb 16, 2026 at 05:04:40PM +0900, Alexandre Courbot wrote:
+> There is a need to access the inner value of a `Bounded` in const
+> context, notably for bitfields and registers. Remove the invariant check
+> of `Bounded::get`, which allows us to make it const.
 > 
-> These methods are particularly useful for bitfield extraction.
-> 
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
 > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 > ---
->  rust/kernel/num/bounded.rs | 42 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
+>  rust/kernel/num/bounded.rs | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > 
 > diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
-> index fa81acbdc8c2..7014b5be66db 100644
+> index 8e4c08924d96..b09b93cd0c5c 100644
 > --- a/rust/kernel/num/bounded.rs
 > +++ b/rust/kernel/num/bounded.rs
-> @@ -473,6 +473,48 @@ pub fn cast<U>(self) -> Bounded<U, N>
->          // `N` bits, and with the same signedness.
->          unsafe { Bounded::__new(value) }
->      }
-> +
-> +    /// Right-shifts `self` by `SHIFT` and returns the result as a `Bounded<_, RES>`, where `RES >=
-> +    /// N - SHIFT`.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::num::Bounded;
-> +    ///
-> +    /// let v = Bounded::<u32, 16>::new::<0xff00>();
-> +    /// let v_shifted: Bounded::<u32, 8> = v.shr::<8, _>();
-> +    ///
-> +    /// assert_eq!(v_shifted.get(), 0xff);
-> +    /// ```
-> +    pub fn shr<const SHIFT: u32, const RES: u32>(self) -> Bounded<T, RES> {
-> +        const { assert!(RES >= N - SHIFT) }
+> @@ -379,6 +379,9 @@ pub fn from_expr(expr: T) -> Self {
+>  
+>      /// Returns the wrapped value as the backing type.
+>      ///
+> +    /// This is similar to the [`Deref`] implementation, but doesn't enforce the size invariant of
+> +    /// the [`Bounded`], which might produce slightly less optimal code.
 
-Perhaps slightly better as:
-
-	const { assert!(RES + SHIFT >= N) }
+The unreachable_unchecked() hint is const, so I see no reason you
+couldn't add the same call in `fn get`.
 
 Alice
