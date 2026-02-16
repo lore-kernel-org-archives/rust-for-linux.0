@@ -1,124 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7979D30F551;
-	Mon, 16 Feb 2026 14:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771251026; cv=none; b=G+L6vq1sA8PuLZWUwHxRO+i1954Iby4ZFh5EmjvUJTGJGwepmcCGxSLYPJFz/H4KBgWvJGolivoomWzx65FrXYFxMUHW+VpvWljQg5Zle/7jnti0eoSYw+FVSKyF2f0yQ4GjdftUaemsuQ8/ZtTcCFTdwGd9lfWP+7Byp7r3VnE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771251026; c=relaxed/simple;
-	bh=rfVAM/ZHzx5qdWkfO8blN25XFekil5Ja5oqXZc5O6F8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CdkHGIyaoXRmIOLQHtHpV58MlFfrPjXkcFnFC3WOGDMldhf9swDNs2WNrc4gF5XANx+NLU0SMYIYlnY810wFwL2TV2GdjmHJjrR4r6X0ojmtQ7vBTAGYoq5otHqNxJ2DGiYOmdreFcnfR0r9oRXjkHBNIrz0T+1k1aclMBEe2us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qENupr8n; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA06D1E32CF;
+	Mon, 16 Feb 2026 14:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771251696; cv=pass; b=Ia5sxuL8gzkKs7g5NFLU1imfEBPxn+ixFmD3HRI3pnLZPUvKWcXpoGIdMH/O1ztKwQZyu3oq7vD70YzwlBhf2yRqepyUTVl/QkJJymbj5vnlRCUrgjTLCSGjWXUGuxkPXv4kti9ZtR6HOVl1eYgxgWKZ/FJO+sjSPD08w7SAIms=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771251696; c=relaxed/simple;
+	bh=P9AWPsLWP+tw/FgtxvdmkbEH4GnF0i4SnqBN/FEAeIA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=QpH6dORSo82Ot7huHz6/gkRfnnB2fcQEnUqwirVq+ER9EMRfiLUMbA4DixGwuGSBvWeKp84jjmsY8zbpVJx5z/vhjd+APQQyPJf9Y8JEf/CWN45aKOePayGYjKeiIvqH0ABF6lOZVoIt2Re4QUYSzpeHst+26QjvT/p6L2cXhVg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=beJa32oM; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qENupr8n"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4AC78C19423;
-	Mon, 16 Feb 2026 14:10:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771251026;
-	bh=rfVAM/ZHzx5qdWkfO8blN25XFekil5Ja5oqXZc5O6F8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=qENupr8nkkXpgGimRWCfkHsxQVjYTtGsON6Bv+ZMH9SpUtaWxpSKrSrNev9zJ1joj
-	 QuCtemlYigPhaM8kdMls3Tj+m7GiF05MGwmIpCBU1yM0bb1/2qMlU6VV2IRQWQRBBm
-	 d1iI8VPCsoSTx6mLEhLDK006k1g+Q9XTJmq/8d2uwhBC6mOwekMrZHo6UaEyIw/ENt
-	 N+l1PDYhUzBdBf912s0ZbYW3EZXCXN/5+okVAA/w5SU+1f2T2mvuaS/1/0Zx/ZDLoB
-	 4Jz9z+hQk4RpWuItYzWKggNKOHZOlrmIL8YLgcOAsa0xyK3KaUi1w1ezcDa3TS/NUR
-	 GeoresLqEIc+Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AB82E81A29;
-	Mon, 16 Feb 2026 14:10:26 +0000 (UTC)
-From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Date: Mon, 16 Feb 2026 19:39:57 +0530
-Subject: [PATCH v6 3/3] rust_binder: shrink all_procs when deregistering
- processes
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="beJa32oM"
+ARC-Seal: i=1; a=rsa-sha256; t=1771251684; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=KhCTDpS/VGYFoOoHsCxk8vaFYdPi3nHISkcO+Pm9COn0lVKzgFg/O4L2jNStfF51jk2H0YqPLeyxHzVFr75L5e9juMzj1ifgsjKmoQBeK8zq7eBOzvkgWIMwcYFjDU32WXokfiUyxGwXHaA7PiduyigYij/0fqgis14+0om/HUQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1771251684; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=P9AWPsLWP+tw/FgtxvdmkbEH4GnF0i4SnqBN/FEAeIA=; 
+	b=g1RqC6czSgEBAtQuLtXMKalEgL8ExLVZLcVTo6g+21DSFAlpovGMyA4+ea+TlnVtLXadF1wM4yb/bVTEsj39DfcJ0nUgsd7P23cJNgwny1jZDmALKtItUTdPzm9b5bz3BSurCd3ziYoow/+4cXgCMX/LIxRI3ejA3y93SnWqwoI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771251684;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=P9AWPsLWP+tw/FgtxvdmkbEH4GnF0i4SnqBN/FEAeIA=;
+	b=beJa32oMUNwp95GSWIcptRjXzwDBpFiOjPXyFi5HYEr3aK0cfRzlFV3XLTHg5OhP
+	QaOFuYTRRMADsXLACoY2R0/fAlQIBr/Jf031/CUkU/aDQUNGJppbYs1wkkmSXfBXgKS
+	Es4D/Jfht+rJq2P68QqctiKURBkOm6JTnw4aLlNQ=
+Received: by mx.zohomail.com with SMTPS id 1771251681818735.6583029166486;
+	Mon, 16 Feb 2026 06:21:21 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-binder-shrink-vec-v3-v6-3-ece8e8593e53@zohomail.in>
-References: <20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in>
-In-Reply-To: <20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in>
-To: Danilo Krummrich <dakr@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Shivam Kalra <shivamkalra98@zohomail.in>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771251023; l=2098;
- i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
- bh=mnNtqRuXw+GbWwUNizt695eJI0LDj0bQ9V6oPxS8Ca8=;
- b=KUC991Pcb5s8ApAhRfN2CtCmZ8JCK0Is6X3B6+q+41igluWkXepMKJ45h5JRYeQzj2X/MfaXg
- W2EfiYUdYp9C2dRyOxEmgaHhOqB/YLKhv4+8ci7NA2x8565gvf00rxD
-X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
- pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
-X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
- with auth_id=633
-X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
-Reply-To: shivamkalra98@zohomail.in
-
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-
-When a process is deregistered from the binder context, the all_procs
-vector may have significant unused capacity. Add logic to shrink the
-vector using a conservative strategy that prevents shrink-then-regrow
-oscillation.
-
-The shrinking strategy triggers when length drops below 1/4 of capacity,
-and shrinks to twice the current length rather than to the exact length.
-This provides hysteresis to avoid repeated reallocations when the process
-count fluctuates.
-
-The shrink operation uses GFP_KERNEL and is allowed to fail gracefully
-since it is purely an optimization. The vector remains valid and
-functional even if shrinking fails.
-
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
----
- drivers/android/binder/context.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
-index 9cf437c025a20..ddddb66b35571 100644
---- a/drivers/android/binder/context.rs
-+++ b/drivers/android/binder/context.rs
-@@ -94,6 +94,17 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
-         }
-         let mut manager = self.manager.lock();
-         manager.all_procs.retain(|p| !Arc::ptr_eq(p, proc));
-+
-+        // Shrink the vector if it has significant unused capacity to avoid memory waste,
-+        // but use a conservative strategy to prevent shrink-then-regrow oscillation.
-+        // Only shrink when length drops below 1/4 of capacity, and shrink to twice the length.
-+        let len = manager.all_procs.len();
-+        let cap = manager.all_procs.capacity();
-+        if len < cap / 4 {
-+            // Shrink to twice the current length. Ignore allocation failures since this
-+            // is just an optimization; the vector remains valid even if shrinking fails.
-+            let _ = manager.all_procs.shrink_to(len * 2, GFP_KERNEL);
-+        }
-     }
- 
-     pub(crate) fn set_manager_node(&self, node_ref: NodeRef) -> Result {
-
--- 
-2.43.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] rust: add a ring buffer implementation
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DGGFZX5JLZ22.3E1C8OVLNUDD6@kernel.org>
+Date: Mon, 16 Feb 2026 11:21:06 -0300
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3D7C5FE8-CA15-418B-B2F7-D0EA4C37E1F0@collabora.com>
+References: <20260215-ringbuffer-v1-1-9b359758a1b6@kernel.org>
+ <8tULWyvUTjVb3E_HFZeW2maApI87eYLZungGtJ6k9CVT9J-C-TzIqx5ShmHA5vS30yqZRq7TmaBd0AIg5V7u6Q==@protonmail.internalid>
+ <aZMMyJofDKualqXw@google.com>
+ <873430es2p.fsf@t14s.mail-host-address-is-not-set>
+ <C82DE0A6-17FC-4FD9-A272-257B59129A7E@collabora.com>
+ <DGGFZX5JLZ22.3E1C8OVLNUDD6@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
 
+
+> On 16 Feb 2026, at 11:06, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Mon Feb 16, 2026 at 2:45 PM CET, Daniel Almeida wrote:
+>> With the allocation being handled by a separate component, I don=E2=80=99=
+t think
+>> this is right. I think a better location is rust/kernel/io
+>=20
+> I'm not sure it is reasonable to ask people who just want a ringbuffer =
+in system
+> memory to take the indirection over an I/O ringbuffer implementation =
+with
+> generic I/O backends choosing the system memory I/O backend.
+>=20
+> The proposed code is simple, without comments and tests, less than 100 =
+lines of
+> code. The I/O infrastructure to make this happen is still WIP. So, I =
+think it's
+> fine to land it as VecDeque for now.
+
+
+Well, this is a 100 line patch, but nothing was said of how much else =
+was going
+to be added on top in the future. In order to avoiding iterating on what =
+I
+consider the wrong approach, I suggested that we start out in the right
+direction from the start, something that Andreas himself apparently =
+agreed to.
+
+
+> Once we have the I/O backend infrastructure, a system memory I/O =
+backend that
+> can deal with separate allocators *and* a ring buffer implementation =
+that sits
+> on top of it, we can still revisit if it makes sense to take advantage =
+of
+> synergies.
+>=20
+> But for now this seems a bit premature in terms of delaying Andreas' =
+work.
+
+IIUC, and feel free to correct me on this, the I/O backends are already =
+in the
+works. What is missing is a trivial system memory backend, and similarly =
+a
+ringbuffer implementation, which is the subject of this patch. I don't =
+see this
+as a lot of work or an unreasonable ask.
+
+=E2=80=94 Daniel=
