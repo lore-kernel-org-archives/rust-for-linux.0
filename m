@@ -1,54 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE7F78F2F;
-	Mon, 16 Feb 2026 13:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B7C78F2F
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 13:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771248146; cv=none; b=q7ohEDkToyPW4VCwUdKhLyf7oUFVtPvcXp3d5u2YXXrLO+D3pv7CsE1+zRS9zO0sHvFCzk57toZw/DP8jyIcuIy7O7Z/0djO+pYix2uidBIX8BY773QZKkvU1F5GXLI/WeQeonW6UHgOlH+VspZOuj9BCVXUqTiJ/xpPNoYu3E4=
+	t=1771248154; cv=none; b=tOxJly3KhkDCpfZ7Gf3Ojc49Ume6pmD71fsfNjtnh/qTLi+Odpd/qj/Hk8E6geJTInPAnt2gHSWJzZ4B9GIIMDMHvsNL7BhURdC2yIAWechZ65POJQIlSP01bCPgKUa51fNkX/XvTrgobkfevBQ+dUrSl4rYjl5MhiSEAdcytps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771248146; c=relaxed/simple;
-	bh=wq+Zr6L88Web7nSkY4eKcKCq9RujjgnqldokSx/qmRA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=b6DtbRY4RoqP7POQVFiCl45AeEkvBH3rZrzAC17B8mAun8qy58GDAwuyfJ9hnQl4Lfg2Zt9tk+WnDr4FyQ0n5ea3gmaJL+lMbpk4Er0ovL4L3dy2YBGCvpGG8N2UymtvZElddp3fnCIMcSye+bhP+oHnFy/mFy+9+f8ZTj4G5Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frRDEktT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771248154; c=relaxed/simple;
+	bh=V5PyQQvgVLRArBUaO0H6XDypFxZ4oZWPK4ihpQOsK/g=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=D4GSKFb0/wVRa+skKYgEfR2lVSA9MRSpMN2T1vjCXdj7WLp8qdo7Tag5wNYJ0VNBOc5hMVqaXkyWWvsRHVM0hXdU3yBZrN1XJ2jOvTHpvwsl5WhHtGJfyuv/h93WX2STj9STVm//aPrg4VfhHmmfclWMpkVpAN69QeYNCARgDUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bcF5Jr7W; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frRDEktT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8765CC116C6;
-	Mon, 16 Feb 2026 13:22:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771248146;
-	bh=wq+Zr6L88Web7nSkY4eKcKCq9RujjgnqldokSx/qmRA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=frRDEktTVlJUto0BcqBtYAJGbVuzLzbUuaBjm/ndTovt7+86WajDsEmpOaJoX7xAK
-	 xTuwIxVxoQlu5fSVLLaaHyXm2GDSE/HyLg2wrKJDxDzpaasnXFZ2FVOH248N/z6uMI
-	 0wNjy2OX1hksnkGA2pvBOU/GUcP6A3k5S3lERUUJ9EAqnN23B1t09kzEL2gxgHHUl2
-	 LlFtWvMTOg8qwCAEOmPYl1B2EKR7tk/AqnFSLM5hr9/RedmP4Q6TTomHQYX57FzzaH
-	 g57X2Our9caSrPyL3BzddhAwD3BftWxAdtsR70fIQcoup19/YNrBB6YL5gq1utdI0L
-	 +Lz7BIEH9Jt6g==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bcF5Jr7W"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43766514653so1989613f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 05:22:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771248152; x=1771852952; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ElKyrfCE+7loQXJG3oD3y1xXHkPN8AgZyfzmDqci610=;
+        b=bcF5Jr7WFovaQiSxFvRi3rCAIhiRd+05QCx/qS58xH5StcyWtUdi5Q/1r5isBb0+aI
+         ap34ixOSfXPkPVl1oWF25fLaFj7zjkuwDymiQFZwww1xUXwrlZ+QD4wyA2OXtQcgNtEa
+         JWRIS5+3gqe6xnLmQc5p+jJMufg5CRBmToxZ0jxBUjfFbh9NS23LTpNk9Mylwc6ntEEO
+         mMawBLcng9yAmk7pfGhlzkhQO1/ku0BEQo6ZmgStqQl2M1sIbmSWt5tLfxsl09whAC70
+         rDzMl5BrN2u6bQJuKXEkEL259L+pjE7cAwFGLMAUqq6z52XbYcCGTtPBMbTCZJaG9d0X
+         ff6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771248152; x=1771852952;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ElKyrfCE+7loQXJG3oD3y1xXHkPN8AgZyfzmDqci610=;
+        b=OlWe9PUvBKY/bcfxafct6OOrcnl6bw6Dt2cE62pJre9/9ARyB+47XVmP76deiCSERo
+         rHYq6VbE2mTdZr4EKt2uQc0Ps8FG8uZO6o56Dl43lPUS9aM/kjsh1PP5ofaqcIuViozC
+         8EJJ+YBFdi4G4cYmVUmBEHQwsaA+ZpIfznFLxVBEq63jmRolBsBCdeQmidP86ZQ/6NcK
+         qjgj2/lCmBQEtWK4hGTsPc/KIuw2OLZp8ILJyMk3bFqKsS9usWzzo7irvF55FwPl9jYX
+         Yw8dX74mWl72AhPJpAlF7VT4iYGXAQrxB9hDsUMO8F5gx/VmYRZwUJUIS+fZS/7lf35b
+         AxfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW+tLWIR+c41kMQH5ekjWcT7CbekSwOiUXAR9TZ73chrduXea7bQwt0cMM7eC2aK3HlYrDbq0j5RlRyIBdOvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzitKynC9m3jFEovaC2G4X4zuGDH9KgVY47QbwSj8DXHX8mL2al
+	1FyaPPqKT9oh2EBJhoed1cy9DP3ToDZrawUm4shwog9G0SqOxBly8/h7yBAcTdDDcb2ho0/RcqY
+	Ei0k1BjZmmKT9+n4AkQ==
+X-Received: from wrbeh10.prod.google.com ([2002:a05:6000:410a:b0:42f:b6ec:c515])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:310c:b0:437:70d3:44ec with SMTP id ffacd0b85a97d-437979189c5mr17087369f8f.43.1771248151307;
+ Mon, 16 Feb 2026 05:22:31 -0800 (PST)
+Date: Mon, 16 Feb 2026 13:22:30 +0000
+In-Reply-To: <20260216131534.65008-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Feb 2026 14:22:22 +0100
-Message-Id: <DGGF2BKJP4BS.1CZFWVQTK144G@kernel.org>
-Subject: Re: Mainline UML Rust stable io.rs unused imports
-Cc: "David Gow" <davidgow@google.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Richard Weinberger"
- <richard@nod.at>, "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
- "Johannes Berg" <johannes@sipsolutions.net>, <driver-core@lists.linux.dev>,
- "linux-um" <linux-um@lists.infradead.org>, "rust-for-linux"
- <rust-for-linux@vger.kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <CANiq72khOYkt6t5zwMvSiyZvWWHMZuNCMERXu=7K=_5tT-8Pgg@mail.gmail.com> <DGGBI4DU4J4U.2JOBHL5IFUCTL@kernel.org>
-In-Reply-To: <DGGBI4DU4J4U.2JOBHL5IFUCTL@kernel.org>
+References: <20260216131534.65008-1-dakr@kernel.org>
+Message-ID: <aZMaFhvZWiknu8UK@google.com>
+Subject: Re: [PATCH] rust: io: macro_export io_define_read!() and io_define_write!()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: daniel.almeida@collabora.com, bhelgaas@google.com, kwilczynski@kernel.org, 
+	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, zhiw@nvidia.com, acourbot@nvidia.com, 
+	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon Feb 16, 2026 at 11:34 AM CET, Danilo Krummrich wrote:
-> I will send a fix soon.
+On Mon, Feb 16, 2026 at 02:14:33PM +0100, Danilo Krummrich wrote:
+> Currently, the define_read!() and define_write!() I/O macros are crate
+> public. The only user outside of the I/O module is PCI (for the
+> configurations space I/O backend). Consequently, when CONFIG_PCI=n this
+> causes a compile time warning [1].
+> 
+> In order to fix this, rename the macros to io_define_read!() and
+> io_define_write!() and use #[macro_export] to export them.
+> 
+> This is better than making the crate public visibility conditional, as
+> eventually subsystems will have their own crate.
+> 
+> Also, I/O backends are valid to be implemented by drivers as well. For
+> instance, there are devices (such as GPUs) that run firmware which
+> allows to program other devices only accessible through the primary
+> device through indirect I/O.
+> 
+> Since the macros are now public, also add the corresponding
+> documentation.
+> 
+> Fixes: 121d87b28e1d ("rust: io: separate generic I/O helpers from MMIO implementation")
+> Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+> Closes: https://lore.kernel.org/driver-core/CANiq72khOYkt6t5zwMvSiyZvWWHMZuNCMERXu=7K=_5tT-8Pgg@mail.gmail.com/ [1]
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-https://lore.kernel.org/driver-core/20260216131534.65008-1-dakr@kernel.org/
+> -pub(crate) use define_read;
+> -pub(crate) use define_write;
+
+You should keep these re-exports (as full `pub`) so that they can be
+accessed from kernel::io. Exposing all macros from crate root via
+#[macro_export] is legacy approach.
+
+Alice
