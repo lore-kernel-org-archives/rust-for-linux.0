@@ -1,78 +1,90 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962022C21CC
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC751A9F88
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771231160; cv=none; b=WodlE9IYoDB7jll8jO74JTz3VsksYIjhkRjjRoFXckzBesEdJauNmWwnOaCzFt5D1rC8/JfDSdD/OLl0O1p2F9U8Ra+rP5l+JWkM2IA69HKK7zkeyqT/0gsg1zEn9VMfIQKMa41iF1+w3jRy5lhemW6eFWy+Mc/BBQhBKiYnjKs=
+	t=1771231210; cv=none; b=DRL07GAOl3YzjdS2LlwkAQTT4pRobvKANFa/Jk5DQRlXEUWJWcAmWH+ThKLaf01uBV/ibe/ufmB0DzAB0C+78cmJhy4iaWTneF9AIWJPoZGOuLMP/ogfl3JS6OFMzbbnn4dJD+gCBTq37ZRGPCRX/Aw/O7IgujS6nniBUq9f0nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771231160; c=relaxed/simple;
-	bh=okcDiHxVL7tNQh8cGFap+Bd3spPt+IwkFuOteJFAlQY=;
+	s=arc-20240116; t=1771231210; c=relaxed/simple;
+	bh=oUjRjWRxo+gphPN2Ko6xQrzNtIVpaWE4lyOQdRwGEFA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=a6CW2Pi4g7MHTydLkHoARPcOjcNC8fBHpThUbpfEOHDCz7zJspT7EctA2lPBhmV+cp6DMh7drlZP1z1O3O/0aqdl6xxK1rmN5IQNHLstXqLK/jjgmVXPSjRClYhpI91ehqVtu3HEkJBo6jZdmfBds/dp3DNp2f+wj+XSvkYstvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mxjDYBp9; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=UwyK+n8aF+JR4B7lTAYF915QzWp0ekGcSc4h6IJtayDDyRko8I36iHfq1DDql1b0Qmb0Z5dITGk2JGFewhA2cJPXVK0KSKRwDaGw+zyq43nqPlEzCkt3taeIt2I5m4hj91SKiQYu22/jQFS/PVkDLlNphJ6zCGCQaWSzkWr+Ww8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k/tvYVrV; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mxjDYBp9"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4837f288194so16992785e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:39:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k/tvYVrV"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so14122235e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:40:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771231158; x=1771835958; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771231208; x=1771836008; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ucPLl8OY0Ir+SHtS9FBvWniFak/5oJhPZPFL09pWZEs=;
-        b=mxjDYBp9PExC7gRXYtFOsNbyt+AnqfZtH+RvsKCXGonzI95WzMUsjYi19DdNS0dOL6
-         gJvKFSNunkH/Cnyz7c3ozxRgsV4cDtMF3j7DRwppn9/QOHaQYRnDWn5zSOWYeuzuKaJS
-         fYy65dr+VTe2FVliZ5Moy4OZbludN8YCBXzO3W5UERuIcIjXbWmF4hGa95Ixgm4WB8ED
-         CMgK0lVdUILYv0fghcG3LUrE7w6zk4XSc4Ko3dHINzFXHG+KP6BtMsnKs14CLlDsXGMb
-         ejDrc5M6lVu/xPVoEgTBDzuKkvim18yNfc39K0q1Rjx1FAL0+YV2jyDrNTmAqHByZoY2
-         Birw==
+        bh=TO2acffBthIDSTFjL+/ZA/O/dcuvRn5M/ufZQEwURoE=;
+        b=k/tvYVrV3D/j1PIr034DF1UloMA7zgafphG+FdW6L2T0AFfMuQtePcFmZRg2ue28YH
+         sXmxfbVltXIUWXZVIXuxW32uuoqoc3FHkNT5cfEAxf0TGOrrDKi3tC4WvZZufEladOqk
+         ZrbTnYekEKSzlXOvgnKO1VT8ViSbpykmlreSrfrmHCBOlUu9kxcoMB6XrKCCkEcmNtpa
+         x+n8ob868zWvNhBWcXFIooL/8AyAgHJkGWSO+/rmMUZ+iwNugxYJVIk+/glesRG0Bz0p
+         hU5sv+jf1r/BbGj0GJi0ZcvFGf2PMkwB0SE7tHwEPWIZ5obTmKra+VmLNm/2kJGJNuNv
+         JgEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771231158; x=1771835958;
+        d=1e100.net; s=20230601; t=1771231208; x=1771836008;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ucPLl8OY0Ir+SHtS9FBvWniFak/5oJhPZPFL09pWZEs=;
-        b=K5BnE3JTU2Zh3Sni+0IEOVBt42BPNYX7655/u50wWD9ePFhVKf3xX/TRHI5g/ZkpEL
-         A4j5g4mDkHJ0cWGwheFWpWu45WCa/GqA0iLNPtX9/siXKIA56kXzKwbj8CzTbKLhQAj1
-         ty0O3dxrjKT66iGzK96G7MpC1lhJKXmxsTR0G9D8qlELJZnAbVSgQsYVH0apfLYDY1RJ
-         x0RrJGG23ewBzzD+4ZOyZaDIrRlo9AIfAnwqRmSeBU7dLrTBXZET/HYXFMHSpi5Oey6s
-         3T11rxei3ev17bMKRHOEgt2REWkm3A7WwJAnYT49PYPZIHOR5H+GnWy9OUru8Dy5f/ht
-         zrcg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3Ddd8NXUhQ8rxMUxUuQ1o20e4yt9BMA9iOwqJRRTU2n01zj4tvjzGQWD2D32foWT5jjfnS6dbawkS2RWJ7w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyzykkx2jcMpFzDABO422YwhnzfOrf7P/01E1DQNyIrOGxXI+Al
-	rOVPvDf8qLQti3tpDMsfmaA0i7i6fhukNr51sZo4RBK+UtmKKCEqb1iXzQbGtuaVOOHtWtS4m68
-	B1jEkYcyzA9FP/ONuPQ==
-X-Received: from wmsd11.prod.google.com ([2002:a05:600c:3acb:b0:47d:5a60:18ab])
+        bh=TO2acffBthIDSTFjL+/ZA/O/dcuvRn5M/ufZQEwURoE=;
+        b=WTMCUhNhnBgScwYfCWyQDP2VgGHf4eYXSXvg40ArAsi4d6CjxmA357eaA8hIIm33il
+         F3wkPMXEAnDhdUuN46Gg9fMv8nTQpz5jjRYqiIxfMFRLTnP3FVP/0s0JbXyDsPF3Ucbw
+         Ay2AjgUPBQktK1lRvZVTvkzLcK9KmZaayCROF7ccDWTrcLEdU7MKFxxsSzjhWCB9XINd
+         VvVz3kiNY19MEv9ntDEgOGATvFFRJI8C19usJWEfNB9pNYF6snjxQU7raHj+pF0HzcQw
+         1cho//nKMIS8Y7rfxKkgD4/xIzkpWdmbCttUn45CXS586WjXoFG3dg6HH4HmQBZzZSl2
+         28Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCXdtpMDIkjUf9mfc/oIP+klk43/7YbvA6E/h7sgcnpf13FbdRCtCRMsnmPaZPHYcIzL8SQxL2GxnQ5a/Ys7xg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPibB/dARBaA6CDGykr2k1y2LgUiPQ6EWTyn7imnLO/fjXSKFV
+	apCF2XXa1yCN3JDs5obTxTC+m1m2sMHSKubfoizyrw6i4DH5swInXn5zBmqQahxLn/EBtLyerre
+	ObNYgnFGKZZqOV0/bAA==
+X-Received: from wmbjd20.prod.google.com ([2002:a05:600c:68d4:b0:482:ef67:407f])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c0ca:b0:483:78c5:d743 with SMTP id 5b1f17b1804b1-48378c5d9fcmr103300795e9.28.1771231157690;
- Mon, 16 Feb 2026 00:39:17 -0800 (PST)
-Date: Mon, 16 Feb 2026 08:39:16 +0000
-In-Reply-To: <20260215-cpu-helpers-v1-0-fab13d817a5e@kernel.org>
+ 2002:a05:600c:8709:b0:480:1c53:2085 with SMTP id 5b1f17b1804b1-48379bd731emr120608095e9.19.1771231207777;
+ Mon, 16 Feb 2026 00:40:07 -0800 (PST)
+Date: Mon, 16 Feb 2026 08:40:06 +0000
+In-Reply-To: <DGFVQ8Y1LLY1.SKXJK85IK4JH@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260215-cpu-helpers-v1-0-fab13d817a5e@kernel.org>
-Message-ID: <aZLXtLc6_DPx2EpQ@google.com>
-Subject: Re: [PATCH 0/2] rust: add a few helpers
+References: <20260215-binder-shrink-vec-v3-v5-0-6e5e56d69766@zohomail.in> <DGFVQ8Y1LLY1.SKXJK85IK4JH@kernel.org>
+Message-ID: <aZLX5uqKbHwWJKqN@google.com>
+Subject: Re: [PATCH v5 0/3] rust: alloc: add KVVec shrinking method
 From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, shivamkalra98@zohomail.in, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sun, Feb 15, 2026 at 09:10:14PM +0100, Andreas Hindborg wrote:
-> This series adds two helpers for obtaining information about the number
-> of numa domans and cpu count of the system.
+On Sun, Feb 15, 2026 at 11:13:15PM +0100, Danilo Krummrich wrote:
+> On Sat Feb 14, 2026 at 9:35 PM CET, Shivam Kalra via B4 Relay wrote:
+> > Shivam Kalra (3):
+> >       rust: kvec: implement shrink_to for KVVec
+> >       rust: alloc: add KUnit tests for KVVec shrink_to
 > 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Greg, Alice, I assume you want to take this through the Android tree?
 
-I'd make both #[inline].
+Binder usually goes through char-misc, and yes I believe that would be
+the simplest.
 
-Alice
+> With the comments in patch 2 addressed,
+> 
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
+
+Thanks!
