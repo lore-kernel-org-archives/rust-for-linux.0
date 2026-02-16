@@ -1,64 +1,64 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD78255F2D
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59901DF258
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771230790; cv=none; b=ogL+HRsTwfJKayLlOJRikzOezsmEcJzbLPpHtIrrRvBkQal9M1uQNJdbXN2O4kRM1ZyY+t7UVQICO2wHOFPck30cKCMmCqkGlK/dFsqEqRbaqJixnp0OTvcN26FyERgPcRsmW+eAnCQMKZunqm6po4Bo8jHQFYwinsT5FpgmM4c=
+	t=1771230864; cv=none; b=EzrHDDOarOP6D3F4BCMFNjLqlEU7fasaBQHj+v1xZQWoUx+c/IxTQ5SxpT1ptfOuUKc64gS1NA1IGOSw66DrEfIFQccQbPzte6KQxqOBQc54VVTj6UqExibdod/IUpB6awKB86HCN9XSV7jobc0JhRyv9+0Muq6t7nxzFfK4hOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771230790; c=relaxed/simple;
-	bh=uoahuacCYZ9SoHB6vmBITsd7B+5bwwaSz1/UFBUoLTY=;
+	s=arc-20240116; t=1771230864; c=relaxed/simple;
+	bh=uQtAVNC65mFQ6/lwaVnbJJjEdXBK5pp+eEmXO1VJvbw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=afMURXf/xuTM5T1+68ZiiLED+Kd6ZHvkg1fDDPdL+4Bcs+HFI58wamCfhp7jYBY9T/zeubRdn+RXEBfmi0y5sG9FFbFtaYCkbAb26KuPfVV6ern6ojs08BvlvpzqXDf2TA9JxXxNavT1UNtvC04O0AfgtZRmJYSRMEaCcnBFRPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uhS9SWUf; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=UDItJI7U05YxMcusetwvknf0I2svOBYGVyQoXr0hexOcnjIZfwSEAc7MBo5PkbqmgkbUx7n32uFzvlPEs/eFlIHPWMynA63zXfiHyZ/Dw8TOpn+r/chxRupfl0CVMZy2ztEU1WimUKgcIFkcxZzkKX3dDcw86vTLGtTLCtiBNPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SlA0guJd; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uhS9SWUf"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-482d8e6e13aso20207755e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:33:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SlA0guJd"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so14060345e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:34:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771230788; x=1771835588; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771230861; x=1771835661; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9FWlfvVYsSfvhml8J19wc2FeA1m6dphdLaOlAObMaZY=;
-        b=uhS9SWUfXveVTX+tW4arkZoL9CWOeo/HkjVxsa8Y89h1oU7QHx0qe0LGh8sGE1w5CC
-         aZOYYVPKPo6eIfbX7/MS/nR9ID8cmNYCbXX+YnZvTkKNRil4Tyy0NMhqUDKCEgwEQUKQ
-         Mr5QdDoABEO6IcVbc0+bByEpJUP4JxcVSqlWV7DPveFkNsiyi8khhXKCuSJD4uwN/xpC
-         Tjw5Wx17+oPQ/KcYrOyFLvF/BdBJJGxN6rKyOUTs+M1iBHsvqL+g0iY1k/QUTrR5Ti7/
-         cCnlySCRWqY1YYfvrtpHp6FL5OynGKDMJycuE+O6+Qz2gCIJ1KpEBHZphZSY5D2WTeCR
-         EXUA==
+        bh=xO+YeDnOOVbfmdjw1uyhMwcQoIFJ6oMNmSYTpMMrEXg=;
+        b=SlA0guJdlnntrokpd/lKfRqrW4lSLvPeRLymtMslcs/rqDE/7mFTTQ5gWQ1gLtSmwn
+         U2irMnhqUrgJwSEgbKT4soNxw05LGQ77bcTfjyf6oH3zN3yUpfmuK2tdubCe+y/WHHGF
+         0lw+0IsmyGPjU7BXQph8yL9uUDkpPiQojARpSlsbsFYFQPlwXtKZQulr+ImL8YwYVAjb
+         KWLl05B2l5DHoCgSuN6Z4Cq0M3hOsRDAnMkHGJADpytGym69oHvRFKF6GDjN5ojW8vjV
+         g+5B+bs1a5dqKlhWQ1SKT/Kstbp+2LjVVZaN9Dnq7TR3x3PT0ZdP+L2ncL2yfyF8bgU5
+         WoGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771230788; x=1771835588;
+        d=1e100.net; s=20230601; t=1771230861; x=1771835661;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9FWlfvVYsSfvhml8J19wc2FeA1m6dphdLaOlAObMaZY=;
-        b=aB/hHqw6XKib5zyfP6D/FzuxmSYxRhr9le+ODol2naKAMxum3Fbc0FEhPoS2SkaCdF
-         qqZCWZJYJi9Mg936qKpRrGii1X4hW20SMawUYm1Q7HLKZDtBZbc43GoglEBmm2IAWHNE
-         S0eIfZQwxLn6bJgyRaEozi1EXizgSkJ8XpdgzwKnejcpkkXcaVqocTsLP19DUYYMsIUL
-         65ghkXV/7kwtIzAn9kfQiK4iNs8497nGqI5CkFE1/wJ0uRt6ReguXSxwA+mRwpiZgp39
-         LCW2q8Ms4MA1+qyo2z+lmvpIGOP+NQ88Vs7ITbDwUCzSzWQ+FJnbEmZK5AkgiYSG1m8Q
-         6xIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSZWfiddfTbQe5zoGX83FSXzqA9YGgechBqJyjN1tLvoZ9XYwL2MeZtJyrCx7glwUjvaJayBSLbsPum9+9Bg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4w9e20jtZZcZg5aqRJs7oSMB17dDed4ywe7bap8xfRBnzdMJv
-	tJHwZVNvnUCmPfqYiL3CLfeKEHfvZ11WDDXC+bxitZHFBRda4uVAEF1uopAHKTadzu2S+c6/NN/
-	f20H/AJ8N01Iwd8SlSQ==
-X-Received: from wmco23.prod.google.com ([2002:a05:600c:a317:b0:483:29ff:3c47])
+        bh=xO+YeDnOOVbfmdjw1uyhMwcQoIFJ6oMNmSYTpMMrEXg=;
+        b=XMmyqvY1JaKlZcysPefTLctG4TIBUYUKx7YQ1WBt1mw9Sx6PnqkIEoZMQnBMC3ZfXs
+         Ldo03hTaTnkJOpTE7CaHvpdyYYkU2f7RYHcbH0F4doJcJUpGnzq8eLCzESH3DdGwR/Z3
+         k2oNa+yc4n3QWW6zpdZrh3X2niqT1Z7rd+5dqH2CLPHXZ7INdJNMOho/3MMzkMkh+DPB
+         cOnWbJnaPhdKDY/Tg98WKgSdt6dLjWxCA/BBDMzVrB9pIuTLWdKNiS2KgCbWQCKuBjEW
+         vrRd9wW16JkjKpkRozQ+LWMhhbG4sHpxLHScHxXj4U3i0tUXpMtysMROFVom6u+PpoJc
+         UD/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVvjKnzL+kgd2WPydTAx4qHW7k/jtS0ADudQTJYBfgtq89Mk2dnwV+rDm6JSP5NVO4P59lb2jckl+2wWN718A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWu/iovgjbu+Z69HKU3KadMkAUGYJBFYX3tfLPaYr2KaMWTjcE
+	/mvonReJAxusiLuZLPA3ezg3tVLjV1G9rTs3OPuKrIujLmkDEH/0G0hlzkaUPMySSDz9mN3l4BY
+	2NMjtE6j/Ey7bDH4Iyw==
+X-Received: from wmxa5-n1.prod.google.com ([2002:a05:600d:6445:10b0:483:7c8d:ed1d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d10:b0:480:6852:8d94 with SMTP id 5b1f17b1804b1-48373a45d65mr154147585e9.27.1771230787459;
- Mon, 16 Feb 2026 00:33:07 -0800 (PST)
-Date: Mon, 16 Feb 2026 08:33:06 +0000
-In-Reply-To: <20260215-time-from-nanos-v1-1-48c61b15ab4c@kernel.org>
+ 2002:a05:600c:8189:b0:482:f12f:f35e with SMTP id 5b1f17b1804b1-48379b98ff9mr119301215e9.12.1771230861193;
+ Mon, 16 Feb 2026 00:34:21 -0800 (PST)
+Date: Mon, 16 Feb 2026 08:34:20 +0000
+In-Reply-To: <20260215-time-delta-display-v1-1-bdd2d6e98ebf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260215-time-from-nanos-v1-1-48c61b15ab4c@kernel.org>
-Message-ID: <aZLWQsg5HstDHiGZ@google.com>
-Subject: Re: [PATCH] rust: time: add `Delta::from_nanos`
+References: <20260215-time-delta-display-v1-1-bdd2d6e98ebf@kernel.org>
+Message-ID: <aZLWjBWaBz4h4_SB@google.com>
+Subject: Re: [PATCH] rust: time: implement `Display` for `Delta`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
@@ -71,12 +71,33 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.co
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sun, Feb 15, 2026 at 09:12:04PM +0100, Andreas Hindborg wrote:
-> Add a method to create a `Delta` from an amount of nanoseconds.
+On Sun, Feb 15, 2026 at 09:14:05PM +0100, Andreas Hindborg wrote:
+> Implement the `Display` trait for `Delta` so that it can be displayed by a
+> formatter.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/time.rs | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 6ea98dfcd0278..e18fd17f38c5a 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -474,3 +474,9 @@ pub fn rem_nanos(self, dividend: i32) -> Self {
+>          }
+>      }
+>  }
+> +
+> +impl kernel::fmt::Display for Delta {
+> +    fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
+> +        f.write_fmt(kernel::prelude::fmt!("{}", self.as_nanos()))
 
-The change itself LGTM, but what is this for?
+I think this can just be
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+	self.as_nanos().fmt(f)
 
+Though I think it would be nicer to include an 'ns' suffix here so it's
+not just the number?
+
+Alice
