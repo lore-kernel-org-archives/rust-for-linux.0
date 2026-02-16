@@ -1,53 +1,54 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011024.outbound.protection.outlook.com [40.93.194.24])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012017.outbound.protection.outlook.com [40.93.195.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FAC2F7ADE;
-	Mon, 16 Feb 2026 08:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB1D2EE617;
+	Mon, 16 Feb 2026 08:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771229145; cv=fail; b=qiewr5/eqssfgOOqJBLccyGgNT4tUrHeOUsgQRgIt6DLs2uZofb1aq9Fy3ozqhcCIea1v5/aIEilLBdz9oA/aBrZceHI5OiBTtbNlmqOG2mIViag+ppQoxVrcJij9kyIF/acYsb13Mtn1gSj+qxPqhnKCorSMnJ9agDM62QEOLw=
+	t=1771229160; cv=fail; b=Amody46iXb3rmghohqeMn9iicTOwu6zZkUqqFQV3vb4B935SP4jQyC9JeTNSbWZW37Fw3mVMB7MdnB/GsPCLPeJGJVL8FPIKeCvk8NiHfWqdT6j16hnuZw62hcFzFuUd2Bz4JLpLjkmT+OzDRXYcIQ+3mxXdrVhETIWi9oEM++U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771229145; c=relaxed/simple;
-	bh=Utqkn8HskMsJrEyLPk0TkjF2fSrSAt/2uaHltKz3bf4=;
+	s=arc-20240116; t=1771229160; c=relaxed/simple;
+	bh=FV+51e9iYc2xrJcEjK2on6n19ycaSuBPBpOmqNhcq2g=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=u/r8syRJXmBGZ7FyZTfmfB3H/+R/XA/fHqrwD3NwvvY20oN22zy592+Lx35GbHc0+nJdGIlWG+Zt+wyadvxr7Wkd6xpEosu6NUtK8rOGWKGnTS1Rj3H0AmIojFGHbOBm2k2CGSV0GmxQuhD5bQhgMG5DJyR7l1FGxxyP5oeS+3A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GqS6uiNt; arc=fail smtp.client-ip=40.93.194.24
+	 To:Cc:MIME-Version; b=lHl5PQjXF+7wgtC3PuaU9nKSw1ZGjcsjRUc9UbQ1CyQwBajpi7MKy7n6hw7lainUYaJELQt2EoosqXvUJcn/EFKiU/IyorZb6qF+xL2XcYb+407Jhsnj0klGwGMyLDCrKrkDGjVHuJW1oDsL/cqqB7TlB03dFnPl/HSSP/PVYFs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hFoRr7b4; arc=fail smtp.client-ip=40.93.195.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GqS6uiNt"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hFoRr7b4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RHv+7XZ7qUG6XMtHddQXReg8sd2zLI/AcJH4OstXCP+wSrPO0Jx1Q8n1Psnv/Njgn2J5xsVxR0XzlOvXk3SORTF0K3385mcI8DWPLGuGMzHZcstZH2Rj0xggOF/oDDsCC9hHmB0l2XW/j4/+OGCJ4+u2Am0qXwOKEtr0ViAKxbcUvWmEhJ/pKYzQm/h3q/nLVlMffnqQFYf1icQfuKfn6F+UJeJRZLRPamzbi4PaSb8Zzvn5rrPBHU7dcGbjZ9Ln2jfnppUQEcHVWckkZNon6AmawnHG4lBjvySmQkHthNqsqvl/NA9WDt8WHaF0PfUumWR8m1rzMr1ItvzsSIxT+A==
+ b=T6eU2+ff/CnwzoBVJ4R74HJ6h02GSEOptNd1AWkT/24vxeqldYp9XbI7F5UaMDDbEy8wzbiPCEIA0j1g+i1dTe7M30vz+uxtYwtfGqhtk5e43jUeSbfpMINOf5lRdoRFVUVagaeu+S3ley/NzkfarzWQrOTaCPmxnfnLYJ4Brrajzc8AoIY+KsoMQGgPET7mnUR4iuTxdJ/Ppy/nRJXuY5jd3MtbfZsYhsZZ9r21SV4gLG7V6stExh/OyfjJb/twlSBfCxpja2dO4o3iBA/GxZP6NP61ze9cWlRv2K/M3At7EOdfrbgGe+IDAlIH7I9I432XipHfkeY6yOVe+sG39g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hcA3+hByhYSpmXFbIf1Asdo8Shgud85eieBIgiJ3WOQ=;
- b=xd6hejQ/yM3T4VHLVygGTP90JkjHP0pJb18Er2YKknrYwES1IpdFeSt8G99c05LvY2R+ZNfQUrvQ2uMJTuuz7Qw3GVZ4tFUMMuW5apl1WrFqguXXgx9gzMInD5fLhGQuVT8em9fH7aAOo1TYeTV73G2JH3FcVpLgX8IC22OasoefYoyOv5FxDVm2ORFBRaDRFdPCq5z/BCNfs06BVJQSNhjpzoUn5+Y77kzcJou9Xk17dlmYAdJ+24qgf6n5ST488NN6xFPXDReIsTQRiNSe/3enoyO9Jxll+wqNoT3/ucYbmSHaNKDgKHZs+iKZRodQ5GZc/HzaDkpPyTOk7ScQ6g==
+ bh=urroqqKTYxT/UxVao2Le2seml19syv3eilGToqEZXeU=;
+ b=N40k12WMk3oRJhkZC3l+/utFlHzW7UfYmAB3g5vReh8RyltRJyiZimxfjQMSutqa8CEOWiRtr0+VMfLCoz7Ifk9nbT+5yewDPFsYtfz/GeHLZOhPP/DMIIebYDxF/oRa1+C2aJyWmNgNdorqVOM2tTSYZt8H9ixBH/w5x2tUmg6YmYqyKOaWxZcfgq9aE/Pm7FGUzPToxp/ej7qwbiDWB3qYXmTAx2i9Lzy6G50aYm4MWYQ7FtXIWiOFQpv6FVl8haI4z8ZnNPZThdAEttTygbAx7VAPTvw4MtNB1d5NRtw0S77uBrmduVAivVb1wlQxy7xT3oPxaANt9lyqF6hJWg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hcA3+hByhYSpmXFbIf1Asdo8Shgud85eieBIgiJ3WOQ=;
- b=GqS6uiNtv1MhmgWGvn+CpzF8nPjr0qGLuZ5lROiESX7bV/r0lzjIYT22Ey33ySiRZyiBq5yBXI9hpchPMtzSA979PMfbZUyaW8l/AW/UODNCZvgQHup2jRiE2o5pKloUx5RvE0oyZjT9wQ681p7b2o6GER4EORfERS6ssPCmf0BJ17+sdCuXLqAtqLODWmLoKoqXEGBKyC32L6JSMDY8SVlgt8BXca5a0Y7TsWGUaLwjJNYvQR8LVXYyu+jpY6UOMy1srTUuy0F5ulQHMeSa1YK+U+i8sNcDF7m5gscFCvY5BdmxN/RcXSmWovsipoNP9f+xNjLZuVHVRsyrnOSYJQ==
+ bh=urroqqKTYxT/UxVao2Le2seml19syv3eilGToqEZXeU=;
+ b=hFoRr7b4E6qjEfW+AQ3CX7TTXc5sABNOv+YzvJReQVKLfXJ/udQJw6I01mWfW9hTvy4ZV3LfzifPVx0jNnxN4hgUpICAfjCuXbhogIV+8+lKhdoM/4wdlf41ZveaD3hK4nHR/2LEU8QH0/kRWEZriLY0hD9pGXbRXO8zfGBvcJ7AscD7Xn2xvAn3m+Bj+0V1cT9lpw/0DH9oFV5f+XnrzPssOvnIZBvrIHWBt4kfs0yQcDe624UJXapyysPYDc6g6ngIW/rL8lHvnoZq7m/ip02z5fSlHKmMQ1UmWDSzKjaPBPUMMPa2+40RUzejRBlNYXC4hhxIyVQ2Exp//7oiDA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
  by BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.13; Mon, 16 Feb
- 2026 08:05:33 +0000
+ 2026 08:05:41 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989%3]) with mapi id 15.20.9611.013; Mon, 16 Feb 2026
- 08:05:33 +0000
+ 08:05:41 +0000
 From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Mon, 16 Feb 2026 17:04:43 +0900
-Subject: [PATCH v6 7/9] rust: io: add `register!` macro
+Date: Mon, 16 Feb 2026 17:04:45 +0900
+Subject: [PATCH FOR REFERENCE v6 9/9] gpu: nova-core: use the kernel
+ `register!` macro
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-register-v6-7-eec9a4de9e9e@nvidia.com>
+Message-Id: <20260216-register-v6-9-eec9a4de9e9e@nvidia.com>
 References: <20260216-register-v6-0-eec9a4de9e9e@nvidia.com>
 In-Reply-To: <20260216-register-v6-0-eec9a4de9e9e@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -64,8 +65,8 @@ Cc: Yury Norov <yury.norov@gmail.com>, John Hubbard <jhubbard@nvidia.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Alexandre Courbot <acourbot@nvidia.com>
 X-Mailer: b4 0.14.3
-X-ClientProxiedBy: TYCP286CA0035.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:29d::8) To CH2PR12MB3990.namprd12.prod.outlook.com
+X-ClientProxiedBy: TYWPR01CA0013.jpnprd01.prod.outlook.com
+ (2603:1096:400:a9::18) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -75,1288 +76,2705 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BL1PR12MB5732:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ac1aeee-43d1-4abd-b30d-08de6d3228c1
+X-MS-Office365-Filtering-Correlation-Id: 56297488-a338-430b-ba66-08de6d322d35
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QS9FdTRIZ0NEdXY0UUs5ZFlnMlcvRlhWQ3Z5ZUJ2N3VLVmlUaEhndjdmSW1y?=
- =?utf-8?B?Y2RIS0lmSG03RkxQMXp2NERwb3hCMXlMRkVUVmlPbjVFSFJpd1pBbEdnZXJS?=
- =?utf-8?B?K0tBNWdYRWpXZUFXZ2k4cnNXWXRrcjlQNEtkUG1iUnFSMU5WblBLeXZqQlFC?=
- =?utf-8?B?UGhLLzB3ZVcxdXZ3ZjNnQytJQlNzTFlROCtCVXNlMUduNThURmwyNnpEaG9v?=
- =?utf-8?B?dlEwelY3NUQzR01GTENjSE1FdXFLUnNxbzdhakZGaWpWTzdTMitCVU9OVCth?=
- =?utf-8?B?QnltdVZYcjFhOWRwOXU2LzYwQmd4M0JINEFqU3hWMFdiZnVWTTZvYjN0bndj?=
- =?utf-8?B?YkhTamE0UndvRCsxcnVyTWF4czdOQlY2TGl2NHIzQzFyRnVUN1ZmNUlaakVt?=
- =?utf-8?B?cEdOb0paRkRQdDdLNC9La29MM3hkRDhkSjlqWlJuOXJFQU80bktPN28rQUY2?=
- =?utf-8?B?blgycER3eW5iYmxnaUI3SVUxazBZaUtVNUt5OHhOMVI5ZWMvcDJaelFFdVF0?=
- =?utf-8?B?MU8vK2Y3WWZnOFZYMXZ6d29DUmRHNE55NVNSakJqMHBudVhJK0oxTmxlUWxV?=
- =?utf-8?B?aWxlRkllVTR4NU02TEZxM1MyTjdCWkRNNFhBRG9rTzhEcnVqeXhYRitqMGlO?=
- =?utf-8?B?MUMrTGFVMm1YN1lTRWU2RVdFY1ovdzlHT3YzR0NkRU8zNzVULzd6WTlWTmVS?=
- =?utf-8?B?c2ZHdmkva0M2S1FhWlJPMTVvekd1bitudlBjdzRNT0g3eGdobVlwK0ZFOWJo?=
- =?utf-8?B?TWUzTGswK0Roek11cXlIcDBBbmxkS0dRRWZYTlNKMDFiaWZEbEpSalhoK2tX?=
- =?utf-8?B?R2YvcFRIQXkrNjJNOUd3VkxBbFRqQnU2ZjNNTzhYQXp0TGRrVDdkamxRYnJT?=
- =?utf-8?B?b1NwcDFtZTVhY3phQnYwTGVnanQ2SzIzNnZwMjA2R0pXb0Vta2pTZHlod3Y3?=
- =?utf-8?B?ZUxNRHhsUndwMitBN0tmNXM1L2pTb0c5a3Y3MTVDdWU1YXU3ZGM2WG9NTjVI?=
- =?utf-8?B?RnNxSzN5blptOXdoenlyRm9EaW1FQUlpK3poaGx1bGlZT3pkYzdBUjhWTXJr?=
- =?utf-8?B?OUhIRlFJSHMxMklJUHNDajZMWGxDTEZyazF1cUNxY1dhY0pQdkU5dUpxQkxQ?=
- =?utf-8?B?eDdJZDlINFUyNlBWRGVXcERUL1FhbXpSOTJJVktUZUdkdG9sL2s3SjNiNFJ3?=
- =?utf-8?B?VDhmK01qbFd0amhIQUpFREt2aXNtNjZVZlRpWGtvUDhrQkl5MWpDeUx0S1J3?=
- =?utf-8?B?eE9qdkpYNTVrVUppKzhIU1VzczhVWERNNnc5cFBHMm53RXY4WmFKbFdmekZS?=
- =?utf-8?B?N25YUHUzNjlNUHlmUlVzL3YvV1A0aEo4RGdtV2ZyUzd0a2FPNW05UitDNWdv?=
- =?utf-8?B?aVJML290WUI3TW5UVTBSdkJFMTBqYlBrU1VqbkVMS21IeVMrNTBEOGoveEtq?=
- =?utf-8?B?OWliQ0R4S25MTXIxaHhsV1R6VFBDTUE1UkpCdjRlMmNXK1JkcGJtNUx5ZUFv?=
- =?utf-8?B?cVlPNWwwUDlyRzFpNHdzUVcrcG9JSGJNRktxQ0hId212cHVMRnNhT1RTbVJo?=
- =?utf-8?B?d011TVZ3TC93UzYxOUt5bU1rMnk0U3NWeGErejZyVy9Ta1VYbWNWUktaRUQ1?=
- =?utf-8?B?VHBoTzZHTDZqblVvZFJvbzZOQlR6QnQxRDFRcjdLWlBMcjBaQU85RysrNXdJ?=
- =?utf-8?B?Z0VmajJqQ0UrYUZZMGFYSjlCd05GVGI3Y3h6Z1YxVllXT3FFaG11aE8yeDJ3?=
- =?utf-8?B?NVZQR2kxSUh1Q3VVa3FHeHpEM2xoK2hUSUZnN2xjVVIvdm1OQ3dpZDVjTWxD?=
- =?utf-8?B?cDVzT0Z0RTFjZUNvLzg1QzFxMDUzbHBvdW43ejRiZHBrcHhDbk5PaVlRZFpz?=
- =?utf-8?B?V3o2VTArRFBCenJUQUlwMmdiR2Njd25SZnJoNzczM244ZGNZK3RtSUdIcTU2?=
- =?utf-8?B?cjBXTk91NCtmNDM2Q3VWL2ZhU2ZNeDRHNkMvZUI4OFgzQnJwS3E3QmVxQXZL?=
- =?utf-8?B?dmVOdG9JWG1yTzBqOXRSVmRKcWV6ZVNOZGFkZkp6K054UlNrYVF0L0lnZnRt?=
- =?utf-8?B?MnFGczV3alF2Q3JocmZlNFZoamtSY2dOeXlBNGRPZWFOVnhQSzZBR3NZeElv?=
- =?utf-8?B?bG16NHpmOHpGNG1UTi82M0V6R0lpT2tZdmMvajVETm9lWFQxb01zKzhCcUcx?=
- =?utf-8?Q?RcSOvOXOAWzcqyaZn19OHP8=3D?=
+	=?utf-8?B?TWkrQlFzUTQ4ZFJBRWNTeDBJM0xwZ2FEV29rdURQbXdOdjlLRkpiNURaODBz?=
+ =?utf-8?B?QUhEeEg0WkxZcU92V0wyc2lPT09VdlZTWmpnQm1Dek5seE1lTEVpekZNK05w?=
+ =?utf-8?B?aHFQU0k1TWxnS05sOS9MNmF5bjY0WEVhVWg0MlFlZHZCYW9qNXNpSXBhcmhv?=
+ =?utf-8?B?TS9Ma2dhRWRtVlFudDFXcGdteU5yRDNGcTk4eE05OU8wdkVlemdvWW50dU5a?=
+ =?utf-8?B?TE8ybHQ1RzF1QUpoYWdIOUdkZFN4QXJmeHFUbG5xdEVQMzFTdHFodEhWenFS?=
+ =?utf-8?B?czZpWDltMEg3L2NEWVRmTVRvQzAzZk1PakJJakY3M0pFMEQyazVZamZhcVl6?=
+ =?utf-8?B?UkJmSGV0YktURHJPQ0llVjVUeWFXZExYSXdKRHNFdEpjSFBQY0U3QmdPbDJW?=
+ =?utf-8?B?R2Zod2FTQ1FSa0NIeDNXQmtqQmc4YSs3NnpxOGUvTnlVZXNnMStFOFZReW8x?=
+ =?utf-8?B?SzM2MHdZRHBpMEJQRnJ3N2Fzc1lyZWxyL2c2L0xKaG5qWVM4OXMvNzFMT05G?=
+ =?utf-8?B?VmNvMG5ocVcwTE9xN2N0TmFWbndjNVo1UDl1V1pJdnNnZDU0OC9CMnl6M3p0?=
+ =?utf-8?B?OTdRaEJvcEdXN0s5ZHJOazJzWCtlaDJBL2tEYXhpdXlGeFlWNmt5Uk45V0Fn?=
+ =?utf-8?B?ekkwNko3MzhSMnVtTXlYUTQ2aUJmdWNETTVZcUJTVGlCOFZuekxsZisxRFY1?=
+ =?utf-8?B?amtYMldnaFFLNEZNVFRabTM4YTA5N1NtMEdzOHRUaEFFa1ZXSElmSWJSYzNL?=
+ =?utf-8?B?ZmlyVVZFWW14Q1hndGpqK2o0VmlFTEErcmxYeUk5OThpNkpUaWpGdkh6Ulkz?=
+ =?utf-8?B?L29YVk1EaUZGY0ZseGpVL3NyYXhPditybWViT3JHbEZ3ekZiMWFDT3Y2dS9S?=
+ =?utf-8?B?b21lNnc0MDNCWnpGUHU0MEg5dS9HeElnOUlTN1JwcVBlWTdVRWZxQVFneFJC?=
+ =?utf-8?B?dG9XazlTVVduUGU4TmJaUlZNM3RRSmM3SVZCc2ZGMGFPRWR4QlVsSnFkNzd0?=
+ =?utf-8?B?YXFpVFdZanlTek5GMzNWRSs3Q1I3b3UvQmpjejB2UnVBRXJKeFBGQ2VRQUpV?=
+ =?utf-8?B?YlM4dldiTVFEY0FBRWxsSHVDN2ZSdWRoOGNZdUEzWE9SQXhaeWdmN21WUHha?=
+ =?utf-8?B?RmJXS0FUSXJWTkhPanhCQS9aaXBXemdQSkJmZUxFTXhRSFg4cDRkdmtObXVC?=
+ =?utf-8?B?NjJ5MzF5dFB1dVZqNlVrN1JwZVhFT1AyMzRvQzZoNkdZTFovbzQvN0JpaERi?=
+ =?utf-8?B?RE1RZEYvdnBKMjMwSVd1NG5LeDk0bG1BVVM1Z3NaQ2UrRnQwZHJDYW9BZ0lM?=
+ =?utf-8?B?TFZSUXI2MVRMY2J4cllXbnpUUWdzRTdENUgyUmNLUmxPLzNtL2xlNzFxcWhP?=
+ =?utf-8?B?RjU0QVd2UFNTbWdKUWx4endZc0RTR1dta1VKWGQ0cHdYKzlEcithb2tTOFFQ?=
+ =?utf-8?B?WjRKc0N2MEFRMlZpOWhKUGVjWXJ3eTlZV0FTdm16VVZsNnhlbnVEai9yL2wv?=
+ =?utf-8?B?OG5jenVEK0s5Q0VkSk9Cam9WZmh3U2xoZm1YK1pjTmVvOWV0Z1VWRUhQS3FC?=
+ =?utf-8?B?b1ZxV2VCWmtleHFjSmpLSWt2RnkzUTJ5cmlZanl5cTJnd0RRTnhOcjR5eFV2?=
+ =?utf-8?B?cHdIbi9tMm4ybzVZRUdvSFZUanowYUoyVmphNUlVWURjT2t2b3VJajkrZXhy?=
+ =?utf-8?B?V1JhZy9sM2dPRmNtMTZ0cmtBdGlNblFiWlZRaFhyMUxUbWQ5Y3R1ZTZoRWNJ?=
+ =?utf-8?B?RTlzVlFFbVJzRmc1RGJKczlyWVk5S1dvU0h6NDhWeFVvZkFPTmNSbHE1SXR3?=
+ =?utf-8?B?ZUVMdkQ0TkpBdnVhNG1idEN1YkJPSEVreUtTTTUrVU9EaTc1M28vRlZtOW0r?=
+ =?utf-8?B?VEQrbHpQNW1SYmN4ZG9UOUp6V0pMdGxWNUZDbjdQd3ZjUVA5R1ZUS2s1ZWpw?=
+ =?utf-8?B?K1VVRTBtWFdnZ25aNUlvWXdBUm02Kyt6bk9RemRrbXNwOFhzL1NrQ0tqNUE2?=
+ =?utf-8?B?SE1yUE92b2RMa3VqeVgrM3ZJZWxVQmlNeHZ3OE9yRWxTSjEyQ2FUNmNEYkww?=
+ =?utf-8?B?VjE4aUVISThKMndHbTUzRXJYOXl4T0tiNTl4SlJhdnZPQTBkc3Q0K1VJZnVF?=
+ =?utf-8?B?QThrMS9XOGJNMzR3Um5CSXQvL0hEV1VPVEthZWNLSDgxR0NmYVdxTnJsMkxn?=
+ =?utf-8?B?RkE9PQ==?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NDA2V0J4d084VjVFWDliVEc4eHoweVNrSnJwS0lIc2RkSXc1K093MVFCZ25K?=
- =?utf-8?B?ZTZKNEo4MkVKVVNLUE9mQVBnNElEK0w5TmZOaTFaVFV6b2RWRUF4bzl2VHcv?=
- =?utf-8?B?dUVBc1hJTk5vRUd3RUlaWUlub0FnMU0vdDhXeXhodjJEQWxpaUN6UExVQ05s?=
- =?utf-8?B?eGREQmNLd3VKTEdYcWRvaHZ5V0o3a1NSK0Iwd0w4Y0lJdnV2eVA0NjV3Y0JC?=
- =?utf-8?B?Rmcvc0hlMU1rcFZ0eUVrcGg3NnBDTFJSak9zUkZUMkxxK2I2RU84TUVETndL?=
- =?utf-8?B?cVFXSHNMUEZXTElhc2ZVSmttWUR6N1FKVEE0Z0xFU1ZkbERRQ3RuWmRFQytI?=
- =?utf-8?B?dnowYkh1cXkxeGQycGFRa1dSTnNEWGsvYUpVOEtjQmp4Rnc3emU5NUp5OXpn?=
- =?utf-8?B?b2ZWVjJjKzkyeDBOM0diczFqNTlJU0lneXM1OGxLWmdCRkFlNGlkS05Ja0o0?=
- =?utf-8?B?eEZYVFMrNGJHa05iMWYrNjY0dm1TZDZJaGwwcE5VVDhRQURTNm9PdjdrQnlz?=
- =?utf-8?B?RWNKaDMxM2p4anZmc0xwK2JSS3FCMEZYRUwxSEVzeHdHR0Z6WDI2ei9Ra0Jn?=
- =?utf-8?B?ak5PZ0w5MkRLN3RSeDJNakx4Y2tYNVVWbDYxbVE3TzY4VjNsZlFHWW5aR2tj?=
- =?utf-8?B?a1UzSG5qVGU1WFdRekVLeUUvQ21LY1F1WEw1ekV3bEN4UnBreFN3bzdaUHVj?=
- =?utf-8?B?QTRIZk9BL1F5RzRKdXBUWTlmc1NsaFZlQVZGNHZWRmVyVXRGeVcxUHFJNHNW?=
- =?utf-8?B?bjRoSW9wclZXa1JJQ2ovYVA3K05wRUpTVytrbEFDUm00NUsvdDZyMDN1MGtl?=
- =?utf-8?B?cE5MdEF2amplQjg3VDBPeGtFamltQ3loeURHYkd2WXdCMWdic240VUd5bDFI?=
- =?utf-8?B?YjMrcFlFdENZY1hTdnB3djhKTmltRUVHSmo0RUVzYmNZVEl1Q01QRXN1MlVR?=
- =?utf-8?B?U082c24yWFF2NDlIVDRCSmRNaHhERFg0SHJieWljREZReGNuSnVVaXVVbzV1?=
- =?utf-8?B?Mkw4dXBGZDU5aE8zb3dPT3pqa0RseG12NldHZ3hDS2FveWkwdVFZSDV0V0F2?=
- =?utf-8?B?NEFQeUx5SjNscFZBc0N5QXh0NHRyWjg2TG1yMzBERWlCckF6MDgyYzQrWTh0?=
- =?utf-8?B?ZjU1Z3IrQmZVd1p5cEM5K0FITnhNKzNwVDJYMVNabjBjUjZyN1dMMTZqbGhI?=
- =?utf-8?B?MmUyTHJBL0lNdlFMTGo4WGhFREZhQ3ZOa0FvNkVZQVFzOVU4ak5kZGlEaVdj?=
- =?utf-8?B?Z1hGSmFJSCtaWHpMOFVqS0plbzFDNzBaOU9ieUd0YjBVN0h5TjZXdTMvQU9C?=
- =?utf-8?B?Q0tKYjdoZlU2d01vc2Uva3QvSFJqNGdlQW9ZcXhxSHMwcVFQQkk3N0cyb1dB?=
- =?utf-8?B?endxRDgzR05jZG54cUdPTnpPQ3UxV3ZKM2xieFRxT25wK2Q4elJDL01EY0V2?=
- =?utf-8?B?UXprRkpMdkpjekozRUs0cm5kY3pCSFJUSHJia29JbCsySGR6akVQc2dLNXI1?=
- =?utf-8?B?ZmJXcVJFQ0Q5ZVM0SUtSby9SOXE3ckNpelBTNmNsa1NMRGQ0VCtZSGZIRm4x?=
- =?utf-8?B?VHRvWkk4V2NFSHBBQTUyVWUvRjRtMU5NOXJ6MTBKaG4rLzlHWStxYjU3dmZl?=
- =?utf-8?B?cUZDeVVaK1VIeGJ3N1JkV0xQOE12VmMrWldHYlVjOE9aNnJzY01QT0pQSDlC?=
- =?utf-8?B?MGp5TkdSazNHVm9uWW0vbUhwdndOZ3ZHNXBOeXpCS2Z2dTJianlOY1lFWHo0?=
- =?utf-8?B?QVdVWmFHOTVXb0w2Ym16aHpMQlo1V2pFdVJVK29vS0VQMzBJMUdzUDNQNVZT?=
- =?utf-8?B?dkdVQ1VQY3kvVnRhZ3JrZHAvTk5lRFhHa3hxeGJSSlZKbDVIcFRqTG9GbENV?=
- =?utf-8?B?dUZWUTlwOHRyU1pQYlVwWElhaUc4QTEvaUpWVGJBUFRuTUJVaVc5dzVOdTJM?=
- =?utf-8?B?L0xDeG16ZnE3Z05rZkowcXNyYnpRUERia2FIaUh2Z3M2SG5VL2V6cTBIUUJW?=
- =?utf-8?B?OTFDVFB5eG9aL3ZqaFhnaXA3dUpkOEFMcTF5MDJZZEM5U2EzbTgvNERWc2F6?=
- =?utf-8?B?L0VKTzJSdzZPTVo1QnlyUTBWRFBhWitHM2dxQ2tQRWdiSDhNNlUrK1BCVG5a?=
- =?utf-8?B?VjVFaStqaFhIQ1VpdVZ6MzNXZFVTbVJoS1pqekFMQ2VUenZhQ1NqN2RLVmlW?=
- =?utf-8?B?dzUyakE2bk41aldOYm1wMGZaQXV4b2xTVjdMTmRjdFlmQzlpZ0l5VlArMkZB?=
- =?utf-8?B?VUhoeVdMTU5vNlFraDBqRW9LVmpRTjBzaW0yeURGU1lobzNOa1Y0R2IxT2ha?=
- =?utf-8?B?Q2g5QjV1bHhJVHYvNktXZmRuMjhSVkZLNzB2azZDeVdhdm05QUNnZGdqMGJQ?=
- =?utf-8?Q?Rft9BggIqTiqO8ZIpQjk4fTsJ4TsRlI36MLKusiLJ4+Wq?=
-X-MS-Exchange-AntiSpam-MessageData-1: KWTrIQwU2Ca1AQ==
+	=?utf-8?B?ZThHY21QRHFvWGFSMmRDaUFHbzJKOEJSbmk5Z3pQMDN1MStMNnY3clRuR1JE?=
+ =?utf-8?B?VG82ZVVjSU9ZbGpOdVpkV0hGZmwzRFR4dVJ3TmIxNEFWam5JY0FQVlFSd2ln?=
+ =?utf-8?B?c3czRUE3SnZhWU0yUGc1ZlFYcmxBaGJmSmJCVlI4cFdmSDFPZUtOU0NLSTVo?=
+ =?utf-8?B?cE5XNXlYSU9VMDlqYnRKbUlsdjBWZ1czRHRuTW1nL3hWQ0E0N3BDT2tXSzl2?=
+ =?utf-8?B?N2s1WEdDem9OUDBXcHFSdTBtVXlZZ1dUTVluYzZtSlZyc21zUVZDNHFydHJt?=
+ =?utf-8?B?L3ZzRWdwT1FxczZKZ3ZlL2dYSkUycW9QR0Fma0h3ZXdKQ0QxM1RWTFh4UlBq?=
+ =?utf-8?B?VTdmRG5TZ0hWanRKaTJWU0NQQWtJdXdHdGlRSzRSdVhYM0lLejU2U2cxT0sx?=
+ =?utf-8?B?SFlDUVZKTzMwK1ZicmJGdHBUemVmTlFoKzgwN0J3SG1kbEZmSHVseFUwbjBp?=
+ =?utf-8?B?R09EYWtQNWRrU2VJZUNmeTFydTNMckdYdmlXOUtGOWp1THppMnV1dS9ZdDla?=
+ =?utf-8?B?cW1DNDBBTlhFYUs1L2pRUXh3REhXL1RQYWIraE9OYlUxQzlJRWZUM2pKU2lH?=
+ =?utf-8?B?RkhoWjhRbHJGN2hSd21jcFN6WTJld2J3M0hrWFZteTVnYXV0c0QzZVA2aTE2?=
+ =?utf-8?B?S3Qrekp3bVJBUlRPNkxpNFg3WFB2NUkyVTYwbEcyNUt4Z2lRYjdxd1M5dkpu?=
+ =?utf-8?B?UnN6TGxlVGNvUGlzSENBdE1HbDJ0NE1ZV1BmU2Q4WmdsTXNyYlBnWWdMQkls?=
+ =?utf-8?B?d0xURnJacnY0VzMzcHFMMjh3Q2NzVXEzTWVyTnNOTmkvYkVRRll0Q3p2ME9S?=
+ =?utf-8?B?YTgxK2cvbjBoQ2hibTE1am13cjRzYnNiRExRY3ZjS1h6VENvUWVFdWhrME5t?=
+ =?utf-8?B?SkJ4dlpRdHQ1c0VVM2pVN3FBNnZTUEtkcjJ4dy9JNmwyRUYzVlZuS21uS1E1?=
+ =?utf-8?B?OE5DYXlDYVgyNkY3amJhRFdLOE9KVHNSblVwdjcwTjdMY0pDYzJ6WVZZVytm?=
+ =?utf-8?B?emtoMWxFM0ZqaFpIQ2JRbW5nQkFXSjdwK3FublNKMjZHK2EzT2VCZWh0TVRS?=
+ =?utf-8?B?b0lOc2RYcTNRKytXaWdRZVZrMVVtK1RWMHk4Tno5SmlCaU5IbklHUkMxNm9t?=
+ =?utf-8?B?am15TlNuaUI4OUhucFI1RGwvam5lMC9tZXR4TU8zUUtJc0R4N3hFRFE2S2J6?=
+ =?utf-8?B?eW1rUkU0T1V5ekp0d1ZuanlhVzZIV3lPcVVYZGIxVHBaQWR6V01ybVZLMERz?=
+ =?utf-8?B?MkhuLzBMVnV5QlQ3VkNoMzh5OUdsZmVrajFlTzZwaktsMXdUcm1iaDViQ1Mv?=
+ =?utf-8?B?QUhBenVpdnpIakt6ZTRCaW11WWE2OWhWcnVTYzBNL2wrTHNhcjBCSzEzL2gr?=
+ =?utf-8?B?cjlIakpobGtQbmRWV21lMGdkRWJpeWJRaVBBZnpmdHd0SHdkOGRjeTBrTXJT?=
+ =?utf-8?B?U0dIUUphckg5cEZaaFlTekVETWtZOFdHRzBaVEZwSmJUcGt1dGc0bFFmZnRZ?=
+ =?utf-8?B?VUNzczVPdTZrR2NmNDhxRExYSkxveDFRbjQza2N1cGN6TFgrbjJxbkp5a0h4?=
+ =?utf-8?B?WWFnTHN5dG9wWk5EUGZmWVRza2NRRVdUNGRlcFppcXVFdFRLWTl4d1JJZlFn?=
+ =?utf-8?B?RExMNk5CclFaWmJuWk5PN3o5MTVwZ015NXpMMnd2MG85TjJKOTZOZ285Z1ll?=
+ =?utf-8?B?S0xUV20yQ2thVFk5U0tGSHBDTTRMczNUQ0FvaFd1VjE1RXFzNFg4dTU2OU54?=
+ =?utf-8?B?MXJjeDBJT0o4QWh0b0d3VEVOSEJxM0pyMkY0UXRBakZaZUtwdktNcmRJQWlI?=
+ =?utf-8?B?ZHBWbjk1b2E0anluK3hJT1YrL2p2alg4WUE5bGxGTFhJb2h6K0RVRWlXVDNI?=
+ =?utf-8?B?ZmhUS3MyV3V1OThnOTlUNkh2a2VIczdkcVJsSk1RYlkyZ1ZobkNzaVh2dWM0?=
+ =?utf-8?B?N0tLUEw2OFhqVjdQYUhXQnJQaXVHdGR6cUhEVllJMHJ6bXptM2VOOTFjUC9j?=
+ =?utf-8?B?c1dOb2IyRWVJZGJ6QisvQzJIaXA5YXEwek5FRjRxSFpuK2hEQWhqODVCbk5X?=
+ =?utf-8?B?SWlRZHNGWDBLRmlacnF4c1VpQkFDcWpMWHdYVG8zd21UV2N3dUN1R0hoSUJP?=
+ =?utf-8?B?ZENMNXdicXpqK0Q3RnN6TDBBcE5FaGhTYVN0TTZyWjJpcTBpWFFzdDNGd0g1?=
+ =?utf-8?B?Nm02THVFZXFEUzNZajl2MmJOZ2w4dGdRM2dBWWRFUlZLMVdnY3BRTDlDck85?=
+ =?utf-8?B?UlFtZkdBZGRIRWc2bEpZVTBhL0JPVmtuL0ZJcnJoYmJ0M3YzTC9ocXhqcG1w?=
+ =?utf-8?B?bTlpVko3Z1FBYkFZWS9qdzV2b1FjeVFXUVVzREZUN3RkMUFHYXdFQ25DQ0wr?=
+ =?utf-8?Q?zhBhpT1o3JxRh3jJFa0NFtrnmpT7V1JFXHhr/bONPLFWq?=
+X-MS-Exchange-AntiSpam-MessageData-1: dvEy+MxLhXhJNQ==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ac1aeee-43d1-4abd-b30d-08de6d3228c1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56297488-a338-430b-ba66-08de6d322d35
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 08:05:33.5564
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 08:05:41.1951
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h6o62No+Y0a0Bq7uGCZmOy8jwqEr7gmbNvqXCCfgcmejcphccymLkKB02hNLuVKIB4yReuHbJzGdM4ozK1YoDQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Tn2o3R9RX3SoCa6VeaeWc2DmQMx+u6g1AspASLpfDNKW0a+SifuK6pk4Xj17jYRZSc2AGDI4pybsWyQ/2RrMbA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5732
 
-Add a macro for defining hardware register types with I/O accessors.
+Replace the nova-core internal `register!` macro by the one defined in
+the `kernel` crate and remove our own private implementations.
 
-Each register field is represented as a `Bounded` of the appropriate bit
-width, ensuring field values are never silently truncated.
-
-Fields can optionally be converted to/from custom types, either fallibly
-or infallibly.
-
-The address of registers can be direct, relative, or indexed, supporting
-most of the patterns in which registers are arranged.
-
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/all/20250306222336.23482-6-dakr@kernel.org/
-Co-developed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
- rust/kernel/io.rs          |    5 +-
- rust/kernel/io/register.rs | 1125 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 1129 insertions(+), 1 deletion(-)
+ drivers/gpu/nova-core/falcon.rs           | 249 +++++-----
+ drivers/gpu/nova-core/falcon/gsp.rs       |  23 +-
+ drivers/gpu/nova-core/falcon/hal/ga102.rs |  65 +--
+ drivers/gpu/nova-core/falcon/hal/tu102.rs |  11 +-
+ drivers/gpu/nova-core/falcon/sec2.rs      |  17 +-
+ drivers/gpu/nova-core/fb.rs               |   6 +-
+ drivers/gpu/nova-core/fb/hal/ga100.rs     |  40 +-
+ drivers/gpu/nova-core/fb/hal/ga102.rs     |   7 +-
+ drivers/gpu/nova-core/fb/hal/tu102.rs     |  22 +-
+ drivers/gpu/nova-core/gfw.rs              |  11 +-
+ drivers/gpu/nova-core/gpu.rs              |  36 +-
+ drivers/gpu/nova-core/gsp/boot.rs         |  11 +-
+ drivers/gpu/nova-core/gsp/cmdq.rs         |  10 +-
+ drivers/gpu/nova-core/regs.rs             | 544 ++++++++++++----------
+ drivers/gpu/nova-core/regs/macros.rs      | 739 ------------------------------
+ 15 files changed, 565 insertions(+), 1226 deletions(-)
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 053c6385842a..c2dddf5b9dfd 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -11,6 +11,7 @@
+diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
+index 37bfee1d0949..bd3154a140ac 100644
+--- a/drivers/gpu/nova-core/falcon.rs
++++ b/drivers/gpu/nova-core/falcon.rs
+@@ -12,7 +12,13 @@
+         DmaAddress,
+         DmaMask, //
+     },
+-    io::poll::read_poll_timeout,
++    io::{
++        poll::read_poll_timeout,
++        register::RegisterBase,
++        Io,
++        IoRef, //
++    },
++    num::Bounded,
+     prelude::*,
+     sync::aref::ARef,
+     time::{
+@@ -30,7 +36,6 @@
+         IntoSafeCast, //
+     },
+     regs,
+-    regs::macros::RegisterBase, //
+ };
  
- pub mod mem;
- pub mod poll;
-+pub mod register;
- pub mod resource;
+ pub(crate) mod gsp;
+@@ -38,11 +43,11 @@
+ pub(crate) mod sec2;
  
- pub use resource::Resource;
-@@ -177,7 +178,7 @@ pub trait IoCapable<T> {
+ // TODO[FPRI]: Replace with `ToPrimitive`.
+-macro_rules! impl_from_enum_to_u8 {
+-    ($enum_type:ty) => {
+-        impl From<$enum_type> for u8 {
++macro_rules! impl_from_enum_to_bounded {
++    ($enum_type:ty, $length:literal) => {
++        impl From<$enum_type> for Bounded<u32, $length> {
+             fn from(value: $enum_type) -> Self {
+-                value as u8
++                Bounded::from_expr(value as u32)
+             }
+         }
+     };
+@@ -50,10 +55,8 @@ fn from(value: $enum_type) -> Self {
+ 
+ /// Revision number of a falcon core, used in the [`crate::regs::NV_PFALCON_FALCON_HWCFG1`]
+ /// register.
+-#[repr(u8)]
+-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
++#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+ pub(crate) enum FalconCoreRev {
+-    #[default]
+     Rev1 = 1,
+     Rev2 = 2,
+     Rev3 = 3,
+@@ -62,16 +65,16 @@ pub(crate) enum FalconCoreRev {
+     Rev6 = 6,
+     Rev7 = 7,
+ }
+-impl_from_enum_to_u8!(FalconCoreRev);
++impl_from_enum_to_bounded!(FalconCoreRev, 4);
+ 
+ // TODO[FPRI]: replace with `FromPrimitive`.
+-impl TryFrom<u8> for FalconCoreRev {
++impl TryFrom<Bounded<u32, 4>> for FalconCoreRev {
+     type Error = Error;
+ 
+-    fn try_from(value: u8) -> Result<Self> {
++    fn try_from(value: Bounded<u32, 4>) -> Result<Self> {
+         use FalconCoreRev::*;
+ 
+-        let rev = match value {
++        let rev = match value.get() {
+             1 => Rev1,
+             2 => Rev2,
+             3 => Rev3,
+@@ -88,46 +91,38 @@ fn try_from(value: u8) -> Result<Self> {
+ 
+ /// Revision subversion number of a falcon core, used in the
+ /// [`crate::regs::NV_PFALCON_FALCON_HWCFG1`] register.
+-#[repr(u8)]
+-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
++#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+ pub(crate) enum FalconCoreRevSubversion {
+-    #[default]
+     Subversion0 = 0,
+     Subversion1 = 1,
+     Subversion2 = 2,
+     Subversion3 = 3,
+ }
+-impl_from_enum_to_u8!(FalconCoreRevSubversion);
++impl_from_enum_to_bounded!(FalconCoreRevSubversion, 2);
+ 
+ // TODO[FPRI]: replace with `FromPrimitive`.
+-impl TryFrom<u8> for FalconCoreRevSubversion {
+-    type Error = Error;
+-
+-    fn try_from(value: u8) -> Result<Self> {
++impl From<Bounded<u32, 2>> for FalconCoreRevSubversion {
++    fn from(value: Bounded<u32, 2>) -> Self {
+         use FalconCoreRevSubversion::*;
+ 
+-        let sub_version = match value & 0b11 {
++        match value.get() {
+             0 => Subversion0,
+             1 => Subversion1,
+             2 => Subversion2,
+             3 => Subversion3,
+-            _ => return Err(EINVAL),
+-        };
+-
+-        Ok(sub_version)
++            // SAFETY: `value` comes from a 2-bit `Bounded`, and we just checked all possible
++            // values.
++            _ => unsafe { core::hint::unreachable_unchecked() },
++        }
+     }
+ }
+ 
+-/// Security model of a falcon core, used in the [`crate::regs::NV_PFALCON_FALCON_HWCFG1`]
+-/// register.
+-#[repr(u8)]
+-#[derive(Debug, Default, Copy, Clone)]
+ /// Security mode of the Falcon microprocessor.
  ///
- /// This trait is the key abstraction allowing [`Io::read`], [`Io::write`], and [`Io::update`]
- /// to work uniformly with both raw `usize` offsets (for primitive types like `u32`) and typed
--/// references.
-+/// references (like those generated by the [`register!`] macro).
+ /// See `falcon.rst` for more details.
++#[derive(Debug, Copy, Clone)]
+ pub(crate) enum FalconSecurityModel {
+     /// Non-Secure: runs unsigned code without privileges.
+-    #[default]
+     None = 0,
+     /// Light-Secured (LS): Runs signed code with some privileges.
+     /// Entry into this mode is only possible from 'Heavy-secure' mode, which verifies the code's
+@@ -141,16 +136,16 @@ pub(crate) enum FalconSecurityModel {
+     /// Also known as High-Secure, Privilege Level 3 or PL3.
+     Heavy = 3,
+ }
+-impl_from_enum_to_u8!(FalconSecurityModel);
++impl_from_enum_to_bounded!(FalconSecurityModel, 2);
+ 
+ // TODO[FPRI]: replace with `FromPrimitive`.
+-impl TryFrom<u8> for FalconSecurityModel {
++impl TryFrom<Bounded<u32, 2>> for FalconSecurityModel {
+     type Error = Error;
+ 
+-    fn try_from(value: u8) -> Result<Self> {
++    fn try_from(value: Bounded<u32, 2>) -> Result<Self> {
+         use FalconSecurityModel::*;
+ 
+-        let sec_model = match value {
++        let sec_model = match value.get() {
+             0 => None,
+             2 => Light,
+             3 => Heavy,
+@@ -163,24 +158,22 @@ fn try_from(value: u8) -> Result<Self> {
+ 
+ /// Signing algorithm for a given firmware, used in the [`crate::regs::NV_PFALCON2_FALCON_MOD_SEL`]
+ /// register. It is passed to the Falcon Boot ROM (BROM) as a parameter.
+-#[repr(u8)]
+-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]
++#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+ pub(crate) enum FalconModSelAlgo {
+     /// AES.
+-    #[expect(dead_code)]
+     Aes = 0,
+     /// RSA3K.
+-    #[default]
+     Rsa3k = 1,
+ }
+-impl_from_enum_to_u8!(FalconModSelAlgo);
++impl_from_enum_to_bounded!(FalconModSelAlgo, 8);
+ 
+ // TODO[FPRI]: replace with `FromPrimitive`.
+-impl TryFrom<u8> for FalconModSelAlgo {
++impl TryFrom<Bounded<u32, 8>> for FalconModSelAlgo {
+     type Error = Error;
+ 
+-    fn try_from(value: u8) -> Result<Self> {
+-        match value {
++    fn try_from(value: Bounded<u32, 8>) -> Result<Self> {
++        match value.get() {
++            0 => Ok(FalconModSelAlgo::Aes),
+             1 => Ok(FalconModSelAlgo::Rsa3k),
+             _ => Err(EINVAL),
+         }
+@@ -188,21 +181,19 @@ fn try_from(value: u8) -> Result<Self> {
+ }
+ 
+ /// Valid values for the `size` field of the [`crate::regs::NV_PFALCON_FALCON_DMATRFCMD`] register.
+-#[repr(u8)]
+-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]
++#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+ pub(crate) enum DmaTrfCmdSize {
+     /// 256 bytes transfer.
+-    #[default]
+     Size256B = 0x6,
+ }
+-impl_from_enum_to_u8!(DmaTrfCmdSize);
++impl_from_enum_to_bounded!(DmaTrfCmdSize, 3);
+ 
+ // TODO[FPRI]: replace with `FromPrimitive`.
+-impl TryFrom<u8> for DmaTrfCmdSize {
++impl TryFrom<Bounded<u32, 3>> for DmaTrfCmdSize {
+     type Error = Error;
+ 
+-    fn try_from(value: u8) -> Result<Self> {
+-        match value {
++    fn try_from(value: Bounded<u32, 3>) -> Result<Self> {
++        match value.get() {
+             0x6 => Ok(Self::Size256B),
+             _ => Err(EINVAL),
+         }
+@@ -210,33 +201,24 @@ fn try_from(value: u8) -> Result<Self> {
+ }
+ 
+ /// Currently active core on a dual falcon/riscv (Peregrine) controller.
+-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub(crate) enum PeregrineCoreSelect {
+     /// Falcon core is active.
+-    #[default]
+     Falcon = 0,
+     /// RISC-V core is active.
+     Riscv = 1,
+ }
++impl_from_enum_to_bounded!(PeregrineCoreSelect, 1);
+ 
+-impl From<bool> for PeregrineCoreSelect {
+-    fn from(value: bool) -> Self {
+-        match value {
++impl From<Bounded<u32, 1>> for PeregrineCoreSelect {
++    fn from(value: Bounded<u32, 1>) -> Self {
++        match bool::from(value) {
+             false => PeregrineCoreSelect::Falcon,
+             true => PeregrineCoreSelect::Riscv,
+         }
+     }
+ }
+ 
+-impl From<PeregrineCoreSelect> for bool {
+-    fn from(value: PeregrineCoreSelect) -> Self {
+-        match value {
+-            PeregrineCoreSelect::Falcon => false,
+-            PeregrineCoreSelect::Riscv => true,
+-        }
+-    }
+-}
+-
+ /// Different types of memory present in a falcon core.
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub(crate) enum FalconMem {
+@@ -252,10 +234,8 @@ pub(crate) enum FalconMem {
+ /// Defines the Framebuffer Interface (FBIF) aperture type.
+ /// This determines the memory type for external memory access during a DMA transfer, which is
+ /// performed by the Falcon's Framebuffer DMA (FBDMA) engine. See falcon.rst for more details.
+-#[derive(Debug, Clone, Default)]
++#[derive(Debug, Clone)]
+ pub(crate) enum FalconFbifTarget {
+-    /// VRAM.
+-    #[default]
+     /// Local Framebuffer (GPU's VRAM memory).
+     LocalFb = 0,
+     /// Coherent system memory (System DRAM).
+@@ -263,14 +243,14 @@ pub(crate) enum FalconFbifTarget {
+     /// Non-coherent system memory (System DRAM).
+     NoncoherentSysmem = 2,
+ }
+-impl_from_enum_to_u8!(FalconFbifTarget);
++impl_from_enum_to_bounded!(FalconFbifTarget, 2);
+ 
+ // TODO[FPRI]: replace with `FromPrimitive`.
+-impl TryFrom<u8> for FalconFbifTarget {
++impl TryFrom<Bounded<u32, 2>> for FalconFbifTarget {
+     type Error = Error;
+ 
+-    fn try_from(value: u8) -> Result<Self> {
+-        let res = match value {
++    fn try_from(value: Bounded<u32, 2>) -> Result<Self> {
++        let res = match value.get() {
+             0 => Self::LocalFb,
+             1 => Self::CoherentSysmem,
+             2 => Self::NoncoherentSysmem,
+@@ -282,34 +262,25 @@ fn try_from(value: u8) -> Result<Self> {
+ }
+ 
+ /// Type of memory addresses to use.
+-#[derive(Debug, Clone, Default)]
++#[derive(Debug, Clone)]
+ pub(crate) enum FalconFbifMemType {
+     /// Virtual memory addresses.
+-    #[default]
+     Virtual = 0,
+     /// Physical memory addresses.
+     Physical = 1,
+ }
++impl_from_enum_to_bounded!(FalconFbifMemType, 1);
+ 
+ /// Conversion from a single-bit register field.
+-impl From<bool> for FalconFbifMemType {
+-    fn from(value: bool) -> Self {
+-        match value {
++impl From<Bounded<u32, 1>> for FalconFbifMemType {
++    fn from(value: Bounded<u32, 1>) -> Self {
++        match bool::from(value) {
+             false => Self::Virtual,
+             true => Self::Physical,
+         }
+     }
+ }
+ 
+-impl From<FalconFbifMemType> for bool {
+-    fn from(value: FalconFbifMemType) -> Self {
+-        match value {
+-            FalconFbifMemType::Virtual => false,
+-            FalconFbifMemType::Physical => true,
+-        }
+-    }
+-}
+-
+ /// Type used to represent the `PFALCON` registers address base for a given falcon engine.
+ pub(crate) struct PFalconBase(());
+ 
+@@ -318,13 +289,10 @@ fn from(value: FalconFbifMemType) -> Self {
+ 
+ /// Trait defining the parameters of a given Falcon engine.
  ///
- /// An `IoRef<T>` carries three pieces of information:
- ///
-@@ -192,6 +193,8 @@ pub trait IoCapable<T> {
- /// An `IoRef` can be passed directly to [`Io::read`] or [`Io::try_read`] to obtain a value, or
- /// turned into an [`IoWrite`] via [`IoRef::set`] to be passed to [`Io::write`] or
- /// [`Io::try_write`].
-+///
-+/// [`register!`]: kernel::register!
- pub trait IoRef<T>: Copy
- where
-     T: From<Self::IoType> + Into<Self::IoType>,
-diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
-new file mode 100644
-index 000000000000..ebafe15d56a2
---- /dev/null
-+++ b/rust/kernel/io/register.rs
-@@ -0,0 +1,1125 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! A macro to define register layout and accessors.
-+//!
-+//! A single register typically includes several fields, which are accessed through a combination
-+//! of bit-shift and mask operations that introduce a class of potential mistakes, notably because
-+//! not all possible field values are necessarily valid.
-+//!
-+//! The [`register!`] macro in this module provides an intuitive and readable syntax for defining a
-+//! dedicated type for each register. Each such type comes with its own field accessors that can
-+//! return an error if a field's value is invalid.
-+//!
-+//! [`register!`]: kernel::register!
-+
-+use core::marker::PhantomData;
-+
-+use crate::io::IoRef;
-+
-+/// Trait providing a base address to be added to the offset of a relative register to obtain
-+/// its actual offset.
-+///
-+/// The `T` generic argument is used to distinguish which base to use, in case a type provides
-+/// several bases. It is given to the `register!` macro to restrict the use of the register to
-+/// implementors of this particular variant.
-+pub trait RegisterBase<T> {
-+    /// Base address to which register offsets are added.
-+    const BASE: usize;
-+}
-+
-+/// Trait implemented by all registers.
-+pub trait Register: Copy {
-+    /// Backing primitive type of the register.
-+    type Storage;
-+}
-+
-+/// Trait implemented by registers with a fixed offset.
-+pub trait FixedRegister: Register {
-+    /// Offset of the register.
-+    const OFFSET: usize;
-+}
-+
-+/// Reference to a fixed register.
-+#[derive(Clone, Copy)]
-+pub struct FixedRegisterRef<T: FixedRegister>(PhantomData<T>);
-+
-+impl<T: FixedRegister> FixedRegisterRef<T> {
-+    /// Creates a reference to `T`.
-+    #[inline(always)]
-+    // We do not implement `Default` so we can be const.
-+    #[allow(clippy::new_without_default)]
-+    pub const fn new() -> Self {
-+        Self(PhantomData)
-+    }
-+}
-+
-+impl<T> IoRef<T> for FixedRegisterRef<T>
-+where
-+    T: FixedRegister + From<T::Storage> + Into<T::Storage>,
-+{
-+    type IoType = T::Storage;
-+
-+    fn offset(self) -> usize {
-+        T::OFFSET
-+    }
-+}
-+
-+/// Trait implemented by relative registers.
-+pub trait RelativeRegister: Register {
-+    /// Family of bases applicable to this register.
-+    type BaseFamily;
-+
-+    /// Offset of the register relative to its base.
-+    const OFFSET: usize;
-+}
-+
-+/// Reference to a relative register.
-+///
-+/// This can either be an immediately accessible regular [`RelativeRegister`], or a
-+/// [`RelativeRegisterArray`] that needs one additional resolution through
-+/// [`RelativeRegisterRef::at`].
-+pub struct RelativeRegisterRef<T, B: ?Sized>(PhantomData<T>, PhantomData<B>);
-+
-+// `Clone` and `Copy` unfortunately cannot be derived without requiring `B` to also implement them.
-+impl<T, B> Clone for RelativeRegisterRef<T, B>
-+where
-+    B: ?Sized,
-+{
-+    fn clone(&self) -> Self {
-+        *self
-+    }
-+}
-+
-+impl<T, B> Copy for RelativeRegisterRef<T, B> where B: ?Sized {}
-+
-+impl<T, B> RelativeRegisterRef<T, B>
-+where
-+    B: ?Sized,
-+{
-+    /// Creates a new reference to a relative register or register array.
-+    #[inline(always)]
-+    // We do not implement `Default` so we can be const.
-+    #[allow(clippy::new_without_default)]
-+    pub const fn new() -> Self {
-+        Self(PhantomData, PhantomData)
-+    }
-+}
-+
-+impl<T, B> IoRef<T> for RelativeRegisterRef<T, B>
-+where
-+    T: RelativeRegister + From<T::Storage> + Into<T::Storage>,
-+    B: RegisterBase<T::BaseFamily> + ?Sized,
-+{
-+    type IoType = T::Storage;
-+
-+    fn offset(self) -> usize {
-+        B::BASE + T::OFFSET
-+    }
-+}
-+
-+/// Trait implemented by arrays of registers.
-+pub trait RegisterArray: Register {
-+    /// Start offset of the registers array.
-+    const OFFSET: usize;
-+    /// Number of elements in the registers array.
-+    const SIZE: usize;
-+    /// Number of bytes between the start of elements in the registers array.
-+    const STRIDE: usize;
-+}
-+
-+/// Reference to an array register.
-+#[derive(Clone, Copy)]
-+pub struct RegisterArrayRef<T: RegisterArray>(usize, PhantomData<T>);
-+
-+impl<T: RegisterArray> RegisterArrayRef<T> {
-+    /// Creates a reference to register `T` at index `idx`, with build-time validation.
-+    #[inline(always)]
-+    pub fn new(idx: usize) -> Self {
-+        ::kernel::build_assert!(idx < T::SIZE);
-+
-+        Self(idx, PhantomData)
-+    }
-+
-+    /// Attempts to create a reference to register `T` at index `idx`, with runtime validation.
-+    #[inline(always)]
-+    pub fn try_new(idx: usize) -> Option<Self> {
-+        if idx < T::SIZE {
-+            Some(Self(idx, PhantomData))
-+        } else {
-+            None
-+        }
-+    }
-+}
-+
-+impl<T> IoRef<T> for RegisterArrayRef<T>
-+where
-+    T: RegisterArray + From<T::Storage> + Into<T::Storage>,
-+{
-+    type IoType = T::Storage;
-+
-+    fn offset(self) -> usize {
-+        T::OFFSET + self.0 * T::STRIDE
-+    }
-+}
-+
-+/// Trait implemented by arrays of relative registers.
-+pub trait RelativeRegisterArray: Register {
-+    /// Family of bases applicable to this register array.
-+    type BaseFamily;
-+
-+    /// Offset of the registers array relative to its base.
-+    const OFFSET: usize;
-+    /// Number of elements in the registers array.
-+    const SIZE: usize;
-+    /// Number of bytes between each element in the registers array.
-+    const STRIDE: usize;
-+}
-+
-+/// Reference to a relative array register.
-+pub struct RelativeRegisterArrayRef<
-+    T: RelativeRegisterArray,
-+    B: RegisterBase<T::BaseFamily> + ?Sized,
-+>(usize, PhantomData<T>, PhantomData<B>);
-+
-+// `Clone` and `Copy` unfortunately cannot be derived without requiring `B` to also implement them.
-+impl<T, B> Clone for RelativeRegisterArrayRef<T, B>
-+where
-+    T: RelativeRegisterArray,
-+    B: RegisterBase<T::BaseFamily> + ?Sized,
-+{
-+    fn clone(&self) -> Self {
-+        *self
-+    }
-+}
-+
-+impl<T, B> Copy for RelativeRegisterArrayRef<T, B>
-+where
-+    T: RelativeRegisterArray,
-+    B: RegisterBase<T::BaseFamily> + ?Sized,
-+{
-+}
-+
-+impl<T, B> RelativeRegisterArrayRef<T, B>
-+where
-+    T: RelativeRegisterArray,
-+    B: RegisterBase<T::BaseFamily> + ?Sized,
-+{
-+    /// Creates a reference to register `T` from the base `B` at index `idx`, with build-time
-+    /// validation.
-+    #[inline(always)]
-+    pub fn new(idx: usize) -> Self {
-+        ::kernel::build_assert!(idx < T::SIZE);
-+
-+        Self(idx, PhantomData, PhantomData)
-+    }
-+
-+    /// Attempts to create a reference to register `T` from the base `B` at index `idx`, with
-+    /// runtime validation.
-+    #[inline(always)]
-+    pub fn try_new(idx: usize) -> Option<Self> {
-+        if idx < T::SIZE {
-+            Some(Self(idx, PhantomData, PhantomData))
-+        } else {
-+            None
-+        }
-+    }
-+}
-+
-+/// Methods exclusive to [`RelativeRegisterRef`]s created with a [`RelativeRegisterArray`].
-+impl<T, B> RelativeRegisterRef<T, B>
-+where
-+    T: RelativeRegisterArray,
-+    B: RegisterBase<T::BaseFamily> + ?Sized,
-+{
-+    /// Returns a reference to the register at index `idx`, with build-time validation.
-+    #[inline(always)]
-+    pub fn at(self, idx: usize) -> RelativeRegisterArrayRef<T, B> {
-+        RelativeRegisterArrayRef::new(idx)
-+    }
-+
-+    /// Attempts to return a reference to the register at index `idx`, with runtime validation.
-+    #[inline(always)]
-+    pub fn try_at(self, idx: usize) -> Option<RelativeRegisterArrayRef<T, B>> {
-+        RelativeRegisterArrayRef::try_new(idx)
-+    }
-+}
-+
-+impl<T, B> IoRef<T> for RelativeRegisterArrayRef<T, B>
-+where
-+    T: RelativeRegisterArray + From<T::Storage> + Into<T::Storage>,
-+    B: RegisterBase<T::BaseFamily> + ?Sized,
-+{
-+    type IoType = T::Storage;
-+
-+    fn offset(self) -> usize {
-+        B::BASE + T::OFFSET + self.0 * T::STRIDE
-+    }
-+}
-+
-+/// Defines a dedicated type for a register, including getter and setter methods for its fields and
-+/// methods to read and write it from an [`Io`](kernel::io::Io) region.
-+///
-+/// # Example
-+///
-+/// ```
-+/// use kernel::register;
-+///
-+/// register! {
-+///     /// Basic information about the chip.
-+///     pub BOOT_0(u32) @ 0x00000100 {
-+///         /// Vendor ID.
-+///         15:8 vendor_id;
-+///         /// Major revision of the chip.
-+///         7:4 major_revision;
-+///         /// Minor revision of the chip.
-+///         3:0 minor_revision;
-+///     }
-+/// }
-+/// ```
-+///
-+/// This defines a 32-bit `BOOT_0` type which can be read from or written to offset `0x100` of an
-+/// `Io` region, with the described fields. For instance, `minor_revision` consists of the 4 least
-+/// significant bits of the type.
-+///
-+/// Fields are instances of [`Bounded`](kernel::num::Bounded) and can be read by calling their
-+/// getter method, which is named after them. They also have setter methods prefixed with `with_`
-+/// for runtime values and `with_const_` for constant values. All setters return the updated
-+/// register value.
-+///
-+/// ```no_run
-+/// use kernel::register;
-+/// use kernel::io::IoRef;
-+/// use kernel::num::Bounded;
-+///
-+/// # register! {
-+/// #     pub BOOT_0(u32) @ 0x00000100 {
-+/// #         15:8 vendor_id;
-+/// #         7:4 major_revision;
-+/// #         3:0 minor_revision;
-+/// #     }
-+/// # }
-+/// # fn test<T: kernel::io::IoKnownSize + kernel::io::IoCapable<u32>>(bar: T) {
-+/// # fn obtain_vendor_id() -> u8 { 0xff }
-+/// // Read from the register's defined offset (0x100).
-+/// let boot0 = bar.read(BOOT_0);
-+/// pr_info!("chip revision: {}.{}", boot0.major_revision().get(), boot0.minor_revision().get());
-+///
-+/// // Update some fields and write the new value back.
-+/// bar.write(BOOT_0.set(boot0
-+///     // Constant values.
-+///     .with_const_major_revision::<3>()
-+///     .with_const_minor_revision::<10>()
-+///     // Run-time value.
-+///     .with_vendor_id(obtain_vendor_id()),
-+/// ));
-+///
-+/// // Or, build a new value from zero and write it:
-+/// bar.write(BOOT_0.init(|r| r
-+///     .with_const_major_revision::<3>()
-+///     .with_const_minor_revision::<10>()
-+///     .with_vendor_id(obtain_vendor_id()),
-+/// ));
-+///
-+/// // Or, read and update the register in a single step.
-+/// bar.update(BOOT_0, |r| r
-+///     .with_const_major_revision::<3>()
-+///     .with_const_minor_revision::<10>()
-+///     .with_vendor_id(obtain_vendor_id())
-+/// );
-+///
-+/// // Constant values can also be built using the const setters.
-+/// const V: BOOT_0 = pin_init::zeroed::<BOOT_0>()
-+///     .with_const_major_revision::<3>()
-+///     .with_const_minor_revision::<10>();
-+/// # }
-+/// ```
-+///
-+/// Fields can also be transparently converted from/to an arbitrary type by using the `=>` and
-+/// `?=>` syntaxes.
-+///
-+/// If present, doc comments above register or fields definitions are added to the relevant item
-+/// they document (the register type itself, or the field's setter and getter methods).
-+///
-+/// Note that multiple registers can be defined in a single `register!` invocation. This can be
-+/// useful to group related registers together.
-+///
-+/// ```
-+/// use kernel::register;
-+///
-+/// register! {
-+///     pub BOOT_0(u8) @ 0x00000100 {
-+///         7:4 major_revision;
-+///         3:0 minor_revision;
-+///     }
-+///
-+///     pub BOOT_1(u8) @ 0x00000101 {
-+///         7:5 num_threads;
-+///         4:0 num_cores;
-+///     }
-+/// };
-+/// ```
-+///
-+/// It is possible to create an alias of an existing register with new field definitions by using
-+/// the `=> ALIAS` syntax. This is useful for cases where a register's interpretation depends on
-+/// the context:
-+///
-+/// ```
-+/// use kernel::register;
-+///
-+/// register! {
-+///     /// Scratch register.
-+///     pub SCRATCH(u32) @ 0x00000200 {
-+///         /// Raw value.
-+///         31:0 value;
-+///     }
-+///
-+///     /// Boot status of the firmware.
-+///     pub SCRATCH_BOOT_STATUS(u32) => SCRATCH {
-+///         /// Whether the firmware has completed booting.
-+///         0:0 completed;
-+///     }
-+/// }
-+/// ```
-+///
-+/// In this example, `SCRATCH_BOOT_STATUS` uses the same I/O address as `SCRATCH`, while also
-+/// providing its own `completed` field.
-+///
-+/// ## Relative registers
-+///
-+/// A register can be defined as being accessible from a fixed offset of a provided base. For
-+/// instance, imagine the following I/O space:
-+///
-+/// ```text
-+///           +-----------------------------+
-+///           |             ...             |
-+///           |                             |
-+///  0x100--->+------------CPU0-------------+
-+///           |                             |
-+///  0x110--->+-----------------------------+
-+///           |           CPU_CTL           |
-+///           +-----------------------------+
-+///           |             ...             |
-+///           |                             |
-+///           |                             |
-+///  0x200--->+------------CPU1-------------+
-+///           |                             |
-+///  0x210--->+-----------------------------+
-+///           |           CPU_CTL           |
-+///           +-----------------------------+
-+///           |             ...             |
-+///           +-----------------------------+
-+/// ```
-+///
-+/// `CPU0` and `CPU1` both have a `CPU_CTL` register that starts at offset `0x10` of their I/O
-+/// space segment. Since both instances of `CPU_CTL` share the same layout, we don't want to define
-+/// them twice and would prefer a way to select which one to use from a single definition.
-+///
-+/// This can be done using the `Base + Offset` syntax when specifying the register's address.
-+///
-+/// `Base` is an arbitrary type (typically a ZST) to be used as a generic parameter of the
-+/// [`RegisterBase`] trait to provide the base as a constant, i.e. each type providing a base for
-+/// this register needs to implement `RegisterBase<Base>`. Here is the above example translated
-+/// into code:
-+///
-+/// ```no_run
-+/// use kernel::register;
-+/// use kernel::io::register::RegisterBase;
-+///
-+/// // Type used to identify the base.
-+/// pub struct CpuCtlBase;
-+///
-+/// // ZST describing `CPU0`.
-+/// struct Cpu0;
-+/// impl RegisterBase<CpuCtlBase> for Cpu0 {
-+///     const BASE: usize = 0x100;
-+/// }
-+/// // Singleton of `CPU0` used to identify it.
-+/// const CPU0: Cpu0 = Cpu0;
-+///
-+/// // ZST describing `CPU1`.
-+/// struct Cpu1;
-+/// impl RegisterBase<CpuCtlBase> for Cpu1 {
-+///     const BASE: usize = 0x200;
-+/// }
-+/// // Singleton of `CPU1` used to identify it.
-+/// const CPU1: Cpu1 = Cpu1;
-+///
-+/// # fn test<T: kernel::io::IoKnownSize + kernel::io::IoCapable<u32>>(bar: T) {
-+/// // This makes `CPU_CTL` accessible from all implementors of `RegisterBase<CpuCtlBase>`.
-+/// register! {
-+///     /// CPU core control.
-+///     pub CPU_CTL(u32) @ CpuCtlBase + 0x10 {
-+///         /// Start the CPU core.
-+///         0:0 start;
-+///     }
-+/// }
-+///
-+/// // Start `Cpu0`.
-+/// bar.update(CPU_CTL::of::<Cpu0>(), |r| r.with_start(true));
-+///
-+/// // Start `Cpu1`.
-+/// bar.update(CPU_CTL::of::<Cpu1>(), |r| r.with_start(true));
-+///
-+/// // Aliases can also be defined for relative register.
-+/// register! {
-+///     /// Alias to CPU core control.
-+///     pub CPU_CTL_ALIAS(u32) => CpuCtlBase + CPU_CTL {
-+///         /// Start the aliased CPU core.
-+///         1:1 alias_start;
-+///     }
-+/// }
-+///
-+/// // Start the aliased `CPU0`.
-+/// bar.update(CPU_CTL_ALIAS::of::<Cpu0>(), |r| r.with_alias_start(true));
-+/// # }
-+/// ```
-+///
-+/// ## Arrays of registers
-+///
-+/// Some I/O areas contain consecutive registers that share the same field layout. These areas can
-+/// be defined as an array of identical registers, allowing them to be accessed by index with
-+/// compile-time or runtime bound checking. Simply specify their size inside `[` and `]` brackets,
-+/// and use the `at` method to obtain the correct reference:
-+///
-+/// ```no_run
-+/// use kernel::register;
-+///
-+/// # fn test<T: kernel::io::IoKnownSize + kernel::io::IoCapable<u32>>(bar: T)
-+/// #     -> Result<(), Error>{
-+/// # fn get_scratch_idx() -> usize {
-+/// #   0x15
-+/// # }
-+/// // Array of 64 consecutive registers with the same layout starting at offset `0x80`.
-+/// register! {
-+///     /// Scratch registers.
-+///     pub SCRATCH(u32)[64] @ 0x00000080 {
-+///         31:0 value;
-+///     }
-+/// }
-+///
-+/// // Read scratch register 0, i.e. I/O address `0x80`.
-+/// let scratch_0 = bar.read(SCRATCH::at(0)).value();
-+/// // Read scratch register 15, i.e. I/O address `0x80 + (15 * 4)`.
-+/// let scratch_15 = bar.read(SCRATCH::at(15)).value();
-+///
-+/// // This is out of bounds and won't build.
-+/// // let scratch_128 = bar.read(SCRATCH::at(128)).value();
-+///
-+/// // Runtime-obtained array index.
-+/// let idx = get_scratch_idx();
-+/// // Access on a runtime index returns an error if it is out-of-bounds.
-+/// let some_scratch = bar.read(SCRATCH::try_at(idx).ok_or(EINVAL)?).value();
-+///
-+/// // Alias to a particular register in an array.
-+/// // Here `SCRATCH[8]` is used to convey the firmware exit code.
-+/// register! {
-+///     /// Firmware exit status code.
-+///     pub FIRMWARE_STATUS(u32) => SCRATCH[8] {
-+///         7:0 status;
-+///     }
-+/// }
-+/// let status = bar.read(FIRMWARE_STATUS).status();
-+///
-+/// // Non-contiguous register arrays can be defined by adding a stride parameter.
-+/// // Here, each of the 16 registers of the array are separated by 8 bytes, meaning that the
-+/// // registers of the two declarations below are interleaved.
-+/// register! {
-+///     /// Scratch registers bank 0.
-+///     pub SCRATCH_INTERLEAVED_0(u32)[16, stride = 8] @ 0x000000c0 {
-+///         31:0 value;
-+///     }
-+///
-+///     /// Scratch registers bank 1.
-+///     pub SCRATCH_INTERLEAVED_1(u32)[16, stride = 8] @ 0x000000c4 {
-+///         31:0 value;
-+///     }
-+/// }
-+/// # Ok(())
-+/// # }
-+/// ```
-+///
-+/// ## Relative arrays of registers
-+///
-+/// Combining the two features described in the sections above, arrays of registers accessible from
-+/// a base can also be defined:
-+///
-+/// ```no_run
-+/// use kernel::register;
-+/// use kernel::io::register::RegisterBase;
-+///
-+/// # fn test<T: kernel::io::IoKnownSize + kernel::io::IoCapable<u32>>(bar: T)
-+/// #     -> Result<(), Error>{
-+/// # fn get_scratch_idx() -> usize {
-+/// #   0x15
-+/// # }
-+/// // Type used as parameter of `RegisterBase` to specify the base.
-+/// pub struct CpuCtlBase;
-+///
-+/// // ZST describing `CPU0`.
-+/// struct Cpu0;
-+/// impl RegisterBase<CpuCtlBase> for Cpu0 {
-+///     const BASE: usize = 0x100;
-+/// }
-+/// // Singleton of `CPU0` used to identify it.
-+/// const CPU0: Cpu0 = Cpu0;
-+///
-+/// // ZST describing `CPU1`.
-+/// struct Cpu1;
-+/// impl RegisterBase<CpuCtlBase> for Cpu1 {
-+///     const BASE: usize = 0x200;
-+/// }
-+/// // Singleton of `CPU1` used to identify it.
-+/// const CPU1: Cpu1 = Cpu1;
-+///
-+/// // 64 per-cpu scratch registers, arranged as a contiguous array.
-+/// register! {
-+///     /// Per-CPU scratch registers.
-+///     pub CPU_SCRATCH(u32)[64] @ CpuCtlBase + 0x00000080 {
-+///         31:0 value;
-+///     }
-+/// }
-+///
-+/// // Read scratch register 0 of CPU0.
-+/// let cpu0_scratch_0 = bar.read(CPU_SCRATCH::of::<Cpu0>().at(0)).value();
-+/// // Read scratch register 15 of CPU1.
-+/// let cpu1_scratch_15 = bar.read(CPU_SCRATCH::of::<Cpu1>().at(15)).value();
-+///
-+/// // This won't build.
-+/// // let cpu0_scratch_128 = bar.read(CPU_SCRATCH::of::<Cpu0>().at(128)).value();
-+///
-+/// // Runtime-obtained array index.
-+/// let scratch_idx = get_scratch_idx();
-+/// // Access on a runtime index returns an error if it is out-of-bounds.
-+/// let cpu0_scratch = bar.read(
-+///     CPU_SCRATCH::of::<Cpu0>().try_at(scratch_idx).ok_or(EINVAL)?
-+/// ).value();
-+///
-+/// // `SCRATCH[8]` is used to convey the firmware exit code.
-+/// register! {
-+///     /// Per-CPU firmware exit status code.
-+///     pub CPU_FIRMWARE_STATUS(u32) => CpuCtlBase + CPU_SCRATCH[8] {
-+///         7:0 status;
-+///     }
-+/// }
-+///
-+/// let cpu0_status = bar.read(CPU_FIRMWARE_STATUS::of::<Cpu0>()).status();
-+///
-+/// // Non-contiguous register arrays can be defined by adding a stride parameter.
-+/// // Here, each of the 16 registers of the array are separated by 8 bytes, meaning that the
-+/// // registers of the two declarations below are interleaved.
-+/// register! {
-+///     /// Scratch registers bank 0.
-+///     pub CPU_SCRATCH_INTERLEAVED_0(u32)[16, stride = 8] @ CpuCtlBase + 0x00000d00 {
-+///         31:0 value;
-+///     }
-+///
-+///     /// Scratch registers bank 1.
-+///     pub CPU_SCRATCH_INTERLEAVED_1(u32)[16, stride = 8] @ CpuCtlBase + 0x00000d04 {
-+///         31:0 value;
-+///     }
-+/// }
-+/// # Ok(())
-+/// # }
-+/// ```
-+#[macro_export]
-+macro_rules! register {
-+    // Entry point for the macro, allowing multiple registers to be defined in one call.
-+    // It matches all possible register declaration patterns to dispatch them to corresponding
-+    // `@reg` rule that defines a single register.
-+    (
-+        $(
-+            $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
-+                $([ $size:expr $(, stride = $stride:expr)? ])?
-+                $(@ $($base:ident +)? $offset:literal)?
-+                $(=> $alias:ident $(+ $alias_offset:ident)? $([$alias_idx:expr])? )?
-+            { $($fields:tt)* }
-+        )*
-+    ) => {
-+        $(
-+        $crate::register!(
-+            @reg $(#[$attr])* $vis $name ($storage) $([$size $(, stride = $stride)?])?
-+                $(@ $($base +)? $offset)?
-+                $(=> $alias $(+ $alias_offset)? $([$alias_idx])? )?
-+            { $($fields)* }
+-/// Each engine provides one base for `PFALCON` and `PFALCON2` registers. The `ID` constant is used
+-/// to identify a given Falcon instance with register I/O methods.
++/// Each engine provides one base for `PFALCON` and `PFALCON2` registers.
+ pub(crate) trait FalconEngine:
+     Send + Sync + RegisterBase<PFalconBase> + RegisterBase<PFalcon2Base> + Sized
+ {
+-    /// Singleton of the engine, used to identify it with register I/O methods.
+-    const ID: Self;
+ }
+ 
+ /// Represents a portion of the firmware to be loaded into a particular memory (e.g. IMEM or DMEM).
+@@ -394,8 +362,10 @@ pub(crate) fn new(dev: &device::Device, chipset: Chipset) -> Result<Self> {
+ 
+     /// Resets DMA-related registers.
+     pub(crate) fn dma_reset(&self, bar: &Bar0) {
+-        regs::NV_PFALCON_FBIF_CTL::update(bar, &E::ID, |v| v.set_allow_phys_no_ctx(true));
+-        regs::NV_PFALCON_FALCON_DMACTL::default().write(bar, &E::ID);
++        bar.update(regs::NV_PFALCON_FBIF_CTL::of::<E>(), |v| {
++            v.with_allow_phys_no_ctx(true)
++        });
++        bar.write(regs::NV_PFALCON_FALCON_DMACTL::of::<E>().zeroed());
+     }
+ 
+     /// Reset the controller, select the falcon core, and wait for memory scrubbing to complete.
+@@ -404,9 +374,10 @@ pub(crate) fn reset(&self, bar: &Bar0) -> Result {
+         self.hal.select_core(self, bar)?;
+         self.hal.reset_wait_mem_scrubbing(bar)?;
+ 
+-        regs::NV_PFALCON_FALCON_RM::default()
+-            .set_value(regs::NV_PMC_BOOT_0::read(bar).into())
+-            .write(bar, &E::ID);
++        bar.write(
++            regs::NV_PFALCON_FALCON_RM::of::<E>()
++                .init(|r| r.with_value(bar.read(regs::NV_PMC_BOOT_0).into_raw())),
 +        );
-+        )*
-+    };
-+
-+    // All the rules below are private helpers.
-+
-+    // Creates a register at a fixed offset of the MMIO space.
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) @ $offset:literal
-+            { $($fields:tt)* }
-+    ) => {
-+        $crate::register!(
-+            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
+ 
+         Ok(())
+     }
+@@ -475,36 +446,37 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
+ 
+         // Set up the base source DMA address.
+ 
+-        regs::NV_PFALCON_FALCON_DMATRFBASE::default()
+-            // CAST: `as u32` is used on purpose since we do want to strip the upper bits, which
+-            // will be written to `NV_PFALCON_FALCON_DMATRFBASE1`.
+-            .set_base((dma_start >> 8) as u32)
+-            .write(bar, &E::ID);
+-        regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
+-            // CAST: `as u16` is used on purpose since the remaining bits are guaranteed to fit
+-            // within a `u16`.
+-            .set_base((dma_start >> 40) as u16)
+-            .write(bar, &E::ID);
++        bar.write(regs::NV_PFALCON_FALCON_DMATRFBASE::of::<E>().init(|r|
++                    // CAST: `as u32` is used on purpose since we do want to strip the upper bits,
++                    // which will be written to `NV_PFALCON_FALCON_DMATRFBASE1`.
++                    r.with_base((dma_start >> 8) as u32)));
++        bar.write(
++            regs::NV_PFALCON_FALCON_DMATRFBASE1::of::<E>()
++                .try_init(|r| r.try_with_base(dma_start >> 40))?,
 +        );
-+        $crate::register!(@io_fixed $(#[$attr])* $vis $name($storage) @ $offset);
-+    };
-+
-+    // Creates an alias register of fixed offset register `alias` with its own fields.
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) => $alias:ident
-+            { $($fields:tt)* }
-+    ) => {
-+        $crate::register!(
-+            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
-+        );
-+        $crate::register!(
-+            @io_fixed $(#[$attr])* $vis $name($storage) @
-+            <$alias as $crate::io::register::FixedRegister>::OFFSET
-+        );
-+    };
-+
-+    // Creates a register at a relative offset from a base address provider.
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) @ $base:ident + $offset:literal
-+            { $($fields:tt)* }
-+    ) => {
-+        $crate::register!(
-+            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
-+        );
-+        $crate::register!(@io_relative $vis $name($storage) @ $base + $offset );
-+    };
-+
-+    // Creates an alias register of relative offset register `alias` with its own fields.
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) => $base:ident + $alias:ident
-+            { $($fields:tt)* }
-+    ) => {
-+        $crate::register!(
-+            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
-+        );
-+        $crate::register!(
-+            @io_relative $vis $name($storage) @
-+            $base + <$alias as $crate::io::register::RelativeRegister>::OFFSET
-+        );
-+    };
-+
-+    // Creates an array of registers at a fixed offset of the MMIO space.
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
-+            [ $size:expr, stride = $stride:expr ] @ $offset:literal { $($fields:tt)* }
-+    ) => {
-+        static_assert!(::core::mem::size_of::<$storage>() <= $stride);
-+
-+        $crate::register!(
-+            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
-+        );
-+        $crate::register!(@io_array $vis $name($storage) [ $size, stride = $stride ] @ $offset);
-+    };
-+
-+    // Shortcut for contiguous array of registers (stride == size of element).
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) [ $size:expr ] @ $offset:literal
-+            { $($fields:tt)* }
-+    ) => {
-+        $crate::register!(
-+            $(#[$attr])* $vis $name($storage) [ $size, stride = ::core::mem::size_of::<$storage>() ]
-+                @ $offset { $($fields)* }
-+        );
-+    };
-+
-+    // Creates an alias of register `idx` of array of registers `alias` with its own fields.
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) => $alias:ident [ $idx:expr ]
-+            { $($fields:tt)* }
-+    ) => {
-+        static_assert!($idx < <$alias as $crate::io::register::RegisterArray>::SIZE);
-+
-+        $crate::register!(
-+            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
-+        );
-+        $crate::register!(@io_fixed $(#[$attr])* $vis $name($storage)
-+            @ <$alias as $crate::io::register::RegisterArray>::OFFSET
-+                + $idx * <$alias as $crate::io::register::RegisterArray>::STRIDE
-+        );
-+    };
-+
-+    // Creates an array of registers at a relative offset from a base address provider.
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
-+            [ $size:expr, stride = $stride:expr ]
-+            @ $base:ident + $offset:literal { $($fields:tt)* }
-+    ) => {
-+        static_assert!(::core::mem::size_of::<$storage>() <= $stride);
-+
-+        $crate::register!(
-+            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
-+        );
-+        $crate::register!(
-+            @io_relative_array $vis $name($storage) [ $size, stride = $stride ] @ $base + $offset
-+        );
-+    };
-+
-+    // Shortcut for contiguous array of relative registers (stride == size of element).
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) [ $size:expr ]
-+            @ $base:ident + $offset:literal { $($fields:tt)* }
-+    ) => {
-+        $crate::register!(
-+            $(#[$attr])* $vis $name($storage) [ $size, stride = ::core::mem::size_of::<$storage>() ]
-+                @ $base + $offset { $($fields)* }
-+        );
-+    };
-+
-+    // Creates an alias of register `idx` of relative array of registers `alias` with its own
-+    // fields.
-+    (
-+        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
-+            => $base:ident + $alias:ident [ $idx:expr ] { $($fields:tt)* }
-+    ) => {
-+        static_assert!($idx < <$alias as $crate::io::register::RelativeRegisterArray>::SIZE);
-+
-+        $crate::register!(
-+            @bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* }
-+        );
-+        $crate::register!(
-+            @io_relative $vis $name($storage) @ $base
-+                + <$alias as $crate::io::register::RelativeRegisterArray>::OFFSET
-+                + $idx * <$alias as $crate::io::register::RelativeRegisterArray>::STRIDE
-+        );
-+    };
-+
-+    // Generates the bitfield for the register.
-+    //
-+    // `#[allow(non_camel_case_types)]` is added since register names typically use
-+    // `SCREAMING_CASE`.
-+    (
-+        @bitfield $(#[$attr:meta])* $vis:vis struct $name:ident($storage:ty) { $($fields:tt)* }
-+    ) => {
-+        $crate::register!(@bitfield_core
-+            #[allow(non_camel_case_types)]
-+            $(#[$attr])* $vis $name $storage
-+        );
-+        $crate::register!(@bitfield_fields $vis $name $storage { $($fields)* });
-+
-+        impl $crate::io::register::Register for $name {
-+            type Storage = $storage;
-+        }
-+    };
-+
-+    // Implementations of fixed registers.
-+    (@io_fixed $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) @ $offset:expr) => {
-+        impl $crate::io::register::FixedRegister for $name {
-+            const OFFSET: usize = $offset;
-+        }
-+
-+        $(#[$attr])*
-+        $vis const $name: $crate::io::register::FixedRegisterRef<$name> =
-+            $crate::io::register::FixedRegisterRef::<$name>::new();
-+    };
-+
-+    // Implementations of relative registers.
-+    (@io_relative $vis:vis $name:ident ($storage:ty) @ $base:ident + $offset:expr ) => {
-+        impl $crate::io::register::RelativeRegister for $name
-+        {
-+            type BaseFamily = $base;
-+            const OFFSET: usize = $offset;
-+        }
-+
-+        #[allow(dead_code)]
-+        impl $name {
-+            /// Returns a reference to the register with the base `B`.
-+            #[inline(always)]
-+            $vis const fn of<B: $crate::io::register::RegisterBase<$base>>()
-+                -> $crate::io::register::RelativeRegisterRef<$name, B> {
-+                $crate::io::register::RelativeRegisterRef::new()
-+            }
-+        }
-+    };
-+
-+    // Implementations of array registers.
-+    (@io_array $vis:vis $name:ident ($storage:ty) [ $size:expr, stride = $stride:expr ]
-+        @ $offset:literal) => {
-+        impl $crate::io::register::RegisterArray for $name {
-+            const OFFSET: usize = $offset;
-+            const SIZE: usize = $size;
-+            const STRIDE: usize = $stride;
-+        }
-+
-+        #[allow(dead_code)]
-+        impl $name {
-+            /// Returns a reference to the register at index `idx`, with build-time validation.
-+            #[inline(always)]
-+            $vis fn at(idx: usize) -> $crate::io::register::RegisterArrayRef<$name> {
-+                $crate::io::register::RegisterArrayRef::new(idx)
-+            }
-+
-+            /// Attempts to return a reference to the register at index `idx`, with runtime
-+            /// validation.
-+            #[inline(always)]
-+            $vis fn try_at(idx: usize) -> Option<$crate::io::register::RegisterArrayRef<$name>> {
-+                $crate::io::register::RegisterArrayRef::try_new(idx)
-+            }
-+        }
-+    };
-+
-+    // Implementations of relative array registers.
-+    (
-+        @io_relative_array $vis:vis $name:ident ($storage:ty) [ $size:expr, stride = $stride:expr ]
-+            @ $base:ident + $offset:literal
-+    ) => {
-+        impl $crate::io::register::RelativeRegisterArray for $name {
-+            type BaseFamily = $base;
-+            const OFFSET: usize = $offset;
-+            const SIZE: usize = $size;
-+            const STRIDE: usize = $stride;
-+        }
-+
-+        #[allow(dead_code)]
-+        impl $name {
-+            /// Returns a reference to the register array with the base `B`.
-+            ///
-+            /// An individual register from the array still needs to be addressed using
-+            /// [`RelativeRegisterRef::at`] or [`RelativeRegisterRef::try_at`].
-+            #[inline(always)]
-+            $vis const fn of<B: $crate::io::register::RegisterBase<$base>>()
-+                -> $crate::io::register::RelativeRegisterRef<$name, B> {
-+                $crate::io::register::RelativeRegisterRef::new()
-+            }
-+        }
-+    };
-+
-+    // Defines the wrapper `$name` type and its conversions from/to the storage type.
-+    (@bitfield_core $(#[$attr:meta])* $vis:vis $name:ident $storage:ty) => {
-+        $(#[$attr])*
-+        #[repr(transparent)]
-+        #[derive(Clone, Copy, PartialEq, Eq)]
-+        $vis struct $name {
-+            inner: $storage,
-+        }
-+
-+        #[allow(dead_code)]
-+        impl $name {
-+            /// Creates a bitfield from a raw value.
-+            #[inline(always)]
-+            $vis const fn from_raw(value: $storage) -> Self {
-+                Self{ inner: value }
-+            }
-+
-+            /// Turns this bitfield into its raw value.
-+            ///
-+            /// This is similar to the [`From`] implementation, but is shorter to invoke in
-+            /// most cases.
-+            #[inline(always)]
-+            $vis const fn into_raw(self) -> $storage {
-+                self.inner
-+            }
-+        }
-+
-+        // SAFETY: `$storage` is `Zeroable` and `$name` is transparent.
-+        unsafe impl ::pin_init::Zeroable for $name {}
-+
-+        impl ::core::convert::From<$name> for $storage {
-+            #[inline(always)]
-+            fn from(val: $name) -> $storage {
-+                val.into_raw()
-+            }
-+        }
-+
-+        impl ::core::convert::From<$storage> for $name {
-+            #[inline(always)]
-+            fn from(val: $storage) -> $name {
-+                Self::from_raw(val)
-+            }
-+        }
-+    };
-+
-+    // Definitions requiring knowledge of individual fields: private and public field accessors,
-+    // and `Debug` implementation.
-+    (@bitfield_fields $vis:vis $name:ident $storage:ty {
-+        $($(#[doc = $doc:expr])* $hi:literal:$lo:literal $field:ident
-+            $(?=> $try_into_type:ty)?
-+            $(=> $into_type:ty)?
-+        ;
-+        )*
-+    }
-+    ) => {
-+        #[allow(dead_code)]
-+        impl $name {
-+        $(
-+        $crate::register!(@private_field_accessors $vis $name $storage : $hi:$lo $field);
-+        $crate::register!(
-+            @public_field_accessors $(#[doc = $doc])* $vis $name $storage : $hi:$lo $field
-+            $(?=> $try_into_type)?
-+            $(=> $into_type)?
-+        );
-+        )*
-+        }
-+
-+        $crate::register!(@debug $name { $($field;)* });
-+    };
-+
-+    // Private field accessors working with the exact `Bounded` type for the field.
-+    (
-+        @private_field_accessors $vis:vis $name:ident $storage:ty : $hi:tt:$lo:tt $field:ident
-+    ) => {
-+        ::kernel::macros::paste!(
-+        $vis const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> = $lo..=$hi;
-+        $vis const [<$field:upper _MASK>]: $storage =
-+            ((((1 << $hi) - 1) << 1) + 1) - ((1 << $lo) - 1);
-+        $vis const [<$field:upper _SHIFT>]: u32 = $lo;
-+        );
-+
-+        ::kernel::macros::paste!(
-+        fn [<__ $field>](self) ->
-+            ::kernel::num::Bounded<$storage, { $hi + 1 - $lo }> {
-+            // Left shift to align the field's MSB with the storage MSB.
-+            const ALIGN_TOP: u32 = $storage::BITS - ($hi + 1);
-+            // Right shift to move the top-aligned field to bit 0 of the storage.
-+            const ALIGN_BOTTOM: u32 = ALIGN_TOP + $lo;
-+
-+            // Extract the field using two shifts. `Bounded::shr` produces the correctly-sized
-+            // output type.
-+            let val = ::kernel::num::Bounded::<$storage, { $storage::BITS }>::from(
-+                self.inner << ALIGN_TOP
+ 
+-        let cmd = regs::NV_PFALCON_FALCON_DMATRFCMD::default()
+-            .set_size(DmaTrfCmdSize::Size256B)
++        let cmd = regs::NV_PFALCON_FALCON_DMATRFCMD::zeroed()
++            .with_size(DmaTrfCmdSize::Size256B)
+             .with_falcon_mem(target_mem);
+ 
+         for pos in (0..num_transfers).map(|i| i * DMA_LEN) {
+             // Perform a transfer of size `DMA_LEN`.
+-            regs::NV_PFALCON_FALCON_DMATRFMOFFS::default()
+-                .set_offs(load_offsets.dst_start + pos)
+-                .write(bar, &E::ID);
+-            regs::NV_PFALCON_FALCON_DMATRFFBOFFS::default()
+-                .set_offs(src_start + pos)
+-                .write(bar, &E::ID);
+-            cmd.write(bar, &E::ID);
++            bar.write(
++                regs::NV_PFALCON_FALCON_DMATRFMOFFS::of::<E>()
++                    .try_init(|r| r.try_with_offs(load_offsets.dst_start + pos))?,
 +            );
-+            val.shr::<ALIGN_BOTTOM, { $hi + 1 - $lo } >()
-+        }
++            bar.write(
++                regs::NV_PFALCON_FALCON_DMATRFFBOFFS::of::<E>()
++                    .init(|r| r.with_offs(src_start + pos)),
++            );
 +
-+        const fn [<__with_ $field>](
-+            mut self,
-+            value: ::kernel::num::Bounded<$storage, { $hi + 1 - $lo }>,
-+        ) -> Self
-+        {
-+            const MASK: $storage = <$name>::[<$field:upper _MASK>];
-+            const SHIFT: u32 = <$name>::[<$field:upper _SHIFT>];
-+
-+            let value = value.get() << SHIFT;
-+            self.inner = (self.inner & !MASK) | value;
-+
-+            self
-+        }
++            bar.write(regs::NV_PFALCON_FALCON_DMATRFCMD::of::<E>().set(cmd));
+ 
+             // Wait for the transfer to complete.
+             // TIMEOUT: arbitrarily large value, no DMA transfer to the falcon's small memories
+             // should ever take that long.
+             read_poll_timeout(
+-                || Ok(regs::NV_PFALCON_FALCON_DMATRFCMD::read(bar, &E::ID)),
++                || Ok(bar.read(regs::NV_PFALCON_FALCON_DMATRFCMD::of::<E>())),
+                 |r| r.idle(),
+                 Delta::ZERO,
+                 Delta::from_secs(2),
+@@ -524,9 +496,9 @@ fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F) -> Result
+         }
+ 
+         self.dma_reset(bar);
+-        regs::NV_PFALCON_FBIF_TRANSCFG::update(bar, &E::ID, 0, |v| {
+-            v.set_target(FalconFbifTarget::CoherentSysmem)
+-                .set_mem_type(FalconFbifMemType::Physical)
++        bar.update(regs::NV_PFALCON_FBIF_TRANSCFG::of::<E>().at(0), |v| {
++            v.with_target(FalconFbifTarget::CoherentSysmem)
++                .with_mem_type(FalconFbifMemType::Physical)
+         });
+ 
+         self.dma_wr(bar, fw, FalconMem::ImemSecure, fw.imem_sec_load_params())?;
+@@ -535,9 +507,9 @@ fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F) -> Result
+         self.hal.program_brom(self, bar, &fw.brom_params())?;
+ 
+         // Set `BootVec` to start of non-secure code.
+-        regs::NV_PFALCON_FALCON_BOOTVEC::default()
+-            .set_value(fw.boot_addr())
+-            .write(bar, &E::ID);
++        bar.write(
++            regs::NV_PFALCON_FALCON_BOOTVEC::of::<E>().init(|r| r.with_value(fw.boot_addr())),
 +        );
-+    };
-+
-+    // Public accessors for fields infallibly (`=>`) converted to a type.
-+    (
-+        @public_field_accessors $(#[doc = $doc:expr])* $vis:vis $name:ident $storage:ty :
-+            $hi:literal:$lo:literal $field:ident => $into_type:ty
-+    ) => {
-+        ::kernel::macros::paste!(
-+
-+        $(#[doc = $doc])*
-+        #[doc = "Returns the value of this field."]
-+        #[inline(always)]
-+        $vis fn $field(self) -> $into_type
+ 
+         Ok(())
+     }
+@@ -546,7 +518,7 @@ fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F) -> Result
+     pub(crate) fn wait_till_halted(&self, bar: &Bar0) -> Result<()> {
+         // TIMEOUT: arbitrarily large value, firmwares should complete in less than 2 seconds.
+         read_poll_timeout(
+-            || Ok(regs::NV_PFALCON_FALCON_CPUCTL::read(bar, &E::ID)),
++            || Ok(bar.read(regs::NV_PFALCON_FALCON_CPUCTL::of::<E>())),
+             |r| r.halted(),
+             Delta::ZERO,
+             Delta::from_secs(2),
+@@ -557,13 +529,16 @@ pub(crate) fn wait_till_halted(&self, bar: &Bar0) -> Result<()> {
+ 
+     /// Start the falcon CPU.
+     pub(crate) fn start(&self, bar: &Bar0) -> Result<()> {
+-        match regs::NV_PFALCON_FALCON_CPUCTL::read(bar, &E::ID).alias_en() {
+-            true => regs::NV_PFALCON_FALCON_CPUCTL_ALIAS::default()
+-                .set_startcpu(true)
+-                .write(bar, &E::ID),
+-            false => regs::NV_PFALCON_FALCON_CPUCTL::default()
+-                .set_startcpu(true)
+-                .write(bar, &E::ID),
++        match bar
++            .read(regs::NV_PFALCON_FALCON_CPUCTL::of::<E>())
++            .alias_en()
 +        {
-+            self.[<__ $field>]().into()
-+        }
-+
-+        $(#[doc = $doc])*
-+        #[doc = "Sets this field to the given `value`."]
-+        #[inline(always)]
-+        $vis fn [<with_ $field>](self, value: $into_type) -> Self
-+        {
-+            self.[<__with_ $field>](value.into())
-+        }
-+
-+        );
-+    };
-+
-+    // Public accessors for fields fallibly (`?=>`) converted to a type.
-+    (
-+        @public_field_accessors $(#[doc = $doc:expr])* $vis:vis $name:ident $storage:ty :
-+            $hi:tt:$lo:tt $field:ident ?=> $try_into_type:ty
-+    ) => {
-+        ::kernel::macros::paste!(
-+
-+        $(#[doc = $doc])*
-+        #[doc = "Returns the value of this field."]
-+        #[inline(always)]
-+        $vis fn $field(self) ->
-+            Result<
-+                $try_into_type,
-+                <$try_into_type as ::core::convert::TryFrom<
-+                    ::kernel::num::Bounded<$storage, { $hi + 1 - $lo }>
-+                >>::Error
-+            >
-+        {
-+            self.[<__ $field>]().try_into()
-+        }
-+
-+        $(#[doc = $doc])*
-+        #[doc = "Sets this field to the given `value`."]
-+        #[inline(always)]
-+        $vis fn [<with_ $field>](self, value: $try_into_type) -> Self
-+        {
-+            self.[<__with_ $field>](value.into())
-+        }
-+
-+        );
-+    };
-+
-+    // Public accessors for fields not converted to a type.
-+    (
-+        @public_field_accessors $(#[doc = $doc:expr])* $vis:vis $name:ident $storage:ty :
-+            $hi:tt:$lo:tt $field:ident
-+    ) => {
-+        ::kernel::macros::paste!(
-+
-+        $(#[doc = $doc])*
-+        #[doc = "Returns the value of this field."]
-+        #[inline(always)]
-+        $vis fn $field(self) ->
-+            ::kernel::num::Bounded<$storage, { $hi + 1 - $lo }>
-+        {
-+            self.[<__ $field>]()
-+        }
-+
-+        $(#[doc = $doc])*
-+        #[doc = "Sets this field to the compile-time constant `VALUE`."]
-+        #[inline(always)]
-+        $vis const fn [<with_const_ $field>]<const VALUE: $storage>(self) -> Self {
-+            self.[<__with_ $field>](
-+                ::kernel::num::Bounded::<$storage, { $hi + 1 - $lo }>::new::<VALUE>()
-+            )
-+        }
-+
-+        $(#[doc = $doc])*
-+        #[doc = "Sets this field to the given `value`."]
-+        #[inline(always)]
-+        $vis fn [<with_ $field>]<T>(
-+            self,
-+            value: T,
-+        ) -> Self
-+            where T: Into<::kernel::num::Bounded<$storage, { $hi + 1 - $lo }>>,
-+        {
-+            self.[<__with_ $field>](value.into())
-+        }
-+
-+        $(#[doc = $doc])*
-+        #[doc = "Tries to set this field to `value`, returning an error if it is out of range."]
-+        #[inline(always)]
-+        $vis fn [<try_with_ $field>]<T>(
-+            self,
-+            value: T,
-+        ) -> ::kernel::error::Result<Self>
-+            where T: ::kernel::num::TryIntoBounded<$storage, { $hi + 1 - $lo }>,
-+        {
-+            Ok(
-+                self.[<__with_ $field>](
-+                    value.try_into_bounded().ok_or(::kernel::error::code::EOVERFLOW)?
-+                )
-+            )
-+        }
-+
-+        );
-+    };
-+
-+    // `Debug` implementation.
-+    (@debug $name:ident { $($field:ident;)* }) => {
-+        impl ::kernel::fmt::Debug for $name {
-+            fn fmt(&self, f: &mut ::kernel::fmt::Formatter<'_>) -> ::kernel::fmt::Result {
-+                f.debug_struct(stringify!($name))
-+                    .field("<raw>", &::kernel::prelude::fmt!("{:#x}", self.inner))
-+                $(
-+                    .field(stringify!($field), &self.$field())
-+                )*
-+                    .finish()
++            true => bar.write(
++                regs::NV_PFALCON_FALCON_CPUCTL_ALIAS::of::<E>().init(|r| r.with_startcpu(true)),
++            ),
++            false => {
++                bar.write(regs::NV_PFALCON_FALCON_CPUCTL::of::<E>().init(|r| r.with_startcpu(true)))
 +            }
+         }
+ 
+         Ok(())
+@@ -572,26 +547,24 @@ pub(crate) fn start(&self, bar: &Bar0) -> Result<()> {
+     /// Writes values to the mailbox registers if provided.
+     pub(crate) fn write_mailboxes(&self, bar: &Bar0, mbox0: Option<u32>, mbox1: Option<u32>) {
+         if let Some(mbox0) = mbox0 {
+-            regs::NV_PFALCON_FALCON_MAILBOX0::default()
+-                .set_value(mbox0)
+-                .write(bar, &E::ID);
++            bar.write(regs::NV_PFALCON_FALCON_MAILBOX0::of::<E>().init(|r| r.with_value(mbox0)));
+         }
+ 
+         if let Some(mbox1) = mbox1 {
+-            regs::NV_PFALCON_FALCON_MAILBOX1::default()
+-                .set_value(mbox1)
+-                .write(bar, &E::ID);
++            bar.write(regs::NV_PFALCON_FALCON_MAILBOX1::of::<E>().init(|r| r.with_value(mbox1)));
+         }
+     }
+ 
+     /// Reads the value from `mbox0` register.
+     pub(crate) fn read_mailbox0(&self, bar: &Bar0) -> u32 {
+-        regs::NV_PFALCON_FALCON_MAILBOX0::read(bar, &E::ID).value()
++        bar.read(regs::NV_PFALCON_FALCON_MAILBOX0::of::<E>())
++            .value()
+     }
+ 
+     /// Reads the value from `mbox1` register.
+     pub(crate) fn read_mailbox1(&self, bar: &Bar0) -> u32 {
+-        regs::NV_PFALCON_FALCON_MAILBOX1::read(bar, &E::ID).value()
++        bar.read(regs::NV_PFALCON_FALCON_MAILBOX1::of::<E>())
++            .value()
+     }
+ 
+     /// Reads values from both mailbox registers.
+@@ -650,8 +623,6 @@ pub(crate) fn load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F) ->
+ 
+     /// Write the application version to the OS register.
+     pub(crate) fn write_os_version(&self, bar: &Bar0, app_version: u32) {
+-        regs::NV_PFALCON_FALCON_OS::default()
+-            .set_value(app_version)
+-            .write(bar, &E::ID);
++        bar.write(regs::NV_PFALCON_FALCON_OS::of::<E>().init(|r| r.with_value(app_version)));
+     }
+ }
+diff --git a/drivers/gpu/nova-core/falcon/gsp.rs b/drivers/gpu/nova-core/falcon/gsp.rs
+index 67edef3636c1..2031c6e760b4 100644
+--- a/drivers/gpu/nova-core/falcon/gsp.rs
++++ b/drivers/gpu/nova-core/falcon/gsp.rs
+@@ -1,7 +1,12 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ use kernel::{
+-    io::poll::read_poll_timeout,
++    io::{
++        poll::read_poll_timeout,
++        register::RegisterBase,
++        Io,
++        IoRef, //
++    },
+     prelude::*,
+     time::Delta, //
+ };
+@@ -14,13 +19,9 @@
+         PFalcon2Base,
+         PFalconBase, //
+     },
+-    regs::{
+-        self,
+-        macros::RegisterBase, //
+-    },
++    regs,
+ };
+ 
+-/// Type specifying the `Gsp` falcon engine. Cannot be instantiated.
+ pub(crate) struct Gsp(());
+ 
+ impl RegisterBase<PFalconBase> for Gsp {
+@@ -31,23 +32,19 @@ impl RegisterBase<PFalcon2Base> for Gsp {
+     const BASE: usize = 0x00111000;
+ }
+ 
+-impl FalconEngine for Gsp {
+-    const ID: Self = Gsp(());
+-}
++impl FalconEngine for Gsp {}
+ 
+ impl Falcon<Gsp> {
+     /// Clears the SWGEN0 bit in the Falcon's IRQ status clear register to
+     /// allow GSP to signal CPU for processing new messages in message queue.
+     pub(crate) fn clear_swgen0_intr(&self, bar: &Bar0) {
+-        regs::NV_PFALCON_FALCON_IRQSCLR::default()
+-            .set_swgen0(true)
+-            .write(bar, &Gsp::ID);
++        bar.write(regs::NV_PFALCON_FALCON_IRQSCLR::of::<Gsp>().init(|r| r.with_swgen0(true)));
+     }
+ 
+     /// Checks if GSP reload/resume has completed during the boot process.
+     pub(crate) fn check_reload_completed(&self, bar: &Bar0, timeout: Delta) -> Result<bool> {
+         read_poll_timeout(
+-            || Ok(regs::NV_PGC6_BSI_SECURE_SCRATCH_14::read(bar)),
++            || Ok(bar.read(regs::NV_PGC6_BSI_SECURE_SCRATCH_14)),
+             |val| val.boot_stage_3_handoff(),
+             Delta::ZERO,
+             timeout,
+diff --git a/drivers/gpu/nova-core/falcon/hal/ga102.rs b/drivers/gpu/nova-core/falcon/hal/ga102.rs
+index 8f62df10da0a..acc34f2a8e66 100644
+--- a/drivers/gpu/nova-core/falcon/hal/ga102.rs
++++ b/drivers/gpu/nova-core/falcon/hal/ga102.rs
+@@ -5,6 +5,8 @@
+ use kernel::{
+     device,
+     io::poll::read_poll_timeout,
++    io::Io,
++    io::IoRef,
+     prelude::*,
+     time::Delta, //
+ };
+@@ -25,15 +27,16 @@
+ use super::FalconHal;
+ 
+ fn select_core_ga102<E: FalconEngine>(bar: &Bar0) -> Result {
+-    let bcr_ctrl = regs::NV_PRISCV_RISCV_BCR_CTRL::read(bar, &E::ID);
++    let bcr_ctrl = bar.read(regs::NV_PRISCV_RISCV_BCR_CTRL::of::<E>());
+     if bcr_ctrl.core_select() != PeregrineCoreSelect::Falcon {
+-        regs::NV_PRISCV_RISCV_BCR_CTRL::default()
+-            .set_core_select(PeregrineCoreSelect::Falcon)
+-            .write(bar, &E::ID);
++        bar.write(
++            regs::NV_PRISCV_RISCV_BCR_CTRL::of::<E>()
++                .init(|r| r.with_core_select(PeregrineCoreSelect::Falcon)),
++        );
+ 
+         // TIMEOUT: falcon core should take less than 10ms to report being enabled.
+         read_poll_timeout(
+-            || Ok(regs::NV_PRISCV_RISCV_BCR_CTRL::read(bar, &E::ID)),
++            || Ok(bar.read(regs::NV_PRISCV_RISCV_BCR_CTRL::of::<E>())),
+             |r| r.valid(),
+             Delta::ZERO,
+             Delta::from_millis(10),
+@@ -60,34 +63,42 @@ fn signature_reg_fuse_version_ga102(
+ 
+     // `ucode_idx` is guaranteed to be in the range [0..15], making the `read` calls provable valid
+     // at build-time.
+-    let reg_fuse_version = if engine_id_mask & 0x0001 != 0 {
+-        regs::NV_FUSE_OPT_FPF_SEC2_UCODE1_VERSION::read(bar, ucode_idx).data()
++    let reg_fuse_version: u16 = if engine_id_mask & 0x0001 != 0 {
++        bar.read(regs::NV_FUSE_OPT_FPF_SEC2_UCODE1_VERSION::at(ucode_idx))
++            .data()
+     } else if engine_id_mask & 0x0004 != 0 {
+-        regs::NV_FUSE_OPT_FPF_NVDEC_UCODE1_VERSION::read(bar, ucode_idx).data()
++        bar.read(regs::NV_FUSE_OPT_FPF_NVDEC_UCODE1_VERSION::at(ucode_idx))
++            .data()
+     } else if engine_id_mask & 0x0400 != 0 {
+-        regs::NV_FUSE_OPT_FPF_GSP_UCODE1_VERSION::read(bar, ucode_idx).data()
++        bar.read(regs::NV_FUSE_OPT_FPF_GSP_UCODE1_VERSION::at(ucode_idx))
++            .data()
+     } else {
+         dev_err!(dev, "unexpected engine_id_mask {:#x}\n", engine_id_mask);
+         return Err(EINVAL);
+-    };
++    }
++    .into();
+ 
+     // TODO[NUMM]: replace with `last_set_bit` once it lands.
+     Ok(u16::BITS - reg_fuse_version.leading_zeros())
+ }
+ 
+ fn program_brom_ga102<E: FalconEngine>(bar: &Bar0, params: &FalconBromParams) -> Result {
+-    regs::NV_PFALCON2_FALCON_BROM_PARAADDR::default()
+-        .set_value(params.pkc_data_offset)
+-        .write(bar, &E::ID, 0);
+-    regs::NV_PFALCON2_FALCON_BROM_ENGIDMASK::default()
+-        .set_value(u32::from(params.engine_id_mask))
+-        .write(bar, &E::ID);
+-    regs::NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID::default()
+-        .set_ucode_id(params.ucode_id)
+-        .write(bar, &E::ID);
+-    regs::NV_PFALCON2_FALCON_MOD_SEL::default()
+-        .set_algo(FalconModSelAlgo::Rsa3k)
+-        .write(bar, &E::ID);
++    bar.write(
++        regs::NV_PFALCON2_FALCON_BROM_PARAADDR::of::<E>()
++            .at(0)
++            .init(|r| r.with_value(params.pkc_data_offset)),
++    );
++    bar.write(
++        regs::NV_PFALCON2_FALCON_BROM_ENGIDMASK::of::<E>()
++            .init(|r| r.with_value(u32::from(params.engine_id_mask))),
++    );
++    bar.write(
++        regs::NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID::of::<E>()
++            .init(|r| r.with_ucode_id(params.ucode_id)),
++    );
++    bar.write(
++        regs::NV_PFALCON2_FALCON_MOD_SEL::of::<E>().init(|r| r.with_algo(FalconModSelAlgo::Rsa3k)),
++    );
+ 
+     Ok(())
+ }
+@@ -120,14 +131,14 @@ fn program_brom(&self, _falcon: &Falcon<E>, bar: &Bar0, params: &FalconBromParam
+     }
+ 
+     fn is_riscv_active(&self, bar: &Bar0) -> bool {
+-        let cpuctl = regs::NV_PRISCV_RISCV_CPUCTL::read(bar, &E::ID);
+-        cpuctl.active_stat()
++        bar.read(regs::NV_PRISCV_RISCV_CPUCTL::of::<E>())
++            .active_stat()
+     }
+ 
+     fn reset_wait_mem_scrubbing(&self, bar: &Bar0) -> Result {
+         // TIMEOUT: memory scrubbing should complete in less than 20ms.
+         read_poll_timeout(
+-            || Ok(regs::NV_PFALCON_FALCON_HWCFG2::read(bar, &E::ID)),
++            || Ok(bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<E>())),
+             |r| r.mem_scrubbing_done(),
+             Delta::ZERO,
+             Delta::from_millis(20),
+@@ -136,12 +147,12 @@ fn reset_wait_mem_scrubbing(&self, bar: &Bar0) -> Result {
+     }
+ 
+     fn reset_eng(&self, bar: &Bar0) -> Result {
+-        let _ = regs::NV_PFALCON_FALCON_HWCFG2::read(bar, &E::ID);
++        let _ = bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<E>());
+ 
+         // According to OpenRM's `kflcnPreResetWait_GA102` documentation, HW sometimes does not set
+         // RESET_READY so a non-failing timeout is used.
+         let _ = read_poll_timeout(
+-            || Ok(regs::NV_PFALCON_FALCON_HWCFG2::read(bar, &E::ID)),
++            || Ok(bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<E>())),
+             |r| r.reset_ready(),
+             Delta::ZERO,
+             Delta::from_micros(150),
+diff --git a/drivers/gpu/nova-core/falcon/hal/tu102.rs b/drivers/gpu/nova-core/falcon/hal/tu102.rs
+index 7de6f24cc0a0..cd4ac53e32af 100644
+--- a/drivers/gpu/nova-core/falcon/hal/tu102.rs
++++ b/drivers/gpu/nova-core/falcon/hal/tu102.rs
+@@ -3,7 +3,10 @@
+ use core::marker::PhantomData;
+ 
+ use kernel::{
+-    io::poll::read_poll_timeout,
++    io::{
++        poll::read_poll_timeout,
++        Io, //
++    },
+     prelude::*,
+     time::Delta, //
+ };
+@@ -49,14 +52,14 @@ fn program_brom(&self, _falcon: &Falcon<E>, _bar: &Bar0, _params: &FalconBromPar
+     }
+ 
+     fn is_riscv_active(&self, bar: &Bar0) -> bool {
+-        let cpuctl = regs::NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS::read(bar, &E::ID);
+-        cpuctl.active_stat()
++        bar.read(regs::NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS::of::<E>())
++            .active_stat()
+     }
+ 
+     fn reset_wait_mem_scrubbing(&self, bar: &Bar0) -> Result {
+         // TIMEOUT: memory scrubbing should complete in less than 10ms.
+         read_poll_timeout(
+-            || Ok(regs::NV_PFALCON_FALCON_DMACTL::read(bar, &E::ID)),
++            || Ok(bar.read(regs::NV_PFALCON_FALCON_DMACTL::of::<E>())),
+             |r| r.mem_scrubbing_done(),
+             Delta::ZERO,
+             Delta::from_millis(10),
+diff --git a/drivers/gpu/nova-core/falcon/sec2.rs b/drivers/gpu/nova-core/falcon/sec2.rs
+index b57d362e576a..91ec7d49c1f5 100644
+--- a/drivers/gpu/nova-core/falcon/sec2.rs
++++ b/drivers/gpu/nova-core/falcon/sec2.rs
+@@ -1,12 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-use crate::{
+-    falcon::{
+-        FalconEngine,
+-        PFalcon2Base,
+-        PFalconBase, //
+-    },
+-    regs::macros::RegisterBase,
++use kernel::io::register::RegisterBase;
++
++use crate::falcon::{
++    FalconEngine,
++    PFalcon2Base,
++    PFalconBase, //
+ };
+ 
+ /// Type specifying the `Sec2` falcon engine. Cannot be instantiated.
+@@ -20,6 +19,4 @@ impl RegisterBase<PFalcon2Base> for Sec2 {
+     const BASE: usize = 0x00841000;
+ }
+ 
+-impl FalconEngine for Sec2 {
+-    const ID: Self = Sec2(());
+-}
++impl FalconEngine for Sec2 {}
+diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
+index c62abcaed547..6b392588f766 100644
+--- a/drivers/gpu/nova-core/fb.rs
++++ b/drivers/gpu/nova-core/fb.rs
+@@ -4,6 +4,7 @@
+ 
+ use kernel::{
+     device,
++    io::Io,
+     prelude::*,
+     ptr::{
+         Alignable,
+@@ -134,7 +135,10 @@ pub(crate) fn new(chipset: Chipset, bar: &Bar0, gsp_fw: &GspFirmware) -> Result<
+                 let base = fb.end - NV_PRAMIN_SIZE;
+ 
+                 if hal.supports_display(bar) {
+-                    match regs::NV_PDISP_VGA_WORKSPACE_BASE::read(bar).vga_workspace_addr() {
++                    match bar
++                        .read(regs::NV_PDISP_VGA_WORKSPACE_BASE)
++                        .vga_workspace_addr()
++                    {
+                         Some(addr) => {
+                             if addr < base {
+                                 const VBIOS_WORKSPACE_SIZE: u64 = usize_as_u64(SZ_128K);
+diff --git a/drivers/gpu/nova-core/fb/hal/ga100.rs b/drivers/gpu/nova-core/fb/hal/ga100.rs
+index e0acc41aa7cd..9c95733f1a48 100644
+--- a/drivers/gpu/nova-core/fb/hal/ga100.rs
++++ b/drivers/gpu/nova-core/fb/hal/ga100.rs
+@@ -1,6 +1,13 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-use kernel::prelude::*;
++use kernel::{
++    io::{
++        Io,
++        IoRef, //
++    },
++    num::Bounded,
++    prelude::*, //
++};
+ 
+ use crate::{
+     driver::Bar0,
+@@ -13,26 +20,31 @@
+ struct Ga100;
+ 
+ pub(super) fn read_sysmem_flush_page_ga100(bar: &Bar0) -> u64 {
+-    u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
+-        | u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::read(bar).adr_63_40())
++    u64::from(bar.read(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
++        | u64::from(bar.read(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI).adr_63_40())
+             << FLUSH_SYSMEM_ADDR_SHIFT_HI
+ }
+ 
+ pub(super) fn write_sysmem_flush_page_ga100(bar: &Bar0, addr: u64) {
+-    regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::default()
+-        // CAST: `as u32` is used on purpose since the remaining bits are guaranteed to fit within
+-        // a `u32`.
+-        .set_adr_63_40((addr >> FLUSH_SYSMEM_ADDR_SHIFT_HI) as u32)
+-        .write(bar);
+-    regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::default()
+-        // CAST: `as u32` is used on purpose since we want to strip the upper bits that have been
+-        // written to `NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI`.
+-        .set_adr_39_08((addr >> FLUSH_SYSMEM_ADDR_SHIFT) as u32)
+-        .write(bar);
++    bar.write(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI.init(|r| {
++        r.with_adr_63_40(
++            Bounded::<u64, _>::from(addr)
++                .shr::<FLUSH_SYSMEM_ADDR_SHIFT_HI, _>()
++                .cast(),
++        )
++    }));
++
++    bar.write(
++        regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR
++            // CAST: `as u32` is used on purpose since we want to strip the upper bits that have
++            // been written to `NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI`.
++            .init(|r| r.with_adr_39_08((addr >> FLUSH_SYSMEM_ADDR_SHIFT) as u32)),
++    );
+ }
+ 
+ pub(super) fn display_enabled_ga100(bar: &Bar0) -> bool {
+-    !regs::ga100::NV_FUSE_STATUS_OPT_DISPLAY::read(bar).display_disabled()
++    !bar.read(regs::ga100::NV_FUSE_STATUS_OPT_DISPLAY)
++        .display_disabled()
+ }
+ 
+ /// Shift applied to the sysmem address before it is written into
+diff --git a/drivers/gpu/nova-core/fb/hal/ga102.rs b/drivers/gpu/nova-core/fb/hal/ga102.rs
+index 734605905031..4b9f0f74d0e7 100644
+--- a/drivers/gpu/nova-core/fb/hal/ga102.rs
++++ b/drivers/gpu/nova-core/fb/hal/ga102.rs
+@@ -1,6 +1,9 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-use kernel::prelude::*;
++use kernel::{
++    io::Io,
++    prelude::*, //
++};
+ 
+ use crate::{
+     driver::Bar0,
+@@ -9,7 +12,7 @@
+ };
+ 
+ fn vidmem_size_ga102(bar: &Bar0) -> u64 {
+-    regs::NV_USABLE_FB_SIZE_IN_MB::read(bar).usable_fb_size()
++    bar.read(regs::NV_USABLE_FB_SIZE_IN_MB).usable_fb_size()
+ }
+ 
+ struct Ga102;
+diff --git a/drivers/gpu/nova-core/fb/hal/tu102.rs b/drivers/gpu/nova-core/fb/hal/tu102.rs
+index eec984f4e816..58894fb870f7 100644
+--- a/drivers/gpu/nova-core/fb/hal/tu102.rs
++++ b/drivers/gpu/nova-core/fb/hal/tu102.rs
+@@ -1,6 +1,12 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-use kernel::prelude::*;
++use kernel::{
++    io::{
++        Io,
++        IoRef, //
++    },
++    prelude::*, //
++};
+ 
+ use crate::{
+     driver::Bar0,
+@@ -13,26 +19,24 @@
+ pub(super) const FLUSH_SYSMEM_ADDR_SHIFT: u32 = 8;
+ 
+ pub(super) fn read_sysmem_flush_page_gm107(bar: &Bar0) -> u64 {
+-    u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
++    u64::from(bar.read(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
+ }
+ 
+ pub(super) fn write_sysmem_flush_page_gm107(bar: &Bar0, addr: u64) -> Result {
+     // Check that the address doesn't overflow the receiving 32-bit register.
+     u32::try_from(addr >> FLUSH_SYSMEM_ADDR_SHIFT)
+         .map_err(|_| EINVAL)
+-        .map(|addr| {
+-            regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::default()
+-                .set_adr_39_08(addr)
+-                .write(bar)
+-        })
++        .map(|addr| bar.write(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR.init(|r| r.with_adr_39_08(addr))))
+ }
+ 
+ pub(super) fn display_enabled_gm107(bar: &Bar0) -> bool {
+-    !regs::gm107::NV_FUSE_STATUS_OPT_DISPLAY::read(bar).display_disabled()
++    !bar.read(regs::gm107::NV_FUSE_STATUS_OPT_DISPLAY)
++        .display_disabled()
+ }
+ 
+ pub(super) fn vidmem_size_gp102(bar: &Bar0) -> u64 {
+-    regs::NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE::read(bar).usable_fb_size()
++    bar.read(regs::NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE)
++        .usable_fb_size()
+ }
+ 
+ struct Tu102;
+diff --git a/drivers/gpu/nova-core/gfw.rs b/drivers/gpu/nova-core/gfw.rs
+index 9121f400046d..fb75dd10a172 100644
+--- a/drivers/gpu/nova-core/gfw.rs
++++ b/drivers/gpu/nova-core/gfw.rs
+@@ -19,7 +19,10 @@
+ //! Note that the devinit sequence also needs to run during suspend/resume.
+ 
+ use kernel::{
+-    io::poll::read_poll_timeout,
++    io::{
++        poll::read_poll_timeout,
++        Io, //
++    },
+     prelude::*,
+     time::Delta, //
+ };
+@@ -58,9 +61,11 @@ pub(crate) fn wait_gfw_boot_completion(bar: &Bar0) -> Result {
+             Ok(
+                 // Check that FWSEC has lowered its protection level before reading the GFW_BOOT
+                 // status.
+-                regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK::read(bar)
++                bar.read(regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK)
+                     .read_protection_level0()
+-                    && regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT::read(bar).completed(),
++                    && bar
++                        .read(regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT)
++                        .completed(),
+             )
+         },
+         |&gfw_booted| gfw_booted,
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index 9b042ef1a308..ca2c153cf87f 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -4,6 +4,8 @@
+     device,
+     devres::Devres,
+     fmt,
++    io::Io,
++    num::Bounded,
+     pci,
+     prelude::*,
+     sync::Arc, //
+@@ -122,24 +124,19 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+ }
+ 
+ /// Enum representation of the GPU generation.
+-///
+-/// TODO: remove the `Default` trait implementation, and the `#[default]`
+-/// attribute, once the register!() macro (which creates Architecture items) no
+-/// longer requires it for read-only fields.
+-#[derive(fmt::Debug, Default, Copy, Clone)]
++#[derive(fmt::Debug, Copy, Clone)]
+ #[repr(u8)]
+ pub(crate) enum Architecture {
+-    #[default]
+     Turing = 0x16,
+     Ampere = 0x17,
+     Ada = 0x19,
+ }
+ 
+-impl TryFrom<u8> for Architecture {
++impl TryFrom<Bounded<u32, 6>> for Architecture {
+     type Error = Error;
+ 
+-    fn try_from(value: u8) -> Result<Self> {
+-        match value {
++    fn try_from(value: Bounded<u32, 6>) -> Result<Self> {
++        match u8::from(value) {
+             0x16 => Ok(Self::Turing),
+             0x17 => Ok(Self::Ampere),
+             0x19 => Ok(Self::Ada),
+@@ -148,23 +145,26 @@ fn try_from(value: u8) -> Result<Self> {
+     }
+ }
+ 
+-impl From<Architecture> for u8 {
++impl From<Architecture> for Bounded<u32, 6> {
+     fn from(value: Architecture) -> Self {
+-        // CAST: `Architecture` is `repr(u8)`, so this cast is always lossless.
+-        value as u8
++        match value {
++            Architecture::Turing => Bounded::<u8, 6>::new::<0x16>().cast(),
++            Architecture::Ampere => Bounded::<u8, 6>::new::<0x17>().cast(),
++            Architecture::Ada => Bounded::<u8, 6>::new::<0x19>().cast(),
 +        }
+     }
+ }
+ 
+ pub(crate) struct Revision {
+-    major: u8,
+-    minor: u8,
++    major: Bounded<u8, 4>,
++    minor: Bounded<u8, 4>,
+ }
+ 
+ impl From<regs::NV_PMC_BOOT_42> for Revision {
+     fn from(boot0: regs::NV_PMC_BOOT_42) -> Self {
+         Self {
+-            major: boot0.major_revision(),
+-            minor: boot0.minor_revision(),
++            major: boot0.major_revision().cast(),
++            minor: boot0.minor_revision().cast(),
+         }
+     }
+ }
+@@ -201,13 +201,13 @@ fn new(dev: &device::Device, bar: &Bar0) -> Result<Spec> {
+         //     from an earlier (pre-Fermi) era, and then using boot42 to precisely identify the GPU.
+         //     Somewhere in the Rubin timeframe, boot0 will no longer have space to add new GPU IDs.
+ 
+-        let boot0 = regs::NV_PMC_BOOT_0::read(bar);
++        let boot0 = bar.read(regs::NV_PMC_BOOT_0);
+ 
+         if boot0.is_older_than_fermi() {
+             return Err(ENODEV);
+         }
+ 
+-        let boot42 = regs::NV_PMC_BOOT_42::read(bar);
++        let boot42 = bar.read(regs::NV_PMC_BOOT_42);
+         Spec::try_from(boot42).inspect_err(|_| {
+             dev_err!(dev, "Unsupported chipset: {}\n", boot42);
+         })
+diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
+index be427fe26a58..154a2bc4655e 100644
+--- a/drivers/gpu/nova-core/gsp/boot.rs
++++ b/drivers/gpu/nova-core/gsp/boot.rs
+@@ -5,6 +5,7 @@
+     dma::CoherentAllocation,
+     dma_write,
+     io::poll::read_poll_timeout,
++    io::Io,
+     pci,
+     prelude::*,
+     time::Delta, //
+@@ -55,7 +56,7 @@ fn run_fwsec_frts(
+     ) -> Result<()> {
+         // Check that the WPR2 region does not already exists - if it does, we cannot run
+         // FWSEC-FRTS until the GPU is reset.
+-        if regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI::read(bar).higher_bound() != 0 {
++        if bar.read(regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI).higher_bound() != 0 {
+             dev_err!(
+                 dev,
+                 "WPR2 region already exists - GPU needs to be reset to proceed\n"
+@@ -78,7 +79,9 @@ fn run_fwsec_frts(
+         fwsec_frts.run(dev, falcon, bar)?;
+ 
+         // SCRATCH_E contains the error code for FWSEC-FRTS.
+-        let frts_status = regs::NV_PBUS_SW_SCRATCH_0E_FRTS_ERR::read(bar).frts_err_code();
++        let frts_status = bar
++            .read(regs::NV_PBUS_SW_SCRATCH_0E_FRTS_ERR)
++            .frts_err_code();
+         if frts_status != 0 {
+             dev_err!(
+                 dev,
+@@ -91,8 +94,8 @@ fn run_fwsec_frts(
+ 
+         // Check that the WPR2 region has been created as we requested.
+         let (wpr2_lo, wpr2_hi) = (
+-            regs::NV_PFB_PRI_MMU_WPR2_ADDR_LO::read(bar).lower_bound(),
+-            regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI::read(bar).higher_bound(),
++            bar.read(regs::NV_PFB_PRI_MMU_WPR2_ADDR_LO).lower_bound(),
++            bar.read(regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI).higher_bound(),
+         );
+ 
+         match (wpr2_lo, wpr2_hi) {
+diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
+index 46819a82a51a..0b01515c39f6 100644
+--- a/drivers/gpu/nova-core/gsp/cmdq.rs
++++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+@@ -16,7 +16,11 @@
+         DmaAddress, //
+     },
+     dma_write,
+-    io::poll::read_poll_timeout,
++    io::{
++        poll::read_poll_timeout,
++        Io,
++        IoRef, //
++    },
+     prelude::*,
+     sync::aref::ARef,
+     time::Delta,
+@@ -475,9 +479,7 @@ fn calculate_checksum<T: Iterator<Item = u8>>(it: T) -> u32 {
+ 
+     /// Notifies the GSP that we have updated the command queue pointers.
+     fn notify_gsp(bar: &Bar0) {
+-        regs::NV_PGSP_QUEUE_HEAD::default()
+-            .set_address(0)
+-            .write(bar);
++        bar.write(regs::NV_PGSP_QUEUE_HEAD.init(|r| r.with_address(0u32)));
+     }
+ 
+     /// Sends `command` to the GSP.
+diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
+index ea0d32f5396c..63d448e90406 100644
+--- a/drivers/gpu/nova-core/regs.rs
++++ b/drivers/gpu/nova-core/regs.rs
+@@ -1,13 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-// Required to retain the original register names used by OpenRM, which are all capital snake case
+-// but are mapped to types.
+-#![allow(non_camel_case_types)]
+-
+-#[macro_use]
+-pub(crate) mod macros;
+-
+ use kernel::{
++    io::Io,
+     prelude::*,
+     time, //
+ };
+@@ -35,20 +29,64 @@
+     num::FromSafeCast,
+ };
+ 
++// All nova-core registers are 32-bit and `pub(crate)`. Wrap the `register!` macro to avoid
++// repeating this information for every register.
++macro_rules! nv_reg {
++    (
++        $(
++            $(#[$attr:meta])* $name:ident $([ $size:expr $(; $stride:expr)? ])?
++                $(@ $offset:literal)?
++                $(@ $base:ident + $base_offset:literal)?
++                $(=> $alias:ident $(+ $alias_offset:ident)? $([$alias_idx:expr])? )?
++            $(, $comment:literal)? { $($fields:tt)* }
++        )*
++    )=> {
++        $(
++        ::kernel::register!(
++            @reg $(#[$attr])* pub(crate) $name(u32) $([$size $(; $stride)?])?
++                $(@ $offset)?
++                $(@ $base + $base_offset)?
++                $(=> $alias $(+ $alias_offset)? $([$alias_idx])? )?
++            $(, $comment)? { $($fields)* }
++        );
++        )*
 +    };
 +}
++
+ // PMC
+ 
+-register!(NV_PMC_BOOT_0 @ 0x00000000, "Basic revision information about the GPU" {
+-    3:0     minor_revision as u8, "Minor revision of the chip";
+-    7:4     major_revision as u8, "Major revision of the chip";
+-    8:8     architecture_1 as u8, "MSB of the architecture";
+-    23:20   implementation as u8, "Implementation version of the architecture";
+-    28:24   architecture_0 as u8, "Lower bits of the architecture";
+-});
++nv_reg! {
++    /// Basic revision information about the GPU.
++    NV_PMC_BOOT_0 @ 0x00000000 {
++        /// Minor revision of the chip.
++        3:0     minor_revision;
++        /// Major revision of the chip.
++        7:4     major_revision;
++        /// Meta-variable `newbase` repeats 0 times, but `offset` repeats 1 time.
++        8:8     architecture_1;
++        /// Implementation version of the architecture.
++        23:20   implementation;
++        /// Lower bits of the architecture.
++        28:24   architecture_0;
++    }
++
++    /// Extended architecture information.
++    NV_PMC_BOOT_42 @ 0x00000a00 {
++        /// Minor revision of the chip.
++        15:12   minor_revision;
++        /// Major revision of the chip.
++        19:16   major_revision;
++        /// Implementation version of the architecture.
++        23:20   implementation;
++        /// Architecture value.
++        29:24   architecture ?=> Architecture;
++    }
++}
+ 
+ impl NV_PMC_BOOT_0 {
+     pub(crate) fn is_older_than_fermi(self) -> bool {
+         // From https://github.com/NVIDIA/open-gpu-doc/tree/master/manuals :
+-        const NV_PMC_BOOT_0_ARCHITECTURE_GF100: u8 = 0xc;
++        const NV_PMC_BOOT_0_ARCHITECTURE_GF100: u32 = 0xc;
+ 
+         // Older chips left arch1 zeroed out. That, combined with an arch0 value that is less than
+         // GF100, means "older than Fermi".
+@@ -56,13 +94,6 @@ pub(crate) fn is_older_than_fermi(self) -> bool {
+     }
+ }
+ 
+-register!(NV_PMC_BOOT_42 @ 0x00000a00, "Extended architecture information" {
+-    15:12   minor_revision as u8, "Minor revision of the chip";
+-    19:16   major_revision as u8, "Major revision of the chip";
+-    23:20   implementation as u8, "Implementation version of the architecture";
+-    29:24   architecture as u8 ?=> Architecture, "Architecture value";
+-});
+-
+ impl NV_PMC_BOOT_42 {
+     /// Combines `architecture` and `implementation` to obtain a code unique to the chipset.
+     pub(crate) fn chipset(self) -> Result<Chipset> {
+@@ -76,8 +107,8 @@ pub(crate) fn chipset(self) -> Result<Chipset> {
+ 
+     /// Returns the raw architecture value from the register.
+     fn architecture_raw(self) -> u8 {
+-        ((self.0 >> Self::ARCHITECTURE_RANGE.start()) & ((1 << Self::ARCHITECTURE_RANGE.len()) - 1))
+-            as u8
++        ((self.inner >> Self::ARCHITECTURE_RANGE.start())
++            & ((1 << Self::ARCHITECTURE_RANGE.len()) - 1)) as u8
+     }
+ }
+ 
+@@ -86,7 +117,7 @@ fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
+         write!(
+             f,
+             "boot42 = 0x{:08x} (architecture 0x{:x}, implementation 0x{:x})",
+-            self.0,
++            self.inner,
+             self.architecture_raw(),
+             self.implementation()
+         )
+@@ -95,35 +126,50 @@ fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
+ 
+ // PBUS
+ 
+-register!(NV_PBUS_SW_SCRATCH @ 0x00001400[64]  {});
++nv_reg! {
++    NV_PBUS_SW_SCRATCH[64] @ 0x00001400 {}
+ 
+-register!(NV_PBUS_SW_SCRATCH_0E_FRTS_ERR => NV_PBUS_SW_SCRATCH[0xe],
+-    "scratch register 0xe used as FRTS firmware error code" {
+-    31:16   frts_err_code as u16;
+-});
++    /// Scratch register 0xe used as FRTS firmware error code.
++    NV_PBUS_SW_SCRATCH_0E_FRTS_ERR => NV_PBUS_SW_SCRATCH[0xe] {
++        31:16   frts_err_code;
++    }
++}
+ 
+ // PFB
+ 
+-// The following two registers together hold the physical system memory address that is used by the
+-// GPU to perform sysmembar operations (see `fb::SysmemFlush`).
++nv_reg! {
++    /// Low bits of the physical system memory address used by the GPU to perform sysmembar
++    /// operations (see [`crate::fb::SysmemFlush`]).
++    NV_PFB_NISO_FLUSH_SYSMEM_ADDR @ 0x00100c10 {
++        31:0    adr_39_08;
++    }
+ 
+-register!(NV_PFB_NISO_FLUSH_SYSMEM_ADDR @ 0x00100c10 {
+-    31:0    adr_39_08 as u32;
+-});
++    /// High bits of the physical system memory address used by the GPU to perform sysmembar
++    /// operations (see [`crate::fb::SysmemFlush`]).
++    NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI @ 0x00100c40 {
++        23:0    adr_63_40;
++    }
+ 
+-register!(NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI @ 0x00100c40 {
+-    23:0    adr_63_40 as u32;
+-});
++    NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE @ 0x00100ce0 {
++        3:0     lower_scale;
++        9:4     lower_mag;
++        30:30   ecc_mode_enabled => bool;
++    }
+ 
+-register!(NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE @ 0x00100ce0 {
+-    3:0     lower_scale as u8;
+-    9:4     lower_mag as u8;
+-    30:30   ecc_mode_enabled as bool;
+-});
++    NV_PGSP_QUEUE_HEAD @ 0x00110c00 {
++        31:0    address;
++    }
+ 
+-register!(NV_PGSP_QUEUE_HEAD @ 0x00110c00 {
+-    31:0    address as u32;
+-});
++    NV_PFB_PRI_MMU_WPR2_ADDR_LO @ 0x001fa824 {
++        /// Bits 12..40 of the lower (inclusive) bound of the WPR2 region.
++        31:4    lo_val;
++    }
++
++    NV_PFB_PRI_MMU_WPR2_ADDR_HI @ 0x001fa828 {
++        /// Bits 12..40 of the higher (exclusive) bound of the WPR2 region.
++        31:4    hi_val;
++    }
++}
+ 
+ impl NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE {
+     /// Returns the usable framebuffer size, in bytes.
+@@ -140,10 +186,6 @@ pub(crate) fn usable_fb_size(self) -> u64 {
+     }
+ }
+ 
+-register!(NV_PFB_PRI_MMU_WPR2_ADDR_LO@0x001fa824  {
+-    31:4    lo_val as u32, "Bits 12..40 of the lower (inclusive) bound of the WPR2 region";
+-});
+-
+ impl NV_PFB_PRI_MMU_WPR2_ADDR_LO {
+     /// Returns the lower (inclusive) bound of the WPR2 region.
+     pub(crate) fn lower_bound(self) -> u64 {
+@@ -151,10 +193,6 @@ pub(crate) fn lower_bound(self) -> u64 {
+     }
+ }
+ 
+-register!(NV_PFB_PRI_MMU_WPR2_ADDR_HI@0x001fa828  {
+-    31:4    hi_val as u32, "Bits 12..40 of the higher (exclusive) bound of the WPR2 region";
+-});
+-
+ impl NV_PFB_PRI_MMU_WPR2_ADDR_HI {
+     /// Returns the higher (exclusive) bound of the WPR2 region.
+     ///
+@@ -173,29 +211,30 @@ pub(crate) fn higher_bound(self) -> u64 {
+ // These scratch registers remain powered on even in a low-power state and have a designated group
+ // number.
+ 
+-// Boot Sequence Interface (BSI) register used to determine
+-// if GSP reload/resume has completed during the boot process.
+-register!(NV_PGC6_BSI_SECURE_SCRATCH_14 @ 0x001180f8 {
+-    26:26   boot_stage_3_handoff as bool;
+-});
+-
+-// Privilege level mask register. It dictates whether the host CPU has privilege to access the
+-// `PGC6_AON_SECURE_SCRATCH_GROUP_05` register (which it needs to read GFW_BOOT).
+-register!(NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK @ 0x00118128,
+-          "Privilege level mask register" {
+-    0:0     read_protection_level0 as bool, "Set after FWSEC lowers its protection level";
+-});
+-
+-// OpenRM defines this as a register array, but doesn't specify its size and only uses its first
+-// element. Be conservative until we know the actual size or need to use more registers.
+-register!(NV_PGC6_AON_SECURE_SCRATCH_GROUP_05 @ 0x00118234[1] {});
+-
+-register!(
+-    NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT => NV_PGC6_AON_SECURE_SCRATCH_GROUP_05[0],
+-    "Scratch group 05 register 0 used as GFW boot progress indicator" {
+-        7:0    progress as u8, "Progress of GFW boot (0xff means completed)";
++nv_reg! {
++    /// Boot Sequence Interface (BSI) register used to determine
++    /// if GSP reload/resume has completed during the boot process.
++    NV_PGC6_BSI_SECURE_SCRATCH_14 @ 0x001180f8 {
++        26:26   boot_stage_3_handoff => bool;
+     }
+-);
++
++    /// Privilege level mask register. It dictates whether the host CPU has privilege to access the
++    /// `PGC6_AON_SECURE_SCRATCH_GROUP_05` register (which it needs to read GFW_BOOT).
++    NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK @ 0x00118128 {
++        /// Set after FWSEC lowers its protection level.
++        0:0     read_protection_level0 => bool;
++    }
++
++    /// OpenRM defines this as a register array, but doesn't specify its size and only uses its
++    /// first element. Be conservative until we know the actual size or need to use more registers.
++    NV_PGC6_AON_SECURE_SCRATCH_GROUP_05[1] @ 0x00118234 {}
++
++    /// Scratch group 05 register 0 used as GFW boot progress indicator.
++    NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT => NV_PGC6_AON_SECURE_SCRATCH_GROUP_05[0] {
++        /// Progress of GFW boot (0xff means completed).
++        7:0    progress;
++    }
++}
+ 
+ impl NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT {
+     /// Returns `true` if GFW boot is completed.
+@@ -204,16 +243,17 @@ pub(crate) fn completed(self) -> bool {
+     }
+ }
+ 
+-register!(NV_PGC6_AON_SECURE_SCRATCH_GROUP_42 @ 0x001183a4 {
+-    31:0    value as u32;
+-});
+-
+-register!(
+-    NV_USABLE_FB_SIZE_IN_MB => NV_PGC6_AON_SECURE_SCRATCH_GROUP_42,
+-    "Scratch group 42 register used as framebuffer size" {
+-        31:0    value as u32, "Usable framebuffer size, in megabytes";
++nv_reg! {
++    NV_PGC6_AON_SECURE_SCRATCH_GROUP_42 @ 0x001183a4 {
++        31:0    value;
+     }
+-);
++
++    /// Scratch group 42 register used as framebuffer size.
++    NV_USABLE_FB_SIZE_IN_MB => NV_PGC6_AON_SECURE_SCRATCH_GROUP_42 {
++        /// Usable framebuffer size, in megabytes.
++        31:0    value;
++    }
++}
+ 
+ impl NV_USABLE_FB_SIZE_IN_MB {
+     /// Returns the usable framebuffer size, in bytes.
+@@ -224,10 +264,14 @@ pub(crate) fn usable_fb_size(self) -> u64 {
+ 
+ // PDISP
+ 
+-register!(NV_PDISP_VGA_WORKSPACE_BASE @ 0x00625f04 {
+-    3:3     status_valid as bool, "Set if the `addr` field is valid";
+-    31:8    addr as u32, "VGA workspace base address divided by 0x10000";
+-});
++nv_reg! {
++    NV_PDISP_VGA_WORKSPACE_BASE @ 0x00625f04 {
++        /// Set if the `addr` field is valid.
++        3:3     status_valid => bool;
++        /// VGA workspace base address divided by 0x10000.
++        31:8    addr;
++    }
++}
+ 
+ impl NV_PDISP_VGA_WORKSPACE_BASE {
+     /// Returns the base address of the VGA workspace, or `None` if none exists.
+@@ -244,73 +288,127 @@ pub(crate) fn vga_workspace_addr(self) -> Option<u64> {
+ 
+ pub(crate) const NV_FUSE_OPT_FPF_SIZE: usize = 16;
+ 
+-register!(NV_FUSE_OPT_FPF_NVDEC_UCODE1_VERSION @ 0x00824100[NV_FUSE_OPT_FPF_SIZE] {
+-    15:0    data as u16;
+-});
++nv_reg! {
++    NV_FUSE_OPT_FPF_NVDEC_UCODE1_VERSION[NV_FUSE_OPT_FPF_SIZE] @ 0x00824100 {
++        15:0    data;
++    }
+ 
+-register!(NV_FUSE_OPT_FPF_SEC2_UCODE1_VERSION @ 0x00824140[NV_FUSE_OPT_FPF_SIZE] {
+-    15:0    data as u16;
+-});
++    NV_FUSE_OPT_FPF_SEC2_UCODE1_VERSION[NV_FUSE_OPT_FPF_SIZE] @ 0x00824140 {
++        15:0    data;
++    }
+ 
+-register!(NV_FUSE_OPT_FPF_GSP_UCODE1_VERSION @ 0x008241c0[NV_FUSE_OPT_FPF_SIZE] {
+-    15:0    data as u16;
+-});
+-
+-// PFALCON
+-
+-register!(NV_PFALCON_FALCON_IRQSCLR @ PFalconBase[0x00000004] {
+-    4:4     halt as bool;
+-    6:6     swgen0 as bool;
+-});
+-
+-register!(NV_PFALCON_FALCON_MAILBOX0 @ PFalconBase[0x00000040] {
+-    31:0    value as u32;
+-});
+-
+-register!(NV_PFALCON_FALCON_MAILBOX1 @ PFalconBase[0x00000044] {
+-    31:0    value as u32;
+-});
+-
+-// Used to store version information about the firmware running
+-// on the Falcon processor.
+-register!(NV_PFALCON_FALCON_OS @ PFalconBase[0x00000080] {
+-    31:0    value as u32;
+-});
+-
+-register!(NV_PFALCON_FALCON_RM @ PFalconBase[0x00000084] {
+-    31:0    value as u32;
+-});
+-
+-register!(NV_PFALCON_FALCON_HWCFG2 @ PFalconBase[0x000000f4] {
+-    10:10   riscv as bool;
+-    12:12   mem_scrubbing as bool, "Set to 0 after memory scrubbing is completed";
+-    31:31   reset_ready as bool, "Signal indicating that reset is completed (GA102+)";
+-});
+-
+-impl NV_PFALCON_FALCON_HWCFG2 {
+-    /// Returns `true` if memory scrubbing is completed.
+-    pub(crate) fn mem_scrubbing_done(self) -> bool {
+-        !self.mem_scrubbing()
++    NV_FUSE_OPT_FPF_GSP_UCODE1_VERSION[NV_FUSE_OPT_FPF_SIZE] @ 0x008241c0 {
++        15:0    data;
+     }
+ }
+ 
+-register!(NV_PFALCON_FALCON_CPUCTL @ PFalconBase[0x00000100] {
+-    1:1     startcpu as bool;
+-    4:4     halted as bool;
+-    6:6     alias_en as bool;
+-});
++// PFALCON
+ 
+-register!(NV_PFALCON_FALCON_BOOTVEC @ PFalconBase[0x00000104] {
+-    31:0    value as u32;
+-});
++nv_reg! {
++    NV_PFALCON_FALCON_IRQSCLR @ PFalconBase + 0x00000004 {
++        4:4     halt => bool;
++        6:6     swgen0 => bool;
++    }
+ 
+-register!(NV_PFALCON_FALCON_DMACTL @ PFalconBase[0x0000010c] {
+-    0:0     require_ctx as bool;
+-    1:1     dmem_scrubbing as bool;
+-    2:2     imem_scrubbing as bool;
+-    6:3     dmaq_num as u8;
+-    7:7     secure_stat as bool;
+-});
++    NV_PFALCON_FALCON_MAILBOX0 @ PFalconBase + 0x00000040 {
++        31:0    value => u32;
++    }
++
++    NV_PFALCON_FALCON_MAILBOX1 @ PFalconBase + 0x00000044 {
++        31:0    value => u32;
++    }
++
++    /// Used to store version information about the firmware running
++    /// on the Falcon processor.
++    NV_PFALCON_FALCON_OS @ PFalconBase + 0x00000080 {
++        31:0    value => u32;
++    }
++
++    NV_PFALCON_FALCON_RM @ PFalconBase + 0x00000084 {
++        31:0    value => u32;
++    }
++
++    NV_PFALCON_FALCON_HWCFG2 @ PFalconBase + 0x000000f4 {
++        10:10   riscv => bool;
++        /// Set to 0 after memory scrubbing is completed.
++        12:12   mem_scrubbing => bool;
++        /// Signal indicating that reset is completed (GA102+).
++        31:31   reset_ready => bool;
++    }
++
++    NV_PFALCON_FALCON_CPUCTL @ PFalconBase + 0x00000100 {
++        1:1     startcpu => bool;
++        4:4     halted => bool;
++        6:6     alias_en => bool;
++    }
++
++    NV_PFALCON_FALCON_BOOTVEC @ PFalconBase + 0x00000104 {
++        31:0    value => u32;
++    }
++
++    NV_PFALCON_FALCON_DMACTL @ PFalconBase + 0x0000010c {
++        0:0     require_ctx => bool;
++        1:1     dmem_scrubbing => bool;
++        2:2     imem_scrubbing => bool;
++        6:3     dmaq_num;
++        7:7     secure_stat => bool;
++    }
++
++    NV_PFALCON_FALCON_DMATRFBASE @ PFalconBase + 0x00000110 {
++        31:0    base => u32;
++    }
++
++    NV_PFALCON_FALCON_DMATRFMOFFS @ PFalconBase + 0x00000114 {
++        23:0    offs;
++    }
++
++    NV_PFALCON_FALCON_DMATRFCMD @ PFalconBase + 0x00000118 {
++        0:0     full => bool;
++        1:1     idle => bool;
++        3:2     sec;
++        4:4     imem => bool;
++        5:5     is_write => bool;
++        10:8    size ?=> DmaTrfCmdSize;
++        14:12   ctxdma;
++        16:16   set_dmtag;
++    }
++
++    NV_PFALCON_FALCON_DMATRFFBOFFS @ PFalconBase + 0x0000011c {
++        31:0    offs => u32;
++    }
++
++    NV_PFALCON_FALCON_DMATRFBASE1 @ PFalconBase + 0x00000128 {
++        8:0     base;
++    }
++
++    NV_PFALCON_FALCON_HWCFG1 @ PFalconBase + 0x0000012c {
++        /// Core revision.
++        3:0     core_rev ?=> FalconCoreRev;
++        /// Security model.
++        5:4     security_model ?=> FalconSecurityModel;
++        /// Core revision subversion.
++        7:6     core_rev_subversion => FalconCoreRevSubversion;
++    }
++
++    NV_PFALCON_FALCON_CPUCTL_ALIAS @ PFalconBase + 0x00000130 {
++        1:1     startcpu => bool;
++    }
++
++    /// Actually known as `NV_PSEC_FALCON_ENGINE` and `NV_PGSP_FALCON_ENGINE` depending on the
++    /// falcon instance.
++    NV_PFALCON_FALCON_ENGINE @ PFalconBase + 0x000003c0 {
++        0:0     reset => bool;
++    }
++
++    NV_PFALCON_FBIF_TRANSCFG[8] @ PFalconBase + 0x00000600 {
++        1:0     target ?=> FalconFbifTarget;
++        2:2     mem_type => FalconFbifMemType;
++    }
++
++    NV_PFALCON_FBIF_CTL @ PFalconBase + 0x00000624 {
++        7:7     allow_phys_no_ctx => bool;
++    }
++}
+ 
+ impl NV_PFALCON_FALCON_DMACTL {
+     /// Returns `true` if memory scrubbing is completed.
+@@ -319,117 +417,81 @@ pub(crate) fn mem_scrubbing_done(self) -> bool {
+     }
+ }
+ 
+-register!(NV_PFALCON_FALCON_DMATRFBASE @ PFalconBase[0x00000110] {
+-    31:0    base as u32;
+-});
+-
+-register!(NV_PFALCON_FALCON_DMATRFMOFFS @ PFalconBase[0x00000114] {
+-    23:0    offs as u32;
+-});
+-
+-register!(NV_PFALCON_FALCON_DMATRFCMD @ PFalconBase[0x00000118] {
+-    0:0     full as bool;
+-    1:1     idle as bool;
+-    3:2     sec as u8;
+-    4:4     imem as bool;
+-    5:5     is_write as bool;
+-    10:8    size as u8 ?=> DmaTrfCmdSize;
+-    14:12   ctxdma as u8;
+-    16:16   set_dmtag as u8;
+-});
+-
+ impl NV_PFALCON_FALCON_DMATRFCMD {
+     /// Programs the `imem` and `sec` fields for the given FalconMem
+     pub(crate) fn with_falcon_mem(self, mem: FalconMem) -> Self {
+-        self.set_imem(mem != FalconMem::Dmem)
+-            .set_sec(if mem == FalconMem::ImemSecure { 1 } else { 0 })
++        let this = self.with_imem(mem != FalconMem::Dmem);
++
++        match mem {
++            FalconMem::ImemSecure => this.with_const_sec::<1>(),
++            _ => this.with_const_sec::<0>(),
++        }
+     }
+ }
+ 
+-register!(NV_PFALCON_FALCON_DMATRFFBOFFS @ PFalconBase[0x0000011c] {
+-    31:0    offs as u32;
+-});
+-
+-register!(NV_PFALCON_FALCON_DMATRFBASE1 @ PFalconBase[0x00000128] {
+-    8:0     base as u16;
+-});
+-
+-register!(NV_PFALCON_FALCON_HWCFG1 @ PFalconBase[0x0000012c] {
+-    3:0     core_rev as u8 ?=> FalconCoreRev, "Core revision";
+-    5:4     security_model as u8 ?=> FalconSecurityModel, "Security model";
+-    7:6     core_rev_subversion as u8 ?=> FalconCoreRevSubversion, "Core revision subversion";
+-});
+-
+-register!(NV_PFALCON_FALCON_CPUCTL_ALIAS @ PFalconBase[0x00000130] {
+-    1:1     startcpu as bool;
+-});
+-
+-// Actually known as `NV_PSEC_FALCON_ENGINE` and `NV_PGSP_FALCON_ENGINE` depending on the falcon
+-// instance.
+-register!(NV_PFALCON_FALCON_ENGINE @ PFalconBase[0x000003c0] {
+-    0:0     reset as bool;
+-});
+-
+ impl NV_PFALCON_FALCON_ENGINE {
+     /// Resets the falcon
+     pub(crate) fn reset_engine<E: FalconEngine>(bar: &Bar0) {
+-        Self::read(bar, &E::ID).set_reset(true).write(bar, &E::ID);
++        bar.update(Self::of::<E>(), |r| r.with_reset(true));
+ 
+         // TIMEOUT: falcon engine should not take more than 10us to reset.
+         time::delay::fsleep(time::Delta::from_micros(10));
+ 
+-        Self::read(bar, &E::ID).set_reset(false).write(bar, &E::ID);
++        bar.update(Self::of::<E>(), |r| r.with_reset(false));
+     }
+ }
+ 
+-register!(NV_PFALCON_FBIF_TRANSCFG @ PFalconBase[0x00000600[8]] {
+-    1:0     target as u8 ?=> FalconFbifTarget;
+-    2:2     mem_type as bool => FalconFbifMemType;
+-});
+-
+-register!(NV_PFALCON_FBIF_CTL @ PFalconBase[0x00000624] {
+-    7:7     allow_phys_no_ctx as bool;
+-});
++impl NV_PFALCON_FALCON_HWCFG2 {
++    /// Returns `true` if memory scrubbing is completed.
++    pub(crate) fn mem_scrubbing_done(self) -> bool {
++        !self.mem_scrubbing()
++    }
++}
+ 
+ /* PFALCON2 */
+ 
+-register!(NV_PFALCON2_FALCON_MOD_SEL @ PFalcon2Base[0x00000180] {
+-    7:0     algo as u8 ?=> FalconModSelAlgo;
+-});
++nv_reg! {
++    NV_PFALCON2_FALCON_MOD_SEL @ PFalcon2Base + 0x00000180 {
++        7:0     algo ?=> FalconModSelAlgo;
++    }
+ 
+-register!(NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID @ PFalcon2Base[0x00000198] {
+-    7:0    ucode_id as u8;
+-});
++    NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID @ PFalcon2Base + 0x00000198 {
++        7:0    ucode_id => u8;
++    }
+ 
+-register!(NV_PFALCON2_FALCON_BROM_ENGIDMASK @ PFalcon2Base[0x0000019c] {
+-    31:0    value as u32;
+-});
++    NV_PFALCON2_FALCON_BROM_ENGIDMASK @ PFalcon2Base + 0x0000019c {
++        31:0    value => u32;
++    }
+ 
+-// OpenRM defines this as a register array, but doesn't specify its size and only uses its first
+-// element. Be conservative until we know the actual size or need to use more registers.
+-register!(NV_PFALCON2_FALCON_BROM_PARAADDR @ PFalcon2Base[0x00000210[1]] {
+-    31:0    value as u32;
+-});
++    /// OpenRM defines this as a register array, but doesn't specify its size and only uses its
++    /// first element. Be conservative until we know the actual size or need to use more registers.
++    NV_PFALCON2_FALCON_BROM_PARAADDR[1] @ PFalcon2Base + 0x00000210 {
++        31:0    value => u32;
++    }
++}
+ 
+ // PRISCV
+ 
+-// RISC-V status register for debug (Turing and GA100 only).
+-// Reflects current RISC-V core status.
+-register!(NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS @ PFalcon2Base[0x00000240] {
+-    0:0     active_stat as bool, "RISC-V core active/inactive status";
+-});
+-
+ // GA102 and later
+-register!(NV_PRISCV_RISCV_CPUCTL @ PFalcon2Base[0x00000388] {
+-    0:0     halted as bool;
+-    7:7     active_stat as bool;
+-});
++nv_reg! {
++    // RISC-V status register for debug (Turing and GA100 only).
++    // Reflects current RISC-V core status.
++    NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS @ PFalcon2Base + 0x00000240 {
++        // RISC-V core active/inactive status.
++        0:0     active_stat => bool;
++    }
+ 
+-register!(NV_PRISCV_RISCV_BCR_CTRL @ PFalcon2Base[0x00000668] {
+-    0:0     valid as bool;
+-    4:4     core_select as bool => PeregrineCoreSelect;
+-    8:8     br_fetch as bool;
+-});
++    NV_PRISCV_RISCV_CPUCTL @ PFalcon2Base + 0x00000388 {
++        0:0     halted => bool;
++        7:7     active_stat => bool;
++    }
++
++    NV_PRISCV_RISCV_BCR_CTRL @ PFalconBase + 0x00001668 {
++        0:0     valid => bool;
++        4:4     core_select => PeregrineCoreSelect;
++        8:8     br_fetch => bool;
++    }
++}
+ 
+ // The modules below provide registers that are not identical on all supported chips. They should
+ // only be used in HAL modules.
+@@ -437,15 +499,19 @@ pub(crate) fn reset_engine<E: FalconEngine>(bar: &Bar0) {
+ pub(crate) mod gm107 {
+     // FUSE
+ 
+-    register!(NV_FUSE_STATUS_OPT_DISPLAY @ 0x00021c04 {
+-        0:0     display_disabled as bool;
+-    });
++    nv_reg! {
++        NV_FUSE_STATUS_OPT_DISPLAY @ 0x00021c04 {
++            0:0     display_disabled => bool;
++        }
++    }
+ }
+ 
+ pub(crate) mod ga100 {
+     // FUSE
+ 
+-    register!(NV_FUSE_STATUS_OPT_DISPLAY @ 0x00820c04 {
+-        0:0     display_disabled as bool;
+-    });
++    nv_reg! {
++        NV_FUSE_STATUS_OPT_DISPLAY @ 0x00820c04 {
++            0:0     display_disabled => bool;
++        }
++    }
+ }
+diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core/regs/macros.rs
+deleted file mode 100644
+index ed624be1f39b..000000000000
+--- a/drivers/gpu/nova-core/regs/macros.rs
++++ /dev/null
+@@ -1,739 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-//! `register!` macro to define register layout and accessors.
+-//!
+-//! A single register typically includes several fields, which are accessed through a combination
+-//! of bit-shift and mask operations that introduce a class of potential mistakes, notably because
+-//! not all possible field values are necessarily valid.
+-//!
+-//! The `register!` macro in this module provides an intuitive and readable syntax for defining a
+-//! dedicated type for each register. Each such type comes with its own field accessors that can
+-//! return an error if a field's value is invalid. Please look at the [`bitfield`] macro for the
+-//! complete syntax of fields definitions.
+-
+-/// Trait providing a base address to be added to the offset of a relative register to obtain
+-/// its actual offset.
+-///
+-/// The `T` generic argument is used to distinguish which base to use, in case a type provides
+-/// several bases. It is given to the `register!` macro to restrict the use of the register to
+-/// implementors of this particular variant.
+-pub(crate) trait RegisterBase<T> {
+-    const BASE: usize;
+-}
+-
+-/// Defines a dedicated type for a register with an absolute offset, including getter and setter
+-/// methods for its fields and methods to read and write it from an `Io` region.
+-///
+-/// Example:
+-///
+-/// ```no_run
+-/// register!(BOOT_0 @ 0x00000100, "Basic revision information about the GPU" {
+-///    3:0     minor_revision as u8, "Minor revision of the chip";
+-///    7:4     major_revision as u8, "Major revision of the chip";
+-///    28:20   chipset as u32 ?=> Chipset, "Chipset model";
+-/// });
+-/// ```
+-///
+-/// This defines a `BOOT_0` type which can be read or written from offset `0x100` of an `Io`
+-/// region. It is composed of 3 fields, for instance `minor_revision` is made of the 4 least
+-/// significant bits of the register. Each field can be accessed and modified using accessor
+-/// methods:
+-///
+-/// ```no_run
+-/// // Read from the register's defined offset (0x100).
+-/// let boot0 = BOOT_0::read(&bar);
+-/// pr_info!("chip revision: {}.{}", boot0.major_revision(), boot0.minor_revision());
+-///
+-/// // `Chipset::try_from` is called with the value of the `chipset` field and returns an
+-/// // error if it is invalid.
+-/// let chipset = boot0.chipset()?;
+-///
+-/// // Update some fields and write the value back.
+-/// boot0.set_major_revision(3).set_minor_revision(10).write(&bar);
+-///
+-/// // Or, just read and update the register in a single step:
+-/// BOOT_0::update(&bar, |r| r.set_major_revision(3).set_minor_revision(10));
+-/// ```
+-///
+-/// The documentation strings are optional. If present, they will be added to the type's
+-/// definition, or the field getter and setter methods they are attached to.
+-///
+-/// It is also possible to create a alias register by using the `=> ALIAS` syntax. This is useful
+-/// for cases where a register's interpretation depends on the context:
+-///
+-/// ```no_run
+-/// register!(SCRATCH @ 0x00000200, "Scratch register" {
+-///    31:0     value as u32, "Raw value";
+-/// });
+-///
+-/// register!(SCRATCH_BOOT_STATUS => SCRATCH, "Boot status of the firmware" {
+-///     0:0     completed as bool, "Whether the firmware has completed booting";
+-/// });
+-/// ```
+-///
+-/// In this example, `SCRATCH_0_BOOT_STATUS` uses the same I/O address as `SCRATCH`, while also
+-/// providing its own `completed` field.
+-///
+-/// ## Relative registers
+-///
+-/// A register can be defined as being accessible from a fixed offset of a provided base. For
+-/// instance, imagine the following I/O space:
+-///
+-/// ```text
+-///           +-----------------------------+
+-///           |             ...             |
+-///           |                             |
+-///  0x100--->+------------CPU0-------------+
+-///           |                             |
+-///  0x110--->+-----------------------------+
+-///           |           CPU_CTL           |
+-///           +-----------------------------+
+-///           |             ...             |
+-///           |                             |
+-///           |                             |
+-///  0x200--->+------------CPU1-------------+
+-///           |                             |
+-///  0x210--->+-----------------------------+
+-///           |           CPU_CTL           |
+-///           +-----------------------------+
+-///           |             ...             |
+-///           +-----------------------------+
+-/// ```
+-///
+-/// `CPU0` and `CPU1` both have a `CPU_CTL` register that starts at offset `0x10` of their I/O
+-/// space segment. Since both instances of `CPU_CTL` share the same layout, we don't want to define
+-/// them twice and would prefer a way to select which one to use from a single definition
+-///
+-/// This can be done using the `Base[Offset]` syntax when specifying the register's address.
+-///
+-/// `Base` is an arbitrary type (typically a ZST) to be used as a generic parameter of the
+-/// [`RegisterBase`] trait to provide the base as a constant, i.e. each type providing a base for
+-/// this register needs to implement `RegisterBase<Base>`. Here is the above example translated
+-/// into code:
+-///
+-/// ```no_run
+-/// // Type used to identify the base.
+-/// pub(crate) struct CpuCtlBase;
+-///
+-/// // ZST describing `CPU0`.
+-/// struct Cpu0;
+-/// impl RegisterBase<CpuCtlBase> for Cpu0 {
+-///     const BASE: usize = 0x100;
+-/// }
+-/// // Singleton of `CPU0` used to identify it.
+-/// const CPU0: Cpu0 = Cpu0;
+-///
+-/// // ZST describing `CPU1`.
+-/// struct Cpu1;
+-/// impl RegisterBase<CpuCtlBase> for Cpu1 {
+-///     const BASE: usize = 0x200;
+-/// }
+-/// // Singleton of `CPU1` used to identify it.
+-/// const CPU1: Cpu1 = Cpu1;
+-///
+-/// // This makes `CPU_CTL` accessible from all implementors of `RegisterBase<CpuCtlBase>`.
+-/// register!(CPU_CTL @ CpuCtlBase[0x10], "CPU core control" {
+-///     0:0     start as bool, "Start the CPU core";
+-/// });
+-///
+-/// // The `read`, `write` and `update` methods of relative registers take an extra `base` argument
+-/// // that is used to resolve its final address by adding its `BASE` to the offset of the
+-/// // register.
+-///
+-/// // Start `CPU0`.
+-/// CPU_CTL::update(bar, &CPU0, |r| r.set_start(true));
+-///
+-/// // Start `CPU1`.
+-/// CPU_CTL::update(bar, &CPU1, |r| r.set_start(true));
+-///
+-/// // Aliases can also be defined for relative register.
+-/// register!(CPU_CTL_ALIAS => CpuCtlBase[CPU_CTL], "Alias to CPU core control" {
+-///     1:1     alias_start as bool, "Start the aliased CPU core";
+-/// });
+-///
+-/// // Start the aliased `CPU0`.
+-/// CPU_CTL_ALIAS::update(bar, &CPU0, |r| r.set_alias_start(true));
+-/// ```
+-///
+-/// ## Arrays of registers
+-///
+-/// Some I/O areas contain consecutive values that can be interpreted in the same way. These areas
+-/// can be defined as an array of identical registers, allowing them to be accessed by index with
+-/// compile-time or runtime bound checking. Simply define their address as `Address[Size]`, and add
+-/// an `idx` parameter to their `read`, `write` and `update` methods:
+-///
+-/// ```no_run
+-/// # fn no_run() -> Result<(), Error> {
+-/// # fn get_scratch_idx() -> usize {
+-/// #   0x15
+-/// # }
+-/// // Array of 64 consecutive registers with the same layout starting at offset `0x80`.
+-/// register!(SCRATCH @ 0x00000080[64], "Scratch registers" {
+-///     31:0    value as u32;
+-/// });
+-///
+-/// // Read scratch register 0, i.e. I/O address `0x80`.
+-/// let scratch_0 = SCRATCH::read(bar, 0).value();
+-/// // Read scratch register 15, i.e. I/O address `0x80 + (15 * 4)`.
+-/// let scratch_15 = SCRATCH::read(bar, 15).value();
+-///
+-/// // This is out of bounds and won't build.
+-/// // let scratch_128 = SCRATCH::read(bar, 128).value();
+-///
+-/// // Runtime-obtained array index.
+-/// let scratch_idx = get_scratch_idx();
+-/// // Access on a runtime index returns an error if it is out-of-bounds.
+-/// let some_scratch = SCRATCH::try_read(bar, scratch_idx)?.value();
+-///
+-/// // Alias to a particular register in an array.
+-/// // Here `SCRATCH[8]` is used to convey the firmware exit code.
+-/// register!(FIRMWARE_STATUS => SCRATCH[8], "Firmware exit status code" {
+-///     7:0     status as u8;
+-/// });
+-///
+-/// let status = FIRMWARE_STATUS::read(bar).status();
+-///
+-/// // Non-contiguous register arrays can be defined by adding a stride parameter.
+-/// // Here, each of the 16 registers of the array are separated by 8 bytes, meaning that the
+-/// // registers of the two declarations below are interleaved.
+-/// register!(SCRATCH_INTERLEAVED_0 @ 0x000000c0[16 ; 8], "Scratch registers bank 0" {
+-///     31:0    value as u32;
+-/// });
+-/// register!(SCRATCH_INTERLEAVED_1 @ 0x000000c4[16 ; 8], "Scratch registers bank 1" {
+-///     31:0    value as u32;
+-/// });
+-/// # Ok(())
+-/// # }
+-/// ```
+-///
+-/// ## Relative arrays of registers
+-///
+-/// Combining the two features described in the sections above, arrays of registers accessible from
+-/// a base can also be defined:
+-///
+-/// ```no_run
+-/// # fn no_run() -> Result<(), Error> {
+-/// # fn get_scratch_idx() -> usize {
+-/// #   0x15
+-/// # }
+-/// // Type used as parameter of `RegisterBase` to specify the base.
+-/// pub(crate) struct CpuCtlBase;
+-///
+-/// // ZST describing `CPU0`.
+-/// struct Cpu0;
+-/// impl RegisterBase<CpuCtlBase> for Cpu0 {
+-///     const BASE: usize = 0x100;
+-/// }
+-/// // Singleton of `CPU0` used to identify it.
+-/// const CPU0: Cpu0 = Cpu0;
+-///
+-/// // ZST describing `CPU1`.
+-/// struct Cpu1;
+-/// impl RegisterBase<CpuCtlBase> for Cpu1 {
+-///     const BASE: usize = 0x200;
+-/// }
+-/// // Singleton of `CPU1` used to identify it.
+-/// const CPU1: Cpu1 = Cpu1;
+-///
+-/// // 64 per-cpu scratch registers, arranged as an contiguous array.
+-/// register!(CPU_SCRATCH @ CpuCtlBase[0x00000080[64]], "Per-CPU scratch registers" {
+-///     31:0    value as u32;
+-/// });
+-///
+-/// let cpu0_scratch_0 = CPU_SCRATCH::read(bar, &Cpu0, 0).value();
+-/// let cpu1_scratch_15 = CPU_SCRATCH::read(bar, &Cpu1, 15).value();
+-///
+-/// // This won't build.
+-/// // let cpu0_scratch_128 = CPU_SCRATCH::read(bar, &Cpu0, 128).value();
+-///
+-/// // Runtime-obtained array index.
+-/// let scratch_idx = get_scratch_idx();
+-/// // Access on a runtime value returns an error if it is out-of-bounds.
+-/// let cpu0_some_scratch = CPU_SCRATCH::try_read(bar, &Cpu0, scratch_idx)?.value();
+-///
+-/// // `SCRATCH[8]` is used to convey the firmware exit code.
+-/// register!(CPU_FIRMWARE_STATUS => CpuCtlBase[CPU_SCRATCH[8]],
+-///     "Per-CPU firmware exit status code" {
+-///     7:0     status as u8;
+-/// });
+-///
+-/// let cpu0_status = CPU_FIRMWARE_STATUS::read(bar, &Cpu0).status();
+-///
+-/// // Non-contiguous register arrays can be defined by adding a stride parameter.
+-/// // Here, each of the 16 registers of the array are separated by 8 bytes, meaning that the
+-/// // registers of the two declarations below are interleaved.
+-/// register!(CPU_SCRATCH_INTERLEAVED_0 @ CpuCtlBase[0x00000d00[16 ; 8]],
+-///           "Scratch registers bank 0" {
+-///     31:0    value as u32;
+-/// });
+-/// register!(CPU_SCRATCH_INTERLEAVED_1 @ CpuCtlBase[0x00000d04[16 ; 8]],
+-///           "Scratch registers bank 1" {
+-///     31:0    value as u32;
+-/// });
+-/// # Ok(())
+-/// # }
+-/// ```
+-macro_rules! register {
+-    // Creates a register at a fixed offset of the MMIO space.
+-    ($name:ident @ $offset:literal $(, $comment:literal)? { $($fields:tt)* } ) => {
+-        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
+-        register!(@io_fixed $name @ $offset);
+-    };
+-
+-    // Creates an alias register of fixed offset register `alias` with its own fields.
+-    ($name:ident => $alias:ident $(, $comment:literal)? { $($fields:tt)* } ) => {
+-        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
+-        register!(@io_fixed $name @ $alias::OFFSET);
+-    };
+-
+-    // Creates a register at a relative offset from a base address provider.
+-    ($name:ident @ $base:ty [ $offset:literal ] $(, $comment:literal)? { $($fields:tt)* } ) => {
+-        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
+-        register!(@io_relative $name @ $base [ $offset ]);
+-    };
+-
+-    // Creates an alias register of relative offset register `alias` with its own fields.
+-    ($name:ident => $base:ty [ $alias:ident ] $(, $comment:literal)? { $($fields:tt)* }) => {
+-        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
+-        register!(@io_relative $name @ $base [ $alias::OFFSET ]);
+-    };
+-
+-    // Creates an array of registers at a fixed offset of the MMIO space.
+-    (
+-        $name:ident @ $offset:literal [ $size:expr ; $stride:expr ] $(, $comment:literal)? {
+-            $($fields:tt)*
+-        }
+-    ) => {
+-        static_assert!(::core::mem::size_of::<u32>() <= $stride);
+-        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
+-        register!(@io_array $name @ $offset [ $size ; $stride ]);
+-    };
+-
+-    // Shortcut for contiguous array of registers (stride == size of element).
+-    (
+-        $name:ident @ $offset:literal [ $size:expr ] $(, $comment:literal)? {
+-            $($fields:tt)*
+-        }
+-    ) => {
+-        register!($name @ $offset [ $size ; ::core::mem::size_of::<u32>() ] $(, $comment)? {
+-            $($fields)*
+-        } );
+-    };
+-
+-    // Creates an array of registers at a relative offset from a base address provider.
+-    (
+-        $name:ident @ $base:ty [ $offset:literal [ $size:expr ; $stride:expr ] ]
+-            $(, $comment:literal)? { $($fields:tt)* }
+-    ) => {
+-        static_assert!(::core::mem::size_of::<u32>() <= $stride);
+-        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
+-        register!(@io_relative_array $name @ $base [ $offset [ $size ; $stride ] ]);
+-    };
+-
+-    // Shortcut for contiguous array of relative registers (stride == size of element).
+-    (
+-        $name:ident @ $base:ty [ $offset:literal [ $size:expr ] ] $(, $comment:literal)? {
+-            $($fields:tt)*
+-        }
+-    ) => {
+-        register!($name @ $base [ $offset [ $size ; ::core::mem::size_of::<u32>() ] ]
+-            $(, $comment)? { $($fields)* } );
+-    };
+-
+-    // Creates an alias of register `idx` of relative array of registers `alias` with its own
+-    // fields.
+-    (
+-        $name:ident => $base:ty [ $alias:ident [ $idx:expr ] ] $(, $comment:literal)? {
+-            $($fields:tt)*
+-        }
+-    ) => {
+-        static_assert!($idx < $alias::SIZE);
+-        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
+-        register!(@io_relative $name @ $base [ $alias::OFFSET + $idx * $alias::STRIDE ] );
+-    };
+-
+-    // Creates an alias of register `idx` of array of registers `alias` with its own fields.
+-    // This rule belongs to the (non-relative) register arrays set, but needs to be put last
+-    // to avoid it being interpreted in place of the relative register array alias rule.
+-    ($name:ident => $alias:ident [ $idx:expr ] $(, $comment:literal)? { $($fields:tt)* }) => {
+-        static_assert!($idx < $alias::SIZE);
+-        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
+-        register!(@io_fixed $name @ $alias::OFFSET + $idx * $alias::STRIDE );
+-    };
+-
+-    // Generates the IO accessors for a fixed offset register.
+-    (@io_fixed $name:ident @ $offset:expr) => {
+-        #[allow(dead_code)]
+-        impl $name {
+-            pub(crate) const OFFSET: usize = $offset;
+-
+-            /// Read the register from its address in `io`.
+-            #[inline(always)]
+-            pub(crate) fn read<T, I>(io: &T) -> Self where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-            {
+-                Self(io.read32($offset))
+-            }
+-
+-            /// Write the value contained in `self` to the register address in `io`.
+-            #[inline(always)]
+-            pub(crate) fn write<T, I>(self, io: &T) where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-            {
+-                io.write32(self.0, $offset)
+-            }
+-
+-            /// Read the register from its address in `io` and run `f` on its value to obtain a new
+-            /// value to write back.
+-            #[inline(always)]
+-            pub(crate) fn update<T, I, F>(
+-                io: &T,
+-                f: F,
+-            ) where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                F: ::core::ops::FnOnce(Self) -> Self,
+-            {
+-                let reg = f(Self::read(io));
+-                reg.write(io);
+-            }
+-        }
+-    };
+-
+-    // Generates the IO accessors for a relative offset register.
+-    (@io_relative $name:ident @ $base:ty [ $offset:expr ]) => {
+-        #[allow(dead_code)]
+-        impl $name {
+-            pub(crate) const OFFSET: usize = $offset;
+-
+-            /// Read the register from `io`, using the base address provided by `base` and adding
+-            /// the register's offset to it.
+-            #[inline(always)]
+-            pub(crate) fn read<T, I, B>(
+-                io: &T,
+-                #[allow(unused_variables)]
+-                base: &B,
+-            ) -> Self where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                B: crate::regs::macros::RegisterBase<$base>,
+-            {
+-                const OFFSET: usize = $name::OFFSET;
+-
+-                let value = io.read32(
+-                    <B as crate::regs::macros::RegisterBase<$base>>::BASE + OFFSET
+-                );
+-
+-                Self(value)
+-            }
+-
+-            /// Write the value contained in `self` to `io`, using the base address provided by
+-            /// `base` and adding the register's offset to it.
+-            #[inline(always)]
+-            pub(crate) fn write<T, I, B>(
+-                self,
+-                io: &T,
+-                #[allow(unused_variables)]
+-                base: &B,
+-            ) where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                B: crate::regs::macros::RegisterBase<$base>,
+-            {
+-                const OFFSET: usize = $name::OFFSET;
+-
+-                io.write32(
+-                    self.0,
+-                    <B as crate::regs::macros::RegisterBase<$base>>::BASE + OFFSET
+-                );
+-            }
+-
+-            /// Read the register from `io`, using the base address provided by `base` and adding
+-            /// the register's offset to it, then run `f` on its value to obtain a new value to
+-            /// write back.
+-            #[inline(always)]
+-            pub(crate) fn update<T, I, B, F>(
+-                io: &T,
+-                base: &B,
+-                f: F,
+-            ) where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                B: crate::regs::macros::RegisterBase<$base>,
+-                F: ::core::ops::FnOnce(Self) -> Self,
+-            {
+-                let reg = f(Self::read(io, base));
+-                reg.write(io, base);
+-            }
+-        }
+-    };
+-
+-    // Generates the IO accessors for an array of registers.
+-    (@io_array $name:ident @ $offset:literal [ $size:expr ; $stride:expr ]) => {
+-        #[allow(dead_code)]
+-        impl $name {
+-            pub(crate) const OFFSET: usize = $offset;
+-            pub(crate) const SIZE: usize = $size;
+-            pub(crate) const STRIDE: usize = $stride;
+-
+-            /// Read the array register at index `idx` from its address in `io`.
+-            #[inline(always)]
+-            pub(crate) fn read<T, I>(
+-                io: &T,
+-                idx: usize,
+-            ) -> Self where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-            {
+-                build_assert!(idx < Self::SIZE);
+-
+-                let offset = Self::OFFSET + (idx * Self::STRIDE);
+-                let value = io.read32(offset);
+-
+-                Self(value)
+-            }
+-
+-            /// Write the value contained in `self` to the array register with index `idx` in `io`.
+-            #[inline(always)]
+-            pub(crate) fn write<T, I>(
+-                self,
+-                io: &T,
+-                idx: usize
+-            ) where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-            {
+-                build_assert!(idx < Self::SIZE);
+-
+-                let offset = Self::OFFSET + (idx * Self::STRIDE);
+-
+-                io.write32(self.0, offset);
+-            }
+-
+-            /// Read the array register at index `idx` in `io` and run `f` on its value to obtain a
+-            /// new value to write back.
+-            #[inline(always)]
+-            pub(crate) fn update<T, I, F>(
+-                io: &T,
+-                idx: usize,
+-                f: F,
+-            ) where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                F: ::core::ops::FnOnce(Self) -> Self,
+-            {
+-                let reg = f(Self::read(io, idx));
+-                reg.write(io, idx);
+-            }
+-
+-            /// Read the array register at index `idx` from its address in `io`.
+-            ///
+-            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned is the
+-            /// access was out-of-bounds.
+-            #[inline(always)]
+-            pub(crate) fn try_read<T, I>(
+-                io: &T,
+-                idx: usize,
+-            ) -> ::kernel::error::Result<Self> where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-            {
+-                if idx < Self::SIZE {
+-                    Ok(Self::read(io, idx))
+-                } else {
+-                    Err(EINVAL)
+-                }
+-            }
+-
+-            /// Write the value contained in `self` to the array register with index `idx` in `io`.
+-            ///
+-            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned is the
+-            /// access was out-of-bounds.
+-            #[inline(always)]
+-            pub(crate) fn try_write<T, I>(
+-                self,
+-                io: &T,
+-                idx: usize,
+-            ) -> ::kernel::error::Result where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-            {
+-                if idx < Self::SIZE {
+-                    Ok(self.write(io, idx))
+-                } else {
+-                    Err(EINVAL)
+-                }
+-            }
+-
+-            /// Read the array register at index `idx` in `io` and run `f` on its value to obtain a
+-            /// new value to write back.
+-            ///
+-            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned is the
+-            /// access was out-of-bounds.
+-            #[inline(always)]
+-            pub(crate) fn try_update<T, I, F>(
+-                io: &T,
+-                idx: usize,
+-                f: F,
+-            ) -> ::kernel::error::Result where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                F: ::core::ops::FnOnce(Self) -> Self,
+-            {
+-                if idx < Self::SIZE {
+-                    Ok(Self::update(io, idx, f))
+-                } else {
+-                    Err(EINVAL)
+-                }
+-            }
+-        }
+-    };
+-
+-    // Generates the IO accessors for an array of relative registers.
+-    (
+-        @io_relative_array $name:ident @ $base:ty
+-            [ $offset:literal [ $size:expr ; $stride:expr ] ]
+-    ) => {
+-        #[allow(dead_code)]
+-        impl $name {
+-            pub(crate) const OFFSET: usize = $offset;
+-            pub(crate) const SIZE: usize = $size;
+-            pub(crate) const STRIDE: usize = $stride;
+-
+-            /// Read the array register at index `idx` from `io`, using the base address provided
+-            /// by `base` and adding the register's offset to it.
+-            #[inline(always)]
+-            pub(crate) fn read<T, I, B>(
+-                io: &T,
+-                #[allow(unused_variables)]
+-                base: &B,
+-                idx: usize,
+-            ) -> Self where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                B: crate::regs::macros::RegisterBase<$base>,
+-            {
+-                build_assert!(idx < Self::SIZE);
+-
+-                let offset = <B as crate::regs::macros::RegisterBase<$base>>::BASE +
+-                    Self::OFFSET + (idx * Self::STRIDE);
+-                let value = io.read32(offset);
+-
+-                Self(value)
+-            }
+-
+-            /// Write the value contained in `self` to `io`, using the base address provided by
+-            /// `base` and adding the offset of array register `idx` to it.
+-            #[inline(always)]
+-            pub(crate) fn write<T, I, B>(
+-                self,
+-                io: &T,
+-                #[allow(unused_variables)]
+-                base: &B,
+-                idx: usize
+-            ) where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                B: crate::regs::macros::RegisterBase<$base>,
+-            {
+-                build_assert!(idx < Self::SIZE);
+-
+-                let offset = <B as crate::regs::macros::RegisterBase<$base>>::BASE +
+-                    Self::OFFSET + (idx * Self::STRIDE);
+-
+-                io.write32(self.0, offset);
+-            }
+-
+-            /// Read the array register at index `idx` from `io`, using the base address provided
+-            /// by `base` and adding the register's offset to it, then run `f` on its value to
+-            /// obtain a new value to write back.
+-            #[inline(always)]
+-            pub(crate) fn update<T, I, B, F>(
+-                io: &T,
+-                base: &B,
+-                idx: usize,
+-                f: F,
+-            ) where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                B: crate::regs::macros::RegisterBase<$base>,
+-                F: ::core::ops::FnOnce(Self) -> Self,
+-            {
+-                let reg = f(Self::read(io, base, idx));
+-                reg.write(io, base, idx);
+-            }
+-
+-            /// Read the array register at index `idx` from `io`, using the base address provided
+-            /// by `base` and adding the register's offset to it.
+-            ///
+-            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned is the
+-            /// access was out-of-bounds.
+-            #[inline(always)]
+-            pub(crate) fn try_read<T, I, B>(
+-                io: &T,
+-                base: &B,
+-                idx: usize,
+-            ) -> ::kernel::error::Result<Self> where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                B: crate::regs::macros::RegisterBase<$base>,
+-            {
+-                if idx < Self::SIZE {
+-                    Ok(Self::read(io, base, idx))
+-                } else {
+-                    Err(EINVAL)
+-                }
+-            }
+-
+-            /// Write the value contained in `self` to `io`, using the base address provided by
+-            /// `base` and adding the offset of array register `idx` to it.
+-            ///
+-            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned is the
+-            /// access was out-of-bounds.
+-            #[inline(always)]
+-            pub(crate) fn try_write<T, I, B>(
+-                self,
+-                io: &T,
+-                base: &B,
+-                idx: usize,
+-            ) -> ::kernel::error::Result where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                B: crate::regs::macros::RegisterBase<$base>,
+-            {
+-                if idx < Self::SIZE {
+-                    Ok(self.write(io, base, idx))
+-                } else {
+-                    Err(EINVAL)
+-                }
+-            }
+-
+-            /// Read the array register at index `idx` from `io`, using the base address provided
+-            /// by `base` and adding the register's offset to it, then run `f` on its value to
+-            /// obtain a new value to write back.
+-            ///
+-            /// The validity of `idx` is checked at run-time, and `EINVAL` is returned is the
+-            /// access was out-of-bounds.
+-            #[inline(always)]
+-            pub(crate) fn try_update<T, I, B, F>(
+-                io: &T,
+-                base: &B,
+-                idx: usize,
+-                f: F,
+-            ) -> ::kernel::error::Result where
+-                T: ::core::ops::Deref<Target = I>,
+-                I: ::kernel::io::IoKnownSize + ::kernel::io::IoCapable<u32>,
+-                B: crate::regs::macros::RegisterBase<$base>,
+-                F: ::core::ops::FnOnce(Self) -> Self,
+-            {
+-                if idx < Self::SIZE {
+-                    Ok(Self::update(io, base, idx, f))
+-                } else {
+-                    Err(EINVAL)
+-                }
+-            }
+-        }
+-    };
+-}
 
 -- 
 2.53.0
