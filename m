@@ -1,85 +1,72 @@
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9A8267B89;
-	Mon, 16 Feb 2026 09:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771234982; cv=pass; b=PyXk2KpHOVw9JJD6xQzULJyOReb4LV9amFWTYFRaWWblnoT1xk66puMtc27LOu0udhcamfqq06mJe6vRaODmUuI6oiNlFrxgr0qTNW8GkqcJ6rqo+GEM++NdG3V6xIoroo/9YHHv/B2alMUDAn0g1XOHEe6CELvnX1xy3fK4KNQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771234982; c=relaxed/simple;
-	bh=B+wfT2BBfh8NHnvxlmxiAavdS0Blbk427uHO/L6o32o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WDQdVYtNcVsEsAsHsoZjdFZELX3oNEEYa4lxNYoiYLmXNYLhrErXC6vZ9vd1BkqfTyDOxPHugKBRIxeab7YhOE2IuEoh8OzHm2BWmvII3v8Gl+yi0uLRGzPo2CfU3dUoVFPNhzhTRZegErnUvd819ru2W7kTcnEVW6Ij1HlO3cY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b=cxr4MXHO; arc=pass smtp.client-ip=103.117.158.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852491DDC2B;
+	Mon, 16 Feb 2026 09:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771235128; cv=none; b=AXGKKgq5qp27ZASQZrRnTHHOLIKt3VMZJJAoreLwtkPHTGXtRqU9q85vpxer/+i28JHoUJVeI35Ozh3AuZLb7m8Dv/BOyA8CAmICztyNI6zcMjdHgzzXhQ42xxJBo2UQX5Xu3VRBuB4FKQTD8ImyZ14eq/yj4eopTA8M1LW5xCY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771235128; c=relaxed/simple;
+	bh=7NunW6RQ2SBImUQczKO4pkXAhCVgbYmwdk+s/Y6+W4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E9cMKuDmrPvxcy47VcSEc9xvOyLzkcw2s1K49fjqZf/Qy0VWT2DFObH0I4pZ7bnLJWx1PwBVA4qyqpa88ER7XhMGkdmIzFSpVwjK9Vxt1KboTXOwMNIoU2twzR9ME6o36d+5nIqFaSYwMTXtSe6Hrwv9+XNMek92UXLiaPXvThQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNL5Ln/G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.in header.i=shivamkalra98@zohomail.in header.b="cxr4MXHO"
-ARC-Seal: i=1; a=rsa-sha256; t=1771234921; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=Y3ogmLHfedo+/iHXtXJrPU+ifm7kP2u807eGr5QE9kb8Zy1McTEUnSHwNcZCSx5CtqMe0Pr0YxhZGdTEsqbuMiutE+UKs2FDrH2s5W9lDafz+4DSEmy4kjFvnXxGHpPwZTWpXXRYzOYDy2P3xMK1zBPfbLDmb1PHEGpj6M/5b4U=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1771234921; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=nMJ0J7TWB6v/PGG8cPtxuCYxJjGogyMNOruXQ/PyI38=; 
-	b=UOqzUu4YU2MDZHLMd9Cl9dwG9C1DXC/UQqaRi4wANadKvm1O7SKswDY571cPTMBHCU+LJSMyeJN/ycafhPkbOq00cG0QBUYv8I+Pfj6lR+PYj5fHWVWOjjw2JIXPhL6c4Gf9FBepdSPtDciZVJY2bmrj2Hs2NPnaMCLEMomc9OY=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771234921;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=nMJ0J7TWB6v/PGG8cPtxuCYxJjGogyMNOruXQ/PyI38=;
-	b=cxr4MXHOo7ODK9b62cSA+hOxudHBw2EonwoLC+I5ynLgbeEaZmpMP5KVaCHhUL+t
-	pgRyjHm67W8SvThGjs8cxSEPkr6BQhMeleXsv8Uo//Ql2UBSkE/7La2AeghUKuMrh7q
-	e5DKhGjt8M5XKi7pSI9/3QCKBjI1CaqTMT2RFenc=
-Received: by mx.zoho.in with SMTPS id 1771234917892242.5090239623105;
-	Mon, 16 Feb 2026 15:11:57 +0530 (IST)
-Message-ID: <d9cbb8fb-8e07-4b89-8fa8-cce98c388989@zohomail.in>
-Date: Mon, 16 Feb 2026 15:11:56 +0530
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNL5Ln/G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8543C116C6;
+	Mon, 16 Feb 2026 09:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771235128;
+	bh=7NunW6RQ2SBImUQczKO4pkXAhCVgbYmwdk+s/Y6+W4c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xNL5Ln/GHbKcYxO9OK9TGyqNcd/W3Shk6BTBuL2YDjBV27c6Vz4DDyLGjzv+io9hQ
+	 PdOiDxodlXjS4AQt6gi27iSLT1dCqRXkcJQqVxWZzKI70+VtmhSilMxCY2wh/9oCBZ
+	 WKCQU1RzcPAKLDryNuS/m9oJEqItky7rfCgukamY=
+Date: Mon, 16 Feb 2026 10:45:19 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>, David Gow <davidgow@google.com>,
+	stable@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
+	rust-for-linux <rust-for-linux@vger.kernel.org>
+Subject: Re: Consider backporting rustdoc fixes for 6.18.y
+Message-ID: <2026021612-hazy-stank-831c@gregkh>
+References: <CANiq72n3qPsoy2u1KxfyV4ZCjJyDZLkK-54i7EesTH=TE9h1jw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/3] rust: alloc: add KVVec shrinking method
-To: Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Alice Ryhl <aliceryhl@google.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
- Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260215-binder-shrink-vec-v3-v5-0-6e5e56d69766@zohomail.in>
- <DGFVQ8Y1LLY1.SKXJK85IK4JH@kernel.org>
-Content-Language: en-US
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-In-Reply-To: <DGFVQ8Y1LLY1.SKXJK85IK4JH@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72n3qPsoy2u1KxfyV4ZCjJyDZLkK-54i7EesTH=TE9h1jw@mail.gmail.com>
 
-On 16/02/26 03:43, Danilo Krummrich wrote:
-> On Sat Feb 14, 2026 at 9:35 PM CET, Shivam Kalra via B4 Relay wrote:
->> Shivam Kalra (3):
->>       rust: kvec: implement shrink_to for KVVec
->>       rust: alloc: add KUnit tests for KVVec shrink_to
+On Sun, Feb 15, 2026 at 03:11:31PM +0100, Miguel Ojeda wrote:
+> Hi Greg, Sasha, David,
 > 
-> Greg, Alice, I assume you want to take this through the Android tree?
+> I have been seeing these warnings (errors with `WERROR=y`) in stable
+> 6.18 UML + Rust on the `rustdoc` target [1].
 > 
-> With the comments in patch 2 addressed,
+> Unless David (who works around UML + Rust) or the different
+> maintainers (Cc'd) have a concern, please consider backporting:
 > 
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
+>   a9a42f0754b6 ("rust: device: fix broken intra-doc links")
+>   32cb3840386f ("rust: dma: fix broken intra-doc links")
+>   4c9f6a782f60 ("rust: driver: fix broken intra-doc links to example
+> driver types")
 > 
->>       rust_binder: shrink all_procs when deregistering processes
-Thanks! Will fix both in v6.
+> They had Fixes tags, but not Cc: stable tags.
+
+All now queued up, thanks.
+
+greg k-h
