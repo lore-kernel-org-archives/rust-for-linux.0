@@ -1,64 +1,64 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7CF278753
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526881EDA2B
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 09:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771232213; cv=none; b=qBKmkB582TXWS3xN79rR2fDTmKd2eu9VDwh1M6AZnjkmu/ar/kfVXy7AIWsgruLayaVlbe1AV282IRliJYfCiyJllwz5HdCkb9qCh7dmtEQScVGttEVKypUd4FVIhW+RoDRJM6XFLAawg0uEj4abygpFXLCxwBS3nIy/c1NK52g=
+	t=1771232470; cv=none; b=QKaMpwKZ5a15RT9sdYTBGNJ8TjKjUVEglGqfKkf6o1dTk4AXH+GT5d57bHD9jhNqTtJ1uXYyvy6eHx8ugxHgCzTj/V2zWJikj/X4OGaP9e0pBH2Sqv5HNqNSigIp+Vh5+jZLNuEg9gkP6/1bSvvrq5mZaz7wFubkodot9X+GFMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771232213; c=relaxed/simple;
-	bh=RRworO0e0jB2L++N8t+MaRtV5KDsytl9rjBp2wDeAQ0=;
+	s=arc-20240116; t=1771232470; c=relaxed/simple;
+	bh=uESNrQehw2PaWEb5/sJSYw2DgDRBw4jYVJ7Ut3+F63o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jXgCH8BF3QPDegrHXARiX16VB/7o45CDA7HhTsD8PB8taU8jdrDNumny8Paw7Ofi7Txk6O9zFIvgvjDk5CpyhkgaNMwViRN/5EXOLH64UOmtwphgeEVs4Q1IxtKlPGoA3vsqBnt/mmsZ1sNgXPbYsKJRLYco+ysHp5N+1WmzpUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YCnDzinu; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=WfmWdheo/GVM1fRXtgf3oJi8jDWH4BpPKdvxFWCWC/6Wi5N0RFzITPPvsHA3+I3vvv8RCNFXclNGNfKz3nsmsK0cigKLK+hviZwJVetDuIvv3pAL8nyZdvI0Oblfw4VsoaXwRfIGD+/BGiM1c2qOCrUlg9JY6eKZmrXtmRME8ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B7yCFdxm; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YCnDzinu"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4837107e0a9so25897575e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:56:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B7yCFdxm"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-65813cc7ef5so2131439a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 01:01:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771232210; x=1771837010; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771232466; x=1771837266; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/g4FBr0hx+U1hrupB09478t2hk2gU/mPpH49qC+dJe0=;
-        b=YCnDzinuapXPS7/JjZzst5cUB8vkI9G4nv+6zH2CI8jkGeKsCQekswlMqsgYXObtDw
-         ZFALackEriP7bkXqc8jW0oolr3t7NQZsy8LGQxzQRlB9B0x3Tt/ulBNcLBnJDMOpXMCc
-         7+XlFdAZaLa4gQj47fThujX4VFI0Ki/Fotj2LsjgMnLNVW7+Of28nF4TrdMfqjSlxE4T
-         WNs68f+TCVnSkDwZ9yaM9Rp5QSXBlqywCbpovA1FMOlcV7Y6cNmelSGj6HUoQSlPH0vJ
-         JORdvGX//s322vgh2fTRf5GjETg1r43HsJ9cG4F7So5w8fRoJIWvn8g5a3AD8XiY/GV/
-         UrOA==
+        bh=APVmnuexgYlYm9KOiPuEkrUPvIg2mrqcImpeCDaBBkU=;
+        b=B7yCFdxmT/XQly+crMsVmUOnmwfRZMk/ks67qiUZM/QZD7X920+mFvMTUVRX79Y1jK
+         G+bVtBM6ExQNb2OBO+PjHa5EVSsXj0LUsI37qmvn7YLhmjgrG45Zx584xRpnT7ofZ0M6
+         /oiy2X3pNowYBoJ5Qtn6uVrWrM7A2JMzIhF9oIJYMU2lFiIbDbrD2NXLVelHyWoMCQRx
+         YGB0XvIEeNdjxZGvO8u8Kv15patXVH8D0kt6dO3XNWjAKC/3yvm0x+VPX3vtbjzEEyqw
+         08dFBVRrqLFVLqx7A+uthbaqwofVC84R6YAo5BMND0DFiKwmcqAu66i5zEiq9/1Vpl9n
+         xCng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771232210; x=1771837010;
+        d=1e100.net; s=20230601; t=1771232466; x=1771837266;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/g4FBr0hx+U1hrupB09478t2hk2gU/mPpH49qC+dJe0=;
-        b=qN/XujOLvF34WAQtU5n4R/k75EDpHtyAXpZ/rIIUJGtKzOGREGXDy9XLf3KILgFXRW
-         DbzmtPpsjTCfVnpZowHmAjYJM2qyjXc0O1yuk/Xygg4G5xodO+v6DN3JcNHNDmk0tZVl
-         hFxCecIRwTDn+S1JZirL9RTt4YTo7TFtqirDqWmqbel80oYtULqVOji3+1o9zwJ1ExUj
-         NeugDGYTpegF+Z9PiZcCm327BbeURtnZ7pukUq2JJ45zTJ/rd6qCcszW2nKtDGk0Qh7F
-         16pLiX+ozBrhEJ1JFYv+OgsVteOXnFDXXWkcCpiMbIXZR7abw2k7WSjfcPHq21UkJH77
-         /f8w==
-X-Forwarded-Encrypted: i=1; AJvYcCXfVYsSc49EHewe7oizXsoWFxEy+VjuaF/A18ddLHStmNIEIassmvx0EneJRcxD0xWRJjCNBgtXLjZ40gn0XA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzve2mpzKpUU6r7xseu02ymQg6r057UfUmDBux0VrAFKAfOAZAT
-	4fsyLbiAWsUqcdrYG26zr43D3GLkAfP3bQ7Pt3VN0unVI3VY0vi/BmtmTEoFyDUh5N8GrRvbXZT
-	4afbnKCGB+MmoMGlMmA==
-X-Received: from wmqy18.prod.google.com ([2002:a05:600c:3652:b0:483:6e28:c1a5])
+        bh=APVmnuexgYlYm9KOiPuEkrUPvIg2mrqcImpeCDaBBkU=;
+        b=i5AbADgModJxKPSEvcNix0koegdIcRdZ7cetw2b37lLIiuhYk4T2nk1WHgitSdrnij
+         kbEulC92K5d/MncNHGsMTSMFPeckejF7ke3nIApUsE4F4TJOoFvH6m+E6Rg1UqAuBXy5
+         /8qFzVlPVdsYJIheh1u+c8riqSWXuw+CJhLm8Iv5JS78A+xZaHllSpGIc7J4qgzjwRfj
+         mm1USrdzcaKaNwOaA8Pq0PBAwYcP0tfIkeLDAwC2ClAp6z+ek9M33h+HsoWaQ0XxluIO
+         E2CPeCW6M2UgKKO8H6t15HSP+DkjrbL0yrNqmFPX1PJpr8gW8GCaVIpN3K9wmYkDac2X
+         jLAA==
+X-Forwarded-Encrypted: i=1; AJvYcCWmadFUfFqGvpxYzP7EPiQwKTZsnm6XHhKbKOaDfO1BbMgAsyCyyvxhwj0W+YR5DVbvalcgoxmjNeHgvih9VQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQ1wi2xCm5WSLePlGFa7dDT5xZNgUfVxkK68xjQZKuySQrR8ur
+	BH4m97begrY0Dk5WARYC4G1QCQnkhC+itr3Bnm/yKlpzW8foSyLly6SyWBtCOleaEYsrH7TxDMc
+	hrJD1LMl/J7/Ac0Da0g==
+X-Received: from edxf6.prod.google.com ([2002:a05:6402:14c6:b0:65b:9daa:35ad])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c172:b0:480:3a72:524a with SMTP id 5b1f17b1804b1-48373a5d591mr154526285e9.19.1771232210394;
- Mon, 16 Feb 2026 00:56:50 -0800 (PST)
-Date: Mon, 16 Feb 2026 08:56:49 +0000
-In-Reply-To: <20260216-register-v6-4-eec9a4de9e9e@nvidia.com>
+ 2002:a05:6402:2549:b0:65a:3f4b:947b with SMTP id 4fb4d7f45d1cf-65bb112f4fcmr4663313a12.15.1771232466462;
+ Mon, 16 Feb 2026 01:01:06 -0800 (PST)
+Date: Mon, 16 Feb 2026 09:01:05 +0000
+In-Reply-To: <20260216-register-v6-5-eec9a4de9e9e@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260216-register-v6-0-eec9a4de9e9e@nvidia.com> <20260216-register-v6-4-eec9a4de9e9e@nvidia.com>
-Message-ID: <aZLb0VcA3oZLfYvr@google.com>
-Subject: Re: [PATCH v6 4/9] rust: num: make Bounded::get const
+References: <20260216-register-v6-0-eec9a4de9e9e@nvidia.com> <20260216-register-v6-5-eec9a4de9e9e@nvidia.com>
+Message-ID: <aZLc0YMHd8C0bVD2@google.com>
+Subject: Re: [PATCH v6 5/9] rust: io: add IoRef and IoWrite types
 From: Alice Ryhl <aliceryhl@google.com>
 To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -73,28 +73,74 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Feb 16, 2026 at 05:04:40PM +0900, Alexandre Courbot wrote:
-> There is a need to access the inner value of a `Bounded` in const
-> context, notably for bitfields and registers. Remove the invariant check
-> of `Bounded::get`, which allows us to make it const.
+On Mon, Feb 16, 2026 at 05:04:41PM +0900, Alexandre Courbot wrote:
+> I/O accesses are defined by the following properties:
 > 
+> - For reads, a start address, a width, and a type to interpret the read
+>   value as,
+> - For writes, the same as above, and a value to write.
+> 
+> Introduce the `IoRef` trait, which allows implementing types to specify
+> the address a type expects to be accessed at, as well as the width of
+> the access, and the user-facing type used to perform the access.
+> 
+> This allows read operations to be made generic with the `read` method
+> over an `IoRef` argument.
+> 
+> Write operations need a value to write on top of the `IoRef`: fulfill
+> that purpose with the `IoWrite`, which is the combination of an `IoRef`
+> and a value of the type it expects. This allows write operations to be
+> made generic with the `write` method over a single `IoWrite` argument.
+> 
+> The main purpose of these new entities is to allow register types to be
+> written using these generic `read` and `write` methods of `Io`.
+> 
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 > ---
->  rust/kernel/num/bounded.rs | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  rust/kernel/io.rs | 243 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 243 insertions(+)
 > 
-> diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
-> index 8e4c08924d96..b09b93cd0c5c 100644
-> --- a/rust/kernel/num/bounded.rs
-> +++ b/rust/kernel/num/bounded.rs
-> @@ -379,6 +379,9 @@ pub fn from_expr(expr: T) -> Self {
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index b150743ffa4f..6da8593f7858 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -173,6 +173,160 @@ pub trait IoCapable<T> {
+>      unsafe fn io_write(&self, value: T, address: usize);
+>  }
 >  
->      /// Returns the wrapped value as the backing type.
->      ///
-> +    /// This is similar to the [`Deref`] implementation, but doesn't enforce the size invariant of
-> +    /// the [`Bounded`], which might produce slightly less optimal code.
+> +/// Reference to an I/O location, describing the offset, width, and return type of an access.
 
-The unreachable_unchecked() hint is const, so I see no reason you
-couldn't add the same call in `fn get`.
+In the next patch you implement this for usize, but here you say it's a
+reference to an I/O location. I'm pretty sure usize is not a reference
+to an I/O location.
+
+> +/// This trait is the key abstraction allowing [`Io::read`], [`Io::write`], and [`Io::update`]
+> +/// to work uniformly with both raw `usize` offsets (for primitive types like `u32`) and typed
+> +/// references.
+> +///
+> +/// An `IoRef<T>` carries three pieces of information:
+> +///
+> +/// - The offset to access (returned by [`IoRef::offset`]),
+> +/// - The width of the access (determined by [`IoRef::IoType`]),
+> +/// - The type `T` in which data is returned or provided.
+> +///
+> +/// `T` and `IoType` may differ: for instance, a typed register has `T` = the register type with
+> +/// its bitfields, and `IoType` = its backing primitive (e.g. `u32`), with `From`/`Into`
+> +/// conversions between them.
+> +///
+> +/// An `IoRef` can be passed directly to [`Io::read`] or [`Io::try_read`] to obtain a value, or
+> +/// turned into an [`IoWrite`] via [`IoRef::set`] to be passed to [`Io::write`] or
+> +/// [`Io::try_write`].
+> +pub trait IoRef<T>: Copy
+> +where
+> +    T: From<Self::IoType> + Into<Self::IoType>,
+
+Prefer to use Into for trait bounds:
+
+where
+    T: Into<Self::IoType>,
+    Self::IoType: Into<T>,
 
 Alice
