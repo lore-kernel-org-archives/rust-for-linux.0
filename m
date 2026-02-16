@@ -1,144 +1,82 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE0B227EA8
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD78255F2D
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771230570; cv=none; b=BItoC14/nxPwv6uWEbEyY+RL9yknxE+OpWxNYk83EZoROMR2MnxyG1vD2yP0sXbB+hKo9JcHs7ZGJBol7oMiAOAA05ioSbFJWmEHFbcD6QTk3W42QA+e3CrvMp4pJvB5H1oh/xH6M7HlSq6g6zJh0iUh3S11gljUVc/7pizW6pA=
+	t=1771230790; cv=none; b=ogL+HRsTwfJKayLlOJRikzOezsmEcJzbLPpHtIrrRvBkQal9M1uQNJdbXN2O4kRM1ZyY+t7UVQICO2wHOFPck30cKCMmCqkGlK/dFsqEqRbaqJixnp0OTvcN26FyERgPcRsmW+eAnCQMKZunqm6po4Bo8jHQFYwinsT5FpgmM4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771230570; c=relaxed/simple;
-	bh=ra1V5naSBIa3oKdC22ngSjF+njr2h+bn056HhsDqPMY=;
+	s=arc-20240116; t=1771230790; c=relaxed/simple;
+	bh=uoahuacCYZ9SoHB6vmBITsd7B+5bwwaSz1/UFBUoLTY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hqfRyqemg033Hbvrm2Yn7dvTqwQp4g5VU+6oveI29yLv9xmHP0/G9XMfmyvQYOU8g0WdbDFk89pXW0Whc9cFdBEPVvrMN0q//HR2fzz4dg6d5ocjUVOE0Ql9sWVlZbtrSQ0fliu/6mAl3p0rgNOSKPlGnqP2moFERZ56GJKE0FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lU5j7QUG; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=afMURXf/xuTM5T1+68ZiiLED+Kd6ZHvkg1fDDPdL+4Bcs+HFI58wamCfhp7jYBY9T/zeubRdn+RXEBfmi0y5sG9FFbFtaYCkbAb26KuPfVV6ern6ojs08BvlvpzqXDf2TA9JxXxNavT1UNtvC04O0AfgtZRmJYSRMEaCcnBFRPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uhS9SWUf; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lU5j7QUG"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836bf1a920so34629605e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:29:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uhS9SWUf"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-482d8e6e13aso20207755e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:33:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771230566; x=1771835366; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771230788; x=1771835588; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dw73ohv4pJTcmw9KbhINi0iCnAI6CO1W3op7q8abiDI=;
-        b=lU5j7QUGcIBvjTe/4qajbOUlIk7kAwyGHmkUpLYBRi4GnP+XwqQkQtCipAYcT4sDje
-         3DQW1bmb3r4mtwQiyvAIA4JS2OyLxzD72dGTWLWICD2kglv66IRQ0aD/v392yWnJnAvs
-         XQIro5Klj4++WtCW6ipVIB9WYX4KU0nrPxJksIt3WWCtlbBD7yp7bC2fMwNPO6Li+Maz
-         Pjkd+N1qwsNWWKy+FoTnPMehzCdfD4ihVfNSu2BEDrHJydaZncO5Viw+g6vdSb//bhpl
-         JdyRrO3GaBZBqo3yXDziXB0cnBhWvECMWS8ixynvxeWSn2NJTududjz3jjr6vboQDGft
-         cxIA==
+        bh=9FWlfvVYsSfvhml8J19wc2FeA1m6dphdLaOlAObMaZY=;
+        b=uhS9SWUfXveVTX+tW4arkZoL9CWOeo/HkjVxsa8Y89h1oU7QHx0qe0LGh8sGE1w5CC
+         aZOYYVPKPo6eIfbX7/MS/nR9ID8cmNYCbXX+YnZvTkKNRil4Tyy0NMhqUDKCEgwEQUKQ
+         Mr5QdDoABEO6IcVbc0+bByEpJUP4JxcVSqlWV7DPveFkNsiyi8khhXKCuSJD4uwN/xpC
+         Tjw5Wx17+oPQ/KcYrOyFLvF/BdBJJGxN6rKyOUTs+M1iBHsvqL+g0iY1k/QUTrR5Ti7/
+         cCnlySCRWqY1YYfvrtpHp6FL5OynGKDMJycuE+O6+Qz2gCIJ1KpEBHZphZSY5D2WTeCR
+         EXUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771230566; x=1771835366;
+        d=1e100.net; s=20230601; t=1771230788; x=1771835588;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dw73ohv4pJTcmw9KbhINi0iCnAI6CO1W3op7q8abiDI=;
-        b=LxbBa0FDt/WHEQZb/QS1WFWg+kVIh5t8hi8JJPDbPunF3YM4lNcRxLp2cF2pmYszN5
-         ZD5Ga7nz478pSmfDq7oYKPvdxu503iG59WE7zFbEzUwk9EateiE7vrS1Z2EFcht0sCxq
-         AKt7tSX9XFIaWfgWgINT6bgmgCUzBeIfcQYPz46UBOnXFRvdGLYy/zEcTptkUDY+nXmZ
-         PsAmOkAWUM0oTFB7+Jv1937STePsNoFXD1JIdE0kx6wJHgEEvGHmCb6DDj2ZxxRXzcAf
-         KRjm4tCgQhX2EF77kSb3RGaJzcIF3QGPHoZt+bx4iD/EzXQ5K1VeZHjp2l4R4puI4DuK
-         OpuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVWw3vPSMPE+cIxIyl7rs4DpAkQFTBd9Y0IDKWOnR4g3fktPg93YD6xAu+F3NmKeesf2pnaopS9nKsMG+yARg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd0jCGdmiumxiHNRsOFJWvyOH96l41ofwP450bo1b/Y6iM/RRz
-	yXPpJU9gLCIZq3A5wA64t33yPetUVShbcclZuW+p4rYRLwwEF41cxthyfG9QW+G7kD5MMPIwaRA
-	q6XBxljRUGpvpeucYYA==
-X-Received: from wmbiv15.prod.google.com ([2002:a05:600c:548f:b0:483:5ee6:9c8b])
+        bh=9FWlfvVYsSfvhml8J19wc2FeA1m6dphdLaOlAObMaZY=;
+        b=aB/hHqw6XKib5zyfP6D/FzuxmSYxRhr9le+ODol2naKAMxum3Fbc0FEhPoS2SkaCdF
+         qqZCWZJYJi9Mg936qKpRrGii1X4hW20SMawUYm1Q7HLKZDtBZbc43GoglEBmm2IAWHNE
+         S0eIfZQwxLn6bJgyRaEozi1EXizgSkJ8XpdgzwKnejcpkkXcaVqocTsLP19DUYYMsIUL
+         65ghkXV/7kwtIzAn9kfQiK4iNs8497nGqI5CkFE1/wJ0uRt6ReguXSxwA+mRwpiZgp39
+         LCW2q8Ms4MA1+qyo2z+lmvpIGOP+NQ88Vs7ITbDwUCzSzWQ+FJnbEmZK5AkgiYSG1m8Q
+         6xIg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSZWfiddfTbQe5zoGX83FSXzqA9YGgechBqJyjN1tLvoZ9XYwL2MeZtJyrCx7glwUjvaJayBSLbsPum9+9Bg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4w9e20jtZZcZg5aqRJs7oSMB17dDed4ywe7bap8xfRBnzdMJv
+	tJHwZVNvnUCmPfqYiL3CLfeKEHfvZ11WDDXC+bxitZHFBRda4uVAEF1uopAHKTadzu2S+c6/NN/
+	f20H/AJ8N01Iwd8SlSQ==
+X-Received: from wmco23.prod.google.com ([2002:a05:600c:a317:b0:483:29ff:3c47])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:37cc:b0:477:58af:a91d with SMTP id 5b1f17b1804b1-48379b93370mr118294095e9.5.1771230565675;
- Mon, 16 Feb 2026 00:29:25 -0800 (PST)
-Date: Mon, 16 Feb 2026 08:29:24 +0000
-In-Reply-To: <20260213220718.82835-6-dakr@kernel.org>
+ 2002:a05:600c:1d10:b0:480:6852:8d94 with SMTP id 5b1f17b1804b1-48373a45d65mr154147585e9.27.1771230787459;
+ Mon, 16 Feb 2026 00:33:07 -0800 (PST)
+Date: Mon, 16 Feb 2026 08:33:06 +0000
+In-Reply-To: <20260215-time-from-nanos-v1-1-48c61b15ab4c@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260213220718.82835-1-dakr@kernel.org> <20260213220718.82835-6-dakr@kernel.org>
-Message-ID: <aZLVZMHzAPnY03Oe@google.com>
-Subject: Re: [PATCH v2 5/5] rust: devres: embed struct devres_node directly
+References: <20260215-time-from-nanos-v1-1-48c61b15ab4c@kernel.org>
+Message-ID: <aZLWQsg5HstDHiGZ@google.com>
+Subject: Re: [PATCH] rust: time: add `Delta::from_nanos`
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, Feb 13, 2026 at 11:07:15PM +0100, Danilo Krummrich wrote:
-> Currently, the Devres<T> container uses devm_add_action() to register a
-> devres callback.
+On Sun, Feb 15, 2026 at 09:12:04PM +0100, Andreas Hindborg wrote:
+> Add a method to create a `Delta` from an amount of nanoseconds.
 > 
-> devm_add_action() allocates a struct action_devres, which on top of
-> struct devres_node, just keeps a data pointer and release function
-> pointer.
-> 
-> This is an unnecessary indirection, given that analogous to struct
-> devres, the Devres<T> container can just embed a struct devres_node
-> directly without an additional allocation.
-> 
-> In contrast to struct devres, we don't need to force an alignment of
-> ARCH_DMA_MINALIGN (as struct devres does to account for the worst case)
-> since we have generics in Rust. I.e. the compiler already ensures
-> correct alignment of the embedded T in Devres<T>.
-> 
-> Thus, get rid of devm_add_action() and instead embed a struct
-> devres_node directly.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+The change itself LGTM, but what is this for?
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
->  /// This abstraction is meant to be used by subsystems to containerize [`Device`] bound resources to
->  /// manage their lifetime.
->  ///
-> @@ -111,12 +124,63 @@
->  /// ```
->  pub struct Devres<T: Send> {
->      dev: ARef<Device>,
-
-Wouldn't it be nicer to move this into the Arc? Most of the time, it
-would probably fit in the kmalloc bucket without enlarging it, so it
-seems like that would be better for most scenarios.
-
-> +// Calling the FFI functions from the `base` module directly from the `Devres<T>` impl may result in
-> +// them being called directly from driver modules. This happens since the Rust compiler will use
-> +// monomorphisation, so it might happen that functions are instantiated within the calling driver
-> +// module. For now, work around this with `#[inline(never)]` helpers.
-> +//
-> +// TODO: Remove once a more generic solution has been implemented. For instance, we may be able to
-> +// leverage `bindgen` to take care of this depending on whether a symbol is (already) exported.
-
-I'm not sure what a generic solution would look like. There is an
-assumption that if A can call B and B can call C, then A can call C.
-Other than just exporting the C methods, possibly for Rust only?
-
-What happens in C when you turn on LTO and core kernel methods get
-inlined into modules?
-
-> +    #[inline(never)]
-> +    #[allow(clippy::missing_safety_doc)]
-> +    pub(super) unsafe fn devres_node_remove(
-> +        dev: *mut bindings::device,
-> +        node: *mut bindings::devres_node,
-> +    ) -> bool {
-
-Since you're taking the opportunity to wrap these, I'd consider adding
-#[must_use] here.
-
-> +                    // SAFETY: `node` is a valid pointer to an uninitialized `struct devres_node`.
-> +                    unsafe {
-> +                        base::devres_set_node_dbginfo(
-> +                            node,
-> +                            // TODO: Use `core::any::type_name::<T>()` once we are able to convert
-> +                            // the `&str` to a NULL terminated `&CStr` without additional
-> +                            // allocation.
-> +                            c"Devres<T>".as_char_ptr(),
-
-The problem is that type_name() is not const. We can convert a const
-&str to &CStr with no problems already.
-
-Alice
