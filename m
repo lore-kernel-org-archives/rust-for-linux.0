@@ -1,103 +1,163 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59901DF258
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1612798E8
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 08:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771230864; cv=none; b=EzrHDDOarOP6D3F4BCMFNjLqlEU7fasaBQHj+v1xZQWoUx+c/IxTQ5SxpT1ptfOuUKc64gS1NA1IGOSw66DrEfIFQccQbPzte6KQxqOBQc54VVTj6UqExibdod/IUpB6awKB86HCN9XSV7jobc0JhRyv9+0Muq6t7nxzFfK4hOc=
+	t=1771231053; cv=none; b=QxUFZ1q/ZMD2VzIPxmlcB+Eyy76OoPxfjekSH16nZ9Y30O7aQwzjhxR/6XGVX8w9HLOiyhPmZQD93FYtQL53GHVnxngiFB36TD8QuG7gFLKV8EC8sNJpdjEOhiRsxWda32Y2MKwEIg6qMQqTzZa0vm9cwH7JOjP/jVCpLMUO5Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771230864; c=relaxed/simple;
-	bh=uQtAVNC65mFQ6/lwaVnbJJjEdXBK5pp+eEmXO1VJvbw=;
+	s=arc-20240116; t=1771231053; c=relaxed/simple;
+	bh=uMNCOiOlUGeNktPdL8qQOPGc05gj9veRiqP1hNx5qik=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UDItJI7U05YxMcusetwvknf0I2svOBYGVyQoXr0hexOcnjIZfwSEAc7MBo5PkbqmgkbUx7n32uFzvlPEs/eFlIHPWMynA63zXfiHyZ/Dw8TOpn+r/chxRupfl0CVMZy2ztEU1WimUKgcIFkcxZzkKX3dDcw86vTLGtTLCtiBNPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SlA0guJd; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=djw+U1ouKQgr4ksNcYSjLxjVs+lmgJYaqOmB8So0tGpBELVPSut9b/3DTen+IPueGNHdWwipmdjHgGrjuM48US/OKDTJHyfFzUxfhZrxuCrPu/i3j1bu8QDjEj9kJ3bt7moBgaAPjdCj8xEpdzcuDgfNCg/xTyqZdDGotfGRy5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UaRsnOEE; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SlA0guJd"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so14060345e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:34:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UaRsnOEE"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837906e9b2so24769155e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Feb 2026 00:37:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771230861; x=1771835661; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771231050; x=1771835850; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xO+YeDnOOVbfmdjw1uyhMwcQoIFJ6oMNmSYTpMMrEXg=;
-        b=SlA0guJdlnntrokpd/lKfRqrW4lSLvPeRLymtMslcs/rqDE/7mFTTQ5gWQ1gLtSmwn
-         U2irMnhqUrgJwSEgbKT4soNxw05LGQ77bcTfjyf6oH3zN3yUpfmuK2tdubCe+y/WHHGF
-         0lw+0IsmyGPjU7BXQph8yL9uUDkpPiQojARpSlsbsFYFQPlwXtKZQulr+ImL8YwYVAjb
-         KWLl05B2l5DHoCgSuN6Z4Cq0M3hOsRDAnMkHGJADpytGym69oHvRFKF6GDjN5ojW8vjV
-         g+5B+bs1a5dqKlhWQ1SKT/Kstbp+2LjVVZaN9Dnq7TR3x3PT0ZdP+L2ncL2yfyF8bgU5
-         WoGw==
+        bh=J0BUd9ffnQeh6t60I1FOnrZZZ6kFC8hsYBEdO48KYcs=;
+        b=UaRsnOEEOaZQlH1bDO5ZMoPbRXzCafFrTMtrsotqUt4OC2/9er66tWB1dnGODe6gPN
+         4r9fVhtuYESBuRfMQkIhOx30YCom8gRz5XY8CMr3A6p4VvC0lzlvd8/uE9fvzVLWPn/f
+         31QtJqa0xXAaU/oB/RvbAIACHmwJRyxT952YVXTrGZu1xI10gXyyP6hFfJ2lHUV6Uylu
+         oAOoW5h9hZopWXfoVRwb7HF425jkpwkHM5Vh2nRtXB0AhFZIX8J/dNgjgqHsfzKOhWaL
+         e26QtuhPvVAaWzQMIE4mPsQGhKXxXeLDJKiOzJCXr7sCdIvHrRAWiGvHmmoq1yqnqBdU
+         D2uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771230861; x=1771835661;
+        d=1e100.net; s=20230601; t=1771231050; x=1771835850;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xO+YeDnOOVbfmdjw1uyhMwcQoIFJ6oMNmSYTpMMrEXg=;
-        b=XMmyqvY1JaKlZcysPefTLctG4TIBUYUKx7YQ1WBt1mw9Sx6PnqkIEoZMQnBMC3ZfXs
-         Ldo03hTaTnkJOpTE7CaHvpdyYYkU2f7RYHcbH0F4doJcJUpGnzq8eLCzESH3DdGwR/Z3
-         k2oNa+yc4n3QWW6zpdZrh3X2niqT1Z7rd+5dqH2CLPHXZ7INdJNMOho/3MMzkMkh+DPB
-         cOnWbJnaPhdKDY/Tg98WKgSdt6dLjWxCA/BBDMzVrB9pIuTLWdKNiS2KgCbWQCKuBjEW
-         vrRd9wW16JkjKpkRozQ+LWMhhbG4sHpxLHScHxXj4U3i0tUXpMtysMROFVom6u+PpoJc
-         UD/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVvjKnzL+kgd2WPydTAx4qHW7k/jtS0ADudQTJYBfgtq89Mk2dnwV+rDm6JSP5NVO4P59lb2jckl+2wWN718A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWu/iovgjbu+Z69HKU3KadMkAUGYJBFYX3tfLPaYr2KaMWTjcE
-	/mvonReJAxusiLuZLPA3ezg3tVLjV1G9rTs3OPuKrIujLmkDEH/0G0hlzkaUPMySSDz9mN3l4BY
-	2NMjtE6j/Ey7bDH4Iyw==
-X-Received: from wmxa5-n1.prod.google.com ([2002:a05:600d:6445:10b0:483:7c8d:ed1d])
+        bh=J0BUd9ffnQeh6t60I1FOnrZZZ6kFC8hsYBEdO48KYcs=;
+        b=mVL7Lx23gQWFJc9QlwPSnbpcINKXyWHYmMLJ+vrxaZKtE0UCcYxBpB5yqb0YmyeH5B
+         OcizE1uhLB9IvvRpJzHDbDwkoPlXkrjoMWLPzvx6kbOO8fbihtuqWJE2NtZ/t24Vl09z
+         ICHMPOr66f5PP1lCZxFZDXjpLIrkQWCxqhyJ2a/Uzc0PhvHI0D+DO2G43xQQOnAy0L6p
+         cYFi5DqDkRe4oZ/mF8xgUK6GmeCdopVYbtlxEy11Ke9PqZsyNgfgoIE7pi/5d3XHYBDo
+         11kcPgZQk6vTJIMBQqy32VsagmM69Wm0g9lJxAMX7zLgYUUgLhrg66zCieQbRB7q1oYl
+         G5/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVUiIU77kvHprfrdG3KZ9jg7bOj0HIXr7h+KNv5f9yvfgSOw6OUzp9+SYu3C8Rnlc+cJfiB8S0w44LJRrpcNw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbDgNs8L24X1zGeIzujEVtriqYnVnMoOg7IEwLGfd5gG5MCA8E
+	nqHppD2CYBj/wJC34t6Woq7CvbrjhLmTPvpVrt0tQZ+QNYFPZxnRCtWN6TzVd9trtp+2B8FppTD
+	Kg7aPKRyO3ceZ8FbJ4Q==
+X-Received: from wmtm7.prod.google.com ([2002:a05:600c:c4b7:b0:483:3115:815])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8189:b0:482:f12f:f35e with SMTP id 5b1f17b1804b1-48379b98ff9mr119301215e9.12.1771230861193;
- Mon, 16 Feb 2026 00:34:21 -0800 (PST)
-Date: Mon, 16 Feb 2026 08:34:20 +0000
-In-Reply-To: <20260215-time-delta-display-v1-1-bdd2d6e98ebf@kernel.org>
+ 2002:a05:600c:4e92:b0:47f:b737:5ce0 with SMTP id 5b1f17b1804b1-48373a5bae2mr162242885e9.23.1771231049850;
+ Mon, 16 Feb 2026 00:37:29 -0800 (PST)
+Date: Mon, 16 Feb 2026 08:37:28 +0000
+In-Reply-To: <20260215-configfs-c-default-groups-v1-1-e967daef6c36@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260215-time-delta-display-v1-1-bdd2d6e98ebf@kernel.org>
-Message-ID: <aZLWjBWaBz4h4_SB@google.com>
-Subject: Re: [PATCH] rust: time: implement `Display` for `Delta`
+References: <20260215-configfs-c-default-groups-v1-1-e967daef6c36@kernel.org>
+Message-ID: <aZLXSPk2uO-R0e6b@google.com>
+Subject: Re: [PATCH] configfs: rust: add an API for adding default groups from C
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sun, Feb 15, 2026 at 09:14:05PM +0100, Andreas Hindborg wrote:
-> Implement the `Display` trait for `Delta` so that it can be displayed by a
-> formatter.
+On Sun, Feb 15, 2026 at 09:33:47PM +0100, Andreas Hindborg wrote:
+> Some C subsystems provide a feature to add configfs default groups to the
+> configfs hierarchy of other drivers or subsystems. Rust abstractions for
+> these subsystems will want a way to add these default groups via the
+> configfs Rust API. So add infrastructure to make this possible.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > ---
->  rust/kernel/time.rs | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  drivers/block/rnull/configfs.rs |  1 +
+>  rust/helpers/configfs.c         | 16 ++++++++++++++++
+>  rust/helpers/helpers.c          |  1 +
+>  rust/kernel/configfs.rs         | 33 ++++++++++++++++++++++++++++++++-
+>  samples/rust/rust_configfs.rs   |  8 +++++++-
+>  5 files changed, 57 insertions(+), 2 deletions(-)
 > 
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 6ea98dfcd0278..e18fd17f38c5a 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -474,3 +474,9 @@ pub fn rem_nanos(self, dividend: i32) -> Self {
->          }
+> diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+> index 6713a6d92391d..ea38b27a9011c 100644
+> --- a/drivers/block/rnull/configfs.rs
+> +++ b/drivers/block/rnull/configfs.rs
+> @@ -78,6 +78,7 @@ fn make_group(
+>                      name: name.try_into()?,
+>                  }),
+>              }),
+> +            core::iter::empty(),
+>          ))
 >      }
 >  }
+> diff --git a/rust/helpers/configfs.c b/rust/helpers/configfs.c
+> new file mode 100644
+> index 0000000000000..7cec8ffcb093d
+> --- /dev/null
+> +++ b/rust/helpers/configfs.c
+> @@ -0,0 +1,16 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +impl kernel::fmt::Display for Delta {
-> +    fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
-> +        f.write_fmt(kernel::prelude::fmt!("{}", self.as_nanos()))
+> +#include <linux/configfs.h>
+> +
+> +__rust_helper void
+> +rust_helper_configfs_add_default_group(struct config_group *new_group,
+> +				       struct config_group *group)
+> +{
+> +	configfs_add_default_group(new_group, group);
+> +}
+> +
+> +__rust_helper void
+> +__rust_helper_configfs_remove_default_groups(struct config_group *group)
 
-I think this can just be
+Only the annotation has the two __ prefix, not the symbol name.
 
-	self.as_nanos().fmt(f)
+> +#[pinned_drop]
+> +impl<Data> PinnedDrop for Group<Data> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY: We have exclusive access to `self` and we know the default groups are alive
+> +        // because we reference them through `self.default_groups`.
+> +        unsafe { bindings::configfs_remove_default_groups(self.group.get()) };
 
-Though I think it would be nicer to include an 'ns' suffix here so it's
-not just the number?
+Why isn't this here already?
+
+> +    }
+>  }
+>  
+>  impl<Data> Group<Data> {
+> @@ -259,7 +269,13 @@ pub fn new(
+>          name: CString,
+>          item_type: &'static ItemType<Group<Data>, Data>,
+>          data: impl PinInit<Data, Error>,
+> +        default_groups: impl IntoIterator<Item = Arc<dyn CDefaultGroup>>,
+
+Honestly, I'd just take a KVec here.
+
+>      ) -> impl PinInit<Self, Error> {
+> +        let mut dg = KVec::new();
+> +        for group in default_groups {
+> +            dg.push(group, GFP_KERNEL).unwrap();
+> +        }
+> +
+>          try_pin_init!(Self {
+>              group <- pin_init::init_zeroed().chain(|v: &mut Opaque<bindings::config_group>| {
+>                  let place = v.get();
+> @@ -268,13 +284,28 @@ pub fn new(
+>                  unsafe {
+>                      bindings::config_group_init_type_name(place, name.cast(), item_type.as_ptr())
+>                  };
+> +
+> +                for default_group in &dg {
+> +                    // SAFETY: We keep the default groups alive until `Self` is dropped.
+> +                    unsafe { bindings::configfs_add_default_group(default_group.group_ptr(), place) }
+> +                }
+
+Do these not need to be removed in drop?
 
 Alice
