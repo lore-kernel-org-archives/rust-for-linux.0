@@ -1,139 +1,186 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76B9374178;
-	Tue, 17 Feb 2026 18:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C26737416C
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 18:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771353840; cv=none; b=SZaWNHp30ebHrm6HJUNlgiKV/JIqESYOQxuQniIVn7I8uPvvBI42Yy6klOQQyzuGojZw+xirI5PUk+TZHi9PKDlq7Ns780L5fRdBp5x1lq+IQP6qn1OTAqSF4ZcAX067fR9TLTWaDmJIk4Ua6H1mSsiW66833qGFctpDnMINHdc=
+	t=1771354045; cv=none; b=Il4TTHMI69YuNXdV/nMLU8HyY5qA8YP+nT6gK2Fh4x8kADEjvq2jKsu6lCwh7ZaHM5bmkPu5B2bUgJ7VzMXAqSAxVXk4TmvIYi3u6J6lguF4RMKs8fbbq0//UzEL4c139aPU6KLd1F/1GP3F7wpBFNpb2B1vAHZdpbtiZ+lY3Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771353840; c=relaxed/simple;
-	bh=Pk4Dgfnl0LTSh5k77thtI5cjFrYaqlPjl8PNswtEoZc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cBBwYAgWlcdyLCFtDlNyfYVv/kJCydRh1AnvURhiQv9EwHY+sz8EgwLTqc8qVPOHg8qL308ejDsKzjTr2kXGQF9AgdIpJtS5ZxwBz1pT8rrX4G7RxoPjvWSFkipkm3ReOGVlzDJc4sqsJBHfdTBUXRQUhvU/+8NgwyJDZgul3KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUEKmHZ5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771354045; c=relaxed/simple;
+	bh=WcoLwLQKYqFYG7eyApsHhIbnKT4ueo5I7JT+p13FMtk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VK49ykNK/oUq9Fi9x/RwUf5wVHhiwSHnXEzO3cOvDk6jfjSehF7uqiFXlE28cEwT6O8Zbw7Cp5spmrYVJIDLDhUbTz8z/O8di2SH9KF58yD/CC/qSsOLVIYeBUuVI5CKtcZj1si8qjzvORsE5d1424o05l7C2V6N0XIEfGea7yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EBwuAYlG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUEKmHZ5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B1FC4CEF7;
-	Tue, 17 Feb 2026 18:43:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EBwuAYlG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76187C19421;
+	Tue, 17 Feb 2026 18:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771353839;
-	bh=Pk4Dgfnl0LTSh5k77thtI5cjFrYaqlPjl8PNswtEoZc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aUEKmHZ5aDwTgKs9nkuh+SBwV4UKqULNKl4BeI1JG2BbWs5fTGwFdfFLVwmb/+haf
-	 iRyj6ub4Emg6ti9hngP6J3kHBGJs/SP33wwdJC9BheIfaxPf4GJ3wF61N59XqdLkpQ
-	 5cG2XKO6fIjX6jAMNzM3Ob2ukkjzPJtoSdbyHesj2nNvsWxpKgR7HMZPKRdl4QC3An
-	 GPC4K1bEhAsG/cTKbiaIX+aukwBTaBYMqO7srG3bdjEl/YYlL5u5Bk5VthTTF/E5cn
-	 ZI6Zu0Hmt6mjWD0v96UoHzBuDzXRlMMIQC5vZXEpczapcjoHvmn6QN07Glw/V/YLU4
-	 tPrPHwEs4gBAA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>, Jens Axboe <axboe@kernel.dk>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>, Greg
- KH <gregkh@linuxfoundation.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will
- Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-In-Reply-To: <20260217160451.GA2995752@noisy.programming.kicks-ass.net>
-References: <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
- <aZQ19FEeGgigdwz9@google.com>
- <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com>
- <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com>
- <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <kkmXYWYC07oImDD0FJFVCCWl45alQdraRLHoLr7zowZfE0tMz0MmPIpuyEYQRSLjBQqrp_Ch0iR2Rix_g49lNg==@protonmail.internalid>
- <aZRWOIPThLfIZ1Ph@google.com> <87ecmjcw2v.fsf@kernel.org>
- <Ubu-HoF6Epp0EBvoi1HO6Q9YgTbAxfjfziFD3wsuTop8XLAXSvW2ZkzmMfb0gA2zCfn1XjwuxBSpyx-lexty6Q==@protonmail.internalid>
- <20260217160451.GA2995752@noisy.programming.kicks-ass.net>
-Date: Tue, 17 Feb 2026 19:43:48 +0100
-Message-ID: <878qcrcisb.fsf@kernel.org>
+	s=k20201202; t=1771354045;
+	bh=WcoLwLQKYqFYG7eyApsHhIbnKT4ueo5I7JT+p13FMtk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EBwuAYlGgaGgsXA8Kkz5XVMh4SNzoiNDdwIkW52Vg/PRJdbFPFMFfmn1C4HjoFTcI
+	 uq+zMXMh964YKFyzEnmCSDZHUxdCFNey8lZJdk2KtsmyRGJc3p1jL7bfjBQoAmkxEU
+	 uHsaxdpaVO4HaQHzDRJEg4hEFajrJa9VP5YhEeh1Yia6NFA7qrD8oqflt3tiYtztTT
+	 Rqr2SCWSnLCSDag3MEey3M9t3kgrzom/7n2ut1oyFTxU99mRFn00sTnBFmwnxpYClO
+	 JoxvIiBTV4ektIPPLuqxKluU2SARTkZEN9wWXXsNpGDHfa+J1zej9s8CQt+abyhGlh
+	 gwo2IfH5H78cw==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 923A6F40068;
+	Tue, 17 Feb 2026 13:47:23 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Tue, 17 Feb 2026 13:47:23 -0500
+X-ME-Sender: <xms:u7eUaVNW-zWqtufYm9_LbeoOK1VromChNjDcUBAW8I3bwd2B1IFtsg>
+    <xme:u7eUaT4SW6NZX3j99UYQhc2NJ8x9cjq5B9nZcQ7jped--K8bAF-ZWDj9QF_ljy1LE
+    F02a2U1m2cQhbtxB1bWTRHR2BbcB_qc8Fkhr0xikbMbqIxmLj1s6g>
+X-ME-Received: <xmr:u7eUaaYUNLhd_WjDsNX8xyhwt42FWb5fIi_JEUGCCUNXCZf677UwHqLKue_CV7kBE-N982Zc06tQOfwjvoPxroZ9IgRiUzHv>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddthedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
+    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
+    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprgdr
+    hhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghriiesih
+    hnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhl
+    vgdrtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvg
+    drtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhm
+    pdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqh
+    hunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihg
+    uhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
+    gtohhm
+X-ME-Proxy: <xmx:u7eUaYHHZ1hdyNaGFbqped33ByQXLYmhXkkV4XV9IxW_2HeQnsq39w>
+    <xmx:u7eUabmKGbemH6hcxaxU0gmEln0S9et69XEBG6TX5TM9k7O2E6L-HQ>
+    <xmx:u7eUaXniNtY1V4eWfiyACqYVVr6e-FtqrzgNJck-k5hMYQr0w1hX0Q>
+    <xmx:u7eUaQVDAoWoL3673wK80s4XD7vMixwUO4-ekyOUtuRgTqAfLOIY0Q>
+    <xmx:u7eUaV-e4ypgAY3Xrj2taoTe95VfGFSpAKHW3Klica3fTMlrlxht7Va9>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Feb 2026 13:47:23 -0500 (EST)
+Date: Tue, 17 Feb 2026 10:47:21 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <aZS3ubEjQo8cycdu@tardis.local>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <20260213112837.GT2995752@noisy.programming.kicks-ass.net>
+ <aY9UedlaCmagVmzh@tardis.local>
+ <87tsvjsppz.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87tsvjsppz.fsf@kernel.org>
 
-"Peter Zijlstra" <peterz@infradead.org> writes:
+On Sat, Feb 14, 2026 at 09:18:16AM +0100, Andreas Hindborg wrote:
+> Boqun Feng <boqun@kernel.org> writes:
+> 
+> > On Fri, Feb 13, 2026 at 12:28:37PM +0100, Peter Zijlstra wrote:
+> >> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
+> >> > When copying data from buffers that are mapped to user space, it is
+> >> > impossible to guarantee absence of concurrent memory operations on those
+> >> > buffers. Copying data to/from `Page` from/to these buffers would be
+> >> > undefined behavior if no special considerations are made.
+> >> > 
+> >> > Add methods on `Page` to read and write the contents using byte-wise atomic
+> >> > operations.
+> >> > 
+> >> > Also improve clarity by specifying additional requirements on
+> >> > `read_raw`/`write_raw` methods regarding concurrent operations on involved
+> >> > buffers.
+> >> 
+> >> 
+> >> > +    /// - Callers must ensure that this call does not race with a write to the source page that
+> >> > +    ///   overlaps with this read.
+> >> 
+> >> Yeah, but per the bit above, its user mapped, you *CANNOT* ensure this.
+> >> 
+> >
+> > First, this safety requirement is actually incorrect, because of the
+> > user mapped case you mentioned. I believe Andreas put it to prevent
+> > others from racing with memcpy(), e.g.
+> 
+> Since context is a bit washed out here, let's make sure we are talking
+> about `Page::read_bytewise_atomic``.
+> 
+> There are two buffers in play. `src`, which is provided by the `self:
+> &Page` and `dst: *mut u8`, which is passed as a function parameter.
+> 
+> The requirement for `src` is:
+> 
+>     Callers must ensure that this call does not race with a write to the **source page** that
+>     overlaps with this read.
+> 
+> This requirement is different than the requirement on `dst`. I do not
+> want to enforce that all memory operations on `src` be atomic, simply
+> that they are synchronized. This is a weaker requirement than the
+> requirement on `dst`. As we hold a shared reference to `self` and there
+> is no internal synchronization, I think this is the correct requirement.
+> 
+> For `dst` we have:
+> 
+>     For the duration of the call, other accesses to the area described by `dst` and `len`,
+>     must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
+>     function. Note that if all other accesses are atomic, then this safety requirement is
+>     trivially fulfilled.
+> 
+> Which is also requiring no races, but is specifically mentioning atomic
+> operations, which I did not want on `src`.
+> 
+> With this in mind, do you still think they are redundant?
+> 
 
-> On Tue, Feb 17, 2026 at 02:56:40PM +0100, Andreas Hindborg wrote:
->
->> I'm processing disk IO in the Rust null block driver. The pages backing
->> the IO requests may be simultaneously mapped to user space, so there is
->> no way to guarantee that there is no concurrent memory operation to/from
->> the memory area. User space programs can do whatever.
->>
->> I don't have any control flow depending on the data I copy. I just store
->> it somewhere and return it if a read IO for the same sector arrive.
->
-> Right, so IIRC the old DIO code used to have this problem. We'd end up
-> writing whatever random state to disk if you did DIO of an mmap().
->
-> And if IIRC the current state of things is better in that we ensure the
-> mapping becomes RO and we have writes fault and wait until the writeback
-> is complete, ensuring things are somewhat more consistent.
->
-> But you'd better ask Jens or someone that has looked at the various IO
-> paths in the past 10 years or so :-)
+I see, I've overlooked and I was confused and I guess Peter was too. The
+`dst` could be a user mapped page, but the `src` cannot be. I.e. it's
+function that copying a public `dst` to a private `src`, of course you
+can request no concurrent access to the private `src`. So his objection
+is invalid.
 
-Oh, this is a really important detail that I did not find while trying
-to follow the code path from user space.
+It's not redundant, but probably we can make it more clear. Maybe we
+start by saying:
 
-Cc: Jens Axboe <axboe@kernel.dk>
+/// Notice this function is guaranteed to performs an atomic byte-wise
+/// memory write to the `dst` side but it may only perform a normal
+/// memory read from the [`Page`] `self`.
 
-@Jens is this so, are pages from user space that are part of a write
-request mapped RO during the IO operation?
+Then
 
->
->> Let me add a bit of context as to why I sent this patch. I am not an
->> expert on the finer details of this subject, so I rely on available
->> expertise in our community. It is my understanding that copying the
->> memory in the situation outlined above, without special consideration
->> (in Rust) would be undefined behavior. Such are the rules of the
->> language. Of course I don't want undefined behavior in the Rust null
->> block driver. When asked how to solve this, the experts suggested
->> defining this byte-wise atomic memory copy function, A function that
->> would have well defined behavior in this particular situation.
->
-> Yeah, so being a C programmer, stepping in UB and tearing up the spec is
-> what you do on the daily. Its called reality :-)
+/// # Safety
+///
+/// Callers must ensure that:
+/// 
+/// - `dst` ..
+/// - For ..
+/// - No concurrent write to the source page `self` that overlaps with
+///   the read.
 
-I see. From my observations, "Rust people" in general have a somewhat
-different approach to UB. An approach where we avoid it. We would rather
-fix the language so that we can do what we need to do, in a well defined
-manner.
+or anything else that could care out the difference between `src` and
+`dst`.
 
->
-> In reality it is *really* hard to have memcpy() not be sane. And if the
-> Rust spec doesn't outlaw out-of-thin-air, then the Rust spec is wrong.
-> It really is that simple.
+Regards,
+Boqun
 
-I'm at the far end of my knowledge here, but I believe that I read that
-the theoretical model allows OOTA but that this is considered a bug of
-the model. I'm not sure what to do with this information though.
-
->
->> That seems like a reasonable course of action to me. I don't understand
->> why this is such a big deal, and I don't understand the need to use
->> aggressive language and swearing.
->
-> Feh, there hardly was any o that :-) Call it cultural differences and
-> show how inclusive you are by being open to how other people have
-> different norms, whahaha :-)
-
-Touche.
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
