@@ -1,64 +1,93 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E207436CDE9;
-	Tue, 17 Feb 2026 15:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AA7286417;
+	Tue, 17 Feb 2026 15:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771343447; cv=none; b=b6vdiMpOFDqd4tZcVeOT+E1snyicrvd+g3waA7ERh3JanW7EbjeBBhSkhBGONkp5X+u2cVBnvIL+EQLCFFPmjX0vKf/TF1vryxXjtsHit6zzV+ipC0np1xiyZjY9cHwUeZpfjW0M+vqQMrqc6ljrfWjfUwHzFb15hIKqw5zRpzM=
+	t=1771343570; cv=none; b=DxezrT8hDz5Lj08yarSpxSIsBJyESvpqnQFEtikQV3jdgbN3ddwqrolqWq/wMx/ZXYVXslzI0M68hxDW1kgTvVnsuZSOkrXlfSz2XubugC5K5653pDnSsTMG2leQKjH/j3irhg925zMwl1MqMxEWpryedNTca/a397HNOy5lVs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771343447; c=relaxed/simple;
-	bh=9V5spGlSEnEZtQq5Yz0ERGyJmwgoptxUYK0CHTM5M/g=;
+	s=arc-20240116; t=1771343570; c=relaxed/simple;
+	bh=iH/4jHxpjwqHTjjSxGybSY4T89B5U0JcMMqKVFpsIQU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qJAakp07b9SHwnSI4+7iV6Ph4jjx56dhJ1EcIX2/VyHn8NZT+5PIAR0T+80VeWv5IVJg190uab4HnG7nw9zNbSrG7J65+3ixy0xDmwmne/MFFL9CqiHGJeJg6tQTfkHAn9UJMKn8uh16ESjJbOOZmkbF/CpDzjtZ7UJTFHJyOTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Ql2CJqSU; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=DLncrzl58rhtdjFKGrpvZhnAkhEsEbYghz0rAtoj9yhBnuasAt13tkubPRCCNc4ShPHzcOVS5bIfZ+QH946w2dhbPSIk0h7S/Dv1ohdtyotfxswwkZN533Vdg5vgYs/kKIqZ9zB9/bcPd3QY215tVCliooj4wJQdsFVe1m9mIKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r0VjQkx+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Ql2CJqSU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rQDqCdZpJsTt3Mav7l+A0YJOBunkeNsBUDQhyvkmVgE=; b=Ql2CJqSU5Yjr83Q8ykEBCYZQjd
-	uabSdSC89l8T97xXW/UI4nH4U/1l0Z+uX3AhLNvg2MOoYSDqy/SLvqLyipthOi6sOOOLO+39LLDUJ
-	frJeGRFJOr2Ht55ZEH67hiHtrfGK6BLTNvb90WQc7ELhtFiBK3YCuJZCRBaF0FkaqHKDUIWFkur4o
-	jC+T9zGhFDx/1Bo9V9sqcbtnzzmIXxZIwWWvmzbsIKt8/NwfEkbbMsEBrI9eS4T0sql1Csp4ktAiu
-	LUist8KrrZ5ScXX8Q/almp/7p5jiYP+qwvECOuyYVAyO4z1YkZKawH51TtZ4naiq2naQTcWiEJj3K
-	R4hzrviA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsNLQ-00000004cf9-1Iof;
-	Tue, 17 Feb 2026 15:50:36 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id D7283300CDE; Tue, 17 Feb 2026 16:50:35 +0100 (CET)
-Date: Tue, 17 Feb 2026 16:50:35 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r0VjQkx+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFDAC4AF09;
+	Tue, 17 Feb 2026 15:52:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771343569;
+	bh=iH/4jHxpjwqHTjjSxGybSY4T89B5U0JcMMqKVFpsIQU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=r0VjQkx+YtBh718FGVCIvmHajV3QqwqmxutrHa8URvIIJYXXzOARhBZOM5wYiMV4U
+	 Se1U4Q9SAaTf1hNbeZJusReqCqtJNT8tLZIR/d12a6k5Ow6IaAK9Tx717eaZTfDNb2
+	 nLcqE2qX8d7i8xHW+bg37e5BH3/RQ9fiiv3T7GGto4QGTvGyV/v4Q4X7J7IRLLgS7S
+	 48uSq6rl5oi75jX2Yzj9TkUHMedwwv5HE5BNC1ZXBzj+igNeEdrxlbUMkJtmN8OBhb
+	 KWdXPe7HMSgZXI8ZIPYfyhJKkaSX1fBxCF4s6cEMaK6BI7HUxeZXJSQnGffttCL7xG
+	 c/dAaaW5cq0XQ==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B30B1F40068;
+	Tue, 17 Feb 2026 10:52:47 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 17 Feb 2026 10:52:47 -0500
+X-ME-Sender: <xms:z46UaSa3J1PtIw2u2CAFksYpd-_Z9Nvs5vHZhZO-cOKx9pDW4AvrCg>
+    <xme:z46UaZXeM336IGk1VclWOpxlfqQyi3mslj5o4OzqbMy3UmLflh70D0bN-8cmMg92d
+    JDyq2MrQmlrK6nxH4V4LlTOguGglUmphH3eiaQu0usK-4MWSraieg>
+X-ME-Received: <xmr:z46UaRhaYlSJU0o35n-HZ9xIiq-pV3T3oMmep3JZzje5DVC94DR4kn9i3GcvtxcGPYWYWmC810gOEFJuwnrb6dtueD5SrZum>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtudejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
+    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
+    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgv
+    thgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepghhrvghgkhhhsehlih
+    hnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhg
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvg
+    drtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
+    tghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpd
+    hrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqhhu
+    nhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguh
+    hordhnvght
+X-ME-Proxy: <xmx:z46Uacn1lz5fFWzE84s4OvIHicypsayeQfHr78MXXNVb8aLLgljGmA>
+    <xmx:z46UaSyatSXICv964C9m0j7jKwUAR9PxuBYt3nYUNBdAq8pbTtot3A>
+    <xmx:z46Uaft-VTEsj482c8TWntCQF3MpMIWxyFc-H8CMNYeFaSnRxWFnPA>
+    <xmx:z46UafvKlq8fdPv3Eu-_slZfO-M0NCbYOjA3AOaCeU3Hq0I9nCyxuQ>
+    <xmx:z46UaVnjVCHLt58ViBBiImupwLKlh8d0Vw5o4BsKgZyyGhcTk1DKbd5R>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Feb 2026 10:52:47 -0500 (EST)
+Date: Tue, 17 Feb 2026 07:52:46 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260217155035.GZ2995752@noisy.programming.kicks-ass.net>
-References: <aZQ19FEeGgigdwz9@google.com>
- <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com>
- <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com>
- <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <aZRWOIPThLfIZ1Ph@google.com>
- <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
- <20260217130024.GP1395416@noisy.programming.kicks-ass.net>
- <DGHADGXGWS45.1A6EHNMKM4SRH@kernel.org>
+Message-ID: <aZSOzjdntYOB-DxZ@tardis.local>
+References: <877bsgu7fb.fsf@kernel.org>
+ <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
+ <2026021313-embody-deprive-9da5@gregkh>
+ <873434u3yq.fsf@kernel.org>
+ <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
+ <2026021311-shorten-veal-532c@gregkh>
+ <aY9HD7nH5A-DtgmR@tardis.local>
+ <2026021326-stark-coastline-c5bc@gregkh>
+ <aY9PBfx3RRV7rXZ5@tardis.local>
+ <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,24 +96,23 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DGHADGXGWS45.1A6EHNMKM4SRH@kernel.org>
+In-Reply-To: <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
 
-On Tue, Feb 17, 2026 at 02:54:30PM +0100, Danilo Krummrich wrote:
-> On Tue Feb 17, 2026 at 2:00 PM CET, Peter Zijlstra wrote:
-> > Anyway, I don't think something like the below is an unreasonable patch.
-> >
-> > It ensures all accesses to the ptr obtained from kmap_local_*() and
-> > released by kunmap_local() stays inside those two.
+On Tue, Feb 17, 2026 at 10:13:48AM +0100, Peter Zijlstra wrote:
+> On Fri, Feb 13, 2026 at 08:19:17AM -0800, Boqun Feng wrote:
+> > Well, in standard C, technically memcpy() has the same problem as Rust's
+> > `core::ptr::copy()` and `core::ptr::copy_nonoverlapping()`, i.e. they
+> > are vulnerable to data races. Our in-kernel memcpy() on the other hand
+> > doesn't have this problem. Why? Because it's volatile byte-wise atomic
+> > per the implementation.
 > 
-> I'd argue that not ensuring this is a feature, as I don't see why we would want
-> to ensure this if !CONFIG_HIGHMEM.
+> Look at arch/x86/lib/memcpy_64.S, plenty of movq variants there. Not
+> byte-wise. Also, not a single atomic operation in sight.
+> 
 
-Because of the principle of least surprise. For the HIGHMEM case 'ptr'
-only lives between kmap and kunmap and any access must necessarily be
-confined in between those. Having the code behave differently for
-!HIGHMEM is surprising.
+Sigh, byte-wise means you at least need to byte-wise atomic, if movq is
+atomic at 32bit or 64 bit level in x86, then it's fine implementation
+for byte wise. Or you are saying on x86 it can tear at byte level?
 
-> I think this is not about not escaping a critical scope, but about ensuring to
-> read exactly once.
-
-It ends up being the same thing.
+Regards,
+Boqun
