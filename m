@@ -1,220 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5260036AB78;
-	Tue, 17 Feb 2026 13:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580FC1F181F;
+	Tue, 17 Feb 2026 14:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771336613; cv=none; b=r7vTc4Ki2bivp4Aj7j6JyOpEY/U37te3HcFpCzZhPEBWDz6r303TejG8ZGU5e9OlTiilRpUNlDrLM5rz/wjg0R5C3nvHfdTWks6T2K/9xPvwas5QrLE6NqN2Q+rKyG9jb3Asx6JPLh4cfDxDLgQBChCm6wO2bBkTwrOIRWnV8wA=
+	t=1771337053; cv=none; b=VANutzFAhRJ5/pSSfnUDdkI/zqPZvt497cPJWIT3vs1fdvpzbljRUdxyT8ZAQijSTatZw2kzBilINodj5XDf36+ZsV9XUbyGu/IbZTFy/rjKWO/oNy7V/5gWNkdjtnxYnj3s0V8B27EJt7AkAVddSVU7K1HjEV+qVfqLtq2rK+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771336613; c=relaxed/simple;
-	bh=Iy8wdT/7KAZeU5VN9H+5axw4leXfO3No4pUMNhfmehA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cV4HvU/rR80R4d3dKqtdhb1jg/49jd1krT0JSLf1xU/ahJt4kJZscteA3h2t6yI3rET2mqI3Z1vF6763KPl0k/EATaWdJ/cJExLlKb2x4G0d+ZIkAmLeTc0eN5H3ol1h4kCZCnAhDB2Vqx3c7ggQevvmM5lh93oJqYj7u5fHlzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAH8TVyK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771337053; c=relaxed/simple;
+	bh=ppRD/uPxe+TTRNocgCzCwGOgX3BbHQSLRy7z1y3OVtU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=k2CLNn2APoP492fNMnJC+/5PgbAaS1Hn82BkwowbY0rJlrZVN9+AePDUlhIBq9MHdx5ic8fK6dPQI/Rb8BYuLOOwA0kjW3PKP5rWLIACRC9z18ft0gp6jH9WOmqYswFk9apv/2mRYqCMjzNl+vQcbtx+QPW9a8O57ZSe6y6u7HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ImZ3NB8u; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAH8TVyK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16983C4CEF7;
-	Tue, 17 Feb 2026 13:56:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771336613;
-	bh=Iy8wdT/7KAZeU5VN9H+5axw4leXfO3No4pUMNhfmehA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=LAH8TVyKuqZ1PTZK2SPxb77WGWq9rrJnTXa8+AaHsLa8LU33ezmTFDSf9iiuYgzki
-	 KSMC1o18J22PW2j9Yl0y0Aa4PYgizeauOPWSsffdEInipCNLZz4O/6vmmCPeqb6Ki9
-	 Y47RTHZib0CZBu0JDyhPZ9iSuJK4gLu6gHtfwep5/yv5ZkXi1ED3A3DtLdPhpwAJJw
-	 zSL6YukxGYdam1yXs/MTSZ4KJ+UI6Cz5MVqbPId7qWo18iAVJ3zQJ7S34x/c3izW/5
-	 H5mVWCmKlxykBZdJD3fVhfz1S+f/Obtbd6MVSfkTtXrGy0HFrBrjBAy7jtAr6/pcjJ
-	 qdYINAgGknjOQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will
- Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-In-Reply-To: <aZRWOIPThLfIZ1Ph@google.com>
-References: <aY9HD7nH5A-DtgmR@tardis.local>
- <2026021326-stark-coastline-c5bc@gregkh> <aY9PBfx3RRV7rXZ5@tardis.local>
- <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
- <aZQ19FEeGgigdwz9@google.com>
- <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com>
- <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com>
- <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <kkmXYWYC07oImDD0FJFVCCWl45alQdraRLHoLr7zowZfE0tMz0MmPIpuyEYQRSLjBQqrp_Ch0iR2Rix_g49lNg==@protonmail.internalid>
- <aZRWOIPThLfIZ1Ph@google.com>
-Date: Tue, 17 Feb 2026 14:56:40 +0100
-Message-ID: <87ecmjcw2v.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ImZ3NB8u"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4fFhFy3H7Gz9ss3;
+	Tue, 17 Feb 2026 15:04:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1771337046; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ppRD/uPxe+TTRNocgCzCwGOgX3BbHQSLRy7z1y3OVtU=;
+	b=ImZ3NB8uC842fnWRwfcSQz9+235VRMXHpI50PJUhqU9C48XkVHWqqnYAAPMgcVdNy1e5a3
+	Vi8i/MJK6llhGBRp1i/dtz0Vc0qJdiCjJf7dbWKx1xp9Gmr0BFoSHLikg7pKqkNms/H0yS
+	VLSKHTUR+yoe1eiuhW8ML9qX0EBBwsCkbsDspAd/6s0AoagAH9YygcQmWqwDehrYH3eW53
+	UkCckDZF8BsVaTiLNmB1WmBM7xupGO5k1LXp1TX18bf4/yd9VeHpXCBklNigmFzHFJVH9l
+	S3bA5eqsF0C1NG5bdc3X5Rfl8V02VvpAozXuLaZUyFXVv+Ezt78XBTob2N5Esw==
+Message-ID: <3d90656315ab0b52f4725ca7c2cd10859d1e4f69.camel@mailbox.org>
+Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Alice
+ Ryhl <aliceryhl@google.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, phasta@kernel.org, 
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Gary Guo <gary@garyguo.net>, Benno Lossin
+ <lossin@kernel.org>,  Daniel Almeida <daniel.almeida@collabora.com>, Joel
+ Fernandes <joelagnelf@nvidia.com>,  linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,  rust-for-linux@vger.kernel.org
+Date: Tue, 17 Feb 2026 15:03:57 +0100
+In-Reply-To: <d9e00d8c-93c0-45f8-95f2-3235fb781e7a@amd.com>
+References: <20260209155843.725dcfe1@fedora>
+	 <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com>
+	 <aYruaIxn8sMXVI0r@google.com> <20260210101525.7fb85f25@fedora>
+	 <aYsFKOVrsMQeAHoi@google.com> <20260210133617.0a4be958@fedora>
+	 <aYsvc3Q8h-Gg27-g@google.com> <20260210142631.6f8a3411@fedora>
+	 <aYs3VVH_UXMFa5oC@google.com>
+	 <f4c32d9a-7303-4a50-aafc-8039102fbd3e@amd.com>
+	 <aYtJznZcCEYBffil@google.com>
+	 <d9e00d8c-93c0-45f8-95f2-3235fb781e7a@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MBO-RS-ID: a39b3d18f28fd9b1e90
+X-MBO-RS-META: 3szqqireognodmxtjpexkd4wuwt4jhd1
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
-
-> On Tue, Feb 17, 2026 at 12:09:11PM +0100, Peter Zijlstra wrote:
->> On Tue, Feb 17, 2026 at 10:47:03AM +0000, Alice Ryhl wrote:
->> > > > 	// OK!
->> > > > 	unsigned long *a, b;
->> > > > 	b = READ_ONCE(a);
->> > > > 	if is_valid(b) {
->> > > > 	    // do stuff
->> > > > 	}
->> > > >
->> > > > Now consider the following code:
->> > > >
->> > > > 	// Is this ok?
->> > > > 	unsigned long *a, b;
->> > > > 	memcpy(a, &b, sizeof(unsigned long));
->> > > > 	if is_valid(b) {
->> > > > 	    // do stuff
->> > > > 	}
->> > >
->> > > Why the hell would you want to write that? But sure. I think similar but
->> > > less weird example would be with structures, where value copies end up
->> > > being similar to memcpy.
->> >
->> > I mean sure, let's say that it was a structure or whatever instead of a
->> > long. The point is that the general pattern of memcpy, then checking the
->> > bytes you copied, then use the bytes you copied, is potentially
->> > susceptible to this exacty optimization.
->>
->> > > And in that case, you can still use volatile and compiler must not do
->> > > silly.
->> >
->> > What you mean by "volatile" here is the same as what this patch means
->> > when it says "per-byte atomic". If you agree that a "volatile memcpy"
->> > would be a good idea to use in this scenario, then it sounds like you
->> > agree with the patch except for its naming / terminology.
->>
->>   struct foo {
->>     int a, b;
->>   };
->>
->>   struct foo *ptr, val;
->>
->>   val = *(volatile struct foo *)ptr;
->>
->> why would we need a an explicit new memcpy for this?
->
-> In my experience with dealing with `struct page` that is mapped into a
-> vma, you need memcpy because the struct might be split across two
-> different pages in the vma. The pages are adjacent in userspace's
-> address space, but not necessarily adjacent from the kernel's POV.
->
-> So you might end up with something that looks like this:
->
-> struct foo val;
-> void *ptr1 = kmap_local_page(p1);
-> void *ptr2 = kmap_local_page(p2);
-> memcpy(ptr1 + offset, val, PAGE_SIZE - offset);
-> memcpy(ptr2, val + offset, sizeof(struct foo) - (PAGE_SIZE - offset));
-> kunmap_local(ptr2);
-> kunmap_local(ptr1);
->
-> if (is_valid(&val)) {
->     // use val
-> }
->
-> This exact thing happens in Binder. It has to be a memcpy.
->
->> > > So I'm still not exactly sure why this is a problem all of a sudden?
->> >
->> > I mean, this is for `struct page` specifically. If you have the struct
->> > page for a page that might also be mapped into a userspace vma, then the
->> > way to perform a "copy_from_user" operation is to:
->> >
->> > 1. kmap_local_page()
->> > 2. memcpy()
->> > 3. kunmap_local()
->> >
->> > Correct me if I'm wrong, but my understanding is that on 64-bit systems,
->> > kmap/kunmap are usually complete no-ops since you have enough address
->> > space to simply map all pages into the kernel's address space. Not even
->> > a barrier - just a `static inline` with an empty body.
->>
->> That is all correct -- however that cannot be all you do.
->>
->> Any shared memory will involved memory barriers of a sort. You cannot
->> just memcpy() and think you're done.
->>
->> So yeah, on x86_64 those 1,2,3 are insufficient to inhibit the re-load,
->> but nobody should ever just do 1,2,3 and think job-done. There must
->> always be more.
->>
->> If it is a ring-buffer like thing, you get:
->>
->>          *   if (LOAD ->data_tail) {            LOAD ->data_head
->>          *                      (A)             smp_rmb()       (C)
->>          *      STORE $data                     LOAD $data
->>          *      smp_wmb()       (B)             smp_mb()        (D)
->>          *      STORE ->data_head               STORE ->data_tail
->>          *   }
->>
->> if it is a seqlock like thing you get that.
->>
->> If it is DMA, you need dma fences.
->>
->> And the moment you use any of that, the re-load goes out the window.
->
-> I don't know how Andreas is using this, but the usage pattern I'm
-> familiar with for `struct page` from my work on Binder is this one:
->
-> 1. memcpy into the page
-> 2. return from ioctl
-> 3. userspace reads from vma
->
-> or
->
-> 1. userspace writes to vma
-> 2. call ioctl
-> 3. kernel reads from page
->
-> which needs no barriers whatsoever. There is nothing to prevent this
-> kind of optimization in this kind of code, so an evil userspace could
-> trigger TOCTOU bugs in the kernel that are not present in the source
-> code if the code was optimized like I described.
-
-I'm processing disk IO in the Rust null block driver. The pages backing
-the IO requests may be simultaneously mapped to user space, so there is
-no way to guarantee that there is no concurrent memory operation to/from
-the memory area. User space programs can do whatever.
-
-I don't have any control flow depending on the data I copy. I just store
-it somewhere and return it if a read IO for the same sector arrive.
-
-Let me add a bit of context as to why I sent this patch. I am not an
-expert on the finer details of this subject, so I rely on available
-expertise in our community. It is my understanding that copying the
-memory in the situation outlined above, without special consideration
-(in Rust) would be undefined behavior. Such are the rules of the
-language. Of course I don't want undefined behavior in the Rust null
-block driver. When asked how to solve this, the experts suggested
-defining this byte-wise atomic memory copy function, A function that
-would have well defined behavior in this particular situation.
-
-That seems like a reasonable course of action to me. I don't understand
-why this is such a big deal, and I don't understand the need to use
-aggressive language and swearing.
-
-I would suggest that if we are failing to understand each other, or if
-we are miscommunicating, let's be curious instead of angry. It get's us
-to where we want to be, way faster. And it is a much more pleasant
-journey.
+On Tue, 2026-02-10 at 16:45 +0100, Christian K=C3=B6nig wrote:
+> On 2/10/26 16:07, Alice Ryhl wrote:
+> > On Tue, Feb 10, 2026 at 02:56:52PM +0100, Christian K=C3=B6nig wrote:
+> > > On 2/10/26 14:49, Alice Ryhl wrote:
+> > > > On Tue, Feb 10, 2026 at 02:26:31PM +0100, Boris Brezillon wrote:
+> > > > > On Tue, 10 Feb 2026 13:15:31 +0000
+> > > > > Alice Ryhl <aliceryhl@google.com> wrote:
+> > > > >=20
+> > > > > > On Tue, Feb 10, 2026 at 01:36:17PM +0100, Boris Brezillon wrote=
+:
+> > > > > > > On Tue, 10 Feb 2026 10:15:04 +0000
+> > > > > > > Alice Ryhl <aliceryhl@google.com> wrote:
+> > > > > > > =C2=A0=20
+> > > > > > > > impl MustBeSignalled<'_> {
+> > > > > > > > =C2=A0=C2=A0=C2=A0 /// Drivers generally should not use thi=
+s one.
+> > > > > > > > =C2=A0=C2=A0=C2=A0 fn i_promise_it_will_be_signalled(self) =
+-> WillBeSignalled { ... }
+> > > > > > > >=20
+> > > > > > > > =C2=A0=C2=A0=C2=A0 /// One way to ensure the fence has been=
+ signalled is to signal it.
+> > > > > > > > =C2=A0=C2=A0=C2=A0 fn signal_fence(self) -> WillBeSignalled=
+ {
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.fence.signa=
+l();
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.i_promise_i=
+t_will_be_signalled()
+> > > > > > > > =C2=A0=C2=A0=C2=A0 }
+> > > > > > > >=20
+> > > > > > > > =C2=A0=C2=A0=C2=A0 /// Another way to ensure the fence will=
+ be signalled is to spawn a
+> > > > > > > > =C2=A0=C2=A0=C2=A0 /// workqueue item that promises to sign=
+al it.
+> > > > > > > > =C2=A0=C2=A0=C2=A0 fn transfer_to_wq(
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self,
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wq: &Workqueue,
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 item: impl DmaFe=
+nceWorkItem,
+> > > > > > > > =C2=A0=C2=A0=C2=A0 ) -> WillBeSignalled {
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // briefly obtai=
+n the lock class of the wq to indicate to
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // lockdep that =
+the signalling path "blocks" on arbitrary jobs
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // from this wq =
+completing
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bindings::lock_a=
+cquire(&wq->key);
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bindings::lock_r=
+elease(&wq->key);
+> > > > > > > >=20
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // enqueue the j=
+ob
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wq.enqueue(item,=
+ wq);
+> > > > > > > >=20
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // The signature=
+ of DmaFenceWorkItem::run() promises to arrange
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // for it to be =
+signalled.
+> > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.i_promise_i=
+t_will_be_signalled()
+> > > > > > > > =C2=A0=C2=A0=C2=A0 }=C2=A0=20
+> > > > > > >=20
+> > > > > > > I guess what's still missing is some sort of `transfer_to_hw(=
+)`
+> > > > > > > function and way to flag the IRQ handler taking over the fenc=
+e
+> > > > > > > signaling token.=C2=A0=20
+> > > > > >=20
+> > > > > > Yes, transfer to hardware needs to be another piece of logic si=
+milar to
+> > > > > > transfer to wq. And I imagine there are many ways such a transf=
+er to
+> > > > > > hardware could work.
+> > > > > >=20
+> > > > > > Unless you have a timeout on it, in which case the WillBeSignal=
+led is
+> > > > > > satisfied by the fact you have a timeout alone, and the signall=
+ing that
+> > > > > > happens from the irq is just an opportunistic signal from outsi=
+de the
+> > > > > > dma fence signalling critical path.
+> > > > >=20
+> > > > > Yes and no. If it deadlocks in the completion WorkItem because of
+> > > > > allocations (or any of the forbidden use cases), I think we want =
+to
+> > > > > catch that, because that's a sign fences are likely to end up wit=
+h
+> > > > > timeouts when they should have otherwise been signaled properly.
+> > > > >=20
+> > > > > > Well ... unless triggering timeouts can block on GFP_KERNEL
+> > > > > > allocations...
+> > > > >=20
+> > > > > I mean, the timeout handler should also be considered a DMA-signa=
+lling
+> > > > > path, and the same rules should apply to it.
+> > > >=20
+> > > > I guess that's fair. Even with a timeout you want both to be signal=
+ling
+> > > > path.
+> > > >=20
+> > > > I guess more generally, if a fence is signalled by mechanism A or B=
+,
+> > > > whichever happens first, you have the choice between:
+> > >=20
+> > > That doesn't happen in practice.
+> > >=20
+> > > For each fence you only have one signaling path you need to guarantee
+> > > forward progress for.
+> > >=20
+> > > All other signaling paths are just opportunistically optimizations
+> > > which *can* signal the fence, but there is no guarantee that they
+> > > will.
+> > >=20
+> > > We used to have some exceptions to that, especially around aborting
+> > > submissions, but those turned out to be a really bad idea as well.=C2=
+=A0=20
+> > >=20
+> > > Thinking more about it you should probably enforce that there is only
+> > > one signaling path for each fence signaling.
+> >=20
+> > I'm not really convinced by this.
+> >=20
+> > First, the timeout path must be a fence signalling path because the
+> > reason you have a timeout in the first place is because the hw might
+> > never signal the fence. So if the timeout path deadlocks on a
+> > kmalloc(GFP_KERNEL) and the hw never comes around to wake you up, boom.
+>=20
+> Mhm, good point. On the other hand the timeout handling should probably b=
+e considered part of the normal signaling path.
 
 
-Best regards,
-Andreas Hindborg
+Why would anyone want to allocate in a timeout path in the first place =E2=
+=80=93 especially for jobqueue?
+
+Timeout -> close the associated ring. Done.
+JobQueue will signal the done_fences with -ECANCELED.=20
+
+What would the driver want to allocate in its timeout path, i.e.: timeout c=
+allback.
 
 
+P.
