@@ -1,95 +1,98 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F2730DD0C
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 09:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F1D30DD1A;
+	Tue, 17 Feb 2026 09:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771320825; cv=none; b=SfJjsqF4+fZt1UKxG46EJfJueij/P/XMBYGriMkOl7ctl/aGymVIOj0KDFM3HPO8cdCf6ak7l5k+e8BWfKmzsZqN8A0tkllOZW/HZBuvC6/oCSLO+jawIImCWFcYpTacgI4b3+1oPTqdWZEu8vkFAPC68z73zwgu209bZHNbjiQ=
+	t=1771320840; cv=none; b=GIh9q20moa9wuw2q6T0OwFDufYSZd9fxyHKp1CqnLpOvItyd3ZAMEUe8VTd0veDWQs3mKCsUBMGf6MnWQ3VhgmtB251lTgoiTTW/aZNHOAQxqZ45DOPzijHnHcWRIcNDnsOb7gKv9HGDIaC3LjbOeaRo/NCcxpTWH4kPiXrXXsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771320825; c=relaxed/simple;
-	bh=B07OPuUveTlk+b/va2juR1LXkVUa801jcSG6qIxxN2Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N0qkVUKtSPM9CMRlegZBh3VeU6mn83bbT+mFhyqxRW7wqblbGAXYeEAmA+29z1NS7mkcxNmxtBFcpEDLh1ISKQOh8cjFls5OQFaWLkkAwhWFoxPRzO81mU7vCDw5vxwHoAMHNANu3KiZMIuSlD6aVt4s4nTCkoHtUhH9dxwy0tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZZKRyNIC; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1771320840; c=relaxed/simple;
+	bh=KGrix/meDH9+LBgevzF+TiWnP7BD6m8ETbTz5IRtB2A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GIH3jW3/QUiHLo4zcubEQM0SuyasLuT+PBDPKcnOL7PmBNDqmCnsd2qcxabzknaWow+Jr+7eKUs0cKXgfC70zy0rtguqQYVUKqQDu1lWCM1k0yr2SuDBSEi1PBcBKBPJR2tyas1aPDgigwwB2QcJZ2Q1hctFMplLE7+rxdewA9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=dYTU2ydm; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZZKRyNIC"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso19741185e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 01:33:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771320822; x=1771925622; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x8U/V9GGZCQ16QVrv/ncm3L2JAXBCx3yPL1lZ3d8azI=;
-        b=ZZKRyNICf4fq8KoRhHKo7iCi/OhI35Vp3+ZZSFBovS+0n+6pJ7Pv8ZueLIxETWZQoZ
-         Xylv+if45N6doveO7Ou2AIodAgFVxRze1JjTh7Id1Rqjg8bAB+DBkvHl+E32JEZEdaQ8
-         oUw2p3/qmZvizifSpwWePBigIvTVhuVH+XNayJBloi+cTZXgu9v/2przlodpAGsVq1iK
-         jETInLLvrZHbbwDWmgP8cJb3UXaOAVuBwJtACqQPjevOzgI/+o5peb85rXxrkYeOp/Tn
-         I3Y4F2rNLsUTJARIK99OBTcITUTl4bRnXACkJJfhjnCjQ6xU1htowmdl8ggyZ5OQyL+e
-         J3uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771320822; x=1771925622;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x8U/V9GGZCQ16QVrv/ncm3L2JAXBCx3yPL1lZ3d8azI=;
-        b=dbrtkVAMgmdF83lckKpcMt87Lqb+KT37S9V+0FuUU9uOYHcmxrKwzHHA2cGGBAXlI5
-         SinaphAfMQye8VtyKlu2ysN2+JV7mrjMbeNBjJ2douk0+TPsnuKMNBrjXtzXbrBylDo1
-         DVlie+9S2Taa9Vf6gGj1nNIVLjqB9h0+te7XfTEOnCCwA4Plkvp8yaTMXbBnMQjHmbY4
-         of7o9epujJ42dMW/Clfq6Pdhb8ypBMDYo94kd+ZRBydI/KLtC+Rp5GQi6+iIGZEnTGkG
-         BhBz1It9e0j63J8GB53IOQj01qXNiSrSLPTfuaBtWwoaC0wsdA9iHKix8yXZsL7FOtFk
-         mDjA==
-X-Forwarded-Encrypted: i=1; AJvYcCWe82ifwm/N+MLE7ZTxvBOALmIJbwKacjXccyiv9WIllhNBQhcwKDdoYfJIKR1XlzcQbWavO/4GYDjy2bkg1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGrZWZIvK3Ors+xLCb67c8IvhTficYbQX8n2VD7M0nlg2f4lD/
-	agfqN3FsQDwdM8T7KbkQNgky/53KeR9qeERvE+cSQS5QHe4egyz15Lhyb0QYqplcK8blGm0g1SA
-	iV7GPuchHKfrtOWCyWA==
-X-Received: from wmbz20.prod.google.com ([2002:a05:600c:c094:b0:47b:d5ad:dd7f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:820d:b0:47d:403e:4eaf with SMTP id 5b1f17b1804b1-48379b9f278mr197567615e9.10.1771320822308;
- Tue, 17 Feb 2026 01:33:42 -0800 (PST)
-Date: Tue, 17 Feb 2026 09:33:40 +0000
-In-Reply-To: <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="dYTU2ydm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+bBTf3wXkTuk7e+nax/2etObEgTBzMf/7JIdQqw1kF4=; b=dYTU2ydm7yvPcT4/57deVTHDi8
+	vDKzJDdcGCvoWWLz3P85baYyzhQgy/1crhJXUMyVlJi+FHf7C0LZJ0sFVObDQiAg/yzngNvlsbrrl
+	43aAD5Ya+YZ/6sPV5YIjjrRud70qPji/qtl32uph/7htvV4WqfIlAarFNt3AkxuMZCzxr9vNq0NT+
+	Y/d71em1yzb2hmlmJA3wsYz+ldrQ14lhem7WWmfpNhA0vXprRHfd+4HrT3/+EhtQ2lxUBadubkOvn
+	raNmBUfi0dhHUsYbKyHtyFNbe1F2W88j9h2MG6tXTFXxORJ3fI/0IuqmaRwXqyzmoRifqLywH12Id
+	bx8QGfUQ==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsHSo-00000004E6o-1Tsu;
+	Tue, 17 Feb 2026 09:33:50 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 9ED57300CDE; Tue, 17 Feb 2026 10:33:44 +0100 (CET)
+Date: Tue, 17 Feb 2026 10:33:44 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260217093344.GO1395416@noisy.programming.kicks-ass.net>
+References: <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
+ <2026021343-germicide-baritone-efe8@gregkh>
+ <877bsgu7fb.fsf@kernel.org>
+ <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
+ <2026021313-embody-deprive-9da5@gregkh>
+ <873434u3yq.fsf@kernel.org>
+ <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
+ <2026021311-shorten-veal-532c@gregkh>
+ <aY9HD7nH5A-DtgmR@tardis.local>
+ <20260217091723.GU1395266@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <877bsgu7fb.fsf@kernel.org> <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
- <2026021313-embody-deprive-9da5@gregkh> <873434u3yq.fsf@kernel.org>
- <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
- <2026021311-shorten-veal-532c@gregkh> <aY9HD7nH5A-DtgmR@tardis.local>
- <2026021326-stark-coastline-c5bc@gregkh> <aY9PBfx3RRV7rXZ5@tardis.local> <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
-Message-ID: <aZQ19FEeGgigdwz9@google.com>
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-From: Alice Ryhl <aliceryhl@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260217091723.GU1395266@noisy.programming.kicks-ass.net>
 
-On Tue, Feb 17, 2026 at 10:13:48AM +0100, Peter Zijlstra wrote:
-> On Fri, Feb 13, 2026 at 08:19:17AM -0800, Boqun Feng wrote:
-> > Well, in standard C, technically memcpy() has the same problem as Rust's
-> > `core::ptr::copy()` and `core::ptr::copy_nonoverlapping()`, i.e. they
-> > are vulnerable to data races. Our in-kernel memcpy() on the other hand
-> > doesn't have this problem. Why? Because it's volatile byte-wise atomic
-> > per the implementation.
+On Tue, Feb 17, 2026 at 10:17:23AM +0100, Peter Zijlstra wrote:
+> On Fri, Feb 13, 2026 at 07:45:19AM -0800, Boqun Feng wrote:
 > 
-> Look at arch/x86/lib/memcpy_64.S, plenty of movq variants there. Not
-> byte-wise.
+> > > > Suppose the memory was 'AAAA' and while you're reading it, it is written
+> > > > to be 'BBBB'. The resulting copy can be any combination of
+> > > > '[AB][AB][AB][AB]'. Not one of them is better than the other.
+> > > > 
+> > 
+> > The idea is if using Rust's own `core::ptr::copy()` or
+> > `core::ptr::copy_nonoverlapping()`, you may get `CCCC`, because they are
+> > not semantically guaranteed atomic per byte (i.e. tearing can happen at
+> > bit level, because they are not designed for using in case of data
+> > races, and there is no defined asm implementation of them, compilers can
+> > do anything).
+> 
+> How the heck would they do out-of-thin-air? Any memcpy() implementation
+> that can cause that is insane and broken.
+> 
+> Compilers are broken crap if they do this.
 
-movq is a valid implementation of 8 byte-wise copies.
+The only way I know for a compiler to cause out-of-thin-air is
+speculative stores -- those MUST NOT happen. Just like hardware must not
+do them.
 
-> Also, not a single atomic operation in sight.
-
-Relaxed atomics are just mov ops.
-
-Alice
+We must all collectively say NO to a compiler that does these. Life is
+too short to try and write concurrent programs with a compiler that does
+this.
