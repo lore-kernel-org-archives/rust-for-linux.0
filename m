@@ -1,300 +1,111 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013037.outbound.protection.outlook.com [40.93.196.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237F5361DC9;
-	Tue, 17 Feb 2026 14:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771338137; cv=fail; b=re4XxygkDXUejcb6WvYAfu1h7nfqAwdcYWPtcd2giFSwVuQxPGuDqCnXQ6Zem3yAy1R+RMUZgxlsoDMwlMCy/iYO6YclpAonxOlI+utk7PGW9OB/+eaDrGFG3Viu4ely6bRUrowEsjuhFvPFGykHKM4WdJQziaS2TwjBVrIf5zU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771338137; c=relaxed/simple;
-	bh=J5oHl6UTANkUcAQXyuDHZqBpwS2hY2sXTdoRdygk980=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ocNEDNDHVc3Dhbal7mF/ZJEnmfrBNeZMV3YTt9uDEVGWhQkI5G1bTsCdBYr2nznxyuzXkjW6jh57wTfsrwHOcgN2rsiPVe1C3VvGS3kTMmo0JyIvEFkSWrtr2zChpT93B9hbMwC1RpIIUGJpj677ih240HncwHUvWa0vCDWSwGs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fBequS29; arc=fail smtp.client-ip=40.93.196.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C543F361DC9
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 14:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771338173; cv=none; b=Gbyld3oxc3D7r/5/BQFl1gbLN8mBdkIPaoMGX8eNwG64qk89snZ970xlqOlh5xP1CP9BMWbLXG+zNMGtVc43OaAVHloBhyfVx4rr0j+Q7N6igYdXxaJRZqDD9m5/LrMq/gxNQT2D2osZaICQC7y1P/6KK/jOB3FJbR9NiZNjqvg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771338173; c=relaxed/simple;
+	bh=Uxj6c/az0LdP8dZc8T2qUy7YzybZMS/bT4hkQ1PgX0M=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rulo3yyed82f8E6pC2r3MonTM3t3iqDvL/bGY0ipOa0RDkvHysfB2jvXy8qs/6bFRl1i6WARsd+2VoKSF2U5+0Gxekup1H4VXMUu/BGBRI3Dj3g5V0h5f0HmKP9VHi7PZ+OZO0L91Z1nvPsInGhgqn/DJaun6tR7PRNQM4Wlx6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o8bmpgT4; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fBequS29"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D0GzLCX7y8lZuZPju2W5TLEOtKeG8THnbdcCyiRYIVIKsIdZHtZNZXqc+wx0OQdezL5hxwKKPXHiEDXUjxBpD2aVhmGq/7LO+kQ1hlAGRoH5WY+uWx70/ayIjqhvGReO6B0vGIeU3iLMqeRUqVYgY0/Ux+y/tU9XZung/kJStk6+7KvBSIAPOyuNUStThub5PVALkSCBHcEa+UHSCZ9o0V8x5LzBAXPRtp7a4MmBHmxm8mz3Y36thAA71cJwME1zCJFxa6xzSfQXEAXiOGpHJCQHKJjRCgYTX6G0JwIupFJW9oTjJ2Om/GuRpJS7WU88Nj387PvbVFm8FNLkPWnD+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GhhV+9v4NpGOACnTsL/P7szWekhZM4hSVD1h9k5L3e0=;
- b=TLGVihmz2R2xnrfBU9Tm3SQPVxrdke0K1rms8F8oYr/doe8X/7vIqk9SajDUAMk8KhO35CwKHuJQ6Y7lGrMBRMRTMlz33CvnOfS/Ua2v+mBGZdxZq92ZXdBkumC4eNun5mDyl8I6BAqJQCSgoIoCzuMMwOtqx6KmAL9mtcDYAxyO2a7lPnzxb4/c1A2m81hRNg+Cudjd9rMy4AAnjFJuITotOD5TOCqCelaJEWtJgVLdQOfXpLaDs05yjmNHkblGt8ZrNHaVGTbymtACzq79Sgq9THEKc4ndZVPdj+Qd3721QdxwcsMNjLlZpuk90xHpNvul5vXMTnm9sWl7UsLwFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GhhV+9v4NpGOACnTsL/P7szWekhZM4hSVD1h9k5L3e0=;
- b=fBequS29lPDTn/ESwrNM5RJU/4aDQz1NNttNWdrBJuPw41mOKaePgpAoCnrKizrnVcXMrI5YmYvMkRJjU31wa6OeTuXbWvdnqWfgM74N86VPEwI48qCcAfT/bYkGjCHmnE/y1yJPYOU+uT3+FtIXX50cDRZ5OavJLyOXMmcvXTo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by MW4PR12MB7032.namprd12.prod.outlook.com (2603:10b6:303:1e9::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.13; Tue, 17 Feb
- 2026 14:22:10 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9611.008; Tue, 17 Feb 2026
- 14:22:10 +0000
-Message-ID: <50ee6f3f-82d3-4eb6-ae3f-9f032f3caf1d@amd.com>
-Date: Tue, 17 Feb 2026 15:22:03 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
-To: Alice Ryhl <aliceryhl@google.com>, phasta@kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Gary Guo <gary@garyguo.net>,
- Benno Lossin <lossin@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-References: <20260209155843.725dcfe1@fedora>
- <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com> <aYruaIxn8sMXVI0r@google.com>
- <20260210101525.7fb85f25@fedora> <aYsFKOVrsMQeAHoi@google.com>
- <20260210133617.0a4be958@fedora> <aYsvc3Q8h-Gg27-g@google.com>
- <20260210142631.6f8a3411@fedora> <aYs3VVH_UXMFa5oC@google.com>
- <f4c32d9a-7303-4a50-aafc-8039102fbd3e@amd.com> <aYtJznZcCEYBffil@google.com>
- <d9e00d8c-93c0-45f8-95f2-3235fb781e7a@amd.com>
- <3d90656315ab0b52f4725ca7c2cd10859d1e4f69.camel@mailbox.org>
- <CAH5fLgjNS1e420UX7muyEPWX3dZ-JsA_uy3=PM7QLA2NuoKJmw@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CAH5fLgjNS1e420UX7muyEPWX3dZ-JsA_uy3=PM7QLA2NuoKJmw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YT4PR01CA0273.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:109::21) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o8bmpgT4"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4830e7c6131so43246575e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 06:22:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771338171; x=1771942971; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9toli3up5J45j2dd4uhudMM/Hy4EA7BHUmvoc7k8+8Y=;
+        b=o8bmpgT4GlJTrrP+ml3OISE/lilgUgN2XmY1wBJu0IZRZyKu6syc/sOskz22C52ZRI
+         Ebt5f6SrtZ3+x0HjEcC3pr7oypmGuOA9SyFlxH/QBX/zlZh0WhiLwbdU8UJNsK7InOp1
+         A/xr0NBYpjET2YPsPTTVqHfhIfY8teihu92ym3xtugFN3TNbpGWDLQud0SgdXP9l3W7I
+         BtC8oBdswjabFAR7rzFd1COMdkjJw1Wat5nHffIlW1IbWdARI2oeIv01NSIDRmiNARMm
+         Ct6efWvPwPa3WTSqp/Zj40WjfF2hgyoagqI7Ek8ND5MHMrE5h/ykByqKPeDtgqYMx9AQ
+         sqYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771338171; x=1771942971;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9toli3up5J45j2dd4uhudMM/Hy4EA7BHUmvoc7k8+8Y=;
+        b=QjQ+TvEJtMkGftwDI6peBN7HYE7l3ZL0zuuzskUwZMED4gbi50CfEQXT2TVZFg46VQ
+         ricfXHtm/rZJYsvymBu5xi9RNnbiz9nCN45+xVrKUf1JMu1gRrRPK732qNoiGMEAU0D+
+         rDpyWIhoiuSgWpCBY3HRxxdRZPz/1tsplikuz6Vfkf5YXwaG6hqUXWIGwHgJVqgbdEtQ
+         /BwHRXEVDUM1R9HyCUGp9Tul8S4/qbMHOi3e6TPZDrEU4kUr2+hVoqP5QQx5sTbRbDUg
+         K94LtvDk4rs96069K38bCErMVfwZKbTkidWabYXxFdh9wVI5YzFxSw+L/vhygzT9tTPe
+         ppag==
+X-Forwarded-Encrypted: i=1; AJvYcCWFAypkOExmurc/k8rhBw4BJaYZht16Yr1uwjjG2bC+sqYwj+TlI+7dA/b0mhZxxGLmmKeKWA1M6hyGS6DjDA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcTSDZAcYcTnLuUDMvMUAKgDKAORt25nVsooj2SLi6s/vx056v
+	opt30Cg9U6hFJEfNCbSIn1CDX0JbDRuw9WPFPsuo6ThJlkRz85ulIFdWhouXDaGzD/1LtE+y4fj
+	Shube6Xbp2bP91s4gHA==
+X-Received: from wmhp19.prod.google.com ([2002:a05:600c:4193:b0:47e:e414:b8fa])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c25:b0:47d:3ead:7440 with SMTP id 5b1f17b1804b1-48379c14606mr166623145e9.32.1771338170924;
+ Tue, 17 Feb 2026 06:22:50 -0800 (PST)
+Date: Tue, 17 Feb 2026 14:22:37 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|MW4PR12MB7032:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19416f0b-7068-4794-d688-08de6e2fefe6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007|7142099003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YmFpWjJiQk5kQ1NnNFBZZ1NtVit4REV0c0k0MWkvTnI0K1NIK1drUTByQ0dK?=
- =?utf-8?B?MStkblFnQ2p4STVzUFlHSWFnb3ZIbHkwbUQ2d2F2S3Nib0w1empPSmlRNmcr?=
- =?utf-8?B?Qk5vSjdJbTRKVEtVOHZiYUwrWCtKeGwvYitNdHdxUnBXNmJDMnI5bXlCKzRQ?=
- =?utf-8?B?OFNWODlzSkhhd3hhTC94NUZiN1B6Y2x1cEtvQ1EyYnlsUjBIUTBiOS9aRHFx?=
- =?utf-8?B?bnJiTkQ3ZWZyYzdpT0gyK1l0WXpLN1pJQjFBZTVRUTBDdWMvNGNlYjRpN3J5?=
- =?utf-8?B?Z3NLVndCazBRc3BGOG9DYXA3TlpwTHN6SXZkYmhweEFLN0traFVkcllpSGVo?=
- =?utf-8?B?ZXV3aHk1OFBSRm1GMjI5Z3J4L0hEOExvSHlDaVUzdm9ML2tiWGZxT0Z4UHB0?=
- =?utf-8?B?Q09sNkZMNWxTdHFBZmxsUTRBWFMycjkyclR5cnFCZEhTd3RORWpXdDBwbEov?=
- =?utf-8?B?ZnNvMGpWOUxTVE9WVTQ2V1hkK3VVUjI5dlpuaDRDRjJFeTRFb3BlNWpUbWFZ?=
- =?utf-8?B?alRCTThyQXQvbStZNnhMZzJZbTllS05ZZVZSYmdtekl4M0x1TTJZbE15VDl5?=
- =?utf-8?B?ZVZ0ZXR6QU9Xcjk3UEZDczF3ak5mYnUra0hDUTB3RXZzZTBKUG1qR3lTTnNm?=
- =?utf-8?B?UDczUEQrU3J6TjUxVVUzeElLcTkvazRwNnl3NG5ISS9rVUduUHpOT2pUdDUy?=
- =?utf-8?B?bjlXcjJwbzhlMkRTZW5SMVUwZGl3UGdzQm5MbjdvSzF2bi9OeVlWM0dRb3Qv?=
- =?utf-8?B?eTdHVEp0ZkNoWnhCT1ZIK3lVU2RpVnFNYVJGUTF1bWtySXV5MWhpQ0pGNjBs?=
- =?utf-8?B?S01LdjVNa3dHVzNDai95dUtiZXZXdFo0TDdRbGx4cXgzS0xYckNMNW1DaHBS?=
- =?utf-8?B?ZC82SnZvcWF3aUpuSHY3QitOYTRCaDhEN2xuSVNEaVJDcXRUUVBHZVBxUDZR?=
- =?utf-8?B?OXR3a3pUcFVkd1V0QnlJUUFna1NDaE9WZ3dQbjRKNCtYRDd3cWlEYmFHVU5Y?=
- =?utf-8?B?RlVCc2JwRjQrck9xa2N0TVBBTDZaa1BUaHR6aGZlZUVmSnRONEhQQVFBcFBp?=
- =?utf-8?B?d1hYZW13eWlpSk13S2NzRTJHWDVtREVKQ1VmSnZXUlNkWXJtYzB6cFNrMXNl?=
- =?utf-8?B?VVMvR1dUbnlvR0FDRm9oUFlNMkZ3THFwWHNLREd5QXJTL01tSFg3NFAyWFI1?=
- =?utf-8?B?WEZ2aDk4Q25GbVMrM1VDVEJLakFObWFESTZmRzU0Z2liZ3FXT2V6Yk94ZXVh?=
- =?utf-8?B?KzArcTF4b2VQZDdtZi9kUW1JTXNHL1VmK3B2akEzNlBZbzczQkZoMUZZWnR4?=
- =?utf-8?B?QXpSUXhYMk1jRE9aY1RaVFNYMlNMNnJORGhQQk9SWUc5eStPeGhiSkZ2ZWZ4?=
- =?utf-8?B?MzlTUHlJMDZ1VUxha0FDOW5CWmxFdndZak96NnRVbDA0VU00NG9LMENMWDhx?=
- =?utf-8?B?Skh3Zy9WT1R0OVBQTUtCY0M2aEtlWERWb2Q1UTVSaTAxM0p3TjBuNjg1RWt1?=
- =?utf-8?B?cktDY3BEczJmOUhxdmErOTJseEp6KzI4dVM1SVhYS1dnOTg2Wk41TkNjcmJO?=
- =?utf-8?B?WmJadHp3aG9CbFhCT1RsY1R6VVAzRW01RVY1bW1SRXhneVJDRXkwZGFGY1NC?=
- =?utf-8?B?UzkyRGRWSXI5ZU04RnEwK3BJaXJrdDhlaTFudEQyUnZuK0YxRFQ2WjExVjR1?=
- =?utf-8?B?U2hhcmNmS0Zja1hDQTRaTjVrOUlIUkY2SGN1SlI3bDdqZlFFRThZYVgxNnVq?=
- =?utf-8?B?ZW5KSGdZTkt0S0RPSjU1YTFLMWpkZisrOTAwMXF6d08wa083Z2Q0bk5xTHVS?=
- =?utf-8?B?NlhnSTRXSVZ0Z2xPVmdyeElpR2EyZUl4S05ja2RkV3JZcDMzQ0orNHErMXAv?=
- =?utf-8?B?d2tNb2VDb0Z2WjVZUGtReFVYeXptMFJmWkRMRzhQZEl6WDNuRXFobDNGcFJP?=
- =?utf-8?B?WjZpVmR6YlVxWkZHb0xUZ1J0amNjNktsMEtObStHYVNSL2JHUlZ6cTZjRTNP?=
- =?utf-8?B?NkZlTkkySFhGVGh0VmZzTElUUWxiNmxGS1oxdjlsZFF3WlF2R0xYeTlCLzk3?=
- =?utf-8?B?YW9iWFk0d2lIcFE1ZW54VlFPdjY5ei9xVGllL3BXNS95WTV6Tk14Q2U1dHp1?=
- =?utf-8?Q?rUOo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007)(7142099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjJ4emd2REt6UndFKzh4d1NQS0pLNlh4Skh4Zm9sSGpZWnQzaUlrVjdmMGJh?=
- =?utf-8?B?aXFNTHdhckN1NGRkOVNnRUNGRmNqY1JXTkkyS0UxcmxiT2hhdVRQNTJCR2Za?=
- =?utf-8?B?YzJKMHhxWXQwSkV0U2pCYnZ4QWNwM2xVT0diSVFvYjBTTFFtZTdzeFdhekxQ?=
- =?utf-8?B?M05TWmV5MzB3dDNCeXNrSERidUVsQXgyRVJDL1o5VEpkeDRhSUQwRmxUSVBu?=
- =?utf-8?B?WmJKM1FaSWdPOEJtMzR4cHVibE5hNkMxbldlMzhDUkkveVlENjlOWGtoNG9R?=
- =?utf-8?B?eXAyTlRTVk5rSUtSdCt1a1B4Ymw2Zm9YdmtRLzFrOC9FL3NMNFM4eExhb2FM?=
- =?utf-8?B?NW5wQjdGZ2pOTTk2SklLa01BQ0U4eGdObU81ck5NRlNNcXBZaU8vZ09YNjVn?=
- =?utf-8?B?S1ZzTnhiYzR6Zm00WllUZ000WE14SHd4bVA4SmhyL0tWTmJkTTJIeVBGRGlF?=
- =?utf-8?B?VG9CTDNPTXByQ0VVaE1SL1JieVFmbWZrTWJYUURYQWcwa3J1T3hHWTU5Umly?=
- =?utf-8?B?d2drcHhuWDdMbGMvSjE0VEZjRnZKR2F4Y1VPWmsxZlJwdktJd3gxS0taSjFk?=
- =?utf-8?B?L29YeHI2OFlBSi9FSWxVTjFxeThRMXpZTlNhbWxuTmNLN1k0Uld2N0xCbE4y?=
- =?utf-8?B?aVo2a051WDR4R3dCNExyaVp0WWduTURUd2lTNDlqdTByL0JTRzlJVDZva0lr?=
- =?utf-8?B?VHlxQ0NOSEFpR0hUek45OEFkZVBkWDlYSG13aythMjZ4aVV1a0Z2dloyOHpF?=
- =?utf-8?B?TU82Tm0rZVZ2VEV2a2VOSC81UUxncy9QSTNlS1Z4NmZQZnpMN2xEeFMrSFdZ?=
- =?utf-8?B?WlhtN2hMRVdmSy9od3ZZRnJRM2RnQnY2QjhsbHQrRTZONmN3ZnRWK084TzFs?=
- =?utf-8?B?Ykh5a2hZeXVRcTkwWHJLZ29sSStFRlZKT3lqWWNwSVBlczRTbHBibEdLQzVv?=
- =?utf-8?B?Qzk2Uk1VaEdKUjB1a0hpRklNVWRhMnZvMEpNL292bEVjamtXRC9jOUVMSDRQ?=
- =?utf-8?B?aFE4czZoallmdEZUdCs4cDlkamNNZkJJejZGbi9leFVQOFhmUHliVzN1dHRB?=
- =?utf-8?B?R256akZwbXJpZWFtclRXRmk3YlozeHpTTXFSTXk5UFRRaUYrRG1XYXVBd21w?=
- =?utf-8?B?bi95UnA0eW5USjdDdk5KOHBxRUtQRGR5MndSRVUrdjFTc05odjJISGJCTkE3?=
- =?utf-8?B?SkhkazhSaHlFNlpIRURodlZNSmdXN0lpNUV3VW5aQ25mRnhrYnNhY3VoYlBk?=
- =?utf-8?B?Nnk5VHBSdHpHVmsvTVpGL0NETFBiZVpKVDR6ZWFDNTE3RmtYMXZQSzBYdHd5?=
- =?utf-8?B?RlhtK1pPY1BXNEZvc2tLdVk1STNTVy9lalk5Zk1pc0Z0WlVsK3kzblAwUWFr?=
- =?utf-8?B?WGtTT215bWZydDJwUE5lMWxENXNHUTBMck14Q3ZoZzFndjZWL3NxellGWmw5?=
- =?utf-8?B?K0UvalJqRmpwb3lrWGdKT1pHY3lWS1c2WjdWUFVoMmZRZzA3N2JtbVBEbHFu?=
- =?utf-8?B?SE5jbGlocU9qY2lBVUlRaHBDeWg5YTllVm44RlRHbDZkKyt2Y2FVRmM1MHo3?=
- =?utf-8?B?MjUybWRiQ1hpc1VFNDBhbWFzckc0aFhhSnEySjA1RENZT2hBYUdLdkhraStJ?=
- =?utf-8?B?K0JRWi9adGI5NkRGb3lEM0NZaFBRY2djQ1NIVFhoM3lMc1dmUzN0ZXRVamRI?=
- =?utf-8?B?UlNyaUc0cG5wcHJYYndhaXlyRFpISlVldkVkbjRxNmMwUlVMNDlZOEY1VTdz?=
- =?utf-8?B?VGxTRGlGUTNDTFpvaVVWcE1Tb2JwL1dSeDZGcHFQVzJsQUVZbUdUS0xDdTlp?=
- =?utf-8?B?NDVDL2xGaDZtM1RtSDd0OEd6eXZ3SFl4L0NrSUdMOXh3dWJ6L1FSS2QyRTRr?=
- =?utf-8?B?RDZ3S1Z4OE96M3RYdk1kY01Wdmp3eHVhcmxUeG0rZ3dacU9PVTI4MTBoejBT?=
- =?utf-8?B?dlZQVHRoR1VsbURJYWcrd3c0UXZsWE5rckJZR1hxQTQ4QWFiRnR5QjV5a3Rm?=
- =?utf-8?B?MFdDNzczM2x2TExwSUw0Q0d4NS96T1k1eGtBMHJ0aktZWElWUFVobmZtbThu?=
- =?utf-8?B?bXRLVnpQd0pqby9KMHRzSHBhbC80ZDBLQkxwaHpBeVQwUE0zSW15Q1ZDQ0My?=
- =?utf-8?B?alpBS0V2cy83Q0h1Tzc3dFpKUG5hYmhSM29RZUZoNFZtVWNtT3laa1AwWFZp?=
- =?utf-8?B?b1FHK1JDQmVib0MvUEJkT1BGZjFlYjZXUm9JN1BKODV4N0dPTzNETXkwdnYw?=
- =?utf-8?B?RlhsRVNXcjRvNDZNdE1FMEU5V0NrYUtCeFVIdjlmN25icDd6Y1JpMytMVlR6?=
- =?utf-8?Q?Lv+qu3D8Ua/scjcZB8?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19416f0b-7068-4794-d688-08de6e2fefe6
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2026 14:22:10.2462
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FGd2gLSzm9WDta6gTCPkovGgVKLoz57MfC4X1mu3Vw5KqfkpMhG4gPZfXKLoIhpE
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7032
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAK15lGkC/x3MTQqAIBBA4avIrBtICfu5SrSwacohslCIILx70
+ vJbvPdC4iicYFAvRL4lyRkKdKWAvAsboyzFYGpja6NbnCUsHPE+HJJn2nG2K7nGcN9ZgpJdkVd 5/uU45fwBLWfJ0WIAAAA=
+X-Change-Id: 20260217-binder-vma-check-b6fca42e986c
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=785; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Uxj6c/az0LdP8dZc8T2qUy7YzybZMS/bT4hkQ1PgX0M=;
+ b=kA0DAAoBBFi+7ljGOUYByyZiAGmUebChDZjcwqWd8ZRbjOtAua4kbQQ1RMjHoMr3X+QKWSs7w
+ IkCMwQAAQoAHRYhBIOSopRNZAcK8Ui9sgRYvu5YxjlGBQJplHmwAAoJEARYvu5YxjlGryIP/320
+ NWn4fxONCqcMTOqDq7viBcZ3G6cxX5lNXZSB9kDxtKeq7LDW4cLWm9VX6fr1A56iPtfHeln2qUw
+ pGXpgDCEASmiabi+l3mJ6/IK1BXXtjwvoOrtmestBi8xAHM/iHsbuLYMedwUJNoMt+PgfXy5mFU
+ /epRzgdGg771b5ltgKB2pablfJ+KX4qP7bYGrVfBzBq6hC2ngTCndBsvlE8pDKnSimggXz80Vzk
+ Ukm2TczsIRVTYjAOdOhlcSJgdH4WKBwZgp59FVHfQqcEqFS41t8+ESMTuCM60Ct4vgfLXebEzRc
+ Zi9iZK/pDfTxfTaPHvR4ubu1GhP+RQ0bsJ+lA0zm5DSoWHJqY8rM+j140oTdjG3wIJN6aSdNJNo
+ Qrf8h8aVTIA/WoP6UH/J1e8Hwgcm5lUCLvikrcxPNMOnm1C33GWY7YulmlHNkB91OOPT9l2RilC
+ +lm+PPMBXh6baCKzAePnHDwoz6vVdAwrNW/koNi0ar3PmB+FMWcL/tWtiM7svIlCZHp4ttGGmfa
+ PXMGPYPXwKIR9UXSg57HSKuSK/QTHGqaPQjRzPCH0L+3Hi6aXnWkFAINwen5CdEdoLAKI1G1f5U
+ fg1F23FGI67l3+WChvssHlymiiakrGek7YMGUvW3VokUGzsn2gfQjMU76NnEYD0A2LfWM4HfgD1 6+PNs
+X-Mailer: b4 0.14.2
+Message-ID: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
+Subject: [PATCH 0/2] Fix VMA confusion in Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Jann Horn <jannh@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
+	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On 2/17/26 15:09, Alice Ryhl wrote:
-> On Tue, Feb 17, 2026 at 3:04 PM Philipp Stanner <phasta@mailbox.org> wrote:
->>
->> On Tue, 2026-02-10 at 16:45 +0100, Christian König wrote:
->>> On 2/10/26 16:07, Alice Ryhl wrote:
->>>> On Tue, Feb 10, 2026 at 02:56:52PM +0100, Christian König wrote:
->>>>> On 2/10/26 14:49, Alice Ryhl wrote:
->>>>>> On Tue, Feb 10, 2026 at 02:26:31PM +0100, Boris Brezillon wrote:
->>>>>>> On Tue, 10 Feb 2026 13:15:31 +0000
->>>>>>> Alice Ryhl <aliceryhl@google.com> wrote:
->>>>>>>
->>>>>>>> On Tue, Feb 10, 2026 at 01:36:17PM +0100, Boris Brezillon wrote:
->>>>>>>>> On Tue, 10 Feb 2026 10:15:04 +0000
->>>>>>>>> Alice Ryhl <aliceryhl@google.com> wrote:
->>>>>>>>>
->>>>>>>>>> impl MustBeSignalled<'_> {
->>>>>>>>>>     /// Drivers generally should not use this one.
->>>>>>>>>>     fn i_promise_it_will_be_signalled(self) -> WillBeSignalled { ... }
->>>>>>>>>>
->>>>>>>>>>     /// One way to ensure the fence has been signalled is to signal it.
->>>>>>>>>>     fn signal_fence(self) -> WillBeSignalled {
->>>>>>>>>>         self.fence.signal();
->>>>>>>>>>         self.i_promise_it_will_be_signalled()
->>>>>>>>>>     }
->>>>>>>>>>
->>>>>>>>>>     /// Another way to ensure the fence will be signalled is to spawn a
->>>>>>>>>>     /// workqueue item that promises to signal it.
->>>>>>>>>>     fn transfer_to_wq(
->>>>>>>>>>         self,
->>>>>>>>>>         wq: &Workqueue,
->>>>>>>>>>         item: impl DmaFenceWorkItem,
->>>>>>>>>>     ) -> WillBeSignalled {
->>>>>>>>>>         // briefly obtain the lock class of the wq to indicate to
->>>>>>>>>>         // lockdep that the signalling path "blocks" on arbitrary jobs
->>>>>>>>>>         // from this wq completing
->>>>>>>>>>         bindings::lock_acquire(&wq->key);
->>>>>>>>>>         bindings::lock_release(&wq->key);
->>>>>>>>>>
->>>>>>>>>>         // enqueue the job
->>>>>>>>>>         wq.enqueue(item, wq);
->>>>>>>>>>
->>>>>>>>>>         // The signature of DmaFenceWorkItem::run() promises to arrange
->>>>>>>>>>         // for it to be signalled.
->>>>>>>>>>         self.i_promise_it_will_be_signalled()
->>>>>>>>>>     }
->>>>>>>>>
->>>>>>>>> I guess what's still missing is some sort of `transfer_to_hw()`
->>>>>>>>> function and way to flag the IRQ handler taking over the fence
->>>>>>>>> signaling token.
->>>>>>>>
->>>>>>>> Yes, transfer to hardware needs to be another piece of logic similar to
->>>>>>>> transfer to wq. And I imagine there are many ways such a transfer to
->>>>>>>> hardware could work.
->>>>>>>>
->>>>>>>> Unless you have a timeout on it, in which case the WillBeSignalled is
->>>>>>>> satisfied by the fact you have a timeout alone, and the signalling that
->>>>>>>> happens from the irq is just an opportunistic signal from outside the
->>>>>>>> dma fence signalling critical path.
->>>>>>>
->>>>>>> Yes and no. If it deadlocks in the completion WorkItem because of
->>>>>>> allocations (or any of the forbidden use cases), I think we want to
->>>>>>> catch that, because that's a sign fences are likely to end up with
->>>>>>> timeouts when they should have otherwise been signaled properly.
->>>>>>>
->>>>>>>> Well ... unless triggering timeouts can block on GFP_KERNEL
->>>>>>>> allocations...
->>>>>>>
->>>>>>> I mean, the timeout handler should also be considered a DMA-signalling
->>>>>>> path, and the same rules should apply to it.
->>>>>>
->>>>>> I guess that's fair. Even with a timeout you want both to be signalling
->>>>>> path.
->>>>>>
->>>>>> I guess more generally, if a fence is signalled by mechanism A or B,
->>>>>> whichever happens first, you have the choice between:
->>>>>
->>>>> That doesn't happen in practice.
->>>>>
->>>>> For each fence you only have one signaling path you need to guarantee
->>>>> forward progress for.
->>>>>
->>>>> All other signaling paths are just opportunistically optimizations
->>>>> which *can* signal the fence, but there is no guarantee that they
->>>>> will.
->>>>>
->>>>> We used to have some exceptions to that, especially around aborting
->>>>> submissions, but those turned out to be a really bad idea as well.
->>>>>
->>>>> Thinking more about it you should probably enforce that there is only
->>>>> one signaling path for each fence signaling.
->>>>
->>>> I'm not really convinced by this.
->>>>
->>>> First, the timeout path must be a fence signalling path because the
->>>> reason you have a timeout in the first place is because the hw might
->>>> never signal the fence. So if the timeout path deadlocks on a
->>>> kmalloc(GFP_KERNEL) and the hw never comes around to wake you up, boom.
->>>
->>> Mhm, good point. On the other hand the timeout handling should probably be considered part of the normal signaling path.
->>
->>
->> Why would anyone want to allocate in a timeout path in the first place – especially for jobqueue?
->>
->> Timeout -> close the associated ring. Done.
->> JobQueue will signal the done_fences with -ECANCELED.
->>
->> What would the driver want to allocate in its timeout path, i.e.: timeout callback.
-> 
-> Maybe you need an allocation to hold the struct delayed_work_struct
-> field that you use to enqueue the timeout?
+This series contains two bugfixes for Rust Binder. I'd like to follow
+them up with better solutions by changing the VMA api, but as an
+immediate fix this should work.
 
-And the workqueue were you schedule the delayed_work on must have the reclaim bit set.
+See the first commit for an explanation of the actual bug.
 
-Otherwise it can be that the workqueue finds all kthreads busy and tries to start a new one, e.g. allocating task structure......
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Alice Ryhl (2):
+      rust_binder: check ownership before using vma
+      rust_binder: avoid reading the written value in offsets array
 
-You also potentially want device core dumps. Those usually use GFP_NOWAIT so that they can't cycle back and wait for some fence. The down side is that they can trivially fail under even light memory pressure.
+ drivers/android/binder/page_range.rs | 78 +++++++++++++++++++++++++++---------
+ drivers/android/binder/thread.rs     | 17 +++-----
+ 2 files changed, 64 insertions(+), 31 deletions(-)
+---
+base-commit: 0f2acd3148e0ef42bdacbd477f90e8533f96b2ac
+change-id: 20260217-binder-vma-check-b6fca42e986c
 
-Regards,
-Christian.
-
-> 
-> Alice
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
