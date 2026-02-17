@@ -1,75 +1,55 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA602DECD3
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 08:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E9C2C187;
+	Tue, 17 Feb 2026 08:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771316578; cv=none; b=OcDmIu0TA6j1r3Eg5zWZq5VRMQhNyetlXz6GLi9/kJYSZ7t2VhRcVYYEmOIynMNC8iRgpIRO3mKmIKcV8G7hTV+MO79WsCHeZs0LyNxTuU5U600VvDW4UHKQSnaeBFl06ZXZ/2g/3fPel25AsIsZ9G4SvAfuyoLt2PBN/+BcBkc=
+	t=1771318557; cv=none; b=YL1u/1FFWY57BrtUoCeCPExcHRSt83+tMfZCs6oFpjzaxZZAHlrsg6zxZXOvP3qOzYmtHt81CdhhIdReGrFR5KCy9DFdrYPFi9dvFF9rUWm8p22ffhV3ar+3/apgzWNBWzXGbtZm/DiMan/EssHMPW1MDQoxYdbj9nUbpE2ZhV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771316578; c=relaxed/simple;
-	bh=j9YvxgBnTjVJotxsZaz59b64frSQ5OWTlyiLqZ4fyTQ=;
+	s=arc-20240116; t=1771318557; c=relaxed/simple;
+	bh=vYUCJ1Xupqk4b0eSr40F9E+7yzYjuT+czzs68jfKMMQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oLK1jeAYcJqAMcaA9gMLAvgB6DWaUQq7h32fu48GcJ3IYA6lMuzaF3E4a1NHxxmc1MYcGzIhuOnJZGusRWs2Os5LgVzN98C0oIbLUWgo+HMDDsGW17kmdsg05IxntoCyGt0ZdziTRG1VIXkudBLOvLKP0osiKzwOmTBBCmEHVXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iETzEx0F; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=sMm/WpQTrO+QGy5crs+UNlnJJqFcEd7/nGFq4GOnIKNhK9cKcUfCM7UJp15tpUE1vso9kEHVjuG6VqkKnw4f0ESLbriQopCaGlNAnJbRV451g268IRoLZhC8l6+9Jjv1pkeAqfAuEy1yLINiUPxo3sqYFmr1FRL6Vazs7FZNv1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=HKohuVAw; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iETzEx0F"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b8876d1a39bso443045566b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 00:22:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771316576; x=1771921376; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j9YvxgBnTjVJotxsZaz59b64frSQ5OWTlyiLqZ4fyTQ=;
-        b=iETzEx0FcOsuVVzz8mVK1eDqkUxZyB5ytUJQuyQkplTJGVpUvyiLbQax0p9Tsbz7I5
-         tywFAq2G2Jd9jaRPBvV+ipvpOkJxput82HpEV8dL0W2I6i+Z5SirXDHvhktQaWx6UYGW
-         vVtTLqU9BmYTFlBGgRHcZyJXpTJ59Ei3M/CinQLa5ZU1X9vDpIgk6TLMOPxOac+abEAP
-         5TECHq8jV/lCTGvxok3M5HesgJjLA7qqJHGInD5CQYz9pQY9OA+LQdQsSlQurioN59i9
-         QH/LDeViMKabCHiy3p41867iBoVlX0zzicaSnDi7nc6YDp5902yggszVMR1hYUNPiBhN
-         M1xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771316576; x=1771921376;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j9YvxgBnTjVJotxsZaz59b64frSQ5OWTlyiLqZ4fyTQ=;
-        b=jRDOPLNIn7/yrrueBul0L8HmUxDqxSf0synspuAIzFMDqogfAYzxe9S12tUAlpZpig
-         1wTCYsIYT4aCbbgKnbbzkf99YB2u8Bh3ZZALmf4mPC5sWozFCHlSG5B+9HYPJuaO9v3N
-         IY2UCwjaucU9glXJ7Sp9/myRewgVP8iN2QACrECtpwIAiAWpLdWsZgLvuIfMpjyxSyNB
-         aCcJKAbUuF430SaglZ2EwFeLIZvsoxlAdx3bTaQsJKWQ/JAPmb8vXHPbhzjlBr1CbvIz
-         NmxYCjTq0AyqOcaSjP0+sBndSOnrNHX4QhcCDw0c3ZzDSZPPT3cEXeN7m/9NDixh3Hf4
-         bbbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXsjig5+Vk4KRmuSp7VTgbil4eF8m3rhCYwhp0uiXqi2GRz128ncvGVYpIavA/QcpdUjiU5WaGwv+7uxQAzFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzA/Cw1QYXFVn4vdPmjdL29FjlCqCxRlGW90ejwxk6ztpfUaS6T
-	USzR/3jvxEJBiPiy0hDfaG+S+T0NuOmlF0E1SadnE94ffKhk9N75FEAM
-X-Gm-Gg: AZuq6aLRxfSvU55FoV/5dxpk46OqCp2uO6NmukTNdir5cLp95g3nRZi20roeXOXXRUg
-	iF5ke2+pF4Mrk9sBqE4RvVvIG1+tGmHY3idLL7TfvnBWmiOaaigJK8zQUHiGC1iM+c8DS2WLgWU
-	cRNJM/wYfsqNwOO7KYbhmfkeTKEbAoL0bP15a2Cn+2CfPElNtGKC/8i7kFTOLOJhZvPHwuz5HO2
-	n8NW2RPxlVENca3qBRE7LoSJbAlYv6K5dnxJl202aTzTh/6PbAsuYyMmloIo9QfoJ+CzvASE4iG
-	iWrTvtUEs5eOteBj4DeLVwbnscdRimhmcsR9wzzdZ4MHhtQF++gF8/8ePv5AdtwJBn7IoUB68wL
-	wpXuIRcBK86IHYuROBMeLaeaHGQcr6OPHkhAZpW5tjMZttdFiccUe26/WvlCD7o8umjaDYvZdzX
-	YlTRegCs+eYJOEi/DoZWBv/9+HvPeaLwSQyAJr5ULBQcX6xcYS1Jzw5FCIVENRDlrdQEO35E7g6
-	2mUwuPKVAA15fgcWAS/Ay0b4RGAnsPw4q2l
-X-Received: by 2002:a17:907:7fa4:b0:b88:241e:693c with SMTP id a640c23a62f3a-b8fc3c7fa23mr672213466b.31.1771316575433;
-        Tue, 17 Feb 2026 00:22:55 -0800 (PST)
-Received: from ddolgov-thinkpadt14sgen1.rmtde.csb (dslb-002-207-075-089.002.207.pools.vodafone-ip.de. [2.207.75.89])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8fc7385d80sm325883366b.16.2026.02.17.00.22.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 00:22:54 -0800 (PST)
-Date: Tue, 17 Feb 2026 09:22:52 +0100
-From: Dmitry Dolgov <9erthalion6@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: linux-perf-users@vger.kernel.org, Ian Rogers <irogers@google.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
-Subject: Re: [PATCH v1] tools build: Fix rust cross compilation
-Message-ID: <nebqi6txwrsgztbsx5g7npptbsoyocbn6r2ebmzmwtigt2z27w@nh2xbmk3bp2e>
-References: <20260213191212.33328-1-9erthalion6@gmail.com>
- <CANiq72n3FPOBVbR83-Vp6uetu8RnazMuu6MhzG_hA=_j18_BTA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HKohuVAw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=s2+3Zb5XQH5ae/EQUG7mNscXyFKybqQMMxQyoHn58Ik=; b=HKohuVAwwQEKJz7VTHhgEQD02z
+	yDbz69X6P+iqHiN0CJ66dtLQ3ddF3XjqDOBd900Humu8XQN5rlR1hcyTeDl+ybdaIUEcG9LPrulZG
+	Nds6OtqTXqXV1rTdF2cxQiQXKeFHaUg2Bjtlz7X7c5jphT5F9sHkJAG4lWLEZXY1LyEl/NQKMt1Aw
+	uqS1hwO/l/1v7Op1TAKyumf1SuQEXPT6CCNEl2f7PlZC9hl/vW6B1bQDUW+dqIfO/nAotr2DZjtR4
+	5eShrDtkjku9LtugQCs7gp3u5fQIodW4geQKK/ZNa3OvfBmRFUIaiRdTlLOua9N5ysHZCJB9iYADE
+	2nkGqA/g==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsGru-0000000FcUe-3wth;
+	Tue, 17 Feb 2026 08:55:43 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id BC83C300CDE; Tue, 17 Feb 2026 09:55:41 +0100 (CET)
+Date: Tue, 17 Feb 2026 09:55:41 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260217085541.GS1395266@noisy.programming.kicks-ass.net>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <aY9i8rbvnxdOA9DV@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -78,21 +58,60 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANiq72n3FPOBVbR83-Vp6uetu8RnazMuu6MhzG_hA=_j18_BTA@mail.gmail.com>
+In-Reply-To: <aY9i8rbvnxdOA9DV@tardis.local>
 
-> On Mon, Feb 16, 2026 at 09:41:34PM +0100, Miguel Ojeda wrote:
-> I think this was meant to v2.
+On Fri, Feb 13, 2026 at 09:44:18AM -0800, Boqun Feng wrote:
+> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
+> [...]
+> > diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+> > index 4aebeacb961a2..8ab20126a88cf 100644
+> > --- a/rust/kernel/sync/atomic.rs
+> > +++ b/rust/kernel/sync/atomic.rs
+> > @@ -560,3 +560,35 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
+> >          unsafe { from_repr(ret) }
+> >      }
+> >  }
+> > +
+> > +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
+> > +///
+> 
+> Given Greg and Peter's feedback, I think it's better to call out why we
+> need `atomic_per_byte_memcpy()` and why we use bindings::memcpy() to
+> implement it. How about a paragraph as follow:
+> 
+> /// This is the concurrent-safe version of `core::ptr::copy()` (the
+> /// counterpart of standard C's `memcpy()`). Because of the atomicity at
+> /// byte level, when racing with another concurrent atomic access (or
+> /// a normal read races with an atomic read) or an external access (from
+> /// DMA or userspace), the behavior of this function is defined:
+> /// copying memory at the (at least) byte granularity.
+> ///
+> /// Implementation note: it's currently implemented by kernel's
+> /// `memcpy()`, because kernel's `memcpy()` is implemented in a way that
+> /// byte-wise atomic memory load/store instructions are used.
+> 
+> And probably we make it a separate patch for this
+> atomic_per_byte_memcpy().
+> 
+> Thoughts?
 
-Yep, I forgot to change the version (it was a bad idea to send it out
-Friday evenig).
+Its still not making sense; an no kernel memcpy() does not necessarily
+use byte wise copy. And please stop talking about 'atomic' here. There
+are no atomic ops used (and atomic ops will fundamentally not help).
 
-> By the way, should this have a Fixes: tag? i.e. since it sounds like
-> this fixes an issue. Perhaps to 6a32fa5ccd33 ("tools build: Add a
-> feature test for rust compiler"), or something else? I also usually
-> recommend showing the error message in the commit message.
+Seriously, none of this makes *ANY* sense.
 
-Right, I can add an example what happens.
+Yes we have racing copies. And yes that is 'tricky'. But there is no
+magic fix. Nor does it matter.
 
-> (Also, you can use "Link: ... [1]" for the link.)
+You copy 'n' bytes (in any way you like, preferably the fastest, that's
+all that really matters), and then you get to go validate that the
+content makes sense, like always when you get something from userspace.
+Must not trust userspace.
 
-Got it, thanks!
+So even if there was no concurrency, and your copy is 'perfect' you
+*STILL* must not trust it. So the presence of concurrency matters not.
+It is just another way userspace can serve you bad values, nothing more,
+nothing less.
+
+
