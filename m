@@ -1,155 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D12374721
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 18:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C46F14A62B;
+	Tue, 17 Feb 2026 19:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771354657; cv=none; b=Vup3YFFkj6urypi+ZjykLLYGTO1uGVblSkJvVRtR4Z8RHm0VZu93n1UTWMiH3FOTTN2/47nGtA6aSnw+gwgLHyZn31v+hs8PIW02kP36DdO8Y7pcHXH3AGPJ07pK91D5wunMLaEkR+lLjZ8OhMsisQV4j440BTbbebQPOfbqhJs=
+	t=1771355469; cv=none; b=d+lBzQFvu9tg49wpEkYAfh1RSKhE7UWlKLhoihv8B0zoFcfNQvCVQzyhNmWwBwQ6nollj3nW03A4cClOhaDgYIFi66JnEWTqIM+F4yEGcyR8vfXYZGAY/UZos+zPg+V/OF7ecjTkq4B0B+UVhX5kAZ2KLWa3UNqFI0f3EAhBwzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771354657; c=relaxed/simple;
-	bh=wP3hKCDKoD//66i9JGFv6lSpkvVqov8oBCX80QQgxRU=;
+	s=arc-20240116; t=1771355469; c=relaxed/simple;
+	bh=Fa+MZEMlciXoGwkQAuUZOCY5XpCMyNzjSBDCGGqCKLE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rSIUUHZE2mpLJy+VJfs3hcNViDdKGTeAe4ZnFLp62l0r70SW4FczEP7FLp0Kkfirfs/RISPXc2aHRfkMqgz3wDHq+jHMbHcxwC4uvOUZm50WyxB7I/L6Rp6HUSVUKjKDcwRmtZnQ2AaoJ/pURiWM8W2owfFsTm47Kqb7mZLqNyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=faekKi3A; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=elQB01xRmKy3UpbuwdZ1FHmXhADJLCV9hb2mmg1WHPvxyzhbMT0aTxDelwQ0eN4rapRsdtwwrok9G02QBuqCgRN1PBTdHzyaW/dnAYrUFJ1wIyMfFaj/q5lgu4WRydG4EVc3o8uw+2LJqKMRJJmU4uLoamLgZyypCitkFfI+8t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m96dHnFL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="faekKi3A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B89C4CEF7;
-	Tue, 17 Feb 2026 18:57:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m96dHnFL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA51FC4CEF7;
+	Tue, 17 Feb 2026 19:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771354656;
-	bh=wP3hKCDKoD//66i9JGFv6lSpkvVqov8oBCX80QQgxRU=;
+	s=k20201202; t=1771355469;
+	bh=Fa+MZEMlciXoGwkQAuUZOCY5XpCMyNzjSBDCGGqCKLE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=faekKi3ABnzzfMhf/GpMsx5uQkWh6JzJ/zNH+76CuSqqyBe4U1CoM1BO2CwH11Du/
-	 y5M031XAgWUU9X6N5PY7Q3byMy7zPzGlfLynzM8GyEDcKvJP3tQlf6ODwEY/JOsbCX
-	 U/XwP3zc7E+s5dMqV0XO7x6Q1FcayH04RS0ZOPS8rZmctg77eHgo3pr+FkNHhM7MdF
-	 ux/ujJFqHGjAFfNsJznsV/abNOu7YXbtUVWzo+rUPLhNN+g++JgRhQIAltO0ztjeQ2
-	 0BcKWKdXINMt3ctD5hR+J6n+N3O0NfSMTtEUi8W4hYCAeuAiWi9Y7UjU1GlzaNd/WH
-	 lwak9KAQkCrew==
+	b=m96dHnFLkM2x7H2tEGnLQG8HLyZ2FepYsecvGXDo7Q6fuMElSz2Q/eJ51gKJ/OU92
+	 E2bJvF21pZUXegD4fjjHcxuy95/rrUBdh6UlDg93tmDprRZAO/AL/DNHH1VDYvEsQi
+	 y5f6EyUdx2vti1MgzdxH9W6b/7XdG6BxXRY//mOQ5G2bn7aiGF2PnOBtAAjehYBJiF
+	 oNwBli+UZ1YTtMkRIHfGdf/Tzgwu2Tr0lpw3LMj3E8cwdBjd7FxJTB2EGygWxE04OY
+	 KQCHx+nFpO6bg9IyxEy4TM4iKDniaGVgDpzsDLjAB2QXtLpPvgYX0Yj6YEpVCAZcXh
+	 FDjTn/J/AU3Cg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Tamir Duberstein <tamird@gmail.com>, Daniel Gomez <da.gomez@kernel.org>
-Cc: linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org, Alice Ryhl
- <aliceryhl@google.com>, Andrew
- Morton <akpm@linux-foundation.org>, Daniel Gomez <da.gomez@samsung.com>,
- gost.dev@samsung.com, Greg KH <gregkh@linuxfoundation.org>, Julia
- Lawall <julia.lawall@inria.fr>, Kairui Song <kasong@tencent.com>, Luis
- Chamberlain <mcgrof@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Evaluating Rust for XArray
-In-Reply-To: <CAJ-ks9mhOAgNKjepUOS918q90JkmyqVU6axKt-v35Rav+MNy3w@mail.gmail.com>
-References: <aZRncP-sKLLS2K1U@macos>
- <Zy05aTxJToTSNNCXvTAVZ_iEi3KkZ8R0an9b0G_kemt0or0JyRUp_dfZ79wuF91J6xV1bna6fZwo5rRwsrlgoA==@protonmail.internalid>
- <CAJ-ks9mhOAgNKjepUOS918q90JkmyqVU6axKt-v35Rav+MNy3w@mail.gmail.com>
-Date: Tue, 17 Feb 2026 19:57:24 +0100
-Message-ID: <875x7vci5n.fsf@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl
+ <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: add a ring buffer implementation
+In-Reply-To: <DGHB1VEL6XTH.2W3803V58FUSH@kernel.org>
+References: <20260215-ringbuffer-v1-1-9b359758a1b6@kernel.org>
+ <8tULWyvUTjVb3E_HFZeW2maApI87eYLZungGtJ6k9CVT9J-C-TzIqx5ShmHA5vS30yqZRq7TmaBd0AIg5V7u6Q==@protonmail.internalid>
+ <aZMMyJofDKualqXw@google.com>
+ <873430es2p.fsf@t14s.mail-host-address-is-not-set>
+ <C82DE0A6-17FC-4FD9-A272-257B59129A7E@collabora.com>
+ <DGGFZX5JLZ22.3E1C8OVLNUDD6@kernel.org>
+ <3D7C5FE8-CA15-418B-B2F7-D0EA4C37E1F0@collabora.com>
+ <DGGGPFU9E9VD.8TT3HZUWS100@kernel.org>
+ <U-BIeJ2bi8_e-eMwrNeo2r12w5jDIlGja9E3QSTg2bgL7JYAp1lJtO6sPCvTGQsL1PCfkEkMHfR5eLVG3JPJaw==@protonmail.internalid>
+ <71F89D79-DBE1-4617-B58A-8552D0F2B3A2@collabora.com>
+ <87pl63d6xx.fsf@t14s.mail-host-address-is-not-set>
+ <L27n6JvhX0qd0nYoc7OSvJJHPPjYRdUHiXcqL4l9FKkG52HCMa-qnOS33uUJtDu_Iayel2UgLad7yc5cWsOGHQ==@protonmail.internalid>
+ <DGHB1VEL6XTH.2W3803V58FUSH@kernel.org>
+Date: Tue, 17 Feb 2026 20:10:48 +0100
+Message-ID: <87342zchjb.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-"Tamir Duberstein" <tamird@gmail.com> writes:
+"Danilo Krummrich" <dakr@kernel.org> writes:
 
-> On Tue, Feb 17, 2026 at 9:28=E2=80=AFAM Daniel Gomez <da.gomez@kernel.org=
-> wrote:
->>
->> We propose a topic to discuss the potential use of Rust in core Linux
->> kernel data structures.
->>
->> The XArray unified the kernel's radix trees into one API back in v4.20
->> (2018). It sits under the page cache, block layer, filesystems, GPU
->> drivers, and dozens of other subsystems.
->>
->> We looked at XArray bugs since 2018. About half are the usual suspects:
->> races, resource leaks, encoding and overflow mistakes. The kind of bugs
->> Greg says make up 60-80% of kernel security bugs [1]. Most of the rest
->> are complex logic bugs where Rust's type system may help but cannot
->> eliminate entirely.
->>
->> The motivation for our interest in evaluating Rust for use in the XArray
->> started with a bug in mm/filemap.c that corrupted page cache data [2].
->> Consumer code called xa_get_order() without the lock, the tree changed,
->> and pages from wrong files ended up in the cache. No CVE was assigned
->> to this issue*, and no reproducer outside production existed before the
->> fix (a synthetic reproducer was only created [5][6] after the issue was
->> escalated). Kairui Song's refactoring and optimization patches [7][8][9]
->> happened to eliminate the issue.
->>
->> In Rust, xa_get_order() would be a method on the lock guard. XArray
->> users would not be able to call it without holding the lock because
->> the type system would not let them. That does not help with the complex
->> logic bugs, but it eliminates the class of mistakes where the API is
->> used outside its required context.
+> On Tue Feb 17, 2026 at 11:02 AM CET, Andreas Hindborg wrote:
+>> We can change the code down the road, no problem. It's not set in stone
+>> just because we merge it without generic alloc support.
 >
-> These benefits are compelling, but they materialize when the _caller_
-> uses Rust (and when Rust abstractions exist, whether native or
-> wrappers around C). A stronger case for a Rust implementation would be
-> justified by internal complexity; IIUC that was the motivation behind
-> Rust Binder.
+> Just to avoid any ambiguity, we should merge it with generic allocator support,
+> but aiming for arbitrary I/O backend support would be a bit too much.
 
-I agree with all of this. Having spent a fair amount of time reading the
-xarray code, I am very interested in seeing how a feature complete
-implementation of xarray would look like in Rust, and how it would read.
-
-For C callers we could do things similar to what our current C data
-structures already do. Asserting preconditions for calling certain
-functions, lock held, etc. I am curious how much of this we could do
-automatically with Rust.
+Right.
 
 >
->> We have a Rust XArray prototype that implements core operations designed
->> around Rust's ownership model. By the conference we aim to benchmark
->> it against tools/testing/radix-tree/ and use it to back the Rust null
->> block driver for A/B testing performance against the C implementation.
->> In the longer term, we plan to deploy the Rust implementation in the
->> page cache for A/B testing performance of generic workloads. We invite
->> the community to take a look at the code (when published), which at the
->> moment is rather simple as it only covers the core operations.
->>
->> We know that Rust is not magic. The first kernel Rust CVE was a race
->> in an unsafe block where the safety comment was wrong [10]. However, we
->> believe that constraining potential memory safety issues to small unsafe
->> blocks provides a significant advantage over writing in C, where the
->> entire program text is to be considered one big unsafe block.
->>
->> With Rust now part of the kernel's core infrastructure [11], we would
->> like to explore whether Rust is applicable for use in core MM data
->> structures. We invite the community to this exploration and we would
->> like to start the discussion. Specifically, we seek insights into:
->>
->>  - Which workloads set the performance bar?
->>  - Would a type-safe API reduce consumer bugs, or would they just move
->> elsewhere?
->>  - Would rewriting core data structures introduce new, previously
->> unseen, bugs**?
->>
->> *Under the Linux kernel CNA's CVE assignment policy, data corruption
->> issues do not meet the cve.org definition of a vulnerability and are
->> therefore not eligible for CVE assignment [3][4].
->>
->> **Our thought: The existing test suite covers years of real edge cases.
->> A second implementation running against it is not just a rewrite, it is
->> differential testing.
+>> Perhaps one could imagine a simple API like in this patch being provided
+>> by a configurable implementation behind the scenes.
 >
-> The downside to a second implementation is that it acts as a change
-> detector: If the tests run against both implementations (and we can't
-> drop the C implementation since Rust is not yet required to build the
-> kernel), any change to the C implementation must be accompanied by a
-> change to the Rust implementation. I'd be surprised if the C folks
-> would be pleased by this.
+> Yeah, in the future we could implement the system memory specific one with a
+> type alias on top of the I/O backend agnostic one. But it remains to see if this
+> will actually work out properly or if it's even worth in terms of
+> maintainability etc.
+>
+> (E.g. one of the limitations that I've mentioned already is that I/O backends do
+> not support growing and shrinking of the backing memory. And I'm not yet sure if
+> they ever should.)
 
-I don't think anyone suggests putting this Rust code into production
-first thing (if ever). Current C development should not be impacted,
-they should continue as they please.
-
-It would be a cat and mouse situation the people working on the Rust
-code for sure. But maybe that is OK.
-
+This particular ringbuffer* implementation does not support changing the
+capacity after initialization, so I don't see that being an issue. For
+applications that need to scale the size of the ring dynamically, we
+could have another type. Or a generic parameter, if that makes sense.
 
 Best regards,
 Andreas Hindborg
 
+
+* VecDeque? This kind of structure has always been a ring to me.
 
