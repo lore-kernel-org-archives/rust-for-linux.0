@@ -1,125 +1,108 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048A54A32;
-	Tue, 17 Feb 2026 16:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB2B336EF8;
+	Tue, 17 Feb 2026 16:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771344304; cv=none; b=cv9u7PZaifW0lBAHe+5dcxoBN8BVZex8U/k5ID10GwZvN1L4m+qa1rHkpKn2Sc5R3FADHN8BgjK9vbGbA501IoTX2sHXldUeoujl61i8lHx+tS7MtRGyaM68goaeQpKEE1kfHLYpP2wvbDGgn41yXXCwa7m53lKw/f3djRG9v+0=
+	t=1771344653; cv=none; b=ZI+KNm7L9/n3MpU+Pvt9OYXN4gL23vccsnAEW/FaaB/tESNAri+0cIdc8+BEQ2b1l2LVsV3eaR+z+eaOOMGesaDKDgqaQk3xejdjv5esRrRGIkMYwtxL9AC9SxMCfT1BnrvM5n8SgNkNDviquHL3sOn3eqeSrp1o/0wLmSY1lc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771344304; c=relaxed/simple;
-	bh=C0X8fipbNQc7BJC76PKoPGVYAk6eQwXryX73Hrm6R4I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XbxUXxU1Bt5Ev6GJVHXjTyRVYdiw22x3jW8oU1y+NVazcjQoZgAsjS3Ehr9GyN1ukmhlu5Lt10RcSpH2FbjYX2FKEP/6ojf3xmZjy+KVEF/2GGNKV9Lsxi9Drmp0XynWZnJqZUdQ70q5QGV3tbH6RZzui8YrALTC1E6lsO4M0XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=R8wMBAJp; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1771344653; c=relaxed/simple;
+	bh=MXhxVIHeRx0BZp2W6p41DrKtgS4f5F5WFmdV2+prA3I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=H0QG8BgyHs4hOh3vBXWSv2O+pm94LeTFCXCCzi7Tue3IgCiGYl3dQ+DQyjK3Y1W75Vo8YD3ws+kbDZ2KQJ1g8c8xPpeItiir/AsZmDaTaLcCuDufxYj94lBps22HovbxOSR0xvhzIYW9lyyBbEFWWZuxBdCXoN+svnCyrMxArpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+6X96Up; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="R8wMBAJp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+IdFW9z5sPzmCexebRSE2HsXqwv2gmAkUgD70T1ufAA=; b=R8wMBAJpLxB+84Dkt3GVtwn69Y
-	OqOrWj8eJgW66DOV8ZsribtgtEX4Z9nCXd2RuWctYDZr8VLW8ObtNy0og4dQ4/1/lKBaUyjpt6R7o
-	OpXLYUcmTn/2oF8l7pwVkEoZnOg4IRrh7P8OidYRoWLvHiYAQXpZ4VPF3nwBC3CGT5lTgRzYXuZfP
-	bBGLUVUS8gxFUFUGBgUUWoE9uGomFvVPuDlSvWgxBBWzeWiyiuILJQNsJqRQc3/YeEgZAlAnynA23
-	eBpKjmEgWe5l+3ClIBIKjd4mG/C6AUxY472ogaxeB9PNR36sAt0bnu9WFyCqio+U6VWpmffM24QVF
-	pUoy1c7w==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsNZF-0000000G8nI-1cec;
-	Tue, 17 Feb 2026 16:04:53 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id F2A4D300CDE; Tue, 17 Feb 2026 17:04:51 +0100 (CET)
-Date: Tue, 17 Feb 2026 17:04:51 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260217160451.GA2995752@noisy.programming.kicks-ass.net>
-References: <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
- <aZQ19FEeGgigdwz9@google.com>
- <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com>
- <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com>
- <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <kkmXYWYC07oImDD0FJFVCCWl45alQdraRLHoLr7zowZfE0tMz0MmPIpuyEYQRSLjBQqrp_Ch0iR2Rix_g49lNg==@protonmail.internalid>
- <aZRWOIPThLfIZ1Ph@google.com>
- <87ecmjcw2v.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+6X96Up"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B95C4CEF7;
+	Tue, 17 Feb 2026 16:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771344653;
+	bh=MXhxVIHeRx0BZp2W6p41DrKtgS4f5F5WFmdV2+prA3I=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=X+6X96UpPdp4cqp7E/C4NBggV15ypDFjwEo3EL4AaUkDLTTFQrFbAgYYCZpDv8r+H
+	 NR3w8etIdXG9TyuAGAG67a/FT02+v3Q3381wGlkvjOuCjmeDwyGFYzcle1us+DxOmS
+	 r3pzKu4oOjfNCEi6otQCyIMBt9kiO74sr1iLhc5TeJ8ZAeSDdjJ9cZ8Xt1Vi24HI+R
+	 dzPec5h4QNx5gt9lN0CDPA0DdDQXDpX3gezcH4vspUWHQjAADc0DZ298oD1aJaM+SE
+	 fvZ+jtvH7PZtQMXb1Z/BBYj1QlVTP1e3DwNqPRYuuXMlXZ56c1WJU1YYogjLZ5lDH1
+	 B+Rz05pOLZh3w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ecmjcw2v.fsf@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Feb 2026 17:10:48 +0100
+Message-Id: <DGHD9TK32CZT.1PGFE238T1YY7@kernel.org>
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Boqun Feng" <boqun@kernel.org>,
+ "Greg KH" <gregkh@linuxfoundation.org>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Will Deacon" <will@kernel.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, <linux-mm@kvack.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Peter Zijlstra" <peterz@infradead.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <aZQ19FEeGgigdwz9@google.com>
+ <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
+ <aZQ8lJJ-U_8j03Z4@google.com>
+ <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
+ <aZRHJ7pSzOHruPA2@google.com>
+ <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
+ <aZRWOIPThLfIZ1Ph@google.com>
+ <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
+ <20260217130024.GP1395416@noisy.programming.kicks-ass.net>
+ <DGHADGXGWS45.1A6EHNMKM4SRH@kernel.org>
+ <20260217155035.GZ2995752@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260217155035.GZ2995752@noisy.programming.kicks-ass.net>
 
-On Tue, Feb 17, 2026 at 02:56:40PM +0100, Andreas Hindborg wrote:
+On Tue Feb 17, 2026 at 4:50 PM CET, Peter Zijlstra wrote:
+> On Tue, Feb 17, 2026 at 02:54:30PM +0100, Danilo Krummrich wrote:
+>> On Tue Feb 17, 2026 at 2:00 PM CET, Peter Zijlstra wrote:
+>> > Anyway, I don't think something like the below is an unreasonable patc=
+h.
+>> >
+>> > It ensures all accesses to the ptr obtained from kmap_local_*() and
+>> > released by kunmap_local() stays inside those two.
+>>=20
+>> I'd argue that not ensuring this is a feature, as I don't see why we wou=
+ld want
+>> to ensure this if !CONFIG_HIGHMEM.
+>
+> Because of the principle of least surprise. For the HIGHMEM case 'ptr'
+> only lives between kmap and kunmap and any access must necessarily be
+> confined in between those. Having the code behave differently for
+> !HIGHMEM is surprising.
 
-> I'm processing disk IO in the Rust null block driver. The pages backing
-> the IO requests may be simultaneously mapped to user space, so there is
-> no way to guarantee that there is no concurrent memory operation to/from
-> the memory area. User space programs can do whatever.
-> 
-> I don't have any control flow depending on the data I copy. I just store
-> it somewhere and return it if a read IO for the same sector arrive.
+Well, I'd argue that those are two different things.
 
-Right, so IIRC the old DIO code used to have this problem. We'd end up
-writing whatever random state to disk if you did DIO of an mmap().
+I agree that correct code does only ever access the pointer between kmap an=
+d
+kunmap (and in Rust we could even enforce this at compile time through the =
+type
+system).
 
-And if IIRC the current state of things is better in that we ensure the
-mapping becomes RO and we have writes fault and wait until the writeback
-is complete, ensuring things are somewhat more consistent.
+But the memory barrier is not required, i.e. if the compiler reorders thing=
+s if
+!CONFIG_HIGHMEM, that's fine.
 
-But you'd better ask Jens or someone that has looked at the various IO
-paths in the past 10 years or so :-)
+I think it would be wrong if users would - for their code - rely on
+"kunmap_local() already issues a memory barrier for me". It's an implementa=
+tion
+detail that depends on CONFIG_HIGHMEM, not an API guarantee.
 
-> Let me add a bit of context as to why I sent this patch. I am not an
-> expert on the finer details of this subject, so I rely on available
-> expertise in our community. It is my understanding that copying the
-> memory in the situation outlined above, without special consideration
-> (in Rust) would be undefined behavior. Such are the rules of the
-> language. Of course I don't want undefined behavior in the Rust null
-> block driver. When asked how to solve this, the experts suggested
-> defining this byte-wise atomic memory copy function, A function that
-> would have well defined behavior in this particular situation.
+>> I think this is not about not escaping a critical scope, but about ensur=
+ing to
+>> read exactly once.
+>
+> It ends up being the same thing.
 
-Yeah, so being a C programmer, stepping in UB and tearing up the spec is
-what you do on the daily. Its called reality :-)
-
-In reality it is *really* hard to have memcpy() not be sane. And if the
-Rust spec doesn't outlaw out-of-thin-air, then the Rust spec is wrong.
-It really is that simple.
-
-> That seems like a reasonable course of action to me. I don't understand
-> why this is such a big deal, and I don't understand the need to use
-> aggressive language and swearing.
-
-Feh, there hardly was any o that :-) Call it cultural differences and
-show how inclusive you are by being open to how other people have
-different norms, whahaha :-)
-
-I've heard it said that in Scottish 'fucking' is the mere announcement
-of a noun.
-
-> I would suggest that if we are failing to understand each other, or if
-> we are miscommunicating, let's be curious instead of angry. It get's us
-> to where we want to be, way faster. And it is a much more pleasant
-> journey.
-
-/me mumbles something and quickly drops the mic before the PC police get
-here...
+Reading a value multiple times within a certain scope and reading it exactl=
+y
+once is a difference, no?
