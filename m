@@ -1,244 +1,229 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013050.outbound.protection.outlook.com [40.107.201.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933F7356A01
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 14:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600C32BB13;
+	Tue, 17 Feb 2026 14:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771337379; cv=pass; b=rEgvxZ4vIJ//G3uardqylESClNcuRDLFafomsi/iEchDrauN2AzItzr2kHHhAmwILZ9rdbElphJlZJrQAGMJeVAFN1uI/hm5Z9kZsGk3LsSIPNPMjHrWcz4eth7Izi64XN8P/o0MVR1RLVF7bTK1UXbtnRKP5I0295TALcWQ5H4=
+	t=1771337413; cv=fail; b=mQc62FYq7qF1gf5jqlreDVE/tnhzxJDImX0jm+7nDRdvhaaWfCvA0g/Ed4ylUbGMi1IIkOHItJSDbnnaVMo51I4QKKtP8K+c0zDHRfL2bZbGMsv7Op2t/tWkLVZa9Wl6p1N8yU5xFEMozyTML03BZngXUdVnTH3pT9lO1mU7lkc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771337379; c=relaxed/simple;
-	bh=QEJrLc0HnQ5I+alHDUi27nIVl1wC70I8Wfh2X+OeMGE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VNTSwGm8JiZ7qNwdz9T+5lTJHMLEv+s5W2rGPa95hHUSnvdQRe4SUSyqofJgFXd/PCnQvtrXncSg6DI/6+G98BxiGW6uGuTMr8qFKsqTiRZfphfOrHKACSAGyvzLDER2kac4eGvBomekcQIVAqR+zZRpE0+lCfYe5coNIrT/JyM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0v4dXTx4; arc=pass smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1771337413; c=relaxed/simple;
+	bh=3VjBfFClRo7v+xsbL/TJNFneaxDFJ7SnTX9G24gEW6M=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=By6LopgVaKDixCKVuQT1IQgsqdAcC2pyEhhqMffpisai3hFCWNzavktQIGQkKbX03pRNiuvKvWBF6kwvXEfpb/Llt1KtD5siCSI2bACZfYS0FUuiJQg8RN62wOSZWR8oxzCZZxVQOQ8qy2mijWfo6YMrJ1DAueyL7Vymd9cd4QA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fumjDTs8; arc=fail smtp.client-ip=40.107.201.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0v4dXTx4"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4362c635319so4227299f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 06:09:37 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771337376; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iAcBI1ajvD8ROABfOi8iXv6m9MMiWRLiIHOkyl/a2eht4KXtrlq5Rj31GE2PHk4Dbz
-         ttqrOvI9RIKH4WXYtroESzGied5UUbxV5WHH8P2os4MJ114KR4wQktYKxiLALBrYRfbz
-         NnW4b9R5FUVCjky4HSZXhaaG5i7og8g3ZewJgWBk1nWIF2oiZSyPhs9MmMUe9pC0BHlZ
-         cw5rY1wfuK222vYgwUh2GTWmkQNH12m81HVxzDnBBHdG4Eoo1uZ6bgVFfFQ+KQshUJkN
-         xnAo2CyMsTCnmunQd8gh9QQ136o98IIWUDU7+pGuynZmrRwCHiU1mDLLfHEXJpGT5tvT
-         j0vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Kw7EHh8fCVhoh+y7PD5pWqu1yarVszXOXmD3HacviCg=;
-        fh=Ewa3s8anK3cYWxC36pf+SFCpZVuGfm4TLFM/P9mVRhs=;
-        b=buw+nBi9tx56dKKJ/ctub+ffh9HwbJO9Q+mOQ48V+HWf9blOdA6miH4DgmOxu4/law
-         YEjjQPb/48tevY1AQVP4vkts8S7He8X1oVYX4acr7li1qLdNij3MI3tgU0mkdGK9Osq5
-         sB9knT3Mb3mEuWnUlYoSyFJ/xmUGDw8AixhzA9OYU/u4lHPeFHX1UxUOwdq0Wk+9S+RO
-         uhx0XyD/cO4RDLf/8PsPr2qOp7wu6k+waod+1WjjrJAv5b6Xb4uopRpHsGxglUxH0iy1
-         fbFHoug7E5E2dvRO9hlVyK7NSSdl7vZO7QemX7WMVhqGIrbHggDSftOiCxWaBm/y+2Is
-         h82g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771337376; x=1771942176; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kw7EHh8fCVhoh+y7PD5pWqu1yarVszXOXmD3HacviCg=;
-        b=0v4dXTx4DHqpk/AypntGOJvW8VwGb9EtYO50beGCnj0vmDB0IUAE637ycCg61PR1t7
-         b+wRfd9Ul6LQRmS0YZTRHOi3xAj/ojYOKqEDKOnpAW9Cjum4oSD+u5gL19IE8q1oYC9F
-         8nCXAH4kHGb71KyyJeLeGwvvdWptkGUxVkhD0bP5hOCqM4M7Dvg9lUl4ov4IFUGolD7/
-         2vLaYrCNxn0lJ/jBkXkP/aDItUhQ6EpWKh2G4A/ucEGbZBAApnG0b870tUpwPYNkkIUe
-         voHMc1SqXUFBG5vUm3GUY1EsOpOXaLyyw3HxoifNedJcQ6QGLv0CoW70WifzGaMyykVi
-         KW/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771337376; x=1771942176;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Kw7EHh8fCVhoh+y7PD5pWqu1yarVszXOXmD3HacviCg=;
-        b=Yg9wZtWFF3C1HsZcIkK96zzX5uWyCvbM+jTHtQd07pezHnLbo8I1n/1SK9uCRS3jbf
-         aUgnAClN68fBLM2Y7WoahlIWLUXE/cCIbYm0UTLleOdhxwaAVUkzfbWjKmHP9CpTdNlH
-         pM5AdFaMj+0boeaI6adR0CvAFeMLGEyiUNB92OnROhdLsHw4ncQeEPeKxfhUGke4gGXq
-         QLcosKx8LExnNFuOErXJVSESrG7jgPPBJQhfVgEaQ4vppipnRdWwxV7HF2Q3jbYcj5Es
-         bHhs0/OXpD3noHLi83fVqw0AzaX+FajSEaxMfRdIgM6zspU6dS12bXeM26+xPSqoojtm
-         heeA==
-X-Forwarded-Encrypted: i=1; AJvYcCU5evqSuafhiWMq4bsveg+TcZN+lAl685QhAEbq8AHOMLnRREvpek5qeltuQijCiI84A7oY8Y3OEhM8mY4zaQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUeqQXEyt1WwRWqFj/+2aNKuGalooh5j5dgGROaSHqAUabuGr0
-	MzE3Qf1A2AT/GqxdTA6QaxakAzYxYBAMi1iPCguzWSo5U0iiIjgvSZz+9L0f4p0VbtUu14FZgHb
-	S/9L8gjExBvPp/K7S7jRXex+5Ii9KxiTg/NNaywvn
-X-Gm-Gg: AZuq6aLpCRxVyZQGgOj8xgXf6cBfvcfeHKlpgRz6o7HCWiYTiAh8BojmZS4XSUtog5d
-	qsWnNuP0axvFLcDYypVMWBomPy0jHrnm8tZtKKoLM3i0kAEu1eP+9hMfOvlAx3J4258/M4yP+EK
-	UuLbtyiyxkW5e2xye5PqQEKRzkiniUoPgJV6F8fj5WuVLzl2VbLYkrBlqOf8iGLIEXGZFdNHqaT
-	0sXwvKd8haKHhr/LHaMYcJBWeImWG5ePxZrv4xpoR61UBczyz70qapuvQMM20HoIzw08LgLfzQB
-	SaoqmI0tVo5OhCYyFPX6y0SL2dJX+K2yZF1ARhP52FyPwSVKnKC0v++vGdOQT7H0Qg5P8w==
-X-Received: by 2002:adf:ee07:0:b0:437:6e63:9172 with SMTP id
- ffacd0b85a97d-437978c761amr17248986f8f.4.1771337375424; Tue, 17 Feb 2026
- 06:09:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fumjDTs8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CeQaXm2hhk2pOmdmyCEQdyg/9QNTkSq3+ZmJRwSnRbPnX2tVxmN4NsrYQrHgMlcmh1zlVk1aKrmoGuDvP73h/TOpvqpMCbYPEnW82midEVqG84rYizdidOXoDuK9+PZ43NEDr1tHlmtgz0ooYy1o82G3IQIS7cU3+KJXdWAYLpTrEDmjNOHPK9fDoBVPjR1T/IVGboNp1ooNL7L5Scgrn1KFS9oXvuOMKB5xRw0YH8YN1TBfHpDaaf3+QbGGyATcXlfYb4IvXn/7rM7YTlLIS86kC+S2RH25qZc+VbTPKFa52h/PVQpLZSGfMxh7r7vUMV40YVmgFkIhPlLk+rPrmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=95UGzk/bbezALZ/C0wepaF53IbL1/Vb2N3FGIJY46w4=;
+ b=uJnxSZerm2Lvaw0fXkGWwRS13q9jpG1iJAfKxg8W4EDcs0RDtj/+J1JR3SEXDSGV6gm1DV8xjSDzsbufCBS0OgAAGV5WL/IxfQedWekSigMTNvcFgbTmvDiDuCaOt9tkG53x3m6553p1BpqPhHo2bmzOy75lyCHWOJwhGyxV9If9qQtt2iZ0GsToMnz0u763U6Jw4xFLiVn4eBq/cYQvS2WQawwEyWj2RHFw54ad3LAhv4FKhp8tq5RUxct278xYVprsHpkyzDHV4/w8iZEDXJYQUpxJK5QfsQMflV82di3X5JN2lYhEyf/yMAy+18urYlLDk+58qnz4upCWZ0b0Lw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=95UGzk/bbezALZ/C0wepaF53IbL1/Vb2N3FGIJY46w4=;
+ b=fumjDTs8T0NGelk3SrJJPXKDuh0ctURcG+dUHeykJiYVrM0wQPwCZtaMGgRFS99dGuAsH+BGKESOFDaOBB2nOBxP/NBTy8WzS1sY6VZBzuPc1zFAEhi1R/2yLu9/b6TwN1tf0CcOZco7I06aK2V0/G7rJs5qzB6PXbE8lKNbrJo7V0SCpU2aFtP1t5Qo4WXANcdbd+390rqvlsemoxlIeOzhDs6qNppiHquZdVnMTJPsa2tn0pBAAxUNqdR4zCPd1JzBRGPNcgzEwvtaD6Jf8uDKzAfC0MQm6vMYJvNznzmVy3dDZb21Iwbg8eXbc+z+xaUQ1m5LYt9k1DZ77D0nbg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by CY8PR12MB8315.namprd12.prod.outlook.com (2603:10b6:930:7e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Tue, 17 Feb
+ 2026 14:10:07 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%3]) with mapi id 15.20.9611.013; Tue, 17 Feb 2026
+ 14:10:07 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Feb 2026 23:10:02 +0900
+Message-Id: <DGHAPCX1JAWX.3B8VMCMPCZ7UG@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Gary
+ Guo" <gary@garyguo.net>
+Subject: Re: [PATCH v3 7/8] gpu: nova-core: use core library's CStr instead
+ of kernel one
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+References: <20260217-nova-misc-v3-0-b4e2d45eafbc@nvidia.com>
+ <20260217-nova-misc-v3-7-b4e2d45eafbc@nvidia.com>
+ <DGH77OGW8BFR.2NV0GJ1890DPF@kernel.org>
+In-Reply-To: <DGH77OGW8BFR.2NV0GJ1890DPF@kernel.org>
+X-ClientProxiedBy: TYCPR01CA0134.jpnprd01.prod.outlook.com
+ (2603:1096:400:26d::13) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260209155843.725dcfe1@fedora> <c319c349-eb95-4c38-84fb-47440daefc3b@amd.com>
- <aYruaIxn8sMXVI0r@google.com> <20260210101525.7fb85f25@fedora>
- <aYsFKOVrsMQeAHoi@google.com> <20260210133617.0a4be958@fedora>
- <aYsvc3Q8h-Gg27-g@google.com> <20260210142631.6f8a3411@fedora>
- <aYs3VVH_UXMFa5oC@google.com> <f4c32d9a-7303-4a50-aafc-8039102fbd3e@amd.com>
- <aYtJznZcCEYBffil@google.com> <d9e00d8c-93c0-45f8-95f2-3235fb781e7a@amd.com> <3d90656315ab0b52f4725ca7c2cd10859d1e4f69.camel@mailbox.org>
-In-Reply-To: <3d90656315ab0b52f4725ca7c2cd10859d1e4f69.camel@mailbox.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 17 Feb 2026 15:09:22 +0100
-X-Gm-Features: AaiRm50B8Tc9CMv2QWUVjoG3DsZ7EJJzS-cwntAad34iqku_5ZENYYX9qsQjqLg
-Message-ID: <CAH5fLgjNS1e420UX7muyEPWX3dZ-JsA_uy3=PM7QLA2NuoKJmw@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
-To: phasta@kernel.org
-Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <lossin@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CY8PR12MB8315:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95d1b21c-c972-48ca-81e5-08de6e2e40cf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|10070799003|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZHBIeEV5SHgvMHZBbEltOXBUcFF5dDM1TjJqOHpkVE1zdy95Ly9RTTF5ck1j?=
+ =?utf-8?B?aWZRL2FzenBnMTVsRWcwSHRNLzZrNVNmY1BVaDgrVC9WSkhyVWhyUE14V1NL?=
+ =?utf-8?B?OVpRK3JVcFdXU2tqZ05oS29ySlFkdGZxMHAxVExSVXJSeGFxNXQ4bzk3UE1s?=
+ =?utf-8?B?N1h1eGtDN09SZHl4OFVGNG85VjJVVFZDSHJ2Mi9JZlJOVzl3OVZ4TTRkQmVv?=
+ =?utf-8?B?TTFWaW55cmdkUk5wak9ab1EySkxseng1WHRkRStZbW1oSmxLSnR0YlB2U2lj?=
+ =?utf-8?B?ZjVVeCtuTmFkM0pMUTNHUWpHaE16RUZBTU9JWXJ5a0l3aklwQVAyWmJHQm9X?=
+ =?utf-8?B?UXRNUkFWVS9ad3pPRDZVVjByZ2pBTDEwRElPblovMFh3YnVvR3E2VWtzdWZa?=
+ =?utf-8?B?bkZySmgwanNnRU1mQ1g4TjlNamRhc2FOU20zTkR0QWJlWnZERVkwYmV6RERk?=
+ =?utf-8?B?UHV3NWYwU0YyaEJOWVVwekVMS0FQSlRHYVBSSzAvSkxXTGE1TzdFd2gyMmFH?=
+ =?utf-8?B?ZHQyNzJRdmlJbytUSHQxYi9KZTZieDRLc0tLT1ptU0NXQXJkRmNZL3FpYzRt?=
+ =?utf-8?B?WEtqcWQ0VGh4V21UTklQRVQ1VHpyaCtPTFhxenZrRVlTdUtnUDJBUGxMVWp2?=
+ =?utf-8?B?ekpvdE0rbUgrYzdDMWVEL3EvQnBkeGlCNUFFOFhLaGVUdlQyRENzc1BPbWpN?=
+ =?utf-8?B?em5rVjJUR2pXTnNNaHhjTGhoaUFPWDNkOW5GeWp3UzExWkVNOGRaVytWZnl2?=
+ =?utf-8?B?eDVWMXl0S25pU20zV2ZZa3JsbjVWRWhvQlE2TkxRVGdvbkhRTWg5SkQwWFlM?=
+ =?utf-8?B?bmsydHZFdGZBUlVtaXJGcDVFVlJPRlR4cEFmZ1dVWjY0bC9nbFM0NjlFM1ZW?=
+ =?utf-8?B?RHUvNlhtZjN3dk1ObUw0ZE0ycnJHK0R0SUlINkFnTWQ0aWdJd1FkUGxmTyt1?=
+ =?utf-8?B?Uk9qc1pFNndpWmpBVW5EdCt1c2dpRElWejIwZ081ZUl6TzlzQnFrdGxJUjdx?=
+ =?utf-8?B?ei8wcVUrSHFSaXhZMm8zdXI2dTBWeUQyNmcwU3EwWnptTE1yY3hCaEpCTHBK?=
+ =?utf-8?B?NVM4Vzh4QjRYYUM5cmJPeCtLak5PZmFpUFJuVXpXaTROQm0yQlZtc2ovMlRn?=
+ =?utf-8?B?bldZc1g2WTNaeVU4VUJNeEdaK3NjVkJFclFFYWhCSC9vaVJFeW5wVmdvTVVv?=
+ =?utf-8?B?K1J6elZvQm5idGZHWDFmWStIZ3JTQjlCTzhTejNwUUR2WjI1cU45TnpQME9U?=
+ =?utf-8?B?T0RBM3hCZXpLWUZpUFZqcEN3TzNtQ1RxT0JTRFV2QXdBOW9RZGw1T2VTNFkx?=
+ =?utf-8?B?dUZCcll0Q1BHbG9JdnF2TmV2d1d5Y3pBblFNRUQxMGtNNUcwbkxwUDFyRDdX?=
+ =?utf-8?B?b1N5ODVNbUFZWFFmRFZHQ0dsNFdOTVpnTkVjVndmYVRLK1BFTUl4T0FERExy?=
+ =?utf-8?B?ZWF6dldsQjBIOHN3Mmx0UkczbENQVnZvR2Z2RmE2V0wyOWgraFBHVTZCVEp5?=
+ =?utf-8?B?RHE3czNDekhucE5hMEQvbXNTMytoclB3aU5WMjVieU4xNEpHUC9qdEIrME00?=
+ =?utf-8?B?T21vWWx1czV2MUl6c2d3Rnk4Vldsb2EvZWxvbVdSdHUwUzQ4UkQ1ZklEOFFp?=
+ =?utf-8?B?a1dEalFjcXJvdUdwMXN4MHF5ZnBlV2RjRmdrZmxIeVNFa1BIdHlYSzRUdzhM?=
+ =?utf-8?B?bnRaZUgrSXNObHJjdEpFYTY1TUFTRktRbEptTzU3ME01bS9mOTlFQXBVY2pG?=
+ =?utf-8?B?ZGlVbzg5YitlWDRqb1dlNDhWTmY4Q3FnMFVuNXc2ZElHeE1pRm82TTh2VnRz?=
+ =?utf-8?B?bEk5Sk85YlQvL2ZZdkRIRkJKV2llY1VSZGFsWVdjdm9hN3hnMjdYdzhGdTFV?=
+ =?utf-8?B?VTU5OWs5S1hNdHRGSTRySUNwd0dSNDd0MjhtNDlhK1lSdDdETjA3dXJpSUFW?=
+ =?utf-8?B?VzB1NjNHbEFXWmV6aDFCeVdiVG9HTEhvR3ZWbzhjK1BqVncyelZLZFJMRmN1?=
+ =?utf-8?B?TzJFWk80YVhDMmFRYkJMMVkzaGZBOHhPY0d5WDdyTVl1eUF4ZHFvc1BtM1Nr?=
+ =?utf-8?B?UUdyUEcxZDBYbDJudmFyMSs2UEI2V3FVWXNYK21mMEI4dEZKVTlmY0RnOTdj?=
+ =?utf-8?Q?iWYs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MFBGQlIzMWRhNEZRTWxHcjJRTm41cmZyNHpvMmpPQ3VOVHZMVEJkN1g1aWtz?=
+ =?utf-8?B?VXFWbisxYlhVZDZCN1doYk9zVVVIZkJHaHVtdVE1V0RmcGo5R2drbUJFTENS?=
+ =?utf-8?B?Zm82dFlMZnVXeGc5NU5BalpMOWlnRlVWVm91T2FKMHNFUDJzNEdvSUtrdnhU?=
+ =?utf-8?B?eENHN09VTHFJTnovREE3RGN4K3l4UzE5bXU3K3hxZGpjdUFuQWcwamNqbFg2?=
+ =?utf-8?B?d3ZNUnhQd1l2bWc1SWRSclNkNnF0bVFWMDcvcWczeHpobFJFVUFsOUtaWGtq?=
+ =?utf-8?B?WVZGZFJpSXJ2cW5CMldXMlJvTktLS0hoem5XckhybTN4bkJqa3cySTRuSVRU?=
+ =?utf-8?B?cW1BVzZ6ZnJuNlpkYzJ5YXhKWU9OTFUxcmRNcjMzc2c2dElIcWxYY0RQeVI5?=
+ =?utf-8?B?a21EMkVPODNuRzVLMENjSHExQjFZenc4M2I4NkJkSjlQMDdHRzcwUkllbm4x?=
+ =?utf-8?B?aEVwZCs1YXFLUktuTzNNNmVaWXdiUkZYRG1uWmFyMXBlS3FDbk9kazBxNjZI?=
+ =?utf-8?B?RTJ3RXE4dENuMjBqNVVBM2hHK2FDZS9QWE5EWGljSGpidCtSVkdhQWpTN01l?=
+ =?utf-8?B?dHpWSkQ4Y0szQkg4QUk2UnpQRXl2bTd3dVBaelVhV3Eyd3l0NnJDeEJESnF6?=
+ =?utf-8?B?dnZJbGlNelZzaEU0YlQxdEYrOFNZVU9PRzNPSFV3TG9FdUJ5OXBZRGZGcjNk?=
+ =?utf-8?B?VUdGOHlNczV3dlcvWXdwRUlNRWIzWWVPODYzSXREaVVjOEtnR1dBSEVYNExH?=
+ =?utf-8?B?anJXcW1Mc1psTGpnbFpySDV3SGNZbm5nMUE5WkpNOEpuVWNpVU03TkZBMVNE?=
+ =?utf-8?B?am5zS09UYXhvS05JWkJEUlNhWkRra3J4TjlBUXA3TWY4ZUdWUGsvVm5UTkwv?=
+ =?utf-8?B?ZHFaUzA1ZE1Ta2ZySEtYVlVtc0xuV0FyTUZ6QlBDRTlNcjlNbVgrZU8yZGp2?=
+ =?utf-8?B?eXZlNmR5eU1COEhCcHBrcklDNjR5VHY4U3Q3UEJwMjhSZXhWRy9HV0pDbTBB?=
+ =?utf-8?B?Uk9IMHU5ZFJxT2dCZm0rRjcyT0lEWUozd3FScUt0Q1JNZ2JxYVY0dEtLVGRj?=
+ =?utf-8?B?VUtvNUlMU293WlNtMWpwdkVSOW8xNFlCaWlkMVM4dks1L1JDRUJ5dVl3bkxk?=
+ =?utf-8?B?MkYya09ZWlphT1Vqa2NnOVpVdWpTTjlWbFdxQkVOVjB0TW5lUEVkamFEdGli?=
+ =?utf-8?B?V0NXbm9POXlCZVQ4aVdhZ2diV2VtQzBibm02K05HVnpOU1Npb1lQRHA5amsv?=
+ =?utf-8?B?Q1RhZGQrSUUyWVFNVHJhazhYNW9DMFFTdmgvTHJUSnY5eERUU3FZV2dDT1Nm?=
+ =?utf-8?B?VThpSldjR0lIcllZay9Tb0hiRXluMVRnUnpEVDlKdlIzZVpFa01KRDk5VFk0?=
+ =?utf-8?B?dlBzODlHbmpHTnYzWjArQkdkY3RseDhyQmF4NXUzSGVmekc2M2FkUlBEOElI?=
+ =?utf-8?B?WUpOTWFnMm9DVzhYZlJIcTI2TWlUMUJaQlFXWlFYZnp6UG5PMzlQaEh2ZU9V?=
+ =?utf-8?B?eXNKYjF3d3pTQ2VQYWZrekF4ci9KcXhjVEZtUTQzRWVvSEhtaUYxd2pOcjZw?=
+ =?utf-8?B?eHhJWkdybVptM2IwQUVwQStaZVBvdEdzOWtseEgvYm1IbW4rSG1vQUVRVmIr?=
+ =?utf-8?B?ZlNEbHJsNG9PcWhpN0U2MzRWS2ljYmpQbGRRSEMxMkxzV1l2ZU5TeE9MUEpF?=
+ =?utf-8?B?YkYyTmdKbGVXVEUvcTRMVWpTT1ZHUzN0L1o0NVJsMlJPWmxZWHBtU1U2bVFQ?=
+ =?utf-8?B?YVRXbTF3bUxJM3h5Z2k1V1hwSEtsOVNiSWNxVHROYXN6ZVlmRzFNQTNaVHY0?=
+ =?utf-8?B?TnJyRGgwL3dNU3VmNGljNXRzRS8wVnVHdUJwSmtIdHhxMEhHd1dwMlRpV1h5?=
+ =?utf-8?B?WUltRDlTZWg0THpTUm9WWjEwTEpxRGxhZmVKazBUNzIzQlpZUlBORnZuc2p1?=
+ =?utf-8?B?WXFJUFBTOFo2ZXZpNWxXWUNWZzFKdlJDdG9nQjJlcnZaQk1pZmVGb1JxL0U3?=
+ =?utf-8?B?OElIWElpTnF4bTlSRzBvUTZUWE9kcktjVXNzWm9rdW5lVzdTQlpxVGxRVjlp?=
+ =?utf-8?B?amtYV3lJcE93MzNEbUNCeFFpSWZyeXBDUllLeC8xRDJJWm8wSjlUOGtybVJq?=
+ =?utf-8?B?d0hPcVlpYW01aEwvMjU5M2ZFRHNzRTYyNWMreHFIMGVIa0Y3R0N5TzJnSG84?=
+ =?utf-8?B?SFBES29tZktBQ1hSUXZRY0xpRllDQ1VQaWMyY0ZVMngzbjVjd2hVNHB5OE5H?=
+ =?utf-8?B?SWFRa0RHWTlCeTlHdVJtOXo1OTJZNWp0WHMrS1AvUkJyQnROQzNYY2ltcUVi?=
+ =?utf-8?B?NXYvNmtuSDF5dlpyZlR0ajlCYU9ESnNDeThyaU1jUTVRMmNiNXY0bGlFNWl3?=
+ =?utf-8?Q?SHbyIBaNf0efKxe+uKiJ7GwpoS0HNjhxEwLusgbc9/rh/?=
+X-MS-Exchange-AntiSpam-MessageData-1: 8ICLgTS76GJhvA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95d1b21c-c972-48ca-81e5-08de6e2e40cf
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2026 14:10:07.3991
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KntdiV2ELvRkVgl7RgKKPNohm1DAqBltACb2APCXmhz7Y1lshXLJNltJhMlBBOryABmteAvEcloggE0vzKNTNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8315
 
-On Tue, Feb 17, 2026 at 3:04=E2=80=AFPM Philipp Stanner <phasta@mailbox.org=
-> wrote:
+On Tue Feb 17, 2026 at 8:25 PM JST, Danilo Krummrich wrote:
+> On Tue Feb 17, 2026 at 3:45 AM CET, Alexandre Courbot wrote:
+>> The kernel's own CStr type has been replaced by the one in the core
+>> library, and is now an alias to the latter. Change our imports to
+>> directly reference the actual type.
+>>
+>> Reviewed-by: Lyude Paul <lyude@redhat.com>
+>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/firmware.rs     | 2 +-
+>>  drivers/gpu/nova-core/firmware/gsp.rs | 6 +++++-
+>>  drivers/gpu/nova-core/nova_core.rs    | 2 +-
+>>  3 files changed, 7 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/f=
+irmware.rs
+>> index 68779540aa28..2f7249383e51 100644
+>> --- a/drivers/gpu/nova-core/firmware.rs
+>> +++ b/drivers/gpu/nova-core/firmware.rs
+>> @@ -424,7 +424,7 @@ const fn make_entry_chipset(self, chipset: &str) -> =
+Self {
+>>      }
+>> =20
+>>      pub(crate) const fn create(
+>> -        module_name: &'static kernel::str::CStr,
+>> +        module_name: &'static core::ffi::CStr,
+>>      ) -> firmware::ModInfoBuilder<N> {
+>>          let mut this =3D Self(firmware::ModInfoBuilder::new(module_name=
+));
+>>          let mut i =3D 0;
+>> diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-co=
+re/firmware/gsp.rs
+>> index 9488a626352f..ae3f6581c5b6 100644
+>> --- a/drivers/gpu/nova-core/firmware/gsp.rs
+>> +++ b/drivers/gpu/nova-core/firmware/gsp.rs
+>> @@ -32,9 +32,13 @@
+>>  /// that scheme before nova-core becomes stable, which means this modul=
+e will eventually be
+>>  /// removed.
+>>  mod elf {
+>> +    use core::{
+>> +        ffi::CStr,
+>> +        mem::size_of, //
+>> +    };
+>> +
+>>      use kernel::{
+>>          bindings,
+>> -        prelude::*,
+>>          transmute::FromBytes, //
+>>      };
 >
-> On Tue, 2026-02-10 at 16:45 +0100, Christian K=C3=B6nig wrote:
-> > On 2/10/26 16:07, Alice Ryhl wrote:
-> > > On Tue, Feb 10, 2026 at 02:56:52PM +0100, Christian K=C3=B6nig wrote:
-> > > > On 2/10/26 14:49, Alice Ryhl wrote:
-> > > > > On Tue, Feb 10, 2026 at 02:26:31PM +0100, Boris Brezillon wrote:
-> > > > > > On Tue, 10 Feb 2026 13:15:31 +0000
-> > > > > > Alice Ryhl <aliceryhl@google.com> wrote:
-> > > > > >
-> > > > > > > On Tue, Feb 10, 2026 at 01:36:17PM +0100, Boris Brezillon wro=
-te:
-> > > > > > > > On Tue, 10 Feb 2026 10:15:04 +0000
-> > > > > > > > Alice Ryhl <aliceryhl@google.com> wrote:
-> > > > > > > >
-> > > > > > > > > impl MustBeSignalled<'_> {
-> > > > > > > > >     /// Drivers generally should not use this one.
-> > > > > > > > >     fn i_promise_it_will_be_signalled(self) -> WillBeSign=
-alled { ... }
-> > > > > > > > >
-> > > > > > > > >     /// One way to ensure the fence has been signalled is=
- to signal it.
-> > > > > > > > >     fn signal_fence(self) -> WillBeSignalled {
-> > > > > > > > >         self.fence.signal();
-> > > > > > > > >         self.i_promise_it_will_be_signalled()
-> > > > > > > > >     }
-> > > > > > > > >
-> > > > > > > > >     /// Another way to ensure the fence will be signalled=
- is to spawn a
-> > > > > > > > >     /// workqueue item that promises to signal it.
-> > > > > > > > >     fn transfer_to_wq(
-> > > > > > > > >         self,
-> > > > > > > > >         wq: &Workqueue,
-> > > > > > > > >         item: impl DmaFenceWorkItem,
-> > > > > > > > >     ) -> WillBeSignalled {
-> > > > > > > > >         // briefly obtain the lock class of the wq to ind=
-icate to
-> > > > > > > > >         // lockdep that the signalling path "blocks" on a=
-rbitrary jobs
-> > > > > > > > >         // from this wq completing
-> > > > > > > > >         bindings::lock_acquire(&wq->key);
-> > > > > > > > >         bindings::lock_release(&wq->key);
-> > > > > > > > >
-> > > > > > > > >         // enqueue the job
-> > > > > > > > >         wq.enqueue(item, wq);
-> > > > > > > > >
-> > > > > > > > >         // The signature of DmaFenceWorkItem::run() promi=
-ses to arrange
-> > > > > > > > >         // for it to be signalled.
-> > > > > > > > >         self.i_promise_it_will_be_signalled()
-> > > > > > > > >     }
-> > > > > > > >
-> > > > > > > > I guess what's still missing is some sort of `transfer_to_h=
-w()`
-> > > > > > > > function and way to flag the IRQ handler taking over the fe=
-nce
-> > > > > > > > signaling token.
-> > > > > > >
-> > > > > > > Yes, transfer to hardware needs to be another piece of logic =
-similar to
-> > > > > > > transfer to wq. And I imagine there are many ways such a tran=
-sfer to
-> > > > > > > hardware could work.
-> > > > > > >
-> > > > > > > Unless you have a timeout on it, in which case the WillBeSign=
-alled is
-> > > > > > > satisfied by the fact you have a timeout alone, and the signa=
-lling that
-> > > > > > > happens from the irq is just an opportunistic signal from out=
-side the
-> > > > > > > dma fence signalling critical path.
-> > > > > >
-> > > > > > Yes and no. If it deadlocks in the completion WorkItem because =
-of
-> > > > > > allocations (or any of the forbidden use cases), I think we wan=
-t to
-> > > > > > catch that, because that's a sign fences are likely to end up w=
-ith
-> > > > > > timeouts when they should have otherwise been signaled properly=
-.
-> > > > > >
-> > > > > > > Well ... unless triggering timeouts can block on GFP_KERNEL
-> > > > > > > allocations...
-> > > > > >
-> > > > > > I mean, the timeout handler should also be considered a DMA-sig=
-nalling
-> > > > > > path, and the same rules should apply to it.
-> > > > >
-> > > > > I guess that's fair. Even with a timeout you want both to be sign=
-alling
-> > > > > path.
-> > > > >
-> > > > > I guess more generally, if a fence is signalled by mechanism A or=
- B,
-> > > > > whichever happens first, you have the choice between:
-> > > >
-> > > > That doesn't happen in practice.
-> > > >
-> > > > For each fence you only have one signaling path you need to guarant=
-ee
-> > > > forward progress for.
-> > > >
-> > > > All other signaling paths are just opportunistically optimizations
-> > > > which *can* signal the fence, but there is no guarantee that they
-> > > > will.
-> > > >
-> > > > We used to have some exceptions to that, especially around aborting
-> > > > submissions, but those turned out to be a really bad idea as well.
-> > > >
-> > > > Thinking more about it you should probably enforce that there is on=
-ly
-> > > > one signaling path for each fence signaling.
-> > >
-> > > I'm not really convinced by this.
-> > >
-> > > First, the timeout path must be a fence signalling path because the
-> > > reason you have a timeout in the first place is because the hw might
-> > > never signal the fence. So if the timeout path deadlocks on a
-> > > kmalloc(GFP_KERNEL) and the hw never comes around to wake you up, boo=
-m.
-> >
-> > Mhm, good point. On the other hand the timeout handling should probably=
- be considered part of the normal signaling path.
->
->
-> Why would anyone want to allocate in a timeout path in the first place =
-=E2=80=93 especially for jobqueue?
->
-> Timeout -> close the associated ring. Done.
-> JobQueue will signal the done_fences with -ECANCELED.
->
-> What would the driver want to allocate in its timeout path, i.e.: timeout=
- callback.
+> What's the improvement in this change? Both of the ones factored out are =
+already
+> correctly imported through prelude. Let's keep it as is.
 
-Maybe you need an allocation to hold the struct delayed_work_struct
-field that you use to enqueue the timeout?
-
-Alice
+Mmm, either they weren't at the time I initially wrote this patch, or
+I've been careless (the latter being more likely). I'll remove this.
