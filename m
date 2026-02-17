@@ -1,70 +1,78 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021105.outbound.protection.outlook.com [52.101.100.105])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020106.outbound.protection.outlook.com [52.101.195.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE2C2F618B;
-	Tue, 17 Feb 2026 23:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEE33242C0;
+	Tue, 17 Feb 2026 23:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.106
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771369821; cv=fail; b=Gxpl7JOSs3vcW8LW/YUyB0dKYNrQ17kLR2uyxVkFNqmOSpVtqec7bto9F20Op9iYULY3qC2bMRN5yIQBwwMtHNirbAoNI4rqPP/LjwL22E7h6OmeEtcSHS6p0OFCSKJPFFtXzGTQu8iU+ItCsIDuP6LGXttkzqolT/nNBmh1hCE=
+	t=1771371568; cv=fail; b=hZ/OSZ3VmxzidOY/EuMcJUxpR3bVmzhy8RbQ7GDPpUE99kDuA6b4qemv+c2UYt2UFoM6yJx4oBI9ENBRR9W3mYihiTL8qH1mvosPIR/JKErcxX+365nAed2Ohfobn/uRUBzT2JGfWZVOQ58z9a5OncEAuHfFI6GI1/GAK12r9SE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771369821; c=relaxed/simple;
-	bh=+uZroC1nVX11if+4Uove303x5mMU7HKJCZIDkOcNcaM=;
+	s=arc-20240116; t=1771371568; c=relaxed/simple;
+	bh=QcT24LQqReATAYlky3RdcJZ35z7kjMkTmA6A5CubLFg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:MIME-Version; b=qXJG3K/DeuYgTFwlE6wjmOa0WNCm+W6Y2wLUhq7oO8SqF2E+U9VZZpMBxnmbuuUvkejtWqYdEOjaUEaLE67SLbZGtNe2hDlIf1BQtaJRhiJJ9ZA9qzm4pre1k5zBbJwT7D2GeOpFWEfQyT2TOuc8WCv1or3XIgcQch+jUGtSBk0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=zdT7Tbja; arc=fail smtp.client-ip=52.101.100.105
+	 Content-Type:MIME-Version; b=pvcOiI56OK262+7kwgjCJ1bokbkKiiOgV0frzoPu3esw52pMU1tZLr0ImChF2Er/0Ckbt0RDMHS9nA3ENb7gvj6NMBOcHkMgD5zVZ8EugDGEB2r2Bp06WyRU0TEEg+UXHn4WNTXCOLAzfKxCWCI0KYIAhJqfFoWYNPl/X3lJ2WQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=vuL9G+oj; arc=fail smtp.client-ip=52.101.195.106
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="zdT7Tbja"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="vuL9G+oj"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Td5TLQYBfN1tl//5fv4fqOBV/RHA4vqA15/LtWfE5RZ239w2AslAQi7IY9A1DMBjfKstBNSXw0O9FpYQj2F7SYQdSBHGfHaQ5sv1VAekpQln3wy2SZDotyHm60XB2qSbOkSItU1VXc4gNwbK9w1BAjZSwNSFpi0pNhakDX8AFAFczRNy3jAqYmd4VsrSmnnvvnc7q/9upW07h2PbhIJkmmkJyAFM6UoEky5zmp4G91+bLFrNP7S+bh0kQhvNBWeKNDYxxXnDqu6TkmxJP6ltxz5GUc8/nlOVk2RN1YmudpZmgMu7UW1Q46BbjGbYShmdQxHLGLjc9Bo57scuizgTWA==
+ b=Der2xEtPGGHq4Bk2ZP9XHqtlYql2jB0l9tUzpNxRIEFYfMlUFXuTSa2O5pAar4Yr0X+2K6NDFde29ODWp7dgiHen3YWXLvbZcd0wFUoHwZBke2jDc1n1f3Ia4BT3av/FwNBOeyreq1Tj4eHbjKdBy0U2HosVyqwREbTJWzRtvoG0YN8JH8CqNDrgIL39pggZV8d95zFgJj8dc56kqoQfPICjd9fpTOpWV2DdQ9CKdMc4GMAlUvR1AlPjAAVWU0uPmYIe7f4HJi1qX10uuBwcGRrwOOx66xgez+hy6zQcjAnNbSyfRrwxHIiz9888pkOhClVYMnayrY5Vj8df1IYm5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ohfp26LYU7w6E4Nr2mL0oPm6XVCM5ZCmOdJW/FeZGQk=;
- b=xzTqUcvtfhxJ30qoZq5/IkTYCuTgtfF7SD3gPm4mgdSikVwlBcTbCKN8tgOC2WtaPYXHInBCI8B7QIs8UzQ10eh6Xc95Wi/fJ0k6bQY9Lx2vQz2/y8Ltdc65V+SV+mqyThMq4IxstGE6SPGUT3968d6qlJooyizIGAqnTMjcMOqeWOOXP8CH+qe4UmaTg2881Z2hbOEg4rXOtwkSh91su5jo09vk9XRvZSzXgFRLyQZbehUEXQ35kMgCh+4hJUg+DM5vjjhU0zaAQQlKzI+kooh5R2X8DCloulEzGaBdMdTARUGoA59KauoP50mE9r3poxpERLfCtNpGlEf751nBkw==
+ bh=bpig5wIjhVIBBj8PoENiLi/C4aPogynRh9FAU/JLH3g=;
+ b=LNIDGL5jdJ0yvstdGHW+1Cp2BtilB3br+0VQDkaa0Ajjq2A4KDSETDNcBGVELKKhSJQ38Nviyd09VR4PsA6P8bz3kY0THzq9kigF5pFkYNmc6wN60pAqKhWeMlYYTpOCNGyaO4h89rxA8Q+m9kdwXLJryGYYsBwkZU+9W2thMkjHat/dwi3KGTG8NhJdMjeE0QkLw8WALhgoHJ8wD5v0+rxpefI9kj0mmoY48Z9Bn4G/FC+upDywxbNFPVkTIgQNA34toyEkl0HggKEdf7QqpSu2HGT1a/Xa/OV2nLC3NgPSWWwVbvXFhSsBv8gbaJ4QEyBsRoBc+DmLvEWBCP2Spg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ohfp26LYU7w6E4Nr2mL0oPm6XVCM5ZCmOdJW/FeZGQk=;
- b=zdT7Tbjag8A56r2nmwgJmKI+NYMJc4l6JAK6saK5RRTSsq2TXu6lhso48naO+0Fti3LIDiEkQoI4rvsKe10hW90RmYT/bdmfZVwRZV/1YUAmwfKKt63oblAaXRjz2YiXByDwUx9+3j1qRsf9sP9vdwtJ7PYU5nE6SPipeYsCaVk=
+ bh=bpig5wIjhVIBBj8PoENiLi/C4aPogynRh9FAU/JLH3g=;
+ b=vuL9G+oj0QKIH8hwlqL8HyOTC2zgXZUTuDy6jVjMwjRHCRB3GZdYFNwef3E4Lv7vo2m8MeE8a2htaxymk5FXvmlQdUVTTN+HFEi2YQ/60uiearhqnJQE11PjxqyB+9yMBnWTIo3Fa7voflRdulUEyVHTZeH/n361ztpMcdYdTPM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO4P265MB3472.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1ac::11) with
+ by CWXP265MB5651.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:158::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Tue, 17 Feb
- 2026 23:10:16 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.15; Tue, 17 Feb
+ 2026 23:39:19 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9632.010; Tue, 17 Feb 2026
- 23:10:16 +0000
-Date: Tue, 17 Feb 2026 23:10:15 +0000
+ 23:39:19 +0000
+Date: Tue, 17 Feb 2026 23:39:18 +0000
 From: Gary Guo <gary@garyguo.net>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-In-Reply-To: <aZRY9HthKwVJrAf1@google.com>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <aZRY9HthKwVJrAf1@google.com>
-Message-ID: <67aea464d25c8cafb3113eea62c8221b@garyguo.net>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>, Greg
+ KH <gregkh@linuxfoundation.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon
+ <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+In-Reply-To: <20260217154800.GY2995752@noisy.programming.kicks-ass.net>
+References: <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
+ <aZQ19FEeGgigdwz9@google.com>
+ <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
+ <aZQ8lJJ-U_8j03Z4@google.com>
+ <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
+ <aZRHJ7pSzOHruPA2@google.com>
+ <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
+ <aZRWOIPThLfIZ1Ph@google.com>
+ <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
+ <aZRokyTqsd_RwdkK@google.com>
+ <20260217154800.GY2995752@noisy.programming.kicks-ass.net>
+Message-ID: <cbbea9ecb994df975109d97a7756d73e@garyguo.net>
 X-Sender: gary@garyguo.net
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0558.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:33b::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P123CA0375.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18e::20) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -73,179 +81,196 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB3472:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7aaff4d4-dcb7-4bb8-760f-08de6e79b63e
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB5651:EE_
+X-MS-Office365-Filtering-Correlation-Id: 91a5ef93-3bbe-4953-6035-08de6e7dc555
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|376014|366016|7416014;
+	BCL:0;ARA:13230040|366016|10070799003|376014|7416014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?6M1ywZ5iT+xK8XA6Hz7rKKo1UogbhO6eoCHEqb5/mIGIzaSkHwHK65ntOBfx?=
- =?us-ascii?Q?Dh/Kn+ia4h/h2HmKRWcoK8L2j6tTdwNzwEJpvZdsiQovNnC3AmVHzwuJ88sA?=
- =?us-ascii?Q?luUUzUV5A78YCh21OWsQ8BQYAJGnlmQxm9q9m+yCn0oH2MDRavldBUNOUBRi?=
- =?us-ascii?Q?TF/XXM3gFHSt2XdZ17YbWycaF98RGw+w9z5JV+8ySxBlELEyIiUvp782vlWy?=
- =?us-ascii?Q?9sbE35ZymOH/8FR0NL6f5ELJWxhHO/UOU3bOszREML3YDte/z0sKrGev3vv4?=
- =?us-ascii?Q?IGPFMgLFBW/2jRBQCJ/OI63Jb+3+lGJg3xj33ZX+oq76F+3VJTRt+0kaBSTW?=
- =?us-ascii?Q?90FZaFIZq5DP3sfV5RzVoIUfTHLFz/Epy52Hka0ZSa7ZBOCUj/YZs8qyM6my?=
- =?us-ascii?Q?jFcICsG5FM2PdtuKb1JTMsQxMmKMBdQboNsZhave9S+w9ghFi+lIjskrosum?=
- =?us-ascii?Q?Nmx3lN+9XSFRhjZu4IgwqmtMF3KOV//ivYrnDnVOL/o4+aqFn7teQ1MoZwWw?=
- =?us-ascii?Q?52IgxC3da4w7Ymo3ngLKC6Yg5PLVMTq+eGPatLBgA5MXxJ+Y+YBpDKRSjR//?=
- =?us-ascii?Q?u1fit8uKOrm4E90qilx1ArlJ+ltJTv+8of55MCVPgMSM6ffyYR/ggio8pKxu?=
- =?us-ascii?Q?tUyP362E3BVK1gCKbvWipxrIV1jsWsdWu3JRgTycGhfpqGK79XY0OFeQwsj0?=
- =?us-ascii?Q?UVWN+RW4v0yIpw7up8W+xAhJOV69ao0hl71TZ9iqXqVH8o6z6pJD65chi1ra?=
- =?us-ascii?Q?E8qVoOYpWvr0c7S0zLgKmmx0mrkO7/rlp2mksOYyTPBgLGJcUo3FwFG71U3/?=
- =?us-ascii?Q?axrxV2Uca86XcC2b+hSQqNfjnOcSJeiHqMVPrlqVvo2GPdFse29jfKa+N6Q7?=
- =?us-ascii?Q?b1+k8nAcYJ/GAfagCkmENZYuYCwsyCW6XhnnktN9Pj6XSVf+TEq0HBr7qesh?=
- =?us-ascii?Q?82NBRU1VakryYWa9QCafGxH6KTGVhHhzuLDgSQxzJJahpqNz2VMiVoaJTSCB?=
- =?us-ascii?Q?yLqKQOOHvWKLEDPNxW/k3wl8KW43og2fgvohGHvncjrXQBON49FARftnQgEU?=
- =?us-ascii?Q?x+Qsue4w9ZGYdgMoYOhso0euIcKX1AVNDh0dKFdCGurXMZlZHjce+VOPXaI0?=
- =?us-ascii?Q?z4QDFBGd0xsl5tX/ysKeXj4FwM5l8oYnKfbSlZ8+Zdk9c91FFfuJc9Ngzpwo?=
- =?us-ascii?Q?166QmoUd4MRhxu1+r0b3GWvccneQob5CRLhPKOMJqM8GvtXxGZ6boSuyTOmS?=
- =?us-ascii?Q?atKVr5S6yzdkEn/9RBjzze0CoylJqoEq/PIHgy/xByEHmxv7V09Zg5Imk9EP?=
- =?us-ascii?Q?vxd8bCJiVDx2Fb1HJOAT1ndfK9SuJRX9qq7G4uX1MkZ+95mM+Q5NoQ1R3U1f?=
- =?us-ascii?Q?g6xvmFMwRitq9GuybUDjy/GisLb0Tdui2XKUKWDWFKUs07sCSD5BienArJYv?=
- =?us-ascii?Q?0hkFfFpjSKmRuzV2svGLREzK3AvJyXf0sMcQTLEtoGsQae6ZtoTsp/l8Eunu?=
- =?us-ascii?Q?V4bxI0IBhbCInWmP2kohvxCkOd9RJlXMCVIN4ojrjkIVSy45acWrd/YyJMPb?=
- =?us-ascii?Q?uJZRvWJR6kcSmEkvtQ4=3D?=
+	=?us-ascii?Q?N3xD9/v083CmN2JbDMIEg5Npe1TqRhjB+X2ZtUaOJA4laculQXaUSceu429g?=
+ =?us-ascii?Q?FJgYWPkXdCcIjwIAJ5QsF8Wg0X5t3IDvqnpd6mNf6AEfP7jeVyzrKLTIZsdj?=
+ =?us-ascii?Q?TWD7o3SwqVa1RNWkXFJHQjnqiRCqF7s082V+650Vv4YN52DhX+nTk4JEiuW2?=
+ =?us-ascii?Q?dLeS3Gdehbsbiz/l1E7D+DDLF4NwNaQLbsE/MIGTRUlP5iCdgxAmsvq53HAA?=
+ =?us-ascii?Q?CymC+1+DHY1JDNRQ42XfmPUV0+oNBukizAsp6vax8QOdMUxsU1L9btcvvj2r?=
+ =?us-ascii?Q?nXd0roV9wl9VBAdKjFG3ym+zgxn/yUTwY6Fo1PqCYoryXPhgzx8+JOp3A+pm?=
+ =?us-ascii?Q?GAKLnhWytJg8IG+m9IpuUltvuFKKI5c8FUcyBlkKk2qGP8Bdorz27vTVVdv+?=
+ =?us-ascii?Q?PBbdQ7k+TGC0OD9OhrOZTdoZmAJvkfBbYK10egBEclGujU9scGFP2qLOwIBe?=
+ =?us-ascii?Q?q55vwAKLbW/FhwjMz76Hggm6lq1NGBzleJyFX6f7X9KWmsYi/moRyVMJExaX?=
+ =?us-ascii?Q?vZzoglJhFd9R82jLOoskMh/PzBccm8YU8u2pYLW1NcCeeSze+Hc5fcuabKdR?=
+ =?us-ascii?Q?BsT7MhdNy3olvUq+9Bb88zoSB8SnL1TJssOQ3NHo/yl1udBjZysLmI7AgFII?=
+ =?us-ascii?Q?Y3GHDgHUG/+HkrFsXI1veRuOq4QLDfA8mzIDRpojppGGD7iVnR1k2lWBvEdD?=
+ =?us-ascii?Q?w2ijGsX3gwP81GbxFG9AMVQiE7AHfwV3/mIPpFJQPm6E0JYm/QoDooy3IGE4?=
+ =?us-ascii?Q?5fzm+hC2WZJolvlASyVXdZU/7UkEw5wWhfzwNHCz2EmaIb49KxvDpAlKYHzN?=
+ =?us-ascii?Q?tW5zmeDg8gFEQe46TYIDehCE19n6asuTbT3trFz9vV/1j3JMNi8H1M8X/qrt?=
+ =?us-ascii?Q?23X9UUPWXb5Ss6yIBBXF0IcUSheVFRNtV6sNB8/ztenPqW3x5kL+gR5y9TW7?=
+ =?us-ascii?Q?VBnyRuTvw2ktBIaDskLGhTRFtmJMrofJVlX2PZ3xRxbeitz4PUf9BG3clKD+?=
+ =?us-ascii?Q?GZo2kxUVAkinFAoH/+jY9W1HkyfF1TAV+rqstD2fogd2OqemH5D1mTI/MteM?=
+ =?us-ascii?Q?RAn3/DD8+31l3ApSHN5cXCwe28UD0KJy7QRrpKjkl+WYKbUuyYD9x9q31unx?=
+ =?us-ascii?Q?o9caRtQfECYs3dA+vRhB2eAkJdZ61d9WgSrRrMGjRBn6c01xCqwxwsc8Uuw2?=
+ =?us-ascii?Q?+PjNVw4dEKssdp/ltdGKMHXVsZirvaDeMHQa5s2RLuoaT5yDKdsx+a7kOjPs?=
+ =?us-ascii?Q?4HRNO2ltVYjHDzsy3+un/cVKOe8UkCKVAK30wPjH5WFtxdxY22iXL0iRFnVo?=
+ =?us-ascii?Q?w3s6ynzYYaSL6iMlhpUz0fVGRluuvKr5l/Rc55KzXKMCVbixo7xC7PbGb/mr?=
+ =?us-ascii?Q?JQm6HuFpm+by8lJvfzy7e9fA2xdo52H6UF/PzowTo3hFPcueTicABW2K5aSS?=
+ =?us-ascii?Q?zjVA8K8VuFaAxdC9SGlMpr/2Tj+N/krewMTLtQY+9bydokLCRCN5DXrZZJMx?=
+ =?us-ascii?Q?ZHwIrmriMGzAAJFh03a22sV9D07ROvQR973Y3rDUNDpeJjazbYQQs9tP1LZu?=
+ =?us-ascii?Q?CxzJQ4iRYEI6duillKI=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(7416014)(1800799024);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Opao/MkDXM4yoPy+TLuAYQxbKtpe8CzqJv9uSUjkTI8bik3xy1nfkd4/Veeq?=
- =?us-ascii?Q?xpNgPypJ6IxW+n27i9vlGoJr1FDhLts8Uwg6Xl/cIvg3+UM3IA+HDJyNC1SD?=
- =?us-ascii?Q?r75tWj9TLIpCRFulpWbRUrYYKNuqjI9eohwTGK8emUnYBm6PspdXKX4B75yp?=
- =?us-ascii?Q?vCxACnxNRzT2KvhERyMwiwTEx/CYoZ/ep4fhysF0SztZQp2qP5/Q3bqduH4h?=
- =?us-ascii?Q?4QqCDVae9tm3gXhnBKogJ9JlHirTpl+OyzGQrb2aoK+G4eQz6WFxi1/NgFjV?=
- =?us-ascii?Q?DVhdpHb93uME8BRkNg+27gJtRhzIqpEfQdGFIJdWUoCery7IKFl648hJI4ot?=
- =?us-ascii?Q?rynMHCx933ErCpLb3YTdh/f88xSkAFBmTpOgx6n7MXhXUrVGuTdx5pzsvSmk?=
- =?us-ascii?Q?pBpYXfzs7m+YnSE7w4uRlG/qdAffjoEfj5GdKvQmfelC6ykPAnT8gKW4kc6D?=
- =?us-ascii?Q?eQSAeu6obb5D2KyCawPEMgpCSclBtsM/SVTnasuSwt9I3S8eBjNK2+erFfVf?=
- =?us-ascii?Q?haSb81llA7PTBjVJBSvwx0kuIaS5fnRmsvdJGSrGHSsDi8mQ6ukacvPafBhE?=
- =?us-ascii?Q?/Wb8w7A7sHNYHVfAKwgPV8rnMAUhHKs562FMWrlf3NFjm8wF3DAoCo7kcB5K?=
- =?us-ascii?Q?+mURWlII8Zi7UBZyan0GbYFE7a522iRnHtPbgxDgzc/vXW43lBihCQ0pCfSH?=
- =?us-ascii?Q?bRru6r7om/wjAPIOmk5VIBdY6soFp1agJLEQ2GWe58Z/4sB7PwFx3CuCyDp6?=
- =?us-ascii?Q?NEWyj90rnpo+Hui8QcN2a+5c+TRh9iUoOicdakrvX+WJXiU+k9QhKcNShD2D?=
- =?us-ascii?Q?4q8ZX2eNJWS8cJ19j4zC8P8PP5EYU75+sV3dlp8Alinhd7JNKXWgrhulcq5e?=
- =?us-ascii?Q?IQdCBVZZqfJI8YHzG/sZS7Tq4mJY1aci8wlSDyRhVCG346Qbjfff5xSoDlza?=
- =?us-ascii?Q?Yc6SRyuXitsi/bwledX+pAgjaAoMir51+ARud58gztosuQKb7tPPHHTTLJqS?=
- =?us-ascii?Q?iEKokN2o4QCUwPOjE/KYQU2rvzZe+WgAcZqpmH9OrmFTS76fgUU5nglPVo8z?=
- =?us-ascii?Q?NpAXgZNfv2KMNCVO1zcuXZ1meS1fOhKDUBOVaYs6ZSV0zRLVsPk2GLrjhpiZ?=
- =?us-ascii?Q?lqnXILA7kLP2P0y8vRUv9zXyUCu7NyUmi6b32gJ71mZiY1NOIVQ5G9S/Cu5a?=
- =?us-ascii?Q?VQESaupn+ABHs9R7CSfbmpTheDZVMreWzEq6asi/QpKNDwFVwCuPBzmekXuc?=
- =?us-ascii?Q?fRTKcRkOPLgUCpSLJyUUBKzvqBn3kTUON2j2hCVfXMrZuqfTWpedkWHKli8V?=
- =?us-ascii?Q?QbNEJhyAybr6ZI899JY71DdGkf0+dFMhulBW4njChMfTGrqVV4BMzrVZZj0+?=
- =?us-ascii?Q?ZxZeM8W/il2yINnuI2qL9SF61fi4zg3aRACIoFUk8geCRFa6mgct889p/pq4?=
- =?us-ascii?Q?es6WeHaIDLMAlAF5YVPtLqN/kXwoPnBYfOcrB48V5ieLwQJV89bP7jxNL+4Y?=
- =?us-ascii?Q?VQC8FHidKN0ghdwq1bMj1oqw8+CvkFm2DVCYmaoJqWMIcS6Fr6CP6iB6A+hS?=
- =?us-ascii?Q?3+EJteW7EGGY+7rEhjvSHduyEFvUdAUx/O3n1O0G0GbCNUoX6jAek7d5mFM7?=
- =?us-ascii?Q?bd/Sbq3i1iZGZ61TjuQxCJF70tSP+ejrDLX0sCrbBuYWBmgPmplihmgocRC2?=
- =?us-ascii?Q?C5+05gUVCeH+Pr4JQ2y32sq7cuU3cOogaMAERcMNo3rWoddypVsEglZ5WwKv?=
- =?us-ascii?Q?Q9F4cyufBw=3D=3D?=
+	=?us-ascii?Q?gmiOKhFbOQKdVHAYc0hRxF8zpiGIkNUyZtyQTisnT+zDT7mL82FDQpPe+8tP?=
+ =?us-ascii?Q?Hq7AJFEmlY0s0aoWigid9kGf9N96qilhcnEAZZkkvHhkQG1FSGur4NEMGsp9?=
+ =?us-ascii?Q?ZJZTvz5tAwsA2VTvK+XMSkHfvQEkduxe/ajr/+1gG9wn8HwEILt+rOU9n93Q?=
+ =?us-ascii?Q?cEgt+HCG6rBDIjZpFRAASvJnx3LWyx9UXe7WKQ319Jy5ElN3uZM8wfLuDJ4H?=
+ =?us-ascii?Q?Sj40uIhsHI6qpDSoxybhYyAZHY1rgyeBkF13UxvZXyCAwmQuxjZPrtn4VaxT?=
+ =?us-ascii?Q?gfyeuTvhGBtqg+ulu4XoAoJ3EoKB8nsg9ca3degJPjouKSLMRgJxolxTonmh?=
+ =?us-ascii?Q?XkQmy7uS91FGWRxwQVXcyCqJxAIIm29JC1Sxle+IHAK5dN0/RTds/h4p/I4P?=
+ =?us-ascii?Q?49si/21NVy8GjHDNMGEW0SJ4ybyY7tNsMYwaXfXHWbrwPDEO2zdDZPE8aLTj?=
+ =?us-ascii?Q?vTgFoZgBYnNC1u0bUX99A4aSh1Xc5ZBj7PCqFA3wWbg053DqmiwtRIReftRk?=
+ =?us-ascii?Q?zptbyu/2jIat2V5eQCj31daJIWkNtgIP7mgzwW6v2GL51HwjPGjrXcvk28TG?=
+ =?us-ascii?Q?onSlH5aXWbCuqOaE0NggBakyTQhY6riWcs2IX/HKcTL9DB0MnF/aQayNFDyY?=
+ =?us-ascii?Q?6sIV8DZnqXETzOL0+hFhDRF7zhgzti7Vwcwl8b2Fd1ogPeKSWj3CGazQZ+n6?=
+ =?us-ascii?Q?p8/s4XGTPpXVVutCulPm4mA+Z0745eWHt6NHx31wbeh0m0QZVsNSoonjun7y?=
+ =?us-ascii?Q?mFORqL9/XG8mkMDJ6xOBzEW7BOTsRVNv0yFKTELhFZBGSG5WwuXZ7CxaX94W?=
+ =?us-ascii?Q?rH2XxgfBqYfAnYXRaD8WyyEq+rM5UO8/yNuvBPIO3KtszdmmxGR3aOLYmjbl?=
+ =?us-ascii?Q?XkWSI2Aonymk25YKF2OMjnu6d7pxk1Se5xNiETfxFt4Rqtqexh8wdSaobkYC?=
+ =?us-ascii?Q?XVJ2Pl25SlvLKSNNAMOBKqBGNo786exM2kXpFpTMrIVvJ6lGgJG3YrGovdr8?=
+ =?us-ascii?Q?LcUQ0uO5cIVltj7pjuNrh+IICvke5kZijjBe/r8e4zh+TfNuViDSeZmO8Z96?=
+ =?us-ascii?Q?D8602Z1NriT1q6DOxFfFB1qQ7Vf+ZNksouGrrPsRXSqHzUTzTR3RpAi8IqaP?=
+ =?us-ascii?Q?gU7BXa7iuOhp1XLYLR0TKIgoJrvLPmh+pH7+uOM6Suer8lhYZTQqhvp/tHJf?=
+ =?us-ascii?Q?ObA751rstQvLqbx6mf37K6awa6U+pvu5VkGkb37f8skwRlqa7BYVGGl5Nv7V?=
+ =?us-ascii?Q?pSbRGFq0Ta+ASdOQr25LvMYPo9XX/7IvffycZP7eOedKoVI5ot7RBAmOjaH8?=
+ =?us-ascii?Q?zFPIDRZz6i1biflP7DFhbuovqcCtQr0CNwUg8VmSd7CXXArMM+tF7LlSvUxe?=
+ =?us-ascii?Q?o3Og9FXQ2nptYSp87ntaBdhhlGfMXMsSyt98xcMJ9a0G56mxXzAaPmtJFaGl?=
+ =?us-ascii?Q?aoPwCSvlNAuWfGOfB+lBEPI/6iyPF14br7an78CC8DkvDOEEG2TIBfAyIYpW?=
+ =?us-ascii?Q?TBJSgUQUhiDaPdGdY5km76HoQEHMzr1tdWjZV3yQ6vfMViehxhC1jiuEYM7M?=
+ =?us-ascii?Q?Ftm9/zT8wrPt2yf6K4dO6Q6wKZoQCDRQdu9amfiUwPwo4qDV0k+gJOFDnhWm?=
+ =?us-ascii?Q?shsCphTygAI0g4IJbPrw6m2TidCMDqZXeqxJLZYffulWmo1sZj12sWlSRf9p?=
+ =?us-ascii?Q?nBUxM+g0RED43ovm6xZwmQGd1xtnqPhfz4/FQteu6cl4OJTilnDaX7eI1I+P?=
+ =?us-ascii?Q?xhEEzL6B8A=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7aaff4d4-dcb7-4bb8-760f-08de6e79b63e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91a5ef93-3bbe-4953-6035-08de6e7dc555
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2026 23:10:16.1720
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2026 23:39:19.5167
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lqKNrJsWk+FvkBdLl92Riyca/C/R0SHnga6sjqfzWVnsQhY3aB/f/z2MlD7a6avImS1FBYVmde2WInkWK/hxbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB3472
+X-MS-Exchange-CrossTenant-UserPrincipalName: TZXJQl9ENefj64zGp/FfiF/B0I+8bk3B8SueOx7BphBjE82C2MGPXHrCh5CuUcvEdOox/bT1KYXXM8g5fV4ApQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB5651
 
-On 2026-02-17 12:03, Alice Ryhl wrote:
-> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
->> When copying data from buffers that are mapped to user space, it is
->> impossible to guarantee absence of concurrent memory operations on 
->> those
->> buffers. Copying data to/from `Page` from/to these buffers would be
->> undefined behavior if no special considerations are made.
+On 2026-02-17 15:48, Peter Zijlstra wrote:
+> On Tue, Feb 17, 2026 at 01:09:39PM +0000, Alice Ryhl wrote:
+>> On Tue, Feb 17, 2026 at 01:09:20PM +0100, Peter Zijlstra wrote:
+>> > On Tue, Feb 17, 2026 at 11:51:20AM +0000, Alice Ryhl wrote:
+>> > 
+>> > > In my experience with dealing with `struct page` that is mapped into a
+>> > > vma, you need memcpy because the struct might be split across two
+>> > > different pages in the vma. The pages are adjacent in userspace's
+>> > > address space, but not necessarily adjacent from the kernel's POV.
+>> > > 
+>> > > So you might end up with something that looks like this:
+>> > > 
+>> > > struct foo val;
+>> > > void *ptr1 = kmap_local_page(p1);
+>> > > void *ptr2 = kmap_local_page(p2);
+>> > > memcpy(ptr1 + offset, val, PAGE_SIZE - offset);
+>> > > memcpy(ptr2, val + offset, sizeof(struct foo) - (PAGE_SIZE - offset));
+>> > > kunmap_local(ptr2);
+>> > > kunmap_local(ptr1);
+>> > 
+>> >   barrier();
+>> > 
+>> > > if (is_valid(&val)) {
+>> > >     // use val
+>> > > }
+>> > > 
+>> > > This exact thing happens in Binder. It has to be a memcpy.
+>> > 
+>> > Sure, but then stick that one barrier() in and you're good.
 >> 
->> Add methods on `Page` to read and write the contents using byte-wise 
->> atomic
->> operations.
+>> Are we really good? Consider this code:
 >> 
->> Also improve clarity by specifying additional requirements on
->> `read_raw`/`write_raw` methods regarding concurrent operations on 
->> involved
->> buffers.
+>> 	bool is_valid(struct foo *val)
+>> 	{
+>> 		// for the sake of example
+>> 		return val->my_field != 0;
+>> 	}
 >> 
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> 	struct foo val;
+>> 
+>> 	void *ptr = kmap_local_page(p1);
+>> 	memcpy(ptr, val, sizeof(struct foo));
+>> 	kunmap_local(p);
+>> 	barrier();
+>> 	if (is_valid(&val)) {
+>> 	    // use val
+>> 	}
+>> 
+>> optimize it into this first:
+>> 
+>> 	struct foo val;
+>> 	int my_field_copy;
+>> 
+>> 	void *ptr = kmap_local_page(p1);
+>> 	memcpy(ptr, val, sizeof(struct foo));
+>> 	my_field_copy = val->my_field;
+>> 	kunmap_local(p);
+>> 	barrier();
+>> 	if (my_field_copy != 0) {
+>> 	    // use val
+>> 	}
+>> 
+>> then optimize it into:
+>> 
+>> 	struct foo val;
+>> 	int my_field_copy;
+>> 
+>> 	void *ptr = kmap_local_page(p1);
+>> 	memcpy(ptr, val, sizeof(struct foo));
+>> 	my_field_copy = ((struct foo *) ptr)->my_field;
+>> 	kunmap_local(p);
+>> 	barrier();
+>> 	if (my_field_copy != 0) {
+>> 	    // use val
+>> 	}
 > 
->> +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic 
->> operations.
->> +///
->> +/// This copy operation is volatile.
->> +///
->> +/// # Safety
->> +///
->> +/// Callers must ensure that:
->> +///
->> +/// - `src` is valid for reads for `len` bytes for the duration of 
->> the call.
->> +/// - `dst` is valid for writes for `len` bytes for the duration of 
->> the call.
->> +/// - For the duration of the call, other accesses to the areas 
->> described by `src`, `dst` and `len`,
->> +///   must not cause data races (defined by [`LKMM`]) against atomic 
->> operations executed by this
->> +///   function. Note that if all other accesses are atomic, then this 
->> safety requirement is
->> +///   trivially fulfilled.
->> +///
->> +/// [`LKMM`]: srctree/tools/memory-model
->> +pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, 
->> len: usize) {
->> +    // SAFETY: By the safety requirements of this function, the 
->> following operation will not:
->> +    //  - Trap.
->> +    //  - Invalidate any reference invariants.
->> +    //  - Race with any operation by the Rust AM, as 
->> `bindings::memcpy` is a byte-wise atomic
->> +    //    operation and all operations by the Rust AM to the involved 
->> memory areas use byte-wise
->> +    //    atomic semantics.
->> +    unsafe {
->> +        bindings::memcpy(
->> +            dst.cast::<kernel::ffi::c_void>(),
->> +            src.cast::<kernel::ffi::c_void>(),
->> +            len,
-> 
-> Are we sure that LLVM will not say "memcpy is a special function name, 
-> I
-> know what it means" and optimize this like a non-atomic memcpy?
+> I don;t think this is allowed. You're lifting the load over the
+> barrier(), that is invalid.
 
-This "treating special symbol name as intrinsics" logic is done in 
-Clang,
-and won't be performed once lower to LLVM IR, so Rust is immune to that 
-(even
-when LTO'ed together with Clang generated IR). So calling to bindings is 
-fine.
+This is allowed. Compilers perform escape analysis and find out that
+"val" does not escape the function and therefore nothing can change "val".
 
-> 
-> I think we should consider using the
-> 
-> 	std::intrinsics::volatile_copy_nonoverlapping_memory
-> 
-> intrinsic until Rust stabilizes a built-in atomic per-byte memcpy. Yes 
-> I
-> know the intrinsic is unstable, but we should at least ask the Rust
-> folks about it. They are plausibly ok with this particular usage.
+A simple example to demonstrate this effect is that
 
-If we have this in stable, I think it's sufficient for LKMM. However for 
-Rust/C11 MM
-says that volatile ops are not atomic and use them for concurrency is 
-UB.
+    int x = 0;
+    x = 1;
+    barrier();
+    do_something(x);
 
-I recall in last Rust all hands the vibe at discussion is that it's 
-desirable to define
-volatile as being byte-wise atomic, so if that actually happens, this 
-would indeed be
-what we want (but I think semantics w.r.t. mixed-size atomics need to be 
-figured out first).
+is happily optimized into
+
+    barrier();
+    do_something(1);
+
+by both GCC and Clang. The fact that the local variable here is a struct and
+memcpy is used to assign the value here does not make a fundamental difference.
+
+barrier() does nothing to local variables if pointers to them do not escape the
+local function.
+
+>> 	int my_field_copy;
+>> 
+>> 	void *ptr = kmap_local_page(p1);
+>> 	memcpy(ptr, val, sizeof(struct foo));
+>> 	my_field_copy = ((struct foo *) ptr)->my_field;
+>> 	kunmap_local(p);
+>> 	barrier();
+>> 	if (my_field_copy != 0) {
+>> 	    // use val
+>> 	}
 
 Best,
 Gary
-
-> 
-> Alice
