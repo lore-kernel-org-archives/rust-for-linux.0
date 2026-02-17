@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC64336C0CF;
-	Tue, 17 Feb 2026 15:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6F83358AD;
+	Tue, 17 Feb 2026 15:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771341194; cv=none; b=ag8ekIWSVcQw6zEOnmg4QC2+uVkaYfUdfihsG7WTbCc/lKgTGe9AmxHVOl0ROKtC3d9sE5Mfjb2fgBURxpTSEcVnLpOHvYMnr7RbEDHkyjgo/aK1F4B+K1tHW35N+9qaRB7OkLmdWSTQSJp4Bl8GmEG4hBkA5dBR9c6eYbRM+m4=
+	t=1771343041; cv=none; b=O9OeGDUXIYI2/h4jsDH7AlQyI5X0dHahyN4PS1bq2TcbK24YRSqRqiK1buBsTM7d0jruK4ugw/heLLGagZzhM5bfcGbU9MumYUPQCuf+9cLmIm4wP+2tBqazd1JswXYzHeQHgAAJkWXIig3f7i9hD20KwkJFMGOBtFbvZVVv1L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771341194; c=relaxed/simple;
-	bh=q4lpe0QHbE4GGbcGYoiqsGdbAX3UVPzDsH/s+Fwz5I4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=a294EuQ870CC4KctUAFin2CMGQbfhOHovIWDWCVJ//6XiMsKoa02+OAUkc3LFCH41k9OydhYECe+i2SsmqGNfyE713ikhPhtpIpB6e0yf0fzSu3JSGgIh3sgYQ++iaD1HfilbEtA/YySFvS8z1vIUtnM4AzLFb1H1+8MvuGJnfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VnqbbF+9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771343041; c=relaxed/simple;
+	bh=XBoj7jEee6VfITY4FrVhLwIQfn3xCXCky7dYUphWrbg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=VQfioMSyyCHE06VTn/d4O6+4i0Pnee6hsGpngiajYVefvqMTlcskQn6Zvp5pidG5hCdDW+BcKP9WFusvE6U38fec6USaFdAj9FuaPZ1Qfmua40805rxIMfFrJpj2xkVbtJ0ylwAqHez20VtsM9plSU6x61rX95wl7Pd/kQKgs7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVWscTb/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VnqbbF+9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28159C4CEF7;
-	Tue, 17 Feb 2026 15:13:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVWscTb/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D88C4CEF7;
+	Tue, 17 Feb 2026 15:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771341194;
-	bh=q4lpe0QHbE4GGbcGYoiqsGdbAX3UVPzDsH/s+Fwz5I4=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=VnqbbF+9M1KozvnJynWTRyiwnmd/bz3qGOF+wNTRpsj/o6hVklSmzdEwa+L5Gq0SL
-	 VMauwQDNwgydoo5TUdMDL+5/ENQvyE6lwgJKcQrW3Tpr7PpBQaYrc8NAPdh+Uw8Sxq
-	 quzTc9Z83wPZVS0BQSCIOiYX0vdT2vaEO88/9weIzA3Qm70l6OcVE3BtI+HldcrbHm
-	 qAxZUU8xowd9rWZe4oaaJ3RDzctOWV1r8QNXafUrW9yNSKOULwgLs3RQRNJf4kZwwN
-	 7RqvjVOXbBuYrSgjDyNsT89aig5ykpzYwPyx/DTj/G/4FRHgl4ftx0NdZRBxwX58ow
-	 7xd2KJRVaaYyQ==
+	s=k20201202; t=1771343040;
+	bh=XBoj7jEee6VfITY4FrVhLwIQfn3xCXCky7dYUphWrbg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=sVWscTb/mAJvi7p5NHrL9Wyzu+Rbk2HYWjeFQebqQWPkAr1bjPIMBBT56d2CZSSdz
+	 cAgLZNdUAvB7tfhy2u8UghAK8GizWwcQyoVzjmERGfr8fA4VEC5XyQ/PsKEfpcccd3
+	 8MdOarGwt7ySv6rGm89MXnQfsscQdlOT2rCSc0Qkt3rQNUtV/8paUxq70iU2a9A6OW
+	 9UeGTWVFCZr5POebt+DowX4SfTlmeuhtLBAZY3/AgcUfJp0Wb0gTjn7kGtWeuuvsWX
+	 hI9x6xae/QMMPgGk7G/9jUbZ/aUT2F/7mfF3s0y5o/uMm+C1qtWoFH9Fsvo+U1YGZd
+	 MFLcJ1Uv++RUA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,124 +34,83 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Feb 2026 16:13:09 +0100
-Message-Id: <DGHC1OLDIXC7.Q4IAOOSMHIY@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Carlos Llamas"
- <cmllamas@google.com>, "Jann Horn" <jannh@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>,
- <stable@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
+Date: Tue, 17 Feb 2026 16:43:54 +0100
+Message-Id: <DGHCP8CM5CRI.2C5YJ7S899XE1@kernel.org>
+Subject: Re: [PATCH v4 17/33] gpu: nova-core: Hopper/Blackwell: add FSP
+ falcon EMEM operations
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 1/2] rust_binder: check ownership before using vma
-References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
- <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
-In-Reply-To: <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
+References: <20260210024601.593248-1-jhubbard@nvidia.com>
+ <20260210024601.593248-18-jhubbard@nvidia.com>
+ <DGC2UTPTU2ZH.3Q5E9OW3ZRPLP@kernel.org>
+ <b38a9707-a640-4104-a8a9-238cab23187a@nvidia.com>
+In-Reply-To: <b38a9707-a640-4104-a8a9-238cab23187a@nvidia.com>
 
-On Tue Feb 17, 2026 at 3:22 PM CET, Alice Ryhl wrote:
-> When installing missing pages (or zapping them), Rust Binder will look
-> up the vma in the mm by address, and then call vm_insert_page (or
-> zap_page_range_single). However, if the vma is closed and replaced with
-> a different vma at the same address, this can lead to Rust Binder
-> installing pages into the wrong vma.
+On Thu Feb 12, 2026 at 3:09 AM CET, John Hubbard wrote:
+> On 2/11/26 2:57 AM, Danilo Krummrich wrote:
+>> On Tue Feb 10, 2026 at 3:45 AM CET, John Hubbard wrote:
+> ...
+>>> +    #[expect(unused)]
+>>> +    pub(crate) fn read_emem(&self, bar: &Bar0, offset: u32, data: &mut=
+ [u8]) -> Result {
+>>> +        // TODO: replace with `is_multiple_of` once the MSRV is >=3D 1=
+.82.
+>>> +        if offset % 4 !=3D 0 || data.len() % 4 !=3D 0 {
+>>> +            return Err(EINVAL);
+>>> +        }
+>>> +
+>>> +        regs::NV_PFALCON_FALCON_EMEM_CTL::default()
+>>> +            .set_rd_mode(true)
+>>> +            .set_offset(offset)
+>>> +            .write(bar, &Fsp::ID);
+>>> +
+>>> +        for chunk in data.chunks_exact_mut(4) {
+>>> +            let word =3D regs::NV_PFALCON_FALCON_EMEM_DATA::read(bar, =
+&Fsp::ID).data();
+>>> +            chunk.copy_from_slice(&word.to_le_bytes());
+>>> +        }
+>>> +
+>>> +        Ok(())
+>>> +    }
+>>> +}
+>>=20
+>> Technically, we could represent this as a separate I/O backend and use I=
+oView /
+>> IoSlice (once we have it).
+>>=20
+>> So, you could have Falcon<Fsp>::emem(), which returns an &Emem that impl=
+ements
+>> Io [1].
+>>=20
+>> This way we would get IoView and register!() for free on top of it. IoVi=
+ew will
+>> allow you to modify fields of the FSP structures similar to what we have=
+ for DMA
+>> with dma_read!() and dma_write!().
+>>=20
+>> I just briefly glanced at the subsequent patches, but it looks like this=
+ could
+>> save quite some code.
+>>=20
+>> We may not get the full potential right away, as IoView is still WIP, bu=
+t I
+>> think it makes sense to consider it for a follow-up.
+>>=20
 >
-> By installing the page into a writable vma, it becomes possible to write
-> to your own binder pages, which are normally read-only. Although you're
-> not supposed to be able to write to those pages, the intent behind the
-> design of Rust Binder is that even if you get that ability, it should not
-> lead to anything bad. Unfortunately, due to another bug, that is not the
-> case.
->
-> To fix this, I will store a pointer in vm_private_data and check that
-> the vma returned by vma_lookup() has the right vm_ops and
-> vm_private_data before trying to use the vma. This should ensure that
-> Rust Binder will refuse to interact with any other VMA. I will follow up
-> this patch with more vma abstractions to avoid this unsafe access to
-> vm_ops and vm_private_data, but for now I'd like to start with the
-> simplest possible fix.
+> Yes, let's keep this in mind.
 
-I suggest to use imperative mood instead.
-
-> C Binder performs the same check in a slightly different way: it
-> provides a vm_ops->close that sets a boolean to true, then checks that
-> boolean after calling vma_lookup(), but I think this is more fragile
-> than the solution in this patch. (We probably still want to do both, but
-> I'll add the vm_ops->close callback with the follow-up vma API changes.)
->
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Reported-by: Jann Horn <jannh@google.com>
-
-If you have a link, please add Closes: after Reported-by:.
-
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  drivers/android/binder/page_range.rs | 78 +++++++++++++++++++++++++++---=
-------
->  1 file changed, 58 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binde=
-r/page_range.rs
-> index fdd97112ef5c8b2341e498dc3567b659f05e3fd7..90bab18961443c6e59699cb73=
-45e41e0db80f0dd 100644
-> --- a/drivers/android/binder/page_range.rs
-> +++ b/drivers/android/binder/page_range.rs
-> @@ -142,6 +142,27 @@ pub(crate) struct ShrinkablePageRange {
->      _pin: PhantomPinned,
->  }
-> =20
-> +// We do not define any ops. For now, used only to check identity of vma=
-s.
-> +static BINDER_VM_OPS: bindings::vm_operations_struct =3D pin_init::zeroe=
-d();
-> +
-> +// To ensure that we do not accidentally install pages into or zap pages=
- from the wrong vma, we
-> +// check its vm_ops and private data before using it.
-> +fn check_vma(vma: &virt::VmaRef, owner: *const ShrinkablePageRange) -> O=
-ption<&virt::VmaMixedMap> {
-> +    // SAFETY: Just reading the vm_ops pointer of any active vma is safe=
-.
-
-Here and in a few other places, missing markdown.
-
-> +    let vm_ops =3D unsafe { (*vma.as_ptr()).vm_ops };
-> +    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
-> +        return None;
-> +    }
-> +
-> +    // SAFETY: Reading the vm_private_data pointer of a binder-owned vma=
- is safe.
-> +    let vm_private_data =3D unsafe { (*vma.as_ptr()).vm_private_data };
-> +    if !ptr::eq(vm_private_data, owner.cast()) {
-> +        return None;
-> +    }
-> +
-> +    vma.as_mixedmap_vma()
-> +}
-> +
->  struct Inner {
->      /// Array of pages.
->      ///
-> @@ -308,6 +329,16 @@ pub(crate) fn register_with_vma(&self, vma: &virt::V=
-maNew) -> Result<usize> {
->          inner.size =3D num_pages;
->          inner.vma_addr =3D vma.start();
-> =20
-> +        // This pointer is only used for comparison - it's not dereferen=
-ced.
-> +        //
-> +        // SAFETY: We own the vma, and we don't use any methods on VmaNe=
-w that rely on
-> +        // `vm_private_data`.
-> +        unsafe { (*vma.as_ptr()).vm_private_data =3D self as *const Self=
- as *mut c_void };
-
-Maybe use from_ref(self).cast_mut().cast::<c_void>() instead?
-
-Please don't consider any of those NITs a blocker. :)
+Just to clarify, I mean we should implement Io and IoCapable right away, bu=
+t
+leave the rest as follow-up.
