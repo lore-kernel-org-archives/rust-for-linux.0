@@ -1,119 +1,89 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB15231845
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 17:48:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771350523; cv=pass; b=k7OH3M031/qIUddWFS1RApFbBsQYopSUmHnGIRTq3liOj8WbcTpGPnv1pICzyopFRaa4sA7ZuFGnX33pQz1j+SgY3uMXtOhMj1vbRAx1aAGZiKQEEUnNRrFYSNWikMhKvuZWIS2E07KJhpU4UkDYjd6AVKw2NKi1wnWvPaL5PUo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771350523; c=relaxed/simple;
-	bh=GgpJ9yEcRczGDFchqBwS4N3ZDlFOzwb0ws/VEtH6HCQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pkb7kz3RqHyVib7TvuyDoS+Hp6CgTh3L5DjbrEs9kA5Te//px/ZuGAQfuqxjYkQGFejvRki8X2HhOvNG6fHuwsXo8y0WpUgMv3euaGhqSmQtTUPvugfRKJXXfN+KPTUAtDXC8wT+N8CbUcW8zl7+xJ91F8wO0zK/4AaIgP3PJQo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Plf3wlvT; arc=pass smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1E336E49E
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 17:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771350700; cv=none; b=qsBfe3+KSSCOzzsEj/cobtM6iBp8jAp19S87Z+qWbLheRyGR938MB+ONbZGtkRAv7PjUU0dYIutjzJEMl8twxRCP1W8Cf2el2/U9WVTlVrSQtic1oLzmbfuQdDna5w9VFUKU2QAR7iVQbgAftPQtNKjeQcSS9fGd4CFrwcT/ZB8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771350700; c=relaxed/simple;
+	bh=+qsGT0BtHCshLG7vFZATbsw1NgFxAVLhghQojwULgOw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=WP863U9dnQolmebNmL+tBRH1cnpMaUmv2wqBel5lMuNYewsNQBrpXxiAqJemHhnou9v1qLCLNjBp+HCy8wLpbtd7jSP1CS6K2US46deKKVsqWvmzZNskNOe6LiI0RsGknedqGUZoXf9WlfWoS7rl8lrihK+z4l8dF/OMkPNe0bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/xbXyE6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Plf3wlvT"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-65a3a1740e7so329a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 09:48:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771350521; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fIAWpLOQO6Tqm45Aq2vjgwhfOU+WcRVWHP/ON2NMInXGaVO7BLXc3h82ADm6uQUG+A
-         ZG/JZoNgPX87y/zZR5q4kOw0X3SwWEsHJxoqq7i4cknXjr8AuA51w34J4lpc8sP9McbM
-         5dTFbPPblgkG5BHhIaDt2x8r1Pr97UoVrEYL9gNrt7YUUg47GZp9PTgRO2B6YlkUR9yH
-         T8qWnz9bv7m9Ja0ZcvIupGjj7bvjawKpUVGawihRycC5M3VXqXsb7406DKno4i9oIseI
-         gn1fJ6yp+ecfq5S4/zivOcHIE2AB3MIAuEOENzCPWIKd8+eu5PghhlnY3kijkCDroh3q
-         bnzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZfLQXgkBk9jXdjY5cMxmWAy50vt0W+v4RbNQzonshso=;
-        fh=Q/UKx3FwIVqThKdxpVCg2HDNBvoh4NJpGX08b8QT6S0=;
-        b=QB2YMzTkUEVjyQrlIXb+zbkzrkxYP2GIRCDEncJr1fVI+9x/32qpLFxPulED7qYkPv
-         HHUbl8TFDk0VhrVYjYsyeiThXCWF+yi+ovcGtUEt7mPGs51zAAOHl8RI3LPJDSrbFFEh
-         0PuQX3tEx/kxLN0axTNdYWFw/WY6H78aiPVk83IH2QAAidbBNwbNXmEHIqyrWornoEio
-         MzjQdj6zwBxR3uxwxkBFB1skZc7OXXUwRyihLKG+JyT+45QeA2FfadtOA286inX2jlSB
-         rk0VFVjPM8QnsXr1jsJvNvyKVW4ScnfTjzWSo6c3dtPiriBzZOAfBYG5DRlt82PocNaL
-         GtWw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771350521; x=1771955321; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZfLQXgkBk9jXdjY5cMxmWAy50vt0W+v4RbNQzonshso=;
-        b=Plf3wlvTPrIJ6Q0HhdjgrbVCLGfuH4UjZKUjOusIbz1cDbI9pv8TR/nNrKlcS8y+KR
-         DsbLE9gENuZiJBaqqp9MUQa3BqTK6w18hUKXxLt87+1z2dCYAda+0agCAR19JvkGZiYg
-         tpYBU28VdOfWPlrMYqdgGuY2+9yin/vQELmZut9rNLGf2Lrj9PMo45Gr4ol4pWKSkwD0
-         tMeiYg9z6XxSMPhyN+JPRU2apJuzcIS7DsX19ke8UEnqbytLjXWgVD6JtsktpgVxw9iU
-         sY7cuVynQyA7NpmAcejJWEgHNWfwOIQdbjLVDB0IB1Zxsx93uPDmAVSe4aVLXCkgxBnD
-         0bQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771350521; x=1771955321;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZfLQXgkBk9jXdjY5cMxmWAy50vt0W+v4RbNQzonshso=;
-        b=gJ8jVTaU0CkmPJL03RfUFDtP7GIzXoe055M2DgRPnw+XazdQe+/H05KLbuVKbzoHEp
-         mMMIZUIsFfo32cexU/yWETHvbwusAOwSNTA9dMYJtK8sBBceJWFMVCI8Jvj6dvTiCF1q
-         UHXjvAivBoF8U5IU7piwqUgVAdTVCtdlwWTFIFwxFS9jE19chUSn8lunXmgSd2u+t3SM
-         lqi3egXDJPvbBbx7o7+kFGofJXnmYdv5w+3D5CqAQLP7+Ds3M6PzFlwNak3Yg3JswkHe
-         gbfTKw5uw60S1SARJDurPgNz2vn/CTqjoZnd7XhpkhvyyrY31GXMAHZvjid87UMi7RU4
-         M8Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCVbK61bOlyLWLyXr0+I29C1VdekhpYuxzLCiCMhLHEyItfDV2zZgtLsbL9yrUpVSxcoWpwCBJMCZIcfI7eryw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpPiv663yM+sCfTpZMI7HRgLv9zIWmhKqUB6XfLI6/OP7XlChJ
-	8L0fkAuUkFDwdqFkxtfdg/svCxFUZvTRG7H+6GzIKT5rZv2nHlvElyacOizoDeWfw9Hu4XE3Y4L
-	K8Vue4STQy9Bn5+Js9pZfznCFB3arVTfWjOQ3O48m
-X-Gm-Gg: AZuq6aKYcmfIWI9nr+y2VlbPyqs4K1jB9xaoYOp/DmdyCOG46tY6Bi5MqOcET7gU4uf
-	MMwJDD73kULr64Pff1RcyS/0v4fHN3tiKxXN0udUgszMBCJGt8Jhqf0But/0RUV2RGRbcsVI2Ns
-	1vs2WaYgggQ90QTcoFvnCi79UlIHn6DTqpoNKHm9X0lw8V1btTau82wBDV6TloSLcoQYP3Ynb5v
-	gQU9TUonYPv4YQKGFazXwFbUwPUJIcdQ7BaYJEHDYvv5bE0afF/ZtZEAMb8oilEBDrPR5AbhDdg
-	X8w5lnoIIX0h5qWR3Ncw55QZoYf1H/t3B6+7NQ==
-X-Received: by 2002:a05:6402:110e:b0:65a:1240:b8c4 with SMTP id
- 4fb4d7f45d1cf-65c1784a989mr60515a12.3.1771350520127; Tue, 17 Feb 2026
- 09:48:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/xbXyE6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F30CC4CEF7;
+	Tue, 17 Feb 2026 17:51:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771350700;
+	bh=+qsGT0BtHCshLG7vFZATbsw1NgFxAVLhghQojwULgOw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=W/xbXyE6xl5b6g0B85OkVAKLFLS7HoIPmkJToi5dx3so5Q2lAYY6ANgrYcsNLwxSz
+	 6YhQydBG8z99i2DgfrrInqlAzq+yCHWhwzbsqfCi2CuEe7G/eKlEntqy1+0HxlGqU4
+	 lz6+BMC1vDQzFgys2Bav2eFy+V2q2lOrMI5udIx0GFXJkT1VYcR2vsj53p7nTYp5Db
+	 hF+iysCfgoNcQR0ENCCKY3cnS+rRRoPFLCMhbHYeoT+dWEB1wXNqTy7czRYdZv6rEz
+	 8R4eOYVX3W+jXsZ3u9a/CT44qb3jMVEouJQMgEasScY4T3sDgRa3yMj6KrcdM/GTc5
+	 iHp6MzRWUbJfQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>, Daniel Gomez <da.gomez@kernel.org>
+Cc: linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org, Alice Ryhl
+ <aliceryhl@google.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Daniel Gomez <da.gomez@samsung.com>,
+ gost.dev@samsung.com, Greg KH <gregkh@linuxfoundation.org>, Julia
+ Lawall <julia.lawall@inria.fr>, Kairui Song <kasong@tencent.com>, Luis
+ Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ rust-for-linux@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Evaluating Rust for XArray
+In-Reply-To: <aZR-ItMBkiqyBdKd@casper.infradead.org>
+References: <aZRncP-sKLLS2K1U@macos>
+ <ix0mR76G9a_ieuQUUkkfHMJIviAsrFaO859172fuFx9Goj7QdIfz1jtnv3ptubGEC7uEFCvVfEoWxcisUnTi1g==@protonmail.internalid>
+ <aZR-ItMBkiqyBdKd@casper.infradead.org>
+Date: Tue, 17 Feb 2026 18:51:28 +0100
+Message-ID: <87bjhncl7j.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260123-binder-alignment-more-checks-v1-1-7e1cea77411d@google.com>
-In-Reply-To: <20260123-binder-alignment-more-checks-v1-1-7e1cea77411d@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 17 Feb 2026 18:48:03 +0100
-X-Gm-Features: AaiRm50Q6ssb6ZW8F6siVy7jzQQOTtBvYsjEBCebZyc4a5zul4m8Fw0gjdRMHs4
-Message-ID: <CAG48ez2j5xA-+XwVejp-8gUv2uPEJNOO5t3MoYBgbigE2oV66A@mail.gmail.com>
-Subject: Re: [PATCH] rust_binder: add additional alignment checks
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Jan 23, 2026 at 5:23=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
-> This adds some alignment checks to match C Binder more closely. This
-> causes the driver to reject more transactions. I don't think any of the
-> transactions in question are harmful, but it's still a bug because it's
-> the wrong uapi to accept them.
+"Matthew Wilcox" <willy@infradead.org> writes:
 
-FYI, this actually fixed something somewhat harmful: Before this
-patch, `unused_buffer_space` was sized such that BINDER_TYPE_PTR
-objects could grow into the area reserved for the secctx; so you
-could, for example, clobber the secctx string with a BINDER_TYPE_FDA
-file descriptor fixup, resulting in an incoming transaction where a
-file descriptor number appears in the middle of the secctx string:
+> On Tue, Feb 17, 2026 at 03:28:45PM +0100, Daniel Gomez wrote:
+>> We propose a topic to discuss the potential use of Rust in core Linux
+>> kernel data structures.
+>
+> This is premature?  We can't move the pagecache or swap over to use Rust
+> until we can compile Rust for m68k/parisc/alpha/... or we drop those
+> architectures from the tree.
 
-00000060  75 6e 63 6f 6e 66 69 6e 65 64 5f 75 3a 75 6e 63  |unconfined_u:un=
-c|
-00000070  05 00 00 00 6e 65 64 5f 72 3a 75 6e 63 6f 6e 66  |....ned_r:uncon=
-f|
-00000080  69 6e 65 64 5f 74 3a 73 30 2d 73 30 3a 63 30 2e  |ined_t:s0-s0:c0=
-.|
-00000090  63 31 30 32 33 00 00 00 00 00 00 00 00 00 00 00  |c1023..........=
-.|
+I disagree that this is premature. And I don't think Daniel is
+suggesting we swap anything over at this time. Doing this work is not
+the same as swapping anything over.
+
+We don't have to wait 5-10 years for gcc to fully support Rust, before
+we start playing with this. We can, and should, start evaluating if we
+can deploy Rust in this area now. We might find that we are lacking
+something from the Rust language to do what we want. We can work with
+the Rust developers to make sure that the Rust language gets all the
+bells and whistles that it needs, to support the use cases we have for
+the Linux kernel. I think this would benefit everyone. Let's get in
+early and help shape the language, rather than board in 10 years when
+everything is settled and much more difficult to change.
+
+On the other hand, we might also find that no, Rust does not work for
+this. This would be a valuable outcome as well.
+
+At any rate, this is not a call to end support for all architectures
+that do not support Rust. Rather, this is a call to figure out if we
+should work harder on getting Rust support for m68k et al.
+
+Without doing this exploration, we cannot answer the questions.
+
+Best regards,
+Andreas Hindborg
+
+
