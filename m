@@ -1,201 +1,302 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E451C32B9B4
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 11:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF33335546;
+	Tue, 17 Feb 2026 11:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771329084; cv=none; b=IJXB3jlGvcRVn/aFreSSu+CY/q39ESjh/8a5MIzcqGJ6PdBXfg8H3/eqgvFDTLUnGCpT7P5gfPVYkDvXRxDPKiGBo5dU7e+jodnZviEDi/G88W4cDreZMfCoMHmS81YMvydUHeAWEXKu+3x4ba9fUlX0W3PhUPlhZz5VKiFiawA=
+	t=1771329157; cv=none; b=PgIdWCkOgfNRUVxMcLeirFaAm14DJRJ42dewp78uuJCn9QMftfhLvrsBak5lgv7h/bBVYHdC8sOuA0TkEVd05iEaaHdfGJTUiaOzjqsLKlUxNhXBgkIH6IuBUQ61+xDBy+j8bPyiHm8A9wgSGVNme2YYpyFTYN0b7k6EP2rTVfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771329084; c=relaxed/simple;
-	bh=FK28VlCz/kieZEbnDDHfYWnmbeWGC9EEPtCcoJFnJHE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uzDjeCxN3gQ2u+inNOc8a2OMwfxzTuhpT5ZZzdabiqlhJguTy7niUgeiEb9C71LnFv/5balGkY/JqWGr9NZlqKcL6PnC2bW1m8DZINfsgnD7aak3JGNOWs5n2SDstC1RITEFzW+MVekx6etjlK7/IQbj4gcfSkfKj0J6ct0QlCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qUtn4YMO; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1771329157; c=relaxed/simple;
+	bh=bhH7iF+cnDq2Pt5ZBwkse6iD2fwFe7a/HG2PI/y2lW8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=DMLPD78fiuagRbpNFlX6b+KjTizmMxNeOZtrdq0/c4bwmKLTL/AfbjlJbmcrZohLJis3abRWngQCH3DPqT5W9bWCW1JDxZNxoLQN6+g7kuOl9MHX9mYTRqdW1QkUjldMj2SH1daSvaJLzutnq6JU0dkZaQd7gnTUwSvUZc8UG6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hz8n2Ubr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qUtn4YMO"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836b7fbf4fso32242405e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 03:51:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771329081; x=1771933881; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BJZSAw1OS3HkHNvztNaVejaKs19d/dpxzj4ZsznN3tA=;
-        b=qUtn4YMOISbp75XPCiuKfo/vZo0loujYVJ+2thVs0aTmOzLu/FUY4aRldLABqX/Gt+
-         x74EFLKhDD42A4Gj++XgMUnBpYAeVZcDT8WDDupM8KDVerufRqRPX8rZ1U/meHEB5H4W
-         wJhwlzCVvl5P+NNd+eDESm/k7VTYIUMkZ/TBCP179+hIJ8Z1vAKJQsYCCY87QRbtTq03
-         WQ/bJFKvG74+ekYkzhkm7lCQvbWoe55f8uT+0CJykSKF3F64Qk2nzUUDCgSu4jdIVAgR
-         lKHSBYTC0IedCaNBw4euxKrLmtGr2Xh7AEhi6PlNh5hYMTTb6NT8zd+rQE432u9GTuCm
-         6DMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771329081; x=1771933881;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BJZSAw1OS3HkHNvztNaVejaKs19d/dpxzj4ZsznN3tA=;
-        b=vwmMuySVbdm9AMXGhbz3/4vQtgo9EPqQ79GrU5LI/j5auW0ReCwgP1Qzg2+i1+/mnd
-         P9VAjyLPi0DkIIEI5wLp3iORAMP8J/XVNhYydgAA8uI1iqLmSf4TDKx8UkhvpQRhBCGp
-         LJfRq9pi5UYgveVy/chszaWu4lWeJOwxtrAcjzusNYp8c/C7f5UpvLyiXPgTY7RlfW4m
-         KlOGUyZ8kmQb3Ln4vFO5cNGTXgbsyncdivQihTYv5QbmHkNyR9tlzOGzdhsdipUqFcti
-         Kzo50mvn4/n6VHYuc4W1rY+kfMEQ+Prb6LtM6jnINe/WCQzoxJEYSx9ICM+QMmMYL1H+
-         1jrA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOz5yxisFhTH4Ad93IvjQVZAcXj2bcDJ37Ri+pJEmoQhXREVRwE/DaMnJVLH+oAqs/05wwvalf+pgOIveEtQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgP6O5VPmqKD4mzAFJEj9fbg0AvQB5peTtOQlYwLT/MXdVsVuC
-	RRshUROGKct4s+fNF9DSVja0cDpYnPB92vvIuN1I+//F7dA10m31T7YKUVhV+heGwps708CcdYF
-	a4148R5XxE+ByRX0jEg==
-X-Received: from wmte24.prod.google.com ([2002:a05:600c:8b38:b0:480:6c54:bb0a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4688:b0:483:703e:4ad5 with SMTP id 5b1f17b1804b1-48373a37af9mr213342565e9.22.1771329080922;
- Tue, 17 Feb 2026 03:51:20 -0800 (PST)
-Date: Tue, 17 Feb 2026 11:51:20 +0000
-In-Reply-To: <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hz8n2Ubr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98F8C4CEF7;
+	Tue, 17 Feb 2026 11:52:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771329156;
+	bh=bhH7iF+cnDq2Pt5ZBwkse6iD2fwFe7a/HG2PI/y2lW8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Hz8n2UbrE9/dT4JPp8aOvp2KibU9qI5WSR51+5rh7xFatvJl7kdB8HgScZf+6JR8x
+	 9uvg7uYQRFRZomawJC9HaDxi56gvQcIWy6KvDg28j+XJpEwQAf4Tp0nto1F3MwGYJ+
+	 pPVOzWZSNjoFhS4Gw4zQ25MiWr0gf8U83qcWLKuLOn+w0cYC6AvM0/BcXhvUouKEPc
+	 b3uSkNLcyoRuWm5r9cmRSdHPh2IydvhURqjKy/uOlhhuy1Uz6R9qAIEWprqTnxBybf
+	 AIVum6lAmJh0qR9zmYWiF8YKqnlTG6O6AKPA8lsKI7dRj/TvwVG8FVfCpx2m/USMMy
+	 Z+mYLqSlZDTkg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <aY9HD7nH5A-DtgmR@tardis.local> <2026021326-stark-coastline-c5bc@gregkh>
- <aY9PBfx3RRV7rXZ5@tardis.local> <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
- <aZQ19FEeGgigdwz9@google.com> <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com> <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com> <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
-Message-ID: <aZRWOIPThLfIZ1Ph@google.com>
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-From: Alice Ryhl <aliceryhl@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Feb 2026 12:52:31 +0100
+Message-Id: <DGH7S2HJRDJJ.210D7DLTNFRNR@kernel.org>
+Subject: Re: [PATCH 1/2] gpu: nova-core: fix GSP RPC send sequence numbers
+ to match Open RM
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Eliot
+ Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Simona
+ Vetter" <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>, "Maneet Singh" <mmaneetsingh@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260211000451.192109-1-jhubbard@nvidia.com>
+ <20260211000451.192109-2-jhubbard@nvidia.com>
+ <DGH35X9GCFYO.EBY01G1C6XQM@nvidia.com>
+In-Reply-To: <DGH35X9GCFYO.EBY01G1C6XQM@nvidia.com>
 
-On Tue, Feb 17, 2026 at 12:09:11PM +0100, Peter Zijlstra wrote:
-> On Tue, Feb 17, 2026 at 10:47:03AM +0000, Alice Ryhl wrote:
-> > > > 	// OK!
-> > > > 	unsigned long *a, b;
-> > > > 	b = READ_ONCE(a);
-> > > > 	if is_valid(b) {
-> > > > 	    // do stuff
-> > > > 	}
-> > > > 
-> > > > Now consider the following code:
-> > > > 
-> > > > 	// Is this ok?
-> > > > 	unsigned long *a, b;
-> > > > 	memcpy(a, &b, sizeof(unsigned long));
-> > > > 	if is_valid(b) {
-> > > > 	    // do stuff
-> > > > 	}
-> > > 
-> > > Why the hell would you want to write that? But sure. I think similar but
-> > > less weird example would be with structures, where value copies end up
-> > > being similar to memcpy.
-> > 
-> > I mean sure, let's say that it was a structure or whatever instead of a
-> > long. The point is that the general pattern of memcpy, then checking the
-> > bytes you copied, then use the bytes you copied, is potentially
-> > susceptible to this exacty optimization.
-> 
-> > > And in that case, you can still use volatile and compiler must not do
-> > > silly.
-> > 
-> > What you mean by "volatile" here is the same as what this patch means
-> > when it says "per-byte atomic". If you agree that a "volatile memcpy"
-> > would be a good idea to use in this scenario, then it sounds like you
-> > agree with the patch except for its naming / terminology.
-> 
->   struct foo {
->     int a, b;
->   };
-> 
->   struct foo *ptr, val;
-> 
->   val = *(volatile struct foo *)ptr;
-> 
-> why would we need a an explicit new memcpy for this?
+On Tue Feb 17, 2026 at 9:15 AM CET, Alexandre Courbot wrote:
+>> diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/g=
+sp/boot.rs
+>> index 02eec2961b5f..f769e234dae6 100644
+>> --- a/drivers/gpu/nova-core/gsp/boot.rs
+>> +++ b/drivers/gpu/nova-core/gsp/boot.rs
+>> @@ -403,7 +403,11 @@ pub(crate) fn boot(
+>> =20
+>>          dev_dbg!(dev, "RISC-V active? {}\n", gsp_falcon.is_riscv_active=
+(bar));
+>> =20
+>> -        // Now that GSP is active, send system info and registry
+>> +        // Now that GSP is active, send system info and registry.
+>> +        //
+>> +        // These are async (fire-and-forget) RPCs: no response comes ba=
+ck from GSP.
+>> +        // GSP does not include them in its sequence number counting to=
+day, but a
+>> +        // future GSP firmware update will fold them into the normal se=
+quence space.
+>
+> From the point of view of the caller this is a superfluous
+> implementation detail. This comment is actually confusing as it mentions
+> a sequence number that the caller does not need to provide, so I'd just
+> remove it altogether.
 
-In my experience with dealing with `struct page` that is mapped into a
-vma, you need memcpy because the struct might be split across two
-different pages in the vma. The pages are adjacent in userspace's
-address space, but not necessarily adjacent from the kernel's POV.
+The comment is not a doc-comment, hence it can more be seen as a comment fo=
+r the
+audience of nova-core developers in general, rather than a description of a
+specific API. So, I think it is OK to talk about an implementation detail h=
+ere.
 
-So you might end up with something that looks like this:
+To me personally it seems useful and I'd like to keep it.
 
-struct foo val;
-void *ptr1 = kmap_local_page(p1);
-void *ptr2 = kmap_local_page(p2);
-memcpy(ptr1 + offset, val, PAGE_SIZE - offset);
-memcpy(ptr2, val + offset, sizeof(struct foo) - (PAGE_SIZE - offset));
-kunmap_local(ptr2);
-kunmap_local(ptr1);
+>
+>>          self.cmdq
+>>              .send_command(bar, commands::SetSystemInfo::new(pdev, chips=
+et))?;
+>>          self.cmdq.send_command(bar, commands::SetRegistry::new())?;
+>> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/g=
+sp/cmdq.rs
+>> index 16895f5281b7..7d6d7d81287c 100644
+>> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+>> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+>> @@ -58,6 +58,13 @@ pub(crate) trait CommandToGsp {
+>>      /// Function identifying this command to the GSP.
+>>      const FUNCTION: MsgFunction;
+>> =20
+>> +    /// Whether this command is async (fire-and-forget), meaning no res=
+ponse is expected from GSP.
+>> +    ///
+>> +    /// Async commands get inner `rpc.sequence` set to 0. Sync commands=
+ get inner `rpc.sequence`
+>> +    /// set to the transport counter, matching Open RM. The outer `seqN=
+um` always increments
+>> +    /// regardless.
+>
+> This here is too much detail as well IMHO, even more if you follow the
+> last suggestion in this review. :)
 
-if (is_valid(&val)) {
-    // use val
-}
+As this one is a doc-comment, agreed.
 
-This exact thing happens in Binder. It has to be a memcpy.
+>
+>> +    const IS_ASYNC: bool =3D false;
+>> +
+>>      /// Type generated by [`CommandToGsp::init`], to be written into th=
+e command queue buffer.
+>>      type Command: FromBytes + AsBytes;
+>> =20
+>> @@ -439,7 +446,8 @@ struct GspMessage<'a> {
+>>  pub(crate) struct Cmdq {
+>>      /// Device this command queue belongs to.
+>>      dev: ARef<device::Device>,
+>> -    /// Current command sequence number.
+>> +    /// Transport-level sequence number, incremented for every send. Us=
+ed for the outer
+>> +    /// GSP_MSG_QUEUE_ELEMENT.seqNum. Also used as the inner rpc.sequen=
+ce for sync commands.
+>
+> Note that these types (especially `GSP_MSG_QUEUE_ELEMENT`) are never
+> visible in this module, so mentioning them here is assuming context that
+> the reader can't easily get.
+>
+> Instead, how about just "Used for [`GspMsgElement`]'s sequence counter"?
 
-> > > So I'm still not exactly sure why this is a problem all of a sudden?
-> > 
-> > I mean, this is for `struct page` specifically. If you have the struct
-> > page for a page that might also be mapped into a userspace vma, then the
-> > way to perform a "copy_from_user" operation is to:
-> > 
-> > 1. kmap_local_page()
-> > 2. memcpy()
-> > 3. kunmap_local()
-> > 
-> > Correct me if I'm wrong, but my understanding is that on 64-bit systems,
-> > kmap/kunmap are usually complete no-ops since you have enough address
-> > space to simply map all pages into the kernel's address space. Not even
-> > a barrier - just a `static inline` with an empty body.
-> 
-> That is all correct -- however that cannot be all you do.
-> 
-> Any shared memory will involved memory barriers of a sort. You cannot
-> just memcpy() and think you're done.
-> 
-> So yeah, on x86_64 those 1,2,3 are insufficient to inhibit the re-load,
-> but nobody should ever just do 1,2,3 and think job-done. There must
-> always be more.
-> 
-> If it is a ring-buffer like thing, you get:
-> 
->          *   if (LOAD ->data_tail) {            LOAD ->data_head
->          *                      (A)             smp_rmb()       (C)
->          *      STORE $data                     LOAD $data
->          *      smp_wmb()       (B)             smp_mb()        (D)
->          *      STORE ->data_head               STORE ->data_tail
->          *   }
-> 
-> if it is a seqlock like thing you get that.
-> 
-> If it is DMA, you need dma fences.
-> 
-> And the moment you use any of that, the re-load goes out the window.
+Same here.
 
-I don't know how Andreas is using this, but the usage pattern I'm
-familiar with for `struct page` from my work on Binder is this one:
+>>      seq: u32,
+>>      /// Memory area shared with the GSP for communicating commands and =
+messages.
+>>      gsp_mem: DmaGspMem,
+>> @@ -514,8 +522,13 @@ pub(crate) fn send_command<M>(&mut self, bar: &Bar0=
+, command: M) -> Result
+>>          // Extract area for the command itself.
+>>          let (cmd, payload_1) =3D M::Command::from_bytes_mut_prefix(dst.=
+contents.0).ok_or(EIO)?;
+>> =20
+>> +        // The outer seqNum always increments (transport-level, unique =
+per message).
+>> +        // The inner rpc.sequence is 0 for async (fire-and-forget) comm=
+ands, or the
+>> +        // sync counter for command/response pairs, matching Open RM be=
+havior.
+>> +        let rpc_seq =3D if M::IS_ASYNC { 0 } else { self.seq };
+>> +
+>>          // Fill the header and command in-place.
+>> -        let msg_element =3D GspMsgElement::init(self.seq, command_size,=
+ M::FUNCTION);
+>> +        let msg_element =3D GspMsgElement::init(self.seq, rpc_seq, comm=
+and_size, M::FUNCTION);
+>>          // SAFETY: `msg_header` and `cmd` are valid references, and not=
+ touched if the initializer
+>>          // fails.
+>>          unsafe {
+>> diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-co=
+re/gsp/commands.rs
+>> index e6a9a1fc6296..c8a73bd30051 100644
+>> --- a/drivers/gpu/nova-core/gsp/commands.rs
+>> +++ b/drivers/gpu/nova-core/gsp/commands.rs
+>> @@ -50,6 +50,7 @@ pub(crate) fn new(pdev: &'a pci::Device<device::Bound>=
+, chipset: Chipset) -> Sel
+>> =20
+>>  impl<'a> CommandToGsp for SetSystemInfo<'a> {
+>>      const FUNCTION: MsgFunction =3D MsgFunction::GspSetSystemInfo;
+>> +    const IS_ASYNC: bool =3D true;
+>>      type Command =3D GspSetSystemInfo;
+>>      type InitError =3D Error;
+>> =20
+>> @@ -101,6 +102,7 @@ pub(crate) fn new() -> Self {
+>> =20
+>>  impl CommandToGsp for SetRegistry {
+>>      const FUNCTION: MsgFunction =3D MsgFunction::SetRegistry;
+>> +    const IS_ASYNC: bool =3D true;
+>>      type Command =3D PackedRegistryTable;
+>>      type InitError =3D Infallible;
+>> =20
+>> diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp=
+/fw.rs
+>> index 927bcee6a5a5..e417ed58419f 100644
+>> --- a/drivers/gpu/nova-core/gsp/fw.rs
+>> +++ b/drivers/gpu/nova-core/gsp/fw.rs
+>> @@ -260,6 +260,26 @@ pub(crate) enum MsgFunction {
+>>      UcodeLibOsPrint =3D bindings::NV_VGPU_MSG_EVENT_UCODE_LIBOS_PRINT,
+>>  }
+>> =20
+>> +impl MsgFunction {
+>> +    /// Returns true if this is a GSP-initiated async event (NV_VGPU_MS=
+G_EVENT_*), as opposed to
+>> +    /// a command response (NV_VGPU_MSG_FUNCTION_*).
+>> +    #[expect(dead_code)]
+>> +    pub(crate) fn is_event(&self) -> bool {
+>> +        matches!(
+>> +            self,
+>> +            Self::GspInitDone
+>> +                | Self::GspRunCpuSequencer
+>> +                | Self::PostEvent
+>> +                | Self::RcTriggered
+>> +                | Self::MmuFaultQueued
+>> +                | Self::OsErrorLog
+>> +                | Self::GspPostNoCat
+>> +                | Self::GspLockdownNotice
+>> +                | Self::UcodeLibOsPrint //
+>> +        )
+>> +    }
+>
+> Mmm using a method for this is quite fragile, as we are always at risk
+> of forgetting to handle a newly-added function. I wanted to eventually
+> split `MsgFunction` between its command and events constituants, maybe
+> that would be a good opportunity to do so.
 
-1. memcpy into the page
-2. return from ioctl
-3. userspace reads from vma
+I also think we should leverage the type system for such things.
 
-or
+> Also, this is marked with `dead_code`? Looks like it belongs to the next
+> patch in this case.
+>
+>> +}
+>> +
+>>  impl fmt::Display for MsgFunction {
+>>      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+>>          match self {
+>> @@ -816,7 +836,7 @@ fn new() -> Self {
+>>  }
+>> =20
+>>  impl bindings::rpc_message_header_v {
+>> -    fn init(cmd_size: usize, function: MsgFunction) -> impl Init<Self, =
+Error> {
+>> +    fn init(cmd_size: usize, function: MsgFunction, sequence: u32) -> i=
+mpl Init<Self, Error> {
+>>          type RpcMessageHeader =3D bindings::rpc_message_header_v;
+>> =20
+>>          try_init!(RpcMessageHeader {
+>> @@ -829,6 +849,7 @@ fn init(cmd_size: usize, function: MsgFunction) -> i=
+mpl Init<Self, Error> {
+>>                  .and_then(|v| v.try_into().map_err(|_| EINVAL))?,
+>>              rpc_result: 0xffffffff,
+>>              rpc_result_private: 0xffffffff,
+>> +            sequence,
+>>              ..Zeroable::init_zeroed()
+>>          })
+>>      }
+>> @@ -847,26 +868,31 @@ impl GspMsgElement {
+>>      ///
+>>      /// # Arguments
+>>      ///
+>> -    /// * `sequence` - Sequence number of the message.
+>> +    /// * `transport_seq` - Transport-level sequence number for the out=
+er message header
+>> +    ///   (`GSP_MSG_QUEUE_ELEMENT.seqNum`). Must be unique per message.
+>> +    /// * `rpc_seq` - RPC-level sequence number for the inner RPC heade=
+r
+>> +    ///   (`rpc_message_header_v.sequence`). Set to 0 for async (fire-a=
+nd-forget) commands,
+>> +    ///   or to the sync counter for command/response pairs.
+>>      /// * `cmd_size` - Size of the command (not including the message e=
+lement), in bytes.
+>>      /// * `function` - Function of the message.
+>>      #[allow(non_snake_case)]
+>>      pub(crate) fn init(
+>> -        sequence: u32,
+>> +        transport_seq: u32,
+>> +        rpc_seq: u32,
+>
+> The caller site of `init` mentions that `rpc_seq` will always either be
+> equal to `transport_seq`, or be 0, depending on whether this is an async
+> command or not, yet this constructor allows any value to be used. I'd
+> like to enforce this invariant by making it impossible to build invalid
+> combinations of sequences.
+>
+> As a matter of fact we already have this information in
+> `CommandToGsp::IS_ASYNC`, so the simpler way would be to pass *that* as
+> an extra argument to `init`, and let it handle the sequencing
+> internally. It also has the benefit of not making this message-layer
+> detail leak into the command queue code, making the discussion about
+> this detail even more irrelevant outside of the `fw` module.
+>
+> An even better solution would be to to pass the `CommandToGsp` as a
+> generic argument - that way `init` could extract both the `FUNCTION` and
+> `IS_ASYNC`. Maybe use a public generic proxy method that calls into a
+> non-generic private one to limit monomorphization.
 
-1. userspace writes to vma
-2. call ioctl
-3. kernel reads from page
-
-which needs no barriers whatsoever. There is nothing to prevent this
-kind of optimization in this kind of code, so an evil userspace could
-trigger TOCTOU bugs in the kernel that are not present in the source
-code if the code was optimized like I described.
-
-Alice
+I think we should go with the generic argument; but I don't think we need a
+proxy method to fight monomorphization, i.e. I don't think we need to do wo=
+rk
+for the optimizer in this case.
