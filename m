@@ -1,171 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235B531B131;
-	Tue, 17 Feb 2026 10:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278432D8396;
+	Tue, 17 Feb 2026 10:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771322531; cv=none; b=fMfu88+7KPDkYiohoGPdPnaTofZD0Cw72YwAU3fib18Q4HoTGATaewvPAqPaif9ax6o6ApDEcYoX1oblP7AvJZxMg6Gt9GFwfueVphKdkKvD4nUbFn7A/sUjDsqm6P1Fj3khecxSKQHId+AZu8tplaxxbaeINGDTvADRjUTEvWA=
+	t=1771323971; cv=none; b=hujGYLgINlVw2LFf/doxkpqo2wnlJAHZE/q8k5RMhFSGbyDHFzuTjPz1/DTGqTRJhKg7fEH065oMcCAB5j7epIEEXD/LZcRaCc4a6duh5zz1rYqYXJv5nZH94+ESuBsvz+heJNpXOBXa4hQ2yKKYf0xIzmTKIqUddNICFBnLvfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771322531; c=relaxed/simple;
-	bh=mfUgB7pxi9VZn9fgVVm2ojiA7IKBP8YzJaDdxro4DoU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TCZhr1PJf+n63uAMF6DnAs46PD03zAxd/+hxuPs4G/udmgsuB8XK7DA7rDpDU8OrQQofktU5Qp6dZUJNparLn3smR1+mTXfpmzrfEp7ch5DgkPKG5DcVrJ9a0FIrnj2RNCrfVM/hARhe/gS81thK9vhWlBzrDS9cN84l3Vlosuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q04pNKET; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771323971; c=relaxed/simple;
+	bh=UKP3oKZ3s21QTV6lJuPupdj9NoA2o8sKla6LeDIvRxc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EWn66OOxbvTXCQoYGFBPmLso1+u8lgXmRKfNLkg6a30NN0qVfrnmnxZd+wTe3jEseasSRnFoLis8IpqYmF3u3VT4+ZiozDYfZT1DYWBObBinr9F73WZhurAZ9cjww0mQtksi49CNmv73ujl7yHaoHC6QTKZHhsOtX3ECtufN5Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZKp4GUL5; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q04pNKET"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FABFC4CEF7;
-	Tue, 17 Feb 2026 10:02:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771322530;
-	bh=mfUgB7pxi9VZn9fgVVm2ojiA7IKBP8YzJaDdxro4DoU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Q04pNKETo9uZ47mCT+9ojD9IMY+KEEYCpNtK5jNvzDaKjxndOXjgriKd+iUk45N24
-	 UUHWRn63x3kmI5AdpbfR5bOBuDffhZtFKXNlNQs5nVFP8uNMh98gShiCZE48fM7thY
-	 uehjSVq/e2fI2UnzarRJ6QInZQTLeS6NKHwnJ8G/yOL4eDb/V+OrxVD8NWSkDHdwVY
-	 BrftClnmIH1Bh9ObZYdL1QEcGHuPGVFVd8eSTaFqIu2NJshDGt5aa86yMXKEx+npl2
-	 WhxEgjXB/Q3dI15yn597mPD2uUpnZoh4oCriuks5rhiIyWY90Fw6U6KR5rMOvSnAVH
-	 NHgWISQUXccSg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich
- <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: add a ring buffer implementation
-In-Reply-To: <71F89D79-DBE1-4617-B58A-8552D0F2B3A2@collabora.com>
-References: <20260215-ringbuffer-v1-1-9b359758a1b6@kernel.org>
- <8tULWyvUTjVb3E_HFZeW2maApI87eYLZungGtJ6k9CVT9J-C-TzIqx5ShmHA5vS30yqZRq7TmaBd0AIg5V7u6Q==@protonmail.internalid>
- <aZMMyJofDKualqXw@google.com>
- <873430es2p.fsf@t14s.mail-host-address-is-not-set>
- <C82DE0A6-17FC-4FD9-A272-257B59129A7E@collabora.com>
- <DGGFZX5JLZ22.3E1C8OVLNUDD6@kernel.org>
- <3D7C5FE8-CA15-418B-B2F7-D0EA4C37E1F0@collabora.com>
- <DGGGPFU9E9VD.8TT3HZUWS100@kernel.org>
- <U-BIeJ2bi8_e-eMwrNeo2r12w5jDIlGja9E3QSTg2bgL7JYAp1lJtO6sPCvTGQsL1PCfkEkMHfR5eLVG3JPJaw==@protonmail.internalid>
- <71F89D79-DBE1-4617-B58A-8552D0F2B3A2@collabora.com>
-Date: Tue, 17 Feb 2026 11:02:02 +0100
-Message-ID: <87pl63d6xx.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZKp4GUL5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=LdgR9J3y9XFwf9Pjemt6beHFk6KHynnpaTjue2G2oAw=; b=ZKp4GUL5rcy3Oyp09BLsWUvOs1
+	10q59nf7z2zf6Ryfu5yA/i0FllAQG+ZetzF3uB8W+0DPSP7KiQNYI33Vy8CKlunIhQdoEZ9wzInVh
+	4L46SkgM/bszGh/9OyZbSGAO3FBp7t1spKFdFJ8jktQ1nJEO52Bedkfvvz36kwzGADWRgwVd6UJzM
+	INL8g3wanBuX6sMgOgTlVJAbl9Q3Zp5a9XSB9VzTaJkpiLa15iLnBZ80podew9cDZG34qMDIhPF6u
+	4BydGRNNQ+WLqPy9ki5sR91c6NYq+eZWvTUDxng9Rq+hJrP8ElieIcDPrKjzXGtiiBYcGze62fqYw
+	li/6BRdA==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsIHH-0000000FirW-0ljG;
+	Tue, 17 Feb 2026 10:25:59 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id BF8CE300CDE; Tue, 17 Feb 2026 11:25:57 +0100 (CET)
+Date: Tue, 17 Feb 2026 11:25:57 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
+References: <873434u3yq.fsf@kernel.org>
+ <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
+ <2026021311-shorten-veal-532c@gregkh>
+ <aY9HD7nH5A-DtgmR@tardis.local>
+ <2026021326-stark-coastline-c5bc@gregkh>
+ <aY9PBfx3RRV7rXZ5@tardis.local>
+ <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
+ <aZQ19FEeGgigdwz9@google.com>
+ <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
+ <aZQ8lJJ-U_8j03Z4@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZQ8lJJ-U_8j03Z4@google.com>
 
-"Daniel Almeida" <daniel.almeida@collabora.com> writes:
+On Tue, Feb 17, 2026 at 10:01:56AM +0000, Alice Ryhl wrote:
+> On Tue, Feb 17, 2026 at 10:45:15AM +0100, Peter Zijlstra wrote:
+> > On Tue, Feb 17, 2026 at 09:33:40AM +0000, Alice Ryhl wrote:
+> > > On Tue, Feb 17, 2026 at 10:13:48AM +0100, Peter Zijlstra wrote:
+> > > > On Fri, Feb 13, 2026 at 08:19:17AM -0800, Boqun Feng wrote:
+> > > > > Well, in standard C, technically memcpy() has the same problem as Rust's
+> > > > > `core::ptr::copy()` and `core::ptr::copy_nonoverlapping()`, i.e. they
+> > > > > are vulnerable to data races. Our in-kernel memcpy() on the other hand
+> > > > > doesn't have this problem. Why? Because it's volatile byte-wise atomic
+> > > > > per the implementation.
+> > > > 
+> > > > Look at arch/x86/lib/memcpy_64.S, plenty of movq variants there. Not
+> > > > byte-wise.
+> > > 
+> > > movq is a valid implementation of 8 byte-wise copies.
+> > > 
+> > > > Also, not a single atomic operation in sight.
+> > > 
+> > > Relaxed atomics are just mov ops.
+> > 
+> > They are not atomics at all.
+> 
+> Atomic loads and stores are just mov ops, right? Sure, RMW operations do
+> more complex stuff, but I'm pretty sure that relaxed atomic loads/stores
+> generally are compiled as mov ops.
 
->> On 16 Feb 2026, at 11:39, Danilo Krummrich <dakr@kernel.org> wrote:
->>
->> On Mon Feb 16, 2026 at 3:21 PM CET, Daniel Almeida wrote:
->>>
->>>
->>>> On 16 Feb 2026, at 11:06, Danilo Krummrich <dakr@kernel.org> wrote:
->>>>
->>>> On Mon Feb 16, 2026 at 2:45 PM CET, Daniel Almeida wrote:
->>>>> With the allocation being handled by a separate component, I don=E2=
-=80=99t think
->>>>> this is right. I think a better location is rust/kernel/io
->>>>
->>>> I'm not sure it is reasonable to ask people who just want a ringbuffer=
- in system
->>>> memory to take the indirection over an I/O ringbuffer implementation w=
-ith
->>>> generic I/O backends choosing the system memory I/O backend.
->>>>
->>>> The proposed code is simple, without comments and tests, less than 100=
- lines of
->>>> code. The I/O infrastructure to make this happen is still WIP. So, I t=
-hink it's
->>>> fine to land it as VecDeque for now.
->>>
->>>
->>> Well, this is a 100 line patch, but nothing was said of how much else w=
-as going
->>> to be added on top in the future. In order to avoiding iterating on wha=
-t I
->>> consider the wrong approach, I suggested that we start out in the right
->>> direction from the start, something that Andreas himself apparently agr=
-eed to.
->>
->> I haven't seen any commitment to implement this in terms of generic I/O =
-backends
->> from Andreas.
->>
->>>> Once we have the I/O backend infrastructure, a system memory I/O backe=
-nd that
->>>> can deal with separate allocators *and* a ring buffer implementation t=
-hat sits
->>>> on top of it, we can still revisit if it makes sense to take advantage=
- of
->>>> synergies.
->>>>
->>>> But for now this seems a bit premature in terms of delaying Andreas' w=
-ork.
->>>
->>> IIUC, and feel free to correct me on this, the I/O backends are already=
- in the
->>> works. What is missing is a trivial system memory backend, and similarl=
-y a
->>> ringbuffer implementation, which is the subject of this patch. I don't =
-see this
->>> as a lot of work or an unreasonable ask.
->>
->> I think you are highly underestimating the consequences of this design.
->
-> Might very well be the case, yeah.
->
->>
->> First of all, we're missing IoView (the generalization of IoSlice), whic=
-h also
->> supports projection. Gary is working on this, but it is completely uncle=
-ar when
->> it will land.
->>
->> Second, the system memory backend would have to be implemented and needs=
- to be
->> generic over arbitrary allocators. Also note that I/O backends do *not*
->> implement growing and shrinking of the backing memory, which would be an=
-other
->> limitation for a derived VecDeque type to swallow. Alternatively, it is =
-yet
->> another thing we have to implement.
->>
->> Then we have to implement the I/O ringbuffer type, which, due to being g=
-eneric
->> over I/O backends, also has to consider the device lifecycle requirement=
-s for
->> the corresponding I/O backend, which is additional complexity as well.
->>
->> So, don't get me wrong, it is a good idea and exactly in the sense of my=
- vision
->> of how powerful I want the I/O infrastructure to be, but for now, I thin=
-k it is
->> unreasonable to ask Andreas to wait for all this.
->>
->> - Danilo
->
-> Fine, let=E2=80=99s stick to VecDeque then. From what I am reading above,=
- there
-> doesn=E2=80=99t seem to be any naks for a more general ring buffer type d=
-ue to the
-> current patch; it=E2=80=99s just not a good time yet. In which case, ther=
-e=E2=80=99s no
-> complaints from me.
+Yeah, because they're not in fact atomic. I have, on various occasions,
+told people to not use atomic_t if all they end up doing is atomic_set()
+and atomic_read(). They're just loads and stores, nothing atomic about
+them.
 
-We can change the code down the road, no problem. It's not set in stone
-just because we merge it without generic alloc support.
+They are just there to complete the interactions with the actual RmW
+operations.
 
-Perhaps one could imagine a simple API like in this patch being provided
-by a configurable implementation behind the scenes.
+> > Somewhere along the line 'atomic' seems to have lost any and all meaning
+> > :-(
+> > 
+> > It must be this C committee and their weasel speak for fear of reality
+> > that has infected everyone or somesuch.
+> > 
+> > Anyway, all you really want is a normal memcpy and somehow Rust cannot
+> > provide? WTF?!
+> 
+> Forget about Rust for a moment.
+> 
+> Consider this code:
+> 
+> 	// Is this ok?
+> 	unsigned long *a, b;
+> 	b = *a;
+> 	if is_valid(b) {
+> 	    // do stuff
+> 	}
 
+Syntax error on is_valid(), need opening ( after if.
 
-Best regards,
-Andreas Hindborg
+> I can easily imagine that LLVM might optimize this into:
+> 
+> 	// Uh oh!
+> 	unsigned long *a, b;
+> 	b = *a;
+> 	if is_valid(*a) {  // <- this was "optimized"
+> 	    // do stuff
+> 	}
 
+Well, compiler would not do anything, since it wouldn't compile :-) But
+sure, that is valid transform.
 
+> the argument being that you used an ordinary load of `a`, so it can be
+> assumed that there are no concurrent writes, so both reads are
+> guaranteed to return the same value.
+> 
+> So if `a` might be concurrently modified, then we are unhappy.
+> 
+> Of course, if *a is replaced with an atomic load such as READ_ONCE(a) an
+> optimization would no longer occur.
+
+Stop using atomic for this. Is not atomic.
+
+Key here is volatile, that indicates value can change outside of scope
+and thus re-load is not valid. And I know C language people hates
+volatile, but there it is.
+
+> 	// OK!
+> 	unsigned long *a, b;
+> 	b = READ_ONCE(a);
+> 	if is_valid(b) {
+> 	    // do stuff
+> 	}
+> 
+> Now consider the following code:
+> 
+> 	// Is this ok?
+> 	unsigned long *a, b;
+> 	memcpy(a, &b, sizeof(unsigned long));
+> 	if is_valid(b) {
+> 	    // do stuff
+> 	}
+
+Why the hell would you want to write that? But sure. I think similar but
+less weird example would be with structures, where value copies end up
+being similar to memcpy.
+
+And in that case, you can still use volatile and compiler must not do
+silly.
+
+> If LLVM understands the memcpy in the same way as how it understands
+> 
+> 	b = *a; // same as memcpy, right?
+> 
+> then by above discussion, the memcpy is not enough either. And Rust
+> documents that it may treat copy_nonoverlapping() in exactly that way,
+> which is why we want a memcpy where reading the values more than once is
+> not a permitted optimization. In most discussions of that topic, that's
+> called a per-byte atomic memcpy.
+> 
+> Does this optimization happen in the real world? I have no clue. I'd
+> rather not find out.
+
+OK, but none of this has anything to do with atomic or byte-wise.
+
+The whole byte-wise thing turns out to be about not allowing
+out-of-thin-air. Nothing should ever allow that.
+
+Anyway, normal userspace copies don't suffer this because accessing
+userspace has enough magical crap around it to inhibit this optimization
+in any case.
+
+If its a shared mapping/DMA, you'd typically end up with barriers
+anyway, and those have a memory clobber on them which tell the compiler
+reloads aren't good.
+
+So I'm still not exactly sure why this is a problem all of a sudden?
