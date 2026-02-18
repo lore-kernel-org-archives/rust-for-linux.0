@@ -1,79 +1,80 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D4930F7F1
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 11:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14212FF172
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 11:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771415627; cv=none; b=PUozn0kylEoMp/2ckz07tRfkwayK5UDTZK0IBus2BVESd4b4Lc8tgRBlktgD0PHGn38BbclWFvdcdXgEoecE017i0lMlnEDUIsSfumJVv98qv0Ti0dyWTNlDSgSxIagIOQywMClJkhrvQQi23Tu2fauaNtlD1HRyVJBZ97yDiuk=
+	t=1771415629; cv=none; b=X+j0eZ6bGNV9l8qA/f6q9sCJdO+3KHtt3HDZxqU7Rxq0CwhGgItpPAPUfjAxSPU9+ujapz71EVPe7Dwfr9Px7X+r9wGS5Y+aNLOxKh4a9US0WnNV89phXq2YELt34hBapG/zJuEglY8Iy8t0j4XsQ3Nw1GJrhbczrG473nNwZ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771415627; c=relaxed/simple;
-	bh=midTfKHBQR4+V9ov+ZGnHBfc/KST2dfDvfMiMRqYAuY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sypwRKvYZ/rLs0lO0WpEa9CJhKnorjGPXKuidRkZFovwQ1naOMJDDdYcfA7JDUs4DJ//o4h0U/UpkbnJ59LFM/QaCDNP2fJRHnDMb9vmYS7B+VOus6RZkTQZmw2ZSi9ZSYzwA1kHGu7CaLEVmdIESLkYOew3e1jMzn3dzBsHYyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XLEDPgHH; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1771415629; c=relaxed/simple;
+	bh=dxslJAb5KIt29+Pmlra1MsYzJUsqBlgsseUHaKRC00Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pIdNH5Rm/jb/uLpBtcu52dKAAgC2mht20eirHr1Iv9OpTuaRE/9jmV48troVwDSd0aC03JOEBh3fLlvWWXvstUro17yUjavIlqGPe9Xg6cXU+G9rjryjxv6+7acU5A3sx+nni/vymeAuxoii/MWQ2t9CngqwuUdv3Oi/eF2HmLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IKsVbLsP; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XLEDPgHH"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836cc0b38eso36977445e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 03:53:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IKsVbLsP"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836bf1a920so60150555e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 03:53:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771415623; x=1772020423; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jabDmLqCWECXnNK4LiTet3HnR07/Mdte6Ju6ZynhZhU=;
-        b=XLEDPgHHR4eZi/hsSkV9udE5avXFpwjiARuHKwAMYa0OzCJzWfeq8E/CImQhxqc1KH
-         0acImqppaKJj0I2KCze91Ocos47KAw8gEjN4jKY9CgoqhHxflK7Ot2XlVdS33KgJnphG
-         lp+jHwgkAgl/uxut1Lq4M6uQ25nydO3Pn5pusm88uwD0j6ZLbYbcPzLtRytthi7huot9
-         qvPYhNcVFFux1GmUJtkgELMxzz1aNCLVzyjRNN/pOo4zpUAddLa30TY0DgXRjneJI2Jv
-         nb27Enveag3EN+wbuTiESszPwqAKTGEdPzkxwv/2rkxN7LpP2wvRg3lD3IydmCdZZ06k
-         g7Ng==
+        d=google.com; s=20230601; t=1771415626; x=1772020426; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2nREefhNbsS6m+NzCv8p/u3MUoT+tS1ddYgBqAgzIBg=;
+        b=IKsVbLsP2kRnSGVyZ7gFXiqkELJYXkM4Y9t/+2Z83IeHfKMt8akYguBhpAgWP9z31C
+         984VJZaCffFLZL5SvUWqH8nDeJxnRrb2+CKYfIrfHgkxx1E9Nd45yOlmDcWdGJhUMMzV
+         caVi8lE//nApGsh6oAmSuE9RoettuU9SibY3qX+lDc3LmtF/Y9kEbAFJnIAj2QppTMBp
+         lFQlVSbDCnMjTgqynDEIj5l7f0Ta5eg7yXFYQ7YpsUlmFAd0Zl2O4s7cm+9NatfuZBNE
+         6XcqFG1Pc+lqNNNG3XfZs5zALj12Jdc2SHDS08scgRMDAmDbKK22jhsMkRJmw5cag4uK
+         lK6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771415623; x=1772020423;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jabDmLqCWECXnNK4LiTet3HnR07/Mdte6Ju6ZynhZhU=;
-        b=wA//mz0xtwp5NL9Fa0cLqRi/Wpc1G1DSMVdPjAJ/UuGHw6ZvgbvuEGoLtLDcn0B3Gt
-         o1Dy4jONxV2UejOsR4LVk7ho1TLWqYui6DzurcDhsmtr2fQ0RhgTz8d8NCAIglCNGmKW
-         lbi/atVnSa2fio3qXkZMu1nracLF1W6rcim/+GuNdlcNLhyq5GQ2fRgFBk2iBQVnxRXR
-         Dy09gfQriPv7REOFdloXnb2TByP1D2YZDgzIbNd99+rulJALZW+bZXt2yaLY3VdOEJWo
-         QPXSMcpQVArLJyzRpYf1cEdUXIvATIVOF9rR5gw98ALKnSfjnEELBLD75Q9dhoi4oLEI
-         omSA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcWDJoPukg/BvVC3pnxNO6EyxV2eRxdDNi5McETTYYVX76u0xnGxzVdZwzMr1VPY8lDMolij82UGEYhPHyJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoECjpJcTUxRwUimASwPqr1iFoDrnvYfvtOqwt5olD+mMcyM5t
-	vfqgqvvJu/0LbaXgUZL0T0ExH+wUeUD4SdxgG8iAdzKPevmRt+gaDg0qLaL9tXNkJZP1/C4snZ6
-	ThFTvg/i6D3ebRm7XyQ==
-X-Received: from wmkz14.prod.google.com ([2002:a7b:c7ce:0:b0:480:46d7:9c4e])
+        d=1e100.net; s=20230601; t=1771415626; x=1772020426;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2nREefhNbsS6m+NzCv8p/u3MUoT+tS1ddYgBqAgzIBg=;
+        b=doeNDzv30wo6PRBWtQZTbIQN3pBqn8noxmQtuBzl6VqtW+0ejTVjqId9EIZ2zMPJIe
+         3Kn+HKBeq3ugDEDz6sbbpOOLTIqaB2+BH2Oeg1iLzUH8QSPUWPvj6mIiKSbxTXatCS4q
+         /+TsSl81FSjYLWwG/mnw8K3VfCj/XTN0VTjuRiMLA76PQkTH5GqTOEU8lFrns/gdjB74
+         ayRppV2E+pjZ0i90NiSZmQRyKZU4fp49R5usrCgm8KfcOejfxEF9Jxw1+VuTNJnqIk1y
+         BXPDNJgWvcfyeYS+xj1GsPhXP6vioMvXZylCU7y+tNfSNumznhAy8AYynkLYJ+IisrM6
+         ckoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX/E8bGFk2cYl7o2exxUE2rWZXUNhYgrRr7Q3KswiHJKtjJeHXqm4i1GXs/dB7ab5Wf+0w2O88aTpEEK1cqcg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyt9i3obuK8qdbrlzPghLbgdD9po3bNkYUfg8VoPq8ypfzH6YJ8
+	LqS8qWCGiJLeivensh14mP+fOBTbPOav5oCKVkZRbnCSqYNMT7bZWeUG9aH2Aja4utMbowdO1wb
+	pQCeWsc8RIJR/5025Ug==
+X-Received: from wmof9.prod.google.com ([2002:a05:600c:44c9:b0:477:988a:7675])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b77:b0:483:6d4e:9811 with SMTP id 5b1f17b1804b1-48398ae6736mr34831615e9.31.1771415623348;
- Wed, 18 Feb 2026 03:53:43 -0800 (PST)
-Date: Wed, 18 Feb 2026 11:53:25 +0000
+ 2002:a05:600c:1c25:b0:47d:3ead:7440 with SMTP id 5b1f17b1804b1-48379c14606mr212400745e9.32.1771415625987;
+ Wed, 18 Feb 2026 03:53:45 -0800 (PST)
+Date: Wed, 18 Feb 2026 11:53:27 +0000
+In-Reply-To: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIADaolWkC/32NQQrCMBBFr1Jm7UgzSqKuvId0kaTTdtA2kkhQS
- u5u7AFcvgf//RUSR+EEl2aFyFmShKUC7Rrwk11GRukrA7WkW1IGnSw9R8yzRT+xv6PTg7dH4vN Je6izZ+RB3lvy1lWeJL1C/GwPWf3sn1hW2KKy5A5mMM5ouo4hjA/e+zBDV0r5AqSRwEOxAAAA
-X-Change-Id: 20260217-binder-vma-check-b6fca42e986c
+References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1043; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=midTfKHBQR4+V9ov+ZGnHBfc/KST2dfDvfMiMRqYAuY=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplag6e4SnfP5Lm6TFw/Rn7c9jU60pUWbZGgoRG
- eiJ3ogJMByJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZWoOgAKCRAEWL7uWMY5
- RgX1D/sFWg5zD0sy5I1A49njTIky+VabjigVV7dwODVE083PmcgpYC+86lQTWYCw1ykaZU1ThIk
- dwSruKbdJw1CGF0UrsBboCdupwT4qNJreAWqwk+/yYLRwRssqxokhI55Wl5gI+0NoxbnL0NMJVC
- BhKOwHD+9lCaLdqHhf0gIEW5PBbdsktewAAbejBGEYth19DdAl5goD8ACw/LzFuU62gkQPXif5/
- d2xpP3IHAJuMRAfzx6G77lPnZ718g+yW5WHHy80/rI5wRivDvCnua5ChxAORQPeruSxvuacEBVB
- +dQxy47+EE46hsaX+kihSkcJSA1wcAcJzNqsKnCv219waPh4bzxsGRmKwpG1jZQneWu1relVtyQ
- 7nzzJY8DF1absFKxu55m4eu5FtByKoBPIoYk91GIS9CgK5LlRnDg5+Nd7MOteEBR6aLU6wkEJbS
- iU6meSuXAaf5Ei/EaPYG/xuMa/QzCBiFMrxpUJO5PRw3R62iFOq/tsRLbgu219aYet4Wwr1AUvk
- tf2lcu6DJQH5CHD797OAbrXMWRaE5w0manWX+ivKpL+fzdAB/kc+fZEhLuRIkrCmqdnqeNyDAtU
- dsUnKt2LDGqqAoMsAevJlgIqH+8DXwKxXRdeHAqNRz9A3h6u82aFNmHJZjxVTcZalbhczkLpdsf E5l0/YzkV8YDchA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2898; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=dxslJAb5KIt29+Pmlra1MsYzJUsqBlgsseUHaKRC00Q=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplahFqqe27pmaRIiimlvXAoI7c4Aaeb8gzBCoW
+ 7sqLygMmP2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZWoRQAKCRAEWL7uWMY5
+ RiinD/93Hu+5kQo1qJcL+IetJ2vxyhhemT1hfThuvAADi5VceWTgLmJNepFXO7G77pW/2GeTBB3
+ hglYyOoUtJStG2fdTUp+EutcYerAtSgpAnbhEpOIaMKO2Yes5W+M92MyD+6fyb2jpTNX29pujW0
+ uca1oss6kBre/m26qiICetpHoL1NS1gN7YdP9JmrVujhz3kE+tFIJlMb+hNWp6ai7tdcn4gTSB9
+ J9OLQvOEIMk/kiA0xLkm+5Gl/u+m5OBPNotZfvsSwjCFDHFAi76dii3zfnn0ogXbsk8Cng5gEkS
+ CK49G2PrS5MB/lyNm8FVpbgDxUbHE4/HJ7qOJv7iBgDtBwkxpeW+4sWHaflHwSkyBMB0o06XkSy
+ CcTe+B3ydUvhCe1jg0tUlmuCqtsRcBwEX4XonP13fIL3aJPniOO4Ofg5aT1emcncDjlovMuwzj6
+ ChcMKSLOqtG2QV6h2HY6a7qu7ih04BkCqiTbRiQ3zKOKqB29seNh/1VwxImeQ3abXclaS/J87Xd
+ uEk0oq0T080GYz/oSMJjJ9jLLpuinmaE6Y6d5KtexouBUr1Z2YA40lB77+roEZf/5v/XL+n/rVc
+ Yc/ENTdwPvpAqKsnqxruyi+lhem8Kr5FlqNy93Krvh7d4uqyPNFvWixXuiZrM0Rb+RVZDF1DJ1I F2yQblZRdRGtoHQ==
 X-Mailer: b4 0.14.2
-Message-ID: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
-Subject: [PATCH v2 0/2] Fix VMA confusion in Rust Binder
+Message-ID: <20260218-binder-vma-check-v2-2-60f9d695a990@google.com>
+Subject: [PATCH v2 2/2] rust_binder: avoid reading the written value in
+ offsets array
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Jann Horn <jannh@google.com>
@@ -86,35 +87,66 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-This series contains two bugfixes for Rust Binder. I'd like to follow
-them up with better solutions by changing the VMA api, but as an
-immediate fix this should work.
+When sending a transaction, its offsets array is first copied into the
+target proc's vma, and then the values are read back from there. This is
+normally fine because the vma is a read-only mapping, so the target
+process cannot change the value under us.
 
-See the first commit for an explanation of the actual bug.
+However, if the target process somehow gains the ability to write to its
+own vma, it could change the offset before it's read back, causing the
+kernel to misinterpret what the sender meant. If the sender happens to
+send a payload with a specific shape, this could in the worst case lead
+to the receiver being able to privilege escalate into the sender.
 
+The intent is that gaining the ability to change the read-only vma of
+your own process should not be exploitable, so remove this TOCTOU read
+even though it's unexploitable without another Binder bug.
+
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Reported-by: Jann Horn <jannh@google.com>
+Reviewed-by: Jann Horn <jannh@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Changes in v2:
-- Use imperative mood.
-- Add some comments about why reuse of ShrinkablePageRange is not a
-  problem.
-- Use ptr::from_ref()
-- Rustfmt
-- Link to v1: https://lore.kernel.org/r/20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com
+ drivers/android/binder/thread.rs | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
----
-Alice Ryhl (2):
-      rust_binder: check ownership before using vma
-      rust_binder: avoid reading the written value in offsets array
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 1f1709a6a77abc1c865cc9387e7ba7493448c71d..a81910f4cedf9bf485bf1cf954b95aee6c122cfd 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -1016,12 +1016,9 @@ pub(crate) fn copy_transaction_data(
+ 
+         // Copy offsets if there are any.
+         if offsets_size > 0 {
+-            {
+-                let mut reader =
+-                    UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
+-                        .reader();
+-                alloc.copy_into(&mut reader, aligned_data_size, offsets_size)?;
+-            }
++            let mut offsets_reader =
++                UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
++                    .reader();
+ 
+             let offsets_start = aligned_data_size;
+             let offsets_end = aligned_data_size + offsets_size;
+@@ -1042,11 +1039,9 @@ pub(crate) fn copy_transaction_data(
+                 .step_by(size_of::<u64>())
+                 .enumerate()
+             {
+-                let offset: usize = view
+-                    .alloc
+-                    .read::<u64>(index_offset)?
+-                    .try_into()
+-                    .map_err(|_| EINVAL)?;
++                let offset = offsets_reader.read::<u64>()?;
++                view.alloc.write(index_offset, &offset)?;
++                let offset: usize = offset.try_into().map_err(|_| EINVAL)?;
+ 
+                 if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
+                     pr_warn!("Got transaction with invalid offset.");
 
- drivers/android/binder/page_range.rs | 83 +++++++++++++++++++++++++++---------
- drivers/android/binder/thread.rs     | 17 +++-----
- 2 files changed, 69 insertions(+), 31 deletions(-)
----
-base-commit: 0f2acd3148e0ef42bdacbd477f90e8533f96b2ac
-change-id: 20260217-binder-vma-check-b6fca42e986c
-
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.53.0.310.g728cabbaf7-goog
 
