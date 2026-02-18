@@ -1,115 +1,162 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7230F318130
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 08:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771403384; cv=pass; b=FWuuyXaCFHsn8SfqNfaYWpPv4BCeg6OkR0y0jwuyGpOULZ7N8VLZ9U2HAE78RH6Z2+Fdod1nG/UBlN5rDUfY9irrcgIEsletpuYjEqhK1zeidstVxCMMnfyaY6bbYlwctI5nxc2JFpJpzTkzoXiFglNaRmr1PUJA0606p0fO5+4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771403384; c=relaxed/simple;
-	bh=KXWmkpCoq7kLjpwGH2w0lCzbwrtLbjDzwhy8Fk/NvNs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rz9tjS21gSsCC4WrGdgzOqLt/40KPZEV+ELtkzrqVJCjU2uUsXe5xxDw5a3yp88OJL+4PMFmWGPbNyLdEnEHaBSpygaM6bCp0IrLk3zOkO7TcSd3pEKaofjG875sP1WAGOsbg7hA3WRCIzEKMfp08MEq8ZjNV2+uEb9TwrFc7Wo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jl0Hf3dX; arc=pass smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF85F2FE57B;
+	Wed, 18 Feb 2026 08:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771403892; cv=none; b=cfXaOS4bzB54gF6twMvIZvdPFZ4WzB1ihaeKYt9cezdZAx0YimcATdkwfduFJGAW6+WC+2hO+4ELsnD7inlUVBR8hEEsonYcTvcDwITiEsG28nkU1Y0RKjo0kjjyy02m5Jo1v/ly45Itd5gO9umh3mRUVBvalxVYqR0HedoVIjQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771403892; c=relaxed/simple;
+	bh=QvgDvJbDfK1mXFNZSUHpWwAH5cKAzQIRTHu6hxZrvng=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ebcJjGTB6QYoODLG3vZEPA2x6Adq2uJ83swKVAQRgI72iFPCmZy1Tkv3jUmsVXqL3/HaNccHoSgs580tOvU4+afHMhcQrZ3V7CNhROS5uw5e4k4agPdel0w/FQEoMjP0lGf3WfImutW+STnfaPOzaA4V/YmQa2G1LyWNVKHhHJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=F14g/Dgp; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jl0Hf3dX"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-4359249bbacso379008f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 00:29:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771403382; cv=none;
-        d=google.com; s=arc-20240605;
-        b=csgJezqQWNdSvkt0T8rRRWSCBmimj1E/T1K7W43p9l+ri8yR/lKQM1/gmEnt+Om/Nu
-         casEAUuWnf+38d3F/Zfs5ovO5fav+/Leashee+R7XSO50sf17mRlmK9Hehdra0kLs6ny
-         GNq3X+e+Hf8T1t/lwhWokPC5ux8DndLa5NWXO/X8V2X+9MfAnXw/CoZEKUhMVzAr6a9N
-         tiugo65Cr8XrojW9gPJQ3wHdRu99uhePOmYi/MNNdAoBAJXxCVcLB8/dZvrIXiUdCC+L
-         VUdYFG7Mzb+eAqdoFUb+A3cL8LSoCQcOvuEYnXjBBPjZa7i8d+yWgBbVoFCXzGiMb44I
-         G74A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KXWmkpCoq7kLjpwGH2w0lCzbwrtLbjDzwhy8Fk/NvNs=;
-        fh=jhsxz9ZAmWheQl+qZuhYYb0W/mu+wrDOoP1MBXBWWZ4=;
-        b=OSXWFM7MTFtCdTfROSUrWtlv5NgGBMvj800lxA1wrlAIQc5e+e+4na1zeY770QB/GG
-         0DyXxhgmM5pzUCOC7yrm4R+Jisvaiet6V4h3H4R4iC3GXBZNSlNdHfW73T1y5Vz9+nnM
-         UBiiqz8QSMZbZrE0my257PNsfQfuqxGOPYsq1Cs7c4KX82xsv2i+clgIauYrtewsqro9
-         HIdIUDJPdeRWNwKoBKMYvf1k9Arj48zwp5MVjskLXxmlHY2fcdtfVzILIUE10nl77SG5
-         oyJ4JWh//X7h6wqo19WEBsxiSdWS1N52jeVCYlxzE1Dg3A+959f8vDEhJ+GZBBKnPolU
-         kvEw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771403382; x=1772008182; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KXWmkpCoq7kLjpwGH2w0lCzbwrtLbjDzwhy8Fk/NvNs=;
-        b=Jl0Hf3dXD4i44V3yeyclWB+GjZr3jIAs6UbYhUhojn7/UGlUa4kSHKUkZFtTmiFSiv
-         /ty1zoUsseYK+x73OpaGZm0krg35D5/2czszQl4eOn8BiiaMoHr+c9vevw08/ZU+Vu8m
-         QHymVJlQzlyb7J52QitgRweWs7nvB9NVKz38JU2OFpQaslVvMQm2WlUDNMMQeXiKysjz
-         aaPkk2nvIDzsAFq44FcDtwU+1VmRjsTJ/dZ1hKZ9sjgcP0sLZfoq/Y4MWtiIl900U3n3
-         QoJFXahyRQnLrNPIm8gN3EQaUwn316/fA0ZKBoWSnOiwRN/xcpPNq/h314s4ksZbDv+O
-         hhcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771403382; x=1772008182;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KXWmkpCoq7kLjpwGH2w0lCzbwrtLbjDzwhy8Fk/NvNs=;
-        b=XIvY5mdagiL9Ae4m6OMm/8R4/QPaA2FDSHCOWVOAXlvANJ2NCnpr6pocy6djtB4D6M
-         mV21xrS8oPHJlCTDGz/tmyr165TiwbQWE901OW7SzxXpnyPonSW1gOFsl8aNYvj4eMpM
-         0l3/e2PCkB1hCwbEoYdzCRA/8naeoHE9Kj0LzoHvUaI4d5MH08P6AnKxem+h2EtmOwwW
-         5yqDf5fu4WRks9qP6O0j8G1HikVQFQizNbxAPbDP+uHKcnIERyxl2cir1h8qGvuSWLKx
-         ni1vfE/PELYpLkXxQ7fXIvCCx3jAJj6ctxBfsojEGs/BAtsBTN80qxhzWZeGvtNSZIro
-         mz+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWxtchRCgxQ+AnrNh4AqxgQFPYeHow8ZlnwzlV7B82HYKSVBZSrnYO2H6tmTkYOTilC3XofNHRhobQ6sWbV+g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzjh5HyGGtW/FmB4jyZ8mhS3Wamq4gbxDXUsBliTjjPZIKfU2/p
-	JWGCMWSXZNBmFCjXhpNWdDfmbGgb2woyzOvZYHZ3yeKBDZLJjKZBnyu/JsRM8fJYu1d/No4en8z
-	yWaCfeVtmpNl98ZNBqZjGC3Yl5556gxRvlblzCii4
-X-Gm-Gg: AZuq6aJjFPaLhTSGu47DW8Qt/kA3pmKjyKj2+UltKvbq96IJnz/F79tr8KQ9S5QwcJn
-	Tn17xVb/gx3C7V7rccYAXe64dmcpIX42BuiwP4e3ocOeU+Ar7A5iLLytUPzjDxNuw1IkMifRegd
-	c/noG6QdVKmhGxXQwVzSXPopZjJe60zlpRPdiVDG8IsECs0nmNDwQs0ubDJVYhH3lFRfVyJU/7e
-	U2zkw/8xbBINm4CGCe386mChr7hPfdda+0g5IYyTvuPky+LN3ITBeSqiazWYJv1/6pPloUzMv/H
-	AVM6w09iQLG15X7gyqWLB/tuNg7fVa8JNbMGE4B9O/d0wMoSupWYe4bQyAmDOlNS5AsCzflEv8I
-	D/cnz
-X-Received: by 2002:a05:6000:4010:b0:430:2773:84d6 with SMTP id
- ffacd0b85a97d-43958c4e66fmr1690358f8f.24.1771403381393; Wed, 18 Feb 2026
- 00:29:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="F14g/Dgp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=z8CmZLDj2c4oTROwg8zkd+DRY9MWE4RsnIDSCGPUZmA=; b=F14g/DgpWhhHTUrMIRAi0AfGfR
+	CDePZyaBLuRkxxTUhgJyI2AXPJzQG1Iart7sHojddMLbunhcV3ftkFoLifgASVVPmQZ5CSYS816Ev
+	c64sjvPL1wA9mr1kvDVDtrd0z6ZRm4Nougbih/4Q8RbyMyB2jOaSZ8fUIvAhXUUlrKwQ6wq/XgOG0
+	9pu/LpAnZ4Dl2Kh8s+gRl4grIOXtkfHaF7qktSP3jPNwiwUIIrOBCTVJNzCRXj9fONsCcLCSWDMUV
+	iWxeWfM7OoCS1/Q0A3wdvSgsCa5GxEBAo9RyWSWxdtA1GuCZUQs/nD+HsElCBtaHSZcyjwD3FfWvc
+	fl1g+HzA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsd4G-00000005kvL-1s4w;
+	Wed, 18 Feb 2026 08:37:56 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E2A12300B40; Wed, 18 Feb 2026 09:37:54 +0100 (CET)
+Date: Wed, 18 Feb 2026 09:37:54 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260218083754.GB2995752@noisy.programming.kicks-ass.net>
+References: <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
+ <aZQ8lJJ-U_8j03Z4@google.com>
+ <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
+ <aZRHJ7pSzOHruPA2@google.com>
+ <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
+ <aZRWOIPThLfIZ1Ph@google.com>
+ <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
+ <aZRokyTqsd_RwdkK@google.com>
+ <20260217154800.GY2995752@noisy.programming.kicks-ass.net>
+ <cbbea9ecb994df975109d97a7756d73e@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260215-ringbuffer-v1-1-9b359758a1b6@kernel.org>
- <8tULWyvUTjVb3E_HFZeW2maApI87eYLZungGtJ6k9CVT9J-C-TzIqx5ShmHA5vS30yqZRq7TmaBd0AIg5V7u6Q==@protonmail.internalid>
- <aZMMyJofDKualqXw@google.com> <873430es2p.fsf@t14s.mail-host-address-is-not-set>
- <C82DE0A6-17FC-4FD9-A272-257B59129A7E@collabora.com> <DGGFZX5JLZ22.3E1C8OVLNUDD6@kernel.org>
- <3D7C5FE8-CA15-418B-B2F7-D0EA4C37E1F0@collabora.com> <DGGGPFU9E9VD.8TT3HZUWS100@kernel.org>
- <U-BIeJ2bi8_e-eMwrNeo2r12w5jDIlGja9E3QSTg2bgL7JYAp1lJtO6sPCvTGQsL1PCfkEkMHfR5eLVG3JPJaw==@protonmail.internalid>
- <71F89D79-DBE1-4617-B58A-8552D0F2B3A2@collabora.com> <87pl63d6xx.fsf@t14s.mail-host-address-is-not-set>
- <L27n6JvhX0qd0nYoc7OSvJJHPPjYRdUHiXcqL4l9FKkG52HCMa-qnOS33uUJtDu_Iayel2UgLad7yc5cWsOGHQ==@protonmail.internalid>
- <DGHB1VEL6XTH.2W3803V58FUSH@kernel.org> <87342zchjb.fsf@kernel.org>
-In-Reply-To: <87342zchjb.fsf@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 18 Feb 2026 09:29:30 +0100
-X-Gm-Features: AaiRm52ayL78Sm3Vd7A9YtG_M81zZQkVCzyzo31wP-bjgXqp4sCbn8YwKCQr-Y4
-Message-ID: <CAH5fLgg4R28vqs7udFb5PtrQAXOzBGaNMq9aGf=W9cjVZEDGjw@mail.gmail.com>
-Subject: Re: [PATCH] rust: add a ring buffer implementation
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cbbea9ecb994df975109d97a7756d73e@garyguo.net>
 
-On Tue, Feb 17, 2026 at 8:11=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
-> * VecDeque? This kind of structure has always been a ring to me.
+On Tue, Feb 17, 2026 at 11:39:18PM +0000, Gary Guo wrote:
 
-I suppose it's only a deque if you can push/pop from both ends.
+> >> Are we really good? Consider this code:
+> >> 
+> >> 	bool is_valid(struct foo *val)
+> >> 	{
+> >> 		// for the sake of example
+> >> 		return val->my_field != 0;
+> >> 	}
+> >> 
+> >> 	struct foo val;
+> >> 
+> >> 	void *ptr = kmap_local_page(p1);
+> >> 	memcpy(ptr, val, sizeof(struct foo));
+> >> 	kunmap_local(p);
+> >> 	barrier();
+> >> 	if (is_valid(&val)) {
+> >> 	    // use val
+> >> 	}
+> >> 
+> >> optimize it into this first:
+> >> 
+> >> 	struct foo val;
+> >> 	int my_field_copy;
+> >> 
+> >> 	void *ptr = kmap_local_page(p1);
+> >> 	memcpy(ptr, val, sizeof(struct foo));
+> >> 	my_field_copy = val->my_field;
+> >> 	kunmap_local(p);
+> >> 	barrier();
+> >> 	if (my_field_copy != 0) {
+> >> 	    // use val
+> >> 	}
+> >> 
+> >> then optimize it into:
+> >> 
+> >> 	struct foo val;
+> >> 	int my_field_copy;
+> >> 
+> >> 	void *ptr = kmap_local_page(p1);
+> >> 	memcpy(ptr, val, sizeof(struct foo));
+> >> 	my_field_copy = ((struct foo *) ptr)->my_field;
+> >> 	kunmap_local(p);
+> >> 	barrier();
+> >> 	if (my_field_copy != 0) {
+> >> 	    // use val
+> >> 	}
+> > 
+> > I don;t think this is allowed. You're lifting the load over the
+> > barrier(), that is invalid.
+> 
+> This is allowed. Compilers perform escape analysis and find out that
+> "val" does not escape the function and therefore nothing can change "val".
+> 
+> A simple example to demonstrate this effect is that
+> 
+>     int x = 0;
+>     x = 1;
+>     barrier();
+>     do_something(x);
+> 
+> is happily optimized into
+> 
+>     barrier();
+>     do_something(1);
+> 
+> by both GCC and Clang. The fact that the local variable here is a struct and
+> memcpy is used to assign the value here does not make a fundamental difference.
+> 
+> barrier() does nothing to local variables if pointers to them do not escape the
+> local function.
 
-Alice
+So how do we stop the compiler from doing this? Because I'm thinking
+there's quite a bit of code that would be broken if this were done.
+
+Must we really go write things like:
+
+	struct foo val, *ptr;
+
+	ptr = kmap_local_page(page);
+	memcpy(ptr, val, sizeof(val));
+	kunmap_local(ptr);
+
+	ptr = RELOC_HIDE(&val, 0);
+
+	if (ptr->field) {
+		...
+	}
+
+That seems 'unfortunate'. It basically means we must never use local
+stack for copies or somesuch.
+
