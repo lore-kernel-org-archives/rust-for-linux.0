@@ -1,135 +1,185 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9252741B5;
-	Wed, 18 Feb 2026 08:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A1D25B1CB
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 09:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771404820; cv=none; b=mGXnSxkIO7KA+1at1Q6alXvqLL3hKrUtdTh6majPRdlN2wnrp7Q7B3ENx67dEF9LVPLryCVeuahezeuKB5fiy0mdS4VFNijLvlD2DvlqnQV41Uzo6J/h105Kxn2AnJyttamAFLS9xFfR9ASMsLlVJVicgvF4rovJJvVkY7OLLL0=
+	t=1771407077; cv=none; b=pcz/n1ipJfTDQzdPLbF2HRg6QKpRLEjIoXjyjKMv8CHF1vWTQuDYufhPakVCDu3VqXOFrWPHIMZwtOa3uilqo8VTqBMkvHi4FMvP0+PteT29j63Hltkp73KMJCsbNqnc0AbuQU5czw6n9WcQjqKKYRb3cWGaQ3ceerXn79eSIeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771404820; c=relaxed/simple;
-	bh=h8tnxqAZN5STQp4YFIacaYVYl33v6/XGGMUZhgpbLK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ckCTUfje/Nj10JbwjPFt6f2W3WiChCvbZ2H1gSNWT84tcrfl+liyVDzWPy4cB3jvNU6QpOLlScGArsC0FYxPlrFXEkAF6285vNknMF8yD7ZkH7t8pTKoFhlyM+SuwpUzbD5mkzPqbQ6dWWPx5t3BEW6JsJ12mjSYXi/eUNNn77E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=p/c6MtAi; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1771407077; c=relaxed/simple;
+	bh=ynAGL37s7FWBMrSgqUjiQMxCYwtmS+dVwdIirYlrhRY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Q+JRQJN0od2b1+lqlNV70JtSAKPFCeq2xrVWTs7saxGnU2KKkwyUqZjkna4rpKfIX81aANrIrZ6Ora4RHmjj+pd8slBako8AskA7jwPC1T58awrlllZxZb/Mk9WZ+1K0EIrS5g36aU18lDvFB/FLSc/l2eKO0+SBm9WRLEonzM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E0KiGf2B; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="p/c6MtAi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rAlZyMlEkwV4M1809AS+1dB0r82ddfEQ5DHlS5PW2RQ=; b=p/c6MtAiG/lOf0ICRFINSX12Ky
-	KuW2LImUZx28lDB5aVM5gVMN3ugNTPOdisLtuzNUrNqmFreDEk0splkkfaVdUhQ8o6PWVq0rot5YM
-	awSIfMcj4suNpbxZ6SLa/1WCeGA1bQrA5EcgU8gSZzMXyaqQgJJk8pgF2jo7ob7EKgBNy83h4VRUk
-	hR7+o3S0z6qtnVU2Ikt76dvld60lx0ArsTEZ8GWimHmMivTGyKRHD/Nhmbtq4BzX1Y+hCc104hzNl
-	RxDtCNiGE5InWDgrpuAzfJbTNi7AxG4xcuCDEivt5RukrAVuEm7bnutd/XJzQxxZ83E8Wp+FG5AeF
-	jF9DuL0A==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsdJI-0000000H6cT-47oi;
-	Wed, 18 Feb 2026 08:53:29 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 79DBE300B40; Wed, 18 Feb 2026 09:53:27 +0100 (CET)
-Date: Wed, 18 Feb 2026 09:53:27 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun@kernel.org>
-Cc: Will Deacon <will@kernel.org>, Gary Guo <gary@garyguo.net>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260218085327.GC2995752@noisy.programming.kicks-ass.net>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <aY9i8rbvnxdOA9DV@tardis.local>
- <20260217085541.GS1395266@noisy.programming.kicks-ass.net>
- <102c86dd6fb1a907b7138a437dee00dc@garyguo.net>
- <aZRHJ22UtG1YeBMj@willie-the-truck>
- <aZShEW2b9-71r18I@tardis.local>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E0KiGf2B"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-436267b01c4so4461581f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 01:31:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771407075; x=1772011875; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rFgVqtfti6/svD+1ZiUO3++RgsvWnRMRX+ORPut57vY=;
+        b=E0KiGf2BcVd844C+NUaC0txq/SfrprjiBTSF5ysBUBkWUSb0w15JRoOh2GVw4Xf/xl
+         a2iZWR0glWICf+bFdgrte4eEY5V+qAXQcRgAXlAEtWmJ6h8zfm0PQvdLNHFbA7baoizt
+         hJoGQM+Rtc4LQ49wkrZIqVbx+xRiybdPMEJJnSwfDFtI1B/hXIWDKkqr4dXit+EbNsKM
+         dnR7Y59QKT75mhqPUQiemy90T2O78G7OIpL7hyap0AQF1rcyqTbopuYhRFjKNS8QITzE
+         CqDTUl/b6hbEAKMwuUptnHeGJB2fzs39YKYp3r/VJVP3Hy1rxJ1se8A+9BVxMNReF4Gv
+         qSzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771407075; x=1772011875;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rFgVqtfti6/svD+1ZiUO3++RgsvWnRMRX+ORPut57vY=;
+        b=CASd0p9SBP+PORM+tnrWI+WocN2mWsEpviVdtUckhjm3m2tKxf8ZSpSgDuI3byHb2G
+         kWps7VgKp0pNbeTnmRtys0clK+C0zXGGYCpHDQB06JZN7C1k5bPsXqFl04FV6iq+dNbZ
+         JRWbtFy8kzWMTm+YiOq8zrl7C363yXCbdi284Goc4zKbfnzFFqzmaJUlFyL3cCXInXEF
+         l7TrfKzMNo0UcvAT0CkE+23WKdm6x3E8BdBv251LNLEYBblhc1xdm0I3vIcqmt+2AJHU
+         PogJrWInLmsTWrl9sJ0cAw+LlWG8lnAFS1NtSZ+KxfbMvtaUGW+FrSKuKR6LDLT3y9pu
+         U0Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCXn1299OcDHVZHEbE5dU2vyua8IXaXf6kkULJYPJ1wLGHlJublsaSsJxD0WtfirTtdPpx/NfxEj//3zXGsFRQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDzGPsNzg4OtpKLFe4w7WKJK9paIU61WY4p3YkFtReBgL6fPIY
+	1GmCx0wxCtQ+ZDc5Cg+TsCOKF+lkqOcmazS4wUl5LGotixgmklSBx/pwJft4vI6WLyUL8cFCHm2
+	0evtIy7ouSteuF6S2EA==
+X-Received: from wrs2.prod.google.com ([2002:a05:6000:642:b0:437:6bbf:a150])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:26c2:b0:435:e57a:9082 with SMTP id ffacd0b85a97d-43958e504afmr2125915f8f.46.1771407074382;
+ Wed, 18 Feb 2026 01:31:14 -0800 (PST)
+Date: Wed, 18 Feb 2026 09:31:13 +0000
+In-Reply-To: <20260218083754.GB2995752@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZShEW2b9-71r18I@tardis.local>
+Mime-Version: 1.0
+References: <aZQ8lJJ-U_8j03Z4@google.com> <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
+ <aZRHJ7pSzOHruPA2@google.com> <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
+ <aZRWOIPThLfIZ1Ph@google.com> <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
+ <aZRokyTqsd_RwdkK@google.com> <20260217154800.GY2995752@noisy.programming.kicks-ass.net>
+ <cbbea9ecb994df975109d97a7756d73e@garyguo.net> <20260218083754.GB2995752@noisy.programming.kicks-ass.net>
+Message-ID: <aZWGq8EMxz4omw4L@google.com>
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+From: Alice Ryhl <aliceryhl@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, 
+	Greg KH <gregkh@linuxfoundation.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Feb 17, 2026 at 09:10:42AM -0800, Boqun Feng wrote:
-
-> We are worried about two racing memcpy()s end up being data race and
-> that's undefined behavior. And "atomic" is the key word in C (and Rust)
-> to "lift" normal accesses to non-data-race, for example:
-
-I hate people for calling that atomic. It has nothing to do with
-atomics.
-
+On Wed, Feb 18, 2026 at 09:37:54AM +0100, Peter Zijlstra wrote:
+> On Tue, Feb 17, 2026 at 11:39:18PM +0000, Gary Guo wrote:
 > 
-> 	thread 1		thread 2
-> 	--------		--------
->     	*a = 1;			r1 = *a;
+> > >> Are we really good? Consider this code:
+> > >> 
+> > >> 	bool is_valid(struct foo *val)
+> > >> 	{
+> > >> 		// for the sake of example
+> > >> 		return val->my_field != 0;
+> > >> 	}
+> > >> 
+> > >> 	struct foo val;
+> > >> 
+> > >> 	void *ptr = kmap_local_page(p1);
+> > >> 	memcpy(ptr, val, sizeof(struct foo));
+> > >> 	kunmap_local(p);
+> > >> 	barrier();
+> > >> 	if (is_valid(&val)) {
+> > >> 	    // use val
+> > >> 	}
+> > >> 
+> > >> optimize it into this first:
+> > >> 
+> > >> 	struct foo val;
+> > >> 	int my_field_copy;
+> > >> 
+> > >> 	void *ptr = kmap_local_page(p1);
+> > >> 	memcpy(ptr, val, sizeof(struct foo));
+> > >> 	my_field_copy = val->my_field;
+> > >> 	kunmap_local(p);
+> > >> 	barrier();
+> > >> 	if (my_field_copy != 0) {
+> > >> 	    // use val
+> > >> 	}
+> > >> 
+> > >> then optimize it into:
+> > >> 
+> > >> 	struct foo val;
+> > >> 	int my_field_copy;
+> > >> 
+> > >> 	void *ptr = kmap_local_page(p1);
+> > >> 	memcpy(ptr, val, sizeof(struct foo));
+> > >> 	my_field_copy = ((struct foo *) ptr)->my_field;
+> > >> 	kunmap_local(p);
+> > >> 	barrier();
+> > >> 	if (my_field_copy != 0) {
+> > >> 	    // use val
+> > >> 	}
+> > > 
+> > > I don;t think this is allowed. You're lifting the load over the
+> > > barrier(), that is invalid.
+> > 
+> > This is allowed. Compilers perform escape analysis and find out that
+> > "val" does not escape the function and therefore nothing can change "val".
+> > 
+> > A simple example to demonstrate this effect is that
+> > 
+> >     int x = 0;
+> >     x = 1;
+> >     barrier();
+> >     do_something(x);
+> > 
+> > is happily optimized into
+> > 
+> >     barrier();
+> >     do_something(1);
+> > 
+> > by both GCC and Clang. The fact that the local variable here is a struct and
+> > memcpy is used to assign the value here does not make a fundamental difference.
+> > 
+> > barrier() does nothing to local variables if pointers to them do not escape the
+> > local function.
 > 
-> is data race, and 
+> So how do we stop the compiler from doing this? Because I'm thinking
+> there's quite a bit of code that would be broken if this were done.
 > 
-> 	thread 1		thread 2
-> 	--------		--------
->     	atomic_store(a,1);	r1 = atomic_load(a);
+> Must we really go write things like:
 > 
-> is not.
-
-At the end of the day, they're both the bloody same thing, no matter
-what you call them :-( All this UB nonsense is just compiler people
-being silly.
-
-> In memcpy() case, since we don't need the whole copy to be a single
-> atomic operation, so as long as the atomicity is guaranteed at byte
-> level (larger is fine because 2byte atomic is still byte atomic), it
-> should be sufficient as a concurrent-safe memcpy().
-
-But this is every memcpy(), ever :/
-
-> So either we want to live in a world where
+> 	struct foo val, *ptr;
 > 
-> "concurrent normal accesses with at least one being write are data race
-> therefore UBs, use the corresponding atomic API in this case and handle
-> the data carefully with concurrent accesses in mind".
+> 	ptr = kmap_local_page(page);
+> 	memcpy(ptr, val, sizeof(val));
+> 	kunmap_local(ptr);
 > 
-> or we want to live in a world where
+> 	ptr = RELOC_HIDE(&val, 0);
 > 
-> "concurrent normal accesses with at least one being write are data race
-> therefore UBs, but there are 17 and more API which are technically UBs,
-> but they are not considered as UBs in kernel, use them"
+> 	if (ptr->field) {
+> 		...
+> 	}
 > 
-> To me, having a atomic_bytewise_memcpy() at least clear things out about
-> what is actually needed (at the very minimal) to have a concurrent-safe
-> memcpy().
+> That seems 'unfortunate'. It basically means we must never use local
+> stack for copies or somesuch.
 
-I'm still not seeing what it does over any other memcpy(), except you
-created one more API, so now we have 18 :-(
+No I don't think RELOC_HIDE is what you want to be using here.
 
-> Moving forward, since the concept has been already somehow
-> proposed to C/C++, it's likely to be standardized (we can push it from
-> the kernel end as well) so we don't need to implement a concurrent-safe
-> memcpy() for all architectures on our own.
-> 
-> Hope this makes some sense ;-)
+The way to stop the compiler from doing this is to ensure that, in
+LLVM's eyes, the memcpy is either a volatile memcpy, an atomic memcpy,
+or an opaque function call. According to Gary's reply to my email on V3,
+it sounds like an explicit call to memcpy like this apparently falls into
+opaque function call, so it should be okay.
 
-I'm still not seeing it. All memcpy() implementations are already
-meeting the criteria you want. There is nothing to implement. And I
-really don't see the point in creating: magical_memcpy() that is
-*identical* to every other memcpy() we already have.
+Anyway, that's why using Rust's copy_nonoverlapping() isn't okay here.
+It emits a non-volatile non-atomic LLVM memcpy intrinsic, which permits
+these optimizations that we don't want in this case. By calling
+bindings::memcpy(), it falls into the opaque function call category
+instead, which fixes the problem.
 
-AFAICT the only problem here is that from:
-
-  https://lkml.kernel.org/r/20260218083754.GB2995752@noisy.programming.kicks-ass.net
-
-
+Alice
