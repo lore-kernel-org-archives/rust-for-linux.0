@@ -1,91 +1,77 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999FE328623
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 13:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C85B32ED37;
+	Wed, 18 Feb 2026 14:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771422718; cv=none; b=LEwMU7pZu7O50zLtYAZKbbybaoKd1x2jvjAMXBYo9LfJKS0yY9Jmyn03MUXukPw5EiWaAyslyA7umYP7MNbklpdgmFCezGAjiojItY/k3enYa0pb2qKmcthMRa2sNOHjFIs+1lR9kVTzHWGgCQHbMg5fU7Z9n5ikkQ38ydKO6h8=
+	t=1771425749; cv=none; b=CDuu/lMEM1PMnoaHuWj+TvThmGpgRXV9F3dkRWN48+pbwmJ+yybxpmo5vMm8x5D6f90d8vtpSIGQ4GCPNJcGulq4itSm0xXDwU0PbSndWmcqnNo4+i1+SNgGh26NOV0JvEpdb+1wnmLs15Jl5znHasL5nnyE2dbuFyCFikKUaX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771422718; c=relaxed/simple;
-	bh=B2gk04B2aeaqoOcUpyvWb8TroOcFFUIngrROjwLCGKQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YpIVr4kp5KlQCQaSffc4uIQjdEK+OOHDls3Gsty+X+bNEZsXResTPLhUV2Gb/CgkAb+ymBoOzihaZgQrS93t9yAi5Wgnbv+83T0nUZCbs8V26bsPykkvXaX5u+N+v3u6gML5DYDbRbZXQTNAiWlYt/Oms1HVGRzX9f1nzWpFYRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Togdtpcr; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771425749; c=relaxed/simple;
+	bh=6GPMVdt+2peIzfNOCgaGLfLM2Thd6H8NgtP6G0RDwEg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=iCdFpt6qFszcLo5+D4Lz3/yS30o1WaXtHvGZOasvoeHT49VLjGEruAOMerM5AFxyW65t4TvQe7in0AboUSkSGBgHAkH49x8n/MBleSivn62bHF6TmQlnTO4djtm9rKZjxUj8D7WXvXSG3BEEh16tNfSRmL6SSzsFpPSEmQHfuYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOuraL88; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Togdtpcr"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4359a16a400so5127155f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 05:51:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771422716; x=1772027516; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rYx47k8dyRpM97gMYzAlYbIru4B1EN9fBdkfbNWwdnI=;
-        b=Togdtpcr/mIFtMEyXcsO6lnYEpoeYsXgoJhypgOceBguqcbHSXChmVHeO98kJAEd60
-         WbAICdFUpmR1J4B22RCQoFmFtIb1ggVETRMo2PqI3Otfm2bKJa+5cLTxg560oSXclW0Z
-         T3ZfERiFg0FH+5dUAOc4h9XQuvYnxJ8+UgyCdsODrQ/6Dopz4XmgTYBw20T/wYXRBAfj
-         tEw/vd+U7SezgVIUsqJ56n7pTlhqIKzmhoj7uVApXmUfs+cxAjfEpRjJBLyAc3bOiGM5
-         y4sTFime+kwXkioCSCsBoPXI63Jh4tfHTqQABZUI7useck/QNf4/6V+ITHK4Pg1uu7U2
-         6k7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771422716; x=1772027516;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rYx47k8dyRpM97gMYzAlYbIru4B1EN9fBdkfbNWwdnI=;
-        b=KrJI66e3WFU84JTYJk6Vpesuaj7Xl4m1qpiXeU1GdpirDjL9Q+JOvTOFG5QkglUt75
-         IigolsYfM+8T/3eqt+ZsaScsI4LC+WD11auT2rAzitRg7vGatT0LbTHNUha6m1vArd8q
-         2MJLE93CX9E+IWa+VHhf7KsgjzBuOgz2UHpSCTNO2EpH8rm4ivFe4reZQvGjrlIsiild
-         V/S8q2o5uU0nAxQZK0s3DwdVfqDAgMurjlgO6zjcbXJk61bcYVVCcPA1jKdAkn68dl9o
-         r7TGNIlVdMsZtiD0uc2qsvi1YfLl4DEu/RC9wasCvwRM5Ra9OdHkY10LTvdjNkpa1nrW
-         qxbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ3VEofl7uIsnLr46iKzGm9TE7/9HxGr6fw7ibKyQtda/2RWip9hx3Jz+mzF91V8eAk35+QPHotq0n1Nk8JQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhjDxiziYmy366uSpZikSNIKGeTx9nXy9+Vy/KUy1YkuhdnSql
-	Hag8IWtcdf69J7xyDTWrmAsu3dfRUQKdUBMkBkBqnJQGBtNu5oZKzW+q
-X-Gm-Gg: AZuq6aIMhxk4yaqrAAmwcQWSor/e6w5VeY8w09XdbCDWfc/TemKbDaypxi5vMSBlves
-	Yg60HtKjiQHIzQUAdpUk7Ook6dQZQiFcZDb0NOIgyAEVp8TbjLV4k9itSE3zvcWqvrnxOmbtCAn
-	89tedroeZemGqR5YJ/840kUL2JxfKgmMa5pJcyMLLmZq55242FZO+VCL5cFmA2iHbrnstnIm7qs
-	1VO0mfmNQcFjwIsmXgV9m/rZxetu0/eAAw34fy1D7eec1sAqX9xp1hJavHVn8S82r6weeNsh7D0
-	YhBQECvoNiC8BkltvV7OttuWtGQZyTmexluvbvvlosDeD33zu/SECAGNQqWQo3xGx+xig2kuCwO
-	z5j0JWAezxN6aX2wmWGnP36pBhGsgdM2ey8if/GcoMG5HVkdPu/Ocx20RtvTo1p4kCTXSUwTzOv
-	9WZm6Z3AFzj2MZl5xUYi6UBmfb212J9GHww2YPtzXaVahycXzOPEWmk3oWj7TsdeRhGaOJNHlHF
-	wZp0N8GAz+ANI4zey9YvVHELPLRlKi37trIE1wMauebaJA=
-X-Received: by 2002:a05:6000:2882:b0:430:feb3:f5ae with SMTP id ffacd0b85a97d-43958e57504mr3195980f8f.55.1771422715780;
-        Wed, 18 Feb 2026 05:51:55 -0800 (PST)
-Received: from ddolgov-thinkpadt14sgen1.rmtde.csb (dslb-002-207-075-089.002.207.pools.vodafone-ip.de. [2.207.75.89])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796a74918sm42069851f8f.17.2026.02.18.05.51.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 05:51:55 -0800 (PST)
-Date: Wed, 18 Feb 2026 14:51:53 +0100
-From: Dmitry Dolgov <9erthalion6@gmail.com>
-To: Levi Zim <i@kxxt.dev>
-Cc: linux-perf-users@vger.kernel.org, Ian Rogers <irogers@google.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
-Subject: Re: [PATCH v3] tools build: Fix rust cross compilation
-Message-ID: <47mkwq2jzflgnswzvtz6rflu5hi6qlg4k55plizxj3y6fgqjb6@qbfqtpuwqqek>
-References: <20260218084736.33114-1-9erthalion6@gmail.com>
- <d1a55d2d-b2b6-4763-a6b6-c7aa843c43ac@kxxt.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOuraL88"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538D6C116D0;
+	Wed, 18 Feb 2026 14:42:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771425748;
+	bh=6GPMVdt+2peIzfNOCgaGLfLM2Thd6H8NgtP6G0RDwEg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WOuraL88EbRfrvLI1WBAyqV6X1XC3KTqovM1+IdLWw5Rcd/bInss17hx4iZLH8YzR
+	 PdtMHLan4I9P7JhvOvEhDqv4mVBgfhaKg7Ceh2KaQMs7BSfXxt8Z2FRvdznrzwDxA2
+	 nVoZSFzVtHd7J82khdVqpnmsHzKxOMM7z0g70b2hAhRwuUTvd3ej5omsZ3zXcphzSQ
+	 o1Au9Ip8mxgLVlblTAo647x7SRcp6PtkoGiEcT4HysQW2j53ecV4CBhVWivu8KMv5+
+	 Z8BE+o/9fHcQVjyBT1C8n9li8Oyl4qZhAQQT8ukbxUuY9qbcOlx+TfH2VvJL3LXh+Z
+	 EqqCOHsOty3bA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d1a55d2d-b2b6-4763-a6b6-c7aa843c43ac@kxxt.dev>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Feb 2026 15:42:23 +0100
+Message-Id: <DGI60O54OUA2.3ULIYWOL6YO5Q@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Mark Rutland" <mark.rutland@arm.com>,
+ <linux-mm@kvack.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+X-Mailer: aerc 0.21.0
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <CANiq72=5r2miRm6GWszb2gDNi4k5-RZUzvdOdFQ3yyndvmHbAA@mail.gmail.com>
+ <CAH5fLgi6NVagOPA_=r7Dmk9MFXrvZVuq85D9bsJfUqLNOZjCaA@mail.gmail.com>
+In-Reply-To: <CAH5fLgi6NVagOPA_=r7Dmk9MFXrvZVuq85D9bsJfUqLNOZjCaA@mail.gmail.com>
 
-> On Wed, Feb 18, 2026 at 06:57:18PM +0800, Levi Zim wrote:
-> On 2/18/26 4:47 PM, Dmitrii Dolgov wrote:
-> > +    RUST_TARGET_FLAGS_riscv	:= riscv64-unknown-linux-gnu
-> 
-> riscv64-unknown-linux-gnu is not a valid rust target triple.
-> It should be riscv64gc-unknown-linux-gnu [1] if this is applied to build user-space Rust binaries.
+On Wed Feb 18, 2026 at 1:00 PM CET, Alice Ryhl wrote:
+> On Wed, Feb 18, 2026 at 12:57=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+>> > +    /// - For the duration of the call, other accesses to the areas d=
+escribed by `src` and `len`,
+>> > +    ///   must not cause data races (defined by [`LKMM`]) against ato=
+mic operations executed by this
+>> > +    ///   function. Note that if all other accesses are atomic, then =
+this safety requirement is
+>> > +    ///   trivially fulfilled.
+>>
+>> And, for this one, Benno said perhaps we should introduce a shorthand.
+>
+> valid for atomic reads?
 
-Indeed, need to fix that, thanks. I've double checked, the rest seems to
-be fine.
+Yes, in particular it should be folded in with the "valid for reads"
+above, since that would otherwise be conflicting.
+
+Cheers,
+Benno
