@@ -1,162 +1,189 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF85F2FE57B;
-	Wed, 18 Feb 2026 08:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50805326927
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 08:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771403892; cv=none; b=cfXaOS4bzB54gF6twMvIZvdPFZ4WzB1ihaeKYt9cezdZAx0YimcATdkwfduFJGAW6+WC+2hO+4ELsnD7inlUVBR8hEEsonYcTvcDwITiEsG28nkU1Y0RKjo0kjjyy02m5Jo1v/ly45Itd5gO9umh3mRUVBvalxVYqR0HedoVIjQ=
+	t=1771404480; cv=none; b=J4E1vvTmoJYrbAiO8zm5oDTgEvNK8amUMfkeBjQ2bcO7197vvfjyq4iOH6lUr2lfM/H/gs5uLm8wz7gHJNuZll+yGvNXaXL6ve5Ep2/3N+QBIWJDW3M9Np0VdQ3osj+6HrkqM7QMFuE3lun+iTCndLmMDkk2i1nMVEXK5kVj0K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771403892; c=relaxed/simple;
-	bh=QvgDvJbDfK1mXFNZSUHpWwAH5cKAzQIRTHu6hxZrvng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ebcJjGTB6QYoODLG3vZEPA2x6Adq2uJ83swKVAQRgI72iFPCmZy1Tkv3jUmsVXqL3/HaNccHoSgs580tOvU4+afHMhcQrZ3V7CNhROS5uw5e4k4agPdel0w/FQEoMjP0lGf3WfImutW+STnfaPOzaA4V/YmQa2G1LyWNVKHhHJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=F14g/Dgp; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1771404480; c=relaxed/simple;
+	bh=db8UoqXBuWlXRrOvDWR6NTe1jADOw1CPeFcMqQs31ok=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LiskK6bE78DZmTsz4t1VhwdicQVhcumOcK+UhkaejpOjTEqqkrY0WuwYit89p6sZOwrJhkFM6qb82MGufb78RCaq0Cytn+0LA3bwGe8SxliQeocP+kHJ0+CqA8VNnWleqXOF3W9pHTze0K3i72e8VVUTR3hln+Tht5rUDxu/te4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ia9dWHdk; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="F14g/Dgp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=z8CmZLDj2c4oTROwg8zkd+DRY9MWE4RsnIDSCGPUZmA=; b=F14g/DgpWhhHTUrMIRAi0AfGfR
-	CDePZyaBLuRkxxTUhgJyI2AXPJzQG1Iart7sHojddMLbunhcV3ftkFoLifgASVVPmQZ5CSYS816Ev
-	c64sjvPL1wA9mr1kvDVDtrd0z6ZRm4Nougbih/4Q8RbyMyB2jOaSZ8fUIvAhXUUlrKwQ6wq/XgOG0
-	9pu/LpAnZ4Dl2Kh8s+gRl4grIOXtkfHaF7qktSP3jPNwiwUIIrOBCTVJNzCRXj9fONsCcLCSWDMUV
-	iWxeWfM7OoCS1/Q0A3wdvSgsCa5GxEBAo9RyWSWxdtA1GuCZUQs/nD+HsElCBtaHSZcyjwD3FfWvc
-	fl1g+HzA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsd4G-00000005kvL-1s4w;
-	Wed, 18 Feb 2026 08:37:56 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E2A12300B40; Wed, 18 Feb 2026 09:37:54 +0100 (CET)
-Date: Wed, 18 Feb 2026 09:37:54 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260218083754.GB2995752@noisy.programming.kicks-ass.net>
-References: <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com>
- <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com>
- <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <aZRWOIPThLfIZ1Ph@google.com>
- <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
- <aZRokyTqsd_RwdkK@google.com>
- <20260217154800.GY2995752@noisy.programming.kicks-ass.net>
- <cbbea9ecb994df975109d97a7756d73e@garyguo.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ia9dWHdk"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b884d5c787bso686311066b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 00:47:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771404478; x=1772009278; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E/5hsVF/ES9WFVEKAhexr1uhkj6T0T0kWE33e5/ideo=;
+        b=ia9dWHdkFSmapGtt7InHJ9ylZD+FIhNJxzak6qdgRKDs5NaLvhPrmo1fG76sZrOPFr
+         BeZdgy5FdFiN1xPCOzb8Ica/ZaAfR6L//kzmfy68vAbl/aIakPgdi46CAtQYY+3PhKxU
+         dT+2Hf5YHFR1idOH0aWXNU2Rn3E+ydmWZF2hm8jfX2zk1eSTPL/ZU+desn/rZuRzLABq
+         z+2jBVPo6SaumzydqAVwmA4442Sg4Y88pxLePlfby1+Zno0oMv2s+Z6Gu30h5UhRYRQ8
+         DwNCiHfukvrBScxm2cd9vjBDSxN47dZvK67FrKsN9CyzSpKKCV5tnbnc0dvm0ZuZb4T/
+         gZQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771404478; x=1772009278;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E/5hsVF/ES9WFVEKAhexr1uhkj6T0T0kWE33e5/ideo=;
+        b=XyO885iCAYU0Pi0Mbmxclxc1dUieXT66JwwTpWnhKiP4Iu91wgNdmMxpU85OjolbEn
+         78uLC3Z/uF/P7hwipYLmJA6Z5qhcTdPgXDAYTCZ1E4lEcRJ6U3KHAm9HVGt0NQOhoOHA
+         IFDFsAvIjfAKSOssEvKa4D02yIJ6Yr4vHdfQqzL98orCP6aLnsbgSoQZyyn6vzv+3US9
+         7A51m8E6mq/yANOaBLiN8kACOi9HTc87n++s35gh1272Dx8u4HwvCUQJeycUo9L6v05h
+         sxuIpDJL3aYB93RX46xoRG0/IvlgtzvrgaIrhuCY68hi+3mR4ZJuv5xvbZHStRxPwWey
+         myNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUdUubzwawdWJPRiDLGmIGgrGsC5o1yhl77jkBqtigi/3DZ1ftKZYbdORrrtDptxCh6e2FArRKcODlT2VDeCw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9ilqh/TzT5sXCt3DNJW4cdYaBUL8371fkAgFT2XchRX2LOiUr
+	OnUaaXnMBMvvVlPED+Td8qgRXdfMgIpTBRjJck5G7W/lEhU9L7ykj73j
+X-Gm-Gg: AZuq6aIwj2iZpZ1eP8KBIESWmW0Bt+Kgae44rnpwVm6Uvs067b3SsrJsWHQvGAo2M+q
+	aSltGK/Z8HCJKuU3lI4BX1l4oz6p3u1+A4l6Cv9EL0ZwcxbkhHmfQxecxCisenkJk1i4S1jz9AK
+	VVnes0HDswQLGcuVpVtqHCgac/kfWiwG9HNom3wyVW9qSq4MXZz4zKx0aLycx5wojWuao89OU+q
+	IoxJqjvFcISvSfbTDC/tJEG0XJiAv/ALEyZMo/kqihwnloHtiVHb/1tqcw6izGGtO5Mq0syBZHX
+	5V95FlfvF3ffMNOaGxSWsQTkf0DDT4F+NYVjUUr8P3N3RWXakiFDiTzcVFjMeJGCIQhPJ8Nd//i
+	OA/HS6uPwtUFiN/SafqWMUSvc74hm5Mbz7d2X35trAraakpwUojBlzxpICPF9X0u7lOPa+fnqtC
+	mEw1xNHPvlHKUjHdXGs+E0w1lvxpWjWfWrYApD6HXKtPWK7tTrPKlZ+R9wl7IO/8kbyb9X12Yei
+	MT7HXZSvSNmTQ5EOG6DNl3Iif0Jyl0=
+X-Received: by 2002:a17:906:6a28:b0:b8f:a195:bad8 with SMTP id a640c23a62f3a-b8fc3cb90f5mr718449766b.45.1771404477251;
+        Wed, 18 Feb 2026 00:47:57 -0800 (PST)
+Received: from ddolgov-thinkpadt14sgen1.local (dslb-002-207-075-089.002.207.pools.vodafone-ip.de. [2.207.75.89])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8fc7629b56sm447920766b.37.2026.02.18.00.47.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 00:47:56 -0800 (PST)
+From: Dmitrii Dolgov <9erthalion6@gmail.com>
+To: linux-perf-users@vger.kernel.org,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Dmitrii Dolgov <9erthalion6@gmail.com>
+Subject: [PATCH v3] tools build: Fix rust cross compilation
+Date: Wed, 18 Feb 2026 09:47:25 +0100
+Message-ID: <20260218084736.33114-1-9erthalion6@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cbbea9ecb994df975109d97a7756d73e@garyguo.net>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 17, 2026 at 11:39:18PM +0000, Gary Guo wrote:
+Currently no target is specified to compile rust code when needed, which
+breaks cross compilation. E.g. for arm64:
 
-> >> Are we really good? Consider this code:
-> >> 
-> >> 	bool is_valid(struct foo *val)
-> >> 	{
-> >> 		// for the sake of example
-> >> 		return val->my_field != 0;
-> >> 	}
-> >> 
-> >> 	struct foo val;
-> >> 
-> >> 	void *ptr = kmap_local_page(p1);
-> >> 	memcpy(ptr, val, sizeof(struct foo));
-> >> 	kunmap_local(p);
-> >> 	barrier();
-> >> 	if (is_valid(&val)) {
-> >> 	    // use val
-> >> 	}
-> >> 
-> >> optimize it into this first:
-> >> 
-> >> 	struct foo val;
-> >> 	int my_field_copy;
-> >> 
-> >> 	void *ptr = kmap_local_page(p1);
-> >> 	memcpy(ptr, val, sizeof(struct foo));
-> >> 	my_field_copy = val->my_field;
-> >> 	kunmap_local(p);
-> >> 	barrier();
-> >> 	if (my_field_copy != 0) {
-> >> 	    // use val
-> >> 	}
-> >> 
-> >> then optimize it into:
-> >> 
-> >> 	struct foo val;
-> >> 	int my_field_copy;
-> >> 
-> >> 	void *ptr = kmap_local_page(p1);
-> >> 	memcpy(ptr, val, sizeof(struct foo));
-> >> 	my_field_copy = ((struct foo *) ptr)->my_field;
-> >> 	kunmap_local(p);
-> >> 	barrier();
-> >> 	if (my_field_copy != 0) {
-> >> 	    // use val
-> >> 	}
-> > 
-> > I don;t think this is allowed. You're lifting the load over the
-> > barrier(), that is invalid.
-> 
-> This is allowed. Compilers perform escape analysis and find out that
-> "val" does not escape the function and therefore nothing can change "val".
-> 
-> A simple example to demonstrate this effect is that
-> 
->     int x = 0;
->     x = 1;
->     barrier();
->     do_something(x);
-> 
-> is happily optimized into
-> 
->     barrier();
->     do_something(1);
-> 
-> by both GCC and Clang. The fact that the local variable here is a struct and
-> memcpy is used to assign the value here does not make a fundamental difference.
-> 
-> barrier() does nothing to local variables if pointers to them do not escape the
-> local function.
+      LD      /tmp/build/tests/workloads/perf-test-in.o
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
+    [...repeated...]
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a: error adding symbols: file in wrong format
+    make[5]: *** [/perf/tools/build/Makefile.build:162: /tmp/build/tests/workloads/perf-test-in.o] Error 1
+    make[4]: *** [/perf/tools/build/Makefile.build:156: workloads] Error 2
+    make[3]: *** [/perf/tools/build/Makefile.build:156: tests] Error 2
+    make[2]: *** [Makefile.perf:785: /tmp/build/perf-test-in.o] Error 2
+    make[2]: *** Waiting for unfinished jobs....
+    make[1]: *** [Makefile.perf:289: sub-make] Error 2
+    make: *** [Makefile:76: all] Error 2
 
-So how do we stop the compiler from doing this? Because I'm thinking
-there's quite a bit of code that would be broken if this were done.
+Detect required target and pass it via rust_flags to the compiler.
 
-Must we really go write things like:
+Note that CROSS_COMPILE might be different from what rust compiler
+expects, since it may omit the target vendor value, e.g.
+"aarch64-linux-gnu" instead of "aarch64-unknown-linux-gnu". Thus
+explicitly map supported CROSS_COMPILE values to corresponding Rust
+versions, as suggested by Miguel Ojeda.
 
-	struct foo val, *ptr;
+Tested using arm64 cross-compilation example from [1].
 
-	ptr = kmap_local_page(page);
-	memcpy(ptr, val, sizeof(val));
-	kunmap_local(ptr);
+Fixes: 2e05bb52a12 ("perf test workload: Add code_with_type test workload")
+Link: https://perfwiki.github.io/main/arm64-cross-compilation-dockerfile/ [1]
+Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
+---
+Changes in v3
+- Improved commit message, add an example of the compilation failure
 
-	ptr = RELOC_HIDE(&val, 0);
+Changes in v2:
+- Map supported CROSS_COMPILE values to corresponding Rust targets
 
-	if (ptr->field) {
-		...
-	}
+ tools/build/Build.include  |  9 +++++++++
+ tools/perf/Makefile.config | 14 ++++++++++++++
+ tools/perf/Makefile.perf   |  2 +-
+ 3 files changed, 24 insertions(+), 1 deletion(-)
 
-That seems 'unfortunate'. It basically means we must never use local
-stack for copies or somesuch.
+diff --git a/tools/build/Build.include b/tools/build/Build.include
+index e45b2eb0d24..cd0baa7a168 100644
+--- a/tools/build/Build.include
++++ b/tools/build/Build.include
+@@ -98,6 +98,15 @@ c_flags_2 = $(filter-out $(CFLAGS_REMOVE_$(basetarget).o), $(c_flags_1))
+ c_flags   = $(filter-out $(CFLAGS_REMOVE_$(obj)), $(c_flags_2))
+ cxx_flags = -Wp,-MD,$(depfile) -Wp,-MT,$@ $(CXXFLAGS) -D"BUILD_STR(s)=\#s" $(CXXFLAGS_$(basetarget).o) $(CXXFLAGS_$(obj))
+ 
++###
++# Rust flags to be used on rule definition, includes:
++# - global $(RUST_FLAGS)
++# - per target Rust flags
++# - per object Rust flags
++rust_flags_1 = $(RUST_FLAGS) $(RUST_FLAGS_$(basetarget).o) $(RUST_FLAGS_$(obj))
++rust_flags_2 = $(filter-out $(RUST_FLAGS_REMOVE_$(basetarget).o), $(rust_flags_1))
++rust_flags   = $(filter-out $(RUST_FLAGS_REMOVE_$(obj)), $(rust_flags_2))
++
+ ###
+ ## HOSTCC C flags
+ 
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index a8dc72cfe48..f40c5a70520 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -1163,6 +1163,20 @@ ifndef NO_RUST
+     CFLAGS += -DHAVE_RUST_SUPPORT
+     $(call detected,CONFIG_RUST_SUPPORT)
+   endif
++
++  ifneq ($(CROSS_COMPILE),)
++    RUST_TARGET_FLAGS_arm	:= arm-unknown-linux-gnueabi
++    RUST_TARGET_FLAGS_arm64	:= aarch64-unknown-linux-gnu
++    RUST_TARGET_FLAGS_m68k	:= m68k-unknown-linux-gnu
++    RUST_TARGET_FLAGS_mips	:= mipsel-unknown-linux-gnu
++    RUST_TARGET_FLAGS_powerpc	:= powerpc64le-unknown-linux-gnu
++    RUST_TARGET_FLAGS_riscv	:= riscv64-unknown-linux-gnu
++    RUST_TARGET_FLAGS_s390	:= s390x-unknown-linux-gnu
++    RUST_TARGET_FLAGS_x86	:= x86_64-unknown-linux-gnu
++    RUST_TARGET_FLAGS_x86_64	:= x86_64-unknown-linux-gnu
++
++    RUST_FLAGS += --target=$(RUST_TARGET_FLAGS_$(ARCH))
++  endif
+ endif
+ 
+ # Among the variables below, these:
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 11b63bafdb2..f7b936deeaa 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -274,7 +274,7 @@ ifeq ($(PYLINT),1)
+   PYLINT := $(shell which pylint 2> /dev/null)
+ endif
+ 
+-export srctree OUTPUT RM CC CXX RUSTC LD AR CFLAGS CXXFLAGS V BISON FLEX AWK
++export srctree OUTPUT RM CC CXX RUSTC LD AR CFLAGS CXXFLAGS RUST_FLAGS V BISON FLEX AWK
+ export HOSTCC HOSTLD HOSTAR HOSTCFLAGS SHELLCHECK MYPY PYLINT
+ 
+ include $(srctree)/tools/build/Makefile.include
+
+base-commit: dbf0108347bdb5d4ccef8910555b16c1f1a505f8
+-- 
+2.52.0
 
