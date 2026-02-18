@@ -1,244 +1,139 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39405289367;
-	Wed, 18 Feb 2026 16:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B6A322753
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 16:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771431426; cv=fail; b=QkfqPQBbVsXB1jNrSbG8DsmiaZeVHv85ZaZFF1PXvc2A/k+t4v2dEBo3wHr3Ko7g/+CB1y+9KH06WJ+Ox0IvmwSUMg6WcNMkx//mPnyHEY6/cNwvxaVp8a0RpmQWHScUNckO5URO/xX00oFViCqjdfmAwmm750k4hAgzLYAZKvU=
+	t=1771431702; cv=pass; b=FBGxnzQZilg8vG7cOinKiI+jtSrN6nXbsaJ+douMNbSI2IMW0LKmzcDY2+to6wRnWFX0KItvx9dlb2zLW5AhmNFisRPltgXxoFU926bFDZbM5l//zSMzU7sPiQDoDu2e4V3QaB0Hcao7apCqC0MqyLcMisxNtjJfLT+nVyeMAdA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771431426; c=relaxed/simple;
-	bh=uaMfF4uhsU6z0mFCiFIfcL0vGlkN5B2qXtjGnCVO+pA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BbYZ9vu2ZYyzCztyUHe6MYZD3CvDDe9EyUx+J810xiAArCbaeZF1iaDBJbKlNelvWWEMt0MGtV3lsVwiPtZJiHp+6IhOAVEUCCEdAxMGVN1Ul7koRhPW/4K7tR+xcbl7nQ/gOs/l+7Z1LPTfXRWfqpk30aVHmAWNc5FV9MsD8pU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=msNfIJoj; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=OAi/XA5F; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1771431702; c=relaxed/simple;
+	bh=N27KEVtuTvXxCb1DztZ20FZNW+sKQDHOlovAwNKEeO8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H/bPPKWmpTm88NYqT28s0WRkoBX3alJZj8jv9i7t3yeARi1tFGasoEFBNjYXhPMDdJOmmkVOVNBRqDfme+RMckeWViNh8iqvrkjn+veq/PK7MnEhOJFECIDRLafgZB8sUxfJesfvbaClT38+So695Q5qLp13PlSJvp3hsJOznWQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yvg3Of5A; arc=pass smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="msNfIJoj";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="OAi/XA5F"
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61I6OeOK066770;
-	Wed, 18 Feb 2026 16:16:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=u7kY0cgRaPXEwx+ZGm
-	vuWk8hdA/eQEG+wmdTELwn6HM=; b=msNfIJojigitfYz1CXX2y0B+EDWiSZrQHJ
-	THuyeJIg0zj7+gJAwrABLFxaaLJXEKA7sNZUZ5moF+9kWRrZGU70jmFNTD7FdUFf
-	5gpQNYqyAc00ImFPETvwzzIaK+9RoB+3ia8lfAQGux2UuxljL5142yxedq42kfl/
-	MnorCfLWY8P7H10Q0If8vmOUwOU1oo7FMRJiPAwBHkFdYGOdMO4vno11WjF8LJOL
-	OTDwNtJxiXVOuYG6PJyllmUXuA/Ks4ItLqnGqAEtJYr4o6P112hNv2ZhuyNSypsu
-	rWjfuMaw2ppfy6Afx4MtxkafmBYmQcImi+SRiwaxCfeYUP6yoLjw==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4caj045sn1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Feb 2026 16:16:38 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61IEoDiq022918;
-	Wed, 18 Feb 2026 16:16:37 GMT
-Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010018.outbound.protection.outlook.com [52.101.193.18])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ccb2ds9pr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Feb 2026 16:16:37 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nSkJ0QWb3K7llx3IwwlL6lEOm6i1K1WCRSvpY0+wKkVQMfYj8IwsEnv6j9DIPeJ7T3R2trNjvQ55UQ4LUU7ypIvISZouvr6XU0AOai4W/p7VTiugexHZ4bOIOKPbXIDiWwq6xK89KMJdWu24z21bZCAe9/sATsHkDLEGeNBdsfFT6c/70opf6S4BqiyZXJsWXd7HWb44ApxxeuS0aJnkibwjVYf74xBsMhr41Cq4AZMvsUUGofnoEhS8vDJx112ox32LOtHD+iIuIa5wPIlgv4JVtbtpSR2pN4xmOmHFnv0yp0n9HuTxpQH/M2ZCEDAQt5SKsKtT0TaV4Q+LFnlojw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u7kY0cgRaPXEwx+ZGmvuWk8hdA/eQEG+wmdTELwn6HM=;
- b=KLLLsE12JHnselkobqjtCpBEJHXF1uHc8H7LP3hWH4mVVmUurm9RQdOCTNbBl1foGVbCSCxH4RMFzCPNCoTeRTaDWBoGB7fo9bDOe5fR5kC27UWVhRDU9j+QM1iN5nku3FR8SfMvELqsOlrQoSIQ0p0a0lAVFf1MhduF+VtpPEELnWxXfTqH8K9fH96cg2DkO3PeRGUnBCTulRMdSbUNlWNEXLCqErZjjlEDg9YPIUHQolHZEsPaiPbweQAdN8xhxxVgivicm6TJgIbmSgwaPyNK0FZb8gFLlxtxezMDnQjt+ArxlVKwvM4Nbw4df4J5KpEzshT7EgoVJ81ouzZzXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yvg3Of5A"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-65821afe680so10634a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 08:21:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771431700; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dnFF8M6e5rti+ikR4lM8+io+KJNGPBZ1qCj3Ilhhfnx12EzbbFjaaFnYUphByoOK1z
+         hfahQ2q+Br2wBg3cl/pKkda/6hx+7woAYLMdJsxMqty6RuxaHoFHjLqOqgyEtayHFzuP
+         l8300Dl7X8NDiNZpjsghBwb46IHn3yoTBck1R42579DIOAgzQXwdHu021BNmnHNpSFqs
+         AeeDze41SOQi4lKhcR7ut7w6jUgBFCVmUuDxJ2X+cwWSnEQWa/qQUhUeOjCyBbkHGDwW
+         X6L3L3+4HGtcYuvIAwKGYjEDvI7ZQynxsvdbU1OSkWYR9zaoUlm8NbANs7BChQEU5dhE
+         seHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zCb7YiNC9EbJODNenpr0byXl5zVWMU3mhtJ8bdZBpH4=;
+        fh=WQXss5IWy8Vt+KPOn9H4CQKKkjhz7stcLN37PtNNczg=;
+        b=JPm9BvP2v4TAGfUqFQnkWRxfJoeZVLr5PpFBQfxhRFxudCXXG84ebQ+v3jFvvu8aqv
+         P6zBJainMaC8nH3Bw+KwQCznJHksWiDcoKfljjV29SCefPg025VelDNduDpwXfvKCIJT
+         o2NsusFQlrO/PxK16u+Vy1ud5N4/T9oI4lqgHSl7mx40SlNdr/8m4Guggtud+N4KIWhO
+         1aTFFSadn3D1m65FdHJD3QvOpebSoKIfnkgJfbow6ZDcMSKWt+tqvWxjRIOmA844z6L+
+         XDUnrQxYa4/naS8tVXVLeEs/mM9e9moDOduBRz5iaBiAd9eNO7JQ1zFrA+W4qW8i9ZMV
+         TZBg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u7kY0cgRaPXEwx+ZGmvuWk8hdA/eQEG+wmdTELwn6HM=;
- b=OAi/XA5FROQ4VbkHP0omFKZLSa57DCyQvyR+zo7Byy2ZF2ojWcBgCT6MTiNRJQK1xsBKTzQ6KCly3X4x1CM6uzLvA7nKd9FEdiV6w2Bpb6nzJid3IEyLpvbDkUnMtNNT0yGxXJs5H33Rd6sOWCieyb2k0aJhOhFs2Frd4EmN5G8=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by IA4PR10MB8517.namprd10.prod.outlook.com (2603:10b6:208:56e::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Wed, 18 Feb
- 2026 16:16:33 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9611.013; Wed, 18 Feb 2026
- 16:16:32 +0000
-Date: Wed, 18 Feb 2026 11:16:29 -0500
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-        Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] rust_binder: use lock_vma_under_rcu() in use_page_slow()
-Message-ID: <cl5xxuaplouphtllsar2qlkgoirltdv5ctgmghjtnh5jmpphzy@upmmvcxurwex>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-References: <20260218-binder-vma-rcu-v1-1-8bd45b2b1183@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260218-binder-vma-rcu-v1-1-8bd45b2b1183@google.com>
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YT3PR01CA0051.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:82::22) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+        d=google.com; s=20230601; t=1771431700; x=1772036500; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zCb7YiNC9EbJODNenpr0byXl5zVWMU3mhtJ8bdZBpH4=;
+        b=yvg3Of5AMXdhlqd6jDjFTg7J4Uxrme37t5v9rvvOYt7Pw9/o5JqD3GJmKiX2S3lX7m
+         GItBEBcRVnUHL1i2hPfmw/2sC7/kN+nae9CjB7s3SjLeotttC1RPPGpuYtzIzfh03N6f
+         xh45ySV+I73l1oY5ed06aU2VpwlzENxTQbvrUQrfTcFJNgIkqkTcnLY0jjAwCsK8Iwdu
+         A3osAm/CvSmHG8N8ARDnBlfsxGMJEQdlhb7KsC68JCqvyV9waN9KdwbnsyxC0y5/eLoD
+         BWpY36R1rZ3C+5vfi0xgHcsDQmhHCriU3DgSzlEnXeA5iywB0gLoFTynjYgrnkNj8lo5
+         uu4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771431700; x=1772036500;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zCb7YiNC9EbJODNenpr0byXl5zVWMU3mhtJ8bdZBpH4=;
+        b=uTK1jF1vXpZAJFdVha2hmYp7fX7ruX/tLwldnTy8EI707KCbUdBmfub3KDOz8NCmjG
+         HPo9G4nZxYXJ7PPyKRADKUX+kf45VFuCuNaoR46XUinR/vA0NmWJY9RL4KikCF6T13A/
+         ANa7QoDTNhmZwWu5XmwACq5knYSOi58wArge4kf8CfiEmpHFkhvWLB2tLjbq8LKMIqPX
+         ZDvpvaW2nMP0Ep2NkH33PxesPR4zP3YKkz+R+XuLWjncQi/GnygYRBIVrxr/89uSkB29
+         xYRBe/3gPvbriak9ObE81XmJ9O9+FfIqigdQ9TLlwcyt647b1QzCq1KMNLoSi4YcrQwj
+         cYGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWDg7hZrpwlsdRG6J2iqXdwwYV4LzvIqmA7UGCtN9G4N4XjqzIWCs0MUuSTuLJZLjitaRGTVzSuTMBtSChyaA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSP+WYFnWpqReRZw3lxObrbIn6CTzArLcaqAmmZwXusCQ/zUDY
+	kBjhN6WsKkmySHnpCwrnjusMRjM1n1nDuAtl7GamFT7Cj2o6qufnro8nP6o0forXLw1xp+Y/lOc
+	H26Xgy8ZENhQPXoyi+Rn2wecstIhgKTasvdH7r8PW
+X-Gm-Gg: AZuq6aI4gS9rxPWzfDOSoqQFex2ysBKk1K2IFPdrb1bXSBJElUFz2ycCssD0kPnRbu7
+	k/1ckp4r8LW2inIotUi0C7YqcYshKdULQ+50a9EayQPfU2vQUQSsAqcohQ5bnknbDbK24bzRygd
+	TctfGFwZmo6No1Tp1W3iFTNd7XagTGhhJixa5fa34ye18XO91v7JeSf6QjB0lKm94SHSKLAKq8j
+	VbUBXpwIORT+3f45FmhfcUjzHgHRdvwd1ajjbRZto91LcjX34UgbcUEkBvukVN3a+lKirTh8uib
+	hh50tgjcDHyP/0dW2HXSx+4TPVp0vw5qBPs1
+X-Received: by 2002:a05:6402:43ce:b0:65c:1e9a:eaf9 with SMTP id
+ 4fb4d7f45d1cf-65c78b73dd1mr32034a12.6.1771431699117; Wed, 18 Feb 2026
+ 08:21:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|IA4PR10MB8517:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e469337-b164-422d-35f3-08de6f0914c9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007|27256017;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2r85ehPIsg0GYArj00+bpKtNPr20MeMUKjYZO7NMy0YlV2SkGUFLdLsoH/Pv?=
- =?us-ascii?Q?EfDgrbdr5qAY+fMWg8RMHR9boHIHceZulu4YSzaWMnNharSOlXrwm2v3vU3L?=
- =?us-ascii?Q?0L+ZJnsbqLJtrb/vY2Y0Bb/Dou79bKIOTx1YKwGt10nIf/HN7GEuwTi708NV?=
- =?us-ascii?Q?azElfTpsVGOB35pUMHqjrdeyurm3KW2zwalzRxXRSK3V7JKRcSaWFQPC92eJ?=
- =?us-ascii?Q?BS/PRZU+W41sIUm/kjCiarYqDW89e0OwE66KaUayZSAaY8VOT9mp3cB2Xnx1?=
- =?us-ascii?Q?VBhRXM8cJHegoNBXfaBMAKnGWTKhSenbTfEQ/xzg+8lvAWqFo1JVjLhI4K3z?=
- =?us-ascii?Q?pBMD4aOQgz2dnIt4CIVuJgzb31N8LhFOujVogPjUz8/HF2/Z9kOgxv9Ip9Kh?=
- =?us-ascii?Q?OhS58ap94dF1j9ZMm+xyCS8js9Pc4j0VyIR7qPjl542FDPVKia69YlphnrNp?=
- =?us-ascii?Q?iXPLxb/LsG62rHs0WN3m6chyHqZ+TnoV4q4YAelgIV/U+NtfGLLVBpPgpOpb?=
- =?us-ascii?Q?Czbo2RLsBXwY8IK/Q2h2SBTGtkJQ1fDOa7mmrFkajIFfDGgHJRFbj/2Wk8CP?=
- =?us-ascii?Q?ijdNzZPM/lNNfUi1EbnqcO1yoi/3ABujLR7YZGH5TfxhuMPWKxiel2QmpR5b?=
- =?us-ascii?Q?yl3hexlrTCgi8EuVGZt0kjanbGu7itX53qUNELQvX+NqSj9OPWTiih/Bv5Zl?=
- =?us-ascii?Q?Kd7xV0rKQJScnFIyeJmR2B/bvj6QlCdBuZFUH/mFw2pbk/pCeu89twVc7Nlo?=
- =?us-ascii?Q?otGuAAknxmaQr/1+uE3a+tLlU1Jt5xSLc0CMiU3NJ0BrUklBqKbG+AssY//0?=
- =?us-ascii?Q?fKjyKN2qATU4uA/I0CLtyOxTgDSZexRWEuKsdD15juZkEB4HL97tL0s7CMtp?=
- =?us-ascii?Q?wAjXI38+qKIUMF+wz39oPwW6W9Q8V0bzfen44TIi+WYXot/d5AeW+Cx0Fj+0?=
- =?us-ascii?Q?fRRm6xtCCFtZ8Is8BhyE1NEV9zzbM08rAcomdJ5bj6jD4UT7EAAaeS3lD5IF?=
- =?us-ascii?Q?FBrkCwZ1rubjydUgHzqJl/wfeahHJssFUucIcbgAxU3zpqWqkuIgOfZ+/t2t?=
- =?us-ascii?Q?PHEMnRxFIj5rDAlFb+PYvn38XJXF1DjU+02vNZ8x5EdBFZlakl3fYXkFUoy/?=
- =?us-ascii?Q?LS4HRIDreZndwFPbuNl46Jm0/4ylDIRycOE160cGG2HTP9T3/nmgrLBBswdX?=
- =?us-ascii?Q?BbhEqcCnPj2ZjZDfSoFEcRahqIJMS1mSGziVOicWseSg58ZaReEEyvw+AOTV?=
- =?us-ascii?Q?OFsLIysA4+UJ6Z8tSIPyW/p5VxwFTYBwycGTe/Aaqg6j6+TICQa2WqEvrSKO?=
- =?us-ascii?Q?eaLD88hFn+K2X4AXAc9fZ2jo+CMuXXTPh7wPixEq804QIapG+4JZ9CRvANvX?=
- =?us-ascii?Q?D5ZL/iArrwY8/LD6nn9sLusthGUx54HY15Wl046+o035zJjrxvRYg5SNtr0C?=
- =?us-ascii?Q?CdMUkA0IYnkDyI5NBvtczfn7MjTSpBhqiMEL+S45o8iGm4wLoEZE93ZSjEK6?=
- =?us-ascii?Q?ynq+nHqUV96IrdZI9DNiKCjDitU0XM1g17serIvSdpOoc2/iUtLSG/c3CZnv?=
- =?us-ascii?Q?ZAA1aChWVUtMN5C0XwQx4iLpHi5Y0tzmY+nn8DgWBwsd4OiZRF0cJi2eiruY?=
- =?us-ascii?Q?Z1eRzKR47AuzcedgFcx6Wo4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007)(27256017);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fLIUNTIFFucIF5wqsAkrVPumcVozq21EYP4yGQZDVho8iuKwRGM4jCCa5zfS?=
- =?us-ascii?Q?S9o1oAK+RsNRujyx61DXdKlfDNEXkGeJ/wEV8GRcphaH6QFMxhhjEAKyuy+N?=
- =?us-ascii?Q?w0GVNdlCQcPEurLZYQxGxeFOPnSGlf9Kqe7ViW9M9MaYL32Tq/i0lAlyt+4F?=
- =?us-ascii?Q?ap+LjGnY3pFuErcLosWIHT4e48lMS9F0iDkB/bBytFpA8sr79ugkq+SFWPey?=
- =?us-ascii?Q?Uq1hciHqJoPDGbHMhOO9xoeIgu7lPWQy8Klhyc0zRnTEmKFDYvA2fwkE/Utf?=
- =?us-ascii?Q?MwEvkYwz4uH5M5V6j8VZgKG8u4FppxOL7/A4vEtfZU/nv+DKdUOWBodgBMBf?=
- =?us-ascii?Q?aPoB1oGk+yyvAZW5pbgZXNN3OkZ6l4x8x6B1HG3oVsMZdM9o+K1PqgtSXNl3?=
- =?us-ascii?Q?MgfGM1Cr4JekZwTVILvmS45sBZp3I0syKFwMyFICzq1t8QWaVoRl2vHw4DqR?=
- =?us-ascii?Q?J4YWjAMS9/VZlRyQiM+K8hGR66/CaKdy81zHel6aJyfRsm2IRnsa1GPHfblA?=
- =?us-ascii?Q?Vh6Ui/a/Wp6k+tnqjTfpSbBl9d0CrG7wzcaJ/Xs6+rFCtUCqU74+Wuo8y1lo?=
- =?us-ascii?Q?HL8RSS9+6b6eXosrEljJGIfq0PoIDtB9Du1tyOgaKumdwoGVqE3J4VJT/g+/?=
- =?us-ascii?Q?7lg8I6l+WHVeU1ocbJU0H3p++pgbwY6BEa0/vVR6fHWHKWLMC3jfXnq+r4of?=
- =?us-ascii?Q?WR3nxpy9UehfYU5Y9ktv8teAPD+VLiPk7g3PX9QJHevT6BgnKABBFMBdCC7o?=
- =?us-ascii?Q?ogtqFLKdTWI2Ib4OxvChy5YMZr5JiyNFd4nxQWKhoJwdAv5zpP5KwflEZ61J?=
- =?us-ascii?Q?R8Qgm2WTJLupsF3UYugKqELcqoSoWKXtvDOKHSE1iTohATDXG6z365C946Co?=
- =?us-ascii?Q?uzfoqJbsATr28QKHXFJMya0FPVMYcSAXduOKzT/WbDJ//o/UyqBl/tjHApEF?=
- =?us-ascii?Q?U3R6D+98luYDwp6gf1utIKsrKNeA6Ln/dl8ep3yFHufdtvEyw0NyiCNBUWb3?=
- =?us-ascii?Q?PIDNiyJsjYtpcQLTZc0C7jEWtGU8jHh6lTxa/uXbNftVHR90pfQxg5huoMN3?=
- =?us-ascii?Q?aHaLghn/+DmevCEtBQ3ce5UdnLr8k9lRnUFScGVxdQRmROZGepR4rrg36El5?=
- =?us-ascii?Q?APeYUCMucFb6/o5sVkXOTC4hMoSnJ/zVgokPV+X+b4FShYRPF7A5UNtGWDR9?=
- =?us-ascii?Q?10DWa4Xvc1PBXyW/nliAZ0FpaY2l6znFJ0Y8PrZvOXjdYBEf4Pp/WMn4dl7j?=
- =?us-ascii?Q?xAiSDE4e39KvKWqy4kVzaEWt+EZOKCieiEviJyPewCvqXL36tqIWkUFYtmgx?=
- =?us-ascii?Q?uDz12eaVttxTGW5jgCDUfCvhDyOHpSqSK7apvCi5Dj5y8yjNyromr6HMpjlR?=
- =?us-ascii?Q?tpL8TIExLbhXB8mGam7Wkx7T/kuYVjVIm2UoO+8QDqUaAxBZg/QS9s8Cjr0e?=
- =?us-ascii?Q?/4Z2KLjUS3jJQCRbkETAIXebvy1s9sVevkO/jy/coJZIRyfGtcqdrjc6I1Lq?=
- =?us-ascii?Q?ifF3eKZFSAWErgC7FrwOQ2yLqirYG0s/wK4wQZEuE5OONVdvRBa8gPzYnSB4?=
- =?us-ascii?Q?mVVkZ8U8WlXYOluvIxjUS1KSj//B4vwtzta/sapFLH7IuOmI0cKuV6QBIs8S?=
- =?us-ascii?Q?YMWVCKAgXUEli65qxTifEdKtyhTv5JnDvGsaF4aASSMNrFVDC8WqaDdtKt1N?=
- =?us-ascii?Q?q9XAUyApLVQuH9pXMj/iqiFE2pm7ZA1MjD4JOQs+zzh6zAVMNg9PFqNMVcU0?=
- =?us-ascii?Q?9OrCvOMGOQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	f2dlZ6Pw+fWkHW2Ub0kYy2H/Kg1ZDz41gRcpnuosJDPS6T9zCY6jLmWskAF/MkETWOe7N2V/5ZZQWi6nXE+2ZEjrmCXHcTc+d3qvGfKCkIxO/hzeMD04nZxoGa0QEacCGMxXyPPS6skWmXnhuMt47hq4W/7QQJ2hUIzqk7vdigxLyhZemYju62mTRR/o/r8KvdWxJfrbscFpTcO20VrjNqVxZIV3tPeIJR2KkJBPJTi9lJ7EM1TxgPzdXHLKGRG12ir4Em7+8EmbwrjZZQP1SGpKYXS9MhkKf7mDFL4khm+58Sm9nwmae0vYMtXkzbSzVOp1dGha1IxtRcHMiW/Fn1C64dk4ps8IAFfjePOUhyaTnFNi8S5rxYLu22zVx6rzv+eHYdSt3R2ESNWmyNtjmFaUMNKmx/LLIK5vh9NvMQnZsi2vlnZI++Vq6LUf0mL6SQmaSO02trZ3tf/PVcqZeDhqxghoUlLSFy5QSozuJrvxGCy37IRyQTw/VHfUBZl+AA0tnZ8vHg1Oh7Fbov2CpD2UpbABb5fQCKcDbPtoCqQsBhquBHK2O8m9htT4MByt1hPrvnJ/AiFYKXiPBUH63UuZbh+qeWYlXqb1rWgul8k=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e469337-b164-422d-35f3-08de6f0914c9
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2026 16:16:32.8912
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TXLe77z1lg5sRfROYkUNtwZio1Dl9hQ1gNDUU/diGimMIo54pCdIVSf2jjIgfWMe2Rf81nvzSDhtMqdRvnq3hQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR10MB8517
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-18_03,2026-02-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 adultscore=0
- mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2602180138
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE4MDEzOCBTYWx0ZWRfXwdCMoeHimUB0
- DxxOrlXJWQKmROc3v0q5xcWozUvSUX13khFIWsigdsncoNGA+VENDin0owFOi4d7LZ7OwQI/WMH
- Dc2bDji4Q6XNR1V4JV7aGQOXUUVNhufpLet1IssWRNQLcLejru/SLlOynlZ9faO7fRVy4LZGE+B
- mUnf/GED9XeAURBhtSGN/xZCPsQDeXYVpU/+ZhRPGjn3w9iGa8IEaTV9gue3eYDSb3hc+JkJ8dj
- njwY6znBhlEVok08nfmeLKHRUBz5c6iLCQri17HCL1lY/PTrdRODXg+Yfq1R6uMVH2enRWrlx9G
- Pu+q7PMuy8rZ9lfHdRq39lzXlGJcJMKum5sBXxjvOSulKH9quOsyC0EsWesUW86EP09qXY+VxNd
- /FJqltIjy/YacCyaYQUIfKuoxDL/uwtfVeBoh1lMspyYiaOkUvnO7UC8n5JgoNDZ5BlD/V7eGz7
- klbIlZfUISXDjshbBUTT9iuh0PtYGCYzEqYJLCzA=
-X-Authority-Analysis: v=2.4 cv=O+w0fR9W c=1 sm=1 tr=0 ts=6995e5e6 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=1XWaLZrsAAAA:8 a=yPCof4ZbAAAA:8 a=kwRcU2RkSJITvpPzbEIA:9 a=CjuIK1q_8ugA:10
- cc=ntf awl=host:12254
-X-Proofpoint-GUID: zQ_wUJM4o-6RTniUWZ-Go1pH6gisYs0e
-X-Proofpoint-ORIG-GUID: zQ_wUJM4o-6RTniUWZ-Go1pH6gisYs0e
+References: <20260218-binder-vma-rcu-v1-1-8bd45b2b1183@google.com>
+In-Reply-To: <20260218-binder-vma-rcu-v1-1-8bd45b2b1183@google.com>
+From: Jann Horn <jannh@google.com>
+Date: Wed, 18 Feb 2026 17:21:01 +0100
+X-Gm-Features: AaiRm51ZVP5ooWZ_n6gAsTEQdsiNCjUAPCM-PZs3XG2hJOqTY0v5t8E4kpEAp9I
+Message-ID: <CAG48ez2v3RoHhOiKYJqBA=UvF+0PnKCZMLiemztTFxNwc4gH=A@mail.gmail.com>
+Subject: Re: [PATCH] rust_binder: use lock_vma_under_rcu() in use_page_slow()
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-* Alice Ryhl <aliceryhl@google.com> [260218 10:13]:
+On Wed, Feb 18, 2026 at 4:13=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 > There's no reason to lock the whole mm when we are doing operations on
 > the vma if we can help it, so to reduce contention, use the
 > lock_vma_under_rcu() abstraction.
-> 
+>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-FWIW for rust code..
-
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Jann Horn <jannh@google.com>
 
 > ---
 > Depends on:
-> https://lore.kernel.org/all/20260218-binder-vma-check-v2-0-60f9d695a990@google.com/
+> https://lore.kernel.org/all/20260218-binder-vma-check-v2-0-60f9d695a990@g=
+oogle.com/
 > ---
->  drivers/android/binder/page_range.rs | 37 ++++++++++++++++++------------------
+>  drivers/android/binder/page_range.rs | 37 ++++++++++++++++++------------=
+------
 >  1 file changed, 19 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-> index 67aae783e8b8b7cf60ecf7e711d5f6f6f5d1dbe3..9dfc154e5dd4e889c4f3aa89e5edb89434113e1a 100644
+>
+> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binde=
+r/page_range.rs
+> index 67aae783e8b8b7cf60ecf7e711d5f6f6f5d1dbe3..9dfc154e5dd4e889c4f3aa89e=
+5edb89434113e1a 100644
 > --- a/drivers/android/binder/page_range.rs
 > +++ b/drivers/android/binder/page_range.rs
-> @@ -435,24 +435,25 @@ unsafe fn use_page_slow(&self, i: usize) -> Result<()> {
+> @@ -435,24 +435,25 @@ unsafe fn use_page_slow(&self, i: usize) -> Result<=
+()> {
 >          //
->          // Using `mmput_async` avoids this, because then the `mm` cleanup is instead queued to a
+>          // Using `mmput_async` avoids this, because then the `mm` cleanu=
+p is instead queued to a
 >          // workqueue.
 > -        check_vma(
-> -            MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?)
+> -            MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(=
+ESRCH)?)
 > -                .mmap_read_lock()
 > -                .vma_lookup(vma_addr)
 > -                .ok_or(ESRCH)?,
@@ -248,44 +143,37 @@ Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 > -        .vm_insert_page(user_page_addr, &new_page)
 > -        .inspect_err(|err| {
 > -            pr_warn!(
-> -                "Failed to vm_insert_page({}): vma_addr:{} i:{} err:{:?}",
+> -                "Failed to vm_insert_page({}): vma_addr:{} i:{} err:{:?}=
+",
 > -                user_page_addr,
 > -                vma_addr,
 > -                i,
 > -                err
 > -            )
 > -        })?;
-> +        let mm = MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?);
+> +        let mm =3D MmWithUser::into_mmput_async(self.mm.mmget_not_zero()=
+.ok_or(ESRCH)?);
 > +        {
 > +            let vma_read;
 > +            let mmap_read;
-> +            let vma = if let Some(ret) = mm.lock_vma_under_rcu(vma_addr) {
-> +                vma_read = ret;
+> +            let vma =3D if let Some(ret) =3D mm.lock_vma_under_rcu(vma_a=
+ddr) {
+> +                vma_read =3D ret;
 > +                check_vma(&vma_read, self)
+
+nit: this might look nicer if the check_vma() calls were moved out of
+the two separate branches
+
 > +            } else {
-> +                mmap_read = mm.mmap_read_lock();
+> +                mmap_read =3D mm.mmap_read_lock();
 > +                mmap_read
 > +                    .vma_lookup(vma_addr)
 > +                    .and_then(|vma| check_vma(vma, self))
 > +            };
 > +
 > +            match vma {
-> +                Some(vma) => vma.vm_insert_page(user_page_addr, &new_page)?,
-> +                None => return Err(ESRCH),
+> +                Some(vma) =3D> vma.vm_insert_page(user_page_addr, &new_p=
+age)?,
+> +                None =3D> return Err(ESRCH),
 > +            }
 > +        }
->  
->          let inner = self.lock.lock();
->  
-> 
-> ---
-> base-commit: 2961f841b025fb234860bac26dfb7fa7cb0fb122
-> change-id: 20260217-binder-vma-rcu-e699d5752ad3
-> prerequisite-change-id: 20260217-binder-vma-check-b6fca42e986c:v2
-> prerequisite-patch-id: 4ca86894150aa7ee26c04440100cb71ce599ce80
-> prerequisite-patch-id: beb72c0aa2ce3d495dd69817507ae6885e5ae1e6
-> 
-> Best regards,
-> -- 
-> Alice Ryhl <aliceryhl@google.com>
-> 
