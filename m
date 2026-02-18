@@ -1,169 +1,242 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA62B1E1DE9
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 02:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771381103; cv=pass; b=Mx8nYhsqyn6s8IaYd/h50ZRtmIyt4VJn3VOQyQXafdCskIOZcaIoVA7miWV8Nwh4asmMjxF/qOPnR7ApNUSThoAHpPNbMhXzSzDQE56J8CS0kZDJWayOv2tAWL7jTD+GMkDon8/JK5bgQ7frc+uBPLENhebhWxQo2zfRiXnXQ64=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771381103; c=relaxed/simple;
-	bh=oisk5RNGpe9X3B4rnNrrpIM/YAw2CyQ7pCGjtBnp3LE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=askaL9mFaUz+TmmAxTO/AkEpkLW8W70GRmN87HomY2nvAJeCXxxcV+Y89ibcekmAUaD7zkQIX6s/qjx7XxP74YpHEPLJOA0JVicMrtrlL2KuccmKzfEg/kP9Wxby7zyWvQn5AuNFB5mJlGKezGXApUabynymEcIYbzATrUN65Wk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jpByvxaA; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5D025487C;
+	Wed, 18 Feb 2026 04:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771387294; cv=none; b=A4XV2/MWKZnNBGQCy18Te7vld4LPRLBy/hr8bhiOaW7bsPQJu81GBeBafnOU2gakXi25GFXNPOMC9KyQmB88OgWnWHRybx/7EGa1wOPdb4h1ilEDl60MKRfxCY3Ok0Vsfjcn7mez7KRuZ8lD+wqRnfYEqIGXwKv1ggapgpf3cws=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771387294; c=relaxed/simple;
+	bh=ey3DQqyq3X7dJ4CqMjdaGFSlYYIHXHiGR0VQGzR3rW0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Jwp+P9wz+NSUrYNR/AHNzgMVJ6TQZY79itvdR6bLS5Xymk0jDmwJSpCCYPwb6l3bWEie7jBl+VOx7a/I+aVQlEX52yh2LnSYaPObYcASwD7BlQa5++M58D2M5Ytr65oEBzR1byodC/PomKAuHzIFC9cB55qVb+B09tKvbYC2+L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4I1Y97u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jpByvxaA"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65a1970b912so661822a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 18:18:21 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771381100; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XhPrh55D5ly/RSv2TaFtywTOgAWVVTztga3I+fj6OPilhZTIz8tki2GPCQ0rITDGn9
-         DTMoD5QsFJmp7SfNz/g3hvVEMs58g6LPRhaixkI1ZUmwUOAc6XAO5pJ8IWcJAyM89ZTz
-         nGScQ950rRwFNQrtnDeuB4xgs3ulg/Qi3RLGnp9BrtvWy+YmQEGGJaORFoiD9IZ1Fdw7
-         Cts3KE5kfFKId+WSC+1MFO0kHwPRQOO4dnifVxrPdU4gy3XxBvRuHX3QhSVNpIJwOP7a
-         jHSIu16HEkHpp46ezV03qZbeByoZ4902ht9GJ8qyNjVQJzx/+iet2DxbIp4uNYTE/l61
-         3kXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oisk5RNGpe9X3B4rnNrrpIM/YAw2CyQ7pCGjtBnp3LE=;
-        fh=fFyBg651HbkJ1lyFWgihwO5v+NocEptsVsvl9tO0kp4=;
-        b=SQcVLvNbAJ/gP4XSywDB5U/fLjPapBej1aCGglvdtjeS0AsWD24QDK1wmmTF0bZG3/
-         pf3f+2kcG8OvkxGurkYnpbWRJxAsuVH7MW6Y0wdI5dg4vffGO3cZeU3LRwvwiuv+ogAp
-         QMLCt2BV5nf+oRgfO8SnjjoPbRzMbxFitsp9Wm1hlNZ7zCx7EWgDilbyCON7+wUqrI6O
-         YVt0EAQyaZzJZyGoIO0O6sU0ap4pYabzjU6IN3UQ3o8kePlcvq87LVaPhyxD7xFhHR7Z
-         4q3CLEpRFsRX51wcKJkPocXmGFbkvr2cF2hw4Pxh40MyjOmK5wswyc9Qmc7OunsOqlDx
-         IW3Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771381100; x=1771985900; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oisk5RNGpe9X3B4rnNrrpIM/YAw2CyQ7pCGjtBnp3LE=;
-        b=jpByvxaAdfjRsOfPiOQAodpAVVLRxR2MeIWdlW005xLzXoPH5BcC7s2D1ShgO5j5Jn
-         /y5Wkpb99qJui36tSejkvEPumsE+akubQsBud21XznDpcTLook5pCeIQPhODlaJFxxhJ
-         r+EVvQc1hq30dbFr5ox/aoFhrKZNckRT9SpUEfjdQ1mJo6+AJhoE5TS1144JAAAukZI+
-         iz32grPxYgG1OY79JknQBUr7T3ctEPqWcfhq/0IzYo2KauXMC2J7oo/ULaWvjzoEhpdI
-         lAvEiCrzw0hCw+IGQgqSqV8b4plqrYbBdblU8axZlfnmaIRASpTgkIw3hDesAIMOytlV
-         WCpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771381100; x=1771985900;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oisk5RNGpe9X3B4rnNrrpIM/YAw2CyQ7pCGjtBnp3LE=;
-        b=POl9yXKWAJYvgz0c0ZCphTfBkuGWhoMLKV4K+9vMEbGaMI5A5yJv3p3CpcpRYIKn/n
-         MYhiCfs88cIZVPrhbTCU+Rx5g9ZqRHAVbVKsGVmS8GDFF3r1vZ/D+QCjMSIoBQjnEN7V
-         o8NQisAUJVtJc1Gw8eW4CV40ycD4+nX6qj+wwre031WEhL/p/pmuq1LjmkmWdk2JOSE4
-         5X85nXH8qVWKl8iHaZiscar7JB7m/eQsLzq0l3zUcvvUrUGLGOl04bZjcVAEtEamVo64
-         dHV+E+h7kBrWBCH4kPcRazDV96MVrFaCwTRziMvodKVGhHnVJe8idn3Iz49YbBn8FAC/
-         RRlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7iv45ey3jcCGLLZVYP7k2Tltpy6RTwPuZ3Cf0hDZU4Ix8rSur0YKkoBoYHQIG4QnCWIanl0h/aoIJBlmcCg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzjd2ATCkcEGsjpxs2l1y9nSVPh2Tmx+RW2IiMaXi26ynogSJ9n
-	Ailul1c0hOUvzQ2v/2mfEA1Wbvm7wR/U0UtobwFIiYIx4kPEeGJw4qN9AMasXdSSTMflCoqpTbL
-	lXPHSD6dxuNSJ7nJNq0yYuA0ATk32cVo=
-X-Gm-Gg: AZuq6aICAPXgbhekBqrOkQwO9dGRXyYX5n87hbTYX7uZ2CVNz3WPeEcpWHIfVO9ZrNo
-	d56eYahKp6zVp0TDdzkpH9bRWTAIf2rD6lUB5EvFkGQ6PxKr1xO4Hvevr5zzc2cbwQqyR2SS14I
-	9FeGp7vObDJD/8jTwRq5cZAltn3uxDDj5y7skqnpXNAf0yWOFJnrQvrifhZTJtq58OYbi6x+pcg
-	ubS+u+1nXxZK6CwoKV0DbCjjA7v7agotOtelAYggmEjCfymE3qiZdK8eRzLsoxiRYRkPAR2pkq3
-	MVrxxTebzJVLKKaJYUjfbT6R1HgPNxrK8cKYOg==
-X-Received: by 2002:a17:907:8e95:b0:b88:50ea:f64f with SMTP id
- a640c23a62f3a-b903ce412bemr23014066b.11.1771381099947; Tue, 17 Feb 2026
- 18:18:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4I1Y97u"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 01261C19425;
+	Wed, 18 Feb 2026 04:01:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771387294;
+	bh=ey3DQqyq3X7dJ4CqMjdaGFSlYYIHXHiGR0VQGzR3rW0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=S4I1Y97uszchibP5IiAdK+WxiIusxPynwoWaIOy7vDxWvNiH+/EshbhLeBg1RP/we
+	 QzvXNVfN0vdqe7OQBdJQoiUW/ut8VBY54yOPI0x/k7oiCM3Zfvbpmegqk/G+lxz+sJ
+	 9sXwjnrThV5R+EGX107/5s60KheZPKKrCwYUZBcaURUogUQdO4XBuzUtDPYsSTaFSe
+	 mwtkXFGzsGxxgxDnTRIWBUIl6EXhZG5XtFxLwSJ4WpiO91Sgl0s1KvsU1HzfqTRnnf
+	 PBQrZRIsFWSCM5ZrIXqj3TfPTTjjcIKpVJN2yXw+Xm7yt7VhvOTQwXlL6IyiLQYqUM
+	 6UDw6ToBT9LSA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DDF54E9A03B;
+	Wed, 18 Feb 2026 04:01:33 +0000 (UTC)
+From: Tim Kovalenko via B4 Relay <devnull+tim.kovalenko.proton.me@kernel.org>
+Date: Tue, 17 Feb 2026 23:01:29 -0500
+Subject: [PATCH v3] gpu: nova-core: fix stack overflow in GSP memory
+ allocation
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260211032935.2705841-1-alistair.francis@wdc.com> <20260217235604.GA1595019@nvidia.com>
-In-Reply-To: <20260217235604.GA1595019@nvidia.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 18 Feb 2026 12:17:53 +1000
-X-Gm-Features: AaiRm51IyO5p1ZFm7PemT4PZZF2gD_mhc5e0kBVSJ5OU9yRJy4LX-SjwiRKMPKk
-Message-ID: <CAKmqyKNeyEN-h9tAnfM9j0GWiFU9idXheGQ1COCqT9MVZgsZYw@mail.gmail.com>
-Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: bhelgaas@google.com, lukas@wunner.de, rust-for-linux@vger.kernel.org, 
-	akpm@linux-foundation.org, linux-pci@vger.kernel.org, 
-	Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me, 
-	boqun.feng@gmail.com, a.hindborg@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	wilfred.mallawa@wdc.com, aliceryhl@google.com, 
-	Alistair Francis <alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260217-drm-rust-next-v3-1-9e7e95c597dc@proton.me>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XMQQ6CMBCF4auQrq1pBwTqynsYF8UO0gUtmdYGQ
+ 7i7hRUxcfle8v0LC0gWA7sWCyNMNljv8ihPBXsO2r2QW5M3AwG1AAnc0MjpHSJ3OEfeYadAIyr
+ TXFg2E2Fv5713f+Q92BA9ffZ8ktv7r5Qkl7wSqlRtJwFreZvIR+/OI7KtlOCoy18NWWstVNU3b
+ QNSH/W6rl/aVHVF6AAAAA==
+X-Change-ID: 20260212-drm-rust-next-beb92aee9d75
+To: Alexandre Courbot <acourbot@nvidia.com>, 
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Tim Kovalenko <tim.kovalenko@proton.me>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771387293; l=6122;
+ i=tim.kovalenko@proton.me; s=20260212; h=from:subject:message-id;
+ bh=9d2Vc62rvOiPpAv0Hkn6Wiy01xq2m2s0v3zXT6ns3tQ=;
+ b=XCWTBdsFpHQ/x01zkYW8tXHp3uoZqiNipbkmGPP5tl3V3birQttmkhUkU/SzQj6SQtRxxKDIJ
+ UQItC1vjmCxAcX/TmTwm0CmI+0dMv+HZGHQ3UqAmaB+PmF5qyM+XeVJ
+X-Developer-Key: i=tim.kovalenko@proton.me; a=ed25519;
+ pk=/+OiulEpgeZifgP4mDE4e5YlV6nMeY+frze/lY/xiHI=
+X-Endpoint-Received: by B4 Relay for tim.kovalenko@proton.me/20260212 with
+ auth_id=635
+X-Original-From: Tim Kovalenko <tim.kovalenko@proton.me>
+Reply-To: tim.kovalenko@proton.me
 
-On Wed, Feb 18, 2026 at 9:56=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> On Wed, Feb 11, 2026 at 01:29:07PM +1000, alistair23@gmail.com wrote:
-> > From: Alistair Francis <alistair.francis@wdc.com>
-> >
-> > Security Protocols and Data Models (SPDM) [1] is used for authenticatio=
-n,
-> > attestation and key exchange. SPDM is generally used over a range of
-> > transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
-> >
-> > >From the kernels perspective SPDM is used to authenticate and attest d=
-evices.
-> > In this threat model a device is considered untrusted until it can be v=
-erified
-> > by the kernel and userspace using SPDM. As such SPDM data is untrusted =
-data
-> > that can be mallicious.
-> >
-> > The SPDM specification is also complex, with the 1.2.1 spec being almos=
-t 200
-> > pages and the 1.3.0 spec being almost 250 pages long.
-> >
-> > As such we have the kernel parsing untrusted responses from a complex
-> > specification, which sounds like a possible exploit vector. This is the=
- type
-> > of place where Rust excels!
->
-> I was arguing for exactly this at a recent conference, so I'm glad to
-> see it. It is a great meaningful usecase for rust in the kernel.
+From: Tim Kovalenko <tim.kovalenko@proton.me>
 
-Woo, someone is on board!
+The `Cmdq::new` function was allocating a `PteArray` struct on the stack
+and was causing a stack overflow with 8216 bytes.
 
->
-> IIRC the netlink was my suggestion too, it really needs a careful
-> look on its own. It is much better than sysfs, but comes with its own
-> pitfalls.
+Modify the `PteArray` to calculate and write the Page Table Entries
+directly into the coherent DMA buffer one-by-one. This reduces the stack
+usage quite a lot.
 
-It was!
+Signed-off-by: Tim Kovalenko <tim.kovalenko@proton.me>
+---
+Changes in v3:
+- Addressed the comments and re-instated the PteArray type.
+- PteArray now uses `init` instead of `new` where it writes to `self`
+  page by page.
+- PteArray just needs a pte pointer obtained from the `gsp_mem.as_slice_mut`.
 
->
-> You might want to try to break this up into two parts, one just dumps
-> a large text file in debugfs where there are not uAPI rules. This
-> would let the rust work proceed.
+I hope I understood everything in the V2 email chain and implemented it correctly :)
 
-I'm currently thinking of splitting this in 3 parts. One for the
-ground work patches (crypto), one for SPDM (without netlink) and then
-a final one for netlink support.
+- Link to v2: https://lore.kernel.org/r/20260213-drm-rust-next-v2-1-aa094f78721a@proton.me
 
-I feel that this RFC proves netlink can work, which is important. For
-SPDM the authenticated syfs attribute is enough to provide usefulness
-to userspace to merge that while sending the netlink later.
+Changes in v2:
+- Missed a code formatting issue.
+- Link to v1: https://lore.kernel.org/r/20260212-drm-rust-next-v1-1-409398b12e61@proton.me
+---
+ drivers/gpu/nova-core/gsp.rs      | 34 +++++++++++++++++++++++-----------
+ drivers/gpu/nova-core/gsp/cmdq.rs | 20 +++++++++++++++-----
+ 2 files changed, 38 insertions(+), 16 deletions(-)
 
-That way hopefully everything is a little more self contained, but
-still has users and value to justify being merged.
+diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
+index 174feaca0a6b9269cf35286dec3acc4d60918904..7dc67fd55ce6ce19cbb750961dcfb4e373a20b4c 100644
+--- a/drivers/gpu/nova-core/gsp.rs
++++ b/drivers/gpu/nova-core/gsp.rs
+@@ -2,6 +2,8 @@
+ 
+ mod boot;
+ 
++use core::iter::Iterator;
++
+ use kernel::{
+     device,
+     dma::{
+@@ -30,7 +32,7 @@
+         GspArgumentsPadded,
+         LibosMemoryRegionInitArgument, //
+     },
+-    num,
++    num, //
+ };
+ 
+ pub(crate) const GSP_PAGE_SHIFT: usize = 12;
+@@ -47,16 +49,17 @@
+ unsafe impl<const NUM_ENTRIES: usize> AsBytes for PteArray<NUM_ENTRIES> {}
+ 
+ impl<const NUM_PAGES: usize> PteArray<NUM_PAGES> {
+-    /// Creates a new page table array mapping `NUM_PAGES` GSP pages starting at address `start`.
+-    fn new(start: DmaAddress) -> Result<Self> {
+-        let mut ptes = [0u64; NUM_PAGES];
+-        for (i, pte) in ptes.iter_mut().enumerate() {
++    /// Initializes the page table array mapping `NUM_PAGES` GSP pages starting at address `start`.
++    /// This is done "in-memory" without using the stack to avoid overflow, by writing one page at
++    /// a time to the memory region
++    fn init(&mut self, start: DmaAddress) -> Result {
++        for (i, pte) in self.0.iter_mut().enumerate() {
+             *pte = start
+                 .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
+                 .ok_or(EOVERFLOW)?;
+         }
+ 
+-        Ok(Self(ptes))
++        Ok(())
+     }
+ }
+ 
+@@ -86,16 +89,25 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
+             NUM_PAGES * GSP_PAGE_SIZE,
+             GFP_KERNEL | __GFP_ZERO,
+         )?);
+-        let ptes = PteArray::<NUM_PAGES>::new(obj.0.dma_handle())?;
++
++        let start_addr = obj.0.dma_handle();
+ 
+         // SAFETY: `obj` has just been created and we are its sole user.
+-        unsafe {
+-            // Copy the self-mapping PTE at the expected location.
++        let pte_region = unsafe {
+             obj.0
+-                .as_slice_mut(size_of::<u64>(), size_of_val(&ptes))?
+-                .copy_from_slice(ptes.as_bytes())
++                .as_slice_mut(size_of::<u64>(), NUM_PAGES * size_of::<u64>())?
+         };
+ 
++        // As in [`PteArray::init`], this is a  one by one GSP Page write to the memory
++        // to avoid stack overflow when allocating the whole array at once.
++        for (i, chunk) in pte_region.chunks_exact_mut(size_of::<u64>()).enumerate() {
++            let pte_value = start_addr
++                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
++                .ok_or(EOVERFLOW)?;
++
++            chunk.copy_from_slice(&pte_value.to_ne_bytes());
++        }
++
+         Ok(obj)
+     }
+ }
+diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
+index 46819a82a51adc58423502d9d45730923b843656..132342a1a6d843e999e2d0e4fbcc76bde2bd8652 100644
+--- a/drivers/gpu/nova-core/gsp/cmdq.rs
++++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+@@ -23,7 +23,7 @@
+     transmute::{
+         AsBytes,
+         FromBytes, //
+-    },
++    }, //
+ };
+ 
+ use crate::{
+@@ -34,10 +34,10 @@
+             MsgFunction,
+             MsgqRxHeader,
+             MsgqTxHeader, //
+-        },
++        }, //
+         PteArray,
+         GSP_PAGE_SHIFT,
+-        GSP_PAGE_SIZE, //
++        GSP_PAGE_SIZE,
+     },
+     num,
+     regs,
+@@ -159,6 +159,7 @@ struct Msgq {
+ #[repr(C)]
+ struct GspMem {
+     /// Self-mapping page table entries.
++    // ptes: [u64; GSP_PAGE_SIZE / size_of::<u64>()],
+     ptes: PteArray<{ GSP_PAGE_SIZE / size_of::<u64>() }>,
+     /// CPU queue: the driver writes commands here, and the GSP reads them. It also contains the
+     /// write and read pointers that the CPU updates.
+@@ -199,9 +200,18 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
+         const MSGQ_SIZE: u32 = num::usize_into_u32::<{ size_of::<Msgq>() }>();
+         const RX_HDR_OFF: u32 = num::usize_into_u32::<{ mem::offset_of!(Msgq, rx) }>();
+ 
+-        let gsp_mem =
++        let mut gsp_mem =
+             CoherentAllocation::<GspMem>::alloc_coherent(dev, 1, GFP_KERNEL | __GFP_ZERO)?;
+-        dma_write!(gsp_mem[0].ptes = PteArray::new(gsp_mem.dma_handle())?)?;
++
++        let start_address = gsp_mem.dma_handle();
++
++        // SAFETY: `gsp_mem` has just been created and we are its sole user.
++        let mem: &mut [GspMem] = unsafe { gsp_mem.as_slice_mut(0, 1)? };
++
++        // Borrowing the array from gsp_mem and writing directly to that in the init method of
++        // PteArray
++        mem[0].ptes.init(start_address)?;
++
+         dma_write!(gsp_mem[0].cpuq.tx = MsgqTxHeader::new(MSGQ_SIZE, RX_HDR_OFF, MSGQ_NUM_PAGES))?;
+         dma_write!(gsp_mem[0].cpuq.rx = MsgqRxHeader::new())?;
+ 
 
-That's a good idea about debugfs though, I'll keep that in mind
+---
+base-commit: cea7b66a80412e2a5b74627b89ae25f1d0110a4b
+change-id: 20260212-drm-rust-next-beb92aee9d75
 
-Alistair
+Best regards,
+-- 
+Tim Kovalenko <tim.kovalenko@proton.me>
 
->
-> And another to introduce a proper uAPI for the data.
->
-> It will be easier to get the right people interested in both parts if
-> it is split up I think, given the size.
->
-> Jason
+
