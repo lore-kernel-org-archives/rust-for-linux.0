@@ -1,54 +1,54 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14212FF172
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 11:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A67D30F931
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 11:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771415629; cv=none; b=X+j0eZ6bGNV9l8qA/f6q9sCJdO+3KHtt3HDZxqU7Rxq0CwhGgItpPAPUfjAxSPU9+ujapz71EVPe7Dwfr9Px7X+r9wGS5Y+aNLOxKh4a9US0WnNV89phXq2YELt34hBapG/zJuEglY8Iy8t0j4XsQ3Nw1GJrhbczrG473nNwZ+g=
+	t=1771415629; cv=none; b=TbNVXxKeaWvJClsuv+n5yBB94kMvkppRqRW2kQLdMkBb4wx8/yQZb5f4/0D9o+GsnzM0mFmsQ56hnb3Pj1BDCBVptt+uRDoqSgsyhsN9/RUW5DtQzzH5sLn9jwHErDAhqMfe/DaTevXtz8KSxjgsKbOZHnenRFnQYn2vNH7zGLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771415629; c=relaxed/simple;
-	bh=dxslJAb5KIt29+Pmlra1MsYzJUsqBlgsseUHaKRC00Q=;
+	bh=AHwJyjos7iEyMW0S0TgaVF/r84EvhJvZEX/erTcBJg4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pIdNH5Rm/jb/uLpBtcu52dKAAgC2mht20eirHr1Iv9OpTuaRE/9jmV48troVwDSd0aC03JOEBh3fLlvWWXvstUro17yUjavIlqGPe9Xg6cXU+G9rjryjxv6+7acU5A3sx+nni/vymeAuxoii/MWQ2t9CngqwuUdv3Oi/eF2HmLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IKsVbLsP; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=Eg3FaSmm6jM30VTCFzpniVeTA0uNUC8ZykK0IFn1Ij71B9qVCmUg5jXpiEzTqoJX2wEIFXrxTfloTHeRop3TpUObEKAtU2yji1zxprG01wAizAQ5ukgr1ERjSyFrGmvKe5izNi/NrrfiM6lZp2kfcKX6O4/VjQIOwuY8x/SbQjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ct3kMbTi; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IKsVbLsP"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836bf1a920so60150555e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 03:53:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ct3kMbTi"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-65c13e2123dso3100179a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 03:53:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771415626; x=1772020426; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771415625; x=1772020425; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2nREefhNbsS6m+NzCv8p/u3MUoT+tS1ddYgBqAgzIBg=;
-        b=IKsVbLsP2kRnSGVyZ7gFXiqkELJYXkM4Y9t/+2Z83IeHfKMt8akYguBhpAgWP9z31C
-         984VJZaCffFLZL5SvUWqH8nDeJxnRrb2+CKYfIrfHgkxx1E9Nd45yOlmDcWdGJhUMMzV
-         caVi8lE//nApGsh6oAmSuE9RoettuU9SibY3qX+lDc3LmtF/Y9kEbAFJnIAj2QppTMBp
-         lFQlVSbDCnMjTgqynDEIj5l7f0Ta5eg7yXFYQ7YpsUlmFAd0Zl2O4s7cm+9NatfuZBNE
-         6XcqFG1Pc+lqNNNG3XfZs5zALj12Jdc2SHDS08scgRMDAmDbKK22jhsMkRJmw5cag4uK
-         lK6g==
+        bh=POlj+5b3FeGUDIy0t6zTY3NKGZo0gnMVI1S8/pn9WM8=;
+        b=ct3kMbTi9MD/YsExWkAzl/clTjC046hfE62W90o+4h2HnnwOGCK/8go29wU3gaY8gf
+         ymJ5ZegNP/GAHHQytgrE7AT6RFTOWhsyyCoAFPfzm7tFC7gkrIVP4hMwByk5jMtMTS/d
+         rb/zgIosVVz17Xuz/n8vjtNA/y+qmqativIReA6aEj6kr/LjWbLBnGt7XnNzFe+RAtXB
+         uhZK+SCtaSUobqDBBsrwf4/lkp26WkoMcTGRsjnFhMfJ27nFji4oODhSgEyxF7ve18/O
+         QDCleTxDAsxesTToRCxRy76i3aKDqyuwPp9Rilcabs8TvawvtggduGDMCOdHV1K7Ndku
+         Jc2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771415626; x=1772020426;
+        d=1e100.net; s=20230601; t=1771415625; x=1772020425;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2nREefhNbsS6m+NzCv8p/u3MUoT+tS1ddYgBqAgzIBg=;
-        b=doeNDzv30wo6PRBWtQZTbIQN3pBqn8noxmQtuBzl6VqtW+0ejTVjqId9EIZ2zMPJIe
-         3Kn+HKBeq3ugDEDz6sbbpOOLTIqaB2+BH2Oeg1iLzUH8QSPUWPvj6mIiKSbxTXatCS4q
-         /+TsSl81FSjYLWwG/mnw8K3VfCj/XTN0VTjuRiMLA76PQkTH5GqTOEU8lFrns/gdjB74
-         ayRppV2E+pjZ0i90NiSZmQRyKZU4fp49R5usrCgm8KfcOejfxEF9Jxw1+VuTNJnqIk1y
-         BXPDNJgWvcfyeYS+xj1GsPhXP6vioMvXZylCU7y+tNfSNumznhAy8AYynkLYJ+IisrM6
-         ckoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/E8bGFk2cYl7o2exxUE2rWZXUNhYgrRr7Q3KswiHJKtjJeHXqm4i1GXs/dB7ab5Wf+0w2O88aTpEEK1cqcg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt9i3obuK8qdbrlzPghLbgdD9po3bNkYUfg8VoPq8ypfzH6YJ8
-	LqS8qWCGiJLeivensh14mP+fOBTbPOav5oCKVkZRbnCSqYNMT7bZWeUG9aH2Aja4utMbowdO1wb
-	pQCeWsc8RIJR/5025Ug==
-X-Received: from wmof9.prod.google.com ([2002:a05:600c:44c9:b0:477:988a:7675])
+        bh=POlj+5b3FeGUDIy0t6zTY3NKGZo0gnMVI1S8/pn9WM8=;
+        b=VTQoMvqnrK59+3V6vqBuLTCPqvU3o9uWrXZQyNWoHQ11DIJpo3u8DteEOHlol6TGyD
+         GgQOMBg4+uPbEEOGzQfR0BRg/OZ3aYiK/4VauJQIs9EcctPKGdmPOGWMJBHSlGaezOq5
+         469G+zvjd4PhIKaPDqVngkscteNCKY/SEJs05L9akDQevagvpqbibAA97y/uRPsyfplY
+         8XN7fc4oEG621eU69iPJaOEYHFj8Ch72nQ0hLkyncqaw5tWo+YxrfAWA9aqiF2nycOhq
+         KIqSaSPz56iY9QLZoEdancTGEPuL7l6c/Q0riqUUl5IRXtZnOLNgpce/rHFJmglLKisH
+         jEhA==
+X-Forwarded-Encrypted: i=1; AJvYcCVxixMzrRANezyflMhSwcO4G41zCZO18s2WiboYCcxaq89ltAZvZ0jVAyqT6HcNZAM2jVP+g1G5FlUgEWH2kw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQe/K5Sskr5upHraWkzpSZpzbxa/Qgp2sLFNtVNNXxpFiySdcy
+	ePQZI5grgg900HJ0Owy4ZmescsQvNnDkyRLTGsUyKV/wAJEVPWex45+m5OUDF7t/23Pp059cmjB
+	9IC/fsj66gbupy9NFiw==
+X-Received: from edsl24.prod.google.com ([2002:aa7:d958:0:b0:63c:6537:43ec])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c25:b0:47d:3ead:7440 with SMTP id 5b1f17b1804b1-48379c14606mr212400745e9.32.1771415625987;
- Wed, 18 Feb 2026 03:53:45 -0800 (PST)
-Date: Wed, 18 Feb 2026 11:53:27 +0000
+ 2002:a05:6402:1470:b0:65c:63f0:a92 with SMTP id 4fb4d7f45d1cf-65c63f00e8bmr2549835a12.23.1771415624762;
+ Wed, 18 Feb 2026 03:53:44 -0800 (PST)
+Date: Wed, 18 Feb 2026 11:53:26 +0000
 In-Reply-To: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,23 +58,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2898; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=dxslJAb5KIt29+Pmlra1MsYzJUsqBlgsseUHaKRC00Q=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplahFqqe27pmaRIiimlvXAoI7c4Aaeb8gzBCoW
- 7sqLygMmP2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZWoRQAKCRAEWL7uWMY5
- RiinD/93Hu+5kQo1qJcL+IetJ2vxyhhemT1hfThuvAADi5VceWTgLmJNepFXO7G77pW/2GeTBB3
- hglYyOoUtJStG2fdTUp+EutcYerAtSgpAnbhEpOIaMKO2Yes5W+M92MyD+6fyb2jpTNX29pujW0
- uca1oss6kBre/m26qiICetpHoL1NS1gN7YdP9JmrVujhz3kE+tFIJlMb+hNWp6ai7tdcn4gTSB9
- J9OLQvOEIMk/kiA0xLkm+5Gl/u+m5OBPNotZfvsSwjCFDHFAi76dii3zfnn0ogXbsk8Cng5gEkS
- CK49G2PrS5MB/lyNm8FVpbgDxUbHE4/HJ7qOJv7iBgDtBwkxpeW+4sWHaflHwSkyBMB0o06XkSy
- CcTe+B3ydUvhCe1jg0tUlmuCqtsRcBwEX4XonP13fIL3aJPniOO4Ofg5aT1emcncDjlovMuwzj6
- ChcMKSLOqtG2QV6h2HY6a7qu7ih04BkCqiTbRiQ3zKOKqB29seNh/1VwxImeQ3abXclaS/J87Xd
- uEk0oq0T080GYz/oSMJjJ9jLLpuinmaE6Y6d5KtexouBUr1Z2YA40lB77+roEZf/5v/XL+n/rVc
- Yc/ENTdwPvpAqKsnqxruyi+lhem8Kr5FlqNy93Krvh7d4uqyPNFvWixXuiZrM0Rb+RVZDF1DJ1I F2yQblZRdRGtoHQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7238; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=AHwJyjos7iEyMW0S0TgaVF/r84EvhJvZEX/erTcBJg4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplahFgui5qXvwywJz5fy38GnQcd/vmShYSKX2R
+ yDlD1BgEXaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZWoRQAKCRAEWL7uWMY5
+ RkFCD/0cX5qG36V764Q3IeYDdRES05yduGLy7SvLEGQd4l/JdSZoLzFgO6SSAR5zFlF8ZOMRdc2
+ 4rPFkme+mMC6uClTNzue0xVeSm9cTFaZJgIWzbDN3I9AgnTqurQQE0UQXwlAc37fTjdzkbDahX2
+ RB+p1PFmbZOYbuscdcuc+37de7FBlCxdZWjQu9Am2bUWbQ71W6HPWj4uPHAPuXrXVo2z4s0GE7n
+ 7RdmBazBHK37jQRMUJwG9xtJjLI9GdhZ2LWy271qayls0aW9lZ9waRqh4ATzgqBJlNf0IXS5bnu
+ uiWurWiMzaeaDWp+f9P8wsdGKMZmt30ReZcD9EYD9pc2bxbi8ooIO3YKMVgavTwYaJQhQZaFiMI
+ fsSIqu3WtFBW7a2fNzFyA0M5c7NfXMuI76Nh/Prj29sgyEV6xX+rFWTUzFfdLyqIWjFJp7fa4s4
+ LXz1MqduYOEexBAUjviuPo+W6cuOyf6DDqRkO7zg5ktcWKlgK3yUW1ALLBM0tWDTPTjTcuqqxWY
+ S7Kj4DUpja9OAzmTdYdwY49wYMgogqLg5XAxCE37XMmkqvXd0vU1m2/6M5mIZHUQ9/0d2OB0hKb
+ /sOH45UxQ1+blp3ajGC2hJb7/VGFzTadtC9cAt70WDoIM4dQh2syJDESamrt7CMTceNn5HRpYka nedUIkmOKe2rrkA==
 X-Mailer: b4 0.14.2
-Message-ID: <20260218-binder-vma-check-v2-2-60f9d695a990@google.com>
-Subject: [PATCH v2 2/2] rust_binder: avoid reading the written value in
- offsets array
+Message-ID: <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
+Subject: [PATCH v2 1/2] rust_binder: check ownership before using vma
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Jann Horn <jannh@google.com>
@@ -87,20 +86,36 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-When sending a transaction, its offsets array is first copied into the
-target proc's vma, and then the values are read back from there. This is
-normally fine because the vma is a read-only mapping, so the target
-process cannot change the value under us.
+When installing missing pages (or zapping them), Rust Binder will look
+up the vma in the mm by address, and then call vm_insert_page (or
+zap_page_range_single). However, if the vma is closed and replaced with
+a different vma at the same address, this can lead to Rust Binder
+installing pages into the wrong vma.
 
-However, if the target process somehow gains the ability to write to its
-own vma, it could change the offset before it's read back, causing the
-kernel to misinterpret what the sender meant. If the sender happens to
-send a payload with a specific shape, this could in the worst case lead
-to the receiver being able to privilege escalate into the sender.
+By installing the page into a writable vma, it becomes possible to write
+to your own binder pages, which are normally read-only. Although you're
+not supposed to be able to write to those pages, the intent behind the
+design of Rust Binder is that even if you get that ability, it should not
+lead to anything bad. Unfortunately, due to another bug, that is not the
+case.
 
-The intent is that gaining the ability to change the read-only vma of
-your own process should not be exploitable, so remove this TOCTOU read
-even though it's unexploitable without another Binder bug.
+To fix this, store a pointer in vm_private_data and check that the vma
+returned by vma_lookup() has the right vm_ops and vm_private_data before
+trying to use the vma. This should ensure that Rust Binder will refuse
+to interact with any other VMA. The plan is to introduce more vma
+abstractions to avoid this unsafe access to vm_ops and vm_private_data,
+but for now let's start with the simplest possible fix.
+
+C Binder performs the same check in a slightly different way: it
+provides a vm_ops->close that sets a boolean to true, then checks that
+boolean after calling vma_lookup(), but this is more fragile
+than the solution in this patch. (We probably still want to do both, but
+the vm_ops->close callback will be added later as part of the follow-up
+vma API changes.)
+
+It's still possible to remap the vma so that pages appear in the right
+vma, but at the wrong offset, but this is a separate issue and will be
+fixed when Rust Binder gets a vm_ops->close callback.
 
 Cc: stable@vger.kernel.org
 Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
@@ -108,44 +123,136 @@ Reported-by: Jann Horn <jannh@google.com>
 Reviewed-by: Jann Horn <jannh@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/thread.rs | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/android/binder/page_range.rs | 83 +++++++++++++++++++++++++++---------
+ 1 file changed, 63 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 1f1709a6a77abc1c865cc9387e7ba7493448c71d..a81910f4cedf9bf485bf1cf954b95aee6c122cfd 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1016,12 +1016,9 @@ pub(crate) fn copy_transaction_data(
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index fdd97112ef5c8b2341e498dc3567b659f05e3fd7..67aae783e8b8b7cf60ecf7e711d5f6f6f5d1dbe3 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -142,6 +142,30 @@ pub(crate) struct ShrinkablePageRange {
+     _pin: PhantomPinned,
+ }
  
-         // Copy offsets if there are any.
-         if offsets_size > 0 {
--            {
--                let mut reader =
--                    UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
--                        .reader();
--                alloc.copy_into(&mut reader, aligned_data_size, offsets_size)?;
--            }
-+            let mut offsets_reader =
-+                UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
-+                    .reader();
++// We do not define any ops. For now, used only to check identity of vmas.
++static BINDER_VM_OPS: bindings::vm_operations_struct = pin_init::zeroed();
++
++// To ensure that we do not accidentally install pages into or zap pages from the wrong vma, we
++// check its vm_ops and private data before using it.
++fn check_vma(vma: &virt::VmaRef, owner: *const ShrinkablePageRange) -> Option<&virt::VmaMixedMap> {
++    // SAFETY: Just reading the vm_ops pointer of any active vma is safe.
++    let vm_ops = unsafe { (*vma.as_ptr()).vm_ops };
++    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
++        return None;
++    }
++
++    // SAFETY: Reading the vm_private_data pointer of a binder-owned vma is safe.
++    let vm_private_data = unsafe { (*vma.as_ptr()).vm_private_data };
++    // The ShrinkablePageRange is only dropped when the Process is dropped, which only happens once
++    // the file's ->release handler is invoked, which means the ShrinkablePageRange outlives any
++    // VMA associated with it, so there can't be any false positives due to pointer reuse here.
++    if !ptr::eq(vm_private_data, owner.cast()) {
++        return None;
++    }
++
++    vma.as_mixedmap_vma()
++}
++
+ struct Inner {
+     /// Array of pages.
+     ///
+@@ -308,6 +332,18 @@ pub(crate) fn register_with_vma(&self, vma: &virt::VmaNew) -> Result<usize> {
+         inner.size = num_pages;
+         inner.vma_addr = vma.start();
  
-             let offsets_start = aligned_data_size;
-             let offsets_end = aligned_data_size + offsets_size;
-@@ -1042,11 +1039,9 @@ pub(crate) fn copy_transaction_data(
-                 .step_by(size_of::<u64>())
-                 .enumerate()
-             {
--                let offset: usize = view
--                    .alloc
--                    .read::<u64>(index_offset)?
--                    .try_into()
--                    .map_err(|_| EINVAL)?;
-+                let offset = offsets_reader.read::<u64>()?;
-+                view.alloc.write(index_offset, &offset)?;
-+                let offset: usize = offset.try_into().map_err(|_| EINVAL)?;
++        // This pointer is only used for comparison - it's not dereferenced.
++        //
++        // SAFETY: We own the vma, and we don't use any methods on VmaNew that rely on
++        // `vm_private_data`.
++        unsafe {
++            (*vma.as_ptr()).vm_private_data = ptr::from_ref(self).cast_mut().cast::<c_void>()
++        };
++
++        // SAFETY: We own the vma, and we don't use any methods on VmaNew that rely on
++        // `vm_ops`.
++        unsafe { (*vma.as_ptr()).vm_ops = &BINDER_VM_OPS };
++
+         Ok(num_pages)
+     }
  
-                 if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
-                     pr_warn!("Got transaction with invalid offset.");
+@@ -399,22 +435,24 @@ unsafe fn use_page_slow(&self, i: usize) -> Result<()> {
+         //
+         // Using `mmput_async` avoids this, because then the `mm` cleanup is instead queued to a
+         // workqueue.
+-        MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?)
+-            .mmap_read_lock()
+-            .vma_lookup(vma_addr)
+-            .ok_or(ESRCH)?
+-            .as_mixedmap_vma()
+-            .ok_or(ESRCH)?
+-            .vm_insert_page(user_page_addr, &new_page)
+-            .inspect_err(|err| {
+-                pr_warn!(
+-                    "Failed to vm_insert_page({}): vma_addr:{} i:{} err:{:?}",
+-                    user_page_addr,
+-                    vma_addr,
+-                    i,
+-                    err
+-                )
+-            })?;
++        check_vma(
++            MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?)
++                .mmap_read_lock()
++                .vma_lookup(vma_addr)
++                .ok_or(ESRCH)?,
++            self,
++        )
++        .ok_or(ESRCH)?
++        .vm_insert_page(user_page_addr, &new_page)
++        .inspect_err(|err| {
++            pr_warn!(
++                "Failed to vm_insert_page({}): vma_addr:{} i:{} err:{:?}",
++                user_page_addr,
++                vma_addr,
++                i,
++                err
++            )
++        })?;
+ 
+         let inner = self.lock.lock();
+ 
+@@ -667,12 +705,15 @@ fn drop(self: Pin<&mut Self>) {
+     let mmap_read;
+     let mm_mutex;
+     let vma_addr;
++    let range_ptr;
+ 
+     {
+         // CAST: The `list_head` field is first in `PageInfo`.
+         let info = item as *mut PageInfo;
+         // SAFETY: The `range` field of `PageInfo` is immutable.
+-        let range = unsafe { &*((*info).range) };
++        range_ptr = unsafe { (*info).range };
++        // SAFETY: The `range` outlives its `PageInfo` values.
++        let range = unsafe { &*range_ptr };
+ 
+         mm = match range.mm.mmget_not_zero() {
+             Some(mm) => MmWithUser::into_mmput_async(mm),
+@@ -717,9 +758,11 @@ fn drop(self: Pin<&mut Self>) {
+     // SAFETY: The lru lock is locked when this method is called.
+     unsafe { bindings::spin_unlock(&raw mut (*lru).lock) };
+ 
+-    if let Some(vma) = mmap_read.vma_lookup(vma_addr) {
+-        let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
+-        vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
++    if let Some(unchecked_vma) = mmap_read.vma_lookup(vma_addr) {
++        if let Some(vma) = check_vma(unchecked_vma, range_ptr) {
++            let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
++            vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
++        }
+     }
+ 
+     drop(mmap_read);
 
 -- 
 2.53.0.310.g728cabbaf7-goog
