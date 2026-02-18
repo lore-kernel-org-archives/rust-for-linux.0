@@ -1,185 +1,337 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021108.outbound.protection.outlook.com [52.101.100.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485301A23AC;
-	Wed, 18 Feb 2026 15:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.108
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771427309; cv=fail; b=uWcLQdQjO1rDc95nYc0lV2RfpX8eUdRALmVC1UIJtcnirEWJge2YiX5bgHI/pi4xMlQSwlD/QIHbw+qs1p+jP5DK0Snz4AtCAoiXByFebEZGRBwAHEzI5n2KycFMW6ywgZi835JSMsK7SVbVu9DiMz6JnhEi/ZAJsNRkHJ0rp/M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771427309; c=relaxed/simple;
-	bh=2G2fhjjkkfL1Ee0J/EQ/aM9UPK0A1RvJFBBGvoGKZhE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:MIME-Version; b=G69NizNl9a6mSzJW1Gbe+vmRIriWo9tCIy/5X5QK5/TF59IKn99j3KjIDdcacTOfp9OQ6fRyKEx5CgAtLAFbueoGNVcKKhuJyjroW+fecPy48o2/fhJGdIkiWOST2drJbE8pyv3NpISZstm6mqRaZkinyNKnbl0vR9Lzqpai3dc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=IQxPAjPk; arc=fail smtp.client-ip=52.101.100.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6873F340274
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 15:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771427318; cv=none; b=YoJvENcRBhAkq5f+hvjlGYLHJ45f0S9RiFJpzCbUPVGdHXGMKLdNiIwKU8xjMUAZ8NS7Nl6IupOEqDH+EiQmxPFvfHJw7Csa0d1YtICi2u7RLyb4AJRqADG4QtrAAl2UNQqcyylHS6Oepq6o1+zAmgCSDDqUSNLbhhkVkGJPIG4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771427318; c=relaxed/simple;
+	bh=2fr/OCZ8cFVBHcDNDyV5zLQo4aqIHZtJeIp6unn02Vg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hbBwYZnIWHT8cIJIs7nrsay03V78WRh6FiVLZiJ+kluxRF/Dj/+Wk/m/k3sgTfI6xgRvNbwHvlhoaEo/ZKN85wes/TpjidTCNrReRlMwIi3lrZTo9XBRRv12xBA28fwNBvJdP5zSVn3j7Or6lL6XyI+eNi3JPlvwWmB+1mJ8C1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=gldyKQL6; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=gldyKQL6; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="IQxPAjPk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u4RKe/blZyROWlY7qewdVMFcml8UT3I7qWi4NFJmrJqP02Oxiy+WOps5Y8LsfWK/nexMhkAxgwrDRxGx1ytJ0yxTjrYo/+3iipKFIg1vJhYv1gxmf4JPfcZ9bHjmqXh+vQAMxtpPEsgIu3KzJDgIjjr5VdjJHawi9AFAgSgU00nHp02Z2rD3VJJuuHfw4FSvJDcYXsdHCU1rJ3dtmHHM60x9iRLFfjC7ZrAjXw5yXDLMY2bLABdqbMv9GTunw+rOwzrLn3Bo+2VaasOfVQFw9mapmHZou8SczToPGy3B9damXEgUIvAhlm2elW2HHEHmq62VtdaUAICc9ie1jUE8IQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=slYEOylv/Rh9fNveW1tH/rwD3Yn4/javefqUUV/ZCSw=;
- b=FuuS7KGl8DhRKttHtsc1z4XxGS3p0JRMchKH5pU4ZkhJCGPl54tWOVzgNf02rFsXT4aVZkau4Pa5YVk9S1e9ZJKvw8XsNNhsgzIXfCQofA7DnZgDeYawQmqYMz7ESOqpSQ2gk2vpE7fzyh2IwZ17CHqSrhSiWIbiEHU7xgtZnOU5I7Y0sz5GGl5gVvrCxaTFNQbtSG2vmiwWEzWmuYFiUdjnU/nBEc/dSRTCXKz5BaACYNcCTDX0GD4t+DEjXey1Es3UcXGw/OvBINgGhTXRsqgVXcvPAZinwm9C9M+rIIzgVzWRHqW4Y1AKNvKrYhedDdOphJkKtZUU501sZOCyPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=slYEOylv/Rh9fNveW1tH/rwD3Yn4/javefqUUV/ZCSw=;
- b=IQxPAjPk4E9IP+9TxpKrFyYD/Pzb7BEg9FJdhkDP3H6agRz5pvhu7uLGrhOP3Og0e6pHXDPqnX0LkI6B2I3cT0e1xJshNkcDZPiC0gBsaz8roM1HIEq4Y0X4ZS+bA2YmUOKidxMbh0Ahl4WrK4bLwAzaEk3p9RzrYSgFV9cneEI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB7027.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ec::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.14; Wed, 18 Feb
- 2026 15:08:18 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9632.010; Wed, 18 Feb 2026
- 15:08:18 +0000
-Date: Wed, 18 Feb 2026 15:08:17 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens
- <me@kloenk.dev>, Christian Schrefl <chrisi.schrefl@gmail.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: pin-init: replace clippy `expect` with `allow`
-In-Reply-To: <DGGCEMEX10HB.3AZIOF9M54YVR@kernel.org>
-References: <20260215132232.1549861-1-lossin@kernel.org>
- <5f29715dba04c5a66195a962ffd1fb69@garyguo.net>
- <DGGCEMEX10HB.3AZIOF9M54YVR@kernel.org>
-Message-ID: <99556c0a6594f7ad9d9399e152d7e759@garyguo.net>
-X-Sender: gary@garyguo.net
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO6P123CA0054.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:310::11) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="gldyKQL6";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="gldyKQL6"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3EAF23E6DD;
+	Wed, 18 Feb 2026 15:08:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1771427308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5lyt323+HbZYpoX64Rl3vcxfunKzUx7dWbFHruMcR5o=;
+	b=gldyKQL6ACDQdncmwMAad+Z99WShbTJgDNbsPhcbC0DQiA3KedeIyVic93hD8vv78dtV5k
+	mpXWOEOKQDyHkeA1GRi52v9RwnG2zVxhkBv7o7JMU+8dwRIwmS7XltK2XFgm+L7TqcdAoi
+	1nUoIbVbEo1ghf+4y8+Ad7p6+tMf3RI=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1771427308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5lyt323+HbZYpoX64Rl3vcxfunKzUx7dWbFHruMcR5o=;
+	b=gldyKQL6ACDQdncmwMAad+Z99WShbTJgDNbsPhcbC0DQiA3KedeIyVic93hD8vv78dtV5k
+	mpXWOEOKQDyHkeA1GRi52v9RwnG2zVxhkBv7o7JMU+8dwRIwmS7XltK2XFgm+L7TqcdAoi
+	1nUoIbVbEo1ghf+4y8+Ad7p6+tMf3RI=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B3DA3EA65;
+	Wed, 18 Feb 2026 15:08:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4AnNIevVlWkRRwAAD6G6ig
+	(envelope-from <petr.pavlu@suse.com>); Wed, 18 Feb 2026 15:08:27 +0000
+Message-ID: <7765df86-b08a-4f70-900d-4b4d85c07d49@suse.com>
+Date: Wed, 18 Feb 2026 16:08:19 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB7027:EE_
-X-MS-Office365-Filtering-Correlation-Id: f45151eb-22cf-47b6-8167-08de6eff8c27
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GwRxuakJ7jNHCx0050Jmba51WRWOGCgFHpT5BQFmTjIjIvrcDFvUPn5RrFEY?=
- =?us-ascii?Q?hEq5o7Yqru39B173Zs5MccrhFVVAO3U4RngQgmlOn52C7kNVLIlNHnB4vHCF?=
- =?us-ascii?Q?hQovCXE3PhScwkbc9PaIW7409aDbWFUHRL4TsUR55r+kYfyADzwXb1QSxXPN?=
- =?us-ascii?Q?7/g4BjGGB/5YeHaOr+Ehg33fUaTVSKS4s/jfzh7FT3pBFIAM6hHzh6q8EUaW?=
- =?us-ascii?Q?vtQDnUsYO2SNlS0suFhdXis6KkXulJqqhbQNAJNT6SR8iWuDIF4km+gt1MGk?=
- =?us-ascii?Q?utJ7aCkyaNWg+eESZrfJUBY++ep9LhQXpW3Q1qOFcEQvOJDmZjGKD28/kTzI?=
- =?us-ascii?Q?uTDxDEI6r7GLeX2AW5eNQplbAVn3mTGHkrHgRe70thInXm+kO5Tw0EGbLzVZ?=
- =?us-ascii?Q?+VYy+I6Hvj720ozB10ehZ6kBsiOHHbulgI8lmaYhkUgBPoq9DnCzt3tTh+AP?=
- =?us-ascii?Q?IYy+NmC/k8WEF/4c1Zk8+VLePVJKE9sucSX1cKVlwWGnfQkGBlQ9AYZKf7yp?=
- =?us-ascii?Q?EqcnVDSlCxvoyEukd8wElmYEdy7kfyQffhJ2M/8PTJhwgOPDY8bLlmHKX8te?=
- =?us-ascii?Q?6qzRpgmzNcV7BtZuTD4PfVHLiAgJL4wLKBgyC6K5Bdd7WeyqR5erTqXuf2hO?=
- =?us-ascii?Q?RtY/vXiSBffEsZt28zKoMj8XBZ/6pf3A8+Hyq3kyss/uWF/GBxeIDmaOT8oO?=
- =?us-ascii?Q?7FM97mLfyPhMvqepj8DMhTD6sEq1+SYQx29b2P0P3JMWr9WdAdp01AbmZyxs?=
- =?us-ascii?Q?zIjTloLG40BHQeEbfE6sko9+1kcBgV2JluvEJIKzqYTJOcAfKZKOnqj0cgHE?=
- =?us-ascii?Q?fj4cAMLb7B7rxke+OJsSNIXnVHIfgeC47QCo5LaE07nLuBF98wis0So3B99N?=
- =?us-ascii?Q?CUA58o/UdlbyfwFt5523AGGqCzbLX6RzklwrtePG5xCWxAFqHCkMCz1sow3J?=
- =?us-ascii?Q?RhaWvjS7W1vwojztGgFsCiXOL0Tx82ONdTVzhdRLfMsIL8OZjbtEZ8Z21rdy?=
- =?us-ascii?Q?ZrYCaCw92bE9+ceamHJJoT1zX2X1mJkjgnDpcYTR45JmRgo7274tAUywzUvq?=
- =?us-ascii?Q?+yN7Y3jquDqRtMr3keB1AG4bVAZbV7M+61VSW2wk68mzDBNMYZJ41RdO13KQ?=
- =?us-ascii?Q?gvYCG1EjFMYLccuU3j0K16BRQLHrdqzlSe7E7J/RrvAdZIOwZHQYGcTwjCo0?=
- =?us-ascii?Q?Iga7UTLxLadTI/7JX6rJHTFSDIzgouCEItvhxHx6V+4vfBFRQU9KaUliYy5N?=
- =?us-ascii?Q?SMRaEvXvlCahqmEW1gQiQG3LtB/A28RhqSn2VkrLmy/x4cvxqqBV6h5DLNAl?=
- =?us-ascii?Q?FfaWukaV8hU68ShwRMNaC4Tgx2WYxLgQs6fUWaCrKLyNHbyN5pHneYXUBwtw?=
- =?us-ascii?Q?S7HwrD/dLyzRhA8MQ9VnuznmrRs7S0tR9g/Lnpf2OuFKUYqScDv/r07B9L0C?=
- =?us-ascii?Q?GizWILWs/6iybmh/lUsQS8V70RfUD3kGWLrp5JH+lRb72ZKoEKGHv2Daw4wd?=
- =?us-ascii?Q?Dy1RUskoG/KNBvdN7XJbDYcWTXMomkpy+Z+EuiwV8KiEmX6rsbTt7+Alfbjv?=
- =?us-ascii?Q?G/u+OCkpaXLu09lzbjk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qNgioU5uUe1lp0iU9b+lg4/EmyNNlU5Bt7Yuglp0SW/nQbfNicY7dIMqUL+u?=
- =?us-ascii?Q?KF8ww3iDnQfbDSt108FUNm52hBG76kDRP0P9E2vS5xG+71inqAf0nHaekdZb?=
- =?us-ascii?Q?p/NuoH3oKefDj4Lq3K/W3Ou2Ju2zwQzMnqsrL0wAvhlQSheUMMfNUMi4SVNm?=
- =?us-ascii?Q?SkdcPZ0hqse2HWrqVVd3s42eOF56v6KUd+sLip6CQggkTF/MeOtEklD7iTBA?=
- =?us-ascii?Q?XwOdHSyWYijPe4tQVjA1HbpUJ23VA3b4fHMWmvn7dzyaJI+HjMzvf6pfRj7Y?=
- =?us-ascii?Q?QdyCT6isMy3p7t3uiHXpv9Dtdc5ERmx4TVRiOle/bHeNkdyIecRqLMw+5y3a?=
- =?us-ascii?Q?GEAK17Not9K8fr3xcFuSRABgi2qpLaqT9RD94Mz3oJ6eXuEHIL5JQ+7LTBwa?=
- =?us-ascii?Q?gyRpOcsataow5CFB2qAJ+/HCfwPGrer5dx7b7ViSzQQjbMXoXCG7PXNEFhFp?=
- =?us-ascii?Q?p1hhV9T3wfdVaQ/1a5KRL4YS/qf7c+daY056PKsdoN7MdiZz86rCpYl9lR3a?=
- =?us-ascii?Q?wOtAJWaasZGMLqdgOkR6e/xa7OphbgifsrsDRJ1rDoUUrNYu9DuWANODvQyd?=
- =?us-ascii?Q?2Z689T9T4Nlh472TmL3ZYs0ZAZYu5YpmOyn4hqrLs4ID9YhqGkZPUUdRuOdg?=
- =?us-ascii?Q?1Y8W85C4QubFpQ1DomTVM4HSxaA9ox+djh4r+JicuIXYqLDTmgsd0xswo6ox?=
- =?us-ascii?Q?2h61jtgroW2AvyX442ScXZ+9HXzJaMaKcSL4C1yQoSoA4pgWqYdrgpJ6sQsa?=
- =?us-ascii?Q?U7LZJeVokBgoLH2tvboKZ33iCopPGzAx+ARPcYWDrfBTWDDBQFM/uUcqkaou?=
- =?us-ascii?Q?G6Wz9lbhIY+YRUFpIXh3m2uWEeeIpQcCc2P9UioR+4h03mTkDGoI3X/Oz6YD?=
- =?us-ascii?Q?aGXBZxLGKsbGrCfBKFQ9SwJ9oQNgXukry7vIOj/ziHnxVpo6yRVnj3bvFIZ3?=
- =?us-ascii?Q?4i7WOHmnGD76Ksh0vVv0XDeAIIR4z2z09AsB5ZsRnlgieW1q4WWP9dDnaAJe?=
- =?us-ascii?Q?wHSCAU6GjljdBckKS0RKtO0j2JjWQksUlasHg4GGwOdZPdOjdSgSqd17wiYA?=
- =?us-ascii?Q?f0gcpCQqkC6pwwWeIcN4gL+JspCqsOd0Zsdt3/+XGduAIE6gy7ZdxbNbjyX6?=
- =?us-ascii?Q?AvpFKiwWQ/CbMVeej4eKFfT6uBUyA9WUO0mmeuIsBcnsNpZxlrrCzxX+y0u3?=
- =?us-ascii?Q?F0ruWVRs8awxRbkUNJzGTsGlXSvTDq9923rQ0Yb/ahRrKSV0lOE6kDjTYZ7Q?=
- =?us-ascii?Q?c8uU4tiADpJP9PCdv1qXDZLarjj8A4wzmM5UuN4bqS6GSKbkRJrWtw3T3QkB?=
- =?us-ascii?Q?8UnhMdoZnrFHO8UFWNl84Dt70j2UgjDuoWm6vTcYtKPyo+0sLW91ZuaZh+Rv?=
- =?us-ascii?Q?3HMiW7K/pNQ3Bk0l6wW1h/urRaWFRdiaWHGwePbSd+9NaboRD3WSy5kU3i8h?=
- =?us-ascii?Q?RChWpDYoXL6USrTAl0KLbCJCyR/NazUeyAD0xk/IQUiubbyX1OczFhS/mtZi?=
- =?us-ascii?Q?xFjzTB2EIsg5F0DjS697WJBRNzdPsORIlEjlHOw0ybjE5Q3Z1qSBxc/X3nIF?=
- =?us-ascii?Q?ves3nef0Cu2gn+BMzT2nM5CIxGRrRoG5rVAXLkkhTrHdmqOUbykbxQM96jA5?=
- =?us-ascii?Q?BASCE0OKK/b/TXQbXxka/r/nRfQ1mPHubkHxwyeoleNPpmUTUWoBBgmV4dqR?=
- =?us-ascii?Q?uH7t7WjsqS5T5bOwPuHpxdWaYJwK5JJ71rRJmCM6UZqw+rGPRJ1F36PyHwmu?=
- =?us-ascii?Q?77ZYA/gK3g=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f45151eb-22cf-47b6-8167-08de6eff8c27
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2026 15:08:18.1728
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KAJdyBwK4PAsexaThkRsj+FzxCuIR5K8jyZQdJiRqPoLpsPcP1utCH1gg2DmhQb8otPPejw1zAwYipgzLhUwHA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB7027
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 34/42] dept: add module support for struct
+ dept_event_site and dept_event_site_dep
+To: Byungchul Park <byungchul@sk.com>
+Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+ linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+ chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+ max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, da.gomez@kernel.org,
+ samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+ neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, josh@joshtriplett.org,
+ urezki@gmail.com, mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+ qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+ vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name,
+ okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+ anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
+ kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
+ ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
+ baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251205071855.72743-1-byungchul@sk.com>
+ <20251205071855.72743-35-byungchul@sk.com>
+ <7afb6666-43b6-4d17-b875-e585c7a5ac99@suse.com>
+ <20260213055006.GA55430@system.software.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260213055006.GA55430@system.software.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	FORGED_RECIPIENTS(2.00)[m:byungchul@sk.com,m:kernel_team@skhynix.com,m:torvalds@linux-foundation.org,m:damien.lemoal@opensource.wdc.com,m:adilger.kernel@dilger.ca,m:mingo@redhat.com,m:peterz@infradead.org,m:will@kernel.org,m:tglx@linutronix.de,m:rostedt@goodmis.org,m:joel@joelfernandes.org,m:sashal@kernel.org,m:daniel.vetter@ffwll.ch,m:duyuyang@gmail.com,m:johannes.berg@intel.com,m:tj@kernel.org,m:tytso@mit.edu,m:willy@infradead.org,m:david@fromorbit.com,m:amir73il@gmail.com,m:gregkh@linuxfoundation.org,m:kernel-team@lge.com,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:mhocko@kernel.org,m:minchan@kernel.org,m:hannes@cmpxchg.org,m:vdavydov.dev@gmail.com,m:sj@kernel.org,m:jglisse@redhat.com,m:dennis@kernel.org,m:cl@linux.com,m:penberg@kernel.org,m:rientjes@google.com,m:vbabka@suse.cz,m:ngupta@vflare.org,m:josef@toxicpanda.com,m:jack@suse.cz,m:jlayton@kernel.org,m:dan.j.williams@intel.com,m:hch@infradead.org,m:djwong@kernel.org,m:dri-devel@lists.freedesktop.org,m:rodrigosiqueiram
+ elo@gmail.com,m:melissa.srw@gmail.com,m:hamohammed.sa@gmail.com,m:harry.yoo@oracle.com,m:chris.p.wilson@intel.com,m:gwan-gyeong.mun@intel.com,m:max.byungchul.park@gmail.com,m:boqun.feng@gmail.com,m:longman@redhat.com,m:yunseong.kim@ericsson.com,m:ysk@kzalloc.com,m:yeoreum.yun@arm.com,m:matthew.brost@intel.com,m:her0gyugyu@gmail.com,m:corbet@lwn.net,m:catalin.marinas@arm.com,m:bp@alien8.de,m:x86@kernel.org,m:luto@kernel.org,m:sumit.semwal@linaro.org,m:gustavo@padovan.org,m:christian.koenig@amd.com,m:andi.shyti@kernel.org,m:arnd@arndb.de,m:lorenzo.stoakes@oracle.com,m:Liam.Howlett@oracle.com,m:rppt@kernel.org,m:surenb@google.com,m:mcgrof@kernel.org,m:da.gomez@kernel.org,m:samitolvanen@google.com,m:paulmck@kernel.org,m:frederic@kernel.org,m:neeraj.upadhyay@kernel.org,m:joelagnelf@nvidia.com,m:josh@joshtriplett.org,m:urezki@gmail.com,m:mathieu.desnoyers@efficios.com,m:jiangshanlai@gmail.com,m:qiang.zhang@linux.dev,m:juri.lelli@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@a
+ rm.com,m:bsegall@google.com,m:mgorman@suse.de,m:vschneid@redhat.com,m:chuck.lever@oracle.com,m:neil@brown.name,m:okorniev@redhat.com,m:Dai.Ngo@oracle.com,s:linux-doc@vger.kernel.org,s:linux-i2c@vger.kernel.org,s:linux-kernel@vger.kernel.org,s:linux-media@vger.kernel.org,s:linux-modules@vger.kernel.org,s:linux-nfs@vger.kernel.org,s:rcu@vger.kernel.org,s:rust-for-linux@vger.kernel.org,s:link@vivo.com];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[renesas];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[skhynix.com,linux-foundation.org,opensource.wdc.com,vger.kernel.org,dilger.ca,redhat.com,infradead.org,kernel.org,linutronix.de,goodmis.org,joelfernandes.org,ffwll.ch,gmail.com,intel.com,mit.edu,fromorbit.com,linuxfoundation.org,lge.com,kvack.org,cmpxchg.org,linux.com,google.com,suse.cz,vflare.org,toxicpanda.com,lists.freedesktop.org,oracle.com,ericsson.com,kzalloc.com,arm.com,lwn.net,alien8.de,zytor.com,linaro.org,padovan.org,amd.com,arndb.de,nvidia.com,joshtriplett.org,efficios.com,linux.dev,suse.de,brown.name,talpey.com,huawei.com,amazon.co.uk,linux.alibaba.com,glider.be,linux.intel.com,treblig.org,star-ark.net,valla.it,vivo.com,baidu.com,lists.infradead.org,lists.linaro.org,lists.linux.dev,qq.com,ownmail.net,sang-engineering.com,linux-m68k.org,garyguo.net,protonmail.com,umich.edu];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[165];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sk.com:email,suse.com:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -0.80
+X-Spam-Level: 
 
-On 2026-02-16 11:17, Benno Lossin wrote:
-> On Mon Feb 16, 2026 at 2:36 AM CET, Gary Guo wrote:
->> On 2026-02-15 13:22, Benno Lossin wrote:
->>> `clippy` has changed behavior in [1] (Rust 1.95) where it no longer
->>> warns about the `let_and_return` lint when a comment is placed 
->>> between
->>> the let binding and the return expression. Nightly thus fails to 
->>> build,
->>> because the expectation is no longer fulfilled.
->>> 
->>> Thus replace the expectation with an `allow`.
->>> 
->>> Link: https://github.com/rust-lang/rust-clippy/pull/16461 [1]
->>> Signed-off-by: Benno Lossin <lossin@kernel.org>
->> 
->> I think it's worth adding a comment (or reason) that this is no longer 
->> needed after 1.95.
+On 2/13/26 6:50 AM, Byungchul Park wrote:
+> On Wed, Jan 07, 2026 at 01:19:00PM +0100, Petr Pavlu wrote:
+>> On 12/5/25 8:18 AM, Byungchul Park wrote:
+>>> struct dept_event_site and struct dept_event_site_dep have been
+>>> introduced to track dependencies between multi event sites for a single
+>>> wait, that will be loaded to data segment.  Plus, a custom section,
+>>> '.dept.event_sites', also has been introduced to keep pointers to the
+>>> objects to make sure all the event sites defined exist in code.
+>>>
+>>> dept should work with the section and segment of module.  Add the
+>>> support to handle the section and segment properly whenever modules are
+>>> loaded and unloaded.
+>>>
+>>> Signed-off-by: Byungchul Park <byungchul@sk.com>
+>>
+>> Below are a few comments from the module loader perspective.
 > 
-> We'll remove the let binding when we raise the MSRV above 1.78 and then
-> the `allow` should also be gone. Do you still want me to add it?
+> Sorry about the late reply.  I've been going through some major life
+> changes lately. :(
 > 
-> Cheers,
-> Benno
+> Thank you sooooo~ much for your helpful feedback.  I will leave my
+> opinion below.
+> 
+[...]
+>>> diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+>>> index b14400c4f83b..07d883579269 100644
+>>> --- a/kernel/dependency/dept.c
+>>> +++ b/kernel/dependency/dept.c
+>>> @@ -984,6 +984,9 @@ static void bfs(void *root, struct bfs_ops *ops, void *in, void **out)
+>>>   * event sites.
+>>>   */
+>>>
+>>> +static LIST_HEAD(dept_event_sites);
+>>> +static LIST_HEAD(dept_event_site_deps);
+>>> +
+>>>  /*
+>>>   * Print all events in the circle.
+>>>   */
+>>> @@ -2043,6 +2046,33 @@ static void del_dep_rcu(struct rcu_head *rh)
+>>>       preempt_enable();
+>>>  }
+>>>
+>>> +/*
+>>> + * NOTE: Must be called with dept_lock held.
+>>> + */
+>>> +static void disconnect_event_site_dep(struct dept_event_site_dep *esd)
+>>> +{
+>>> +     list_del_rcu(&esd->dep_node);
+>>> +     list_del_rcu(&esd->dep_rev_node);
+>>> +}
+>>> +
+>>> +/*
+>>> + * NOTE: Must be called with dept_lock held.
+>>> + */
+>>> +static void disconnect_event_site(struct dept_event_site *es)
+>>> +{
+>>> +     struct dept_event_site_dep *esd, *next_esd;
+>>> +
+>>> +     list_for_each_entry_safe(esd, next_esd, &es->dep_head, dep_node) {
+>>> +             list_del_rcu(&esd->dep_node);
+>>> +             list_del_rcu(&esd->dep_rev_node);
+>>> +     }
+>>> +
+>>> +     list_for_each_entry_safe(esd, next_esd, &es->dep_rev_head, dep_rev_node) {
+>>> +             list_del_rcu(&esd->dep_node);
+>>> +             list_del_rcu(&esd->dep_rev_node);
+>>> +     }
+>>> +}
+>>> +
+>>>  /*
+>>>   * NOTE: Must be called with dept_lock held.
+>>>   */
+>>> @@ -2384,6 +2414,8 @@ void dept_free_range(void *start, unsigned int sz)
+>>>  {
+>>>       struct dept_task *dt = dept_task();
+>>>       struct dept_class *c, *n;
+>>> +     struct dept_event_site_dep *esd, *next_esd;
+>>> +     struct dept_event_site *es, *next_es;
+>>>       unsigned long flags;
+>>>
+>>>       if (unlikely(!dept_working()))
+>>> @@ -2405,6 +2437,24 @@ void dept_free_range(void *start, unsigned int sz)
+>>>       while (unlikely(!dept_lock()))
+>>>               cpu_relax();
+>>>
+>>> +     list_for_each_entry_safe(esd, next_esd, &dept_event_site_deps, all_node) {
+>>> +             if (!within((void *)esd, start, sz))
+>>> +                     continue;
+>>> +
+>>> +             disconnect_event_site_dep(esd);
+>>> +             list_del(&esd->all_node);
+>>> +     }
+>>> +
+>>> +     list_for_each_entry_safe(es, next_es, &dept_event_sites, all_node) {
+>>> +             if (!within((void *)es, start, sz) &&
+>>> +                 !within(es->name, start, sz) &&
+>>> +                 !within(es->func_name, start, sz))
+>>> +                     continue;
+>>> +
+>>> +             disconnect_event_site(es);
+>>> +             list_del(&es->all_node);
+>>> +     }
+>>> +
+>>>       list_for_each_entry_safe(c, n, &dept_classes, all_node) {
+>>>               if (!within((void *)c->key, start, sz) &&
+>>>                   !within(c->name, start, sz))
+>>> @@ -3337,6 +3387,7 @@ void __dept_recover_event(struct dept_event_site_dep *esd,
+>>>
+>>>       list_add(&esd->dep_node, &es->dep_head);
+>>>       list_add(&esd->dep_rev_node, &rs->dep_rev_head);
+>>> +     list_add(&esd->all_node, &dept_event_site_deps);
+>>>       check_recover_dl_bfs(esd);
+>>>  unlock:
+>>>       dept_unlock();
+>>> @@ -3347,6 +3398,23 @@ EXPORT_SYMBOL_GPL(__dept_recover_event);
+>>>
+>>>  #define B2KB(B) ((B) / 1024)
+>>>
+>>> +void dept_mark_event_site_used(void *start, void *end)
+>>
+>> Nit: I suggest that dept_mark_event_site_used() take pointers to
+>> dept_event_site_init, which would catch the type mismatch with
+> 
+> IMO, this is the easiest way to get all the pointers from start to the
+> end, or I can't get the number of the pointers.  It's similar to the
+> initcalls section for device drivers.
 
-The existing comment just says that the bug exists in 1.78. So is it 
-fixed in 1.79+? If so,
-please update the comment to say the MSRV that this is no longer needed, 
-then I'm fine
-without reason for clippy allow.
+This was a minor suggestion.. The idea is to simply change the function
+signature to:
 
-Best,
-Gary
+void dept_mark_event_site_used(struct dept_event_site_init **start,
+			       struct dept_event_site_init **end))
+
+This way, the compiler can provide proper type checking to ensure that
+correct pointers are passed to dept_mark_event_site_used(). It would
+catch the type mismatch with module::dept_event_sites.
+
+> 
+>> module::dept_event_sites.
+>>
+>>> +{
+>>> +     struct dept_event_site_init **evtinitpp;
+>>> +
+>>> +     for (evtinitpp = (struct dept_event_site_init **)start;
+>>> +          evtinitpp < (struct dept_event_site_init **)end;
+>>> +          evtinitpp++) {
+>>> +             (*evtinitpp)->evt_site->used = true;
+>>> +             (*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
+>>> +             list_add(&(*evtinitpp)->evt_site->all_node, &dept_event_sites);
+>>> +
+>>> +             pr_info("dept_event_site %s@%s is initialized.\n",
+>>> +                             (*evtinitpp)->evt_site->name,
+>>> +                             (*evtinitpp)->evt_site->func_name);
+>>> +     }
+>>> +}
+>>> +
+>>>  extern char __dept_event_sites_start[], __dept_event_sites_end[];
+>>
+>> Related to the above, __dept_event_sites_start and
+>> __dept_event_sites_end can already be properly typed here.
+> 
+> How can I get the number of the pointers?
+
+Similarly here, changing the code to:
+
+extern struct dept_event_site_init *__dept_event_sites_start[], *__dept_event_sites_end[];
+
+It is the same for the initcalls you mentioned. The declarations of
+their start/end symbols are also already properly typed as
+initcall_entry_t[] in include/linux/init.h.
+
+-- 
+Thanks,
+Petr
