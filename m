@@ -1,187 +1,211 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011000.outbound.protection.outlook.com [40.93.194.0])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7E118A6CF;
-	Tue, 17 Feb 2026 23:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771372643; cv=fail; b=CHH+vaH5gfPXlK2V0mHtmTEmHTkKxsA69G1tR0DId1i8OBlGcd9yebE3n+Plk1SRxxBVYLlNYea+ukhC1SAycBklux4WBMmM61HHs96LUiTVUZSHP0hkgvhGGcnqVUr2KLx5v016NuqYc2UTpJ8yjDONMEXvlmn3Yg9ELzKEXOE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771372643; c=relaxed/simple;
-	bh=j6e+nrpQOQ/YyvRp7UothgxNdMFCBJwMmBGNK8STGaU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CyVZaF3YB4U9oJRngueFrPsXVARS8oxAiktGRJvYaZTmJJ7NlB7g8QjgfjntMas2ILucIoekGvtal2uRfCyObziszfpM4k9z8/f0ll9ncbLbisir8NsRPrqFZSV3ADMgWKJPh8sGvm+SnyDotMjmH0q40GBTWTaAsvl/A1NWve8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tGLJWsZA; arc=fail smtp.client-ip=40.93.194.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AE47080E
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 02:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771380233; cv=none; b=Rg2aYYVeD7GKHGZmGCKbgpUdU1/kXyuiOLCFagf5mHNt5/kCgf1EKNGgxTgts87b4wu6IBQbo2bkoSiDASBr8YfqHrY9j1R/OZjdhsmynnGb2oIYpU9+K6r51NMeDIJ/qRtTbCTNcVp+M+krne6/sMoLgXj4sNqfjmTvP6C4xDc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771380233; c=relaxed/simple;
+	bh=PUEtUvlnxfRwbku097xynciK1P/oSr9Kiu2SbUO2/mA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=InuxRAt9ud7vMdhjJAP4DPVrjBYW/4tcvMLr96F8ZqjTPQyXduiDw2XsYIG96ig0vA+SZdyztDQbfowYyroj3YyTRLHejY9ICWN6kSUZGqkAFYFvifOGljvL8BGv+odDmWmx4lmc5dHtEW9JMhFcJls1P3Hg7SZQx8wSiHzLDo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L3Cq/OUm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tGLJWsZA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KS1xQ9s6Z+/poO1/RKW3GRVx6QP8wINxOUprUYJXYmqNGsD4Nm4RaFL/JYXlEiv1A6jC+8g+Wv041lStTu4kSPpPv6ZrqcXom8nB3iBB2Su/RpEya/fsefpQ0nmW38wWRPcf6xbMOWCg2KKN+v8f9ozZdO/iR4VZmpUZEz/W7juAllOB5JFyaQnBDp2+e30PUM9hRRKLS62ddKfnZiYSUhgVieIfLrfGbxs2hKEqL9IZzP7CEU0Uyp6hQgtv0B6G/WO3vsw2imv6OrG/xft9ejR7KIxxU2Opntnc21PffMv0xhtOEZrfdYu39H7VaWtv+yki16V4dNYbtVDpigXQrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yE8mAKsS/84BA9aTu5VS2P/KKWMpnYsPGcwNhritQbA=;
- b=nLFdnbTyhd+niaU1itQhfACHsh12ul/z6ZqKSU9B5C1jlFAjQza3jW4FVLhpJb87aqMelSrEMpgdad/1QLvlK9/91NXcWCUxYFbkQaAeO2Knq1Vs1/r2MFHEYpCWhd4UGKxBaxTeKkZl5elFebJA+38y//7G1vZZXDZb0BjP+qn/WtZA1VT5JB/uuRZJmb2hXS+xOa/gmwncRtpgcmwotWzXUKFTPyOmLAlJgqVYn9ZJlhZ31s33XR16bCpqeIDHMu3Ko4n+ZRJQ3yDAz3en6wLTJiRt4XNrNvdCk2ieLZ5uEsIhCq0Be6WM6AT9YZ2fHvjk2M0mBGD61J8WgJcVIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yE8mAKsS/84BA9aTu5VS2P/KKWMpnYsPGcwNhritQbA=;
- b=tGLJWsZAKffBl+1aoUlpyvUJBF6CT9qRVDHl3fo9wSlIc837TVuC0CBIpaa8x9zQnyxfYLx47lIOd4XK09WZeDdfKuF/DUXmBvM/WyPk8UyHQo7pXrCZQwwcMZjiKUtd1FwHmAQwMUYf7IUyPkUqp4kaFqwi6OzC7wutu4gwX22OP8soR7ixi1+eO/RRo36brBA0kZr0wU0S/JFT5f+rHjPWSRGoE6qT8imjv2OyIhHRkVphtFjUP/Ai5aj7FKh7pniW4njwk/wRF1yQZMeaXrFPgkojX9psa3l64jf35LNkr31xKmhtEfrjO8Oh4lbacf4ul9N73L/29sxOODvYnA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by IA1PR12MB6306.namprd12.prod.outlook.com (2603:10b6:208:3e6::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.13; Tue, 17 Feb
- 2026 23:56:05 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9611.013; Tue, 17 Feb 2026
- 23:56:05 +0000
-Date: Tue, 17 Feb 2026 19:56:04 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: alistair23@gmail.com
-Cc: bhelgaas@google.com, lukas@wunner.de, rust-for-linux@vger.kernel.org,
-	akpm@linux-foundation.org, linux-pci@vger.kernel.org,
-	Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com,
-	benno.lossin@proton.me, boqun.feng@gmail.com, a.hindborg@kernel.org,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, wilfred.mallawa@wdc.com, aliceryhl@google.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
-Message-ID: <20260217235604.GA1595019@nvidia.com>
-References: <20260211032935.2705841-1-alistair.francis@wdc.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260211032935.2705841-1-alistair.francis@wdc.com>
-X-ClientProxiedBy: MN2PR20CA0031.namprd20.prod.outlook.com
- (2603:10b6:208:e8::44) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L3Cq/OUm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771380231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o4cHvKSBZESAOv4yzpaqvORLgvpDRThGyDvq3HOoF2s=;
+	b=L3Cq/OUmE39lqbDMi4RD6vO0nKtNjMPE/ztjEMWsLNVlvhTOqH32r9XGzP0KVBn0aRAxFL
+	ECWwUisKahCsLGqWNef6y4+tDeZl1lkLIBUtMqQnU21mpb2qa6F7gP0gTMVMYLcLDLChC5
+	RNeehsEWsOmhFqPRegVtRrvWEoWC158=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-iJIgTF30NlKu6GeJ0eHQ9g-1; Tue, 17 Feb 2026 21:03:50 -0500
+X-MC-Unique: iJIgTF30NlKu6GeJ0eHQ9g-1
+X-Mimecast-MFC-AGG-ID: iJIgTF30NlKu6GeJ0eHQ9g_1771380230
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8947d47793fso721606316d6.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 18:03:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771380230; x=1771985030;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o4cHvKSBZESAOv4yzpaqvORLgvpDRThGyDvq3HOoF2s=;
+        b=H5huFlGHEN9Tz8FprrOM0z7I4e26n6OraLRRyNDUV2ip7TSeaSB0G3HJsvy/Ul7574
+         qZnz61nN6ygovInDmxECBKtz9f9oOYan8RYAc0/cwHa7sv4RU/FODeYTgrPm33boNtDg
+         OBORBfXBvJlmNErWutHe4lApu6RlDhuMIW8DMgxdyav9Qe0jBsrhwK7S/CwAx/O+qDJz
+         MLvP2JpetlnXDrBTSOArQzzq42oxwLqsISpxFvCyQJkPSQa5xKQV2XplPHGXqrOTHTCB
+         05XjVFD4U/ZCVG+f9j5t3h3/GvIj/bkxQHwxVJ5wfrSlzp1UWvBlx3dyjco0Gz2Ujm0S
+         RBqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUiS4r552wimKirz7r8ifvF5gjaUHYzpdn5y/BO7lpvkEFn/2z+g03uBjlzhxabH/BKCD//oce/Fsli82ly2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4/pRBQ1Vpd/xsfsiWAOtxy8980D2XNl+Wna8rQIvQb39rUc2t
+	q2NyCXW6zxX+tHQcx/Hg9h9E7YdB0CanTY+mn4zdR/eyS5L1kTb+qvmsy++o0LLo6xC/Kjzlf7s
+	PNvZk3J8x7jrv1VwVMBA+bsSSHPZWIcpPoEwdXI4bSb5bQWbig5/2yOPfu4T0CHpwnU7o
+X-Gm-Gg: AZuq6aI5Oc+iMMl2sJVrOaVoKo00BBpES/rBbqxTqRdAoZ7aDATcszIC9NudHmoEXA5
+	5hL+S+8Ffa1DZb06He5s7dUaie53US9UJUgkg1X9p+jXSmEgsSqW0bPdCJuOxx3+35X4hSZHIMF
+	kzjy3CYEsox1hTJGjy8vA1W3BDs8ixR6dUXtJIWd4V/mORcv3jXPpFVpUXVLit17GFQl1Jvbs5O
+	3dcx1pYgxLl8OGwbioOjM+MS8+ejjuysmpv+rJSf/9beKPsuU6xxc1reb08XDy8I59/V94h2Q7G
+	iE1VpU283YprhKshcbCyCAlnszySSVzZeX9inty2EUnW1scIh5yZAaFkMssrVUKfOFW6REGlI6L
+	uWQEMpj8CpzPyfMJCGqWyUg==
+X-Received: by 2002:ad4:5dee:0:b0:894:6cb7:da94 with SMTP id 6a1803df08f44-897402c95aamr190212996d6.8.1771380229534;
+        Tue, 17 Feb 2026 18:03:49 -0800 (PST)
+X-Received: by 2002:ad4:5dee:0:b0:894:6cb7:da94 with SMTP id 6a1803df08f44-897402c95aamr190212556d6.8.1771380228953;
+        Tue, 17 Feb 2026 18:03:48 -0800 (PST)
+Received: from localhost ([2607:f2c0:b1e3:9a00:3d5c:8422:4052:e7a6])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-8971cc7dc1csm176656526d6.10.2026.02.17.18.03.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Feb 2026 18:03:48 -0800 (PST)
+Date: Tue, 17 Feb 2026 21:03:47 -0500
+From: Peter Colberg <pcolberg@redhat.com>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jonathan Corbet <corbet@lwn.net>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>, Moritz Fischer <mdf@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org, linux-fpga@vger.kernel.org,
+	driver-core@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH v2 10/10] samples: rust: add SR-IOV driver sample
+Message-ID: <aZUeA1hmYlZIILQg@earendel>
+References: <20260205-rust-pci-sriov-v2-0-ef9400c7767b@redhat.com>
+ <20260205-rust-pci-sriov-v2-10-ef9400c7767b@redhat.com>
+ <0e762787-7270-426f-81ee-b24761617c18@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|IA1PR12MB6306:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2aa43671-6487-41c3-cfe6-08de6e801ca3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FjtqG1dWeIEXvNrbBqBlFyHwto6lcoRR26ZGbzeWpPz069v2kS+ZEp/HRfFf?=
- =?us-ascii?Q?3bKQFuO2f8W5dYyGkTRsvBMZNWBYtqWEUGuUiNX4YaUevSZ9y2CyGNXU7tvg?=
- =?us-ascii?Q?eBefxy1n6b7pg7sO+Q7MqoKMKZ2xN5UibWnl2qLmmsEbo7Ok5bCqytTe1bsJ?=
- =?us-ascii?Q?wLpulUfPSyFKIOGuPgTIVui3QMHO2d5v2yuoScy7HbgyvBYesGNQB1a9hJjy?=
- =?us-ascii?Q?hblagB6k3KZQzQJOuvtyp59MJ8Z5w9NbZ2LreUa3Yfh7XEHbIGnDFYd+7YQW?=
- =?us-ascii?Q?fM55CElHbEyJfQlDF8XBJKQMAmvT92Np3+NN33MA9FhVXUkkOhcRmZefAO1F?=
- =?us-ascii?Q?K5WmUe2cVpaWpeLbiJLNvL+CA9YXh8Xmvtuz+sTyL/GTgOIhlTQFeMza1SLD?=
- =?us-ascii?Q?vlzeaqy1bNu5eKBOeK/bhwXHOJLf287VVEKdH8GYdcKF858VyoXMlrBCZmtu?=
- =?us-ascii?Q?H62FhI6L37SjT8QX1+m7DB+zrxqr0xftvbTGr89RAYBy2+IbYFjLbTsh+qSz?=
- =?us-ascii?Q?/fq5yjqnXkgwiJPWSu9SOqidqD4jc5LcvRFQdTGd6uC6ROTg6FgsQeHNsmIf?=
- =?us-ascii?Q?IO6PcTpZSiLF9xB/kgSXR+Bp/SjsZMIfNLKwFMfUAfwtQoaTKAyoGM2Z0Vrs?=
- =?us-ascii?Q?vi7K9yMk3nesPqhhY5zI4dDsWkNKBVCe7iPVEl6X3AazQRvoXaaL73IRG+uO?=
- =?us-ascii?Q?0clFveLVT4PNa3B4VvEO8ED1rNY33ysYeMls7/mKb0bkIzfU4tv9EwYO8XCr?=
- =?us-ascii?Q?G+ZBSw3bk+cgaeouG5f6fCeqwIEGaYXjqNXrb0hppmNvc/Dvx042095f+mEk?=
- =?us-ascii?Q?uP58Zj9gweYRqJ3ntkcv6otd5vqQbwQSMJLOBEZq/u2sR08xLi7aswPQtF9V?=
- =?us-ascii?Q?aEBzU6CDFKG/gbkIVj8pt0g6JjBAb3CiyBTr9+yt+bH4nlISuz/9hWqDfkQG?=
- =?us-ascii?Q?1IfZXunTq8sc8FMMLH2h9jQAWQY3iP5BPabRocYYt3hYayt0Cue9heu/1EmB?=
- =?us-ascii?Q?B8a6D70oKXzCMEN4Wq5K/kqYVlg0qh3RvV/3LfVVG5YQWMOI2EFRLSlekKfq?=
- =?us-ascii?Q?U7pccaTu3IIX6IGMeU1PgXlAKODj6JWcXFVX6tYYDPz9ReI03v3RjaQNPq1E?=
- =?us-ascii?Q?AmkOB7bRRNEbsQfRIK4sC1PsPUgdIoJPXjj/eDpByBwJflJrTaIkkiailBpK?=
- =?us-ascii?Q?WDZbIy3rvED+Pc/LIxUMiRKmfedrxYY3bv/Pks2ARQuVCNK4T4RSvchc7wgW?=
- =?us-ascii?Q?Afrk5bR1p3rmW13eMK+b3qqkLeplwo5xvC0JU+iEDugn7mGsB+/i+xvqwYyb?=
- =?us-ascii?Q?OErif2iUZhXt9ZDBM2LVdOwUvT0yUT6yB0uYcRlyOsNs2CbmK8hBRxAtEpev?=
- =?us-ascii?Q?l97IHTVyTsEJJMCDl9ctrBxFeoag6Eaf00bFh/Ywa2H1JFgAFTXntzT098NG?=
- =?us-ascii?Q?2tiv985/8n4zVKRaA4DRR0XQ93Cesl8rChXUcC9ttMZ9j1rnbR5nEm6TIcDj?=
- =?us-ascii?Q?1cHlyUbW9aNLT52cin9BBnNppLvOSw2va5dM4bPwQ1xs1RqBUsFl3YaZ6klM?=
- =?us-ascii?Q?+7xAg2I/2HOqh0+2+TU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5vGxMSFPIQOesz1nnb50LBtuvAO2X33P8ZUBvhbc8vugRBDZWwEEPEyAnV4X?=
- =?us-ascii?Q?lpO7RxXc4aLQkH6NKP/v52xQzJd1qk+41CQPhOOtzG0vJEDGjBteEa2WFIcQ?=
- =?us-ascii?Q?NEEWT1fgDsmyxoEWsh/zOS1hz+nTAYJFDjvNoUdTsxfp6v3iT/9re52PPYo7?=
- =?us-ascii?Q?ILTftgoSA1cQjn7djkt9t2HB47Xzqy+dXGTVgvTcLBdGEAtLv5Q7bbP5xIQB?=
- =?us-ascii?Q?5WOU2Ie6AR8Kc7P3tiV14yRb99QvWuonAUdu4jWtgyAoxmDcUwdyg0y05Htb?=
- =?us-ascii?Q?hhOnh5eQOtGx4h55shlK+QjoDae1nhb88VIG/WH7XtKgpcbYYszOAvMO5QE/?=
- =?us-ascii?Q?/RH1iQIiMthXpQh/DXs7Xr4eRiJ9pPY5wKinNI/5hIbJzEhA4BiKhBJnfHHM?=
- =?us-ascii?Q?K6sAamS9pWc5fTjqG8vnb0yLDStAKP2RXZM2KU/IeUiLKAabA0q9QucIPaMI?=
- =?us-ascii?Q?IFl8cpzvtuP/G7Wqzbuhx3P0dgKhYlkmlKpsAo14vSjS/gLaZ4NCWLP6LdEA?=
- =?us-ascii?Q?6xIFmqCDaqFclCOKJ8gKMPHunYoScXH5r6G2xOiOfe8jbHvT79/OgFL5vGIy?=
- =?us-ascii?Q?Zy6qGgmhq0FDzprXl/N9q9K+sGW8GHm4Ks4+uaXQ1y1mE0zAIIsMYLJeOXvk?=
- =?us-ascii?Q?A5EhKMBHyBWwEHg6Es/mny7k7k7QeFBxIRmdTW1+rLV45x1wQSCGuyXDfIPu?=
- =?us-ascii?Q?+qhMlPS/OgRwerGS+RBfom7eBcstP10JWMRK+2yW9agg5gTiVWb7Y9wEd9pM?=
- =?us-ascii?Q?2O4XYgkD0WZmaj4gyQDTaqtYFwLMQbFPiTd4xzfHWcxWuT69p8AJQy5CQ678?=
- =?us-ascii?Q?iSDY8vLjh/skXptiKvI77aIqd56OuWl/hRS5fK6Clq7PCc+nCdYZa5NYsi2n?=
- =?us-ascii?Q?0hYOEHorJI+0arN7gYU0Mfv8ej7XY5YfyXPGibVwAej9y3/WFLnj37yQZdB6?=
- =?us-ascii?Q?xTJUqooxRq1YXqigfTYeRUqN50vwxLo90zNmwr0nIpBRBO1mb2FReIphwZCq?=
- =?us-ascii?Q?F8Dopv3sw3SIodfyQcOjAEIrl+ho7MnEAKt3cEcKqsFeknk3gp5WrHjqEgN5?=
- =?us-ascii?Q?gPD+FHWhXh/qxFyCmlAcpvm2W5qNoLjHKUEUpCjT3ifh+aS02Ko3oeAZLEhD?=
- =?us-ascii?Q?VnmPfICd9TMs+xMKTMakEpM0Cn5084G6+YTjEkToU/jUEqYGvmVvO30YWPKB?=
- =?us-ascii?Q?Ip57H6rAztICKzrPisTFNFcdjeyz1sSm8xmShxMJlo6ICkn2lTboKcctBpmE?=
- =?us-ascii?Q?NgMVH+jJwsFLrqGMX/Qpr2W6jPcC+nLx5e3SJrGy1sn8gTTU9g9ej7VyJuwu?=
- =?us-ascii?Q?Ny/yZxMLzSkXbeji2dN8FrDlGcIiApxNmBqGdt+iawr10NTDF1MXHB0Opbu3?=
- =?us-ascii?Q?b9S827QNU1//gIvNhrv4b4C6yyKAuZocaPn2pXTzioC96N2ObiOJza5j3JrJ?=
- =?us-ascii?Q?B1tduoKb9R61TqEWA8yL9gjR1L0gx0yGx+fZ9gUaEbzexrnSSIdQr3OkYUfo?=
- =?us-ascii?Q?XeBKEwWgNFZaP6P9Dss18nDrNa3zyadb7nuMUgjEGHxb0X68QLuOlwJ28D0y?=
- =?us-ascii?Q?pkhAGwu/3r8c98diRNLWLMTXaoHo1tJgbXfb44wKbVZQ3ULPvVr3lphH3gF5?=
- =?us-ascii?Q?yPPLhfDAbp7YkqCtFhI1Ki5a82eyKgZZcNzsIGoRE/ioCBI249pS4e/C6l+E?=
- =?us-ascii?Q?vQVK9vzaJMF4H2SYXWIFlKKXT06QFJCxPqD3B9Y980Ico2xCDoiFTLcp8LAj?=
- =?us-ascii?Q?7lLeLCxn7A=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2aa43671-6487-41c3-cfe6-08de6e801ca3
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2026 23:56:05.0674
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r6aHKd0T3H1bUfCsdqpzq1cLFSqXtZnt6/qCh8fHuGFeZ4UH5lq3NgHuOCSNjd8N
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6306
+In-Reply-To: <0e762787-7270-426f-81ee-b24761617c18@de.bosch.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: zxNbLOODK0m-5S3InCMnC8ftkMmYjpRlUnOQuU5HtCI_1771380230
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, Feb 11, 2026 at 01:29:07PM +1000, alistair23@gmail.com wrote:
-> From: Alistair Francis <alistair.francis@wdc.com>
+Hi Dirk,
+
+On Mon, Feb 16, 2026 at 09:27:44AM +0100, Dirk Behme wrote:
+> Hi Peter,
 > 
-> Security Protocols and Data Models (SPDM) [1] is used for authentication,
-> attestation and key exchange. SPDM is generally used over a range of
-> transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
+> On 05.02.2026 21:59, Peter Colberg wrote:
+> > Add a new SR-IOV driver sample that demonstrates how to enable and
+> > disable the Single Root I/O Virtualization capability for a PCI device.
+> > 
+> > The sample may be exercised using QEMU's 82576 (igb) emulation.
+> > 
+> > Link: https://www.qemu.org/docs/master/system/devices/igb.html
+> > Signed-off-by: Peter Colberg <pcolberg@redhat.com>
+> > ---
+> > Changes in v2:
+> > - Use "kernel vertical" style on imports.
+> > - Demonstrate how to reach driver data of PF device from VF device.
+> > ---
+> >   MAINTAINERS                       |   1 +
+> >   samples/rust/Kconfig              |  11 ++++
+> >   samples/rust/Makefile             |   1 +
+> >   samples/rust/rust_driver_sriov.rs | 127 ++++++++++++++++++++++++++++++++++++++
+> >   4 files changed, 140 insertions(+)
+> > 
+> ...
+> > diff --git a/samples/rust/rust_driver_sriov.rs b/samples/rust/rust_driver_sriov.rs
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..84d057629c7b03d743179a4e05ccc092f814bf6b
+> > --- /dev/null
+> > +++ b/samples/rust/rust_driver_sriov.rs
+> > @@ -0,0 +1,127 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Rust SR-IOV driver sample based on QEMU's 82576 ([igb]) emulation.
+> > +//!
+> > +//! To make this driver probe, QEMU must be run with `-device igb`.
+> > +//!
+> > +//! Further, enable [vIOMMU] with interrupt remapping using, e.g.,
+> > +//!
+> > +//! `-M q35,accel=kvm,kernel-irqchip=split -device intel-iommu,intremap=on,caching-mode=on`
+> > +//!
+> > +//! and append `intel_iommu=on` to the guest kernel arguments.
+> > +//!
+> > +//! [igb]: https://www.qemu.org/docs/master/system/devices/igb.html
+> > +//! [vIOMMU]: https://wiki.qemu.org/Features/VT-d
+> > +
+> > +use kernel::{
+> > +    device::Core,
+> > +    pci,
+> > +    prelude::*,
+> > +    sync::aref::ARef, //
+> > +};
+> > +
+> > +use core::any::TypeId;
+> > +
+> > +#[pin_data(PinnedDrop)]
+> > +struct SampleDriver {
+> > +    pdev: ARef<pci::Device>,
+> > +    private: TypeId,
+> > +}
+> > +
+> > +kernel::pci_device_table!(
+> > +    PCI_TABLE,
+> > +    MODULE_PCI_TABLE,
+> > +    <SampleDriver as pci::Driver>::IdInfo,
+> > +    [
+> > +        // E1000_DEV_ID_82576
+> > +        (pci::DeviceId::from_id(pci::Vendor::INTEL, 0x10c9), ()),
+> > +        // E1000_DEV_ID_82576_VF
+> > +        (pci::DeviceId::from_id(pci::Vendor::INTEL, 0x10ca), ())
+> > +    ]
+> > +);
+> > +
+> > +#[vtable]
+> > +impl pci::Driver for SampleDriver {
+> > +    type IdInfo = ();
+> > +
+> > +    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+> > +
+> > +    fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
+> > +        pin_init::pin_init_scope(move || {
+> > +            dev_info!(
+> > +                pdev.as_ref(),
 > 
-> >From the kernels perspective SPDM is used to authenticate and attest devices.
-> In this threat model a device is considered untrusted until it can be verified
-> by the kernel and userspace using SPDM. As such SPDM data is untrusted data
-> that can be mallicious.
+> The `as_ref()` in the `dev_*()` prints can be dropped. Example:
 > 
-> The SPDM specification is also complex, with the 1.2.1 spec being almost 200
-> pages and the 1.3.0 spec being almost 250 pages long.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/samples/rust/rust_driver_pci.rs?id=600de1c008b2302b56d69ff27d12a9d8d14892ac
+
+Thank you for the pointer, dropped in v3.
+
+Peter
+
 > 
-> As such we have the kernel parsing untrusted responses from a complex
-> specification, which sounds like a possible exploit vector. This is the type
-> of place where Rust excels!
+> Best regards
+> 
+> Dirk
+> 
 
-I was arguing for exactly this at a recent conference, so I'm glad to
-see it. It is a great meaningful usecase for rust in the kernel.
-
-IIRC the netlink was my suggestion too, it really needs a careful
-look on its own. It is much better than sysfs, but comes with its own
-pitfalls.
-
-You might want to try to break this up into two parts, one just dumps
-a large text file in debugfs where there are not uAPI rules. This
-would let the rust work proceed.
-
-And another to introduce a proper uAPI for the data.
-
-It will be easier to get the right people interested in both parts if
-it is split up I think, given the size.
-
-Jason
