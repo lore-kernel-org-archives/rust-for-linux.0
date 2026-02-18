@@ -1,160 +1,194 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F78319873
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 15:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE1A330663
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 15:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771427614; cv=none; b=tro5vI0vyu9tlBikHUevVIfozrqxuXmoba2h7ft26yLpLAx9ybqE1wfGwFbLgJc/ZX96+On/U0IkM8zaMhfAIvLiCsaxj2jwdLLaJFijPW7jf0Upj3ICJGnfdDSau3QNRq7ddWSHxuHP8oIA+zF7+kP8QXISmtsyL9tdyg3Ehwc=
+	t=1771429689; cv=none; b=dD1j3dL9EzMm6GI2HKCxdjPYgIqTwyNq7X8xaPIxlkdi6DDTaySXSuKcl4armSjm+Yn71s9tB0RGlubZ69AQCSRKMrNabZMnqqpj/xnPBO+lmdkPAfA+H292iS+yrGpvcWgz3ubGI4WBu1pqmdBra49kcDFDrKYDMtpclZNtFUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771427614; c=relaxed/simple;
-	bh=84Ip3tw5AbdKr5Kyt979OjbY4zlojv3t7VOkkXCJsi8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TIb+3fKop4zShEbUqdFFBs2IQq5zTCurTU2UJxFwjFTMqciEBpkoiKugAANdEnXfl8f2AvFSJ2vEfZFs88p++k36d/OsHv/tLRO9wPJTzGMBuGHZ5jMv+hZLj1vKIyo/FiX+h1GfD9Fy/vKFScXUbhSm28BUgHrO2bdOqsddNP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MxKZtR41; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1771429689; c=relaxed/simple;
+	bh=zpyqzpFOHppQVJAb1owM5FRBK9bKCVLDsQ7J3h9lQ88=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kIKURgrpgUFcUmsLgHcdYmFzphxMqYDrvFGSZkajKw0KaBdAlA949q5VUtl9EviIW03fNY/IB4oRy8vXY0FANscGPcq6pyq8tAhwvCOZAla9JmjoxHHEDgG/jczYADMshyzFhmM2Dz7Hs1JLu8uv+xWR0XlVQh+uNMPYNpA/nQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PM/JryG+; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MxKZtR41"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b801784f406so508811666b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 07:13:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PM/JryG+"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48336a6e932so33655175e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 07:48:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771427612; x=1772032412; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=D1/Ls7LwysFMM1ACNCIQCse+fYSn6YnlDM357NSCbtY=;
-        b=MxKZtR414pnzQX/rXJA7PABWOSP9ffA+3vbS+oEkXWPDcQZGSFF3SYHxgp659+VPrg
-         8HBA991goB2IsKzqi5o1Ingm0udaZ5rI995jv8Z4VYgOsyGIBa4XfaM4qfT+dFzTrMkk
-         XGhCem13PA1ajKsV3L5Zh5YbeXtR8T9Oa7IaM5VxGMGguB7CzTOwY9f4gxa23GHUHNK5
-         cs6Tq+ef0Zds9ZI5tpBgQIPngpY85hN9yBSExiQjVuzsJp4d2bEGeb0zreyJAXqQggvC
-         Lg9fcLH5o8u2G91Awv9jeidWohgf8dflYMmyCIl5n9xp3b5N8ut+h+AuBvPXJkQydYde
-         Y05g==
+        d=gmail.com; s=20230601; t=1771429686; x=1772034486; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xj239r5RLCKwLTm1AZYnx5SxtOGhPSVfSA9B5DKaX3Y=;
+        b=PM/JryG+eIlWviqiLmGcbTXff7DUuNtisx+oUhskRu+ivkgzPMdfgV52ErI1yss4B2
+         /1tosHoiVOre/afT6jaKL/eLwjbqxBj5s2kMTyyLhhxjsLaNw1aR9qPcdM2ykEbEmGlB
+         +41n9TUWG5idCfLViP4Mq1M+O5Cq4cpPdVgbZnlGMaVjnrUHwX4SmSoPypED+nyY4btb
+         dzx2CrRkb3vwWLvEBb1Ae2dLeiha+Wo6wxC4hrcu4INyphAb6VMaRrqb+vrzwWM8c0Tm
+         wpDyr8OQAJylvNhL2iyj0rbeiMW80KPlAr/02AQTLKMZnT5hcjSzUzikbvo1hWrgc7l6
+         g5hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771427612; x=1772032412;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=D1/Ls7LwysFMM1ACNCIQCse+fYSn6YnlDM357NSCbtY=;
-        b=lpE9vPSeZur051onWxEgwexYgEMMzNqOaXB3fifRIqXTaqadBR4YakcVaXzp1ZgB28
-         qimNp7w3xt7mDqnlXDOpD+TUpnYsP/pK+pqwq2CbTROZimGH/Vw0UTDqyYZDG9IXiGrG
-         f+Z1S7OORddSUqIe97PcW0rDWRiG/98G6vSR0IkTLinsww3DZSaeNJGHrnIXJ4Anj0Jx
-         gkPB5ynOXVDgOXmB6icnqfNCZhMPscZq6XDA0vshb1MTcTXNUmpB6ULqlrSx7Ukfo0Mj
-         6hRw+hoDkk3+RIW2WnVForA7hPGKPfH4ngOWBLKvxrBDsVzCA6ai+4aAhlrLapV2nkH9
-         nbkw==
-X-Forwarded-Encrypted: i=1; AJvYcCVXl6amXiWII7kR7nQT/E75VRxcxv374/RYvVMYdLgSmY+c/a/AZkT7Hwi3duvJw2LDV4yli+Sa1egMGmZMBQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykh5qXuc4KieF3DgzO1qJnwy9PB2t1WCOxwiFMhUspEc9kp7Ud
-	UaVyY72UlNhppQAR5t7biWTHUDcJG3OiyDn+ggQBN4zZKYA5SM38VmnpOpas5YYWBjaGP1c4GO+
-	QVx9O5z5+zLHjJt/0Jg==
-X-Received: from ejcr2.prod.google.com ([2002:a17:906:2802:b0:b88:4b98:9b5])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:a49:b0:b8f:7014:8437 with SMTP id a640c23a62f3a-b8fb4193791mr846036466b.2.1771427611551;
- Wed, 18 Feb 2026 07:13:31 -0800 (PST)
-Date: Wed, 18 Feb 2026 15:13:23 +0000
+        d=1e100.net; s=20230601; t=1771429686; x=1772034486;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xj239r5RLCKwLTm1AZYnx5SxtOGhPSVfSA9B5DKaX3Y=;
+        b=TmHnCHRpRINi2Ea1nAbfgBpQ/SLOPLSl2/BwJF3mZBoFXwyV54xbDWROi/v3mnhNvQ
+         3X0IKCNY07aJXMqm8ttEtQFOm0YE5qWNmzotiZF+p76LFkkLVC3ngnCM+I7b081u5/C4
+         1cvCwIWxfUc96BzyLJljFci17bi+zyroGvH++MiKF/YmeWLF/ImK+TeR3fTpk0CqR9yI
+         JfVbzyNA4JuZPvVUOdZx/mlbN03MKelVBE85fLLp2wneS0Pake8ydAmybFVaR9+SRf8e
+         b1vyJZVJchGVRqMxc1i8JPkVuH6vElLg025mtlAHu3o0rBD2VtuqAtA10wLBDt01ABVg
+         5z3A==
+X-Forwarded-Encrypted: i=1; AJvYcCXQal3zq7cFR1L8AATGHvqCNok1WfuBwFg7cR2Iqt240CAsz2BmM6+Qjt3ihYhbqJig1F+V1XUzpTlQsAgjRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlswDsraPuUmKELxxQkjsfFJXb2QNl4/+Y6B2aYXttliab1+SY
+	22CP9YintJHXfss8VjG0juMCGO4dmuNmENoOpNcC3vx+HlmAJUdvjj0n
+X-Gm-Gg: AZuq6aJoUEOCh3lD5pIN713jhr1qS4T0ZFsIN6OyyRIYNy0uzeF3BNAdTJ3rsPQHFQT
+	FmbiWJ9xZdA7DktHkIXVdPPxVOZiCXo90eKUWeUGhpFmsob+Ty6hFkMjXZuZR1a61ubEOphVm/c
+	VsJtwtpt8j1HBqP/65MIl0jHMH1C3gF4o21g3Y/JDF3VTIWAcURH5H/ugiyNzehK+piqAJqecvh
+	e5IFVmcJxvsPYWz9Fe+3HUuEdH/CqdKeObZG/OHqw29SxVIo8IUwqAUIGEqUpsyylUzUFAIRhBC
+	FLteUMW9z6QFqBAL6GOzMehZBk98DxpTAmK7cJrj9QCPBr406V9+UF7PzB0+LV3AM7tCGvgZCF7
+	lVzYjKsd2nmTknlfW2k+tMYx3GYzls87eeuUJHjJDPXA3ZrEB2yphjZBXE9o3ROJghp1CEHi191
+	kHQOt8UvDjeTsGzpSX4tFlNGrQOKLDQfnO0nMLeM8AgXXqCdL8M8mt8gK5gYtuAcu51rIqOYul3
+	7c6DVCdqnhh583KeKaljXAVAt8jR8uAjfOH7MiQluVguCk=
+X-Received: by 2002:a05:600c:c491:b0:475:dd89:acb with SMTP id 5b1f17b1804b1-48379be8253mr257859815e9.22.1771429685657;
+        Wed, 18 Feb 2026 07:48:05 -0800 (PST)
+Received: from ddolgov-thinkpadt14sgen1.rmtde.csb (dslb-002-207-075-089.002.207.pools.vodafone-ip.de. [2.207.75.89])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4837e565f5esm428352325e9.10.2026.02.18.07.48.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 07:48:05 -0800 (PST)
+From: Dmitrii Dolgov <9erthalion6@gmail.com>
+To: linux-perf-users@vger.kernel.org,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Levi Zim <i@kxxt.dev>
+Cc: Namhyung Kim <namhyung@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Dmitrii Dolgov <9erthalion6@gmail.com>
+Subject: [PATCH v4] tools build: Fix rust cross compilation
+Date: Wed, 18 Feb 2026 16:47:53 +0100
+Message-ID: <20260218154800.367720-1-9erthalion6@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIABPXlWkC/23MQQ6CMBCF4as0s7YRqhTpVQyL0o4yMQWcFmJCu
- LtVFm5c/i953woRmTCCESswLhRpHHKUBwGut8MdJfncoAqlC1XWsqPBI8slWMlulqibxld1paw
- /QT5NjDd6fcFruzfjc85u2scfa8Q/1PXoHrLTN2fPCpuLdmZRH7mzEaUbQ6BkxDzFxGjDMdiYk KHdtjclkO0hywAAAA==
-X-Change-Id: 20260217-binder-vma-rcu-e699d5752ad3
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2675; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=84Ip3tw5AbdKr5Kyt979OjbY4zlojv3t7VOkkXCJsi8=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpldcWKLJgmMWFi2DkcATTG2dyWp/K26cydARhq
- CloiIJ/C0GJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZXXFgAKCRAEWL7uWMY5
- RnjED/4k82Ivr29rMWQ77Z8WP7YeiFsjTEkeoP2bk8cr0uF6Of/W9lSj2QtQGXskyQB521HIxgd
- nWfplqXli9EtKksgcLh046LavJWk7BoXwy3Hh4J7hw181wQpG6sRKOKQFzdbAdQcqhlzpGGA+Q7
- lFIJ/4eGqX9A7aWQBodTREnOqNQvmQ/oCFCgsPVjnW0OkiuQQH46pR1KPCfH7GnjTTfjvUmV+nn
- GU/keDlCm891o4WsLg528CprWGmO72vq8MEjzZVrO1iE/bqra6QbHW5Q4DJyPrl0LkfXyXX+Bwv
- ZiKDTTc5oCNsSskyxe55FPlxUCiOV6ZjdSJf7TGL8vOmimEvS4jNpE/Oi82cCMGLG+RUBwUY2I0
- LIadEqhc3H6wdMq4fuEXuf545CwLzqGQ0OKz0mxMr0l7+fakls9dBw0iGMxd7FESouU1e9Sis4l
- npfYT9QFQgIta/Jxz0nn4IXxeRf73U6dpHYtWZLoJ2QGZJ+JWTG/AoA2q+fHXVH3KaUmg0rPc9f
- 07+ewFAE7izMtFVK7sepppAH/SNsP3EEtsxl5eJsrOwF4m6ji9eAU0Pw7pnUzJBgheVcljWJAEY
- 9+xQoWJgE+YoPvTlZFB+JvRHIMN23K7uWBG9YrBZLfVrezbtN57bxO1DjuehmokeRBoeRAgG28t bH7Mq26FTP/92HQ==
-X-Mailer: b4 0.14.2
-Message-ID: <20260218-binder-vma-rcu-v1-1-8bd45b2b1183@google.com>
-Subject: [PATCH] rust_binder: use lock_vma_under_rcu() in use_page_slow()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-There's no reason to lock the whole mm when we are doing operations on
-the vma if we can help it, so to reduce contention, use the
-lock_vma_under_rcu() abstraction.
+Currently no target is specified to compile rust code when needed, which
+breaks cross compilation. E.g. for arm64:
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+      LD      /tmp/build/tests/workloads/perf-test-in.o
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
+    [...repeated...]
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
+    aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a: error adding symbols: file in wrong format
+    make[5]: *** [/perf/tools/build/Makefile.build:162: /tmp/build/tests/workloads/perf-test-in.o] Error 1
+    make[4]: *** [/perf/tools/build/Makefile.build:156: workloads] Error 2
+    make[3]: *** [/perf/tools/build/Makefile.build:156: tests] Error 2
+    make[2]: *** [Makefile.perf:785: /tmp/build/perf-test-in.o] Error 2
+    make[2]: *** Waiting for unfinished jobs....
+    make[1]: *** [Makefile.perf:289: sub-make] Error 2
+    make: *** [Makefile:76: all] Error 2
+
+Detect required target and pass it via rust_flags to the compiler.
+
+Note that CROSS_COMPILE might be different from what rust compiler
+expects, since it may omit the target vendor value, e.g.
+"aarch64-linux-gnu" instead of "aarch64-unknown-linux-gnu". Thus
+explicitly map supported CROSS_COMPILE values to corresponding Rust
+versions, as suggested by Miguel Ojeda.
+
+Tested using arm64 cross-compilation example from [1].
+
+Fixes: 2e05bb52a12 ("perf test workload: Add code_with_type test workload")
+Link: https://perfwiki.github.io/main/arm64-cross-compilation-dockerfile/ [1]
+Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
 ---
-Depends on:
-https://lore.kernel.org/all/20260218-binder-vma-check-v2-0-60f9d695a990@google.com/
----
- drivers/android/binder/page_range.rs | 37 ++++++++++++++++++------------------
- 1 file changed, 19 insertions(+), 18 deletions(-)
+Changes in v4
+- Fixed incorrect target name for riscv
 
-diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-index 67aae783e8b8b7cf60ecf7e711d5f6f6f5d1dbe3..9dfc154e5dd4e889c4f3aa89e5edb89434113e1a 100644
---- a/drivers/android/binder/page_range.rs
-+++ b/drivers/android/binder/page_range.rs
-@@ -435,24 +435,25 @@ unsafe fn use_page_slow(&self, i: usize) -> Result<()> {
-         //
-         // Using `mmput_async` avoids this, because then the `mm` cleanup is instead queued to a
-         // workqueue.
--        check_vma(
--            MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?)
--                .mmap_read_lock()
--                .vma_lookup(vma_addr)
--                .ok_or(ESRCH)?,
--            self,
--        )
--        .ok_or(ESRCH)?
--        .vm_insert_page(user_page_addr, &new_page)
--        .inspect_err(|err| {
--            pr_warn!(
--                "Failed to vm_insert_page({}): vma_addr:{} i:{} err:{:?}",
--                user_page_addr,
--                vma_addr,
--                i,
--                err
--            )
--        })?;
-+        let mm = MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?);
-+        {
-+            let vma_read;
-+            let mmap_read;
-+            let vma = if let Some(ret) = mm.lock_vma_under_rcu(vma_addr) {
-+                vma_read = ret;
-+                check_vma(&vma_read, self)
-+            } else {
-+                mmap_read = mm.mmap_read_lock();
-+                mmap_read
-+                    .vma_lookup(vma_addr)
-+                    .and_then(|vma| check_vma(vma, self))
-+            };
+Changes in v3
+- Improved commit message, add an example of the compilation failure
+
+Changes in v2:
+- Map supported CROSS_COMPILE values to corresponding Rust targets
+
+
+ tools/build/Build.include  |  9 +++++++++
+ tools/perf/Makefile.config | 14 ++++++++++++++
+ tools/perf/Makefile.perf   |  2 +-
+ 3 files changed, 24 insertions(+), 1 deletion(-)
+
+diff --git a/tools/build/Build.include b/tools/build/Build.include
+index e45b2eb0d24..cd0baa7a168 100644
+--- a/tools/build/Build.include
++++ b/tools/build/Build.include
+@@ -98,6 +98,15 @@ c_flags_2 = $(filter-out $(CFLAGS_REMOVE_$(basetarget).o), $(c_flags_1))
+ c_flags   = $(filter-out $(CFLAGS_REMOVE_$(obj)), $(c_flags_2))
+ cxx_flags = -Wp,-MD,$(depfile) -Wp,-MT,$@ $(CXXFLAGS) -D"BUILD_STR(s)=\#s" $(CXXFLAGS_$(basetarget).o) $(CXXFLAGS_$(obj))
+ 
++###
++# Rust flags to be used on rule definition, includes:
++# - global $(RUST_FLAGS)
++# - per target Rust flags
++# - per object Rust flags
++rust_flags_1 = $(RUST_FLAGS) $(RUST_FLAGS_$(basetarget).o) $(RUST_FLAGS_$(obj))
++rust_flags_2 = $(filter-out $(RUST_FLAGS_REMOVE_$(basetarget).o), $(rust_flags_1))
++rust_flags   = $(filter-out $(RUST_FLAGS_REMOVE_$(obj)), $(rust_flags_2))
 +
-+            match vma {
-+                Some(vma) => vma.vm_insert_page(user_page_addr, &new_page)?,
-+                None => return Err(ESRCH),
-+            }
-+        }
+ ###
+ ## HOSTCC C flags
  
-         let inner = self.lock.lock();
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index a8dc72cfe48..214d8f6d9b8 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -1163,6 +1163,20 @@ ifndef NO_RUST
+     CFLAGS += -DHAVE_RUST_SUPPORT
+     $(call detected,CONFIG_RUST_SUPPORT)
+   endif
++
++  ifneq ($(CROSS_COMPILE),)
++    RUST_TARGET_FLAGS_arm	:= arm-unknown-linux-gnueabi
++    RUST_TARGET_FLAGS_arm64	:= aarch64-unknown-linux-gnu
++    RUST_TARGET_FLAGS_m68k	:= m68k-unknown-linux-gnu
++    RUST_TARGET_FLAGS_mips	:= mipsel-unknown-linux-gnu
++    RUST_TARGET_FLAGS_powerpc	:= powerpc64le-unknown-linux-gnu
++    RUST_TARGET_FLAGS_riscv	:= riscv64gc-unknown-linux-gnu
++    RUST_TARGET_FLAGS_s390	:= s390x-unknown-linux-gnu
++    RUST_TARGET_FLAGS_x86	:= x86_64-unknown-linux-gnu
++    RUST_TARGET_FLAGS_x86_64	:= x86_64-unknown-linux-gnu
++
++    RUST_FLAGS += --target=$(RUST_TARGET_FLAGS_$(ARCH))
++  endif
+ endif
  
+ # Among the variables below, these:
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 11b63bafdb2..f7b936deeaa 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -274,7 +274,7 @@ ifeq ($(PYLINT),1)
+   PYLINT := $(shell which pylint 2> /dev/null)
+ endif
+ 
+-export srctree OUTPUT RM CC CXX RUSTC LD AR CFLAGS CXXFLAGS V BISON FLEX AWK
++export srctree OUTPUT RM CC CXX RUSTC LD AR CFLAGS CXXFLAGS RUST_FLAGS V BISON FLEX AWK
+ export HOSTCC HOSTLD HOSTAR HOSTCFLAGS SHELLCHECK MYPY PYLINT
+ 
+ include $(srctree)/tools/build/Makefile.include
 
----
-base-commit: 2961f841b025fb234860bac26dfb7fa7cb0fb122
-change-id: 20260217-binder-vma-rcu-e699d5752ad3
-prerequisite-change-id: 20260217-binder-vma-check-b6fca42e986c:v2
-prerequisite-patch-id: 4ca86894150aa7ee26c04440100cb71ce599ce80
-prerequisite-patch-id: beb72c0aa2ce3d495dd69817507ae6885e5ae1e6
-
-Best regards,
+base-commit: dbf0108347bdb5d4ccef8910555b16c1f1a505f8
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.52.0
 
