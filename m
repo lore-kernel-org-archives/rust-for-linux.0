@@ -1,88 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61403161A1;
-	Wed, 18 Feb 2026 12:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4116428B4FA;
+	Wed, 18 Feb 2026 13:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771418029; cv=none; b=ZsbAHEKFD8VV+ITn+PoGA1I2zKO84YLUb3KawRPdo9af7v0fbfdgnSdIWuGTiy40ZJRiJJ76VlYBqqGbP+e5PeYWIg7Ayvd0YbABEmG8pdIl9hkVmObxuPtETJSTzqfXjUeg9hnQBUkN3QTPug/EZzRfyObDAnJ58cF0MitSh64=
+	t=1771422426; cv=none; b=OYwfJv/MNwa8XMmH8rjaLjnyZjLi5nmkcHq3gwVv4/r9ds6TNtlw1vMD/Igj/awdO5ESOFjUZHXySq/MFrFYP+bqUmIAp+UINDoUx/kgfAGm8Pt5ZJ6s9F0WM3ufNvlOe1gSYInUraDDpfPbahpWU5PUmOJjGftVwiklIgOOsM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771418029; c=relaxed/simple;
-	bh=tPRTH5D/YtLHQRbJV//XCuFvKTE73aRX+m2Us19zizE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Tnz2VN1SmlsA7V5//44+MqC2Q4xfhbG89Q6gmQyWWakR3jnP3iQxRaIzhAp4CQ0mt7QtJzB+U9CsSN1XMDCUYT20bG8h2T1VnZc/gKqmI9QwPKrOzT/sKQ9cMXHrs+0OEqtuaW7FUA/vUu/GzngmK41mt/0S5hKrQV9lcL3Mc2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dW/i8orC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771422426; c=relaxed/simple;
+	bh=g7xLnbWUtNkSyUhaZry6Tmd7Wk+eR8gm83r0+hOi7tE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=r6ZSGvLKLtmi1wrYS7msgjgupi0w+Y1Qi6tjuCs354JALZ8lGj25ZeG/pRj5rxvbLHHhF1O5l5gxT3uAEqaIKoDTdaldNscMUvlDNeL0i8JuFgtxheCUXbocwqsggdES1yGuG1dEH523E5Aq+oqXX+ocMf87EDkfHT5KTtCugiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9oHy2ne; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dW/i8orC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB5EC19421;
-	Wed, 18 Feb 2026 12:33:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9oHy2ne"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985C9C19425;
+	Wed, 18 Feb 2026 13:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771418028;
-	bh=tPRTH5D/YtLHQRbJV//XCuFvKTE73aRX+m2Us19zizE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dW/i8orC81AsU4bNVV5MeaYMzqX8sW/RQ/Nd21nyFtqx5GQzupMt6/ibvEQFTk3Wt
-	 54LQ42QAS6mkEkVk703xT3dWEhgEoHbXxC8WLzlbdAWzrPkkMfmZwLeuKt/4sTfisb
-	 XrSOAVwW7qXnHEf5z8uKTkAIXEd30JCoPOWdU2iqBqAmKbf42j8le2TUbY0/HJyNrf
-	 Lsk9iRVf/smIFK4rYZMiueOBzaVCP8f747vbYXBQo8doBajY9Ai/yClmRzQRkURRqB
-	 t1Junhh1cQZMLlpORdxKmAVABQUpRqzm5oaTCGyePlbefCupbmrn7C+zJHEoWbe4l8
-	 kF7ugQHz6fh2g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl
- <aliceryhl@google.com>
-Cc: Benno Lossin <lossin@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam
- R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-In-Reply-To: <CANiq72nCmZ57VmXsXdXbP9edmWYqOWCYgWNTPGKvxC30sy94KQ@mail.gmail.com>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <CANiq72=5r2miRm6GWszb2gDNi4k5-RZUzvdOdFQ3yyndvmHbAA@mail.gmail.com>
- <CAH5fLgi6NVagOPA_=r7Dmk9MFXrvZVuq85D9bsJfUqLNOZjCaA@mail.gmail.com>
- <M50jfg_TPSF2G6kHFKHc8zxjC5DT3HtgXhWFeXdZxPwnsMnjr-B9ieBi-pZAXpPcInhZ21cxtYYvSciNJRS3Vw==@protonmail.internalid>
- <CANiq72nCmZ57VmXsXdXbP9edmWYqOWCYgWNTPGKvxC30sy94KQ@mail.gmail.com>
-Date: Wed, 18 Feb 2026 13:33:37 +0100
-Message-ID: <87seayb59a.fsf@kernel.org>
+	s=k20201202; t=1771422425;
+	bh=g7xLnbWUtNkSyUhaZry6Tmd7Wk+eR8gm83r0+hOi7tE=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=c9oHy2neizExuvudX1M7U/XiymsKKkRPxTyGQH1tkHRWaUAOr7Qk+TBq4VUY2UOqc
+	 O2VQA+6znhq+PGkCC8cBTQBwvxu27JzqESUXCOOYy8DJZ+GO4ox3e95HPDoNcRx1Tt
+	 ZUpU5E21uFN069r2rGSKYE0pC3TGD0V8c2n4wWqiX4dRSfCQZKF7fYyY0WDt2YOlht
+	 GWjU+o3BOjBHOXIHwdKW7EYYhk0RaRW47OnYIYuGASBV3Rcify/Mqs38SSYGa9IBEF
+	 et5sP/x6FgfdFaROF47WjkZmqWDUSkIWzlqEUNRVrjJyyJ5fbymPOs37r0Wbej4ics
+	 4eMt/011vFtYQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Feb 2026 14:47:00 +0100
+Message-Id: <DGI4U9PY3B8F.37E697MM1LQF2@kernel.org>
+Subject: Re: [PATCH v2 1/2] rust_binder: check ownership before using vma
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Carlos Llamas"
+ <cmllamas@google.com>, "Jann Horn" <jannh@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>,
+ <stable@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
+ <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
+In-Reply-To: <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
-
-> On Wed, Feb 18, 2026 at 1:00=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
->>
->> That's right, valid for reads implies that it's okay to read it.
+On Wed Feb 18, 2026 at 12:53 PM CET, Alice Ryhl wrote:
+> When installing missing pages (or zapping them), Rust Binder will look
+> up the vma in the mm by address, and then call vm_insert_page (or
+> zap_page_range_single). However, if the vma is closed and replaced with
+> a different vma at the same address, this can lead to Rust Binder
+> installing pages into the wrong vma.
 >
-> Great, thanks for confirming.
-
-Cool, will adjust in next version.
-
+> By installing the page into a writable vma, it becomes possible to write
+> to your own binder pages, which are normally read-only. Although you're
+> not supposed to be able to write to those pages, the intent behind the
+> design of Rust Binder is that even if you get that ability, it should not
+> lead to anything bad. Unfortunately, due to another bug, that is not the
+> case.
 >
->> valid for atomic reads?
+> To fix this, store a pointer in vm_private_data and check that the vma
+> returned by vma_lookup() has the right vm_ops and vm_private_data before
+> trying to use the vma. This should ensure that Rust Binder will refuse
+> to interact with any other VMA. The plan is to introduce more vma
+> abstractions to avoid this unsafe access to vm_ops and vm_private_data,
+> but for now let's start with the simplest possible fix.
 >
-> That is the one he suggested, so it is likely to be a good one if two
-> people thought about it :)
+> C Binder performs the same check in a slightly different way: it
+> provides a vm_ops->close that sets a boolean to true, then checks that
+> boolean after calling vma_lookup(), but this is more fragile
+> than the solution in this patch. (We probably still want to do both, but
+> the vm_ops->close callback will be added later as part of the follow-up
+> vma API changes.)
+>
+> It's still possible to remap the vma so that pages appear in the right
+> vma, but at the wrong offset, but this is a separate issue and will be
+> fixed when Rust Binder gets a vm_ops->close callback.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+> Reported-by: Jann Horn <jannh@google.com>
+> Reviewed-by: Jann Horn <jannh@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Great, I like it.
+FWIW, in terms of my drive-by feedback from v1,
 
-This document should be in tree. It's not, is it?
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 
-
-Best regards,
-Andreas Hindborg
-
-
-
-
-
+(I'd offer an RB, but I did not dig deep enough into binder to justify it.)
