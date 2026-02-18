@@ -1,211 +1,282 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AE47080E
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 02:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771380233; cv=none; b=Rg2aYYVeD7GKHGZmGCKbgpUdU1/kXyuiOLCFagf5mHNt5/kCgf1EKNGgxTgts87b4wu6IBQbo2bkoSiDASBr8YfqHrY9j1R/OZjdhsmynnGb2oIYpU9+K6r51NMeDIJ/qRtTbCTNcVp+M+krne6/sMoLgXj4sNqfjmTvP6C4xDc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771380233; c=relaxed/simple;
-	bh=PUEtUvlnxfRwbku097xynciK1P/oSr9Kiu2SbUO2/mA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=InuxRAt9ud7vMdhjJAP4DPVrjBYW/4tcvMLr96F8ZqjTPQyXduiDw2XsYIG96ig0vA+SZdyztDQbfowYyroj3YyTRLHejY9ICWN6kSUZGqkAFYFvifOGljvL8BGv+odDmWmx4lmc5dHtEW9JMhFcJls1P3Hg7SZQx8wSiHzLDo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L3Cq/OUm; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042D4246335
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 02:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771380800; cv=pass; b=kyENX0vXw2iL1j/anabU+PRMmGNDWzRXAl1cU99WDAZPE4kakyHXZ6zhEZaSKroV2OtP9u/4CBhsgvUYRMxbzP0o0/IWkdWiPx/IcZOSuvt9NxPVbZARJ6P/kq8ZKestpAUuN/Viot3XWclJXWn1O/Iv049pYNhQFS35WthPalk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771380800; c=relaxed/simple;
+	bh=S/Z/B3945DyN1CgtJ/z53VZxf7iks2VH62eReMEjqQs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cRh1k4lAPJvhmTpWK0rIhekdPahtNc7iFl0N8eNggkLSYWDwx4RfOnyZmBorbZpgAYjuDb3PckzC5w83KG0aB/yAxjK5/9HZFmPST2wZ0XPMXzoCY6GW+sfflMXtoPhmdJQ9m7EWSR34yv+uj58ynF0AkdDt3dI+hQ/fYMkUMe4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=joH4Wp/m; arc=pass smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L3Cq/OUm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771380231;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o4cHvKSBZESAOv4yzpaqvORLgvpDRThGyDvq3HOoF2s=;
-	b=L3Cq/OUmE39lqbDMi4RD6vO0nKtNjMPE/ztjEMWsLNVlvhTOqH32r9XGzP0KVBn0aRAxFL
-	ECWwUisKahCsLGqWNef6y4+tDeZl1lkLIBUtMqQnU21mpb2qa6F7gP0gTMVMYLcLDLChC5
-	RNeehsEWsOmhFqPRegVtRrvWEoWC158=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-iJIgTF30NlKu6GeJ0eHQ9g-1; Tue, 17 Feb 2026 21:03:50 -0500
-X-MC-Unique: iJIgTF30NlKu6GeJ0eHQ9g-1
-X-Mimecast-MFC-AGG-ID: iJIgTF30NlKu6GeJ0eHQ9g_1771380230
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8947d47793fso721606316d6.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 18:03:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="joH4Wp/m"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6581234d208so8185408a12.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Feb 2026 18:13:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771380797; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dhDFYGWZNhvw4SVGHFm9103LFd58OFjpswk+3eP1t0wWX+ZVtlKKKY8yewfPMb4Cnp
+         yIWwIu1+hD3GqFiRnof5kin9gwaQu0cPFlHupTOyLhjdwy1+MkK2CfT2eca+t2RdWaGE
+         3LJL0dcE3tK1kL5HuZejes5y51+/8J3hTIFD5cMKGVUWoQgZV2k11mIGWZXqaZHPAC8/
+         8aXmWkFdIIn1HH49WphGx74Vlk7I095aI2/iJtI0bD91nd9tHOsK5qFJDkrRlYkPIgEM
+         IXqLu93JHxXYyPonB5CVBXCU+HgQgqC65MUaR+1sr8pUxs3btxU97RdPqCpOa8nJSIyM
+         C3iA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yt03EibpDHB+OSTayepUfQsKwul4kw22IcVV11w6O5c=;
+        fh=dl7Rltxu06n3cUUPOiszKphp0FLsZ2SUfjNjy98Eb9g=;
+        b=ddByER2WdbC8y8lU8VQ1qWeDu4XSGbmViXb2DOtUW3uP5EQvy6efIzT1RpYOGZcP4H
+         +1fR9qkaQfQ8YNGhzxywqjn7V2TtRCkG2LXhwku59VpjmA4I5ZvCj/CkQc5yO6etSlso
+         Trd8vsmT19XkWW91UHf9+AiD7n+eMVU3icRgTxJPJrxZ+5yy9hBFNxWaCR8YtFpm1CN7
+         /5UWeJu1Y1vjeEyT8J0SkHqyPYnUxhhoiKNDnMdeXVXjgCINmO8iyJqyHswYJBymOJjx
+         xleyXEx483gL0ywQ9SgeH3hqjR6TfB0yw0y5PG2/9pmLu4C3g5uRB1ZMyTeNLcCE3fB2
+         HsYA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771380797; x=1771985597; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yt03EibpDHB+OSTayepUfQsKwul4kw22IcVV11w6O5c=;
+        b=joH4Wp/mCKT9U/skqar+JcyFggO/PFCWbsG2S0Ko3fh8pyoyy408Dj8dKHgdU8j4g/
+         0w96RKfWqB57c0+8aDL267bFTtBQrFuylgJTOXPm3g0cSHrv9Ta4V8mL/NJJWsm3xL3G
+         9TyPUI3a3pduG7vpYOGsPaSWnwoxwu3jKiqK8jkoEqwxYWk3DirkMe1VqlyU+nX0Eqih
+         u1pLKj3eiokeeCwdGN8IGdSWgZPZpkHEg0cxlWEkk26AZyeMTtmkjE3Ps+z2iusV9+BP
+         lUBMgppSLH9HIPoQpmUY5er7uqMeS/XEIo3XnIRuE2b0GMl5dS0A609AmMagKZow2oCW
+         ugig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771380230; x=1771985030;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o4cHvKSBZESAOv4yzpaqvORLgvpDRThGyDvq3HOoF2s=;
-        b=H5huFlGHEN9Tz8FprrOM0z7I4e26n6OraLRRyNDUV2ip7TSeaSB0G3HJsvy/Ul7574
-         qZnz61nN6ygovInDmxECBKtz9f9oOYan8RYAc0/cwHa7sv4RU/FODeYTgrPm33boNtDg
-         OBORBfXBvJlmNErWutHe4lApu6RlDhuMIW8DMgxdyav9Qe0jBsrhwK7S/CwAx/O+qDJz
-         MLvP2JpetlnXDrBTSOArQzzq42oxwLqsISpxFvCyQJkPSQa5xKQV2XplPHGXqrOTHTCB
-         05XjVFD4U/ZCVG+f9j5t3h3/GvIj/bkxQHwxVJ5wfrSlzp1UWvBlx3dyjco0Gz2Ujm0S
-         RBqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUiS4r552wimKirz7r8ifvF5gjaUHYzpdn5y/BO7lpvkEFn/2z+g03uBjlzhxabH/BKCD//oce/Fsli82ly2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4/pRBQ1Vpd/xsfsiWAOtxy8980D2XNl+Wna8rQIvQb39rUc2t
-	q2NyCXW6zxX+tHQcx/Hg9h9E7YdB0CanTY+mn4zdR/eyS5L1kTb+qvmsy++o0LLo6xC/Kjzlf7s
-	PNvZk3J8x7jrv1VwVMBA+bsSSHPZWIcpPoEwdXI4bSb5bQWbig5/2yOPfu4T0CHpwnU7o
-X-Gm-Gg: AZuq6aI5Oc+iMMl2sJVrOaVoKo00BBpES/rBbqxTqRdAoZ7aDATcszIC9NudHmoEXA5
-	5hL+S+8Ffa1DZb06He5s7dUaie53US9UJUgkg1X9p+jXSmEgsSqW0bPdCJuOxx3+35X4hSZHIMF
-	kzjy3CYEsox1hTJGjy8vA1W3BDs8ixR6dUXtJIWd4V/mORcv3jXPpFVpUXVLit17GFQl1Jvbs5O
-	3dcx1pYgxLl8OGwbioOjM+MS8+ejjuysmpv+rJSf/9beKPsuU6xxc1reb08XDy8I59/V94h2Q7G
-	iE1VpU283YprhKshcbCyCAlnszySSVzZeX9inty2EUnW1scIh5yZAaFkMssrVUKfOFW6REGlI6L
-	uWQEMpj8CpzPyfMJCGqWyUg==
-X-Received: by 2002:ad4:5dee:0:b0:894:6cb7:da94 with SMTP id 6a1803df08f44-897402c95aamr190212996d6.8.1771380229534;
-        Tue, 17 Feb 2026 18:03:49 -0800 (PST)
-X-Received: by 2002:ad4:5dee:0:b0:894:6cb7:da94 with SMTP id 6a1803df08f44-897402c95aamr190212556d6.8.1771380228953;
-        Tue, 17 Feb 2026 18:03:48 -0800 (PST)
-Received: from localhost ([2607:f2c0:b1e3:9a00:3d5c:8422:4052:e7a6])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-8971cc7dc1csm176656526d6.10.2026.02.17.18.03.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 18:03:48 -0800 (PST)
-Date: Tue, 17 Feb 2026 21:03:47 -0500
-From: Peter Colberg <pcolberg@redhat.com>
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jonathan Corbet <corbet@lwn.net>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>, Moritz Fischer <mdf@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-doc@vger.kernel.org, linux-fpga@vger.kernel.org,
-	driver-core@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v2 10/10] samples: rust: add SR-IOV driver sample
-Message-ID: <aZUeA1hmYlZIILQg@earendel>
-References: <20260205-rust-pci-sriov-v2-0-ef9400c7767b@redhat.com>
- <20260205-rust-pci-sriov-v2-10-ef9400c7767b@redhat.com>
- <0e762787-7270-426f-81ee-b24761617c18@de.bosch.com>
+        d=1e100.net; s=20230601; t=1771380797; x=1771985597;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yt03EibpDHB+OSTayepUfQsKwul4kw22IcVV11w6O5c=;
+        b=q8BLO1MJsbwvXiVoEhsINChxWfMcN4op7kn7EVQXiKOmLTaqr2Rfk+3c0YdpAjA0AH
+         89kOmiq/J3L/N6Qxi0843G7dyNLVJ0SLlGD5+lf8gfrpcV9acv9Ras7bPbsO6pqKrIp5
+         xe/880LQ2y08v2oncFM0ZKiYX4JwAYbRcoOEfEayahVG0kLIozg2k+xH+U4Ksjd/WVMN
+         e86lhF6uDihWNW69SXhYTv6FEYot/sXt4pp8Gtgbcx7D/FLHYJqMRmtlLd6cfbtxrYox
+         6MNQYCTHO4a4ml7mRzCtJE1jfZyN8CxdgJtU1NGONCUjOB6ld0fT1kOxMv4y2kfCiccu
+         Eo9g==
+X-Forwarded-Encrypted: i=1; AJvYcCXZsSt6fTRTPNfk9HRsBhdv0qxQNOkgRLMp9TAU4UDIb5biOUunDcCF47MNGLJd+P+CVDLuSob9mNbLLQjXlg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsiTKwT8rtQxn8SSF1YtB/fDiKm4fAKxbKJqd0OE7LV9Ro2nlk
+	1VKBFK2ShCvdP4K7XDcolxSvmIakhXGnIyYDVXnI+YY2Kcc3ooE7SME8/g0PS7wCDodUwOADO9z
+	YO7hTpit/CEsezjRha8ZjbY48Ux8pA3o=
+X-Gm-Gg: AZuq6aJzxn4DZqaxwIH2MPQGThzKRhHnzpSHQD4Aqd/mpqnvDwKS+tDY5peUH1x2apN
+	b380WoPHXPRtna3C8ODwz68t9/fo4uqZH4BlZuduMw3aARLIofTX1cpC6zRR5J6cts6Xwi3Xpj3
+	n+h2bpq/Kg+DfjomTyqkKeHssWJiOp20FAS672IwyMmXw5HXNyfCaoG1zXIPmJ4qJ1O2AuzPyku
+	2DSYkQ9uQt1XRHQrv4gA8dorAdu42ZQrTyhj1CxIFpVVYERDR6EZihn1l6R59kX7Z7rRF2AzZsN
+	ZFo7eClLJgOjrs5DWFgJKni3qPkHHk3YittAQQ==
+X-Received: by 2002:a05:6402:f16:b0:658:c1b3:b958 with SMTP id
+ 4fb4d7f45d1cf-65bc7605c53mr5233615a12.0.1771380797025; Tue, 17 Feb 2026
+ 18:13:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <0e762787-7270-426f-81ee-b24761617c18@de.bosch.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: zxNbLOODK0m-5S3InCMnC8ftkMmYjpRlUnOQuU5HtCI_1771380230
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260211032935.2705841-1-alistair.francis@wdc.com> <698d6b7faa190_2e57100d3@dwillia2-mobl4.notmuch>
+In-Reply-To: <698d6b7faa190_2e57100d3@dwillia2-mobl4.notmuch>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 18 Feb 2026 12:12:50 +1000
+X-Gm-Features: AaiRm50kUfToGCU-ZHMlptQVt4b0wRA7xDMepx3E9_wmPCsQaIda1MtDKAVhlig
+Message-ID: <CAKmqyKPoY+u+9MxDb5eeCdQDB+KB=CVwqVBgCsKUK+uua7QY0A@mail.gmail.com>
+Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
+To: dan.j.williams@intel.com
+Cc: bhelgaas@google.com, lukas@wunner.de, rust-for-linux@vger.kernel.org, 
+	akpm@linux-foundation.org, linux-pci@vger.kernel.org, 
+	Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me, 
+	boqun.feng@gmail.com, a.hindborg@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, tmgross@umich.edu, ojeda@kernel.org, 
+	wilfred.mallawa@wdc.com, aliceryhl@google.com, 
+	Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dirk,
+On Thu, Feb 12, 2026 at 3:56=E2=80=AFPM <dan.j.williams@intel.com> wrote:
+>
+> alistair23@ wrote:
+> > From: Alistair Francis <alistair.francis@wdc.com>
+>
+> Hi Alistair, quite a bit to digest here and details to dig into. Before
+> getting into that, I will say that at a broad strokes level, no immune
+> response to the core proposal of depending on a Rust SPDM library and
+> forgoing a C SPDM library.
+>
+> Most of that allergy relief comes from how this organizes the C to
+> Rust interactions. The core SPDM implementation calls out to C for the
+> presentation layer (Netlink) or is invoked by sysfs. That makes it
+> amenable for sharing those presentation mechanics.
 
-On Mon, Feb 16, 2026 at 09:27:44AM +0100, Dirk Behme wrote:
-> Hi Peter,
-> 
-> On 05.02.2026 21:59, Peter Colberg wrote:
-> > Add a new SR-IOV driver sample that demonstrates how to enable and
-> > disable the Single Root I/O Virtualization capability for a PCI device.
-> > 
-> > The sample may be exercised using QEMU's 82576 (igb) emulation.
-> > 
-> > Link: https://www.qemu.org/docs/master/system/devices/igb.html
-> > Signed-off-by: Peter Colberg <pcolberg@redhat.com>
-> > ---
-> > Changes in v2:
-> > - Use "kernel vertical" style on imports.
-> > - Demonstrate how to reach driver data of PF device from VF device.
-> > ---
-> >   MAINTAINERS                       |   1 +
-> >   samples/rust/Kconfig              |  11 ++++
-> >   samples/rust/Makefile             |   1 +
-> >   samples/rust/rust_driver_sriov.rs | 127 ++++++++++++++++++++++++++++++++++++++
-> >   4 files changed, 140 insertions(+)
-> > 
-> ...
-> > diff --git a/samples/rust/rust_driver_sriov.rs b/samples/rust/rust_driver_sriov.rs
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..84d057629c7b03d743179a4e05ccc092f814bf6b
-> > --- /dev/null
-> > +++ b/samples/rust/rust_driver_sriov.rs
-> > @@ -0,0 +1,127 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Rust SR-IOV driver sample based on QEMU's 82576 ([igb]) emulation.
-> > +//!
-> > +//! To make this driver probe, QEMU must be run with `-device igb`.
-> > +//!
-> > +//! Further, enable [vIOMMU] with interrupt remapping using, e.g.,
-> > +//!
-> > +//! `-M q35,accel=kvm,kernel-irqchip=split -device intel-iommu,intremap=on,caching-mode=on`
-> > +//!
-> > +//! and append `intel_iommu=on` to the guest kernel arguments.
-> > +//!
-> > +//! [igb]: https://www.qemu.org/docs/master/system/devices/igb.html
-> > +//! [vIOMMU]: https://wiki.qemu.org/Features/VT-d
-> > +
-> > +use kernel::{
-> > +    device::Core,
-> > +    pci,
-> > +    prelude::*,
-> > +    sync::aref::ARef, //
-> > +};
-> > +
-> > +use core::any::TypeId;
-> > +
-> > +#[pin_data(PinnedDrop)]
-> > +struct SampleDriver {
-> > +    pdev: ARef<pci::Device>,
-> > +    private: TypeId,
-> > +}
-> > +
-> > +kernel::pci_device_table!(
-> > +    PCI_TABLE,
-> > +    MODULE_PCI_TABLE,
-> > +    <SampleDriver as pci::Driver>::IdInfo,
-> > +    [
-> > +        // E1000_DEV_ID_82576
-> > +        (pci::DeviceId::from_id(pci::Vendor::INTEL, 0x10c9), ()),
-> > +        // E1000_DEV_ID_82576_VF
-> > +        (pci::DeviceId::from_id(pci::Vendor::INTEL, 0x10ca), ())
-> > +    ]
-> > +);
-> > +
-> > +#[vtable]
-> > +impl pci::Driver for SampleDriver {
-> > +    type IdInfo = ();
-> > +
-> > +    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
-> > +
-> > +    fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
-> > +        pin_init::pin_init_scope(move || {
-> > +            dev_info!(
-> > +                pdev.as_ref(),
-> 
-> The `as_ref()` in the `dev_*()` prints can be dropped. Example:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/samples/rust/rust_driver_pci.rs?id=600de1c008b2302b56d69ff27d12a9d8d14892ac
+Great! That was my goal.
 
-Thank you for the pointer, dropped in v3.
+Also, with netlink some of the C code is autogenerated, so a Rust
+version would be tricky to do well.
 
-Peter
+>
+> Specifically, my primary concern is integration and refactoring
+> opportunities with the PCI TSM implementation [1]. The PCI TSM case
+> should use the same uABI transport for requesting + conveying device
+> certificate chain, SPDM transcript, and device measurements as PCI CMA.
 
-> 
-> Best regards
-> 
-> Dirk
-> 
+I do think broadly that they can use the same uABI. I'm sure there
+will be refactoring required though.
 
+> Note that in the TSM case the SPDM implementation is in platform
+> firmware and will bypass this library. The TSM SPDM session is mutually
+> exclusive with the CMA SPDM session.
+
+As long as we can get the details from the platform firmware (which I
+assume is possible) then we can present them to userspace via the same
+netlink ABI.
+
+>
+> [1]: http://lore.kernel.org/69339e215b09f_1e0210057@dwillia2-mobl4.notmuc=
+h
+>
+> > Security Protocols and Data Models (SPDM) [1] is used for authenticatio=
+n,
+> > attestation and key exchange. SPDM is generally used over a range of
+> > transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
+> >
+> > From the kernels perspective SPDM is used to authenticate and attest de=
+vices.
+> > In this threat model a device is considered untrusted until it can be v=
+erified
+> > by the kernel and userspace using SPDM. As such SPDM data is untrusted =
+data
+> > that can be mallicious.
+> >
+> > The SPDM specification is also complex, with the 1.2.1 spec being almos=
+t 200
+> > pages and the 1.3.0 spec being almost 250 pages long.
+> >
+> > As such we have the kernel parsing untrusted responses from a complex
+> > specification, which sounds like a possible exploit vector. This is the=
+ type
+> > of place where Rust excels!
+> >
+> > This series implements a SPDM requester in Rust.
+> >
+> > This is very similar to Lukas' implementation [2]. This series includes=
+ patches
+> > and files from Lukas' C SPDM implementation, which isn't in mainline.
+> >
+> > This is a standalone series and doesn't depend on Lukas' implementation=
+.
+>
+> So, I *am* allergic to how this series references Lukas' work by
+> pointing to random points in his personal git tree. I trust that was
+> done for RFC purposes, but it would have helped to call that out in the
+> changelog and set expectations about the ideal path to coordinate with
+> that work.
+
+I was trying to convey that a lot of this work was done by Lukas, I
+didn't want to appear to be claiming otherwise or stepping on toes,
+hence the links to his git tree.
+
+As for an ideal path forward, what I think would be really useful is
+if Lukas' prep patches get merged. Lukas sent them in his original
+series and they have been reviewed there. I have picked them up here
+to help with testing, but they could go upstream today and set the
+ground work for either a C or Rust implementation.
+
+That would reduce the size of any future series as well.
+
+From there it would be worth thinking about a C or Rust implementation
+and maybe just focus on one and work towards that.
+
+>
+> > To help with maintaining compatibility it's designed in a way to match =
+Lukas'
+> > design and the state struct stores the same information, although in a =
+Rust
+> > struct instead of the original C one.
+> >
+> > This series exposes the data to userspace via netlink, with a single sy=
+sfs
+> > atrribute to allow reauthentication.
+> >
+> > All of the patches are included in the RFC, as it depends on some patch=
+es
+> > that aren't upstream yet.
+> >
+> > Now that Rust is no longer experimental I have picked this back up. If =
+the
+> > community is generally on board with a Rust implementation I can work o=
+n
+> > sending a non-RFC version and push towards getting that merged.
+>
+> As long as this stays explicitly designed to minimize exposure to
+> "refactor across language boundary" events (as initially seems to be the
+> case), then it seems workable.
+>
+> > The entire tree can be seen here: https://github.com/alistair23/linux/t=
+ree/alistair/spdm-rust
+> >
+> > I'm testing the netlink data by running the following
+> >
+> > ```shell
+> > cargo run -- --qemu-server response
+> >
+> > qemu-system-x86_64 \
+> >   -nic none \
+> >   -object rng-random,filename=3D/dev/urandom,id=3Drng0 \
+> >   -device virtio-rng-pci,rng=3Drng0 \
+> >   -drive file=3Ddeploy/images/qemux86-64/core-image-pcie-qemux86-64.roo=
+tfs.ext4,if=3Dvirtio,format=3Draw \
+> >   -usb -device usb-tablet -usb -device usb-kbd \
+> >   -cpu Skylake-Client \
+> >   -machine q35,i8042=3Doff \
+> >   -smp 4 -m 2G \
+> >   -drive file=3Dblknvme,if=3Dnone,id=3Dmynvme,format=3Draw \
+> >   -device nvme,drive=3Dmynvme,serial=3Ddeadbeef,spdm_port=3D2323,spdm_t=
+rans=3Ddoe \
+> >   -snapshot \
+> >   -serial mon:stdio -serial null -nographic \
+> >   -kernel deploy/images/qemux86-64/bzImage \
+> >   -append 'root=3D/dev/vda rw  console=3DttyS0 console=3DttyS1 oprofile=
+.timer=3D1 tsc=3Dreliable no_timer_check rcupdate.rcu_expedited=3D1 swiotlb=
+=3D0 '
+> >
+> > spdm_utils identify &
+> > sleep 1
+> > echo re > /sys/devices/pci0000:00/0000:00:03.0/authenticated
+>
+> So this is where it will collide with TSM that also emits an
+> authenticated attribute. See Documentation/ABI/testing/sysfs-bus-pci.
+>
+> The rough plan Lukas and I worked out is that switching between TSM and
+> CMA based authentication would use sysfs visibility to coordinate. I.e.
+> TSM to CMA conversion hides the TSM "authenticated" attribute and
+> unhides the CMA attribute of the same name.
+
+That sounds fine to me
+
+>
+> The most significant unsolved point of contention between TSM and CMA is
+> the policy on when authentication is mandated and the driver probe
+> policy. The proposed model for enforcing device security for
+> Confidential Computing is make it completely amenable to userspace
+> policy. Draft details here [2] to be refreshed "soon" when I send out
+> the next version of that.
+>
+> [2]: http://lore.kernel.org/20250827035259.1356758-6-dan.j.williams@intel=
+.com
+>
+> To be clear I am ok if there is an incremental option to have auto_cma
+> and/or auto_tsm that arranges for authentication or link encryption to
+> happen without asking. I take issue with auto_cma being the only hard
+> coded option.
+
+Ok, so we would need a way for users to select TSM or CMA and specify
+policy information?
+
+Alistair
