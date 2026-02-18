@@ -1,185 +1,162 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A1D25B1CB
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 09:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77931271A6D;
+	Wed, 18 Feb 2026 09:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771407077; cv=none; b=pcz/n1ipJfTDQzdPLbF2HRg6QKpRLEjIoXjyjKMv8CHF1vWTQuDYufhPakVCDu3VqXOFrWPHIMZwtOa3uilqo8VTqBMkvHi4FMvP0+PteT29j63Hltkp73KMJCsbNqnc0AbuQU5czw6n9WcQjqKKYRb3cWGaQ3ceerXn79eSIeQ=
+	t=1771407471; cv=none; b=GRN3DDs6YWzS828sj1kXNsw5UcoWR5+LG3olot/fdpQlHVigPM8+gWVpqvEN219pBgifAnYJrhzXq55FANt2uI8ICkKWHQ+PvTwPHZIjKO4YagvUK6AAUpNTD844q/pq7sbGAVNCrgssrXFwmd0kLHeMV1SWpVCmZQvMdwGCPqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771407077; c=relaxed/simple;
-	bh=ynAGL37s7FWBMrSgqUjiQMxCYwtmS+dVwdIirYlrhRY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Q+JRQJN0od2b1+lqlNV70JtSAKPFCeq2xrVWTs7saxGnU2KKkwyUqZjkna4rpKfIX81aANrIrZ6Ora4RHmjj+pd8slBako8AskA7jwPC1T58awrlllZxZb/Mk9WZ+1K0EIrS5g36aU18lDvFB/FLSc/l2eKO0+SBm9WRLEonzM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E0KiGf2B; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1771407471; c=relaxed/simple;
+	bh=5BhDohxi/Dt4pM2Aom0/HfkXZ43SmgfuTX1tvwIrp8w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=npGXUScmmAhbKycjIiWLa+YBIwheLrM30FQHZOVhT8MuGdRHobeAYBOuZcL7oje2so+LUi4eWjyYxLBdyyHikGWTxHQNu6JJRqjiDa0/X3G+a9QTl4JqtUfyDGQ/A5t/cS354r8K3YIsMrzZ2+Tuktg1SBABKmKydIoMIH8CX70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kPqyI43l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E0KiGf2B"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-436267b01c4so4461581f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 01:31:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771407075; x=1772011875; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rFgVqtfti6/svD+1ZiUO3++RgsvWnRMRX+ORPut57vY=;
-        b=E0KiGf2BcVd844C+NUaC0txq/SfrprjiBTSF5ysBUBkWUSb0w15JRoOh2GVw4Xf/xl
-         a2iZWR0glWICf+bFdgrte4eEY5V+qAXQcRgAXlAEtWmJ6h8zfm0PQvdLNHFbA7baoizt
-         hJoGQM+Rtc4LQ49wkrZIqVbx+xRiybdPMEJJnSwfDFtI1B/hXIWDKkqr4dXit+EbNsKM
-         dnR7Y59QKT75mhqPUQiemy90T2O78G7OIpL7hyap0AQF1rcyqTbopuYhRFjKNS8QITzE
-         CqDTUl/b6hbEAKMwuUptnHeGJB2fzs39YKYp3r/VJVP3Hy1rxJ1se8A+9BVxMNReF4Gv
-         qSzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771407075; x=1772011875;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rFgVqtfti6/svD+1ZiUO3++RgsvWnRMRX+ORPut57vY=;
-        b=CASd0p9SBP+PORM+tnrWI+WocN2mWsEpviVdtUckhjm3m2tKxf8ZSpSgDuI3byHb2G
-         kWps7VgKp0pNbeTnmRtys0clK+C0zXGGYCpHDQB06JZN7C1k5bPsXqFl04FV6iq+dNbZ
-         JRWbtFy8kzWMTm+YiOq8zrl7C363yXCbdi284Goc4zKbfnzFFqzmaJUlFyL3cCXInXEF
-         l7TrfKzMNo0UcvAT0CkE+23WKdm6x3E8BdBv251LNLEYBblhc1xdm0I3vIcqmt+2AJHU
-         PogJrWInLmsTWrl9sJ0cAw+LlWG8lnAFS1NtSZ+KxfbMvtaUGW+FrSKuKR6LDLT3y9pu
-         U0Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCXn1299OcDHVZHEbE5dU2vyua8IXaXf6kkULJYPJ1wLGHlJublsaSsJxD0WtfirTtdPpx/NfxEj//3zXGsFRQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDzGPsNzg4OtpKLFe4w7WKJK9paIU61WY4p3YkFtReBgL6fPIY
-	1GmCx0wxCtQ+ZDc5Cg+TsCOKF+lkqOcmazS4wUl5LGotixgmklSBx/pwJft4vI6WLyUL8cFCHm2
-	0evtIy7ouSteuF6S2EA==
-X-Received: from wrs2.prod.google.com ([2002:a05:6000:642:b0:437:6bbf:a150])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:26c2:b0:435:e57a:9082 with SMTP id ffacd0b85a97d-43958e504afmr2125915f8f.46.1771407074382;
- Wed, 18 Feb 2026 01:31:14 -0800 (PST)
-Date: Wed, 18 Feb 2026 09:31:13 +0000
-In-Reply-To: <20260218083754.GB2995752@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kPqyI43l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4685AC19421;
+	Wed, 18 Feb 2026 09:37:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771407471;
+	bh=5BhDohxi/Dt4pM2Aom0/HfkXZ43SmgfuTX1tvwIrp8w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=kPqyI43lDuyH6COoxx8Jlawwo7f3PIUTUm3np3lZ3uUtlPTJNBhXG4I7B4hnl9Gmi
+	 /yAWsqGgdzL9yHIh3nDunHON6BIqLbR7ZE9lK8QpEVWFdhNmstlelVuuiYFY3/9rRa
+	 oje/E/aYEw8zgoOYUAmP35mpChGING4E2TF6Vuv+1wikJlty9OTYwF+wl8svtE5MuT
+	 AMeNE/2CGnP8ycuwSL/ZebbuwtnORNKnH4Rbtk2VgQwCNUwiwie7dOK1N2fB3O36er
+	 ADC3JXSKGa5j4wh0BQBf9V3tvqNcz5JZWJ7Hu316Tb2NNtUq540K29U5fGsNth3HD+
+	 fEiDWQaE3rN7w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
+ Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: page: add method to copy data between safe pages
+In-Reply-To: <CANiq72kZQiu9DbQgkHXDDjHORwUdTm7oOhZOE4Tr8eHiyW7RbQ@mail.gmail.com>
+References: <20260215-page-additions-v1-0-4827790a9bc4@kernel.org>
+ <20260215-page-additions-v1-2-4827790a9bc4@kernel.org>
+ <g4ihY-XQwSZ3ysINoU0v3jFzzJG7Uzonq0b6C-EYEYDx4pbJWHHJ1hYmQsmGATIDzexHv6NFea8YNikY6zXq6w==@protonmail.internalid>
+ <CANiq72kovxkiF1Kj66yVyQYKx1OijjtTGB6UN5M35th57UFFeQ@mail.gmail.com>
+ <87ldgteftm.fsf@t14s.mail-host-address-is-not-set>
+ <RHTfcS8-6wqboBRd0aNAk2RG-phiMsedyL_E78rwI1FbLtNzmdCAlk5Es1KyQMPV_-KAtJw_-ImmDchI0Mp0Gg==@protonmail.internalid>
+ <CANiq72kZQiu9DbQgkHXDDjHORwUdTm7oOhZOE4Tr8eHiyW7RbQ@mail.gmail.com>
+Date: Wed, 18 Feb 2026 10:37:43 +0100
+Message-ID: <87v7fubdeg.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <aZQ8lJJ-U_8j03Z4@google.com> <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com> <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <aZRWOIPThLfIZ1Ph@google.com> <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
- <aZRokyTqsd_RwdkK@google.com> <20260217154800.GY2995752@noisy.programming.kicks-ass.net>
- <cbbea9ecb994df975109d97a7756d73e@garyguo.net> <20260218083754.GB2995752@noisy.programming.kicks-ass.net>
-Message-ID: <aZWGq8EMxz4omw4L@google.com>
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-From: Alice Ryhl <aliceryhl@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, 
-	Greg KH <gregkh@linuxfoundation.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 18, 2026 at 09:37:54AM +0100, Peter Zijlstra wrote:
-> On Tue, Feb 17, 2026 at 11:39:18PM +0000, Gary Guo wrote:
-> 
-> > >> Are we really good? Consider this code:
-> > >> 
-> > >> 	bool is_valid(struct foo *val)
-> > >> 	{
-> > >> 		// for the sake of example
-> > >> 		return val->my_field != 0;
-> > >> 	}
-> > >> 
-> > >> 	struct foo val;
-> > >> 
-> > >> 	void *ptr = kmap_local_page(p1);
-> > >> 	memcpy(ptr, val, sizeof(struct foo));
-> > >> 	kunmap_local(p);
-> > >> 	barrier();
-> > >> 	if (is_valid(&val)) {
-> > >> 	    // use val
-> > >> 	}
-> > >> 
-> > >> optimize it into this first:
-> > >> 
-> > >> 	struct foo val;
-> > >> 	int my_field_copy;
-> > >> 
-> > >> 	void *ptr = kmap_local_page(p1);
-> > >> 	memcpy(ptr, val, sizeof(struct foo));
-> > >> 	my_field_copy = val->my_field;
-> > >> 	kunmap_local(p);
-> > >> 	barrier();
-> > >> 	if (my_field_copy != 0) {
-> > >> 	    // use val
-> > >> 	}
-> > >> 
-> > >> then optimize it into:
-> > >> 
-> > >> 	struct foo val;
-> > >> 	int my_field_copy;
-> > >> 
-> > >> 	void *ptr = kmap_local_page(p1);
-> > >> 	memcpy(ptr, val, sizeof(struct foo));
-> > >> 	my_field_copy = ((struct foo *) ptr)->my_field;
-> > >> 	kunmap_local(p);
-> > >> 	barrier();
-> > >> 	if (my_field_copy != 0) {
-> > >> 	    // use val
-> > >> 	}
-> > > 
-> > > I don;t think this is allowed. You're lifting the load over the
-> > > barrier(), that is invalid.
-> > 
-> > This is allowed. Compilers perform escape analysis and find out that
-> > "val" does not escape the function and therefore nothing can change "val".
-> > 
-> > A simple example to demonstrate this effect is that
-> > 
-> >     int x = 0;
-> >     x = 1;
-> >     barrier();
-> >     do_something(x);
-> > 
-> > is happily optimized into
-> > 
-> >     barrier();
-> >     do_something(1);
-> > 
-> > by both GCC and Clang. The fact that the local variable here is a struct and
-> > memcpy is used to assign the value here does not make a fundamental difference.
-> > 
-> > barrier() does nothing to local variables if pointers to them do not escape the
-> > local function.
-> 
-> So how do we stop the compiler from doing this? Because I'm thinking
-> there's quite a bit of code that would be broken if this were done.
-> 
-> Must we really go write things like:
-> 
-> 	struct foo val, *ptr;
-> 
-> 	ptr = kmap_local_page(page);
-> 	memcpy(ptr, val, sizeof(val));
-> 	kunmap_local(ptr);
-> 
-> 	ptr = RELOC_HIDE(&val, 0);
-> 
-> 	if (ptr->field) {
-> 		...
-> 	}
-> 
-> That seems 'unfortunate'. It basically means we must never use local
-> stack for copies or somesuch.
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 
-No I don't think RELOC_HIDE is what you want to be using here.
+> On Mon, Feb 16, 2026 at 12:42=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
+nel.org> wrote:
+>>
+>> Why?
+>
+> If you mean why we don't do it everywhere, then it is because for many
+> functions it wouldn't add much value, but it would add substantial
+> verbosity, which has a cost for both readers and writers.
+>
+> Originally, we picked the standard library style, because it seemed
+> like a good balance that both had shown good results (especially for
+> this language, where we have rich, strong types in signatures which
+> help reduce the need) and that would get others to write docs easily.
+>
+> Sometimes it may be needed, e.g. there are many parameters with
+> details to explain that wouldn't read well otherwise, or there are
+> primitive integers parameters with constraints on them (instead of a
+> newtype that enforces them) and so on.
+>
+> i.e. why do you think you need it here? When a reader sees the list,
+> they will need to pause to read it, thinking there is something
+> important/subtle there -- is there?
+>
+> (I say this as someone that generally likes structured, "exhaustive"
+> documentation such as, say, the classic Win32 docs...)
 
-The way to stop the compiler from doing this is to ensure that, in
-LLVM's eyes, the memcpy is either a volatile memcpy, an atomic memcpy,
-or an opaque function call. According to Gary's reply to my email on V3,
-it sounds like an explicit call to memcpy like this apparently falls into
-opaque function call, so it should be okay.
+I would rather not get into an argument about things that are subjective,
+but if we picked a style, I should for sure follow that.
 
-Anyway, that's why using Rust's copy_nonoverlapping() isn't okay here.
-It emits a non-volatile non-atomic LLVM memcpy intrinsic, which permits
-these optimizations that we don't want in this case. By calling
-bindings::memcpy(), it falls into the opaque function call category
-instead, which fixes the problem.
+If we picked a style for documenting argument lists, perhaps we should
+add it to Documentation/rust/coding-guidelines.rst?
 
-Alice
+>
+>> Writes require a mutable reference. There cannot be a mutable reference
+>> while we have a shared reference.
+>
+> Ok, but I am trying to map what you wrote with what the callee
+> requires. In the second bullet point, you justify there are no races
+> for the read side, and the third one for the write side. But you refer
+> to the type invariant in the second one, for some reason, and that
+> type invariant already promises no data races for `SafePage`, and all
+> we have here are `SafePage`s on both sides, no?
+>
+> So to me it sounds like either you could justify everything just by
+> invoking the type invariant (that is why I mentioned circular
+> reasoning, because the type invariant doesn't seem justified itself in
+> `// INVARIANT:`) or the type invariant is actually a different, weaker
+> one (which would explain why you need extra explanations in `//
+> SAFETY:` on top of the type invariant).
+>
+> (By the way, if we use bullet points, then I think we should map each
+> to the callee's one, i.e. #2 and #3 would be together since #2 is the
+> one in the callee about data races).
+
+Others called out that the type invariant on `SafePage` is mushy. I will
+try to tighten that up. I want it to convey the information that the
+data of this page follows standard Rust aliasing rules. If you have a
+shared reference to a `SafePage`, there can be no writes to the data. If
+you have an exclusive reference, you are the only writer, and there are
+no other readers.
+
+I disagree that the bullets should be swapped. The second bullet at the
+call site:
+
+  // - By type invariant and existence of shared reference, there are no ot=
+her writes to
+  //   `src` during this call.
+
+Maps to the second bullet in the callee safety requirements:
+
+  /// * Callers must ensure that there are no concurrent writes to the sour=
+ce memory region.
+
+The third bullet at the call site:
+
+  // - By exclusive ownership of `dst`, there are no other writes to `dst` =
+during this
+  //   call.
+
+Maps to the third bullet of the callee safety requirements:
+
+
+  /// * Callers must ensure that this call does not race with a read or wri=
+te to the same page
+  ///   that overlaps with this write.
+
+I think it checks out? `self` becomes `src` at the call site.
+
+But now that I look, I think it should say:
+
+  // - By type invariant and existence of shared reference, there are no wr=
+ites to
+  //   `src` during this call.
+
+That is, the word "other" is misleading. There are no writers, not us -
+not others. We are doing a read of `src`.
+
+Best regards,
+Andreas Hindborg
+
+
