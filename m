@@ -1,175 +1,159 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE053126A1
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 09:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF06026B777
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 09:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771407611; cv=none; b=HPHkq04WgqTsJwAqxb3PwefE1hYzcm4FvwkgIYnppE/FcDtE/ODh0GTarud9fZowrQMfk0L8otQoBD4dF7DBJ/NY5k3Juc+FatqOJHE19DIaCboDF2pHYN34m8EuVewWNLISf4jk33SPUGgSdtOCXbo8qIM4WGQb0G8ctiKI4TM=
+	t=1771408266; cv=none; b=BqYjlnGzRUWmlZvHggEN7lWZmy4AhHtUFhsN5vi+irqIGbNbGCrfRSYtEpM7tWtXIIbxNG0qv2F89P7ddNRW0mWQskTULXuuOBVTlRRlAoFWVDpfCLmY5ONxPLvu1c+BdjgI2cJKrqkWMK0dL4wiMjRM6uc1DF27TXo5B2QL2Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771407611; c=relaxed/simple;
-	bh=xDMC0hVVm2NNH6STxgzemy2o3/+UeAEh8X9k1CBm1n0=;
+	s=arc-20240116; t=1771408266; c=relaxed/simple;
+	bh=PSlS4Q9N8FSMlYq+evkSTqDZvOhmh8neJQMMReaF6yQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qnrqPMh8Il6tBZp99natnbEuSmR61mVIsVxdHI6998+74KmpID3FGZUPl1KVYtoCiIrHHmoVEgASsrbSz8qnty+kNAc+QEyp5J70n1sMiCLDuDWLaEYz25Cs6AWml8qqmK/yQWBnfZoHs0LTVLcdISoX6pDNHwc9vASdZWsPCfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ty/XDGI5; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=pItzL7jKcZVQPrHjTOfwKGaC3pWiAF/H9zZEsiwiwOEQQ2W59zCYQx02Lho3JI6TwnsJYhzkTD/lQrFsod119cvlyF5hs/lDBrpVzfDDvv8gIIgiAxE7X8qynrYSPN98F+K0c7zMM3fafqNXZUz15WgtDNPqVxDIzNyyRmFAlw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ciTUu873; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ty/XDGI5"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-4362456500eso4892285f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 01:40:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ciTUu873"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836e35292cso39467795e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Feb 2026 01:51:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771407608; x=1772012408; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+qgmQYzq/LwIvRAllD7t9G5Xcp/7gpl+R9gFqsKAeyw=;
-        b=ty/XDGI5sf8ooG3BgE7md8dQXJ28xefPwGRLv/2FjUv+RtdYUDdQ9t8P/dmsk6v5Fe
-         be2K2ezwSKBLmE7/BsP5IfuhpKyUi+7V2ofyYMFWtU+5clo8NA9I5JuZB1+Hs93o/yHW
-         dmzlwlDnkXPlWaqqmUYFhSi/WQz/bJ7cK4+f6QQGAzNuOvj+BFjc85lYV6eJ6/VW73Nl
-         sBAbWESdMcbd762A3zfCHce0GAKl8GkUQvcEu/dwHQLRUSrTnL5BCioIi7L/WeljKBUA
-         diBc4FgbO6V/jqJ4+iO5fAgGAxRtKf351wZ7YOW7Omb97svjObB7EoufhdUZDW6hxTSp
-         LNcQ==
+        d=google.com; s=20230601; t=1771408263; x=1772013063; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PSlS4Q9N8FSMlYq+evkSTqDZvOhmh8neJQMMReaF6yQ=;
+        b=ciTUu87345Wuyt6m++LarI/gCXEYCFokD80fUmyaTgOia+c7AMB2MCZ/lBKA4Npdt5
+         OEraM3Zk0YVuAHOHn3W3nUvC+cYf2w8c7fGYP7uyex1AxOdrJ5tjuAVJ0gHroPcMocYs
+         YqDbeauXVBjd+qSAP8oVKM9AWTGvQjsbFeNAjPyJm4Bq3O0mIsPNovpDevnZ9kDYwiuQ
+         6j6MKOsr7hFOv8wgjuRkILvTTSSPE6lv6gCuTmnb2Cb3FGaYRxwftWIHJZnFrOCj4i8h
+         RcQqVZmyLr59AyEbEt7UiEriyR66jXUuKvDON+F+bBBekFoy7cF3uWO8UfT+ZHfDLISM
+         632A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771407608; x=1772012408;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+qgmQYzq/LwIvRAllD7t9G5Xcp/7gpl+R9gFqsKAeyw=;
-        b=OX5NC5OkNcEEpJPCo8kc89/AfWkshPIsCkAitIU3jPum9BKLEDRdcBJOljiCff2P7/
-         ZQOtgBrcihyB5y37/loJnvlPgcrzwg7H1v+4+YY+n+xpLKaKzcnA46lJWhBRv56Hu3GV
-         Lo6wU39DyypVyJG6DPlEPXojmpEdtOKzET8ALMOLxU05qPW6FbnGxrthSHoJE6S97bg9
-         JPzpq1kplqehXMscJOC+xahumr5WDfSQJt5T5HEYTnjMn7Qu416lsPg5Vm7UVWRS5BFc
-         +1v1Zy9x9D3O5igIEVHu2bSX+edijWWzjh6YdQtBnSMVdR7gOUaJcrbxMj43SN0Q5aOo
-         Tprg==
-X-Forwarded-Encrypted: i=1; AJvYcCX6k7GMXcaDlYT1V7jfk2G8utQMegPoESvFbIM/8ilRN1Os231009ppiJcnrh0nRY/88itRx7mQ5GGFt3uUaA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzv40pz7FX6SQfP6m5y7abph6tha1EdAAOgVBmFSyKltfUwKGqH
-	LUKVLAb/Ki1YGW6YDgMJe5ENUTQ3G4og0gCrurqQPcaDPJx1M2P88bsie7cGfIMnaYJ5PoGQ8m9
-	WRXrmUn0VYWq7OGHagQ==
-X-Received: from wrbdr6.prod.google.com ([2002:a5d:5f86:0:b0:437:6ebe:6e58])
+        d=1e100.net; s=20230601; t=1771408263; x=1772013063;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PSlS4Q9N8FSMlYq+evkSTqDZvOhmh8neJQMMReaF6yQ=;
+        b=BJar5+xfSbU8sivcF0TK0IBr0QIJ3slonMn31RinG3BMHtbnYT2taDIpObKLM+CLHY
+         XBL3jU8hOr+fBJoqHW3n04TE7biCkuwccG4Lfp11Ii5pgHE3r9Tq5JHOBkYdtC4O7Fep
+         Q4tMEAOVyyc/+YKuC9lFZ7EDz3aJ950KH+sItg8e28XaHuSA8sSY2PYmvFqEenNLkWMk
+         cvStikXsHBZuYJpQPcSfocQGY6uMjWTRE2kuZ2hcDG3gXWzwwtzkaYWhdsMFyJPLDmYD
+         fRf/fAvjiHWbBRbiPjyKcadx0UZAtFCt7Dtg4MMVJ1MtEwnGNXUI33+vv/3Uvc11gLct
+         WIwg==
+X-Forwarded-Encrypted: i=1; AJvYcCXn9RGwmtjRKvCIuYF8GFnhym90+PMyjrdDv3lz3+c1jMAty9xOgJAqyTAN+qYzSaI0MmLIGcIzmbt7mbEtdg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDBWkcNkNyiJ6cg83EbvRx1ZIF8zPPz6mMqwklUL7VVmxUG3g6
+	AJC6NQbaDijNrnv7+Qrp0e9OMj3fZhPZ8zqazTX48nIe53NCJN5OmKDglcohG7BmvfxDWPMOOpw
+	sL84nL7z38JqN9xxEdw==
+X-Received: from wmbhg17.prod.google.com ([2002:a05:600c:5391:b0:483:7b48:cd99])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2dca:b0:437:6e63:9172 with SMTP id ffacd0b85a97d-43958df3516mr2229518f8f.4.1771407607843;
- Wed, 18 Feb 2026 01:40:07 -0800 (PST)
-Date: Wed, 18 Feb 2026 09:40:07 +0000
-In-Reply-To: <67aea464d25c8cafb3113eea62c8221b@garyguo.net>
+ 2002:a05:600c:1c21:b0:483:47ae:7c00 with SMTP id 5b1f17b1804b1-48373a3eac4mr314707005e9.20.1771408263104;
+ Wed, 18 Feb 2026 01:51:03 -0800 (PST)
+Date: Wed, 18 Feb 2026 09:50:56 +0000
+In-Reply-To: <3fa96185ef99f56947360355dc55739d66043f28.camel@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <aZRY9HthKwVJrAf1@google.com> <67aea464d25c8cafb3113eea62c8221b@garyguo.net>
-Message-ID: <aZWI9zGIO6rtlCCg@google.com>
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+References: <aYsvc3Q8h-Gg27-g@google.com> <20260210142631.6f8a3411@fedora>
+ <aYs3VVH_UXMFa5oC@google.com> <f4c32d9a-7303-4a50-aafc-8039102fbd3e@amd.com>
+ <aYtJznZcCEYBffil@google.com> <d9e00d8c-93c0-45f8-95f2-3235fb781e7a@amd.com>
+ <3d90656315ab0b52f4725ca7c2cd10859d1e4f69.camel@mailbox.org>
+ <CAH5fLgjNS1e420UX7muyEPWX3dZ-JsA_uy3=PM7QLA2NuoKJmw@mail.gmail.com>
+ <50ee6f3f-82d3-4eb6-ae3f-9f032f3caf1d@amd.com> <3fa96185ef99f56947360355dc55739d66043f28.camel@mailbox.org>
+Message-ID: <aZWLgObIwWVaCPkv@google.com>
+Subject: Re: [RFC PATCH 2/4] rust: sync: Add dma_fence abstractions
 From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+To: phasta@kernel.org
+Cc: "Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <lossin@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 17, 2026 at 11:10:15PM +0000, Gary Guo wrote:
-> On 2026-02-17 12:03, Alice Ryhl wrote:
-> > On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
-> > > When copying data from buffers that are mapped to user space, it is
-> > > impossible to guarantee absence of concurrent memory operations on
-> > > those
-> > > buffers. Copying data to/from `Page` from/to these buffers would be
-> > > undefined behavior if no special considerations are made.
-> > > 
-> > > Add methods on `Page` to read and write the contents using byte-wise
-> > > atomic
-> > > operations.
-> > > 
-> > > Also improve clarity by specifying additional requirements on
-> > > `read_raw`/`write_raw` methods regarding concurrent operations on
-> > > involved
-> > > buffers.
-> > > 
-> > > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > 
-> > > +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic
-> > > operations.
-> > > +///
-> > > +/// This copy operation is volatile.
-> > > +///
-> > > +/// # Safety
-> > > +///
-> > > +/// Callers must ensure that:
-> > > +///
-> > > +/// - `src` is valid for reads for `len` bytes for the duration of
-> > > the call.
-> > > +/// - `dst` is valid for writes for `len` bytes for the duration of
-> > > the call.
-> > > +/// - For the duration of the call, other accesses to the areas
-> > > described by `src`, `dst` and `len`,
-> > > +///   must not cause data races (defined by [`LKMM`]) against
-> > > atomic operations executed by this
-> > > +///   function. Note that if all other accesses are atomic, then
-> > > this safety requirement is
-> > > +///   trivially fulfilled.
-> > > +///
-> > > +/// [`LKMM`]: srctree/tools/memory-model
-> > > +pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8,
-> > > len: usize) {
-> > > +    // SAFETY: By the safety requirements of this function, the
-> > > following operation will not:
-> > > +    //  - Trap.
-> > > +    //  - Invalidate any reference invariants.
-> > > +    //  - Race with any operation by the Rust AM, as
-> > > `bindings::memcpy` is a byte-wise atomic
-> > > +    //    operation and all operations by the Rust AM to the
-> > > involved memory areas use byte-wise
-> > > +    //    atomic semantics.
-> > > +    unsafe {
-> > > +        bindings::memcpy(
-> > > +            dst.cast::<kernel::ffi::c_void>(),
-> > > +            src.cast::<kernel::ffi::c_void>(),
-> > > +            len,
-> > 
-> > Are we sure that LLVM will not say "memcpy is a special function name, I
-> > know what it means" and optimize this like a non-atomic memcpy?
-> 
-> This "treating special symbol name as intrinsics" logic is done in Clang,
-> and won't be performed once lower to LLVM IR, so Rust is immune to that
-> (even
-> when LTO'ed together with Clang generated IR). So calling to bindings is
-> fine.
+On Tue, Feb 17, 2026 at 03:28:06PM +0100, Philipp Stanner wrote:
+> On Tue, 2026-02-17 at 15:22 +0100, Christian K=C3=B6nig wrote:
+> > On 2/17/26 15:09, Alice Ryhl wrote:
+> > > On Tue, Feb 17, 2026 at 3:04=E2=80=AFPM Philipp Stanner <phasta@mailb=
+ox.org> wrote:
+> > > > > > >=20
+> > > > > > >=20
+>=20
+> [=E2=80=A6]
+>=20
+> > > > > > > Thinking more about it you should probably enforce that there=
+ is only
+> > > > > > > one signaling path for each fence signaling.
+> > > > > >=20
+> > > > > > I'm not really convinced by this.
+> > > > > >=20
+> > > > > > First, the timeout path must be a fence signalling path because=
+ the
+> > > > > > reason you have a timeout in the first place is because the hw =
+might
+> > > > > > never signal the fence. So if the timeout path deadlocks on a
+> > > > > > kmalloc(GFP_KERNEL) and the hw never comes around to wake you u=
+p, boom.
+> > > > >=20
+> > > > > Mhm, good point. On the other hand the timeout handling should pr=
+obably be considered part of the normal signaling path.
+> > > >=20
+> > > >=20
+> > > > Why would anyone want to allocate in a timeout path in the first pl=
+ace =E2=80=93 especially for jobqueue?
+> > > >=20
+> > > > Timeout -> close the associated ring. Done.
+> > > > JobQueue will signal the done_fences with -ECANCELED.
+> > > >=20
+> > > > What would the driver want to allocate in its timeout path, i.e.: t=
+imeout callback.
+> > >=20
+> > > Maybe you need an allocation to hold the struct delayed_work_struct
+> > > field that you use to enqueue the timeout?
+> >=20
+> > And the workqueue were you schedule the delayed_work on must have the r=
+eclaim bit set.
+> >=20
+> > Otherwise it can be that the workqueue finds all kthreads busy and trie=
+s to start a new one, e.g. allocating task structure......
+>=20
+> OK, maybe I'm lost, but what delayed_work?
+>=20
+> The jobqueue's delayed work item gets either created on JQ::new() or in
+> jq.submit_job(). Why would anyone =E2=80=93 that is: any driver =E2=80=93=
+ implement a
+> delayed work in its timeout callback?
+>=20
+> That doesn't make sense.
+>=20
+> JQ notifies the driver from its delayed_work through
+> timeout_callback(), and in that callback the driver closes the
+> associated firmware ring.
+>=20
+> And it drops the JQ. So it is gone. A new JQ will get a new timeout
+> work item.
+>=20
+> That's basically all the driver must ever do. Maybe some logging and
+> stuff.
+>=20
+> With firmware scheduling it should really be that simple.
+>=20
+> And signalling / notifying userspace gets done by jobqueue.
+>=20
+> Right?
 
-Ok, that's good! Then I'm less concerned.
+What I'm getting at is that a driver author might attempt to implement
+their own timeout logic instead of using the job queue, and if they do,
+they might get it wrong in the way I described.
 
-Though I guess it means that even if it's known to be e.g. an 8-byte
-aligned memcpy of length 8, then it still can't optimize it to e.g. a
-movq instruction.
-
-> > I think we should consider using the
-> > 
-> > 	std::intrinsics::volatile_copy_nonoverlapping_memory
-> > 
-> > intrinsic until Rust stabilizes a built-in atomic per-byte memcpy. Yes I
-> > know the intrinsic is unstable, but we should at least ask the Rust
-> > folks about it. They are plausibly ok with this particular usage.
-> 
-> If we have this in stable, I think it's sufficient for LKMM. However for
-> Rust/C11 MM
-> says that volatile ops are not atomic and use them for concurrency is UB.
-
-I'm well aware of that! Yet, Rust currently provides no alternative
-whatsoever, even on nightly, and has already told us in other situations
-they're ok with Linux using volatile for this purpose in limited
-situations. That is why I suggest doing this temporarily, and after
-asking the rustc compiler folks about it.
-
-> I recall in last Rust all hands the vibe at discussion is that it's
-> desirable to define
-> volatile as being byte-wise atomic, so if that actually happens, this would
-> indeed be
-> what we want (but I think semantics w.r.t. mixed-size atomics need to be
-> figured out first).
-
-Yes, that's right.
+You're correct that they shouldn't do this. But you asked how a driver
+author might get the timeout wrong, and doing it the wrong way is one
+such way they might do it in the wrong way.
 
 Alice
