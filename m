@@ -1,356 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010051.outbound.protection.outlook.com [52.101.85.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2381E2D978B;
-	Thu, 19 Feb 2026 19:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771528939; cv=none; b=WEJPs1TFHD0sHClfiq7a3+musFeqM3GrqK72lwYji3nHTmUOm/lZVYfkbPpEwBGhnNTj2XTvSONGpcRBh+29cLjizPgEyTeZcPA0j18Rf0NYS7P7I4aCL/JGgdW09dNJ7TzeOxK163s5oIg8N9igf1v0QDnI3F8tL8rfA8Qk7PA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771528939; c=relaxed/simple;
-	bh=W3ZS+i4Di872LQ0S4OOaNbHiSvr0uLsqYRcd3yHifcM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ZJF/zJRxURLvoLjyKl+QLgtkcqBvxEB/9kSHK2nIAgz/ympl2wIGFniku3LP/kCvj5azGG4KmVZ58lKB3GuTmn6Snqa6mW36NhzwL6sPY2vrv3NNrCswJA52JQQ1ApWrFQE5i7iAUyllz1mW9LWi3wevnzWNxNc+SbZLw80kPxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UF9WAmSX; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103ED306B0A;
+	Thu, 19 Feb 2026 19:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771529341; cv=fail; b=bfjeGf5mSy/vdxKJ1L8CsTfhYs48Tg1u1uVpvTej6ciKek5l7rMZAyt8JhSDd6sRT6XQPcYKqimq3Y6Mgys8Tnaa+1FerwPWXQAwFs4zzT6plo8TiFu4fO1NA5EQq6A2cwmpNtsm799k+JqQVTe2o54YFRjW9nDSrLblG9J2jmo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771529341; c=relaxed/simple;
+	bh=r5flg/QouGC+ddl1sNTGhEnraVyFmHEuO7vnhntyKlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=oXM05FifGvqbsNUxjLZPdz2eNvQVCwH2JSL8IU0mGwFdqZXocSQ0XJMtp3XUBNPAgOa7Fru0/tkZ26ckmEj1xty8gKg8GNPiHaE1ZayuoJ5esaDea0JUD8Ha1hSsTVuDU0hPabZy3UORtZEydNXPZ85aj5ssvTyOlig+DBLE1og=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=d/QfJqMU; arc=fail smtp.client-ip=52.101.85.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UF9WAmSX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB3DC4CEF7;
-	Thu, 19 Feb 2026 19:22:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771528938;
-	bh=W3ZS+i4Di872LQ0S4OOaNbHiSvr0uLsqYRcd3yHifcM=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=UF9WAmSXzQ/eqO1LE8Vz1b5m/RrIi/LHq3p3o1rsthcb3K1k+Acfjh5ri8C3fc2F0
-	 N//Qai93xXHf6cy6S+EJHzpyRrqZRroniwrF+uomWKq/+oth/e/r+ZX1b0xVJUfWfV
-	 DzZVkOT+/+v94L/q1B2Fx27cF58ni9KN+HsPcGfQ7etGqsKwbTjwCiWuRJizgBFoC2
-	 FTL/chwkLRSIxuJ2rG5SsjdXR+UFyPBuiGu1nTaKve1XvsJBgB7Lh/x4yQV3LM/7YV
-	 vij3/tdnJlMZkll6CLyFjO0JAFmD9T5eHbjIj1a/nPJ0owpDu/bJlLorodItju0716
-	 MO+dklMJDf+6Q==
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="d/QfJqMU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FkpaArZNLB6fzqET+rshpkQdeyYx/Q42sHv0nPtG+R2GQtY97Dw8oNfdT1nF/BSG0VLZt32rIJlK3AL2su4Hp9yAMXqjIdpdo286ZUy9yiK03X4l1lu7iN9K1h/ozDT+gpehcD1UE2nuPCoByAECcSF4rZbpSMt3bbdnwHidxD4BQvHCe5oApUo1PAt8VD4LP9L2EYdWXQDWwO5vlK49EUHPrulKPrdxJgcQatS6qIVAWlzyD1JMH+45DSlDYc3ij9rKg3r4vrCZ7kHdHCxfiVuO4HpphoMmzPUArRYbAZV3Eq2e0Ae+1JDA3QYDRyKfCLrRoXe+8T1QK9XMHJMraQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r5flg/QouGC+ddl1sNTGhEnraVyFmHEuO7vnhntyKlU=;
+ b=B61+OE+qgGyiLBWsXeRHT4QohjVvojnXk0Njt6nQSNSUuHuU9Ds0hczI5xLuDt2tFmUkLt6hZkGtk9H32D6H2V4+siHD70o2ALppqnvvbrtS/v0IrjhBWNfBn5gXWYbyQEmLCK4W5oTsJaDByOdbajixrtWXtwujbWmaCPO2POhMIUl9p5mqEV0l7iQqkMpvETdY4lrvCDbXO8/XzLozOgWKACMjn+2RtiTKpHOpO7HUcsyzXHdz43evtJYazpSxrlf7bRmoRzbHmj6VrsTj6az+Bjy5J1tSeFPw28d6Jt7L8s9+pLYknwVXDQF0vQ5RCLcmyK2hOAEwMApEoEiJ1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r5flg/QouGC+ddl1sNTGhEnraVyFmHEuO7vnhntyKlU=;
+ b=d/QfJqMU7YJHKDyo6WvxRrY6Q+84+Dd9FT7kwvVNHqLtK/vt7dZMKFLiCsaEX55fshdoY/4S1VYxegDZGGN0UDKXLDQNof9xMGkD16GRdzyC6W3LvyFTVVS/Df4f8CxlCmlBdkdAAPZ63RZrV1FokPgRiH+95ZTgvubNIBwKCgOPY9syBDbJ21ug8WB50Q8bk9CDOE3kPoozqiR3V5piIGkTiFjx2UQ6g/sD/rEyGp9xhx1T2k5i1HmIw0lzPpVWeIze5PaNMmGqNLG12M+vpo9VjE3eAK2lmRk4F+ghTs2dL4r0JYF281gv1s12Osggz7gUQW3dgthV3SqkeApqVQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ DM4PR12MB6182.namprd12.prod.outlook.com (2603:10b6:8:a8::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.15; Thu, 19 Feb 2026 19:28:53 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9632.010; Thu, 19 Feb 2026
+ 19:28:53 +0000
+Date: Thu, 19 Feb 2026 14:28:51 -0500
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Dave Airlie <airlied@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Koen Koning <koen.koning@linux.intel.com>,
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>
+Subject: Re: [PATCH v10 5/8] rust: clist: Add support to interface with C
+ linked lists
+Message-ID: <FCF46102-0B7A-4972-90AF-985A9F45CE9E@nvidia.com>
+References: <CANiq72=2Hx9QYbdFee7FZzF2tt9dzAOs7A+xe=tAXZi3_o2DCg@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=2Hx9QYbdFee7FZzF2tt9dzAOs7A+xe=tAXZi3_o2DCg@mail.gmail.com>
+X-ClientProxiedBy: BLAPR03CA0074.namprd03.prod.outlook.com
+ (2603:10b6:208:329::19) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Feb 2026 20:22:14 +0100
-Message-Id: <DGJ6LHIVMV03.MM7RWYBJHBIQ@kernel.org>
-Subject: Re: [PATCH v4 3/6] rust: gpuvm: add GpuVm::obtain()
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, "Janne Grunau" <j@jannau.net>, "Matthew
- Brost" <matthew.brost@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, "Lyude Paul" <lyude@redhat.com>, "Asahi
- Lina" <lina+kernel@asahilina.net>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
- <20260130-gpuvm-rust-v4-3-8364d104ff40@google.com>
-In-Reply-To: <20260130-gpuvm-rust-v4-3-8364d104ff40@google.com>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|DM4PR12MB6182:EE_
+X-MS-Office365-Filtering-Correlation-Id: a74cf624-18b3-40c2-5f86-08de6fed1d81
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?eKDY10mkp1rZA4EwmmUF8wCfxyoqvk8o5lf4wV3+BOBibkDtco6yFlkwSrkr?=
+ =?us-ascii?Q?LiSv14Evxw9FjSOg8ie0YMKipK1wO3LDduF407dQczk6b33hbZsShi146tFK?=
+ =?us-ascii?Q?rrD862YzOqMLR4iuODzL2VUu99VkRp7osm5SMhLKKynSkdNqRyQUosn4LoIo?=
+ =?us-ascii?Q?Ko72++kJxSGCvyAo2wqB+sNHxs++WBJxZCjqbKA7fabByk71FHKaDTqaRpxp?=
+ =?us-ascii?Q?HkLQPRefm0PVcaNRJ4dd+URdb4lbOEXHc6PaHAKEC/HV47W35AbnK/NPEeL1?=
+ =?us-ascii?Q?CZ5gnT9mmnDpFkGaFdcjc65rDrCwRgpgcGl8OdAeggeWpJdI3JFXFWq40qq0?=
+ =?us-ascii?Q?mrvbbYNUyDy8O56w4p6hF57HSkl3d9xH/P1bGmP/4/jxLtDqzX4rd+ezDrmO?=
+ =?us-ascii?Q?EcLtwz14tSWxBQBz17Oh0qb1IW2jq93ZFNw52vmA11yqKWz/xAmwH3Lbu0NL?=
+ =?us-ascii?Q?Df/wEbtfjZvCADMAYh9lMhHlmwUFLAEVMSxQhcnB8KvFbwDadLDpLy3W0h6G?=
+ =?us-ascii?Q?ZBq5M5gyEx5z8tdImwjZqDnbmgl9Rvvtd9r5K3v2jpQ4y+ZzWl5GNvFK3pvd?=
+ =?us-ascii?Q?ZmQf/Zyd00UcBE/5ZIwxYGFHrfueGqrBjcVYDHdT3ZBpiDkufYqkjkWAnYrT?=
+ =?us-ascii?Q?VCjNYQH5sD//siEvKqu01jpkcwMCENT0Qmnx2qmgPBJ+wNCsMIQBomenS43M?=
+ =?us-ascii?Q?Jyv5X32/JHxKTGkiHrtZox86uGxn8hIzcBDPxdDs5Hgdj7aBl6o1XYvy0CUi?=
+ =?us-ascii?Q?UwjKV3vG3LVbPZtYQRL7vQ+Ayfkp4mYpnW+ilGkVCWTt1qYL5OAt/rcalnMU?=
+ =?us-ascii?Q?pV/dJdfbG+ITq2eSH9QgzRnaaSNwX1+yFuUXH4daFum8t5H6TvUbgvW8UTMd?=
+ =?us-ascii?Q?ksnfKOOpgxIzo8liENPq5RbdottkeH8yfO7RVwpv6u+am171qoELflqN1Bp1?=
+ =?us-ascii?Q?lIm/lNHbWcRLORhEFGnGw18B7rfF4HNNTXdutPAHvMPnaPnKThnBX5pWtR+t?=
+ =?us-ascii?Q?9+jJ9du4LMtzueJbpM8gPe8QgskF95uydBcin4HDZR2Nw0LpifCORI6PP596?=
+ =?us-ascii?Q?aTkjCheAPEz6IOVPFZvKigI1g1P1jOsDOV3eQEwhThUy155q+iypx8QNzoJx?=
+ =?us-ascii?Q?aov/Xz6M8AW+sRN0RDJIPc+hqjUyOAtx03jXOvXGWHxKPShP6DuH4TsbV+Q8?=
+ =?us-ascii?Q?3tWOSKWfZETeRNTP0/pCKGywvq88Wjcait09Do1Rrn3tHK0Gkz69oa2fxC28?=
+ =?us-ascii?Q?EI21rAa3066kvsRhveXohgb6yVvHQ67NkdmKm2fT1XNHbLk6G2hCl/2BCABG?=
+ =?us-ascii?Q?aehBVXNfVBimfXmA6xZQKIcTotPy3IZ+LIQ6YdD7OxrdWovDrmqJmJvnbbeu?=
+ =?us-ascii?Q?/y3kbcV7SAZx6XV77yL9S2f/guPb42k3yE/mvQF5uRrqiMAmRzDG2RL7j7lv?=
+ =?us-ascii?Q?Cbd9KiKPCGhS8NuZ5vRokiL5wjL3Q3g5ipTdw9Ek+EUtNfmJUmzSmvCueMZz?=
+ =?us-ascii?Q?GeNdqd+C0xXJNJXIxtd2rGJW9Dwzo4DUwAiCLwOxmllbvpnAUT2fvi1GMt4M?=
+ =?us-ascii?Q?dG58Tzp1Ph57mlvh/pE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kiCyIRU+G4k1KkKvD5wIxNp/3ocsMeBpByngfsLIABJDx7HyTqrDYkBtQB77?=
+ =?us-ascii?Q?NPv4EBrOlbQWkjbQ5ULu+KV9F2/+JV6nNJUQKtQQbta1tXnVxUTqLLUklPKO?=
+ =?us-ascii?Q?jJfDGFx/eyFCQjyCbOyMwIwqSYcadQvYTvzvX14HcJAwLDrPPPvGwl7KhTyZ?=
+ =?us-ascii?Q?n9uq0Epq3rObn81+R37mrm/bWil+UfvhFkIVbMuMMwoMmwlRUDQqSxiBUGzj?=
+ =?us-ascii?Q?BRgLM6L7iitXQaKK0RdrHD7Zd8wvKskxPxn0aq4wS15SvNvjOQ1BJL3EwiSa?=
+ =?us-ascii?Q?l4/R5ZPiLbeqblFPHV3F2LmlJ8afPYc08YyTu1CIzynzHgikcBHfyRzVo1P/?=
+ =?us-ascii?Q?BYPMJtleZEfYHOr/ZYMinmf+UUs14UJayXu2OJoSBDnlzhAerxTSWeb5OdVZ?=
+ =?us-ascii?Q?ZA+3AR14gvIw00Flom3vHm398vvzR40kuUtgDhQ6NYWWOW503SvpaIJ8+goq?=
+ =?us-ascii?Q?SxwwrBplBDms+L+qSZ39qHM06/vfbhmqToOmYE6+gsufeTw0pl30RTwMnxzm?=
+ =?us-ascii?Q?IfKknLwW+cv54gfnJSyHn8wm0iy87kfy3bw/z5cSgWCFzuznHs7WxXGmFLWY?=
+ =?us-ascii?Q?GSBE6N8V1xv+TxnXY+YBc1oCiczZ2djbOMdhuOnPs/6RFPwCUDgOd+ynDtf+?=
+ =?us-ascii?Q?Guwf0UhK728jvqlSF3AHmSOEChxsoejPuAbl4OYlkXyB0wuGkxUlz6hewNpi?=
+ =?us-ascii?Q?Yvjh0PWsocfOATLxoub7GuLvUJAY4glt/kGKP+r2K5ZI7NzDtvZ3L98iN/vP?=
+ =?us-ascii?Q?1ICn4KlBy9tQvlOLE5r8Bk5Z2syBf5mo3ujrLlhmLSjRC/k/BNEt1GxNsHct?=
+ =?us-ascii?Q?qY7DFj5Q7LD/4JMIWuXNBgsSR8Tg1j9WbfDa0FSLQpGQxVnfStB9JKLR86pY?=
+ =?us-ascii?Q?JA7/E29SIH3pHn4ZTLyRDPmkv0GstL/HsIKDmX3Kuacga4Ay8c7RdherRpiz?=
+ =?us-ascii?Q?a8xkM/ub5/RH+z+oBF7KyNccCy/hAk6j0YiAlOUDwklv5+kfGbllvdBZ/RVH?=
+ =?us-ascii?Q?bK1RD39dA6XZLtH8pL8jH5lcHATPkn/p/IJsBbSq4jdTyTS9EAF3rLBqoAqA?=
+ =?us-ascii?Q?0XgF1qdf4VBG/JSVXSO4v2R1t2wh1pJ+XAi9X+NET+pybjPHAn7PFoqAhaPq?=
+ =?us-ascii?Q?MEGXFY4qXDRhd31VTCQFkaKuiR+ncwBRfmzkuTyqDt0Mtc5LGwyi35hiX2Bm?=
+ =?us-ascii?Q?4ojUKdbtm1nop/IYPWIKklbXKieN+N0Oaki1y9lMlEQfYLqQSbMuaNVPQDb2?=
+ =?us-ascii?Q?alLX3lSDlOI9nGpFYGmJ7+HaG0v5u1uKUKWPEP83bE+lXewePxYCewgYXG80?=
+ =?us-ascii?Q?SP7sqzdgt5/I5X337gdSHSdrfGyOq9lAWdzjrhEZkooPGtV+5o0RNX/hmp9R?=
+ =?us-ascii?Q?BLDP/lrI61NEFGo4aYUiYEW1uJqVBArI6BFpRghqhnLEIQb4gOsXK6HRIXNH?=
+ =?us-ascii?Q?HYqDassxSX0oUvUhtcwHe/+0EqPb/rPg0iW66Ac7K7Zsz3Lu3lBQCYiN8sA6?=
+ =?us-ascii?Q?3kDQA3AfG/ZKvtSkM0XYhaW3GgTzjnI39YlR7WBzbXlqMZN+nqVRI0B+ucLu?=
+ =?us-ascii?Q?GfWWztrLCA2CTwsSCQma/AMSMvG2S8Cpt/DUv1clBSdzbDVkBfUHClOqathK?=
+ =?us-ascii?Q?aX6Uh0heUVbc6B9QpPQP7OFSiZF9gkSyA6tJvzQGqFagLngTKU59Ro73uf37?=
+ =?us-ascii?Q?wjdlt/8ng15YFqYazGWwYVjZcz3Iq/pE4r7b0Vl7w13s+1xWflht8e/Uu3cZ?=
+ =?us-ascii?Q?gwdtXnlFGg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a74cf624-18b3-40c2-5f86-08de6fed1d81
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 19:28:52.9968
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hj4aqS7MPFFnsgznDifHG6CPrUN33MoTXdXYMnlEAwUrLXYZ7hkPAKJNszvlPfCCUr4e0d+x7g+v6H58PT0UsA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6182
 
-On Fri Jan 30, 2026 at 3:24 PM CET, Alice Ryhl wrote:
-> +/// Represents that a given GEM object has at least one mapping on this =
-[`GpuVm`] instance.
-> +///
-> +/// Does not assume that GEM lock is held.
-> +#[repr(C)]
-> +#[pin_data]
-> +pub struct GpuVmBo<T: DriverGpuVm> {
-> +    #[pin]
-> +    inner: Opaque<bindings::drm_gpuvm_bo>,
-> +    #[pin]
-> +    data: T::VmBoData,
-> +}
-> +
-> +impl<T: DriverGpuVm> GpuVmBo<T> {
-> +    pub(super) const ALLOC_FN: Option<unsafe extern "C" fn() -> *mut bin=
-dings::drm_gpuvm_bo> =3D {
-> +        use core::alloc::Layout;
-> +        let base =3D Layout::new::<bindings::drm_gpuvm_bo>();
-> +        let rust =3D Layout::new::<Self>();
-> +        assert!(base.size() <=3D rust.size());
-> +        if base.size() !=3D rust.size() || base.align() !=3D rust.align(=
-) {
-> +            Some(Self::vm_bo_alloc)
-> +        } else {
-> +            // This causes GPUVM to allocate a `GpuVmBo<T>` with `kzallo=
-c(sizeof(drm_gpuvm_bo))`.
-> +            None
+On Feb 19, 2026, at 1:38 PM, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+> On Thu, Feb 19, 2026 at 7:07 PM Joel Fernandes <joelagnelf@nvidia.com> wrote:
+>>
+>> Yeah, this is a good idea. I am Ok with that. Alex/Miguel, you're Ok
+>> with this too?
+>>
+>> If all in agreement, I can make this change for next revision.
+>
+> It would be very good to get you guys (and NVIDIA) more involved in
+> general, so thank you! :) -- (and Danilo for proposing it)
 
-So, if T::VmBoData is a ZST *and* needs drop, we may end up allocating on t=
-he C
-side and freeing on the Rust side.
+Sounds good. :)
 
-I assume this is intentional and there is nothing wrong with it, but withou=
-t a
-comment it might be a bit subtle.
+> Do you want that I set up a branch for that like `rust-ffi`? It is
+> usually what we are doing lately for things like this, and slowly
+> splitting things into more pieces. I see you both have already sent in
+> the past a few GIT PULLs etc., so possibly this is not that
+> interesting for you, but we can still do it.
 
-Another subtlety is that vm_bo_free() and vm_bo_alloc() assume that inner i=
-s
-always the first member. I'd probably add a brief comment why this even has=
- to
-be the case, i.e. vm_bo_alloc() does not return *mut c_void, but *mut
-bindings::drm_gpuvm_bo.
+I think let us see how it goes and how much is the volume? If it is
+light then I/we could send you a pull request from personal kernel.org
+repository, if not then we can set up a branch at that time. What do
+you think?
 
-> +        }
-> +    };
-> +
-> +    pub(super) const FREE_FN: Option<unsafe extern "C" fn(*mut bindings:=
-:drm_gpuvm_bo)> =3D {
-> +        if core::mem::needs_drop::<Self>() {
-> +            Some(Self::vm_bo_free)
-> +        } else {
-> +            // This causes GPUVM to free a `GpuVmBo<T>` with `kfree`.
-> +            None
-> +        }
-> +    };
-> +
-> +    /// Custom function for allocating a `drm_gpuvm_bo`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Always safe to call.
-> +    unsafe extern "C" fn vm_bo_alloc() -> *mut bindings::drm_gpuvm_bo {
-> +        KBox::<Self>::new_uninit(GFP_KERNEL | __GFP_ZERO)
-> +            .map(KBox::into_raw)
-> +            .unwrap_or(ptr::null_mut())
-> +            .cast()
-> +    }
-> +
-> +    /// Custom function for freeing a `drm_gpuvm_bo`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The pointer must have been allocated with [`GpuVmBo::ALLOC_FN`],=
- and must not be used after
-> +    /// this call.
-> +    unsafe extern "C" fn vm_bo_free(ptr: *mut bindings::drm_gpuvm_bo) {
-> +        // SAFETY:
-> +        // * The ptr was allocated from kmalloc with the layout of `GpuV=
-mBo<T>`.
-> +        // * `ptr->inner` has no destructor.
-> +        // * `ptr->data` contains a valid `T::VmBoData` that we can drop=
-.
-> +        drop(unsafe { KBox::<Self>::from_raw(ptr.cast()) });
-> +    }
-> +
-> +    /// Access this [`GpuVmBo`] from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// For the duration of `'a`, the pointer must reference a valid `dr=
-m_gpuvm_bo` associated with
-> +    /// a [`GpuVm<T>`].
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::drm_gpuvm_bo) -> &'a =
-Self {
+--
+Joel Fernandes
 
-I think this a good candidate for crate private, as we don't want drivers t=
-o use
-this, but still use it in other DRM core modules.
-
-> +        // SAFETY: `drm_gpuvm_bo` is first field and `repr(C)`.
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    /// Returns a raw pointer to underlying C value.
-> +    #[inline]
-> +    pub fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
-
-Less important, but probably also only needed in core DRM code.
-
-> +        self.inner.get()
-> +    }
-> +
-> +    /// The [`GpuVm`] that this GEM object is mapped in.
-> +    #[inline]
-> +    pub fn gpuvm(&self) -> &GpuVm<T> {
-> +        // SAFETY: The `obj` pointer is guaranteed to be valid.
-> +        unsafe { GpuVm::<T>::from_raw((*self.inner.get()).vm) }
-> +    }
-> +
-> +    /// The [`drm_gem_object`](crate::gem::Object) for these mappings.
-> +    #[inline]
-> +    pub fn obj(&self) -> &T::Object {
-> +        // SAFETY: The `obj` pointer is guaranteed to be valid.
-> +        unsafe { <T::Object as IntoGEMObject>::from_raw((*self.inner.get=
-()).obj) }
-> +    }
-> +
-> +    /// The driver data with this buffer object.
-> +    #[inline]
-> +    pub fn data(&self) -> &T::VmBoData {
-> +        &self.data
-> +    }
-> +}
-> +
-> +/// A pre-allocated [`GpuVmBo`] object.
-> +///
-> +/// # Invariants
-> +///
-> +/// Points at a `drm_gpuvm_bo` that contains a valid `T::VmBoData`, has =
-a refcount of one, and is
-> +/// absent from any gem, extobj, or evict lists.
-> +pub(super) struct GpuVmBoAlloc<T: DriverGpuVm>(NonNull<GpuVmBo<T>>);
-> +
-> +impl<T: DriverGpuVm> GpuVmBoAlloc<T> {
-> +    /// Create a new pre-allocated [`GpuVmBo`].
-> +    ///
-> +    /// It's intentional that the initializer is infallible because `drm=
-_gpuvm_bo_put` will call
-> +    /// drop on the data, so we don't have a way to free it when the dat=
-a is missing.
-> +    #[inline]
-> +    pub(super) fn new(
-> +        gpuvm: &GpuVm<T>,
-> +        gem: &T::Object,
-> +        value: impl PinInit<T::VmBoData>,
-> +    ) -> Result<GpuVmBoAlloc<T>, AllocError> {
-> +        // CAST: `GpuVmBoAlloc::vm_bo_alloc` ensures that this memory wa=
-s allocated with the layout
-> +        // of `GpuVmBo<T>`. The type is repr(C), so `container_of` is no=
-t required.
-> +        // SAFETY: The provided gpuvm and gem ptrs are valid for the dur=
-ation of this call.
-> +        let raw_ptr =3D unsafe {
-> +            bindings::drm_gpuvm_bo_create(gpuvm.as_raw(), gem.as_raw()).=
-cast::<GpuVmBo<T>>()
-> +        };
-> +        let ptr =3D NonNull::new(raw_ptr).ok_or(AllocError)?;
-> +        // SAFETY: `ptr->data` is a valid pinned location.
-> +        let Ok(()) =3D unsafe { value.__pinned_init(&raw mut (*raw_ptr).=
-data) };
-> +        // INVARIANTS: We just created the vm_bo so it's absent from lis=
-ts, and the data is valid
-> +        // as we just initialized it.
-> +        Ok(GpuVmBoAlloc(ptr))
-> +    }
-> +
-> +    /// Returns a raw pointer to underlying C value.
-> +    #[inline]
-> +    pub(super) fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
-> +        // SAFETY: The pointer references a valid `drm_gpuvm_bo`.
-> +        unsafe { (*self.0.as_ptr()).inner.get() }
-> +    }
-> +
-> +    /// Look up whether there is an existing [`GpuVmBo`] for this gem ob=
-ject.
-> +    #[inline]
-> +    pub(super) fn obtain(self) -> GpuVmBoRegistered<T> {
-> +        let me =3D ManuallyDrop::new(self);
-> +        // SAFETY: Valid `drm_gpuvm_bo` not already in the lists.
-> +        let ptr =3D unsafe { bindings::drm_gpuvm_bo_obtain_prealloc(me.a=
-s_raw()) };
-> +
-> +        // Add the vm_bo to the extobj list if it's an external object, =
-and if the vm_bo does not
-> +        // already exist. (If we are using an existing vm_bo, it's alrea=
-dy in the extobj list.)
-> +        if ptr::eq(ptr, me.as_raw()) && me.gpuvm().is_extobj(me.obj()) {
-> +            let resv_lock =3D me.gpuvm().raw_resv();
-> +            // SAFETY: The GPUVM is still alive, so its resv lock is too=
-.
-> +            unsafe { bindings::dma_resv_lock(resv_lock, ptr::null_mut())=
- };
-
-Maybe add a TODO to replace this with a proper lock guard once available?
-
-> +            // SAFETY: We hold the GPUVMs resv lock.
-> +            unsafe { bindings::drm_gpuvm_bo_extobj_add(ptr) };
-> +            // SAFETY: We took the lock, so we can unlock it.
-> +            unsafe { bindings::dma_resv_unlock(resv_lock) };
-> +        }
-> +
-> +        // INVARIANTS: Valid `drm_gpuvm_bo` in the GEM list.
-> +        // SAFETY: `drm_gpuvm_bo_obtain_prealloc` always returns a non-n=
-ull ptr
-> +        GpuVmBoRegistered(unsafe { NonNull::new_unchecked(ptr.cast()) })
-> +    }
-> +}
-> +
-> +impl<T: DriverGpuVm> Deref for GpuVmBoAlloc<T> {
-> +    type Target =3D GpuVmBo<T>;
-> +    #[inline]
-> +    fn deref(&self) -> &GpuVmBo<T> {
-> +        // SAFETY: By the type invariants we may deref while `Self` exis=
-ts.
-> +        unsafe { self.0.as_ref() }
-> +    }
-> +}
-> +
-> +impl<T: DriverGpuVm> Drop for GpuVmBoAlloc<T> {
-> +    #[inline]
-> +    fn drop(&mut self) {
-> +        // TODO: Call drm_gpuvm_bo_destroy_not_in_lists() directly.
-> +        // SAFETY: It's safe to perform a deferred put in any context.
-> +        unsafe { bindings::drm_gpuvm_bo_put_deferred(self.as_raw()) };
-> +    }
-> +}
-> +
-> +/// A [`GpuVmBo`] object in the GEM list.
-> +///
-> +/// # Invariants
-> +///
-> +/// Points at a `drm_gpuvm_bo` that contains a valid `T::VmBoData` and i=
-s present in the gem list.
-> +pub struct GpuVmBoRegistered<T: DriverGpuVm>(NonNull<GpuVmBo<T>>);
-
-I know that I proposed to rename this from GpuVmBoResident to GpuVmBoRegist=
-ered
-in a drive-by comment on v3.
-
-But now that I have a closer look, I think it would be nice to just have Gp=
-uVmBo
-being the registered one and GpuVmBoAlloc being the pre-allocated one.
-
-As it is currently, I think it is bad to ever present a &GpuVmBo to a drive=
-r
-because it implies that we don't know whether it is a pre-allocated one or =
-a
-"normal", registered one. But we do always know.
-
-For instance, in patch 6 we give out &'op GpuVmBo<T>, but it actually carri=
-es
-the invariant of being registered.
-
-Of course, we could fix this by giving out a &'op GpuVmBoRegistered<T> inst=
-ead,
-but it would be nice to not have drivers be in touch with a type that can b=
-e one
-or the other.
-
-I know that the current GpuVmBo<T> also serves the purpose of storing commo=
-n
-code. Maybe we can make it private, call it GpuVmBoInner<T> and have inline
-forwarding methods for GpuVmBo<T> and GpuVmBoAlloc<T>. This is slightly mor=
-e
-overhead in this implementation due to the forwarding methods, but less
-ambiguity for drivers, which I think is more important.
-
-> +impl<T: DriverGpuVm> GpuVmBoRegistered<T> {
-> +    /// Returns a raw pointer to underlying C value.
-> +    #[inline]
-> +    pub fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
-> +        // SAFETY: The pointer references a valid `drm_gpuvm_bo`.
-> +        unsafe { (*self.0.as_ptr()).inner.get() }
-> +    }
-> +}
-> +
-> +impl<T: DriverGpuVm> Deref for GpuVmBoRegistered<T> {
-> +    type Target =3D GpuVmBo<T>;
-> +    #[inline]
-> +    fn deref(&self) -> &GpuVmBo<T> {
-> +        // SAFETY: By the type invariants we may deref while `Self` exis=
-ts.
-> +        unsafe { self.0.as_ref() }
-> +    }
-> +}
-> +
-> +impl<T: DriverGpuVm> Drop for GpuVmBoRegistered<T> {
-> +    #[inline]
-> +    fn drop(&mut self) {
-> +        // SAFETY: It's safe to perform a deferred put in any context.
-> +        unsafe { bindings::drm_gpuvm_bo_put_deferred(self.as_raw()) };
-> +    }
-> +}
