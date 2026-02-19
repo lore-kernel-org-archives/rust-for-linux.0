@@ -1,161 +1,453 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AA1338596
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 11:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0E027EFE9;
+	Thu, 19 Feb 2026 11:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771500438; cv=none; b=aeFbEc1l/wkiWgRit7MLdTpi9SCUMMOsDKdlOBP6K7c7Hz4I+2hWktLuFsoF/zsheeSiC48bqNEAWc9u8YT6d9TS5CiPUIQt2QvwoOKdFmEwXHHmldU5xbBF9lyOqG2tL5NOC8MKCxyVj6Vxc2cqDjsMgCC0A+rKi5J0xc7tUms=
+	t=1771502291; cv=none; b=WSknNs7/rtd8z8EWP0OpYpGVhQHfxewEQTv7YByVBUctSypqZ8OcyD1JjbL5MkQDWc+4lzF5MyLw/sT/TMIh9E87T5HzsIYFknyKIrGEqJ060xK3SFX8zMLQ4UNnGkZPmEG7N0FTk0It/yxH1jvMsWThrVBiKYcqcnYV47Sqd8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771500438; c=relaxed/simple;
-	bh=kud8Rw/Cd9klTCoUP4Wxhjtw93Ta53+nsPUvNFLO88s=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=F9xIHHcJJrDr75JDUFit79/73yNs1TXw4fqAC7FrUZef4a9WZt4SVZxFBw2WmoO7NyIMQuwEQdDnkPWAiLqMaeIJakPBzNiMSPI2HJrHjqhOrApcIuyL6yVXHRXTa3Dp9RX1+zBY1wVqq5kdgWMkQW1RylikziZMaTO+GJZRJFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hMoRDTn4; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1771502291; c=relaxed/simple;
+	bh=QZXDc2rJpT9hCdG3Xp4FIwU2qwOY9HPnhtehLOi8tSs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oss6wTdePPmsUAPT+iBoIux55baM5B00bjGBkQ+laBxkkVY0cTTJ7c6pBOnyZqrpY1puCLuewB+dyFeoKCiaXhnvMZApmL0/2GjL95GXgUKGpyyr1dZRNspeo3yZB0KtbhMmhDUOCq+VZSY/cPVNpzY07yiG/4LTIDNVotBYLek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lmqYn4pj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hMoRDTn4"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836b7fbf4fso7943435e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 03:27:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771500435; x=1772105235; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oTB+4zGlLiIk++llY73cireeXyt+xsrzbx0t1uTG5ms=;
-        b=hMoRDTn4P2zMJ0m1yb2no+XmCvkD+P8oQ080B8aypTKk1iX+QjGO2Qy1ugL0ikm+4G
-         gvitah2T3nAmtkdJdmSEL8Vp72D9b39zLbQIUdczxt3+aQBX5ZLztP8Yc8NyLblVOI71
-         R4ypJYAfubXCQJGFMpL2y8omJIDntWyifnOdapuSWZGOm+OK0S9AJqrL5TtPQhqqA2qd
-         FZ6W5ItCB5TFLZWt58T7fgs2sX8d1smuoDxCKLkuUHZAjAF2jrXkZEt7c1iABdR9eqHT
-         90O0KdylhKia8VYJDhjanrXTBi1jg8Kx1gwJ6Vm98Ez2QHS6UI//UWd0lsYGRaCAMtsz
-         SxTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771500435; x=1772105235;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oTB+4zGlLiIk++llY73cireeXyt+xsrzbx0t1uTG5ms=;
-        b=BPj6TWSleNtX97/ITlUc2wHnzHNMWrQPK9Gm7AzYArvDMSamMPe8D7luTSRQxtB8+L
-         cRh6a+fJl2J9RGbUFUvqSoTCjmoesHGPAsHnzBBOOSB54H6Ba0NyD7KO39Z0AmmF8rMD
-         SpyFTuilh9SdHfcYleYLmhDFXnq9Bx5ePUYTedvmDTe0ORVEKcWnoxWmL1udJ3yWI0uT
-         bjIb6KRJivpoH4Y5WusesA0dWK04n9xf2zNXesP81wXMvPLuxI1FDAbbInyYqzdep849
-         215FhXxpZJWiTek3gZ3vxox1ISrGjdrnVTyDsAQ1Q7j1kOHgdU9S2ANZwkM4pk7lfsZW
-         HK2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXFo3Tt6y7isT297sY4B3BIEx+VxWd1AOfqK6KsATut2swD1JiCNSMrQ/T0xe951cON6/PA4KXF3Aj5tZOVZQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNtELXzMUoebqhKuSYFXdXtVD9pJqQuoNYZOqZPkvUzvDvwsmP
-	kVyhJr+FovC/LpbDY1zqPoVo79wi67krncfaHkLcB2fDDqYY3YbjvbKPf4LYr/tnVW5KCQXMN9j
-	i52VpvLGNrlbYvXBEJw==
-X-Received: from wmdp17.prod.google.com ([2002:a05:600c:5d1:b0:483:291c:7f23])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6207:b0:480:5951:fc1e with SMTP id 5b1f17b1804b1-4839e63d7aamr34476115e9.11.1771500434759;
- Thu, 19 Feb 2026 03:27:14 -0800 (PST)
-Date: Thu, 19 Feb 2026 11:27:00 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lmqYn4pj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6340EC116C6;
+	Thu, 19 Feb 2026 11:58:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771502290;
+	bh=QZXDc2rJpT9hCdG3Xp4FIwU2qwOY9HPnhtehLOi8tSs=;
+	h=From:Date:Subject:To:Cc:From;
+	b=lmqYn4pjB56IQBFR6mPIFDZKbdk5H+3NtsH3WqO7qfOfTAD88rHspRdPlEsSHAt3M
+	 Mb+UV/sJ48B8UyiB0UraExkTKf5Zf/Wa2zf/FB77YzWrnsXx66Das3CGb15YRZ/lag
+	 TyeazWbLuz0O1V2PAU5QigZY3AnKOfh594gaCfnc+ipT5pA4rW8ela96oOCmQZdhnJ
+	 sAeljkhnrPTYMZzeWla9ftMvU7T9BocXY2h0MFfoOeo7h4Yex532Dvz1eOg6/3K1O9
+	 WYcBBRRvgp8E19XaJEQlPKqlRFFdXhgTV2a26uzCMYCFep2PdZBWbrMZwD0mwefBfB
+	 h173DRn0tiaug==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Thu, 19 Feb 2026 12:57:45 +0100
+Subject: [PATCH v2] hrtimer: add usage examples to documentation
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAIPzlmkC/3WMyw6CMBBFf4XM2jF9pRFX/odhQduhTKKUtEg0h
- H+3snd57s05GxTKTAWuzQaZVi6cpgrq1IAf+ykScqgMSigrlNSYX2VBx1OgjHNBY0MbRL2M7qF Kc6aB30fw3lUeuSwpf47+Kn/r39QqUaJ1rRgu2gtnwi2mFB909ukJ3b7vX6TiNC6tAAAA
-X-Change-Id: 20260213-rust-binder-ps-46d9d060243a
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3613; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=kud8Rw/Cd9klTCoUP4Wxhjtw93Ta53+nsPUvNFLO88s=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplvOHLd0GYFbusVW4+JR3yWroKuAkhF7/YjSgL
- cVCvC6JWSuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZbzhwAKCRAEWL7uWMY5
- Rva/EAC3IpqMpiN/Yn9XJBKv/NdyQab5MuF11dY3O5Q/Iho3XG2gxKTf/Av5Cq10v1NS4/JZtmX
- CwuN8QxEVuDs8/hlZ2tF3SjXY2QpqjR65EMv+7rQ7Upi6pUndeJ6Qua70XsfAoFXfWPfiGVi1Vg
- d/h2aIXGzl6h5Zwo82D8Hiz6clM+cAk7MjvQwTtpRPoTKJcUi7RaTfC/kDUy3B27JQeYgHoV49I
- 7y1rGRRvc3Gk9Q77dM2gf5oHJpRxsNnXp1HgTW9quPu04tCbO3pmKLerVzqDTrrhanRsFgoEUR8
- 2vXd2ROlhbJUqxMQbf8UcMdZ5P++WyEUpBKRNvSv2oDoIoglEAxvEja7qE32Yjblf/wyj04J2Mi
- pOk41V7w24o1Md8SJqidTcYbKPS01QRsBHU41Wo6a++05YRSl7LTQZuwqPWumjmbBhgQdfr71mK
- G8n/ls/OB0gBOAfUa0AxFswvtK+7l8jM+n85MtoyuNdGaCGefC6XxCHsJwt4vs1WbADPbUl1Ahx
- jyXOQUzWowf9hx7cxmyELUTS2wgdQuX/6vPyu9yCChLE1vvR01YoFsL4152FKFMBZjDXlsm1DA8
- gi2yGmFXokIzJmxMp6MpbPM6oJxelfSG+UjBpPIEwAOqVbT40ZcggF9uo4Lm2umyYYlGYEWXVuu q/+M5JTNAs8leeg==
-X-Mailer: b4 0.14.2
-Message-ID: <20260219-rust-binder-ps-v2-1-773eca09c125@google.com>
-Subject: [PATCH v2] rust_binder: avoid name mangling for get_work[_local]
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, 
-	Alice Ryhl <aliceryhl@google.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260219-hrtimer-examples-v6-19-rc1-v2-1-810cc06ca9f6@kernel.org>
+X-B4-Tracking: v=1; b=H4sIALj6lmkC/33Nyw6CMBCF4Vchs3ZMp6EgrngPwwLKCI3cMiUNh
+ vDuVhK3Lv+z+M4OnsWxh3uyg3Bw3s1TDH1JwPb11DG6NjZopQ1pMtjL6kYW5K0el4E9hgypQLG
+ EOjM3y0XTmFZBBBbhp9tO/FHF7p1fZ3mfX4G+64/N/7GBkDCtW8U5pzZlVb5YJh6us3RQHcfxA
+ U2ZAh7FAAAA
+X-Change-ID: 20251215-hrtimer-examples-v6-19-rc1-2658ce9bb5d0
+To: Andreas Hindborg <a.hindborg@kernel.org>, 
+ Boqun Feng <boqun.feng@gmail.com>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ Thomas Gleixner <tglx@linutronix.de>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11003;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=QZXDc2rJpT9hCdG3Xp4FIwU2qwOY9HPnhtehLOi8tSs=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBplvrCxTiPjzsk7neCIC7HuX1R4bS6qEKKJehsY
+ qOuwNlxSBSJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZb6wgAKCRDhuBo+eShj
+ d7XkD/44BXFvvBUleUv/aj8nYvO6t2kb44DS8XGCRjjrQ0KlCJZvrK3AtX+5tCpCS137/uATWlh
+ ix7ho9RpG5JE+pT68yEOEfo2aZtyuWJryqp3HPVliaEToAL6uA8PthP3b4tY5e2a7wJjuB1VfD9
+ gyD3eHb77SLvifYfLn+EhWctjo5c1kKkQsD5TWfeUnDCWxMenwxijpWkFC2BZs7bsDxlJAxzDfK
+ pdi/G3Sgi0F06wLXh9XcyybXZy7DhtMWDMRK/SjiipD3fvDbt+MEjmcVCcM0B7gYh9OhpQja8Ux
+ oe8XgGsrTGXlwimHaO7z9+j0L/s396u3iEJ3+nKZFzioTfOg3bTEEvYemkZBA09i/4o6PB9F+EG
+ FLWi3G74pXprOqRmgs3NuSCZxMK7lTjmltAg2CuuQcR0fXQF6FQ/l5qNjza1dsdiuM4Fcp6FafA
+ ojWUSkx4rIGTIBn97i54Edo7Yuq+MeUFStCLC0LM7/U1tFq+3fLbhz6/lnd4oIQjoAoV4S9l19y
+ 0pj2xB3SYMTc9bQ4Z3Jy2iwNH3Lskakm/8A8cDI3CC1XGeTxIRAtwOxPyd4NKUv84bD0RFx9aBs
+ xzf1NZBZyTYEpcMSg3veMK0YAjtvuQnywqVZFpLDgWR9FPB5B5k9yAOcfY5q99ocvjAEA1hSgfR
+ JQTLwnZQJi5rLUg==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Currently ps -A shows processes waiting on schedule() in functions with
-names such as do_epoll_wait, wait_woken, and the impeccably named
-_RNvMs2_NtCs8QPsHWIn21X_16rust_binder_main6threadNtB5_6Thread8get_work.
+Add documentation examples showing various ways to use hrtimers:
 
-To improve how ps output looks, give explicit non-mangled names to the
-functions where Rust Binder calls schedule(), since these are the most
-likely places to show up on ps output.
+- Box-allocated timers with shared state in Arc.
+- Arc-allocated timers.
+- Stack-based timers for scoped usage.
+- Mutable stack-based timers with shared state.
 
-The name of rust_binder_waitlcl is truncated instead of using _local
-suffix because rust_binder_wait_local is sufficiently long that ps shows
-unaligned output.
-
-This is intended to be a temporary workaround until we find a better
-solution. Adding #[export_name] to every Rust function that calls
-schedule() is not a great long-term solution.
-
-Suggested-by: Matthew Maurer <mmaurer@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
 Changes in v2:
-- Rebase.
-- Clarify that this is a workaround.
-- Link to v1: https://lore.kernel.org/r/20260213-rust-binder-ps-v1-1-6b90f83c0b4d@google.com
+- Sprinkle blank lines for readability
+- Change heading for Arc example
+- Fix error handling.
+- Link to v1: https://lore.kernel.org/r/20251217-hrtimer-examples-v6-19-rc1-v1-1-4ad0e7e4c4e0@kernel.org
 ---
- drivers/android/binder/process.rs | 3 +++
- drivers/android/binder/thread.rs  | 6 ++++++
- 2 files changed, 9 insertions(+)
+ rust/kernel/time/hrtimer.rs | 336 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 336 insertions(+)
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 41de5593197cd29b71d1cb49829a1ff878bab249..f62f626f928e7ea4965d03c92cc988f344c6ae81 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1442,6 +1442,9 @@ pub(crate) fn drop_outstanding_txn(&self) {
-         }
-     }
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+index 856d2d929a008..2d7f1131a8131 100644
+--- a/rust/kernel/time/hrtimer.rs
++++ b/rust/kernel/time/hrtimer.rs
+@@ -66,6 +66,342 @@
+ //!
+ //! A `restart` operation on a timer in the **stopped** state is equivalent to a
+ //! `start` operation.
++//!
++//! When a type implements both `HrTimerPointer` and `Clone`, it is possible to
++//! issue the `start` operation while the timer is in the **started** state. In
++//! this case the `start` operation is equivalent to the `restart` operation.
++//!
++//! # Examples
++//!
++//! ## Using an intrusive timer living in a [`Box`]
++//!
++//! ```
++//! # use kernel::{
++//! #     alloc::flags,
++//! #     impl_has_hr_timer,
++//! #     prelude::*,
++//! #     sync::{
++//! #         atomic::{ordering, Atomic},
++//! #         completion::Completion,
++//! #         Arc,
++//! #     },
++//! #     time::{
++//! #         hrtimer::{
++//! #             RelativeMode, HrTimer, HrTimerCallback, HrTimerPointer,
++//! #             HrTimerRestart, HrTimerCallbackContext
++//! #         },
++//! #         Delta, Monotonic,
++//! #     },
++//! # };
++//!
++//! #[pin_data]
++//! struct Shared {
++//!     #[pin]
++//!     flag: Atomic<u64>,
++//!     #[pin]
++//!     cond: Completion,
++//! }
++//!
++//! impl Shared {
++//!     fn new() -> impl PinInit<Self> {
++//!         pin_init!(Self {
++//!             flag <- Atomic::new(0),
++//!             cond <- Completion::new(),
++//!         })
++//!     }
++//! }
++//!
++//! #[pin_data]
++//! struct BoxIntrusiveHrTimer {
++//!     #[pin]
++//!     timer: HrTimer<Self>,
++//!     shared: Arc<Shared>,
++//! }
++//!
++//! impl BoxIntrusiveHrTimer {
++//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
++//!         try_pin_init!(Self {
++//!             timer <- HrTimer::new(),
++//!             shared: Arc::pin_init(Shared::new(), flags::GFP_KERNEL)?,
++//!         })
++//!     }
++//! }
++//!
++//! impl HrTimerCallback for BoxIntrusiveHrTimer {
++//!     type Pointer<'a> = Pin<KBox<Self>>;
++//!
++//!     fn run(this: Pin<&mut Self>, _ctx: HrTimerCallbackContext<'_, Self>) -> HrTimerRestart {
++//!         pr_info!("Timer called\n");
++//!
++//!         let flag = this.shared.flag.fetch_add(1, ordering::Full);
++//!         this.shared.cond.complete_all();
++//!
++//!         if flag == 4 {
++//!             HrTimerRestart::NoRestart
++//!         } else {
++//!             HrTimerRestart::Restart
++//!         }
++//!     }
++//! }
++//!
++//! impl_has_hr_timer! {
++//!     impl HasHrTimer<Self> for BoxIntrusiveHrTimer {
++//!         mode: RelativeMode<Monotonic>, field: self.timer
++//!     }
++//! }
++//!
++//! let has_timer = Box::pin_init(BoxIntrusiveHrTimer::new(), GFP_KERNEL)?;
++//! let shared = has_timer.shared.clone();
++//! let _handle = has_timer.start(Delta::from_micros(200));
++//!
++//! while shared.flag.load(ordering::Relaxed) != 5 {
++//!     shared.cond.wait_for_completion();
++//! }
++//!
++//! pr_info!("Counted to 5\n");
++//! # Ok::<(), kernel::error::Error>(())
++//! ```
++//!
++//! ## Using an intrusive timer in an [`Arc`]
++//!
++//! ```
++//! # use kernel::{
++//! #     alloc::flags,
++//! #     impl_has_hr_timer,
++//! #     prelude::*,
++//! #     sync::{
++//! #         atomic::{ordering, Atomic},
++//! #         completion::Completion,
++//! #         Arc, ArcBorrow,
++//! #     },
++//! #     time::{
++//! #         hrtimer::{
++//! #             RelativeMode, HrTimer, HrTimerCallback, HrTimerPointer, HrTimerRestart,
++//! #             HasHrTimer, HrTimerCallbackContext
++//! #         },
++//! #         Delta, Monotonic,
++//! #     },
++//! # };
++//!
++//! #[pin_data]
++//! struct ArcIntrusiveHrTimer {
++//!     #[pin]
++//!     timer: HrTimer<Self>,
++//!     #[pin]
++//!     flag: Atomic<u64>,
++//!     #[pin]
++//!     cond: Completion,
++//! }
++//!
++//! impl ArcIntrusiveHrTimer {
++//!     fn new() -> impl PinInit<Self> {
++//!         pin_init!(Self {
++//!             timer <- HrTimer::new(),
++//!             flag <- Atomic::new(0),
++//!             cond <- Completion::new(),
++//!         })
++//!     }
++//! }
++//!
++//! impl HrTimerCallback for ArcIntrusiveHrTimer {
++//!     type Pointer<'a> = Arc<Self>;
++//!
++//!     fn run(
++//!         this: ArcBorrow<'_, Self>,
++//!         _ctx: HrTimerCallbackContext<'_, Self>,
++//!     ) -> HrTimerRestart {
++//!         pr_info!("Timer called\n");
++//!
++//!         let flag = this.flag.fetch_add(1, ordering::Full);
++//!         this.cond.complete_all();
++//!
++//!         if flag == 4 {
++//!             HrTimerRestart::NoRestart
++//!         } else {
++//!             HrTimerRestart::Restart
++//!         }
++//!     }
++//! }
++//!
++//! impl_has_hr_timer! {
++//!     impl HasHrTimer<Self> for ArcIntrusiveHrTimer {
++//!         mode: RelativeMode<Monotonic>, field: self.timer
++//!     }
++//! }
++//!
++//! let has_timer = Arc::pin_init(ArcIntrusiveHrTimer::new(), GFP_KERNEL)?;
++//! let _handle = has_timer.clone().start(Delta::from_micros(200));
++//!
++//! while has_timer.flag.load(ordering::Relaxed) != 5 {
++//!     has_timer.cond.wait_for_completion();
++//! }
++//!
++//! pr_info!("Counted to 5\n");
++//! # Ok::<(), kernel::error::Error>(())
++//! ```
++//!
++//! ## Using a stack-based timer
++//!
++//! ```
++//! # use kernel::{
++//! #     impl_has_hr_timer,
++//! #     prelude::*,
++//! #     sync::{
++//! #         atomic::{ordering, Atomic},
++//! #         completion::Completion,
++//! #     },
++//! #     time::{
++//! #         hrtimer::{
++//! #             ScopedHrTimerPointer, HrTimer, HrTimerCallback, HrTimerPointer, HrTimerRestart,
++//! #             HasHrTimer, RelativeMode, HrTimerCallbackContext
++//! #         },
++//! #         Delta, Monotonic,
++//! #     },
++//! # };
++//! # use pin_init::stack_pin_init;
++//!
++//! #[pin_data]
++//! struct IntrusiveHrTimer {
++//!     #[pin]
++//!     timer: HrTimer<Self>,
++//!     #[pin]
++//!     flag: Atomic<u64>,
++//!     #[pin]
++//!     cond: Completion,
++//! }
++//!
++//! impl IntrusiveHrTimer {
++//!     fn new() -> impl PinInit<Self> {
++//!         pin_init!(Self {
++//!             timer <- HrTimer::new(),
++//!             flag <- Atomic::new(0),
++//!             cond <- Completion::new(),
++//!         })
++//!     }
++//! }
++//!
++//! impl HrTimerCallback for IntrusiveHrTimer {
++//!     type Pointer<'a> = Pin<&'a Self>;
++//!
++//!     fn run(this: Pin<&Self>, _ctx: HrTimerCallbackContext<'_, Self>) -> HrTimerRestart {
++//!         pr_info!("Timer called\n");
++//!
++//!         this.flag.store(1, ordering::Release);
++//!         this.cond.complete_all();
++//!
++//!         HrTimerRestart::NoRestart
++//!     }
++//! }
++//!
++//! impl_has_hr_timer! {
++//!     impl HasHrTimer<Self> for IntrusiveHrTimer {
++//!         mode: RelativeMode<Monotonic>, field: self.timer
++//!     }
++//! }
++//!
++//! stack_pin_init!( let has_timer = IntrusiveHrTimer::new() );
++//! has_timer.as_ref().start_scoped(Delta::from_micros(200), || {
++//!     while has_timer.flag.load(ordering::Relaxed) != 1 {
++//!         has_timer.cond.wait_for_completion();
++//!     }
++//! });
++//!
++//! pr_info!("Flag raised\n");
++//! # Ok::<(), kernel::error::Error>(())
++//! ```
++//!
++//! ## Using a mutable stack-based timer
++//!
++//! ```
++//! # use kernel::{
++//! #     alloc::flags,
++//! #     impl_has_hr_timer,
++//! #     prelude::*,
++//! #     sync::{
++//! #         atomic::{ordering, Atomic},
++//! #         completion::Completion,
++//! #         Arc,
++//! #     },
++//! #     time::{
++//! #         hrtimer::{
++//! #             ScopedHrTimerPointer, HrTimer, HrTimerCallback, HrTimerPointer, HrTimerRestart,
++//! #             HasHrTimer, RelativeMode, HrTimerCallbackContext
++//! #         },
++//! #         Delta, Monotonic,
++//! #     },
++//! # };
++//! # use pin_init::stack_try_pin_init;
++//!
++//! #[pin_data]
++//! struct Shared {
++//!     #[pin]
++//!     flag: Atomic<u64>,
++//!     #[pin]
++//!     cond: Completion,
++//! }
++//!
++//! impl Shared {
++//!     fn new() -> impl PinInit<Self> {
++//!         pin_init!(Self {
++//!             flag <- Atomic::new(0),
++//!             cond <- Completion::new(),
++//!         })
++//!     }
++//! }
++//!
++//! #[pin_data]
++//! struct IntrusiveHrTimer {
++//!     #[pin]
++//!     timer: HrTimer<Self>,
++//!     shared: Arc<Shared>,
++//! }
++//!
++//! impl IntrusiveHrTimer {
++//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
++//!         try_pin_init!(Self {
++//!             timer <- HrTimer::new(),
++//!             shared: Arc::pin_init(Shared::new(), flags::GFP_KERNEL)?,
++//!         })
++//!     }
++//! }
++//!
++//! impl HrTimerCallback for IntrusiveHrTimer {
++//!     type Pointer<'a> = Pin<&'a mut Self>;
++//!
++//!     fn run(this: Pin<&mut Self>, _ctx: HrTimerCallbackContext<'_, Self>) -> HrTimerRestart {
++//!         pr_info!("Timer called\n");
++//!
++//!         let flag = this.shared.flag.fetch_add(1, ordering::Full);
++//!         this.shared.cond.complete_all();
++//!
++//!         if flag == 4 {
++//!             HrTimerRestart::NoRestart
++//!         } else {
++//!             HrTimerRestart::Restart
++//!         }
++//!     }
++//! }
++//!
++//! impl_has_hr_timer! {
++//!     impl HasHrTimer<Self> for IntrusiveHrTimer {
++//!         mode: RelativeMode<Monotonic>, field: self.timer
++//!     }
++//! }
++//!
++//! stack_try_pin_init!( let has_timer =? IntrusiveHrTimer::new() );
++//! let shared = has_timer.shared.clone();
++//!
++//! has_timer.as_mut().start_scoped(Delta::from_micros(200), || {
++//!     while shared.flag.load(ordering::Relaxed) != 5 {
++//!         shared.cond.wait_for_completion();
++//!     }
++//! });
++//!
++//! pr_info!("Counted to 5\n");
++//! # Ok::<(), kernel::error::Error>(())
++//! ```
++//!
++//! [`Arc`]: kernel::sync::Arc
  
-+    // #[export_name] is a temporary workaround so that ps output does not become unreadable from
-+    // mangled symbol names.
-+    #[export_name = "rust_binder_freeze"]
-     pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
-         if info.enable == 0 {
-             let msgs = self.prepare_freeze_messages()?;
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 0b62d24b2118abe10577029a0129887e4ee8c6ba..6f197be0fa75d9d485c6cd659fa28c872a88af93 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -513,6 +513,9 @@ pub(crate) fn has_current_transaction(&self) -> bool {
-     /// Attempts to fetch a work item from the thread-local queue. The behaviour if the queue is
-     /// empty depends on `wait`: if it is true, the function waits for some work to be queued (or a
-     /// signal); otherwise it returns indicating that none is available.
-+    // #[export_name] is a temporary workaround so that ps output does not become unreadable from
-+    // mangled symbol names.
-+    #[export_name = "rust_binder_waitlcl"]
-     fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
-         {
-             let mut inner = self.inner.lock();
-@@ -551,6 +554,9 @@ fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn Deliv
-     ///
-     /// This must only be called when the thread is not participating in a transaction chain. If it
-     /// is, the local version (`get_work_local`) should be used instead.
-+    // #[export_name] is a temporary workaround so that ps output does not become unreadable from
-+    // mangled symbol names.
-+    #[export_name = "rust_binder_wait"]
-     fn get_work(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
-         // Try to get work from the thread's work queue, using only a local lock.
-         {
+ use super::{ClockSource, Delta, Instant};
+ use crate::{prelude::*, types::Opaque};
 
 ---
-base-commit: 2961f841b025fb234860bac26dfb7fa7cb0fb122
-change-id: 20260213-rust-binder-ps-46d9d060243a
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251215-hrtimer-examples-v6-19-rc1-2658ce9bb5d0
 
 Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+Andreas Hindborg <a.hindborg@kernel.org>
+
 
