@@ -1,93 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B69274B37;
-	Thu, 19 Feb 2026 10:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290DB38FA3;
+	Thu, 19 Feb 2026 10:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771495787; cv=none; b=ncvwxQ42eYEgcwmOCJ7d2gMwnVCT80/FM6Biw4AKt/7IW3xzPnPAhQ7VZ6lv780NZpx0XRf9e7ZzDUOGgAI/k7u4UzkEEjZD/Rr0L9DyXaBSyI7dy/r7efp+fETjFYqiEmWzv9ISEVM2td0wVYln+1QAuP5r+bZQfBbEJnbjFzQ=
+	t=1771496392; cv=none; b=G/IEyXchVlfNQdQ8eL426UwPgJoo2Wcni4I3kT4JFjAscnlwDHI14HhaVwDgWQ/7vucIkYqfz6k8AngxQR93i4PAntnThdAe4LGDLv8uTKEh5VOU9HqFmzCFcRgOMPMHD2XyhdTlJ+aBJ2CTCFApX7JwsEQD1WYnFjmXtVwxCkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771495787; c=relaxed/simple;
-	bh=q1/kcsmRETp7wspynddOCV7OlvJ+YvFQsBqiIrIMRr4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=KCSO2EeI7ZhfisyHXS3B+lkax464rdKGKEeLEYHnvqV95MKCSvjFct/JhDDLc8OcRN4BPIpXQqXEIqzzoED9bbiT7qbt708gJouls9TyR9qAExlG0Jske0oQ8iWXJQ9JIVutW0xTCidXfzVTDqkvciAEhMNwrX+6a+erG1K3ZxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTUIZPLo; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTUIZPLo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EDFC4CEF7;
-	Thu, 19 Feb 2026 10:09:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771495787;
-	bh=q1/kcsmRETp7wspynddOCV7OlvJ+YvFQsBqiIrIMRr4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=QTUIZPLoWDtllOmleDtmudvrTyW+aH6DHEaB39eE9nhw9OfqYWDoOUx1LcX3Iq/s/
-	 /07ir+pL485oJZgPmPrVVqdFgKQxU6nR9eN8MEMZr8CBihxbLJiu8g3cxyyumNXss6
-	 xTtZZeTGXUqaYTstOwP9xuqAbK6VIjF+8YiSFH4FeNP0PCCCxLW/v/uRwatJSl94pN
-	 4IIXd/+d3o1hWP7ZwukN3Wd41o+2HxBT3TR/rb7y5yVgrxiZqiZinv8Xm+olshjBAR
-	 Wa18gcI0xWgtVeWSPOd1PYI1wFtiq5zOjzXXZy74VAt8B2hh7ZbFTWz3Dp0sHgJUgN
-	 Rsf2sSPGAPLKw==
+	s=arc-20240116; t=1771496392; c=relaxed/simple;
+	bh=v7nRuBhs/efhlLKH96QuC8e1U8C49z270WZ13oY6b9U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kd5bsKHWX94JQ6GxxLuV5HP23T9RZ3POSQgc8sMh2uRuE7eB0xU24HYByLzAKqmBksiTM3GagBCLN9CJwaqk+D9ju1M6PmjqjwFUrBYQLB7QD4CHIfeBzSCQvoXvmMWQZSarRzujGW6herqNwgJFzXpEs9NMlZOGwSEetwi6G04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 078222021BE5;
+	Thu, 19 Feb 2026 11:19:48 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id E87F54BBEE; Thu, 19 Feb 2026 11:19:47 +0100 (CET)
+Date: Thu, 19 Feb 2026 11:19:47 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: alistair23@gmail.com
+Cc: bhelgaas@google.com, rust-for-linux@vger.kernel.org,
+	akpm@linux-foundation.org, linux-pci@vger.kernel.org,
+	Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com,
+	benno.lossin@proton.me, boqun.feng@gmail.com, a.hindborg@kernel.org,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, wilfred.mallawa@wdc.com, aliceryhl@google.com,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [RFC v3 27/27] rspdm: Multicast received signatures via netlink
+Message-ID: <aZbjw48-tcYkH4vK@wunner.de>
+References: <20260211032935.2705841-1-alistair.francis@wdc.com>
+ <20260211032935.2705841-28-alistair.francis@wdc.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Feb 2026 11:09:42 +0100
-Message-Id: <DGIUUFLC31D5.2OZBF5FWQJWMZ@kernel.org>
-Subject: Re: [PATCH v10 3/8] gpu: Fix uninitialized buddy for built-in
- drivers
-Cc: <linux-kernel@vger.kernel.org>, "Matthew Auld" <matthew.auld@intel.com>,
- "Arun Pravin" <arunpravin.paneerselvam@amd.com>, "Christian Koenig"
- <christian.koenig@amd.com>, "David Airlie" <airlied@gmail.com>, "Simona
- Vetter" <simona@ffwll.ch>, "Dave Airlie" <airlied@redhat.com>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Koen Koning"
- <koen.koning@linux.intel.com>, <dri-devel@lists.freedesktop.org>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <intel-xe@lists.freedesktop.org>, "Peter Senna Tschudin"
- <peter.senna@linux.intel.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260218205507.689429-1-joelagnelf@nvidia.com>
- <20260218205507.689429-4-joelagnelf@nvidia.com>
-In-Reply-To: <20260218205507.689429-4-joelagnelf@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260211032935.2705841-28-alistair.francis@wdc.com>
 
-On Wed Feb 18, 2026 at 9:55 PM CET, Joel Fernandes wrote:
-> From: Koen Koning <koen.koning@linux.intel.com>
->
-> Use subsys_initcall instead of module_init for the GPU buddy allocator,
-> so its initialization code runs before any gpu drivers.
-> Otherwise, a built-in driver that tries to use the buddy allocator will
-> run into a kernel NULL pointer dereference because slab_blocks is
-> uninitialized.
->
-> Specifically, this fixes drm/xe (as built-in) running into a kernel
-> panic during boot, because it uses buddy during device probe.
->
-> Fixes: ba110db8e1bc ("gpu: Move DRM buddy allocator one level up (part tw=
-o)")
+On Wed, Feb 11, 2026 at 01:29:34PM +1000, alistair23@gmail.com wrote:
+> This is based on Lukas's patch from [1]. This exposes all of the SPDM
+> information to userspace via netlink. This includes the certificate
+> chain and communication transcript.
+> 
+> 1: https://github.com/l1k/linux/commit/fe90b5700ee9bc595a21c030192eac4060eaeae1
 
-This Fixes: tag seems wrong. How is this code move related to this problem?
+Just a heads-up, the above-linked commit is from Dec 11, but I spent
+the calm days around Christmas and New Year testing and improving the
+SPDM netlink code.  I ended up squashing quite a few bugs and refactoring
+things for clarity.  Latest version is on my development branch:
 
-This should rather be:
+https://github.com/l1k/linux/commits/doe
 
-Fixes: 6387a3c4b0c4 ("drm: move the buddy allocator from i915 into common d=
-rm")
+The branch contains a separate commit introducing a nla_put_blob()
+helper to add a zero-copy blob attribute to an skb.  And the SPDM
+netlink code uses that helper instead of open coding its contents.
 
-Also, please add:
+The SPDM netlink code can be tested with:
 
-Cc: stable@vger.kernel.org
+tools/net/ynl/pyynl/cli.py \
+     --spec Documentation/netlink/specs/spdm.yaml \
+     --subscribe sig  --sleep 10
 
-> Cc: Joel Fernandes <joelagnelf@nvidia.com>
-> Cc: Dave Airlie <airlied@redhat.com>
-> Cc: intel-xe@lists.freedesktop.org
-> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Koen Koning <koen.koning@linux.intel.com>
-> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Just reauthenticate the device and the signature with ancillary
+data gets dumped via netlink.
 
-I also think this patch should be sent separately and go through drm-misc-f=
-ixes.
+The commit message and kernel-doc of the SPDM netlink commit is
+still a WIP because right after the calm of the holidays I got
+swamped (again) with AER work that my employeer prioritizes.
+But the code is now well-tested.
+
+Thanks,
+
+Lukas
