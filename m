@@ -1,85 +1,161 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F9F2C0F7F;
-	Thu, 19 Feb 2026 11:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AA1338596
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 11:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771500267; cv=none; b=LEOzC+4hevssFp2f5xEKY5F3hPjQGQRX4Cocz4BGt5S5+e/7Q8c242wQiJPuSb+mjVS+OaDRdhCTjelH8/rhVNZoRqvTSXmtzklgnEGFbf2d6B+n/B0TXt8oCwKbN3mAliHURul+BYHxW0jrTvH9qi1/r1brIJd5q35OJrxC/zk=
+	t=1771500438; cv=none; b=aeFbEc1l/wkiWgRit7MLdTpi9SCUMMOsDKdlOBP6K7c7Hz4I+2hWktLuFsoF/zsheeSiC48bqNEAWc9u8YT6d9TS5CiPUIQt2QvwoOKdFmEwXHHmldU5xbBF9lyOqG2tL5NOC8MKCxyVj6Vxc2cqDjsMgCC0A+rKi5J0xc7tUms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771500267; c=relaxed/simple;
-	bh=kiWWMJPRnZszwBRPKCM3XhoHzxajw/7QqLZcR1h9gdc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vCZN7w1PleqzQCUC3TKmNl1gvi53r3JXHi/U5iCRPqWyxfC/yK98b7QURH5rRz/gb6w9xZN9hPNDxn3DFZDsZFnbac3K0aq2Z9CsxzYHxLPz96fhCUUeGO6+ZxbJpiS1Mjh8n2xwO9sDX9iAcjuTS5EpWA67CprxwcCob6E78QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fGrcS4fvzzJ46ZK;
-	Thu, 19 Feb 2026 19:24:08 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id E7DA440584;
-	Thu, 19 Feb 2026 19:24:21 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 19 Feb
- 2026 11:24:20 +0000
-Date: Thu, 19 Feb 2026 11:24:19 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: <alistair23@gmail.com>, <bhelgaas@google.com>, <lukas@wunner.de>,
-	<rust-for-linux@vger.kernel.org>, <akpm@linux-foundation.org>,
-	<linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <alex.gaynor@gmail.com>,
-	<benno.lossin@proton.me>, <boqun.feng@gmail.com>, <a.hindborg@kernel.org>,
-	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <tmgross@umich.edu>,
-	<ojeda@kernel.org>, <wilfred.mallawa@wdc.com>, <aliceryhl@google.com>,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
-Message-ID: <20260219112419.00000903@huawei.com>
-In-Reply-To: <20260217235604.GA1595019@nvidia.com>
-References: <20260211032935.2705841-1-alistair.francis@wdc.com>
-	<20260217235604.GA1595019@nvidia.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1771500438; c=relaxed/simple;
+	bh=kud8Rw/Cd9klTCoUP4Wxhjtw93Ta53+nsPUvNFLO88s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=F9xIHHcJJrDr75JDUFit79/73yNs1TXw4fqAC7FrUZef4a9WZt4SVZxFBw2WmoO7NyIMQuwEQdDnkPWAiLqMaeIJakPBzNiMSPI2HJrHjqhOrApcIuyL6yVXHRXTa3Dp9RX1+zBY1wVqq5kdgWMkQW1RylikziZMaTO+GJZRJFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hMoRDTn4; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hMoRDTn4"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836b7fbf4fso7943435e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 03:27:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771500435; x=1772105235; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oTB+4zGlLiIk++llY73cireeXyt+xsrzbx0t1uTG5ms=;
+        b=hMoRDTn4P2zMJ0m1yb2no+XmCvkD+P8oQ080B8aypTKk1iX+QjGO2Qy1ugL0ikm+4G
+         gvitah2T3nAmtkdJdmSEL8Vp72D9b39zLbQIUdczxt3+aQBX5ZLztP8Yc8NyLblVOI71
+         R4ypJYAfubXCQJGFMpL2y8omJIDntWyifnOdapuSWZGOm+OK0S9AJqrL5TtPQhqqA2qd
+         FZ6W5ItCB5TFLZWt58T7fgs2sX8d1smuoDxCKLkuUHZAjAF2jrXkZEt7c1iABdR9eqHT
+         90O0KdylhKia8VYJDhjanrXTBi1jg8Kx1gwJ6Vm98Ez2QHS6UI//UWd0lsYGRaCAMtsz
+         SxTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771500435; x=1772105235;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oTB+4zGlLiIk++llY73cireeXyt+xsrzbx0t1uTG5ms=;
+        b=BPj6TWSleNtX97/ITlUc2wHnzHNMWrQPK9Gm7AzYArvDMSamMPe8D7luTSRQxtB8+L
+         cRh6a+fJl2J9RGbUFUvqSoTCjmoesHGPAsHnzBBOOSB54H6Ba0NyD7KO39Z0AmmF8rMD
+         SpyFTuilh9SdHfcYleYLmhDFXnq9Bx5ePUYTedvmDTe0ORVEKcWnoxWmL1udJ3yWI0uT
+         bjIb6KRJivpoH4Y5WusesA0dWK04n9xf2zNXesP81wXMvPLuxI1FDAbbInyYqzdep849
+         215FhXxpZJWiTek3gZ3vxox1ISrGjdrnVTyDsAQ1Q7j1kOHgdU9S2ANZwkM4pk7lfsZW
+         HK2A==
+X-Forwarded-Encrypted: i=1; AJvYcCXFo3Tt6y7isT297sY4B3BIEx+VxWd1AOfqK6KsATut2swD1JiCNSMrQ/T0xe951cON6/PA4KXF3Aj5tZOVZQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNtELXzMUoebqhKuSYFXdXtVD9pJqQuoNYZOqZPkvUzvDvwsmP
+	kVyhJr+FovC/LpbDY1zqPoVo79wi67krncfaHkLcB2fDDqYY3YbjvbKPf4LYr/tnVW5KCQXMN9j
+	i52VpvLGNrlbYvXBEJw==
+X-Received: from wmdp17.prod.google.com ([2002:a05:600c:5d1:b0:483:291c:7f23])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:6207:b0:480:5951:fc1e with SMTP id 5b1f17b1804b1-4839e63d7aamr34476115e9.11.1771500434759;
+ Thu, 19 Feb 2026 03:27:14 -0800 (PST)
+Date: Thu, 19 Feb 2026 11:27:00 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIPzlmkC/3WMyw6CMBBFf4XM2jF9pRFX/odhQduhTKKUtEg0h
+ H+3snd57s05GxTKTAWuzQaZVi6cpgrq1IAf+ykScqgMSigrlNSYX2VBx1OgjHNBY0MbRL2M7qF Kc6aB30fw3lUeuSwpf47+Kn/r39QqUaJ1rRgu2gtnwi2mFB909ukJ3b7vX6TiNC6tAAAA
+X-Change-Id: 20260213-rust-binder-ps-46d9d060243a
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3613; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=kud8Rw/Cd9klTCoUP4Wxhjtw93Ta53+nsPUvNFLO88s=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplvOHLd0GYFbusVW4+JR3yWroKuAkhF7/YjSgL
+ cVCvC6JWSuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZbzhwAKCRAEWL7uWMY5
+ Rva/EAC3IpqMpiN/Yn9XJBKv/NdyQab5MuF11dY3O5Q/Iho3XG2gxKTf/Av5Cq10v1NS4/JZtmX
+ CwuN8QxEVuDs8/hlZ2tF3SjXY2QpqjR65EMv+7rQ7Upi6pUndeJ6Qua70XsfAoFXfWPfiGVi1Vg
+ d/h2aIXGzl6h5Zwo82D8Hiz6clM+cAk7MjvQwTtpRPoTKJcUi7RaTfC/kDUy3B27JQeYgHoV49I
+ 7y1rGRRvc3Gk9Q77dM2gf5oHJpRxsNnXp1HgTW9quPu04tCbO3pmKLerVzqDTrrhanRsFgoEUR8
+ 2vXd2ROlhbJUqxMQbf8UcMdZ5P++WyEUpBKRNvSv2oDoIoglEAxvEja7qE32Yjblf/wyj04J2Mi
+ pOk41V7w24o1Md8SJqidTcYbKPS01QRsBHU41Wo6a++05YRSl7LTQZuwqPWumjmbBhgQdfr71mK
+ G8n/ls/OB0gBOAfUa0AxFswvtK+7l8jM+n85MtoyuNdGaCGefC6XxCHsJwt4vs1WbADPbUl1Ahx
+ jyXOQUzWowf9hx7cxmyELUTS2wgdQuX/6vPyu9yCChLE1vvR01YoFsL4152FKFMBZjDXlsm1DA8
+ gi2yGmFXokIzJmxMp6MpbPM6oJxelfSG+UjBpPIEwAOqVbT40ZcggF9uo4Lm2umyYYlGYEWXVuu q/+M5JTNAs8leeg==
+X-Mailer: b4 0.14.2
+Message-ID: <20260219-rust-binder-ps-v2-1-773eca09c125@google.com>
+Subject: [PATCH v2] rust_binder: avoid name mangling for get_work[_local]
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, 17 Feb 2026 19:56:04 -0400
-Jason Gunthorpe <jgg@nvidia.com> wrote:
+Currently ps -A shows processes waiting on schedule() in functions with
+names such as do_epoll_wait, wait_woken, and the impeccably named
+_RNvMs2_NtCs8QPsHWIn21X_16rust_binder_main6threadNtB5_6Thread8get_work.
 
-> On Wed, Feb 11, 2026 at 01:29:07PM +1000, alistair23@gmail.com wrote:
-> > From: Alistair Francis <alistair.francis@wdc.com>
-> > 
-> > Security Protocols and Data Models (SPDM) [1] is used for authentication,
-> > attestation and key exchange. SPDM is generally used over a range of
-> > transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
-> >   
-> > >From the kernels perspective SPDM is used to authenticate and attest devices.  
-> > In this threat model a device is considered untrusted until it can be verified
-> > by the kernel and userspace using SPDM. As such SPDM data is untrusted data
-> > that can be mallicious.
-> > 
-> > The SPDM specification is also complex, with the 1.2.1 spec being almost 200
-> > pages and the 1.3.0 spec being almost 250 pages long.
-> > 
-> > As such we have the kernel parsing untrusted responses from a complex
-> > specification, which sounds like a possible exploit vector. This is the type
-> > of place where Rust excels!  
-> 
-> I was arguing for exactly this at a recent conference, so I'm glad to
-> see it. It is a great meaningful usecase for rust in the kernel.
+To improve how ps output looks, give explicit non-mangled names to the
+functions where Rust Binder calls schedule(), since these are the most
+likely places to show up on ps output.
 
-FWIW I'm fully on board with this as well.  More than happy to see my C
-code Lukas has been carrying go away in favor of the Rust :)
-It'll also finally make me learn more than a trivial level of Rust.
+The name of rust_binder_waitlcl is truncated instead of using _local
+suffix because rust_binder_wait_local is sufficiently long that ps shows
+unaligned output.
 
-Jonathan
+This is intended to be a temporary workaround until we find a better
+solution. Adding #[export_name] to every Rust function that calls
+schedule() is not a great long-term solution.
+
+Suggested-by: Matthew Maurer <mmaurer@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Rebase.
+- Clarify that this is a workaround.
+- Link to v1: https://lore.kernel.org/r/20260213-rust-binder-ps-v1-1-6b90f83c0b4d@google.com
+---
+ drivers/android/binder/process.rs | 3 +++
+ drivers/android/binder/thread.rs  | 6 ++++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 41de5593197cd29b71d1cb49829a1ff878bab249..f62f626f928e7ea4965d03c92cc988f344c6ae81 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1442,6 +1442,9 @@ pub(crate) fn drop_outstanding_txn(&self) {
+         }
+     }
+ 
++    // #[export_name] is a temporary workaround so that ps output does not become unreadable from
++    // mangled symbol names.
++    #[export_name = "rust_binder_freeze"]
+     pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
+         if info.enable == 0 {
+             let msgs = self.prepare_freeze_messages()?;
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 0b62d24b2118abe10577029a0129887e4ee8c6ba..6f197be0fa75d9d485c6cd659fa28c872a88af93 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -513,6 +513,9 @@ pub(crate) fn has_current_transaction(&self) -> bool {
+     /// Attempts to fetch a work item from the thread-local queue. The behaviour if the queue is
+     /// empty depends on `wait`: if it is true, the function waits for some work to be queued (or a
+     /// signal); otherwise it returns indicating that none is available.
++    // #[export_name] is a temporary workaround so that ps output does not become unreadable from
++    // mangled symbol names.
++    #[export_name = "rust_binder_waitlcl"]
+     fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
+         {
+             let mut inner = self.inner.lock();
+@@ -551,6 +554,9 @@ fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn Deliv
+     ///
+     /// This must only be called when the thread is not participating in a transaction chain. If it
+     /// is, the local version (`get_work_local`) should be used instead.
++    // #[export_name] is a temporary workaround so that ps output does not become unreadable from
++    // mangled symbol names.
++    #[export_name = "rust_binder_wait"]
+     fn get_work(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
+         // Try to get work from the thread's work queue, using only a local lock.
+         {
+
+---
+base-commit: 2961f841b025fb234860bac26dfb7fa7cb0fb122
+change-id: 20260213-rust-binder-ps-46d9d060243a
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
