@@ -1,313 +1,119 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020081.outbound.protection.outlook.com [52.101.196.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322B133EB0A;
-	Thu, 19 Feb 2026 14:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771512267; cv=fail; b=ce9AYq4pCROSqD/gzi27MMlXheXe2orQWxzkuzv5cB+WNlHMSFrm4vXTjMBcwKTPIAJ0+eIAupbgAUH+vyzucjTn+KMIdsqBhd7w1mFvYAnc1jCTffzxgxY+o0c69pKtV12HH/P4/ViulMk4JiMnvw8Y9275ZfILqt8UOgBxz8g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771512267; c=relaxed/simple;
-	bh=5QWVGRPeDqegSxO9fX8cJkpubbIRGyMNlN9dmpmTpGo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:MIME-Version; b=LXsPZF9EPspJq+D6TZYiwEjQR4kJosnCt5z4m4l1YdOR2QQ7HAz67WDyNkxc4MXU5/8AQqqIZX+h5xuCY+NA6X7vAK5WJk3z2YS55iNfAkQnOyzBGajApotAmGThmkI2KRbjjhfY++pvX6Y1kIAnkHXtu6I3FsbLhTBEeMSjba0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=UEgFUnjt; arc=fail smtp.client-ip=52.101.196.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D882340D93
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 14:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771512333; cv=none; b=WDSTc+ZRwkZGCl2wGjsM5FYIdjCkFTdG1dpOGrNQB6nw8ImCRndyhU7RkqYgiyhGdEUhXlfEc/k/kE3Z/QrQnHaLpTYWrKFBYLMbVw8RPxGbqyZFmmQO622yexgXa37oJ4OK8iyCA5Iz3fFq+nG5q1pAttoMIYNaVO497W1eXTA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771512333; c=relaxed/simple;
+	bh=fYw1FO2Zyktav/6HUO5ChasMYjYS3ZMigDlcZGSnzvA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Mvdl+lqicfZavUdULDRjtZsfhBElAkSeiiWwRHRVM2w/RF/CGBrbpjr5Ioqu5nNstef+vWlNkeN71ySL13tFURkZeW7tGNvURVZSuNj7Iy3zethp7kNfQeeBH5teIr8C1fF5/nHgXwB47BcQgEQb6ppvzj1ppud9qGfr3ug9CLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ISIBhEHC; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="UEgFUnjt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TEWqoHTsN3ly5I2sIydy9y9wffYiTrySXW+yfaMbgfycw36ZbW4jP2RsSIrg5m8pPBhoRvSs1VMfBll9dshE+rNclsF4L8WX9N8W8Z0id2qqO+ktXK+XJIvIFAm+x2MoQO3xBH1g38llzt2pSi7ausXPcjW2s6hlbFV7DVGVk0C5SSPc/ek5cYHvSykZrBxoJ0rqnjYInZwELEJpmPj7d62Nw9EPDdZ0DokfmHffWqZSgU0wGhuPmd3gK6X3lst24mja2IvbRWyGGrc8H2E2Z8okGXPZVfYYDMOrB82pDUPWgE5Ebdm1TDDzHvHuc4qOGEVoWy583mZVSiFqITEYMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4Wr4az2g+OS4sJNq+MDCAiNLmaWh0zDDJHMB8UHazJ4=;
- b=FHk6IJ0FRjRSOM6GcOmemz/B7amsQQnssh7eq9jdXkK2+o4Oo9M+4ma1fpeZ8QJ4RssROROykFz+wj7xiqw1saNxEbJtPKWpo1t2EHtzZrwjltaG8Q7DNvV3G6icLG0MlrmLctWKQisSY1SgHGZBiTH7R+6D0LLV7sq6Cej2Un3jxBl+eMS9Oews8W2YQE6WqBTBoYqNitilFUZjAku9pT9z+Mh45oKlapPurB7eWHz+nw7OCzbr4tnHdDPWBFRZboHvY439O/gWr+SL7cC/oyJLTXa3TxPC9/hlVDzgk1fpf7JA0IAHbWVq5wu1S25BJNUcgjXkLj+7BU+fX0wX8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4Wr4az2g+OS4sJNq+MDCAiNLmaWh0zDDJHMB8UHazJ4=;
- b=UEgFUnjtY5S+WRulZjer6lKhqpJ6ZzjdThZmMn0tER433SQXouc3puZziOHw7yKinJ+p9fXGCeu0Lq8P8Gcu5djpkMQhuy1yNiu4aP3IGrFZBw/yUB6bLu44BlFWqOh8ai39S5dubveHBk6KavPBvWMH3jfrTj/Qsva/SL3U7Bg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB2583.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:aa::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.16; Thu, 19 Feb
- 2026 14:44:22 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9632.010; Thu, 19 Feb 2026
- 14:44:22 +0000
-Date: Thu, 19 Feb 2026 14:44:22 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida
- <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: irq: move 'static bounds to traits
-In-Reply-To: <20260219-irq-static-on-trait-v1-1-6ede6b743ea3@google.com>
-References: <20260219-irq-static-on-trait-v1-1-6ede6b743ea3@google.com>
-Message-ID: <7442f2b32fb502cca25d61df390021dd@garyguo.net>
-X-Sender: gary@garyguo.net
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0059.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:60::23) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ISIBhEHC"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-482d8e6e13aso6856985e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 06:45:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771512329; x=1772117129; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ON/96V1lMwS1dfQQ1ZSvAAeHD+BqqqKIY95pUkvU5Uw=;
+        b=ISIBhEHCmt+5QE6t2UQZPLIBICAxiidCnBa62PlAqN9JkaAR9jfHEwsHn1cgkNxoF+
+         geLa4TEUbTNb1vel8OCAocIRuq8WbAoGwYzoaey4M0kh2bLQ30CkGE3BY/srRPD9vhbn
+         +wOBBo4dnFXSndIsFL3Pklcm5x8gxHnslN2QhVYzVC71kuz+QFZmgSgcgL8E7CYAL21g
+         EVjx4T+aQN1WaTJo62xT3uyflbj8fE1q8HwhVwcbBLO4fgQaGXitzZny+H2ZujxPe7sl
+         gMQTj9BGz4Q/SkzmiQkJajTqar5CesghVOT2iVpznUsOnK/EiJ1GbdichU9iJoGJ76Zn
+         aX7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771512329; x=1772117129;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ON/96V1lMwS1dfQQ1ZSvAAeHD+BqqqKIY95pUkvU5Uw=;
+        b=re//uz8h52eHeU4a17OU2kHmW5XhDEr+9yWkkLQNVSPyoRqzTDN6HDOWNkPCn1ptGo
+         8j7uJuJjApXZmRk8S1+GXtLRNsl19z6/k3M0rhMwaVn0rf6z2jvbMg+PX09VZxAIvPDi
+         N9SBhIB9cWE2vQoblUFAQi3Mk8A764PBT4mu/p88QVASJ30c1E4srWR4pP7bse7m97jT
+         1ZzhfQWL6PFkhKYHZgASRGMm+2+6iwK/tG3biJd63h+dZBniSFYfDeuRpeB6zzyYqWDH
+         grwxUWmw3ERCc9/iJlMs+KUWD8iOZ6VbCH/y8yYNCu46KDHtDVbsDi1GQ1Al5NveE9Tw
+         kh6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWNjqk+bKCnvhG9Tuim9Oh2MmP9J8kyU7/J+90MxJd6Nh748trIpzuWUIdFr/xCx/T74A1KkpCQhIDLk8GuEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YydsnTq1LQ687u1uYtrozMLZXN9TvJe8Rn5Q1SMJxac7zHaIcPT
+	5o9gXfa9gD8iQeplHoWTZa/YY7PMFD1tuvLanYNvaLDLsAcLwHJEJDdCuH7JpVhJGS3QqVSMIdE
+	24QJ5+sgjLEAJQe7gsQ==
+X-Received: from wmdp17.prod.google.com ([2002:a05:600c:5d1:b0:483:291c:7f23])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600d:8443:10b0:482:df17:bbbc with SMTP id 5b1f17b1804b1-4839e661d4bmr37096335e9.20.1771512329237;
+ Thu, 19 Feb 2026 06:45:29 -0800 (PST)
+Date: Thu, 19 Feb 2026 14:45:28 +0000
+In-Reply-To: <DGJ0LNG3KO1N.35V3YXBLS6IT1@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2583:EE_
-X-MS-Office365-Filtering-Correlation-Id: 886673c2-6e71-42d2-7863-08de6fc55ee8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/N7stz2LL9bUgvGghO8jMAADt4huYB70rbW/WWPaLNPAJj5Xk8IMmkOcZu8m?=
- =?us-ascii?Q?06s3NHTgfISnNeFgrLK9QjRwMXNhbZ/IAmrpJsRw+u3xu/+Fv5tns7IKPJdh?=
- =?us-ascii?Q?ptMt6jdSFLRGJIPChy56Y7O0YDT2R7aojKMFFjI9kY1004Wf/IOk9phTinmQ?=
- =?us-ascii?Q?N2YD+X2uksVGMylo3PHCSEW/xFbEUnns4mpWPuZ7LorRrNPo2JDqlgVsmdBD?=
- =?us-ascii?Q?ayedAKtTNFPCDBMab26T4qIce8HsLwEguu5OxYML+qb7UP3OjkP8wan+SADJ?=
- =?us-ascii?Q?ENaMDQP3Yo6WlIMpicELiuUDZL/qmHftsDW1fQfmZXSiI3zCweRn64sZRIWF?=
- =?us-ascii?Q?ucRZap5dGOT0OTXKVEFKZ09ksI8pFSxVTbSPlagvzZuxvhLJQ4fO9HDEixut?=
- =?us-ascii?Q?INp+h0cRR6Qi3MRQwJoilI2nXSxGU32csW9JsSOeavIAU0OkAi0ppObusHDw?=
- =?us-ascii?Q?EdGuJ3FlCL4EBoWmKz2zOdO7Tt+n1g92Df51Uzw+qxRZDDiykz8RBJ8VHdPe?=
- =?us-ascii?Q?YwBqBxG3iXSlcpbDNDl6bNS5Wkqzthb05Xs9Lcray7S/Bp4V6LjGR7jnr20u?=
- =?us-ascii?Q?OFJiLClvOsUv1sL/DqXnA2ya5vwNwZPFaW8DBn6cr3r9blABTmZv0aV1KVXT?=
- =?us-ascii?Q?4dpmSh42gvdzAqMdJjAJnEiy4AWMz4NCRod8A3e9XsAllf+qt20nsNG6yvZn?=
- =?us-ascii?Q?MIcgP9Z2yfZiFnXRh3pVCUDiD8x9afUcKWj/bbdkLhS+CIOKx+0Fr9csOJKg?=
- =?us-ascii?Q?RhfoQdBt42SWgK0rL9w/sWVfKw9U45eZnBrrhuKTahu1XU4Mpust3rAqVVOV?=
- =?us-ascii?Q?Vd3wvVrPo0++wG+L0aHnVykZ2UBYDcm8hqdQJ10bZC41FzGX/JN4vgMwP/Ss?=
- =?us-ascii?Q?8ZDYXTJy9HhxfkPL2sTnXx7XdsCauI9VXw21Mn3iTzC67A5LUhJJ/NjcOFNF?=
- =?us-ascii?Q?CbbOKWW+nsObzOSaO8WKxG83JBCK/N+hwHe1Pp5K8JKtkU4BfM2b7I2Oo7/w?=
- =?us-ascii?Q?66Ndi/kIKB3YXFjiJ6fkxZlRpGblAONn8PU7+6Dd7PCoR1sR/ZN6E6/E+Zta?=
- =?us-ascii?Q?UX9JQ1g5fCaMdb0SOI54WI6n7MEEjt8QNcLiF0p+CCfWcB8wOFSP0R3ZYxqP?=
- =?us-ascii?Q?8uzPGu7WRQYgAsTorDGefeqdNvvj9SOBBW9OkJ31H8I+xaDxquWVb9MQgcj+?=
- =?us-ascii?Q?XEN6F8C/lS1fcm7j+gp1PE6o0/SwBSRByA31+crA5AGYXNwl3zG5Afs8uX5+?=
- =?us-ascii?Q?JLEfLIrD7tfsbho9RuiTPN0kWrSXuxEQ6XmkDsGm/fGF25Fse8/N6tq+UZZu?=
- =?us-ascii?Q?D8aqbrqa63duzEMGWXSLNNr/7QUBpQzfLLiQZPWVRJ/2AUajLa4EdyzA9Uny?=
- =?us-ascii?Q?PKoncY1BhPh6V8Ej1CMGrhHudNHoUTVW6BN9f9flf9VFO+h9GWf2m9HTqom8?=
- =?us-ascii?Q?XXV/0/dukl4wsIrCRT+SkL8ucTm068mugq4KvhC2hRRR5IgHNsqMw+HL1QAJ?=
- =?us-ascii?Q?4KgVyErWNONyLQZOaFIvsvVoUE5X3HN/wGZIhBes7pY/3DuNirTRq0cox2S4?=
- =?us-ascii?Q?EAocqi/DiQ6lWQBRWUk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?y1PnHfJSP9BCP21Ayh7T8uEa9NRlAJDpVw0EknkQSWboeYghlUWgx8yH/Pd3?=
- =?us-ascii?Q?BG84tB9nqzHA1ITx84IOZEXcYFd1bvMyJUinoD+QQn8qA7TjslYSJlqbUN6B?=
- =?us-ascii?Q?aEI0NzNLOrPv1Sr96jbj/Uo2A2IYmx9EBqBps8G+d+An9Mnv7vV7CEt3jGXa?=
- =?us-ascii?Q?gPr9np+VuQfGORShCTRXrXsmEcQI4R9qz2k8t8faxs2uqvXlleo9kVQiFAXA?=
- =?us-ascii?Q?ZkJu8pKfgYnQgTqMF7iQGk9FpeRQxWRM7hMso69VSgNngUd4xbdQ5mNCLNXP?=
- =?us-ascii?Q?nbtXG9QyyFzbCdSgHqyCN0rsl0KthbdRf0R1IM9ZpLh3CNWFoR6554Lti4qv?=
- =?us-ascii?Q?sbvPOYDOwHUnVGxX240BIFTyAyrjB27M5VJyL/CxgJtx2geXkhO4YFEIJKap?=
- =?us-ascii?Q?3A/nmLBag1KuY7DZB+cQNWcQtvHPMSATLJ4YYZtDV4IZgAX6R+6zu0LKPSxO?=
- =?us-ascii?Q?mjDynAtNcdosS7K3f4BHpZmiGiXw5VS1SOll7ZqsyB7u+jPnTbW9nVL4R6P9?=
- =?us-ascii?Q?/1SLkmt9pRwNEKrUpaz5q2ih0M45dT+N0pz01NCw4x+/Csc1cb65UzkDZfXJ?=
- =?us-ascii?Q?26twb5sXetHcgehUilLTRgqTdBIygZm9WkyaP89n2eCBNui7MSTAj8Y5PvVZ?=
- =?us-ascii?Q?kIG2X6L4UTQU0HgInWO4uYTRX2aQLQs9Zx8SuX4qtYZ1F+L3UosRkDS+fFho?=
- =?us-ascii?Q?ykl2RMXypXtbr33+wLoYom1WPlDLl9wCcK+CttLnMW2ZVTg7i+DTqkyIHOXE?=
- =?us-ascii?Q?El1D28H12nFLJpsUO/LKtVXjCo0IDoRwrtbZOQbUCB4sDCM1GFAGz7n6OFRO?=
- =?us-ascii?Q?naGviCmxfYnPbJLYQ/EnxVWLdJ9redHbxQIlKv1IMICX7+0gN6/UfTXBoUif?=
- =?us-ascii?Q?bPhajxw6+a3Vk9yxGLuxRHBsK29zaOX9Xe5FCI6Sp0DjlCg9vapHmccrNR+s?=
- =?us-ascii?Q?JU8ad8/SHqSzOzd8fRAbLDVIDpM3MU97Tz7AupDYxaKk6qKceOhnQvm5sPVL?=
- =?us-ascii?Q?f/BmlPZsw121mkDTduA+7Dip9dDLR1IsKpPm6X32qHXoKaC1YrRetBwbfkaO?=
- =?us-ascii?Q?3qom/ESyjYwJpDpt1cTbCUpA26/rTHWAgbja3lWo8Efo26RvBp0dt+ZGkwOp?=
- =?us-ascii?Q?EgLNqJy8t3Au7XdvQF8wMku77BGYqHsfcQJxetMFAc1uSKaouK7mm7K3dBb4?=
- =?us-ascii?Q?WHCGhKMXczT5N3y4GSchDrf/7h6ZjlufOtmmbBwAmQuWN6bunYLCFdWLCpMt?=
- =?us-ascii?Q?ZuRvry3a4Bq1AU0joMg5vt4pztIY++b7SgZ6rw9zTYYnRCdBtesL5SUB2dfc?=
- =?us-ascii?Q?2rb7dzm+jSELdVeL1Zhy1riOO1bZilJfbU81RjFGvIK757t0/VuvbYvY8dME?=
- =?us-ascii?Q?ilDIsxze9LIUcLTAGmK7j4Qn5VVw3Alrure9fh/ZFNs9C8Eo7i7nLjamAK64?=
- =?us-ascii?Q?YZwaryIb4OIgpvCzdUJYU32YvSYkq/l2NtnEgMNAqX0lDuDSLckAed0frkj/?=
- =?us-ascii?Q?xAun6ItELIfqUhpTG++3S62nFdE/4/Bsb0HHLRuaeocOqkGO+ZEq0jVMIkKB?=
- =?us-ascii?Q?Gqcs2Q7JQP01JvNR4ifpem1/Ln7fkvN8/XhVOH397AmPqvyay/PDHTi2Huyi?=
- =?us-ascii?Q?NFxO9lyiOhDK4nY65LqdvP7eQA8dOlcXf9QgdEhZ8c8XkRc2TRM1RWWAZySf?=
- =?us-ascii?Q?r5USodOmJsMs6gbE6Q0O+qHfIMI23kTs+xlb54SrcHj7HMRtRK6a7GoMYGyb?=
- =?us-ascii?Q?pidH0ZJ3mg=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 886673c2-6e71-42d2-7863-08de6fc55ee8
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 14:44:22.5513
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0zfNBjzFwKL7m/u1/LkfHDPE3bv49F/LtcxIa9BAlUePnxYkU6eJ7gCsG1g5jaiCBTHsNcH1snifcxgajjqMGw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2583
+Mime-Version: 1.0
+References: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
+ <20260130-gpuvm-rust-v4-2-8364d104ff40@google.com> <DGJ0LNG3KO1N.35V3YXBLS6IT1@kernel.org>
+Message-ID: <aZciCO2yZx1pIqsD@google.com>
+Subject: Re: [PATCH v4 2/6] rust: helpers: Add bindings/wrappers for dma_resv_lock
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Lyude Paul <lyude@redhat.com>, 
+	Asahi Lina <lina+kernel@asahilina.net>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On 2026-02-19 09:12, Alice Ryhl wrote:
-> The 'static bound is required by all irq handlers, so it is simpler to
-> specify it on the trait declaration instead of repeating it every time
-> the trait is used as a where clause. Note that we already list Sync on
-> the trait bound for the same reason.
+On Thu, Feb 19, 2026 at 03:40:20PM +0100, Danilo Krummrich wrote:
+> On Fri Jan 30, 2026 at 3:24 PM CET, Alice Ryhl wrote:
+> > From: Asahi Lina <lina+kernel@asahilina.net>
+> >
+> > This is just for basic usage in the DRM shmem abstractions for implied
+> > locking, not intended as a full DMA Reservation abstraction yet.
+> >
+> > Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+> > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > Reviewed-by: Janne Grunau <j@jannau.net>
+> > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> > Taken from:
+> > https://lore.kernel.org/all/20251202220924.520644-3-lyude@redhat.com/
+> > with __rust_helper added.
+> > ---
+> >  MAINTAINERS                     |  1 +
+> >  rust/bindings/bindings_helper.h |  1 +
+> >  rust/helpers/dma-resv.c         | 14 ++++++++++++++
+> >  rust/helpers/helpers.c          |  1 +
+> >  4 files changed, 17 insertions(+)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 618becae72985b9dfdca8469ee48d4752fd0ca41..8d44728261ffa82fc36fa0c5df3b11a5bfb4339b 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -7467,6 +7467,7 @@ L:	rust-for-linux@vger.kernel.org
+> >  S:	Supported
+> >  W:	https://rust-for-linux.com
+> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+> > +F:	rust/helpers/dma-resv.c
+> >  F:	rust/helpers/dma.c
+> >  F:	rust/helpers/scatterlist.c
+> >  F:	rust/kernel/dma.rs
 > 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> That's fine for me in general, but maybe the DMA BUFFER SHARING FRAMEWORK is
+> probably the correct place. DMA BUFFER SHARING FRAMEWORK is also under the DRM
+> umbrella, so we should also add it to the drm-rust entry as well.
 
-Thanks, this is much cleaner.
+Sumit, Christian, are you ok with listing this under DMA BUFFER SHARING
+FRAMEWORK?
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-
-Best,
-Gary
-
-> ---
-> Follow up to:
-> https://lore.kernel.org/all/20260214092740.3201946-1-lossin@kernel.org/
-> ---
->  rust/kernel/irq/request.rs | 28 +++++++++++-----------------
->  1 file changed, 11 insertions(+), 17 deletions(-)
-> 
-> diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
-> index 
-> 2ceeaeb0543a4ef0d4f25ca600dc4770f97085c5..e207707156094b1bbf1af0292cff8ed27ea64207 
-> 100644
-> --- a/rust/kernel/irq/request.rs
-> +++ b/rust/kernel/irq/request.rs
-> @@ -27,7 +27,7 @@ pub enum IrqReturn {
->  }
-> 
->  /// Callbacks for an IRQ handler.
-> -pub trait Handler: Sync {
-> +pub trait Handler: Sync + 'static {
->      /// The hard IRQ handler.
->      ///
->      /// This is executed in interrupt context, hence all corresponding
-> @@ -45,7 +45,7 @@ fn handle(&self, device: &Device<Bound>) -> IrqReturn 
-> {
->      }
->  }
-> 
-> -impl<T: ?Sized + Handler, A: Allocator> Handler for Box<T, A> {
-> +impl<T: ?Sized + Handler, A: Allocator + 'static> Handler for Box<T, 
-> A> {
->      fn handle(&self, device: &Device<Bound>) -> IrqReturn {
->          T::handle(self, device)
->      }
-> @@ -182,7 +182,7 @@ pub fn irq(&self) -> u32 {
->  ///
->  /// * We own an irq handler whose cookie is a pointer to `Self`.
->  #[pin_data]
-> -pub struct Registration<T: Handler + 'static> {
-> +pub struct Registration<T: Handler> {
->      #[pin]
->      inner: Devres<RegistrationInner>,
-> 
-> @@ -195,7 +195,7 @@ pub struct Registration<T: Handler + 'static> {
->      _pin: PhantomPinned,
->  }
-> 
-> -impl<T: Handler + 'static> Registration<T> {
-> +impl<T: Handler> Registration<T> {
->      /// Registers the IRQ handler with the system for the given IRQ 
-> number.
->      pub fn new<'a>(
->          request: IrqRequest<'a>,
-> @@ -261,10 +261,7 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> 
-> Result {
->  /// # Safety
->  ///
->  /// This function should be only used as the callback in 
-> `request_irq`.
-> -unsafe extern "C" fn handle_irq_callback<T: Handler + 'static>(
-> -    _irq: i32,
-> -    ptr: *mut c_void,
-> -) -> c_uint {
-> +unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: 
-> *mut c_void) -> c_uint {
->      // SAFETY: `ptr` is a pointer to `Registration<T>` set in 
-> `Registration::new`
->      let registration = unsafe { &*(ptr as *const Registration<T>) };
->      // SAFETY: The irq callback is removed before the device is 
-> unbound, so the fact that the irq
-> @@ -288,7 +285,7 @@ pub enum ThreadedIrqReturn {
->  }
-> 
->  /// Callbacks for a threaded IRQ handler.
-> -pub trait ThreadedHandler: Sync {
-> +pub trait ThreadedHandler: Sync + 'static {
->      /// The hard IRQ handler.
->      ///
->      /// This is executed in interrupt context, hence all corresponding
-> @@ -319,7 +316,7 @@ fn handle_threaded(&self, device: &Device<Bound>) 
-> -> IrqReturn {
->      }
->  }
-> 
-> -impl<T: ?Sized + ThreadedHandler, A: Allocator> ThreadedHandler for 
-> Box<T, A> {
-> +impl<T: ?Sized + ThreadedHandler, A: Allocator + 'static> 
-> ThreadedHandler for Box<T, A> {
->      fn handle(&self, device: &Device<Bound>) -> ThreadedIrqReturn {
->          T::handle(self, device)
->      }
-> @@ -403,7 +400,7 @@ fn handle_threaded(&self, device: &Device<Bound>) 
-> -> IrqReturn {
->  ///
->  /// * We own an irq handler whose cookie is a pointer to `Self`.
->  #[pin_data]
-> -pub struct ThreadedRegistration<T: ThreadedHandler + 'static> {
-> +pub struct ThreadedRegistration<T: ThreadedHandler> {
->      #[pin]
->      inner: Devres<RegistrationInner>,
-> 
-> @@ -416,7 +413,7 @@ pub struct ThreadedRegistration<T: ThreadedHandler 
-> + 'static> {
->      _pin: PhantomPinned,
->  }
-> 
-> -impl<T: ThreadedHandler + 'static> ThreadedRegistration<T> {
-> +impl<T: ThreadedHandler> ThreadedRegistration<T> {
->      /// Registers the IRQ handler with the system for the given IRQ 
-> number.
->      pub fn new<'a>(
->          request: IrqRequest<'a>,
-> @@ -483,7 +480,7 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> 
-> Result {
->  /// # Safety
->  ///
->  /// This function should be only used as the callback in 
-> `request_threaded_irq`.
-> -unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler + 
-> 'static>(
-> +unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler>(
->      _irq: i32,
->      ptr: *mut c_void,
->  ) -> c_uint {
-> @@ -499,10 +496,7 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> 
-> Result {
->  /// # Safety
->  ///
->  /// This function should be only used as the callback in 
-> `request_threaded_irq`.
-> -unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler + 'static>(
-> -    _irq: i32,
-> -    ptr: *mut c_void,
-> -) -> c_uint {
-> +unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler>(_irq: i32, 
-> ptr: *mut c_void) -> c_uint {
->      // SAFETY: `ptr` is a pointer to `ThreadedRegistration<T>` set in 
-> `ThreadedRegistration::new`
->      let registration = unsafe { &*(ptr as *const 
-> ThreadedRegistration<T>) };
->      // SAFETY: The irq callback is removed before the device is 
-> unbound, so the fact that the irq
-> 
-> ---
-> base-commit: a58b8764aed9648357b1c5b6368c9943ba33b7f9
-> change-id: 20260219-irq-static-on-trait-5b267c7a4375
-> 
-> Best regards,
+Alice
