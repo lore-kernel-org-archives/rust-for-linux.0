@@ -1,96 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCF93191BB;
-	Thu, 19 Feb 2026 14:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6931EB9E1;
+	Thu, 19 Feb 2026 14:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771512025; cv=none; b=cDO8oQLqQm/0FxmvBkkvyytX7oF8FiJ/1i+gyMmHnBg7XxKW4av8w5eD1fkrQGf/Gnt/pFIrQuqow5jNaCqu51zstPFyDuM3pFXJYb7HMEnQhgpiVGXC/2bTcKQTZUaZumD7Sjl1ju3Z7iDU8XnSQdbZ94oXyCN2pfuqJqKJcZI=
+	t=1771512028; cv=none; b=NFPPw3w+7Xxd5GBfPcw8Ez0PID/uTR0E6tbTcJbEniM53qR0mP6DnHIkXzczwrKw2pfgGukyc8aG/EvPEd/JpC5cXiPOkFvJYZZeJ7fSZxRROplDGp17K8KAsSq1yOolFF94ueWwKplgA7jkvUlrQrMs6OJJM6qAV7tEyxuveoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771512025; c=relaxed/simple;
-	bh=+mWop+SGGQtuAmErfrJzTJmQkk1/L/C3KS2AgGyoXZc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=SljB6Y+fMJdoC6SuCPX2ka6bPmsAzKUSLbtEHiycPE2D9ZYlWk3UaXqD4w8JTu3st1TOAjU0nMqe5Q71to7y3k1D+R0qPnGtaAL7l2smmuY25T/Ev1NVUQkC8pnKhwBctjFr6cKWe0/ABrtBuwt2TZgiu3JHJHLnwEz323H+5zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MoY/i30f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771512028; c=relaxed/simple;
+	bh=OPHHr3yx9B9GJpe9JF2InVCGHbzzW/H0JaXbZAaUPhI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bf2b/zYeylqTMsPm8KDfLuwXefS5lori4u9Z3tnZ4HcS3cERzRNqDMVaTn+vuN+c0l+l/N7CjoYTvQJjSolpqFgCvBLNpWzS01EI5eJVIx/5oKnehqwjdzJo1FFUnw5KIRFPdyG5gZEjOSPsRK2hxGHX2oTv/J/2XaX0t4GSZgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IU/s+go8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MoY/i30f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDFDC4CEF7;
-	Thu, 19 Feb 2026 14:40:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771512024;
-	bh=+mWop+SGGQtuAmErfrJzTJmQkk1/L/C3KS2AgGyoXZc=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=MoY/i30fOkwRavStwnW2hKd0VBKt538Ome4n/uhfJa2p/7ilnAT001jdk9zIJZCTD
-	 MlxXqosMVae1O0ATFtxFy5eDAHnxd5y88AaV62zFDruqjfSvtsv6dONYVqqTL1DdHy
-	 fiavA8w2cVQUbS2zyZAjMQEl5hayM5k5JJ3l5eE7vHBDCR+FlWMh3pHfST0TT9Cwt1
-	 xmMB6okl/zwtJozEfUKFPQM4pLNic6YXxW1wpgQ0bYLWJ04IBvVHEP9MVOaihQTut3
-	 HmpDjvMGINDxbFP0Vb4tO/uy9WglTDR9WCXDOit4rSSzBuTA1yZJpu7smtylMqHEKZ
-	 W+gbJLsd3sNag==
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IU/s+go8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7670C116D0;
+	Thu, 19 Feb 2026 14:40:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771512028;
+	bh=OPHHr3yx9B9GJpe9JF2InVCGHbzzW/H0JaXbZAaUPhI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IU/s+go8GuvUjzTrJNg1E25yPSossDIdGq0aavjBTp3xkty2MDXeCxyg7W+mzJYFe
+	 npy1j0rQveiiHCQwVWCsQpGis5aoobefhG/uvYKzN1lxz1B1GrVI0UpBO/j57kI03B
+	 eFs5eFgI2AaI4S4cXzt/S1fwnSTU0HQlD6AL9Ais=
+Date: Thu, 19 Feb 2026 15:40:25 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, dan.j.williams@intel.com,
+	Alistair Francis <alistair23@gmail.com>, bhelgaas@google.com,
+	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org,
+	linux-pci@vger.kernel.org, Jonathan.Cameron@huawei.com,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	alex.gaynor@gmail.com, benno.lossin@proton.me, boqun.feng@gmail.com,
+	a.hindborg@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	tmgross@umich.edu, ojeda@kernel.org, wilfred.mallawa@wdc.com,
+	aliceryhl@google.com, Alistair Francis <alistair.francis@wdc.com>,
+	aneesh.kumar@kernel.org, yilun.xu@linux.intel.com, aik@amd.com
+Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
+Message-ID: <2026021944-material-hardhat-c508@gregkh>
+References: <20260219124313.GE723117@nvidia.com>
+ <20260219124119.GD723117@nvidia.com>
+ <aZcbBt7OmNeH3oA0@wunner.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Feb 2026 15:40:20 +0100
-Message-Id: <DGJ0LNG3KO1N.35V3YXBLS6IT1@kernel.org>
-Subject: Re: [PATCH v4 2/6] rust: helpers: Add bindings/wrappers for
- dma_resv_lock
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, "Janne Grunau" <j@jannau.net>, "Matthew
- Brost" <matthew.brost@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, "Lyude Paul" <lyude@redhat.com>, "Asahi
- Lina" <lina+kernel@asahilina.net>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
- <20260130-gpuvm-rust-v4-2-8364d104ff40@google.com>
-In-Reply-To: <20260130-gpuvm-rust-v4-2-8364d104ff40@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZcbBt7OmNeH3oA0@wunner.de>
 
-On Fri Jan 30, 2026 at 3:24 PM CET, Alice Ryhl wrote:
-> From: Asahi Lina <lina+kernel@asahilina.net>
->
-> This is just for basic usage in the DRM shmem abstractions for implied
-> locking, not intended as a full DMA Reservation abstraction yet.
->
-> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Reviewed-by: Janne Grunau <j@jannau.net>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Taken from:
-> https://lore.kernel.org/all/20251202220924.520644-3-lyude@redhat.com/
-> with __rust_helper added.
-> ---
->  MAINTAINERS                     |  1 +
->  rust/bindings/bindings_helper.h |  1 +
->  rust/helpers/dma-resv.c         | 14 ++++++++++++++
->  rust/helpers/helpers.c          |  1 +
->  4 files changed, 17 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 618becae72985b9dfdca8469ee48d4752fd0ca41..8d44728261ffa82fc36fa0c5d=
-f3b11a5bfb4339b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7467,6 +7467,7 @@ L:	rust-for-linux@vger.kernel.org
->  S:	Supported
->  W:	https://rust-for-linux.com
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-=
-core.git
-> +F:	rust/helpers/dma-resv.c
->  F:	rust/helpers/dma.c
->  F:	rust/helpers/scatterlist.c
->  F:	rust/kernel/dma.rs
+On Thu, Feb 19, 2026 at 03:15:34PM +0100, Lukas Wunner wrote:
+> On Thu, Feb 19, 2026 at 08:41:19AM -0400, Jason Gunthorpe wrote:
+> > > It has turned out to be super convenient to expose the 8 slots with
+> > > certificate chains in sysfs for direct examination with openssl and
+> > > similar tools, without having to go through netlink.
+> > 
+> > Honestly, I'm reluctant to add permanent sysfs uAPI just for temporary
+> > debugging. Put it in debugfs.
+> 
+> Exposure of the certificates in the SPDM slots is not for debugging,
+> it's just super convenient for day-to-day use.
+> 
+> > Having to find/remember some baroque openssl command line with a
+> > million options is not reasonable for a production kind of
+> > environment.
+> 
+> Personally I find something like the following neither baroque nor
+> unreasonable:
+> 
+>   # What's the certificate chain in slot0?
+>   openssl storeutl -text /sys/bus/pci/devices/0000:03:00.0/certificates/slot0
+> 
+>   # Fingerprint of root cert in slot0, does it match what vendor claims?
+>   openssl x509 -fingerprint -in /sys/bus/pci/devices/0000:03:00.0/certificates/slot0
+> 
+>   # Looks good, let's trust it:
+>   keyctl padd asymmetric "" %:.cma < /sys/bus/pci/devices/0000:03:00.0/certificates/slot0
 
-That's fine for me in general, but maybe the DMA BUFFER SHARING FRAMEWORK i=
-s
-probably the correct place. DMA BUFFER SHARING FRAMEWORK is also under the =
-DRM
-umbrella, so we should also add it to the drm-rust entry as well.
+As much fun as it is to abuse sysfs, please, let's not do this there.
+You just did something that could have changed the device between
+storing, checking and then trusting it as the device is never guaranteed
+to remain the same across multiple calls to sysfs (i.e. yanked out and
+another added.)
+
+So let's not design in a security issue from the start please :)
+
+thanks,
+
+greg k-h
