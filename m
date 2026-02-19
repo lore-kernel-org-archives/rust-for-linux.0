@@ -1,53 +1,53 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FDF33AD9A
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 13:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C978D33EAE6
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 13:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771509162; cv=none; b=aV86RCJIwQT6RtN9hZ5QPrUl3PNrZ+qwiHFeeeXqfGwOKU4bcjxYn6/cJ4ahvMCouoZZGATlrOOLdMQt1eC4Ku4I0/xBTa8IM9bOtVjIy2Ll21GJARet/BRYfFJ9NekJcXfIY0lvOnTD0MnXEEd+hTVe76B23UwXZyxRipdG21E=
+	t=1771509164; cv=none; b=SEZ1QtPa8Yr4CFggDBdCN3xiZcrJNhf1EvwBKW+sDcK45ZKKK6OphjSXv7k1PQEBwE29WSxacMhh4tguPSuJ4bI86/bv/WkqeFCGuZMoKMYl0WZ0CnMpIUD4+b95U126VIi+49JeVWjYj/Yzxw8L32kOMkOJoCIG8h0oudjNUoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771509162; c=relaxed/simple;
-	bh=mWee6xZrNfTmTG2KRqcPJ0MteR3hR2HE+2W5ZnHhDC8=;
+	s=arc-20240116; t=1771509164; c=relaxed/simple;
+	bh=SFMND3DEeve6tpPjD7rNtzhxS/T9UUw/nJs8W9yZZls=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=O+QuKeQtiD0qHSZDyaTBWgGrmh60NZkOOluo1hMpFggQGYSNfR13V0QLsFAFOIyb2c9mg4+Wbb28MIrxtGl/BUTLTeRDgFO9uoknrmmwKX3dmIGrSYMr+ONBCQWNu/nCjQ3qG0kHXbLYiBwQiQo8BrzgvNQ75nkQUypg+3DjZaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4iS6DbEy; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=QmckeC/VrcUHnbut2zoXOurVHDy+siKq6k8vs9d6BmVjKzat/rBdrLLSR87WBKPHBanRG4GB+WS1HmUPxhbs1vty1J1MSmynvqqap0w313hKdOA9jf5dDGzuV6EjS68p+/3IAn+7PsHlKwkNg3qOH6rehrVT9iXF9vthB5HATDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Msc0Oc6n; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4iS6DbEy"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48069a43217so8885125e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 05:52:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Msc0Oc6n"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-435ab907109so677041f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 05:52:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771509160; x=1772113960; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771509161; x=1772113961; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9/dw7/PhVES54kaBIEy1CnzvyX9MJDcWWxJs4k9jghM=;
-        b=4iS6DbEyRXTYi5lfzyRRXGf2kPfzEihmNXDXkZQG5hOcCD+L3SI/VMLADqWAulQglw
-         rDvRZZGiQidPqF3Ig9Kbso+NO4h7E3QS2D/02J+yTLokRBsEtNKYqUCBrUpgK2/ujBX4
-         TKi0nO1UYp+hCC6Fv+bpMeIhTxqjzMvU1xedSbPtwfDGCY4nUM//lenQvBT2bNxMJlTg
-         2IJ8ScvUEceQoIjd1P4RIUmMps0yg3EBsJjCvbkgd7GFyHq3iiW7tg7zg2nJKcjBQJy+
-         qH3ec/WTZgrclLLn4mcCJdHdfGN5J0PdCl88uKmx/d5ZRIX2NqHL1Chd0BuxhbKOs6Vx
-         uCFQ==
+        bh=+RWjqSlp/CcvrD7GGLBgDCctAadn05McnuJql7rDrfs=;
+        b=Msc0Oc6nILfLUiY5zFTD6iEkiHeLXqFmGntK5FKbh9q4j5xrchjNS/Ljt8kCc7AqK8
+         jWtIJCIUOFoIoU4PvmIIPxDk3Y4cbj02Apr8JWdQ9l7wynzee4sxSJ0SCKxPJnX3KjiG
+         3SYo1wWt34qlKotd39nUQrDrQ9GCaadrj7Jy93cxBrtEtY3TOgpqMaMc0FYepR31QM2Q
+         Y8a3BmDBL+ReO0NNXToI8gtQ/ZHeveqriHEkk6BwQ6znG3dX/PTYzvuODpiFyX5rx7hC
+         mahVhcaSAoqctXN5azy4AUXYJrPcp2sSmTLlYm8ID8UGVZ3ptQlyl766FbzX0nZMQj5g
+         xuGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771509160; x=1772113960;
+        d=1e100.net; s=20230601; t=1771509161; x=1772113961;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9/dw7/PhVES54kaBIEy1CnzvyX9MJDcWWxJs4k9jghM=;
-        b=QtecuHpTbnVzdaQvF7p1c5LMe406xs8+YIh4Fo40I5gYwk0J2ARO5MXl1vRHjn6ngq
-         0PiDUYpCjILa4YWfKXwCoeRrYHuvdREkxWIvSWWPa/8ZIl/zQSIThjsrsZbnwaWM0kFe
-         KlmKDKmosv/RJKVmK6C2zuFXgSLS5GSSq+VUwyZnbOSoDPcOFGh5dkkYJgPmLjxO3U5s
-         SJX4mnO9YZsFk6Fe6Wcc9NpGbNTjGuRQIXcgCOxoHJ4KpA6qcBH/+1JePVCJ78J+NM04
-         phOV3PqAAoQFBHtMeqbUXlyTQUbNh5aYmtm9bt3FolnBLoVgXuS2VMXp+9FDRKQ+Eox7
-         7YfA==
-X-Gm-Message-State: AOJu0YwNNcTTVKi/Q5wwb4eQ7OiHlrXfTfQ2q+vyfJalRk9i0yAOiy9P
-	OdQbupMsnqaCYIrT29WBgougPLuGUZ8dv+q5qQK634Lvsw2Sc/McOyS5LCtCA2WICjQGZfEem/h
-	BinADAmsyy9sJnH5qug==
-X-Received: from wmdp17.prod.google.com ([2002:a05:600c:5d1:b0:483:291c:7f23])
+        bh=+RWjqSlp/CcvrD7GGLBgDCctAadn05McnuJql7rDrfs=;
+        b=s2qeQmgSL6EIZyZct9cw1jo3YIT/VYuy+eO4szdUfCWD5yScyMVTn+gVs4oSFrJGmN
+         faxCXJpp9+TKdC89OaStGdczMQ3enFO7cajAiuC3+F7AZJ7OdblG28Xif7TcJqTiHmzu
+         jpuCCEPW/Is+yYaC+vaLUelvyxWCCMX5L5Bva7e6uYx0BbNXaRjGiDYetQKnxRlE8Fh6
+         p5LDbI+Vl7FuT4R49c2TckEgz63+aQDPa0bsmYlWPDeBSOVTS/0oX5f/CGImhx+xeX3f
+         Ux4nrweQw4Zcts+iVFVgABfvQPfvHYWsl9esT8LLiqvOB+WdW+Gdxv/Isw180UnF+cbv
+         DtVw==
+X-Gm-Message-State: AOJu0YwpbFN1O32/mx+FFTqXo+6Ox9yoR2K54LYPON8zXun6weqn9qbN
+	KQT3wJV1g0TFw+nPie2gldXiG7gP9B1yRFne5QoTB64R23ZnYN3XCH4WcXc97w01kWwiKgyPrKP
+	savCz39JZqCEiUcyA4g==
+X-Received: from wmot5.prod.google.com ([2002:a05:600c:4505:b0:479:2d82:5535])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:548e:b0:480:6dff:e786 with SMTP id 5b1f17b1804b1-48379bff816mr295884705e9.37.1771509159855;
- Thu, 19 Feb 2026 05:52:39 -0800 (PST)
-Date: Thu, 19 Feb 2026 13:52:35 +0000
+ 2002:a05:600c:6091:b0:477:df7:b020 with SMTP id 5b1f17b1804b1-4839e661d1bmr49574975e9.18.1771509161001;
+ Thu, 19 Feb 2026 05:52:41 -0800 (PST)
+Date: Thu, 19 Feb 2026 13:52:36 +0000
 In-Reply-To: <20260219-close-fd-check-current-v1-0-fcab8d8469f5@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -57,22 +57,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260219-close-fd-check-current-v1-0-fcab8d8469f5@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=831; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=mWee6xZrNfTmTG2KRqcPJ0MteR3hR2HE+2W5ZnHhDC8=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplxWjLZnhuH1LUcU6+gseK6xv/kT5aqHcma7R8
- J5Kyudt5K2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZcVowAKCRAEWL7uWMY5
- RiVSD/sHrBtkt90WXfWzafS0bwjeOdEY8LOF29cEgZ2p/2F+Vmg54NPY1UW5p68t8vSU7Geh/V7
- wbPEgObFCQndSeqOKValgBrWP1bwLDlGi2TK6aVC2uYpLmW500iSs++AshkllV2BWMdL7/oc2Hx
- ldhLl7LHZaqcOpimJv5pO53y9STMfQg2Jc5Gjd79CrMq+CTY2XJKeVG6pYFkv9gbEysDbYfHKcJ
- GrEQOnQFoqsHbrndDpGS5Qhpnx81zgL5cAetm43m+DRRfi8FP909j1/viwrBO08kbYDgxQ314H9
- QYMFakXCTmDcb9X2XFwMoWMaLjbePb3Vhc17SUR+juCG8gmTCxaA1b+lqze8hthN4lnL1tF6oLg
- ovF50wJse03fssYePt0vP9Jtvq58sHRVb6aySocZRtRA+eBiSKMZXsignZ0Ba8u9HMDwwhfszA/
- DKYe1uypskkohonxHeFBhPAoDCCCj9qJmeKx1+ZdoxK7gQGJX5mA2SuPKstNJuJA56i5Zfcgxwk
- cZuOdlcgW7C1Ee79xJoWpX2Ar9o3+tUE1tKzprwM+qnfXqD0dJW2LTFWqwQLL3bR84v0vO6EIms
- 7EICXVHzUw1rjVnpUAoe6jqRmqvITyEZvBrN4gP7ELKy7ZUA2cGsi9oTYJ6ciosLXzu5sG01NDX cz4DNsmgtbhX1/g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1598; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=SFMND3DEeve6tpPjD7rNtzhxS/T9UUw/nJs8W9yZZls=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplxWkA+Ihi+Yc9Z3Fxz9v5/2YwOZ5viDpD9505
+ zYQX1qhT/WJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZcVpAAKCRAEWL7uWMY5
+ RhkFEACmpbY8rMAYA/fYuRbPx9LtxpK1m31BC8sOD28hpemY7FWllIIT5iZ/KKyy/9hxzXk+ouW
+ iEDilT0cCZF2+qBueQp1DFggHu3P/zdNM0uhn/Pug+mvU+xFOWCT1sNMiOmRCQa0DU650IroPxb
+ JqLN3uhK0VzoNy3XUgjlFu8YbQx01vOkY2CmZ+pHPc+2C4hORack6zyhDmcPYnooI+F4uZXPASW
+ RVHiS9erppItcbIbY4xjUUOEdRxUrugDwgdI7E7tqPtnQ6zazWHLMGAeRJiCsszDhL9tigrgMLu
+ Brho5rG/hBVSAwvYNfl2FQxLxPYKrt3hD5QCfbne2I5j9vJtH9kBKcPwS/FIgM1T8WxT71ztpG8
+ 3dBPOJjvXcRhtMETEQV9in3oq5vEoLJ2wEec+iRLHlKqP3rL/quT6FeB3x5twQkWBOjtDFEJTnI
+ qoGsiq1pknaC3slqA1/4ll/n6iO05e8t13v1Sckj0TiUboTqCmGyFeJvaHTr/zCzb7lSNRG60i/
+ lUczaUlwN5euGi2+Suoj7fTdgf/yP+TFiRdTJE8A1Kn0Rl7ldQxsr5KCPSuHScLNBuqskkJ+HEi
+ kzQhENxyQlQNWkdYZezyxKWRjBOSysvROsikEVVo7SgmQsuSE/y0rMJRBV0Hmicbn5GoLh32xCz zWrBfjWe3B0R4Kw==
 X-Mailer: b4 0.14.2
-Message-ID: <20260219-close-fd-check-current-v1-2-fcab8d8469f5@google.com>
-Subject: [PATCH 2/3] rust: task: implement == operator for Task
+Message-ID: <20260219-close-fd-check-current-v1-3-fcab8d8469f5@google.com>
+Subject: [PATCH 3/3] rust_binder: check current before closing fds
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -80,37 +80,41 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@goo
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
+	Alice Ryhl <aliceryhl@google.com>, Jann Horn <jannh@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-It's useful to compare if two tasks are the same task or not. Rust
-Binder wants this to check if a certain task is equal to the group
-leader of current.
+This list gets populated once the transaction is delivered to the target
+process, at which point it's not touched again except in BC_FREE_BUFFER
+and process exit, so if the list has been populated then this code
+should not run in the context of the wrong userspace process.
 
+However, why tempt fate? The function itself can run in the context of
+both the sender and receiver, and if someone can engineer a scenario
+where it runs in the sender and this list is non-empty (or future Rust
+Binder changes make such a scenario possible), then that'd be a problem
+because we'd be closing random unrelated fds in the wrong process.
+
+Suggested-by: Jann Horn <jannh@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/task.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/android/binder/allocation.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index cc907fb531bceea6e8dc1175d9350bd24780a3d5..8834bf25cce5e7b7f48cd649c977eb92fbfb61e9 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -362,6 +362,14 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-     }
- }
+diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
+index 7f65a9c3a0e58e07a7e6d4e7d7b185f73fb1aab8..31a42738a99dd8118c21bb15635f54ddd748787e 100644
+--- a/drivers/android/binder/allocation.rs
++++ b/drivers/android/binder/allocation.rs
+@@ -260,6 +260,10 @@ fn drop(&mut self) {
+                 }
+             }
  
-+impl PartialEq for Task {
-+    fn eq(&self, other: &Self) -> bool {
-+        ptr::eq(self.as_ptr(), other.as_ptr())
-+    }
-+}
-+
-+impl Eq for Task {}
-+
- impl Kuid {
-     /// Get the current euid.
-     #[inline]
++            if self.process.task != kernel::current!().group_leader() {
++                // Called from wrong task, so do not free fds.
++                info.file_list.close_on_free.clear();
++            }
+             for &fd in &info.file_list.close_on_free {
+                 let closer = match DeferredFdCloser::new(GFP_KERNEL) {
+                     Ok(closer) => closer,
 
 -- 
 2.53.0.335.g19a08e0c02-goog
