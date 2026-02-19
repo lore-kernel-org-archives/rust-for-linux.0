@@ -1,53 +1,53 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5355133B6E6
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 13:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FDF33AD9A
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 13:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771509161; cv=none; b=EddlpoAmnADLWrD645EWtW0YQEqLfImBK03tQ7F7ZfQ65CAnOEcrVSupgMXOvq2NcBQD875Ah0LD3w5fmWie77nwbl3/+2JpI26whpgFQXRYhSB+giKVnocCTbcvvy0pvl6jydSobdUaVc2lSSaLY0ayHBSyf/TxhhrhOUexVAY=
+	t=1771509162; cv=none; b=aV86RCJIwQT6RtN9hZ5QPrUl3PNrZ+qwiHFeeeXqfGwOKU4bcjxYn6/cJ4ahvMCouoZZGATlrOOLdMQt1eC4Ku4I0/xBTa8IM9bOtVjIy2Ll21GJARet/BRYfFJ9NekJcXfIY0lvOnTD0MnXEEd+hTVe76B23UwXZyxRipdG21E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771509161; c=relaxed/simple;
-	bh=4JkND1FpXVW3ETByYdyu09j/paImfIwZMIzFFcN6Nck=;
+	s=arc-20240116; t=1771509162; c=relaxed/simple;
+	bh=mWee6xZrNfTmTG2KRqcPJ0MteR3hR2HE+2W5ZnHhDC8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=T0dFXC8k3RaURFpdp+zWFaHl8PuY+qGX/DWEjEFGtcNY+znVCaFJ5C6a8Lihlkslsto16bJ9XKCQsnrwcm+dIMBssvMACSDwFQjs7d3fZnAqLGJrY236cWtV00kvJRjlqB0q5KBQoBf3g3/Rf5Tx50jrLKPGH4VuetvE7N6ztWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1yaEIrFT; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=O+QuKeQtiD0qHSZDyaTBWgGrmh60NZkOOluo1hMpFggQGYSNfR13V0QLsFAFOIyb2c9mg4+Wbb28MIrxtGl/BUTLTeRDgFO9uoknrmmwKX3dmIGrSYMr+ONBCQWNu/nCjQ3qG0kHXbLYiBwQiQo8BrzgvNQ75nkQUypg+3DjZaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4iS6DbEy; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1yaEIrFT"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837b9913c9so8258025e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 05:52:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4iS6DbEy"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48069a43217so8885125e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 05:52:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771509158; x=1772113958; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771509160; x=1772113960; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/dntFHcpqkB/5crSkMLy+P+Y3QedvoFL3zjHA9Suyc8=;
-        b=1yaEIrFTQuBUe8cegb6Y3DyMWE6utU9brB7Yr1DOBXLhKd2LWDIHB02+doJwOaYDst
-         dHFeVgIdeh9WVZHpueRtiW1r7RSTAgIXXSUjLqIo7qHdWRZ7qxjQ2O0zETNmBH6KhGXy
-         5urB2R8QGThccw3LvQgqlLFEu1O45JQ3XECp2QzC5uEmsurv43srwXdsSiTMD3WfuEt0
-         wEOevOokISbhCe6X/D9c+mG9N0YRiHUWayJIff6joBaCNPGsozCAD3DCNquE9Lcsoj/2
-         XmIGivmP7rQXfAF2SxMHe78x8eAcgwNl8XxLohPAoG6isX3iRwKRo2awGd+NhiXIAM49
-         y49Q==
+        bh=9/dw7/PhVES54kaBIEy1CnzvyX9MJDcWWxJs4k9jghM=;
+        b=4iS6DbEyRXTYi5lfzyRRXGf2kPfzEihmNXDXkZQG5hOcCD+L3SI/VMLADqWAulQglw
+         rDvRZZGiQidPqF3Ig9Kbso+NO4h7E3QS2D/02J+yTLokRBsEtNKYqUCBrUpgK2/ujBX4
+         TKi0nO1UYp+hCC6Fv+bpMeIhTxqjzMvU1xedSbPtwfDGCY4nUM//lenQvBT2bNxMJlTg
+         2IJ8ScvUEceQoIjd1P4RIUmMps0yg3EBsJjCvbkgd7GFyHq3iiW7tg7zg2nJKcjBQJy+
+         qH3ec/WTZgrclLLn4mcCJdHdfGN5J0PdCl88uKmx/d5ZRIX2NqHL1Chd0BuxhbKOs6Vx
+         uCFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771509158; x=1772113958;
+        d=1e100.net; s=20230601; t=1771509160; x=1772113960;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/dntFHcpqkB/5crSkMLy+P+Y3QedvoFL3zjHA9Suyc8=;
-        b=evhuzLCKN/akzid1NlVWC4Cvci5e9FS+uiK2eacDMpG5bd5hbNKDybLJSV3+XLbr/N
-         +k03KXP1dMF9eLDlf+hQfAM8PedawT4QcKuORE6wWq0xifa/zOzj90G34nGkwp7uiZWw
-         yveHEE4dNU7OLl654IVVTzx1Uw62BK1cdKvviO/STMpmQE6Kw3vytwgiU5ayQAzxdhis
-         sYwyFd6Dq8jczcSgeMDwnUz2b0nu3Zzh4BLtWMkm6xvYX4OdEYQI5XJax5otmjN4bAYd
-         gwyiAjEf2ZMPslFQ+0dzh9PA/3jYeNvnB2wCtnzUGz7ULClLE0VUbi+oftySraK9GR74
-         H8Zg==
-X-Gm-Message-State: AOJu0YwSCeDVOHRug3ixmFfdI4ixP6NM/PzemnfjCzZXvQeGQDd3qBhY
-	nCIyaNEqZZOsYtxwJCQdo/ULQAY9WOrAeYZkZYrE6kJXmg1g3TV5iZoHZfmL43KEgrw/bLFLLSf
-	ZJHQD7ewlqMe+WhF4Jw==
-X-Received: from wmpe37.prod.google.com ([2002:a05:600c:4ba5:b0:481:a662:2ac8])
+        bh=9/dw7/PhVES54kaBIEy1CnzvyX9MJDcWWxJs4k9jghM=;
+        b=QtecuHpTbnVzdaQvF7p1c5LMe406xs8+YIh4Fo40I5gYwk0J2ARO5MXl1vRHjn6ngq
+         0PiDUYpCjILa4YWfKXwCoeRrYHuvdREkxWIvSWWPa/8ZIl/zQSIThjsrsZbnwaWM0kFe
+         KlmKDKmosv/RJKVmK6C2zuFXgSLS5GSSq+VUwyZnbOSoDPcOFGh5dkkYJgPmLjxO3U5s
+         SJX4mnO9YZsFk6Fe6Wcc9NpGbNTjGuRQIXcgCOxoHJ4KpA6qcBH/+1JePVCJ78J+NM04
+         phOV3PqAAoQFBHtMeqbUXlyTQUbNh5aYmtm9bt3FolnBLoVgXuS2VMXp+9FDRKQ+Eox7
+         7YfA==
+X-Gm-Message-State: AOJu0YwNNcTTVKi/Q5wwb4eQ7OiHlrXfTfQ2q+vyfJalRk9i0yAOiy9P
+	OdQbupMsnqaCYIrT29WBgougPLuGUZ8dv+q5qQK634Lvsw2Sc/McOyS5LCtCA2WICjQGZfEem/h
+	BinADAmsyy9sJnH5qug==
+X-Received: from wmdp17.prod.google.com ([2002:a05:600c:5d1:b0:483:291c:7f23])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:46c7:b0:483:7ce6:1efb with SMTP id 5b1f17b1804b1-4839e6614c4mr42385265e9.17.1771509158453;
- Thu, 19 Feb 2026 05:52:38 -0800 (PST)
-Date: Thu, 19 Feb 2026 13:52:34 +0000
+ 2002:a05:600c:548e:b0:480:6dff:e786 with SMTP id 5b1f17b1804b1-48379bff816mr295884705e9.37.1771509159855;
+ Thu, 19 Feb 2026 05:52:39 -0800 (PST)
+Date: Thu, 19 Feb 2026 13:52:35 +0000
 In-Reply-To: <20260219-close-fd-check-current-v1-0-fcab8d8469f5@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -57,22 +57,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260219-close-fd-check-current-v1-0-fcab8d8469f5@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1257; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=4JkND1FpXVW3ETByYdyu09j/paImfIwZMIzFFcN6Nck=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplxWjlOM9j0uWGwX82m/HbXnv/pEb/CH+LuE9E
- rKdZKHWSwOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZcVowAKCRAEWL7uWMY5
- RsvWEACiLxND1kBa33oliayMGh7/gaVhLf2eXfsxrk/fXfCbOFxQoixBvJjoXct3FgiiL66TIrz
- cDv/YQRQMWT7Bw5djCbS8ORtHrZIuFd2hMo4fOy8V9wKni+gNWY5SilWBdnY50+qAX7rHfCXzz7
- qXNEOGfcOj0HE0c0H2zDuLGv7pwpW9qCJujLrFcdHsc6yN9OERwc8vwe5seUJLpWC24BjAdLu4C
- R6FtieVtADBxCtdWl3Z12wzhjzNP7srYPyQ2efSGEOrIuUE0XrCVB7KAJ1hnLSgXMRdhuTXcTAC
- xW2m1Z8aAYD+aRpTQlfuyIiJp5L/OG22C69QRMBizjIgAalcILpsnTksyY2/MOEx7pQUb6avJ7J
- PX1vgqaqpmp1upQCci7ErWLQ4sJ5bvIlkx80+wwH31F/q1ty9rCD10dgXmVYjk8oywU38p936gX
- H+56dt3np7YCc+8nfkAvfa6EXvQwL+dJ/HYdSrmU1yCQxKKk+ANfa0BC5o5iVW0VhdGSXMi7NlN
- X6mKQ1Q8bfjCtkCdhlQiydPm8ViJsrns7VnvrEe6qLqQVnFQ0OC7Z0PfG5TbEe8ciYxc7uG69hv
- wgCUFeH+LYle4hcL0ezSntqy5HYKPIzSMPZuPIHM3LDM7GeQMnhBibbiyR5a+X9rTk5ftM04uxi jGRZAIWSudX5BOA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=831; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=mWee6xZrNfTmTG2KRqcPJ0MteR3hR2HE+2W5ZnHhDC8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplxWjLZnhuH1LUcU6+gseK6xv/kT5aqHcma7R8
+ J5Kyudt5K2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZcVowAKCRAEWL7uWMY5
+ RiVSD/sHrBtkt90WXfWzafS0bwjeOdEY8LOF29cEgZ2p/2F+Vmg54NPY1UW5p68t8vSU7Geh/V7
+ wbPEgObFCQndSeqOKValgBrWP1bwLDlGi2TK6aVC2uYpLmW500iSs++AshkllV2BWMdL7/oc2Hx
+ ldhLl7LHZaqcOpimJv5pO53y9STMfQg2Jc5Gjd79CrMq+CTY2XJKeVG6pYFkv9gbEysDbYfHKcJ
+ GrEQOnQFoqsHbrndDpGS5Qhpnx81zgL5cAetm43m+DRRfi8FP909j1/viwrBO08kbYDgxQ314H9
+ QYMFakXCTmDcb9X2XFwMoWMaLjbePb3Vhc17SUR+juCG8gmTCxaA1b+lqze8hthN4lnL1tF6oLg
+ ovF50wJse03fssYePt0vP9Jtvq58sHRVb6aySocZRtRA+eBiSKMZXsignZ0Ba8u9HMDwwhfszA/
+ DKYe1uypskkohonxHeFBhPAoDCCCj9qJmeKx1+ZdoxK7gQGJX5mA2SuPKstNJuJA56i5Zfcgxwk
+ cZuOdlcgW7C1Ee79xJoWpX2Ar9o3+tUE1tKzprwM+qnfXqD0dJW2LTFWqwQLL3bR84v0vO6EIms
+ 7EICXVHzUw1rjVnpUAoe6jqRmqvITyEZvBrN4gP7ELKy7ZUA2cGsi9oTYJ6ciosLXzu5sG01NDX cz4DNsmgtbhX1/g==
 X-Mailer: b4 0.14.2
-Message-ID: <20260219-close-fd-check-current-v1-1-fcab8d8469f5@google.com>
-Subject: [PATCH 1/3] rust: sync: implement == operator for ARef
+Message-ID: <20260219-close-fd-check-current-v1-2-fcab8d8469f5@google.com>
+Subject: [PATCH 2/3] rust: task: implement == operator for Task
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -83,47 +83,34 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Rust Binder wants to perform a comparison between ARef<Task> and &Task,
-so define the == operator for ARef<_> when compared with another ARef<_>
-or just a reference. The operator is implemented in terms of the same
-operator applied to the inner type.
+It's useful to compare if two tasks are the same task or not. Rust
+Binder wants this to check if a certain task is equal to the group
+leader of current.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/sync/aref.rs | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ rust/kernel/task.rs | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-index 0616c0353c2b3b4d8b3be6c4b8156995a2f1d504..f56598a847e949b497f4cf2a05a7298a58a0ccef 100644
---- a/rust/kernel/sync/aref.rs
-+++ b/rust/kernel/sync/aref.rs
-@@ -170,3 +170,26 @@ fn drop(&mut self) {
-         unsafe { T::dec_ref(self.ptr) };
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index cc907fb531bceea6e8dc1175d9350bd24780a3d5..8834bf25cce5e7b7f48cd649c977eb92fbfb61e9 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -362,6 +362,14 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
      }
  }
-+
-+impl<T, U> PartialEq<ARef<U>> for ARef<T>
-+where
-+    T: AlwaysRefCounted + PartialEq<U>,
-+    U: AlwaysRefCounted,
-+{
-+    #[inline]
-+    fn eq(&self, other: &ARef<U>) -> bool {
-+        T::eq(&**self, &**other)
+ 
++impl PartialEq for Task {
++    fn eq(&self, other: &Self) -> bool {
++        ptr::eq(self.as_ptr(), other.as_ptr())
 +    }
 +}
 +
-+impl<T, U> PartialEq<&'_ U> for ARef<T>
-+where
-+    T: AlwaysRefCounted + PartialEq<U>,
-+{
-+    #[inline]
-+    fn eq(&self, other: &&U) -> bool {
-+        T::eq(&**self, other)
-+    }
-+}
++impl Eq for Task {}
 +
-+impl<T: AlwaysRefCounted + Eq> Eq for ARef<T> {}
+ impl Kuid {
+     /// Get the current euid.
+     #[inline]
 
 -- 
 2.53.0.335.g19a08e0c02-goog
