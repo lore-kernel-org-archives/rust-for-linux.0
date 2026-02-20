@@ -1,130 +1,123 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E213032D7F3
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 22:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252C932E121
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Feb 2026 00:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771541753; cv=pass; b=Eoe6mgEF6aetz5HBhx+raVq0FQh5sfzkVfm9Te6Mr7sRRYUBUEm4rON/kouCIwarRSU/4Z97vWYwvjx15uhqX2/2evK8IzcK2mX7FmEvgpzAmzpOPfXQH926ZXvMTJPB4iFiR2AS7Mhw2Ohw+H9ka6Y7ueePxfprwOUtVpL+lZ4=
+	t=1771545618; cv=pass; b=OmyspwNzRxT7cGwvjJa+s1e0/dBUFikFrGnoh/51x+IHRq2rPsGudhbNUe3zP/Z6OpGINiRaPKddzy1Eilf+1t5VV63ubZ8bTGYpw0D/VX6q1OKJqGzMCBdyQp3WYIFdphcXKHpqIYlVYSfzfRmpPDM44oaYMNHUfhAc6evX6WM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771541753; c=relaxed/simple;
-	bh=MZKjExKkSBJcIIP6vxJQ/Xoo58AUuTyIj/ALG55KVsk=;
+	s=arc-20240116; t=1771545618; c=relaxed/simple;
+	bh=d21yEhqfzh8zMrqUE1edOExxeM5FU/XoUziSunkEo6Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YlLvgWbctb5lCt6hn9YfnyTh//HrkIUZpzPW26vygNMZFhr2UFk5iCq0NACfLFT6BPVGuiUD/JB4zwyjoXijKGhH/gJxPlPEzTxTnM3NY0SkTQDQ1pJPJdhwqw64uIZ61+YXOmIoM1iY79dfKnmjj115fh3Z6zXdcTrxo4+i3rU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JfdON1pE; arc=pass smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=uymFEm95fecQEjyiafntF+R9fRQe04eqy/wRX0fI53rObjsvfDd/OeGK1pU7B9d61m6yMhhXvbPwXh8fmXDtVgtobztnB3kSWrs1A8FrxoAycbeKzOs63t2XhRn8sEPh/znHWYNoC7Q2EAq6xWa3sQBbTjY++h5FXrayEKx/wz4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=R88Y0q8z; arc=pass smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JfdON1pE"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12714f01940so125172c88.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 14:55:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771541751; cv=none;
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="R88Y0q8z"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c6c444e89bcso588026a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Feb 2026 16:00:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771545616; cv=none;
         d=google.com; s=arc-20240605;
-        b=C32CWGTBm+Zqo1gI1H5n5wzXI216Zb5HQWQlkigRgTS9WjbPW9XpzsErgZVD4Rxx2p
-         hRhZHzrjeHEIaG8AQhDABXPQheAf9qapnlZInN61j2zT0wAc5o7reOIUvuHfjcOHm8Yu
-         cNkdUYZDvZMeIgtPSUqPB0Nmz2SCAMNYDYAC4EpwCW461l9cckvwtSpged40Iz3I7nEm
-         3cpIwTxNmee7pD5jcHXgCO95wtN97SPN1mxa5tDDOEFZwLQOxxRj+NzeDEFhYVJMJHuT
-         i2jxg9aJViQR/oUIm1TEpdpOkW+EQMFCu2TolEyzYFZ6OA97Eppld39znba+RKAw5qY2
-         4amw==
+        b=b0c7SJCu7WYe9IRumzf1HzVBzlT+max6CSTJPPXOyc8+T9cFgM1JtfgvhqouqYDFW5
+         5oXdLI2XqTT4UWH0KeXG2PRdVGb2Z3B2cmRrZku/TxW+MpNdAsxsLaKDnNqUNJJ7ZDhP
+         RBuYHZc2nkMxWDv0MlyIu53nksPFP1y2DgCAgAGo5oMo94ckrXl/25eV0dkHMfYKfKtL
+         YWmxky0+LpadgqKDH7cxlbwevY/vrezpd6UAyD71Rc49NSnJzG7ZwjcD6lzIRsDTAMTo
+         +goTvP0z5o6N+7dOX88F4teCRwhai7i3Ce9YPIudo5blBvmp3OoFqGqyd1XqyH1N/4Yj
+         b9JQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=tzmFdsfq8MNx6L2xpTWEWoiPLvNts9kq7DaS1ogvM6k=;
-        fh=TUWYLmZENJ7HvtWTHEgx9E2twUhmYwFzyNk5vCpWFtY=;
-        b=jB33SUtwRf9kQYt0Vw1RYYKoXMzYk55n2tTMJGrNccDxig2xQS4t3zV0x5ywi3eQUV
-         gKcU8DA5wY+TAv6OLWKkafzXWe/eF5cP8WkMR/9AT2w55MAfLPNvrjWgdOr7qzcpwidP
-         s+r1JGf7Jw0CBs9b4haAeNNRs9eOdKejDGSnLUjMiPJIZJHO688vuQo+YikmYSrmM+Ro
-         cMbVFcSo47dKqOplXEiVDwi5jbh+bqucOQgckIKLjEHptvM/bsZ3JB+PxrFktrwduejX
-         EKwf2Q3jJ364lRggXRP1oeM0zJW2E9lzaY+tv6YNY3HrWw43zTR1wPmblBkWujMjJQxE
-         kVMQ==;
+        bh=o36/diJ36lG8KI3DZxLKNWURpWjbyhgAwYq0XhyOvXQ=;
+        fh=uU9SIoGvcOCepStEI2VstXxE2cgeNS/4ntvO/wuH5P0=;
+        b=QcjUepUJVNZy2BrG737bmp29/hY26uoOTAlBHTr7Avzl0t4054ln8KVdg/sUZseSfw
+         qV6H5yaquMEhjfPlpM3+bde6Xl157IiHSo92y9jtMutZAVTigSYTcKknBAWyzMs0Qq1e
+         e56MM7yfHSbB57RxkNXAhB2jfrUlCkwk37z/pIi87wkxz4zTXOlvBMJQNrs3ZTZ2Bx9O
+         Xgy562g1Jg9vqrkmJ1FspdQYH7J5PTM3zmNV68wDyB+f/kT4BHBWWHPFKncDpjjwUQBc
+         oGtriaSNhOHjUc5YmQvXSqJ8G0dveIbiUKMjE1yXoQsSKzhU+QYi3QpMyxzZTzpublvV
+         dw7Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771541751; x=1772146551; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1771545616; x=1772150416; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tzmFdsfq8MNx6L2xpTWEWoiPLvNts9kq7DaS1ogvM6k=;
-        b=JfdON1pEw6AnnnY24AAdkQSIWeYklEz6iE2WB2joEmcUDHHUchAKH7YnujEc290v+S
-         LpG4nctyScnAV7QQ8On7oNXzVYpwUeZkvzQdddHCk3SPAnPdpuYnIpMooOoPRJfzXuUH
-         ihW/wpqeSudOXok/16i3x4vEeJfX9TXcqTCNaPcxdPf5n0kpkZiSGLUV6p64JNBix2Kz
-         l4QR72D3jylumNtSR2HFXsFYV5JOLYIZDXL0OUTA3+l4BNmY1gLlAPrnPiNapTmIukDC
-         +AXRbNqjqmF5VMyjQpZh1qfuheJToR1hCrWoIFG1HdsAr6NtQXf3QvJltK5eSEhXvl9A
-         MxBw==
+        bh=o36/diJ36lG8KI3DZxLKNWURpWjbyhgAwYq0XhyOvXQ=;
+        b=R88Y0q8z0dHcUQAjhtFOXxB0v/Ng+vorKWHgapGefvZBQgIj80kHHJYEmz/Hu8cj5g
+         1FkoZxpF3jwLYVz+/VSa1BVR9U5lSfdUF/yFHRAKfo7AkW/L7KE44y7q6dM01iq7WuXx
+         x03Fa8zC8rsZLVBFG0l1WDwScTLw4vEVAcfZAIi1HvWuXiKXCGNZb4gMqwuOJrbi0BGY
+         UuE/iV553N4Ph3As94swqTEcdGTKLNmwnD6S0//kuBCoWkjRSnZETJKEgc2/hDFVnpRF
+         3XMjdq013lH7ZuTpXRbuiXHRj3pyOSrgmLLJT0x9pPSK0f/Fgb7qrppNT7++zXnWboeP
+         896A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771541751; x=1772146551;
+        d=1e100.net; s=20230601; t=1771545616; x=1772150416;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=tzmFdsfq8MNx6L2xpTWEWoiPLvNts9kq7DaS1ogvM6k=;
-        b=mDCrWk9DMv+UGKc/Hr73JcSvlsrM7n+WPugkb+6wDA46Cuabq1J2GlcIma5H99j/f6
-         PfHUYecFq4y4YaDBURPMDIEygUDVRDoQXNRFEeIbMEPcm+OI7lN992sHkhKjbTtocHY+
-         f0+Pw2f4eMdMWZbZ99iHlOJxOpQJ5dpe4Z0mZahZTkit1f5XAD+HU0AevH2S1mOualcJ
-         33V2uc+xkACnln1q1X6yMpOACaYyefbRUc/trnUO1DMfaQyLR+3v69qyOm2VXY1Z9hi+
-         40aQrE8DbUF/dTRElEB9UKTA5YFCb5n1XRotc/eDKRhTdgyPm0pWFNrg9rVHP+mB56wS
-         5mxA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+qRQlmH++v2Xxr2U6m6VvY4kRBx2GpqkozXcRIcMuHloUkyDJKcGyZgW+23fWvz+i8GmTpvOFxw+YrSevqw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFKcJfXf+tzJlvduxgaM15xnTUC6Bgis1K3tiWKp4ZaT3xXVUI
-	dH52YCXKkl3ZyvIkH6FcrCkeFLlpo0H/lDTI4jIsLSfMN7EWNkzqQItDtEPrVBFpNpwrFcCPkOP
-	J0V1XLm2b8DtFcux0mEvJDlhn7o0UHKA=
-X-Gm-Gg: AZuq6aIqguDFWhwTk94rCfZgUU/k7iAV+wCvKKp/ocXxXf/vbHbPsuB6/+3emu4IFLJ
-	61Q3lrbOUPjqO9g5ySE/qJBtmDUkBFbqteMUkVT49MQbNbpo9h/+k3qHh836XJ0Dn4lXW0JCJ0p
-	NvvBROXZCwzFIkIEDs7hF5ZVs+CnfXdIWNXCFsiR0HCvXkuhcyClHYLnWmHs7f0L/jIiOPhWsSK
-	I09mk71bZgT4GqNLubTyC/K8pg4TIOzqCmHl3G6widxWSS8i5Zpc5OXL2AToZoVsKvn2nId7eYR
-	6rY7CxUQ5tN2ZGf6fuC5dJuZhpvsdLrynVaclpJQGwUXbS7qPiakGk+250h1XvJlYFh6898qiMG
-	VqT1pN7yBY8rgYK6dlDDE0Gm2
-X-Received: by 2002:a05:7301:4591:b0:2ba:75f5:72cd with SMTP id
- 5a478bee46e88-2baba129259mr5952861eec.9.1771541750839; Thu, 19 Feb 2026
- 14:55:50 -0800 (PST)
+        bh=o36/diJ36lG8KI3DZxLKNWURpWjbyhgAwYq0XhyOvXQ=;
+        b=eNVidIC4vcoOPuv0TmkaEmcuj6sIIE6+kaVQ2t0ZMDYWUjkiyA6AxHJrF2OQijOwb/
+         LpPPQ4D4bGERItZzZk23H2VkoT0GcGCESAjldChF/Ylmd31ktSNZMsAKZ61oJtXhLVuj
+         81PTR6FxZx6tLAbEft+vyxBc1QjMS2pdhhjmuMJyvaWPdAjG2u2BWZvsszJZQ/jAfIT5
+         KR3IZNsddeo7DCTGXCT/RDomuVdD1hSfs1V/CpmYaHu9U6952sSheT1VD57Rm3KhZIFo
+         9cYGq1zEM1W634DtC/ug+q8kFZ/P6FbNelUlDGYtJXvs+DIJa0vecGGTLl83vmP+wdB+
+         JZvw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUIXOxKFrPM0/y3evqVyYH2rLifTGV/HO4UEcX2OsxPwx819LCdsX86kb6LFyiTvc6Rgl0TJjsihnHoYleWA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxESYuGzbANvZ2/cYczrzexdMPam8OG+MqMainJrIVFQUZ6VYFF
+	LXl77g9jXEQG2yge2Q+YG9jwdI3jTgrFxiqh7w+S8OaXxHN9T8DRokV1pwDHg6kInlMRBQqEF9j
+	MAAGJv71q3r8sI0pzoej7hGHHfk9dLZ9wR87XpzP7
+X-Gm-Gg: AZuq6aLyimtBPXKb0SJXbZ8lyVX8c4v88ahEeUmjGDDuZk3hoMMchOQCOGvAhP8q0zc
+	1NcO1vQmiCo4iNKoeCCN2HF8xvEZducLluihVYTo9kRIgtHiTB9d64k6RCxew6KRO9qyzO9wzA7
+	E2ijRQsOIJ4FtRP1slkoeoIm/7+wh8A71R3gk7PkGEDvFJItgjFlWJNI1uad+bUIAsOmI92MeR/
+	Vw+18rCF2zCOeP9m+5YfMk0mVJr1lNgiPA7Y0fcxviMBfFkIDlZtejIFK/86pzlU5IhY8gp4xiE
+	vJq09Hs=
+X-Received: by 2002:a17:90a:d890:b0:340:be44:dd11 with SMTP id
+ 98e67ed59e1d1-3588916c4d3mr5800139a91.27.1771545616313; Thu, 19 Feb 2026
+ 16:00:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72=2Hx9QYbdFee7FZzF2tt9dzAOs7A+xe=tAXZi3_o2DCg@mail.gmail.com>
- <FCF46102-0B7A-4972-90AF-985A9F45CE9E@nvidia.com>
-In-Reply-To: <FCF46102-0B7A-4972-90AF-985A9F45CE9E@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 19 Feb 2026 23:55:38 +0100
-X-Gm-Features: AaiRm50FqOS1dTWgKs-rY8pjqDvqyuBoJm6Fgf3-4VuQIwJo2BUnXmDIAOZ9-c8
-Message-ID: <CANiq72=A22Xn+Ocd9-GU_CVU88LD6i1hTHAeQPqLEf-j17131g@mail.gmail.com>
-Subject: Re: [PATCH v10 5/8] rust: clist: Add support to interface with C
- linked lists
-To: Joel Fernandes <joelagnelf@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com> <20260205-binder-tristate-v1-2-dfc947c35d35@google.com>
+In-Reply-To: <20260205-binder-tristate-v1-2-dfc947c35d35@google.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 19 Feb 2026 19:00:05 -0500
+X-Gm-Features: AaiRm506Y2kfbsAw5yuSy39Cc7BbQ8GnxyExl_UwkT36VTmOrXmenuVrilx1Qck
+Message-ID: <CAHC9VhQP3jz-RbdZczp=FVHphu55ddojEmjkh+U5m02AdPiDJw@mail.gmail.com>
+Subject: Re: [PATCH 2/5] security: export binder symbols
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Dave Airlie <airlied@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org, 
-	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	Nikola Djukic <ndjukic@nvidia.com>
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 19, 2026 at 8:29=E2=80=AFPM Joel Fernandes <joelagnelf@nvidia.c=
-om> wrote:
+On Thu, Feb 5, 2026 at 5:51=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
 >
-> I think let us see how it goes and how much is the volume? If it is
-> light then I/we could send you a pull request from personal kernel.org
-> repository, if not then we can set up a branch at that time. What do
-> you think?
+> To enable building Binder as a module, export these symbols.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  security/security.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-If it is very light, then we could just do Acked-bys, but setting up a
-branch is easy:
+Acked-by: Paul Moore <paul@paul-moore.com>
 
-  https://github.com/Rust-for-Linux/linux/tree/ffi-next
-
-Please feel free to use it (if so, please let me know your GitHub
-handle -- I already have Alexandre's); otherwise, we can delete it.
-
-Having all branches in the same place is good for others to have a
-single place to look into, and has the advantage of being able to add
-it there as a `T:` field already.
-
-Thanks!
-
-Cheers,
-Miguel
+--=20
+paul-moore.com
