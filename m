@@ -1,98 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F29F3EBF28;
-	Fri, 20 Feb 2026 09:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05ABB31AAA3;
+	Fri, 20 Feb 2026 09:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771578900; cv=none; b=jRvtWmN4foKpjZkRWjrZFu2seiHWuCyU6p6ZWsFzvZRzbyavzf2mIcQImakXcjxUJsyzhE3prjb/BN2wo/lf/B59GGgG6p15ma7dzi86Ue7fa50XHjFjT13Tm/6O9Phq7iHjJbHtWarXa+MShdwAchUJukV1Rj7x0CKQa1ypD7g=
+	t=1771581111; cv=none; b=jCm4PUK3j6SlKaWlLflnAhpnXPDC5xXbT4997R7r+QAu62Z6m60bUitduOeOHSh5a7MAZ93QiXKJTtHXPmH4xxqYuad8kUWDxk4Uvl7ZhsPEoIsLfiD2yn24VpzcfdAF8EFXW5rR8i7ANkVB5VNdPNXetMmZ75XFhAEPpfme+Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771578900; c=relaxed/simple;
-	bh=wuW/g3yRjC0OKrwp3pgODFGDF2SKgvTJiWvlt2FqPWA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=puSNkbakK/ZXos/gs4UvR13rnYkeWCHNoXF8yI73Ui53uCS9PCNzoQXx8tltFZU2eAdo6Jx0igykPRoQYhH3w8MZSPmPhNLXRFp9jqFXw4azUwqyhjjsbisSerhSLnV3/IT2iDB+Pb8hpUnC7ALdB/X/ipvuypDnDUtATn5IMZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sR8X0HwD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771581111; c=relaxed/simple;
+	bh=PBOESvJWRqEQ2bmBI+MqZdyLdwyA7OsD4YPXBLOYQLU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=MzMFTRupQRbm+Bros7FocBFH6/IIvqFpzgFWo6d6Bz1RNCkQCv8zh/QEfvdCqU2qciXwzniSCm8omUIm2G4cTFnqBY6n2HR0fhK0KTJvzuPJPqk7hwpWFj7d22f34zziC4tFs74NjerFWZZU4D38lbTeUYEy8efulkRpj8cgIZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oSMnR2VB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sR8X0HwD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA00C116C6;
-	Fri, 20 Feb 2026 09:14:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771578899;
-	bh=wuW/g3yRjC0OKrwp3pgODFGDF2SKgvTJiWvlt2FqPWA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sR8X0HwDjXIS1rk4UGFYf9dL3TQGY73pWwVA8vZmvNvqKehr1oEZ+2PCNiFux2ans
-	 e5CKdhDTuXEXtKbnUgxEMBIbZj/mLJsN6gkDmA4PHQEQYOIfhjPq3qpiNp2a/xG4pf
-	 Lb7jbyhvCK8YqiVybst8S+4pce1WXokyf2EhPHC0=
-Date: Fri, 20 Feb 2026 10:14:56 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, dan.j.williams@intel.com,
-	Alistair Francis <alistair23@gmail.com>, bhelgaas@google.com,
-	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org,
-	linux-pci@vger.kernel.org, Jonathan.Cameron@huawei.com,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	alex.gaynor@gmail.com, benno.lossin@proton.me, boqun.feng@gmail.com,
-	a.hindborg@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	tmgross@umich.edu, ojeda@kernel.org, wilfred.mallawa@wdc.com,
-	aliceryhl@google.com, Alistair Francis <alistair.francis@wdc.com>,
-	aneesh.kumar@kernel.org, yilun.xu@linux.intel.com, aik@amd.com
-Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
-Message-ID: <2026022028-upstage-dollop-ee16@gregkh>
-References: <20260219124313.GE723117@nvidia.com>
- <20260219124119.GD723117@nvidia.com>
- <aZcbBt7OmNeH3oA0@wunner.de>
- <2026021944-material-hardhat-c508@gregkh>
- <aZgRTT0woruvH-AM@wunner.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oSMnR2VB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E18C116D0;
+	Fri, 20 Feb 2026 09:51:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771581110;
+	bh=PBOESvJWRqEQ2bmBI+MqZdyLdwyA7OsD4YPXBLOYQLU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=oSMnR2VBFiYF7mSjxjkfNVi7njkjNf3PLhFrBmpcM9d4pWK/GXd5fkMSWFUZ6VD2x
+	 5eWFNCJJkIsdUzWD77f02RYiEeD4v6skYIt2XW4ao3NA2rgWmQjg+wQhZGtGTM0+Zj
+	 QiUHPRguHu8S8fyOflkwjbIMsLyOrB/J3XN0Hx2jcXaSuNOpyqtRqMaEsgaUkyYUeX
+	 KxMtJKZRfO/w92vTqQMucveSOe8zWyt3q17hU4n7gBLOq3rKrBHkil4p0WmBHZZPXk
+	 G1/C+VImEEajDd/Cp9FfpLnahW7HziI4vghEkK4AbpaRBMnwIhHj6tE38PTOuLCsH6
+	 mzUUw11uwWtqQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 20 Feb 2026 10:51:13 +0100
+Subject: [PATCH v15 4/9] rust: aref: update formatting of use statements
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZgRTT0woruvH-AM@wunner.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260220-unique-ref-v15-4-893ed86b06cc@kernel.org>
+References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
+In-Reply-To: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+ Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Igor Korotin <igor.korotin.linux@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Boqun Feng <boqun@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=753; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=PBOESvJWRqEQ2bmBI+MqZdyLdwyA7OsD4YPXBLOYQLU=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpmC6hzPFPu7KGUd6cRx7n7GKtIx6VHoVNewyV0
+ EXg0W57W8CJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZguoQAKCRDhuBo+eShj
+ dxM1EACnIHiAlYn9gPgqZulCKlNlf50uQDXyF9B5lqzxCB4xzKIk29CViLlfREtNEQpmiNQ6TtS
+ hzd1FYLf8u5dAvd4QayeNLUYTUptXcQrByNp2EdNsAhuMhgCPbvxv+5XzO7Yb4c2iwvxXZ/GV3F
+ Ez583A3k+mRd7YqWWpEj4RFpnKFo5uIsu+8LJckCpHdVp+QBP16CQHoJpF/FjhcEYaulQ62G4kF
+ NkTJmahq5F85IlPLQZ9bZfLgDII15NQvFGJDbj6tOPcVDVLOZrSpdw9wHnDj5K7h4UE2FTUpyZ8
+ sl8Hk5h+JXj/1GqZbQyHuxIM2mJq3l3W8UusstI+ftPaYNK+cRNg5aEEWt/uP7WYBqUR2R+rFez
+ NF32cG5Xgq9fKisyoiE0H808A3G9U4UA8GIZlqilG16eM24JIQWAw/cbRleD8D7YDiPtRb6id5R
+ yRJBMLPT83Cz61htPmBosbIHLJX7srwu8C40hy8wXT8NeJvJKVYf2HY8q1ViVS9uaHBWecAHYjJ
+ qa0FaiULDIt0mIIUOHhDKnldiiopsOPUz3D+Fz0tJhlLaaw602DiBfp+t8ghomDp+O6GNvrZA5m
+ yzaE5kR1WUPNuPs0iFLB5ez3KpIEebt3HS7YpUVYt1xLlkOuC4mg364/IymHXlngTS1mnkrgVVf
+ wmnQL4v1G3QBseQ==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Fri, Feb 20, 2026 at 08:46:21AM +0100, Lukas Wunner wrote:
-> On Thu, Feb 19, 2026 at 03:40:25PM +0100, Greg KH wrote:
-> > On Thu, Feb 19, 2026 at 03:15:34PM +0100, Lukas Wunner wrote:
-> > >   # What's the certificate chain in slot0?
-> > >   openssl storeutl -text /sys/bus/pci/devices/0000:03:00.0/certificates/slot0
-> > > 
-> > >   # Fingerprint of root cert in slot0, does it match what vendor claims?
-> > >   openssl x509 -fingerprint -in /sys/bus/pci/devices/0000:03:00.0/certificates/slot0
-> > > 
-> > >   # Looks good, let's trust it:
-> > >   keyctl padd asymmetric "" %:.cma < /sys/bus/pci/devices/0000:03:00.0/certificates/slot0
-> > 
-> > As much fun as it is to abuse sysfs, please, let's not do this there.
-> > You just did something that could have changed the device between
-> > storing, checking and then trusting it as the device is never guaranteed
-> > to remain the same across multiple calls to sysfs (i.e. yanked out and
-> > another added.)
-> 
-> No, the kernel caches the certificate chains read from the SPDM slots
-> and what is exposed in sysfs is that cached copy.  So all three commands
-> above pertain to the same certificate chain.
+Update formatting if use statements in preparation for next commit.
 
-So if a device is removed and a different one added between steps 2 and
-three above, with the same pci number, all is ok?
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/sync/aref.rs | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Remember, PCI device ids are not unique, they can come and go and be
-reordered and reused at any point in time.  They are fully dynamic and
-should NEVER be used as a unique identifier except for a specific moment
-in time.
+diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+index efe16a7fdfa5d..3c63c9a5fb9be 100644
+--- a/rust/kernel/sync/aref.rs
++++ b/rust/kernel/sync/aref.rs
+@@ -17,7 +17,12 @@
+ //! [`Arc`]: crate::sync::Arc
+ //! [`Arc<T>`]: crate::sync::Arc
+ 
+-use core::{marker::PhantomData, mem::ManuallyDrop, ops::Deref, ptr::NonNull};
++use core::{
++    marker::PhantomData,
++    mem::ManuallyDrop,
++    ops::Deref,
++    ptr::NonNull, //
++};
+ 
+ /// Types that are internally reference counted.
+ ///
 
-In other words, you are expecting that device id to always refer to the
-same device across all 3 operations, which is never guaranteed.
+-- 
+2.51.2
 
-> > So let's not design in a security issue from the start please :)
-> 
-> The alleged security issue does not exist.
 
-How is this not the classic definition of a TOCTOU (time-of-check to
-time-of-use) problem?
-
-thanks,
-
-greg k-h
