@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99AD2FFDF4;
-	Fri, 20 Feb 2026 08:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F20A2F6927;
+	Fri, 20 Feb 2026 08:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771574798; cv=none; b=O6UvYO7aZr/yzGUaftETe9EZ3XSgVNWr7ngJSwOx0EJtQtk+tj9SyIQ3R5gy2T9XLfd+RHtGLW3oMI/uZ9uXpp2JYeG0H/qg6MfBMI2nGCrk0BzANxKlm4VGsE5eXjh2/AIf0SL9PNK+Amdl8ZCvVoQTiTIohD7URufsHQP2WgE=
+	t=1771574802; cv=none; b=Qsxx2adPhvGyVZYqPb3z7GqXN31VoK8UcVrsJvGK+BV0MRx2q2kiecdD8pa8auv/lzeZfMh1dlaK4NFJwe3XbEepGAWHlS+EvMPJKFImpY1kOcwwvPvNy9VBaQT75CAhD7lX4O4cR5g0FHTJWHmdTb9cGjF8rHDnJqFYpLt/Mu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771574798; c=relaxed/simple;
-	bh=m+6QBkzuJzFm/2DPq8oIAn6XLWd1kELDmu++OukzS0E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gsssRtDj5TZBkDBCxWwi13IxZP+tfEwTGFzYI3mxXYh7xAEhWbjQbLs2DKSFpDgMY/A3cVGz403yPLGS0cNErEgUFimtUzB1THJADKoWP5GW0duih2YHYbdnGGey9AlNjGXjhdcKYePHu4CEiKE9/f+b+g3gcrQMcaxU5TeUGV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bpDIM9wy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771574802; c=relaxed/simple;
+	bh=oh7ovVTPXi3INDBhW35BsZCibXB0g/u1OgpzR9VgEXY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jNUFHq2lx2mEwPxRVtgyI7JDEwzUu0uBHcXHlmMvtBg7r7EifCsiYy/APzW923YA0Ev2ZqtFe8wTHcSGEfhNGm+7DRraNBu3ox1VROPFnaN9me9n2v59rLmGXuS/UkudbeOmpupwAA/iAurljvWp59JHUXomDNscME3bFR55kcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZycM0s64; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bpDIM9wy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9B4C116C6;
-	Fri, 20 Feb 2026 08:06:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZycM0s64"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E92FC116C6;
+	Fri, 20 Feb 2026 08:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771574798;
-	bh=m+6QBkzuJzFm/2DPq8oIAn6XLWd1kELDmu++OukzS0E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=bpDIM9wyNNdO30QRBcNiBr7w6idqXlwSpbrs591iE3hQfrZDYvQJQU4SY3IQxuF4N
-	 k2w1VgTkNtu9SyCLTNDc2Mxcn9wWfab6GSs8Tp9LzDFmPqt9PIPHpn5p9cohAIhOgM
-	 0bVliI/9nPz31x/G912F2qKy5EslzllXKkGYu2jOsq9OZfcUSmwvhDG1vwakgPPbs3
-	 SOMeZxmsvCuLI4WJW86NGKHKgqJ0muYO3w81kTGFtBM7rxiU5ycgRz5axd1wvw72mD
-	 fEjgDGma32zKQc6aSu4/k+/fBQgQiB5D++xpzD2Lqy06+NOOkBYop4t8RwIyMngfvP
-	 YitUYlVpaRg2Q==
+	s=k20201202; t=1771574802;
+	bh=oh7ovVTPXi3INDBhW35BsZCibXB0g/u1OgpzR9VgEXY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ZycM0s64PegXW4ntR4QwRyLf1Cua9f3tnCFzmtv0XmAzv1QEgdJmtI+aa4n9A+eZd
+	 s2dAYl3zNGG06z5RfnmEM87jhsYRxDhfieOFqcutC2HjHHZmI6EvEdCRWk1CD6QMZx
+	 KiqxjpJ413aE93uTpktk7eu7ThpEjYT8p+wNYeCV6BoZ6SHCoq+b3Yi3TeTlZ5nEoK
+	 a/ikTjKiRbRXMBYC4bITcETT1eCz52ZOsPNAq/eWiXWY3By/7fScHdrZKVBOswXWSR
+	 tg1/dNocmEhZTZNhvo9zHlK+QfReGjV/Rnyl1tP/J88PSsbrsnVxr7C7eiY7QNmw/4
+	 gGGaZzL1H7ZkA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Feb 2026 09:06:21 +0100
-Subject: [PATCH v3 2/3] rust: atomic: update documentation for `fetch_add`
+Subject: [PATCH v3 0/3] rust: atomic: add `fetch_sub` and update docs
+Date: Fri, 20 Feb 2026 09:06:19 +0100
+Message-Id: <20260220-atomic-sub-v3-0-e63cbed1d2aa@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,9 +37,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260220-atomic-sub-v3-2-e63cbed1d2aa@kernel.org>
-References: <20260220-atomic-sub-v3-0-e63cbed1d2aa@kernel.org>
-In-Reply-To: <20260220-atomic-sub-v3-0-e63cbed1d2aa@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAPsVmGkC/22MSwrCMBQAryJv7ZPkibFx5T3ERb5tUBtJalBK7
+ 27ajRRczsDMCNml4DKcNiMkV0IOsa+w327AdKpvHQZbGYiRYJwaVEN8BIP5pZG85wcpyHpOUIN
+ ncj68l9nlWrkLeYjps7wLn+3fTeHI0TdGKG20ZuJ4vrnUu/suphbmT6FfS1yuWkKGjbZSGmU9C
+ btqp2n6AodhKtThAAAA
+X-Change-ID: 20260128-atomic-sub-2ff15962df12
 To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
  Boqun Feng <boqun.feng@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
  Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -49,59 +51,54 @@ To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1376; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=m+6QBkzuJzFm/2DPq8oIAn6XLWd1kELDmu++OukzS0E=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpmBYBQ/BEgmkJUPIsZBsuX5HNzHmeNs5zFwB2u
- TvSsnjpU+mJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZgWAQAKCRDhuBo+eShj
- d2PfD/98EW+2FtjO06NLkdcJRB1tLTpqncg6RHmtQ3Et0+A3FSsLO6aIGJV9GMj3wL0grRTAHY1
- kCyoySKkhShwKFVeO3WCv7A1M0MVucu+CsBbhpNaUZhhtbcESRxnH41cA2rAhkW5qss6Ci9QKSv
- mMGhNMA0opU/ECUk9Tli4lTdK79iJ2WwY7a3PkvJLg5mRg/IHwYBqxkOok1tMuM3OJEOrKtli5w
- BWxrMSmLLuD/FfTEtZoQ9h6YMyG2ql8FM+Sjcyq0Ggnju/xZUXQQeF5w5Ljz7XePMP3uewhGcE1
- gjj0OSiS0l9TE2p2nIy3MmQ39NqVZScHClTHIudn1IvlOfjSvs9YybqD6BnQWy5SX5CW1oRyEb0
- +hpURuiS2eNjujCbSpngH92jatDA63gwrt3bNXLLjMNicBpn55KoWYOw9BYU+G9Gzh+bROKX0Hg
- cGUZCaPyWs4a4Bv9+Fvd/8NBdZwFLtOhKRlDCvj0hlcPhaAn39ClxSgKZzPhvh4Gvq1LBHe6Vm9
- DCmEyinrYKxHgvOjvM9W2+0HutkydWF03KBd0wvz6P+VrZU3b2B22sSjFOvb5V0pS8C+CgLRBkK
- 6OHPwvcZlMeCN+QZStzV8I5VUoDL/RT4gVoXxad+hQQcaS0TxQhDytiE9XfS7gC99TU8DBFcXbW
- iuHEXJj1sEh6Ebw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1140; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=oh7ovVTPXi3INDBhW35BsZCibXB0g/u1OgpzR9VgEXY=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpmBX93KiPJhPiw/vaSeYXethKoU6bfx9piMDMf
+ KRfeo6zzEuJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZgV/QAKCRDhuBo+eShj
+ d/uJD/9c7ARgX7m/l+q1AYKSMf1DCRcXtVWySSsQQU0op85D4E5gy4xQ5T13AQlC3BLcyC7hIsp
+ e8GjnclSx3h/i0BVVau0/lr8McGxxzTOuJ4zypKfNVC15f5f4knfjFmPxMZuPYRZEh58tNkgPyn
+ BubmynwCUc15OKzkxelyfOOTCKtSN/0IQDKe8Xk1Fs0cgMx2HOHyLGL9NIxa/xOEg9LU+R+KG8O
+ 6J2iTNxZoLL+hDZgQ2iWCDgGjTmxe/FKe96AMHqNBKnjXZbi7HMgPZhrsGblrB/pX7ZqYHeTgAa
+ nKYmuOMxs8c5LpZXR38IIm6oQQgqUbtxl2EUDwNuM5quQrNG+uaexcmZOIW3x1EUuPPUbGoi+om
+ gnZktPIMNbjwxOr7SvFKPrbiVRi2AaVxKUXn4+7KsKJHQrPlwtuMnCBofVLKqXMlYemAShSgxOu
+ kNzuuZkLo+np6a/Lncqq6Tz38EfJUTvfwKnk8mdbr/Do+hwd0MSxneelMKSdNz0ojGkIWHYxVYh
+ sPnhIfZpfw1RzNKRjq4okq0IteQ/akNAQqGweq3nmj70ubl3fu+GFTVyFZTWm/z7ypfAvr3UxZ3
+ ekOw4J9n2TtIqrb5KCdtsytvBGZsOmNQbTNVG8RhMhPaRO/90vBUSVhW0R7Jfe+oAxFuifUj7kv
+ nbA+r9Hv8AAouaw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-The documentation for `fetch_add` does not indicate that the original value
-is returned by `fetch_add`. Update the documentation so this is clear.
+Add `fetch_sub` and improve documentation and safety comments of of
+`fetch_add`.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/sync/atomic.rs | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+Changes in v3:
+- Remove a spurious line feed.
+- Add a patch to update a safety comment for `fetch_add`.
+- Update safety comment in `fetch_sub` implementation.
+- Link to v2: https://msgid.link/20260219-atomic-sub-v2-0-8bd99cadf26d@kernel.org
 
-diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index 83e03bb7ecd24..774c0c9f1c9c2 100644
---- a/rust/kernel/sync/atomic.rs
-+++ b/rust/kernel/sync/atomic.rs
-@@ -527,16 +527,14 @@ pub fn add<Rhs>(&self, v: Rhs, _: ordering::Relaxed)
-     /// use kernel::sync::atomic::{Atomic, Acquire, Full, Relaxed};
-     ///
-     /// let x = Atomic::new(42);
--    ///
-     /// assert_eq!(42, x.load(Relaxed));
--    ///
--    /// assert_eq!(54, { x.fetch_add(12, Acquire); x.load(Relaxed) });
-+    /// assert_eq!(42, x.fetch_add(12, Acquire));
-+    /// assert_eq!(54, x.load(Relaxed));
-     ///
-     /// let x = Atomic::new(42);
--    ///
-     /// assert_eq!(42, x.load(Relaxed));
--    ///
--    /// assert_eq!(54, { x.fetch_add(12, Full); x.load(Relaxed) } );
-+    /// assert_eq!(42, x.fetch_add(12, Full));
-+    /// assert_eq!(54, x.load(Relaxed));
-     /// ```
-     #[inline(always)]
-     pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering) -> T
+Changes in v2:
+- Update example to be more clear.
+- Add a patch that updates documentation for `fetch_add`.
+- Link to v1: https://lore.kernel.org/r/20260128-atomic-sub-v1-1-f8c6abcbb067@kernel.org
 
+---
+Andreas Hindborg (3):
+      rust: atomic: add fetch_sub
+      rust: atomic: update documentation for `fetch_add`
+      rust: atomic: update a safety comment in impl of `fetch_add`
+
+ rust/kernel/sync/atomic.rs          | 53 ++++++++++++++++++++++++++++++++-----
+ rust/kernel/sync/atomic/internal.rs |  7 ++++-
+ 2 files changed, 53 insertions(+), 7 deletions(-)
+---
+base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+change-id: 20260128-atomic-sub-2ff15962df12
+
+Best regards,
 -- 
-2.51.2
+Andreas Hindborg <a.hindborg@kernel.org>
 
 
