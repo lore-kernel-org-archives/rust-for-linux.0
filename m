@@ -1,642 +1,157 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594733168EE
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Feb 2026 17:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D4E365A11
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Feb 2026 17:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771607509; cv=pass; b=ep8eCJLmrwjUTVu+59IkOAP4nJjoebCz1bvaZou5k6J9DcgN1RAi/rwyA2yRFAftoWLOq8JGtM4w8pZV3GKjVSfbL4z1g+wWhLz7LVOh3dfjvwo0+VpXXHgDOuFOPnTQIwC7WwcPH5Nie8m/HQE8YgiSVjTJ1AhwVQXNcXhYe+Q=
+	t=1771608845; cv=pass; b=AKCAnZiXwwfnMXYwnWyKDMSD0rD62YeLdH5ka9hJRXlLU4kavskn6rtbUsSoEUjpxcVUgDfIKredWWNO/2TVbDo82GC4ISC4WVjxzsiu6hi7hlJybQ4PPUHfFTAhcrBlmyNAS5E4JdLWdcyAAQx+29Q5niR8aWXTIuf/p5pCZRI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771607509; c=relaxed/simple;
-	bh=HMklXPlbAlfL4nG3Ks3Gl+q6Zh61G3gg7XFdTtUf35M=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=CihmTBHKdgPFgV9eSVK9g+TMuIFLpMzUMHeoylfFfiGIE39U53PMGmAsF1yv3Ht6jgZLyFbDlnN0UwE7QIy7SbXys2+MrLSXym1E7+tK5rcWlFOnXyFtapxnVhtqs4+L9OWp415xLGGrVIwohVErQiV33jGnIDp9apfCFykKR5A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UMVUYOer; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1771608845; c=relaxed/simple;
+	bh=dW69iUku9IRFksYkhFKb49OwK2nuvLOXPied0JTmtvA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HH1V0TmtfhafVvWeq14DE0MDgTVz2j4vf58XlqMw6bEurZOwUuM9WUOtjQCDnSlhsLeMeMG/KLLhSq3CkDcUHFfKWT0nMKPYjomc5YYPUchNVR8A/8+8PuRIRfHxg/2mWhpXCfzoO4gx1VI5VGR8cGU6FVpZ9ZRaZ006fVC+pZ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GUmovhQZ; arc=pass smtp.client-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UMVUYOer"
-ARC-Seal: i=1; a=rsa-sha256; t=1771607499; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=DKaOzoeWQomxVcsTuBa0tqUnV9Wx3g8xVZ2ZpoMKLsMOnl2dgsXcCxr3iD5k3yOHMai+esud8bU71gD7q7Hc/2HwwuMdQ0noLctYO1dwLQh1oofUs9cLfGkcoGzPZQpp0POAO2yoBsKk/UttmIMiPBdHOQnpfJ3MG49kD3U+x7A=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771607499; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9gnrg29Djou6oQZ3O6gpDoe5m5gTRK/DYWomSKGmAo4=; 
-	b=e5m+D4sOBh94LPswdlP/LDJtDWpAIGI9SWfnBQQWh7RvZuCkCYIX5bqNWhfhOApI1O9X5SSmS0GJw2opLUP7wZri40t9uK3gtRWs5bPTOhd83A1xexPGOADXoVLAqf4H8svRbl61R5d0s5nqEF0x8fBPrg1G2naFozbaBia3lDA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771607499;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=9gnrg29Djou6oQZ3O6gpDoe5m5gTRK/DYWomSKGmAo4=;
-	b=UMVUYOerP6ECV1yIVV1Px6xHuL8epero6xo0l8PU8XDv69CkFqQEfVDFJ7Ojvj0b
-	NXWZ5j/hApsbRhEOyaW9IXGmw/eA6m8ILlOImb5ZMexAKznqOsEwtjb7R4KTA9GF4sa
-	rcxPhC8g+oBZLXS7VhF345j570UBp7xmM/tAA7A8=
-Received: by mx.zohomail.com with SMTPS id 1771607497576374.93497929039745;
-	Fri, 20 Feb 2026 09:11:37 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GUmovhQZ"
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-127148c2112so221445c88.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Feb 2026 09:34:03 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771608843; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BfeN28g7uDqu5/SZTXJ0TlyXQIzWIzRGH2CuxSPyohLJXMP94D+xhk5jHpmBjpg0or
+         gavl0Jkk/VFPUK6en0fQc7iABIExFTSmjIFoT1ABJm8EpnFYjYmUncMXpsFP75T4VO9A
+         DEiRp1RxoiOeSAW6gFdPCw2tTsMfHJwEkQPmzKy8Id4AupKhmrfvGgC7nVGNvLWWm1Zk
+         mdpPtQ1WS+3G0ctibkST0sjzdvkV1a4KRl2dJXxXcWrI7M0/jxNiNSSHTgv1xd0iRfmj
+         7y0q1tPYw5jNzYDHBKPKz7L2Mr/zh7DgLr2zBmqGcg8juJFVvwzC4bGPUodfe9Dq58vM
+         +/vA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=B3RiLfffpu7Ffa96sGXtUyFTXMqhEfmtMEWOofkZHzs=;
+        fh=morHQOBdY4zNHFErlSGK4hCggCIEMmXy9HhBS3xJmzc=;
+        b=CTuhYZPxn6M0IFjs7WTWFtSd5DbafkDwBrzdcmQfyWOy8H0tCONij0+Xgc4WxyWQX4
+         8hSFxyUR+2vOqUm5BJ3/zHWYtFx5TenZkFdEitSji7cdprI2bXG4ipEiFcYXAOfFVzQ9
+         RZbkIu6KYJA9L+/yUtuF5XD4nhmqjMLtU9rK1cnZ1ihHrl1KO3u2qoMTGn3/bsnnmEvD
+         MQDnLySArxaXpzeetRCFcXNMdpojvmdgElqyU7wX3y2FDPQLSwA867r/3bvpHlw19dnW
+         CjHOi5d5Zylwr0swD6CdVFsW8Qgl0BvTvEIH8xagbYxt5TvNkSggPawLxVcsl7nPHF4i
+         0jFQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771608843; x=1772213643; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B3RiLfffpu7Ffa96sGXtUyFTXMqhEfmtMEWOofkZHzs=;
+        b=GUmovhQZ0/gL6Csm9lB/oZvXQzoRbh+uVmBzc8YSv+cMKg9Uubues33H/9RyfdILfj
+         k+zc557ufFVnuu02HgkHoFuAOrYPjf492rTJMSJs+Y14GZdZJ6vatA+cSh9f6oo963Io
+         d0+6cjq3IXdboW94NV5+1nI2XbXJvpX520Bj2HNaDdIOD88O4E6cx87O+l9159ye1JVx
+         z5ECFYUXaEaFv94IyKrGZwFgzAl9mjpRAIoxg2VDDG4MXRpqli7BRe0VZzFziNXygZdF
+         C5HOej3GIe0ixLu5QAUeJFlzHR9sfGixz9LuDB31Pak32LJ1sCx/7snoqduumBjN/l3T
+         gKng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771608843; x=1772213643;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=B3RiLfffpu7Ffa96sGXtUyFTXMqhEfmtMEWOofkZHzs=;
+        b=Xvk73Y85SyTd5owq+5aHfjI6x3Tozkymq5BwR69eeW4GWBBUGOLTjVJ07Iu+AsvBvr
+         hvfGo9nttdZVuiij2MvWc+csOvw9Z0mW02RN/pzYFthS3xDYivz4H01/x77o/G4UdDql
+         MOdMjEU6yBzIQgcrnqK2GDZgfbkiqVp12Z2DWTEKDG+WP6Q/16O3cB9xBnY2A/ScnsZ/
+         TrH1aupQaklI22AC2YBvTSGtaLmiiN6s+OrULFZNC2TIafWyfmpiaccQEo+maCMGnD4e
+         xmqSWnSanOgPYA2wz1sKwhq/SrZigee+8TtWJwnfDdP+vgM6AjI3CZaC2hwSHAHmADlN
+         WRqA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRQGXNJo30nm38LfQGkb/MUoG8hnyXmqDT3ZFaZ9QgwAYYrl2VOf1tsNxh3W3Yn+8feZmn1WG03bYoKAqpZw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0v21Vvka5AABfL1TVlmf0ogoDlFqJCic/21bmpHhaxYMjscP+
+	IKHH37a3YPZX8yOIooM2AFDZoo5qkyHDob/ZquWpE01hslK6HWVvZbjBB6pyZxB/DcxMOpQDfgl
+	XwVOdDc6XvvvzeuPicFPyMFT44PSqQ+I=
+X-Gm-Gg: AZuq6aK4ystrQD7ki8JkmkDwFsLaOLu9WShXkcesBukWP6n+NlpZi4TpnEAng3L/MMi
+	aGnnuAfwKYn8Zp2Wpk0HzdqNNx/byEZJuuenWBFa6ezFxOEU1Ag65a4iVzBt+xceEQb4twdTqMz
+	Tur8Lqmxxiu4bwyg3ZZS2DYk3JbNmjDXhnrmtEriVPiuv9LX8F/TmYAwvcPdhidNFbB+ExM0t9G
+	ig/gCCHWWizbjUJ2m1A/APWc+mF4KE40ETNvYY3pUvrYhNo9KQVgec5SbjfNQWgDG8d23nRXvcF
+	E7R0z3q4KNAD3A7zrTceGQfjr/FUY72BBAO27sQkglKPIOV7f7pxoyFPd2UB+X0YR1vijJSUZLq
+	nII5LU3BFRvcsdu2dXHspJqL2
+X-Received: by 2002:a05:693c:2c17:b0:2ba:674a:dbe8 with SMTP id
+ 5a478bee46e88-2bd7bdbce7cmr74947eec.8.1771608842904; Fri, 20 Feb 2026
+ 09:34:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 08/12] drm/tyr: add MMU module
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260212013713.304343-9-deborah.brouwer@collabora.com>
-Date: Fri, 20 Feb 2026 14:11:21 -0300
-Cc: dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- aliceryhl@google.com,
- boris.brezillon@collabora.com,
- beata.michalska@arm.com,
- lyude@redhat.com
+MIME-Version: 1.0
+References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org> <20260220-unique-ref-v15-9-893ed86b06cc@kernel.org>
+In-Reply-To: <20260220-unique-ref-v15-9-893ed86b06cc@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 20 Feb 2026 18:33:49 +0100
+X-Gm-Features: AaiRm53lo0keI-FayfnRj4AYfVuM2jzmE06bNyAO-n4MO92LWSUkvblDHz_tCFM
+Message-ID: <CANiq72myc+tCEHm0WtZspZHWwsSzvesxsmUvk31=GCdUN_zVNA@mail.gmail.com>
+Subject: Re: [PATCH v15 9/9] rust: page: add `from_raw()`
+To: Andreas Hindborg <a.hindborg@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Igor Korotin <igor.korotin.linux@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <6A26D4EC-413C-44BC-9058-C6CC06514E41@collabora.com>
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
- <20260212013713.304343-9-deborah.brouwer@collabora.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
+On Fri, Feb 20, 2026 at 10:52=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
+>
+> +    /// Create a `&Page` from a raw `struct page` pointer
 
+Please end sentences with a period.
 
-> On 11 Feb 2026, at 22:37, Deborah Brouwer =
-<deborah.brouwer@collabora.com> wrote:
->=20
-> From: Boris Brezillon <boris.brezillon@collabora.com>
->=20
-> Add a Memory Management Unit (MMU) driver for Tyr. The MMU wraps a
-> SlotManager for allocating hardware address space slots. The =
-underlying
-> AddressSpaceManager performs MMU operations including =
-enabling/disabling
-> address spaces, flushing page tables, and locking regions for page =
-table
-> updates.
->=20
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> ---
-> drivers/gpu/drm/tyr/driver.rs            |   3 +
-> drivers/gpu/drm/tyr/mmu.rs               |  91 +++++++
-> drivers/gpu/drm/tyr/mmu/address_space.rs | 322 +++++++++++++++++++++++
-> drivers/gpu/drm/tyr/tyr.rs               |   1 +
-> 4 files changed, 417 insertions(+)
-> create mode 100644 drivers/gpu/drm/tyr/mmu.rs
-> create mode 100644 drivers/gpu/drm/tyr/mmu/address_space.rs
->=20
-> diff --git a/drivers/gpu/drm/tyr/driver.rs =
-b/drivers/gpu/drm/tyr/driver.rs
-> index 2973a8b3cc09..ad5a765a6c2a 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -43,6 +43,7 @@
->     gem::BoData,
->     gpu,
->     gpu::GpuInfo,
-> +    mmu::Mmu,
->     regs, //
-> };
->=20
-> @@ -148,6 +149,8 @@ fn probe(
->         let uninit_ddev =3D =
-UnregisteredDevice::<TyrDrmDriver>::new(pdev.as_ref())?;
->         let platform: ARef<platform::Device> =3D pdev.into();
->=20
-> +        let _mmu =3D Mmu::new(pdev, iomem.as_arc_borrow(), =
-&gpu_info)?;
-> +
+> +        // SAFETY: By function safety requirements, ptr is not null and =
+is
 
-We need to store this or it will drop.
+Please use Markdown in comments: `ptr`.
 
+> +    /// `ptr` must be valid for use as a reference for the duration of `=
+'a`.
 
->         let data =3D try_pin_init!(TyrDrmDeviceData {
->                 pdev: platform.clone(),
->                 clks <- new_mutex!(Clocks {
-> diff --git a/drivers/gpu/drm/tyr/mmu.rs b/drivers/gpu/drm/tyr/mmu.rs
-> new file mode 100644
-> index 000000000000..8e076c35f342
-> --- /dev/null
-> +++ b/drivers/gpu/drm/tyr/mmu.rs
-> @@ -0,0 +1,91 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +
-> +//! Memory Management Unit (MMU) driver for the Tyr GPU.
-> +//!
-> +//! This module manages GPU address spaces and virtual memory =
-operations through
-> +//! hardware MMU slots. It provides functionality for flushing page =
-tables and
-> +//! managing VM updates for active address spaces.
-> +//!
-> +//! The MMU coordinates with the [`AddressSpaceManager`] to handle =
-hardware
-> +//! address space allocation and page table operations, using =
-[`SlotManager`]
-> +//! to track which address spaces are currently active in hardware =
-slots.
-> +//!
-> +//! [`AddressSpaceManager`]: address_space::AddressSpaceManager
-> +//! [`SlotManager`]: crate::slot::SlotManager
-> +#![allow(dead_code)]
-> +
-> +use core::ops::Range;
-> +
-> +use kernel::{
-> +    devres::Devres,
-> +    new_mutex,
-> +    platform,
-> +    prelude::*,
-> +    sync::{
-> +        Arc,
-> +        ArcBorrow,
-> +        Mutex, //
-> +    }, //
-> +};
-> +
-> +use crate::{
-> +    driver::IoMem,
-> +    gpu::GpuInfo,
-> +    mmu::address_space::{
-> +        AddressSpaceManager,
-> +        VmAsData, //
-> +    },
-> +    regs::MAX_AS_REGISTERS,
-> +    slot::{
-> +        SlotManager, //
-> +    }, //
-> +};
-> +
-> +pub(crate) mod address_space;
-> +
-> +pub(crate) type AsSlotManager =3D SlotManager<AddressSpaceManager, =
-MAX_AS_REGISTERS>;
-> +
-> +#[pin_data]
-> +pub(crate) struct Mmu {
-> +    /// Manages the allocation of hardware MMU slots to GPU address =
-spaces.
-> +    ///
-> +    /// Tracks which address spaces are currently active in hardware =
-slots and
-> +    /// coordinates address space operations like flushing and VM =
-updates.
-> +    #[pin]
-> +    pub(crate) as_manager: Mutex<AsSlotManager>,
-> +}
-> +
-> +impl Mmu {
-> +    pub(crate) fn new(
-> +        pdev: &platform::Device,
-> +        iomem: ArcBorrow<'_, Devres<IoMem>>,
-> +        gpu_info: &GpuInfo,
-> +    ) -> Result<Arc<Mmu>> {
-> +        let slot_count =3D =
-gpu_info.as_present.count_ones().try_into()?;
-> +        let as_manager =3D AddressSpaceManager::new(pdev, iomem, =
-gpu_info.as_present)?;
-> +        let mmu_init =3D try_pin_init!(Self{
-> +            as_manager <- new_mutex!(SlotManager::new(as_manager, =
-slot_count)?),
-> +        });
-> +        Arc::pin_init(mmu_init, GFP_KERNEL)
-> +    }
-> +
-> +    pub(crate) fn activate_vm(&self, vm: ArcBorrow<'_, VmAsData>) -> =
-Result {
-> +        self.as_manager.lock().activate_vm(vm)
-> +    }
-> +
-> +    pub(crate) fn deactivate_vm(&self, vm: &VmAsData) -> Result {
-> +        self.as_manager.lock().deactivate_vm(vm)
-> +    }
-> +
-> +    pub(crate) fn flush_vm(&self, vm: &VmAsData) -> Result {
-> +        self.as_manager.lock().flush_vm(vm)
-> +    }
-> +
-> +    pub(crate) fn start_vm_update(&self, vm: &VmAsData, region: =
-&Range<u64>) -> Result {
-> +        self.as_manager.lock().start_vm_update(vm, region)
-> +    }
+Since we will likely try to starting introducing at least a subset of
+the Safety Standard soon, we should try to use standard terms.
 
-Please return a token type from this.
+So I think this "valid for use as a reference" is not an established
+one, no? Isn't "convertible to a shared reference" the official term?
 
-// if you want the whole vm to be locked while this update takes place
-struct VmUpdate<=E2=80=98a> (Guard<=E2=80=98a, AsSlotManager>);=20
+  https://doc.rust-lang.org/std/ptr/index.html#pointer-to-reference-convers=
+ion
 
-// if you don=E2=80=99t=20
-struct VmUpdate<=E2=80=98a> (&=E2=80=99a AsSlotManager);
+In fact, I see `as_ref_unchecked()` and `as_mut_unchecked()` just got
+stabilized for 1.95.0, so we should probably starting using those were
+applicable as we bump the minimum, but we should probably use already
+a similar wording as the standard library for the safety section and
+the comment:
 
-The lifetime will be correctly elided as the lifetime of &self, i.e.:
+  "`ptr` must be [convertible to a reference](...)."
 
- start_vm_update<=E2=80=98a>(&=E2=80=99a self, vm: &VmAsData, region: =
-&Range<u64>) -> Result<VmUpdate<=E2=80=98a>>
-=20
-Which is just:
+where the term is a link to that section. Cc'ing Benno.
 
- start_vm_update(&self, vm: &VmAsData, region: &Range<u64>) -> =
-Result<VmUpdate<=E2=80=98_>>
+I have created a (future) issue for that:
 
+  https://github.com/Rust-for-Linux/linux/issues/1225
 
-> +
-> +    pub(crate) fn end_vm_update(&self, vm: &VmAsData) -> Result {
-> +        self.as_manager.lock().end_vm_update(vm)
-> +    }
+Cc'ing Tamir since this is close to the cast work, so it may interest
+him as well.
 
-Move this to the token type=E2=80=99s Drop implementation.
-
-> +}
-> diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs =
-b/drivers/gpu/drm/tyr/mmu/address_space.rs
-> new file mode 100644
-> index 000000000000..60e9a79112f0
-> --- /dev/null
-> +++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
-> @@ -0,0 +1,322 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +
-> +//! GPU address space management and hardware operations.
-> +//!
-> +//! This module manages GPU hardware address spaces, including =
-configuration,
-> +//! command submission, and page table update regions. It handles the =
-hardware
-> +//! interaction for MMU operations through MMIO register access.
-> +//!
-> +//! The [`AddressSpaceManager`] implements [`SlotOperations`] to =
-integrate with
-> +//! the slot management system, enabling and configuring address =
-spaces in the
-> +//! hardware slots as needed.
-> +//!
-> +//! [`SlotOperations`]: crate::slot::SlotOperations
-> +
-> +use core::ops::Range;
-> +
-> +use kernel::{
-> +    bits::*,
-> +    device::{
-> +        Bound,
-> +        Device, //
-> +    },
-> +    devres::Devres,
-> +    error::Result,
-> +    io,
-> +    iommu::pgtable::{
-> +        IoPageTable,
-> +        ARM64LPAES1, //
-> +    },
-> +    platform,
-> +    prelude::*,
-> +    sync::{
-> +        aref::ARef,
-> +        Arc,
-> +        ArcBorrow,
-> +        LockedBy, //
-> +    },
-> +    time::Delta, //
-> +};
-> +
-> +use crate::{
-> +    driver::IoMem,
-> +    mmu::{
-> +        AsSlotManager,
-> +        Mmu, //
-> +    },
-> +    regs::*,
-> +    slot::{
-> +        Seat,
-> +        SlotOperations, //
-> +    }, //
-> +};
-> +
-> +/// Hardware address space configuration registers.
-> +///
-> +/// Contains the values to be written to the GPU's AS registers when
-> +/// activating this address space.
-> +#[derive(Clone, Copy)]
-> +pub(crate) struct AddressSpaceConfig {
-> +    pub(crate) transcfg: u64,
-> +    pub(crate) transtab: u64,
-> +    pub(crate) memattr: u64,
-> +}
-
-Do we need pub(crate) here?
-
-> +
-> +/// Any resource/information that will be used by the =
-AddressSpaceManager
-> +/// to make a VM active is present in VmAsData.
-> +///
-> +/// On activation, we will pass an Arc<VmAsData> that will be stored =
-in
-> +/// the slot to make sure the page table and the underlying resources
-> +/// (pages) used by the AS slot won't go away while the MMU points to
-> +/// those.
-> +pub(crate) struct VmAsData {
-> +    /// Tracks this VM's binding to a hardware address space slot.
-> +    as_seat: LockedBy<Seat, AsSlotManager>,
-> +    /// Hardware configuration for this address space.
-> +    as_config: AddressSpaceConfig,
-> +    /// Page table (managed by devres).
-> +    pub(crate) page_table: =
-Pin<KBox<Devres<IoPageTable<ARM64LPAES1>>>>,
-
-Do we need pub(crate) here?
-
-> +}
-> +
-> +impl VmAsData {
-> +    pub(crate) fn new(
-> +        mmu: &Mmu,
-> +        as_config: AddressSpaceConfig,
-> +        page_table: Pin<KBox<Devres<IoPageTable<ARM64LPAES1>>>>,
-> +    ) -> VmAsData {
-> +        Self {
-> +            as_seat: LockedBy::new(&mmu.as_manager, Seat::NoSeat),
-> +            as_config,
-> +            page_table,
-> +        }
-> +    }
-> +}
-> +
-> +/// Manages GPU hardware address spaces via MMIO register operations.
-> +pub(crate) struct AddressSpaceManager {
-> +    pdev: ARef<platform::Device>,
-> +    iomem: Arc<Devres<IoMem>>,
-> +    /// Bitmask of available address space slots from GPU_AS_PRESENT =
-register
-> +    as_present: u32,
-> +}
-> +
-> +impl SlotOperations for AddressSpaceManager {
-> +    type SlotData =3D Arc<VmAsData>;
-> +
-> +    fn activate(&mut self, slot_idx: usize, slot_data: =
-&Self::SlotData) -> Result {
-> +        self.as_enable(slot_idx, &slot_data.as_config)
-> +    }
-> +
-> +    fn evict(&mut self, slot_idx: usize, _slot_data: &Self::SlotData) =
--> Result {
-> +        if self.iomem.try_access().is_some() {
-> +            let _ =3D self.as_flush(slot_idx);
-> +            let _ =3D self.as_disable(slot_idx);
-> +        }
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl AddressSpaceManager {
-> +    pub(super) fn new(
-> +        pdev: &platform::Device,
-> +        iomem: ArcBorrow<'_, Devres<IoMem>>,
-> +        as_present: u32,
-> +    ) -> Result<AddressSpaceManager> {
-> +        Ok(Self {
-> +            pdev: pdev.into(),
-> +            iomem: iomem.into(),
-> +            as_present,
-> +        })
-> +    }
-> +
-> +    fn dev(&self) -> &Device<Bound> {
-> +        // SAFETY: pdev is a bound device.
-
-I don=E2=80=99t think we can say this for sure? I don=E2=80=99t think =
-there is anything
-special about this scope that ensures Device<Bound>.
-
-> +        unsafe { self.pdev.as_ref().as_bound() }
-> +    }
-> +
-> +    fn validate_as_slot(&self, as_nr: usize) -> Result {
-> +        if as_nr >=3D MAX_AS_REGISTERS {
-> +            pr_err!(
-> +                "AS slot {} out of valid range (max {})\n",
-> +                as_nr,
-> +                MAX_AS_REGISTERS
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        if (self.as_present & (1 << as_nr)) =3D=3D 0 {
-> +            pr_err!(
-> +                "AS slot {} not present in hardware =
-(AS_PRESENT=3D{:#x})\n",
-> +                as_nr,
-> +                self.as_present
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +
-> +    fn as_wait_ready(&self, as_nr: usize) -> Result {
-> +        let op =3D || as_status(as_nr)?.read(self.dev(), =
-&self.iomem);
-> +        let cond =3D |status: &u32| -> bool { *status & =
-AS_STATUS_ACTIVE =3D=3D 0 };
-> +        let _ =3D
-> +            io::poll::read_poll_timeout(op, cond, =
-Delta::from_millis(0), Delta::from_millis(10))?;
-> +
-> +        Ok(())
-> +    }
-> +
-> +    fn as_send_cmd(&mut self, as_nr: usize, cmd: u32) -> Result {
-> +        self.as_wait_ready(as_nr)?;
-> +        as_command(as_nr)?.write(self.dev(), &self.iomem, cmd)?;
-> +        Ok(())
-> +    }
-> +
-> +    fn as_send_cmd_and_wait(&mut self, as_nr: usize, cmd: u32) -> =
-Result {
-> +        self.as_send_cmd(as_nr, cmd)?;
-> +        self.as_wait_ready(as_nr)?;
-> +        Ok(())
-> +    }
-> +
-> +    fn as_enable(&mut self, as_nr: usize, as_config: =
-&AddressSpaceConfig) -> Result {
-> +        self.validate_as_slot(as_nr)?;
-> +
-> +        let transtab =3D as_config.transtab;
-> +        let transcfg =3D as_config.transcfg;
-> +        let memattr =3D as_config.memattr;
-> +
-> +        let transtab_lo =3D (transtab & 0xffffffff) as u32;
-> +        let transtab_hi =3D (transtab >> 32) as u32;
-> +
-> +        let transcfg_lo =3D (transcfg & 0xffffffff) as u32;
-> +        let transcfg_hi =3D (transcfg >> 32) as u32;
-> +
-> +        let memattr_lo =3D (memattr & 0xffffffff) as u32;
-> +        let memattr_hi =3D (memattr >> 32) as u32;
-> +
-> +        let dev =3D self.dev();
-> +        as_transtab_lo(as_nr)?.write(dev, &self.iomem, transtab_lo)?;
-> +        as_transtab_hi(as_nr)?.write(dev, &self.iomem, transtab_hi)?;
-> +
-> +        as_transcfg_lo(as_nr)?.write(dev, &self.iomem, transcfg_lo)?;
-> +        as_transcfg_hi(as_nr)?.write(dev, &self.iomem, transcfg_hi)?;
-> +
-> +        as_memattr_lo(as_nr)?.write(dev, &self.iomem, memattr_lo)?;
-> +        as_memattr_hi(as_nr)?.write(dev, &self.iomem, memattr_hi)?;
-> +
-> +        self.as_send_cmd_and_wait(as_nr, AS_COMMAND_UPDATE)?;
-> +
-> +        Ok(())
-> +    }
-> +
-> +    fn as_disable(&mut self, as_nr: usize) -> Result {
-> +        self.validate_as_slot(as_nr)?;
-> +
-> +        // Flush AS before disabling
-> +        self.as_send_cmd_and_wait(as_nr, AS_COMMAND_FLUSH_MEM)?;
-> +
-> +        let dev =3D self.dev();
-> +        as_transtab_lo(as_nr)?.write(dev, &self.iomem, 0)?;
-> +        as_transtab_hi(as_nr)?.write(dev, &self.iomem, 0)?;
-> +
-> +        as_memattr_lo(as_nr)?.write(dev, &self.iomem, 0)?;
-> +        as_memattr_hi(as_nr)?.write(dev, &self.iomem, 0)?;
-> +
-> +        as_transcfg_lo(as_nr)?.write(dev, &self.iomem, =
-AS_TRANSCFG_ADRMODE_UNMAPPED as u32)?;
-> +        as_transcfg_hi(as_nr)?.write(dev, &self.iomem, 0)?;
-> +
-> +        self.as_send_cmd_and_wait(as_nr, AS_COMMAND_UPDATE)?;
-> +
-> +        Ok(())
-> +    }
-> +
-> +    fn as_start_update(&mut self, as_nr: usize, region: &Range<u64>) =
--> Result {
-> +        self.validate_as_slot(as_nr)?;
-> +
-> +        // The locked region is a naturally aligned power of 2 block =
-encoded as
-> +        // log2 minus(1).
-> +        //
-> +        // Calculate the desired start/end and look for the highest =
-bit which
-> +        // differs. The smallest naturally aligned block must include =
-this bit
-> +        // change, the desired region starts with this bit (and =
-subsequent bits)
-> +        // zeroed and ends with the bit (and subsequent bits) set to =
-one.
-> +        let region_width =3D core::cmp::max(
-> +            64 - (region.start ^ (region.end - 1)).leading_zeros() as =
-u8,
-> +            AS_LOCK_REGION_MIN_SIZE.trailing_zeros() as u8,
-> +        ) - 1;
-
-Is it me, or did this change from the prototype branch?
-
-> +
-> +        // Mask off the low bits of region.start, which would be =
-ignored by the
-> +        // hardware anyways.
-> +        let region_start =3D
-> +            region.start & =
-genmask_checked_u64(u32::from(region_width)..=3D63).ok_or(EINVAL)?;
-> +
-> +        let region =3D (u64::from(region_width)) | region_start;
-> +
-> +        let region_lo =3D (region & 0xffffffff) as u32;
-> +        let region_hi =3D (region >> 32) as u32;
-> +
-> +        // Lock the region that needs to be updated.
-> +        let dev =3D self.dev();
-> +        as_lockaddr_lo(as_nr)?.write(dev, &self.iomem, region_lo)?;
-> +        as_lockaddr_hi(as_nr)?.write(dev, &self.iomem, region_hi)?;
-> +
-> +        self.as_send_cmd(as_nr, AS_COMMAND_LOCK)
-> +    }
-> +
-> +    fn as_end_update(&mut self, as_nr: usize) -> Result {
-> +        self.validate_as_slot(as_nr)?;
-> +        self.as_send_cmd_and_wait(as_nr, AS_COMMAND_FLUSH_PT)
-> +    }
-> +
-> +    fn as_flush(&mut self, as_nr: usize) -> Result {
-> +        self.validate_as_slot(as_nr)?;
-> +        self.as_send_cmd(as_nr, AS_COMMAND_FLUSH_PT)
-> +    }
-> +}
-> +
-> +impl AsSlotManager {
-> +    /// Locks a region for page table updates if the VM has an active =
-slot.
-> +    pub(super) fn start_vm_update(&mut self, vm: &VmAsData, region: =
-&Range<u64>) -> Result {
-> +        let seat =3D vm.as_seat.access(self);
-> +        match seat.slot() {
-> +            Some(slot) =3D> {
-> +                let as_nr =3D slot as usize;
-> +                self.as_start_update(as_nr, region)
-> +            }
-> +            _ =3D> Ok(()),
-> +        }
-> +    }
-> +
-> +    /// Flushes page table updates for a VM if it has an active slot.
-> +    pub(super) fn end_vm_update(&mut self, vm: &VmAsData) -> Result {
-> +        let seat =3D vm.as_seat.access(self);
-> +        match seat.slot() {
-> +            Some(slot) =3D> {
-> +                let as_nr =3D slot as usize;
-> +                self.as_end_update(as_nr)
-> +            }
-> +            _ =3D> Ok(()),
-> +        }
-> +    }
-> +
-> +    /// Flushes page tables for a VM if it has an active slot.
-> +    pub(super) fn flush_vm(&mut self, vm: &VmAsData) -> Result {
-> +        let seat =3D vm.as_seat.access(self);
-> +        match seat.slot() {
-> +            Some(slot) =3D> {
-> +                let as_nr =3D slot as usize;
-> +                self.as_flush(as_nr)
-> +            }
-> +            _ =3D> Ok(()),
-> +        }
-> +    }
-> +
-> +    /// Flushes page tables for a VM if it has an active slot.
-> +    pub(super) fn activate_vm(&mut self, vm: ArcBorrow<'_, VmAsData>) =
--> Result {
-> +        self.activate(&vm.as_seat, vm.into())
-> +    }
-> +
-> +    /// Flushes page tables for a VM if it has an active slot.
-> +    pub(super) fn deactivate_vm(&mut self, vm: &VmAsData) -> Result {
-> +        self.evict(&vm.as_seat)
-> +    }
-> +}
-> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-> index f54b997355e0..ae435c7e80b1 100644
-> --- a/drivers/gpu/drm/tyr/tyr.rs
-> +++ b/drivers/gpu/drm/tyr/tyr.rs
-> @@ -11,6 +11,7 @@
-> mod file;
-> mod gem;
-> mod gpu;
-> +mod mmu;
-> mod regs;
-> mod slot;
->=20
-> --=20
-> 2.52.0
->=20
-
+Cheers,
+Miguel
