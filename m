@@ -1,458 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F92C335564;
-	Fri, 20 Feb 2026 08:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F9B326D6B
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Feb 2026 08:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771575130; cv=none; b=QABHQUe9cyMrunjCt1sGCyM75nTG/DEl1aXCfkTKXqv8va2zlgwELSZyYEC4x8zJgMgGSa7dyiaIUAHPT3b2ag4lx27eb6V8HE5k8qKqWN/pQ6GfZGuSqe318Jcses5A5kntql9lKWM4b5mfdwr5d0xXMVxrXJF4xDrUXkuKEKg=
+	t=1771575400; cv=none; b=HVpkvKVMQ5i+1wKGU7WE4BcfZ+/Hao0gS82ArgSFS/0ww6I7Sl9rJuWCKzcGxxFfVUMqsJSwr6rk0DKlVqW1pohMJ6QAwT1SagO5d9OEwZd5BXP0O9E8ICY4VSPibUFfllhhxJlVhaw1BQ/YeEzlD1ufOO17THG+3652SMzVOPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771575130; c=relaxed/simple;
-	bh=8qllAnK2E4ExfRqT/ejd3hRkBoAdErW5tI+Astup0Es=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=frHsFlE7JJTg3Oflnd8FulN3E2nNZrYTSEC5FX+46CI7Usw7RQYYMmkY5ZItOza9F2CkC7On18T1/fBiHDxukQ/EprWQki43/ww1sfXMTq1YRgeXhf8cupZcpY7jZkUFGbWCITnRrbRqd+aDjJY/WrlCpQpEZwLCWnJIhAEtyLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyCX/Clz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771575400; c=relaxed/simple;
+	bh=JEMcAPfavE4xeyGu3udM3KXamn237t2x+0V0qZcEuEQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tDx86qMdO6zB4CIr+0risalvTq6CLleA27CSDvENwWEnabBZdl+ALb1GD3BLJ8O3ezyQbodBaFBWFEcMmEtnRpSBZCHtoHIG3LOXwPZkZ9xSGYLtG52/dF8p0vErW4qGfGVjfHvYXwJu6i0t1CI2FYSctKRM4Q9KDxbX5dKmpFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nKr01JHj; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyCX/Clz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14ACCC116C6;
-	Fri, 20 Feb 2026 08:12:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771575129;
-	bh=8qllAnK2E4ExfRqT/ejd3hRkBoAdErW5tI+Astup0Es=;
-	h=From:Date:Subject:To:Cc:From;
-	b=fyCX/ClzTa7k36FGjMCRodmxYuum0OClaHpAciO/qwqRzun0wnZ6KFiZVC+I+BKBZ
-	 Bybani0fEFfHCAMp5KtWBwExCR2IUxCYuA6OcqyU+ykS/+etcj4s9RAPU4NY30qmNI
-	 ySSJjMWdeHF9xp/RJwQCYN8uhDoafZMzhcJi82jxUfrDCQUBYZiCv4g/hhdxz2z79W
-	 W27YdV7tmTU4XU9TPpmIJxvd36VupCBFdXMVEK773qDRFdiikN3YbBWinxiHQjCx9X
-	 2JzbDW9JGoXHE96Nm1/wnK52i2qMXXiYDVz5c42rfWiwIa95cnggvDU9rKjcsep4c1
-	 pfPhYGjoFvCZQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Feb 2026 09:11:59 +0100
-Subject: [PATCH v3] hrtimer: add usage examples to documentation
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nKr01JHj"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-658c19d5ca0so2076552a12.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Feb 2026 00:16:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771575397; x=1772180197; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PyET7l0I7fLKTMPMjBwCdOePtcIDSdcQj0ubAt5TBQI=;
+        b=nKr01JHjklK2dSMEqV1/7jyUXsXPyEvEvT0Ft6KczWU5G6I+MIQzcGwxwYSN3EEiXL
+         wo8XaIgCFeEa1Y54T7ZAr+id4l07UhBN3e8e5o0e0/QMxPbnSjt9Tbs/Q1cLQcDx04NA
+         KfyXilX63gNUEr6McrQ4EbeL5OfVsbNkW6xnjNJmdmzQN5X1WodVFzY/txHWeCa3Ujkh
+         ncbvIw7YsYFWRFE3MLT/Ma9g5wuzxJCazgInYxKYUYzEjj3bm+GCgrpAd5XXWbXTC/I/
+         kmIcmY5g5wczvqG3WXNimFfERD9G7LhgpW6unSn6+nLWyDN7JByjoleYlY3eG1bmY6HZ
+         WCWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771575397; x=1772180197;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PyET7l0I7fLKTMPMjBwCdOePtcIDSdcQj0ubAt5TBQI=;
+        b=VEnGyVqx0It8ijKKJusO0LHbG2xhc/O4G28UizKHdCDgb0Ik0QikkeTFaXIhy9vIEC
+         zmqHpJ97y5zAh/gaVuU4pBQ2SASsJWYuwPCPNKSgORWPHJ0K+M0vPnWOGoaKPCHBtmWB
+         F+h+3L/bEOnVm8SGZ6HHiWBBkyeq77v/ITvOO0kJ+VgJLMBubx6debTHvDL4Z6tbv9VY
+         DNABRDd6F/l8HgMPub7zeZD3XNIG+f9WyNWOkOLztu3UG+10KAVmYyBNpKAVwkzRRlRz
+         S03uqhwucoG4SlE/1Fz2RuCgQCXDb5tURDjebsWHctw/sNajy6ed/2ODEWa9W4ipZWSf
+         0SHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU2bMV1SWI7xQ7Tndqp1zmr5GuH20SvVz/TD+pX0w98M2ihH015nhfepRaYDcuyFhIyvDxKuji8v/zPaxrKkg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwuJQIv5ZU9a9Mi50dbStFLNPdSruyVY/xcMbfXv4VoKXhtKfl
+	5dNPJCVXCWGfS/G7I/rvfLe0LtjHAGrFpYEDyEFwy+61SHlxXY50wn0DPLHoGTnmwih+LQxxfxq
+	vBgMqAPeic3q35SqQFA==
+X-Received: from edvd12.prod.google.com ([2002:aa7:ce0c:0:b0:659:31c4:b9d0])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:27d0:b0:65c:b71:e69e with SMTP id 4fb4d7f45d1cf-65e825a4ef5mr496694a12.8.1771575396787;
+ Fri, 20 Feb 2026 00:16:36 -0800 (PST)
+Date: Fri, 20 Feb 2026 08:16:35 +0000
+In-Reply-To: <DGJ6LHIVMV03.MM7RWYBJHBIQ@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
+ <20260130-gpuvm-rust-v4-3-8364d104ff40@google.com> <DGJ6LHIVMV03.MM7RWYBJHBIQ@kernel.org>
+Message-ID: <aZgYY_fetgz_GDR8@google.com>
+Subject: Re: [PATCH v4 3/6] rust: gpuvm: add GpuVm::obtain()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Lyude Paul <lyude@redhat.com>, 
+	Asahi Lina <lina+kernel@asahilina.net>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260220-hrtimer-examples-v6-19-rc1-v3-1-ddfc19a90741@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAE4XmGkC/33NTQqDMBCG4auUrDslSU3UrnqP0kWMo4b6x0SCR
- bx7o+CiG5fvB/PMwjySQ88el4URBufd0Me4Xy/MNqavEVwZm0kulZBCQUOT65AAZ9ONLXoIGkQ
- OZAVIrTKLeVGokrMIjISVm3f89Y7dOD8N9N1/BbGtB5uesUGAgMSUHFNMbIL8+UHqsb0NVLPND
- fKwNJfx6MyS0coEt5Zra/JK/1nruv4AQnP/whEBAAA=
-X-Change-ID: 20251215-hrtimer-examples-v6-19-rc1-2658ce9bb5d0
-To: Andreas Hindborg <a.hindborg@kernel.org>, 
- Boqun Feng <boqun.feng@gmail.com>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
- Thomas Gleixner <tglx@linutronix.de>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11068;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=8qllAnK2E4ExfRqT/ejd3hRkBoAdErW5tI+Astup0Es=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpmBdPZ/4uwvJMPtOltVgo1Y1A0MV2tzFjx/3q0
- lEn/P0ExeyJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZgXTwAKCRDhuBo+eShj
- dzQZEACnDfXN/Z467Mzv9jDA/FYW2krGxvau7rVL3umJclIEN7UPdbG1PoefhysOEMUEiFWpiD8
- /6d+6r9hlxI4dcqMHwABP9gJ7+PM0FMb79zSkUAZ2HweDqkGOiNh7O/nLCRkqsC+OdmP9fxHjiH
- 2RpiyR3Lj5EGjl3NIQdy55RZc1g+SQmrX8d2COSQecz39fgOXmwaY2qEoSuX+iVND0qQT4xh0y2
- 8PdDllC31h0CLfWVUEXJioTcjFhdZeidwZ5EYR+Po3qdGthZFD8rFLm9s3jCs2HB/vbEf8XlKwt
- J6aJTK6/7qx4DNbuT+hVOkrgH1u9w6PNgquxk43mWGP4uLVuRQHOOnHhZxYQuYm3yPZ4x/jaIjd
- BTxCi5kaq8OAqaTXvcs3GshZxulVLE3ifBIVk+Yl+6KDaP/YXbaYqyRT3BL0nIFfPrIfMLrnyGZ
- mf8ocWifvtfxz5jv1SB0olrI4QgrxDyC+2B9maeBxSupiPSZg63cngwZ3xOOOk9Wjueus6OYoNv
- 2ufWrPOIS2h6FrUdRszpdqCSFcguBSkNXCx8LyP6Rs2AO6ZVxdE6XV/OmygJPl/XUtM8iu7JzCl
- fIMxBi0bSpbDC8hJXX4hYRkjx9b/nmJvVw33CHL/1DrWNkUPKdTsffzfeVXEbk8oNsOiaitJDar
- yD1aUcivf8UTdBg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Add documentation examples showing various ways to use hrtimers:
+On Thu, Feb 19, 2026 at 08:22:14PM +0100, Danilo Krummrich wrote:
+> On Fri Jan 30, 2026 at 3:24 PM CET, Alice Ryhl wrote:
+> > +/// Represents that a given GEM object has at least one mapping on this [`GpuVm`] instance.
+> > +///
+> > +/// Does not assume that GEM lock is held.
+> > +#[repr(C)]
+> > +#[pin_data]
+> > +pub struct GpuVmBo<T: DriverGpuVm> {
+> > +    #[pin]
+> > +    inner: Opaque<bindings::drm_gpuvm_bo>,
+> > +    #[pin]
+> > +    data: T::VmBoData,
+> > +}
+> > +
+> > +impl<T: DriverGpuVm> GpuVmBo<T> {
+> > +    pub(super) const ALLOC_FN: Option<unsafe extern "C" fn() -> *mut bindings::drm_gpuvm_bo> = {
+> > +        use core::alloc::Layout;
+> > +        let base = Layout::new::<bindings::drm_gpuvm_bo>();
+> > +        let rust = Layout::new::<Self>();
+> > +        assert!(base.size() <= rust.size());
+> > +        if base.size() != rust.size() || base.align() != rust.align() {
+> > +            Some(Self::vm_bo_alloc)
+> > +        } else {
+> > +            // This causes GPUVM to allocate a `GpuVmBo<T>` with `kzalloc(sizeof(drm_gpuvm_bo))`.
+> > +            None
+> 
+> So, if T::VmBoData is a ZST *and* needs drop, we may end up allocating on the C
+> side and freeing on the Rust side.
+> 
+> I assume this is intentional and there is nothing wrong with it, but without a
+> comment it might be a bit subtle.
 
-- Box-allocated timers with shared state in Arc.
-- Arc-allocated timers.
-- Stack-based timers for scoped usage.
-- Mutable stack-based timers with shared state.
+Yeah it's subtle but correct.
 
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-Changes in v3:
-- Do not hide imports in examples.
-- Link to v2: https://msgid.link/20260219-hrtimer-examples-v6-19-rc1-v2-1-810cc06ca9f6@kernel.org
+> Another subtlety is that vm_bo_free() and vm_bo_alloc() assume that inner is
+> always the first member. I'd probably add a brief comment why this even has to
+> be the case, i.e. vm_bo_alloc() does not return *mut c_void, but *mut
+> bindings::drm_gpuvm_bo.
 
-Changes in v2:
-- Sprinkle blank lines for readability
-- Change heading for Arc example
-- Fix error handling.
-- Link to v1: https://lore.kernel.org/r/20251217-hrtimer-examples-v6-19-rc1-v1-1-4ad0e7e4c4e0@kernel.org
----
- rust/kernel/time/hrtimer.rs | 336 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 336 insertions(+)
+I will add comments.
 
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 856d2d929a008..0362bb8492716 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -66,6 +66,342 @@
- //!
- //! A `restart` operation on a timer in the **stopped** state is equivalent to a
- //! `start` operation.
-+//!
-+//! When a type implements both `HrTimerPointer` and `Clone`, it is possible to
-+//! issue the `start` operation while the timer is in the **started** state. In
-+//! this case the `start` operation is equivalent to the `restart` operation.
-+//!
-+//! # Examples
-+//!
-+//! ## Using an intrusive timer living in a [`Box`]
-+//!
-+//! ```
-+//! use kernel::{
-+//!     alloc::flags,
-+//!     impl_has_hr_timer,
-+//!     prelude::*,
-+//!     sync::{
-+//!         atomic::{ordering, Atomic},
-+//!         completion::Completion,
-+//!         Arc,
-+//!     },
-+//!     time::{
-+//!         hrtimer::{
-+//!             RelativeMode, HrTimer, HrTimerCallback, HrTimerPointer,
-+//!             HrTimerRestart, HrTimerCallbackContext
-+//!         },
-+//!         Delta, Monotonic,
-+//!     },
-+//! };
-+//!
-+//! #[pin_data]
-+//! struct Shared {
-+//!     #[pin]
-+//!     flag: Atomic<u64>,
-+//!     #[pin]
-+//!     cond: Completion,
-+//! }
-+//!
-+//! impl Shared {
-+//!     fn new() -> impl PinInit<Self> {
-+//!         pin_init!(Self {
-+//!             flag <- Atomic::new(0),
-+//!             cond <- Completion::new(),
-+//!         })
-+//!     }
-+//! }
-+//!
-+//! #[pin_data]
-+//! struct BoxIntrusiveHrTimer {
-+//!     #[pin]
-+//!     timer: HrTimer<Self>,
-+//!     shared: Arc<Shared>,
-+//! }
-+//!
-+//! impl BoxIntrusiveHrTimer {
-+//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
-+//!         try_pin_init!(Self {
-+//!             timer <- HrTimer::new(),
-+//!             shared: Arc::pin_init(Shared::new(), flags::GFP_KERNEL)?,
-+//!         })
-+//!     }
-+//! }
-+//!
-+//! impl HrTimerCallback for BoxIntrusiveHrTimer {
-+//!     type Pointer<'a> = Pin<KBox<Self>>;
-+//!
-+//!     fn run(this: Pin<&mut Self>, _ctx: HrTimerCallbackContext<'_, Self>) -> HrTimerRestart {
-+//!         pr_info!("Timer called\n");
-+//!
-+//!         let flag = this.shared.flag.fetch_add(1, ordering::Full);
-+//!         this.shared.cond.complete_all();
-+//!
-+//!         if flag == 4 {
-+//!             HrTimerRestart::NoRestart
-+//!         } else {
-+//!             HrTimerRestart::Restart
-+//!         }
-+//!     }
-+//! }
-+//!
-+//! impl_has_hr_timer! {
-+//!     impl HasHrTimer<Self> for BoxIntrusiveHrTimer {
-+//!         mode: RelativeMode<Monotonic>, field: self.timer
-+//!     }
-+//! }
-+//!
-+//! let has_timer = Box::pin_init(BoxIntrusiveHrTimer::new(), GFP_KERNEL)?;
-+//! let shared = has_timer.shared.clone();
-+//! let _handle = has_timer.start(Delta::from_micros(200));
-+//!
-+//! while shared.flag.load(ordering::Relaxed) != 5 {
-+//!     shared.cond.wait_for_completion();
-+//! }
-+//!
-+//! pr_info!("Counted to 5\n");
-+//! # Ok::<(), kernel::error::Error>(())
-+//! ```
-+//!
-+//! ## Using an intrusive timer in an [`Arc`]
-+//!
-+//! ```
-+//! use kernel::{
-+//!     alloc::flags,
-+//!     impl_has_hr_timer,
-+//!     prelude::*,
-+//!     sync::{
-+//!         atomic::{ordering, Atomic},
-+//!         completion::Completion,
-+//!         Arc, ArcBorrow,
-+//!     },
-+//!     time::{
-+//!         hrtimer::{
-+//!             RelativeMode, HrTimer, HrTimerCallback, HrTimerPointer, HrTimerRestart,
-+//!             HasHrTimer, HrTimerCallbackContext
-+//!         },
-+//!         Delta, Monotonic,
-+//!     },
-+//! };
-+//!
-+//! #[pin_data]
-+//! struct ArcIntrusiveHrTimer {
-+//!     #[pin]
-+//!     timer: HrTimer<Self>,
-+//!     #[pin]
-+//!     flag: Atomic<u64>,
-+//!     #[pin]
-+//!     cond: Completion,
-+//! }
-+//!
-+//! impl ArcIntrusiveHrTimer {
-+//!     fn new() -> impl PinInit<Self> {
-+//!         pin_init!(Self {
-+//!             timer <- HrTimer::new(),
-+//!             flag <- Atomic::new(0),
-+//!             cond <- Completion::new(),
-+//!         })
-+//!     }
-+//! }
-+//!
-+//! impl HrTimerCallback for ArcIntrusiveHrTimer {
-+//!     type Pointer<'a> = Arc<Self>;
-+//!
-+//!     fn run(
-+//!         this: ArcBorrow<'_, Self>,
-+//!         _ctx: HrTimerCallbackContext<'_, Self>,
-+//!     ) -> HrTimerRestart {
-+//!         pr_info!("Timer called\n");
-+//!
-+//!         let flag = this.flag.fetch_add(1, ordering::Full);
-+//!         this.cond.complete_all();
-+//!
-+//!         if flag == 4 {
-+//!             HrTimerRestart::NoRestart
-+//!         } else {
-+//!             HrTimerRestart::Restart
-+//!         }
-+//!     }
-+//! }
-+//!
-+//! impl_has_hr_timer! {
-+//!     impl HasHrTimer<Self> for ArcIntrusiveHrTimer {
-+//!         mode: RelativeMode<Monotonic>, field: self.timer
-+//!     }
-+//! }
-+//!
-+//! let has_timer = Arc::pin_init(ArcIntrusiveHrTimer::new(), GFP_KERNEL)?;
-+//! let _handle = has_timer.clone().start(Delta::from_micros(200));
-+//!
-+//! while has_timer.flag.load(ordering::Relaxed) != 5 {
-+//!     has_timer.cond.wait_for_completion();
-+//! }
-+//!
-+//! pr_info!("Counted to 5\n");
-+//! # Ok::<(), kernel::error::Error>(())
-+//! ```
-+//!
-+//! ## Using a stack-based timer
-+//!
-+//! ```
-+//! use kernel::{
-+//!     impl_has_hr_timer,
-+//!     prelude::*,
-+//!     sync::{
-+//!         atomic::{ordering, Atomic},
-+//!         completion::Completion,
-+//!     },
-+//!     time::{
-+//!         hrtimer::{
-+//!             ScopedHrTimerPointer, HrTimer, HrTimerCallback, HrTimerPointer, HrTimerRestart,
-+//!             HasHrTimer, RelativeMode, HrTimerCallbackContext
-+//!         },
-+//!         Delta, Monotonic,
-+//!     },
-+//! };
-+//! use pin_init::stack_pin_init;
-+//!
-+//! #[pin_data]
-+//! struct IntrusiveHrTimer {
-+//!     #[pin]
-+//!     timer: HrTimer<Self>,
-+//!     #[pin]
-+//!     flag: Atomic<u64>,
-+//!     #[pin]
-+//!     cond: Completion,
-+//! }
-+//!
-+//! impl IntrusiveHrTimer {
-+//!     fn new() -> impl PinInit<Self> {
-+//!         pin_init!(Self {
-+//!             timer <- HrTimer::new(),
-+//!             flag <- Atomic::new(0),
-+//!             cond <- Completion::new(),
-+//!         })
-+//!     }
-+//! }
-+//!
-+//! impl HrTimerCallback for IntrusiveHrTimer {
-+//!     type Pointer<'a> = Pin<&'a Self>;
-+//!
-+//!     fn run(this: Pin<&Self>, _ctx: HrTimerCallbackContext<'_, Self>) -> HrTimerRestart {
-+//!         pr_info!("Timer called\n");
-+//!
-+//!         this.flag.store(1, ordering::Release);
-+//!         this.cond.complete_all();
-+//!
-+//!         HrTimerRestart::NoRestart
-+//!     }
-+//! }
-+//!
-+//! impl_has_hr_timer! {
-+//!     impl HasHrTimer<Self> for IntrusiveHrTimer {
-+//!         mode: RelativeMode<Monotonic>, field: self.timer
-+//!     }
-+//! }
-+//!
-+//! stack_pin_init!( let has_timer = IntrusiveHrTimer::new() );
-+//! has_timer.as_ref().start_scoped(Delta::from_micros(200), || {
-+//!     while has_timer.flag.load(ordering::Relaxed) != 1 {
-+//!         has_timer.cond.wait_for_completion();
-+//!     }
-+//! });
-+//!
-+//! pr_info!("Flag raised\n");
-+//! # Ok::<(), kernel::error::Error>(())
-+//! ```
-+//!
-+//! ## Using a mutable stack-based timer
-+//!
-+//! ```
-+//! use kernel::{
-+//!     alloc::flags,
-+//!     impl_has_hr_timer,
-+//!     prelude::*,
-+//!     sync::{
-+//!         atomic::{ordering, Atomic},
-+//!         completion::Completion,
-+//!         Arc,
-+//!     },
-+//!     time::{
-+//!         hrtimer::{
-+//!             ScopedHrTimerPointer, HrTimer, HrTimerCallback, HrTimerPointer, HrTimerRestart,
-+//!             HasHrTimer, RelativeMode, HrTimerCallbackContext
-+//!         },
-+//!         Delta, Monotonic,
-+//!     },
-+//! };
-+//! use pin_init::stack_try_pin_init;
-+//!
-+//! #[pin_data]
-+//! struct Shared {
-+//!     #[pin]
-+//!     flag: Atomic<u64>,
-+//!     #[pin]
-+//!     cond: Completion,
-+//! }
-+//!
-+//! impl Shared {
-+//!     fn new() -> impl PinInit<Self> {
-+//!         pin_init!(Self {
-+//!             flag <- Atomic::new(0),
-+//!             cond <- Completion::new(),
-+//!         })
-+//!     }
-+//! }
-+//!
-+//! #[pin_data]
-+//! struct IntrusiveHrTimer {
-+//!     #[pin]
-+//!     timer: HrTimer<Self>,
-+//!     shared: Arc<Shared>,
-+//! }
-+//!
-+//! impl IntrusiveHrTimer {
-+//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
-+//!         try_pin_init!(Self {
-+//!             timer <- HrTimer::new(),
-+//!             shared: Arc::pin_init(Shared::new(), flags::GFP_KERNEL)?,
-+//!         })
-+//!     }
-+//! }
-+//!
-+//! impl HrTimerCallback for IntrusiveHrTimer {
-+//!     type Pointer<'a> = Pin<&'a mut Self>;
-+//!
-+//!     fn run(this: Pin<&mut Self>, _ctx: HrTimerCallbackContext<'_, Self>) -> HrTimerRestart {
-+//!         pr_info!("Timer called\n");
-+//!
-+//!         let flag = this.shared.flag.fetch_add(1, ordering::Full);
-+//!         this.shared.cond.complete_all();
-+//!
-+//!         if flag == 4 {
-+//!             HrTimerRestart::NoRestart
-+//!         } else {
-+//!             HrTimerRestart::Restart
-+//!         }
-+//!     }
-+//! }
-+//!
-+//! impl_has_hr_timer! {
-+//!     impl HasHrTimer<Self> for IntrusiveHrTimer {
-+//!         mode: RelativeMode<Monotonic>, field: self.timer
-+//!     }
-+//! }
-+//!
-+//! stack_try_pin_init!( let has_timer =? IntrusiveHrTimer::new() );
-+//! let shared = has_timer.shared.clone();
-+//!
-+//! has_timer.as_mut().start_scoped(Delta::from_micros(200), || {
-+//!     while shared.flag.load(ordering::Relaxed) != 5 {
-+//!         shared.cond.wait_for_completion();
-+//!     }
-+//! });
-+//!
-+//! pr_info!("Counted to 5\n");
-+//! # Ok::<(), kernel::error::Error>(())
-+//! ```
-+//!
-+//! [`Arc`]: kernel::sync::Arc
- 
- use super::{ClockSource, Delta, Instant};
- use crate::{prelude::*, types::Opaque};
+> > +    /// Access this [`GpuVmBo`] from a raw pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// For the duration of `'a`, the pointer must reference a valid `drm_gpuvm_bo` associated with
+> > +    /// a [`GpuVm<T>`].
+> > +    #[inline]
+> > +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::drm_gpuvm_bo) -> &'a Self {
+> 
+> I think this a good candidate for crate private, as we don't want drivers to use
+> this, but still use it in other DRM core modules.
+> 
+> > +        // SAFETY: `drm_gpuvm_bo` is first field and `repr(C)`.
+> > +        unsafe { &*ptr.cast() }
+> > +    }
+> > +
+> > +    /// Returns a raw pointer to underlying C value.
+> > +    #[inline]
+> > +    pub fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
+> 
+> Less important, but probably also only needed in core DRM code.
 
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251215-hrtimer-examples-v6-19-rc1-2658ce9bb5d0
+For cases like these two, I do think one can run into cases where you
+want them to be public. E.g. the vma confusion bugfix uses a raw pointer
+for now:
+https://lore.kernel.org/all/20260218-binder-vma-check-v2-1-60f9d695a990@google.com/
 
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
+I'm generally not so worried about methods like these being public
+because they can't be used without unsafe.
 
+> > +    /// Look up whether there is an existing [`GpuVmBo`] for this gem object.
+> > +    #[inline]
+> > +    pub(super) fn obtain(self) -> GpuVmBoRegistered<T> {
+> > +        let me = ManuallyDrop::new(self);
+> > +        // SAFETY: Valid `drm_gpuvm_bo` not already in the lists.
+> > +        let ptr = unsafe { bindings::drm_gpuvm_bo_obtain_prealloc(me.as_raw()) };
+> > +
+> > +        // Add the vm_bo to the extobj list if it's an external object, and if the vm_bo does not
+> > +        // already exist. (If we are using an existing vm_bo, it's already in the extobj list.)
+> > +        if ptr::eq(ptr, me.as_raw()) && me.gpuvm().is_extobj(me.obj()) {
+> > +            let resv_lock = me.gpuvm().raw_resv();
+> > +            // SAFETY: The GPUVM is still alive, so its resv lock is too.
+> > +            unsafe { bindings::dma_resv_lock(resv_lock, ptr::null_mut()) };
+> 
+> Maybe add a TODO to replace this with a proper lock guard once available?
 
+Ok.
+
+> > +/// A [`GpuVmBo`] object in the GEM list.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// Points at a `drm_gpuvm_bo` that contains a valid `T::VmBoData` and is present in the gem list.
+> > +pub struct GpuVmBoRegistered<T: DriverGpuVm>(NonNull<GpuVmBo<T>>);
+> 
+> I know that I proposed to rename this from GpuVmBoResident to GpuVmBoRegistered
+> in a drive-by comment on v3.
+> 
+> But now that I have a closer look, I think it would be nice to just have GpuVmBo
+> being the registered one and GpuVmBoAlloc being the pre-allocated one.
+> 
+> As it is currently, I think it is bad to ever present a &GpuVmBo to a driver
+> because it implies that we don't know whether it is a pre-allocated one or a
+> "normal", registered one. But we do always know.
+
+Actually, I think GpuVmBo is already the registered one.
+GpuVmBoRegistered is just ARef<GpuVmBo<T>>.
+
+> For instance, in patch 6 we give out &'op GpuVmBo<T>, but it actually carries
+> the invariant of being registered.
+> 
+> Of course, we could fix this by giving out a &'op GpuVmBoRegistered<T> instead,
+> but it would be nice to not have drivers be in touch with a type that can be one
+> or the other.
+> 
+> I know that the current GpuVmBo<T> also serves the purpose of storing common
+> code. Maybe we can make it private, call it GpuVmBoInner<T> and have inline
+> forwarding methods for GpuVmBo<T> and GpuVmBoAlloc<T>. This is slightly more
+> overhead in this implementation due to the forwarding methods, but less
+> ambiguity for drivers, which I think is more important.
+
+I think we should keep the current state that GpuVmBo is registered, and
+only GpuVmBoAlloc is not. That is most useful.
+
+Alice
