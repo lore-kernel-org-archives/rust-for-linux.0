@@ -1,167 +1,147 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16C2313281
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Feb 2026 13:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771593640; cv=none; b=ja9qRKpyPLF/bylEpp8xw369OME1vNOVeVBONUisRoUZr+mRYnBbTtpSj5fh36DKH/q6ATjkydQKcmXymbXROBvxF2BIuiZmc3e5oA+QYUzUO36MaxqngqlK7WgiH/0uLtZ4mKZ3YiO8kzah5WjgmhmRbr0VSfNHNnR3Cnd8YTQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771593640; c=relaxed/simple;
-	bh=wuvRQXlCRLuwIsSmpqcRNATCL2TV0Dnk15w9Ychvgbs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z/UGCDkGSciKyETGtpW5SZ5pUM8jHB2m7eTOd0E8ZQ6DwNUozr/Pygpk/Ks7pAUJ+2AKYA06JTC0wb612tYqfijsIvR5bXNVMPiKj0ygdFhfErz51FER72RA99i8mukXi8hdGQqc5S9ZzGv9LAzAH0+BGAH9tJrqxmvGr4mzoV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nLOFozTw; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC4934B697
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Feb 2026 14:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771596235; cv=pass; b=l1WCIrs5ftSL2F9LOqmp2KQ5VX696jDF8RpV8iCEdsrIbnFTttLx6SoXNGbh+PD8kT5HJHXQE/E5zPirk6W2Dk6x0Ru3sxWfzaSsKrWZ8hF6CTAjO3Lq9jW9EEfrmijlKISxye9vWJQTNBjL/P/HAylGwIgKch6KIK0njs7VtAk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771596235; c=relaxed/simple;
+	bh=lhk15j/cl2TOdEFsdG2r22cQKyQ2YQjmDrI3zrHVCkY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=inLWGXdXzPARVIEOrXy86cbdoYztmUeKoYsBCD57XiHMFfsud4zuMLLZCMhwnau//qWaPnse1YDnS5eD9+ibBg37EX8FyiNN/5BfpgK05mHP4tPo2mF0YxQrp9D50IjTyoceqYWrTLvKE9DDFw6h38+N7rwIs2BRZArMmdlJQuY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CjDCgnXP; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nLOFozTw"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4359a16a400so1858347f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 20 Feb 2026 05:20:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771593637; x=1772198437; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yisxG46a/j9NykTgwbDnRnNT6I9RQR5YNqufY/coaEE=;
-        b=nLOFozTwMyShuy0rrOpCiAs1fhqIagmnGl8B60gLA0/gZZGiGIEZN6nsdxATCb1+kd
-         NyiFkkWaYswVnwNw6ptYjiCwp4mIs+7IJ3cn3LLekiy6fu8okhgP0/y/F/NY4wTprjqJ
-         6pYo0SkGl0ddq10K3NOFhTi59uH2auQCGT0Ubz9cLbFxBFHLb7ZicrSlAiiCA/J65EAf
-         8CjVy9XuD6PWm05cEQRr958ohRWSen/tNbhlkInIyax2ux/vx0173BvvM9510OkccDap
-         TBmm4p5J7ldtxRkPeNlpjRKLyQUwdKG23XaNbdo1U+NYAtYhYr/OYXW6iCgX5+F34wdU
-         B9sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771593637; x=1772198437;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yisxG46a/j9NykTgwbDnRnNT6I9RQR5YNqufY/coaEE=;
-        b=DqCdDdxMmnrC1bGrZIilutVX9HnDDVbcDYSoXhmSWcSEegifSp69v5o59z8H8NAjcH
-         0t0lFtMz5Ay5G0i56uTXpX4bmqlPD4TZ5rbwGZQ2nCfyur27tSNr4SPvmQb/ZRCGMupS
-         L3W+yftZtY4ic3y5YKzYEX+o0eLPrkT1/mrQmlyni8vIYMWTt5Ua6eRJM+S+uhQL9pFu
-         iLdosh46gKo9zMMsohp93rBDaaiVhVHhgGlkl6P3gvvEPU5ourlYnFfFaO4shClIa5U6
-         0HOvHud+DAd0BJFXFaqK3G4nkIMZXqSNqV3KprDM4tJz/+4ocfHQafCfNX5dXukXYBZ5
-         XGHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVnFFPKkQpp9XAwV5PP2f6zYRlCNA6q/ILAFcQPoPwCautppBumHA5tpj6ZUTeMEfzwIyPLQexLbRhSK19Bg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTM8jWS2QQZqubDb7WkiFMKdxGDFO0jlUhYPmRju6O6fU16OUu
-	INyLVbLe6IGSnpGFYc3noFuYqBDHUI0L6yIhJjYrPlqRxG3+6XKxLZUo
-X-Gm-Gg: AZuq6aKsjP4kuXGqZZr26RjhHmXTRTc9umeNlOPjj7NpR0GQ3IaxOilGXKuOLerIVRP
-	c5k+nDQCJOawODgZjm/RmP8xFi+Dc/5ATkTcfe78a3dzkeY05IdOi1LHBI4PcIQiAd5W704AbFZ
-	iWKRdyHEEg8Aaj4CcY8UYo20Cf71geiSWz4+n4LatZk/Z4BLfZM9VCySESkKUTi3xtpPMXq2KzS
-	SDh4NMzl7Q3phcwOVTzQQmDwVm1akQf+Ll5o8BrtWRg1cGa0AbYbJu5ryX9ahe2XpdT1O0ge+Yl
-	kigKlIrDphZ2gKHRkGvKaNGkKdIkUvjTsDBpj9M400y9JPxd2sGJnOYD20AKaBp0ZXl57tsyiyg
-	cSaiL9Oheh0UAnaCidKkUGDVk9CoWvmoiPePs7AznKjkfTRj/nDUhR4lZuKWQvTw5zW2BVyuoJu
-	vgU9PTk7qDN6i9DPaEQL+qoXzmEXoTQO17EqS8qt8qHhn99EArec/A0/EzlM4f1XuqE7qnXfuFt
-	RMWcRrxUmmfXq4eAsXpTpfsmLpfgbQMmwWqDlMhVc3aOMSgOn2G6zSOng==
-X-Received: by 2002:a05:6000:400e:b0:435:9882:234e with SMTP id ffacd0b85a97d-43958e58315mr15302003f8f.59.1771593636717;
-        Fri, 20 Feb 2026 05:20:36 -0800 (PST)
-Received: from ?IPV6:2003:df:bf29:9000:7fb1:1192:aeeb:ca3f? (p200300dfbf2990007fb11192aeebca3f.dip0.t-ipconnect.de. [2003:df:bf29:9000:7fb1:1192:aeeb:ca3f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796a5acaasm51063862f8f.6.2026.02.20.05.20.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Feb 2026 05:20:36 -0800 (PST)
-Message-ID: <e5c01465-9571-442b-8490-6ae336cffba8@gmail.com>
-Date: Fri, 20 Feb 2026 14:20:34 +0100
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CjDCgnXP"
+ARC-Seal: i=1; a=rsa-sha256; t=1771596227; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=na/PVeTbSV57quP4075W+gAyXndhOrOKAfr9guq5J5bCDG+q7jqCez7TaTD4PHDZ8103M/hU41TMePZqI0oAh8uJ9vItXBhP47EPisw6+abyRsY5IB2WboazEjpTMzqun8djoPRP/r6DbgiOf5A34+todEKpcb+Ab2S95XGIc6g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1771596227; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Hss0ExZ9YqaGFnovrBNOogefYBXYmBiHXblAHnhPYjc=; 
+	b=b6lbCOJ4dc+vNGBWuKMqGKupL1y+UnjaO48aNjre4ne5yR3j9ikSmxfo0yEikZI8mNFfiAcxaZC04lXacKw1/c1vqpHsw2nqI7tJ8Im2lUIAYKwq7S7eaX4ykR1+yDqK7/+oR7zCTjiGOl/9d7zdu+pXK0C/wOXW1HV0/bdVNUY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771596227;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=Hss0ExZ9YqaGFnovrBNOogefYBXYmBiHXblAHnhPYjc=;
+	b=CjDCgnXPyBeqSLiGxYhsaDA38Jkym8ZpHsN4ER6zNjR9bnokF670ucMuzSRKLL10
+	VkcFNbGAhXVZiIBUNewn35oR8KJhYUJ7PjrLHsctjtxIjwaZi6knzYFGdJqN6UbUAcQ
+	KiclCSCv4dhVK0O0J7fNXdrGiq1WhP64ZQ2VbnLk=
+Received: by mx.zohomail.com with SMTPS id 1771596225427242.69170962146313;
+	Fri, 20 Feb 2026 06:03:45 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/9] rust: add `register!` macro
-To: Alexandre Courbot <acourbot@nvidia.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Boqun Feng <boqun@kernel.org>
-Cc: Yury Norov <yury.norov@gmail.com>, John Hubbard <jhubbard@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Joel Fernandes
- <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Edwin Peer <epeer@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
- Dirk Behme <dirk.behme@de.bosch.com>, Steven Price <steven.price@arm.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260216-register-v6-0-eec9a4de9e9e@nvidia.com>
-Content-Language: de-AT-frami, en-US
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20260216-register-v6-0-eec9a4de9e9e@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-Hi Alexandre,
-
-On 16.02.26 09:04, Alexandre Courbot wrote:
-> This new revision took some time because it is (yet another) overhaul.
-> ^_^;
-> 
-> Thanks to a breakthrough by Gary, we found a way to have the I/O type
-> perform the actual I/O instead of the register type, which moves us from
-> this access pattern:
-> 
->     let boot0 = regs::NV_PMC_BOOT_0::read(bar);
-> 
-> to this arguably more natural one:
-> 
->     let boot0 = bar.read(regs::NV_PMC_BOOT_0);
-> 
-> It also has the benefit of taking advantage of deref coercion for types
-> that wrap an `Io`, something the register-based methods couldn't do and
-> which would have required extra `AsRef` implementations just for this
-> purpose.
-> 
-> Furthermore, this resolves the inconsistency of the former register API
-> that couldn't use the `try_` I/O accessors (and even had methods whose
-> names clashed with them). Now if `Io` supports it, it can be done on a
-> register.
-> 
-> Another benefit is that there is less work done within macros, and more
-> in generic code, which is (generally) a win for readability. The
-> `register!` macro is considerably smaller and easier to work on, and now
-> mostly made up of the bitfield accessors that will eventually be moved
-> into another macro.
-> 
-> I decided to remove a couple of tags because the code has changed quite
-> a bit since they were obtained.
-
-Last time I gave this a try was with v2. From my aarch64 simple timer
-test on that version I have [1] below. Could you give a hint how to
-convert this to v6? :)
-
-Many thanks!
-
-Dirk
-
-[1]
-
-register!(TCR(u16) @ 0x10 {
-        9:9    icpf;
-        8:8    unf;
-        7:6    icpe;
-	5:5    unie;
-	4:3    ckeg;
-	2:0    tpsc;
-});
-
-
-impl TCR {
-	fn handle_underflow<const SIZE: usize, T>(io: &T)
-	where
-	    T: Deref<Target = Io<SIZE>>,
-	{
-	    let tcr = Self::read(io);
-	    if tcr.unf().into() {
-	        tcr.set_unf(false).write(io);
-	    }
-	}
-}
-
-...
-
-// Reset the underflow flag
-TCR::handle_underflow(io);
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 02/12] drm/tyr: move clock cleanup into Clocks Drop impl
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260212013713.304343-3-deborah.brouwer@collabora.com>
+Date: Fri, 20 Feb 2026 11:03:29 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ aliceryhl@google.com,
+ boris.brezillon@collabora.com,
+ beata.michalska@arm.com,
+ lyude@redhat.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <AA5860A4-53D4-4571-BBB1-49ACB9F12243@collabora.com>
+References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
+ <20260212013713.304343-3-deborah.brouwer@collabora.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
 
 
+> On 11 Feb 2026, at 22:37, Deborah Brouwer =
+<deborah.brouwer@collabora.com> wrote:
+>=20
+> Currently Tyr disables its clocks from TyrDrmDeviceData::drop(), which
+> causes them to be shut down before any other fields in =
+TyrDrmDeviceData
+> are dropped. This prevents us from using the clocks when dropping the
+> other fields in TyrDrmDeviceData.
+>=20
+> In order to better control when the clocks are dropped, move this =
+cleanup
+> logic into a Drop implementation on the Clocks struct itself.
+>=20
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> ---
+> drivers/gpu/drm/tyr/driver.rs | 23 +++++++++--------------
+> 1 file changed, 9 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/driver.rs =
+b/drivers/gpu/drm/tyr/driver.rs
+> index ae4daa12b3e5..9bc6ed56c45e 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -54,7 +54,7 @@ pub(crate) struct TyrPlatformDeviceData {
+>     _device: ARef<TyrDrmDevice>,
+> }
+>=20
+> -#[pin_data(PinnedDrop)]
+> +#[pin_data]
+> pub(crate) struct TyrDrmDeviceData {
+>     pub(crate) pdev: ARef<platform::Device>,
+>=20
+> @@ -168,17 +168,6 @@ impl PinnedDrop for TyrPlatformDeviceData {
+>     fn drop(self: Pin<&mut Self>) {}
+> }
+>=20
+> -#[pinned_drop]
+> -impl PinnedDrop for TyrDrmDeviceData {
+> -    fn drop(self: Pin<&mut Self>) {
+> -        // TODO: the type-state pattern for Clks will fix this.
+> -        let clks =3D self.clks.lock();
+> -        clks.core.disable_unprepare();
+> -        clks.stacks.disable_unprepare();
+> -        clks.coregroup.disable_unprepare();
+> -    }
+> -}
+> -
+> // We need to retain the name "panthor" to achieve drop-in =
+compatibility with
+> // the C driver in the userspace stack.
+> const INFO: drm::DriverInfo =3D drm::DriverInfo {
+> @@ -202,14 +191,20 @@ impl drm::Driver for TyrDrmDriver {
+>     }
+> }
+>=20
+> -#[pin_data]
+> struct Clocks {
+>     core: Clk,
+>     stacks: OptionalClk,
+>     coregroup: OptionalClk,
+> }
+>=20
+> -#[pin_data]
+> +impl Drop for Clocks {
+> +    fn drop(&mut self) {
+> +        self.core.disable_unprepare();
+> +        self.stacks.disable_unprepare();
+> +        self.coregroup.disable_unprepare();
+> +    }
+> +}
+> +
+> struct Regulators {
+>     _mali: Regulator<regulator::Enabled>,
+>     _sram: Regulator<regulator::Enabled>,
+> --=20
+> 2.52.0
+>=20
+>=20
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
