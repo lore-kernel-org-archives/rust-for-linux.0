@@ -1,123 +1,166 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742709476
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 13:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771681754; cv=pass; b=p9Ud+H7p1QFgwjbHYSAEe6oxEmi1gdSjHkoR2MSNqyn/I0OqYMeWsB0E3sEQ9AtNo8VF//eKtM5G05WrdKVM3ODSMQh+SAzYV2vJDP0IAjrX1KgDKs5vm/TK5v6vHG1AZPTj0x5lAe8TiZDTed0h7kj0dfp6fUgo+51IPR0lNTs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771681754; c=relaxed/simple;
-	bh=s9nvHAGeXgcsZn0q7uE5FzQwgD+Wrh7IPNsTqig76tE=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=IM5f/gvNgv68B1+iQVMoGzGUy0kwoT/Ezg1TNd7jyVIk2PouvkR93esthj4fa2/GjLeSbyA8GmkrNhQIN5tsyFW6SV0ZUtPZXSMvebbXa2lxuVloUY3IowDCLzHPkCFfq+egiDSEMmdN8kxOhaklRu0eLyvZsuXDzjQIbhBRkq8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bUVARW/3; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B028D262BD;
+	Sat, 21 Feb 2026 14:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771684433; cv=none; b=uo9Pn6NRSjvk3p3IUtabAGoCe6eROSE0W4KqLNiHy4NKoR8YjGxY2fO9Y8/L0yc20QS3BOISreaJ5Rp6u4E/lOMAx3lp6eCjcwGuEi5jhsLvoagv0OUsU9cC9mH+W0+J8yFFM3x42Q6wtjgIAjTk9iu6bpGwVRK9hytkPilC65Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771684433; c=relaxed/simple;
+	bh=XjVc8WYemFdIrSWOiPIohhWHiePuI0UIIDF7cj68pOI=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:Mime-Version:
+	 References:In-Reply-To; b=qJCaMOK9rWy8eaXmjgGAa+65n/ZfIuwQdiYEvibG6H1Kh9/CzfZ+dYfrNTt6m2249hBYxHdK5tnrEfr62CJpb23B6S1sC0PABRNG2gbAcay5zdvvhVFOZgd+L+XaUzlQgESfnSPZYpZjiR3df9rTTYUZqLdInqmsSDG+aiG28aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r6gwKZLV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bUVARW/3"
-ARC-Seal: i=1; a=rsa-sha256; t=1771681744; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=l/04NL4T5oQvVDYJD6G1KUhkPLfD4kRn07JGUsf/+yLO+aIhuiMFliPaEDx4Eu88brw29oJmJrhVSZszfLhJT64Sjtr/5Thf4dZf0Ii0UIH+T8OPjF3J6yR5JBXV+8WTqK61lSzMpUnAZwyCDtv/xwInhBQvxcUYLufzgb7TJTs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771681744; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=eAmu3VW6ddEaB/ezAKpj8LOV8eZUAkq0rF53NN8BJFc=; 
-	b=joDmVtVjD4tsD9iFjF7BqPfohBelvueLlUb6mWsUEa/LnBT5XMMnt2BQZJbFHHKPuZ0WAI9EIOyU0s/u9Hccm4pSZo3XX5YAkiw3bZlPUjm5l6AeDhve8I8aIGzmHBByTn5YyKhk15dJIX6gSmlKlQIk20v0MMt377cHDithYtY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771681744;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Content-Transfer-Encoding:From:From:Mime-Version:Subject:Subject:Date:Date:Message-Id:Message-Id:References:Cc:Cc:In-Reply-To:To:To:Reply-To;
-	bh=eAmu3VW6ddEaB/ezAKpj8LOV8eZUAkq0rF53NN8BJFc=;
-	b=bUVARW/3aJTZkaEWsQhlFT84IrtsFXfTzAufE4fw9zFDEBl3GOqqUF4z/h9Rg6Zk
-	og2lJ/wTjOVWCbz3G8txF5iqvTHPYv2D6riHzg3pzzRXNsScFdSfUWT6Nxuh0FHBGI+
-	+lskjHC7dGbIm5Em4K/CyjLg1vAB2yTjT1I09qnE=
-Received: by mx.zohomail.com with SMTPS id 1771681743288371.94964133806286;
-	Sat, 21 Feb 2026 05:49:03 -0800 (PST)
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r6gwKZLV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80C4C4CEF7;
+	Sat, 21 Feb 2026 14:33:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771684433;
+	bh=XjVc8WYemFdIrSWOiPIohhWHiePuI0UIIDF7cj68pOI=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=r6gwKZLVAflZJ3PuTTea9qwjjWph1YstDpXWnqB93u8SNqCnf9oV3ACQFp+v61B7H
+	 xKcCQiNx7GM4E/ms8f4YgCeERa/7RIokIkXL/DA9G19tIHp+4qcOgk1Xs6Z9AXS48F
+	 CyiwkS4la5EtoNNa6hs6p70iF1S+QO7nVrQmf9V8LDqohOIDogYDS8jM6FnJycSQcP
+	 YY+RmBA4GyVnvyiJ2KnOm/qNByRGxP/AM8xjg2wDTssvVokLufaTB7OGZvHmcnyHH3
+	 aDD4fjwK7xEI/CFBTfXZTsD+ZgpVgs1xeTFzf88GphKglA7iIGBR6njXCNu8xRHEaX
+	 bR022rZKyIPXg==
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 21 Feb 2026 15:33:48 +0100
+Message-Id: <DGKPPQI0QE73.S8I1M5NCI2BV@kernel.org>
+Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
+ callbacks
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <linux-rtc@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, "Alexandre Belloni"
+ <alexandre.belloni@bootlin.com>, "Alvin Sun" <alvin.sun@linux.dev>
+From: "Danilo Krummrich" <dakr@kernel.org>
 Content-Transfer-Encoding: quoted-printable
-From: Daniel Almeida <daniel.almeida@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH 07/12] drm/tyr: Add generic slot manager
-Date: Sat, 21 Feb 2026 10:48:47 -0300
-Message-Id: <A6C92AE7-06F1-46AB-A197-7A48C7C6AC23@collabora.com>
-References: <aZm1zL1nA97zur0v@google.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Deborah Brouwer <deborah.brouwer@collabora.com>,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- beata.michalska@arm.com, lyude@redhat.com
-In-Reply-To: <aZm1zL1nA97zur0v@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: iPhone Mail (23D127)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+References: <20260116162203.296844-1-sunke@kylinos.cn>
+ <20260116162203.296844-2-sunke@kylinos.cn>
+ <DFSN0O9RRVD6.1LCI38JKGO1R0@kernel.org>
+ <77d373dc-c5f2-4dca-b0d2-b5cee6a21b3b@gmail.com>
+ <20260220225341c5eeb835@mail.local>
+ <d1c9e33b-e1f3-41c6-af5e-a85fe2b86d10@linux.dev>
+ <20260221111619162a41a1@mail.local>
+ <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
 
+On Sat Feb 21, 2026 at 12:19 PM CET, Rafael J. Wysocki wrote:
+> On Sat, Feb 21, 2026 at 12:16=E2=80=AFPM Alexandre Belloni
+> <alexandre.belloni@bootlin.com> wrote:
+>> > > Out of 29 drivers, 18 are doing so.
+>
+> The vast majority of around 50 platform drivers I've inspected
+> recently use platform_set_drvdata() or equivalent in probe.
 
-> On 21 Feb 2026, at 10:40, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> =EF=BB=BFOn Sat, Feb 21, 2026 at 09:44:45AM -0300, Daniel Almeida wrote:
->>=20
->>=20
->>>> On 21 Feb 2026, at 08:17, Alice Ryhl <aliceryhl@google.com> wrote:
->>>=20
->>> On Thu, Feb 12, 2026 at 11:11:13AM +0100, Boris Brezillon wrote:
->>>>> +type LockedSeat<T, const MAX_SLOTS: usize> =3D LockedBy<Seat, SlotMan=
-ager<T, MAX_SLOTS>>;
->>>>> +
->>>>> +impl<T: SlotOperations, const MAX_SLOTS: usize> Unpin for SlotManager=
-<T, MAX_SLOTS> {}
->>>>=20
->>>> Do we really need to explicitly flag this type Unpin? I thought this
->>>> was the default if the struct is not pinned (and it's not AFAICT).
->>>=20
->>> It may be cleaner to add `#[pin_data]` to the struct and rely on the
->>> Unpin impl it generates.
->>>=20
->>> In general, the default Unpin implementation is to inherit from the
->>> fields. When you add #[pin_data], it's changed to only inherit from
->>> fields marked #[pin]. By adding #[pin_data] but not marking any fields
->>> #[pin], it will be Unpin unless any of the zero fields marked #[pin] are=
+This thread seems to contain quite a bit of confusion and misunderstandings=
+ --
+let me try to clarify.
 
->>> Unpin, i.e. it will always be Unpin.
->>=20
->> Why do we need this if all fields are Unpin?
->=20
-> Its fields are not necessarily Unpin. 'manager' could be any type,
-> including !Unpin types.
->=20
-> Adding #[pin_data] without marking any fields #[pin] is equivalent to
-> the explicit impl Unpin the patch has now.
+  (1) How Rust handles bus device private data.
 
-If the T or the slot data is !Unpin, then the SlotManager is !Unpin and that=
-=E2=80=99s fine. This has been my point from the beginning.
+  In Rust the probe() function of a bus implementation (platform, PCI, etc.=
+)
+  returns an initializer (impl PinInit<T, Error>) for the driver's device
+  private data.
 
-I don=E2=80=99t see why we need to deviate from this default behavior. This i=
-s much clearer than deriving pin_data with 0 #[pin] fields.
+  The bus implementation takes this initializer and passes it (together wit=
+h the
+  underlying struct device) to the driver-core. The driver-core allocates t=
+he
+  required memory, initializes the memory with the given initializer and st=
+ores
+  a pointer to the corresponding object with dev_set_drvdata().
 
->=20
->>>>> +        // FIXME: Annoying manual copy. The original idea was to not a=
-dd Copy+Clone to SeatInfo,
->>>>> +        // so that only slot.rs can change the seat state, but there m=
-ight be better solutions
->>>>> +        // to prevent that.
->>>>=20
->>>> Okay, I guess we want some inputs from Daniel and/or Alice on that one.=
+  So, technically, in Rust all platform drivers call platform_set_drvdata()=
+.
 
->>>=20
->>> You could consider only implementing Clone. That way, copies do not
->>> happen unless you do so explicitly. Or add a private method on the type
->>> that has the same function as Clone if you do not wish to expose it.
->>=20
->> Please check my solution where clone is not needed.
->=20
-> If you do not need to return it from the function, then that's fine too,
-> of course.
->=20
-> Alice
+  (Note that this is also true when the driver's device private data type i=
+s
+  empty (i.e. it has no fields). In this case it could still have a destruc=
+tor
+  that must be called when the device private data structure is destroyed. =
+Of
+  course there is no real memory allocation when the struct's size is zero.=
+)
 
+  The driver's device private data can only be accessed when the bus device=
+ is
+  bound to the driver, i.e. the driver can only access it with a &Device<Bo=
+und>;
+  it (the driver's device private data) is automatically freed by the
+  driver-core when remove() and all devres callbacks have been completed.
+
+  I.e. the rules are - of course - the same as on the C side, but they are
+  enforced by the type system and the driver-core code.
+
+  (2) Bus device private data vs. class device private data.
+
+  The change to pass a struct rtc_device in class device callbacks of RTC,
+  rather than the base struct device of the corresponding bus device (e.g. =
+AMBA,
+  platform, etc.) should not aim at storing all data in rtc->dev.private_da=
+ta
+  that was previously stored in rtc->dev.parent->private_data.
+
+  Instead, it gives drivers the option to differentiate in terms of ownersh=
+ip
+  and lifetime.
+
+  While the bus device private data has a very defined lifetime from probe(=
+)
+  until the device is unbound from the driver, class device private data mi=
+ght
+  live shorter than this, or might even out-live driver unbind in some case=
+s. It
+  really depends on the lifetime of the class device itself, which is not
+  generally defined.
+
+  Now, from a C side point of view this may not look like a big deal, as it
+  (unfortunately) is not that uncommon that struct fields are just initiali=
+zed
+  and destroyed whenever needed and the code just takes it into account.
+
+  But at the same time, this is what leads to a lot of lifetime problems an=
+d
+  memory bugs and it is one of those things that Rust aims at avoiding by b=
+eing
+  very strict about initialization, ownership and lifetimes.
+
+  However, I do also recognize that drivers creating an RTC device are typi=
+cally
+  very simple and in practice I would not be surprised if it turns out that=
+ it
+  happens that drivers keep the struct rtc_device alive from probe() until =
+the
+  bus device is unbound from the driver, i.e. lifetimes just end up being a=
+lmost
+  the same. But I don't know if that's always the case.
+
+  Regardless of that, I think it would be good to keep driver authors findi=
+ng a
+  common pattern, where class device callbacks carry the corresponding clas=
+s
+  device struct (instead of the parent base struct device).
+
+  Especially on the Rust side we now have the chance to make the experience=
+ of
+  writing drivers as consistent as possible, which should help (new) driver
+  authors a lot in terms of learning the driver lifetime patterns.
+
+I hope this helps.
+
+- Danilo
