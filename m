@@ -1,47 +1,47 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011050.outbound.protection.outlook.com [52.101.62.50])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011055.outbound.protection.outlook.com [52.101.62.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CE1334C1F;
-	Sat, 21 Feb 2026 02:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E814335547;
+	Sat, 21 Feb 2026 02:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771639876; cv=fail; b=hNYM81YzV/oy1CyS+wmV5/qNS7WjSJQxd8uuf2jZHR1Jxw0SCrqOlGAR0yM5DMmvG9W92zaWixnPGERxv4i6jhPFeMELnYVrY3alEHjAybNkod1bmAF1x/jZm3m8KsvqOIDH7vDSaVEW5qBtARcsIlg7qhvLrgIMlJ4aS426Dwo=
+	t=1771639877; cv=fail; b=AYldZvgLEffH5atm+h2ufTgWDAINMr375qfAcmgJjk71jwZyPRuELJmwK1kIo0ajSqladKCAiuz4Dw7goEAIsBfAcQfht0Kcllxi0sVIo4K0lQxJBWBKeMbqEDPrtdPGf0BDmvqCfFTxInqQ6/lb4M+IVMOicGinKM2vuBq+Z4E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771639876; c=relaxed/simple;
-	bh=MG3tqbtcFh4fO2qXNiVzKJffexuectiBH7YxCzR3n/0=;
+	s=arc-20240116; t=1771639877; c=relaxed/simple;
+	bh=L17fv4lddZByoHdQBjFDYwYYChTh1eFwvaMV7GiAhmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AfTuV8rq84Qzot5W8Cc02BfYrOKFTiv1F9U3HXkn0UrDh7gcLxV5e7/Bs5B5vnJziiSibMjfeh7V/qhJowHklcbHVTu4rwqjEyNkytpLAsSRBq18iF1rnb0OAzspHnesQm+V7m63xss5P0ItuIsF+jjePRlB0pHeEGjNoT7B2Aw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EWd+Yt6p; arc=fail smtp.client-ip=52.101.62.50
+	 Content-Type:MIME-Version; b=KMx+V+oXrcdliCgwlXuHJmICOq4sMBJa5kSWF+9OX/6JsRWWIC7HMjWapJs04eQe9oSLlyzrtSFUT5D+sHHKh8wtQ3EZ2V4QOA77/Qozk6sE6Qipnol+UFDi55CdAX0FVUy3aVbP6fCYNfkCI1b2X2Kbl5V+wrM1S352/xpq08E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JxdPoQMs; arc=fail smtp.client-ip=52.101.62.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EWd+Yt6p"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JxdPoQMs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RbscgFD6/psZZA/TRE9a3lwd7V/vkpM2N/B9dvoN164ooR/wKrwYVcZBc3WDI0xNjZIA2DgeOsAVmHhkgHLtLUl0g/2S2qikYXKvUNlDfjqydtC50/39XBWjQMup9QR+orZ0RP0v4+pzx8hC5whTVUtN1TMLCbE+IouqAA8kFpmMJG15hxmN3et0O76cpa+Ir5ELd3vkjkRVBPw6OeBnPybf21gPBZmVZDhk8EdtPYMM7Ik485hjZW2c15YX+hh0lRqupQmcE4medoiSmXRNcnYN3em19JiVHwhITlBtwdtcmO0Psl7rQrrPi3m65fPbODys06sPNp5odUIy6U8dAw==
+ b=iMfQNXHAgVc3Z6FJP7pRcnXSoJE5l7xGpgiFxi5DunrUerDNisJ930WPaXLWi0DAChn8N/B5LMPClDXHmhYuh3tfTKPSkaFBgEq2UV9TFSSORoly/8KXICa+jwdAsiSQ7MjV6724f/eEKLHiHEuGvRdSyBVxRjnFITyIRIrbl/OfjkYiHc3IfNZnogVq2mIGHTrsI4tzEWnlwmQGuNI1z2b886WQ5Zj6iMybRoy6t+uCKSdV7BSVJ2B/BwElM8aCQ7uW+vp0TUizHdfWMTdtLocksjsjzzSWhE6xm+GtgxqPO9oiQ1OhfvEsxE+lVF7btLo+A+7Up3iRKyJUlCpeHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PFXbYAyvF5YBYbm2Wi/gbYiKAVR63NzziCjue+b6xA0=;
- b=eWjPxtassOLLOPWtXj7aiHMDQ4mrLG/UIiy50eZnYe/U1z2hCq3Ln7vJCc1R3ld56GIzcDBRfw3vGy1rZRWrU+M5PF+tYX7YEjyOaNxAYkCtdyyMVVhX1eA0c8gpNQAAbVa8ZDfUBfK4fjDZoERCccgid01fU5b7WRRzgCiFizAZf8qDgDa7LCfnceINkY7u2cUxIpEgr/L+2R4O04mGvwwhTc+i+LDREORjhL/PNxEMNUGthwO6CDRiiwu0xXbBjrz1DPUeyHpaPYzNjNPMixGef4C0M1wyI3SQc7H6QUG4bo3SmoW10qUSIAUwEHRYhu3xmbxc10b4g5t0+qdoow==
+ bh=rg3pmjqEw/ruiPsg2UsmwGOX5sKPA38C7hEUjPR40/I=;
+ b=AHIzYEaCjkxzo++oa+Od5rd2eH0f/ij9fEdwinSqLFlPkPX8WBWoaeZb3cY8WW24bBCCfjxAETq4LkojWy3Wn6OTAgmKHc5OU5QKh11TPH4WOHRZrFcVPxQTbtqn0ULwz22JM1MVf7UEhPG/nn/3apqSM1MSyD+1oGlPBsAVt9/pwai8jMjvmTbuMh0fzXKbJw0ua0Zf9azB3TQ/MFRN3aPK/sAvoF8KzZOQqtN5czccHQau6ooSyxUZQUfMEBoqC4vbbpfY9XhHkWhjKGvAu+6Pt3makCL8PgEDS7tEfaeS2xuY3BkHTj5yHEPENp+BbRsTVkU1n2i2Q6JJOOJ9XQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PFXbYAyvF5YBYbm2Wi/gbYiKAVR63NzziCjue+b6xA0=;
- b=EWd+Yt6poCqagxtTT2aENIJNmHziLnh+v4Dw4ffQN2xJVqIHpFx7yPmeVtI3vT2MlSBx8QjwPhlkIn3VjlzPuSM0uOC15RDzyPGCM+W/kC3usSVv/fp+gTxyDkyZ5GokL0wRS7R4WkH5U5S6RUYzsMENOrvz4LDOONwfmb1u/J1vQVO85XqhsBHT7M1qVFto/kVZPaalJiro7L5GE9Ez2nR2vxuVe6VLHxBR2PNfn2bnH2mlEmPOq+VQ0xPbyf7DRtcT11Jt0hi0DgkCSI+eReQibLGylJAXghh+0OV+jPVnBerGDY5CaH1Dmp/RFPA6IpPKTBMjJEFZ+6cMqzaGXw==
+ bh=rg3pmjqEw/ruiPsg2UsmwGOX5sKPA38C7hEUjPR40/I=;
+ b=JxdPoQMstQZ2NSQj9T8dkR7DSO2ITkW1U1id8Vwewdj90U8hXslIicvs1l/oLqfcQ+d+YYSzpuntaY7+PFGxD+GkfTsjp8c+7yQtAG9H6cC/iKe5WgcSZoDTONG2vpGFn2eVA8epekPgJPY0S/4Z4N+T4WnB00Nu/iVUT1pBx4ExlZOayA82sKc1ovTFt3DA5n80hgsQygu58r/YVudAEJ8r7k03V20RxHhcu3Ow3trJ6HdmZxSSw4qUmXii+nenk3nt2UBhaM9lJa2arZJop8W7Ldp0vgXL510DfhPZhNzU91Lhp4LnQqiP4Da5VtyKhoL3Q+0dxCcm6z7mv+eqxg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- SA1PR12MB6996.namprd12.prod.outlook.com (2603:10b6:806:24f::18) with
+ PH7PR12MB7378.namprd12.prod.outlook.com (2603:10b6:510:20d::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.14; Sat, 21 Feb
- 2026 02:11:02 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.16; Sat, 21 Feb
+ 2026 02:11:04 +0000
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9632.017; Sat, 21 Feb 2026
- 02:11:01 +0000
+ 02:11:04 +0000
 From: John Hubbard <jhubbard@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>
@@ -66,17 +66,17 @@ Cc: Joel Fernandes <joelagnelf@nvidia.com>,
 	rust-for-linux@vger.kernel.org,
 	LKML <linux-kernel@vger.kernel.org>,
 	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v5 31/38] gpu: nova-core: Blackwell: use correct sysmem flush registers
-Date: Fri, 20 Feb 2026 18:09:45 -0800
-Message-ID: <20260221020952.412352-32-jhubbard@nvidia.com>
+Subject: [PATCH v5 36/38] gpu: nova-core: Hopper/Blackwell: integrate FSP boot path into boot()
+Date: Fri, 20 Feb 2026 18:09:50 -0800
+Message-ID: <20260221020952.412352-37-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260221020952.412352-1-jhubbard@nvidia.com>
 References: <20260221020952.412352-1-jhubbard@nvidia.com>
 X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ2PR07CA0021.namprd07.prod.outlook.com
- (2603:10b6:a03:505::23) To DM3PR12MB9416.namprd12.prod.outlook.com
+X-ClientProxiedBy: BY3PR05CA0037.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::12) To DM3PR12MB9416.namprd12.prod.outlook.com
  (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -85,326 +85,423 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SA1PR12MB6996:EE_
-X-MS-Office365-Filtering-Correlation-Id: 130d6b33-6da1-4f41-a45d-08de70ee6483
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|PH7PR12MB7378:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5596b5d6-1e6d-416e-d6e4-08de70ee6842
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9NC4O5n/2ovrS4IxE/gn72uMi32nIpEZUIFwIm8xgpLBKBfoui3yf8lH/ks6?=
- =?us-ascii?Q?Ggoa/2PO6C+CDjHTCcQjDdHtA1C6xL9/+a+ZYZQvZclrrqymx+KucjJ3Tjme?=
- =?us-ascii?Q?cafrLz6OIFlHr64rogvj7gBctCEamJ/4W2AfRZXOghY1am4wU3ZGiOugbyMH?=
- =?us-ascii?Q?objBXjjkcHmVXT7wW7dAnffMzCpvJOfAXiOAWeRLVyl3gH/RJOBaKuFbGQTe?=
- =?us-ascii?Q?K4RZofmlHB2HQktVXsPpyJMDeKis7y/R/gZONe1zfvFpjYKRdpqJKtGUciOc?=
- =?us-ascii?Q?CUzZZfMMrQI3gqrAagn4BZrPyCOmxAgtjW/MvIO1Adh1QWTe7JFCwAK9GwXP?=
- =?us-ascii?Q?YLFQbAFFlH7EAuRLW2VPX3lcNhsSff4sQZEb/uSYBpAfr8G+EXOyTSng1Uni?=
- =?us-ascii?Q?yuS1A5wTJ7PZfhbiCmYiX/hWG0dbfiz3gcZyAXQU+2wHP9IRgYKPLhQvjb9s?=
- =?us-ascii?Q?3TGqw1diT86+znrlYjYcajZIo90lKcwtSSQWhjkP21Ap1UEFDmNH6K7OMPdK?=
- =?us-ascii?Q?vPHeh0mOorgyur2ldPnvllO1HbbZZeGxW3cGEVsx6ZCU9AekHO9QTF40EFzz?=
- =?us-ascii?Q?L84KSBzgiG3ualtMoMVB7PP+4nNfmD0i3bA9sD76iTV64xX9UEMuW8O6eLfE?=
- =?us-ascii?Q?sbLKzujUFhQLd2NX34CtFmK328grPEHpN6iLo5G+If9Wse3Hf6jasnVMgeYo?=
- =?us-ascii?Q?0NHfUE/8Uh0u7dI9+3VCN6rYifQ0B3f9YGIIPbc2H+arfw9ez9oTJtQ2I8XR?=
- =?us-ascii?Q?rnIkrxN0xi6sfcYiN0Zldk4MK/BPoJ12oBZcU0YeYQ16jXuvPdb/yPINwQYB?=
- =?us-ascii?Q?QrKt3xm0vdvOzRHX2Whv/s3OoJghn/kaot+b81Y1q5TOndTr6j7Y0iZNxg8X?=
- =?us-ascii?Q?6DI+MZwMB+8JZ9AgLxtDjoBp7L+5iRH6FFmbpl7dtgy5eM8j8IYVG1DMDfvl?=
- =?us-ascii?Q?w40BcnyOqaAiO+irA9NIy2NtJQh8akAZTIKG3yOn1N0Cq9tQB4NwG/2lPfHw?=
- =?us-ascii?Q?LhHN0lbAaN+IkAxgxRbpIjfUlt55ldM9hBk1J8l58SF+xiUcqXFSD2shiN46?=
- =?us-ascii?Q?vvMX1rud3+E9FTHB1Kmgzzkpe+RfmV3Hrv1/L1LLkxdyVYyla3Imiia5vAu6?=
- =?us-ascii?Q?qm8me2zx9tpP87iglm+A51M3I4x5yP5PeDc6Pa5xfv0teCycWDoTFlmEH/z+?=
- =?us-ascii?Q?P1jvvmlTFqg7CilbBXJpgHMUOT6BwqweFtkZLyrOkhOf53UiNV2LM4sa83Fb?=
- =?us-ascii?Q?2gJRHYTh4Jkp5aYS4m/ir2KhxCxugYdqpdUzVWrcsUfVnLTCSODHq815fvyi?=
- =?us-ascii?Q?K//o9CEbYv3FD0DEaGH9LsEAvumkQZ/J/Hso85MvpjqD2jj30LlLzom71DF4?=
- =?us-ascii?Q?V98oHZVvhXv6sf4IO7aTp1WwOOefALOnP/hMS+bLxAWvmmKQbj5cbZniVW9N?=
- =?us-ascii?Q?ICEx5YHeRGF+4G9ThJaVGg+tKOQZj/7PXhqYd7ZmCxnvi9aAkKlbViBHuyJF?=
- =?us-ascii?Q?s7Uf77bYG93XGkd2/DZjn3VNYpJAL1f39famddnBw8ISa4KPrEXqQ6O8IhBy?=
- =?us-ascii?Q?VPkAYZvc614zeQ/vmZU=3D?=
+	=?us-ascii?Q?9Dv4dSF7xYZXqnC2AxTV4MnS0Tr7G9AfV1nZu8LwtJdMWYxfA+ETrbeYMJ/x?=
+ =?us-ascii?Q?cXLFZvheTL6Oi2nrqFsHQDx3JigRsP+17B51R0ViJh2Jn7M9XVsLkTcIs/BD?=
+ =?us-ascii?Q?iMDSpzbvlXP7OvvsQ26Y525zHIZ7IrNxXFFK+YAJ1mnJH2XvNR5LvPSZE0AO?=
+ =?us-ascii?Q?iY7HjcVOVzd96TLZAzcYPyklL8Xcl6pSO90rVyiU0CWMNQxcf3130oyoyWhl?=
+ =?us-ascii?Q?7MjI9Osd5hKgHykTd+nFSmpr5UBGF++2+NpL9gKf2qh6Pa5Ye59foxx1I04G?=
+ =?us-ascii?Q?jIqtCzoz3otmhDQjIkCULIwhDcV5WIs6Dhm2P1vaXVPlOA+FKuJOsZ/IAhhw?=
+ =?us-ascii?Q?pgc7ClKD06KeuUDSgcRs0U8AvHPw84JvjEMgsqxtizORwhwyz9SnipL8mcry?=
+ =?us-ascii?Q?1UENYlg5MLQ1seK3VzIhL548I8ofYCmaJnH3X012wyQq2mW7nQpJKgWhF9o6?=
+ =?us-ascii?Q?U5rDBNXA55iPRfJFNUNefYLZOeo7WyUHXb8WtqZTzrHD82ZyT6ERDkTf6qel?=
+ =?us-ascii?Q?tpT1pV2J/1T0sAb/Jt8t08ElKKGimkp+PlHisr/hXz5v8stXTqA0S/PMthMe?=
+ =?us-ascii?Q?xtmWDf5sYgQV+U/x0C5oaoflxjCMz1XTr1Y3pWp1PkGILsOa5HwG7qAl1CaH?=
+ =?us-ascii?Q?gMCfPMeWe/6eCWsKsAgPrGwdUTik4ayjYKmBRFkgHfjJX/CkRwz1PbTmtK1Y?=
+ =?us-ascii?Q?jPDdRci5Z/2IQxkuqC7Xg7wUt0Z1uuB8/6SAgXJiTulImilU6ztKfKakCgLS?=
+ =?us-ascii?Q?E/o5D/b/XRJbPzrW8XbkZy8PdJEKeNnRSMZG8EPNsekJJ5KsZvh6g8myWYSI?=
+ =?us-ascii?Q?5eqDyT689Pmjf5aoJSKzq/K9a/7v8PBKLnImsflQZoXx1xAk42Bk6tGY+Wqq?=
+ =?us-ascii?Q?dSo5XcmAl29lRWJmNXjyGmTRYriMKV20GIlnVpg15vs53S8U8Mm2YZ5c63qD?=
+ =?us-ascii?Q?WP7/KayHeRopgrrSKDkye6t/95yBvYL8kG97+kQdDvojAsKIkRZQE6V3Y4Q4?=
+ =?us-ascii?Q?A9a1WCR/NqOYzkJgASg79LQ1hlEsccl3YYi02VZ6Ubkdusw6tIll+xEKHxUt?=
+ =?us-ascii?Q?whHjQn/sUdCSc5IF7Yx94q2gfwhUtVOhhDNGFcGitNRo+DqBmvH46TazFyku?=
+ =?us-ascii?Q?v0LnUIBianE2RKH1arZBqq9juqAcdxRfybKH9DETt6IBurhhKafCBH8veGnl?=
+ =?us-ascii?Q?iz9Uo5hlTWv85xl5EX9Ye4cnxBZ8IY1+Eq8M8g/B+0xYkxYrNa1sfW4RnkfB?=
+ =?us-ascii?Q?jxFebA0tAnQWVA9SGI3iiMA4pwNdWXKTGEATqrXHUELUrvJuYvmFuEVH2A2d?=
+ =?us-ascii?Q?L4zhvTWNhE58YNooDxPcD5j4MaqhEUGmQERHWO6WWXcutdZ+1RO4xzm0jBdX?=
+ =?us-ascii?Q?0xXOng2FkjWfmWgU3YCzKFl18qaNapz03lCUXKCuhR6/xJGCAgkoVQCcckle?=
+ =?us-ascii?Q?c2ULWMIm14nNo0bGO94h145nMUkfWg/U2oNZzgGCM2GZ0k1G/tD/gN8diYX8?=
+ =?us-ascii?Q?hB9YwpETHlEhFcgvrUqBKa2ReZ0krZHcs7F4t/wb7ALcfrtx94tTzFYHjN2t?=
+ =?us-ascii?Q?zdQxzglx2orDya7bkqY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?11kgi0oTKSQAsKm+9BVKWiJYZ5E51q57oThSWXjVv+yVXY3qCnB96ht7Sug+?=
- =?us-ascii?Q?p5ehSNeItLhVJEd0PcwdqyN+K8N0oYoR4XR+X0/+USJElqVMMT/zIreZTORo?=
- =?us-ascii?Q?VqyKc6bFCt8tWJ+0ZzW8Sb1S/z+FmweJGGyY11OOdIoyjTijQOE1c85FqAyg?=
- =?us-ascii?Q?/IlDhFo9Csb0bYENV2FWzYc2+yGq0+/v9+vuD47hoKYNIP0m7FywB5Q+sjnR?=
- =?us-ascii?Q?SXfULV0P63SPRV1I9khYA5I0XGdkR/VfUn1vwkszZ24IpLIeVBo7INs9Qfu5?=
- =?us-ascii?Q?pfGHXVlX1pB+1U145xqWXgtha4G8zLa29oLJh49qWfyHJ0n7MN0OHBTUEZ42?=
- =?us-ascii?Q?fBv3o+CDKDZyuW3C/IAyBuVJTqZ0KwIZMro470p4jVTK3uHUhuaAUSm+RHKa?=
- =?us-ascii?Q?cfiHxDg9Nh5DHS8rNn2WPGcAteCz6jV7SjVplQOBcXwdaxPciygt9BSvIrq1?=
- =?us-ascii?Q?XjPwvNrVcFPSBZ6Od0iFyt+TV6YuIAHd7mXnmMn/xr97RabzOu5aZWwn5aDg?=
- =?us-ascii?Q?mZxmvQauJ4tGdL8PLW3bAZVoOQvFPERIyXQfZNSi09AcflHqfnxXoYvvndu7?=
- =?us-ascii?Q?MsE9bwH0oAYdYSJqOjTJ20NEzgwsd4tnfrfgwI+v95QLRbHZocLG/Bb7rSvm?=
- =?us-ascii?Q?54nH1N8gTxGGt5K9IBj2cyEegwdHKtSDemvKbnkBFFzXX30LO5mHnotQXvqo?=
- =?us-ascii?Q?u3S7VIDPRo1kZ8GmHYcR9rokOKwpf5+Iokwg1asFSFPcTJUm52Zha6serXCi?=
- =?us-ascii?Q?weI4bCKzsLE74kT8ZKiQFoxUhaM3bKcAKq6E0MX036aOVZ4DfWr52i0nkZrK?=
- =?us-ascii?Q?i2rs5GlKmp8eQrSAFXLkrf6oEiHMDwgCVE4JA9+hGfH2/ZgBDHDQF/dNhNef?=
- =?us-ascii?Q?NdBtDYtOSEQ2/5nFNY0nh4Y1stpxf/0+zEcQ52Gd92hd2POSr1RwX9lRYAjx?=
- =?us-ascii?Q?KdFcDDVIMEyPQp/esfjQayGYNmQw2D0BrNVUTE6gtqY2298oIJV9xD4kWMwP?=
- =?us-ascii?Q?LQzqtCbfclJwQ25PKodm5jupHcu8LddO71lr2Il2Y2P5obUvnLNWanN9iGPT?=
- =?us-ascii?Q?sEUJpinUOQrHUdsU7pHVOtF9yOkQkZPvLQ33dlU5xYwmBmMX+EsixqEu6zUf?=
- =?us-ascii?Q?sRBdriyNHWrGb4FQFGb0lxK1SArapbhywKE2yXrYq3b2Gb1AFuA5KIzvJjcD?=
- =?us-ascii?Q?4eu1qZswc31cYPb2klEoM3/7c8NoGmLySsxPhxsA8HQzn+Uay/zGSgRYISju?=
- =?us-ascii?Q?43CHIoSeoVfADnEcnQtI/8FYMzP05PW9o0Ku1gUFnA+VkvDFtElbu/TwtuoQ?=
- =?us-ascii?Q?lVbBaZ2zW5kgY09jRdLJNNM5cx72QaueY9IpTbl1RJZqoDDcVs6KBM0x5aoL?=
- =?us-ascii?Q?t2AldrX/vgXA1RLZDctwvYKU6kD4OpXqnnhOOSA0jRDtO+mLwet20m/vfhXt?=
- =?us-ascii?Q?PjIzg6MLWQmJGQDlQqeSVvOnDiuRRUz97+BnjpUPJ8qYsbXU87g+tUiOq9yH?=
- =?us-ascii?Q?fxFCxUyPiI0U76as9nHc3Dl2+eaCahrE7YuBI7KLRIqg4iSWzDlDe62WVUbl?=
- =?us-ascii?Q?pJp0YeqmaloYiU8fphOII3A02YWmDA2AgHMdx9hLUp5tHHrIILJ1QjouPlPZ?=
- =?us-ascii?Q?yA4LeNycWgOnJh/Wz3pC8vefcboYMFRVY/GZrVO8IEnJSODK4UQN+Mq8zatH?=
- =?us-ascii?Q?39TxyhGfqUf8vXDZoSBJQbX1UMJu5YqTysq2x0xce7DNXI9VxmgUbDVurBk6?=
- =?us-ascii?Q?X64bzQDSqw=3D=3D?=
+	=?us-ascii?Q?QPGeEgfZDj16XFBMvM8FyhqqZtHwkqmfyn8rDxzqh8geS/NcwvRggi8rxEq/?=
+ =?us-ascii?Q?FHgEA9DbnWsd6H24GSZ2G8yQf/wQ6eYaY9cuDtoPnrT2XnnZQa4nt/MKP3YL?=
+ =?us-ascii?Q?k+rcnS48ozhP+JPWnFqKJ7GYgbtwoaT2HpreMPgWaPx/dxZAfpU51ewqnYmw?=
+ =?us-ascii?Q?kFw+3LKes+KuQ0TfIIxDn70UU6IcPn+LwvISOmIX3rPCb7bk3wC5Og9tQAhc?=
+ =?us-ascii?Q?/TvOjxzZ7mjK/3s8kty6k57LS42GzYG3NEKu5lgIK0oOm8U9S7vzAVaplRxN?=
+ =?us-ascii?Q?xCIYtRc3Zj5rousYIhBNRxE69uXBWXC0wLxZfSwXvS9KzVC+aenKuQha9yGA?=
+ =?us-ascii?Q?kc2TRpP6Ku1BRZuHsNKe/Tdn4UEy9vvvEfC3ZuDS/7WEzk1Bk1rEDZvRMJJw?=
+ =?us-ascii?Q?YZFgJ9xFriXRSn7ECm9U/+IoJFAe0aCEy9qkXSQ62l0K4z+6QVxzm5Mpvkae?=
+ =?us-ascii?Q?Ziv21J3+jCnz/wvX4Y2QyB/qeXzuycChdCUSQKEZUmvWP/pidg5oEZ9fgLQF?=
+ =?us-ascii?Q?vkuawCmy+NISylbnawH9g5ZrJrpL0tGsZ2FZe479Y8m09ehmVnzkpAAb2tfo?=
+ =?us-ascii?Q?R1wE1+jGJS0N+k5fpmed36ZCYrPAkN94A4nv97TdKEhTjN++O8NWguLmvErV?=
+ =?us-ascii?Q?UxDyNpqAoP0kXMbEvbzJfdSITyK/u4lY3k9HXn62X2aSDLi7xNN4s+IZhUMy?=
+ =?us-ascii?Q?m9Qh65TZpr3Il+AERCfvl3vicO5zKGyDW1KalwQsKtwUrhpB8UT4l3hXZsh5?=
+ =?us-ascii?Q?XH5eUKPgvw5cPnzn4KB0mBYdI4oOOuFyiOj9R4ILJ/Ij/4mWJ7Icpm5Km3/Q?=
+ =?us-ascii?Q?y/yQFrWRe0hjrnYyPdIIVZgqVoHpGPatkwZ1h3k8xkyIIutxbBiOk1L8vZpA?=
+ =?us-ascii?Q?xsKfzy2qLam0J37Cs8YYjv9EAmA1U0AvMyljXzEc0To+fNEhmjzlGXNUrz4L?=
+ =?us-ascii?Q?V+vgU2cNq6i0nYix2sn4jmREZ5/cEIGhg3H1NMPgk5nqMR/4cIIRf28+dM84?=
+ =?us-ascii?Q?L5SkMZWTR28pZqxgZ8gUUjbgOdENSVfs3yno6i/o67GRYt4ELHF88LJ8D2Ck?=
+ =?us-ascii?Q?MYFy0e//8Syb9xao2SfAG2ZoBmIcyoi/ez6/FeKI9MJ4SXS7en3szT9gZ626?=
+ =?us-ascii?Q?OnKGQlfYxbgGB5KjTxH1ExsmHxxQ9WFZ1ECVWI6Lq9hS94PKs8tYgm/3O+WX?=
+ =?us-ascii?Q?27PqoL/hJwK3/I+24/GtXirD5gIaPA5c7qlaCh1ahgB4LPkVa+MSPEzN8PF2?=
+ =?us-ascii?Q?vjkiM2RCB9xrhqG3anSjsDPU15k/I+qim5lezKqK6fMr8sM3TLCj8IHDV4/o?=
+ =?us-ascii?Q?5YONaW+Oy6BrIxgxeEZncgCiFr4G0fJBWrAx7QM3pud7QOTL0OJxU7JA0OiJ?=
+ =?us-ascii?Q?0o2yqlrpU0R3lIqMEPyaj8ov7nnQzSky/12/xDwmOBVE1lUOsE7lwihRPNSf?=
+ =?us-ascii?Q?RXtwtP/He/9n3tNbcH9cUOH92k2RtUtaeYy1MtiodvzPT89hNNx339zUTbni?=
+ =?us-ascii?Q?XWd1dCTt+O+jIdFreEY4w+TO9Wy0SkSueEqvl9ejx/+S1rDGW5pO32bVaAx2?=
+ =?us-ascii?Q?8MqyeVyrmQG3qazqU7GIi2vEcD/z0Q22Bf2nxZkuTFjmpl1iUjEl1y9y2ZYW?=
+ =?us-ascii?Q?u0v2W2lqb6JwXvdW+mYT5UBexHbXbg088+9RMK/FgmeKUQQFCqtDVn6Kdac3?=
+ =?us-ascii?Q?rUMN+XhQKjxOixFaNCbxjIfjbsL+ewwSMJFAGygHJxKI7iot2JxAqHCsRw2V?=
+ =?us-ascii?Q?fxP/8ER6+g=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 130d6b33-6da1-4f41-a45d-08de70ee6483
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5596b5d6-1e6d-416e-d6e4-08de70ee6842
 X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2026 02:10:32.5576
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2026 02:10:38.8175
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D17eX/CGyJtMLeBri0sI+6YRdH2IzTbhHOJoa4aIDHV8TuhV0yMODjolTCeIxT+Vpwdcz+OnkP3vk/CxJG8Wzw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6996
+X-MS-Exchange-CrossTenant-UserPrincipalName: MSWAztKl/uVJsTeKuFArW5eiM5XpCrTr5cHy4SsaQ6UxZ6MD5JVcHoJZ/VavVH9xjsHlTkZ7rmPSygcBkwPWIw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7378
 
-Blackwell GPUs moved the sysmem flush page registers away from the
-legacy NV_PFB_NISO_FLUSH_SYSMEM_ADDR used by Ampere/Ada.
+Add the FSP boot path for Hopper and Blackwell GPUs. These architectures
+use FSP with FMC firmware for Chain of Trust boot, rather than SEC2.
 
-GB10x uses HSHUB0 registers, with both a primary and EG (egress) pair
-that must be programmed to the same address. GB20x uses FBHUB0
-registers.
-
-Add separate GB100 and GB202 fb HALs, and split the Blackwell HAL
-dispatch so that each uses its respective registers.
+boot() now dispatches to boot_via_sec2() or boot_via_fsp() based on
+architecture. The SEC2 path keeps its original command ordering. The
+FSP path sends SetSystemInfo/SetRegistry after GSP becomes active.
+The GSP sequencer only runs for SEC2-based architectures.
 
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/gpu/nova-core/fb/hal.rs       | 10 ++++-
- drivers/gpu/nova-core/fb/hal/gb100.rs | 47 +++++++++++++++++---
- drivers/gpu/nova-core/fb/hal/gb202.rs | 62 +++++++++++++++++++++++++++
- drivers/gpu/nova-core/regs.rs         | 36 ++++++++++++++++
- 4 files changed, 149 insertions(+), 6 deletions(-)
- create mode 100644 drivers/gpu/nova-core/fb/hal/gb202.rs
+ drivers/gpu/nova-core/firmware/fsp.rs |   2 -
+ drivers/gpu/nova-core/fsp.rs          |   5 -
+ drivers/gpu/nova-core/gsp/boot.rs     | 190 +++++++++++++++++++-------
+ 3 files changed, 144 insertions(+), 53 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/fb/hal.rs b/drivers/gpu/nova-core/fb/hal.rs
-index ebd12247f771..844b00868832 100644
---- a/drivers/gpu/nova-core/fb/hal.rs
-+++ b/drivers/gpu/nova-core/fb/hal.rs
-@@ -13,9 +13,14 @@
- mod ga100;
- mod ga102;
- mod gb100;
-+mod gb202;
- mod gh100;
- mod tu102;
- 
-+/// Non-WPR heap size for Blackwell (2 MiB + 128 KiB).
-+/// See Open RM: kgspCalculateFbLayout_GB100.
-+const BLACKWELL_NON_WPR_HEAP_SIZE: u32 = 0x220000;
-+
- pub(crate) trait FbHal {
-     /// Returns the address of the currently-registered sysmem flush page.
-     fn read_sysmem_flush_page(&self, bar: &Bar0) -> u64;
-@@ -46,6 +51,9 @@ pub(crate) fn fb_hal(chipset: Chipset) -> &'static dyn FbHal {
-         Architecture::Ampere if chipset == Chipset::GA100 => ga100::GA100_HAL,
-         Architecture::Ampere | Architecture::Ada => ga102::GA102_HAL,
-         Architecture::Hopper => gh100::GH100_HAL,
--        Architecture::Blackwell => gb100::GB100_HAL,
-+        Architecture::Blackwell => match chipset {
-+            Chipset::GB100 | Chipset::GB102 => gb100::GB100_HAL,
-+            _ => gb202::GB202_HAL,
-+        },
-     }
- }
-diff --git a/drivers/gpu/nova-core/fb/hal/gb100.rs b/drivers/gpu/nova-core/fb/hal/gb100.rs
-index bead99a6ca76..831a058a388b 100644
---- a/drivers/gpu/nova-core/fb/hal/gb100.rs
-+++ b/drivers/gpu/nova-core/fb/hal/gb100.rs
-@@ -1,21 +1,59 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+//! Blackwell GB10x framebuffer HAL.
-+//!
-+//! GB10x GPUs use HSHUB0 registers for the sysmem flush page. Both the primary and EG (egress)
-+//! register pairs must be programmed to the same address, as required by hardware.
-+
- use kernel::prelude::*;
- 
- use crate::{
-     driver::Bar0,
--    fb::hal::FbHal, //
-+    fb::hal::FbHal,
-+    regs, //
+diff --git a/drivers/gpu/nova-core/firmware/fsp.rs b/drivers/gpu/nova-core/firmware/fsp.rs
+index bb35f363b998..0e72f1378ef0 100644
+--- a/drivers/gpu/nova-core/firmware/fsp.rs
++++ b/drivers/gpu/nova-core/firmware/fsp.rs
+@@ -13,7 +13,6 @@
+     gpu::Chipset, //
  };
  
- struct Gb100;
- 
-+fn read_sysmem_flush_page_gb100(bar: &Bar0) -> u64 {
-+    let lo = u64::from(regs::NV_PFB_HSHUB0_PCIE_FLUSH_SYSMEM_ADDR_LO::read(bar).adr());
-+    let hi = u64::from(regs::NV_PFB_HSHUB0_PCIE_FLUSH_SYSMEM_ADDR_HI::read(bar).adr());
-+
-+    lo | (hi << 32)
-+}
-+
-+fn write_sysmem_flush_page_gb100(bar: &Bar0, addr: u64) {
-+    // CAST: lower 32 bits. Hardware ignores bits 7:0.
-+    let addr_lo = addr as u32;
-+    // CAST: upper 32 bits, then masked to 20 bits by the register field.
-+    let addr_hi = (addr >> 32) as u32;
-+
-+    // Write HI first. The hardware will trigger the flush on the LO write.
-+
-+    // Primary HSHUB pair.
-+    regs::NV_PFB_HSHUB0_PCIE_FLUSH_SYSMEM_ADDR_HI::default()
-+        .set_adr(addr_hi)
-+        .write(bar);
-+    regs::NV_PFB_HSHUB0_PCIE_FLUSH_SYSMEM_ADDR_LO::default()
-+        .set_adr(addr_lo)
-+        .write(bar);
-+
-+    // EG (egress) pair -- must match the primary pair.
-+    regs::NV_PFB_HSHUB0_EG_PCIE_FLUSH_SYSMEM_ADDR_HI::default()
-+        .set_adr(addr_hi)
-+        .write(bar);
-+    regs::NV_PFB_HSHUB0_EG_PCIE_FLUSH_SYSMEM_ADDR_LO::default()
-+        .set_adr(addr_lo)
-+        .write(bar);
-+}
-+
- impl FbHal for Gb100 {
-     fn read_sysmem_flush_page(&self, bar: &Bar0) -> u64 {
--        super::ga100::read_sysmem_flush_page_ga100(bar)
-+        read_sysmem_flush_page_gb100(bar)
-     }
- 
-     fn write_sysmem_flush_page(&self, bar: &Bar0, addr: u64) -> Result {
--        super::ga100::write_sysmem_flush_page_ga100(bar, addr);
-+        write_sysmem_flush_page_gb100(bar, addr);
- 
-         Ok(())
-     }
-@@ -29,8 +67,7 @@ fn vidmem_size(&self, bar: &Bar0) -> u64 {
-     }
- 
-     fn non_wpr_heap_size(&self) -> Option<u32> {
--        // 2 MiB + 128 KiB non-WPR heap for Blackwell (see Open RM: kgspCalculateFbLayout_GB100).
--        Some(0x220000)
-+        Some(super::BLACKWELL_NON_WPR_HEAP_SIZE)
-     }
+-#[expect(dead_code)]
+ pub(crate) struct FspFirmware {
+     /// FMC firmware image data (only the "image" ELF section).
+     pub(crate) fmc_image: DmaObject,
+@@ -22,7 +21,6 @@ pub(crate) struct FspFirmware {
  }
  
-diff --git a/drivers/gpu/nova-core/fb/hal/gb202.rs b/drivers/gpu/nova-core/fb/hal/gb202.rs
-new file mode 100644
-index 000000000000..2a4c3e7961b2
---- /dev/null
-+++ b/drivers/gpu/nova-core/fb/hal/gb202.rs
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: GPL-2.0
+ impl FspFirmware {
+-    #[expect(dead_code)]
+     pub(crate) fn new(
+         dev: &device::Device<device::Bound>,
+         chipset: Chipset,
+diff --git a/drivers/gpu/nova-core/fsp.rs b/drivers/gpu/nova-core/fsp.rs
+index c66ad0a102a6..3749b5e3a677 100644
+--- a/drivers/gpu/nova-core/fsp.rs
++++ b/drivers/gpu/nova-core/fsp.rs
+@@ -238,7 +238,6 @@ pub(crate) struct FmcBootArgs<'a> {
+ impl<'a> FmcBootArgs<'a> {
+     /// Build FMC boot arguments, allocating the DMA-coherent boot parameter
+     /// structure that FSP will read.
+-    #[expect(dead_code)]
+     #[allow(clippy::too_many_arguments)]
+     pub(crate) fn new(
+         dev: &device::Device<device::Bound>,
+@@ -287,7 +286,6 @@ pub(crate) fn new(
+ 
+     /// DMA address of the FMC boot parameters, needed after boot for lockdown
+     /// release polling.
+-    #[expect(dead_code)]
+     pub(crate) fn boot_params_dma_handle(&self) -> u64 {
+         self.fmc_boot_params.dma_handle()
+     }
+@@ -301,7 +299,6 @@ impl Fsp {
+     ///
+     /// Polls the thermal scratch register until FSP signals boot completion
+     /// or timeout occurs.
+-    #[expect(dead_code)]
+     pub(crate) fn wait_secure_boot(
+         dev: &device::Device<device::Bound>,
+         bar: &crate::driver::Bar0,
+@@ -331,7 +328,6 @@ pub(crate) fn wait_secure_boot(
+     ///
+     /// Extracts real cryptographic signatures from FMC ELF32 firmware sections.
+     /// Returns signatures in a heap-allocated structure to prevent stack overflow.
+-    #[expect(dead_code)]
+     pub(crate) fn extract_fmc_signatures(
+         dev: &device::Device<device::Bound>,
+         fmc_fw_data: &[u8],
+@@ -391,7 +387,6 @@ pub(crate) fn extract_fmc_signatures(
+     ///
+     /// Builds the COT message from the pre-configured [`FmcBootArgs`], sends it
+     /// to FSP, and waits for the response.
+-    #[expect(dead_code)]
+     pub(crate) fn boot_fmc(
+         dev: &device::Device<device::Bound>,
+         bar: &crate::driver::Bar0,
+diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
+index 0db2c58e0765..1fdcb72ce163 100644
+--- a/drivers/gpu/nova-core/gsp/boot.rs
++++ b/drivers/gpu/nova-core/gsp/boot.rs
+@@ -13,6 +13,7 @@
+ use crate::{
+     driver::Bar0,
+     falcon::{
++        fsp::Fsp as FspEngine,
+         gsp::Gsp,
+         sec2::Sec2,
+         Falcon,
+@@ -24,6 +25,7 @@
+             BooterFirmware,
+             BooterKind, //
+         },
++        fsp::FspFirmware,
+         fwsec::{
+             FwsecCommand,
+             FwsecFirmware, //
+@@ -31,9 +33,17 @@
+         gsp::GspFirmware,
+         FIRMWARE_VERSION, //
+     },
+-    gpu::Chipset,
++    fsp::{
++        FmcBootArgs,
++        Fsp, //
++    },
++    gpu::{
++        Architecture,
++        Chipset, //
++    },
+     gsp::{
+         commands,
++        fw::LibosMemoryRegionInitArgument,
+         sequencer::{
+             GspSequencer,
+             GspSequencerParams, //
+@@ -188,8 +198,83 @@ fn run_booter(
+         booter.run(dev, bar, sec2_falcon, wpr_meta)
+     }
+ 
++    /// Boot GSP via SEC2 booter firmware (Turing/Ampere/Ada path).
++    ///
++    /// This path uses FWSEC-FRTS to set up WPR2, then boots GSP directly,
++    /// then uses SEC2 to run the booter firmware.
++    #[allow(clippy::too_many_arguments)]
++    fn boot_via_sec2(
++        dev: &device::Device<device::Bound>,
++        bar: &Bar0,
++        chipset: Chipset,
++        gsp_falcon: &Falcon<Gsp>,
++        sec2_falcon: &Falcon<Sec2>,
++        fb_layout: &FbLayout,
++        libos: &CoherentAllocation<LibosMemoryRegionInitArgument>,
++        wpr_meta: &CoherentAllocation<GspFwWprMeta>,
++    ) -> Result {
++        // Run FWSEC-FRTS to set up the WPR2 region
++        let bios = Vbios::new(dev, bar)?;
++        Self::run_fwsec_frts(dev, gsp_falcon, bar, &bios, fb_layout)?;
 +
-+//! Blackwell GB20x framebuffer HAL.
-+//!
-+//! GB20x GPUs moved the sysmem flush registers from `NV_PFB_NISO_FLUSH_SYSMEM_ADDR` to
-+//! `NV_PFB_FBHUB0_PCIE_FLUSH_SYSMEM_ADDR_{LO,HI}`.
++        // Reset and boot GSP before SEC2
++        gsp_falcon.reset(bar)?;
++        let libos_handle = libos.dma_handle();
++        let (mbox0, mbox1) = gsp_falcon.boot(
++            bar,
++            Some(libos_handle as u32),
++            Some((libos_handle >> 32) as u32),
++        )?;
++        dev_dbg!(dev, "GSP MBOX0: {:#x}, MBOX1: {:#x}\n", mbox0, mbox1);
++        dev_dbg!(
++            dev,
++            "Using SEC2 to load and run the booter_load firmware...\n"
++        );
 +
-+use kernel::prelude::*;
-+
-+use crate::{
-+    driver::Bar0,
-+    fb::hal::FbHal,
-+    regs, //
-+};
-+
-+struct Gb202;
-+
-+fn read_sysmem_flush_page_gb202(bar: &Bar0) -> u64 {
-+    let lo = u64::from(regs::NV_PFB_FBHUB0_PCIE_FLUSH_SYSMEM_ADDR_LO::read(bar).adr());
-+    let hi = u64::from(regs::NV_PFB_FBHUB0_PCIE_FLUSH_SYSMEM_ADDR_HI::read(bar).adr());
-+
-+    lo | (hi << 32)
-+}
-+
-+fn write_sysmem_flush_page_gb202(bar: &Bar0, addr: u64) {
-+    // Write HI first. The hardware will trigger the flush on the LO write.
-+    regs::NV_PFB_FBHUB0_PCIE_FLUSH_SYSMEM_ADDR_HI::default()
-+        // CAST: upper 32 bits, then masked to 20 bits by the register field.
-+        .set_adr((addr >> 32) as u32)
-+        .write(bar);
-+    regs::NV_PFB_FBHUB0_PCIE_FLUSH_SYSMEM_ADDR_LO::default()
-+        // CAST: lower 32 bits. Hardware ignores bits 7:0.
-+        .set_adr(addr as u32)
-+        .write(bar);
-+}
-+
-+impl FbHal for Gb202 {
-+    fn read_sysmem_flush_page(&self, bar: &Bar0) -> u64 {
-+        read_sysmem_flush_page_gb202(bar)
++        // Run booter via SEC2
++        Self::run_booter(dev, bar, chipset, sec2_falcon, wpr_meta)
 +    }
 +
-+    fn write_sysmem_flush_page(&self, bar: &Bar0, addr: u64) -> Result {
-+        write_sysmem_flush_page_gb202(bar, addr);
++    /// Boot GSP via FSP Chain of Trust (Hopper/Blackwell+ path).
++    ///
++    /// This path uses FSP to establish a chain of trust and boot GSP-FMC. FSP handles
++    /// the GSP boot internally - no manual GSP reset/boot is needed.
++    fn boot_via_fsp(
++        dev: &device::Device<device::Bound>,
++        bar: &Bar0,
++        chipset: Chipset,
++        gsp_falcon: &Falcon<Gsp>,
++        wpr_meta: &CoherentAllocation<GspFwWprMeta>,
++        libos: &CoherentAllocation<LibosMemoryRegionInitArgument>,
++    ) -> Result {
++        let fsp_falcon = Falcon::<FspEngine>::new(dev, chipset)?;
++
++        Fsp::wait_secure_boot(dev, bar, chipset.arch())?;
++
++        let fsp_fw = FspFirmware::new(dev, chipset, FIRMWARE_VERSION)?;
++
++        let signatures = Fsp::extract_fmc_signatures(dev, &fsp_fw.fmc_full)?;
++
++        let args = FmcBootArgs::new(
++            dev,
++            chipset,
++            &fsp_fw.fmc_image,
++            wpr_meta.dma_handle(),
++            core::mem::size_of::<GspFwWprMeta>() as u32,
++            libos.dma_handle(),
++            false,
++            &signatures,
++        )?;
++
++        Fsp::boot_fmc(dev, bar, &fsp_falcon, &args)?;
++
++        let fmc_boot_params_addr = args.boot_params_dma_handle();
++        Self::wait_for_gsp_lockdown_release(dev, bar, gsp_falcon, fmc_boot_params_addr)?;
 +
 +        Ok(())
 +    }
 +
-+    fn supports_display(&self, bar: &Bar0) -> bool {
-+        super::ga100::display_enabled_ga100(bar)
-+    }
-+
-+    fn vidmem_size(&self, bar: &Bar0) -> u64 {
-+        super::ga102::vidmem_size_ga102(bar)
-+    }
-+
-+    fn non_wpr_heap_size(&self) -> Option<u32> {
-+        Some(super::BLACKWELL_NON_WPR_HEAP_SIZE)
-+    }
-+}
-+
-+const GB202: Gb202 = Gb202;
-+pub(super) const GB202_HAL: &dyn FbHal = &GB202;
-diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
-index 77d590887ee7..91911f9b32ca 100644
---- a/drivers/gpu/nova-core/regs.rs
-+++ b/drivers/gpu/nova-core/regs.rs
-@@ -116,6 +116,42 @@ fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
-     23:0    adr_63_40 as u32;
- });
+     /// Wait for GSP lockdown to be released after FSP Chain of Trust.
+-    #[expect(dead_code)]
+     fn wait_for_gsp_lockdown_release(
+         dev: &device::Device<device::Bound>,
+         bar: &Bar0,
+@@ -233,45 +318,49 @@ pub(crate) fn boot(
+         sec2_falcon: &Falcon<Sec2>,
+     ) -> Result {
+         let dev = pdev.as_ref();
+-
+-        let bios = Vbios::new(dev, bar)?;
++        let uses_sec2 = matches!(
++            chipset.arch(),
++            Architecture::Turing | Architecture::Ampere | Architecture::Ada
++        );
  
-+// Blackwell GB10x sysmem flush registers (HSHUB0).
-+//
-+// GB10x GPUs use two pairs of HSHUB registers for sysmembar: a primary pair and an EG
-+// (egress) pair. Both must be programmed to the same address. Hardware ignores bits 7:0
-+// of each LO register. HSHUB0 base is 0x00891000.
+         let gsp_fw = KBox::pin_init(GspFirmware::new(dev, chipset, FIRMWARE_VERSION), GFP_KERNEL)?;
+ 
+         let fb_layout = FbLayout::new(chipset, bar, &gsp_fw)?;
+         dev_dbg!(dev, "{:#x?}\n", fb_layout);
+ 
+-        Self::run_fwsec_frts(dev, gsp_falcon, bar, &bios, &fb_layout)?;
+-
+         let wpr_meta =
+             CoherentAllocation::<GspFwWprMeta>::alloc_coherent(dev, 1, GFP_KERNEL | __GFP_ZERO)?;
+         dma_write!(wpr_meta[0] = GspFwWprMeta::new(&gsp_fw, &fb_layout))?;
+ 
+-        self.cmdq
+-            .send_command(bar, commands::SetSystemInfo::new(pdev, chipset))?;
+-        self.cmdq.send_command(bar, commands::SetRegistry::new())?;
+-
+-        gsp_falcon.reset(bar)?;
+-        let libos_handle = self.libos.dma_handle();
+-        let (mbox0, mbox1) = gsp_falcon.boot(
+-            bar,
+-            Some(libos_handle as u32),
+-            Some((libos_handle >> 32) as u32),
+-        )?;
+-        dev_dbg!(
+-            pdev,
+-            "GSP MBOX0: {:#x}, MBOX1: {:#x}\n",
+-            mbox0,
+-            mbox1
+-        );
+-
+-        dev_dbg!(
+-            pdev,
+-            "Using SEC2 to load and run the booter_load firmware...\n"
+-        );
++        // Architecture-specific boot path
++        if uses_sec2 {
++            // SEC2 path: send commands before GSP reset/boot (original order).
++            self.cmdq
++                .send_command(bar, commands::SetSystemInfo::new(pdev, chipset))?;
++            self.cmdq.send_command(bar, commands::SetRegistry::new())?;
+ 
+-        Self::run_booter(dev, bar, chipset, sec2_falcon, &wpr_meta)?;
++            Self::boot_via_sec2(
++                dev,
++                bar,
++                chipset,
++                gsp_falcon,
++                sec2_falcon,
++                &fb_layout,
++                &self.libos,
++                &wpr_meta,
++            )?;
++        } else {
++            Self::boot_via_fsp(
++                dev,
++                bar,
++                chipset,
++                gsp_falcon,
++                &wpr_meta,
++                &self.libos,
++            )?;
++        }
+ 
++        // Common post-boot initialization
+         gsp_falcon.write_os_version(bar, gsp_fw.bootloader.app_version);
+ 
+         // Poll for RISC-V to become active before running sequencer
+@@ -282,22 +371,31 @@ pub(crate) fn boot(
+             Delta::from_secs(5),
+         )?;
+ 
+-        dev_dbg!(
+-            pdev,
+-            "RISC-V active? {}\n",
+-            gsp_falcon.is_riscv_active(bar),
+-        );
++        dev_dbg!(dev, "RISC-V active? {}\n", gsp_falcon.is_riscv_active(bar));
+ 
+-        // Create and run the GSP sequencer.
+-        let seq_params = GspSequencerParams {
+-            bootloader_app_version: gsp_fw.bootloader.app_version,
+-            libos_dma_handle: libos_handle,
+-            gsp_falcon,
+-            sec2_falcon,
+-            dev: pdev.as_ref().into(),
+-            bar,
+-        };
+-        GspSequencer::run(&mut self.cmdq, seq_params)?;
++        // For FSP path, send commands after GSP becomes active.
++        if matches!(
++            chipset.arch(),
++            Architecture::Hopper | Architecture::Blackwell
++        ) {
++            self.cmdq
++                .send_command(bar, commands::SetSystemInfo::new(pdev, chipset))?;
++            self.cmdq.send_command(bar, commands::SetRegistry::new())?;
++        }
 +
-+register!(NV_PFB_HSHUB0_PCIE_FLUSH_SYSMEM_ADDR_LO @ 0x00891e50 {
-+    31:0    adr as u32;
-+});
-+
-+register!(NV_PFB_HSHUB0_PCIE_FLUSH_SYSMEM_ADDR_HI @ 0x00891e54 {
-+    19:0    adr as u32;
-+});
-+
-+register!(NV_PFB_HSHUB0_EG_PCIE_FLUSH_SYSMEM_ADDR_LO @ 0x008916c0 {
-+    31:0    adr as u32;
-+});
-+
-+register!(NV_PFB_HSHUB0_EG_PCIE_FLUSH_SYSMEM_ADDR_HI @ 0x008916c4 {
-+    19:0    adr as u32;
-+});
-+
-+// Blackwell GB20x sysmem flush registers (FBHUB0).
-+//
-+// Unlike the older NV_PFB_NISO_FLUSH_SYSMEM_ADDR registers which encode the address with an
-+// 8-bit right-shift, these registers take the raw address split into lower/upper 32-bit halves.
-+// The hardware ignores bits 7:0 of the LO register.
-+
-+register!(NV_PFB_FBHUB0_PCIE_FLUSH_SYSMEM_ADDR_LO @ 0x008a1d58 {
-+    31:0    adr as u32;
-+});
-+
-+register!(NV_PFB_FBHUB0_PCIE_FLUSH_SYSMEM_ADDR_HI @ 0x008a1d5c {
-+    19:0    adr as u32;
-+});
-+
- register!(NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE @ 0x00100ce0 {
-     3:0     lower_scale as u8;
-     9:4     lower_mag as u8;
++        // SEC2-based architectures need to run the GSP sequencer
++        if uses_sec2 {
++            let libos_handle = self.libos.dma_handle();
++            let seq_params = GspSequencerParams {
++                bootloader_app_version: gsp_fw.bootloader.app_version,
++                libos_dma_handle: libos_handle,
++                gsp_falcon,
++                sec2_falcon,
++                dev: dev.into(),
++                bar,
++            };
++            GspSequencer::run(&mut self.cmdq, seq_params)?;
++        }
+ 
+         // Wait until GSP is fully initialized.
+         commands::wait_gsp_init_done(&mut self.cmdq)?;
+@@ -305,8 +403,8 @@ pub(crate) fn boot(
+         // Obtain and display basic GPU information.
+         let info = commands::get_gsp_info(&mut self.cmdq, bar)?;
+         match info.gpu_name() {
+-            Ok(name) => dev_info!(pdev, "GPU name: {}\n", name),
+-            Err(e) => dev_warn!(pdev, "GPU name unavailable: {:?}\n", e),
++            Ok(name) => dev_info!(dev, "GPU name: {}\n", name),
++            Err(e) => dev_warn!(dev, "GPU name unavailable: {:?}\n", e),
+         }
+ 
+         Ok(())
 -- 
 2.53.0
 
