@@ -1,138 +1,114 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0B43EBF31
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 12:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771677910; cv=pass; b=X/EGSc9YhUzYkB5+S/zrrFxF2Obbt/8HOw3Xy9RbWz1OxusCqBuZBk62CMHXsO7EwNS2eHIf/UFj+rM2wLh9qflgR1vlmTtt1g0V89NDIwbx0ImK6it62Jb8/KhnBbW0PAKojifFXVaiSpYYCUiTl1iJgnGnNPcjq7Nr/qsAfZ4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771677910; c=relaxed/simple;
-	bh=IOvI83B/cIT8bYm0dRB4m1gMSE9CxfsnS5WRWQEwAYg=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=G4a7gtPAK6mnjmcdXVKmZW6W1ujcDC11kM57mv+CqMmgO4Qn3+8Ouqqokwf6rCQcVCOgddbJd/Hgyh+kjGXKOOvTNr72nwKzAk2FIGFAfaxADyeoSdEM+IXPwEykkGHANuZoaWAd0nx+a4gD8LMbJFzfV2J4XKJ/2pWQar/WBzI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=MZonnIEQ; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0D519DFAB
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 13:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771681232; cv=none; b=pStZe4LjRoeIGWTM6MblhfhvYV7jXVDfW0NI3OvANeN7rmsgQP5J1e+3DfCjZ9kWTBjbkWchAU6r9s6ocFDKYRUSiuC2ispNRS7aTZiO7hnka12gM46gHmU6LIDUsABbD1qJRWLuFQ59+oQUhi0SyR5gTK6X6zooa5igU/NYMU8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771681232; c=relaxed/simple;
+	bh=Vhhdppl6PXRgu5oic1Lg2m5BEIK/ZSgBtlaghG8FF5Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tXNQnky/6jH/5xTsmaCOBtBe8IyhBbZFM/yZMpVroDA8b5wtXrSAR4NZyT/tdQSbXwIYdKXcxaAnridGtkrYJRBgHFybzHEnFgMUZgGrmI+Lr1y1sDPaxFFw9U8bDWyoO7S3kYt8GcBodZPcaHd1wdIhHcUEhTHAB1BGBS0MkOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lpCobC9e; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="MZonnIEQ"
-ARC-Seal: i=1; a=rsa-sha256; t=1771677901; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=TWCeSHaXdySiDmuEfkC9Nrq/aGKv07Io2tkF6PEotPZMBJ1Ph6dA/xgkAZCNQgXJXWVc9KFxBNtQ7mNm8lioUzZQ3Q+NegirvpVjeM+fAbP8TkEUrsw70cFffBZz7z39k+VCUk80USOViZ6fS+qaaQukV2AcO9BcwXByoE7H+BU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771677901; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=SgXlv7TllpBaP/d9E1ESGvy7DB77p/4obwqFzCoHZVU=; 
-	b=kbRWPulYQnp1HWHCw9awO7r+F7fAz/ipNKJeLcK2+lQz3nDzvkP/03TcMt6Qhgk0Y33ju156DTeoQ39J+wbhpT5WInoi5WbTvXT/RINVHTy0RF7l1AfEGqc7VEva9ZDSFGHLs2DtczydvYCe0gCkPJ5kQdWu0UmyHRwyXiEU5/I=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771677901;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Content-Transfer-Encoding:From:From:Mime-Version:Subject:Subject:Date:Date:Message-Id:Message-Id:References:Cc:Cc:In-Reply-To:To:To:Reply-To;
-	bh=SgXlv7TllpBaP/d9E1ESGvy7DB77p/4obwqFzCoHZVU=;
-	b=MZonnIEQifgCPInkwSGPInoI5m5T3mxwfkrmsGh32w2KWgpeEopO049xeT5vuvtq
-	oS/c1nnFKGzDNhj4yq8MA34gUNBBJJMz5YbdBHanvFIbSBJPHCPNAUxhqTW9ong4BZq
-	BrX5ujlXMkkpsyJHws089d5Ev+n7foktFp0BjQI8=
-Received: by mx.zohomail.com with SMTPS id 1771677899641129.55273493234313;
-	Sat, 21 Feb 2026 04:44:59 -0800 (PST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Daniel Almeida <daniel.almeida@collabora.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lpCobC9e"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-65a43295689so2736876a12.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 05:40:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771681229; x=1772286029; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/f6N+ixFwHqdQwhwMZ2WjnEQYVFUNTbw/BLHS4peY/4=;
+        b=lpCobC9eVTbEXRqCBoP8D0EQ7eR5i4sPQwmO4XS7dkMH4KDN4bFAK37jZp8wbMrfRz
+         amLUyu0jK7HEG01fkhqlHVqv3eI/uu0WendXg2FOVNm11hTzw7Lgb1riseBXSe2Qs2E6
+         /4U25HUHV5RauxruPqscqcP0Q5CGs6JJgxN6EU2fHxSQ3erm3u2vqG/kfFItLn6ppICY
+         j2c+K7SM0ZLwjrQ+SZl3/KhYrGxUtLe58orSJ5DX/yHwaoGvrXdlUcwzk5n1dgBLWnJk
+         zF5eYCijuO2sG0R0bCrjKHLrbwo57LAsnvUw8BA5LE9cYG0rmX/Zw95mKb1N9yt+KUAz
+         AxuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771681229; x=1772286029;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/f6N+ixFwHqdQwhwMZ2WjnEQYVFUNTbw/BLHS4peY/4=;
+        b=ioDLCytDcdid6DkF6IzxSOg3uEPNVGneux2HpKOOp2+pxFIgdF6YuBnrzUwkDgt5rT
+         tkXZyPj8H4FbIApx0Kic5BfQIjr+cxthAv1MeyHdl2KUBLpzvqcL8XJL2GCvr+37GWZT
+         Zaq3KdkTr+66gaU7qLESGQP/z417GmAM1GA+NmaPfFddfZL3//ye5JGjYeSYtvbbQqrQ
+         oNKDPmupEpzdhgE9E2UAaV4NF/7PCcZrQ4wUsCxmVcLMQDbZ69gE4uQSkNYJ5u0nL+N4
+         VaJQnQDXbxv8KpLnqSHU+a7jRNlMkdUuzJ/gU3YBi0xe2Bmv17Ecs99y5WyMgnLzpbs6
+         8+Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbqNR1Vx8OfJDBi2RtZt5QEskVyItmkkA0anDIzsf0ZOM8OzhVkZ7zWZ53KwvGNsf4wH2bb8p0PdzYjdq6kw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YycrYRu+JuAUIu0zW/X7oxR5GlB44jTJjxD+8DoR/o7HPLHR7WE
+	mSCoXIlrHhOvguFqqu06AHdyF4D1/4LDziinneQhQY2SLYx04pJ1Z+yQyGCmVsxBQF1IjZUS+Dp
+	bZnfjAJ9Nx5sr1C+w8w==
+X-Received: from edbev27.prod.google.com ([2002:a05:6402:541b:b0:65a:10ff:4ab])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:380e:b0:64d:3b22:a5c2 with SMTP id 4fb4d7f45d1cf-65ea4f24b94mr1700759a12.25.1771681229064;
+ Sat, 21 Feb 2026 05:40:29 -0800 (PST)
+Date: Sat, 21 Feb 2026 13:40:28 +0000
+In-Reply-To: <4A56F56B-7366-451E-9B65-09B2EE16075E@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
+Mime-Version: 1.0
+References: <aZmUJxyZM3taMvAC@google.com> <4A56F56B-7366-451E-9B65-09B2EE16075E@collabora.com>
+Message-ID: <aZm1zL1nA97zur0v@google.com>
 Subject: Re: [PATCH 07/12] drm/tyr: Add generic slot manager
-Date: Sat, 21 Feb 2026 09:44:45 -0300
-Message-Id: <4A56F56B-7366-451E-9B65-09B2EE16075E@collabora.com>
-References: <aZmUJxyZM3taMvAC@google.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Deborah Brouwer <deborah.brouwer@collabora.com>,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- beata.michalska@arm.com, lyude@redhat.com
-In-Reply-To: <aZmUJxyZM3taMvAC@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: iPhone Mail (23D127)
-X-ZohoMailClient: External
+From: Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, 
+	Deborah Brouwer <deborah.brouwer@collabora.com>, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, beata.michalska@arm.com, lyude@redhat.com
+Content-Type: text/plain; charset="utf-8"
 
+On Sat, Feb 21, 2026 at 09:44:45AM -0300, Daniel Almeida wrote:
+> 
+> 
+> > On 21 Feb 2026, at 08:17, Alice Ryhl <aliceryhl@google.com> wrote:
+> > 
+> > On Thu, Feb 12, 2026 at 11:11:13AM +0100, Boris Brezillon wrote:
+> >>> +type LockedSeat<T, const MAX_SLOTS: usize> = LockedBy<Seat, SlotManager<T, MAX_SLOTS>>;
+> >>> +
+> >>> +impl<T: SlotOperations, const MAX_SLOTS: usize> Unpin for SlotManager<T, MAX_SLOTS> {}
+> >> 
+> >> Do we really need to explicitly flag this type Unpin? I thought this
+> >> was the default if the struct is not pinned (and it's not AFAICT).
+> > 
+> > It may be cleaner to add `#[pin_data]` to the struct and rely on the
+> > Unpin impl it generates.
+> > 
+> > In general, the default Unpin implementation is to inherit from the
+> > fields. When you add #[pin_data], it's changed to only inherit from
+> > fields marked #[pin]. By adding #[pin_data] but not marking any fields
+> > #[pin], it will be Unpin unless any of the zero fields marked #[pin] are
+> > Unpin, i.e. it will always be Unpin.
+> 
+> Why do we need this if all fields are Unpin?
 
+Its fields are not necessarily Unpin. 'manager' could be any type,
+including !Unpin types.
 
-> On 21 Feb 2026, at 08:17, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> =EF=BB=BFOn Thu, Feb 12, 2026 at 11:11:13AM +0100, Boris Brezillon wrote:
->>> On Wed, 11 Feb 2026 17:37:08 -0800
->>> Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
->>>=20
->>> From: Boris Brezillon <boris.brezillon@collabora.com>
->>>=20
->>> Introduce a generic slot manager to dynamically allocate limited hardwar=
-e
->>> slots to software "seats". It can be used for both address space (AS) an=
-d
->>> command stream group (CSG) slots.
->>>=20
->>> The slot manager initially assigns seats to its free slots. It then
->>> continues to reuse the same slot for a seat, as long as another seat
->>> did not start to use the slot in the interim.
->>>=20
->>> When contention arises because all of the slots are allocated, the slot
->>> manager will lazily evict and reuse slots that have become idle (if any)=
-.
->>>=20
->>> The seat state is protected using the LockedBy pattern with the same loc=
-k
->>> that guards the SlotManager. This ensures the seat state stays consisten=
-t
->>> across slot operations.
->>>=20
->>> Hardware specific behaviour can be customized using the slot manager's
->>> `SlotOperations` trait.
->>>=20
->>> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
->>> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
->>> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
->=20
->=20
->>> +type LockedSeat<T, const MAX_SLOTS: usize> =3D LockedBy<Seat, SlotManag=
-er<T, MAX_SLOTS>>;
->>> +
->>> +impl<T: SlotOperations, const MAX_SLOTS: usize> Unpin for SlotManager<T=
-, MAX_SLOTS> {}
->>=20
->> Do we really need to explicitly flag this type Unpin? I thought this
->> was the default if the struct is not pinned (and it's not AFAICT).
->=20
-> It may be cleaner to add `#[pin_data]` to the struct and rely on the
-> Unpin impl it generates.
->=20
-> In general, the default Unpin implementation is to inherit from the
-> fields. When you add #[pin_data], it's changed to only inherit from
-> fields marked #[pin]. By adding #[pin_data] but not marking any fields
-> #[pin], it will be Unpin unless any of the zero fields marked #[pin] are
-> Unpin, i.e. it will always be Unpin.
+Adding #[pin_data] without marking any fields #[pin] is equivalent to
+the explicit impl Unpin the patch has now.
 
-Why do we need this if all fields are Unpin?
+> >>> +        // FIXME: Annoying manual copy. The original idea was to not add Copy+Clone to SeatInfo,
+> >>> +        // so that only slot.rs can change the seat state, but there might be better solutions
+> >>> +        // to prevent that.
+> >> 
+> >> Okay, I guess we want some inputs from Daniel and/or Alice on that one.
+> > 
+> > You could consider only implementing Clone. That way, copies do not
+> > happen unless you do so explicitly. Or add a private method on the type
+> > that has the same function as Clone if you do not wish to expose it.
+> 
+> Please check my solution where clone is not needed.
 
->=20
->>> +        // FIXME: Annoying manual copy. The original idea was to not ad=
-d Copy+Clone to SeatInfo,
->>> +        // so that only slot.rs can change the seat state, but there mi=
-ght be better solutions
->>> +        // to prevent that.
->>=20
->> Okay, I guess we want some inputs from Daniel and/or Alice on that one.
->=20
-> You could consider only implementing Clone. That way, copies do not
-> happen unless you do so explicitly. Or add a private method on the type
-> that has the same function as Clone if you do not wish to expose it.
->=20
-> Alice
+If you do not need to return it from the function, then that's fine too,
+of course.
 
-
-Please check my solution where clone is not needed.
-
-=E2=80=94 Daniel=
-
+Alice
