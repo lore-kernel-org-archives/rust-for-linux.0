@@ -1,90 +1,106 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10437279DC8
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 11:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1813F3128D7
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 11:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771672676; cv=none; b=HG1Un+tNfvNDidsH6XGghOmakOPDHtURwry8GfcsH1LSPycMXiCccM+jr0UAuBNtM70NZN5gGVlK9WwyjI+NiYhn4ErRuedl1QKBeBNZ18jEQeu1oAA5btQq7VTmTPFKTjIYL8rONX3kRto3bVzQ3X0ipVkLh5RZJ+H9+j0MMjQ=
+	t=1771672799; cv=none; b=HlEaUS7OGS9FJDjlLTXx94ueVIU41uy0YgZMM5S6UiQo8+dboqMORNfGtcJ9ZnarJQjxivN7eUNzuOIoTXkJ5AuaYkpOfI/5NWD7Xs056WJQ+E1PCHXdBhD8lwZh1IewElJZrg2KfBUFMy+olNKCWv+rYtovrWNMVb8orOtEB60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771672676; c=relaxed/simple;
-	bh=Up2UUqGZzUPmRm3jyaqpQNdnHP+sJXlCbrdgYnNug2A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=asbRwUWe1ojAOipHHiRB08SvIq6HGJ0MqW+dbg94Ht+ax6EckCp0+NStP1u8fmB9hnteaN9s4hhwyVS8Amm798DmdHjAmGluKzPCV0o2UPEmgdICxFqlFfvAu4qpwL34p7CdLrRFC3/eXhtNqEVoJXr3+7UKrj/QKdqrhrte178=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NBzGXw0W; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1771672799; c=relaxed/simple;
+	bh=6muKgQ8aEVIrHd4tRfSWiRy6tgoiQ0Swt7PxdEI0YDg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hriEzpDlup4/F1E+nueMheYgw7R1+xch6XtYi4wyzU5IyHXru1OtjvVKBW4blkKF4BRIF7uw+EuvAes99P6MyWl2rbv6/82QAiYwdEmDL4aBld5enqzRJIbyS5ELU4KhGcJOslqnBWp54f7+O0oXGSr0CCTDnKeix4D12hoUUhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A3X9ezXI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NBzGXw0W"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836b7c302fso23748765e9.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 03:17:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771672673; x=1772277473; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nLgfgkjh77J46ZUln9D17ln2Gi3ljJZ5rCGVfoowYl0=;
-        b=NBzGXw0WozFVuItcMClScQ92J8SAshASvG385ZWwvhYO5RnCEEl6c2uuwudRcQrUkW
-         XkKPqm1WtiJ+6A2qT0zAWHs8ugDQiKCdA1Qj1gRqwPIuyLTNQVIl7yGusM2j5/buHDl5
-         Q37jVl5J2P945IT/++4Jalo/Xnh5wSo9yZps5lCupT1DXzDVEL0Md8uo+PBr7d0Xu235
-         Xuo6QtejGmYQd8Bwy+eh/5Od+b3a17p6X1fPwO9W5B4P+fdj0RXef+l+He2OkCIwF3Y4
-         pDvH2di2mldR23U4oX8o1LNtJMPgma+18U/Iqx8cjk+tEiH8JJXz1tVcgG5UIvtR5HVm
-         AfXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771672673; x=1772277473;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nLgfgkjh77J46ZUln9D17ln2Gi3ljJZ5rCGVfoowYl0=;
-        b=ZbFl5BE5btuhVdVhuM82XuMZHSEBTDkmm36RT96V1avzdoSBIlHu1Yu3+85OxTk4ca
-         l3G1eyolnXuPvbM+zXrPPP6HMfZdxUaWpiBBmAJ2cYdCZEtiP5A7ovp79wb7jP8HD0t+
-         vxovoTPhXQY8Lpk3NjUgm9XxLlm3EHfKLtPSf8bMytKdXeN0TvUq7PjzzWvwyOPYULh5
-         f9iPUc9uqxDQ8jWXS9f8sxtQ9BjRMZFyGIVY7D2tIc8oRyZxt0AGUa36/NaIZQIQPLzo
-         A76lyYQYEfIdtyanVlAPpa1MNSn4yWYdDzSV8aYvof4tilOmFCCvkiBB8Q81j5F4wPII
-         OOEw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCdH6qFL2uHf+bq+1f0c7JZI9mF8B3ZxKU09D9KD7G97QdjdjNv/yU0Gd5nNT3bBdm0vC7OyGJMGLMm6JcvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9nSSHHoc7i08nh9qxZvUWar0VqeMTBXe8x7wwj3I9BZ0R5wcV
-	uy0IBfBl4iiEvAD8o/v3Mleh+NnMdGthByrLG6r9geid7wU4b8kaGu42EoNEkbzSc6RGN3zL+2B
-	8chm/l0vEcUb7x0sJcA==
-X-Received: from wmqt10.prod.google.com ([2002:a05:600c:198a:b0:47e:e27f:e298])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5020:b0:483:a2db:6743 with SMTP id 5b1f17b1804b1-483a95eb82amr44441335e9.4.1771672673212;
- Sat, 21 Feb 2026 03:17:53 -0800 (PST)
-Date: Sat, 21 Feb 2026 11:17:52 +0000
-In-Reply-To: <20260212120538.13f81d8a@fedora>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A3X9ezXI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE175C2BC86
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 11:19:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771672798;
+	bh=6muKgQ8aEVIrHd4tRfSWiRy6tgoiQ0Swt7PxdEI0YDg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=A3X9ezXI6Z6b/r3cK4QvXROX0FaAlsy8sm47GzF0SWRJ7Za31CU8ly6HfAjeICHqV
+	 D3h6LJd0TUaZ3hol2fmno27uTgvZjclrSOrKC0JICDcn0AAU2xTJQoUkw60RKhsrUn
+	 QInUSGjL6fJj1aF4S6MxDYe4DsweWbDMhGS+Q6vWCUNJ1VQnmHN2AFhOSw39QI1LzC
+	 q1FeN21XLc2/ixWuvY+hNSuPTDVcDhG0FNw6HxI8xJ1Lmv0nfGWgIBS+hhhcXYPnXB
+	 hmefyfixkmnGdTiosl8YNToAFpu9+yA33WS3K0GpiFHiG9FR3fwFHxtodnnZamEMKC
+	 TwBT9qQrzjf9Q==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-413acc82f38so1090298fac.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 03:19:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVcQn1RiGIcAlay8Y0kN7YysCNKEvbNsYCloqp95jpor74erBhDKndbKZJfssc7jS5SovK+5d+eOgsZoMu3MQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhdDt2ll+3kQMKndZv5+GJ7dMJ8XwGYiKgOBQyX+hHQvPLGN1+
+	dPjuBzKrQXRbcyG/aYIVA6/KTJNkSJyqGVaklSj1GZNjbiegCCWguCVt9VPpTIQsytYB765Nkg8
+	D1itnjlcjfAVASnlwuBAfJ+8o688QDI4=
+X-Received: by 2002:a05:687c:408f:b0:3f5:74a6:b99f with SMTP id
+ 586e51a60fabf-4157b0b6a84mr1785227fac.29.1771672797766; Sat, 21 Feb 2026
+ 03:19:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
- <20260212013713.304343-9-deborah.brouwer@collabora.com> <20260212120538.13f81d8a@fedora>
-Message-ID: <aZmUYJeV1F24m3kN@google.com>
-Subject: Re: [PATCH 08/12] drm/tyr: add MMU module
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com, 
-	beata.michalska@arm.com, lyude@redhat.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260116162203.296844-1-sunke@kylinos.cn> <20260116162203.296844-2-sunke@kylinos.cn>
+ <DFSN0O9RRVD6.1LCI38JKGO1R0@kernel.org> <77d373dc-c5f2-4dca-b0d2-b5cee6a21b3b@gmail.com>
+ <20260220225341c5eeb835@mail.local> <d1c9e33b-e1f3-41c6-af5e-a85fe2b86d10@linux.dev>
+ <20260221111619162a41a1@mail.local>
+In-Reply-To: <20260221111619162a41a1@mail.local>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Sat, 21 Feb 2026 12:19:46 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
+X-Gm-Features: AaiRm532RkVV7APDNxPiwoMpbGuwl1XMnPW-TD2JejrLflaFiynJVycwzEFC0k8
+Message-ID: <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops callbacks
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Alvin Sun <alvin.sun@linux.dev>, Danilo Krummrich <dakr@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 12, 2026 at 12:05:38PM +0100, Boris Brezillon wrote:
-> On Wed, 11 Feb 2026 17:37:09 -0800
-> Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
-> 
-> > +
-> > +impl Mmu {
-> > +    pub(crate) fn new(
-> > +        pdev: &platform::Device,
-> > +        iomem: ArcBorrow<'_, Devres<IoMem>>,
-> > +        gpu_info: &GpuInfo,
-> > +    ) -> Result<Arc<Mmu>> {
-> 
-> Maybe the Mmu should be wrapped in a Devres, like we do with other HW
-> components that require the underlying device to be bound to access
-> registers. I mean, we do have iomem wrapper into a Devres, so maybe
-> that's not needed, dunno.
+On Sat, Feb 21, 2026 at 12:16=E2=80=AFPM Alexandre Belloni
+<alexandre.belloni@bootlin.com> wrote:
+>
+> On 21/02/2026 17:31:09+0800, Alvin Sun wrote:
+> > As in platform.rs [1] and i2c.rs [2], set_drvdata is always called by
+> > the bus Adapter's probe_callback, not by the device driver.
+> >
+> > [1]:
+> > https://elixir.bootlin.com/linux/v6.19-rc5/source/rust/kernel/platform.=
+rs#L80
+> > [2]:
+> > https://elixir.bootlin.com/linux/v6.19-rc5/source/rust/kernel/i2c.rs#L1=
+60
+> >
+> > In Rust the Adapter already sets drvdata on the bus device in probe. If
+> > the driver also calls amba_set_drvdata() there, it overwrites that
+> > pointer; on remove/shutdown the framework then gets wrong data and can
+> > hit use-after-free or crashes. So only the framework must set drvdata
+> > on the bus device.
+>
+> But this is wrong, how do you then handle the class device on
+> suspend/resume or on .remove?
+>
+> >
+> > This applies only to the Rust implementation; in C, calling
+> > amba_set_drvdata() is fine. In the Rust design the bus device owns the
+> > bus device's drvdata and the class device owns the class device's
+> > drvdata, so the class driver must not set drvdata on the bus device.
+> >
+> > This is my understanding of the Rust device driver abstraction design.
+> > Danilo is the authority on this.
+> >
+> > Best regards,
+> > Ke Sun
+> >
+> > > Out of 29 drivers, 18 are doing so.
 
-I wouldn't add Devres just for fun. If none of the fields require it,
-then I wouldn't bother.
++1
 
-Alice
+The vast majority of around 50 platform drivers I've inspected
+recently use platform_set_drvdata() or equivalent in probe.
