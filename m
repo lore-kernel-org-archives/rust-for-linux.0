@@ -1,159 +1,122 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425C5A930
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 08:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848CD21771B
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 08:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771663392; cv=none; b=ZWsfInQrrr2FxtSJ/ay9STYZcJKZkfEtxY57Sg38sz3vON9CUAHN5+SOuiF80wI87u2n0POaQg14aEkA1H8URR/voNbfRxiXuMOJCdm3aCLq/D83497HD9xOdaLDcaATBxqUUmerLPv1N8JB7+5JAOp2O5OxxikGm8lmD3b3gIs=
+	t=1771663585; cv=none; b=lkTRIwebBrVPD5x0EQJt/FvKo3QiMP1fiAbwo7QP7IXWu7/38UE/6PIxbOGVx1Qbk1hjg3r81bmaOKrafVGr2fBeDdoS9Jl4gymrWno1RsCP+BKn20h+Qwy569NR8shm3AnOyqOOmcbL1ezFkdCqeTqXb4vOZCj0txah6Rur/Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771663392; c=relaxed/simple;
-	bh=GatSdbu3Cxzh1BhHt9Nrd2UzxFhJ/XWk1amcznPRydo=;
+	s=arc-20240116; t=1771663585; c=relaxed/simple;
+	bh=FvVhxenxS7HM/csXHU/D92CvynmXQ2FD7DgNw3v4dXI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JvH3xfLuPoIMCJ5+oURvmp4KnY0xO84lNWV7PP2wUOFLJlVNRwDVeP7G2++/2wyOXRfqGHsOsnVJSKOlGTLlo8fdgHUQTl5wuJV38Z2dKVdW63nma/RnyBoiQV98EijXkKgdna0CezxpTzAJN+4W3V7yLHSNBZYdIYKL9sMqfWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PJWh46oK; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=DvC3jkMrnc7DRVjToIjvsITn7tvpc7bL2cCnmvC1PfNKZ2WWY5x+zo4iURH1zKsJoVKAQDxq0KF18ZkZpEBNKO02Htk0kvl/EWR1KCEHf6GNx3gdrIw/oZMavpNqBqneLthG7DjEQg3//DzWb1jZPbQG1rZm3hVKLOvBDpAgxi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ktvJn78U; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PJWh46oK"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836b7fbf4fso30876295e9.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 00:43:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ktvJn78U"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b90484c398cso262045866b.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 00:46:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771663389; x=1772268189; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771663583; x=1772268383; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TI1u65dUKTPlQPt6U/0xJyIkF4F/BeJUkS8IGT0Cslk=;
-        b=PJWh46oKd8V/2tTBsa7r3jYa+0wqbK9mnYhIC+OfcFesx+5E1/d452rH6F2LOOSAsB
-         tWrmT1rrH7LaqPrxrxhLk+/VUHZJN82/22hA3lsU/VipLP2L13UalGZ3PEYf3/eSh+Xg
-         l+buN/IL4NghZ0Np9/2AlPiDPaMci94YVxJ5wkLmIgxG4kUzXHFfiJArUATKsQvJykjH
-         UPiNqJvX1uprZmnLE8Qm0sAL5r9T5ujSqXOBss/Z/KeUpgpD9tmTHrM4/LACHErUU8ZO
-         jlK1NYKkg4gdvzRzVQACQfqLnx/HvHN+1p6EN3/WliARuwrPbvb6XqFEUJ7PV9UOVNLM
-         zgtA==
+        bh=3nulCMAkP+Qci36vgPqlTJu8Ho7ZO6tqS+wQkIh7yUM=;
+        b=ktvJn78UnvVm0v6d+i1WtfORgnuXeg3GAI8jbby6EEZnN1JAe23AVF7azoDlRaXNYl
+         JpLCHm8EC+Zx+MINs8GYLW+ZEFJunwn5rj/urTFggfj7+j8QjregS3j5p9ZgXE0SPrqI
+         rOuVsFki7gKe9Iu7xfZxFb18E/Ho9sj2bTUcsgRXR+ws8/CpPDrufkmTrQSq7lzgqIKr
+         S8/FiJCr84s/dilNwB2/Ph/lj9LG/lPSsbnig2Yj7yAMQ8meDUvS3Ltb8TW0TCO5earQ
+         OJCghKuYxTAQFamZlgzDcVfu2BQkQtlWZnULbuWCTa4neFGtu6hrz60xX3MiPQPGMKYT
+         Bztg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771663389; x=1772268189;
+        d=1e100.net; s=20230601; t=1771663583; x=1772268383;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TI1u65dUKTPlQPt6U/0xJyIkF4F/BeJUkS8IGT0Cslk=;
-        b=gpZ3D06zFPp6gJEr+fQ5RyxbgvxDz360AJvG5YZN6CkvEr8DJF58vS9dctCASXZgxb
-         a5iXKcTHKSYS6JojIH6rbySUDUq2AeRgQGUrEyMifnEDxFzFofB5OTD4BZ66BI9T7z0d
-         l/aOHdLCNacT5K3foUuLuEzML2l3BDTwpj0+3S2Wssru7u52HiNXSzbU4YFHclvZ6ZPj
-         sJoF+HSeV0NBcAb/grNDy8kms2j8QdQR+sDfPFiEmW0AfwBq6B5Q667LCoVvsejKYwNv
-         X4FfeHdBcIZm8K8vD5lNMSoePMg0tJz1pQKtcm6atAa5cVb+/lndxuMRavpW493EB87C
-         WpDA==
-X-Forwarded-Encrypted: i=1; AJvYcCVExuzVxselz/NZtYBO5SZDDVBSJlihYgfEVuQ/ueUXTlwkaKSHvaXTQVmg5eeY49hVk5u94/ScWZDzOAI4Nw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYN16YTOsM90QZxiaiBTaLdJdd5BGlMVkNzIxggDlK2CaOZSFu
-	EsCQw/Orup0R4jkAHWTz95euAua6HPCh/1VaYGtKsFvq6McCFnMpktJlkgx5KhvFLkn6on6kRKX
-	c1Wxunxe/zopfirWSuw==
-X-Received: from wmbdo20.prod.google.com ([2002:a05:600c:6814:b0:480:6c79:b533])
+        bh=3nulCMAkP+Qci36vgPqlTJu8Ho7ZO6tqS+wQkIh7yUM=;
+        b=lAE+q/9KR9I3ntIQIKlGkJuRMKh4lU94aK1TBDrTO8ZmyZRNszWRqZjAcjgFi06/Y8
+         wyqMS8vVJvp+a5mlvN69YjE5izkYn1+472Z6oWZymhA0fptIZqzsn9e2ETX/5e5ST3PQ
+         8hIXIdNQgKk22U5gt3nmuWMYzE/ePuYLp0v988f+nJjpv6v+s96x6I41nHGPte1aIOG6
+         QIHY9occGh+Uo/kIcN6SM2xfwi8Yp91AkdGuo3Tjqrn+l0Wt4u/akU7F1e+tgpS1Tfgs
+         9SRkhFk0zMImUOepNShW1Ruu3prF4jYtfg1XPXYzSKmfnMg7VI6L8O+jxEdg/wE6OdRf
+         0Chw==
+X-Forwarded-Encrypted: i=1; AJvYcCWbFyEmVUDl0pLryI9Zqkj0laZUComAsdIgP7nC09w0l0oerlKRS+FSn7HVkWjzhUnGzCrCdwMRKlj9pQjXZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEwT1R+EgNKwjdiil6d54sbOqD/kRNmSNpSzVf8hFGsUKUESIr
+	PoUcUR5Yi/m6TbUP+hvA1r2ZM7BsXQRqXApjWrC7nufec1bg1hBvvvqqzIC49ywDmXyoW5FWe9H
+	I3v5rjWb5alhHnWubig==
+X-Received: from ejdck25.prod.google.com ([2002:a17:907:f1d9:b0:b88:451e:42d3])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:46c9:b0:483:a21:774c with SMTP id 5b1f17b1804b1-483a95eab7cmr37449865e9.25.1771663388514;
- Sat, 21 Feb 2026 00:43:08 -0800 (PST)
-Date: Sat, 21 Feb 2026 08:43:07 +0000
-In-Reply-To: <DGJVC2YUHIK7.37Q47DI7QQK32@nvidia.com>
+ 2002:a17:907:3e83:b0:b7f:f862:df26 with SMTP id a640c23a62f3a-b9081a0251bmr130091966b.14.1771663582622;
+ Sat, 21 Feb 2026 00:46:22 -0800 (PST)
+Date: Sat, 21 Feb 2026 08:46:21 +0000
+In-Reply-To: <DGJX3FI97W1G.371MAMC60FX24@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260216-register-v6-0-eec9a4de9e9e@nvidia.com>
- <20260216-register-v6-5-eec9a4de9e9e@nvidia.com> <aZLc0YMHd8C0bVD2@google.com>
- <DGGA9D0N19KQ.4LBXRAEGNMLX@nvidia.com> <aZLzBP_v6JlTR9WB@google.com>
- <DGGBVOL5XZ5B.NIXE0JCEBJC2@nvidia.com> <DGJKZHBSGKKF.2S8URAVPODWJP@nvidia.com>
- <aZgYzbsVr2uKZUOP@google.com> <DGJVC2YUHIK7.37Q47DI7QQK32@nvidia.com>
-Message-ID: <aZlwG3wK5w-IV18x@google.com>
-Subject: Re: [PATCH v6 5/9] rust: io: add IoRef and IoWrite types
+References: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
+ <20260130-gpuvm-rust-v4-3-8364d104ff40@google.com> <DGJ6LHIVMV03.MM7RWYBJHBIQ@kernel.org>
+ <aZgYY_fetgz_GDR8@google.com> <DGJX3FI97W1G.371MAMC60FX24@kernel.org>
+Message-ID: <aZlw3SGmLetHwaTM@google.com>
+Subject: Re: [PATCH v4 3/6] rust: gpuvm: add GpuVm::obtain()
 From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Boqun Feng <boqun@kernel.org>, 
-	Yury Norov <yury.norov@gmail.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>, 
-	Eliot Courtney <ecourtney@nvidia.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
-	Steven Price <steven.price@arm.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Lyude Paul <lyude@redhat.com>, 
+	Asahi Lina <lina+kernel@asahilina.net>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, Feb 20, 2026 at 11:45:25PM +0900, Alexandre Courbot wrote:
-> On Fri Feb 20, 2026 at 5:18 PM JST, Alice Ryhl wrote:
-> > On Fri, Feb 20, 2026 at 03:38:46PM +0900, Alexandre Courbot wrote:
-> >> On Mon Feb 16, 2026 at 7:52 PM JST, Alexandre Courbot wrote:
-> >> > On Mon Feb 16, 2026 at 7:35 PM JST, Alice Ryhl wrote:
-> >> >> On Mon, Feb 16, 2026 at 06:36:29PM +0900, Alexandre Courbot wrote:
-> >> >>> On Mon Feb 16, 2026 at 6:01 PM JST, Alice Ryhl wrote:
-> >> >>> > On Mon, Feb 16, 2026 at 05:04:41PM +0900, Alexandre Courbot wrote:
-> >> >>> >> I/O accesses are defined by the following properties:
-> >> >>> >> 
-> >> >>> >> - For reads, a start address, a width, and a type to interpret the read
-> >> >>> >>   value as,
-> >> >>> >> - For writes, the same as above, and a value to write.
-> >> >>> >> 
-> >> >>> >> Introduce the `IoRef` trait, which allows implementing types to specify
-> >> >>> >> the address a type expects to be accessed at, as well as the width of
-> >> >>> >> the access, and the user-facing type used to perform the access.
-> >> >>> >> 
-> >> >>> >> This allows read operations to be made generic with the `read` method
-> >> >>> >> over an `IoRef` argument.
-> >> >>> >> 
-> >> >>> >> Write operations need a value to write on top of the `IoRef`: fulfill
-> >> >>> >> that purpose with the `IoWrite`, which is the combination of an `IoRef`
-> >> >>> >> and a value of the type it expects. This allows write operations to be
-> >> >>> >> made generic with the `write` method over a single `IoWrite` argument.
-> >> >>> >> 
-> >> >>> >> The main purpose of these new entities is to allow register types to be
-> >> >>> >> written using these generic `read` and `write` methods of `Io`.
-> >> >>> >> 
-> >> >>> >> Co-developed-by: Gary Guo <gary@garyguo.net>
-> >> >>> >> Signed-off-by: Gary Guo <gary@garyguo.net>
-> >> >>> >> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> >> >>> >> ---
-> >> >>> >>  rust/kernel/io.rs | 243 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> >> >>> >>  1 file changed, 243 insertions(+)
-> >> >>> >> 
-> >> >>> >> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> >> >>> >> index b150743ffa4f..6da8593f7858 100644
-> >> >>> >> --- a/rust/kernel/io.rs
-> >> >>> >> +++ b/rust/kernel/io.rs
-> >> >>> >> @@ -173,6 +173,160 @@ pub trait IoCapable<T> {
-> >> >>> >>      unsafe fn io_write(&self, value: T, address: usize);
-> >> >>> >>  }
-> >> >>> >>  
-> >> >>> >> +/// Reference to an I/O location, describing the offset, width, and return type of an access.
-> >> >>> >
-> >> >>> > In the next patch you implement this for usize, but here you say it's a
-> >> >>> > reference to an I/O location. I'm pretty sure usize is not a reference
-> >> >>> > to an I/O location.
-> >> >>> 
-> >> >>> Methods like `read_u8` use a `usize` to reference the location we want
-> >> >>> to read, so aren't they in that context?
-> >> >>
-> >> >> Oh .. I wouldn't use the word "reference" like that. How about "index"
-> >> >> instead?
-> >> >
-> >> > "index" looks more accurate indeed for something that is not a pointer
-> >> > type.
+On Fri, Feb 20, 2026 at 05:08:09PM +0100, Danilo Krummrich wrote:
+> On Fri Feb 20, 2026 at 9:16 AM CET, Alice Ryhl wrote:
+> >> > +/// A [`GpuVmBo`] object in the GEM list.
+> >> > +///
+> >> > +/// # Invariants
+> >> > +///
+> >> > +/// Points at a `drm_gpuvm_bo` that contains a valid `T::VmBoData` and is present in the gem list.
+> >> > +pub struct GpuVmBoRegistered<T: DriverGpuVm>(NonNull<GpuVmBo<T>>);
 > >> 
-> >> Actually this creates a bit of confusion in `register.rs`, where we have
-> >> arrays of registers, which `RegisterArrayRef` was built using the index
-> >> of a particular register within that array. If we rename `IoRef` to
-> >> `IoIndex` and transitively `RegisterArrayRef` to `RegisterArrayIndex`,
-> >> we now have an index that takes an index...
+> >> I know that I proposed to rename this from GpuVmBoResident to GpuVmBoRegistered
+> >> in a drive-by comment on v3.
 > >> 
-> >> Besides `IoRef` is more than just an index - it is also an access width,
-> >> and a type to convert that access from/to. Would `IoSpec` and
-> >> `specification` be acceptable?
+> >> But now that I have a closer look, I think it would be nice to just have GpuVmBo
+> >> being the registered one and GpuVmBoAlloc being the pre-allocated one.
+> >> 
+> >> As it is currently, I think it is bad to ever present a &GpuVmBo to a driver
+> >> because it implies that we don't know whether it is a pre-allocated one or a
+> >> "normal", registered one. But we do always know.
 > >
-> > Not using "index" make sense to me, but I don't really understand how
-> > "spec" fits in either. How about "place" or "location"?
+> > Actually, I think GpuVmBo is already the registered one.
+> > GpuVmBoRegistered is just ARef<GpuVmBo<T>>.
 > 
-> Well it's a specification of how to access an I/O area... kind of.
-> 
-> "Location" sounds good too, and abbreviates nicely to "Loc", let me see
-> how that looks in practice.
+> GpuVmBoAlloc<T> dereferences to GpuVmBo<T>, so currently it is not.
 
-Ok, I like location too.
+I will drop the Deref impl.
+
+> >> For instance, in patch 6 we give out &'op GpuVmBo<T>, but it actually carries
+> >> the invariant of being registered.
+> >> 
+> >> Of course, we could fix this by giving out a &'op GpuVmBoRegistered<T> instead,
+> >> but it would be nice to not have drivers be in touch with a type that can be one
+> >> or the other.
+> >> 
+> >> I know that the current GpuVmBo<T> also serves the purpose of storing common
+> >> code. Maybe we can make it private, call it GpuVmBoInner<T> and have inline
+> >> forwarding methods for GpuVmBo<T> and GpuVmBoAlloc<T>. This is slightly more
+> >> overhead in this implementation due to the forwarding methods, but less
+> >> ambiguity for drivers, which I think is more important.
+> >
+> > I think we should keep the current state that GpuVmBo is registered, and
+> > only GpuVmBoAlloc is not. That is most useful.
+> 
+> We seem to agree then: What I want is that from a driver perspective there is
+> only GpuVmBo<T> (which is the registered thing) and GpuVmBoAlloc<T> which is the
+> pre-allocated thing, i.e.  no separate GpuVmBoRegistered<T> type.
+
+So, should we get rid of GpuVmBoRegistered in favor of ARef<GpuVm<T>>?
 
 Alice
