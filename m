@@ -1,117 +1,115 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D70A2E22B5
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 20:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771705894; cv=pass; b=Ts8PjwZENRAGaxn0IoOsFBtMI9a7YWj3aQRnOagyY6hIkvkasgX4j6m5tDcGtZWrhleVNz3vw9TjUqfMz1coHEELP8h0Yu95k38QXmZPbrs0XlMnEhZiacE/y4j6Qgfa10JZsTDyclt5F/CKtSnQVvbRCn3anMz49dzSagg0B+g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771705894; c=relaxed/simple;
-	bh=FrJ3od3X8M9bOPnstqA2Hb/cX/Yif+NbwT5ilPFnH3A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UxC1p3eS6RDQuJ8jROjO09Zq5cSB+cTA5aBN+6uoLdMgYNoDHDApAKTtxy9c5aONIt9wIZ/CtafBLB/L3kyXMAIeyB0bSBxFx7ornuJ1C1T5aXc+TPg9JK5rZIJMFettkgt88Pc0SU3VPRslH2AuJj3C+/QX36ctU7Yfa15vAwE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k6AH5HFN; arc=pass smtp.client-ip=74.125.82.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04AC18C33;
+	Sat, 21 Feb 2026 20:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771706011; cv=none; b=P+Fu6ZA8hVR56PNcuauveK2knPuYo5wNx8NyUhIDiA4fa0H2nLXQx8OCpVcZGqjMx7fDhs8+nXbt5+TkOl7yhDYT8/aZ5oi2RjV1bt1eVvFAkJETTQFpw9C8p9AHo7c7sgb/ajQkqO5NbFLbH+e1CCC+88/yCKbRLzStnjkGDqQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771706011; c=relaxed/simple;
+	bh=wHNXqUd7HIsd/T7qV77MkUXfJ1ptxTaEW7OaMm1Sbhc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sEf6JIsLKoYP3smcGoV2jYUdca2tKmRw4GIqsR4wKuDdi8YkjbzS9ytpL54UoppKx50mVmLs7wjqIcEL2tgHzKoC4hAQOdDqkRumOKM8Eyu6jkLj8w9z6XPrs0Qb4bJO0QHs37eIrMzKfpoA+tYXW6PjVdu8xMmvOjv1f2JlnTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONWL90pp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k6AH5HFN"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2bd784c3e2bso32563eec.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 12:31:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771705892; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Dz2pMJXcgwYxNTET4or6kSCGOZVou4BgdvNMj6z0kC+oKJ3LFLAxlQfFzVSbTsVbnj
-         UcvblnZ3YWftHmlbVIscOyEGQEgvVOKGgrNwNp6HID9EJOys+8wNMl1CZdUNh6ySVMkH
-         sgbl9xFjSfavYSGIBkYle7h4K1EVTIbkORQr+ZPdmzllGxIk2GGw5cZBVG4f224O8uVU
-         j1pUsvMOwmlkOSsNWd6LpMPZ/Bvrn7FqNVvV3xZg5od4H/yMHdTDvZgEdArvLSpcjWkD
-         HH9z/IcOsy6peQ/Tq1zZr2t/4lOCQpRxS35ik4S2CHPD2WYznLdHdsC0z1A7/kS1+6cH
-         DT4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FrJ3od3X8M9bOPnstqA2Hb/cX/Yif+NbwT5ilPFnH3A=;
-        fh=vuvMMyUYhDQ+HVl0pBECYf6LG58/aaFRg6bZRzwzmAI=;
-        b=ErYgAq8VRwvXrC0pcUNLqfQD7ULJj3sUl0vlfXB8pEUElYu9c25/6Lmw7gO2NTMpMh
-         j95Dr7OeKbDvKZPxurgZQoLgjC1dBqmDYAQZL6MY5FSQ4PvmU2cbcuz8uEtcretGIGFn
-         OaOAXBx7aMdv+QjtdPEjstOPEey0g1eTV21qYqqlysgBI9p09qyETGTNG8ZZeKGx6M1v
-         Q1QOabfntee6x0E1L2haZdKE08mq4tll5ifeFWsVskaszhNWvWzkvSclFqio2NC0KPUS
-         f/U3pRCQWH9U+kdFUmNkxDyk59e9OWbbSrGlMJ3cEX8asQv7TrM3V87LMSUd3DeIKmrc
-         NK7A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771705892; x=1772310692; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FrJ3od3X8M9bOPnstqA2Hb/cX/Yif+NbwT5ilPFnH3A=;
-        b=k6AH5HFNGbr60z2XbCACCeQjrWalRYfvgDryc4Kjkox0RDdSPWdxvo3gO+OJSrdAxG
-         Yqv81mTFOClKD6uRnUGNaz3pJMHL9Gt4DwNKJf16yQ4ayx6gRWq0GR6BtVY5MWRw+pUF
-         1TrHp6zis+z5MaefMr6ckdNPjGTEMvSCCw+UnyyVg8Hg9swaU9cSjr8LNX559peXWV76
-         aMImXoW7t3/O3JTVBP6wpgmu+0nYOoizzWaO88k0e8gIOy0JppGTsTCT/knhKmLroLOa
-         93zQ6ehr1GIcpOtnAeraJSGhank+yAB+oSyPo0JdeAVL0k35R0akwI6bNLaPPtYLkHDX
-         6DmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771705892; x=1772310692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FrJ3od3X8M9bOPnstqA2Hb/cX/Yif+NbwT5ilPFnH3A=;
-        b=ctkSk1j2MK6GxMtrHbDaHnPt6mzV9rp3ABd8hE7307+Xv0SQpNQkVNI+fIPb0kup0E
-         2IuE4iyJLCJPrznpG+Rq5bLS/c8E/uUD+KTQOsmDJ0NwDct45WPQssE2Cn+oqRA6ecve
-         MYNNMumMKVhkOce7c6G9xJsk5/Q+q8oeL81Y9VSUxMnEqic2eQ4beGZVRGaZkQK7OIVm
-         7Mkxq0O8ZdsqEXeTC+ClhQg+eh2bGUctTqF4R9q3QtkkWEumZt1l2HBwRlVH6oId1EZM
-         2FldybBIdw7CZjxjYQumI5HfNCjM8/n7UGLq91hIbjpWKS+a1SBXXPUsc0PvtEmcpBaH
-         Ho3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVLnvaQ0MnU0loWMxqT3WYygdVigi9ldB1A9BMFAVT6wSyRQvLeOa2VwPF9dVeBeUd18M/nx8CYt5Myd9rczw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLCZfbkaswLuJ0rPH3fOPMhtW9oiDREov9JnlAaQStFQBcXW/8
-	LbaI5S86jOxn90vIgnwC/Wr8RF+4NF/HE25z9OgOoVnSgFUeFVRsQfSDpk7KjgQ/KGJm2ztf3My
-	7eIFc5rWP3EQc2EzUcNLJWP7TeCI+TQw=
-X-Gm-Gg: AZuq6aIUs5vYLdJ30GlTGy5uT/wWyEXvSIQW3dXEQZp7DpoOW0SNoERBY3YtrM9qA9y
-	v9QxI7DCYMVkeLorMTUCXv0JNs4N1jkAxC0/9WxZsiPLmZnrWjZyiECLT1AazVnEW2nZ6Y5+MRh
-	TLDHvlt3csbgcCudvehiv44zVrx0cLQfmPijZo4wbV5b5DEqnR2SJG7FcKU+dSxw73X7OT2Epx0
-	CrEJP33A3Qj9UyExSvu7nzB/yBExxS3qE1TpOuI0sxA5FeiPmiuzvbwXO7/XIKCzgShd9c88aME
-	+/crErK9guqByzfaddbNqmD7gcWQVDF5Q6hvLddvAh79nl7YeVznh4DsPGUO7mPvyAxZYyjPbF3
-	MPVK+9ssC5EOSKGpyHC7sS9pM
-X-Received: by 2002:a05:693c:310b:b0:2ba:7783:d1d1 with SMTP id
- 5a478bee46e88-2bd7bb62b24mr903258eec.2.1771705892150; Sat, 21 Feb 2026
- 12:31:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONWL90pp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93381C4CEF7;
+	Sat, 21 Feb 2026 20:33:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771706011;
+	bh=wHNXqUd7HIsd/T7qV77MkUXfJ1ptxTaEW7OaMm1Sbhc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ONWL90ppbsB9b3Om1NNnxZModADGviwOJOYtvHSBU9VYLRksONuW6loltW03yCetq
+	 /T+su3xrij9gIFcPaaBYYaARgeZdmdjMkoms+5wKpe+I/EsE6Q42vW7TDStbsRLL04
+	 44tK/iY5sA4Y/gTy1CEYU69nb21aUBXPSZ1oqZZ9M5VaBy3ZfGzBWoxwX0MTZ5sn0K
+	 AJTGxurvF4HS9tY1YiLjOXmsoZAvT6QiVHP2pDVW0OHo1nX+mUPcx61XOlbf98F9Hj
+	 N83mrLQBQu1a/JwSwhxKg5A1ncjCys8kMd9PCAVm0Yg3pQcu30QQuWAktTQXQt8cdd
+	 PwDX039tE4czw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 7.0
+Date: Sat, 21 Feb 2026 21:33:06 +0100
+Message-ID: <20260221203306.133927-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251221081659.1742800-1-stijn@linux-ipv6.be> <CANiq72nqwqTmCzKb=rhRhUDg8pju_RB2zzCKnJ5hDrVTUVnhPA@mail.gmail.com>
-In-Reply-To: <CANiq72nqwqTmCzKb=rhRhUDg8pju_RB2zzCKnJ5hDrVTUVnhPA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 21 Feb 2026 21:31:19 +0100
-X-Gm-Features: AaiRm52aBfPYjtJMkeqYa1pVE2nBJzQoyEJKXJ-q7qII8d--4j4XXVFdcCdfMEk
-Message-ID: <CANiq72kuP7P8NL51S2J48q=epqd+4F6iPXSPaVCF0ET7rAN9Og@mail.gmail.com>
-Subject: Re: [PATCH] rust: bindgen: disable GCC latent entropy plugin
-To: stijn@linux-ipv6.be, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Emese Revfy <re.emese@gmail.com>
-Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jan 18, 2026 at 11:46=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Cc'ing plugins and Kbuild.
->
-> Kees, Emese: from a quick look at the plugin, it doesn't seem to
-> change the signature of the functions (and even for variables it just
-> initializes), so it seems OK to ignore it for `bindgen` purposes, at
-> least naively. So I think this sounds fine.
->
-> Thanks!
+Hi Linus,
 
-If nobody shouts, then I will pick this up soon.
+Please pull these fixes for Rust.
+
+The top commit has only been in linux-next for one round, but they are
+all low risk. They are also not urgent, so they may wait for -rc2.
+
+No conflicts expected.
 
 Thanks!
 
 Cheers,
 Miguel
+
+The following changes since commit 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b:
+
+  Linux 6.19 (2026-02-08 13:03:27 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.0
+
+for you to fetch changes up to 97b281d7edb2ae662365be2809cd728470119720:
+
+  rust: list: Add unsafe blocks for container_of and safety comments (2026-02-20 01:59:51 +0100)
+
+----------------------------------------------------------------
+Rust fixes for v7.0-rc1
+
+Toolchain and infrastructure:
+
+ - Pass '-Zunstable-options' flag required by the future Rust 1.95.0.
+
+ - Fix 'objtool' warning for Rust 1.84.0.
+
+'kernel' crate:
+
+ - 'irq' module: add missing bound detected by the future Rust 1.95.0.
+
+ - 'list' module: add missing 'unsafe' blocks and placeholder safety
+   comments to macros (an issue for future callers within the crate).
+
+'pin-init' crate:
+
+ - Clean Clippy warning that changed behavior in the future Rust 1.95.0.
+
+----------------------------------------------------------------
+Benno Lossin (2):
+      rust: irq: add `'static` bounds to irq callbacks
+      rust: pin-init: replace clippy `expect` with `allow`
+
+Miguel Ojeda (2):
+      rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0
+      objtool/rust: add one more `noreturn` Rust function
+
+Philipp Stanner (1):
+      rust: list: Add unsafe blocks for container_of and safety comments
+
+ rust/Makefile                          |  3 +++
+ rust/kernel/irq/request.rs             | 12 +++++++++---
+ rust/kernel/list/impl_list_item_mod.rs | 25 ++++++++++++++++---------
+ rust/pin-init/src/lib.rs               |  4 ++--
+ tools/objtool/check.c                  |  3 ++-
+ 5 files changed, 32 insertions(+), 15 deletions(-)
