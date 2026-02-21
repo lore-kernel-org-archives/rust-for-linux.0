@@ -1,95 +1,160 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30D3BA34
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 09:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B0E24C676;
+	Sat, 21 Feb 2026 09:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771664967; cv=none; b=hvai+iqH+aWWXpRb4cVqUPE+jC+k38oL/0otkz0DDZ4/PdAsyRtBMRFDRYkPb6Q2KVhl1ckJw9qsZiGLdrQeq06kWkX7Xf4NN+QGTKkVwWHEwx24PsqNsMr7Z5WAzqz1TJs2PCJ5XpOuAJHHq5iLpinp1BRxPeW3koAXkUH0N4k=
+	t=1771666298; cv=none; b=KZvKB78UOQV2cg8omCZeCGYn+T3IKeJ78IeUbk0UHJhpRsfOSS5hlnkpNVEchIBT50K8tv8A3exgO+1C8M0T+QzDfxKWcyIcJZ6DVn+8ENuMSj3Zn9oC44vjfQgAWIPPnsfNyQQEZB2FF1gVtB9Gx54r2l//BKxaP9BoUbxA0aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771664967; c=relaxed/simple;
-	bh=nXsY1Y1WyV38WfDGxjMkQbSrSZssTBkdbIx3gnImlao=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eMByM7ACgbpryrqNIgJ4Ko0LywI8wmoCOOlHJdL5QzXyulrlHrhc6CInoVDWwnMmCLfOzcOOP2cBlJq95u3NuJtUH0gm/ygK8yoclL2XESb3/DcWXDsF6D4+jYRGdSUJp6jpGKemFevKaOlegKKoCoUfp7LsTxYTvJay1mwD0Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R1tMn5m7; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1771666298; c=relaxed/simple;
+	bh=JZd3TUO8sHKc1E5nsz3EpGaka1sJimcYCK4bXDXs0Ig=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RZK/Rp5yz3ji27yzFB4/VIKPXlCgpbXTOT9Q9RhVlyFJ1L3cvvTw3pH7jOH6U3/nzrutkfJy9AdgPol2iX4eYMeHs2OakzqQMEbK2O5HKpA5EzEH1DtBty2TaL27y7k5zOC9JYDe+THnHB/6QpzZ89zDhEI6NwxT22YzVzkGPAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Mv1kJVIE; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R1tMn5m7"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48372facfedso33295755e9.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 01:09:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771664964; x=1772269764; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tjL3co8gOybFESLAf7giPjhwsqQeHlhhnyGU8ZVONRI=;
-        b=R1tMn5m7mUnHc1c1gU3Vz6m5oDEua3j4HqRRxMleCW3NsQzxKVWzvgrXuBCZdsq4uA
-         EGUcQdnT88y1kxtKuBZnBg82p/XIPfozRA/Ll6hxBlFQVDnbBXHjo3UwF4RwTpNO9kpk
-         gRb8NAUvH810Z+ndUyXdAia7c5kmdh6dUFG6trNRQxvcQFIALdc9uOoEudkHUyEicoWr
-         F3KIoc0kcZrcH3zAzLbXHeZLLU66rXXNstoRNArkB/jgpFT8i9g5a/64BtwA6UxEztMR
-         H+HXmPVnSILAYLNL87GJAMf6W8RmXNFX+m8s04riHM8gNEBi0ZNBTPJ7Yoy0C2u3E6eV
-         0eMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771664964; x=1772269764;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tjL3co8gOybFESLAf7giPjhwsqQeHlhhnyGU8ZVONRI=;
-        b=Kv/R/Qv/NYI63RvqqUUtqDHyQ7OaBW3t0hn9OB4OaskGIsof4T9LSnNCMPE/kHvIL1
-         aqCObeElL5PZ2Gnm2d8p6664rCEedVp+W5oFwb3QlKirLSL/PE6TlxGtxFx2Av/zRfBM
-         CNq3OqskZcqzgE0OyOsm9RUlulNtZO9jiZEiuIUZEejewd8O+QtTRbHWvrJ0iSdeCz1l
-         IAdpT7VYYKui+1qhUFpwlRl/LhxqDm/1+J49Rgz1uTIc7LShKS0WdAOryBta7nhnOt5Z
-         YgwoW4jgIBQR5HXGo4EF4h0t1tHzU/Oyrq96aUFt4dEsndz7XKM1OVx/xQD4StIB4dCB
-         cd4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWxiaEufrPRUqycpJ1jj43yNtO+aor4RbPiK/Cpx3KiMIJJZ8iWM/hvuX8gUGQxuMhrszNKH6am+7s4Y3cQGA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJf2PtKxy31XbXE1j5tVhXano0Xm4k6en6vNytkbpgE1535xO4
-	2/vsL9K80R6NK88GLbzQnZ1ADrx+B90JD44PiHYr7oaSPew2FLgNAGlu9y6D8vuDF5mciIm02qu
-	5r9/VOEZiuHkbMJ5Oew==
-X-Received: from wmpz1.prod.google.com ([2002:a05:600c:a01:b0:483:8b61:16bd])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:358c:b0:47e:e59c:67c5 with SMTP id 5b1f17b1804b1-483a94a0b4fmr44283405e9.8.1771664964168;
- Sat, 21 Feb 2026 01:09:24 -0800 (PST)
-Date: Sat, 21 Feb 2026 09:09:23 +0000
-In-Reply-To: <20260212013713.304343-6-deborah.brouwer@collabora.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Mv1kJVIE"
+Message-ID: <d1c9e33b-e1f3-41c6-af5e-a85fe2b86d10@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771666287;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E0e3N+WFi6mKTSOmzqovnatex4YXABvp7cs8CmE8c8I=;
+	b=Mv1kJVIEwjxprAlnE7ePaFZ2mmEYiE6FpB0p8vlY+HTS/ika+2crJrWqhBAZDnTEangKkG
+	vF+x6eAzf15i1e6fPAryB+htLyuOxECps0kTkoZ577lF8yybbXLNT+C+B8UtwcG0IUHy/J
+	QlJXS36aR4TenAW9wV8MjXXQbj9Zj0c=
+Date: Sat, 21 Feb 2026 17:31:09 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com> <20260212013713.304343-6-deborah.brouwer@collabora.com>
-Message-ID: <aZl2Qzl4knlY19Hb@google.com>
-Subject: Re: [PATCH 05/12] drm/tyr: add MMU address space registers
-From: Alice Ryhl <aliceryhl@google.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	daniel.almeida@collabora.com, boris.brezillon@collabora.com, 
-	beata.michalska@arm.com, lyude@redhat.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
+ callbacks
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+References: <20260116162203.296844-1-sunke@kylinos.cn>
+ <20260116162203.296844-2-sunke@kylinos.cn>
+ <DFSN0O9RRVD6.1LCI38JKGO1R0@kernel.org>
+ <77d373dc-c5f2-4dca-b0d2-b5cee6a21b3b@gmail.com>
+ <20260220225341c5eeb835@mail.local>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <20260220225341c5eeb835@mail.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Feb 11, 2026 at 05:37:06PM -0800, Deborah Brouwer wrote:
-> From: Boris Brezillon <boris.brezillon@collabora.com>
-> 
-> Add register definitions and constants for managing MMU address space,
-> including:
->   - Address space translation configuration (page table format, attributes)
->   - Memory attributes (cacheability, shareability)
->   - Address space commands (update, lock, flush)
->   - AsRegister helper for per-AS register access
-> 
-> These will be used by the MMU/VM manager to configure page tables and
-> control address space operations.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+On 2/21/26 06:53, Alexandre Belloni wrote:
+> On 20/01/2026 16:01:40+0800, Ke Sun wrote:
+>> On 1/19/26 22:32, Danilo Krummrich wrote:
+>>> On Fri Jan 16, 2026 at 5:21 PM CET, Ke Sun wrote:
+>>>> diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
+>>>> index baf1a8ca8b2b1..eddcc5a69db3b 100644
+>>>> --- a/drivers/rtc/dev.c
+>>>> +++ b/drivers/rtc/dev.c
+>>>> @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
+>>>>    		}
+>>>>    		default:
+>>>>    			if (rtc->ops->param_get)
+>>>> -				err = rtc->ops->param_get(rtc->dev.parent, &param);
+>>>> +				err = rtc->ops->param_get(rtc_ops_dev(rtc), &param);
+>>>>    			else
+>>>>    				err = -EINVAL;
+>>>>    		}
+>>> <snip>
+>>>
+>>>> +/**
+>>>> + * rtc_ops_dev - Get the device pointer for RTC ops callbacks
+>>>> + * @rtc: RTC device
+>>>> + *
+>>>> + * Returns &rtc->dev if RTC_OPS_USE_RTC_DEV flag is set,
+>>>> + * otherwise returns rtc->dev.parent.
+>>>> + */
+>>>> +static inline struct device *rtc_ops_dev(struct rtc_device *rtc)
+>>>> +{
+>>>> +	if (test_bit(RTC_OPS_USE_RTC_DEV, &rtc->flags))
+>>>> +		return &rtc->dev;
+>>>> +	return rtc->dev.parent;
+>>>> +}
+>>> I understand that the idea is to gradually convert all drivers to use the RTC
+>>> device, rather than it's parent device in RTC device callbacks.
+>>>
+>>> My main concern is that once that has been achieved it's still not what we want
+>>> to have eventually, i.e. RTC device callbacks should ideally take a struct
+>>> rtc_device as argument and not the embedded base struct device.
+>>>
+>>> I.e. we'd kick off a conversion process that won't reach the actual desired
+>>> state.
+>> Hi Danilo,
+>>
+>> This is indeed an intermediate step.
+>>
+>> Full cleanup is in progress, but it's large and untested. I'm working on a
+>> complete cleanup involving ~190+ files across arch/, drivers/rtc/, and
+>> drivers/virtio/. Most changes are straightforward interface replacements,
+>> but some drivers need additional modifications. Given the scale, I haven't
+>> fully tested everything and can't guarantee correctness yet.
+>>
+>> The intermediate step enables gradual migration, allowing us to:
+>> - Clean up and test each rtc driver incrementally
+>> - Ensure correctness through gradual changes
+>> - Avoid breaking existing functionality
+>>
+>> Once all cleanup is complete and tested, changing all rtc_class_ops
+>> callbacks to use struct rtc_device * will be much simpler and safer.
+>>
+>> Currently there seem to be only these two approaches. I'm still waiting
+>> for Alexandre's suggestion on how to proceed specifically, but haven't
+>> received a response yet.
+> I'm sorry, I still don't see the point of doing this. The driver will
+> almost always need to set its driver data in the parent device because
+> we need to be able to handle interrupts, suspend/resume or .remove(). So
+> while intellectually, this would be more satisfying to have the
+> callbacks take a struct rtc_device, functionally this doesn't have any
+> purpose because we need to use the parent drvdata anyway.
+>
+> Said differently, you should explain why a device driver must not call
+> amba_set_drvdata() ?
 
-> +/// Maximum number of hardware address space slots.
-> +/// The actual number of slots available is usually much lower.
-> +pub(crate) const MAX_AS_REGISTERS: usize = 32;
+As in platform.rs [1] and i2c.rs [2], set_drvdata is always called by
+the bus Adapter's probe_callback, not by the device driver.
 
-Not necessarily a problem, but this constant is not present in Panthor's
-header file.
+[1]: 
+https://elixir.bootlin.com/linux/v6.19-rc5/source/rust/kernel/platform.rs#L80
+[2]: 
+https://elixir.bootlin.com/linux/v6.19-rc5/source/rust/kernel/i2c.rs#L160
 
-Alice
+In Rust the Adapter already sets drvdata on the bus device in probe. If
+the driver also calls amba_set_drvdata() there, it overwrites that
+pointer; on remove/shutdown the framework then gets wrong data and can
+hit use-after-free or crashes. So only the framework must set drvdata
+on the bus device.
+
+This applies only to the Rust implementation; in C, calling
+amba_set_drvdata() is fine. In the Rust design the bus device owns the
+bus device's drvdata and the class device owns the class device's
+drvdata, so the class driver must not set drvdata on the bus device.
+
+This is my understanding of the Rust device driver abstraction design.
+Danilo is the authority on this.
+
+Best regards,
+Ke Sun
+
+> Out of 29 drivers, 18 are doing so.
+>
