@@ -1,64 +1,64 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDF011CBA
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 09:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30D3BA34
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 09:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771664585; cv=none; b=tfI61DGtxrkTSpTf3UFSZ1iosxOE9KbUXtrcJTGjGuhNdE4yizeBpqLMQwDo55RGFiYEv6cJ2/LjWGuVlwyvAri818aRL3g9XTNu0n7XK8dEa1VvSSGmX7pfS4JA5u4q3EVg/kHDcNAZP88bLPtxWXSI2Iz82oxkPt2eY9X9BIg=
+	t=1771664967; cv=none; b=hvai+iqH+aWWXpRb4cVqUPE+jC+k38oL/0otkz0DDZ4/PdAsyRtBMRFDRYkPb6Q2KVhl1ckJw9qsZiGLdrQeq06kWkX7Xf4NN+QGTKkVwWHEwx24PsqNsMr7Z5WAzqz1TJs2PCJ5XpOuAJHHq5iLpinp1BRxPeW3koAXkUH0N4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771664585; c=relaxed/simple;
-	bh=OxmLVQCBLwO4s8kAZ84cz/P1OFnBKKzVPO7tt85hwVE=;
+	s=arc-20240116; t=1771664967; c=relaxed/simple;
+	bh=nXsY1Y1WyV38WfDGxjMkQbSrSZssTBkdbIx3gnImlao=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sQjxYytgaR7ZrjUl3PaPeb75opu5L9G0BKlUJUbkOl2pF4k4myoT5zFhJjCtnqwENYZ1ztzEUh0XSPpgU3tMhzjvdurba9lvjxfWbqEiTsRzoO6rnRZk3A6KDLRhBO+//uYNEKDOHckz13qLFIws466lmQAU3Z9qovQFGzjb5R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GI9kXwro; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=eMByM7ACgbpryrqNIgJ4Ko0LywI8wmoCOOlHJdL5QzXyulrlHrhc6CInoVDWwnMmCLfOzcOOP2cBlJq95u3NuJtUH0gm/ygK8yoclL2XESb3/DcWXDsF6D4+jYRGdSUJp6jpGKemFevKaOlegKKoCoUfp7LsTxYTvJay1mwD0Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R1tMn5m7; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GI9kXwro"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836e35292cso25224845e9.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 01:03:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R1tMn5m7"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48372facfedso33295755e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 01:09:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771664583; x=1772269383; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771664964; x=1772269764; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xqof4s0oT0bzk2vKcOSU+aeQbztw0Mc+PhxZBmWcX5o=;
-        b=GI9kXwroIei72+UJ1nLrH9MOdUTf+UW/7Amk7uU5R95k6ggULuQ5lsuHIrFieCUFT7
-         o1NQY5nqfOMbrHHxJKxAt2M6e8fl1gU0bN/DUS8/J/BcTxmK3MH12kCPToNpeQU3HkvD
-         Y45n9JoiHXB+rNGUThUYKbCUBnQ2+lViBPohPnD1sDUthbm/t4a/CDjAbtxe4hLEoUoJ
-         FoyE7BSnaMAF7T6KhR9TDPtRQ6CbLNV7DEm3mXN5fEF9dzhJIk8vDYVhOT9Ta1TtkVCq
-         WceKX7c2LmLsDbNzL7Ch/P+JZwwam6+yWfENVuIz520erg+rCjteDL/fUMr0fKIu85TN
-         aV/A==
+        bh=tjL3co8gOybFESLAf7giPjhwsqQeHlhhnyGU8ZVONRI=;
+        b=R1tMn5m7mUnHc1c1gU3Vz6m5oDEua3j4HqRRxMleCW3NsQzxKVWzvgrXuBCZdsq4uA
+         EGUcQdnT88y1kxtKuBZnBg82p/XIPfozRA/Ll6hxBlFQVDnbBXHjo3UwF4RwTpNO9kpk
+         gRb8NAUvH810Z+ndUyXdAia7c5kmdh6dUFG6trNRQxvcQFIALdc9uOoEudkHUyEicoWr
+         F3KIoc0kcZrcH3zAzLbXHeZLLU66rXXNstoRNArkB/jgpFT8i9g5a/64BtwA6UxEztMR
+         H+HXmPVnSILAYLNL87GJAMf6W8RmXNFX+m8s04riHM8gNEBi0ZNBTPJ7Yoy0C2u3E6eV
+         0eMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771664583; x=1772269383;
+        d=1e100.net; s=20230601; t=1771664964; x=1772269764;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xqof4s0oT0bzk2vKcOSU+aeQbztw0Mc+PhxZBmWcX5o=;
-        b=Bvni9cBD3dotMIKaXf82XJI5uQLmHrexte3crDt1P1DIubTzHBkjbsbsLIb1VF2WP+
-         peGJQNCYwdij/9nS56QE6/qY7E6ZZ2Q8W6DslYFuT7a6VPrMVcRL2gosSFgaCln73bvr
-         FlbG4YPd+0fGbkv4olgxd5s+7bBZypMhg1vvUO+aPFDEKaeDGLL9zIvSXfhyxKYmSAtD
-         jJHW4GSheFxI4YoAHWMq6ce78OiBWqFyDCI2NZmyI1hoPvepbF5Jg/LC2mfiUTNjx/WC
-         mwPEqjD7szywXHcNaQKjq7A36NkMsm+YH02dr16ehDoiNs+VdP9brw7qywxJsdpYdzsI
-         sjmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTNRU4Hr+AQxvyQ/NZ/ygf0V/gwugJeh3/Jkg49T7+7zcl/jsQjoNPQIxjSw4shD3R2iehHQTjlsBRpxijYg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz30AGhl7Np4ITf3w3RiHIsKEOZWyB0xCMGdfPu4ZJcAKDV+ji6
-	1xuRc3ovYVw89xPvvgt8RX6ZHmrN14JGM0jdBVT1tx57pYff5N1nBoVNfSsbMIKt90aQQ5dNk2+
-	p1qSrGSPIUgm1DIKLPg==
-X-Received: from wmbjp4.prod.google.com ([2002:a05:600c:5584:b0:483:27fd:cf47])
+        bh=tjL3co8gOybFESLAf7giPjhwsqQeHlhhnyGU8ZVONRI=;
+        b=Kv/R/Qv/NYI63RvqqUUtqDHyQ7OaBW3t0hn9OB4OaskGIsof4T9LSnNCMPE/kHvIL1
+         aqCObeElL5PZ2Gnm2d8p6664rCEedVp+W5oFwb3QlKirLSL/PE6TlxGtxFx2Av/zRfBM
+         CNq3OqskZcqzgE0OyOsm9RUlulNtZO9jiZEiuIUZEejewd8O+QtTRbHWvrJ0iSdeCz1l
+         IAdpT7VYYKui+1qhUFpwlRl/LhxqDm/1+J49Rgz1uTIc7LShKS0WdAOryBta7nhnOt5Z
+         YgwoW4jgIBQR5HXGo4EF4h0t1tHzU/Oyrq96aUFt4dEsndz7XKM1OVx/xQD4StIB4dCB
+         cd4w==
+X-Forwarded-Encrypted: i=1; AJvYcCWxiaEufrPRUqycpJ1jj43yNtO+aor4RbPiK/Cpx3KiMIJJZ8iWM/hvuX8gUGQxuMhrszNKH6am+7s4Y3cQGA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJf2PtKxy31XbXE1j5tVhXano0Xm4k6en6vNytkbpgE1535xO4
+	2/vsL9K80R6NK88GLbzQnZ1ADrx+B90JD44PiHYr7oaSPew2FLgNAGlu9y6D8vuDF5mciIm02qu
+	5r9/VOEZiuHkbMJ5Oew==
+X-Received: from wmpz1.prod.google.com ([2002:a05:600c:a01:b0:483:8b61:16bd])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b17:b0:483:71f9:37ef with SMTP id 5b1f17b1804b1-483a95b5405mr30650555e9.8.1771664582473;
- Sat, 21 Feb 2026 01:03:02 -0800 (PST)
-Date: Sat, 21 Feb 2026 09:03:01 +0000
-In-Reply-To: <20260212013713.304343-5-deborah.brouwer@collabora.com>
+ 2002:a05:600c:358c:b0:47e:e59c:67c5 with SMTP id 5b1f17b1804b1-483a94a0b4fmr44283405e9.8.1771664964168;
+ Sat, 21 Feb 2026 01:09:24 -0800 (PST)
+Date: Sat, 21 Feb 2026 09:09:23 +0000
+In-Reply-To: <20260212013713.304343-6-deborah.brouwer@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com> <20260212013713.304343-5-deborah.brouwer@collabora.com>
-Message-ID: <aZl0xaouJla98Py1@google.com>
-Subject: Re: [PATCH 04/12] drm/tyr: set DMA mask using GPU physical address
+References: <20260212013713.304343-1-deborah.brouwer@collabora.com> <20260212013713.304343-6-deborah.brouwer@collabora.com>
+Message-ID: <aZl2Qzl4knlY19Hb@google.com>
+Subject: Re: [PATCH 05/12] drm/tyr: add MMU address space registers
 From: Alice Ryhl <aliceryhl@google.com>
 To: Deborah Brouwer <deborah.brouwer@collabora.com>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
@@ -66,30 +66,30 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
 	beata.michalska@arm.com, lyude@redhat.com
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Feb 11, 2026 at 05:37:05PM -0800, Deborah Brouwer wrote:
-> From: Beata Michalska <beata.michalska@arm.com>
+On Wed, Feb 11, 2026 at 05:37:06PM -0800, Deborah Brouwer wrote:
+> From: Boris Brezillon <boris.brezillon@collabora.com>
 > 
-> Configure the device DMA mask during probe using the GPU's physical
-> address capability reported in GpuInfo. This ensures DMA allocations
-> use an appropriate address mask.
+> Add register definitions and constants for managing MMU address space,
+> including:
+>   - Address space translation configuration (page table format, attributes)
+>   - Memory attributes (cacheability, shareability)
+>   - Address space commands (update, lock, flush)
+>   - AsRegister helper for per-AS register access
 > 
-> Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+> These will be used by the MMU/VM manager to configure page tables and
+> control address space operations.
+> 
+> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 > Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-> +        // SAFETY: No concurrent DMA allocations or mappings can be made because
-> +        // the device is still being probed and therefore isn't being used by
-> +        // other threads of execution.
-> +        unsafe {
-> +            pdev.dma_set_mask_and_coherent(DmaMask::try_new(gpu_info.pa_bits())?)?;
-> +        }
+> +/// Maximum number of hardware address space slots.
+> +/// The actual number of slots available is usually much lower.
+> +pub(crate) const MAX_AS_REGISTERS: usize = 32;
 
-Nit: We usually move the semicolon outside of unsafe blocks:
+Not necessarily a problem, but this constant is not present in Panthor's
+header file.
 
-unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(gpu_info.pa_bits())?)? };
-
-Most of the time, this allows rustfmt to format the unsafe block on one
-line like the above (but it depends on line length).
-
+Alice
