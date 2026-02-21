@@ -1,127 +1,83 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CD3274FEB
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 08:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36D611CBA
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 09:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771664362; cv=none; b=EBrLPNYErG+XcdNcwlZj+a35jhcngUp+zi94QAQ1MP9SGTYBnjP+BqQXnf7oXhLVzcs45iQlG7B22C3V1RtylnhRdrFuGjo/ijUXSQBjEkGuG8Q561sym8cMlAQhajF8XjN1oJF5BiIqL9X8bhdP2f/dlc2pv/yz/GQkp4NCAEI=
+	t=1771664469; cv=none; b=mHIv9REoYPFKOtN9ACpKKICmUrdBJ9O7wzrXlUHW0clRh2CRcyyd5h1G02mLm5PoV+aLudMdQlA+vHNm/S6T5WRI+dOtpKauosFPi5fIXt+hodP/SgFWJdAhxAfk2SiiZIuElIKaH+8ayg44qIxLZyNAbUWLwKwOK4Lq6C7BFeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771664362; c=relaxed/simple;
-	bh=gFh8xuSc1dOKs5gKk6gqPmmHdoqd/hicr6x62pPVBMo=;
+	s=arc-20240116; t=1771664469; c=relaxed/simple;
+	bh=foP9Zs+xFWULpW25QMB1JN3468oIPdNroHO//NFSr8c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lLWg3WglvLZbEDl9cKTgUzJu9WV2zy3faXFbzN8tXVCtLSbsQ7uYcT3SAFCAD7kvdFixTKO82pFUaDA3Thpi5A1FArXn1zBV2uUY8glAxPlbMk4vjIoYrmIKIAhFSXxtG2FDvFuS2Gronio9rCnjhYEZS9ZNhrwwCPx+CQIyEfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UKSPjuKu; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=m+oXY9k31qtjqbjcabDcFc5/9rK2M2RCpBvEkmuPz/TQloO8RyVGvw/JdzWs7nkVziNrjDZa3atNsUJkzA7AtqWqWFDuYoEkUMhn8SCeuDCiLr5Ql7Qp8gkGmvgSM+va7vwwtPKVH+lUFUDjii+F3TXp0lJUgx+5u+v1PqfGr3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pi7GUDTf; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UKSPjuKu"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836c819456so21032445e9.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 00:59:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pi7GUDTf"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837b9913c9so32002345e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 01:01:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771664357; x=1772269157; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771664466; x=1772269266; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6zMqqgKoh/9hUmXKLa8W/Ktm8MqMG46VT0cs/LJ1MPQ=;
-        b=UKSPjuKuSV0XqhQqJCFnWsBQqsdYirpjZqRmWMZaJHkHKhF+PtjgfiRGL56B5P27cc
-         bo/zbmNz7UdW5PhkVoKacIogtkNJkcTzYhgULURH/hH8ckmIyXdMXmPTtLL8rXb5VYzI
-         S2/GK24RHb1HfI2zQ/Gzz7lbbJyTvACpKUwNPs3J1f5+WARfgbnXZ0WTzIFliwC1tFJf
-         riNcOFkNk+W41NHM3cPSaJpHmTkZsKEuwdM7MNdP3NZ4IFWT7zvLqac3uvAaDIgy435s
-         Y32aHszKhoNdKaufkY0A1qUByOBt01/S8u2/pnYlxqwztOha4IJGHDeMqwdJHpzrPRU1
-         zFOw==
+        bh=CDxg5/Q1IAt1VWYUZzRTRQkuZmjdGOa1HbUsVbaTc1M=;
+        b=pi7GUDTf3RvVVPqjfNwELhlI3p/FA7txeC2Jjy9PmCNll5UDvjNJLKmm2d4baYd3fs
+         o+MQHfS85/oMBFe5x+MBFO7Q46C0olvOP1IwepLXIfCwVFRcQJVUnBKRIJX9L9Lc4shx
+         mz1arQJ2mTpWg3s84gTaLW8xXivX4lS7+fvEq3EV9l2FaCQX05sLgyzhkEfkfKVBvP/4
+         zofX5Kn9x4CuRFotMBhbR49NofEmVG4RZnZ6fqs1HPvTcJEi+AvPNBRJ1zQU8dhMdtUs
+         xufJ6HVaTihRpb9a1R5H8VInhTw9VEa4jQmLfIUFc4+bnyDZ3qPvU5x2W4T97R+KMYGw
+         KSkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771664357; x=1772269157;
+        d=1e100.net; s=20230601; t=1771664466; x=1772269266;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6zMqqgKoh/9hUmXKLa8W/Ktm8MqMG46VT0cs/LJ1MPQ=;
-        b=CH9mJAqDtFnPKrRT4a+A4BQ08vvgRIqa2C3p9gaakxcnBk43QzK70oo9vNG0JnCKl7
-         lbN8udqFjqKHeZhMAvolhfG3YNC73NZOTvY2QAM+MgLV5n7zetpelSIQAyQz8i6B8hIW
-         wrf+wYlWDJOVAjhg/CSzG6UbQjHDvT6T0ieds91D9HY95laqs6BiSkxIditk9BNn+9NY
-         lzZlZKndClbQE7C5MylWt646VtcD9pEwYtVulby3nGCdxPCPYMVkxHzVc9IDwDlBf0AT
-         bT/vlnisYagOs0Y6s7IzxTYVJ0tfG1ux12X9dKn174x3ZCdMKJu1M4QzLXfYPqYRutj5
-         kJfA==
-X-Forwarded-Encrypted: i=1; AJvYcCU61sc7VMKUJUYKeH9xMuloqUlnj0wv0rl8UqbP/yQ+vktWRQaTm3uohf5OQYdpsc87/p/ezcZfked2qPP5cw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu0DyuWa28DN+XohBYyyXyki35+z+Evi1hVUNKxxy8E5og1Wou
-	1I4QJbFujU9GcxCXt1Y9D4FFSiMfwNWwWWqPxyZKUXx+WHzsQ2Eo4UIfUmrrUVjZ/PIKqit9Q4p
-	24WakNZy3VyzcZeiHPA==
-X-Received: from wmbz1.prod.google.com ([2002:a05:600c:c081:b0:483:6f89:e2c8])
+        bh=CDxg5/Q1IAt1VWYUZzRTRQkuZmjdGOa1HbUsVbaTc1M=;
+        b=H4S/ir34udFwUtvQ7efPhdC/lORjG/VuM+plTGIcFeokf5WFW8TMa6JeSpEPbuL3VC
+         NoGjb97Y4LU+ik7Mgw5jtrmolGb7AYJZLQAvOVOreo3m6H4EaIlPdKicIJSILxUE2dRL
+         QZG1kswgUy9kWiWhPlAQ5F3jpURgQhRaqAiv37S3mmbGFAUxmF12AtLBPNNDjCkc/344
+         X/E/E7oBBj1bWP5u/1uUnPEWumbdhCOzSTsrHVSPrEug7X5BRAZX9vHhcweLNl3lGJXZ
+         dIAGa8zHiswQLa4L/UCkY1/5qsXOInBPtd7HoUDb+r1im35MY/Q6lwPKp2J4KUVClYJ7
+         bnkw==
+X-Forwarded-Encrypted: i=1; AJvYcCXkmHw+5g/9xxdm336lh7hKJJbKEPD3pWjgAIfIkH+9FEt7K6tvTSmSoj5I9Pc2GAMIuHITMV1nUFz6nbFaIQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQL4XToA3I2O2fWrjH6kdb2rV68PO8ZGZ6JJmbGcz9kNVs3GHE
+	D77ifCpOA6/izJmP3dS4vT/S1bJLsYwDwdVz/xfjY+Sd+Tm7x2YmhwYSRjcu7dopZrT//Sz1rTE
+	47+8w6KQb6yi7+FSD5Q==
+X-Received: from wmqt10.prod.google.com ([2002:a05:600c:198a:b0:47e:e27f:e298])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1e09:b0:480:25ae:9993 with SMTP id 5b1f17b1804b1-483a962e3c9mr39685415e9.20.1771664356547;
- Sat, 21 Feb 2026 00:59:16 -0800 (PST)
-Date: Sat, 21 Feb 2026 08:59:15 +0000
-In-Reply-To: <20260218205507.689429-6-joelagnelf@nvidia.com>
+ 2002:a05:600c:8206:b0:483:75f1:54f with SMTP id 5b1f17b1804b1-483a95f8a84mr41710485e9.31.1771664466113;
+ Sat, 21 Feb 2026 01:01:06 -0800 (PST)
+Date: Sat, 21 Feb 2026 09:01:05 +0000
+In-Reply-To: <20260212013713.304343-3-deborah.brouwer@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260218205507.689429-1-joelagnelf@nvidia.com> <20260218205507.689429-6-joelagnelf@nvidia.com>
-Message-ID: <aZlz49VtPA0JbEGx@google.com>
-Subject: Re: [PATCH v10 5/8] rust: clist: Add support to interface with C
- linked lists
+References: <20260212013713.304343-1-deborah.brouwer@collabora.com> <20260212013713.304343-3-deborah.brouwer@collabora.com>
+Message-ID: <aZl0UXJ4agEpsRBj@google.com>
+Subject: Re: [PATCH 02/12] drm/tyr: move clock cleanup into Clocks Drop impl
 From: Alice Ryhl <aliceryhl@google.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Dave Airlie <airlied@redhat.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Koen Koning <koen.koning@linux.intel.com>, 
-	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	daniel.almeida@collabora.com, boris.brezillon@collabora.com, 
+	beata.michalska@arm.com, lyude@redhat.com
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Feb 18, 2026 at 03:55:03PM -0500, Joel Fernandes wrote:
-> Add a new module `clist` for working with C's doubly circular linked
-> lists. Provide low-level iteration over list nodes.
+On Wed, Feb 11, 2026 at 05:37:03PM -0800, Deborah Brouwer wrote:
+> Currently Tyr disables its clocks from TyrDrmDeviceData::drop(), which
+> causes them to be shut down before any other fields in TyrDrmDeviceData
+> are dropped. This prevents us from using the clocks when dropping the
+> other fields in TyrDrmDeviceData.
 > 
-> Typed iteration over actual items is provided with a `clist_create`
-> macro to assist in creation of the `CList` type.
+> In order to better control when the clocks are dropped, move this cleanup
+> logic into a Drop implementation on the Clocks struct itself.
 > 
-> Cc: Nikola Djukic <ndjukic@nvidia.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Acked-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-In general this looks like a useful tool to write other abstractions, so
-that's good. A few nits below.
+I agree with Boris's point about pinning.
 
-Also, I think it would make more sense to split this series into two
-with titles like this:
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-* Add clist helper for writing abstractions using C lists
-* Move buddy alloctor one level up
-
-That way, you can tell what the series actually does from its title.
-Yes, the 'why' of a series is very important, and must be included in
-the cover letter or commit messages, but I think the title of a series
-should explain the 'what', not the 'why'.
-
-> +impl CListHead {
-> +    /// Create a `&CListHead` reference from a raw `list_head` pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - `ptr` must be a valid pointer to an allocated and initialized `list_head` structure.
-> +    /// - `ptr` must remain valid and unmodified for the lifetime `'a`.
-> +    /// - The list and all linked `list_head` nodes must not be modified by non-Rust code
-> +    ///   for the lifetime `'a`.
-
-I don't think C vs Rust is useful here. What you want is that the list
-is not modified by random other code in ways you didn't expect. It
-doesn't matter if it's C or Rust code that carries out the illegal
-modification.
-
-> +// SAFETY: [`CListHead`] can be sent to any thread.
-> +unsafe impl Send for CListHead {}
-> +
-> +// SAFETY: [`CListHead`] can be shared among threads as it is not modified
-> +// by non-Rust code per safety requirements of [`CListHead::from_raw`].
-> +unsafe impl Sync for CListHead {}
-
-Same here. If another piece of Rust code modifies the list in parallel
-from another thread, you'll have a bad time too. C vs Rust does not
-matter.
-
-Alice
