@@ -1,70 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49303219FF;
-	Sat, 21 Feb 2026 15:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E68F31B808
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Feb 2026 16:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771686586; cv=none; b=O48fPG+90kHLM+Oa9UoHFCKkULz8AzkmrU+mlFbZgB/7r0cUfWT4DGqTdurZO6RLDli3n6a+l6TsusgCuUBOvZKHi5XnHzyBbWpuKQM8YiswxVTV+hdSEgaL06dl1DPknAjtWih3F5O5OInCtpA4hZjMS4QJC2Bd8np4gEaf0LM=
+	t=1771691560; cv=none; b=b09h3bAsGdhYq1qpqF0fCqCPehbxdAhIQ3M3e6SVFE+G635lZR37y89VFYw97dE1T+a5Lzi1wziq/BDgozCga05HFO+nBR8ry8ysdG+kFu+/T9AQg29F3KYoTmXhEtn+4W+Bwtw/lkdXDJr88r1BExkVPECrER9rezCNAW2lZfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771686586; c=relaxed/simple;
-	bh=jTIT9NqpyoWBxCeo/vIgFgNyhqW6Cp5fG9tUy3nKyeA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=FwIVVnW49BdbO5gLkPZP6VPwJmKcg6xVOXlJ/THFmDQnQCK5u9Z/8rGKgHAdx/5Xi6VLDkU8K611xchnM7QG5Jb+EjncxNa8Xva/GOGqHP0CbB1cYTPm1LlrQhpJmohEIYtKNdQo64zeyz8FI8SLmBYBDRnxiQq7GRA5XAPsPa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6/2wUb3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771691560; c=relaxed/simple;
+	bh=T++o4PIPrW3bDyoXB1Mtj2wlyorw9tXJy62Q+71FGEk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IhbsYM/vR5Os5gQxxjKVG/IqD4xigqch17XlYA4b1pZoz9g+T5RhNsXkidbtyTmsbRJ0GFpnD76Fc4Vu5c4x0PHVNM0IX4TMsx0Ey/899cMRMAx7EOPli95ZHc4VXrO0pE/HNxHZhCLcqyaQoeA0Or+CLsKhLL77Uf9gvh4cOCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KSu0NGqF; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6/2wUb3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CAAC4CEF7;
-	Sat, 21 Feb 2026 15:09:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771686585;
-	bh=jTIT9NqpyoWBxCeo/vIgFgNyhqW6Cp5fG9tUy3nKyeA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=X6/2wUb3g64KQyNHy+qsGgWX/nzikXjB7/VpDNAAvMR8ct44WmuPx5mLNY1RmsZ8R
-	 MgrMWVAErZZ+AWsOfakPP4iII49dIZYN5/tA7Jdq5Zgjm2f8Q/432TOUNHUk8M+KTY
-	 b0QDAeXWGhZikedRflCYX+nWh4EoQQbycaKWDNHKKgn/veVn1OyoSCZiYDm2VehdWh
-	 2dY3npv651mv6xSDcbhFTxEty8qvZguEGFDdUC40w0YzHNRc7LtQ9ozZ0kFk2CriBp
-	 40plQQvpAI+KsmR8tYddu0xtVrVeZMHYaXFyow+n/c53V7ZwA0kDJ6S5cSCPjNbuAb
-	 zUMoLfw5XF1Hg==
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KSu0NGqF"
+Message-ID: <70d2f54c-a107-40b4-b90e-f4705cb8699c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771691555;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T++o4PIPrW3bDyoXB1Mtj2wlyorw9tXJy62Q+71FGEk=;
+	b=KSu0NGqFbCqbrcMXuENZwNVDFUOHh1k2R5OmKbWkKrncbHUa5+F7el8miNr5qfSAdS9lzw
+	KnBcjRG9zbwlTTDtvuLMEZhbXhBFtdj9rKHUnxgRUadDMDTC3Qn9egeVsYUUvfk+rcyq2O
+	0zBbZa3vULNMeEREu0kJORkfcoaG2SM=
+Date: Sun, 22 Feb 2026 00:32:24 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 21 Feb 2026 16:09:41 +0100
-Message-Id: <DGKQH7Q9QONY.4GLSDMQ8DOY1@kernel.org>
-Subject: Re: [PATCH v4 3/6] rust: gpuvm: add GpuVm::obtain()
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, "Janne Grunau" <j@jannau.net>, "Matthew
- Brost" <matthew.brost@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, "Lyude Paul" <lyude@redhat.com>, "Asahi
- Lina" <lina+kernel@asahilina.net>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
- <20260130-gpuvm-rust-v4-3-8364d104ff40@google.com>
- <DGJ6LHIVMV03.MM7RWYBJHBIQ@kernel.org> <aZgYY_fetgz_GDR8@google.com>
- <DGJX3FI97W1G.371MAMC60FX24@kernel.org> <aZlw3SGmLetHwaTM@google.com>
-In-Reply-To: <aZlw3SGmLetHwaTM@google.com>
+MIME-Version: 1.0
+Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
+ callbacks
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ linux-rtc@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+References: <20260116162203.296844-1-sunke@kylinos.cn>
+ <20260116162203.296844-2-sunke@kylinos.cn>
+ <DFSN0O9RRVD6.1LCI38JKGO1R0@kernel.org>
+ <77d373dc-c5f2-4dca-b0d2-b5cee6a21b3b@gmail.com>
+ <20260220225341c5eeb835@mail.local>
+ <d1c9e33b-e1f3-41c6-af5e-a85fe2b86d10@linux.dev>
+ <20260221111619162a41a1@mail.local>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <20260221111619162a41a1@mail.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sat Feb 21, 2026 at 9:46 AM CET, Alice Ryhl wrote:
-> So, should we get rid of GpuVmBoRegistered in favor of ARef<GpuVm<T>>?
 
-I wanted to avoid exposing the reference count, as I suspect drivers might =
-not
-need it in Rust, but I don't know for sure.
+On 2/21/26 19:16, Alexandre Belloni wrote:
+> On 21/02/2026 17:31:09+0800, Alvin Sun wrote:
+>> As in platform.rs [1] and i2c.rs [2], set_drvdata is always called by
+>> the bus Adapter's probe_callback, not by the device driver.
+>>
+>> [1]:
+>> https://elixir.bootlin.com/linux/v6.19-rc5/source/rust/kernel/platform.rs#L80
+>> [2]:
+>> https://elixir.bootlin.com/linux/v6.19-rc5/source/rust/kernel/i2c.rs#L160
+>>
+>> In Rust the Adapter already sets drvdata on the bus device in probe. If
+>> the driver also calls amba_set_drvdata() there, it overwrites that
+>> pointer; on remove/shutdown the framework then gets wrong data and can
+>> hit use-after-free or crashes. So only the framework must set drvdata
+>> on the bus device.
+> But this is wrong, how do you then handle the class device on
+> suspend/resume or on .remove?
 
-We could also define it as GpuVmBo<T>(ARef<GpuVmBoInner<T>>), where
-GpuVmBoInner<T> is private, but I also don't want you to go back and forth =
-with
-this in case it turns out we do need drivers to be able to take a reference
-count and I also don't think it hurts too much exposing the reference count=
-,
-even if not needed.
+There is a patch adding runtime PM for Tyr (platform device driver):
 
-So, either is fine with me, ARef<GpuVmBo<T>> or
-GpuVmBo<T>(ARef<GpuVmBoInner<T>>).
+https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/60/diffs#dbdd2c5024317f2c80128c91a823e224b3a41550_240_256
+
+If you are interested in adding Rust support for RTC, We can do some
+research on top of it for RTC Rust drivers.
+
+>
+>> This applies only to the Rust implementation; in C, calling
+>> amba_set_drvdata() is fine. In the Rust design the bus device owns the
+>> bus device's drvdata and the class device owns the class device's
+>> drvdata, so the class driver must not set drvdata on the bus device.
+>>
+>> This is my understanding of the Rust device driver abstraction design.
+>> Danilo is the authority on this.
+>>
+>> Best regards,
+>> Ke Sun
+>>
+>>> Out of 29 drivers, 18 are doing so.
+>>>
