@@ -1,299 +1,220 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010071.outbound.protection.outlook.com [52.101.56.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98026A930
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Feb 2026 18:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BC52F851;
+	Sun, 22 Feb 2026 19:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771786036; cv=pass; b=IKfHqg421d0gS/9PgoHwTTsevX6tYUz95RM0jxYGQBt+ywLU1DQdz8I9UlernlbHojivQabEKPR/K6bC8p5MBkCWKxLt+16wKt3XgLlZr679mY0IfXckn8EqG5drUyiKfeC888zhL+G86X6WbBVFrpY5tiJiSo3djx3Jsk9h2h0=
+	t=1771786998; cv=fail; b=nscTR5a5SGD2CPElYWDkMC+I4iUbc/7ok4n1p+A2n5xwfHNT8pHap3fDLcPqaCmmlQYdqWWsc+LBNGIx3aEiK5bmNxbrGLL1D6pcC9W2xsGBHdhkvYdEXRQoR44ugw2Aqqu5AEmkzS3fBaBF/URqin7mtunNryamrd1IRcv4mIE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771786036; c=relaxed/simple;
-	bh=yLPU0XuXmr/nl8fYCuH0XnHyT/1ystk4QjQD62Vq628=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=J4rZV3qzU6j87A1gEvCowj99UmCSZtfos3NFkV8vm4lKZbM/Vr5ah0TUP6FhAXGIH3xSHdY88a/zMKXbY8oN5+37Fl79Qcajj0q0W1Sn2q+YY1/cCiGzBzeRO+0T4OFO4fDRJSYKImxV+Z3h7xtlY2QkV+tS7XNLpk1/kZoxN40=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=NRRiPpEc; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1771786998; c=relaxed/simple;
+	bh=cVR32zrw4D9grSHgnMYx6C9/0yGgRjvd+fN6mEfYlGw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hWg2DUTIW/I7j9fgdOd95Sbh/pMndttazlApdCGCXosNpgZMK81CkUCxwdSYd12bGQpEF8mZv8M+EMhMp84S2i7CO0jUctj8OFU+d3AIyeaL3hmQSzCLgFPGQcVgM13h4Hwue3jiboJ6rTlvxVcTg9Br+3xxiTcqpLvz1ztfpHw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hjdoDHri; arc=fail smtp.client-ip=52.101.56.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NRRiPpEc"
-ARC-Seal: i=1; a=rsa-sha256; t=1771786026; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=blj0lbcKxk/rPCdW/NTs8tjIg+0a1m92rWF11DHIhPOmWIPpFVS+dGCkY32fZrZJnNSKf9P2tD1XJTfSbIip485bCx10HPFTIlSTBU9lT1jiPRZZ6SuSpf4GKrd0pYTFEbYfKdz4aMp43bSu5gk9pBb4ZqjJA5GjNNaNE7k808U=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771786026; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ZcfktLejpbom6eLvi7iT6XCrb4oFOoFJP1yOuF4OcbI=; 
-	b=DAqJdUlWrAacrAR60jmBhrSQf7yf/6MlpUiRMStRLTLC60tm7+K2G8F3eEUAQRyKAALoHxckxPtPOzm9I2GOHwT5ifdE90UVliMuzPpTKmq/GwUnAbavAU8AsIILa1zBXcu4iwzx4YCfSV8FVj6skuz06iQTa2ZYMS7yDvJ3UxY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771786026;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=ZcfktLejpbom6eLvi7iT6XCrb4oFOoFJP1yOuF4OcbI=;
-	b=NRRiPpEcpLH+AyoXwgrQkAD4ID7QvfQNobswNeByMJ3DUtP42HwOvgmm5+S0SCCq
-	KWjSJ2Uv8H1g33v8bhzs1ONpOErrcuZ3EIHf8h/6LmQLnikTQ/60Uw7Tq4yVKswAz2A
-	+wRSDNs1txL97ySGiuRAoqQvEFT7yIk/0znmSPXE=
-Received: by mx.zohomail.com with SMTPS id 17717860241071004.3358029822639;
-	Sun, 22 Feb 2026 10:47:04 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hjdoDHri"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rn18zoHukQzbsdts5jQRWFulUObjI77qIKleJYamUZ+5/aCFRhsr91CzuAQMKiZrVBQEd7Yi7JqBtVI0rH8QoEL5Q4r7opyXaIFkzjg2kI6bsij38BZ162O4jdjnii72mYLVQB02oGcsYmrRf0K1SNXQQn/oQfKhRLet6hsFSnwhkJKvtw0m8dvFFegHR5fUyREYqEArci/K7WaUqHxtaCXnon3TLHI6G1HiCUAbhBTp830DwgtcKXOQamvIcDPSh+I5lin07RG53/YGT3wxBOGh38cJ5eKgkk9Natq0YSve8zi8Fxh7F3LSHsMGny1XzJ9MMBFmNDjCqdQPwUltKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0c1Vpws9Pzy/fJ6+H4VrBCeM9C0sRGqug41Syf9JtNc=;
+ b=fG4OH9KZyYn0623WAvSlDPFAwjtaeYG+IXWQsbSjGQZDuavlo/dmsItdbts/Avd+hMXXvnlrkbwJhxqRzdX80FrwUlOGHCXTgBME7qWuTOoFJlPBvR5EY5bxszBWjxSK5+PYibk5WdvdvEG89rHg/ur//M0HzjdSiCzxbl+QpIxhO64Tj9/sh9UnNthggP4MxkK13hjoVAM8k6OzS6tNAhFdBCuN/Tq3+zSlij9ix1Wl7VqC83nOAattogXZu75wSKfJi+qLc58ome8SY5lEqzLmRGgNLxk5x2ICCHedhDG9bOiPj9DsXbfHDEw2+TQKM8Ach2EyeNExz+GY1YEEFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0c1Vpws9Pzy/fJ6+H4VrBCeM9C0sRGqug41Syf9JtNc=;
+ b=hjdoDHriKQWUEOejQtXYZ2Fm0J2a/5NUGYIoos09BlINgn9GEEnYJLNoCv/3TQh5tku87tiJog9k3FslEB/j+vieCziQGc5YmlXr26XOBXFTjCM8YjLqqIXWUMT/prWaFzAA7pi9H1E1LiuhnA8g1r1hA4Rm3Yg66DzIcLERzuizBwigaUfEYsrRA7DF3BcXYGZ23fjXeHBgopUz7ZuI/gCGdOH2/4BmT2FdQpSWJHLBVZSFZC5rueBrvL9Fx+0pH33Ek2f6kWJtJDhtrwOUer2X5+KgKkM04QPISIBjnPd0mQmGoe13TPgHUHPl5mLfmai1jHdHTM1K9cd0FGtmMw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ SJ0PR12MB6965.namprd12.prod.outlook.com (2603:10b6:a03:448::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.13; Sun, 22 Feb
+ 2026 19:03:12 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9632.017; Sun, 22 Feb 2026
+ 19:03:12 +0000
+Message-ID: <86600a42-9eef-4c2c-84c7-112f5b9b2509@nvidia.com>
+Date: Sun, 22 Feb 2026 11:03:08 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 21/38] rust: ptr: add const_align_up() and enable
+ inline_const feature
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20260221020952.412352-1-jhubbard@nvidia.com>
+ <20260221020952.412352-22-jhubbard@nvidia.com>
+ <CANiq72n46KhQv453+9nMWxaXqo77PT20Ya6iw=fiR+oyrPDquQ@mail.gmail.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <CANiq72n46KhQv453+9nMWxaXqo77PT20Ya6iw=fiR+oyrPDquQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR02CA0067.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::44) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 07/12] drm/tyr: Add generic slot manager
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260222185743.02dabb26@fedora>
-Date: Sun, 22 Feb 2026 15:46:48 -0300
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- aliceryhl@google.com,
- beata.michalska@arm.com,
- lyude@redhat.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <AF169886-65F7-4B7A-BAFE-D2C75ADAE678@collabora.com>
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
- <20260212013713.304343-8-deborah.brouwer@collabora.com>
- <20260212111113.68778819@fedora>
- <1B40312F-694C-4154-ABF7-F96CE5576C0E@collabora.com>
- <20260220172154.4fe93c6d@fedora>
- <A60BBD53-B7D3-4E85-A72E-8B914B82C977@collabora.com>
- <20260222185743.02dabb26@fedora>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SJ0PR12MB6965:EE_
+X-MS-Office365-Filtering-Correlation-Id: 300ca6e1-ffef-409b-6e88-08de72450691
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?d0ttTWIrZENuK1RaVUFSOFBnWUR5cXRuSjdRV1NiRVpJai9YRkVqMXpUSnNF?=
+ =?utf-8?B?NEZYR0hxS1VoTnlwbEtCU0h0dUdqa2JSSkpucDBOeEQ1eGExSy9iT2RyenhM?=
+ =?utf-8?B?MzgrUUx1Q2JrSzVqUXlIK25vR0tYOVNZakN5cHE2RTBoZW1JbXZ1OWpPaVFt?=
+ =?utf-8?B?ZTlCVjQ0Kys4Qy81S2t5ZnNPaTBvTFdlSzVRQVp0UytlYW9RcCs5UzFZcUI4?=
+ =?utf-8?B?Q2toRSt0YjNmcS8yTFVueTF5a2VNbFc4aWRqM0JWVWQ0bFJjck91b09hU3hj?=
+ =?utf-8?B?Mkt0SnBRdDFYMGtxWGdPdW9WeHUwdGtWcExEdTN3UkNRWXJFejYwR2g3RzdS?=
+ =?utf-8?B?WlpDMWh2eFFVTEZYcDUvR3E0ZDFGZUNjVUp1bFhSU3Nnei9ORm5KblFZYmFT?=
+ =?utf-8?B?R2F1eGVlVlAwaGZXUCt5Zjd0aC9jSXlOc3BtVFBpdzEyVUVuWnc3RFovKysy?=
+ =?utf-8?B?Y2UraTNJMU42YkllMWIvMytYR2ZJTkpENWdSKzJwZEVaK1Fha09qNTlkbEVv?=
+ =?utf-8?B?Z3JXTk5VN0c2RmI1WVQwR0tvTmVFa3JQVHlwL3BzUTJhVnE5OU5KNTlNS0Rt?=
+ =?utf-8?B?QXhWSFR5M2JtUTVjZUJIbkp4dTV6dTFIcmJBNnVHb1cwUzkrUFQxTGFJTFFs?=
+ =?utf-8?B?S0k4UHdYSFlkWUpaeUdtZktPNVFmSTlKYThJaUFESGxxUEs4VDRETTJqOWNl?=
+ =?utf-8?B?VytmSkFES01zdHh5ZFZwWTJVLzVmaFRLc0RiT1VOMGVBZzZ6R0RDY2VmcnhG?=
+ =?utf-8?B?bnEwZ0g1M0lxWGY4Q1BtK3JEUWZpcGRMVkFlWDFGSDNiczc0eWhmeURXNDBM?=
+ =?utf-8?B?cWNpMFRKZDZMUDkyQXA4WGtNZlBjZGxrV3JqZDhiRUZyUDAwSWpLN0NkbjVS?=
+ =?utf-8?B?VmFRMWJqMUU3cGZEdEcyL2RuYkVvWkpQdVBGNUJMTmw4SXI2bXp4WlpLa29v?=
+ =?utf-8?B?L25LRENIZWNGbWpUMW9CUzFLM3FKU3BvdFA4Tk9zNmVnUHJpaFBBby9WRkVC?=
+ =?utf-8?B?Ti8xREpuU1FYVHE5TnJCSWVyZFhPNmVoSTRxdUo4T2x6NmNWazVNcyszeDIz?=
+ =?utf-8?B?b0pQcTVEQ2NJcSsrcENwRGtvcHd5U1E2Z2w4Q0lpeTZPSFpja1ZZZ3ZTVlJR?=
+ =?utf-8?B?UXVuSUZWR3RKKzd0TUxmTUpHazFpWHpCRTNLeHZSRHBPMXJEeFNwVnBOdGc1?=
+ =?utf-8?B?RStHK0ltMzcyOGJKOWJGL0t3VTBJcHlkMmlhUlVWQ0xCSHFOSFlYelU3cHVi?=
+ =?utf-8?B?ZzJNY05Ld092L1FNT1dtZWFpWnpiSWtuM1hXQlNSV1hraXFWNUZaSGgwSHN3?=
+ =?utf-8?B?MkdXOXY3bjAweUMveDFFdnpadDFPTUNBTWt4TzJmQnVaZWJmUWtIWXNvR2V3?=
+ =?utf-8?B?TkdWci92MThKZk9HMGI5Q2FhN0t5Z0s1SXg1SUhDajRPaXNQY3lXR1pNTzRi?=
+ =?utf-8?B?aWxIMmwxT09CZk9tSGtiWkI1RVlPU2FzSUZzVDUwRjhIK0kxYUNwSkhXRE4v?=
+ =?utf-8?B?UXhpRmxITjExRDJnTjFUNUtDU1NSRjdkOU1yYW4yYk5RQ3FUL0w0OFFYOFFq?=
+ =?utf-8?B?QmN5UWpjSVZ2SUZPczZJMFBLQ2g5MFU2UytVNGZxK0JjS003NFJJTDNoZ0hx?=
+ =?utf-8?B?OXpCZWwrZnhiRWo2ekFWY2VWdE5wd2hhTklPbmVJcytzNnVjRHJoT0gvOFZN?=
+ =?utf-8?B?N0d4Q1Nma21OYThpbURaVzN6Rk5IcGkwMVMyMWRhVW1leVQ2RnAwd2dEL1FB?=
+ =?utf-8?B?VEUvakhCYWR3dnVVM2NDb2J1YytsaU12amxXQ05MU1dqMHBLUU5JQnpTSHpx?=
+ =?utf-8?B?aFFsMnBRL2Vwb2xpNUtuTlJRY2hnaGlmOE5WSWkyQU84d0lXcDdsTzBCMnA4?=
+ =?utf-8?B?Z212cm1kRnBQWm5hcEpFczBKTVVNMmtITm4vaW1Pd2F3cjNpdjUzbkNGMWhl?=
+ =?utf-8?B?MFhvMy9HRlZ4S0trUGpGc0Q2ZC9ZN0NReFFzZkRaU0pCVFlqWWFRdGlsU3Rj?=
+ =?utf-8?B?RjkxWVU4eGwzeFUzdW5ySVhwK0dkdzdUSEdoeHdPK3hISzBPVWRDVWVtM1Yy?=
+ =?utf-8?B?a3lFT29NbnB3MEgvc1ZJV3RpN3ZFalV3eHlkckJuTEt1b0tYdXZYWlgwZHVm?=
+ =?utf-8?Q?Xc8Q=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WE9kdCtDcEpHK1FlUUViVlZzMzdWWWhqZUtsVTZyTzdaWklEdVFLcnZOeUs4?=
+ =?utf-8?B?YUxEckk4TXpzbzMwTGx5TVVWZTVEdEZmSlhUajJDaVpTYkNENUwrcXBZNEhw?=
+ =?utf-8?B?WG5jb0lldXA0ZnRvZTVTSnhPNmpDQW90b0h2TDJGUDVHd3kzeWh6UEZxcFB6?=
+ =?utf-8?B?TFJjT1BJbXZ6YTFWRUgydHhLV1BoSW9ueUt0bXNkNW5xdG5JSFNldit1LzZK?=
+ =?utf-8?B?Nm1XZE1raTkvL09ySno1anczbVJpZlFQVzY5RFkxWkluSEtKNDJENWhNdWlZ?=
+ =?utf-8?B?Yk8zRUJtRmkzQTB6YUxNdExua3lXQzQ4UDlJQ2d4Q1prQ2lCc1hKb1Vsa1g2?=
+ =?utf-8?B?Q3QwOEROSDVVK1hZTGprQUVaRmdjTk95WUhidDQ0bzlHV3Q1ZTFLMElsWXdv?=
+ =?utf-8?B?MjI4RWFOUXpEeTVvblpMK01EMEY4WUU1OVZlTXN1alpuTEtrWkdvZmkvRm4z?=
+ =?utf-8?B?TnN1MGlkZnJOb3BoK3R2VUJmTXRyMElZditvZ2lGdnRzVmFFZnh3OW45QlRv?=
+ =?utf-8?B?UXNITkVocXlEaTlURGVKY0gwaVpqOTY4Qms4SFhBQi9NaERXL2VQMEV4cUxl?=
+ =?utf-8?B?Z082Ti9ldFV6amRpajdOL1dkYjJ1WjU4ckJ2V2JDcUw3K1ZPZjV2cVc4WUZ1?=
+ =?utf-8?B?QzBNMExpNFpPTERHV3hJOHRTVXB6K3FUK1pPZ29IQ0dqTDExVXN1d0p0azM2?=
+ =?utf-8?B?c1FGVUt0NVRIMXQzTDJ1cGVNcUVYV2Q5YTFTOC9ickE1Q3RyQk1UWFB0ZE9m?=
+ =?utf-8?B?ZHRuMzFteXVlTER6UVluTkUxZjhNS09OSGE0WjJGdVluWjJsTFR1K2toZ29u?=
+ =?utf-8?B?TXFHMFd1TUdYdUUxb3BlbEJGRm5iRmtLb2lsNnpLSmFWR3MrbExLTUszKzJl?=
+ =?utf-8?B?SXg5RzdKYUtad3YzYzFRcENYRkxGbFpralVYR29wbTlqWjBNdjJJRkhtaDFk?=
+ =?utf-8?B?aWNPem0vVkRzU3pnZW53SkZadWFQQ0hmZ1ZsU0Q2ditNckZmblBlbU5veFR3?=
+ =?utf-8?B?NWM2aUdadkNHUXgxNnZ1d0o3VTh0VHcrc0NjdXNtNmhQb1JNVTJDM2lsaktw?=
+ =?utf-8?B?UHdLWEhISEVDc2RJVEwyYTdHSjk3K0ZzU1hNWC9LMzY5QTNGdmVicWtlSnhU?=
+ =?utf-8?B?M2x1c2JhMmYwcjlqN0FIY1k3T1RBdWFMeGdjdko1cm95MHFLb0RFRU40Zmxx?=
+ =?utf-8?B?ZDBPM1haU0duZ2hEYUtFMWhSYXU1czRYNThwRDErTFRaOGNGdmdFNmk2S09x?=
+ =?utf-8?B?OWloRkZWbjhweXF3cGwvdlRwUXJqSzBkc2FhdEtVR0JidVYybXNzeDBoT2dq?=
+ =?utf-8?B?anFVMncyR1R6clVqelliUmVsbTRhUkZETnFRYWxSV1Jsd3lNNlR1VnltNFZK?=
+ =?utf-8?B?R1FrUDlZTU9MZW12MGtoL3pYU0Z4RVdsOUtCVmhuQXBCdmVWQ3BuOHVYZDQv?=
+ =?utf-8?B?SVh5c0JJUXVnNGJEdk5uREZCYzZ3eS82OFNwcmxZYjU2em5hZnlpNlYzbkt4?=
+ =?utf-8?B?NlBmMHc5YWQ5RjJPYUxCZWhOS2MrSWkzY1NyejFlRkdZcytGWnRrR2ptZDRk?=
+ =?utf-8?B?WmJnNnlXUG1qaSs0REhzYWhlNkVnb09NLzFmSUpQTWYyQUovSStLZnVDNkNU?=
+ =?utf-8?B?aWdobDBFWmhJR015VEhXYlFsY0diZUxOc0NNaStQQUlrYmRxVW51TFUvdktr?=
+ =?utf-8?B?SEZaWUNZS0J3RTU1V0IrZVU3QkRhbVozWkN5TUkyMVoyM281cG03Y1owYnYv?=
+ =?utf-8?B?SEhFUXhlMDVBaXhqOEtJTHpRdmxZbVFDSE5WWElLc1o4RVJMNzRPRTY0em9C?=
+ =?utf-8?B?QlB0N1hzbnFaWTBNTFNnVWtMVlBqTUZmNzZuQjB5OTRiK2ViQ1NGMlVxMHRk?=
+ =?utf-8?B?VWRXTkpUQ3g0Sm0xL2VqR3JoQkVaZ2lCRmpOZXVxbHJqbnBTN0duMS92NFU1?=
+ =?utf-8?B?MWN0bXN6Rkt2ZWp1L3ovbDBxdkRFTGQ1VXpUc3ZiZ2xzTWFvZlFEcktzUlRH?=
+ =?utf-8?B?RkdoQ3M3VVBuQ2FHM01ZTWFyY3R5ZVFoVjhWemVRVUkwdzJCTm92OVhnODBE?=
+ =?utf-8?B?MGxrSjhoL0VBUGNKb1FSV21pdVNteWxwRng1NTlXZGwzVXJla1g5N05YVnNU?=
+ =?utf-8?B?V0ozbDUrWTYvVlVQbitqaThNT0ZnMVZIdVZKUmt2alNVYUozdDIvWktWUjR3?=
+ =?utf-8?B?NmgwWWxpREQyaDVmQmFxSDIyS3RuQzZhUzliQzBNOVRJM2pQbDd5R3I0QUpN?=
+ =?utf-8?B?SmZUK3NhNTFWVjFPOHJKanY0dnNkaFJFaWRvbUVaRVlzd2taVEhwM0RZM2Yv?=
+ =?utf-8?B?SlFZOURVMVd1ODFGQzErZlA5UGcvenVPdXRtbXF4SmxOamgzMVJGcU4zZjlL?=
+ =?utf-8?Q?4aS9QFlQ3xHsqnRg=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 300ca6e1-ffef-409b-6e88-08de72450691
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2026 19:03:12.3480
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EUydl8tqDqDrB3JEeJ7JjxyJboOXfkZghL7bNEuFNWi1uu6ykIIR145V2VN8t6jiohN4WmuxJAoKFSl0oPwRFg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6965
 
+On 2/21/26 12:50 PM, Miguel Ojeda wrote:
+> On Sat, Feb 21, 2026 at 3:11 AM John Hubbard <jhubbard@nvidia.com> wrote:
+>>
+>> [1] https://lore.kernel.org/rust-for-linux/20260206171253.2704684-2-gary@kernel.org/
+> 
+> Link: https://lore.kernel.org/rust-for-linux/20260206171253.2704684-2-gary@kernel.org/
+> [1]
+> 
+>> +pub const fn const_align_up<const ALIGN: usize>(value: usize) -> usize {
+> 
+> Ah, I thought you wanted to put this in `drivers/gpu/nova-core/num.rs`
+> like in the previous version.
 
+Works for me. I was anticipating that people wanted it in rust/ but
+I'm perfectly happy to keep it local to nova-core.
 
-> On 22 Feb 2026, at 14:57, Boris Brezillon =
-<boris.brezillon@collabora.com> wrote:
->=20
-> On Fri, 20 Feb 2026 13:55:31 -0300
-> Daniel Almeida <daniel.almeida@collabora.com> wrote:
->=20
->>> On 20 Feb 2026, at 13:21, Boris Brezillon =
-<boris.brezillon@collabora.com> wrote:
->>>=20
->>> On Fri, 20 Feb 2026 12:25:43 -0300
->>> Daniel Almeida <daniel.almeida@collabora.com> wrote:
->>>=20
->>>>>> +
->>>>>> +    // Checks and updates the seat state based on the slot it =
-points to
->>>>>> +    // (if any). Returns a Seat with a value matching the slot =
-state.
->>>>>> +    fn check_seat(&mut self, locked_seat: &LockedSeat<T, =
-MAX_SLOTS>) -> Seat {
->>>>>> +        let new_seat =3D match locked_seat.access(self) {
->>>>>> +            Seat::Active(seat_info) =3D> {
->>>>>> +                let old_slot_idx =3D seat_info.slot as usize;
->>>>>> +                let slot =3D &self.slots[old_slot_idx];
->>>>>> +
->>>>>> +                if kernel::warn_on!(
->>>>>> +                    !matches!(slot, Slot::Active(slot_info) if =
-slot_info.seqno =3D=3D seat_info.seqno)
->>>>>> +                ) {
->>>>>> +                    Seat::NoSeat
->>>>>> +                } else {
->>>>>> +                    Seat::Active(SeatInfo {
->>>>>> +                        slot: seat_info.slot,
->>>>>> +                        seqno: seat_info.seqno,
->>>>>> +                    })
->>>>>> +                }
->>>>>> +            }
->>>>>> +
->>>>>> +            Seat::Idle(seat_info) =3D> {
->>>>>> +                let old_slot_idx =3D seat_info.slot as usize;
->>>>>> +                let slot =3D &self.slots[old_slot_idx];
->>>>>> +
->>>>>> +                if !matches!(slot, Slot::Idle(slot_info) if =
-slot_info.seqno =3D=3D seat_info.seqno) {
->>>>>> +                    Seat::NoSeat
->>>>>> +                } else {
->>>>>> +                    Seat::Idle(SeatInfo {
->>>>>> +                        slot: seat_info.slot,
->>>>>> +                        seqno: seat_info.seqno,
->>>>>> +                    })
->>>>>> +                }
->>>>>> +            }
->>>>>> +
->>>>>> +            _ =3D> Seat::NoSeat,
->>>>>> +        };
->>>>>> +
->>>>>> +        // FIXME: Annoying manual copy. The original idea was to =
-not add Copy+Clone to SeatInfo,
->>>>>> +        // so that only slot.rs can change the seat state, but =
-there might be better solutions
->>>>>> +        // to prevent that.   =20
->>>>>=20
->>>>> Okay, I guess we want some inputs from Daniel and/or Alice on that =
-one.   =20
->>>>=20
->>>> Hm, I'd say we shouldn't implement Clone to avoid any possibility =
-of holding on
->>>> to stale state by duplicating it. =20
->>>=20
->>> Okay, so basically what we have now.
->>>=20
->>>>=20
->>>> Why do we need to return Seat from this function? Can't we simply =
-write
->>>> locked_seat in place and not return anything? =20
->>>=20
->>> We do both actually. IIRC, the reason is that LockedBy borrows &self =
-if
->>> we want to read the locked_seat, which prevents us from calling =
-methods
->>> taking a &mut ref from a `match(locked_seat.access())`. =20
->>=20
->>=20
->> I am referring to this change:
->>=20
->> --- a/drivers/gpu/drm/tyr/slot.rs
->> +++ b/drivers/gpu/drm/tyr/slot.rs
->> @@ -242,8 +242,8 @@ fn evict_slot(&mut self, slot_idx: usize, =
-locked_seat: &LockedSeat<T, MAX_SLOTS>
->>     }
->>=20
->>     // Checks and updates the seat state based on the slot it points =
-to
->> -    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) =
--> Seat {
->> +    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) =
-{
->>         let new_seat =3D match locked_seat.access(self) {
->>             Seat::Active(seat_info) =3D> {
->>                 let old_slot_idx =3D seat_info.slot as usize;
->> @@ -278,26 +278,7 @@ fn check_seat(&mut self, locked_seat: =
-&LockedSeat<T, MAX_SLOTS>) -> Seat {
->>             _ =3D> Seat::NoSeat,
->>         };
->>=20
->> -        // FIXME: Annoying manual copy. The original idea was to not =
-add Copy+Clone to SeatInfo,
->> -        // so that only slot.rs can change the seat state, but there =
-might be better solutions
->> -        // to prevent that.
->> -        match &new_seat {
->> -            Seat::Active(seat_info) =3D> {
->> -                *locked_seat.access_mut(self) =3D =
-Seat::Active(SeatInfo {
->> -                    slot: seat_info.slot,
->> -                    seqno: seat_info.seqno,
->> -                })
->> -            }
->> -            Seat::Idle(seat_info) =3D> {
->> -                *locked_seat.access_mut(self) =3D =
-Seat::Idle(SeatInfo {
->> -                    slot: seat_info.slot,
->> -                    seqno: seat_info.seqno,
->> -                })
->> -            }
->> -            _ =3D> *locked_seat.access_mut(self) =3D Seat::NoSeat,
->> -        }
->> -
->> -        new_seat
->> +        *locked_seat.access_mut(self) =3D new_seat;
->=20
-> That one requires Copy support, or am I missing something?
+> 
+> If it is here instead, then you shouldn't need the
+> `rust_allowed_features` change anymore, because we already enable
+> `inline_const` in the `kernel` crate.
 
-No. Copy and Clone produce a new value and both the old and new values =
-remain
-valid. The line above is moving a value into a new location, =
-invalidating the
-previous one. This means that Copy is not required.
+I see.
 
->=20
->>     }
->>=20
->> Or even shorter:
->>=20
->>    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) {
->>        let (slot_idx, seqno, is_active) =3D match =
-locked_seat.access(self) {
->>            Seat::Active(info) =3D> (info.slot as usize, info.seqno, =
-true),
->>            Seat::Idle(info) =3D> (info.slot as usize, info.seqno, =
-false),
->>            _ =3D> return,
->>        };
->>=20
->>        let valid =3D if is_active {
->>            !kernel::warn_on!(!matches!(&self.slots[slot_idx], =
-Slot::Active(s) if s.seqno =3D=3D seqno))
->>        } else {
->>            matches!(&self.slots[slot_idx], Slot::Idle(s) if s.seqno =
-=3D=3D seqno)
->>        };
->>=20
->>        if !valid {
->>            *locked_seat.access_mut(self) =3D Seat::NoSeat;
->>        }
->>    }
->=20
-> Did you try that? Last I tried, I was hitting a wall because the =
-caller
-> of check_seat() does a match on the updated seat, and inside this
-> match, it calls functions that need a &mut self, and the borrow =
-checker
-> rightfully points the invalid &self then &mut self borrow pattern.
+> 
+>> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> 
+> Having said that, if you do end up needing it elsewhere, then please
+> add the other line added by Gary's patch, i.e.:
+> 
+>    +#   - Stable since Rust 1.79.0: `feature(inline_const)`.
+> 
+> Thanks!
+> 
+> Cheers,
+> Miguel
 
-Yes, I compiled-tested all changes I suggested. My changes compile =
-because they
-intentionally avoid doing what you said above.
-
-The key here is that your borrows do not overlap anymore. The code I =
-showed
-first borrows immutably, and then returns this tuple: (slot_idx, seqno, =
-is_active).
-The immutable borrow then ends, since this tuple is copied (not =
-borrowed) from
-its source. This benefits from the fact that primitive types are Copy.
-
-Note that you can borrow both mutably and immutably in the same scope =
-just fine. The
-borrows just can=E2=80=99t be alive at the same time. When the borrow =
-checker rejects your code,
-it shows you why incompatible borrows overlap (i.e.: check the =E2=80=9Cfi=
-rst used here=E2=80=A6later
-used here=E2=80=9D part of the error).
-
->=20
->>=20
->> access vs access_mut() does not matter here: since the owner is &mut =
-self
->> anyways we know we have exclusive access to the LockedSeat throughout =
-the whole
->> function.
->=20
-> I agree, but LockedBy is picky, and last I tried I couldn't make it
-> work without the annoying update+return-copy-of-seat dance you see
-> here. Maybe I missed something obvious and it does indeed work with
-> your suggested changes, dunno.
-
-Rewriting things so they pass the borrow checker is common in Rust. =
-Sometimes
-it can be done rather easily; other times the design is just broken and =
-needs
-to be reworked. Luckily this one fell in the first category.
-
-This benefits from the fact that no one can race us between reading this =
-tuple
-
-(slot_idx, seqno, is_active)=20
-
-..and using it. That=E2=80=99s because we=E2=80=99re taking &mut self as =
-a proxy in LockedBy, so
-we=E2=80=99re sure we have exclusive access in this scope.
-
-If you don=E2=80=99t have any complaints about the code I sent (i.e.: =
-convoluted, wrong
-logic, etc), I suggest switching to it.
-
-
-=E2=80=94 Daniel
+thanks,
+-- 
+John Hubbard
 
