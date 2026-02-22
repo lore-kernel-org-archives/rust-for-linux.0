@@ -1,63 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF1A3563E9;
-	Sun, 22 Feb 2026 20:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CF335BDCE;
+	Sun, 22 Feb 2026 21:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771791536; cv=none; b=esTm77c7x9IyrLArj1o8xIOPuCuOY59puRTHC08EOUrk0FIOUK6WTvFj/wPRnHcALrilw18chMRl9oYnHJhHGwzugCWAikgfh0n7bMN0VfZ6HnXmbRDdwTrfBQ6gFcsYLoz8VlVZqDuIEsrGs9EIRrMm+pjMV0/jBVo7JEQwRgQ=
+	t=1771797405; cv=none; b=cw1VmeujlMq09aWX6JSxknkSRuxf8jWaUJMLhl/d37aQYGeNTyQB+BWi5K0D132fjQoOtCv8m/ngl61sKYQlIkQ/6Y00ARljCkFg0h9LlJP9ly5RuizNhUBCZtSydXCiznYhz6P6Xd8POXB01g6PENuRAscnJXaBpYTbsfP0KrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771791536; c=relaxed/simple;
-	bh=RJ5UqpTSOvcjMaCOK3kGanRR9nFAHWj8OF1Rfh5VjUA=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=roL2+J9pDeLjcgGezfRLstvH8plptoFEvlsY52x/8TuP340LLwcdG5+Z2WTon9UgrzJ5RBKvoalKXjgOVt+flLCkKZY230hvR1SHsgaXxtnBKPyJKSRt0eUQUoYCpNo6O0oAKg/t9ZhaPbI1JswL4NpqV5CO9C/B/HuZ39+bzoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sk22YTqI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771797405; c=relaxed/simple;
+	bh=k0DqYKl9vOmSoIzCsrhe177aCy5oNhzuWEVjxPgMDBY=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Rr93bV5pq7I29qfuBMBRRgHEWrO3qEEG3EZ325NpKuw2Ie0YwYp7VJH9pmqmYdQJOp/TG17sltIYnwYbxcZh+v05FUgi4/7bQfMuyPbdJLpal3MTe4Rz9Cu0I8gWJYjfwgzRfazNDhJr0bUIShI2YEgFifbpomp3iWdNeV0u/+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=AlI2IZ7g; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sk22YTqI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359E4C2BC86;
-	Sun, 22 Feb 2026 20:18:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771791536;
-	bh=RJ5UqpTSOvcjMaCOK3kGanRR9nFAHWj8OF1Rfh5VjUA=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=Sk22YTqITWxaX6IWXkhx2IfUo+NLV+8QaVeFYCtWC3qnHuKsfJSZgIy3/gUggQBci
-	 TExrk7d0gZ0+gVo7AAWP78MzztRJ9kz2KnSEZQgBJ7FYsj4dLJvdnwLbwejIlODbpi
-	 uOADaFh73sWBaS1MZu3NQ7ldl1/WycrZrpwz5h4x+W4zK8fbPZKvYoREvsiLqMKa0L
-	 ohsDbzoz9VQzHl7RVfMJgLDGi51J2HoTbkH8+ydZ23FKQIIDM0AtZIlboxg0B+Nv6l
-	 8PwdxlZDp9FkOW2wM5cTGjM0MP91w/DV3EYUWpppMkxCQqjH1TxKoVy19vb5dw+IJP
-	 OEpe8Q7s1bMvQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 400003808200;
-	Sun, 22 Feb 2026 20:19:04 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 7.0
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260221203306.133927-1-ojeda@kernel.org>
-References: <20260221203306.133927-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20260221203306.133927-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.0
-X-PR-Tracked-Commit-Id: 97b281d7edb2ae662365be2809cd728470119720
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 1dd419145d090f8fdf149cbb39dea6d968659dd2
-Message-Id: <177179154298.1490320.1315513153620094557.pr-tracker-bot@kernel.org>
-Date: Sun, 22 Feb 2026 20:19:02 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="AlI2IZ7g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1771797395; x=1772056595;
+	bh=lIVwq497ZjA4Wb6r9LAuVMMa4W9rkXNUtscIuYO8KUg=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=AlI2IZ7gKGxKrHBrWQTuvFezlbAFaRPMqKyqWQroSK2CMJI3DO4JYbb90/w3tiXj+
+	 ZgtkhT7E/ES4B9oIfAmQrqHywYKwkf80B54NwWskkukhpdZPZCs+1rfH+4pApJaOvS
+	 G/qQwXejkm2wR4ajgSSDYx7BuY1CX5dzYnl5sPtkDoq1kPGj1OV4uIotCF35O/+jTS
+	 qN2mQXA2zA0QU0AudakCBo36EYGIH4a4Uz3W3ytKS56/BxldFGmDFQbKUIQ94U2XDG
+	 7552771cGmQCHw0RaYyfpq8fpLRnCNst60Lq0mP/aQs4WCp4iD9+0UzDl170z3llTk
+	 CQzw74NVAYzvQ==
+Date: Sun, 22 Feb 2026 21:56:29 +0000
+To: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, benjamin.tissoires@redhat.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, db48x@db48x.net, gary@garyguo.net, jikos@kernel.org, ojeda@kernel.org, peter.hutterer@who-t.net, tmgross@umich.edu, Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Subject: [PATCH v6 0/2] Initial work for Rust abstraction for HID device driver development
+Message-ID: <20260222215611.79760-1-sergeantsagara@protonmail.com>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: 6c7b6f366fd84ca545596a6255ea76fd175754ee
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-The pull request you sent on Sat, 21 Feb 2026 21:33:06 +0100:
+Hi folks,
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.0
+It has been a while since I last posted an updated. Had some big life chang=
+es
+that have kept me from working on this more actively, so I have not been ab=
+le to
+get on top of this till now. Hoping my pace going forward should be a lot
+faster. Using the conversation from LPC as well as other refactors needed, =
+I
+have rebased the series on top of rust-next. My next steps are to get Razer=
+Blade
+controls working with a Rust HID driver.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/1dd419145d090f8fdf149cbb39dea6d968659dd2
+Link: https://youtu.be/c8JAZm-QinY
+Link: https://lore.kernel.org/rust-for-linux/wjfjzjc626n55zvhksiyldobwubr2i=
+mbvfavqej333lvnka2wn@r4zfcjqtanvu/
+Link: https://lore.kernel.org/rust-for-linux/175810473311.3076338.143091013=
+39951114135.b4-ty@kernel.org/
 
-Thank you!
+Thanks,
+Rahul Rameshbabu
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Rahul Rameshbabu (2):
+  rust: core abstractions for HID drivers
+  rust: hid: Glorious PC Gaming Race Model O and O- mice reference
+    driver
+
+ MAINTAINERS                           |  14 +
+ drivers/hid/Kconfig                   |   2 +
+ drivers/hid/Makefile                  |   2 +
+ drivers/hid/hid-glorious.c            |   2 +
+ drivers/hid/hid_glorious_rust.rs      |  60 +++
+ drivers/hid/rust/Kconfig              |  28 ++
+ drivers/hid/rust/Makefile             |   6 +
+ drivers/hid/rust/hid_glorious_rust.rs |  60 +++
+ rust/bindings/bindings_helper.h       |   3 +
+ rust/kernel/hid.rs                    | 530 ++++++++++++++++++++++++++
+ rust/kernel/lib.rs                    |   2 +
+ 11 files changed, 709 insertions(+)
+ create mode 100644 drivers/hid/hid_glorious_rust.rs
+ create mode 100644 drivers/hid/rust/Kconfig
+ create mode 100644 drivers/hid/rust/Makefile
+ create mode 100644 drivers/hid/rust/hid_glorious_rust.rs
+ create mode 100644 rust/kernel/hid.rs
+
+--=20
+2.52.0
+
+
