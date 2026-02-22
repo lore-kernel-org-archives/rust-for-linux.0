@@ -1,204 +1,135 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2841118787A
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Feb 2026 17:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771783071; cv=none; b=h5ZdolugNcWqJAvGnolfw/r47Uj138a9gaiwQnLH82xBTXzM7awQHPgNAP/MTtbl5anE3Oghzu1rAClr+BShK63j6d35ygL4EETXT9G04kjUU9+t4bjWG3Qdd5ITHYR12UM/sqGqPT57Cf9PV9T2kjQmd83Yj/WGyAHRO8RpNzI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771783071; c=relaxed/simple;
-	bh=EZp5B71IN+Tf33Ftt+oBwMGTW8URNBihcjRf7NU/td8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pwvCYZsjQk1NY9lUFmJjtyBFA6158h7VdRTmbcIttzuRWdlbSMKvWXtDETwz3h8/8RfwAaEHdVOcyNrpSVIFA5OAMDlQ2TeGUbLEiwgu48fPD7s2r/wkCR4EEB9uh40RX0m2Mq/ncdn3pt4OCPCVYnC8cF77GFFs+DWRd4EYmm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=NNbCML8Q; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFA31AA1F4
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Feb 2026 18:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771783794; cv=pass; b=JNpTejSbwWl8qiS3qTbRgm64UuhxMWUqKZq/bkPneMEGWdHF0gcOcKUzGCeN4TkFeRgmP8MEB58i/hxe9CqQ1HyBD72Dahh0dgQ5bSCCpJqRr9eXaLSqy91M0XPLnIVC2gyS3Zw7XvKtYH1HxNW6YLkfTQnGfHR2PvoYXCxQGmU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771783794; c=relaxed/simple;
+	bh=+ZLcpx0EeYCuav5+AU0HUoV7c8dGSHXUVko87H7r+g0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q0jqnouNql32T+KAqZu1+kbQUW9Tlk78v025QToB4ZIGO9blqvyfQ6v2Ul2L+AZhowa6Eimmf99He7JysA/ivwPQNmeVMr+J23acDnbVbnD8amLAXfCOsKCgEB2IWNxvLAM/DKNUORijF4cldq9YAFrorzjHBi02JKC1eOfe9fE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EDywi67C; arc=pass smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="NNbCML8Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1771783068;
-	bh=EZp5B71IN+Tf33Ftt+oBwMGTW8URNBihcjRf7NU/td8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NNbCML8QCJmYv/iVEuYEW8e9ZsQyHuBz60AcCPYAhaGIbUPqf1E0zO9QWCGaj0hUw
-	 kWpVFnRNPvbJX1+SeOQGcT38TzF6ma5ENLtT5MIi2yat8Xnm8sO169X32UXPYp5Btm
-	 ACjOBaT+aA+qc+xLyYYVVBJPHd3u9HAfvzKwaoztH3PcZth96A1fPaeosFW92Jwheb
-	 OdtnN4cmg0QEjHgfiwpGxH4yTExWM31ZNNL7SzW49YYbhFbizbyUNREwWCAfO4gHEs
-	 +umeoIfotV2j3B7Eoq9ZSkDdwQre1Axyo0AOy9jKy3kozJ07HxVJL1NgigSpJ6ueCz
-	 u1rfpYG85l9fQ==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id DD2E817E0E67;
-	Sun, 22 Feb 2026 18:57:47 +0100 (CET)
-Date: Sun, 22 Feb 2026 18:57:43 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- aliceryhl@google.com, beata.michalska@arm.com, lyude@redhat.com
-Subject: Re: [PATCH 07/12] drm/tyr: Add generic slot manager
-Message-ID: <20260222185743.02dabb26@fedora>
-In-Reply-To: <A60BBD53-B7D3-4E85-A72E-8B914B82C977@collabora.com>
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
-	<20260212013713.304343-8-deborah.brouwer@collabora.com>
-	<20260212111113.68778819@fedora>
-	<1B40312F-694C-4154-ABF7-F96CE5576C0E@collabora.com>
-	<20260220172154.4fe93c6d@fedora>
-	<A60BBD53-B7D3-4E85-A72E-8B914B82C977@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EDywi67C"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4836f363ad2so40433185e9.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Feb 2026 10:09:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771783791; cv=none;
+        d=google.com; s=arc-20240605;
+        b=A0O+seA5zc92CPqpCl62xfZxY5aHQyWhG65RLa2Y80UvNfw4xGxrgKvgioFCe0T+XW
+         XnJdQqrvLQlCaXk9MS8fgdAwrHZfQDK+tngHZ6d2ayRFTqDRUIw0xMUD3iO5SNR6HDMW
+         f3UFss4vCAa0hyp3S7XtVjBpIBMnFcCwGoQtqkwlu1fzJ8DpR99IrVNyQxIZlzNDhE5B
+         WuoFjj5iY1kagBU5Y+dtbrejxWQm18JnmpxBpsJLpjr1JQHmCBh4oqxc/WhW1ee52XAa
+         jL/qVMrUZl2RkNKYdefmNEKhCPLSRta26op8jLV57ExIwasoyjXn95/DRZdlH9ZJbcEZ
+         FzSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=M0ioOo1oxBko9pcVJkHyQzgZqWkho96JvS59tLy4wQc=;
+        fh=jMsejrC1nsth63a/z7MDdJn7OpNLlOvlNx9ev48moWc=;
+        b=UgfGFnSQRsEQ2j9MCFjBhXRr78Cme4Rntqe/uExBHJ16x+iNpd3n/bLNDfdw9Xw7TK
+         Mi2HsfS1t60vo4kc79XQtRW4Aygd/7WEbux6NgT1Flg7vp3EeN3JzBkVVEzelgqMLzcV
+         YsUudA5Ev7kFwCZSP119XRR8cdlZe0zIgASdmFZS0SoPRe/Nh9wrAsiS63RJghfhIwuo
+         xHiftTbePgln5GtPj+W2pCR5Tk3JW9Qa8ud27xQ9FjPYJXL5/7r5C3BzDG5TvV4H/i/o
+         eRxecJ9Vyjme8tt09xlPHCkDG1drP46YZ5vQAksGbKULsON/XeNZc/MsPqv1bw9lfYzU
+         N9jw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771783791; x=1772388591; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M0ioOo1oxBko9pcVJkHyQzgZqWkho96JvS59tLy4wQc=;
+        b=EDywi67CWjXEzbjOEg7m6sxY6IyWBLSrIOHjdNShfdqaAe+L9BFRsD0YTKSywZqhsA
+         aH2YWbh/gzvYvFtoXNAz1rdyOBZNpkajy0nb45Y0jbahQx201H8tfPyrXOYZ7H2wJMKe
+         rH8i17STFWc+U0MkUz6bzIIPeQXbfv1xZ2RID5W1YFpKKinkyqMpwVxJ5SwdRNeq6w9V
+         2msgcOcWIAfQ6iUXkzVahD2eEqR+xyWr2sz3w0vUUS4aOFZXD+SUvCyL0RZahrAe2Kzi
+         COZzFCOzw/rshuyP3gGpTwc/faPp+JrW7/5ETwfUujM0ZLPzEeR+Y9exd48APST33ICm
+         oZjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771783791; x=1772388591;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=M0ioOo1oxBko9pcVJkHyQzgZqWkho96JvS59tLy4wQc=;
+        b=KQtHKQt/mEtwZp2eTcYHbA5BHS8slm/fEhPY9oWiHbiSictxh5u7RQNebS6HhMVm5A
+         V2Xa6evQGRfUePG+j3DgcUtmY4FIHuapFk5XFLdCIKf71G6K2dEE+5/9wEIx2lDr2kbD
+         BJV4cXiTgd3S/abxMHuoernerdQI1m2chXjUAN1wsL/Ypp4F07HxGgapeZi2sQqyOdW+
+         2muCWEq7qLk29t1TjCykKBPa4QNQVNVL565Nmwn7q4IuV6crdNBbmTrsjyiVHyKxvAos
+         2ekhTm3cCvPaIB/mlVf6Ts9OVxB9yDtoCu3YRdWGABn/Ddkik97E6BeYVmSX1VDCrg3P
+         YyLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWzV+sjWQbE7y9wb/RoZimXKOMcqXa35G4SNjyK68W3RHpP8FeccKwb1VrkESyxGV27WfnjkKBiHEhZn6soUg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzySTogAuqKn3ml+gkTHWJpS4/aDMVUaPhrGmEbUAc5fQlFsAlX
+	qm2Y2+EaDy/Av9drXHuUfpPqaoeQquyBrFSkmUuciV0sWAMZoI7t6jIE8wXiceWo60fVXAUrMg3
+	cWJubaKlpPUkec57cRwy+fFKbm0LXj8xVbQKxlaMy
+X-Gm-Gg: AZuq6aIhFxKRaSfpIbr2RPxtP+BN2JNXqYKl2ZA+IxZ5L9x4e4O9xk9+VPzUw7Eub+N
+	vrL2V9W4dExpQJ25lUCQ7dk7b0wKZNtYsgBteR3xTAdrgqMboNPr9xpGiDEIqotd4eiD4Pz+TAB
+	97A++k5Ez3IYDoo/QKM3+JLIrUWnB82zov/9+RpYiz/x7oahr/9GxLLoFr8wU3RuAWIt1VL6Pmn
+	H/IJ0wOv7K/KJbVUBi+YktrBTy0QBPNsHYU2m3wK3qtQv6m1GTtoevqIMlcoiTFgeF6xOKdFq8K
+	x0TZzbHY3KRY9DVgBD8civS9thbJaM8b0xEiwA2f2cZk47md
+X-Received: by 2002:a05:600c:620c:b0:483:43d8:8d68 with SMTP id
+ 5b1f17b1804b1-483a95f8988mr99041605e9.28.1771783790563; Sun, 22 Feb 2026
+ 10:09:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260210090023.2587534-1-mkchauras@gmail.com> <20260210090023.2587534-3-mkchauras@gmail.com>
+In-Reply-To: <20260210090023.2587534-3-mkchauras@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sun, 22 Feb 2026 19:09:38 +0100
+X-Gm-Features: AaiRm52Q8m3SEnrLH6jkyBDSVsN1hOKBCoLoWD_xybQBz668Fl6X4XkBu3NwbWo
+Message-ID: <CAH5fLgi3Owm4=4g8wQ5Rnr7Y63XJ1D8apOdkewW6WpRfg6vV_w@mail.gmail.com>
+Subject: Re: [PATCH V6 2/3] rust: Add PowerPC support
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+Cc: linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, corbet@lwn.net, 
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, 
+	jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 20 Feb 2026 13:55:31 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+On Tue, Feb 10, 2026 at 10:00=E2=80=AFAM Mukesh Kumar Chaurasiya (IBM)
+<mkchauras@gmail.com> wrote:
+>
+> From: Link Mauve <linkmauve@linkmauve.fr>
+>
+> For now only Big Endian 32-bit PowerPC is supported, as that is the only
+> hardware I have.  This has been tested on the Nintendo Wii so far, but I
+> plan on also using it on the GameCube, Wii U and Apple G4.
+>
+> These changes aren=E2=80=99t the only ones required to get the kernel to =
+compile
+> and link on PowerPC, libcore will also have to be changed to not use
+> integer division to format u64, u128 and core::time::Duration, otherwise
+> __udivdi3() and __umoddi3() will have to be added.  I have tested this
+> change by replacing the three implementations with unimplemented!() and
+> it linked just fine.
+>
+> Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+> Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
 
-> > On 20 Feb 2026, at 13:21, Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> > 
-> > On Fri, 20 Feb 2026 12:25:43 -0300
-> > Daniel Almeida <daniel.almeida@collabora.com> wrote:
-> >   
-> >>>> +
-> >>>> +    // Checks and updates the seat state based on the slot it points to
-> >>>> +    // (if any). Returns a Seat with a value matching the slot state.
-> >>>> +    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Seat {
-> >>>> +        let new_seat = match locked_seat.access(self) {
-> >>>> +            Seat::Active(seat_info) => {
-> >>>> +                let old_slot_idx = seat_info.slot as usize;
-> >>>> +                let slot = &self.slots[old_slot_idx];
-> >>>> +
-> >>>> +                if kernel::warn_on!(
-> >>>> +                    !matches!(slot, Slot::Active(slot_info) if slot_info.seqno == seat_info.seqno)
-> >>>> +                ) {
-> >>>> +                    Seat::NoSeat
-> >>>> +                } else {
-> >>>> +                    Seat::Active(SeatInfo {
-> >>>> +                        slot: seat_info.slot,
-> >>>> +                        seqno: seat_info.seqno,
-> >>>> +                    })
-> >>>> +                }
-> >>>> +            }
-> >>>> +
-> >>>> +            Seat::Idle(seat_info) => {
-> >>>> +                let old_slot_idx = seat_info.slot as usize;
-> >>>> +                let slot = &self.slots[old_slot_idx];
-> >>>> +
-> >>>> +                if !matches!(slot, Slot::Idle(slot_info) if slot_info.seqno == seat_info.seqno) {
-> >>>> +                    Seat::NoSeat
-> >>>> +                } else {
-> >>>> +                    Seat::Idle(SeatInfo {
-> >>>> +                        slot: seat_info.slot,
-> >>>> +                        seqno: seat_info.seqno,
-> >>>> +                    })
-> >>>> +                }
-> >>>> +            }
-> >>>> +
-> >>>> +            _ => Seat::NoSeat,
-> >>>> +        };
-> >>>> +
-> >>>> +        // FIXME: Annoying manual copy. The original idea was to not add Copy+Clone to SeatInfo,
-> >>>> +        // so that only slot.rs can change the seat state, but there might be better solutions
-> >>>> +        // to prevent that.    
-> >>> 
-> >>> Okay, I guess we want some inputs from Daniel and/or Alice on that one.    
-> >> 
-> >> Hm, I'd say we shouldn't implement Clone to avoid any possibility of holding on
-> >> to stale state by duplicating it.  
-> > 
-> > Okay, so basically what we have now.
-> >   
-> >> 
-> >> Why do we need to return Seat from this function? Can't we simply write
-> >> locked_seat in place and not return anything?  
-> > 
-> > We do both actually. IIRC, the reason is that LockedBy borrows &self if
-> > we want to read the locked_seat, which prevents us from calling methods
-> > taking a &mut ref from a `match(locked_seat.access())`.  
-> 
-> 
-> I am referring to this change:
-> 
-> --- a/drivers/gpu/drm/tyr/slot.rs
-> +++ b/drivers/gpu/drm/tyr/slot.rs
-> @@ -242,8 +242,8 @@ fn evict_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>
->      }
->  
->      // Checks and updates the seat state based on the slot it points to
-> -    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Seat {
-> +    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) {
->          let new_seat = match locked_seat.access(self) {
->              Seat::Active(seat_info) => {
->                  let old_slot_idx = seat_info.slot as usize;
-> @@ -278,26 +278,7 @@ fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Seat {
->              _ => Seat::NoSeat,
->          };
->  
-> -        // FIXME: Annoying manual copy. The original idea was to not add Copy+Clone to SeatInfo,
-> -        // so that only slot.rs can change the seat state, but there might be better solutions
-> -        // to prevent that.
-> -        match &new_seat {
-> -            Seat::Active(seat_info) => {
-> -                *locked_seat.access_mut(self) = Seat::Active(SeatInfo {
-> -                    slot: seat_info.slot,
-> -                    seqno: seat_info.seqno,
-> -                })
-> -            }
-> -            Seat::Idle(seat_info) => {
-> -                *locked_seat.access_mut(self) = Seat::Idle(SeatInfo {
-> -                    slot: seat_info.slot,
-> -                    seqno: seat_info.seqno,
-> -                })
-> -            }
-> -            _ => *locked_seat.access_mut(self) = Seat::NoSeat,
-> -        }
-> -
-> -        new_seat
-> +        *locked_seat.access_mut(self) = new_seat;
+> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> index a58b1029592c..9fd82c75dcbd 100644
+> --- a/arch/powerpc/Makefile
+> +++ b/arch/powerpc/Makefile
+> @@ -61,6 +61,8 @@ else
+>  KBUILD_LDFLAGS_MODULE +=3D $(objtree)/arch/powerpc/lib/crtsavres.o
+>  endif
+>
+> +KBUILD_RUSTFLAGS +=3D --target=3Dpowerpc-unknown-linux-gnu
 
-That one requires Copy support, or am I missing something?
+This needs to be a softfloat target.
 
->      }
-> 
-> Or even shorter:
-> 
->     fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) {
->         let (slot_idx, seqno, is_active) = match locked_seat.access(self) {
->             Seat::Active(info) => (info.slot as usize, info.seqno, true),
->             Seat::Idle(info) => (info.slot as usize, info.seqno, false),
->             _ => return,
->         };
-> 
->         let valid = if is_active {
->             !kernel::warn_on!(!matches!(&self.slots[slot_idx], Slot::Active(s) if s.seqno == seqno))
->         } else {
->             matches!(&self.slots[slot_idx], Slot::Idle(s) if s.seqno == seqno)
->         };
-> 
->         if !valid {
->             *locked_seat.access_mut(self) = Seat::NoSeat;
->         }
->     }
-
-Did you try that? Last I tried, I was hitting a wall because the caller
-of check_seat() does a match on the updated seat, and inside this
-match, it calls functions that need a &mut self, and the borrow checker
-rightfully points the invalid &self then &mut self borrow pattern.
-
-> 
-> access vs access_mut() does not matter here: since the owner is &mut self
-> anyways we know we have exclusive access to the LockedSeat throughout the whole
-> function.
-
-I agree, but LockedBy is picky, and last I tried I couldn't make it
-work without the annoying update+return-copy-of-seat dance you see
-here. Maybe I missed something obvious and it does indeed work with
-your suggested changes, dunno.
+Alice
