@@ -1,322 +1,158 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C7A378D88
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 20:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5C9378823
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 21:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771879627; cv=pass; b=LPAJ6WOwlFWj2lDksyOxMfT5hMu2ogIoJVDU8m2hEpEUerSkRFLalLl7I02F+dJOzPbFRR6qCmh35A0yWnG7c+lXcCNj5jkvmzrSVwB98o4QO8z8Z6t3DAHFC3WiPbMBPdVHOXiPaYMnnS2yJGKxjpuFzPEQcsuAFAdYefhxHPo=
+	t=1771882056; cv=pass; b=Rx/xIY3NHI7HR3rfahllYe9OSNDM8jqmSCEJcXRyhgKnwnTGVtuaxt1I6eTM0EzOwaRYrLfPq1B4JwztA2pcyXkjMbJaulddY9dffQ7CYpsEHNYTNCKMD5/WuJOSAUY7k2oXR9CBYw3BW3Lt7G3yjxCWYux4Red1i20Nl7Ua93A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771879627; c=relaxed/simple;
-	bh=oozkva+EYLEHT8aIipOD/ZXJtHHgSFywabOeJoYBOqs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=StqLeLQOlMMwlfDq25NRRNfqqJL1GR0o5I/KAsDA2ZIzWhUWu7CCoG24HnupmpNepkAdG1ZAzPDa0bBvmNLt4XUC+TNX03BUQzVyN2eFUZIGVNCsgS/n8U3vfaC5Qail5Lb3XF4hOQPuhT0RJT1oekPdP43AWV1QZ0p7bE3/M2Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=PC0wzK1L; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1771882056; c=relaxed/simple;
+	bh=didkkmMeA554Dxj/ZdCbtum+QUKQIqmhPv1W1r9HzYY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V9AUfmbrzNvBXka4iNIHG0siCDqpAv7Zd38LAL03/XWhkUQgp4ukG+DbKrkzowNsH/hqWlt4DfMY5bZLf0bWO/3w+YKygtHBsZj8oyl0nczv9kOh6Qx6az2Kg5CqaBXIDJXCPhD2cxxTwJM8ypg84QDcv1p7ptVHhA0itrvJ8+o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DZSyS0ri; arc=pass smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="PC0wzK1L"
-ARC-Seal: i=1; a=rsa-sha256; t=1771879621; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZKZeW94t70X4iD0DWwGpypDad7txo1QGimp9IkDrQhlir610n79laegW/EVNC4SLk7VixmHc0pFrAdHUrRy1DSLvxdMoLXHilHgThpBzB2oJcxVA3GUl8l0TfMSN37wr+QDHkWCeAfZHvoSoPPUXhAG2ZbgUus4/HhQKEP2DWRw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771879621; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=omXsfdQG1ENNaS0crkFyTd4hZmbHa2t2VtU2JTI72oc=; 
-	b=V+p721RyQBhHQh8EFNR92773SRo+ovBiZywTypQ4qS32GCibUjAz4b3OJvCJTGfK0/WrpvHAm9+gmYTndKBDVGfvw/Yi6rV3yDAhMX5tKXtuMuSGQUSAwquuv7+raltUjHW4nxArmRvhONzPK4NltvRUHGXpaLyB/JTLqFZwlcg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771879621;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=omXsfdQG1ENNaS0crkFyTd4hZmbHa2t2VtU2JTI72oc=;
-	b=PC0wzK1L2jxBWpvHKdjrQAJ7L2xNmbienovd0IZIVkfDuSkRsPm0A5ZPfLSnbjk3
-	/OB6zoCiZlxWgE1bU6bjr/PunsPJryiNOQkOL6bxut6cqibohJPTnN4IfLsJPI5yU/G
-	yIEP7UdEkrqZ6B3VZ6B2U7yuXuSC/WfRhQI/sApU=
-Received: by mx.zohomail.com with SMTPS id 1771879620120162.0218336358172;
-	Mon, 23 Feb 2026 12:47:00 -0800 (PST)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Cc: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	boris.brezillon@collabora.com,
-	deborah.brouwer@collabora.com
-Subject: [PATCH v2] drm/tyr: Clarify driver/device type names
-Date: Mon, 23 Feb 2026 12:46:48 -0800
-Message-ID: <20260223204648.208886-1-deborah.brouwer@collabora.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DZSyS0ri"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4376de3f128so3439175f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 13:27:34 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771882053; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PCniAmaYmFibTrn6L8gZkNA+4Zc2m/EuCgOoLTqH4TuXFAbWNN4WMp15sHHAuWjoIH
+         2LahxL9HsSrnkYda16wLwXZwq0SeLMd1LYGdcyERCfDfC0WH38HchTqgysSdzHiX4+9n
+         51HjRldUmv2+zedOGNjBtGg6yCimOLeWiahFfn3NJIMDlHBWOzhTPvODPWmwBycMvjq5
+         u44+Bxs/CTL7ln4R5o+aYK7icUl9jkxGkZWrqrz12Quqr3QT+4pi6DMJM9lkXYlFCGaV
+         NGN5m5ZQvjg4ShQvx6U37kYqJdbjoVLIeYpJ5dwCZ2/0MURCNuTDAO+PLvRb39xQ1WlL
+         OtLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3TLtkDhp5yvjNfBzirqBO5/FyIhc8TMr7bRoRTvtMt0=;
+        fh=TGk0ErGCUxdL2bpE2Bb4FRukAjkqP4TtdX+xroh86ps=;
+        b=hdlcgCdQcdMjK7XBUN/vih3ER8BjI/Cjq5GyEWRMLXmE80xsvGs5IB521dW+S7Sx+B
+         EXDMSbJTE8+lzD8S9LODQpWTEklGEPBOq/6cQu39RZL3dlwcaSTgLQNLaYgfXU9kjqxh
+         D5H9xqHmtUXm+fa8A9IxqpZ9sQtNRHxIsRA3RyUAJ4vbvmUlSs0XsNngMKc7teyJf5fu
+         qVp+PeLJYh3Gwl+nQavskjFFAyiVUAAKmZ4cS9QLE2q7eliGCR/gNNHidaf3ZhoNcfOv
+         xvM8chuaFG9CkrDgVYn/JM43vEwz18FTFfSZ82T5TTtb1K7J2pBCMN2GlBE1S5ir7qFm
+         c4NQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771882053; x=1772486853; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3TLtkDhp5yvjNfBzirqBO5/FyIhc8TMr7bRoRTvtMt0=;
+        b=DZSyS0riRLv6DfivVmna1TefOP8SBQFJcVmvfN2qZaiD21+nhCtRJxgr6DIoVKg7Fd
+         nfynEr3YXUqQKAzAmZBB7vfSjrS6vkqRR4tzjHZaf26TgjYhimkEYamQ6do/vqUBUnBl
+         I0gTPdDAqvP1Og7QhMhS/L7t8jQGg0yMBzy7hNC7ifXW06I7Ot8vYrB4b9WAb1aYArw4
+         eGc0WG6uyjWoCS7c1TDXvR32ccsHAn0Ymzfq6WsYn7ZRBjEsPCoVhhewPh8BLn6+AA5Q
+         mrhpgErqGXJ3avnvCpYerMFSIDJrOxiQeva9KtcV57GN455J+11Ws8DccSEMGS9ZGbq0
+         3QEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771882053; x=1772486853;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3TLtkDhp5yvjNfBzirqBO5/FyIhc8TMr7bRoRTvtMt0=;
+        b=bTqfRhnQNa6yCSr4h+Gu2GCbLDDmdADqdivfHWwJhOtV5/gV0kZVxxJmAuwKcoHtVj
+         03OZU9hd+rarDInkdfEcx6Y2hAkLAtkQ9mt1sTo187sf8UlLkmu3vtZoqMGeTsWq24dJ
+         U5nzTiksSCUlZw9mRPm4bc1mnO8eHDJfyY2GZfBNevALRiiCcWxsPw2Dt2JNaUKVQcmS
+         j33OGW4s05V71NWP9N/n0RrI2XStYAJ/NGchIzX+7tMqiK7Kn0RAk6iX1+00H8+tFZdb
+         WYHAXaKh+FCFw0A0s0k4R2Fg/VZwiW3hDnWkQaqo0sTV9qjUpzaiZ61eFg616rMLt8mY
+         NFjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW4cWJlVBwPPnli+lhqdp1jqmZkYpHyvpSoumTXkkjVlq+b1XKDJKgULCV8I+1X7lASJPPcPwXnsOE8Ay9xpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyENWs49l2DbbAYrMY+pElHoChD+zbDY4Irfn688yBQnhbqyQxH
+	JHIQcDaCZDmz4GwAVyWuqT+E8LyiD23fjawgkG4Sb8g2NeiEo6rYYcRvoBpOmZW5DDcVm9poQKT
+	wttxte/DRa+N7i10L3yIYBQVUMdBJ5QkP9aeEVrCa
+X-Gm-Gg: ATEYQzxo7Q2x9UffxQmvv/NV3fwq7fxSHiBFKatfNTVt4rbriIqWQGOkmCFcsMxMe8D
+	DAEtzhJ/QRCTNMaZ0hdvFx9aL7PpKGqEjmrnIBu9PCMJoaTEyCPtkWcj2uIIrGCyS623lOcvCTo
+	apa3M4MDOkyCHki7NCYmgCPFIFYZ7++3bNuYXjccP2Q3l5ATWjtpsV+6cvUBO8LylsEjJSX7/1w
+	NasV0/I1BQTfI+3XiKSnEZyWBumYYlRFa9PQEXKXdCGJodxBObC+ahNBS0ASRkWe2g7zu5+xKC5
+	N9ugxy8sjSjgH/80plfW4eDwRwlwZ/pVdlqc2Q==
+X-Received: by 2002:a05:6000:26c2:b0:435:a8e7:62de with SMTP id
+ ffacd0b85a97d-4396f18f942mr16385137f8f.58.1771882053091; Mon, 23 Feb 2026
+ 13:27:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260216131534.65008-1-dakr@kernel.org> <aZMaFhvZWiknu8UK@google.com>
+ <DGGF97AAA3HF.3DSNMFJTCNI9Z@kernel.org>
+In-Reply-To: <DGGF97AAA3HF.3DSNMFJTCNI9Z@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 23 Feb 2026 22:27:21 +0100
+X-Gm-Features: AaiRm51eKGoP_MuYqn_kp-y0-YSen_uHZo47Hlce9OFpI8_rE8a7FBFjXKSXZpk
+Message-ID: <CAH5fLgh6MvjN3AHCVUROeYFWr+0CPxoYcgFfa99wu1EaNJAn-g@mail.gmail.com>
+Subject: Re: [PATCH] rust: io: macro_export io_define_read!() and io_define_write!()
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: daniel.almeida@collabora.com, bhelgaas@google.com, kwilczynski@kernel.org, 
+	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, zhiw@nvidia.com, acourbot@nvidia.com, 
+	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently the `TyrDriver` struct implements both `platform::Driver` and
-`drm::Driver`. For clarity, split up these two roles:
- - Introduce `TyrPlatformDeviceData` to implement `platform::Driver`, and
- - Introduce `TyrDrmDriver` to implement `drm::Driver`.
+On Mon, Feb 16, 2026 at 2:31=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Mon Feb 16, 2026 at 2:22 PM CET, Alice Ryhl wrote:
+> > You should keep these re-exports (as full `pub`) so that they can be
+> > accessed from kernel::io. Exposing all macros from crate root via
+> > #[macro_export] is legacy approach.
+>
+> Good catch!
+>
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index 58f464cf5efd..e5fba6bf6db0 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -249,6 +249,7 @@ macro_rules! io_define_read {
+>          }
+>      };
+>  }
+> +pub use io_define_read;
+>
+>  /// Generates an accessor method for writing to an I/O backend.
+>  ///
+> @@ -305,6 +306,7 @@ macro_rules! io_define_write {
+>          }
+>      };
+>  }
+> +pub use io_define_write;
+>
+>  /// Checks whether an access of type `U` at the given `offset`
+>  /// is valid within this region.
+> diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
+> index 2c8d7d00e54d..fb6edab2aea7 100644
+> --- a/rust/kernel/pci/io.rs
+> +++ b/rust/kernel/pci/io.rs
+> @@ -8,14 +8,14 @@
+>      device,
+>      devres::Devres,
+>      io::{
+> +        io_define_read,
+> +        io_define_write,
+>          Io,
+>          IoCapable,
+>          IoKnownSize,
+>          Mmio,
+>          MmioRaw, //
+>      },
+> -    io_define_read,
+> -    io_define_write,
+>      prelude::*,
+>      sync::aref::ARef, //
+>  };
+>
+>
+> (I'd still keep the `io_` prefix though.)
 
-Also rename other variables to reflect their roles in the DRM context:
-- Rename `TyrDevice` to `TyrDrmDevice`
-- Rename `TyrData` to `TyrDrmDeviceData`
-- Rename `File` to `TyrDrmFileData`
-- Rename `DrmFile` to `TyrDrmFile`
-
-No functional changes are intended.
-
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
-Changes in v2:
-- Move the import TyrDrmDriver to a single line.
-- Rename the variable `tdev` -> `ddev` in file.rs to be
-consistent with the name used in driver.rs.
-Link to v1: https://lore.kernel.org/rust-for-linux/20260205185906.40940-1-deborah.brouwer@collabora.com/
-
-This patch depends on: 
-[PATCH v2] drm/tyr: Use vertical style for imports
-https://lore.kernel.org/rust-for-linux/20260223203833.207955-1-deborah.brouwer@collabora.com/
-
- drivers/gpu/drm/tyr/driver.rs | 40 ++++++++++++++++++-----------------
- drivers/gpu/drm/tyr/file.rs   | 23 +++++++++-----------
- drivers/gpu/drm/tyr/gem.rs    |  9 +++-----
- drivers/gpu/drm/tyr/tyr.rs    |  4 ++--
- 4 files changed, 36 insertions(+), 40 deletions(-)
-
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 259a5157eb47..7a42e5d96d82 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -30,7 +30,7 @@
- };
- 
- use crate::{
--    file::File,
-+    file::TyrDrmFileData,
-     gem::TyrObject,
-     gpu,
-     gpu::GpuInfo,
-@@ -39,16 +39,18 @@
- 
- pub(crate) type IoMem = kernel::io::mem::IoMem<SZ_2M>;
- 
-+pub(crate) struct TyrDrmDriver;
-+
- /// Convenience type alias for the DRM device type for this driver.
--pub(crate) type TyrDevice = drm::Device<TyrDriver>;
-+pub(crate) type TyrDrmDevice = drm::Device<TyrDrmDriver>;
- 
- #[pin_data(PinnedDrop)]
--pub(crate) struct TyrDriver {
--    _device: ARef<TyrDevice>,
-+pub(crate) struct TyrPlatformDeviceData {
-+    _device: ARef<TyrDrmDevice>,
- }
- 
- #[pin_data(PinnedDrop)]
--pub(crate) struct TyrData {
-+pub(crate) struct TyrDrmDeviceData {
-     pub(crate) pdev: ARef<platform::Device>,
- 
-     #[pin]
-@@ -71,9 +73,9 @@ pub(crate) struct TyrData {
- // that it will be removed in a future patch.
- //
- // SAFETY: This will be removed in a future patch.
--unsafe impl Send for TyrData {}
-+unsafe impl Send for TyrDrmDeviceData {}
- // SAFETY: This will be removed in a future patch.
--unsafe impl Sync for TyrData {}
-+unsafe impl Sync for TyrDrmDeviceData {}
- 
- fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-     regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
-@@ -92,14 +94,14 @@ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
- kernel::of_device_table!(
-     OF_TABLE,
-     MODULE_OF_TABLE,
--    <TyrDriver as platform::Driver>::IdInfo,
-+    <TyrPlatformDeviceData as platform::Driver>::IdInfo,
-     [
-         (of::DeviceId::new(c"rockchip,rk3588-mali"), ()),
-         (of::DeviceId::new(c"arm,mali-valhall-csf"), ())
-     ]
- );
- 
--impl platform::Driver for TyrDriver {
-+impl platform::Driver for TyrPlatformDeviceData {
-     type IdInfo = ();
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
- 
-@@ -129,7 +131,7 @@ fn probe(
- 
-         let platform: ARef<platform::Device> = pdev.into();
- 
--        let data = try_pin_init!(TyrData {
-+        let data = try_pin_init!(TyrDrmDeviceData {
-                 pdev: platform.clone(),
-                 clks <- new_mutex!(Clocks {
-                     core: core_clk,
-@@ -143,10 +145,10 @@ fn probe(
-                 gpu_info,
-         });
- 
--        let tdev: ARef<TyrDevice> = drm::Device::new(pdev.as_ref(), data)?;
--        drm::driver::Registration::new_foreign_owned(&tdev, pdev.as_ref(), 0)?;
-+        let ddev: ARef<TyrDrmDevice> = drm::Device::new(pdev.as_ref(), data)?;
-+        drm::driver::Registration::new_foreign_owned(&ddev, pdev.as_ref(), 0)?;
- 
--        let driver = TyrDriver { _device: tdev };
-+        let driver = TyrPlatformDeviceData { _device: ddev };
- 
-         // We need this to be dev_info!() because dev_dbg!() does not work at
-         // all in Rust for now, and we need to see whether probe succeeded.
-@@ -156,12 +158,12 @@ fn probe(
- }
- 
- #[pinned_drop]
--impl PinnedDrop for TyrDriver {
-+impl PinnedDrop for TyrPlatformDeviceData {
-     fn drop(self: Pin<&mut Self>) {}
- }
- 
- #[pinned_drop]
--impl PinnedDrop for TyrData {
-+impl PinnedDrop for TyrDrmDeviceData {
-     fn drop(self: Pin<&mut Self>) {
-         // TODO: the type-state pattern for Clks will fix this.
-         let clks = self.clks.lock();
-@@ -182,15 +184,15 @@ fn drop(self: Pin<&mut Self>) {
- };
- 
- #[vtable]
--impl drm::Driver for TyrDriver {
--    type Data = TyrData;
--    type File = File;
-+impl drm::Driver for TyrDrmDriver {
-+    type Data = TyrDrmDeviceData;
-+    type File = TyrDrmFileData;
-     type Object = drm::gem::Object<TyrObject>;
- 
-     const INFO: drm::DriverInfo = INFO;
- 
-     kernel::declare_drm_ioctls! {
--        (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, File::dev_query),
-+        (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, TyrDrmFileData::dev_query),
-     }
- }
- 
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 48bff4476d74..450be5ab9aaf 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -7,35 +7,32 @@
-     uapi, //
- };
- 
--use crate::{
--    driver::TyrDevice,
--    TyrDriver, //
--};
-+use crate::driver::TyrDrmDriver;
- 
- #[pin_data]
--pub(crate) struct File {}
-+pub(crate) struct TyrDrmFileData {}
- 
- /// Convenience type alias for our DRM `File` type
--pub(crate) type DrmFile = drm::file::File<File>;
-+pub(crate) type TyrDrmFile = drm::file::File<TyrDrmFileData>;
- 
--impl drm::file::DriverFile for File {
--    type Driver = TyrDriver;
-+impl drm::file::DriverFile for TyrDrmFileData {
-+    type Driver = TyrDrmDriver;
- 
-     fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
-         KBox::try_pin_init(try_pin_init!(Self {}), GFP_KERNEL)
-     }
- }
- 
--impl File {
-+impl TyrDrmFileData {
-     pub(crate) fn dev_query(
--        tdev: &TyrDevice,
-+        ddev: &drm::Device<TyrDrmDriver>,
-         devquery: &mut uapi::drm_panthor_dev_query,
--        _file: &DrmFile,
-+        _file: &TyrDrmFile,
-     ) -> Result<u32> {
-         if devquery.pointer == 0 {
-             match devquery.type_ {
-                 uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU_INFO => {
--                    devquery.size = core::mem::size_of_val(&tdev.gpu_info) as u32;
-+                    devquery.size = core::mem::size_of_val(&ddev.gpu_info) as u32;
-                     Ok(0)
-                 }
-                 _ => Err(EINVAL),
-@@ -49,7 +46,7 @@ pub(crate) fn dev_query(
-                     )
-                     .writer();
- 
--                    writer.write(&tdev.gpu_info)?;
-+                    writer.write(&ddev.gpu_info)?;
- 
-                     Ok(0)
-                 }
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 8f2d23e3c093..514524ae07ef 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -5,19 +5,16 @@
-     prelude::*, //
- };
- 
--use crate::driver::{
--    TyrDevice,
--    TyrDriver, //
--};
-+use crate::driver::TyrDrmDriver;
- 
- /// GEM Object inner driver data
- #[pin_data]
- pub(crate) struct TyrObject {}
- 
- impl gem::DriverObject for TyrObject {
--    type Driver = TyrDriver;
-+    type Driver = TyrDrmDriver;
- 
--    fn new(_dev: &TyrDevice, _size: usize) -> impl PinInit<Self, Error> {
-+    fn new(_dev: &kernel::drm::Device<TyrDrmDriver>, _size: usize) -> impl PinInit<Self, Error> {
-         try_pin_init!(TyrObject {})
-     }
- }
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index 861d1db43072..6eaa2135fe07 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -5,7 +5,7 @@
- //! The name "Tyr" is inspired by Norse mythology, reflecting Arm's tradition of
- //! naming their GPUs after Nordic mythological figures and places.
- 
--use crate::driver::TyrDriver;
-+use crate::driver::TyrPlatformDeviceData;
- 
- mod driver;
- mod file;
-@@ -14,7 +14,7 @@
- mod regs;
- 
- kernel::module_platform_driver! {
--    type: TyrDriver,
-+    type: TyrPlatformDeviceData,
-     name: "tyr",
-     authors: ["The Tyr driver authors"],
-     description: "Arm Mali Tyr DRM driver",
--- 
-2.52.0
-
+With the above change: RB
