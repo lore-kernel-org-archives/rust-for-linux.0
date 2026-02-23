@@ -1,54 +1,56 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782F736164D
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 10:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEB7361672
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 10:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771841319; cv=none; b=nt+l+uXF5Vms8GUn6J/PJxCKKdM0ouUVRwpAC3d2K5gNchyx2sGml/uacm9h0naRyihyXnoZPCCDFEE/7KWVgr7FF+pk3dcF9GuHAlgq31rKdWutbYC0Esy3BtLtmPcvs9ahHu8QoYFgXU4S3un6xhaa/L7uzPLVZ2seE3LnAe4=
+	t=1771841322; cv=none; b=Ud3H+O6c31kVuoQ9eZLP27TV2xPmYxZtf1WNHlMOSXvhbJQgELKp5Y242S9D+22McClkE6uuuTsdLmYlhdEXXGzhLy314uwg2fDdUyr0t0XBcSIYT26pfgO5fEJlsX4bCnY5rUD8nnfp9OYRBm9ny4MPvh8Y4eZWw4s9Kdf7FKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771841319; c=relaxed/simple;
-	bh=pyY9kK4oV6p5HO7c/+g+XC/Va/dVtmU2Pzel1xZKbW0=;
+	s=arc-20240116; t=1771841322; c=relaxed/simple;
+	bh=+Vwn2RMiQCLbhdbFzxMNsyo+6P3BWAiCt7b4ppvm0lc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=X6XrdrFJNirUBnPxDOH/qHOWGlZ0kjNAvXgLEolrMiqA5D17PaKzM+KeAaxAM001FrjE/qzZUmh3bXbd/kn3yZ3oqxl5nkfT0GxvuJTS7KYh7o+k+4CP0z4eQIrC24CPzRMFf/5mHGz6u6n28lIfeJUbEp5aIcp7H+l43X9ypT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gz+kDW21; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=QNkfBZ0Su1HTidD8K+lT1pF5T4RH5zhA0m2HPtQ115KiowKKLjsFyWJx4TXetdyiusIM0MvXOg56p2x1B/tJ2mr4VeZ1S6O0hYc4MnhhfS32WwwL6cR0B8LV6jsKYfZgZhFjPJCHHD2QfGDTgU7S7usSD+McuvBvAlm1CU8TZJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pi+8rdk7; arc=none smtp.client-ip=209.85.218.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gz+kDW21"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4830e7c6131so39943045e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 02:08:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pi+8rdk7"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b8f848ebcbbso332241166b.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 02:08:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771841317; x=1772446117; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=74oBSEu7KeQiZ+IoO0+YkS8FCtMu2JGZ7vr9oRz0PzI=;
-        b=gz+kDW21aShQ42gx89RO4N2FPDKFjyt/nXcSzqWPphs7dSFxRDOBzMX2IoFl2Vdqlt
-         K3WFxjF45/i6V8Q9H8iC7XpKGOP4X7IGxF9rYz8mfkZBVO+gXruRAi1J7Aw9XdtTWgtM
-         B/ByscH+5ewPO9qsB4HPgw2urAjrIE04AspQO1w23PU2dlOny7FOPLqNexMK280w87zz
-         SG++UiJQgLpCbqGA7+9l6BWq9B5b+w/w5A4hw8aSBt+n/77QlU81JUlqt6AYmqXfaJ/j
-         EQYyMCJFVMAuaj6BEdSVRdy0ub/lJQt2s//eUrW8eVKsEUyL6zXrYVr9qCv1lVoOmZ20
-         Yo9Q==
+        d=google.com; s=20230601; t=1771841319; x=1772446119; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OdnKcgHkjFRmgggTpTfgYETTa8fsvbvkTrjIctXuE0E=;
+        b=pi+8rdk7qhbkmTrlMOBUPZ4jNC+DQ0xjprhXSbsJ3gCUHo9KrP7Lr7kLV0x6grSMs6
+         bU784O7TMnQAtQCyLHde1W9HWXBa7ONXfzoQ5YFxLMovRBaydbTe0heF7NklvzKeDRVb
+         868hZ8iuwZgo7R2AuTN25BgBFcdm7lbCNm2yKfn1oGwiKeyU9ADqezMoLGAKYG/jXBT6
+         bCaaP4vUbDhGHHODN3auskIP0Zm/sz0JTsQe4re8jp+UZG4j/33S48aqQTNR2rCJkAny
+         wIm3DzEWj15C5naxm4Ts27n9ZHIwTaMn2LgYozV9C6Y7xGgP8OvC81SdE+NLzDrVK7pF
+         1jLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771841317; x=1772446117;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=74oBSEu7KeQiZ+IoO0+YkS8FCtMu2JGZ7vr9oRz0PzI=;
-        b=utrxCjAAqDPaHsczKIAhvgNonTUExcgPgMCnVs8W5VpWjgN3b3w/nSBWXYsfkFS0Ui
-         On6xqrOFzxvejIM6cVeBL+R2IcwFQT/e2aRRTgY38hxKC0pta0Ig7SYP+gQSkHzkx2Zp
-         fwU5WZw8YlWrQN4mxjIc5mvQy8Jy4coKQKShS3vukLD0GtrvL1wKEna8aqvNyV2QZlE1
-         Kj6P/CXqzag5tQmXcqHpNnRfA3CUK/ktbRSy+o+25dPaNVPK/7uUBpBQKKlhRx8LOOo8
-         u3JO5G4uAewQIrFV5bAOYTKQSmnw7QW1bwKWYZm4QgK6LR0P3MTjyZyTK9BxW38Fd6J5
-         T1lw==
-X-Forwarded-Encrypted: i=1; AJvYcCVa4QTBG53udY0MYa90EOuC+CjHnUCwMtKmDgzS/uORMsjuaYwMenEGaNwxGzpxVf+ohxx2wHhBzSopSj2hnQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYXFla4SqSj5KvLGfF2yYrpb3SCD7TtT6M09aSJOK7oZ2DQr/v
-	84rTLhH6wimRHdB83ct/x4ajVr8A6QFjTqlNDnzxXX3nkdmBXznxPL4VDMTs1z7tSd9vfEw8073
-	bVWpApksTukBtFbrkfg==
-X-Received: from wmqf8.prod.google.com ([2002:a05:600c:4e88:b0:483:509d:729b])
+        d=1e100.net; s=20230601; t=1771841319; x=1772446119;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OdnKcgHkjFRmgggTpTfgYETTa8fsvbvkTrjIctXuE0E=;
+        b=A18FwPwc60DswVrn8Vfev0gfX325EKT/3jfDWmyInm5OkphtS7ZxaRTdYKxHXaGq3E
+         zv97RZlL0WWKhMmo/4dtN7Pk4Mo3uGkxPKyt91gTWG2NHYhdaeL2ZP/cJ+8hsmw2pJ6x
+         REef7zdbRKEaDVN3aqCFQ+xj/TSzTE64XeXID0Z6ZVg+6VfgfcC71+c7jmV+cEeH1XoY
+         y9Gw0M2nK0kIFcNII0chNKa5xYOHG2pPtgjiTSZVY0xG7+y82jSDRXKI7YcqgBuorcql
+         Rdv+oF0q/GZHWdK/V8O0JthYkV5bnAeZir8dCBlMueNhY5Rf0IaVAM31+DUnC+SmdHI5
+         vE6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXRDb9TYIuX/aOksM90mWojlfr1avjR0a+KfLYKsCmaYZKbQ3dvwnmKPoAvIigipNwbhvaHheAQ9gBsxHdnIQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyfV3qS1pw51H+x1VJOMEbcGgUtzD+GqvDEQJxJx8CCfOuGAs2
+	jheGkgCum6zk31rhwcUucp6WwhaiDwIkXXVBfbo8Nzz03C383LT6LAjSYzhTwkfkVgYifzCTdfi
+	NM1O6to7ntsIojuNdlA==
+X-Received: from edgi6-n1.prod.google.com ([2002:a05:6402:a586:10b0:659:32e4:b9bf])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6298:b0:477:b734:8c53 with SMTP id 5b1f17b1804b1-483a95fc1b2mr131544185e9.12.1771841316659;
- Mon, 23 Feb 2026 02:08:36 -0800 (PST)
-Date: Mon, 23 Feb 2026 10:08:26 +0000
+ 2002:a17:907:3e25:b0:b8f:ad6:db92 with SMTP id a640c23a62f3a-b908196acb2mr410233066b.3.1771841318227;
+ Mon, 23 Feb 2026 02:08:38 -0800 (PST)
+Date: Mon, 23 Feb 2026 10:08:27 +0000
 In-Reply-To: <20260223-clk-send-sync-v5-0-181bf2f35652@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,22 +60,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260223-clk-send-sync-v5-0-181bf2f35652@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1702; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=pyY9kK4oV6p5HO7c/+g+XC/Va/dVtmU2Pzel1xZKbW0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpnCcgQsWGO0SyEW1aYXJHNJ1ToG77ov+/VqDIJ
- 2Rqb9pykuKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZwnIAAKCRAEWL7uWMY5
- RvPKEACcCzYO2H2oHLj3JDXRaxmHYGc/SeaInq4aZ2JbFlexxZTT4p23CkD40L5nX9RPxIEFFFi
- c7N8pnaUWanWESy6oExuxMGfeErXamS1NMw1HApdc8c1tN2HuU6S7Ae/5fZodqUPjq58GFujgik
- UjrEnwkWDYYu5Ur0biyjS07f9wtR0nHDaTokNWxkoINedZCvmyz4tHzGFVG+ckuZwdEPQTS2L4H
- suTrShLXwqeePnkJisxZPKyPYYcELHBOB1WnvpYJ9Y+ECidj9mgbPFjQx53XeHyg2Q7aBOa9nxN
- Tvn6x1DKjWkJbFpGOthc8vlwDei8eMV/hPEu5qdjPtogR4LpopTrhVGVqXoVHK0tcmV1gktjxYR
- fA2KrSdElAcjkxQsZWBOSpwOEKp+HjxgeMjatw3CtjYZBAeyKgmG+cGoSvZmKzcD/220WpvoDtK
- NiGtga+cJkHAVUyjDv6XC/R8zp6+ZwmrK0WJdqkIMoQ1vpj52EJBzZDdljwKL3knHM1h5GSlran
- hUcuddCm9qyCl59Tx2TgYGdiUe4UcF3qxsHzSFus/3+kaqkw7jNKs0jyZ40pz4pM+tqkOTQb2ly
- 5H3BRIhQ/kZhj+W1ZRRKzRuBj/lunAY1BW8Ry2zahqvU+ESFtSG4uzeTTQQBMCRRPpiPuCstoW4 wHfC88lm6sts2ng==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1832; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=jAawhmP9tDMdeWRIiWq9BA5B+z9O+mAwAwRx1JUlWqQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpnCcgbTxLXepdurAu3GuF7CkmSYRcJGHXg5wHK
+ hhZLv4P056JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZwnIAAKCRAEWL7uWMY5
+ Rmg5EACUr4q9yVqlI5z1xy9rbC8EGqAU70l/fbrINwUJqLf9Vt3GtkZDEI/b6AlgN8RQX4mTF5N
+ HbhQXKgYr3ZoF6FEaPGouSxpJfyULOX2dOGt9yKD2+/TUDXWtEMqF3IUZi2EVrynHGVLOQ73+m+
+ 2f9n2iLzZXtFHFAqD6y2m4alR5jk3jY3z6OJxCUBgZsPNs0LI7md9QylC/vN1NfF5gvEv/QouDJ
+ soiXmdHJCUYyBnyOsmDvPwMu/fbl+x92jpt87qPSH9hLWfJbGFojiA/aPlR2W3jIJCkbCVMntgY
+ 1Ae/ApT2P85bQovYJ1xpIrQ3H0f6ywsWkuPhtEderymKHmGPSukBCAx9tbtw9kt8rX+Osg8+grg
+ fg8/woo0bSdW0aIwDRIeUpet1ZR6eMqgjOoJyYt3ECDnWWOZrj61nr1OPmCuQAIMqcYD8rT2XxM
+ nJ73kRZ3WpHs5JtCSYUPj+qacn/BhfJdTlXQrHmhF3ZYoHv+bJv+XYe/Z6b5rSx9PXx+nQb5Bg9
+ TrnpR3YQeos5D8NteZVWdTP/iLDuezjrC85tGipCA7HdZgQpAhFbDQn7ump6S53j+KhQ/g62O6M
+ Vaaurm+dt3EGb3ZPkYJiKXj1PZ10PFUfFE7r/ZFauGbCVwih6pBzgXs3nTUUkcLAP8gj6dP9+Zi c6sJUxRyO1VAaWg==
 X-Mailer: b4 0.14.2
-Message-ID: <20260223-clk-send-sync-v5-2-181bf2f35652@google.com>
-Subject: [PATCH v5 2/3] tyr: remove impl Send/Sync for TyrData
+Message-ID: <20260223-clk-send-sync-v5-3-181bf2f35652@google.com>
+Subject: [PATCH v5 3/3] pwm: th1520: remove impl Send/Sync for Th1520PwmDriverData
 From: Alice Ryhl <aliceryhl@google.com>
 To: Stephen Boyd <sboyd@kernel.org>
 Cc: Michael Turquette <mturquette@baylibre.com>, 
@@ -89,47 +91,55 @@ Cc: Michael Turquette <mturquette@baylibre.com>,
 	linux-pwm@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
 	Boqun Feng <boqun@kernel.org>
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
 Now that clk implements Send and Sync, we no longer need to manually
-implement these traits for TyrData. Thus remove the implementations.
+implement these traits for Th1520PwmDriverData. Thus remove the
+implementations.
 
-The comment also mentions the regulator. However, the regulator had the
-traits added in commit 9a200cbdb543 ("rust: regulator: implement Send
-and Sync for Regulator<T>"), which is already in mainline.
-
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Acked-by: Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org>
+Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/gpu/drm/tyr/driver.rs | 12 ------------
- 1 file changed, 12 deletions(-)
+ drivers/pwm/pwm_th1520.rs | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index beeffe36b6cb068f2a87129872b37cbea4fb2010..e833e9f537b0225368ca10f5bc71b2612b0befa5 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -53,18 +53,6 @@ pub(crate) struct TyrData {
-     pub(crate) gpu_info: GpuInfo,
+diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+index b0e24ee724e4501b812e5f9c7904b483bfe5e2dc..6cd6fa3d298484cbd84b88cfdd3=
+244217855fa05 100644
+--- a/drivers/pwm/pwm_th1520.rs
++++ b/drivers/pwm/pwm_th1520.rs
+@@ -99,21 +99,6 @@ struct Th1520PwmDriverData {
+     clk: Clk,
  }
- 
--// Both `Clk` and `Regulator` do not implement `Send` or `Sync`, but they
--// should. There are patches on the mailing list to address this, but they have
--// not landed yet.
--//
--// For now, add this workaround so that this patch compiles with the promise
--// that it will be removed in a future patch.
--//
--// SAFETY: This will be removed in a future patch.
--unsafe impl Send for TyrData {}
--// SAFETY: This will be removed in a future patch.
--unsafe impl Sync for TyrData {}
+=20
+-// This `unsafe` implementation is a temporary necessity because the under=
+lying `kernel::clk::Clk`
+-// type does not yet expose `Send` and `Sync` implementations. This block =
+should be removed
+-// as soon as the clock abstraction provides these guarantees directly.
+-// TODO: Remove those unsafe impl's when Clk will support them itself.
 -
- fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-     regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
- 
+-// SAFETY: The `devres` framework requires the driver's private data to be=
+ `Send` and `Sync`.
+-// We can guarantee this because the PWM core synchronizes all callbacks, =
+preventing concurrent
+-// access to the contained `iomem` and `clk` resources.
+-unsafe impl Send for Th1520PwmDriverData {}
+-
+-// SAFETY: The same reasoning applies as for `Send`. The PWM core's synchr=
+onization
+-// guarantees that it is safe for multiple threads to have shared access (=
+`&self`)
+-// to the driver data during callbacks.
+-unsafe impl Sync for Th1520PwmDriverData {}
+-
+ impl pwm::PwmOps for Th1520PwmDriverData {
+     type WfHw =3D Th1520WfHw;
+=20
 
--- 
+--=20
 2.53.0.345.g96ddfc5eaa-goog
 
