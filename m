@@ -1,96 +1,113 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAB534EEEF
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 09:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD6534EEEA
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 09:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771838106; cv=none; b=pTSRU5+f6v0u1bZGK/2Nj9KhKArdF4J81k+E/aA1CSwVn3FIH8phY0RId4JhSrJ/N4vp7HqAJcMoxXPykWs3WzOeUO5DspRGLRZM92JPtCPfe3cv4iVRFu/PjbySNQvyqViGmCA0C0ogRt8s7LhWH/1hrj9iQuWQxkXDGUl8hzc=
+	t=1771838557; cv=none; b=Swm/am0J6GooLOy0ljAdjtVrEunBVJW1JtXq0fPH+ttE/WFqgOTvdSNleV3CHujbVtsxAV2atsht75vSN4ffzRGfLkyLdzhmlaAB80QdrkWW4Vdsqu8ACwhzVxdn/7hym93mdc+qitPozhb7N2kzTXyWHL5dyNkmxJpAlsJh/vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771838106; c=relaxed/simple;
-	bh=WnCVSVyP0du3aW6xgB13h3WYPrZY9fXisXZmNJUw1fc=;
+	s=arc-20240116; t=1771838557; c=relaxed/simple;
+	bh=ewIfZ3EnYBpT23se9tTPnU3gYWUWURZsHjmHpqyN3Hs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZdAfGQI0MtJUkkV1U24dryrnUU9rLeD/yzqn6//U0HvOKRSnd9ZgYVwDEe0sRMNQK92V540ev8mgMYA0hoMB1luzwkZe1gTpWwqNi+2633K6sg5QNgqCRkp9nUSZDANgISHVUImUUJ90RuUjMw3LLvKTz3zlbmvBe7iJU4Kjzl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fxbpdLDS; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=BI2e2+xjhAG5QC4WrrXXyCCTt1edEk6nhSFOI+6Q4dLucXFBUJRSW5ggED2Py92PmhX3iEzi1S5jKe9QDoFS0BP8ix5cHdKVl7fOgo01LsiQigQLhg5FgALlST3KKC0VGIDR0jyyNHUyfe5bCMlS9YZ6P7JH9RgKvlzKFWbhhMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UqytCUmz; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fxbpdLDS"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4837b9913c9so42257695e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 01:15:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UqytCUmz"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4362456500eso3813238f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 01:22:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771838104; x=1772442904; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vOcHT801aqXoK3tA38lkJBGJrXjsRTU5HQwu+hWqDEo=;
-        b=fxbpdLDSpCuDHWiWq8iYRBDFnd+gHO90u9lHycAEX81v74Gya9raCGBEG8FMmNV5WQ
-         9EfDJ3vKMJV22mSMX8HtDEUd5RlzxmpxhTrOMo/M+/VjG/MhaBd967ikEPabtadjP8T/
-         QnK7mbqahRoROqAYLmdpsJo4zsDsa1SjCDCEGTxwb4FRuGV9MpBCJbZlYDn0MLnmzfBV
-         JUh/Fcncs1QGG6XQG6JPsHsRuwQUqCNMudzo0Qf6eO3DP+Ya/lI04x3r2VlyczlETDay
-         AtV3s1sSuwrk7Uv0Ttb5VzfqoBgY1pOY5grmf2KqB7GlBCRpBDGinl/AxzeikCJ7YJ1N
-         23Tg==
+        d=google.com; s=20230601; t=1771838555; x=1772443355; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6/py8COuiIEGDu7/nY5qfOGmBj2ryx1hQ7/J9NPZ4C0=;
+        b=UqytCUmz2gJRGb8qkstqDev0OkUD/hT3mSReEYNV5EdVOdRzSwNA+KR2zIlueIk+kH
+         Dcx53Y4O+4kxfxSiUBbPXqUHtnEi9OoVKr0EgOBXoqGwXcjaqKratfQSo5tJ/9e77+PX
+         UdGjtku2sdJvdVPDjs4ThskFguQG/JrIokiOc1oMamSGJmLv14t3HRnND/ePHupgQPOt
+         7gG5LYjG1cOptQbGK+kkShWiZyDdbzE497/QXNbbDq9gFviABFDOE2X+ISsMKLX0TG1U
+         +MVyqhgOPfX83D+WN9OOpBS1L9jabc+p58I2p3FUrxrB99F6xYieJndtSI3TbqCtb7S5
+         Vkcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771838104; x=1772442904;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vOcHT801aqXoK3tA38lkJBGJrXjsRTU5HQwu+hWqDEo=;
-        b=u2FkEIQQ812l0vCGf5nFlrwV6p7Z93y/I4BxqE9uSB5BHQrm7hFrriSs5iYsKOR3uN
-         mbkU5ChEE+Uf3G+Xpy9s08oKL3u06Zi7K3i3UXHOItj3CNN/3vZMN+v026jj7TgkKmYr
-         Ljeo4hzrsQ9mN9l039cQqUdTsEeXT5zizpgfOyUar8mUHH5nNIDv9hTiNxjuJu3PHsYW
-         3SWrdCm+R+QYF5MGJFUe40ZYTiwPNsxVvO/HmvHkb2yhu9Gvf90mdj+R+4K9kM874Bb+
-         G3Qee9SGPWwrzes81WiNwknP4pT4SR5lZQ7o+FdRsPG/g7XYnOVRF4uLOSjUun4d6VgR
-         2TyA==
-X-Forwarded-Encrypted: i=1; AJvYcCXOyEi/7KkqRcLLB/tekgO0qepjlJpYlKXaqIXbrvrcrKewnJX+ruZuPxKsO9dADjJ+qt1sQYbAqtjrHMy2cQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIxPksyVN4wdB+ERPdNWdMGm8yMTKLsz2WbTcMxnf+YPGonY6K
-	dOBeQLR0W3YyGtfIG4MDXGvUHxUJf384Bk+tJlSRmWtHiyqi2/eMhDJWF1n/nMKCZCQXKgpFiHh
-	GNm+poKej13dkXXAL4w==
-X-Received: from wmqa20.prod.google.com ([2002:a05:600c:3494:b0:483:1069:2eb4])
+        d=1e100.net; s=20230601; t=1771838555; x=1772443355;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6/py8COuiIEGDu7/nY5qfOGmBj2ryx1hQ7/J9NPZ4C0=;
+        b=VFW6BXX1hlY10g1mY6FJGW9Hs1w8EoZQb8u/7XQmf/C0u5aAyfJ17Z7isyLTckUbt8
+         1qNB9J2Y4JhfJT54gqmyVuw15iTwsc443ydTcRBbgpgFcbg5wnBH5zhtVz1KQwOMTtos
+         cmMiTzPtteIoL3qIIl0x53T5UTbd6NmyIH0zw2NhDAj3TWHsERkfkzpOfHRuM40mc1f/
+         Q5BPb69elWT1n1yeSO4tYLYEe5YjhFvuux68z9ZQybxvM7lN50EXIngkL3USnRkp8kU1
+         ou7pnJEtAhLxOSMd/YDbf2lkV1g4NtK2dK+FkueXiFpgt/YWGQAerKXCYGM/hIrxAw86
+         IVJA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgZieuUE6AlggX03RIlLJKl2NHr7OFI025W9iLalOZNf2HU9wKKXryVDRT12KXAwnF+DtCTIFK00StRTBqnQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNRlGNEgKaC/sCwqL80cqk7FeDAHXuaVVkb8Ij7gZ+i7V7V86a
+	9s26ZUadflUxhTk4c2Y10qEofxpk/tQqJpEMsg1WI6zgCUnMjwCKvsVgS6tacMtEHKlrIr67zbs
+	6nQJvPItPq878xLH6+g==
+X-Received: from wmga22.prod.google.com ([2002:a05:600c:2d56:b0:483:49c9:7c2e])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8206:b0:483:75f1:54f with SMTP id 5b1f17b1804b1-483a95f8a84mr142893835e9.31.1771838103699;
- Mon, 23 Feb 2026 01:15:03 -0800 (PST)
-Date: Mon, 23 Feb 2026 09:15:02 +0000
-In-Reply-To: <DGKQH7Q9QONY.4GLSDMQ8DOY1@kernel.org>
+ 2002:a05:600c:c8a:b0:483:71f7:2782 with SMTP id 5b1f17b1804b1-483a95fc09emr129349825e9.12.1771838554485;
+ Mon, 23 Feb 2026 01:22:34 -0800 (PST)
+Date: Mon, 23 Feb 2026 09:22:33 +0000
+In-Reply-To: <aZu6cSqnvO91w1m4@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
- <20260130-gpuvm-rust-v4-3-8364d104ff40@google.com> <DGJ6LHIVMV03.MM7RWYBJHBIQ@kernel.org>
- <aZgYY_fetgz_GDR8@google.com> <DGJX3FI97W1G.371MAMC60FX24@kernel.org>
- <aZlw3SGmLetHwaTM@google.com> <DGKQH7Q9QONY.4GLSDMQ8DOY1@kernel.org>
-Message-ID: <aZwalt_6KlOIDzkN@google.com>
-Subject: Re: [PATCH v4 3/6] rust: gpuvm: add GpuVm::obtain()
+References: <20260210090023.2587534-1-mkchauras@gmail.com> <20260210090023.2587534-3-mkchauras@gmail.com>
+ <CAH5fLgi3Owm4=4g8wQ5Rnr7Y63XJ1D8apOdkewW6WpRfg6vV_w@mail.gmail.com>
+ <aZtT4MH0Q8Ic9ZiM@luna> <CANiq72nEam8n_daX5LyYrpH=i71k+pb+HLn6EEPdJJc-Zi9Q3A@mail.gmail.com>
+ <aZu6cSqnvO91w1m4@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+Message-ID: <aZwcWfYkBnivrgNa@google.com>
+Subject: Re: [PATCH V6 2/3] rust: Add PowerPC support
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Lyude Paul <lyude@redhat.com>, 
-	Asahi Lina <lina+kernel@asahilina.net>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+To: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Link Mauve <linkmauve@linkmauve.fr>, 
+	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
+	peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
+	rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 21, 2026 at 04:09:41PM +0100, Danilo Krummrich wrote:
-> On Sat Feb 21, 2026 at 9:46 AM CET, Alice Ryhl wrote:
-> > So, should we get rid of GpuVmBoRegistered in favor of ARef<GpuVm<T>>?
-> 
-> I wanted to avoid exposing the reference count, as I suspect drivers might not
-> need it in Rust, but I don't know for sure.
-> 
-> We could also define it as GpuVmBo<T>(ARef<GpuVmBoInner<T>>), where
-> GpuVmBoInner<T> is private, but I also don't want you to go back and forth with
-> this in case it turns out we do need drivers to be able to take a reference
-> count and I also don't think it hurts too much exposing the reference count,
-> even if not needed.
-> 
-> So, either is fine with me, ARef<GpuVmBo<T>> or
-> GpuVmBo<T>(ARef<GpuVmBoInner<T>>).
+On Mon, Feb 23, 2026 at 07:56:02AM +0530, Mukesh Kumar Chaurasiya wrote:
+> On Sun, Feb 22, 2026 at 08:11:17PM +0100, Miguel Ojeda wrote:
+> > On Sun, Feb 22, 2026 at 8:07=E2=80=AFPM Link Mauve <linkmauve@linkmauve=
+.fr> wrote:
+> > >
+> > > Should we come back to describing the target like I did in my first
+> > > patch[1] in scripts/generate_rust_target.rs, or should I bring that t=
+o
+> > > Rust to create a powerpc-unknown-unknown-softfloat target upstream?  =
+Or
+> > > is there a better third solution I=E2=80=99m not thinking of?
+> >=20
+> > We are trying to stop using the custom target specs, so we should ask
+> > upstream to give you a built-in target you can use (or equivalently, a
+> > flag to do what you need, but I think the idea is to not have such a
+> > flag).
+> >=20
+> > i.e. even if you used the custom target JSON, we would still need to
+> > ask, since the goal is to remove that script entirely.
+>=20
+> I think, disabling altivec, fpu and vsx with compiler flag will work.
+>=20
+> What are your opinion on this?
 
-I don't think GpuVmBo<T>(ARef<GpuVmBoInner<T>>) works because we need to
-be able to talk about both ARef<GpuVmBoInner<T>> and &GpuVmBoInner<T>.
-The reference type is returned by several different APIs, so the Inner
-type can't be private.
+I think you can and should submit a PR to add a softfloat target to
+upstream Rust right now, and I believe there should be no issue in
+accepting that.
+
+If there's a workaround we can use on existing compiler versions without
+the target, that's great too, but we should get the target in upstream
+asap.
 
 Alice
