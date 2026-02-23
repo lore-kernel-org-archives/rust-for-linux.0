@@ -1,178 +1,228 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFF786334;
-	Mon, 23 Feb 2026 00:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771807647; cv=none; b=AN2kq2+tJpd6GF7qQ8/CoHZlLVa68UUcmfcTFZaCYHluIesGTHIK1Fh3Oo+PVzqZ3XGPm77itLHTlYPAdpFadux57H2F4VRo8qukXdVCopbg5/rWCcIHajmTFt4vJr4Ghl6u6VKpZYBlzLTBxXW8gWWCnKEE4PFswCB3CV1dryY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771807647; c=relaxed/simple;
-	bh=9Rg2ovzdHFVJcpJOm3vuScJXDsF1IsJTiaRKGC5EjjE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dEkdeH+hEWY2qM23Rftg622dmemVJ9M1Q/C1CJJ1nfKZKo3BI54AbErL8BSSUDaceevSykTJwIJJkqKAxDX1Ay2eZQaASNieXyhFNQIIwVcat9OIdrd34uvd9yBbEEZI6YfxQCnTLc/4vZLsPxj69Yi/ZJwYvTfcUqK6+fwXjoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-c1-699ba00d3559
-Date: Mon, 23 Feb 2026 09:32:07 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Dirk Behme <dirk.behme@gmx.de>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
-	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
-	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
-	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
-	gustavo@padovan.org, christian.koenig@amd.com,
-	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
-	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
-	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
-	josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
-	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v18 31/42] dept: assign unique dept_key to each distinct
- wait_for_completion() caller
-Message-ID: <20260223003207.GA44876@system.software.com>
-References: <20251205071855.72743-1-byungchul@sk.com>
- <20251205071855.72743-32-byungchul@sk.com>
- <ab0b9f9c-3a05-42f3-b4a7-ddb6ab0d37a4@gmx.de>
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010041.outbound.protection.outlook.com [40.93.198.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC671799F;
+	Mon, 23 Feb 2026 00:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771808063; cv=fail; b=BV7N0uA35BJtdJ09bzkh75kP5UA8g5dHQeGEZEQcstZaEP0yZJ835woUuE8bR9g0WQnj643edumEsCVHcY6aMDAc3SGKe+tDoWig+BXpcFHtjbvMCn439P1BMBWkWF4nmoZ6E3tjcYIqjsyey+Eq3DKLcluWcVEKisDI294G1n0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771808063; c=relaxed/simple;
+	bh=RGNHbJtztI8mevHkMK+WeTUmIkJNxwf7lJJKfRLbdIo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=sZGtGVQ8pqKfsO99Dlmo6c/qZzTsq6vhXPgD0OJtL+DLJWxZihrEVw5YNTO/b+T/0ZYMaQzXXP0QQclMp9jtw7O2/PkveE7iRH9OAVoD9ge/NCICQCqCaC+BtWim9p12wR2ZNRQyeUy/W/7zO9SIhaAd3TmTdPtDfyjZ54Dc630=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tff7Ts98; arc=fail smtp.client-ip=40.93.198.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tff7Ts98"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MMYwU3jK1jLlOfSRLPvXPyDLgmzRTIQM3AszCHVzmYlicSt1zXm2I5QqGDy50xsTeevMNeHNQDaeDjAFeHnbGEHnTdugy64QPD+tdYoqz0B8mJdzRXZk5CkufE3lTUz8A2hKubwOPvbKJXO+5g+a15vZB6VmkSErbGS2zt4c7vN64XXSnk/MjwjXjMCs12qFByZ+C4ooK5rdL0/cepWIS67gBOFkNV9J0pW2MqGcotUU+GIkthuhaYYDtSc6lBPYboCf+hCiny45aM1l9WlUX0pe0dQjpLHNtGtaFBr0TxKpAtwTxgTu3jgzPkgYX0huE/5vsVmF7aaGr/l0D3AJZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vrK6NdzArNO70dtefVbTm7eNep3Zntgjqm+YOmjR3lY=;
+ b=DFgEgtC6gcC9TCr+fAEtM0p3I8sMdhVS+Vy6oIOurUyIJlkfTczkM91vGS9Z6Y0xCVstekMkcyUl/5BG+DGatE74JnT67zDPFT445IqiAaNuKcIFN9dQyzhl+MOLV1LOFvVK7+OARKPXBvxwR11zFsk4nDLh4e9/+5DA6TPdFi5Bh49tk53YrDHkfV6k4qLyLpOwehYw4tG6YAEm9Rn/KwyOB1Ho5dwi6te35FoQgqg5A2rL/ylcB3MkOAv90NC6nd+gU8J5haOCR4PtYh/p3IRKOtNDo4/ycj+D1kS4z2/KXAlgGZx6vpgslVx773yK6pFBCT7U3pCHXv5ZLyC8Sw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vrK6NdzArNO70dtefVbTm7eNep3Zntgjqm+YOmjR3lY=;
+ b=tff7Ts98sZjy5OkJNtbzGSfBRm7OTaUdDNwz0IxKVMPnsBOrYhibPRELK52XcVUwV61Xob07uagU2Vt+xLNYtvQEeH40ZI+eP14wqu7O4zOEnxlt0g40VSHkHvQc70LYN2lAoaKNoXqQ+Br+NlppjNRU8PehAdDhoA4Yj/0z2iZtZXZr9owAe1Z74hMXIHoem5sFLXHmfURbcZpxU1xuiFaQjpZIPW941e4xfJJ7PQyWAHNhuHT2Vr9r9t0USskpiyWW7evcpFbGzdqNBl4QqwJ+sLZ6k6k4t3NwvSbb64elZYLBdUrJtchJy/VQXJL6ySfVF8z0kwIyVpgtzlb6aw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ SJ0PR12MB5675.namprd12.prod.outlook.com (2603:10b6:a03:42d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.20; Mon, 23 Feb
+ 2026 00:54:16 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
+ 00:54:16 +0000
+Message-ID: <859ee9c5-f37a-475d-81eb-6f9de6d34b4f@nvidia.com>
+Date: Sun, 22 Feb 2026 19:54:14 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 5/8] rust: clist: Add support to interface with C
+ linked lists
+To: Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Alexandre Courbot <acourbot@nvidia.com>,
+ Dave Airlie <airlied@redhat.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ Nikola Djukic <ndjukic@nvidia.com>
+References: <20260218205507.689429-1-joelagnelf@nvidia.com>
+ <20260218205507.689429-6-joelagnelf@nvidia.com>
+ <DGIWDQTR76Y5.34L9IHKU2SEKI@kernel.org>
+ <eadfa4662f403fa01f19c1c17a435c1a@nvidia.com>
+ <15a193fc-b2b9-476e-a9f6-57e3a210b74f@nvidia.com>
+ <DGJ2TNVD8AS7.2P0HYYKKE8CBQ@kernel.org>
+ <4ad9fd6598e2688c88f6ef22c088c683@garyguo.net>
+ <DGJXYEXCYIII.Z6FOAA8YYMAZ@kernel.org>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <DGJXYEXCYIII.Z6FOAA8YYMAZ@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0221.namprd13.prod.outlook.com
+ (2603:10b6:208:2bf::16) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab0b9f9c-3a05-42f3-b4a7-ddb6ab0d37a4@gmx.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH89x7n3svHXXXzrFnkmxL57KNBNiMS06cM25Zlhs/mezDsi3T
-	NetFmlJwLfKiMRZiK+JWsUwWWxwdYqeAQEpEXjRxNMDIRC1M2hHegqSsk0ICbWHtiusNMfPb
-	P79/zu+cD4enVS52O68rLJaMhZoCNatgFOH0xmyly6l7J3IuG6osJ6G+vZWFKs9FDL/5Kxl4
-	0NaCYC3hpMHS84SBpH2QgzqfnYYfQxUMLLu/Q+AIOjkIz/RheDK1QIE/tojAPb9BQbJODw2N
-	nSwMXzjLQthXT4Hv7mMEPbO9HMy4gww4R8ZSU64iGGxZ4KAtfB/D8PQ4hpkhK4ab5lkOPH8O
-	IKjqjTLgeZQqfrY2MTDWW8+C2bmGoX0hQMGw4xoD93uvY+gcuUtDzJYJ7ugyB8GHVgqu3R5h
-	YdCVAStNMQasqxsYrkSWaDj9Vx8Lk7a/GWgPemnwRhcpqB11sRCf6sYwbm9gYc4W5sBZYUNw
-	1lLHwI2BNQ5OTb4HifXU+vWORxiuJ8cRLNVE8L4PxebOLkq0jCZZsfWnViQm4nYkWmpS6crv
-	i6wYjz5kxaYzcUrscUxxostzVOy8miVevhWixInHH4ie5jOsWB3+gxKX7t3jDrz2hWKPVirQ
-	lUjG3L1fK/J7fvCyR2rTy/yn9GZUqahGaTwRdhF3m596mr2Vbq4a8TwjvEFmfIdlzApvkkDg
-	H1rG2wQ1uTG5T8a00PIKGQuXyfkFQU8GupKsnJUCkMb5EK5GCl4l2BHxeWupzWIrGb44z2wO
-	Z5HARoiSnbSQSX7Z4GWcJuwm3psWLOcXhdfJna4hSvYQYSKNTLsb6M0zXya/Xg0wNUhwPKN1
-	PKN1/K91IboZqXSFJQaNrmBXTn55oa4s55sigwel/tZ94t8vu9HKg0/7kcAjdbryzrJDp8Ka
-	ElO5oR8RnlZvUyYSKaTUasqPScaiQ8ajBZKpH2XyjPol5c5YqVYlHNYUS3pJOiIZn7YUn7bd
-	jNq762PfZ8TXO2qaRr4d/zg08dHKwJrWMKu3VQw1bP0qf9V8wHL+hI3LwZ+sLn72dmlex44o
-	JTx3ekvEcCFjB96CsLTH83nf5OVQ3lvnSj239aHnb+V15b7q3xnR1pWAYzrn/MHc41aNP3np
-	pDW4Pzh6aW6uu/i4abdhv+X97GN71YwpX/NuFm00af4DM937xrMDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH8zzP7e1tQ821YLjo4ofqYmIibmaa4yRK9mHe7P0TOr+MRq5y
-	VyimVQZOYyk065hZsK4ltMoQtVugvpXXznQjNOAcM7ZWRzPBalaRhiJMWhmtpWtjlvnl5H/+
-	//M7OR8OQ5RJyWpG1B4WdFp1lYqWU/KPdjRuyutwiG8MTJeA2XQCJsIRCfzRMERBIm6m4MwV
-	Fw1px4AUzO42Cfw6bqTAf7kbQThhRrCYchAweTIUpC2jUogv3ZeCtQFBxjuKwBawEAj5fyHg
-	6m3AsHB1mYYZ3zME1kcRGlqjDRTMOU8isE85pBAd2Q2z4esSyEw+wTD+PIbAGVnGEBn6CkHa
-	poHvO3uyuG2ehtSt2wRarX4E5x5NEngWfYigd/QBAu+PRhoet/QRsN8/AMHICribmKPhpvUb
-	GmYDZzA8vUpDh9ErgcDvMwjOOiwIpv70Ymg8f4UG21k3BZ6HP0khMPMCw4TNgqHb/SGEnVMU
-	jLV04uzJ2alrheBobcTZMo3Beuk6LnUiftH0LcV39fRj3nQnTfOudhfiU0kL4uMXGwlvasm2
-	vtgc4Zt6vuAvjsVoPpm4R/Pe5x0U/1snx1/4Oon5U7c28R77pPSTd/bJSyqEKrFW0G3eWS6v
-	9Hznow+dzqsbb9IYkFHejGQMx77F+YxOaTNiGIp9nQsHDuZsmt3AhUJLJGcXsCqub6I0ZxO2
-	ey0XnK3L6XxWw430p+mcVrDAdUaikmYkZ5SsBXEB32n8MljJ3WyLUC/hjVxoOYpzOwm7hvth
-	mcnZMvZtzjdgkuT0KnYdN9R/A7cghf0V2v4Kbf+f7kCkCxWI2tpqtVi1tVivqazXinXF+2uq
-	3Sj7kc7jL04Nonhw9zBiGaTKU8wXOUSlRF2rr68eRhxDVAWKVMouKhUV6vqjgq7mM92RKkE/
-	jNYwlKpQ8d4eoVzJHlQfFjSCcEjQ/ZdiRrbagPJJHDyfip/vCZTtcpfn9cnW73C1/82Qnr1d
-	wS+Xap7mG8rOtZaGmv7SJsvmNYsFI0Xr321P/bz1yMKqf1zFK/C1bbEwGZx+PCiDxPumtfqg
-	v7332F3PvnuGGydjbQuWiqLeO2Mf6Oq2vLaue0vKf+Dj6Inthl0lhRHz9kyGFWMqSl+pfnMj
-	0enV/wJlLv3cjQMAAA==
-X-CFilter-Loop: Reflected
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|SJ0PR12MB5675:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70a2f064-1b39-4925-e1c8-08de727611c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QzlWSWE1NHNZaTV1WUFKWFVTYk5sQ1l5TG9pK1FWZHJ3SGF4TVJhL3cxTGFs?=
+ =?utf-8?B?VVFWcGVKWC9lTTRwaWFpQVF1aWJnSHc2NDRJdDN2SUdMMUpyMFNmTzhXN092?=
+ =?utf-8?B?anFVVUljOU4rVGRZdCtwU3JlNzNjMmN6MjE3SC83MkxpQU1IVEF3K1l0Q2s5?=
+ =?utf-8?B?Y3RMWHpVVGE3VTM4eDRpSVFUN29XOElnc2I1TWM5TVhNRWdCZHZjMjlhRFFt?=
+ =?utf-8?B?VCtnSUxhYUdLTUp0VUY2QVpZQ2lscmxITjBKVVplckFEVnJoSTdIVHdMK2xC?=
+ =?utf-8?B?Q1lpQzd1a09rZVJ6eWN4SUlUSDFBazdVM1hab0l5djlIeFRIS1FDeDZINkZa?=
+ =?utf-8?B?WnNDMmlGTzVsV1Rvb2NjZXNPMVlzR2d1WUNsWmtDNjR5RGRFUzJON0xxZjNX?=
+ =?utf-8?B?SUlYbUNvV2FwMW04YTJyT2lFNTlrU2JPK25PWDB2ZVFYcmZtZlB6eFloUjc0?=
+ =?utf-8?B?ZDlieFFIaDRacUoxSTkxUWFKVGdEQ3RxRUMySHRFbUcrdkQ2ZWUxTC9NYnpH?=
+ =?utf-8?B?dlZCR2s4b2RiVmlGK2t1TDR6bDBZWTJPU0U0enZrZytZcjlvMUVhOGlHUWN5?=
+ =?utf-8?B?akM1MjNQeEJubkwzNE9SRmY5bktYZW5PanI5RUpSYVluQmxVZGhPbDBPUXVM?=
+ =?utf-8?B?a2dxaVI0cjR3MXJHUDFtTkVxSXRNY2ZCam9NNHYzMUM1dDZWM0YvTEUvUDRi?=
+ =?utf-8?B?M2I4QnJiekpUb280NThMUndhUmNUNWdQclBOU05oRWgyL3gvYmJibmJ2VURY?=
+ =?utf-8?B?L1ZjbkJ0MittcGpNN3ZvTFA3TjFHRDcxcWFDUThMc1JoMTYzUklDdWswbGFh?=
+ =?utf-8?B?bmZRVEZjSnYwQm9lYlUxSjRHb0xYMEI4bUJGZzhaNm4vSEptYVZidXJtaG9u?=
+ =?utf-8?B?M1I5N0RSNWpDMmJyWHhFRm5SOGszMU1RZ1hzb3N1TXFCS3kzUktPdUMwTkMw?=
+ =?utf-8?B?a21PQ1d5OHIrcHIrVlpJN3pOU2Z1OXZhSEhJdHkwK3RMaTNwOU9YUUVzcEpt?=
+ =?utf-8?B?RkJ2cjhEa1Q4d085RTh3ZEZzR3lRT2VhT3ZsMWJuVFkwajVXRnJlRVl6aXY1?=
+ =?utf-8?B?Sm1iU25ZeVJPWHpqcUxFM0dUOFR4dHFkV3BOTHNuZ3NnSGoyU0ROODA1eHgz?=
+ =?utf-8?B?R3ZUSzJhcUZNRGJ0SzdZc0dXOUV2OUp2cHNjK2NtQ2hIc24rWm9DazR1emJF?=
+ =?utf-8?B?b3NpelVkNkhaT1FaZW8wRUhscURIcFQwV3NkNThHVndmdmgvU1FKaGJVQ0xE?=
+ =?utf-8?B?V0djalE2VWVMSnNmREd1Q005anA2eHN5YjA4blZqZEpMeDRUbkRzMHlrRG9v?=
+ =?utf-8?B?bHNzS3p3ejIwazlyT2NuWGdFTFB5cnp6aEJYWlFWd0tRVE0vUHhrZmE3c3lH?=
+ =?utf-8?B?TXhYdUI3TExjNm8zQWtJbHRkN1ZSZjFvNzhEdTdEbWY1dkZoNm55K0J1R2dV?=
+ =?utf-8?B?WVJtbzAxa1pKQUZ2RUQ4Nlh2dFpTQ3pScVFKM3k5MHprNjB3bW9OSlpybitQ?=
+ =?utf-8?B?WVNwVzkyUi9UNkJ1clpmZEdmdFlqUjVuOCswWGo0OHUvZHg0VFV1cHBBMVIz?=
+ =?utf-8?B?ZHpOLzBjS1k2K2JudWNScVZqTldscWV4bU5GUmtKYWhsU3RXUUc5TkRqUXU3?=
+ =?utf-8?B?WVJzV0dhSE5qUzUxWm5pd3FNelp4OGtNa3l3ckNBeUxEcDNWVkRzUVphdTNY?=
+ =?utf-8?B?akUxcGJQaDFzK1RFejdtYkVCM054Zk5xQm1kY3AzRFZ0STdKY0prYzEzRnZK?=
+ =?utf-8?B?ZjJLU1VQcmo0RzhJZ1lYOHRmQ0ZFYmVXREUzN2dkbW5td2s2WmZvMmhPYzE4?=
+ =?utf-8?B?SjJTVVdFQXJPWGJsN2s4VVBPVHc3WGxhQ2cyblZGWGhqRU5lRGZhSzhNMVR3?=
+ =?utf-8?B?YTlDTVYrM1g1QXp4UDUwU3cwdTJkRVlOOWlIZGZtdE9QQ1l5TmxXYlQzU3FZ?=
+ =?utf-8?B?YmU1ZzRrQXRvTllna0JTUUdxMHQrdGkycGIxODNiUk83NEhqbTV2NjFGandZ?=
+ =?utf-8?B?ZzBweEpEeHNqaStob2U3cngxL3BZNUd3ak9nSGFhcm5XQXdZaEhMalRhekZD?=
+ =?utf-8?B?ckJrUkdQd1V1aTFaMnVZOG5KeWJzSEppU2ZKK0JzUzgrUHJiNW5SQVp0d2Ex?=
+ =?utf-8?Q?JC0w=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NWFPamV0dlhkZ0UxdnJGRFJtTlNCT2plb1NYOUhXbi8waldrc3lSWEtHRndF?=
+ =?utf-8?B?UTJpRFYvMTdaVEJUaE0veXRpenIxRjRkaTdLRVdoc1d2ZHpVMzQrbTRYOUhT?=
+ =?utf-8?B?KzIxOUsrbnY1RndnemVMc1BmZXM4S01tUUFQaEhNUkhOamFKMjJzY1d2ZUtp?=
+ =?utf-8?B?eG5zVTRvTGZtREZRYzRwWTNmOXNFMDZzSU55M0R2dmJmTk9GdGxGeGhzSnRR?=
+ =?utf-8?B?Wk43VGVKYlJ5aHlKK28vMWhXbGpSa1M0Uk81SE5mcVcxWUgxd1UwNjdxcURL?=
+ =?utf-8?B?dVc5citmaldhd0k4aXRJTnFJMVU1K0UrSVRaSzcvKzBvclFxcnlRR2xqN1oz?=
+ =?utf-8?B?emIrVEZDSXQvajZrWHFZOGRoVElBZllLNFQ4NGNzZDdUelo4SlBBc2c1QUQ1?=
+ =?utf-8?B?RG1ZSDMzdTBCbEhManRBTDMwOXB2YzFFRHp6aGhJVGVoYVdvRndMUUpCcG1N?=
+ =?utf-8?B?bVBBV3hNNU9QZEJpcVVFMXNSSmswN3JDeklsNTZoWFA5YWdHR0ZwUVBWMlpR?=
+ =?utf-8?B?bFJWMzZJU082cU9wRGpEUTN0cmo5ekh5Q0xpM25UT2pyRldRL2tEcGdFZUI0?=
+ =?utf-8?B?NUxVMHVlZ2hFbC96ZE8xMjRLZ2p2WENYV1hlUFMwUStoYWlKekxua1VaZlZh?=
+ =?utf-8?B?SFZrRHJ4eklZQVZBYUxrZFhicDBGTXdjODRSd3FkSk9LU09PZXJmakZBazJR?=
+ =?utf-8?B?UGtyTGFLVmFKc1gvbWtXN2YzNkhFSjlqTHdFWUZiVzhydlRDendkaE9hTDVT?=
+ =?utf-8?B?TUpFMVFvM1dqd2hYVmlFUE5uMEhYOHZubHZROE5hT0xXa0VTWnl6eWpBUUNI?=
+ =?utf-8?B?ajZiRjdMdHM3dGM2Nk5WSXlLOUZza0YxMWdZMXZLSTNSYmxSbVhlMmVPSGh3?=
+ =?utf-8?B?eWkwa294MGRsODRPQWpxWUdHZzRVU2NGRG02RTFkdUd0VVhXTnoyQ3dsVjF4?=
+ =?utf-8?B?cEV2Nlk0YUhsWHVTOTdZMHRWL3RBREVKdHNucWhDdDYwTjBkZkpKd0NXdkV4?=
+ =?utf-8?B?UXRZMU1nVWJmdi8yd29qL1JQdERSZnpudllHcWZyTjdUL0d1dFJTd3h5TzdT?=
+ =?utf-8?B?K29ocmdlamRlNjJLUnkxTDlEU1g0K0NGblJ3N01QVmhZT24weGxUZnhCaUFy?=
+ =?utf-8?B?eEF2b3o3K1Z5MHNvVXIvOWNJTVd1Z2xuQlVSdlRoSjM1UTRKVG8zRDVaNmZh?=
+ =?utf-8?B?RGIweXhtUkpvWWVsR0JvYVBFd0h3Vks0dFZzZE0wdWNjaWxOM2RKbko3TnB5?=
+ =?utf-8?B?c0toOHYxTWdEV3JneGtnTEJqN1NpQlY1QnE3cmFjR1ZVS2RkR2JuTnNaSlBh?=
+ =?utf-8?B?M3VjMlBLSFBjWFMzOGN0QmRwd3R6d2xoQzFWbkxmUXZmOW8rSGRYOTBJempI?=
+ =?utf-8?B?azBneGhONUZQYTF2TEdraVZjU1NVdVQwcUlSaXUvY3lKc1NwVkdDQkpnY05C?=
+ =?utf-8?B?R2FlMVRNY1BKWlZoN0ZHZWk5ODhkWGREemxhMUNGaHZ4VzcrcWpiYzJ0K2RL?=
+ =?utf-8?B?TUdRcExsQUJpaWRkZTJKZUFtT3V4Zk01SGNmMm0vdFEydHJ5NndQWEcvUEpV?=
+ =?utf-8?B?anR0K2tnUHhiNkhVMk5FdWtCcG91dTVtdzJwYzRQNFowVzhkNktCVTgvWFJO?=
+ =?utf-8?B?emZ4SDNiWWt1eElEWExteTJhUHZWdjVoZUdoY2gyM2tSVHp3cUNQTExvVDM4?=
+ =?utf-8?B?cTU4YktwdHVzM3ViQ3JLYXVvOVRhd1ZEengrS1dBeitjaDVEUjZtcER6TU5Y?=
+ =?utf-8?B?ZG9mN0trZmlPd1lJL2RJck9CN1FQSFF1a2NRSFBwNlVCN0FBZ0lQcmc5UlpR?=
+ =?utf-8?B?eGk4OVJQWGI0VUxHejIxR2lhUG03M0h5Vkp6RUhvYm4wbFdkMjM5bm1sanBv?=
+ =?utf-8?B?NW93RmJJV0JYYnRNa0x2akdOUzhXMFFEN0JmNkc2OHJzelFQcFpnVzJsalBZ?=
+ =?utf-8?B?MUY5a0dSMGF5cGl5cldmQ2x3ZVRLYzd0bVRsbVBzekZnQnRkUXBmV3ErZENy?=
+ =?utf-8?B?TWl2RmRKYUd2S1NxRGtFVDJSa1pkeTM4TGovR0JwT1B2bG5CN1pVc29laG53?=
+ =?utf-8?B?dDhJbGZpbHBOclMyWFBqSUVLNVAwWERmNURqd21uaVA0SVVOZSs2T1Q2RWcv?=
+ =?utf-8?B?a2dHZ1hjQ1FJdWVjdjZvczZEaGc3WG1JSVBkRit6dEZHUXRNaE1ZNGQydko3?=
+ =?utf-8?B?V2l6Nlp5NDFJU2RuNzdZMUFoNUpjVHlUa0RNanJoYThTN1hhc29RNXpybDlC?=
+ =?utf-8?B?ZHh0Nnc3d2dsSVg1bUt0UFVLak16RTFTR3pUd3FmN2hmL05uUHhjcm51bDZu?=
+ =?utf-8?B?ZU9CRSsyZ0hEMUIzUkpibWFzVmxLSDh3Y29ZaytBRWJJTlVFSE0xUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70a2f064-1b39-4925-e1c8-08de727611c4
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 00:54:16.4652
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4WE6qpzihtxDMo2i3Wz3Hsw33DzAWz08OQXiyUcjqIhoeOPLyuSrB9rL5TnRss6kO+pE6Qu/LJodCkjRZ7CijQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5675
 
-On Sun, Feb 15, 2026 at 07:42:05AM +0100, Dirk Behme wrote:
-> On 05.12.25 08:18, Byungchul Park wrote:
-> > wait_for_completion() can be used at various points in the code and it's
-> > very hard to distinguish wait_for_completion()s between different usages.
-> > Using a single dept_key for all the wait_for_completion()s could trigger
-> > false positive reports.
-> >
-> > Assign unique dept_key to each distinct wait_for_completion() caller to
-> > avoid false positive reports.
-> >
-> > While at it, add a rust helper for wait_for_completion() to avoid build
-> > errors.
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > ---
-> >  include/linux/completion.h | 100 +++++++++++++++++++++++++++++++------
-> >  kernel/sched/completion.c  |  60 +++++++++++-----------
-> >  rust/helpers/completion.c  |   5 ++
-> >  3 files changed, 120 insertions(+), 45 deletions(-)
-> >
-> ...
-> > diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
-> > index b2443262a2ae..5bae5e749def 100644
-> > --- a/rust/helpers/completion.c
-> > +++ b/rust/helpers/completion.c
-> > @@ -6,3 +6,8 @@ void rust_helper_init_completion(struct completion *x)
-> >  {
-> >       init_completion(x);
-> >  }
-> > +
-> > +void rust_helper_wait_for_completion(struct completion *x)
-> 
-> Please add `__rust_helper`:
 
-I will.  Thanks.
 
-	Byungchul
+On 2/20/2026 11:48 AM, Danilo Krummrich wrote:
+> On Fri Feb 20, 2026 at 2:09 AM CET, Gary Guo wrote:
+>> On 2026-02-19 16:24, Danilo Krummrich wrote:
+>>> I feel like it makes a bit more sense to have an entry for the entire class of
+>>> "RUST [FFI]" infrastructure.
+>>
+>> I don't think so. Most of the kernel crate is doing FFI. We have a `ffi` crate
+>> defining FFI types, we have `CStr`/`CString` which in Rust std is inside `std::ffi`,
+>> etc.
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/rust/helpers/completion.c?h=next-20260213&id=1c7a6f48f7eeb3014584d2fc55fc67f0cbaeef69
+> The idea is not that everything that somehow has an FFI interface falls under
+> this category, as this would indeed be the majority.
 > 
-> Best regards
+> The idea is rather everything that is specifically designed as a helper to
+> implement FFI interactions. (Given that maybe just "RUST [FFI HELPER]"?)
+
+I do tend to agree with Danilo on this. Unless someone yells, I will change
+the maintainer entry to "RUST [FFI HELPER]" for the next spin.
+
+thanks,
+
+--
+Joel FErnandes
+
+
 > 
-> Dirk
+> For instance, this would also apply to Opaque and ForeignOwnable. But also CStr
+> and CString, as you say.
+> 
+> But there's also lots of stuff that does not fall under this category, such as
+> pin-init, alloc, syn, num, bits (genmask), fmt, slice, revocable, list, ptr, assert,
+> print, arc, etc.
+> 
+> There are also things that are more on the "partially" side of things, such as
+> transmute, error or aref.
+> 
+>> I feel that the FFI infra is the core responsibility of the top-level Rust entry,
+>> while specific stuff can be splitted out.
+> 
+> I think the core responsibilities are compiler and general design topics, such
+> as abstraction design, (safety) documentation, etc., as well as core language
+> infrastructure, such as pin-init, syn, alloc, arc, etc.
+> 
+> Given the definition "helper to implement FFI interactions" I feel like we have
+> much more infrastructure that is not for this specific purpose.
+
