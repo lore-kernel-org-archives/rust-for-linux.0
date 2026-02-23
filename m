@@ -1,113 +1,105 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD6534EEEA
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 09:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0312334F241
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 09:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771838557; cv=none; b=Swm/am0J6GooLOy0ljAdjtVrEunBVJW1JtXq0fPH+ttE/WFqgOTvdSNleV3CHujbVtsxAV2atsht75vSN4ffzRGfLkyLdzhmlaAB80QdrkWW4Vdsqu8ACwhzVxdn/7hym93mdc+qitPozhb7N2kzTXyWHL5dyNkmxJpAlsJh/vM=
+	t=1771839533; cv=none; b=jPL0zpFXpUHWL4uVsgTVqJDlhTT9qV/KnvWQdtQPhdiRrosAmOTBwz5KQ5qKsPyeToPasBnZgzUNuecyV0RrylvhmvXWy7SdaITXSMRqaujimxZ2GalOrgcljBOl76Vz3Y0WOgupnAME8QmFgJGJ+fI52xwLBytJnRJ1nnbEr2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771838557; c=relaxed/simple;
-	bh=ewIfZ3EnYBpT23se9tTPnU3gYWUWURZsHjmHpqyN3Hs=;
+	s=arc-20240116; t=1771839533; c=relaxed/simple;
+	bh=gxy+/s8L6Svy+u85I+jjvexOSnsf4iX1hFPbmrGKxz0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BI2e2+xjhAG5QC4WrrXXyCCTt1edEk6nhSFOI+6Q4dLucXFBUJRSW5ggED2Py92PmhX3iEzi1S5jKe9QDoFS0BP8ix5cHdKVl7fOgo01LsiQigQLhg5FgALlST3KKC0VGIDR0jyyNHUyfe5bCMlS9YZ6P7JH9RgKvlzKFWbhhMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UqytCUmz; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=l1eGaacYdoxLTyC/2O8OTaIX8k9nnb+1YdRZg2cMypDyiDN3z6a3pdDiAICsQvnO2a2LjXlbkIQJ5JfYTIlwtEmKfCxDQvU3VFfN8/LnDvHznhoQJF2z9focKPYQvHSRNd0YU0EotUqQeRzhpxDdC7pXLuvxtOEk2dRrsIdqm1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2aNcC1xX; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UqytCUmz"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4362456500eso3813238f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 01:22:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2aNcC1xX"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836abfc742so27325685e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 01:38:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771838555; x=1772443355; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6/py8COuiIEGDu7/nY5qfOGmBj2ryx1hQ7/J9NPZ4C0=;
-        b=UqytCUmz2gJRGb8qkstqDev0OkUD/hT3mSReEYNV5EdVOdRzSwNA+KR2zIlueIk+kH
-         Dcx53Y4O+4kxfxSiUBbPXqUHtnEi9OoVKr0EgOBXoqGwXcjaqKratfQSo5tJ/9e77+PX
-         UdGjtku2sdJvdVPDjs4ThskFguQG/JrIokiOc1oMamSGJmLv14t3HRnND/ePHupgQPOt
-         7gG5LYjG1cOptQbGK+kkShWiZyDdbzE497/QXNbbDq9gFviABFDOE2X+ISsMKLX0TG1U
-         +MVyqhgOPfX83D+WN9OOpBS1L9jabc+p58I2p3FUrxrB99F6xYieJndtSI3TbqCtb7S5
-         Vkcw==
+        d=google.com; s=20230601; t=1771839530; x=1772444330; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CEki8/3kEPkYK4GTCiTKeIkEztw6O4in5DWfsgS0OCc=;
+        b=2aNcC1xXEm8NcuqFzoXyofnuuZeiu3En9zTHlK8qSaiuwzA8CgBMRMsJpMS7yfAcIy
+         5MTMJUfbV+QFjahRIEAN82ph642Zf+GYKAhpg9q9qm3+TejGwIMv5iH1cRXrKW8ZzQzS
+         BmrkMvFEkN2nB11jPlxjFc6EADxF2dnAvpy3eCtH8rTprN3vmK+v9wwaaPxSOkHylgqE
+         4HfBV91EAQOrh33ZB0YhYtjAMlICht85+Sz8XjHAsHeof0gk0qLFpDITp8GcJukZi3SR
+         QacoH5Dr5d204kICahdN61rK/Z7KBxoRP4ckYT9wAkJTCEik63ysBPGaEAzXvxoj9k04
+         UHmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771838555; x=1772443355;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6/py8COuiIEGDu7/nY5qfOGmBj2ryx1hQ7/J9NPZ4C0=;
-        b=VFW6BXX1hlY10g1mY6FJGW9Hs1w8EoZQb8u/7XQmf/C0u5aAyfJ17Z7isyLTckUbt8
-         1qNB9J2Y4JhfJT54gqmyVuw15iTwsc443ydTcRBbgpgFcbg5wnBH5zhtVz1KQwOMTtos
-         cmMiTzPtteIoL3qIIl0x53T5UTbd6NmyIH0zw2NhDAj3TWHsERkfkzpOfHRuM40mc1f/
-         Q5BPb69elWT1n1yeSO4tYLYEe5YjhFvuux68z9ZQybxvM7lN50EXIngkL3USnRkp8kU1
-         ou7pnJEtAhLxOSMd/YDbf2lkV1g4NtK2dK+FkueXiFpgt/YWGQAerKXCYGM/hIrxAw86
-         IVJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgZieuUE6AlggX03RIlLJKl2NHr7OFI025W9iLalOZNf2HU9wKKXryVDRT12KXAwnF+DtCTIFK00StRTBqnQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNRlGNEgKaC/sCwqL80cqk7FeDAHXuaVVkb8Ij7gZ+i7V7V86a
-	9s26ZUadflUxhTk4c2Y10qEofxpk/tQqJpEMsg1WI6zgCUnMjwCKvsVgS6tacMtEHKlrIr67zbs
-	6nQJvPItPq878xLH6+g==
-X-Received: from wmga22.prod.google.com ([2002:a05:600c:2d56:b0:483:49c9:7c2e])
+        d=1e100.net; s=20230601; t=1771839530; x=1772444330;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CEki8/3kEPkYK4GTCiTKeIkEztw6O4in5DWfsgS0OCc=;
+        b=v/rHIeePeLb+UZDGZtjJatkCF66Ijy3LJGk7p+HIHUooGjJ2dJC6UD4iNSHQUMcOo/
+         eAQxyjOqXxfm48pf5NfXJKzn/WgNFp521oHZqwGZUwSgIO162V52H4WG9jS4H6rziXNh
+         gHX7+bGUa8JbW/TUj/JzwYPbv2bUwYfFyVyi6egIU9YhZM36Ob/0HjVsL8BDl+hWBh0A
+         sO9p9p4/kTQawOqomnryxnR/V9qkmL2bTc1bWHjfhXtezDkACsujQvo2R+g5PW84t2E4
+         p4B/owyj73b92egmU1P99AhMQd8rkh0P4tKjwZHC19IJfOcd8K2zxqs0X7JaC3w8QYux
+         YWPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVorMABMBJDkUzi/4Z4oB5CVpEDOBjIJ52fPkf7Cwvdiz7hz5u5CRU5n4qZhUnxRIxl6ut7ypfZnnHIhmEDCw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeFytF/u5Eed+9L/fF2/AkpP7Si6T/vQKy07+ZJqLy/MUgX3xL
+	1q886Ru6bGUYvbl7ehHcl4ee7FnndSMXo7cBSy0n+MbWeaWXOTgBRkwTrf94oWPqYxPRFYghhjP
+	9vcMBN9MXmI3ZFh4jJw==
+X-Received: from wmg8.prod.google.com ([2002:a05:600c:22c8:b0:47e:dc0c:276f])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c8a:b0:483:71f7:2782 with SMTP id 5b1f17b1804b1-483a95fc09emr129349825e9.12.1771838554485;
- Mon, 23 Feb 2026 01:22:34 -0800 (PST)
-Date: Mon, 23 Feb 2026 09:22:33 +0000
-In-Reply-To: <aZu6cSqnvO91w1m4@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+ 2002:a05:600c:3e8d:b0:47e:e779:36d with SMTP id 5b1f17b1804b1-483a95f8bdfmr128430325e9.23.1771839530398;
+ Mon, 23 Feb 2026 01:38:50 -0800 (PST)
+Date: Mon, 23 Feb 2026 09:38:49 +0000
+In-Reply-To: <5523ddd6-fda1-445a-9235-54e778df2694@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260210090023.2587534-1-mkchauras@gmail.com> <20260210090023.2587534-3-mkchauras@gmail.com>
- <CAH5fLgi3Owm4=4g8wQ5Rnr7Y63XJ1D8apOdkewW6WpRfg6vV_w@mail.gmail.com>
- <aZtT4MH0Q8Ic9ZiM@luna> <CANiq72nEam8n_daX5LyYrpH=i71k+pb+HLn6EEPdJJc-Zi9Q3A@mail.gmail.com>
- <aZu6cSqnvO91w1m4@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-Message-ID: <aZwcWfYkBnivrgNa@google.com>
-Subject: Re: [PATCH V6 2/3] rust: Add PowerPC support
+References: <20260218205507.689429-1-joelagnelf@nvidia.com>
+ <20260218205507.689429-6-joelagnelf@nvidia.com> <aZlz49VtPA0JbEGx@google.com> <5523ddd6-fda1-445a-9235-54e778df2694@nvidia.com>
+Message-ID: <aZwgKcdEnSHyuSLG@google.com>
+Subject: Re: [PATCH v10 5/8] rust: clist: Add support to interface with C
+ linked lists
 From: Alice Ryhl <aliceryhl@google.com>
-To: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Link Mauve <linkmauve@linkmauve.fr>, 
-	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, 
-	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
-	peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Dave Airlie <airlied@redhat.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Koen Koning <koen.koning@linux.intel.com>, 
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 23, 2026 at 07:56:02AM +0530, Mukesh Kumar Chaurasiya wrote:
-> On Sun, Feb 22, 2026 at 08:11:17PM +0100, Miguel Ojeda wrote:
-> > On Sun, Feb 22, 2026 at 8:07=E2=80=AFPM Link Mauve <linkmauve@linkmauve=
-.fr> wrote:
-> > >
-> > > Should we come back to describing the target like I did in my first
-> > > patch[1] in scripts/generate_rust_target.rs, or should I bring that t=
-o
-> > > Rust to create a powerpc-unknown-unknown-softfloat target upstream?  =
-Or
-> > > is there a better third solution I=E2=80=99m not thinking of?
-> >=20
-> > We are trying to stop using the custom target specs, so we should ask
-> > upstream to give you a built-in target you can use (or equivalently, a
-> > flag to do what you need, but I think the idea is to not have such a
-> > flag).
-> >=20
-> > i.e. even if you used the custom target JSON, we would still need to
-> > ask, since the goal is to remove that script entirely.
->=20
-> I think, disabling altivec, fpu and vsx with compiler flag will work.
->=20
-> What are your opinion on this?
+On Sun, Feb 22, 2026 at 07:41:44PM -0500, Joel Fernandes wrote:
+> Hi Alice,
+> 
+> On 2/21/2026 3:59 AM, Alice Ryhl wrote:
+> > On Wed, Feb 18, 2026 at 03:55:03PM -0500, Joel Fernandes wrote:
+> >> +impl CListHead {
+> >> +    /// Create a `&CListHead` reference from a raw `list_head` pointer.
+> >> +    ///
+> >> +    /// # Safety
+> >> +    ///
+> >> +    /// - `ptr` must be a valid pointer to an allocated and initialized `list_head` structure.
+> >> +    /// - `ptr` must remain valid and unmodified for the lifetime `'a`.
+> >> +    /// - The list and all linked `list_head` nodes must not be modified by non-Rust code
+> >> +    ///   for the lifetime `'a`.
+> > 
+> > I don't think C vs Rust is useful here. What you want is that the list
+> > is not modified by random other code in ways you didn't expect. It
+> > doesn't matter if it's C or Rust code that carries out the illegal
+> > modification.
+> 
+> Yeah, this is true. I will change it to the following then:
+> 
+> "The list and all linked `list_head` nodes must not be modified from
+> anywhere for the lifetime `'a`."
 
-I think you can and should submit a PR to add a softfloat target to
-upstream Rust right now, and I believe there should be no issue in
-accepting that.
-
-If there's a workaround we can use on existing compiler versions without
-the target, that's great too, but we should get the target in upstream
-asap.
+Ok. Perhaps you should say that it must not be modified except through
+this CListHead? I guess it depends on whether you want to add methods
+for changing the list via this API.
 
 Alice
