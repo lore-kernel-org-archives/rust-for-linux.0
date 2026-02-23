@@ -1,247 +1,178 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012007.outbound.protection.outlook.com [52.101.43.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C09168BD;
-	Mon, 23 Feb 2026 00:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771807312; cv=fail; b=lUpRp91yjOUVcpm0kgBW/SRyhCGbQV2UWnjxgqSs+nOlnP5yUVuYAV/uUVPR26kWndpPVVd5nkUHMUGaHNTW0pFbYuWNgSIwYGRG3XQS9u36FbnD+45eOAWewrwUf6n56QlrmwqkNTuObdL1JoTrcyeKHaRdsBjuzhdmvLNa/AA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771807312; c=relaxed/simple;
-	bh=D9WwNT71HWMLa6AnAJCUMlDCqqZ3GvsN+a+otR1Q04g=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=trG1XoSW79BbO3M8jPJecu989XRkK7q//aLIbKfu2j7FArW0/iw7nTzCfrvFvRebV7xFwqIdK7Q0/zSqomW9sFqWLFsuYOIzBg/yI2a9C+QQ0aFT929DvICUVZFf0NnqudZM9jQv+UlxMLMzIXq2B41cz304EWQW9pFFKJO8lzI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ob+ryKmE; arc=fail smtp.client-ip=52.101.43.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ob+ryKmE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xLd+brg1mf3etodFQlE6f5G5I3vXumwydbaa9dBVEoAEUHeZEAUcUYFFsHKvAeGtg40a06ZWY9/Dn8r3IXF7pFYZJdPpdBsipakMk0S+y9jTND8om+PimL3KlXDU2rmnWoZIHy/5EPiuFZZxEtT2mNv8/8RdZ++m84vAdQroBUYZ6NvaJ7oxWgJUxfJjj10HmJZpWiss4LXR0J/o45gYXaSsRSXZGtdFJl3K2PwFWc+NX4YYOwTOnH1B3zkszYCf8JoWDWnqnRWlzdIxcbnLJAnqKT+JWSbfhd7e97wts6NBu8Fz503wUbIUd0qXrDm2SvKQtVIg1YLM6GtUtgXBGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PhRXgHQ4oDsEdOiVXzHJa36VfEbotkS5yl9gDa0gZpk=;
- b=ILMk4d3m5Nh12YqbUPDi18hsQEW4Riinjejfb3c2tdVtE09OZqNgi5/kqANlpS3Bghz4Bj3UJwAhVgokioRB3r11dW6Gab5Fkike8mX2ABscuLCQZaEdWsvcsu96fhp9Yc4aCezMqAC07lDA4WW2/NKNkAyxDRExJPh2oMRrHsY+KGOtcsa/1yLo8uiws36vao02zEvsC66Ysp1EeOWJdJgE/Q5J9+NgmkbD/5erN7A/NVC5npn+EANcfRXMdB+LKK5wzPa+vXtfKLXlcy2Obs+GoThvEZM+Cqgf3z/3aVNv+VtE05mjURCb3QoNtOe4YZF4+E6eNrBkUjGNCwR+iQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PhRXgHQ4oDsEdOiVXzHJa36VfEbotkS5yl9gDa0gZpk=;
- b=Ob+ryKmEZrKC9saLKjgvF5Mkh2aa9j0THVKz3W8gjilx/facTLqbae+vhYucF0PmuVbjacvb4hYE+2VjCf/tsQ5CTcesgetIZqph1hrPRZUEMfVA5WB7TanKPDk/2T1sfZUVcUZtkvybedG3x3cZqKd1wblOvj4u8dp+6j5bpKVf37PkMmIeWqAWq9KIxktjH6YSNbdRhwHE5OYtMdPNR7fktTsUAZ/3pbbr9agu9Nv1taL8r5CzBbaGsBb5Hxhy9lw0QAtSxYyp5gERDEtKOTifyOUa9WHM0mq26GeB85z+b1NyXKDC4A4Sl05PK7ByosXinGmGNp3I2+nm0EQpiw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- DM4PR12MB7720.namprd12.prod.outlook.com (2603:10b6:8:100::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.21; Mon, 23 Feb 2026 00:41:47 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
- 00:41:46 +0000
-Message-ID: <5523ddd6-fda1-445a-9235-54e778df2694@nvidia.com>
-Date: Sun, 22 Feb 2026 19:41:44 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 5/8] rust: clist: Add support to interface with C
- linked lists
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Dave Airlie <airlied@redhat.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- Nikola Djukic <ndjukic@nvidia.com>
-References: <20260218205507.689429-1-joelagnelf@nvidia.com>
- <20260218205507.689429-6-joelagnelf@nvidia.com> <aZlz49VtPA0JbEGx@google.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <aZlz49VtPA0JbEGx@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR14CA0007.namprd14.prod.outlook.com
- (2603:10b6:208:23e::12) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFF786334;
+	Mon, 23 Feb 2026 00:47:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771807647; cv=none; b=AN2kq2+tJpd6GF7qQ8/CoHZlLVa68UUcmfcTFZaCYHluIesGTHIK1Fh3Oo+PVzqZ3XGPm77itLHTlYPAdpFadux57H2F4VRo8qukXdVCopbg5/rWCcIHajmTFt4vJr4Ghl6u6VKpZYBlzLTBxXW8gWWCnKEE4PFswCB3CV1dryY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771807647; c=relaxed/simple;
+	bh=9Rg2ovzdHFVJcpJOm3vuScJXDsF1IsJTiaRKGC5EjjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dEkdeH+hEWY2qM23Rftg622dmemVJ9M1Q/C1CJJ1nfKZKo3BI54AbErL8BSSUDaceevSykTJwIJJkqKAxDX1Ay2eZQaASNieXyhFNQIIwVcat9OIdrd34uvd9yBbEEZI6YfxQCnTLc/4vZLsPxj69Yi/ZJwYvTfcUqK6+fwXjoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-c1-699ba00d3559
+Date: Mon, 23 Feb 2026 09:32:07 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Dirk Behme <dirk.behme@gmx.de>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v18 31/42] dept: assign unique dept_key to each distinct
+ wait_for_completion() caller
+Message-ID: <20260223003207.GA44876@system.software.com>
+References: <20251205071855.72743-1-byungchul@sk.com>
+ <20251205071855.72743-32-byungchul@sk.com>
+ <ab0b9f9c-3a05-42f3-b4a7-ddb6ab0d37a4@gmx.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|DM4PR12MB7720:EE_
-X-MS-Office365-Filtering-Correlation-Id: 78af78ee-32af-494f-0604-08de72745302
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TlNRcE5xcDU4cFMzckVYamZPRXFmcEZ4K0JuOHJJeElZWVVrbUpMRFcyckk2?=
- =?utf-8?B?dEl0WFk0K3ZYa1h3dkxieDJaT1dWRDlsVHpvdW1LaURRRGRDQVo5eDFQV2VV?=
- =?utf-8?B?R3Joay85RHZVNExwNHJpZzhCaGZjbnozK0RDcVMvTGxTRjZMUHYwQW1XWC8v?=
- =?utf-8?B?VGN1eU5CdndIenMzNG1tV3Y4aGJMWVpMdUV2Qlk4YlFyd1R2VGg3eDVSTDQ0?=
- =?utf-8?B?UWJGMGVXaDdRRXpnbzZCdkh3SFE3bmVJTXdQNmpJZkZ3NmpSTnFObGhoTVZo?=
- =?utf-8?B?RjdCUmRGY3k3UzdVV0hnVFEvSjc0UVR3NEVnTTkrL1haTm8reVY2RlFwR0Ro?=
- =?utf-8?B?NVJiQnJmMUxaMWRVMVZ6am9KcWdHNG9Vam1EbDNIR09uYTFBT05aaG00Vzdy?=
- =?utf-8?B?TUxSVkhPMVZ0KzZOMmhvUytaQXNNNGw0WEpyV3UwaWpLMW5rUGpRUXdiRjlI?=
- =?utf-8?B?SjRTWnUwUE42MDU3SVh5VW90d0RJMVdYV0c4ZytnbzZQSSs2dzhWbGZ6MTF4?=
- =?utf-8?B?N2FSK3FmUDJTRVBsU0RheEFuNmIzS0R2d1NFcjFXMk1BSmIycVlnQytkbnJm?=
- =?utf-8?B?NCsrVXFEamVrWjF6Q0xzZjRRQlQyOTA0N0V4Q2FJa0p5VEdMME5oSlZhbWky?=
- =?utf-8?B?YldFM3l3SllKSzgvRUx5bStVbmJPMHNEZG1zc01Hd1BGQU1STjlSOXJuZGxJ?=
- =?utf-8?B?c0xWNDYvV2lzR2xhcXVpZkphRmlwdzMvUHdtUmJoZys2VFRremtoNkZyeTFG?=
- =?utf-8?B?T0VlMER4MDlxN1UyQTR1QWp1UmR5RVVNQzF0QUJvWHhhd0xYcUE1VXgyK05S?=
- =?utf-8?B?dVNUVTUzVXltcS91a3puaGp4UDErcGJOamlnTmd0bmVrOUZXbTd1K2NjS3Fr?=
- =?utf-8?B?UENUZklJR3RvL0pCb1paV2dSL1dDSjc1cE1OTDJuZ1pTYjhNbGZLb0lMdlI0?=
- =?utf-8?B?NlFiNE45RHV2aHlaU05OUG1aZVo5MmhPZmVFenlseWlqZ2NBVUs1SVJOc2xv?=
- =?utf-8?B?Q3BRQzVPR2hpREw1SEt5UU9KN0NTcFRaMzFDZXRFVFBOZkRHdjZwYU9yU1Jv?=
- =?utf-8?B?SDZRa1FxVUdFLzg2alpxd25lb0FHeURPV2ViWXZKei9qRDBMK04rZVdockVE?=
- =?utf-8?B?dFdUaFU5UXRINjcwd3NGd05Zai9rcGIvMUZaU1NPMzBWSUdtbGc1UGloUUta?=
- =?utf-8?B?bmhkWVBkckx0M2JaOHgzV2FpYkF3K3N1TVZPOEdZK3VnL1pZUFNkUXNBNHRv?=
- =?utf-8?B?OUtRRUdISWtVYTJHd2Y1cnYrNCttbTJBMGRZYlZpYjZ6S2J1TjV1RzF0ZkZI?=
- =?utf-8?B?ZE1JQ0tETWREUnJMM2JqblQxMS9tQ29MREswTnNmUjFsMnNHays1Y1VmMldY?=
- =?utf-8?B?d202a0Ftc1VZWXN4cmtKSlVycko2R2F1WEFQaVVXa0xNaStCMXNoWCtXNHRV?=
- =?utf-8?B?ZkVCeS95cE9xOU5rak9xY2JNZHVWeVdwNmRWQUNiZFlBNjlpZDgyRHo1K1Ry?=
- =?utf-8?B?MXVyUzQvOUl4UkMxVE9FRnVGR2JsS0JVcW5NaWYxZ0k5c3MyQThBN21BR0JG?=
- =?utf-8?B?ZUo1eDdlSGIwdUV5Y0tkODZpN1FsRG1OU0EvM3ZFVHRJZnhTdTV3SE5xU29j?=
- =?utf-8?B?TFA3UG9NYW9KTTVtRWx4WDR2WmoxRmMxN3d1KzFHSmNGQjMzRVRvNU5qVitR?=
- =?utf-8?B?cGVPNEtoM0hscVcwSjNobWdBL2U0RHNZaElaM1JZSWRJR0pTUVd1cE5QMExC?=
- =?utf-8?B?eFJCVGRpcGNvbHZVUndubGtCYjFzNG5OUnlCcWdIZThvTEZEbmlGekFiUmpa?=
- =?utf-8?B?UnFiaEY5a3VBWEFmSm9HV2tDby9URHdjU29IRUZzZXBPVng1dlJKcm4vSENn?=
- =?utf-8?B?MDlYWlBIS0YwWERvcmVWQStuMFhlUzZoS1V3Qlo2TUppVVhsQUJGNHZ0eHJC?=
- =?utf-8?B?emp2T2Y2LzB6VEI4R0tLSXVqbFZJeGFieHpqaDkyQXN0ejZEQWk4NHZ4QzU2?=
- =?utf-8?B?MnVrc3V4cWoxUlJlL0dYNkVpSzZZVUZkZzl2M1Z4bWRYU1BKd0xld3JpQ0dx?=
- =?utf-8?B?dko2a09nNnBQMCtRTDUxM3lhWHgrejEzWmpvS3dKdHJLMEdEd3ltdFdUckxG?=
- =?utf-8?Q?+Zjc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aG9MWFJHQitIUzJNelhjRnpvaWc1Y3IwWGJlbGJkYU5Edm5USzVFMFVEQWgv?=
- =?utf-8?B?RmZ6djd2U3F1ODFuM01tME5qNEtxeXBEZllCKy9yc01VUU9DeXBUc0Z5ZCs0?=
- =?utf-8?B?eXBWK3FvdThtTnJDejZ6RDMzZEFRaHdNZTBIRDBoN0hFNFMyZWVtcit5UzZ0?=
- =?utf-8?B?SkVrZ0REWno2SExpUVZsczNxZ2JYREVmUEFqakR2a0hab1dSb1pOSXNsUG95?=
- =?utf-8?B?MEdjWVhpajdITFQ2VmxTL2RRckZ6dFF1emxHek4vNUVIZmRwb3ZMNG1GY1R2?=
- =?utf-8?B?V0F3cStZalgvb1VPNU0zV0sxbkdiNTdHYVdMWUU2TmFUSzdCdk55T3NQaTB3?=
- =?utf-8?B?c21tMDZ5MnBKbnhaenY3bFIwUmRmTjc5eitKdDFSbmdqV0lpcHVTbkQ0N3Rs?=
- =?utf-8?B?WGxLb0dsR2ZxYVpkSWJpRXhYTU81NEo4NEFJYTFEUE1HdTNUcndTV2FaM0pY?=
- =?utf-8?B?NmRkbmxSeUJLL242cDVpc1UyZTVEcG0zbDB4R2FjajdFTjN3L1lMT2VoY0NN?=
- =?utf-8?B?TXZ1Y1BCTGwxdU9zOHBXaWNld1hVekpxZzJWRXh6VUMrUTlCUzQrL3NKbEl4?=
- =?utf-8?B?S0pJZ3Y0T3N2ZnVKdkZqV3UvS0NxUzBDb2Vxc3dDREVKVkxIOTdIUndvY0pP?=
- =?utf-8?B?VmNxbGR2dmFsazhHNWQ4NGZYcGdhUEVwQXNRQXNNaHRqVE9RdVNxdm9xcCsy?=
- =?utf-8?B?TFpxRGE3RnlmbkhRTWJidjUzd1U5K3dWcllzOUNZVldNa0JOdHVMZDY0cDN4?=
- =?utf-8?B?ZkZOMmJlQld5R3ljelBqNTlQTnJMWWJzb2o1Yzhza0dvT2x5ZjV3OGEzSjhs?=
- =?utf-8?B?NFBaRzRrNEJzYjJFZDNIUldvanBMVzV6UnBrVFI1TEN3QW5oMHM3dDBmQTZr?=
- =?utf-8?B?UXlnc3FRdzZzZ2pSNU5mQ2lQZjdZOVFSaVFJQThlMEs2ZU1Xd3ZqOHFVWVpF?=
- =?utf-8?B?V0Z0Vk80WWZ2VTNjVGgrdklrSlc1bCtycGYxZVMyakJGY2dUR3FWS1hnY3FD?=
- =?utf-8?B?ZDkyVGdDaThudUJuV0lFKzNjMk0xS1VyZ2V6UTQzeUxnaXMxTmFYSFFjSnFv?=
- =?utf-8?B?TVUyeFM1ZjQwb2J2TjBBTkRUUXZBTm9DZHNWOWUrS09oc0lYb3dTclNwY1Zw?=
- =?utf-8?B?cHZtWEtJK3F4S21HT1Y4VHVMTUFkd2NlbXJCVHNxTVdiQzFNaklIQnloemZo?=
- =?utf-8?B?K0pmMTRQT28zcm1rdzZoSkgrWWxUTDN1UmNNbDBWbjQ4eE5hYzNmbFIrTmJv?=
- =?utf-8?B?V3FFZm53ekc0MFFoTjF6L1FWc09CS2NHOUlzRU9zNUZubTFRSDRiMDliZnRx?=
- =?utf-8?B?UTh2eXRZaU5rZ1FHSnhZd0hNSlQ4eTIrQ25oeTQ2QUZvZlh5ZnRGVll0WlNu?=
- =?utf-8?B?SlgrKzU1QjVSMXVPMkRaQjJvb2M4a3hwWGVWZmdIc3hLcnZnTkk1dTBJYlE0?=
- =?utf-8?B?a1BKQzl2YkgySjhGVWYvdnZvcHphWmRac3RNUFRvbkl4U1VTYS9zbUNMSmlO?=
- =?utf-8?B?OVBvUjhCcmdvNmpBZ1MycjJ2UjU2cEhZRWNMeDZWbzBRKzVOUmJxNnE4R0pv?=
- =?utf-8?B?c3owOXhZT2RoTEdiWkJFbnpUYWkzOU5YL1pBNWNEZmNVeXYySElFdk93NE9l?=
- =?utf-8?B?UFczSHk5OXBpS28zZWdHcUFzaGM1L1d0SzllSjFDbVh2aHU2R0JQYW1PeHRa?=
- =?utf-8?B?WmdSTUpuSVdrTXJLSm1kanA4dDZjYjB2TnZnUWM1REIra1dNVzJIalRVajlm?=
- =?utf-8?B?dVZaL1BoSG5FSDFsWHFYR090L1JzcnV2V1cvSldzTnB1N3pVYmNuTjJPYVZv?=
- =?utf-8?B?b09JcmdyY2NKZUU2MDNyUld2U2REMkJJZW03KzBTUC9zcDU2MHpGd1JJQ3RJ?=
- =?utf-8?B?aVR4WUd3b0ozbTlpNHRjdDFabmNWcjZ6b2x3TUpVQnMxZndJcXhUeTdKZThI?=
- =?utf-8?B?b2UycWhpdG9XRU8vWXNSNWpXVGc5M25zSUU4WFFZZFBuSjU0cGk3bm5VdCtT?=
- =?utf-8?B?K0VuT0NwSE9uM2JGdUZxY0FrM3dvMFFKMitIZnloSGdwT29OQ2U4OWR0QTVu?=
- =?utf-8?B?N2hzMUV1L0hpZExld2IwcmZoVmtrUExjNUY4Si9oT1hLOWZmRUdBYjBkNGQ1?=
- =?utf-8?B?WFQ5YWFDYUNkZS9hVHAvS3UxZUU2QzYzUE1nZ1dJdStXK1FkY1VPSnhYbDBK?=
- =?utf-8?B?T2pvSjlOZDBHYlJpL3g1UTlmUXliSHlFVzBvNTBxZ1l6dFpHQ2pQRDdobFJY?=
- =?utf-8?B?eDhPRm1FeWF5TldISCtyMGhEK3daV2txcDBKZzdZVC8wbU1TVkxIb3F6dkVi?=
- =?utf-8?B?Z3JBNkhtVlRCOGl5dGxEUjhCZG96MU8vdDZvVEJOZks4RExPYm1ZUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78af78ee-32af-494f-0604-08de72745302
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 00:41:46.9112
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: H93KjWOtI9iO88oWczd7Wxpkhj+oO1WlzMfL6vMWZWwPHZGzfEBGWfpjdJoaTh6QHJHwVxHfPwLKIyxdVCkmCA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7720
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ab0b9f9c-3a05-42f3-b4a7-ddb6ab0d37a4@gmx.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH89x7n3svHXXXzrFnkmxL57KNBNiMS06cM25Zlhs/mezDsi3T
+	NetFmlJwLfKiMRZiK+JWsUwWWxwdYqeAQEpEXjRxNMDIRC1M2hHegqSsk0ICbWHtiusNMfPb
+	P79/zu+cD4enVS52O68rLJaMhZoCNatgFOH0xmyly6l7J3IuG6osJ6G+vZWFKs9FDL/5Kxl4
+	0NaCYC3hpMHS84SBpH2QgzqfnYYfQxUMLLu/Q+AIOjkIz/RheDK1QIE/tojAPb9BQbJODw2N
+	nSwMXzjLQthXT4Hv7mMEPbO9HMy4gww4R8ZSU64iGGxZ4KAtfB/D8PQ4hpkhK4ab5lkOPH8O
+	IKjqjTLgeZQqfrY2MTDWW8+C2bmGoX0hQMGw4xoD93uvY+gcuUtDzJYJ7ugyB8GHVgqu3R5h
+	YdCVAStNMQasqxsYrkSWaDj9Vx8Lk7a/GWgPemnwRhcpqB11sRCf6sYwbm9gYc4W5sBZYUNw
+	1lLHwI2BNQ5OTb4HifXU+vWORxiuJ8cRLNVE8L4PxebOLkq0jCZZsfWnViQm4nYkWmpS6crv
+	i6wYjz5kxaYzcUrscUxxostzVOy8miVevhWixInHH4ie5jOsWB3+gxKX7t3jDrz2hWKPVirQ
+	lUjG3L1fK/J7fvCyR2rTy/yn9GZUqahGaTwRdhF3m596mr2Vbq4a8TwjvEFmfIdlzApvkkDg
+	H1rG2wQ1uTG5T8a00PIKGQuXyfkFQU8GupKsnJUCkMb5EK5GCl4l2BHxeWupzWIrGb44z2wO
+	Z5HARoiSnbSQSX7Z4GWcJuwm3psWLOcXhdfJna4hSvYQYSKNTLsb6M0zXya/Xg0wNUhwPKN1
+	PKN1/K91IboZqXSFJQaNrmBXTn55oa4s55sigwel/tZ94t8vu9HKg0/7kcAjdbryzrJDp8Ka
+	ElO5oR8RnlZvUyYSKaTUasqPScaiQ8ajBZKpH2XyjPol5c5YqVYlHNYUS3pJOiIZn7YUn7bd
+	jNq762PfZ8TXO2qaRr4d/zg08dHKwJrWMKu3VQw1bP0qf9V8wHL+hI3LwZ+sLn72dmlex44o
+	JTx3ekvEcCFjB96CsLTH83nf5OVQ3lvnSj239aHnb+V15b7q3xnR1pWAYzrn/MHc41aNP3np
+	pDW4Pzh6aW6uu/i4abdhv+X97GN71YwpX/NuFm00af4DM937xrMDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH8zzP7e1tQ821YLjo4ofqYmIibmaa4yRK9mHe7P0TOr+MRq5y
+	VyimVQZOYyk065hZsK4ltMoQtVugvpXXznQjNOAcM7ZWRzPBalaRhiJMWhmtpWtjlvnl5H/+
+	//M7OR8OQ5RJyWpG1B4WdFp1lYqWU/KPdjRuyutwiG8MTJeA2XQCJsIRCfzRMERBIm6m4MwV
+	Fw1px4AUzO42Cfw6bqTAf7kbQThhRrCYchAweTIUpC2jUogv3ZeCtQFBxjuKwBawEAj5fyHg
+	6m3AsHB1mYYZ3zME1kcRGlqjDRTMOU8isE85pBAd2Q2z4esSyEw+wTD+PIbAGVnGEBn6CkHa
+	poHvO3uyuG2ehtSt2wRarX4E5x5NEngWfYigd/QBAu+PRhoet/QRsN8/AMHICribmKPhpvUb
+	GmYDZzA8vUpDh9ErgcDvMwjOOiwIpv70Ymg8f4UG21k3BZ6HP0khMPMCw4TNgqHb/SGEnVMU
+	jLV04uzJ2alrheBobcTZMo3Beuk6LnUiftH0LcV39fRj3nQnTfOudhfiU0kL4uMXGwlvasm2
+	vtgc4Zt6vuAvjsVoPpm4R/Pe5x0U/1snx1/4Oon5U7c28R77pPSTd/bJSyqEKrFW0G3eWS6v
+	9Hznow+dzqsbb9IYkFHejGQMx77F+YxOaTNiGIp9nQsHDuZsmt3AhUJLJGcXsCqub6I0ZxO2
+	ey0XnK3L6XxWw430p+mcVrDAdUaikmYkZ5SsBXEB32n8MljJ3WyLUC/hjVxoOYpzOwm7hvth
+	mcnZMvZtzjdgkuT0KnYdN9R/A7cghf0V2v4Kbf+f7kCkCxWI2tpqtVi1tVivqazXinXF+2uq
+	3Sj7kc7jL04Nonhw9zBiGaTKU8wXOUSlRF2rr68eRhxDVAWKVMouKhUV6vqjgq7mM92RKkE/
+	jNYwlKpQ8d4eoVzJHlQfFjSCcEjQ/ZdiRrbagPJJHDyfip/vCZTtcpfn9cnW73C1/82Qnr1d
+	wS+Xap7mG8rOtZaGmv7SJsvmNYsFI0Xr321P/bz1yMKqf1zFK/C1bbEwGZx+PCiDxPumtfqg
+	v7332F3PvnuGGydjbQuWiqLeO2Mf6Oq2vLaue0vKf+Dj6Inthl0lhRHz9kyGFWMqSl+pfnMj
+	0enV/wJlLv3cjQMAAA==
+X-CFilter-Loop: Reflected
 
-Hi Alice,
-
-On 2/21/2026 3:59 AM, Alice Ryhl wrote:
-> On Wed, Feb 18, 2026 at 03:55:03PM -0500, Joel Fernandes wrote:
->> Add a new module `clist` for working with C's doubly circular linked
->> lists. Provide low-level iteration over list nodes.
->>
->> Typed iteration over actual items is provided with a `clist_create`
->> macro to assist in creation of the `CList` type.
->>
->> Cc: Nikola Djukic <ndjukic@nvidia.com>
->> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->> Acked-by: Gary Guo <gary@garyguo.net>
->> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+On Sun, Feb 15, 2026 at 07:42:05AM +0100, Dirk Behme wrote:
+> On 05.12.25 08:18, Byungchul Park wrote:
+> > wait_for_completion() can be used at various points in the code and it's
+> > very hard to distinguish wait_for_completion()s between different usages.
+> > Using a single dept_key for all the wait_for_completion()s could trigger
+> > false positive reports.
+> >
+> > Assign unique dept_key to each distinct wait_for_completion() caller to
+> > avoid false positive reports.
+> >
+> > While at it, add a rust helper for wait_for_completion() to avoid build
+> > errors.
+> >
+> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+> > ---
+> >  include/linux/completion.h | 100 +++++++++++++++++++++++++++++++------
+> >  kernel/sched/completion.c  |  60 +++++++++++-----------
+> >  rust/helpers/completion.c  |   5 ++
+> >  3 files changed, 120 insertions(+), 45 deletions(-)
+> >
+> ...
+> > diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
+> > index b2443262a2ae..5bae5e749def 100644
+> > --- a/rust/helpers/completion.c
+> > +++ b/rust/helpers/completion.c
+> > @@ -6,3 +6,8 @@ void rust_helper_init_completion(struct completion *x)
+> >  {
+> >       init_completion(x);
+> >  }
+> > +
+> > +void rust_helper_wait_for_completion(struct completion *x)
 > 
-> In general this looks like a useful tool to write other abstractions, so
-> that's good. A few nits below.
+> Please add `__rust_helper`:
+
+I will.  Thanks.
+
+	Byungchul
 > 
-> Also, I think it would make more sense to split this series into two
-> with titles like this:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/rust/helpers/completion.c?h=next-20260213&id=1c7a6f48f7eeb3014584d2fc55fc67f0cbaeef69
 > 
-> * Add clist helper for writing abstractions using C lists
-> * Move buddy alloctor one level up
+> Best regards
 > 
-> That way, you can tell what the series actually does from its title.
-> Yes, the 'why' of a series is very important, and must be included in
-> the cover letter or commit messages, but I think the title of a series
-> should explain the 'what', not the 'why'.
-
-Sure, that makes sense I can move the buddy patches into a different series
-indeed.
-
-> 
->> +impl CListHead {
->> +    /// Create a `&CListHead` reference from a raw `list_head` pointer.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `ptr` must be a valid pointer to an allocated and initialized `list_head` structure.
->> +    /// - `ptr` must remain valid and unmodified for the lifetime `'a`.
->> +    /// - The list and all linked `list_head` nodes must not be modified by non-Rust code
->> +    ///   for the lifetime `'a`.
-> 
-> I don't think C vs Rust is useful here. What you want is that the list
-> is not modified by random other code in ways you didn't expect. It
-> doesn't matter if it's C or Rust code that carries out the illegal
-> modification.
-
-Yeah, this is true. I will change it to the following then:
-
-"The list and all linked `list_head` nodes must not be modified from
-anywhere for the lifetime `'a`."
-
-> 
->> +// SAFETY: [`CListHead`] can be sent to any thread.
->> +unsafe impl Send for CListHead {}
->> +
->> +// SAFETY: [`CListHead`] can be shared among threads as it is not modified
->> +// by non-Rust code per safety requirements of [`CListHead::from_raw`].
->> +unsafe impl Sync for CListHead {}
-> 
-> Same here. If another piece of Rust code modifies the list in parallel
-> from another thread, you'll have a bad time too. C vs Rust does not
-> matter.
-
-Ack, will change it to:
-  // SAFETY: [`CListHead`] can be shared among threads as it is
-  // read-only per safety requirements of [`CListHead::from_raw`].
-
-thanks,
-
---
-Joel Fernandes
-
+> Dirk
