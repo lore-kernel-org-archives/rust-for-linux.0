@@ -1,241 +1,177 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011030.outbound.protection.outlook.com [40.107.208.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC926366579;
-	Tue, 24 Feb 2026 10:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771929490; cv=fail; b=FHbMnio0K/VW9UOKxnrwjQjMjDSYYHiDUGySUIoxG7STgFTDY2hBqJxnkRTJYdojIF/s5vpXtBWG3L7tyxWYOVf0ADZO+BOT64yL//y4edAt6o7ZOln2nyKkmxAi++ay9x/EzhaBfRtv5sntofYZTjOXENvjHDgwZMUrLLMfc0E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771929490; c=relaxed/simple;
-	bh=v/9TMLwkPQlfiWoC8GkEDau7z8dCGQPwUjePzqLNPas=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=BnKnNXVH6Jt/J5x+/FKkkz8fYWJkA0KAwzF3Vb2QJxf9zVnbhaK229EtyovZWSsVoMWuEUlCZ6Om3EvXb0YmSiYPNegoKYzJ5FYm0st5PF9dLzqUobIu4zzdbz/NA6KRnuuA2hHGpwXIIaeOdOXR05kOb58JdcSIs6gdo+aorL8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=elVsGDFK; arc=fail smtp.client-ip=40.107.208.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4327A378D8D;
+	Tue, 24 Feb 2026 10:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771929741; cv=none; b=T8vY59VbCBAaIxVwFZBX7UhmbdWc8ypiaw4M9GNcvPyKw8wtkEf74ttFct5+v0wCbdwLPwvP3nc/EKZ3+7Anxw0rPG1zOYIksmqhpri2rGF3m2XQ3R2Dic+pw2jzee6TocttOVew1U6XIGlotzBtz20QUh4Yqw7itcEvUPnbFAc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771929741; c=relaxed/simple;
+	bh=EdYMSneYGYWOu2MY/gnpVM4ln8olb1RiXGDKI2avrXU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FSthP+NnFq7VbL49MUl8+sx8aA8HHXdF9zCaO5LinPf30IjPb9l/QN8QfAeHwwrcksaE468/gnLBf4bwy/BRXD84TBXqWOgPnonKFJyMV3KY46ymy6cHop84LrL5H/ne1bUQQgUjqu8KFE3gTNI5+UL8aJ0H8NsXmULbJ+wwlUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAU2pdQX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="elVsGDFK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vX6MsVxtpJeAWl8yQK+XCKIAcqSgSA4TZeM3SzmgmBviRW+UuvV11m+CE8nbPphxU9spyas0FaElQTUD1R8O1t2gb5NWEX02Rg60aNYemN3S7fZ8NqJLKhH1FjzntVmDXU3SbHXRqTk89bf21l/OD9J28GYkWfFj+o7yi29QoEOvxIaN3DUuFWAq+coz3rhHnFbcdGK0MwAMM2sgMPrYOwq/DmR12zr4DgHF+xYbOTVk83mN3Bue0YfhCzvRj0UrYEKSRgO7JhabYDjXtajOx2aqH1kRnZQ6C2YkXPL3i7cejTrFTx9f+XQyPB3onQ15kWdXnzIfJsNY6u4jMM+QcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=weL9m9MOiTxfnKqsoq2byGzgisox2tTknSIz03/5RwM=;
- b=AJKuCBjL6thtidotKyDx00xIUb0/5oK+e5Q/luPgasqqmJCgD92njsM/kt5A/fg53gto66/nX7jeQW3FINcVAa9R3cr62N4caJj7nkMrq+9SN87jT4gfYWmEu+trgFcSLUFaGaxFMTrCLgkmhkEwglxuLOtdgFmFtPoQTxzo1gOQue6+PYGt0D7ZJlfpGOJBhV5blmW8MKMwttQtjs+vCV7DwP+elRdIt6Ikj1DniiTtKN+0LFYWvbxg46zpXHq0EAxg1wkhhH5amc/P5KCwIc/GtEeY2S/g4zV9uVvLq1Aaxef2CUS+skuOelAgAAROLWq4OO/2ilLZrYdDF2br5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=weL9m9MOiTxfnKqsoq2byGzgisox2tTknSIz03/5RwM=;
- b=elVsGDFKGS4BIi0rFydusQ6tlj1Nh06jAIB+w5Kot9MgujrZr2ka1LNRKf2SB/Sfffx/aWE36p1ekKTRT6HX2WjOaqw1e2DQQLsyomX/qg/8bIbykoSx40oV/odM7B+ccymTirbN/vAwZDnFgWYOP8qdNvZH2Mnc2It/QsxobfgN9QnRIt0yjekRAwXVzx+EQ+URY6IWZFy2kfoXyZtQBOaqIpF18agYvInMG0TRs4LdY33I4g9BW6Ey4Dt0CMNQNi2CNBdOvQTTg7ncuWI+WJl/kPbBCr5OUHVRMUmI9wzYgwuXm0vykuKQ1M4Pw8jjO5C8vNEaMzKfiM4OW2zW3w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SJ0PR12MB6878.namprd12.prod.outlook.com (2603:10b6:a03:483::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
- 2026 10:38:04 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 10:38:04 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Tue, 24 Feb 2026 19:37:56 +0900
-Subject: [PATCH v2] rust: kunit: fix warning when !CONFIG_PRINTK
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260224-unused_var_err-v2-1-337f9359d98e@nvidia.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XMQQ7CIBCF4as0sxYDRFrrynuYpkEY7CykzWCJp
- uHuYvcu/5e8b4OETJjg0mzAmCnRHGvoQwNusvGBgnxt0FK3UuuTWOOa0I/Z8ojMou9b34Vgdec
- M1NPCGOi9g7eh9kTpNfNn97P6rX+prIQSzih/lgYd3s01ZvJkj25+wlBK+QLc6LqErQAAAA==
-X-Change-ID: 20260224-unused_var_err-996d7ffa27c5
-To: Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <davidgow@google.com>, Rae Moar <raemoar63@gmail.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.14.3
-X-ClientProxiedBy: TY4PR01CA0079.jpnprd01.prod.outlook.com
- (2603:1096:405:36c::14) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAU2pdQX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158D2C116D0;
+	Tue, 24 Feb 2026 10:42:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771929740;
+	bh=EdYMSneYGYWOu2MY/gnpVM4ln8olb1RiXGDKI2avrXU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=GAU2pdQXeucHDr93YOJlBQA+9WyQyiqX3XUv0GPdy5+63ewH++MkxyrNYQumwLA4W
+	 YPvSJkU9bCvwg0PQISCbL7pQ53LDJwxCiV6mlupfv3XGnYbITTh1piGzZ+A4mlBMuk
+	 4BLlREPZdKFZhle5va0yKY3MgMD1Ru8Hzm9tCf+z8+JaypVhehj82iMeu/g36i61cS
+	 LOK6GF96u2rd6HmI4kigzcpkbtJ/Mu3uUKlP3KL6U4B3ccmjM1712HCHbTYCUdiqco
+	 kxP5N90jQc3VZcobz2Hi+vK6uI3CzGRjwp0bzDuDcBOAuwMIDp5V4VWUl94VWRudG1
+	 gdUVkzkXXqWYQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: aliceryhl@google.com
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Dave
+ Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
+ Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian
+ Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Igor Korotin
+ <igor.korotin.linux@gmail.com>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen
+ Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
+ =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, Asahi Lina
+ <lina+kernel@asahilina.net>, Oliver Mangold <oliver.mangold@pm.me>
+Subject: Re: [PATCH v15 1/9] rust: types: Add Ownable/Owned types
+In-Reply-To: <aZ1VQmtapuoerpVo@google.com>
+References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
+ <20260220-unique-ref-v15-1-893ed86b06cc@kernel.org>
+ <aZg44EmMWKK-z5KP@google.com>
+ <87wm0333qt.fsf@t14s.mail-host-address-is-not-set>
+ <IFU05rWmgywK-tzaInc7eF2Kmy1zf-BDkCrQZfRI_2JN6E0-p3zFaUMu3V6T1YTeQG9xC1hHzXThLCORJqpoWA==@protonmail.internalid>
+ <aZ1VQmtapuoerpVo@google.com>
+Date: Tue, 24 Feb 2026 11:41:45 +0100
+Message-ID: <87a4wy2zkm.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB6878:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf36f2b4-28bb-4e08-d127-08de7390ca97
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UDk3d1BwZEVnRXJMejFZa1Q3WkViQTFrOCt5dy9DWmJwUXpMYTdtWFNsUHFG?=
- =?utf-8?B?ck5LL0Nabm5keE9UeDAyUkF5OFJqZXYvQWxYbFVmZzM5WjdiQ0sxcGVMc0dE?=
- =?utf-8?B?d3RHNDVleTh5V05MUGsrWVEyMHhKRGo4ZUszMmJoMkhIY2NMckxIVGY3Rmg1?=
- =?utf-8?B?alhQcENhSnE4bWJvMkNScTNOSjlxdXVqcjdNcW5xQzNxaUR6VC92eU12WjFC?=
- =?utf-8?B?eUQyL25Sc1ZjSDdqSGZaeXczMXNQallvakg1bm1ONG9DVTNTd0k2cjdkVnNX?=
- =?utf-8?B?cm9oY3ZsNXA3WVAxYXhFY09wSE9LT0lHNmJUK3MwU3BZQnRaQTlBZDR6TlNC?=
- =?utf-8?B?UkcrdS9ES2QxRmNaN01HZ1JUbmxPQ2NoZTYvbW45UEhjYmlGQjdvSnV3SHdt?=
- =?utf-8?B?cEU5d3JkMVA1K21zUEpXUXlKSXEvd1NhMWthdzBNUHZ5OFFJR1pnK3FWbzdL?=
- =?utf-8?B?TGIyb0pzbWFhSSt0THQwZXVtdStoa2dxWDdiVEVRWkFSSk1Dbkw0b3hCb09O?=
- =?utf-8?B?cEI4L3pJQnkxVy91a2JDQ2JxaVdPTHkrTEJHeU8vbStOR0libVhTdjdORjJr?=
- =?utf-8?B?U3VSTEhJWU1FZ1hQandhdzRNQzhpRlhERFB2RHdnU09hTmd0c2FlUHI1aTZv?=
- =?utf-8?B?YnoxM1kzRkxodDJ0aE9HUVdpUEdHOG10cEJKTEFyZnEyMXJsNWxhbFFpLzAy?=
- =?utf-8?B?NHNKVmxkMzdVaTZFbldxQ3k3a2s0TWw3eHNGeDU4RDRKaGFzdVNZbUVTQkRJ?=
- =?utf-8?B?R2lrTWFDNjBRSFBTZkxaeTZKL2JaTERJTXFZUk1IWXJGeFpSQUY3elluRVN4?=
- =?utf-8?B?T3ZWSGVZNit2ZW5uNSsyekdud09ZVldoZEtFRTdiS0RhNjBxMERMZlZxRW9O?=
- =?utf-8?B?TFV4T0ZsaG9RZGw2OWhQL0ZrYi9DSm5GWXZNN0JubHN6M3R3ZWd3NHp4YURW?=
- =?utf-8?B?ZUJEbVZtN2NUTHFGOHNhSmFWekJNc3pWNjZsb05oOGpEWWVQOFc4VDlDaEtu?=
- =?utf-8?B?a2FHZVhnK1FKWXlScXpCbkdzQ0w0eVFiODJINUtHTzVhOXEzUXArZ2FWSE5G?=
- =?utf-8?B?YnRsYWI4cFZCbWR3ajd1Ulc1SUJEbUpob1ZsZEdmRjJPMU1QdEhlVFdpbDB2?=
- =?utf-8?B?MXBpbXU5dFZzNzRSSERNNFF4NHk1TkJHVmxCWGpFM2Zrc2lwOWhzV1JnVHlI?=
- =?utf-8?B?OVd6VStMOEtSWnlHTGVIUzRSaEdHTjJmTCs2R2luNkpUb1hTZWoyYVcxb0F3?=
- =?utf-8?B?Z3NmbklhZlBmSUVwMElEbC9kNEpIRTZ2VGk0NnNVMTIrb2N0NFVRQmlERVBJ?=
- =?utf-8?B?czlpUGQvNDRmNzZSZU54MDJoWHBNVDFCUVI4dTJmRTBjOERuM1YvRjlCTVZW?=
- =?utf-8?B?QW5zTlpsMWFDOTdaNkcvRkQ1L0lJZmI3Q3dUQjZiSU9zMzZlZ2pOa3NVZWNa?=
- =?utf-8?B?TXExdytGd0xpSk1jU2xPbWRUNUlJQnNVSVNleGpBVlBKNHFGV3Y5NFM5dzlw?=
- =?utf-8?B?WjJDT09iVjFZeTB1MXIwdHhCbCtNaTBnQWN6RXVEZTMyUGVtcWpabFVEeHFT?=
- =?utf-8?B?UjlMKzlSWlRLT0VtcmFWUzBPR2R2WGhkNzIyRkMzRkZpZy9QMmdBR2FYQzR2?=
- =?utf-8?B?WEJDSCs2aGo4dkJ3ZjhQRDQrTzF4TnZiWCtIUmJBalFPWXFJU3NISDk3VXdy?=
- =?utf-8?B?RHZWRE14L0o0NUpVTnNieUdmeXhOTDRtRGtKZzFteThqWno2Sm5YUVJXVUVF?=
- =?utf-8?B?Nk14djlORWd3OTB4QThzS2Y3WnAwUHdoMWRqdndiKy91SisxVkNXNUk4aEtt?=
- =?utf-8?B?L2xBWUFyckhaK213RlgvbzBYd3JtWThFSnNtTHU0dHVVZDZCT3I3YWs4Q0Qw?=
- =?utf-8?B?S3dxTVZtV1dJNXdic2VBR3grc0Vvc3B4MGJ4UDFET0hnQ0x6N0w5ZUVLbEdW?=
- =?utf-8?B?eWdzekREdzVJRlpQeG5WQ0Y0dnREa3NLQ08vZFhiOUhzaGp1dm5BSzErUGND?=
- =?utf-8?B?RFA5NWpraS84ZjloT0J3VkdWajE1a2Nqb2k0Qit0SHcrWUpxVmZTZ0lJRE5n?=
- =?utf-8?B?YnVzZ3pSamNjZ3p0L2JCWmFuY3hvUXpsNmphRmtJa3pTR1VWYWRVV2xhWUN2?=
- =?utf-8?B?YTBib3VjY3VLaTZaeStvZ3hDeWVlbVRpaG5VbStMOG0vOGovSkMySmlvRThF?=
- =?utf-8?Q?2ZtfTVNq7+b9Wl06tTc/LFs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MzhxN2RkRElVeVBhVU41bENoVy82cno2R0FPR0RVank1YkdXYmI5VlY3OWlw?=
- =?utf-8?B?VGRwT1pQbmlHWG0wbGNnaWs5NHNPclFKblg5aEdGZThSdmRKNkw3N3B2T1BO?=
- =?utf-8?B?b3FXQkFJeDBtNjArSDg1Y1Fvb0xaSlZYYnZ6cmo4WUJydHBpeEErRzFxUmVq?=
- =?utf-8?B?LzdTd3UzT1VtUWlEVWcwcUV6YUFlZHdmV1RoSjYya01GbDFVbVdndGhRY3Bo?=
- =?utf-8?B?eWNBMTZRUmFkZ3FrU3VybGNNbDVBK3FoVWlpMmhqRlhJR0daNnZUNUxqV1B0?=
- =?utf-8?B?Qk45OGNydjhaR1FjYkgrU1hSVVRaMHk5QWluL0EwYTBTbzJOYlg5b1ZjRkxv?=
- =?utf-8?B?VEtLVE9Jb2tKK1pianVJS3c1KzJRTVJ4T0JGVUR1QnRLSFVINi9WOUdLT2Zr?=
- =?utf-8?B?M0hackRPN3FTNEN0M2QwaHkxZGVZaDhOYjBqNGtabGNqa0RXSHd2OTQrczhp?=
- =?utf-8?B?Vjk5YmFDQitsVTBLeHA0U2tJUGZWZDZTZm5ZTVRhdllLeG9aS2hjMUczLy9T?=
- =?utf-8?B?cFM2UVpUSVFvU0JsYlNnSlk1SXlPbWJQYXBsNy9PNmdBQUo3b3h2WXo3TUJW?=
- =?utf-8?B?OUJIU1k1bGFtSWNSZEx3NFphcDJxNmRaeVNtWGJqZmVFUGk0Y1lkbXB3YkdV?=
- =?utf-8?B?UG9JbVl4UHpEVExJWXpaNFIrcW0vSVlkbjRXTFlIK2x0b3A4TjVGdmdkMzdL?=
- =?utf-8?B?aTFESlg4a2VxeFZ1OWZpNEhYdk43bFdNTU5LSnVzS1p4ZEMyRm5hZ3RKci9r?=
- =?utf-8?B?YndCWEVXZWYxSzFuVFRtOXgzR056R28zMXNSeHF0SGJ0eTRIWTBObk1kTVEv?=
- =?utf-8?B?a2VlSDJZZ0JkVXNTT29aU2lWVjJCNzVUcTZjTGlaOU05SWc5S1pHVGlzSHUw?=
- =?utf-8?B?VFgwemZwWnUrRVdydFUvNWtIQURNY3krdWZ2NXRYaGl0RnA0cHI4N1dRQ1J4?=
- =?utf-8?B?ckpFUnVEZ2Y4ek1IWFdmVk1TM2Z3RmcxZmJCK0pPYVVic0F1M0NJNFdDclhs?=
- =?utf-8?B?MmNFRmpnNGRrWUtOVzdIbUhWVXhxM1dkbWt6K3hVUzZsRkVpSXhWa0ZmbXdk?=
- =?utf-8?B?LzZpQ0tvZWtMOEtUc3ZYSS9RWHdFV3QxSVdjVE9tSjZIdWc4MlZRSWN0V3pt?=
- =?utf-8?B?OFdkYUtuZ2FIaDhERDlmcmhPTG95ZmFlQURIWitOaXl5QTB5Ym52RUk0M3pZ?=
- =?utf-8?B?eTEwWVdDT1drZzJIb1hZQWg2cjIxTnFjL2ZCYmVKNFBuRG8xRGpBWGh6THU1?=
- =?utf-8?B?SmMrR0lGY2hRM1ZpSVFyMzROWFhZMlVJcVlDVEZsMzFTV2RiUWh3WU5YNWQw?=
- =?utf-8?B?RlpNb0dQaDBZcTFnWEZWMXBSNXN6dXdSM01WVGtEbU5qWkxHek8ydXJ5cFhI?=
- =?utf-8?B?N20vN3NlczNIdEVPeC92V0tpQ2xJd0o2RUV4NGRZMk50L2l3SmFQNzB1Y1NR?=
- =?utf-8?B?ZFoycnozNGR5bnpXUDluSC9DU3gwb25sa0RFN3Rma0RjV0JKWWsrUzNqZjdE?=
- =?utf-8?B?MHVDNkFQeDMxenM1alVoVUlKZnkrVldFK0FvTlIvOG1KMzVUbHVJSi9EM3R1?=
- =?utf-8?B?WFB3cmg4cWtldkg4Y0ZSTDl5RUVKQXIwTGg2dzhqS2hPUXdXY2xSdEdRa3NK?=
- =?utf-8?B?VmcyVFBvdFdodmMvaWU3c2dzd3BCMXNRZndXeDhjYUhKSnBPMTIwR2xCLzJQ?=
- =?utf-8?B?WlZjN2oyWlRJb0k1SkZneGZMSTlFWU14cHZvUjFQZnQyTU5kTlpRRzcvYnBB?=
- =?utf-8?B?c2I5bWVPbHJkcFNkS0N0N3Y2SHpRZWxiandmS2hBbUU2UERUMm85SlpnZ3NN?=
- =?utf-8?B?ZkVaQk9QYnhsaXdlaVI5SGpRcEVUS1lMUHRYb1g5SldPMmptK0xSbXk4aWxo?=
- =?utf-8?B?R3ZnS3RnMU93UmUyZEFYek53Zys4OCswdFd6aHZnVGlGM09MblQrNXVNdndL?=
- =?utf-8?B?WlpMaXZtemRIVGZ1NWlucHd5a1JVNGVENEt4ZjRjR3FweFNhN2t1VWRhN3J3?=
- =?utf-8?B?clZPc3ZITGF4OUNlODhzZ1B5VTg5RFpmN1ZoZ1E0Q0cvWmp3ME9hTXVHREFC?=
- =?utf-8?B?ejlQS2U3VXRDeWJtWjNVTDlLZGVETVg1VEhmTWw4dzJMdVB0MTVYb2ZUNGl4?=
- =?utf-8?B?TTZMVCtWbUh0dWd6MXM4TFpEbXRscGpvNGZ2L2ttK3JGK1BsZS9Ic0YycmQ5?=
- =?utf-8?B?bjgrSWdVdUVhV2RKb3JUallGM0t1WE15RjFMQ1JpYmFtT3hjY0wxbW1pbmdq?=
- =?utf-8?B?V3dmOUt3Mk9pQ200NXdNV25aWU1ZK0NBUWhFRk96YzRiY1U4ZEoxZUV2bzQ2?=
- =?utf-8?B?UHgxYTBlQTJyLzcyT2NacUt3THAzNXNQbi9YQkJlUytYb2w1OTB4SGNHWDJM?=
- =?utf-8?Q?EjxOrgzgkjp2GQoz5ma8goCZQoR6dl8O88yoGEk44CXY1?=
-X-MS-Exchange-AntiSpam-MessageData-1: f/CjK5c8R70rcw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf36f2b4-28bb-4e08-d127-08de7390ca97
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 10:38:04.6362
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qJre5Fao1lKTqwR0HsHuyoUlXqFU1xSMY9BxEaDyNeUeA26Y9SBaEHUAaiNaDBpw7On9XvqGgPgaFWwAoyr1JA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6878
+Content-Type: text/plain
 
-If `CONFIG_PRINTK` is not set, then the following warnings are issued
-during build:
+<aliceryhl@google.com> writes:
 
-  warning: unused variable: `args`
-    --> ../rust/kernel/kunit.rs:16:12
-    |
-  16 | pub fn err(args: fmt::Arguments<'_>) {
-    |            ^^^^ help: if this is intentional, prefix it with an underscore: `_args`
-    |
-    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+> On Mon, Feb 23, 2026 at 03:59:22PM +0100, Andreas Hindborg wrote:
+>> Alice Ryhl <aliceryhl@google.com> writes:
+>>
+>> > On Fri, Feb 20, 2026 at 10:51:10AM +0100, Andreas Hindborg wrote:
+>> >> From: Asahi Lina <lina+kernel@asahilina.net>
+>> >>
+>> >> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+>> >> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
+>> >> `AlwaysRefCounted`, this mechanism expects the reference to be unique
+>> >> within Rust, and does not allow cloning.
+>> >>
+>> >> Conceptually, this is similar to a `KBox<T>`, except that it delegates
+>> >> resource management to the `T` instead of using a generic allocator.
+>> >>
+>> >> [ om:
+>> >>   - Split code into separate file and `pub use` it from types.rs.
+>> >>   - Make from_raw() and into_raw() public.
+>> >>   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
+>> >>   - Usage example/doctest for Ownable/Owned.
+>> >>   - Fixes to documentation and commit message.
+>> >> ]
+>> >>
+>> >> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
+>> >> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+>> >> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
+>> >> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+>> >> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+>> >> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> >> [ Andreas: Updated documentation, examples, and formatting ]
+>> >> Reviewed-by: Gary Guo <gary@garyguo.net>
+>> >> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> >
+>> >> +///         let result = NonNull::new(KBox::into_raw(result))
+>> >> +///             .expect("Raw pointer to newly allocation KBox is null, this should never happen.");
+>> >
+>> > KBox should probably have an into_raw_nonnull().
+>>
+>> I can add that.
+>>
+>> >
+>> >> +///    let foo = Foo::new().expect("Failed to allocate a Foo. This shouldn't happen");
+>> >> +///    assert!(*FOO_ALLOC_COUNT.lock() == 1);
+>> >
+>> > Use ? here.
+>>
+>> Ok.
+>>
+>> >
+>> >> +/// }
+>> >> +/// // `foo` is out of scope now, so we expect no live allocations.
+>> >> +/// assert!(*FOO_ALLOC_COUNT.lock() == 0);
+>> >> +/// ```
+>> >> +pub unsafe trait Ownable {
+>> >> +    /// Releases the object.
+>> >> +    ///
+>> >> +    /// # Safety
+>> >> +    ///
+>> >> +    /// Callers must ensure that:
+>> >> +    /// - `this` points to a valid `Self`.
+>> >> +    /// - `*this` is no longer used after this call.
+>> >> +    unsafe fn release(this: NonNull<Self>);
+>> >
+>> > Honestly, not using it after this call may be too strong. I can imagine
+>> > wanting a value where I have both an ARef<_> and Owned<_> reference to
+>> > something similar to the existing Arc<_>/ListArc<_> pattern, and in that
+>> > case the value may in fact be accessed after this call if you still have
+>> > an ARef<_>.
+>>
+>> I do not understand your use case.
+>>
+>> You are not supposed to have both an `ARef` and an `Owned` at the same
+>> time. The `Owned` is to `ARef` what `UniqueArc` is to `Arc`. It is
+>> supposed to be unique and no `ARef` can be live while the `Owned` is
+>> live.
+>>
+>> A `ListArc` is "at most one per list link" and it takes a refcount on
+>> the object by owning an `Arc`. As far as I recall, it does not provide
+>> mutable access to anything but the list link. To me, that is a very
+>> different situation.
+>
+> I mean, even Page is kind of an example like that.
+>
+> Pages are refcounted, but when you have a higher-order page, the
+> __free_pages() call does something special beyond what put_page(). For
+> example, if you have an order-2 page, which consists of 4 pages, then
+> the refcount only keeps the first page alive, and __free_pages() frees
+> the 3 extra pages right away even if refcount is still non-zero. The
+> first page then stays alive until the last put_page() is called.
 
-  warning: unused variable: `args`
-    --> ../rust/kernel/kunit.rs:32:13
-    |
-  32 | pub fn info(args: fmt::Arguments<'_>) {
-    |             ^^^^ help: if this is intentional, prefix it with an underscore: `_args`
+I see. We currently only support order 0 pages. I think we can handle
+this situation later, if we need to handle higher order pages.
 
-Fix this by adding a no-op assignment using `args` when `CONFIG_PRINTK`
-is not set.
+In that case, we could hand out `Owned<Page>` for the head page and then
+provide some way of getting a `&Page` for the tail pages. Obtaining
+`Owned<Page>` for a tail page does not make sense.
 
-Fixes: a66d733da801 ("rust: support running Rust documentation tests as KUnit ones")
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
-Changes in v2:
-- Use a no-op assignment instead of the wider `#[allow(unused_variables)]`.
-- Link to v1: https://patch.msgid.link/20260224-unused_var_err-v1-1-c51d805eceb5@nvidia.com
----
- rust/kernel/kunit.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index f93f24a60bdd..a1edf7491579 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -14,6 +14,10 @@
- /// Public but hidden since it should only be used from KUnit generated code.
- #[doc(hidden)]
- pub fn err(args: fmt::Arguments<'_>) {
-+    // `args` is unused if `CONFIG_PRINTK` is not set - this avoids a build-time warning.
-+    #[cfg(not(CONFIG_PRINTK))]
-+    let _ = args;
-+
-     // SAFETY: The format string is null-terminated and the `%pA` specifier matches the argument we
-     // are passing.
-     #[cfg(CONFIG_PRINTK)]
-@@ -30,6 +34,10 @@ pub fn err(args: fmt::Arguments<'_>) {
- /// Public but hidden since it should only be used from KUnit generated code.
- #[doc(hidden)]
- pub fn info(args: fmt::Arguments<'_>) {
-+    // `args` is unused if `CONFIG_PRINTK` is not set - this avoids a build-time warning.
-+    #[cfg(not(CONFIG_PRINTK))]
-+    let _ = args;
-+
-     // SAFETY: The format string is null-terminated and the `%pA` specifier matches the argument we
-     // are passing.
-     #[cfg(CONFIG_PRINTK)]
-
----
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-change-id: 20260224-unused_var_err-996d7ffa27c5
+More likely we will build an abstraction for `struct folio`. We can
+still hand some kind of page reference for tail pages from an `Owned<Folio>`.
 
 Best regards,
--- 
-Alexandre Courbot <acourbot@nvidia.com>
+Andreas Hindborg
+
 
