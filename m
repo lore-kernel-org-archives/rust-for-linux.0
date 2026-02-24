@@ -1,98 +1,104 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward501d.mail.yandex.net (forward501d.mail.yandex.net [178.154.239.209])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A6236654A
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 07:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A443364055;
+	Tue, 24 Feb 2026 07:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771918833; cv=none; b=SUeNaIKjoOsTWrlUokBQ3lg1zChhAS53cKA71j/6+d0cF5sGpLB+IC8r9/F8Pecn84Q53CIFgHBTlRmMEtSbRj3r9DU2qd/4PIsOqDO5gXi27o1GpK4BLDsU6wbEoCfCDoOVqy/54j4gbamrtAY0y5HNreqfsh1jbivohy0VacU=
+	t=1771918833; cv=none; b=IIFqFwb7TqgPSiXJAwt+uloAm/jwzHYVQnEVlbfPGMz9ATinbXgEutAQ1aC+ROAnbt0BO9RQTDt6et29pIFsbFWkEmLYJVHNJm/6O4SDEKtUb6fb+FJfoaPSd5szCGToVXtW2hFcVsdjWOBFA9FwEhlcxsqx8FZGttOiGbUqYdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771918833; c=relaxed/simple;
-	bh=Io/ZkhGhEupZ5ffQQcXAaXbykfDp3iGhw1Kf+6gZPuI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aTSVrGMC4ZHH/TuQrGbMQCKe150/GM1cwZeEUauN7dxramemAIIysox0YbcUQAReMgXDgAOm5V6D37cZVqBlNaj/jMRJLPF4cZnJkGW109+4+K1Z5i15l+OKmslGfFgDWN0uAlNXr01tQ2KmH3aMHi4DIBCtDJJ+KP3xH+pt5RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dEx7j/+8; arc=none smtp.client-ip=209.85.208.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	bh=B54aS2h4Gbh0Sjql2JuO9E2TlHWn5g2oy3nq3oOxxPw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Weo5axM9Y4kCxmYCyr1PVASUk2ZE7aAzoud9nz+otoEDM6mDLcC2cVFVkuLyJZKiZQqBK7TZ7V5bsAoONCYVPySrb03ILmbENZY7s7FSRt2bVKxNvaokUMxi8w2S/vnBdN4jXLZkQLgR0EpTpF4jEnDp0PgHBo7+4g7zrWULk+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Iz5HTNIs; arc=none smtp.client-ip=178.154.239.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dEx7j/+8"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-65f6e28e7dcso243786a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 23:40:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771918830; x=1772523630; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sCYKSjqgDVMvOWcwfRLj9JJfMnbz5kYU9ZhocRMksgo=;
-        b=dEx7j/+8sPPS3JuRwv7oc0I4qJ0d2VKbLf5bDBwns7FyOPoJNnHhpLFumS/uZ7cHPJ
-         /c5MFac2J9rdLjh1WkV3wgcBExsW+rN5b31R+L/poxCLYZvaHKITbN28YAcxOSeHeOgS
-         77mM9zBCeMXWapcVsOsXDCkv1Aw1juiSa2Wt1mhXxnqW+RorkhXc1TVgfNcEjU+99d+6
-         CIcBXNqqXqjXORahBOd6kmICOEQIst2IYWSMLOfwVkoMikEtETcsSXB6KKYFSPjwcQeI
-         uqylgG5kZ0JFTCKApbycvMA8VrzQKaBHAymnPpkIzb+9y9CULzGOTH6kAzkcjDNnrf6J
-         y44w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771918830; x=1772523630;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sCYKSjqgDVMvOWcwfRLj9JJfMnbz5kYU9ZhocRMksgo=;
-        b=KYPn4hvBxUFbK2VRGl8EenPrWeWawRJCL+K6CNLldYleQYiO+vrKQtFSP3ZWMn65RC
-         22n10dKBDkv7UxHE1HhuNLxIf67jWQZs9ZBZZC8NXt0oCqaFJJEyRoV7CVo8Oxr6ekZO
-         5otzn7d9FLg29KXhWuzbvz/+V6n/pzRRpOnpTURSKW/cV/ROioacJ4T+lzIYqaY17rlk
-         7dIGHK6oMYzg9c54yyFvCDq/+oqf0jMLvDIN31rItOjmKsF0evAGpdFxe0Oy/sU/3Xmm
-         qOcYQYVtGtqAE9neTaGSSkjXF4Qz01VCGXvO1mkmfqNX+JNn+NSAkYvnbU8AhXiLUQ/R
-         W62A==
-X-Forwarded-Encrypted: i=1; AJvYcCVlDVfFHr4OE2oCmiYsUFeoij18J/5Xmw/wFjmBwZiLwO5kom+H7y3X/qMnsoWunySumbEEeNT0jMiCweH00Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxT8K9LVZ/o/n/xLvoe5xpqvELpo7GJCYygn2IQQdBmPSmLwpEj
-	9ZvR6XGw59f+GZHBA/sWA9N2A4k/0QkbCLjAlYbDyvlRbCgOz9QGjnDhdIDSUdDnnUsaGn2oV03
-	3iHV4A6osoqqEBGuf9g==
-X-Received: from edwv1.prod.google.com ([2002:aa7:cd41:0:b0:65b:963c:ec65])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:354b:b0:65b:94e0:a593 with SMTP id 4fb4d7f45d1cf-65ea4b65b5cmr5810901a12.1.1771918830281;
- Mon, 23 Feb 2026 23:40:30 -0800 (PST)
-Date: Tue, 24 Feb 2026 07:40:29 +0000
-In-Reply-To: <20260224-nullterminatedformatter-v1-1-5bef7b9b3d4c@nvidia.com>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Iz5HTNIs"
+Received: from mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:27a5:0:640:93ca:0])
+	by forward501d.mail.yandex.net (Yandex) with ESMTPS id 0410A81A24;
+	Tue, 24 Feb 2026 10:33:38 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id YXaYV7YGl8c0-NkAdRRC8;
+	Tue, 24 Feb 2026 10:33:37 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1771918417;
+	bh=d9U0QGJloAUl6Pctz/Vi8BIKTRD/NlRzH3hZdz/7PMM=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=Iz5HTNIsYzw03mTxFWhk7Y5lkQIELAmYPS5/R4VvcL1eEuQSZx/4256gxJ5xQeBEg
+	 3pmRWcmkidC/6RTvVdLvy4xKHL8E0IuUOdReL5MSCjgN8wzPkS5deEr0qt9Yh1ivwQ
+	 onHqjRzOb0FTI0Jc44g4zJC9sHvjH/OxqQa2/6ow=
+Authentication-Results: mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Tue, 24 Feb 2026 10:33:32 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Gary Guo <gary@garyguo.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, linux-kbuild@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: kbuild: emit dep-info into $(depfile) directly
+Message-ID: <20260224103332.6be95dca@nimda>
+In-Reply-To: <20260224072957.214979-1-gary@garyguo.net>
+References: <20260224072957.214979-1-gary@garyguo.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260224-nullterminatedformatter-v1-1-5bef7b9b3d4c@nvidia.com>
-Message-ID: <aZ1V7ckM97JvSZKt@google.com>
-Subject: Re: [PATCH] rust: str: make NullTerminatedFormatter public
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 24, 2026 at 11:25:34AM +0900, Alexandre Courbot wrote:
-> If `CONFIG_BLOCK` is disabled, the following warnings are displayed
-> during build:
-> 
->   warning: struct `NullTerminatedFormatter` is never constructed
->     --> ../rust/kernel/str.rs:667:19
->       |
->   667 | pub(crate) struct NullTerminatedFormatter<'a> {
->       |                   ^^^^^^^^^^^^^^^^^^^^^^^
->       |
->       = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
-> 
->   warning: associated function `new` is never used
->     --> ../rust/kernel/str.rs:673:19
->       |
->   671 | impl<'a> NullTerminatedFormatter<'a> {
->       | ------------------------------------ associated function in this implementation
->   672 |     /// Create a new [`Self`] instance.
->   673 |     pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
-> 
-> Fix them by making `NullTerminatedFormatter` public, as it could be
-> useful for drivers anyway.
-> 
-> Fixes: cdde7a1951ff ("rust: str: introduce `NullTerminatedFormatter`")
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+On Tue, 24 Feb 2026 15:29:56 +0800
+Gary Guo <gary@garyguo.net> wrote:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> After commit 295d8398c67e ("kbuild: specify output names separately
+> for each emission type from rustc"), the preferred pattern is to ask
+> rustc to emit depedency information into $(depfile) directly, and
+> after commit 2185242faddd ("kbuild: remove sed commands after rustc
+> rules"), the post-processing to remove comments is no longer
+> necessary as fixdep can handle comments directly. Thus, emit dep-ifno
+> into $(depfile) directly and remove the mv and sed invocation.
+>=20
+> This fixes the issue where a non-ignored .d file is emitted during
+> compilation and removed shortly afterwards.
+>=20
+> Reported-by: Onur =C3=96zkan <work@onurozkan.dev>
+> Closes:
+> https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic=
+/syn.20artifact.20being.20tracked.20by.20git/with/575467879
+> Fixes: 7dbe46c0b11d ("rust: kbuild: add proc macro library support")
+> Signed-off-by: Gary Guo <gary@garyguo.net> ---
+>  rust/Makefile | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 629b3bdd2b20..1500993d7ecc 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -526,11 +526,9 @@ quiet_cmd_rustc_procmacrolibrary =3D
+> $(RUSTC_OR_CLIPPY_QUIET) PL $@ cmd_rustc_procmacrolibrary =3D \
+>  	$(if $(skip_clippy),$(RUSTC),$(RUSTC_OR_CLIPPY)) \
+>  		$(filter-out $(skip_flags),$(rust_common_flags)
+> $(rustc_target_flags)) \
+> -		--emit=3Ddep-info,link --crate-type rlib -O \
+> +		--emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@
+> --crate-type rlib -O \ --out-dir $(objtree)/$(obj)
+> -L$(objtree)/$(obj) \
+> -		--crate-name $(patsubst lib%.rlib,%,$(notdir $@))
+> $<; \
+> -	mv $(objtree)/$(obj)/$(patsubst lib%.rlib,%,$(notdir $@)).d
+> $(depfile); \
+> -	sed -i '/^\#/d' $(depfile)
+> +		--crate-name $(patsubst lib%.rlib,%,$(notdir $@)) $<
+> =20
+>  $(obj)/libproc_macro2.rlib: private skip_clippy =3D 1
+>  $(obj)/libproc_macro2.rlib: private rustc_target_flags =3D
+> $(proc_macro2-flags)
+
+Tested-by: Onur =C3=96zkan <work@onurozkan.dev>
