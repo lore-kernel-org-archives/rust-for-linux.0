@@ -1,177 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4327A378D8D;
-	Tue, 24 Feb 2026 10:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCC737BE83;
+	Tue, 24 Feb 2026 11:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771929741; cv=none; b=T8vY59VbCBAaIxVwFZBX7UhmbdWc8ypiaw4M9GNcvPyKw8wtkEf74ttFct5+v0wCbdwLPwvP3nc/EKZ3+7Anxw0rPG1zOYIksmqhpri2rGF3m2XQ3R2Dic+pw2jzee6TocttOVew1U6XIGlotzBtz20QUh4Yqw7itcEvUPnbFAc=
+	t=1771931941; cv=none; b=t5o8OaIDKMXLEBCMp1wNSkRy6kzU11k4Xg8hL8gpeYAlowMjfmfk1DZYiA6RsFiHrBkgTj8Ly4AANeKNG77YKQ0kes2CjNdrz2vIqNEEHZjQHiOsVAWDSQ1lGihpO0uZ8IpxThapQ3BaP34iN07CZMtbU2AMBMDA4Gxu6Op3H3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771929741; c=relaxed/simple;
-	bh=EdYMSneYGYWOu2MY/gnpVM4ln8olb1RiXGDKI2avrXU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FSthP+NnFq7VbL49MUl8+sx8aA8HHXdF9zCaO5LinPf30IjPb9l/QN8QfAeHwwrcksaE468/gnLBf4bwy/BRXD84TBXqWOgPnonKFJyMV3KY46ymy6cHop84LrL5H/ne1bUQQgUjqu8KFE3gTNI5+UL8aJ0H8NsXmULbJ+wwlUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAU2pdQX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771931941; c=relaxed/simple;
+	bh=TzCUGpEDUTKD6tcoKokHDlQAGVLw4XXksTwjbV99rHQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=SC4xSsnQLuZhNraIQxkolHaQLFuNCzjK462fNet7Fck8P6tBY6Q9uOzOh26IlOss5jBtGbI7O3n0/LXCdDiPVS9m/FXSQKMveSuggMofcN1kOdq/qtC8os+11cmG0O1Y9cbMIi9vlewaJdWJBpetGnDvPu4UxkCF30y8ndgfPsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOu8qMmm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAU2pdQX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158D2C116D0;
-	Tue, 24 Feb 2026 10:42:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOu8qMmm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB733C116D0;
+	Tue, 24 Feb 2026 11:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771929740;
-	bh=EdYMSneYGYWOu2MY/gnpVM4ln8olb1RiXGDKI2avrXU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=GAU2pdQXeucHDr93YOJlBQA+9WyQyiqX3XUv0GPdy5+63ewH++MkxyrNYQumwLA4W
-	 YPvSJkU9bCvwg0PQISCbL7pQ53LDJwxCiV6mlupfv3XGnYbITTh1piGzZ+A4mlBMuk
-	 4BLlREPZdKFZhle5va0yKY3MgMD1Ru8Hzm9tCf+z8+JaypVhehj82iMeu/g36i61cS
-	 LOK6GF96u2rd6HmI4kigzcpkbtJ/Mu3uUKlP3KL6U4B3ccmjM1712HCHbTYCUdiqco
-	 kxP5N90jQc3VZcobz2Hi+vK6uI3CzGRjwp0bzDuDcBOAuwMIDp5V4VWUl94VWRudG1
-	 gdUVkzkXXqWYQ==
+	s=k20201202; t=1771931941;
+	bh=TzCUGpEDUTKD6tcoKokHDlQAGVLw4XXksTwjbV99rHQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=MOu8qMmmrykyBB4CVhwqsAo8Gs8bS7U6AafB15auu2pLImpGtcvmUXOPslyfKs2el
+	 cA6Tgr0KiCNDlclglU7X5nBYMurMj/c4b5jgIPllHvoz8I5zv55L8nL/QYuioiqNz0
+	 bFHwNBCzqEwNzza99Dotcw3hy2WSMt1k4v0Nu1ObFnuzzPCJTaZJR09VKnQPVNu0Ie
+	 YiaCR0DXwqb5L1MTAH33VJOtane4KNMsI/15XTFxxb0XWg50vHeumHbafF+RW87C0o
+	 zS7G0Yc9SFTSe1i5chVbdD//SENR7XS47MSpwMtFs06smyoMu66VTyAuEoDPiztBuc
+	 FG8EIBIcIDBog==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: aliceryhl@google.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dave
- Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
- Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
- Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Igor Korotin
- <igor.korotin.linux@gmail.com>, Daniel Almeida
- <daniel.almeida@collabora.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen
- Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
- =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Boqun
- Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org,
- linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, Asahi Lina
- <lina+kernel@asahilina.net>, Oliver Mangold <oliver.mangold@pm.me>
-Subject: Re: [PATCH v15 1/9] rust: types: Add Ownable/Owned types
-In-Reply-To: <aZ1VQmtapuoerpVo@google.com>
-References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
- <20260220-unique-ref-v15-1-893ed86b06cc@kernel.org>
- <aZg44EmMWKK-z5KP@google.com>
- <87wm0333qt.fsf@t14s.mail-host-address-is-not-set>
- <IFU05rWmgywK-tzaInc7eF2Kmy1zf-BDkCrQZfRI_2JN6E0-p3zFaUMu3V6T1YTeQG9xC1hHzXThLCORJqpoWA==@protonmail.internalid>
- <aZ1VQmtapuoerpVo@google.com>
-Date: Tue, 24 Feb 2026 11:41:45 +0100
-Message-ID: <87a4wy2zkm.fsf@t14s.mail-host-address-is-not-set>
+Date: Tue, 24 Feb 2026 12:18:02 +0100
+Subject: [PATCH v16 07/10] rust: page: update formatting of `use`
+ statements
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260224-unique-ref-v16-7-c21afcb118d3@kernel.org>
+References: <20260224-unique-ref-v16-0-c21afcb118d3@kernel.org>
+In-Reply-To: <20260224-unique-ref-v16-0-c21afcb118d3@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+ Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Igor Korotin <igor.korotin.linux@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+ Uladzislau Rezki <urezki@gmail.com>, Boqun Feng <boqun@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=910; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=TzCUGpEDUTKD6tcoKokHDlQAGVLw4XXksTwjbV99rHQ=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpnYj5ytywbjKxCmfhmUDrIuCRIXch3CamTuuGv
+ j824oj6dJyJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZ2I+QAKCRDhuBo+eShj
+ d33LD/4tIWyZ+fNIywG0iGTvb2DorpPWbOHBNN9ywRijqdgN4kCYPMclfyWq5jb0IYw6fO5XvGS
+ n3w8ZMsfLfCWPUxLJdLXezRidEemIyeulj0g1sXIMUJtJCTE5KGLt1cF2TlmAqfIGDb1Hxva9+n
+ a17hvt6TxHT6vtxd6YhnJcIRECoOoIi6t163hqhNU+3Hy46/GrL+c+nTkA/ZlnfxLgaXP1+VGB7
+ I5d4mn9T5xF6HdI3RAI44jmR25J4E5AypWhSJtFg83rD1WbnwAcDa+Ow11Emd7UpvLdl7IYKorJ
+ VNJ5BCcmWvA7Uv5SbU6NqZ46lpaYD0303kqPl4SzHPc9ZgGpj1itJTcAZZg+7N11zMJ6N5UNtgL
+ 55lUMrNsD4c2ho5ywzGrZm+g8TjNVjqpCx+CcfiRj100RVyVJxpUoJsKKhElKn7CNCCvKJQk37C
+ ckI1Utyd486+FYBxr0xjySMGhSl+kuUkGVSs7o4WGXtaGlBup26dnSeAkV0hwb7PIJTnVEqhNG9
+ kkzffHhBC7rgSMVm/7JPpUvyMDnshDU2+oBO08eew7B5Exm7GXhrbIxkwxtnS8isIL6D8vMXvdR
+ 1M7UgSTMkNpZejv8PvjASBdsv1PFNoFB4h/GbJw5gpvV2ud0ebXXQu7h+wVO6KP4Jt9TmyvfoVj
+ JnTkk1uh31vgExw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-<aliceryhl@google.com> writes:
+Update formatting in preparation for next patch
 
-> On Mon, Feb 23, 2026 at 03:59:22PM +0100, Andreas Hindborg wrote:
->> Alice Ryhl <aliceryhl@google.com> writes:
->>
->> > On Fri, Feb 20, 2026 at 10:51:10AM +0100, Andreas Hindborg wrote:
->> >> From: Asahi Lina <lina+kernel@asahilina.net>
->> >>
->> >> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
->> >> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
->> >> `AlwaysRefCounted`, this mechanism expects the reference to be unique
->> >> within Rust, and does not allow cloning.
->> >>
->> >> Conceptually, this is similar to a `KBox<T>`, except that it delegates
->> >> resource management to the `T` instead of using a generic allocator.
->> >>
->> >> [ om:
->> >>   - Split code into separate file and `pub use` it from types.rs.
->> >>   - Make from_raw() and into_raw() public.
->> >>   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
->> >>   - Usage example/doctest for Ownable/Owned.
->> >>   - Fixes to documentation and commit message.
->> >> ]
->> >>
->> >> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
->> >> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
->> >> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
->> >> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
->> >> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
->> >> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->> >> [ Andreas: Updated documentation, examples, and formatting ]
->> >> Reviewed-by: Gary Guo <gary@garyguo.net>
->> >> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
->> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> >
->> >> +///         let result = NonNull::new(KBox::into_raw(result))
->> >> +///             .expect("Raw pointer to newly allocation KBox is null, this should never happen.");
->> >
->> > KBox should probably have an into_raw_nonnull().
->>
->> I can add that.
->>
->> >
->> >> +///    let foo = Foo::new().expect("Failed to allocate a Foo. This shouldn't happen");
->> >> +///    assert!(*FOO_ALLOC_COUNT.lock() == 1);
->> >
->> > Use ? here.
->>
->> Ok.
->>
->> >
->> >> +/// }
->> >> +/// // `foo` is out of scope now, so we expect no live allocations.
->> >> +/// assert!(*FOO_ALLOC_COUNT.lock() == 0);
->> >> +/// ```
->> >> +pub unsafe trait Ownable {
->> >> +    /// Releases the object.
->> >> +    ///
->> >> +    /// # Safety
->> >> +    ///
->> >> +    /// Callers must ensure that:
->> >> +    /// - `this` points to a valid `Self`.
->> >> +    /// - `*this` is no longer used after this call.
->> >> +    unsafe fn release(this: NonNull<Self>);
->> >
->> > Honestly, not using it after this call may be too strong. I can imagine
->> > wanting a value where I have both an ARef<_> and Owned<_> reference to
->> > something similar to the existing Arc<_>/ListArc<_> pattern, and in that
->> > case the value may in fact be accessed after this call if you still have
->> > an ARef<_>.
->>
->> I do not understand your use case.
->>
->> You are not supposed to have both an `ARef` and an `Owned` at the same
->> time. The `Owned` is to `ARef` what `UniqueArc` is to `Arc`. It is
->> supposed to be unique and no `ARef` can be live while the `Owned` is
->> live.
->>
->> A `ListArc` is "at most one per list link" and it takes a refcount on
->> the object by owning an `Arc`. As far as I recall, it does not provide
->> mutable access to anything but the list link. To me, that is a very
->> different situation.
->
-> I mean, even Page is kind of an example like that.
->
-> Pages are refcounted, but when you have a higher-order page, the
-> __free_pages() call does something special beyond what put_page(). For
-> example, if you have an order-2 page, which consists of 4 pages, then
-> the refcount only keeps the first page alive, and __free_pages() frees
-> the 3 extra pages right away even if refcount is still non-zero. The
-> first page then stays alive until the last put_page() is called.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/page.rs | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-I see. We currently only support order 0 pages. I think we can handle
-this situation later, if we need to handle higher order pages.
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 432fc0297d4a8..bf3bed7e2d3fe 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -3,17 +3,23 @@
+ //! Kernel page allocation and management.
+ 
+ use crate::{
+-    alloc::{AllocError, Flags},
++    alloc::{
++        AllocError,
++        Flags, //
++    },
+     bindings,
+     error::code::*,
+     error::Result,
+-    uaccess::UserSliceReader,
++    uaccess::UserSliceReader, //
+ };
+ use core::{
+     marker::PhantomData,
+     mem::ManuallyDrop,
+     ops::Deref,
+-    ptr::{self, NonNull},
++    ptr::{
++        self,
++        NonNull, //
++    }, //
+ };
+ 
+ /// A bitwise shift for the page size.
 
-In that case, we could hand out `Owned<Page>` for the head page and then
-provide some way of getting a `&Page` for the tail pages. Obtaining
-`Owned<Page>` for a tail page does not make sense.
-
-More likely we will build an abstraction for `struct folio`. We can
-still hand some kind of page reference for tail pages from an `Owned<Folio>`.
-
-Best regards,
-Andreas Hindborg
+-- 
+2.51.2
 
 
