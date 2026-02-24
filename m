@@ -1,102 +1,64 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1875739C626
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 15:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7403A0B1E;
+	Tue, 24 Feb 2026 15:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771946241; cv=none; b=G0ccDl4yLu/9f6dtR3wkGQQBD2kC2Qgn3T9Vjf7G+hQF5QeqH+VtEF8WpdO2FsXMUxMg3fJdPKzBw6QizOCNRhecKlITWWazIt8KaGAAsIuB6J9dreyIoRaLVdMsuJjoPwhC0UT23RGmwQu2VRT5GSTPJbkoT4xXgiK9fuQJskQ=
+	t=1771946264; cv=none; b=tZ6omGANmwnRHE4ez3zAetBlAkPu9WjtDSfh8JrENBj3G+1NQaSr78DrmYB81CxzjWbu4tsdJMP17XyjRTbbb4Bdgc1eZ659EAWnWLGb/1Lh8lW30Z9cj3zp35TeOLytzPj8VzAgkuw4stdwlCzCMhL7lc3ZIPr5EULtQv6lQrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771946241; c=relaxed/simple;
-	bh=bpTGTozvD3yasSrq4XIec/IuQ7bIWRv4psvjDM1rGY0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EocvpJQXW7XDYDeCRkL2jMxTo/pFM5lueyC9EanBtX9ymuoe8FSLQiKdN41cTL1/mnPLjLTWN6DBEQx26olI9+75iQIPCAzRsaJn8kwHssubyJCbh+XNg67Uo6kfV1t8Hezj/QHrCjVAVhJqZUYxILV0vrc1ds4/Y7GIfah6IjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hxUGMi5a; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1771946264; c=relaxed/simple;
+	bh=1Bj5QO/sZIgAv9PKzWZ8aiOMalGgR/GkNuoz/EcNLQc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IsUYZVB6+en7eaW7+tc93XqyOMeGFwytJXUA7fMoS7zCEpKStLIy+QONgL0AYTeO2cci5JPIhvV8pc5qdm7PUa7UFQPIBFM72VrRcK/zTqsfRuoN3kFyr1NgQtMppiD2+z50UOhZH5Pl6IeRDvnqGSH8r/IYtToKB+Q9V0ejpi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSuchcjU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hxUGMi5a"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4830e7c6131so52345595e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 07:17:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771946237; x=1772551037; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bpTGTozvD3yasSrq4XIec/IuQ7bIWRv4psvjDM1rGY0=;
-        b=hxUGMi5aqKDDy6pjXae5Sew+FIKjn9h3BhLsS2xvH9jNpaYIvjfX+XymKGwiTqnb6V
-         vDDP2r0LL2h2qV62u8jxqh3mu+izE8+DWxOgtQW5hfQa1cMN8kdzeh+5wwa71jBTGN9M
-         0cg37cl0yDHflGq6y3YrADsZfWuhisdlSyDHIm4cz7HptAL2/TVOVk9BGcGuRZrKN7I2
-         Fje6aFCj9/xIxbhhI2FO1S+sGNJ5uAR7o8aV28rBpm5W/JquAqGleCVGZwbeR5GRpDkn
-         qxkwOXTN7Iibz3DN6As1xHnWi3+Y+Cc62H+SXBNLc6Rl+SMRToGi7YbgLIXC+FKwqEJF
-         NkZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771946237; x=1772551037;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bpTGTozvD3yasSrq4XIec/IuQ7bIWRv4psvjDM1rGY0=;
-        b=GPiJo6f/lyL8W9JoxHBkNuZSSzgTx9/YkOxQRfCt/Nui4HPFez5pPoDYCHb8HRw4Ul
-         zm0ZXqK3qZQpOBw2Mzh6WEWcX8f99w2V2z4LJlQ7+/0QeyyspQxVUQH6sQ62sutPqy6I
-         7KEXGRuFM6+KZJglQThV7EMt+MHNB1qLMTJ/kDdGbErRJmIORrpzap7GnVQVp/1DJBVF
-         Ud+vDXLsl0PqRoPrPcGFKsgLX+M6QcLtfVTvTtsWbjIHopghS08DHBoJTBxKzT3aqrfb
-         DEs8R/CejvAHnGJGrYdZiWx4iwPE84FQtGg+nEDLB2GTChno2+dVqtG9RlOIC4j2Iv/J
-         kAEA==
-X-Forwarded-Encrypted: i=1; AJvYcCWBxjCmjweP2i+8tH2C3R7TvKLHxsgcaFRZMZF8l7hkuNbwxppsxtkVzQFM1SYhQ6R4M8ZmBBzgjPvuVTi0mA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOJJsfN645pCiFB6wBs1t6TAA5B15wDhK9IahUYMNNQSJ7DgfM
-	Ej5B8CWea2gRKrICrDdBVukXqjO6UXZcPr/y7IZqhTH5nkYBsDNoB2GkdNvqHwKUXgt0L2MCoOx
-	ABcUPHIgMT03aDk+n9w==
-X-Received: from wmof9.prod.google.com ([2002:a05:600c:44c9:b0:477:988a:7675])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f93:b0:475:dde5:d91b with SMTP id 5b1f17b1804b1-483a962dff6mr201499035e9.17.1771946237254;
- Tue, 24 Feb 2026 07:17:17 -0800 (PST)
-Date: Tue, 24 Feb 2026 15:17:16 +0000
-In-Reply-To: <CANiq72keRQupX8UX7PQrLYgzzbdRquxV06SDzY9aubA_p+uGjw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSuchcjU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C1AC116D0;
+	Tue, 24 Feb 2026 15:17:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771946263;
+	bh=1Bj5QO/sZIgAv9PKzWZ8aiOMalGgR/GkNuoz/EcNLQc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lSuchcjU/2owqJhZ1jM1s7aF9fhsUAb/DeV80/FqAwmXv1RmmT4L/nVr7s9W/KrC2
+	 hWoHW0NZwfBKFc28JbpsVNDcmbw8EAMLOyP+kO1plYYxd3vvJ0NAiBLgihOW3XyH88
+	 OLcZZmGVL39VgF9L3Nf9wA/Gtq8xJ2WwPEuU/0Wolwd3FGCYSlT37ROpJpugSOk6qA
+	 j9WJLPBwUdisUoPcATackch+IlGtFcY7p/zGo4W1NJd6pbZl/Aw8BjZ+sBR+AZDp4x
+	 TBD9m7ciFH8MYZb1pJp8dH7cNRFuToiV3wH6zaRBu7Salev+lp91RtJGv5Dp/ZvjwZ
+	 patqViub4840g==
+Message-ID: <e3f1facc-c077-4453-8960-3d31f2a322ed@kernel.org>
+Date: Tue, 24 Feb 2026 16:17:39 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260224-binder-crate-name-v1-0-7dfc1289abbd@google.com> <CANiq72keRQupX8UX7PQrLYgzzbdRquxV06SDzY9aubA_p+uGjw@mail.gmail.com>
-Message-ID: <aZ3A_KBWFJES0d_t@google.com>
-Subject: Re: [PATCH 0/2] Change Rust Binder crate name to rust_binder
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] rust/drm: Fixup import styles
+To: Lyude Paul <lyude@redhat.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, Ewan Chorynski <ewan.chorynski@ik.me>,
+ Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Simona Vetter <simona@ffwll.ch>, Shankari Anand <shankari.ak0208@gmail.com>,
+ David Airlie <airlied@gmail.com>, Atharv Dubey <atharvd440@gmail.com>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ Daniel Almeida <daniel.almeida@collabora.com>
+References: <20260122214316.3281257-1-lyude@redhat.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260122214316.3281257-1-lyude@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 24, 2026 at 02:24:59PM +0100, Miguel Ojeda wrote:
-> On Tue, Feb 24, 2026 at 10:38=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> >
-> > Currently the crate name of the Rust Binder driver is rust_binder_main,
-> > but I'd like it to be called rust_binder instead. This affects e.g.
-> > symbol names in stack traces.
->=20
-> We discussed allowing to customize crate names years ago, at least for
-> dashes vs. underscores, for matching C names more closely and perhaps
-> other needs.
->=20
-> Back then, we decided to keep things simple to avoid confusion (i.e. a
-> single identifier used everywhere the same way is simpler, at least
-> for humans) and to avoid having to deal with those dual names
-> everywhere (e.g. adding workarounds for rust-analyzer here).
->=20
-> I talked with Alice about what she needed here -- could we rename that
-> source file to just something like `binder`? That would avoid the need
-> to have a custom name, so everything would still match (symbols,
-> source file, object file...), and it would give you even shorter
-> names.
+On 1/22/26 10:43 PM, Lyude Paul wrote:
+> This is to match
+>   https://docs.kernel.org/rust/coding-guidelines.html#imports
+> 
+> There should be no functional changes in this patch.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-Sure just renaming rust_binder_main.rs to binder.rs would work too.
+Applied to drm-rust-next, thanks!
 
-Alice
+    [ Move trailing `//` at the end. - Danilo ]
