@@ -1,267 +1,98 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E09A3644AD
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 07:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A6236654A
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 07:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771918663; cv=none; b=EwjXUiqKV6/xJEkXN5foQRq28Ql6b0EmqAh895TJO4QfVjvEObiQIj/IBybU6odmllxVZgIAYzcRqdwatVHf/j23h1gMjmdBlXg9Lrjfu7Pg1Y7slhDQKXqGQIyo+3bGTaXx6wufWwpMOXHG4iyGRa86PVsL9QeNAXjjp3CGidI=
+	t=1771918833; cv=none; b=SUeNaIKjoOsTWrlUokBQ3lg1zChhAS53cKA71j/6+d0cF5sGpLB+IC8r9/F8Pecn84Q53CIFgHBTlRmMEtSbRj3r9DU2qd/4PIsOqDO5gXi27o1GpK4BLDsU6wbEoCfCDoOVqy/54j4gbamrtAY0y5HNreqfsh1jbivohy0VacU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771918663; c=relaxed/simple;
-	bh=rdtI/eBapYxisnhkJe8WgbchqvYRdF1p2iiYViIA4sA=;
+	s=arc-20240116; t=1771918833; c=relaxed/simple;
+	bh=Io/ZkhGhEupZ5ffQQcXAaXbykfDp3iGhw1Kf+6gZPuI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UU88ToUahNKbeTb17wDMcIDr4BSX3NY9p+wcULVdDkl01unNdkQPOzBWVQgIzw7s3S7Xt0t2+zSl1JfW4G1AmSgoW6DRRdLBI+XKllOmvM7Iga0y8pG5ulue7w9d11zHyk4l/wy22Co2UwN7/k3JMwDYpRhBI/CxpGXK7yLbXpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SWdRoK+K; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=aTSVrGMC4ZHH/TuQrGbMQCKe150/GM1cwZeEUauN7dxramemAIIysox0YbcUQAReMgXDgAOm5V6D37cZVqBlNaj/jMRJLPF4cZnJkGW109+4+K1Z5i15l+OKmslGfFgDWN0uAlNXr01tQ2KmH3aMHi4DIBCtDJJ+KP3xH+pt5RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dEx7j/+8; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SWdRoK+K"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4806cfffca6so47566395e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 23:37:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dEx7j/+8"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-65f6e28e7dcso243786a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Feb 2026 23:40:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771918660; x=1772523460; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771918830; x=1772523630; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :f2079rom:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ccaw3Qp4EtXU0xb2rrWk95YgoDmXX+bj8GIv5SpCaTk=;
-        b=SWdRoK+KhzJadfTvadCRAPVuKb0sl8vOFEf8WLcK11pL2IwUxnCQdNoc/JD+m/GGSv
-         HOXKA26IhZsphuq3ASrefnsrga6VaBIVqaDzDmSWj+KVhzXjmlpTnINzrdAk09yHyODl
-         mcm9g8FsIefz5Y4s87s6li5kmGVsh9vAgUhREzI0lzQg3wAOSD2jDRH3O1ZLhoMvMJfF
-         cghnpmgcIsjwJ//GjYxWryxt5tsS7ADSeL4Q29LnOEOG4qDtt/e+rZwbtWXkmPYsrGWd
-         XOOd74xD/13110wH9rovGcjfGe3HXgQH2a2Gt2vE3e/DXTCTucX/WO9TNN+QSs/GEiLD
-         y+dw==
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sCYKSjqgDVMvOWcwfRLj9JJfMnbz5kYU9ZhocRMksgo=;
+        b=dEx7j/+8sPPS3JuRwv7oc0I4qJ0d2VKbLf5bDBwns7FyOPoJNnHhpLFumS/uZ7cHPJ
+         /c5MFac2J9rdLjh1WkV3wgcBExsW+rN5b31R+L/poxCLYZvaHKITbN28YAcxOSeHeOgS
+         77mM9zBCeMXWapcVsOsXDCkv1Aw1juiSa2Wt1mhXxnqW+RorkhXc1TVgfNcEjU+99d+6
+         CIcBXNqqXqjXORahBOd6kmICOEQIst2IYWSMLOfwVkoMikEtETcsSXB6KKYFSPjwcQeI
+         uqylgG5kZ0JFTCKApbycvMA8VrzQKaBHAymnPpkIzb+9y9CULzGOTH6kAzkcjDNnrf6J
+         y44w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771918660; x=1772523460;
+        d=1e100.net; s=20230601; t=1771918830; x=1772523630;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :f2079rom:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ccaw3Qp4EtXU0xb2rrWk95YgoDmXX+bj8GIv5SpCaTk=;
-        b=hp7FNcUUa83wFiNZxEpYKEGTzZbTw2j25PDSa4GkmXvKtAcm5lL38m0wj2EnmjInKU
-         qXc2EZBlCNDkfD9XukK5ERAqSQ4ss6zzVbRVYCadVPvR9VgY6m7S71Y4ip4xvA/F5p8F
-         0ch8aRy+ii0AcLSvRdpf3WGIcmPgLza9UCA9LfkEziTMEefkpI3Bq+ZoBc8I/JYCPd/4
-         cEUAMOBmu+VBOfrHoikCwM4gK3JHWq/SDnWPVJwDQG3oFYW/lOomHMe/LdAnkbAqJE2V
-         035G0A1YeFTVqVvXQ+4CqqK09sVUMzdHZEPug4I9Jx7a4f7P9uSDldDLjh40UuHImBJl
-         S3gA==
-X-Forwarded-Encrypted: i=1; AJvYcCWhJ9q3YL4Cl2oU9X2HOcWE+QReeXxVgQRx0LrwBgzP50tGshiYOVswjLhGZk043qNkcIOLV+mX7PQP2xIu2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHCevpo/mbw8hDwMMNNPEFm3fmSg8InQP4u/KG8u7ETnIfF+wb
-	ijIxktCl7m/SDZSa4F4FtUaSSPaauxIHZ+a6PEJ8hTrAPz26g6D68zzIihwwQeoE7idp4hpjoXY
-	lXfqCQquoNtmOocZULg==
-X-Received: from wmxb5-n2.prod.google.com ([2002:a05:600d:8445:20b0:483:43dc:999f])
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sCYKSjqgDVMvOWcwfRLj9JJfMnbz5kYU9ZhocRMksgo=;
+        b=KYPn4hvBxUFbK2VRGl8EenPrWeWawRJCL+K6CNLldYleQYiO+vrKQtFSP3ZWMn65RC
+         22n10dKBDkv7UxHE1HhuNLxIf67jWQZs9ZBZZC8NXt0oCqaFJJEyRoV7CVo8Oxr6ekZO
+         5otzn7d9FLg29KXhWuzbvz/+V6n/pzRRpOnpTURSKW/cV/ROioacJ4T+lzIYqaY17rlk
+         7dIGHK6oMYzg9c54yyFvCDq/+oqf0jMLvDIN31rItOjmKsF0evAGpdFxe0Oy/sU/3Xmm
+         qOcYQYVtGtqAE9neTaGSSkjXF4Qz01VCGXvO1mkmfqNX+JNn+NSAkYvnbU8AhXiLUQ/R
+         W62A==
+X-Forwarded-Encrypted: i=1; AJvYcCVlDVfFHr4OE2oCmiYsUFeoij18J/5Xmw/wFjmBwZiLwO5kom+H7y3X/qMnsoWunySumbEEeNT0jMiCweH00Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT8K9LVZ/o/n/xLvoe5xpqvELpo7GJCYygn2IQQdBmPSmLwpEj
+	9ZvR6XGw59f+GZHBA/sWA9N2A4k/0QkbCLjAlYbDyvlRbCgOz9QGjnDhdIDSUdDnnUsaGn2oV03
+	3iHV4A6osoqqEBGuf9g==
+X-Received: from edwv1.prod.google.com ([2002:aa7:cd41:0:b0:65b:963c:ec65])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:674f:b0:483:6ff1:18b with SMTP id 5b1f17b1804b1-483a9555bafmr189459985e9.0.1771918659820;
- Mon, 23 Feb 2026 23:37:39 -0800 (PST)
-Date: Tue, 24 Feb 2026 07:37:38 +0000
-F2079rom: Alice Ryhl <aliceryhl@google.com>
-In-Reply-To: <87wm0333qt.fsf@t14s.mail-host-address-is-not-set>
+ 2002:a05:6402:354b:b0:65b:94e0:a593 with SMTP id 4fb4d7f45d1cf-65ea4b65b5cmr5810901a12.1.1771918830281;
+ Mon, 23 Feb 2026 23:40:30 -0800 (PST)
+Date: Tue, 24 Feb 2026 07:40:29 +0000
+In-Reply-To: <20260224-nullterminatedformatter-v1-1-5bef7b9b3d4c@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
- <20260220-unique-ref-v15-1-893ed86b06cc@kernel.org> <aZg44EmMWKK-z5KP@google.com>
- <87wm0333qt.fsf@t14s.mail-host-address-is-not-set>
-Message-ID: <aZ1VQmtapuoerpVo@google.com>
-Subject: Re: [PATCH v15 1/9] rust: types: Add Ownable/Owned types
-From: <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+References: <20260224-nullterminatedformatter-v1-1-5bef7b9b3d4c@nvidia.com>
+Message-ID: <aZ1V7ckM97JvSZKt@google.com>
+Subject: Re: [PATCH] rust: str: make NullTerminatedFormatter public
+From: Alice Ryhl <aliceryhl@google.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Igor Korotin <igor.korotin.linux@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
-	linux-pci@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>, 
-	Oliver Mangold <oliver.mangold@pm.me>
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Feb 23, 2026 at 03:59:22PM +0100, Andreas Hindborg wrote:
-> Alice Ryhl <aliceryhl@google.com> writes:
+On Tue, Feb 24, 2026 at 11:25:34AM +0900, Alexandre Courbot wrote:
+> If `CONFIG_BLOCK` is disabled, the following warnings are displayed
+> during build:
 > 
-> > On Fri, Feb 20, 2026 at 10:51:10AM +0100, Andreas Hindborg wrote:
-> >> From: Asahi Lina <lina+kernel@asahilina.net>
-> >> 
-> >> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
-> >> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
-> >> `AlwaysRefCounted`, this mechanism expects the reference to be unique
-> >> within Rust, and does not allow cloning.
-> >> 
-> >> Conceptually, this is similar to a `KBox<T>`, except that it delegates
-> >> resource management to the `T` instead of using a generic allocator.
-> >> 
-> >> [ om:
-> >>   - Split code into separate file and `pub use` it from types.rs.
-> >>   - Make from_raw() and into_raw() public.
-> >>   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
-> >>   - Usage example/doctest for Ownable/Owned.
-> >>   - Fixes to documentation and commit message.
-> >> ]
-> >> 
-> >> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
-> >> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> >> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
-> >> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> >> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> >> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> >> [ Andreas: Updated documentation, examples, and formatting ]
-> >> Reviewed-by: Gary Guo <gary@garyguo.net>
-> >> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> >
-> >> +///         let result = NonNull::new(KBox::into_raw(result))
-> >> +///             .expect("Raw pointer to newly allocation KBox is null, this should never happen.");
-> >
-> > KBox should probably have an into_raw_nonnull().
+>   warning: struct `NullTerminatedFormatter` is never constructed
+>     --> ../rust/kernel/str.rs:667:19
+>       |
+>   667 | pub(crate) struct NullTerminatedFormatter<'a> {
+>       |                   ^^^^^^^^^^^^^^^^^^^^^^^
+>       |
+>       = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
 > 
-> I can add that.
+>   warning: associated function `new` is never used
+>     --> ../rust/kernel/str.rs:673:19
+>       |
+>   671 | impl<'a> NullTerminatedFormatter<'a> {
+>       | ------------------------------------ associated function in this implementation
+>   672 |     /// Create a new [`Self`] instance.
+>   673 |     pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
 > 
-> >
-> >> +///    let foo = Foo::new().expect("Failed to allocate a Foo. This shouldn't happen");
-> >> +///    assert!(*FOO_ALLOC_COUNT.lock() == 1);
-> >
-> > Use ? here.
+> Fix them by making `NullTerminatedFormatter` public, as it could be
+> useful for drivers anyway.
 > 
-> Ok.
-> 
-> >
-> >> +/// }
-> >> +/// // `foo` is out of scope now, so we expect no live allocations.
-> >> +/// assert!(*FOO_ALLOC_COUNT.lock() == 0);
-> >> +/// ```
-> >> +pub unsafe trait Ownable {
-> >> +    /// Releases the object.
-> >> +    ///
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// Callers must ensure that:
-> >> +    /// - `this` points to a valid `Self`.
-> >> +    /// - `*this` is no longer used after this call.
-> >> +    unsafe fn release(this: NonNull<Self>);
-> >
-> > Honestly, not using it after this call may be too strong. I can imagine
-> > wanting a value where I have both an ARef<_> and Owned<_> reference to
-> > something similar to the existing Arc<_>/ListArc<_> pattern, and in that
-> > case the value may in fact be accessed after this call if you still have
-> > an ARef<_>.
-> 
-> I do not understand your use case.
-> 
-> You are not supposed to have both an `ARef` and an `Owned` at the same
-> time. The `Owned` is to `ARef` what `UniqueArc` is to `Arc`. It is
-> supposed to be unique and no `ARef` can be live while the `Owned` is
-> live.
-> 
-> A `ListArc` is "at most one per list link" and it takes a refcount on
-> the object by owning an `Arc`. As far as I recall, it does not provide
-> mutable access to anything but the list link. To me, that is a very
-> different situation.
+> Fixes: cdde7a1951ff ("rust: str: introduce `NullTerminatedFormatter`")
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-I mean, even Page is kind of an example like that.
-
-Pages are refcounted, but when you have a higher-order page, the
-__free_pages() call does something special beyond what put_page(). For
-example, if you have an order-2 page, which consists of 4 pages, then
-the refcount only keeps the first page alive, and __free_pages() frees
-the 3 extra pages right away even if refcount is still non-zero. The
-first page then stays alive until the last put_page() is called.
-
-> > If you modify Owned<_> invariants and Owned::from_raw() safety
-> > requirements along the lines of what I say below, then this could just
-> > say that the caller must have permission to call this function. The
-> > concrete implementer can specify what that means more directly, but here
-> > all it means is that a prior call to Owned::from_raw() promised to give
-> > you permission to call it.
-> 
-> I don't think we need the "permission" wording. How about this:
-> 
-> 
-> /// A mutable reference to an owned `T`.
-> ///
-> /// The [`Ownable`] is automatically freed or released when an instance of [`Owned`] is
-> /// dropped.
-> ///
-> /// # Invariants
-> ///
-> /// - Until `T::release` is called, this `Owned<T>` exclusively owns the underlying `T`.
-> /// - The `T` value is pinned.
-> pub struct Owned<T: Ownable> {...}
-> 
-> 
-> impl<T: Ownable> Owned<T> {
->     /// Creates a new instance of [`Owned`].
->     ///
->     /// This function takes over ownership of the underlying object.
->     ///
->     /// # Safety
->     ///
->     /// Callers must ensure that:
->     /// - `ptr` points to a valid instance of `T`.
->     /// - Until `T::release` is called, the returned `Owned<T>` exclusively owns the underlying `T`.
->     pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {...}
-> }
-> 
-> pub trait Ownable {
->     /// Tear down this `Ownable`.
->     ///
->     /// Implementers of `Ownable` can use this function to clean up the use of `Self`. This can
->     /// include freeing the underlying object.
->     ///
->     /// # Safety
->     ///
->     /// Callers must ensure that the caller has exclusive ownership of `T`, and this ownership can
->     /// be transferred to the `release` method.
->     unsafe fn release(&mut self);
-> }
-> 
-> 
-> Note `Ownable` not being an unsafe trait.
-
-It looks ok but see my above reply.
-
-> >> +/// A mutable reference to an owned `T`.
-> >> +///
-> >> +/// The [`Ownable`] is automatically freed or released when an instance of [`Owned`] is
-> >> +/// dropped.
-> >> +///
-> >> +/// # Invariants
-> >> +///
-> >> +/// - The [`Owned<T>`] has exclusive access to the instance of `T`.
-> >> +/// - The instance of `T` will stay alive at least as long as the [`Owned<T>`] is alive.
-> >> +pub struct Owned<T: Ownable> {
-> >> +    ptr: NonNull<T>,
-> >> +}
-> >
-> > I think some more direct and less fuzzy invariants would be:
-> >
-> > - This `Owned<T>` holds permissions to call `T::release()` on the value once.
-> > - Until `T::release()` is called, this `Owned<T>` may perform mutable access on the `T`.
-> 
-> I do not like the wording for mutable access. Formulating safety
-> requirements for `from_raw` and safety comments for that function
-> becomes convoluted like this. I'd rather formulate the
-> access capability in terms of ownership;
-> 
->  - Until `T::release()` is called, this `Owned<T>` exclusively owns the
->    underlying `T`.
-> 
-> How is that?
-> 
-> > - The `T` value is pinned.
-> 
-> I am unsure about the pinning terminology. If we say that `T` is pinned,
-> does this mean that it will never move, even if `T: Unpin`? Or is it
-> implied that `T` may move if it is `Unpin`?
-
-Values that are `Unpin` can always move - pinning is a no-op for them.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
