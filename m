@@ -1,128 +1,203 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.ci.icloud.com (ci-2003l-snip4-8.eps.apple.com [57.103.91.249])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F48639C64D
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 13:25:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771939515; cv=pass; b=LdH9q0dM/zXtUSBYcn9+GQyuvqD7FRsVy4t1gh5Of8iZgxzkcDs39YZQcjYdq9lM/UAE7LfjfiywVfvvj4HJsGber+R3Ri/gjAxZ2rTj7/B64sj9QXPGPyne5eLYTejcQFc1GfwhGagfL3hxcHaDh8gTBzGuwst/3gP768DhKuM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771939515; c=relaxed/simple;
-	bh=4B5oKnKjDlfXUuHy/T3lAUMN60/UQviL34TxIPODh6s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CofOFPG5FCqVEQ9JJ0EY3EATYyyFxLJnp4GfpZSh6dIR+qxfzQkKT6NRYZa1UlTD4RHkrs2gNODxksgQ5Q2uHZodAbe7+D1fiJRqGEUfB3wqS5bMQe/eP6NWtmxRsrnD+bqatnWux1TiAIXT85PpCSGJVLPCpu1I6EFC/FrwCrQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=amJ19gfy; arc=pass smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D6B396B9A
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 13:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.91.249
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771939726; cv=none; b=SsRBMabIU44WmIrHJaLtbrnIZQtnpL4cQIE2qadpriDGXsaNHg97jhSoiWNlASVeQ40MTEErp8KgE4t3Dyjuw1OfM6HstgQ4tImrlpAg8vF/TgdYDpSEtNGAbZ1GnCLHOEgsWxiWUz/Jk3RyPatN86Ky9aWR9AC2ak8iZPduWIY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771939726; c=relaxed/simple;
+	bh=lIqYJW8hkUMY1V1F6d7O3lkHqk0O6MLa0qzb2h4D1Ck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LXWjUb/nKVtbXPeqy2g8tUbFq7UNhy63GHfNGuhEUwZvlGFpbXzEi0wBm8WHsS3HwpNKYuuWDFWVFkTIXatRHrhHiacVDOlLsCQdHvn31lyZ2LKpUNSDQmFijl2uJycaQxqvGvL67qIO+XJbd1t5WN0CQs3kiLYTcGtdmSwLjdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=CA5kd3RH; arc=none smtp.client-ip=57.103.91.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="amJ19gfy"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2bd5658b901so247373eec.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 05:25:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771939513; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Xhjb7gKo3cw53b0KwHqQLvQ4O6bL5P8iKqF6HCfUpokT1HicUZY1DmR9GUy/+OpY7K
-         /ox2C87ChpjRWgqXtFU/JoJN4EuSxPAIs78KUdRT40F2ZGZM69xO6Zq5W86IZFGRmnaz
-         jxwJTii/O8/tAZHrkSTk33xz3HWp2QQgpnLLNJIr16xbjwta+IpQjwXtiwYm6u67Vrah
-         JGt77rQ/ebD6XDXmVMMPlTDCpucvk6oyBGZHC0xb5ahgMndxBCbam6uDiIkAIfCYnA8q
-         8q5RJYYicgv7Jd1YHLFhGuu6X4Hapx7yVDMQi6a7Ac9hFnlH6R3TWKV2jV7ODf9xIEuK
-         pT+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4B5oKnKjDlfXUuHy/T3lAUMN60/UQviL34TxIPODh6s=;
-        fh=sVAfOY2+g+Mw4X8l3FQzyWNUw+EXdLcKWXHrNm5PHNk=;
-        b=khocQUyh+THaZW13uBLwGmQAdqDTp97HzhkXaC12HCJ9TZfLe1IoyaGsZyCjnEk/y9
-         UB354BJ4LMPohoXqaVIEEvDwGrWCEtmqS8eHv3lt+XgLrufgNn/zACHrzk07Z5Glh/BT
-         C0bhG1a1IvP6C5URN9Sqcm7ZXVzFTFlZ/E+8FlLp8L67qb4WQJldD3kKYlpi7BFOWbBU
-         +9+s6N00im4hT4twqs9qqyc20mFAv4WgoARbgu/8YN6ZnXmYDexqnX1tD1DOI5GU4rSJ
-         4QW0yyj4LYfTg1RIGsqkTKlWy4435Y8ulBHAAZZQwnkN/8yeGlb7rkzF8q5lPg7Nh4pE
-         ZM5g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771939513; x=1772544313; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4B5oKnKjDlfXUuHy/T3lAUMN60/UQviL34TxIPODh6s=;
-        b=amJ19gfyTtAVoMxgQm0f3qImnKBOYS2LMhRYmZfxjNVo2ZknrkIJw/fwhJszjDR/tr
-         4SwIc8L7tfoHSforCLzabX3OFWwl445LKXBcoc5aqR2wVorjsjfGyFFJOfjQk3EELnBA
-         vMTY22X0uRG9UcTQ3I+bNKlcK5ZhQLGca0dZyejeHc8TIFjwdM4YR9h/bzwOwwr96WbB
-         HUv5z04GvfZAU1sGIVkEU4M5oQozYWmLKwxseVvAx/Ik7MMRayqV5QrUa2gAqLx8AfB+
-         +W/Rn8cPlf9FS5QTbDifhJTfjcJC/MsCJ1ERX3cv+ln6qCG+p/izQV4j6lw6+87fSzQe
-         55sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771939513; x=1772544313;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4B5oKnKjDlfXUuHy/T3lAUMN60/UQviL34TxIPODh6s=;
-        b=FmBGzq2IbF8fbwFXVfKUSmZ0uh0tlG2olrH4Lkmb34RjdQm6HTk9RkCXC0jwEkG8KW
-         8YI7ddM5/rJxpwpUouFKMwRy9p68N4CCr2vPespiQmTHPHnIMxNn3WZwzxjRSFrJtBT1
-         X4xiq87Ns9EQjgAx6/VtBHjbVEgFOtBMlUb2naFFfiHi1x1I+VGRX0wvalSOTBdgtaE/
-         F68/1pgQGw6lntmkDaQNSUDALAUr7iboVtW7+z8wdtgoNmIWXGIvq30VwK/Hs08oau3X
-         kFEjc4kOD5PiTRqZwPg0KONkLCjwwEt0pDJdBVyLB8uwO0Xkbn0300tU3MlKtF3Fie6T
-         ajtg==
-X-Forwarded-Encrypted: i=1; AJvYcCX5r5qvYnoWfoeuXMYkWdVxRVKgNrLCkvYmoP/RYqXoRmwK79hGOxe6GPENkKcPorMrm1kHw1vNgL5zIA1NNQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVcKE3SuyuiOMtXgET9/9qfORkVcHcpskVTv/ltijGSI9w9Q0R
-	NcaD12j/4hM1Gs0Zr3GGBFTJjmEuofofIUnhOGjqcGi0Vit8H5EpoCZ+MMZNlki1Ic+a7Yn+OAv
-	OMoY8cEV52LmIT6nnw3SCT73stT7rX6E=
-X-Gm-Gg: AZuq6aJoto+6qmvsZo1Y/uIqWB55D/Zwg6tvZo6FsrJIf8S23uw3xaI1/Bh+oS4f3NU
-	DNYcG5RxQVlM2HT0nRl+GB5LrsAjleC0f0cFYWqnMIRT8ok808n25WytHbOjT/MV82AZ04PQaTj
-	cuMJYaPwvgLR5Bu++980miW7nYztQ+f9P1U841plBQjkLBqrCJUanAUDVTdHwxsJbc5Vi4tgQ14
-	22xMXtlpptKzdkxtr8Cj3vbRZD9fmKW/GqEBM5tKnyGPQSwv2VuJcV9V/KTyVk6sP8XzL7old93
-	BXvwAloBuaolgD/BQz7DIRuqYyYVvJRKIG86HFBU8FaxzhTVgzG6B3I+76PVSxlmjEEZ7YuKvzs
-	hG2OlVke+OXQASY+SzAl6HKyDt9g6Tvgvqbqy+Ss=
-X-Received: by 2002:a05:7022:985:b0:11b:65e:f33 with SMTP id
- a92af1059eb24-1276acaf097mr2227296c88.1.1771939513135; Tue, 24 Feb 2026
- 05:25:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="CA5kd3RH"
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-central-1k-10-percent-0 (Postfix) with ESMTPS id 04DF918040DF;
+	Tue, 24 Feb 2026 13:28:40 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1771939724; x=1774531724; bh=uDzSpRQnsKZXpRRhVqrNUhwqNU2mSRg29QHzKyqO/sE=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=CA5kd3RHLI2N+VGmGMoz3G7Ji38fwTwcub9xcRQ3GGEy47Gr4PXDlnrtPsEGYvL3RVtqv1WOd2+yCDCaoJ3SXNcp/vD8kfoFODaQC2M0hrv1MNnHxmBQtCdWF+z5h6YtiwY4A9pEE5eOnLMRRbIytkupx+GjECdknCGXsT/6KW/LQFTNZcGYnkevb3+oxy7CQAe7Pq88LHctX3pJd3ldz/1Go3n8Pg1sVD+yRsM/n0gjI6ijtZ7bqBpsMV8UsGPdrmMs1KmOr2xmtsEwNjjITv5j66YZouwJDmSrSNzTptUOqeIrYkrMPnJkHnnXlHlw1rV913A/k/GUVxoNk6Kd1Q==
+mail-alias-created-date: 1769500909675
+Received: from bee.. (unknown [17.57.156.36])
+	by p00-icloudmta-asmtp-us-central-1k-10-percent-0 (Postfix) with ESMTPSA id 6A45818040DD;
+	Tue, 24 Feb 2026 13:28:36 +0000 (UTC)
+From: FUJITA Tomonori <tomo@aliasing.net>
+To: a.hindborg@kernel.org,
+	ojeda@kernel.org
+Cc: dirk.behme@de.bosch.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	frederic@kernel.org,
+	gary@garyguo.net,
+	jstultz@google.com,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	sboyd@kernel.org,
+	tglx@kernel.org,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v2] rust: hrtimer: Restrict expires() to safe contexts
+Date: Tue, 24 Feb 2026 22:25:07 +0900
+Message-ID: <20260224132507.315637-1-tomo@aliasing.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260224-binder-crate-name-v1-0-7dfc1289abbd@google.com>
-In-Reply-To: <20260224-binder-crate-name-v1-0-7dfc1289abbd@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 24 Feb 2026 14:24:59 +0100
-X-Gm-Features: AaiRm509Z9-gzlIVSS9iwUGUQ6PSAeno5gaW8ZXoZH9h2w6NjyMBrQpssCA5U6U
-Message-ID: <CANiq72keRQupX8UX7PQrLYgzzbdRquxV06SDzY9aubA_p+uGjw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Change Rust Binder crate name to rust_binder
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Tamir Duberstein <tamird@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-Authority-Info-Out: v=2.4 cv=HKHO14tv c=1 sm=1 tr=0 ts=699da78a
+ cx=c_apl:c_apl_out:c_pps a=2G65uMN5HjSv0sBfM2Yj2w==:117
+ a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=JouNnQUc7SE4L-yjL0wA:9
+X-Proofpoint-GUID: tNv4KCjQlpGfHt318xD7s-NPs7ePD8FJ
+X-Proofpoint-ORIG-GUID: tNv4KCjQlpGfHt318xD7s-NPs7ePD8FJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDExMCBTYWx0ZWRfX6nZ+dUAkJ4+Z
+ VolD0R35A9d58r8B7Y2MegADYJl0ECm8FF7GNyjRH+b3e+9E7C/ZFYmHD14/Vm/36z1lmWbfH2B
+ GX6cB8ZIZtxMLYmnwBXCfY0OwSdcYucSk+dqqCDXPuglGz+brL/6GW0GpHlUPXaYqCwwJMveDE7
+ NDj2EdwZtRLjIxxUQihTICtvxB+n+B0ODPQHzG3Csy+wmhuQGlqhQLFv7R8/3ukTBLdaFgVdZfV
+ /JoNWgqyqt9gfH74fTd8+urYNq4DZTZl3tbWIQB76xnMlqANrwuhLIHdSXYC5+ejBkVb/f/gxvA
+ YT39R3rEq+hHNULBFHwW7O83CxvEcPlD4w1/RSaLyj/TxwNHLIdGzrVYCH0zWU=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-24_02,2026-02-23_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ clxscore=1030 bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=643 suspectscore=0 classifier=spam authscore=0
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602240110
+X-JNJ: AAAAAAABOokSFtlCtm3dqW22CJYXtOmZvtbkbBFyb737xVzJa2Uwp1OO0kEM/oam1lW8m1nABrUZY9Oq4Q1wdHvcNZn3j/9u1g9yFSUPIPzvVDMYG6EfnFLXb7Gl60/ohzjoH3NmfOC3OZU3MbAyWiY9gR6sZYe5VPpBa9NTVzAVAGNfbu/kzG3PNwNywhCayUt0R4mOuvKbc/11H1hsta1Yf+pBs3USilEZ/BZ4IO57Ry+qf2C92q3Y8lGCoieF4pHGl4tFZDk2JeUndBhJuSY+0X5KgZkAGFwDWPVC+CMO9XgAFeD+CMdQ1p4YnjAgHi4X63liZahrm0HtXHPWq0tKzmPCPDbmIRUl5VKjhBpD4tqL+iF62wjRTUTaJwVqI+nq1NWXiml6LOQPJY+NEqGO6yq064eBut/9yd8bhXRmZmxJuR/JluT9GCQwegx7L1qAkYH08P0xJ3xvNpTA3s0wWa6YOsu9b7nFniUv+YSb2K1/0IUOXL6t0SNzdcLhfdzH1n0hzfODHb4rCAP9sfAWZH2yCdY8r9Rfei2J6ua8lwU/4xiVofU6wNEUVYqFWbUtqC9MDlA/VHVhh1UvOoCXLliNLk55bI27ZUS6aHTMfj0MDpU1YC6catKslAh2Z/SZUxrim6W0sGemo6MRW5jB0vihd4K4mrzLNwAu0ETqZ+CP0VQZuWSW52C7FiaqAbsYH3ZJQ7gxwqKhLhcxnPIb9Oomlpx6/sxYPwvTHmdH9k1op4afuongROqm5BZYBQrJ9ydGEASwF97NBDFLLzQQ+1G5MXGoLYSoEf2fLABA1BBVd5F7+7PTP0JllWGhdmQt2pF7yxtQiYt6wWpnjghS
 
-On Tue, Feb 24, 2026 at 10:38=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> Currently the crate name of the Rust Binder driver is rust_binder_main,
-> but I'd like it to be called rust_binder instead. This affects e.g.
-> symbol names in stack traces.
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-We discussed allowing to customize crate names years ago, at least for
-dashes vs. underscores, for matching C names more closely and perhaps
-other needs.
+HrTimer::expires() previously read node.expires via a volatile load, which
+can race with C-side updates. Rework the API so it is only callable with
+exclusive access or from the callback context.
 
-Back then, we decided to keep things simple to avoid confusion (i.e. a
-single identifier used everywhere the same way is simpler, at least
-for humans) and to avoid having to deal with those dual names
-everywhere (e.g. adding workarounds for rust-analyzer here).
+Introduce raw_expires() with an explicit safety contract, switch
+HrTimer::expires() to Pin<&mut Self>, add
+HrTimerCallbackContext::expires(), and route the read through
+hrtimer_get_expires() via a Rust helper.
 
-I talked with Alice about what she needed here -- could we rename that
-source file to just something like `binder`? That would avoid the need
-to have a custom name, so everything would still match (symbols,
-source file, object file...), and it would give you even shorter
-names.
+Fixes: 4b0147494275 ("rust: hrtimer: Add HrTimer::expires()")
+Closes: https://lore.kernel.org/rust-for-linux/87ldi7f4o1.fsf@t14s.mail-host-address-is-not-set/
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+v2:
+- Add Fixes and Closes tags
+- Fix and improve comments
+v1: https://lore.kernel.org/rust-for-linux/20260110115838.3109895-1-fujita.tomonori@gmail.com/
+---
+ rust/helpers/time.c         |  6 +++++
+ rust/kernel/time/hrtimer.rs | 49 +++++++++++++++++++++++++++----------
+ 2 files changed, 42 insertions(+), 13 deletions(-)
 
-Cheers,
-Miguel
+diff --git a/rust/helpers/time.c b/rust/helpers/time.c
+index 32f495970493..ef8999621399 100644
+--- a/rust/helpers/time.c
++++ b/rust/helpers/time.c
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/delay.h>
+ #include <linux/ktime.h>
++#include <linux/hrtimer.h>
+ #include <linux/timekeeping.h>
+ 
+ __rust_helper void rust_helper_fsleep(unsigned long usecs)
+@@ -38,3 +39,8 @@ __rust_helper void rust_helper_udelay(unsigned long usec)
+ {
+ 	udelay(usec);
+ }
++
++__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
++{
++	return hrtimer_get_expires(timer);
++}
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+index 856d2d929a00..78e2343fd016 100644
+--- a/rust/kernel/time/hrtimer.rs
++++ b/rust/kernel/time/hrtimer.rs
+@@ -224,27 +224,39 @@ pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
+         self.forward(HrTimerInstant::<T>::now(), interval)
+     }
+ 
++    /// Return the time expiry for this [`HrTimer`].
++    ///
++    /// # Safety
++    ///
++    /// - `self_ptr` must point to a valid `Self`.
++    /// - The caller must either have exclusive access to the data pointed to by `self_ptr`, or be
++    ///   within the context of the timer callback.
++    #[inline]
++    unsafe fn raw_expires(self_ptr: *const Self) -> HrTimerInstant<T>
++    where
++        T: HasHrTimer<T>,
++    {
++        // SAFETY:
++        // - The C API requirements for this function are fulfilled by our safety contract.
++        // - `self_ptr` is guaranteed to point to a valid `Self` via our safety contract.
++        // - Timers cannot have negative `ktime_t` values as their expiration time.
++        unsafe { Instant::from_ktime(bindings::hrtimer_get_expires(Self::raw_get(self_ptr))) }
++    }
++
+     /// Return the time expiry for this [`HrTimer`].
+     ///
+     /// This value should only be used as a snapshot, as the actual expiry time could change after
+     /// this function is called.
+-    pub fn expires(&self) -> HrTimerInstant<T>
++    pub fn expires(self: Pin<&mut Self>) -> HrTimerInstant<T>
+     where
+         T: HasHrTimer<T>,
+     {
+-        // SAFETY: `self` is an immutable reference and thus always points to a valid `HrTimer`.
+-        let c_timer_ptr = unsafe { HrTimer::raw_get(self) };
++        // SAFETY: `raw_expires` does not move `Self`.
++        let this = unsafe { self.get_unchecked_mut() };
+ 
+-        // SAFETY:
+-        // - Timers cannot have negative ktime_t values as their expiration time.
+-        // - There's no actual locking here, a racy read is fine and expected
+-        unsafe {
+-            Instant::from_ktime(
+-                // This `read_volatile` is intended to correspond to a READ_ONCE call.
+-                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
+-                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
+-            )
+-        }
++        // SAFETY: By existence of `Pin<&mut Self>`, the pointer passed to `raw_expires` points to a
++        // valid `Self` that we have exclusive access to.
++        unsafe { Self::raw_expires(this) }
+     }
+ }
+ 
+@@ -729,6 +741,17 @@ pub fn forward(&mut self, now: HrTimerInstant<T>, interval: Delta) -> u64 {
+     pub fn forward_now(&mut self, duration: Delta) -> u64 {
+         self.forward(HrTimerInstant::<T>::now(), duration)
+     }
++
++    /// Return the time expiry for this [`HrTimer`].
++    ///
++    /// This function is identical to [`HrTimer::expires()`] except that it may only be used from
++    /// within the context of a [`HrTimer`] callback.
++    pub fn expires(&self) -> HrTimerInstant<T> {
++        // SAFETY:
++        // - We are guaranteed to be within the context of a timer callback by our type invariants.
++        // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`.
++        unsafe { HrTimer::<T>::raw_expires(self.0.as_ptr()) }
++    }
+ }
+ 
+ /// Use to implement the [`HasHrTimer<T>`] trait.
+
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+-- 
+2.43.0
+
