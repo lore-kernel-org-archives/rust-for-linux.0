@@ -1,313 +1,327 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704ED70810;
-	Tue, 24 Feb 2026 00:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771891957; cv=none; b=StTDAH3TxT/ruyA/3E4y1s4h2+Gwhy0Xknr4cOC+mZumEjMCld/VQsLQYoSFFrJf2aibyp/cYEajZBldjec6JJywEALnuVgdOvArosqmxEt4X6NfQR61th/Rdzmd0P1tiZqeikcE+HFVajqknjZu+g77ymRAdLlw7bJRz3oD9T4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771891957; c=relaxed/simple;
-	bh=5MoNpm6w13iH1OdpASvRWeXDOeQYYcPrWRjlmiy22yA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=IrQm6v3XqXfDZGWNLgg8lL9fVKgJfg9u5Fp1/j9SoiTzpeVaoMUr/G6G32QagWFj+2rONjpMz9SAFzaCYV4LcEp7QuvOv7zPd6WKRX2dtu3nz19cWDZqjbhVyulAYQyDdp9pXG/IH+r3VDhMLxGmClvRXAeUQNvFLqCtmXwOMYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TsypuPUr; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FA21D45E8
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 00:23:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771892611; cv=pass; b=e+PiOYs1oWrjQVJHNSEusYSwsFPEOQveP+/h9BQnUQ5yEz9I2THt27FBF1MX3xjDJYa1ah0uXyGVTfd2PyVJic3HwZ20QTMfsTnad7fDYvOHhGtc0km+/5d6r2dMOdEYnOXBast0+M/Q0eG1PNwobR1Ui27tvdxeygt/1XjOaBE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771892611; c=relaxed/simple;
+	bh=Ydtzxna8PfFQil/o51FHBaWJcpOky5bkiT1B+EyMgcc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gs7rABIgEXm+lJTcGU+oDK7FbuUxJklhRRQn3lg/tT4BcWRmIR/IlX7Fr3DDjFlxDvNH+MFhbkg+jjsMrxpqcbMUSmUPfQv3pb4hD6T2LnsaoG2ESNsZiN9nYCYLfMg+w2pBgV3FwzmgFdJ5E27vp5F10Jq6qtrlYN/zli4WNcw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=bBet/m9j; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TsypuPUr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7A6C116C6;
-	Tue, 24 Feb 2026 00:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771891957;
-	bh=5MoNpm6w13iH1OdpASvRWeXDOeQYYcPrWRjlmiy22yA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=TsypuPUrgxou8ammBptWG3KG0R28ghyv62RNx5KnQrVjmf1hUtNklXYtMhQH6DV6S
-	 ZTgB5CGJmv4R9mEDFfk9cToIjs5vOzCjxKl50Eyq/jtYoW+0KsRppOpXi6uhaUIpMx
-	 1CYmg4xENqSJPeO/plt0lJ8QjKfrGXo8+P9p3OiRDAct7qMbrpsrgEHS9jM4DBjH5s
-	 JQ2QCIGwir7alEsyL6gPf51i+KZTjYzm9QCk56gpBtQICAXfjxF83QlBN6HQqaNwtC
-	 S/YW895b5wflgRbfPf9tadxJGSZ18mu2sFLkDujITNvLWrYZi1BYFpu0qXMlFjiVtB
-	 O2qUPEFkk6+vQ==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="bBet/m9j"
+ARC-Seal: i=1; a=rsa-sha256; t=1771892602; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZnGvM+OjEuJSu0rxNwTBIL5b6cQ3hlfzSkhA4a2E4gvhf23ZmjWY3OogwwbWvtkn54Z9Gei3fZ4N9AVsQX7q4u2ZNb4BppYMcji7YXe/PypQs8VaBK+hNbTz0BFPYNF6vx54yCdStfVeSAzklNBvNQiNd0rXJFouhhCjI9KA/Tc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1771892602; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=CI7aESVSHPcmOkxY+BwLF80O1NQq1ArBaTxw6r28HKc=; 
+	b=BmFeYNwI0LHjJzd/M2jDZuM1mjDIGbEFKGv6yfj0VyF8lLDPgy02gwH11TYM355HADUKPv6Qgda3P32llEUO3QEOgAOt2BK89JNPrpKV2brhHEG6P6Z/l6SuWR8/osn51X4/G1RSSGkf1mSVvGGbR7Hnmoa6e4t6yMXq/+CAB8w=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771892602;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=CI7aESVSHPcmOkxY+BwLF80O1NQq1ArBaTxw6r28HKc=;
+	b=bBet/m9j/nI0SJzIlrBHVq4O71ynK/mElaq9WaQGRAyjTfxEyhzaKs8aoXYC1Zr6
+	2SVjQPznoN2yfrI0dvA9Uj1Z+aUsDd4YSsDK0MwjOnBNNjZYOszgcovjVGPGgAIrJl7
+	Djh2eT2zFlTJulpKd9xJ3ZZPtyOQTuD2rTtKECnc=
+Received: by mx.zohomail.com with SMTPS id 1771892601649311.60930839879256;
+	Mon, 23 Feb 2026 16:23:21 -0800 (PST)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Cc: daniel.almeida@collabora.com,
+	aliceryhl@google.com,
+	boris.brezillon@collabora.com,
+	dakr@kernel.org,
+	deborah.brouwer@collabora.com
+Subject: [PATCH v3] drm/tyr: Clarify driver/device type names
+Date: Mon, 23 Feb 2026 16:23:14 -0800
+Message-ID: <20260224002314.344675-1-deborah.brouwer@collabora.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Feb 2026 01:12:32 +0100
-Message-Id: <DGMR9XOWP1V0.3C9219TYPXV6J@kernel.org>
-Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
- callbacks
-Cc: "Alexandre Belloni" <alexandre.belloni@bootlin.com>, "Alvin Sun"
- <alvin.sun@linux.dev>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-rtc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260116162203.296844-1-sunke@kylinos.cn>
- <20260116162203.296844-2-sunke@kylinos.cn>
- <DFSN0O9RRVD6.1LCI38JKGO1R0@kernel.org>
- <77d373dc-c5f2-4dca-b0d2-b5cee6a21b3b@gmail.com>
- <20260220225341c5eeb835@mail.local>
- <d1c9e33b-e1f3-41c6-af5e-a85fe2b86d10@linux.dev>
- <20260221111619162a41a1@mail.local>
- <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
- <DGKPPQI0QE73.S8I1M5NCI2BV@kernel.org> <20260222000556ea1938c0@mail.local>
- <DGLI4H9M0T6D.25RTLDVU5JRBE@kernel.org>
- <CAJZ5v0gtiQxBCknkaOzLKrDqUQfhKh_UjQkvgxJBL4UthbCOkg@mail.gmail.com>
- <DGLMGEZTM7E2.Y8VV9I6LI1P6@kernel.org>
-In-Reply-To: <DGLMGEZTM7E2.Y8VV9I6LI1P6@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sun Feb 22, 2026 at 5:13 PM CET, Danilo Krummrich wrote:
-> There is no limitation from the Rust side of things, as mentioned in [1],=
- this
-> should work perfectly fine, but it might be slightly less convinient:
+Currently the `TyrDriver` struct implements both `platform::Driver` and
+`drm::Driver`. For clarity, split up these two roles:
+ - Introduce `TyrPlatformDriverData` to implement `platform::Driver`, and
+ - Introduce `TyrDrmDriver` to implement `drm::Driver`.
 
-When I wrote this on Sunday, I should have been much more precise about thi=
-s,
-since it actually does not work perfectly fine without further changes that
-would (re-)introduce ordering constraints for drivers on the probe() side o=
-f
-things that I want to avoid.
+Also rename other variables to reflect their roles in the DRM context:
+- Rename `TyrDevice` to `TyrDrmDevice`
+- Rename `TyrData` to `TyrDrmDeviceData`
+- Rename `File` to `TyrDrmFileData`
+- Rename `DrmFile` to `TyrDrmFile`
 
-The "re-" is in braces as we never had those ordering constraints in Rust, =
-but
-we have quite a lot of them in C, where they cause endless problems. Which =
-is
-why I want to avoid them in Rust.
+No functional changes are intended.
 
-> Example 1:
->
-> 	impl rtc::Ops for MyRtcOps {
-> 	    type BusDeviceType =3D platform::Device<Bound>;
->
-> 	    fn read_time(
-> 	        parent: &platform::Device<Bound>,
-> 	        time: &mut rtc::Time,
-> 	    ) -> Result {
-> 	        let drvdata =3D pdev.as_ref().drvdata::<MyDriver>()?;
->
-> 	        ...
-> 	    }
-> 	}
+Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+Changes in v3:
+- Rename `TyrPlatformDeviceData` to `TyrPlatformDriverData`
+Link to v2: https://lore.kernel.org/rust-for-linux/20260223204648.208886-1-deborah.brouwer@collabora.com/
 
-Let's have a look at the corresponding probe() side of things.
+Changes in v2:
+- Move the import TyrDrmDriver to a single line.
+- Rename the variable `tdev` -> `ddev` in file.rs to be
+consistent with the name used in driver.rs.
+Link to v1: https://lore.kernel.org/rust-for-linux/20260205185906.40940-1-deborah.brouwer@collabora.com/
 
-	struct SampleIrqData;
+This patch depends on: 
+[PATCH v2] drm/tyr: Use vertical style for imports
+https://lore.kernel.org/rust-for-linux/20260223203833.207955-1-deborah.brouwer@collabora.com/
 
-	// The bus device private data.
-	#[pin_data]
-	struct SampleDriver {
-	    #[pin]
-	    irq: irq::Registration<SampleIrqData>,
-	    rtc: ARef<rtc::Device>,
-	    ...,
-	}
+ drivers/gpu/drm/tyr/driver.rs | 40 ++++++++++++++++++-----------------
+ drivers/gpu/drm/tyr/file.rs   | 23 +++++++++-----------
+ drivers/gpu/drm/tyr/gem.rs    |  9 +++-----
+ drivers/gpu/drm/tyr/tyr.rs    |  4 ++--
+ 4 files changed, 36 insertions(+), 40 deletions(-)
 
-	impl pci::Driver for SampleDriver {
-	    fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl PinIni=
-t<Self, Error> {
-	        let dev =3D pdev.as_ref();
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 259a5157eb47..611434641580 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -30,7 +30,7 @@
+ };
+ 
+ use crate::{
+-    file::File,
++    file::TyrDrmFileData,
+     gem::TyrObject,
+     gpu,
+     gpu::GpuInfo,
+@@ -39,16 +39,18 @@
+ 
+ pub(crate) type IoMem = kernel::io::mem::IoMem<SZ_2M>;
+ 
++pub(crate) struct TyrDrmDriver;
++
+ /// Convenience type alias for the DRM device type for this driver.
+-pub(crate) type TyrDevice = drm::Device<TyrDriver>;
++pub(crate) type TyrDrmDevice = drm::Device<TyrDrmDriver>;
+ 
+ #[pin_data(PinnedDrop)]
+-pub(crate) struct TyrDriver {
+-    _device: ARef<TyrDevice>,
++pub(crate) struct TyrPlatformDriverData {
++    _device: ARef<TyrDrmDevice>,
+ }
+ 
+ #[pin_data(PinnedDrop)]
+-pub(crate) struct TyrData {
++pub(crate) struct TyrDrmDeviceData {
+     pub(crate) pdev: ARef<platform::Device>,
+ 
+     #[pin]
+@@ -71,9 +73,9 @@ pub(crate) struct TyrData {
+ // that it will be removed in a future patch.
+ //
+ // SAFETY: This will be removed in a future patch.
+-unsafe impl Send for TyrData {}
++unsafe impl Send for TyrDrmDeviceData {}
+ // SAFETY: This will be removed in a future patch.
+-unsafe impl Sync for TyrData {}
++unsafe impl Sync for TyrDrmDeviceData {}
+ 
+ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
+     regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
+@@ -92,14 +94,14 @@ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
+ kernel::of_device_table!(
+     OF_TABLE,
+     MODULE_OF_TABLE,
+-    <TyrDriver as platform::Driver>::IdInfo,
++    <TyrPlatformDriverData as platform::Driver>::IdInfo,
+     [
+         (of::DeviceId::new(c"rockchip,rk3588-mali"), ()),
+         (of::DeviceId::new(c"arm,mali-valhall-csf"), ())
+     ]
+ );
+ 
+-impl platform::Driver for TyrDriver {
++impl platform::Driver for TyrPlatformDriverData {
+     type IdInfo = ();
+     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
+ 
+@@ -129,7 +131,7 @@ fn probe(
+ 
+         let platform: ARef<platform::Device> = pdev.into();
+ 
+-        let data = try_pin_init!(TyrData {
++        let data = try_pin_init!(TyrDrmDeviceData {
+                 pdev: platform.clone(),
+                 clks <- new_mutex!(Clocks {
+                     core: core_clk,
+@@ -143,10 +145,10 @@ fn probe(
+                 gpu_info,
+         });
+ 
+-        let tdev: ARef<TyrDevice> = drm::Device::new(pdev.as_ref(), data)?;
+-        drm::driver::Registration::new_foreign_owned(&tdev, pdev.as_ref(), 0)?;
++        let ddev: ARef<TyrDrmDevice> = drm::Device::new(pdev.as_ref(), data)?;
++        drm::driver::Registration::new_foreign_owned(&ddev, pdev.as_ref(), 0)?;
+ 
+-        let driver = TyrDriver { _device: tdev };
++        let driver = TyrPlatformDriverData { _device: ddev };
+ 
+         // We need this to be dev_info!() because dev_dbg!() does not work at
+         // all in Rust for now, and we need to see whether probe succeeded.
+@@ -156,12 +158,12 @@ fn probe(
+ }
+ 
+ #[pinned_drop]
+-impl PinnedDrop for TyrDriver {
++impl PinnedDrop for TyrPlatformDriverData {
+     fn drop(self: Pin<&mut Self>) {}
+ }
+ 
+ #[pinned_drop]
+-impl PinnedDrop for TyrData {
++impl PinnedDrop for TyrDrmDeviceData {
+     fn drop(self: Pin<&mut Self>) {
+         // TODO: the type-state pattern for Clks will fix this.
+         let clks = self.clks.lock();
+@@ -182,15 +184,15 @@ fn drop(self: Pin<&mut Self>) {
+ };
+ 
+ #[vtable]
+-impl drm::Driver for TyrDriver {
+-    type Data = TyrData;
+-    type File = File;
++impl drm::Driver for TyrDrmDriver {
++    type Data = TyrDrmDeviceData;
++    type File = TyrDrmFileData;
+     type Object = drm::gem::Object<TyrObject>;
+ 
+     const INFO: drm::DriverInfo = INFO;
+ 
+     kernel::declare_drm_ioctls! {
+-        (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, File::dev_query),
++        (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, TyrDrmFileData::dev_query),
+     }
+ }
+ 
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index 48bff4476d74..450be5ab9aaf 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -7,35 +7,32 @@
+     uapi, //
+ };
+ 
+-use crate::{
+-    driver::TyrDevice,
+-    TyrDriver, //
+-};
++use crate::driver::TyrDrmDriver;
+ 
+ #[pin_data]
+-pub(crate) struct File {}
++pub(crate) struct TyrDrmFileData {}
+ 
+ /// Convenience type alias for our DRM `File` type
+-pub(crate) type DrmFile = drm::file::File<File>;
++pub(crate) type TyrDrmFile = drm::file::File<TyrDrmFileData>;
+ 
+-impl drm::file::DriverFile for File {
+-    type Driver = TyrDriver;
++impl drm::file::DriverFile for TyrDrmFileData {
++    type Driver = TyrDrmDriver;
+ 
+     fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
+         KBox::try_pin_init(try_pin_init!(Self {}), GFP_KERNEL)
+     }
+ }
+ 
+-impl File {
++impl TyrDrmFileData {
+     pub(crate) fn dev_query(
+-        tdev: &TyrDevice,
++        ddev: &drm::Device<TyrDrmDriver>,
+         devquery: &mut uapi::drm_panthor_dev_query,
+-        _file: &DrmFile,
++        _file: &TyrDrmFile,
+     ) -> Result<u32> {
+         if devquery.pointer == 0 {
+             match devquery.type_ {
+                 uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU_INFO => {
+-                    devquery.size = core::mem::size_of_val(&tdev.gpu_info) as u32;
++                    devquery.size = core::mem::size_of_val(&ddev.gpu_info) as u32;
+                     Ok(0)
+                 }
+                 _ => Err(EINVAL),
+@@ -49,7 +46,7 @@ pub(crate) fn dev_query(
+                     )
+                     .writer();
+ 
+-                    writer.write(&tdev.gpu_info)?;
++                    writer.write(&ddev.gpu_info)?;
+ 
+                     Ok(0)
+                 }
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index 8f2d23e3c093..514524ae07ef 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -5,19 +5,16 @@
+     prelude::*, //
+ };
+ 
+-use crate::driver::{
+-    TyrDevice,
+-    TyrDriver, //
+-};
++use crate::driver::TyrDrmDriver;
+ 
+ /// GEM Object inner driver data
+ #[pin_data]
+ pub(crate) struct TyrObject {}
+ 
+ impl gem::DriverObject for TyrObject {
+-    type Driver = TyrDriver;
++    type Driver = TyrDrmDriver;
+ 
+-    fn new(_dev: &TyrDevice, _size: usize) -> impl PinInit<Self, Error> {
++    fn new(_dev: &kernel::drm::Device<TyrDrmDriver>, _size: usize) -> impl PinInit<Self, Error> {
+         try_pin_init!(TyrObject {})
+     }
+ }
+diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+index 861d1db43072..9432ddd6b5b8 100644
+--- a/drivers/gpu/drm/tyr/tyr.rs
++++ b/drivers/gpu/drm/tyr/tyr.rs
+@@ -5,7 +5,7 @@
+ //! The name "Tyr" is inspired by Norse mythology, reflecting Arm's tradition of
+ //! naming their GPUs after Nordic mythological figures and places.
+ 
+-use crate::driver::TyrDriver;
++use crate::driver::TyrPlatformDriverData;
+ 
+ mod driver;
+ mod file;
+@@ -14,7 +14,7 @@
+ mod regs;
+ 
+ kernel::module_platform_driver! {
+-    type: TyrDriver,
++    type: TyrPlatformDriverData,
+     name: "tyr",
+     authors: ["The Tyr driver authors"],
+     description: "Arm Mali Tyr DRM driver",
+-- 
+2.52.0
 
-	        let rtc =3D rtc::Device::new(dev)?;
-
-	        Ok(impl_pin_init!(Self {
-	            irq <- irq::Registration::new(...),
-	            rtc,
-	            _: {
-	                devres::register(rtc::Registration::new(rtc))?;
-	            }
-	        })
-	    }
-	}
-
-This is a problem, since even though the registration of the RTC device is =
-the
-last thing in the initializer, rtc::Ops::read_time() above could race and
-Device::drvdata() could just fail as it might not be set yet.
-
-This is fixable, but - as mentioned - at the price of introducing ordering
-constraints for drivers.
-
-For instance, this could be solved by introducing a pci::ProbeDevice<'a> ty=
-pe,
-which ensures that pci::ProbeDevice::set_drvdata() can only be called from
-probe() and can only be called once, as it consumes the pci::ProbeDevice.
-
-	struct SampleIrqData;
-
-	// The bus device private data.
-	#[pin_data]
-	struct SampleDriver {
-	    #[pin]
-	    irq: irq::Registration<SampleIrqData>,
-	    rtc: ARef<rtc::Device>,
-	    ...,
-	}
-
-	impl pci::Driver for SampleDriver {
-	    fn probe<'a>(pdev: pci::ProbeDevice<'a>, info: &Self::IdInfo) -> Resul=
-t {
-	        let dev =3D pdev.as_ref();
-
-	        let rtc =3D rtc::Device::new(dev)?;
-
-	        let data =3D impl_pin_init!(Self {
-	            irq <- irq::Registration::new(...),
-	            rtc,
-	        });
-
-	        // The `pci::ProbeDevice` has been consumed by value, and
-	        // returned a `&pci::Device<Core>`.
-	        let pdev =3D pdev.set_drvdata(data)?;
-
-	        devres::register(rtc::Registration::new(rtc))
-	    }
-	}
-
-However, note how this wouldn't solve the same problem for irq::Registratio=
-n, as
-it lives within the the driver's device private data.
-
-If this would be C you would probably just partially initialize the driver'=
-s
-device private data, but in Rust uninitialized data is not allowed for safe=
-ty
-reasons.
-
-We could probably find other ways to somehow handle this, e.g. by introduci=
-ng
-new device context states, additional callbacks, etc., but in the end it wo=
-uld
-only be workarounds for not having defined ownership, that eventually ends =
-up
-being more complicated and more error prone.
-
-For this reason an irq::Registration has its own private data (which in thi=
-s
-example is just an empty struct).
-
-Similarly, all other kinds of registrations (and driver entry points) have =
-their
-own private data, such as class devices, work and workqueues, file operatio=
-ns,
-timers, etc.
-
-I.e. there is a clear separation of ownership and lifetime, which makes mor=
-e or
-less (often more) suble ordering constraints obsolete.
-
-In fact, in the beginning I did not even plan to expose Device::drvdata() a=
-t
-all, making the driver's device private data only available in bus device
-callbacks, etc.
-
-The reason why I added it was that it was required (and makes sense) when
-drivers interact with other drivers, e.g. through an auxiliary device.
-
-I did also mention this in the commit message of commit 6f61a2637abe ("rust=
-:
-device: introduce Device::drvdata()"):
-
-      (2) Having a direct accessor to the driver's private data is not
-          commonly required (at least in Rust): Bus callback methods alread=
-y
-          provide access to the driver's device private data through a &sel=
-f
-          argument, while other driver entry points such as IRQs,
-          workqueues, timers, IOCTLs, etc. have their own private data with
-          separate ownership and lifetime.
-
-          In other words, a driver's device private data is only relevant
-          for driver model contexts (such a file private is only relevant
-          for file contexts).
-
-    Having that said, the motivation for accessing the driver's device
-    private data with Device<Bound>::drvdata() are interactions between
-    drivers. For instance, when an auxiliary driver calls back into its
-    parent, the parent has to be capable to derive its private data from th=
-e
-    corresponding device (i.e. the parent of the auxiliary device).
-
-Let's have a look at how probe() looks like for the example below, which is=
- what
-we do in other subsystems, such as DRM or PWM.
-
-> Example 3:
->
->	struct SampleIrqData {
->	    rtc: ARef<rtc::Device>,
->	};
->
-> 	// The bus device private data.
-> 	#[pin_data]
-> 	struct SampleDriver {
-> 	    #[pin]
-> 	    irq: irq::Registration<SampleIrqHandler>,
-> 	    rtc: ARef<rtc::Device<SampleRtcData>>,
-> 	}
->
-> 	// The class device private data.
-> 	struct SampleRtcData {
-> 	    io: Devres<IoMem<PL031_REG_SIZE>>,
-> 	    hw_variant: VendorVariant,
-> 	}
->
-> 	impl rtc::Ops for MyRtcOps {
-> 	    type BusDeviceType =3D platform::Device<Bound>;
->
-> 	    fn read_time(
-> 	        rtc: &rtc::Device<SampleRtcData>
-> 	        parent: &platform::Device<Bound>,
-> 	        time: &mut rtc::Time,
-> 	    ) -> Result {
-> 	        let io =3D rtc.io.access(parent)?;
->
-> 	        match rtc.hw_variant {
-> 	            VendorVariant::Arm | VendorVariant::StV1 =3D> {
-> 	                let my_time =3D io.read(...);
->
-> 	                my_time.write_into(time);
-> 	            },
-> 	            VendorVariant::StV2 =3D> { ... },
-> 	        }
-> 	    }
-> 	}
->
-
-	impl pci::Driver for SampleDriver {
-	    fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl PinIni=
-t<Self, Error> {
-	        let dev =3D pdev.as_ref();
-
-	        let rtc_data =3D impl_pin_init!(SampleRtcData {
-	            io: iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
-	            hw_variant: VendorVariant::StV1,
-	        });
-
-	        let rtc =3D rtc::Device::new(dev, rtc_data)?;
-
-	        // Internally calls `devres::register(rtc::Registration::new())`.
-	        rtc::Registration::register(rtc)?;
-
-	        Ok(impl_pin_init!(Self {
-	            // Give the IRQ handler a reference count of the `rtc::Device`=
-.
-	            irq <- irq::Registration::new(..., rtc.clone()),
-	            rtc,
-	        })
-	    }
-	}
-
-With this there are no (subtle) ordering constraints the driver has to get
-right; ownership and lifetimes are well defined.
-
-(I.e. whatever order a driver picks, it either works properly or it does no=
-t
-compile in the first place, which is a huge improvement over the situation =
-we
-have in C.)
