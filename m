@@ -1,125 +1,114 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C921F1304
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 16:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771950210; cv=pass; b=BPdf2ROwEnaZ4OUdsK6IfwCjWCeV7u1gXOjK1MDhRZHfwxXDOItKgY+1ImNddTWA03kQYL9hbidgZFJ+QS2kUl/Qc+WzU0G3v8zUZXCmNpE07PVEEg6Q6KzVJEggk0wbhN9coHZPkysYSnys4+07iP7v+ZYt72dHfwl/HUWIU1M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771950210; c=relaxed/simple;
-	bh=ZqJufl22SDOPAyHAbjNV+mtVnTAnC3F95iDjVkPYjsc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kQo/bf5kfp+4rdenPeqlms51w1ZZleJHFr3A5rwCB9MnQBOjsOf/KpfpP0t+CAG1D3RFe670zz6xFJtPNv/QQRO1IFGl0mlYQw/+1rPNDb9rL+Ko+J1pZ5IJP9GlFsHk4XC6DuaMl4RHOgnqW4hX5NT/8WQrLOUOMTmkwlTHd+Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NfHhBxwa; arc=pass smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456343A8FE1;
+	Tue, 24 Feb 2026 16:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771950928; cv=none; b=AvlIvL7g4Rvmw03C+FfU7PIJh8VuUsMmY+wFBux5mAyqhgO3OO0y9xyIin7C8xyeXDBrmmPXzS6cOY+5K1J+I7xza5d4HSIqTCuJ9QlNdD2cKvcx1VlYD0IVGXVmTffdvhOrqehVOmNLoM7VBZIvU9QV7ByaR7N4DZnwjKQ/C7w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771950928; c=relaxed/simple;
+	bh=OzigO6c+dArWtHRsz+dmj92Kzhjc1yxExDnuGmeqgbU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=N0E2rPm0Su6ddgynA688czIe1729VK9VYa94eyDATvOexKpTqk7+bemCXUTsNTr/ar1Y0V5sWrxPgTKVz+s7Df514GFapLi8E7Pyqf8doix2hggBD0mSLpgxA+Pb7UMhlNEV0bidXRojHGwY8hUC72bzaua0GpJba1ozOafOMLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jybKs8Q6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NfHhBxwa"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2baa1ed79b0so198832eec.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 08:23:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771950208; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fffVaZAUz47Nft558tpmSYhm4C2NKacsbM2EcWDHpBkBNS2IZcbznicvd6yX3zqvgn
-         OHVtQSRmGubSLSx1Ai1S49LUmRJzEsZ2oOFTWOrU8AJ9fUu6xrhFXeZdEI07ClqMJc+t
-         M6qYbdn6JJtcs5JZXQdFKu9ezhGJZ6iV2BGVKkJgYQs99OZ1PRY9HX46G2z1XMRcc55u
-         LTZjzAOm/nuayl+T9US/G8e+bU0njrMSvhGB+4iksZkQ9OjIIR9Kv3YceEuNj8NyXvvJ
-         FeX4QKGkJCwFeyoZyNZQ/ymS/lVCisoQZa6Ev6m7I4mXDMQ9Q4bRGBVlI6bUXiGzU37N
-         Ei0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZqJufl22SDOPAyHAbjNV+mtVnTAnC3F95iDjVkPYjsc=;
-        fh=Ddk6pfycgQFmrhU708R94zIdaA//UxuLlIu9Fb7DFF8=;
-        b=cvT4jFc8pWRJnOdBWB9Lxl0H8hx9f+E8iSMQ5YNcaemcL1mmx5NEKul+yYsp8otnIq
-         +XvK/W0ubsGgj/l+TWkMSwrzKqOvjgRdawsoEAYclULDNW182+g/ayJmcF3AMQdp7Ypy
-         rEPu4r77j0eMVHZTfL4Utem4yadTzN76BdFdRTyzIXWp5z45exXnELDLCB4LwDv5SUPT
-         BNcumJE5jlA1mgUq8g8+hq6cpRnRAZaLFUhcxbreaex3Fv7H5O+esX0Iq+d+g6HiNdfp
-         fYOtp5lBS7MIqDdNIx41VlxslvAHgHp9Z8JBle+k2BC9a/E8u5c+50pVdubeus4dAbEU
-         VAGw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771950208; x=1772555008; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZqJufl22SDOPAyHAbjNV+mtVnTAnC3F95iDjVkPYjsc=;
-        b=NfHhBxwaHqxl4hP4LhBuPbhxDtmpiUFDuF5vJRhyFz5nkOHWcUGkUm5MX9wTLP0seS
-         GJ8KrR/HdE1e8GbmYgRb02OmbqlXHHSdRM4WcXsysG7svjxujS5yIR2K9DqfRXtKORVb
-         IU4/zVkixcIXv9DqCAYhKaQ7d3zdGMJAfNwCDvkvotzDm9yS3LlLkeY3BsxT5Bp2nOsf
-         bmKZiBAO/cyIW6Y+sBWEDKvpaXzaixEvOyVU5AbZrbif99YUrZau0afZWmQiXKFuXZrr
-         VrC8SELGZwndi17J9h79PV/iXdD39izMmg4yTxXleGzGtm5DtnpHZFzEvZ0EZje3h7YW
-         Yk0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771950208; x=1772555008;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZqJufl22SDOPAyHAbjNV+mtVnTAnC3F95iDjVkPYjsc=;
-        b=sI+LZ0gP4x/Z2NaQuSfC1xGR+Ji0xRWjMMA9iXNZEPDR3wADpuMgOwZUrE1wdH53K/
-         ya35HiKOPq1TM2rDFt3DFLjA50GkuAhBRM26LclEq4ywqaXjBS2Y2KVFFFu082sICqRj
-         sz1g+W81fJ/PzGR7BXUFbm6UjPvEK6zRwKkdyRpjAAeVz9z8Ucmc5rMPV4Ipo5MBeknF
-         QYba1oDnmG2G2mcLJ/RPBGudZUFaNCm5vhw58AXDhn6PTIJx0e+2a5LYEvaAr734eaJ2
-         3sO3ejkJCK/5633XQNxEuu0ZvJ4+aalO4jzhom9U7WpR8xNYe1Z4RFejuiJafa9sxzIO
-         YYPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQv8j47CbC5V7EcC8DS8cBtShM/hZ3YN46z5JrYKpny+V+f/xON4SPdD1P8r+JI8qtWtJTfwJuc9ipbq1G6g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVOXK70RR8+kjUOYHsYJAzDlcBN6LSKykbhUZH6vpuDFQSYiHS
-	qmWJFQx7/c7rQAT6GoBsR73C+4JbK5UuLnoBRK/bFKNhgkqjl9U+TC/gmLjF1IO6cgpjx1SMbdt
-	f4mKv/cV4o/pz4dDo37ZZHtJRWeojIcA=
-X-Gm-Gg: ATEYQzy5ZpM/LQhnQH4JQdLNJ1crlwRe+7/Dr87xsmcc19leehOLGBtNOJPDbXwKstT
-	uj2X+Kk+u2VyJuAVYxpwxUws4etfm3tihxajopkuC6QXe0LVrXZXk/GFS4PxO4PwZcS2+UhqQxM
-	xi93HV9sjUJ6fb4cklX+0XZ0xnIyQBFjWlwtIAZa1A2a4OrSFALKX3IHD1X0yAWLbNScxy3wztu
-	SJDPcG+qj8/MxNzVnIMZsl1QhABH9g37RcqExe5uarLr+ZobJVz41PY46E5JyJKRh/bDTrv3Jtw
-	J+tNj4ksNUgHfGSTx6rxz7y88/tR92akRmzcwyWVGBBSM2ZJfgWHkyW8KsPV1pUNBcWFctQ99vz
-	h5TVD8ulNnPDhHLANO/qxvEw3Qv6A
-X-Received: by 2002:a05:7300:dc8e:b0:2ba:7013:2b94 with SMTP id
- 5a478bee46e88-2bd7bd5a668mr2692037eec.4.1771950207813; Tue, 24 Feb 2026
- 08:23:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jybKs8Q6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C561C116D0;
+	Tue, 24 Feb 2026 16:35:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771950927;
+	bh=OzigO6c+dArWtHRsz+dmj92Kzhjc1yxExDnuGmeqgbU=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=jybKs8Q6AGFvL6l1KQlMjPGeATR1Z42nW3evbAPMII/s0DasJr72DxR0ZlF7AEX8q
+	 LucXAw48wFPXZuLSvty6DFPUZiQY9GcobN7PP/cJHB97ZkdWcRVHC9YZfHl85wOO4K
+	 KOvngxTdw1/PfuddBug9TEN7DuRfQr8MzYsolTUoPt6e36htnG/D7l3A09MZ/tEtGB
+	 JNnScTTlRDTJe5p7jweIonZR4msz32qpkaj1KRtYj8zKZy+A4uHff9HOkSFxW/Hjij
+	 hsZDB59n7jS4CzC2g2MmIg8DIheiKFtcP0X0Km+XIa5a5rpLhZPUnbHrTlCQcwdsX2
+	 ybdgfOOevGnew==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260223220504.2102-1-iprintercanon@gmail.com> <20260224043211.1747-1-iprintercanon@gmail.com>
-In-Reply-To: <20260224043211.1747-1-iprintercanon@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 24 Feb 2026 17:23:15 +0100
-X-Gm-Features: AaiRm53w0bVWON5EvGEnE-QSWW26Y5D2UjioC8X6mMuMoDlaoNudcBlKEg6cgtQ
-Message-ID: <CANiq72n9=xwb+HVkSDc9+6HGQA0-vw46OUHJ5PouhGgiFbcYBA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 0/3] net: phy: add Rust reference driver for ET1011C
-To: Artem Lytkin <iprintercanon@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Feb 2026 17:35:23 +0100
+Message-Id: <DGNC6GEH8EV7.2WWAQ8DNCLRAB@kernel.org>
+Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
+ callbacks
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Alvin Sun"
+ <alvin.sun@linux.dev>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-rtc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>
+To: "Alexandre Belloni" <alexandre.belloni@bootlin.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260220225341c5eeb835@mail.local>
+ <d1c9e33b-e1f3-41c6-af5e-a85fe2b86d10@linux.dev>
+ <20260221111619162a41a1@mail.local>
+ <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
+ <DGKPPQI0QE73.S8I1M5NCI2BV@kernel.org> <20260222000556ea1938c0@mail.local>
+ <DGLI4H9M0T6D.25RTLDVU5JRBE@kernel.org>
+ <CAJZ5v0gtiQxBCknkaOzLKrDqUQfhKh_UjQkvgxJBL4UthbCOkg@mail.gmail.com>
+ <DGLMGEZTM7E2.Y8VV9I6LI1P6@kernel.org>
+ <DGMR9XOWP1V0.3C9219TYPXV6J@kernel.org> <2026022415010804e28202@mail.local>
+In-Reply-To: <2026022415010804e28202@mail.local>
 
-On Tue, Feb 24, 2026 at 5:32=E2=80=AFAM Artem Lytkin <iprintercanon@gmail.c=
-om> wrote:
+On Tue Feb 24, 2026 at 4:01 PM CET, Alexandre Belloni wrote:
+> On 24/02/2026 01:12:32+0100, Danilo Krummrich wrote:
+>> 	impl pci::Driver for SampleDriver {
+>> 	    fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl Pin=
+Init<Self, Error> {
+>> 	        let dev =3D pdev.as_ref();
+>>=20
+>> 	        let rtc_data =3D impl_pin_init!(SampleRtcData {
+>> 	            io: iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
+>> 	            hw_variant: VendorVariant::StV1,
+>> 	        });
+>>=20
+>> 	        let rtc =3D rtc::Device::new(dev, rtc_data)?;
+>>=20
+>> 	        // Internally calls `devres::register(rtc::Registration::new())=
+`.
+>> 	        rtc::Registration::register(rtc)?;
+>>=20
+>> 	        Ok(impl_pin_init!(Self {
+>> 	            // Give the IRQ handler a reference count of the `rtc::Devi=
+ce`.
+>> 	            irq <- irq::Registration::new(..., rtc.clone()),
+>> 	            rtc,
+>> 	        })
 >
-> This series adds a Rust reference driver for the LSI ET1011C PHY,
-> following the pattern established by the existing Rust Asix PHY driver
-> (ax88796b_rust.rs).
+> I can't really read rust yet but this seems to open a race condition
+> with userspace if irq::Registration::new(...) fails, there is an
+> ordering constraint you missed.
 
-It is great to see more Rust code, and I am glad the "Rust reference
-driver" model is useful here. But reference drivers, in principle, are
-meant to bootstrap the abstractions and so on. The cover letter says
-"following the pattern established", but the idea is not to duplicate
-every C driver.
+(I did not have any specific hardware in mind when sketching this up (e.g. =
+an
+IRQ could also only be needed in bus device callbacks, e.g. for loading fir=
+mware
+etc.). But for RTC it obviously is common that it is relevant to the class
+device too.)
 
-Since there is already a PHY one, is this meant to bootstrap the two
-new APIs? Or something else?
+So, I assume you mean because there could already be an ioctl before the IR=
+Q has
+been successfully registered, and this ioctl may wait for an IRQ?
 
-Of course, it is up to the maintainers, i.e. if they want/need to have
-more reference drivers, that is great. But I think it would be good to
-clarify.
+In this case the irq::Registration should go into rtc_data instead to accou=
+nt
+for this dependency. Unfortunately, this is a semantic dependency that we c=
+an't
+always catch at compile time.
 
-Thanks!
-
-Cheers,
-Miguel
+The reason we sometimes can is because, if you would need access to the
+irq::Registration from ioctls (e.g. for calling synchronize(), enable(),
+disable() etc.) it would be caught, because you couldn't access it without =
+it
+being in rtc_data in the first place, and being forced to have it in rtc_da=
+ta
+guarantees that the ordering can't be wrong.
