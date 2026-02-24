@@ -1,165 +1,325 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075233806A6
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 14:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771944768; cv=pass; b=pkJlggIiIbwi5BVU5NJOSWqPjbo0ntMuODKhql9A8uSpvW30mC4o8Psgp60sfWnyldBdLYOnjrVvB0fDZ2f+vZ2XoRX2vsuN7XIUD+1ccTNUryPmsipkUXOAol47AeZrAlsY3gTGEb5PCr3jMYQ0fVFNcdnDv4SQrEEtwrqtKlo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771944768; c=relaxed/simple;
-	bh=VXgd47+pXWp7UCA4btT1GsW2p9QQVOz+p8kJSRXBbTA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aK4tjNBO5E0vpYctPzpmtZq59YrpDJP8pf5ZSjIkMSYaIeGYYdIFJ15RpcEFW8WPqezrVDYN17hZTE5NuDnCcmslmLhC+5pTG5Hpzlq4w+8XItVbpEYbstV4imxmjOBeU6S5sT8e4SWeHY6IeKL4cUYcsmnh+fRFb50KPF3GfyM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cK/gpAIn; arc=pass smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3CF3A0B25
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 14:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771945050; cv=none; b=hi/LGOYf+GYppoFH38a/cQYE8TXnD+kP+tD+IO+fHx+BZeMwSCJluykx4HaNc+eLrRmeznX7pp+Gy4sP7JI0KcbcFDYqucK59FkygUrnFa9naBu1sHHpaQ2vN8Eq7RDY/9CnWb2CbhZwJU67yR5sgr0AxIGVp0DtglxPZDJ3o4c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771945050; c=relaxed/simple;
+	bh=szupPBL5VMlKq6nt6+El2RXtOKnqlDN56+pCm0qFwSE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pR03AxqeGMvF80YqmdcU6mqJV9uWH3zp48yj+W+kqJw/D3SDQ5diWKjJ82MeqvynAPToNzW05N334SCAsxrsVxU9jt3XBWN7hCUYPYPOGjhnbeEKL0IgY3De/QEHTQq8jff57RJ/9P1BJBft89WPYuTEV9p/5VuMEvyb54HJOFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mcXAobgB; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cK/gpAIn"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-385c23b88e8so46910541fa.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Feb 2026 06:52:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771944765; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E+Uemicyi7Ptz1J8L1dbsYMWyTjOrJgx8pnfznVs4fhFM3vYFqmgf7V4GpQmsMCbwG
-         btve92Mhs7arnvKzDNtmKLWBRcu5ODNHGmbUA02c4hPQCLQYz9Ad3fKUfKgcnDqoSKDD
-         JbkpWNBskA+I8Wjw5EQ5ZvNUXN1StcfLHJ1UrwutexPMNnfLOPyIC5lBea6Dy+t8SN/K
-         wXptTIvHiy/bsyOTgN/qvjINcQFMPui7fG/f5f/FjTPfcNPZi+e9x5v8O7XZ/WEO1sxs
-         EkWrw7FunPy2h8+t5pwcG1DfqzexvaHyc3447ZTNtju/shUN0Mq1H0WmeBUTaHLAJ7oQ
-         Fa7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mHcX/rh6tRUfCgGWx2lmhCiMrVAEeWUcSr7K4fvJPDI=;
-        fh=y9ar3/M7mjFGiskDwGmtfUcxBQNfSkL18vN/oJ/91uA=;
-        b=VmiitLhUWKZDxE3plZzSvlrloTTDlZKQ33PLh9PtAq5tkUivlAwJXoCpQS9XW3bk4y
-         FaGMlkc3alu3eEZW/Nhb4w8nFNluiO1R99pemp9pxkguzxc2k1xOAvIGx2eUk0AWIDuM
-         RcqOugVztnTBkbsviG83nbke3Xp5ZEueo9MdvQFGnO/cr82luXr55BLwJa7A+i+jFh7U
-         6m9aJYn7juf35im2Nd5g8/75qNAZYTyBt0a3u8ZS8YOPbt3E0sz6AWy7sKrZYDihY/NE
-         k+kL3CrRq2rP6v7PiLTYD8roSW6fGVtvbCjo3DBd7rgOUUQSW+a729Pf2zCfLkCO0NAd
-         rk5A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771944765; x=1772549565; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mHcX/rh6tRUfCgGWx2lmhCiMrVAEeWUcSr7K4fvJPDI=;
-        b=cK/gpAInLT4Yop5xOyZZPrBFED3Z2agEzLdVTFEwiG+ymL98UlFRmBFWdIP/u0TpZa
-         qHcw+jYAqnji9+bSfIgs7qJlEOMScubJfXchNc5mzEELy1MYrZEDPQTYv5XbTdTHHjLl
-         jOjJp61oc+9GL7JQHFeH7RIMnteQ8SbkuZ8U4W1H8JQKiWhJZX7Eq83jQLgQ3DILrRA0
-         lBbcao0gOG/nCSTKGtbmImlD7WtssKAcMKJbvz58bo66QX8pYecWJvuXEVCoTB87sfot
-         qwax39Hi91dEIRpetHPcgtOWNm4MeQxE6E3A9jaqN80uBA8mJYyJX+8nwEeD32J62mMx
-         TTAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771944765; x=1772549565;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mHcX/rh6tRUfCgGWx2lmhCiMrVAEeWUcSr7K4fvJPDI=;
-        b=UdAWsqEwv90bQ97en2ZvCG3kLUDNLRECngp6BFdYftH5u56K6TE3yJ9q01ZaurHzje
-         upfgM9EBqj/9BjLOtN/hLBNhr3vhImB1xEawJhUosTG3t8b4VcqmXcxFj/VseuxfpUal
-         m4TkIllTn9S9jbZiOgF4/0txLfgkf3CoY/jzKXUAlS3lBed+7QhKh1MyBFTXrKJJXVH5
-         usQ06PpJtCbbHbRfQKuObB0PV16TNRJ13+74aG2gUZz/lEG5xDY9xZRFM8SaxJnGb4iC
-         aD2+x/8AAEba4s4Tm54rN4WyiGtu4ZIJZCsrNPHT+3frK084pmBc3oYWMv+Hq6gVe4Fz
-         npRg==
-X-Forwarded-Encrypted: i=1; AJvYcCXfAoRPXm1dYw12tLu4V5UzaeD1f3IxDFQEKNUEQr1PVAeowyvpdqgrp10V7Yw5pH0Bi6TQOdHdqY2w7VOTeA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuxUe9lFh5/LnR0nnEfEstiNaDk0Y2mSBNCea+w6SKUHEJhYNJ
-	WpSdSQL7tLMbNSGGBOYSwqAb2cHgA0gs8Pbo2kKPBfRtr/iNQ5V1xO2ySDgTEo5wsO1D8h2inkr
-	vo4VCp/emTDE2mG5lM6PRkzimKkJm0kY=
-X-Gm-Gg: ATEYQzzmmuuxVeH8c39ZdCq4K3IoJ2rDE3eVLg7h4YnObzd/uoCagvNF915Ku5ylafv
-	fTOs8JHhD87or6j1ljLstuoR63sU7xQENPMZ5QF7MK3v+jVncs3yGQrQUcvwMei2YZ24p8e8Ksf
-	AZEhWzqrM70XzQQv2Sp9HehoAobEMUK+AZsIbTZEb6FucYhm9hiFMSeN20diwgc4qCOutlTrwIJ
-	qJRNO0bcYsb0sTxvCxhvuSOF2ytWS16hAgSQT/X5MAGsln/EY/EQREdfyw65NEh74IE749A5xuj
-	44tOEFTmNUTZfDTnPJUjoy7Su7Wr26UM9Q6JCWP2FJXouCY/3rOmZraxG7wFu+61gw8GLczGBeg
-	jskKrXR0AEBPdsKog/A==
-X-Received: by 2002:a05:651c:31d2:b0:385:c7f0:2b1a with SMTP id
- 38308e7fff4ca-389a5bfaf3cmr45288531fa.33.1771944764898; Tue, 24 Feb 2026
- 06:52:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mcXAobgB"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CEDB64E410A1;
+	Tue, 24 Feb 2026 14:57:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A2C0E5FD9D;
+	Tue, 24 Feb 2026 14:57:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E664610369189;
+	Tue, 24 Feb 2026 15:57:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1771945044; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=TD35meJIx0tSWD32u5a5s8+Ze4KqZJJ2vlTVst4M7UA=;
+	b=mcXAobgB6rIqRh1WLat0kLJSEv+JeUvlXjK9NVWIFkpf0nd+fvF0ocp751ItUIg+9jMIn8
+	mhFCtEzH12OHR8B4ml2S+Sm38MHU0Agd0Lbr/PQ9j4pXsk0Xig3SPavJCZUmbbQ9hUcA29
+	OYw81AkOQEXSsAgtwrx+dgy7iAPISXDMokzQVtB82C0E1m9Y6fbnX1BJR6Ttv/fJf80ba/
+	fliqH3GeFWB4Qk5XaQW1FpWDxMl7jhXFjNY8jEwe8/92BewuvlpV31g+AkmxyzXdM923qR
+	1OPg8uaRhN4NVFMe+5T6smV6o171A28OA1tztEe+Xp45/MOEj8zytYYim60TYg==
+Date: Tue, 24 Feb 2026 15:57:21 +0100
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alvin Sun <alvin.sun@linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-rtc@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
+ callbacks
+Message-ID: <20260224145721a9e69e4d@mail.local>
+References: <d1c9e33b-e1f3-41c6-af5e-a85fe2b86d10@linux.dev>
+ <20260221111619162a41a1@mail.local>
+ <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
+ <DGKPPQI0QE73.S8I1M5NCI2BV@kernel.org>
+ <20260222000556ea1938c0@mail.local>
+ <DGLI4H9M0T6D.25RTLDVU5JRBE@kernel.org>
+ <CAJZ5v0gtiQxBCknkaOzLKrDqUQfhKh_UjQkvgxJBL4UthbCOkg@mail.gmail.com>
+ <DGLMGEZTM7E2.Y8VV9I6LI1P6@kernel.org>
+ <DGMR9XOWP1V0.3C9219TYPXV6J@kernel.org>
+ <CAJZ5v0habtTt32bTiJF2keifwea4i0=j_s_x7AzOn_xmaO+RWQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org> <CAJ-ks9=hWB2eFcEj1obfsoLvK15=YR9y=hifxVyeB=mJOz+gXQ@mail.gmail.com>
- <87ms0y1akt.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87ms0y1akt.fsf@t14s.mail-host-address-is-not-set>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 24 Feb 2026 09:52:07 -0500
-X-Gm-Features: AaiRm51E5g5hu-gNZ3KVzmobV8NCSlGexxFTi5VRWK0zHfaV6kQEmjkKY0e45lI
-Message-ID: <CAJ-ks9mtwo6eAvmT6qbL+Mg_=A+-zdtiBw6BtsfO2eZ8HbkXWg@mail.gmail.com>
-Subject: Re: [PATCH v3 04/12] rust: xarray: add `XArrayState`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0habtTt32bTiJF2keifwea4i0=j_s_x7AzOn_xmaO+RWQ@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Feb 24, 2026 at 9:27=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> Tamir Duberstein <tamird@gmail.com> writes:
->
-> > On Mon, Feb 9, 2026 at 6:39=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
-> >>
-> >> Add `XArrayState` as internal state for XArray iteration and entry
-> >> operations. This struct wraps the C `xa_state` structure and holds a
-> >> reference to a `Guard` to ensure exclusive access to the XArray for th=
-e
-> >> lifetime of the state object.
-> >>
-> >> The `XAS_RESTART` constant is also exposed through the bindings helper
-> >> to properly initialize the `xa_node` field.
-> >>
-> >> The struct and its constructor are marked with `#[expect(dead_code)]` =
-as
-> >> there are no users yet. We will remove this annotation in a later patc=
-h.
-> >>
-> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> >> ---
-> >>  rust/bindings/bindings_helper.h |  1 +
-> >>  rust/kernel/xarray.rs           | 41 ++++++++++++++++++++++++++++++++=
-++++++++-
-> >>  2 files changed, 41 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_=
-helper.h
-> >> index a067038b4b422..58605c32e8102 100644
-> >> --- a/rust/bindings/bindings_helper.h
-> >> +++ b/rust/bindings/bindings_helper.h
-> >> @@ -117,6 +117,7 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT =3D X=
-A_PRESENT;
-> >>
-> >>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC =3D XA_FLAGS_ALLOC;
-> >>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 =3D XA_FLAGS_ALLOC1;
-> >> +const size_t RUST_CONST_HELPER_XAS_RESTART =3D (size_t)XAS_RESTART;
+On 24/02/2026 14:28:48+0100, Rafael J. Wysocki wrote:
+> On Tue, Feb 24, 2026 at 1:12 AM Danilo Krummrich <dakr@kernel.org> wrote:
 > >
-> > Please add a comment to explain the cast.
->
-> How is this:
->
-> // `XAS_RESTART` is defined with type `struct xa_node *`. `bindgen`
-> // cannot generate pointer typed constants, so we cast to `size_t`.
+> > On Sun Feb 22, 2026 at 5:13 PM CET, Danilo Krummrich wrote:
+> > > There is no limitation from the Rust side of things, as mentioned in [1], this
+> > > should work perfectly fine, but it might be slightly less convinient:
+> >
+> > When I wrote this on Sunday, I should have been much more precise about this,
+> > since it actually does not work perfectly fine without further changes that
+> > would (re-)introduce ordering constraints for drivers on the probe() side of
+> > things that I want to avoid.
+> >
+> > The "re-" is in braces as we never had those ordering constraints in Rust, but
+> > we have quite a lot of them in C, where they cause endless problems. Which is
+> > why I want to avoid them in Rust.
+> >
+> > > Example 1:
+> > >
+> > >       impl rtc::Ops for MyRtcOps {
+> > >           type BusDeviceType = platform::Device<Bound>;
+> > >
+> > >           fn read_time(
+> > >               parent: &platform::Device<Bound>,
+> > >               time: &mut rtc::Time,
+> > >           ) -> Result {
+> > >               let drvdata = pdev.as_ref().drvdata::<MyDriver>()?;
+> > >
+> > >               ...
+> > >           }
+> > >       }
+> >
+> > Let's have a look at the corresponding probe() side of things.
+> >
+> >         struct SampleIrqData;
+> >
+> >         // The bus device private data.
+> >         #[pin_data]
+> >         struct SampleDriver {
+> >             #[pin]
+> >             irq: irq::Registration<SampleIrqData>,
+> >             rtc: ARef<rtc::Device>,
+> >             ...,
+> >         }
+> >
+> >         impl pci::Driver for SampleDriver {
+> >             fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl PinInit<Self, Error> {
+> >                 let dev = pdev.as_ref();
+> >
+> >                 let rtc = rtc::Device::new(dev)?;
+> >
+> >                 Ok(impl_pin_init!(Self {
+> >                     irq <- irq::Registration::new(...),
+> >                     rtc,
+> >                     _: {
+> >                         devres::register(rtc::Registration::new(rtc))?;
+> >                     }
+> >                 })
+> >             }
+> >         }
+> >
+> > This is a problem, since even though the registration of the RTC device is the
+> > last thing in the initializer, rtc::Ops::read_time() above could race and
+> > Device::drvdata() could just fail as it might not be set yet.
+> >
+> > This is fixable, but - as mentioned - at the price of introducing ordering
+> > constraints for drivers.
+> >
+> > For instance, this could be solved by introducing a pci::ProbeDevice<'a> type,
+> > which ensures that pci::ProbeDevice::set_drvdata() can only be called from
+> > probe() and can only be called once, as it consumes the pci::ProbeDevice.
+> >
+> >         struct SampleIrqData;
+> >
+> >         // The bus device private data.
+> >         #[pin_data]
+> >         struct SampleDriver {
+> >             #[pin]
+> >             irq: irq::Registration<SampleIrqData>,
+> >             rtc: ARef<rtc::Device>,
+> >             ...,
+> >         }
+> >
+> >         impl pci::Driver for SampleDriver {
+> >             fn probe<'a>(pdev: pci::ProbeDevice<'a>, info: &Self::IdInfo) -> Result {
+> >                 let dev = pdev.as_ref();
+> >
+> >                 let rtc = rtc::Device::new(dev)?;
+> >
+> >                 let data = impl_pin_init!(Self {
+> >                     irq <- irq::Registration::new(...),
+> >                     rtc,
+> >                 });
+> >
+> >                 // The `pci::ProbeDevice` has been consumed by value, and
+> >                 // returned a `&pci::Device<Core>`.
+> >                 let pdev = pdev.set_drvdata(data)?;
+> >
+> >                 devres::register(rtc::Registration::new(rtc))
+> >             }
+> >         }
+> >
+> > However, note how this wouldn't solve the same problem for irq::Registration, as
+> > it lives within the the driver's device private data.
+> >
+> > If this would be C you would probably just partially initialize the driver's
+> > device private data, but in Rust uninitialized data is not allowed for safety
+> > reasons.
+> >
+> > We could probably find other ways to somehow handle this, e.g. by introducing
+> > new device context states, additional callbacks, etc., but in the end it would
+> > only be workarounds for not having defined ownership, that eventually ends up
+> > being more complicated and more error prone.
+> >
+> > For this reason an irq::Registration has its own private data (which in this
+> > example is just an empty struct).
+> >
+> > Similarly, all other kinds of registrations (and driver entry points) have their
+> > own private data, such as class devices, work and workqueues, file operations,
+> > timers, etc.
+> >
+> > I.e. there is a clear separation of ownership and lifetime, which makes more or
+> > less (often more) suble ordering constraints obsolete.
+> >
+> > In fact, in the beginning I did not even plan to expose Device::drvdata() at
+> > all, making the driver's device private data only available in bus device
+> > callbacks, etc.
+> >
+> > The reason why I added it was that it was required (and makes sense) when
+> > drivers interact with other drivers, e.g. through an auxiliary device.
+> >
+> > I did also mention this in the commit message of commit 6f61a2637abe ("rust:
+> > device: introduce Device::drvdata()"):
+> >
+> >       (2) Having a direct accessor to the driver's private data is not
+> >           commonly required (at least in Rust): Bus callback methods already
+> >           provide access to the driver's device private data through a &self
+> >           argument, while other driver entry points such as IRQs,
+> >           workqueues, timers, IOCTLs, etc. have their own private data with
+> >           separate ownership and lifetime.
+> >
+> >           In other words, a driver's device private data is only relevant
+> >           for driver model contexts (such a file private is only relevant
+> >           for file contexts).
+> >
+> >     Having that said, the motivation for accessing the driver's device
+> >     private data with Device<Bound>::drvdata() are interactions between
+> >     drivers. For instance, when an auxiliary driver calls back into its
+> >     parent, the parent has to be capable to derive its private data from the
+> >     corresponding device (i.e. the parent of the auxiliary device).
+> >
+> > Let's have a look at how probe() looks like for the example below, which is what
+> > we do in other subsystems, such as DRM or PWM.
+> >
+> > > Example 3:
+> > >
+> > >       struct SampleIrqData {
+> > >           rtc: ARef<rtc::Device>,
+> > >       };
+> > >
+> > >       // The bus device private data.
+> > >       #[pin_data]
+> > >       struct SampleDriver {
+> > >           #[pin]
+> > >           irq: irq::Registration<SampleIrqHandler>,
+> > >           rtc: ARef<rtc::Device<SampleRtcData>>,
+> > >       }
+> > >
+> > >       // The class device private data.
+> > >       struct SampleRtcData {
+> > >           io: Devres<IoMem<PL031_REG_SIZE>>,
+> > >           hw_variant: VendorVariant,
+> > >       }
+> > >
+> > >       impl rtc::Ops for MyRtcOps {
+> > >           type BusDeviceType = platform::Device<Bound>;
+> > >
+> > >           fn read_time(
+> > >               rtc: &rtc::Device<SampleRtcData>
+> > >               parent: &platform::Device<Bound>,
+> > >               time: &mut rtc::Time,
+> > >           ) -> Result {
+> > >               let io = rtc.io.access(parent)?;
+> > >
+> > >               match rtc.hw_variant {
+> > >                   VendorVariant::Arm | VendorVariant::StV1 => {
+> > >                       let my_time = io.read(...);
+> > >
+> > >                       my_time.write_into(time);
+> > >                   },
+> > >                   VendorVariant::StV2 => { ... },
+> > >               }
+> > >           }
+> > >       }
+> > >
+> >
+> >         impl pci::Driver for SampleDriver {
+> >             fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl PinInit<Self, Error> {
+> >                 let dev = pdev.as_ref();
+> >
+> >                 let rtc_data = impl_pin_init!(SampleRtcData {
+> >                     io: iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
+> >                     hw_variant: VendorVariant::StV1,
+> >                 });
+> >
+> >                 let rtc = rtc::Device::new(dev, rtc_data)?;
+> >
+> >                 // Internally calls `devres::register(rtc::Registration::new())`.
+> >                 rtc::Registration::register(rtc)?;
+> >
+> >                 Ok(impl_pin_init!(Self {
+> >                     // Give the IRQ handler a reference count of the `rtc::Device`.
+> >                     irq <- irq::Registration::new(..., rtc.clone()),
+> >                     rtc,
+> >                 })
+> >             }
+> >         }
+> >
+> > With this there are no (subtle) ordering constraints the driver has to get
+> > right; ownership and lifetimes are well defined.
+> >
+> > (I.e. whatever order a driver picks, it either works properly or it does not
+> > compile in the first place, which is a huge improvement over the situation we
+> > have in C.)
+> 
+> Thanks for all of this information and let me confirm my understanding.
+> 
+> In both Example 1 and Example 3 there is a dependency between rtc's
+> read_time() callback and the PCI driver probe() because calling the
+> former before the latter is complete would be premature (and it would
+> fail).  However, in Example 1 the compiler does not take that
+> dependency into account because rtc is not passed to the callback,
+> while in Example 3 the dependency is visible to the compiler and it
+> will refuse to compile the code if the dependency may be missed.
+> 
+> If the above is correct, the current calling convention of RTC class
+> callbacks is problematic because it causes correctness checks done by
+> the Rust compiler to be bypassed (which may allow certain ordering
+> issues to be missed and functional problems to appear going forward).
+> 
+> That's convincing and I think that adding an RTC device pointer to the
+> list of parameters of RTC class callbacks on the C side would not be a
+> very intrusive change.  Arguably, it would be less intrusive than
+> replacing the parent device pointer with the RTC device pointer in
+> them.
 
-Can we include a citation or explain why bindgen can't generate
-pointer typed constants?
+But there is no way the rtc callbacks will be called before the rtc is
+registered which will only happen in probe, when we have an actual
+device to talk to...
 
->
->
-> Best regards,
-> Andreas Hindborg
->
->
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
