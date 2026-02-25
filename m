@@ -1,626 +1,178 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013016.outbound.protection.outlook.com [40.93.201.16])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013061.outbound.protection.outlook.com [40.93.201.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3522DCC1C;
-	Wed, 25 Feb 2026 19:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AF7145348;
+	Wed, 25 Feb 2026 20:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772048966; cv=fail; b=iaYPWL5aqOc04QVJaMduCGBMhpa3yfimAs7lQ1yl5U55x9NhxZSU1o8a1eoz5pW9aZlAURIGEp5UluosFB6oHizDhonRNGGO43sQBkSUQFS6H3NZVjActkb9huKDUkDUEwNexfo8HoAhO6t2lpHqrEQmKJe24WF8ctskK3zMfks=
+	t=1772050825; cv=fail; b=Ihxlpmq3kCNGbynIWu/A+g6qO2h/28AT6E6SG/2zTfBDvJVooyyABpgxXDZuDYItKc1TqxwuCHAGlYhfRSawbqj0yE3EkqL1cYvSkCZVdsZoSUwiam+BnboA/tqTjhd0d9KSWmIma8JcuAPMgdKpCVile2vbmT3l7lyGqPLOe0A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772048966; c=relaxed/simple;
-	bh=7VT4bCeueTJb8qKIWkFk8LFTAgWwvZolKUFuPw/1xn8=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ht3CjlYcluXda2B+3AQp3rKa9F/VIH3gYIvKhaHYyyz3YQAtve5XOB/eDFXqJvTBxRTNGCGFPZLOgs5dWTXIi5M8WSGG6xcDLH/uPC5Tv0dfa13hqi2431ieMxm+S0RsNxBLrlXO4pSUqEI3ER6gpmmFk4nO44gE4lnW0pnrWgM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kj79Fu+w; arc=fail smtp.client-ip=40.93.201.16
+	s=arc-20240116; t=1772050825; c=relaxed/simple;
+	bh=6GUrScFUFBwU9D3elV0H02oCzWJsZEei6K0T2cvk5gM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=mlDaYB6JdmOJsDt4SSMf4GXYhGC06n5nlF6bks6AB1PV9dD1GbECWaA+Jejry/3cOy8RxSHVWHvdhWqm11pcg9+mVLRC8TEq8op46J4Ap5l3QbhMbKyreEveVNlsdz1trp7551HNpIQMOgI/sx+pSamgIc99xdy7HaqQ4M5eeIM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XrZugcC0; arc=fail smtp.client-ip=40.93.201.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kj79Fu+w"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XrZugcC0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JOwpX23V8STME8G8wqZWS3Y12Nvp1nvudMD62ZjG1YEXIjdb5vjm0fXYABDFr2kTyASYk4GD9cUvmKy7Gu4QAOGMw+EjcvRezdK4jSj67TYH7eM2LjbuG2JR2YUH78oR47CsNVoGZ0/f6qnUxiuyuP+vr4xqYVDIAkSsGjRQ7plMSWTx+0bu4E0g4yLXztX4csfHaMA8vZ0BO54nAUUhE2f7XhnLbWSEHJtvLG7nGHLM2unv2MvAwx5Q3bF8oxyaLVMbL+ttBo+8AX4yQ5VZvp/04Olq9j3tVyd5opK+Zf1rJo4ZtZ3LUkJe9Zf6E1e04Bq03dJ/EjnjKDuTO+p86w==
+ b=BdbHq5Xuf88dJdpw5tmDj+0BlOdcJ3lT18gU//tseSOiCmj9eD05lC4S99vy0pMcTbkuJDlNPr+dNHCJacfaRYTjhRj6/a+m9GeE/jtklExzIxrzNb9Un62rp8vG3xwh/TJmKF0B5Ia/1V1SC7SfbwNFYLnBhypnbDLW0M87X26yUbiYRZ4TG+zWWCxqKtTqXh+X6QGLjLo0rRHIlUae1A6zaQ7eg8jhJu3WAH0tsIrbHiLZD2xGX2VcXaMGmmlXWIHQfQ1Ok52tEqChmP4kQA8A9n36o6/2ciE1+GHNJsyOH5+hXwtkUY4gOcz6bideeESoakFP+k+cV/mQnsohTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qDmektqFrtbgWztxeR8rv2Jw/KkzWO9YpLHdnNC1HPE=;
- b=E93mtpusLUxygEltjuPpoMX2j7Itq4ypUhPC4u0VhDI7CvF8hgI/b7M/AyVwPUgrPAhUtXudWxEB6cmn/YP1dDj/OTa5KhAlI0cx4dSXGuAizSRGqah3MpherLT6S0ZaAaj3gKK/JHqcTXaOqid4brL9FrXhBJ0ZMx/BA+iU2vm11pQEuLP1nRC3wps/DIp9VSQeZKPBpbgdJZFzvqNMb7wrFWcE19fallfbbrqhkuXAsgZp+8bijaNO3Ccdp8d8S949IahMT3NczU3AQxZuf6H9crhrjd45tPxNj69ZAfAWGMLXOUx+wypUytMDq3m/PD9gGrPMyZW360XeBW7rrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
+ bh=hvWjKumVid6KfMcFHik3IpxYzjnoRTZtVR1LA5LBjis=;
+ b=CGwybXGeY+ctGuUxJ0RUmBQbEIDgOmXF2rh/UE/WANMqTO0iH/Hxszw/ozwMhuFRlzPn2I8XlZBTYGY8RJ5uYzgDgWlFRGCg8zIk2zQybor5hj4O1Lzb6m958BPuI4p37cVxcBDqcmERTCPxf41ZFciUJ3CUHVuzttu62cvYNrFCnqCSCZr/AHwgLBttXEjoqiQTsowa9MaVRufyzdcIWtqa3+7jkvHKTf4Cda3atGbraG8pyJQ82SfusvkPuomay/Xt634b6RibgX/2IW3Rnb6sicnBY22hEek5I7cNBeIoU4m/p6MJSY09YinQ9L86T7vPXSM2yurnhqpOjOPJHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qDmektqFrtbgWztxeR8rv2Jw/KkzWO9YpLHdnNC1HPE=;
- b=kj79Fu+wjpq1+3Qf+TOroXZv20Gvb5wzT/TMkhVDTUnNmgplLPa6VID3+ZE2oi/Up3b2TY/1fq1Fvt+nHzGRFnfcPMRdzBrMLtApFi3GFaxIU+DTO1NyM8g3kLSWQGgnuPdFMfLqlPup6yrVftdBGO7f0HjO0YduyQIAZ3zd7G1jBUSKsR+wnX64Q1OEvzQvwvo9Nhz8LwCv/SqOLyPI566GEeG3N/O3e8a0LuyL2SJaYfYOeeYb3bfAorpQBrXOWgcApRBEdJjKvaSCO/zKzjDbJkqpjthoz+2SpCmDzxaXO8fmNm3gmedm9+s/GvCalZKYmixAO4wUTJqvb2TmIQ==
-Received: from CH5P221CA0017.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:1f2::17)
- by MN2PR12MB4207.namprd12.prod.outlook.com (2603:10b6:208:1d9::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Wed, 25 Feb
- 2026 19:49:15 +0000
-Received: from CH1PEPF0000A348.namprd04.prod.outlook.com
- (2603:10b6:610:1f2:cafe::1b) by CH5P221CA0017.outlook.office365.com
- (2603:10b6:610:1f2::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.23 via Frontend Transport; Wed,
- 25 Feb 2026 19:49:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH1PEPF0000A348.mail.protection.outlook.com (10.167.244.4) with Microsoft
+ bh=hvWjKumVid6KfMcFHik3IpxYzjnoRTZtVR1LA5LBjis=;
+ b=XrZugcC0iTrdHBoiBpIm/uzaS2J1g4aEJ4I02umUUOQWiKWgOgCFEGfSdj5Piq+3A7RwbygVg1yfc/4G0rrEncmzpoLL5vSpSOC1U1HKMWecwzSthVXipLsn2X/PYf3XKUbz2RNj8OHAEkRaLjriFpWF4VezhpC2a6gVXuvJJJQFcjjsYA1Hiy68mANL94ZXWRR8/d6xPNsl5YonoQvUiATn4JNp8Jhm9iQfALwPzWjldAcoUhrB3PZSTJsnMdajG4/UV2N6syQnsQkib9xGCvMocACuX/cIX+JQBSkjEcDeEhHb2daoEy37R8rJ7+m1JRpG5XMxe68rpPesnjLuZA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ BL1PR12MB5705.namprd12.prod.outlook.com (2603:10b6:208:384::5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Wed, 25 Feb 2026 19:49:14 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 25 Feb
- 2026 11:48:53 -0800
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 25 Feb
- 2026 11:48:52 -0800
-Received: from inno-dell (10.127.8.10) by mail.nvidia.com (10.129.68.7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Wed, 25 Feb 2026 11:48:48 -0800
-Date: Wed, 25 Feb 2026 21:48:44 +0200
-From: Zhi Wang <zhiw@nvidia.com>
-To: Eliot Courtney <ecourtney@nvidia.com>
-CC: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>, Gary Guo
-	<gary@garyguo.net>, <nouveau@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-	<rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 4/4] gpu: nova-core: gsp: add mutex locking to Cmdq
-Message-ID: <20260225214844.6367f660@inno-dell>
-In-Reply-To: <20260225-cmdq-locking-v1-4-bbf6b4156706@nvidia.com>
-References: <20260225-cmdq-locking-v1-0-bbf6b4156706@nvidia.com>
-	<20260225-cmdq-locking-v1-4-bbf6b4156706@nvidia.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+ 15.20.9632.22; Wed, 25 Feb 2026 20:20:16 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
+ 20:20:16 +0000
+Message-ID: <fe65b37f-6944-4056-8b7a-3cc09a044bf8@nvidia.com>
+Date: Wed, 25 Feb 2026 15:20:12 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 5/8] rust: clist: Add support to interface with C
+ linked lists
+To: Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, linux-kernel@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Alexandre Courbot <acourbot@nvidia.com>,
+ Dave Airlie <airlied@redhat.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ Nikola Djukic <ndjukic@nvidia.com>
+References: <20260218205507.689429-1-joelagnelf@nvidia.com>
+ <20260218205507.689429-6-joelagnelf@nvidia.com>
+ <DGIWDQTR76Y5.34L9IHKU2SEKI@kernel.org>
+ <eadfa4662f403fa01f19c1c17a435c1a@nvidia.com>
+ <15a193fc-b2b9-476e-a9f6-57e3a210b74f@nvidia.com>
+ <DGJ2TNVD8AS7.2P0HYYKKE8CBQ@kernel.org>
+ <4ad9fd6598e2688c88f6ef22c088c683@garyguo.net>
+ <DGJXYEXCYIII.Z6FOAA8YYMAZ@kernel.org> <aZ9SF5ql6OCdaFi8@tardis.local>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <aZ9SF5ql6OCdaFi8@tardis.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0175.namprd13.prod.outlook.com
+ (2603:10b6:208:2bd::30) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000A348:EE_|MN2PR12MB4207:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7bbd9e79-a679-478a-3f97-08de74a6f493
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|BL1PR12MB5705:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24377316-9054-476a-1954-08de74ab49b6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|36860700013|82310400026|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
 X-Microsoft-Antispam-Message-Info:
-	AEqCH0lNSr1VQ5CC8eQfrKnuD6HxyOM4sedxhoIVs9ENmQ6benSiCCJKKMDQr6gk7hWHjVyHrOAHyISQuRbfHAfPkgH3FsqIqik4EHZ+nNokRnHSj2ksEdmKC6Qtm9drHFM0tIWpxA6h5MYWv3lr0wJwaa2Dw4PCNOQ2J6EXY+n6F4225hQj8cUiZFofMSawKocaW/Z7AW8qldEE+thDBCrdJIV/nvOwEmNHCqMMjPnD+hkqwde0pHWI1DPHjD79c6qqH1bRx022BUwz1KCcqiv48+Dc2GSj9uHtSWl2UC9KibQMy3uX7MFSschTAE3+D/ZIMT2l9mqFQi3zz580nDfxxrt0CsOCGY6/8bCQExbdNb88ghjpCAKFiOmz3/0H+o4qpB7r4Xh78qlE5ozxef+QGoUas53VngHsK5atcbR5MTFVn/UGOX/27Hqdzy9lYMmw1D1SxV5H5bWNqgZGE2Vl1LE4l65WvqI3W9AcwWtNnbgzPhhJ5vMpZVUr446Ud4JZnZGFK3M7wNDfYafaNukp5QDDbwi8g+YscpA4olN/PyTXLnVpTiximP9PsWxyad1GaB/i/i3pk+lYwmrot6H3dCZicWbNSuUzDifWCIya86k5ahMp9gOb1SQnl67DF13UL9I3jLPVQGZlXd6J86XtKoJnJmH6kyXbMyS1pOahwXmVt+wWW08tNk4mmKK+Q8PpwF1jhGS+UKIB9Tsx+NdV/uT3UzB3qlh0jzs8jcmJ0Q9xT4pwINgN8OQUJajOgjUtjmfiSA8UsynDO7ZdyWzzPvdYZUIsNVVl3s7GUkK9U23LfUnY/KZMxXjBlDqrBjbAPBx8z2z9VKB9R99afw==
+	pmkeAuchFAYML1Ug0ydGEDzGV24iMx9/rEngdU1GH3Cl5DMuMErpggk61BKrltMfN312lK27eTePRfddm6+/Uuo1IhL9RjADiuPPdV8sBVZvaXVXjwDXHF8f8mYwWj0kqpiA078+4v3N5dHAdf9pYQLCPSlxbNqQ2OB2DgS+Fh4uT6l7OIXQ+TmulD4ebmeXdKzvbX29TL00QoRsXvLWoHgm6OpNDqYBwSwTLG+A0nd/BFqFkhyj6RN0es0EG6zPiBCjTVcqSlb8bAJV9ktaX6k29itGlXVGI9fOnVrSHxj0h64CyTnljdH/p8MFfQ5Kddc+P+slmFG5mtx409elkGbSB058sH6JCOx3mEGCxYiXCDPM+OPn+Cc8KqL6WmD8jw///In7ZKpPhUeoog3MKbob8fLZ6p/Roe7e7rnpTvwyjz6wsmn7xUpf61nFgwvT3qansmuwhVg4Ny9pDqo9u4HOPBylI2bDLrhI496LgdRT9F4VkOcgGgi6usaHYjuHvQY6j9XQdcYAEPBMDsICgFL9oQMqvYCdXtX+MxB2WxItcVaRtwnQMzNj/QI+W76OQ8xf+KMz9NOleMkPwpWv+GFuChMTJjqbbGBRHYqmp+7FCJKdEWa+IZcLoBbdnfP9N1hYNNTqQoUlJ9mofB1o+iCUKqDHqRV8W/c+BFy9q/ZUVGcbcCxiOLxmk9khptx1BNkn9LfVJk6bKetM79BHcrDWBPIYwn+McjMPRrsfwfA=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	0rOWNFhYzseNTKy8+EftPdceJXUUB0DhkZD+tjgv7qUtpcpbUZNm/yQx2kMGByETuKFB6NwiCqqietwklhAfgBqOFwovlqW35pJA0fOBQKXdCZSWVq+RGUUVK6dp37T9azK8NQ7TGkb31K/DnFxxLgnDeVQuE2GLvp/stIo2ArV3lmZLHWT/CCtcx63/qQE2Zo6/gzfws0n0jK1LuXFcuZrH76SOZOXSw1bEK7/fN1AYTaMqZABAvWlEr0ahO65PDHFBEZeyun+BQ1jjg/KUq0CQyTJlmK2F2/zeUF02go4MGPZdh1FrEbd7QUf5jAl5uj6VZAf5uOfMfvDlJpqb+AUyZJHhwzT1u4UR4XwQx+XSWywz/76OwCXcEAP1996qhGsydWYoOJxZzYZDMvvhiZc0dtZTCBV2BCUVDNDylr1RJJ/nWQI6hqxYDyUc71sZ
+	=?utf-8?B?S3NKZXB4TllEWlJvY3N6bERzWUl3d1VYaldMSEtKSTJSbHc5MXY4OG5QVCtM?=
+ =?utf-8?B?NzZvZXI2L1NmejZmTG9oZXpiQ1ZLWk9ZWXB2Qi9nUXZvNGE4TEFUL1FHZEdT?=
+ =?utf-8?B?RGdYTFhYN2gwZkc4RFluZHRiNUR2YlFOeG9zOU9FTHF5K2xPeDA4SGhpQ2Vm?=
+ =?utf-8?B?aHBRVU1nUmswV0M0LzBFTHFjTXk1VGIrMTdLc3JBbVZVcTlBbyt5WGFvemZk?=
+ =?utf-8?B?MnZJZXpkeWlpWENWQ01GRVB3OEJva3V1eFgxc1NMckNabnppZktQYzdoVDlW?=
+ =?utf-8?B?eDI1YlV5ZVVSa2lJajdPSFl2U1d2OWxnWkxXcW50NTVhMk9MRXZyeEJVZGRV?=
+ =?utf-8?B?RGtSbWxmS25JVjk5N3U5UFFqWDBaQlZoR0MrcEJNVGpTRkoyWUFKMExKekFa?=
+ =?utf-8?B?bWJLTTFJOFBUQWFrQVR2QXN5SGRTVWRBYmw3RnZyc1V1M0p1VXBNdnp4RkF1?=
+ =?utf-8?B?R3RVZGlVZmJjanUzbmNCMDJJNVhwZHJmMUZCN1hGRmV6TjF2S2tEMy8vM29s?=
+ =?utf-8?B?MzhzMHd6cmZFcFc0cmpRdmlYUkdGa0dQc0RyNXVOaWc1QThMZzhXcDlFOUNC?=
+ =?utf-8?B?eVoxSzhCbFY1RXc3M2p2ZE85VTN1U29hcmlOejEwSk9kZGFXSFRmU3lvMmpM?=
+ =?utf-8?B?OTVIdkROajIrUzlWanhqOUowMU1TckRRbTJwaThaK0tPZkxWdDRYcnU3dFA3?=
+ =?utf-8?B?Y1NnYjhxZGQ3dGdKaDV5Qi81VHR3OEp2VUVjdkhYcjY0Nk1MTHhXS2c4aWpL?=
+ =?utf-8?B?cC9sdWIzc096V3IrclpGY3paSVNLdktCQWJQSFkvQW5oTUMrd3dhL1Mxbmsy?=
+ =?utf-8?B?QVUzU29URENhbmlIdW54OXY4QVZHWW8xeWhiSEM3eU1SNHRrWVM0RlN1UVkv?=
+ =?utf-8?B?LzdqT21BZ2pFVWRzMnIrNStIbWZWWjZSc3dNNjhUYWtlOTVWclRubWkxSGN3?=
+ =?utf-8?B?TjJGS0xSdldodEp0SHovYWxJZ2JzaUt5STR6TFNNTXdoTy9BRzhhZGNQS1hH?=
+ =?utf-8?B?b1N5cnB2ZjgrcWVrRGpsYzVxaTdQQ3NQOEpNY2FpWk9jekZlcXh5RG9LRThO?=
+ =?utf-8?B?VW1FRnRIcVJmMWxPU214Vm1Ca3JsR2w3bTZBVWVsRUlNSDVKOUJHcDFqQW80?=
+ =?utf-8?B?LzhUOWgwclNyVmdsQnhCZ0paMmREMW5sTGs2VW5XYW56NnVhWmUrK3lLWjZv?=
+ =?utf-8?B?bGxTMHc2L1M3UkYyMVVUS1pLNEZZeFJGVkZkVUt4S1lydENwc0IvNlB5UVA0?=
+ =?utf-8?B?MXVRTEUwcTNucEYyUW5BZHV4TG1HR1FsTUVqUnc1c3kxSnU3NU5NNm5RU0FB?=
+ =?utf-8?B?VzJ2VEk1bDJSMnRCQVpYT0hrczBIV2NnK1ROeHI4c2FabXVpWHhmSXZOeFVH?=
+ =?utf-8?B?cWhGd2lraG1jL2FHd1dBMmE1YkpzVk9FZmhQcmxQclN5bHBDVCtWbmZTcHdn?=
+ =?utf-8?B?eU9Hc1ZBUGNmalVtdU00Q3V6ZERleGUwRjNnajJZcFVtNzNRdTFzOVM0YWJT?=
+ =?utf-8?B?SEtDdjQ2MDJIRXZaQWRSYnhTMmdRL1lQUjRqUldvTzNCQTNqWGtxYlFKb2xh?=
+ =?utf-8?B?a1lxeXRhLzRNSzBMVnVsTENTRUJ4Y0pPdzFyeERmKy9lcEZHTlBkSUxNWjRw?=
+ =?utf-8?B?eEdMSk54ZDkvS2E3NHdkWkdTUXNudnZ4dDJCbUxKTStiK0F5c0U1T3psWjNr?=
+ =?utf-8?B?cVIvdFpVYlNFT0IrZ3BXcWtPc29nbGRicmhMWXE4SU1WZVVHSzA1YW9qa3dp?=
+ =?utf-8?B?TTRGNDJxWWZPY045Mm0xN3Q5aml1N1pxelR2b0tLbVAyR1JlUzUrMGRKS1lY?=
+ =?utf-8?B?R1d4QmUzYm9IU1kyWXBPZXdIYXQzQWxpdy9QbW0yVUZ6TU04N3MyeFh2MXRw?=
+ =?utf-8?B?bXp1djRndHAyL3lFczFWbGw2SnlNc2FkRHd3MU5KSTA0TjhHOVl4ekhRRVZh?=
+ =?utf-8?B?RFc5NVEyTlc1MmhPOWp0RUNFalc0UWJNQ2ZKclNjKzF4WEFTOGFuMWJmUGc0?=
+ =?utf-8?B?RTd4TDV2K1RnMDlETENpQ0pKUHBCdCtlbU84VFRzbjNFTTliQkNOZDRORFBp?=
+ =?utf-8?B?cndpM0JxVkFOa1V0My9VYjFlbWV1SS9LUGdZZkREaUZYbCtQWFBNOEh0Tlg0?=
+ =?utf-8?B?VzF2RnVUR1E3bGlTN2ZKVkw5TTZEVDhBZnI3WlBEcFZjNlF5ejEyMXFoUmth?=
+ =?utf-8?B?ekFyNElsbElSNUV0OFh3VDQxdjlGQitiOERPRTVHMWdUV3A3bFdwRU9nVloz?=
+ =?utf-8?B?SXF1eGloSEhiZ1BySVd6TXR2V2t2R015dWVmRzdyY0RsMkQ5NDZSaURNdVJr?=
+ =?utf-8?B?VHhRR2gvY21tVW82VkJXelRxUFRqMVRrWHYvRHRpOWRXYmtMemhZQT09?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 19:49:14.8267
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24377316-9054-476a-1954-08de74ab49b6
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 20:20:16.0431
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bbd9e79-a679-478a-3f97-08de74a6f493
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000A348.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4207
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kx89WzniUXN4e5EVso79g8b7BWFRAIyd+uejh6t19uiOtT+z5xJ9KcOOJSH9/w22yJUfSnF+061aXUsOc7NQ7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5705
 
-On Wed, 25 Feb 2026 22:41:51 +0900
-Eliot Courtney <ecourtney@nvidia.com> wrote:
 
-Looks good to me.
 
-Reviewed-by: Zhi Wang <zhiw@nvidia.com>
+On 2/25/2026 2:48 PM, Boqun Feng wrote:
+> On Fri, Feb 20, 2026 at 05:48:37PM +0100, Danilo Krummrich wrote:
+>> On Fri Feb 20, 2026 at 2:09 AM CET, Gary Guo wrote:
+>>> On 2026-02-19 16:24, Danilo Krummrich wrote:
+>>>> I feel like it makes a bit more sense to have an entry for the entire class of
+>>>> "RUST [FFI]" infrastructure.
+>>>
+>>> I don't think so. Most of the kernel crate is doing FFI. We have a `ffi` crate
+>>> defining FFI types, we have `CStr`/`CString` which in Rust std is inside `std::ffi`,
+>>> etc.
+>>
+>> The idea is not that everything that somehow has an FFI interface falls under
+>> this category, as this would indeed be the majority.
+>>
+>> The idea is rather everything that is specifically designed as a helper to
+>> implement FFI interactions. (Given that maybe just "RUST [FFI HELPER]"?)
+>>
+> 
+> I feel like you may want to call it "interop" then, because it's "Rust
+> doing something with interoperation on C data structure". If I
+> understand you correctly, the category you referred here is the area
+> that we could not simply call an FFI function to get the functionality
+> from C side, but rather we need to make sure that we are interpret C
+> data structure correctly to work with C side.
 
-> Wrap `Cmdq`'s mutable state in a new struct `CmdqInner` and wrap that
-> in a Mutex. This lets `Cmdq` methods take &self instead of &mut self,
-> which lets required commands be sent e.g. while unloading the driver.
-> 
-> The mutex is held over both send and receive in `send_sync_command` to
-> make sure that it doesn't get the reply of some other command that
-> could have been sent just beforehand.
-> 
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
->  drivers/gpu/nova-core/gsp/boot.rs      |   8 +-
->  drivers/gpu/nova-core/gsp/cmdq.rs      | 260
-> ++++++++++++++++++---------------
-> drivers/gpu/nova-core/gsp/commands.rs  |   4 +-
-> drivers/gpu/nova-core/gsp/sequencer.rs |   2 +- 4 files changed, 152
-> insertions(+), 122 deletions(-)
-> 
-> diff --git a/drivers/gpu/nova-core/gsp/boot.rs
-> b/drivers/gpu/nova-core/gsp/boot.rs index 1cb21da855b9..cb583f57666a
-> 100644 --- a/drivers/gpu/nova-core/gsp/boot.rs
-> +++ b/drivers/gpu/nova-core/gsp/boot.rs
-> @@ -128,7 +128,7 @@ fn run_fwsec_frts(
->      ///
->      /// Upon return, the GSP is up and running, and its runtime
-> object given as return value. pub(crate) fn boot(
-> -        mut self: Pin<&mut Self>,
-> +        self: Pin<&mut Self>,
->          pdev: &pci::Device<device::Bound>,
->          bar: &Bar0,
->          chipset: Chipset,
-> @@ -232,13 +232,13 @@ pub(crate) fn boot(
->              dev: pdev.as_ref().into(),
->              bar,
->          };
-> -        GspSequencer::run(&mut self.cmdq, seq_params)?;
-> +        GspSequencer::run(&self.cmdq, seq_params)?;
->  
->          // Wait until GSP is fully initialized.
-> -        commands::wait_gsp_init_done(&mut self.cmdq)?;
-> +        commands::wait_gsp_init_done(&self.cmdq)?;
->  
->          // Obtain and display basic GPU information.
-> -        let info = commands::get_gsp_info(&mut self.cmdq, bar)?;
-> +        let info = commands::get_gsp_info(&self.cmdq, bar)?;
->          match info.gpu_name() {
->              Ok(name) => dev_info!(pdev.as_ref(), "GPU name: {}\n",
-> name), Err(e) => dev_warn!(pdev.as_ref(), "GPU name unavailable:
-> {:?}\n", e), diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs
-> b/drivers/gpu/nova-core/gsp/cmdq.rs index 44c3e960c965..faf1e9d5072b
-> 100644 --- a/drivers/gpu/nova-core/gsp/cmdq.rs
-> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-> @@ -16,8 +16,12 @@
->      },
->      dma_write,
->      io::poll::read_poll_timeout,
-> +    new_mutex,
->      prelude::*,
-> -    sync::aref::ARef,
-> +    sync::{
-> +        aref::ARef,
-> +        Mutex, //
-> +    },
->      time::Delta,
->      transmute::{
->          AsBytes,
-> @@ -54,8 +58,8 @@
->  
->  /// Trait implemented by types representing a command to send to the
-> GSP. ///
-> -/// The main purpose of this trait is to provide
-> [`Cmdq::send_command`] with the information it -/// needs to send a
-> given command. +/// The main purpose of this trait is to provide
-> [`Cmdq`] with the information it needs to send +/// a given command.
->  ///
->  /// [`CommandToGsp::init`] in particular is responsible for
-> initializing the command directly /// into the space reserved for it
-> in the command queue buffer. @@ -470,66 +474,15 @@ pub(crate) fn
-> command_size<M>(command: &M) -> usize size_of::<M::Command>() +
-> command.variable_payload_len() }
->  
-> -/// GSP command queue.
-> -///
-> -/// Provides the ability to send commands and receive messages from
-> the GSP using a shared memory -/// area.
-> -#[pin_data]
-> -pub(crate) struct Cmdq {
-> -    /// Device this command queue belongs to.
-> -    dev: ARef<device::Device>,
-> +/// Inner mutex protected state of [`Cmdq`].
-> +struct CmdqInner {
->      /// Current command sequence number.
->      seq: u32,
->      /// Memory area shared with the GSP for communicating commands
-> and messages. gsp_mem: DmaGspMem,
->  }
->  
-> -impl Cmdq {
-> -    /// Offset of the data after the PTEs.
-> -    const POST_PTE_OFFSET: usize = core::mem::offset_of!(GspMem,
-> cpuq); -
-> -    /// Offset of command queue ring buffer.
-> -    pub(crate) const CMDQ_OFFSET: usize =
-> core::mem::offset_of!(GspMem, cpuq)
-> -        + core::mem::offset_of!(Msgq, msgq)
-> -        - Self::POST_PTE_OFFSET;
-> -
-> -    /// Offset of message queue ring buffer.
-> -    pub(crate) const STATQ_OFFSET: usize =
-> core::mem::offset_of!(GspMem, gspq)
-> -        + core::mem::offset_of!(Msgq, msgq)
-> -        - Self::POST_PTE_OFFSET;
-> -
-> -    /// Number of page table entries for the GSP shared region.
-> -    pub(crate) const NUM_PTES: usize = size_of::<GspMem>() >>
-> GSP_PAGE_SHIFT; -
-> -    /// Creates a new command queue for `dev`.
-> -    pub(crate) fn new(dev: &device::Device<device::Bound>) -> impl
-> PinInit<Self, Error> + '_ {
-> -        try_pin_init!(Self {
-> -            gsp_mem: DmaGspMem::new(dev)?,
-> -            dev: dev.into(),
-> -            seq: 0,
-> -        })
-> -    }
-> -
-> -    /// Computes the checksum for the message pointed to by `it`.
-> -    ///
-> -    /// A message is made of several parts, so `it` is an iterator
-> over byte slices representing
-> -    /// these parts.
-> -    fn calculate_checksum<T: Iterator<Item = u8>>(it: T) -> u32 {
-> -        let sum64 = it
-> -            .enumerate()
-> -            .map(|(idx, byte)| (((idx % 8) * 8) as u32, byte))
-> -            .fold(0, |acc, (rol, byte)| acc ^
-> u64::from(byte).rotate_left(rol)); -
-> -        ((sum64 >> 32) as u32) ^ (sum64 as u32)
-> -    }
-> -
-> -    /// Notifies the GSP that we have updated the command queue
-> pointers.
-> -    fn notify_gsp(bar: &Bar0) {
-> -        regs::NV_PGSP_QUEUE_HEAD::default()
-> -            .set_address(0)
-> -            .write(bar);
-> -    }
-> -
-> +impl CmdqInner {
->      /// Sends `command` to the GSP, without splitting it.
->      ///
->      /// # Errors
-> @@ -540,7 +493,7 @@ fn notify_gsp(bar: &Bar0) {
->      ///   written to by its [`CommandToGsp::init_variable_payload`]
-> method. ///
->      /// Error codes returned by the command initializers are
-> propagated as-is.
-> -    fn send_single_command<M>(&mut self, bar: &Bar0, command: M) ->
-> Result
-> +    fn send_single_command<M>(&mut self, dev: &device::Device, bar:
-> &Bar0, command: M) -> Result where
->          M: CommandToGsp,
->          // This allows all error types, including `Infallible`, to
-> be used for `M::InitError`. @@ -583,7 +536,7 @@ fn
-> send_single_command<M>(&mut self, bar: &Bar0, command: M) -> Result
-> ]))); 
->          dev_dbg!(
-> -            &self.dev,
-> +            dev,
->              "GSP RPC: send: seq# {}, function={}, length=0x{:x}\n",
->              self.seq,
->              M::FUNCTION,
-> @@ -610,73 +563,27 @@ fn send_single_command<M>(&mut self, bar:
-> &Bar0, command: M) -> Result ///   written to by its
-> [`CommandToGsp::init_variable_payload`] method. ///
->      /// Error codes returned by the command initializers are
-> propagated as-is.
-> -    fn send_command<M>(&mut self, bar: &Bar0, command: M) -> Result
-> +    fn send_command<M>(&mut self, dev: &device::Device, bar: &Bar0,
-> command: M) -> Result where
->          M: CommandToGsp,
->          Error: From<M::InitError>,
->      {
->          let mut state = SplitState::new(&command)?;
-> -
-> -        self.send_single_command(bar, state.command(command))?;
-> +        self.send_single_command(dev, bar, state.command(command))?;
->  
->          while let Some(continuation) =
-> state.next_continuation_record() { dev_dbg!(
-> -                &self.dev,
-> +                dev,
->                  "GSP RPC: send continuation: size=0x{:x}\n",
->                  command_size(&continuation),
->              );
->              // Turbofish needed because the compiler cannot infer M
-> here.
-> -            self.send_single_command::<ContinuationRecord<'_>>(bar,
-> continuation)?;
-> +            self.send_single_command::<ContinuationRecord<'_>>(dev,
-> bar, continuation)?; }
->  
->          Ok(())
->      }
->  
-> -    /// Sends `command` to the GSP and waits for the reply.
-> -    ///
-> -    /// # Errors
-> -    ///
-> -    /// - `ETIMEDOUT` if space does not become available to send the
-> command, or if the reply is
-> -    ///   not received within the timeout.
-> -    /// - `EIO` if the variable payload requested by the command has
-> not been entirely
-> -    ///   written to by its [`CommandToGsp::init_variable_payload`]
-> method.
-> -    ///
-> -    /// Error codes returned by the command and reply initializers
-> are propagated as-is.
-> -    pub(crate) fn send_sync_command<M>(&mut self, bar: &Bar0,
-> command: M) -> Result<M::Reply>
-> -    where
-> -        M: CommandToGsp,
-> -        M::Reply: MessageFromGsp,
-> -        Error: From<M::InitError>,
-> -        Error: From<<M::Reply as MessageFromGsp>::InitError>,
-> -    {
-> -        self.send_command(bar, command)?;
-> -
-> -        loop {
-> -            match self.receive_msg::<M::Reply>(Delta::from_secs(10))
-> {
-> -                Ok(reply) => break Ok(reply),
-> -                Err(ERANGE) => continue,
-> -                Err(e) => break Err(e),
-> -            }
-> -        }
-> -    }
-> -
-> -    /// Sends `command` to the GSP without waiting for a reply.
-> -    ///
-> -    /// # Errors
-> -    ///
-> -    /// - `ETIMEDOUT` if space does not become available within the
-> timeout.
-> -    /// - `EIO` if the variable payload requested by the command has
-> not been entirely
-> -    ///   written to by its [`CommandToGsp::init_variable_payload`]
-> method.
-> -    ///
-> -    /// Error codes returned by the command initializers are
-> propagated as-is.
-> -    pub(crate) fn send_async_command<M>(&mut self, bar: &Bar0,
-> command: M) -> Result
-> -    where
-> -        M: CommandToGsp<Reply = NoReply>,
-> -        Error: From<M::InitError>,
-> -    {
-> -        self.send_command(bar, command)
-> -    }
-> -
->      /// Wait for a message to become available on the message queue.
->      ///
->      /// This works purely at the transport layer and does not
-> interpret or validate the message @@ -695,7 +602,7 @@ pub(crate) fn
-> send_async_command<M>(&mut self, bar: &Bar0, command: M) -> Result
-> ///   message queue. ///
->      /// Error codes returned by the message constructor are
-> propagated as-is.
-> -    fn wait_for_msg(&self, timeout: Delta) -> Result<GspMessage<'_>>
-> {
-> +    fn wait_for_msg(&self, dev: &device::Device, timeout: Delta) ->
-> Result<GspMessage<'_>> { // Wait for a message to arrive from the GSP.
->          let (slice_1, slice_2) = read_poll_timeout(
->              || Ok(self.gsp_mem.driver_read_area()),
-> @@ -712,7 +619,7 @@ fn wait_for_msg(&self, timeout: Delta) ->
-> Result<GspMessage<'_>> { let (header, slice_1) =
-> GspMsgElement::from_bytes_prefix(slice_1).ok_or(EIO)?; 
->          dev_dbg!(
-> -            self.dev,
-> +            dev,
->              "GSP RPC: receive: seq# {}, function={:?},
-> length=0x{:x}\n", header.sequence(),
->              header.function(),
-> @@ -747,7 +654,7 @@ fn wait_for_msg(&self, timeout: Delta) ->
-> Result<GspMessage<'_>> { ])) != 0
->          {
->              dev_err!(
-> -                self.dev,
-> +                dev,
->                  "GSP RPC: receive: Call {} - bad checksum\n",
->                  header.sequence()
->              );
-> @@ -776,12 +683,12 @@ fn wait_for_msg(&self, timeout: Delta) ->
-> Result<GspMessage<'_>> { /// - `ERANGE` if the message had a
-> recognized but non-matching function code. ///
->      /// Error codes returned by [`MessageFromGsp::read`] are
-> propagated as-is.
-> -    pub(crate) fn receive_msg<M: MessageFromGsp>(&mut self, timeout:
-> Delta) -> Result<M>
-> +    fn receive_msg<M: MessageFromGsp>(&mut self, dev:
-> &device::Device, timeout: Delta) -> Result<M> where
->          // This allows all error types, including `Infallible`, to
-> be used for `M::InitError`. Error: From<M::InitError>,
->      {
-> -        let message = self.wait_for_msg(timeout)?;
-> +        let message = self.wait_for_msg(dev, timeout)?;
->          let function = message.header.function().map_err(|_|
-> EINVAL)?; 
->          // Extract the message. Store the result as we want to
-> advance the read pointer even in @@ -802,9 +709,132 @@ pub(crate) fn
-> receive_msg<M: MessageFromGsp>(&mut self, timeout: Delta) -> Resul 
->          result
->      }
-> +}
-> +
-> +/// GSP command queue.
-> +///
-> +/// Provides the ability to send commands and receive messages from
-> the GSP using a shared memory +/// area.
-> +#[pin_data]
-> +pub(crate) struct Cmdq {
-> +    /// Device this command queue belongs to.
-> +    dev: ARef<device::Device>,
-> +    /// Inner mutex-protected state.
-> +    #[pin]
-> +    inner: Mutex<CmdqInner>,
-> +}
-> +
-> +impl Cmdq {
-> +    /// Offset of the data after the PTEs.
-> +    const POST_PTE_OFFSET: usize = core::mem::offset_of!(GspMem,
-> cpuq); +
-> +    /// Offset of command queue ring buffer.
-> +    pub(crate) const CMDQ_OFFSET: usize =
-> core::mem::offset_of!(GspMem, cpuq)
-> +        + core::mem::offset_of!(Msgq, msgq)
-> +        - Self::POST_PTE_OFFSET;
-> +
-> +    /// Offset of message queue ring buffer.
-> +    pub(crate) const STATQ_OFFSET: usize =
-> core::mem::offset_of!(GspMem, gspq)
-> +        + core::mem::offset_of!(Msgq, msgq)
-> +        - Self::POST_PTE_OFFSET;
-> +
-> +    /// Number of page table entries for the GSP shared region.
-> +    pub(crate) const NUM_PTES: usize = size_of::<GspMem>() >>
-> GSP_PAGE_SHIFT; +
-> +    /// Creates a new command queue for `dev`.
-> +    pub(crate) fn new(dev: &device::Device<device::Bound>) -> impl
-> PinInit<Self, Error> + '_ {
-> +        try_pin_init!(Self {
-> +            inner <- new_mutex!(CmdqInner {
-> +                gsp_mem: DmaGspMem::new(dev)?,
-> +                seq: 0,
-> +                }),
-> +            dev: dev.into(),
-> +        })
-> +    }
-> +
-> +    /// Computes the checksum for the message pointed to by `it`.
-> +    ///
-> +    /// A message is made of several parts, so `it` is an iterator
-> over byte slices representing
-> +    /// these parts.
-> +    fn calculate_checksum<T: Iterator<Item = u8>>(it: T) -> u32 {
-> +        let sum64 = it
-> +            .enumerate()
-> +            .map(|(idx, byte)| (((idx % 8) * 8) as u32, byte))
-> +            .fold(0, |acc, (rol, byte)| acc ^
-> u64::from(byte).rotate_left(rol)); +
-> +        ((sum64 >> 32) as u32) ^ (sum64 as u32)
-> +    }
-> +
-> +    /// Notifies the GSP that we have updated the command queue
-> pointers.
-> +    fn notify_gsp(bar: &Bar0) {
-> +        regs::NV_PGSP_QUEUE_HEAD::default()
-> +            .set_address(0)
-> +            .write(bar);
-> +    }
-> +
-> +    /// Sends `command` to the GSP and waits for the reply.
-> +    ///
-> +    /// The mutex is held for the entire send+receive cycle to
-> ensure that no other command can
-> +    /// be interleaved. Messages with non-matching function codes
-> are silently consumed until the
-> +    /// expected reply arrives.
-> +    ///
-> +    /// # Errors
-> +    ///
-> +    /// - `ETIMEDOUT` if space does not become available to send the
-> command, or if the reply is
-> +    ///   not received within the timeout.
-> +    /// - `EIO` if the variable payload requested by the command has
-> not been entirely
-> +    ///   written to by its [`CommandToGsp::init_variable_payload`]
-> method.
-> +    ///
-> +    /// Error codes returned by the command and reply initializers
-> are propagated as-is.
-> +    pub(crate) fn send_sync_command<M>(&self, bar: &Bar0, command:
-> M) -> Result<M::Reply>
-> +    where
-> +        M: CommandToGsp,
-> +        M::Reply: MessageFromGsp,
-> +        Error: From<M::InitError>,
-> +        Error: From<<M::Reply as MessageFromGsp>::InitError>,
-> +    {
-> +        let mut inner = self.inner.lock();
-> +        inner.send_command(&self.dev, bar, command)?;
-> +
-> +        loop {
-> +            match inner.receive_msg::<M::Reply>(&self.dev,
-> Delta::from_secs(10)) {
-> +                Ok(reply) => break Ok(reply),
-> +                Err(ERANGE) => continue,
-> +                Err(e) => break Err(e),
-> +            }
-> +        }
-> +    }
-> +
-> +    /// Sends `command` to the GSP without waiting for a reply.
-> +    ///
-> +    /// # Errors
-> +    ///
-> +    /// - `ETIMEDOUT` if space does not become available within the
-> timeout.
-> +    /// - `EIO` if the variable payload requested by the command has
-> not been entirely
-> +    ///   written to by its [`CommandToGsp::init_variable_payload`]
-> method.
-> +    ///
-> +    /// Error codes returned by the command initializers are
-> propagated as-is.
-> +    pub(crate) fn send_async_command<M>(&self, bar: &Bar0, command:
-> M) -> Result
-> +    where
-> +        M: CommandToGsp<Reply = NoReply>,
-> +        Error: From<M::InitError>,
-> +    {
-> +        self.inner.lock().send_command(&self.dev, bar, command)
-> +    }
-> +
-> +    /// Receive a message from the GSP.
-> +    ///
-> +    /// See [`CmdqInner::receive_msg`] for details.
-> +    pub(crate) fn receive_msg<M: MessageFromGsp>(&self, timeout:
-> Delta) -> Result<M>
-> +    where
-> +        // This allows all error types, including `Infallible`, to
-> be used for `M::InitError`.
-> +        Error: From<M::InitError>,
-> +    {
-> +        self.inner.lock().receive_msg(&self.dev, timeout)
-> +    }
->  
->      /// Returns the DMA handle of the command queue's shared memory
-> region. pub(crate) fn dma_handle(&self) -> DmaAddress {
-> -        self.gsp_mem.0.dma_handle()
-> +        self.inner.lock().gsp_mem.0.dma_handle()
->      }
->  }
-> diff --git a/drivers/gpu/nova-core/gsp/commands.rs
-> b/drivers/gpu/nova-core/gsp/commands.rs index
-> b42e32dcc55c..7ceff2e6bd63 100644 ---
-> a/drivers/gpu/nova-core/gsp/commands.rs +++
-> b/drivers/gpu/nova-core/gsp/commands.rs @@ -170,7 +170,7 @@ fn read(
->  }
->  
->  /// Waits for GSP initialization to complete.
-> -pub(crate) fn wait_gsp_init_done(cmdq: &mut Cmdq) -> Result {
-> +pub(crate) fn wait_gsp_init_done(cmdq: &Cmdq) -> Result {
->      loop {
->          match cmdq.receive_msg::<GspInitDone>(Delta::from_secs(10)) {
->              Ok(_) => break Ok(()),
-> @@ -239,7 +239,7 @@ pub(crate) fn gpu_name(&self) ->
-> core::result::Result<&str, GpuNameError> { }
->  
->  /// Send the [`GetGspInfo`] command and awaits for its reply.
-> -pub(crate) fn get_gsp_info(cmdq: &mut Cmdq, bar: &Bar0) ->
-> Result<GetGspStaticInfoReply> { +pub(crate) fn get_gsp_info(cmdq:
-> &Cmdq, bar: &Bar0) -> Result<GetGspStaticInfoReply> {
-> cmdq.send_sync_command(bar, GetGspStaticInfo) }
->  
-> diff --git a/drivers/gpu/nova-core/gsp/sequencer.rs
-> b/drivers/gpu/nova-core/gsp/sequencer.rs index
-> 2fa2a0792cec..bc94b8567c6a 100644 ---
-> a/drivers/gpu/nova-core/gsp/sequencer.rs +++
-> b/drivers/gpu/nova-core/gsp/sequencer.rs @@ -366,7 +366,7 @@
-> pub(crate) struct GspSequencerParams<'a> { }
->  
->  impl<'a> GspSequencer<'a> {
-> -    pub(crate) fn run(cmdq: &mut Cmdq, params:
-> GspSequencerParams<'a>) -> Result {
-> +    pub(crate) fn run(cmdq: &Cmdq, params: GspSequencerParams<'a>)
-> -> Result { let seq_info = loop {
->              match
-> cmdq.receive_msg::<GspSequence>(Delta::from_secs(10)) { Ok(seq_info)
-> => break seq_info,
-> 
+Boqun has a point here: https://en.wikipedia.org/wiki/Language_interoperability
+
+thanks,
+
+--
+Joel Fernandes
 
