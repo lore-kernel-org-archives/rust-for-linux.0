@@ -1,74 +1,91 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021107.outbound.protection.outlook.com [52.101.95.107])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020108.outbound.protection.outlook.com [52.101.195.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B4629D26D;
-	Wed, 25 Feb 2026 03:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2272227FB2E;
+	Wed, 25 Feb 2026 05:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.108
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771989548; cv=fail; b=Yhapl5we45kXf5T08LSoRBbStWD3H5m61NRtTgOesRUcZwO9iA/N1BKXIFZ+VoxMihj6cbO9THAk6rHvSDbduupyIUSi5blInCPmsoq2VYq8uyod3ZhFq1UT7FjjeImyZruJ+wqxadQ39NSgaggFR7vUIEQqTUzRbiPUKB6j4WI=
+	t=1771997947; cv=fail; b=Xr6Hp+UJXfHzo28nPmCdvgx2u9M9qbX3QE+N50z3j5Q42AqhuOHLfIn5wJu7w8JmYuyADftjyVYU045v7Bvc7VUzmUySZCkALcrqIFWkeWKeU+kB7xuZhh729E4HjxnRcGFGuncOSVHpXOEREd2a1jDuyfHwIO1KwYSNAm9zKJ0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771989548; c=relaxed/simple;
-	bh=F8B4vwIOPMTUySEUXsSP5bm/evB/lYGbSTGllxRtyjI=;
+	s=arc-20240116; t=1771997947; c=relaxed/simple;
+	bh=qTUqabWvGphQ5esv5V+L7iJFlA8k+i/YIAC80cjWfrU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:MIME-Version; b=j1Lm+QBa5cpUq6MrH/B8PPp6FfMacjzthnLmSEiP6ukYXRhTh5oE5P8YBSG5FYMv5SBjAqP9GTq7Dq0WffLkbQG5y9AAyK+9t3aJIbqQdDo+lyzXAPol/7Cstaa6IsWVPkidYtdLmJthNOQqJKlsW8J4AEm1IxU+I3y9rF1D0t0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=CzXB1xDq; arc=fail smtp.client-ip=52.101.95.107
+	 Content-Type:MIME-Version; b=bLgLPUt5PkXCv6ah/ULLxXTtK4Ssig4/+VbJfuZ8g8rt7pcZQHbz9YWz1UUQd5khf7nevevUfbrvMtLUn0dx2oCYkJfKhv4OkmdpTWazwoSaBmGCDZf6YtWOiLKySh8LzO/Lhej7Iagk+dVfVB97rT/o8b3zAq+edYB88t5V7lg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=C35l4A/W; arc=fail smtp.client-ip=52.101.195.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="CzXB1xDq"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="C35l4A/W"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XYp+Lzg0Eo/26rBO9fpZ1ySfsS5VBMfrPRHqrC39/6x/WTsgTXpRz+nnvbG7iAAcODcmE2Anyr3mNM27fIR6TRs2ZwW1Oi3sqeMZv/lUek/AVNc/FS3a633hSXrmGE2OG/VIHwfaiNiycHtQzIUwPa2pYMgc0CtOGuM6WC+8aY/yQwB0a1G5GemHElrm+wTmG5wnmHDEDtrOSip/9ts4zITF10DhGg2etKO88SDHTjrXGRCsh5MceHnGeJHbVe08J7UGFPXoVJ2sGso/q6hOEMbXLMWrqDV9uStsTNT8xGs1NJUxqwR0c8c8/6dLtG6E4WyVk3pzKs3KMLc+IVcKJA==
+ b=W3QNjpZLSDrcO0fXAfAg7KybRsgncOvPXmHFNGNss8kXSuBLr+VBkS2i+TygQv9xKE0ZU/OdDTvfUFdGG4YNP6J3NffFlQvMLLZE24bjecth92GHuQt5R5LGn96m72UvRYBccH7Pq7eu+7SJ+G34/NhtVOe87rv5pS502H8buo9dF5lOPO2/HSms956kFSM/s3W2ElaiB15VcwTRiR0O15DzjEpRHebPaUGjwPZhfOPmIZmm+o5wwYDwXHtST/aBrZIgZQH6Ze+MQLf8NIZ0KMNsuvjrSbCK3lf5US1y1B2ULPmEWdeJyGn2T5qX9+EKbEuU4Yj67kv7bdf1u+KZWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Cx3GsYQJZMlkRxa9khsPPI2Y84SfXzHF/ch4ir3Oe2A=;
- b=QX1XB+4K1MkIxrGRKfZExYjwmdAtGmByuHK0mbPbvjnW8YHpUsmdS4jsksLWVdFU0BDw9/YDvS9NezfoSoB6ui7nU6B/1O2rBudV88z459sAISa+gj94MBa64GHDTr/0wW4S38B0Lr9IuyqpWvlvU0HJjGZpo7S9/NZpwNDoaJkkyNvNMxlemKD5NWwPH2txyfSKfeODs3Lg5ithhSlKyoya5Hx2f54UnpzT4HhDbc7wz24DDqYxd46A0WYJvBf+CBJ7AFjrYmsAtiCJ+8ZuJiqTltbyOoI4Tr02QJYsvNliSteE6mnnD6JNAP3j8g743mxvZE186fm2YR+QzSwOOQ==
+ bh=2MRyVCGymqkZlssLywbB6cWVHJpecDym47QTP5+TJLo=;
+ b=rBHyTvG6LAVfGuq4+WWqkgV0U6iqKotEIPLhR7+P1MPQB0bQ6RIX9haNafBtOG0+r08zyk55XRq1rOBD2Sbr6lb/yCtkaEpKQRxoU8NjOBqHUa8jPxweqUBf6di9E7ReyZQo2k07+kM6JeDga5yLmV6qn9fBe/ybgdo87ovSsRKHgqWYLB3nSM33Bf7N6eoyX+nz+s4SE+GM+lqgWL85EcE2kT3ZLwqWRyEvSTBy1OLRFmt6g9lNCIrsdznLves28MCg1ucmibWIwSDjBCP/gwR9DOjdQUJSMiD6/pvFKJ8WLot7IePvXn9B6li05a1A+EIxXNyuoAyNH3rJQR/vAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cx3GsYQJZMlkRxa9khsPPI2Y84SfXzHF/ch4ir3Oe2A=;
- b=CzXB1xDqAfCM0z1cUjwq3jwsui+bgSmcWWuPvGYQOmWSGHKZooUgrPpsYBOMYMlxwnA8e68kIXIfP+EdZFfWFZNpSMxhzCnPO+8JEFfI8K5GtI6HomkrGfgDmaEWs+V1BM4QPG8p8CrL8vHL3C/k2EUOVqAmNb6qz2V6bIlfzms=
+ bh=2MRyVCGymqkZlssLywbB6cWVHJpecDym47QTP5+TJLo=;
+ b=C35l4A/Wdo6elaA5oMbC6MTiyUQamlqOf5czhQadkir+3GU7tocDCFpFp1vSaPU5fwVIuqoK6tQ2EIgFkBeQX7cqXxI5yUS38iIi52PRdjpdOQpq4L1YIkhKzrJXXdvEs7k/8nlBepgZtgRFv08UIZnxSGZBbGRp4Qs36U59bFk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB5235.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1c3::9) with
+ by CWLP265MB6230.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:183::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.23; Wed, 25 Feb
- 2026 03:19:03 +0000
+ 2026 05:39:02 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
- 03:19:03 +0000
-Date: Wed, 25 Feb 2026 03:19:02 +0000
+ 05:39:02 +0000
+Date: Wed, 25 Feb 2026 05:39:01 +0000
 From: Gary Guo <gary@garyguo.net>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj?=
- =?UTF-8?Q?=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- linux-rtc@vger.kernel.org, rust-for-linux@vger.kernel.org, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
- callbacks
-In-Reply-To: <20260224224449f141e366@mail.local>
-References: <DGKPPQI0QE73.S8I1M5NCI2BV@kernel.org>
- <20260222000556ea1938c0@mail.local> <DGLI4H9M0T6D.25RTLDVU5JRBE@kernel.org>
- <CAJZ5v0gtiQxBCknkaOzLKrDqUQfhKh_UjQkvgxJBL4UthbCOkg@mail.gmail.com>
- <DGLMGEZTM7E2.Y8VV9I6LI1P6@kernel.org>
- <DGMR9XOWP1V0.3C9219TYPXV6J@kernel.org> <2026022415010804e28202@mail.local>
- <DGNC6GEH8EV7.2WWAQ8DNCLRAB@kernel.org> <20260224172822de7f4569@mail.local>
- <DGNJKZA00MNT.2C7NAQYG597MO@kernel.org> <20260224224449f141e366@mail.local>
-Message-ID: <0818fed1ab11f54f899917b6bd87cebc@garyguo.net>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Dave Airlie
+ <airlied@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, Koen
+ Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Nikola Djukic
+ <ndjukic@nvidia.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jonathan
+ Corbet <corbet@lwn.net>, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>, Matthew Brost
+ <matthew.brost@intel.com>, Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Helge
+ Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, John Hubbard <jhubbard@nvidia.com>, Alistair Popple
+ <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Edwin Peer
+ <epeer@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, Andrea Righi
+ <arighi@nvidia.com>, Andy Ritger <aritger@nvidia.com>, Zhi Wang
+ <zhiw@nvidia.com>, Balbir Singh <balbirs@nvidia.com>, Philipp Stanner
+ <phasta@kernel.org>, Elle Rhumsaa <elle@weathered-steel.dev>,
+ alexeyi@nvidia.com, Eliot Courtney <ecourtney@nvidia.com>,
+ joel@joelfernandes.org, linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v8 16/25] gpu: nova-core: mm: Add page table walker for
+ MMU v2/v3
+In-Reply-To: <20260224225323.3312204-17-joelagnelf@nvidia.com>
+References: <20260224225323.3312204-1-joelagnelf@nvidia.com>
+ <20260224225323.3312204-17-joelagnelf@nvidia.com>
+Message-ID: <129e9988ff8d3e8747f724fbcc88c5cb@garyguo.net>
 X-Sender: gary@garyguo.net
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO3P123CA0022.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:388::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO2P265CA0178.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a::22) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -77,188 +94,159 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB5235:EE_
-X-MS-Office365-Filtering-Correlation-Id: 40565259-2b3a-4c68-cfe6-08de741ca066
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB6230:EE_
+X-MS-Office365-Filtering-Correlation-Id: a41f55be-6868-4d02-d15f-08de74302ec7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|7416014|376014;
+	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?CxKSREAqT3xG+uMPaD6g0U3yJM9rQb5s0DknJj5+39fGGxlXIpByp3R+ToYm?=
- =?us-ascii?Q?1gkMCsX2NC8IRJwZPmA0MLuk09eAYCHQ1nRLK7NjXIy/sa8mlXHQsyKF5l7z?=
- =?us-ascii?Q?ZGXQenIR9NA4QohMwqZUOosfC0IX6rrnbenXAIQibODuLZa4GbVnKvXNqwWn?=
- =?us-ascii?Q?ZTmIX3y+uAb5Tg81yiDVA0O+Sb/uVfF2mmHAY6wRDxHYGLyazY22HHCoqGGo?=
- =?us-ascii?Q?AOcuEyH5m8tca812SN+fxHgNDvWDLqGbKlfv05BCdW9EfQFifiCTZiQdJuya?=
- =?us-ascii?Q?he8bItsVOPnL2c8VAkhOTXCr/F3AKe78cUcPDGd44ubz/mRINtNUGdz2SflX?=
- =?us-ascii?Q?9VwFgJwMAGVyakEjvT8D+t4urEYX0YZJudZnRnuda+d+Rbp+xNzbBZvKF6hC?=
- =?us-ascii?Q?HybtlKWSpW0UB4bqZ1D1xLGxd7k+XxbYe5ZM8eC0VWbFsRUsE3A2HkkFPBfC?=
- =?us-ascii?Q?1fE9bm3XeKqna1dVtDUpHZO/x5mBF/tTBGho5L/Oaqv9QSBvx+hSOBQ8FXWd?=
- =?us-ascii?Q?GGamjXcMA5J0uTkXiYauP0rcr4CtvZxoR6iMdRYUiyqTYsddaOwZejY48MQo?=
- =?us-ascii?Q?DRMmnWJQYzugW468DxcLF58C8f0IAcCK2dYCt+ow90JZ6VkNONdGyXFcNJsq?=
- =?us-ascii?Q?oOE+VSrgRWWzmiILVWZaWfVVKuzwjUDVsekSse+lm9PiHPOfZ0H16lVznSJh?=
- =?us-ascii?Q?RGLYVzRNSe4chjEi0Qxo4wDtt0YB13VNGNJtBsO685kWqNPkrZYjblMFnmee?=
- =?us-ascii?Q?JXN1ClX8I83JGi32sFUfXOC8V9aYKxnR8R1T08MEPUyPT+ZHCialA7o9aJva?=
- =?us-ascii?Q?zj9rARiE+aGE+5dqgEoQHGquBiewO93QoZQGEKWUkusDC5nsYafmSaiT/WRr?=
- =?us-ascii?Q?JF7s9xTNjWS4hv7Tmys4I6NqZRXorTXUD5LIUR+IVU1S4SmgZOjxTMqEYQvI?=
- =?us-ascii?Q?UlO2IaD/TAkiAvvze3Ppq+ZeA6cmus/xof5+xsB/JwD9GCAKWR+qsS9rJES5?=
- =?us-ascii?Q?3B7jHzRcZdC6cXZlatIZHsFFlgqwdhA7BvC3PkvQDfyhFDj4L63edku7R+jE?=
- =?us-ascii?Q?Uz2/KJGEXNg77Pu5b9zvQIxKqkdwp/iTtEb60DVr4DGlHahdWBzWW7zXdIeH?=
- =?us-ascii?Q?dDLEI4/PPIMYCcsImbVdmkp1y5Twhhc7fgNHW9rt1Nrf0zASADPn+ODZ+VDr?=
- =?us-ascii?Q?LBulYsk3hApIioaZ0eXI/UI7e9K/hrhzvIcilmHwhCUEtm+UNp949lSLPURX?=
- =?us-ascii?Q?PXNovntrsJ713FdgAbwIobvkjeh8z252Q7OYhyRijQ7yHulYGcFeppXQneAC?=
- =?us-ascii?Q?W0qCRTmREQbOty6OdHrAYIlJ68htEfQc3gP9eOkMPQX9VkQgue1oSotsWeb7?=
- =?us-ascii?Q?ceY8cjtgujmRXZeLwMyYS95u8Su5QlgO2ic1aWRX6tK0gZ5Wq9rJk6/go0Z7?=
- =?us-ascii?Q?nHG0tQke96Ns4YgyebeA3dJWEMr7UQC+bkR6aJkbEj0nM2iPAxGeQfgcrtty?=
- =?us-ascii?Q?k0mFtdbCM9Vw8SIISOsLQzaxawh0vJYN9B+52Dbsfi2eo/2UsFy4FaRcwtxG?=
- =?us-ascii?Q?ddgKi9LNgUZ6Ockuyfo=3D?=
+	=?us-ascii?Q?2vO/lTmsfCmCrxhjlZUgn4cikDCU4YtZXxieoxzZEeEAQiX8bnMwkmNpjVUw?=
+ =?us-ascii?Q?igeKm+hUAuq1lB/7LbngD6bdB0UeFpESPXzdJcYOdQ10TGusnzO7vpPONO7P?=
+ =?us-ascii?Q?Lz4wnxJYSe/xq/9LpBCbRottTBvr8I0QVRuAgEYE4woFYUC26d7Kw1de9mpS?=
+ =?us-ascii?Q?Rsu6lkEC4HNbkgw8InofFDvBQZXVP3c1JsKRKi5UfdgnZhh06R86JJPPhcL0?=
+ =?us-ascii?Q?Gh31dA/4USnmqZ3Z9dZt2jFq8/eeOKTnFLaPB9ZR1qEXT63/OIdZ88hJtwhX?=
+ =?us-ascii?Q?NNCTySzY8H7e/r9YIQ65MgF3XEsKtphZfA77P6JPeRm9rEj9+dYJP5/cr8N9?=
+ =?us-ascii?Q?c+oM/Mfdp9kxKGXTbaX5X5ixyoh1M1QCQ72TGKU+o/KTM5xq6C5jkiFSzLF+?=
+ =?us-ascii?Q?alZdJSK7bm4qy4EgxVA8+OWyfC4bEfs2Jadq331b+IJ0aXBFbeQz5y0iB1Fb?=
+ =?us-ascii?Q?s12+dDyPHztlrlTPnTeSonJvHd+hgWU7lMgIULlZZiDNyD+CIGCDfvRZE9aA?=
+ =?us-ascii?Q?W65cFC0z+rB0QMpO17KVg/uoijtj2skX+YDEDRpLKmUNwgwCk76TRfomnz7s?=
+ =?us-ascii?Q?NBDxVllgvfLaxEAHTLv+WDvFBcieNgugfCMjVtaW3qLiBVRVpnCk4pxEqY9l?=
+ =?us-ascii?Q?HgeP3qUmPPTMzUrNQy4Ym2oZBzHOCIs5hSht5P+4oiUvbuMIcxKRnablNZgq?=
+ =?us-ascii?Q?WjyADYRtAVR0CwkE8OgxTPdu1fc9cNiI1Ax2unAi+Y0k85LGwPRXl0QQUYEb?=
+ =?us-ascii?Q?jp4/cjltHkEO28PMEX+LeehA2T6y9MvdrOBKEDYGfmvXNVt9KlWA9rUtal+w?=
+ =?us-ascii?Q?t2ApGC1XOXnkyPsvZkYvtpyBz6acDiUU2iUBvIvylT7tyExBsUjdCeQND++3?=
+ =?us-ascii?Q?bvyg0YKj6U0YUOf1rKkMShhtE0sedCB6N1n6aE6EjTZNutYViDMrL9OqUL6k?=
+ =?us-ascii?Q?ND8eh3NVCswsqm/je1vnijvxpOb6VNAnZvPyqLIJGVj5PFtRE+y9BwAGXoJk?=
+ =?us-ascii?Q?K0cLuqJ7550+geSRCpQCF1sPN0j7n5xFYEtR7btvsyNYv4rUoMZL/aAg9cGZ?=
+ =?us-ascii?Q?txe+deepRp0hj5VilETReof2+hVNtaKy4BBb+DsO7E5MuWG8aFcUDLX3Env9?=
+ =?us-ascii?Q?7UsOqPgwpixUhNDNGIJUg94M7kdEZYqnXPIu2IUYPNUeO3M2k7+7WWmTCg6O?=
+ =?us-ascii?Q?/r1Q5SFLqvd16B35TVhAuyQn2oc9cARWallG3XaaD1A13frTGyKNd2BEQ5dJ?=
+ =?us-ascii?Q?U2QggtAzouY+YU7tXWELrAs1XmbrXvvOEGJfujvP4w6yUrxF/xApSgQWnRQ4?=
+ =?us-ascii?Q?q9iw/XkatNCbWmB2PjlMld9t11W9nULTn5ZnDtuJim3rt7g6MH8fEUlgwLnQ?=
+ =?us-ascii?Q?QCijlKAg6utccKH2/TCUifpeH/+2cYs2NPi0Wa24Pyg0kTB34BfGdHbSnGkM?=
+ =?us-ascii?Q?Py+WEpOpJh5uyTdUfG1qCZoisWfCbZttGJ3ukH6RW/JE7EPXJhaD+aLhMvZo?=
+ =?us-ascii?Q?aocUXu3cHhjg1FjITFN3Rg5N3TeZ/B7VbjDEwyg70kf0toumTD8ikRZ1xXrG?=
+ =?us-ascii?Q?HWk8cKqpAAwNey0HOyM=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tNy780BW+PIF5a3YF9ckpY8FsAGOEdQzZhS+x32SuCvS0BkTizi+KlGsyOuZ?=
- =?us-ascii?Q?r9yJ2uN26O+4/iNx5zCA99Gz7m3iSQZ3wzvg2fmzGHuTqrakxIFevS+kP2er?=
- =?us-ascii?Q?eqcFJ7Ka5WVb6SB6hQjuLthVX59BKZPJ1uHtKe+qH2RPs8ej0uH+HB2bNpbO?=
- =?us-ascii?Q?zvX0okSvhOqXtgL3JGBeWw9LhXDuxIN650BvFu7N6Eb7KWVOHk6QvVF4X5NI?=
- =?us-ascii?Q?ZBLDeCjYZJ/ggQZEiImPdFFhqnNLis/9PcNJ6pLX3MqWlWZadjZdyI0OOeXt?=
- =?us-ascii?Q?gkW5LQ2FaHYrz5MKUNvmEEdyz4kdAnHpHa70nB/l91YGgibqmJuPTDA3kYA3?=
- =?us-ascii?Q?k34YULfDBTLZH4UvAt0NX4pfkOiet5mnAR4tLjFEaDwE72RhN98nu+x8LPer?=
- =?us-ascii?Q?pftnA61+UFJl3ZSszCBipzXapuCZDw2fkUk6wLDrvPyazmSwEUZBZ7FXueGl?=
- =?us-ascii?Q?qwAAjwWTmsTCF6/ni2rJnySvJaTkEU063iKnRwXGyCgsxthJSDJo/uSykqzt?=
- =?us-ascii?Q?E23Q0f+TsO4Ap4nMSiMpQFHEojYfk3qHuWMKa5mkFtZQ+d8zTLunOMwwcCQe?=
- =?us-ascii?Q?+uA5l7PWTbZb/YGB7l6rM8SqyUpb9lFPpLcTiJJ0j2dTfB3jfj4GkjvWHP7Q?=
- =?us-ascii?Q?FqtGRaAo6RwrunNAJUSTMDzWST2n0n1Xy0+Q9IfHlJaBm5aSYkN0+HFwcxjW?=
- =?us-ascii?Q?z4rgFzxfd0Y2D9RDCmGXyD0i9+r/fgQdmP+Z8ILNpuyz+cpMuJRuIo5BedYC?=
- =?us-ascii?Q?roLcpUn4Pa+XApP+WiTk6h11DMVdBa198GcDqQtlNHPBx9t5devOXPghrIvj?=
- =?us-ascii?Q?lAjHvy0n9BniweNi1gOfaBJjbKnJuBRy6HcwAjCRC7Q0bCADf/KJPePYZwpI?=
- =?us-ascii?Q?TZ3hLzU/a6Z0OMkKL4TLtw/0/ePehzTQa95GRMmHoxjksxpMoIAQPqfPY9hq?=
- =?us-ascii?Q?tTsGQhiUNTIxMX0NSn895g7IGzFRbgPv5CIi1Jg53vaKFuPgr1JRIjrWhyEP?=
- =?us-ascii?Q?AqDeGnjgNpFnssZmwT2amtHAxKehIbxKGR8huMBrbnegmA3VbHkQHfw+Pe9z?=
- =?us-ascii?Q?L+/zeMZvO9xRIHm5rwpNsNdba6KRwBLTFSsQrKg/gQUVcLEkHPQUo1EwDYnD?=
- =?us-ascii?Q?bGsH5HIq472iLX2OELihniulOUaZD0mY0Gz1B9AhkcK9QzmaGPjTbor67wpb?=
- =?us-ascii?Q?M883iSJzIx+qElzwsTTohq4oOvQPr4wMytw0Fd+Uu81KgnV239w7A2Aj43g7?=
- =?us-ascii?Q?tZLqS1U897YpAcU/Hp4Cv+ME+yljFBC1eMxjo4X6wuobYA+8RwnMcZNrfj82?=
- =?us-ascii?Q?X7R3dNhJWODCX1mRjuj1L5h0Mx3GpO5eh/GdNpzMKQisMdPsWPIlxEN9X9v6?=
- =?us-ascii?Q?9dliM7cGueFNX6EhcDJe1M76vjWoDQ9u7kvsk5V5043eJ2hTG0dieL2ANw7n?=
- =?us-ascii?Q?6k+K+yFrCiYi5Mezqp4l8HlcLeVuQw5bMI4khLcxyp+cCacmltJ8OEZHeUX1?=
- =?us-ascii?Q?npXipEx7mjkQPVCBp8im0Ydr+KNhVM7loCG7+kqfnAx7cP4TU0VjPf+dzZiF?=
- =?us-ascii?Q?m9PL6pYR4uQU3i1w3MsUXZ8Py3hqdXBD5KbEX0TMC9e7ePwrENu7Vdr7BFzQ?=
- =?us-ascii?Q?OEdGcsQRe0ECN4Ao15/4Bo/VHNPM48Da6H0rcSm/I50sKHL8zz2G8GhIb2xU?=
- =?us-ascii?Q?s4xHUIbEpZ0pLPv/UzPsx0qKxpxUbS8NrWFjSb/W+kOPjj0TWisbSE6JfIq4?=
- =?us-ascii?Q?T9Voqrh4hw=3D=3D?=
+	=?us-ascii?Q?Ia2vhG67n7LUXvL205qtSxIZtw++poRj2XHAe+joSxnv6Ofn14c0yJsnvoR7?=
+ =?us-ascii?Q?XuknafFgkrRDenON0xOnmPiStApqdOWhjIpxcd4Fj5O4KpBmwaWneU6jXah2?=
+ =?us-ascii?Q?VkEl/u/KZ7dFtls+/FF8Qz1ZqwH82DvkWhze0HCv31Gk9cPBjJgyA5icM6yk?=
+ =?us-ascii?Q?cc0UoTLiDyqsgrOe4HW3X98dGrFYdybzC+vSeV+JA09ey3YKJLdhAfYqa/Z3?=
+ =?us-ascii?Q?yjTiRomC8N8+3zk3nVjDYhqAab+srnCF/s+/NV0LPk41I3RDCbw1jHDaJj7N?=
+ =?us-ascii?Q?UKS0IVRPi7poW0yAdPdH+VIxw9UeV+6VDi0EciPxA3RdrWaI8zZlASdkawNX?=
+ =?us-ascii?Q?l3B1Nqp3jqloyvX8Qz90mTfZ6PAxJVHDjFLl7Z9NSVBEVSTXokEs5DMth2qn?=
+ =?us-ascii?Q?ecF8Cl6zgb4nQBUQ18vIXgT60PtMSVuMig1tAMb4O+KRB70rNgnbQ7VCPRM0?=
+ =?us-ascii?Q?+NR9eOF/WepduP4X6pufnRYIw8pOzO+E3fUUCNk6iC8bCdFp3STIBhgKRQSm?=
+ =?us-ascii?Q?y3lF86YGObSEf2NotL0mAuLDDj6qKYpk9HuGw0Gn6MPwHzXNVWupP3NWw4QO?=
+ =?us-ascii?Q?xLagYGKV/Ju0+QlnAH8PK99L/Dz3fbAeK6wDUquM9cLIXO8ImA9GBl6Lbv71?=
+ =?us-ascii?Q?O0tjHFD7bYrIN7MImQF2l5FvUR33C1kOeyNTXXqVa1QQ8y33ybQg72qL8/Dd?=
+ =?us-ascii?Q?B9uNkRbtjbjyTi4oUpWvG2V8Lz6MRVebmF9vKCo2cJMO3sY7kNA3W/DbPyV2?=
+ =?us-ascii?Q?nlRkTZabHQ7XwNJ3fPfwiCf9fi/ziXcXcc77MI1m7z+JX9GS0NIVDR+7YuYp?=
+ =?us-ascii?Q?lF5Q/Cos7U8LyGf0AECM6pgkhDLunj4BHEGKn33G2OZgeA/Z/bE/27kjZY4X?=
+ =?us-ascii?Q?hiScbGTbsmOzCtRTNmKkzNQzIolM6kRAl6aI8mzSX1A6s8c+hKd4eNYlzz6D?=
+ =?us-ascii?Q?nKvjddLWgcwq21f5XvfTBOnmmjdVxk5EZLkU5dM+qtCSPO+1X4WK6SRamjgH?=
+ =?us-ascii?Q?6xDK0FoKo01KCBtp16D8KaMGF8ut4k5iJ1NKEv0XAvGseBrUkVILS/KPvkVo?=
+ =?us-ascii?Q?UKpLMtt2JUYPn0Tw2OO/Bbx84mmEmbICzVCGs2XI8ePac6jbH20RVRDslOou?=
+ =?us-ascii?Q?SHbdP6dZdNHp0fOFPRsCEfzKwH0TAFCWlnFG8qObdDADOa3p7YSCJWm9M6t3?=
+ =?us-ascii?Q?lSqBHAVBU0B9qlXijZrrw2rW/P/Htr9cPjrEUTLAHbjq/KM1oX/JcwAiEB2l?=
+ =?us-ascii?Q?RUwhZ1P8OQNnN/Z+QSuRnDt2JYASngXirTfNB7pzYjIp/q6mGwIJHGEhpRy1?=
+ =?us-ascii?Q?qk3UDwFwgIRykjIogWvIHrWWgjho1fo6vkW1Cvk41RhCNKO67jrHGiceTU1B?=
+ =?us-ascii?Q?CV0Lh2aR1K920lxwaGPX2Qgoi5GkDtGE6qU8rd75+KghpG9EEdmVI7RWkasn?=
+ =?us-ascii?Q?1ZwxGAwB+aJqX1ZomS5q4sAD4FQDxhrDwEh4oDTQnmdrxT6lQX5DpJmeOfx0?=
+ =?us-ascii?Q?YYcCtjL9J57HwFfE1AF0WjYWqTsCBu2zGA1hLJkGSQXDeQYS8lABYga1ImiW?=
+ =?us-ascii?Q?JnnRfOjb9VIa5RCKx/IpVUkuoQfo00TT+1shr+eaiOrlJrIstKLLiJiGje++?=
+ =?us-ascii?Q?fLmzqFdOvt66ZVCzxAQxtHeEvxk9kB4MvY+Up6ACbgt+HXFuuD6WBpmc8ja9?=
+ =?us-ascii?Q?P1e6TwBxp9i9OTSere6eP5Ev0mLkvZu3ReEd+i5gG5PBDNVFYBYUK06OjPVX?=
+ =?us-ascii?Q?1NTwtveCXw=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40565259-2b3a-4c68-cfe6-08de741ca066
+X-MS-Exchange-CrossTenant-Network-Message-Id: a41f55be-6868-4d02-d15f-08de74302ec7
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 03:19:03.3034
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 05:39:02.6954
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +e5HUHPLcvm62VY1n8W9dtVc0g83zLyotHnjJ3UMRiYYwJu0QSUWBxVjvoZwgpTO0gG+B5eEDvy+63AQpTqwvA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5235
+X-MS-Exchange-CrossTenant-UserPrincipalName: p0i/bEP1YLOHt3BqCSCKQoYgmXSrqgmkn2q63OwKI4lQcRp7chaZvr8S8X2tn2zHSuoHoYfyPUvaj59yCK11GA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6230
 
-On 2026-02-24 22:44, Alexandre Belloni wrote:
-> On 24/02/2026 23:23:29+0100, Danilo Krummrich wrote:
->> On Tue Feb 24, 2026 at 6:28 PM CET, Alexandre Belloni wrote:
->> > On 24/02/2026 17:35:23+0100, Danilo Krummrich wrote:
->> >> (I did not have any specific hardware in mind when sketching this up (e.g. an
->> >> IRQ could also only be needed in bus device callbacks, e.g. for loading firmware
->> >> etc.). But for RTC it obviously is common that it is relevant to the class
->> >> device too.)
->> >> 
->> >> So, I assume you mean because there could already be an ioctl before the IRQ has
->> >> been successfully registered, and this ioctl may wait for an IRQ?
->> >> 
->> >> In this case the irq::Registration should go into rtc_data instead to account
->> >> for this dependency. Unfortunately, this is a semantic dependency that we can't
->> >> always catch at compile time.
->> >> 
->> >> The reason we sometimes can is because, if you would need access to the
->> >> irq::Registration from ioctls (e.g. for calling synchronize(), enable(),
->> >> disable() etc.) it would be caught, because you couldn't access it without it
->> >> being in rtc_data in the first place, and being forced to have it in rtc_data
->> >> guarantees that the ordering can't be wrong.
->> >
->> > No, once you register the rtc, the character device will appear in
->> > userspace and may be opened, at this point, probe is not allowed to fail
->> > anymore which you are allowing by trying to register the IRQ so late.
->> 
->> This does not seem to correspond to my previous reply -- may I kindly ask you to
->> read it again?
->> 
->> Here's also some sketched up code for what I wrote above:
->> 
->> 	fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl PinInit<Self, Error> {
->> 	    let dev = pdev.as_ref();
->> 
->> 	    let rtc_data = impl_pin_init!(SampleRtcData {
->> 	        io: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
->> 	        hw_variant: VendorVariant::StV1,
->> 	        irq <- irq::Registration::new(...),
->> 	    });
->> 
->> 	    let rtc = rtc::Device::new(dev, rtc_data)?;
->> 
->> 	    rtc::Registration::register(rtc)?;
->> 
->> 	    Ok(Self { rtc })
->> 	}
->> 
->> Note that if any of the RTC callbacks would ever need to call irq.synchronize(),
->> irq.disable(), etc. the compiler would enforce correct ordering, as there would
->> not be any other possibility to put the irq::Registration other than into the
->> rtc_data that goes into rtc::Device::new().
+On 2026-02-24 22:53, Joel Fernandes wrote:
+> Add the page table walker implementation that traverses the page table
+> hierarchy for both MMU v2 (5-level) and MMU v3 (6-level) to resolve
+> virtual addresses to physical addresses or find PTE locations.
 > 
-> Right but again, the issue is not about the irq or resource allocation
-> ordering, it is about probe failing after the character device creation.
+> Currently only v2 has been tested (nova-core currently boots pre-hopper)
+> with some initial prepatory work done for v3.
 > 
->> 
->> Besides that, you above mentioned "probe is not allowed to fail anymore" after
->> the RTC device is registered and the corresponding character device becomes
->> visible to userspace.
->> 
->> While there most likely isn't any good reason for probe() to fail afterwards for
->> RTC devices, it is not the case that this isn't allowed. We generally can unwind
->> from a class device registration. In fact, this is not different to remove()
->> being called (immediately).
+> Cc: Nikola Djukic <ndjukic@nvidia.com>
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/mm/pagetable.rs      |   1 +
+>  drivers/gpu/nova-core/mm/pagetable/walk.rs | 218 +++++++++++++++++++++
+>  2 files changed, 219 insertions(+)
+>  create mode 100644 drivers/gpu/nova-core/mm/pagetable/walk.rs
 > 
-> It is actually different, this was the race back then:
-> 
-> CPU0:                                CPU1:
-> sys_load_module()
->  do_init_module()
->   do_one_initcall()
->    cmos_do_probe()
->     rtc_device_register()
->      __register_chrdev()
->      cdev->owner = struct module*
->                                      open("/dev/rtc0")
->     rtc_device_unregister()
->   module_put()
->   free_module()
->    module_free(mod->module_core)
->    /* struct module *module is now
->       freed */
->                                       chrdev_open()
->                                        spin_lock(cdev_lock)
->                                        cdev_get()
->                                         try_module_get()
->                                          module_is_live()
->                                          /* dereferences already
->                                             freed struct module* */
-> 
-> 
-> I don't think it has been solved since then.
+> diff --git a/drivers/gpu/nova-core/mm/pagetable.rs b/drivers/gpu/nova-core/mm/pagetable.rs
+> index 33acb7053fbe..7ebea4cb8437 100644
+> --- a/drivers/gpu/nova-core/mm/pagetable.rs
+> +++ b/drivers/gpu/nova-core/mm/pagetable.rs
+> @@ -9,6 +9,7 @@
+>  #![expect(dead_code)]
+>  pub(crate) mod ver2;
+>  pub(crate) mod ver3;
+> +pub(crate) mod walk;
+>  
+>  use kernel::prelude::*;
+>  
+> diff --git a/drivers/gpu/nova-core/mm/pagetable/walk.rs b/drivers/gpu/nova-core/mm/pagetable/walk.rs
+> new file mode 100644
+> index 000000000000..023226af8816
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/mm/pagetable/walk.rs
+> @@ -0,0 +1,218 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Page table walker implementation for NVIDIA GPUs.
+> +//!
+> +//! This module provides page table walking functionality for MMU v2 and v3.
+> +//! The walker traverses the page table hierarchy to resolve virtual addresses
+> +//! to physical addresses or to find PTE locations.
+> +//!
+> +//! # Page Table Hierarchy
+> +//!
+> +//! ## MMU v2 (Turing/Ampere/Ada) - 5 levels
+> +//!
+> +//! ```text
+> +//!     +-------+     +-------+     +-------+     +---------+     +-------+
+> +//!     | PDB   |---->|  L1   |---->|  L2   |---->| L3 Dual |---->|  L4   |
+> +//!     | (L0)  |     |       |     |       |     | PDE     |     | (PTE) |
+> +//!     +-------+     +-------+     +-------+     +---------+     +-------+
+> +//!       64-bit        64-bit        64-bit        128-bit         64-bit
+> +//!        PDE           PDE           PDE        (big+small)        PTE
+> +//! ```
+> +//!
+> +//! ## MMU v3 (Hopper+) - 6 levels
 
-I think it is not realistic to require module init to always complete once a char
-dev is registered. What if you're trying to register multiple char devs?
-
-I think this requires that either `rtc_device_unregister` to wait until all
-opened fds on the char dev to be closed before returning, or a reference
-count to the module is kept. (Or having the file ops being swapped out so
-further operation on the fd doesn't hit the module anymore).
-
-Anyhow, this looks exactly what all the driver-core revocable discussion is about.
+I think this is called "4 levels" and "5 levels" in kernel MM rather than
+"5 levels" and "6 levels".
 
 Best,
 Gary
+
+> +//!
+> +//! ```text
+> +//!     +-------+     +-------+     +-------+     +-------+     +---------+     +-------+
+> +//!     | PDB   |---->|  L1   |---->|  L2   |---->|  L3   |---->| L4 Dual |---->|  L5   |
+> +//!     | (L0)  |     |       |     |       |     |       |     | PDE     |     | (PTE) |
+> +//!     +-------+     +-------+     +-------+     +-------+     +---------+     +-------+
+> +//!       64-bit        64-bit        64-bit        64-bit        128-bit         64-bit
+> +//!        PDE           PDE           PDE           PDE        (big+small)        PTE
+> +//! ```
+> +//!
+> +//! # Result of a page table walk
+> +//!
+> +//! The walker returns a [`WalkResult`] indicating the outcome.
