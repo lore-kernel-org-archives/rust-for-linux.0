@@ -1,172 +1,244 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022094.outbound.protection.outlook.com [52.101.96.94])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8B530EF62;
-	Wed, 25 Feb 2026 21:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.94
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772053680; cv=fail; b=VCvpGsc9l8PDOrsJevxDanS16EMs4HCtjcx/tpkcjcW3+HZR3Yj4yvo+cRABAo6gWKyulcZ7szpQHAqhCRENEjim1WgFbVNJDtKK+VP13Is9VvbS4RyIphY9L4Q9vWC+/xhxYiIZY9zBy5+ayPGAHST/XMvZl1LdrRi15ZTe0Ys=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772053680; c=relaxed/simple;
-	bh=8/ZgkgWrlaHL8E5OU8tP/svaO/9Qg3DB1Q0RsGJzH3Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:MIME-Version; b=QhfvKtQW2V/hNo6TARufTHOAOt03eX9VomdzNtxYgHBNYGHxi84budBZWQtj2GiTAtEAR/GmJrfBb5ljgxKPcpGIjpHQ23d1PXxFQstsaF+uTn2ZYkAuGoJFLp7RTviBwr1dTxTe0QXRDT6IcO/Bux7HdKVyMuD6iLSxQz3q9k8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=hcu2d/Mw; arc=fail smtp.client-ip=52.101.96.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AAE2F25E4
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Feb 2026 21:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772054136; cv=none; b=WCBsKIzGeyBYV3ip8FqXf90R4Yje+VFTrMhyh5KM4qruzqyRV2df67BT4STIz4cRoMvcdh0gP9V6hMAO4HS8vA6z0cn4fIuA0Y2u9dxY+UoqYcByrvacHgd1b6eB+yAghd9UOaiw6zVvfDrOfHVdfB75VsOD6mfVLwhhB50jGIc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772054136; c=relaxed/simple;
+	bh=z+DlvjYWMPDQTmDpWzttaYmRaVtwEVuc2YhqCyYm9ro=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IKniqMYmb3kqQs4fFsSZdRSprDJ3oKpYOze0uUXZMG/pIpi2HRDrQqn1RVO75a9km+cSWL+y3Y6m55rejGpWpmlRn1UOpJgH5ibtZ0r61x020ryb9DQPZA2//WiVoBxNi8ZWocP3/Mofsz/7sIFKcWSedbkNS6Sie/geNiQOiYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ih0Gf01V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="hcu2d/Mw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dVqMEcCXLQbnA3ONvjKLmV0DnIqR//mFaMOlpThwn536wA6CeVoaRDP4SamY4NM9xQHMxgZO8OsKUGT1kxqLxIxOloSdi6w5mm2XzW7uznIVFR5lrQPyKTsWllmeIgEY12FRoelxTUxvy9qlwiHAoeV3h/hAZNzKwmmXdthnm88SBkbRfoXDOuN3UNY85G356XaKVxwjU8nW21yFT6qvGQFNcbnS42CUuI0aVTttYiY6bFLXFNzqZ3aTEazv7qR47JbeWwqUVwkmTQ/CzBK0tOMD7XxpkUfQZgViZFsZlx1vD3SAL1wvE0oKo890o+0/MTXFCJ3OZf+ZyVfLX2vstg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EuM5SZlnXzManixCAO9TFA97bKJ4s2DlSnkREGz4h3M=;
- b=HB6Q6WIHccK8tUHolqK3O9jwQFqknwvfOPrtzHYLVL6mKrs1KkmdOM31NWE2OCsk/P4ml2CAIt5fo0V+5DeeVRGL0IOaunA14tCXfR+4YUq1REyX0wzetW6O9ValOxdtEc4R6HrPRJmPOrvMxfYelGzQfqUWKs9SQNFA3T2Go07yNG+21znFpVgXLUrNFDMyvU5whfYyoi1gEo05E3w2jP5RVpsnG/m1COF36Tq87p/i0a3PtlNZ1KHmlgLXI5MOZSIpTGqd/ISmb3+wvAV4l+7tQwZwSoCf9meHPvLTjyj4+YLL4LmzVv1xzYKfgoTvWq4UYcX07IsJWamGilNklA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EuM5SZlnXzManixCAO9TFA97bKJ4s2DlSnkREGz4h3M=;
- b=hcu2d/MwB5aEqbXDZp0EEkJO7fyjLIBs6gdSr/QJTrbZkmPn7VWOy2baLVvv2qHbNaDRJPvZud2wadNgW6MCDsIWGBsnYyL/VaS2VnDp3tcRL/Kh4rrd6exYnaQV7gHZ6cslPF+QDDNWALqdaWSHRrw7Mh5K0VsutkfzGe5bcfM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
- by LO4P265MB7063.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:34f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.23; Wed, 25 Feb
- 2026 21:07:57 +0000
-Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.20.9654.013; Wed, 25 Feb 2026
- 21:07:57 +0000
-Date: Wed, 25 Feb 2026 21:07:56 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Elsanti <santiagojoseleal27@gmail.com>
-Cc: brendan.higgins@linux.dev, davidgow@google.com, ojeda@kernel.org,
- raemoar63@gmail.com, boqun@kernel.org, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, linux-kselftest@vger.kernel.org,
- kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: kunit: implement test attr filtering without
- extract_if
-In-Reply-To: <20260225194543.1542668-1-santiagojoseleal27@gmail.com>
-References: <20260225194543.1542668-1-santiagojoseleal27@gmail.com>
-Message-ID: <bfcdcd95aff2e515401784f464c61312@garyguo.net>
-X-Sender: gary@garyguo.net
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0074.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2bd::13) To CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:27c::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ih0Gf01V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C108C116D0
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Feb 2026 21:15:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772054136;
+	bh=z+DlvjYWMPDQTmDpWzttaYmRaVtwEVuc2YhqCyYm9ro=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ih0Gf01VMg1kh8vyFaCbNT4KpoTECSVi+GHss1CxELIv/RsFIcoNN47vRdiziJAnL
+	 hffuDgaXE3zJwjexAP7eWS+o3jLgPgL6QJQgx+VP7/jfYG1Lxhl/VWnboU/hsmbDYa
+	 vfBGal8BK9kk/y+UbQx4jRAxXqwixMBCsyoxeICncJ3Oj2FH6UvtWV98r9agoh7WCV
+	 JCvpqWvAE0pneh3WgSrJMKz7uDZwi7bomfszhIyYzM1VSL5mU8nJhrSZoKsdL/tArA
+	 K6hczuIe/fmfaxf0ZF+B3EC9KAHiV6a1vlh4CutLIMMyinhfVC6N6BOCyZ0CIKm7Ts
+	 ave4NsVuhpMLw==
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-46392972257so110915b6e.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Feb 2026 13:15:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX+BrzqWuPRjRBD/DZ92oeKMt1Kx9gPRq6M0grzXB5vAzMp6fhFvCQ4nR/2fja0/9W9jBHXI8Ryn0G6N4bUGg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4oKp3Ldnja2D3Zl5CN+XCJ5YX0hrVsw37OHzmjdsXEneAQdNR
+	+WS4VOpxkz0jde42whu9e1YW2mugtwdidhFma565a+py1Ay16aE+niwzMR0mLLCtTHKZCWuLK6o
+	Ct23eIbPrkOq/YNzm13LcdMPMIcfDFdw=
+X-Received: by 2002:a05:6808:878b:b0:464:a066:aa6a with SMTP id
+ 5614622812f47-464a066b160mr763959b6e.45.1772054135325; Wed, 25 Feb 2026
+ 13:15:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|LO4P265MB7063:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8e25f16-51dd-450f-324d-08de74b1f361
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|10070799003|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	jlVc7tIroynU4d+uGQMvZk8XnS1lT5Hsj5p3tgg89zIugtoBdBBhPN2o07MK8C4P54pKxy63Z+id8k+BI1a9MiNmJbU4qRTkFrkYLhGDk07Z79uN8hJsbdfjZJcRWT9wqDbGUZZvaG6eZc6ui0Aayh2U9PuVabF/OHcrYMCVHO6M/uBkiMG+HyTXhqC9Ulwm/Nc5s3wPEX8kVwg4/Lmo/+44epCxSGjGdw1f9vY2FrnpYKmFAhiiwqOV/NtdaQ83oQXjc1nVSCCJzmH7hPHcnzcTOcvEv1S5NWgI89J5tCuLob6KM8XbDRvFgDG2/MfaOF7M+mIY2Zxx8Tcy4h5dZYTPG9LWvHJ21eeaxV5yUjKJILEsH7cR2qxgKJRuQUj6aYXEAdzDSLqfHZ4z2J6c5r815oMiLBqmGnbfJ0RUIQNUdgnsqCtdKx7wYW9XYLiRw08O6xd5osp0zK6zHQXRGVugUw91RWm8Dlj2YmtIfDg635cSOu0fXtBoXZMusN+++PLhkiVbzw7zJtVYfEyEuORDCFNXTlhoJ5y7wLfzECiEAFI5HdwxMs+SpAZG2Tg+/Sz05/xE4RAa/WjkilHZcoe074c6hYdAmv+uXydENY9/+A/0ADrUse8fajTI1/rcxSuNcPJSpf6NU7tTq2fKh/vw/UTGVFpEbDJHoWCsB4sO7eVboBheozvAXVPTgK7yzEpf7b12YzJTHp5ydNkCX536DGAI8+OYoaEZXeHZSyA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6naw9V5Xw1AJSsSTaP4VPVkHFTo7rZXvE6iDDbM62VYr1CosuC1jI4wLDTCj?=
- =?us-ascii?Q?iP6syTsnjLMmQXD7KNVb2XLsEv6hJMBiyE4IPhFe7MY1XchXjS+YVW4IRIk4?=
- =?us-ascii?Q?dUFYxv7G/Kc2G1++wQmKCbj7Rcq5jcotCjK3MqAA1Xs4tP2T+4d+0dIoBOqA?=
- =?us-ascii?Q?219mgZFOSeuF8YiZCGvwoKekCRR2GtoN4YFPepfCclsQH+x/xBlsFcqJNMhn?=
- =?us-ascii?Q?tPC0VT0Ocm4Kq1EMluhvmlSgGWJNfMDDEsXlIB6vufSMDx+kEXvWIu/lWEAD?=
- =?us-ascii?Q?AbX0Y8bk14Ux3zU/iI1RHH34zTSXc2FoMdhr9LScVJ5im8bTPjN4ihhR908L?=
- =?us-ascii?Q?jjUiQUA0UwJGNjIL7O8MjCmUBKK7L6zdEnHWKARXZi05hWJuG8oXzewRiXW/?=
- =?us-ascii?Q?cjnzf9W9eR16WfGegXp4DXj7WC+aJ2Y3zzHWi1RAnGFRbfCljIMMIH0r51a4?=
- =?us-ascii?Q?OtzGq8LnLRzve+HK7ixHAdwfyG91J6m+suT+bW6CdgiNI/NjcYPiLaZkLDrV?=
- =?us-ascii?Q?I69R1JpuJ+SSuv3F2Y1IscwAbkcDu9U+bk+5fX9aD4nneyzCQFWOCQphMqEg?=
- =?us-ascii?Q?kNID9oMPUruEmQ9E84UNW6steDnFdVcMkncnLRPWQN5FM6NxDmYu8Osdfb0J?=
- =?us-ascii?Q?WOSWjIpjvif6Af5755qxwmAS5cgeRaT+w8oukQfahLJj7Q98LS93gGb2NFGU?=
- =?us-ascii?Q?PCkQqXqEKVY5Avupm3RYbyk1VTa5RPvMcdC/NqiWPWt3HJ9Wf8YdH3voGLve?=
- =?us-ascii?Q?1VyZC59QLpi3wLW80ZeoC8QX++ZRxHc7kPRJkEBDaA5Lk0BvXgnXJ1AaO2CS?=
- =?us-ascii?Q?VxO91a9d8WOxj8EwElIF99sweNTs98pDV2m6EJjlGn/8ZF2gDuQvN8p//XyK?=
- =?us-ascii?Q?E49iWuxvjuDVMgqM1FGdsNLlUs3b3YnJO7zrjZeSKI/iY21mclV5nLjyit0k?=
- =?us-ascii?Q?IC3MZhScgru0J5TE3Qsvi7MJyk2/AOho/jBRbmZEdUWuzNEY4QlysHAEqSdT?=
- =?us-ascii?Q?kQ8FAXXFWIcnEeBRsYxSXW1M5gyUSpNMYyQr7vFPHYbYIKeDigRbvMILgPzo?=
- =?us-ascii?Q?6WkIatsnze7W6U5pjAQ7gP+bfLoOXKxwAHuDilgKEshgLskragL0K2hRzmas?=
- =?us-ascii?Q?ZhmMoNBJLjXRS5m2jbCdmJcpc4fLFAztoCFeKNFZtbq+wRMI2nFkp3HR6oP/?=
- =?us-ascii?Q?naBHHaljcfkc1nIY/5J6sHTcrzBkRR2dLX9BZQYY2qm3lCiq2YVJAa0cOZUL?=
- =?us-ascii?Q?q5/bLjXhlKQcugGB/MxSfmCTnupdUeKxdSaAzROpfIVz4PW42WmBJabimJM7?=
- =?us-ascii?Q?WRfGYUx7M8JTecVZIMu/PX/N3StUQVfwDpDOiB/1/4EpFkbOSJPSTPCB9uo8?=
- =?us-ascii?Q?EODb8f/gxCX2vN57/BLFeU+cTVO+XOVVK3HjvPUal7ouxoeLjtXTagXYGvDl?=
- =?us-ascii?Q?oowRN+gT8TWW3Ej9d6/dsrACAic7e2jTm7uKxxn/u1s3X5Yrf037lx7/sar2?=
- =?us-ascii?Q?cW1ACYXqI2KAUzE0/CkeCj4BCUZeok/6kcneRWyBIUS+qx3l1N/3F68JvHhL?=
- =?us-ascii?Q?aiJhgTb1Qj7GMq7mvld1vxtQXT2z4KPL8b6QNshxc6dMcdZxkzrHclevGFlM?=
- =?us-ascii?Q?E1SUk5glxyk30hbai4rrXIrrO+p/uLOunlRTPGcY34sk+MDT4XjMpVxdkHWL?=
- =?us-ascii?Q?OiyQcj30jSHxj9gi7mezOM0VjE70dOZ0Ry1MY5mOzsEC93rYsrHuTtwLW3r+?=
- =?us-ascii?Q?ZUELZ5NQoA=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8e25f16-51dd-450f-324d-08de74b1f361
-X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 21:07:57.5501
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4FYg6o9L1q4dYFVSU+3jsmrYqOB8ScDfC7DQ61WLz6Vy0TFgjIXFyi6HT/XoQlUIPpl6ZTKzJ8G6GSHv/u3EMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB7063
+References: <20260221111619162a41a1@mail.local> <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
+ <DGKPPQI0QE73.S8I1M5NCI2BV@kernel.org> <20260222000556ea1938c0@mail.local>
+ <DGLI4H9M0T6D.25RTLDVU5JRBE@kernel.org> <CAJZ5v0gtiQxBCknkaOzLKrDqUQfhKh_UjQkvgxJBL4UthbCOkg@mail.gmail.com>
+ <DGLMGEZTM7E2.Y8VV9I6LI1P6@kernel.org> <DGMR9XOWP1V0.3C9219TYPXV6J@kernel.org>
+ <2026022415010804e28202@mail.local> <DGNC6GEH8EV7.2WWAQ8DNCLRAB@kernel.org>
+ <20260224172822de7f4569@mail.local> <DGNJKZA00MNT.2C7NAQYG597MO@kernel.org>
+ <CAJZ5v0iA88G0ZRVB347dXEu2y8mT=d+aWd42cB2tpO5pLVpKuQ@mail.gmail.com> <DGO6MEKIIHGH.3L06QJ47CP3CU@kernel.org>
+In-Reply-To: <DGO6MEKIIHGH.3L06QJ47CP3CU@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 25 Feb 2026 22:15:22 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hAF5qwv6wDAviqkkZSza7Dj-p_AGCrAzXjFrMOhDKAMg@mail.gmail.com>
+X-Gm-Features: AaiRm52YfPaPRjAqJHfFoPr_qwe67MHx8wdiZzY3CovJZo-BOto2n_ITHC6YYKk
+Message-ID: <CAJZ5v0hAF5qwv6wDAviqkkZSza7Dj-p_AGCrAzXjFrMOhDKAMg@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops callbacks
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-02-25 19:45, Elsanti wrote:
-> Replace the TODO-only removal of #[test] attributes with a
-> retain_mut-based filter that works with the current MSRV.
-> This preserves test detection without depending on
-> Vec::extract_if and keeps the generated KUnit wrappers correct.
-> 
-> Signed-off-by: Elsanti <santiagojoseleal27@gmail.com>
-> ---
->  rust/macros/kunit.rs | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-> index 6be880d634e2..e064419bfc10 100644
-> --- a/rust/macros/kunit.rs
-> +++ b/rust/macros/kunit.rs
-> @@ -87,10 +87,15 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
->              continue;
->          };
->  
-> -        // TODO: Replace below with `extract_if` when MSRV is bumped above 1.85.
-> -        let before_len = f.attrs.len();
-> -        f.attrs.retain(|attr| !attr.path().is_ident("test"));
-> -        if f.attrs.len() == before_len {
-> +        let mut had_test_attr = false;
-> +        f.attrs.retain_mut(|attr| {
-> +            let is_test = attr.path().is_ident("test");
-> +            if is_test {
-> +                had_test_attr = true;
-> +            }
-> +            !is_test
-> +        });
+On Wed, Feb 25, 2026 at 5:26=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Wed Feb 25, 2026 at 2:33 PM CET, Rafael J. Wysocki wrote:
+> > On Tue, Feb 24, 2026 at 11:23=E2=80=AFPM Danilo Krummrich <dakr@kernel.=
+org> wrote:
+> >> Here's also some sketched up code for what I wrote above:
+> >>
+> >>         fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> imp=
+l PinInit<Self, Error> {
+> >>             let dev =3D pdev.as_ref();
+> >>
+> >>             let rtc_data =3D impl_pin_init!(SampleRtcData {
+> >>                 io: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/b=
+ar0")?,
+> >>                 hw_variant: VendorVariant::StV1,
+> >>                 irq <- irq::Registration::new(...),
+> >>             });
+> >>
+> >>             let rtc =3D rtc::Device::new(dev, rtc_data)?;
+> >>
+> >>             rtc::Registration::register(rtc)?;
+> >>
+> >>             Ok(Self { rtc })
+> >>         }
+> >>
+> >> Note that if any of the RTC callbacks would ever need to call irq.sync=
+hronize(),
+> >> irq.disable(), etc. the compiler would enforce correct ordering, as th=
+ere would
+> >> not be any other possibility to put the irq::Registration other than i=
+nto the
+> >> rtc_data that goes into rtc::Device::new().
+> >
+> > IIUC, the interrupt handler can only access the rtc_data because the
+> > parent's driver_data may not exist yet when it runs.  Or am I missing
+> > something?
+>
+> In the code above the IRQ handler can also not access rtc_data, as struct
+> SampleRtcData might not be fully initialized when it runs, i.e.
+>
+>         let rtc_data =3D impl_pin_init!(SampleRtcData {
+>             io: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
+>             hw_variant: VendorVariant::StV1,
+>             irq <- irq::Registration::new(..., rtc_data),
+>         });
+>
+> would not compile in the first place.
+>
+> irq::Registration, for this purpose, has its own private data on the hand=
+ler
+> itself, see also [1]. In fact, the C code has the same concept with the d=
+ev_id
+> argument in request_threaded_irq() [2].
+>
+> The difference is that the C compiler does not ensure that the IRQ handle=
+r
+> actually owns the data behind the dev_id pointer. I.e. the driver has to =
+somehow
+> ensure that whatever is behind the dev_id pointer remains valid for the d=
+uration
+> the IRQ handler is registered.
+>
+> In the Rust implementation the compiler does ensure that what is behind t=
+he
+> dev_id pointer remains valid for the duration of the lifetime of the
+> irq::Registration.
+>
+> Having that said, I assume you wonder what we would pass into the
+> irq::Registration instead, if it is not rtc_data.
+>
+> The answer is it depends; it depends on what's actually needed, what othe=
+r
+> entities interact with the IRQ (e.g. some scheduled work, etc.) and maybe=
+ even
+> preference to some extend.
+>
+> Here is one example:
+>
+>         let irq_data =3D impl_pin_init!(SampleIrqData {
+>             io <- pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")=
+?,
+>             hw_variant: VendorVariant::StV1,
+>         });
+>
+>         let rtc_data =3D impl_pin_init!(SampleRtcData {
+>             irq <- irq::Registration::new(..., irq_data),
+>             ...,
+>         });
+>
+>         let rtc =3D rtc::Device::new(dev, rtc_data)?;
+>
+> This would compile as it ensures that irq_data (struct SampleIrqData) is =
+fully
+> initialized before irq::Registration::new() is called.
+>
+> At a first glance this might look like we need an additional allocation, =
+one for
+> irq_data and one for rtc_data, but that is not the case. irq_data is an
+> initializer that is passed to another initializer, i.e. rtc_data is still=
+ an
+> initializer.
+>
+> The actual (single) allocation happens in rtc::Device::new().
+>
+> In terms of accessing it through the the rtc::Device in an RTC device cal=
+lback,
+> we would likely use accessor methods to make it a bit more convinient, i.=
+e.
+>
+>             fn read_time(
+>                 rtc: &rtc::Device<SampleRtcData>
+>                 parent: &platform::Device<Bound>,
+>                 time: &mut rtc::Time,
+>             ) -> Result {
+>                 let io =3D rtc.io().access(parent)?;
+>
+>                 match rtc.hw_variant() {
+>                     VendorVariant::Arm | VendorVariant::StV1 =3D> {
+>                         let my_time =3D io.read(...);
+>
+>                         my_time.write_into(time);
+>                     },
+>                     VendorVariant::StV2 =3D> { ... },
+>                 }
+>             }
+>
+> As mentioned above there are a few other options to implement this, depen=
+ding on
+> what's required, etc.
+>
+> For instance, if the I/O bar is actually shared between multiple entities=
+ we
+> might want to initialize it within an Arc [3] (reference count it) for sh=
+ared
+> ownership.
+>
+> For the future we will also be able to support references within initiali=
+zers to
+> other pinned fields, which make things a bit more convinient, so you coul=
+d do
+> things like this:
+>
+>         let irq_data =3D impl_pin_init!(SampleIrqData {
+>             io <- pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")=
+?,
+>             hw_variant: VendorVariant::StV1,
+>         });
+>
+>         let rtc_data =3D impl_pin_init!(SampleRtcData {
+>             irq <- irq::Registration::new(..., irq_data),
+>             io: &irq.io,
+>             ...,
+>         });
+>
+>         let rtc =3D rtc::Device::new(dev, rtc_data)?;
+>
+> Note the additional `io: &irq.io,` in the rtc_data initializer. This woul=
+d be
+> legal as we know that `irq` is pinned within `rtc_data`, hence it is vali=
+d to
+> hold a reference to one of its pinned fields.
+>
+> I am not sure how far we are from having this supported, I assume Benno a=
+nd Gary
+> can say more about this.
+>
+> I hope this helps, and thanks for asking those questions!
 
-Eh, no. I think the current code is more readable. I added the TODO because I think
+Well, I'm using an opportunity to learn something, thank you!
 
-if f.attrs.extract_if(|attr| attr.path().is_ident("test")).count() == 0 {
-    ...
-}
-
-is slightly more readable, not that I had any issue with length comparison.
-
-Best,
-Gary
-
-> +        if !had_test_attr {
->              processed_items.push(Item::Fn(f));
->              continue;
->          }
+> [1] https://rust.docs.kernel.org/kernel/irq/struct.Registration.html
+> [2] https://elixir.bootlin.com/linux/v6.19.3/source/kernel/irq/manage.c#L=
+2090
+> [3] https://rust.docs.kernel.org/kernel/sync/struct.Arc.html
