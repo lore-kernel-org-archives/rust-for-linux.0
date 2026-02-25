@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D3C3E8C70;
-	Wed, 25 Feb 2026 15:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBF43D4110;
+	Wed, 25 Feb 2026 16:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772034416; cv=none; b=hOQyqpgrykAwdhfrFqN6US7Zw5vn/IgIzxkrvxqXv1OrIHMIbaTHLcgroiBVBBm6EH2gTYBeyMtHVrZ9neGJS7DxZJrLS68l55F49k/gxUMRXjuAVENSa+xItG59Uv2pcLpIpi8n7RroiDssr6I3RpvrpWuLpFYBJJTkMUblqgI=
+	t=1772036811; cv=none; b=bU1xEMPLAOdmIiFSN5+BwhefhlXuUll0oaJGRnJsNl6c8mN/CpSJEgokvYNR0CkYzaLmUDcyhuNztDeU6Izq9f2iLNNew6gMdHpc/9NHXiWQ67bmZnHVzrPXEFtAkduYaB12ywp8ZC5ypry+LYIxpnfdB5KHT10q+V/BUFo1oIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772034416; c=relaxed/simple;
-	bh=AlRNYr0g7ckHbt4Eg1IUwmE97fw50dZyzx1GZdf8jT8=;
+	s=arc-20240116; t=1772036811; c=relaxed/simple;
+	bh=YUN9M0AR4tx7LcUF/R+6u5VZbMi7IE1VKfYANVdBxkI=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=o10dyGkURuVDbr4kXIrSzZespzO13cS17AKMZHdqanDFOBvceXjaY0aNlc+50/iks+X6Pbeg5iDio3bfRnvvMP5UP1ep/RRVb+SQluwQylWXF/VIqEsyxJWl2kjF3biHgdcOmqsQdRARHdUjarfBI+IYC0K6tcQcwledcbIzw50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvNkwDZl; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=fbS0x6L6SV3gv7uirZi/Drxx6MNbvSUGpgyqpOZQHwNGYp/cSynR38dP2nkxh2XHdydQwPbrddPuSCsh4aWz82kTEOUNzu34whVcgRthOz7RryidJgCiWqrcGVw/RAOZDYe60XXSen5YhdUl0ukzLjcxiKnETIOr+Y53ze7asbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGexLGMP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvNkwDZl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC6EC116D0;
-	Wed, 25 Feb 2026 15:46:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGexLGMP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB2EC116D0;
+	Wed, 25 Feb 2026 16:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772034415;
-	bh=AlRNYr0g7ckHbt4Eg1IUwmE97fw50dZyzx1GZdf8jT8=;
+	s=k20201202; t=1772036810;
+	bh=YUN9M0AR4tx7LcUF/R+6u5VZbMi7IE1VKfYANVdBxkI=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=bvNkwDZlNgPGRlnV+Fdo27F0RxpIL+CihI4VZGz9Kma9FraNHV5bGvf8bHqJtRnGR
-	 kL57CPox+9/83r4DeMABa8LbkQcy5B7gty+zRLg+pZrGAzkwZb+KHz6WVeZvwWMNVW
-	 8oDPZRmlplQ9y5xN2eDC3nytguqZhcn+DuYGCK8HvaQj7mNwPpgWlV4O8W32DFkCp4
-	 gbl9tgUC29Vv4OTmY90qdZOgHhBjB64RwRgAVmVRT0jAHnNaECLaVjyy6SRDoGOGyR
-	 p7IqvR+OPecFVUuVfSXa24mZRAGxqDqoKPVrHjRDbeppKZZSvc5uxR6YPzQzXaZfYj
-	 rtTIi67ZiMHyw==
+	b=GGexLGMPjLpx0LmPFOJBELVinx2geWAs5rZ8WmuSl4lCq/BfvAHDQ/AQr3OSko5BL
+	 +auam0L7mAlBPzgKtNJnDZo4gAb1l5OhnhK8H0l+5D3fHNne9EmsyUbUL7S0kWVE30
+	 clrXPdUlXaceDAfY80CHRwuku0iGO0foydZJVSonas1xbM6unQZPBxwFoyHSje+oxV
+	 oSXoW3JKB8KJYXPao82ei8zZAjGeyPNTndN4cGpTUvo44F0ckr5Hf11MdRuW190ZBX
+	 HxgO7i03bgVuF0IY9hsGuPetTadNQVC8FqFNewrq1+6olwWoACgzx942rFUMaSww9R
+	 Tde+TjXStwiUg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,71 +34,193 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Feb 2026 16:46:51 +0100
-Message-Id: <DGO5RUMC880T.2BBB93GLBFSIJ@kernel.org>
-Subject: Re: [PATCH v4 3/6] rust: gpuvm: add GpuVm::obtain()
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, "Janne Grunau" <j@jannau.net>, "Matthew
- Brost" <matthew.brost@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, "Lyude Paul" <lyude@redhat.com>, "Asahi
- Lina" <lina+kernel@asahilina.net>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
+Date: Wed, 25 Feb 2026 17:26:46 +0100
+Message-Id: <DGO6MEKIIHGH.3L06QJ47CP3CU@kernel.org>
+Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
+ callbacks
+Cc: "Alexandre Belloni" <alexandre.belloni@bootlin.com>, "Alvin Sun"
+ <alvin.sun@linux.dev>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-rtc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260130-gpuvm-rust-v4-0-8364d104ff40@google.com>
- <20260130-gpuvm-rust-v4-3-8364d104ff40@google.com>
- <DGJ6LHIVMV03.MM7RWYBJHBIQ@kernel.org> <aZgYY_fetgz_GDR8@google.com>
- <DGJX3FI97W1G.371MAMC60FX24@kernel.org> <aZlw3SGmLetHwaTM@google.com>
- <DGKQH7Q9QONY.4GLSDMQ8DOY1@kernel.org> <aZwalt_6KlOIDzkN@google.com>
- <DGMA3158PGED.1BQ63TEC2FC60@kernel.org> <aZw4hCxvx_2oFIha@google.com>
-In-Reply-To: <aZw4hCxvx_2oFIha@google.com>
+References: <20260221111619162a41a1@mail.local>
+ <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
+ <DGKPPQI0QE73.S8I1M5NCI2BV@kernel.org> <20260222000556ea1938c0@mail.local>
+ <DGLI4H9M0T6D.25RTLDVU5JRBE@kernel.org>
+ <CAJZ5v0gtiQxBCknkaOzLKrDqUQfhKh_UjQkvgxJBL4UthbCOkg@mail.gmail.com>
+ <DGLMGEZTM7E2.Y8VV9I6LI1P6@kernel.org>
+ <DGMR9XOWP1V0.3C9219TYPXV6J@kernel.org> <2026022415010804e28202@mail.local>
+ <DGNC6GEH8EV7.2WWAQ8DNCLRAB@kernel.org> <20260224172822de7f4569@mail.local>
+ <DGNJKZA00MNT.2C7NAQYG597MO@kernel.org>
+ <CAJZ5v0iA88G0ZRVB347dXEu2y8mT=d+aWd42cB2tpO5pLVpKuQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iA88G0ZRVB347dXEu2y8mT=d+aWd42cB2tpO5pLVpKuQ@mail.gmail.com>
 
-On Mon Feb 23, 2026 at 12:22 PM CET, Alice Ryhl wrote:
-> On Mon, Feb 23, 2026 at 11:44:12AM +0100, Danilo Krummrich wrote:
->> On Mon Feb 23, 2026 at 10:15 AM CET, Alice Ryhl wrote:
->> > On Sat, Feb 21, 2026 at 04:09:41PM +0100, Danilo Krummrich wrote:
->> >> On Sat Feb 21, 2026 at 9:46 AM CET, Alice Ryhl wrote:
->> >> > So, should we get rid of GpuVmBoRegistered in favor of ARef<GpuVm<T=
->>?
->> >>=20
->> >> I wanted to avoid exposing the reference count, as I suspect drivers =
-might not
->> >> need it in Rust, but I don't know for sure.
->> >>=20
->> >> We could also define it as GpuVmBo<T>(ARef<GpuVmBoInner<T>>), where
->> >> GpuVmBoInner<T> is private, but I also don't want you to go back and =
-forth with
->> >> this in case it turns out we do need drivers to be able to take a ref=
-erence
->> >> count and I also don't think it hurts too much exposing the reference=
- count,
->> >> even if not needed.
->> >>=20
->> >> So, either is fine with me, ARef<GpuVmBo<T>> or
->> >> GpuVmBo<T>(ARef<GpuVmBoInner<T>>).
->> >
->> > I don't think GpuVmBo<T>(ARef<GpuVmBoInner<T>>) works because we need =
-to
->> > be able to talk about both ARef<GpuVmBoInner<T>> and &GpuVmBoInner<T>.
->> > The reference type is returned by several different APIs, so the Inner
->> > type can't be private.
->>=20
->> I meant NonNull<GpuVmBoInner<T>>, analogous to the current GpuVmBoRegist=
-ered.
+On Wed Feb 25, 2026 at 2:33 PM CET, Rafael J. Wysocki wrote:
+> On Tue, Feb 24, 2026 at 11:23=E2=80=AFPM Danilo Krummrich <dakr@kernel.or=
+g> wrote:
+>> Here's also some sketched up code for what I wrote above:
+>>
+>>         fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl =
+PinInit<Self, Error> {
+>>             let dev =3D pdev.as_ref();
+>>
+>>             let rtc_data =3D impl_pin_init!(SampleRtcData {
+>>                 io: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar=
+0")?,
+>>                 hw_variant: VendorVariant::StV1,
+>>                 irq <- irq::Registration::new(...),
+>>             });
+>>
+>>             let rtc =3D rtc::Device::new(dev, rtc_data)?;
+>>
+>>             rtc::Registration::register(rtc)?;
+>>
+>>             Ok(Self { rtc })
+>>         }
+>>
+>> Note that if any of the RTC callbacks would ever need to call irq.synchr=
+onize(),
+>> irq.disable(), etc. the compiler would enforce correct ordering, as ther=
+e would
+>> not be any other possibility to put the irq::Registration other than int=
+o the
+>> rtc_data that goes into rtc::Device::new().
 >
-> Not sure what you mean.
+> IIUC, the interrupt handler can only access the rtc_data because the
+> parent's driver_data may not exist yet when it runs.  Or am I missing
+> something?
 
-What I meant was doing what you currently have, with the following changes:
+In the code above the IRQ handler can also not access rtc_data, as struct
+SampleRtcData might not be fully initialized when it runs, i.e.
 
-- Rename GpuVmBoRegistered<T> to GpuVmBo<T>.
-- Rename GpuVmBo<T> to GpuVmBoInner<T> and make it private.
+	let rtc_data =3D impl_pin_init!(SampleRtcData {
+	    io: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
+	    hw_variant: VendorVariant::StV1,
+	    irq <- irq::Registration::new(..., rtc_data),
+	});
 
-The downside is that both GpuVmBo<T> and GpuVmBoAlloc<T> can't dereference =
+would not compile in the first place.
+
+irq::Registration, for this purpose, has its own private data on the handle=
+r
+itself, see also [1]. In fact, the C code has the same concept with the dev=
+_id
+argument in request_threaded_irq() [2].
+
+The difference is that the C compiler does not ensure that the IRQ handler
+actually owns the data behind the dev_id pointer. I.e. the driver has to so=
+mehow
+ensure that whatever is behind the dev_id pointer remains valid for the dur=
+ation
+the IRQ handler is registered.
+
+In the Rust implementation the compiler does ensure that what is behind the
+dev_id pointer remains valid for the duration of the lifetime of the
+irq::Registration.
+
+Having that said, I assume you wonder what we would pass into the
+irq::Registration instead, if it is not rtc_data.
+
+The answer is it depends; it depends on what's actually needed, what other
+entities interact with the IRQ (e.g. some scheduled work, etc.) and maybe e=
+ven
+preference to some extend.
+
+Here is one example:
+
+	let irq_data =3D impl_pin_init!(SampleIrqData {
+	    io <- pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
+	    hw_variant: VendorVariant::StV1,
+	});
+
+	let rtc_data =3D impl_pin_init!(SampleRtcData {
+	    irq <- irq::Registration::new(..., irq_data),
+	    ...,
+	});
+
+	let rtc =3D rtc::Device::new(dev, rtc_data)?;
+
+This would compile as it ensures that irq_data (struct SampleIrqData) is fu=
+lly
+initialized before irq::Registration::new() is called.
+
+At a first glance this might look like we need an additional allocation, on=
+e for
+irq_data and one for rtc_data, but that is not the case. irq_data is an
+initializer that is passed to another initializer, i.e. rtc_data is still a=
+n
+initializer.
+
+The actual (single) allocation happens in rtc::Device::new().
+
+In terms of accessing it through the the rtc::Device in an RTC device callb=
+ack,
+we would likely use accessor methods to make it a bit more convinient, i.e.
+
+	    fn read_time(
+	        rtc: &rtc::Device<SampleRtcData>
+	        parent: &platform::Device<Bound>,
+	        time: &mut rtc::Time,
+	    ) -> Result {
+	        let io =3D rtc.io().access(parent)?;
+
+	        match rtc.hw_variant() {
+	            VendorVariant::Arm | VendorVariant::StV1 =3D> {
+	                let my_time =3D io.read(...);
+
+	                my_time.write_into(time);
+	            },
+	            VendorVariant::StV2 =3D> { ... },
+	        }
+	    }
+
+As mentioned above there are a few other options to implement this, dependi=
+ng on
+what's required, etc.
+
+For instance, if the I/O bar is actually shared between multiple entities w=
+e
+might want to initialize it within an Arc [3] (reference count it) for shar=
+ed
+ownership.
+
+For the future we will also be able to support references within initialize=
+rs to
+other pinned fields, which make things a bit more convinient, so you could =
+do
+things like this:
+
+	let irq_data =3D impl_pin_init!(SampleIrqData {
+	    io <- pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
+	    hw_variant: VendorVariant::StV1,
+	});
+
+	let rtc_data =3D impl_pin_init!(SampleRtcData {
+	    irq <- irq::Registration::new(..., irq_data),
+	    io: &irq.io,
+	    ...,
+	});
+
+	let rtc =3D rtc::Device::new(dev, rtc_data)?;
+
+Note the additional `io: &irq.io,` in the rtc_data initializer. This would =
+be
+legal as we know that `irq` is pinned within `rtc_data`, hence it is valid =
 to
-GpuVmBoInner<T>, so we'd need some forwarding methods.
+hold a reference to one of its pinned fields.
 
-The advantage is that we can hide the reference count and keep it simple wi=
-th
-only two driver types, GpuVmBo<T> and GpuVmBoAlloc<T>.
+I am not sure how far we are from having this supported, I assume Benno and=
+ Gary
+can say more about this.
 
-But I'm also fine with just ARef<GpuVmBo<T>> and GpuVmBoAlloc<T>.
+I hope this helps, and thanks for asking those questions!
+
+[1] https://rust.docs.kernel.org/kernel/irq/struct.Registration.html
+[2] https://elixir.bootlin.com/linux/v6.19.3/source/kernel/irq/manage.c#L20=
+90
+[3] https://rust.docs.kernel.org/kernel/sync/struct.Arc.html
