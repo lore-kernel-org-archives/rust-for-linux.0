@@ -1,85 +1,84 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010065.outbound.protection.outlook.com [52.101.46.65])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010064.outbound.protection.outlook.com [40.93.198.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551102BE644;
-	Wed, 25 Feb 2026 19:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643863ECBDA;
+	Wed, 25 Feb 2026 19:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772047125; cv=fail; b=YV58MoEwEAZJJ/RlV076f2RFzI+pMZfTX2ohpX6JkbsyI98L5uXeHe+TnHglapLcTPNazXtut0MzPq96xuVM067WOQ99mtFQRDUOTd4OVlUaBZw1iukc5t71xT62brsZexnRiQF4IYEgZm+gi5DPfeszNXVpZ9YC+xc3fkVqORc=
+	t=1772048565; cv=fail; b=mEakKbYmThn3JFsDgisqiEsb9EFMR6pazO32Q2kJWJSy1mU1Ye3rwTIxlxvWqpD++ALAtIEwQKGPQR+yhqWjYd2ks0cqsnufo8M4F/CcGS84F+ovCd5r8JFS9rk2AY6oxXFfu0xTEcjxON8aHZh84WP4OVy+y/nQMmErZnPwarg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772047125; c=relaxed/simple;
-	bh=ZcAt6oCHXibqBk0oftlBrp9Ra2zwTBaX8uEB+orzQqc=;
+	s=arc-20240116; t=1772048565; c=relaxed/simple;
+	bh=VJvjtuBUsJH8Lh+ZQjOV/dhpK7XNhaLWTWdVl8fRqb8=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y8KXMWwqrEsDSgJPKwQBb/RACgwGc563W24T4sRypwrrgZh9PRRPOkImaS7afeMTgrNR5oKAGdJA/v2puefhrpttNdx2ypDWtlH45eyEKUoW+78B3Wk49Pl01icWUzD8Ny7YQduWeLj7sdxasNCMKVgvh5SQ6ZrX37VeGUrrPjw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Uppp+0Hb; arc=fail smtp.client-ip=52.101.46.65
+	 MIME-Version:Content-Type; b=G/YWyNU1hwj+Rwj/Am/3inTnhaKsxs+gbiAC/lEwkdeCGtcQkWHyMAcG9NwjwS6ySk2/DY46meXwH6Hr5Uy8+bg7/fLNsjejl6wDj1/rb+t5DNwOvMCNq1UHMQDtFYDYWBp2tgZikIxQ/3FNOxwSu3lkoQNRLfIC+09HTPRE4f8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=etJze8Pl; arc=fail smtp.client-ip=40.93.198.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Uppp+0Hb"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="etJze8Pl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s9hGAKhl3pkW2ubl3jjYrfU9JCiAFmQBSyMvzGZ/OVpkXLNSG+nnDTJMEC5PHGBNz66UBxxxSyyEddZwwZWd2AiAzQRcMz7rFrOWo6fumyfG5Sr7ru8eMmyzn6LaYjIlj7eEKKNy9ph8g/DykVLdPglLNVJ5KAGBReegrcJECYfsUPmYy/r93v7apJYQOq+LzW6liuWErAmnsxxkiSTlXbuKrCHKBNjN92V5yBl83sRVuZiWhRvH10xfWZ8osfHqP0AXiDxWpmP1HXb30qnqgtq7z4s4patuzFA3SDn87zVWlk1b0IxglSZlRANVb9nFC7mIsmGrKm3ZsG0ZmyYzxg==
+ b=K1f3DtpLDoYPFJi26foT8cNQsYkfPyrdxlIB0Ld6fsu+lYxf3TEQpka9k6YcZKneF/jKRf10tX8+cDqEDbtiT+HE6JRcl8QW30DJ86FGn5bpziNhZ/B6c1LmBIscNs8+AtWf47nZhRK3uSc2Rx1a1c0RuNK2RYhoj4AYvkDyOWh88UUkLfwXYsSC1ZxfHm7cRVb6fwMawUFSxewW/BVMfA34GpHgo0tGiqVtRlu9FlhG/L7kXHy03jzx+AjbP/1qLeidjJ46Vppwr0Nki66mMCNMuX6z3pMifeQ1LokhgpjbFAhHN8ZXcWGOCt+aOHkI+gF5SFGT/oZeCxY6MH7MiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NyzL/fsHbv2ZMpapjypAwpDqKVt9wI2RRIACGYLc7rs=;
- b=KojfHfmNVWQqKncuRV9O74EPWfr/hWNlSXUq+e37WjE70f6GkeKieeroCCN2xVLAEy1CPQIPN8aB8bQXealckpmopW5N9h0ZuL8U+pGL1cE5D3qDmNLpXn6iWEdAijxNKj6M6QBmR8nX3oFoxWLgjP2lZPZh52Z02/oPnR4GZDzMENWHEbcWCYuS6aPSeOmAgxIJxS3QzhwQdiUG0tNPTvZh38KETqc0gF5+C+VoeaVJBqvSsgKvguYMdVpflcEuCPDXULbdnXefTsyUSGsybj9iyiubXIezPB8K5KIIvEDt5lMnPRI7h5V1fNkIC+LRjhL6fkQI1S1oce9pncLJCQ==
+ bh=aWZ8ffIeSvzY6psqr+J5rvIUnijaXGHqpT9MFpm21B4=;
+ b=ce+iKSjMF5hcs0BKwmHQlCzWpJj6Mj0xc7Qwfz/zLzFQFUQeZ9z6E/iUJ0ag9idycSgEAB/fiRlfGc6NVcieG3n/U7TMLtAQ2bIv0s9fDcvpTM24EtRA5S8NoB51JRrHT95fOSicd2dPg54IZ9NG5ctOselp851kncJHo1WQ83NR3BBmANXI72tEAsb05jw94dlifFM4aQncsU0nsfZDngXTaSg70zhbqVsPl/lm4SMaD9L9GZZvrZsn8GB8rW2WHji67xEVQ8jKbFapgHOho8Qun2G1ukVsH/oUDkwxv3xJpawt3BoKZif0zpzcPt6U6eBw245VDanU0wWqOl+g5w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=lists.freedesktop.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NyzL/fsHbv2ZMpapjypAwpDqKVt9wI2RRIACGYLc7rs=;
- b=Uppp+0HbVL/EVasMADGjJ9y41hK2UXxP7/zCQD1u92NAozDuqjMDVcI/PP2P99lx6FdRoJfhN262tkZNDQYDzQx1G2r48shNzl7rNKWGOVj7Ty34DpJRLdjBnuJTxAZ+5gNtepp5g4Qxy5iStrZYQtN5lGLV+sKoXO+IrEYnnEQdzSiXrxGcMctq5Hsddg982cZnyl/fHNpoe9pKZFkaIdJ0GSXzhGC/cO9EAgQAFGasizguWoiNvrV5GvFu5Kjs7hg/dHwO6HI5lZbR4E+adM0bFK3X5ySMye6L8vq/Uy9P+uRgwVwKYMo+uR85RQrvka210guUwtRDAk8fbmJNcw==
-Received: from SJ0PR13CA0028.namprd13.prod.outlook.com (2603:10b6:a03:2c0::33)
- by IA1PR12MB9524.namprd12.prod.outlook.com (2603:10b6:208:596::14) with
+ bh=aWZ8ffIeSvzY6psqr+J5rvIUnijaXGHqpT9MFpm21B4=;
+ b=etJze8Pltk0y7hGjAauzQjitfVkRBnjjevQzOQBb/lGQCrGqgUMIr5L4Za44vlqDH52Uetu7CUck93HHrp2zuNqF27s+HKLWPFl4ihP0hl9nNquOkc35OsNtl588ESBCmKryKx8juIZS+2Un50m74mfkxi67Jei9mVOzOCXbR8qrQRstguf2T3VBudubQwR8IvLeAuGfQwY/MBYMO3toj44h0qlr6I+brK9ZDqF0DBMtgfY25C+8iBSlJs0fiM96fEs/gOeububwCCY1PKqfVKy4Y+gHJ7nC5SoNg/vRlVm9GJLn9PwYwAnu7SE4s0SVkHEuKEuZHJ9she/MXn9xEw==
+Received: from DS7PR03CA0190.namprd03.prod.outlook.com (2603:10b6:5:3b6::15)
+ by PH0PR12MB7488.namprd12.prod.outlook.com (2603:10b6:510:1e9::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Wed, 25 Feb
- 2026 19:18:39 +0000
-Received: from SJ1PEPF000023D2.namprd02.prod.outlook.com
- (2603:10b6:a03:2c0:cafe::da) by SJ0PR13CA0028.outlook.office365.com
- (2603:10b6:a03:2c0::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.13; Wed, 25 Feb
+ 2026 19:42:38 +0000
+Received: from DS2PEPF00003442.namprd04.prod.outlook.com
+ (2603:10b6:5:3b6:cafe::3b) by DS7PR03CA0190.outlook.office365.com
+ (2603:10b6:5:3b6::15) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.22 via Frontend Transport; Wed,
- 25 Feb 2026 19:18:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 25 Feb 2026 19:42:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF000023D2.mail.protection.outlook.com (10.167.244.9) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS2PEPF00003442.mail.protection.outlook.com (10.167.17.69) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Wed, 25 Feb 2026 19:18:39 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9632.12 via Frontend Transport; Wed, 25 Feb 2026 19:42:38 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 25 Feb
- 2026 11:18:24 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 11:42:15 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 25 Feb
- 2026 11:18:23 -0800
+ 2026 11:42:15 -0800
 Received: from inno-dell (10.127.8.10) by mail.nvidia.com (10.129.68.8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Wed, 25 Feb 2026 11:18:16 -0800
-Date: Wed, 25 Feb 2026 21:18:10 +0200
+ Transport; Wed, 25 Feb 2026 11:42:10 -0800
+Date: Wed, 25 Feb 2026 21:42:07 +0200
 From: Zhi Wang <zhiw@nvidia.com>
 To: Eliot Courtney <ecourtney@nvidia.com>
 CC: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
 	Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?=
- Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	<nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 0/9] gpu: nova-core: gsp: add continuation record
- support
-Message-ID: <20260225211810.3142ccd7@inno-dell>
-In-Reply-To: <20260219-cmdq-continuation-v2-0-2e8b7615536f@nvidia.com>
-References: <20260219-cmdq-continuation-v2-0-2e8b7615536f@nvidia.com>
+	Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>, Gary Guo
+	<gary@garyguo.net>, <nouveau@lists.freedesktop.org>,
+	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+	<rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 2/4] gpu: nova-core: gsp: add sync and async command
+ queue API to `Cmdq`
+Message-ID: <20260225214207.078e3186@inno-dell>
+In-Reply-To: <20260225-cmdq-locking-v1-2-bbf6b4156706@nvidia.com>
+References: <20260225-cmdq-locking-v1-0-bbf6b4156706@nvidia.com>
+	<20260225-cmdq-locking-v1-2-bbf6b4156706@nvidia.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -92,91 +91,161 @@ Content-Transfer-Encoding: 7bit
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D2:EE_|IA1PR12MB9524:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ff17ca3-e42b-4ef9-706d-08de74a2ae84
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003442:EE_|PH0PR12MB7488:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98810442-1662-40e5-ef58-08de74a6082b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700013;
+	BCL:0;ARA:13230040|1800799024|36860700013|7416014|376014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	24UuwQwqhXw4ROK9AsVM6ySYBHm5U1oTcB1nBHWjWRTAwbPq91u3jgwEaqe4+gyT5FfR3JgfZFgCALlYg9pzz9y+ctJqE+ZuXG7l1/Y24qjEJxFFDj2CjvxQe6MAXl+C4gQpE4lDlH0agHodMkoMaI32LUj4HiG5R1muDYvfjI9mWDyomfjrp0c1mTZMU4FKmcBmdc5QZhPN6bcRCWYfBTzXeWDDE0/ILSFrg69dItPRPEZfcmuXqF+5m1BUd0260mGZvNlCyo3BLtXDOdndspLGKscudSttvkfki/t5q5LCFWet7/W7icX7F7egJDqTYJNEfNdHSgHNjLgLD7+NWPyZox15xV1nTYNMfHCkbmVz9+EhDPhBflDNm/Ana4k3Au835YzQq0FMTyurdQy+Go8ZUrZFLYPTIJY68PWUDlhF1p1ovkRbfPjvlxiPBl8hYSXeOB7c3d1oS7xfF/wKke618dP7LksureoZky8E1ZOzKTdLzcaAXt9GY3PnvLN9r/y5AWNf+pvoxv/NbXgtrJhC32VthUnWaZLGp7g4QPbIcucugav4mLOKL9xdQDL/3s+4yfZsU9JUWwJLt3Lj4zzWWasSOptgOZngou7AWzLVSEmKG3yq8XUM1PJJFjtwDg6CMu3zou+RXUK0RZbYYEJoIZ1NNlmeCJMuXgNlyCzKOLQXT5n/0Y1E0388HHIy2zU9uoU22I5tj2Q57AqevJAYI8HiliKu/FC5wQkoyW73XTmjYgYCDgQkFAVrQ52/JOymGkYumtsSKQ/Y196rmKfKcvLQNoKA4AdhW+dMfHuWENDAfvSXNgU31heXBF1E20sNKcO75C7pNa2EA2xyMA==
+	ndjtxbdJuyqqTaDeVs66ZdVxhCTCrVGMxF6Ffpi3REZdN4IK94YSpS0wALDuvkYBh6Szd2eEHgZlIpT7JNnuJcXUzTyfukc7WFZpqTPG/pDPEnY1vSIFaA9u8PiKfwdmVLQICr5AyiyO2YMfIYiQAOVpnP3TBsPQPlF1lj+ZWIsfUMhoOsOkUlTKbgwILbORsmPhTiBVKsFIpz3HM29uiOa2xXZNsUkfM8lUTtLpzILmJlxjm48pXkUIuGnK2BJE+l7c9rrXBgfjgaDEXqRyuKCeqyPnCFNpsCGELofbrV4VIYKj+J2f2zG/qYrmMXEyFjRIun21EE+TImECTSiKhFPTdBF+YHFwRfQudipTcVBAGh0SbFI4Jc4L05MBZ43Z4ZtF2CZQYJfmyT1Ja4daWXSPZaN1e84vSIOGnbRVRbh+s6ffCNCS33vkX3Lw4vHYkGiY9zKxoIo9s2vWeTUwI4A5rgnF+XDHQY/yxnVCfjoXI6BqYXepur6YDUHBZug3TH0ACQobpv90FF51P2kz1KYHTwl3rcBja+LrRV77qR2APct/6qep5eUGPcqZXWyTGH6830Voj0DaDwyqEIJnz1o52CiJbZ/8RVJnkg5Q/9HFBt0c28sB6fzGkzlqYglkQ39QPrHh9tsSXUXYbzicLmACpfDX39nSfI1Q0rt2M70cF3zKfIIDC5OYIhueJlxAMge71fqPlKJimz2q+s7FROQiZ6OK/W4Sxxyc56nF7XBSXp214abY8TTlr1qvKHxbZ3s82kz/Kqb++WS11k/V2qmm0mLn5dSw7Vy1e0Sf35hr5tkQccqjp1nFFhUUi+gEuz6DkuQ7B/UxCpzGBEfrPw==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700013);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	5pLvKu5nj4LYK9eDzx1Y94qhduApQO0wz/t2H9soIElXjrxFupzOyX4pcgumqSRn7OY6VK+3EZsTFsj4x6pS/zASRtLo6GUYF6JhEUBcyIGlb4h5updKj6GG3CWTQBZUiJGvqb4ksvcGmskSS4oMfY3BfUJthEsUWCZNDmR0omRMZW6OuWnUlyp3Ki1Y1ZJ1l/7E3bvRXFT/XO4qol/dp8jDLCrbCk22ijwNE6Z53NyjhfRNY20Zgjwcw7gLkT0l6mCPB2Dwze0EGOh/mx3CDhF0AIZ1N7K4ncTyZvBSTZnQb4PWPzo59TtVOygsfslDwFJe15k8pE82l6/bC9j74J0VqIvXL9VqeWByGoD2O7RBsJmMEG7K5jJnj4MmpQXdvWFFNavG1441P2a1MbNFgPscN2pSmI/mIK2S05pS7OBe573+a8qp1LTWNJH//T56
+	SsfXil10nOppsThTyvMG4TdXaOhqi7L7FtRa0r0BoNmclFR0nv+IpuY/mT616vwfFBpOj+xXh67C9216CqkpGXOP/yWymtcvfZSwJHItBqmt1Dpx/FpjJlIu7fAoMvQ6lHAKdcv0mUhhQJgiGzu1vRk0jcg4AIXeu+72Dk5YFbX47n2uvLxJmuv+IZIjFbrpNk5oRENwSRsnExKufWiv4HxvKVcy/UTJ2FcZqHZoaK06Yd/LD0hMN0IQ6wBa1T+ZwzEvV4qUYQezJHpXhAPwyAFcgNCP/lgnWnutT47HQmnyJ769ehU5X34Q6D34XjfsKlPFqu5BM1gdsZdL3bV3Zq+1L2I45wHGfcgFnX8XGxHz7q3Uq9IZLVTonocfaBIJsZS298w+e/EsYK36bjmRguz9bB6mkpOw1zcYjR3evhEZ0fqaNU3m+l3qYedNHGk4
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 19:18:39.4360
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 19:42:38.2214
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ff17ca3-e42b-4ef9-706d-08de74a2ae84
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98810442-1662-40e5-ef58-08de74a6082b
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023D2.namprd02.prod.outlook.com
+	DS2PEPF00003442.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9524
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7488
 
-On Thu, 19 Feb 2026 16:30:49 +0900
+On Wed, 25 Feb 2026 22:41:49 +0900
 Eliot Courtney <ecourtney@nvidia.com> wrote:
 
-Tested-by: Zhi Wang <zhiw@nvidia.com>
+> Add sync and async command queue API and the type infrastructure to
+> know what reply is expected from each `CommandToGsp`.
+> 
 
-> GSP commands over 16 pages need to be sent using "continuation
-> records" which essentially means splitting the payload over multiple
-> commands.
+snip
+
+> +        loop {
+> +            match self.receive_msg::<M::Reply>(Delta::from_secs(10))
+
+It turns out here the timeout is changed to 10s from 5s which was used
+in other places. Any problem you encountered during the debugging?
+
+Z.
+
+> {
+> +                Ok(reply) => break Ok(reply),
+> +                Err(ERANGE) => continue,
+> +                Err(e) => break Err(e),
+> +            }
+> +        }
+> +    }
+> +
+> +    /// Sends `command` to the GSP without waiting for a reply.
+> +    ///
+> +    /// # Errors
+> +    ///
+> +    /// - `ETIMEDOUT` if space does not become available within the
+> timeout.
+> +    /// - `EIO` if the variable payload requested by the command has
+> not been entirely
+> +    ///   written to by its [`CommandToGsp::init_variable_payload`]
+> method.
+> +    ///
+> +    /// Error codes returned by the command initializers are
+> propagated as-is.
+> +    pub(crate) fn send_async_command<M>(&mut self, bar: &Bar0,
+> command: M) -> Result
+> +    where
+> +        M: CommandToGsp<Reply = NoReply>,
+> +        Error: From<M::InitError>,
+> +    {
+> +        self.send_command(bar, command)
+> +    }
+> +
+>      /// Wait for a message to become available on the message queue.
+>      ///
+>      /// This works purely at the transport layer and does not
+> interpret or validate the message diff --git
+> a/drivers/gpu/nova-core/gsp/commands.rs
+> b/drivers/gpu/nova-core/gsp/commands.rs index
+> 1683ebb4c685..b42e32dcc55c 100644 ---
+> a/drivers/gpu/nova-core/gsp/commands.rs +++
+> b/drivers/gpu/nova-core/gsp/commands.rs @@ -26,7 +26,8 @@
+> command_size, Cmdq,
+>              CommandToGsp,
+> -            MessageFromGsp, //
+> +            MessageFromGsp,
+> +            NoReply, //
+>          },
+>          fw::{
+>              commands::*,
+> @@ -53,6 +54,7 @@ pub(crate) fn new(pdev: &'a
+> pci::Device<device::Bound>) -> Self { impl<'a> CommandToGsp for
+> SetSystemInfo<'a> { const FUNCTION: MsgFunction =
+> MsgFunction::GspSetSystemInfo; type Command = GspSetSystemInfo;
+> +    type Reply = NoReply;
+>      type InitError = Error;
+>  
+>      fn init(&self) -> impl Init<Self::Command, Self::InitError> {
+> @@ -104,6 +106,7 @@ pub(crate) fn new() -> Self {
+>  impl CommandToGsp for SetRegistry {
+>      const FUNCTION: MsgFunction = MsgFunction::SetRegistry;
+>      type Command = PackedRegistryTable;
+> +    type Reply = NoReply;
+>      type InitError = Infallible;
+>  
+>      fn init(&self) -> impl Init<Self::Command, Self::InitError> {
+> @@ -183,6 +186,7 @@ pub(crate) fn wait_gsp_init_done(cmdq: &mut Cmdq)
+> -> Result { impl CommandToGsp for GetGspStaticInfo {
+>      const FUNCTION: MsgFunction = MsgFunction::GetGspStaticInfo;
+>      type Command = GspStaticConfigInfo;
+> +    type Reply = GetGspStaticInfoReply;
+>      type InitError = Infallible;
+>  
+>      fn init(&self) -> impl Init<Self::Command, Self::InitError> {
+> @@ -236,15 +240,7 @@ pub(crate) fn gpu_name(&self) ->
+> core::result::Result<&str, GpuNameError> { 
+>  /// Send the [`GetGspInfo`] command and awaits for its reply.
+>  pub(crate) fn get_gsp_info(cmdq: &mut Cmdq, bar: &Bar0) ->
+> Result<GetGspStaticInfoReply> {
+> -    cmdq.send_command(bar, GetGspStaticInfo)?;
+> -
+> -    loop {
+> -        match
+> cmdq.receive_msg::<GetGspStaticInfoReply>(Delta::from_secs(5)) {
+> -            Ok(info) => return Ok(info),
+> -            Err(ERANGE) => continue,
+> -            Err(e) => return Err(e),
+> -        }
+> -    }
+> +    cmdq.send_sync_command(bar, GetGspStaticInfo)
+>  }
+>  
+>  /// The `ContinuationRecord` command.
+> @@ -262,6 +258,7 @@ pub(crate) fn new(data: &'a [u8]) -> Self {
+>  impl<'a> CommandToGsp for ContinuationRecord<'a> {
+>      const FUNCTION: MsgFunction = MsgFunction::ContinuationRecord;
+>      type Command = ();
+> +    type Reply = NoReply;
+>      type InitError = Infallible;
+>  
+>      fn init(&self) -> impl Init<Self::Command, Self::InitError> {
+> @@ -354,6 +351,7 @@ pub(crate) enum SplitCommand<'a, C: CommandToGsp>
+> { impl<'a, C: CommandToGsp> CommandToGsp for SplitCommand<'a, C> {
+>      const FUNCTION: MsgFunction = C::FUNCTION;
+>      type Command = C::Command;
+> +    type Reply = C::Reply;
+>      type InitError = C::InitError;
+>  
+>      fn init(&self) -> impl Init<Self::Command, Self::InitError> {
+> @@ -410,6 +408,7 @@ fn new(len: usize) -> Result<Self> {
+>      impl CommandToGsp for TestPayload {
+>          const FUNCTION: MsgFunction = MsgFunction::Nop;
+>          type Command = ();
+> +        type Reply = NoReply;
+>          type InitError = Infallible;
+>  
+>          fn init(&self) -> impl Init<Self::Command, Self::InitError> {
 > 
-> This series adds a command type `ContinuationRecord` which just writes
-> its header and whatever payload it is given. It also adds types
-> `SplitState` and `SplitCommand` which support splitting a large RPC
-> into smaller ones while transparently letting regular sized RPCs be
-> sent without extra copies.
-> 
-> The send pathway uses `SplitState` to send all commands, but if
-> the command fits into 16 pages, it still writes directly into the
-> command queue. If it is larger than 16 pages and needs continuation
-> records, it writes into a staging buffer, so there is one copy.
-> 
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
-> Changes in v2:
-> - Added doccoments
-> - Renamed driver_bytes_available_to_write to driver_write_area_size
-> - allocate_command_with_timeout merged allocate_command with timeout
-> parameter
-> - Replaced hardcoded GSP_PAGE_SIZE * 16 with bindings
-> - Changed oversized command error from EIO to EMSGSIZE
-> - Added EMSGSIZE to kernel/error.rs
-> - Split WrappingCommand functionality into SplitState + SplitCommand
-> enum
-> - Made max_size a const (MAX_CMD_SIZE)
-> - Removed send_continuation_record + added comment for type inference
-> - send_single_command now consumes the command
-> - Extracted command_size + used in SplitState 
-> - Link to v1:
-> https://lore.kernel.org/r/20260212-cmdq-continuation-v1-0-73079ded55e6@nvidia.com
-> 
-> ---
-> Eliot Courtney (9):
->       gpu: nova-core: gsp: sort MsgFunction variants alphabetically
->       gpu: nova-core: gsp: add mechanism to wait for space on command
-> queue rust: add EMSGSIZE error code
->       gpu: nova-core: gsp: add checking oversized commands
->       gpu: nova-core: gsp: clarify invariant on command queue
->       gpu: nova-core: gsp: unconditionally call variable payload
-> handling gpu: nova-core: gsp: add command_size helper
->       gpu: nova-core: gsp: support large RPCs via continuation record
->       gpu: nova-core: gsp: add tests for SplitState
-> 
->  drivers/gpu/nova-core/gsp/cmdq.rs                 | 118 +++++++---
->  drivers/gpu/nova-core/gsp/commands.rs             | 256
-> +++++++++++++++++++++- drivers/gpu/nova-core/gsp/fw.rs
->    | 106 +++++---- drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> |   1 + rust/kernel/error.rs                              |   1 +
->  5 files changed, 408 insertions(+), 74 deletions(-)
-> ---
-> base-commit: 956b9cbd7f156c8672dac94a00de3c6a0939c692
-> change-id: 20260203-cmdq-continuation-b99f3d5966c3
-> 
-> Best regards,
 
