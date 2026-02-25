@@ -1,125 +1,144 @@
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E17A2D595B
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Feb 2026 19:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40F42D876A;
+	Wed, 25 Feb 2026 19:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772048758; cv=none; b=GzKMjkCuSUZrLxs9B0QMxrYP9V6HKIebPSr7/1NCXJQ+TXD3/yZsqeqRn5+k7GV2OGldEue/3JI5lSFe16IunjwgS49T0QwjLeJNmMGH37diKqvFnLXDcD4/ifToMruL8Rx2PinPWRPr2Sq6Cw8tiaqFl6CSkGT4G0zaKAaam3I=
+	t=1772048922; cv=none; b=rTaR3bVVbsVmOR5GW9t6WHSE8HrIBQdmtaRt0uipCYN1j8ZA1VmXXh+tZ1sPl7fcyKI8ZDmQwYu854evpsD+Gx++4oWnKaCk0Z/lZ7B6x8xF1S8IR69uRyfWHTtAmLG5r4cI7XpDtu7JVzMAIwVzhzNgKJf5wcb54phbQtkw0Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772048758; c=relaxed/simple;
-	bh=foRzQxT8CkgOXWqmcR/feMK9MJqjzyf7PRMHFJtRYSY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WMXOSpYigklwFQv/QERvP8OizeO3waH115m+UKkctxGQtdACuOg7sPzk0Qgo0zG9VR+y0J7QwcNBobAn/5V7WSTlUd4sOi7DSVacNmmX1LTqrBw8YfTw17TP7yquBT/42aswF4pPBEzsECeYMckxz5k40oTs0Adq/6svZ+5MQWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TBFb6Cis; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772048922; c=relaxed/simple;
+	bh=K2Thy+cfo8IGrm9J3gFlrop/sJOrdHourjqbZe7bYVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JOuPELPAEb+txM9LaWLYf6mLDqF4IXcumzkjX8DH1eXufdDW5qSaWptzTClBX52VQx/M+FbB+x/2Y6MAjmHuMe8a+Hda9PtsCVixxlttGzybZrVIzFkJKWYVvPsGCG4kuTifPoLUK0Mq+3/Jqik7WuWuae8UN6uRp6GXhCjdHlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OpKsM8iT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TBFb6Cis"
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-56a8a20e6e6so63690e0c.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Feb 2026 11:45:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772048755; x=1772653555; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sFGINhiINX8MAdKqo1ZviH2yexjx3PwIBTKhQwKzVYw=;
-        b=TBFb6Cis5L0AHOTcvxrW/esgvqp3FGgBWiFmv+GIt59uOhpDFFZd8Aivf7MeSMl4s8
-         +W2Xw4WNKqPiJHVVlJT8WM1VkZAAjaX2JmAv7iiVo63Tw8E14Y7YrPlIJrixcg6bWHM6
-         Gou6eqkgP+AKoB6sfhpZnR7i5m36KvrXqUXE7JpPpMrLvVBkgICPGcwcSmJYM1sRktJw
-         FGtKCjZXICgrpAk5gkRGAflSNPfk7K/wekfP3yHmHfusvUeHT3RWTe+7lLjfBZbV48k9
-         xHBW6jhpFQPyjODZVppt7suRYx5A3Q17b2iLwgHOGdO1zB9Mgx+nG0XgR7VczcZWoOQ3
-         DmyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772048755; x=1772653555;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sFGINhiINX8MAdKqo1ZviH2yexjx3PwIBTKhQwKzVYw=;
-        b=jcHXUmMy0+fSV0C1aCtZI457OnxORQJ4QmFT7zaYygMXF1KBrRwrnD8+JoSOqzToju
-         tbTBE+2OXkJHseMwwCplmBb36epP2vA/oVX8KY368SBUENvU8fp9jiIvG0iGNLbd8L7h
-         kSeZfKxEUjBeDQIwOArzOej8A9f0QfM9uh5XZlu9vXZDmXzXIQfRgAKXlSa7DoTI2PzX
-         RdSzhWyUov+w91ZdlIz3KVWthIV3yO2qiRHiRz7kJ1rMta6eQlpD3RAbpBhGhpuQGgsd
-         A94ffTypFIIo/R8iUc0S2D8rL3dciPY1UVJNRl3Q7UHtcVshlE/hEGMqWHXE5h0b6cWe
-         k1Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOdlXFD9cwE1upgxE/4lngmDYb1Dg5qDhPgzmm+oZK8eyYyx2QpOLNJB75RzKl2HIc52ZlJLzFn0PiPhU86w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqFIuVDsWDPWd9uVkuaetXkuKwDTQoRzsBZcKKIgMV1iqGGjHz
-	4ZeTYzgsS7w2tn8nXmQbOEiqNU06rWT/X7Eq2D0TiqVbKbF4E2MgFPwc
-X-Gm-Gg: ATEYQzxvv+L0wU70glI0eB42NicKTOUlScK7sTdSrzFgYV+/b20JVs/nrdUPeRpzMPT
-	z6KuGsxOUXq8xxQykRtSrdyNMjG0OcNc2K4eXohkLjV+uCt0CZ/zXYrFKJdkLDE26TWwnd53g5R
-	1NjXQRmqc6hMtyFppHvbPns1VF/7zTVGHxJVUoc3r8iXNH2iKw6O/EKgKU9t7wp5ynQ1/nlRUBh
-	8kP1mG8pMsGcdPld0kQgoxMJajC6ayIp7x9A0YEGNMO3/QpdKeEbbiX7P1FuTMPx71oXmtsZ/In
-	ApcuhLUmv+PYJn9Lu4+FRtZDgOfrzB09Q38tSPH7+JJJ7cJ4WESEEBxW0kbkL0TEfRkFDz6LBfI
-	/wOBaAPl7uh6oAAnjbYesxEqZyra9p45ZvoFcGTzewMqEpOfk7eDghqPQFMMO/NrsmxNOUCVP6w
-	o4U+kZ4rZFQGbp5ygZRKk9JZFomMoY2hjRH56GRNxrcxtpxa4ZLs9vn8KLVRX7BM2ZocjADiA=
-X-Received: by 2002:a05:6122:e448:b0:567:4aec:a27c with SMTP id 71dfb90a1353d-568e48f3255mr7001990e0c.17.1772048755348;
-        Wed, 25 Feb 2026 11:45:55 -0800 (PST)
-Received: from fedora ([190.142.206.42])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-568e591c266sm18023919e0c.15.2026.02.25.11.45.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 11:45:54 -0800 (PST)
-From: Elsanti <santiagojoseleal27@gmail.com>
-To: brendan.higgins@linux.dev,
-	davidgow@google.com,
-	ojeda@kernel.org
-Cc: raemoar63@gmail.com,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Elsanti <santiagojoseleal27@gmail.com>
-Subject: [PATCH] rust: kunit: implement test attr filtering without extract_if
-Date: Wed, 25 Feb 2026 15:45:43 -0400
-Message-ID: <20260225194543.1542668-1-santiagojoseleal27@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OpKsM8iT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1245CC116D0;
+	Wed, 25 Feb 2026 19:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772048922;
+	bh=K2Thy+cfo8IGrm9J3gFlrop/sJOrdHourjqbZe7bYVM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OpKsM8iTP+Ar1Wf7dzecNATnhVKbSyGteQq7w4VAJMzi/nH4aIJIWvhQ0VqhpqFem
+	 ARKsahKUO3xnVzOkurrPKQV5dk3OhEscaqaWiIBfKmvjR4d1XgbsCHJrXzw4GkrEEt
+	 /fmSASYSs7TOhKkH+/VuXkeMIvs+Ivw1cHd5XnjhJEdLwifv08sHfEsRekneDuLrbJ
+	 sII96zHGA2jjBnXcnHSmOfIYKuDGk0Tmj/VD19ucvoLak7hgXrgPm3otJuT4MEz2cI
+	 J4fSkXg1Zxb6YsmwALV0qOcntbpBq/DucFpgL5Y68sqJ67XF0AKf6bdqJyQULCF/zK
+	 0y/e66pvIDX5w==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 316AAF4006B;
+	Wed, 25 Feb 2026 14:48:41 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Wed, 25 Feb 2026 14:48:41 -0500
+X-ME-Sender: <xms:GVKfaaAi8FIFLztlmdfvgB7vzzc3XD7KIg89Nj_ZMQwwrbv8Pq2MGw>
+    <xme:GVKfaTy2kN_Nt-Gn6hXzIO39R4wDEKotJiizDpxyng5BwNq0x2fQFjxyU51oJ5qD-
+    f2R6Vs-tvDVsnJE-UEm96Z1SnUF9UMlBrpJDHX9FIOXKk1U5cCWAA>
+X-ME-Received: <xmr:GVKfaQZ0BlYytldrVEl31YtcBp_qRAYo8mTUzx7hstHzBQaScQdyop8_0vRNbRbug7epLg7MpqKisi7Oq9zwb_XKzHoVp09K>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeefleelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
+    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
+    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggr
+    khhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnh
+    gvthdprhgtphhtthhopehjohgvlhgrghhnvghlfhesnhhvihguihgrrdgtohhmpdhrtghp
+    thhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghjohhrnhef
+    pghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:GVKfaQSiVhNb9SrGJn_CTx9vf1ZU2IMu41EAY5tdXFJqPqzr4GiFuQ>
+    <xmx:GVKfaTjcbhg-i6wzn70Ry3IJEhTQqIcP-VC2mjxL6xUfQpQYCEg-hQ>
+    <xmx:GVKfab5isXBVPZ5SYxZcriOhneMhiwO1A1Q3SGWb4M1HXo9YqPOOJg>
+    <xmx:GVKfaemleS5ZHYf_i3ltJvPXSacnPLLi87pWLpGFVQjTUzb89WBN1A>
+    <xmx:GVKfaUPkGWkeMqgMLmVjjh6cRjeOMSqWN-aLXyqxuz75riSutrAvH9Yq>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Feb 2026 14:48:40 -0500 (EST)
+Date: Wed, 25 Feb 2026 11:48:39 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Joel Fernandes <joelagnelf@nvidia.com>,
+	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Koen Koning <koen.koning@linux.intel.com>,
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>
+Subject: Re: [PATCH v10 5/8] rust: clist: Add support to interface with C
+ linked lists
+Message-ID: <aZ9SF5ql6OCdaFi8@tardis.local>
+References: <20260218205507.689429-1-joelagnelf@nvidia.com>
+ <20260218205507.689429-6-joelagnelf@nvidia.com>
+ <DGIWDQTR76Y5.34L9IHKU2SEKI@kernel.org>
+ <eadfa4662f403fa01f19c1c17a435c1a@nvidia.com>
+ <15a193fc-b2b9-476e-a9f6-57e3a210b74f@nvidia.com>
+ <DGJ2TNVD8AS7.2P0HYYKKE8CBQ@kernel.org>
+ <4ad9fd6598e2688c88f6ef22c088c683@garyguo.net>
+ <DGJXYEXCYIII.Z6FOAA8YYMAZ@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DGJXYEXCYIII.Z6FOAA8YYMAZ@kernel.org>
 
-Replace the TODO-only removal of #[test] attributes with a
-retain_mut-based filter that works with the current MSRV.
-This preserves test detection without depending on
-Vec::extract_if and keeps the generated KUnit wrappers correct.
+On Fri, Feb 20, 2026 at 05:48:37PM +0100, Danilo Krummrich wrote:
+> On Fri Feb 20, 2026 at 2:09 AM CET, Gary Guo wrote:
+> > On 2026-02-19 16:24, Danilo Krummrich wrote:
+> >> I feel like it makes a bit more sense to have an entry for the entire class of
+> >> "RUST [FFI]" infrastructure.
+> >
+> > I don't think so. Most of the kernel crate is doing FFI. We have a `ffi` crate
+> > defining FFI types, we have `CStr`/`CString` which in Rust std is inside `std::ffi`,
+> > etc.
+> 
+> The idea is not that everything that somehow has an FFI interface falls under
+> this category, as this would indeed be the majority.
+> 
+> The idea is rather everything that is specifically designed as a helper to
+> implement FFI interactions. (Given that maybe just "RUST [FFI HELPER]"?)
+> 
 
-Signed-off-by: Elsanti <santiagojoseleal27@gmail.com>
----
- rust/macros/kunit.rs | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+I feel like you may want to call it "interop" then, because it's "Rust
+doing something with interoperation on C data structure". If I
+understand you correctly, the category you referred here is the area
+that we could not simply call an FFI function to get the functionality
+from C side, but rather we need to make sure that we are interpret C
+data structure correctly to work with C side.
 
-diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-index 6be880d634e2..e064419bfc10 100644
---- a/rust/macros/kunit.rs
-+++ b/rust/macros/kunit.rs
-@@ -87,10 +87,15 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
-             continue;
-         };
- 
--        // TODO: Replace below with `extract_if` when MSRV is bumped above 1.85.
--        let before_len = f.attrs.len();
--        f.attrs.retain(|attr| !attr.path().is_ident("test"));
--        if f.attrs.len() == before_len {
-+        let mut had_test_attr = false;
-+        f.attrs.retain_mut(|attr| {
-+            let is_test = attr.path().is_ident("test");
-+            if is_test {
-+                had_test_attr = true;
-+            }
-+            !is_test
-+        });
-+        if !had_test_attr {
-             processed_items.push(Item::Fn(f));
-             continue;
-         }
--- 
-2.53.0
+Regards,
+Boqun
 
+> For instance, this would also apply to Opaque and ForeignOwnable. But also CStr
+> and CString, as you say.
+> 
+> But there's also lots of stuff that does not fall under this category, such as
+> pin-init, alloc, syn, num, bits (genmask), fmt, slice, revocable, list, ptr, assert,
+> print, arc, etc.
+> 
+> There are also things that are more on the "partially" side of things, such as
+> transmute, error or aref.
+> 
+> > I feel that the FFI infra is the core responsibility of the top-level Rust entry,
+> > while specific stuff can be splitted out.
+> 
+> I think the core responsibilities are compiler and general design topics, such
+> as abstraction design, (safety) documentation, etc., as well as core language
+> infrastructure, such as pin-init, syn, alloc, arc, etc.
+> 
+> Given the definition "helper to implement FFI interactions" I feel like we have
+> much more infrastructure that is not for this specific purpose.
