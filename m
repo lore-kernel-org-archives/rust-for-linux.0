@@ -1,408 +1,160 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012013.outbound.protection.outlook.com [52.101.53.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE6F21770A;
-	Thu, 26 Feb 2026 21:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772142149; cv=fail; b=jVPeRmjGdykGfCf+FH+1jvuXVpzNvymWOD7lPZZaU7Lw4XHsrNE+HX3m1yEDe/VL2c1C09DG+TBj7+wz3eYPlMUPPP9l0JXfkNKOMDAlG3gprEYpjAvqyUAW43ZkDxXL+yNJ2nXiJ27LSO2phJJkap8xvHxfHVGOR+UZpJKU27M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772142149; c=relaxed/simple;
-	bh=YCyqya1KQQohItAUGTfqv7jIdLf40MuUXCvCVhbM07w=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=aHrYSMwJ3PFQ7kITCKnhTB6cnWySO1y5JUN6XLtm3caFzoE+KPleyBGhzmCWJe/eL6ddqJAOcE4jVKgWr8MKC+vc9OJIU5158cnbXuK8806JCwv2cQ8fcPYECnvyC/+vfeQhEQEoZ8FnHTMQnToqN/fXwdPjXiiO0r64XkIfz8M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GY+BN0JB; arc=fail smtp.client-ip=52.101.53.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7F7322B96
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 23:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772149659; cv=none; b=sKq7a3Yh3oS6vN98gdIe2SLR+02X9zUWA+OXVLV2TjJz0Dsm78GSrG5b3L1542WECf7uQmGjnagUihTzljYrGrNMTZcr300qFLCH20bCCW5UTnCQYqe1GcM+ooLG2OsdpnrkaRtUB7XngZYZS76H5A+vUzVkR/jJqRymR4GVP3Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772149659; c=relaxed/simple;
+	bh=2JZ14oqyop+OfbJKe2VgqDVfV2Lq3g8h2Qdja2yt5Oo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SfIQRLbO3qLsoBC26McD9p0fYL+Iax+yy/NrxdRGMCyMSwVZu47zoRdJuCO6JmtuADn08TInkbBS0xv1DM1tfr0UOHv2K9FYXf9qzoaOdJhACb3HEZ+KtWf6X/GxDodKS2YKCik5K/SRjDKzN4SG2jjfRofcOJWDQ5lYnSEdSok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ENCSd3cU; arc=none smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GY+BN0JB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v6qzhaVYSgk29phNT1luIfMTQgzi6zVaRbn1egf6HLWbH9/tOEv0dlZzNZnWJ6whvUc0ckIrCh9GbB/mhrFXuTGEzJR61YqxTU7ZUmrz/Kh/1jz3mq0WNv5WFmutwkO0jITaczNQtNt/+X1Dy9iBd9LERMZEEyV27HJFKvLwt5DOlCSn+r0b8aiorSaF+AN/70cdMzfdbbQvtaPGsM4ISzt6+dnMrnYG869sJ4bPZsWrOdsBrQE4mAG1Y7NAD3mDOw0urf+TX3M1gsfVlpVK1wnaw/+a/7LGpfFPs3SGLHbw1lyAtlMBTpCb513GP0lci7FjB86+yZYtYJLA6fXPfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9KYm4ebBoksMpM4lfq6kefecUbVPORV6wcmKADp3RqE=;
- b=RfLEwJXPbOxN3eDR4pLWa8AwfXjm/axcSAVCoSNdqnap9monprDeju8BWSqof6AXNNbkXoCvlFP9LBZTf6b2mdeBTLhBv0c6NDnckp+4uKlNGNfu2E8oDpyhZrXSU6LIAVkPXTc2WuJl8PtDjKjMgrgrmV+sfCjfQBt3RJsUr+cwXKplsMtHYYpAMvWG23iULEmZ+2eXMNNQxLsPEeNe7fTVVLRIDeTpFNiuRIEPTYOUDMU3ZEfRtyeCXhV1b+UGVkW2+OM8uQv1aslqHuKWDISOU8Az2hCz6t+4+w6IzSvHEBuajVR56ZuVFL06mYkCo+QvlXwN83h8RNK4jh8LyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9KYm4ebBoksMpM4lfq6kefecUbVPORV6wcmKADp3RqE=;
- b=GY+BN0JBxX0y/OVaCAuqg3vwZ2bKxM4hPCAszWooQ5J8331jWXj9/pk750RTSJJ97k4GN0idLLvL6i3FgOZ2jQRzCx/+8oZCtU3tayDEICyv+LXucHVKmNVI3RVV5av3OL3RyexST/Bf5d0BErsFyXBvLFkQlle73J7QyK/fUj1HQHZ95TlowUXms/DDjTxRVnot2pTNi+Xeci+pNvsv4BX6pUnNKsVXO4my2AVCCjNq18yfBdWl5i98SKGRUyScZROUh8NgULYV8PTYcJ13pL7yeFDULxM+hP1T509SOsLDYb0wkn6UaCTjDqk9p52amN4QMIC9NvxqvP4JHgSVLw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- DS7PR12MB9504.namprd12.prod.outlook.com (2603:10b6:8:252::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.14; Thu, 26 Feb 2026 21:42:15 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9654.014; Thu, 26 Feb 2026
- 21:42:15 +0000
-Message-ID: <3161a017-a9f8-465c-b4dd-fef085d75b98@nvidia.com>
-Date: Thu, 26 Feb 2026 16:42:11 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 4/4] rust: gpu: Add GPU buddy allocator bindings
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- Nikola Djukic <ndjukic@nvidia.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Jonathan Corbet <corbet@lwn.net>, Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
- Helge Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- Andrea Righi <arighi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
- Philipp Stanner <phasta@kernel.org>, Elle Rhumsaa
- <elle@weathered-steel.dev>, alexeyi@nvidia.com,
- Eliot Courtney <ecourtney@nvidia.com>, linux-doc@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20260224224005.3232841-1-joelagnelf@nvidia.com>
- <20260224224005.3232841-5-joelagnelf@nvidia.com>
- <DGO4BIQ6MQ9Y.KB3JJQI71ETU@nvidia.com>
- <eff888d1-2caa-45bd-a611-e5772ee94e1b@nvidia.com>
- <DGOJDXWDOJD0.2J6NENL44SQJJ@nvidia.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <DGOJDXWDOJD0.2J6NENL44SQJJ@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR13CA0006.namprd13.prod.outlook.com
- (2603:10b6:208:160::19) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ENCSd3cU"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1275750cfc7so2116660c88.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 15:47:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772149658; x=1772754458; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/k9W3puS9VlvVSvbP2i2HOOhKsYSW79uIt5oIhUdqFY=;
+        b=ENCSd3cUnMGC1ERlOrIePmspmhoZmbfuT66oU4+H3HFMbQ7Zrv5Mi711Y3YzsB2sNn
+         DYJBxyL18UrykZbkVR10gESg6yOhLa0m2itDCSv7rDMyEbQcm5exnfXI6gugOZkFRL+W
+         O4aoALh4Fl303a7aqKCGjyCjtMcfuqvVROO5PGmgXu4UYnb77myZ1Qf5KLVwruvD64Z8
+         AClqDPXoeIvsA2GAyWstZKGKYyr6dJFaevuWhW2omHdzPgcJ7NJ2JLUxWa5Ot0uvzHI5
+         ZlUYbeQh6UpwckSfLe0sAKyAHEVsQ36S4BFXERPnsuDXcXJRerPszYJsV/fWWOjU4TK/
+         rupA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772149658; x=1772754458;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/k9W3puS9VlvVSvbP2i2HOOhKsYSW79uIt5oIhUdqFY=;
+        b=KPS4ynF4oSrYuHTRu8adVBAggIXw9FPuQbkyt8d2G1YFtxc13sSkwtXQphvU3OGlsd
+         mimCTFoiJ3kpNYHCBOQWwjVJAFqYTdw3c4tZJBGQWyvtifFKRHXU1kvxAsXAPU5OusFw
+         5/qHhTT3f/4rd+BZVNEtiZ6ZDrakZ1BAxOWkxC6rOBXYNjv7de5L4Viybh5Hv/NHitr/
+         21d8Sl1/t4HlrLE1haANCeSPmV66JWQ1L3Ijixz6O2tcPTn8MOCOwSLqVw+6UXIHleHL
+         osY6uTFhdblUHafv+cNRopsl4F+XG9Pl7wrSi2Zmfp7tiOx3qMWBaWZe428pkdYEPxSc
+         WLEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWHbwXMABbJGCpwdEo9C1G3odBVSB4NZ1YHSfMkPwerEIXwBxpOt74s+gDUnWqRIZbGlJF5yKdObCZ6673CWQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIU3CFJ6MORH+xHxc6cAKpA0/eNg/Sunqx+T39bFHmoilICV7/
+	lcT5MZ/ux6bni8SI9+N2QRgblQUqfl7Tlljs4rANvlBUUwbgAUzKS0eR
+X-Gm-Gg: ATEYQzxQb5NE8TT5F4rOH3r1VfFXOyMXjErgflLrE1mKszXQyEFytrvgQku4PNxekBK
+	5Ozb+3DkkOSmeKwsNtd9pWV7eJBSIEk2QX8cDgV9mHAuF2kB7cdzNakXzq7YWEWvKrGNYiQHe20
+	WR1/1QWo3Oat7feaGmVlbVoe33/GIj/MdXureMLw0aYcKRBh+gB1Rmrd3YQx4uoPoYUZBJirvha
+	CjjcmnG8pjuyD5mkiE7flop1ve2cehIW5zYAqHJXOPVStEqS4QVG40+20YpGv4Gj4UiXpIpWqey
+	bs0qVFWCGv5jrpTJDdGRBcMLfMZ1ujceT4cvjzgb5av8wae4vm1auGZswE8Thm7UQ+t1s0e+8gO
+	NmBxSkoQPMEsPRBQb6OjoPOrIPERj44IqGvJGYzGAclkzcr2O9DbjhpcjTKC0L3KQDgyD6W/zvG
+	B+uAc1BrA+EsN7vmViggznjGUzwA9bV7XwXCVMtzIfeLsSQqpJwhC9Cl5/k2mWDKSpPTPcOdsSE
+	Q==
+X-Received: by 2002:a05:7022:4583:b0:127:5cda:fb7d with SMTP id a92af1059eb24-1278fc2c5fbmr491113c88.6.1772149657533;
+        Thu, 26 Feb 2026 15:47:37 -0800 (PST)
+Received: from localhost (99-122-55-39.lightspeed.sntcca.sbcglobal.net. [99.122.55.39])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-127899df391sm3990909c88.5.2026.02.26.15.47.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 15:47:37 -0800 (PST)
+From: Matthew Wood <thepacketgeek@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>
+Cc: Aaron Tomlin <atomlin@atomlin.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	David Gow <davidgow@google.com>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	linux-modules@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/8] rust: module parameter extensions
+Date: Thu, 26 Feb 2026 15:47:26 -0800
+Message-ID: <20260226234736.428341-1-thepacketgeek@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|DS7PR12MB9504:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91f910d6-5a09-470a-cea3-08de757fe867
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	NSTo+07b5mMuu7NPp5XLuJCbMQ+IHTsBJH6eebjyWFFkM2u7+jq8hocUCghOFZkgQ51hS7qrWxNyEUOyBgqfiSCAlbTJkLaT2+QtSc5ViV8hKEHdZytVQTo/3oL26wFPK64KWFtqo8BaiQguiGVqSrkzsHS1S6tzp6M/NN8XlfHGEywTzYZC8LMN1knO8+1ntNesQs8A9flkc92UpK3WQRlu1wpwLVUceH2UfiYORPK/dgQ2CpOUC+NnvOpRaP0Z7izEtp2Mkg37/XAv8q5UzVyNGM//QygZaRcAk3/mfDZQTpTCYCqaTTFvwH/35v+iRablSuAm+dZRtS51tn13pOtlmBr+vtjw8mMk/qhJ3NqMgVjhdg4xjuwmwBb+YDott8r0t7c4wr+ENLUG5FCEQ915yVkjcGhNJApRJGtBCUw0Pz3q08QWwAaQeXj0b2WzyQW3FtGOkow05pZc0XaowLK9N31cVjYJB5clkT8iM0w/dJ24f8cXcXnF++hw1W94x+NYsV4/DhBtpqoI3YLigedJ0Sd0iDYiYEcQSxlXXD2DNV534wAvfa7OtoEtTwOhRFiULJLorBx6EmbSY/0dYz4Oiq1rpK0XsEPW9MsRAynk9O9jRpv1YrMjDL9avk+m0fD86AU8Tr7qZifDG3NGyhGbHXtATUwZhhR0v+CO7Wq5RrDd+XhXh+0nT67hcWkBjplzhH3r4DssYeSKdwmES8PKBYGYjiN4coANYCagokw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b0lGR1Rkc01TYXpQVjhHbkJHaGR5ZE5tN29PT1BEUDBFTWFYZnNmeVlEN1NW?=
- =?utf-8?B?SWdQVjBuQVkxMWNCVTFkbVRnc0xtMGp4WWRYRGNrblZSenF4eVFaYjlYc1ln?=
- =?utf-8?B?TUQvQXhQK1cyTC85YnU1VXBIMzFKVGNmckZJRVo2bTNQY0hmY3NIeWU3Ui9p?=
- =?utf-8?B?d2kwU3FnQnVaRTNjSzB1NmREemVuOVEvdXBHTFg3UGowTDBubUtueklnWWFs?=
- =?utf-8?B?azdhbE5VZ1JnU0ZyNVFSWW96UHpMSjhCbWF2dnVHdllFbXE0OGk1cUlFNXE3?=
- =?utf-8?B?NlBrdGJoYndLbCtZcTZ6Qi9DdnlqRzJrUnE0MFovbDlaZVFRLzBuK1BaTVJl?=
- =?utf-8?B?Z1VwejBabmlPa1JVS1lnb0ZSR21aNWNWYUVtc043b05jclhqSmtWZnpLeEtw?=
- =?utf-8?B?emZoOHBhQmFtT2lGQXNZUlpjQWZDb0pyd3lVNmVhcEhPcy9keFFVM1BpNWhk?=
- =?utf-8?B?dnB3SUY4ck8wZjgwNTNKRVJmLzVCakVlWFZLekJrQzMvNVBLbWZIL1NUREwx?=
- =?utf-8?B?OHc3dTNEUHFWblBzdUNJbmJMbUY1b3ZydGtVOERac3k3RlB3VE55Q2JEOHlE?=
- =?utf-8?B?NTdmQnlLQ3V2SXo4cXhoeVdURnVaOFBHVm5tOEkrYm9pTkdDQ2JFbDRMV2x1?=
- =?utf-8?B?MXIrYjh5OXBlc21UR25VSEVyUjlSeURQQXQ4alVYUHp2aVE1MmZkUkdXV1R5?=
- =?utf-8?B?Snhod1FkUGxMYjcwSTIxMFF3a1BUci83NnZON2JmNVpRS201TlhlUWFtVVVY?=
- =?utf-8?B?L2ZTd211elJhNVdRRnorL2MzNmptcHhjSjdIZnZXSWFCZGc4WTR4MGYrcmN0?=
- =?utf-8?B?N0kxdk1pQ2xjL2J6dTJzZnA1eElPbzN4RTJxOFVWSXg5OEhGZ3B0MWxVSml1?=
- =?utf-8?B?QWVGVGw5L0p6SFlvaUcwZkRXK2NKcklCY1Z2Rk4zVW5mYk5YMHZ3Tk9JM0F1?=
- =?utf-8?B?NzcxVVR4c2tUbzYydUo0R1NiOENmZG94ajdmTjBPaFhNODdDVGl6dFZqK1VW?=
- =?utf-8?B?T29HaUhoblFQTER5YWh1cGtOYTRDR3NsMnl0b1hUTE1PMUYxbkFJQ0lkUTlJ?=
- =?utf-8?B?cnFrQ1JUVE5wd0xDN3Fkd2pNeEJFRGVmeGlvaDUyTjBKbGU3R3J3NW5oMGJa?=
- =?utf-8?B?aDZuMHlyOUt2NkQrQjltR3UzZERselNFbmJFZHAwMnJGdDI5T3E2VUh5Nlpi?=
- =?utf-8?B?SmpGaGtNV1M3SWZNNStTZmhOc0pTSGdwdm10OHcrbnVKcjg1dWt6RFRiVVZ6?=
- =?utf-8?B?Mmx3N3JoeWhSOFArU1cvSFlqc3FwUHJER0NPeGt6aXdWcGNGanJ6dWlDQW1t?=
- =?utf-8?B?aDZWQWx0VklaNGtUbW9JY3krQzh0VzRqSkZoNks5c2dpRmpXNWtkVk1jR3hM?=
- =?utf-8?B?ZUUwN1FQcG5qMG8yd3pETzR5Uk5hc0VJNFZlbWZ4NXBjbUtZc0ZaaUNaSFox?=
- =?utf-8?B?a25QTDM4UGdya0JKMmoyZllzSFBnRzhlTEVqOWNjSzNRUE1QSkhObDJ5Qk5i?=
- =?utf-8?B?bmRoU0dkUFJjYWZUVFhtM0U0Qlo1cGNmcWRVR0pMbnNYOWthTXlrTEtMakF5?=
- =?utf-8?B?Q2Q2TmE3V1pPaG9TdlVSUjBvTWFnWlF1QUNaUTF4S28xODVTM0hGSEp4K2ZH?=
- =?utf-8?B?dk5uQWtVb1YrNmM2U1BGZzM1bkU4eGZOczJ5MUYxbkNnVXNLOFc0b3k5QjRr?=
- =?utf-8?B?M0x0NjYvN3E4QllHUVRHVWZpdldlSTA1THhEdnlocnVLd2tNNWtXVXVVdVd6?=
- =?utf-8?B?RFhCaDY1dDhPZ1NrbDdJaFIxNXFFTm5hYjFjK1NEMDBkMTVKT2tzSFh0eWU5?=
- =?utf-8?B?N3kwSDkzTFJjSXo5WVNENUZjQVpiOGRzSmhjSEJDVGpTRHRQSEMzYzBrc2J1?=
- =?utf-8?B?dFd6OHNoRDZ1NFFwS3Z4dWJSckRJa2pRRThwb0k1ZElacTBDajhwZjdGdmRj?=
- =?utf-8?B?YWhmdUlDQ2xIYXZoTXBENXhUNnMvK1NLcHRkalAyRWtWVk1yV1lzZDVhMmgy?=
- =?utf-8?B?Z0NGVFhQVkhXRnpzRGtHeXlZMGNFc1dmS2ZrdTlUM2JpcTVSUzcrZ05qZVVl?=
- =?utf-8?B?Z0IrQmloRmlYb0piaENURXZqckRBUFFTdlZJSFh6dkRiVitRYk4rOGN0eExm?=
- =?utf-8?B?a1Azb0twMnhKQVB2TTRYZ1pzYndCTmRDekFvNDFrRzRXRk5PVm9CdUx0MXp5?=
- =?utf-8?B?bGdGSWw5ZUg3aXI5ZVN1a2l2b0pROXAwQXNiL2djTTVkS3JxQ09QaFFXREdX?=
- =?utf-8?B?MDVPQXArODNPQWZwMUcyMGt1VlhxZnZINzlxUXcybXJyQXN3QlpZQTVRQith?=
- =?utf-8?B?TmVnNmxhOHZrYW1xbFEzSjFQT0hNWXdyc2NQVE4vY3JGNVJOaFlLQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91f910d6-5a09-470a-cea3-08de757fe867
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 21:42:15.5287
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: d//WIIiwhtd+ymjh+HfGbpZkB4Nhu+gRYxzOu5N1XErzcm20snRMkAEx65u9NGV6+Gh2/srpjLHqsMnpINIcxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9504
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+This series extends the Rust module! macro with three capabilities that
+are available to C modules but currently missing from the Rust
+abstractions: string parameters, early boot command-line parameters, and
+configurable initcall levels.
 
+The existing Rust module parameter infrastructure supports integer types
+(i8..u64, isize, usize) but has no way to accept string values.
+Additionally, built-in Rust modules cannot register parameters for early
+boot command-line parsing (__setup / early_param), and all Rust modules
+are hard-coded to initcall level 6 (device_initcall) with no way to
+control initialization ordering.
 
-On 2/25/2026 9:26 PM, Alexandre Courbot wrote:
-> On Thu Feb 26, 2026 at 5:41 AM JST, Joel Fernandes wrote:
->>> This structure doesn't seem to be useful. I would understand using one
->>> if `GpuBuddyParams` had lots of members, some of which have a sensible
->>> default value - then we could implement `Default` and let users fill in
->>> the parameters they need.
->>>
->>> But this structure has no constructor of any sort, requiring users to
->>> fill its 3 members manually - which is actually heavier than having 3
->>> parameters to `GpuBuddy::new`. It is even deconstructed in
->>> `GpuBuddyInner` to store its members as 3 different fields! So let's
->>> skip it.
->>
->> I'd prefer to keep the struct -- all three parameters are `u64`, so
->> positional arguments would be easy to silently misorder. The struct
->> also makes call sites more readable since Rust has no named function call
->> parameters.
-> 
-> Fair point about the 3 parameters being easily confused. If you keep it,
-> can you also store it in `GpuBuddyInner` instead of deconstructing it
-> into 3 members?
+String parameter support (patches 1-3):
 
-Done, good idea.
+  Introduce StringParam, a Copy wrapper around *const c_char whose
+  memory is managed by the kernel parameter subsystem.  Wire it into
+  the module! macro as the `string` parameter type with a dedicated
+  kernel_param_ops (PARAM_OPS_STRING) that stores the pointer directly
+  into a SetOnce<StringParam> container.  The rust_minimal sample is
+  updated to demonstrate usage.
 
-> 
->>
->>>> +pub struct GpuBuddyAllocParams {
->>>
->>> This one also feels like it could be rustified some more.
->>>
->>> By this I mean that it e.g. allows the user to specify a range even if
->>> `RANGE_ALLOCATION` is not set. A C API rejects invalid combinations at
->>> runtime. A Rust API should make it impossible to even express them.
->>>
->>> [...]
->>>
->>> That would turn `alloc_blocks` into something like:
->>>
->>>   `fn alloc_blocks(&self, alloc: AllocType, size: u64, min_block_size: Alignment, flags: AllocBlocksFlags)`
->>
->> The C API supports combining allocation modes with modifiers (e.g.
->> RANGE+CLEAR, TOPDOWN+CLEAR), so modeling the mode as a
->> mutually-exclusive enum would lose valid combinations. More importantly,
-> 
-> What I suggested does allow you to combine allocation modes with
-> modifiers. I should have pasted a bit of code for clarity, so here goes:
-> 
->     #[derive(Copy, Clone, Debug, PartialEq, Eq)]
->     pub enum GpuBuddyAllocMode {
->         Simple,
->         Range { start: u64, end: u64 },
->         TopDown,
->     }
-> 
->     impl GpuBuddyAllocMode {
->         // Returns the flag corresponding to the allocation mode.
->         //
->         // Intentionally private - for internal use.
->         fn into_flags(self) -> usize {
->             match self {
->                 Self::Simple => 0,
->                 Self::Range { .. } => bindings::GPU_BUDDY_RANGE_ALLOCATION,
->                 Self::TopDown => bindings::GPU_BUDDY_TOPDOWN_ALLOCATION,
->             }
->         }
->     }
+  An earlier implementation of string parameter support was proposed in:
 
-I took this bit from  yours(more comments below).
-> 
->     impl_flags!(
->         #[derive(Copy, Clone, PartialEq, Eq, Default)]
->         pub struct GpuBuddyAllocFlags(u32);
-> 
->         #[derive(Copy, Clone, PartialEq, Eq)]
->         pub enum GpuBuddyAllocFlag {
->             Contiguous = bindings::GPU_BUDDY_CONTIGUOUS_ALLOCATION as u32,
->             Clear = bindings::GPU_BUDDY_CLEAR_ALLOCATION as u32,
->             TrimDisable = bindings::GPU_BUDDY_TRIM_DISABLE as u32,
->         }
->     );
-> 
->     pub struct GpuBuddyAllocParams {
->         mode: GpuBuddyAllocMode,
->         size: u64,
->         min_block_size: u64,
->         flags: GpuBuddyAllocFlags,
->     }
-> 
-I took this bit from  yours(more comments below).
+      https://github.com/Rust-for-Linux/linux/pull/110/
 
-> Now instead of doing something like:
-> 
->     let params = GpuBuddyAllocParams {
->         start_range_address: 0,
->         end_range_address: 0,
->         size: SZ_16M as u64,
->         min_block_size: SZ_16M as u64,
->         buddy_flags: BuddyFlag::TopdownAllocation.into(),
->     };
-> 
-> You would have:
-> 
->     let params = GpuBuddyAllocParams {
->         // No unneeded `start_range` and `end_range`!
->         mode: GpuBuddyAllocMode::TopDown,
->         size: SZ_16M as u64,
->         min_block_size: SZ_16M as u64,
->         flags: Default::default(),
->     };
-> 
-I took this bit from  yours(more comments below).
+  This series takes a different approach for StringParam by storing the
+  raw C string pointer directly rather than copying the string data,
+  since the kernel guarantees the backing memory remains valid for the
+  module's lifetime.  This avoids allocation in the parameter setter and
+  keeps StringParam as a simple Copy type consistent with the existing
+  integer parameter design.
 
-> And for a cleared range allocation:
-> 
->     let params = GpuBuddyAllocParams {
->         mode: GpuBuddyAllocMode::Range {
->             start: 0,
->             end: SZ_16M as u64,
->         },
->         size: SZ_16M as u64,
->         min_block_size: SZ_16M as u64,
->         flags: GpuBuddyAllocFlag::Clear,
->     };
-> 
-> Actually the parameters are now distinct enough that you don't need a
-> type to prevent confusion. A block allocation now just reads like a nice
-> sentence:
-> 
->     buddy.alloc_blocks(
->         GpuBuddyAllocMode::Range {
->             start: 0,
->             end: SZ_16M,
->         },
->         SZ_16M,
->         // `min_block_size` should be an `Alignment`, the C API even
->         // returns an error if it is not a power of 2.
->         Alignment::new::<SZ_16M>(),
->         GpuBuddyAllocFlag::Clear,
->     )?;
+Early boot parameter support (patches 4-7):
 
-Makes sense, this is indeed better, I'll do it this way.
+  Add ObsKernelParam (mirroring the C obs_kernel_param), extend the
+  ModuleParam trait with from_setup_arg() for constructing parameter
+  values from raw __setup callback arguments, and integrate an optional
+  `early_param` field into the module! macro.  When specified, the macro
+  emits a __setup entry in the .init.setup ELF section, gated behind
+  #[cfg(not(MODULE))] since this mechanism is only meaningful for
+  built-in modules.
 
-> 
-> And the job of `alloc_blocks` is also simplified:
-> 
->     let (start, end) = match mode {
->         GpuBuddyAllocMode::Range { start, end } => (start, end),
->         _ => (0, 0),
->     };
->     let flags = mode.into_flags() | u32::from(flags) as usize;
->     // ... and just invoke the C API with these parameters.
-> 
->> if the C allocator evolves its flag semantics (new combinations become
->> valid, or existing constraints change), an enum on the Rust side would
->> break. It's simpler and more maintainable to pass combinable flags and
->> let the C allocator validate -- which it already does. The switch to
->> `impl_flags!` will work for us without over-constraining.
-> 
-> The evolution you describe is speculative and unlikely to happen as it
-> would break all C users just the same. And if the C API adds new flags
-> or allocation modes, we will have to update the Rust abstraction either
-> way.
+Configurable initcall levels (patch 8):
 
-How/why would it break C users? Currently top down + range is silently ignored,
-implementing it is unlikely to break them.
+  Add an optional `initcall` field to the module! macro that accepts
+  any of the eight standard levels (pure through late).  The default
+  remains level 6 (device) so existing modules are unaffected.
 
-I also wouldn't call it speculative: top-down within a range is a natural
-feature the C allocator could add right? By modeling modes as a mutually
-exclusive enum, we're disallowing a flag combination that could become
-valid in the future. That's fine for now, but something to keep in mind as we
-choose this design. We could add a new RangeTopDown mode variant in the future,
-though. That said, I've made the switch to the enum as
-you suggested since it is cleaner code! And is more Rust-like as you pointed.
+Matthew Wood (8):
+  rust: module_param: add StringParam type for C string parameters
+  rust: module_param: wire StringParam into the module! macro
+  samples: rust_minimal: demonstrate string module parameter
+  rust: module_param: add ObsKernelParam type
+  rust: module_param: add from_setup_arg() to ModuleParam trait
+  rust: macros: add early_param support to module! macro
+  samples: rust_minimal: demonstrate early_param usage
+  rust: macros: add configurable initcall levels to module! macro
 
-> 
-> Rust abstractions should model the C API correctly. By hardening the way
-> the C API can be used and stripping out invalid uses, we save headaches
-> to users of the API who don't need to worry about whether the flag they
-> pass will result in an error or simply be ignored, and we also save
-> maintainer time who don't have to explain the intricacies of their APIs
-> to confused users. :)
-> 
-
-Sure, no argument on that one. ;-)
-
-[...]
->>>> +    base_offset: u64,
->>>
->>> This does not appear to be used in the C API - does it belong here? It
->>> looks like an additional convenience, but I'm not convinced that's the
->>> role of this type to provide this. But if it really is needed by all
->>> users (guess I'll find out after looking the Nova code :)), then keeping
->>> it is fair I guess.
->>
->> Yes, `base_offset` is needed by nova-core. The GPU's usable VRAM
->> starts at `usable_vram_start` from the GSP firmware parameters:
->>
->>     GpuBuddyParams {
->>         base_offset: params.usable_vram_start,
->>         physical_memory_size: params.usable_vram_size,
->>         chunk_size: SZ_4K.into_safe_cast(),
->>     }
->>
->> `AllocatedBlock::offset()` then adds `base_offset` to return absolute
->> VRAM addresses, so callers don't need to track the offset themselves.
-> 
-> Sounds fair, I'll check how this is used in Nova.
-> 
-> Ah, another thing I've noticed while writing the example above:
-> 
->> +#[pinned_drop]
->> +impl PinnedDrop for AllocatedBlocks {
->> +    fn drop(self: Pin<&mut Self>) {
->> +        let guard = self.buddy.lock();
->> +
->> +        // SAFETY:
->> +        // - list is valid per the type's invariants.
->> +        // - guard provides exclusive access to the allocator.
->> +        // CAST: BuddyFlags were validated to fit in u32 at construction.
->> +        unsafe {
->> +            bindings::gpu_buddy_free_list(
->> +                guard.as_raw(),
->> +                self.list.as_raw(),
->> +                self.flags.as_raw() as u32,
-> 
-> `gpu_buddy_free_list` only expects the `CLEARED` flag - actually it
-> silently masks other flags. So you probably want to just pass `0` here -
-> adding a `Cleared` field to `GpuBuddyAllocFlag` would also do the trick,
-> but it looks risky to me as it relies on the promise that the user has
-> cleared the buffer, which is not something we can guarantee. So I don't
-> think we can support this safely.
-> 
-> If you just pass `0`, then the `flags` member of `AllocatedBlocks`
-> becomes unused and you can just drop it.
-
-Good catch, done!
-
-> 
-> And another small one - some methods of `Block` are `pub(crate)` - I
-> believe they should either be `pub` or kept private.
-
-Changed to pub. thanks,
+ rust/kernel/module_param.rs  | 160 +++++++++++++++++++++++++++++++
+ rust/macros/lib.rs           |   9 ++
+ rust/macros/module.rs        | 179 +++++++++++++++++++++++++++++++++--
+ samples/rust/rust_minimal.rs |  33 ++++++-
+ 4 files changed, 368 insertions(+), 13 deletions(-)
 
 -- 
-Joel Fernandes
+2.52.0
 
