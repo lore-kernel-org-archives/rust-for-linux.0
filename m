@@ -1,61 +1,67 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021098.outbound.protection.outlook.com [52.101.100.98])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022097.outbound.protection.outlook.com [52.101.101.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCC43A63F9;
-	Thu, 26 Feb 2026 10:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EC7376BFD
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 11:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.97
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772100754; cv=fail; b=euDdgS7clXqWwrLWaDo9TwFRBxjHYUEodkYckVusG2LDN3ba5RvjJiIwQE41sgQ/kwJ7PoFsHP/J4sytkVKHU76qvskR1k/ros+Uxeqm830i0IM9sU9i0OJkCZdhTEL9Rp99wLdHOzy3ajP4S3mEj8wbEQ7cbh1qyySSD91QHP8=
+	t=1772106165; cv=fail; b=qc9CssmiCFgJWXQ3p/dIGwxOPTC1j5MAvU7leyTYB7CrRdh/PBE4l94mC+Ay+/XaQd+PAE6GVryn18s+cjTcFJE98W2xBanaIgHM2COYsU5rtJ/bCHmwHk9POilbnzvWHVYFLaauEsjfsrmOF4zEKTQPyTCi6blDSKUYXNv9Nlo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772100754; c=relaxed/simple;
-	bh=UIhskOSN5yHzv47rhyDWsb2yczPXxV72RpPUBDw5h9c=;
+	s=arc-20240116; t=1772106165; c=relaxed/simple;
+	bh=eXHXe28Po3a+9exFuq/8YLJSDcsD2qChQxv8RBFvqw0=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Y9tSchnUfUiZJJHK9SpVHg1ZGhlWwAp6qwx2zpLWqrWalTyjsYTYDyXCfs3DvEuPQpKiUGs/cejUTqaLzPoDPzSk1AdW4ydl0MLPn8o8eWFFxIdX1rDaGyYnnScdLU/KFix1idu7AzFMe2UsczDCiDfbzpzyOekikWctFiEBXlU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=UGj4zlOq; arc=fail smtp.client-ip=52.101.100.98
+	 In-Reply-To:MIME-Version; b=g2fbD0SAWlu2wJGkWDDDOMoowVC3/DYL5Lgf8PiO4M+uLTOKwwJk+8jbtp4H9DTUpkPSXHg/irj+v+MJdBo6ro4SkgMJoagvr4xVSQzPE81LSMjd8lc0+fRcN/ErlsBVuVrV8oND3kEjcoipgihtLoSjRf2W1ZZbbUoIbx9qj5M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=aMXKZBUL; arc=fail smtp.client-ip=52.101.101.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="UGj4zlOq"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="aMXKZBUL"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fKV6RSlf0D1JIAgBdmSgkNwUFHPi9ZZvbaIBtb+rR6sWJx8vEb1VoZlDa9cQYvGhbpHykRkjKzudZBbOymuZl+0mQnml5xMbLwD4crWcyCzErj3u0MC0QDghGGnX9QJJitC0PWKRlmHD4udkVwNrEQImVBMZuCJ6cyBqYxTnkZ9NQJH3DxfX+T2sdQ4JM+TZy5fUUPORgzIfXrdIQd6Gvo+PDh0ubExsA3eybqcMoNxPT742ZmfwMON8oDXOOkoXdwM8DbICxlnn4k0z4Mevic4yDjE+IrDWBAP8Lb55XvcdpOSV+euGIvQ7gB6A+9rlrBhmCjz4zhRQjphRdGfTpw==
+ b=Ss+oV+C8J24sv+dMo5WGaWpONKWaqesTZ127epJpw56b5kDT4AZlW1xi2WP2yInMpsd8xs6ke8GyPi2gAZL1+Ci8rjSzPIGxfv5y6xdTelp9gH7/83mhfZ4ZfvfhT980q27D2lvY7Xg1OrJkTFFd0JhTKzCqDQBavKyJ6PvIRCe0RmEjhrt0F9hBrO8BsW31QXRHgExAAixhpoc6AUGEIaAK3MwAadXnMMf/3GTVGzap3j86mNFnKFYDjGkbgXFECkmrycZS3pi+vbI2WEeBklpJ6fQfZU2O1FleDuPbK0K1cL57xVEnIwt2v3JwVY26Zw/3mVwwK6v5fYdK7OEliA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yYGvTSYX/Mu44IEN427AQ/w9RzNwerEM7Uh0E+mBSDc=;
- b=jZbyCvFIqbqsv0zQJiDH4XlxcqnyCb5aC17s8qOGTwwwymD/rAXjmP3gqXDaG2BX6MKmLZ4VN/iIBUh8wcvPZEVORB2qUtmcK/hrIlDNlEeOEkRLHd4NV2EOsiH10vcHxfQQNyJPow13sj2ZTb0nZK/oaDWxvQVkr8Gl6ue6NcnTeEYM8tjpvwvWof5+HHUz996jzDtiOxv3ToVxwhrrVxWA9kg3lYVh0cd3StKFaLmI7mroYMOlIjRdCqqZ6pDgI5scO62q+FoGCZ1W4xkhoxm8HEXwmJAInKoGkyyLV/Of6NME0cYo8aNSUXYFaJdmO1ss4WZs+OljRKwgkXkfOw==
+ bh=kLF+2MA49VpgMFef9L9V2O7ftyCD1ddkBEXv8AANjo8=;
+ b=fn8qRXpNjaI3nYcrP6PdIM6r7mxLM33+b8G4U44Dry2HnJZMaenCVTCrCUhJZhut0xjp+ishQjrson4lqJK/ltsoSbmtmYzSZIgPX3xoPa/qHnsP7XFt55GVGTy5K2ktJY8FnB+hoJ6GmfPV/cpFCooGhin7LPUr/O7Qfeu6+jp0AX4tYnDTBI48THA6otDMpa/N45c1t0vJUuR/pn8+7A400Ohoo1eZZ4nq9xJCnzcvSdmr48TSEBQYPWRWS8MpU9Hk4YHCnI2rvzBXCfWBrtY/zzI1Thvu+l+t5sb8irVz+r4c1cl3tpxKM66u2U5KtYljb24HZcYzVtsAjm3ldA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yYGvTSYX/Mu44IEN427AQ/w9RzNwerEM7Uh0E+mBSDc=;
- b=UGj4zlOq+9VwMlucQ5sqYRVUJdeOaX+GJPFo7ZSfd4yVe9StK2aDPDMAtq007vnkeHjq9oAoqbIXbd5U31AUmNHtarsUXq0Q6AhcIvY3EMzfJ8Rja5JDGzPDIWkbqPRGO3mrWWve1S4K8Z+z5h4ox7ST+tOp+b78XF2xBiedpJs=
+ bh=kLF+2MA49VpgMFef9L9V2O7ftyCD1ddkBEXv8AANjo8=;
+ b=aMXKZBULlMtRd+3Tpy7R/xA2breSuCGVcOcfVpC9quHnKnLZMRghn+m+yUB/H1GQ4J4Yoaj/gf3YZ/AEDKx134dCp9yu947cip0+R7LHEId3way8xmDyMlWxIcWtb69PwAUbIP4OuYjfRIxiAU3bgGPzLdwV4ZLXxv1Ky2NMiRw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB5883.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1b2::12) with
+ by LOBP265MB8833.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:48e::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Thu, 26 Feb
- 2026 10:12:27 +0000
+ 2026 11:42:40 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.014; Thu, 26 Feb 2026
- 10:12:27 +0000
+ 11:42:40 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Feb 2026 10:12:27 +0000
-Message-Id: <DGOTACILQVSU.1NJCL0KR7O1ET@garyguo.net>
-Cc: <linux-kbuild@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] kbuild: host: use single executable for rustc -C linker
+Date: Thu, 26 Feb 2026 11:42:39 +0000
+Message-Id: <DGOV7EXV8VO9.QR9UN9EV6DZK@garyguo.net>
+Cc: <dirk.behme@de.bosch.com>, <aliceryhl@google.com>,
+ <anna-maria@linutronix.de>, <bjorn3_gh@protonmail.com>, <boqun@kernel.org>,
+ <dakr@kernel.org>, <frederic@kernel.org>, <gary@garyguo.net>,
+ <jstultz@google.com>, <lossin@kernel.org>, <lyude@redhat.com>,
+ <sboyd@kernel.org>, <tglx@kernel.org>, <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v2] rust: hrtimer: Restrict expires() to safe contexts
 From: "Gary Guo" <gary@garyguo.net>
-To: "Mohamad Alsadhan" <mo@sdhn.cc>, <nathan@kernel.org>, <nsc@kernel.org>
+To: "FUJITA Tomonori" <tomo@aliasing.net>, <a.hindborg@kernel.org>,
+ <ojeda@kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260225102819.16553-1-mo@sdhn.cc>
-In-Reply-To: <20260225102819.16553-1-mo@sdhn.cc>
-X-ClientProxiedBy: LO4P123CA0297.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:196::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260224132507.315637-1-tomo@aliasing.net>
+In-Reply-To: <20260224132507.315637-1-tomo@aliasing.net>
+X-ClientProxiedBy: LO4P123CA0557.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:33b::13) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -64,135 +70,223 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB5883:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d2010e9-ba3a-4697-84c9-08de751f8b4e
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOBP265MB8833:EE_
+X-MS-Office365-Filtering-Correlation-Id: 455a0ae6-888c-4da7-7044-08de752c2577
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7053199007;
+	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	9qHcyIv2gL5bgNIQ9oC8r/onIKuQQu2W1Zx8jfdVgQRYgsKabdUzfhyc/OWxRliklmLoCTK/8ZcpGhUxBGuwpXsn+pjrJ1cf1JH+43MUboyY5fNJZ7xEKVasXJjvvyd/n3nUmsG/xX3zHBt5tkP/DjZ1D353AB6/bC+YJQcvsXpaIN8EDm81NmvG4E2me1ElzXtvr/YtkI55v801ZH1mw0Qj5DH1iorYUw2EAP/uxwJ7JMk05TdntGcksDsEVbUKSr03BQTRtrBj5aahyPDbzfy8zty19j4Aa793wWbrmkWu2NQ72fAQdlZnecUN1w3J6by+PqzRocEqPHzyv4nDogRw1Rx0uw/4waskJoHrLJgXUJVEgwwNq/NEphY23KbyU6RsKZt+nSCMMq6rK/OyBNJOyMlFiykcqOEwCIPkK1UUzCrLgEl1tIMJ6L7CFdgAnYR1Gr9g3+xZN5/1LCLWm82YQFnAtsMUglI5k+JdOIZL+TI788gqnO//1DhCqrbV7BISjcy/WLEqi3K4GsHGNB/Xlr9NkkhZ1kjPsULOL4qhrtgDPJ9nvOOShiHjzqZB+v49B0UmvpJlD8TCC0jGQIHTArJcqLoeiuLT4zu8pYi36p2IX0m2z/+YcLZgTO7GPIiVx5vC7iDl6LSDCvcFdCiBEFvYwPXiXp1bPtvD5D0fFqEnUM8agg5rY6FlI9z6
+	6jvRMANJNonop3K8vDoVhevxwwxZI+T6EqNf4qP1lKBkoS2kypGShOkXfu0KpdTY7EtdGC7vUAUN7MI1yr0q5aN1R4kHPXcpFy1luJhTkJCh9rEJJ2OC8Wfxe+LmwFduhsMctnYUQixMogN6dbR3cBGD+qYW8x5uL7suJuJ1/y7AqizdYbXa08eN84InI4SFQKwW9tYZMzdtccCq+wfv7HZNZxS0u3WPi7LQYW/xH5BzTimbk6CbHl5TWf2k5K1N+M/NmedMumx60BgAVvRtav2PTfh3XO3Vte9cH+SOZCwHEnKeUNw4+tpnzrYEBwAOvNmR3ZIVNmTODUSwKFVar5nll1H/JrrwBfKLQRqHVayg0AsYCTuC0BO3+uKwNyxEnK9JvwYMTVulun++Z0119H4uDDPxfB2PY40Fw1EKABrAvQUIRD9F9ESXC5AZenlOE0eAIMYmfaXPhk4voDvi95jCIAtKWtEpw0ZZR3JzVyzyLL8p8eWKgbAnn6f54GyiQVACNhrIEEwbKhRj8kCN8DXrC8Co2d0rjr2362xHzFXiN5xQkXPVUTIUNUqMed5apbEmL1zPhWJmN1Nc5nmyK8qS8jzNztNA+oxJkaW4/Xw5pLrDws8VpqsqU2yskDOwx9jFESf0QBdISQ2ecbBXVRJ08CMDXUzJ8Jw68H/mE0Lu07ckKmYKrwEHkOYCXMWWHHSQlUTICiSolLpyBoQsqYv6y7mqAbRxrvObjAPJ1vk=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TThHZTZJWmhoWXVUMWxneTloNlBlVzdMdVpDdzFONnBnVEtqREdESXRoSDRB?=
- =?utf-8?B?UWpseGdBT1pQcVV3c3dPNFMvc3BoTUV0QUx3R1F1cStlaGR4dFFwU2UwdzRR?=
- =?utf-8?B?RUpESHkzOURac2VlSDlBd0pRU1dBeW5KRjg0UllqNHpCQVA4OThESEZrRDgy?=
- =?utf-8?B?dCsxY1BNQTBFdU52ZGtSYmN6aElPV0ZoalNlL1dGcFlWK0w4WG9qMnlheXBt?=
- =?utf-8?B?Z1N4N1NycStESHJGWGNxaWQzRWpwM243dDZza1BCZkxIUERZVFFWeWFmOG4v?=
- =?utf-8?B?OUxZdTlFTThIN1ZFZFVxZm55Z3VjTnFTTHA2eExWdTNIb1NjeTlTcmlJb0pM?=
- =?utf-8?B?cUpXalpZWEVPTUQ2eFhqZmV5REtsRng3aEk1S0hnYmFrRUxnREdjLzdoK3lN?=
- =?utf-8?B?YnVIcEpCbFpSclFlN1pZckQrYi9Db1VJeWVpUktsQkNkZ1k2YnAzWlNUNkFW?=
- =?utf-8?B?VWdZSGU5RXNUbFY1RUgyQ2ZOaXB6cG9COEVPallFMmhkdjRQZjMrZ0Z1QXhE?=
- =?utf-8?B?Wmd3Ykw5ZDEvQ0wwV2NBMGlkSEZjWEczU2J6YjlXRDZ0MElwYjBGVDAyY3Z4?=
- =?utf-8?B?VEFEVHJJU3A3UndwRGh4RVRrWEgyUzlOMFBQWjJ1bE5uYXJtUnRKdE9nY1NW?=
- =?utf-8?B?Um1uSFVLT1BNSXhwWVIrWUhpTkgyclU5Y2Q1N1BsaURyVmpIUlBrWUlDcXFt?=
- =?utf-8?B?MUNaWXVsT3pQQTlOTGdpblpNb1dOejhtK0N3dTlwYkxlMG85d3EyMngvekp6?=
- =?utf-8?B?Z0FHeVpKQW11SXAzc012YWNxVUd0UjRTNEx4bjZheEFWbS9TVW1OV3BHWDhR?=
- =?utf-8?B?WE8wT3pUMXJuanNmTlNubGs2aENMMFprU21vVlRKbEZXMUVmTXcyLzVCQ0pH?=
- =?utf-8?B?ai9SQ3QyMjBIT3IzOHlKb3ZTMDkyZHVidTRraDhWV0VMb2tMVHVtOXNiVG80?=
- =?utf-8?B?bGtOdG9aS1ZKVktCNk9hckJ5R25oUWdlM3ZnN3cvRkhuWVZqWWJBejJuM0p4?=
- =?utf-8?B?VDM4dlVnYkRpcEdJdDkzdmhrTWxrbDJaNlVJTlVkUFNEUXZNV2JrcXljUjli?=
- =?utf-8?B?UmlwSFVPRnZtZDVGa2NVYWFVeW0rM3I4bUJlM0JzeGc3K2JCR2p5Y0szRnVo?=
- =?utf-8?B?Q3c4VFZoVlc0WFB6ajRXc3RCWHI3Q3FsNS9pVTRURy9qR2gxdytVZnFyb3Rh?=
- =?utf-8?B?aHRoMXhFSFJkbm5kd3l6cGJWUTQwOTlQRWhtVG1yd1YrNDZGa29Ib0hpUXNh?=
- =?utf-8?B?NzY5d3FYWE92WENJdWI3d24rTkNnd0JzdDdidjFaZG1yenlnODZrekFtYUFv?=
- =?utf-8?B?RmJ4Q2FhZDlZejNnUVNZMXZMQkpoUW9Jakd2cXN2SXF6YUUxVXg5RlQzN3o1?=
- =?utf-8?B?TXYyeUFxWTRRQnJXWW0rM04zT0hQYThoRGlYdUc2aGRhNW9mT3cxbkxKZEp6?=
- =?utf-8?B?bitGdVhBNHEyZkpSU0tvNDU2bHp4TCtEbnR5Zjk5MTl0Q0FqVU1jSHRBenlz?=
- =?utf-8?B?bnB0V204NVhMSFFwSXdOT0V6OVhOd25oWkxWYjVIbm53dktPOUY1QUgwMWQ2?=
- =?utf-8?B?TVhSZi80UmRDdFpoRlgvY1RXa1REckZna251ay9kSVhyRWRHMWYzQWxrRG00?=
- =?utf-8?B?K3A0WmRNdXVWcWQwWnZjc3F0dG94dXFsYjIydTZQbzJ6WHJ4SGJYM3pLRWNU?=
- =?utf-8?B?aUdNWmF0bHFCMFdIcmprc0p0SFRPNVdXQ3FTMi9seVg4c1ptMXh5R3l5MFB0?=
- =?utf-8?B?a2JVY1hlaVhZSFI3bWRvRGJSOE9RYkJ6U29PdGg0WEZKWTdxenQ2YjVuM3lj?=
- =?utf-8?B?YmhmdWhUOXpvYnhVbUJIeVAwYm04UGY0a1lYWDQ1NU5JT2o4bHdUS1NoWkhU?=
- =?utf-8?B?eVNUR1NrWmZLUml1REJ4cTgwcCtjT2J4SmV2bkMxZWZtbWsxbUhOTis0NjBz?=
- =?utf-8?B?dzdWaVlxN3RIZE1SNGU3bndKNmY3UlJlbUprS2dxbTZQVVM5OHgyWXlxZDBT?=
- =?utf-8?B?aTF3YkEzRVB6K1RQb2dhbmc0eDdtZnIvaC96OCtCZFhlWUt2UkRBa1N4YzYr?=
- =?utf-8?B?WW1nYnFLOTFUalRiMWY5OURxVzJIdHI2MXNCaXdsQWpBWmQraXQ5ZmpMQzJm?=
- =?utf-8?B?VU05Z0grMnhUN2poS0dobVBicnhGT1NtNXN6bklaOTV5K1FIeG5kRTdHTExp?=
- =?utf-8?B?QUgzRjRlakYvbHZwYnZqdDBMeXVaWEd1UVJDQUxZRkMyWks4aU1mdlE3YWV6?=
- =?utf-8?B?MVc1Z0RnVHNOQythSk9nYWg4RVVIcTY2Z3R6OWxtc0ZNUmRDZEljTUdBR1pl?=
- =?utf-8?B?UUVyYWFhZFdUWXI1MHJ3M2lHM0NJQmdLUzNNK1F5TFpYZ1ZWVGRzQT09?=
+	=?utf-8?B?R0ZJZUg5OG1MOVg4WnFMZmgwM2xhcVBTVFdqZExacHZCWW1YZWdOSko1MzlS?=
+ =?utf-8?B?aXBxTnA4UG5jRVZoUUVSOGZSWEZNdWU0c01SMDh2TENxWmRCY2JSSXVpOGQ1?=
+ =?utf-8?B?Nis4NG9raHc1RmVFNlMyV0lWaEJZcFU1RFZCR2FOcTdFa1o5T3NOVmJEWnhR?=
+ =?utf-8?B?djlFNmxMbncvNGVCQmhkT0dwTHl2anc1cDRzazU5Q2MxOXNlRUM4QlU0VlN2?=
+ =?utf-8?B?dU82Ui96OGxaZGpGTjNobllGSnJVMzZqb0g5ZCtwN1pGUThXTHFMS05RRklo?=
+ =?utf-8?B?L2xVbDJDTTZOV0pxSG5EM2JXT0hkbEtZSjJEZDFkVUhBbU5rVnk1eGtreThw?=
+ =?utf-8?B?WGJyZFBmalRPZGV2NFBMQVhaTjJ4VEQwTnVTYUtDaC9mSnppaWYyK1l3YnhL?=
+ =?utf-8?B?K002ZDdBZG52MUZxU29oSVA4Y1hLMFBockF3YVVqUzgvSk9zTms3YlVlWnFQ?=
+ =?utf-8?B?VmRzQWh0dTJIRzB3YjBxZnVHS3NYOGRvRXRZV0g3a0JvNGU0Zlh2bjFCTW8x?=
+ =?utf-8?B?Zk4vR3pyWFhaS2gyc04vOHlIZmd3eEhRWHRsa3FFSnpWdTlKK2JKL25pZ1lM?=
+ =?utf-8?B?ZHR1S3VZZHZEcFhPczk2a2tvME9YcyswKys0Ty9KbCtZQTlDL1VhakIycGtw?=
+ =?utf-8?B?VmhqRFh2bmN2T0VNUHNZL1B2bWtNaSt5NUZROHlwY0VmdnluT3FmQjVITFhO?=
+ =?utf-8?B?YWZ0RGxla1FTOVlKbTlqRk1nb2lSU21ZWXR5Vllldk9scXZmN1NZQndLSUx3?=
+ =?utf-8?B?MnJTdjduT0JBS2ZYbjNrb1Z2SlE4RXhIN1FKVTgzMVg4NEJKZTR5MWI5WnlO?=
+ =?utf-8?B?bVRhR0M5UC8yT2htK1JRREpkRVVkY245ZGtuOEJNVVRHUVUzNGhQS1BWV3hI?=
+ =?utf-8?B?bm5WQUJPeG55b3hEMk9XajdvZDExUjlTbUpaVnlkSXc4bXo1bFQybmdqaUZQ?=
+ =?utf-8?B?cC9leVJ2elZoOFZkZzhvQmFJbjJTSnQrRlRtVklSeXZlRGR0OUZoYlB0UmVr?=
+ =?utf-8?B?MFlZUHlBUlRiOGEzUmdOYlpRb3dRWUFWMWlZNTRKUmMxZmVYa1pJeUV3cU5a?=
+ =?utf-8?B?S1hIeS85d2pFUUhDOWJNeGtDcEd5THVDMS8yV09lV2FuOU1JelFWRUlwVXRz?=
+ =?utf-8?B?RWIxdUNudmtsS1BBZS9LcmJjbFU1bG1wM0VYdVUzRnZWNTZ1SmNNVVpWUjdx?=
+ =?utf-8?B?VERtLzNzbFQxeTJYSjM5T29PbHNmRDZxT3FneDh2TEl6NmdlYUR5OVR6Y2NW?=
+ =?utf-8?B?RXdIaldWUWhUemJuOU1TbzIyalF5dG90SEQ2RCtpb3pUcmpoRjFYVjVyaDdw?=
+ =?utf-8?B?d0duaHVWNEExVWR5UFNRZEZldmwvNDNTWldZVytKYjNPb2lCQllkYUhCL0Z6?=
+ =?utf-8?B?bGZJcTlOejhOSTE1aTV1OHl6S1A1NU9aYzgwTjRHV1JTR3plTHlpc081Z0pz?=
+ =?utf-8?B?aDQwTFFQbmtjdmg2dndIVFJES0NTclcxbGNlS1U5NnlWMGI5YTVreEttRXVl?=
+ =?utf-8?B?VTFtSTdzQkVjK2hrZ0EzUW5pUTBPMUZSb2VxenE5aVRVUzlnOUhENW4vVVMr?=
+ =?utf-8?B?RDBzVFhwUjAvRWZ0bnloZEJPYlp0TVJid2FwVGNoOXVhc1FzUE1OaHN3d0ZU?=
+ =?utf-8?B?VW5BWmlkNU4yeUZYK2lGczg4eEpRTlhVRjBFUGlzUTYyY1UySGhuYTFqQVdG?=
+ =?utf-8?B?Vlc4bkRjY3RoVU8rSlNHdEIyZjNCRHJZTU1NU01wM2NvcjlIQVZnenJIdURC?=
+ =?utf-8?B?bzBubFVZQ0VWU3hMc2gweHhqL1lqZUJtK3hDbFRqTEk4Q3FOOUJJWXlaR2FJ?=
+ =?utf-8?B?UDgxaWZNeUNEM0JhUFZGSHFpOUhIN3ZqM2FBcXR5UEROR1BNVTlmR3hEOGJx?=
+ =?utf-8?B?bWxGc3h4eXhORXg3WUlLZVVrTTRMeDNhMkQxRktMZCs4dGovZm9lNXVheFZC?=
+ =?utf-8?B?enRDVi9CQUNkRndrY04xR1FXT0NacHNVSGx2V1Frd1Y0YjVjVWdNbUY1RTc5?=
+ =?utf-8?B?UUh4YlkveVMxUGJLMlVnTnFtZ0hiVkFUY0RLOEV3YWo2eXBiZTRvejgySU55?=
+ =?utf-8?B?WlQzQ213TVhXUERUdDV3cXBjbUhJQ0VVNkJRdGNCbCtwa1VwclRXb0NLR3VU?=
+ =?utf-8?B?SHM1YXAwMEZZUFA1V3hqOENBYjhKc084b2pkUGhwbTQxZjNaeXArdWVzeWl6?=
+ =?utf-8?B?bDlNcFdERmZ1RzYvRlZYeFgyejlRbTFqUlNqNmpIRVYwQjN3RThHZUhvaVRW?=
+ =?utf-8?B?TG5kOTBvOWVIMldoSVpqbi83WEtLZi94RjhNTmtDMlFFOUxQQSs3QU1QTGJm?=
+ =?utf-8?B?ZkczRmRkb21UUkxWT1Y1U2VkVE5KM2NMWUhWZmFTMnNDbktidzkzZz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d2010e9-ba3a-4697-84c9-08de751f8b4e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 455a0ae6-888c-4da7-7044-08de752c2577
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 10:12:27.6146
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 11:42:40.2750
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: inVhQmpnjrIbiJkRShCq8R8NzGYE7o0qba3OR3x/mCN8PDezqypdzLEJDOPeALuPZZpU6RGSbZJrQ43Wk7NSGQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5883
+X-MS-Exchange-CrossTenant-UserPrincipalName: PWhwtxveVFD78KC+BhzI/UXLWtOwKAOBu19UKTqj+Hi2qx3c0fS4LWd+HqHGgJIRRZ1Th2a08rLNMxujNQcNWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOBP265MB8833
 
-On Wed Feb 25, 2026 at 10:28 AM GMT, Mohamad Alsadhan wrote:
-> rustc's -C linker=3D option expects a single executable path. When
-> HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
-> -Clinker=3D$(HOSTCC) results in the shell splitting the value into
-> multiple words, and rustc interprets the additional word as an
-> input filename:
+On Tue Feb 24, 2026 at 1:25 PM GMT, FUJITA Tomonori wrote:
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 >
->   error: multiple input filenames provided ...
+> HrTimer::expires() previously read node.expires via a volatile load, whic=
+h
+> can race with C-side updates. Rework the API so it is only callable with
+> exclusive access or from the callback context.
 >
-> Use the last word of HOSTCC as the linker executable for host
-> Rust tools. This preserves wrapper usage for C host tools while
-> ensuring rustc receives a single executable path.
+> Introduce raw_expires() with an explicit safety contract, switch
+> HrTimer::expires() to Pin<&mut Self>, add
+> HrTimerCallbackContext::expires(), and route the read through
+> hrtimer_get_expires() via a Rust helper.
+>
+> Fixes: 4b0147494275 ("rust: hrtimer: Add HrTimer::expires()")
+> Closes: https://lore.kernel.org/rust-for-linux/87ldi7f4o1.fsf@t14s.mail-h=
+ost-address-is-not-set/
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+> v2:
+> - Add Fixes and Closes tags
+> - Fix and improve comments
+> v1: https://lore.kernel.org/rust-for-linux/20260110115838.3109895-1-fujit=
+a.tomonori@gmail.com/
+> ---
+>  rust/helpers/time.c         |  6 +++++
+>  rust/kernel/time/hrtimer.rs | 49 +++++++++++++++++++++++++++----------
+>  2 files changed, 42 insertions(+), 13 deletions(-)
+>
+> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
+> index 32f495970493..ef8999621399 100644
+> --- a/rust/helpers/time.c
+> +++ b/rust/helpers/time.c
+> @@ -2,6 +2,7 @@
+> =20
+>  #include <linux/delay.h>
+>  #include <linux/ktime.h>
+> +#include <linux/hrtimer.h>
+>  #include <linux/timekeeping.h>
+> =20
+>  __rust_helper void rust_helper_fsleep(unsigned long usecs)
+> @@ -38,3 +39,8 @@ __rust_helper void rust_helper_udelay(unsigned long use=
+c)
+>  {
+>  	udelay(usec);
+>  }
+> +
+> +__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtim=
+er *timer)
+> +{
+> +	return hrtimer_get_expires(timer);
+> +}
+> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+> index 856d2d929a00..78e2343fd016 100644
+> --- a/rust/kernel/time/hrtimer.rs
+> +++ b/rust/kernel/time/hrtimer.rs
+> @@ -224,27 +224,39 @@ pub fn forward_now(self: Pin<&mut Self>, interval: =
+Delta) -> u64
+>          self.forward(HrTimerInstant::<T>::now(), interval)
+>      }
+> =20
+> +    /// Return the time expiry for this [`HrTimer`].
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `self_ptr` must point to a valid `Self`.
+> +    /// - The caller must either have exclusive access to the data point=
+ed to by `self_ptr`, or be
+> +    ///   within the context of the timer callback.
+> +    #[inline]
+> +    unsafe fn raw_expires(self_ptr: *const Self) -> HrTimerInstant<T>
 
-I don't think this is the right fix. Using only the last word is
+I guess the signature of this can also be
 
-(1) not what people asks for when they override HOSTCC. When a user ssays "=
-call
-ccache gcc", they don't want "gcc" to be invoked instead.
-(2) not general enough. If instead of a wrapper, it's something with subcom=
-mand,
-then this just breaks.
-(3) going to cause surprises to people and be hard to troubleshoot when thi=
-ngs
-do not work.
-
-I think the proper fix should be invoking a helper script with the multi-wo=
-rd
-command be passed as environment variable which is then expanded by shell.
+`unsafe fn raw_expires(&self) -> HrTimerInstant<T>`? Then you can remove th=
+e
+first safety requirement.
 
 Best,
 Gary
 
->
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1224
->
-> Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
-> ---
->  scripts/Makefile.host | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-> index c1dedf646..22eab2734 100644
-> --- a/scripts/Makefile.host
-> +++ b/scripts/Makefile.host
-> @@ -87,11 +87,18 @@ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
->                   $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
->                   $(HOSTCXXFLAGS_$(target-stem).o)
-> =20
-> +# rustc's `-C linker=3D` expects a single executable path, not a command=
- line.
-> +# HOSTCC may be a multi-word command when wrapped (e.g. "ccache gcc"),
-> +# which would otherwise be split by the shell and mis-parsed by rustc.
-> +#
-> +# Use a dedicated variable for the linker program used by host Rust tool=
-s.
-> +HOSTRUSTC_LINKER ?=3D $(lastword $(HOSTCC))
+> +    where
+> +        T: HasHrTimer<T>,
+> +    {
+> +        // SAFETY:
+> +        // - The C API requirements for this function are fulfilled by o=
+ur safety contract.
+> +        // - `self_ptr` is guaranteed to point to a valid `Self` via our=
+ safety contract.
+> +        // - Timers cannot have negative `ktime_t` values as their expir=
+ation time.
+> +        unsafe { Instant::from_ktime(bindings::hrtimer_get_expires(Self:=
+:raw_get(self_ptr))) }
+> +    }
 > +
->  # `--out-dir` is required to avoid temporaries being created by `rustc` =
-in the
->  # current working directory, which may be not accessible in the out-of-t=
-ree
->  # modules case.
->  hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(depfile) \
-> -		 -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
-> +		 -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTRUSTC_LINKER) \
->  		 -Clink-args=3D'$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
->                   $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
->                   $(HOSTRUSTFLAGS_$(target-stem))
+>      /// Return the time expiry for this [`HrTimer`].
+>      ///
+>      /// This value should only be used as a snapshot, as the actual expi=
+ry time could change after
+>      /// this function is called.
+> -    pub fn expires(&self) -> HrTimerInstant<T>
+> +    pub fn expires(self: Pin<&mut Self>) -> HrTimerInstant<T>
+>      where
+>          T: HasHrTimer<T>,
+>      {
+> -        // SAFETY: `self` is an immutable reference and thus always poin=
+ts to a valid `HrTimer`.
+> -        let c_timer_ptr =3D unsafe { HrTimer::raw_get(self) };
+> +        // SAFETY: `raw_expires` does not move `Self`.
+> +        let this =3D unsafe { self.get_unchecked_mut() };
+> =20
+> -        // SAFETY:
+> -        // - Timers cannot have negative ktime_t values as their expirat=
+ion time.
+> -        // - There's no actual locking here, a racy read is fine and exp=
+ected
+> -        unsafe {
+> -            Instant::from_ktime(
+> -                // This `read_volatile` is intended to correspond to a R=
+EAD_ONCE call.
+> -                // FIXME(read_once): Replace with `read_once` when avail=
+able on the Rust side.
+> -                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node=
+.expires)),
+> -            )
+> -        }
+> +        // SAFETY: By existence of `Pin<&mut Self>`, the pointer passed =
+to `raw_expires` points to a
+> +        // valid `Self` that we have exclusive access to.
+> +        unsafe { Self::raw_expires(this) }
+>      }
+>  }
+> =20
+> @@ -729,6 +741,17 @@ pub fn forward(&mut self, now: HrTimerInstant<T>, in=
+terval: Delta) -> u64 {
+>      pub fn forward_now(&mut self, duration: Delta) -> u64 {
+>          self.forward(HrTimerInstant::<T>::now(), duration)
+>      }
+> +
+> +    /// Return the time expiry for this [`HrTimer`].
+> +    ///
+> +    /// This function is identical to [`HrTimer::expires()`] except that=
+ it may only be used from
+> +    /// within the context of a [`HrTimer`] callback.
+> +    pub fn expires(&self) -> HrTimerInstant<T> {
+> +        // SAFETY:
+> +        // - We are guaranteed to be within the context of a timer callb=
+ack by our type invariants.
+> +        // - By our type invariants, `self.0` always points to a valid `=
+HrTimer<T>`.
+> +        unsafe { HrTimer::<T>::raw_expires(self.0.as_ptr()) }
+> +    }
+>  }
+> =20
+>  /// Use to implement the [`HasHrTimer<T>`] trait.
+>
+> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
 
