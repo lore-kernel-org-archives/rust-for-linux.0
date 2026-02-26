@@ -1,68 +1,73 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022097.outbound.protection.outlook.com [52.101.101.97])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010062.outbound.protection.outlook.com [52.101.56.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EC7376BFD
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 11:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF405332ECC;
+	Thu, 26 Feb 2026 11:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.62
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772106165; cv=fail; b=qc9CssmiCFgJWXQ3p/dIGwxOPTC1j5MAvU7leyTYB7CrRdh/PBE4l94mC+Ay+/XaQd+PAE6GVryn18s+cjTcFJE98W2xBanaIgHM2COYsU5rtJ/bCHmwHk9POilbnzvWHVYFLaauEsjfsrmOF4zEKTQPyTCi6blDSKUYXNv9Nlo=
+	t=1772106410; cv=fail; b=SPMHFyDIX7JhpqTtP29HyOpC+4MctYZvveEiLB9DrSMP0+yXx4ngj+xefAx+X6yO9P5T/+f77f6yBfDZwqEEXf4l7Lr6kZdKj+6wx2gCdffIWK8UG6xNO51Lyd4UXYnQnAXLuUuJ/C1VtpNBjqTxh2CaVasKfaVeXajQ2invzjY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772106165; c=relaxed/simple;
-	bh=eXHXe28Po3a+9exFuq/8YLJSDcsD2qChQxv8RBFvqw0=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=g2fbD0SAWlu2wJGkWDDDOMoowVC3/DYL5Lgf8PiO4M+uLTOKwwJk+8jbtp4H9DTUpkPSXHg/irj+v+MJdBo6ro4SkgMJoagvr4xVSQzPE81LSMjd8lc0+fRcN/ErlsBVuVrV8oND3kEjcoipgihtLoSjRf2W1ZZbbUoIbx9qj5M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=aMXKZBUL; arc=fail smtp.client-ip=52.101.101.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1772106410; c=relaxed/simple;
+	bh=A5ujHY4eU3ep7aDDm2FuLesQNYBm4WTa91VBvx0h6I4=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=g3rTLSbUjQjp+RHAW4U2TzlKXW2scjxtF3y9uMvB8WCLEGsQ+O7ByMdBAeEXLa97zdnB68Qqv/oUUqmk5ondaGpTGegrX1krD35GI0cn5rtH7pMyoNFuifi8xS9PqW7LEQpGcDzeIrapkeVLNvgwVKQcpTVjxps7m3fqn2BRn58=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=W0WlGLnZ; arc=fail smtp.client-ip=52.101.56.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="aMXKZBUL"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="W0WlGLnZ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ss+oV+C8J24sv+dMo5WGaWpONKWaqesTZ127epJpw56b5kDT4AZlW1xi2WP2yInMpsd8xs6ke8GyPi2gAZL1+Ci8rjSzPIGxfv5y6xdTelp9gH7/83mhfZ4ZfvfhT980q27D2lvY7Xg1OrJkTFFd0JhTKzCqDQBavKyJ6PvIRCe0RmEjhrt0F9hBrO8BsW31QXRHgExAAixhpoc6AUGEIaAK3MwAadXnMMf/3GTVGzap3j86mNFnKFYDjGkbgXFECkmrycZS3pi+vbI2WEeBklpJ6fQfZU2O1FleDuPbK0K1cL57xVEnIwt2v3JwVY26Zw/3mVwwK6v5fYdK7OEliA==
+ b=H3thY2IvxYcUMpRKEBszyL6RFiYR7EUf0w96Du5arlPCoJufOX+xl92UOoSkxpJZ4DxZquY5HDcNeSYp75hxSlZ8/WoKXjDTxJRARAG6fTA34Hr5OBiFLDWq9cTWroGeAXPS/R8e0uZOIt5itwASPFIrtbx/gJlNXWm9twX/Mci+EzoTKy8L2FcfO7PVsMHSnjmuMOPvrFq3GWvoFIc4a+9JrZqdUFPdPFovvvly+fdYmZRnuyIBtCpxkSsZzqqaFHrsybRGCkll5POYCfKv5C2PgZ9/9FBEOOfWzFBT/z19DNf9H6BvaMDhRwrQeqnBR34UljNZKMg59DBjEvx9VA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kLF+2MA49VpgMFef9L9V2O7ftyCD1ddkBEXv8AANjo8=;
- b=fn8qRXpNjaI3nYcrP6PdIM6r7mxLM33+b8G4U44Dry2HnJZMaenCVTCrCUhJZhut0xjp+ishQjrson4lqJK/ltsoSbmtmYzSZIgPX3xoPa/qHnsP7XFt55GVGTy5K2ktJY8FnB+hoJ6GmfPV/cpFCooGhin7LPUr/O7Qfeu6+jp0AX4tYnDTBI48THA6otDMpa/N45c1t0vJUuR/pn8+7A400Ohoo1eZZ4nq9xJCnzcvSdmr48TSEBQYPWRWS8MpU9Hk4YHCnI2rvzBXCfWBrtY/zzI1Thvu+l+t5sb8irVz+r4c1cl3tpxKM66u2U5KtYljb24HZcYzVtsAjm3ldA==
+ bh=sMY96A6F1tDZHE8RLTFE5p2zhP7cdjqBaEcDOhHlkgQ=;
+ b=uPqfRohpQuTfd/apkhvjOeEYBh3ZURDCfs/ovUElZa/RA0IbBH4Mc6e0lRaJcIr45qG1lbN5yUr0TrSWQEJ1dBQvOQKuusXkHiO0n0fBn4g+d6cJO73ADzsmumh6oQl8qf9ADvZSDMXiCIUD/oMFW8qrvwf5M2LC6Ubem4Nn0RUkr0HXyHXdW+Uy0pNthiLR7E3/tecZ6VuTbBPOF54k+HvY5ULlIki9GPc1iLFhajH+hVKqgViV6C9DfEVA7bfPYctSbmU5qs/5pw/R29hi33SKve7hpgnQSSC3CKmI6Kyb0mF4mQvjV1dXOUU49fWZDd2GCFXn7hWHouUQ/h1wUw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kLF+2MA49VpgMFef9L9V2O7ftyCD1ddkBEXv8AANjo8=;
- b=aMXKZBULlMtRd+3Tpy7R/xA2breSuCGVcOcfVpC9quHnKnLZMRghn+m+yUB/H1GQ4J4Yoaj/gf3YZ/AEDKx134dCp9yu947cip0+R7LHEId3way8xmDyMlWxIcWtb69PwAUbIP4OuYjfRIxiAU3bgGPzLdwV4ZLXxv1Ky2NMiRw=
+ bh=sMY96A6F1tDZHE8RLTFE5p2zhP7cdjqBaEcDOhHlkgQ=;
+ b=W0WlGLnZQwQT8qTPtFuwCYwKF1N0BewQ4XrsQrqjxAg2c5CUpwRbBGoB7y7SAggIcZ9eLSRXGmFYfcav9aQ1j4FSUKi9caQedsvp1PioE8Wp4rF5mj0uetOLYPkS0f2J9rFgb4k2LNCJ4EiHIBBQHKUcztaXHSscdQRLwX1LrYN1O4/b93fO+HSQMnSNiqeJu7DnAFL+rHZRvfB+4UYP4AmHCTR2nNQwVB5RVujhTj6Ntxie0x9LGyjLqldkgnCH5FLgx9jm1gcSyXEHlo7pAJKCJUfUpEluXSi3NNxNrFckbBAfLlIijc9qA+k/Q4sr0ckX5N41tWTRVKrPq0z+fg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOBP265MB8833.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:48e::19) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by PH8PR12MB7112.namprd12.prod.outlook.com (2603:10b6:510:22c::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Thu, 26 Feb
- 2026 11:42:40 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.014; Thu, 26 Feb 2026
- 11:42:40 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Feb 2026 11:42:39 +0000
-Message-Id: <DGOV7EXV8VO9.QR9UN9EV6DZK@garyguo.net>
-Cc: <dirk.behme@de.bosch.com>, <aliceryhl@google.com>,
- <anna-maria@linutronix.de>, <bjorn3_gh@protonmail.com>, <boqun@kernel.org>,
- <dakr@kernel.org>, <frederic@kernel.org>, <gary@garyguo.net>,
- <jstultz@google.com>, <lossin@kernel.org>, <lyude@redhat.com>,
- <sboyd@kernel.org>, <tglx@kernel.org>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v2] rust: hrtimer: Restrict expires() to safe contexts
-From: "Gary Guo" <gary@garyguo.net>
-To: "FUJITA Tomonori" <tomo@aliasing.net>, <a.hindborg@kernel.org>,
- <ojeda@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260224132507.315637-1-tomo@aliasing.net>
-In-Reply-To: <20260224132507.315637-1-tomo@aliasing.net>
-X-ClientProxiedBy: LO4P123CA0557.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:33b::13) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.20; Thu, 26 Feb
+ 2026 11:46:40 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9654.007; Thu, 26 Feb 2026
+ 11:46:40 +0000
+From: Eliot Courtney <ecourtney@nvidia.com>
+Subject: [PATCH v3 0/9] gpu: nova-core: gsp: add continuation record
+ support
+Date: Thu, 26 Feb 2026 20:45:32 +0900
+Message-Id: <20260226-cmdq-continuation-v3-0-572ab9916766@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23OTW7DIBAF4KtYrEsFw48hq96jygLD0LCwnQBBq
+ SLfvdTetFKWbzTzzXuSgjlhIafhSTK2VNK69CDeBuIvbvlCmkLPBBhoBkxQP4cb9etS03J3tW/
+ TydoogrJae0H63TVjTI/d/DwfOePt3ul6DMnkCnZjnlM9DdJJGxEECjVO0hipUPCI1oNxhoFnS
+ irDrSG/1iWVuubvvW7jO3Y04/CiWeOU0VGw0QYMSqH+WFoKyb333zvX4C9hXxHQCUAzjZorJXT
+ 8R2zb9gPSagN/QgEAAA==
+X-Change-ID: 20260203-cmdq-continuation-b99f3d5966c3
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
+X-Mailer: b4 0.14.3
+X-ClientProxiedBy: TYCPR01CA0063.jpnprd01.prod.outlook.com
+ (2603:1096:405:2::27) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,223 +75,130 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOBP265MB8833:EE_
-X-MS-Office365-Filtering-Correlation-Id: 455a0ae6-888c-4da7-7044-08de752c2577
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|PH8PR12MB7112:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2746439-ec04-46d5-c145-08de752cb481
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|1800799024;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003|921020;
 X-Microsoft-Antispam-Message-Info:
-	6jvRMANJNonop3K8vDoVhevxwwxZI+T6EqNf4qP1lKBkoS2kypGShOkXfu0KpdTY7EtdGC7vUAUN7MI1yr0q5aN1R4kHPXcpFy1luJhTkJCh9rEJJ2OC8Wfxe+LmwFduhsMctnYUQixMogN6dbR3cBGD+qYW8x5uL7suJuJ1/y7AqizdYbXa08eN84InI4SFQKwW9tYZMzdtccCq+wfv7HZNZxS0u3WPi7LQYW/xH5BzTimbk6CbHl5TWf2k5K1N+M/NmedMumx60BgAVvRtav2PTfh3XO3Vte9cH+SOZCwHEnKeUNw4+tpnzrYEBwAOvNmR3ZIVNmTODUSwKFVar5nll1H/JrrwBfKLQRqHVayg0AsYCTuC0BO3+uKwNyxEnK9JvwYMTVulun++Z0119H4uDDPxfB2PY40Fw1EKABrAvQUIRD9F9ESXC5AZenlOE0eAIMYmfaXPhk4voDvi95jCIAtKWtEpw0ZZR3JzVyzyLL8p8eWKgbAnn6f54GyiQVACNhrIEEwbKhRj8kCN8DXrC8Co2d0rjr2362xHzFXiN5xQkXPVUTIUNUqMed5apbEmL1zPhWJmN1Nc5nmyK8qS8jzNztNA+oxJkaW4/Xw5pLrDws8VpqsqU2yskDOwx9jFESf0QBdISQ2ecbBXVRJ08CMDXUzJ8Jw68H/mE0Lu07ckKmYKrwEHkOYCXMWWHHSQlUTICiSolLpyBoQsqYv6y7mqAbRxrvObjAPJ1vk=
+	2nTGyCC946eyMinC2B5yEgtJQOKRNvVL7+XjI82HZzzixiX8oVxD7Qz0XDSq0piTd/7Wz6r/3XLcsrFtpB0Fq7jBDRccUWKavXjsmWdvdmUKn6y+vil5H2dR0BkRZMRpFrrTRS8yMHUfDRY2XUss7ADidwmWtVGIBUZKHPNLGLTEDzCOKkFY72tcZeHHFa+ZU5nHOX0Jx3kK0e+OG26zed04Ll9t7QClKa3hdzitjyzQo4WLa0bTD5Fxlwci4mTeRzyGhORaS5Ax+hmZMqJWNgvmFx5ffEHlLsubr+jo2VOCeELXsU8LxeJcmORTQ1ZOGNg5YHlW7d0IkOZ1oJuxJXo5ZRYMkIXynUy9ODdEG+xT2agm7spQJQJei4VmllseFX/h8+2eAfamumbUPwtbvWSD/GiFU9OC7uNxiMvlxyxLaaoEoM2hWgFMSaW0Yu1L9Afneh713eQ+CUNYfY4AHbhWMPvmX2pAcHAyQrJuw1NuIQKnrcQrvEOL7EX1ooPRAjzalEdS3m1B156y/UbzIpBIg3XvnQIlis79KlZ7tWqLhXVRd5zl8snf03Gkaz7/EDehFRL2BshHDPeG0I7YDjFIlQZ6KeHZ3Cv1pHRaeZctsudGbe1cwdHRuKjX2YEQ2jEfoX4V1IDoYUiAepfQ/kmP3sofIpUCt05vjcJfuM0J0/BDjhLfxPrLZdDTme11++UEtSWxDu42CWmNcCNdlb9lMWIGkBBWMuf526Qa/RPwT61yYpHGpUhW5OO4Bh0ealzue3prYGCLRqGwyGOYRQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R0ZJZUg5OG1MOVg4WnFMZmgwM2xhcVBTVFdqZExacHZCWW1YZWdOSko1MzlS?=
- =?utf-8?B?aXBxTnA4UG5jRVZoUUVSOGZSWEZNdWU0c01SMDh2TENxWmRCY2JSSXVpOGQ1?=
- =?utf-8?B?Nis4NG9raHc1RmVFNlMyV0lWaEJZcFU1RFZCR2FOcTdFa1o5T3NOVmJEWnhR?=
- =?utf-8?B?djlFNmxMbncvNGVCQmhkT0dwTHl2anc1cDRzazU5Q2MxOXNlRUM4QlU0VlN2?=
- =?utf-8?B?dU82Ui96OGxaZGpGTjNobllGSnJVMzZqb0g5ZCtwN1pGUThXTHFMS05RRklo?=
- =?utf-8?B?L2xVbDJDTTZOV0pxSG5EM2JXT0hkbEtZSjJEZDFkVUhBbU5rVnk1eGtreThw?=
- =?utf-8?B?WGJyZFBmalRPZGV2NFBMQVhaTjJ4VEQwTnVTYUtDaC9mSnppaWYyK1l3YnhL?=
- =?utf-8?B?K002ZDdBZG52MUZxU29oSVA4Y1hLMFBockF3YVVqUzgvSk9zTms3YlVlWnFQ?=
- =?utf-8?B?VmRzQWh0dTJIRzB3YjBxZnVHS3NYOGRvRXRZV0g3a0JvNGU0Zlh2bjFCTW8x?=
- =?utf-8?B?Zk4vR3pyWFhaS2gyc04vOHlIZmd3eEhRWHRsa3FFSnpWdTlKK2JKL25pZ1lM?=
- =?utf-8?B?ZHR1S3VZZHZEcFhPczk2a2tvME9YcyswKys0Ty9KbCtZQTlDL1VhakIycGtw?=
- =?utf-8?B?VmhqRFh2bmN2T0VNUHNZL1B2bWtNaSt5NUZROHlwY0VmdnluT3FmQjVITFhO?=
- =?utf-8?B?YWZ0RGxla1FTOVlKbTlqRk1nb2lSU21ZWXR5Vllldk9scXZmN1NZQndLSUx3?=
- =?utf-8?B?MnJTdjduT0JBS2ZYbjNrb1Z2SlE4RXhIN1FKVTgzMVg4NEJKZTR5MWI5WnlO?=
- =?utf-8?B?bVRhR0M5UC8yT2htK1JRREpkRVVkY245ZGtuOEJNVVRHUVUzNGhQS1BWV3hI?=
- =?utf-8?B?bm5WQUJPeG55b3hEMk9XajdvZDExUjlTbUpaVnlkSXc4bXo1bFQybmdqaUZQ?=
- =?utf-8?B?cC9leVJ2elZoOFZkZzhvQmFJbjJTSnQrRlRtVklSeXZlRGR0OUZoYlB0UmVr?=
- =?utf-8?B?MFlZUHlBUlRiOGEzUmdOYlpRb3dRWUFWMWlZNTRKUmMxZmVYa1pJeUV3cU5a?=
- =?utf-8?B?S1hIeS85d2pFUUhDOWJNeGtDcEd5THVDMS8yV09lV2FuOU1JelFWRUlwVXRz?=
- =?utf-8?B?RWIxdUNudmtsS1BBZS9LcmJjbFU1bG1wM0VYdVUzRnZWNTZ1SmNNVVpWUjdx?=
- =?utf-8?B?VERtLzNzbFQxeTJYSjM5T29PbHNmRDZxT3FneDh2TEl6NmdlYUR5OVR6Y2NW?=
- =?utf-8?B?RXdIaldWUWhUemJuOU1TbzIyalF5dG90SEQ2RCtpb3pUcmpoRjFYVjVyaDdw?=
- =?utf-8?B?d0duaHVWNEExVWR5UFNRZEZldmwvNDNTWldZVytKYjNPb2lCQllkYUhCL0Z6?=
- =?utf-8?B?bGZJcTlOejhOSTE1aTV1OHl6S1A1NU9aYzgwTjRHV1JTR3plTHlpc081Z0pz?=
- =?utf-8?B?aDQwTFFQbmtjdmg2dndIVFJES0NTclcxbGNlS1U5NnlWMGI5YTVreEttRXVl?=
- =?utf-8?B?VTFtSTdzQkVjK2hrZ0EzUW5pUTBPMUZSb2VxenE5aVRVUzlnOUhENW4vVVMr?=
- =?utf-8?B?RDBzVFhwUjAvRWZ0bnloZEJPYlp0TVJid2FwVGNoOXVhc1FzUE1OaHN3d0ZU?=
- =?utf-8?B?VW5BWmlkNU4yeUZYK2lGczg4eEpRTlhVRjBFUGlzUTYyY1UySGhuYTFqQVdG?=
- =?utf-8?B?Vlc4bkRjY3RoVU8rSlNHdEIyZjNCRHJZTU1NU01wM2NvcjlIQVZnenJIdURC?=
- =?utf-8?B?bzBubFVZQ0VWU3hMc2gweHhqL1lqZUJtK3hDbFRqTEk4Q3FOOUJJWXlaR2FJ?=
- =?utf-8?B?UDgxaWZNeUNEM0JhUFZGSHFpOUhIN3ZqM2FBcXR5UEROR1BNVTlmR3hEOGJx?=
- =?utf-8?B?bWxGc3h4eXhORXg3WUlLZVVrTTRMeDNhMkQxRktMZCs4dGovZm9lNXVheFZC?=
- =?utf-8?B?enRDVi9CQUNkRndrY04xR1FXT0NacHNVSGx2V1Frd1Y0YjVjVWdNbUY1RTc5?=
- =?utf-8?B?UUh4YlkveVMxUGJLMlVnTnFtZ0hiVkFUY0RLOEV3YWo2eXBiZTRvejgySU55?=
- =?utf-8?B?WlQzQ213TVhXUERUdDV3cXBjbUhJQ0VVNkJRdGNCbCtwa1VwclRXb0NLR3VU?=
- =?utf-8?B?SHM1YXAwMEZZUFA1V3hqOENBYjhKc084b2pkUGhwbTQxZjNaeXArdWVzeWl6?=
- =?utf-8?B?bDlNcFdERmZ1RzYvRlZYeFgyejlRbTFqUlNqNmpIRVYwQjN3RThHZUhvaVRW?=
- =?utf-8?B?TG5kOTBvOWVIMldoSVpqbi83WEtLZi94RjhNTmtDMlFFOUxQQSs3QU1QTGJm?=
- =?utf-8?B?ZkczRmRkb21UUkxWT1Y1U2VkVE5KM2NMWUhWZmFTMnNDbktidzkzZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 455a0ae6-888c-4da7-7044-08de752c2577
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?Y3J2cC9obi9ZMjg0bUNRT2J3T1JIb0JoN2hFaHExU3FKUUtBVHlrUUU0MzVs?=
+ =?utf-8?B?RTNES3F5YWcwa2RsOEpwK1p5Q1dnTVdvamNNeHNLUjNuUmNkbnVCVjJnMlBm?=
+ =?utf-8?B?eWNxZG5hZE0xY05EbEJlZjlDY3NlSHh5dnpxUHBHcHB0S0tMbkV5bGQrSFNO?=
+ =?utf-8?B?dVFkWDFNcFdMRmk2SEhISVJQRFUzdW1YYWg2N3ArTmp2S3VYTlNNamdJZmlL?=
+ =?utf-8?B?SjJUMmZQUzk0OWJvTnFnZmI0OW5qVkc0VUIzemErSUpadXVKTmhTeCtRVmNz?=
+ =?utf-8?B?ODFyNHI3VjNUcjFHRlVJZlF4YXFwNUN6UG9uNFBtU2djaXJsZTdDZm4zbmty?=
+ =?utf-8?B?OE9sQ21weksyZzJsR3FJSHg0MGlQeitTdjByQnE0S2llYTFEKzY4YkJtTHA4?=
+ =?utf-8?B?bVQreXprdzlXU2ZFT0RPMGUxY3dNRzI4Q295OHRId3FnZVJpTE1RT0MyQ25O?=
+ =?utf-8?B?eXo2YXdPdGtrUzIybGRZd0V4Y2F6d3VPQTR2eFROTEV4a3orSHEydXk1Ry9D?=
+ =?utf-8?B?dGVTd0V3bzZHVjBQTitZYmFMMEY2TDlYNlZZci9DQUZ2a3AzS0ZPV3llMzJZ?=
+ =?utf-8?B?UjBuZUNGVzVlby96KzJaejR6NGNsQUxBMkdzY1ozdFc5bWhVYkpyUUdtdW1Y?=
+ =?utf-8?B?aExqUytZclY4OG9YazZYN3JKZnJlQmVkR3RveXhCbVpWR3g1SnJzcGtjMmg0?=
+ =?utf-8?B?V1hvZmxtUTM5RTNRZHBheWhUOW9UUUcvck1NWlpxdVAvNlQ1ejRzempubms1?=
+ =?utf-8?B?dU12VW9vaG0zTm1QLzRsRG95RjBCczJlZ1V3TEZDcENlbWxhMFFYYytYZEoy?=
+ =?utf-8?B?QXR4VXBYYkxxaHVHNFFhVWFmY3ovSXJMVHByaXBJZ2ROZ0VveE1qd3F4eHUw?=
+ =?utf-8?B?OStqQmFFMHFFSUlPc1FDN3hGQ2ZIaUpNb3lZc0Y5S0FselZRZ0g5MVB5TUI5?=
+ =?utf-8?B?Z01QazcwcTI0ckFSWHRFclJYRytYVURlN0pBejRyQk1sUGU5VmEwYUlXZmZk?=
+ =?utf-8?B?ejBzazVKdVI3b09NV0dNR3BkQ3VxSTJhZHpuQXF6OGEySTFlTk5XQWpOSDFy?=
+ =?utf-8?B?cEZ5QVdoRGJibWYzT2RUV0RZWGxBRDc5MlNDcmFxVUhlR0kydmtxSnFjTjVH?=
+ =?utf-8?B?Y3Fwci9tTGdjaTFrRXJCQjBqNzdTc2dpdzJNWGI1SlVqQmI4Q1NUaU9nbjRi?=
+ =?utf-8?B?cmtMRjlaZm1PY0U4VDg2R1Jvam5MWHV0NFpLYTc5eXM2cE9OallSeFhWbnBy?=
+ =?utf-8?B?eGFIamhsNFd4a09WZ0p6eFYySWtFTm5PbTFJK2FWaG9GajBXMXRiSkJIV2s3?=
+ =?utf-8?B?YXlNemd6d3VNcWdiRC9tL2RtWFRwcEpyQmlhd0JtUkhtWWJjclpabnN6aHNm?=
+ =?utf-8?B?SzBDei8raWUzL0dnd3M4elc0MGZoZElwK3FRclVmcU5qc01wZWdsVlliR1k2?=
+ =?utf-8?B?ODYwQVZaeWdzRzJNTTlmYkhPSHF2TzFINi9nQXhROGFvb0w0WUNuc3VMdGQr?=
+ =?utf-8?B?akZ6TjFrWU5yUE4xOEgvT0JGOWJrUHRCMWpvZlNmRk1HTXFPSXRHbE1LZUdI?=
+ =?utf-8?B?Y0lZNU1ENUZrSXlPcDZkOEZibi9rVFVKTmI3LytPcHRYcmRUajhoUXdGTy9n?=
+ =?utf-8?B?ZTRDRlBwWnVES3FUOTdBaTFYeGdLTDV0YnBaN3F2QzBQZks5SjFOQlIvVnB1?=
+ =?utf-8?B?NkJiTmR1QXVkOGhFa3IvbHcySDhMMklDb3BmcDcwZHhnNnI2TkMzU3dqdFk4?=
+ =?utf-8?B?ZG5GOFJ0VCtwVjFiRkZ6djBuZTl4T3BESmRTOUpCdVNhSFpiUXhPNHpEaFBq?=
+ =?utf-8?B?dnpPbGowV1J2RWkxSndRTGR1U1YwZWZsL3ptMnNTemVHSDEwa05WUWR6UThG?=
+ =?utf-8?B?MVpsNEVwOWJqdjNzc0owUUx0OFQ4MUY0YTdqQnVkb2g0OEg0OGpyNVhidVpy?=
+ =?utf-8?B?cHZPZ01hM1h5MmtISWhVdy9NSkhzUSs2TTJUR2NoRkdtT0hhdW9VWXJKY09H?=
+ =?utf-8?B?OU80YUZCdmRvSElubzdTOFlWY3k1Zkx1MjV3K2IxOFZUKzYrYkREMHJUSmIx?=
+ =?utf-8?B?UmFNSFRmbGN1UThwTVFUS2hVemxqNVI3QlZDNWR6b3RrZkVmV2NLaFJyaUlE?=
+ =?utf-8?B?SFZaWS9VVERSc2hxVmhKaHVuY2E0SVhoOVJ4L1F2UmJ4c2hPODFRZit3OXZ4?=
+ =?utf-8?B?UlhmZHA1TGNHSzMxMm1jOWdmYXYveWNzUnZjVkJOdWFDQ1N5cUUyUUdORUh1?=
+ =?utf-8?B?QnR3aFlmbk85MElVZlVaS2RxYythQkV2amVtRHM4SnRoRUxYU1RxZWxHbGdC?=
+ =?utf-8?B?ck9IcUd2aDRMcnc0azlEU05WUHlmaDVLVG9oY1JNU2l6RS9sOXV1cEVnM3BX?=
+ =?utf-8?Q?yQkESZ6KjvetL/bNOiMxDlGSZOhL9Y9prIHppk3hRSAzn?=
+X-MS-Exchange-AntiSpam-MessageData-1: EJ92YT9jjf2NMQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2746439-ec04-46d5-c145-08de752cb481
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 11:42:40.2750
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 11:46:40.2265
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PWhwtxveVFD78KC+BhzI/UXLWtOwKAOBu19UKTqj+Hi2qx3c0fS4LWd+HqHGgJIRRZ1Th2a08rLNMxujNQcNWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOBP265MB8833
+X-MS-Exchange-CrossTenant-UserPrincipalName: fmHPlI3H6D/crYZOVaL+PbQu3Pst4y+u4R7sVGU7UMZn3GJF9Q80xNqnEumTxa4wijljzaK3Qri1nakjACEW6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7112
 
-On Tue Feb 24, 2026 at 1:25 PM GMT, FUJITA Tomonori wrote:
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->
-> HrTimer::expires() previously read node.expires via a volatile load, whic=
-h
-> can race with C-side updates. Rework the API so it is only callable with
-> exclusive access or from the callback context.
->
-> Introduce raw_expires() with an explicit safety contract, switch
-> HrTimer::expires() to Pin<&mut Self>, add
-> HrTimerCallbackContext::expires(), and route the read through
-> hrtimer_get_expires() via a Rust helper.
->
-> Fixes: 4b0147494275 ("rust: hrtimer: Add HrTimer::expires()")
-> Closes: https://lore.kernel.org/rust-for-linux/87ldi7f4o1.fsf@t14s.mail-h=
-ost-address-is-not-set/
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
-> v2:
-> - Add Fixes and Closes tags
-> - Fix and improve comments
-> v1: https://lore.kernel.org/rust-for-linux/20260110115838.3109895-1-fujit=
-a.tomonori@gmail.com/
-> ---
->  rust/helpers/time.c         |  6 +++++
->  rust/kernel/time/hrtimer.rs | 49 +++++++++++++++++++++++++++----------
->  2 files changed, 42 insertions(+), 13 deletions(-)
->
-> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
-> index 32f495970493..ef8999621399 100644
-> --- a/rust/helpers/time.c
-> +++ b/rust/helpers/time.c
-> @@ -2,6 +2,7 @@
-> =20
->  #include <linux/delay.h>
->  #include <linux/ktime.h>
-> +#include <linux/hrtimer.h>
->  #include <linux/timekeeping.h>
-> =20
->  __rust_helper void rust_helper_fsleep(unsigned long usecs)
-> @@ -38,3 +39,8 @@ __rust_helper void rust_helper_udelay(unsigned long use=
-c)
->  {
->  	udelay(usec);
->  }
-> +
-> +__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtim=
-er *timer)
-> +{
-> +	return hrtimer_get_expires(timer);
-> +}
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index 856d2d929a00..78e2343fd016 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -224,27 +224,39 @@ pub fn forward_now(self: Pin<&mut Self>, interval: =
-Delta) -> u64
->          self.forward(HrTimerInstant::<T>::now(), interval)
->      }
-> =20
-> +    /// Return the time expiry for this [`HrTimer`].
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - `self_ptr` must point to a valid `Self`.
-> +    /// - The caller must either have exclusive access to the data point=
-ed to by `self_ptr`, or be
-> +    ///   within the context of the timer callback.
-> +    #[inline]
-> +    unsafe fn raw_expires(self_ptr: *const Self) -> HrTimerInstant<T>
+GSP commands over 16 pages need to be sent using "continuation records"
+which essentially means splitting the payload over multiple commands.
 
-I guess the signature of this can also be
+This series adds a command type `ContinuationRecord` which just writes
+its header and whatever payload it is given. It also adds types
+`SplitState` and `SplitCommand` which support splitting a large RPC
+into smaller ones while transparently letting regular sized RPCs be sent
+without extra copies.
 
-`unsafe fn raw_expires(&self) -> HrTimerInstant<T>`? Then you can remove th=
-e
-first safety requirement.
+The send pathway uses `SplitState` to send all commands, but if
+the command fits into 16 pages, it still writes directly into the
+command queue. If it is larger than 16 pages and needs continuation
+records, it writes into a staging buffer, so there is one copy.
 
-Best,
-Gary
+Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+---
+Changes in v3:
+- Rebased onto drm-rust-next
+- Added some doc comments
+- Reworded command_size doc comment
+- Link to v2: https://lore.kernel.org/r/20260219-cmdq-continuation-v2-0-2e8b7615536f@nvidia.com
 
-> +    where
-> +        T: HasHrTimer<T>,
-> +    {
-> +        // SAFETY:
-> +        // - The C API requirements for this function are fulfilled by o=
-ur safety contract.
-> +        // - `self_ptr` is guaranteed to point to a valid `Self` via our=
- safety contract.
-> +        // - Timers cannot have negative `ktime_t` values as their expir=
-ation time.
-> +        unsafe { Instant::from_ktime(bindings::hrtimer_get_expires(Self:=
-:raw_get(self_ptr))) }
-> +    }
-> +
->      /// Return the time expiry for this [`HrTimer`].
->      ///
->      /// This value should only be used as a snapshot, as the actual expi=
-ry time could change after
->      /// this function is called.
-> -    pub fn expires(&self) -> HrTimerInstant<T>
-> +    pub fn expires(self: Pin<&mut Self>) -> HrTimerInstant<T>
->      where
->          T: HasHrTimer<T>,
->      {
-> -        // SAFETY: `self` is an immutable reference and thus always poin=
-ts to a valid `HrTimer`.
-> -        let c_timer_ptr =3D unsafe { HrTimer::raw_get(self) };
-> +        // SAFETY: `raw_expires` does not move `Self`.
-> +        let this =3D unsafe { self.get_unchecked_mut() };
-> =20
-> -        // SAFETY:
-> -        // - Timers cannot have negative ktime_t values as their expirat=
-ion time.
-> -        // - There's no actual locking here, a racy read is fine and exp=
-ected
-> -        unsafe {
-> -            Instant::from_ktime(
-> -                // This `read_volatile` is intended to correspond to a R=
-EAD_ONCE call.
-> -                // FIXME(read_once): Replace with `read_once` when avail=
-able on the Rust side.
-> -                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node=
-.expires)),
-> -            )
-> -        }
-> +        // SAFETY: By existence of `Pin<&mut Self>`, the pointer passed =
-to `raw_expires` points to a
-> +        // valid `Self` that we have exclusive access to.
-> +        unsafe { Self::raw_expires(this) }
->      }
->  }
-> =20
-> @@ -729,6 +741,17 @@ pub fn forward(&mut self, now: HrTimerInstant<T>, in=
-terval: Delta) -> u64 {
->      pub fn forward_now(&mut self, duration: Delta) -> u64 {
->          self.forward(HrTimerInstant::<T>::now(), duration)
->      }
-> +
-> +    /// Return the time expiry for this [`HrTimer`].
-> +    ///
-> +    /// This function is identical to [`HrTimer::expires()`] except that=
- it may only be used from
-> +    /// within the context of a [`HrTimer`] callback.
-> +    pub fn expires(&self) -> HrTimerInstant<T> {
-> +        // SAFETY:
-> +        // - We are guaranteed to be within the context of a timer callb=
-ack by our type invariants.
-> +        // - By our type invariants, `self.0` always points to a valid `=
-HrTimer<T>`.
-> +        unsafe { HrTimer::<T>::raw_expires(self.0.as_ptr()) }
-> +    }
->  }
-> =20
->  /// Use to implement the [`HasHrTimer<T>`] trait.
->
-> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+Changes in v2:
+- Added doccoments
+- Renamed driver_bytes_available_to_write to driver_write_area_size
+- allocate_command_with_timeout merged allocate_command with timeout parameter
+- Replaced hardcoded GSP_PAGE_SIZE * 16 with bindings
+- Changed oversized command error from EIO to EMSGSIZE
+- Added EMSGSIZE to kernel/error.rs
+- Split WrappingCommand functionality into SplitState + SplitCommand enum
+- Made max_size a const (MAX_CMD_SIZE)
+- Removed send_continuation_record + added comment for type inference
+- send_single_command now consumes the command
+- Extracted command_size + used in SplitState 
+- Link to v1: https://lore.kernel.org/r/20260212-cmdq-continuation-v1-0-73079ded55e6@nvidia.com
+
+---
+Eliot Courtney (9):
+      gpu: nova-core: gsp: sort MsgFunction variants alphabetically
+      gpu: nova-core: gsp: add mechanism to wait for space on command queue
+      rust: add EMSGSIZE error code
+      gpu: nova-core: gsp: add checking oversized commands
+      gpu: nova-core: gsp: clarify invariant on command queue
+      gpu: nova-core: gsp: unconditionally call variable payload handling
+      gpu: nova-core: gsp: add command_size helper
+      gpu: nova-core: gsp: support large RPCs via continuation record
+      gpu: nova-core: gsp: add tests for SplitState
+
+ drivers/gpu/nova-core/gsp/cmdq.rs                 | 116 +++++++---
+ drivers/gpu/nova-core/gsp/commands.rs             | 258 +++++++++++++++++++++-
+ drivers/gpu/nova-core/gsp/fw.rs                   |  75 ++++---
+ drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs |   1 +
+ rust/kernel/error.rs                              |   1 +
+ 5 files changed, 393 insertions(+), 58 deletions(-)
+---
+base-commit: 4a49fe23e357b48845e31fe9c28a802c05458198
+change-id: 20260203-cmdq-continuation-b99f3d5966c3
+
+Best regards,
+-- 
+Eliot Courtney <ecourtney@nvidia.com>
 
