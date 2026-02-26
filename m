@@ -1,108 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0BB389456
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 18:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B704385523
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 18:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772130820; cv=none; b=WxeckFG3L46pqtpIormz4J7n1CHOI4Y4nW5NC5YLIL+Dkd4OfvhmT5zeMOjJe34zOr8h0Ptph5lsoK+ACsI1X5n6IK75ntJaD6pd5JKw23f/uJv8To0/JjfkwRmcNZuxFDNlUxv06gqbecaDfoXKP80Tq8mG+6VBoEDblr24BAI=
+	t=1772131245; cv=none; b=GI8a0PCLqHs7FIEJsxkmTuIuZtHnGnxfmG02zSV1hZyWfMGnnuTxbq44OpfgUozq9+rtm/1xEpTKbDXyPMNM+5bFPMZ2X7pqNzG/WSSsNCHqLIMhMIkaHKPx4XgvhBu+zpNFZyuqvpbCtuLdqqrGuV3Ajkoe40inD/E6L/Le7zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772130820; c=relaxed/simple;
-	bh=GE44E3J8r6gMM0CKLU5cL6GNGPifrw/dyXGVenYJO20=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FjHK45CftBQEv5slXEagrNAIlxqQLuKPt39s2BG3te+z2wMfnQRcAGaaylo8e8ooMDERxLioYD/jjfrJ/GObdnSHK81rnkw9gfsylTrNpeXqHDiNWLH3Xn3V9BedNr30N3S/Qf78M9HHyZPE/BFnCy9Ybducp8z/SooybzBld8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vK+uYY8N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772131245; c=relaxed/simple;
+	bh=5ty71ZP/kn9UYFYi5Gf8attnjAgfMP8XR0y3mMnTX88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BXB83sScKimDubpggPOm68r6KXGUx9l2mHflol37EeYhe/YWf2HhfRZv3dqO9gjU6uAWcx8l2TzaZUIxQ9hN4tR8BkAO/FeQ3i8f7osYq9bPGk94i7XUep466ZEsUjzv4Gs2Br7LAMlU5Ahr7J2Hfb4VYB8iDCHWMilcTgTdbEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RtEut1M1; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vK+uYY8N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB792C116C6;
-	Thu, 26 Feb 2026 18:33:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772130820;
-	bh=GE44E3J8r6gMM0CKLU5cL6GNGPifrw/dyXGVenYJO20=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=vK+uYY8NHRGJxt0wX7htzhyv+0xd415G81mezVsGZ44NyYj/Wl/tM7VlZA59hVEyC
-	 NFzx4TKM6RRqRV1Y2WKa5IqdcsTrh30RNbX9zdK4Fza7As4Na9y8YNt5APS8p/SAxD
-	 N7JafVzPQ/0iV9gx/r7+jJYOJI/BI8EpfexVqtxtaGK2viecga//Enht2P+FYYl0uS
-	 1XaXGAc6b8VweXNXfXwnEAgRsMD/HbFT9vfuoQbO30QG2zGXr2Vq7+Y4lu/YXklybL
-	 0gq/iUuTc2QcIlN0ZsgWUbYr84571kuZtYgb4sO5UmgrUgbyHT+6YiYbLSrC80gibG
-	 g2kYA2Omalvdw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, FUJITA Tomonori <tomo@aliasing.net>,
- gary@garyguo.net
-Cc: ojeda@kernel.org, dirk.behme@de.bosch.com, aliceryhl@google.com,
- anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun@kernel.org,
- dakr@kernel.org, frederic@kernel.org, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tglx@kernel.org,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v2] rust: hrtimer: Restrict expires() to safe contexts
-In-Reply-To: <DGOYGXQ1JWJ2.7F00MTVQPUKA@garyguo.net>
-References: <20260226.215052.2040587083248816676.fujita@bee>
- <1772111941.36504110-faee-4088-a465-c0faad81a43b@kernel.org>
- <6ZuBTDotWZ75XfiP0PdEZNqM4Xg1prviuRKstdR1zcM56HCe4_7IdUT0APcrVZ3RTSNHjVqI-sBXgWdE2qjI2g==@protonmail.internalid>
- <DGOYGXQ1JWJ2.7F00MTVQPUKA@garyguo.net>
-Date: Thu, 26 Feb 2026 19:33:27 +0100
-Message-ID: <87qzq7bbig.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtEut1M1"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-65f9a875eabso2371598a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 10:40:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772131243; x=1772736043; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ty71ZP/kn9UYFYi5Gf8attnjAgfMP8XR0y3mMnTX88=;
+        b=RtEut1M1Hf7ppzqlx6DFODu+jXyhzXeyJ4Fgkv9Kq0aWDsxSq491Bs0kaIapAgANAm
+         aTceN1nrdYtBVzb9tnge7sDTs5tGLEhoIc5Dpgtq4y1rIUI5cULRGr5ahkz0wrI2S7Qz
+         oCOkNmo68x/7Xv3jza925NTcvh67rk/IaHwDzLTrx+DAXVnZjTIdi1ESpqNxxAD83wID
+         S6zul0ykh8Y/521rRsjfJjCEEARESf/4E2yZOJhIDBJvtZz7VUmyybVzkzlyCiQunUhG
+         UpXuE93mRXJZLmJMcr6NmDHgDdKWOM024cHZuBmfIqYotDXfJ9uCh30Xn1521aQThXAh
+         UBeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772131243; x=1772736043;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5ty71ZP/kn9UYFYi5Gf8attnjAgfMP8XR0y3mMnTX88=;
+        b=au+omnFqzCzbAL5UAeMwdOVGS5QaHPcH6ZTEDEayAp1Oo2RfVkmMJXtVLYJwO8gA4i
+         OqETy8J+keBHVyMHCOWqIAUgRk1JeIVw6reXVkz9kilCpG8WudRR/6wTqsfRL3bpAOJD
+         khollny8P5N7LSLFyzVclhzWTz8JVUWvBHdgkQfuscSMl3ZqM5KG/M2JdVZZevMuadAb
+         RNvEO+pOczMuaSmDoQpxFC3V+XfytV2eDt1Tgw9CGtl8EHuKyhxh9YOFwTHGksS2QRkz
+         iW0A+t3Z4tT0iyOJgXMmeUI9HokPdIzfI/lnrvG5DKkpCKV3ORdFCK58HTgILG6+P+k/
+         2E3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVlY7aRrzqIwUcCAoGE9A2KPYe/kfJca064ukmIL9nQBPtKeXc64sn9ECU8H73cBk6pkoda7NFv2XT7Gvy/0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzsxye4mZulc5y/Aeavb3gVxVzhI8Y74lMxiL5RpdaDO2Zzq6j7
+	cZuhzvAM3mr2Dbh+Sw1VPk8pF1iDbWu9Y98r1clBRc7dvH5P4k+Qok+S
+X-Gm-Gg: ATEYQzxZLmPo6Drh7Iq5Nrck0gVuy46jz5v6HvHmO5DoWnjDFqNqAY8QyEavGDzqlrj
+	xMREkRsvc7TqpM9NvtMXFjaOC5NEpBBM3SeqBw3AuLgrcWhGZVSqNdIeGByS6ak9Q3/4JnhjI4J
+	YLKH+zIFhtjx/iCY52pkLhR9IBQi5VO4LrCXqXdOJxtTeEU8iYs6c1gVT8otDlNEDrYemav2NJI
+	XQRh7s5P1x/0nEtMZtPZ5R0GT0VidGFoEOTXaZrAtQ4ESmf90SJtu5vCUzWbPJwRGmGEKpggkET
+	vJVV4g18o2SZb3+ixSd+LSScxtXs0MSp+KFOTa+SLsA3bd31RjyLmBUtQ3JEPW2IMSbQdr9XsWG
+	NDnHLuFfAUDT/VA+/HE9SklsYaZuCJkmiNzJPewkpmlyBjDdWvbZWk+NfsMunnlXsiMlYzZnJv3
+	2xdXGx/963yclNvnQoUwvH+UwsXENbPovQDMw6QwVUQalKo1ustqLNBNv08Vsle7upfVhcxemj9
+	gTAdeN6xXddKGja1jt0YCrZws6lPscFglnuRNS0m3vJPsA=
+X-Received: by 2002:a05:6402:1467:b0:65f:9c21:e69b with SMTP id 4fb4d7f45d1cf-65fdd6e2ee8mr211415a12.10.1772131242711;
+        Thu, 26 Feb 2026 10:40:42 -0800 (PST)
+Received: from ddolgov-thinkpadt14sgen1.rmtde.csb (dslb-002-207-075-089.002.207.pools.vodafone-ip.de. [2.207.75.89])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65fabd36219sm669054a12.3.2026.02.26.10.40.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 10:40:41 -0800 (PST)
+Date: Thu, 26 Feb 2026 19:40:38 +0100
+From: Dmitry Dolgov <9erthalion6@gmail.com>
+To: Ian Rogers <irogers@google.com>
+Cc: linux-perf-users@vger.kernel.org, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Levi Zim <i@kxxt.dev>, 
+	Namhyung Kim <namhyung@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
+Subject: Re: [PATCH v5] tools build: Fix rust cross compilation
+Message-ID: <mnakvrusyjmuq2zwdjataxq5wc3m4bhyynbwdku2s3kdvtsi5f@2n7t65aqbupy>
+References: <20260226170025.517743-1-9erthalion6@gmail.com>
+ <CAP-5=fV7OuWN9K-wnsS7zza+s0FQRSR_JCcJi5tvpgQAbh=Nnw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAP-5=fV7OuWN9K-wnsS7zza+s0FQRSR_JCcJi5tvpgQAbh=Nnw@mail.gmail.com>
 
-"Gary Guo" <gary@garyguo.net> writes:
+> On Thu, Feb 26, 2026 at 09:10:24AM -0800, Ian Rogers wrote:
+> Not a cross-compilation problem, but is there a way to pass-through
+> extra flags to the rust compiler? For CFLAGS we have EXTRA_CFLAGS as a
+> make variable, but I don't see an EXTRA_RUSTFLAGS. I was looking for
+> this because I was trying to make a build passing "-m32" to CFLAGS to
+> create a 32-bit perf binary. The link against the rust workload was
+> failing due to the different object types.
 
-> On Thu Feb 26, 2026 at 1:19 PM GMT, Andreas Hindborg wrote:
->> FUJITA Tomonori <tomo@aliasing.net> writes:
->>
->>> On Thu, 26 Feb 2026 11:42:39 +0000
->>> "Gary Guo" <gary@garyguo.net> wrote:
->>>
->>> >> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->>> >> index 856d2d929a00..78e2343fd016 100644
->>> >> --- a/rust/kernel/time/hrtimer.rs
->>> >> +++ b/rust/kernel/time/hrtimer.rs
->>> >> @@ -224,27 +224,39 @@ pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
->>> >>          self.forward(HrTimerInstant::<T>::now(), interval)
->>> >>      }
->>> >>
->>> >> +    /// Return the time expiry for this [`HrTimer`].
->>> >> +    ///
->>> >> +    /// # Safety
->>> >> +    ///
->>> >> +    /// - `self_ptr` must point to a valid `Self`.
->>> >> +    /// - The caller must either have exclusive access to the data pointed to by `self_ptr`, or be
->>> >> +    ///   within the context of the timer callback.
->>> >> +    #[inline]
->>> >> +    unsafe fn raw_expires(self_ptr: *const Self) -> HrTimerInstant<T>
->>> >
->>> > I guess the signature of this can also be
->>> >
->>> > `unsafe fn raw_expires(&self) -> HrTimerInstant<T>`? Then you can remove the
->>> > first safety requirement.
->>>
->>> Thanks, I've updated the signature to use &self.
->>>
->>> Andreas, this breaks the consistency with raw_forward. Is this
->>> acceptable?
->>
->> If we do this, we get to argue that the NonNull we have in the callback context
->> is convertible to a reference. Either way is fine with me.
->>
->> If you change this to a reference, then I think we should rename the function to
->> `expires_unchecked`. The `raw` usually refers to operations on pointers rather
->> than references.
->
-> Does it make sense to simply have `HrTimerCallback<'a, T: ...>(&'a HrTimer<T>)`?
-
-I assume you mean `HrTimerCallbackContext`.
-
-Could it be a mut reference? We are supposed to have exclusive access
-when we have the context.
-
-
-Best regards,
-Andreas Hindborg
-
-
+Nope, not yet, currently one can only set global RUST_FLAGS or per build
+target. But sure, I'll add this in a separate patch.
