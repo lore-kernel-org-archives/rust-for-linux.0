@@ -1,84 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE2D36C5B5;
-	Thu, 26 Feb 2026 13:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772113518; cv=none; b=S+nR+i9oI+1daUxjvLBwzLsAY1X4egcPfEO4abvldbXAkFY64JJibMYafsOwQoMpxmG9w5X6rySK9X7LljmJfIxJ9dzJRZmWq/vHNY6lWVE/QczHa9WyaYwj+n1hQNCL1IXcINTWsD/4WoNlYHVhkUIfGST/AAbz/nMNAfcrBEE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772113518; c=relaxed/simple;
-	bh=dV7ALMoq2XgdOFKV5Emv3PkDFWkIqZYBpcOx1vNi51I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i6ucqieTqewxp3owuLsrt5vmjsraiknPqAbqgl8nhA8zAtArAbmBrR5cVQOhatC0prkH7hqhC/JquSNInIWn9MobKfAWjpYZJXV3JN8QxZ8VYxYYm5dXbr9Q9z9Qea81/wYQkIlP6e5U1qpmRpiJ++e1YkAh95jgLX8xSAKenWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OyKbk1Pe; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F7A33BBA7
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 14:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772114693; cv=pass; b=b2XNWO5h5XVpJ+dRJdI3tgQFIwujau0lKSiuFE/1gwHfJXxmnU8LbzxvOgow/aES+SplxtAa0HQuF9oIgxRHkmOA7PUoiIgE3jwmRdw3KGoto1sOE9nNm9cTQyn2ll//vS9kAYFU3LZfKfYucP7Q+NsHC9Pk/hXoYvR0uPwVL2Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772114693; c=relaxed/simple;
+	bh=1wvUnTzFU0djvbBSDUF+jiedZLVLMDrkBPDbAvBdvOw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jfaX3zFs426hcqt8NfgbmdSXi4WcIrODNNJy6RLMe9tyNfK1sXcWsoERuDmT+4wvK1zUBgHqRUyvhPF97QZkSFGOIEgdDdLsR2sGsG3H9MaAcdJvuiFuZ6WSB2Jsunf7rt10h9Go8bF+2NAaJtnbZCw+qCC/udVfr0gRQh/YfRU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SfxpbqhD; arc=pass smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OyKbk1Pe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97383C19423;
-	Thu, 26 Feb 2026 13:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772113518;
-	bh=dV7ALMoq2XgdOFKV5Emv3PkDFWkIqZYBpcOx1vNi51I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OyKbk1PesDbWCAqwgmZDKDMdqKB07CIYQPoIQNjGwzqvuQZKnaXvAw8bsftoI/rQB
-	 JvBYNx50Gc1dM6f8zo9DY77eBiw1Ch/gjnBLUwN04xl7sWVhYD46bhIvMnoKtgTQ0n
-	 MBk1Bng+Zgdcd0VfivW0pK7HwK+O/WnEgTVD2Ay8C9eWKnGcdFiIgIC30xjw1z+I5K
-	 HoXgmOZxyCfafkFRvnHl+Nk/+QRgjh47eoBLONrBBSPpCeUAvO9aEZRLhyegYLzceh
-	 FzJwJYBuCOKvLRGSRJk5UC5uOZx+OIQi67KDypdU51ATkyehb13JDgRInz+dvxdQi6
-	 Jo73bKxJIA9OQ==
-Date: Thu, 26 Feb 2026 08:45:17 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	ojeda@kernel.org, shankari.ak0208@gmail.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.19-6.18] rust: sync: Implement Unpin for ARef
-Message-ID: <aaBObfxypvzGmCVl@laps>
-References: <20260212010955.3480391-1-sashal@kernel.org>
- <20260212010955.3480391-23-sashal@kernel.org>
- <CANiq72mi6_UrGoFs2=ch6AyKP0hhCon3epSkXCzwiGUGmfswOQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SfxpbqhD"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1277863a912so70529c88.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 06:04:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772114688; cv=none;
+        d=google.com; s=arc-20240605;
+        b=I3uMYyL8f6W9ZDhoVJ2bevwapqQc4TMXWHfd4cviCNTbOV9pH/lI8RxETb7Tf+9fnN
+         6joeA1FTGac+VwnMqJmARC+dT3GZrsaMPHLhwDN0TsIvFiL7DlLuWwmh95GHtV6MxQSR
+         CtJIV6Hjft+s0V8wNZ5Zd1/NB1NB0yJinq5byhJfEembISZ4rudolFWEeXybZjpMX+qt
+         kGKo9BBOzqhrcs8EDRfoM7uvKncWxR9CHYPWIeX3YfYNsac2n8i0ao8SY+fR+vqpaSa5
+         QL95VX8llp3x7RdSiDMzidgy8v5yRetRfZ/av+FKLD+P2gPgUM/G8JgcyQmrVKvRiMpA
+         h37Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1wvUnTzFU0djvbBSDUF+jiedZLVLMDrkBPDbAvBdvOw=;
+        fh=7sEQ9qQalEI0w19NIEz+QszDnqe/rr84X9v61jnUg5Y=;
+        b=Vr+x+oAE4XquMYmfezXp+1YubtQIvSyo4iqyWFEFc6E1CY3VTbJIle7iY0pbO96o+x
+         CFTxpqkbz9iSvF5Rpbv/zsHb++wmhLJJGsPkE6Mp5U/0fjWHyzhscKzCc+gdNDsJ0Y4i
+         8UlCILxBu71PWKCEIf0V5/hs7QugqXU7lSnOwNuO0AfMVCVyrefzkD0781j2aKC0uhPQ
+         5jTmFJviZjbBqu7Hy1sqQkG0qIjNJ2VTavBLYJwZS3Zx356C8kJXXDh/M6Q4H/rVudPx
+         zAepFSp6e9YmhVD1/jFZYQRtagTODvsPJRyg8gNtyH6HORV0BoabASyt9nm8vNqmPxIA
+         y1pA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772114688; x=1772719488; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1wvUnTzFU0djvbBSDUF+jiedZLVLMDrkBPDbAvBdvOw=;
+        b=SfxpbqhDfL1yUdZ8z0ccd65ICXtdF0Y4xi6qySNpK7kaaAkzdJvBcM2B0DXlqXVow9
+         6IYfgAYhxvHTNBF6KkBrWX17hGp7n3A2UnBwGq4G5dJEk/IS9gfoEL15PfXR/QghRZ1l
+         UDv9ciQrCqYBUK3OaaXRFLvBW6n9ds3LIydh5krJ0UFz6GQJ8Wwh6tRA0Rr9gJqo10rh
+         qiShTJSSeKRLLTvprxeXZ/aFBj+11IWfTdCeTNOk8ogjry73DFe02iQXTzdvtInfoAMY
+         MMldj3POm5cJD/DqAzmuZ/sogq+pEknKq38iEV4iLXZ68Qij2JH7/CF2oI2Ma4OwyxD5
+         PGYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772114688; x=1772719488;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1wvUnTzFU0djvbBSDUF+jiedZLVLMDrkBPDbAvBdvOw=;
+        b=VjzKX2sTMqLq4XGd3iGyaQrEmdUKSwDQcTfkykLaXGeZLNFabjkivL+zVAtVCqpdcF
+         CmP9j3alpSldOdgjHwx+artKjp7bQ+yFD6ViP8tuuoGl4rSiwcAZjJYkN57V8KX59dsD
+         3MqkfUR9n1OuFRRrH21M3GCxypJkHmPvBlpdl9lK08etCzTg7snRZ7/K1gar5OWlQ4S6
+         ALtqW88EukFz62Qj/EZCInkMKhvGwEmOkunUuZywjfGBrOXDdI7UKriGCMsnrJsHcgA9
+         nQDORWps+PIGZqg4geKccuW1jnDbnPYNonc8EddGShDb3+fgANFjMJC7zreuKyxNQ87n
+         JjtA==
+X-Forwarded-Encrypted: i=1; AJvYcCXg/+aJ69P+upycFzz8uAT1YIcLldwMNHjzRLxfYx4u8yddW+/VOeemc3FoStbOFK/42trN66pOrranW04qqQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjBd+A6kHkxLIiKDHjMzXLzHGcA3q03o1+VDqvDuk8nrUt5fJt
+	Vj9p3eHJucnnQc6UY0Fhe137eTuQKFGIgsD4fpbKfwbYg89a7tylIo+P+2+4YnXrjEqY7IdAGbA
+	zvrgA1N+a6XX4W43OB2/sLMdPUJllP64=
+X-Gm-Gg: ATEYQzw3dxiSUWupsuf0FJl7UgvDcMqHhS08XGApfDvcznb9jvrx5l0UeBi5cOu1+6P
+	Nl2RjXoxKqI3pS7nDevNplhWP+ghlvDVqjSE0yMPxQgJpaC4OdmmsYtZQlorowucawwucMGArVr
+	9vH7WHnsRLVmbIib4lTLkfCh+j32LRnKVRAT0zZAQCgTlykHqYuRfAZeebMz1rKwxZ+6Xmr/KRZ
+	NY+xej+0HxzuCkCZk7zJBV4kL+mfn1tuBd+HXl40YV2hExgj7rnA6jSXl9F03sNdEizsVv6fOTO
+	NOe2GBYrKE8m4aC6a94C9OF9HAfY2QJF0/vLPriWduAntWczAU9KnzIwBtzoFLH00EpmGgYdFeS
+	l7peS7IZ+AD65slI1w84e2I93RA2MMmoYnP2FY2U=
+X-Received: by 2002:a05:7300:bf18:b0:2bd:bc33:ca32 with SMTP id
+ 5a478bee46e88-2bdbc33cb83mr1132309eec.4.1772114687621; Thu, 26 Feb 2026
+ 06:04:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mi6_UrGoFs2=ch6AyKP0hhCon3epSkXCzwiGUGmfswOQ@mail.gmail.com>
+References: <20260226-cmdq-continuation-v3-0-572ab9916766@nvidia.com> <20260226-cmdq-continuation-v3-3-572ab9916766@nvidia.com>
+In-Reply-To: <20260226-cmdq-continuation-v3-3-572ab9916766@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 26 Feb 2026 15:04:34 +0100
+X-Gm-Features: AaiRm50bYcwJMHTCfOonMLoQxEz1NrF-ZMytkNesE2f6ML6hsIR6ETTN8geqQBY
+Message-ID: <CANiq72mb=t4C-hTn0BdzLmvCu315tZLHPN_g_wvs0P-qgO_RBw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/9] rust: add EMSGSIZE error code
+To: Eliot Courtney <ecourtney@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Zhi Wang <zhiw@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 12, 2026 at 01:11:50PM +0100, Miguel Ojeda wrote:
->On Thu, Feb 12, 2026 at 2:10 AM Sasha Levin <sashal@kernel.org> wrote:
->>
->> This is a **build fix / type system correctness fix**. While no in-tree
->> code currently triggers the build failure in 6.19.y,
+On Thu, Feb 26, 2026 at 12:46=E2=80=AFPM Eliot Courtney <ecourtney@nvidia.c=
+om> wrote:
 >
->Hmm... If nothing is failing to build in a tree, then I don't think it
->is supposed to be considered a "build fix". It may be still good to
->have, e.g. for other backports and for downstream developers/vendors,
->but it sounds more critical than it really is when worded like that
->(same for "type system correctness fix" -- one could think it may be
->referring to unsoundness).
+> Add the EMSGSIZE error code, which indicates that a message is too
+> long.
 >
->> - The commit is still in linux-next, pending mainline merge
->
->Wait, shouldn't all stable commits land in mainline first? (modulo exceptions)
->
->...ah, it is actually in mainline, but the AI checked linux-next only
->I guess (?).
->
->Would it help to hint at it in the AI review instructions? Or, if you
->already only ever make it review things that are picked from mainline
->anyway, then telling the AI to avoid checking that?
+> Tested-by: Zhi Wang <zhiw@nvidia.com>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
 
-Right - the LLM went a bit off the rails here. I'll improve the prompt a bit
-and see if it helps :)
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
--- 
-Thanks,
-Sasha
+I checked that it is placed in the right spot in the list :)
+
+Thanks!
+
+Cheers,
+Miguel
