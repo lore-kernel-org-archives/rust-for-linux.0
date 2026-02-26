@@ -1,263 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound.mr.icloud.com (p-west2-cluster4-host1-snip4-3.eps.apple.com [57.103.69.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C7B33A9EA
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 12:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C87F23D7F5
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 12:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.69.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772108903; cv=none; b=G2lVXQ2EBRomB+hauSqz9eWtn/iPHx2ZPhkAu39A6gBkkzhT7XwEkoFRczGYycgGasYQ54WmiLCtUJ6A8kHn70KD742OB0SaIC37akKe60KID5JrR4LcAGmPfMcivTKIx9baVHH49q1+/IyPq5zaTs0uzidhGmOrudbx+7aeEHk=
+	t=1772110307; cv=none; b=qHV5SKK3tDqhhzHsLEqHAdySjxpPxlUBgvLOD3uxJJm4kxlt/DmQRdOxf5dbp1VXGGi46Ct9Pd/1m0zX7EqumMmTDXdVSY6jiBdvqYxZCynd/hjCSFc9rDmlCA5TyG4o3p5T5C9uZDUFzms88CZyA7a0MZak/TtvGsmwEBBnGAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772108903; c=relaxed/simple;
-	bh=suoYzminA3YKvZbZA3gZl3vI0+8D+6GmcsMdqFGnHyY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F2GOAahaI/90U6KFVIBkJ9PqIIJ3FcxP6g7hCgWfdlQYJektmqeEsxFoaTeBz9CgZzYZdx5d1Ghfb+vWj8sT6gf4LiuoiRWqV3GKGBjo1S8phzI+IwqxA2kHEx+S49WiLIhwMD1GC7L6cTyape9pcqW/+EgwGC5UiymqVpjurXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DHkG/2EP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772110307; c=relaxed/simple;
+	bh=o2J3+fWlkAmR1UO3v2iHCcX1V3XzEl8E0D4Z39kkDrE=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=IK52hngv70/i9Xe9wFnngOwMJmFR5wBA0K9ztz8+USwLtpL6suNlq+xg+lSgiqXHtg7LjzVjW6ofgvK+y1rTEFMRH+wi2foL4sa/hmbAnFxnCgFJzSB41W68/NrgZNMl+2jzhJoiJ9GXaAcVYP6Kx5xLk9fZ3pw5fVdveCSCNeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=YIZyfL8L; arc=none smtp.client-ip=57.103.69.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DHkG/2EP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F79CC2BCB4
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 12:28:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772108903;
-	bh=suoYzminA3YKvZbZA3gZl3vI0+8D+6GmcsMdqFGnHyY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DHkG/2EPhYf07XsGNT9zk/2OnpWzg8R7N4HS9oWWrBPgTEPd1n5ftxT6NYCFmREtv
-	 gh6Odsg0wWNZ10/lRKwW2dvrVikB+cZR+DqKNUjIEYhIwkZaunLnQJfZzqDyAhyRuN
-	 6S69wH2VW5b1gphTnhaq6KrAMwSaH99ne7TGLHQnsp1l72OyYxOdfp8KGUkO46fsEu
-	 Td7LFlv9iLL5o+YULiTebSJ8GnTTr7rFSfI6fUuvk4SVY3jX2kz1XtPm4vK/dHEOFc
-	 BhoCKGMNJSHxBk+hnJpeRX0rAk0HTBcjp/Krbcxql0+qUsgU8ing/WfT9q7Hjiagar
-	 JmXwFsjihtzQQ==
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d19d3c7208so321944a34.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 04:28:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUofhvK5lCJcTSeXZsMwAlqYZxLRq1i/Av9myed2NVfsbm6QaRwb8Ccv+6skoP+2mVNJndvvBCE81KO58jQng==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQtiywsd5Sq1DCwkVa8cJWhbpQErcG4/Opo8FD45cctFfMvzrC
-	eQttA3nfxhHdqxhKLQZIOOI2Lu2tG4muKNRYBYyKXT+sSAZGgvaOYpUZaLNjsXNXr3zOCrWfzgl
-	3lcWD74pKlwq/x/tCznVnNZbiuA7dBMA=
-X-Received: by 2002:a05:6830:6d0f:b0:7cf:dbb4:320a with SMTP id
- 46e09a7af769-7d586f561ccmr997621a34.27.1772108902360; Thu, 26 Feb 2026
- 04:28:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="YIZyfL8L"
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPS id E002C18001C6;
+	Thu, 26 Feb 2026 12:51:43 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1772110305; x=1774702305; bh=DVKBN5OdIW0jGfPpHopnIoTviwkGpHXAo2ZWpr5E30c=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=YIZyfL8LkXGl9o24dmXHT71pl+qvSrNUVBW+2jkbaBgO7kIvgDX6QrfDijThdDSoZusJysww2RJXpWUqSLhqCU8ykQWfsK2qE7TQzu/N/Kw8TtVM44ADeLVCzlAkxQlo4O1vYCQU1MNMmEipmxm2CdIwodzeq9CPqCEFX0ghqz3M/njF1Npp+V3JGsAcP37tWEw0Kc1OEWlTqtc2l8ZsORDc7Pja4PmcaiFv7Q2qj+M0uBej811ymiudx2po49UaeCBK622eRwuAXYTf1ulVb1Fe91owzxiHCIKKGecgV+XmyCt+e/VlN4hb6NKHHlrtlNDSv7tPw9TiALGny4pikg==
+mail-alias-created-date: 1769500909675
+Received: from localhost (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPSA id DC53E1800583;
+	Thu, 26 Feb 2026 12:51:40 +0000 (UTC)
+Date: Thu, 26 Feb 2026 21:50:52 +0900 (JST)
+Message-Id: <20260226.215052.2040587083248816676.fujita@bee>
+To: gary@garyguo.net, a.hindborg@kernel.org
+Cc: tomo@aliasing.net, ojeda@kernel.org, dirk.behme@de.bosch.com,
+ aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
+ boqun@kernel.org, dakr@kernel.org, frederic@kernel.org,
+ jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
+ tglx@kernel.org, tmgross@umich.edu, rust-for-linux@vger.kernel.org,
+ fujita.tomonori@gmail.com
+Subject: Re: [PATCH v2] rust: hrtimer: Restrict expires() to safe contexts
+From: FUJITA Tomonori <tomo@aliasing.net>
+In-Reply-To: <DGOV7EXV8VO9.QR9UN9EV6DZK@garyguo.net>
+References: <20260224132507.315637-1-tomo@aliasing.net>
+	<DGOV7EXV8VO9.QR9UN9EV6DZK@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260221111619162a41a1@mail.local> <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
- <DGKPPQI0QE73.S8I1M5NCI2BV@kernel.org> <20260222000556ea1938c0@mail.local>
- <DGLI4H9M0T6D.25RTLDVU5JRBE@kernel.org> <CAJZ5v0gtiQxBCknkaOzLKrDqUQfhKh_UjQkvgxJBL4UthbCOkg@mail.gmail.com>
- <DGLMGEZTM7E2.Y8VV9I6LI1P6@kernel.org> <DGMR9XOWP1V0.3C9219TYPXV6J@kernel.org>
- <2026022415010804e28202@mail.local> <DGNC6GEH8EV7.2WWAQ8DNCLRAB@kernel.org>
- <20260224172822de7f4569@mail.local> <DGNJKZA00MNT.2C7NAQYG597MO@kernel.org>
- <CAJZ5v0iA88G0ZRVB347dXEu2y8mT=d+aWd42cB2tpO5pLVpKuQ@mail.gmail.com> <DGO6MEKIIHGH.3L06QJ47CP3CU@kernel.org>
-In-Reply-To: <DGO6MEKIIHGH.3L06QJ47CP3CU@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 26 Feb 2026 13:28:10 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iRrfvV5nsfQ=YkhLjp4tOTOzSXHq-sQntf2QMuAW1Lfg@mail.gmail.com>
-X-Gm-Features: AaiRm529vrDRa30sD66S8_1_FN511oOwBqQFehS0XzC3HnrG7t02i2PwgmEGgBY
-Message-ID: <CAJZ5v0iRrfvV5nsfQ=YkhLjp4tOTOzSXHq-sQntf2QMuAW1Lfg@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops callbacks
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Authority-Info-Out: v=2.4 cv=Oa2VzxTY c=1 sm=1 tr=0 ts=69a041e1
+ cx=c_apl:c_apl_out:c_pps a=9OgfyREA4BUYbbCgc0Y0oA==:117
+ a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
+ a=_2yia0w1AAAA:8 a=cHpjoAaQVRKGXfxu0XcA:9 a=CjuIK1q_8ugA:10
+ a=4yAS8WwzZ1jAEY03B-5r:22
+X-Proofpoint-ORIG-GUID: daB55VVd-Z6UA0QqdVBlltKEKMDsav1s
+X-Proofpoint-GUID: daB55VVd-Z6UA0QqdVBlltKEKMDsav1s
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDExNiBTYWx0ZWRfX6ad4P/Lqh39+
+ NY15mlPYClIYLx3xERZfXmvHdyrT+sXp04idrsKI+nnGPgj+P8IGd4i8U+k4nQpsje+AcOLYOiA
+ ARK2ZOXd59nb8JOIIiSj4hzwgK6nG6FKwvkW4sy7va+SUxE9S/4qaiQfII2qdyYd+H6sgxrFFuk
+ xG70TjA1yk00B9+K8LTxRaWxkpS8TbhtERmY6rLxqKXk75c0uS770ziFHl7I+Z0z/jr+Jqt4gX/
+ ir7ThayQfWBROb7aa5XZjpwDFL61oyxDwMigTdVRzmu02Qcpn3aJrz2yiHHyMOIMJVEItE91K60
+ fydX0hKhFc0JEa4Y39agHAlxbbB+n55onylthGMb/eykk/Klu4h6siGAg0WnoQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-25_04,2026-02-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 clxscore=1030
+ mlxlogscore=511 spamscore=0 mlxscore=0 malwarescore=0 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602260116
+X-JNJ: AAAAAAAB7maQe3i7NuIjvQZTHF6EJvPKWH47em9jiWBRn1zhEd6VM6QDMo/7xmrbzAucwWC+xX05VAmOslIjCb17RRob0l7dGoMd2oI+SpjwU+sKgjd5Tky5ks0YxlNpxBew5YtilmiMND74Q/UzZc8OdujqZ5+/lLzNyUXDcYc6wrbj/ArS0l1vYJ8Vhf2ADY0gSt6Ll4GUm5KUBtqMbP1L0hS7RVpf7NEQbvD0DPa/0BAv/vM3rLVxlPIf9QXWEN7CtexHlcUXroVgyUXICuYKcnBBxK2E+CtDeKosP911JR04y2ZUXrVwR4k2FtRc6df1uB0MN688/rmZDCypbR6znjz7HW7fXpeCeCzRKU8I000TaWEGrdMCFzSgxfcnDpiE4SWCo16UFTHtmvhqAsB2S1R7RWe0pWLsqSxlXAtJHyLwzdBKokb/LGE/Gt6sf5o43WH3xLOR+RQ9/2JeZhrOYsLS10HnEvlfXtc1iTml2d7LGnajA1vE5qxG4DUWNGQuiOptKfrRaRcbNLe9AxIZyRA0v+qQTigTghJ2sXpRFB6PhikC9eWqtfW6muR9GdewAw8S78O7Vz69MdZKYB7r0t57pC8Q6sK0Z5xXhO41hnJl8ZbWTFmpOlI9fGBqExtD6NJG8jFqsfMIrQRyyzP8U7mCZwhmOKnYxdGVjBrG5k66nBZHakHLOuyD4oIoLgmUKiRdG1frcLy1tX1c17/1E2B3EOG9x7hfI+eI51coLAypPZrlq/eZDwmaG1C8Lj+0R3sePyjtz+hKCRmrWrkdCaj8OV0DotDdCrQkkXqf0ykaeYOVaTahOLo+p6FAGH508IiSKkZElKG/41ZqsQ7HprmfoDjJDJscqfFE6JBl
 
-On Wed, Feb 25, 2026 at 5:26=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Wed Feb 25, 2026 at 2:33 PM CET, Rafael J. Wysocki wrote:
-> > On Tue, Feb 24, 2026 at 11:23=E2=80=AFPM Danilo Krummrich <dakr@kernel.=
-org> wrote:
-> >> Here's also some sketched up code for what I wrote above:
-> >>
-> >>         fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> imp=
-l PinInit<Self, Error> {
-> >>             let dev =3D pdev.as_ref();
-> >>
-> >>             let rtc_data =3D impl_pin_init!(SampleRtcData {
-> >>                 io: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/b=
-ar0")?,
-> >>                 hw_variant: VendorVariant::StV1,
-> >>                 irq <- irq::Registration::new(...),
-> >>             });
-> >>
-> >>             let rtc =3D rtc::Device::new(dev, rtc_data)?;
-> >>
-> >>             rtc::Registration::register(rtc)?;
-> >>
-> >>             Ok(Self { rtc })
-> >>         }
-> >>
-> >> Note that if any of the RTC callbacks would ever need to call irq.sync=
-hronize(),
-> >> irq.disable(), etc. the compiler would enforce correct ordering, as th=
-ere would
-> >> not be any other possibility to put the irq::Registration other than i=
-nto the
-> >> rtc_data that goes into rtc::Device::new().
-> >
-> > IIUC, the interrupt handler can only access the rtc_data because the
-> > parent's driver_data may not exist yet when it runs.  Or am I missing
-> > something?
->
-> In the code above the IRQ handler can also not access rtc_data, as struct
-> SampleRtcData might not be fully initialized when it runs, i.e.
->
->         let rtc_data =3D impl_pin_init!(SampleRtcData {
->             io: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
->             hw_variant: VendorVariant::StV1,
->             irq <- irq::Registration::new(..., rtc_data),
->         });
->
-> would not compile in the first place.
->
-> irq::Registration, for this purpose, has its own private data on the hand=
-ler
-> itself, see also [1]. In fact, the C code has the same concept with the d=
-ev_id
-> argument in request_threaded_irq() [2].
->
-> The difference is that the C compiler does not ensure that the IRQ handle=
-r
-> actually owns the data behind the dev_id pointer. I.e. the driver has to =
-somehow
-> ensure that whatever is behind the dev_id pointer remains valid for the d=
-uration
-> the IRQ handler is registered.
->
-> In the Rust implementation the compiler does ensure that what is behind t=
-he
-> dev_id pointer remains valid for the duration of the lifetime of the
-> irq::Registration.
->
-> Having that said, I assume you wonder what we would pass into the
-> irq::Registration instead, if it is not rtc_data.
->
-> The answer is it depends; it depends on what's actually needed, what othe=
-r
-> entities interact with the IRQ (e.g. some scheduled work, etc.) and maybe=
- even
-> preference to some extend.
->
-> Here is one example:
->
->         let irq_data =3D impl_pin_init!(SampleIrqData {
->             io <- pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")=
-?,
->             hw_variant: VendorVariant::StV1,
->         });
->
->         let rtc_data =3D impl_pin_init!(SampleRtcData {
->             irq <- irq::Registration::new(..., irq_data),
->             ...,
->         });
->
->         let rtc =3D rtc::Device::new(dev, rtc_data)?;
->
-> This would compile as it ensures that irq_data (struct SampleIrqData) is =
-fully
-> initialized before irq::Registration::new() is called.
->
-> At a first glance this might look like we need an additional allocation, =
-one for
-> irq_data and one for rtc_data, but that is not the case. irq_data is an
-> initializer that is passed to another initializer, i.e. rtc_data is still=
- an
-> initializer.
->
-> The actual (single) allocation happens in rtc::Device::new().
+On Thu, 26 Feb 2026 11:42:39 +0000
+"Gary Guo" <gary@garyguo.net> wrote:
 
-I think that the key observation here is that C and Rust are
-substantially different with respect to how things get initialized.
+>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+>> index 856d2d929a00..78e2343fd016 100644
+>> --- a/rust/kernel/time/hrtimer.rs
+>> +++ b/rust/kernel/time/hrtimer.rs
+>> @@ -224,27 +224,39 @@ pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
+>>          self.forward(HrTimerInstant::<T>::now(), interval)
+>>      }
+>>  
+>> +    /// Return the time expiry for this [`HrTimer`].
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `self_ptr` must point to a valid `Self`.
+>> +    /// - The caller must either have exclusive access to the data pointed to by `self_ptr`, or be
+>> +    ///   within the context of the timer callback.
+>> +    #[inline]
+>> +    unsafe fn raw_expires(self_ptr: *const Self) -> HrTimerInstant<T>
+> 
+> I guess the signature of this can also be
+> 
+> `unsafe fn raw_expires(&self) -> HrTimerInstant<T>`? Then you can remove the
+> first safety requirement.
 
-In C, we first allocate memory, then initialize it, and then start
-services that will refer to it.  All of these steps need to be taken
-explicitly and separately in the right order and the compiler simply
-processes the high-level language into CPU instructions.  On the way
-out, all of that needs to be cleaned up directly, most of the time in
-reverse order.  If anything is missed or forgotten, or the ordering is
-messed up, troubles ensue.
+Thanks, I've updated the signature to use &self.
 
-In Rust, IIUC, the compiler is essentially told about what data will
-be there in the memory, how to initialize it and what services to
-start and all of that happens in one go when memory gets allocated
-(so, apparently, a good part of the code doesn't even produce CPU
-instructions at all, as it is all about feeding the information to the
-compiler).  So long as the compiler has complete information, it can
-figure out the right ordering automatically and it will complain if
-something is not right.  The difficulty here is to find a way to
-provide the compiler with complete information.
-
-> In terms of accessing it through the the rtc::Device in an RTC device cal=
-lback,
-> we would likely use accessor methods to make it a bit more convinient, i.=
-e.
->
->             fn read_time(
->                 rtc: &rtc::Device<SampleRtcData>
->                 parent: &platform::Device<Bound>,
->                 time: &mut rtc::Time,
->             ) -> Result {
->                 let io =3D rtc.io().access(parent)?;
->
->                 match rtc.hw_variant() {
->                     VendorVariant::Arm | VendorVariant::StV1 =3D> {
->                         let my_time =3D io.read(...);
->
->                         my_time.write_into(time);
->                     },
->                     VendorVariant::StV2 =3D> { ... },
->                 }
->             }
->
-> As mentioned above there are a few other options to implement this, depen=
-ding on
-> what's required, etc.
->
-> For instance, if the I/O bar is actually shared between multiple entities=
- we
-> might want to initialize it within an Arc [3] (reference count it) for sh=
-ared
-> ownership.
->
-> For the future we will also be able to support references within initiali=
-zers to
-> other pinned fields, which make things a bit more convinient, so you coul=
-d do
-> things like this:
->
->         let irq_data =3D impl_pin_init!(SampleIrqData {
->             io <- pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")=
-?,
->             hw_variant: VendorVariant::StV1,
->         });
->
->         let rtc_data =3D impl_pin_init!(SampleRtcData {
->             irq <- irq::Registration::new(..., irq_data),
->             io: &irq.io,
->             ...,
->         });
->
->         let rtc =3D rtc::Device::new(dev, rtc_data)?;
->
-> Note the additional `io: &irq.io,` in the rtc_data initializer. This woul=
-d be
-> legal as we know that `irq` is pinned within `rtc_data`, hence it is vali=
-d to
-> hold a reference to one of its pinned fields.
->
-> I am not sure how far we are from having this supported, I assume Benno a=
-nd Gary
-> can say more about this.
->
-> I hope this helps, and thanks for asking those questions!
->
-> [1] https://rust.docs.kernel.org/kernel/irq/struct.Registration.html
-> [2] https://elixir.bootlin.com/linux/v6.19.3/source/kernel/irq/manage.c#L=
-2090
-> [3] https://rust.docs.kernel.org/kernel/sync/struct.Arc.html
+Andreas, this breaks the consistency with raw_forward. Is this
+acceptable?
