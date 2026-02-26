@@ -1,43 +1,42 @@
-Received: from outbound.mr.icloud.com (p-west2-cluster4-host1-snip4-3.eps.apple.com [57.103.69.194])
+Received: from outbound.mr.icloud.com (p-west2-cluster6-host8-snip4-10.eps.apple.com [57.103.70.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C87F23D7F5
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 12:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.69.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CB22DB7AA
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 12:59:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.70.63
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772110307; cv=none; b=qHV5SKK3tDqhhzHsLEqHAdySjxpPxlUBgvLOD3uxJJm4kxlt/DmQRdOxf5dbp1VXGGi46Ct9Pd/1m0zX7EqumMmTDXdVSY6jiBdvqYxZCynd/hjCSFc9rDmlCA5TyG4o3p5T5C9uZDUFzms88CZyA7a0MZak/TtvGsmwEBBnGAQ=
+	t=1772110770; cv=none; b=CySHwBQc8zt6oEUTyc5UBXUA8MrbM0vuvKEwda4epZ7SBdZ+YrJxjZLf0sdMBbgTESBqRyFIC6AYffevLgP3o2eOvStTvEWE/HLOmDap6XnDhkMPG/9/UZNSnH/yzbBwC80OFb3fC/B2PeSLWs3/1DImTYrX4VOCxPCdhVoZq9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772110307; c=relaxed/simple;
-	bh=o2J3+fWlkAmR1UO3v2iHCcX1V3XzEl8E0D4Z39kkDrE=;
+	s=arc-20240116; t=1772110770; c=relaxed/simple;
+	bh=G4j6e7+BDNHctPlLs9jFJKwv3njjRQx2zscDmhYp1GU=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=IK52hngv70/i9Xe9wFnngOwMJmFR5wBA0K9ztz8+USwLtpL6suNlq+xg+lSgiqXHtg7LjzVjW6ofgvK+y1rTEFMRH+wi2foL4sa/hmbAnFxnCgFJzSB41W68/NrgZNMl+2jzhJoiJ9GXaAcVYP6Kx5xLk9fZ3pw5fVdveCSCNeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=YIZyfL8L; arc=none smtp.client-ip=57.103.69.194
+	 Mime-Version:Content-Type; b=uf9r31hry6UU4FZPJgiBl7ME63slmoXkfK3WKMK8SRUKirons9L9+Pbp4ev7d4L3A4ZCZ9ivYMDsAnXTaKGmDj4SHuEoi38fRxBCynnTTxFcXwQXGISaxRAEyshdQoSvWlSqF9WIaZXaUDpmFzSoRGXqu2b/h3WB2aonL5KWISU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=SBcTo1pf; arc=none smtp.client-ip=57.103.70.63
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="YIZyfL8L"
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="SBcTo1pf"
 Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPS id E002C18001C6;
-	Thu, 26 Feb 2026 12:51:43 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1772110305; x=1774702305; bh=DVKBN5OdIW0jGfPpHopnIoTviwkGpHXAo2ZWpr5E30c=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=YIZyfL8LkXGl9o24dmXHT71pl+qvSrNUVBW+2jkbaBgO7kIvgDX6QrfDijThdDSoZusJysww2RJXpWUqSLhqCU8ykQWfsK2qE7TQzu/N/Kw8TtVM44ADeLVCzlAkxQlo4O1vYCQU1MNMmEipmxm2CdIwodzeq9CPqCEFX0ghqz3M/njF1Npp+V3JGsAcP37tWEw0Kc1OEWlTqtc2l8ZsORDc7Pja4PmcaiFv7Q2qj+M0uBej811ymiudx2po49UaeCBK622eRwuAXYTf1ulVb1Fe91owzxiHCIKKGecgV+XmyCt+e/VlN4hb6NKHHlrtlNDSv7tPw9TiALGny4pikg==
+	by p00-icloudmta-asmtp-us-west-2a-10-percent-1 (Postfix) with ESMTPS id CFD231800467;
+	Thu, 26 Feb 2026 12:59:26 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1772110768; x=1774702768; bh=HKlz/9Uzul+m9auzfC+vy/iHP/iD9Xpti1cZKOOrOVk=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=SBcTo1pfkMB44AEvsNWXSbd+B+0j8PlXK7TW+ykj/o/c5+LCKzTJgjUJNbyYLlrEA+JwjasKh2okbEb+ZP/zYOjgZrckGem/F7BixBFimFG/3g3A3ZDsPnfEyDgUJHfVyhTRcujbMDUrDb6V6f2up+QiUVtaBG/mKQVbYiWMyj+zBxUXk42SpZQED5DxMg8SbqEe5v7qUAYg9XKdixfSm3wubPeW9TpH0AFCAnTLRPS84NIepEpF9yQiSemIdCu4gP6RFnocHFbN29RVAaI/C3D7krk9W1cTaJF3/Ze4aMjBh8mglO8OvpIgyDdseaEknm1HAaqpLhZEO2G9MJqdUg==
 mail-alias-created-date: 1769500909675
 Received: from localhost (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPSA id DC53E1800583;
-	Thu, 26 Feb 2026 12:51:40 +0000 (UTC)
-Date: Thu, 26 Feb 2026 21:50:52 +0900 (JST)
-Message-Id: <20260226.215052.2040587083248816676.fujita@bee>
-To: gary@garyguo.net, a.hindborg@kernel.org
-Cc: tomo@aliasing.net, ojeda@kernel.org, dirk.behme@de.bosch.com,
- aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- boqun@kernel.org, dakr@kernel.org, frederic@kernel.org,
- jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
- tglx@kernel.org, tmgross@umich.edu, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v2] rust: hrtimer: Restrict expires() to safe contexts
+	by p00-icloudmta-asmtp-us-west-2a-10-percent-1 (Postfix) with ESMTPSA id B1CA81800847;
+	Thu, 26 Feb 2026 12:59:24 +0000 (UTC)
+Date: Thu, 26 Feb 2026 21:59:23 +0900 (JST)
+Message-Id: <20260226.215923.1020202093931415612.fujita@bee>
+To: adarshdas950@gmail.com
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 4/4] rust: time: add `pr_warn_once!` for clamped delta
+ in `fsleep`
 From: FUJITA Tomonori <tomo@aliasing.net>
-In-Reply-To: <DGOV7EXV8VO9.QR9UN9EV6DZK@garyguo.net>
-References: <20260224132507.315637-1-tomo@aliasing.net>
-	<DGOV7EXV8VO9.QR9UN9EV6DZK@garyguo.net>
+In-Reply-To: <20260226120848.82891-5-adarshdas950@gmail.com>
+References: <20260226120848.82891-1-adarshdas950@gmail.com>
+	<20260226120848.82891-5-adarshdas950@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,57 +45,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Authority-Info-Out: v=2.4 cv=Oa2VzxTY c=1 sm=1 tr=0 ts=69a041e1
+X-Proofpoint-GUID: DN0t9srL9xICJjkQwuNc0OQ49freKUF6
+X-Proofpoint-ORIG-GUID: DN0t9srL9xICJjkQwuNc0OQ49freKUF6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDExOCBTYWx0ZWRfX8BdP6XiMlh0h
+ 3iHXGsuMTBoK1I0Kfa5sho4GBenVTkeagPfZPBF3FsLvenPYXvuQbb93J3mcS/ruGNNmYviuvhr
+ uuaIeWhTZGOc6aOfoY+uGF422qBP5vfn/kj96qKxubYdJvdLJLgPjdi6Rz1P4v6akklUFyqXClw
+ tTWO03MF12D4/QaKVkDA0TcK7aZhES0mE3TEy395qSHMVDcoMa2Ma/hUL2AAzdUBwyfK6q0VFY3
+ HRYiWvgNCcWCzmLKIY4mrmwrCqVAgvLKqGxOJjCr3+LV4DPEUNmzGYgrTeBPJ9cE8I3Q8oUmK0O
+ 4eKH6ND8drTwKm24+Q7sYlXUgl7wBTJ9vCAVGpzUOXuTGW0bISbARvMoNK6FUA=
+X-Authority-Info-Out: v=2.4 cv=Q+vfIo2a c=1 sm=1 tr=0 ts=69a043af
  cx=c_apl:c_apl_out:c_pps a=9OgfyREA4BUYbbCgc0Y0oA==:117
  a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10
  a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=_2yia0w1AAAA:8 a=cHpjoAaQVRKGXfxu0XcA:9 a=CjuIK1q_8ugA:10
- a=4yAS8WwzZ1jAEY03B-5r:22
-X-Proofpoint-ORIG-GUID: daB55VVd-Z6UA0QqdVBlltKEKMDsav1s
-X-Proofpoint-GUID: daB55VVd-Z6UA0QqdVBlltKEKMDsav1s
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDExNiBTYWx0ZWRfX6ad4P/Lqh39+
- NY15mlPYClIYLx3xERZfXmvHdyrT+sXp04idrsKI+nnGPgj+P8IGd4i8U+k4nQpsje+AcOLYOiA
- ARK2ZOXd59nb8JOIIiSj4hzwgK6nG6FKwvkW4sy7va+SUxE9S/4qaiQfII2qdyYd+H6sgxrFFuk
- xG70TjA1yk00B9+K8LTxRaWxkpS8TbhtERmY6rLxqKXk75c0uS770ziFHl7I+Z0z/jr+Jqt4gX/
- ir7ThayQfWBROb7aa5XZjpwDFL61oyxDwMigTdVRzmu02Qcpn3aJrz2yiHHyMOIMJVEItE91K60
- fydX0hKhFc0JEa4Y39agHAlxbbB+n55onylthGMb/eykk/Klu4h6siGAg0WnoQ=
+ a=pGLkceISAAAA:8 a=cAV4dH-aPzQhSy5cs2MA:9 a=CjuIK1q_8ugA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-25_04,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 clxscore=1030
- mlxlogscore=511 spamscore=0 mlxscore=0 malwarescore=0 classifier=spam
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ phishscore=0 lowpriorityscore=0 clxscore=1030 mlxscore=0 mlxlogscore=452
+ adultscore=0 malwarescore=0 suspectscore=0 spamscore=0 classifier=spam
  authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602260116
-X-JNJ: AAAAAAAB7maQe3i7NuIjvQZTHF6EJvPKWH47em9jiWBRn1zhEd6VM6QDMo/7xmrbzAucwWC+xX05VAmOslIjCb17RRob0l7dGoMd2oI+SpjwU+sKgjd5Tky5ks0YxlNpxBew5YtilmiMND74Q/UzZc8OdujqZ5+/lLzNyUXDcYc6wrbj/ArS0l1vYJ8Vhf2ADY0gSt6Ll4GUm5KUBtqMbP1L0hS7RVpf7NEQbvD0DPa/0BAv/vM3rLVxlPIf9QXWEN7CtexHlcUXroVgyUXICuYKcnBBxK2E+CtDeKosP911JR04y2ZUXrVwR4k2FtRc6df1uB0MN688/rmZDCypbR6znjz7HW7fXpeCeCzRKU8I000TaWEGrdMCFzSgxfcnDpiE4SWCo16UFTHtmvhqAsB2S1R7RWe0pWLsqSxlXAtJHyLwzdBKokb/LGE/Gt6sf5o43WH3xLOR+RQ9/2JeZhrOYsLS10HnEvlfXtc1iTml2d7LGnajA1vE5qxG4DUWNGQuiOptKfrRaRcbNLe9AxIZyRA0v+qQTigTghJ2sXpRFB6PhikC9eWqtfW6muR9GdewAw8S78O7Vz69MdZKYB7r0t57pC8Q6sK0Z5xXhO41hnJl8ZbWTFmpOlI9fGBqExtD6NJG8jFqsfMIrQRyyzP8U7mCZwhmOKnYxdGVjBrG5k66nBZHakHLOuyD4oIoLgmUKiRdG1frcLy1tX1c17/1E2B3EOG9x7hfI+eI51coLAypPZrlq/eZDwmaG1C8Lj+0R3sePyjtz+hKCRmrWrkdCaj8OV0DotDdCrQkkXqf0ykaeYOVaTahOLo+p6FAGH508IiSKkZElKG/41ZqsQ7HprmfoDjJDJscqfFE6JBl
+ definitions=main-2602260118
+X-JNJ: AAAAAAABIDuH5J/DSteGDSIzaRDTtnde7OcFerFXrIg67J5RS2ry88SgrLtBcULvKTpLkRv2b2IONuCKsNQB/ehTxZcwfkxVethj2Ao4ArhOwmf+ugnSesA1ZKYIRg0P+nFZapfP8iyWdhkuN7hJ1v5J+9GF1AJfXk0/CD4Jp7Z7SXNIToB4A5P09qKw4a1c79r4oVR1SBo6zbqrVAzw65kbEgyjUYRwJCNh2l7Bnm5VtGiLolEYQOpCNrEgZA6DE+69GcLHK32SsKyQ2kVJ/JfjU9FxE4132dyzfMKWD5oHCxm0SBG0xSzGB90mJk3lDlRwo3pXWrlEuyh6UV1h7PM8Xh1NFJJuludA2jhWKyW0dwwPaI7ANI2LUv2V5NdzY+jkMccwTwZqIVPgsPm7poCvy+GlPV0w4MoXbuddoXE/RGD7mIjYecdA5L2jL6GmuWt+KS2+zoO9S3O9hO8bAy5kVhxVRzeevVb9WxAFb/MjoksWgm00NMTiQf0jdvnxgXbu3TCCC7wLopwdTTi8B5jz9UzMPqRRru6euJv/jDT8lgaCjC3/bCfvcI9pKmwjegAKsP9DBsTweH9uliE9Y315iegaLNv/pkQG73KPPeq9n8M/5KkmdOgnJkEZalxhNIAmNSfFpn3624T1C55BoQpTrvraD2WrdyBV4/4UKB3bx05+nTgY61q329a507tiKd5T1QWzq7vZi0+B5KgorcpJf0P67Q+WYwX9oRsyCtQu87AWYd/yMaVaLgieWebtkr9Tprl6o+SWKPYkiFSVjypjRtEWACNhLY//3oi243Bflny2
 
-On Thu, 26 Feb 2026 11:42:39 +0000
-"Gary Guo" <gary@garyguo.net> wrote:
+On Thu, 26 Feb 2026 17:38:48 +0530
+Adarsh Das <adarshdas950@gmail.com> wrote:
 
->> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->> index 856d2d929a00..78e2343fd016 100644
->> --- a/rust/kernel/time/hrtimer.rs
->> +++ b/rust/kernel/time/hrtimer.rs
->> @@ -224,27 +224,39 @@ pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
->>          self.forward(HrTimerInstant::<T>::now(), interval)
->>      }
->>  
->> +    /// Return the time expiry for this [`HrTimer`].
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `self_ptr` must point to a valid `Self`.
->> +    /// - The caller must either have exclusive access to the data pointed to by `self_ptr`, or be
->> +    ///   within the context of the timer callback.
->> +    #[inline]
->> +    unsafe fn raw_expires(self_ptr: *const Self) -> HrTimerInstant<T>
+> Add a warning when the delta is clamped to the maximum value and remove the TODO comment.
 > 
-> I guess the signature of this can also be
+> Signed-off-by: Adarsh Das <adarshdas950@gmail.com>
+> ---
+>  rust/kernel/time/delay.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> `unsafe fn raw_expires(&self) -> HrTimerInstant<T>`? Then you can remove the
-> first safety requirement.
+> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
+> index b5b1b42797a0..0965fcb6eb80 100644
+> --- a/rust/kernel/time/delay.rs
+> +++ b/rust/kernel/time/delay.rs
+> @@ -35,7 +35,7 @@ pub fn fsleep(delta: Delta) {
+>      let delta = if (Delta::ZERO..=MAX_DELTA).contains(&delta) {
+>          delta
+>      } else {
+> -        // TODO: Add WARN_ONCE() when it's supported.
+> +        crate::pr_warn_once!("delta out of range, clamping to maximum\n");
+>          MAX_DELTA
+>      };
 
-Thanks, I've updated the signature to use &self.
+pr_warn_once() and WARN_ONCE() are different; WARN_ONCE() also dumps a
+stack trace, which is more appropriate here, I think.
 
-Andreas, this breaks the consistency with raw_forward. Is this
-acceptable?
