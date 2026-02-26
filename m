@@ -1,274 +1,315 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010000.outbound.protection.outlook.com [52.101.56.0])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010017.outbound.protection.outlook.com [52.101.69.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA92C392815;
-	Thu, 26 Feb 2026 11:47:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB4337AA90;
+	Thu, 26 Feb 2026 12:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772106442; cv=fail; b=m6Oa2xhcergECWesqxp5nT7vkdih8sJ5l5pEF8pThz/kLqIAdsJ1/vAXe2b/a6jAFM17Bgbd62+qi4Z2FbsBiQ0Txm0O1byATRZ+12apYBVifABhgqxCHAqyt9GQd2NxWEMRjgXSn4xjFJbBvQAIs41gHrQ9S9VxTA5e7XcOSds=
+	t=1772107349; cv=fail; b=TG6UkoXAcNlDQL48S9F7/TGGjRoxSrL1U1TqgPmK4NeZDub8q41LILDhj88OJn2zn14XLpELaJtYo/YQGMyIvx8J1hVOvjpmRb6FBcYMFZ63ntX88tZ3y7snbDlpRK0FUb51bqKagE/YszaLjWxckOvwSQl0scGfPEmlmfCQTYM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772106442; c=relaxed/simple;
-	bh=mePEQH3x1au3Fq85rhWxbiJte0pwLvvPBLcJ0lWsPq0=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=o6LRuZrs3I9TYfa5iG5pdA2wF0IwxtjGLguPIGPB20kwJyTrC2kabzW8Xg9Ib+33PF75jxV72tD9flV8p+8SR1W/4CrjB7hHG77uCG5MSKjkdan8CuxIz8xlkPDDCLcNQtqKcs+QBojLN/MfAI4R/MbsVj6NNy/ujB3swyuK7sE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DqByXa8v; arc=fail smtp.client-ip=52.101.56.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1772107349; c=relaxed/simple;
+	bh=UNQia223hMJrpT9cgxNCBcGHlrF3nFQKJzTEglQwr5I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=hwGmCJml4LzZPgA99v+mHfttMBldSips0X/Op0o260X1tbQMZHWGgezRKTk5V4MLMaojZxVt4ju6nLJnY60KzWbi7RQxS/Ft9jrUdqzd7BwN7JgiTKyimNXfZsF3DqXhpd6HN2UOt8KrNBulzF+ktshBrNtFHj258EsvUS2GJhU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=eWIvPscu; arc=fail smtp.client-ip=52.101.69.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DqByXa8v"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="eWIvPscu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CZdmqJwYw4jdza8IRJfn3tVh3Xbd4Uwt1EI1pvqyOXmcaxxBqjfVoA6kW1+5Z9JkNNNbH0Odso6X5XskAMAIfJj3d1zAr2Fe29RNHFIBUpOy0cUgDgXUXXCzLJgLwuWmAw8lKvmX05+o6TQDXFiCR/uNRpQb7efcpX/bu08a0L4RYE/eWWBUDN0E+ybExcsgGU+sCVd7Gs7RnBJ3rYx1XoSw5nFtCVwLvNnQjrqDT3MIlelFl4d9bOApwGIex4rA/VtOweyZYQc+q4vL38ap5c+jZ5yTEqAk+GugvSv9ib+doJrooeF36h+/Whz8S/Ob7oByZgZyh+/DAI3/1+SHdQ==
+ b=QCzW2jdc5I4dLaipIRuiufe6e9U/TNzFssaV21TGpiM9pURd3Ocs5fmfGuVuYMJDQf0pTH5PGi15vZMwhsHtYKi8HccPO7srC0d533s70bVSeNu2cAgPid2Y2ZGhKnyHMVMQdNl8qzjeUn0DywfgnRvs5gdvdwW0Gw1bS7YPa+grGqMIbwsVrDgRc/9O6TGcgZMbaZeLlxwVeFbnZQkKetJYuqrZp2pv/vSCRJ2VnKOmcWyacr7Uc6mciPRqkBYIKI6XLLRKLvZZ5CMnvUJSskPMsFHXWeHIxyc2Z0vDctD4ECGX4XBJpXOzGXCjcKnYOWrRbXRY1ei30KYJx0/shA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JVQ+AUSa2O8lPjC8zY2F0HyAKJMBLoSAHxI1phpLfM0=;
- b=EGRVEZGp2BphL1vit7SaL55brwPvkKt8xdWz8r2U0OnSauZro0vFnzF0NVXsQ46X/uQwQSwTYVQykrD4cT2SweTKxQc54dc2WVV9/HdNdVPVQe+lmFiOaLrIbocv8zhN65HmlfO3ZTRk6oxl4Bu7BpzDq1nHViQCP6+10rMDBI0AYNyd+6+lz4SFlvLhk9PdR+SZh+1pYSBSrzIFsN1yhsy/laV2AGn8ArgqD+oGfq+JLvKhJkJFjLsbrSntXhCwmUPK4drCEd3bcv9sy2eGSrwQOIp2efW8XyHYd7VCRTMMpwNGOEWbQ2H6WYaHBRN+/Et8KPFoZY2p/JHeWt2YcA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ bh=Kt+2wSyd1JyPybJ0S2nJrwzRkqElHttI7RkE2PxfDzU=;
+ b=Gcz4j++EuFIZYBlyMmMahVNheHF7eEN0f64fZERmEK8Q4bowC/wFfcitjdjqOf1yeo/pJEhBJI4T+rxTvXYqR5vV2liclfPG1HCs0dBCXd1ioFMVYYy5zmXI6k7Lzj4elGxxzVfBFRApWtQQ/tHRgKeP3zBJeQQ0iU5gdFrkL6Ftqp9kwIKSwde7KXb3QJb+HiLBSoBDXyWPMYYWRUy+u4cYGupuFdXLPE6XpCEJ40sXcHkB/Slsw3Y55o0FEhDjJ4swyc8qO8c7Nw3C9MBv2EFK2991b9Z4C9s61z/QZlqmheT/g6aiDB62DUvE35+bipVbO7HxdRI+wbJGVwxctg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=nvidia.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JVQ+AUSa2O8lPjC8zY2F0HyAKJMBLoSAHxI1phpLfM0=;
- b=DqByXa8vG/DVQGcYD6Odmd+IgVxIiTcTx1C5bNkp24uWp5NWNjkWcwaP2ff3jUg5wpOpwJLT4H21mc/0l5bhQicDIGF+8aLvHrL8e20RiL50GWDL9PkegWl+RRNWHMpALvUBLk2lsjhnuSI9LZzaDFeRwuOcrarUtI/kt1im2uIT/UGzBwShahKCQ6QF+cLD8Fk/VaNrwLj7vmp9FHlh/Tfc1om2cNvVS0JtEadgiUe9Rs5+sheFHhW6dlBEDaiMySgOY2ni2vF2Es/32j4irPTfhWWye52FGy7E6CCRhdV3kV+btJLqJi2a6tDLpnn8ooO/vvzJOct4Zro4dzlmjA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by PH8PR12MB7112.namprd12.prod.outlook.com (2603:10b6:510:22c::15) with
+ bh=Kt+2wSyd1JyPybJ0S2nJrwzRkqElHttI7RkE2PxfDzU=;
+ b=eWIvPscuT5JBrSD7w3bdkbdxu2g59dtycNIYx50Rs4GoXSJWuaYlxHOerQjoM7WgL0YN7zWKLMvmN2/K81SqRuwIJHwr9t8YSRY9YKfV5pt2CJEVLmdcVGn+A0Q6sV6zMCBdcDi0DeyD1rKalhlPr33YMYbK/1r0JJyVcUSV5RfDij4xACdNvCVLPdCzBfboXL9wRo+TUyV63JFQNfzp1AyK37DYDPKY9WPD0fD4Ir5VLnzRV7PEndrMefV7jH/EnzUzMmIoAWSm0nysQMDcTVBOBcULqna0TrZVliJIZ3qQZL/dETDyRtZt3KJZbV8d00XjRYogC9Khc8vH+udlvQ==
+Received: from AS4PR10CA0026.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:5d8::20)
+ by DB8PR10MB3721.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:13d::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.20; Thu, 26 Feb
- 2026 11:47:17 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9654.007; Thu, 26 Feb 2026
- 11:47:16 +0000
-From: Eliot Courtney <ecourtney@nvidia.com>
-Date: Thu, 26 Feb 2026 20:45:41 +0900
-Subject: [PATCH v3 9/9] gpu: nova-core: gsp: add tests for SplitState
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-cmdq-continuation-v3-9-572ab9916766@nvidia.com>
-References: <20260226-cmdq-continuation-v3-0-572ab9916766@nvidia.com>
-In-Reply-To: <20260226-cmdq-continuation-v3-0-572ab9916766@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
-X-Mailer: b4 0.14.3
-X-ClientProxiedBy: TYCP286CA0334.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:38e::12) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Thu, 26 Feb
+ 2026 12:02:19 +0000
+Received: from AMS0EPF0000019B.eurprd05.prod.outlook.com
+ (2603:10a6:20b:5d8:cafe::b8) by AS4PR10CA0026.outlook.office365.com
+ (2603:10a6:20b:5d8::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.26 via Frontend Transport; Thu,
+ 26 Feb 2026 12:02:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ AMS0EPF0000019B.mail.protection.outlook.com (10.167.16.247) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.12 via Frontend Transport; Thu, 26 Feb 2026 12:02:19 +0000
+Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 26 Feb
+ 2026 13:02:03 +0100
+Received: from [10.34.218.123] (10.34.218.123) by smtp.app.bosch.com
+ (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 26 Feb
+ 2026 13:02:02 +0100
+Message-ID: <749a803e-4167-4eb0-bf8b-da6c27dff5c2@de.bosch.com>
+Date: Thu, 26 Feb 2026 13:01:56 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 00/10] rust: add `register!` macro
+To: Alexandre Courbot <acourbot@nvidia.com>
+CC: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda
+	<ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
+	<tmgross@umich.edu>, Boqun Feng <boqun@kernel.org>, Yury Norov
+	<yury.norov@gmail.com>, John Hubbard <jhubbard@nvidia.com>, Alistair Popple
+	<apopple@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi
+	<ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>, Eliot Courtney
+	<ecourtney@nvidia.com>, Steven Price <steven.price@arm.com>,
+	<rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
+ <a278ad60-5912-4b9e-8930-6fc9ecedbd16@de.bosch.com>
+ <DGO3AXDQKCKO.19VWO463SM0WP@nvidia.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <DGO3AXDQKCKO.19VWO463SM0WP@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|PH8PR12MB7112:EE_
-X-MS-Office365-Filtering-Correlation-Id: 76da6bf0-a7cb-4f28-d162-08de752cca54
+X-MS-TrafficTypeDiagnostic: AMS0EPF0000019B:EE_|DB8PR10MB3721:EE_
+X-MS-Office365-Filtering-Correlation-Id: d25d5215-2a21-45ce-df47-08de752ee498
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003|921020;
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014|7416014|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	Y2SCgDlpn8SuEskmdJHmUR0fj3bQWCT5zaOySRn6ujM5IbWydyaGkg6IThYzPnw2PsAS4MdKkC65b0jKMP369yh3gZ6gZuku8ZN+rFs46bX/sD4FoN0KBSUTO4J/TLQ5ucRndcEmME3YSX5Y8fu0SA2y5mRBPD93FWOq7R/V+P4Kbkgo2mlRCkTkaXK5pq7oD+XYSMA/YJINQV8Q1wBIDziKNIGEtm1oely9HqzJcujFL5AWEOe59abG++ANkpUPR4Hv3djEk3kCHEo0Ni78IRPkZn8YTRmzavYp8au3kw5rZLFTPryWfoIstvwQJ9GW1G0Ihrd2z8dO6uYsklgRcj6dcVUMo9UsddK6yeH2J964sELAHysfe1GKYHQgYfkEAuq18sielZa8zhmimQvDqB0DhQcHxK9g7q8k8KNuPtWKtzEbT+wHQsO/qWk03KjClauk7meVB61bXTUiqNtbHiPvg4iumZLbS0TQFdE0aKrY0rBtSqaHJWmL46+ZDUN3fr4OTfEQXT/gYMdnA8dLuev9qzbwCKRvvTerxq6fQS/mP7zl9KfpzOikJeGDnLyyFZQ+GoefuIHfe1N1RSDYC3qKeWi8GcQ3qbnhHT9DlewFttUKedf7es+AtPAAF5oPzF/pE3WJHs+G0gmoR62VjiUg8p90QqdciHZ0Koq/w4uM/gInm1b8hjhIve/1p1zef97x+P5xj4FpVooKaLz/zhjagU8n3fXSxmNY21cZHno0kanHZwcGORWwTmARsRTEzU9wsdOpGubLwsxt5DiJSQ==
+	qBLbd12hP5i2h6dLhxBkv6X5ipGwD4geQeFhUH8oGnWLjS3U8HYrC/nQ5+RW2kgOi2jA6AlRL0do4bDIq9AFFQGNXkTH7NuMylEQ9eXXvrwaMO++pNthRhO54mQX0Jv++0YeJe+KFAtHgAxUP1O+alyG9HjAOp11el7CEqGnpH9CIWskvG6/V/XI+d8X89MnEJoNjZylOesTv0uosY+wYOCs5dKdm9KR8cCB+3wot0ENHdnj3/9nwHmJBsepkJIwx1AMONYXzdc6zgq+L9Ul1r4dzdzwDCuO10XdNybPf/J/f69u1EbM8ySP9eLo3Rl58RRn694y99VFIud+5FUfB8gc/NR0AqP9XCk0jx2X83JoPisfgO0tEmDp6O4Pb9kONoVR/vXgyr+F3kfGEKJhy971nG6aLA+rZ8zpqsXUKY8iQdJ+EJenD8KVlouVCLcU+iKBRZoRG7xPEw0ukkkpCCrb+fUxtCeLeb0TCUP3VBGdIetH9RJHxWMeyNzY+BiLq2ReelNvSGDe+fv0HJZHP6wSV6ZdgyeGR2tt7BigoGKib4HEJryYvWKafApyJxdhywdsoEwwuamiOKC0e163Qqr0fyBIVbdfZzq0GKGZ0sfcb1coHjbfJjzUThfaJRTi4jk9zfWoRWUJFlq3deWg98xdcsleBkjHb9jv9s6qUqgRiMioeArjC//gASo4VFooR1NUp3eS1YzXTdyz0U2/RQi3kzKgESXZMrDzg66OXlvsHuTUhj3BbuW+L3gf4/3hYAg31fiaFaAdGWNPjV4u0g==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014)(7416014)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZFUwc2ErU0hKdHRoV2orbjl4c203Rlhvd3BraXFzYUZsMncrZFUxMk15eCtN?=
- =?utf-8?B?SnFOYmZidDUrQ3ZtSEFhZllJVWdlanAvTE1pSmdScVU1Ti9HMCtCdjRqREw4?=
- =?utf-8?B?T1BtWWphNkdPclNiWW5VZERVL0ZLazhoN0pCQWFWOW9UZWxqbUFoNGR4UDVT?=
- =?utf-8?B?VUZlNmhNNU9GOVdQWCtoT2xyOHJGeUVXcEJFRVpYV3JtN2FKME4vME04bW5U?=
- =?utf-8?B?VWYyL3k5eS9ON2tLWjd1Zjk3c1gvSENmM1BwNFFROUVJVSs2OCtyNFZ1SXMy?=
- =?utf-8?B?R25yM0pVTUtXT3NMOTl5TU9PMTFEWXBpZDlUK0NaVHB3Ujh4WmJGM2pMSmd3?=
- =?utf-8?B?cmE2R0Y3K0tlQzlZYjI2Y2ExYTR1VlJsLyszcEZBeGFJQmZUNEgxaEVZNldF?=
- =?utf-8?B?eXUrcXFiMDVnNllvQjVhV2xGVnJzcUZ5VllQSzcvN1U4ZXArSHhhWEdvSGxL?=
- =?utf-8?B?eTBFblIreGJ3dWtvU2xaMWVCZlhGVjJFekU2UGkvaWN2Q0pKS2dVazlOblps?=
- =?utf-8?B?M25pbU4vaFZrR2R0alZ0Mk5sa2NuSWVoZFJUNDJhSERjVDZJSTNoaFVNUDht?=
- =?utf-8?B?dWdGZUhaMURvK3RZLytKTW5aTEpFaERzT1FUek9tYlo5U0hvUktSMTRIRjdS?=
- =?utf-8?B?dENxMmNEeG4wazJwSmZET0NpcGFkcDcyZnRmcXVOU2RiR0JOVjhjTUZZU1RR?=
- =?utf-8?B?cFdSRnNQTmsrdFNSeUxOV2VHRE52NEw4V2pPUTBHK1BER3AzY1EraTZ4ZWha?=
- =?utf-8?B?MFloNUxiRGlielhtMVJualdiRHhPV0lXTXFBa0wrYUpRRUdvbzRKbVp1SnBS?=
- =?utf-8?B?WmRrdTNLZ29pOUoyT2xjbEhxTmZUS2pwY05RcC91NmFmdm13b3lZZzZHcmE1?=
- =?utf-8?B?U2ZCTVlZOW5tbUpIamNJNk5vcUtTWFdETFQ5UmovSy9nNlZkSXN2NFBpc3l1?=
- =?utf-8?B?TTRhVEY3RGtPaHhjVVY1a2s4SWdtKzJJRDdFWFdsQVV0S2tUWW5wSlZGYm40?=
- =?utf-8?B?STk1R0xmbUNXdXY1SUFtU1Yrc3hJRUs1VWk1NzcySWtOcFZiRnZiZ1l5R01Y?=
- =?utf-8?B?dlZrcmVGR2lYbU5RUHh1OEZjTVFKSW9tQW5rWlVnY1lseEpDMm5SK0ZYWlVk?=
- =?utf-8?B?NFBBbU4ra2FsWExKcEhGbmpFeE40SVRWcmlTSDR5UllWZFFYUFJ6dnJGTUhX?=
- =?utf-8?B?Rld1Y2ZGRHNuK1prMHBPTXMrcEZUSHJzS25Zc2gxMzZwcjZNQVJMR3dMSCtX?=
- =?utf-8?B?Zi9FVUZrcGZUV3dsUjhmZ1YybFR0SkpvSWtjQThsajVvemxOTDR0M2RCM2F4?=
- =?utf-8?B?bnczZ3RGZmdrMnd1YlIxcGhwYllVK1FXMXF5QlgveGtNelgrNGowRHBQbkxJ?=
- =?utf-8?B?eXNuNEd3QUVJTGp4ZkJyamFwSWRPVWExWlNtby9kMWJtVUkxd3RJbkkvY050?=
- =?utf-8?B?YzF2Y0NZaFR0bE40ay8yYzFhcnpSVGJTeXFlUnY3RmdWTHF4V1lmMW5DYnhS?=
- =?utf-8?B?M3NjSFhINHRQRlJYQ3FDV01SMzkyVm9jd29ZNXNBbkE0TmNhRUd3T0V0c0k5?=
- =?utf-8?B?ZGxWbUJ3eDJMQkcyelcxdXhpNlB4UGlLc1FBeC82UktDbDcyR2NyY1RoM291?=
- =?utf-8?B?cUo0ZHZCN1MrUFBHcHA3azIwRkl2Q1ovaGxlMC8yVjFXcWoxTUlrK0dIYWUy?=
- =?utf-8?B?WkFiUU0waEt4eWM1YlVydkg0TkZBRmgrc3J0T0hBVG82MkMyb0lhOThxZTZq?=
- =?utf-8?B?MjJFU2NmWjBkZ0dsdG4ycXBuUVFvcWlEWUhzOStRa3l3ZEhPYlZTcG8yYnRj?=
- =?utf-8?B?NUJ6bmc5SThqbTZTNzdhWUQ5RzZUbThZZmRSVEh1UHl6eUdpMEtTNUlOSnds?=
- =?utf-8?B?RnA5M1l0b0s2R0U2MUZMMDJHdGl5cndjK2dSdXdiWklmMlVhNnlCa0RvWDVJ?=
- =?utf-8?B?aDhnVWF3RWFPTXdIQ21sclJtVmVJVnVlbkRkdmlMSlk1MHd6VnVKWjVsaURE?=
- =?utf-8?B?cXhvb0dEMk1aMGprSlhEYTkzNE5uM1lLZ3dHUVYyNkM0eVVQZ3RsUVJVM2Vv?=
- =?utf-8?B?ODQvblVnd3FabWNydkhSVHU1M042U1RCYUZ2K0l4djlBbmhSaFJSb01VZjRE?=
- =?utf-8?B?RkFmOHdRN2lhWVZnNkpRM2FOR0dCSUN1OFFQRE16RUFJbldTOVEyT0Z3QXU2?=
- =?utf-8?B?aHNUeG0zVTZzSEVpQURBM0R0V2lUOFJrV2N4NXJxc0pxWjFlOWlKaUo4eGZq?=
- =?utf-8?B?NisySFU2TTRja0ZsK1AzbmVOSFZnZnMzUWhMQkdmM3NGYWRINWVIOVY5eXJr?=
- =?utf-8?B?dFdlZjRTSWUwQTU2a3JOL2ZsVHY5WGQ3dVV3R3NydlUycFFYZkNlR0I2TUhn?=
- =?utf-8?Q?Lc+m2TdxAQkKWRP4yktqDs18cFBe9fMGsxOFSNUrVMv3l?=
-X-MS-Exchange-AntiSpam-MessageData-1: kHAScp5Y5R+aYw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76da6bf0-a7cb-4f28-d162-08de752cca54
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 11:47:16.9203
+	I+EzrzpqnrZhKuO9YxU9Ys1PkYZavqNtjkIa8fnyX85oUcak/FPfOXG9JDsOnTE2HT4CMyA7TPZuaoW9Qi2x+rjIS9PDwQKVeteIBeNEXBmHNNtICHDQSDZlJjvJnloqaOyY7hZwuZ/Nw2qU2BPNtEpLSYjkEfsEF/GUXynAQwtb1rFxHWyDWkFP3AfVWnMQ1awPeN5KNM+uCW2LNdZUpFA/CPgYWrxuu1Q5IIKi3+UsTe2dp1Bnc20I/EZeaNzAh8NqTIZnGhF042hIO4/7JuPbAKtVOTBwsSIDB9hogi+YbF2aKUQaMITH2V3+ltEhUj+kAhg5GHmZt/mVXGSCxHDofipgOScKt1p8qiDWUPPROOxFf05R/1M7Aov3kFNokO54l02oseZ3mIFSing1WHexhTvuBH1WcfmwszXMTHIkBuavQHRmmf0KVMt9tQES
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 12:02:19.6613
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6TNF7u57JvLzGATr7Qc5NZsFxXNVQulAuW1ehdLxhjfFCIP4hzUD40WyASEBSlhgd8M6UO6EBNsDxD4HnOK7Ow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7112
+X-MS-Exchange-CrossTenant-Network-Message-Id: d25d5215-2a21-45ce-df47-08de752ee498
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF0000019B.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3721
 
-Add tests for SplitState. They cover boundary conditions at the split
-points to make sure the right number of continuation records are made.
-They also check that the data concatenated is correct.
+On 25.02.2026 14:50, Alexandre Courbot wrote:
+> On Wed Feb 25, 2026 at 8:58 PM JST, Dirk Behme wrote:
+>> On 24.02.2026 15:21, Alexandre Courbot wrote:
+>>> New revision addressing the v6 feedback - the use of "location" instead
+>>> of "reference" in particular reads well both in the code and the
+>>> comments.
+>>>
+>>> As a reminder, since the previous revision we use the I/O type to
+>>> perform the actual I/O instead of the register type, which moves us from
+>>> this access pattern:
+>>>
+>>>       let boot0 = regs::NV_PMC_BOOT_0::read(bar);
+>>>
+>>> to this arguably more natural one:
+>>>
+>>>       let boot0 = bar.read(regs::NV_PMC_BOOT_0);
+>>>
+>>> This revision is based on `driver-core-testing` as of 2026-02-24 with
+>>> [1] applied. A tree with this series and its dependencies is available
+>>> at [2].
+>>>
+>>> [1] https://lore.kernel.org/all/20260206-io-v2-0-71dea20a06e6@nvidia.com/
+>>> [2] https://github.com/Gnurou/linux/tree/b4/register
+>>>
+>>> The first patch enables the `generic_arg_infer` feature, which is
+>>> required for generic type inference and used in subsequent patches. This
+>>> feature is stable since rustc 1.89.
+>>>
+>>> The second patch adds `shr` and `shl` methods to `Bounded`. These were
+>>> suggested by Alice during LPC as a way to avoid the use of the
+>>> controversial `Bounded::from_expr` in both the bitfield macro and the
+>>> Nova code. The third patch adds another convenience method to obtain a
+>>> `bool` from single-bit `Bounded`s, while the fourth patch turns
+>>> `Bounded::get` into a const method in order to make register setter
+>>> methods const.
+>>>
+>>> Patches 5 and 6 introduce the `IoLoc` and `IoWrite` types around which
+>>> I/O accesses are centered. This allows registers to be accessed using
+>>> the same `read` and `write` methods as primitive types.
+>>>
+>>> Patch 7 adds the `register!` macro and the types it requires.
+>>>
+>>> Patch 8 updates the Rust PCI sample driver to use `register!`, as per
+>>> its TODO item.
+>>>
+>>> Patch 9 illustrates more extensively how this macro is used by
+>>> converting nova-core to use it, and removing the local implementation.
+>>> This patch is to be merged one cycle after the other patches.
+>>>
+>>> Patch 10 is an RFC allowing a shorter write syntax to be used in the
+>>> case of fixed or relative registers. It doesn't need to be merged
+>>> immediately, but I think it is a good time to discuss it.
+>>>
+>>> I have also removed Gary's signoff on patches 5 and 7 to make sure it
+>>> doesn't get merged before he gives it explicitly.
+>>>
+>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>>
+>>> ---
+>>> Changes in v7:
+>>> - Use `RES + SHIFT >= N` instead of `RES >= N - SHIFT` in
+>>>     `Bounded::shr`.
+>>> - Rename `IoRef` to `IoLoc` and all related types
+>>>     accordingly.
+>>> - Use `Into` trait bounds in both directions on `IoLoc`.
+>>> - Add RFC patch allowing fixed register values to be used directly with
+>>>     `write`.
+>>> - Link to v6: https://patch.msgid.link/20260216-register-v6-0-eec9a4de9e9e@nvidia.com
+>>>
+>>> Changes in v6:
+>>> - Remove Tested-by tags as the code has considerably changed.
+>>> - Make `Bounded::get` const so it can be used with registers.
+>>> - Use the `pin_init::zeroed()` const function instead of defining our
+>>>     own method.
+>>> - Generalize all `Io` around the new `IoRef` and `IoWrite` types, and
+>>>     make registers use these as well.
+>>> - Use the more natural pattern of having the `Io` type perform the I/O
+>>>     access instead of the register type.
+>>> - Convert the whole PCI driver example, and not only the PCI
+>>>     configuration space.
+>>> - Rename `Bounded::as_bool` to `Bounded::into_bool`.
+>>> - Drop `Bounded::into_inner` in favor of making `Bounded::get` const.
+>>> - Link to v5: https://patch.msgid.link/20260129-register-v5-0-c4587c902514@nvidia.com
+>>>
+>>> Changes in v5:
+>>> - Rename all setters to `with_*` and `with_const_*`.
+>>> - Use `, stride = ` to specify the stride of register arrays.
+>>> - Remove `Deref` requirement on the `RegisterIo` trait and make it
+>>>     `#[doc(hidden)`.
+>>> - Simplify the top dispatch rule a bit.
+>>> - Link to v4: https://patch.msgid.link/20260128-register-v4-0-aee3a33d9649@nvidia.com
+>>>
+>>> Changes in v4:
+>>> - Add `with_` const field setter methods (removing the need to call
+>>>     `Bounded::new` for constant field values).
+>>> - Add `into_inner` const method for `Bounded`.
+>>> - Add `from_raw` and const `zeroed` method to create initial register
+>>>     values.
+>>> - More documentation improvements.
+>>> - Link to v3: https://patch.msgid.link/20260126-register-v3-0-2328a59d7312@nvidia.com
+>>>
+>>> Changes in v3:
+>>> - Sort the Rust features list alphabetically.
+>>> - Rebase on top of latest `driver-core-next` including the new Io trait.
+>>> - Allow several registers to be defined from the same macro invocation.
+>>> - Remove references to `bitfield!` macro.
+>>> - Fix doccomment of `shr` and `shl`.
+>>> - Use `+` syntax for relative register offsets.
+>>> - Move register arrays size and stride to after the backing type declaration.
+>>> - Use regular doccomments to document registers and fields (thanks Gary!).
+>>> - Remove `Default` implementation and implement the more predictable
+>>>     `Zeroable` instead.
+>>> - Improve doccomments a bit.
+>>> - Link to v2: https://patch.msgid.link/20260121-register-v2-0-79d9b8d5e36a@nvidia.com
+>>>
+>>> Changes in v2:
+>>> - Remove `bitfield!` and put its rules into `register!` to give it more
+>>>     time to get reviewed.
+>>> - Allow output type larger than strictly required for `shr` and `shl` on
+>>>     `Bounded`.
+>>> - Enable the `generic_arg_infer` feature, required for rustc < 1.89.
+>>> - Link to v1: https://patch.msgid.link/20260120-register-v1-0-723a1743b557@nvidia.com
+>>>
+>>> ---
+>>> Alexandre Courbot (10):
+>>>         rust: enable the `generic_arg_infer` feature
+>>>         rust: num: add `shr` and `shl` methods to `Bounded`
+>>>         rust: num: add `into_bool` method to `Bounded`
+>>>         rust: num: make Bounded::get const
+>>>         rust: io: add IoLoc and IoWrite types
+>>>         rust: io: use generic read/write accessors for primitive accesses
+>>>         rust: io: add `register!` macro
+>>>         sample: rust: pci: use `register!` macro
+>>>         [FOR REFERENCE] gpu: nova-core: use the kernel `register!` macro
+>>>         RFC: rust: io: allow fixed register values directly in `write`
+>>>
+>>>    drivers/gpu/nova-core/falcon.rs           |  249 +++----
+>>>    drivers/gpu/nova-core/falcon/gsp.rs       |   23 +-
+>>>    drivers/gpu/nova-core/falcon/hal/ga102.rs |   65 +-
+>>>    drivers/gpu/nova-core/falcon/hal/tu102.rs |   11 +-
+>>>    drivers/gpu/nova-core/falcon/sec2.rs      |   17 +-
+>>>    drivers/gpu/nova-core/fb.rs               |    6 +-
+>>>    drivers/gpu/nova-core/fb/hal/ga100.rs     |   40 +-
+>>>    drivers/gpu/nova-core/fb/hal/ga102.rs     |    7 +-
+>>>    drivers/gpu/nova-core/fb/hal/tu102.rs     |   22 +-
+>>>    drivers/gpu/nova-core/gfw.rs              |   11 +-
+>>>    drivers/gpu/nova-core/gpu.rs              |   36 +-
+>>>    drivers/gpu/nova-core/gsp/boot.rs         |   11 +-
+>>>    drivers/gpu/nova-core/gsp/cmdq.rs         |   10 +-
+>>>    drivers/gpu/nova-core/regs.rs             |  544 ++++++++------
+>>>    drivers/gpu/nova-core/regs/macros.rs      |  739 -------------------
+>>>    rust/kernel/io.rs                         |  347 +++++++--
+>>>    rust/kernel/io/register.rs                | 1135 +++++++++++++++++++++++++++++
+>>>    rust/kernel/lib.rs                        |    3 +
+>>>    rust/kernel/num/bounded.rs                |   70 +-
+>>>    samples/rust/rust_driver_pci.rs           |   84 ++-
+>>>    scripts/Makefile.build                    |    3 +-
+>>>    21 files changed, 2118 insertions(+), 1315 deletions(-)
+>>> ---
+>>> base-commit: 545225ee0b0b6998c7b6ff888f8497681b8b35c4
+>>> change-id: 20260117-register-ccaba1d21713
+>>
+>>
+>> I converted my simple aarch64 TMU timer example [1] over to v7 (many
+>> thanks helping with that!) and gave it a try: It works like with v2.
+>> With that:
+>>
+>> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+> 
+> Really appreciated! And I think we are finally converging, so hopefully
+> no more big refactoring ahead. :) Still, please let me know if you saw
+> anything that looked off during the conversion.
 
-Tested-by: Zhi Wang <zhiw@nvidia.com>
-Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
----
- drivers/gpu/nova-core/gsp/commands.rs | 114 ++++++++++++++++++++++++++++++++++
- 1 file changed, 114 insertions(+)
 
-diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-core/gsp/commands.rs
-index 6ffd0b9cbf05..74f875755e53 100644
---- a/drivers/gpu/nova-core/gsp/commands.rs
-+++ b/drivers/gpu/nova-core/gsp/commands.rs
-@@ -384,3 +384,117 @@ fn init_variable_payload(
-         }
-     }
- }
-+
-+#[kunit_tests(nova_core_gsp_commands)]
-+mod tests {
-+    use super::*;
-+
-+    struct TestPayload {
-+        data: KVVec<u8>,
-+    }
-+
-+    impl TestPayload {
-+        fn generate_pattern(len: usize) -> Result<KVVec<u8>> {
-+            let mut data = KVVec::with_capacity(len, GFP_KERNEL)?;
-+            for i in 0..len {
-+                data.push(i as u8, GFP_KERNEL)?;
-+            }
-+            Ok(data)
-+        }
-+
-+        fn new(len: usize) -> Result<Self> {
-+            Ok(Self {
-+                data: Self::generate_pattern(len)?,
-+            })
-+        }
-+    }
-+
-+    impl CommandToGsp for TestPayload {
-+        const FUNCTION: MsgFunction = MsgFunction::Nop;
-+        type Command = ();
-+        type InitError = Infallible;
-+
-+        fn init(&self) -> impl Init<Self::Command, Self::InitError> {
-+            <()>::init_zeroed()
-+        }
-+
-+        fn variable_payload_len(&self) -> usize {
-+            self.data.len()
-+        }
-+
-+        fn init_variable_payload(
-+            &self,
-+            dst: &mut SBufferIter<core::array::IntoIter<&mut [u8], 2>>,
-+        ) -> Result {
-+            dst.write_all(self.data.as_slice())
-+        }
-+    }
-+
-+    const MAX_CMD_SIZE: usize = SplitState::<TestPayload>::MAX_CMD_SIZE;
-+
-+    fn read_payload(cmd: &impl CommandToGsp) -> Result<KVVec<u8>> {
-+        let len = cmd.variable_payload_len();
-+        let mut buf = KVVec::from_elem(0u8, len, GFP_KERNEL)?;
-+        let mut sbuf = SBufferIter::new_writer([buf.as_mut_slice(), &mut []]);
-+        cmd.init_variable_payload(&mut sbuf)?;
-+        drop(sbuf);
-+        Ok(buf)
-+    }
-+
-+    struct SplitTest {
-+        payload_size: usize,
-+        num_continuations: usize,
-+    }
-+
-+    fn check_split(t: SplitTest) -> Result {
-+        let payload = TestPayload::new(t.payload_size)?;
-+        let mut state = SplitState::new(&payload)?;
-+
-+        let mut buf = read_payload(&state.command(payload))?;
-+        assert!(buf.len() <= MAX_CMD_SIZE);
-+
-+        let mut num_continuations = 0;
-+        while let Some(cont) = state.next_continuation_record() {
-+            let payload = read_payload(&cont)?;
-+            assert!(payload.len() <= MAX_CMD_SIZE);
-+            buf.extend_from_slice(&payload, GFP_KERNEL)?;
-+            num_continuations += 1;
-+        }
-+
-+        assert_eq!(num_continuations, t.num_continuations);
-+        assert_eq!(
-+            buf.as_slice(),
-+            TestPayload::generate_pattern(t.payload_size)?.as_slice()
-+        );
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn split_command() -> Result {
-+        check_split(SplitTest {
-+            payload_size: 0,
-+            num_continuations: 0,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_CMD_SIZE,
-+            num_continuations: 0,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_CMD_SIZE + 1,
-+            num_continuations: 1,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_CMD_SIZE * 2,
-+            num_continuations: 1,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_CMD_SIZE * 2 + 1,
-+            num_continuations: 2,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_CMD_SIZE * 3 + MAX_CMD_SIZE / 2,
-+            num_continuations: 3,
-+        })?;
-+        Ok(())
-+    }
-+}
+I was slightly surprised about the `set_` to `with_` change. But 
+thinking about it I think it heavily depends on the point of view:
 
--- 
-2.53.0
+If you look at it from a physical register point of view I'm used to 
+"set" a register / bit. So looking from physical register point of view 
+I find using `set_` natural.
+
+On the other hand, if we look at the Rust "syntax" you create here like
+
+foo.with_a(4).with_b(9).write(io);
+
+we write to register foo with bits a being 4 and bits b being 9. So we 
+are doing a write *with* some bits set. From this point of view `with_` 
+fits as well.
+
+I think you mentioned that this is discussable. And I think it heavily 
+depends on the point of view you take. So I'm fine either.
+
+Thanks
+
+Dirk
 
