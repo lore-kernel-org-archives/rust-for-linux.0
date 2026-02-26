@@ -1,63 +1,63 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EF836682C
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 12:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FFB311960
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 12:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772107808; cv=none; b=k6eQwRyK02UTU4GJ2kO5DKrhq+Xz+cFkpf29GvA87JOM02TDaCuJnOZ5z5B4FMXenCnhq0WyqOU8q2t4XmwCN9zje6c5AsXpq38i3u85uCwKz6x4qaEz5VlKHVqA/qEMneG8KUaskxvtM2LOgVcGr7jgcmbbUrtP++vWBmsZ/i0=
+	t=1772107813; cv=none; b=c/j8LdmcrXO+koRYiMNH7rd38p0tn0dEWpm8TWWYQGRJfiMramU3FcyfydKqiTYfv26uiqQ2oRLDlQrvfle1MHQqA+pUXVqtoVet2FK5btvtlicprnMaPwSS/XXr79uJ3PdAPz6o/iVPPYeBDD63VmSIGopr0X3V5yDawzaaTqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772107808; c=relaxed/simple;
-	bh=x76RNCXfgdAuGc9fiHqWSqvUA0USXkosjZxUYRc0fFc=;
+	s=arc-20240116; t=1772107813; c=relaxed/simple;
+	bh=QQTBf/EQqtb5sGEPuiIIC9TQ2GBjaXEAqjeS0rNpq74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmrQVNiNPpAWXLzxtWVEhhbHJa7q4GH4ydBz3ZyXDZlajMVAeCArIgbv5nQDbkqp/QWIhTmu17XM8iKJKtnm9NkhcOf4WQA6HbwbCI4xVYFTd5Je+sYf7X3uXNvi86jtiA+JbhFMr9snro+Smbfv5i7kSF4jSs7NJVcJvsgGTIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OdRaYH8X; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=UYFilwk2kmkleYnlRuILDKfgAazqI5iZv0ouzCBwHU2Hvn/kWy3AZHZeZysabNXLRXLeKejWFsPJ15THM0J6uw0zmkWycj3NIjpduAnso5E1nMRj+1cFKT0mtaX6Zsk1KyTTsfD3qMeCdEZ6v2I2zoe1J/6sGZPrvnCaMiu4Cqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CR8Kv042; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OdRaYH8X"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a9296b3926so6022445ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 04:10:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CR8Kv042"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c6e23cb81f4so294984a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Feb 2026 04:10:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772107806; x=1772712606; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772107811; x=1772712611; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2xSHdR1w9bpnJdPF+3g2I3/9gadQVBqo+N9ka111Les=;
-        b=OdRaYH8XRfNYwsoaK/dzATibXDxiNRg3VpUsu5Ys4Njl3axYCqz+vGlfcia2YVaf9J
-         G+mVLsfXdXnteRTuqQtNb0trnU/7u8X3V6+MAEDGkD1Pry5R507rwSlB1JuA5C8wSy9C
-         5CDYevCVHy90SC722buUGZ8a2CxKApBuAXbuENczSyox42+jaSABntq8imWRhpjwobTP
-         HUVM3nV85nxTZGnrDZbzy+Geg+yJAR0Ufv99LIjazk22xxflwBdaxOdQ6gyBkv9/Fefr
-         Rj5BmxuegMZMclDuUJQlqkybIJPeaD7Op8JfvC0DR0FG2PCzgoA16R69l7qp6vjewPzL
-         NRWA==
+        bh=XXBi7ACXXienF+kiY4q7BvWmKQquNZrtWMv4+/ApcHI=;
+        b=CR8Kv042wmX4RyTonkYd1ITqgtuIDmwr+b8+9iFxd7ILaJVxhVy3QOKlxuLFtEY2Xz
+         ijyvasu9jeTv1og+s4QvyzEHXq/ETy83n9hCK8gpJFPkRB/niNGCvMhJRKBE3vE2YRGC
+         /x0iX/+KAK7TlBw92ixcuyXIk3/dR2oaTM9J9oqj7OrrLEYqYXiT6E00QZtp0DD0+teB
+         jJExPk7I088AXSQBje+f3qRI5fACmdU1IpqYGXgvLFSZ8szNJj+ycp4icLfJXKsxQR5Q
+         CrYKHpgWyHWbo1sLjsENG/zwj+JM2eGya1YW1UWNoGw8oIfYfWIaS3VUha94YKmmJs9O
+         dNoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772107806; x=1772712606;
+        d=1e100.net; s=20230601; t=1772107811; x=1772712611;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=2xSHdR1w9bpnJdPF+3g2I3/9gadQVBqo+N9ka111Les=;
-        b=PuHvBxMb6nAbL1rnRwXN7xo7xAn8Q1HB2iTBIdBpuHxqzpO92LpQkZL/9OlODKAtN3
-         DB9x5GeEEqi9TJ5kCOXkyhWOMH5IUj1yOM2Gx4K7rchXpkOQi2KsNk0hKU/I6yxw1bIf
-         nv2h+vemoWGjSS24aoEWHO1AK2UyZwxgq0878VEqcyXbO/BHMxsXxy6vofWIpYV8lDOd
-         Hpb/Jqv+k3FirPFAJkZUlHF+tdPjEI5hd/60B3BtZWWzoK4B9erXZIiMAD5B2qq0s3Xi
-         F/LLmMx93zxNrG9bHgTUjaFQTM7rvqC3pOnF2V4wSv7Jm+OihnX59gGu425WoQ+rLYwP
-         Yc1g==
-X-Forwarded-Encrypted: i=1; AJvYcCU/JrehbkOKMnxh3HifzAqIfoyi+xkGuBAmcWYLrEuSAi50qeJCTw6AzuUqLqyo8FOMsz2VhY0U0cRjDzcqDg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNEfPb2dg1qNRgNIa7tAfdUB/9x0vsHQIt9f1Bsl8ncPjJjm2z
-	FDBASSKkFBh8WA5l36AwjNuGeUjrp8/YQO/VnNbl8H4QmEO+zW6Tl+bN
-X-Gm-Gg: ATEYQzy1RCPUFpFniER315sG4G+wMYS8qP6tTHoNHeTCVWCsMvStPHOz0yqDP526OnQ
-	7Y8eaw2ZU29VnJ3ZEhW45gofEUi4v4N1hIDyw4o+FFI4/piuqsIMtDSa8Ob8gy2n4M0fEzs56mg
-	sVHnwfWHe930rFQxhuWfDbHfx503DtKV6Bavv+bArhoDWZYQ6KqnMQsxNyJDN43R8LsgL1raspl
-	0XS5S6idRoGdMTDMNZWwO1hRlxdpBdAhMGy5x11oWVQsnKFyzYovxpUhKXLEwaiKHRPArvmMxdb
-	OSJFQoZ/yn7t2kW9aZSxVhC4P67cu/mqqKBc2ikSGf40PhdjB3qcHTsV9Hb7euWLzegm4Y+fWLU
-	5QutAr5e9LutGHmIERvIQk9XVFF1R6qoBy+6zDcV7ZfIchyxBwofRFakW8g18bEY6iSjNk3rclt
-	0oU87+0wY8lL4GcjRHza6isdXfzytZCUhqbjA=
-X-Received: by 2002:a17:902:e5c4:b0:2ad:d59c:bed1 with SMTP id d9443c01a7336-2ae034c04d9mr27210895ad.29.1772107806443;
-        Thu, 26 Feb 2026 04:10:06 -0800 (PST)
+        bh=XXBi7ACXXienF+kiY4q7BvWmKQquNZrtWMv4+/ApcHI=;
+        b=Gl15EkeHzpqX67G5TE5BUkCPEE3dgmvLDIbqee87fVJyBirCak+r+MT6dKPwFbTsCC
+         3Qh/rc2ftrA7kyvKutgN+a5fp5edAbQnNbrZC6Gtqxdq4xuxl2bH0q8ja5YGqx9FdM0v
+         ulvB3rwgcRh4qJtwNZzde5J6uymHQpH3uHTmIM9datsFaLseNg+idesCkZhxFDRtVdM6
+         Ltv6dVCSqpz15xKqKvaeO1ozl1Kls2dMyVi2GzDO7zJPUicKvFa+NezL7c4jyeknMuPE
+         YRMIRUV8LhF04Erj2n68I3Z6YLG1Huum547c3nwk6pJXj73KbJ3nUKKY0AEi2oOB2hIx
+         yGZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUc116Yqa8wa8RUwdsPvhi8kcWLYWJ2zLdb0rFbsDpcylYrAzWL42UDqmJHsWvFl95zHs2c1tuVDHR5IbjbzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt1iJKC5B56EkzWvBdk+zYHXRS15jNb+boL+VOosFloJ328EiI
+	OLEsOQmNNVxNiSJAZJ0ufUrzipZXbaIbXREX1qctKOBNvVHIIS321L23
+X-Gm-Gg: ATEYQzzjxtzb4zJSqBbZ6XQtFkvyvfeYxNUXxjdDuVO+pp5SSwtwGTobfIqx/e3qB3T
+	7bDyakPv976KX6hs59CoYcDomIGkarqFekIaZ/4gbS4qQUwRjX8zjk4maxS/PKZTp7bjPuYPCsj
+	sHFpCkZIIvwyyF8B+ZN/eoCRPX7n0W3Z1rgsPf2MfvhiaGs/NHIci9xXTAVqvdzId6YAWbNW9DN
+	gF4rOn7cVkmgSlm9OD+qcmVrpALM6lkfX2SQ89+5/qq7tZL94p6Kz52j8QdXSu0EjJx8nQvUiRf
+	VoQBdq77ZG/zCbSx+Ljrf0cwvT9mH/qEUXKpRTErYKYkrZgfLVIj4RZqVBog/th1euDds+9lO1K
+	gL6sF6b4daZfbvfUYwJuGCYh6ce4K81LRuCEezdG1hRUSIoFXVeATP1G50ZnhvJvT7bIUEDFkJN
+	JRTsRdzzvMJBUlCMe3GstG5YMz
+X-Received: by 2002:a05:6a21:4002:b0:363:e4d7:2c34 with SMTP id adf61e73a8af0-39545faba5emr17013134637.57.1772107811563;
+        Thu, 26 Feb 2026 04:10:11 -0800 (PST)
 Received: from archlinux ([103.208.68.105])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6cd476sm24199525ad.75.2026.02.26.04.10.01
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6cd476sm24199525ad.75.2026.02.26.04.10.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 04:10:06 -0800 (PST)
+        Thu, 26 Feb 2026 04:10:11 -0800 (PST)
 From: Adarsh Das <adarshdas950@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Boqun Feng <boqun@kernel.org>,
@@ -70,9 +70,9 @@ Cc: Boqun Feng <boqun@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>,
 	rust-for-linux@vger.kernel.org,
 	Adarsh Das <adarshdas950@gmail.com>
-Subject: [PATCH 2/4] rust: module_params: use `pr_warn_once!` instead of `pr_warn!`
-Date: Thu, 26 Feb 2026 17:38:46 +0530
-Message-ID: <20260226120848.82891-3-adarshdas950@gmail.com>
+Subject: [PATCH 3/4] rust: mm: add `pr_warn_once!` for invalid range in `zap_page_range_single`
+Date: Thu, 26 Feb 2026 17:38:47 +0530
+Message-ID: <20260226120848.82891-4-adarshdas950@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260226120848.82891-1-adarshdas950@gmail.com>
 References: <20260226120848.82891-1-adarshdas950@gmail.com>
@@ -84,27 +84,25 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace the temporary `pr_warn!` call with `pr_warn_once!` and remove
-the TODO comment.
+Add a warning for the invalid range case and remove the TODO comment.
 
 Signed-off-by: Adarsh Das <adarshdas950@gmail.com>
 ---
- rust/kernel/module_param.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ rust/kernel/mm/virt.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
-index 6a8a7a875643..dd6d663a0a3c 100644
---- a/rust/kernel/module_param.rs
-+++ b/rust/kernel/module_param.rs
-@@ -62,8 +62,7 @@ pub trait ModuleParam: Sized + Copy {
-     // NOTE: If we start supporting arguments without values, val _is_ allowed
-     // to be null here.
-     if val.is_null() {
--        // TODO: Use pr_warn_once available.
--        crate::pr_warn!("Null pointer passed to `module_param::set_param`");
-+        crate::pr_warn_once!("Null pointer passed to `module_param::set_param`");
-         return EINVAL.to_errno();
-     }
+diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+index da21d65ccd20..f608262a4ff8 100644
+--- a/rust/kernel/mm/virt.rs
++++ b/rust/kernel/mm/virt.rs
+@@ -116,7 +116,7 @@ pub fn end(&self) -> usize {
+     pub fn zap_page_range_single(&self, address: usize, size: usize) {
+         let (end, did_overflow) = address.overflowing_add(size);
+         if did_overflow || address < self.start() || self.end() < end {
+-            // TODO: call WARN_ONCE once Rust version of it is added
++            crate::pr_warn_once!("VMA contains invalid range\n");
+             return;
+         }
  
 -- 
 2.53.0
