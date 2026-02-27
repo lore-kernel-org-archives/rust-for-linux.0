@@ -1,51 +1,52 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021129.outbound.protection.outlook.com [52.101.100.129])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020136.outbound.protection.outlook.com [52.101.195.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F0B3644D1;
-	Fri, 27 Feb 2026 18:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C37365A03;
+	Fri, 27 Feb 2026 18:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.136
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772215374; cv=fail; b=j4NU0Ut6jRWh2JdJg4VgdqSMr4iIeVKvPzkL0jBuYXsCISPbBxanGPK3hgZSI6MGD6rD8Q6V/LGiN02m3ZEiZEmPLyrt2ImAu4nmieAWKMddk0cnu6LWk6lCcUsNia6ErHJgyi/f77fZ5Lio26hczsLMVg2llwIJWi2FQ6xF8r8=
+	t=1772215478; cv=fail; b=nQXDbUt1jXtQ9/9n/9wSDAPgERTVAk1xhAqpZq7r8Mo+xhsCo7YnU1lUnSKqIQImfCzET0taTyePHdhF2piY8y9L9gTB2d/HWyPHv78JiLsKlvxIb7Nok2T2KH748nL+HnI4k5MIFpt6J8vGOFpTwYj7zZ2B/nZRYgIVRNjugAA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772215374; c=relaxed/simple;
-	bh=sdnhk31drsELTrWaO2xYmv49VwA+HPZRKythwUPGJqw=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=Aulzi5a1VCa/Cw9ag+3rPOTI8o5EWkQnkROSYsku0A1okPHk943lwvxlpwU5XKpSL2I4f44ixMKvBErP+XhxUAXXMRsqTQUGiKWP/vn5RFRkz9zcChttQjFMMiaxaxb5Eh/YKv8fwr6yOdVF5NcYxTLv+DYTKeibNYWOZHdZo9k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=bsc5F34c; arc=fail smtp.client-ip=52.101.100.129
+	s=arc-20240116; t=1772215478; c=relaxed/simple;
+	bh=2l6n3gkdszQItWBilGcnz96++L5jUNpNjp7k3NeP2WM=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=qbPuUEthVVxHeUnVu7ADkWrTtHjwls9QKbyd0ZEzb/3eW/Iv492kf+iMthFvt/pzLpywlHRdyAzfnSTGkIQmiP6S10kj9gzeqZ3Ddasi2Al21wCZtEiYQBYtlxg+ja8yfxiLMxNDNuZCGNf5olhZd264/2cAQYQU6hlxeEZQ4C8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=qn3OzuKJ; arc=fail smtp.client-ip=52.101.195.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="bsc5F34c"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="qn3OzuKJ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h4mRrYyAwGaS211sS1DlVzzJkz475+SpyWlCpJClbI3ezESrwKpbTybtKIh1juS2KALUkbvdu30jUAr4+80IaSu8bI2dP9bhiREVgPRTTLEYYvdprvXEw9kMXvMQSuUogoz6MQH3FUR78+46VOEqf3Jc/br5DCbZea6M4oTT19rBZaSBuGG/0uuIfrAxFFS9M+4RU8GuLN+2Sx19V0IY2Lp6zF3uiC9dKd7WtDqvhk8Cysm6P4iAlfOCNECzRjFZ9sw0h/CcWrO1x6fYis7Fy1xwrIxW/z2bKwkC22R1naCb0fsIP1vQzPW0Ev7nqAxZNX3njVkThrZEwVdHAOVjow==
+ b=rGEhxkz3mb4REnx2HGIU168GT1zZ3+H8L1LfTh5i9u+u3uxdnmFIwSzlLqrwKfkVp7TSwm6nQ9pVNkZrXRZzlNErLNIlU7tbIdZncu1HjsiR9P3XjkKOtAV3Wh+2ik/mZK57phxlse0EDbqq+7aIULc/mSTikZ4EmKq62US10Xsf115ZbJNThipb28sc0klSz2NbEN5UjVSSg67JgYAbkBhJXrc7n4lBH6Jzq+ToxjlqFZVa8p94z6qPymiJyupBMTzmzOYNM3K/ZcvGiAeKRIAf7TtYIEhAFFK1EWl67lVDCkWFWfZVtSMcdBa/omw7LTflX86PYxfklpYqpPZwZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QuYxV29miTTSLTTZMFS/UWUr5Hd8dgg1nrYMxy9qi88=;
- b=S2/jFwShTVwWzR+4zvUTw+OxUTsMZj+5cXcxD3Ercd/DBkr0VXHtVW5zG1U+XdYywyMMovLPimkE34vq8dyE29wg5MrUDEkpan/tjkxbxFwSGhbX7GeJRJGXJUQ5yu5ErYoXQDhTy991KBwx1Jxgy1R5gW/K3b96yPPfUGyPpmAa6R2jJukBuStyQQlJLsIItTSJFG1ymPkriJQLnDZXIaB64alZw9IjqNE3dJ1Jnk9p/xUFiv6tjcNSgkruiCQXcYQXv7gC5yCvOnCVYMd24LwJwcXEdpSwagbKSL3GBGS41oMAPMimaK0KdpcxLzI6FwQaurXhP8a/YdNKht4aUQ==
+ bh=zSmMsmDYV/nKeVDA3yGg0IgjrmJp7ka+E5NeO7ERyCI=;
+ b=E7FaWdBX6g0cY72O0llmL80TQDQesYIcJMmmt/Mmqn5PNfVM+mIN0n/n7giPzovQrw3SRiOS47FshNTkSAGcFgdNIHbYwQXH1qgMLZ95PergIycivMzUEkDoaEyHTfTBiZENFs84CYUgMd23aFNf+GeCLTHkIpUbu2omG7Q5vXp2FB0Pfh+L6YdwgOhyFJDWnJwYZjLc9ugSBRlAh76hKQ8Inx1gF45eBni0sJoR0lOrsWur6LIa0pSCLsWHMfzd/MWmNJPrm981zp8LFbmgMFX4uNYk8f1K3q1RWmWMO4VYKKsZECc/H32EqugW9Ej6BffRNLgqLHeYmtoLOGtx5A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QuYxV29miTTSLTTZMFS/UWUr5Hd8dgg1nrYMxy9qi88=;
- b=bsc5F34cKS/LA2MZYe4ZOAv4asPAluqieypxjccSHRyg4X7QC+3ahK2M4eGKd4pDdl/w9xzz4Ns9wRBUWID/TtSXCoWQDK3Ab9Ak5e3LyL48MQMQcrw6GIPdlJ8gBrCzUkRpRW/jwEvpPoS5dqLF+bxGTmT+yS+UPFUQ7irHuKE=
+ bh=zSmMsmDYV/nKeVDA3yGg0IgjrmJp7ka+E5NeO7ERyCI=;
+ b=qn3OzuKJktS9zCmEUP5sZg4PLpxba6UtzbGHCEYDp6v911aHCD4sX9XjNBc1BB/n3nc+Bwxo9MR3RQW/WcC440HOyoM9slXNA5+g+H+L1S+JFXW4xL0EAk1uBRW/qf6RC6nxbZ7nw3Zk9NjJzgmFs8YOWm2kg4NK2DWwmrZX6nE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO6P265MB6094.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2a9::7) with
+ by LO0P265MB5682.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1ff::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.15; Fri, 27 Feb
- 2026 18:02:49 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Fri, 27 Feb
+ 2026 18:04:32 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.015; Fri, 27 Feb 2026
- 18:02:48 +0000
+ 18:04:32 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Feb 2026 18:02:47 +0000
-Message-Id: <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
+Date: Fri, 27 Feb 2026 18:04:32 +0000
+Message-Id: <DGPXYCH36Q2F.W08WT11UFKMM@garyguo.net>
+From: "Gary Guo" <gary@garyguo.net>
 To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
  <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
  <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
@@ -59,14 +60,14 @@ Cc: "Yury Norov" <yury.norov@gmail.com>, "John Hubbard"
  Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Dirk
  Behme" <dirk.behme@de.bosch.com>, "Steven Price" <steven.price@arm.com>,
  <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
-From: "Gary Guo" <gary@garyguo.net>
+Subject: Re: [PATCH v7 06/10] rust: io: use generic read/write accessors for
+ primitive accesses
 X-Mailer: aerc 0.21.0
 References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
- <20260224-register-v7-5-aad44f760f33@nvidia.com>
-In-Reply-To: <20260224-register-v7-5-aad44f760f33@nvidia.com>
-X-ClientProxiedBy: LO4P265CA0171.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:312::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ <20260224-register-v7-6-aad44f760f33@nvidia.com>
+In-Reply-To: <20260224-register-v7-6-aad44f760f33@nvidia.com>
+X-ClientProxiedBy: LO4P265CA0218.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:33a::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -75,415 +76,335 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6094:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4efd993e-2b54-43b5-3311-08de762a6ade
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB5682:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad6596b0-36a5-4d08-1f0d-08de762aa8d1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|376014|7416014|921020|7053199007;
+	BCL:0;ARA:13230040|10070799003|366016|376014|7416014|1800799024|921020|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	I6Dv4LCJj6ShXe3dCTmO40EGx3utD+icl9p96RnbzrYpVybcG9Gh/kXM7kqIFhzE312PuDqut9sCGMZHBKo9Pia8wTeFg1biM3sOjhLR1NR+tPlGhyVaLn11JeuNMLWftNgR8bX0BnPz7Q8+DUzMIWE/9epoVBReGahE3JAw38bs55raSbLQIDmHei7Oi8gpTNqh6kReMKogAro95MWVQwW5WCTa+W0mbiZvDt5i/+OwCqlXUKCN/MdfnhwV1QWmj+RNsuldxMTagAXamaSDkUzdz1pl0W4z/2s87ChnOzwLBT1p3b+g9hq0opGkAyHGpcbfBEErw+2n4mavqBflN9V9rZWv4o5tws7uEQZGicSPF0zZEJT4cuwzQ/jNWu7DzA62+wb7NC3eaOYTHlRrJna+q0xxb6WvoICYFSkC9Pmu8qeuoS3js7eIZwGI93O9kjRlUYGnwxe0CGA5ON79LlUoLojKD51tW2b27GGcDxhocRFx9r+AELgpq/lKKxy0GyrECmksiiF2cxQ0HC6p30ioHQKzGhZOW13SE8QCQDa1xON3TCzL70H5xNr8cSttBSO95Ds+Vak0K+nzRMVBk8fDxcJzBhK+faIFf85wEKpawflThfmBy3opUjUUUGwumgba/v6pTeMeUyYnrq8SEhmrU0xXWrViP86GJa8RKkeRHBR6YoqPRsDygZ3Qht0QJ1vOknBervyEYz4KWVeJVaEATfqxaAUnzcelGXfUKFclSh6eKnRmsuK6mvh1dKxHoorYNO2v2lvjEkI1oaWLPw==
+	DOOxZAWAF96gWG8aS+U/cfi3T1hnEtaQZu6FosmNHyi1A/MZ0APKV178XKKWZmIFtwa9a9EG1Cs11A68F1cv2o9HAUW6Ws27CHd9kF4MQX3Za/m0hzhM5uocEOm3bzWl27La3RDUM5VzYpvH+Dy3IM/+z1gAp2yUBkSy43MlN14mD2lCe8aNf8gx1uPF9ezI28iU8JFUMeI75PBtkq9Cs+WEczUzsU3TqPCEG4ka7kcaNx8mMvZ4J5BZIm8LCvRvnPihTifLebJeEKJaz2irePd+evJZeCoNg1VveiHOBmL+rPBH8i06pKcu8+PcFJWMHvRp/dxxM1RCxTKi0Q0UwkXOZQywzsszKxktL2Ya04UDb2BwaU1fwjQEzPe8s4qLJi8a7M6AAXNLRbiG6LB70I/Pz9tdtxlw8OzlgKs//NJS62IFjBq8YXiwzEcFbUXDS6W1MgJHgw3QIt18d9nRLUcaIQMYi52rRyfNgYs6SdHHba8MFPgLh7EVRH0V2F5C956bxAaTmqC5O/LHAH4HABOcBnrQG0lS0cS83mheZtCyu6VCsXTb6gtde82cMqnNKlHGjmjPlISc8yhYSiv3hQUt6A6ofAtPRIBJLQSeIkH0VBhl9PbiNOrv1B4Qy7iVdFKANK1O+DEnEXnj39ktP96x08b7bOQfZq3ka/09/frm/3A666yXcZvyMuQ4NDOTswlJ6j1H2WJ8i5/RQq98jCbvAngaJ4pWsBVEhX5Xe0lvAs23XWMO0iV9QsCf9G9qGstPhSYOY77G9drqyt2OCw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(376014)(7416014)(921020)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(7416014)(1800799024)(921020)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cGRSVWtZOVBCanZsQ1ArU1UrWDRvcW5EMGYxTEJiWDFpdG5adjQ2bUVsTlM3?=
- =?utf-8?B?YzEvWHZxbkRTbXBGd2FQWWVXL3pDdFFtVUJEL1lYRmNYSHZMam1UWFdBRHVk?=
- =?utf-8?B?U1ZpNGtQYjhMVDhrWkRUNzJpNk9jV3JKdTVJM2FFSHBEeXM0TW00dUxkWW5n?=
- =?utf-8?B?UjU1K3FBaDVsNXlUeTBKL3kyYi9vTzU3Qk1XSkhLV2JuMGxUc3ZNTVdOTHls?=
- =?utf-8?B?OUZnejAxVkduVzhiTHdzWVJlVDhIMVBlL1BNbkQxeFZlNXFDZUVabUtmSGQ1?=
- =?utf-8?B?N2I1R0hQbnV0WkpaZndXT2p0ZE5sUWFJYUVwVjZpclEwNmk2bklleUFlUzAy?=
- =?utf-8?B?aFlzQnhpcW9nQkc2NTZWa1hKbjVWUjNxT3djRmM2ZFBaUGdyMVNuWGloaldh?=
- =?utf-8?B?K2NvQXJDSFdDRzFrWDZLN1czcHUzaG1adWVFY1JXdE00R2VGZ3lMTCtUUWJK?=
- =?utf-8?B?Uy93dTJYY3FzaC93Zk53b2dxQ1Y3SlY0WnRKb2Q3RU9Wc3oxdWFLOElEaFZk?=
- =?utf-8?B?eC9SQ1FzQTlLaW5LWjNUWWd6ZHIxdnJIeG1MQWtIZCt2T1ZEL2gwdEVDRGtw?=
- =?utf-8?B?Q3V5bVdWZTZ1dEpBR01ETGI5Q1Q3TjZlL0dPQVZJam1NWTAyQnZad3VRY2Fs?=
- =?utf-8?B?RlVUbzQyNmJ0OTNTaGtRYlIwd3MvOWlJT1VOOVJJZTRZR0hKaW5xS0NQbERD?=
- =?utf-8?B?ck5ZZXEwcFNUT1ZKOGZaQmJLcjhOWk13MkU0MTNxRnNnUVdJZ2NMbGRTTjNF?=
- =?utf-8?B?ZW9WTHk5Mlg5SmRFWEVJcngyZ0MzTTdzTWtIa0EveEZ1c0hBOWlGdTU1VlRP?=
- =?utf-8?B?b25lZ1o3dExTSnFmREYxTStzNTlpdVZKQzlERDZYbVJRN1o0cXRSWndGRllD?=
- =?utf-8?B?SjlPQ291aWFJM1RkL0VsSDJpaEN5dzZxQXp4MFlqd2l6eGwwY2hpejVPNGtY?=
- =?utf-8?B?VGdMNVh2eGhwaWMzWUVNeFVncms0NW1yb2xzbTQ3TzdBZ0pjODdGaGJueHVP?=
- =?utf-8?B?Ymd3ZlFKN2lmbEY2bHlvczYzcXd1VEJHMUd6Q0plY3E0V0F6QTdwQ2xUVWhr?=
- =?utf-8?B?Zk1lMEVMbWxMdGRlZWRvWjlTWjFRMFNtQlpVTkNwSERJWXRFejRZY29BSjdB?=
- =?utf-8?B?K0syK2FmU2REdW1xTWsraThWWmV1amFNaWdOR2luUzlqRHp2T2RIbWNkbzF0?=
- =?utf-8?B?Z3lTV1dMYTdWcFowQmVDc25DMG9EanpTL3VqY1lqU0pJV1dSSmFTbE8vWjlr?=
- =?utf-8?B?M3MvZFhlVDZ3d3JKMnR5VkNsQjRPUFVVUHJ2QjJoTUR0UDdRcGRqejltcWdK?=
- =?utf-8?B?RDB1bThjajJsNE1Xd1dxZWEwNnduNVRCWGFlMm5aanNmcnZQNHIwK2ViUkdP?=
- =?utf-8?B?RlgwZEpSYmNJWStvd1REOHZBUUNTNkhCZ3dVcG52VmdwbDBYQXkrRkRmcTU4?=
- =?utf-8?B?SjhUOVBHanI0eVdtdzNDMVU0YzhZNW9YY0F4Q3NjVjZvSzBZczBCUXdYdkVj?=
- =?utf-8?B?NW8vbWNBa0JLalpydkZnOEwrT0pVU09QSHczVE9lRjVML3gvMW12UlFOZUV5?=
- =?utf-8?B?WW1SWmQxdlZBV2JXc2ROOXNnRUx0aUhJdmJjRW45VjV4TlNLekhQTVNDYmdu?=
- =?utf-8?B?OGYzTXJtZmcxTysrY2c3dCtmVFpHS0hNOXRjUXpSVWpNdERtbUxEOWczUU1Q?=
- =?utf-8?B?bWJsM29mS3ZtQlhHcENZTEp2WmljenJsZFc3NW5PZEFsNm82Rjk0K1E1V1c2?=
- =?utf-8?B?OVJrVkRTTyt3ckFYZlZSeHVPTjMrazVualJTSnd2QktkK1FsbTF3RnZ0bnQv?=
- =?utf-8?B?UWgrRytoWnRTWVQ3Y2VETEZZVUJiQ1RjWWlCQTFBY09ua0VyeVAwY0s2ZEh4?=
- =?utf-8?B?R1BHZzBkOXluR2pUaHBIb0k2eklWS0tQRVVmNkM0TmJCZUhjNnlESDJjWDNn?=
- =?utf-8?B?NG5JUFN5S3ozc2xxYnBBM0pRelUvc0ZrVlRJSXA3cURzeE9TNU9TeVkvenVj?=
- =?utf-8?B?aHl4NFh2OFg1R2ZDZGlJNDZrdEhIaU94ZkRvYU9qSG9QVno1RHhMYytLVkts?=
- =?utf-8?B?SUR2STFWMDRDSGkrVUlrY1ZPMzZWRzV3elBsZE95bGtMY2c3SFJVY3FIZG5y?=
- =?utf-8?B?QWFiMUtmb1dJV0tGSXpzd3JPU1JTQVFacVcxSlFwWkpVaWdEenlGRDhlQUxo?=
- =?utf-8?B?U1MyZnROaFVJY0hrNDg4WVplTkRHNE44YUNDbUMyeGF5cmgxdkI5emNLK2ZK?=
- =?utf-8?B?c3FOTU0xaUtCbVZoV2dUU1dMUVNvNzdGVjdPYTlxYjZOVmloOWNpMXA0US9m?=
- =?utf-8?B?MVZ6N2Y1c0JvMms5bmJIZzd6a3NTOTAyWDdOZ1JIdUJHMVJwYnRwUT09?=
+	=?utf-8?B?MG8zcFlPall5VVo1Y2VmbGx3eVExR0J6VWpVL2FwQ3Rqb2FKV2RxQVdtNTh1?=
+ =?utf-8?B?Vk1JRGE2bmloMytsM2psRDh6WmZBNTN0K1J0bUJ6M1NGSElBdzZ3dWppT2FD?=
+ =?utf-8?B?MlJYS2k2c1RHdnNGZEQzcGpmS1B6b0d0YTRuZWhkL0NnMW1vVStoY0l2SGIy?=
+ =?utf-8?B?V0twbUZxc0h0ZlgxRWo5SGJpd2NQdUVrcWJWWDUrT0wzQWRFZ2kwWXFydldZ?=
+ =?utf-8?B?YWJTaW9VRkxJOVhsaTY2QU10OFZwSngyZ29oNlRGb2Vqc2E2djJpZ2FGc2p0?=
+ =?utf-8?B?WTcxNEpFM0hZNXJISkxCTW9IQVBnbjhoMDI3TEFQUXJ1MitTb1diM0xqcFdE?=
+ =?utf-8?B?Y2xGMGtnQXZFekppcU1wc3FvbTc1dVVVYmlGcHZWSmgwdTEzSzlKTDkxTUZ1?=
+ =?utf-8?B?bEIxWTVTNUxzS3dhWGNLNnNVZWxhVFEyVzEzb0NZdkpMMHBkTjdudkdEd0VO?=
+ =?utf-8?B?WCt4cVVLWnhwalhIejY5WklFRGlmNm0wSjloSlAramg2YUs1R1BQUk53K0ts?=
+ =?utf-8?B?aW0wSU1VczFYT3lwTk9tWmhTVEpvNTRnQlFHNWxrSHdvNDFXMHFkdlNiVzEr?=
+ =?utf-8?B?RlVwTldlQ3pIeWpXQUhaRU5ESVBDbEY5TlNtb3ZSekdQbm4vUXQ0SVN3bnNa?=
+ =?utf-8?B?bWpSejYydmNHNW1NNVJtUzBNaHR2V29hMEdtM0xWREg4ckJaT2Y3aFNJd0VN?=
+ =?utf-8?B?dFp6RnY0REJwYTdIUTIyREtBRS82SXcwS1RIaElEM1I1OWRKRWJ3aklPR09W?=
+ =?utf-8?B?Vmw0alcvdUVDcW94VlZwVEdSQ2NQMUJNU3FzbE9sSnJQMlI5NUljNG5BcG9O?=
+ =?utf-8?B?bWd2N0hUTTBlRmFtZVVMZ2hRZHE3R2xOOEVzNjduN0NDTTdZVnlFaktFcXox?=
+ =?utf-8?B?RmFYcytqeCtzNnBBVjF4TGJVSldySzl2RHB2SUcxNXovcFd3T3Zjb1ZTS3NX?=
+ =?utf-8?B?UGdJQTQvNzZHd3gzMGJKSFVTb3BBTVZ5U0EyQ1JBWTdGZmszaTN2ZitMeVUx?=
+ =?utf-8?B?TU52NW5vdC8wY3dxVGxydmUzcEg1U1c0NG8vcUZ4OE5CQ3NnMWt4M3RtMWFG?=
+ =?utf-8?B?ZTBQL0JlV2tVMit6ZG0zazVnZGRsUEwwUU9YVnphVGZ4UmFlUFE4aDRnUzBv?=
+ =?utf-8?B?QitQZUdHSDhqdGlqMFJHQWkyMmtROE9xMUtWNHhtQUE4ZkdJNXRqakU4bnBx?=
+ =?utf-8?B?enJubXFQdTF1MUpYSFpPSHFxV0hVOGxpZ1FaVUZocnNwWjlWVUNZMjZiV211?=
+ =?utf-8?B?RU1PL0t6NVJpV1dMdjlzK1hVb3ZZRmMwcm5VZWZoYnVHSVNWc3JIbHB6ZFpu?=
+ =?utf-8?B?L1VwZko2TFlQcTlqdWx5SWMwZ3ZzRzlwR01WMk5QRDRRTGlxekVFdG9Ea1hR?=
+ =?utf-8?B?NEpIUkoxUy9HVk90aVF2Q3FxSkhRREQ4c3UvWTVtMUZXSS94UmJGUkdvOHRZ?=
+ =?utf-8?B?ajBUQTRYUGlFNi9TZFlwWldFRXJWMGlPcGYyS2V4cGx5OVc1bWlSRThBUnM4?=
+ =?utf-8?B?dDVENVhpVGRyUUhMc21WbFNSdFg0V1hVQ2l2S2hwWkhyVTU1M0JpYkFhQWVH?=
+ =?utf-8?B?b2hkVmkrTlZudGsxYm9HaTJFWXdzUXVTWjdxeWE3VllqVzE0QWJkRzh6c1lU?=
+ =?utf-8?B?emE5ZmxNeCsrQW1VYXRuZzNmVEpjWmlJTFhuNmpsU1VlQURWZ3ZRWXpUb3pI?=
+ =?utf-8?B?TTd4cDh1YVdkSzB4QXZJYUwyK3RWRENqQjBiY3ROTW52SjBYdldqSUZaTHY2?=
+ =?utf-8?B?VjR4Ni9FK2w4bkNHWkRkV2g4NlVqellsWDdkZ0Z5ZEpQQ2kzRlJSQllBRVNB?=
+ =?utf-8?B?eGNhN1pxQVU0TnVDOTEzSTZaUEsyR2M3QkFSWWNPRXdOTEUxczNSKzZpSUpY?=
+ =?utf-8?B?THVHaWY2N25VWDFJWVpiSTUwOVMxZERKUkpjRTlRR2RsWTZ6S3orYkVaYk5P?=
+ =?utf-8?B?ZVdRVzd1SUg1Mmw3OWVtbTZsR2paY044aFhNdTBrTUZjZ25ibFN6dkNqVGRx?=
+ =?utf-8?B?eGtLUkdmOS9NR29UOVJaK2ZkMTdPLzJObVF0VkVqK1JOWFhKSGxsbUV4b1JO?=
+ =?utf-8?B?cmZHTjl2V2h0R3ZteldtUEhpL2dTSDFheFhGU3N5K1J6OXY5ZE9zV0trRmFl?=
+ =?utf-8?B?WTZMbWZSMFVpbEpDWkpWVy96MURpWDVIeUxvUjQrTUZPSEhhcmlLWFNMSTFl?=
+ =?utf-8?B?Uk1xZXdabGs5ZmpGOHlPT3pjTWpsc1VWakJkZEg0S1Bmb0YyeDZPRU5mU3BX?=
+ =?utf-8?B?QW5FeUcrcG5RUTIwMG9HVmhYclhOSXRLajlQU1NncVNhZEtUZ2FZdjlaL2Zt?=
+ =?utf-8?B?bkVCcm55cnJ6V2s4b2Jxek5ZZjUwYVllTW10ZEdXT1Q1OWlUODJqdz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4efd993e-2b54-43b5-3311-08de762a6ade
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad6596b0-36a5-4d08-1f0d-08de762aa8d1
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 18:02:48.8737
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 18:04:32.7419
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BSUsB/dPM7hS2IyN1epoj9suwnyXLQ8kUj2rjFxpzWCywbgpfpp3Ch4WtWNoBw+N+p1UUOVnlAh/iNrKno0T7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6094
+X-MS-Exchange-CrossTenant-UserPrincipalName: ef8Ca9MkkyzNAQXCba3uAdUEMmXn2nvONicyAK75BUgCIFtWO0MD62nQM0LEHoSYios5ECfEl1xyiskOP0e3/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5682
 
 On Tue Feb 24, 2026 at 2:21 PM GMT, Alexandre Courbot wrote:
-> I/O accesses are defined by the following properties:
+> By providing the required `IoLoc` implementations on `usize`, we can
+> leverage the generic accessors and reduce the number of unsafe blocks in
+> the module.
 >
-> - For reads, a start address, a width, and a type to interpret the read
->   value as,
-> - For writes, the same as above, and a value to write.
->
-> Introduce the `IoLoc` trait, which allows implementing types to specify
-> the address a type expects to be accessed at, as well as the width of
-> the access, and the user-facing type used to perform the access.
->
-> This allows read operations to be made generic with the `read` method
-> over an `IoLoc` argument.
->
-> Write operations need a value to write on top of the `IoLoc`: fulfill
-> that purpose with the `IoWrite` type, which is the combination of an
-> `IoLoc` and a value of the type it expects. This allows write operations
-> to be made generic with the `write` method over a single `IoWrite`
-> argument.
->
-> The main purpose of these new entities is to allow register types to be
-> written using these generic `read` and `write` methods of `Io`.
->
-> Co-developed-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  rust/kernel/io.rs | 241 ++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 241 insertions(+)
->
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index b150743ffa4f..fdd2549d8e13 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -173,6 +173,158 @@ pub trait IoCapable<T> {
->      unsafe fn io_write(&self, value: T, address: usize);
->  }
-> =20
-> +/// Describes a given I/O location: its offset, width, and return type.
-> +///
-> +/// This trait is the key abstraction allowing [`Io::read`], [`Io::write=
-`], and [`Io::update`]
-> +/// to work uniformly with both raw `usize` offsets (for primitive types=
- like `u32`) and typed
-> +/// ones.
-> +///
-> +/// An `IoLoc<T>` carries three pieces of information:
-> +///
-> +/// - The offset to access (returned by [`IoLoc::offset`]),
-> +/// - The width of the access (determined by [`IoLoc::IoType`]),
-> +/// - The type `T` in which data is returned or provided.
-> +///
-> +/// `T` and `IoType` may differ: for instance, a typed register has `T` =
-=3D the register type with
-> +/// its bitfields, and `IoType` =3D its backing primitive (e.g. `u32`), =
-with `Into` conversions
-> +/// between them.
-> +///
-> +/// An `IoLoc` can be passed directly to [`Io::read`] or [`Io::try_read`=
-] to obtain a value, or
-> +/// turned into an [`IoWrite`] via [`IoLoc::set`] to be passed to [`Io::=
-write`] or
-> +/// [`Io::try_write`].
-> +pub trait IoLoc<T>: Copy
-> +where
-> +    T: Into<Self::IoType>,
-> +    Self::IoType: Into<T>,
-> +{
-> +    /// Size (`u8`, `u16`, etc) of the I/O performed on the returned [`o=
-ffset`](IoLoc::offset).
-> +    type IoType;
-> +
-> +    /// Returns the offset of this location.
-> +    fn offset(self) -> usize;
-> +
-> +    /// Turns this location into an [`IoWrite`] with the initial `value`=
-.
-> +    fn set(self, value: T) -> IoWrite<T, Self> {
-> +        IoWrite { value, loc: self }
-> +    }
-> +
-> +    /// Turns this location into an [`IoWrite`] with the initial value `=
-0`.
-> +    fn zeroed(self) -> IoWrite<T, Self>
-> +    where
-> +        T: Zeroable,
-> +    {
-> +        self.set(pin_init::zeroed())
-> +    }
-> +
-> +    /// Turns this location into an [`IoWrite`] with the initial [`Defau=
-lt`] value of `T`.
-> +    fn default(self) -> IoWrite<T, Self>
-> +    where
-> +        T: Default,
-> +    {
-> +        self.set(Default::default())
-> +    }
-> +
-> +    /// Turns this location into an [`IoWrite`] initialized from `0` and=
- transformed by `f`.
-> +    ///
-> +    /// This is a shortcut for `self.zeroed().update(f)`.
-> +    fn init<F>(self, f: F) -> IoWrite<T, Self>
-> +    where
-> +        T: Zeroable,
-> +        F: FnOnce(T) -> T,
-> +    {
-> +        self.zeroed().update(f)
-> +    }
-> +
-> +    /// Turns this location into an [`IoWrite`] initialized from `0` and=
- transformed by `f`.
-> +    ///
-> +    /// `f` is expected to return a [`Result<T>`].
-> +    ///
-> +    /// This is a shortcut for `self.zeroed().try_update(f)`.
-> +    fn try_init<F, E>(self, f: F) -> Result<IoWrite<T, Self>, E>
-> +    where
-> +        T: Zeroable,
-> +        F: FnOnce(T) -> Result<T, E>,
-> +    {
-> +        self.zeroed().try_update(f)
-> +    }
-> +
-> +    /// Turns this location into an [`IoWrite`] initialized from [`Defau=
-lt`] and transformed
-> +    /// by `f`.
-> +    ///
-> +    /// This is a shortcut for `self.default().update(f)`.
-> +    fn init_default<F>(self, f: F) -> IoWrite<T, Self>
-> +    where
-> +        T: Default,
-> +        F: FnOnce(T) -> T,
-> +    {
-> +        self.default().update(f)
-> +    }
-> +
-> +    /// Turns this location into an [`IoWrite`] initialized from [`Defau=
-lt`] and transformed by
-> +    /// `f`.
-> +    ///
-> +    /// `f` is expected to return a [`Result<T>`].
-> +    ///
-> +    /// This is a shortcut for `self.default().try_update(f)`.
-> +    fn try_init_default<F, E>(self, f: F) -> Result<IoWrite<T, Self>, E>
-> +    where
-> +        T: Default,
-> +        F: FnOnce(T) -> Result<T, E>,
-> +    {
-> +        self.default().try_update(f)
-> +    }
-> +}
-> +
-> +/// A pending I/O write operation, bundling a value with the [`IoLoc`] i=
-t should be written to.
-> +///
-> +/// Created by [`IoLoc::set`], [`IoLoc::zeroed`], [`IoLoc::default`], [`=
-IoLoc::init`], or
-> +/// [`IoLoc::init_default`], and consumed by [`Io::write`] or [`Io::try_=
-write`] to perform the
-> +/// actual write.
-> +///
-> +/// The value can be modified before writing using [`IoWrite::update`] o=
-r [`IoWrite::try_update`],
-> +/// enabling a builder pattern:
-> +///
-> +/// ```ignore
-> +/// io.write(REGISTER.init(|v| v.with_field(x)));
-> +/// ```
 
-Thinking about this again, I think we might still want to write
+To expand my comment on patch 5, if we have
 
-    io.write(REGISTER, value)
+    io.write(loc, value)
 
-Granted, this does mean that we will write `REGISTER` twice in some cases:
+and
+   =20
+    io.try_write(loc, value)
 
-    io.write(REGISTER, REGISTER::default().with_field(foo));
+then we would naturally have
 
-But, we have no redundancy for the update case:
+    io.write::<u32>(loc, value)
 
-    io.update(REGISTER, |v| v.with_field(foo));
+becoming the generic equivalent of
 
-The reason for this thought is that conceptually, the type of a register is=
- not
-necessarily coupled with the register itself. This is the case currently fo=
-r
-register arrays, but also the case when we think in the long term where
-bitfields become decoupled from `register!`. People also might just want to
-define a register of u32 without any bitfields at all, and in this case wri=
-ting
+    io.write32(loc, value)
 
-    io.write(REGISTER, u32_value)
-
-looks nicer than
-
-    io.write(REGISTER.set(u32_value))
-
-Spelling out the "offset" explictly, arguably, is also more natural for a C
-programmer, and also simpler on the implementation side (all the helper met=
-hods
-on `IoLoc` would go away).
+for free.
 
 Best,
 Gary
 
-> +pub struct IoWrite<T, R>
-> +where
-> +    R: IoLoc<T>,
-> +    T: Into<R::IoType>,
-> +{
-> +    value: T,
-> +    loc: R,
-> +}
-> +
-> +impl<R, T> IoWrite<T, R>
-> +where
-> +    R: IoLoc<T>,
-> +    T: Into<R::IoType>,
-> +{
-> +    /// Transforms the value to be written by applying `f`, returning th=
-e modified [`IoWrite`].
-> +    #[inline(always)]
-> +    pub fn update<F>(mut self, f: F) -> Self
-> +    where
-> +        F: FnOnce(T) -> T,
-> +    {
-> +        self.value =3D f(self.value);
-> +
-> +        self
-> +    }
-> +
-> +    /// Transforms the value to be written by applying `f`, returning th=
-e modified [`IoWrite`] on
-> +    /// success.
-> +    #[inline(always)]
-> +    pub fn try_update<F, E>(mut self, f: F) -> Result<Self, E>
-> +    where
-> +        F: FnOnce(T) -> Result<T, E>,
-> +    {
-> +        self.value =3D f(self.value)?;
-> +
-> +        Ok(self)
-> +    }
-> +}
-> +
->  /// Types implementing this trait (e.g. MMIO BARs or PCI config regions)
->  /// can perform I/O operations on regions of memory.
->  ///
-> @@ -406,6 +558,95 @@ fn write64(&self, value: u64, offset: usize)
->          // SAFETY: `address` has been validated by `io_addr_assert`.
->          unsafe { self.io_write(value, address) }
+
+> ---
+>  rust/kernel/io.rs | 103 +++++++++++++++++++-----------------------------=
+------
+>  1 file changed, 35 insertions(+), 68 deletions(-)
+>
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index fdd2549d8e13..256eba16ccc8 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -275,6 +275,25 @@ fn try_init_default<F, E>(self, f: F) -> Result<IoWr=
+ite<T, Self>, E>
 >      }
-> +
-> +    /// Generic fallible read with runtime bounds check.
-> +    #[inline(always)]
-> +    fn try_read<T, R>(&self, r: R) -> Result<T>
-> +    where
-> +        R: IoLoc<T>,
-> +        T: Into<R::IoType>,
-> +        Self: IoCapable<R::IoType>,
-> +    {
-> +        let address =3D self.io_addr::<R::IoType>(r.offset())?;
-> +
-> +        // SAFETY: `address` has been validated by `io_addr`.
-> +        Ok(unsafe { self.io_read(address) }.into())
-> +    }
-> +
-> +    /// Generic fallible write with runtime bounds check.
-> +    #[inline(always)]
-> +    fn try_write<T, R>(&self, op: IoWrite<T, R>) -> Result
-> +    where
-> +        R: IoLoc<T>,
-> +        T: Into<R::IoType>,
-> +        Self: IoCapable<R::IoType>,
-> +    {
-> +        let address =3D self.io_addr::<R::IoType>(op.loc.offset())?;
-> +
-> +        // SAFETY: `address` has been validated by `io_addr`.
-> +        unsafe { self.io_write(op.value.into(), address) };
-> +        Ok(())
-> +    }
-> +
-> +    /// Generic fallible update with runtime bounds check.
-> +    ///
-> +    /// Caution: this does not perform any synchronization. Race conditi=
-ons can occur in case of
-> +    /// concurrent access.
-> +    #[inline(always)]
-> +    fn try_update<T, R, F>(&self, r: R, f: F) -> Result
-> +    where
-> +        R: IoLoc<T>,
-> +        T: Into<R::IoType>,
-> +        Self: IoCapable<R::IoType>,
-> +        F: FnOnce(T) -> T,
-> +    {
-> +        let v =3D self.try_read(r)?;
-> +        self.try_write(r.set(f(v)))
-> +    }
-> +
-> +    /// Generic infallible read with compile-time bounds check.
-> +    #[inline(always)]
-> +    fn read<T, R>(&self, r: R) -> T
-> +    where
-> +        R: IoLoc<T>,
-> +        T: Into<R::IoType>,
-> +        Self: IoKnownSize + IoCapable<R::IoType>,
-> +    {
-> +        let address =3D self.io_addr_assert::<R::IoType>(r.offset());
-> +
-> +        // SAFETY: `address` has been validated by `io_addr_assert`.
-> +        unsafe { self.io_read(address) }.into()
-> +    }
-> +
-> +    /// Generic infallible write with compile-time bounds check.
-> +    #[inline(always)]
-> +    fn write<T, R>(&self, op: IoWrite<T, R>)
-> +    where
-> +        R: IoLoc<T>,
-> +        T: Into<R::IoType>,
-> +        Self: IoKnownSize + IoCapable<R::IoType>,
-> +    {
-> +        let address =3D self.io_addr_assert::<R::IoType>(op.loc.offset()=
-);
-> +
-> +        // SAFETY: `address` has been validated by `io_addr_assert`.
-> +        unsafe { self.io_write(op.value.into(), address) }
-> +    }
-> +
-> +    /// Generic infallible update with compile-time bounds check.
-> +    ///
-> +    /// Caution: this does not perform any synchronization. Race conditi=
-ons can occur in case of
-> +    /// concurrent access.
-> +    #[inline(always)]
-> +    fn update<T, R, F>(&self, r: R, f: F)
-> +    where
-> +        R: IoLoc<T>,
-> +        T: Into<R::IoType>,
-> +        Self: IoKnownSize + IoCapable<R::IoType> + Sized,
-> +        F: FnOnce(T) -> T,
-> +    {
-> +        let v =3D self.read(r);
-> +        self.write(r.set(f(v)));
-> +    }
 >  }
 > =20
->  /// Trait for types with a known size at compile time.
+> +/// Implements [`IoLoc<$ty>`] for [`usize`], allowing to use `usize` as =
+a parameter of
+> +/// [`Io::read`] and [`Io::write`].
+> +macro_rules! impl_usize_ioloc {
+> +    ($($ty:ty),*) =3D> {
+> +        $(
+> +            impl IoLoc<$ty> for usize {
+> +                type IoType =3D $ty;
+> +
+> +                fn offset(self) -> usize {
+> +                    self
+> +                }
+> +            }
+> +        )*
+> +    }
+> +}
+> +
+> +// Provide the ability to read any primitive type from a [`usize`].
+> +impl_usize_ioloc!(u8, u16, u32, u64);
+> +
+>  /// A pending I/O write operation, bundling a value with the [`IoLoc`] i=
+t should be written to.
+>  ///
+>  /// Created by [`IoLoc::set`], [`IoLoc::zeroed`], [`IoLoc::default`], [`=
+IoLoc::init`], or
+> @@ -369,10 +388,7 @@ fn try_read8(&self, offset: usize) -> Result<u8>
+>      where
+>          Self: IoCapable<u8>,
+>      {
+> -        let address =3D self.io_addr::<u8>(offset)?;
+> -
+> -        // SAFETY: `address` has been validated by `io_addr`.
+> -        Ok(unsafe { self.io_read(address) })
+> +        self.try_read(offset)
+>      }
+> =20
+>      /// Fallible 16-bit read with runtime bounds check.
+> @@ -381,10 +397,7 @@ fn try_read16(&self, offset: usize) -> Result<u16>
+>      where
+>          Self: IoCapable<u16>,
+>      {
+> -        let address =3D self.io_addr::<u16>(offset)?;
+> -
+> -        // SAFETY: `address` has been validated by `io_addr`.
+> -        Ok(unsafe { self.io_read(address) })
+> +        self.try_read(offset)
+>      }
+> =20
+>      /// Fallible 32-bit read with runtime bounds check.
+> @@ -393,10 +406,7 @@ fn try_read32(&self, offset: usize) -> Result<u32>
+>      where
+>          Self: IoCapable<u32>,
+>      {
+> -        let address =3D self.io_addr::<u32>(offset)?;
+> -
+> -        // SAFETY: `address` has been validated by `io_addr`.
+> -        Ok(unsafe { self.io_read(address) })
+> +        self.try_read(offset)
+>      }
+> =20
+>      /// Fallible 64-bit read with runtime bounds check.
+> @@ -405,10 +415,7 @@ fn try_read64(&self, offset: usize) -> Result<u64>
+>      where
+>          Self: IoCapable<u64>,
+>      {
+> -        let address =3D self.io_addr::<u64>(offset)?;
+> -
+> -        // SAFETY: `address` has been validated by `io_addr`.
+> -        Ok(unsafe { self.io_read(address) })
+> +        self.try_read(offset)
+>      }
+> =20
+>      /// Fallible 8-bit write with runtime bounds check.
+> @@ -417,11 +424,7 @@ fn try_write8(&self, value: u8, offset: usize) -> Re=
+sult
+>      where
+>          Self: IoCapable<u8>,
+>      {
+> -        let address =3D self.io_addr::<u8>(offset)?;
+> -
+> -        // SAFETY: `address` has been validated by `io_addr`.
+> -        unsafe { self.io_write(value, address) };
+> -        Ok(())
+> +        self.try_write(offset.set(value))
+>      }
+> =20
+>      /// Fallible 16-bit write with runtime bounds check.
+> @@ -430,11 +433,7 @@ fn try_write16(&self, value: u16, offset: usize) -> =
+Result
+>      where
+>          Self: IoCapable<u16>,
+>      {
+> -        let address =3D self.io_addr::<u16>(offset)?;
+> -
+> -        // SAFETY: `address` has been validated by `io_addr`.
+> -        unsafe { self.io_write(value, address) };
+> -        Ok(())
+> +        self.try_write(offset.set(value))
+>      }
+> =20
+>      /// Fallible 32-bit write with runtime bounds check.
+> @@ -443,11 +442,7 @@ fn try_write32(&self, value: u32, offset: usize) -> =
+Result
+>      where
+>          Self: IoCapable<u32>,
+>      {
+> -        let address =3D self.io_addr::<u32>(offset)?;
+> -
+> -        // SAFETY: `address` has been validated by `io_addr`.
+> -        unsafe { self.io_write(value, address) };
+> -        Ok(())
+> +        self.try_write(offset.set(value))
+>      }
+> =20
+>      /// Fallible 64-bit write with runtime bounds check.
+> @@ -456,11 +451,7 @@ fn try_write64(&self, value: u64, offset: usize) -> =
+Result
+>      where
+>          Self: IoCapable<u64>,
+>      {
+> -        let address =3D self.io_addr::<u64>(offset)?;
+> -
+> -        // SAFETY: `address` has been validated by `io_addr`.
+> -        unsafe { self.io_write(value, address) };
+> -        Ok(())
+> +        self.try_write(offset.set(value))
+>      }
+> =20
+>      /// Infallible 8-bit read with compile-time bounds check.
+> @@ -469,10 +460,7 @@ fn read8(&self, offset: usize) -> u8
+>      where
+>          Self: IoKnownSize + IoCapable<u8>,
+>      {
+> -        let address =3D self.io_addr_assert::<u8>(offset);
+> -
+> -        // SAFETY: `address` has been validated by `io_addr_assert`.
+> -        unsafe { self.io_read(address) }
+> +        self.read(offset)
+>      }
+> =20
+>      /// Infallible 16-bit read with compile-time bounds check.
+> @@ -481,10 +469,7 @@ fn read16(&self, offset: usize) -> u16
+>      where
+>          Self: IoKnownSize + IoCapable<u16>,
+>      {
+> -        let address =3D self.io_addr_assert::<u16>(offset);
+> -
+> -        // SAFETY: `address` has been validated by `io_addr_assert`.
+> -        unsafe { self.io_read(address) }
+> +        self.read(offset)
+>      }
+> =20
+>      /// Infallible 32-bit read with compile-time bounds check.
+> @@ -493,10 +478,7 @@ fn read32(&self, offset: usize) -> u32
+>      where
+>          Self: IoKnownSize + IoCapable<u32>,
+>      {
+> -        let address =3D self.io_addr_assert::<u32>(offset);
+> -
+> -        // SAFETY: `address` has been validated by `io_addr_assert`.
+> -        unsafe { self.io_read(address) }
+> +        self.read(offset)
+>      }
+> =20
+>      /// Infallible 64-bit read with compile-time bounds check.
+> @@ -505,10 +487,7 @@ fn read64(&self, offset: usize) -> u64
+>      where
+>          Self: IoKnownSize + IoCapable<u64>,
+>      {
+> -        let address =3D self.io_addr_assert::<u64>(offset);
+> -
+> -        // SAFETY: `address` has been validated by `io_addr_assert`.
+> -        unsafe { self.io_read(address) }
+> +        self.read(offset)
+>      }
+> =20
+>      /// Infallible 8-bit write with compile-time bounds check.
+> @@ -517,10 +496,7 @@ fn write8(&self, value: u8, offset: usize)
+>      where
+>          Self: IoKnownSize + IoCapable<u8>,
+>      {
+> -        let address =3D self.io_addr_assert::<u8>(offset);
+> -
+> -        // SAFETY: `address` has been validated by `io_addr_assert`.
+> -        unsafe { self.io_write(value, address) }
+> +        self.write(offset.set(value))
+>      }
+> =20
+>      /// Infallible 16-bit write with compile-time bounds check.
+> @@ -529,10 +505,7 @@ fn write16(&self, value: u16, offset: usize)
+>      where
+>          Self: IoKnownSize + IoCapable<u16>,
+>      {
+> -        let address =3D self.io_addr_assert::<u16>(offset);
+> -
+> -        // SAFETY: `address` has been validated by `io_addr_assert`.
+> -        unsafe { self.io_write(value, address) }
+> +        self.write(offset.set(value))
+>      }
+> =20
+>      /// Infallible 32-bit write with compile-time bounds check.
+> @@ -541,10 +514,7 @@ fn write32(&self, value: u32, offset: usize)
+>      where
+>          Self: IoKnownSize + IoCapable<u32>,
+>      {
+> -        let address =3D self.io_addr_assert::<u32>(offset);
+> -
+> -        // SAFETY: `address` has been validated by `io_addr_assert`.
+> -        unsafe { self.io_write(value, address) }
+> +        self.write(offset.set(value))
+>      }
+> =20
+>      /// Infallible 64-bit write with compile-time bounds check.
+> @@ -553,10 +523,7 @@ fn write64(&self, value: u64, offset: usize)
+>      where
+>          Self: IoKnownSize + IoCapable<u64>,
+>      {
+> -        let address =3D self.io_addr_assert::<u64>(offset);
+> -
+> -        // SAFETY: `address` has been validated by `io_addr_assert`.
+> -        unsafe { self.io_write(value, address) }
+> +        self.write(offset.set(value))
+>      }
+> =20
+>      /// Generic fallible read with runtime bounds check.
 
