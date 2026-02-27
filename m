@@ -1,114 +1,103 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A300E3D3D1A
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 19:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D413D5222;
+	Fri, 27 Feb 2026 19:23:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772220003; cv=none; b=gQKWahjokW5wEBBuV/UQFRaBCoHBZmY9PNuJfunD4Nwq75S359vbrJemA/vK/ZAVQSrN8rksZIHOKOHdw0uKIpq3ycIfK7rzHDNiKWRYOpT/aBrWaZ7WiO0nsktF3Z+0QNPuCmIlfb4mKdTfAMw9gwL0wyo9n3xYQa/e1g9UyEQ=
+	t=1772220229; cv=none; b=t3FkcN2H8LwOlh2+esfShnMhV/m2QR7+dCaZ/0u4YJBVhPXjAey1s6Ohha20S1xvPTJ8yN2l9h4SfunmAx1AUJnNR38EjxSNwfynVjsvwE4MEeHNzgC6MbIZvZh1APjIRimx8u5PXjnC2eoB9Ldlbnr0FwuA+dfUaQABrMzulNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772220003; c=relaxed/simple;
-	bh=L8FJABVHFHSCFveVLUCxW+JYK5AyBjBR4VFqAhgVR9I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iNR47lObuPP/VoCM26o/RpLE9dkFhPcEzrBKkcirvfHXTjJHBhnu+7LGDMOR3xQMisHdIuq+297X0wjEe7PnXNQnBFTxggeEDRYXUanNrYZQFNZSxeSo5VupWYEQl+DDi4BHSlCGrYFBehWJHKvCrL/Dkc85R0g+s3BoTEJ3pTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Cl7d0obZ; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1772220229; c=relaxed/simple;
+	bh=8j5ZKcQ4d5zl2A4GAuq6a49HEq794Ux9UP/o3AbBX64=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=SM9fWJQhChGuA2BD9OQqlxCc6GYkJd4KWEgMuiwyH2Az882/czF6LlRh/eAcAxv9Eu/a+YtXzXBtahhfCvRlxu9lqT5goVGbzBtgcZpyKsPFS0dTNfWBThW0NyjhVMmGHfd2XQArhLnaeVcXRrEm8RN+9Sxnr9iD1NjX/CRb9ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=il60quBt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Cl7d0obZ"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4806b12ad3fso20418715e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 11:19:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772219998; x=1772824798; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WBgwzx0zzY1/PqSKldnWCeFUNyWLZOQM8NUJjdzdoSI=;
-        b=Cl7d0obZjC+dnlEIxVUSlNuNlspjAbPahotYuolNpPMY6pDbh7/lWFcprc0eWp/r8u
-         /Dkosoiz9/Mfk6qX6nhW+1wJITTpY1zTu1phiCH5XIs8An+Q4aM13jpBYr8/kj6HS6pa
-         xZz1hF3Q1eEtF+7I4hmPG6f0TZ5XGVxdCUck5OCkDS03yTNJCzXQG3dtf20ATm6Kaqkz
-         +zXuWHe5i701/RF8BU2ANKTPw9SnfjiLDClHu7KiPGOmV7hz9AR71H7fLdBUqcvMmHT7
-         n37mNe9BD+b2kadx5onopL+R6lFlEsKhWYMRCm9o1M7tt+/XIlQ8+dK3OjHorzxSaBIJ
-         UGjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772219998; x=1772824798;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WBgwzx0zzY1/PqSKldnWCeFUNyWLZOQM8NUJjdzdoSI=;
-        b=u/7QzkFU1TSQX+pv4EvBaFJlwDBPY6OAGqcE7cy4uJ+zMTJcp+Wbk5vMWECpTTiTrd
-         vvbDpYuKQXpWkg+v/0bmrSEyaEmoEfVwxOgjpQ/HZQrWT1UHYQKhMnvTJtj3UnBLuKbO
-         HzDrphtXKGAS3BEwRjifUbbjNiXSarVxvyP+rZTpND0gYZVEuMUGzdcWJBhoBKlsmUV9
-         OZH5uMf0/7nnV3jpanIhCoS+CKMt/rwTMu85ySd0tuWLJBHOxVvO0oT2ZhEsJ81KuOM7
-         GbNPYU0rnlZTqTMTx0MK9h4gbOcZYH0cleUpAjRdQycwfKjCVuf4l5fPxR2BEPlP8IsE
-         zOrw==
-X-Forwarded-Encrypted: i=1; AJvYcCXdbcCPidzD8jQ0ZsHAY8CYhui++0bG1LX69K3cPQg/Smha6l7uJI4v2EfyysEnDzsEqT5kwylE88GyMxC/xQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+nTzEFvU2wSKNHJ6XKMie25qhZUsP2Nw4JT7tjpYdIXEUIKTt
-	6UmSVMeEJrQJFP2Uucq7zmjbINIlrfcc4K+qKxtZoKAeJREQpruRihpPAL8ms6s5J+5E1pdfdeH
-	PQ/BhMHSGcJNBRihVVA==
-X-Received: from wmqd21.prod.google.com ([2002:a05:600c:34d5:b0:480:4a03:7b64])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d0e:b0:480:3bba:1cac with SMTP id 5b1f17b1804b1-483c9bc55c0mr59327825e9.6.1772219997631;
- Fri, 27 Feb 2026 11:19:57 -0800 (PST)
-Date: Fri, 27 Feb 2026 19:19:56 +0000
-In-Reply-To: <aaHrxzWIFFUjzWhu@slm.duckdns.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="il60quBt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80D2C19421;
+	Fri, 27 Feb 2026 19:23:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772220229;
+	bh=8j5ZKcQ4d5zl2A4GAuq6a49HEq794Ux9UP/o3AbBX64=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=il60quBt0k5z0njs7VdUz5V5hMWK7lIJBsShQ6bx2hf+k+PgWrRpxY7QAycdrOhCm
+	 FaXWh6yxNBLqj0creAnHJLZtrnrIiexY39ooIQtqtjMffLXnF7DTwDB6iFhtNt3o58
+	 KHgV4qH/G2ytzdoc5FmOYRDb5ATAL/GfKeWkXhOGOC01O0ycvk6LVvpJZk9grhz9Pe
+	 +1z6gUWri18J3twQf7xJAla7uMzrybfAp7fvQXdKXe7O9Ra1SImjmGpKkxT6ybPV8H
+	 dyfg1VQeU9xsU4t+h/S8DWAM649clCmwcwaoKlFXFG9iXN3VbOQ2m9PNHNadiAqidd
+	 JenVB1gbWnw7w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 27 Feb 2026 20:23:44 +0100
+Message-Id: <DGPZMZKAQ2TC.RA0BF64C639M@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 2/2] rust: workqueue: add creation of workqueues
+Cc: "Tejun Heo" <tj@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Lai
+ Jiangshan" <jiangshanlai@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Philipp Stanner" <phasta@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Benno Lossin" <lossin@kernel.org>, "Tamir
+ Duberstein" <tamird@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
 References: <20260227-create-workqueue-v3-0-87de133f7849@google.com>
- <20260227-create-workqueue-v3-1-87de133f7849@google.com> <aaHPs-nULPEt_wJB@slm.duckdns.org>
- <aaHp_pGBxA4pNiXJ@google.com> <aaHrxzWIFFUjzWhu@slm.duckdns.org>
-Message-ID: <aaHuXEO64ONKMW4O@google.com>
-Subject: Re: [PATCH v3 1/2] rust: workqueue: restrict delayed work to global wqs
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tejun Heo <tj@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Boqun Feng <boqun@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, Tamir Duberstein <tamird@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+ <20260227-create-workqueue-v3-2-87de133f7849@google.com>
+ <DGPUOSG5I4GM.1N5AWMP5ZFY4M@kernel.org> <aaHq9VpaVN4_hchW@google.com>
+In-Reply-To: <aaHq9VpaVN4_hchW@google.com>
 
-On Fri, Feb 27, 2026 at 09:08:55AM -1000, Tejun Heo wrote:
-> On Fri, Feb 27, 2026 at 07:01:18PM +0000, Alice Ryhl wrote:
-> > On Fri, Feb 27, 2026 at 07:09:07AM -1000, Tejun Heo wrote:
-> > > On Fri, Feb 27, 2026 at 02:53:20PM +0000, Alice Ryhl wrote:
-> > > > When a workqueue is shut down, delayed work that is pending but not
-> > > > scheduled does not get properly cleaned up, so it's not safe to use
-> > > > `enqueue_delayed` on a workqueue that might be destroyed. To fix this,
-> > > > restricted `enqueue_delayed` to static queues.
-> > > 
-> > > C being C, we've been just chalking this up as "user error", but please feel
-> > > free to add per-workqueue percpu ref for pending delayed work items if
-> > > that'd help. That shouldn't be noticeably expensive and should help
-> > > straighten this out for rust hopefully.
-> > 
-> > I had been thinking I would pick up this patch again:
-> > https://lore.kernel.org/all/20250423-destroy-workqueue-flush-v1-1-3d74820780a5@google.com/
-> > 
-> > but it sounds like you're suggesting a different solution?
-> 
-> I'm not remembering much context at this point, but if it *could* work,
-> percpu refcnt counting the number of delayed work items would be cheaper.
-> Again, I could easily be forgetting why we didn't do that in the first
-> place.
+On Fri Feb 27, 2026 at 8:05 PM CET, Alice Ryhl wrote:
+> On Fri, Feb 27, 2026 at 04:30:59PM +0100, Danilo Krummrich wrote:
+>> On Fri Feb 27, 2026 at 3:53 PM CET, Alice Ryhl wrote:
+>> > +    /// Set the maximum number of active cpus.
+>> > +    ///
+>> > +    /// If not set, a reasonable default value is used. The maximum v=
+alue is `WQ_MAX_ACTIVE`.
+>>=20
+>> Should we just mention the default value?
+>
+> I can mention the constant name, but I'd like to avoid mentioning a
+> value that might change.
 
-I guess the question is, what does destroy_workqueue() do?
+Yes, that's what I meant.
 
-- Does it wait for the timers to finish?
-- Does it immediately run the delayed works?
-- Does it exit without waiting for timers?
+>> > +    #[inline]
+>> > +    pub fn max_active(mut self, max_active: u32) -> Builder {
+>> > +        self.max_active =3D i32::try_from(max_active).unwrap_or(i32::=
+MAX);
+>>=20
+>> The workqueue code prints a warning for max_active >  WQ_MAX_ACTIVE. May=
+be use
+>> debug_assert()?
+>
+> What's wrong with just making use of the C-side warning?
 
-It sounds like the refcount approach is the last solution, where
-destroy_workqueue() just exits without waiting for timers, but then
-keeping the workqueue alive until the timers elapse.
+IIRC, we have the same pattern in other Rust code that we use debug_assert(=
+)
+when a value got clamped, e.g. in udelay().
 
-The main concern I can see is that this means that delayed work can run
-after destroy_workqueue() is called. That may be a problem if
-destroy_workqueue() is used to guard module unload (or device unbind).
+>> It's also a bit unfortunate that alloc_ordered_workqueue() becomes
+>> .max_active(1).
+>>=20
+>> At the same time having a separate ordered() method competes with max_ac=
+tive().
+>>=20
+>> Mybe a type state, i.e. Builder<Ordered> that doesn't have max_active()?
+>
+> Sorry I'm a bit confused by this. Why does an ordered() compete with
+> max_active()?
 
-Alice
+Because you could get an inconsistent state with __WQ_ORDERED and
+max_active > 1.
+
+It also conflicts with sysfs() I think [1].
+
+[1] https://elixir.bootlin.com/linux/v6.19.3/source/kernel/workqueue.c#L741=
+7
