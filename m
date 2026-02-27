@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B9F436352;
-	Fri, 27 Feb 2026 15:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74708436374;
+	Fri, 27 Feb 2026 15:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772204987; cv=none; b=JGMtxZ+g5ULapOrG3ZJbHMqXNoiIflg0YOjnD/wKvDsMr9/6h/Aychs4Y5hWUiz9lv261KOEv9MzuR4aiG/MA2pYasW8I8rcD8H5XHbqdZwZmcP5Di6tr7uancSQPmGhKNlHMnbvluwIWMyTQko7SERZbSo+ebwojqnrFUl1duE=
+	t=1772205016; cv=none; b=jx/YmtVO4kEM0SO+P+11Gdf/EPbweAnCKdLDawo8GbfAYtB5poV8M0/wjUR/YQLhTDp6y27USiHTuV7ClhH6yoC0zQojssHvhqYm5KrKLdLLPRPRtCLXM+Wv/KDzt0abevbA9fmHTdZIDtLvLStLCfbO63QTyZ/wlETU0cJd4J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772204987; c=relaxed/simple;
-	bh=0yqN5dTX/ixzOtodz7NizEgEOEjte8QFyiCaU6F6XTQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=SeFPE+gfmAnzh0lL3V+PSZ6Eo3nRSUUt4Hj/5csSyvAiPeLQyw6XQCJqO3uiA5dI0ZGzo92++yYx8wurvWI2GXQPCcR5mUhvVrdu/6hjYqeAd9WcpsZUMi/JepNQePYPeZn3YqYRJWNPTG/DFh/aMw4YfXQ7b3gXgCF12WuA9UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fWNPPCGu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772205016; c=relaxed/simple;
+	bh=A+0kNftCTVHBA/gr9wUYwklcGsNkEFj9fn64fLK4cMo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ZzlkfkgD4BICHlCMranid61sj8uwF9EiyVYi1v7BOq5nF7e/VmoTIHO5FlFtqTVw90t6MeYpP52kfmxEskHS79D/0KjloeO8hDmpMWvLwn2jn1rK2sjsIVM22MIX7i9UPbf22dUz4Q+AAl6hV/2Y/akTRr7vJxC5cxmWWvvTQw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R3wOU3bP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fWNPPCGu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2228C19422;
-	Fri, 27 Feb 2026 15:09:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R3wOU3bP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05F1C19422;
+	Fri, 27 Feb 2026 15:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772204986;
-	bh=0yqN5dTX/ixzOtodz7NizEgEOEjte8QFyiCaU6F6XTQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=fWNPPCGuHNVc1p17psub485eGCIrdMelnqPja5XEvxMNQCATVPa1XBdtgfy+c3HIb
-	 k04n4wBbHbLFP6GlD2Xwwp6hL/NOeNtt5UGfaNZ3GCotTP7GH4GUXqQNFF4I/Adt/f
-	 zaGyigVs7mF9pENt1+pOII9HssyXNj2cTpQxBbKZn4tuFqrmdWmIbeNmg3pwSlGxK2
-	 6WXj4WNEJ3ZxMt6UYThrtFZCpjL44Ngib+OuGSb2G8GMSgn1ZdwG8FGKb8+PAgjX3W
-	 m2rUMqvL4SF4tFZlP0Cy2w5ZeHJaEQneeyZ4PhpA+HMDeTKRKhW/PbNlv/rj6b5CY/
-	 gPFeipVM6jX/g==
+	s=k20201202; t=1772205016;
+	bh=A+0kNftCTVHBA/gr9wUYwklcGsNkEFj9fn64fLK4cMo=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=R3wOU3bPwzjVMt88qdYanywyywgh6ijFhqoRxoky1je2i+67QUwTqzbwB/aUNVoWR
+	 5d7hAysaLWZy1DUGSgqG5K5EBU43ZW2MyEqlibvaX96sDOiWFHFOqYM8WkSGbkwgNc
+	 G1HNKqKhPrByUtdy3MyH8f4joH+smKTQO6uddbQJDtGhebmWPiFdv0AIDlFC4R78i6
+	 TuC4eX8Z4hDJkeAwJmGi4/LnSJH8IL1ai7mB9jxJxEQUmfUZSG6d9cVl6+ZGIpkmzH
+	 zmTnuaPnXYoGVy+mL5be4gFXPaeV4fnmZa2wRLtKFn0Pwc1ZqvqcEiUFteTaFLLq8U
+	 WT7ypYWwdKz6A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,71 +34,76 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Feb 2026 16:09:41 +0100
-Message-Id: <DGPU8HAAHHEL.289YRTRTFQEKK@kernel.org>
-Cc: "Alexandre Belloni" <alexandre.belloni@bootlin.com>, "Alvin Sun"
- <alvin.sun@linux.dev>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+Date: Fri, 27 Feb 2026 16:10:11 +0100
+Message-Id: <DGPU8USGBKVH.2D5DH6NTL50U2@kernel.org>
+Subject: Re: [PATCH v3 1/2] rust: workqueue: restrict delayed work to global
+ wqs
+Cc: "Tejun Heo" <tj@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Lai
+ Jiangshan" <jiangshanlai@gmail.com>, "Gary Guo" <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-rtc@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>
-Subject: Re: [RFC PATCH v3 1/5] rtc: add device selector for rtc_class_ops
- callbacks
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260221111619162a41a1@mail.local>
- <CAJZ5v0jo2sLKWVOBJz7QP9x_aMZbaVx+ES7QwYWkTzHp7d2xLQ@mail.gmail.com>
- <DGKPPQI0QE73.S8I1M5NCI2BV@kernel.org> <20260222000556ea1938c0@mail.local>
- <DGLI4H9M0T6D.25RTLDVU5JRBE@kernel.org>
- <CAJZ5v0gtiQxBCknkaOzLKrDqUQfhKh_UjQkvgxJBL4UthbCOkg@mail.gmail.com>
- <DGLMGEZTM7E2.Y8VV9I6LI1P6@kernel.org>
- <DGMR9XOWP1V0.3C9219TYPXV6J@kernel.org> <2026022415010804e28202@mail.local>
- <DGNC6GEH8EV7.2WWAQ8DNCLRAB@kernel.org> <20260224172822de7f4569@mail.local>
- <DGNJKZA00MNT.2C7NAQYG597MO@kernel.org>
- <CAJZ5v0iA88G0ZRVB347dXEu2y8mT=d+aWd42cB2tpO5pLVpKuQ@mail.gmail.com>
- <DGO6MEKIIHGH.3L06QJ47CP3CU@kernel.org>
-In-Reply-To: <DGO6MEKIIHGH.3L06QJ47CP3CU@kernel.org>
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Philipp Stanner" <phasta@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Benno Lossin" <lossin@kernel.org>, "Tamir
+ Duberstein" <tamird@kernel.org>, <stable@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260227-create-workqueue-v3-0-87de133f7849@google.com>
+ <20260227-create-workqueue-v3-1-87de133f7849@google.com>
+In-Reply-To: <20260227-create-workqueue-v3-1-87de133f7849@google.com>
 
-On Wed Feb 25, 2026 at 5:26 PM CET, Danilo Krummrich wrote:
-> For the future we will also be able to support references within initiali=
-zers to
-> other pinned fields, which make things a bit more convinient, so you coul=
-d do
-> things like this:
->
-> 	let irq_data =3D impl_pin_init!(SampleIrqData {
-> 	    io <- pdev.iomap_region_sized::<BAR0_SIZE>(0, c"my_rtc/bar0")?,
-> 	    hw_variant: VendorVariant::StV1,
-> 	});
->
-> 	let rtc_data =3D impl_pin_init!(SampleRtcData {
-> 	    irq <- irq::Registration::new(..., irq_data),
-> 	    io: &irq.io,
-> 	    ...,
-> 	});
->
-> 	let rtc =3D rtc::Device::new(dev, rtc_data)?;
->
-> Note the additional `io: &irq.io,` in the rtc_data initializer. This woul=
-d be
-> legal as we know that `irq` is pinned within `rtc_data`, hence it is vali=
-d to
-> hold a reference to one of its pinned fields.
->
-> I am not sure how far we are from having this supported, I assume Benno a=
-nd Gary
-> can say more about this.
+On Fri Feb 27, 2026 at 3:53 PM CET, Alice Ryhl wrote:
+> When a workqueue is shut down, delayed work that is pending but not
+> scheduled does not get properly cleaned up, so it's not safe to use
+> `enqueue_delayed` on a workqueue that might be destroyed. To fix this,
+> restricted `enqueue_delayed` to static queues.
 
-We added that support in 42415d163e5d ("rust: pin-init: add references
-to previously initialized fields"). Note that any references created
-during the initializer are only valid inside of that initializer. You
-can convert into a raw pointer though and if the struct is `!Unpin` it
-is sound to use that pointer at the same time as references to the
-pinned value.
+:(
 
-Cheers,
-Benno
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+
+> Cc: stable@vger.kernel.org
+> Fixes: 7c098cd5eaae ("workqueue: rust: add delayed work items")
+> Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/workqueue.rs | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 706e833e9702..1acd113c04ee 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -296,8 +296,15 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::=
+EnqueueOutput
+>      ///
+>      /// This may fail if the work item is already enqueued in a workqueu=
+e.
+>      ///
+> +    /// This is only valid for global workqueues (with static lifetimes)=
+ because those are the only
+> +    /// ones that outlive all possible delayed work items.
+
+We should probably add a FIXME comment pointing out that this should be fix=
+ed in
+the C code.
+
+Maybe also link your approach?
+
+> +    ///
+>      /// The work item will be submitted using `WORK_CPU_UNBOUND`.
+> -    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies=
+) -> W::EnqueueOutput
+> +    pub fn enqueue_delayed<W, const ID: u64>(
+> +        &'static self,
+> +        w: W,
+> +        delay: Jiffies,
+> +    ) -> W::EnqueueOutput
+>      where
+>          W: RawDelayedWorkItem<ID> + Send + 'static,
+>      {
+>
+> --=20
+> 2.53.0.473.g4a7958ca14-goog
+
