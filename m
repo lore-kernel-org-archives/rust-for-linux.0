@@ -1,302 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012067.outbound.protection.outlook.com [52.101.43.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4336D1E1C11;
-	Fri, 27 Feb 2026 11:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772191833; cv=none; b=DYYxJrp0n5GY4sw5eYj4W9jKSldYaUXlcrxFGX1muTpbpXotY0eBJ5qppHTSsPPwD6OPt6LJ8iWT7ChubLxUqJjRjZEgw+f8FMsy1bkjUZ4PKjEXsFyN+ytLiutIfHCt1rwxO0ywL5FGH/Tdr/VlsN+4tN6RIzI1g6rVDaZIwbs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772191833; c=relaxed/simple;
-	bh=q9Qw4m+ehN9G6pF4YvgGI5YvC7WtO4kLCNQbCmQ0VZ8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=BJzq879Q9x344UkDpWUS7cylorAZlBeKcgP82JlUwHjaf5TcIbOsnAmH065wgkUyoPPet9Fly9fjd5EtiXgCgeZm63VZ/frmreqgzmZ/7T+6LqDv1shjjP8BP7O3ovS1fMyU/bJLuaVbQlrewjJugp+4zLWDsKyWO5spVAfX2cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KA9mDr33; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776013EFD1B;
+	Fri, 27 Feb 2026 11:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772191962; cv=fail; b=UF8WcOabFGt60vHUJq6WrCuh+YlYTjaxNQYonz1f0OEAzsyfgN2pBvcJh8AQqHVRPSwBVyTMEY1zrTUWqJ48A2qnCk644u/+MH0m/rQTdrzqlNVn7gxHmqA2lr6UWEngeBuBLQnvnryAzmLKevAwX+knwx3qMDKMhlaTdfTq/gE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772191962; c=relaxed/simple;
+	bh=Y2qzEihCiyKMfrdgAR46ROMoN97HUdqRWOLqqnaxKOE=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=RPjc2qbwba3oItVvufon5iEKDfQoIGSyymaBM7RG7TIVG0QhQZF9kiUqsuVagGJIJ4Sl6G3gDUXLdyIMm6+vTqKa+DHMYK8OL1ot6S2FsiZ63IQFFinwDwLaMM/6c4WfJOKol21cA9isJg3cdT0dYduqYJLjEH+IWfwKs43XY5o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dzqnfMin; arc=fail smtp.client-ip=52.101.43.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KA9mDr33"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC98C116C6;
-	Fri, 27 Feb 2026 11:30:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772191832;
-	bh=q9Qw4m+ehN9G6pF4YvgGI5YvC7WtO4kLCNQbCmQ0VZ8=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=KA9mDr33xS18HYhHMxjWEsKqOqRnJOYpP3JoPuGNMxpZMgBGRk6QZ30AzHVzdMVlO
-	 TlkKcIB9/TPLGYpNMZ08Il3YRMVl9JyYWiCdAl2pNiuWRqG72drMNfkl3tdVGfJ97c
-	 DpXQ9dYkomvweAHjYHDizYYP8o4V52D/mdElnHU1siJ10WDu+XllQMBZZO0xEYE09D
-	 o/8GjtCbz5qKoHOUipHVLPwgZNQZNkuawkxPPgJ6OBKBakBli+8GttpLRvglr/C2wh
-	 2jrpmrS4BRdthCoOgJ1ymMUaQ1woQSWypOu7cGqLP0i/AZequ6WqdEOC47KWg0+CDn
-	 IPDrai+gMi2kw==
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dzqnfMin"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VX84hBvnm7zhDzrCQbSAyLcb+yCJjOvn9f89D82sINBtO4ceap2/kPRQ4X6jyGW8fo+kwwLDjLGEizXaxFZ+HRFrTz2B3wF9aQNF+GJaSUOHlSW/wyIMttGa9XFOJfncYdcUBFlUsfxZbXXPDgMTZySri0Y43t93ap1KyWxdfYsBM9g9GdHcLFv5YypticmJR0zWrqi8PnWb7czjP6yjo5n7r5/It5VCHe2Xz0LiCGDl9B83VUmzofFAh32yM1VIgV/Ia0r759FaSg51ExgOMdIsMNaxCrmWhlFcdNwaMDKBvcPb0Vdlcjw6l2g29/w/d7DI/N3A6zgtiPzn5ldmLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HydwHC7wsV66ivF5pyWg+u3mEGejd2bN1hKLCaTmxXc=;
+ b=QoDbMpXVpSu8wUihD+/ZgZnxJ4EbtjDFCvHWqZW8lllwK46Gxrvs8yhu9R2FEh1FdtAYZ+vd6w5Or7N+4wwtY7hUWT+WxcGpapF8E/WDiAWtyCtwp930x0pwcPyisn7FgF6jxATaLuHgWYpq2oPwtKLfE8yZm+l4c765Of2HX1sxoQbofkYYg+FS2BDA+3kc1VbYtgtlpJD7+++OXbSioXMHdVmn6umcewFSskQBAdhato3DryOIaE/lIH5HQ/me41qtoCL7xR+yl04v7KvNUdppqy8XIpMbl/44FCCEfHX267icROlnC/7lhihmlyBthMWGKiMnyplYhVModXox8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HydwHC7wsV66ivF5pyWg+u3mEGejd2bN1hKLCaTmxXc=;
+ b=dzqnfMinWWqo8XtqC1afsWHkaSIHcKBQuUZz9JYmzgXC8oPNwCmw47Wac/kSt3AGTnQtgc7uoSMZ9EUavSqeumyUrbPKPprn1zrB8cv+PPr+dUwdFai8MYNsS38f8eT/KfMQeeckroIILxyQIF2NeF2qu4VMPazlvHAcvXf+J1FwbLh4I9srMy/QJU7sSNz0yG2H51iFTVA7rZLPOzlPHAwTUBHN61hgWfeyRrBjqlLqWMQKKZnTDZFGm7PJzI4CQyE8RiqTVCTgU0Cw2LzmriTmOmoFqUy8AflnSE/8G/zgGTB3i5ncq7e+k2wBFJBMkf4Neq23wam08Twz/5VXYw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SJ0PR12MB7460.namprd12.prod.outlook.com (2603:10b6:a03:48d::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Fri, 27 Feb
+ 2026 11:32:37 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
+ 11:32:37 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 27 Feb 2026 20:32:33 +0900
+Message-Id: <DGPPM80YS5P8.3UOZ42Q2O8U3G@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "Zhi Wang" <zhiw@nvidia.com>
+Subject: Re: [PATCH v3 9/9] gpu: nova-core: gsp: add tests for SplitState
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+References: <20260226-cmdq-continuation-v3-0-572ab9916766@nvidia.com>
+ <20260226-cmdq-continuation-v3-9-572ab9916766@nvidia.com>
+In-Reply-To: <20260226-cmdq-continuation-v3-9-572ab9916766@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0110.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29c::17) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Feb 2026 12:30:20 +0100
-Message-Id: <DGPPKJ5W6FVD.29LI1HKSBZSG2@kernel.org>
-Subject: Re: [PATCH v11 4/4] rust: gpu: Add GPU buddy allocator bindings
-Cc: <linux-kernel@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Dave
- Airlie" <airlied@redhat.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Koen Koning"
- <koen.koning@linux.intel.com>, <dri-devel@lists.freedesktop.org>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "Nikola
- Djukic" <ndjukic@nvidia.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan Corbet"
- <corbet@lwn.net>, "Alex Deucher" <alexander.deucher@amd.com>,
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Jani Nikula"
- <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
- <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
- "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang Rui" <ray.huang@amd.com>,
- "Matthew Auld" <matthew.auld@intel.com>, "Matthew Brost"
- <matthew.brost@intel.com>, "Lucas De Marchi" <lucas.demarchi@intel.com>,
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- "Helge Deller" <deller@gmx.de>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "John Hubbard" <jhubbard@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Andrea Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>,
- "Zhi Wang" <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>, "Philipp
- Stanner" <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
- <alexeyi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <joel@joelfernandes.org>, <linux-doc@vger.kernel.org>,
- <amd-gfx@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
- <intel-xe@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>,
- <arunpravin.paneerselvam@amd.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260224224005.3232841-1-joelagnelf@nvidia.com>
- <20260224224005.3232841-5-joelagnelf@nvidia.com>
-In-Reply-To: <20260224224005.3232841-5-joelagnelf@nvidia.com>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB7460:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5b380d7b-0ec0-421e-9a5f-08de75f3e837
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	JxhOKQ4IYvlUlxjwk8x9dGTzA3fX8dSDc2slDtLs/AeJMxJsZ8nJcwo5zxzvsvIiGXR1fGrYroR+xTBLy/jBH9cdqT7ErDrMLNxcJBAxkxCP2HXPD6sqe+2jrff8wVTrsksGDbljJ07Nfmic529LMaeDdQyRyNiI9PESjH6KTo3Vff9BhvuLlvEBqU9lMZwVI5PXN0zy+rsPsbpncekO6DPWuoZE1dPFOLi0OfaggFqQ0J6Viel3xm1Iw9hqp0HKuEV+2O1E+/EgLGoggNZj+UbdDT3g3bCrK1tEGlh0erdIEzu8OnK98EwFTLJpIX/7255Tq+juI04KXJBoo4v7WhmBozKj2H8R1tx44ZnTXn6MZZedl37fBO9w8H0b/mWIyXB0N3BcxE0LpNV59JB2teIPI8wy3Xbih+ter6nQK6fmtoF3TrfuXA5pM4fq/4mz1+qEWvkpfKtYkbvcqeRyhtO5gdpmRV4jG7vaOMBAHGyr4QRl2gqocOWHsoWujJ20Puwrj2EzLYg7lR+XUburu9NWzU4AKwZWg70+tOMyHSuSxdjX5cUBYG4zdx9rA3e44s7GN8Y02lvuX6Orn49z0hBJXCGDwum2uLkDoxeTPDeuuvCsPT4h8I7rH/2qR16JNbuCsQhvFQYhvyobZE5hVmguT+AYYF/+woFPptI9HAMD7ygdrjWcNTLU7+2AotYpMDyGZD6xC6dmb1jUkETwlLfcHJLsZEQyU1QdjhNJnTk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qkx2Vkp4K2RVWUlZeE5Kd1JzZVFEUE9BekNRRGk3eURQQURad2dYMG56RWUy?=
+ =?utf-8?B?MmdRMzNHdmgzNS95UFB3S0thWUpINklkZDRNNE5lNzQwL09Pemxoc3Z6Q2pu?=
+ =?utf-8?B?RzFINDJrZitjRVpXRitsZnhyQkt1TUtmZGpJYUprWUx4OHo2M0IwRVlHRFNX?=
+ =?utf-8?B?NmNYaUNVRElVK2VCSWg3ZjViZXpHY3hnUUhZNlFtMkxhWkdvQm5qU1BHTmVw?=
+ =?utf-8?B?RElOK3pkNFArY2dwankxQUp4UkxqMno3N0hHbVk3ekRqSk9TZkpHM2VtcXRN?=
+ =?utf-8?B?NldkOWswSjNLVjZ6ZlE1YnR1cUhpNFVYMjBZbVRCbVRSYnNUdWZzVkVMZ3JJ?=
+ =?utf-8?B?Zjh4dzI3RmlGVldlSjMrUC91UFN5WHl6cHB3NFp6RWF3WU4xcTBPVE1ieGpx?=
+ =?utf-8?B?c2xYWWpwdi8xUXkydlBZL0NvdHlpaVJJV2tERjNrcXB6OG1DQlM4dXFtK2pF?=
+ =?utf-8?B?bFEzM0lmK096RVBPMGdhZk9MVkEwaGFIVTNwclJWLzBGYlNtNEVBUGJkc2RF?=
+ =?utf-8?B?WmE0QXFYSCs4K0RZdzAvREJ6VEZFRCttOGtRZzcwY0I0V1l5b0dDSmdzS2JB?=
+ =?utf-8?B?a0wzaFNRM2pXQ0dUdi9lY1dlbmZnUFdxUXlaUWpjS0ZCWHVMaUY2VDY2bXFL?=
+ =?utf-8?B?Rk1GK052UGwvcVNXZ0RUVTlXMG1GZmpIWHV6SkhRVEU0YzlrcCtTT1FadzFT?=
+ =?utf-8?B?YmZyK2NSVlZpdWgwNlVLM0E0eEErT2k0b3dUSDk2dnJjWXF3a2UyVUFrWUls?=
+ =?utf-8?B?WG0xazVLb2xhdTRpbzh6RXhCbjlkdFRtT3lKNlJoUlVRV0Q0dmhyNm52SGhM?=
+ =?utf-8?B?d1FRTVRaanFGSzQxWmNmVmlEWENuOTljMlJKQ0Jsdk9xaXBVbDdDMWUrMkRE?=
+ =?utf-8?B?Q3Jxb1dLQnZNWWlldkhUQmQ1K3V1eFNhMXlFOW5jcjhhenRtMG01T29hSGFR?=
+ =?utf-8?B?Rzd0TlI0KzJJVy9SS2YwWkppUTQ5Ti95aGdYY1JLVDUrVWxmTzFTVnU3N1Ri?=
+ =?utf-8?B?MW8wK2JMM0FxTGMzaDUreis1dlZCMjNSWjR0VGhtc1Jpcnpmcy9obTdGYWdh?=
+ =?utf-8?B?Z1BtT3ljcGs1RnRCSDBoZk5UcFlreUc1d0hJb1MrS09xSTlPVWY3U0NtYlFS?=
+ =?utf-8?B?eUVmRWlncjVUSUY4aTNoZitIdEhEdUpwaFIzVGx0UmRsZWZ6OFRPcXM0RXh4?=
+ =?utf-8?B?R2JHK2paUzBXWjhMRFQ3bGF6Y0M5QThsK1luVUVoMEg1ejhhMVl6cmR3Tlho?=
+ =?utf-8?B?Z2RDd3QrYlFCS3dpdVFWeUpjTjhjd3cydm15VlFFajVJUTNzM3pFN0Y0OGpr?=
+ =?utf-8?B?eHJFdThiK0ppMGs5eUEzV21tM3NORlBEbml5ZzlWWFZ0b1U5WkNTcnNZK3BT?=
+ =?utf-8?B?Y2hJeXp2T2xydlZLM001ZkEyaXkyUmxlWlRwRGFrbVMwRzUwWm1lSVpIeDdO?=
+ =?utf-8?B?b1dhWGxWaGJKR0dvd1lWei84QjJScjdCbTNKTWh2UE1xemZ1Wkxxb3hTWlgw?=
+ =?utf-8?B?OEdZaWVVaVlzWHE3TlRsdHZFMnc0SHhYcCtjK0pOaTdBNGJSdmE5VnJjZmRm?=
+ =?utf-8?B?RzBRamdtcFBHbmg3N3VPSHNNNjFZY055MW9DVkw5ZitCblgwL1lveGMrOFhD?=
+ =?utf-8?B?bGl4UGZFVGVsSjBNNWVOeDI4QUtrWXM4OE1xSUNWRW1nUExhT3U5MGJSRnZW?=
+ =?utf-8?B?UENOK1k2QXFYZHh5R1dVUTUyRWYrV1dlamx3N2lVaktqU2tqeGMxQXd4cGtZ?=
+ =?utf-8?B?NGpoRUVheUk3ZHMxTjJXblQzdWpNSVdQWHRiVllzamlBOG9YYnlEY0g1bjFT?=
+ =?utf-8?B?Q3JlSDV5b3lNR0tFR0lHRmxidGM5NzdpSUJ4a2owN2Y2L3lCNFFDdGM4TW5w?=
+ =?utf-8?B?blRObjFEdUQ3UjNFaDZOMWZRaFUxTldONjBsdFlHYWoyQjg3bWgvSkliY2pI?=
+ =?utf-8?B?dUdIR3JIUUZKTk1uY00rK1J3ek5oUnJCYnhoZFRhNjNDRFJGc0UweTNOU2ZW?=
+ =?utf-8?B?bm0xcGQwSHB2OUsrd2FzbEhZWld1bXBrV0tlK0hUeGExblFDU3VXeW53bXAy?=
+ =?utf-8?B?RnBZaDR6bTlHN294QVdBSUFrQy9pMGIwMHN6c0M0MEdKQmYyZjgyZkZNaXdZ?=
+ =?utf-8?B?YlZGdENRRmRCQllobVQwVTZZTE9YcjNacS90SXVISTNFSmVkYWovVUZaTkY0?=
+ =?utf-8?B?cFNJOEpFZGtZbmVzSzZZYzZub01wM3I2YUhOODU0VWpHbkpncGt2UUNpcVJO?=
+ =?utf-8?B?SC9NSTU0NXdINzIxZmt2dU9KSWdVSlVkZnE0ZkJzRGg3akxQa1NPNHVhb1hL?=
+ =?utf-8?B?NnE2V2JJMGZMbmhETlpybDdzSmhTSjlZVnhSakROZzBHV2drOTJnekM5UHNp?=
+ =?utf-8?Q?2mpUgm5i9DFN7k1zXtapn5egccKmsHMwI52DTpe+m9U5p?=
+X-MS-Exchange-AntiSpam-MessageData-1: 2KIOtlZJldS+IA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b380d7b-0ec0-421e-9a5f-08de75f3e837
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 11:32:36.9322
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9XHTmqAgOSD6HMvKmVI21hWyp2PhQ4OsMPniezlbTY9dGxDAQ02BGu9SUHNcGrjr6XmO+a7exPRWshXgv/7E3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7460
 
-(Cc: Arun)
-
-On Tue Feb 24, 2026 at 11:40 PM CET, Joel Fernandes wrote:
-> +RUST [GPU BUDDY]
-> +M:	Joel Fernandes <joelagnelf@nvidia.com>
-> +L:	dri-devel@lists.freedesktop.org
-> +L:	rust-for-linux@vger.kernel.org
-> +S:	Maintained
-> +F:	rust/helpers/gpu.c
-> +F:	rust/kernel/gpu/
-
-What about adding this to the existing GPU BUDDY ALLOCATOR entry? Maybe you=
- can
-offer Matthew and Arun your help.
-
-Also, this wouldn't be a subentry of "RUST", but the rust version of GPU BU=
-DDY,
-so it would be "GPU BUDDY [RUST]".
-
-Also, please add rust/kernel/gpu/ to the "DRM DRIVERS AND COMMON INFRASTRUC=
-TURE
-[RUST]" entry.
-
-> +/// Inner structure holding the actual buddy allocator.
-> +///
-> +/// # Synchronization
-> +///
-> +/// The C `gpu_buddy` API requires synchronization (see `include/linux/g=
-pu_buddy.h`).
-> +/// The internal [`GpuBuddyGuard`] ensures that the lock is held for all
-> +/// allocator and free operations, preventing races between concurrent a=
-llocations
-> +/// and the freeing that occurs when [`AllocatedBlocks`] is dropped.
-> +///
-> +/// # Invariants
-> +///
-> +/// The inner [`Opaque`] contains a valid, initialized buddy allocator.
-
-The invariant should be justified in the constructor. Also, where is it use=
-d?
-
-> +// SAFETY: GpuBuddyInner is `Sync` because the internal GpuBuddyGuard
-
-I think it's more precise to refer to GpuBuddyInner::lock.
-
-> +// serializes all access to the C allocator, preventing data races.
-> +unsafe impl Sync for GpuBuddyInner {}
+On Thu Feb 26, 2026 at 8:45 PM JST, Eliot Courtney wrote:
+> Add tests for SplitState. They cover boundary conditions at the split
+> points to make sure the right number of continuation records are made.
+> They also check that the data concatenated is correct.
+>
+> Tested-by: Zhi Wang <zhiw@nvidia.com>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/gsp/commands.rs | 114 ++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 114 insertions(+)
+>
+> diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-cor=
+e/gsp/commands.rs
+> index 6ffd0b9cbf05..74f875755e53 100644
+> --- a/drivers/gpu/nova-core/gsp/commands.rs
+> +++ b/drivers/gpu/nova-core/gsp/commands.rs
+> @@ -384,3 +384,117 @@ fn init_variable_payload(
+>          }
+>      }
+>  }
 > +
-> +/// Guard that proves the lock is held, enabling access to the allocator=
-.
-> +///
-> +/// # Invariants
-> +///
-> +/// The inner `_guard` holds the lock for the duration of this guard's l=
-ifetime.
-> +pub(crate) struct GpuBuddyGuard<'a> {
-> +    inner: &'a GpuBuddyInner,
-> +    _guard: MutexGuard<'a, ()>,
-> +}
+> +#[kunit_tests(nova_core_gsp_commands)]
+> +mod tests {
+> +    use super::*;
 > +
-> +impl GpuBuddyGuard<'_> {
-> +    /// Get a raw pointer to the underlying C `gpu_buddy` structure.
-> +    fn as_raw(&self) -> *mut bindings::gpu_buddy {
-> +        self.inner.inner.get()
+> +    struct TestPayload {
+> +        data: KVVec<u8>,
 > +    }
-> +}
 > +
-> +/// GPU buddy allocator instance.
-> +///
-> +/// This structure wraps the C `gpu_buddy` allocator using reference cou=
-nting.
-> +/// The allocator is automatically cleaned up when all references are dr=
-opped.
-> +///
-> +/// # Invariants
-> +///
-> +/// The inner [`Arc`] points to a valid, initialized GPU buddy allocator=
-.
-
-Do we need this invariant? Isn't this implied by the GpuBuddyInner type?
-
-> +    /// Iterate over allocated blocks.
-> +    ///
-> +    /// Returns an iterator yielding [`AllocatedBlock`] values. Each [`A=
-llocatedBlock`]
-> +    /// borrows `self` and is only valid for the duration of that borrow=
-.
-> +    pub fn iter(&self) -> impl Iterator<Item =3D AllocatedBlock<'_>> + '=
-_ {
-> +        // SAFETY: list contains gpu_buddy_block items linked via __bind=
-gen_anon_1.link.
-> +        let clist =3D clist_create!(unsafe {
-
-This macro has three separate safety requirements, please justify all of th=
-em.
-Also, please also use markdown in safety comments. Personally, I don't care=
- too
-much, but it would be good to keep things consistent.
-
-> +            self.list.as_raw(),
-> +            Block,
-> +            bindings::gpu_buddy_block,
-> +            __bindgen_anon_1.link
-> +        });
+> +    impl TestPayload {
+> +        fn generate_pattern(len: usize) -> Result<KVVec<u8>> {
+> +            let mut data =3D KVVec::with_capacity(len, GFP_KERNEL)?;
+> +            for i in 0..len {
+> +                data.push(i as u8, GFP_KERNEL)?;
+> +            }
+> +            Ok(data)
+> +        }
 > +
-> +        clist
-> +            .iter()
-> +            .map(|block| AllocatedBlock { block, alloc: self })
-> +    }
-> +}
-> +
-> +#[pinned_drop]
-> +impl PinnedDrop for AllocatedBlocks {
-> +    fn drop(self: Pin<&mut Self>) {
-> +        let guard =3D self.buddy.lock();
-> +
-> +        // SAFETY:
-> +        // - list is valid per the type's invariants.
-> +        // - guard provides exclusive access to the allocator.
-> +        // CAST: BuddyFlags were validated to fit in u32 at construction=
-.
-> +        unsafe {
-> +            bindings::gpu_buddy_free_list(
-> +                guard.as_raw(),
-> +                self.list.as_raw(),
-> +                self.flags.as_raw() as u32,
-> +            );
+> +        fn new(len: usize) -> Result<Self> {
+> +            Ok(Self {
+> +                data: Self::generate_pattern(len)?,
+> +            })
 > +        }
 > +    }
-> +}
 > +
-> +/// A GPU buddy block.
-> +///
-> +/// Transparent wrapper over C `gpu_buddy_block` structure. This type is=
- returned
-> +/// as references during iteration over [`AllocatedBlocks`].
-> +///
-> +/// # Invariants
-> +///
-> +/// The inner [`Opaque`] contains a valid, allocated `gpu_buddy_block`.
-> +#[repr(transparent)]
-> +pub struct Block(Opaque<bindings::gpu_buddy_block>);
+> +    impl CommandToGsp for TestPayload {
+> +        const FUNCTION: MsgFunction =3D MsgFunction::Nop;
+> +        type Command =3D ();
 
-Does this need to be public? I don't see it being exposed by any API.
+Since we are testing the size of the data written on the command queue,
+can you make the command itself larger than 0 bytes? Otherwise there is
+a potential for missing errors.
 
-> +
-> +impl Block {
-> +    /// Get a raw pointer to the underlying C block.
-> +    fn as_raw(&self) -> *mut bindings::gpu_buddy_block {
-> +        self.0.get()
-> +    }
-> +
-> +    /// Get the block's offset in the address space.
-> +    pub(crate) fn offset(&self) -> u64 {
-> +        // SAFETY: self.as_raw() is valid per the type's invariants.
-> +        unsafe { bindings::gpu_buddy_block_offset(self.as_raw()) }
-> +    }
-> +
-> +    /// Get the block order.
-> +    pub(crate) fn order(&self) -> u32 {
-> +        // SAFETY: self.as_raw() is valid per the type's invariants.
-> +        unsafe { bindings::gpu_buddy_block_order(self.as_raw()) }
-> +    }
-> +}
-> +
-> +// SAFETY: `Block` is not modified after allocation for the lifetime
-> +// of `AllocatedBlock`.
-> +unsafe impl Send for Block {}
-> +
-> +// SAFETY: `Block` is not modified after allocation for the lifetime
-> +// of `AllocatedBlock`.
-> +unsafe impl Sync for Block {}
-> +
-> +/// An allocated block with access to the GPU buddy allocator.
-
-This needs a better description, i.e. what makes an `AllocatedBlock differe=
-nt
-compared to a "normal" Block.
-
-> +///
-> +/// It is returned by [`AllocatedBlocks::iter()`] and provides access to=
- the
-> +/// GPU buddy allocator required for some accessors.
-> +///
-> +/// # Invariants
-> +///
-> +/// - `block` is a valid reference to an allocated [`Block`].
-> +/// - `alloc` is a valid reference to the [`AllocatedBlocks`] that owns =
-this block.
-
-References should always be valid, no need to mention that.
-
-> +pub struct AllocatedBlock<'a> {
-> +    block: &'a Block,
-
-NIT: What about just naming it "this" and
-
-> +    alloc: &'a AllocatedBlocks,
-
-"blocks"?
-
-> +}
-> +
-> +impl AllocatedBlock<'_> {
-> +    /// Get the block's offset in the address space.
-> +    ///
-> +    /// Returns the absolute offset including the allocator's base offse=
-t.
-> +    /// This is the actual address to use for accessing the allocated me=
-mory.
-> +    pub fn offset(&self) -> u64 {
-> +        self.alloc.buddy.base_offset + self.block.offset()
-> +    }
-> +
-> +    /// Get the block order (size =3D chunk_size << order).
-> +    pub fn order(&self) -> u32 {
-> +        self.block.order()
-> +    }
-> +
-> +    /// Get the block's size in bytes.
-> +    pub fn size(&self) -> u64 {
-> +        self.alloc.buddy.chunk_size << self.block.order()
-> +    }
-> +}
+I'm saying that because it actually happened to me, I used
+`MAX_CMD_SIZE` instead of `MAX_CMD_SIZE - size_of::<C::Command>()`
+somewhere, and despite it being broken the tests were passing.
