@@ -1,127 +1,141 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.mr.icloud.com (p-west2-cluster1-host11-snip4-10.eps.apple.com [57.103.68.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638CA27603A
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 13:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDE7248F68
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 13:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.68.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772197353; cv=none; b=C8gMb4GSkngsigHYkoRf0KI3sMSSWkT50fyVhuFWgndabfvT3kgYeldpS2Mj4N7Srr1xiGuP/qP7E62ovqqkO9FC22ayE7cTkcQvdEVpq5YHcsRNpzRQ8KzVj+6qb67bT1cAnGdO+ElLMJEa6CfXoILiKMvSA4MAkKUEQIOt52I=
+	t=1772198843; cv=none; b=DLVma268MQqQXOce7nA856GI1zVQ3WhQ/Sj39R139CTZsIqkcRvByWEmTxdQEYendZJRQm0i1eGXH90XfrkSqdDHoeme+5LZXhFwSkMHJ5CbtbacquS9NHxxg+FYXDk8QwDj4iyc3fFdLfhN+VvG+jD31Bqo5uqmRYcgI/J52RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772197353; c=relaxed/simple;
-	bh=uzYqLggd1J3ruSnkOHZzlSQ4Ico+CcZ9oOE2mJRsSFk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MCDH2w9/mRHOxHsArzMD8oOqGs2JbEkObtGdYMH/NnfnvixJEuRgZD0hiNAUfUuzwWdNklMK6mKJgpaKfOEKiK6K7h0qb95lFOTfmTbqOMKwJVPLCnmD6GNIVTE3NSI1np4NdIO3Lbvv5pTdQ+Gsi33o1tgjsO9q2dsdA1OyyNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N5XbK4Nh; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1772198843; c=relaxed/simple;
+	bh=sEgXL3WoF8wdiRr7K25ilKknZPwGl5esvG142bOJ5nQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=I95pmyyxvxXgfpr/JtZZpg+MNQ0jt2Z4HbfAMCZsSIcbNH5ETx5/KX4kHYi6eCpuN+9lG4fyCx6kAhzzp6IQaFXOf3euuIMnjRz+KLLcYESXFbA7axGMWBbPGUf8CGYBNjZBcRf49DteTLCXsfFGd8nW9aD+ihWiDrovBnxR8AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=PK2chCLi; arc=none smtp.client-ip=57.103.68.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N5XbK4Nh"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836b7fbf4fso13981365e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 05:02:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772197350; x=1772802150; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7+OE6E+kryFBIhcFl9wc2Cm9uk0vShrlaAuBGorkTKs=;
-        b=N5XbK4NhG357+qBqqmn5PJ3PvBasyFGZuX/xS5Kv7Hf7hwMLZO4HPPrwyYfNzrUcck
-         UsBOCXEOfTeqZbxqNCSkE6qhCdKglNJwWzG2h9QX5wAI12emDlxzgy6UeUAT+B1YXG3I
-         u3mvLSkXwIkB1PUBWQ5+xgaDcNAwZ0y7IOOc6SXhod3DOaYPzx0piMbQgDAFWYCJnBTF
-         ZH8Dnbjb4VAJyv5FaXp1JUB004uJVlYrDQ4O3OSDQBHE1koh3bDIw7HuSkWWCMjuCTTW
-         ft2OQzx48Ddtp8lfNOZP3O7gY2ywyl52CW0Lg/PoaAX+W1aNV0Q7Ecn7im91WQnAqHSi
-         H58Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772197350; x=1772802150;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7+OE6E+kryFBIhcFl9wc2Cm9uk0vShrlaAuBGorkTKs=;
-        b=qiDeh64C1xeiceoD/G/7eRknI8X9EZzV4YMh+ggsbRyRnjDapVOtMcDLx+yiDauxj7
-         HvUpIiBsghVM51TAGRDjWC4ZzaS893TPv3Ip1KtZT6zVHSg9LZhvO0SkQq2XxK89vIOO
-         9ATUBnnSrZ4Xr4pRbx3rW3juAG0lh2Q19CE29IJVBE4YR6mt85z+kUZAVVidUBQv6vMb
-         H2aMkib/TjXR7ZjSh84xPWRHX0ct4X8w42GrNCzLrfBF5U1o3oYBj78P17QsRiY/vWdA
-         Ph9HwVyzScseeG2dRGt/OF0VwJMjSGF6jqDlJpAOzMepn85otVEWHwR3uB3iQeSta36/
-         fTMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVfTBue2OX+k8JXoQvaK3qaQA1anneOfphg+T+KigMKxaTet9oREn2EFZi9qOBbavnwr8uUnD3jBJ/GDJ71tw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwY4Rss+dOKBCZrFCNV0zFn9Nm4uo86MIskmzLF2gFMNNxsTSjG
-	ePPapsrS1SYKkcD7JJdlEfcBue98DFfs2DHPqJ727Dk3i330sHbXX+2Amo1LyL6g7t4p3Qp6TYZ
-	ZAD5xONpn567xinlfKQ==
-X-Received: from wmsm28.prod.google.com ([2002:a05:600c:3b1c:b0:480:2e46:31e1])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:190c:b0:47e:e8c2:905f with SMTP id 5b1f17b1804b1-483c9ba7b9fmr39802455e9.8.1772197349520;
- Fri, 27 Feb 2026 05:02:29 -0800 (PST)
-Date: Fri, 27 Feb 2026 13:02:28 +0000
-In-Reply-To: <DGPQSQCRYS7E.2443Q5A151I7H@garyguo.net>
+	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="PK2chCLi"
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-7 (Postfix) with ESMTPS id 2D5E3180016B;
+	Fri, 27 Feb 2026 13:27:21 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1772198841; x=1774790841; bh=NBL8i/gMkWhnGT+P+c8YRHFFPZcKzGJ6OnahLVdfmIc=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=PK2chCLiYzePN9NDo3wZJVPjgVMCBLITpxnltXIedA546KVAg4yJC8hg9UQ1gIDGfKpmWwoIFbUqJFKock49pjCDbSCIEMJygiqbw9dGeeigqmEZkhCG1FfTw7tCG4bJIFeRS9L8qS9Rh+uGlIDSbYJS6qTpw4uM0Hfy58qrmwrKMG7A8yxdwrI06aKEJApLw4k7P/A9M31Naua5ADsEKzp45rwd0/m/mEsq1yOaCtGHlas8QlU/ZKdI/SaO9DgzYjRXkoqG//2pitO7j3QKssk0gstxHCAED3W3F/gz9dw3wGR78/aR1xQaxohP2Cm6ps4GJEEfa46LxkannfJg6w==
+mail-alias-created-date: 1772007648188
+Received: from localhost.localdomain (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-7 (Postfix) with ESMTPSA id BA4021800140;
+	Fri, 27 Feb 2026 13:27:18 +0000 (UTC)
+From: Mohamad Alsadhan <mo@sdhn.cc>
+To: nathan@kernel.org,
+	nsc@kernel.org
+Cc: ojeda@kernel.org,
+	gary@garyguo.net,
+	linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Mohamad Alsadhan <mo@sdhn.cc>,
+	Yoann Congal <yoann.congal@smile.fr>
+Subject: [PATCH v2] kbuild: host: use single executable for rustc -C linker
+Date: Fri, 27 Feb 2026 16:27:13 +0300
+Message-ID: <20260227132713.23106-1-mo@sdhn.cc>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260225102819.16553-1-mo@sdhn.cc>
+References: <20260225102819.16553-1-mo@sdhn.cc>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260227-close-fd-check-current-v2-0-b3347edbb310@google.com>
- <20260227-close-fd-check-current-v2-4-b3347edbb310@google.com> <DGPQSQCRYS7E.2443Q5A151I7H@garyguo.net>
-Message-ID: <aaGV5NR9qo4Iah5C@google.com>
-Subject: Re: [PATCH v2 4/4] rust_binder: check current before closing fds
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: s776J-1zVqQDbH6tTIMSP0jZsGbSoT1-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDExOSBTYWx0ZWRfX5272JshkG3il
+ Zh0CHlU9qgwn268+kZ24iUT8LqhxuVAvq4IoRiYPv3Z345V68tzHnFVjwfNxwT+ybZ+H8zxQINB
+ 0fHEnWFetksfFTliAjMV1CUsbUXmPS5ZZ3b7cRLzbpNY/573uI0Rh2tfgSSPeROGKpTPxtMKLVa
+ 6al0mW560yvRqo5/uUmMtQt7e6q/eizZql7tGCLBYM65fmgSZCfWUi5OMHFIqVaU1eUGoXqay8i
+ xKldgKpcZYo/TYv0LObTFJusMUHTCyEtYgiovwMg7lSkkikc02QSfY9Qz6gg+1jXHu2VAMyNDBH
+ YSxpdTV25D8wdiw2LHEE+tqjyzdr6KGw6e15TL1ZAP+uFDA1OYa/KgNzrtljIY=
+X-Proofpoint-ORIG-GUID: s776J-1zVqQDbH6tTIMSP0jZsGbSoT1-
+X-Authority-Info-Out: v=2.4 cv=O/U0fR9W c=1 sm=1 tr=0 ts=69a19bb9
+ cx=c_apl:c_apl_out:c_pps a=9OgfyREA4BUYbbCgc0Y0oA==:117
+ a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8
+ a=x15TNrMgF8Yv6q7hHcYA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-27_02,2026-02-27_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ spamscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
+ phishscore=0 clxscore=1030 bulkscore=0 mlxscore=0 classifier=spam authscore=0
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602270119
+X-JNJ: AAAAAAAB505fCQDuvsixKucLwym0EmR/Ak7BJ4FAjZcPS5BzCY3tv4slMTbccWpVpXruJ/tP8VsyoefZF1qcQcYbMuko+N+R/zQ7rTupA276P0/GJ95zaldt8lDJsYpuIwJDpegLnrPzOcpBh7v6IwFc/dCPnMuvtFAZkvP+O9cjbdr3EW7MePCfuZRsBlfQfQ8M8FiDAh49C1gLL9OAzJcxBlCIR6APzpucnwN/qEm7wTKX/ob7nAS4CrCYc/aUIa2mWshiHldLfUqmjnB4bLpw2FHvyO/Hg8jYYA5u6krzaF5u5kucNocH43qBzQ5slWpIIO1xzgSK549w9RiHhjI0myZtdYU1ffUVCZEnDYliUMu4M8OWAzktKhvIJTCB3bsX2VpxBmfGGsIATro8q8JRSPxab1lYnXzjL8EekmV+sCc/deshNVzz5+pPT0JCNGc5iweaCB/cjRtFLyEaQgfICiBNRYygmDixq3h0CLYjr7XKJJaLRlfiHASRB924WEBI/4Wqz3iDgw/pk1D3g/C1Yd5Nck/5ync9XVYXvC6B1bMc7/8fupQ7Z54Gs3aDMmVOebU1jpAeFPDXob9RtUYzDp/v/YktsUQnAD6+xyVGlef1HykGDkUnnYvFG0duV/uC1kJEctFoaNu7QY/tQ0D2Y06Kz8mfuv6LgCdC6do2Y3E4dAJhM43bwboWgiwuccDPYw==
 
-On Fri, Feb 27, 2026 at 12:28:04PM +0000, Gary Guo wrote:
-> On Fri Feb 27, 2026 at 9:34 AM GMT, Alice Ryhl wrote:
-> > This list gets populated once the transaction is delivered to the target
-> > process, at which point it's not touched again except in BC_FREE_BUFFER
-> > and process exit, so if the list has been populated then this code
-> > should not run in the context of the wrong userspace process.
-> >
-> > However, why tempt fate? The function itself can run in the context of
-> > both the sender and receiver, and if someone can engineer a scenario
-> > where it runs in the sender and this list is non-empty (or future Rust
-> > Binder changes make such a scenario possible), then that'd be a problem
-> > because we'd be closing random unrelated fds in the wrong process.
-> >
-> > Suggested-by: Jann Horn <jannh@google.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  drivers/android/binder/allocation.rs | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
-> > index 7f65a9c3a0e5..31a42738a99d 100644
-> > --- a/drivers/android/binder/allocation.rs
-> > +++ b/drivers/android/binder/allocation.rs
-> > @@ -260,6 +260,10 @@ fn drop(&mut self) {
-> >                  }
-> >              }
-> >  
-> > +            if self.process.task != kernel::current!().group_leader() {
-> > +                // Called from wrong task, so do not free fds.
-> > +                info.file_list.close_on_free.clear();
-> > +            }
-> 
-> If you're sure that this won't actually happen, perhaps print a warning if it's
-> called from a different task but the list is not empty?
-> 
-> Also, I think this can be
-> 
-> if ... {
->     for &fd in ... {
->     }
-> }
-> 
-> rather than `.clear()` and then iterate.
+rustc's -C linker= option expects a single executable path. When
+HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
+-Clinker=$(HOSTCC) results in the shell splitting the value into
+multiple words, and rustc interprets the additional word as an
+input filename:
 
-Actually, I guess there is one case. When the binder fd is closed, this
-code may run from deferred_release() in workqueue context. Now, the fd
-close logic is a no-op from workqueue context, so this patch still
-doesn't change behavior, but it means the fds wont get closed.
+  error: multiple input filenames provided ...
 
-That said, this actually matches C Binder behavior. It also does not
-close BINDER_TYPE_FDA fds when you close the Binder fd without first
-issuing the cleanup command for each live BINDER_TYPE_FDA object.
-Probably not intentional, though.
+Introduce HOSTRUSTC_LD to select the linker executable for host Rust
+tools. When HOSTCC expands to multiple arguments and HOSTRUSTC_LD is
+not set, fall back to the last word of HOSTCC and warn. Users needing
+wrapper semantics can point HOSTRUSTC_LD at a wrapper script.
 
-Alice
+Closes: https://github.com/Rust-for-Linux/linux/issues/1224
+Suggested-by: Yoann Congal <yoann.congal@smile.fr>
+
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
+---
+v1 -> v2:
+  - Rename HOSTRUSTC_LINKER to HOSTRUSTC_LD for consistency
+  - Introduce explicit HOSTRUSTC_LD override
+  - Warn when falling back due to multi-argument HOSTCC
+  - Error out if a user-specified HOSTRUSTC_LD is not an executable
+
+v1: https://lore.kernel.org/all/20260225102819.16553-1-mo@sdhn.cc/
+---
+ scripts/Makefile.host | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/Makefile.host b/scripts/Makefile.host
+index c1dedf646..f029f3f0c 100644
+--- a/scripts/Makefile.host
++++ b/scripts/Makefile.host
+@@ -87,11 +87,30 @@ hostcxx_flags  = -Wp,-MMD,$(depfile) \
+                  $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
+                  $(HOSTCXXFLAGS_$(target-stem).o)
+ 
++# rustc's `-C linker=` expects a single executable path, not a command line.
++# HOSTCC may be a multi-word command when wrapped (e.g. "ccache gcc"), which
++# would otherwise be split by the shell and mis-parsed by rustc.
++#
++# Allow users to override the linker used by host Rust tools via HOSTRUSTC_LD.
++# If HOSTCC is multi-word and HOSTRUSTC_LD is not set, default to the last
++# word of HOSTCC (typically the underlying compiler) and emit a warning.
++ifndef HOSTRUSTC_LD
++HOSTRUSTC_LD := $(HOSTCC)
++endif
++
++ifneq ($(words $(HOSTRUSTC_LD)),1)
++ifneq ($(filter command\ line environment,$(origin HOSTRUSTC_LD)),)
++$(error HOSTRUSTC_LD must be a single executable for rustc -C linker=. Got: "$(HOSTRUSTC_LD)")
++endif
++HOSTRUSTC_LD := $(lastword $(HOSTCC))
++$(warning HOSTCC expands to multiple arguments. Trying HOSTRUSTC_LD="$(HOSTRUSTC_LD)" for rustc. Set HOSTRUSTC_LD to override.)
++endif
++
+ # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+ # current working directory, which may be not accessible in the out-of-tree
+ # modules case.
+ hostrust_flags = --out-dir $(dir $@) --emit=dep-info=$(depfile) \
+-		 -Clinker-flavor=gcc -Clinker=$(HOSTCC) \
++		 -Clinker-flavor=gcc -Clinker=$(HOSTRUSTC_LD) \
+ 		 -Clink-args='$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
+                  $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
+                  $(HOSTRUSTFLAGS_$(target-stem))
+-- 
+2.52.0
+
