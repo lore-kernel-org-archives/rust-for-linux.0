@@ -1,71 +1,69 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022079.outbound.protection.outlook.com [52.101.101.79])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020126.outbound.protection.outlook.com [52.101.196.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCED644B66D;
-	Fri, 27 Feb 2026 16:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD2844BCA4;
+	Fri, 27 Feb 2026 16:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.126
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772208059; cv=fail; b=s3ljM/IXqfnbkFyy0ORfsgRnCnvXahq5seeeJiwVRs7wu+uvY4q5eJwfPMZmgBWO3+BXwF2qbiIuuz5vVxGSKpDZ1TN/NlHYNig3Wr+AMlmaTS5NQucUgzF10BtknVxMg50N3Ui7JXm+GiySms9EJQiGWExzj6++7c/Ub/5mjLI=
+	t=1772208303; cv=fail; b=VlA2gPYhNVHIDelM8LflsFoPe3PdEtj1b6jw71sH9sjrkz0uuu77dzMPuTFiqD8MRfxGGvlFONZiekd5zvHjAnFaz+e401JUWc506LtqLj3hzQSYxrDtWb0BYxUzM8qbOvCkdaGlOScXkUUHWW8uPQo+KuWUvbprHPd8LGBysak=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772208059; c=relaxed/simple;
-	bh=1N4n/AY8LzlO/aI2qaKi3Xi/HEW21+wp5+V5Fr1CI3w=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=iwFp5yq7Np3eIGuxlV1ntkTcLrz8QvNbBS3m+FPD/w2r3tRoSwvIJ0J7Qdtu/v3WB/BtrZKvCXmk6blcQ278C6hnUVtA9J171aRrv7FWOo98t8yw5YiqkEJmyRWYrzI3O/dYoOGwt8eBjALnaOVeQxuAK+KnD3liNk5AfF8n8Tk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=JqkMGXVW; arc=fail smtp.client-ip=52.101.101.79
+	s=arc-20240116; t=1772208303; c=relaxed/simple;
+	bh=zAPK1Sxb7Ej9rwP5eV6bCOft1PozYnE+cncAXWwcxB8=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=IokyrkqSVbY0QTymCqGS8b480WnSzDK2H/uO3DNKxMZMKksPSCG2EJTVsFsLvBCza1iMeBoMkaNbPCz2y2mvBpZRl4xRbEGTllNxYdkvo+Nv38jpLl/MzE3L6fmZqxMUrJqutu0SjlrVL8sgYs8Sa1GuLg14xZkBTClsPDiOJ2A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=cvrwySkx; arc=fail smtp.client-ip=52.101.196.126
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="JqkMGXVW"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="cvrwySkx"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xUI11YRJc34Sq9GTjoYuRtSDYNsDb4iBmOESY+iVyZefweie9kWeI8l4YcF1oh3jzHTjx9bcdoRo23zvvVfT1tDM6mvfKpIsef/Y1o8mYpCMwZaHnGprUNrTWo6LKFIiGywJbualNMH7IZvAmflU+TdDQNk+T3ApR+IvULjYtJYFTtro9u39kYbOdRv2feM1vVhqtEOcFNljAisB2Iwk95BH94DD4g52KpG317hSOK0IZVoXpBzN6QK2TSIvm/0R6H4rccjNto2zeMUIvXDlKueuU7fPVN2XHC0ORaiuF/8pYu9MNmRFYnpFMvo0LhUmtTmna/RN8krRkOz9BORVlw==
+ b=m6CdO0xrynsWoo1zwZ0EcTzr33LtSUNC2Bs2D6CZHkPqGqg3TBa6jaaQdsF5r0RrunlYN4Ilf0/vyKTnJa4kszXurFvF7MgglM9SXeHefIWGPEUq+SufoZc2AjttLUu15eTJUFpCo7LrByAjo6VPltt+4FzebbO2Q8Zq4qYUg81l3NrV8DyrxvltoAJgi0OrMvQl/v+Kos9jwQalR/DOyPLBIpPUuV2wVGqj4kAmwF+TWLfs2wq2coRhgwzQYCs0qyGc16HbAmi7X64/xZL7PDwZGjkNFOpgXNLLJ7Ax787gg+JXiBqqGqPryM8OOOr7ljEOK2H4oUyLua88qWuq8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ClLhfUqvhOjGgBPkoGUu9fG1mPBXrT9BdfF8/y/ELGI=;
- b=J6sJyDrdkcNG0kpwS2yQY1CZd2HjV5CVUK8769AjQUVkCMAeuXkfWa0xZZ/kmzXI90J6Og1L3HbgFgLj3eiGV49KbgzD6QQk7I9VgAnjMDzeoiUvvSuS6skm3urFY2r3BFoVsJIHkzKt41S3JnVyqZ09eN0TDiJNBPARP9CzGlIsj1PXb9/ik1Y8418oOWmz81Nh5nighPEVbel+wsylLZDxOALNelXJjXm2I/hDAkiTkPaRYtQVxlF2AiIclmjiof7w8ho0PpHfhnCpylTUfy1f6F/DUrgoyfeXOmEoggs90A34B+7Stxc883lc/sunG0TGZfN1DvFKYgR5dfS/yQ==
+ bh=aHZu9jtDqK/NmIOip4dnqF5qbxMdy1JlaRBLxXMcNIE=;
+ b=frFvJunXjydXf6M8P7bTZUQ/hqUPJJyVzobitPXlNmAXbDder1EEECSxqMYUlybnggq8yWF77E/uBeaTW0+gGh6eLCJtxNV1uZhGoX7m34whnbnk9GM9UFWRovOlFzYDVs8NnoBT9OV/xVl67jyWCNzZZQw4Tv+QNZO5Tnq9McI+xQnumQsDyJ1fgE5TlAUEXwYixZpC3JgMsZVUqMOHsQVDKXbnA/KHIdgq1SV7nNZ9Cm7vtXG4iiSiDYu/6zpMraZ6jizILi2QhdFyayRW3gymTSG/OYC6TTqqQUXNu55z2xMRF7/wnLtLLXcjVZa31Xmi5R66SVjnugC+BojJig==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ClLhfUqvhOjGgBPkoGUu9fG1mPBXrT9BdfF8/y/ELGI=;
- b=JqkMGXVW2TPyswfW67CGlCq60bx662FFxDGrZZay/1lvuVonsU02c7Ui4MCttZU+iRiwNpDybTpu2NA+/OvGNplmmPTICS95sOlU24Nl0daTHeJHurr6z29Chf6+uFhJ65BR98Q4SB3/iwH8CtQynKZ2c1THyuHH6v/WYl3HoFg=
+ bh=aHZu9jtDqK/NmIOip4dnqF5qbxMdy1JlaRBLxXMcNIE=;
+ b=cvrwySkxFcZZL4XnFCcJ+j81qWRt5oqvt9KvdewEr/ZiVQksD6bsIVrAuBAS0GKffkIZYQmX2WtcMCXan1OFXAROnxQ0ex1JalW/gqd8HsUi1XdbqO8b6I5p0fp/B4a1rx1cuckaz2XjN2wCeNO64QiyD+loMFiuPdwWLxEAQTg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB5766.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1a8::6) with
+ by CW1P265MB7675.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:21f::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.15; Fri, 27 Feb
- 2026 16:00:52 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Fri, 27 Feb
+ 2026 16:04:58 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
- 16:00:52 +0000
+ 16:04:58 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Feb 2026 16:00:48 +0000
-Message-Id: <DGPVBM93AJXE.35EXIFCRRT9FU@garyguo.net>
-Cc: "Tejun Heo" <tj@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Lai
- Jiangshan" <jiangshanlai@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Philipp Stanner" <phasta@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Benno Lossin" <lossin@kernel.org>, "Tamir
- Duberstein" <tamird@kernel.org>
+Date: Fri, 27 Feb 2026 16:04:57 +0000
+Message-Id: <DGPVESJHRDJZ.3VHEZW1ZM7Q3Q@garyguo.net>
 Subject: Re: [PATCH v3 2/2] rust: workqueue: add creation of workqueues
 From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Tejun Heo" <tj@kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>
+Cc: "Lai Jiangshan" <jiangshanlai@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "John Hubbard" <jhubbard@nvidia.com>,
+ "Philipp Stanner" <phasta@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Benno
+ Lossin" <lossin@kernel.org>, "Tamir Duberstein" <tamird@kernel.org>
 X-Mailer: aerc 0.21.0
 References: <20260227-create-workqueue-v3-0-87de133f7849@google.com>
  <20260227-create-workqueue-v3-2-87de133f7849@google.com>
- <DGPUOSG5I4GM.1N5AWMP5ZFY4M@kernel.org>
-In-Reply-To: <DGPUOSG5I4GM.1N5AWMP5ZFY4M@kernel.org>
-X-ClientProxiedBy: LO4P123CA0466.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1aa::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+In-Reply-To: <20260227-create-workqueue-v3-2-87de133f7849@google.com>
+X-ClientProxiedBy: LO4P123CA0185.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a4::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -74,110 +72,351 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB5766:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4139c6c3-d5a0-4f71-a0c1-08de761961ba
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7675:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe92277f-3ab7-4f6f-ac16-08de7619f46c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003;
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|10070799003|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	uEsURIp7rrHQDtGYlFX/EN4nmxdHf+FMfDzeLYbiTAS+Ke6H8OOuYz8o/LKrGFzDETKlJwnymjlTJfXrZMl14TrfhZJ1Xd1bBs0u8jeN9mYRtYFPiuXeElnT5vSSjaFU2UT6RTdQ4/6QUWa6avLrrSMwLMuHlwaAitUcdN8JPXHhdXZ+RujKNeJ35MzmkHbSaYwQ8FLUeNz2hQl7YeaYetFeYRYgFM6lDmyBTjPnOtWdew3rdUe9wzrrbrug/9e42o0QMSyT1paSG/u0FOKd0vl5/0ebFcfeMT+h+tpeJZ5de3gWzjT6rZ8PJST4MXQNQEhSU5+CZ2vjdVJ1aHeyLxCAkLl/BmjHqVcEyVeIBlu+yIAmpnai9gecrw4Hbu8jQVFTo3Kt3rLriV75a5ZMwDxJEw89n8O6D5YFlxGQUDj55iMkdz93T0/AZRB/HuOjrm+Fjl/bItRxtwyasfYm+pw5ENoI+SlhPBsL6KF2CLhKPoc8FRZLpbiSb0fQvyUwL2T5GkqJ5Ma3t70MDQM4IJ/yHl3bDjRt2BsSzTmUb6KAX6A22z8zcjQBhg4+601Ahi/w7AOgHqx5h6sAm89hQnqN5vumGM+csYT6kKpNjOas08a8awQOAaSR2qCRZLQ7HZs1iOuKihMeBf/ET1xep2ZIcbKRhihOwbsi7pbWy/ztXnRbGTSCfc1GIWrPy79BPSKq8n0SmJNo9JjPIawO91cPHtmJJR1ZLNbb/UfXvYc=
+	/hM5x+WyhkF2YLbXBJFeXL+Uk2YTfmFbEyt/SMMY3DR/+PBmvAxjpI6v9mO1ClfqSIc38minLqgaTp/iiWxG6wssMZE8OgYFivVHfusmU8lFAxIQTknG/xPtlBcJZNOTSRtUG6Cz204pT5dUiOrOW34sfulSBuXYnDoenMdv5ooexCezXpMRnUzKTxKlxEqx1yuWOjJrAV5UzyAfcuNPh5J4IvhX0zLgo9c+EFrmodYKX7RzY4Gzqhyw7emfLyGIVhoqCNT6boXHZfyKtVARxSzdnMmsz0VJDBYK5MG2DxpNswoCVksjjKyKZtcMVLuHezILieqqt975+RfMM7Is0ZlUec8TXPJhO/Cno40sbTLHfxJfkKkmagshexpvQLt6/Y8iIN9TW3Kzp9gGTxei3FSv9iJq1FW1ComfxD5HmAkOa3uES775CTRaujusVQUTe1wGrpqCSDfdPAiqCfw6CBlLumKT36V+ECI6aq+CQrzak7M5lwLnYLwLv+gSSyMSJgT4Ox62iUI+Ie3JTRBzjXGg0BI9rfQcox4crMIqK2V51dSRwLaVDvKyYKlfewN7+79od4VlwvXibZXSc7tedd1B3L2XBj+RUdXWZBH/r5x62soL8FB1ivYVi2tsjBXCNN8rPj2bkAwYtVDhIcRAx3NrWrNkMcl9ElC7hQpX23XA9+OVhB3sZuO77RcXa3O8T4smXhfqAF9lc19ACZDKbPmXnXNrY6SeDuX0lb7W3qo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(10070799003)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TTA5TTJXelUvZmhBcDdqME9UZFVFcWswNmltQUphUEx1QllMOTh3NUFIdzhN?=
- =?utf-8?B?aUtyU0RYanV1a2twaGI4WC9iN0NBNXhjUkNnTkVZYjZzNTFKY1NHd3pQS1FQ?=
- =?utf-8?B?U2JySWVrNkp6dU12MVk3cmYzZ2FROEE4NXhobzN4bnBQTWJFYzh5TlZ5R2lw?=
- =?utf-8?B?akRldHY1enJvNmxSdXJPSjBmVHBQUWxCdkMzdWtLNXh4cU5ld3BTUE5oQUpp?=
- =?utf-8?B?SzNvVG9TSzdFRDdBTUtVQ21GNEc1dzU5SmZ2eS9MMXRMTkRubS8vVmZBVVhP?=
- =?utf-8?B?KzRseUxMeEVqK1dCS3J4VHhsQ0U1N1cwWks0TnMyOTJnVEE0dU45YStHN2Vn?=
- =?utf-8?B?NkxFejNCbjdNVkgxVVpUWmVodzY3b29ab2NBVTFyaUFQVXpENVFJWEJVRWw0?=
- =?utf-8?B?MmdxcmtHdHVEcDNsdjBjQmVxRGphR3N3a2RXMSttVEdJbloraS9wT0piZjdV?=
- =?utf-8?B?Y1JZWFhocm14TCtDcTN6MytIdlhpckxlVmsrd3NtV2VMdE5PdnY2dmlTNVFs?=
- =?utf-8?B?VWhxd1UxbUxqOXJQdXRoMkpzMzFtUzdkcHBjZEs3U3ZXS3lDV0YzdVcvM1p4?=
- =?utf-8?B?NVBXWEZxQ1ZuQXlRUkNJZDM4d25ua3BlT3hvWXF6UFZVRmVERkxabVZnbHE5?=
- =?utf-8?B?Y0NkN1NkMnY2V3NJanA3L21rVG9URlE5YzZKNVBPcVMyQW1CZmQzZG91d3Y4?=
- =?utf-8?B?ajF1RlZrZkFGaEhFMFFPNVVzNUZCL0w0aXBZQ2hLdVFCeWxSZG43UHZzeGJP?=
- =?utf-8?B?UW1LWlhybUFxUmxPZzBzN1V6eERacDBnZ1NlT25jRU5jQkZ4SGVTbUJ5U1NH?=
- =?utf-8?B?M2tPZmZkTlZHTTl6MWtVRXRGUUpkNUtFbG5HellIemxSNzRtVFU3VklCdGxX?=
- =?utf-8?B?cXBrSjZldlUxR0prZ2hHVWNDdy9hWDExcEk3UC80NGltNnhlTzBjNUVrb1BG?=
- =?utf-8?B?Wk9EL2lWZGJtK3BDY2lwUjNNcDdteDBYUUdwcmN4aHRkbG8yTFppR2hzNUp6?=
- =?utf-8?B?QzNacHM1c2NKdW1vQURZZU83Q3dMZXdQOU5pN28rYzEydGtpTENLb1JUc2Rr?=
- =?utf-8?B?WDdoWGMwY1p6blczSlpCM2RNN3duNlZiQmhLZnhuSlFCaS9rTS85ZXd6ZG12?=
- =?utf-8?B?cE91MkxuMFRmV21GdTVYcGxkb1cyK3hYNzRJUHJWaUE0MllyckhLKzVmSGNO?=
- =?utf-8?B?VnZXVmdKUFMvYXYzRTl0S3d0eEZFWFY2elFZTUZOZU9pNU8xNlFESU9wTm1v?=
- =?utf-8?B?MEF2WDVzMmk4V1FQVnF4aXZWcG83TktBTkx1ZTZGdjhEV0VkaVd5dzdnaVpT?=
- =?utf-8?B?eWtXTS9rYVVjM2ZsejFiNVpuaVZ1UXJWRzZCcGw0UkErbXEvRlpuNzBvU3lN?=
- =?utf-8?B?VlArNVFqR2NzcGVWd1FDdjViRFIwZEJoSmtIclEwaTZNK0NlNWNES2JvTW04?=
- =?utf-8?B?aENyUHV2UWZjRGx0bERpSEpLWGRSUmJvd0NOY1Bya3REYzR2RC9aUlBwczRQ?=
- =?utf-8?B?NDh1RXl6a2dyem0ydG5NVEhuK1MxTmRRSmppRnNsWmx3NDhHZ3UzZ0dncEI2?=
- =?utf-8?B?WmpEY1hYRllzRjZIY0hvQjlJL00zWFcyRkJoNHZYQVloMDVJeC9TUkx3VlFz?=
- =?utf-8?B?OFNBemNUYTg3eXNBM3RzQkhGTTJSdlBtYVErcHMrT2tFK1piUEVKT0FZYlNT?=
- =?utf-8?B?L0Vvc3J0YnRkNFVYVGw3UkRMM05UR05oUW9Ob1dZb0pHbTF5YmJxKyttTndP?=
- =?utf-8?B?MzUvTUhpZWxhckFnRDROMXl0SnpkWjVoeTFjZjk5MGlqeG5OVWVwQ2IzNWF3?=
- =?utf-8?B?bk1VN3FBKzEvYzljV0hWOG9nV1NVYjIrRkUzM2VwMDBiRVdZMkhmZ1RHbkxJ?=
- =?utf-8?B?WW1UOWh1aGVnSU1ZcU05a01lalAxZkI1MTVTSFBsSmx0ZDMzY1F6cjdmZm1S?=
- =?utf-8?B?Q3V3eFlYZXZ3cDVTSklTWVk4NUNRZ3NTYUNSTXFtOXRGdlJvRXJlYkIrK2xH?=
- =?utf-8?B?cjVhRURya2YxS1loY1grOFlBYy9xSHdTcHZIRXVHNlcwY0ptNHRJZ251OFdh?=
- =?utf-8?B?N20xbWROV0R2R1NFVzNmMnpYbVZaQTRUeFdXR1lkeTl2QUtsRUxiQWZtM0NH?=
- =?utf-8?B?RTBmZ2lLYjE4VlhoWHRNUmVpN1RIcXV3U2NNRVlOcXA5N3AyTkp0eCswNWlG?=
- =?utf-8?B?dGEzc2V5cmp0cW9XS0NXbnNhZnVsengzTXNTbnJSbDVuYzZhSFRUYXJncWdO?=
- =?utf-8?B?VzJpQ3g5NUhIV254UHd6NmgzaWp2RWlUTEtHemJZaHovME1YRjAwQzZWeHNs?=
- =?utf-8?B?MGpWM2RkaUttZi9BVGFxVzNJSDA3V1RBTytsY3hJMVliZjFET2xsUT09?=
+	=?utf-8?B?OTNBWXhjWDQ2NWxqUTBHak11RGI5OEtvQWhudFFaQUVEZVExWTIzYlk4bTc0?=
+ =?utf-8?B?S09tdERPbGJpcG01RWhya2pWOUZESEpCYUt0UE5Uc280Mjg0aHZLTERGczZm?=
+ =?utf-8?B?dHA0TXRQMTVkNnV0R2U0aFRodktYU1RQbTdyVWE5Z1hUcWtJMk1aOEhSckVu?=
+ =?utf-8?B?ZE1VRkJTaEFJYldmWVBjWDJPckZHVzJSLzM0TytlTVlKNVVHaGt0VVBmVEx2?=
+ =?utf-8?B?UDdTVnJ4dDNzMmtLSUwzYXJ2NjFaeUV1ZTFtQnQxclpzb1VTYjI0a2VTRThz?=
+ =?utf-8?B?M09vN1MzMm41bFZwTTFBd1NTZUd6c1pMZVVyUHBJT3RuTXcwbzN1LzNhMTh1?=
+ =?utf-8?B?MjBLNDQzWlJld0RzQlVlL2txYmUweVFqaFUxMEdCL1B0TjgyZVlmS2dhc3du?=
+ =?utf-8?B?UlNQN1A5Ymp1MW5Tcmp0RHc4RStkOWFlSDlrTFA5ejV2T202aHhUQ2FuRUtq?=
+ =?utf-8?B?aXFObExGeTZWSEp4QVcrUlJJUFdEU3g2anBmM25VaGRQNjJ1OEthM09QMUM4?=
+ =?utf-8?B?UmdwRXo4Zlo3d1hsRlBSVDlrdzgyRWlkZGNxdFdCc1Zyb21jdTRHbjdZZXFp?=
+ =?utf-8?B?eHVBVUNPQlZKVkJqbWVJOU5DRXZ4bUpKb3JYdE9YR3pBM0pQVFQyWnI3UHhP?=
+ =?utf-8?B?cnJWSVlTaTlVd1drQjNtZVk0bm9rQlE1STQrcWxFQ0NUcE1KZit6QWR1NlZJ?=
+ =?utf-8?B?aFQ3K3BMQXdGQzh5UmRzT3JkQU9yc09pVzFxanlMRmswMEhZV25GU1VIRnpw?=
+ =?utf-8?B?bFRlcTZmYUg0dnJyb0cwSjhWcW5OTHB3WU1nWEF6cHRIaVJvd2RtKzhpY2tM?=
+ =?utf-8?B?bHI5MlhjSXFPS3BBazZhYkd5M0ZIQ3c4UXVWelZQZzZLWXg1R0tHaEo3clRL?=
+ =?utf-8?B?UnZFWlNZYVJhMG9OeVhacmFVVU5NN3E3ZzdTQ2toOVl5dXdMN0hzTXYyV3hV?=
+ =?utf-8?B?M1hLTUxFMlIxckhmUDZLQThBOHFaTVB1M2hQMStlSlduNEd6ZWlKQW5QWVJu?=
+ =?utf-8?B?cnpKbDYzUDc1bHhNYlNBaEx2TTg4T0srZ25xVVBXSThaTERFYUdxdzMyZHpB?=
+ =?utf-8?B?V0xHMk1QWTNpdVFNRmxsLzM5azhrWXBWRUgxVDhlMHdyeXh3OW5vSWt6VW1R?=
+ =?utf-8?B?bFNCZm16aDVsSEhZeDVTR1BWSkY2Mk1qRzFxVWg0Qk9uZk95bHo0OHVSOUR4?=
+ =?utf-8?B?Rm1FamVuOW1zcVJsZ3hJcTZuanNERU8ycmJJaTBBSVYrS3doT09PT0JSa3pJ?=
+ =?utf-8?B?WThweER6OTFxWEtpZ2ZpT0VwT3FkYjZTc1RtVDh2Z2dONjZIZ1RrZkxEMEgz?=
+ =?utf-8?B?QjB3WE9nNHk2RnlPcmVIaEliRnpJSFJ0TFlJZHpVdWc1bnpYUG83ZE8yNTdt?=
+ =?utf-8?B?Y1NmMWtCV1FqdlFtOGJ6OHI1ZXVKWHhvaWFtMDZ2WnJqMm1XZFZCWDQ0S1da?=
+ =?utf-8?B?MmZWY1BOUjh3amM5SFhQUVlhVHNvQzZiOHlDaDJtMEd6aUt5UFVuV2VpZkZh?=
+ =?utf-8?B?eDQ4amgwNk53K1FTRG5KTitaQ2IxdWpSTmNpVVh0RlBqVjNhZWRBeU5rVlVs?=
+ =?utf-8?B?MzRUS20rQ0NsMUtwKzhFdFRpUE85aUUwTXpsNUJVWWlSM3hSV3h4Ym1Yenhk?=
+ =?utf-8?B?NEVsa1BFM0JJeDFnaVkwS1JGaWMwN3ZRYlc3ejNjbzNQa2ZnellyVmx4bmlB?=
+ =?utf-8?B?YThYaGlMSHF4TGF1eTV1TmxBbEliVnBIRWczZXUwMW5PNTlYTkdTdmowQ0Jz?=
+ =?utf-8?B?MkhRekpvaHVoZ1I4cXBkR3puQ2lkRWZvM0JFM0thRWRtYytTdExGTk5lQTQv?=
+ =?utf-8?B?L1ljUmppQjdmcWpGaTVDSXBjeGhvVXZydzhhY3lsbUEvYzlZMkIrMlBLTlRm?=
+ =?utf-8?B?N09heTA0dTNrN1h1aW5yeTJxYVJNTGVhbDU4Yk9zaWtkNEpxRmRhd1NZcTlh?=
+ =?utf-8?B?Y3pLZFpKa2tNWlRvZFoyWmdJQk56L3F4SVUrTlhHVHZMUjRzV3VsTlowbkRD?=
+ =?utf-8?B?dHMrOVFweXZtaitxTEkwK1UxM2I0TUZHdXNJNHJMajhTK0Y5VTZFUmpQZU1Q?=
+ =?utf-8?B?Y2xCMWxLbUJ2Umsra1lZcEpnWlo4YzJ4amh0QWJHMWtTRERpOGtSZGYrYlI0?=
+ =?utf-8?B?SzZBM2k1dGxPbkdOUW5nejBZM29GdUFsaWNtbGo2am1EQWhTaVhyNnE5OG15?=
+ =?utf-8?B?VVRST3UrcDh6UVloeUZSeC8zNnJ1K1Zja2lFZnRXWmt6Y01qcnJCT1JyY1Iw?=
+ =?utf-8?B?Tk5aY21ra0dKRVZNZVJjTmZiZXhXRXo3Q1hrTVJPSUI4U3hvK2ppaG1GeE1t?=
+ =?utf-8?B?c0JyaEoyOWFDMnByb0pRNittUkVleTRTejZuN0FqeHIyMi90eDBydz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4139c6c3-d5a0-4f71-a0c1-08de761961ba
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe92277f-3ab7-4f6f-ac16-08de7619f46c
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 16:00:51.9990
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 16:04:58.1012
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7yEKFBI8DHN0PuAEwYqfheGRoKOlupoOSA2jJCy5c9Cv9PreZ6ofxhiWOqhGXqNBByQu/wAl9M9N8wYTYjhK0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB5766
+X-MS-Exchange-CrossTenant-UserPrincipalName: HFtt64nla9qz0/89NDsUt0azXW/iC71j/HRUGt+j9rqwzdnbBfdMhDbu4f8XxoEYTTh+/ihZ4hY8YcaiNJEg2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7675
 
-On Fri Feb 27, 2026 at 3:30 PM GMT, Danilo Krummrich wrote:
-> On Fri Feb 27, 2026 at 3:53 PM CET, Alice Ryhl wrote:
->> +    /// Set the maximum number of active cpus.
->> +    ///
->> +    /// If not set, a reasonable default value is used. The maximum val=
-ue is `WQ_MAX_ACTIVE`.
+On Fri Feb 27, 2026 at 2:53 PM GMT, Alice Ryhl wrote:
+> Creating workqueues is needed by various GPU drivers. Not only does it
+> give you better control over execution, it also allows devices to ensure
+> that all tasks have exited before the device is unbound (or similar) by
+> running the workqueue destructor.
 >
-> Should we just mention the default value?
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/helpers/workqueue.c |   7 ++
+>  rust/kernel/workqueue.rs | 190 +++++++++++++++++++++++++++++++++++++++++=
++++++-
+>  2 files changed, 194 insertions(+), 3 deletions(-)
 >
->> +    #[inline]
->> +    pub fn max_active(mut self, max_active: u32) -> Builder {
->> +        self.max_active =3D i32::try_from(max_active).unwrap_or(i32::MA=
-X);
->
-> The workqueue code prints a warning for max_active >  WQ_MAX_ACTIVE. Mayb=
-e use
-> debug_assert()?
->
-> It's also a bit unfortunate that alloc_ordered_workqueue() becomes
-> .max_active(1).
+> diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
+> index ce1c3a5b2150..e4b9d1b3d6bf 100644
+> --- a/rust/helpers/workqueue.c
+> +++ b/rust/helpers/workqueue.c
+> @@ -14,3 +14,10 @@ __rust_helper void rust_helper_init_work_with_key(stru=
+ct work_struct *work,
+>  	INIT_LIST_HEAD(&work->entry);
+>  	work->func =3D func;
+>  }
+> +
+> +__rust_helper
+> +struct workqueue_struct *rust_helper_alloc_workqueue(const char *fmt, un=
+signed int flags,
+> +						     int max_active, const void *data)
+> +{
+> +	return alloc_workqueue(fmt, flags, max_active, data);
+> +}
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 1acd113c04ee..4ef02a537cd9 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -186,7 +186,10 @@
+>  //! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqu=
+eue.h)
+> =20
+>  use crate::{
+> -    alloc::{AllocError, Flags},
+> +    alloc::{
+> +        self,
+> +        AllocError, //
+> +    },
+>      container_of,
+>      prelude::*,
+>      sync::Arc,
+> @@ -194,7 +197,11 @@
+>      time::Jiffies,
+>      types::Opaque,
+>  };
+> -use core::marker::PhantomData;
+> +use core::{
+> +    marker::PhantomData,
+> +    ops::Deref,
+> +    ptr::NonNull, //
+> +};
+> =20
+>  /// Creates a [`Work`] initialiser with the given name and a newly-creat=
+ed lock class.
+>  #[macro_export]
+> @@ -340,7 +347,7 @@ pub fn enqueue_delayed<W, const ID: u64>(
+>      /// This method can fail because it allocates memory to store the wo=
+rk item.
+>      pub fn try_spawn<T: 'static + Send + FnOnce()>(
+>          &self,
+> -        flags: Flags,
+> +        flags: alloc::Flags,
+>          func: T,
+>      ) -> Result<(), AllocError> {
+>          let init =3D pin_init!(ClosureWork {
+> @@ -353,6 +360,183 @@ pub fn try_spawn<T: 'static + Send + FnOnce()>(
+>      }
+>  }
+> =20
+> +/// Workqueue builder.
+> +///
+> +/// A valid combination of workqueue flags contains one of the base flag=
+s (`WQ_UNBOUND`, `WQ_BH`,
+> +/// or `WQ_PERCPU`) and a combination of modifier flags that are compati=
+ble with the selected base
+> +/// flag.
+> +///
+> +/// For details, please refer to `Documentation/core-api/workqueue.rst`.
+> +pub struct Builder {
+> +    flags: bindings::wq_flags,
+> +    max_active: i32,
+> +}
+> +
+> +impl Builder {
+> +    /// Not bound to any cpu.
+> +    #[inline]
+> +    pub fn unbound() -> Builder {
 
-I think ordered workqueue still to have __WQ_ORDERED flag, too?
+These can all be "-> Self".
 
->
-> At the same time having a separate ordered() method competes with max_act=
-ive().
+> +        Builder {
+> +            flags: bindings::wq_flags_WQ_UNBOUND,
+> +            max_active: 0,
+> +        }
+> +    }
+> +
+> +    /// Bound to a specific cpu.
+> +    #[inline]
+> +    pub fn percpu() -> Builder {
+> +        Builder {
+> +            flags: bindings::wq_flags_WQ_PERCPU,
+> +            max_active: 0,
+> +        }
+> +    }
+> +
+> +    /// Set the maximum number of active cpus.
+> +    ///
+> +    /// If not set, a reasonable default value is used. The maximum valu=
+e is `WQ_MAX_ACTIVE`.
+> +    #[inline]
+> +    pub fn max_active(mut self, max_active: u32) -> Builder {
+> +        self.max_active =3D i32::try_from(max_active).unwrap_or(i32::MAX=
+);
+> +        self
+> +    }
+> +
+> +    /// Allow this workqueue to be frozen during suspend.
+> +    #[inline]
+> +    pub fn freezable(mut self) -> Self {
+> +        self.flags |=3D bindings::wq_flags_WQ_FREEZABLE;
+> +        self
+> +    }
+> +
+> +    /// This workqueue may be used during memory reclaim.
+> +    #[inline]
+> +    pub fn mem_reclaim(mut self) -> Self {
+> +        self.flags |=3D bindings::wq_flags_WQ_MEM_RECLAIM;
+> +        self
+> +    }
+> +
+> +    /// Mark this workqueue as cpu intensive.
+> +    #[inline]
+> +    pub fn cpu_intensive(mut self) -> Self {
+> +        self.flags |=3D bindings::wq_flags_WQ_CPU_INTENSIVE;
+> +        self
+> +    }
+> +
+> +    /// Make this workqueue visible in sysfs.
+> +    #[inline]
+> +    pub fn sysfs(mut self) -> Self {
+> +        self.flags |=3D bindings::wq_flags_WQ_SYSFS;
+> +        self
+> +    }
+> +
+> +    /// Mark this workqueue high priority.
+> +    #[inline]
+> +    pub fn highpri(mut self) -> Self {
+> +        self.flags |=3D bindings::wq_flags_WQ_HIGHPRI;
+> +        self
+> +    }
+> +
+> +    /// Allocates a new workqueue.
+> +    ///
+> +    /// The provided name is used verbatim as the workqueue name.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::workqueue;
+> +    ///
+> +    /// // create an unbound workqueue registered with sysfs
+> +    /// let wq =3D workqueue::Builder::unbound().sysfs().build(c"my-wq")=
+?;
+> +    ///
+> +    /// // spawn a work item on it
+> +    /// wq.try_spawn(
+> +    ///     GFP_KERNEL,
+> +    ///     || pr_warn!("Printing from my-wq"),
+> +    /// )?;
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn build(self, name: &CStr) -> Result<OwnedQueue, AllocError> {
+> +        // SAFETY:
+> +        // * c"%s" is compatible with passing the name as a c-string.
+> +        // * the builder only permits valid flag combinations
+> +        let ptr =3D unsafe {
+> +            bindings::alloc_workqueue(
+> +                c"%s".as_char_ptr(),
+> +                self.flags,
+> +                self.max_active,
+> +                name.as_char_ptr().cast::<c_void>(),
+> +            )
+> +        };
 
-I don't think its too bad to have both, and before constructing checks that=
- it's
-used correctly:
+INVARIANT comments?
 
-    warn_on!(self.flags & __WQ_ORDERED !=3D 0 && self.max_active !=3D 1);
+> +
+> +        Ok(OwnedQueue {
+> +            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
+> +        })
+> +    }
+> +
+> +    /// Allocates a new workqueue.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// This example shows how to pass a Rust string formatter to the wo=
+rkqueue name, creating
+> +    /// workqueues with names such as `my-wq-1` and `my-wq-2`.
+> +    ///
+> +    /// ```
+> +    /// use kernel::{
+> +    ///     alloc::AllocError,
+> +    ///     workqueue::{self, OwnedQueue},
+> +    /// };
+> +    ///
+> +    /// fn my_wq(num: u32) -> Result<OwnedQueue, AllocError> {
+> +    ///     // create a percpu workqueue called my-wq-{num}
+> +    ///     workqueue::Builder::percpu().build_fmt(fmt!("my-wq-{num}"))
+> +    /// }
+> +    /// ```
+> +    #[inline]
+> +    pub fn build_fmt(self, name: kernel::fmt::Arguments<'_>) -> Result<O=
+wnedQueue, AllocError> {
+> +        // SAFETY:
+> +        // * c"%pA" is compatible with passing an `Arguments` pointer.
+> +        // * the builder only permits valid flag combinations
+> +        let ptr =3D unsafe {
+> +            bindings::alloc_workqueue(
+> +                c"%pA".as_char_ptr(),
+> +                self.flags,
+> +                self.max_active,
+> +                core::ptr::from_ref(&name).cast::<c_void>(),
+> +            )
+> +        };
+> +
+> +        Ok(OwnedQueue {
+> +            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
+> +        })
+> +    }
+> +}
+> +
+> +/// An owned kernel work queue.
+> +///
+> +/// Dropping a workqueue blocks on all pending work.
+> +///
+> +/// # Invariants
+> +///
+> +/// `queue` points at a valid workqueue that is owned by this `OwnedQueu=
+e`.
+> +pub struct OwnedQueue {
+> +    queue: NonNull<Queue>,
+> +}
+> +
+> +impl Deref for OwnedQueue {
+> +    type Target =3D Queue;
+> +    fn deref(&self) -> &Queue {
+> +        // SAFETY: By the type invariants, this pointer references a val=
+id queue.
+> +        unsafe { &*self.queue.as_ptr() }
+> +    }
+> +}
+> +
+> +impl Drop for OwnedQueue {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The `OwnedQueue` is being destroyed, so we can destro=
+y the workqueue it owns.
 
-but type state works, too.
+Hmm, is this correct? This should say *why* the call is safe, not what it i=
+s
+doing.
+
+I think this should mention: (1) the pointer is valid and (2) no delayed wo=
+rk is
+being scheduled on this queue.
 
 Best,
 Gary
 
->
-> Mybe a type state, i.e. Builder<Ordered> that doesn't have max_active()?
->
->> +        self
->> +    }
+> +        unsafe { bindings::destroy_workqueue(self.queue.as_ptr().cast())=
+ }
+> +    }
+> +}
+> +
+>  /// A helper type used in [`try_spawn`].
+>  ///
+>  /// [`try_spawn`]: Queue::try_spawn
 
