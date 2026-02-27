@@ -1,69 +1,66 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021108.outbound.protection.outlook.com [52.101.100.108])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022077.outbound.protection.outlook.com [52.101.96.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A40027B4FB;
-	Fri, 27 Feb 2026 14:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74EA259CB6;
+	Fri, 27 Feb 2026 14:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772202226; cv=fail; b=L5ThDDItC6slc+qKqb6PWLuziZdfdYWb3qZkLILWlcGIuhDpfksHgIzUMm8rH4PQ9yRZzWQK/eBXkctJTuhXK1ABbSDRdVej14bmQccH9j1IM5gm/BTe/5ub7eXXqPFOQPqSgIhakzlIly4pKjzJMWBdJcnXoMUktpnVYhBom8E=
+	t=1772202744; cv=fail; b=lNWgGaazxvlYGo+Jh4otZ6Q8wFaU9BU1gbG1vydrm6N7mDclfiDoI0Bn6h9j42OzGW9sbdS8joxaADFMMD4U5qgiWJoqfFCjUSnoiZOp3nPaa7svjPBlrdaBEpNRSC9GW0I44fLo+MW7qX4mcOJYVEKNHNOOLtwsDi7YePEkibU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772202226; c=relaxed/simple;
-	bh=/gUQ34pFTjnku+GkWTDv2axPoOS/B9avq3CZV0yKdSU=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=qaa1VNNDF/i45qHYQPnZBg92e9u+ORNXPF4d/an62zH23P8bmiZIoOJKRCpy6MW0J83y1S8+bKAudEoHZ1rrF0FTqd43keqZG20LVjWfaPt1InHh0nd3yCIQL0EJIzdMX/2TOXtgzRYkkEoXpxXHML5/X9zFP1Xe65WO1aMh5j0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=r6TnP5Hf; arc=fail smtp.client-ip=52.101.100.108
+	s=arc-20240116; t=1772202744; c=relaxed/simple;
+	bh=j9I3IM895EGkCJPBX9DbjsfEo6lnJ3dcEPeU+EoyctA=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=gjIWauARo0hm3Hy8/LhV/KEssoaGojtl6pmOtoN8L4p4sXDcTvc19lD8dS4tVdendFk5wBeLCiDVOsMU1RbtFpGviLPvDnGliZytIBS/4pQLO0Z8mG2/MAndSyo+PaPSdN9o9OsegcqegB1fYJpHwMGbDeP/l8mF3tilvzHdVZM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=AG8W24iH; arc=fail smtp.client-ip=52.101.96.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="r6TnP5Hf"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="AG8W24iH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Exz6bOGSk+fv8HytwnHTMzG3d7oRpeXCrLOTWRvpOhHXNu+fpkdaDZRBp2w6fy4+yP9Cpz2Qd5RZ2+EQ7lA/n095DaXRkdqauwJyG4MgfcRUi2tB/Vv1JEs8h+4769GZzarG2IOXZClbaQVvA8BErTp42rBczLrvoMAwpzMis6UT/XalknBnqMwkJCNbHyVr90o1mh+7RjNkza3gIHXtwkWQttDJ/79UXuJtMKpW45San8Jdt1cmKUFYUicCglcMjk6hlnyo6/Wc4FTtb0EylnXoFx7f1eZSgtVI06EFqu7u3PWO4SRsuIj3L4p0OI/X6DV3EFMGeY+rWls+T8+n/w==
+ b=nSCPQprZQRomhYbfFEIb2xA8etCH9QsgO29LzyXj5OTpfDgBFi74/zt7//btcZZHH9uva7vPS66XV1gR2Ccy/RIMsHbcLwNuCtHoN9AoecBmAx2eT6ABfweV9WriCLr/eFaOtKbCw78zDyZykv4KgCbnmrcnCjm650dDmT9yGw2Hp+AZO8OZnGhcxoW5+MGrCnwfsncmta2iBguh1Hr/SSjnJaPTuIorNPDBN92BiX1Hd63XWl54MFFvl79bmNWfH/G1A/XgjtXLYPwzVqh6Y3JT66vkAbsB2gtqlUxI2OYxrGlfZS7h22Myv/LV19talTVcbekUtRJ5/xpGLaVSBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=czeZSNi2WBTeUU8DNplq0OCbt16Cd9d4+JRuulT18no=;
- b=nYA9aZf84SzlOGD3hOfkfIfwc4p/DtMRrLvOgSoXCASzfUdRZtvRNEpHnCcTFga7MzBhlxjx+wC1cRJl6GQXl4B+VzxNRPK4AWq6ofeRNOQ6Jf0q9hqmSb+7/n6Q5ZZpMo/3As2ENUYyOM8wYEn2uVIeKbmb31MdsHvPxTxvZF2UbT5VMe5nWZ/mQd86C9DiKOU5DLNG8aXT83xJCfsgFkww00Nhf5YWn1VgzSmLH1gPRUahmcLrZmVa6gCqWHflvYpHUpyCde3FzyebTTE3iaKxdr0hg1BzwtHvb0wGRwBipYMyDaOC75OLYaTcLV1o2OAbSS5KqZAIJASvbW+ivA==
+ bh=fnxcMAs9vjrY04tZKKPcd9F8zweQqGC3aQHeEHqe7CM=;
+ b=Q3iKauFyp8VQ5vLOvZ7IO5853+xV0ZpfEalmm78Bh/dPz2TMBiPenQwY80s3mxfglKabdZl3b7wcCWLJzCyAQFgsfqETlQdozBAeF0QlkQ4Hm6XO/ODQVXQIYZ8PoYFDdapJt0YqoJaws1kpqSOW9ZB9OLq8JAv5//36aDSS5NtFyJF+4dxHjxYR5Ixg027xcztkcrjmv2l48Nr9LbDzrEKDhowmeEQhPoLqdMFVxDjhXoxlVKH4wuQlamuePY6H0pt+JrrYUaE3rnqnvw8MQxlyKBnO67Z7dyMS+R24Sgf4mL76OfsxLSQaoGzIZLSY9wF8y+yS72WjBjFj7zX9VA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=czeZSNi2WBTeUU8DNplq0OCbt16Cd9d4+JRuulT18no=;
- b=r6TnP5Hfl1Eb0jEALNYwkQGm1kzo7QPn0Wemwf3POofwQyKh2tIfiGu9PxahyPCoJbhA5YJD699wK3U6OgXyb8MlRiaUjMiGhrE378iUEqCNiGEanOsjoQOCnlwxVJEz8rwZheA/RphXTysWY+5jy8qRgji5CVrT/qDOPcQyYOo=
+ bh=fnxcMAs9vjrY04tZKKPcd9F8zweQqGC3aQHeEHqe7CM=;
+ b=AG8W24iHebvna0JeB7IRviirkxXxFp9lpSQOPLL05WnYi7JFaiZ5eONNGJcNSL6qSe2clrd4jh9iddhTbylkfJjd/7pfYMBEttEh7b24KxhmkURsz77yukEEgcntznRXIAL5gUIHJNXYYv11D6KdDfZCgI4653KaUtIUCzzSZzY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOBP265MB9106.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:47e::22) with
+ by LO4P265MB6778.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2f0::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Fri, 27 Feb
- 2026 14:23:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.15; Fri, 27 Feb
+ 2026 14:32:19 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
- 14:23:40 +0000
+ 14:32:19 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Feb 2026 14:23:40 +0000
-Message-Id: <DGPT98PHCRJK.24W50V2JKRE8K@garyguo.net>
-Subject: Re: [PATCH] rust: hrtimer: add active() method to query timer state
+Date: Fri, 27 Feb 2026 14:32:13 +0000
+Message-Id: <DGPTFSM1EK7V.1VEG57EE9DT6K@garyguo.net>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "Akinobu Mita" <akinobu.mita@gmail.com>
+Subject: Re: [PATCH] fault-inject: rust: add a Rust API for fault-injection
 From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Boqun Feng"
- <boqun.feng@gmail.com>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- "Frederic Weisbecker" <frederic@kernel.org>, "Lyude Paul"
- <lyude@redhat.com>, "Thomas Gleixner" <tglx@kernel.org>, "Anna-Maria
- Behnsen" <anna-maria@linutronix.de>, "John Stultz" <jstultz@google.com>,
- "Stephen Boyd" <sboyd@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
  Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
  Krummrich" <dakr@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260215-hrtimer-active-v1-1-a754d10492c2@kernel.org>
-In-Reply-To: <20260215-hrtimer-active-v1-1-a754d10492c2@kernel.org>
-X-ClientProxiedBy: LO4P265CA0274.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37a::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260215-rust-fault-inject-v1-1-6ec459cb5ccb@kernel.org>
+In-Reply-To: <20260215-rust-fault-inject-v1-1-6ec459cb5ccb@kernel.org>
+X-ClientProxiedBy: LO2P123CA0074.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:138::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -72,127 +69,247 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOBP265MB9106:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf95d702-fc1b-46b5-db40-08de760bce1f
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB6778:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6701a7e-3c2a-4542-0a6c-08de760d0324
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|10070799003|921020|7053199007;
+	BCL:0;ARA:13230040|10070799003|1800799024|366016|7416014|376014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	4nIAhyEDuU2lvUIEBTklPhukXN5OFy9v+QZiXbfaUN1nHanAz8Gd8GvD/qwGlORE+PBbzg5W1FI/7kka9OP4uWYJvE4t2dGfG+Hk+NCSl5Ld0jQwek1Os0e+iV9ppjBgKu7yZrgiy7XAQKoVojDrzWlSZU1bwdak1MxyGEOh/FNjwh9kH3Hm+6h3oURUg9c51Kd7ZLKNz8RD8YC98vv0ew60U8Ix/fK2xxkxDhISurWgWqmsFcDJARVIl+BiXx9yoQWBfSSN/SSnS8zV6O1d7NN6j9T10Yrf889tof8R6B8P5oyI/HF1uyVmZRovCLjEAHaUQ5D9wL+lYKG9qfElmRrZv7Vp5GDkkdivoYgqcCCQ507oMzwyzBOf/309RxHeHOpK+YFQ6MJ29BwceqGHAnLyyBcTX9aga6RTMCzr/T99ZsHhY6HHRb9GHCa3EJWwexc+DDB1pg4HkXarsEUvFkiHQadkqIYbkRSLcYlr+hHJEc4qagt680+6JtnerRj6hWBE2fHPmkzG6vmZXN9zhzYWKBN01rwx5oVbxLwg41kHa9vOnrnP63XQAlrt6Nnf9z/LY6lVT2t/h8A+yGbUPsJleJUwY/XwKjxlzFo1v5+X4dyWKATw1/rENQ3/4HSonFylv+5KuYs/JUzllX1qrZmPk8x5SX0yjWibCzxIK1pwEMop1jqrTOxxNxq1iY0Z5uK5rU5uBd/P8EFymESvVw28HRm2Faj7NCNpj18O6ZtwpvE32cxdclauYPscx3CwZT6ixs7tUcXfY8vaTm3rIw==
+	4RWLAoYfYwRUWidJQsKf8GxWjLHiArgwFgv5YS4wyLG7M607dV+Yudr3v9yiELVC3+APmFBKjN6CsP+Ejk8kBrbMHcBo9S7kpuC2FAdwnqC3/nRST0Hq7ilKk0UweEYzYBYGwV65nqaoZ0RTL1t1nEIBlDQmn8V0pJ5goEL+HGFGeujlRp4fx5+c6a+0WsgbJMMD1dIEwb1xtDCPrBZTcq6AFU0hpduoX1/JajzT663PE3kafw6BKQyRpQGWyh5du3e0il1Jw3CLQLaZw1OpnGOmTS0afAymJbM5+QHXD6Ch+nNfCMdiJAzHacotLRz0ObHtIUpuxDjrVrHfXMCltKtMCs/RXzzfDnTFoE2O678S7uWFfwStT2Qnyr/Nwaw4p0biMzxdSN+sEm1ilJCDVNx9tGbfLpFIX9T8gRlA5LR1GUl0NyqTbH9Mr8o7wrtyCoW15884NNyjeAX3RlQMD0rqlV3KL6gfvpYaSrfaA47wx2p4RUS96+hslUP3U/cTl0NefFQy65JHEPHMWHnRYGJLMvQ3CBb91KYsXz/Py1TeF5Cn0cjZlHaog3xFNLvVho1QqIm6568QKlsyOSBxMVBOwAsZxJ5ZtWkp5pC5AuVx2S8KUUsRf1BPtDx4o7dT/z/PZo8VqBUvsXSs5PAQXy15grNofF2lRpPPPv65qlTNNawKqYnHnIbgvXUOEzwflCeTUnH3u5wMjssXhTNTalTu7mVCpTN2Fs+A2vhuZyE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(10070799003)(921020)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?KzNqVU9Hd3dMYnB0ZmhqanJibm4wQ1R5QndOTW9yMHlxQ3ZBN3F4aHBrTzJ3?=
- =?utf-8?B?cFBpcktreGxmSjMxd1ladWlkM3JoSnJZbXJMVkpzUW5JQ3J3NFBVb0prK2Fy?=
- =?utf-8?B?M3I4elJmZG9za1RTV0xuRm5pU2VuRXlVYkZSYXJsNlpKVFVVTk1KblRMZVhz?=
- =?utf-8?B?NjhKSWIzNkZJQUR6bTVsaExGREZic0FBTnhKeWM5NlJtRUUrbnBWOGxpNE1i?=
- =?utf-8?B?bU1vTW9hNi9oMUZaQ1oyTlBvS2xtNXV2Wmg0aU5sRGFITS9tQ0FsOGlIVHpX?=
- =?utf-8?B?ZUM0ZUh5ZExqc21NTEdGSGhFcytiTlNCWi84L2NaQkovUnBXeUV0K3c2bVJU?=
- =?utf-8?B?bjN4NTQzaVpiRk53WTE1QXRpdlVoMzV0YjdrKzFmNndqT2VsQktFU0lLcnlP?=
- =?utf-8?B?Y1ErbEtMMCtqU20yYndCNFd4NGwzV2ZGaUwyQ2tHK2tPak9PYkdGWFllVWR3?=
- =?utf-8?B?Ykhoa1pOVWlUWEhvWkZtS1V5ZEJkSVRYZ2VZd2xKVWo0T2dCTThLQ25HYkFK?=
- =?utf-8?B?N0psMEtTdEtnak01VmhFZkRCZmNaSXhBTVg4SlN6ZUo4b0xSUi82SEtXQXVC?=
- =?utf-8?B?dVp0U2tUdTZXMHNwOUZFejY2Q1h0dlcrcnNqNnNrQWJCS3U3eFVjQXUvTGpk?=
- =?utf-8?B?VjBjSWppVVprU3c5NktqdGVtcWFKVW1PbWYrbW9GYzFLUk80eTJya2d5M2h4?=
- =?utf-8?B?UStNZjk0VWs3M1pwWlVuUEZwbi9xMFJUUzdxL3NyQ0kzYkRDL2pFS0hGTVMy?=
- =?utf-8?B?S3IwMmNCSUt5di94cEROb1NnSnVub2h6dURCbzNVRVRISlVVQy9maytJeS9D?=
- =?utf-8?B?V3VGVXhlb0t5bWVUTGxmUnJQOEtrS3RNcXNiQjdvOUcyNDYzVlJRcUlsYzJ1?=
- =?utf-8?B?RTZLSytib25neEJ3N1JDWk9Ha3NvQldSSmZFeGtDVDF6djV0RGtjNkhKL1Jz?=
- =?utf-8?B?VGYvd1RYeEFVZ0tUZ3BObXBlNkZQTUU2blBtVVdhRlRYb0dhMWlGRDNnSnIr?=
- =?utf-8?B?elJvMmNlM3IvdmxzOE0zL3Y2RWZjdFlRTm0rbDhqcVF3dThkUlM0alMrNGNi?=
- =?utf-8?B?T2g5SXhmVTd1bzBTcUpiZGdZMXZBK212UWFjU0dSdzRSMGJyZW8vdEZQU1lD?=
- =?utf-8?B?RVNoMXpWS2lVMWNPY2d2SHZTbFhPemNmZFNHTndDc2NpV1NkWWhjaWMzbjhr?=
- =?utf-8?B?V2cxSDQ3dzRSY2RaSG91SytOaGxFRHRVRndTM1VhU01DU2JBY1ozdHVGeE5q?=
- =?utf-8?B?MTJxQld2WE40QWlkN0pmTmRNNFNSMTFQR0VuUm4yWHFqdUZLSk5pelltay9k?=
- =?utf-8?B?ZWI4REdEbzgrOG9DaC82VUdDT2V6T0JPOFQwSEhsR0h3ZVYrcDlyaFNhZm5l?=
- =?utf-8?B?NzFWclhIOFZNTUxyZElLSmZHQmZObUlXb3huQndEMU5WdXFnVThnQmpRd3dy?=
- =?utf-8?B?WlRsajBqcTNGUCt4RkNLQk10aDFWVjQrTEJCT3ZCcFp2a2pZNHgxZGN3MlFW?=
- =?utf-8?B?NHdJWDNKTGR5RHBsbmlsTUpmeGFyZGwwZXdpOStEdHJiMDJ4TDJyOTM0WFh4?=
- =?utf-8?B?QTJVRjJuMjllY3l4eGVOTWxPMStDRnZOckh0VFROUmZQRUFVcGMvYkNsYk11?=
- =?utf-8?B?d1NJQkJuU0h5SEIwZDJCNldZdkYwUmM0emt6TVJMVkZ3OENpaHJKT3ZmN0sv?=
- =?utf-8?B?a3R3MnMwbUVZbDNtNlhSL0d4NUE0WWFkaTFtU20zOTFnL2ZGOXBBc2hQRnMz?=
- =?utf-8?B?VEdLNElsUFFlU3NVbGhvUnhmdzdxb2J6VzJod1pONlVaNWVGTUlBUGhiVkhJ?=
- =?utf-8?B?THBLUDF0NVEyTTV1NTdSMzdCMy8vMHplaUlvMUhOb0R4ZkQ5djdJOCtVVUZv?=
- =?utf-8?B?VWRrSS95ajJEMHdIVDF4TUs5b3R2dUUwMXEyM1AvYVhCa0MvRXhUempMWkR3?=
- =?utf-8?B?cXRaRXVtem9aTkNydzI0bnRxK0V4T3I2OUFvNXNGQ05RdlZHcHd3c0VDUCtB?=
- =?utf-8?B?Z0RJS3JhWWFXUHJVK2I3dlMvaXZvUUo1UDZrbDF3S2EzOEZCLzFxOGdLZTF3?=
- =?utf-8?B?a0NCYUZhdVB0QU9iMWk1cVFOVFg5bDFyVjhXb0NockJOa2Q5MFZFTElid3Vy?=
- =?utf-8?B?KzFuWUxoWEcrWXRka1R4VmduN3hGN05Tc0VYRStvQU4zV09jeVBTVDY3dGpo?=
- =?utf-8?B?cElSODlxcUU5N01VOHJ6QTYxVTNSenR2Q0FGSXIvNmxaNTJCVXRUa056bEE5?=
- =?utf-8?B?MVA3eDdvNTZqR2lNcG5yYnBiSE5JdFQ3ZnZ1S0wvSytyRk5RTUJvNk5pWDBx?=
- =?utf-8?B?QzYwSGgyMlM5bm5hS05Fck4vbjY3SXRFUDFqdWgwUm5QUnBMYkgyQT09?=
+	=?utf-8?B?YlZEdlVWSVFMWTlPdDJMVkFPK2hEdnY4NG1Ic3FXU2VvSEdzalJJUGMza2FS?=
+ =?utf-8?B?U2RxUUQrZjduK0ZMUDY2cnZaVSs3TGw5djZnYkg4UXF4T2tMc3A4RzJrUXRr?=
+ =?utf-8?B?SFEzRkxhNVhkS3BORDd6NEVOU0FzN3Y0Q1FmMExQWU5YSnVadW1yczcvOW4y?=
+ =?utf-8?B?N1hLOHVieHNIaGQwY3Fva1QrZHNJUmVKa1V2aGxzWCszMXgvdm05NFBwSUE1?=
+ =?utf-8?B?NjJ0dHJXVkJJSnFxMEc2K1l6RnVITy9pUU13dFczMmUvSlV4dnlJTkZZc20x?=
+ =?utf-8?B?RUlYcWp3bGluZzVZMTNzajVOdm52YUVwcUMzNnVnTjZheFR5clMzS0wyY2xD?=
+ =?utf-8?B?NHA4djI2aG5EcWVwc3I2YUpMK0ExWldkWXNnV2trOXQ2VHlmaXUwTFdOZHIv?=
+ =?utf-8?B?ZFZyb00vRDZjQTNMKzh2QitpWUJNQjhjL3gxdnJPbloxN2J0TUlhWVFPcHU2?=
+ =?utf-8?B?RTVOK0tyeUtqRytKZjdnWFAvK0NsK3BBL1A5OEE3MTdlK1lqelpwQkN2ZUl6?=
+ =?utf-8?B?TGRJMU0yWitsRG92RDF3dm8xajhPU3Q1L3VJZ3M1emdNelZvQVRLN3BMQzJ2?=
+ =?utf-8?B?QXVjY0pGNWY0eFQ3SGVKb25HQ3ZvMmdnUHl1R0psZDc1S2JCd0c1R3FkL1li?=
+ =?utf-8?B?OUJiUGJZZHU4c2M0bi9LN3orTWpPa3c1bFVUVTlHOWZKdjZFWFdjYkdHOFh4?=
+ =?utf-8?B?bEhyRVJFZ2xqQ0xyNHhXVEJMVVdsYUJSNEJyd0V2VmVOc1lwMzdNNVFYTm5t?=
+ =?utf-8?B?YW1FeWxQeVllYTVEK3FtOXVoUnNWL2NORGhCK3h1TkJyU2M4bjVUS252NnpY?=
+ =?utf-8?B?L1RhN2NxTVVvOTE5SnVXWlhScTQwTy8xQTJJOFI3eDArWEFmazE2eTlhYlM5?=
+ =?utf-8?B?UHV1K1pQS3I2eWtTeHVPN2dpVVR4QVNBWER2cnE5OGQwcDRVeVh1YWdMNm9p?=
+ =?utf-8?B?VVV5MXF2SThXY3dBWE44TDROUkUxQ1RkenpyMy9yaGh5VUVOcndNU0RidjRL?=
+ =?utf-8?B?MmJPcWFmSTRITnVHS2w3UXlsdHcyQi84M1o1bUFtTWtZZjJhUzNnVVovNmVT?=
+ =?utf-8?B?dW56elEzZ1JLTHpmMWdVRUNHQk1ZK2s2dFlGc2UrYzNmbG91UCtrM0d4SGhB?=
+ =?utf-8?B?V0VkUXFUM3hrQW1XSXN3bVAvMUY4SWg1ZkpIem9SUmNtUGFQWjZtN2pYSVg0?=
+ =?utf-8?B?Qy96RzNzSmRwdmNTdmlwZFNQSGIwK1ZWSkV1YkoxTEg2Q0RaWVJ4dml5SHZl?=
+ =?utf-8?B?OWdwNXZIMExoaWRaWEdBenZUVWJYK0xXSHVFc25vS01HcUhTS1BsNmV6V2E2?=
+ =?utf-8?B?MUJnN3NVNjFSNklvNTdWaGFUa3lrWGxXMVBJOEFQZzZ1OG1kaVpjN1BtanFu?=
+ =?utf-8?B?N1BmWnhLOEgyNm50VkxxYU5JMHYyY1ZQYThjcnRtcnJ4cy8ybExTZk90anRI?=
+ =?utf-8?B?NlNlY3NZWHRBa1dIMEZSd2JDY1BJTXc2eFJCcWhOVHY4QWpZTlNDN3dBNHJw?=
+ =?utf-8?B?OHVXS1VpdzJtdVNveHFPWnVLT3ROTzIwd1VFQlhnWWRZWEpnV0U3R0hpRnNU?=
+ =?utf-8?B?WW9SQWc0R0djck5QeU9hRzhFeTVXQjZzNHRNMmRoRTd0d3BtY1VTWHJlUVpq?=
+ =?utf-8?B?UUNlMC9uQjBOejJoNGx2QUxUaDBBZDREbVh2RXcxbURYeXlMZHg2bGg0THdZ?=
+ =?utf-8?B?bk5kL0Q3dnpFejZYVWF5MnkvekUySXJlbDczUnczZGpMam1nSWNwNk43bzY5?=
+ =?utf-8?B?S1B3dlpCRXRpVTdYc1V0RStpSllBTkdVTkNhdG1uZWpTUklydkViVjRWNnk2?=
+ =?utf-8?B?ZXF2N0ZheDdVbGxDY08rOWFDQmxldFNUb044R3ZxM2ljNnNObHhGc1dmK0p6?=
+ =?utf-8?B?cGNWOVUwUnNWU3JMRHNKTEkxek04UUJESXdnTXg1ZVNMcXBoOWRsUThIZTBx?=
+ =?utf-8?B?bjBCWTYxdncwSnJUMDFZdHJoMEZyaTJ5T09hcFRuTFg4YkRsdWVWMjBtWDdO?=
+ =?utf-8?B?cldPNXRSSkREK25LMGg2TWFIeVRKSTJCUEsvUUVTcVFLUGJlNEMvVzhWa3Fw?=
+ =?utf-8?B?RzI4NGRTaHJ5SjcwcGMyQ1lVZmFKRmRaTk9UclBuUEczNDBmSVV6R1ZDNW1H?=
+ =?utf-8?B?U1ZUQU5yRExDYWtGQjlwVFloelE1Z2k2Q2NuaVkyakpnVHdVMnI3OFJLYXBY?=
+ =?utf-8?B?OFlUR2M3OEM3anY0RmZBVXp6UXZyY0l1cS9BelI4NXdYOG1JUXpLN2xOMG94?=
+ =?utf-8?B?K3U2elJkQlhHeThobDBEQ0lJUjQ2c1RETmJEVHl0MFk0UmhyUDlUK0dxNHpw?=
+ =?utf-8?B?YU04Sms0S0JPZXdjbWtEOXU3MUZnaTdqWVlSRHhjU3hLL0wzV2d1dz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf95d702-fc1b-46b5-db40-08de760bce1f
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6701a7e-3c2a-4542-0a6c-08de760d0324
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 14:23:40.8890
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 14:32:19.3293
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bzLe12YD+bi/92eiBw0/nYLjxfeMbveBMTs1w9xd7fHALBaXMpT92ReLB86Ysg6TmrpSESZgq6I5FXFbTkcmdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOBP265MB9106
+X-MS-Exchange-CrossTenant-UserPrincipalName: g9hTa5hZB1uUsQmw7qv7lftptIKVBbtJJt5rV30JBJLzlsybpHheOsEJFHPB8JiEGG5Y9c9zTjrBB1/Y31qYLA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6778
 
-On Sun Feb 15, 2026 at 8:29 PM GMT, Andreas Hindborg wrote:
-> Add an `active()` method to HrTimer that returns true if the timer is in
-> the started or running states. This wraps the kernel's hrtimer_active()
-> function.
+On Sun Feb 15, 2026 at 9:30 PM GMT, Andreas Hindborg wrote:
+> Add a way for Rust code to create fault-injection control points. The
+> control points can be attached to a configfs tree as default groups and
+> controlled from user space. On the kernel side, provide a `should_fail`
+> method to query if an operation should fail.
 >
-> Also add documentation clarifying the definition of an active timer.
->
+> Cc: Akinobu Mita <akinobu.mita@gmail.com>
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > ---
->  rust/kernel/time/hrtimer.rs | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+> This patch is a dependency for the rust null block driver fault
+> injection feature.
+> ---
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/kernel/fault_injection.rs  | 88 +++++++++++++++++++++++++++++++++++=
+++++++
+>  rust/kernel/lib.rs              |  2 +
+>  3 files changed, 91 insertions(+)
 >
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index 856d2d929a008..b2272b059e504 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -66,6 +66,8 @@
->  //!
->  //! A `restart` operation on a timer in the **stopped** state is equival=
-ent to a
->  //! `start` operation.
-> +//!
-> +//! A timer is **active** if it is either in the **started** or **runnin=
-g** states.
-> =20
->  use super::{ClockSource, Delta, Instant};
->  use crate::{prelude::*, types::Opaque};
-> @@ -246,6 +248,14 @@ pub fn expires(&self) -> HrTimerInstant<T>
->              )
->          }
->      }
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index a067038b4b422..87cbaf69d330e 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -54,6 +54,7 @@
+>  #include <linux/errname.h>
+>  #include <linux/ethtool.h>
+>  #include <linux/fdtable.h>
+> +#include <linux/fault-inject.h>
+>  #include <linux/file.h>
+>  #include <linux/firmware.h>
+>  #include <linux/interrupt.h>
+> diff --git a/rust/kernel/fault_injection.rs b/rust/kernel/fault_injection=
+.rs
+> new file mode 100644
+> index 0000000000000..e9afa3ca6cf31
+> --- /dev/null
+> +++ b/rust/kernel/fault_injection.rs
+> @@ -0,0 +1,88 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +    /// Query the state of the timer.
+> +//! Fault injection capabilities infrastructure.
+> +//!
+> +//! This module provides a Rust API for the kernel fault injection frame=
+work.
+> +//! Fault injection allows simulation of failures in kernel code paths t=
+o test
+> +//! error handling.
+> +//!
+> +//! [`FaultConfig`] represents a fault injection control point that can =
+be:
+> +//!
+> +//! - Attached to a configfs tree as a default group, allowing userspace=
+ control
+> +//!   of fault injection parameters.
+> +//! - Queried via [`FaultConfig::should_fail`] to determine if an operat=
+ion
+> +//!   should be simulated as failing.
+> +//!
+> +//! Please see the [fault injection documentation] for details on config=
+uring
+> +//! and using fault injection from userspace.
+> +//!
+> +//! C header: [`include/linux/fault-inject.h`](srctree/include/linux/fau=
+lt-inject.h)
+> +//!
+> +//! [fault injection documentation]: srctree/Documentation/fault-injecti=
+on/fault-injection.rst
+> +
+> +use crate::{prelude::*, types::Opaque};
+> +
+> +/// A fault injection control point.
+> +///
+> +/// This type wraps a `struct fault_config` from the C fault injection
+> +/// framework. It provides a way to create controllable fault injection =
+points
+> +/// that can be configured via configfs.
+> +///
+> +/// When attached to a configfs subsystem as a default group, userspace =
+can
+> +/// configure fault injection parameters through the configfs interface.=
+ The
+> +/// kernel code can then query [`FaultConfig::should_fail`] to determine
+> +/// whether to simulate a failure.
+> +///
+> +/// # Invariants
+> +///
+> +/// - `self.inner` is always a valid `struct fault_config`.
+> +#[pin_data]
+> +pub struct FaultConfig {
+> +    #[pin]
+> +    inner: Opaque<bindings::fault_config>,
+> +}
+> +
+> +impl FaultConfig {
+> +    /// Create a new [`FaultConfig`].
 > +    ///
-> +    /// Returns `true` if the timer is in the started or running states.
+> +    /// If attached to a configfs group, this [`FaultConfig`] will appea=
+r as a directory named
+> +    /// `name`.
+> +    pub fn new(name: &CStr) -> impl PinInit<Self> + use<'_> {
+> +        pin_init!(Self {
+> +            // INVARIANT: `self.inner` is initialized in ffi_init.
+> +            inner <- Opaque::zeroed().chain(|inner| {
+> +                let ptr =3D inner.get();
+> +                // SAFETY: `ptr` points to a zeroed allocation and the s=
+econd argument is null
+> +                // terminated string.
+> +                unsafe { bindings::fault_config_init( ptr, name.as_ptr()=
+.cast()) };
+> +                Ok(())
+> +            }),
+> +        })
+> +    }
+> +}
+> +
+> +impl kernel::configfs::CDefaultGroup for FaultConfig {
+> +    fn group_ptr(&self) -> *mut bindings::config_group {
+> +        // SAFETY: By type invariant, `self.inner` is valid.
+> +        unsafe { &raw mut (*self.inner.get()).group }
+> +    }
+> +}
+> +
+> +impl FaultConfig {
+> +    /// Query for failure.
+> +    ///
+> +    /// Returns true if the operation should fail.
 
-This could be `#[inline]`.
+#[inline]
 
-> +    pub fn active(&self) -> bool {
-> +        // SAFETY: By type invariant, `self.timer` is valid.
+> +    pub fn should_fail(&self, size: isize) -> bool {
 
-Perhaps also mention that this function is safe to call without exclusive
-requirement, as this is a common requiremnt for many other hrtimer function=
-s.
+What is the meaning of a negative `size` here?
+
+I did a quick grep on the C codebase and cannot find a case where negative
+number is used here. It is either number of bytes for allocations, or `1` f=
+or
+when injecting based on number of operations performed.
+
+I think it's also worth explaining about the meaning of size here a bit mor=
+e in
+the doc comments.
 
 Best,
 Gary
 
-> +        unsafe { bindings::hrtimer_active(self.timer.get()) }
+> +        // SAFETY: By type invariant, self is always valid.
+> +        let attr =3D unsafe { &raw const (*self.inner.get()).attr };
+> +
+> +        // SAFETY: By type invariant, self is always valid.
+> +        unsafe { bindings::should_fail(attr.cast_mut(), size) }
 > +    }
->  }
-> =20
->  /// Implemented by pointer types that point to structs that contain a [`=
-HrTimer`].
+> +}
+> +
+> +// SAFETY: FaultConfig can be used from any task.
+> +unsafe impl Send for FaultConfig {}
+> +
+> +// SAFETY: FaultConfig applies internal synchronization.
+> +unsafe impl Sync for FaultConfig {}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index f812cf1200428..1b8f1a216a268 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -92,6 +92,8 @@
+>  #[cfg(CONFIG_DRM =3D "y")]
+>  pub mod drm;
+>  pub mod error;
+> +#[cfg(all(CONFIG_FAULT_INJECTION, CONFIG_FAULT_INJECTION_CONFIGFS))]
+> +pub mod fault_injection;
+>  pub mod faux;
+>  #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+>  pub mod firmware;
 >
 > ---
-> base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
-> change-id: 20260215-hrtimer-active-f183411fe56b
+> base-commit: e9ec05addd1a067fc7cb218f20ecdc1b1b0898c0
+> change-id: 20260215-rust-fault-inject-bc62f1083502
+> prerequisite-change-id: 20260215-configfs-c-default-groups-bdb0a44633a6:v=
+1
+> prerequisite-patch-id: 5c82dc0deb0768531d2cdb24ac5e92857c9e76a7
 >
 > Best regards,
 
