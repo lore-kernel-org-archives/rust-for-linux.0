@@ -1,103 +1,101 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AEF3112A1
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 19:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D513A44DB91
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 19:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772220495; cv=none; b=a5RltXmnLx0vv+625rRIEcj/K6Yeg+67g7cWS+G04I+V6TPtMSyo4MMXkNC3DEULaOh1CKuygfhKaoyEY/aFp3l0oaQIDim+ovmOpdMIN+G2r3TbNObmCPbVk45qjnQaN460rstOIwUoZDViUrFa4HPpBNeYpD+sULZRRnv+RFc=
+	t=1772220658; cv=none; b=RDsMEQCaK0PVEHgOu9mYG0rZz2BrQn5vO9jCeBmDVXsIOZKWZDiSsgLViijWH+fvl3BPV8KeZcuznYrPZ0JUmBGqZs9anUOwvXwIwopgOW6PWltg+vq+b6h6qzTuBBb/S0tE1tveQt7sWbqmclRuXvyiZN88LELNSwXx/NIYtgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772220495; c=relaxed/simple;
-	bh=HfVDmGC4fB3MiRfy2NmM8QDzL0ngy1GxNiE1UvPUglM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YNBi0VKtmpzKmlaq4sS4ZIR+nTOWI+A3gciKKE71FuAzNQzUEs4uYRxLsCwlUtz3AzHw4bjgFd/o2ua0Q22LHYmc7KjM/LBnG82eCjRYKmRCK/O9+mNzkv+CJOOxy0QnY/dOgFyRhsDPEeeqbtQ/MfLvc+UpSsNpT1PMNxkhZ+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pwg7qZeS; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1772220658; c=relaxed/simple;
+	bh=tOEJKuqHHzaUF5iNtoYOWbJbmY9YayOUbISzMxzdUcY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=OhICO17r3u6/B6Xw5DyAyy/VMye7/B/LS1nOcO8/BQJbwgZzlQu9gtgqXZyVSqhZ7IPxcQNfAK+LxDZ96CtMvkusOotjNZFGKvnbMwtl/mqa6EYM9WAYZpaGl/ACPvB7SYcymPDOj/V6YsMGkbj5yJGSIoKr8dPYHVhpg4cH8CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OdGYFDdT; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pwg7qZeS"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836cf00787so32436885e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 11:28:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OdGYFDdT"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5069b3e0c66so48153211cf.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 11:30:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772220492; x=1772825292; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w1HcWsQPS7f+mcem6RVU74G7Wi+GwI58L79rKUSwDFo=;
-        b=pwg7qZeSJeHFvzKt9o6skkwd7BF9E0NkMset5m4FOpTOC+Ki5A4QecbY445B2Mf4DQ
-         kEDnjWx+zcApBKkUXcNOVIjataP08wdFNaNVG8Y23kuT8h3DTErjOrqc+9GKh2vzNKwC
-         EumL0Q8yggt21gazgHckhK981jwUwXI3RB6Dnh8aB2FlTlLNFYvTz1yUv+FHFVzOHA34
-         04jwx+a5CZ4qj8kvUnxpYHj2Y0F00eX0IOpONyMCC3rMS0w8tzUxGn2FC39fpEril06u
-         2hcBXY4ONE54t+Wzwy95iVFrfm7BVL7CCTOFnTVT20IrjoJvVFiPC5P+Ai4LbC+rhJdE
-         6ldw==
+        d=gmail.com; s=20230601; t=1772220656; x=1772825456; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sMgCgfThj0uiQ/ajRpndQGU5RmdKGE2cIcjmdTi6q0U=;
+        b=OdGYFDdTNNiIJoxZxlX3SL8k3fRV8cCkaOE1RIf89nnZowl6j+UJxekkP4jhvOoqzT
+         czZRX19SuXT/hxm9TyBtWG8S00OubCrQTQEM06W4/DrUBv+hDTj7H0PQaPcc/eQwfM/y
+         q0zfCUVZRzTZ5Bv73ytCNXmmtPBLMmAeLz/lAljpcfalZ/atgRqTfExCuvIXLD48PuBa
+         YzfpQHMPSLlMEspMEodBfLkHR0qv2shZGI3M4OZeArEihbX4rw8ZRgsjSmPoZ+qvnpGK
+         nN0j6GPmQ4fc/XH04S+e1Dofwv75naTF1Of9r92cFynoQODruRwD3XCxFFN/4umvIUyo
+         O+3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772220492; x=1772825292;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w1HcWsQPS7f+mcem6RVU74G7Wi+GwI58L79rKUSwDFo=;
-        b=Jp67MICLmo5Os1YabvdY8N8XHndc8G9F4MzrAZGAL3gNBO/z+1onE+qdd0brn5zyQ5
-         7ID+hQrT3BAhomPMacHeeJ8myeTVB4IqaZ2uJmNUhAx/Z+MaDW3gNNU4kOjQ3dmckEzc
-         qk2LoFQjuK3yG4IQagcUxgkRMpFO0AtDE0yyX59FECb2ilZIYVdQ0zHCEgE0wKuEfpBr
-         B2ZZYVAr03OzNyJg8zOJyoXlTTiY0Km+q7up3BRARK8gF2gWeR2rPSN8XI9VBPFRH7ry
-         66jRzgdDVYmTQSjRpoK8VqsQIMiurBpjSha3M0S16D7OnZoCB0/JytupxX4lf2CvBbHP
-         XZkA==
-X-Forwarded-Encrypted: i=1; AJvYcCVN9P2BjTOmZo3wMvTekPRCYjYsHsPl7PiPjkTQJ8EWMR9HHTfMAzpl5x2fHn/aXtzErC99WcOOkqA1xnDAPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGgdsSoPNgSdSUnOi99Xijp1/whB4MTiRvUSMKCXITZnkbvyCI
-	slxVf4X66K9JJgl8U7Y/nAiDkHsog8oM9bwVoNMebLlYe+/2iv62rDWxX13G23ZTVBjtOXMzzQX
-	71mcVbwgTVfIMXq2MzQ==
-X-Received: from wmxb15-n1.prod.google.com ([2002:a05:600d:844f:10b0:480:4a03:7b80])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c1d:b0:483:4b37:8620 with SMTP id 5b1f17b1804b1-483c992e330mr68942145e9.10.1772220491946;
- Fri, 27 Feb 2026 11:28:11 -0800 (PST)
-Date: Fri, 27 Feb 2026 19:28:11 +0000
-In-Reply-To: <aaHvcvbmkl7oSFOR@slm.duckdns.org>
+        d=1e100.net; s=20230601; t=1772220656; x=1772825456;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sMgCgfThj0uiQ/ajRpndQGU5RmdKGE2cIcjmdTi6q0U=;
+        b=mXsI9ryogyW4JGZpdyjoO09efbZTUfZOvD0DYomAjBb93hOFrcvPmdd03veYutNt9a
+         pNJmcIk95iuoOIT9Ua7i1i0HfedNzthNug7bAYN6OsRVBzhQptnwqvgRDg4D3TJj5uJY
+         3D28oZ7WcsDJaL/yGC4ye1yf1BqPEY705l5/lUUe/244uFiaF5ec1AyTZCisrrTWgbG1
+         5rIFwQEfMRWsx7dJQH+FNg3vW46i5PBxeyLpiVAT6zHc6fioOVumgpPgjbHphI+0tW9r
+         Bhf/xl5lAJBReoAnTc8mwsFOlfjmxd3y68IcbUuQRqNCMlYrnNt1M/8P2R3eytuk7/1m
+         izRA==
+X-Gm-Message-State: AOJu0Yx2aVN2c6Lf1Z5euJ/9YtMavvpz60zUp80H8V1Fuc2tEZcvm9Wb
+	rg7kOIlnNTHXQ+90inNrwzSSQM2UOGbjdGjkWDdLXHju5nBwefuH1Fwa
+X-Gm-Gg: ATEYQzyrrD1iv/CYxnRxsBVVXnUCK4+PoVojJLODT6IvS7KFBbHHxT6dqiLqqq/cMXq
+	93juOQTBdio2nHZC2Mdy0O7Uvr3w5XLXaIpfOgYYm2isbF7Obd0geyC2zK5CSwQAnzWofrSaUgW
+	/M/f2bCTiAT5InBPJDaCB2z39vdA4MwcWIepblEh+NwucHL3Kbwb5SykP/jbTTl1S5cP7sL8nTj
+	rqWl8uG2p/QzZyDuGo3cEGfIaNthF4PjVpH8//9lbzt9D8S+ZhACmlKyNDgWh2QxpOXE6jFGlc1
+	DX7DSdC23tgt9RyJBANhb22xDdsx5kjRkJGazgTmOgcWM6tuE+Ikro71d/LZXu48P0ubdHKUdAO
+	DgoTIIVzU66P+BaZ6eKJYgwAEMjlSvuKqqG42HDs2hS1DZg39vpIJB2lWz3yrnwT57iICslH0iF
+	Jr//IL8fM6qQS7cVfrhnvBtQQYCEZkhKBmPCiuL9SA4sEm
+X-Received: by 2002:a05:622a:48:b0:4ff:a6b7:6c9d with SMTP id d75a77b69052e-5075248b828mr56391801cf.38.1772220655720;
+        Fri, 27 Feb 2026 11:30:55 -0800 (PST)
+Received: from localhost ([2603:8000:bb00:9b3f::18f6])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50744af0731sm60355271cf.31.2026.02.27.11.30.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Feb 2026 11:30:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260227-create-workqueue-v3-0-87de133f7849@google.com>
- <20260227-create-workqueue-v3-1-87de133f7849@google.com> <aaHPs-nULPEt_wJB@slm.duckdns.org>
- <aaHp_pGBxA4pNiXJ@google.com> <aaHrxzWIFFUjzWhu@slm.duckdns.org>
- <aaHuXEO64ONKMW4O@google.com> <aaHvcvbmkl7oSFOR@slm.duckdns.org>
-Message-ID: <aaHwSxIaTqLWndkw@google.com>
-Subject: Re: [PATCH v3 1/2] rust: workqueue: restrict delayed work to global wqs
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tejun Heo <tj@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Boqun Feng <boqun@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, Tamir Duberstein <tamird@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 27 Feb 2026 11:30:49 -0800
+Message-Id: <DGPZSF0HMGPJ.2ZDZ6J28MFTQK@gmail.com>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-riscv@lists.infradead.org>
+Subject: Re: [PATCH v2 7/8] gpu: nova-core: remove redundant `.as_ref()` for
+ `dev_*` print
+From: "Aditya Rajan" <adi.dev.github@gmail.com>
+To: "Gary Guo" <gary@garyguo.net>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Boqun Feng" <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Paul Walmsley" <pjw@kernel.org>, "Palmer Dabbelt"
+ <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre
+ Ghiti" <alex@ghiti.fr>, "Alistair Popple" <apopple@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "Lyude Paul" <lyude@redhat.com>, "John
+ Hubbard" <jhubbard@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <20260123175854.176735-1-gary@kernel.org>
+ <20260123175854.176735-7-gary@kernel.org>
+In-Reply-To: <20260123175854.176735-7-gary@kernel.org>
 
-On Fri, Feb 27, 2026 at 09:24:34AM -1000, Tejun Heo wrote:
-> Hello,
-> 
-> On Fri, Feb 27, 2026 at 07:19:56PM +0000, Alice Ryhl wrote:
-> > I guess the question is, what does destroy_workqueue() do?
-> > 
-> > - Does it wait for the timers to finish?
-> > - Does it immediately run the delayed works?
-> > - Does it exit without waiting for timers?
-> > 
-> > It sounds like the refcount approach is the last solution, where
-> > destroy_workqueue() just exits without waiting for timers, but then
-> > keeping the workqueue alive until the timers elapse.
-> > 
-> > The main concern I can see is that this means that delayed work can run
-> > after destroy_workqueue() is called. That may be a problem if
-> > destroy_workqueue() is used to guard module unload (or device unbind).
-> 
-> delayed_work is just pointing to the wq pointer. On destroy_workqueue(), we
-> can shut it down and free all the supporting stuff while leaving zombie wq
-> struct which noops execution and let the whole thing go away when refs reach
-> zero?
+On Fri Jan 23, 2026 at 9:58 AM PST, Gary Guo wrote:
+> +        dev_dbg!(pdev, "SEC2 MBOX0: {:#x}, MBOX1{:#x}\n", mbox0, mbox1);
+Nit: Missing colon after MBOX1, should it be `MBOX1: {:#x}`.
 
-But isn't that a problem for e.g. self-freeing work? If we don't run the
-work, then its memory is just leaked.
+Thanks!
 
-Alice
+
+
