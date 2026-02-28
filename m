@@ -1,137 +1,103 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.mr.icloud.com (p-west2-cluster2-host11-snip4-10.eps.apple.com [57.103.68.213])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21229202F71
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 03:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772247882; cv=pass; b=CUB0UVjoJc+BC9BnedVDYxwUTg2tVqW5rj3/Z8jd2vfRQ91KsArwJgPym5mdZTxGg24w95uIQpCAfvVKKxtJ7mrGNMXqChVgddXvAraSjxYkG7uXzwKfadg4Zxspw7apDPSprEtzYFrRlcXSm1P1gtkrwtU4xgbYMi1XME7r6ys=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772247882; c=relaxed/simple;
-	bh=vTgL6wj88MiC7bKtnA4PfFprU4IvDrt5AbGrKHSU+k4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q6p/Xnp2EbekMeEJ1rYxFqo0jEfAkqgTt1XvqRvVofcnMTV0cwxq8K/0cLXDsEBB2pJ6fDtKiZntKbTw8hwrJWx+Bgotx0BTh/c3cstIbkNnjW6UYYIcmXBAZjJAnFBOCMbYeZkKgAA5zrWHr9aCWxci+oKV1vR2ou8oTEIB158=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BFOvsxT1; arc=pass smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D6C2BFC60
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 03:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.68.213
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772248098; cv=none; b=l1Scbd6RI3/2OT1WvUCuOAryk/QfUYWlfqDx9hUq4pieAOzq+5PyjVy5egYt/Ziovjl3fm+6u9D9E4t6PZBu2eiTPalN2d1IoX6RQrCgu66RZ7ioTKLUtATrpwJVD/KO4J2SXv3pUx9ykwvEV37jkhnKJ0xDACO0gM7mVzk/PWs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772248098; c=relaxed/simple;
+	bh=5/33RIwclZ7H6PzJR0CQ9Fob07mvR9ft8MCUCLexuVo=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=bomyfNYiV7VocwWf7ZZGnmiiM0Ku/5hzoDbLPs9iUPNC/KhPsOTGeg033FqTvha5cqY/jL4aMy0gHVu6VV26e4SsBtzq4H6QoslxnzKqyQI7vs0v8z1ZyA2nfh6tyUZEKLl/Q3gUlqxNq8D2CQD/gPMlKy78BFPA6rCknVwsvrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=N461aaW0; arc=none smtp.client-ip=57.103.68.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BFOvsxT1"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2bd801b40dbso224789eec.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 19:04:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772247880; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hcdy8LUOmOwWVz+ifM25RPVFmliZW2kP570fNs8/UjjB1AGafeku3ftsUn6ZCp8WOJ
-         Ye8qKRmKP5bFYi0mA13ZvdsT6JLBd3kud8DBG9cRGB8EZyNlqwSHm4iV8KYe6GdhDAwr
-         hTJAlzdO1a5k79RLOmZZsTumxkbwYuQyAZVDWbQN43ot+QEj12aSSXAJ4JeZRZSR8hUT
-         sLB4k+/fwxe/3q3ifQnLnfQyRcU1k9fs388aPKNoGcqDuFYoyq6e+TOYHEgGfznq+Syi
-         IL9VT7KvH1SS6qUP5Wcb43X4G5QtkSanDUIyTS0+VjdEPaAWUNlpdgsXqQlyFm5XqSGG
-         CbnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3eBwjHixwr42Z/JUwBQoLyl3SR0lJOCkLYgkHnyat6I=;
-        fh=2qqPvPTVAlZUBuRsPo+/wHx4tBex71r/G7VeuPo6hqA=;
-        b=gxz7qsPGulSUj6rsy4pgM1qQ9npX5ytFPhWyrzINzROXebhlSx2IAqbXvDA8R4I3Wy
-         N/fRoqfuiMbj+xadrdw5xCAFKFy256OzxlrEwGbO/l0/tef0HOPrWb4qwleBjNVNf6oK
-         KiT/z1/uro09CKEjnM5x8YtgNzDC1pakBANMKDzzeKbqbJJhpF/eGkvOmrBUPnzlDugY
-         etCqvChT6yb2a/RfPnw7J8MvkfForjkibitvQCpPqhPfQuB6/w1/gKdZDmyE0guMymcJ
-         fAdYQRUOr8TRHsXynHsKRzkOz8AjjiJDGwE4Ey/iJpywtUdITnaZ+3seUG4bVzt4uBZm
-         NjNQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772247880; x=1772852680; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3eBwjHixwr42Z/JUwBQoLyl3SR0lJOCkLYgkHnyat6I=;
-        b=BFOvsxT1VPLdr2WMXrHwfmN5VqWNc+lxscpJR0nBiuMX0rvbzvvRrDzcXQd1OntBfE
-         OILoIJhz27eOidfim/sAQF339520ENq0gLlYfSDAjk2hr4Oe+1NuXsNLO9PEWvu3SdIh
-         0IxwsrU0b2R5AEJ506iC9hJjk+FbiguR+JCY8c4dxND0wfb/zaiWlm/hjhKXk+bWi78u
-         vpXuPE5MYCj8TWGNzzBaO/ZOPxUfBa/hQSDhYUiu7Yg3yPBJlKLcJ8NQ0fUjM63Sp5mB
-         1VYmj7TAS9JIsCnmr72Ajh9StIsvUVyWsDE8tI20xo4sysv3JGkFOX6tOK29vnc1zkeV
-         EMRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772247880; x=1772852680;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3eBwjHixwr42Z/JUwBQoLyl3SR0lJOCkLYgkHnyat6I=;
-        b=dLXifiBwjWaLwmCrJ85FEMfOKlIhVIdft0NOHykuzhmtBOdtbjFvaNEPuOfCtkq0Oj
-         GJbtIBEZTYYJRU6ca7bw6LuSyL3JvJImnbXxAJp0vMqetoXXNmuZyoS6xXsx0xwdco2P
-         AIyuUTuwjTrmoecOj1iNkLKm6rzfSanIh/x7tiWz8MUnxNrMBbwImSBs1QeqynimHtPz
-         ZKXqPUnXPmmvg/eNm86A2EQJ2t9Vi2IEqUOgWzhRJXgha1+IkNV4a/mobAjqzFYrvSwo
-         XjBKPNvwmu1JH0P/4nc6SX8/a3dtgJa2RW+noe0i0rgdRoxVSm8hNqgOqGJAdxFLTzub
-         3bZA==
-X-Forwarded-Encrypted: i=1; AJvYcCW3WAKXAsbF1maFGQ9M4WKbaQ93xKMWyE4xISCyw5D/jtikT8Ek/lcRjStjSQ2hQK4X6TYLrxshiYMQFtBr3A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTJSThtV3/BZgnbdZKqrwmQx/ogXbwCbRkBUKTyArisz6QiXPf
-	hM4YhluMVkg3J0gHmpZY21ysJ7sGQoUx+qxlL5nF3gy7KounaVN8jQ+vf+im18EVgRCaDtQxI5L
-	NqZvh1knJD7zJZNmQnbHjD7m+dhGBdPY=
-X-Gm-Gg: ATEYQzxpA415jnOnBO1cT8TCDqNW/FvdGpDcLk/awS2DCdPkHs/5KbQrpkk/WklwRHA
-	DVDMr6RbUBYd/FGfh3i8GM5EcEsrwwVLfZFLGLsb0wZ1wlHZZ/AqbceHBOhv3RGK+4zkk6YGG3t
-	7m4yzd5O0dI8PjDNndQESddWrqBOItBgtARykMzXf70Q/gcnBjyTvwvRXAUHL1otBr6SZBKAssk
-	zxBBjwlyipiad4T56ZIxEN7CNNPSE6A3u2AlW1MzjNcY42pYWhsQb5pptMcWu2kf5EiIJJmYBur
-	INLIutdDqOaEUIijBvHNIrQamgDiDTL5ACPshSKfKPEymETkl8nF2UtcPO7Uh94oqDs8e4z4NcL
-	tlJMMxRwg/xiVUre52F0vX2b+El/A
-X-Received: by 2002:a05:7300:cb13:b0:2b7:121a:99f with SMTP id
- 5a478bee46e88-2bde16beae8mr943647eec.0.1772247880144; Fri, 27 Feb 2026
- 19:04:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="N461aaW0"
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-4 (Postfix) with ESMTPS id 4EE981800128;
+	Sat, 28 Feb 2026 03:08:13 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1772248097; x=1774840097; bh=sstvHFE1AJiQTGpUm5exjRae7lmo+G84ieX/fV24DXs=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=N461aaW088mtwGCmvdg549WJ/60fKgVBHdyLrHaLcTxLc5n3WyqPGFYlFSgufnuTnU/9wnYhrxutSOjOcLwYXZ04+CaWMQohhKgh+AlFrgkTh8F9eONt+dMiK3ccK6kzbaXrEn2WnmxqBjetTXijeyT2KEy9EaiGqtHoSuby5laMWLycCB1f8Zf5Im1sLX0jEVyO8oMkNmWHgL6V7JJKYv0m1jCPDnXNwTvZ5Dc6DbkExGuDzGi2Q2ndh+v0I61Raw9RqbcnfUT99zVi1fU2xHaXpY41im1TYTLc0TuJV/Olwo6MbBsOtgUXVyNzBC9IK1keU95GK+ZBF839FoY1ow==
+mail-alias-created-date: 1769500909675
+Received: from localhost (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-4 (Postfix) with ESMTPSA id 27EE518001C6;
+	Sat, 28 Feb 2026 03:08:10 +0000 (UTC)
+Date: Sat, 28 Feb 2026 12:08:08 +0900 (JST)
+Message-Id: <20260228.120808.423470088962258309.fujita@bee>
+To: a.hindborg@kernel.org
+Cc: boqun.feng@gmail.com, fujita.tomonori@gmail.com, frederic@kernel.org,
+ lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: hrtimer: document handle based design rationale
+From: FUJITA Tomonori <tomo@aliasing.net>
+In-Reply-To: <20260215-hrtimer-docs-v1-1-bff6a6c0d923@kernel.org>
+References: <20260215-hrtimer-docs-v1-1-bff6a6c0d923@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260215-hrtimer-active-v1-1-a754d10492c2@kernel.org>
- <CANiq72mfLyXNs2QdzROkgOeuQDPSEM_f3Rt3rvGcrhd44weSTw@mail.gmail.com> <20260228.112257.2070673836800156099.fujita@bee>
-In-Reply-To: <20260228.112257.2070673836800156099.fujita@bee>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 28 Feb 2026 04:04:27 +0100
-X-Gm-Features: AaiRm525fxEQ7fIgyaAGspou9bW5sS58iIsqFEWInXxkYoULuWYWH26Jcc8wVoc
-Message-ID: <CANiq72=Y5aHc+jQc2Z5R7gxQj4oyKKKuPuuR9Uzx_LR8Ph84gw@mail.gmail.com>
-Subject: Re: [PATCH] rust: hrtimer: add active() method to query timer state
-To: FUJITA Tomonori <tomo@aliasing.net>
-Cc: a.hindborg@kernel.org, boqun.feng@gmail.com, fujita.tomonori@gmail.com, 
-	frederic@kernel.org, lyude@redhat.com, tglx@kernel.org, 
-	anna-maria@linutronix.de, jstultz@google.com, sboyd@kernel.org, 
-	ojeda@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: fq3nyA3M4_-XZ_-C2_FAXGR4LQbcQzq9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI4MDAyNiBTYWx0ZWRfXx1sOtS+itdN8
+ HUly2O9PxCREyxlD9gwFfpADrkRB6U3k7kixfD0pQ+ghgyHwL0wg+kRzp1Cteg88vBmQZWiAjnK
+ ITargg/CrfM52bHF1dsTHaRj8qb9gE1349sCj0/OsIrX8rjFGNw5xWgYbD9dbSnTZvLhI33xtqT
+ BXx7piewIlmddiTuqjSlr622hhQZtdzMWbilam49X9v+4Zcnt1GNiNUsosrQlnKF5sFVAKU28i9
+ p7+9GinEtDKIadKkRqQATLIZdGz7dSgsshlm2xBJSmYou1MdnWLZ0066kuPgQ73XCqz41Q2XH2P
+ 1j+yFxyfp3nCKxhFIf0uz37dQHsKNWqG1lYNOzhxicZDsuj+uxq39H/2olIHnQ=
+X-Proofpoint-GUID: fq3nyA3M4_-XZ_-C2_FAXGR4LQbcQzq9
+X-Authority-Info-Out: v=2.4 cv=COQnnBrD c=1 sm=1 tr=0 ts=69a25c1f
+ cx=c_apl:c_apl_out:c_pps a=9OgfyREA4BUYbbCgc0Y0oA==:117
+ a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=cu8r0ib7BQWouZTaLqMA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-28_01,2026-02-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=709
+ phishscore=0 malwarescore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ clxscore=1030 spamscore=0 adultscore=0 mlxscore=0 classifier=spam authscore=0
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602280026
+X-JNJ: AAAAAAABuhBq2Oj3eqauPjCWDysXWnRE0DB5jHj1bNDrKI53loL/jQhj3MXSxz0Ep4mXlhE01GxJ6kFnzwzkK/ViCA2QzShtJkUf5K3hTohqxZevarAXYtk8S729YJ8zP0ievkA0Vr2qGDpFc77eJgbKkevUHwd2l4ONE/SBVjV2AsLbrv8lE+h5TvXB0RsR/MdPI0P2PMwpgFP8WZSg7LjDwnsXiwRG7qbji05+p1BBk/pGd30+LSjRaHruVuKqOyAjW67PebzJ9E1cC4A4k1Y0TGPKYsE9ks1BQ19TbVv4+wv1vhvrG3ubB0uzZvZXpGLey6ZWw/HGXPD3QAGR/7efoRgBmAdX+M91jjXmzx05H+9E7czdHBmF3C7mxN2SPSRQyKESb9jBGc/4rC53pG+MyfX0dMoew5nnZW8feUi/CdOJL2Fhcfk4kR9KbTuBqdnOitoQ4HRrRpJiCJrA2R4JbXCdhQEYDEMcVkYiMEaxX0ZLOjOpT3pqx8DwmLPfCIda7qSs7S1OVFCWM0JIpYxPL0P+ZOLgAA0fut4PAlCdx4XU9K1iNxKkTAzqU3HRFBAQHyL0yrPmM8ue7tPomLrZREu9RK0UykQBXjpbBq4tRZrtasuuEsPe3URu+U0uyOA9B7pKtVSFq2N3sZrM6hp7yi9NqFe2QSvOvD1xeL7jKjPTrE3lQQ/wWaJa/u32srPvdbhog+iAuwIIpiAuo+gQvKbsUXQqsjhESSB0puu4QqNIurhuRQ84Ht3sn3LgaSSrp1cmdnaSv94ETy3FEcy5TDYD0iRazx7pwJpdnydMHANRDBnUxnoN4+ZRd/CfXNbatuj1u0X8oSNF+/vUp7bCXUo=
 
-On Sat, Feb 28, 2026 at 3:23=E2=80=AFAM FUJITA Tomonori <tomo@aliasing.net>=
- wrote:
->
-> Should we use intra-doc links for true/flase? Currently, rust/kernel
-> doesn't seem to use them. Seems that Rust std library isn't consistent
-> on this either.
+On Sun, 15 Feb 2026 21:36:04 +0100
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-Maybe... It doesn't matter much either way, obviously.
+> Add implementation notes explaining why the hrtimer abstraction uses a
+> handle based approach.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/time/hrtimer.rs | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+> index 856d2d929a008..f92880b2cbdbd 100644
+> --- a/rust/kernel/time/hrtimer.rs
+> +++ b/rust/kernel/time/hrtimer.rs
+> @@ -67,6 +67,18 @@
+>  //! A `restart` operation on a timer in the **stopped** state is equivalent to a
+>  //! `start` operation.
+>  
+> +// Implementation details
+> +//
+> +// The reasoning for adopting a handle based approach:
+> +// - If we explicitly drop the target of a timer callback in the timer callback, we
+> +//   may get a dangling reference.
+> +// - If the callback owns the last reference to the target, target may be dropped
+> +//   in non-sleepable context when the callback is finished.
+> +// - When dropping an object that is the target of an armed timer, we may drop
+> +//   fields accessed by the timer callback before we cancel the timer (drop order).
+> +//
+> +// By using a handle, we can make the handle own the callback target and avoid these problems.
+> +
 
-For simplicity/consistency with other "trivial" items, it may be
-better. On the other hand, it is more painful to type and takes 2
-characters.
-
-This is the entry I have so far for this in my to-be-sent guidelines
-"rules" list:
-
-- Use intra-doc links wherever the link would work (i.e. if ``rustdoc``
-  can resolve it), unless doing so would be unreasonably complex or
-  verbose. In such a case, use a simple code span instead.
-
-  Do so even for trivial types and constants, such as ``i32`` and
-  ``true``, as well as for ``Self``.
-
-  .. code-block:: rust
-
-    /// Returns a new [`Foo`].
-
-  Avoid:
-
-  .. code-block:: rust
-
-    /// Returns a new `Foo`.
-
-Cheers,
-Miguel
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
