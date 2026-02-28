@@ -1,116 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4503B44BCA8;
-	Sat, 28 Feb 2026 14:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772290613; cv=none; b=GV6RjzEdTnLtj9Rmw4gy5bW8AN+mxx+aD7kQXPwtdoDvuQJq8CqqDga997sJiVT2gH5MfmTd+Lwej2WeQGe2jABFseQGSvcD3WK0LsUcpwqOJ0jHeZa3AaIZ7RhGNDaMtYrJqRGfKFkLpuSqJZii6tQAXBFH8U8OJGJM9R1zuyE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772290613; c=relaxed/simple;
-	bh=nMtdbiP2HKP61yIcu+YQQSlHUdnuPLxRDCcLbKBEocw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=Azcm+hDe4l8KYOHkYEiHx7hJckELquuy2vGUt9ZnSXqEUwaSWCDNyJS2Mst3vwbqynQbU2BULXT7fYa/cMytcCu4pMobLrAHRJmDADY7AN/3aMBiGibjYdmG36f9Moa5x8xjW34l1hlRyaA/cfdgRi3N6Yr1W6xuqj7zvuh5TnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENqNfFuc; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADD2371465;
+	Sat, 28 Feb 2026 17:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772300143; cv=pass; b=lXGq4vkr/QjddVwfGf8n/3N1jwk9GGT6Rfgl1HDiSmxtUsp5xy8E8CQzdfjcTNLZhU1RfjtGo0uL5UZD77BgZAkugWfsApyoyKNr89f0yvVZEZIiuTyEfSzKDKtf7a/wgOwbeRHwc7+49N/4DW6jVVSZ7ZwCViQFbWZfPxo15uA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772300143; c=relaxed/simple;
+	bh=tnihtFJNzmt7h/f1sP2uom6gn5kId58YFeyLasqpCsU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=jTUs2A7stgdtFpVaVbdnHPlzaSHkfFKMeE8zP9TZxf+9L7DkAEdh0C7Jo194nA8+MC0BU/m3SPtysGHqLSiqG8XN8VfakyOFx3BM74DRA7tQNPsPj+om8y4vapcWumkR7dbc8u/KjbOSw7ozC2iy0V00qRLl46pBJL0dE8iZ688=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=KuB+4o+j; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENqNfFuc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78D9C116D0;
-	Sat, 28 Feb 2026 14:56:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772290613;
-	bh=nMtdbiP2HKP61yIcu+YQQSlHUdnuPLxRDCcLbKBEocw=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=ENqNfFucdSRlXBi8VQrOSjLwOMmC7gJthDBRno9AD+CT5PFxK1yOB1ETahaMorq1E
-	 9V2TRDK7MDTH2nPA0YC8koRLjeXZnEve6tKByPizQJgMERRIsFuP095Tid6YmwfCFK
-	 tLtKUkuiY+fXkOyTSHPHrk7TN3BWYBssGRR3M/6/D8Gq/PY2A6+juq65yrHHh8kqnN
-	 F14GlXlvQG40sEC7aTW04STgCFTdmpc1YFJLPMKrOhLMA/vrFJIof3frxKL4cesr0S
-	 WXiwXoKsuaIbDsfvaJ7XMTIt1q4qazYOb09q23+/rw2gqM/4A5GGNRKAaeSsJcYd/U
-	 0dEOq+LcOf3OA==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="KuB+4o+j"
+ARC-Seal: i=1; a=rsa-sha256; t=1772300125; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=iCmli1x+qqYxzy37SKwwgZV6ccmtjgqhOjoZ/aOmYxQbBwQktCAD78QO/wsVqYSOBFGm5HFIks3mWkN5oo2COGAX/hAdFEmHDe8U1z09LkAtJNxet1G+RBRjFPwKVm4+UYAHa+uRFcX/sGDyIgMnT+wSJ9nBv5ivluWzNfqY0B8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1772300125; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=tnihtFJNzmt7h/f1sP2uom6gn5kId58YFeyLasqpCsU=; 
+	b=BOVdMoC3kfBcPmFXe0rVqTmZVYV+9KrKtIS0a+Sp7M8cbLYQ2ZH/89j8m4oZBwAPjNRanC0rgt/UCxwS5mdSrv8mcVgzXAqv4cZ7JtsN5D6w7PR2VzYEOnVMxAq4JC7uWJGpF8uYooc24oupeI7yof6IK3D5tIdIuLZHC+viHz0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772300125;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=tnihtFJNzmt7h/f1sP2uom6gn5kId58YFeyLasqpCsU=;
+	b=KuB+4o+jm2EQ/3nggJHEJc/LVCaJanjXJmFwtS/XuL5lSO/uwEOpkuYIdKNUfHnl
+	HEaELqvfFzIiUHdXDaqAxPBbgdQkguZiMmzCCwvIKcwWx/iAdz6eCrjWHF5pAkdkKZe
+	pfMYeSoiJMaJzHq9j2S9waBAymXukFrRcEiycSPU=
+Received: by mx.zohomail.com with SMTPS id 177230012304395.92709734053415;
+	Sat, 28 Feb 2026 09:35:23 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 0/4] rust: Add ARef support for work items
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <196AEBB6-29A6-4F0F-917B-A042F422698C@collabora.com>
+Date: Sat, 28 Feb 2026 14:35:05 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 28 Feb 2026 15:56:48 +0100
-Message-Id: <DGQOL5TWOD70.4WHKMEIP1FEN@kernel.org>
-Subject: Re: [PATCH 2/2] rust: pin-init: internal: init: document
- load-bearing fact of field accessors
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Wedson Almeida Filho"
- <wedsonaf@gmail.com>
-Cc: <stable@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260228113713.1402110-1-lossin@kernel.org>
- <20260228113713.1402110-2-lossin@kernel.org>
- <DGQKQM3UOCTG.25ULNY22EYXJI@garyguo.net>
-In-Reply-To: <DGQKQM3UOCTG.25ULNY22EYXJI@garyguo.net>
+Message-Id: <E0BC3E06-FF0E-4EAE-8B7D-FFC1630F537C@collabora.com>
+References: <20260204-aref-workitem-v2-0-bec25b012d2a@collabora.com>
+ <196AEBB6-29A6-4F0F-917B-A042F422698C@collabora.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Tejun Heo <tj@kernel.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Sat Feb 28, 2026 at 12:55 PM CET, Gary Guo wrote:
-> On Sat Feb 28, 2026 at 11:37 AM GMT, Benno Lossin wrote:
->> diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal=
-/src/init.rs
->> index da53adc44ecf..533029d53d30 100644
->> --- a/rust/pin-init/internal/src/init.rs
->> +++ b/rust/pin-init/internal/src/init.rs
->> @@ -251,6 +251,11 @@ fn init_fields(
->>                  });
->>                  // Again span for better diagnostics
->>                  let write =3D quote_spanned!(ident.span()=3D> ::core::p=
-tr::write);
->> +                // NOTE: the field accessor ensures that the initialize=
-d struct is not
->> +                // `repr(packed)`. If it were, the compiler would emit =
-E0793. We do not support
->> +                // packed structs, since `Init::__init` requires an ali=
-gned pointer; the same
->> +                // requirement that the call to `ptr::write` below has.
->> +                // For more info see <https://github.com/Rust-for-Linux=
-/pin-init/issues/112>
->
-> The emphasis should be unaligned fields instead of `repr(packed)`. Of cou=
-rse,
-> unaligned fields can only occur with `repr(packed)`, but packed structs c=
-an
-> contain well-aligned fields, too (e.g. 1-byte aligned members, or
-> `repr(packed(2))` with 2-byte aligned members, etc...). Rust permits crea=
-tion of
-> references to these fields.
+Tejun,
 
-Yeah that's a more accurate account of things.
+AFAICT, there are no further comments on this series. Can I get your =
+feedback here, please?
 
-> Something like:
->
->     NOTE: the field accessor ensures that the initialized field is proper=
-ly
->     aligned. Unaligned fields will cause the compiler to emit E0793. We d=
-o not
->     support unaligned fields since `Init::__init` requires an aligned poi=
-nter;
->     the `ptr::write` below has the same requirement.
-
-That's a much better suggestion, I'll send an updated series later
-today.
-
-> Also, it is not immediately clear to me which one, buyt one of the two oc=
-curance
-> should be `PinInit::__pin_init`?
-
-No, `PinInit::__pin_init` is never called from the macro, since that
-only makes sense for structurally pinned fields. That info isn't
-available at the callsite of `init!`. We emit it in `#[pin_data]` which
-exposes it to `init!` via the `PinData`. That ZST has a method with the
-same name as the field and it takes the respective initializer (so `impl
-Init` or `impl PinInit`) and just runs said initializer.
-
-This happens in the second hunk in the case where `pinned =3D=3D true`.
-
-Cheers,
-Benno
+=E2=80=94 Daniel=
