@@ -1,141 +1,82 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.mr.icloud.com (p-west2-cluster2-host12-snip4-10.eps.apple.com [57.103.68.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0B721E087
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 01:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772242372; cv=pass; b=nUIyQX+Wyje2pxeN8AmukTHMMcMVNbvO0SPZtbyY1DBNT/2WZjgmlTijtrTjUk619zGJKcGSSPfne15hrPK+Kc4AxBGUzLIYOcPlHlGKPOscqzD8AXR6Sv+4zZ38tWJO5fDymQBE3lLR3fu93yTvJgEuQjraVjCFL1/VB5Qe3PI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772242372; c=relaxed/simple;
-	bh=CONkaPmD6N1p8Wl41bWFdbK04Exw+AofJGxiyObuVR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=atRDfM1cikIrjy0Mj02ToXO3eEeA2vBfMyw3URByCt5E+FBw+GEttj4P18JiRGrtF4Fm2gRqes9XaIbhUlj7lHB2xg46qKMamWvvcoloXzm+SHgLGVz/u+65oqXS+w3xD0gFfDlHT5OGqTMJQQRsIBI9adV4prniwJWXRzn5hOQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NpUE24zM; arc=pass smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBB822A4FC
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 02:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.68.223
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772245385; cv=none; b=YENdx5DRL754Ze2DlsH6PGY/bNk5N9AkgEaQ/OfUDB2dbSS7CmxLF8AI5WfllvM0meCxSmGdc4X6ph2tOtt0pQSVGSrTMVLxUJet5TCHoXCTydOhQ+ttBSm8bkopNZNtUAhYJqDpIqRd5Ji13fPBfdsfN5Qi3Qi/RvKjoZCEm70=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772245385; c=relaxed/simple;
+	bh=g/2KgPheU+5XCsWdlHZUOJXNN5C9nPmtUInShZ2mRvw=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=AnGPmocmbaLzpRmdHaoGIQQFaYWI3PIeuxFdNRmf1OYIo+YNKLnNN5zgkAPW2LeIOwwekozYA5O9p164dJ43D7Jkp/N8e/njfsDCkdxn6HIqfXM93Ht2gwwuAGia09is+21e/lxBkoVHbwYP77U2LEl0yq1g9bRZq12+W3L0V30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=tn840BXh; arc=none smtp.client-ip=57.103.68.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NpUE24zM"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2bdb82b69f4so142509eec.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 17:32:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772242370; cv=none;
-        d=google.com; s=arc-20240605;
-        b=J2eASeC4X4gexqLWMtdlMDliuKbiBoRUWwtDzEhlqbo0b35CJ7bn2n1GG6gh+dYKAA
-         WWymsdRAmQsi30g0B1dASPi0SkYSaKtU14oaGcETdz5YAp8x3q/8PIg+7+oQvech99mY
-         7ZYXht9T4Zaj++xGO8xKHGp4RmL2RFMf3zYwPGFDQTp6gg8gGC0uxsZnRAvrpO+GQ+FE
-         rlFmSABe4rdNueNhGOaFm7DTiQ4hfdtWBFpxf4GOUgUTjLxmB5/SMR1DJbhrHXp0WARm
-         Y2zrlKOg/mT+jh50bHeQfIfwuAXWRDdoiPw1r3G/VPOYhTWUjoIa5D65/4jhREwB0+Ri
-         B+DA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3nsfOyCnlIaYDY7uNCziE96qb4GjGHs75Vm15QwleTo=;
-        fh=PCe7rwxWVanIq6xhJ7rBvPukcy+5sluyvAgmyNKdogI=;
-        b=ZLCwT/lmQ5HbmZCiPlcCKR0DSUgzX3U3qRT8oeDyQU3mfRNxammAQDrKgmOuCNxJng
-         Ukd81JS4XDb9vQQiOAYXF8F1ECIR3x89aDS3FBkyStHeRzsBUFtw2RrjdxJk8kgA1hmg
-         FI/2wlQlETsNDZ9RHy/UsjnU9OKW1T4W+XY8ZSFdEs+zZliJjzAhXRdZYPfuxXhWTfPu
-         AtUygD7DYqDwzPByydhbwlI2UDv+qWWNBWSHcJw3T3SSs3dlklzABrSUthE21ODsua8v
-         +NMaoPQlI0bXeedQ+MvPDN5LTyhQytnE90YvMjU3fNDegbzK0HXzoz6uxzNistxDswVx
-         Mg6Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772242370; x=1772847170; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3nsfOyCnlIaYDY7uNCziE96qb4GjGHs75Vm15QwleTo=;
-        b=NpUE24zMqPh/loW8KERTuXfmsZAGUxZbvyw9j2dS+DkjDnT1I5i34ThZLRCXYWAY4v
-         fAiR3S3Uqr24K31a8JT4uIrgKDSokVGbo33KxL8pzx7E3QZJzWCvQrzpEYl9BnTJ2CZl
-         lkDdryC+Azyp/OZcStiRKoA64n+Ki8XgEjRkbD9wSUOVAJF7uPT8YxSmAbj3ryj5iek+
-         BvaCPwmvO6L25JXByxE/eHs73MvwG42ctGBpqPz8cSP42YFDMQU3/haJYlCsUICOlR/m
-         JoMcxVMAMGWprycSjPMa/biQLg8QycQ8JwkWfg1ydpXbvK/3GFsS++eSQtCaTywsgYG3
-         O28w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772242370; x=1772847170;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3nsfOyCnlIaYDY7uNCziE96qb4GjGHs75Vm15QwleTo=;
-        b=WjYvGrQHRYNS0GAgcm6IKnwPJE3yrqWmMrvBOvDIMMAwLm/2Y2IXakxGWxLTR3MRqd
-         2nyOCdFcnRdnxjjb1hYNc5RIJUu/LlA/0fpmfsD2e/Ac+XH4CdwkZYO/lCcSc6ZoCZTx
-         k8mPR6ybFAlPhu35GXl1mwowvdsHh9S0fcdsi7EchxweZRcghrpkVE3oQ2TJn5UOApHs
-         6MYSjjRa9worjww684a+eVayud3fJQFTXcOD3RGYYNuWKbrqTeQ+kyzqZRn8e2yAAVQc
-         zoVacYmAGFr+R7wrVTMdrIWJFEZgFi6eGKMBKymXAH2AmKAsWEAkKr6I2RlITIez/mpB
-         q+Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCXzxrC11DHeBUjLf06i/NTq975Jde891JRv1FUaVKc0baaKChvxnfa4oZlnQXQk3Zvzmj59ybRy++Zs2BvWkw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYFi20+OTI7FVwBbzciL+SGc4S4cI7rv/kUfMsxNVPQZjILgAd
-	GwpV5HSP/bVEaPcO28L6lpRZrR1O4DCcuKkcfnd7YWpndE3W3YcgHF/UQ7KHYAMEH3xKNw8DXB+
-	tQ+Mk52kEpOPsrnMssP8LanHK+P7YRZM=
-X-Gm-Gg: ATEYQzx0eVAZrKqbMJA+bX8lGZw/31ZgCeXVKpLH2dnqfUF9abPTgiGAG0e2PxkXI9S
-	tt7pAWmBJgspWwJktQ0XvYrxJQgXyjKoucqUACB9GcdpbEgiLxUp3A34Xyw6uLLGSLW3j5l/Tny
-	du71y7vWnlLbShGh7Obwd+ozefFPQUERa9b4SmBzV01RiY26xIoOkzZlaibid6wEHSHBP4TSAJr
-	DOy7Las8/ux2h+rhdJ+HM08WEVjnQqSe1HdP4JIwawARYJK40y2AG3OxRYjJ+w1+KnZ59PzqlRK
-	FaADmOKSaRLV51jTiw3mELNCJY2AWcM7FzoZumwxPHRJfOQZsOA9ANGprhMWpxp2eNtVSe5Iw43
-	viWQu9snmD8wTrzXPLIeGXe98hUvW
-X-Received: by 2002:a05:7300:dc8c:b0:2b7:f145:a98 with SMTP id
- 5a478bee46e88-2bde1b2878bmr1121074eec.2.1772242370097; Fri, 27 Feb 2026
- 17:32:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="tn840BXh"
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-20-percent-0 (Postfix) with ESMTPS id 0AA421800DEA;
+	Sat, 28 Feb 2026 02:23:01 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1772245383; x=1774837383; bh=g/2KgPheU+5XCsWdlHZUOJXNN5C9nPmtUInShZ2mRvw=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=tn840BXhpsTfZs8CaEZjs+OxxA+9LhsAwTcVNzKjWP2sBG8OODfF6f9oRWx9Ttt1WzTKVAUd+yOrWSUax72Ap3lBcc2SEkiy8QlOrOWKbFidFn0kveyqTHfPl5yJiNS2uSNZO1OSUaQIlt7EBybPdDW+qmrUuZeBf6GbOWNtg1yVilymOFXFBvrbw93BdJhseZstB0cXuq9FbtBuIrbWIcZhFaFgL79nAOYVk3xNKzmLkYlX3LIGzDFZjBvRKeEwpAepJhacKaHKk8amnBohudZuz6mOMM6AqD0G20sxfjcCPkDNhzRE2iyGreMvkHJAUDPtDI8uzF4Yra1LrR9S6Q==
+mail-alias-created-date: 1769500909675
+Received: from localhost (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-20-percent-0 (Postfix) with ESMTPSA id 4421A1800DDE;
+	Sat, 28 Feb 2026 02:22:59 +0000 (UTC)
+Date: Sat, 28 Feb 2026 11:22:57 +0900 (JST)
+Message-Id: <20260228.112257.2070673836800156099.fujita@bee>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org, boqun.feng@gmail.com, fujita.tomonori@gmail.com,
+ frederic@kernel.org, lyude@redhat.com, tglx@kernel.org,
+ anna-maria@linutronix.de, jstultz@google.com, sboyd@kernel.org,
+ ojeda@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: hrtimer: add active() method to query timer state
+From: FUJITA Tomonori <tomo@aliasing.net>
+In-Reply-To: <CANiq72mfLyXNs2QdzROkgOeuQDPSEM_f3Rt3rvGcrhd44weSTw@mail.gmail.com>
+References: <20260215-hrtimer-active-v1-1-a754d10492c2@kernel.org>
+	<CANiq72mfLyXNs2QdzROkgOeuQDPSEM_f3Rt3rvGcrhd44weSTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260226234736.428341-1-thepacketgeek@gmail.com> <20260226234736.428341-2-thepacketgeek@gmail.com>
-In-Reply-To: <20260226234736.428341-2-thepacketgeek@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 28 Feb 2026 02:32:36 +0100
-X-Gm-Features: AaiRm52ur8aq7KahUBluBVKKHjAKX3SUBCaPurx6nv1CE1SejfeUH-yosDfCUvA
-Message-ID: <CANiq72=d3DmqUwe+b-btk75N9r8XMxSeqaQniShfbQQKBeFRZw@mail.gmail.com>
-Subject: Re: [PATCH 1/8] rust: module_param: add StringParam type for C string parameters
-To: Matthew Wood <thepacketgeek@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, David Gow <davidgow@google.com>, 
-	=?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
+X-Proofpoint-GUID: yp4Wb06W2_P50Dy-4xppEOZk9tgBhpVF
+X-Authority-Info-Out: v=2.4 cv=C6fkCAP+ c=1 sm=1 tr=0 ts=69a25186
+ cx=c_apl:c_apl_out:c_pps a=9OgfyREA4BUYbbCgc0Y0oA==:117
+ a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
+ a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=1LrhdiHZ6EmkTve_-FMA:9 a=QEXdDO2ut3YA:10
+ a=0lgtpPvCYYIA:10
+X-Proofpoint-ORIG-GUID: yp4Wb06W2_P50Dy-4xppEOZk9tgBhpVF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI4MDAyMCBTYWx0ZWRfX+NIREwxD0VnP
+ +yf2n/ekaSHvmi/aIjB9Z8VUxWIW6wPbmQnZeJKT1yAXXU22kRLQUUuYs2bcA/IVQvqGIecr6lW
+ S/r1P83ILniTf2XFgInOJ7WfY+Y5/Oel4wkhM3MEUkLdUo61Xt6UCH1kgGVz72FBPX+G12IC04M
+ /VbDi4RhnCcVg+/nkS3wDI/oE5H4D2DQgvWiws1fh7ggTDm26ZtnMEe3e46hv+mt7X/rrDNaKnU
+ CpiGr/7sBu6iEndmC0QQfSZL9dF3p9rAGLaRHJtsEm7KzlP4q7MNeai6jQycug2wPzvqgYv94Hh
+ K4ueggN0l/3uQqih+I96Fa1yxXGOcwzNdln2EDoEFi7DcBIGP2uXCS0xJ3SSNM=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-27_04,2026-02-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ lowpriorityscore=0 phishscore=0 mlxlogscore=471 malwarescore=0 mlxscore=0
+ spamscore=0 bulkscore=0 adultscore=0 clxscore=1030 suspectscore=0
+ classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.22.0-2601150000 definitions=main-2602280020
+X-JNJ: AAAAAAABq9q7dUMHFALPdbOFg/f0BuKMZm6QKDMAxnvdj4kn/9vybVgKkkn6DJsFremNI+NvGklZtO25QFoa82gtbOc6N6AhBmTtFBV6AbNHN3ffERHRe6uWg8TbTo5mRgXoiL1eb59PKJlXgvyG4sbyAuY+ydFoCzA50SuBQOBv0exFhWAuh8bYYBACXg7TgcU1SCdwzLX3g9Ko/DMfCmSAYXgVC+CxLRQWeeJLpGHTDQcUvFP73S++no/A5ncJQqSWS5ffdZ4K6+dr5nOaEUzzPJyMxUrf1ofoRWOr8hcNJzzDmgfBoOmAguTu+yCJcI18r9FoAhB+X4HYzvlkGSYJbo2Nz63+bDLwMYGInHvGhDeW8mrpBhVUqV0SnMp5CmXGH54+T+Nv5pJpjc8vjvt6NTJ43YTx/vCvPF6HZtGBWznVxKVVSg2C9fG2Y9znB8OJ0TvMe98/HK6KHnwqvbUtJWFJGOPSxT3slzDdk325AYbxVhFtKAZr7WYrwgPUapJshzuTWS7fvMs6NyJBs/oj+ywVYnQRU3LgXojrI+0vDHvLKY5gH2QSI1jeFn/kWz4WMXCW57CHwEQMwLPIGTs8LbGuUgRVGWmvjMxWsSj+HhDm5sRQjmfN1vkS01GjKszUPfz+uGDRWPNc8kmgyJ62H85QJoY3WUqWqwLHo0qCqnSgItTCNLe+qwYAYsmx8R3NzNdNUX9Je8fTTYIUcluf0Y0T1Becgn+/0vhTbJVGw6hjpOUbOA21/BhSdCaQzyIv1y7WD3tJ9jFk6Q7IXndZ/L0SERrn+Z+xhOwtDx58/zAzZKN2t7MFTB0Dz5x9kATP5OafiRur8sdwSQOIjk807caDP04WQXgVEew=
 
-On Fri, Feb 27, 2026 at 12:47=E2=80=AFAM Matthew Wood <thepacketgeek@gmail.=
-com> wrote:
->
-> +/// This type is `Copy` by storing only a raw pointer. The underlying st=
-ring
-
-Please use intra-doc links where possible/reasonable.
-
-> +/// # Safety
-> +///
-> +/// The pointer is only valid while the module is loaded. The kernel ens=
-ures
-> +/// the string memory remains valid for the module's lifetime.
-> +#[derive(Copy, Clone)]
-> +#[repr(transparent)]
-> +pub struct StringParam {
-
-A `# Safety` section for a type? What do you mean here?
-
-I think you may want to establish an invariant instead.
-
-> +            // SAFETY: pointer validity is checked above
-> +            Some(unsafe { CStr::from_char_ptr(self.ptr) })
-
-I assume you mean that the non-null implies the validity, but validity
-is not really "checked" above. That is why you probably want to have a
-proper invariant in the type, so that you can invoke it here etc.
-
-> +unsafe impl Sync for StringParam {}
-
-This is missing a `// SAFETY:` comment -- please double-check
-`CLIPPY=3D1` passes clean.
-
-Cheers,
-Miguel
+T24gU3VuLCAxNSBGZWIgMjAyNiAyMTo1OTo1NyArMDEwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBTdW4sIEZlYiAxNSwgMjAy
+NiBhdCA5OjMw4oCvUE0gQW5kcmVhcyBIaW5kYm9yZyA8YS5oaW5kYm9yZ0BrZXJuZWwub3JnPiB3
+cm90ZToNCj4+DQo+PiArICAgIC8vLyBRdWVyeSB0aGUgc3RhdGUgb2YgdGhlIHRpbWVyLg0KPj4g
+KyAgICAvLy8NCj4+ICsgICAgLy8vIFJldHVybnMgYHRydWVgIGlmIHRoZSB0aW1lciBpcyBpbiB0
+aGUgc3RhcnRlZCBvciBydW5uaW5nIHN0YXRlcy4NCj4gDQo+IFtgdHJ1ZWBdDQoNClNob3VsZCB3
+ZSB1c2UgaW50cmEtZG9jIGxpbmtzIGZvciB0cnVlL2ZsYXNlPyBDdXJyZW50bHksIHJ1c3Qva2Vy
+bmVsDQpkb2Vzbid0IHNlZW0gdG8gdXNlIHRoZW0uIFNlZW1zIHRoYXQgUnVzdCBzdGQgbGlicmFy
+eSBpc24ndCBjb25zaXN0ZW50DQpvbiB0aGlzIGVpdGhlci4NCg==
