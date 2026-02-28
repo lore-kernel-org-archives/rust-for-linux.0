@@ -1,170 +1,132 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2467263CB
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 00:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5211B21ADB7
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 00:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772237871; cv=pass; b=ucNfn3kFEH/8heG7N1Gk7oXYUjEbjRmXnuF52B6GvzdLbbFHW9iHDZJKV93/k524+n1FAYzxhTM2rA58vjxn09fcrXLPoKmOWHPowkZDlS2R1nDIGFpC3G6CXjfrpauGzTCotOJoKAvVTyZYNt63cQ0PSeOVSWzCFSFxNTK6B9o=
+	t=1772237881; cv=pass; b=Zk3Pvym29ZM1a72NrvhOXiLrkbnbXILu+KBzYVxkL5P44neRogbWIzxWVf6IrxP+rBKfx0FhFdRqpeGpHobLYVHkhEgEoh9kn7Zwk/BBTg3igtfSv0qm14OTcxOOvUF1zzEc/ZkJ0jW8krPxuLNevmqWWlsl+JXQuokXcT5+a4E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772237871; c=relaxed/simple;
-	bh=AyWhE0nAVWkgfy7iqd4XULC970Hvz7QfVqrUmk1J00Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H0dB+FdoUqe0F1YMwyTOCq24j77Ri0Z8tf67pY2GheIv/T/DfDj1Fm7gD+5cfC5MWxIADMCEx2lIl/Xy7qz9fSqywirk+SzJVMtoD8akzXXodDVxGjTuR00TtxkDFiiTyNsWL2dq3vcSu4RK6w5rM8EZxHW6el5B4zmLqyv11dU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=YRP89O2e; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1772237881; c=relaxed/simple;
+	bh=B/4xcLoYpCf4oy51IBJ9CMfuwbAGNjelRBl/GPnocWY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kfHL6fYM3Jp7Fgljc1YjsuRZK+NULa+cE9st1soYXe4q0wcMrLFWbOBRaS3ZeL5hxdmpOi+pOQbj4aDg2098LKLPQHjOGG78DVnsEtniB3Ih3vEpaqlIH4bhWUz0tw8AcGJATJK/6/gp8XH/CDBRCFMjKzmdlWyidncoviiWLJU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4p57+6t; arc=pass smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="YRP89O2e"
-ARC-Seal: i=1; a=rsa-sha256; t=1772237858; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=b0gYgNeiBHZlQwsupS6nM/lxig0cCLKjbXzBX37M4t2QULe21Z+jh2R/W3inZdTpSMNq6t2P9qOc+atp7Ccpd4+0vP6UQnSwhQ4v3Ark4KUQIckkr3Uy/NUNIN/NxGAK0f0j5PBoQckOaT3MvpNNPwyuKC5WlXPF1NmIZOZrWlA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1772237858; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=xBboO8K+xkEUBzbYX5xV5gkcLBnmymkque8l0b3Hc3s=; 
-	b=I+pBLGEPpuk4rNu3YwOg2nGjwssYtOKvrXokIFSfVFOTUD3OMq4UXuXW4moFXYAU8a52/7huzChvsa4Y5+51SvtYPaJP1oiOohWvLABau23bxK3A0+gOzPHfyDZqB8CD6AzR1ODXUtTr0qFgi3g/wsSLRweE0MbhWRO5l9ejeGQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772237858;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=xBboO8K+xkEUBzbYX5xV5gkcLBnmymkque8l0b3Hc3s=;
-	b=YRP89O2eUZq9P3F9xOAh5AzQmeor///c96vI9IsYctgrR/P3bVKSkexKqnexrZG1
-	A/QmlRxNeJjXx1xGMyxFkwRJAWoLWmKl/ml69Pz8LZkSZibgKiUlGb77mN2acHx5HWQ
-	t1+m19zqc3Jq0V4LvKtMQfDbCWbAtf9LQxZ5VVx8=
-Received: by mx.zohomail.com with SMTPS id 1772237857173103.26535471031525;
-	Fri, 27 Feb 2026 16:17:37 -0800 (PST)
-Date: Fri, 27 Feb 2026 16:17:35 -0800
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	aliceryhl@google.com, boris.brezillon@collabora.com,
-	beata.michalska@arm.com, lyude@redhat.com
-Subject: Re: [PATCH 06/12] drm/tyr: add shmem backing for GEM objects
-Message-ID: <aaI0H8u7nAbMySek@um790>
-References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
- <20260212013713.304343-7-deborah.brouwer@collabora.com>
- <A849CDE2-C257-42D7-9FD2-E9442A540264@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4p57+6t"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1273882d901so149434c88.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 16:18:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772237879; cv=none;
+        d=google.com; s=arc-20240605;
+        b=et2+Em3AO3Qoh3qz4z1OLgKyn7DYGBi8nemmnsio2D/gZvPV76RAXaor7rhONOgy7m
+         xoQXskmepG8UsGfjcJNcN+qz/+WhDyRiDJnHlzC57DPhNurR+l78b6RSe+NVF8jZIIQ1
+         RfXyMMQTCfuxFbPm+nHNT3Np/sV3gr/wrJCs3DcibhwiHCsPgj9/DHoNHAVy1hSJw/6S
+         M15vF9z/dQhj3cRubM3P0K5co3qlAozlCp6Y2NB9h64np0hq16AS2pBrrjeW8psd9SRA
+         wabH2tMLEtk37bC1hLgW4pp/4OEjIyYNl9sxzkmOhKILpuihGFTWSwltze5qJxHbeZ+A
+         JXnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=B/4xcLoYpCf4oy51IBJ9CMfuwbAGNjelRBl/GPnocWY=;
+        fh=/98PPfwgpcduVinkIc1HnWCnk2NS5a3gd9THiHza4Go=;
+        b=RbzrfsJs/Z1pKWxwgU/7bVvXIenMP/k/QzWpq7ocionYjbNvXsDOwnIZuaYopxXpk8
+         +tbs9gCiB93uY8CqlWio09sfJCrxEgVAd1M8g/xL35+pIouWDHBxekDgduGu4BpfhxRT
+         2V2CX/LIfC384nfHln+VlMYwjntPjVSXGf+dTQsam5V1Ml5JOlMKaw8Ey722v5yGpfX9
+         lJY7L1MwQTtNqAtxVtiS6ZZYMKWupb/swA5UQt0xEK+ukEVztzblAVVJiKcXQIow3KKA
+         K7xkpRgP/MVLi14HtoEi8ywkn7EbZ0eRbx6Y3nGtmEy5RZuBelILapS8E/v008+7rFYf
+         Hrkg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772237879; x=1772842679; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B/4xcLoYpCf4oy51IBJ9CMfuwbAGNjelRBl/GPnocWY=;
+        b=W4p57+6tXjNZkc5+B2eBtnAD5cPIquO593j4HWJd6x+3x7itcJFHjiQc89LoN3jsjI
+         5i8CMbcDFt/4RSA/Y6Vw7rkRogzqvG5zYbx6ZFpkrApQkxd+r+hv1ZX8Bd1yY5paRXCv
+         C9b21W0VFW6TG8G1LfeffWEpPFrC9kTrEX83C2+A4AI1ACnYM194kIo5MDl6P/GkavSa
+         fVy0SBxR1kQEMhdGy0gPwnL2V+/WS7WgGaOohP5u5SEe1/kKt6iMiKdPkU0U/qHOdtIt
+         TNrorJVVtlGUA5+8iDueh/JUF0S9kdNb8ptiZeG2V16umGB4RdkMcikMyTxp+od4V9PW
+         orIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772237879; x=1772842679;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=B/4xcLoYpCf4oy51IBJ9CMfuwbAGNjelRBl/GPnocWY=;
+        b=KFBmnIJ46NIzQCUg2ob1QbHCw2pRgteGLdEG39KoJe00M3HCy2WheXGK7jY/Et2vaC
+         +Qd5iVc9EtiDOd0QS77WCUQ9GG0Hlx2pU1HbEaFdOjlHjY8FXlcAEqy3U2B4LMIHD0/Z
+         7fPPANrZCpUhFXJJ8Ny++CR2/ziBynpOrX6gNrXk6V0CO9F0RDZcCvpuGZwO/0FMpWB5
+         h4s4ULn6H9J4qDYsk5VuJDbFEB2yEAfp81Il2E0R2VX07EJ0qifzCQj+h6B1zTtFIR79
+         ZdyFEValUlO7Wx6QmiJIIhgYLEJbyU3+iTUDhu4puUAddNG5OVZ3NCl/9NTJQ8N8dTZj
+         0OxA==
+X-Forwarded-Encrypted: i=1; AJvYcCXkSMXDuHIuKiFG5Ud2dZTCu+fsHtgUamrsaOPcrOcbCkT9PqatzjbKASXr+RJB4EYMWTtv1XS16yQGDeU/FQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxcj55lpGqeeJAjzF4J+Nlluc3hiXGLmqfcjp8d6r+wvC9LhxCk
+	+145chl1GNXnUsY/LwELe3fzJJ6wO2vH5YkxAuy2wkPHqm8jwvUYzdO42v+5eMEW8HfKd6fA+BS
+	GQUxpnAj/nmD148N4TaAE2doLQXwzYlc=
+X-Gm-Gg: ATEYQzxVDLgxpuaaiz8W0ZrLt7oSyv0N6gSy5XnriDSKJe0+cpm7XFBwJ6EICOPZ7nF
+	cSOfmHvxY9wZprH1S1Yc+tFxJEFyrQIgkerRgt7Wolj/QKEYglj46WqRx/HSMUM4tyrAswk3ROK
+	vZjFW84X1RKPRItoEjdELI1w4CXlYao+QuzDtWKzOP+Dxhnq29FjpRBVbFYFrBM/EAjfxvwjlWt
+	09yHi8zwa8JBlB7JRCfADn6xL8CtmxQoxPrxR+etNaffmVLPAXG+0qFAwciAryZwOjNSDfjV8s/
+	L0MXGmsSd0SOss0EX5Gh1opW7Up2cArHqb8qZDOd/dpcsGp1gsa6Td97PXkp5x4CJkHWeKf+vRQ
+	qGEK2m3qfeo2BFrsmHwd1Vpalg5XD
+X-Received: by 2002:a05:7300:fd11:b0:2bd:d8e6:90a3 with SMTP id
+ 5a478bee46e88-2bde1d0db9bmr1000466eec.3.1772237879328; Fri, 27 Feb 2026
+ 16:17:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <A849CDE2-C257-42D7-9FD2-E9442A540264@collabora.com>
+References: <20260227215357.667257-1-thepacketgeek@gmail.com>
+ <2026022704-xbox-comfort-2493@gregkh> <aaIrV3m41n-0mWxJ@deathstar>
+In-Reply-To: <aaIrV3m41n-0mWxJ@deathstar>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 28 Feb 2026 01:17:47 +0100
+X-Gm-Features: AaiRm50ahetLquJ44L3MgdqAftfCK6kSEdY-VxcEemQ3L8Byhs3Vhm7SuOeo8Ys
+Message-ID: <CANiq72=sCt_NKtv81V=M0UimXzCOJxkSsGSerfd-J4Epnf7uZg@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: console: add abstraction for kernel console drivers
+To: Matthew Wood <thepacketgeek@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Breno Leito <leitao@debian.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 20, 2026 at 11:25:47AM -0300, Daniel Almeida wrote:
-> 
-> 
-> > On 11 Feb 2026, at 22:37, Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
-> > 
-> > Add support for GEM buffer objects backed by shared memory.
-> > 
-> > This introduces the BoCreateArgs structure for passing creation parameters
-> > including flags, and adds a flags field to BoData. A new_dummy_object()
-> > helper is provided to create a dummy GEM object for use as a GPUVM root.
-> > 
-> > The Bo type alias is added to simplify working with Tyr's shmem-backed
-> > GEM objects throughout the driver.
-> > 
-> > Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-> > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> > ---
-> > drivers/gpu/drm/tyr/gem.rs | 52 ++++++++++++++++++++++++++++++++------
-> > 1 file changed, 44 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-> > index c1208d332dea..6a58f2da88d3 100644
-> > --- a/drivers/gpu/drm/tyr/gem.rs
-> > +++ b/drivers/gpu/drm/tyr/gem.rs
-> > @@ -1,28 +1,64 @@
-> > // SPDX-License-Identifier: GPL-2.0 or MIT
-> > +//! GEM buffer object management for the Tyr driver.
-> > +//!
-> > +//! This module provides buffer object (BO) management functionality using
-> > +//! DRM's GEM subsystem with shmem backing.
-> > 
-> > use kernel::{
-> >     drm::{
-> >         gem,
-> > +        gem::shmem,
-> >         DeviceContext, //
-> >     },
-> > -    prelude::*, //
-> > +    prelude::*,
-> > +    sync::aref::ARef, //
-> > };
-> > 
-> > -use crate::driver::TyrDrmDriver;
-> > +use crate::driver::{
-> > +    TyrDrmDevice,
-> > +    TyrDrmDriver, //
-> > +};
-> > 
-> > -/// GEM Object inner driver data
-> > +/// Tyr's DriverObject type for GEM objects.
-> > #[pin_data]
-> > -pub(crate) struct BoData {}
-> > +pub(crate) struct BoData {
-> > +    flags: u32,
-> > +}
-> > +
-> > +/// Provides a way to pass arguments when creating BoData
-> > +/// as required by the gem::DriverObject trait.
-> > +pub(crate) struct BoCreateArgs {
-> > +    flags: u32,
-> > +}
-> > 
-> > impl gem::DriverObject for BoData {
-> >     type Driver = TyrDrmDriver;
-> > -    type Args = ();
-> > +    type Args = BoCreateArgs;
-> > 
-> >     fn new<Ctx: DeviceContext>(
-> > -        _dev: &kernel::drm::Device<TyrDrmDriver, Ctx>,
-> > +        _dev: &TyrDrmDevice<Ctx>,
-> 
-> Unrelated change?
+On Sat, Feb 28, 2026 at 12:44=E2=80=AFAM Matthew Wood <thepacketgeek@gmail.=
+com> wrote:
+>
+> 1) Should I submit the complete implementation w/ dependencies as one
+> series?
 
-I switched to use the convenience type alias `TyrDrmDevice<Ctx>`
-here instead of using its full path. I can flag that in the commit
-mesage if that is what you mean?
+It depends a bit on the case, but yes, one option is sending the
+entire set. It doesn't hurt if it is not very large, at least once,
+possibly as an RFC, and then you can use it as a reference, e.g. via a
+link later on, when you submit the subsets.
 
-> 
-> >         _size: usize,
-> > -        _args: (),
-> > +        args: BoCreateArgs,
-> >     ) -> impl PinInit<Self, Error> {
-> > -        try_pin_init!(BoData {})
-> > +        try_pin_init!(Self { flags: args.flags })
-> >     }
-> > }
-> > +
-> > +/// Type alias for Tyr GEM buffer objects.
-> > +pub(crate) type Bo = gem::shmem::Object<BoData>;
-> > +
-> > +/// Creates a dummy GEM object to serve as the root of a GPUVM.
-> > +#[expect(dead_code)]
-> > +pub(crate) fn new_dummy_object<Ctx: DeviceContext>(ddev: &TyrDrmDevice<Ctx>) -> Result<ARef<Bo>> {
-> > +    let bo = gem::shmem::Object::<BoData>::new(
-> > +        ddev,
-> > +        4096,
-> > +        shmem::ObjectConfig {
-> > +            map_wc: true,
-> > +            parent_resv_obj: None,
-> > +        },
-> > +        BoCreateArgs { flags: 0 },
-> > +    )?;
-> > +
-> > +    Ok(bo)
-> > +}
-> > -- 
-> > 2.52.0
-> > 
-> > 
-> 
+Another common approach is to provide a link to a branch with the
+entire set for reference. That is also useful on its own -- some
+people prefer to fetch a fully prepared branch to test. So I would
+recommend doing that even if you send the entire series once.
+
+> 2) If I create and include a minimum-viable functional example using
+> this console abstraction, would that suffice?
+
+That definitely helps reviewers, please do so. Sometimes people add a
+sample in `samples/rust/` for that as an extra patch.
+
+Nevertheless, maintainers will likely want to have a "real user" as the goa=
+l.
+
+I hope that helps!
+
+Cheers,
+Miguel
