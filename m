@@ -1,134 +1,141 @@
-Received: from outbound.mr.icloud.com (p-west2-cluster4-host5-snip4-10.eps.apple.com [57.103.69.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4672E542A
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 01:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.69.161
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772242011; cv=none; b=LWBDXVsFsRZSbsb6unu+peIGhOYNAsp7IhNjVI3yCE7mwfkaO1dZaeVxm2mTR4m1Ek9LK2heXU5wndeXTyJ0LgkQewK/a7cMMZDQ3c5xxpdd4zimI3ZlB3g2Zs377SIShyp8XtI4grS9ew0+2kpsXu13QbI3/kx7lqYObhuart8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772242011; c=relaxed/simple;
-	bh=TRnW7hTCC+OdojCKqr/TN3JjhJb5UAlVCRKfVLHdyQ0=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=IuuekOjsZqj9FwJ+6vCfGHk1OEiyeCVdNmyyK2BEd5vStG6+kWipyJVRem4DeEbIJkqW2SToSFNkSpUIVLzLuQWcoxXNNqqfi7f2x0oKaOUDZ0khpCP2Km3dhoXP9CMjAAVcjFfM3YR+zBs1izt40FDK+YlOf+FYKEHnAVTw5RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=yNrbWA3V; arc=none smtp.client-ip=57.103.69.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0B721E087
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 01:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772242372; cv=pass; b=nUIyQX+Wyje2pxeN8AmukTHMMcMVNbvO0SPZtbyY1DBNT/2WZjgmlTijtrTjUk619zGJKcGSSPfne15hrPK+Kc4AxBGUzLIYOcPlHlGKPOscqzD8AXR6Sv+4zZ38tWJO5fDymQBE3lLR3fu93yTvJgEuQjraVjCFL1/VB5Qe3PI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772242372; c=relaxed/simple;
+	bh=CONkaPmD6N1p8Wl41bWFdbK04Exw+AofJGxiyObuVR0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=atRDfM1cikIrjy0Mj02ToXO3eEeA2vBfMyw3URByCt5E+FBw+GEttj4P18JiRGrtF4Fm2gRqes9XaIbhUlj7lHB2xg46qKMamWvvcoloXzm+SHgLGVz/u+65oqXS+w3xD0gFfDlHT5OGqTMJQQRsIBI9adV4prniwJWXRzn5hOQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NpUE24zM; arc=pass smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="yNrbWA3V"
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-2 (Postfix) with ESMTPS id 111CA1800117;
-	Sat, 28 Feb 2026 01:26:45 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1772242009; x=1774834009; bh=PK9N+yyc1bwgR/WTNZ9o4bJ7lyKNSDTZEVmMla0PuYo=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=yNrbWA3VqtawshNLTmNxj7h3DUNlVNeWB58wGsFSAH6rzhjShD57ND4jlI1lIOu8MP/ZbPhkMkVsQK4I/lU+bpSZqkcVKHt2RtV+biM9S+upbjl0QG2jawpy2EQC0SY0Lm2oOTeiCGjkFMdZQFHFEdR30Rsx9s1HCDC6dglC21dY1YMCLQWe6rN7xdo8q/DffyXOtxHTGeyrJMHTRMbCc4ZjRNEzjipjev4+zyIVNHnV6/NWFqX4sfbx8SMi/R5if/Wb2ks0KIdTGPQkXG+XBWeJqA+nWmbGpsM2DoYsKi5QGJAHEwBq+4NA9FlEhN/63i5+9x1qpzf7lSen+CCnxA==
-mail-alias-created-date: 1769500909675
-Received: from localhost (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-2 (Postfix) with ESMTPSA id D2391180012D;
-	Sat, 28 Feb 2026 01:26:42 +0000 (UTC)
-Date: Sat, 28 Feb 2026 10:26:41 +0900 (JST)
-Message-Id: <20260228.102641.702865761508670909.fujita@bee>
-To: gary@garyguo.net
-Cc: a.hindborg@kernel.org, tomo@aliasing.net, ojeda@kernel.org,
- dirk.behme@de.bosch.com, aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- frederic@kernel.org, jstultz@google.com, lossin@kernel.org,
- lyude@redhat.com, sboyd@kernel.org, tglx@kernel.org, tmgross@umich.edu,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH v2] rust: hrtimer: Restrict expires() to safe contexts
-From: FUJITA Tomonori <tomo@aliasing.net>
-In-Reply-To: <DGPQVSXND3M9.1738YQZSFDNDJ@garyguo.net>
-References: <DGOYGXQ1JWJ2.7F00MTVQPUKA@garyguo.net>
-	<87qzq7bbig.fsf@t14s.mail-host-address-is-not-set>
-	<DGPQVSXND3M9.1738YQZSFDNDJ@garyguo.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NpUE24zM"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2bdb82b69f4so142509eec.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 17:32:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772242370; cv=none;
+        d=google.com; s=arc-20240605;
+        b=J2eASeC4X4gexqLWMtdlMDliuKbiBoRUWwtDzEhlqbo0b35CJ7bn2n1GG6gh+dYKAA
+         WWymsdRAmQsi30g0B1dASPi0SkYSaKtU14oaGcETdz5YAp8x3q/8PIg+7+oQvech99mY
+         7ZYXht9T4Zaj++xGO8xKHGp4RmL2RFMf3zYwPGFDQTp6gg8gGC0uxsZnRAvrpO+GQ+FE
+         rlFmSABe4rdNueNhGOaFm7DTiQ4hfdtWBFpxf4GOUgUTjLxmB5/SMR1DJbhrHXp0WARm
+         Y2zrlKOg/mT+jh50bHeQfIfwuAXWRDdoiPw1r3G/VPOYhTWUjoIa5D65/4jhREwB0+Ri
+         B+DA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3nsfOyCnlIaYDY7uNCziE96qb4GjGHs75Vm15QwleTo=;
+        fh=PCe7rwxWVanIq6xhJ7rBvPukcy+5sluyvAgmyNKdogI=;
+        b=ZLCwT/lmQ5HbmZCiPlcCKR0DSUgzX3U3qRT8oeDyQU3mfRNxammAQDrKgmOuCNxJng
+         Ukd81JS4XDb9vQQiOAYXF8F1ECIR3x89aDS3FBkyStHeRzsBUFtw2RrjdxJk8kgA1hmg
+         FI/2wlQlETsNDZ9RHy/UsjnU9OKW1T4W+XY8ZSFdEs+zZliJjzAhXRdZYPfuxXhWTfPu
+         AtUygD7DYqDwzPByydhbwlI2UDv+qWWNBWSHcJw3T3SSs3dlklzABrSUthE21ODsua8v
+         +NMaoPQlI0bXeedQ+MvPDN5LTyhQytnE90YvMjU3fNDegbzK0HXzoz6uxzNistxDswVx
+         Mg6Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772242370; x=1772847170; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3nsfOyCnlIaYDY7uNCziE96qb4GjGHs75Vm15QwleTo=;
+        b=NpUE24zMqPh/loW8KERTuXfmsZAGUxZbvyw9j2dS+DkjDnT1I5i34ThZLRCXYWAY4v
+         fAiR3S3Uqr24K31a8JT4uIrgKDSokVGbo33KxL8pzx7E3QZJzWCvQrzpEYl9BnTJ2CZl
+         lkDdryC+Azyp/OZcStiRKoA64n+Ki8XgEjRkbD9wSUOVAJF7uPT8YxSmAbj3ryj5iek+
+         BvaCPwmvO6L25JXByxE/eHs73MvwG42ctGBpqPz8cSP42YFDMQU3/haJYlCsUICOlR/m
+         JoMcxVMAMGWprycSjPMa/biQLg8QycQ8JwkWfg1ydpXbvK/3GFsS++eSQtCaTywsgYG3
+         O28w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772242370; x=1772847170;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3nsfOyCnlIaYDY7uNCziE96qb4GjGHs75Vm15QwleTo=;
+        b=WjYvGrQHRYNS0GAgcm6IKnwPJE3yrqWmMrvBOvDIMMAwLm/2Y2IXakxGWxLTR3MRqd
+         2nyOCdFcnRdnxjjb1hYNc5RIJUu/LlA/0fpmfsD2e/Ac+XH4CdwkZYO/lCcSc6ZoCZTx
+         k8mPR6ybFAlPhu35GXl1mwowvdsHh9S0fcdsi7EchxweZRcghrpkVE3oQ2TJn5UOApHs
+         6MYSjjRa9worjww684a+eVayud3fJQFTXcOD3RGYYNuWKbrqTeQ+kyzqZRn8e2yAAVQc
+         zoVacYmAGFr+R7wrVTMdrIWJFEZgFi6eGKMBKymXAH2AmKAsWEAkKr6I2RlITIez/mpB
+         q+Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzxrC11DHeBUjLf06i/NTq975Jde891JRv1FUaVKc0baaKChvxnfa4oZlnQXQk3Zvzmj59ybRy++Zs2BvWkw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYFi20+OTI7FVwBbzciL+SGc4S4cI7rv/kUfMsxNVPQZjILgAd
+	GwpV5HSP/bVEaPcO28L6lpRZrR1O4DCcuKkcfnd7YWpndE3W3YcgHF/UQ7KHYAMEH3xKNw8DXB+
+	tQ+Mk52kEpOPsrnMssP8LanHK+P7YRZM=
+X-Gm-Gg: ATEYQzx0eVAZrKqbMJA+bX8lGZw/31ZgCeXVKpLH2dnqfUF9abPTgiGAG0e2PxkXI9S
+	tt7pAWmBJgspWwJktQ0XvYrxJQgXyjKoucqUACB9GcdpbEgiLxUp3A34Xyw6uLLGSLW3j5l/Tny
+	du71y7vWnlLbShGh7Obwd+ozefFPQUERa9b4SmBzV01RiY26xIoOkzZlaibid6wEHSHBP4TSAJr
+	DOy7Las8/ux2h+rhdJ+HM08WEVjnQqSe1HdP4JIwawARYJK40y2AG3OxRYjJ+w1+KnZ59PzqlRK
+	FaADmOKSaRLV51jTiw3mELNCJY2AWcM7FzoZumwxPHRJfOQZsOA9ANGprhMWpxp2eNtVSe5Iw43
+	viWQu9snmD8wTrzXPLIeGXe98hUvW
+X-Received: by 2002:a05:7300:dc8c:b0:2b7:f145:a98 with SMTP id
+ 5a478bee46e88-2bde1b2878bmr1121074eec.2.1772242370097; Fri, 27 Feb 2026
+ 17:32:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: FMujo4XJ9hQV9CPE1PzeJrG0bwRqUbVZ
-X-Authority-Info-Out: v=2.4 cv=YsgChoYX c=1 sm=1 tr=0 ts=69a24457
- cx=c_apl:c_apl_out:c_pps a=9OgfyREA4BUYbbCgc0Y0oA==:117
- a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=_2yia0w1AAAA:8 a=h38X0v18AAAA:8 a=ZvQN2bS3E4ssKD8-FuQA:9 a=CjuIK1q_8ugA:10
- a=4yAS8WwzZ1jAEY03B-5r:22 a=hjDv5vYt9AxPTMVfK17q:22
-X-Proofpoint-ORIG-GUID: FMujo4XJ9hQV9CPE1PzeJrG0bwRqUbVZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI4MDAxMSBTYWx0ZWRfX0G/pygKCi9Mv
- Vh/PPegwo+o8cbzqQhgc3Hl9Wx9rhL/LMEioMJnkjhASjdYdcuo4bj56B/eyiWMDhHBNtAg0YAu
- fiPlfOsA0ThQjujLCMuI0nWdCMXeqbb6c9nNn7D9+eOHGstu34dmg+NXavd0TAncTvf7+wVGVuP
- IUdgs5HlqC6dmKYC8TnGQBEiKmkRk4BIIq2yik0sT+QslH2r4lGVqR0demmP2lKhV/nmwoJRmt9
- SFP2X4BABrv6WzzNeH1sDFpLr0Z1owlX2GXFWSIN7MeVDrENEbj91fnqCw1T2mz62MELXPtdZMT
- WDjx3pmxhIP6b+01w2PxQ3XVPAHPu+7PQSokpZeVVvwzYORdw+WkvJtQNJHEJ8=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-27_04,2026-02-27_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- malwarescore=0 clxscore=1030 spamscore=0 phishscore=0 mlxlogscore=699
- suspectscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602280011
-X-JNJ: AAAAAAABL6nowZiawVjEGmpApsRWptEFEk6NOYgPxYxd1iuZbgOJ45UntKWOHtCdObKT37ceiBUtWQQnAIXvPifjP9rBROUDpLYCSYweXzBsyPRLwEw4pr2vAQx0w2M7m1sGYcNoNApzKeE7UzagwM8sPFc/IR+2992COM+b86p4UbLUssXd9tleD4RrsvJZdugd+vDK1EiV7bcSIKS1O7+6IFnpLzLYKMWVSekrntsAngyryJYh+wPF3oqQ7JXkD9AmaggQ0MbLL10/Sh+t8NwqpWDmIBgXqWYZzOy9RvM1wh1/jRgPxvkH2P14u96zBjedIlW2rM3zzfkt7uI+Ppe1xjBw36sdJ2U/1SM2ee2jQCAZzOH5loLp6VHOpWlmlwKREUod9WSlE7rThGj/GyRM87lDF4UexQnRdAhcANPRvhJ+EIJcO1X73cIyhmioUjPMtJ7DB87qC53lR7oNOxoNKfeMf8eneZ/6n9jATn1WfhtB0ZqxSplOKwIvmnQ8MOMNJjJjLTTUwZEAqvcn/JZ6IJN5tSzor7nHXuTtQoeZoVRMSFeqc6OfYo48Wm60WM894cdO/3Ladzz+Xpnyl3WKx7Nv9HWEKjytiWsMDkCIrwjqkdTcT7thLi6MJ6kBQXuW7u5ngOk7mRBuONN15+ygKDeGO3YeDHxTIcDlLXXg6HyiNRpltSVUMyd9oZKSUu47fRjFmxK52y0cyE9XGotkgugW4ZRitgPdcho3AESoChupdy8gNK5/JSccEr+M1kNYWlR2MKmCBh9rPPerF91hi2MYkt2fl3CwYIfXuEewhEX3QfM18TvS3yweaiM0dMBQ+fhAWZszZPTPX7Tg4z5b542C9x1jumkPds0Zb2GzoA==
+MIME-Version: 1.0
+References: <20260226234736.428341-1-thepacketgeek@gmail.com> <20260226234736.428341-2-thepacketgeek@gmail.com>
+In-Reply-To: <20260226234736.428341-2-thepacketgeek@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 28 Feb 2026 02:32:36 +0100
+X-Gm-Features: AaiRm52ur8aq7KahUBluBVKKHjAKX3SUBCaPurx6nv1CE1SejfeUH-yosDfCUvA
+Message-ID: <CANiq72=d3DmqUwe+b-btk75N9r8XMxSeqaQniShfbQQKBeFRZw@mail.gmail.com>
+Subject: Re: [PATCH 1/8] rust: module_param: add StringParam type for C string parameters
+To: Matthew Wood <thepacketgeek@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, David Gow <davidgow@google.com>, 
+	=?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 27 Feb 2026 12:32:05 +0000
-"Gary Guo" <gary@garyguo.net> wrote:
+On Fri, Feb 27, 2026 at 12:47=E2=80=AFAM Matthew Wood <thepacketgeek@gmail.=
+com> wrote:
+>
+> +/// This type is `Copy` by storing only a raw pointer. The underlying st=
+ring
 
-> On Thu Feb 26, 2026 at 6:33 PM GMT, Andreas Hindborg wrote:
->> "Gary Guo" <gary@garyguo.net> writes:
->>
->>> On Thu Feb 26, 2026 at 1:19 PM GMT, Andreas Hindborg wrote:
->>>> FUJITA Tomonori <tomo@aliasing.net> writes:
->>>>
->>>>> On Thu, 26 Feb 2026 11:42:39 +0000
->>>>> "Gary Guo" <gary@garyguo.net> wrote:
->>>>>
->>>>> >> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->>>>> >> index 856d2d929a00..78e2343fd016 100644
->>>>> >> --- a/rust/kernel/time/hrtimer.rs
->>>>> >> +++ b/rust/kernel/time/hrtimer.rs
->>>>> >> @@ -224,27 +224,39 @@ pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
->>>>> >>          self.forward(HrTimerInstant::<T>::now(), interval)
->>>>> >>      }
->>>>> >>
->>>>> >> +    /// Return the time expiry for this [`HrTimer`].
->>>>> >> +    ///
->>>>> >> +    /// # Safety
->>>>> >> +    ///
->>>>> >> +    /// - `self_ptr` must point to a valid `Self`.
->>>>> >> +    /// - The caller must either have exclusive access to the data pointed to by `self_ptr`, or be
->>>>> >> +    ///   within the context of the timer callback.
->>>>> >> +    #[inline]
->>>>> >> +    unsafe fn raw_expires(self_ptr: *const Self) -> HrTimerInstant<T>
->>>>> >
->>>>> > I guess the signature of this can also be
->>>>> >
->>>>> > `unsafe fn raw_expires(&self) -> HrTimerInstant<T>`? Then you can remove the
->>>>> > first safety requirement.
->>>>>
->>>>> Thanks, I've updated the signature to use &self.
->>>>>
->>>>> Andreas, this breaks the consistency with raw_forward. Is this
->>>>> acceptable?
->>>>
->>>> If we do this, we get to argue that the NonNull we have in the callback context
->>>> is convertible to a reference. Either way is fine with me.
->>>>
->>>> If you change this to a reference, then I think we should rename the function to
->>>> `expires_unchecked`. The `raw` usually refers to operations on pointers rather
->>>> than references.
->>>
->>> Does it make sense to simply have `HrTimerCallback<'a, T: ...>(&'a HrTimer<T>)`?
->>
->> I assume you mean `HrTimerCallbackContext`.
->>
->> Could it be a mut reference? We are supposed to have exclusive access
->> when we have the context.
-> 
-> If `Pin<&mut Hrtimer>` would work, then we can perhaps remove the
-> `HrTimerCallbackContext` type and just pass a `Pin<&mut HrTimer>` to the callback?
+Please use intra-doc links where possible/reasonable.
 
-During the callback, ArcTimerHandle still holds Arc<T>, and the
-callback receives ArcBorrow<T>. Creating Pin<&mut HrTimer<T>> would
-cause aliasing between &HrTimer<T> and &mut HrTimer<T>?
+> +/// # Safety
+> +///
+> +/// The pointer is only valid while the module is loaded. The kernel ens=
+ures
+> +/// the string memory remains valid for the module's lifetime.
+> +#[derive(Copy, Clone)]
+> +#[repr(transparent)]
+> +pub struct StringParam {
 
+A `# Safety` section for a type? What do you mean here?
+
+I think you may want to establish an invariant instead.
+
+> +            // SAFETY: pointer validity is checked above
+> +            Some(unsafe { CStr::from_char_ptr(self.ptr) })
+
+I assume you mean that the non-null implies the validity, but validity
+is not really "checked" above. That is why you probably want to have a
+proper invariant in the type, so that you can invoke it here etc.
+
+> +unsafe impl Sync for StringParam {}
+
+This is missing a `// SAFETY:` comment -- please double-check
+`CLIPPY=3D1` passes clean.
+
+Cheers,
+Miguel
