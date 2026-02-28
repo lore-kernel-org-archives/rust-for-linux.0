@@ -1,170 +1,117 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC5736F43D
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 12:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B626A43D50C
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 13:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772282671; cv=none; b=Hla5e4bcQGo4lNzk5bbH7h91Z0BlaiCdRuhTr+YkkApv2aNvB/WoGMmlg7bcTJVMKQvdC7qli2dhMRMR/DqRCd2u5VNZ3kpUOSTGaJ7dKacNwGGZALO9VpmqNGWOrosG+8hBoXleFnv2jq2G78OmWDMj1tjKI7Xk6O6TEajvyJw=
+	t=1772283603; cv=none; b=uA9RROQ10bldyXMIA0m68xwPWLGiobCJ3oDHLD50Km6Ey7WyVJBeZ/LsX3JgPrZu4llJu4lIANybt0zy9vmeQsjJDGZJGwHUN8dj+lk/Zlu4gqipiJw8urfqd/xGY1sOW6Gxc/0Uh0A5bFbzpFyS8xh/5wjhzxbmbICni517wFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772282671; c=relaxed/simple;
-	bh=tFmr9Byzvb8HJGLej5py8cdOGPaTsp9oa5qHurqtjoY=;
+	s=arc-20240116; t=1772283603; c=relaxed/simple;
+	bh=61HIaXXQJP6dIRkDpR4iBFVDQXV0Bu8NiJovkIb2Foc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CeQAyfKVAwZGNn4Csyg3h17SRLwzUB5MR3YmIuRDO7P7UrteI7mdpsunJn2TM66zRFEevXtthzeC/8H61JX3hfBHEE3wFcwREcrSfgeLtYzq2lf4PUTYDcOrULX0zw9xozEhyHxiUMYouJKtljT4a848PwaVJWGUV8fXGbMcJXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eiIPwFYL; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=XdAckLM4BAeJRTCGHS6rJs+RdM0Pv/hhp5MuUVNhhxdKwas7AZvyQh/nJgCitYizF5lfneAQBQ5s4NK4qNQv+ZWAaZDAgS/8Jbo1CYfVvr564kW/gNTXDlibGH6jP0/fYx0tm6NKmDyALOQBPYxqndokW3+l+H2XbBGA35LU4qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wXs+RFBk; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eiIPwFYL"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837c597cd5so16662355e9.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 04:44:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wXs+RFBk"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b9360e9f43bso277734666b.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 05:00:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772282669; x=1772887469; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1772283600; x=1772888400; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RH0L9WD4/u9mQiuU+Jc2bLYt2zoxsRLi5sNyM2YzgMo=;
-        b=eiIPwFYLYXBrQHNFhQU4sxt4bdchSZbQ0puZaLAQjjg8A9Odu3TFv1QEgkJEBK/yCk
-         BitlkH+LB4jiAVgOUKCUYU/hCr7WCXGT5fvZI3okDXNtzs17DkiD793+5XSdRTCu2QiZ
-         Xd1BpLe2o/3Fc3Lb1LFNT53cPNBgVkNDDr2VddntcNLiYr+4RJ5kj6GGIOntLiFZIfVM
-         lhlJ/0jeFMh0qmFgv0oWQVJRlexVpR1VV7Rjf2renHY7f7jWAsYvXQMIK2ZzA0iL1XZI
-         flwCa2xK+qbn9PgkWlCnXGh4KzNZq5BPj/c8K9+6Q7zIwAgsQQDJS8mUn+2gWYAmH7CL
-         LzWg==
+        bh=hN0ejCwE0lfhOX+cUbY364fk4yuls3EG3DMiE5XZI04=;
+        b=wXs+RFBk29RXcFfoMpzl5Ni5mstsMdOIwVwLTDfYu/UyNtzC+Gx/dBnhbcoffIjsjE
+         +XEuq0bAlYy5bz6k+1HpZzsLhQLB0QI8dJ1wBFVdeJD4rcJLWKW3pIzTqQDg36BgOv2P
+         S92rlxW1vozPJFPSJdlMgb72FQQcLHHtcMJyD5Q/D0bydkpD3uskbMHMvG9cq5bAN+R2
+         EuF+Yt6AHe90Y1lwZtFHk/E6iX6eFaXyBwcjh8mEtgr+c6iQgHZkjdEmdgFHL0nY37Zc
+         i5ZXDDRU+O4kZiiJ29gjnf95cwg5OXwTBO9MORxeooR+UDDfqxgXe6TvY2BYz215Lcza
+         ftFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772282669; x=1772887469;
+        d=1e100.net; s=20230601; t=1772283600; x=1772888400;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RH0L9WD4/u9mQiuU+Jc2bLYt2zoxsRLi5sNyM2YzgMo=;
-        b=cOWxWRr+xC968418poO5z8JT/4p7Kc7C1fFS2s+DCmf1IG3cqlFhAYfa6ilEX/35Jh
-         GVnG9pIRDteKSWVJiPXyaI7P+HQ/NFgkIwC8qekxOhvQu0cUi2Ots0ZYAqTeGIz9SiNc
-         6CAzyhN0/biArmeAoKCw7bypg417uTQwmKSXU5izCbE02Ea3BAj4+lHMjEBBEQw9re2F
-         YNGN9Ttpsr+ewIwmbWWUuQNRXfvyI22gG+sFXpVy/varkXZPztJM1n5lKqwPmULN8l14
-         MksRYYB+99Mto0fiEso0WDemD8GH0TxfX6XTTMwim59snlOQFvkkEmSUkUiOKdShctJN
-         v69Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVQqnQRfRVehzIBAYTFTVRlGcmcbxs4/VI6atTcB/drv6I13DOiELMm1kvNxCO/Ecsr2TtHgJ+o7U3R0WblVA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2qGNXilk9m1xpgmovnkUNmgLKZce/4qQOxOIQbOygqeGY6YFt
-	UNH265dvbnSsT/wznLO0l2DK2xfZ3YAJUt0Ajezgz4Oi+wCmbZlzA+0IniGPHL6HAheUGSzLuHP
-	O3+GLk8gv3YYx7Kwy+g==
-X-Received: from wmqi19.prod.google.com ([2002:a05:600c:3553:b0:483:6fe1:c054])
+        bh=hN0ejCwE0lfhOX+cUbY364fk4yuls3EG3DMiE5XZI04=;
+        b=tzT5dPG0hlx5CjIaKOK5+yfkSfLWUAFct1KYzAlfgSzNRjUBk28Rnkgci1Nesl4EpN
+         kj0Ojpfd46hYEXpufMNgg/mCCWwAjcv/CJuuQhgwUNa9XRfCmK5JqIUm69PjNjiGONLD
+         ToteGOOgvz83RCj12u49YJl9Iswsir0xif6AauCaYScM0ma2P6dk3ka+SPgKKmnYc8EC
+         WabZ3NgUDhNBvWNz112wPnZpnJTOKprzAQKHaIwBzNnqZt2eU9F/T1/shyHazYvZ2IOl
+         /qP3Zl1NqQQMhj4AVuUHsM5tvbhuGGVMq50o2MuvnU5i9/aoAIM/JLl3b2CorCu0gFRP
+         fkyg==
+X-Forwarded-Encrypted: i=1; AJvYcCW0wypnhhbh+MR3+zzmclvv5blh/m5D8o5yRFfoxNCvCHclgGbfae3T97cqrc4Gpt0+Gmpxo+fEQmK8I43gDQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFufRAoU43QQWlKDCPYfFFZA5HLTv806JGWfUdnhrPKkEnI1be
+	mU29barOD9yiEskMH+pGjYbktjgWbFEpkGLkdjhlRH+9mzl5OGaZxB6Nxp12BQEwrluxL271BS5
+	+M/8SJ0Sgy5mT4xsWLQ==
+X-Received: from ejil27.prod.google.com ([2002:a17:906:e1b:b0:b8f:70ee:e3e0])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4fc8:b0:47b:e2a9:2bd7 with SMTP id 5b1f17b1804b1-483c9beaca0mr120569145e9.19.1772282668287;
- Sat, 28 Feb 2026 04:44:28 -0800 (PST)
-Date: Sat, 28 Feb 2026 12:44:27 +0000
-In-Reply-To: <20260227200848.114019-15-david@kernel.org>
+ 2002:a17:907:9348:b0:b88:6062:7078 with SMTP id a640c23a62f3a-b937650a5ddmr390774566b.30.1772283599767;
+ Sat, 28 Feb 2026 04:59:59 -0800 (PST)
+Date: Sat, 28 Feb 2026 12:59:58 +0000
+In-Reply-To: <DGPZMZKAQ2TC.RA0BF64C639M@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260227200848.114019-1-david@kernel.org> <20260227200848.114019-15-david@kernel.org>
-Message-ID: <aaLjK2Q2q5ghE-uE@google.com>
-Subject: Re: [PATCH v1 14/16] mm: rename zap_page_range_single() to zap_vma_range()
+References: <20260227-create-workqueue-v3-0-87de133f7849@google.com>
+ <20260227-create-workqueue-v3-2-87de133f7849@google.com> <DGPUOSG5I4GM.1N5AWMP5ZFY4M@kernel.org>
+ <aaHq9VpaVN4_hchW@google.com> <DGPZMZKAQ2TC.RA0BF64C639M@kernel.org>
+Message-ID: <aaLmzp0mMPpE45yQ@google.com>
+Subject: Re: [PATCH v3 2/2] rust: workqueue: add creation of workqueues
 From: Alice Ryhl <aliceryhl@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, 
-	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Boqun Feng <boqun@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, Tamir Duberstein <tamird@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, Feb 27, 2026 at 09:08:45PM +0100, David Hildenbrand (Arm) wrote:
-> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-> index fdd97112ef5c..2fddd4ed8d4c 100644
-> --- a/drivers/android/binder/page_range.rs
-> +++ b/drivers/android/binder/page_range.rs
-> @@ -130,7 +130,7 @@ pub(crate) struct ShrinkablePageRange {
->      pid: Pid,
->      /// The mm for the relevant process.
->      mm: ARef<Mm>,
-> -    /// Used to synchronize calls to `vm_insert_page` and `zap_page_range_single`.
-> +    /// Used to synchronize calls to `vm_insert_page` and `zap_vma_range`.
->      #[pin]
->      mm_lock: Mutex<()>,
->      /// Spinlock protecting changes to pages.
-> @@ -719,7 +719,7 @@ fn drop(self: Pin<&mut Self>) {
->  
->      if let Some(vma) = mmap_read.vma_lookup(vma_addr) {
->          let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
-> -        vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
-> +        vma.zap_vma_range(user_page_addr, PAGE_SIZE);
->      }
+On Fri, Feb 27, 2026 at 08:23:44PM +0100, Danilo Krummrich wrote:
+> On Fri Feb 27, 2026 at 8:05 PM CET, Alice Ryhl wrote:
+> > On Fri, Feb 27, 2026 at 04:30:59PM +0100, Danilo Krummrich wrote:
+> >> On Fri Feb 27, 2026 at 3:53 PM CET, Alice Ryhl wrote:
+> >> > +    #[inline]
+> >> > +    pub fn max_active(mut self, max_active: u32) -> Builder {
+> >> > +        self.max_active = i32::try_from(max_active).unwrap_or(i32::MAX);
+> >> 
+> >> The workqueue code prints a warning for max_active >  WQ_MAX_ACTIVE. Maybe use
+> >> debug_assert()?
+> >
+> > What's wrong with just making use of the C-side warning?
+> 
+> IIRC, we have the same pattern in other Rust code that we use debug_assert()
+> when a value got clamped, e.g. in udelay().
 
-LGTM. Be aware that this will have a merge conflict with patches
-currently in char-misc-linus that are scheduled to land in an -rc.
+In udelay(), the clamping happens on the Rust side, so it makes sense
+that Rust is the one to warn about it.
 
-> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-> index dd2046bd5cde..e4488ad86a65 100644
-> --- a/drivers/android/binder_alloc.c
-> +++ b/drivers/android/binder_alloc.c
-> @@ -1185,7 +1185,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
->  	if (vma) {
->  		trace_binder_unmap_user_start(alloc, index);
->  
-> -		zap_page_range_single(vma, page_addr, PAGE_SIZE);
-> +		zap_vma_range(vma, page_addr, PAGE_SIZE);
->  
->  		trace_binder_unmap_user_end(alloc, index);
+Here, the clamping happens in C code. To warn about it, I'd have to
+duplicate the existing C-side check to clamp in Rust.
 
-LGTM.
+> >> It's also a bit unfortunate that alloc_ordered_workqueue() becomes
+> >> .max_active(1).
+> >> 
+> >> At the same time having a separate ordered() method competes with max_active().
+> >> 
+> >> Mybe a type state, i.e. Builder<Ordered> that doesn't have max_active()?
+> >
+> > Sorry I'm a bit confused by this. Why does an ordered() compete with
+> > max_active()?
+> 
+> Because you could get an inconsistent state with __WQ_ORDERED and
+> max_active > 1.
+> 
+> It also conflicts with sysfs() I think [1].
+> 
+> [1] https://elixir.bootlin.com/linux/v6.19.3/source/kernel/workqueue.c#L7417
 
-> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> index b8e59e4420f3..04b3cc925d67 100644
-> --- a/rust/kernel/mm/virt.rs
-> +++ b/rust/kernel/mm/virt.rs
-> @@ -113,7 +113,7 @@ pub fn end(&self) -> usize {
->      /// kernel goes further in freeing unused page tables, but for the purposes of this operation
->      /// we must only assume that the leaf level is cleared.
->      #[inline]
-> -    pub fn zap_page_range_single(&self, address: usize, size: usize) {
-> +    pub fn zap_vma_range(&self, address: usize, size: usize) {
->          let (end, did_overflow) = address.overflowing_add(size);
->          if did_overflow || address < self.start() || self.end() < end {
->              // TODO: call WARN_ONCE once Rust version of it is added
-> @@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
->          // sufficient for this method call. This method has no requirements on the vma flags. The
->          // address range is checked to be within the vma.
->          unsafe {
-> -            bindings::zap_page_range_single(self.as_ptr(), address, size)
-> +            bindings::zap_vma_range(self.as_ptr(), address, size)
->          };
->      }
-
-Same as previous patch: please run rustfmt. It will format on a single
-line, like this:
-
-        unsafe { bindings::zap_vma_range(self.as_ptr(), address, size) };
-
-with the above change applied:
-
-Acked-by: Alice Ryhl <aliceryhl@google.com> # Rust and Binder
+And I guess the further argument is that we have a use-case for ordered
+workqueues?
 
 Alice
