@@ -1,76 +1,52 @@
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AA23A7F63
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 23:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772235890; cv=none; b=nxXYqJKGKn1wHPjiYCFbiHKc8MLqCor3oyoCDCKH3VMD2vuSKFE9oFTRWTTv/HP5zw4lnlmIyTZQYnLIk+9USX4dksS/ns//Ao3C94Pp4HtksnSyT3maDMkg+4maJua0Ljo3Bm8vgX/9XXLUmbsydYF/Lp7h//IZgzYHtz0chHk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772235890; c=relaxed/simple;
-	bh=Gr6QosS47841Nd5oir6zV3dcFqJcftEf6sCnm9h2QRo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1215548EE
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 00:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772237552; cv=pass; b=nn6bLCrKFjFI7bjc9o3kAuhoFX26ID7RTPr4Y7YGHSQlV0I2cfEPMMPkQVnACVegPjWf0dChE2+pir57cELKH78HkXT37DlQR/Wmon62aLFsQgB8dfFN8rX4FtpIi547Dp7tWel1N7ABSPk2esWGUUWXexdaWgqC4pI/9I3IP2Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772237552; c=relaxed/simple;
+	bh=FHWI2P/Fwv2xBYBv8v9OlsDWpcvBPvAsDwpb5np8xi0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lD/rO7F17n0oF5Jr5OBkA5+lP5l12CBMTHY//LZbY6Uzx3IIIXaEhxDRLSZNeVPV+taihtZUbgzNDhdc45t4bBjMDFaCqMop4EUWGj4reQs1g8MvUn4D6gGvpdYfrCUkUAediKsHSED987d1qKtjQxvnIJA5dRrq2isL4/Y2SGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UmK07Hnu; arc=none smtp.client-ip=74.125.82.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=N1Ne6+urT6D0B8BzRmkwJ/1SuogeDOJe3+thG9kW95gY8liEsfnt5uTI246VVGNNtlqj4488HbV58td4UoadOeJ6WF1ff6p0YRgY7D1z/EJe0Hh+FcLW3yfaCdTFn+frkXnFZvO5NQtOpPgalCvYD1JQ71VEh7AsRZByg1wbMT4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=jqpk2gv3; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UmK07Hnu"
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-12758ce1e8dso334919c88.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Feb 2026 15:44:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772235888; x=1772840688; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xrIOYsqemqn38YLNQBRSHnhQFO92CoUzmgCv58SLHyQ=;
-        b=UmK07HnuMAWXm8wl8NmT+f/C6K6I9JX+wamb8CI7oetShfsl07Zg8HCMg3tBROUxKM
-         X1zNFb+sGtMBVRUwmIfix2m0ZpEbbB9tABogz65KUeiRhQi4TE+UA8Jjsn28S5EV9Jpv
-         mhGcH9SgL3xupr29LaZYKP9v8vtGG9K8swbzgTkSZ3RMhxEPZeZ6AUU7W5wCHmqcBCO4
-         XOeBQCyw0ugHhGEPzL9c0rttEXGwkOYWcDdgZql9BUASpfa7LiFHcQhYKbyEToYfeF/b
-         AVPWEX0d+HTIeVPN9FyNcO45QN1IcxmD2v9At01/OyJ0UO9olQHmeoZQU5059jveYXb9
-         YZZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772235888; x=1772840688;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xrIOYsqemqn38YLNQBRSHnhQFO92CoUzmgCv58SLHyQ=;
-        b=cIE84C1doCALLCSwlufH0OFwuK3n6RG3w7jXSwQt0rAAPRw0snqatabfmFnrcTyqDH
-         xVEFbcMgyWyyEsT+hvjcLKaHhFLABf2QGC3FA8jYUEIS3/Ns/VK9TZjZDOIJpBrmWWOx
-         hiif/g+lFSy9L5D8wwRPIBm+Hcrigdnqp39D1addrO5hT0+xkh4pTRFhNB6F5RSni+hN
-         YAl6y+/agwGLOtR0FcSx3Vnx0wzvTjYC3IN4Xxq2A0ZS6bG02F6pSGzN7fsTabw5PQ3A
-         vpDYukd8rTHSCm6yV9HashIWi1PwkS+N1IUw+N359e485+8eYAl0imYecPepsFpBYj0W
-         8QYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpu3U9S4pPVEoIvNk+nirj1KnftPOC7SVCpHEdE0lg/TNyZJaAVpfJAiILY7fHqd+WcgQALsY9dD0vWFHJzw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcAZKjFgLVpMjQHmMJ2nkTrE/UwcXYMd70DVxbDQdoTR45zC8b
-	DL2LRfDbEdt1tWZ4mvjDyF/I5+AULEoRUtda3WyxnBvL7EblWrSvGnIP
-X-Gm-Gg: ATEYQzzKIKxO1ew3umRUkcPiuZlljizPIH6y8N9kIzyAM/1WBlHjLW8uRjcks/0PxWI
-	S4nVMtPaeq4nGFXS9b4ChcBJ4XBXTMom0KV4bkAgPpKvrEa4kLrkXbkp2UWlFhJ1HbMhJCJKP+k
-	IQCw6Z6d3AESgVqTT6GVVcqQ9uMNiTGz75UPXUquXwkFFqAJcIi3OcKV/NO4KcGw+d+tTM5bzNL
-	TOauRq5lPg4PbxO3pRZKh7RznhmgPQPLCvz09erSCbPIuvteNsHEen0o3K26L9cQb0Yj4Knzl9p
-	HVkJevf+HQrk31WovcNFKwH5K2aBBUVcTY+93s9rYcsmYQuCGNGp/jFSQXOzal4pPzh7RCuOUVO
-	xwymk2v6oPaQhI9jBG9J5gwoUkMmdsqkg3a8d7fyI7lytlGvzXMuafBe7ywfviuC9KYpMe4yj4x
-	/U4+U7WquXH7nOxEVjnd//OiQfoxFKlqbnUT1mPBif
-X-Received: by 2002:a05:7022:4181:b0:127:3b1b:dcd with SMTP id a92af1059eb24-1278fd46166mr1656856c88.23.1772235887893;
-        Fri, 27 Feb 2026 15:44:47 -0800 (PST)
-Received: from deathstar ([2600:1700:22f5:908f:1457:7499:d258:358f])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12789a5312dsm5857688c88.16.2026.02.27.15.44.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 15:44:47 -0800 (PST)
-Date: Fri, 27 Feb 2026 15:44:45 -0800
-From: Matthew Wood <thepacketgeek@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Breno Leito <leitao@debian.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] rust: console: add abstraction for kernel console
- drivers
-Message-ID: <aaIrV3m41n-0mWxJ@deathstar>
-References: <20260227215357.667257-1-thepacketgeek@gmail.com>
- <2026022704-xbox-comfort-2493@gregkh>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="jqpk2gv3"
+ARC-Seal: i=1; a=rsa-sha256; t=1772237543; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=lHoFXfSQzbLXpczP5D45JTKPt1ThSCvGBoUaE5slBd64nvG4BeugGqx4VOvStn1Ab/HHBG+DFqos2wcO5rQb+jYgQgiPaJRULpZ3A3QyG0s6QxXO91Ctli1EwwYCm6PGsBFEcRK4S4YGEOfba2SJDe6kkzrGN5yA7sTndCkbqlk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1772237543; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=urMyP6X1qSgUnf936PORQmfBPlAQbqK2HDDQz7EXRac=; 
+	b=CLNU2E73r1QPn9kSxhZIhfB+4VXTG8dwGYHUNXVBQGsjb7KbVNxFct0eLxc4X1trqg8LzpQpa8NzAG7J6K93s0ApPTpswvZH/7nvai2wbFfiNYM0xFpkmQI3/as+2PWZ7f0xYcCeaCdh5/0T7baCNLPSqit92qcC23H8Dxow6JU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772237543;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=urMyP6X1qSgUnf936PORQmfBPlAQbqK2HDDQz7EXRac=;
+	b=jqpk2gv3rBuVP9mHoUS+GFEf59bW0ZtDPC7D0d7AfSYrcVjZjYZBuxvXVmVSjNGT
+	0Ygr+1MWnikmQcO+QQJCqYMLltpM+6TjBQ9OESKEugE1S3Y/L/H4mceIdxGnnvdaCQ4
+	3N/4EtPMP2WYCW5syPpZUYL8tRtIkMWvljMV78wI=
+Received: by mx.zohomail.com with SMTPS id 1772237541430580.1043397795119;
+	Fri, 27 Feb 2026 16:12:21 -0800 (PST)
+Date: Fri, 27 Feb 2026 16:12:20 -0800
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	daniel.almeida@collabora.com, aliceryhl@google.com,
+	beata.michalska@arm.com, lyude@redhat.com
+Subject: Re: [PATCH 05/12] drm/tyr: add MMU address space registers
+Message-ID: <aaIy5GVP9Q5JP9Gu@um790>
+References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
+ <20260212013713.304343-6-deborah.brouwer@collabora.com>
+ <20260212091624.3deda2ea@fedora>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -79,25 +55,154 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2026022704-xbox-comfort-2493@gregkh>
+In-Reply-To: <20260212091624.3deda2ea@fedora>
 
-On Fri, Feb 27, 2026 at 06:14:43PM -0500, Greg Kroah-Hartman wrote:
-> > This abstraction is a dependency for a Rust netconsole implementation
-> > I am working on.
+On Thu, Feb 12, 2026 at 09:16:24AM +0100, Boris Brezillon wrote:
+> On Wed, 11 Feb 2026 17:37:06 -0800
+> Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 > 
-> I'd prefer to see it then, with the user, before even reviewing this
-> one, sorry.  That way we "know" it at least works for you.
+> > From: Boris Brezillon <boris.brezillon@collabora.com>
 > 
-Thanks for the reply Greg, that's a very fair request. Since the
-complete netconsole Rust implementation crosses several subsytems
-(module-support, net, configfs, console) and I haven't yet
-submitted such a large series before:
+> I'm pretty sure I got that from Daniel's branch, and only tweaked a few
+> minor things to make it work (I probably messed up authorship when
+> doing that). I'd prefer to attribute that work to Daniel, if you don't
+> mind.
 
-1) Should I submit the complete implementation w/ dependencies as one
-series?
+Sure, sorry I didn't clarify that, will change the author in v2.
 
-2) If I create and include a minimum-viable functional example using
-this console abstraction, would that suffice?
-
-Regards,
-Matthew
+> 
+> > 
+> > Add register definitions and constants for managing MMU address space,
+> > including:
+> >   - Address space translation configuration (page table format, attributes)
+> >   - Memory attributes (cacheability, shareability)
+> >   - Address space commands (update, lock, flush)
+> >   - AsRegister helper for per-AS register access
+> > 
+> > These will be used by the MMU/VM manager to configure page tables and
+> > control address space operations.
+> > 
+> > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> > Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> > ---
+> >  drivers/gpu/drm/tyr/regs.rs | 101 +++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 100 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+> > index 611870c2e6af..9cb7ab0c806a 100644
+> > --- a/drivers/gpu/drm/tyr/regs.rs
+> > +++ b/drivers/gpu/drm/tyr/regs.rs
+> > @@ -8,7 +8,10 @@
+> >  #![allow(dead_code)]
+> >  
+> >  use kernel::{
+> > -    bits::bit_u32,
+> > +    bits::{
+> > +        bit_u32,
+> > +        bit_u64, //
+> > +    },
+> >      device::{
+> >          Bound,
+> >          Device, //
+> > @@ -111,3 +114,99 @@ pub(crate) fn write(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>, value: u3
+> >  pub(crate) const MMU_IRQ_CLEAR: Register<0x2004> = Register;
+> >  pub(crate) const MMU_IRQ_MASK: Register<0x2008> = Register;
+> >  pub(crate) const MMU_IRQ_STAT: Register<0x200c> = Register;
+> > +
+> > +pub(crate) const AS_TRANSCFG_ADRMODE_UNMAPPED: u64 = bit_u64(0);
+> > +pub(crate) const AS_TRANSCFG_ADRMODE_AARCH64_4K: u64 = bit_u64(2) | bit_u64(1);
+> > +pub(crate) const AS_TRANSCFG_PTW_MEMATTR_WB: u64 = bit_u64(25);
+> > +pub(crate) const AS_TRANSCFG_PTW_RA: u64 = bit_u64(30);
+> > +
+> > +pub(crate) const fn as_transcfg_ina_bits(x: u64) -> u64 {
+> > +    x << 6
+> > +}
+> > +
+> > +pub(crate) const AS_MEMATTR_AARCH64_SH_MIDGARD_INNER: u32 = 0 << 4;
+> > +pub(crate) const AS_MEMATTR_AARCH64_INNER_OUTER_NC: u32 = 1 << 6;
+> > +pub(crate) const AS_MEMATTR_AARCH64_INNER_OUTER_WB: u32 = 2 << 6;
+> > +
+> > +pub(crate) fn as_memattr_aarch64_inner_alloc_expl(w: bool, r: bool) -> u32 {
+> > +    (3 << 2) | (u32::from(w)) | ((u32::from(r)) << 1)
+> > +}
+> > +
+> > +pub(crate) const AS_COMMAND_UPDATE: u32 = 1;
+> > +pub(crate) const AS_COMMAND_LOCK: u32 = 2;
+> > +pub(crate) const AS_COMMAND_FLUSH_PT: u32 = 4;
+> > +pub(crate) const AS_COMMAND_FLUSH_MEM: u32 = 5;
+> > +
+> > +pub(crate) const AS_STATUS_ACTIVE: u32 = bit_u32(0);
+> > +
+> > +pub(crate) const AS_LOCK_REGION_MIN_SIZE: u32 = bit_u32(15);
+> > +
+> > +/// Maximum number of hardware address space slots.
+> > +/// The actual number of slots available is usually much lower.
+> > +pub(crate) const MAX_AS_REGISTERS: usize = 32;
+> > +
+> > +const MMU_BASE: usize = 0x2400;
+> > +const MMU_AS_SHIFT: usize = 6;
+> > +
+> > +const fn mmu_as(as_nr: usize) -> usize {
+> > +    MMU_BASE + (as_nr << MMU_AS_SHIFT)
+> > +}
+> > +
+> > +pub(crate) struct AsRegister(usize);
+> > +
+> > +impl AsRegister {
+> > +    fn new(as_nr: usize, offset: usize) -> Result<Self> {
+> > +        Ok(AsRegister(mmu_as(as_nr) + offset))
+> > +    }
+> > +
+> > +    #[inline]
+> > +    pub(crate) fn read(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<u32> {
+> > +        let value = (*iomem).access(dev)?.try_read32(self.0)?;
+> > +        Ok(value)
+> > +    }
+> > +
+> > +    #[inline]
+> > +    pub(crate) fn write(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>, value: u32) -> Result {
+> > +        (*iomem).access(dev)?.try_write32(value, self.0)?;
+> > +        Ok(())
+> > +    }
+> > +}
+> > +
+> > +pub(crate) fn as_transtab_lo(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0x0)
+> > +}
+> > +
+> > +pub(crate) fn as_transtab_hi(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0x4)
+> > +}
+> > +
+> > +pub(crate) fn as_memattr_lo(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0x8)
+> > +}
+> > +
+> > +pub(crate) fn as_memattr_hi(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0xc)
+> > +}
+> > +
+> > +pub(crate) fn as_lockaddr_lo(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0x10)
+> > +}
+> > +
+> > +pub(crate) fn as_lockaddr_hi(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0x14)
+> > +}
+> > +
+> > +pub(crate) fn as_command(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0x18)
+> > +}
+> > +
+> > +pub(crate) fn as_status(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0x28)
+> > +}
+> > +
+> > +pub(crate) fn as_transcfg_lo(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0x30)
+> > +}
+> > +pub(crate) fn as_transcfg_hi(as_nr: usize) -> Result<AsRegister> {
+> > +    AsRegister::new(as_nr, 0x34)
+> > +}
+> 
