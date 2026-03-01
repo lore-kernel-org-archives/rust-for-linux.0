@@ -1,114 +1,152 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E217617ADE0
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Mar 2026 11:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6955F2E7621
+	for <rust-for-linux@vger.kernel.org>; Sun,  1 Mar 2026 11:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772364704; cv=none; b=VgTasgGV1I5Qe+kKxzVCulKf48b3dSykR6xsOp4RoKnlfFKCkSZkHCkhYcxLt5QC0RPeaxDfEd2RnknEpo4kjuwlBdyLFJWil7roY+IJdnpuQ9z5Jz2lfAVBCTJ5TBWUpKEbgYJqxftuH9eSma4NAjxcEPOy9ncrw+kQ7c/oh88=
+	t=1772366153; cv=none; b=HwaxCZcU8LQwe12WFrwoFApDkoLAvBpvnY6aQrTsfXGSRuuNsa7om476tqSd015Sz4A1fdHifQXdvitGzker8A3fH0A92oC/BP5gdBbP9tu2GyR7GiUausa2lyS9OOi+bRT4jHIfy0s80zscJGARaQoSew9toHTwvfhsEUniG1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772364704; c=relaxed/simple;
-	bh=uMFe7uI5KQx2ifr5s3qh2c05WQVptHqAKMuxcaeOa6g=;
+	s=arc-20240116; t=1772366153; c=relaxed/simple;
+	bh=PfN/y5pRqIRPogCVA2tIWQzh++wno7n31O6nvIICik8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l6egfIhoawXWPWkkiIMHyEJs4NpT6+9/sRcYiQKs+w6bnXc8UsTQcytHHsA4utXXU1nBAuuRVe9OHzRP5LsB/pcsCIRBIxzCQFATuKPfaptbpDAXm/+mcv6Fp5bsTSHPTdwk7RDz7ttZ+05VUbPt5DibltF7yBYW3LYjuCLAcqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZFHZd2W2; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=BeGMhxnzVHFPSuJqtN1cKE3aZoBpa+ZxGsLyP/c41vOZbScKzQwe9UAyGGefNw2ubSrlWt9TBLpMfcGUDyP5R8DIUd5fgBOUKFtJbKykv5YUyt7s4JYNALGATF5CWegf/+gkCnJ+aWKontwq5dH+6YzuRZysixhgNR4S+nvGT9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tCFGDun8; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZFHZd2W2"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-483bcfdaf7dso34203935e9.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 01 Mar 2026 03:31:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tCFGDun8"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4832c4621c2so39420065e9.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 01 Mar 2026 03:55:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772364701; x=1772969501; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MAy2CPvj2hswse9mlB2C5yDrhtQ8bradZmfDI9jvp4Q=;
-        b=ZFHZd2W2LZniXfzUs6iaQUGwAKbPGcxn/xOeypsxsmYQKdt/XQ5+ZnilE/WRndv5HA
-         Akc/tNAxQs5XB84jH0seeeO4kKyYOFiRSF0vfLt58YdPv5bxh24iDkFZ4BxTxWbKt++c
-         3QOce4CaZ+LCe3PUk96wqqAHCZqfp++9bX6WgDlEV+npZ34UGcyPor4nhGx9gxn0vc2I
-         Y0JurWCEnoHzr2xfXbRpXIrRGI147zyWhZeV6pfVqYCLx759ylXiERCFItCl7k00ds8D
-         zKozr17NI7ZpKMrAnNTR6fSxLZH3bC+aK1Y3ztpqic/dWIIzjX/8ailSZMOfyHja15PS
-         Dr7Q==
+        d=google.com; s=20230601; t=1772366151; x=1772970951; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yLaBt3LVM64DKGE6X1KmJrKDdlh6IijFoqqtE4OEVdY=;
+        b=tCFGDun8D4KoRuhcvwKG2BLEyYpxJllYFtYJh5bREmoJCU3M/suF95ZH/8YfViDAZT
+         obFmXtH6SHSIu2D/SYAm7EozCUOiZ3V/cxlWmvdUO80bytQnyBVFN9QO60J7QeFb8xyn
+         vzKwwux8cIGbmAtMLX2seJusfBmPDjh6ktBSyMkx29218zpPi6fja+OP2KlGdq2esHJb
+         LE0HLL7tQAY0dLogJRFZGymvnw1xzi922lvHZrf9NXzQjIcWy1V8HJG9ou/phPD2MubG
+         ISY6a8YeEgeLPQxOjWwajZxaQF+hKgKRD3tzHnr2QCLqSaXjUjoUJt5LcGMFOShDsQd0
+         u3Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772364701; x=1772969501;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MAy2CPvj2hswse9mlB2C5yDrhtQ8bradZmfDI9jvp4Q=;
-        b=c3lGLWLTezoGMcUzBV+PKcRKsFb7gqklCVv/lVv4wBPxlNDps3ozY3dcL//jMCgZqx
-         ZLY8xa6PSHizChWue175Ix1rcg3eQag7I5NJ8QDUCMR2R5+9KmuNzg1vZsQagAs0uHKI
-         /xnlDV/6g1pS1NzANrfAlBi73RISVz3aeULlZvjsVh/TfBSh9rPuRfcsta6T/1Hf/UcI
-         t4KxtiIVuE0R8AJe5+tukKPqceOU37048UHD/tsPCS73e4DyBaVjwMvlIkgoAjmiJx1h
-         zjB+JZS8QK6dczfB4cMhz5ycRnpNRHkw0+UVZBNh9L242TD5/gvIK/jBLltDj0ULs+uN
-         4dJw==
-X-Forwarded-Encrypted: i=1; AJvYcCW9RURbtzRplcDHanE2DF3kyLXMyK5J957m7pUus78jlkynEgpqEJCpS9HvPQ+pL1kkDJDnpL0gba8/dabfeg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFlD+egv7tB4+ikh3nXBZHcuU7AZQAiTZvl/LNdffgCSwd9WbS
-	7y6lrS21WkrNiC63F5w/RlKdyvHDBM/eLTT+3gQiF+8WjTaJIAa+k7h6Gs4y1w8Pg0PUH0bdHah
-	Uk65aPX5wXZAXXkJ7DA==
-X-Received: from wmbg25.prod.google.com ([2002:a05:600c:a419:b0:477:a181:1919])
+        d=1e100.net; s=20230601; t=1772366151; x=1772970951;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yLaBt3LVM64DKGE6X1KmJrKDdlh6IijFoqqtE4OEVdY=;
+        b=AKWwn8oj5hnFgTQWxqSuQ/tSUkkjICnY/oHBT4+lfGZ91BiiHGJu0jZCwdFtj/1po6
+         ArEdPmi5hWq9Mu63MYHKMPLQzNz1DwyFYW0f3TDVFZMW5IgaqB8w19NyNgerxzBO7B9a
+         mtOEGZ4Ne2Tcq9pvm/XHHSX0uQe4cwbxkCbAOr48om6aZc2XGyG+zI1Hz3W8+7t19khx
+         xZBHudGuEpSADlu10lZGtfVSMGJDcxQtIGVx8xyQMBBWvUNvE/MsQKmPrrrM9iCwEzAa
+         LFwRhXlEOFEHSU3uV4YaaEUR2lrq4KTxlPU+yRZRFZGIDQKkzeG0xlW25tAu32pPTmdC
+         nMUA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+QcspDyLcSCeNXSXuR4mwNzhXeGrINKNexvTy7rllpKpxakQJBNtue3gSpNBMeqg8cy1MoY71K25/SRdD+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTgfoYZ6YRYc0imeMT7ex5EEgfjMpkpkkXLWLjRI5l5rg+nb7p
+	oaXhc8tY1SaKHCTdfGSdUYC0GV9wTwqSF3Uyu+AAoxL7+g6+dIcIhy5W4BIm9JzkRa687vWsMky
+	RIY8CJ1khIIglckXhgg==
+X-Received: from wmri26-n1.prod.google.com ([2002:a05:600c:8a1a:10b0:47e:e414:b8fa])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:45d5:b0:480:6c75:ddce with SMTP id 5b1f17b1804b1-483c9c11ef1mr147483115e9.33.1772364701057;
- Sun, 01 Mar 2026 03:31:41 -0800 (PST)
-Date: Sun, 1 Mar 2026 11:31:40 +0000
-In-Reply-To: <CANiq72=Y5aHc+jQc2Z5R7gxQj4oyKKKuPuuR9Uzx_LR8Ph84gw@mail.gmail.com>
+ 2002:a05:600c:1d89:b0:483:71f9:37ef with SMTP id 5b1f17b1804b1-483c9bc031cmr142097055e9.8.1772366150568;
+ Sun, 01 Mar 2026 03:55:50 -0800 (PST)
+Date: Sun, 1 Mar 2026 11:55:49 +0000
+In-Reply-To: <DGQOAM62LGC8.2S5KJZBQU9OR8@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260215-hrtimer-active-v1-1-a754d10492c2@kernel.org>
- <CANiq72mfLyXNs2QdzROkgOeuQDPSEM_f3Rt3rvGcrhd44weSTw@mail.gmail.com>
- <20260228.112257.2070673836800156099.fujita@bee> <CANiq72=Y5aHc+jQc2Z5R7gxQj4oyKKKuPuuR9Uzx_LR8Ph84gw@mail.gmail.com>
-Message-ID: <aaQjnM3XbaolKcvo@google.com>
-Subject: Re: [PATCH] rust: hrtimer: add active() method to query timer state
+References: <20260227-create-workqueue-v3-0-87de133f7849@google.com>
+ <20260227-create-workqueue-v3-2-87de133f7849@google.com> <DGPUOSG5I4GM.1N5AWMP5ZFY4M@kernel.org>
+ <aaHq9VpaVN4_hchW@google.com> <DGPZMZKAQ2TC.RA0BF64C639M@kernel.org>
+ <aaLmzp0mMPpE45yQ@google.com> <DGQOAM62LGC8.2S5KJZBQU9OR8@kernel.org>
+Message-ID: <aaQpRXR2hBde5LZy@google.com>
+Subject: Re: [PATCH v3 2/2] rust: workqueue: add creation of workqueues
 From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <tomo@aliasing.net>, a.hindborg@kernel.org, boqun.feng@gmail.com, 
-	fujita.tomonori@gmail.com, frederic@kernel.org, lyude@redhat.com, 
-	tglx@kernel.org, anna-maria@linutronix.de, jstultz@google.com, 
-	sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu, 
-	dakr@kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Boqun Feng <boqun@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, Tamir Duberstein <tamird@kernel.org>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 28, 2026 at 04:04:27AM +0100, Miguel Ojeda wrote:
-> On Sat, Feb 28, 2026 at 3:23=E2=80=AFAM FUJITA Tomonori <tomo@aliasing.ne=
-t> wrote:
+On Sat, Feb 28, 2026 at 03:43:02PM +0100, Danilo Krummrich wrote:
+> On Sat Feb 28, 2026 at 1:59 PM CET, Alice Ryhl wrote:
+> > On Fri, Feb 27, 2026 at 08:23:44PM +0100, Danilo Krummrich wrote:
+> >> On Fri Feb 27, 2026 at 8:05 PM CET, Alice Ryhl wrote:
+> >> > On Fri, Feb 27, 2026 at 04:30:59PM +0100, Danilo Krummrich wrote:
+> >> >> On Fri Feb 27, 2026 at 3:53 PM CET, Alice Ryhl wrote:
+> >> >> > +    #[inline]
+> >> >> > +    pub fn max_active(mut self, max_active: u32) -> Builder {
+> >> >> > +        self.max_active = i32::try_from(max_active).unwrap_or(i32::MAX);
+> >> >> 
+> >> >> The workqueue code prints a warning for max_active >  WQ_MAX_ACTIVE. Maybe use
+> >> >> debug_assert()?
+> >> >
+> >> > What's wrong with just making use of the C-side warning?
+> >> 
+> >> IIRC, we have the same pattern in other Rust code that we use debug_assert()
+> >> when a value got clamped, e.g. in udelay().
 > >
-> > Should we use intra-doc links for true/flase? Currently, rust/kernel
-> > doesn't seem to use them. Seems that Rust std library isn't consistent
-> > on this either.
->=20
-> Maybe... It doesn't matter much either way, obviously.
->=20
-> For simplicity/consistency with other "trivial" items, it may be
-> better. On the other hand, it is more painful to type and takes 2
-> characters.
->=20
-> This is the entry I have so far for this in my to-be-sent guidelines
-> "rules" list:
->=20
-> - Use intra-doc links wherever the link would work (i.e. if ``rustdoc``
->   can resolve it), unless doing so would be unreasonably complex or
->   verbose. In such a case, use a simple code span instead.
->=20
->   Do so even for trivial types and constants, such as ``i32`` and
->   ``true``, as well as for ``Self``.
->=20
->   .. code-block:: rust
->=20
->     /// Returns a new [`Foo`].
->=20
->   Avoid:
->=20
->   .. code-block:: rust
->=20
->     /// Returns a new `Foo`.
+> > In udelay(), the clamping happens on the Rust side, so it makes sense
+> > that Rust is the one to warn about it.
+> >
+> > Here, the clamping happens in C code. To warn about it, I'd have to
+> > duplicate the existing C-side check to clamp in Rust.
+> 
+> That's fair, although I also think that it is not unreasonable. Given that this
+> uses the builder pattern, I think it would be nice to ensure that nothing
+> "invalid" can be built in the first place.
+> 
+> Maybe we can use a bounded integer?
 
-I'm not convinced by that. I don't think it's useful for `true` or
-`Self` to be links in most cases.
+Bounded integers allow zero, which is also illegal.
+
+I think it's a bit much honestly.
+
+> >> >> It's also a bit unfortunate that alloc_ordered_workqueue() becomes
+> >> >> .max_active(1).
+> >> >> 
+> >> >> At the same time having a separate ordered() method competes with max_active().
+> >> >> 
+> >> >> Mybe a type state, i.e. Builder<Ordered> that doesn't have max_active()?
+> >> >
+> >> > Sorry I'm a bit confused by this. Why does an ordered() compete with
+> >> > max_active()?
+> >> 
+> >> Because you could get an inconsistent state with __WQ_ORDERED and
+> >> max_active > 1.
+> >> 
+> >> It also conflicts with sysfs() I think [1].
+> >> 
+> >> [1] https://elixir.bootlin.com/linux/v6.19.3/source/kernel/workqueue.c#L7417
+> >
+> > And I guess the further argument is that we have a use-case for ordered
+> > workqueues?
+> 
+> In the context of
+> 
+> 	GPU drivers often need to create their own workqueues for various
+> 	reasons. Add the ability to do so.
+> 
+> I think we do.
+> 
+> Depending on the final implementation details and the driver it may be needed by
+> the job queue.
+> 
+> They are also pretty common outside the scheduler use-case in GPU drivers. I
+> think panthor has one as well, so you might also need one in Tyr. In nova-core I
+> expect this to be used in MM code.
+> 
+> But even without that, I think it would be reasonble to consider ordered queues
+> for this abstraction, since alloc_ordered_workqueue() and
+> create_singlethread_workqueue() seem to have more users than the non-ordered
+> constructors (without checking whether alloc_workqueue() is also used directly
+> to create ordered queues).
+
+Ok, I'll consider this for next version.
 
 Alice
