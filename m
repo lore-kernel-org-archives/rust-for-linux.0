@@ -1,111 +1,112 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9288E2D77E9
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Mar 2026 07:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772351810; cv=none; b=pKsyJZfnCEW95TOYY17HYE35hW01oXH5jnpXOQ3q1wztcY6lXsCaUktjw+8CPa9ou8Mo8W+Did5nFxNjNnQBhdlVnmcWEIyd4KMQ4pyAYORGSn88zU4A01MY6Sv5PuYZv9l2o4pnba5VquGy3/u3PiAzletrSk5z/bJOCzKpmDo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772351810; c=relaxed/simple;
-	bh=fHPJXMlciHnObqoUj2uJ4M6Qdtd38LNuqyUK0JBiZh0=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF674335081
+	for <rust-for-linux@vger.kernel.org>; Sun,  1 Mar 2026 10:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772360009; cv=pass; b=Bcv573bTKA2yPdF/WJI5vBa7ffjhYraW4ShNx8/0HSMtVO+Dvkx52vegsztkZVwbfEcHnxJtvBJoD52MBqAJQJtZwb1LqQKP2+oAU5qrsYbNl1FEVhnRZPpW2FQj2UScmafJH1+aIuXcWai5viyR+VyHxrZPA5KjOeKAMupTx8w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772360009; c=relaxed/simple;
+	bh=75C/JukTvKdnXwRgWlbYQi4lAka/pdpoSGb1wX+7VBI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HtHDVjZWW/Xt1SnPnzu5axw9cQVaQVWa3j3CJfuJpWw0kFcDi5gaZvjZI/4DCvww/2PLEyCwGTPcUMocSDXlB3kJY+kVEiGj4ITArmiGpLZC36Pci040XyEIlKQ8ZVpFdJtlo44fuiRaZJYjt7Z/lAfGF2lbSr3VPHS7Y3VVm/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OrdClRVR; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	 To:Cc:Content-Type; b=A8/8fQ51qiR5vusaSikP5u8e9ZESRX8iLpZmo7L5ax5W6ef5SpVjKuMChpyT7l0k/0C1U0u2kZdie+EVoOva81KiiF/17OzdCXwz6zwijQy8Cua7MTzHxnhkG6vf2r5eeIbipCYyehXvPF375T4BcE3zaZ8X1FHoblt/BRFirbs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4CvyYGd; arc=pass smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OrdClRVR"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b934fdced05so459036766b.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 23:56:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4CvyYGd"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2b8095668ebso154235eec.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 01 Mar 2026 02:13:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772360007; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GZ8QW6gN1KjesAysSl9GFx6YmSyqfDVUc6NNYx+yJKQqVGLX7uDZ5xH1Wqx85r3qAy
+         QDTjgti8T0R5uYp0sv/a1y9z8lYqdOzow1PJyPfWki+ZmyVzWoNDaBMMAkSjkyf5YyRt
+         y7cKI35Sre667p0sTvm8o17vyTNlWAsNggn4xsWNdzzdp8aZXJMc+Me/c76L15BvefwV
+         yTmYswNOBIb+BfD6VKYIluG+lwZznjgnjyKu/ScIlE6kxJ422seo7cw6dCJLEQ6tVLyG
+         n47mIgPXOWl5udClvRDBLH24nIj0CILTBr9hG6w6FuqetckpJK10+2/NIDbrcyIN4ouF
+         Eh7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=75C/JukTvKdnXwRgWlbYQi4lAka/pdpoSGb1wX+7VBI=;
+        fh=3XHU/W6JhWL4FAqb29i6aURymvdZTMslTtANP/7Z+FY=;
+        b=eQy0qbd9YGebiTFEauKzjqHH0NCC3OZN6LAewfI9P1XSrxkNdGIaRmSS6GNUtNOUdJ
+         IrQk4vaCjWwrAK0K9J1k4i8K+RP3qBgmU/3q95rfVSeOgk+VtLh+k39n7kdgrj70PmCp
+         9my0ichXLBEixBPthLQprS58q+WYiV9dSNqjHgva9G1IFCOTLkQ73gpDv1LbF5cXvYrq
+         B2he0o1dngeufeDYDiJBP9Sr6/dFKfp3gRu5JK8XVt4S5aPC4dAQ2U8CFkK9u7Qi58cb
+         gVYm1LRlbvNq21HFdb88ltkAlYLlvIJicYArjKJhOCv0vOjb1Z1JnQPtuwX19rRT1Ezz
+         fREw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1772351807; x=1772956607; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UAkqncwaBSQm61ty4+VcxJqmyotEfziP+tLQOjI6vHM=;
-        b=OrdClRVRF8bTRfDEl7XS+6uc9FAf83dGlFz0ZqZhoC1rTuuEvoJkmC27NSjJwYrjpq
-         Xb3CIV9L5sZTGI9Otd030wm/jARVc3H88CE5FYn7pft/9wJ5GIOVe+DOKzOb65wcPSOz
-         1xf2zDW6tw3ShheVQ5IR5XGlSwrbv6dozA158=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772351807; x=1772956607;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772360007; x=1772964807; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UAkqncwaBSQm61ty4+VcxJqmyotEfziP+tLQOjI6vHM=;
-        b=TnmjYcq8pTVUZq8VP4j7vsc/AEpiKGyDKUHTkNOWcbdzS/iaPpS812jZj11jB+srvZ
-         k+yOIoMVzuBU/+EaBEnHUJxJEGv45BaDqKgmnrsIwGzy5tZgYpWCwM1OpIjtNPE0YDa8
-         8bn6XONlgZ+CDb7iQQRMfB5wFiQ4/e0NUOTSigZwO0G8kbH6rpcP7NeePle8Yh+1zxTN
-         OiuPX52xpaUVEmWy+defG9cUKSythA4mEeiiwl9775zNDPi4HOAXkB8jHJP/ftSrtN69
-         Um26y3eGzKKD/2MUwQYlOLIL69VhTcs4pFy0ckXUvDVcYEtPkCAN02q9BWdWviNfo+ns
-         nCNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVuKF6R8W7pxcM+te413LCOuGZV7fpyMtZjXg/pspW/b12LRvmknOSAh+IH8IEVBjNPx4PBxwqJyBjtAecndQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtnB8A3QG/a0M18ID4lcxsw/ikQe95O6+QzcUeqMxfWjjKfBxY
-	726fSeIyXXyXv2jJtWSppMom9SzV4kiyy1eYfE9JyeXhCck5Anrvx5jXHDPFRYFiAsxpkpllW9s
-	bdVH3o80=
-X-Gm-Gg: ATEYQzzjnmVcHeRhpERPCiBloISC96pvefLnDHddOhfDg6/8fT1CTEomLAFmqjdObii
-	z5n6rNKm9HxLuHM5fQEux/njcnGrWoJtII8b6ddloNsX2rUDmTRqGCOWMrgEaRRH+oEJJBoyqBJ
-	mFz3uo5OCTfAxbA+DMJUjo8iVxhVMUKX/R39P1vKaKt4SI6jkQlzr6Ev0wrT5V/kFFta119Xw6N
-	5ZfJTsfTcQKfJhHsanACPi7dFJdGNnmym1TOTg5Zp99Avurm+ObHKUiYtRga398vo+rZr8Y9+kR
-	0VYV0GeHsVxtCPmjs4dpMW5ulUiw6np1kHO77QPtLYUvZvq9HbniEQZsGnWjB0dxkLuYDpwghNY
-	z1uH1Ricdx7wwnUgrTmNaQjTd7C/jw3hv/rY9txb162+iqgJsEIDZyHzQULdffbTLWS6PuZCiVG
-	9OiFdv6iqpwEmYA+pkTLy/9+Uv0GKNdIHXPGToPefGMPAGqmsjiPsaqhkGefkfT2Su3kKog+6J
-X-Received: by 2002:a17:906:2317:b0:b8a:f225:ede1 with SMTP id a640c23a62f3a-b937654ffebmr442691266b.41.1772351806807;
-        Sat, 28 Feb 2026 23:56:46 -0800 (PST)
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ac51843sm350648466b.16.2026.02.28.23.56.45
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Feb 2026 23:56:46 -0800 (PST)
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-65f73225f45so5593270a12.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 23:56:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWj3sscjjcRaL5BB7ZOEwCQ17sfC6rIR4AIAY6VxKWf3XUF9YKCN6UFJWV1q9CVhvSYi229UElKRbYGfFebwA==@vger.kernel.org
-X-Received: by 2002:a17:907:7f8f:b0:b83:95ca:23e7 with SMTP id
- a640c23a62f3a-b937636cee5mr554496966b.4.1772351805687; Sat, 28 Feb 2026
- 23:56:45 -0800 (PST)
+        bh=75C/JukTvKdnXwRgWlbYQi4lAka/pdpoSGb1wX+7VBI=;
+        b=b4CvyYGdoTB/HA6JgVYkwBhfhKvD9AqB9poXcAbabtbjVTcg4GDQmRDlXQgWxmcVxY
+         7JM6ZVXAMcoCxgXPXE3bs7GhvkxCGnXMslG8TInGnNUXdRQMZh9LpOwYLulM6a16flhq
+         ki0O1PtxyI3jNRq1v+GLk5gu/Skxf5NT7qF1GbCyWTPWlKd7OKtyhSmynm7b4AtMz8UF
+         IRy/Xe69OjmfR1OH2nelCLJHS3kuC9Q/g9VViLfCqN5pABe+dlE+N69F1YLxoHiO6pmk
+         VmNnH0pzkHzeV3G3h0JcecVM3oERmmBoud2Lhk0uFEiy2Tx/1iXgbRIna1UnIzNP6b3z
+         JyVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772360007; x=1772964807;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=75C/JukTvKdnXwRgWlbYQi4lAka/pdpoSGb1wX+7VBI=;
+        b=hyJw48syhAYGfKm/Jc+AcNViGw2/yuFWLeWK+Z7wucHrlGcrwuUnGoRX7GnzsnmJyt
+         fSSqPijL2LvgT9zxEH6RlTCFlhz69qVcXgsebXEjobq6RcpdBbE6+H37H6+gkAKKBr59
+         fMOP9LnDM7Iq0j9lBeBCo/ocEYDNZ2lyUshX9lHA95SAspipKpsMETiGQg2NjVoU0w7S
+         UP5kk/m7zzJYDp4PFfiriokXC2L89+3Dsc1bFJV5CbpU/LTIVoq+y4dj1NkslFhvssCq
+         lnn739JjdmX1iHhes5ymkt4pem4ne5xCk/euFqREHT9JROICENCMEKz7E5+eCjcBlcYt
+         O2lg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4csRm4N3SMGaF5JUJx99kjB0dqDMMYQOuUqtW5lZw4ohiL06V2CZaKwHI3A36+7+n8420QQulr8non4jtpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzbJsM5OwzBHcnyeqRxGMtnkgkAOvK0uW4nCJkF8EPtsyJuZ4U
+	kzwjY54KOn3H7NwA9vvhBhCLS+FisJAM5ZZIH190uW/s9eLKg+1Ln8X0Rugnm2X5v22Y49w13Gk
+	a1aoS9475hWA3GaijZr8LlkLoMriNhuw=
+X-Gm-Gg: ATEYQzx4IKnHnU8cstCPAM42WhSn7lEevdO7i/ITKJADNVKL60kCy9iskxJrXrpU6PY
+	xMfebwoImYq/hQls66hI82puRtu+JqWu91iMcN3bM4lgz2Bjc5G024eepT18rH5zIEM/OsBKxgw
+	HoRnsdalxvt3PPZ2JYOy60KiyAud/ReeJGnm+4/YMn/QW+NfWAMnfsTMzDaHajH1LS/cF/RUsWH
+	dn/zhSKbihREDSnUWgyGCVNGd/Y8jBUKbk1vnpm8glpEPH1fgtMfXZFEL2QClM82zhaabeFrv82
+	U+IyzIeajz9WkPTyewpWdDBo9iayqgeC0gJThKDIidhagmsrk46nWvsztOeQgTJYliIuENeNdt7
+	2p/n1b/XbMsOYyKi2JjPEF0iOwntC
+X-Received: by 2002:a05:7300:724c:b0:2bd:db75:c28b with SMTP id
+ 5a478bee46e88-2bde1e90dd9mr1533864eec.7.1772360007089; Sun, 01 Mar 2026
+ 02:13:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <DGCIBIK52SF8.3FVF3GR1R2302@kernel.org> <CAHk-=wgJ_L1C=HjcYJotg_zrZEmiLFJaoic+PWthjuQrutrfJw@mail.gmail.com>
-In-Reply-To: <CAHk-=wgJ_L1C=HjcYJotg_zrZEmiLFJaoic+PWthjuQrutrfJw@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 28 Feb 2026 23:56:29 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whLdS-5DhAfJVOp_fXJcM2sx-V0DAocuwA20s3JcA-d6g@mail.gmail.com>
-X-Gm-Features: AaiRm53QeH4tfXx0plcR1AZBTlH4cv4p0UAXb6D3niDubjG28DjQBxzo-g0ywYg
-Message-ID: <CAHk-=whLdS-5DhAfJVOp_fXJcM2sx-V0DAocuwA20s3JcA-d6g@mail.gmail.com>
-Subject: Re: [GIT PULL] Driver core changes for 7.0-rc1
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20260301020545.1734572-1-sashal@kernel.org>
+In-Reply-To: <20260301020545.1734572-1-sashal@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 1 Mar 2026 11:13:14 +0100
+X-Gm-Features: AaiRm50nMriLVyJIwduMFuyQbOs4IpGjFLyo6U0eJZtJzgEz1pwnRPv8P0IIuaw
+Message-ID: <CANiq72n-kFuv7QQ3FV9cwSrX+Vbmsf6R2A-AeUNr9wsMcUqyPA@mail.gmail.com>
+Subject: Re: FAILED: Patch "rust: pin-init: replace clippy `expect` with
+ `allow`" failed to apply to 5.10-stable tree
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, lossin@kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 28 Feb 2026 at 23:44, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
+On Sun, Mar 1, 2026 at 3:05=E2=80=AFAM Sasha Levin <sashal@kernel.org> wrot=
+e:
 >
-> In other words, it makes fragile drivers go from "you get an oops" to
-> something much worse. The oops becomes unrecoverable - with typically
-> a black screen at boot - because the probe is holding a lock that then
-> makes everything else come to a grinding halt when the driver fails.
+> The patch below does not apply to the 5.10-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-See this message:
+There is no Rust in 5.10.y, so this is fine:
 
-    https://lore.kernel.org/all/67f655bb-4d81-4609-b008-68d200255dd2@davidgow.net/
+> Cc: stable@vger.kernel.org # Needed in 6.18.y and later.
 
-on the interaction with the driver core merge with the firewire oops bug.
-
-In this case we were actually somewhat lucky, in that the hardware is
-fairly common, but seldom actually used - a combination that meant tht
-wer had several people who caught it fairly quickly and were willing
-and able to bisect it. I had the first report the day after -rc1 was
-released.
-
-IOW, it could have been *so* much worse. Imagine some random driver
-bug on hardware that isn't common and just causes inexplicable boot
-failures for the people who see it and are likely using distro
-kernels.
-
-              Linus
+Cheers,
+Miguel
