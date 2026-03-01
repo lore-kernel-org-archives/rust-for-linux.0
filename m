@@ -1,108 +1,341 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C599328243
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Mar 2026 21:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772398928; cv=none; b=Tt4aPgpQw4FhkMs1Inr9+02yk2u7C+wuANrac/I53JQEUgt/Y7cCRB+43/AJGhq+6Upj3FaN9F3MQfF9OMrQTuknTEGWnFl1BCpeov49lMEkY6YniZRi2mpaBkyx5Diq5U42ZWZdWAQML/8DG0zWnekah7XCVAj3xhUUT+RDFv0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772398928; c=relaxed/simple;
-	bh=pyzRCOD1UmU2geAXFDx/ZeUikbKuoCXAHdKTbQBsFF4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gmnlv7mEhu+ogA6RnpkFfnX69HQP+Jw7kBf02sr9fDLO911qOGMvJ9hB/+65cgMXUt+K8WoTIQDmeKcfXI1tJf8HYpoaxnR/bUwzr9UF+JhZ4bC1TdbRbZHAGTyN6U8vpJqQ/yuAsk9bCU2SEmDyqLm+ZYtRKNA78SAGOMd73BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cW+jbT2X; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D230277C81
+	for <rust-for-linux@vger.kernel.org>; Sun,  1 Mar 2026 23:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772408583; cv=pass; b=mRnc6B/jb9lqTOyvFS8FE6OMjmgcBW17gL1DvHZsltcLz+LKngNAB5ab6OeOWz70BmLQVvOzrxX2jKGnclfJmVPfj4Ah1u4LaWF1BUwboKIxhp+pLi/YVDAtj27iFAI1fk35E4A1iPRzXxHgD1NszbxvmtPeFhjvfYc5rH7xQf4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772408583; c=relaxed/simple;
+	bh=2lumFFkJ0ZwYBqoADHIq/QJZcgPn5Y+Rf9ui93BHJdQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ISKkfkPiIUKkT7sWWCot9+vAXzRazMhlwY5tvGXIV3KYfQkwRiJsMz1YnhQ0wta6voKB9RWuMb5sz8Zcva6GL2NeeDvjuyNPY98EzTPtdu2VGuEShuFhV6F7PoGq2h4xs2iNI5opIPiOJ+7d6H/VmrlnzvZLyxOSEtvBuyScbUY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SSxIphTe; arc=pass smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cW+jbT2X"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b936b85cc71so411633666b.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 01 Mar 2026 13:02:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SSxIphTe"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2bd801b40dbso275620eec.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 01 Mar 2026 15:43:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772408582; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QjgepF1eJkv1x84t/yAWDo//h1P3acbtCod9S9X4n7A3Mp8Ae0N9rxkOobQ5Yu/mr4
+         Yi2MAiuHMo94RAr11HrXS940DdCOWggiKCDiOekK+y3dQ6Rzf1YCJctSPT/cUmGzczUi
+         XEY9UA1WDPmgiS+9YFTNRV9G1PJNV/oVZbbE8kk4iNtwYbVvIIApjD0hBd5W/SouoRNJ
+         uLwOc0OR+JzJixJ3mmSefK+aOBJm0vfLUb0JNIIEroLZ+EVDL+xlszB8Kw6vnbw6G4XC
+         B0z06xYGRZS/0KEMLVfc2pNDh/JoyGOC4WQ5KWtVdBcDkqr7/ih6iWUyD10vj5ipSVGB
+         jmxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=U1gYsY7zWUiNKxFF1e5Vu7YTdyDgHqmsZtnGIts9t9Y=;
+        fh=tmfH/sSV9PEXTJLPsBEV9vUJMyQUJi+D3Y3O7+N9qJI=;
+        b=P0tH9WPZN5wDZIhFGzD4Jp26T9locOrwILw85VXV04+s8ZHskJev+Wd7RK/ZmewqwD
+         cdRvE4/hLrcWWd25scsXZupXM+rXmjCe0mUnhADTLpRqnCu0Dfsi6AHdAPCKbqZJk4x0
+         qSn5GrHZjB1x+18pxCT/a24Wv2oVf0MXVsrGdHUxqfRzFSa3hLQYbvfL+qOmlKBJsG45
+         yUv3Qp5Zk1r04T4UzeErX6qW4kjLmO7evtBVndvea87bc6e8LUAPCql2fkN3seNRgtGp
+         eQa7GZvUIedYI2emmibwJxiGJ2v6mmDojj87WyGr0n+5WIwuNjQJxqwFx8SV71QSNj5n
+         u/aw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1772398925; x=1773003725; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mezHDVLpKDYbfdxOWPZQ4Kx1amzQes9ySZ/VWutVgTQ=;
-        b=cW+jbT2Xru8yclqJcKuOYywZrrJA1dcII+MMQwxtd4tV4nhJD8spYnYji/UPlYUZfT
-         TrFS16K5oLHEV9/7Ay3397kREiM+DgcStRhBuiifkQzlgTqcB+9ETt4+k/+H1AvZ2nPx
-         Ag+Uwan2GAIcvgMD5M4EDVvF7Mi490WguvokI=
+        d=gmail.com; s=20230601; t=1772408582; x=1773013382; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=U1gYsY7zWUiNKxFF1e5Vu7YTdyDgHqmsZtnGIts9t9Y=;
+        b=SSxIphTefol9WABAYVSZbDyD826ghUxpCNKkpnVrGue96jXXxYYk9jg4mLL1eQSxXi
+         jgsE0R3opdRvXBX1yX4tPTILtHDMqYC5IS7XiklsgmrSuATHJthHKWzxwoVKultWNeyZ
+         q817mI45RrqHPLJ8RlBtLbuxNTTa1TJU6cUbLTRiDAK9ELRN2IFezhjoj1S0gUI1XGSt
+         LihLcir3/+WKYXBkfBndwFOf37bnoYkt0Ng6ec5R3G9D8YT9HU3C16EfNHap+eA2CTXe
+         FDjQQHlq31nTr6yTcJKpAkHGxoSLlrvltPSTnHHeDc9e0tGQNUQQTpZXFXysimF51Nm6
+         QV/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772398925; x=1773003725;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mezHDVLpKDYbfdxOWPZQ4Kx1amzQes9ySZ/VWutVgTQ=;
-        b=t3eZEA+sPjs1epnISp6Y+hTimnoth0s0sa8DH7bhtfSIYilu3mZ+B+x/hgn3cKJEBD
-         TdoQLgbCu2NguX9lupbOve+pF0MHM0PbtrsbzmAA00rxSzpTE1rqS+BaD+tTz9JhxMSP
-         XffnwtrI+OUH8EMYVPgHI09AJ4jMF9rY+RH625hRszQpzC84cHD5b0p5otgCLIZyDR3g
-         MPNBqOfj1lC6CXI4vYDl6okm/DVsBVuFBORu2LRjoRzHsx5DmuszDn461WBLdEqu6Bko
-         KpbMI41yYvu+BoSD14sUeHpWUgbx5JhnMHFm185k0m8DT6XMD26/5wKM5iGC+MLOUSqb
-         gJ2g==
-X-Forwarded-Encrypted: i=1; AJvYcCVXPVS4zVYGT2fOlWZ62OfN/pcMdGlDyNoLCeCfjl3swah26F0TTatAd08+FztlP5XPLapb8g3tvdseAe0v4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqRZx531EdO5vDLQG5HvFHWMJgMbKwkYDOocqed5lJH4dWAq/f
-	dIsEsliRlITTJDNlfQ7BuVhBLNr0udeU5BjqMF0hKPvaItdHc0di7tI8t/Tl6udSQJkPZ4yhNCP
-	NJ0Bb5w28ng==
-X-Gm-Gg: ATEYQzyLP5IwJ7Af+7gXEsYuifaJCdPA8S3KMwz5FhPqBlwaQlvz5usjLOu83D8gTZ0
-	rxIZ0D1l8BE+LxyE6cTSY5mP4G/d8riYmicQWSCtcexHENfc0fBe7UWEsYmHRwhAT0L4pCGYbbk
-	SB9Hks9XK9I1Gbh9kWYX9ak8Mc5JVwde/iswj+b9YLxHJI5ZY3OcfDSq0IYfNML8jrhNMnD6PdJ
-	ytlUwfLa4LGy7VAG0Dm9BmEM5PW8SIs0ZldDlrzTVAkSDft9GgUS18Q++oDFNDxTlEMFCZh8ugG
-	+jh/Bx4KCv2urPLV46FqwhIeFTg+QnS+14IEu/1CN3XJ7QwRlvfToVFrU/csKTeZ9WUsMbHL+bi
-	KocbNHlGgclI3JJcuuMuGCt3yAPMk8g8sFXw9WXTBE4ozy2qa5AnFDIxKePku6RR4ZaXPV1RgIz
-	CPH/2KWNwPPqgpBlrXkshp47JSL0QrZx4tzL3VfbmdZK0FvAIyXFkkTHlJazNFISskP7SeCPFX
-X-Received: by 2002:a17:907:9710:b0:b87:d44:81d with SMTP id a640c23a62f3a-b9376538cddmr560814766b.45.1772398925325;
-        Sun, 01 Mar 2026 13:02:05 -0800 (PST)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935aec3243sm398837666b.53.2026.03.01.13.02.05
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Mar 2026 13:02:05 -0800 (PST)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-65f812e0d93so5825061a12.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 01 Mar 2026 13:02:05 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUxMfL7zZ3XoD5jIJXVi6OlfPyOJlYby7V4LC1wF26PduvTz/aPTQbhWlKsVf/8qMIBOt8jDeHTrVUW44kczA==@vger.kernel.org
-X-Received: by 2002:a17:907:3d50:b0:b8f:a8bc:a081 with SMTP id
- a640c23a62f3a-b9376385cccmr645983866b.19.1772398924758; Sun, 01 Mar 2026
- 13:02:04 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772408582; x=1773013382;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U1gYsY7zWUiNKxFF1e5Vu7YTdyDgHqmsZtnGIts9t9Y=;
+        b=wM+1IokbMcSIaRaN/pX7L48jJURRkBW+YVjKaocP6SRih0gsXE0u0Snj8VhSGdtC1K
+         BCTps7bpeCPUllXbfSXkDQkdImcU8n4HwlJDBvN/KBjhbh/c2FBkf3F0KqwoNo3tQ2Sg
+         Vif6c5ZS0UmjEEF6Bl4fhNmhJst36VE/tv4lU100AfFNumNH+9fY9QYqLkb4ynNMRyad
+         OglW4wOCrCakl1UZQKS/LL9kUwOBtnNUe+skGJ/qlpf5h5YPkpv8mxsjybWDlDW26ijG
+         rtdAwedlr8G8I3G2Hv5ISx5ci+6XrrlR8C2ubDDiVo3sA1oG5PpEYuEMxuDUeGu0WZim
+         ojUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWaB1da6SwWfijt1VG2qMLTCZUjtS5QF4qkFvaH5JWYL8OPiSOXORUPpSNKBa9ZMlkJcDrn4ab8BIlqHYe0nQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsBAiDLRAbcJvptUIliThxKUcAGZm2g6mibZ988WDG3F2J7dmn
+	hhkWzeKXIqlb2Jva/Qll1uM+VJ/yiJRXASoqsN6oXEuaUfKkzB1dPLlu4cG03z7HGwMq6srRivc
+	JJeoTxueD12WHQpSdctJYg8VnD/EIyimyhtKKC1E=
+X-Gm-Gg: ATEYQzy1HaxJDcOtt0Co8VaBGXoXHc/9lygY9C0ILjrlm+DxIGuYgcql+BE2vxq0sed
+	ThYPmyOBhemOjqvY2A4vGS561mHV2tyDTjR+luy+Niu+b0pImTfRW9oDzKrEzZge2I7QyZGfA5t
+	qUm21PXkLkgBV0aSf5PPSp3z6OT8l3Lno/wCtJ+MnP4eIvdMhnwjBRFydYky8It9mB+RQ6xJ53m
+	w7RHoWGz7FUcTL5QfX/cd2QlYIwGL2WkEWcsv2xdlblUFjo3egF1XBtG8cZ8Ao8JcGumjJUiyNg
+	gVN+UlkJrwSqrnwHGtx9vxffSCdZo60Cq1VZmyC3zKvacHgwi1GgX0/Kn44v0t9rbXsJt+je00r
+	7e4/rjFJlqJ2WaGXeG4JcwTWBHnPR
+X-Received: by 2002:a05:693c:2c8f:b0:2be:171c:2177 with SMTP id
+ 5a478bee46e88-2be171c2ccdmr15106eec.7.1772408581518; Sun, 01 Mar 2026
+ 15:43:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <DGCIBIK52SF8.3FVF3GR1R2302@kernel.org> <CAHk-=wgJ_L1C=HjcYJotg_zrZEmiLFJaoic+PWthjuQrutrfJw@mail.gmail.com>
- <DGRGTIRHA62X.3RY09D9SOK77P@kernel.org> <CAHk-=whAU=_wOO9WnaeO2HZVBhr6JLOkCSvToPqHyoL90dkyBA@mail.gmail.com>
- <DGRQ4L6IAZA6.3LD6VRCPOHDWX@kernel.org>
-In-Reply-To: <DGRQ4L6IAZA6.3LD6VRCPOHDWX@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 1 Mar 2026 13:01:48 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjDwsXRcur+-Mf0UysmNP8Vz2XcETgdp60bJnK0Nm+C7Q@mail.gmail.com>
-X-Gm-Features: AaiRm521b_BDFdXtKKGw-6vzQShQzqlQVJfesicPtfpZkTxitLHg1Ed9dzI-ArE
-Message-ID: <CAHk-=wjDwsXRcur+-Mf0UysmNP8Vz2XcETgdp60bJnK0Nm+C7Q@mail.gmail.com>
-Subject: Re: [GIT PULL] Driver core changes for 7.0-rc1
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 2 Mar 2026 00:42:49 +0100
+X-Gm-Features: AaiRm52fTXrGz5PlTORiyphpsPMjHdsF2ymu7kB9CFR5ioFaHp3gh72XIk80BjI
+Message-ID: <CANiq72mAQxbRJZDnik3Qmd4phvFwPA01O2jwaaXRh_T+2=L-qA@mail.gmail.com>
+Subject: loongarch64 objtool warning with LLVM 18 in Rust object file
+To: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, loongarch@lists.linux.dev, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Nouveau Dev <nouveau@lists.freedesktop.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 1 Mar 2026 at 12:21, Danilo Krummrich <dakr@kernel.org> wrote:
->
-> Otherwise, since you asked, the string length is currently limited to
-> PAGE_SIZE - 1 as it will be copied with sysfs_emit().
+Hi objtool & loongarch,
 
-Well, the string length from /proc itself might be long, but do we *care*?
+I noticed an objtool warning in a Rust object file for loongarch64 in mainline:
 
-It's only meaningful when it matches a driver name, so anything longer
-than the longest driver name is irrelevant - it's not going to match.
+drivers/gpu/nova-core/nova_core.o: warning: objtool:
+_RNvMs1_NtNtCs3LxSlPxFOnk_9nova_core3gsp4cmdqNtB5_4Cmdq3new+0x238:
+return with modified stack frame
 
-So the thing that would matter is the longest actual real driver name.
-Aren't those typically just a few bytes (eg "regulator-bus-drv" or
-"__typec_altmode_driver" being long ones I find with a bad grep
-pattern that might miss millions of other cases)
+From a quick test, I saw it happened only with older upstream Rust
+binaries (1.78.0 to 1.81.0), so I suspected a switch of major LLVM
+version, and indeed with 1.82.0 LLVM 19 is used instead of LLVM 18.
 
-IOW, it looks like it would be fine to just say "use just a 32-byte
-buffer" if a buffer is needed.
+With LLVM 18 I get:
 
-Of course, if no buffer is needed that's even better.
+    addi.d          $sp, $sp, -2032
+    st.d            $ra, $sp, 2024
+    st.d            $fp, $sp, 2016
+    st.d            $s0, $sp, 2008
+    st.d            $s1, $sp, 2000
+    st.d            $s2, $sp, 1992
+    st.d            $s3, $sp, 1984
+    st.d            $s4, $sp, 1976
+    st.d            $s5, $sp, 1968
+    addi.d          $sp, $sp, -2048
+    addi.d          $sp, $sp, -2048
+    addi.d          $sp, $sp, -2048
+    addi.d          $sp, $sp, -112
+    ...
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x870
+    add.d           $sp, $sp, $a0
+    ld.d            $s5, $sp, 1968
+    ld.d            $s4, $sp, 1976
+    ld.d            $s3, $sp, 1984
+    ld.d            $s2, $sp, 1992
+    ld.d            $s1, $sp, 2000
+    ld.d            $s0, $sp, 2008
+    ld.d            $fp, $sp, 2016
+    ld.d            $ra, $sp, 2024
+    addi.d          $sp, $sp, 2032
+    ret
 
-             Linus
+While with LLVM 19 I get:
+
+    addi.d          $sp, $sp, -2032
+    st.d            $ra, $sp, 2024
+    st.d            $fp, $sp, 2016
+    st.d            $s0, $sp, 2008
+    st.d            $s1, $sp, 2000
+    st.d            $s2, $sp, 1992
+    st.d            $s3, $sp, 1984
+    st.d            $s4, $sp, 1976
+    st.d            $s5, $sp, 1968
+    lu12i.w         $a2, 1
+    ori             $a2, $a2, 0x870
+    sub.d           $sp, $sp, $a2
+    ...
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x870
+    add.d           $sp, $sp, $a0
+    ld.d            $s5, $sp, 1968
+    ld.d            $s4, $sp, 1976
+    ld.d            $s3, $sp, 1984
+    ld.d            $s2, $sp, 1992
+    ld.d            $s1, $sp, 2000
+    ld.d            $s0, $sp, 2008
+    ld.d            $fp, $sp, 2016
+    ld.d            $ra, $sp, 2024
+    addi.d          $sp, $sp, 2032
+    ret
+
+So I suspect the stack pointer is not getting tracked properly and
+thus the mismatch. Is it a known limitation for `objtool` on
+loongarch64?
+
+It is a very big frame, so I guess maybe it is not even expected to
+have to deal with such a case to begin with.
+
+I think we likely want to avoid that big stack size to begin with
+anyway (Cc Danilo and Alexandre).
+
+I am copying the full disassembly of the symbol in the case it
+triggers the warning below.
+
+Thanks!
+
+Cheers,
+Miguel
+
+[1]
+
+<<nova_core::gsp::cmdq::Cmdq>::new>:
+    addi.d          $sp, $sp, -2032
+    st.d            $ra, $sp, 2024
+    st.d            $fp, $sp, 2016
+    st.d            $s0, $sp, 2008
+    st.d            $s1, $sp, 2000
+    st.d            $s2, $sp, 1992
+    st.d            $s3, $sp, 1984
+    st.d            $s4, $sp, 1976
+    st.d            $s5, $sp, 1968
+    addi.d          $sp, $sp, -2048
+    addi.d          $sp, $sp, -2048
+    addi.d          $sp, $sp, -2048
+    addi.d          $sp, $sp, -112
+    move            $s1, $a1
+    move            $fp, $a0
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x20
+    add.d           $a0, $sp, $a0
+    st.d            $zero, $a0, 0
+    lu12i.w         $a1, 129
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x20
+    add.d           $s5, $sp, $a0
+    li.w            $a3, 0xdc0
+    move            $a0, $s1
+    move            $a2, $s5
+    move            $a4, $zero
+    bl              0    # <<nova_core::gsp::cmdq::Cmdq>::new+0x6c>
+            R_LARCH_B26    dma_alloc_attrs
+    beqz            $a0, 352    # <<nova_core::gsp::cmdq::Cmdq>::new+0x1d0>
+    move            $s0, $a0
+    move            $a0, $s1
+    bl              0    # <<nova_core::gsp::cmdq::Cmdq>::new+0x7c>
+            R_LARCH_B26
+<kernel::sync::aref::ARef<kernel::device::Device> as
+core::convert::From<&kernel::device::Device<kernel::device::Bound>>>::from
+    move            $s2, $a0
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x20
+    add.d           $a0, $sp, $a0
+    ld.d            $s3, $a0, 0
+    lu12i.w         $s4, 1
+    move            $a0, $s5
+    move            $a1, $zero
+    move            $a2, $s4
+    bl              0    # <<nova_core::gsp::cmdq::Cmdq>::new+0xa4>
+            R_LARCH_B26    memset
+    lu12i.w         $a0, 512
+    move            $a1, $zero
+    add.d           $a2, $s3, $a1
+    bltu            $a2, $s3, 292    # <<nova_core::gsp::cmdq::Cmdq>::new+0x1d8>
+    st.d            $a2, $s5, 0
+    add.d           $a1, $a1, $s4
+    addi.d          $s5, $s5, 8
+    bne             $a1, $a0, -20    # <<nova_core::gsp::cmdq::Cmdq>::new+0xb0>
+    addi.d          $s5, $sp, 32
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x20
+    add.d           $a1, $sp, $a0
+    move            $a0, $s5
+    move            $a2, $s4
+    bl              0    # <<nova_core::gsp::cmdq::Cmdq>::new+0xe0>
+            R_LARCH_B26    memcpy
+    move            $a0, $s0
+    move            $a1, $s5
+    move            $a2, $s4
+    bl              0    # <<nova_core::gsp::cmdq::Cmdq>::new+0xf0>
+            R_LARCH_B26    memcpy
+    lu12i.w         $a0, 64
+    st.w            $a0, $sp, 32
+    li.w            $a0, 0x3f
+    st.w            $a0, $sp, 24
+    li.w            $a0, 0x20
+    st.w            $a0, $sp, 12
+    st.w            $s4, $sp, 28
+    st.w            $s4, $sp, 8
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x20
+    add.d           $a0, $sp, $a0
+    st.w            $zero, $a0, 0
+    st.w            $zero, $sp, 20
+    li.w            $s4, 0x1
+    st.w            $s4, $sp, 16
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x20
+    add.d           $a0, $sp, $a0
+    ld.w            $a0, $a0, 0
+    stptr.w         $a0, $s0, 4096
+    ld.w            $a0, $sp, 32
+    stptr.w         $a0, $s0, 4100
+    ld.w            $a0, $sp, 28
+    stptr.w         $a0, $s0, 4104
+    ld.w            $a0, $sp, 24
+    stptr.w         $a0, $s0, 4108
+    ld.w            $a0, $sp, 20
+    stptr.w         $a0, $s0, 4112
+    ld.w            $a0, $sp, 16
+    stptr.w         $a0, $s0, 4116
+    ld.w            $a0, $sp, 12
+    stptr.w         $a0, $s0, 4120
+    ld.w            $a0, $sp, 8
+    stptr.w         $a0, $s0, 4124
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x20
+    add.d           $a0, $sp, $a0
+    st.w            $zero, $a0, 0
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x20
+    add.d           $a0, $sp, $a0
+    ld.w            $a0, $a0, 0
+    stptr.w         $a0, $s0, 4128
+    move            $a0, $s1
+    bl              0    # <<nova_core::gsp::cmdq::Cmdq>::new+0x1a4>
+            R_LARCH_B26
+<kernel::sync::aref::ARef<kernel::device::Device> as
+core::convert::From<&kernel::device::Device<kernel::device::Bound>>>::from
+    st.w            $zero, $fp, 48
+    st.w            $zero, $fp, 40
+    st.d            $s4, $fp, 32
+    st.d            $s3, $fp, 24
+    srli.d          $a1, $s0, 0x20
+    st.w            $a1, $fp, 20
+    st.w            $s0, $fp, 16
+    st.d            $s2, $fp, 8
+    st.d            $a0, $fp, 0
+    b               60    # <<nova_core::gsp::cmdq::Cmdq>::new+0x208>
+    li.w            $a0, -12
+    b               40    # <<nova_core::gsp::cmdq::Cmdq>::new+0x1fc>
+    lu12i.w         $a1, 129
+    move            $a0, $s2
+    move            $a2, $s0
+    move            $a3, $s3
+    move            $a4, $zero
+    bl              0    # <<nova_core::gsp::cmdq::Cmdq>::new+0x1ec>
+            R_LARCH_B26    dma_free_attrs
+    move            $a0, $s2
+    bl              0    # <<nova_core::gsp::cmdq::Cmdq>::new+0x1f4>
+            R_LARCH_B26    <kernel::device::Device as
+kernel::sync::aref::AlwaysRefCounted>::dec_ref
+    li.w            $a0, -75
+    lu32i.d         $a0, 0
+    st.d            $zero, $fp, 0
+    st.w            $a0, $fp, 8
+    lu12i.w         $a0, 1
+    ori             $a0, $a0, 0x870
+    add.d           $sp, $sp, $a0
+    ld.d            $s5, $sp, 1968
+    ld.d            $s4, $sp, 1976
+    ld.d            $s3, $sp, 1984
+    ld.d            $s2, $sp, 1992
+    ld.d            $s1, $sp, 2000
+    ld.d            $s0, $sp, 2008
+    ld.d            $fp, $sp, 2016
+    ld.d            $ra, $sp, 2024
+    addi.d          $sp, $sp, 2032
+    ret
+    nop
