@@ -1,94 +1,64 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D0F1E5B64;
-	Sun,  1 Mar 2026 03:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B83A2737E3;
+	Sun,  1 Mar 2026 04:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772334211; cv=none; b=Ggk4ql7YjKBn+qnQxjovFBKZ+aV9RcLCcMxcgcYkzvLFuD0wF1GkOK5+9GCbwK9IIzFS2fN7ZsDmHV3pJxePWnLewKme0RUueJ7BGFkcBHAqfYLUsZXTTcIT/4w4xiGhEyAC89N83r/hjlU0TIMbpqHPR06szFtdILlj5xxN5gU=
+	t=1772337863; cv=none; b=CXnhuEiLg7TqDvZ1HajGglzvoDjSi4Q30HIDSsHbU85wxxlt1bYcCveZbPmNUDtS+KohxOi9Yj2Dslhcya5GyvuiCiG46AHoVrvLW//1w79omqrnr/UHQu047hhpLjUkGwc9c8SwpPLr0aFN39qwNIwbOQvqNv12IittAIBySYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772334211; c=relaxed/simple;
-	bh=jgg62RNduz6YLPoUe7v7X1oBlyRvWr5Ap7qSHKUMH48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EKnZasr8vNejtGH68e1/MJgVK/Zgt0OpaGIxT7JhGUf9ja8Qvv4vrMdvgvGeWumYFRwcam51HB305Ud6HwerW8ejBTin5F9MgpEhGwN/2rdZyT0K+jvw9JWifIzdsu1OTODQDZE/unoL9VMjdByEatCbxL70T3jf9UC5VAlO28M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=EVspzjq7; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1772337863; c=relaxed/simple;
+	bh=I873bR1NnNvRQZkAmS/uVtcFrj3ycYPAOFBc61YTgbg=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=qkYGH5wSNoQesZw2bQ8566w0loihOAiAHqklUvAmrUMwDMZ6CD2XCqB2fDGgFeB2GqStwMOl7ZOyOeALW7r1Xb7NyRoE4ktTDWlV+kUPmcHOHVwAbAz5j1z/4dzMiRg/aRWGIBwBb5pnu+PsRKJ4spfWjE5F5r2GcGwSjB8/1h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/9DsQbX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="EVspzjq7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=O8AQRwkuen2J2VbPw4OAhdRbe8PeJJKYGBh2E6Vfdaw=; b=EVspzjq79oLNNa56WDjYtDF+JC
-	Bx3WkOv204TCjyORd7t9CZ1ARwuH/0CbDO4cvHqrgZgLUguInBGr3Tvcqhg1wwGyeNCOYoy2j+anu
-	sfLXNl2LfXr2/mfPKfQMxNdpKw+c6bRKcBm3jadrxHdRZWtkwrfQ11/L3THgbCeQPsGD2pvPZWEgJ
-	Kz/m8G0g58CTreOxRBLno5q8+U9p5R3WjMxNkHAMstRpQWzkZ+V5hfmF/PakQUlYA8oLfZ4++Bpn7
-	0a4ycPB2091dyXEsAtPSeDPUOU0ejKVVEaQE9qm0h496EmzyfMtnVbrbI6aa73zfYYs2dTtrZHnBX
-	3GxXwK0w==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vwX5M-0000000AmD7-3feh;
-	Sun, 01 Mar 2026 03:03:12 +0000
-Message-ID: <2512c6a2-df8d-41d8-8d94-4c004cc60f86@infradead.org>
-Date: Sat, 28 Feb 2026 19:03:11 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/9DsQbX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB97C116C6;
+	Sun,  1 Mar 2026 04:04:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772337863;
+	bh=I873bR1NnNvRQZkAmS/uVtcFrj3ycYPAOFBc61YTgbg=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=r/9DsQbXcqiLiOqI374w/377OHpK1yU1bVI4TYSrXFc/ca4r5zrnobPYxw93b78yv
+	 uQexBqGbf47PivIAtXGN2RRNByGhnrdBDP7kAJyRuOCOEM3LWoVWzcX2r216OMgMXH
+	 HfOnG7beXtul7YDW8DpfzO8eN+FNj9EvFoRj5WI+gCgyP2Wf99RmREYYEn/8X/CcRA
+	 0A0YURpKoJfr8QusEgo8zN1TVhwd4J2PAAZaHzNUpp/Fcd5xBJs5iHJdcj4NhiFWdC
+	 KRWLW961pJ0PU63h3WuAzvgWv/l1s4fAcOcBnnZ0tHQ2fcxkJF3HxnEzgW6CNrNvMj
+	 9z+j5z2GHwiNw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEA139F202E;
+	Sun,  1 Mar 2026 04:04:27 +0000 (UTC)
+Subject: Re: [GIT PULL] Driver core fixes for 7.0-rc2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <DGQW0ORGGBDG.2BEBG5GGS0NJG@kernel.org>
+References: <DGQW0ORGGBDG.2BEBG5GGS0NJG@kernel.org>
+X-PR-Tracked-List-Id: <driver-core.lists.linux.dev>
+X-PR-Tracked-Message-Id: <DGQW0ORGGBDG.2BEBG5GGS0NJG@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git tags/driver-core-7.0-rc2
+X-PR-Tracked-Commit-Id: 78437ab3b769f80526416570f60173c89858dd84
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 63a43faf6a68ce0045c874b32e60acac2089a41a
+Message-Id: <177233786598.3243406.2729159051678646579.pr-tracker-bot@kernel.org>
+Date: Sun, 01 Mar 2026 04:04:25 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Saravana Kannan <saravanak@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] gpu: nova-core: add initial driver stub
-To: Danilo Krummrich <dakr@kernel.org>, airlied@gmail.com, simona@ffwll.ch,
- corbet@lwn.net, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
- pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
- bskeggs@nvidia.com, acurrid@nvidia.com
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- gregkh@linuxfoundation.org, mcgrof@kernel.org, russ.weight@linux.dev,
- dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
-References: <20250306222336.23482-1-dakr@kernel.org>
- <20250306222336.23482-5-dakr@kernel.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20250306222336.23482-5-dakr@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-Hi,
-Sorry for the delay. I just noticed this.
+The pull request you sent on Sat, 28 Feb 2026 21:46:13 +0100:
 
-On 3/6/25 2:23 PM, Danilo Krummrich wrote:
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ca11a553d412..ede8abee210a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7450,6 +7450,16 @@ T:	git https://gitlab.freedesktop.org/drm/nouveau.git
->  F:	drivers/gpu/drm/nouveau/
->  F:	include/uapi/drm/nouveau_drm.h
->  
-> +CORE DRIVER FOR NVIDIA GPUS [RUST]
-> +M:	Danilo Krummrich <dakr@kernel.org>
-> +L:	nouveau@lists.freedesktop.org
-> +S:	Supported
-> +Q:	https://patchwork.freedesktop.org/project/nouveau/
-> +B:	https://gitlab.freedesktop.org/drm/nova/-/issues
-> +C:	irc://irc.oftc.net/nouveau
-> +T:	git https://gitlab.freedesktop.org/drm/nova.git nova-next
-> +F:	drivers/gpu/nova-core/
+> git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git tags/driver-core-7.0-rc2
 
-This is merged as commit 54e6baf123fd.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/63a43faf6a68ce0045c874b32e60acac2089a41a
 
-Entries in the MAINTAINERS file are meant to be kept in alphabetical order.
-"CORE DRIVER" is mislocated. Please correct it.
-
-thanks.
+Thank you!
 
 -- 
-~Randy
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
