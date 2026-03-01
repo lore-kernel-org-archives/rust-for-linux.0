@@ -1,40 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A80262FEC;
-	Sun,  1 Mar 2026 02:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAC62EE262;
+	Sun,  1 Mar 2026 02:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330675; cv=none; b=bJQPiui5SzZCJLKDqUh3uUQzdsJGlX6ldKb60HULEZLjwNyELX6wXDQy1qZgv9747RhCk08J2k8uuU4Lj/gfWQIjbusBoQhagITmGioXGYBp4q6ufUzTHkHoBFATrm40NKb9dzW8BS9QNgKd9cylxUzT2JbYGLL9LGOySCafBD0=
+	t=1772330747; cv=none; b=b3RAQuJDDheVkvClPxa5FT5vv8O3tYG+WpHHjBlnBjwJMI24gz1G6QPn/21z/ee5zYo/DrvMUYXQE8BurwGrWWUlGaJcNv5/ODJ9cQDwsGiu9CJ6NhK5iPUJ0m6PLsNP61T2ZQ0OWzFgZ4kJpWnw2vGMioIVGH+CcAv3+h/UFTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330675; c=relaxed/simple;
-	bh=RneSqO77SPtKlPlrjTpRDVwnuTVBSZTVYktsO9uXJLw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bOM2/l7csYHCnitDpxdc6DEUznRWnHD8kzNNnQHhm8XoVR3Kmdjr9GlpfWrRT0oL0vHDqkrdYnf7UlsCyDRR9J05Iinx91RkSsdg7Qz8f8QCkzwD6wQVXTz0ahRGQmXKXPMQb6naJObT9l3/lmlTTVCu6jIcEW3zcAew6KEVgyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OsANHFED; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772330747; c=relaxed/simple;
+	bh=x2o42VTPQAD77oDP6EAvRHF8itnSuz61zWDMTx9ZtzY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m5GLiE4ObbdnpIQrNchjtXfDqZ+p/C4gaxKzA+S6NfaZlYfjqJEXpTrxcsdx1kd7cVaJ12ZUhYFM0R98dlUkOEmqDqTgSSUEDFaA/p225L2etaWKEMgKTaKMBOArK1iumT9xBjs0ULIUhnKXVpYCOOVSy1H0Dv4+LgAtkwy0Q74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isAfmsfZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OsANHFED"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8C8C19421;
-	Sun,  1 Mar 2026 02:04:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isAfmsfZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59208C19421;
+	Sun,  1 Mar 2026 02:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330675;
-	bh=RneSqO77SPtKlPlrjTpRDVwnuTVBSZTVYktsO9uXJLw=;
+	s=k20201202; t=1772330746;
+	bh=x2o42VTPQAD77oDP6EAvRHF8itnSuz61zWDMTx9ZtzY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=OsANHFEDqiEGJtPcemGXyBNGY5gbGfphDkZX3NLVe8zWyKqZraXyjohrGMJ0L1KEM
-	 ElOri9aQCGaTCw0HtJlcCk6r3i1K8avJfdDMIUdB0TTAWPF+7bsFm4lkDXJ+oFb6Gx
-	 H3dcIIRi8IXnGlKEG8JVDnSXpTKsWJLoU+7b0j9VyDdJut5RIULvgs5KUwW3NTXlyf
-	 qnanKjKMEkoYU8uHH+ZSrTjP/eBHsZ707e+KB4osbT6IzcW+w6P2i0uQYAhg/0WC4j
-	 rt5EJvuRc8MjWmNQw1GSp6ltt7GRne1HjvX0L+WEcstQ8Lb8AX1L6SsYdJUNfug8bM
-	 gNcAUx3keNH/Q==
+	b=isAfmsfZnbucr7iZWGDrH5QM7iFPJBsc3VfJg5uP8NhC/PnEgJMh+XfcFCD9fhBSs
+	 5uIk0xk/2kE2vAC+vLaa4Rx8KZKSmfTZKKGYchKPFetKnwY0uXBxv7rzpQyjKG5GZO
+	 y6t7KPJfaIeXLycOCPnXLlANx+oACWkvfx9fV17p3Hh8EKlITgUrboyRZ0vlMHdoBn
+	 RZJGa9hruUw6FKuttgziOi8k/Ykf3O1LXwc65HyO1LH04JTmmVoUDbdoH/KU3lMeat
+	 FsA2avH5rfvDUi59HJuWdMo3JRBz1S1QiE2rNh/SXzNhx1gjxqH2DDya8eSV3uAdKq
+	 6vHL01BohKKJw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ojeda@kernel.org
-Cc: David Wood <david@davidtw.co>,
-	Wesley Wiser <wwiser@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
+	lossin@kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
 	rust-for-linux@vger.kernel.org
-Subject: FAILED: Patch "rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:04:33 -0500
-Message-ID: <20260301020433.1733030-1-sashal@kernel.org>
+Subject: FAILED: Patch "rust: pin-init: replace clippy `expect` with `allow`" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:05:44 -0500
+Message-ID: <20260301020545.1734572-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -56,60 +54,79 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0a9be83e57de0d0ca8ca4ec610bc344f17a8e5e7 Mon Sep 17 00:00:00 2001
-From: Miguel Ojeda <ojeda@kernel.org>
-Date: Fri, 6 Feb 2026 21:45:35 +0100
-Subject: [PATCH] rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0
+From a58b8764aed9648357b1c5b6368c9943ba33b7f9 Mon Sep 17 00:00:00 2001
+From: Benno Lossin <lossin@kernel.org>
+Date: Sun, 15 Feb 2026 14:22:30 +0100
+Subject: [PATCH] rust: pin-init: replace clippy `expect` with `allow`
 
-Custom target specifications are unstable, but starting with Rust 1.95.0,
-`rustc` requires to explicitly pass `-Zunstable-options` to use them [1]:
+`clippy` has changed behavior in [1] (Rust 1.95) where it no longer
+warns about the `let_and_return` lint when a comment is placed between
+the let binding and the return expression. Nightly thus fails to build,
+because the expectation is no longer fulfilled.
 
-    error: error loading target specification: custom targets are unstable and require `-Zunstable-options`
-      |
-      = help: run `rustc --print target-list` for a list of built-in targets
+Thus replace the expectation with an `allow`.
 
-David (Rust compiler team lead), writes:
+[ The errors were:
 
-   "We're destabilising custom targets to allow us to move forward with
-    build-std without accidentally exposing functionality that we'd like
-    to revisit prior to committing to. I'll start a thread on Zulip to
-    discuss with the RfL team how we can come up with an alternative
-    for them."
+      error: this lint expectation is unfulfilled
+          --> rust/pin-init/src/lib.rs:1279:10
+           |
+      1279 | #[expect(clippy::let_and_return)]
+           |          ^^^^^^^^^^^^^^^^^^^^^^
+           |
+           = note: `-D unfulfilled-lint-expectations` implied by `-D warnings`
+           = help: to override `-D warnings` add `#[allow(unfulfilled_lint_expectations)]`
 
-Thus pass it.
+      error: this lint expectation is unfulfilled
+          --> rust/pin-init/src/lib.rs:1295:10
+           |
+      1295 | #[expect(clippy::let_and_return)]
+           |          ^^^^^^^^^^^^^^^^^^^^^^
 
-Cc: David Wood <david@davidtw.co>
-Cc: Wesley Wiser <wwiser@gmail.com>
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/151534 [1]
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Tested-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260206204535.39431-1-ojeda@kernel.org
+    - Miguel ]
+
+Link: https://github.com/rust-lang/rust-clippy/pull/16461 [1]
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+Cc: stable@vger.kernel.org # Needed in 6.18.y and later.
+Link: https://patch.msgid.link/20260215132232.1549861-1-lossin@kernel.org
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/Makefile | 3 +++
- 1 file changed, 3 insertions(+)
+ rust/pin-init/src/lib.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 4dcc2eff51cb2..725158740fc6f 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -552,6 +552,8 @@ $(obj)/$(libpin_init_internal_name): private rustc_target_flags = --cfg kernel
- $(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs FORCE
- 	+$(call if_changed_dep,rustc_procmacro)
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 8dc9dd5ac6fd3..3da65db9e2dd3 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -1276,13 +1276,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ ///
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
+-#[expect(clippy::let_and_return)]
+ pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> impl PinInit<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.cast::<T>())) };
+     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+     // cycle when computing the type returned by this function)
++    #[allow(clippy::let_and_return)]
+     res
+ }
  
-+# `rustc` requires `-Zunstable-options` to use custom target specifications
-+# since Rust 1.95.0 (https://github.com/rust-lang/rust/pull/151534).
- quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L $@
-       cmd_rustc_library = \
- 	OBJTREE=$(abspath $(objtree)) \
-@@ -562,6 +564,7 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
- 		--crate-type rlib -L$(objtree)/$(obj) \
- 		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
- 		--sysroot=/dev/null \
-+		-Zunstable-options \
- 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@) \
- 	$(cmd_objtool)
+@@ -1292,13 +1292,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ ///
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
+-#[expect(clippy::let_and_return)]
+ pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { init_from_closure(|ptr: *mut U| init.__init(ptr.cast::<T>())) };
+     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+     // cycle when computing the type returned by this function)
++    #[allow(clippy::let_and_return)]
+     res
+ }
  
 -- 
 2.51.0
