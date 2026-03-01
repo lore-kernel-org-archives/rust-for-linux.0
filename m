@@ -1,113 +1,119 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BCA430BBD
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 23:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637B62848AA;
+	Sun,  1 Mar 2026 01:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772321918; cv=none; b=GRiECEeKOcuZYE0ZtqfMQc80pXI7zR4m6Q29p7Ln8t1ZfbzyVXw7EUrktPvLhT1FNgx/mhlhaGKX4pOekCX59cjUDo40dleIJNVFrRG54hWpkKQv3RKwRyhf2DDRGcBUxf0zfu/IatkBcRJWs2XMtn6gof3fyyPr0ON5I5k0GUw=
+	t=1772328450; cv=none; b=N+Y0cAwE+A0aitLpU+7gVeuq/dynjgYSHIDBq+R700+C9zzlkPd9d40yUR/9BE7sJMtNdKFWqVIyRhDvqgUf17Fsj4UDU/upUAGHy2ivjUsZwSf1Qs+KLVmT7/IKpXH/w1r45LkTgRQ5csa/UHSpXo4nU3O593H7cSpwnTKFOFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772321918; c=relaxed/simple;
-	bh=AW5T9Hc4nbKkDkGmRXK+0jMJLHNhZgY/umP29NnIa7A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=BDBhP+DhyciW9xB7hkhAy01L69Y2wmoKPVemyn7j4BumtMD2969MAW2R1JsmpC15lWSK+MhwYcaq2JXDnqAUS3QeP/QXzWTPxSeegp8H4WQzYdB7JxuPEhQrgKmeGot3RQnBv04TUuuldV/eFH1BvTLsxhtqXCMIw6x+UjdGEbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y+62m04m; arc=none smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772328450; c=relaxed/simple;
+	bh=u5ph5ocY+v/Qf1RDPo+0+0CrVgQEsdPh3hYFePxBAKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=syV4DEuvu5OKsZxlj0IdTiY0pxeKiYjqXAqkeqwLXy1xf6VhqqUxjANiFfPZZpkxyISaLkHVZi1HpzcQoMbXly8sb1vCyvZRbajQlWd5d87mGeYLvXc/3RlPaOTHgpxnIKuAo/cUwdEm4Yvsm5iZDuiFvZJXOz6xSJmnmI07dig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sL/rROWh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y+62m04m"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2bdecd00ebdso4015023eec.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 28 Feb 2026 15:38:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772321916; x=1772926716; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hziZ8HwNJIKxde4jYjnTUIsaI5Anyr71P4ZGtylHymA=;
-        b=Y+62m04madFEPG2Egzu4UaSzjbGXDICKcnrhiGXXheiJIWV8XF3Ust9Lzm9XRj1NOg
-         NxhlxYWqHfePx190ZNflO9TjXEQusCNXYWz83MgFxaozOytFzerq/9V+8uZfNiZNTmqg
-         I2Xukgvhy5yyMIjnNFbXDXsRFHnzq08+vLusCHGX3tNvszdulkTZO2A5CRx6QM4zGw16
-         Le9evq6pcjjH/ADl9nr3Zi5Q/NYUnRSe1JbL9XbR/o+QkVbteknIsqaQTv3MitFMVuc6
-         aAKwQqZhrUgL6ix1dd8js30UPZKEl3mraiY9wu/kr7LU5Rxm20KjYYQWodwNMeEsRi1U
-         Yo9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772321916; x=1772926716;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hziZ8HwNJIKxde4jYjnTUIsaI5Anyr71P4ZGtylHymA=;
-        b=wJSJvONCZ0zTyNjLDfTjZldnHLjtqcAPkJdxXFrzqloz+PUFiP1Ponaw1OxSQyhFqC
-         2biSwjUGLu83i+UfzQTRZDBzIxLuYVXd5C1Hh1zUx6obeUJ7HV+RZhOC5V8KI1fGXYOq
-         Vivm3yJDlos5nqN7qJaz5rF3/lwQLBGMEcjILHk+pUaAcQV5IhimahoktV97mi+nEQek
-         G2NWtCEq2rZCHlWyrKrR+IxYzn9+Lejo6xeteW8bAtof/ZpdvGqaDxHii+a2GjsYpiG9
-         8fBOvEWGQn1pYr4IiSa/WlneblF395VFvwNzNMEHQgRv8eeIHA1NsJnXYf1DswnEuc7I
-         GTQA==
-X-Gm-Message-State: AOJu0YxyOwdTXx4ZYeffQIgftEDyCR0D7p9PJzK05NohJRvw+JJzRAn/
-	4dPLPDP+QdcNmHbLXXIFd/FCe14dNy5SAQvSUoU3l7c9UjUfeRtBOefx
-X-Gm-Gg: ATEYQzz2T6d9PfIgxrfLx1f4Y9GWPuOxcqVLEe5FoYSmhbEyDjn259l7WwcAgy/YRJJ
-	dmPXO2RpyY1oh0RpYdI6s4y2gxShxRQGXUYbwh2PiM7cn1Peebk7+aH9gp8X+Xmz3d7i5sda9VZ
-	08pmkZV6UovSlhp5GmiLhWk3GQxmKKM7LYwdVg+om2a07LQJ9hvlK37SNwYs2/iRugnzAvIzPPY
-	9KOm+Ibh7n1LAQWUHgdAjDRJ14TdYgIogc8Jeu+e/JFUQ9EbKE15PShd91dJO288nlKRa5pTvZM
-	g9M/oUD6CSsVhXk9tNWLJE1ea0eI6/gLLykFxP3N/uAq8PwOAIdhj8Euki2Nlq4YkG9HTqlYIjk
-	Xm/282IcUsF8NbecRjlPiSuM2t7a6NiWvj21PUmjfLIui1U68wv58iqR9DTNyvp6Gl2f8CVCIW5
-	9iRATnaLTeObx+Lmb/IUor5CcYo+vo1Od6qVz0MOn2I8HE
-X-Received: by 2002:a05:7300:a198:b0:2be:694:5713 with SMTP id 5a478bee46e88-2be069458e8mr203613eec.36.1772321915822;
-        Sat, 28 Feb 2026 15:38:35 -0800 (PST)
-Received: from localhost ([2603:8000:bb00:9b3f::18f6])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bdfb3f898asm1293640eec.29.2026.02.28.15.38.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Feb 2026 15:38:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sL/rROWh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C41CC19421;
+	Sun,  1 Mar 2026 01:27:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772328450;
+	bh=u5ph5ocY+v/Qf1RDPo+0+0CrVgQEsdPh3hYFePxBAKE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sL/rROWhpxoKDQndtDnUELfkQ2IuRH01yh3Y07BJeXKdNhn/Bx647S/ZzXjsZqXkR
+	 /Kr6PFXEcmsqbNb4efSVOYFYDW2xJoVETtTL7gXzwMeDHh4TmhZ2+LLTehqAMZN/kx
+	 Q5sSRHcIC/aK42yJxRh/McyRT+BG9iTKJ9flsJjYjKgCxN4xeUbeCvQmdA5/AWvdSg
+	 Et0c5RPSB55FmXmaQ5DTLKbnhGaYmoo/cE5fvcMHlJS9Nc9h3QdbvI34MJhf/Keioj
+	 0mx4m4wTAN/gY2K58kBiB3wy3LZEr0tPrrwYh2EeffFNKiIzmw16Kb+3lh6uAA/Hjn
+	 457hzLx5m4ZfQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	ojeda@kernel.org
+Cc: David Wood <david@davidtw.co>,
+	Wesley Wiser <wwiser@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	rust-for-linux@vger.kernel.org
+Subject: FAILED: Patch "rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:27:28 -0500
+Message-ID: <20260301012728.1684975-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 28 Feb 2026 15:38:29 -0800
-Message-Id: <DGQZOLAH72HC.2OE3REDD7M7U7@gmail.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: add projection infrastructure
-From: "Aditya Rajan" <adi.dev.github@gmail.com>
-To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260226154656.3241736-1-gary@kernel.org>
- <20260226154656.3241736-2-gary@kernel.org>
-In-Reply-To: <20260226154656.3241736-2-gary@kernel.org>
+MIME-Version: 1.0
+X-Patchwork-Hint: ignore
+X-stable: review
+Content-Transfer-Encoding: 8bit
 
-On Thu Feb 26, 2026 at 7:46 AM PST, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
-> diff --git a/rust/kernel/projection.rs b/rust/kernel/projection.rs
-> new file mode 100644
-> index 000000000000..186ec194f2b8
-> --- /dev/null
-> +++ b/rust/kernel/projection.rs
-> +unsafe impl<T> ProjectIndex<[T]> for usize {
-> +    type Output =3D T;
-> +
-> +    #[inline(always)]
-> +    fn get(self, slice: *mut [T]) -> Option<*mut T> {
-> +        if self > slice.len() {
-I am not sure but shouldn't this be `self >=3D slice.len()` ? I could be wr=
-ong but `slice.get(n)` should return `None` for slice 0..n ?
-There is a similar condition somewhere else in the code as well.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-[...]
+Thanks,
+Sasha
 
-> +                // Check unaligned field. Not all users (e.g. DMA) can h=
-andle unaligned
-> +                // projections. (e.g. DMA).
-Nit: Comment mentions (e.g. DMA) twice
+------------------ original commit in Linus's tree ------------------
 
-One question regarding the `in bounds` check otherwise LGTM
+From 0a9be83e57de0d0ca8ca4ec610bc344f17a8e5e7 Mon Sep 17 00:00:00 2001
+From: Miguel Ojeda <ojeda@kernel.org>
+Date: Fri, 6 Feb 2026 21:45:35 +0100
+Subject: [PATCH] rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0
 
-Thanks
-Aditya
+Custom target specifications are unstable, but starting with Rust 1.95.0,
+`rustc` requires to explicitly pass `-Zunstable-options` to use them [1]:
+
+    error: error loading target specification: custom targets are unstable and require `-Zunstable-options`
+      |
+      = help: run `rustc --print target-list` for a list of built-in targets
+
+David (Rust compiler team lead), writes:
+
+   "We're destabilising custom targets to allow us to move forward with
+    build-std without accidentally exposing functionality that we'd like
+    to revisit prior to committing to. I'll start a thread on Zulip to
+    discuss with the RfL team how we can come up with an alternative
+    for them."
+
+Thus pass it.
+
+Cc: David Wood <david@davidtw.co>
+Cc: Wesley Wiser <wwiser@gmail.com>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/151534 [1]
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Tested-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260206204535.39431-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/rust/Makefile b/rust/Makefile
+index 4dcc2eff51cb2..725158740fc6f 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -552,6 +552,8 @@ $(obj)/$(libpin_init_internal_name): private rustc_target_flags = --cfg kernel
+ $(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs FORCE
+ 	+$(call if_changed_dep,rustc_procmacro)
+ 
++# `rustc` requires `-Zunstable-options` to use custom target specifications
++# since Rust 1.95.0 (https://github.com/rust-lang/rust/pull/151534).
+ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L $@
+       cmd_rustc_library = \
+ 	OBJTREE=$(abspath $(objtree)) \
+@@ -562,6 +564,7 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
+ 		--crate-type rlib -L$(objtree)/$(obj) \
+ 		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
+ 		--sysroot=/dev/null \
++		-Zunstable-options \
+ 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@) \
+ 	$(cmd_objtool)
+ 
+-- 
+2.51.0
+
+
+
 
