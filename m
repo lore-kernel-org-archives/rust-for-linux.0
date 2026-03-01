@@ -1,136 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAC62EE262;
-	Sun,  1 Mar 2026 02:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D0F1E5B64;
+	Sun,  1 Mar 2026 03:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330747; cv=none; b=b3RAQuJDDheVkvClPxa5FT5vv8O3tYG+WpHHjBlnBjwJMI24gz1G6QPn/21z/ee5zYo/DrvMUYXQE8BurwGrWWUlGaJcNv5/ODJ9cQDwsGiu9CJ6NhK5iPUJ0m6PLsNP61T2ZQ0OWzFgZ4kJpWnw2vGMioIVGH+CcAv3+h/UFTk=
+	t=1772334211; cv=none; b=Ggk4ql7YjKBn+qnQxjovFBKZ+aV9RcLCcMxcgcYkzvLFuD0wF1GkOK5+9GCbwK9IIzFS2fN7ZsDmHV3pJxePWnLewKme0RUueJ7BGFkcBHAqfYLUsZXTTcIT/4w4xiGhEyAC89N83r/hjlU0TIMbpqHPR06szFtdILlj5xxN5gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330747; c=relaxed/simple;
-	bh=x2o42VTPQAD77oDP6EAvRHF8itnSuz61zWDMTx9ZtzY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m5GLiE4ObbdnpIQrNchjtXfDqZ+p/C4gaxKzA+S6NfaZlYfjqJEXpTrxcsdx1kd7cVaJ12ZUhYFM0R98dlUkOEmqDqTgSSUEDFaA/p225L2etaWKEMgKTaKMBOArK1iumT9xBjs0ULIUhnKXVpYCOOVSy1H0Dv4+LgAtkwy0Q74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isAfmsfZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772334211; c=relaxed/simple;
+	bh=jgg62RNduz6YLPoUe7v7X1oBlyRvWr5Ap7qSHKUMH48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EKnZasr8vNejtGH68e1/MJgVK/Zgt0OpaGIxT7JhGUf9ja8Qvv4vrMdvgvGeWumYFRwcam51HB305Ud6HwerW8ejBTin5F9MgpEhGwN/2rdZyT0K+jvw9JWifIzdsu1OTODQDZE/unoL9VMjdByEatCbxL70T3jf9UC5VAlO28M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=EVspzjq7; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isAfmsfZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59208C19421;
-	Sun,  1 Mar 2026 02:05:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330746;
-	bh=x2o42VTPQAD77oDP6EAvRHF8itnSuz61zWDMTx9ZtzY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=isAfmsfZnbucr7iZWGDrH5QM7iFPJBsc3VfJg5uP8NhC/PnEgJMh+XfcFCD9fhBSs
-	 5uIk0xk/2kE2vAC+vLaa4Rx8KZKSmfTZKKGYchKPFetKnwY0uXBxv7rzpQyjKG5GZO
-	 y6t7KPJfaIeXLycOCPnXLlANx+oACWkvfx9fV17p3Hh8EKlITgUrboyRZ0vlMHdoBn
-	 RZJGa9hruUw6FKuttgziOi8k/Ykf3O1LXwc65HyO1LH04JTmmVoUDbdoH/KU3lMeat
-	 FsA2avH5rfvDUi59HJuWdMo3JRBz1S1QiE2rNh/SXzNhx1gjxqH2DDya8eSV3uAdKq
-	 6vHL01BohKKJw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	lossin@kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org
-Subject: FAILED: Patch "rust: pin-init: replace clippy `expect` with `allow`" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:05:44 -0500
-Message-ID: <20260301020545.1734572-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="EVspzjq7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=O8AQRwkuen2J2VbPw4OAhdRbe8PeJJKYGBh2E6Vfdaw=; b=EVspzjq79oLNNa56WDjYtDF+JC
+	Bx3WkOv204TCjyORd7t9CZ1ARwuH/0CbDO4cvHqrgZgLUguInBGr3Tvcqhg1wwGyeNCOYoy2j+anu
+	sfLXNl2LfXr2/mfPKfQMxNdpKw+c6bRKcBm3jadrxHdRZWtkwrfQ11/L3THgbCeQPsGD2pvPZWEgJ
+	Kz/m8G0g58CTreOxRBLno5q8+U9p5R3WjMxNkHAMstRpQWzkZ+V5hfmF/PakQUlYA8oLfZ4++Bpn7
+	0a4ycPB2091dyXEsAtPSeDPUOU0ejKVVEaQE9qm0h496EmzyfMtnVbrbI6aa73zfYYs2dTtrZHnBX
+	3GxXwK0w==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vwX5M-0000000AmD7-3feh;
+	Sun, 01 Mar 2026 03:03:12 +0000
+Message-ID: <2512c6a2-df8d-41d8-8d94-4c004cc60f86@infradead.org>
+Date: Sat, 28 Feb 2026 19:03:11 -0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Patchwork-Hint: ignore
-X-stable: review
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/5] gpu: nova-core: add initial driver stub
+To: Danilo Krummrich <dakr@kernel.org>, airlied@gmail.com, simona@ffwll.ch,
+ corbet@lwn.net, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
+ pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
+ bskeggs@nvidia.com, acurrid@nvidia.com
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ gregkh@linuxfoundation.org, mcgrof@kernel.org, russ.weight@linux.dev,
+ dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
+References: <20250306222336.23482-1-dakr@kernel.org>
+ <20250306222336.23482-5-dakr@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250306222336.23482-5-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Hi,
+Sorry for the delay. I just noticed this.
 
-Thanks,
-Sasha
+On 3/6/25 2:23 PM, Danilo Krummrich wrote:
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ca11a553d412..ede8abee210a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7450,6 +7450,16 @@ T:	git https://gitlab.freedesktop.org/drm/nouveau.git
+>  F:	drivers/gpu/drm/nouveau/
+>  F:	include/uapi/drm/nouveau_drm.h
+>  
+> +CORE DRIVER FOR NVIDIA GPUS [RUST]
+> +M:	Danilo Krummrich <dakr@kernel.org>
+> +L:	nouveau@lists.freedesktop.org
+> +S:	Supported
+> +Q:	https://patchwork.freedesktop.org/project/nouveau/
+> +B:	https://gitlab.freedesktop.org/drm/nova/-/issues
+> +C:	irc://irc.oftc.net/nouveau
+> +T:	git https://gitlab.freedesktop.org/drm/nova.git nova-next
+> +F:	drivers/gpu/nova-core/
 
------------------- original commit in Linus's tree ------------------
+This is merged as commit 54e6baf123fd.
 
-From a58b8764aed9648357b1c5b6368c9943ba33b7f9 Mon Sep 17 00:00:00 2001
-From: Benno Lossin <lossin@kernel.org>
-Date: Sun, 15 Feb 2026 14:22:30 +0100
-Subject: [PATCH] rust: pin-init: replace clippy `expect` with `allow`
+Entries in the MAINTAINERS file are meant to be kept in alphabetical order.
+"CORE DRIVER" is mislocated. Please correct it.
 
-`clippy` has changed behavior in [1] (Rust 1.95) where it no longer
-warns about the `let_and_return` lint when a comment is placed between
-the let binding and the return expression. Nightly thus fails to build,
-because the expectation is no longer fulfilled.
+thanks.
 
-Thus replace the expectation with an `allow`.
-
-[ The errors were:
-
-      error: this lint expectation is unfulfilled
-          --> rust/pin-init/src/lib.rs:1279:10
-           |
-      1279 | #[expect(clippy::let_and_return)]
-           |          ^^^^^^^^^^^^^^^^^^^^^^
-           |
-           = note: `-D unfulfilled-lint-expectations` implied by `-D warnings`
-           = help: to override `-D warnings` add `#[allow(unfulfilled_lint_expectations)]`
-
-      error: this lint expectation is unfulfilled
-          --> rust/pin-init/src/lib.rs:1295:10
-           |
-      1295 | #[expect(clippy::let_and_return)]
-           |          ^^^^^^^^^^^^^^^^^^^^^^
-
-    - Miguel ]
-
-Link: https://github.com/rust-lang/rust-clippy/pull/16461 [1]
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-Cc: stable@vger.kernel.org # Needed in 6.18.y and later.
-Link: https://patch.msgid.link/20260215132232.1549861-1-lossin@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/pin-init/src/lib.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 8dc9dd5ac6fd3..3da65db9e2dd3 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -1276,13 +1276,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
- ///
- /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
- ///   pointer must result in a valid `U`.
--#[expect(clippy::let_and_return)]
- pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> impl PinInit<U, E> {
-     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
-     // requirements.
-     let res = unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.cast::<T>())) };
-     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
-     // cycle when computing the type returned by this function)
-+    #[allow(clippy::let_and_return)]
-     res
- }
- 
-@@ -1292,13 +1292,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
- ///
- /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
- ///   pointer must result in a valid `U`.
--#[expect(clippy::let_and_return)]
- pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
-     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
-     // requirements.
-     let res = unsafe { init_from_closure(|ptr: *mut U| init.__init(ptr.cast::<T>())) };
-     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
-     // cycle when computing the type returned by this function)
-+    #[allow(clippy::let_and_return)]
-     res
- }
- 
 -- 
-2.51.0
-
-
-
+~Randy
 
