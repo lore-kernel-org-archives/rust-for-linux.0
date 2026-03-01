@@ -1,206 +1,161 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B771D86DC
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Mar 2026 16:53:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9B43093C1;
+	Sun,  1 Mar 2026 17:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772384011; cv=none; b=uUEZ29V0Zjtyhulokg98xSn5jdbFkhHwjfZ7oj1alBJMFSzS2F1OdGQcqrWyr6d31mxxqhrIC7CWXZu8/Vshql4qRanKQdmfQ2sRseFcUy5drzz9kVPr6wVySrDa2XQaIUUkYFCpNShF8Fpr38tD/PruS4YvAwz+euPRPfJZExg=
+	t=1772385147; cv=none; b=CsaPS5IxUxJo4m1b2MLeNYskhdrkOULCE+E4toBpHutEYxpQ9x1GhcekB+P4B7OyQBJ/UhA3We2T3OixHIpTY2AeleqkrM4O7DKT1dRc0v6uQeZ7cR1DUIPwnq1s8IwpaZDWdE5XFAeSiZTExUF0NKjV8jEY5151Y193/hqVzUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772384011; c=relaxed/simple;
-	bh=y/n4171M5AXZrmPSe1LHW4DkH4/xTU37QaESKgeepEo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Eo77ebAcV4NN8WBzkjnsLuJtWddc/tyavoR4XJ8GAVTbXGDJ9psFyymIGl9t/OG3+dsdLHcCGEd8ShG/sJTzIQ8T5Buv2o5KD2VLvzNhP7Gmkz7MBYmcL6L/Kaf1guHwKbEJ7Tom7+NS5r+VvxtlxXYeUS89FuoRL80xuENML08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1I8DhpNl; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1772385147; c=relaxed/simple;
+	bh=vhaUIKmRQqxlusdgAEbn8VEqEE4zNIocOCsLD9scoAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a4S8ECOXZMPcBZy1b5oiMQFD57O5VoU7dPv5HDu8tVT62nyTZLLs2dN0wbwEd1bC44M0Sut8dhBYxN53gbV5ixvgiJ/wUFjM/w3GvWfWle7VJaa2hdzkhX8HNSHcOYrA0ebTKDdFITfFfvZKvTAbf0pteO0xraTgkwPIejurVmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=COr3RKDq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=3RQn59wi; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1I8DhpNl"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-439b50320a0so283718f8f.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 01 Mar 2026 08:53:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772384008; x=1772988808; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PfdUfCNI/OQhhLtw/VeFZbribXWs9YmY3yISi0+RLUA=;
-        b=1I8DhpNlFpzU+38LaUorn4sGdc8U6B25Sp5mTaH9YFGe5PcCEZgFCWoyioGCii3dgX
-         Z5DWsIGD8cxQ/LaO92CUQDqzmMkYhQmpP78ngIdE9pmorPHz5NGFulekegSb+OBBmh3U
-         Q4sx4WnBS2NUt0qWORVznzbkrkJrEWAmJ3xth73G/Q391peOK9q0uvT9CPiTj60ZRMOK
-         bT0k/0E8158ArNzvUYLJAK3NfQuU5X8c4Id1JQPGnUFQWCxksxV6ENtMCLgr39D2+IXi
-         KuQcB5Loa/jJU0pMQ4q82O6VL8GFOOW0+1Xlr1VM7hDRVDG5sgr3Pu6jyqQAXthAAX8A
-         jkFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772384008; x=1772988808;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PfdUfCNI/OQhhLtw/VeFZbribXWs9YmY3yISi0+RLUA=;
-        b=gymCz1rdswGMYmZ9MIixYjzALuDwtjMxE768e8ZOskRMar9azqfImEOUKmDn3mxq/8
-         zzS70LMhOR2FRKaM8rXYXLbY9ZCniB+MTf+wiMyZEqg0RbwpNUGckZL60uggKtfq8ewR
-         0PKUPALUxJkDqTD+g4RdITdUjRMONVXBrQ3jAds83iaF6LORSGhDNjzOHi5nQto1VSsL
-         lPXAiH7yIp2aL0MBfkRAx0zZilSyNKCv1y1s4k8MtLF1Fj8OKtaEu+ioGRf0sDqRRCUu
-         SgI5c5KLK0udXrYFBvIXVLTOlXyhMAmz7CUTcyph6bSNiFTUEpUgE9kQRmqhJMD1ci4c
-         0qbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUdRUcjRc9vmGvIBkzJk49m8q6AO48/DU/dhUyRke2J4QSDIajxwk4crFNkSQ7VNb48sQOQiJCBxoa7bGfZA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxhm0x8sFKUYCXg5zyGI4zKz77tnG1ViCwA3gFG/vltgxp04Vrl
-	TqvHkeOGHJSjSQXpYnK2/MuF921+bhNJ5PoKleg+J1645up7X8Y4XSo5U7T8hDDzjSdjFBkzV90
-	McwSA4Uao5dLPJbEVUg==
-X-Received: from wrbbs10.prod.google.com ([2002:a05:6000:70a:b0:439:901b:97cb])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2013:b0:439:afe3:6185 with SMTP id ffacd0b85a97d-439afe364e1mr6850853f8f.15.1772384007596;
- Sun, 01 Mar 2026 08:53:27 -0800 (PST)
-Date: Sun, 1 Mar 2026 16:53:26 +0000
-In-Reply-To: <DGRJO4NKZ4R5.2BZ2D9BSPXDMT@kernel.org>
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="COr3RKDq";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="3RQn59wi"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id D948B1D0005E;
+	Sun,  1 Mar 2026 12:12:24 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Sun, 01 Mar 2026 12:12:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1772385144; x=1772471544; bh=JvpvEOa8Cw
+	cssa/8kfGC7exMi81uwRLONhgntqmZiDI=; b=COr3RKDqms2GN4EZdTWv1RUM9T
+	tBRCaWH4HfaY/wXZzFVToe/goQ7QEkpRDwSjuYdugUkJvBDO0PZUU8GBLp+uwZ0J
+	RlPhfDNyWnS0HlDBkk4Bo9JAlv/br0XHJesoBbJfzam+ky5VWCvvTrRAgPC4qeJV
+	pbz8HS+GwAnZ0uPU+EXwd/BlNXSlwyLmgGQPLUhY5s9C+b47OEt2XJ2TN3FpZUcH
+	1aTugTC+ggXAT/Yc0/Zk4MZS0fmFnPugGutRDhv5lIACwvbGE7HRz63M/0YhrN3v
+	4lxIz+zf6Mm5iBKZef92zwh+XzdciH17sggOCkeN7EgXKuuL08MW2pLgW5LA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1772385144; x=1772471544; bh=JvpvEOa8Cwcssa/8kfGC7exMi81uwRLONhg
+	ntqmZiDI=; b=3RQn59wicyxbpapRWscP0sQGydPPzXCYldNWU+Dz7GdqWUDLmhZ
+	0/ZuOvAQCn5yDNbDgkXcMEMLd2cd6j1GAwT8Wpihx/+gIDeFMsXY7LoRQzyWqP0a
+	bu/ZUME1eSYaGfk+oKRGuZqtobJ2XVqGaYntNR3ymDO0bqp2LVamV4nFvf9avLkK
+	GknFTgz12ew75aeGV+tZQ2zS/X8GFYRKhGz/Pcyld2xNpMeK/g82cl38zXv48yJI
+	EfHa+V13uBVmFKVfz41Q1EjULkSrdD+StC6XxDVIiRoFyPZ6CFEWS+OxeyQ/kzzO
+	y4/OKC4NvgbxiRSjRT8GM1moG0BdB/rG7AA==
+X-ME-Sender: <xms:eHOkadhOQI1fbDAVvIlCCm2gUbLMF68DzGy1fOmBNoSZh8-A7_2RnA>
+    <xme:eHOkaaJzVhVwfoMeweaXDqeU37xiNKxGSIqtfM32RFN-PpSnclX8nZrUElkI5Psez
+    WxA4chVj0ykyGBaDkbQsm6Zd-2hncOPse4Eaa_F-b-sTSAm10cvn0g>
+X-ME-Received: <xmr:eHOkacnVo6BPX4TVr0w8dpNDYOyu5t8G9cu2UcwrQAO1QF41TRC5f_3qxVnh2IWJpnCgAXjnI3IdCxeGrfhBNL1GpyeLL-52-2k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheehfeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomheplfgrnhhnvgcu
+    ifhruhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpefggf
+    duveeiudefleeigfefvdeludevffeghfehjeffteekfeeghefggfdtudelgfenucffohhm
+    rghinhepiihulhhiphgthhgrthdrtghomhdpghhithhhuhgsrdgtohhmnecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurdhn
+    vghtpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    eplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrhih
+    ghhuohdrnhgvthdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopegsohhquhhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegsjhhorhhnfegp
+    ghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegrrdhhihhnuggsohhrgh
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgv
+    rdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuhdprhgtphhtth
+    hopegurghkrheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:eHOkaSMbi03zPgFOpLCGqxM5tC5RABfXtC114q9LNMXxNQuUJ2ZH0g>
+    <xmx:eHOkaW4h0NnW_MntY4LWI_VR9OB2u6AFcdKI4JCHPhvb8w20PWaHnA>
+    <xmx:eHOkaWavfFZy4r_9lYDB53TbvfFgtk1n-4bmn-zZoRTR5ehLctozuw>
+    <xmx:eHOkaTddnpcBH_D-wLq9RT0wyA4fruT8gGOLepdVzet9nGNw-By6QQ>
+    <xmx:eHOkabn_P-xmQBtwVfu2qZn39TYtl5_TDz9Ydxkg5ts7ETW8-6LqMAhE>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 1 Mar 2026 12:12:23 -0500 (EST)
+Date: Sun, 1 Mar 2026 18:12:22 +0100
+From: Janne Grunau <j@jannau.net>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, asahi@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: pin-init: internal: init: remove
+ `#[disable_initialized_field_access]`
+Message-ID: <20260301171222.GA22561@robin.jannau.net>
+References: <20260228113713.1402110-1-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260204-aref-workitem-v2-0-bec25b012d2a@collabora.com>
- <20260204-aref-workitem-v2-2-bec25b012d2a@collabora.com> <DGQTCDOIVTHW.3OGUVXRS496FP@kernel.org>
- <aaQr0ntSw9Q5Qzws@google.com> <DGRJO4NKZ4R5.2BZ2D9BSPXDMT@kernel.org>
-Message-ID: <aaRvBmfx-YTp5zEa@google.com>
-Subject: Re: [PATCH v2 2/4] rust: drm: dispatch work items to the private data
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Tejun Heo <tj@kernel.org>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260228113713.1402110-1-lossin@kernel.org>
 
-On Sun, Mar 01, 2026 at 04:18:15PM +0100, Danilo Krummrich wrote:
-> On Sun Mar 1, 2026 at 1:06 PM CET, Alice Ryhl wrote:
-> > On Sat, Feb 28, 2026 at 07:40:26PM +0100, Danilo Krummrich wrote:
-> >> On Wed Feb 4, 2026 at 9:40 PM CET, Daniel Almeida wrote:
-> >> > This implementation dispatches any work enqueued on ARef<drm::Device<T>> to
-> >> > its driver-provided handler. It does so by building upon the newly-added
-> >> > ARef<T> support in workqueue.rs in order to call into the driver
-> >> > implementations for work_container_of and raw_get_work.
-> >> >
-> >> > This is notably important for work items that need access to the drm
-> >> > device, as it was not possible to enqueue work on a ARef<drm::Device<T>>
-> >> > previously without failing the orphan rule.
-> >> >
-> >> > The current implementation needs T::Data to live inline with drm::Device in
-> >> > order for work_container_of to function. This restriction is already
-> >> > captured by the trait bounds. Drivers that need to share their ownership of
-> >> > T::Data may trivially get around this:
-> >> >
-> >> > // Lives inline in drm::Device
-> >> > struct DataWrapper {
-> >> >   work: ...,
-> >> >   // Heap-allocated, shared ownership.
-> >> >   data: Arc<DriverData>,
-> >> > }
-> >> 
-> >> IIUC, this is how it's supposed to be used:
-> >> 
-> >> 	#[pin_data]
-> >> 	struct MyData {
-> >> 	    #[pin]
-> >> 	    work: Work<drm::Device<MyDriver>>,
-> >> 	    value: u32,
-> >> 	}
-> >> 	
-> >> 	impl_has_work! {
-> >> 	    impl HasWork<drm::Device<MyDriver>> for MyData { self.work }
-> >> 	}
-> >> 	
-> >> 	impl WorkItem for MyData {
-> >> 	    type Pointer = ARef<drm::Device<MyDriver>>;
-> >> 	
-> >> 	    fn run(dev: ARef<drm::Device<MyDriver>>) {
-> >> 	        dev_info!(dev, "value = {}\n", dev.value);
-> >> 	    }
-> >> 	}
-> >> 
-> >> The reason the WorkItem is implemented for MyData, rather than
-> >> drm::Device<MyDriver> (which would be a bit more straight forward) is the orphan
-> >> rule, I assume.
-> >
-> > This characterizes it as a workaround for the orphan rule. I don't think
-> > that's fair. Implementing WorkItem for MyDriver directly is the
-> > idiomatic way to do it, in my opinion.
+On Sat, Feb 28, 2026 at 12:37:04PM +0100, Benno Lossin wrote:
+> Gary noticed [1] that the initializer macros as well as the `[Pin]Init`
+> traits cannot support packed struct, since they use operations that
+> require aligned pointers. This means that any code using packed structs
+> and pin-init is unsound.
 > 
-> The trait bound is T::Data: WorkItem, not T: drm::Driver + WorkItem.
-> Implementing WorkItem for MyDriver seems more straight forward to me.
-
-I missed the part about `for MyData` vs `for MyDriver`. Since you
-talked about the orphan rule I assumed you wanted the driver to
-implement it for `drm::Device<MyDriver>` directly, which is what the
-orphan rule would prohibit, rather than for `MyDriver`.
-
-In any case, I do think it makes sense that you would implement it on
-the struct that actually contains the `struct work_struct`.
-
-> >> Now, the whole purpose of this is that a driver can implement WorkItem for
-> >> MyData without needing an additional struct (and allocation), such as:
-> >> 
-> >> 	#[pin_data]
-> >> 	struct MyWork {
-> >> 	    #[pin]
-> >> 	    work: Work<Self>,
-> >> 	    dev: drm::Device<MyDriver>,
-> >> 	}
-> >> 
-> >> How is this supposed to be done when you want multiple different implementations
-> >> of WorkItem that have a drm::Device<MyDriver> as payload?
-> >> 
-> >> Fall back to various struct MyWork? Add in an "artificial" type state for MyData
-> >> with some phantom data, so you can implement HasWork for MyData<Work0>,
-> >> MyData<Work1>, etc.?
-> >
-> > You cannot configure the code that is executed on a per-call basis
-> > because the code called by a work item is a function pointer stored
-> > inside the `struct work_struct`. And it can't be changed after
-> > initialization of the field.
-> >
-> > So either you must store that info in a separate field. This is what
-> > Binder does, see drivers/android/binder/process.rs for an example.
-> >
-> >     impl workqueue::WorkItem for Process {
-> >         type Pointer = Arc<Process>;
-> >     
-> >         fn run(me: Arc<Self>) {
-> >             let defer;
-> >             {
-> >                 let mut inner = me.inner.lock();
-> >                 defer = inner.defer_work;
-> >                 inner.defer_work = 0;
-> >             }
-> >     
-> >             if defer & PROC_DEFER_FLUSH != 0 {
-> >                 me.deferred_flush();
-> >             }
-> >             if defer & PROC_DEFER_RELEASE != 0 {
-> >                 me.deferred_release();
-> >             }
-> >         }
-> >     }
+> Thus remove the `#[disable_initialized_field_access]` attribute from
+> `init!`, which is the only safe way to create an initializer of a packed
+> struct.
 > 
-> Ok, so this would be a switch to decide what to do when a single work is run,
-> i.e. it is not for running multiple work.
-
-Yeah.
-
-But in any case, a single `struct work_struct` can't be used to schedule
-multiple work items. It only has one prev/next pointer pair.
-
-> > Or you must have multiple different fields of type Work, each with a
-> > different function pointer stored inside it.
+> In the future, we can add support for packed structs by changing the
+> trait infrastructure to include `UnalignedInit` or hopefully another
+> mechanism.
 > 
-> This sounds it works for running multiple work, but I wonder how enqueue() knows
-> which work should be run in this case? I.e. what do we do with:
+> Reported-by: Gary Guo <gary@garyguo.net>
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/561532-pin-init/topic/initialized.20field.20accessor.20detection/with/576210658 [1]
+> Fixes: ceca298c53f9 ("rust: pin-init: internal: init: add escape hatch for referencing initialized fields")
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
+> ---
+> This commit does not need backporting, as ceca298c53f9 is not yet in any
+> stable tree.
 > 
-> 	impl_has_work! {
-> 	    impl HasWork<drm::Device<MyDriver>> for MyData { self.work }
-> 	}
+> However, the unsoundness still affects several stable trees, because it
+> was unknowingly fixed in commit 42415d163e5d ("rust: pin-init: add
+> references to previously initialized fields"). Before then, packed
+> structs compiled without any issues with pin-init and thus all prior
+> kernel versions with pin-init that do not contain that commit are
+> affected.
+> 
+> We introduced pin-init in 90e53c5e70a6 ("rust: add pin-init API core"),
+> which was included in 6.4. The affected stable trees that are still
+> maintained are: 6.17, 6.16, 6.12, and 6.6. Note that 6.18 and 6.19
+> already contain 42415d163e5d, so they are unaffected.
+> 
+> I will prepare a separate patch series to backport 42415d163e5d to each
+> of the affected trees, including the second patch of this series that
+> documents the fact that field accessors are load-bearing for soundness.
+> 
+> @asahi folks, let me know if I should prioritize a solution for packed
+> structs. Otherwise I'd like not support it at the moment, as that
+> requires some deeper changes to the internals of pin-init. I'm tracking
+> the status of packed structs in:
 
-Both WorkItem and HasWork are generic over an ID integer. You can
-specify it to disambiguiate.
+I have worked around this in the downstream AOP audio driver now. I did
+not do that initially since it looked more involved and we were planning
+to bring support back.
+These structs describe messages for communication with a coprocessor via
+shared memory. They are derived by observing messages by tracing. So
+there is only limited understanding how the messages are formated. Their
+layout has for obvious reason match exactly so `#[repr(C, packed)]` is
+the obvious choice.
+One of the structs had a size of N * 4 - 1 which results in a alignment
+of 1. Fortunately the struct could be padded to multiple of 4.
+Nevertheless it was required to replace a few u32 with an unaligned
+version.
 
-Alice
+I'm not sure if there is a need to support unaligned fields in pin-init.
+The workarounds in the asahi GPU and AOP audio drivers are acceptable
+and could stay indefinitely.
+
+Janne
+
+>     https://github.com/Rust-for-Linux/pin-init/issues/112
