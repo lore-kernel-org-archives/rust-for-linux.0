@@ -1,40 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AFC32FA2B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C953909A3
 	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 23:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772493925; cv=pass; b=FYb4n5afTeRpt9RdiNlixCumxpm+uPP4bQCzZTCFwvDwUeUChUuytXFi/ng8i1plZQ7bNlc0EYph1ZwrYoLRmoXdHEWOI+Gd/GRIKXlaywLXpwqsFW2NVv1gZjskqmgElBfGJTTp9uKKzYAbSTwYO+pAhihqxoLx6Hv15lf6540=
+	t=1772493925; cv=pass; b=Eg8RNQjl0cIlWy7SXunREh+xGYGZNI8xjren/utPiLH5nvbEazrhPRfPaJbVC36kZwfm0XqydB4YsjxmYKymdzBvnGBtxQP/pKTjKKvA/UJHgEPFsJ69RlZP3fh4NLs3Ljlib87RNaWI2lYtYrTWondAMyeWdpDauNYJJ1Z8ZdM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772493925; c=relaxed/simple;
-	bh=G75IKl4xGwtfNgcWnzkv4BKMCpA6BkjaqRkGYhYUAnU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J2rYdW8KyoccoKrorXLQfmlhi5miw5YuCHnIQTUq88NCjwUFNUFPMbGI64Wb2ZmGvt1rMwFgTkni8rvFhO18HQgWl+KaELwz6BKbe0cqjLl/ikQxEfiGCArPcSMcelfV7G/lHbhklnLqSNl6aYXh7lDyPRHJ+QMQv8L5rcqZApE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=c3e5vY+Z; arc=pass smtp.client-ip=136.143.188.112
+	bh=AvMMmI20i26o6LIH7tGiMCe7EGT7m0NU/oLm7YcMmAI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DD6L22MqPIyq74LffKUYqD7PCv44nzjivRvfoAK/66Twr+F3wH6d9V0YoTelH4UIco7qVSxM6KJH0QWcjP5AeO2wFiMRfzFpcEBQ9ncSvBfrT68p11WMNW9zPTUBfatR/r58Qb3KdbqZZ0eQiQ4zftM95BX18UUsZFZKjKJVPsI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=HxFvgbOR; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="c3e5vY+Z"
-ARC-Seal: i=1; a=rsa-sha256; t=1772493911; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="HxFvgbOR"
+ARC-Seal: i=1; a=rsa-sha256; t=1772493913; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=cLMS5XUlhNgUuG5K3A4x3sOiC0RtDo44ItRuiZ3k7RiEK8ruxEsoA1rrgg2HBotFeouJ7WXAvt//vdmJrRDr3RdSEDf/IhisQaa4K69+Hr5KQg+XEzr53tRQc8PV0wGazITWT2BYbFSf8WD+cnCqIsC/3nVi/zN05D4VFw+QVho=
+	b=XHuP/ecpMVBWNRcFchhNtqW/nBJXdY6JFa+lEgVWekQUCQJQWT7XIHghA4yOb4DtIjszCJFunkmRIhlctmptcrhHT5ysj9I4uYTtaH0nxuPngAbpnzYsvdvsHyFWy3Tdf4pCd3+kgwEWPhL5f9ZLifBGmml/VQCMhjkmNFBoQ9g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1772493911; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=vMn4mleYJCwHO/HEaqYDhujRlmyDNEKG8BQE1W/8jVs=; 
-	b=OWDp96r6SnWUIwYASx/U+ad+2ZszJ0kHz6M7XnVBWz8aOsp+LU4IVbNHbxcSKR165P2G8CXprF12Ahzmofq0DKZzgaw0kT26QhMRIVcquBMGjm/mswbZ2sxaA2zmjBjiS/EPutc26FlV7HXqIB/0Kwaz/SlOAR3DHIlKFomUpzo=
+	t=1772493913; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=JeVKrmBGAZbOfL0zQIy44YasmHlurQx5d/IhOY6/xAA=; 
+	b=NKzLIa1PuLgAqJ+V3onBbuQ5w9FeW8ZSc31EsTvWwdT1JJAtWbe+loN84RSeb4zdLV4ipriYdi1p2BxWSjpRSYqaXFhXzDD2pTKjwt9yE9vjwebSPnWUL0m0YGRL0k5w808f2NxyOWkucaLH7pwWT7Wil8w1aK1MPATM1nEJyL0=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772493911;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772493913;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=vMn4mleYJCwHO/HEaqYDhujRlmyDNEKG8BQE1W/8jVs=;
-	b=c3e5vY+ZNpREo/SPUkDbeMYVVyhQhF3pAsZ9n37t9Hg6P61aaopmJVWf7UFSR3tr
-	NPQYRCHtVjcwwWPVoFH/P3OI1XJfQoJElrZByQORg5lSaGI9pFtbIVH4ufFaqOEonTn
-	nemM9Buwz7i2ZVUiaDuCdA1lOKLzmnwjBqOF8pqw=
-Received: by mx.zohomail.com with SMTPS id 1772493909850979.7698025270312;
-	Mon, 2 Mar 2026 15:25:09 -0800 (PST)
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=JeVKrmBGAZbOfL0zQIy44YasmHlurQx5d/IhOY6/xAA=;
+	b=HxFvgbOR4fEuqQmZyFoUAEG/DFus7cJTuuJYjsfCHLAG+ZP2EdukCYdjE1mzTVtq
+	u7EhZa4r5c8lg0GK//4wr4JLUQGNaKZ1yep02C6lNeQNLMlJyP95nc31t72s1M9YDKg
+	nmi0o/5u/J+dpY5vMlKpF94xuZbxTyi4Inu7RuuE=
+Received: by mx.zohomail.com with SMTPS id 1772493911012417.9461385509999;
+	Mon, 2 Mar 2026 15:25:11 -0800 (PST)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
@@ -45,10 +46,12 @@ Cc: daniel.almeida@collabora.com,
 	lyude@redhat.com,
 	work@onurozkan.dev,
 	Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH v2 0/12] drm/tyr: firmware loading and MCU boot support
-Date: Mon,  2 Mar 2026 15:24:48 -0800
-Message-ID: <20260302232500.244489-1-deborah.brouwer@collabora.com>
+Subject: [PATCH v2 02/12] drm/tyr: move clock cleanup into Clocks Drop impl
+Date: Mon,  2 Mar 2026 15:24:50 -0800
+Message-ID: <20260302232500.244489-3-deborah.brouwer@collabora.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260302232500.244489-1-deborah.brouwer@collabora.com>
+References: <20260302232500.244489-1-deborah.brouwer@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,82 +60,87 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds firmware loading and MCU boot support to the Tyr DRM
-driver. It includes:
-- A parser for the Mali CSF firmware binary format
-- A kernel-managed BO type (KernelBo) for internal driver allocations
-- GPU virtual memory (VM) integration using drm_gpuvm
-- An MMU module and a generic slot manager
-- Shmem-backed GEM support for Tyr
-- Loading firmware, VM activation, and MCU boot at probe()
+Currently Tyr disables its clocks from TyrDrmDeviceData::drop(), which
+causes them to be shut down before any other fields in TyrDrmDeviceData
+are dropped. This prevents us from using the clocks when dropping the
+other fields in TyrDrmDeviceData.
 
-Dependencies:
-- [PATCH v7 0/7] Rust bindings for gem shmem + iosys_map
-https://lore.kernel.org/rust-for-linux/20260206223431.693765-1-lyude@redhat.com/
+In order to better control when the clocks are dropped, move this cleanup
+logic into a Drop implementation on the Clocks struct itself.
 
-- [PATCH v4 0/6] Rust GPUVM immediate mode
-https://lore.kernel.org/rust-for-linux/20260130-gpuvm-rust-v4-0-8364d104ff40@google.com/
+Since it serves no further purpose, remove the PinnedDrop implementation
+for TyrDrmDeviceData.
 
-- [PATCH v5 0/4] Introduce DeviceContext
-https://lore.kernel.org/rust-for-linux/20260131001602.2095470-1-lyude@redhat.com/
+Also, while here, remove the #[pin_data] annotation from both the struct
+Clocks and struct Regulators since neither of these structs need this
+macro to create structurally pinned fields.
 
-Other Prerequisites:
-This series also depends on additional prerequisite fixes not included in
-this posting. The full stack (base + prerequisites + this series) is
-available here:
-  https://gitlab.freedesktop.org/dbrouwer/linux/-/tree/dbrouwer/fw-boot
-
-Development history / discussion:
-  https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/56
-
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
 Changes in v2:
-- The whole series is rebased on drm-rust-next including v7.0-rc1.
-- Each patch has its own changelog.
+- Mention pinning changes in commit message.
+- Pick up Reviewed-by tags.
 
-Link to v1: https://lore.kernel.org/rust-for-linux/20260212013713.304343-1-deborah.brouwer@collabora.com/
----
+ drivers/gpu/drm/tyr/driver.rs | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-Beata Michalska (1):
-  drm/tyr: set DMA mask using GPU physical address
-
-Boris Brezillon (5):
-  drm/tyr: select DRM abstractions in Kconfig
-  drm/tyr: rename TyrObject to BoData
-  drm/tyr: Add generic slot manager
-  drm/tyr: add MMU module
-  drm/tyr: add GPU virtual memory module
-
-Daniel Almeida (2):
-  drm/tyr: add MMU address space registers
-  drm/tyr: add parser for firmware binary
-
-Deborah Brouwer (4):
-  drm/tyr: move clock cleanup into Clocks Drop impl
-  drm/tyr: add shmem backing for GEM objects
-  drm/tyr: add a kernel buffer object
-  drm/tyr: add firmware loading and MCU boot support
-
- drivers/gpu/drm/tyr/Kconfig              |  15 +-
- drivers/gpu/drm/tyr/driver.rs            |  53 +-
- drivers/gpu/drm/tyr/fw.rs                | 270 ++++++++
- drivers/gpu/drm/tyr/fw/parser.rs         | 519 +++++++++++++++
- drivers/gpu/drm/tyr/gem.rs               | 154 ++++-
- drivers/gpu/drm/tyr/gpu.rs               |   2 -
- drivers/gpu/drm/tyr/mmu.rs               | 122 ++++
- drivers/gpu/drm/tyr/mmu/address_space.rs | 493 ++++++++++++++
- drivers/gpu/drm/tyr/regs.rs              | 101 ++-
- drivers/gpu/drm/tyr/slot.rs              | 436 +++++++++++++
- drivers/gpu/drm/tyr/tyr.rs               |   4 +
- drivers/gpu/drm/tyr/vm.rs                | 794 +++++++++++++++++++++++
- 12 files changed, 2933 insertions(+), 30 deletions(-)
- create mode 100644 drivers/gpu/drm/tyr/fw.rs
- create mode 100644 drivers/gpu/drm/tyr/fw/parser.rs
- create mode 100644 drivers/gpu/drm/tyr/mmu.rs
- create mode 100644 drivers/gpu/drm/tyr/mmu/address_space.rs
- create mode 100644 drivers/gpu/drm/tyr/slot.rs
- create mode 100644 drivers/gpu/drm/tyr/vm.rs
-
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 38e5268e881a..4fff01478391 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -54,7 +54,7 @@ pub(crate) struct TyrPlatformDriverData {
+     _device: ARef<TyrDrmDevice>,
+ }
+ 
+-#[pin_data(PinnedDrop)]
++#[pin_data]
+ pub(crate) struct TyrDrmDeviceData {
+     pub(crate) pdev: ARef<platform::Device>,
+ 
+@@ -168,17 +168,6 @@ impl PinnedDrop for TyrPlatformDriverData {
+     fn drop(self: Pin<&mut Self>) {}
+ }
+ 
+-#[pinned_drop]
+-impl PinnedDrop for TyrDrmDeviceData {
+-    fn drop(self: Pin<&mut Self>) {
+-        // TODO: the type-state pattern for Clks will fix this.
+-        let clks = self.clks.lock();
+-        clks.core.disable_unprepare();
+-        clks.stacks.disable_unprepare();
+-        clks.coregroup.disable_unprepare();
+-    }
+-}
+-
+ // We need to retain the name "panthor" to achieve drop-in compatibility with
+ // the C driver in the userspace stack.
+ const INFO: drm::DriverInfo = drm::DriverInfo {
+@@ -202,14 +191,20 @@ impl drm::Driver for TyrDrmDriver {
+     }
+ }
+ 
+-#[pin_data]
+ struct Clocks {
+     core: Clk,
+     stacks: OptionalClk,
+     coregroup: OptionalClk,
+ }
+ 
+-#[pin_data]
++impl Drop for Clocks {
++    fn drop(&mut self) {
++        self.core.disable_unprepare();
++        self.stacks.disable_unprepare();
++        self.coregroup.disable_unprepare();
++    }
++}
++
+ struct Regulators {
+     _mali: Regulator<regulator::Enabled>,
+     _sram: Regulator<regulator::Enabled>,
 -- 
 2.52.0
 
