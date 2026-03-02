@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235553E0C4C
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 13:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17818368940;
+	Mon,  2 Mar 2026 13:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772456569; cv=none; b=KhfAP06lq6zIojtj6hUamhD+tasNVYLaPOT0+lLJDpvMZCDRgsH6MpI3GAwOjU/5WPun55RmRSJX3q52kw3VlOAaJxcc9gku7sD9HtuJsF+PVqPLUrANp7fvM6JJtGF8mmvo/h0a7RpGf/tMymEtMLnLBFbI25hDY6pMcZR1cAQ=
+	t=1772456574; cv=none; b=JERuKgSCoqF/7KptbRZ8z6PD9vlxiaVXPbLiU9XJCxbZJ2eUinPwOFQmQSp5hX+nJ46hRXOjIAnuwFJsazSLxfLhdx8gGu5e2/grY4WYT9nhEgHTHnZAXidNoh9drhdojObh67fuh5L45V/c7ha9Q46JopK1AhIPH9Pkn6IF5xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772456569; c=relaxed/simple;
-	bh=MSML7zxaijONDCk65+yv/C9VGQuBoXaOvrseodsnklE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cBa5Bzx+EmrK3d/M1VXJnVg5Y7GBEtBG9M1USiLNjFSlJRccWC7hZY2TDOAPVngbSG2br7iGdUcYxTpw7Vx2YLS68quYoF6zln0wtSw0AsW8AyqRepx6uNhfZ+HfgDdjE38Vr9muCI99Neor9EKzm+shVkzFsSEH0t3On1qVXTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4fbTZTz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772456574; c=relaxed/simple;
+	bh=CIUye5MpoPqcW0+7LFpqghUhhyAY3op29+vdVWau4WA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GUZ3DFC8gUktRMoG0Bz84clpwCovFfWHpju9X/pJcsAj0IasxTZ3cQLV04hOuuxdyM+y4DDnLEsVcBGFZlu5dk00Mth3HDeWR0wPYhWZxxqmRIpv2qm/uy7yzEfpvOCFeI6nBGa3CrsQCgaBM90bweR2D12gOBmmb13OLTNwf2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWK4Yomz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4fbTZTz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A3BC2BC87;
-	Mon,  2 Mar 2026 13:02:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWK4Yomz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0575FC2BC86;
+	Mon,  2 Mar 2026 13:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772456568;
-	bh=MSML7zxaijONDCk65+yv/C9VGQuBoXaOvrseodsnklE=;
-	h=From:To:Cc:Subject:Date:Reply-To:From;
-	b=q4fbTZTzifoa8HvA8vYZi+XiNNLtNLo6Z1cDWnYe87Um88RjwUk3GwyHmRyHBbjsU
-	 AYJkyZh+NEjXIXhxfyIv38RMuGcBjcpnXWKyn6iwNOFTFlGy9fpQrtdOsCFRDkgI4o
-	 ch5XODL74boxfaL+6Li/dnM0k5f3EaGYTscPvADVs6jRau9PeamSAoJ8UPsKecQAr7
-	 h5Uxuak7eWdlvBtV2N2eTDhEoCc78PBXN2D5cd2Nmw2WwmRw4zHErSpeOn6s8tNCEv
-	 p0w//Jvyf9pK4Rvu9+Xxt2mlbc5Ea513npzwXaJm7rXTIc1eJKfyfhT00MIvKv5fSN
-	 fyBezBs5A9w/Q==
+	s=k20201202; t=1772456573;
+	bh=CIUye5MpoPqcW0+7LFpqghUhhyAY3op29+vdVWau4WA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
+	b=KWK4YomzwQP2T1pyuOJonuiJ880zq5fOkAZjpTJ7IgqQEQwRUcsK6rczOIeet5b+1
+	 y1H/fF5hj1RxUpp1HlxDIWz/FDFZn7dUO8CleOVesx5MsB6jA6gLaKDkBZSN7itTq8
+	 wCKWDQEc8/0BN243DAHeECk2e4SXFWbRTtzZakaqeySm6WzlJKlsOKmHK7PusfAk4l
+	 0DA1QVCxDQZUNzqu4T6/8cPCpAwWm110vMITcTw8HpoBMxSz5VL6yMHVinb4I2oLN0
+	 SYE9mEWdqgG5Tz2vLAjL8epmf9X6e2hr0xM7W8fa2FMMwPHKtnvCxO8r/u6PRJVUpe
+	 KRljdR/mkZKuw==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
@@ -34,12 +35,19 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 0/2] rust: add pointer projection infrastructure and convert DMA
-Date: Mon,  2 Mar 2026 13:02:18 +0000
-Message-ID: <20260302130223.134058-1-gary@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Cc: rust-for-linux@vger.kernel.org,
+	Aditya Rajan <adi.dev.github@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH v3 1/2] rust: add projection infrastructure
+Date: Mon,  2 Mar 2026 13:02:19 +0000
+Message-ID: <20260302130223.134058-2-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260302130223.134058-1-gary@kernel.org>
+References: <20260302130223.134058-1-gary@kernel.org>
 Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -51,57 +59,381 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-This adds a general pointer projection infrastructure which is intended to
-serve as the basis for generic I/O projections. The idea is that we will
-have a unified way of reading/writing MMIO or DMA allocation, creating
-typed subviews into them, and able to read/write subfields safely.
+Add a generic infrastructure for performing field and index projections on
+raw pointers. This will form the basis of performing I/O projections.
 
-This is the first step towards that direction, where an infra for
-projecting arbitrary pointers are added. This takes care to not assume
-pointers are part of a valid allocation, so it can be used to project I/O
-pointers, too. `dma_read!` and `dma_write!` is converted to use this infra,
-as they currently have soundness issues [1] and users have already
-encountered limitation of it [2].
+Pointers manipulations are intentionally using the safe wrapping variants
+instead of the unsafe variants, as the latter requires pointers to be
+inside an allocation which is not necessarily true for I/O pointers.
 
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Soundness.20of.20.60dma_read!.28.29.60/with/573645610 [1]
-Link: https://lore.kernel.org/rust-for-linux/DGE9DBH7X8CO.2EES6EX8UA5ZF@kernel.org/T/#mc17b9c0309ac10346b3d6c6bd8461488e7c73161 [2]
+This projection macro protects against rogue `Deref` implementation, which
+can causes the projected pointer to be outside the bounds of starting
+pointer. This is extremely unlikely and Rust has a lint to catch this, but
+is unsoundness regardless. The protection works by inducing type inference
+ambiguity when `Deref` is implemented.
 
+This projection macro also stops projecting into unaligned fields (i.e.
+fields of `#[repr(packed)]` structs), as misaligned pointers require
+special handling. This is implemented by attempting to create reference to
+projected field inside a `if false` block. Despite being unreachable, Rust
+still checks that they're not unaligned fields.
+
+The projection macro supports both fallible and infallible index
+projections. These are described in detail inside the documentation.
+
+Reviewed-by: Aditya Rajan <adi.dev.github@gmail.com>
+Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
-Changes since v2:
-- Fix off-by-one issue (Aditya)
-- Fix comment (Aditya)
-- Link to v2: https://lore.kernel.org/rust-for-linux/20260226154656.3241736-1-gary@kernel.org/
-
-Changes since v1:
-- Squashed patch 2,3,4 so that all users are converted in single commit
-  (Danilo)
-- I discovered an additional soundness bug in dma_read/write macros
-  where it can create misaligned access. This is addressed in this new
-  version.
-- Updated sample driver to have a function that does check instead use a
-  budget-try block (Benno)
-- Improved diagnostics when index projection is used on types that are
-  not slices.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20260214053344.1994776-1-gary@garyguo.net/
-
----
-Gary Guo (2):
-  rust: add projection infrastructure
-  rust: dma: use pointer projection infra for `dma_{read,write}` macro
-
- drivers/gpu/nova-core/gsp.rs      |  14 +-
- drivers/gpu/nova-core/gsp/boot.rs |   2 +-
- drivers/gpu/nova-core/gsp/cmdq.rs |  10 +-
- rust/kernel/dma.rs                | 114 ++++++------
- rust/kernel/lib.rs                |   5 +
- rust/kernel/projection.rs         | 284 ++++++++++++++++++++++++++++++
- samples/rust/rust_dma.rs          |  30 ++--
- scripts/Makefile.build            |   4 +-
- 8 files changed, 373 insertions(+), 90 deletions(-)
+ rust/kernel/lib.rs        |   5 +
+ rust/kernel/projection.rs | 284 ++++++++++++++++++++++++++++++++++++++
+ scripts/Makefile.build    |   4 +-
+ 3 files changed, 292 insertions(+), 1 deletion(-)
  create mode 100644 rust/kernel/projection.rs
 
-
-base-commit: 877552aa875839314afad7154b5a561889e87ea9
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 3da92f18f4ee..50866b481bdb 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -20,6 +20,7 @@
+ #![feature(generic_nonzero)]
+ #![feature(inline_const)]
+ #![feature(pointer_is_aligned)]
++#![feature(slice_ptr_len)]
+ //
+ // Stable since Rust 1.80.0.
+ #![feature(slice_flatten)]
+@@ -37,6 +38,9 @@
+ #![feature(const_ptr_write)]
+ #![feature(const_refs_to_cell)]
+ //
++// Stable since Rust 1.84.0.
++#![feature(strict_provenance)]
++//
+ // Expected to become stable.
+ #![feature(arbitrary_self_types)]
+ //
+@@ -130,6 +134,7 @@
+ pub mod prelude;
+ pub mod print;
+ pub mod processor;
++pub mod projection;
+ pub mod ptr;
+ #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
+ pub mod pwm;
+diff --git a/rust/kernel/projection.rs b/rust/kernel/projection.rs
+new file mode 100644
+index 000000000000..b9e2b174615c
+--- /dev/null
++++ b/rust/kernel/projection.rs
+@@ -0,0 +1,284 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Infrastructure for handling projections.
++
++use core::{
++    mem::MaybeUninit,
++    ops::Deref, //
++};
++
++use crate::prelude::*;
++
++/// Error raised when a projection is attempted on array or slices out of bounds.
++pub struct OutOfBound;
++
++impl From<OutOfBound> for Error {
++    #[inline(always)]
++    fn from(_: OutOfBound) -> Self {
++        ERANGE
++    }
++}
++
++/// A helper trait to perform index projection.
++///
++/// This is similar to `core::slice::SliceIndex`, but operate on raw pointers safely and fallibly.
++///
++/// # Safety
++///
++/// `get` must return a pointer in bounds of the provided pointer.
++#[diagnostic::on_unimplemented(message = "`{Self}` cannot be used to index `{T}`")]
++#[doc(hidden)]
++pub unsafe trait ProjectIndex<T: ?Sized>: Sized {
++    type Output: ?Sized;
++
++    /// Returns an index-projected pointer, if in bounds.
++    fn get(self, slice: *mut T) -> Option<*mut Self::Output>;
++
++    /// Returns an index-projected pointer; fail the build if it cannot be proved to be in bounds.
++    #[inline(always)]
++    fn index(self, slice: *mut T) -> *mut Self::Output {
++        Self::get(self, slice).unwrap_or_else(|| build_error!())
++    }
++}
++
++// Forward array impl to slice impl.
++// SAFETY: `get` returned pointers are in bounds.
++unsafe impl<T, I, const N: usize> ProjectIndex<[T; N]> for I
++where
++    I: ProjectIndex<[T]>,
++{
++    type Output = <I as ProjectIndex<[T]>>::Output;
++
++    #[inline(always)]
++    fn get(self, slice: *mut [T; N]) -> Option<*mut Self::Output> {
++        <I as ProjectIndex<[T]>>::get(self, slice)
++    }
++
++    #[inline(always)]
++    fn index(self, slice: *mut [T; N]) -> *mut Self::Output {
++        <I as ProjectIndex<[T]>>::index(self, slice)
++    }
++}
++
++// SAFETY: `get` returned pointers are in bounds.
++unsafe impl<T> ProjectIndex<[T]> for usize {
++    type Output = T;
++
++    #[inline(always)]
++    fn get(self, slice: *mut [T]) -> Option<*mut T> {
++        if self >= slice.len() {
++            None
++        } else {
++            Some(slice.cast::<T>().wrapping_add(self))
++        }
++    }
++}
++
++// SAFETY: `get` returned pointers are in bounds.
++unsafe impl<T> ProjectIndex<[T]> for core::ops::Range<usize> {
++    type Output = [T];
++
++    #[inline(always)]
++    fn get(self, slice: *mut [T]) -> Option<*mut [T]> {
++        let new_len = self.end.checked_sub(self.start)?;
++        if self.end > slice.len() {
++            return None;
++        }
++        Some(core::ptr::slice_from_raw_parts_mut(
++            slice.cast::<T>().wrapping_add(self.start),
++            new_len,
++        ))
++    }
++}
++
++// SAFETY: `get` returned pointers are in bounds.
++unsafe impl<T> ProjectIndex<[T]> for core::ops::RangeTo<usize> {
++    type Output = [T];
++
++    #[inline(always)]
++    fn get(self, slice: *mut [T]) -> Option<*mut [T]> {
++        (0..self.end).get(slice)
++    }
++}
++
++// SAFETY: `get` returned pointers are in bounds.
++unsafe impl<T> ProjectIndex<[T]> for core::ops::RangeFrom<usize> {
++    type Output = [T];
++
++    #[inline(always)]
++    fn get(self, slice: *mut [T]) -> Option<*mut [T]> {
++        (self.start..slice.len()).get(slice)
++    }
++}
++
++// SAFETY: `get` returned pointers are in bounds.
++unsafe impl<T> ProjectIndex<[T]> for core::ops::RangeFull {
++    type Output = [T];
++
++    #[inline(always)]
++    fn get(self, slice: *mut [T]) -> Option<*mut [T]> {
++        Some(slice)
++    }
++}
++
++/// A helper trait to perform field projection.
++///
++/// This trait has a `DEREF` generic parameter so it can be implemented twice for types that
++/// implement `Deref`. This will cause an ambiguity error and thus block `Deref` types being used
++/// as base of projection, as they can inject unsoundness.
++///
++/// # Safety
++///
++/// `proj` should invoke `f` with valid allocation, as documentation described.
++#[doc(hidden)]
++pub unsafe trait ProjectField<const DEREF: bool> {
++    /// Project a pointer to a type to a pointer of a field.
++    ///
++    /// `f` is always invoked with valid allocation so it can safely obtain raw pointers to fields
++    /// using `&raw mut`.
++    ///
++    /// This is needed because `base` might not point to a valid allocation, while `&raw mut`
++    /// requires pointers to be in bounds of a valid allocation.
++    ///
++    /// # Safety
++    ///
++    /// `f` must returns a pointer in bounds of the provided pointer.
++    unsafe fn proj<F>(base: *mut Self, f: impl FnOnce(*mut Self) -> *mut F) -> *mut F;
++}
++
++// NOTE: in theory, this API should work for `T: ?Sized` and `F: ?Sized`, too. However we cannot
++// currently support that as we need to obtain a valid allocation that `&raw const` can operate on.
++// SAFETY: `proj` invokes `f` with valid allocation.
++unsafe impl<T> ProjectField<false> for T {
++    #[inline(always)]
++    unsafe fn proj<F>(base: *mut Self, f: impl FnOnce(*mut Self) -> *mut F) -> *mut F {
++        // Create a valid allocation to start projection, as `base` is not necessarily so. The
++        // memory is never actually used so it will be optimized out, so it should work even for
++        // very large `T` (`memoffset` crate also relies on this). To be extra certain, we also
++        // annotate `f` closure with `#[inline(always)]` in the macro.
++        let mut place = MaybeUninit::uninit();
++        let place_base = place.as_mut_ptr();
++        let field = f(place_base);
++        // SAFETY: `field` is in bounds from `base` per safety requirement.
++        let offset = unsafe { field.byte_offset_from(place_base) };
++        // Use `wrapping_byte_offset` as `base` does not need to be of valid allocation.
++        base.wrapping_byte_offset(offset).cast()
++    }
++}
++
++// SAFETY: vacuously satisfied.
++unsafe impl<T: Deref> ProjectField<true> for T {
++    #[inline(always)]
++    unsafe fn proj<F>(_: *mut Self, _: impl FnOnce(*mut Self) -> *mut F) -> *mut F {
++        build_error!("this function is a guard against `Deref` impl and is never invoked");
++    }
++}
++
++/// Create a projection from a raw pointer.
++///
++/// The projected pointer is within the memory region marked by the input pointer. There is no
++/// requirement that the input raw pointer needs to be valid, so this macro may be used for
++/// projecting pointers outside normal address space, e.g. I/O pointers. However, if the input
++/// pointer is valid, the projected pointer is also valid.
++///
++/// Supported projections include field projections and index projections.
++/// It is not allowed to project into types that implement custom `Deref` or `Index`.
++///
++/// The macro has basic syntax of `kernel::project_pointer!(ptr, projection)`, where `ptr` is an
++/// expression that evaluates to a raw pointer which serves as the base of projection. `projection`
++/// can be a projection expression of form `.field` (normally identifer, or numeral in case of
++/// tuple structs) or of form `[index]`.
++///
++/// If mutable pointer is needed, the macro input can be prefixed with `mut` keyword, i.e.
++/// `kernel::project_pointer!(mut ptr, projection)`. By default, a const pointer is created.
++///
++/// `project_pointer!` macro can perform both fallible indexing and build-time checked indexing.
++/// `[index]` form performs build-time bounds checking; if compiler fails to prove `[index]` is in
++/// bounds, compilation will fail. `[index]?` can be used to perform runtime bounds checking;
++/// `OutOfBound` error is raised via `?` if the index is out of bounds.
++///
++/// # Examples
++///
++/// Field projections are performed with `.field_name`:
++/// ```
++/// struct MyStruct { field: u32, }
++/// let ptr: *const MyStruct = core::ptr::dangling();
++/// let field_ptr: *const u32 = kernel::project_pointer!(ptr, .field);
++///
++/// struct MyTupleStruct(u32, u32);
++///
++/// fn proj(ptr: *const MyTupleStruct) {
++///     let field_ptr: *const u32 = kernel::project_pointer!(ptr, .1);
++/// }
++/// ```
++///
++/// Index projections are performed with `[index]`:
++/// ```
++/// fn proj(ptr: *const [u8; 32]) -> Result {
++///     let field_ptr: *const u8 = kernel::project_pointer!(ptr, [1]);
++///     // This will fail the build.
++///     // kernel::project_pointer!(ptr, [128]);
++///     // This will raise an `OutOfBound` error (which is convertable to `ERANGE`).
++///     kernel::project_pointer!(ptr, [128]?);
++///     Ok(())
++/// }
++/// ```
++///
++/// If you need to match on the error instead of propagate, put the invocation inside a closure:
++/// ```
++/// let ptr: *const [u8; 32] = core::ptr::dangling();
++/// let field_ptr: Result<*const u8> = (|| -> Result<_> {
++///     Ok(kernel::project_pointer!(ptr, [128]?))
++/// })();
++/// assert!(field_ptr.is_err());
++/// ```
++///
++/// For mutable pointers, put `mut` as the first token in macro invocation.
++/// ```
++/// let ptr: *mut [(u8, u16); 32] = core::ptr::dangling_mut();
++/// let field_ptr: *mut u16 = kernel::project_pointer!(mut ptr, [1].1);
++/// ```
++#[macro_export]
++macro_rules! project_pointer {
++    (@gen $ptr:ident, ) => {};
++    // Field projection. `$field` needs to be `tt` to support tuple index like `.0`.
++    (@gen $ptr:ident, .$field:tt $($rest:tt)*) => {
++        // SAFETY: the provided closure always return in bounds pointer.
++        let $ptr = unsafe {
++            $crate::projection::ProjectField::proj($ptr, #[inline(always)] |ptr| {
++                // Check unaligned field. Not all users (e.g. DMA) can handle unaligned
++                // projections.
++                if false {
++                    let _ = &(*ptr).$field;
++                }
++                // SAFETY: `$field` is in bounds, and no implicit `Deref` is possible (if the
++                // type implements `Deref`, Rust cannot infer the generic parameter `DEREF`).
++                &raw mut (*ptr).$field
++            })
++        };
++        $crate::project_pointer!(@gen $ptr, $($rest)*)
++    };
++    // Fallible index projection.
++    (@gen $ptr:ident, [$index:expr]? $($rest:tt)*) => {
++        let $ptr = $crate::projection::ProjectIndex::get($index, $ptr)
++            .ok_or($crate::projection::OutOfBound)?;
++        $crate::project_pointer!(@gen $ptr, $($rest)*)
++    };
++    // Build-time checked index projection.
++    (@gen $ptr:ident, [$index:expr] $($rest:tt)*) => {
++        let $ptr = $crate::projection::ProjectIndex::index($index, $ptr);
++        $crate::project_pointer!(@gen $ptr, $($rest)*)
++    };
++    (mut $ptr:expr, $($proj:tt)*) => {{
++        let ptr: *mut _ = $ptr;
++        $crate::project_pointer!(@gen ptr, $($proj)*);
++        ptr
++    }};
++    ($ptr:expr, $($proj:tt)*) => {{
++        let ptr = <*const _>::cast_mut($ptr);
++        // We currently always project using mutable pointer, as it is not decided whether `&raw
++        // const` allows the resulting pointer to be mutated (see documentation of `addr_of!`).
++        $crate::project_pointer!(@gen ptr, $($proj)*);
++        ptr.cast_const()
++    }};
++}
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 32e209bc7985..3652b85be545 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -310,16 +310,18 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+ 
+ # The features in this list are the ones allowed for non-`rust/` code.
+ #
++#   - Stable since Rust 1.79.0: `feature(slice_ptr_len)`.
+ #   - Stable since Rust 1.81.0: `feature(lint_reasons)`.
+ #   - Stable since Rust 1.82.0: `feature(asm_const)`,
+ #     `feature(offset_of_nested)`, `feature(raw_ref_op)`.
++#   - Stable since Rust 1.84.0: `feature(strict_provenance)`.
+ #   - Stable since Rust 1.87.0: `feature(asm_goto)`.
+ #   - Expected to become stable: `feature(arbitrary_self_types)`.
+ #   - To be determined: `feature(used_with_arg)`.
+ #
+ # Please see https://github.com/Rust-for-Linux/linux/issues/2 for details on
+ # the unstable features in use.
+-rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg
++rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,slice_ptr_len,strict_provenance,used_with_arg
+ 
+ # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+ # current working directory, which may be not accessible in the out-of-tree
 -- 
 2.51.2
 
