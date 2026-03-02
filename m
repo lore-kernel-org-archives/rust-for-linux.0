@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759633FB072;
-	Mon,  2 Mar 2026 14:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9163FB075;
+	Mon,  2 Mar 2026 14:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772460273; cv=none; b=tfo/IwHf0Oo4EVkDibPEDy3/vRi/d8OD1kWGWM8oUW2hEcoNYxFyAQ6irCt0FAjl7cfvzCchx0AsqcjkJrqJ+Hyp5HIW4frY/MaP9LW2gRtB+jhtci4jggfXwCKTM5x0/feffFno+Vig5SQg3e4emNtmoyPopElLDL2QGBkOfjg=
+	t=1772460279; cv=none; b=Vj+2kueWOVBWjRoB3C1uEJzk6gfz5Rpzb4MHwxmLrH3lbSIXkAKsuvStUeFoSVW8Vjfew3RKxhmgO1+pTJ1m57TXh3Wca73Bj0Ifftie0iKMUF9uK5vC5VoAsP5a6VkD81opWayJlp7wzv4wNoQ1C1IsJjFjEaFAZfAquwrbVBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772460273; c=relaxed/simple;
-	bh=FWvmTwbXMGmMmOMHmif6zgJqnJQlH6L3lPMOIbNWxd8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BisDyVV79CJvHYMSRYp2n/Mjmn4BqCQT3A1GrfJ+bkPt7+pjOcI/SU+QDCkxw1hOTRcHzewb+/zOJGroAJSGntL9+o/q9ESwmOWpGdbPNQKTAApKPOMmWaN/pc5IiBm3r1K0jpTJKx2Hwd0cDZF42fttMQ5850lwC843Uu3GnuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDypVqAC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772460279; c=relaxed/simple;
+	bh=DbIQyN4/yzHKlY1q7pbNwcaynEivTFVygC/s84+psuE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DAwJuo9YEFtL5Gu5FdhTlJh23hyNXLLBXQSjrIqVpXeMrbVDXjiFHiZrAXsxwbE5NA/YfqlckniMhQz3C9nGZE1Bk0N5iQdYcHu82CLeweH0yXByql2Fo/ooYVTs0o0kCatvBV9nmIdFFnSoz6Op6NMyzisRnElMMJbD9sCoJM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rPs0t3FI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDypVqAC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70BE4C2BCB1;
-	Mon,  2 Mar 2026 14:04:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rPs0t3FI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADC3C2BCAF;
+	Mon,  2 Mar 2026 14:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772460273;
-	bh=FWvmTwbXMGmMmOMHmif6zgJqnJQlH6L3lPMOIbNWxd8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=RDypVqAC5+oWIEnPibY3eCblxU4BilDH9Ic8tsu9YHWI5tH1CohmBbFOyG6qthECy
-	 u7hIZ/6OpmIBUVFjh8QHFUovlY16/NnCSRjHekezmWXXuwoBNynAAdMy5sma9oBzEn
-	 EoHi1uoZiafpKrDXLiXYxKu6SWTemFg65sPOYpjP4yIXrF3cottcT52qGoyfdvPz6R
-	 veNXTvTK5+y35rMzigj9LK9jM2zF6Vsf8D2COnD/LHceF/s/bAcOlgNWHxM7/OzuLB
-	 sQdnhd5b4yC3xCrFkf7kUdurJWlsE2WWkMl5Xu4MjIri+3npmrZ3kQRcfZ8sYBS4rk
-	 10ml5mlbg7nsQ==
+	s=k20201202; t=1772460279;
+	bh=DbIQyN4/yzHKlY1q7pbNwcaynEivTFVygC/s84+psuE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rPs0t3FIhBJ+g/NnZJbYfcK42PqlLZ9XO2XW4mc/XlKJHYqjFRRSbovWdYGSfQSMN
+	 Ikp88a+Z/9xaQFuH1oarlZL4WUg7Y/4lzdSi+hlT1+9gB9JmEaAV70mKC9ayTZYcND
+	 WohllrnWYsq2L+7QymD5S75fopjzYGhMbdLiKhmgvFH8BfrDtUcPXq5CTUWnEDM3Fy
+	 cikxm/MkrHnEuGTftOpT1N4oUhCPRwpOukkEknJET178BqB5YqbSf5SeSTE8jQRS3n
+	 DVh1AbZl/+q72n+AbhxVoiuZA5lo/nTBQveXcY4j2toT9oclV2qDGTjy8rE4sBO0xI
+	 xwcGJsgxRnEgw==
 From: Benno Lossin <lossin@kernel.org>
 To: Benno Lossin <lossin@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -34,15 +35,17 @@ To: Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: "Janne Grunau" <j@jannau.net>,
-	asahi@lists.linux.dev,
+	Danilo Krummrich <dakr@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: stable@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] rust: pin-init: internal: init: remove `#[disable_initialized_field_access]`
-Date: Mon,  2 Mar 2026 15:04:14 +0100
-Message-ID: <20260302140424.4097655-1-lossin@kernel.org>
+Subject: [PATCH v2 2/2] rust: pin-init: internal: init: document load-bearing fact of field accessors
+Date: Mon,  2 Mar 2026 15:04:15 +0100
+Message-ID: <20260302140424.4097655-2-lossin@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260302140424.4097655-1-lossin@kernel.org>
+References: <20260302140424.4097655-1-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,169 +54,70 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Gary noticed [1] that the initializer macros as well as the `[Pin]Init`
-traits cannot support unaligned fields, since they use operations that
-require aligned pointers. This means that any code using structs with
-unaligned fields in pin-init is unsound.
+The functions `[Pin]Init::__[pinned_]init` and `ptr::write` called from
+the `init!` macro require the passed pointer to be aligned. This fact is
+ensured by the creation of field accessors to previously initialized
+fields.
 
-By default, the `init!` macro generates references to initialized
-fields, which makes the compiler check that those fields are aligned.
-However, we added the `#[disable_initialized_field_access]` attribute to
-avoid this behavior in ceca298c53f9 ("rust: pin-init: internal: init:
-add escape hatch for referencing initialized fields"). Thus remove the
-`#[disable_initialized_field_access]` attribute from `init!`, which is
-the only safe way to create an initializer handling unaligned fields.
+Since we missed this very important fact from the beginning [1],
+document it in the code.
 
-If support for in-place initializing structs with unaligned fields is
-required in the future, we could figure out a solution. This is tracked
-in [2].
-
-Reported-by: Gary Guo <gary@garyguo.net>
 Link: https://rust-for-linux.zulipchat.com/#narrow/channel/561532-pin-init/topic/initialized.20field.20accessor.20detection/with/576210658 [1]
-Link: https://github.com/Rust-for-Linux/pin-init/issues/112 [2]
-Fixes: ceca298c53f9 ("rust: pin-init: internal: init: add escape hatch for referencing initialized fields")
+Fixes: 90e53c5e70a6 ("rust: add pin-init API core")
+Cc: stable@vger.kernel.org # 6.19.y and 6.18.y: patch should apply without issues
+Cc: stable@vger.kernel.org # 6.12.y and 6.6.y: need prerequisite see below `---` for more info
 Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
-Changelog:
-* changes since v1: https://lore.kernel.org/all/20260228113713.1402110-1-lossin@kernel.org
-  - improved note added to the code in patch 2
-  - improved commit messages
----
-This commit does not need backporting, as ceca298c53f9 is not yet in any
-stable tree.
-
-However, the unsoundness still affects two stable trees, because it was
-unknowingly fixed in commit 42415d163e5d ("rust: pin-init: add
-references to previously initialized fields"). Before then, packed
-structs compiled without any issues with pin-init and thus all prior
-kernel versions with pin-init that do not contain that commit are
-affected.
+As already explained in the previous email, we discovered an unsoundness
+in pin-init that exists since the beginning, but was unknowingly fixed
+in commit 42415d163e5d ("rust: pin-init: add references to previously
+initialized fields").
 
 We introduced pin-init in 90e53c5e70a6 ("rust: add pin-init API core"),
 which was included in 6.4. The affected stable trees that are still
 maintained are: 6.12 and 6.6. Note that 6.18 and 6.19 already contain
 42415d163e5d, so they are unaffected.
 
-I will prepare a separate patch series to backport 42415d163e5d to each
-of the affected trees, including the second patch of this series that
-documents the fact that field accessors are load-bearing for soundness.
+We still should backport this piece of documentation explaining the need
+for the field accessors for soundness. For this reasons we also want to
+backport it to 6.18 and 6.19.
 
-Janne Grunau has worked around [3] this problem in the AOP audio driver
-downstream, which was the reason for adding the
-`#[disable_initialized_field_access]` attribute in the first place.
-
-[3]: https://lore.kernel.org/all/20260301171222.GA22561@robin.jannau.net
+Note that this patch depends on 42415d163e5d; so the only versions this
+patch can go in directly are 6.18 and 6.19. I will send separate patch
+series' for the older versions. The series' will include a backport of
+42415d163e5d as well as a modified version of this patch, since this
+patch depends on the `syn` rewrite, which is not present in older
+versions.
 ---
- rust/pin-init/internal/src/init.rs | 39 ++++++------------------------
- 1 file changed, 8 insertions(+), 31 deletions(-)
+ rust/pin-init/internal/src/init.rs | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index 42936f915a07..da53adc44ecf 100644
+index da53adc44ecf..738f62c8105c 100644
 --- a/rust/pin-init/internal/src/init.rs
 +++ b/rust/pin-init/internal/src/init.rs
-@@ -62,7 +62,6 @@ fn ident(&self) -> Option<&Ident> {
- 
- enum InitializerAttribute {
-     DefaultError(DefaultErrorAttribute),
--    DisableInitializedFieldAccess,
- }
- 
- struct DefaultErrorAttribute {
-@@ -86,6 +85,7 @@ pub(crate) fn expand(
-     let error = error.map_or_else(
-         || {
-             if let Some(default_error) = attrs.iter().fold(None, |acc, attr| {
-+                #[expect(irrefutable_let_patterns)]
-                 if let InitializerAttribute::DefaultError(DefaultErrorAttribute { ty }) = attr {
-                     Some(ty.clone())
-                 } else {
-@@ -145,15 +145,7 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
-     };
-     // `mixed_site` ensures that the data is not accessible to the user-controlled code.
-     let data = Ident::new("__data", Span::mixed_site());
--    let init_fields = init_fields(
--        &fields,
--        pinned,
--        !attrs
--            .iter()
--            .any(|attr| matches!(attr, InitializerAttribute::DisableInitializedFieldAccess)),
--        &data,
--        &slot,
--    );
-+    let init_fields = init_fields(&fields, pinned, &data, &slot);
-     let field_check = make_field_check(&fields, init_kind, &path);
-     Ok(quote! {{
-         // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
-@@ -236,7 +228,6 @@ fn get_init_kind(rest: Option<(Token![..], Expr)>, dcx: &mut DiagCtxt) -> InitKi
- fn init_fields(
-     fields: &Punctuated<InitializerField, Token![,]>,
-     pinned: bool,
--    generate_initialized_accessors: bool,
-     data: &Ident,
-     slot: &Ident,
- ) -> TokenStream {
-@@ -272,13 +263,6 @@ fn init_fields(
-                         unsafe { &mut (*#slot).#ident }
-                     }
-                 };
--                let accessor = generate_initialized_accessors.then(|| {
--                    quote! {
--                        #(#cfgs)*
--                        #[allow(unused_variables)]
--                        let #ident = #accessor;
--                    }
--                });
-                 quote! {
-                     #(#attrs)*
-                     {
-@@ -286,7 +270,9 @@ fn init_fields(
-                         // SAFETY: TODO
-                         unsafe { #write(::core::ptr::addr_of_mut!((*#slot).#ident), #value_ident) };
-                     }
--                    #accessor
-+                    #(#cfgs)*
-+                    #[allow(unused_variables)]
-+                    let #ident = #accessor;
-                 }
-             }
+@@ -251,6 +251,10 @@ fn init_fields(
+                 });
+                 // Again span for better diagnostics
+                 let write = quote_spanned!(ident.span()=> ::core::ptr::write);
++                // NOTE: the field accessor ensures that the initialized field is properly aligned.
++                // Unaligned fields will cause the compiler to emit E0793. We do not support
++                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++                // `ptr::write` below has the same requirement.
+                 let accessor = if pinned {
+                     let project_ident = format_ident!("__project_{ident}");
+                     quote! {
+@@ -278,6 +282,10 @@ fn init_fields(
              InitializerKind::Init { ident, value, .. } => {
-@@ -326,20 +312,15 @@ fn init_fields(
-                         },
-                     )
-                 };
--                let accessor = generate_initialized_accessors.then(|| {
--                    quote! {
--                        #(#cfgs)*
--                        #[allow(unused_variables)]
--                        let #ident = #accessor;
--                    }
--                });
-                 quote! {
-                     #(#attrs)*
-                     {
-                         let #init = #value;
-                         #value_init
-                     }
--                    #accessor
-+                    #(#cfgs)*
-+                    #[allow(unused_variables)]
-+                    let #ident = #accessor;
-                 }
-             }
-             InitializerKind::Code { block: value, .. } => quote! {
-@@ -466,10 +447,6 @@ fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-                 if a.path().is_ident("default_error") {
-                     a.parse_args::<DefaultErrorAttribute>()
-                         .map(InitializerAttribute::DefaultError)
--                } else if a.path().is_ident("disable_initialized_field_access") {
--                    a.meta
--                        .require_path_only()
--                        .map(|_| InitializerAttribute::DisableInitializedFieldAccess)
-                 } else {
-                     Err(syn::Error::new_spanned(a, "unknown initializer attribute"))
-                 }
-
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+                 // Again span for better diagnostics
+                 let init = format_ident!("init", span = value.span());
++                // NOTE: the field accessor ensures that the initialized field is properly aligned.
++                // Unaligned fields will cause the compiler to emit E0793. We do not support
++                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++                // `ptr::write` below has the same requirement.
+                 let (value_init, accessor) = if pinned {
+                     let project_ident = format_ident!("__project_{ident}");
+                     (
 -- 
 2.53.0
 
