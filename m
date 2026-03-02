@@ -1,156 +1,151 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FA741C0C1
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 16:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9064A23
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 17:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772470759; cv=pass; b=TepXfqhE9E0DeB30zzph8H2NqYpom2/qtHt2raCENbzePobNweRf/TBrJ4NXXx50CuHQMjMKkCHzyRDYFmfW6JLuPl6iwn8ZE7Yu89XSerCFQ2nZYDjrMB115wuo9dyMca9HbYdDOciAXsKS0Bk9rjKuHTT2JN+OPxkq16zcfPQ=
+	t=1772471014; cv=pass; b=W6Kgg4g0HiQQ/uJ7UihRdv++F9k8BxJoSJsRVtYrbKePxxVNlNPTTXspEjN00WY6f15Z7NPazR/dhpGtN9q9ndVanJR3Vr5dwmmE8jE8tFXnf7xiNIib3Nx18i+EF/KdLp109+D1GNDKC/FxOdxhgOcSzPXelTD0aa10HKaLqfM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772470759; c=relaxed/simple;
-	bh=pVz0dJBBcxJkK/aoGlVT/i9HSy5kxN+sszIeZ9c3UJM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=boK1Lcpg4RG+ZKQZIP5yTTAygMeTg9V2nhv5xVLtqVsQt3p5Wz0RZeuOYdl94ieNBWTT7C+1rVr+ZkFu9osW5Tfgs/HusX4E9plOIdEXbQSXEpJHOxAldKBUjN1sGWMGiZahIclnILTObl/P8DgjNDT437mqkh2Hi1Gp5SyVRac=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h/khvKnb; arc=pass smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772471014; c=relaxed/simple;
+	bh=ub95iMK1ZTUVrns/iuK9oSUqW2cXG9p86NQBNckeM7k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pEIc0UtHuzo23CSuffExKeEOoCH2zHHRIQlUyrFItHcjDx0gHoOA4iuMUO3oqHSe8zIUkz8uyF89EOrD/wa/BER4zP9QzGZ+kGvof0HthhMnXu7mYAstp8UonqMxPMv25XE744qH2rvNcu7ggQ9ZpIkQC8dMOLsERfVQ2MvObV4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=UB1WmjJ1; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h/khvKnb"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-389ff6e5885so12885321fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 08:59:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772470756; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QAGkasyQJ0w4eRpu7Vf0jSHCywWU9NyiQE0QCUribDf9S9Ot/BzwtXCyptiG8rqVTp
-         zYhK4NdZ4DuLU1TKGlY9z/p0X8WU08AiJybF4pxA9qur2ZkQRvlS+/b1SiBYg+6sZM39
-         BshL7Pu0YcmPHzg277v9CVv9QPwWppZAEObLN7ivrkJrcTRAOE8L1Frcz2/4HUpmBc5T
-         CG5xySO8DJuzGIDdiv3DbkIDYvwEQrwA26zhQZ8/2H45+Ydd0mS0i+9pQSPtQDo+gFpi
-         03FAI9V7HYxKkU0Md/L/4NlT7waTwELek2s5w2qHiQ7iNVyuiOs5WExuL4kRUdxLxzAd
-         kmLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lQBA7gwP3YvOBaPq8xRoZ9s6LczWLnuMTYSo52+OrLc=;
-        fh=jui3MJfIwD9cT7gbv9HBbu1OT54ieodmP3Rj3Y7rgx4=;
-        b=Xff0dlWnNtku+qGkFVVkFfMKXUWvKj4e7u/4vczzoVoNXsIeYfIKa/1/l2wPnSQIGq
-         WOsMN/1ZBd6zwf/JA64AtmY364XWot7MvbpW009TlvFDGcL06iKieeudNxyCNAxg7v6K
-         2Q3gAjRtD5eZBfkeuHL0jcsNQbiyhkDtqZQP7CwbL9u0AV7so6+6kS8aUAemKFbMNXmq
-         TrNQoJ/FymQzmHGvAZ8yXbzUb1buNpjXZEZ8uWebPOY2wlagXEAtikrElYf0wMKT+5xp
-         FlM0xBS1aDI6T1OTW9mYzMMzkGv2D+iH6ozzJWW/KPgIXgi8W/qyzBFQmbJhNqtx6SyP
-         WlWQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772470756; x=1773075556; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lQBA7gwP3YvOBaPq8xRoZ9s6LczWLnuMTYSo52+OrLc=;
-        b=h/khvKnb/qKAnaXwmEe3LybIepLxMy/avPM7Av51z/HS7jiP/vc/3urir2D7a0YTH+
-         RCW5bPt4Uj3h0Q05E4Ybmdrd9KLpnWwzBmX/g9hw3RAwxHSmAunUxwjt9mqkzqLXx35J
-         3x7RmqbPBWICK68Z7FEsKc6OKVXihiLiQTRsu2/4ThwQZ5Bu+ePozirwrOOnkTv6dzGs
-         k+cVbHqHfJVdyCZag537yh2hd62lr+grRggPEEexsYlW61ChxcIdL/cKmHKTGA5imenS
-         LtQJfp0YQdbncjopsyRY2OpiHNdaGda/aMytkt1zgbLjk/+J5yI0Sq9l599ln+gkMEVU
-         PTAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772470756; x=1773075556;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lQBA7gwP3YvOBaPq8xRoZ9s6LczWLnuMTYSo52+OrLc=;
-        b=R6BrplSiLcohcHFsKPUp/Nr+ZogrU+YPhFD+uP0dXWoeslTEfX8gkii8hU2dTkPF/k
-         gfdkrvxYHvsZyOCxfD3cy6nyJzkEUjTuHNw5MetWh2zyAuKJ/1MuD2SKXU4vkO2FRTlX
-         h9Rok327HBcF9yd8xzWd1nsiMo/FVlWpY5JS8XDSCwh0S8Lj+9g+LnUSkSkcXuKH7DZf
-         f/b3nHt0MEjOKaZJSxX07ciU9VW6fLfCozty+8m7F+OND1gBC+AlwwmBkjExcQ1Xq1wE
-         NHV11KFeK/50OkRCcdhalylvEHT5wlwqEdE1LQZzjgQ+pvDeJ2CDdHgklyRofqgR0U0c
-         PwvA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWzEt3wnwyuJtEhfccWxpVt4OyqiUMYhkQCv/kxVv2IJhqCdDPdHznjrh5Ah/vzc3N67oH/vbsQ/IvS/nfng==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNYtuibwCGaHUowGhRkwAJ+QGMA26QDHLoGh7uxXFhKTd520NL
-	doLqsYjv5mSlJIIYeu6GVG4N/Jrgatbg3wt0ArkLSRDHi1WRPigKFbN/E60RX5pDF/2DpQLZEm9
-	rHr1VxdQGBzmcBSfZpzLrzr9iF3vGHoU=
-X-Gm-Gg: ATEYQzxpXKDs5LDGQ3m8L4f6Hpxn3+w9mT2il2j3PGMqmf7p3XrwjodYFVen+63+cnO
-	UtLe2BO0KlB9Gy8fvBJl60X8eGSOO3A36A5+hXGl0wPKayBoxVUw7dYXrfx7Ye9C7ftMRTerFKH
-	IDCSJK0stEK7dQ6cG7g9CW2V4pNwzRbU1u4Kw9qYc8G6p4h6RFl/msLQRNXLXLm/e8H6S4ytdVD
-	y8QupVyppzahBkbQe/+J4SU7P2caxMf+VKEdVsw5zOXwLCXJzLVtVKNV4XO1iPMJD+5F/ZhDPNJ
-	bksrkzpw52o2sJYX6cRdrKQI2am1YFzDyY4v4rFemVaogL9k8+M438woSKew1K8/fZbzCWo1Tvm
-	A7MF+6eFsiCwPp98Tyg==
-X-Received: by 2002:a05:651c:542:b0:389:ed50:1b10 with SMTP id
- 38308e7fff4ca-389ff73e368mr76850201fa.13.1772470755751; Mon, 02 Mar 2026
- 08:59:15 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="UB1WmjJ1"
+ARC-Seal: i=1; a=rsa-sha256; t=1772471006; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=nIxKPqimEkEj3+VtKwCQbDx59+lpFCaUJb9STfD37jWy55f4WFBgSQy5MXBwxqDPMBueYuSsYeofCP2vDkEJMXvWq8LZnwDpjhzMau7j/XvSN9g3x/ekSC7+4kiQKBI6tITLlrz8VRc4WgMnKo5gBAsH+uJ66EObjDtxAN77OHs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1772471006; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=G1nGZ9pjYdRxj6fO5beVqDO4Q6KE8nU16ODj3Ijuy10=; 
+	b=BPfjAmHdlzhwEeW6rKSPnmQa1Fk0Hd8mPQm3FBAXZ5UJjhFt6XB0q/voPp/0JWj+0MapORQsROl26T4kUCtb7Cd37QXJTejHsu0TCP5UYCl9IxJRjzQxm1R/OUsJcxsH7ED8KAfnK9RCUWSh4g6IhseolhzHZOoiEKq+T5Yj44s=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772471006;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=G1nGZ9pjYdRxj6fO5beVqDO4Q6KE8nU16ODj3Ijuy10=;
+	b=UB1WmjJ1ufcshvvX87pa61YDincaf/ugV96I5jJxRFwgQXRtHhgzp85jqLfHZKo+
+	XT5jjkyokSGCjEt/tjdTbnfI/8Dy2gVlvnobQEql8Zidh3XxqXHQ0dhqzwRAv51FTof
+	WSwOgop748oVJBK7+dVYkDpRC5o8Z0LAJFHs488g=
+Received: by mx.zohomail.com with SMTPS id 1772471003268422.2853518645959;
+	Mon, 2 Mar 2026 09:03:23 -0800 (PST)
+Date: Mon, 2 Mar 2026 09:03:22 -0800
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: rust-for-linux@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	dri-devel@lists.freedesktop.org, aliceryhl@google.com,
+	beata.michalska@arm.com, lyude@redhat.com
+Subject: Re: [PATCH 06/12] drm/tyr: add shmem backing for GEM objects
+Message-ID: <aaXC2td--4_afzT4@um790>
+References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
+ <20260212013713.304343-7-deborah.brouwer@collabora.com>
+ <A849CDE2-C257-42D7-9FD2-E9442A540264@collabora.com>
+ <aaI0H8u7nAbMySek@um790>
+ <20260302111757.7bae333d@fedora>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260109-ra-fix-primitive-v2-0-249852a4145a@gmail.com>
-In-Reply-To: <20260109-ra-fix-primitive-v2-0-249852a4145a@gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 2 Mar 2026 11:58:39 -0500
-X-Gm-Features: AaiRm51PVQ5lAX_DpPUoEisvIdHNSxL1eIYdkSoSlaj-ykO9afB8fJdDkcgZRnQ
-Message-ID: <CAJ-ks9nd4Vmbgw8gOajhU7ijgVrvcqpQL46rgX-tuPN1QOQBVg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] rust: take advantage of newer rust-analyzer features
-To: y.j3ms.n@gmail.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302111757.7bae333d@fedora>
 
-On Fri, Jan 9, 2026 at 5:10=E2=80=AFPM Jesung Yang via B4 Relay
-<devnull+y.j3ms.n.gmail.com@kernel.org> wrote:
->
-> As discussed in [1], we need to support multiple versions of
-> rust-analyzer to take advantage of newer features without breaking
-> compatibility for users on older toolchains; we must maintain support
-> for rust-analyzer v0.3.1940 (2024-04-29), which corresponds to our
-> current MSRV of 1.78.
->
-> Hence, this series revises the approach taken in [2] by first adding
-> multi-version support for rust-analyzer. Specifically, it enables
-> support for the v0.3.2727 (2025-12-22) release and newer, which is
-> required to resolve inherent method resolution issues for primitive
-> types found in recent versions of rust-analyzer.
->
-> Thanks to Gary Guo and Miguel Ojeda for their feedback and reviews.
->
-> [1] https://lore.kernel.org/rust-for-linux/20260101-rust-project-reduce-s=
-ize-v1-1-4cd66e9e02d9@gmail.com/
-> [2] https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-def809357b4e=
-@gmail.com/
->
-> Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
-> ---
-> Changes in v2:
-> - Implement multiple rust-analyzer version support.
-> - Rebase on 9ace4753a520 (Linux 6.19-rc4).
-> - Remove an unnecessary new line between tags.
-> - Link to v1: https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-de=
-f809357b4e@gmail.com
->
-> ---
-> Jesung Yang (2):
->       scripts: generate_rust_analyzer: add versioning infrastructure
->       scripts: generate_rust_analyzer: fix IDE support for primitive type=
-s
->
->  scripts/generate_rust_analyzer.py | 196 ++++++++++++++++++++++++++++++++=
-+-----
->  1 file changed, 172 insertions(+), 24 deletions(-)
-> ---
-> base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
-> change-id: 20260101-ra-fix-primitive-78154fe8173f
->
-> Best regards,
-> --
-> Jesung Yang <y.j3ms.n@gmail.com>
->
->
+On Mon, Mar 02, 2026 at 11:17:57AM +0100, Boris Brezillon wrote:
+> On Fri, 27 Feb 2026 16:17:35 -0800
+> Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
+> 
+> > On Fri, Feb 20, 2026 at 11:25:47AM -0300, Daniel Almeida wrote:
+> > > 
+> > >   
+> > > > On 11 Feb 2026, at 22:37, Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
+> > > > 
+> > > > Add support for GEM buffer objects backed by shared memory.
+> > > > 
+> > > > This introduces the BoCreateArgs structure for passing creation parameters
+> > > > including flags, and adds a flags field to BoData. A new_dummy_object()
+> > > > helper is provided to create a dummy GEM object for use as a GPUVM root.
+> > > > 
+> > > > The Bo type alias is added to simplify working with Tyr's shmem-backed
+> > > > GEM objects throughout the driver.
+> > > > 
+> > > > Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> > > > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> > > > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> > > > ---
+> > > > drivers/gpu/drm/tyr/gem.rs | 52 ++++++++++++++++++++++++++++++++------
+> > > > 1 file changed, 44 insertions(+), 8 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+> > > > index c1208d332dea..6a58f2da88d3 100644
+> > > > --- a/drivers/gpu/drm/tyr/gem.rs
+> > > > +++ b/drivers/gpu/drm/tyr/gem.rs
+> > > > @@ -1,28 +1,64 @@
+> > > > // SPDX-License-Identifier: GPL-2.0 or MIT
+> > > > +//! GEM buffer object management for the Tyr driver.
+> > > > +//!
+> > > > +//! This module provides buffer object (BO) management functionality using
+> > > > +//! DRM's GEM subsystem with shmem backing.
+> > > > 
+> > > > use kernel::{
+> > > >     drm::{
+> > > >         gem,
+> > > > +        gem::shmem,
+> > > >         DeviceContext, //
+> > > >     },
+> > > > -    prelude::*, //
+> > > > +    prelude::*,
+> > > > +    sync::aref::ARef, //
+> > > > };
+> > > > 
+> > > > -use crate::driver::TyrDrmDriver;
+> > > > +use crate::driver::{
+> > > > +    TyrDrmDevice,
+> > > > +    TyrDrmDriver, //
+> > > > +};
+> > > > 
+> > > > -/// GEM Object inner driver data
+> > > > +/// Tyr's DriverObject type for GEM objects.
+> > > > #[pin_data]
+> > > > -pub(crate) struct BoData {}
+> > > > +pub(crate) struct BoData {
+> > > > +    flags: u32,
+> > > > +}
+> > > > +
+> > > > +/// Provides a way to pass arguments when creating BoData
+> > > > +/// as required by the gem::DriverObject trait.
+> > > > +pub(crate) struct BoCreateArgs {
+> > > > +    flags: u32,
+> > > > +}
+> > > > 
+> > > > impl gem::DriverObject for BoData {
+> > > >     type Driver = TyrDrmDriver;
+> > > > -    type Args = ();
+> > > > +    type Args = BoCreateArgs;
+> > > > 
+> > > >     fn new<Ctx: DeviceContext>(
+> > > > -        _dev: &kernel::drm::Device<TyrDrmDriver, Ctx>,
+> > > > +        _dev: &TyrDrmDevice<Ctx>,  
+> > > 
+> > > Unrelated change?  
+> > 
+> > I switched to use the convenience type alias `TyrDrmDevice<Ctx>`
+> > here instead of using its full path. I can flag that in the commit
+> > mesage if that is what you mean?
+> 
+> I'd probably do that in a separate commit, like Daniel suggested, even
+> if that means introducing a one-line commit just for that cosmetic
+> change.
 
-Hi Jesung, is this something you'd be interested in updating now that
-type hints have been staged in rust-analyzer-next?
+Sure, i'll check to make sure i haven't done this anywhere else, and
+gather them all into a separate commit.
 
-Cheers.
-Tamir
