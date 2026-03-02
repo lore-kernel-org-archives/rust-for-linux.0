@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE97640149F;
-	Mon,  2 Mar 2026 14:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EC33E558F;
+	Mon,  2 Mar 2026 14:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772462898; cv=none; b=s4bQqGfrzHOUGBvJsXLBVO9fYoXOzBB1m0AE9EYjWHXC1kk4CUOc0C6JmtOKh8qPUg5imjEvczFnrjwr3UX2XqGsClcpHofxfwV8SrVoZmImIcb4VvMye+giLnp1NuDZrPdO5mIopJs7n+84BiZDAVYLPf1HLStHVRA9sCJU/ug=
+	t=1772462933; cv=none; b=MfcTTjcWg0xaiwM3u8PUiOAdtUOrUVLsD5urVL12sIow5U0SOiD59ZCyHyraZQNH0E1opjqjnBUXCPLWiKXN3ErbQ50gidxzDlXM9WDmanCKSPPucwdso1/Xe85NoVrdyIWxw8dbsUov+sygLuUVr9Vf6ny6THY6UH40rfyKZL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772462898; c=relaxed/simple;
-	bh=Mt0Svr10fcBQzLnM+GXvrbYOWA96FAL+7ZWEJZAvMZA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=maTE6wtf1po9r3YtNSRDlna4kBV29FIdLjxBitHG42oIMl2OqPIx5McrOhHoEYpRUeNBAqmfJ2AQuQDK+nHC7ih4u8CRW687AtOYVYCKgoJEPoi8ac8ZQbpVm3O5e3nBBVPu6s1pa2WbzECCv8EIl7uQlf9Ws4M1tkFB7BimyAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H2C60Lmg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772462933; c=relaxed/simple;
+	bh=k68oi+DG4aKXnEQ2vm1Yt+VFr3uZ5dWnaQrBSVsbMFk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=N/Se5XB/+1HGKR/mySoB9h9ISQ/5cm/5+NwXqTEQavPrvX130uUbYOi+fD/XN/JVC8Svt9U/vXDgeV0Z+bYVGNa08I+28bhR9heKIyrIjitV5q+gAG9ZPQo2fszo8kiG0mfMF2qc4kuhKFk2CBT8WP7DFaO2XmTH5ju6vXXCAG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hF9HctBM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H2C60Lmg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F1BC19423;
-	Mon,  2 Mar 2026 14:48:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hF9HctBM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3274AC19423;
+	Mon,  2 Mar 2026 14:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772462898;
-	bh=Mt0Svr10fcBQzLnM+GXvrbYOWA96FAL+7ZWEJZAvMZA=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=H2C60LmgAUk2Nssv2qnSo/XLdqmeuApSpvzZLVSRVsZG4CvMhjOsYL5KHNyZsytXS
-	 cF3qAta2ahwjaThsE/dVPgV+q1hGG6vFHZwmAZwPOASjH4UFqxYXKFjhjFBxpJRnET
-	 eqmKlhh1F+RMZNpR9kdyb9pYwsa0+lDhgag9tATx4bkweWNl06/LaQowgxo5gjXRI/
-	 MQBGNGuqdx4K1ooQpyvf849fU0EVM7Z9084r88k9YBlPpHAXrPn65h2f2M6wfAmmQ3
-	 93zEAD6EF9kRQyVoTEndgXouaYhwufC+c2kg0O8RRzw87izSn8o2oghgkwbsSfAqax
-	 uZfoJFgw3/u3w==
+	s=k20201202; t=1772462932;
+	bh=k68oi+DG4aKXnEQ2vm1Yt+VFr3uZ5dWnaQrBSVsbMFk=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=hF9HctBMivGe5BVx/YbhrGtDjYbKCp/t5eBvIzD3AH3OpTTpbvkLzFBKpwwO5LJM1
+	 vnTaioGnceLfJxf7FegwLy8axOD/JpujYsU7DO4OvUnp6XxdsoVH8/62hj7nMBJse8
+	 RLTTJc7jAgKqwt+r/4RELXN4wGC6n4Warjww4HAMGrm73zGNB0ZbXDqEYWIezTYlJm
+	 qYbRGFTlHs5ESfn2q6IwPPl4Bk2Mhvd43/6bk1IxCG4joM9OVausJ8OEKO21YCsIP1
+	 jyzsVdBK9s6lC3FGNPYMV56wLJvSZD43jggvJ+3pFGa2BEnEkphxrWaUBP2LTJar3b
+	 u0+m/JomFhiIA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,27 +34,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Mar 2026 15:48:13 +0100
-Message-Id: <DGSDNOH55CX8.CMGYO2OMDBJZ@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 1/2] rust: add projection infrastructure
-Cc: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Aditya Rajan"
- <adi.dev.github@gmail.com>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>
-References: <20260302130223.134058-1-gary@kernel.org>
- <20260302130223.134058-2-gary@kernel.org>
- <DGSDGDIVUHO0.P594H9B4LLO5@kernel.org>
-In-Reply-To: <DGSDGDIVUHO0.P594H9B4LLO5@kernel.org>
+Date: Mon, 02 Mar 2026 15:48:48 +0100
+Message-Id: <DGSDO460JUJ5.2VSG2QHHGB8HZ@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Wedson Almeida Filho" <wedsonaf@gmail.com>, <stable@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] rust: pin-init: internal: init: document
+ load-bearing fact of field accessors
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260302140424.4097655-1-lossin@kernel.org>
+ <20260302140424.4097655-2-lossin@kernel.org>
+ <DGSCXPXGW2SW.D8VR5QI5OVNT@garyguo.net>
+ <CANiq72mWrPR32O-1rgs7fz0aJTS2rcjGMd7omwvr2cSQkM9rig@mail.gmail.com>
+In-Reply-To: <CANiq72mWrPR32O-1rgs7fz0aJTS2rcjGMd7omwvr2cSQkM9rig@mail.gmail.com>
 
-On Mon Mar 2, 2026 at 3:38 PM CET, Benno Lossin wrote:
-> [1]: https://doc.rust-lang.org/std/mem/fn.size_of_val_raw.html
+On Mon Mar 2, 2026 at 3:20 PM CET, Miguel Ojeda wrote:
+> On Mon, Mar 2, 2026 at 3:14=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>>
+>>     Cc: stable@vger.kernel.org # 6.12.y and 6.6.y: need commit 42415d163=
+e5d ("rust: pin-init: add references to previously initialized fields")
+>
+> Yeah, something like that is what I would have probably written. The
+> docs seem to suggest a format like this:
+>
+>   Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y: 42415d163e5d: rust:
+> pin-init: add references to previously initialized fields
+>   Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y, 6.18.y, 6.19.y
+>
+> i.e. first the prerequisite, then a line without it to indicate "this com=
+mit".
 
-I recently would have had a use-case for this as well, but besides the reas=
-ons
-you can't use it in this patch, I think it's also still unstable?
+Yeah I saw that in the docs as well, but I thought that since the
+cherry-pick wouldn't succeed (due to the syn rewrite). However, I wrote
+that 6.18.y and 6.19.y applying the patch would succeed, but that's also
+not true, there we also don't have the syn rewrite...
+
+The two Cc lines you gave seem like the correct thing :)
+
+So when you pick them, change the Cc's to that (unless I need a new
+version of course).
+
+Cheers,
+Benno
