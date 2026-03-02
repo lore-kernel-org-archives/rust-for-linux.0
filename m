@@ -1,146 +1,128 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013023.outbound.protection.outlook.com [40.107.201.23])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27283815FC;
-	Mon,  2 Mar 2026 20:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666C12FE044
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 20:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772482604; cv=fail; b=ihk/CUgm29zk+stUPDJB4C5h7uawaIvGrIgbhJUxJgEjk264tWHR0mvvgFhbUIi6WPNXQtsIdY4dmScyxsIWBqPzTgimVxoeo17UbtQeYDqSgrsGvjuva7rGGFzb1LK/hkPwULXwmu4em3+Z8SaZgxBcL8L++X8qMDn5EKsdT9s=
+	t=1772483027; cv=pass; b=GNFwNRJRptjKtY63MWAkWSNLnP7qTUhV1H2R3aN4MQ87e7FurafaE+vt7fFqfcGLACKBN23ZppogcjQYSM62yPWDOQ6djjaAYNfK2422fA1K4qTqNHdb6xLOvf58OveB+d3ESkZvZV+U8TbIJwNHKVjuVTWoTg5qmrqzIaDk3ms=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772482604; c=relaxed/simple;
-	bh=GgwzQgAj/81wVN9uci1oycp95Eaf3p2HRuZirMegals=;
-	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=C3ExIwoXQuuyUgT9FwbJKloDderQJpNdqK2qsisNcaqkQWLnThByS0OnPiT879cDPBiJc163/FBKX21jgRUFBuf+zkUPvx6wztXhklkFkBTghfMmH/XSlb8gJfu+Ah7uchHJxPZmIXI7KDHe0eoBHyccig10nOr4YX0SAjF27Yc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=p6w1Pmwd; arc=fail smtp.client-ip=40.107.201.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1772483027; c=relaxed/simple;
+	bh=2O3MPMBoN4lWLj866sM39xcDmM42WzxqVySUIo7g8uM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jEzvhJb77Vmcb99LILAXwiQF/aL0HMTFmXmQI1hIowm+41G1zAc2hH71ZxAOmGWNAaXEiJVWfX1iyKEUPKLugOfV8yWE79Fk1qnqj0DDQxuVBUAUNWram10gUEjuDZB3E8q3921FLKLHtGkxzs990hnR97jZhy4R9K0PYAnfce8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=XzsGhd6J; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="p6w1Pmwd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uhd0XHluzPHXtxMwsifBc2GGQoSpdaGloI/0DaBRHkg1cQQLnQWQoEgEzoPoYmFeeRc4sjL0RaEJEGMyqpX6tvPtsoSEam24nkis8dCAr2RXKYZPp9UPs11E/Qnt+vo95C+jXd9MSmoDUcqBOeyo1YNRva8LE9Ij4Juv+n3iiSrrNZvdEKnG9IMhgvN2FKGaKt+8D2qQTpehmV9k0CHitreMw27ftw1CN1Vk8n5TdKEKhqvq50FdHPAdjlNmuj7adzv94i/+M7e9MXdwl5MTnvOjBSLxmgm4LDKRaGnVehDo6QamtKTAvZPYyUHcPzMrQdc3WgEn+HPQnTfNQ9vU/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GgwzQgAj/81wVN9uci1oycp95Eaf3p2HRuZirMegals=;
- b=J7gY3kYBk9rHnu2kcrC1ILomfBPG40CoQA0WpLIrHx4Z1fRl/bHS+L61gqbksobTjyoyaRoodQK97xXi5jyxDvxl3C8EJgNHGaYdaXoWBQRkoj9XZY2Vo8R4KSictOfJJeEO2uCweIAMehLZ66Sp3WLKWXu4AZ+XPYmucAK1+Jx5J5+Kxp/l5AV/qS1vDjDnfBxKP7Q7cx4BIONKbA+iNNd7BamoN0CzIHs6lgUVMzDOEkgbrcE1g+Ey0PHKajFPw3tZ+LFxw7bIsSwwI83hjNgSEdwXdoOx01ATdpN0RTn/xYUxardCCAg8YPuw7OVclsOwV0IptJDt1/8G0+niHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GgwzQgAj/81wVN9uci1oycp95Eaf3p2HRuZirMegals=;
- b=p6w1PmwdX9+G7R++z0/9amJXNgO+nvU1J0+J3CgicrBkvoeVDKZ/eWje8eVbPnq6H6/ruruD7t4F/eSeozGycZAd5QCm7cZ8qYFmaIE/Q2b2ORkKgzXXXG317a0yYFoWYy4NdVPLqKAteIkxNRr88/CxH1Tu+eyY+Mnsw2jLQPpF4qnzqY7m3j2H6Cv0eNVgQqbm0l1l+OivIsCGt9Ylu98B6uwSTUf7perNzqHS/k8unBtdBoZfJxXVekjhiZ//1mGLlulbJQMfGf7GVPeIBQIMWZtZdtB37X1zGY/inLp5Q2Vx4IpKsFIrlM5kY92VMtgaZHBXBaYX8tj//QQeIg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- CH3PR12MB9454.namprd12.prod.outlook.com (2603:10b6:610:1c7::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
- 2026 20:16:36 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9654.015; Mon, 2 Mar 2026
- 20:16:36 +0000
-Message-ID: <26f0ae85-6284-4175-9f6b-812db91237bb@nvidia.com>
-Date: Mon, 2 Mar 2026 15:16:34 -0500
-User-Agent: Mozilla Thunderbird
-From: Joel Fernandes <joelagnelf@nvidia.com>
-Subject: Re: [PATCH v11 4/4] rust: gpu: Add GPU buddy allocator bindings
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Dave Airlie <airlied@redhat.com>, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- Alexandre Courbot <acourbot@nvidia.com>, joel@joelfernandes.org
-References: <20260224224005.3232841-1-joelagnelf@nvidia.com>
- <20260224224005.3232841-5-joelagnelf@nvidia.com>
- <DGPQDMR88BBG.2RO77IS0XQ0HF@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DGPQDMR88BBG.2RO77IS0XQ0HF@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR06CA0029.namprd06.prod.outlook.com
- (2603:10b6:208:23d::34) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="XzsGhd6J"
+ARC-Seal: i=1; a=rsa-sha256; t=1772483020; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=elOjR+LXzlUoQl9A/87V3aOpmy9UOjpb6h5DoCO+C/6AvYVX4APFE4P7a69gi+VjnYhc66ps9aq/ovt2V075HiH1nqjHnxAtYrvJLgfNUKSXR/ftbvPYV7VoHzAX/uuFU6J3oPTeEQt/XsuYFbkM/ibyW8yee9cuUE5nRV0rx2s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1772483020; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=2P7cKmxKTtUWza3HVGpYgBF0W5BOF4ADlghlq0nZnXo=; 
+	b=CbtbxahovGTUufjc1ULbSGpG14RsXnZXgkuubT4Jq+vLs5q6uzMfDOGenSR4PkxuzD22DcR4RSgx5ccAIwXZMfp51AQVKl99Y8gh0a/0wqn4c68L17gR2dgBdndnpjuxwYhq5RI3Z0e5VOhKFelvbDYrhbk5/Ipsb5cPYSpTMSY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772483019;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=2P7cKmxKTtUWza3HVGpYgBF0W5BOF4ADlghlq0nZnXo=;
+	b=XzsGhd6JzEaomip6IvKAw69y9ks/sbfzHz2ixJmCUj+Uk6vKjE2QEkfzKXGnbuRX
+	9y0jCna7a7Y/tZv5fG5Bqg5MxYOaOxx7Yt4sd8hLHFgIbbDRwjFe0SrYfSjUfuvhWWm
+	tptwW0UuZ1m4Z1mKzLxnmkY6wolo38wBAURkRfiM=
+Received: by mx.zohomail.com with SMTPS id 1772483017282302.4406533457385;
+	Mon, 2 Mar 2026 12:23:37 -0800 (PST)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Cc: daniel.almeida@collabora.com,
+	aliceryhl@google.com,
+	boris.brezillon@collabora.com,
+	Deborah Brouwer <deborah.brouwer@collabora.com>
+Subject: [PATCH] drm/tyr: Use DRM device type alias across driver
+Date: Mon,  2 Mar 2026 12:23:31 -0800
+Message-ID: <20260302202331.176140-1-deborah.brouwer@collabora.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|CH3PR12MB9454:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9b35156-3211-4cb4-2950-08de78989b00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	2VN07RUWEhbRVLsY6OGJnJV0lkeEs39eZhuPSbJQCRJiUAE0QJZgHAny3d0CglajZFZfz0lh0FH4/pLlqEFGF87NpcI1fC9DdDixULip4fDlScw/1b4ej+OgNx2kA5JIyBK/3dHHCPyUkcPj4yT0bSsI9czlWIlfBb2oewbqLDRAtIwHYt1ibmMOHjsZa5SskYTjYUClp8GQkV31hUrS4jDB8NIDrC6JKPhMCc54fnm5smZvOFAKJPNbzrcEvDyVHusrK2st1FS6WcgLbWX+zFPEXyfslceMV1Mq+GP6kDGC+26H/F5Sum0aKBY9WVlBntWACKDwS2TNtl+p1QYAvdRrobIhBDusnjiB32MFLeBjXLVy0ReeNmvPpVpM42AU0Xn8JZx5Hz1wcoCPcBmzsssLi9iQgO2Jsj883CYNUno8J/Cb0atnhynrtCcOenNT2xoHN+hOqMGIwSYYXXWyA0yIIRlGsY0KnX6dnYInrpI7jV51fOyb+RLRdZQNVDjzlqzF6H5jHgNwQ0BaO6Pl3FalSGzbuFmi8CvHvIA8c64n5A/dILIKVAXBUuGa2wqO1Sb5hsy98WnNNwQwaXL4BY45nruO3tplL88P6MCDyFcO908MFHcSnNIM5lWXhNpGR66RRSI/6g10nDk/fgIzxq3gzPwZXF0QC4PQoMzD2fSMMLTkfnpR+GeXR0pnpCZFrerBRq4h1wjAcqaqd2b++A54ujWT4kJV4YibKvSKZ/I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a2pwczFENzB5dnRoZytDNGVuUnFMZUtNSE9qbUVmVFZJNkNpRkdCVmV4RHVx?=
- =?utf-8?B?cGtGR1F6RWZjWENvV2UzdXZkWEFpQWR2MlVQbWlrdDJ6d21XcGMrNXVCNDVH?=
- =?utf-8?B?bkN6eWdYaFN4RzI2bWxkNzBBWUluNDRmQ29RT25KK1NTQnVYaVQvU0Q4RWpT?=
- =?utf-8?B?MDBwMlN2Vy9NcWxORnFJcGhVc2UxZk1iSEpvNTRKTFp6Z2dRNUdIM0laZUtO?=
- =?utf-8?B?dGl6ak4wQ2E2cGR0eFhrNnIyZEsyMUFxRGhlUEJrN2UyY0JPOUpsdWFISnRD?=
- =?utf-8?B?bk1JclRkZXV3dFhBZnJ5Ry94c2FxWXNXT3NpSmcwYi9SMW1UU0ZoUUc5SWhW?=
- =?utf-8?B?NTU3WVMvZGVWamVseWtOWnVVRWYydzZJZitDNnhEdGUwbi93d2N1YjF1Wm4r?=
- =?utf-8?B?YzMwNzBabFhsRDB4b3c2b0ZqYUYzNGp0TThkM0FWczFDcE5EMEFwbWttYlBs?=
- =?utf-8?B?MXpTLzVrZEpXR211Nmx1b3ZpRC9OQmJrUW9OTzhRY0R5UHBtZ1JJQ1FYbVZs?=
- =?utf-8?B?SXBvUnlpbnl2R1AxdzQ1L1N0VzJoR3hWTDVIRlNrRzZNSVd2YkhKWEswR1pi?=
- =?utf-8?B?bjBKM0kzQ3B1MWVNcDYrOTlLbG52RUV4TFhJVnhWcjlNZGRDVXpJY2dtTW50?=
- =?utf-8?B?QmxuU2FvOUJjVDg3aVZkQTJ6K0loT3ZoTjliRVcwOTZVb2JvaUozdG42NWRy?=
- =?utf-8?B?eUcrb204RFhaZzhnVkpXVjh4U0F3OXhiSk10WWxLbTVIQmY4S1BtZUcyTmxz?=
- =?utf-8?B?VTIvbXhCQnVSelpVWDAyVUV5eFBoWEpDSTc0QkplRWhkZUFhSEJYQkFqWVdr?=
- =?utf-8?B?dHl6OVdDaysxR3A4SVljc0tHWXRSMkdSbHhsVW4wbDBEUjJGNkt3MUVidUUw?=
- =?utf-8?B?RWx3SGV3dWw3OHFkNjNtL0JNWitEVzdMSFdFdTJiU0ZISUZobnZpYmNBY1Bn?=
- =?utf-8?B?ZXprVUJCQXY5Z1N2OUlqSXFVcjYzNEVISU1hd0ZnV050UEFJakRTWjA0TUR5?=
- =?utf-8?B?aHc1Vkc5cXFsbVhmcXFWY0tsVzRLTXhYN3RXNTBaQVVBWWpDbU1JVmk0cnJz?=
- =?utf-8?B?amhQY0w2VXZ4NHVlc0pjSlU1VHBXZ2RMaWZPSFd1VWhUYWI1NE85VW90RDhR?=
- =?utf-8?B?NFpvZU1DUCtjMC8wclRZTUJPczN5UWl5RGw1eFJZcENIQnFlQTFRN05JVUg4?=
- =?utf-8?B?a0h3cTdhUWdGeTg4eTFPK3NTVzBvcTVtOEdReVd2bXNsRW83WjV6MHlnR2ZH?=
- =?utf-8?B?ekx5YkZJNWRXWnJheFZndDNvRVlGdXlHT2M1L3YwT3Q2bFh4Mi9iWHBNektN?=
- =?utf-8?B?SXNxelhrZ0NtWFozYUxJYWNaY1h4enRzZ01UaEMrSkk4cWFTVUM2Q0w2QVly?=
- =?utf-8?B?WDF6cWNMdHdqbXRaOTFONGZhZUxoSitxdE5xS3FGYlNZUkFxeWlta2ttN2Zx?=
- =?utf-8?B?eitlZVVEbUNWdmRLY21NUmRObmVFK1VWeU43SyszR2FwQmxlUUMrNzc3MGN5?=
- =?utf-8?B?WlcvZzVyd3BPWi9SQ2pyQ1VyNG1XSDhqbDNEWktXK0xudWRWOFZKL1NzbG5S?=
- =?utf-8?B?ZmhaaVNMUWk2bW5rSFZCTEMyZVdHaGZqSTd1d3oxdGw1dmVtaldpU2xpNEQ5?=
- =?utf-8?B?YVZTYVhYb3JKa2lyVEVBWnNTRzdNSUFwZjdIQ1BDWnVVaEF4QXM5UEtRYUF6?=
- =?utf-8?B?K3M4T25xY2I2WEN2MkFMZU9uRTNjRTdQMnhndWZqU0lyZHpsSzc0Q213YUM2?=
- =?utf-8?B?dEV6cFJzVDA2Y3NrV0hWd244azBjM2o2Yll4U1RaYTRNUi9XOHZPWi9vOFha?=
- =?utf-8?B?bkg1UlVEckNaTlJnc0RGM0dwODgycUVmZFlTL0lyeHFlZnliRS9oWWJHS2Rt?=
- =?utf-8?B?M1NtOE5sckVxSmNXdGUvSDBNcm5FWlhsY2I2QjFsbFdXd3h2QU1MRWVWenph?=
- =?utf-8?B?RU1DQkxUblM1bW9CVDdkVlEzYmV6MkIyOTJ6WHduQ2VlTU8yLzRXNXZSYjdL?=
- =?utf-8?B?d2pEeWFWb3o3TVV1dXNJWW50S1JoSGUycHpGL1lKSDRsaVhpamZTbWtWZ2FQ?=
- =?utf-8?B?K09HbWtGRmR3c1FGRWcrODFzc0ExOXRuY1V4YnRyaVVpWG1Da0xJVHNwZFZU?=
- =?utf-8?B?dnlhSzIyaFdPRk9UZzJrbjNlNytRbisrREFGSlZPM2xXa3E4by9ndlllRmph?=
- =?utf-8?B?WkpVR0FtUUpXOVRBVFZHTzNJbFRLNTJxQjhwQTdRNE1Vd3FqTDNpNzdhZC9h?=
- =?utf-8?B?VUdjMk5vNVd5bEtUSDBiNk1SbzRSY0t4b0M0V3E4UitTWjh3MmxwaHhQUkZ2?=
- =?utf-8?B?Y0pnQ0h1eDdQMnpDajVKc252clQ5L25BQUZSek9BTnRkc2Mvd0JLQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9b35156-3211-4cb4-2950-08de78989b00
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 20:16:36.6658
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wQcvCShf+CWmqjsmZ8VBwaV00P0tS90rho8heHFzZ6fZ9MrZ9d6J7diuZYe5rjaep2xJoV99vcv4M1nauQri4A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9454
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 27, 2026 at 01:08:21PM +0100, Danilo Krummrich wrote:
-> > +#[cfg(CONFIG_GPU_BUDDY)]
->
-> Has to be #[cfg(CONFIG_GPU_BUDDY = "y")] for now.
+Currently Tyr defines a convenience type alias for its DRM device type,
+`TyrDrmDevice` but it does not use the alias outside of `tyr/driver.rs`.
 
-Fixed, thanks.
+Replace `drm::Device<TyrDrmDriver>` with the alias `TyrDrmDevice` across
+the driver.
 
---
-Joel Fernandes
+This change will ease future upstream Tyr development by reducing the
+diffs when multiple series are touching these files.
+
+No functional changes are intended.
+
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+ drivers/gpu/drm/tyr/file.rs | 7 +++++--
+ drivers/gpu/drm/tyr/gem.rs  | 7 +++++--
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index 450be5ab9aaf..31411da203c5 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -7,7 +7,10 @@
+     uapi, //
+ };
+ 
+-use crate::driver::TyrDrmDriver;
++use crate::driver::{
++    TyrDrmDevice,
++    TyrDrmDriver, //
++};
+ 
+ #[pin_data]
+ pub(crate) struct TyrDrmFileData {}
+@@ -25,7 +28,7 @@ fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
+ 
+ impl TyrDrmFileData {
+     pub(crate) fn dev_query(
+-        ddev: &drm::Device<TyrDrmDriver>,
++        ddev: &TyrDrmDevice,
+         devquery: &mut uapi::drm_panthor_dev_query,
+         _file: &TyrDrmFile,
+     ) -> Result<u32> {
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index 514524ae07ef..5cd0cd9585e8 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -5,7 +5,10 @@
+     prelude::*, //
+ };
+ 
+-use crate::driver::TyrDrmDriver;
++use crate::driver::{
++    TyrDrmDevice,
++    TyrDrmDriver, //
++};
+ 
+ /// GEM Object inner driver data
+ #[pin_data]
+@@ -14,7 +17,7 @@ pub(crate) struct TyrObject {}
+ impl gem::DriverObject for TyrObject {
+     type Driver = TyrDrmDriver;
+ 
+-    fn new(_dev: &kernel::drm::Device<TyrDrmDriver>, _size: usize) -> impl PinInit<Self, Error> {
++    fn new(_dev: &TyrDrmDevice, _size: usize) -> impl PinInit<Self, Error> {
+         try_pin_init!(TyrObject {})
+     }
+ }
+
+base-commit: 15da5bc9f3adab7242867db0251fe451ac3ddb72
+-- 
+2.52.0
 
