@@ -1,206 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013010.outbound.protection.outlook.com [40.93.201.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FB32DC764
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 17:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772473580; cv=none; b=HIHidkmyt+1D6PY78GiWDdZHS22ZqcIjXNBFPKGoP+G6Cfev7KFsaFO05mBMfPltms5tyQVfjC8TcNtNgHMYitoB2w1Eqo2gPcgZ98wH+1K8yb4QkYlP8UbmPpO9zMFPWpzFOkjguSWl0p+cyu6JflGLVJzxSALH7E7wSfoKxaQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772473580; c=relaxed/simple;
-	bh=xk2Sa0/F/o3zcA5SrVAb8kwCrGSRJ8F137GOIajTJ1w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JHdmlbxoiYiB8/6wfQ/JHhKLBYL3aP3Ri4UsPlu01/mZ7AwzSV0WfGKgzx0p767Yu8NV/s1RXHTrWPVe1BTq+gvZLfWvyxQQ/ECc9LJox9cT6FAeaVxiT0tQ6wKfnhjGCsg/RQwJNOXxXoWaJcsZ/JYNVdrGubL4cPqHO/gjBuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4rz4NkJ; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5414C280A5B;
+	Mon,  2 Mar 2026 18:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772474627; cv=fail; b=X8UzvdMMpWKDwtS0CQAFofuxUU+b/VY2XqbQPvB/pfM4Lgvcy3f2Z/fxkjFIok4TTdoKtr1ZGGOzuu2VCAHZsuRS5DBn9Tk6u2n0YVph3l6InCmfQcAq2eTUZzDzfZ0f/s+Ea4wjVq2nvUjPlAoSeFt6IvzOp8QmsHC/ydm+uhM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772474627; c=relaxed/simple;
+	bh=dkUIyGrZ1ZZ71On2Xl+QZjLMASSSAd6hE+YcKh51stI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=brdQ7arxdLNqQnWW+2H1Oycb5WhqJIpZJ+9XpKuIEpcIVzSQzlC7pt63dRjlF0opNH6WHKIeOPQOIq5c3LKvBGFuROpZKXnBodojuSUWjO5QRmb8MMOq/SBCOOoHS3snziRX9K6loQkEPMZYSoMVcqZgl+GOEHUHZWDwWi2Q1l0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=N3A2cIYZ; arc=fail smtp.client-ip=40.93.201.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4rz4NkJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EEDC2BC9E
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 17:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772473580;
-	bh=xk2Sa0/F/o3zcA5SrVAb8kwCrGSRJ8F137GOIajTJ1w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=m4rz4NkJA1tq6eJPxPhzoX0oDsu/PkPJiXMEBISqYCEU+ZnUlXcbRrGUANqzb7Mcd
-	 0K9FGVlkRhoGdqRqs9R9am7PYS2CfPtN9BvgiHSay2VJfoMUh6U/vYrZulcIPKpteN
-	 Xlao6KfM7qsSrMWSjKp+uRca83MvxlNePGZWrid0WmPhZBSH0ptwYpvjM7RVFIESwb
-	 GbVbA6DVq9k7ov5RwQTDNpqKyn2mVfzA46PzxFh2J/WPjauTqetp8QiRsTJzHO47O9
-	 TlNWZJSMu7PUO8EpqyuUhrvXefLpERv+okndeFquwnxEWxmTD8WgQViUoUKTRSthwD
-	 ugitRU3PTKkRg==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-389f9895c81so13144511fa.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 09:46:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUxBFgMkyc+4GZUwVoLARS0rFgpA0386zDIHSgOufPfoKHfE7kn8hyNCDMg8fGMcs6iob/O2qoRqP1GraQk1A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1fYfIqsiMfq45P2yMklk3yAtT0jnrWLN8OJ4swGajM7rBvn3X
-	hWR4Q7yxHxYfont3nNVglLvOFHb3J2CSlA7k3+iIYZXZ+REVSgn1nn1Vtq6XET3DMWVGXwDr2CF
-	Bw1VHRJ5D5MM+RRf8FKTxigmsG/988xs=
-X-Received: by 2002:a05:651c:988:b0:389:fd1d:48e9 with SMTP id
- 38308e7fff4ca-389ff36f884mr83303431fa.40.1772473578959; Mon, 02 Mar 2026
- 09:46:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="N3A2cIYZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aDHUBOKiXvE8NhXK/BFTU4//ACEDl3qSfWBuhlFdsnLi4/nKD41tXwdPhVSSdobRRj/NEmrXQS69vo3ZGyQ9JF2zaqxtcPz548u8vhG0rnpEi8ZLp4jv/OmKe3WV9EiZ7SqjgADb93wAZ18/P29bgocGS0o+r8nXf3QDvklZLQ6Cgaurz8D4d3+H7mVy9GzYjg6ad595IGjZyDdElvSa4JIyTFuKcJCnk5o7J9Ldm30rMkTQMUx5UapCZYOncsUpuxJ8vHrXKPFBm65ULqOSLh0IjJcRwDvxb7CjH98GGWL64osn6ikukCICuemEbys7g/+EQy+nE24bnalAHJK+bQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A57p3MUVaLhWtEF//GJa7sO6cB4kd4/lFmh0MyBBNlQ=;
+ b=oUcSVk++8+v/EN0lboG1YJVRbSrGnb7RkxNOj8pVafuOnzWqRSiTc+rOI9Mx4RYdcgS/Dubi78okbefksJ8UON18sEd2f9dwGHV/6GzPGBSveFVTsRlwXWpcFt7L2VCNpZZ1Se1yM0KoRV42/R7m38IRGjuzhKm0r8HbunvQDSRfDRC4UwEAWMkhwtj73d+bY1me4Q/UbigpYjAnQK1W1qVus7MqNzERCYzdIdbp36Hr4ZGAtsenFsTgxnTX4BIT4M+4HBbLPnrXzrTut8mRs9nujXiQ9MHnG4MLeBtbaeVE7O50CImRa+Os04qGlWfnZXAvw4kfR8y/Y0dT4ri3Qw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A57p3MUVaLhWtEF//GJa7sO6cB4kd4/lFmh0MyBBNlQ=;
+ b=N3A2cIYZRoCaBuBooO/VA4jvB0qabdtnwm171RyJvNU4XS8aSvSyYJKv5Mbz5eUuUn1QQHUJptS4wRY3Qs0bi9OFlatsdey+UEo0e7lvGZMDuHqq9+n2KTnFj9lstXua65UNuUBd99bm2aDD2m1/03jktqZ1rjbJVOogs/WG4PKiy8SxXvgNekq68jIp/mI6bW+I2inucDGEhmBVQDdphrDDZ+LX9F4FlnZKolH9dk1OXpDfv4iX9Jg1oUAW/XOrTIXUUBAT03Dp7iOuR2+b/9dyjupfd5mu0GdLaUgC0jzaprxda49ewf6OyyTA5B0QQDBdIn4dzagdQBKOtPYAUw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ DS0PR12MB7748.namprd12.prod.outlook.com (2603:10b6:8:130::22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.21; Mon, 2 Mar 2026 18:03:40 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 18:03:39 +0000
+Message-ID: <4e27719d-85d3-4bd7-b458-5d6d0a3063ba@nvidia.com>
+Date: Mon, 2 Mar 2026 10:03:38 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] gpu: nova-core: gsp: add sync and async command
+ queue API to `Cmdq`
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Eliot Courtney <ecourtney@nvidia.com>, Alice Ryhl <aliceryhl@google.com>,
+ Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>,
+ Gary Guo <gary@garyguo.net>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20260226-cmdq-locking-v2-0-c7e16a6d5885@nvidia.com>
+ <20260226-cmdq-locking-v2-2-c7e16a6d5885@nvidia.com>
+ <a3b7a5c3-9689-4700-981e-d94bd2b5091d@nvidia.com>
+ <DGSAOTM95PZ4.2JGBBMNRSJSNN@kernel.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DGSAOTM95PZ4.2JGBBMNRSJSNN@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0024.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::29) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260302-cstr-rename-macro-v1-1-a269fe4dc3f0@kernel.org> <DGSH4L653R41.1JXV6RIKG0V4@garyguo.net>
-In-Reply-To: <DGSH4L653R41.1JXV6RIKG0V4@garyguo.net>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 2 Mar 2026 12:45:41 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9mOq69HHALheyFNc-0TqUTDGb1CEB4zqERXYhK+oMn3PQ@mail.gmail.com>
-X-Gm-Features: AaiRm531LE_EvicxT0U8EMnQXWB7T9tGf08YXv-ormO32S9ztsao6bM5SEnkkRY
-Message-ID: <CAJ-ks9mOq69HHALheyFNc-0TqUTDGb1CEB4zqERXYhK+oMn3PQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: rename `kernel::c_str!` to `str_to_cstr!`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Breno Leitao <leitao@debian.org>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <raemoar63@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS0PR12MB7748:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5dd3c5bb-31ac-4bc2-eb65-08de78860888
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	azGmOWwZ83u1nV1F5uezxWKJHa0RHqYqKbu6ygPYnLAHzQrrqC4X4P2d4Gl/SaGkpOJIjzdYmBxqOEAA25y/P6elPrsWB5mL938xm6X2GwYw/mCuQpMO61Ke+civnsLgkpoOp55Gra3RpH7ulsM9hscl70E/x3hLjw4nNaPntH7ClITEOu2RLy+ZfLQfWMGkY0yHfcv1N36j9qAeLR1cEwIhIy796u9xnElyu+OC7udP9Bsmw0fjO2/Jje/rqDUN9OUhzAklRwvgZgxjZldUDykFRRROXm4idpWLyEGtMhlmVFOjdAGVPLvoW5dvG2jMmrmcRriw8rbG3f34XdwqLJLJBVncgdx74eXTdAsjtjWjjE6rKZhf13RKguMAvsYFDRNVF5Hsd+J5eKzD3ftwoJYqclgbS+46aSGlWfZTDLBmiDNntB/pAwaE/LpG1ZH1aG38THVN8LgmesaxciSMYTWThmEmktCy+alZq1GTkdKQbE3y/UOQEKLcraeauDcPY6Av9tXZzB52CuxruisxFgs44TTr4v3hSOKM27fudQ8KcOrHcuvNEZo7W2pk9wa/G7BakUoZHZgyucg3kMDpEWGdyvmXArYKk1LI4kyDKn7ZEfcqSd2idgd6+k6jyIuOOUFncKWoxT/miG6cX7m1cd+x3bvcScFDoT1utf/M2jqWUBoMp3dE90oG8CiqB2nQOHalVoeOeG8H6CsEf8oyp+/8AB6eW5S/9wOG35wFWjE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UmZLVnB2eFVUMGp5ZlF5czdCREVJK0E2MU1EMC9Zc0F0OHB6dXB3Vy95MEpK?=
+ =?utf-8?B?UFFQV0JZNk9wMTlxb08rVUt1anJGL1pES0lJRmN3UDd3eVlGdy9MZm1oeVZT?=
+ =?utf-8?B?RlROMFVibEVINEFVdW5FcGFZRjhPNjlDTUt0MTNRSS9qbTlleWlFZ1VtYlRQ?=
+ =?utf-8?B?WVdYMDlNSlNUTFd6OTN1OUlhTGh5ZUJmNGdvNm51bDVPZTl6R20wOWRzeGZl?=
+ =?utf-8?B?UnN3Qml0TUtHdzM3Tk5LY01aSHZCUmxDc01PcFFIWHhtY1VzbXpGa1A1bWtT?=
+ =?utf-8?B?dnBmcnFlSVBWdkpQV0MxdTFkbGJyUmVkVWFpNmxxWm1lbnB2MEx6OFpaa1JE?=
+ =?utf-8?B?akRUZUhLb2N0NFBJalV3cnpSRmtackVEN1VHazllZXlBa1VTRVZMekhDVDBH?=
+ =?utf-8?B?cmVnZDBVd1E2QlYxODdXbFVPRTI4K3Y4N3praForWVBvS09zOWwyV0k4UDBC?=
+ =?utf-8?B?QzBoZmVyQTQwNFZFbWsvdXlpeUUzV3hDR2ppUUt6WFVvdXR3a0hIMnFaTStE?=
+ =?utf-8?B?eXkxdUdRU1FyOXpNWUh1RktqbHNCa1R0QzNUelpJZEFya0dIY0Yyekp2RWJE?=
+ =?utf-8?B?dC9ROXRVdUhrQU5ZYlVVczJjUEpnUm93N2lpNGJsQ0RlVVZIVmhqVkRubGZW?=
+ =?utf-8?B?aGRHSk9NMGF2WHlzRGMyczhkeDBqdElLWTVoNjRFRUtwRXBXVSsrc0pIM2pP?=
+ =?utf-8?B?am1DTFJzSU01NUYyVS9SeTVocVlGajdyeGxwelk0Yk8xVU9YdE42TVNISEl3?=
+ =?utf-8?B?RzdsZ2R5bnJOWHJiUG5WWEFMZDJZaXk0ZVVTL1E5Q0dpZmJiVWNCUGVXS2l6?=
+ =?utf-8?B?Y0lneXBtanhoYVo0RThqMHFDK0tpakRWVlhkMlg2RnU1YnlsZ2Mwd2k4bytn?=
+ =?utf-8?B?Y3liVzdDRVZxcFB3aEQ4OUtxd3p2a05EZEl6eVZVeFZFM2d0K0N3VkhPUERN?=
+ =?utf-8?B?NENueDRqTk5nZ0REbVlHMk1RcUVYZzFKcm8xZkpHMDVzVEtEOUhvV1c0bCtV?=
+ =?utf-8?B?YzErd2RJYTF1MFpMYkxwSEdDM2dWT0wreG9OVTlWTWNYNURRUTg4NEdlbGQ3?=
+ =?utf-8?B?M0dMd3R6S1RNMVBldE5MeTRzdnJwK1JzWE1vOSs2dzhJcXh2c1lNdmhTR0po?=
+ =?utf-8?B?WDdpQk11Y3VydHlQRmowNWdLanhHWklkZGJlYStVV1BSV0tmWGdmT0pSYjJR?=
+ =?utf-8?B?YWNlK05xYVJUL3pqNlFzY2NaRWZ6VloyWVorVWgyOW5icWNuOHgycU1zWk02?=
+ =?utf-8?B?T3JMR2l3UklrNEtlaGtLalo1MWFIL2xHbzUxWXFUNUdXR3ZrajQvbEZSbkIr?=
+ =?utf-8?B?WGwwOHJKZUFHUFNJRm9veHZSV3FpU0F0dnlQR0ljeGJrOGpLWmFNUUxNNVVY?=
+ =?utf-8?B?SlIvb2s4aW9USXB6aTFHNldMSWdzSXNHRWcwclJYNzVyOTZvUVBQR0FjL0Jp?=
+ =?utf-8?B?OUJZTk43TFgxVjZTNEVCSzJPdVFmYWNLZEFQV0V2TXFtalBMQUVVSnhJaWtE?=
+ =?utf-8?B?aitqbUl0OHZDSWtuSm5Sd1V4NzFLTXIwZ3hIN0RaaTdlUmFGSWhLdEk3aG9L?=
+ =?utf-8?B?WWlZa2V1ZExqNHZjZVFCVU1uWGdlS3UxT21JZTU2TkFPNjY0U0U2NW40c0pk?=
+ =?utf-8?B?R1lRKzJTdFloVkhxUjhrU3BpUUxZaVhzNTROaFRJUXV5aUdBMnY0eEY0TzQ5?=
+ =?utf-8?B?bjRiNlV5SzhkaGVXeE1PVkVVMEVRSVQrWk9Od0FVR204aTgwZU1aYnkraEhx?=
+ =?utf-8?B?dFExZVZER1BJb0FFVkZBeG02RVNGaXhQZXNLS1ZqRUxFUGxGdW1Kay9lL293?=
+ =?utf-8?B?V1VUWGIzQTRINzNCZ1NmcW1HMlhNUXFmeXhnRzFKSVNrT3VRdE56dHZudGFm?=
+ =?utf-8?B?WU5WU3IzVU1QMTc4Z3A5Z1hCNitHMmlCV1BDb2ZMTEMwR0QxRTlOd3RHNk10?=
+ =?utf-8?B?WEtqV29hd3dyQXZLMDJ0TW0rb2cvMHZVMEdqVjNhZGI4SnBRb3BucFJMRmtW?=
+ =?utf-8?B?NU52ZGN2WE5SbG9PZ3lMem92RkJNRzVmVkNqRitJZlVCT00wVWFEU0VMNUM0?=
+ =?utf-8?B?YnZYaE8xWHJQMGlTaEVEbHVBM211Um5xNVZnMlpTUVJTQkFIZkt6aGFPNURz?=
+ =?utf-8?B?R2FOQUtKQzJUZTByNGpoaUpTeHpvT3dRVWFqOGtnNVBxODNJVkFlV25hdm1X?=
+ =?utf-8?B?NVV4TmM0RnlGajllekRqRHBvNEFlaGJuQ2hiZmlQYjRicHZnSUJxbHhiT2Fj?=
+ =?utf-8?B?VnpjekNqWHlHNWVJNXZrakFZSUNVelNVc0tQcU1xVWJGVWRpVkNOM2ZhUWQy?=
+ =?utf-8?B?Mldjdno3UG5Zd1NGNHEvcytpc1N0MUFrcTIvdmo0QjNjYnU4ajNvN2tSZG9s?=
+ =?utf-8?Q?sMnD7Ztg0xPjd9j4=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5dd3c5bb-31ac-4bc2-eb65-08de78860888
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 18:03:39.9049
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4qVyqlpoFmXLpF+9jXM/FwZukoGIj0ATQdmvKsHDkJgVrFUgzon5i5UOOSpX7UirGz2Z/Kx2QHa8N6bDU1TPyw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7748
 
-On Mon, Mar 2, 2026 at 12:31=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> On Mon Mar 2, 2026 at 5:20 PM GMT, Tamir Duberstein wrote:
-> > Now that all literals are C-Strings, rename and update the documentatio=
-n
-> > of this macro to clarify its intended purpose.
-> >
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1075
-> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
->
-> Do we really need to perform the rename? I think updating the documentati=
-on
-> should be good enough?
->
-> If the only concern is misuse of the macro then perhaps I can just add a
-> lint for this in klint.
+On 3/2/26 4:28 AM, Danilo Krummrich wrote:
+> On Sat Feb 28, 2026 at 7:11 AM CET, John Hubbard wrote:
+>> The sync/async naming that GSP RM uses is a little bit "off". I
+>> spent some time discussing it with them, and the problem is that
+>> sync/async is a concept that is somewhat independent of whether
+>> a reply is expected. Usually, sync means a blocking wait for a
+>> response, which is not necessarily required in all case with
+>> GSP RM calls.
+>>
+>> The naming would be better here if it reflected simply that
+>> a response is expected, or not. I don't have great names for
+>> that, but "fire and forget" works well for what we have so
+>> far called "async". So we could do create a convention in which
+>> no annotation means that the API has a response that will come
+>> back, and some abbreviated for of "fire and forget" or "one way"
+>> added to the function name would mean that no response is
+>> expected.
+> 
+> I think the relevant information for the caller is whether the call is blocking
+> or non-blocking; i.e. do we have cases where we want to block, but discard the
+> reply, or expect a reply but don't want to wait for it?
+> 
+> So, unless there is additional complexity I'm not aware of, I feel like
+> send_command() and send_command_no_wait() should be sufficient.
 
-That would be better! I'll change v2 to only update the documentation.
+That's my favorite so far. It's unencumbered by any assumptions about
+behavior, and unambiguous about what it does, and shorter names too.
 
->
-> > ---
-> > This patch completes the work of replacing our custom `CStr` with
-> > upstream's.
-> > ---
-> >  rust/kernel/bug.rs              |  2 +-
-> >  rust/kernel/configfs.rs         |  2 +-
-> >  rust/kernel/drm/ioctl.rs        |  2 +-
-> >  rust/kernel/kunit.rs            |  3 ++-
-> >  rust/kernel/str.rs              | 19 ++++++++++++++-----
-> >  rust/kernel/sync.rs             |  4 ++--
-> >  rust/kernel/sync/lock/global.rs |  3 ++-
-> >  rust/kernel/workqueue.rs        |  6 +++---
-> >  8 files changed, 26 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-> > index ed943960f851..f7cb673b1766 100644
-> > --- a/rust/kernel/bug.rs
-> > +++ b/rust/kernel/bug.rs
-> > @@ -80,7 +80,7 @@ macro_rules! warn_flags {
-> >          // with a valid null-terminated string.
-> >          unsafe {
-> >              $crate::bindings::warn_slowpath_fmt(
-> > -                $crate::c_str!(::core::file!()).as_char_ptr(),
-> > +                $crate::str_to_cstr!(::core::file!()).as_char_ptr(),
-> >                  line!() as $crate::ffi::c_int,
-> >                  $flags as $crate::ffi::c_uint,
-> >                  ::core::ptr::null(),
-> > diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-> > index 2339c6467325..930f17bb2041 100644
-> > --- a/rust/kernel/configfs.rs
-> > +++ b/rust/kernel/configfs.rs
-> > @@ -1000,7 +1000,7 @@ macro_rules! configfs_attrs {
-> >                          $crate::configfs::Attribute<$attr, $data, $dat=
-a> =3D
-> >                              unsafe {
-> >                                  $crate::configfs::Attribute::new(
-> > -                                    $crate::c_str!(::core::stringify!(=
-$name)),
-> > +                                    $crate::str_to_cstr!(::core::strin=
-gify!($name)),
-> >                                  )
-> >                              };
-> >                  )*
-> > diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
-> > index cf328101dde4..6a87f489dc88 100644
-> > --- a/rust/kernel/drm/ioctl.rs
-> > +++ b/rust/kernel/drm/ioctl.rs
-> > @@ -157,7 +157,7 @@ macro_rules! declare_drm_ioctls {
-> >                      },
-> >                      flags: $flags,
-> >                      name: $crate::str::as_char_ptr_in_const_context(
-> > -                        $crate::c_str!(::core::stringify!($cmd)),
-> > +                        $crate::str_to_cstr!(::core::stringify!($cmd))=
-,
-> >                      ),
-> >                  }
-> >              ),*];
-> > diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> > index f93f24a60bdd..5802a3507ecc 100644
-> > --- a/rust/kernel/kunit.rs
-> > +++ b/rust/kernel/kunit.rs
-> > @@ -59,7 +59,8 @@ macro_rules! kunit_assert {
-> >
-> >              static FILE: &'static $crate::str::CStr =3D $file;
-> >              static LINE: i32 =3D ::core::line!() as i32 - $diff;
-> > -            static CONDITION: &'static $crate::str::CStr =3D $crate::c=
-_str!(stringify!($condition));
-> > +            static CONDITION: &'static $crate::str::CStr =3D
-> > +                $crate::str_to_cstr!(stringify!($condition));
-> >
-> >              // SAFETY: FFI call without safety requirements.
-> >              let kunit_test =3D unsafe { $crate::bindings::kunit_get_cu=
-rrent_test() };
-> > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> > index fa87779d2253..8bb40de007d4 100644
-> > --- a/rust/kernel/str.rs
-> > +++ b/rust/kernel/str.rs
-> > @@ -376,19 +376,28 @@ fn as_ref(&self) -> &BStr {
-> >      }
-> >  }
-> >
-> > -/// Creates a new [`CStr`] from a string literal.
-> > +/// Creates a new [`CStr`] at compile time.
-> >  ///
-> > -/// The string literal should not contain any `NUL` bytes.
-> > +/// Rust supports C string literals since Rust 1.77, and they should b=
-e used instead of this macro
-> > +/// where possible. This macro exists to allow static *non-literal* C =
-strings to be created at
-> > +/// compile time. This is most often used in other macros.
-> > +///
-> > +/// # Panics
-> > +///
-> > +/// This macro panics if the operand contains an interior `NUL` byte.
-> >  ///
-> >  /// # Examples
-> >  ///
-> >  /// ```
-> > -/// # use kernel::c_str;
-> > +/// # use kernel::str_to_cstr;
-> >  /// # use kernel::str::CStr;
-> > -/// const MY_CSTR: &CStr =3D c_str!("My awesome CStr!");
-> > +/// const MY_CSTR: &CStr =3D str_to_cstr!(concat!(file!(), ":", line!(=
-), ": My CStr!"));
->
-> Perhaps keep a copy of the old example and add a comment saying this is a=
-llowed
-> but c"literal" should be preferred.
+> 
+> (Maybe send_command_wait() if we want to be a bit more explicit.)
+> 
+> As for the specific commands, we could have traits to control whether blocking
+> or non-blocking submissions are allowed for them in the first place, i.e. this
+> gives us some control about whether a reply is allowed to be discarded through a
+> _no_wait() submission etc.
 
-Done in v2.
+thanks,
+-- 
+John Hubbard
 
->
-> Best,
-> Gary
-
-Thanks for having a look!
-Tamir
