@@ -1,128 +1,253 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010010.outbound.protection.outlook.com [52.101.193.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666C12FE044
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 20:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC38282F08;
+	Mon,  2 Mar 2026 21:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772483027; cv=pass; b=GNFwNRJRptjKtY63MWAkWSNLnP7qTUhV1H2R3aN4MQ87e7FurafaE+vt7fFqfcGLACKBN23ZppogcjQYSM62yPWDOQ6djjaAYNfK2422fA1K4qTqNHdb6xLOvf58OveB+d3ESkZvZV+U8TbIJwNHKVjuVTWoTg5qmrqzIaDk3ms=
+	t=1772486348; cv=fail; b=g3R4RLPCcx8klD2inIS2iQ7wEWs4y8sTe5VChKBYpPXDUKIaih0wAdJTaMh6tT5qevk/4Dux30l1IwuNYCEuqxbvM6KybmWZLnp7MUT/gLZ1jB7GGRzujinXmCdst5sfbIqYzmoj2IcZwZ6H9WDEDkMZ52Pfb++ze4bHwTgoboA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772483027; c=relaxed/simple;
-	bh=2O3MPMBoN4lWLj866sM39xcDmM42WzxqVySUIo7g8uM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jEzvhJb77Vmcb99LILAXwiQF/aL0HMTFmXmQI1hIowm+41G1zAc2hH71ZxAOmGWNAaXEiJVWfX1iyKEUPKLugOfV8yWE79Fk1qnqj0DDQxuVBUAUNWram10gUEjuDZB3E8q3921FLKLHtGkxzs990hnR97jZhy4R9K0PYAnfce8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=XzsGhd6J; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1772486348; c=relaxed/simple;
+	bh=uildwec5WRBRWgIdIheAxkC9mCO8EBhEzEDC+Dnj6Io=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ACT17kIMTNtkof0zN+s/9N1ec89T929TUdHRayQ9OV3/NWqH03fCtSsnswJqUI5jHFOA6Dg6BQ+Puj0424su6BdbHxM7EIiic5hoVN4OkrJnDEHz8tqVSix/NbHj09pbqfiJbD3wNk1uf3yZqYJACIHybbrxssKIZcpy1WTb+JU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sEp0/zPP; arc=fail smtp.client-ip=52.101.193.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="XzsGhd6J"
-ARC-Seal: i=1; a=rsa-sha256; t=1772483020; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=elOjR+LXzlUoQl9A/87V3aOpmy9UOjpb6h5DoCO+C/6AvYVX4APFE4P7a69gi+VjnYhc66ps9aq/ovt2V075HiH1nqjHnxAtYrvJLgfNUKSXR/ftbvPYV7VoHzAX/uuFU6J3oPTeEQt/XsuYFbkM/ibyW8yee9cuUE5nRV0rx2s=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1772483020; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=2P7cKmxKTtUWza3HVGpYgBF0W5BOF4ADlghlq0nZnXo=; 
-	b=CbtbxahovGTUufjc1ULbSGpG14RsXnZXgkuubT4Jq+vLs5q6uzMfDOGenSR4PkxuzD22DcR4RSgx5ccAIwXZMfp51AQVKl99Y8gh0a/0wqn4c68L17gR2dgBdndnpjuxwYhq5RI3Z0e5VOhKFelvbDYrhbk5/Ipsb5cPYSpTMSY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772483019;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=2P7cKmxKTtUWza3HVGpYgBF0W5BOF4ADlghlq0nZnXo=;
-	b=XzsGhd6JzEaomip6IvKAw69y9ks/sbfzHz2ixJmCUj+Uk6vKjE2QEkfzKXGnbuRX
-	9y0jCna7a7Y/tZv5fG5Bqg5MxYOaOxx7Yt4sd8hLHFgIbbDRwjFe0SrYfSjUfuvhWWm
-	tptwW0UuZ1m4Z1mKzLxnmkY6wolo38wBAURkRfiM=
-Received: by mx.zohomail.com with SMTPS id 1772483017282302.4406533457385;
-	Mon, 2 Mar 2026 12:23:37 -0800 (PST)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Cc: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	boris.brezillon@collabora.com,
-	Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH] drm/tyr: Use DRM device type alias across driver
-Date: Mon,  2 Mar 2026 12:23:31 -0800
-Message-ID: <20260302202331.176140-1-deborah.brouwer@collabora.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sEp0/zPP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UDQv/LPFzERYG155gJ1z4aVPhmuy3Mk9OlwPX+PvzexLAq7WiWkxLYo8+P+pB93bYSyH/OCiVd/M+mLAGYYerWQOtflvTnuOgeXN30a87ra4Q/dfKSE57Tf/Zn40bVnTNtHySQtAan3YamhWd1KCYkYIiX3UzwbrYZRDyFRYx7fE3nwIzA8568cX6nTBsIXgW2Th41ommg8wForR9CoMz1ukhkiiLCdrElAaFtWdJ7HwJdVwyXFWF3z/o515JB8dMkGTczA6/1A2o/Tn+h2sglbe++Y7bZB2IfjOXrII58Uv7k6nqemB1ZDcMPL+kBfQttmjxNXzeF3xtPiZTRXNoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pOQmMXo5C3WJmUBAdjBvhCpEzy4haUJs6C4FtTWL4DI=;
+ b=YlR3+FjSPrk5vuYhthsoRbiKxXHGkZmTVS1advtpZ44XLS8RAUx6nsDczwZ7x2tmT0L8UqkmaEgg9aRS6z5AoD1h55tk/+S5rV/Qa5igRswgDer3Wkn9Qwm7p+cYb4J2NV9EqTtqUWBf++JgMswmoWlekYFHRaETGO6oUV2WJc0XWFzzBHl1EGCqpFjIpPa7brty/0CG9PolLSm+ep279MAr40rxgKgSakU07B5sr1aaS3EeSTPQMH8PKfukI3YFR+F9USTyKn2H6ckJYbv0VKr2XYnconCKUrwvH2S5htc5sHjkS9YCAHiGpCYJTNBJc+5ETGei2gGlg4kgcsBEEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pOQmMXo5C3WJmUBAdjBvhCpEzy4haUJs6C4FtTWL4DI=;
+ b=sEp0/zPPfK9X15JRlAXtN9JOEOAw+jYFDOikwch3F1fvzk02LXkPHvOPRDRbtwu8Hpu9rbrNpJeGsdUYJ5EEMoBnB29KR4qbQETds03ikN5241g2lZNR3/iLyMldwB5OrsBOs9lUbmZqYiGQEtQnHaP+82XWWfWtrBR5cNfr58EUsrKOhM+3d4SyRmcodHf/zNcyIXNiyY8sN7abmHbeqesL5j7brgNZQR7e8hOBH1PoztZiY3iH6Ko3vaksPs4EdYa3EqWxXW7dphrbuzO2MXHAPGzKeL2ag5P6Sxm2eBHzXOi970Wr54MTPKdYXn6z0oaVaQlREsAqmDLh/mK0gQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ DS7PR12MB8081.namprd12.prod.outlook.com (2603:10b6:8:e6::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.20; Mon, 2 Mar 2026 21:18:58 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9654.015; Mon, 2 Mar 2026
+ 21:18:58 +0000
+Message-ID: <7b3146c1-ce5a-4bf9-9837-57c19b24ada9@nvidia.com>
+Date: Mon, 2 Mar 2026 16:18:56 -0500
+User-Agent: Mozilla Thunderbird
+From: Joel Fernandes <joelagnelf@nvidia.com>
+Subject: Re: [PATCH v11 4/4] rust: gpu: Add GPU buddy allocator bindings
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Dave Airlie <airlied@redhat.com>, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ Alexandre Courbot <acourbot@nvidia.com>, arunpravin.paneerselvam@amd.com,
+ joel@joelfernandes.org
+References: <20260224224005.3232841-1-joelagnelf@nvidia.com>
+ <20260224224005.3232841-5-joelagnelf@nvidia.com>
+ <DGPPKJ5W6FVD.29LI1HKSBZSG2@kernel.org>
+Content-Language: en-US
+In-Reply-To: <DGPPKJ5W6FVD.29LI1HKSBZSG2@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BLAPR03CA0177.namprd03.prod.outlook.com
+ (2603:10b6:208:32f::30) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|DS7PR12MB8081:EE_
+X-MS-Office365-Filtering-Correlation-Id: 307943e5-22c3-4ddf-0eaf-08de78a15122
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	cFB/r/fATCI+FAkCJOhmsCL6NbJulqyIk4Gj0ydq82rY6fGQ0kGcVicTUOSlEOSJomsndWn0zDWAwO0+j0H+qt+tIzctd+eRPqjkp+2XWlAwpgGHVXFyDnde/KeK73ov1xcTlJVJ1qKG+fYNjkP8NTYKjmQAE6QEuGISBldO80lwia31+7E4ziIunUSggpw8jTPpvTcbOdicVN4grNGhvzuzjrnLuCH2p6DWLTXc+f+WR2yMotZzGQH2u047KF72E1RPDjrz/IHSP5lEQEyzczIcP92cVlm5uFNzrPwyE+gBjY0L/GWfr7x7xNlXSN/MzhPIyS1HsiJ2buApezYm8qz1+2FvIaImNV1/LWE1b1a5AXD8K1V2dSV3Zd0nnhuuzRyIyLc2FulwdHTqWvBB3R+X04pid34L1qjJmHm7Uubbl4MbYHcR7qrKEnh9/BsP3rlfYl1m8rXLbWJCCKyRQbtP2ERJdoCzRO+FYfrxJl1HBpYvw5MKv1yXN8GhIDKZh3DrOGn1oeDxWH9O/n9BPHWP5M7pRUXH5FgkZiYflFP9i+jDe8ZvaNvRS4AHIUS9cuTVwXl2S9hfa1SgW14U6XZed+Y3b4c3bOSVwr85nNqjS+HRRnUgWqzbmOUCFhYcQWBPhQz4JGdW8wZOTiXkaKo7ch4Y/j26p0PLDyxG2GHPxvZFOUFVqfemk2bFSd3woC0+8CTGFDudpQBgruh9dXNshBXTfojIrcBcUjMjZEM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SUtZSnJEWkJlS0U0UHZSQ3ZXYldXQVBTVndlNnd6Y3BiNmRmOTFPbVJoeTdS?=
+ =?utf-8?B?Ry9HWHdNWDBQeFltU0htdXliT2tOVkVwQ2VzdSsyRHZ5L1owK01OTENQZ2Rm?=
+ =?utf-8?B?WFNHQ0duNFFTcm5pRWpRYjdYMllMMGpCZkNaOUtIQXU4NUlwd09hRW1ia2gx?=
+ =?utf-8?B?WWdPZDd1NXBzYW9JWTRtQkUrOE42cTh3NERERnZWZlJzbTZyOHJCejVFMTVL?=
+ =?utf-8?B?N05ZNkdWZERUS1p0Qm9iOHU5aE5qZCtyaTYyeHlMTC9QRkhBTmpDeFV1SkN3?=
+ =?utf-8?B?N1RxRzFQYTZOekhjVjUrM1duSGJ5eThzMWxWc2duMEluUjVLVGFLUWhsODN5?=
+ =?utf-8?B?STR1ZERoNVU3bUNCVkRxdGV5WTE5aU5jTTZDbGtOSmlKT0FLY1lWQTdpdGF3?=
+ =?utf-8?B?RVV4RGJQRW1vbTNzQytRbkNNT1gwSjhkTmZuMXBMUTZaT1V6YzVwU05aa25E?=
+ =?utf-8?B?OTFqTGxkQjNVZHpsNFNMRGtiaXd0YnZzNW94WUhIWUZZekg5a0lTWW5HWmRl?=
+ =?utf-8?B?ZzU1ZkRVZmw5UnZJRkY3UVNZME5ydy9SdXNtN0x5L1FzUmRFSlAzcGJ5TnJl?=
+ =?utf-8?B?U2grWjZEUVpaK296dytmYzJubzN2NnROc1RkbmZYL3NuQ0tubmpmcThmSnhO?=
+ =?utf-8?B?enVLcU4zUWRTNVBkV2IvUkRpWENaT0ZQaXE4eU81YUNBTldHdi93QUR4MEYr?=
+ =?utf-8?B?TGN0R1FqOXd0UjFzRlN2V0tjUEJzQlRjMnJ2bldya1Zsa2RMemE5RzhoY2JU?=
+ =?utf-8?B?anpRajFidk9vUEpWckpoTjFqNFR5NVNqdHhIbUx1ZGgvRk9DZmJYbG9qUUh6?=
+ =?utf-8?B?Y2huRUhnZzQ2bDJyWDA4Z1JvV1VtYjdVUEg0QVIrZ2hVTmhHaW0vSGhubWdN?=
+ =?utf-8?B?eEVHUnZBalJuM0gxeHd3Q0tMSmtSL0YzZUo4RERac203bk1KUGZZQ21RdVNY?=
+ =?utf-8?B?MzVsRXhrQnBvbFloWTlaQ2RHaldBUDFsNS9MRjVuYUxHdHlGZzJ6Qy9SbDJt?=
+ =?utf-8?B?UmJPQXhXa1hiNWJaT3M2MHlHcW4vdzRmN0JtVlBPUnhzK2tyQnQ3a2hHUHY2?=
+ =?utf-8?B?b2RjdE1CQUR6cXFPMFpnWEk4d1pJL2tkU3dkMjJEeWNMT2lTNzB2VHZPSHNt?=
+ =?utf-8?B?eUw0TFJBc1Y3SW1SK0pxMTRCaks3WHAvek5LVEY0Zm9nMVdrNnhNcDVCeGpR?=
+ =?utf-8?B?azRQY1QzVnFYREQzcG1NWUdIM25vQ2t3aHhZMDhET0VVMnFlNDNuZ1JPa0I5?=
+ =?utf-8?B?ejVHNHNJZVFRZk1KQjU5WUMvSXEvMlkvUzJsSFd5MXZhNk5nYXl6em90V0FM?=
+ =?utf-8?B?YkZuVyt2RTE1bUNWT21kNmY2Ui94MG5MaGN5ODhBMXpmeWo0WHZqZk02SFpm?=
+ =?utf-8?B?RGpaKzE4M2JQZU5lNm5CemFKeXRrcU5iNjVqclpvbXhwWmV5cU5iTUtuTzAr?=
+ =?utf-8?B?YnR0WXRHRnNUN3QvbTNhV1YzeVpnMGo1dHVsM0NvUG1PYkgyYTNkU3FRdllD?=
+ =?utf-8?B?YUpScVZoWjBHR0QraysySGdtb1hlOGpoZTVZUnpkZjFiaGhVMnkwdkxJOUY0?=
+ =?utf-8?B?WnRweHhYeWxzWVYyQ2cvTXB1WDdYSlBRMEQyS01FazRNMFdlNFA4cUtnOUpk?=
+ =?utf-8?B?aFcyR3hHdWlQbE5OYWlDSHpRcFRhYzBVUHJMcGw2SXo5RU9CN3JJaytLWmFk?=
+ =?utf-8?B?WW1aaVlxSFJWeEhqSjlQS0tMSFNST1Z1VTh4TzFrSElRZUZ0TlVsZ3dubEor?=
+ =?utf-8?B?elloU1JBWjNGN0Zabm9SdWZoS1AxMHUrNXRVaURWQzlWOHNPSDhoUE5Va2x0?=
+ =?utf-8?B?blowRFQrUERZWGxOU2VabStkcDNGM2ZOZUVTL2g5aTMvK1FIL1o2N0prMCtT?=
+ =?utf-8?B?Uzl6ZzByOEpYT1dPT1VnZlpEVlNlR3hxWVlkOHJ3YjZwclBXcFRPWlB0OXRR?=
+ =?utf-8?B?UzVtK3RGN2hCSGx3b3RPWWI4WW1PalRhWnJVamc4MG83WE1RZThoaVQ3OWtS?=
+ =?utf-8?B?S3YwcG9HLzRWY2RNcnZSanpEdmVhb2hUMFl2Z20vRXg0OHRldi9zaGp3M1lo?=
+ =?utf-8?B?VGgxVkRhbFp5b2l5L092UHJwY1N1andiZXJ4SEZEdnVueGxCTEVZVTdqYVNP?=
+ =?utf-8?B?WnZ0Sks4NElsVXdoSWFkSTZTOHJTN0xUWkVwelhNVGtmRUVmZncwWHk2Ujkx?=
+ =?utf-8?B?eXFTSzFZUW1sdHhqZ1FCa0E3UXJicGl1TTFGVmMzb3VzeWNsOGRCZi9UT1Zz?=
+ =?utf-8?B?SmtFck9yRFcyV3MwK1Q3bC91VWVFTmVlQXFWc0NUR0liSXpBQldOZHN2UFNo?=
+ =?utf-8?B?Q3Q3QnNFNHdBcG1QN0pFbmZmaHJVWk1qUlFWa292U0s3ZGF2b2prUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 307943e5-22c3-4ddf-0eaf-08de78a15122
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 21:18:58.2593
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: H6Mf2HgQ8w8dibest2PI9Zd+Tjya8ookiVAncbvBftJGJOekJ3oc/+tzznblIpaeKKWRw7PANatWsfh9gPMhFQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8081
 
-Currently Tyr defines a convenience type alias for its DRM device type,
-`TyrDrmDevice` but it does not use the alias outside of `tyr/driver.rs`.
+Hi Danilo,
 
-Replace `drm::Device<TyrDrmDriver>` with the alias `TyrDrmDevice` across
-the driver.
+On Fri, Feb 27, 2026 at 12:30:20PM +0100, Danilo Krummrich wrote:
+> >
+> > +RUST [GPU BUDDY]
+> > +M:	Joel Fernandes <joelagnelf@nvidia.com>
+> > +L:	dri-devel@lists.freedesktop.org
+> > +L:	rust-for-linux@vger.kernel.org
+> > +S:	Maintained
+> > +F:	rust/helpers/gpu.c
+> > +F:	rust/kernel/gpu/
+>
+> What about adding this to the existing GPU BUDDY ALLOCATOR entry? Maybe you can
+> offer Matthew and Arun your help.
+>
+> Also, this wouldn't be a subentry of "RUST", but the rust version of GPU BUDDY,
+> so it would be "GPU BUDDY [RUST]".
+>
+> Also, please add rust/kernel/gpu/ to the "DRM DRIVERS AND COMMON INFRASTRUCTURE
+> [RUST]" entry.
 
-This change will ease future upstream Tyr development by reducing the
-diffs when multiple series are touching these files.
+Both these additions sound good to me. Just to list all the options below
+so we save time on what we all agree on:
 
-No functional changes are intended.
+1. New GPU BUDDY [RUST] entry.
 
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
- drivers/gpu/drm/tyr/file.rs | 7 +++++--
- drivers/gpu/drm/tyr/gem.rs  | 7 +++++--
- 2 files changed, 10 insertions(+), 4 deletions(-)
+2. Add it under the existing "DRM DRIVERS AND COMMON INFRASTRUCTURE
+   [RUST]"
 
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 450be5ab9aaf..31411da203c5 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -7,7 +7,10 @@
-     uapi, //
- };
- 
--use crate::driver::TyrDrmDriver;
-+use crate::driver::{
-+    TyrDrmDevice,
-+    TyrDrmDriver, //
-+};
- 
- #[pin_data]
- pub(crate) struct TyrDrmFileData {}
-@@ -25,7 +28,7 @@ fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
- 
- impl TyrDrmFileData {
-     pub(crate) fn dev_query(
--        ddev: &drm::Device<TyrDrmDriver>,
-+        ddev: &TyrDrmDevice,
-         devquery: &mut uapi::drm_panthor_dev_query,
-         _file: &TyrDrmFile,
-     ) -> Result<u32> {
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 514524ae07ef..5cd0cd9585e8 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -5,7 +5,10 @@
-     prelude::*, //
- };
- 
--use crate::driver::TyrDrmDriver;
-+use crate::driver::{
-+    TyrDrmDevice,
-+    TyrDrmDriver, //
-+};
- 
- /// GEM Object inner driver data
- #[pin_data]
-@@ -14,7 +17,7 @@ pub(crate) struct TyrObject {}
- impl gem::DriverObject for TyrObject {
-     type Driver = TyrDrmDriver;
- 
--    fn new(_dev: &kernel::drm::Device<TyrDrmDriver>, _size: usize) -> impl PinInit<Self, Error> {
-+    fn new(_dev: &TyrDrmDevice, _size: usize) -> impl PinInit<Self, Error> {
-         try_pin_init!(TyrObject {})
-     }
- }
+3. Add the rust files under the existing "GPU BUDDY ALLOCATOR" and add
+   myself and Alex as R:/M:
 
-base-commit: 15da5bc9f3adab7242867db0251fe451ac3ddb72
--- 
-2.52.0
+Which of these options make sense? Personally, I think #2 makes sense
+since we are already suggesting to add it to the existing DRM RUST entry
+anyway - we can just drop the new record and add rust/helpers/gpu.c
+there as well. That's what I've done for now. Does that work for you/others?
 
+> > +/// # Invariants
+> > +///
+> > +/// The inner [`Opaque`] contains a valid, initialized buddy allocator.
+>
+> The invariant should be justified in the constructor. Also, where is it used?
+
+Done. Added `// INVARIANT:` justification in `GpuBuddyInner::new()` and
+cited at all usage sites (ex, alloc_blocks).
+
+> > +// SAFETY: GpuBuddyInner is `Sync` because the internal GpuBuddyGuard
+> > +// serializes all access to the C allocator, preventing data races.
+>
+> I think it's more precise to refer to GpuBuddyInner::lock.
+
+Agreed. Fixed to reference `GpuBuddyInner::lock`.
+
+> > +/// # Invariants
+> > +///
+> > +/// The inner [`Arc`] points to a valid, initialized GPU buddy allocator.
+>
+> Do we need this invariant? Isn't this implied by the GpuBuddyInner type?
+
+Right, removed.
+
+> > +        // SAFETY: list contains gpu_buddy_block items linked via __bindgen_anon_1.link.
+> > +        let clist = clist_create!(unsafe {
+>
+> This macro has three separate safety requirements, please justify all of them.
+> Also, please also use markdown in safety comments.
+
+Done. Expanded to justify all three safety requirements.
+
+> > +pub struct Block(Opaque<bindings::gpu_buddy_block>);
+>
+> Does this need to be public? I don't see it being exposed by any API.
+
+You're right. Made it private.
+
+> > +/// An allocated block with access to the GPU buddy allocator.
+>
+> This needs a better description, i.e. what makes an `AllocatedBlock different
+> compared to a "normal" Block.
+
+Updated to the following:
+
+/// A [`Block`] paired with its owning [`AllocatedBlocks`] context.
+///
+/// Unlike a raw [`Block`], which only knows its offset within the buddy address
+/// space, an [`AllocatedBlock`] also has access to the allocator's
+/// `base_offset` and `chunk_size`, enabling it to compute absolute offsets and
+/// byte sizes.
+///
+/// Returned by [`AllocatedBlocks::iter()`].
+pub struct AllocatedBlock<'a> {
+    this: &'a Block,
+    blocks: &'a AllocatedBlocks,
+}
+
+
+> > +/// - `block` is a valid reference to an allocated [`Block`].
+> > +/// - `alloc` is a valid reference to the [`AllocatedBlocks`] that owns this block.
+>
+> References should always be valid, no need to mention that.
+
+Removed.
+
+> > +    block: &'a Block,
+>
+> NIT: What about just naming it "this" and
+>
+> > +    alloc: &'a AllocatedBlocks,
+>
+> "blocks"?
+
+Done, that's better.
+
+thanks,
+
+--
+Joel Fernandes
