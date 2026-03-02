@@ -1,55 +1,55 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9C64279F3
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 16:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0602425CD8
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 16:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772469996; cv=none; b=BoYyXcYE4JTpZPR2MSf7oEVJVfsCdpKDd5wR1TM/zsKB/cqnzBrVmCcQ883rNFTJD4aGCJecPpoHsuBktK4kPzX4Jc3WhtobUJaVOMiL05R7wBzQ+0V8dd/HUI3U8bXDeATJsAvHyjsSEQi4Nq3A1UpMX09b8lqvzGCXRuY1ZWc=
+	t=1772470071; cv=none; b=KY7PUmFABabLQAC7MnRhY1cGluSUUJ1tI+yPYOToeCmrzkmxufReXc4gfnwN9e7Az5syaWwoAg0ZdQWebiX2nAVqvYeLVN7gdXf9JtokZiOsZ4dtipKUK1eW2Eag0IzALl6CEJPD6Fa8hlDSktLDugeN4qmIsVceBS9B6KNDmCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772469996; c=relaxed/simple;
-	bh=4z5K+KiCeElKstJ2uX8xd2HVV2ql9/jQMvYGpgTfM8A=;
+	s=arc-20240116; t=1772470071; c=relaxed/simple;
+	bh=DoVwBkJHjRR4WVrijUu0v6PjXF8skgMegaPq29y5Btw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FpR+9Zf/dmHhpuPGHq4B/6q5WnIryUhm3XX1eqnATsS0BE7Gg5Knbm7/oybYUzLh4Z5jybqZB88wg39n0v0Wiq8KP5TRGi3axKznG410dkgKxWcdm5QTtO4dUxnnLnoZtVxHnS0BztqoxlboIYQEkSWfLeTBs9X/nGKZiIbwlqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SLHEuliz; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=tFtCHgOAVf39zFyekohJXeEQEQq8y6R3iQgv7MfOqwHqvtEYOikWKUyhMB1PtcKWf9Bxi53BupL5Vg1HZ5oS05PpzEGhC5mg3pFOLjQAfbLRzNeeQNuFs+4RENAQ8nHx4dGxFSVQxLhIWzFAfMu4tH0pXffap6uMeU7lLWXGal8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TiDB2uVW; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SLHEuliz"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43999e04921so3029133f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 08:46:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TiDB2uVW"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837907ec88so54172735e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 08:47:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772469992; x=1773074792; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1772470068; x=1773074868; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QYg22rfSXMfwVcQppmIM0Zb0tvFZKcn9JNJPKatkhBc=;
-        b=SLHEulizJvXUOww0kxnldZ+9g2JVwDQBsBSM+W8nJejKVyFmpvgfiRFCE2SYb/BVi4
-         KbXeFB9naEwkqxrMsPu8Sm8OimloFrxPQi3GlCbTC7txhdm2UAB5Z8J6pVXecw0p8Npl
-         1az9OyAoy2n+qDLTEMPwvXDw6FXn73ID+J/Z5CGdTq8OLGSnxz2opSm9k/P7ogFd+iAf
-         No5NT8CsC++lie1PB0cH6uX8nN9nr7+RhRXe8l3HmKOWpFCLkrA+xFyNnrz+SOaygSv6
-         X9pbmx8tHhGGlSeYDP9svygbKzoMxjOMUOyR5fGG7KczecVDiSohVv8ocrBV31TIIs+K
-         cHaQ==
+        bh=yaWqpVdlDV9VaHjIoyw0LdeLAZaCz/qIWYw9AXU/0oM=;
+        b=TiDB2uVWnbDep92WYvsV59+RbOHtl30KJTjZ1OwHAX78uJX6YXuetYkXMNCAEJ/ilv
+         VHBzCw91s4BvnGK2ZIxtosHImH33eD5jzjOwLbMFjw3clTlgGUtZI76nq97xVn64TBS3
+         hifrGhCy7OUoMjLHPbhBaElACXts5Q7uIdXQOK8gN98Jcb137/UJZ387hyKFmLB7s4of
+         RX6el3NM5lZpl+1PEuLeiVk18qFiireu/5NTKsvEML5uWax9oF69a1dbqjN6Zusp5AM3
+         3gjTiXNT4TY2xL5nBiY1Y5LD1bDm6jfU3GKWEStM5oEZKuS8VPb8VAgQbd7RdXU4Lxal
+         7I9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772469992; x=1773074792;
+        d=1e100.net; s=20230601; t=1772470068; x=1773074868;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QYg22rfSXMfwVcQppmIM0Zb0tvFZKcn9JNJPKatkhBc=;
-        b=NiWzia4iW/qgDvcvNncSmkm8BTgoFOEdTmcXDp+uh94tXXZpXpvP7Y5KYYlyvQUv2m
-         yVLeNXjwGUR5F8fx0HQOdZ+WGr9z8bxPNakEaNB7Ymwf3qq8TSpJNS5n2nU8vcoGNud5
-         DPzmRyoHwMaMPBEgieWosUqOhAb9YuSE5s2iHs+hZxfVEL0x9qBxHO5EUDnEetdwG5FQ
-         ALJ1hCefiv3Rn60KDxdjIGDtq0TymWo+b6K4+h5GPgll534tFgVbbLjXcubv00H7ORny
-         mUImYiPrl5vjk3JzxKHNzBqgy8BZObSmRUPJK/C6Ab0CD43KD8dXY1u0gvoTPTIdOvxN
-         nPdA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2kKr/IqEoTDj/kDtGSgkuNlBO1Lz2RiTHUNR7Ii4bLNbNmhyI/otHVsebZbLaM4RKWccQCIcK5ncbZF/GKQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YykYdJSwjz+WY+dU7TjZsBco5wKlMFKy+h7ZbaVAkfJS80tWhEb
-	1aRVWpkuEo3SKVmIcsvEEOUpAOKBXT1lcycSV6BRB6RJMeKeZQtW713W7MVAU3Xhu7e/LpRxVSG
-	1kGQx3OA1Zfon6qFQig==
-X-Received: from wrbee8.prod.google.com ([2002:a05:6000:2108:b0:439:8f84:28e])
+        bh=yaWqpVdlDV9VaHjIoyw0LdeLAZaCz/qIWYw9AXU/0oM=;
+        b=iGpA5GxP1TRbJPZfbFSs4q4u+tZzqxPI3kjmiqhnDMMTZ7dYmcAnGW05hJiuNLtNB4
+         Rn0gMMGawiyuKVtjPw/I+4+yzN/aGBXPgkTljYhJytwSSBFqbRJjwAgKkKU09orQppQ4
+         jP8i7htBuiINr1GVatCP69Kn+f8e4uae9eDFVclzfTIULVi7OFpeDicj9jyiGIW12/3f
+         PKsYZs5OeE7Il0+acVg651HWvwBsGCJViI/hV+sE9jXwPD390HMDXdE/GBlkEMJwPu87
+         a4aSxB5vQqsrytBA8hCO3Wsu8xFfPiX7Y3zPETf9j+WfpToevLP9StroG/Ss0joJ4IIu
+         uPEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZHUKZS7c7FGK2jxiab+UOr+AfB/a/3w5rbdTgFU9vx0dh5n3SB7rQUCBhfmNIug5eF79WiiDeu4UuvcO/2g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFMzsbW37a0hDww0OVVHB/Y3g1KShZ2HZSoz3S2eVcRFigm19W
+	8lQqkojd+pdIz97mxzmS3pRPBdOA1yRDxDYRM3BUdqANOqTwW8Ai601lsANTuK0/OLupWqRjTPE
+	Wlmod1wsQSqmN1/oc/A==
+X-Received: from wrra18.prod.google.com ([2002:adf:fb92:0:b0:439:b77a:b852])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5f90:0:b0:439:9464:ac0a with SMTP id ffacd0b85a97d-4399d97f64dmr22793244f8f.10.1772469991630;
- Mon, 02 Mar 2026 08:46:31 -0800 (PST)
-Date: Mon, 2 Mar 2026 16:46:30 +0000
-In-Reply-To: <aaW81JU7P82nXNbd@slm.duckdns.org>
+ 2002:a05:600c:1f83:b0:483:8062:b43 with SMTP id 5b1f17b1804b1-483c9c031e6mr262504225e9.19.1772470068114;
+ Mon, 02 Mar 2026 08:47:48 -0800 (PST)
+Date: Mon, 2 Mar 2026 16:47:47 +0000
+In-Reply-To: <20260204-aref-workitem-v2-0-bec25b012d2a@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,31 +57,35 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260204-aref-workitem-v2-0-bec25b012d2a@collabora.com>
- <196AEBB6-29A6-4F0F-917B-A042F422698C@collabora.com> <E0BC3E06-FF0E-4EAE-8B7D-FFC1630F537C@collabora.com>
- <aaW81JU7P82nXNbd@slm.duckdns.org>
-Message-ID: <aaW-5vwuf97Cpt6r@google.com>
+Message-ID: <aaW_M_h8vAUpUyQG@google.com>
 Subject: Re: [PATCH v2 0/4] rust: Add ARef support for work items
 From: Alice Ryhl <aliceryhl@google.com>
-To: Tejun Heo <tj@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, rust-for-linux@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Mar 02, 2026 at 06:37:40AM -1000, Tejun Heo wrote:
-> On Sat, Feb 28, 2026 at 02:35:05PM -0300, Daniel Almeida wrote:
-> > Tejun,
-> > 
-> > AFAICT, there are no further comments on this series. Can I get your feedback here, please?
+On Wed, Feb 04, 2026 at 05:40:38PM -0300, Daniel Almeida wrote:
+> This series adds ARef<T> support for both regular and delayed work items. 
 > 
-> I don't know enough to have an opinion but if it looks alright from rust
-> side, please go ahead.
+> - Patches 1 and 3 actually implement the support in workqueue.rs
+> - Patches 2 and 4 adds a corresponding implementation in drm::Device that
+>   dispatches the calls to the underlying T::Data.
+> 
+> This was tested on Tyr, and is actually needed in order to obtain a
+> &drm::Device when handling work items. This is then needed in order to
+> allocate GEM objects inside the work handler that processes the tiler OOM
+> (out of memory) events. The current series sets the stage so that the above
+> is possible in the future.
+> 
+> This is currently based on v6.19-rc8. I hope we can land all four commits
+> on a single tree, but otherwise let me know whether I should split the
+> workqueue.rs changes from the drm::Device ones and rebase accordingly.
 
-Yes I think it looks alright. This just makes workqueue usable in more
-situations.
+I noticed my Reviewed-by from v1 was dropped, so here it is again:
 
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
