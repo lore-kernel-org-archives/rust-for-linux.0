@@ -1,106 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39314219FD
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 17:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7445642DFFA
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 17:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772471797; cv=none; b=FP6k0Zt3VmMd6qW0O474B8l+Wcg/DUoJOt0D0wiow/MEviZG79C/X4dA94WR54j4QvSB7MNAHPDLC+oIflSivvkfplVUV0dgxKmGwlZreKFlR+h+xDLpAqHL/5INdKXvPCfsk2+ZPuHc3hOCbHTEe60uE/J7IOM4kLHJVPVfMas=
+	t=1772471920; cv=none; b=Z0IG0sQBTa5soVu8nLMPld+IWzNDI1eliLBqdyB7YUkxrhwageR+bgR2A2J348KFuYEFrcT8u2QnxY06Snpzi+DQTUGTGG00Ul2+ZyqgZfJU2z/Wk+0nOkPQbuOccIg9m1onwq3UeMMH/n0ALVRq/JgsX5FMfWCp60y/l8QmzKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772471797; c=relaxed/simple;
-	bh=WUk3+L5+DM2P/5DAt5KeN9nLSDmjVK81KXg2iJ7K9IU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VZDWwmI6tzHOIe3N7vKA4nZFD/5d3wke8OaSKMIHGA4BaYkaRBXcrlVQbjlM9g28jsyvAiLuKkusr9G5Gjmot/v7+b4PjVErL5vreHclculYlv9O9uZrBO16/UUiyKCqhoPUwcVJmet0vthioSnGvndZSphfjIefe+Of+9YfFEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXRmNTet; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772471920; c=relaxed/simple;
+	bh=Pv2qpIk3MvXi6bkzaURmK+swy1UybcwU1prgxX07c/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s46i3YFvWAGIJ2FeH8bUGMjrJmfdLa5siO2VOMHxjaw0zJHyRJjHUqS0HC7yG+HdZDS3Rv1NuUFuc5R8jhCx5/1U2U9dR/Yr6d3QUKnfmk5FpPiWhpq2cBFwpsQxHTltzi99MpSj1Vr7AqJTvQHayymL1fanpH29cSNZ1dSp/6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ee+SlY59; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXRmNTet"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B79C19423
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 17:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772471796;
-	bh=WUk3+L5+DM2P/5DAt5KeN9nLSDmjVK81KXg2iJ7K9IU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RXRmNTet5q8BkbAzoxGd0GlG5QaaIgVYLPiPWCOoXuWDwMByuQWfFMwA/f8Ah24Kh
-	 2KRZ9KQYYrHLFw5VBH3vkyoLAnH9wSJthRuj6FxQwnMPwRk+35KNiI68v+bv0eipdj
-	 ank5jLTEJ5qHubTQFVQixjdxXRwYyhor/6U78uJ7IeFW6JT2ubY+ONNXDVhxEtLzL2
-	 T3cgQ7OKyCRlqDKVAqVUaxaOKI3EUa4AsbApg61P7xWVfOsISgs98mTvehgQpXmaYd
-	 /LM+KVOcjcJuPNsZ0NPN+aBLa3gw2qYK3mcViWSs3D7d4gIxnbwHUT8RNEO6q9wiNv
-	 ox7pPc7k/RGGQ==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3870dec27f4so14549631fa.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 09:16:36 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVwSKGWGVoqOBLGFGchrx5vlmdUTXtmzkiVDgAsp9H/bV25wNuKvtq+AkUP2FvCV5BHd6qiC7Awd/lfgiYzaA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjGYFNSqLyjPKqC9IIBb3qPghRFzEFYZYqjYrbdA9sVuTkIdKu
-	XBSTE9WLBsWvtqviyIKBfSRKtOSbfk5jZoMwkKVZyQ24CPDG16ooAd37aRGwy96oz5+dz3GsWcX
-	iAGWRkDwqFDySfIkl8sXcFhkykREUYTU=
-X-Received: by 2002:a2e:be1a:0:b0:385:c15f:6bd with SMTP id
- 38308e7fff4ca-389ff73df24mr73690511fa.10.1772471795293; Mon, 02 Mar 2026
- 09:16:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ee+SlY59"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ae49120e97so105975ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 09:18:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772471916; x=1773076716; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gmjyFqn2IXkUrXbwMN6/szcLPp+gfk/WNKWPoNt3xHc=;
+        b=ee+SlY59p0blvuRcE3KRq1cPytLWsk3tj8cu0KzLJ4GCGIXfnBihzE63BosPQ/MC1Z
+         00mtDEyiflDkjCl7w/HJvLjm4FwU4q6Xz5GOpbphoW4JyWqa8DpejTQGfiM+uKiIhxFW
+         rKbQQipuiIcMY+LiI4CT6W9ybbnRdt2qVufnlMV6np8iRAmNipXpEDDX3tLUXtQnNC7I
+         kL05mNm8TxKJEry63U3Cxvt+Q0sz8PsqJS4UNkmctIY4NEZRY5WCfdloMpS+3thD0D7n
+         u8KrNT9tYjIWaWA7SbsjbX5peyLpolazsrjHmmOucT0vzL56UVet6gSm9HimgQ01/TN8
+         gzaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772471916; x=1773076716;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gmjyFqn2IXkUrXbwMN6/szcLPp+gfk/WNKWPoNt3xHc=;
+        b=l1cSllOIS7yv5bPIbA7Bq9uFuB3KcDC1EN2zKNUN+s6+A7dGtUVGPQefy7gJrMbDyE
+         7WgMAKVavbDQZHDqZaXhxiV+Z2LaO81DP/rhD13x6FN1qhfBjMoHJCc5fnSpTbgoTmcB
+         Cd2vt24VlzEcLu7hQLp2eXtsq5xqSeK16mRW4t9DhKvMLungfgWxgmV+KNKIgQ4WIols
+         Eq82HCv3a3kIIhP/lzJzEtrKhZpPS/DBuJeY14n25lFusVUfHqY9kikrcya/IVKUhv15
+         4EnNPBkfrscvwAaKnleJDc8z3585qjP022zzJPpgGg6Jh+6bSB8gVwmvrvEPqjRAVUJv
+         t6VQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV8bUQyemYXSNF8lllP6yxb+o+qz9z7lnztYZea94ddHOSbiOU9tjPBfI0HQd9+xLAy+byBKjyyngRMqkBmeQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVHjDLsrcDyxHx7epFdGo4tIXdTMz2WfP4glOPk1ABosaGuifQ
+	UJf9lBUT5+O8hpdcLPaofROiyMX4bIppeUM87zOkyG7MApJVe+YpiRQ0qXWODQDsOQ==
+X-Gm-Gg: ATEYQzxYEOtkk5DgIdeXdyHfCTze00z8F1S5OdRRkstsP4aJ6DyRmjOm4qaNWhm5HDl
+	E3wgGMWLjCxbcMPvJ3/wOux3UIpRCSXSFdMS1ZVcZiMKTyyGePt9e85C6a1eQLldUbhGBor0oZS
+	QXgyrtQnULWIEB6FyQj5UYdr6RGb+szt/oapMtxbT45Ppz17htFmymQIJnXpHIpswJ2Zs286OBr
+	kePK34n32qbWiga4gB0OQ9de5e6hDOOBdqz027dP3/Uio7/TKciCfvro+yzgU/6bqQlkrpF7Kxb
+	CZ25yH6ZpuhegdebW1cItdcov7fzUPEjeltDsG1s2BWteE615bvqzwMQEbVENvXTYnv10+OnFJx
+	yLCDt8jpmeWQXiylEcBXiK5ne9nTZG46KKN98EucPnTFK1s9fFRFNJTy2oy0z0FRJJAvn6qEt8W
+	VnwNtsVFc875UwlEarLoKGrUy5R1QIAX0nZOKqOIuxs6VpKnqwfj7TnhjXxgcwI5N7HabB7Uvf
+X-Received: by 2002:a17:903:2d1:b0:2aa:d5fd:5d76 with SMTP id d9443c01a7336-2ae3b3868d1mr2934195ad.1.1772471915887;
+        Mon, 02 Mar 2026 09:18:35 -0800 (PST)
+Received: from google.com (154.52.125.34.bc.googleusercontent.com. [34.125.52.154])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae4802645bsm55239085ad.12.2026.03.02.09.18.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 09:18:35 -0800 (PST)
+Date: Mon, 2 Mar 2026 17:18:30 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jann Horn <jannh@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust_binder: check ownership before using vma
+Message-ID: <aaXGZlfAmk-DCuBW@google.com>
+References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
+ <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260127-rust-analyzer-pin-init-duplication-v3-0-118c48c35e88@kernel.org>
- <20260127-rust-analyzer-pin-init-duplication-v3-2-118c48c35e88@kernel.org>
- <CANiq72kYE3zvZ2tdo3U0vBv6z8Oi3CuPtwAi+SzNZrKzQfzfrg@mail.gmail.com> <CAJ-ks9nZS_KE5Wawts-2gDwK1O7k8jP-3ApSE0BiPmqW_6R95g@mail.gmail.com>
-In-Reply-To: <CAJ-ks9nZS_KE5Wawts-2gDwK1O7k8jP-3ApSE0BiPmqW_6R95g@mail.gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 2 Mar 2026 12:15:57 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9=MOmh5qaLgnxTeAh3kMOZoq0V0KtU_gXfJc_H-SpQNUA@mail.gmail.com>
-X-Gm-Features: AaiRm52vfgTfedxepFtwIxJxPD1I3Q6CmLp3rn_pGbfzogdyqiWkx0i37i1nKBA
-Message-ID: <CAJ-ks9=MOmh5qaLgnxTeAh3kMOZoq0V0KtU_gXfJc_H-SpQNUA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] scripts: generate_rust_analyzer.py: reduce cfg plumbing
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
 
-On Tue, Jan 27, 2026 at 11:41=E2=80=AFAM Tamir Duberstein <tamird@kernel.or=
-g> wrote:
->
-> On Tue, Jan 27, 2026 at 10:05=E2=80=AFAM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > On Tue, Jan 27, 2026 at 2:56=E2=80=AFPM Tamir Duberstein <tamird@kernel=
-.org> wrote:
-> > >
-> > > - rust/Makefile: pass `pin_init{,_internal}-cfgs` from rust/Makefile =
-to
-> > >   scripts/generate_rust_analyzer.py.
-> > > - scripts/generate_rust_analyzer.py: centralize `cfg` lookup in
-> > >   `append_crate` to avoid having to do so for each crate. Remove
-> > >   hardcoded `cfg`s for `pin-init{,-internal}` now that these are pass=
-ed
-> > >   from `rust/Makefile`.
-> > >
-> > > Reviewed-by: Jesung Yang <y.j3ms.n@gmail.com>
-> > > Acked-by: Benno Lossin <lossin@kernel.org>
-> > > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-> >
-> > I may still take #1 this cycle, but this one you will need either way
-> > next cycle, so:
-> >
-> > Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> >
-> > By the way, the commit messages (in the kernel, I know e.g. some GNU
-> > projects do it differently) are not typically bullet points, i.e. they
-> > usually tell a story and make the points relate to each other, so e.g.
-> > it could say that what the first bullet point mentions is needed for
-> > the second etc.
-> >
-> > (I am mentioning this sort of thing since you will be taking commits
-> > from others etc.)
->
-> Makes sense, thanks. I'll reword into paragraph form on apply.
->
-> Thanks!
-> Tamir
+On Wed, Feb 18, 2026 at 11:53:26AM +0000, Alice Ryhl wrote:
+> When installing missing pages (or zapping them), Rust Binder will look
+> up the vma in the mm by address, and then call vm_insert_page (or
+> zap_page_range_single). However, if the vma is closed and replaced with
+> a different vma at the same address, this can lead to Rust Binder
+> installing pages into the wrong vma.
+> 
+> By installing the page into a writable vma, it becomes possible to write
+> to your own binder pages, which are normally read-only. Although you're
+> not supposed to be able to write to those pages, the intent behind the
+> design of Rust Binder is that even if you get that ability, it should not
+> lead to anything bad. Unfortunately, due to another bug, that is not the
+> case.
 
-Applied to `rust-analyzer-next`. Thanks all!
+This all makes sense to me. What I'm missing though is why not reject
+VM_WRITE mappings all together? Is there a downside or something that
+prevents us from setting this check?
+
+--
+Carlos Llamas
