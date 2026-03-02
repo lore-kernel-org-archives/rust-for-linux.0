@@ -1,106 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870DE175A8B;
-	Mon,  2 Mar 2026 23:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93FA359A99
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 23:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772494178; cv=none; b=T5sItySvKP35+nTfA0ia3EYtXzWEfvdFzfefTDNCfKvz8smG6JAerDCr+hFxVnRsVhTn8jFu7FsefBHWVwVh6xKPn+oiDHQI5yPzsQUqvckRQBmYLgeDvGs1pgelbdNzx3nwvwslFVGR1AIgyRb+3GlF5leOjsbE32sNh2NLlgE=
+	t=1772495907; cv=none; b=W5Ugo+u5klvWcuV4zdMj4N1exl7MX9O6mwseOJCXHkK0ZxyvyxDJ2SFcVre7kK+a6G8AiEmbD7vI5FP+Hu3bumyQe4wEfACb7CmVVJ4iRrXQCB6O4QLoXBt7nV8rompvv76w+mLndVSIkejZRMpCYQUob8dRf33DvOLHDWx9774=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772494178; c=relaxed/simple;
-	bh=cGbDhS0SYNM7ywiKo18nxPHughICS0VYorf2j+DgiJI=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=g3hHH+zDDTxkJyHJkey9uTFiwg8Buuc2kdMjBcIzqTb4uwdJKGbZ3baEEkmiTw1MBJy98twra857rLTxrDTGZJmUooBbBjMAGkhymbOHN2w9lR4Xci8UI54puscRomys/MBLyb/QbBMR/mxC0z/bTIeKRQiLV/S2oCG2ym9rR+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TSxh7FtX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772495907; c=relaxed/simple;
+	bh=dLPS21rhotZsClGCyEhOGzY3/6PtbWLrIcPK+TMyZh0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ouxt9LV8iRN0BlSDCI0+IsAtF80Ub1dzo1HlhFmbbd0GLx+tWbX2CjwZCYQ6easdidDr99vcsmRl5z54FhcfzjAMtkk7xgloYowZZ7juHoNCqvn0HDOi5vXV0U+/4Dn3wxXQzfggwDsRcNWccWCrVmhtlaEjSZ//6PAM8vQ5cBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QhNzglLG; arc=none smtp.client-ip=74.125.82.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TSxh7FtX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67948C2BC86;
-	Mon,  2 Mar 2026 23:29:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772494178;
-	bh=cGbDhS0SYNM7ywiKo18nxPHughICS0VYorf2j+DgiJI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TSxh7FtXeAjmq+kHAoxRq7blbJce7OjcAyo5efUABhyEIDg5ECsbidW5Mcj6tsYRQ
-	 DzsG6rRpbWkeoTG5vogARAaO0jUDloWcC8I+5NMkdmsuNVjw9kdp+VtHQVYC7rwOhD
-	 vT8qcareSz2ZYaJdXKgw++Ul/6kRr6+5kG6+y49U=
-Date: Mon, 2 Mar 2026 15:29:34 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
- <linux-mm@kvack.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, David Rientjes
- <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Alice Ryhl
- <aliceryhl@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman <mpe@ellerman.id.au>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Claudio
- Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?ISO-8859-1?Q?Hj=F8nnev?=
- =?ISO-8859-1?Q?=E5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>,
- Christian Brauner <brauner@kernel.org>, Carlos Llamas
- <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, H Hartley Sweeten
- <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jason
- Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Dimitri
- Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
- <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, Vincenzo Frascino
- <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, Neal
- Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>,
- David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 00/16] mm: cleanups around unmapping / zapping
-Message-Id: <20260302152934.eba1cfede1c9b8cebdf45b09@linux-foundation.org>
-In-Reply-To: <20260227200848.114019-1-david@kernel.org>
-References: <20260227200848.114019-1-david@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QhNzglLG"
+Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-1270dcd11c1so6679857c88.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 15:58:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772495906; x=1773100706; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yfIfOmIXwQ7nZr2XqRPaUJWDnxnqMi80a3YRLRf5U3w=;
+        b=QhNzglLG8N60Fit6Qbu7DEmzIYgsHfDkldWCk07ORnHsZhu2OLw8hpS5gS37A4WWfb
+         MqEivFIQoGvRMxDRM8nrtRxYK52Y0p5FU+L7zcgiwnpXg4/jErtMIxKUuAyoNmLL6W9A
+         D7b4ysC7N/L7ZKIOKzt/GgKAkIBwbEesnIu3O98L0zSIIJp6MHt0nDTlylVSZzv7m7DA
+         rzYhlS4LNfxg2uyiO1/aNkHLr+InnndcXLeqMTO+EBKKPF43LLJZAe7WycJDQMTrfVNl
+         YA818u5TdxLevhHkLuaWpYG4I3u4SUgO+bYGuDAWChAxhFLjHoRWXJ26skdYAIwAv2zM
+         8Y9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772495906; x=1773100706;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yfIfOmIXwQ7nZr2XqRPaUJWDnxnqMi80a3YRLRf5U3w=;
+        b=ZasaKHXi4vms3bnUoEc+2xBkzB2Ge8Qk1UFT+WyBD0LTfk7rmPsSEpLRdK9YlCPtsK
+         eIyBrlRhpMLHhVYTj2jheXIt0BrrXu5pCqFIG6kHBjcOrnpSGmAiroT8WQCav6eeQ7w0
+         iu6xEXWmhaOnlwvi72X1beyAqI9DOM+LV4hoCABkGn5VYIhEB67B6k/VoTixo/IV9+24
+         GxgITEjrFdPcjHqiANsHACdHFbp/QkTzinNdxWvcX1iisGHfx671E0V9Cthx1wMszKFp
+         V39Md/+5HaRpb7BFQrsD5PuyyydvuBqM5GjQw2MIzHAMIuw2abtzMszWHFnXj04l0DZV
+         3ilw==
+X-Forwarded-Encrypted: i=1; AJvYcCXy5eY+k/fN2LWbJDqtJTB/Fc2ERQdBqWc8vGdJTPpvjimKrR86qzWGYiYXLJZ/tK4UZnOQzmK7KXfsP/jcnA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3o9bUKg9nLt+raQLVUSTycj/dOWQWKCAjWVrVenvvV1vTJGHE
+	MAOc+akjbp/lbuOBUIgwB0FoBZi2svhfQUrkZXGTdZ1HhGJohO2+IC/q7EmRVS53VrvGL0hXAQC
+	5Dv8T4UCnvQ==
+X-Received: from dlbsj2-n2.prod.google.com ([2002:a05:7022:f902:20b0:11d:cd2a:4c1b])
+ (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:128f:b0:124:9acd:328e
+ with SMTP id a92af1059eb24-1278fcb60bdmr5859046c88.27.1772495905544; Mon, 02
+ Mar 2026 15:58:25 -0800 (PST)
+Date: Mon,  2 Mar 2026 15:58:21 -0800
+In-Reply-To: <jiwt5mjma2puv7kjbgploxx2l5tankjm4zu2tsa75qkckwnwjk@f7mz5vlvzpjz>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <jiwt5mjma2puv7kjbgploxx2l5tankjm4zu2tsa75qkckwnwjk@f7mz5vlvzpjz>
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260302235821.588686-1-irogers@google.com>
+Subject: [PATCH v1] perf test type profiling: Remote typedef on struct
+From: Ian Rogers <irogers@google.com>
+To: 9erthalion6@gmail.com
+Cc: miguel.ojeda.sandonis@gmail.com, a.hindborg@kernel.org, acme@kernel.org, 
+	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org, 
+	dakr@kernel.org, gary@garyguo.net, irogers@google.com, 
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	lossin@kernel.org, namhyung@kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 27 Feb 2026 21:08:31 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+The typedef creates an issue where the struct or the typedef may
+appear in the output and cause the "perf data type profiling tests" to
+fail. Let's remove the typedef to keep the test passing.
 
-> A bunch of cleanups around unmapping and zapping. Mostly simplifications,
-> code movements, documentation and renaming of zapping functions.
+Fixes: 335047109d7d ("perf tests: Test annotate with data type profiling and C")
+Signed-off-by: Ian Rogers <irogers@google.com>
+---
+ tools/perf/tests/shell/data_type_profiling.sh | 2 +-
+ tools/perf/tests/workloads/datasym.c          | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Thanks, I added this (and the below) to mm.git
-
-I suppressed the dded-to-mm emails to protect the innocent.
-
---- a/rust/kernel/mm/virt.rs~mm-memory-remove-zap_details-parameter-from-zap_page_range_single-fix
-+++ a/rust/kernel/mm/virt.rs
-@@ -123,9 +123,7 @@ impl VmaRef {
-         // SAFETY: By the type invariants, the caller has read access to this VMA, which is
-         // sufficient for this method call. This method has no requirements on the vma flags. The
-         // address range is checked to be within the vma.
--        unsafe {
--            bindings::zap_page_range_single(self.as_ptr(), address, size)
--        };
-+        unsafe { bindings::zap_page_range_single(self.as_ptr(), address, size) };
-     }
+diff --git a/tools/perf/tests/shell/data_type_profiling.sh b/tools/perf/tests/shell/data_type_profiling.sh
+index 2a7f8f7c42d0..fb47b7213b33 100755
+--- a/tools/perf/tests/shell/data_type_profiling.sh
++++ b/tools/perf/tests/shell/data_type_profiling.sh
+@@ -8,7 +8,7 @@ set -e
+ # data type profiling manifestation
  
-     /// If the [`VM_MIXEDMAP`] flag is set, returns a [`VmaMixedMap`] to this VMA, otherwise
-_
+ # Values in testtypes and testprogs should match
+-testtypes=("# data-type: struct Buf" "# data-type: struct _buf")
++testtypes=("# data-type: struct Buf" "# data-type: struct buf")
+ testprogs=("perf test -w code_with_type" "perf test -w datasym")
+ 
+ err=0
+diff --git a/tools/perf/tests/workloads/datasym.c b/tools/perf/tests/workloads/datasym.c
+index 1d0b7d64e1ba..19242c7255c0 100644
+--- a/tools/perf/tests/workloads/datasym.c
++++ b/tools/perf/tests/workloads/datasym.c
+@@ -4,14 +4,14 @@
+ #include <linux/compiler.h>
+ #include "../tests.h"
+ 
+-typedef struct _buf {
++struct buf {
+ 	char data1;
+ 	char reserved[55];
+ 	char data2;
+-} buf __attribute__((aligned(64)));
++} __attribute__((aligned(64)));
+ 
+ /* volatile to try to avoid the compiler seeing reserved as unused. */
+-static volatile buf workload_datasym_buf1 = {
++static volatile struct buf workload_datasym_buf1 = {
+ 	/* to have this in the data section */
+ 	.reserved[0] = 1,
+ };
+-- 
+2.53.0.473.g4a7958ca14-goog
 
