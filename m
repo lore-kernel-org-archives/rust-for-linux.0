@@ -1,178 +1,144 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013010.outbound.protection.outlook.com [40.93.201.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5414C280A5B;
-	Mon,  2 Mar 2026 18:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772474627; cv=fail; b=X8UzvdMMpWKDwtS0CQAFofuxUU+b/VY2XqbQPvB/pfM4Lgvcy3f2Z/fxkjFIok4TTdoKtr1ZGGOzuu2VCAHZsuRS5DBn9Tk6u2n0YVph3l6InCmfQcAq2eTUZzDzfZ0f/s+Ea4wjVq2nvUjPlAoSeFt6IvzOp8QmsHC/ydm+uhM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772474627; c=relaxed/simple;
-	bh=dkUIyGrZ1ZZ71On2Xl+QZjLMASSSAd6hE+YcKh51stI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=brdQ7arxdLNqQnWW+2H1Oycb5WhqJIpZJ+9XpKuIEpcIVzSQzlC7pt63dRjlF0opNH6WHKIeOPQOIq5c3LKvBGFuROpZKXnBodojuSUWjO5QRmb8MMOq/SBCOOoHS3snziRX9K6loQkEPMZYSoMVcqZgl+GOEHUHZWDwWi2Q1l0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=N3A2cIYZ; arc=fail smtp.client-ip=40.93.201.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC3533555B
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 18:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772476570; cv=none; b=XG3CoIPpXE5Iin1G1IVGaG61HNtnz1y8fAQLB3a6bomurY5CGjQmUTm7Eiyh5BdhB4am0cnF1zlYFikDegytO8cST+yeG+aos412oaJCRl3t3axJ0kAjba9GlOMaYVlz9p5nkSWJD30GJCfTcmkYlct/IUglDDUuHRj0cfj45BQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772476570; c=relaxed/simple;
+	bh=gE+jXU5agoQWTZebEDnDXNxEhHacPNAY9q51lw7KMLQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NNj9qtSEVHfdYkg/OUEkbXmKwNfcrpLqv84/goF1D2UTvYWC2hL7d/Drsguc2qcOAjwLKLYfe9CIIHZHa5tHgEosGn1hFkJT15taSvlYkrjDfjvyM9LxEZ33L89CO3PZY59GY2mEJCk8WHqULJ9b1zCYFLL+y+xxQnIQ/i8GHNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mzCHPyne; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="N3A2cIYZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aDHUBOKiXvE8NhXK/BFTU4//ACEDl3qSfWBuhlFdsnLi4/nKD41tXwdPhVSSdobRRj/NEmrXQS69vo3ZGyQ9JF2zaqxtcPz548u8vhG0rnpEi8ZLp4jv/OmKe3WV9EiZ7SqjgADb93wAZ18/P29bgocGS0o+r8nXf3QDvklZLQ6Cgaurz8D4d3+H7mVy9GzYjg6ad595IGjZyDdElvSa4JIyTFuKcJCnk5o7J9Ldm30rMkTQMUx5UapCZYOncsUpuxJ8vHrXKPFBm65ULqOSLh0IjJcRwDvxb7CjH98GGWL64osn6ikukCICuemEbys7g/+EQy+nE24bnalAHJK+bQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A57p3MUVaLhWtEF//GJa7sO6cB4kd4/lFmh0MyBBNlQ=;
- b=oUcSVk++8+v/EN0lboG1YJVRbSrGnb7RkxNOj8pVafuOnzWqRSiTc+rOI9Mx4RYdcgS/Dubi78okbefksJ8UON18sEd2f9dwGHV/6GzPGBSveFVTsRlwXWpcFt7L2VCNpZZ1Se1yM0KoRV42/R7m38IRGjuzhKm0r8HbunvQDSRfDRC4UwEAWMkhwtj73d+bY1me4Q/UbigpYjAnQK1W1qVus7MqNzERCYzdIdbp36Hr4ZGAtsenFsTgxnTX4BIT4M+4HBbLPnrXzrTut8mRs9nujXiQ9MHnG4MLeBtbaeVE7O50CImRa+Os04qGlWfnZXAvw4kfR8y/Y0dT4ri3Qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A57p3MUVaLhWtEF//GJa7sO6cB4kd4/lFmh0MyBBNlQ=;
- b=N3A2cIYZRoCaBuBooO/VA4jvB0qabdtnwm171RyJvNU4XS8aSvSyYJKv5Mbz5eUuUn1QQHUJptS4wRY3Qs0bi9OFlatsdey+UEo0e7lvGZMDuHqq9+n2KTnFj9lstXua65UNuUBd99bm2aDD2m1/03jktqZ1rjbJVOogs/WG4PKiy8SxXvgNekq68jIp/mI6bW+I2inucDGEhmBVQDdphrDDZ+LX9F4FlnZKolH9dk1OXpDfv4iX9Jg1oUAW/XOrTIXUUBAT03Dp7iOuR2+b/9dyjupfd5mu0GdLaUgC0jzaprxda49ewf6OyyTA5B0QQDBdIn4dzagdQBKOtPYAUw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- DS0PR12MB7748.namprd12.prod.outlook.com (2603:10b6:8:130::22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.21; Mon, 2 Mar 2026 18:03:40 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 18:03:39 +0000
-Message-ID: <4e27719d-85d3-4bd7-b458-5d6d0a3063ba@nvidia.com>
-Date: Mon, 2 Mar 2026 10:03:38 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] gpu: nova-core: gsp: add sync and async command
- queue API to `Cmdq`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Eliot Courtney <ecourtney@nvidia.com>, Alice Ryhl <aliceryhl@google.com>,
- Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>,
- Gary Guo <gary@garyguo.net>, nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20260226-cmdq-locking-v2-0-c7e16a6d5885@nvidia.com>
- <20260226-cmdq-locking-v2-2-c7e16a6d5885@nvidia.com>
- <a3b7a5c3-9689-4700-981e-d94bd2b5091d@nvidia.com>
- <DGSAOTM95PZ4.2JGBBMNRSJSNN@kernel.org>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <DGSAOTM95PZ4.2JGBBMNRSJSNN@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0024.namprd03.prod.outlook.com
- (2603:10b6:a03:33a::29) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mzCHPyne"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ae3f822163so8135ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 10:36:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772476569; x=1773081369; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TNGbC+n/FkqePeOY//UBg6AI1QctrOX8iaSRimJodOQ=;
+        b=mzCHPyneiY261XfAVBrXgOzej8xAJlb7jU8TJqzrwazDKr476xUrHUfPrUHFd5W1Yu
+         K/nHuaLuK/0XVy+8AfnsEJkbklyOS48YJQnkygmsojCkhwRfDTbaCzHtQggvsFjkxDWG
+         W1P6ZwapsdPgFssbMFegNd6ofWHwAs0kDlahVe/EBJ1pvSkuTbmFZgdsmak69sqRVHGb
+         nJhxvCPQYcW87DOjpMoT+IOuZvoeS73LYdOWvFML6UtYW56tTWpNe26oF3P3DnVQlaSh
+         aDVqc//WnkoaOTFuU0kNA0sMx0gQgXRbyOHpdMhn2DmVgsTas3QYakhoFjGJOAVsOe51
+         p+7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772476569; x=1773081369;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TNGbC+n/FkqePeOY//UBg6AI1QctrOX8iaSRimJodOQ=;
+        b=hLN4SGdaaiYBtcM4xbhNnRXoTwCuS1iLs/bFS6YLiW9nXxiMsCcKVcOBcByucfYnjz
+         MwgrXIt0JOK1WdYB4ErldATAAcZnkh8RHN9Iwis2h63F1/xXTwwK+g8rOywNE8laMjxi
+         8n9cfNgAImp7BzP/JDtt3YwMpFqBvc+p3b3DpxtDuPPF2xuxxpjlhwNbCzu46Qtavs/T
+         aKc5nGqIqSfAGRaY7jk2WmVvCLtmbCSniNpQX+MlNvwx7u7pqi1xaW2MjYdxjswa+VX+
+         xRCn3e2CIjZtGnH+37j7OaogCTmX4eCesEMoxC0sCsj8ANBRFLAUGerYDuFYWQIfHn92
+         G5Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCWlijyKWHgoZCW+Cl4q7TH473/RFDQ366ZPtdbWsO3cetN/j0p0G8mkRbLrLHZ91gsyMHsu6dQHu5OTEVAG7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWoT+6pd5D3bhne4MPaZu+fP9zWybXrWgrXCe0NOWtlkavx6zQ
+	oUpWHVggPMhiZ6QZeiiKdwJFAMk8D7xZtyQRs/D/nUuL0hzXj67e0sPsggN/6jxAEA==
+X-Gm-Gg: ATEYQzzuzCEFY0J6TgFk4xmeVdtzw7DzlUf2CBiY+5b6pmQHbw2dRvW/rqLQzIfvzAF
+	8YY0k76IgVFQvfxIZj8sPfbyNK/N0R+eSo+iuTefDiIuwtVeY822P2eZXRsyKWBsNy1s2HOg5+3
+	w2TaciGS5NCfBdKhGGH5qAPwf2Kc0K4JT1st/QK0d4B5MH/cQ3FzZL2s31oYYqxbIhbljgbWtTG
+	Honr5DA0IJ3tUyccIpjN+HhuWjspvgChjLQ56o0EhGpdtPX8aFtJFZTTa22ZnTldpT0jFIAMgS6
+	Uz+OCoidSmLYVMSPUv53iZ1FrpRm0ELbX9Fl+5aGYPOgbII5G7Ej9o3x3Fe9a8OTIAwvQ2VSGuJ
+	bVKbmLCgpi0Wn/NUm4YH3XfD1mOTOy2jbnKKPD2nFaXY1cW2pH/xgTZzNJVBtPm171zIpPb5vQ2
+	CdxVVYQgGO0E7IELrN8y4xr9O4uZCqoOMQw12RwtdHM4wNp+it/0A87M1Y5qFjeEwJ1Q6+Tgpi
+X-Received: by 2002:a17:903:1b6f:b0:2a9:5ef5:399b with SMTP id d9443c01a7336-2ae3b553cd7mr4766455ad.19.1772476568598;
+        Mon, 02 Mar 2026 10:36:08 -0800 (PST)
+Received: from google.com (154.52.125.34.bc.googleusercontent.com. [34.125.52.154])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739d94de6sm13941615b3a.24.2026.03.02.10.36.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 10:36:08 -0800 (PST)
+Date: Mon, 2 Mar 2026 18:36:03 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Jann Horn <jannh@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust_binder: check ownership before using vma
+Message-ID: <aaXYkwQ0Yg5b7sTb@google.com>
+References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
+ <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
+ <aaXGZlfAmk-DCuBW@google.com>
+ <CAG48ez2M4fj15gqyKrP7ADRUhNQZkpy9m+NSz2N=vo=PSefm0w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS0PR12MB7748:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5dd3c5bb-31ac-4bc2-eb65-08de78860888
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	azGmOWwZ83u1nV1F5uezxWKJHa0RHqYqKbu6ygPYnLAHzQrrqC4X4P2d4Gl/SaGkpOJIjzdYmBxqOEAA25y/P6elPrsWB5mL938xm6X2GwYw/mCuQpMO61Ke+civnsLgkpoOp55Gra3RpH7ulsM9hscl70E/x3hLjw4nNaPntH7ClITEOu2RLy+ZfLQfWMGkY0yHfcv1N36j9qAeLR1cEwIhIy796u9xnElyu+OC7udP9Bsmw0fjO2/Jje/rqDUN9OUhzAklRwvgZgxjZldUDykFRRROXm4idpWLyEGtMhlmVFOjdAGVPLvoW5dvG2jMmrmcRriw8rbG3f34XdwqLJLJBVncgdx74eXTdAsjtjWjjE6rKZhf13RKguMAvsYFDRNVF5Hsd+J5eKzD3ftwoJYqclgbS+46aSGlWfZTDLBmiDNntB/pAwaE/LpG1ZH1aG38THVN8LgmesaxciSMYTWThmEmktCy+alZq1GTkdKQbE3y/UOQEKLcraeauDcPY6Av9tXZzB52CuxruisxFgs44TTr4v3hSOKM27fudQ8KcOrHcuvNEZo7W2pk9wa/G7BakUoZHZgyucg3kMDpEWGdyvmXArYKk1LI4kyDKn7ZEfcqSd2idgd6+k6jyIuOOUFncKWoxT/miG6cX7m1cd+x3bvcScFDoT1utf/M2jqWUBoMp3dE90oG8CiqB2nQOHalVoeOeG8H6CsEf8oyp+/8AB6eW5S/9wOG35wFWjE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UmZLVnB2eFVUMGp5ZlF5czdCREVJK0E2MU1EMC9Zc0F0OHB6dXB3Vy95MEpK?=
- =?utf-8?B?UFFQV0JZNk9wMTlxb08rVUt1anJGL1pES0lJRmN3UDd3eVlGdy9MZm1oeVZT?=
- =?utf-8?B?RlROMFVibEVINEFVdW5FcGFZRjhPNjlDTUt0MTNRSS9qbTlleWlFZ1VtYlRQ?=
- =?utf-8?B?WVdYMDlNSlNUTFd6OTN1OUlhTGh5ZUJmNGdvNm51bDVPZTl6R20wOWRzeGZl?=
- =?utf-8?B?UnN3Qml0TUtHdzM3Tk5LY01aSHZCUmxDc01PcFFIWHhtY1VzbXpGa1A1bWtT?=
- =?utf-8?B?dnBmcnFlSVBWdkpQV0MxdTFkbGJyUmVkVWFpNmxxWm1lbnB2MEx6OFpaa1JE?=
- =?utf-8?B?akRUZUhLb2N0NFBJalV3cnpSRmtackVEN1VHazllZXlBa1VTRVZMekhDVDBH?=
- =?utf-8?B?cmVnZDBVd1E2QlYxODdXbFVPRTI4K3Y4N3praForWVBvS09zOWwyV0k4UDBC?=
- =?utf-8?B?QzBoZmVyQTQwNFZFbWsvdXlpeUUzV3hDR2ppUUt6WFVvdXR3a0hIMnFaTStE?=
- =?utf-8?B?eXkxdUdRU1FyOXpNWUh1RktqbHNCa1R0QzNUelpJZEFya0dIY0Yyekp2RWJE?=
- =?utf-8?B?dC9ROXRVdUhrQU5ZYlVVczJjUEpnUm93N2lpNGJsQ0RlVVZIVmhqVkRubGZW?=
- =?utf-8?B?aGRHSk9NMGF2WHlzRGMyczhkeDBqdElLWTVoNjRFRUtwRXBXVSsrc0pIM2pP?=
- =?utf-8?B?am1DTFJzSU01NUYyVS9SeTVocVlGajdyeGxwelk0Yk8xVU9YdE42TVNISEl3?=
- =?utf-8?B?RzdsZ2R5bnJOWHJiUG5WWEFMZDJZaXk0ZVVTL1E5Q0dpZmJiVWNCUGVXS2l6?=
- =?utf-8?B?Y0lneXBtanhoYVo0RThqMHFDK0tpakRWVlhkMlg2RnU1YnlsZ2Mwd2k4bytn?=
- =?utf-8?B?Y3liVzdDRVZxcFB3aEQ4OUtxd3p2a05EZEl6eVZVeFZFM2d0K0N3VkhPUERN?=
- =?utf-8?B?NENueDRqTk5nZ0REbVlHMk1RcUVYZzFKcm8xZkpHMDVzVEtEOUhvV1c0bCtV?=
- =?utf-8?B?YzErd2RJYTF1MFpMYkxwSEdDM2dWT0wreG9OVTlWTWNYNURRUTg4NEdlbGQ3?=
- =?utf-8?B?M0dMd3R6S1RNMVBldE5MeTRzdnJwK1JzWE1vOSs2dzhJcXh2c1lNdmhTR0po?=
- =?utf-8?B?WDdpQk11Y3VydHlQRmowNWdLanhHWklkZGJlYStVV1BSV0tmWGdmT0pSYjJR?=
- =?utf-8?B?YWNlK05xYVJUL3pqNlFzY2NaRWZ6VloyWVorVWgyOW5icWNuOHgycU1zWk02?=
- =?utf-8?B?T3JMR2l3UklrNEtlaGtLalo1MWFIL2xHbzUxWXFUNUdXR3ZrajQvbEZSbkIr?=
- =?utf-8?B?WGwwOHJKZUFHUFNJRm9veHZSV3FpU0F0dnlQR0ljeGJrOGpLWmFNUUxNNVVY?=
- =?utf-8?B?SlIvb2s4aW9USXB6aTFHNldMSWdzSXNHRWcwclJYNzVyOTZvUVBQR0FjL0Jp?=
- =?utf-8?B?OUJZTk43TFgxVjZTNEVCSzJPdVFmYWNLZEFQV0V2TXFtalBMQUVVSnhJaWtE?=
- =?utf-8?B?aitqbUl0OHZDSWtuSm5Sd1V4NzFLTXIwZ3hIN0RaaTdlUmFGSWhLdEk3aG9L?=
- =?utf-8?B?WWlZa2V1ZExqNHZjZVFCVU1uWGdlS3UxT21JZTU2TkFPNjY0U0U2NW40c0pk?=
- =?utf-8?B?R1lRKzJTdFloVkhxUjhrU3BpUUxZaVhzNTROaFRJUXV5aUdBMnY0eEY0TzQ5?=
- =?utf-8?B?bjRiNlV5SzhkaGVXeE1PVkVVMEVRSVQrWk9Od0FVR204aTgwZU1aYnkraEhx?=
- =?utf-8?B?dFExZVZER1BJb0FFVkZBeG02RVNGaXhQZXNLS1ZqRUxFUGxGdW1Kay9lL293?=
- =?utf-8?B?V1VUWGIzQTRINzNCZ1NmcW1HMlhNUXFmeXhnRzFKSVNrT3VRdE56dHZudGFm?=
- =?utf-8?B?WU5WU3IzVU1QMTc4Z3A5Z1hCNitHMmlCV1BDb2ZMTEMwR0QxRTlOd3RHNk10?=
- =?utf-8?B?WEtqV29hd3dyQXZLMDJ0TW0rb2cvMHZVMEdqVjNhZGI4SnBRb3BucFJMRmtW?=
- =?utf-8?B?NU52ZGN2WE5SbG9PZ3lMem92RkJNRzVmVkNqRitJZlVCT00wVWFEU0VMNUM0?=
- =?utf-8?B?YnZYaE8xWHJQMGlTaEVEbHVBM211Um5xNVZnMlpTUVJTQkFIZkt6aGFPNURz?=
- =?utf-8?B?R2FOQUtKQzJUZTByNGpoaUpTeHpvT3dRVWFqOGtnNVBxODNJVkFlV25hdm1X?=
- =?utf-8?B?NVV4TmM0RnlGajllekRqRHBvNEFlaGJuQ2hiZmlQYjRicHZnSUJxbHhiT2Fj?=
- =?utf-8?B?VnpjekNqWHlHNWVJNXZrakFZSUNVelNVc0tQcU1xVWJGVWRpVkNOM2ZhUWQy?=
- =?utf-8?B?Mldjdno3UG5Zd1NGNHEvcytpc1N0MUFrcTIvdmo0QjNjYnU4ajNvN2tSZG9s?=
- =?utf-8?Q?sMnD7Ztg0xPjd9j4=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5dd3c5bb-31ac-4bc2-eb65-08de78860888
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 18:03:39.9049
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4qVyqlpoFmXLpF+9jXM/FwZukoGIj0ATQdmvKsHDkJgVrFUgzon5i5UOOSpX7UirGz2Z/Kx2QHa8N6bDU1TPyw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7748
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez2M4fj15gqyKrP7ADRUhNQZkpy9m+NSz2N=vo=PSefm0w@mail.gmail.com>
 
-On 3/2/26 4:28 AM, Danilo Krummrich wrote:
-> On Sat Feb 28, 2026 at 7:11 AM CET, John Hubbard wrote:
->> The sync/async naming that GSP RM uses is a little bit "off". I
->> spent some time discussing it with them, and the problem is that
->> sync/async is a concept that is somewhat independent of whether
->> a reply is expected. Usually, sync means a blocking wait for a
->> response, which is not necessarily required in all case with
->> GSP RM calls.
->>
->> The naming would be better here if it reflected simply that
->> a response is expected, or not. I don't have great names for
->> that, but "fire and forget" works well for what we have so
->> far called "async". So we could do create a convention in which
->> no annotation means that the API has a response that will come
->> back, and some abbreviated for of "fire and forget" or "one way"
->> added to the function name would mean that no response is
->> expected.
+On Mon, Mar 02, 2026 at 06:28:17PM +0100, Jann Horn wrote:
+> On Mon, Mar 2, 2026 at 6:18 PM Carlos Llamas <cmllamas@google.com> wrote:
+> > On Wed, Feb 18, 2026 at 11:53:26AM +0000, Alice Ryhl wrote:
+> > > When installing missing pages (or zapping them), Rust Binder will look
+> > > up the vma in the mm by address, and then call vm_insert_page (or
+> > > zap_page_range_single). However, if the vma is closed and replaced with
+> > > a different vma at the same address, this can lead to Rust Binder
+> > > installing pages into the wrong vma.
+> > >
+> > > By installing the page into a writable vma, it becomes possible to write
+> > > to your own binder pages, which are normally read-only. Although you're
+> > > not supposed to be able to write to those pages, the intent behind the
+> > > design of Rust Binder is that even if you get that ability, it should not
+> > > lead to anything bad. Unfortunately, due to another bug, that is not the
+> > > case.
+> >
+> > This all makes sense to me. What I'm missing though is why not reject
+> > VM_WRITE mappings all together? Is there a downside or something that
+> > prevents us from setting this check?
 > 
-> I think the relevant information for the caller is whether the call is blocking
-> or non-blocking; i.e. do we have cases where we want to block, but discard the
-> reply, or expect a reply but don't want to wait for it?
-> 
-> So, unless there is additional complexity I'm not aware of, I feel like
-> send_command() and send_command_no_wait() should be sufficient.
+> You could, and it would probably do the job (assuming that you check
+> for VM_MAYWRITE instead of VM_WRITE), but I think it'd be more of a
+> surface-level mitigation than a robust safety check - in my opinion, a
+> robust check should, at a minimum, confirm that the VMA being accessed
+> belongs to the right driver, because other drivers might do random
+> things you don't expect in their own VMAs. (For example, it wouldn't
+> protect against interaction with a driver like C binder which reads
+> PTEs back out of the VMA in binder_page_lookup(), makes assumptions
+> about what kinds of pages that yields, and writes into those pages.) A
+> driver should not be touching VMAs it doesn't own.
 
-That's my favorite so far. It's unencumbered by any assumptions about
-behavior, and unambiguous about what it does, and shorter names too.
+Alice just informed me the VM_MAYWRITE check is already in-place:
 
-> 
-> (Maybe send_command_wait() if we want to be a bit more explicit.)
-> 
-> As for the specific commands, we could have traits to control whether blocking
-> or non-blocking submissions are allowed for them in the first place, i.e. this
-> gives us some control about whether a reply is allowed to be discarded through a
-> _no_wait() submission etc.
+	rust_binder_mmap() ->
+		Process::mmap() ->
+			try_clear_maywrite()
 
-thanks,
--- 
-John Hubbard
+I just wasn't aware of this, sorry for the noise.
+
+I also agree with your comments. The following two safety checks should
+be addressed by binder:
+
+  1. mappings should be read-only.
+  2. don't operate on unrelated VMAs.
+
+(1) Was already covered and (2) is addressed by this patchset. So we are
+all good here. Thanks!
+
+--
+Carlos Llamas
 
