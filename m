@@ -1,144 +1,147 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC3533555B
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 18:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA70288D0;
+	Mon,  2 Mar 2026 18:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772476570; cv=none; b=XG3CoIPpXE5Iin1G1IVGaG61HNtnz1y8fAQLB3a6bomurY5CGjQmUTm7Eiyh5BdhB4am0cnF1zlYFikDegytO8cST+yeG+aos412oaJCRl3t3axJ0kAjba9GlOMaYVlz9p5nkSWJD30GJCfTcmkYlct/IUglDDUuHRj0cfj45BQ=
+	t=1772477366; cv=none; b=YFn7BsJb12YgGldWZHTO02rS+tcuKSAslT9xtJ2JYgP7NHyD5lqn17Ov0Nx7WAYlB4HQRmDPRAYIL4PmTpVbwhz2ZJEVOlPZkb4Ywx2wBfJDkyYP7FeAEHqOMUYssbmH8tpP5ulLrCXpOIYoHR+VKV+TUAon3Fdq02zMuxqbmlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772476570; c=relaxed/simple;
-	bh=gE+jXU5agoQWTZebEDnDXNxEhHacPNAY9q51lw7KMLQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NNj9qtSEVHfdYkg/OUEkbXmKwNfcrpLqv84/goF1D2UTvYWC2hL7d/Drsguc2qcOAjwLKLYfe9CIIHZHa5tHgEosGn1hFkJT15taSvlYkrjDfjvyM9LxEZ33L89CO3PZY59GY2mEJCk8WHqULJ9b1zCYFLL+y+xxQnIQ/i8GHNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mzCHPyne; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1772477366; c=relaxed/simple;
+	bh=qBM6Fw3XeUMXMlJ/g+MQuY3TcsiQ7Dhorjdqc+1IbwQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=IUsiY9NvMALvrhyhXRU+pDVFv8v/1j5PZo3ADCptep7efjD/Hhvkny+1IQO/TpJbbZsgOMsqkirsKlNyor3mT+5kWt2UajM1iZEuits73lx2AeRCKIuMQmELgy6jo/2lw6eY6cYQ3+sHmRmxM4hjDKJo1zdTKxEzybJ6MIYpnKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBVX2MV3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mzCHPyne"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ae3f822163so8135ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 10:36:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772476569; x=1773081369; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TNGbC+n/FkqePeOY//UBg6AI1QctrOX8iaSRimJodOQ=;
-        b=mzCHPyneiY261XfAVBrXgOzej8xAJlb7jU8TJqzrwazDKr476xUrHUfPrUHFd5W1Yu
-         K/nHuaLuK/0XVy+8AfnsEJkbklyOS48YJQnkygmsojCkhwRfDTbaCzHtQggvsFjkxDWG
-         W1P6ZwapsdPgFssbMFegNd6ofWHwAs0kDlahVe/EBJ1pvSkuTbmFZgdsmak69sqRVHGb
-         nJhxvCPQYcW87DOjpMoT+IOuZvoeS73LYdOWvFML6UtYW56tTWpNe26oF3P3DnVQlaSh
-         aDVqc//WnkoaOTFuU0kNA0sMx0gQgXRbyOHpdMhn2DmVgsTas3QYakhoFjGJOAVsOe51
-         p+7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772476569; x=1773081369;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TNGbC+n/FkqePeOY//UBg6AI1QctrOX8iaSRimJodOQ=;
-        b=hLN4SGdaaiYBtcM4xbhNnRXoTwCuS1iLs/bFS6YLiW9nXxiMsCcKVcOBcByucfYnjz
-         MwgrXIt0JOK1WdYB4ErldATAAcZnkh8RHN9Iwis2h63F1/xXTwwK+g8rOywNE8laMjxi
-         8n9cfNgAImp7BzP/JDtt3YwMpFqBvc+p3b3DpxtDuPPF2xuxxpjlhwNbCzu46Qtavs/T
-         aKc5nGqIqSfAGRaY7jk2WmVvCLtmbCSniNpQX+MlNvwx7u7pqi1xaW2MjYdxjswa+VX+
-         xRCn3e2CIjZtGnH+37j7OaogCTmX4eCesEMoxC0sCsj8ANBRFLAUGerYDuFYWQIfHn92
-         G5Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlijyKWHgoZCW+Cl4q7TH473/RFDQ366ZPtdbWsO3cetN/j0p0G8mkRbLrLHZ91gsyMHsu6dQHu5OTEVAG7g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWoT+6pd5D3bhne4MPaZu+fP9zWybXrWgrXCe0NOWtlkavx6zQ
-	oUpWHVggPMhiZ6QZeiiKdwJFAMk8D7xZtyQRs/D/nUuL0hzXj67e0sPsggN/6jxAEA==
-X-Gm-Gg: ATEYQzzuzCEFY0J6TgFk4xmeVdtzw7DzlUf2CBiY+5b6pmQHbw2dRvW/rqLQzIfvzAF
-	8YY0k76IgVFQvfxIZj8sPfbyNK/N0R+eSo+iuTefDiIuwtVeY822P2eZXRsyKWBsNy1s2HOg5+3
-	w2TaciGS5NCfBdKhGGH5qAPwf2Kc0K4JT1st/QK0d4B5MH/cQ3FzZL2s31oYYqxbIhbljgbWtTG
-	Honr5DA0IJ3tUyccIpjN+HhuWjspvgChjLQ56o0EhGpdtPX8aFtJFZTTa22ZnTldpT0jFIAMgS6
-	Uz+OCoidSmLYVMSPUv53iZ1FrpRm0ELbX9Fl+5aGYPOgbII5G7Ej9o3x3Fe9a8OTIAwvQ2VSGuJ
-	bVKbmLCgpi0Wn/NUm4YH3XfD1mOTOy2jbnKKPD2nFaXY1cW2pH/xgTZzNJVBtPm171zIpPb5vQ2
-	CdxVVYQgGO0E7IELrN8y4xr9O4uZCqoOMQw12RwtdHM4wNp+it/0A87M1Y5qFjeEwJ1Q6+Tgpi
-X-Received: by 2002:a17:903:1b6f:b0:2a9:5ef5:399b with SMTP id d9443c01a7336-2ae3b553cd7mr4766455ad.19.1772476568598;
-        Mon, 02 Mar 2026 10:36:08 -0800 (PST)
-Received: from google.com (154.52.125.34.bc.googleusercontent.com. [34.125.52.154])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739d94de6sm13941615b3a.24.2026.03.02.10.36.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 10:36:08 -0800 (PST)
-Date: Mon, 2 Mar 2026 18:36:03 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Jann Horn <jannh@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust_binder: check ownership before using vma
-Message-ID: <aaXYkwQ0Yg5b7sTb@google.com>
-References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
- <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
- <aaXGZlfAmk-DCuBW@google.com>
- <CAG48ez2M4fj15gqyKrP7ADRUhNQZkpy9m+NSz2N=vo=PSefm0w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBVX2MV3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45A3C19423;
+	Mon,  2 Mar 2026 18:49:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772477366;
+	bh=qBM6Fw3XeUMXMlJ/g+MQuY3TcsiQ7Dhorjdqc+1IbwQ=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=CBVX2MV3/UiMiLiXR0YzslYfuhMcVZV29vknjnCJcvT5FzknwyvabBfFCXMVM19lY
+	 XecEfXLQmRBc3v004ftBiSopW/Wo8q4Z3ha3w99aH9tDwICrFFRhaLWXQjiYzSGfpF
+	 yA7bfqJw8XgzQ1bStTL1uwjV/Ridd8DZ7ft3iKUnqAnxHcR8HyndEoDJofi3IfyNV9
+	 gEOqx9tLe5Q0Z6wkwsxyPEmXlm4DFO7KPEO+titLvBhTy0XhP11fb1UO4CkXacV0VG
+	 XvEYvdMokzlvs4fncWKO6dK0qywqj1QcjqhpjxJcvY6o08X6fXu7SrwT93J/2HRc5T
+	 NA7nebPT7+wyA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez2M4fj15gqyKrP7ADRUhNQZkpy9m+NSz2N=vo=PSefm0w@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 02 Mar 2026 19:49:22 +0100
+Message-Id: <DGSISB2SQHWM.D8OGH4JJHIRP@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, "Aditya Rajan"
+ <adi.dev.github@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>
+Subject: Re: [PATCH v3 1/2] rust: add projection infrastructure
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260302130223.134058-1-gary@kernel.org>
+ <20260302130223.134058-2-gary@kernel.org>
+ <DGSDGDIVUHO0.P594H9B4LLO5@kernel.org>
+ <DGSDOKRKSKQL.2NQL17J05GGX2@garyguo.net>
+In-Reply-To: <DGSDOKRKSKQL.2NQL17J05GGX2@garyguo.net>
 
-On Mon, Mar 02, 2026 at 06:28:17PM +0100, Jann Horn wrote:
-> On Mon, Mar 2, 2026 at 6:18 PM Carlos Llamas <cmllamas@google.com> wrote:
-> > On Wed, Feb 18, 2026 at 11:53:26AM +0000, Alice Ryhl wrote:
-> > > When installing missing pages (or zapping them), Rust Binder will look
-> > > up the vma in the mm by address, and then call vm_insert_page (or
-> > > zap_page_range_single). However, if the vma is closed and replaced with
-> > > a different vma at the same address, this can lead to Rust Binder
-> > > installing pages into the wrong vma.
-> > >
-> > > By installing the page into a writable vma, it becomes possible to write
-> > > to your own binder pages, which are normally read-only. Although you're
-> > > not supposed to be able to write to those pages, the intent behind the
-> > > design of Rust Binder is that even if you get that ability, it should not
-> > > lead to anything bad. Unfortunately, due to another bug, that is not the
-> > > case.
-> >
-> > This all makes sense to me. What I'm missing though is why not reject
-> > VM_WRITE mappings all together? Is there a downside or something that
-> > prevents us from setting this check?
-> 
-> You could, and it would probably do the job (assuming that you check
-> for VM_MAYWRITE instead of VM_WRITE), but I think it'd be more of a
-> surface-level mitigation than a robust safety check - in my opinion, a
-> robust check should, at a minimum, confirm that the VMA being accessed
-> belongs to the right driver, because other drivers might do random
-> things you don't expect in their own VMAs. (For example, it wouldn't
-> protect against interaction with a driver like C binder which reads
-> PTEs back out of the VMA in binder_page_lookup(), makes assumptions
-> about what kinds of pages that yields, and writes into those pages.) A
-> driver should not be touching VMAs it doesn't own.
+On Mon Mar 2, 2026 at 3:49 PM CET, Gary Guo wrote:
+> On Mon Mar 2, 2026 at 2:38 PM GMT, Benno Lossin wrote:
+>> On Mon Mar 2, 2026 at 2:02 PM CET, Gary Guo wrote:
+>>> +/// A helper trait to perform index projection.
+>>> +///
+>>> +/// This is similar to `core::slice::SliceIndex`, but operate on raw p=
+ointers safely and fallibly.
+>>> +///
+>>> +/// # Safety
+>>> +///
+>>> +/// `get` must return a pointer in bounds of the provided pointer.
+>>
+>> This only makes sense when the provided pointer already points at an
+>> allocation. But since the functions of this trait aren't `unsafe`, it
+>> must be sound to pass `ptr::null` to them.
+>
+> The "in bounds" here is the conceptual bounds of the pointer. So, for a p=
+ointer
+> with size `x`, the address of the returned pointer lies between `ptr .. p=
+tr +
+> x`.
 
-Alice just informed me the VM_MAYWRITE check is already in-place:
+Okay, I haven't really seen that as a concept. Also, what is the size of
+an invalid pointer?
 
-	rust_binder_mmap() ->
-		Process::mmap() ->
-			try_clear_maywrite()
+>> I first thought that we might be able to just use `mem::size_of_val_raw`
+>> [1] to give an upper and lower bound on the address of the returned
+>> pointer, but that is unsafe and cannot be called with an arbitrary
+>> pointer. Interestingly, `ptr::metadata` [2] can be called safely & with
+>> any pointer; I would expect them to be very similar (except of course
+>> for extern types).
+>>
+>> [1]: https://doc.rust-lang.org/std/mem/fn.size_of_val_raw.html
+>> [2]: https://doc.rust-lang.org/std/ptr/fn.metadata.html
+>
+> I have a `KnownSize` trait for this in my I/O projection series that is
+> implemented for `T: Sized` and `[T]`, and it returns the size when given =
+a raw
+> pointer.
+>
+>>
+>> A pretty expensive solution would be to add a sealed trait `Indexable`
+>> that we implement for all things that `T` is allowed to be; and then we
+>> provide a safe function in that trait to query the maximum offset the
+>> `get` function is allowed to make.
+>>
+>> Alternatively, we could use something like this:
+>>
+>>     The implementation of `get` must:
+>>     - return a pointer obtained by offsetting the input pointer.
+>>     - ensure that when the input pointer points at a valid value of type
+>>       `T`, the offset must not be greater than [`mem::size_of_val_raw`]
+>>       of the input pointer.
+>
+> Given that I'm not introducing `KnownSize` trait in this patch, this is w=
+hy I
+> haven't used this kind of wording. Perhaps I can just bring `KnownSize` i=
+n early
+> and use it first for documentation purpose only?
 
-I just wasn't aware of this, sorry for the noise.
+That sounds great.
 
-I also agree with your comments. The following two safety checks should
-be addressed by binder:
+>> Or something simpler that says "if the input pointer is valid, then
+>> `get` must return a valid output pointer"?
+>
+> Hmm, wouldn't this give impression that "you can do whatever you want if =
+the
+> input pointer is not valid"?
 
-  1. mappings should be read-only.
-  2. don't operate on unrelated VMAs.
+Yes that's true, but why is that a problem?
 
-(1) Was already covered and (2) is addressed by this patchset. So we are
-all good here. Thanks!
+>>> +#[diagnostic::on_unimplemented(message =3D "`{Self}` cannot be used to=
+ index `{T}`")]
+>>> +#[doc(hidden)]
+>>> +pub unsafe trait ProjectIndex<T: ?Sized>: Sized {
+>>> +    type Output: ?Sized;
+>>> +
+>>> +    /// Returns an index-projected pointer, if in bounds.
+>>> +    fn get(self, slice: *mut T) -> Option<*mut Self::Output>;
+>>
+>> How about we name this `try_index` instead of the general `get`?
+>
+> I'm following the name on `SliceIndex`:
+> https://doc.rust-lang.org/stable/std/slice/trait.SliceIndex.html.
 
---
-Carlos Llamas
+Hmm, the methods in that trait are marked as unstable under
+`slice_index_methods`, which doesn't have a tracking issue, so are
+perma-unstable? I'll suggest the rename upstream as well.
 
+Cheers,
+Benno
