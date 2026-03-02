@@ -1,252 +1,136 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022133.outbound.protection.outlook.com [52.101.101.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C197361DA1;
-	Mon,  2 Mar 2026 17:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B8336C9CD
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 17:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772472416; cv=fail; b=qzDPGGlc5hI73QzPOPkK6Gm2r29RYhevY+oDAx9hkuDn+mousIYcbZ7oYAjEN68mrWq0QgEg5iKN9jiFl4t7AJJMLU/C4vr81sS6NGuZ/GQtbrBhOAh7FJG+9MNkmJZE+Os4iqTdUhmwJGV29OQTi/UV2v9Mzo5NiR1Eh7tFS/M=
+	t=1772472536; cv=pass; b=JYP3cbfoAScJJJiVciEb8sevrVCBj79soMxqmYxbTUvx4BBEFDK+DglhMyeY/Z6++XhlgHXrXcgUUIbPmIcywhVEAdbTcdnkEWxycw87047vq8fcGYugD7Yz6jqQE6JxQaR+WlFb9mXauCXdJZZtjzA6u3TaGDa6CjdbxCLMpV4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772472416; c=relaxed/simple;
-	bh=t2Ht2kEZjesgANkcGBorIGBgk+ObGGfTLwFD/ULUe1U=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=sGd2dK8cCLt2gMj92cDq2V8Z0KvSaL3T1ms8M03E8b8pV90EUCsljh1tqIfGiFByKlGJLJX3Xk8pXOWBXDZJ1MjgXM8gdvUM46KrelJ9oHAGZSTGlloxpiYR+Y1eGCW9O5OTHx47eWcwl1RSdxMr7rRhiFyHoWdDOmARA8Xl94k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=v3xYXlCX; arc=fail smtp.client-ip=52.101.101.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1772472536; c=relaxed/simple;
+	bh=G3n0b90DzB04tYV40Bc9lDxOunyy6wXi77KoBPjFJew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lm9wKksvy/U9D9/wSy0bFufd8NHIvQ/TzvpgEIxPl0fAuviE4FSn7gy1xJRBmvAaApue71fr2brmdWSq0qVX8AOSYQSxc4pxLQsX1JF3yVItx8+tO/9HtEQiJGyhkhwih/YhXbyVyBRFAw2CQIJpCpt/+jUU+x4GJt2ZWycxaoU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yLaJzPgb; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="v3xYXlCX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YKDvhUkfj7JUUco8Xq9G/ekfKq05a17309A19MLinFBgG62Yrerze7VCdYIKUhc0WdBYZAmWnNonmRwv9o4v4GgNiGaLIjtUXtYok4S8+dH3l8zsqmkBRRkOqm8XVWD77rBcVi5M/qdXlf05SF7qdHL738YU0dtRADbQ7Zb2cRu9k14pv6CNxmygEGVTjykZFzn5iqh+stHnxlTWhEy8zeKlJZWOxA4WMg2Nso+7wXiug4sbEo1bYE3fgjE1IkO8b6yLoKRsS7ILuiqTGe0N/hYQ6u0oAWTtI6Hnp8gIMt5SNSLiNTO21dnMvO4QVZ4L9jXTj5fPa+O/9HCaF/yUdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SpPVpUTurjMEo0TDyiIE+esnVU8X4QqwcE2GSnLgDkw=;
- b=UJxdmO1QjNK6jNXRoG7vG7t1DLoyyCxlDPWmZTJcG4qmMEr6E/kFraHi9M9ZkvgeHtS/6hfv1HTJJzye2Mw5gr2NDfR1aFGeBZdMdYxw78MLaVc70CS5ZGkJE9MD4E/u4y1bPaQZa2x5sxyMICEIGgYP7aLbiRjlM51lV0e5phcaqd/Jd1Q3Ks4i6mNEABiEhC6+OIEUYv6h/cXlKx0jDVySOkZH/p+7ZHSuVuejAo6W9RphI3YXmgj7N2sMfPdzpSAdfS0TMM0KzBCEavq8HqAyUj/ym3VUUJSsmoUwNeR55xO7weuSKxNyjbE2YgIzd8yloULsS8/oskKj8k0A4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SpPVpUTurjMEo0TDyiIE+esnVU8X4QqwcE2GSnLgDkw=;
- b=v3xYXlCXRbRnC8xLwTM6cqHpzBYxkFcrBlNQAOL2m0hLAK55ab08xZl2rP1W4sufIZ7/NbeFx4H6lvc4ivqthnGCSJNlzOUJxbGKeIGCZsZ9fEIhNL9j30a05p6UTFZ1JpMQGj4mF5VQG8KhQn+x/mbaebc9ITrvslMZd8skdnk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOYP265MB1838.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:f0::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Mon, 2 Mar
- 2026 17:26:50 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 17:26:50 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Mar 2026 17:26:49 +0000
-Message-Id: <DGSH13Q82SJI.1PSPF1POKDO1J@garyguo.net>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Benno Lossin"
- <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v2 2/4] gpu: nova-core: gsp: add sync and async command
- queue API to `Cmdq`
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260226-cmdq-locking-v2-0-c7e16a6d5885@nvidia.com>
- <20260226-cmdq-locking-v2-2-c7e16a6d5885@nvidia.com>
- <a3b7a5c3-9689-4700-981e-d94bd2b5091d@nvidia.com>
- <DGRXSDSDMUOI.31863U05DR3VA@nvidia.com>
- <DGRYNXISKYQR.2V6CH8PKCLUDY@nvidia.com>
-In-Reply-To: <DGRYNXISKYQR.2V6CH8PKCLUDY@nvidia.com>
-X-ClientProxiedBy: LO4P302CA0032.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:317::13) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yLaJzPgb"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65f93fff5c5so26395a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 09:28:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772472534; cv=none;
+        d=google.com; s=arc-20240605;
+        b=H2IBWxBcpVdnDebwvR8Heh12A98DI12KhMmeL0dXizR7PTeUe9H4XMEkx7cg3PJTK5
+         jaqgSFBe/1brf01r+xFDBWtfSXWLJ87Um+DM4DWZk6aHHPowcLpWKklX3WaCkUmkm5kF
+         g7+HoWhkpT1XaCdRFDM+GgqVkWuxVmsUOEDshs1lDuCE9J27NkCS1A0jqchhWbqjl7MJ
+         atcX+uV4eE1N5g90gM56qmZEjylh54Ul1psMyWVOBxrOXOm7cIU33BlsHGTPv95aoJB+
+         4NwKgbMlGpdpPD/d1OD/UIggEE6Y0Ti6/ESFgiXG1fAAFfcmM5ZwzN5droIRQguJnbrA
+         O9NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=G3n0b90DzB04tYV40Bc9lDxOunyy6wXi77KoBPjFJew=;
+        fh=g1nYsOk0/56A//RblT4+eYK9zWiCK9HQOk4c55rFGoE=;
+        b=XZrNwGqnaVI60R5DMvvloB3UXdX9XCTa3rOXVWKSRj6EdKYAoN3vJRcg2xLG/CZoGF
+         zkTcO/OURRrvxZX+DLnxlENSH5Fx3PW2pvqMyoBfQK1qy7KzHmDew5kgZJEdd/K62eW0
+         NCN77QuMTCgZHWURYhJLslBX1DEKdTXHIeba4WJvU98VNftU87R9GOnu3MLBbEDmnUl6
+         QEOxfN2CJLq+LdWLulvKeB2IU9Bruavp7zc7fk7GMrKckREUuu3oOPS3lial12Ds53Jr
+         p6JLuA4zEVFDDluqB3cVFm2qNc0etXkIgATdFCMXN4B0kzFDDTltqrm067t7RWJIntq/
+         D52w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772472534; x=1773077334; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G3n0b90DzB04tYV40Bc9lDxOunyy6wXi77KoBPjFJew=;
+        b=yLaJzPgbpwstyVIdBrsY+0JevJta8OWA7YfDVmqIm5h+nYlVCsl3KUP5YV0qKCXJ9Z
+         iyPHFK2Ifsn7iiPBlq5wieHJ0cyhIdj+bMqw5KmhVjLP7yjX6kqow8ed2CZiqSIohZKq
+         5dprM1j9t5I73CxS2ROQWepQFyHzQwA0y8BkcvF8cFB1zHkkTbFzFLnwNEsg04GHWxVC
+         ERZzB82RIWs1N087uy31YWcO1DocAGwZzaxstQbZwLgsfTYMMq9Kt/t8UccpkxisWSwy
+         pMQbAdfbqxNk5TtJ1e7qFxAPYj+p+L53DPuWpCRSzVoknVhmh8PV/zN4FDGnKWsrKdhd
+         EQqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772472534; x=1773077334;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=G3n0b90DzB04tYV40Bc9lDxOunyy6wXi77KoBPjFJew=;
+        b=lElE6mfHoIkcedX+JiJuSBRtiPFdebQS8H/Q+IjvSBxGFVz15xmAluXivAmTR3j/8/
+         +U/lLqdyZDS2L4ZVj1I0eGMq0CHcYv0GndcWeTRKgjg66rWt/cXceiqe3DdtVp7gT6G2
+         zGjFY3oiiwttQMqAoWlZOXamvjTxBfDH4x1b5qwONqVk7Edy3GUnJvOMyHRBRxmvzOtx
+         srlUBxWPTGKAhHsrPG6ThM4tOBpRMDntnEY0j+0t3BMUq38E0mrkOjZjkiBSc2UeEGUH
+         9FmXb6qR5tn30IXuzLk4IvKrVEidOV+0UjkQXfHjTryva6he3qtUeAp9SXJttA3VPdH0
+         FB2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXnWYAe/9lFJ6vuqmiqpLEAzJwIOZeb9khpoI5reSvdWy+4vnjRBrL6VY5ozUWp8ma1XYRaEY5kj64ilSuOSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxChnh5tsgTdOgj+F2poF9m9I2hXi7oIdJSdCgjZl6PZdkrvHBH
+	32DXGrHyeZHHfe9R2Ujhc0Wms4WH+WFWqL54ivzNWaaRM2T0FBnq/A/QOF3rKqmD5yibL3Nd3z5
+	/nVvbbSHguqRK7l3vOlJW/bjq4GlHvhJQS56+fyQQ
+X-Gm-Gg: ATEYQzzI7UUz7QkBmV5WmLGBi+Z38soaJhR2BKsfzfjBe7PZdB50vj4eNHjXEcvj8xB
+	HNsPDkJNWcPqPiwbpiMmItAZaRgHkgq0/2ev8UKmb+mb2afxACNJhed9FqDgiVd2skdZ2+Ij5Z5
+	z/fPCQUqJquzFS59H3Ce4GCQud/T6st0gPift/IGlS/hNfIk76e8zBIE7uHBcV39D1093YlNzOl
+	Af6DfbVxOaRZ0cK9sRcxuCwMYirlhwqAzR7kOZRtfG0k1TeKXraBbkz8LpU8jzpblLrBf1xj4FE
+	XPTjoCh9ga9fpG11ZkuQ6pRN/oCxTn3oCdRK
+X-Received: by 2002:a05:6402:f12:b0:65f:ddaf:d1c5 with SMTP id
+ 4fb4d7f45d1cf-66008e0a08emr235858a12.12.1772472533625; Mon, 02 Mar 2026
+ 09:28:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOYP265MB1838:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f3d8c62-f29f-476a-41ca-08de7880e36b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	w6R+kEpyyyh1tRTwli5/KSzU/LYjyxoIAaaA0Km1hnPdLbcNtv7yUpbv/wToLIv9KgXDrCJRrKLfrQFslvSH1N1ivRj4py36Qe9AWdDKPgDlFUKQLySdEO9tyzi4+nFfy403p9/jZLIxv11P1zsK50jWslcbz7efhSer217zYKOEeG4qerlsJGelLPpdmJ14h533uQr109870G98R2Y+XA6VedxbsFcPcairLXa+QS9MnE4cqxxIKWGdqqLP3OOHnjkYBTwWl1R+s1rJLaz6uarsGRDFxpjzYHVCfZliK9972FCJFAMzKcSOfqcKRnVkGjDDGYXh8WHLhfc9PeKMNcewpyQ2TPhaHRhTfbN/YgyLDlfBw7z6DI93K5AMVAo4Sixqjn6/sN3kxrYRu5KqrHvwrwk3/df4P/P9euAOFb68ozh0HUKYYe254cBI4p9/MTyNBSFRohQpowK1aFxG/NHlkqKbCW0grvmyv/C9ng3gzd2o98arcHrHiCTLfgRPS038Rk6Pn2EH/QWgXbuCyCRN2/MdbrL9hVGXZWCHHSTgzuiSKzn8qaoyKev03oD7y8+8SkMOOdJrKqkWHY/GgeUHxMWoytagTV1aUrURVkaSm5g71R2IWUWgpOCOwxaAO8KAbBDRFri82ji0mx/N1acI4DhZh+l3SlaW/Peu50kwxWSoaX2jhUhoCIualD79woRc9UscxDnbs57lD5zIwvPuW6Xb40Tss8M1c5DirDU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZFl3V0dWN3YyT2plOUpWbjRBUzY1czh0WEdxdnVYR2Fpem9zY01JQ2hxNklU?=
- =?utf-8?B?aFplb2pFVlV3ZFAxSVcyRlhYSXp6ZmhNYk1VT084cEVwOTRFV1lvcVNaNjZZ?=
- =?utf-8?B?UGNKY2hSdG9jcTB6dmJONzFLU2J1dDR5dzY3dEFrcURiMTcyZ2o1V1lyV0Vl?=
- =?utf-8?B?K3libllBU05kZ1NRM2orQ3NpSml5SDZqSnlTQVlaankweFl6RG5GUldBbTJ5?=
- =?utf-8?B?WUc4OXNtem9ROEJ4amdiY0w5TEZtanVqbDVyN1RReHlvS3JpbElCR3dmd3Fv?=
- =?utf-8?B?NmROc0c4VlFZdnhUUHB0eXFLTGJiUS9CUitiV29MRlpyKzYvSnZ2c1czRTIy?=
- =?utf-8?B?K3Z0YXNpREh5enNlemxFQW05T2xGdUU1aTlzSE5rUHViMVBFT3FPY2tJREo3?=
- =?utf-8?B?Z3NzL1FvWmJXTXVHTzh0Vm1ORWxIcFhrK082aXFKUjFMK3luUXpEZThja1Ev?=
- =?utf-8?B?WjQ5Yk96MldlMEh1cmNXb2JNRDI5K1RiYzJjb01jNWlLYnhlcm9jak8rNHlQ?=
- =?utf-8?B?UXcrWFNQUnh6UGswa2N0R3R4RTZtWW9WL0l6OVFjNzRGdmtlZUdNQWtSSzNJ?=
- =?utf-8?B?dWU3dDliNU5MTTdxd0ZCWkNWTUNzQ3RDd0Ftd0ZyaEs2VmJNVHFoTmtya2FJ?=
- =?utf-8?B?YmRsWXRVVDZyNjBpNDI0UEtzVUVReGxOY1BXZkF5dEl5OElTREhDejFTSVdD?=
- =?utf-8?B?U2ZpelpqTmd6YXdZaW9ydnF6ZXRFL3pva2c1SnRZNHJTQ2ZISU1kQzZMaDg4?=
- =?utf-8?B?VUN2WnU2MnAydHRhM0pGeGI2MnpMVm1McVNFL09xaGNlczNCa3F1dFNiNXBM?=
- =?utf-8?B?elRBZnNTUHRMSy9lQ2pSZUFEQ1RCb0lIdzFMcWMvNURMTEd1bmZBUFBackxF?=
- =?utf-8?B?Y3doTFZ1UzRUV0ZabU1PeFN0eUNxWk9LR29pV0s1RlE5Q2oxNUM2d280NGJy?=
- =?utf-8?B?TmFYMWlITWdqUGs2cFNlOE0zQzhVVHVhaDI4eUJKS3NRdXFrT3hYNHd4SXp0?=
- =?utf-8?B?dW5rZFFJRDU4c0VUVkRybGRtN2ZnREZ0UStIZGlrd1ZHUlZxNTZzbXRsUHRX?=
- =?utf-8?B?V09nMVQvMWFSQkkrdHk3MENQMVh4aEdmRzJGL1lJZXJCdVg3d28vZnNtQmFK?=
- =?utf-8?B?bGNuaEF6QzFEb1JZbFVYUjB0QjJKZE5FQXArRitXeVdhbFdGb2ZyanpzbTkr?=
- =?utf-8?B?bjRwVklaeG50U0JRN3JEdFFPNWQ5UVg3OXVBekZEOURqeFRUc2RSaWlMTDN1?=
- =?utf-8?B?dExYK2JiWW9EWGdQU0VkaWVOVWY0QVRHOTlCUStWTEpodUxzdnFyTlV4dDc5?=
- =?utf-8?B?dXd3S09XYjIvNVF1cXY3OVRnanBuWmhNSy9zT2FqV3NaNHBMcGJya0REejlR?=
- =?utf-8?B?ek9DUU9CQmQvSFlZQ3k5WCtyUXBZVW1qMEt6RUU4ZnRHVkh5N2IvckpjZ1dw?=
- =?utf-8?B?UWF3L3BuckRtckdDQjk4cWM4aEsyRUljVTB0ZjhaMFUrWTBqVWUvODhNWDNl?=
- =?utf-8?B?Ky9DSnB2UU1tcWMwNTh4NWxJTCtzTFNJZkJ2N1Y5cE1hWjVUSGxDc3pOTS95?=
- =?utf-8?B?czBmRWVBZE03Rjh1SDJEU3hJVDhtczdwZ3pSZjJvU2xLNDZWVzZ5dEpTZTlU?=
- =?utf-8?B?UUpiTjhJQzRXRGUwR21JVVREczF0Q0VwR0RuU1FudE95QlVJVkZRZHgwYXFt?=
- =?utf-8?B?UG5SempFTy84SUNxZ0R0YWMyck13ZFA3Q3oxdmExeXBhTjVCVi8rY1lHYllK?=
- =?utf-8?B?R001T2dMLzU2b0w1UkxzVEFEUHNIemZveS9hRWFWV0RGQUNDd2NJQ1hvMzdK?=
- =?utf-8?B?TmRqVUhQT2hhTDNaNVBoNXBWN1lZMC9zSDdyR09vQUF4SEo1VzFrMUFwcHZ2?=
- =?utf-8?B?VUpJN1d5T1RaZVgrd2ZkV2JhSVp3aWVDcWdiemJndHVydlM1MUZLTTQwMTJ3?=
- =?utf-8?B?VklOMDZMdmNOcm1GWDNpQTRQU1ZGM3NSdVFhYW5GR2JlSndpaE9lU2NzT09C?=
- =?utf-8?B?TEhPUDV5U0puM2gzSWNxTnh3QWU3bUNoMXgyempYVm4wWm9PWlhxbExSbXl6?=
- =?utf-8?B?bG51RlRKMUJUVTgxUmhpd0hnSDJsQ1ZKVWJsOXQwa2dvdnlwZ0dkMXlWV3JW?=
- =?utf-8?B?MmZhQzQ2QTMxMzFBY0RqU3R0L3NhTy9uYmVna2h3N0x5QXVPdmFUU0oxb3Iw?=
- =?utf-8?B?blNDR0cvcllCSEpPdU5yTWtQS01XT05kUUxMVGlaek1TSnljelpMcWhTUHA0?=
- =?utf-8?B?WXQ1OWJ5OHVHZXVBd2FzQy9ldGxvYzB5VUVlV2M5YkJMaWJlYzZvREh4bkk4?=
- =?utf-8?B?NFhEWG0zcytmUmZ0NG1zNGdYa2ErL2VmTEZ0V0JqREVpczZQT1FvUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f3d8c62-f29f-476a-41ca-08de7880e36b
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 17:26:50.1221
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HPrwMC0b5ixqiY/y7BdiEs/1MF0Wa85A/vKMAota+8dn8DCzkzi5Fys6q6CqBayTmTEyI6Sg4WglZ2D+y92hYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB1838
+References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
+ <20260218-binder-vma-check-v2-1-60f9d695a990@google.com> <aaXGZlfAmk-DCuBW@google.com>
+In-Reply-To: <aaXGZlfAmk-DCuBW@google.com>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 2 Mar 2026 18:28:17 +0100
+X-Gm-Features: AaiRm50SZW8QPqSRhdWDXBgdsHpRSfdrfGzv3dpf9ThjwdH9bYPFTN50ijeQDLs
+Message-ID: <CAG48ez2M4fj15gqyKrP7ADRUhNQZkpy9m+NSz2N=vo=PSefm0w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] rust_binder: check ownership before using vma
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 2, 2026 at 3:03 AM GMT, Alexandre Courbot wrote:
-> On Mon Mar 2, 2026 at 11:22 AM JST, Eliot Courtney wrote:
->> On Sat Feb 28, 2026 at 3:11 PM JST, John Hubbard wrote:
->>> On 2/26/26 7:50 AM, Eliot Courtney wrote:
->>>> Add sync and async command queue API and the type infrastructure to kn=
-ow
->>>> what reply is expected from each `CommandToGsp`.
->>>>=20
->>>> Use a marker type `NoReply` which does not implement `MessageFromGsp` =
-to
->>>> mark async commands which don't expect a response.
->>>>=20
->>> ...
->>>> +    /// Type of the reply expected from the GSP, or [`NoReply`] for a=
-sync commands.
->>>
->>> Hi Eliot,
->>>
->>> The following does not need to hold up your patchset, but I want
->>> to bring it up somewhere just to work through it.
->>>
->>> The sync/async naming that GSP RM uses is a little bit "off". I
->>> spent some time discussing it with them, and the problem is that
->>> sync/async is a concept that is somewhat independent of whether
->>> a reply is expected. Usually, sync means a blocking wait for a
->>> response, which is not necessarily required in all case with
->>> GSP RM calls.
->>>
->>> The naming would be better here if it reflected simply that
->>> a response is expected, or not. I don't have great names for
->>> that, but "fire and forget" works well for what we have so
->>> far called "async". So we could do create a convention in which
->>> no annotation means that the API has a response that will come
->>> back, and some abbreviated for of "fire and forget" or "one way"
->>> added to the function name would mean that no response is
->>> expected.
->>>
->>> Again, I don't think this has to happen here, because we can
->>> go through and rename later, no problem there. But when I saw
->>> the sync/asynch and remembered the very recent discussion, I
->>> figured I'd better post something about it.
->>>
->>> And yes, I started us off in the wrong direction with the
->>> IS_ASYNCH thing! haha
->>>
->>> thanks,
->>
->> Hi John,
->>
->> I totally agree and was hoping that someone would have a good suggestion
->> for this. I discussed this exact thing with Alex before posting this
->> too. So if you have any naming suggestions would love to hear them.
->>
->> As you say, sync and async are orthogonal to reply vs no reply. I think
->> we have several ideas here actually:
->> - blocking vs non-blocking
->> - reply vs no-reply
->> - wait for reply vs don't wait for reply (practically equivalent to
->>   blocking vs non-blocking here, but conceptually the send could also be
->>   blocking vs non-blocking)
->>
->> We should also be careful with conflating waiting for the reply vs not
->> having a reply. So `send_without_waiting_for_reply` is definitely
->> confusing to me, because there may be a reply that we just don't wait
->> for.
->>
->> Some ideas:
->> - send_command_with_reply + send_command_without_reply
->>   - Maybe non-obvious that this blocks for send_command_with_reply.
->> - send_and_wait_for_reply + send_no_reply
->>   - More obvious that it blocks and gets the reply.
->>   - Should be obvious from context that you are sending a command
->>     anyway.
->>
->> Personally I think it's nice to keep a convention of keeping it
->> mostly obvious which functions block/wait. (e.g. we already have
->> wait_for_msg in cmdq.rs).
->>
->> For lack of a better idea  i suggest send_and_wait_for_reply +
->> send_no_reply for now.
+On Mon, Mar 2, 2026 at 6:18=E2=80=AFPM Carlos Llamas <cmllamas@google.com> =
+wrote:
+> On Wed, Feb 18, 2026 at 11:53:26AM +0000, Alice Ryhl wrote:
+> > When installing missing pages (or zapping them), Rust Binder will look
+> > up the vma in the mm by address, and then call vm_insert_page (or
+> > zap_page_range_single). However, if the vma is closed and replaced with
+> > a different vma at the same address, this can lead to Rust Binder
+> > installing pages into the wrong vma.
+> >
+> > By installing the page into a writable vma, it becomes possible to writ=
+e
+> > to your own binder pages, which are normally read-only. Although you're
+> > not supposed to be able to write to those pages, the intent behind the
+> > design of Rust Binder is that even if you get that ability, it should n=
+ot
+> > lead to anything bad. Unfortunately, due to another bug, that is not th=
+e
+> > case.
 >
-> One important detail IMHO is that the API cannot be misused, i.e. you
-> cannot call the fire-and-forget send method on a command that expects a
-> reply. So the risk is mostly when adding support for a new command - but
-> if that step is done properly, users will be directed to the right
-> method by the compiler.
->
-> This, I think, allows us to tolerate more ambiguity in the method names,
-> as long as their documentation makes up for it. We all agree that
-> `async` and `sync` are not a good fit, but `send`/`send_noreply` should
-> be tolerable (I'd like to keep the names short if possible)
->
-> Or maybe we can use a variant of the trick mentioned by Gary in [1] and
-> have a single `send_command` method?
+> This all makes sense to me. What I'm missing though is why not reject
+> VM_WRITE mappings all together? Is there a downside or something that
+> prevents us from setting this check?
 
-I think for this particular use case there isn't even a need to use any tri=
-cks?
-You can simply just skip the receiving part when there's no reply expected.
-
-Something like
-
-    if TypeId::of::<M::Reply>() =3D=3D TypeId::of::<NoReply>() {
-        // SAFETY: `M::Reply` is `NoReply` and it's `Copy`.
-        return Ok(unsafe { core::mem::transmute_copy(&NoReply) });
-    }
-
-Best,
-Gary
-
->
-> [1] https://lore.kernel.org/all/DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net/
-
+You could, and it would probably do the job (assuming that you check
+for VM_MAYWRITE instead of VM_WRITE), but I think it'd be more of a
+surface-level mitigation than a robust safety check - in my opinion, a
+robust check should, at a minimum, confirm that the VMA being accessed
+belongs to the right driver, because other drivers might do random
+things you don't expect in their own VMAs. (For example, it wouldn't
+protect against interaction with a driver like C binder which reads
+PTEs back out of the VMA in binder_page_lookup(), makes assumptions
+about what kinds of pages that yields, and writes into those pages.) A
+driver should not be touching VMAs it doesn't own.
