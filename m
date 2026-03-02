@@ -1,72 +1,70 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022114.outbound.protection.outlook.com [52.101.101.114])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013023.outbound.protection.outlook.com [40.107.201.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC593321A2;
-	Mon,  2 Mar 2026 20:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27283815FC;
+	Mon,  2 Mar 2026 20:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772482494; cv=fail; b=TPLZNF+sZDg8CLTDEwHcii6kv9bUdqcnJB4tzg4nPKLpfqHdfm0k3cs1aKY5Zi5eGsz1J/Av6hSs+vNQPqDJs786Je20w67LnmNWOumXz7xbXTihOR84zlubofVBhhUPsC0iE4NhDsatdtyPY8bsv9OrbqAzueCVv6qipUHv+UE=
+	t=1772482604; cv=fail; b=ihk/CUgm29zk+stUPDJB4C5h7uawaIvGrIgbhJUxJgEjk264tWHR0mvvgFhbUIi6WPNXQtsIdY4dmScyxsIWBqPzTgimVxoeo17UbtQeYDqSgrsGvjuva7rGGFzb1LK/hkPwULXwmu4em3+Z8SaZgxBcL8L++X8qMDn5EKsdT9s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772482494; c=relaxed/simple;
-	bh=v9Dm2YvzHeL+zpEypnpmEEvw6GJw/gihCuaT7vhxxHA=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=KRUcC0U5cQQPhG2dn3dU+b9D30wwymEMES6LH/4kobMe7i/1cqCYekgIJDu6TEa1OluhpViyjFc0qUzYf25La8TBDQThzR0vmzwwx/XodjQTsOVsmWlE0XCwz9QOKMLLxFxyJbkfFvFnfPI2FVrm1h7+JWHW0Qxtg0DZ0kv1QAw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=eYDKJMXJ; arc=fail smtp.client-ip=52.101.101.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1772482604; c=relaxed/simple;
+	bh=GgwzQgAj/81wVN9uci1oycp95Eaf3p2HRuZirMegals=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=C3ExIwoXQuuyUgT9FwbJKloDderQJpNdqK2qsisNcaqkQWLnThByS0OnPiT879cDPBiJc163/FBKX21jgRUFBuf+zkUPvx6wztXhklkFkBTghfMmH/XSlb8gJfu+Ah7uchHJxPZmIXI7KDHe0eoBHyccig10nOr4YX0SAjF27Yc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=p6w1Pmwd; arc=fail smtp.client-ip=40.107.201.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="eYDKJMXJ"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="p6w1Pmwd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q3dJ/KTLBHxOaZFczWfW18zB61Z3IDH+vc/UexbPkWY2yyuBhxoNjI8Fnj7imix38nqZ/upwUfNcB3fSwVTub9MfaOZrbgiKUO+sA1UsqVPCbLtLQWL/p6dtB7M64jDIlQFLaJvA4sKuE7qrl14MP9TalnIM4GNG8YqOM9w4kDHmAAvNBNzDD3W1cYlhOqooSwwrjSsheJxq+l4erABeNlSONc/2/qPdtRzhyUfrmC71dxbT8O2ej0kD6dDwamQyUg/F2D/b5du/9WiweDHjvK/SRNY1nd2osdETWqZOwRT4USpn+Q7MQP0uFH44j4f7Dkebt4n0PSuyHDGHP9stSA==
+ b=uhd0XHluzPHXtxMwsifBc2GGQoSpdaGloI/0DaBRHkg1cQQLnQWQoEgEzoPoYmFeeRc4sjL0RaEJEGMyqpX6tvPtsoSEam24nkis8dCAr2RXKYZPp9UPs11E/Qnt+vo95C+jXd9MSmoDUcqBOeyo1YNRva8LE9Ij4Juv+n3iiSrrNZvdEKnG9IMhgvN2FKGaKt+8D2qQTpehmV9k0CHitreMw27ftw1CN1Vk8n5TdKEKhqvq50FdHPAdjlNmuj7adzv94i/+M7e9MXdwl5MTnvOjBSLxmgm4LDKRaGnVehDo6QamtKTAvZPYyUHcPzMrQdc3WgEn+HPQnTfNQ9vU/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OTjMY5MgDvkqiSUbAJWtcHlN8YWDcDQT3SX3fXrAjEo=;
- b=prQA6kghAKJ+4KGirjkH/VL2f69drowr1jFMMpY4LTHNWz/qjVB0k0zYvWkR0yQTN2VC+k/bjhca6jXOXs6WX5stCs671+4ts+0gFTXzs1/PS38WEUR7f3mF5/5RbjpxzO0pZj1/8eakathhNbUWnKtCxbKIobxp4YrxoNn1K161c4leYeo4RczAIEig3rNdY+YntEsh77dWNVxMF7gfI6YXt/+ZYfnoSXeKCRmklVvn8GD1PB2mEfQqIT57A1mWRvKo/Alax9Y0Wyj6kXwRDV/GTSx5DuvMVEhq2dBKs2IgunCKMN0m/t2WQiDdAKKVA9QKF6iykuTsNEg714R09A==
+ bh=GgwzQgAj/81wVN9uci1oycp95Eaf3p2HRuZirMegals=;
+ b=J7gY3kYBk9rHnu2kcrC1ILomfBPG40CoQA0WpLIrHx4Z1fRl/bHS+L61gqbksobTjyoyaRoodQK97xXi5jyxDvxl3C8EJgNHGaYdaXoWBQRkoj9XZY2Vo8R4KSictOfJJeEO2uCweIAMehLZ66Sp3WLKWXu4AZ+XPYmucAK1+Jx5J5+Kxp/l5AV/qS1vDjDnfBxKP7Q7cx4BIONKbA+iNNd7BamoN0CzIHs6lgUVMzDOEkgbrcE1g+Ey0PHKajFPw3tZ+LFxw7bIsSwwI83hjNgSEdwXdoOx01ATdpN0RTn/xYUxardCCAg8YPuw7OVclsOwV0IptJDt1/8G0+niHg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OTjMY5MgDvkqiSUbAJWtcHlN8YWDcDQT3SX3fXrAjEo=;
- b=eYDKJMXJ308WYDBhI2Z7FDrw3FzeQfnEbhHefIpfpeNYzVU49GLhoHb0EI0Kl1IoeGCgreU3sG1grLHsnCqCAw1/bi5qTBOparY+ETy1WIuhTeJO5Rrku8Oe/nlNY4rj9GRz8G9nBPWeOnbWb70D1Mp1WA/x58Ndu4VaLfRxLro=
+ bh=GgwzQgAj/81wVN9uci1oycp95Eaf3p2HRuZirMegals=;
+ b=p6w1PmwdX9+G7R++z0/9amJXNgO+nvU1J0+J3CgicrBkvoeVDKZ/eWje8eVbPnq6H6/ruruD7t4F/eSeozGycZAd5QCm7cZ8qYFmaIE/Q2b2ORkKgzXXXG317a0yYFoWYy4NdVPLqKAteIkxNRr88/CxH1Tu+eyY+Mnsw2jLQPpF4qnzqY7m3j2H6Cv0eNVgQqbm0l1l+OivIsCGt9Ylu98B6uwSTUf7perNzqHS/k8unBtdBoZfJxXVekjhiZ//1mGLlulbJQMfGf7GVPeIBQIMWZtZdtB37X1zGY/inLp5Q2Vx4IpKsFIrlM5kY92VMtgaZHBXBaYX8tj//QQeIg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB3366.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:e5::13) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ CH3PR12MB9454.namprd12.prod.outlook.com (2603:10b6:610:1c7::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Mon, 2 Mar
- 2026 20:14:49 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 20:14:49 +0000
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 20:16:36 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9654.015; Mon, 2 Mar 2026
+ 20:16:36 +0000
+Message-ID: <26f0ae85-6284-4175-9f6b-812db91237bb@nvidia.com>
+Date: Mon, 2 Mar 2026 15:16:34 -0500
+User-Agent: Mozilla Thunderbird
+From: Joel Fernandes <joelagnelf@nvidia.com>
+Subject: Re: [PATCH v11 4/4] rust: gpu: Add GPU buddy allocator bindings
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Dave Airlie <airlied@redhat.com>, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ Alexandre Courbot <acourbot@nvidia.com>, joel@joelfernandes.org
+References: <20260224224005.3232841-1-joelagnelf@nvidia.com>
+ <20260224224005.3232841-5-joelagnelf@nvidia.com>
+ <DGPQDMR88BBG.2RO77IS0XQ0HF@kernel.org>
+Content-Language: en-US
+In-Reply-To: <DGPQDMR88BBG.2RO77IS0XQ0HF@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Mar 2026 20:14:48 +0000
-Message-Id: <DGSKLQ9WMRID.3ILNUUEITA48K@garyguo.net>
-Cc: <rust-for-linux@vger.kernel.org>, "Aditya Rajan"
- <adi.dev.github@gmail.com>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] rust: add projection infrastructure
-From: "Gary Guo" <gary@garyguo.net>
-To: "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260302130223.134058-1-gary@kernel.org>
- <20260302130223.134058-2-gary@kernel.org>
- <DGSDGDIVUHO0.P594H9B4LLO5@kernel.org>
- <DGSDOKRKSKQL.2NQL17J05GGX2@garyguo.net>
- <DGSISB2SQHWM.D8OGH4JJHIRP@kernel.org>
-In-Reply-To: <DGSISB2SQHWM.D8OGH4JJHIRP@kernel.org>
-X-ClientProxiedBy: LO4P123CA0247.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a7::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN2PR06CA0029.namprd06.prod.outlook.com
+ (2603:10b6:208:23d::34) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -74,197 +72,75 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB3366:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd2093ca-d3f9-4840-2f88-08de78985b36
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|CH3PR12MB9454:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9b35156-3211-4cb4-2950-08de78989b00
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014|921020;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
 X-Microsoft-Antispam-Message-Info:
-	eG/KZIq3DXt9N07t3K2uTQNXpXOTBeayy8jqhkLamPRCtq0mrHYy+VUsj1U7UfYPTcaU3Bd6Ld9MiRWJmP/fnS1jo1ELD+sKN57Y1UX3NzcccjYq4sLgYp0k4qzpeEscjEMLffUuiXwvNukkZT4rFCva6U8HnYqx5hJmr4DTc7j+WfbnfiJAfBW8ROaLOlH9Cx3bkLTSHh9DkAiBM5Fa2w+tXEDUgHgvpk1lS0VxJMloD0rLOzK6Lf6Tkw36kjBlslqQ4oXp+0jrgxzJ4SI1FLzA+M7QRShamKeLYi8jDa1szG7iFsclrYthIiEHqVVqDhiPaHUjbU5NngFhcaBDZL0Lwn4YCw+e8EXj+ip/2Wz8xJK3V5mZ8yPfmpFB7RTOiqnKRPSpJz2yom5mZ+NzW5KUNbEGNzfdJMr5dRf+So41MT+uBUxQw6+YdnqjWmzSJ1ojZcANqwmSulQNzBSZMdYPplRjQHAtiDffed3RwdgZntyeDWfL7M01X2+LG+fzV4azvUxBqkA2AJBOMx0LmGjiyrh4bNr6asL90BFbIV8MHBTglNmXumZu5KSel72NMGeMatc3yFjNpdsWgiFpDy5SrDTbJTzmk4olD2PLO2o82q2SxNZc46QBj/ADha+CNOl0JvfVmEyfC3EAb0LkKsddCFvfWCvBCmKwhffU57bRhji0G/4tQb43ng1ZeU+dxrPeV/Z8MwESgSPcAjJ0Eso/vmbaSO2hEZPLZori5V8=
+	2VN07RUWEhbRVLsY6OGJnJV0lkeEs39eZhuPSbJQCRJiUAE0QJZgHAny3d0CglajZFZfz0lh0FH4/pLlqEFGF87NpcI1fC9DdDixULip4fDlScw/1b4ej+OgNx2kA5JIyBK/3dHHCPyUkcPj4yT0bSsI9czlWIlfBb2oewbqLDRAtIwHYt1ibmMOHjsZa5SskYTjYUClp8GQkV31hUrS4jDB8NIDrC6JKPhMCc54fnm5smZvOFAKJPNbzrcEvDyVHusrK2st1FS6WcgLbWX+zFPEXyfslceMV1Mq+GP6kDGC+26H/F5Sum0aKBY9WVlBntWACKDwS2TNtl+p1QYAvdRrobIhBDusnjiB32MFLeBjXLVy0ReeNmvPpVpM42AU0Xn8JZx5Hz1wcoCPcBmzsssLi9iQgO2Jsj883CYNUno8J/Cb0atnhynrtCcOenNT2xoHN+hOqMGIwSYYXXWyA0yIIRlGsY0KnX6dnYInrpI7jV51fOyb+RLRdZQNVDjzlqzF6H5jHgNwQ0BaO6Pl3FalSGzbuFmi8CvHvIA8c64n5A/dILIKVAXBUuGa2wqO1Sb5hsy98WnNNwQwaXL4BY45nruO3tplL88P6MCDyFcO908MFHcSnNIM5lWXhNpGR66RRSI/6g10nDk/fgIzxq3gzPwZXF0QC4PQoMzD2fSMMLTkfnpR+GeXR0pnpCZFrerBRq4h1wjAcqaqd2b++A54ujWT4kJV4YibKvSKZ/I=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MVFucUd5N2RnVFU1RzNYeVE3Q01ZVDdBak5rYytlSE1UNkw2V2c0NGZQZWRS?=
- =?utf-8?B?Y0w2NkhiMWcvS3A2N0JOWUE4RlZuK25Xb2Qya1JXK2x2dmRjNE5RaDE4WU5G?=
- =?utf-8?B?RkI0Y1lKK2J3NDNsTE1haCtmZ1Q4RjlOc0M4OXJHUldoVjNWd3Q3Mm54T1Ey?=
- =?utf-8?B?VFhORFJTVXorM2NsZ2JGbmZCUXVFRXR0WlZRNUg0dUpPYnJCMVVOaWVjd1Rp?=
- =?utf-8?B?WThreFZlZlM1U0tiOHdabjAxeEFNaGhUS2d3VWRoM1JNUTYwd1ZKOW5HVUxC?=
- =?utf-8?B?bWJKVUNWTHBUOU1Tc2dBNXJzUm5UT1JWQ2pQTDV6S2prK2xOMTI1UUlNZ0V3?=
- =?utf-8?B?M0duOU5ZOUphNVU0WlRwWHJuZG9xRWYyNFlvVXdoUDJwZnJsWDFiUHhNOElZ?=
- =?utf-8?B?YlRhaGNueHRtNUNlbGlYcnBvWWJjTDV1b0M5YXpLYWtHYnhZc1IxeHJhL2FC?=
- =?utf-8?B?QXdSaERrWWJYNlpHY21TazVvVHp3V2pUdWthZGRGeTRVRmhQNXAvVzA3ZFFl?=
- =?utf-8?B?V3JYRGwrcDF6RHJXOStPajdmTVgxUXJNdW1reFZneVlWRjcvVGRWM3BRWm5y?=
- =?utf-8?B?K0loajVsNEt3U1A2L1JjQ1loNmNkNVNJYnVWTFJRdlBWMXdKWXBqMENkZDJi?=
- =?utf-8?B?bmxORTRHWHkrdUVFZW9WOHNxU3dzZER0b1VMeStBb0FtcDNBMlhnZHVnZng2?=
- =?utf-8?B?bEZSSnNuSmhFZk81aERmdFNrZ3ZFUDdkKzRhMlF1V2dvc3h3d1QvbXR4VTgw?=
- =?utf-8?B?b3RIZkR6alRqb21YZjB5a3RmTkg4cU1VVFQxUXBJNHVmMFBYZUNnSUZRcDYx?=
- =?utf-8?B?OUxaMUhXc2lrdWQyMERETjVGU0FsY3ZoTXhZVG9CZ2JwMndja2dHUW1VbFlE?=
- =?utf-8?B?V25jZjdDemY5VC9vVXNZbjljdVpuWlZQNHk3SE82N1ZPc0dUTm1IdHkxVTAx?=
- =?utf-8?B?MGM3T3BmUmVSeFd6elAvYU53UzdaQS8vQ2V0dkdOQmFUV2lYRW4xUTJWeWtS?=
- =?utf-8?B?Z2xQVDJyUEtmc0JKeHR4MXd2OUhtODhlK21PMjZMK0c2Q0U3STByY3hvM2lS?=
- =?utf-8?B?dmRWM3Vwdy8yeTdCMHE3dG1qMEtGVFlYelcvV3A0TjNtbzQySXF4U3FoTytk?=
- =?utf-8?B?eGhIOFNOMGpQUU1QOVkyaGwvMENSdmw4aVJlOTlrVWlzSGxGSHYrT3lWcE1h?=
- =?utf-8?B?MmNqLzB6cXlQQVRzUWU2V0xPRXVSVTR2bmx6RWI3RzNReFk1ZDg1REZCTlBS?=
- =?utf-8?B?ZlZzSTNjV2pFZ01HUTlRcW94SjFuN1VCK0RCY2hSUGE0NWtKVHRxbmJHMDhw?=
- =?utf-8?B?YWhJd3g3NjBpNVhubEhjS25nY0lrT2hmTFB1cytMYldXUDNQbFN1UEIva2sx?=
- =?utf-8?B?R0trYWpiaVRTd0tvRmw0a0hCNHdncy9qUG5YQ1JVNnlRZHVGZVhseHlLQWh2?=
- =?utf-8?B?TWtmanZTQ015UUJOYit2cEpWaWkxb2hnZlljOFNDaVl0eUx5VXZTemZweTFD?=
- =?utf-8?B?ZXlRVUhhbGpLd3kzZkI3UXZlWXBRL2Z2QjllRG5GK2hvdUxzOVpuaTNtY1B0?=
- =?utf-8?B?UG1lQ21iSTBSUmwyb0xGNXdlQmFtb0VtbjdhRko4enFNS3dIenRkUTBmd1hj?=
- =?utf-8?B?YnRuOWJnY2F0YytkbGNiQ2xLWjZ5Rm5hcExHeHgxM3gvejhScGlMVlBDT2hV?=
- =?utf-8?B?U25XU0ZiZWVmWVl6OG56eXRSYllZT2dYc0J1c2lRVldhTEhzRHk3Y0luUHd4?=
- =?utf-8?B?d01Fd01yalE4c2V2RzhFQjRFZS9lN0FXcGdwTTlYUzlTbFVOSDFGZWh1ckNs?=
- =?utf-8?B?TUQxMVRlYk9yVkFNKzRTM1U3ajZCZjA0REc3OGhGVVh0Ly9VOTBha09YSzRJ?=
- =?utf-8?B?NVM4NjkyaWRpam5FSWlZdVU0Ull0RXZvdjR0WUxZVmZIM3g4aGZLaGM0Ukd0?=
- =?utf-8?B?djdDVHlIY2Y0UnNvdDBCVFl4bXBJQVhwVG9EamtBdlJqbC9HOURrVTd3d1Bq?=
- =?utf-8?B?MEpYKzRmNGMrWSszTWQ5anlINTZJK08rRWJRQjAxa1BCVlFTRVY5YXJRZWpx?=
- =?utf-8?B?a01hbitMYnNSNEtXeW1paUNBbVFNQWcxRHpMSzYzL1JNdjB4THVVY1FucTJT?=
- =?utf-8?B?N2N1SW1tSW8vdzRwVWJXVUpMZG1waFFoREVTa2czYmpzN1JrMTFFRCt2aWph?=
- =?utf-8?B?SThlb3FOL0l3ejlIQThCcWt5ZFR2UE94Q0U5T3F4d3NnOTlCaVE2ZGl6TUdi?=
- =?utf-8?B?UEpYRWJjd3REc3VRQ2RTUFlPN2R5bWkzRGc4aDJlZ0tJaWF4ZCs0NkQramFN?=
- =?utf-8?B?dmNPbVR6WHA0RytaeGhqKy9odThMS2xseXF5dzVzenJaTW1jUWhEdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd2093ca-d3f9-4840-2f88-08de78985b36
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?a2pwczFENzB5dnRoZytDNGVuUnFMZUtNSE9qbUVmVFZJNkNpRkdCVmV4RHVx?=
+ =?utf-8?B?cGtGR1F6RWZjWENvV2UzdXZkWEFpQWR2MlVQbWlrdDJ6d21XcGMrNXVCNDVH?=
+ =?utf-8?B?bkN6eWdYaFN4RzI2bWxkNzBBWUluNDRmQ29RT25KK1NTQnVYaVQvU0Q4RWpT?=
+ =?utf-8?B?MDBwMlN2Vy9NcWxORnFJcGhVc2UxZk1iSEpvNTRKTFp6Z2dRNUdIM0laZUtO?=
+ =?utf-8?B?dGl6ak4wQ2E2cGR0eFhrNnIyZEsyMUFxRGhlUEJrN2UyY0JPOUpsdWFISnRD?=
+ =?utf-8?B?bk1JclRkZXV3dFhBZnJ5Ry94c2FxWXNXT3NpSmcwYi9SMW1UU0ZoUUc5SWhW?=
+ =?utf-8?B?NTU3WVMvZGVWamVseWtOWnVVRWYydzZJZitDNnhEdGUwbi93d2N1YjF1Wm4r?=
+ =?utf-8?B?YzMwNzBabFhsRDB4b3c2b0ZqYUYzNGp0TThkM0FWczFDcE5EMEFwbWttYlBs?=
+ =?utf-8?B?MXpTLzVrZEpXR211Nmx1b3ZpRC9OQmJrUW9OTzhRY0R5UHBtZ1JJQ1FYbVZs?=
+ =?utf-8?B?SXBvUnlpbnl2R1AxdzQ1L1N0VzJoR3hWTDVIRlNrRzZNSVd2YkhKWEswR1pi?=
+ =?utf-8?B?bjBKM0kzQ3B1MWVNcDYrOTlLbG52RUV4TFhJVnhWcjlNZGRDVXpJY2dtTW50?=
+ =?utf-8?B?QmxuU2FvOUJjVDg3aVZkQTJ6K0loT3ZoTjliRVcwOTZVb2JvaUozdG42NWRy?=
+ =?utf-8?B?eUcrb204RFhaZzhnVkpXVjh4U0F3OXhiSk10WWxLbTVIQmY4S1BtZUcyTmxz?=
+ =?utf-8?B?VTIvbXhCQnVSelpVWDAyVUV5eFBoWEpDSTc0QkplRWhkZUFhSEJYQkFqWVdr?=
+ =?utf-8?B?dHl6OVdDaysxR3A4SVljc0tHWXRSMkdSbHhsVW4wbDBEUjJGNkt3MUVidUUw?=
+ =?utf-8?B?RWx3SGV3dWw3OHFkNjNtL0JNWitEVzdMSFdFdTJiU0ZISUZobnZpYmNBY1Bn?=
+ =?utf-8?B?ZXprVUJCQXY5Z1N2OUlqSXFVcjYzNEVISU1hd0ZnV050UEFJakRTWjA0TUR5?=
+ =?utf-8?B?aHc1Vkc5cXFsbVhmcXFWY0tsVzRLTXhYN3RXNTBaQVVBWWpDbU1JVmk0cnJz?=
+ =?utf-8?B?amhQY0w2VXZ4NHVlc0pjSlU1VHBXZ2RMaWZPSFd1VWhUYWI1NE85VW90RDhR?=
+ =?utf-8?B?NFpvZU1DUCtjMC8wclRZTUJPczN5UWl5RGw1eFJZcENIQnFlQTFRN05JVUg4?=
+ =?utf-8?B?a0h3cTdhUWdGeTg4eTFPK3NTVzBvcTVtOEdReVd2bXNsRW83WjV6MHlnR2ZH?=
+ =?utf-8?B?ekx5YkZJNWRXWnJheFZndDNvRVlGdXlHT2M1L3YwT3Q2bFh4Mi9iWHBNektN?=
+ =?utf-8?B?SXNxelhrZ0NtWFozYUxJYWNaY1h4enRzZ01UaEMrSkk4cWFTVUM2Q0w2QVly?=
+ =?utf-8?B?WDF6cWNMdHdqbXRaOTFONGZhZUxoSitxdE5xS3FGYlNZUkFxeWlta2ttN2Zx?=
+ =?utf-8?B?eitlZVVEbUNWdmRLY21NUmRObmVFK1VWeU43SyszR2FwQmxlUUMrNzc3MGN5?=
+ =?utf-8?B?WlcvZzVyd3BPWi9SQ2pyQ1VyNG1XSDhqbDNEWktXK0xudWRWOFZKL1NzbG5S?=
+ =?utf-8?B?ZmhaaVNMUWk2bW5rSFZCTEMyZVdHaGZqSTd1d3oxdGw1dmVtaldpU2xpNEQ5?=
+ =?utf-8?B?YVZTYVhYb3JKa2lyVEVBWnNTRzdNSUFwZjdIQ1BDWnVVaEF4QXM5UEtRYUF6?=
+ =?utf-8?B?K3M4T25xY2I2WEN2MkFMZU9uRTNjRTdQMnhndWZqU0lyZHpsSzc0Q213YUM2?=
+ =?utf-8?B?dEV6cFJzVDA2Y3NrV0hWd244azBjM2o2Yll4U1RaYTRNUi9XOHZPWi9vOFha?=
+ =?utf-8?B?bkg1UlVEckNaTlJnc0RGM0dwODgycUVmZFlTL0lyeHFlZnliRS9oWWJHS2Rt?=
+ =?utf-8?B?M1NtOE5sckVxSmNXdGUvSDBNcm5FWlhsY2I2QjFsbFdXd3h2QU1MRWVWenph?=
+ =?utf-8?B?RU1DQkxUblM1bW9CVDdkVlEzYmV6MkIyOTJ6WHduQ2VlTU8yLzRXNXZSYjdL?=
+ =?utf-8?B?d2pEeWFWb3o3TVV1dXNJWW50S1JoSGUycHpGL1lKSDRsaVhpamZTbWtWZ2FQ?=
+ =?utf-8?B?K09HbWtGRmR3c1FGRWcrODFzc0ExOXRuY1V4YnRyaVVpWG1Da0xJVHNwZFZU?=
+ =?utf-8?B?dnlhSzIyaFdPRk9UZzJrbjNlNytRbisrREFGSlZPM2xXa3E4by9ndlllRmph?=
+ =?utf-8?B?WkpVR0FtUUpXOVRBVFZHTzNJbFRLNTJxQjhwQTdRNE1Vd3FqTDNpNzdhZC9h?=
+ =?utf-8?B?VUdjMk5vNVd5bEtUSDBiNk1SbzRSY0t4b0M0V3E4UitTWjh3MmxwaHhQUkZ2?=
+ =?utf-8?B?Y0pnQ0h1eDdQMnpDajVKc252clQ5L25BQUZSek9BTnRkc2Mvd0JLQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9b35156-3211-4cb4-2950-08de78989b00
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 20:14:49.4708
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 20:16:36.6658
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GYcXspxQKcKDV9r7tMUZwd2h6yHgsZE6dQsVaNZpXXopE2UYKevPMuc5xHssyxYmpI2IaUVDyt5R2FYjFUwstA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3366
+X-MS-Exchange-CrossTenant-UserPrincipalName: wQcvCShf+CWmqjsmZ8VBwaV00P0tS90rho8heHFzZ6fZ9MrZ9d6J7diuZYe5rjaep2xJoV99vcv4M1nauQri4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9454
 
-On Mon Mar 2, 2026 at 6:49 PM GMT, Benno Lossin wrote:
-> On Mon Mar 2, 2026 at 3:49 PM CET, Gary Guo wrote:
->> On Mon Mar 2, 2026 at 2:38 PM GMT, Benno Lossin wrote:
->>> On Mon Mar 2, 2026 at 2:02 PM CET, Gary Guo wrote:
->>>> +/// A helper trait to perform index projection.
->>>> +///
->>>> +/// This is similar to `core::slice::SliceIndex`, but operate on raw =
-pointers safely and fallibly.
->>>> +///
->>>> +/// # Safety
->>>> +///
->>>> +/// `get` must return a pointer in bounds of the provided pointer.
->>>
->>> This only makes sense when the provided pointer already points at an
->>> allocation. But since the functions of this trait aren't `unsafe`, it
->>> must be sound to pass `ptr::null` to them.
->>
->> The "in bounds" here is the conceptual bounds of the pointer. So, for a =
-pointer
->> with size `x`, the address of the returned pointer lies between `ptr .. =
-ptr +
->> x`.
+On Fri, Feb 27, 2026 at 01:08:21PM +0100, Danilo Krummrich wrote:
+> > +#[cfg(CONFIG_GPU_BUDDY)]
 >
-> Okay, I haven't really seen that as a concept. Also, what is the size of
-> an invalid pointer?
+> Has to be #[cfg(CONFIG_GPU_BUDDY = "y")] for now.
 
-It's `size_of::<T>()` for sized types, and `size_of::<T>() * slice.len()` f=
-or a
-raw slice pointer.
+Fixed, thanks.
 
-The projection semantics is same regardless whether it's valid or not. The =
-I/O
-projection work will rely on this, as many I/O impls will act on pointers t=
-hat
-are not "valid" in Rust sense because they refer to a different address spa=
-ce.
-But they're still legit pointers with proper meaning.
-
->
->>> I first thought that we might be able to just use `mem::size_of_val_raw=
-`
->>> [1] to give an upper and lower bound on the address of the returned
->>> pointer, but that is unsafe and cannot be called with an arbitrary
->>> pointer. Interestingly, `ptr::metadata` [2] can be called safely & with
->>> any pointer; I would expect them to be very similar (except of course
->>> for extern types).
->>>
->>> [1]: https://doc.rust-lang.org/std/mem/fn.size_of_val_raw.html
->>> [2]: https://doc.rust-lang.org/std/ptr/fn.metadata.html
->>
->> I have a `KnownSize` trait for this in my I/O projection series that is
->> implemented for `T: Sized` and `[T]`, and it returns the size when given=
- a raw
->> pointer.
->>
->>>
->>> A pretty expensive solution would be to add a sealed trait `Indexable`
->>> that we implement for all things that `T` is allowed to be; and then we
->>> provide a safe function in that trait to query the maximum offset the
->>> `get` function is allowed to make.
->>>
->>> Alternatively, we could use something like this:
->>>
->>>     The implementation of `get` must:
->>>     - return a pointer obtained by offsetting the input pointer.
->>>     - ensure that when the input pointer points at a valid value of typ=
-e
->>>       `T`, the offset must not be greater than [`mem::size_of_val_raw`]
->>>       of the input pointer.
->>
->> Given that I'm not introducing `KnownSize` trait in this patch, this is =
-why I
->> haven't used this kind of wording. Perhaps I can just bring `KnownSize` =
-in early
->> and use it first for documentation purpose only?
->
-> That sounds great.
->
->>> Or something simpler that says "if the input pointer is valid, then
->>> `get` must return a valid output pointer"?
->>
->> Hmm, wouldn't this give impression that "you can do whatever you want if=
- the
->> input pointer is not valid"?
->
-> Yes that's true, but why is that a problem?
-
-A impl that returns an arbitrary pointer when given a null pointer is not v=
-alid.
-
-I/O projection will use the ability to project on null pointers, too. An ex=
-ample
-is PCI config space code, which will project using null pointer as starting
-pointer.
-
-The "bounds" projected pointer must still be with in `0..KnownSize::size(pt=
-r)`.
-
->
->>>> +#[diagnostic::on_unimplemented(message =3D "`{Self}` cannot be used t=
-o index `{T}`")]
->>>> +#[doc(hidden)]
->>>> +pub unsafe trait ProjectIndex<T: ?Sized>: Sized {
->>>> +    type Output: ?Sized;
->>>> +
->>>> +    /// Returns an index-projected pointer, if in bounds.
->>>> +    fn get(self, slice: *mut T) -> Option<*mut Self::Output>;
->>>
->>> How about we name this `try_index` instead of the general `get`?
->>
->> I'm following the name on `SliceIndex`:
->> https://doc.rust-lang.org/stable/std/slice/trait.SliceIndex.html.
->
-> Hmm, the methods in that trait are marked as unstable under
-> `slice_index_methods`, which doesn't have a tracking issue, so are
-> perma-unstable? I'll suggest the rename upstream as well.
-
-I mean, they're named after the `slice::get` method [1] and `Index::index`
-method [2], so I don't really see the naming issue here.
-
-[1]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.get
-[2]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.index=
--24
-
-Best,
-Gary
-
->
-> Cheers,
-> Benno
+--
+Joel Fernandes
 
