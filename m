@@ -1,68 +1,73 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021121.outbound.protection.outlook.com [52.101.100.121])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021100.outbound.protection.outlook.com [52.101.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495FE364927;
-	Mon,  2 Mar 2026 14:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEA43E0C68;
+	Mon,  2 Mar 2026 14:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.100
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772460866; cv=fail; b=DV51TkMbdogdIo4vZYCKmo5jdKQJwuyuCT92YUTgFqGP+MZqezQNLJ+NgQLwVJOX7lHCiAPyka7n0vIBYMHUEXVfcObGXOCLq4mODouhjPBuShptqsMFctxhB9P/U/YPnVncvffwmA7M2Y9K1egtYtc0s9jjtdcr0ZwUtBZ9A9c=
+	t=1772461130; cv=fail; b=SBQW0yTUf9+/itYvfiwGpY/UNlymoB/8tbTvOZG0tgBseCLppn7o1tRmINr46wpLoAbEjWQXnnk1P7OexN+GmruZ4Am5JmW58OuUhpLdBsfQSqcikztGSOJjQhrOf4qLpONqO5Qsn0R0doA7aU6mebQrrWB2dzbkhdl2wrDRe2o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772460866; c=relaxed/simple;
-	bh=rZZUkMO2DBZwVb17uW6aYB36hE8IngMozGAzpIGH6ss=;
+	s=arc-20240116; t=1772461130; c=relaxed/simple;
+	bh=KXkDwaVgzuebxJrGHfIoWVALbJcYcmj5VniZKFdo4b8=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=JeMSVIrLQvqUp6rxAAvKEU4JGMHSGpaJFj1/gR34HgNfkCQjvRLfaKJdxZrHktSUAb4KOwSYDwKsUctKnTnLbsUzC/zHAGWlE/G9NCjGGeXcwASTV0AGfoYagyZxW9Nk0Hc2zKMs7YDlci2aVYUsd6x6qi910Tqphp6MmsvFGxg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=D2KahejX; arc=fail smtp.client-ip=52.101.100.121
+	 In-Reply-To:MIME-Version; b=b0r37qgK1Guns6LbdI22EqECvx7+bQd8Zp8/kKh8v94JxV83dgK+m66Dz4UrVetIrN75/FL0x9Ly9V5MqF4EEfNyeUCQOG5NvxkIRW+ZYkJ/4mPwEJsjNmnUgsmq29TyLWXQ74W8P6kYZnqCHphFYBHExRRAscNiqObgIr3XlzE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=SojWXDMZ; arc=fail smtp.client-ip=52.101.95.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="D2KahejX"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="SojWXDMZ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X49sag0N0XkGmCQVbvGUpWAGWi8bGJrtgCWpO/Te0kJm4uCTB1rI3lZypeWtAnfcxREvUAWpUxXVbDr5CdMOLRQm+qUg5IAvgcLrMSw+wEODHsWIRE+OYQ5zhdb2Y9rJ9VcDX6XqXqhLAfOGuqZpnn6vEajr9btdKX/b/pn7G2joribjg7KQy74bmOhxTj6tDxHNrcxlccQhP+Aq/BuEhkndDJRZvjIad9LDle3SKE2PXsQ71UCBotNhEHv1m3GWagmTGxEjIAAtWOy79xc+deM8I1YyrHI9rg3nMOY/84ZoO9a87QCxSrGFnuOnICpUTmOK15B/Cr+amASK40v/0g==
+ b=dyQ4V2MxLF3vcEup2k71LP3rTN7djM5N/YAyYbp8RvxgdkXE/5fRSYMiJhD2P7yp+u+ga1awUuifkH7DzHTadrrkwaAZIbO1EtCLECEgbHJlBrMVYIkiDKm4l8WSLY4JihK83yLs3mb1PEAMvCr8SBvvNgm822i7PvjEoJD+F7E9ywzj/SvSb6L0eLnh2B0fcmtBjHHNKN2yh0mx7zr4jrrv1qnOkDVn/7y5mq1OVa6vL1u7QpV70W7Ei7IzyqLtPR09xfdpXhVaK+WkKPUqroaIJRM64UDCQD2/gIv/D+dnMLWWwlAQ/WsMgQy591tMpsPpcmbu83Qwr/thsb2dLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E1Da3Xw0/nfji/3A0lp+mD2oAhd3ABUCeNJ4ZAemtjI=;
- b=oWWWygIyy72BXTSmJrIDOdFfYWwDIgL7CpCdFvxU0pAmLTrlqaN5m0nCt0hMhQ3VEOK52FOXqQ1Tli//uegJFAHPmJ2SwFZCiBboG2KIkV2m3mIUOV24rkUS9WGq7yNQ/0Ep0ZWVXSUVlIjTrYdr47nAcAcO9Q1CXY9jkcQR4yJ8E5u//MxB2Fz57E+U9xDm3225W/KnWWZqe5uq3D//sTSOzY3wYPts2o5gj+2xADbZzgYUP0jVCxN67xIa7kmCWoISDdja92PwRYA9XezkCrhVDPFMXKF3p8OdP1wCfsfVrZa2sK7/wwixK0QOEQ9Pn20I/KLIyw1wgdezFBOV4A==
+ bh=27hg2lWPJoZZ7dtgu7e0bWSqw3+DIEaMGm3+TVlFREM=;
+ b=cKD6hxW23hl/r8Q8hDCFothk+mB6MXhDCRNe0KF05yNSClSfGwx2xYiNjPR9AcnOqD6Uf3aPfcDPdEjOFpMr/hpL1EiJyKdhKkEHICKajqT2QYPqWQqEv6Td8njWmEFtNSukg+5RXgKkUKcdJx3E915FnyA7FT201a9JeWdgAs+Hms+1UeT5++OxwR2un8/x6H738HWtI9zqKTAUCupBvJg+CCPwLP6v0+CcaufmPQp5FyoO/cjoh9NOFj3fCIhwrFNzi4r8NzO7uubHVVdeUC24a1T14sCgaUonqHf/a28oS3eOPuiIMdRLzed/r/MkEzApvEXbfcG99BJo4moL/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E1Da3Xw0/nfji/3A0lp+mD2oAhd3ABUCeNJ4ZAemtjI=;
- b=D2KahejXSMbCFTo7Ue0YSjJheaKpWN7SvRVfzinryL7ijxQsWsBYWAn1RCpBN5PfrdwWEkhlHvsqvdFDGysEVs99olJIKDADHw+/e9LnJXkEjGkW1nNWoXdWPQXDIM8zSkzA5oEnbT9ll1CfP0n4puRyrAnvvyiVo5dpu3v6tHw=
+ bh=27hg2lWPJoZZ7dtgu7e0bWSqw3+DIEaMGm3+TVlFREM=;
+ b=SojWXDMZYyisTlg5PTRUeXCLD/AHiC1h4jk1AZlTP1ig8zlwlOwLJ6a6I67Zsmc3MClcroGeosEzP73GfFDBOKOgVztSRnnnS4Tq1yKnxhaMDooIOhMO0YEDhVS+Ew/jtq8D83EVnLJPgEmu3m3bWP5litLEgue15XyJIcwUMas=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO2P265MB5887.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:26c::10) with
+ by LOYP265MB1790.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:f2::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Mon, 2 Mar
- 2026 14:14:20 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Mon, 2 Mar
+ 2026 14:18:45 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 14:14:20 +0000
+ 14:18:45 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Mar 2026 14:14:19 +0000
-Message-Id: <DGSCXPXGW2SW.D8VR5QI5OVNT@garyguo.net>
-Cc: <stable@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] rust: pin-init: internal: init: document
- load-bearing fact of field accessors
+Date: Mon, 02 Mar 2026 14:18:44 +0000
+Message-Id: <DGSD13LEUEZK.DXHNXLIRVY24@garyguo.net>
+Cc: "Zhi Wang" <zhiw@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v4 2/9] gpu: nova-core: gsp: add mechanism to wait for
+ space on command queue
 From: "Gary Guo" <gary@garyguo.net>
-To: "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Wedson Almeida Filho" <wedsonaf@gmail.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>
 X-Mailer: aerc 0.21.0
-References: <20260302140424.4097655-1-lossin@kernel.org>
- <20260302140424.4097655-2-lossin@kernel.org>
-In-Reply-To: <20260302140424.4097655-2-lossin@kernel.org>
-X-ClientProxiedBy: LO2P123CA0070.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1::34) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260302-cmdq-continuation-v4-0-c011f15aad58@nvidia.com>
+ <20260302-cmdq-continuation-v4-2-c011f15aad58@nvidia.com>
+In-Reply-To: <20260302-cmdq-continuation-v4-2-c011f15aad58@nvidia.com>
+X-ClientProxiedBy: LO4P265CA0143.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c4::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -71,126 +76,209 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB5887:EE_
-X-MS-Office365-Filtering-Correlation-Id: d37feff6-cf27-494c-6fc8-08de7865ff1f
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOYP265MB1790:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11787b35-8a4d-438b-d8a8-08de78669d04
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|921020|7053199007;
+	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016|921020|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	reo6gLwTo3BAd7l1lS8i1s9WmPZqdgYq/KSUVMAjQyRXadkA0mJux5p096n0pFxs0PMUBl76fgB+fLPY19cpxr0KbYxIjQik5yV+zyx9LaeBortd8v2RaIXjEx4K8Ts1N9scWzrJUaVWaKoCRBLcBYRbXuudjHxbsOt0O789S7aKlna1aqmwGsQeISRuj94CRZkuFOSabLd3FYNUvWpOU0xoaRvlyypVrz2CuI6K4d3fNt8yASCBMDPG6s5+IUf/s6VJKabWrq3VG+GaBF7GtPK7S9g9PmJ8vN218Blf+YSRdWYwUxNDd+CBpP+Xr5PViNhSa3PopThRqTA9NRnv4H3pMmvXFWbCzm9vnZo9Dv8RI5ALX9OdnETYQ5cdPgRQ66FxWLVXQZoVej0U6uWg6pr2Z1HqmM4ojpSRx2jv3mCeVkPumX+jELA8kbYM9/4I23oJnAStBPVanSIlSlnagazsta8GbKNZ0onZcKftRAFym4O5sMXD819WEClf10Oq17148tdCSi4P+2o1DZyFYkHkvZkiYaET8NoFXSnz8ABt39CL1B6TD4FNOa1wN2Wz9mYmPprXt5Oj5LeFE2FVBdSjFZZKy+MEzVTRTSZerMrQ5j8BhdukmM12+S0Gdh4KT0oYkBvpoIQxlRhJsWLav5mR5QpguLTWdHVWfvO+fIc1mvP8ColOM/JPWcHsWYj36n6OAPHu1/Sl8QJdCgLKPg==
+	tj9CTx9LMGM7ac5ysuDgedQkENssua55DeLqm11BhDe0HSFq6VeVbGV7iXD5cKpLZbCW35psFGu8+8VMdH1kZtnTUyrv+xl9//k57fDpoTg4TWcblEssK80zEbE+MUCl3XmDgPGXfCN2ADQU1Uz49k20FdlsHsscv+KOFqn+8pAAxkTxrNKvkzwBBKJDF85dYqbBeSbFoNEXyfLnbau6yqe68O48dUv4ql7ibuc/oLA7kH9f1ix34tn0Hhj9plg7PLQqcEjhRR8pXcocOmqt2/V++86NPCDhrvaeJySe3WBRDRiE+mzxndm/avg8n4q1fN/LCtLZEr++bm/HX75kdzEz0sSldHDIMnqiFAiL4UetrRIjb/oEwgHrxUP4g2ZjY1HNvgYoQBCHTu+gsEIOdbZFU9o+8WgADbFDO9Gk9cRF9VgkCMw/nenVJR8YqMXond+qjPupIe28OEuIhZZb+WOQt9PD8mpoJHdKu+TY+kO0sihVDU1NRhe9zcrPxH75iS9AFEkm9jyRaNFBRD4FKZO7oz+8nwTR3JwfNtOP+1C/NazsOsnX6dMHu8s0XOnNRXN7EcNEuMoHCUGu6V/w5LNk3ayx48l5peFqnv7E++S1gaOvhsPYuz8Du9XkdPEDn7lQMgkhDIbtWzLg/Ht4UWbc1JuFFJh/bDMGBmBi3zyKwuFvU1q1nNdp1NnYDpmoCAemE/s1Wf6J6jodhsfJsXyVGU3V7moXWGHqpN71Kc0ggQLym+tSGCb/uaCwTWuBVEsthfF5PS88f54tVFyq+A==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(921020)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016)(921020)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L1VpWXVlSlkrZU8vS09PTFdhNERDRGZicnFFUUdXdk5UeU54dklTa2phNjhT?=
- =?utf-8?B?U2JXSjhMZzhvYkVYOU1UOFRER0Fmc21TeW8yMS9jTGxDSkNCSmxHaUdNd3JG?=
- =?utf-8?B?eStudGhnR2xQTEFqSUVCekZGUXJyNUM4c2xFdm5YcXZ0a3NiQkpuMGtBTkI1?=
- =?utf-8?B?V1JnOGZuMUI3NWMwenNQL3FhUmp4cFgxNlpkbzZoaTVXQmdYTCs2YXZNL0tp?=
- =?utf-8?B?M3MxcmRWR1RWN0dLbVBFRE0yYStTMENOYXZMZVJiTGpYNzE3ZkF2L0o3MmpJ?=
- =?utf-8?B?TWdTcVdnRWx2blk3WmVLV1c1Q1RLWm9mRGcxZ2dWd2J1T2VTa2hCdytOb21B?=
- =?utf-8?B?blZmUXA0azRIbFJtdTAraEhvQUovZ0xEMVdEYkV4TkVTazBBZlJ6d1hSbmx6?=
- =?utf-8?B?M2ZIYTNiSlU0TXpuajdFdXVFS08rWkZOS2RZTjVmUnkyVjhHNEFLcUtaWnlu?=
- =?utf-8?B?L0ZUdzV3L1BJYUZmR0gzUk5lT3V1d0Y4SXoyYVAxcEVPbllxaVNseWZvWjh5?=
- =?utf-8?B?bVNVVllweE1oSlQ1bjJBcndwbzJwcjh3ZHBvdi9JZDFERWZpNk90TjZPbDA0?=
- =?utf-8?B?bldsMm5BTWNLMDl2dDhSMk1OVE1zTWQyQm9oTlV3aUI4M2JkZnVOU09kVHJG?=
- =?utf-8?B?UHlsdUxLNGFqUXFOWFUxRTJUc01NT2dtODlxempya2RYUVB1dTJRYkhYMmNJ?=
- =?utf-8?B?V1ZGaXMxb2F1aWtSeFVMMFJ4bEI3M2lYQU92bURuN3d0SHM4blJFV3JHK3d4?=
- =?utf-8?B?b0x0RUtRZERjL0tkMHhhZHVlQVUwU1V1QW5KT1A5UGpobmZuVDVmajU1OWRB?=
- =?utf-8?B?WWtic0I1SUVKMGprNkNENGdtRDhvL0hwTGpmTzBWdWMvbG0yNXdKMGF6TjZ6?=
- =?utf-8?B?TjFvTmphMjI4VTdGYmx4bHdhQ2NTQU1tM2RmZVd4eHdBNlFzRXlnQnA1Y200?=
- =?utf-8?B?UEY3ckRRM1J1K2FUanNyYVF2MEc4T1ozUjJ0cnZPbFVnaGNqREZRRzZna2NO?=
- =?utf-8?B?NjdyVXlOSHR0NWJpbWNRa3BMdnAxQzlhZHBSNXlTbUJ6T3NKNEo0aUgvajV4?=
- =?utf-8?B?VnlKU3dPMUpQVXJJY2x3UDBXRjVSUkpUZlBjSFNGR29TMWNqa3ZKMXM3d3l3?=
- =?utf-8?B?dHRZQVZ6K3hpdzBCcVVJNUJSbEJPNmxvMms3Zjh5SlpmOHdpU3VIcWlIKzhV?=
- =?utf-8?B?ZHp0ZnpDblRUZld4OUhqQ0FHNHBqTW9GZmZFY3BOR090eUZ6NFg4V05LSzRO?=
- =?utf-8?B?TFIrY1h6NlZOY3ppQ3oxV1VQZUVESE9GNWxHcnpYQnFHRDR1SkNFOWNwOUY2?=
- =?utf-8?B?dUZGb3FBbjBJdWgwN3QwZ3Y2QnZzY2xuZDE3MnB3Q2xmSEo2c0g0NGxEWlpw?=
- =?utf-8?B?T2lqL3VMd1JZalJzbmJWTXJhRjNXdUVTOXhTTTg3MVc0VUg0YllicEJCWWpm?=
- =?utf-8?B?cHdVK2w0YmdjZ3JJRDVaS09uM1pnTUhQNUpDREI3R0hleHh3YUlHRjRna2J2?=
- =?utf-8?B?Nm9mOTdYOEFqYk1wMVk0RlhGYzZRVll1VmZhNEVVQWdyRTBLUnJlM000d3FJ?=
- =?utf-8?B?MGlDL09lb3VPS21iV2JBRTlaeDU4Q21HT0RaQUNlcUNoVTVLK0pIMkFTc3FD?=
- =?utf-8?B?TW5lNERyMXB3V3NQNVhpdWVJbVlnR1U3YW92aEo4NzBuVGpHQjFNc1FKZ0tr?=
- =?utf-8?B?STUrVzBtbGJGa0JEaFlYRmU0dDkvNG9UeTIvL0pDYlYyZ256WVNBNk1nRE8r?=
- =?utf-8?B?M1paSUVVdmRjQWFQWUFVTXpwcXBJdTNqc3BxaVYzVVFaVk1NdHRRM1l2aStx?=
- =?utf-8?B?eEFMa04rU1hUejM2UnBpTjN3MEZEbmtoNEw0cGtEVWxVS0FiaUczK2poN3Ru?=
- =?utf-8?B?Z09Nc041RDAvTWpaMVEvTjIwdzYvcG5YN2EvTUR0djJBTnlUMzI4VTZ2MU90?=
- =?utf-8?B?YnZ1YkJIZkR3aWRKaG9MWHJHQkQ0dlNMMCtYVEhKVS8zSW41c1QxOGl1Rktz?=
- =?utf-8?B?QnM0N3JLV3Q1Rjh3UHlJT0IzUzJLdDV5MGtORGpTYnprM2xZeDZhL1VYUGJV?=
- =?utf-8?B?UW9aTzVwMXZFSFNUNEx1SHF4MDZxRDNnYjN1MHoxcjZZOUgyd0xncStOblMy?=
- =?utf-8?B?T0U5eUJWWXA5N3NtUStBdWNUYjZrVUI4eWxSbnVpZForZ1JZRXNRbW9mMnQx?=
- =?utf-8?B?TXgxWTRDeCtFM21FY0Rsb3ZncGIwaVJLSnNDN0tPT1IvZENjMnlLZ1B3ZVVu?=
- =?utf-8?B?L0MzMHBkR0l5eHhlOTQrTEp4U08wb2NPR1pMazhGYmlZR1FQZExpRU5vb3F0?=
- =?utf-8?B?NFV3SDAvVFd6UnBPcGtRbjhJWnZBTC8xUmZlWWpyampJcHJ5WmV4QT09?=
+	=?utf-8?B?UTY0YmtPUkJPZXgvMUNGdjkxdCtwODNrQjcyczVtSHlWTFh1Mnl2OHVoNFlX?=
+ =?utf-8?B?NUNnWnAremowaHQ0ZTREWHhDR0FvUnhGUTRFRFlFY1BUYWpZMFJFbllmTjZt?=
+ =?utf-8?B?dUpoUUxiT3VKempLYVVIRUYxMXoyZzBxTnAyeEhDRmJnMExGdk1oUlJQdkVB?=
+ =?utf-8?B?R2l1MGNrSXlUYzRwOS9NZDAwdEduYUZIOEFxaVUxanBhMGxSNkNpV1hVeUpW?=
+ =?utf-8?B?alQxWmkvSS9yZ2VPZkRoSzZwZmk4ZzVtMUNBcFhndWdjUmszTVdxMGV1OWEy?=
+ =?utf-8?B?TTRrTVJOTWNnaHFFZ0NCUTBqSHBOWGhTckxrZ3V5RXVkaWxnaU9nbVVVN3RG?=
+ =?utf-8?B?VlJvSEUyNndHOUF6OVdPTWtQZUIxQzVhMEZrUmdnb2lKQm5VS282VHEzSXRj?=
+ =?utf-8?B?K3Z4d1FFZVlQUHhTUlBpVTB3TGFObkRyWjkxUnVHc0tXQ0R6NWdjcE1mMGk2?=
+ =?utf-8?B?VUQvdEtxeDdxVkc3UU44MmJod0QwU2N5SnRHSUVHWDYxdXpRQWozTWpzditN?=
+ =?utf-8?B?U3htUDcrb25TZHBLdEZlMFBzcExud3BadG52TXdxOXNvcCtEUUxoRk50SmFP?=
+ =?utf-8?B?Y2UydjZld2dmREpzSzBJRGNwOGNDaExLQWJaU1JRaElHcmhPQVNGUGNNamlF?=
+ =?utf-8?B?bXFRbDhkSTExeWs1dE5CYUZ0M3hsY1JjTmttOFN0YXZtZ053TVdEeWkyVUpl?=
+ =?utf-8?B?UE5WdnZjZTBRUUtnZEExT25XWWhmckdnZ1h4QlhIYU9JV0dEWHBEK1RudWFp?=
+ =?utf-8?B?a0NDYmltajk4TnN2TUtZN2hWODFZSWsxNENrc3UyWmlObTZpeXZ2L09NQUVE?=
+ =?utf-8?B?d3pHSURXam5OM0ZMRzl2bW1pRmVWRjQ5eXZXK2tWTG40N280d3pNZWdHS1BC?=
+ =?utf-8?B?NVhVVWZjMXozOGFKTC9CTVJtZmJlSnZyeG1Ra1BaMytzYlJuMjZrRFFuempq?=
+ =?utf-8?B?OXFPaXFMeCs4WUx4QnVGTUFldUpLcVJEUW0vcmw0ZnB4SHNsSzJtdHRBa3pY?=
+ =?utf-8?B?U0RuSXIwelNSTk1iU3piTWRDa0kzUDM0VTVwWDdnNUFzQVR5RDBhVEpLb3VO?=
+ =?utf-8?B?RG80VHdUTVhVVzdUc0RUUXlJeDJwTHdmMWdPSXJHVWdac1V4SWc2ME9XdzJW?=
+ =?utf-8?B?NzFycVVCUWtiSzczNk84UWhnaHlROWx0OU95KzNyeDhDUjh5YmVJWGkrK1c4?=
+ =?utf-8?B?T2VlYnJCMElIZDdsR0Q5cCtwazcxd21hbzBrdE0rL0p3UllCbXBlMlZwcjRh?=
+ =?utf-8?B?RjNNRkVxTmJGSlU1SE5pNHFlODMwUGsxT3pLMUdob1UzY0F6c3k1L0w1WDZp?=
+ =?utf-8?B?cTNjWTNmR2liaExiNk4zYytvYmVXV2xqNmJjU2FrK0pncDZVYWRzamRBKzNB?=
+ =?utf-8?B?UlNIckN4OE5ZR2lkSmJGd1JOY3V1MDlIR3RITzJDWWZ6cUNZRno3RXNGbko2?=
+ =?utf-8?B?ZHdlbXRBVlZ5c3d1QlZNRFlUWURBVFNCWlFPUzRRZ2NCc01PTGFtR3pmMjhM?=
+ =?utf-8?B?MG0zU1JIMTBWZCtORGIrTTgzVkNkcmpCUUNhYnJxa0E3ZldLT01MckdXTmlk?=
+ =?utf-8?B?WUQvQW9NODJtMExoUWh0QlNkNnVaMmVZU0N3ZWIxUXUvN0Vzb28xM3FIQzln?=
+ =?utf-8?B?NUZBeVR3ajRlM1Fhb2Q3TllMcXRrVngrZHVlMSswUldYTWg2Tm93YmhVRjgy?=
+ =?utf-8?B?UFRkY3pKdUNuQ3NMWG44cWpvT1VnT0ZkT2FIKzJQYXNNYmNEYy9SRXlDOCti?=
+ =?utf-8?B?MTF2RWFDNVR3OXEremx6V2FHcUNvK3cxTHRDUjFhSU9LaDdZbVErNk1TRVdX?=
+ =?utf-8?B?N1V0RVdYNUpxaDd3TysvQ1pCcWl1RXh2bWlWVzNYWlJpM01hbzdxaGlOdmVR?=
+ =?utf-8?B?RUQ2Y3NZV0JvTkM2QTJ1LzJIQmM0SkxWT0czSU9DTzlZYTlnTHhmWE8zOEox?=
+ =?utf-8?B?US90M3NwOG5GM2tVUXZCbGR3WS8yTTlXUnFLaHBpUTQ4dnBLNmVvQXhueVdI?=
+ =?utf-8?B?dkNEUlFLQk9iNi9adWRDMm9DS0VKUUVnMXAvZWtIYTR3QTUxRmNwM0J3ZUFn?=
+ =?utf-8?B?M0JFaWVPR2NaUkxoeEVOazAwTUlHbHYyR1ZhNDhya0FuTGRkR2IzWC9obXVL?=
+ =?utf-8?B?blYzN0lpZkZyUCsrQ2dkazNuQktVQjRKVlRWT3ZEdHNKUk1LSFVkSGFUTTlo?=
+ =?utf-8?B?ZVBtVXJ4czhxbmR1aUZNVVk1SW1zSmNsZHV4OVpDTzVxOG5EZG5mdTgza1U3?=
+ =?utf-8?B?cUJEd2U2dzB5ZTcyMkNXbUtTUkNvWVMyRzhIR3ZMMVRjRXhNMEcrVUpyeTJU?=
+ =?utf-8?B?dWg1RjBHWGdxTnd3OWdCSEhmWUhPYk55STlNUVNuM0JRZGRCNi9pdz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d37feff6-cf27-494c-6fc8-08de7865ff1f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11787b35-8a4d-438b-d8a8-08de78669d04
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 14:14:20.1349
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 14:18:45.0333
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rO8ucnBz7c+ymF+kZrJLDzv8B7Wwk2ue2+wqFUyDlqAjZ1ixBEcK45FEgKqgAQnTV2QV9Ie5G1HX69/oW8EQaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5887
+X-MS-Exchange-CrossTenant-UserPrincipalName: PtVVGU14QDMkxTKhcx/hT/peqd3Py3YSIlqr+XXLKLTB9K9OS8hCcN9kakDFoCvLcaPZYIykUXWyn6trhOFVMw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB1790
 
-On Mon Mar 2, 2026 at 2:04 PM GMT, Benno Lossin wrote:
-> The functions `[Pin]Init::__[pinned_]init` and `ptr::write` called from
-> the `init!` macro require the passed pointer to be aligned. This fact is
-> ensured by the creation of field accessors to previously initialized
-> fields.
->=20
-> Since we missed this very important fact from the beginning [1],
-> document it in the code.
->=20
-> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/561532-pin-ini=
-t/topic/initialized.20field.20accessor.20detection/with/576210658 [1]
-> Fixes: 90e53c5e70a6 ("rust: add pin-init API core")
-> Cc: stable@vger.kernel.org # 6.19.y and 6.18.y: patch should apply withou=
-t issues
-> Cc: stable@vger.kernel.org # 6.12.y and 6.6.y: need prerequisite see belo=
-w `---` for more info
+On Mon Mar 2, 2026 at 11:42 AM GMT, Eliot Courtney wrote:
+> Add a timeout to `allocate_command` which waits for space on the GSP
+> command queue. It uses a similar timeout to nouveau.
+>
+> This lets `send_command` wait for space to free up in the command queue.
+> This is required to support continuation records which can fill up the
+> queue.
 
-Hmm, if this patch is applied as is, the --- below is going to be cut out a=
-nd
-this line wouldn't make sense.
+Any reason that this isn't implemented as a `poll_allocate_command` which j=
+ust
+returns a `EAGAIN`, and then a wrapper function that just waits for space t=
+o be
+ready when it got one? This way the logic is cleaner.
 
-Perhaps we should just put
+(I write this with Rust async in mind)
 
-    Cc: stable@vger.kernel.org # 6.12.y and 6.6.y: need commit 42415d163e5d=
- ("rust: pin-init: add references to previously initialized fields")
+>
+> Tested-by: Zhi Wang <zhiw@nvidia.com>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/gsp/cmdq.rs | 39 +++++++++++++++++++++++++++------=
+------
+>  1 file changed, 27 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
+p/cmdq.rs
+> index 87dbbd6d1be9..efbbc89f4d8a 100644
+> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+> @@ -250,6 +250,19 @@ fn new(dev: &device::Device<device::Bound>) -> Resul=
+t<Self> {
+>          }
+>      }
+> =20
+> +    /// Returns the size of the region of the CPU message queue that the=
+ driver is currently allowed
+> +    /// to write to, in bytes.
+> +    fn driver_write_area_size(&self) -> usize {
+> +        let tx =3D self.cpu_write_ptr();
+> +        let rx =3D self.gsp_read_ptr();
+> +
+> +        // `rx` and `tx` are both in `0..MSGQ_NUM_PAGES` per the invaria=
+nts of `gsp_read_ptr` and
+> +        // `cpu_write_ptr`. The minimum value case is where `rx =3D=3D 0=
+` and `tx =3D=3D MSGQ_NUM_PAGES -
+> +        // 1`, which gives `0 + MSGQ_NUM_PAGES - (MSGQ_NUM_PAGES - 1) - =
+1 =3D=3D 0`.
+> +        let slots =3D (rx + MSGQ_NUM_PAGES - tx - 1) % MSGQ_NUM_PAGES;
+> +        num::u32_as_usize(slots) * GSP_PAGE_SIZE
+> +    }
+> +
+>      /// Returns the region of the GSP message queue that the driver is c=
+urrently allowed to read
+>      /// from.
+>      ///
+> @@ -281,15 +294,22 @@ fn new(dev: &device::Device<device::Bound>) -> Resu=
+lt<Self> {
+>      }
+> =20
+>      /// Allocates a region on the command queue that is large enough to =
+send a command of `size`
+> -    /// bytes.
+> +    /// bytes, waiting for space to become available based on the provid=
+ed timeout.
+>      ///
+>      /// This returns a [`GspCommand`] ready to be written to by the call=
+er.
+>      ///
+>      /// # Errors
+>      ///
+> -    /// - `EAGAIN` if the driver area is too small to hold the requested=
+ command.
+> +    /// - `ETIMEDOUT` if space does not become available within the time=
+out.
+>      /// - `EIO` if the command header is not properly aligned.
+> -    fn allocate_command(&mut self, size: usize) -> Result<GspCommand<'_>=
+> {
+> +    fn allocate_command(&mut self, size: usize, timeout: Delta) -> Resul=
+t<GspCommand<'_>> {
+> +        read_poll_timeout(
+> +            || Ok(self.driver_write_area_size()),
+> +            |available_bytes| *available_bytes >=3D size_of::<GspMsgElem=
+ent>() + size,
+> +            Delta::ZERO,
+> +            timeout,
+> +        )?;
+> +
+>          // Get the current writable area as an array of bytes.
+>          let (slice_1, slice_2) =3D {
+>              let (slice_1, slice_2) =3D self.driver_write_area();
+> @@ -298,13 +318,6 @@ fn allocate_command(&mut self, size: usize) -> Resul=
+t<GspCommand<'_>> {
+>              (slice_1.as_flattened_mut(), slice_2.as_flattened_mut())
+>          };
+> =20
+> -        // If the GSP is still processing previous messages the shared r=
+egion
+> -        // may be full in which case we will have to retry once the GSP =
+has
+> -        // processed the existing commands.
+> -        if size_of::<GspMsgElement>() + size > slice_1.len() + slice_2.l=
+en() {
+> -            return Err(EAGAIN);
+> -        }
+> -
+>          // Extract area for the `GspMsgElement`.
+>          let (header, slice_1) =3D GspMsgElement::from_bytes_mut_prefix(s=
+lice_1).ok_or(EIO)?;
+> =20
+> @@ -497,7 +510,7 @@ fn notify_gsp(bar: &Bar0) {
+>      ///
+>      /// # Errors
+>      ///
+> -    /// - `EAGAIN` if there was not enough space in the command queue to=
+ send the command.
+> +    /// - `ETIMEDOUT` if space does not become available within the time=
+out.
+>      /// - `EIO` if the variable payload requested by the command has not=
+ been entirely
+>      ///   written to by its [`CommandToGsp::init_variable_payload`] meth=
+od.
+>      ///
+> @@ -509,7 +522,9 @@ pub(crate) fn send_command<M>(&mut self, bar: &Bar0, =
+command: M) -> Result
+>          Error: From<M::InitError>,
+>      {
+>          let command_size =3D size_of::<M::Command>() + command.variable_=
+payload_len();
+> -        let dst =3D self.gsp_mem.allocate_command(command_size)?;
+> +        let dst =3D self
+> +            .gsp_mem
+> +            .allocate_command(command_size, Delta::from_secs(1))?;
 
-Or leave this cc out and ask for manual picking?
-
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Let's make these consts, not magic numbers.
 
 Best,
 Gary
 
-> ---
-> As already explained in the previous email, we discovered an unsoundness
-> in pin-init that exists since the beginning, but was unknowingly fixed
-> in commit 42415d163e5d ("rust: pin-init: add references to previously
-> initialized fields").
->=20
-> We introduced pin-init in 90e53c5e70a6 ("rust: add pin-init API core"),
-> which was included in 6.4. The affected stable trees that are still
-> maintained are: 6.12 and 6.6. Note that 6.18 and 6.19 already contain
-> 42415d163e5d, so they are unaffected.
->=20
-> We still should backport this piece of documentation explaining the need
-> for the field accessors for soundness. For this reasons we also want to
-> backport it to 6.18 and 6.19.
->=20
-> Note that this patch depends on 42415d163e5d; so the only versions this
-> patch can go in directly are 6.18 and 6.19. I will send separate patch
-> series' for the older versions. The series' will include a backport of
-> 42415d163e5d as well as a modified version of this patch, since this
-> patch depends on the `syn` rewrite, which is not present in older
-> versions.
-> ---
->  rust/pin-init/internal/src/init.rs | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> =20
+>          // Extract area for the command itself.
+>          let (cmd, payload_1) =3D M::Command::from_bytes_mut_prefix(dst.c=
+ontents.0).ok_or(EIO)?;
 
