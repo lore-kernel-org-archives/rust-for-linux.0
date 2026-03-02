@@ -1,78 +1,73 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020091.outbound.protection.outlook.com [52.101.196.91])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020117.outbound.protection.outlook.com [52.101.195.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF6C430B96;
-	Mon,  2 Mar 2026 13:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEDE379EFC;
+	Mon,  2 Mar 2026 13:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.117
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772458758; cv=fail; b=SQ2UAMOt97gUpB3YTTdypp0LEJPxfQVkii6ZgpC+52wLxLGK2Oy/o3qoFnHQCUCYs+MAUnY3XT6kgxQZOKwJw+/2G1Rp0PATetmlRF8mKSQFHL2xeNpuKALK5YireSHoHNSWjab/G5XCDDORywS1BCuXsuGBU6CHbGW6vEdvbBY=
+	t=1772459231; cv=fail; b=C6QXEPsH8x3NLYhprYuzQ4V+k2xy7Mdz8WQCEAMm3JaVtOBcOflS8NOdsFPMELV/ViD0fKtfiQkDvfWRXoEAwdG1AMxRKbhdxHSAtKB7Smk6/8eFh2FQwlzrJWXoxB/Uc3PhvdHgrFgXMB7rDR3cF/ALzwaFifaGWGrnEMFHfW4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772458758; c=relaxed/simple;
-	bh=yLpCM2GnTrQ41gZJt5EJYpgw1fsOc52zJIsujPu3MkU=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=fggFpY7A+TBdeeTHXOmaC/t/LWU3ir+Y1YnjEFBPgNd3gpYov9BpvQjP3SI4SfNJ5Jwh3I6FGNSMKnEloSCC6aY/jt4XGRc6vToX4r9NmS6jQJcExy6BovBWENaQtONaG63k2g5TQQo+qa75ArFpEibkysK9Lzla1ZdfLwoeQXE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Kc2HYk4W; arc=fail smtp.client-ip=52.101.196.91
+	s=arc-20240116; t=1772459231; c=relaxed/simple;
+	bh=sI/faylBYlqQSSvUXEG8h3ws5BVVJdW2HnOuCEt+MQQ=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=F0zig+3WKJVuK9AzyJifIeuZzxOnlkNrdjLphINBomU410pTGo0cnqkTviORFfY+TOztOL1Kz7KldG9+Zx7gP3KiCvZFcpL/Pq5E2PiDsJsZy0cl1KtKF4JeirCqYQJbDd6hyPNarYeC93m3YMMkSGbV/+AVIK5grv0D1gKDdqo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=XPY5izZm; arc=fail smtp.client-ip=52.101.195.117
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Kc2HYk4W"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="XPY5izZm"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A8v7Yu1+sTPNhFZtyhX1D0R60un77Gf8f/nJPO2QDsQlfz2KeqDW4oU1ECsWxuNUtO2kTJ9s24kUdWOVUSq8G1Nq+32ao27AIcVfZa6FHTBqGBKHrDIpnkVb92YZDk7VVvtgEjBUnTWOhUjvfbt33dQUtl5aV9y9IUegzrkuK3njtpsJHdFiX98AkkqI2vQAz2p7KcrQBXIxDBjuZl7xfudLY7eXoRnOs3jvcoSGPPtH5UJQXXlBXyUNPZbLVWaCCn1M67JsAHeK51ORvOYjRm+neH428AdYUdSRLaMbDw7yYs2n5T3cyV5eWIiH5LPcCBWZT6Yy+0KjbBC/7e4pLg==
+ b=WetZ9qO5Utor+0E9CSKRSBiB4WJOXrZj/DUmy/RUv5J4QWUmFrL014TvniFfp1wufigddbIe+d8klOufYB9ZXnigVRpa0byxaS1B1JDGwhREumvNyIRCzrntI4pJFq+rJq5bDYvmEOtrG/CGExKs3/G3MCLfy25XRhNRPxQFnwpLUjvYza8CVnO8PN4F1x5ClfUlJ/B8ZAnfnlN4xCq8DLXFYL6GYn+oP4o1fC38aqruyH4NQKh0Q2PAE7KVXbFsEVgXtbHXqyaF2yF7eopcyhIWCQCPL2IGgEZuFsdP1ZPBwohOmO6cBXR2yWLVtN4525yXRK+2WImq/1cMq0g2+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=INL86wCfloTBh0ZRtNDuyk31mKMfW+LmC8u3fjGeYSQ=;
- b=XWohBunIIK/jPIsN4+JhxuHmBC1F7HAMMsV6RRZhMTOsamsBkatLdWS0hY/nINkQSzNm3tTA+cUadP9DppzJgGM8OnpI8wpRUnC4IXeki33aWgCwG2whSNaOhESAzyqK37pIbVM1HqKKGQ7lvq8d2PtV04gXLZ8L9cN4R2tp5Y/tVBWp2Yx/76KpNp48Erf60k4fTqGS/3d+kWlGxe9YqPF83/KFQE8+N7ursxmo5lhXLP4WvbWEv/FfVt/2xfN1UAfBwbeVfS8nTTSmIMeQMTFMYJM9W2mQf+DLuFQQVQRwPR9pOFwmFD9epMu61ZsScwhEhdy9NCCOauxTz0vgew==
+ bh=bANeFdfLxsO5KW2XqUIIelkyxLYFOgBJLn+bjnHTG9E=;
+ b=X15rZwLIDNA0F8XL/FdmFeJudp+CT/qc3XY2n+O9/pMfZhdyG/tHLGMMqpfsblDaW4CDBXS26sMPxA6pp6m0N0oX1pyGLbPfUFlz+BPikg8S70X4gubipi1LS8QeQJDfZ4OfH662ipjb9Nk7W0FL5cZv6pEF3ypwhbhxAwb4X0LeiQLYnGPYiUfeOUkvIM70e+CpH+fYt1g5xDkdbrFLYFNpRGgpy0NipdrETubmk/KCCSHvFAZyJ7n7Cde+WUbXYcw1LrKbETnEi2Pxhx4RE5ZWBqltk9Sud6Qn/KrwNaWn7hQXZqqCjTumByTHCzrJg1j221M8+BLI8JIQheMnqg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=INL86wCfloTBh0ZRtNDuyk31mKMfW+LmC8u3fjGeYSQ=;
- b=Kc2HYk4W/AMrTnUMmTwZWrkHAlJxp567zYcyp1gRWDun1PPOQHMzP5ssaL7yfqy3FSPfKFYjDFYo1Zb7keuk7RSLSnx0w7odeSaXUB70Atq3K/9rI71O0hdSvE73dsdnnmnI+B9QjAbu0SXq6o8CP9mByecuazmvJes/S8lcafA=
+ bh=bANeFdfLxsO5KW2XqUIIelkyxLYFOgBJLn+bjnHTG9E=;
+ b=XPY5izZmLizoPFzjI8mPPQB38arxUHlCxX3TA/fgPImLX4hYQWCm4IurwYFwXJym39K0F6n2jW0LtYPdP+LviKskHz/50FVCGfEfqcn3kH94yvdCT+36eX+EIsBJeb3W7xs9vvx6HZzqfAJ0D+U3hDZtWFsuufGwac/ZAWCoXJ0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB2743.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:89::11) with
+ by CWXP265MB5568.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:158::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Mon, 2 Mar
- 2026 13:39:14 +0000
+ 2026 13:47:04 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 13:39:14 +0000
+ 13:47:04 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Mar 2026 13:39:12 +0000
-Message-Id: <DGSC6U50TCHF.9FKDO3AWL3Y1@garyguo.net>
-Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
+Date: Mon, 02 Mar 2026 13:47:03 +0000
+Message-Id: <DGSCCUH798RC.3JBL3K24ZYGNK@garyguo.net>
+Cc: "Zhi Wang" <zhiw@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v4 1/9] gpu: nova-core: gsp: sort MsgFunction variants
+ alphabetically
 From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
+To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>
 X-Mailer: aerc 0.21.0
-References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
- <20260224-register-v7-5-aad44f760f33@nvidia.com>
- <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
- <DGQ67S1NH3OA.2MS0YVO0UU2E2@nvidia.com>
- <DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net>
- <DGRWZVJNLLH0.39JYHZIIMC9XK@nvidia.com>
- <DGSB81ZE18O1.31CVVHMP38U2W@garyguo.net>
- <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
-In-Reply-To: <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
-X-ClientProxiedBy: LO4P265CA0270.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37a::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260302-cmdq-continuation-v4-0-c011f15aad58@nvidia.com>
+ <20260302-cmdq-continuation-v4-1-c011f15aad58@nvidia.com>
+In-Reply-To: <20260302-cmdq-continuation-v4-1-c011f15aad58@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0522.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:272::8) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -81,135 +76,252 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2743:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0701616-e111-4623-84af-08de786117b2
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB5568:EE_
+X-MS-Office365-Filtering-Correlation-Id: 706588fa-6294-401c-e00f-08de78623025
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|10070799003|1800799024|366016;
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014|7053199007|921020;
 X-Microsoft-Antispam-Message-Info:
-	gtWAXB1Ga0BN4CL6I4wS0wvRujwn9YyZdfdDi1gO3V22FJkiUC2yYvjfkfY7YLxxOPS+YpDPweXenn4w9RqQYnalaBcPeL5wZJCyWtZf5FIcH4FnK+Ucdn6s9genhOP2leyjsJhVjrknJmwsQLIxcA8mGc3XrYajKyNCsCfFeRl3ntYbPtHqr6gD/E11rqtcQj6ShGQlfY42q8dYyU7VNrUSWs0xusFzVswt6kMSxkaUObErHMJE4GXGShVpW+lu7iFhgGT4RQSGmQ5Sz0AFKMRue/jepa0GweKgRuVbmgBDcrDCvSpbonV3fkixwBWThHZn6OoHYmzTjJCYYSSHVYPtHEIw9fSaspCKoA8vmB6UTLq1Ei4XwkmCY7K9QZ7VFK/LjMW85MykHMuqXPVKBI26XvGxkFxvbylhQln1VTcFPbZrQNEaaE4rT9IqvjHFAFkuY/o8XSVl4Ix5I12SeLFS1Vv9qBVgwZPjKlf6HY6GMfPgO7P2EKTGCkCSMq3xHzKV2kOOQEcWSQ79niAGw6sqod59d4tr2UmvCn5ENwOqrPrUaEdxHlwdAEtUeo1wc9ItgL8u3JH3BymE7ALA4uxUonbevyUwiF6bh7dkhOYO2TWS7BN/4J+oSLYCHSzjK7/poMLpOyeoxDupTRAboXzSdjhztA9rvVndEO4aVJUB6ncv5gh6hidcFNOvyL1imXaIeWpnS6FWhuhfpFFswJCF09GRe27aHmwgLA28GYQ=
+	ZKPc0FM53CCPh2cC4IuH7a8aYcex8M9Z6qVlUr5tyOIMZflvefmujZ016uOWIw7j5Aq+agF2ZPKBHBnoGByNRWKqh2OATsjEKSoRbTCB+ScDEGSQOTABWBQOASITYTX8IMWuuItQumuqOmrq2g/x7wTPrhfe/dbreh2lplU4bAkqHSouSZAMOgI8XEtmQJt3OIylixtUfKiG2PGFMRwFPmpqJ3hpLHr6s5XgUwLMuhbbae3uVo/uOk5U3xdASMaEOmkVPcEs92jsemM1WFIHv5Q5lYfVaS1BiTNtZ39tE0HzY4XT6ZI/eE+uw/cP+44Pl/eDZTqaOPsC6372iWbcrQCGfXSL/pKVbnm6BNnOPQAbbxipf8uIuw/64qCoblWhEk8wPNcG3LYQh3lDWCvWgIhoJ+s9CEQDOARKJ061immibnmIBfoJEx/8Hq+qk0PW18ebCveDZwc68AFEfsRGxzgKRzqi74vTZQ0OlgUwtalLrbxXpLDqOiK11Dz/Ja01E243tq+aakNcxLOMcXdS6TqGqV7TumxmIa5Vo8LokwxS4iZxvAIYfyB8z80Zc9NYEfcR/apA5ZPPTLmXFXXVCkdmlxOs5nRRbwmAoVO1K5Ldzja/OeD93EG3jkLbw09jvu9BSaBsHfoRNYDkYo3SREiUBrA5jBrxplhanKCCjU3aF1vD54UbxIhZzUaV5YLYgdQE3xkPqSroiFrbeisXH5fwq4oLrABy+zN1VSKIqepsQFAZdhT+MHqt5xkn0idawbWKMTp/sb8GJx12m6OlBQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(1800799024)(366016);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014)(7053199007)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RTZEaFh5eDh4WWswU2Ruclh6elFOUjJhSkEwUnoyQWMxRTUvN204RHBjK0Y0?=
- =?utf-8?B?T2pXVk5JRFQyWDd0YzRlRmdXUklENWs5cHdZNXc5WmpoVmN4aVhadEdjNjhN?=
- =?utf-8?B?M0JjeHQzQXpoN0JPd0pwRVhJd25FenNMZGFORzBlSlVKTXVTallXc25wRnkr?=
- =?utf-8?B?c3hBeTdDR2M5cEFsaStYeHFaaDk4ZmpMYlljcXFSOFQzbWF1TUQ3ekJFWHl4?=
- =?utf-8?B?d3lFZTB2aWV3T3dRL3o0WjErVFBXZ3BrOVVlY3ZneWJ0a3pDeEd0MkFFdUJ4?=
- =?utf-8?B?ay9IM2EwTzFzVklHTVdhcWlRMWRGeE1yWkllWGVLWVUvQWhkb0NyMHpHWFh3?=
- =?utf-8?B?MTlGcFhDaG44SmUvTFF0Mms1WkJGTG4ycnJHclBmZnFZTkNncFE0eXczSFNa?=
- =?utf-8?B?VnJOQmFGUENkVm5SNEJQamZZY3VLL3BweThGcGsxRWxobHpxOXEzRGpQdXJH?=
- =?utf-8?B?UFBMR0VGTlhONEx0UGhUeDVraVJSUjBKQ2xQc3BFUTFtOUFDV1lhQkpMVUIz?=
- =?utf-8?B?cWF4S2VNOWV1a1k1cDIyakhLUytoQ3I0VEJxejhaekx3SjFGYmNtUmVzUm5H?=
- =?utf-8?B?QUswRzVLZ1BqUGtXZTJoR2s4MTFQSkZvWkFLdWtoUWMrcUhTcDhoTlRjbWll?=
- =?utf-8?B?bStseC9uYVBhNzN3ekVvWWZlckVOY05heXRRb1cwb1E5VHFhSCtBWHBJMnpy?=
- =?utf-8?B?Qy9QWFhxQURwN1RoMU1yTjg4YTEwMWJqb0QrV2tKNnIxakh5YnM3bGJuVWZu?=
- =?utf-8?B?dE9kUkh2TEl5T2FvK1Q4N1Q0ZzRna1VLUGNUUTlXODZCdVMwaFo5U2d2QUxq?=
- =?utf-8?B?MGIwOEg1WjRCMWFVMzByRUxqS1dUd0VQNlU3NFRpOW1rbDMvdlJsZ3FMZHpG?=
- =?utf-8?B?TU1DWDJkUWRyZnRxaVZ3RGF4VHE0dDlLa2VnQUFTRmlwZ2xESTYvdlBncUVQ?=
- =?utf-8?B?RFNLM05aODJRT1FhcEZvbHIxRHZDQU9WcThIL3pOMmJvMmRrSDdPUXo0UTRP?=
- =?utf-8?B?VTAvL1JKblNkY3pyTFZsZG0xZ09GNVlhVHF6ZzN0WVRSRWE0TmVYQ2ptWnVU?=
- =?utf-8?B?a1poTnF1Q3UrQy9TMDlOTXFZQkJFM29PT2VtZGtleXNSd3dmQXFDMER2dWor?=
- =?utf-8?B?YVUyL0NUSEx6RXdmSGJCdTBIdURvS2JPd3ZDY0hQUVJlUVBPbENjeXFsRU43?=
- =?utf-8?B?SHZTWFY0M0wrRW9OOFhGNW5DNjVOMUMzRWhhZW5Gb0FKRHFFZFIyeHhTdFpl?=
- =?utf-8?B?ZW5SK044S3FJUjQ4Zml4MTRFbDFVeVVLOWQzYWF0Rk9USHNiSk5lZEJNMVpt?=
- =?utf-8?B?OGk5eXRzaEUvNDN3eHh2VnNzeEZIbXUrVzBQUXpqWVk4bnN4NFBiVjhvcDZ3?=
- =?utf-8?B?bmIxRUNNMXlZaWhGczRESTdidWlmcTlGMTFDMVFWUkszaGFpdEhkalNXV2VC?=
- =?utf-8?B?bzBteVZJSUdGSWRqcXAzbEppaGZMbE8zeWZqN2VWTlk3eXgxdjJSaThWeWw5?=
- =?utf-8?B?NHdIRmF4ZFFOYW9vRGl4LzhwdDZSQjZyUVp4NGhiZzQ3SmJZOVMrSVcrNlp2?=
- =?utf-8?B?QlZVaUs5ZGVndkYxR1gzVi9ZKzRwa3c1OXhtemJPMnBteGN5MWljNEFiMUox?=
- =?utf-8?B?b0RVWXRIS0srVzJOUXRMWEk3ZWZoY2RqSkE2aHNPRU5YdFFSUytKcDN3TDAz?=
- =?utf-8?B?bjhxTSsweHNscTNJRkYxcFZ2NC9JU2hFc09jK0VndXVFcDZRNjhBMmUyaGxq?=
- =?utf-8?B?K0xuN2hkMFA1KzZxU1N2eW9ta2QvVDllRTR4YktzbEVGcjNCNkROWHRjaXpl?=
- =?utf-8?B?d2MvQWIzM3ZTVDJ3RUVUWDdRV09SMWdpNGRzQnBCQk4vcVowUlVsS1lnQVFL?=
- =?utf-8?B?dHFibm9xaVI5cm5SUWhYZkEzdjNXaU1DL2EyVDhNY2JHekxxa2pNUlBaNGdh?=
- =?utf-8?B?N2dxZ1pvV1h2ZEdDSFp5OGwxdVhacWtTWS9HOXBTL3E5bW9tR21kazZyVlhS?=
- =?utf-8?B?aHRrWmRZaFZXeGV4TmNYMzJrd1lSdUZkRTZRNFR1cGJ0WjQ2UDhibUc1Ti9B?=
- =?utf-8?B?S0JBYWIzYit2d3k1VDBjaGhkdVJZWW9rdWoyOUtvZ3VPRWNmTXB5N1duWFdK?=
- =?utf-8?B?ektmVFdBSUl2eExFWUhvV2F3eTVGTGVxcXV5NmhSMHk2WktUdTFsQjM0R1B1?=
- =?utf-8?B?RGhJNUhqQWVhc1hDVGpDSDVxdXM1OTR6cExCVEdIdzVzWWJMZzExVFZ5eWV3?=
- =?utf-8?B?TC9ZMk0rRDdXbExxS2FHT1B6SDIvZmM1bFcwam45YjBMYk5GeWZmc0J3Q0Z5?=
- =?utf-8?B?bm5VRllTc3JFNkRnaEtOSjhaeFo1eXJYYngwZ3M0RjJpVU13R0c0QT09?=
+	=?utf-8?B?NmlVRzAwQStFaTlNL3g0OVQ0WFg0UjBjdWcveGNCRGtZNHVtd3NuaHdiUXBO?=
+ =?utf-8?B?bnhUUGlaU0VIU2Vmb3pzVjlUclNjbmt3ZmJWT2g5SnhSdVRNS3E4b3gwK0Q2?=
+ =?utf-8?B?dGk0ZzYzdjRrRWd0WDNqWU9iendranlOcDd4dlB2dkZsaVFsR09lWlZROVBS?=
+ =?utf-8?B?QnFIR0tmRlhzdm53ZmYrK0I1SkxwMXJqa3ZHVGNZRWxZbmFzbVgvTGhMOVZY?=
+ =?utf-8?B?RXlwTHZzRjhScVhZK3pGSlJ1ODR3ajJ2WnJSRkNTbEhZTitoalQ2UER4R3BE?=
+ =?utf-8?B?OTBjOGxMVUdqeGNtZ3pGRWFKV3ZxK2krWFVJb1Z4UEx2MXdNODh6a29mcEhL?=
+ =?utf-8?B?SkVsT0tZUDZpWkdFNXJTU0tMVFlqRStwL2lwRzhwUzFjTG1KWmphWGVNOHlR?=
+ =?utf-8?B?ZXdXRGpFelp2czRnaDRaYUdkdmRnQ3drQ2VlT3VrVlhwZWdDYysxdy9aUkE2?=
+ =?utf-8?B?Uzk3b3p2K25PV1FZS1l0M0hpcDN0ZXhoWTBVZlU4UkZjM0Q3L3Z4dnlOcEpS?=
+ =?utf-8?B?ai92NGxMY2VOS0NVSTVpZ08wR1g4VmQ4bEc3a3pCSldocTQ3eXAzcU44dzU1?=
+ =?utf-8?B?UENFMUwyNlFoczZaTUlGS2QxSlJzUDV5bnBoRWM2VGwzODREWmlnYWNhWWNq?=
+ =?utf-8?B?MFViR1BONzRadmRHaWtseTNwNnJucmZTK2pHTFBxQTh0UmhlRC9aRVJIeU1T?=
+ =?utf-8?B?dHJ0N1F2L3l0dGlQR3pGYy9uMDlDVEZTYmxRQVVZVlFESENlT3crVU1nUmwx?=
+ =?utf-8?B?SVNSajRiU1JlbjNVekJiMm5KaVkxa0h6NE91ZjRzclZJZkdwZXRBbjRFQmJx?=
+ =?utf-8?B?T3IwZ2dKdWpZcGZ3Y1BHbDhzMmJNcis1VUVPTDR4Q3JWRk5UaWYrV0U5MjNz?=
+ =?utf-8?B?R1Bkd2h0dVRUMmE3OXBYN3l2ZnloODJTd1VseG4vMnZlNFBNMjUrM1dzMGMr?=
+ =?utf-8?B?NTEzdWRhU0I3UmpaNm5rNFVoNlA1WTdpWVdEODVISWxiQVMwN3NBUEFFSEFt?=
+ =?utf-8?B?a3RxT1d0dld2dnY0aVRVSEQ4Kzl4T2hCeWw0Zk5ndlZDNXhXYVVGYW8xMHRo?=
+ =?utf-8?B?VENRcmErWGlzQ3JhRFdGOE5VS2lVZmFSOHRZOEQ4Ni9mQ1J5V3NQNDI4ZTFM?=
+ =?utf-8?B?QnFhaXpSN1BnTkwyV3p4bGRuaUo4TWJ1NGhka1RSTDl5dFNCenU2SEl6NWhD?=
+ =?utf-8?B?TVJmaUhybDhXRHVwMEU5RWpaZndrbng5WEFZSUw1WHBGbUlmTHFRTzl3dEpQ?=
+ =?utf-8?B?Nkw2b01lbE5GaFJydldkNkd5K29yRFl6aUF3VTVaT08yNXRHVTZOOUNnaUN3?=
+ =?utf-8?B?VzNBa2FoemQzT0xNSCtZOGlLa0JoMlU1M2pBMjVVUktUNG1xcnE1Q3FrUko1?=
+ =?utf-8?B?MzRaejJGTnRxSnRjZ0ZLc0JkU2Npd1Nkek5WWGdYSnRKbmRZS2dBa0lxU0Fx?=
+ =?utf-8?B?Z05SMzdPQXdkUTFLZEViaGF5RU1HbExENm5HSWxzMmpMVHVzTHVjK2xJMFlK?=
+ =?utf-8?B?a09JSk5lMytZZlYyNnc1dGVZN1ZkbUwxRm1RRHR3M0daaGFndHFiOGFVZ3h5?=
+ =?utf-8?B?UExSdVdsSGhnd2x1dUlFaFBCdW1QNS8zUGlJSHYwcllEKzYzQUhQK1FITGhY?=
+ =?utf-8?B?Wk8rVEpKZlhVV2wyTGFvNEtaQ1JlVTJRcXJrSnhreTVkSWE4aGxzYjZqNFBr?=
+ =?utf-8?B?UCtUemIvTUVZUVFoUkhDUXJRMWVMTGMyeklCbm5XTnA3ZDBOcFo1dGZoSFl1?=
+ =?utf-8?B?Y0tLR3Y1YjRNZ0xXdTlMbmZUWEMzOXZ3MHFxQkJTVjgzQTZTb0tyYyt5c3dl?=
+ =?utf-8?B?NWJxSXFpdnMrcnZFNG9xYkJhTGNkTEhlSnJ0UXR5S3ZUNVpQNCsydkoreXFa?=
+ =?utf-8?B?SGFob0luRnpoS3NrK29uaVZCTVRVaVdJUXRKTlBZZ2RCMTV0R2txenpUOVRO?=
+ =?utf-8?B?alJUYWM1KzhEaXRLUlNJTEpUbHNEQitpc0ZjSWVwL056dGNqU25FWlphc0lt?=
+ =?utf-8?B?RGVCU1g2ZVhlc0JoM3JaSmtvc3RpdVVvb0NBNHdIcFdNcVhzb2hrQmVtUk9h?=
+ =?utf-8?B?K0NRdlZjVmlkU2ZkUjNIQ2xYMVlCZlZQdUJiZEZ3M1RpSWlCRHM5QWhBaFRM?=
+ =?utf-8?B?bWQzcldMZm5kYk11ZHEwbUUxa0t5WDdoTkhidFBldE0xb0JaVkwrNENadmNw?=
+ =?utf-8?B?cm82NDNFSVN4R2JjQklzSEowSU9IUVljSXVVV29McldEZDcxV1J2U20rT3Jr?=
+ =?utf-8?B?V0JFRVd1cVlrU1JJRTM3OGhIcHdQS3hwbkNQa2VoVWRjMzIxbmM0K28xNUcy?=
+ =?utf-8?B?NHVCVlVaYjBxNzJPZjRKZy9lN3krL2VuSE5vMm8rOWNzSzlST0Y4dz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0701616-e111-4623-84af-08de786117b2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 706588fa-6294-401c-e00f-08de78623025
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 13:39:13.9344
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 13:47:04.4105
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uhb3PDvlHmRcbVTGI5Q03GB5v+NakmqlJr0T5TUIZwl+MfCStIjqDmeSc/Qh0Lln30nGCJk6j2sByQOS1PkPVg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2743
+X-MS-Exchange-CrossTenant-UserPrincipalName: UsQFOMSexeDnG9VWVb0UOMXmFanNWRqROO9wvE1FMXKFnxp7mVvXSsKwvhv5YlsnmA6q0RY339V9ZCTP2cxICw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB5568
 
-On Mon Mar 2, 2026 at 1:12 PM GMT, Danilo Krummrich wrote:
-> On Mon Mar 2, 2026 at 1:53 PM CET, Gary Guo wrote:
->> On Mon Mar 2, 2026 at 1:44 AM GMT, Alexandre Courbot wrote:
->>> That should be doable. Note that we currently support `zeroed` and
->>> `default` as initializers, so having the same level of coverage would
->>> require two `write` variants. I'd like to hear what Danilo thinks.
->>
->> I wonder if just providing a single version that starts with
->> `Default::default()` should be sufficient? For most users, zeroed versio=
-n is the
->> default version anyway. For those where default is not zero, it perhaps =
-makes
->> more sense to start with default anyway; if explicitly zeroing is needed=
- they
->> can always do an explicit `::zeroed()`.
->
-> I was thinking about this for a while and also thought that we probably o=
-nly
-> ever need a version that starts with Default::default().
->
-> What I still dislike is that the common case becomes write_with() instead=
- of
-> just write(). (Just to clarify, the name write_with() is perfectly fine f=
-or what
-> the function does, it's more that we need it in the first place.)
->
-> Also, IIUC, if the value is not created within the closure, we'd still ha=
-ve the
-> following redundancy, right?
->
-> 	let reg =3D regs::NV_PFALCON_FALCON_DMATRFMOFFS::of::<E>()
-> 		.try_init(|r| r.try_with_offs(load_offsets.dst_start + pos))?;
->
-> 	bar.write(regs::NV_PFALCON_FALCON_DMATRFMOFFS::of::<E>(), reg);
->
-> It's just that this case nicely converts to write_with().
+On Mon Mar 2, 2026 at 11:42 AM GMT, Eliot Courtney wrote:
+> There is no particular order required here and keeping them alphabetical
+> will help preventing future mistakes.
 
-You would have
-
-    let reg =3D regs::NV_PFALCON_FALCON_DMATRFMOFFS::default()
-        .try_with_offs(load_offsets.dst_start + pos))?;
-
-    bar.write(regs::NV_PFALCON_FALCON_DMATRFMOFFS::of::<E>(), reg);
-
-Note that the `default()` invocation doesn't mention relative base, as it's=
- just
-plain bitfields without offset at that point. [ I like the fact that this
-doesn't need to use closure, as I generally prefer code without them, perha=
-ps I
-am not "rusty" enough :) ]
-
-In my view, if the code is complex enough that you have
-
-    let reg =3D ...;
-    <some code>
-    bar.write(reg)
-
-then it probably makes sense to have register name mentioned again (this is
-typed checked anyway so you don't need to worry about misnaming it). Otherw=
-ise,
-one might read the code and be confused about what register is being writte=
-n to
-at all.
-
-I think for explicit location parameter makes much more sense for relative
-addressed registers and register arrays.
+Looks like the current order is in increasing opcode order. Granted, curren=
+tly
+they're generated in bindings and then included as such, but perhaps eventu=
+ally
+Rust code can be generated directly so the ordering could make sense?
 
 Best,
 Gary
+
+>
+> Tested-by: Zhi Wang <zhiw@nvidia.com>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/gsp/fw.rs | 67 +++++++++++++++++++++--------------=
+------
+>  1 file changed, 35 insertions(+), 32 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/=
+fw.rs
+> index f1797e1f0d9d..4b998485360b 100644
+> --- a/drivers/gpu/nova-core/gsp/fw.rs
+> +++ b/drivers/gpu/nova-core/gsp/fw.rs
+> @@ -191,34 +191,34 @@ pub(crate) fn new(gsp_firmware: &GspFirmware, fb_la=
+yout: &FbLayout) -> Self {
+>  #[repr(u32)]
+>  pub(crate) enum MsgFunction {
+>      // Common function codes
+> -    Nop =3D bindings::NV_VGPU_MSG_FUNCTION_NOP,
+> -    SetGuestSystemInfo =3D bindings::NV_VGPU_MSG_FUNCTION_SET_GUEST_SYST=
+EM_INFO,
+> -    AllocRoot =3D bindings::NV_VGPU_MSG_FUNCTION_ALLOC_ROOT,
+> +    AllocChannelDma =3D bindings::NV_VGPU_MSG_FUNCTION_ALLOC_CHANNEL_DMA=
+,
+> +    AllocCtxDma =3D bindings::NV_VGPU_MSG_FUNCTION_ALLOC_CTX_DMA,
+>      AllocDevice =3D bindings::NV_VGPU_MSG_FUNCTION_ALLOC_DEVICE,
+>      AllocMemory =3D bindings::NV_VGPU_MSG_FUNCTION_ALLOC_MEMORY,
+> -    AllocCtxDma =3D bindings::NV_VGPU_MSG_FUNCTION_ALLOC_CTX_DMA,
+> -    AllocChannelDma =3D bindings::NV_VGPU_MSG_FUNCTION_ALLOC_CHANNEL_DMA=
+,
+> -    MapMemory =3D bindings::NV_VGPU_MSG_FUNCTION_MAP_MEMORY,
+> -    BindCtxDma =3D bindings::NV_VGPU_MSG_FUNCTION_BIND_CTX_DMA,
+>      AllocObject =3D bindings::NV_VGPU_MSG_FUNCTION_ALLOC_OBJECT,
+> +    AllocRoot =3D bindings::NV_VGPU_MSG_FUNCTION_ALLOC_ROOT,
+> +    BindCtxDma =3D bindings::NV_VGPU_MSG_FUNCTION_BIND_CTX_DMA,
+>      Free =3D bindings::NV_VGPU_MSG_FUNCTION_FREE,
+> -    Log =3D bindings::NV_VGPU_MSG_FUNCTION_LOG,
+>      GetGspStaticInfo =3D bindings::NV_VGPU_MSG_FUNCTION_GET_GSP_STATIC_I=
+NFO,
+> -    SetRegistry =3D bindings::NV_VGPU_MSG_FUNCTION_SET_REGISTRY,
+> -    GspSetSystemInfo =3D bindings::NV_VGPU_MSG_FUNCTION_GSP_SET_SYSTEM_I=
+NFO,
+> +    GetStaticInfo =3D bindings::NV_VGPU_MSG_FUNCTION_GET_STATIC_INFO,
+>      GspInitPostObjGpu =3D bindings::NV_VGPU_MSG_FUNCTION_GSP_INIT_POST_O=
+BJGPU,
+>      GspRmControl =3D bindings::NV_VGPU_MSG_FUNCTION_GSP_RM_CONTROL,
+> -    GetStaticInfo =3D bindings::NV_VGPU_MSG_FUNCTION_GET_STATIC_INFO,
+> +    GspSetSystemInfo =3D bindings::NV_VGPU_MSG_FUNCTION_GSP_SET_SYSTEM_I=
+NFO,
+> +    Log =3D bindings::NV_VGPU_MSG_FUNCTION_LOG,
+> +    MapMemory =3D bindings::NV_VGPU_MSG_FUNCTION_MAP_MEMORY,
+> +    Nop =3D bindings::NV_VGPU_MSG_FUNCTION_NOP,
+> +    SetGuestSystemInfo =3D bindings::NV_VGPU_MSG_FUNCTION_SET_GUEST_SYST=
+EM_INFO,
+> +    SetRegistry =3D bindings::NV_VGPU_MSG_FUNCTION_SET_REGISTRY,
+> =20
+>      // Event codes
+>      GspInitDone =3D bindings::NV_VGPU_MSG_EVENT_GSP_INIT_DONE,
+> +    GspLockdownNotice =3D bindings::NV_VGPU_MSG_EVENT_GSP_LOCKDOWN_NOTIC=
+E,
+> +    GspPostNoCat =3D bindings::NV_VGPU_MSG_EVENT_GSP_POST_NOCAT_RECORD,
+>      GspRunCpuSequencer =3D bindings::NV_VGPU_MSG_EVENT_GSP_RUN_CPU_SEQUE=
+NCER,
+> -    PostEvent =3D bindings::NV_VGPU_MSG_EVENT_POST_EVENT,
+> -    RcTriggered =3D bindings::NV_VGPU_MSG_EVENT_RC_TRIGGERED,
+>      MmuFaultQueued =3D bindings::NV_VGPU_MSG_EVENT_MMU_FAULT_QUEUED,
+>      OsErrorLog =3D bindings::NV_VGPU_MSG_EVENT_OS_ERROR_LOG,
+> -    GspPostNoCat =3D bindings::NV_VGPU_MSG_EVENT_GSP_POST_NOCAT_RECORD,
+> -    GspLockdownNotice =3D bindings::NV_VGPU_MSG_EVENT_GSP_LOCKDOWN_NOTIC=
+E,
+> +    PostEvent =3D bindings::NV_VGPU_MSG_EVENT_POST_EVENT,
+> +    RcTriggered =3D bindings::NV_VGPU_MSG_EVENT_RC_TRIGGERED,
+>      UcodeLibOsPrint =3D bindings::NV_VGPU_MSG_EVENT_UCODE_LIBOS_PRINT,
+>  }
+> =20
+> @@ -227,38 +227,41 @@ impl TryFrom<u32> for MsgFunction {
+> =20
+>      fn try_from(value: u32) -> Result<MsgFunction> {
+>          match value {
+> -            bindings::NV_VGPU_MSG_FUNCTION_NOP =3D> Ok(MsgFunction::Nop)=
+,
+> -            bindings::NV_VGPU_MSG_FUNCTION_SET_GUEST_SYSTEM_INFO =3D> {
+> -                Ok(MsgFunction::SetGuestSystemInfo)
+> -            }
+> -            bindings::NV_VGPU_MSG_FUNCTION_ALLOC_ROOT =3D> Ok(MsgFunctio=
+n::AllocRoot),
+> +            // Common function codes
+> +            bindings::NV_VGPU_MSG_FUNCTION_ALLOC_CHANNEL_DMA =3D> Ok(Msg=
+Function::AllocChannelDma),
+> +            bindings::NV_VGPU_MSG_FUNCTION_ALLOC_CTX_DMA =3D> Ok(MsgFunc=
+tion::AllocCtxDma),
+>              bindings::NV_VGPU_MSG_FUNCTION_ALLOC_DEVICE =3D> Ok(MsgFunct=
+ion::AllocDevice),
+>              bindings::NV_VGPU_MSG_FUNCTION_ALLOC_MEMORY =3D> Ok(MsgFunct=
+ion::AllocMemory),
+> -            bindings::NV_VGPU_MSG_FUNCTION_ALLOC_CTX_DMA =3D> Ok(MsgFunc=
+tion::AllocCtxDma),
+> -            bindings::NV_VGPU_MSG_FUNCTION_ALLOC_CHANNEL_DMA =3D> Ok(Msg=
+Function::AllocChannelDma),
+> -            bindings::NV_VGPU_MSG_FUNCTION_MAP_MEMORY =3D> Ok(MsgFunctio=
+n::MapMemory),
+> -            bindings::NV_VGPU_MSG_FUNCTION_BIND_CTX_DMA =3D> Ok(MsgFunct=
+ion::BindCtxDma),
+>              bindings::NV_VGPU_MSG_FUNCTION_ALLOC_OBJECT =3D> Ok(MsgFunct=
+ion::AllocObject),
+> +            bindings::NV_VGPU_MSG_FUNCTION_ALLOC_ROOT =3D> Ok(MsgFunctio=
+n::AllocRoot),
+> +            bindings::NV_VGPU_MSG_FUNCTION_BIND_CTX_DMA =3D> Ok(MsgFunct=
+ion::BindCtxDma),
+>              bindings::NV_VGPU_MSG_FUNCTION_FREE =3D> Ok(MsgFunction::Fre=
+e),
+> -            bindings::NV_VGPU_MSG_FUNCTION_LOG =3D> Ok(MsgFunction::Log)=
+,
+>              bindings::NV_VGPU_MSG_FUNCTION_GET_GSP_STATIC_INFO =3D> Ok(M=
+sgFunction::GetGspStaticInfo),
+> -            bindings::NV_VGPU_MSG_FUNCTION_SET_REGISTRY =3D> Ok(MsgFunct=
+ion::SetRegistry),
+> -            bindings::NV_VGPU_MSG_FUNCTION_GSP_SET_SYSTEM_INFO =3D> Ok(M=
+sgFunction::GspSetSystemInfo),
+> +            bindings::NV_VGPU_MSG_FUNCTION_GET_STATIC_INFO =3D> Ok(MsgFu=
+nction::GetStaticInfo),
+>              bindings::NV_VGPU_MSG_FUNCTION_GSP_INIT_POST_OBJGPU =3D> {
+>                  Ok(MsgFunction::GspInitPostObjGpu)
+>              }
+>              bindings::NV_VGPU_MSG_FUNCTION_GSP_RM_CONTROL =3D> Ok(MsgFun=
+ction::GspRmControl),
+> -            bindings::NV_VGPU_MSG_FUNCTION_GET_STATIC_INFO =3D> Ok(MsgFu=
+nction::GetStaticInfo),
+> +            bindings::NV_VGPU_MSG_FUNCTION_GSP_SET_SYSTEM_INFO =3D> Ok(M=
+sgFunction::GspSetSystemInfo),
+> +            bindings::NV_VGPU_MSG_FUNCTION_LOG =3D> Ok(MsgFunction::Log)=
+,
+> +            bindings::NV_VGPU_MSG_FUNCTION_MAP_MEMORY =3D> Ok(MsgFunctio=
+n::MapMemory),
+> +            bindings::NV_VGPU_MSG_FUNCTION_NOP =3D> Ok(MsgFunction::Nop)=
+,
+> +            bindings::NV_VGPU_MSG_FUNCTION_SET_GUEST_SYSTEM_INFO =3D> {
+> +                Ok(MsgFunction::SetGuestSystemInfo)
+> +            }
+> +            bindings::NV_VGPU_MSG_FUNCTION_SET_REGISTRY =3D> Ok(MsgFunct=
+ion::SetRegistry),
+> +
+> +            // Event codes
+>              bindings::NV_VGPU_MSG_EVENT_GSP_INIT_DONE =3D> Ok(MsgFunctio=
+n::GspInitDone),
+> +            bindings::NV_VGPU_MSG_EVENT_GSP_LOCKDOWN_NOTICE =3D> Ok(MsgF=
+unction::GspLockdownNotice),
+> +            bindings::NV_VGPU_MSG_EVENT_GSP_POST_NOCAT_RECORD =3D> Ok(Ms=
+gFunction::GspPostNoCat),
+>              bindings::NV_VGPU_MSG_EVENT_GSP_RUN_CPU_SEQUENCER =3D> {
+>                  Ok(MsgFunction::GspRunCpuSequencer)
+>              }
+> -            bindings::NV_VGPU_MSG_EVENT_POST_EVENT =3D> Ok(MsgFunction::=
+PostEvent),
+> -            bindings::NV_VGPU_MSG_EVENT_RC_TRIGGERED =3D> Ok(MsgFunction=
+::RcTriggered),
+>              bindings::NV_VGPU_MSG_EVENT_MMU_FAULT_QUEUED =3D> Ok(MsgFunc=
+tion::MmuFaultQueued),
+>              bindings::NV_VGPU_MSG_EVENT_OS_ERROR_LOG =3D> Ok(MsgFunction=
+::OsErrorLog),
+> -            bindings::NV_VGPU_MSG_EVENT_GSP_POST_NOCAT_RECORD =3D> Ok(Ms=
+gFunction::GspPostNoCat),
+> -            bindings::NV_VGPU_MSG_EVENT_GSP_LOCKDOWN_NOTICE =3D> Ok(MsgF=
+unction::GspLockdownNotice),
+> +            bindings::NV_VGPU_MSG_EVENT_POST_EVENT =3D> Ok(MsgFunction::=
+PostEvent),
+> +            bindings::NV_VGPU_MSG_EVENT_RC_TRIGGERED =3D> Ok(MsgFunction=
+::RcTriggered),
+>              bindings::NV_VGPU_MSG_EVENT_UCODE_LIBOS_PRINT =3D> Ok(MsgFun=
+ction::UcodeLibOsPrint),
+>              _ =3D> Err(EINVAL),
+>          }
+
