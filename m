@@ -1,135 +1,127 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECACC39448E
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 10:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932CE175A84
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 10:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772445675; cv=none; b=MBuVgux7K+jy2RWdK3kEC/RH9ikraVNyRdtPqYa9tNlRdOPwtsW1MB5v5+/jtwi6imkKtmdrh3zrq+5ZPFn9x4qUKAOHqe9NQr9rw+zzyL7Ze88tzbCnjrKOY4nbROnJ/fjiQBOAE826bDxJIjpstehXNK14uybe5GIUKnV1fv4=
+	t=1772446233; cv=none; b=KpWfC4wyQmuOxqzHr9WQGeT2VOlJm0qIoQ6v0sZrgPNZXXkLEnif57eekCkF+z9YK4nbGZCJslci4uS843evR+BNEKnGOZ4vEMw2bzuqJX6S2Yhq60UHu+hVVDdWEwi3jUj8v8DevxlNuCorcchKuvVT0jIpmc1sOs0Zkr/gbSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772445675; c=relaxed/simple;
-	bh=XcDBiF+tm+FToq8gICWmU+m/nRh9Ny7buWewqeSSE5s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sUNRtkBRF7quAylRkJDJsCWMenZDNMjP3voZh/dljqtafnC7dTSbqMxexQlu6DlhMj1UAOmU3VYZjFRt1pN2DSmBP6cYSWguMuZ9mf9Yu4xlgV666Kh5Hc26moT7GpjGhN/Gwg8SCvSm+Ker/r7SkKb1lbbdHvZSbSru362p5GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pKcMeK5z; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1772446233; c=relaxed/simple;
+	bh=DykPuhSTp7UV7wBs+lLCqWdpe0feAfPyWKQx7K2cZpU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ty7CkB8kkOGlpvZsdM9V299DbmCK/qaaFyCEH5ObyNftNxRMOpV7jXFObidhGF/xgqH67SvV/W7ghr05kDD7PnYfq41lhiVMU4JzCxooyScbz1TQJchGyfLMvsZyQxdOzR6dkfrTtWwQkVP7vAAWJY3pwDqc5lTS7NXYbnT9wsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Zcdj8Abd; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pKcMeK5z"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837f288194so31086215e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 02:01:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772445672; x=1773050472; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tjS8FX592qmj/rFkafjn+lojx6cnlsSGWxK3ppaLTGU=;
-        b=pKcMeK5zFCeuyEDqN9uC2KaA70X8zgbgjnqAslsyyaFYEXtkS9V6COy+BZIyCzxSmQ
-         pOEovWK8dwfeI8hGnwiaqcOR0b2SAyvlou6AEigYeorhF6m2bin/+hJiFLV9gNI5yJ9X
-         5VbDb+pbUiHmxG/B6jxauf6w66cmYQoGlfDcBBhNz9g73G6Xfxxfk2cqgDlaiRQTKaSH
-         2TMAEi4ATjIBTiC2y3HnwO5ZQIREWjEyEayiTutzK8+3fCDcwXrIjy29bqj+MgfJewS+
-         TQdyTuXurfVHvukuPqLt4qL+/V7ElyQD1yki55tyknaGoKa4sg5MjKF7WPiUKOM217sF
-         9gCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772445672; x=1773050472;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tjS8FX592qmj/rFkafjn+lojx6cnlsSGWxK3ppaLTGU=;
-        b=vHqZPh53Q4pcyZptvo1kXWJ5cQQBvUxDqRN23GnvOQgfLuxtp2qlGQZm4S7C+rmJx1
-         Q1VqNvyEQm7NIVkI9NFKDrOM9NhzbOykFoNxTr9Da7JWQE+cveUYAOuF2h1rnvu57vND
-         ZLjjQ1Z674TSHbbSlb0Cfenl7AHXH6hFHg3dnU9Dum56sviLrzQeUeE/tRYqtOy+5QaT
-         /9hqN8WUHXwZ1ULMQtTE4gd/CrtcT1dOHj/cYsiArIsEOT1D92jdB5ZBpLlcRwjUCtPa
-         L8tuRw650Kh+1neDgh1m191u7mzDKnSUcDJuUAoGrN56MQ4r8grmDeaHxGsjIuZo6pUk
-         jr2g==
-X-Forwarded-Encrypted: i=1; AJvYcCUq8IknYhakp/hWX4RlDl6nDeyuIhPc22YweNQxmLqmHLDY7+Tjd0rBwF4TUb/D4lRRUTLbHUkrDr352V32rQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyegVM2FAFUUk9RrY7epYqeus7IOxJ0tAfWiWqp132tc974l193
-	t8S5DeIX3OGIGjlbvflbC1jSzOw4TQLVTFrjtes+twk9pI1vY0qQJR0iy004cXR226sNgOgQcNZ
-	5LHFQiE7ztI2fDkNTog==
-X-Received: from wmbg9.prod.google.com ([2002:a05:600c:a409:b0:483:7827:ade4])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3110:b0:480:2521:4d92 with SMTP id 5b1f17b1804b1-483c9c23ffbmr196674855e9.24.1772445671732;
- Mon, 02 Mar 2026 02:01:11 -0800 (PST)
-Date: Mon, 2 Mar 2026 10:01:10 +0000
-In-Reply-To: <8a27e9ac-2025-4724-a46d-0a7c90894ba7@kernel.org>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Zcdj8Abd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1772446223;
+	bh=DykPuhSTp7UV7wBs+lLCqWdpe0feAfPyWKQx7K2cZpU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Zcdj8AbdsRtsdwk6z4eKDGOROjoc3xI8oHzconJD5wd36geyoEfBVaqez/N4UdKU6
+	 qPraQtLqNgJotIWJVq+X5+bu17s7Kh4ZYhxEX3YSCtLn/dGY1Na1CkX/cij49d2CLT
+	 nnij47LFVXHdtgiVu16ODbESi2hPCkBzKCWFlzSOsk0II60RWa7Y3Qx6oh+4WDvUlj
+	 CEhm0DeAXlJ4WPldFLYhmVTbnQu5M5ZXUp8fgbUEeyi15OUTUepF/Imy6CoWGV292X
+	 G/yhBwlNIENaAJOn7KiN0RBfE9roWinYlL4mL6p+sULVhc1TEfPGjjcXHHLNCRmsDC
+	 bLXKA+r9YFK7A==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 8D87517E03E5;
+	Mon,  2 Mar 2026 11:10:23 +0100 (CET)
+Date: Mon, 2 Mar 2026 11:10:18 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ aliceryhl@google.com, beata.michalska@arm.com, lyude@redhat.com
+Subject: Re: [PATCH 07/12] drm/tyr: Add generic slot manager
+Message-ID: <20260302111018.33d1d413@fedora>
+In-Reply-To: <aaI2w5vIxB_kc98o@um790>
+References: <20260212013713.304343-1-deborah.brouwer@collabora.com>
+	<20260212013713.304343-8-deborah.brouwer@collabora.com>
+	<20260212111113.68778819@fedora>
+	<1B40312F-694C-4154-ABF7-F96CE5576C0E@collabora.com>
+	<20260220172154.4fe93c6d@fedora>
+	<A60BBD53-B7D3-4E85-A72E-8B914B82C977@collabora.com>
+	<20260222185743.02dabb26@fedora>
+	<AF169886-65F7-4B7A-BAFE-D2C75ADAE678@collabora.com>
+	<aaI2w5vIxB_kc98o@um790>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260227200848.114019-1-david@kernel.org> <20260227200848.114019-3-david@kernel.org>
- <aaLh2BxSgC9Jl5iS@google.com> <8a27e9ac-2025-4724-a46d-0a7c90894ba7@kernel.org>
-Message-ID: <aaVf5gv4XjV6Ddt-@google.com>
-Subject: Re: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from zap_page_range_single()
-From: Alice Ryhl <aliceryhl@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, 
-	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 02, 2026 at 09:18:45AM +0100, David Hildenbrand (Arm) wrote:
-> On 2/28/26 13:38, Alice Ryhl wrote:
-> > On Fri, Feb 27, 2026 at 09:08:33PM +0100, David Hildenbrand (Arm) wrote:
-> >> Nobody except memory.c should really set that parameter to non-NULL. So
-> >> let's just drop it and make unmap_mapping_range_vma() use
-> >> zap_page_range_single_batched() instead.
-> >>
-> >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> > 
-> >> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> >> index da21d65ccd20..b8e59e4420f3 100644
-> >> --- a/rust/kernel/mm/virt.rs
-> >> +++ b/rust/kernel/mm/virt.rs
-> >> @@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
-> >>          // sufficient for this method call. This method has no requirements on the vma flags. The
-> >>          // address range is checked to be within the vma.
-> >>          unsafe {
-> >> -            bindings::zap_page_range_single(self.as_ptr(), address, size, core::ptr::null_mut())
-> >> +            bindings::zap_page_range_single(self.as_ptr(), address, size)
-> >>          };
-> > 
-> > Please run rustfmt on Rust changes. Here, rustfmt leads to this being
-> > formatted on a single line:
-> 
-> Having to run tooling I don't even have installed when removing a single
-> function parameter; did not expect that :)
+On Fri, 27 Feb 2026 16:28:51 -0800
+Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 
-Well, rustfmt comes with the compiler, and it would be ideal to build
-test changes before sending them :)
+> > >  =20
+> > >>=20
+> > >> access vs access_mut() does not matter here: since the owner is &mut=
+ self
+> > >> anyways we know we have exclusive access to the LockedSeat throughou=
+t the whole
+> > >> function. =20
+> > >=20
+> > > I agree, but LockedBy is picky, and last I tried I couldn't make it
+> > > work without the annoying update+return-copy-of-seat dance you see
+> > > here. Maybe I missed something obvious and it does indeed work with
+> > > your suggested changes, dunno. =20
+> >=20
+> > Rewriting things so they pass the borrow checker is common in Rust. Som=
+etimes
+> > it can be done rather easily; other times the design is just broken and=
+ needs
+> > to be reworked. Luckily this one fell in the first category.
+> >=20
+> > This benefits from the fact that no one can race us between reading thi=
+s tuple
+> >=20
+> > (slot_idx, seqno, is_active)=20
+> >=20
+> > ..and using it. That=E2=80=99s because we=E2=80=99re taking &mut self a=
+s a proxy in LockedBy, so
+> > we=E2=80=99re sure we have exclusive access in this scope.
 
-But no worries, I took care of testing it. Thanks for taking the time to
-update the Rust code as well.
+Yep, I know that, but I seem to remember it wasn't working when I was doing
 
-Documentation/rust/quick-start.rst has details for most distros.
+        match locked_seat.access(self) {
+            Seat::Active(seat_info) | Seat::Idle(seat_info) =3D> {
+                // With lazy eviction, if seqno matches, the hardware state=
+ is still
+                // valid for both Active and Idle slots, so just update our=
+ records
+                self.record_active_slot(seat_info.slot as usize, locked_sea=
+t, slot_data)
+            }
+            _ =3D> self.allocate_slot(locked_seat, slot_data),
+        }
 
-Alice
+in ::activate(), which is why I made check_seat() return a Seat and
+did the match against this returned seat. Oh well, I must have
+misunderstood the problem reported by the compiler.
+
+> >=20
+> > If you don=E2=80=99t have any complaints about the code I sent (i.e.: c=
+onvoluted, wrong
+> > logic, etc), I suggest switching to it. =20
+>=20
+> I=E2=80=99ve tested the short check_seat() function and can confirm that =
+it correctly
+> compares Seat and Slot seqno as well as emits the kernel warning when we =
+have a
+> mismatch on an active Seat. So I=E2=80=99ll the simplified check_seat() f=
+unction in v2
+> unless there are any more issues to address.
+
+If things still compile/work as expected, no objection on my end.
