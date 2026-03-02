@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98771288D0;
-	Mon,  2 Mar 2026 18:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7C2317155;
+	Mon,  2 Mar 2026 18:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772477380; cv=none; b=SfOQz8zi8yyjWzf/ukdtRfbYmsqWjFNU/pXbwn0J1U6HgxulGRIznx76NaN8xwfXPp+7NxBoOz6XGOfLJf2eRwnfodqL7rhTKRLUJ7fSzA48fSo8rc4C2VefDOK95Kfbm5bNu2qTbK0kRrV6SP+aAQmojkQNrQ/RSGzMIxIbl14=
+	t=1772477770; cv=none; b=lBjxti0AcQ9Ahr7jNn1HExQsU4Y/0BRn3npPgaHE7vwDB3/Y1HYzHm6hRnaRtz5MyVw4KBG2hxDUa4g8faPfZ0FEBH/LXvv7wm77F56mT/sSgE4FHo01P3Y2vZQrE61sLIptZwzUWIpTn8nGxm5BHinbSQAX3AXAtI+9Nv/Nxvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772477380; c=relaxed/simple;
-	bh=BcsL79IJhwd7FAwX1EI2Imf/fcTXZ3d4XedyvqerWig=;
+	s=arc-20240116; t=1772477770; c=relaxed/simple;
+	bh=v6FFhSD8dJyILCfeTNcqw1mFWE96MGcIFsHdhsBj1lY=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ePyMhTZo0NpAWAb9+UePAeO43vS+1Y2caoDEtOPN8s9Uvd3/IH4dK7PMaNvNR3jXC0jnwtVEKsXs4jIbvrFDUd1Cv/g0kWcbDf9la/DA3C4SdLugQ6A8IYO0uHqRAH4HSX7tdNAK75OFJhmfmDUOLgRJIWXFx7YBY06tppoiLlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V89H1abG; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Ee9eQq9083tYxe952AagRSba+ZBcrRKlhWqixZeOTLzDnSX0XRo11tJnm0D7Yry34/yNspNEobbN4hSFBWfGVXVl5PH1JySxvFgsf/j+49w9Si3SNJziJ12gniH90vTY0GKLS+kPLfAF+eyfGgI5IJxISvVvlSAMlCNxhqVXXGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nb01fDBd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V89H1abG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1E8C19423;
-	Mon,  2 Mar 2026 18:49:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nb01fDBd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5B6C19423;
+	Mon,  2 Mar 2026 18:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772477380;
-	bh=BcsL79IJhwd7FAwX1EI2Imf/fcTXZ3d4XedyvqerWig=;
+	s=k20201202; t=1772477769;
+	bh=v6FFhSD8dJyILCfeTNcqw1mFWE96MGcIFsHdhsBj1lY=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=V89H1abGuvTjVC76gSx6lPPJHo/OvCUZr2Rr6yWxV8QRydq9Pzubxq4Mlp+8By2rj
-	 R9GgAcWu3GIgZVcF0oNxJ3YDsRvxkbuHyADRy9EqVawVMJ0UGh3PAdEdwLAgSc3O6j
-	 u5hcr2L3PNnrdGNeBiMOiYNWvu5F1HpdhVHla6owLeWNKsr+bYYiSmVMh8mUNn0MLq
-	 +z+GSoqbZACowaRGtSomq5T3pySVWioTAJrnZeJpGmxR0SpWT28YYsVwjt7p6551S1
-	 Tbj3ShtcA/95ztgTAatbPJMm1IwQq7AKkRzkP5DQ/KtnXPSqvqDhnLyR8RNJBf62wW
-	 9BpuzVCQ5v3TQ==
+	b=nb01fDBdSYSwpb21hjvFrG9YDrhrrTzK6Hu3fws2haYQi0XJn4VFPVi8XYGzePeqn
+	 kmsKbURGNb6xJeU9c8hmkv8wLOeueNcJ5dEOItiZI43EQ8fz9YAnu4Zd0Asl9z8b/F
+	 +cR9Kw8lGpMUA5cLmCcH1nZR7zt0n77l1VtWClu8r56BWTKW9yo/I6Bjmd0bmk26DT
+	 wEaWXW7Cd1dJotjAVsev3x1O00qWxA6+97aUT6a9ivUj98X/DhX/t2zRHt36J3v3gz
+	 9sO6CJKQaFHaNGPfkTwORxThPMGpzbW/JX/0viTTS9elC4NbGovfOoPQeeZ8KfmNF0
+	 wpAQUDehPQTkg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,35 +34,104 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Mar 2026 19:49:35 +0100
-Message-Id: <DGSISHB3UDZZ.3U1OWYM0OQUJP@kernel.org>
-Cc: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+Date: Mon, 02 Mar 2026 19:56:06 +0100
+Message-Id: <DGSIXGQW5ALN.226YQUWPHZXVC@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 1/3] rust: ptr: add `KnownSize` trait to support DST
+ size info extraction
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
  Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
  "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Aditya Rajan"
- <adi.dev.github@gmail.com>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] rust: add projection infrastructure
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
+ "Danilo Krummrich" <dakr@kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260302130223.134058-1-gary@kernel.org>
- <20260302130223.134058-2-gary@kernel.org>
- <DGSDGDIVUHO0.P594H9B4LLO5@kernel.org>
- <DGSDNOH55CX8.CMGYO2OMDBJZ@kernel.org>
-In-Reply-To: <DGSDNOH55CX8.CMGYO2OMDBJZ@kernel.org>
+References: <20260302164239.284084-1-gary@kernel.org>
+ <20260302164239.284084-2-gary@kernel.org>
+In-Reply-To: <20260302164239.284084-2-gary@kernel.org>
 
-On Mon Mar 2, 2026 at 3:48 PM CET, Danilo Krummrich wrote:
-> On Mon Mar 2, 2026 at 3:38 PM CET, Benno Lossin wrote:
->> [1]: https://doc.rust-lang.org/std/mem/fn.size_of_val_raw.html
+On Mon Mar 2, 2026 at 5:42 PM CET, Gary Guo wrote:
+> From: Gary Guo <gary@garyguo.net>
 >
-> I recently would have had a use-case for this as well, but besides the re=
-asons
-> you can't use it in this patch, I think it's also still unstable?
+> Add a `KnownSize` trait which is used obtain a size from a raw pointer's
+> metadata. This makes it possible to obtain size information on a raw slic=
+e
+> pointer. This is similar to Rust `core::mem::size_of_val_raw` which is no=
+t
+> yet stable.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Oh yeah that's right.
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+Found a typo below.
+
+> ---
+>  rust/kernel/lib.rs |  1 +
+>  rust/kernel/ptr.rs | 27 ++++++++++++++++++++++++++-
+>  2 files changed, 27 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 3da92f18f4ee..510cc7fe4961 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -20,6 +20,7 @@
+>  #![feature(generic_nonzero)]
+>  #![feature(inline_const)]
+>  #![feature(pointer_is_aligned)]
+> +#![feature(slice_ptr_len)]
+>  //
+>  // Stable since Rust 1.80.0.
+>  #![feature(slice_flatten)]
+> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
+> index 5b6a382637fe..cf980a103acf 100644
+> --- a/rust/kernel/ptr.rs
+> +++ b/rust/kernel/ptr.rs
+> @@ -2,7 +2,10 @@
+> =20
+>  //! Types and functions to work with pointers and addresses.
+> =20
+> -use core::mem::align_of;
+> +use core::mem::{
+> +    align_of,
+> +    size_of, //
+> +};
+>  use core::num::NonZero;
+> =20
+>  /// Type representing an alignment, which is always a power of two.
+> @@ -225,3 +228,25 @@ fn align_up(self, alignment: Alignment) -> Option<Se=
+lf> {
+>  }
+> =20
+>  impl_alignable_uint!(u8, u16, u32, u64, usize);
+> +
+> +/// Trait to represent compile-time known size information.
+> +///
+> +/// This is a generalization of what [`size_of`] which works for dynamic=
+ally sized types.
+
+s/what//
 
 Cheers,
 Benno
+
+> +pub trait KnownSize {
+> +    /// Get the size of an object of this type in bytes, with the metada=
+ta of the given pointer.
+> +    fn size(p: *const Self) -> usize;
+> +}
+> +
+> +impl<T> KnownSize for T {
+> +    #[inline(always)]
+> +    fn size(_: *const Self) -> usize {
+> +        size_of::<T>()
+> +    }
+> +}
+> +
+> +impl<T> KnownSize for [T] {
+> +    #[inline(always)]
+> +    fn size(p: *const Self) -> usize {
+> +        p.len() * size_of::<T>()
+> +    }
+> +}
+
