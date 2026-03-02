@@ -1,136 +1,350 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020116.outbound.protection.outlook.com [52.101.195.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B8336C9CD
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 17:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760632DC334;
+	Mon,  2 Mar 2026 17:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.116
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772472536; cv=pass; b=JYP3cbfoAScJJJiVciEb8sevrVCBj79soMxqmYxbTUvx4BBEFDK+DglhMyeY/Z6++XhlgHXrXcgUUIbPmIcywhVEAdbTcdnkEWxycw87047vq8fcGYugD7Yz6jqQE6JxQaR+WlFb9mXauCXdJZZtjzA6u3TaGDa6CjdbxCLMpV4=
+	t=1772472688; cv=fail; b=OG32d2CWLoZJzRAMDDEx4Dw3IPxL1f9HUnRtVoDwcmnTE4S9avUe8HjuMZ3Xc/9oPmnE6GdCcS/Erw/mMHsZS15V5PCFIohjdCwqafsw9aq2A+kEDEWSbRpt99uKXwZbhhHsur1aeH63eLf2I+lxpewoszv3AW9X4OXQU+LIClo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772472536; c=relaxed/simple;
-	bh=G3n0b90DzB04tYV40Bc9lDxOunyy6wXi77KoBPjFJew=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lm9wKksvy/U9D9/wSy0bFufd8NHIvQ/TzvpgEIxPl0fAuviE4FSn7gy1xJRBmvAaApue71fr2brmdWSq0qVX8AOSYQSxc4pxLQsX1JF3yVItx8+tO/9HtEQiJGyhkhwih/YhXbyVyBRFAw2CQIJpCpt/+jUU+x4GJt2ZWycxaoU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yLaJzPgb; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1772472688; c=relaxed/simple;
+	bh=qoOKJu3H8ZCxodApCxItKx/EVohC83YX0Q0LLrMGj6c=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=c08xkxjuCxo23MMzZiCEz2hiI8k/60QUc/hdv0BRAY9zKpQRCHyDNOcH2chGivQWOiVoncutGoUXiqQBUNlvTYTFZLaCotLyjYPIpiZTasykMCe7U0gBaFnv9V8VP5G2M/w3xxsawGFxnGIQQHUdj5sNQqKkgJMUu+vFS/csssI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=jOaGbx73; arc=fail smtp.client-ip=52.101.195.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yLaJzPgb"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65f93fff5c5so26395a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 09:28:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772472534; cv=none;
-        d=google.com; s=arc-20240605;
-        b=H2IBWxBcpVdnDebwvR8Heh12A98DI12KhMmeL0dXizR7PTeUe9H4XMEkx7cg3PJTK5
-         jaqgSFBe/1brf01r+xFDBWtfSXWLJ87Um+DM4DWZk6aHHPowcLpWKklX3WaCkUmkm5kF
-         g7+HoWhkpT1XaCdRFDM+GgqVkWuxVmsUOEDshs1lDuCE9J27NkCS1A0jqchhWbqjl7MJ
-         atcX+uV4eE1N5g90gM56qmZEjylh54Ul1psMyWVOBxrOXOm7cIU33BlsHGTPv95aoJB+
-         4NwKgbMlGpdpPD/d1OD/UIggEE6Y0Ti6/ESFgiXG1fAAFfcmM5ZwzN5droIRQguJnbrA
-         O9NQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=G3n0b90DzB04tYV40Bc9lDxOunyy6wXi77KoBPjFJew=;
-        fh=g1nYsOk0/56A//RblT4+eYK9zWiCK9HQOk4c55rFGoE=;
-        b=XZrNwGqnaVI60R5DMvvloB3UXdX9XCTa3rOXVWKSRj6EdKYAoN3vJRcg2xLG/CZoGF
-         zkTcO/OURRrvxZX+DLnxlENSH5Fx3PW2pvqMyoBfQK1qy7KzHmDew5kgZJEdd/K62eW0
-         NCN77QuMTCgZHWURYhJLslBX1DEKdTXHIeba4WJvU98VNftU87R9GOnu3MLBbEDmnUl6
-         QEOxfN2CJLq+LdWLulvKeB2IU9Bruavp7zc7fk7GMrKckREUuu3oOPS3lial12Ds53Jr
-         p6JLuA4zEVFDDluqB3cVFm2qNc0etXkIgATdFCMXN4B0kzFDDTltqrm067t7RWJIntq/
-         D52w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772472534; x=1773077334; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G3n0b90DzB04tYV40Bc9lDxOunyy6wXi77KoBPjFJew=;
-        b=yLaJzPgbpwstyVIdBrsY+0JevJta8OWA7YfDVmqIm5h+nYlVCsl3KUP5YV0qKCXJ9Z
-         iyPHFK2Ifsn7iiPBlq5wieHJ0cyhIdj+bMqw5KmhVjLP7yjX6kqow8ed2CZiqSIohZKq
-         5dprM1j9t5I73CxS2ROQWepQFyHzQwA0y8BkcvF8cFB1zHkkTbFzFLnwNEsg04GHWxVC
-         ERZzB82RIWs1N087uy31YWcO1DocAGwZzaxstQbZwLgsfTYMMq9Kt/t8UccpkxisWSwy
-         pMQbAdfbqxNk5TtJ1e7qFxAPYj+p+L53DPuWpCRSzVoknVhmh8PV/zN4FDGnKWsrKdhd
-         EQqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772472534; x=1773077334;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=G3n0b90DzB04tYV40Bc9lDxOunyy6wXi77KoBPjFJew=;
-        b=lElE6mfHoIkcedX+JiJuSBRtiPFdebQS8H/Q+IjvSBxGFVz15xmAluXivAmTR3j/8/
-         +U/lLqdyZDS2L4ZVj1I0eGMq0CHcYv0GndcWeTRKgjg66rWt/cXceiqe3DdtVp7gT6G2
-         zGjFY3oiiwttQMqAoWlZOXamvjTxBfDH4x1b5qwONqVk7Edy3GUnJvOMyHRBRxmvzOtx
-         srlUBxWPTGKAhHsrPG6ThM4tOBpRMDntnEY0j+0t3BMUq38E0mrkOjZjkiBSc2UeEGUH
-         9FmXb6qR5tn30IXuzLk4IvKrVEidOV+0UjkQXfHjTryva6he3qtUeAp9SXJttA3VPdH0
-         FB2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXnWYAe/9lFJ6vuqmiqpLEAzJwIOZeb9khpoI5reSvdWy+4vnjRBrL6VY5ozUWp8ma1XYRaEY5kj64ilSuOSw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxChnh5tsgTdOgj+F2poF9m9I2hXi7oIdJSdCgjZl6PZdkrvHBH
-	32DXGrHyeZHHfe9R2Ujhc0Wms4WH+WFWqL54ivzNWaaRM2T0FBnq/A/QOF3rKqmD5yibL3Nd3z5
-	/nVvbbSHguqRK7l3vOlJW/bjq4GlHvhJQS56+fyQQ
-X-Gm-Gg: ATEYQzzI7UUz7QkBmV5WmLGBi+Z38soaJhR2BKsfzfjBe7PZdB50vj4eNHjXEcvj8xB
-	HNsPDkJNWcPqPiwbpiMmItAZaRgHkgq0/2ev8UKmb+mb2afxACNJhed9FqDgiVd2skdZ2+Ij5Z5
-	z/fPCQUqJquzFS59H3Ce4GCQud/T6st0gPift/IGlS/hNfIk76e8zBIE7uHBcV39D1093YlNzOl
-	Af6DfbVxOaRZ0cK9sRcxuCwMYirlhwqAzR7kOZRtfG0k1TeKXraBbkz8LpU8jzpblLrBf1xj4FE
-	XPTjoCh9ga9fpG11ZkuQ6pRN/oCxTn3oCdRK
-X-Received: by 2002:a05:6402:f12:b0:65f:ddaf:d1c5 with SMTP id
- 4fb4d7f45d1cf-66008e0a08emr235858a12.12.1772472533625; Mon, 02 Mar 2026
- 09:28:53 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="jOaGbx73"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QWMxp4LW0xdZAXzZwqH7Om8E7vOtCJWleWROBfud6nccu5sQzhyEfC8Wxp6XQtNJFhCsHltKg5KXGRIe+YpFBW2bfSVklgq8LgErMzpkRX0JMaWl4nEGHn2dPeT7QzHFs4at1nojTOmh5Z+LWaUZcsjU+F4eExRtxH1ons9dT0jBbJmhLtx+YRO+rNFYFAbN6M/hYZCJ/5N50siBix5jFz+vR8e3taVRi5m5yWd9sWqapTkwJ0q8NKqhw5m1e0tMQqN4CKYTX1IaiKJpt5NV8qX39+5U6dTbsqPe86P8vn6ro/0IH/u4Hp++xQzvTuVEKBpXjHxz+1Wg98WdsLzN8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wyVCgTmPKTtVg9U2ZGp+h7GQHI7SCejCkRF3+kudDus=;
+ b=lelXhFY53ArNMSs7afuvBiTvvPzKbW1bZ1NaMQogr0d4ONRCI+3+54vy3N0Z8k0PpiCeTsrNOBntitLLbeK/vDvNzqE0JbKkkztj8XHlFYHZwYVfU9HeTAdREHfRiRlpsB16PDSg1xNVIOLg9V9COtmZttSyYKpk3bVtZ7v9BsLd0CyPMKjCyTM3c98EbDHBnzzHKVQHgh6P5YNj6TJX1hWc8k/p5MPvO+/ob2ddZoEqoCjtlh8bJMCqNv0XsIAchR86tfjhWqPLvXRrBwO36KryVBltNsxG5My3mkYVeqz0xp5Pbny5R8xBCtZRjaAEQxnGd+oS7tqRE8HS77weVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wyVCgTmPKTtVg9U2ZGp+h7GQHI7SCejCkRF3+kudDus=;
+ b=jOaGbx73Ew4yRuX0vsfvaRVQIIzzFG7xAi1ltssFcR3HUwbD9351sCVdpQYuwWgWJ2Q6dHdTjysj0LQT758tCmf0sd5z+PY+aG1WEGvVFj1f9sNxrkm+HKUCVMOhsNgKIBgvpmn+42wrU0iZCqd8YDhAaqyoOrS4a8N4nOZNCG8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB2830.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:17a::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Mon, 2 Mar
+ 2026 17:31:23 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 17:31:22 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 02 Mar 2026 17:31:22 +0000
+Message-Id: <DGSH4L653R41.1JXV6RIKG0V4@garyguo.net>
+From: "Gary Guo" <gary@garyguo.net>
+To: "Tamir Duberstein" <tamird@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Breno Leitao" <leitao@debian.org>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Brendan Higgins"
+ <brendan.higgins@linux.dev>, "David Gow" <davidgow@google.com>, "Rae Moar"
+ <raemoar63@gmail.com>, "Peter Zijlstra" <peterz@infradead.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Will Deacon" <will@kernel.org>, "Waiman Long"
+ <longman@redhat.com>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kselftest@vger.kernel.org>,
+ <kunit-dev@googlegroups.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] rust: rename `kernel::c_str!` to `str_to_cstr!`
+X-Mailer: aerc 0.21.0
+References: <20260302-cstr-rename-macro-v1-1-a269fe4dc3f0@kernel.org>
+In-Reply-To: <20260302-cstr-rename-macro-v1-1-a269fe4dc3f0@kernel.org>
+X-ClientProxiedBy: LO4P123CA0553.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:33b::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
- <20260218-binder-vma-check-v2-1-60f9d695a990@google.com> <aaXGZlfAmk-DCuBW@google.com>
-In-Reply-To: <aaXGZlfAmk-DCuBW@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 2 Mar 2026 18:28:17 +0100
-X-Gm-Features: AaiRm50SZW8QPqSRhdWDXBgdsHpRSfdrfGzv3dpf9ThjwdH9bYPFTN50ijeQDLs
-Message-ID: <CAG48ez2M4fj15gqyKrP7ADRUhNQZkpy9m+NSz2N=vo=PSefm0w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust_binder: check ownership before using vma
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB2830:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76dae19d-e101-4467-c391-08de78818607
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	ca5WyeY1w3VEH5AOYoAByaDC4Ei7TkV0RCCR71TuZhCesgMwOsMJGQY0SD+7K87xprTulrjCHgl/znSJpnu8IYhcdYShgN8Y8XbRDEnqV+LozDrUVEEkYRNoXXYYhOPz3LgUvHWe6SuDwWK6wZ12QPdAxsPmmphV1PWCUvtIuAHHZhYZHGqJ89ho1jgPUfFxRhIJGMxsnOivneJyZ/S4sMhaTdQ8DLXuGVrWaSYN6gGF7+HyspWM+1pwMPOqktm5SIXh7/1sFj5k7NJWi4FA+keSHmNWAv2hlG3blI5OfLOsk9N0kaqzvj8FNb501qGCvF/8QzUhIHX8EzwkK2EZZ5epj/a/mI7owE08s2r0WIgpEgwiTgB+R7GcylLpNLS3eFHjXG7NWtpdjYVNJylml+aBj2OIo8bdhG/dEHMfLeEZz8ln5pirJGt6FBD3XBXUQ1MG1Na0R1X423hUgIFm3snqyl1+qOLEEeiaQlpe+3WjtUNuuaoZ6mYR1p7u+H4Y6qI6l/0e3307hvpFlk5EntAomC4ZkHqSG98L5BOlzjaRdozkDMwYqyZvpiLCWQOP2YBwW+M5snmvQPTR8uvKl/gH2DzUlJpKLOnUQXMkXUrHGS4Zp6ImNpOFaHgnW8tdOG+6s2VGltYt9NvVCl28ny8SEIrk82Kl9uToTOHBg6nwAPmvnQd8sEsP+x24Yo1QPoNPWULluW5j5xoPjrRv7AJrenrE8fTMWcauJxtskgDiQ3+UD7x3luOnWNG6cQVZtcbXMLJLqsRNJU0+nCC1MA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aHViV2tMbXh2TEQ2aWFZMlhITlhEd3FwWmVkVzIxTEUwbE14RTcyT2VUTllL?=
+ =?utf-8?B?aEpWeWkwRDkweGNsRHdkT1Z3R1NQQnlmNlo2YnBGOXBHM0NxU21EeW5HREw4?=
+ =?utf-8?B?ZTB4bGFLMDBRVm1lM0p0L00wQzNEOHR6TjVZc2RLSEhqZnIwNWtPRWJMWE5v?=
+ =?utf-8?B?M0Y3QWY1YUhJV2dCZ2RSMXJzVXJRMElvME01aDRSNjRKbVgrYzR0VU5RQUlt?=
+ =?utf-8?B?bHc1U3BIV1Y0VkQzVFIwWnE4UUZ2SFJXUmRoOCtvSXY3YnZEcnl2alVndDF4?=
+ =?utf-8?B?Y2VrWGM4aGdYdTZDTWF6cHBLV1ZsNkJIZGQ2dzgrMXdQa2hvRExqTDFqaElO?=
+ =?utf-8?B?eHU1b25JVHFpVkF3VkwrR2hwY29idXo1a3VTRnNubUFHdmo4Ylk3UFVhUW1V?=
+ =?utf-8?B?WHVDOFZtS25zam9LZ0ZPM3UwaDRubys0OS9hMWdvTmdGSWdWQ1dEWGdRSklW?=
+ =?utf-8?B?Njd4clJDSmpsMHRhWTMrZE5FdjJ3ZnVBNm56UlZ2NHhNMnZFYTV5NUNwRUJB?=
+ =?utf-8?B?RDZSTWw4MTE0eXdqV3ZBTjNjNCtiZUxCNFFWZFJtTkQvTmVFa3IxenBteG5I?=
+ =?utf-8?B?ZmZ5azg2RWxvcXpVWTVRVjZEL3N5Z05SSEZJTkpwRzdmMXpUOFdUVkJPNWJo?=
+ =?utf-8?B?Ry9DdUZDdzZrcUg0MExkQVNxMkxNYW9kbUZvbG5hcFFrRG9JVU9CbXBIZkFU?=
+ =?utf-8?B?dUdpQ3AvWm5temV4YnMwd2FlL1ZCdDBjY2tKRE5XbWVsQ3JZY2UxWG1MdTd6?=
+ =?utf-8?B?dkVBRWJESFFPY0Q5UVEwa0JFWkZjdjIwUXhIOGhwWGNuSEFRZHNNd2R2T2g2?=
+ =?utf-8?B?MVRYbnVPYVdaYzRpc1lhVEMwMXhyeG5sa21PNmQwa01xOUFvZ3pYdlZkMDFL?=
+ =?utf-8?B?akZncGV0Wkk5YUhvb2RWeUcyZVR0NFl4ZlZZZzN1WWlRZU5DZ0dMOTQwSXhC?=
+ =?utf-8?B?MyszYUh5N3BqUHh6aVFHY09rOEh5RnpVbUpSQmJDZkFYRjF6Zy9HZ25CT1Vr?=
+ =?utf-8?B?dVJBZ09Rcy82VWZ0cXQ2MDNFRldkbjkvTzdrT0dpS0Z3N0VtZ2VzU1lFcElJ?=
+ =?utf-8?B?ZlhMN2ZKOGVLUDdtWVhKM1cwT3hMRnE2VC9JcjErbEhRYy9nU2tGZ3FRYXgy?=
+ =?utf-8?B?WWZ4bFlnaTJPdElLcURxclpKaEhFVEVCNi8vbWNHb1U0R2F4UHZYY1djRTRa?=
+ =?utf-8?B?NVNVTnZMa0FjZlJFZTliRk5QbEIwQ0JUMG0za0NRbW1DalZ2Q3pyNWFBUzMr?=
+ =?utf-8?B?SElyL25nQ1dEZXQwT25MckpmaFQweDRhaktXdzdlVC92QzhDUy9kRzhZSkRQ?=
+ =?utf-8?B?bDFtVW5SRW5SS3ZFbU1LOEp4S0Q4T3NETjNtYmJTYWFiK3kxbzFINmNwY2p3?=
+ =?utf-8?B?TURXTG1GSFJKMURwUnB4QU1SMFVWUDFNd1hHdkI4TFYyMnlVUEYwU3lZZGhO?=
+ =?utf-8?B?dGhqOHNPR0NlRE5MamtwRVRSbXZTSXhkRThzNEtvbXBRTHRvZnU0NHJ2ZEJD?=
+ =?utf-8?B?TUZOL2FySlhHQ01uTkVmL3BOaDJ5TFZ4QmNsQ0xpVEowUWN3RFFpbXhFZ1h6?=
+ =?utf-8?B?VEdCUjI0U21YN0xSYjcrTG1GelFBK28zRTlMcnBpMEhCdGhsNlpET3IzWTBn?=
+ =?utf-8?B?a09ueW9EQjlhYzJlcHN4YjdSZ3l3V0xxUUYvTTVubS8zeUJhWURKL1padnpN?=
+ =?utf-8?B?ZjNKb3hrQm5iZVg2NTlvYU9udWlmNW9peUM5R2p6UHNlb0VVTzJQS28wOWxR?=
+ =?utf-8?B?L0pLL0p2SDJmcGtJRTNLTkNTVUxBVjY3cXJyTThrN3ZqN2pCSHlLK3Z2QUhK?=
+ =?utf-8?B?Zzh4TkwvUmZvenI2anplQXN4VU96VEVMRkRScDZldUNjaHJTUG5JaFBhcEYz?=
+ =?utf-8?B?MWtaOXFHTGxIanhDVVoxckplMzhEdU8ybkVIRVY1OVNLTTZhTFo4eGNIQmFW?=
+ =?utf-8?B?c1RWa28xL29HbUVYUWliYVhEbTB3aVRTUUFwOGpYWnhrQnFQMDJJQlF2dUpP?=
+ =?utf-8?B?dTB3L1JYQTJWWFBpSFJSSzV1TnJwRTZtT0t4eERaTFdJRWQvNDBmZStua0lu?=
+ =?utf-8?B?Y01YZ1Q4YXJZUVUzTFFOeVEwQ3d6Mi9pZWhWbklwMGRGUHJPcTFoZDdMMERp?=
+ =?utf-8?B?dy9wU1lHaEdVcDhMSDgwT2V6Nkg5LzA0dzB3aGhRWEVHb2FhQU5vNTI2Vnp3?=
+ =?utf-8?B?UXM0ejM5SjRCdVl3djFac1YxeVJmV2QzRy9jeGVMaUJVWXp4NnhzVGE5WW5M?=
+ =?utf-8?B?UXVPT1hnWU4yalVpUU83ZDZXT3ZNK3NPVkVjT2VOU1h4ODNSRGQveWdBdWdZ?=
+ =?utf-8?B?ZHh6M20zVHJQQzJyNTBkR2lnOTVUeFZsZXpoM2VOeUh4b2tGZjJSUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76dae19d-e101-4467-c391-08de78818607
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 17:31:22.8900
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KVqqZd7v4ytxEx6Wa3wpDl1lXNzYX2QAnyJ+vksoKLQ/umx+8Tt+X7ZjXgK7iOLX84xsb1arq8Zc1DEUXLVejA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2830
 
-On Mon, Mar 2, 2026 at 6:18=E2=80=AFPM Carlos Llamas <cmllamas@google.com> =
-wrote:
-> On Wed, Feb 18, 2026 at 11:53:26AM +0000, Alice Ryhl wrote:
-> > When installing missing pages (or zapping them), Rust Binder will look
-> > up the vma in the mm by address, and then call vm_insert_page (or
-> > zap_page_range_single). However, if the vma is closed and replaced with
-> > a different vma at the same address, this can lead to Rust Binder
-> > installing pages into the wrong vma.
-> >
-> > By installing the page into a writable vma, it becomes possible to writ=
-e
-> > to your own binder pages, which are normally read-only. Although you're
-> > not supposed to be able to write to those pages, the intent behind the
-> > design of Rust Binder is that even if you get that ability, it should n=
-ot
-> > lead to anything bad. Unfortunately, due to another bug, that is not th=
-e
-> > case.
+On Mon Mar 2, 2026 at 5:20 PM GMT, Tamir Duberstein wrote:
+> Now that all literals are C-Strings, rename and update the documentation
+> of this macro to clarify its intended purpose.
 >
-> This all makes sense to me. What I'm missing though is why not reject
-> VM_WRITE mappings all together? Is there a downside or something that
-> prevents us from setting this check?
+> Link: https://github.com/Rust-for-Linux/linux/issues/1075
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 
-You could, and it would probably do the job (assuming that you check
-for VM_MAYWRITE instead of VM_WRITE), but I think it'd be more of a
-surface-level mitigation than a robust safety check - in my opinion, a
-robust check should, at a minimum, confirm that the VMA being accessed
-belongs to the right driver, because other drivers might do random
-things you don't expect in their own VMAs. (For example, it wouldn't
-protect against interaction with a driver like C binder which reads
-PTEs back out of the VMA in binder_page_lookup(), makes assumptions
-about what kinds of pages that yields, and writes into those pages.) A
-driver should not be touching VMAs it doesn't own.
+Do we really need to perform the rename? I think updating the documentation
+should be good enough?
+
+If the only concern is misuse of the macro then perhaps I can just add a
+lint for this in klint.
+
+> ---
+> This patch completes the work of replacing our custom `CStr` with
+> upstream's.
+> ---
+>  rust/kernel/bug.rs              |  2 +-
+>  rust/kernel/configfs.rs         |  2 +-
+>  rust/kernel/drm/ioctl.rs        |  2 +-
+>  rust/kernel/kunit.rs            |  3 ++-
+>  rust/kernel/str.rs              | 19 ++++++++++++++-----
+>  rust/kernel/sync.rs             |  4 ++--
+>  rust/kernel/sync/lock/global.rs |  3 ++-
+>  rust/kernel/workqueue.rs        |  6 +++---
+>  8 files changed, 26 insertions(+), 15 deletions(-)
+>
+> diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+> index ed943960f851..f7cb673b1766 100644
+> --- a/rust/kernel/bug.rs
+> +++ b/rust/kernel/bug.rs
+> @@ -80,7 +80,7 @@ macro_rules! warn_flags {
+>          // with a valid null-terminated string.
+>          unsafe {
+>              $crate::bindings::warn_slowpath_fmt(
+> -                $crate::c_str!(::core::file!()).as_char_ptr(),
+> +                $crate::str_to_cstr!(::core::file!()).as_char_ptr(),
+>                  line!() as $crate::ffi::c_int,
+>                  $flags as $crate::ffi::c_uint,
+>                  ::core::ptr::null(),
+> diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
+> index 2339c6467325..930f17bb2041 100644
+> --- a/rust/kernel/configfs.rs
+> +++ b/rust/kernel/configfs.rs
+> @@ -1000,7 +1000,7 @@ macro_rules! configfs_attrs {
+>                          $crate::configfs::Attribute<$attr, $data, $data>=
+ =3D
+>                              unsafe {
+>                                  $crate::configfs::Attribute::new(
+> -                                    $crate::c_str!(::core::stringify!($n=
+ame)),
+> +                                    $crate::str_to_cstr!(::core::stringi=
+fy!($name)),
+>                                  )
+>                              };
+>                  )*
+> diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+> index cf328101dde4..6a87f489dc88 100644
+> --- a/rust/kernel/drm/ioctl.rs
+> +++ b/rust/kernel/drm/ioctl.rs
+> @@ -157,7 +157,7 @@ macro_rules! declare_drm_ioctls {
+>                      },
+>                      flags: $flags,
+>                      name: $crate::str::as_char_ptr_in_const_context(
+> -                        $crate::c_str!(::core::stringify!($cmd)),
+> +                        $crate::str_to_cstr!(::core::stringify!($cmd)),
+>                      ),
+>                  }
+>              ),*];
+> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+> index f93f24a60bdd..5802a3507ecc 100644
+> --- a/rust/kernel/kunit.rs
+> +++ b/rust/kernel/kunit.rs
+> @@ -59,7 +59,8 @@ macro_rules! kunit_assert {
+> =20
+>              static FILE: &'static $crate::str::CStr =3D $file;
+>              static LINE: i32 =3D ::core::line!() as i32 - $diff;
+> -            static CONDITION: &'static $crate::str::CStr =3D $crate::c_s=
+tr!(stringify!($condition));
+> +            static CONDITION: &'static $crate::str::CStr =3D
+> +                $crate::str_to_cstr!(stringify!($condition));
+> =20
+>              // SAFETY: FFI call without safety requirements.
+>              let kunit_test =3D unsafe { $crate::bindings::kunit_get_curr=
+ent_test() };
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index fa87779d2253..8bb40de007d4 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -376,19 +376,28 @@ fn as_ref(&self) -> &BStr {
+>      }
+>  }
+> =20
+> -/// Creates a new [`CStr`] from a string literal.
+> +/// Creates a new [`CStr`] at compile time.
+>  ///
+> -/// The string literal should not contain any `NUL` bytes.
+> +/// Rust supports C string literals since Rust 1.77, and they should be =
+used instead of this macro
+> +/// where possible. This macro exists to allow static *non-literal* C st=
+rings to be created at
+> +/// compile time. This is most often used in other macros.
+> +///
+> +/// # Panics
+> +///
+> +/// This macro panics if the operand contains an interior `NUL` byte.
+>  ///
+>  /// # Examples
+>  ///
+>  /// ```
+> -/// # use kernel::c_str;
+> +/// # use kernel::str_to_cstr;
+>  /// # use kernel::str::CStr;
+> -/// const MY_CSTR: &CStr =3D c_str!("My awesome CStr!");
+> +/// const MY_CSTR: &CStr =3D str_to_cstr!(concat!(file!(), ":", line!(),=
+ ": My CStr!"));
+
+Perhaps keep a copy of the old example and add a comment saying this is all=
+owed
+but c"literal" should be preferred.
+
+Best,
+Gary
+
+>  /// ```
+>  #[macro_export]
+> -macro_rules! c_str {
+> +macro_rules! str_to_cstr {
+> +    // NB: we could write `($str:lit) =3D> compile_error!("use a C strin=
+g literal instead");` here but
+> +    // that would trigger when the literal is at the top of several macr=
+o expansions. That would be
+> +    // too limiting to macro authors, so we rely on the name as a hint i=
+nstead.
+>      ($str:expr) =3D> {{
+>          const S: &str =3D concat!($str, "\0");
+>          const C: &$crate::str::CStr =3D match $crate::str::CStr::from_by=
+tes_with_nul(S.as_bytes()) {
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 993dbf2caa0e..ecf02a67ec35 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -154,9 +154,9 @@ macro_rules! static_lock_class {
+>  #[macro_export]
+>  macro_rules! optional_name {
+>      () =3D> {
+> -        $crate::c_str!(::core::concat!(::core::file!(), ":", ::core::lin=
+e!()))
+> +        $crate::str_to_cstr!(::core::concat!(::core::file!(), ":", ::cor=
+e::line!()))
+>      };
+>      ($name:literal) =3D> {
+> -        $crate::c_str!($name)
+> +        $crate::str_to_cstr!($name)
+>      };
+>  }
+> diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/glob=
+al.rs
+> index aecbdc34738f..81f46229be7d 100644
+> --- a/rust/kernel/sync/lock/global.rs
+> +++ b/rust/kernel/sync/lock/global.rs
+> @@ -272,7 +272,8 @@ macro_rules! global_lock {
+>          $pub enum $name {}
+> =20
+>          impl $crate::sync::lock::GlobalLockBackend for $name {
+> -            const NAME: &'static $crate::str::CStr =3D $crate::c_str!(::=
+core::stringify!($name));
+> +            const NAME: &'static $crate::str::CStr =3D
+> +                $crate::str_to_cstr!(::core::stringify!($name));
+>              type Item =3D $valuety;
+>              type Backend =3D $crate::global_lock_inner!(backend $kind);
+> =20
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 706e833e9702..7616d71df68e 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -212,7 +212,7 @@ macro_rules! new_delayed_work {
+>          $crate::workqueue::DelayedWork::new(
+>              $crate::optional_name!(),
+>              $crate::static_lock_class!(),
+> -            $crate::c_str!(::core::concat!(
+> +            $crate::str_to_cstr!(::core::concat!(
+>                  ::core::file!(),
+>                  ":",
+>                  ::core::line!(),
+> @@ -223,9 +223,9 @@ macro_rules! new_delayed_work {
+>      };
+>      ($name:literal) =3D> {
+>          $crate::workqueue::DelayedWork::new(
+> -            $crate::c_str!($name),
+> +            $crate::str_to_cstr!($name),
+>              $crate::static_lock_class!(),
+> -            $crate::c_str!(::core::concat!($name, "_timer")),
+> +            $crate::str_to_cstr!(::core::concat!($name, "_timer")),
+>              $crate::static_lock_class!(),
+>          )
+>      };
+>
+> ---
+> base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
+> change-id: 20260302-cstr-rename-macro-64201be6c969
+>
+> Best regards,
+> -- =20
+> Tamir Duberstein <tamird@kernel.org>
+
