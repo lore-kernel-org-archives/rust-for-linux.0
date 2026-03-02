@@ -1,154 +1,120 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021141.outbound.protection.outlook.com [52.101.95.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6407E3FB073;
-	Mon,  2 Mar 2026 14:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D2038A723
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Mar 2026 14:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772461150; cv=fail; b=aqi5MOWH0o/9MwUDu5UNhORkRfTYVOsP7uOubgTXoVNRGlVGSb/pEq9N6A9qsW6xH561cQ+D5OkfVH8eKyG+KvqAV5oqj6sv90pa11s/66Twz9SYYu0XC8Eiqe1gj+1uKnbzarE7KewCBR28V/e0j7iw0JWUKojrWO819Ai7dJw=
+	t=1772461247; cv=pass; b=Kj+/Vvp1n/Ahw/BzWjpkPwQ78Essf1crlUv22sBNv0I2xX/nWLtKtARhIsG1/HvLuaLKdQKrKAVDUAb58+Nw4xvAFgnCtTJxq9uQWzg7qoyozFdMI3RYlXVUgRPlxXS+VnF0+/cYGVGy46RavL4rPKW+Qr3HsaOuLFkhsH3Utgw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772461150; c=relaxed/simple;
-	bh=/CoBzijwk4ayUHkJCjBD3OMuC4xWL4Yisy3Q9ocxK2w=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=gnM3x9I7uo6Rd4zy13FO67QgWvRqMAEteMu3aGq10j7AGNju6nrppbWV8mMS5ejAqLJIV+EsDm9jpdkAxXy8uI9t6CilgS/JykhxWy6tpIFpfRjNDR1VMyoutQmpXBbm6N73GqpVkVU2vekavV5mNe2i6GKnMPCzaV5h1pQaNmQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ZCFYmeXI; arc=fail smtp.client-ip=52.101.95.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1772461247; c=relaxed/simple;
+	bh=v1iJCitIlusxSvV0ZmYGh6EV90eFcXE9L9mACC4oXLY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nRJXKwInTG/dIFWctdncuBZ4F4ZQwldtH3eRhMBLWs3uxe5Bl8UEyktW7u00ldMsrWVeZmbCG28btGhyUXsBwYvgih9qCBEOQPWtrDhS6QyKwiPlj5VbRERbAKLLfyTfG5ydqxxSqQGeWzJmSZc/iZDLW1Ev9L9Fn0skqQENEdg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODWTOi8d; arc=pass smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ZCFYmeXI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hOAFmQT/3O+Bk35CXGKLd6J8ONEPAw5311oIjf5unkgYf7FKs+CgkUKy1TzXWoHmLWGxBYZM4mGsd6MG6kaMX/VnZESSxUOJkUA8zen14oDQZOLHNh+u48oDsv9h7t7RMSM0/Oe6tLVFrHCFNtPcn9ebEoEV7EHxcEJtRLAhppSmtWt9GDjaeezDRPwNjlQF6BdTXjGw0WbuSfj/oOv/Riog5xeF/LF8J/6aulNC+PswYZwpF64iVzGiH6FFCaE+/bpdK/n8M9yv1p0Hu1l1tCeBgZwOp935PHYijCKBMSF5Rqy421hfCuEUi3/7tOy/8tVQsJQ8+pPMUMyCgWWOqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0Hh0lek0Gf831V2WZh24JUsvLb0uVsxI+/d55a6eHu0=;
- b=nA7QOwtsOwhIwW63ZbZYnvZhFynN/7qPvw7mhC3xiWYiID3UX0ia8Qx9c2i48RRdgTHyZEjDd7xwHEDus7y/8IS3ylvVZmroVHc5L/HTin7fsznmxZwm1rExLwVZWqcyq/hS0QOSXIroE266KK0Ch2bbygpxpAFqItuf8tOeHGg5H5zZRBQO52x4X+BuD1UETIQOLgP1tijWvGR5Q6UZwgMU45JOHZUh1qtAnI7y8BZLjjGN3BhIoN367lQf6ZDasaqPju6oPRz/c9rYj3AE2QI6pXMPSrApeH9+V9d+m0iKINA+6Sop3lue40yN0C8TZ+jjfCQsft31z6ee0yJbzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0Hh0lek0Gf831V2WZh24JUsvLb0uVsxI+/d55a6eHu0=;
- b=ZCFYmeXIr3/c+PI1ACiI4cRP2nIBx7lIu/BERPKh3eqGHuXLdC8/+QD2XBe1wV4I/ZVjirHCEkF4C9UvswXxtVUrOc/FK7bDohxNgyZA1IWvQdqYA4b3LQa3lQlbvBohJlPJaLhTB4uhsKjo8hsNtagg8dSHtg+vOdYLkiaJb2s=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO4P265MB6998.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:34d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Mon, 2 Mar
- 2026 14:19:06 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 14:19:06 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Mar 2026 14:19:05 +0000
-Message-Id: <DGSD1D71H2I3.1YC1DP43NP9VX@garyguo.net>
-To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>
-Cc: "Zhi Wang" <zhiw@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v4 3/9] rust: add EMSGSIZE error code
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260302-cmdq-continuation-v4-0-c011f15aad58@nvidia.com>
- <20260302-cmdq-continuation-v4-3-c011f15aad58@nvidia.com>
-In-Reply-To: <20260302-cmdq-continuation-v4-3-c011f15aad58@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0557.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:33b::13) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODWTOi8d"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-127337e3870so253956c88.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Mar 2026 06:20:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772461245; cv=none;
+        d=google.com; s=arc-20240605;
+        b=I89TDw0JdeXcZ+46vfJTH5oIrOLgGoK+BeUx53c7N5RTEq3xDc6fW0LGmrRYD98Jzj
+         HmreYOjVBvqJ4Nmip2qtwXHYEV1Zidj/Pu4jzlk7FUkuRIK0UTZjXlc+1DAAvWMfrJeT
+         78B+ZKEYbK3n2vD0es0AdzkqamXLRSimJoqKYtBEWF+ry3P+VhQKXpumD5iyJ7IYJrxN
+         lGAuXXij/4+Sk2KSRXmjzhCj8yvgEIsPXfURDKhX4gqY+xWuAQOra4trXD2MmFrnnkzj
+         bQ+zuOHF2WvolX2kPs3rRZh4AHmGnL2ODmX0rtGIub9XbuEahDDge/g+UOJUq13NejrE
+         1iDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=u8dgdlnRXlNMes5eV5ld7vZ3X2CzhT0OJUL+NBisd6k=;
+        fh=UUXCYqNtCs8tIbNjKpxqEvG20+B7FPPuxc2XlVZzPic=;
+        b=AVpaStlWVa2jJi8mk7E9Yn+UxH1J+5Pxp9bX5AnKvXEirHtZy4zh3+vXPZVJY5mb0y
+         2QABLFsli5Y3bRU8RHjmc3bL+LvOHlTKvaU7YX9nFnE5FLvn7Fa8tvUMLXjUyeep7yoC
+         rV0C58dyfwwr039qqbtmBZ3TWz/vGg0FmmGhXx4OPFgo7Be9amZC8EIpnZQHSPVOdiRj
+         Fc8GXXqcmaVwx4px+Phl2Kx4sXvVc3Q0f8k+I+Ln9ZKPLyILpmL+z/TV+UiV6CWDcAZ8
+         cbN2f8XR14LhC1QydHgdyhX6iaW0Ye1V+4Pvwj6K6D2sVUeCJs5sY4ZuWvGy9rpNCv5i
+         r4EQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772461245; x=1773066045; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u8dgdlnRXlNMes5eV5ld7vZ3X2CzhT0OJUL+NBisd6k=;
+        b=ODWTOi8djhSnmrTmzpyzAfTvKnr7So3zRqcluaI5l64R/lMyt8PJ1jyQg4GeBirKFR
+         zBfxv2VQXsPvfFDXAV0/fBKDGVN459ceP1Xn/z1kNNGGEOyFN5GdjxWK58qEUk2j9rOX
+         utzft21XNJfPNj+YWBPz6GiwBF7WevcmN+6CSFGUVw8VSsYPxaxR+wVbOgM7yGLYv/hS
+         f1ZYF5ZMFcxX0v5aonQYHE7xYN0+owk7Ro6c0bBf5tATc1x89kdAY2Qt87hauSJfXnxL
+         cpE1BZFrLed4oF4XHm6uXEUv/R+v72WVq9K+Xpfiw04/gG5L7hUi314HtocAvU4Xh/JX
+         pt9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772461245; x=1773066045;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=u8dgdlnRXlNMes5eV5ld7vZ3X2CzhT0OJUL+NBisd6k=;
+        b=k7Qh50r1vK0f9duS8E2oC4/MFuixZJPbrrpcue+oo/VrpDuX59AtvWbG2ZedjcJJfY
+         Exni1DFAEjL3PUnSl9mAWFrRAMSxqmGzLsFM4pKsJSeuXm+P3feyhWTs9pY6PVsjJApT
+         CPepmJjwNbk0MO07mKibs4LDVZEoxDYOa8ayjz8dAYe7BCFxqfBe8rfHUCcaDA/xhx7h
+         dedU3R9schBLfB2h9zm6bkLnFmxLOdbwNcpGraf2N/KtW3dI+7lFyVsT2h6idc1sg1UO
+         DMF5bm9u4RJJcbjPiXsFCkpZha1p7SqJbW5+fmY9af37q6JSCa6SKFWppJjgABvT1Cxg
+         rhyA==
+X-Forwarded-Encrypted: i=1; AJvYcCVxs6GNAp1TslLqtQKLJukiiK9jSVfliMRKpa6zcuSkdvt6TnyjRdsjxzzFIUQJGUxK47UBYQzmrmZlb41TFA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzx9u5oUz9Tuuu9ue8XOd2/Oi+egdkI4X1q94yUQF9K+8dfsdaG
+	THfUY77Y8DvJbSHdEXyNjzNTnfV6K6WBMvK3VJi4QATA3TsacpiT6ky4EO4gT/Ti4/rAxaROZ+l
+	NCdyhHP1YfbYMVa2g6mkDksE3lWI+Wz0=
+X-Gm-Gg: ATEYQzzWIcd05d8PCN9r62CHOuDRTJn7lha1vPCoEzQQk4xFKPGMVLd+zg2At/Hy9Yo
+	ZKDu4MZLkysyNGaNIGVub0/S+oon060BAdc9afKXG+TrdF6Oi2PEsQMPd3pDVVf6AGNWyN7ZMt+
+	BR40PojXJ5IitonE7El19CCvUu9OgApOpUSwqjHOyQqQtUYWVGXSfyxF6TYaeZgYZMRac1k0csa
+	PU6ItctDJxYuT9fxcldPiKeXo3U8a/TLYR0VZQn19S8ExLondIpRf2jLCltV7CbpHKmkaM4569C
+	//eTIc7bnVcll4F1q/6IsyxTbjo7C86VnBAyUbm37qj3tGGH52NwUffY1XVMAheR/Y4FNcC2F9c
+	QCds2yeXTbR4t8Y4+DIjpHGvbvegOx8YcnWCrP0g=
+X-Received: by 2002:a05:7300:dc90:b0:2bd:d8e6:90a9 with SMTP id
+ 5a478bee46e88-2bde1cf8740mr2816706eec.3.1772461245499; Mon, 02 Mar 2026
+ 06:20:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB6998:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63693839-accd-4918-105e-08de7866a97b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	BZ7Ui1KuUJMA7yovegNLYCxDqVV2/ow95bj1Sqxu7rpPAu96BPvsdVySb6V849+3BNwNjsNpFz4ghsmrZJi8UoT9DJVfal2NyCkrP1tB0XVqbQf5XAgYGdiIKcEIM+1pUCSanyqZPwv+U/vcOoe79iZOE7sPAJbWbJ38hRJg7NAalTY1/he4Zlr0OCXjDhFn40lCfNO2hZWvas5P14RxTFAlUNb0VpKaCBVI+SIH/0ozBreCpjDzT8xIAGgkrRdaDes6PrSHfnB5wU4mYSon5FXk7CAm2qgh8xcXtri4E6npwL+8eu6tsfqZXRFH8pIQwSmulncpLN/pt3UkXnT0Zoy3b/nMGkqZWTcojsmfA2RidqzKqeT60Hsw26pTBNyfYyDZutfUyORGAEJnJ51FoVeAL454kSyfcfjErCUQ1ug/Y+kHZTtotiJBH73iCFUdFtQm34Spj6xLRMih+k+vsCKxk502VC/+MIBJjwT9apTN6pJhIm/pfyOsj0/9is+ExikpBrxL4TSama9q2/i2eone2+gCQ45td717W51H/jtowxLjB08AYO9vasDfn2h36zejVk1kwje5uBZhBPyiaUrkGFDv6bnZcRrSMdnCxAW1DiWmkXRhiv8+WvkIUZvFkfbcr974W7m65TLr72Zp6yh4mMadupt4Ap76IvRcBF+seL4S+G3BE5AJomsuwYeAqm9Ul5ThuDNWT0h2ArrXIxzJXt6dvi9oekSTsccF8dBVvXrC9T7bkSZclE8a8Csmxlm65ZHNj8knv4ZmtdNhIw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MUNRVlRnbE1CRkJaWDgwNW1BYTJkSlpuTmVGcDIzMGljVTY4YlhqOXhoZGpq?=
- =?utf-8?B?NHJIV3BPcU04UEVRTlN4TU91eWxJTm94Wlo0bGtxaXdDSGVPdlhONi9LbFpL?=
- =?utf-8?B?R1pxU1hxdUkxc01lN0NFOGVIamRNanRWNFF6TGZpYURjcUtBektRaWRJSFI3?=
- =?utf-8?B?ZW9RUjRkYitwQ2tlcDdobk9XY3JRZC9zYVpFeUlGYlpIazVGaFQ4SHJqdENZ?=
- =?utf-8?B?bEJnd2RFWDdDeXNPbnZUbkRCTUdJR05GelMzVlprK0RmZVBsZldJT3hWVFBn?=
- =?utf-8?B?S2lGU0FnaTlYSWhDQ3VKWGxnUGhvWkNjaitLYm95UWI5a00wb1A0a2lYTXpC?=
- =?utf-8?B?MUI2aEF1L1MwMXR1NVIwL3lHcFRqV1lrbjlKOHdPektBcVNDTGpUYTAwRWJz?=
- =?utf-8?B?NHZmZUVOWkRqUjlRSXRJa0VoRDVJQUgyRFc4NThDb2x1RkJwNER1MWpsK0Zq?=
- =?utf-8?B?Tk5uTUdUUW95NzJGdDBxaHF3Wms1eE5CVHVXRDkzYnJaeUdZZnBQWXdaRlJl?=
- =?utf-8?B?bVY5TWZKVlFsWlYrK1hXeDNoWWNlVVJ5NGpUdmRjNDhyd3lvZ2psb2tncEtQ?=
- =?utf-8?B?SExSbGJaMmQ2cnduV1lKbU9vWGIrMnVEU1djaXl2dXh4dXh3ZVRUQ3NrSnZJ?=
- =?utf-8?B?SE9OR2dYSTMrQVZ1VjJJMzBucWhUL0VMUzg5ZjNHWEVHT013TlBZQjdQTW9n?=
- =?utf-8?B?UXF1ckVjdEFGcURLek5uTGhjTkY5cGNEeXh1TnhpMzl1K0FOcFFwckVGMXdh?=
- =?utf-8?B?UDV3aXUvQUNBWkNaOEFaeUF5ektjZTc3SVlTR1FhczFQV0JLMkQzVWFJaUFF?=
- =?utf-8?B?Zk5nbVBYcmpJOVVVM2tCekVjWVhNTjRVY2JySXE1WnNrME4xN1RhMFI5dWJD?=
- =?utf-8?B?VTZqQ09pdUVoS242aU9hWTBZcVJ3Qyt0Z3R1TjVNb0xSQ1V6d1hYeGZ4WU11?=
- =?utf-8?B?eEJPWkNQL2lmZy82SEZlYTFMcU51eVB0dWhMSE1nUmdiM1VCUGFTNFo3T2xt?=
- =?utf-8?B?ZG95WU50amtQakxWOUMveVJqUCs5SjcvaGtHT05HWHZ4TXlobDEzY2Vsa2R4?=
- =?utf-8?B?VHprV0w0dTdZMmVYRDVMN2JSYldnMzl1UE5mSEp1RkwzU0NaOGtONHBjM0ls?=
- =?utf-8?B?N21xYjFaeWk1dmRpSytYMElJeWs5U2laVGM2UlBFcEdyeTRJZW1MeXlHLzhu?=
- =?utf-8?B?UTI1M212aWNjOWRjSXhYL2lJMW5ad3JySUJYODVlN1paZlpqaVpmb2VoMkQy?=
- =?utf-8?B?NCtYRFl2amc5ZStFQnExL0xpcFAwUllOQUkxbDNkWWNrU1ZwOXROSUljYzJk?=
- =?utf-8?B?cVVUY2J6QUxvYm43aktpOExvbStUTmZuS0Q2NDUrTFkrNloyZUhYN1R1UHBT?=
- =?utf-8?B?bzQ1SU5DQ1hyc1pLcVNUSFE0aGhITzdSTy9iSVUxQlJGcVF1SHlVcE1YS0Ji?=
- =?utf-8?B?ZEdtUUFWeUxYZHg3ZHFLV2JJUGxtNWl6WkU4OGFOTWpzQnBjN2E0ZHNQWG1m?=
- =?utf-8?B?bTk5YTZqS1dmTGkrWVFHVENxSkpVZXg0YmtKMmE0cTh5SkNQOXhQYzltYThr?=
- =?utf-8?B?dWN2SklleGVkVVMwOGptVEEyZWd3YTFXQ2trV0dFbzI2bFg4ZGNMUmg3cHBZ?=
- =?utf-8?B?ZTdZb21rbE8vQ0V5Lzd0dmdhSjdvZk9MNEl4Ty9OS3hhL3hub00xU05sSW5S?=
- =?utf-8?B?SlZaSlFyQndUNU1kN0F2QTdXeDhYRUkzb2RxQXF6SkNSOVkvWGZGeGNSZG5u?=
- =?utf-8?B?aG5MSXBBYzVWbFNzNWZjTlA5cWFhMWkzaTFmV0ZQVm02aDlaeThTa1ZkdTFm?=
- =?utf-8?B?ZVpFOU9RcDhQcTNkNUVHZFNrWUJKUGRGYUE2b1NSOVFYRUN4M2ZzcGNZUDQr?=
- =?utf-8?B?RFRuT0lHY0k2dS9yMTkwLzc3bWNreE5IblJJeTIrM2x1QWJTR3lPZ2xoc05s?=
- =?utf-8?B?K1BQSDVqbG1pNUY2cEZ3bGxSRGV0bkNOd0RyaUU3Q3FmQ1VrMGZXZHlzTlFP?=
- =?utf-8?B?Y2lTR1RwaVY4amdZQmgwM0FhN1RjeHJLY09Wd3orbnRxUVB3Z3JuUmRsbVJQ?=
- =?utf-8?B?Y2JkTzByUEdzdUVXZ0tMSzJIcHRoazhab2pUSkNBZUFLU2tlWklKRHdZU21v?=
- =?utf-8?B?YTI5Z0svMGs2eDdtcXR1ODliUVRKM0NUN3Fla0NoNUpZOFZ1d1l1MVJsVVQ1?=
- =?utf-8?B?QUlXT1g0RVVKUS9ydUg5SFBrWmx2a3lsUklqdE9wc3RVcmdkNlJBZVVsT0V6?=
- =?utf-8?B?NEpsdzJabERxaXlXS3pwUU5yK0FrVnZ3cTFhTWJtS2tnN1VTRUtzeXJyUzlQ?=
- =?utf-8?B?Ti9Fb2RoTDFYdk9SZ2NWVXhqOFU3UUZxaExWU0hMTXl4enloYTViQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63693839-accd-4918-105e-08de7866a97b
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 14:19:05.9239
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KBohh6T9PcKUJc6kHw6BQlqAaiLW/oIKoero5GKZJR7Atzs1gUFhhMPg1QSG1yKVIW/ug3wLxhV9p7k2RlTGUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6998
+References: <20260302140424.4097655-1-lossin@kernel.org> <20260302140424.4097655-2-lossin@kernel.org>
+ <DGSCXPXGW2SW.D8VR5QI5OVNT@garyguo.net>
+In-Reply-To: <DGSCXPXGW2SW.D8VR5QI5OVNT@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 2 Mar 2026 15:20:33 +0100
+X-Gm-Features: AaiRm53KptjDkt8bfE05WqYGIUTryLO7FU3MhlZQUv_hDS9KcrKY5zr_tkTNAew
+Message-ID: <CANiq72mWrPR32O-1rgs7fz0aJTS2rcjGMd7omwvr2cSQkM9rig@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] rust: pin-init: internal: init: document
+ load-bearing fact of field accessors
+To: Gary Guo <gary@garyguo.net>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 2, 2026 at 11:42 AM GMT, Eliot Courtney wrote:
-> Add the EMSGSIZE error code, which indicates that a message is too
-> long.
->=20
-> Tested-by: Zhi Wang <zhiw@nvidia.com>
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+On Mon, Mar 2, 2026 at 3:14=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+>     Cc: stable@vger.kernel.org # 6.12.y and 6.6.y: need commit 42415d163e=
+5d ("rust: pin-init: add references to previously initialized fields")
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Yeah, something like that is what I would have probably written. The
+docs seem to suggest a format like this:
 
-> ---
->  rust/kernel/error.rs | 1 +
->  1 file changed, 1 insertion(+)
+  Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y: 42415d163e5d: rust:
+pin-init: add references to previously initialized fields
+  Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y, 6.18.y, 6.19.y
 
+i.e. first the prerequisite, then a line without it to indicate "this commi=
+t".
+
+Cheers,
+Miguel
