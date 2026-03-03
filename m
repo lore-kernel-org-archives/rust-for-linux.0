@@ -1,50 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399003E7165
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 20:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA3538654B
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 20:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772569039; cv=none; b=gDxkTEr5RvyifxNEdJyYZEqgHsFtHEJ9NB91SwJSAFQe0DGHPGvmWY30xVGoIwyGk7U/xsyWjMTwJJ3nLqNyi6GlJcYdze66bB7gMeXvsNISXadi7bAs4Hm5iqYfqjHv/FCqE/9AXFd324ttiJLZn8cv34CuUgkOcsX9AO8WTEM=
+	t=1772569040; cv=none; b=FVRFnrT7ntSRNjkfPypDXysMii/6ZXfcyxx3vIw5gomKI+tdhTAtNt32KKHMVTHNDhDPU3h2KicXqzwdn8FONSbIC32k2YPxoFrcAaytjrL3tjsPXRDfNWzILZkgti48ZKsT8sNNj1mlc551N/jL8msJR3NVftaQfHiO/6bYm70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772569039; c=relaxed/simple;
-	bh=9lBopCnAyhkwiXawDtFXjRwrZUoXdBnCkHoSFWpEvY8=;
+	s=arc-20240116; t=1772569040; c=relaxed/simple;
+	bh=4d6Hvpn10gbAYRt+sutMoUGNvahQ/QqGBeB/pqThwS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zxi3HCuT3+FmiPTn8paCAc/8RnSCv1+uacwBHptwfdhaJQuCX5gMH7bj0iX7LfoH6Rr1bVqw+O/vdJXg2syJ3e2fn5K7pZbAbwuMKO5prDniV8ulf/iJuBcwP2NAcnBYTxLChZnsd3fanXQulW9oscxdDtc/kPpiTUAKXFQAN20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+gXLygw; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=nw1zyMuXqZH0YJd4WqtYtaaFT0cIewuCotHsS9SJZGKbtJ3TcAy8JlNQL5qO/eUaa8cqKu6ug2FX1A5Q62V9i3jzyio4CqENmEGg9aw1xQn6vBd26qrL++QRkAgFv3ggI9Undo6wveFLq1q6zorw0UpJlBc3Ze07E5Xs93HNjU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byd4LJIw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+gXLygw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA1DC116C6;
-	Tue,  3 Mar 2026 20:17:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byd4LJIw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029E2C4AF0C;
+	Tue,  3 Mar 2026 20:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772569038;
-	bh=9lBopCnAyhkwiXawDtFXjRwrZUoXdBnCkHoSFWpEvY8=;
+	s=k20201202; t=1772569040;
+	bh=4d6Hvpn10gbAYRt+sutMoUGNvahQ/QqGBeB/pqThwS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n+gXLygw55vmXe5Px7ZBSuNAqQt5GhAE/QD36MeAlP4TWhFLc8xk0c1vai+XYEheY
-	 W/A/EzL8tnMufsIbQzL75X1tmvuCFat1MY0pCkKioLzC+1I2cY3yrJIKDJf1Wdb/UQ
-	 Ybwpnu5bVyqWMI1tNWbqHtxY7gEQ1RYxhaTlwmGkrIISv3ixtYwDHKUrvJ+WCTTnrk
-	 eznkFU3afgzDijpckXb7GtYlFWh/sS3w4x6Z2vC+XC9l3SsDSMsKWy8dOdQcNbAZRQ
-	 ++nBt9xQ3WwT9qErlLSQIAfrVMC0Z1vqANBVEszjfqsrrrgq1knYLHCbEgKnEPdChn
-	 efJRw6+sXE3fA==
+	b=byd4LJIwboGO5J5Lg+mWYX9XYgKz+0u2aFyVl9mHqHm9yuxoTUqMLmJykh4uiRTE+
+	 DvyvOsrhNa4Z9XOW65SyAdkzJE/ROAiwAUUHFlOrLHzGs2pCkKmwW5RMMU94a4bh5m
+	 nYvWA97wC7NGOt7wARx194FVUVL9KHZLBgSHOZVCmd+9iGE8kfnTa5ZR9mKA3BigIU
+	 g8CciFRcEZno62NvBeqAR2JZWfw0z7omINGJddX3vHSHMFKi88EdqtVReOLOL11D7+
+	 r8h6pNt5XFaSzW5sfYMRxYxkEs2H03WRwMPBgro+lFtuOk6nl+WFmXf6Uf8wl1MTDr
+	 9OpOxfdph1hkA==
 Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id BA421F40068;
-	Tue,  3 Mar 2026 15:17:17 -0500 (EST)
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2F85BF40069;
+	Tue,  3 Mar 2026 15:17:19 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 03 Mar 2026 15:17:17 -0500
-X-ME-Sender: <xms:zUGnab7jcnSH8JUm-m5V5XT_7VS_zRS0zJ_uD5MBU1PBiQDEjTNSJw>
-    <xme:zUGnaaT3FVbw_2MIHBOA6DXNFgeqtEt1aqmVu0wHrnhhgK90RifKcaGfrxuAOtuuT
-    xvCkE2SDpMi4DxqjOFC6Fa9YMotP6KADfK0VrLCk803jyD4s9xE-9k>
-X-ME-Received: <xmr:zUGnaa8GB7dBYIcq5YRyjjtnS7Mi0uelkAcnCj-00xPTO_xYg_nwAUd4gnBIDGfF7f1ojYTpPXObhzdmblIwHAMREVmfMtPm>
+  by phl-compute-03.internal (MEProxy); Tue, 03 Mar 2026 15:17:19 -0500
+X-ME-Sender: <xms:z0Gnadp0NaKQMtlsn583ZCilCclOURmC05oWqoSqedQG_vI4aD9o_Q>
+    <xme:z0Gnablb-yVBAmWqC0K2SXCL5NcCLBCk5xhq3n-cKtfLiqoAExfpIxUkN0NBeUd6p
+    NucLa_7wfmyLF1wMf_H5aVU_XdZdVkYeVXCpiv4SIEMQMEeJBQ3YQ>
+X-ME-Received: <xmr:z0GnaQXg279o9OFQDFFhGhCXiGDiYTBu7Of7NEOWMprH8qjMKNkUv899mrBL7-MzDtvEP5xh5kLznMRnvIMcMOdtqlsl0pFF>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieduheefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
     hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
     ekieffgeevhefgudffveffheettdfgkeeilefhhfduhedugedvhedtteegvdeugfenucff
-    ohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    ohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgepudenucfrrg
     hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
     rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
-    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudejpdhmohgu
+    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudekpdhmohgu
     vgepshhmthhpohhuthdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdroh
     hrghdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgr
     rhhkrdhruhhtlhgrnhgusegrrhhmrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrh
@@ -53,14 +53,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieduheefucetufdote
     hghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghr
     nhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorh
     hg
-X-ME-Proxy: <xmx:zUGnabqQi2UFOqc_p9dbRKHU6A3LhJG_nXr84_JzXnm8vDF6EG0SKg>
-    <xmx:zUGnaQXBmDbxW5S9_ZrgjY2TR0Dbou_ww5ZRpe3cVYmJby0ld__A5g>
-    <xmx:zUGnaQ53knDS7OIz4HMZbHQID7edw50FFLSnottWuoal84jZCAFlsQ>
-    <xmx:zUGnaWDnMCRa6Ju1i5KUzyeRvcsamp2ql0_6hRBBQJiAsOX4wzjccQ>
-    <xmx:zUGnaceCdy5vxZGMd9VczT337N2n3_WSJMZgZfkvoIS32mrcVTkg3ILA>
+X-ME-Proxy: <xmx:z0GnafS4JDnkgOePZrUrsAwmFnMrTRz6gucunHfVZaPhk18g1_gxoQ>
+    <xmx:z0GnabCqfXizFKuFDW8y9tYcHkHKceMX47VccYHExGkvNn0u5g_Qog>
+    <xmx:z0GnaaRoRMyh5aLhxCrbz_Ro-UI0uXd1mvotqXtpQ3dA5DUFdzS47w>
+    <xmx:z0GnaVQF82joDTq1L9xG87-iqJplDhTLYBt3oAv-HP8q2PmxtP7fQg>
+    <xmx:z0GnaQJUzSnofOmfYxtqCoqWoLLuYPwEeiTnqMMJmj7m0kA-A6WM76pt>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Mar 2026 15:17:17 -0500 (EST)
+ 3 Mar 2026 15:17:18 -0500 (EST)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Will Deacon <will@kernel.org>,
@@ -78,10 +78,11 @@ Cc: Will Deacon <will@kernel.org>,
 	"Ingo Molnar" <mingo@kernel.org>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 05/13] rust: helpers: Generify the definitions of rust_helper_*_cmpxchg*
-Date: Tue,  3 Mar 2026 12:16:53 -0800
-Message-ID: <20260303201701.12204-6-boqun@kernel.org>
+	Boqun Feng <boqun.feng@gmail.com>,
+	Dirk Behme <dirk.behme@gmail.com>
+Subject: [PATCH 06/13] rust: sync: atomic: Clarify the need of CONFIG_ARCH_SUPPORTS_ATOMIC_RMW
+Date: Tue,  3 Mar 2026 12:16:54 -0800
+Message-ID: <20260303201701.12204-7-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260303201701.12204-1-boqun@kernel.org>
 References: <20260303201701.12204-1-boqun@kernel.org>
@@ -95,75 +96,63 @@ Content-Transfer-Encoding: 8bit
 
 From: Boqun Feng <boqun.feng@gmail.com>
 
-To support atomic pointers, more cmpxchg helpers will be introduced,
-hence define macros to generate these helpers to ease the introduction
-of the future helpers.
+Currently, since all the architectures that support Rust all have
+CONFIG_ARCH_SUPPORTS_ATOMIC_RMW selected, the helpers of atomic
+load/store on i8 and i16 relies on CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=y.
+It's generally fine since most of architectures support that.
 
+The plan for CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=n architectures is adding
+their (probably lock-based) atomic load/store for i8 and i16 as their
+atomic_{read,set}() and atomic64_{read,set}() counterpart when they
+plans to support Rust.
+
+Hence use a statis_assert!() to check this and remind the future us the
+need of the helpers. This is more clear than the #[cfg] on impl blocks
+of i8 and i16.
+
+Suggested-by: Dirk Behme <dirk.behme@gmail.com>
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20260117122243.24404-4-boqun.feng@gmail.com
+Link: https://patch.msgid.link/20260120140503.62804-2-boqun.feng@gmail.com
 ---
- rust/helpers/atomic_ext.c | 48 ++++++++++-----------------------------
- 1 file changed, 12 insertions(+), 36 deletions(-)
+ rust/kernel/sync/atomic/internal.rs | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
-index c5f665bbe785..240218e2e708 100644
---- a/rust/helpers/atomic_ext.c
-+++ b/rust/helpers/atomic_ext.c
-@@ -67,42 +67,18 @@ GEN_XCHG_HELPERS(i16, s16)
-  * The architectures that currently support Rust (x86_64, armv7,
-  * arm64, riscv, and loongarch) satisfy these requirements.
-  */
--__rust_helper bool rust_helper_atomic_i8_try_cmpxchg(s8 *ptr, s8 *old, s8 new)
--{
--	return try_cmpxchg(ptr, old, new);
--}
--
--__rust_helper bool rust_helper_atomic_i16_try_cmpxchg(s16 *ptr, s16 *old, s16 new)
--{
--	return try_cmpxchg(ptr, old, new);
--}
--
--__rust_helper bool rust_helper_atomic_i8_try_cmpxchg_acquire(s8 *ptr, s8 *old, s8 new)
--{
--	return try_cmpxchg_acquire(ptr, old, new);
--}
--
--__rust_helper bool rust_helper_atomic_i16_try_cmpxchg_acquire(s16 *ptr, s16 *old, s16 new)
--{
--	return try_cmpxchg_acquire(ptr, old, new);
--}
--
--__rust_helper bool rust_helper_atomic_i8_try_cmpxchg_release(s8 *ptr, s8 *old, s8 new)
--{
--	return try_cmpxchg_release(ptr, old, new);
--}
--
--__rust_helper bool rust_helper_atomic_i16_try_cmpxchg_release(s16 *ptr, s16 *old, s16 new)
--{
--	return try_cmpxchg_release(ptr, old, new);
-+#define GEN_TRY_CMPXCHG_HELPER(tname, type, suffix)				\
-+__rust_helper bool								\
-+rust_helper_atomic_##tname##_try_cmpxchg##suffix(type *ptr, type *old, type new)\
-+{										\
-+	return try_cmpxchg##suffix(ptr, old, new);				\
+diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
+index 0dac58bca2b3..ef516bcb02ee 100644
+--- a/rust/kernel/sync/atomic/internal.rs
++++ b/rust/kernel/sync/atomic/internal.rs
+@@ -37,16 +37,23 @@ pub trait AtomicImpl: Sized + Send + Copy + private::Sealed {
+     type Delta;
  }
  
--__rust_helper bool rust_helper_atomic_i8_try_cmpxchg_relaxed(s8 *ptr, s8 *old, s8 new)
--{
--	return try_cmpxchg_relaxed(ptr, old, new);
--}
-+#define GEN_TRY_CMPXCHG_HELPERS(tname, type)					\
-+	GEN_TRY_CMPXCHG_HELPER(tname, type, )					\
-+	GEN_TRY_CMPXCHG_HELPER(tname, type, _acquire)				\
-+	GEN_TRY_CMPXCHG_HELPER(tname, type, _release)				\
-+	GEN_TRY_CMPXCHG_HELPER(tname, type, _relaxed)				\
+-// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
+-// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
+-#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
++// The current helpers of load/store of atomic `i8` and `i16` use `{WRITE,READ}_ONCE()` hence the
++// atomicity is only guaranteed against read-modify-write operations if the architecture supports
++// native atomic RmW.
++//
++// In the future when a CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=n architecture plans to support Rust, the
++// load/store helpers that guarantee atomicity against RmW operations (usually via a lock) need to
++// be added.
++crate::static_assert!(
++    cfg!(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW),
++    "The current implementation of atomic i8/i16/ptr relies on the architecure being \
++    ARCH_SUPPORTS_ATOMIC_RMW"
++);
++
+ impl AtomicImpl for i8 {
+     type Delta = Self;
+ }
  
--__rust_helper bool rust_helper_atomic_i16_try_cmpxchg_relaxed(s16 *ptr, s16 *old, s16 new)
--{
--	return try_cmpxchg_relaxed(ptr, old, new);
--}
-+GEN_TRY_CMPXCHG_HELPERS(i8, s8)
-+GEN_TRY_CMPXCHG_HELPERS(i16, s16)
+-// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
+-// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
+-#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
+ impl AtomicImpl for i16 {
+     type Delta = Self;
+ }
 -- 
 2.50.1 (Apple Git-155)
 
