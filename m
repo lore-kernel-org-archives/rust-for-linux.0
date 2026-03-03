@@ -1,188 +1,208 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010008.outbound.protection.outlook.com [52.101.56.8])
+Received: from outbound.ci.icloud.com (ci-2003f-snip4-5.eps.apple.com [57.103.91.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A239A374E7A;
-	Tue,  3 Mar 2026 04:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772512040; cv=fail; b=aSaYaCCkSKegCfdy9GWJTXQ4WllVs6GEW6VABqZPACrhAjJ0VqxMLnCdHQgkpoNDdrpDWnSkUQQBr4xMzNKuVcVMkSx3ktDZnJlzoeOcWngIc6LVPt0A9Ms/f2cFm2F/Hqnblb46m0m7tdv6RbKMI9r4z4+ZLEh2HDdtVqSehB0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772512040; c=relaxed/simple;
-	bh=tVTD6SsvcDU0bFK1mDhJvfvv+CDS0JQmIXdVi3bmy5k=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=PAcyea6t4qZaRV8k0rtE1I433AHWFELVtRVHUmgcisC8FPq7uDchnGSYnlgK3SKVwJI7/wUdrlJbf2MZkriWOHiLlYBYl7uieLSifdg/ZrpoepV1hs1xB/ELQ2+VzHw4vwAdMuPHZceDOf6ecIIF19qQjCfEAmVlJtBn23XHopg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Gi0giFMr; arc=fail smtp.client-ip=52.101.56.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C45E3624A3
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 06:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.91.186
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772518229; cv=none; b=senRSwnyq7ADUfHV0Qld56NBMI0RPHhutQmS7IUQB7t1wNFmTGkTsjO1cVSNXJEyut1F6J81dQOnXx3d2uOPKJkjTGzlLfpRQqorTuHtemYBVWBs79o+iyV3EQRltzsmA4V7grq6+DXemZ/Ndg6OGp7nenxThpTRV1mv0q7Jet8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772518229; c=relaxed/simple;
+	bh=3awracQBqBPZOls3F739WOk4JaMIWyd0MKXB7bN16Xw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sLpoatvzB3Frd3yiSojrJ0Y/HKjjQmo6bCm7Hr6EOWOl/rFcuZkZGRDqRjQg8f5lTuMC7QTMjshWSpfFIeBuWYYMmJD4nGwPWfzZUa/G73nW4CvpwRAbPNe6t2zJERqkfZaMQRpHd5OZ6Eu2L4XgLtMq9A0DuLsVWwW8UTPNAQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=saVY+c3q; arc=none smtp.client-ip=57.103.91.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Gi0giFMr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ubUtvCE3DCoR+u80m6zBa1744+PHiyWzvrFaFTKsAPQbwv0f3dk5hvWU3CTtf3rJIndO9zl6gnD5F1Hk3il35EyIjGwEkQ8Ac99at7qsT3C1w4+IPA0H9K+aYje0p79tCgWLmqFfuMc8Wx1WE5rEGpL1rur2M2pZVZ0PzLGsq8Q7enHP1srHp1j/KIsQ/heDhOhWnQwNQVfpHks7RAPIIMov/dM/L9vNcxFiVk4D45+WQIvgmekm6q20KZwluBAgB+i/23NzdXeDdhF8GDGZLTdhfviEa80N43u8UP873StAZyn4KF79LXpJ0i7J7lUsUciKAQQ3fOVquzqYlcgV7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IU2lRUwIMm04TgzhzF/wwV+lVsRlCAVFGam+TZwYe9A=;
- b=GF8j7caHA7ksAF7TTjeLQNqInLi4QIcxcoVXVQRUQvta99cD+oQEWxSxJxWnfEyobOAaU4OijKtv3wMa7TkvQN4TKOgOyH7oIOUjdFHINGuX/HZY9sxxR6kI6Oh3p0hceKGyEiom4fPw7C/8ctXka6nmmId5jeVhyOWhV7yPbZUWj+q9hqBc6wb1nYFALY5IPG1MwT7h+gf6szUpDd0E32FXKw5pknLv9XeQK5Lm0iImi6JkcGcRab2BRd/pEVgLLcK3fsew5Y74WBfaLTiWomLTFKDr9Pu9YK0T2lB3mkwsiMcNf25KzmdwjspW1BSoZZmh7eIgSY4bXHbMW208qQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IU2lRUwIMm04TgzhzF/wwV+lVsRlCAVFGam+TZwYe9A=;
- b=Gi0giFMryZ2fuyalfitmp6JG8+H8OwozikXDzsEKtXZal2UXjgX6KyD8URaidNu4zqgb5mqnJmdOjfuP//HtlKgLAKrjl/XU0AzPPK9bX0iMNIoWBan7zTagF3TplT+fdThIpkHXc9j/EslnXw6yMW3M+LFUSEjFEHpjwSksjxDfkFNUAwTeE4/Is7GTYJlHSG/85HkeQL7mWNX7mQpq8cDyDeUa5Rp3KEMK1OnMfFbv3HLgFGMdUFH3RCUAVlFYLqg4iQwu1lNaLu8guX+Ohz/X8jlWg/C89uP/0NOb+iMwR6zJJ9bOrXBKzlMmJhZwacEAGmZWuRjv4Lg8vB1mBA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by DS0PR12MB7605.namprd12.prod.outlook.com (2603:10b6:8:13d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Tue, 3 Mar
- 2026 04:27:13 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9654.015; Tue, 3 Mar 2026
- 04:27:12 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Mar 2026 13:27:08 +0900
-Message-Id: <DGSV2OSW9KKS.1JSIU4TD8XRIN@nvidia.com>
-Subject: Re: [PATCH v4 8/9] gpu: nova-core: gsp: support large RPCs via
- continuation record
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Zhi
- Wang" <zhiw@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260302-cmdq-continuation-v4-0-c011f15aad58@nvidia.com>
- <20260302-cmdq-continuation-v4-8-c011f15aad58@nvidia.com>
- <DGSBHXT0W3VH.3S2OI2EAG2BP0@nvidia.com>
-In-Reply-To: <DGSBHXT0W3VH.3S2OI2EAG2BP0@nvidia.com>
-X-ClientProxiedBy: TYWPR01CA0005.jpnprd01.prod.outlook.com
- (2603:1096:400:a9::10) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="saVY+c3q"
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-central-1k-60-percent-15 (Postfix) with ESMTPS id 4B25218000A9;
+	Tue,  3 Mar 2026 06:10:25 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1772518227; x=1775110227; bh=Tsb0Pln2qQ3FXj3SHBz+RTL/BdHdrL58+gjvsi0htvY=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=saVY+c3qrgfmSLhbAtO7WmGP4mS5d7Hyh6vv34f6LLa+me0rh3czsL+9GyW8WDJ1aGCcH5AcOwuULuNhVZa3YvntAWDajmfTX665meSM6L2qsd5iT4OT8uSNgjOmeb32b0UBJZB5vFfWUM7tagw+uTU8nlx4wo742W/WjGL4+WTFc1qniQ8rWpHGiRklmdOdFoDyoLhQOjthFKBi4qSA23GZ5Zvo3W6J5lN4O/ph7ZlGEGC4FsqhyK81EL0Asp2iwNJW+DSbXVy+nh7dZFhzcJ0el3NptBhHk5v185mGStwczDnjW/bmG3z7/wJcpKTu64casDLZcgqewOJAlOa5rA==
+mail-alias-created-date: 1769500909675
+Received: from bee.. (unknown [17.57.156.36])
+	by p00-icloudmta-asmtp-us-central-1k-60-percent-15 (Postfix) with ESMTPSA id DDAC4180020D;
+	Tue,  3 Mar 2026 06:10:21 +0000 (UTC)
+From: FUJITA Tomonori <tomo@aliasing.net>
+To: a.hindborg@kernel.org,
+	ojeda@kernel.org,
+	gary@garyguo.net
+Cc: dirk.behme@de.bosch.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	frederic@kernel.org,
+	jstultz@google.com,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	sboyd@kernel.org,
+	tglx@kernel.org,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v3] rust: hrtimer: Restrict expires() to safe contexts
+Date: Tue,  3 Mar 2026 15:10:00 +0900
+Message-ID: <20260303061000.73970-1-tomo@aliasing.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|DS0PR12MB7605:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05993a24-924c-4bda-d2be-08de78dd2462
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	elrKagxW9LGg9vqtIRF4aP+zRl+6CAvmg6esG5K8mOjx92nKMCpKgHFaxa20xTAFlyeujAX6BxZDsiW32BRQMVZ6Nm/tk/dY75cZfO9MpdVU6GR6xkn9oQx6uhNIav4R8jH5NlPExb0giiXHHfkqfROdz3SRKh2JtsRuD9Cur2zz9QFRzUd1DFbWUnJsex5DOIjFt2oiWcUtOg15cFhmumMEgNjU1rslUMu0xNlvxhUSeoHBgMTJ0G0mdM9G7vAImcTmxnibx5ebqHrlpV1wvW682dQ7UvMJv4rky27vukvhoVvuGswU7BFFJDBxvzgbEwtqGWOAmUkYpicGz3HZy24fKYvOW/ClSdoud9tsqS7FK2+L4iyvPttbdxb21dPqCAvC0adecBsuovuVpKMx+KNAs9ywbTgSC2X4jC3KQj5L7xANPnC58fkh++SBxTgT9tEn5+EBVfpPn9P12hybC2/lvE6LTesQOcPbryuEXaFrdKY0FV1EXJb57jBZsPmpkB/omePo7GuYpEMx+8M+KxWW2yOx0lWyTQC9J6tdEG89lttGyxsQR3rP2zzGeCSZNKZNtA+/lxuzGAaaWmcRRnoS7JeoHzErze2rS+D2SBAiLSRiCCZe6YMz/P/DODWMXVNUmr5Tuxkzz3feARK1MQHd6ToahKG/cWD6r5wMXGRuqHpjxb5T65MTEs56HbPSSF5WOaM8jKNIMpV3VOeh2OiUKOqsPriz3GEZUI/z80g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?czVtV0o3V0Z1MXAyOGowUXlmcWF5TjljdkZVWDk4MmpGUG1QKzA0Q3dWQTdz?=
- =?utf-8?B?THk0ODdseFhTYTBoSGVGSXJGZE1pSU5CdTJlamljbWsrRjFOaHYxRDErdXY0?=
- =?utf-8?B?K2txKzFCMFlTcUZQNDZMUTFLZFhOZzBQZHZ5Wmd0VG0yYkRJWmtVU1pzNlNV?=
- =?utf-8?B?M1lSYTJ5KzVFL0JLTTR3MnlWRk9ZbVQ2eEg1eGhqanp0dE1CZ0FlSlEyQURB?=
- =?utf-8?B?M25VVEQzMFI1WmdrNElZV1hHdHJvUVFvNDR3QnZLekNic3lRMWdTWGxyamxS?=
- =?utf-8?B?QSswb21ma3lLS1NXbWZWN2ZmNDFFM3NualFsZVVqMFF3OFpVMExrOGZGS0tQ?=
- =?utf-8?B?em9nNmhMalJpQllxT0VRWTQ0dUFWTWp4WVQ2OVpPQlZEV05KNzlmRVBMbEdZ?=
- =?utf-8?B?bHh0ZklWM0IvMUVkUGVvUXRINmxTYldiaDR1QWhKcW5rOVNYNDZOVVU0MzVv?=
- =?utf-8?B?RHZsZjBqY2FraGNwTTNJbU42ZG45RVpFK24wZ3o0bXRqTkxVdjRielVDcVg4?=
- =?utf-8?B?WFJHMXhVT2JHUG01bERSNmoyNmgwZEgxRjVPL3M0c1VockYxUnJHd2FPcXIx?=
- =?utf-8?B?VlZRM1hMR2RlS2tpWUFrNkFWUUpnN04wUU4wK280dnBXUXhFYUdxY0YwYlNM?=
- =?utf-8?B?M2pld2sycTR5aWp5bXQ3NHk2aWJ5RkNxLzRsbnpaaDQ4VkJqQS9MdmJtbnlC?=
- =?utf-8?B?UUdZZm4yQnZhRVFod283NzVtc0dNaVF4Q0R6bXpaMUVmOTFrZmdFdWtxUWRp?=
- =?utf-8?B?YnR4cjg2cEdpZWdNblRyTTBhcnBzWUw0a0xCaExjT2pUWGw0UStrZ0ZSTHg1?=
- =?utf-8?B?YmZGcXVkZWpSNjBNVUtXQ1FDY2FObXdLU1FqdTY3TGRMVTMyTnBsR04wSDJO?=
- =?utf-8?B?QS81SHkvb0JQYzdBYUZaOXRzSmdIanJBekVsaEVnRXNMdFhySTNONHJWL09Y?=
- =?utf-8?B?c0hQa0I5ZFhLWGVBb3JFR3Bmb2RqbkRrL3FIQ3J0NDM0NFBtTTVpcCtiVVl6?=
- =?utf-8?B?S1NZa3lvakMyaTBKWXNFaks2VE9tZ0Y3Tjc2c29sNWN2OHc4NTJwa1pqOVdv?=
- =?utf-8?B?dHF6Znloa3RQMEJVLzQ1L2tERDFiRmRiN00vODdNUUFDdDVrYjlsU1pCTUZI?=
- =?utf-8?B?YUdiY0NiYU5qSGl2SlZiMU16MUt3SGtVSEQ2YUk0NmN5RWVscllFMUx2bFpv?=
- =?utf-8?B?VVVXM05xMWlSVXVJQi9yNjR5WExOaUxRcFdTZXRpckFlZm02SnFyYWhzeWJk?=
- =?utf-8?B?emZEbmozaEE2c0dmUW5JaUo5SUxyZGJrRHd4Q3FXZDRkSjFUSkNLS2FTNTVl?=
- =?utf-8?B?TDI5NlUzaDNwWGk5RTRWUTQxSmJUdjM4aDJWQ0hZOGhSR05Cc3pzZ1hOb3Vn?=
- =?utf-8?B?T0xQeVVleVVHL1BnK01iOThXRXA2dmRGU2FNYjNsK1R3ZVJGd3FQN2Jrb2JS?=
- =?utf-8?B?NmlGUTNjakJaeCtVMWZBay96Sk4rRGd3QjFnYVZheFVsWk1CVERIUFNQWnNu?=
- =?utf-8?B?UkR5czNKdzBvQlpqNHBSNVU4VC93Z2lIVVBDMzZieTh0WnMzS3RTdE51cGNt?=
- =?utf-8?B?MU84eW1jNWltZ3pzd0NzL2NXRzlHMGdCdTV4TklTUWR6bDg4Z2RmWFZWbCt5?=
- =?utf-8?B?L2lTZFQrMEI3WExSRUMySGtKWng0VjBZQk5LVUZVMkcxbThZMkRJUGJueTk1?=
- =?utf-8?B?Nm05c2dMRE5YdlkvVlN1ZmllbTM2WkZiSEhId2cxdGVUNFRQaUxRZEZJY3No?=
- =?utf-8?B?L2diaDNCZWR2YVNGTUxvVFVJNy8vTEFIZE9NdjBHRVlOdFQ2M1pGYnp2THN5?=
- =?utf-8?B?ekxVWDloUC80eTd4WGVsQks4MUM0NjJ1UUUwSllsL0JiM214b0NkeUZUdHNN?=
- =?utf-8?B?a0w4ZGF0Z3oydEY3Si90YlpXNk9POHJIRkhaN3BFQUxUUlgybkhWNGt4aUZC?=
- =?utf-8?B?MUhDOFo4aU5BaUdJdTZGdFczdlMwQzNhaFdNMDd0cGljQmYyQkdkbUJtZ3NL?=
- =?utf-8?B?TXhsU3drYVAycWI5NEZZMHpKQjVFdkFHelBXRWVzWVFhS2pZZFRtbXI3Y29T?=
- =?utf-8?B?OWN4QTFsRWh3Sm5DcGtRTStEMmdUOERGeDRYNklvOEs5VFVveXNtaERNUHFa?=
- =?utf-8?B?dk9WbHlHZmM4SVpmdTF5MFI5YXZGam1nSEYrVWt0TytIek42WG9aWm9mUWtm?=
- =?utf-8?B?R3FWVlJPN3FrT3VhNjBkUjMzNmZqNTlTQXd1c0NRRkZsL3VmZW1wZ2pzQm9n?=
- =?utf-8?B?dXVMZmxHN1YwWHhiSUdPdlVqL29iN2F0ZmtsL3ZJQ3NGUUNzdzdqWllRVXk0?=
- =?utf-8?B?cC91UksyRmxMOEN2aTVnejgzVDhKKzl1K1Zod2RsckVvb29jTytuck1RdGZ5?=
- =?utf-8?Q?qyC/ShZRDoXKeiY2bYyh2ceFI5XMNDf/6sUjoa5uf+A3z?=
-X-MS-Exchange-AntiSpam-MessageData-1: WJOZWJPgh6uqAg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05993a24-924c-4bda-d2be-08de78dd2462
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 04:27:12.8303
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DsVL35/9XFiaoemF06E4H5qXP4GXcyntpYjN5rPtHgRezk6pJL6DxR7bHdz66UvimhVvpdCMlHLo/HdPLjpBDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7605
+Content-Transfer-Encoding: 7bit
+X-Authority-Info-Out: v=2.4 cv=Madhep/f c=1 sm=1 tr=0 ts=69a67b52
+ cx=c_apl:c_pps:t_out a=2G65uMN5HjSv0sBfM2Yj2w==:117
+ a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=h38X0v18AAAA:8 a=pGLkceISAAAA:8 a=u2gGhAnWh_5ohZzoCfwA:9
+ a=hjDv5vYt9AxPTMVfK17q:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA0MCBTYWx0ZWRfX2sDC+SytSXwk
+ zGagLnfWUfyuOSOTnjirJKRw0ewSheBhgTngeOoNRoXijhXWistPPeD70FrcMd8pFL6/OktpBem
+ K6JlBeExQoa1ccEF/d+paXzC9jJTquChAR41conAo/BAd0chnTuP4D1bwU09SR9DDQkHfRvqghH
+ BNUigmTnYH1qReaohi9b8ac4nBVk6e4YiyXDjwnnmW9emTXbNIT2FhON3ht5+I6KgLYf+s+gb3F
+ 3l453Ir8cvNQ48RdgQb+2xAXuni7zWB4DVOiZQIYVE7YgRfoHekffoCozFbkfozpgskRSyAjwLe
+ QQoY4sSHvniRifOfaNZPEuwnzFF8KplWC5Ne1FpHrji9zhJ31RatNcld+6rDC0=
+X-Proofpoint-GUID: -4jutrMGhcYLnmn9OWUL-6hXSKRVVg9R
+X-Proofpoint-ORIG-GUID: -4jutrMGhcYLnmn9OWUL-6hXSKRVVg9R
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ suspectscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0 mlxlogscore=525
+ spamscore=0 mlxscore=0 clxscore=1030 adultscore=0 classifier=spam authscore=0
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2603030040
+X-JNJ: AAAAAAABKEYT2ZhrUzzDBOcGOvu9urwJn6kDVw41fQ78d0OjEOBHO058Yu4prLGgfDEP0I9Mrp/NWrsSyZ7JafJO+ALE6Ui4X0DLfILrsFBRmi6VzvpvpXyh8aNH/ibG/tcjDQ/HtGReV6dD32yzulVlJOUUmcsEZCuc5rnglZms6L5RRh2r+8TfROyUy2nagN3ZZy1FCJigQbPFh2ZnVwExbdwHWbS5R+i8UQlkLVqctxx037ETKjZYndWU7J/nxAaFow2z3XrO9Mii30tvsoLR1aCjhP+K29ylZgy4N4hwdihFDludMpcFFXC1/sxXHESOkY7Y5oYjtzYzM6m8yjFXT99W1CTtxI7OcmAm5c5KH0ICS+m/Ic2MJMggp/S5JlufrGtHSzPMbQ0778Rop3sNqlHzCN5L+3eMQ9HT6hskCBUfpTfUzCFDjLwNma0xgFS79673wYys/yyIJLmmv89FeQembXBCAVObp5Lf4slO0X4iL3cP8V7kK8cVcVSQgcgDQymnTjnqKU4ZhcxjT1SkyQjGki7+fTlUPOSQ+T7B6ujIDy+AjXIHClKIH92OHhixyxOpokvtidaV/7sD6MVkRaUX9NEBhT3F47GR0ZALValVNyYEghbTnskpVznty1lCeYVfAaqHBurgwk1HDy747AeXzXPvRB5WaNyqQs+opi0iZVqzMyLoMd4o4VSvxQcMZ2yTPyULsSg05Oh71BtiResTlcmSonl0YmqD9//QGvf4XFQlw1RYL6TvrddQJTLJb0CJoTpmlENhNw/nUWr8sPKr7XQT2Y50VObGROPOs6D+X7zxTr6D9BD73Iw4sAEzBk9tlUYWGmX1QS4aGXyOuzW6Fs7W
 
-On Mon Mar 2, 2026 at 10:06 PM JST, Alexandre Courbot wrote:
-> On Mon Mar 2, 2026 at 8:42 PM JST, Eliot Courtney wrote:
->> Splits large RPCs if necessary and sends the remaining parts using
->> continuation records. RPCs that do not need continuation records
->> continue to write directly into the command buffer. Ones that do write
->> into a staging buffer first, so there is one copy.
->>
->> Continuation record for receive is not necessary to support at the
->> moment because those replies do not need to be read and are currently
->> drained by retrying `receive_msg` on ERANGE.
->>
->> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/gsp.rs              |   1 +
->>  drivers/gpu/nova-core/gsp/cmdq.rs         |  41 +++++++-
->>  drivers/gpu/nova-core/gsp/continuation.rs | 167 +++++++++++++++++++++++=
-+++++++
->>  drivers/gpu/nova-core/gsp/fw.rs           |   4 +
->>  4 files changed, 210 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
->> index 174feaca0a6b..ccf56f1ad246 100644
->> --- a/drivers/gpu/nova-core/gsp.rs
->> +++ b/drivers/gpu/nova-core/gsp.rs
->> @@ -16,6 +16,7 @@
->> =20
->>  pub(crate) mod cmdq;
->>  pub(crate) mod commands;
->> +mod continuation;
->
-> Looking at this series it seems more logical to have `continuation`
-> under `cmdq` than just `gsp`.
->
-> Nothing in `gsp` makes use of it, as it is an implementation detail of
-> the command queue. And that way the `pub(super)` exports would be
-> perfectly scoped to their user.
->
-> Re-reading my review of v3, I am the one who suggested to put it under
-> `gsp` - so this is my mistake.
->
-> No need to resend just for that, I can fix when applying and this should
-> have no impact on the patches that come above it.
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-I think we might have one more round on this so for now I have made this
-change locally and will be in the next version.
+HrTimer::expires() previously read node.expires via a volatile load, which
+can race with C-side updates. Rework the API so it is only callable with
+exclusive access or from the callback context.
+
+Introduce expires_unchecked() with an explicit safety contract, switch
+HrTimer::expires() to Pin<&mut Self>, add
+HrTimerCallbackContext::expires(), and route the read through
+hrtimer_get_expires() via a Rust helper.
+
+Fixes: 4b0147494275 ("rust: hrtimer: Add HrTimer::expires()")
+Closes: https://lore.kernel.org/rust-for-linux/87ldi7f4o1.fsf@t14s.mail-host-address-is-not-set/
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+
+Note that I will send a separate patch to remove
+HrTimerCallbackContext after the discussion concludes.
+
+v3:
+- Change the signature of raw_expires()
+- Rename raw_expires() to expires_unchecked()
+v2: https://lore.kernel.org/rust-for-linux/20260224132507.315637-1-tomo@aliasing.net/
+- Add Fixes and Closes tags
+- Fix and improve comments
+v1: https://lore.kernel.org/rust-for-linux/20260110115838.3109895-1-fujita.tomonori@gmail.com/
+---
+ rust/helpers/time.c         |  6 +++++
+ rust/kernel/time/hrtimer.rs | 46 ++++++++++++++++++++++++++-----------
+ 2 files changed, 39 insertions(+), 13 deletions(-)
+
+diff --git a/rust/helpers/time.c b/rust/helpers/time.c
+index 32f495970493..ef8999621399 100644
+--- a/rust/helpers/time.c
++++ b/rust/helpers/time.c
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/delay.h>
+ #include <linux/ktime.h>
++#include <linux/hrtimer.h>
+ #include <linux/timekeeping.h>
+ 
+ __rust_helper void rust_helper_fsleep(unsigned long usecs)
+@@ -38,3 +39,8 @@ __rust_helper void rust_helper_udelay(unsigned long usec)
+ {
+ 	udelay(usec);
+ }
++
++__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
++{
++	return hrtimer_get_expires(timer);
++}
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+index 856d2d929a00..a4aea06e2c2d 100644
+--- a/rust/kernel/time/hrtimer.rs
++++ b/rust/kernel/time/hrtimer.rs
+@@ -224,27 +224,36 @@ pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
+         self.forward(HrTimerInstant::<T>::now(), interval)
+     }
+ 
++    /// Return the time expiry for this [`HrTimer`].
++    ///
++    /// # Safety
++    ///
++    /// The caller must either have exclusive access to `self`, or be within the context of the
++    /// timer callback.
++    #[inline]
++    unsafe fn expires_unchecked(&self) -> HrTimerInstant<T>
++    where
++        T: HasHrTimer<T>,
++    {
++        // SAFETY:
++        // - The C API requirements for this function are fulfilled by our safety contract.
++        // - Timers cannot have negative `ktime_t` values as their expiration time.
++        unsafe { Instant::from_ktime(bindings::hrtimer_get_expires(Self::raw_get(self))) }
++    }
++
+     /// Return the time expiry for this [`HrTimer`].
+     ///
+     /// This value should only be used as a snapshot, as the actual expiry time could change after
+     /// this function is called.
+-    pub fn expires(&self) -> HrTimerInstant<T>
++    pub fn expires(self: Pin<&mut Self>) -> HrTimerInstant<T>
+     where
+         T: HasHrTimer<T>,
+     {
+-        // SAFETY: `self` is an immutable reference and thus always points to a valid `HrTimer`.
+-        let c_timer_ptr = unsafe { HrTimer::raw_get(self) };
++        // SAFETY: `expires_unchecked` does not move `Self`.
++        let this = unsafe { self.get_unchecked_mut() };
+ 
+-        // SAFETY:
+-        // - Timers cannot have negative ktime_t values as their expiration time.
+-        // - There's no actual locking here, a racy read is fine and expected
+-        unsafe {
+-            Instant::from_ktime(
+-                // This `read_volatile` is intended to correspond to a READ_ONCE call.
+-                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
+-                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
+-            )
+-        }
++        // SAFETY: By existence of `Pin<&mut Self>`, we have exclusive access to `Self`.
++        unsafe { this.expires_unchecked() }
+     }
+ }
+ 
+@@ -729,6 +738,17 @@ pub fn forward(&mut self, now: HrTimerInstant<T>, interval: Delta) -> u64 {
+     pub fn forward_now(&mut self, duration: Delta) -> u64 {
+         self.forward(HrTimerInstant::<T>::now(), duration)
+     }
++
++    /// Return the time expiry for the timer.
++    ///
++    /// This function is identical to [`HrTimer::expires()`] except that it may only be used from
++    /// within the context of a [`HrTimer`] callback.
++    pub fn expires(&self) -> HrTimerInstant<T> {
++        // SAFETY:
++        // - We are guaranteed to be within the context of a timer callback by our type invariants.
++        // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`.
++        unsafe { self.0.as_ref().expires_unchecked() }
++    }
+ }
+ 
+ /// Use to implement the [`HasHrTimer<T>`] trait.
+
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+-- 
+2.43.0
+
