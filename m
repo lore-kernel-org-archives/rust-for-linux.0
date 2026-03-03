@@ -1,135 +1,280 @@
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012028.outbound.protection.outlook.com [52.101.53.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC240381AFA
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 18:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3B626F46E;
+	Tue,  3 Mar 2026 19:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772561261; cv=pass; b=MlNdsixrENW5RzSTWisS5BzHXIz5acpiJz51jthsRWzJ+QOdzdTao8SLu/dRnLM4SILjVxsy2L4L+Lcq7oJYucyWp4CaEpni9I29Nob8oNNU+DLMdiWEmlIC6OvKC6g68YcfQ/suh73186fwOJoKPDdEElk2S0ioeilS8X2nStE=
+	t=1772567059; cv=fail; b=rtaj6UPilkh7Pra0RP+1I41KsQBnbh76E6lHL9yHuKaW0VvXJuM9Uv1AVB9twpHpeCccImbtGBHZGPhQFVY0RKARDjnzO9DuQtLOC9miStDxUd5pbmp0eb/lXi53Fw4Ebydz9uzVrXhFvDoOZoMAjAFncAwuM8W5SkHSLn5XcHw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772561261; c=relaxed/simple;
-	bh=HUHgj2ElBuPGmubcslyfUuFNZEOEJOjv22IyfxcfieI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HlnwW0m1VmDeMnXpICtK7CihEMwFKTi/rFPBpWZqGa1KGXHLyer5VGicmdZ0MAO+eJXO6gMgYGR5jG5KJrSBRiKbxZtA8im1ljw6oKbQHh6PYdaqrp31t71hPRTF8xeBrpQadItOmxEvmPg/OOdOWuPgukMt8+1KcYU3xLIfrdU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XGapfEar; arc=pass smtp.client-ip=74.125.82.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772567059; c=relaxed/simple;
+	bh=45mTGLPfToaZL3wX7NKeRYAndUKd5nc+2bm/c7a7RrA=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ll58cYJ0gfKJUZGBnzvYlAKeY0MdCA/quwetj5yEyMo2oguUJdDU0MxB617l9HUSZN+bplPVcNBHsuhOOPSa3q5dCgATGeG4on/I98jG5vl4HzUMXuGPfBVHSFcQD8fzS4u4Q+eaOnQruB+1F9Ao/SRFhWX7sRjUBPR1Yj1pXE0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eb3ZZOTb; arc=fail smtp.client-ip=52.101.53.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XGapfEar"
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2be084d8166so184490eec.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Mar 2026 10:07:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772561260; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XO5RNW6QSiOLSshi5JJRV504ZTOjuk9IsS799+9jxKcd/62wyokTwJb6XXYLvNZdSA
-         FrptkZ8APN5SUIaMn3smCbeN/FZFyDMU86089bR81d4FZpTnPoVycEYl4Dm6qB5SL/ap
-         nLwczaKHTRxaLi9hTYezHsCL4lAePiN7qze/8Bl1wL5WqSBTxo2w3OC/H1v6nyIEAkT1
-         EMGDOYPoBU+Tg+dkckv4H/x96+8+T0YoHUv6WtviRSMHIszUIDY0BWPRlh7FblbiSY+q
-         5/rb7dxrRHuep1V+4BdZAd6Sy5K6uMHsqKaJrXxtJtX05X/WEkAHoEcSx0rSqOTLiol3
-         YqNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=R+q0jN+aH2U740XZAx90ODP1AU2BrSp5EsLhQpO8EjQ=;
-        fh=1cf0D0mLs5EtQ+7ICwzCHqpJqdyBTJesIKsqjc4ZIhI=;
-        b=EMEzr9sFoW1VM8M+92//dcgtY65kOpaz1Q+/d2kQA2RvCO4Dht0GOupGZxKOtDB1pV
-         rVsxMDf4kSRPcRIJWDBeCfBgmiMD8GnP/Xyi4OkxqJa375e/nDmyQzK1b12yUqMUk4V6
-         tQLLBx8zRLG4rm2gRvAjBnHGmdbJD0JDJm4zFWPtYso+eZbbWMrw6Tam9pH6+qw3Jbh5
-         Ftq+9u6uoZRvZWHhywxhA0iU5XxT7HM9wwmadPO1MrbLnTm2U3ZJ7jYBncBY5KzawDt7
-         nWkDJi22rP+NBLe/2ZoLdJYnNFT6p4yOtDJGAovoKJDyi3Jg2DjjCCPcCAv4ONDOIltm
-         kCKg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772561260; x=1773166060; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R+q0jN+aH2U740XZAx90ODP1AU2BrSp5EsLhQpO8EjQ=;
-        b=XGapfEary2QvfkhT2A03zHWPyyNJ6Iao5dpwc6qoSW9t7U0bZEFgeqdUWFHiQx0oZt
-         PMLO+YoBvftY2bV44jNW3TwFTtG4+y+HvpwCZzdquagngv7grRMS793RBb3gGOrxwQRh
-         E+PmR57RDenuPd2sT4bp9qvEo7O0dtyqmqUziSLy77o3fNg0n4FGzzCCtazjecQmuc8l
-         dZf2ZoDEqsp7iR5H+H2dKfgw6JlLEfrz5Ncya6As4PgHqhx+nA9oWgm8LS6SgA4Ko0AV
-         JbiY+EHuU8qjRGYkzNbMAvD2NsVOQBJUH/75SaxLlqMriheKko1HccaKIHW3FGGn/Ig8
-         WpMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772561260; x=1773166060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=R+q0jN+aH2U740XZAx90ODP1AU2BrSp5EsLhQpO8EjQ=;
-        b=jeAwUuHPXP3ba9ngGTJz0cdXsk1sC+b+/BeBV2G8z7RWHXKrBbrdZNbXXY9Oe4KBx+
-         HPqr/R1vULaR3w4rk7li59oX1kTKry0IAGGirXhNV4/8NKfS+bFrmchKRMoqtYCFEfvd
-         sxnoG1hidiFRYacRrZz/B329/gTgCk14dB1D+hYko3k+dlcjptPrDWNhK0xzId1Ho3tN
-         HRizjptmb9sp72vnuYUMvFNyDYPEJgoS7JsIiUl0hmOU1U/kdQGkiWzkSb963WtJvCm/
-         1x8M8qOTcLZNzhB9fqe3ofUOUfFDLYIpqF8zjQk6kk0kImd9FlcMRhZjGNjKUgzqRkDm
-         TvFw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOBlPCqcJWvFIKv1KPYkPFBua5R05JDsqYJhX7R3LVYB9Xgy1svNPzOnZjn5GiXix90PRU59DKs8wQqCjp+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAYjZalush3vsQdA7aEuDkYKc9wIHX4uKRleHFYYbB3iMZDLe4
-	A5OsO9cwPCwGLl0A1birq0NCi4x+dxe5bqRsRhqQWuQXm5kWpvFXcPobt1jHR3t6AHUCVZIn3Nu
-	gpbGdV59tOTzdO8MJ7f0/1Y+KaVVeGf8=
-X-Gm-Gg: ATEYQzwIWhWWHQyjjrdVZzb7fKmIwVaAprjLKhUMBmAu2Cu/z/UA5Zs7vxmX78gWWpv
-	/pKX4o5obVBgyqt6rCyGv/T2cG4GP9oCY+j8e933P4+aJreMi/4/fNz7mIIoCPcvOTz1X4oFvEW
-	5ThBGi+z828zNq/hpTcUo6eoMrYObT4OhKPMNokIXj2mWeu7KnGQ/M3BpkiCyvtu63Y1qy3NewP
-	L7BOeeqtC/HvAL76mIW19PifaI5q6lKjsdZWDL5MbnJNIG5orNQqlMR+2q3mlovIlTNnEJz7S7/
-	EXJFoZoKnMLDgVgkXQZBLoKY+AhZrd9v6lhhm2vnpjVkwaeomMEmrsWpmiJQdwxsYD1tffsCXmV
-	6keOHJ4nQWJnu3LaoVSB/ycKZ
-X-Received: by 2002:a05:7301:128f:b0:2be:1946:8576 with SMTP id
- 5a478bee46e88-2be19468a7cmr1189062eec.4.1772561259708; Tue, 03 Mar 2026
- 10:07:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eb3ZZOTb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tL+7gjb54ka7wvvuSA+F0loVKqy2o60yUEQ0kO+2kbnoHXcQgikiStvWNpbotblUX6qJhGiN33KsN/Z5QE6uhaod31Dy/k1/xbWJSN5eupWBJZDtkNkbeNFkrqacm485VdoJ9mmtYt8hD3flRCdJUIKUREmY/kj0+bqf4VBWwtk6FTPZHnrc5g3L2tN2/VTOuh014wqBgAwQqZtY2kgxUQctcgpzNiKMopFd++H908n9GTj5aetxBWJDdUKAMNIBGT0ZL+aU973hFaH2O9rA6hcIrtGyhBjYT9U3vDL4h9kYa50yn/I8jBSqJ/VfeleZI5ZafQ4uGe2/8UcxCbrmJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9uks4LlUVJ6lWKm12K7dD6TPGuILbjjYzHJ1St0vw64=;
+ b=ivlxPckmFBClkqPER3XtpiwblK0qFmdikPRgmIjlOd3UCpYim1UrPIgMfC8IDd2+CRoUkwqzw8TkZkg41WIqOayWSiqdha1LGxldQW2ZKuIUDA/P06LmgSsL82VmYuzJfwFxVHGWfAs+hdnhYP/gd2f2sR2E4Fqt177u4Jciw5wHJdV/hmimhKT3NeLaucKiVoTb/RKz70AqU0wftz1n2yOe4mpYMZx3PvRZlPzkZGdTskUJWlzrJ37EX7LSyMJRcRqfIJE3z3yopRUF1GS0p81ksagmD/LdW7WbB6TN6LJq3W1P3eE/8mMNIsRPUtN4eg96Xpo00ZR8AsNGH8NSnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9uks4LlUVJ6lWKm12K7dD6TPGuILbjjYzHJ1St0vw64=;
+ b=eb3ZZOTbGX9TocjvW3zCP9PQO3kV+ONkLTyIcJePZc4NsradJ5MlID/+j5cx5kcrnWu6CzD3zQDgMb9WarjkH6B206UoNhURr06LYUAibSiCS6IrYzQ1Eg8ObTWc8EYnh9VZInlFp17SLDv1PJ87nfTLEIb3x6tlxWbIniXKwDryTRPHSbzxglYqMV/mN2TDhgdg8nBeKjP57YBi0XtGIaquUpt90oXBdhhKDidFtyFTZalsf1psHPjQLZntEaRFXb9ueIqkNl7qtNFFx4KwNwRPDig6MC0Hox88hn0+IXdYtY0T6FAod4x69pUsnHmEZEdx8Fijz7D3gZDhjcsd+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ MW4PR12MB6828.namprd12.prod.outlook.com (2603:10b6:303:209::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
+ 2026 19:44:07 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9654.022; Tue, 3 Mar 2026
+ 19:44:07 +0000
+Message-ID: <e9ac37f5-f23f-4ea3-81dc-32d96e5b2041@nvidia.com>
+Date: Tue, 3 Mar 2026 14:44:03 -0500
+User-Agent: Mozilla Thunderbird
+From: Joel Fernandes <joelagnelf@nvidia.com>
+Subject: Re: [PATCH v8 06/25] gpu: nova-core: mm: Add support to use PRAMIN
+ windows to write to VRAM
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
+ dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>,
+ joel@joelfernandes.org
+References: <DGSA1N4M1PUM.29JML8EK3SKWA@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <DGSA1N4M1PUM.29JML8EK3SKWA@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CYXP220CA0002.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:930:ee::12) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260211032935.2705841-1-alistair.francis@wdc.com>
- <20260211032935.2705841-14-alistair.francis@wdc.com> <20260303120901.00004f09@huawei.com>
-In-Reply-To: <20260303120901.00004f09@huawei.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 3 Mar 2026 19:07:25 +0100
-X-Gm-Features: AaiRm50kQCG3rWYXRXgEs_41HrhB68jbew2wmRd5fS8L-moVcgSEic_0M728KX8
-Message-ID: <CANiq72nU-0Da1R3K6eHeJU1jkhnu7arVP5NOykdvQEpoHSgHbg@mail.gmail.com>
-Subject: Re: [RFC v3 13/27] lib: rspdm: Support SPDM get_capabilities
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: alistair23@gmail.com, bhelgaas@google.com, lukas@wunner.de, 
-	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org, 
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me, 
-	boqun.feng@gmail.com, a.hindborg@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	wilfred.mallawa@wdc.com, aliceryhl@google.com, 
-	Alistair Francis <alistair@alistair23.me>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|MW4PR12MB6828:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37e7a617-fa2e-47d3-335f-08de795d3b0f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	yxLlAMNmqM/O/GERom5dAOs1T96MeFupGg4TUGsKGr178L8WX3yVo+UjFyQhJ4x5povWWgrFep6w6BkuiBhaxb+JBtYmr0xvKtfWlmBtjyr0wwF7tt1Xwp5m3b6FVyHG/mMgAPHpam4ZevmceipKrok1Zr1ufxbJVb42+Xs3c3ogYNqJ3YbW6NteAnkioigxONMWZCHE1DCs/T/2ymsqyit579OBQ/gH5inojl9vzYkM0D2dYXvp1miJoRDYd6BNrwWYKSXYKwlgk2Le2UTiedYRPXeXfJLNnzKyD1VWNrKfprAj6U3qUqC/sTrXnz7Wc9Bs66Dpv33mkeCQFpgxrub9le8KqLLErz5IOHGtW1zsPM3MBzk9NeEaG8/+06PCf0rgF2is3mNAtXEc1ywwejI61R1KRQy5dCdedCW39gyfWmvq0Ky09aaaJ9eIrf+qgBNZsWzzereXclaEUMWI+A9A7BO5NyP+zhyHNA0co/TDLreureH8DO5FGsI3C7oONFNbkgFUXiym2UTxhNPehWBOpOwafMqY2HZYKHsGy/vS9XFvu/azsG1b1xyZVGcl6n1dChkB5fCZu0ar1E3A6ihmS7fF7C46YBG0LEZ4X/0OZcnQGWGpsiX3gQ9zHPfZt+hxot5IMDAeuauc+ov+teBSJUGNLE+E95pGjIyy9Bqk5xfPPtNTMea5hwKecBs6volDsceI8eTVslN0uCpg0zQvu/20HcF4AVtH8J1P03g=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MnlidCtIN24vQzlDN1Y2RDdIVTJTaWlUcVRJbW5DYVBOTk5ZNjJ4YkhEN0lX?=
+ =?utf-8?B?Y2kwZlBidmM0OG1vL0FDS25aVjhVampibTRvZDJFL0hTZEIrK0ZXdGxSR0V2?=
+ =?utf-8?B?enRhaGVVcWI3MkhQQnBIZW5uNWJTaXVKeWtHaDBMdmYrVS9qcU90eUZDTC9u?=
+ =?utf-8?B?WWJLOWZsZ3pESXV2NDRHUEc1ZzUrMWM4UlBIRjU2czJyampOK1FPZWtERmd3?=
+ =?utf-8?B?eTl2T29JUWc4ajUwVllpa0VVOHpjT0ZtQlVQa3BCWDE3TllJZ1FOdWFlNjdC?=
+ =?utf-8?B?QVFmUVZCQnFzZWNTT1VuVlJteXM1Z2hGYnp2SkpOVG5USXRXenN0dWRTWEFl?=
+ =?utf-8?B?WElQUStSVms0eDZIOGJkd21XZHJ2cDd5V2FXQ1hoVlhkSGhHelo4VytZLzZ0?=
+ =?utf-8?B?dW1QdmVadUhuU0dxL0t2N3FYeUtKN0xESXVXVGtWajJYUlB6TEZ6a0FmOUFp?=
+ =?utf-8?B?VURGamVpM1B2SU5FbkJTU3R0VCtISVR3LzdFcjJRTjJBbTJyNkV6WXBrUGEr?=
+ =?utf-8?B?LzVzcmROWlZpZVR3a004eGpYbjlxdG5ITzdUaEcyZzBFMFUwU1g0VCt5cVlN?=
+ =?utf-8?B?RXRFNjJ1MlR1TTVhSXVGQThpazRiTTVqTU9wSFNJc3U3VjlKeWFnL0hpb3pa?=
+ =?utf-8?B?S1dUdTBGVUFsZ2dreXJqZXpLRkdUQ0NOSUhFQzZHTk42UnZLV3VlUGRPdVpl?=
+ =?utf-8?B?ZzRjc2ErUmN4c1QyS3NYVnNTUWNsK1hBSWV6cldmWThkc3ZSSFpHdFVrdjZu?=
+ =?utf-8?B?ZVBLd29VckF3NCs0c3BITzk1WUVkTTNDNHhNeGNrUmxiMHdpRXhOY2RQTFJk?=
+ =?utf-8?B?RkFzSXY1MzJlSWpsdlJ3OHhNRkd4eFZJd2NRT3crOFc1ZExac1JYSE45NU5E?=
+ =?utf-8?B?LzB1THF6SjdnK1ZCSldXOGdFS0xNNTVrY0w0MXdDcDRlQ3NlRVo3bmZpb1h2?=
+ =?utf-8?B?aksvTVJsdnZkNjRabHVrZ3BVK0c0NytoSVlCeklETlhUOXVPOGFsUVUzMU5R?=
+ =?utf-8?B?RUIxYzZwUlhGYzE5MUpyQ0liSGZMQ2ppdGExQy9Gd1RRbFNFYk9ZVkNodEU5?=
+ =?utf-8?B?L1Q3bUhVWlc5UHdhMUVLNjFiT1Y2Ly9POWRrbmlSR3NvTHNMcXVvendKZDd0?=
+ =?utf-8?B?OTVhU0RYMlQvV3c0WmoxU0tQSENZMDlqRjlJWmswdWdNa3lEK3dnSzNjYjF5?=
+ =?utf-8?B?T2lMcDNZMDRDMXhRaXhwMFg5bmN1ZEJHbVhXT204STlOOVI4dFpSS1hOODVv?=
+ =?utf-8?B?TTBGNndiYUh1bzdTWk9tOU5YWHRObk54MXFVRXJyNVB0Tnloa2pqcHZ3a0tH?=
+ =?utf-8?B?Y05HMysxaENDOWJJUzJqTW9RQ2NRdWN6b3prSEFoSWxNVlU2TjJnQXgwbXpo?=
+ =?utf-8?B?Ui92MCtQSWpLQzhFNmRMaXhwYWRad1BuMzlON3NsbTZWbHJQK3pnQUhWV0pi?=
+ =?utf-8?B?WFc3UUFXN3VDQUJiKzltQkFEb0p4YTZYVUdxSnlHV2orT3ZNUkJxdXhmL1VF?=
+ =?utf-8?B?QmVnRWQyeTFDenJ4SWRsVTc5Mm9wZ2Z5K2lKaW41dVhscnUwNmlpcURCc2Qv?=
+ =?utf-8?B?dm1NMm9PN2doVFpJRnd5WmlZbEU4b09DK0NVRzlUNTFPaG9zWTlOUVRPRW1Q?=
+ =?utf-8?B?VlhBTjZjWjZxYm1ybzR6VUN5dndJcmRSc28rYTVFamtiSy8vek1pZkozbjhR?=
+ =?utf-8?B?dlZJempaZnlCS1gyeEMwTnljaDQ2c2U1QWMrUlhDc0F1YjFwU2Jja20yQTRN?=
+ =?utf-8?B?SzVza3lPd3VrTGZmQVRCMnFwWGJncVNNaG1RUHhsc1hzalZ4alBBQzkya1JG?=
+ =?utf-8?B?cG9CeG1LTjhNdGg0aUowMi9HTzV0VWlwWUF1RWpOM3dxVzVEUGNhNGZ4MGJX?=
+ =?utf-8?B?NEVwTWJkZDE0cHY5MDVvc1MzS1hLQmZnTmVaY3k2dzVWWjZqNFR5V1Bld043?=
+ =?utf-8?B?eW41MlhmZVBOejhVZ0VDV2xKZFNXU2RkOXdVQkRuSFo2NVdobS9DTEdqcTJW?=
+ =?utf-8?B?WTFWblFQbWJpTEVSQjNyYlVUYlMxbEhGb2RDcjFPZTJobEZPVWdHQU5xZnpN?=
+ =?utf-8?B?aXlrZ0lZTEJmeGZFZStGVVJvOTg2R1NaZHRXQ09jL3NZL0NpdUx3c0ExUXJR?=
+ =?utf-8?B?RnlMcVJ0UTVSRzZ6Mytza05FbU5WWWcraEhjWVE3Q2luRnpVVUNPRlpYM0Jp?=
+ =?utf-8?B?VTJoeEVESDNhTTFaZDUxVUVDRU1BRXd4dEJZanVCWjhVZ0VqcnMzaWdwL3h6?=
+ =?utf-8?B?NEp5WlZKUTdnM0hMcjFHVVJ1L1hubVRjOGZ2dmJ2azVaKzdxc0tDbHpWWFNu?=
+ =?utf-8?B?YlQ1aDYxdVNhWjhtRlZSVEt1UHdRQndrMXRWUHBRSGo1a0J1QW40Zz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37e7a617-fa2e-47d3-335f-08de795d3b0f
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 19:44:06.9627
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: C5HPptWu1Bzgsx41aM6w/Y30HvMKCGNTGvMYDOfkrNw86VQLOOyOgl6sj9aN2Tb6I+NvIS+YjN8ETWq29OmSWQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6828
 
-On Tue, Mar 3, 2026 at 1:09=E2=80=AFPM Jonathan Cameron
-<jonathan.cameron@huawei.com> wrote:
+On Mon, Mar 02, 2026 at 08:58:23PM +0900, Alexandre Courbot wrote:
+> > +//! controlled by the `NV_PBUS_BAR0_WINDOW` register and must be 64KB aligned.
 >
-> Can we use bit_u32() or similar here?
-> We've tried to move to BIT() for similar defines in the C code, so I'm
-> looking for something along those lines. Provides a form of documentation
-> that they are single bit fields.
+> s/must be/is - it's not like that hardware is giving us a choice anyway
+> since we cannot even express a non-aligned value in the window register.
 
-We have these so far:
+Done.
 
-  https://rust.docs.kernel.org/kernel/bits/
+> > +            let bar = self.bar.try_access().ok_or(ENODEV)?;
+>
+> Ouch, we are calling `try_access` for every single read or write
+> operation.
 
-Out-of-tree long ago we had also a `bit<T>` generic const function
-(https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/types.rs#L31=
-7-L349).
-I think we also discussed a `bit!` macro at some point.
+> > +    bar: Arc<Devres<Bar0>>,
+>
+> Cloning the `Arc` is what forces us to do a `try_access` on every
+> read/write operation. [...] you can just call `try_access` in `window`
+> and store that. This turns `bar` into:
+>
+>     bar: RevocableGuard<'a, Bar0>,
 
-> This is why I was getting bit grumpy in previous about long lines.
-> Fair enough if this is only option, but it's not nice for a review proces=
-s
-> that relies on patches!
+Agreed, this is a lot better and has fewer lines of code too. I have
+made the change.
 
-This should be using the kernel imports style, which should make a
-case like this more readable:
+> > +struct PraminState {
+> > +    current_base: usize,
+> > +}
+>
+> This has only one member and no impl block of its own - shall we inline
+> it?
 
-  https://docs.kernel.org/rust/coding-guidelines.html#imports
+Agreed. Inlined to Mutex<usize>.
 
-I hope that helps!
+> > +    /// This lock is acquired during the DMA fence signalling critical path.
+>
+> nit: s/signalling/signaling
 
-Cheers,
-Miguel
+Done.
+
+> > +    pub(crate) fn window(&self) -> Result<PraminWindow<'_>> {
+>
+> The name of this method is strange - we don't pass the base of any
+> window area. It looks more like it is actually acquiring the `Pramin`
+> for exclusive access.
+
+How about `get_window()`? Open to other suggestions too.
+
+> Also fun question: what happens if we try to access an area above (or
+> below) the available VRAM?
+
+Good catch, I added further hardening to check for that in next spin.  And
+as a result, I can also drop this check now "Validate within hardware
+addressable range (40-bit address space)" since it will be covered by the
+VRAM region check.
+
+Also I was doing unnecessary window repositioning: we were computing a new
+base for every 64KB boundary crossing, fixed now.
+
+
+> > +    fn try_read_window_base(bar: &Bar0) -> Result<usize> {
+> > +        let shifted = base.checked_shl(16).ok_or(EOVERFLOW)?;
+> > +        shifted.try_into().map_err(|_| EOVERFLOW)
+>
+> This function is actually infallible. [...] For now can you use a regular
+> shift operation with a TODO to convert to `Bounded`?
+
+Done. Renamed to read_window_base(), uses plain shift and u64_as_usize.
+Added TODO for Bounded.
+
+> > +    saved_base: usize,
+>
+> What is the point of saving and restoring the original position?
+
+> > impl Drop for PraminWindow<'_> { ...
+>
+> Let's drop this alongside the original window base restoration, which
+> doesn't serve any purpose.
+
+I was trying to avoid side effects for other users of PRAMIN, but you
+are right, that is too defensive with handling this. Will simplify.
+
+> > +    state: MutexGuard<'a, PraminState>,
+>
+> I'm wondering whether we should remove the `Mutex` from `Pramin` and
+> make its methods take `&mut self`.
+
+Actually I would like not to do that because it complicates the design -
+`&mut self` on Pramin then requires `&mut GpuMm` everywhere, cascading
+through all callers. I had tried that path initially but ended up with
+the internal Mutex approach and concluded it is cleaner. I think we can
+start with this and refine as needed - let me know if you're okay with
+that. Similar reasoning for the buddy allocator, where I implemented
+internal locking there after trying the mutable reference path.
+
+> > +    fn write_window_base(bar: &Bar0, base: usize) {
+>
+> `base` should be the native type of the GPU, i.e. `u64`.
+
+Makes sense. I changed it throughout the file to be that way. Btw, I left
+the BAR0 offsets (bar_offset, offset_in_window) remain usize since those
+are host MMIO offsets. We could argue that is 'an offset into VRAM though
+which is GPU addresses' but I guess we have to draw the line somewhere :)
+
+> > +        // CAST:
+> > +        // - We have guaranteed that the base is within the addressable range (40-bits).
+>
+> This function does not guarantee anything of the sort - even the caller
+> doesn't, this actually relies on the behavior of `compute_window`.
+
+Fixed. Reworded to: "The caller (compute_window) validates that base is
+within the VRAM region which is always <= 40 bits. After >> 16, a 40-bit
+base becomes 24 bits, which fits in u32."
+
+> > +        if end_offset > MAX_VRAM_OFFSET + 1 {
+>
+> If we are going to use `MAX_VRAM_OFFSET` like this, let's define it as
+> `1 << 40` and turn this into `if end_offset > MAX_VRAM_OFFSET`.
+
+Removed entirely - the 40-bit hardware check is now redundant since
+compute_window validates against the actual vram_region (which is
+always <= 40 bits) as per above.
+
+> > +        if offset_in_window + access_size > PRAMIN_SIZE {
+>
+> Here `offset_in_window` cannot be larger than 64K because of the line
+> before - this check is effectively dead code.
+
+This was true with the old code that aligned to 64KB on every access.
+With the repositioning fix (we now check if the access fits in the
+current 1MB window first), offset_in_window can be up to ~1MB, so this
+check is now live and needed.
+
+> > +    25:24   target as u8, "Target memory (0=VRAM, 1=SYS_MEM_COH, 2=SYS_MEM_NONCOH)";
+>
+> This should be converted to an enum. [...] a single-variant enum will
+> document that fact and force us to set the correct value.
+
+Done. Added Bar0WindowTarget enum with a single variant.
+
+thanks,
+
+--
+Joel Fernandes
+
