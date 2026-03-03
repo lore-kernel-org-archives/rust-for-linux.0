@@ -1,47 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456FB3D5661
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 20:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D162542F57C;
+	Tue,  3 Mar 2026 20:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772569049; cv=none; b=XLUBIxQlWAhWitURtMhqY/Kr/IppG52kHXQ+l+1eIa7TtooZgPp6kB7nPvTXcR4hglNW+vNgvbr+jYdr8Ton2Pey+C6L36BhE1LhtuFYe3ygr/CuVK6kq1GV0kVrWFF0yv56vY3h8SiOq1hEN9yiM60aZZY2Z+QCz5WCwl5bmfw=
+	t=1772569050; cv=none; b=IaGDM0CsNDJzZ93qxua/9aPcZi0ab2DCB9y1PMT6kA0EdqKglGtjmZP/PcG+ydCpLXtGVIpXkUT1noXkep0tvycYQwvkEZvBrfSgKSzy/J6PbHwKJth/iIEnuFYArv2Y+X5M8vhABHHt+9a5jD4XwchEQMpu7l4XSeVJF5TcKPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772569049; c=relaxed/simple;
-	bh=45m0CJiBLXF5Mo1YFzO2suUGnf1ICyutZtmKXGX4zRs=;
+	s=arc-20240116; t=1772569050; c=relaxed/simple;
+	bh=6kKNudW1gJgGgJ9BpMFix/NIUUSMcOPE/nKLOWbaQYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxofwDn3Mi3NsaWx16CD3aFrJIWFCAS7P7MoR1ypLsUyxMl7HA5QK5cuDRHYZrj0cn3yblzoGayR1GS8Y5KyO5o8XBHAvdvTOAHA5JZT8DJmUm0eTm9Wthjn4r1m7v/++n7X3BLXih6z8zSUjEUQzzBz4VGQYcE0HSFqpAQbbWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRoXlFQc; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=pf1fFog52qy6owWpk2q56JSwlxR29fl6dmRJON6reiF02Bw06CpIkmiClnTsqRxvQFnXOX7Bg5Xb8nrA8p2DgHirOhzHqHJ3LZPUwpyelkCoertSpaVl8dz/AIUul1nnPgrFuja9Adc2B4aRowSbb8ttlKTGUHaanI0lGLAiDZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ExuBhxx6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRoXlFQc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF03C2BC87;
-	Tue,  3 Mar 2026 20:17:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ExuBhxx6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3939CC4AF09;
+	Tue,  3 Mar 2026 20:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772569049;
-	bh=45m0CJiBLXF5Mo1YFzO2suUGnf1ICyutZtmKXGX4zRs=;
+	s=k20201202; t=1772569050;
+	bh=6kKNudW1gJgGgJ9BpMFix/NIUUSMcOPE/nKLOWbaQYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRoXlFQc42wRBb+tZgNqdnGN6sdFLOnbmDpqXZ2xjoWlP7FVJBiNRGWQFD79bUt1I
-	 pWC5hHzaJOEqMYJe/ZTnI9Gr2MaNSyAIOK7FGwRN562ciraV2evZ1vvLtP7xRIXRuu
-	 lQOTcNQ6m4HvbsDy9n4fxi9GOSKm7Wl6lK0jz+jpsTQXxFUJFJSyrw/TBn5sD8LmxF
-	 9S26ozEgodVc+J0cKLQfWWkkGLU3ldqucyDyQFV4D9yOpoEipZBfUgUgjgf1EHNpFY
-	 B2XIU2OIjGe3aHOr4AlDywZAIr1P3pQEj9LC52S3KDm1cugjc77E9aYXP982RET0A1
-	 FmOqRHSfTzbsQ==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DC0EEF40068;
-	Tue,  3 Mar 2026 15:17:27 -0500 (EST)
+	b=ExuBhxx6z63Nfj89HtKwcFLl2SbPL48BW6DlIHDt2dl2yyQxvOUD5Cwh/9aqU47cG
+	 q6BuBPBZ90dTX7cbosihOa9O2CMmxQ83FwbiYBmpKM3gIh13QNcNoub8urbESgjcMH
+	 Lb0AC3raDpGM7pZF73qo4EL3mso037TNE39X/Izc561QIc6g735OdudxaqAb4N9KKA
+	 xKuLLORcl29VSKF54XyNNcYbaBicvCA8CPJNkX2ZFxA7o4UHDfxVN+8fuj34Y69mE8
+	 AOJfyyGkCAoJ3rje+mDS2xL8BSg88JalH9nm8ZNLh3xvOchcb/jMtWQ4umSSbonTCR
+	 e5VlqgYHx3q6A==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5CD8FF40068;
+	Tue,  3 Mar 2026 15:17:29 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 03 Mar 2026 15:17:27 -0500
-X-ME-Sender: <xms:10GnaR3RS9mj5uFu-rnVfoKz9I11OlUwb27Sm56eySp_oiN9dtKYPQ>
-    <xme:10GnafrmdeYSkIgriFwz9dspqEhT1ehyhUnTITQJUEI3M0Pyml0bEV8f7vwcj2HJE
-    pFngKHoE_7Sz984qn1qYkXc9JsiZxQxOalbllazyrM6MOT8N-K4Bg>
-X-ME-Received: <xmr:10GnaRj_2uLBwM6OJxIUpi3XSrbrgeC5cmq7MLvhrxIGsdtlgax1isuqq_5EcXwtSR6za6iX0SahZTBdmX1XZhm-depvIW9N>
+  by phl-compute-01.internal (MEProxy); Tue, 03 Mar 2026 15:17:29 -0500
+X-ME-Sender: <xms:2UGnae0_kjcyxBAB6gwqQaZys2BaIW1kssan35S764P4cEaKekZM0g>
+    <xme:2UGnaYr1wdkuHYuEYTXCokcjbA2SSaznDNZ1bYUf9EuziSaNPBtUZl43nQI8l1NsF
+    vug4x35Ud_7hRUlnbU8Fuv528Ylo3j1ECrF7xLi0sXa01WX-fxSIoU>
+X-ME-Received: <xmr:2UGnaWiSEhyQjx7YWwJQSGMjYiQXaiZuTx9wBxRd-TChjsTVGb8RkkPRdYW1hD_7hhy4qsk3CRJMHoMN-QlN7RGu7phsTzUt>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieduheefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
     hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
     ekieffgeevhefgudffveffheettdfgkeeilefhhfduhedugedvhedtteegvdeugfenucff
-    ohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    ohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgepvdenucfrrg
     hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
     rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
     hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudeipdhmohgu
@@ -53,14 +53,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieduheefucetufdote
     hghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghr
     nhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorh
     hg
-X-ME-Proxy: <xmx:10GnabmMQQarWIFV2FjDaUzGGED5yL-9eA5IOpNe7J_aRI5vF7b7CA>
-    <xmx:10GnaaqoNMvNbFwWoTQfM6QYYBdDJY5sRAO6vauB2Sk-VAum5NKnAQ>
-    <xmx:10GnaXLKMp2kM5KDeYOn0qBA2rkEPcbGfovxz2L3pL8ejnx7lzBmvQ>
-    <xmx:10GnaWC6loMoTSUoFf5s600pWsqWyftWnyzBWMZiloTc0dpbQjMBlw>
-    <xmx:10GnaZ7mhVS9tgdthP-oXvURk7er6UIhVAE282KFZ2kAfkdSgy4f6akA>
+X-ME-Proxy: <xmx:2UGnacklBX8TmQmiiXJlJP3pBl90NvFArtOdQ--1dJ1RWxMEWiryFw>
+    <xmx:2UGnaXo0wewcXYU-rU7hLtlH4VDmB1NdBQ6Q8lJeFe_Ca3onvYr6vw>
+    <xmx:2UGnaQIyZ2946G28rSMd4VgC3Bn8EbsJfEFKgApJl2Z4jzL8uy38ng>
+    <xmx:2UGnabAysnH-sHTw-cOwiLWLI3HOFYDN1yOss0f2SDiQsaWFS_ydMg>
+    <xmx:2UGnaa4AEK5a8ZPLmMExOe8fao5AyJV03oxEOAMzm22omrjGa1EWyhT8>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Mar 2026 15:17:27 -0500 (EST)
+ 3 Mar 2026 15:17:28 -0500 (EST)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Will Deacon <will@kernel.org>,
@@ -78,9 +78,9 @@ Cc: Will Deacon <will@kernel.org>,
 	"Ingo Molnar" <mingo@kernel.org>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 12/13] rust: sync: atomic: Update documentation for `fetch_add()`
-Date: Tue,  3 Mar 2026 12:17:00 -0800
-Message-ID: <20260303201701.12204-13-boqun@kernel.org>
+Subject: [PATCH 13/13] rust: atomic: Update a safety comment in impl of `fetch_add()`
+Date: Tue,  3 Mar 2026 12:17:01 -0800
+Message-ID: <20260303201701.12204-14-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260303201701.12204-1-boqun@kernel.org>
 References: <20260303201701.12204-1-boqun@kernel.org>
@@ -94,43 +94,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Andreas Hindborg <a.hindborg@kernel.org>
 
-The documentation for `fetch_add()` does not indicate that the original
-value is returned by `fetch_add()`. Update the documentation so this is
-clear.
+The safety comment used in the implementation of `fetch_add()` could be
+read as just saying something it is true without justifying it. Update
+the safety comment to include justification.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Boqun Feng <boqun@kernel.org>
-Link: https://patch.msgid.link/20260220-atomic-sub-v3-2-e63cbed1d2aa@kernel.org
+Link: https://patch.msgid.link/20260220-atomic-sub-v3-3-e63cbed1d2aa@kernel.org
 ---
- rust/kernel/sync/atomic.rs | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ rust/kernel/sync/atomic/internal.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index 545a8d37ba78..9cd009d57e35 100644
---- a/rust/kernel/sync/atomic.rs
-+++ b/rust/kernel/sync/atomic.rs
-@@ -545,16 +545,14 @@ pub fn add<Rhs>(&self, v: Rhs, _: ordering::Relaxed)
-     /// use kernel::sync::atomic::{Atomic, Acquire, Full, Relaxed};
-     ///
-     /// let x = Atomic::new(42);
--    ///
-     /// assert_eq!(42, x.load(Relaxed));
--    ///
--    /// assert_eq!(54, { x.fetch_add(12, Acquire); x.load(Relaxed) });
-+    /// assert_eq!(42, x.fetch_add(12, Acquire));
-+    /// assert_eq!(54, x.load(Relaxed));
-     ///
-     /// let x = Atomic::new(42);
--    ///
-     /// assert_eq!(42, x.load(Relaxed));
--    ///
--    /// assert_eq!(54, { x.fetch_add(12, Full); x.load(Relaxed) } );
-+    /// assert_eq!(42, x.fetch_add(12, Full));
-+    /// assert_eq!(54, x.load(Relaxed));
-     /// ```
-     #[inline(always)]
-     pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering) -> T
+diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
+index b762dbdf6d18..ad810c2172ec 100644
+--- a/rust/kernel/sync/atomic/internal.rs
++++ b/rust/kernel/sync/atomic/internal.rs
+@@ -337,7 +337,7 @@ fn add[](a: &AtomicRepr<Self>, v: Self::Delta) {
+         /// Atomically updates `*a` to `(*a).wrapping_add(v)`, and returns the value of `*a`
+         /// before the update.
+         fn fetch_add[acquire, release, relaxed](a: &AtomicRepr<Self>, v: Self::Delta) -> Self {
+-            // SAFETY: `a.as_ptr()` is valid and properly aligned.
++            // SAFETY: `a.as_ptr()` guarantees the returned pointer is valid and properly aligned.
+             unsafe { bindings::#call(v, a.as_ptr().cast()) }
+         }
+ 
 -- 
 2.50.1 (Apple Git-155)
 
