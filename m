@@ -1,93 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D50A4A2E0A
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 16:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5F74DB56D;
+	Tue,  3 Mar 2026 16:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772554251; cv=none; b=IiQMEqwIZId7zYZZHJPls/QpyvJShXX15EUwdmyZE+VTHfURsi4TdIi2LbsYvsRkfGbUsSG01Jb9/EE0v38A9hZ2cSbeAOsfjbGeusBP5aQEP+7LsasV1v36+3s1l1B5zy9wDDIhjF2qrOKclbCXwSCP3hEYznKA7rEVBXYQmgg=
+	t=1772555002; cv=none; b=in3l+yf29TCoczXRcVO+2991QBX1DZCA3fpCXOkILBkigM+VZap/nezq3rv9aGIeWkeALLe+YW4fLbEJFXljGc1J5Cbfk0aSeC/iFThs0CV+yZggUg0dpkrjeGNVSY6OBTbJhQ5HlSdMCDXC/36d+Bt2cnvFHXppgCenCXpcNM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772554251; c=relaxed/simple;
-	bh=4GSrzicB14vZ5Ir0D8/CZeXtKGRW4de6m37Lf9060G0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o+q1Q2dfFDrSTZa0uVZhNmZVabPlt5m6xRN0dkRCG/TehGWyaCUbTJLbg7yz7QfW5WfxCfaCAvA7Hqq5YSR/4SIFIJEiTmHUkcszAsR0VXP6D81PhMqFNgMN6oDR/wAyLaDSMR1vcncpRw7BJv6o5jVRwGq2UeRkys6ZMZyYf5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+kDkoN+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772555002; c=relaxed/simple;
+	bh=LZhImWuMkU3twctJXiYSMBdRdlQpQCpIy5sEVsTJsPs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ogKPmi1l9CJw8D6XwMH8fC24KALkI0a26uEtAUTrGv0k7zMBRMcXm3XWA/yBZDppB47Qq9tCh6t+s6OkYEy3Yu2DuCV+M8hQHHJbk7x5eW3fG4YpOZxRwZMnKfwxc4KBCWqtoCAceWmii0hpAw00/Zkrep1xspHffFuOTAWvdTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D20tbfkk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+kDkoN+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4ECC116C6
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 16:10:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D20tbfkk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFDCC116C6;
+	Tue,  3 Mar 2026 16:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772554251;
-	bh=4GSrzicB14vZ5Ir0D8/CZeXtKGRW4de6m37Lf9060G0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b+kDkoN+mwc4alESwT5PBbRS6J5J3lRuaLDN8fNRUSbc2m5OiR2/0fpy8aRF9VaOW
-	 W+do35e+LwQBQOsbFgJWSqpUqetokzhQxS7Bp+deL/XDqOtr4iRSLxUucrHK217NT9
-	 D9DyqCsb02+VT7OdvmYvXGFlVJZgmaDl7ngbaDloYOVRmVMiZ7AiPsMJWeiIPd0CEh
-	 HV8XnWhHZH8XHkwy/dfjpgXVW/6eQpxYDNnYqSXAONpO/TZCLl2Rd60u23sStmFsWt
-	 b8ZhUGNdrETD049ktJa9T5DvgRt54dDwR1Wx5mq4HW1dsE+UvGyiv0nVf/v0APtrJM
-	 HhuzaM+6eT08A==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 134A7F40068;
-	Tue,  3 Mar 2026 11:10:50 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 03 Mar 2026 11:10:50 -0500
-X-ME-Sender: <xms:CginaZVY2-av2Bx39P0cjytpMGNMjlNKJlGf01O452ydr60kwGdFAQ>
-    <xme:CginaRCNKO61ZX_Fcn2yk8ZCA77AI_m1Y0gVpszgaItvtftK3QJaBp4Euyp2oR19e
-    LTlmR5_xJjWKHdQaucvtIxridJt95-opqpg-aI-WnstF3phKeqdvg>
-X-ME-Received: <xmr:CginaSx4PvUlqtdYlhTrzz9j7W2Uid7VNbUWZMJREbIFdqE21tlOshN0ytOeidzQISl9amPyjXn2pxJR8IFIKLU7GI-f_vRI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddviedutddvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
-    dttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnsehkvghrnhgvlhdr
-    ohhrgheqnecuggftrfgrthhtvghrnhepveffledvudehudehvdehiefhtdehfffhgfeuge
-    fhvddtgeeujeehveekgeekudeunecuffhomhgrihhnpehgohhoghhlvgdrtghomhenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
-    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
-    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
-    hnsggprhgtphhtthhopeefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsohhq
-    uhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlh
-    hinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnsehf
-    ihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:CginaWA262ReszC9e6sk28OFjQsh6rvMMF79npgXEOd-6_24yxllpw>
-    <xmx:CginaXbi4RX3Zy19qVWgnJgcllhmafRlPp39Lzq9dJ76DYsmkMEXsQ>
-    <xmx:CginaWjx_GU6lE1KYSmrQn8HvOJGAtPrEYfzz84sYlkAtkkgQmxb-Q>
-    <xmx:CginaR5DSdfN7_KSqN9-qyxgBgyC0ZrX0nxP6PF3x47YMFBCRdUYrg>
-    <xmx:CginaV5IVcPEvi9wD0rf4hj5bVxIPh7djkSiAHGB9aVzQnoqGoWxmHYC>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Mar 2026 11:10:49 -0500 (EST)
-Date: Tue, 3 Mar 2026 08:10:48 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Re: Open Meeting at Oct 15
-Message-ID: <aacICOmj9E6XzYAS@tardis-2.local>
-References: <Za_9bJxeyW0pddKL@boqun-archlinux>
- <ZgHBE8yRuZ5_8Bwi@boqun-archlinux>
- <ZlX_KOjdd65k9Jkw@boqun-archlinux>
- <ZqpWRo2M2SaTWU76@Boquns-Mac-mini.home>
- <Z1ClkseCwaEXS6GE@boqun-archlinux>
- <Z6IvhjRFU9R32jHV@Mac.home>
- <67f43ca0.0c0a0220.a75ba.35cb@mx.google.com>
- <aEXLAPOV_FrH7Q5C@tardis.local>
- <aJtkNLp1pETbl9UI@Mac.home>
- <aO0uLL8dZF6MuRib@tardis.local>
+	s=k20201202; t=1772555001;
+	bh=LZhImWuMkU3twctJXiYSMBdRdlQpQCpIy5sEVsTJsPs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=D20tbfkk1xkCPRKVfaRXdyuOyGZz1o7Ue+wpoIv/a6AGFcACdSsZvjdOlt1lRKfvQ
+	 Fe3wXKViyuY0H0RA4uCFyoshov8odkRYxqGBg6EyzRcLNkQkE62kddf6fOzsSazMem
+	 brjQS63XriSXH5R6skF56yLgRCVC3chPWIzCc4uSzDmAgW/FvZyq5qIWrcVANTNJpF
+	 /se/9Zm9lyHKpYaz1ydAdzgPugtxASifjrH6Dik2pVK49p7RiUaPnPw8oSN7K9fUsA
+	 omOYTIt2mxuY90G9aG8rA2AXkPg/ApM3+L+tq2V0xb0gIslnkFmktJEWz/zRjtDljD
+	 opvtQUPsw7HYw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: aliceryhl@google.com,
+	acourbot@nvidia.com,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	abdiel.janulgue@gmail.com,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com
+Cc: driver-core@lists.linux.dev,
+	nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 0/8] dma::Coherent & dma::CoherentInit API
+Date: Tue,  3 Mar 2026 17:22:51 +0100
+Message-ID: <20260303162314.94363-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aO0uLL8dZF6MuRib@tardis.local>
+Content-Transfer-Encoding: 8bit
 
-Hi all,
+This patch series introduces the dma::Coherent API Gary worked out in the
+context of his I/O projection work.
 
-A little last-minute confirmation, but as usual, our Open Meeting will
-be at Wednesday (Mar 4, 2026) 19:00 UTC and feel free to join via:
+Additionally, introduce dma::CoherentInit, a type that encapsulates a
+dma::Coherent object before its DMA address is exposed to the device.
+dma::CoherentInit can guarantee exclusive access to the inner dma::Coherent
+object and implement Deref and DerefMut.
 
- 	https://meet.google.com/cik-xrih-wij
+Also add Coherent::init() and Coherent::init_with_attrs() so we can directly
+initialize a new dma::Coherent object through an impl Init<T, E>.
 
-Regards,
-Boqun
+Danilo Krummrich (5):
+  rust: dma: use "kernel vertical" style for imports
+  rust: dma: introduce dma::CoherentInit for memory initialization
+  rust: dma: add Coherent:init() and Coherent::init_with_attrs()
+  gpu: nova-core: use Coherent::init to initialize GspFwWprMeta
+  gpu: nova-core: convert Gsp::new() to use CoherentInit
+
+Gary Guo (3):
+  rust: dma: add generalized container for types other than slices
+  rust: dma: add zeroed constructor to `Coherent`
+  gpu: nova-core: convert to new dma::Coherent API
+
+ drivers/gpu/nova-core/dma.rs      |  19 +-
+ drivers/gpu/nova-core/falcon.rs   |   7 +-
+ drivers/gpu/nova-core/firmware.rs |  10 +-
+ drivers/gpu/nova-core/gsp.rs      |  65 ++--
+ drivers/gpu/nova-core/gsp/boot.rs |   7 +-
+ drivers/gpu/nova-core/gsp/cmdq.rs |  55 +--
+ drivers/gpu/nova-core/gsp/fw.rs   |  82 ++--
+ rust/kernel/device.rs             |   4 +-
+ rust/kernel/dma.rs                | 626 +++++++++++++++++++++++-------
+ samples/rust/rust_dma.rs          |   8 +-
+ 10 files changed, 619 insertions(+), 264 deletions(-)
+
+
+base-commit: 1195fcbda62f12108dc9be56fa4173897905b90c
+-- 
+2.53.0
+
