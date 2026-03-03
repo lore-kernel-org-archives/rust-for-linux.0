@@ -1,47 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA1B48A2B2;
-	Tue,  3 Mar 2026 20:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7874DBD8E;
+	Tue,  3 Mar 2026 20:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772569045; cv=none; b=iH1A/nQyCM4O7G7NIHILINwnuQkdRXbdEEXx9c4wxDzUfoAICXMvvA3YN5+m8visaX5yvsZWCH/AY5w16TJ2n6Bo82AA/g8RnDZGzi5hH7ciEiJo/Vy8s/CYEpAzZS3j0PUINoxwQAFpS62zfbCWeLIx8pAHjLIEP2r/VZrG84M=
+	t=1772569046; cv=none; b=XoVXm62wZYhm6o+Ql+sL1yVVdsD7UCUHCySu6zDg21rkhmXaymGQLMuAAtK5b8RwjOPan1hPZQYnALeeteU1c0JWABsWl9DhlGiQLCAIuoLIist5RIT9qUwggAn81RIh3wbk/FZcr5PCM7g3JRIdBZ6lamM/sy8ljllkZUevC9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772569045; c=relaxed/simple;
-	bh=I+LdWH6GEDuniBtO1nwtn3nzkGl1DvaM9Bc5RT7vdoI=;
+	s=arc-20240116; t=1772569046; c=relaxed/simple;
+	bh=dLnkIdEJOXGQHNKxguIz3N79Ge336E+VQxQBEIeBeHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETGJY9QAelEbL+d9ZdF0OA1LEAPEirWQ0ZDNv6yEzidLi8jQ7H7JRNOQOazwBoMG81+w8XwJ6c+g0Ni64p6cRzhZhAenUh/S6tTM5DxEIYR1vp9Ijx+N86RnmSYz8r6He7j4oxslOCR3p7jhRSrRi89YmzL6J9ccRhsKmtcoSs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6RgMGld; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=no7EmpDR/BWuLugvoo/bwg5f1Duil3K7qh1mv/j3E6HtMqwTKqQXT+nin73MecB+TkdiWKQR7gsyywSti2hAsu5I+NlJSbffXk0T183Q7WATd/zCUKDJZPsQtjAWpWmh6+O0o6QHuhtFSKo0C0DfrEw+raUOxegHXs8zNxcvneM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j/uKoGNS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6RgMGld"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597E9C4AF0B;
-	Tue,  3 Mar 2026 20:17:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j/uKoGNS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA4BC116C6;
+	Tue,  3 Mar 2026 20:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772569044;
-	bh=I+LdWH6GEDuniBtO1nwtn3nzkGl1DvaM9Bc5RT7vdoI=;
+	s=k20201202; t=1772569046;
+	bh=dLnkIdEJOXGQHNKxguIz3N79Ge336E+VQxQBEIeBeHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6RgMGldM8jxDuhWmYfwvYlu8sQVReXICMThTDo5X44x6BO1NRFKMlrylAfNcG2qO
-	 cycwdZq51awWkQDgNenKcqHBVwLM+ZkAoPcVIpHRYfkVodGoZl7+6EN5EZEwK6Agt3
-	 VqLhdJeqDosZUb82BcSoeYfL7UiHvX9037F1Rd2SJgYGI7iXZ+JiYaIFvqRJh4L0YH
-	 yXhqSYXNS71thlD1dQ/3pQz2evQ6xpLrW1cQxrqO6laGHsXjOC7xbOHf505qPWmNVX
-	 zqfU+KjDZgprKkuf725BMxklpGHlhm7pJQqKHIC+2MFqTLcgRUVjBir3Wotj11M7h2
-	 FEGulcFrNJJrQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 88675F40068;
-	Tue,  3 Mar 2026 15:17:23 -0500 (EST)
+	b=j/uKoGNScNegwxeeYadQUC3xPccyi09CeJe+Zu4lFSjfFjL0+yhPhrniwlvXe6Ck0
+	 YfMNLTfZGSHdSb7cfaVIXC5M/spouWonoenRjCJD5KrK9J03BnS83uvs4auTTngjjg
+	 EItyV6K7reJhzfP8uK33mGHmiyD/4nduYKlj/xU0v+rQ8FWoSlUgaKtAs92oJO1fdA
+	 0PIAE50Dxan6pjWQbaEMDIMFvpgHgId78TvdO7Ja8P+ILhfyho/yHow3ZSJlFaQecM
+	 bmUdWIAz/eDxu1XnCZL1QjsXYlADFWcXnl+ydhLuYO4fl4woi6ayfOXO9u7C3f3FW6
+	 CIj3bVzcPdaTw==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E9D5AF4006A;
+	Tue,  3 Mar 2026 15:17:24 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 03 Mar 2026 15:17:23 -0500
-X-ME-Sender: <xms:00GnaZYB0FXwbEgBvykomWICVNA5mdcDEKlizXQVvy_ltqeIGj-Smw>
-    <xme:00GnaZy8q8Yo2IrpEXHT-Ypnofow4JGpeTZltCsfRX45XgdOiXkPgnuOZ_SY84or5
-    8g5OUVXbUdIcTds2k9vgyOrnw-_UQN90IOndDQGGZ3_DkcV_uUTPg>
-X-ME-Received: <xmr:00GnaUe0YtoyBEdSjHikWi3TcQkkQgWzmZ6L3Ocuwz-aq7IVx7-KO-McpKPWeSA1mCaeGWMehGCDTO55U4GDUrQDRzrYBs-L>
+  by phl-compute-01.internal (MEProxy); Tue, 03 Mar 2026 15:17:24 -0500
+X-ME-Sender: <xms:1EGnaRFFj0ykXXQVaHFW0cAe7TQZ6PUYQuvfx2k5_JB7C6xgBgTK-Q>
+    <xme:1EGnafv5H4zPdHlWZJdjFnlmt2eAMb4rRujA2k4BpboxL7Kg6W746Guq4EljYhm0C
+    haGwRoKkIXPkTgwLpGn0FFQmioDYubnWkLjXvDiwV7sQLypKI9qZA>
+X-ME-Received: <xmr:1EGnabovmFFgi6K4vfV7RZOJfYY9qHIXMWiywjTjih_paQLgckoQZCFGaCBMO0PeYZpBav1QgMDxsImgx-hZlXJo4fHkyQWO>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieduheefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
     hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
     ekieffgeevhefgudffveffheettdfgkeeilefhhfduhedugedvhedtteegvdeugfenucff
-    ohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    ohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgepudenucfrrg
     hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
     rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
     hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudejpdhmohgu
@@ -53,14 +53,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieduheefucetufdote
     hghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghr
     nhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorh
     hg
-X-ME-Proxy: <xmx:00GnaXIKq6m88e-IOgLtglp7zzbHdf9FuXlPIjyhLMCzrqjS6CgG2w>
-    <xmx:00GnaV3k-kQMfDtbW5pfrB5TnpGlEBpO12U9wQdrGH5g6kB6S2aBDA>
-    <xmx:00GnaYaTPKEm4eRzqIQ7UKRtUUfJzagovp2qbgOg4s9NW816pXQ2SA>
-    <xmx:00GnaXjW0gBGA4708xfLIHcB-6HaC418juVsTdkUt4_hKudpPl5ITQ>
-    <xmx:00Gnaf_fWdb_jdyWYli2KvEnlEc_nuu8dNOHiMQS3AM2m7ws8UdXH1qt>
+X-ME-Proxy: <xmx:1EGnaWnsXQCD1NJeZ4y_8itSqoTXhkOIjhT1bSKSlz7mEzK16bUPXA>
+    <xmx:1EGnaYgE3We4rticbPIgmEzTKgqeWB1DO-ImGoJdAPVo4Zmze1TN8w>
+    <xmx:1EGnadXnDpaImkax2MIEooFL9tKhv_8GWq8TWasInQbhN6CEtVJbeg>
+    <xmx:1EGnaRu283AnxpctnLb7YGPL7AEG-2vdcM9w84f7OMATtT8sGphMpA>
+    <xmx:1EGnaWaKiaHWSRkzA1KjPkfw6Hv29y03alZ72qB0yU2Crs2i_CPuB_bw>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Mar 2026 15:17:23 -0500 (EST)
+ 3 Mar 2026 15:17:24 -0500 (EST)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Will Deacon <will@kernel.org>,
@@ -78,10 +78,10 @@ Cc: Will Deacon <will@kernel.org>,
 	"Ingo Molnar" <mingo@kernel.org>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH 09/13] rust: list: Use AtomicFlag in AtomicTracker
-Date: Tue,  3 Mar 2026 12:16:57 -0800
-Message-ID: <20260303201701.12204-10-boqun@kernel.org>
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [PATCH 10/13] rust: sync: atomic: Add atomic operation helpers over raw pointers
+Date: Tue,  3 Mar 2026 12:16:58 -0800
+Message-ID: <20260303201701.12204-11-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260303201701.12204-1-boqun@kernel.org>
 References: <20260303201701.12204-1-boqun@kernel.org>
@@ -93,56 +93,223 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Boqun Feng <boqun.feng@gmail.com>
 
-Make AtomicTracker use AtomicFlag instead of Atomic<bool> to avoid
-slow byte-sized RMWs on architectures that don't support them.
+In order to synchronize with C or external memory, atomic operations
+over raw pointers are need. Although there is already an
+`Atomic::from_ptr()` to provide a `&Atomic<T>`, it's more convenient to
+have helpers that directly perform atomic operations on raw pointers.
+Hence a few are added, which are basically an `Atomic::from_ptr().op()`
+wrapper.
 
+Note: for naming, since `atomic_xchg()` and `atomic_cmpxchg()` have a
+conflict naming to 32bit C atomic xchg/cmpxchg, hence the helpers are
+just named as `xchg()` and `cmpxchg()`. For `atomic_load()` and
+`atomic_store()`, their 32bit C counterparts are `atomic_read()` and
+`atomic_set()`, so keep the `atomic_` prefix.
+
+[boqun: Fix typo spotted by Alice and fix broken sentence spotted by
+Gary]
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Signed-off-by: Boqun Feng <boqun@kernel.org>
-Link: https://patch.msgid.link/20260129122622.3896144-3-tomo@aliasing.net
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://patch.msgid.link/20260120115207.55318-3-boqun.feng@gmail.com
 ---
- rust/kernel/list/arc.rs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ rust/kernel/sync/atomic.rs           | 104 +++++++++++++++++++++++++++
+ rust/kernel/sync/atomic/predefine.rs |  46 ++++++++++++
+ 2 files changed, 150 insertions(+)
 
-diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
-index 2282f33913ee..5e84f500a3fe 100644
---- a/rust/kernel/list/arc.rs
-+++ b/rust/kernel/list/arc.rs
-@@ -6,7 +6,7 @@
- 
- use crate::alloc::{AllocError, Flags};
- use crate::prelude::*;
--use crate::sync::atomic::{ordering, Atomic};
-+use crate::sync::atomic::{ordering, AtomicFlag};
- use crate::sync::{Arc, ArcBorrow, UniqueArc};
- use core::marker::PhantomPinned;
- use core::ops::Deref;
-@@ -469,7 +469,7 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> for ListArc
- /// If the boolean is `false`, then there is no [`ListArc`] for this value.
- #[repr(transparent)]
- pub struct AtomicTracker<const ID: u64 = 0> {
--    inner: Atomic<bool>,
-+    inner: AtomicFlag,
-     // This value needs to be pinned to justify the INVARIANT: comment in `AtomicTracker::new`.
-     _pin: PhantomPinned,
- }
-@@ -480,12 +480,12 @@ pub fn new() -> impl PinInit<Self> {
-         // INVARIANT: Pin-init initializers can't be used on an existing `Arc`, so this value will
-         // not be constructed in an `Arc` that already has a `ListArc`.
-         Self {
--            inner: Atomic::new(false),
-+            inner: AtomicFlag::new(false),
-             _pin: PhantomPinned,
+diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+index f80cebce5bc1..1bb1fc2be177 100644
+--- a/rust/kernel/sync/atomic.rs
++++ b/rust/kernel/sync/atomic.rs
+@@ -703,3 +703,107 @@ pub fn cmpxchg<Ordering: ordering::Ordering>(
          }
      }
+ }
++
++/// Atomic load over raw pointers.
++///
++/// This function provides a short-cut of `Atomic::from_ptr().load(..)`, and can be used to work
++/// with C side on synchronizations:
++///
++/// - `atomic_load(.., Relaxed)` maps to `READ_ONCE()` when used for inter-thread communication.
++/// - `atomic_load(.., Acquire)` maps to `smp_load_acquire()`.
++///
++/// # Safety
++///
++/// - `ptr` is a valid pointer to `T` and aligned to `align_of::<T>()`.
++/// - If there is a concurrent store from kernel (C or Rust), it has to be atomic.
++#[doc(alias("READ_ONCE", "smp_load_acquire"))]
++#[inline(always)]
++pub unsafe fn atomic_load<T: AtomicType, Ordering: ordering::AcquireOrRelaxed>(
++    ptr: *mut T,
++    o: Ordering,
++) -> T
++where
++    T::Repr: AtomicBasicOps,
++{
++    // SAFETY: Per the function safety requirement, `ptr` is valid and aligned to
++    // `align_of::<T>()`, and all concurrent stores from kernel are atomic, hence no data race per
++    // LKMM.
++    unsafe { Atomic::from_ptr(ptr) }.load(o)
++}
++
++/// Atomic store over raw pointers.
++///
++/// This function provides a short-cut of `Atomic::from_ptr().load(..)`, and can be used to work
++/// with C side on synchronizations:
++///
++/// - `atomic_store(.., Relaxed)` maps to `WRITE_ONCE()` when used for inter-thread communication.
++/// - `atomic_load(.., Release)` maps to `smp_store_release()`.
++///
++/// # Safety
++///
++/// - `ptr` is a valid pointer to `T` and aligned to `align_of::<T>()`.
++/// - If there is a concurrent access from kernel (C or Rust), it has to be atomic.
++#[doc(alias("WRITE_ONCE", "smp_store_release"))]
++#[inline(always)]
++pub unsafe fn atomic_store<T: AtomicType, Ordering: ordering::ReleaseOrRelaxed>(
++    ptr: *mut T,
++    v: T,
++    o: Ordering,
++) where
++    T::Repr: AtomicBasicOps,
++{
++    // SAFETY: Per the function safety requirement, `ptr` is valid and aligned to
++    // `align_of::<T>()`, and all concurrent accesses from kernel are atomic, hence no data race
++    // per LKMM.
++    unsafe { Atomic::from_ptr(ptr) }.store(v, o);
++}
++
++/// Atomic exchange over raw pointers.
++///
++/// This function provides a short-cut of `Atomic::from_ptr().xchg(..)`, and can be used to work
++/// with C side on synchronizations.
++///
++/// # Safety
++///
++/// - `ptr` is a valid pointer to `T` and aligned to `align_of::<T>()`.
++/// - If there is a concurrent access from kernel (C or Rust), it has to be atomic.
++#[inline(always)]
++pub unsafe fn xchg<T: AtomicType, Ordering: ordering::Ordering>(
++    ptr: *mut T,
++    new: T,
++    o: Ordering,
++) -> T
++where
++    T::Repr: AtomicExchangeOps,
++{
++    // SAFETY: Per the function safety requirement, `ptr` is valid and aligned to
++    // `align_of::<T>()`, and all concurrent accesses from kernel are atomic, hence no data race
++    // per LKMM.
++    unsafe { Atomic::from_ptr(ptr) }.xchg(new, o)
++}
++
++/// Atomic compare and exchange over raw pointers.
++///
++/// This function provides a short-cut of `Atomic::from_ptr().cmpxchg(..)`, and can be used to work
++/// with C side on synchronizations.
++///
++/// # Safety
++///
++/// - `ptr` is a valid pointer to `T` and aligned to `align_of::<T>()`.
++/// - If there is a concurrent access from kernel (C or Rust), it has to be atomic.
++#[doc(alias("try_cmpxchg"))]
++#[inline(always)]
++pub unsafe fn cmpxchg<T: AtomicType, Ordering: ordering::Ordering>(
++    ptr: *mut T,
++    old: T,
++    new: T,
++    o: Ordering,
++) -> Result<T, T>
++where
++    T::Repr: AtomicExchangeOps,
++{
++    // SAFETY: Per the function safety requirement, `ptr` is valid and aligned to
++    // `align_of::<T>()`, and all concurrent accesses from kernel are atomic, hence no data race
++    // per LKMM.
++    unsafe { Atomic::from_ptr(ptr) }.cmpxchg(old, new, o)
++}
+diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+index ceb3caed9784..1d53834fcb12 100644
+--- a/rust/kernel/sync/atomic/predefine.rs
++++ b/rust/kernel/sync/atomic/predefine.rs
+@@ -178,6 +178,14 @@ fn atomic_basic_tests() {
  
--    fn project_inner(self: Pin<&mut Self>) -> &mut Atomic<bool> {
-+    fn project_inner(self: Pin<&mut Self>) -> &mut AtomicFlag {
-         // SAFETY: The `inner` field is not structurally pinned, so we may obtain a mutable
-         // reference to it even if we only have a pinned reference to `self`.
-         unsafe { &mut Pin::into_inner_unchecked(self).inner }
+             assert_eq!(v, x.load(Relaxed));
+         });
++
++        for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
++            let x = Atomic::new(v);
++            let ptr = x.as_ptr();
++
++            // SAFETY: `ptr` is a valid pointer and no concurrent access.
++            assert_eq!(v, unsafe { atomic_load(ptr, Relaxed) });
++        });
+     }
+ 
+     #[test]
+@@ -188,6 +196,17 @@ fn atomic_acquire_release_tests() {
+             x.store(v, Release);
+             assert_eq!(v, x.load(Acquire));
+         });
++
++        for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
++            let x = Atomic::new(0);
++            let ptr = x.as_ptr();
++
++            // SAFETY: `ptr` is a valid pointer and no concurrent access.
++            unsafe { atomic_store(ptr, v, Release) };
++
++            // SAFETY: `ptr` is a valid pointer and no concurrent access.
++            assert_eq!(v, unsafe { atomic_load(ptr, Acquire) });
++        });
+     }
+ 
+     #[test]
+@@ -201,6 +220,18 @@ fn atomic_xchg_tests() {
+             assert_eq!(old, x.xchg(new, Full));
+             assert_eq!(new, x.load(Relaxed));
+         });
++
++        for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
++            let x = Atomic::new(v);
++            let ptr = x.as_ptr();
++
++            let old = v;
++            let new = v + 1;
++
++            // SAFETY: `ptr` is a valid pointer and no concurrent access.
++            assert_eq!(old, unsafe { xchg(ptr, new, Full) });
++            assert_eq!(new, x.load(Relaxed));
++        });
+     }
+ 
+     #[test]
+@@ -216,6 +247,21 @@ fn atomic_cmpxchg_tests() {
+             assert_eq!(Ok(old), x.cmpxchg(old, new, Relaxed));
+             assert_eq!(new, x.load(Relaxed));
+         });
++
++        for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
++            let x = Atomic::new(v);
++            let ptr = x.as_ptr();
++
++            let old = v;
++            let new = v + 1;
++
++            // SAFETY: `ptr` is a valid pointer and no concurrent access.
++            assert_eq!(Err(old), unsafe { cmpxchg(ptr, new, new, Full) });
++            assert_eq!(old, x.load(Relaxed));
++            // SAFETY: `ptr` is a valid pointer and no concurrent access.
++            assert_eq!(Ok(old), unsafe { cmpxchg(ptr, old, new, Relaxed) });
++            assert_eq!(new, x.load(Relaxed));
++        });
+     }
+ 
+     #[test]
 -- 
 2.50.1 (Apple Git-155)
 
