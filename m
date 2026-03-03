@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EAA3A5E65
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 20:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9142A384251
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 20:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772569034; cv=none; b=ZMDkqRGvG7bHjxPUq4cDcR0feJUhehrAgqt5A5r6eo2gC2886OoGeQYUXNXfbZW2DYLrRTABKeW+dtGbvduhrNJEgmXA094x+5lFeFRgYSwaYxxn4Tz1+t6POcKQeGIbwfP0zx3c5u7ZLwDCRkPDZR+nzn/ono+zTuzR6U+CBaU=
+	t=1772569036; cv=none; b=hlwlimks6Pe8oPONmopgPsCtgCQk7zH9NlAI8fN11Yr7mupcbFFWOnyuTVVy47RD/bl66uKQ3Ov46cwAwZpPnFs0OGti8OFzbOctMzQsX1nrdmoiGrjnpY+xRCai1sGuxPkYX4bgDZoPIYsUOOAgax0G+CsWtj4nGAdgbXRCyjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772569034; c=relaxed/simple;
-	bh=Z1tKkFOpyqvATYfskTsH6WPac+YzXa67OCKt6VLZh1w=;
+	s=arc-20240116; t=1772569036; c=relaxed/simple;
+	bh=AKPWmh4rrmUMnmPi7iqjv6GVZwNv+zZVTWNcBuZTt+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZaFrS0AwxrrEvlgDOroqVs/QHwsAXeH++AxwediuF6VmCtz4KKx7QNwX74LTDcm7+BzMgffiuaQk51fMiOnRJzyjOJQrwkumeiAF30I9V9+eeT9rxEnmXvtG0sN4Xo9Yz0wJTQ9PBqBkTYiccFLzuq9JXeT1noFPPA50gmZELw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1Iy+ReC; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=rUJT9MywXyLv+pGOPjo1VD5pPN1NAk6Ydy+E4QBSD0WNjIDdfHnyFLk1olFRP6NDwPaPnQ41OcyYKfoJPDTwWGma8UpND5sAInytbDiyLiLF3fhrQgeVQ3hCLm1RXt/ggm8eCwKogS6cYYQ5e+8x/4vN4Ol3Ni72lP3YoHKcdN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o9w59Va0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1Iy+ReC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F48DC4AF0B;
-	Tue,  3 Mar 2026 20:17:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o9w59Va0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E02C116C6;
+	Tue,  3 Mar 2026 20:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772569034;
-	bh=Z1tKkFOpyqvATYfskTsH6WPac+YzXa67OCKt6VLZh1w=;
+	s=k20201202; t=1772569036;
+	bh=AKPWmh4rrmUMnmPi7iqjv6GVZwNv+zZVTWNcBuZTt+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1Iy+ReC1pSuxZNR4MKkkWiiJJ/Zh4cH/7B1nsvDBQ081uBJmsTF2dv2E97JwUHDk
-	 AxULJlKs8AiJ9Rg72Vm5n6bdH+iANzSaTXwFHWD6oggt4TcAaKHerc9OsMG6BFItDm
-	 KJg4tEQOoGeGOqUsP5ftPBKnxEg4nD3zM2juRHIwWLFTtfAs77EdBPNaNxZWLSATRo
-	 QqPmKWpFZA1S3QJZsKFo188+gtK8LMxauNjbWlB+c5Rfq5VHKUjsicwavs5tsYu7Tk
-	 xKDd48e3OeaFzvCB8eWAtRJ5UgV707hn4Sq+KBo8gQHfi2W+BgXspNx6Y9dLBBLCxg
-	 toYuUiZjYUfCg==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7B28BF40069;
-	Tue,  3 Mar 2026 15:17:13 -0500 (EST)
+	b=o9w59Va0ExVnBDTZuef08TBp5gJmdQhTz4EE/vMYsrtZRPSLTFm15gZtXSxncZVn4
+	 iZMVpbs96rk01CgoJ3E76jUM0p9xPdK/84fb1rJYDTJMP4o8muHZU4r7bqTxp0KU5w
+	 uK3rrjaOqOdOcAe9sk8HNOztMI+mJNmXpt4ixRoAtqCRAb57x1PJVO+HUMxEhugGcX
+	 RxlWTGrWf4GosqtZJDZ/vouzJU9I/iaFALIBy3ZgkJRuqh3IZ0iUSOMoX071DejJf7
+	 qSUZtvcJI6xAFsrxsAc0W9y2/4axoAQXpy54QL7awLPO7w7pxnlDTCiPuCJGskuz60
+	 QAXdVXBycnY+g==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DD49BF40068;
+	Tue,  3 Mar 2026 15:17:14 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 03 Mar 2026 15:17:13 -0500
-X-ME-Sender: <xms:yUGnaa1m_K7L_hW02ocRHBsBmRoS-4Yp0EmGjlNgWSYYUgxJhBJIqw>
-    <xme:yUGnaWdxmcTS8i4y3OyjwTbaZjFTJUyul-tCBabQjDAqaqPB237NOt5gnn0oPd5PD
-    PRh5-anhnnKiZCxHnsdG5VlbmSuJ-GP8hUzvogUm4y9Za9mhmFWVw>
-X-ME-Received: <xmr:yUGnabYQKz4fs4Exo2j0B-kqzY7Cgr94otG4PH-lMrUTwP-IdVJCsYSPpXOk6aIHqtwTgkwtAAaf4NPVm6di3sUqz09-GakF>
+  by phl-compute-12.internal (MEProxy); Tue, 03 Mar 2026 15:17:14 -0500
+X-ME-Sender: <xms:ykGnaYHsfeYARqrC-27u7mTbHj23DyPoxWiVGGxKe3m78I0s51CPJg>
+    <xme:ykGnaavka_xcVTUBiMqusGdKgktpH1CmQVPoecVMDTpu8qI7nNy1TBaJ04ea9bOrM
+    vP-8SoDgEaNVJpqDQSjSqvp8ZWoFQzliPFSWbFYI3lAPC0gpK565Q>
+X-ME-Received: <xmr:ykGnaao8BVGIRkG3znRY67dbUnOexy7RxH82UWFYb56CR_SsSQKgFkhQ0rVCN_6ouiRa0vNHhAwJB-eaIWdKjvvL8yy8aWhf>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieduheefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -53,14 +53,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieduheefucetufdote
     hghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghr
     nhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorh
     hg
-X-ME-Proxy: <xmx:yUGnabUfWqH2yZJcGH0_BtdzsgModC_CI_o4WxQivu05v2nTw1ozdA>
-    <xmx:yUGnaeQjZbvacgQyLVu2UQjZD4IWZ16gfTNu1ls-9k5OKRZ1bsc-VQ>
-    <xmx:yUGnaQHqACR9u_G09_-51Dt4wpLn1HSd4mA4ASlRPyRr-XLE4Bfq-w>
-    <xmx:yUGnadcqgncConn54zqQHhxRip-2kWJT5kDqtEcTxU0o0qLNWyq-iA>
-    <xmx:yUGnaXImYg6bpJh6F_Fz47FQhlHgMK6hQOY10TZiA0KOa55Yy0fO6OQi>
+X-ME-Proxy: <xmx:ykGnaZkOrMgBnje84cVaP2-tBfiqAaBDWwuDcVII4PLlDrYmCeM-rg>
+    <xmx:ykGnafiyGAg6CxOtfCJ6oXO6NR0zKwsn26pHKzB6DvY7Hc8BPA9AFw>
+    <xmx:ykGnaYXNcF2pzQmVlMvlCJS3P1B5HwK-BRFsKVmfhRboAi84OyYnew>
+    <xmx:ykGnaQuiPqityh0u7XgX0Hv4Q5Az_z7ONEd-dvY2zNX_UlaIPS6wvg>
+    <xmx:ykGnaZafqR2ZslxvcnmJQcuY04Gviqa97LvNtUr9-b8DFdxltZL_nX7q>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Mar 2026 15:17:13 -0500 (EST)
+ 3 Mar 2026 15:17:14 -0500 (EST)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Will Deacon <will@kernel.org>,
@@ -78,10 +78,10 @@ Cc: Will Deacon <will@kernel.org>,
 	"Ingo Molnar" <mingo@kernel.org>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH 02/13] rust: sync: atomic: Add example for Atomic::get_mut()
-Date: Tue,  3 Mar 2026 12:16:50 -0800
-Message-ID: <20260303201701.12204-3-boqun@kernel.org>
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [PATCH 03/13] rust: helpers: Generify the definitions of rust_helper_*_{read,set}*
+Date: Tue,  3 Mar 2026 12:16:51 -0800
+Message-ID: <20260303201701.12204-4-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260303201701.12204-1-boqun@kernel.org>
 References: <20260303201701.12204-1-boqun@kernel.org>
@@ -93,41 +93,91 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Boqun Feng <boqun.feng@gmail.com>
 
-Add an example for Atomic::get_mut(). No functional change.
+To support atomic pointers, more {read,set} helpers will be introduced,
+hence define macros to generate these helpers to ease the introduction
+of the future helpers.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Boqun Feng <boqun@kernel.org>
-Link: https://patch.msgid.link/20260128123313.3850604-1-tomo@aliasing.net
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://patch.msgid.link/20260117122243.24404-2-boqun.feng@gmail.com
 ---
- rust/kernel/sync/atomic.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ rust/helpers/atomic_ext.c | 53 +++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 30 deletions(-)
 
-diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index 296b25e83bbb..e262b0cb53ae 100644
---- a/rust/kernel/sync/atomic.rs
-+++ b/rust/kernel/sync/atomic.rs
-@@ -232,6 +232,17 @@ pub const fn as_ptr(&self) -> *mut T {
-     /// Returns a mutable reference to the underlying atomic `T`.
-     ///
-     /// This is safe because the mutable reference of the atomic `T` guarantees exclusive access.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::sync::atomic::{Atomic, Relaxed};
-+    ///
-+    /// let mut atomic_val = Atomic::new(0u32);
-+    /// let val_mut = atomic_val.get_mut();
-+    /// *val_mut = 101;
-+    /// assert_eq!(101, atomic_val.load(Relaxed));
-+    /// ```
-     pub fn get_mut(&mut self) -> &mut T {
-         // CAST: `T` and `T::Repr` has the same size and alignment per the safety requirement of
-         // `AtomicType`, and per the type invariants `self.0` is a valid `T`, therefore the casting
+diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
+index 7d0c2bd340da..f471c1ff123d 100644
+--- a/rust/helpers/atomic_ext.c
++++ b/rust/helpers/atomic_ext.c
+@@ -4,45 +4,38 @@
+ #include <asm/rwonce.h>
+ #include <linux/atomic.h>
+ 
+-__rust_helper s8 rust_helper_atomic_i8_read(s8 *ptr)
+-{
+-	return READ_ONCE(*ptr);
+-}
+-
+-__rust_helper s8 rust_helper_atomic_i8_read_acquire(s8 *ptr)
+-{
+-	return smp_load_acquire(ptr);
+-}
+-
+-__rust_helper s16 rust_helper_atomic_i16_read(s16 *ptr)
+-{
+-	return READ_ONCE(*ptr);
++#define GEN_READ_HELPER(tname, type)						\
++__rust_helper type rust_helper_atomic_##tname##_read(type *ptr)			\
++{										\
++	return READ_ONCE(*ptr);							\
+ }
+ 
+-__rust_helper s16 rust_helper_atomic_i16_read_acquire(s16 *ptr)
+-{
+-	return smp_load_acquire(ptr);
++#define GEN_SET_HELPER(tname, type)						\
++__rust_helper void rust_helper_atomic_##tname##_set(type *ptr, type val)	\
++{										\
++	WRITE_ONCE(*ptr, val);							\
+ }
+ 
+-__rust_helper void rust_helper_atomic_i8_set(s8 *ptr, s8 val)
+-{
+-	WRITE_ONCE(*ptr, val);
++#define GEN_READ_ACQUIRE_HELPER(tname, type)					\
++__rust_helper type rust_helper_atomic_##tname##_read_acquire(type *ptr)		\
++{										\
++	return smp_load_acquire(ptr);						\
+ }
+ 
+-__rust_helper void rust_helper_atomic_i8_set_release(s8 *ptr, s8 val)
+-{
+-	smp_store_release(ptr, val);
++#define GEN_SET_RELEASE_HELPER(tname, type)					\
++__rust_helper void rust_helper_atomic_##tname##_set_release(type *ptr, type val)\
++{										\
++	smp_store_release(ptr, val);						\
+ }
+ 
+-__rust_helper void rust_helper_atomic_i16_set(s16 *ptr, s16 val)
+-{
+-	WRITE_ONCE(*ptr, val);
+-}
++#define GEN_READ_SET_HELPERS(tname, type)					\
++	GEN_READ_HELPER(tname, type)						\
++	GEN_SET_HELPER(tname, type)						\
++	GEN_READ_ACQUIRE_HELPER(tname, type)					\
++	GEN_SET_RELEASE_HELPER(tname, type)					\
+ 
+-__rust_helper void rust_helper_atomic_i16_set_release(s16 *ptr, s16 val)
+-{
+-	smp_store_release(ptr, val);
+-}
++GEN_READ_SET_HELPERS(i8, s8)
++GEN_READ_SET_HELPERS(i16, s16)
+ 
+ /*
+  * xchg helpers depend on ARCH_SUPPORTS_ATOMIC_RMW and on the
 -- 
 2.50.1 (Apple Git-155)
 
