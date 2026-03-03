@@ -1,247 +1,131 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022127.outbound.protection.outlook.com [52.101.101.127])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06F83876CC;
-	Tue,  3 Mar 2026 10:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.127
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772533028; cv=fail; b=Ugttx3H9a+Na61J4Q/BMRKWSF3cDvBtdKCsy7M5LGTVU1W4rdMVCYlOTo0l7OT5lBd3hjNbCGmKHJDmO4V2AmpEaC5gfG6Tdg//c8J0rhxFFjn+0AQ937/VUXnwRI/IvX7UGqQ9X8n8YMmmsHseZj6KYSkdrw500EsABqGoJ+jQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772533028; c=relaxed/simple;
-	bh=p1vgnvgkXE8394Ci2xsrHBvNHpFbGqDB8XYcfxFCem4=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=qcBSIB0jEo76wt+jHDCrWEBvHVvmfo1WBHUH7vX0FQbaIb1XfmNK/vKL7ysehYd6tEssWl5FYwLZqh5MeertpuXvUcj1dYv1zv6GTjF2VqTqcPr7z5gzC2Cvyhf6qqCbNA8vLDdgMiSIRD9LIyCsu13sHua01G7l9aPIFW8ytqg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=P6hSKYXV; arc=fail smtp.client-ip=52.101.101.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB9036D9EC
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 10:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772533517; cv=none; b=l0+vnr/avlhOq2Z40yqK8kI8bp5l8xIrS6tCZpXIfFszuMRcwMCwQIdp4gELSiUK+rmwnlXA3ev5mdgKL5G+nDLkJp1V2Cu0LhKzkW23GvGChucJAJVi0N1eya7CSKPsewtBcClBDfgdERZntcQ7LLcDG597JoDWF7j0lqyVbd8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772533517; c=relaxed/simple;
+	bh=lUm3Qv+Y+T2p0B2H2OuXplVZveLD9IckC1/rT/NDcOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kNQIdSbcnFg1wF4HecKos1tFGFk3E+kszrsA1ti9L9axGyleSuDyflu1rs6Ibjjmb/ylALfy7nEkxgMC8KH8nnNjTvw5amFTwLhg5gkkG3agfiMaMcMd37u6IwTl+oMJXhCriTv06dnglC51Dt9f1zrMtF/TmRcrTZ2ZHNOnSD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=MnQm5bf9; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="P6hSKYXV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SB+nkBJqIIWXLCThuBUlRc2wJ9/p3g4regLZ5t2f4gKLZcn7Ky91wWn+Qk8RWrWefzekFwMj+fcRURGfp9HRI0WrhZOafxdrVpD5Djwa8oACttNl/5D2Am8uZ3n8sIyuDJ7D0PWgBSJTFpFRkfGP0SQBZYarCSr5N4SkObmvRkshmzZ4NYtbYmcat0TkXMBcl0AAEc2QHwb9ys2Xc2F8Q7ZgX7rWxnxf31OTkOj6QGBrQ74ledDsoGhEMHIRnkZdh/J9UPoXYqjbjL+KdlYQX4jUzDBKiEn9H0Yu7FrC8C5VctpoEDHuFsunqDM6Gj7VFFXw9pbmNaPH1/At40bbYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aLFBKp3ytfPcLCEj43bD+V0s+pJ7Y4piOEyNmsdU5x0=;
- b=ta+qKjldZfDv5Sr6K3W0TAdwAGznjmBkeu/NYXh+tOlRby7JlB2RWTYTkZSVAeNflqAH0uY5lMm/OuiCvNSPuEnBta2kPh9s7HpQTRTELnSLID/eKz2i8SRGUxYzK/mlQVLZKxxRI0HjKitvul/5klE/5cbpPkeJi5YvJ3Z3sntqOuprCWJj7N0A7mREuDqewovxTxGymZPr7948ucdhTharFLyzKMtHk9EFtiYyrNn/0S+4XXLzpaObMkoChlnlqdoqJSqfNZDYFrR/O4atBz+HMydIygTALMsFmjlP0OkAqtAOs/Q2Rg+SQ0HXqVzmIQiIvuHGyQ+hsqepkUAuXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aLFBKp3ytfPcLCEj43bD+V0s+pJ7Y4piOEyNmsdU5x0=;
- b=P6hSKYXVG/3DrpRN4X7p3SnYVHYMTOzdMehZZHWICYjY7NcpHMgCcHlcjIh0iocQIE+HysnksUcQ4DwA+TW5iON028Fxk3zLDkZA+tWA7JeoFOrhY0HWd/70kp1CDH1wtSu9fB0+8PZePsvBPZvywwGtd3T80G708/rgvUD2t3w=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO6P265MB6492.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2d3::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 10:17:03 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9654.022; Tue, 3 Mar 2026
- 10:17:02 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Mar 2026 10:17:01 +0000
-Message-Id: <DGT2IKQK341C.35HW6HHSB03KL@garyguo.net>
-Subject: Re: [PATCH v3 1/2] rust: add projection infrastructure
-From: "Gary Guo" <gary@garyguo.net>
-To: "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, "Aditya Rajan"
- <adi.dev.github@gmail.com>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260302130223.134058-1-gary@kernel.org>
- <20260302130223.134058-2-gary@kernel.org>
- <DGSDGDIVUHO0.P594H9B4LLO5@kernel.org>
- <DGSDOKRKSKQL.2NQL17J05GGX2@garyguo.net>
- <DGSISB2SQHWM.D8OGH4JJHIRP@kernel.org>
- <DGSKLQ9WMRID.3ILNUUEITA48K@garyguo.net>
- <DGSMV5Z3PW5O.3NBTRGX8CK8WB@kernel.org>
- <DGSN9C8PBFYP.2T48HOEE5LXSM@garyguo.net>
- <DGT16NCR2TD7.27E74897D8XEC@kernel.org>
-In-Reply-To: <DGT16NCR2TD7.27E74897D8XEC@kernel.org>
-X-ClientProxiedBy: LO2P265CA0511.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:13b::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="MnQm5bf9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1772533508;
+	bh=lUm3Qv+Y+T2p0B2H2OuXplVZveLD9IckC1/rT/NDcOI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MnQm5bf9YUeMFv/ikj4ECGjJJUpnpHrjXwWNa5BA2cHIn3x2Tu/vZ/I1dKB6/rjyD
+	 OhWZ6m58s+NRn7lXsMby4r4jUJ5s1D9zvL4EkGltFRnGoi9RFA1dBVGt2+bGiMwV4/
+	 VU0MRbvrb4sV1YvYuRAydNHe845jsWoTQ2CjK1HSUA09ytOSwC3Filt19F/8m6CA71
+	 IF/wiv60VSc/JpGCrljPQqRD1pKY9w4y+xgfj0744mkw8qyAYYKOr5HL3KCwP1VXlP
+	 zPqmOoNDvL2QZ3htWHpV/Ms0I/VNuCvxe3et1No3QKsfbAA3GVVeRYN2Ub1pqPd83j
+	 5+Cbbnr1rx7/Q==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0BF4D17E005F;
+	Tue,  3 Mar 2026 11:25:08 +0100 (CET)
+Date: Tue, 3 Mar 2026 11:25:00 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ daniel.almeida@collabora.com, aliceryhl@google.com
+Subject: Re: [PATCH] drm/tyr: Use DRM device type alias across driver
+Message-ID: <20260303112500.1f47d56e@fedora>
+In-Reply-To: <20260302202331.176140-1-deborah.brouwer@collabora.com>
+References: <20260302202331.176140-1-deborah.brouwer@collabora.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6492:EE_
-X-MS-Office365-Filtering-Correlation-Id: 532ca502-38c8-413a-8eba-08de790e0324
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003|921020;
-X-Microsoft-Antispam-Message-Info:
-	nKkuA5+DUd1PSY0UhbjE3NV+QJA6xHZCEnjq0eigsZ28hihDUIcNpio6jO7RF8s7jvT6HOwVypezxrnVPgQKdRgJ078q2TS8fkfwEvlzVH95Ra2mc/CvfKCaIX6heGUFl4++T/oM+1B/5zeJ/nDPt/TQQcUd8d2nmF1SGCejUzR9SGzgPfdFCvmDP9JygMQLecvw9Wvl3AGjnCG9XGSrEGy36MwV8ayQnfW+sP/OR39+DpXw60x8SA24BJpFEtTM6qVmEgyVw/ipyNDa+DouhD/zLSzo6UtCzaZFLIPmwm2wkEpe73pTcvxU2wfjz3QN7ZEKuPkVvXGHQDWM4nWoV8G+WVHXTzG13xE5hlnXrUmofldBIkN5an2hjYtxbCoZsX6aQDiaXeSAAOBhP7UUJyi8afmNy0c13IiKmxtdkh1G32qvLoiTSDcuHWY/Jei+ySFLnn1V4/j1iku9toFLnpQEciPsm8VaVUD5CM3iDKacqB68tbXOZbBidg2dZh3gWixp4jYkjpHXlM8PP9GjHAlFFTrRjIsl2kdZCAo/vMWb3MqxQh7RAqrDD9PzK5DuXsgTUKpp+Nmrr9XMeXGzp9cwmjFrfOxU6IRvAioX4KQLGE/7DARvMZiaT2rcin9Q9v28tFkFVrrtB+dkufpSiNVxpCBlbK8rlRNmF0pmJ+7ymIoXTMFprLOjZvRnCmD2Tpatn+305LDqajBe62Xughljh8xShUhR7DLFSBwTJyE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S0pKaUltRlpMSDZYemNPQ2tLNm9zQ1pZaW5FQWZNUUJ5aS9OWk9uZnJtTFFs?=
- =?utf-8?B?eVpGVStXb1grbFhIZVdQbmR6TUFuVnRSRTlKUGpOYnRWYlpsdFFabVVXRzQ3?=
- =?utf-8?B?R1hZTTF6MmxrSDQvc1dsNWJRNmprTGZUejAyTnE3T0IwWHgzdkJlQ0x6VzlL?=
- =?utf-8?B?dXl4SysxanNSWmxTejFYQ0FhL1grSUcyMGpZUnlvNFRYejRXOHIxQ0F5VzQr?=
- =?utf-8?B?bUNVNnVLaXlITEpaanV4dTRyazFoSk1WbC9KdDgza1Zqd1Q5c2dFUy8yN1Va?=
- =?utf-8?B?UEJwYUVzWGpOMjVkcjV4R0tkakdEU2JYUFdoQldFckN4azVKRGxOWkRuVzFz?=
- =?utf-8?B?R3VrNmFveGNFaFlFZ2VUU1lBNFdkTUtKak5ETUFLZ1JRR0VUNW9EQjRadThY?=
- =?utf-8?B?L25CQjhwdlUyd0h5TUNneE5waGhiaXl4UmhnK2Z0NnBERWNEYnYxVHVJb2pI?=
- =?utf-8?B?b1VISjE0dVY4WDZldlEzMGNocUJkZ2JpY1FBWmlOTzJYUURQZmJLZzlUQzl3?=
- =?utf-8?B?eEQ4UmtYVmF2aDlVbmxkeFA3c01mTTVHRWY2c0xUaktJZ3lxcVkzVVdaTnN5?=
- =?utf-8?B?Q3lnZ1B5UkJCOXVmekJKOXMwMkFxZG1Hcnl3ZDVOcWNYZWxYT1Z1K2FlM3JV?=
- =?utf-8?B?T2IyeHV1ZTJjdEhLUFQ2WWpSTGZnT0pSMGZrK0hlTjdtWWhscHA2QWZncjVK?=
- =?utf-8?B?R0o5cnF1QnV0U2k4UXpIY0NSMGRJRnplM1JESW9TN2hVakNYV1ZsSkpKU1FC?=
- =?utf-8?B?Ym1SeFFIRTl4czVSMWRHT2w2bzZsaWhyS3dSRzBqNTkySHh4RUZxQWZ5NGQ3?=
- =?utf-8?B?Lzl4R1RUNGNGUnJDR3R0NjB3bHVZOURyNHFGeGxWUjdzRkM3RUorWE5GTFp1?=
- =?utf-8?B?KzUzNkVKb2REaStKNThidG4zS21ZbDlWSjA2TVRETUhXYzU5WnNFSzhEWHlU?=
- =?utf-8?B?QUp0eVByaHIrRGowUWpwMDBYRlArdXEzbkQvTGYzVDRMODZZNExLRDliUWRR?=
- =?utf-8?B?T2tRTy9sN2xMNm1QWlNvSDc5b1lpM3dWQ1ZqVndzNjBlR045cUtGNVlzaVhi?=
- =?utf-8?B?ejFISUNJaWVKSkdHclpkVncwSXVQL0tOZ1ZlR3g4WklWaGh0dEFybnlIOG9a?=
- =?utf-8?B?VWtsYU9rTnpUc256WGQ3K2NnY0xrRmdEaFlWVWd0ajdHTmxlelJRVGlFc3VQ?=
- =?utf-8?B?bUtiUVJUQWFsYzAwTDNrek1LUDJwVlgwWDNlcjZzMlFZell5d3N2Q0xiV0lo?=
- =?utf-8?B?VWhZc0NNUmRYVVB0S1gyZ2kzdjBrT2h3Z1UrZm1PSWlHcGRPa1JvY01qbXZu?=
- =?utf-8?B?NUtOQWFxL0JIUTIraEltdUt1bnRqcEpTTTNHOVFJY3RiQnhLWk5XVCtMZEp0?=
- =?utf-8?B?VEV0bjdIc1RITW9VN3dMcDdMeHhmZi9nbUVGS2FSdWxVc1dIUzJ3cDN1YVhS?=
- =?utf-8?B?c1ZuWnpud1lpODNrNVZmdkxWQmdJVzgzMUR6eVJqTTYvZzBHZllLYmZxbHRs?=
- =?utf-8?B?dUZjOHRkTkpEOVdUdEVPL2xiR3JJbU9KWGd0SklJRElCR0wrNlBkNkV2LzZ3?=
- =?utf-8?B?S3dvOXlEbUl1QXJ2eC82ZEFkRkE1MWEybFR5WTJ6R0dERk42K042U3doTm5y?=
- =?utf-8?B?YnVDemVHTE4rVlFKU1VEUG1QZmlpeVVZYThoblhiZ04yQm1FUG4vN0dWazJv?=
- =?utf-8?B?SWt0Zm5OSmhZS2tqd2lyM0RQM0c4Wko1bmFZVlF5a29hbjB0T1VpcjJQMVVN?=
- =?utf-8?B?WGNDNHh2ZExCR3lRTmlVSndlSmh4aWJQQUtYVWlINzRZandPWEpFYklXNktQ?=
- =?utf-8?B?aXFMS25wQ3Z1QnNUdlhDeTdaeHprZk05SEFZSUdBRllidjBEUG5YWmpRbW5R?=
- =?utf-8?B?NzltK0l0Z090VzhlZnVncFJzc0loNm01UDN6eFErVjRhTmJSQUQ4UkYzckQr?=
- =?utf-8?B?MXloRmtTV3NWb0syRnVobTJ6cTRCTzloY250Ti9ublI0M2FGUHhuTlF5bGcy?=
- =?utf-8?B?N2N5Zm1uNGJ2OTh3dmx3WGxESVVwcGUySUZyeHJNK0FvUGszdnhWZDFVWnNX?=
- =?utf-8?B?ejFQK1dzQWU1Rlk3cllId0xCOGEyOEFBK0FQaE9aZlRiT2JVMTRSSW5iM2Zk?=
- =?utf-8?B?N3l4TWovWlFVVUF4R0ptSWc3SnBGbTdSZjNMV1VqbjhXcXZlNUowckI5Z2VW?=
- =?utf-8?B?dVc0UkRuWW1TNmZraGNxTU9maUFORmJhWVdvYU90U0h0Y3haQzhlMS9FRWEv?=
- =?utf-8?B?QUdkQmRyU0VsNDEvd3QrSW01Mmh5d0Q5S1NwbDl0NU45Vm1wSFVUeEttK0p6?=
- =?utf-8?B?ak4yZkZ3U2ZFMFN5Y0pHaWxSaXVyOVdBa2VodG54YVNBMEVyd0llUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 532ca502-38c8-413a-8eba-08de790e0324
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 10:17:02.3803
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z5aTAC976jSnO1gB7yX8eFjVMu9uWsnCart+qgBbCQePmjxpGtVfl7NHbdppH6ENop6LuotArF6isP9eHJdIVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6492
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue Mar 3, 2026 at 9:14 AM GMT, Benno Lossin wrote:
-> On Mon Mar 2, 2026 at 11:19 PM CET, Gary Guo wrote:
->> On Mon Mar 2, 2026 at 10:01 PM GMT, Benno Lossin wrote:
->>> On Mon Mar 2, 2026 at 9:14 PM CET, Gary Guo wrote:
->>>> On Mon Mar 2, 2026 at 6:49 PM GMT, Benno Lossin wrote:
->>>>> On Mon Mar 2, 2026 at 3:49 PM CET, Gary Guo wrote:
->>>>>> On Mon Mar 2, 2026 at 2:38 PM GMT, Benno Lossin wrote:
->>>>>>> On Mon Mar 2, 2026 at 2:02 PM CET, Gary Guo wrote:
->>>>>>>> +/// A helper trait to perform index projection.
->>>>>>>> +///
->>>>>>>> +/// This is similar to `core::slice::SliceIndex`, but operate on =
-raw pointers safely and fallibly.
->>>>>>>> +///
->>>>>>>> +/// # Safety
->>>>>>>> +///
->>>>>>>> +/// `get` must return a pointer in bounds of the provided pointer=
-.
->>>>>>>
->>>>>>> This only makes sense when the provided pointer already points at a=
-n
->>>>>>> allocation. But since the functions of this trait aren't `unsafe`, =
-it
->>>>>>> must be sound to pass `ptr::null` to them.
->>>>>>
->>>>>> The "in bounds" here is the conceptual bounds of the pointer. So, fo=
-r a pointer
->>>>>> with size `x`, the address of the returned pointer lies between `ptr=
- .. ptr +
->>>>>> x`.
->>>>>
->>>>> Okay, I haven't really seen that as a concept. Also, what is the size=
- of
->>>>> an invalid pointer?
->>>>
->>>> It's `size_of::<T>()` for sized types, and `size_of::<T>() * slice.len=
-()` for a
->>>> raw slice pointer.
->>>
->>> And for `dyn Trait`?
->>>
->>> Do you have a link to somewhere?
->>
->> For `dyn Trait` it would be the size in the vtable, which is always avai=
-lable as
->> vtable metadata on a raw pointer is required to be valid anyway (this is
->> something that lang team has already decided so that trait upcasting cou=
-ld work
->> for raw pointers).
->
-> I really would like to see some docs of that, I didn't find anything in
-> the reference, official docs, or nomicon. The reference does say [1]
-> that:
->
->     `dyn Trait` metadata must be a pointer to a compiler-generated
->     vtable for Trait. (For raw pointers, this requirement remains a
->     subject of some debate.)
->
-> Do you know where it was decided? I did find this [2] UCG issue that
-> covers it, but that doesn't seem like the decision, just the discussion.
+On Mon,  2 Mar 2026 12:23:31 -0800
+Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 
-The FCP is here: https://github.com/rust-lang/rust/issues/101336
+> Currently Tyr defines a convenience type alias for its DRM device type,
+> `TyrDrmDevice` but it does not use the alias outside of `tyr/driver.rs`.
+> 
+> Replace `drm::Device<TyrDrmDriver>` with the alias `TyrDrmDevice` across
+> the driver.
+> 
+> This change will ease future upstream Tyr development by reducing the
+> diffs when multiple series are touching these files.
+> 
+> No functional changes are intended.
+> 
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-The gist: for a fat raw pointer with `dyn Trait` metadata, the safety invar=
-iant
-requires a fully valid vtable. Validity invariant is not yet decided.
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
->
-> [1]: https://doc.rust-lang.org/reference/behavior-considered-undefined.ht=
-ml#r-undefined.validity.wide
-> [2]: https://github.com/rust-lang/unsafe-code-guidelines/issues/516
->
->> I am basically just having `size_of_val_raw` in mind when writing this. =
-So the
->> current `KnownSize` comment in v4 is something that I am happy about.
->
-> Well size_of_val_raw is `unsafe` and only valid to call in certain
-> conditions. It asks in the case of slices that the length is an
-> initialized integer and that the entire value must fit into `isize`.
-> This to me just further indicates that `*mut T` has safety
-> requirements to obtaining the size of an arbitrary pointer.
->
-> In the special cases of `T: Sized` and `T =3D=3D [U]`, we have safe ways =
-of
-> getting their size.
-
-Hmm, the `isize` fitting requirement is problematic indeed. It's broken cod=
-e if
-pointer projection is used with an allocation that exceeds the limit, but I=
- want
-the API to be safe, so it'll be good if the API is defined to just be wrapp=
-ing
-and safe (it may return values that doesn't make sense, but that'll be on t=
-he
-user).
-
-Anyhow this is moot as we're going the `KnownSize` route.
-
-Best,
-Gary
-
->
-> Cheers,
-> Benno
+> ---
+>  drivers/gpu/drm/tyr/file.rs | 7 +++++--
+>  drivers/gpu/drm/tyr/gem.rs  | 7 +++++--
+>  2 files changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+> index 450be5ab9aaf..31411da203c5 100644
+> --- a/drivers/gpu/drm/tyr/file.rs
+> +++ b/drivers/gpu/drm/tyr/file.rs
+> @@ -7,7 +7,10 @@
+>      uapi, //
+>  };
+>  
+> -use crate::driver::TyrDrmDriver;
+> +use crate::driver::{
+> +    TyrDrmDevice,
+> +    TyrDrmDriver, //
+> +};
+>  
+>  #[pin_data]
+>  pub(crate) struct TyrDrmFileData {}
+> @@ -25,7 +28,7 @@ fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
+>  
+>  impl TyrDrmFileData {
+>      pub(crate) fn dev_query(
+> -        ddev: &drm::Device<TyrDrmDriver>,
+> +        ddev: &TyrDrmDevice,
+>          devquery: &mut uapi::drm_panthor_dev_query,
+>          _file: &TyrDrmFile,
+>      ) -> Result<u32> {
+> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+> index 514524ae07ef..5cd0cd9585e8 100644
+> --- a/drivers/gpu/drm/tyr/gem.rs
+> +++ b/drivers/gpu/drm/tyr/gem.rs
+> @@ -5,7 +5,10 @@
+>      prelude::*, //
+>  };
+>  
+> -use crate::driver::TyrDrmDriver;
+> +use crate::driver::{
+> +    TyrDrmDevice,
+> +    TyrDrmDriver, //
+> +};
+>  
+>  /// GEM Object inner driver data
+>  #[pin_data]
+> @@ -14,7 +17,7 @@ pub(crate) struct TyrObject {}
+>  impl gem::DriverObject for TyrObject {
+>      type Driver = TyrDrmDriver;
+>  
+> -    fn new(_dev: &kernel::drm::Device<TyrDrmDriver>, _size: usize) -> impl PinInit<Self, Error> {
+> +    fn new(_dev: &TyrDrmDevice, _size: usize) -> impl PinInit<Self, Error> {
+>          try_pin_init!(TyrObject {})
+>      }
+>  }
+> 
+> base-commit: 15da5bc9f3adab7242867db0251fe451ac3ddb72
 
