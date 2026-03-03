@@ -1,131 +1,103 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB9036D9EC
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 10:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDA91DC9B3
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 11:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772533517; cv=none; b=l0+vnr/avlhOq2Z40yqK8kI8bp5l8xIrS6tCZpXIfFszuMRcwMCwQIdp4gELSiUK+rmwnlXA3ev5mdgKL5G+nDLkJp1V2Cu0LhKzkW23GvGChucJAJVi0N1eya7CSKPsewtBcClBDfgdERZntcQ7LLcDG597JoDWF7j0lqyVbd8=
+	t=1772537499; cv=none; b=nDtfrdsq+a8MyLjPN7McUz5Ej+AO1Q2NNbUdxsmuQlNQTD3hO6arp9JFxDDLYeJ3RIsi5iznN/8bBsOnomNBK6YSA7AIb9vLS23M7qxx3pWWx2khZCRpeP7YKR3Bo6PyYwT0h0uiwsIJgHLkmbrhnQNjyjvvL1AQKhmTvbjrTGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772533517; c=relaxed/simple;
-	bh=lUm3Qv+Y+T2p0B2H2OuXplVZveLD9IckC1/rT/NDcOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kNQIdSbcnFg1wF4HecKos1tFGFk3E+kszrsA1ti9L9axGyleSuDyflu1rs6Ibjjmb/ylALfy7nEkxgMC8KH8nnNjTvw5amFTwLhg5gkkG3agfiMaMcMd37u6IwTl+oMJXhCriTv06dnglC51Dt9f1zrMtF/TmRcrTZ2ZHNOnSD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=MnQm5bf9; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1772537499; c=relaxed/simple;
+	bh=Sh0Wyuegl3U89t2IMn2+3vPBnjuBYsEDi6+plbKyr8o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aql6ykFrezmxv0BTRgjnLiYcIQdfGpyhHpbj0xT4e+s9/+DQkWFIF2D3T3XREzVqhD0boOgOoluoPBb+MGnRoduEWZ8san0vn5c/1IwGAplIZ/Z1NW/MIPqpO/55vkaqJ6DemOZcypfCI3sTQAfIOUbX7eaMEZgYCtbs4OoekRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yqgT2GLx; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="MnQm5bf9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1772533508;
-	bh=lUm3Qv+Y+T2p0B2H2OuXplVZveLD9IckC1/rT/NDcOI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MnQm5bf9YUeMFv/ikj4ECGjJJUpnpHrjXwWNa5BA2cHIn3x2Tu/vZ/I1dKB6/rjyD
-	 OhWZ6m58s+NRn7lXsMby4r4jUJ5s1D9zvL4EkGltFRnGoi9RFA1dBVGt2+bGiMwV4/
-	 VU0MRbvrb4sV1YvYuRAydNHe845jsWoTQ2CjK1HSUA09ytOSwC3Filt19F/8m6CA71
-	 IF/wiv60VSc/JpGCrljPQqRD1pKY9w4y+xgfj0744mkw8qyAYYKOr5HL3KCwP1VXlP
-	 zPqmOoNDvL2QZ3htWHpV/Ms0I/VNuCvxe3et1No3QKsfbAA3GVVeRYN2Ub1pqPd83j
-	 5+Cbbnr1rx7/Q==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0BF4D17E005F;
-	Tue,  3 Mar 2026 11:25:08 +0100 (CET)
-Date: Tue, 3 Mar 2026 11:25:00 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- daniel.almeida@collabora.com, aliceryhl@google.com
-Subject: Re: [PATCH] drm/tyr: Use DRM device type alias across driver
-Message-ID: <20260303112500.1f47d56e@fedora>
-In-Reply-To: <20260302202331.176140-1-deborah.brouwer@collabora.com>
-References: <20260302202331.176140-1-deborah.brouwer@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yqgT2GLx"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48069a43217so53398535e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Mar 2026 03:31:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772537494; x=1773142294; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=38x5OncwAiSFYUDBr2ZhbAskiL0YL/di//zDMAN1dtM=;
+        b=yqgT2GLxsniwtcrOyrIiJw6pSiPC6zj4wvX3yzvkIFbwEJAF31yKw4VDw9pmwAfXS8
+         pYNTqIkLM2H87GSVNVqgUsrgvLM7M0HQyjDpqSO3jsSPCSg4kDgsTGbrr2f3ctGtcR6g
+         wJfM1jtNYJRo2/ZjErbGHe9FSr+SRtdf9N9OaBxeaCPLhjaWcpZYa5udE1+YUm/OAcXA
+         2ClBw7nziN8imlAa9m9JoTmrkbeZ+ym6tTTt/k3YwSF/CFfSFcPFeMXx8eeCCRVetYWe
+         /CgWijsPFSc5BJqilik8oZ+c8G+qwQh4zIgY3BxGUCfWhs7xD/GxIlC40Kd5kPwfmKPz
+         U6Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772537494; x=1773142294;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=38x5OncwAiSFYUDBr2ZhbAskiL0YL/di//zDMAN1dtM=;
+        b=n4JJgLBZhd//9+eJqFKn3clit8olByfI1QfJYxAAV+eTbRUSiqNLlsbYlcokZYspuQ
+         gOCKOBNoS8pm3Czv5+FuL/Ux76tAJU+RFVbqdnWb3/aK22919cEc1Tc7Gt0AN1a/+yCW
+         ACXjOCDK5IRbippilpSQ5xeJ5SGBffBxTej1Ez7k8gKFJJxWv7JRj7Cce3Kgxx3FTrJb
+         gUOez8Jvwd0cthZgjGYe+3fA7AMm4QQIXg5/uFLygycqgnYfT8pbLx46KraX5gOXXmR7
+         tmnQssxBXZBw6qs/hsquUBSIUKcdG3seC6+nFtQGQegR74T1xgZkajA1h+XpY/7STJLP
+         5Tfg==
+X-Forwarded-Encrypted: i=1; AJvYcCVYB2hxmr/PqrWE+n/ZUDl1/aT03lgJ/qzKsT3yWBz3o5k3dQyGd0JSHdsRLZVaRxL8c6zXY39Hl8H4qIA7rA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKWmVYTr4qqQfd8ukWBSFx8Z0QGaOSzru9sO5uyQSc9PGKuwfw
+	GR54PI8itYwtQbT6Ptb/OMndB50ZQyiC9BVNJzZBq/CrNI6Ik4fGG9ESCSIsn+0t74iupaU0tS+
+	mM73loXC6CysHlqL/Ew==
+X-Received: from wmbbd15.prod.google.com ([2002:a05:600c:1f0f:b0:477:9dee:b5d5])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1e2a:b0:480:1dc6:2686 with SMTP id 5b1f17b1804b1-483c9ba15afmr297261305e9.13.1772537493662;
+ Tue, 03 Mar 2026 03:31:33 -0800 (PST)
+Date: Tue, 3 Mar 2026 11:31:32 +0000
+In-Reply-To: <20260302140424.4097655-1-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260302140424.4097655-1-lossin@kernel.org>
+Message-ID: <aabGlKYNd0CrO7_f@google.com>
+Subject: Re: [PATCH v2 1/2] rust: pin-init: internal: init: remove `#[disable_initialized_field_access]`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Janne Grunau <j@jannau.net>, 
+	asahi@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Mon,  2 Mar 2026 12:23:31 -0800
-Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
+On Mon, Mar 02, 2026 at 03:04:14PM +0100, Benno Lossin wrote:
+> Gary noticed [1] that the initializer macros as well as the `[Pin]Init`
+> traits cannot support unaligned fields, since they use operations that
+> require aligned pointers. This means that any code using structs with
+> unaligned fields in pin-init is unsound.
+> 
+> By default, the `init!` macro generates references to initialized
+> fields, which makes the compiler check that those fields are aligned.
+> However, we added the `#[disable_initialized_field_access]` attribute to
+> avoid this behavior in ceca298c53f9 ("rust: pin-init: internal: init:
 
-> Currently Tyr defines a convenience type alias for its DRM device type,
-> `TyrDrmDevice` but it does not use the alias outside of `tyr/driver.rs`.
-> 
-> Replace `drm::Device<TyrDrmDriver>` with the alias `TyrDrmDevice` across
-> the driver.
-> 
-> This change will ease future upstream Tyr development by reducing the
-> diffs when multiple series are touching these files.
-> 
-> No functional changes are intended.
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+checkpatch here: missing 'commit' before ceca298c53f9
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-
-> ---
->  drivers/gpu/drm/tyr/file.rs | 7 +++++--
->  drivers/gpu/drm/tyr/gem.rs  | 7 +++++--
->  2 files changed, 10 insertions(+), 4 deletions(-)
+> add escape hatch for referencing initialized fields"). Thus remove the
+> `#[disable_initialized_field_access]` attribute from `init!`, which is
+> the only safe way to create an initializer handling unaligned fields.
 > 
-> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-> index 450be5ab9aaf..31411da203c5 100644
-> --- a/drivers/gpu/drm/tyr/file.rs
-> +++ b/drivers/gpu/drm/tyr/file.rs
-> @@ -7,7 +7,10 @@
->      uapi, //
->  };
->  
-> -use crate::driver::TyrDrmDriver;
-> +use crate::driver::{
-> +    TyrDrmDevice,
-> +    TyrDrmDriver, //
-> +};
->  
->  #[pin_data]
->  pub(crate) struct TyrDrmFileData {}
-> @@ -25,7 +28,7 @@ fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
->  
->  impl TyrDrmFileData {
->      pub(crate) fn dev_query(
-> -        ddev: &drm::Device<TyrDrmDriver>,
-> +        ddev: &TyrDrmDevice,
->          devquery: &mut uapi::drm_panthor_dev_query,
->          _file: &TyrDrmFile,
->      ) -> Result<u32> {
-> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-> index 514524ae07ef..5cd0cd9585e8 100644
-> --- a/drivers/gpu/drm/tyr/gem.rs
-> +++ b/drivers/gpu/drm/tyr/gem.rs
-> @@ -5,7 +5,10 @@
->      prelude::*, //
->  };
->  
-> -use crate::driver::TyrDrmDriver;
-> +use crate::driver::{
-> +    TyrDrmDevice,
-> +    TyrDrmDriver, //
-> +};
->  
->  /// GEM Object inner driver data
->  #[pin_data]
-> @@ -14,7 +17,7 @@ pub(crate) struct TyrObject {}
->  impl gem::DriverObject for TyrObject {
->      type Driver = TyrDrmDriver;
->  
-> -    fn new(_dev: &kernel::drm::Device<TyrDrmDriver>, _size: usize) -> impl PinInit<Self, Error> {
-> +    fn new(_dev: &TyrDrmDevice, _size: usize) -> impl PinInit<Self, Error> {
->          try_pin_init!(TyrObject {})
->      }
->  }
+> If support for in-place initializing structs with unaligned fields is
+> required in the future, we could figure out a solution. This is tracked
+> in [2].
 > 
-> base-commit: 15da5bc9f3adab7242867db0251fe451ac3ddb72
+> Reported-by: Gary Guo <gary@garyguo.net>
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/561532-pin-init/topic/initialized.20field.20accessor.20detection/with/576210658 [1]
 
+Should probably be Closes: rather than Link:.
+
+> Link: https://github.com/Rust-for-Linux/pin-init/issues/112 [2]
+> Fixes: ceca298c53f9 ("rust: pin-init: internal: init: add escape hatch for referencing initialized fields")
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
+
+change itself LGTM
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
