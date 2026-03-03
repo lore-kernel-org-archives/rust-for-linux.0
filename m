@@ -1,345 +1,102 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8825647DD4F;
-	Tue,  3 Mar 2026 11:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AE533121F
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Mar 2026 11:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772537813; cv=none; b=u1YpRUOwcUPy7mm8XIlWpkrSi5n5zQSn+DVSeOAACgN9NscZTxV/5UmFdXC3xfLwcwL/X8qp0me8mhLw95QEUMBbzuAwFB0mwCpRjJ/p19r4wEGzwn/ZrunKFSPq3+QeAhrJZ/CwtWO7zxM51jbR65qydZtwjT6V9h0/47GXjEo=
+	t=1772537951; cv=none; b=r0kgKgVGTfcuia4bnldwsg6DeCJVmxW6EYBQ0jTZd3GTglclgan4xXrdHA8i4W4LAIgx/Gdq+TDdRkkVP0uLFBswfWyaH2/nu3cIPdOIehC77bEtwR2RbJlEHLFbOjxc/sKOREky0Vooa+loc43EHkINaXpSdV8DFKDfIfBe2BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772537813; c=relaxed/simple;
-	bh=4j9SiNPAShNjUvoy8mbGUxFuSDBSVebYPini23uYHSo=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I60a2+4T7GWS9dIXg+i5JJBIegu2/COh2oLiEF01TRV1bBI1qcQqiDyS6DtiTokaLbo4HCMEae+yNNAVBU41vYPUqjlFtQJ0dz0vgSaNm1CAejYsEmu5I8KOIIFqlU2T5Seg4xY2+ctM9u753hn/K81iL6+UyDacwsvh5iEmY3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fQDJq5FLtzJ46ck;
-	Tue,  3 Mar 2026 19:36:11 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id B30534056A;
-	Tue,  3 Mar 2026 19:36:44 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 3 Mar
- 2026 11:36:43 +0000
-Date: Tue, 3 Mar 2026 11:36:42 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: <alistair23@gmail.com>
-CC: <bhelgaas@google.com>, <lukas@wunner.de>,
-	<rust-for-linux@vger.kernel.org>, <akpm@linux-foundation.org>,
-	<linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <alex.gaynor@gmail.com>,
-	<benno.lossin@proton.me>, <boqun.feng@gmail.com>, <a.hindborg@kernel.org>,
-	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <tmgross@umich.edu>,
-	<ojeda@kernel.org>, <wilfred.mallawa@wdc.com>, <aliceryhl@google.com>,
-	Alistair Francis <alistair@alistair23.me>
-Subject: Re: [RFC v3 12/27] lib: rspdm: Support SPDM get_version
-Message-ID: <20260303113642.00005774@huawei.com>
-In-Reply-To: <20260211032935.2705841-13-alistair.francis@wdc.com>
-References: <20260211032935.2705841-1-alistair.francis@wdc.com>
-	<20260211032935.2705841-13-alistair.francis@wdc.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1772537951; c=relaxed/simple;
+	bh=SOkN8YVRNPjTfsz/PejMeq0iowgdTuG0HqfQGfFGgEs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qhlA6aEZ0Q7e36hEgzNRJ473RMwJz8J8hFuDCvU5Z2FIfiCRtj+Zuak6ea4NhQ20ox3vtwsHKFHr0Mu18BRdyFmCSbC4djd4tx2EFHIdYMFttU4VZXNOCs0MuxZ4paelqiwxxF6VKc/YOCTu3yE4TR0xjVywVFZnZsT/ZbgTk18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Cvqh1bpC; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Cvqh1bpC"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836cc0b38eso60858595e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Mar 2026 03:39:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772537949; x=1773142749; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kh33YTVJdNdb4rfed7VKp0A1E6qzkpd9sZhD0bYZ4Vs=;
+        b=Cvqh1bpC6d1xy/LrYmXaCBkxgKpotSkzc2Yl8ic9wYiv7bxTXsS6PXwpyA9m9zBuC+
+         Oc7YsKkODvTSsE3T14CM6N5fOFFUj/5YjtAjgfmUwew+/6LpYeE5vrEFxiKXfFrKmpv/
+         oXZ2lvR7qYbeOzCV9+M7DjSDKrzPJO0f1YkJnl/JDG8M7f+mvMoKlZz3kvRYK+DW6a70
+         1Oy+8bkIwRB7F/hI2Dsusg1TbY8pPE8th2Ne6u7e9c1qTiwpgxH/BB4mIrl+7BfbfGCq
+         x6uYtoaS2+ctcQFg3nG1RVlqjQ2UYUsTXYS1pbIppd57cKqO0dxdRqBvlAuaTWDZcsL2
+         WMnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772537949; x=1773142749;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kh33YTVJdNdb4rfed7VKp0A1E6qzkpd9sZhD0bYZ4Vs=;
+        b=siqGoYesCwKgZlMDLlJ0OZuGp8tiYVs6SRNqvNnC6kWlWGEJay3crYydPpRQmUJp0q
+         +3iRDFgyEQGlXg98oe+x0VAaL1LCwURRt0DUe094qOm64yqlpMoIBYr8ctnNrRGBIsRy
+         iUNwaXAjS5/R4sas0BCgPE7nOuy16q1XF03aMLJrrVEhKf5r7cHApUvIKl7h8nQC8au9
+         Q4KClu3EImGcdri+iXOq0BYHMC2FQQYVAUVgIVgO67Pyu1b5KMjRo2W6BxzWt8s8C7Ua
+         1taaGlJmkbzGgLWkeIpm9/+EWsvevNtKbK1aXsVy3RlmRMCho6c6dIUWQ9RYFg9B2Nb/
+         E0og==
+X-Forwarded-Encrypted: i=1; AJvYcCWMkhtbv5t87lkGC4dUO/5i0OQYF33sYzkIKbk22b+6/9O9J0xTMxYqYrJWm9xyypxabVsHImpfx9WCpxmf1g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuVFIeari7jqsTUgsV4E1yzR0lbqov1W5iQFWqAOUhF3+TXkL1
+	0XazAaQzCCYoYq3l8bKdSs2IgH4rtY1hq0l+lv3D2V9MTlUaT3v7gnWoQ77lw4A8fSEkfAJlPcn
+	tFpO15rCkga6WbLreAQ==
+X-Received: from wmbjv25.prod.google.com ([2002:a05:600c:5719:b0:480:6a27:9ec2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3106:b0:47a:7fd0:9eea with SMTP id 5b1f17b1804b1-483c9ba610fmr259196275e9.3.1772537948481;
+ Tue, 03 Mar 2026 03:39:08 -0800 (PST)
+Date: Tue, 3 Mar 2026 11:39:07 +0000
+In-Reply-To: <DGT2IKQK341C.35HW6HHSB03KL@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Mime-Version: 1.0
+References: <20260302130223.134058-1-gary@kernel.org> <20260302130223.134058-2-gary@kernel.org>
+ <DGSDGDIVUHO0.P594H9B4LLO5@kernel.org> <DGSDOKRKSKQL.2NQL17J05GGX2@garyguo.net>
+ <DGSISB2SQHWM.D8OGH4JJHIRP@kernel.org> <DGSKLQ9WMRID.3ILNUUEITA48K@garyguo.net>
+ <DGSMV5Z3PW5O.3NBTRGX8CK8WB@kernel.org> <DGSN9C8PBFYP.2T48HOEE5LXSM@garyguo.net>
+ <DGT16NCR2TD7.27E74897D8XEC@kernel.org> <DGT2IKQK341C.35HW6HHSB03KL@garyguo.net>
+Message-ID: <aabIW4RNCgSyY945@google.com>
+Subject: Re: [PATCH v3 1/2] rust: add projection infrastructure
+From: Alice Ryhl <aliceryhl@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Aditya Rajan <adi.dev.github@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, 11 Feb 2026 13:29:19 +1000
-alistair23@gmail.com wrote:
-
-> From: Alistair Francis <alistair@alistair23.me>
+On Tue, Mar 03, 2026 at 10:17:01AM +0000, Gary Guo wrote:
+> On Tue Mar 3, 2026 at 9:14 AM GMT, Benno Lossin wrote:
+> > On Mon Mar 2, 2026 at 11:19 PM CET, Gary Guo wrote:
+> >> I am basically just having `size_of_val_raw` in mind when writing this. So the
+> >> current `KnownSize` comment in v4 is something that I am happy about.
+> >
+> > Well size_of_val_raw is `unsafe` and only valid to call in certain
+> > conditions. It asks in the case of slices that the length is an
+> > initialized integer and that the entire value must fit into `isize`.
+> > This to me just further indicates that `*mut T` has safety
+> > requirements to obtaining the size of an arbitrary pointer.
+> >
+> > In the special cases of `T: Sized` and `T == [U]`, we have safe ways of
+> > getting their size.
 > 
-> Support the GET_VERSION SPDM command.
+> Hmm, the `isize` fitting requirement is problematic indeed. It's broken code if
+> pointer projection is used with an allocation that exceeds the limit, but I want
+> the API to be safe, so it'll be good if the API is defined to just be wrapping
+> and safe (it may return values that doesn't make sense, but that'll be on the
+> user).
 > 
-> Signed-off-by: Alistair Francis <alistair@alistair23.me>
-Hi Alistair,
+> Anyhow this is moot as we're going the `KnownSize` route.
 
-Various minor comments inline. Biggest one is what I think
-is some confusing le16 handling that to me is in the wrong place.
+It sounds like that's no different from dyn trait vtable case. Fat
+pointer must have valid metadata, even if raw pointer.
 
-Jonathan
-
-> ---
->  lib/rspdm/consts.rs    | 17 +++++++++++
->  lib/rspdm/lib.rs       |  6 +++-
->  lib/rspdm/state.rs     | 58 ++++++++++++++++++++++++++++++++++--
->  lib/rspdm/validator.rs | 67 ++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 144 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/rspdm/consts.rs b/lib/rspdm/consts.rs
-> index 40ce60eba2f3..38f48f0863e2 100644
-> --- a/lib/rspdm/consts.rs
-> +++ b/lib/rspdm/consts.rs
-
-> @@ -115,3 +129,6 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
->          Ok(())
->      }
->  }
-> +
-> +pub(crate) const SPDM_GET_VERSION: u8 = 0x84;
-> +pub(crate) const SPDM_GET_VERSION_LEN: usize = mem::size_of::<SpdmHeader>() + 255;
-
-I'd either add a comment on where the 255 comes from. Also do we have a U8_MAX definition
-we can use?  Or some way to get it from code?
-
-> diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
-> index 2bb716140e0a..08abcbb21247 100644
-> --- a/lib/rspdm/lib.rs
-> +++ b/lib/rspdm/lib.rs
-> @@ -108,7 +108,11 @@
->  /// Return 0 on success or a negative errno.  In particular, -EPROTONOSUPPORT
->  /// indicates authentication is not supported by the device.
->  #[no_mangle]
-> -pub unsafe extern "C" fn spdm_authenticate(_state: &'static mut SpdmState) -> c_int {
-> +pub unsafe extern "C" fn spdm_authenticate(state: &'static mut SpdmState) -> c_int {
-
-Is there more to this rename than it appears?  Can it get pushed back to earlier patch?
-
-> +    if let Err(e) = state.get_version() {
-> +        return e.to_errno() as c_int;
-> +    }
-> +
->      0
->  }
->  
-> diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
-> index 68861f30e3fa..3ad53ec05044 100644
-> --- a/lib/rspdm/state.rs
-> +++ b/lib/rspdm/state.rs
-> @@ -8,6 +8,7 @@
->  //! <https://www.dmtf.org/dsp/DSP0274>
->  
->  use core::ffi::c_void;
-> +use core::slice::from_raw_parts_mut;
->  use kernel::prelude::*;
->  use kernel::{
->      bindings,
-> @@ -15,8 +16,10 @@
->      validate::Untrusted,
->  };
->  
-> -use crate::consts::{SpdmErrorCode, SPDM_ERROR, SPDM_REQ};
-> -use crate::validator::{SpdmErrorRsp, SpdmHeader};
-> +use crate::consts::{
-> +    SpdmErrorCode, SPDM_ERROR, SPDM_GET_VERSION_LEN, SPDM_MAX_VER, SPDM_MIN_VER, SPDM_REQ,
-
-Is the Rust linter fussy about these being on one line? Feels like we'd
-get less churn over time if we formatted this as one per line.
-
-> +};
-> +use crate::validator::{GetVersionReq, GetVersionRsp, SpdmErrorRsp, SpdmHeader};
->  
->  /// The current SPDM session state for a device. Based on the
->  /// C `struct spdm_state`.
-> @@ -61,7 +64,7 @@ pub(crate) fn new(
->              transport_sz,
->              keyring,
->              validate,
-> -            version: 0x10,
-> +            version: SPDM_MIN_VER,
-
-Pull that def back to earlier patch to keep the churn confined.
-
->          }
->      }
->  
-> @@ -217,4 +220,53 @@ pub(crate) fn spdm_exchange(
->  
->          Ok(length)
->      }
-> +
-> +    /// Negoiate a supported SPDM version and store the information
-> +    /// in the `SpdmState`.
-> +    pub(crate) fn get_version(&mut self) -> Result<(), Error> {
-> +        let mut request = GetVersionReq::default();
-> +        request.version = self.version;
-> +
-> +        // SAFETY: `request` is repr(C) and packed, so we can convert it to a slice
-> +        let request_buf = unsafe {
-> +            from_raw_parts_mut(
-> +                &mut request as *mut _ as *mut u8,
-> +                core::mem::size_of::<GetVersionReq>(),
-> +            )
-> +        };
-> +
-> +        let mut response_vec: KVec<u8> = KVec::with_capacity(SPDM_GET_VERSION_LEN, GFP_KERNEL)?;
-> +        // SAFETY: `request` is repr(C) and packed, so we can convert it to a slice
-> +        let response_buf =
-> +            unsafe { from_raw_parts_mut(response_vec.as_mut_ptr(), SPDM_GET_VERSION_LEN) };
-> +
-> +        let rc = self.spdm_exchange(request_buf, response_buf)?;
-> +
-> +        // SAFETY: `rc` is the length of data read, which will be smaller
-> +        // then the capacity of the vector
-
-than?
-
-> +        unsafe { response_vec.inc_len(rc as usize) };
-> +
-> +        let response: &mut GetVersionRsp = Untrusted::new_mut(&mut response_vec).validate_mut()?;
-> +
-> +        let mut foundver = false;
-> +        for i in 0..response.version_number_entry_count {
-> +            // Creating a reference on a packed struct will result in
-> +            // undefined behaviour, so we operate on the raw data directly
-> +            let unaligned = core::ptr::addr_of_mut!(response.version_number_entries) as *mut u16;
-
-Maybe pull that out of the loop like you do below?
-
-> +            let addr = unaligned.wrapping_add(i as usize);
-> +            let version = (unsafe { core::ptr::read_unaligned::<u16>(addr) } >> 8) as u8;
-Given the endian conversion below, this is correct, but I think leaving it as the __le16 until
-here is better.  We could also just pull out the correct byte and ignore the other one.
-It's a spec quirk that they decided to have it defined as a __le16 rather than u8[2] as
-the fields are confined one byte or the other.
-
-I wonder if we should also reject any alpha versions? I.e. check the bottom 4 bits
-are 0.
-
-> +
-> +            if version >= self.version && version <= SPDM_MAX_VER {
-> +                self.version = version;
-> +                foundver = true;
-> +            }
-> +        }
-> +
-> +        if !foundver {
-> +            pr_err!("No common supported version\n");
-> +            to_result(-(bindings::EPROTO as i32))?;
-> +        }
-> +
-> +        Ok(())
-> +    }
->  }
-> diff --git a/lib/rspdm/validator.rs b/lib/rspdm/validator.rs
-> index a0a3a2f46952..f69be6aa6280 100644
-> --- a/lib/rspdm/validator.rs
-> +++ b/lib/rspdm/validator.rs
-> @@ -7,6 +7,7 @@
->  //! Rust implementation of the DMTF Security Protocol and Data Model (SPDM)
->  //! <https://www.dmtf.org/dsp/DSP0274>
->  
-> +use crate::bindings::{__IncompleteArrayField, __le16};
->  use crate::consts::SpdmErrorCode;
->  use core::mem;
->  use kernel::prelude::*;
-> @@ -15,6 +16,8 @@
->      validate::{Unvalidated, Validate},
->  };
->  
-> +use crate::consts::SPDM_GET_VERSION;
-> +
->  #[repr(C, packed)]
->  pub(crate) struct SpdmHeader {
->      pub(crate) version: u8,
-> @@ -64,3 +67,67 @@ pub(crate) struct SpdmErrorRsp {
->      pub(crate) error_code: SpdmErrorCode,
->      pub(crate) error_data: u8,
->  }
-> +
-> +#[repr(C, packed)]
-
-Why packed?
-
-> +pub(crate) struct GetVersionReq {
-> +    pub(crate) version: u8,
-> +    pub(crate) code: u8,
-> +    pub(crate) param1: u8,
-> +    pub(crate) param2: u8,
-> +}
-> +
-> +impl Default for GetVersionReq {
-> +    fn default() -> Self {
-> +        GetVersionReq {
-> +            version: 0,
-
-Given this only takes one value we could default it to 0x10
-(even though it's written above to keep the state machine in sync).
-
-> +            code: SPDM_GET_VERSION,
-> +            param1: 0,
-> +            param2: 0,
-> +        }
-> +    }
-> +}
-> +
-> +#[repr(C, packed)]
-> +pub(crate) struct GetVersionRsp {
-> +    pub(crate) version: u8,
-> +    pub(crate) code: u8,
-> +    param1: u8,
-> +    param2: u8,
-> +    reserved: u8,
-> +    pub(crate) version_number_entry_count: u8,
-> +    pub(crate) version_number_entries: __IncompleteArrayField<__le16>,
-> +}
-> +
-> +impl Validate<&mut Unvalidated<KVec<u8>>> for &mut GetVersionRsp {
-> +    type Err = Error;
-> +
-> +    fn validate(unvalidated: &mut Unvalidated<KVec<u8>>) -> Result<Self, Self::Err> {
-> +        let raw = unvalidated.raw_mut();
-> +        if raw.len() < mem::size_of::<GetVersionRsp>() {
-> +            return Err(EINVAL);
-> +        }
-
-I guess it probably belongs at the header validation point rather that here,
-but can we also check the version matches what was requested. Possibly an
-additional check here that it is 0x10 (as this one is a special case where
-only that value is correct).
-
-> +
-> +        let version_number_entries = *(raw.get(5).ok_or(ENOMEM))? as usize;
-> +        let total_expected_size = version_number_entries * 2 + 6;
-
-Instead of 6 can we use mem::size_of::<GetVersionRsp>()?
-Ideally something similar for the 2 as well even if it's a bit verbose.
-(if I was lazy in the C code you get to make it better here :)
-
-
-> +        if raw.len() < total_expected_size {
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let ptr = raw.as_mut_ptr();
-> +        // CAST: `GetVersionRsp` only contains integers and has `repr(C)`.
-> +        let ptr = ptr.cast::<GetVersionRsp>();
-> +        // SAFETY: `ptr` came from a reference and the cast above is valid.
-> +        let rsp: &mut GetVersionRsp = unsafe { &mut *ptr };
-> +
-> +        // Creating a reference on a packed struct will result in
-
-Silly question, but why is it packed?  We might need to do this for some
-structures in SPDM but do we have transports that mess up the alignment enough
-that where the messages themselves don't need to be packed we have to mark
-the structures so anyway? Probably good to document this somewhere.
-
-> +        // undefined behaviour, so we operate on the raw data directly
-> +        let unaligned = core::ptr::addr_of_mut!(rsp.version_number_entries) as *mut u16;
-> +        for version_offset in 0..version_number_entries {
-> +            let addr = unaligned.wrapping_add(version_offset);
-> +            let version = unsafe { core::ptr::read_unaligned::<u16>(addr) };
-> +            unsafe { core::ptr::write_unaligned::<u16>(addr, version.to_le()) }
-
-I'd like to see a comment on why this seems to be doing an endian swap if we
-are on big endian. Looking back at the c code, it has an endian swap but
-only as part of the search for a version to use (finding the largest both
-device and and kernel support).
-
-Maybe I'm reading it wrong but isn't this putting cpu endian data into a structure
-element that is of type __le16?
-
-> +        }
-> +
-> +        Ok(rsp)
-> +    }
-> +}
-
+Alice
