@@ -1,79 +1,70 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020128.outbound.protection.outlook.com [52.101.196.128])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021110.outbound.protection.outlook.com [52.101.95.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F48335F160;
-	Wed,  4 Mar 2026 11:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DD9372ED3;
+	Wed,  4 Mar 2026 11:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.110
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772623091; cv=fail; b=Mbz5hphDfyNCr0bU8uxzOVycRuW7KhiTXojhwXPibjS8ek3uSZjbEz9gNUuyMKQBBq2RzY8SV0pSLIx8pricSe4byZQMO5WYe2+mfJoa7EzSyhx6+ncBmssJSfEJ4eG2eqTZxNfrxMzoBiEVZskDJd7HrN92PXqz1qnwmTi4dLU=
+	t=1772623519; cv=fail; b=gXAFmt2k+1Mz4VIy0FdaGI2zdXVFIUdD8XtA9D8DKjNS+2j1R9LnXs9cMPv7POz+A4P2WBz0FY7HNrVFZeKZI1hdgdgOOwkMyhIDy47DKjt8UvXsL7kJBB8DZ/52wP4NdBaiOxV48SbK8P26fsMqTVY5hVtCij5pHnVYLMi5oOM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772623091; c=relaxed/simple;
-	bh=Jrsaynv9WnBwdbXker/beSpFSNNBEhlzAW9aQMc78uM=;
+	s=arc-20240116; t=1772623519; c=relaxed/simple;
+	bh=yggQES54kfHmBzkxkPtLHtBvYDZ1L22yZKznh9Btrc8=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Yy3vx2VkOQIuYlXTWiWvbV87MpnoBRHq0S8BYKcWvIVmXbI3iJj6lfbCeN8qCL/Mi9itaj5dOw5P5OqGabDySOkUfxKg3mjVMX98CIjy6FDV/QQJLS3VLGKPJzL3n6KNjBOns2bRCwE3kU51abBDvz20KEBlAkQV8q5mEltTqec=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Z0bilzLZ; arc=fail smtp.client-ip=52.101.196.128
+	 In-Reply-To:MIME-Version; b=jOT4JtsyY/A5RVpMU2GenqKWIex4SSyN2/WTNi8LZ4UZTKtu7c+P5OWdnuC1Ns6JLEBT/0Tng4kGjB9fil4Ca9fOwNZKZHulfBtP1uX+RpJU9934VdCctY6Dt5k5rPJLKpEDVy7OsyX6/OqEX39PIxvOBcORpzGUCgV1K7GRG7E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=GogqJz2T; arc=fail smtp.client-ip=52.101.95.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Z0bilzLZ"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="GogqJz2T"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QMoYl4WxhnAyABNU7kHaVP/I7w9mSCKKwM+KG/q00hPtDYf81MrELHvWMf0AFg6AcjPWmJ1C+5v+GhN46V9wlix52RaLmEtFFjxmVDd5m/GtVbLNR+toT+YpEgE3QWo1cuKOvZsaSKxByq7gJ3zSmVr1asFLVSJi6CsMsS18TKJ1cAqU4uBVw7INCRQY5XJbiWLtTCv964/jRyZkWyDirZgMLtj6NHwKb2PudsGDHdbZOvVMJeYMbw7+1XG5FC6ADCJytmq2ksPRysZpj+bZvDP6sk/ZHBD4GmvHgDPHLbfHqdJQhVnQYXX2GCRL4vodl4KVzPBGU3zPOK9ZyJt4Bg==
+ b=ATTJ6biRlt8RIS+Lev2A/k0dQN1oZ5URfM+JbKkT58cmwpNODoTLdhs6ZAlHV+EEJpKSIn0o0io9PJy/7Nf8lZp3xEHzzd+BXIBm2vEyHHVrc9LZWixiS2wQb5pWePdEBUpyOn8V08Cgwgp/4Md9W5x3UFlZGg4F5zXFknVnaIkOejjrJKjVIuEp3w7QI5DDGPpS9UBol8Ru1UYlBuMtu/jH5YVSaMCrXXSBA+4XzJQQD+FJgHpY0FlgBqoqe1WfP0kqmEVt1epApW6Truz2k32gNLKNrffjw3ieh3bBY0xxcF+LhT5lN3yp7stbHpUU3+rANlNoEP/qKPXexXEJJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v0jdjfGWPVuVYyjIGUEfvqLDRRePRTtGTkTICBSVHIA=;
- b=fkWy2WdApXTLgxRz4ekcohfzzWPK2JygzW/7CIO3Q5QvAtxJv2u+JpUivtP7+B+0EjM7Pg9ZwV9O8BT4hs8Id0vB+OLCTrRPhMacUm9k0GuqGLiFYypSti0hbpzQ+MnVCSiwsEh1ZrpJ/JxqLh+z6VsPlES/n5PfmAgOAAT6/6lX2fyAkqKBlK4t/Zz37YuthbQGtBJAUEoOsXGvURQstDJ7IJsWjuzuGsqGKnusGGU1Dwdw2O684E6VQJ+yShPUJDDbKiGA3mvOS4SIJrNQoLtuJC3L3v80qnd+Rqjk7fmIb6FMAj89qM/vRyw8nu3eQDowgwXtoURUzVRGxzLokg==
+ bh=Vt0UqjRC4hDSk+4WzKq6JATpuAI2peyLQyKVbsGcrpQ=;
+ b=JO1L/5OWsmrDEvGN7OlFDD5EX4Nc76m/teCkIx6VlSQM5JXOyhquE5iUHeZiZ4p5JbdoeF8FIfzYQsw5RQZuETBO03BxFsW1P3sSlNt+qfvLt0xaC4+ze8N2tsjzoW1a9/Ta+QiIz+6SpUBjErMagsFzIEnBWprUZ5xFiwrG/Sqre1fJSve428C4tFNKROk6dKWN+HUbo/FpLgLe2Ndi9dTGBsey9lVbO+CT+6Gcbq5lXb2hsqaBbwD91iBrjhc+iHuYHMIoaQ8ezELmsuFL+/py6Hl24S8kFlYclClsXruMgaLZZtIhKcEzownc088U7X2HNFfBAuq+9zusoEtMTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v0jdjfGWPVuVYyjIGUEfvqLDRRePRTtGTkTICBSVHIA=;
- b=Z0bilzLZHIfyLnSuTkiggdYUz4IeQAWPC5iNiSh/rql14FA88jtYLQ2MM41q6HpVZ3cxmO3LjSKBrKyOWHO36E7VPsb2CI0xQwvUL6z6wr2W/WQWIpFiaLqXpD8v3T6Hk6WPfGQsJxxqqnMuhNVS8M2I6vNySxkpTSmyazBUlHg=
+ bh=Vt0UqjRC4hDSk+4WzKq6JATpuAI2peyLQyKVbsGcrpQ=;
+ b=GogqJz2TP2O9XLQZwcAFenNZdLQk4vkNOaF4st853NKXxlKaXjpdIwCMbU1Ho+z/P0YMleDPAUgUKdnBp3tOPPf5tnisSszbxos5fcYzfDOWu2XKfVxTyvbFagv/xPWH9QauTWxEPYlsXjl6l9GrrQtARWRYZVReFp/27YRDO5Q=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB7366.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f8::11) with
+ by LO2P265MB2446.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:12d::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Wed, 4 Mar
- 2026 11:18:04 +0000
+ 2026 11:25:09 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
- 11:18:03 +0000
+ 11:25:08 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Mar 2026 11:18:02 +0000
-Message-Id: <DGTYFUCCECHS.T8EW6ZPL8NZS@garyguo.net>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <nouveau@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 21/38] rust: ptr: add const_align_up() and enable
- inline_const feature
+Date: Wed, 04 Mar 2026 11:25:08 +0000
+Message-Id: <DGTYL9RNLI6W.2EDM61M64V7PK@garyguo.net>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "Zhi Wang" <zhiw@nvidia.com>
+Subject: Re: [PATCH v3 1/5] gpu: nova-core: gsp: fix stale doc comments on
+ command queue methods
 From: "Gary Guo" <gary@garyguo.net>
-To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>
+To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>
 X-Mailer: aerc 0.21.0
-References: <20260221020952.412352-1-jhubbard@nvidia.com>
- <20260221020952.412352-22-jhubbard@nvidia.com>
- <ee76d46cc0cab88ce6dbdeda6a8850dc@garyguo.net>
- <89b240a4-33ec-44dc-8f7c-1a3f8d379e0d@nvidia.com>
- <DGMAKO04ZM3J.1NJDI9SYE354S@kernel.org>
- <ba7aec533e083622be9055e77c30fee0@garyguo.net>
- <DGMEORS8PL1T.242O5BRE6ZSM6@kernel.org>
- <282c94d3-f32c-4851-969f-61fc968de6a7@nvidia.com>
-In-Reply-To: <282c94d3-f32c-4851-969f-61fc968de6a7@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0317.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:197::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260304-cmdq-locking-v3-0-a6314b708850@nvidia.com>
+ <20260304-cmdq-locking-v3-1-a6314b708850@nvidia.com>
+In-Reply-To: <20260304-cmdq-locking-v3-1-a6314b708850@nvidia.com>
+X-ClientProxiedBy: LO3P265CA0013.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:bb::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -82,196 +73,155 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB7366:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68c02dd1-8c77-4ef9-6fbd-08de79dfb3e2
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB2446:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4138f40c-1839-4d44-efed-08de79e0b15f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|10070799003;
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|10070799003|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	2HOVjH2tAA13UWRyIfHLSCG87DfPmUgDuhpOizGipQCIB7L4nufRh6TNb7Jblmx1OLH6+2C/+Aa8s5s/Q8OvV/9qUV0nQFpSTOxXa9mFkbNp5rYnJuzL+GFdDR/G5H0Y/RHQys6+/lQx1wTBqrrmc7dnZcxyDSCaHQR22b9SKyQntKWFD9akc06sX1KoqCxYh/g+tP0kuOV/BY0hmeBobImiRIWplW2duzgxCNWAmII+MZjEM5H7YdnxGfRamVzu5z2+w3v/5x4jIQm61kqmCpHKRebv3Sg9beayj3JkHx67+UIo1lSCtWXhQAi781e7xTcIVNp7bHMyv+M4A1jujrkcqF0ftAAf+wLXj5iQoKgRo992pGSg9jo9O/gav4Ekxw6jwyfh7JVwntHNyuSmRSmfxvH5wcqqJdF5F8W8N+rvgHDGlLTsQukeAvGEgNeWPdg8Cb1XtyVyjVVGcInirDiQ2TKevbXxKxNlOVav7gEqpfcxQSpgMTWXrGVeywUu9WC/PewvXg/IjkSol0JVnJxryRwNY7CjNyv9HLXA7kqPiNbiE4Mg13vkj9X1hnyVE/Z1EUqb3JnJL+gLrtyYEN5eSkvUsyHpEu++3Qt5WRioKqXdgXVwIJEOMGs2ghtX57td2+xbytImyTM566cJgrdQrGEOD2f3ORh7vpTFD35Y0gNb/PsgaOxIL91oGQKwPb0kGJle9XV5334HK/fKIHTNQZwIBQC1ofUDFH8SVgQ=
+	maDZFbNR8N3/bLkt6VH7+Z0Ret0ermSNAoX4mJblSZ+uCWjfSQXvoyxnOmXdz9H2QgH9u5HWFCUMohvhwFX1MUytyIdzuHS4BV7gceCc0H6M9bQx1UpvMPFxRz5uzo562/Z/tniXULQqttWIJZpG7d27gPrVyykEkNLvoUZhdb0tCpP01fp6txltQus50vNBEBO1NcEc10aMKxuxms5s8In+UAs7H5sXEO22rKDryfCuqPLpxzTEAR/KBUiq588zt4S1jqDJLTLYuhkIiBV+xk/btyQ2sCpFAQdjtjOre2tfsiBRSzOpYYwRcdQ9VUKpSuTxoPz+tZg5rVJ3S57yb/TsWCkfckJs8fp5Ha4bwItjuxeV6u2CHXF/IkIDUqvgH6/LjLv0y7AywAm7NRIaUumocy9rCzPiwfwL4tfh6xNFhgm8Xiw8L77jY/OIwJnpDQRZNYjd+RyYjik17KzLjsfInEQjBmfbCGnXgOAl/jnqIE+sM3GYnW+ZJzxTeyjrTXM/Yz1K2QoDfEquqPOvlPUP17HCmhB5pZlK2lI1Nf4sw1XFF6Wec69xOJ12jIeUzi8nn7rTRhYVgavtpsBmrzPZSa2HN+usHjDMV2nWWl6f6QsIFAiRydxfP8MAtqDuWIG5DJTk6025ReKB5bMjQadZ+amCbrmr6T7Xds5SgKCPW4jPAsGqsLlE5y5PAFqiSbLNkoJbLAnvrsTjL1A5hTzkmprgJsteBxVnT3Jmn1g=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(10070799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(10070799003)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cWZ5aWhtMXR3MWZseG5mQ0wrRDZnbjJSK0V4QnRBaG45ajlLTXVvbzJrRURY?=
- =?utf-8?B?R2U1bWJ3V1lnWDdGNGFnNkJWazRMcHBVdS9HODNBSjY2aFEvQ1pWWmppaDcr?=
- =?utf-8?B?V1pNVUFFQWdMS2plVnpjcUhKaFdhM2wwczBoM2IraHlhNzZwampEUVpjRXVP?=
- =?utf-8?B?L283YTNjcVlOa2I0ZTU0a3NrL1k1U2ZiT210NGt6a1JWVnJqUUMwdlNaTm4z?=
- =?utf-8?B?b2lpenVMRDFJM3NmOXNpUzdDTlBPUFVtSURLUU9YcHprRGloalNBZkMzM2o5?=
- =?utf-8?B?N0g4TGpOSTdPSnJGWkNHcWNkL3JFb3dhamhuRkcySGlMaXNxZDBtOHJYbUVh?=
- =?utf-8?B?akRlcDIrQ3A3SC94d1VGaXVHSGNzZ2t0VENQT2RGbjF2eG9qKzk4NlVPdUVD?=
- =?utf-8?B?OWtkaXhWdGd0dENwQWE0ZTFvNEtjdWpaL0ptd1JaaVVOVTEydDh4WGFjN3Q0?=
- =?utf-8?B?K0lLdlI0ZFRnd2RhVkdNN2N0cWVXVlU5Z2VwS0xTNkJNRllydjE0Uzk0clVT?=
- =?utf-8?B?U1NYNnJVdDVQYnNqSEx5VWhtZjI0c1d1RWRVeHhBcldLakoxTk9nK09aZGNj?=
- =?utf-8?B?Y0RhNG1uLy9WaHBOa25ucWloeFJJTWhSMlBwTTVVNWgyZXNTZlQ4ZmhDRTRk?=
- =?utf-8?B?TGVjSW5qV2EvYUwwbXNnV0toK0hpZVFWaHhHQjJ0SDk5VkVnVXYzRzJmOUNV?=
- =?utf-8?B?eDdKQllqSGFJSGZVTlNhWDc2UEp4RGZTeENYcFFBRG00L1Vja1M2Sk5yWTZq?=
- =?utf-8?B?SXdKa0Q3QS93RUJlODFkL3FDUmJ0cThiN0dvZEVPY3NvTDVLVW85U3hBTDkr?=
- =?utf-8?B?YjZsQ0pBc2ZxZUlBSWpNa2hOUlY3VE80dWhkSjdRTEdmdW9aKzJMR0RTVTJ0?=
- =?utf-8?B?anNyMUNHdHJtSCtwbzR1SHVhNVZyUzliRlY4QU1BSWRpN25qQzdwRFZ1bHJ5?=
- =?utf-8?B?bVR2ekljZk5oSGRVaFhnTTFPdkRBUDRHOW1xUGFFN3grM0x6S1k1b2ZEdE44?=
- =?utf-8?B?YXVwdGJuQUJKQUVwRVVJTnpYTVh4cFJHUFVMY0RkR1VSV2NBc2RNemJBUGZi?=
- =?utf-8?B?VjdzR0gxSkRaNmJ0b0ZuS0NWdGN2NDNJN2ZmSkV1emp5Tm1pZUVNRExtdWVE?=
- =?utf-8?B?TmduSWxxRzhrRVZzd1FCd2IyTnFybUF2eGxoV3pZT3U3L2hPYWRtSTdLZWlr?=
- =?utf-8?B?R0N0OXRwcTEwWkM0ZnZRNzdTTnR4RkxxSGhFRTBtb05NMDFvUG9nUmhsZ2Nx?=
- =?utf-8?B?M3JXSWppdW9rQUh3endGN0toK2h2ZEttQjBUSFVpWkhtZlBYSE1wUHVFUk5y?=
- =?utf-8?B?cDBoS3VmZ1ZRNXJaTFNqRjVBTmZvczIwWmhSbE1lMEQzajJjUDN2Zk5RVjVB?=
- =?utf-8?B?YWY4SnpHQlBzWUhqVkoxbDlJaHdZNVN1cGkvVEc2NVVhWDFIeUhITkJkQi9h?=
- =?utf-8?B?MklteWVOa043b0lTMTAyWG9zWEU0RDNJVFd2Vzg4YlNrRzFENExHMkIrWWg4?=
- =?utf-8?B?bU9GYmNLQmE5RkYwREVVdXRNK1dnTTB3bC95WU5yeEpkRHNLV2hHWVQ0b1VW?=
- =?utf-8?B?R2ZjQlptQzh2YmUxUllXWWR4MHVnc2hHTVFOVEk3M2EyczZ3dmF5TG9PWE5a?=
- =?utf-8?B?R1ExaGg3Q21QU0RBWXgyTC9nUmFHR3Q3UGxsSVVBL1MxQ2MyU3k3SWRBOUd5?=
- =?utf-8?B?RStnMzk1b2J1N3FPcXg0NGRRdnR5ODdrcHlGU3hIcUx4TmFKb1hiV1JxQnIr?=
- =?utf-8?B?Q250K3oxUlY2Rk1ZT3RQcmlMUVN3M3lTQWRpZ3hVdHZrdHdhTU9oSjJnQXpU?=
- =?utf-8?B?NVRQb0tMRlErZDk1NHVDRXRiRm0zQjJRS28xclBFVk55cWYvTzVDZ01JZHhN?=
- =?utf-8?B?NWxQWWhzYUNGcHZObEdsUURpNFFhcW5RSVFNdDZ5T3NvdGU1OVdwT3N1ZStU?=
- =?utf-8?B?Y1g4cy95dTl3bUlLOW41T3owZkJhVGNGcktXR2h5YmtqMEozUEpaODU4bHJo?=
- =?utf-8?B?dTJFYnppNlZOUDlicWJZOThMS04vM3dXbHROUDJWVUdlR0l5UzdndkIwbzZG?=
- =?utf-8?B?eUROeU5RZXpjc1JYcVpYMWZ6Ni9nTURCVTR1STFMZ0V6QmxlOFhWclFlK0Fu?=
- =?utf-8?B?SXZSdUE5Wm5QVVZEUFFlMXdOb1FONUxhcDBud0dncG9IOUgxSHVNYS8wMkZl?=
- =?utf-8?B?Z2l3ZmM0OGJkMjdNcWR3YnFCUFVyUGx4NWJlQXJDM2lvWVFaMzd0T1RjOTRj?=
- =?utf-8?B?RlJlbTVUdmIyS2Njc0RWdnBieTJIVUxvQ015Tyt4S1lPVDIwUEVLWHRHWUFG?=
- =?utf-8?B?VnBxOGR4c1I3eG9JbWJzdnJwU3I2R0tQQ0xzQkM0SzRJa0dyNmlxdz09?=
+	=?utf-8?B?MlFkdGhvR3lHN2V1R0dvRUk2ampHeHIwZHU3dkJadXc0NWRadVBYRmU2Qnh1?=
+ =?utf-8?B?OGpuMnNNY0d2ak0yaU5nWmVJZ25RYndpd2U4NTZtYlBJSGNWNks2VWZNUU15?=
+ =?utf-8?B?eWY4MjZIUk01S3ZraDQ3bzczOWxoY2NKOXV6REt5WThSdVNXVjFwengvdGZM?=
+ =?utf-8?B?ekRnQVdGZllPVEd5b3BYQ1NyK085YTFBWnh3T0lYS0FwTUM4RkxIR1p5WjFD?=
+ =?utf-8?B?RnlzN0lYeDgwL0l4azJXQmlHTzZ6N3A2L3pNa1F3Vk43SlNqd0NkRk1mUHdW?=
+ =?utf-8?B?QVUwSStvWWllUld5b1B6RDZXa2JPTkZPZlFGSGYzUmQ0eEhQMDZIS0g2NWNP?=
+ =?utf-8?B?L21OeEhwSGgvSDU5bGd0NUQxRUlCS3cyV0tjOEJ2TTdrNkhzK3BYaW1JSnZi?=
+ =?utf-8?B?OVpveXNwVFNLeHFaU0FsbldWRno3RFQ3REZzRlpmNmNRUTFpMFptT28yN0Jx?=
+ =?utf-8?B?NEJFR0paR2VQelh6VzdrWEhxRFFrVFJ5eGRMampwb3Bha2t1S00xYXZNZWYy?=
+ =?utf-8?B?VmJMK1A5NDh4emcvQ3lZOTZ3UVBTOThKM0xGejNOSTRIeFV4MzlTNDZtK2dI?=
+ =?utf-8?B?bmVlaWNQMllmTldwQkNCL0NVTndhLytGemdISW1TYXlhdnU2cTAwOHl2NEdD?=
+ =?utf-8?B?THdQRkkraEQrRWhNYzNFVHh1Q2swTStVazdtejhXbWoyNlBJOWhGQVRqaEgz?=
+ =?utf-8?B?SDR3TngrcnhPNWlkNDFhNFUyZFhETzhjek5STkRVdUVUTUw2ZkhsTkEwMWZS?=
+ =?utf-8?B?aGNtNmY4bStBdUlYenJlUHlyc0RSREcvZ2dSUVBBNGxybFYvL2o3YzYrNFNZ?=
+ =?utf-8?B?Ym03T0V4YU51RFVYUDY4eUw1eFgzMWt1Tm1mZDhuRHUzWUpNeHJub0hrc011?=
+ =?utf-8?B?NWlIdFc3WU1BQmxTQ3ZpQXNqaEk5QU9kekFFcXJtdUdZOGg4aGlWelVicGl6?=
+ =?utf-8?B?Q1I1Nlg5UWRPRkdrVmIzbFJvWGY4RWdzOWo1UUhRd0JBYi9MWFovd004UnVQ?=
+ =?utf-8?B?bW1BOTFMRGkrYk1JU1ZTU2dLNU43SXpwZDJGQ003dHI1YjBGTEVLc05KbXhl?=
+ =?utf-8?B?bDBLWHNENzVzdlRiR05IMXMyYXFaVG4ySEd1MEtDZ2NRNkc4Uko5eUhxQjJ6?=
+ =?utf-8?B?TVkvbFhBTmFacDJtM3lnRmh4dkNKdENZdFpTSmUyckFuQVQzYWtHMGJRR05L?=
+ =?utf-8?B?alNGYUlhSVVzazVPY0VIQ040cVlSNlRqNHNxNlcxNjh1My9LSDlrRkxpYWRW?=
+ =?utf-8?B?cmFhblozd3p1V3o5RDVYK0Z6Ri84MWZZVGxUUDc1RXUzQ3luODErOXpzY1di?=
+ =?utf-8?B?YWwyNHhJOHZyNDI2enA1b0tLcFR3MjJDZk5LdXRjUnBHRHo3N01BVVdKS2Z1?=
+ =?utf-8?B?SE1QbXdESlBka2R6TUtwU3NBMmdtYW5jVXdQczF4WjBMd1hYM3dBZWFudXB4?=
+ =?utf-8?B?MVB5OWN5NngyZDdSZHJhWnVBR3V2VXNGL0ZLNGJRd2I1N0l6cjhZZXI2cXJp?=
+ =?utf-8?B?NDk0Q2xoa1pBdHBYWWY2U0JKMjJvRkhueG5zWWNxdEhoNVBFNTNaQWpWSjQr?=
+ =?utf-8?B?N1BtU2RCczFWaHhKaFJSQkMzRmZmblBWT0Z0Q0tRK1lIU1dheXRScVhJMzcw?=
+ =?utf-8?B?Q0paa0ZndG1kYkpRVForR1BDMFViLzBFV3dZaUFFNFZ1WC9LeGY5aWhqLzli?=
+ =?utf-8?B?dTUzSUVlek40WkFrTFpRZlpNSHFNSmVtY2RiM3RtU2p3eEFSV2loWldJN1Bm?=
+ =?utf-8?B?aVZadmduL3ZpNVFCQmprdzdqNDlUZFR1WHhLR0dDYXRUaGNIaWRPTUNpamxH?=
+ =?utf-8?B?ODRYSzlrWGpOSUh5MEo1Z2wzaUM5NzJUbk12V0dDWFdiLythbnYwb2NpWEsw?=
+ =?utf-8?B?WG5OZ1dpK3RiVGJ4WjUvRmxHb0JFWjRBU1BnWjh0dVY0bVFkTnR6YnBWMFV4?=
+ =?utf-8?B?RDF3STJYcTF2VldxQk5WSUhKNGlhbjZUd0x1aHVvTVJsbVdrNG9KSi90b3E0?=
+ =?utf-8?B?R2xRVzFiQk5CWVlYckJ5aDFpVlJmdzRPT2tDeWw0bjZWV2Y3cGFKaFRJbmlq?=
+ =?utf-8?B?RWNRY2xadzJTZjR1WWs1bWpjYWM0ay9ZVHovS1ZpNkppTXZQWmF2Uk0yT2Z6?=
+ =?utf-8?B?ZUFmYWQ4eFRtcCtXVXpkbEc0b2hvTUc1c0pEdW9jQ05Bc3dKeHpvS0dRaFFZ?=
+ =?utf-8?B?ckFGQ1UzOGpFZmdwVWl6clBhZUR3Q3hyY0xqSjM0VXNTN1NtOHo5UWc4WWlW?=
+ =?utf-8?B?UTNhOFZsV2gxaXk1bHhHUWU0K2J4aXZvcDRib0JrdkZtS3FNWmR5aFY4aUpi?=
+ =?utf-8?B?RFBzN1J5Qk9YamtxSWZxSDlNZDA5OWp6QkhNY0hCNGhMWXFUUEpGZz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68c02dd1-8c77-4ef9-6fbd-08de79dfb3e2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4138f40c-1839-4d44-efed-08de79e0b15f
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 11:18:03.7108
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 11:25:08.9512
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KxiqC3rrBg7IeaJqk8AMqT7V8EdjLLXCugDxQGotw/pW5/BQ+LdpneGFOfWJzFOLUG6tr9fX7TM01ORaw/IzVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7366
+X-MS-Exchange-CrossTenant-UserPrincipalName: KU3ZkiCBaIFWwJ99+6WUttSYGRCdXcHfwYrwwtc2AnFWTd2DEm8M9AagRpj2lHNg5b6hH9g67oERFLmPRK3iHQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2446
 
-On Wed Mar 4, 2026 at 3:47 AM GMT, John Hubbard wrote:
-> On 2/23/26 6:20 AM, Danilo Krummrich wrote:
->> On Mon Feb 23, 2026 at 3:16 PM CET, Gary Guo wrote:
->>> On 2026-02-23 11:07, Danilo Krummrich wrote:
->>>> On Sun Feb 22, 2026 at 8:04 PM CET, John Hubbard wrote:
->>>>> On 2/21/26 11:46 PM, Gary Guo wrote:
->>>>>> On 2026-02-21 02:09, John Hubbard wrote:
->>>>>>> Add const_align_up<ALIGN>() to kernel::ptr as the const-compatible
->>>>>>> equivalent of Alignable::align_up(). This uses inline_const to vali=
-date
->>>>>>> the alignment at compile time with a clear error message.
->>>>>>>
->>>>> ...
->>>>>
->>>>>>> +#[inline(always)]
->>>>>>> +pub const fn const_align_up<const ALIGN: usize>(value: usize) -> u=
-size {
->>>>>>> +    const { assert!(ALIGN.is_power_of_two(), "ALIGN must be a powe=
-r of two") };
->>>>>>> +    match value.checked_add(ALIGN - 1) {
->>>>>>> +        Some(v) =3D> v & !(ALIGN - 1),
->>>>>>> +        None =3D> panic!("const_align_up: overflow"),
->>>>>>
->>>>>> This is wrong. Either this function is always used in const context,=
- in which case
->>>>>> you take `ALIGN` as normal function parameter and use `build_assert`=
- and `build_error`,
->>>>>> or this function can be called from runtime and you shouldn't have a=
- panic call here.
->>>>
->>>> I think the most common case is that ALIGN is const, but value is not.
->>>>
->>>> What about keeping the function as is (with the panic() replaced with =
-a Result)
->>>> and also add
->>>>
->>>> 	#[inline(always)]
->>>> 	pub const fn const_expect<T: Copy>(opt: Result<T>, &'static str) -> T=
- {
->>>> 	    match opt {
->>>> 	        Ok(v) =3D> v,
->>>> 	        Err(_) =3D> panic!(""),
->>>> 	    }
->>>> 	}
->>>>
->>>
->>> We already have `Alignable::align_up` for non-const cases, so this woul=
-d only be used
->>> in const context and I don't see the need of having explicit const_expe=
-ct?
->>=20
->> Fair enough -- unfortunate we can't call this from const context.
+On Wed Mar 4, 2026 at 2:46 AM GMT, Eliot Courtney wrote:
+> Fix some inaccuracies / old doc comments.
 >
-> OK, so after the dust settled on this discussion, I *think* we ended up
-> at this, which I have staged for an upcoming v6. Did I understand you bot=
-h
-> correctly?
+> Reviewed-by: Zhi Wang <zhiw@nvidia.com>
+> Tested-by: Zhi Wang <zhiw@nvidia.com>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/gsp/cmdq.rs | 17 ++++++++---------
+>  1 file changed, 8 insertions(+), 9 deletions(-)
 >
-> commit 1360a440272976df697140361537c5b697d602e0
-> Author: John Hubbard <jhubbard@nvidia.com>
-> Date:   Thu Feb 19 14:44:02 2026 -0800
->
->     rust: ptr: add const_align_up()
->    =20
->     Add const_align_up<ALIGN>() to kernel::ptr as the const-compatible
->     equivalent of Alignable::align_up(). This uses inline_const to valida=
-te
->     the alignment at compile time with a clear error message.
->    =20
->     Overflow causes a panic, which becomes a compile-time error in const
->     context. For runtime alignment with fallible overflow handling, calle=
-rs
->     should use Alignable::align_up() instead.
->    =20
->     Suggested-by: Danilo Krummrich <dakr@kernel.org>
->     Suggested-by: Miguel Ojeda <ojeda@kernel.org>
->     Signed-off-by: John Hubbard <jhubbard@nvidia.com>
->
-> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
-> index 5b6a382637fe..b8b0cb1e0b6b 100644
-> --- a/rust/kernel/ptr.rs
-> +++ b/rust/kernel/ptr.rs
-> @@ -225,3 +225,31 @@ fn align_up(self, alignment: Alignment) -> Option<Se=
-lf> {
->  }
-> =20
->  impl_alignable_uint!(u8, u16, u32, u64, usize);
-> +
-> +/// Aligns `value` up to `ALIGN` at compile time.
-> +///
-> +/// This is the const-compatible equivalent of [`Alignable::align_up`].
-> +/// `ALIGN` must be a power of two (enforced at compile time).
-> +///
-> +/// Panics on overflow, which becomes a compile-time error in const cont=
-ext.
-> +/// For runtime alignment with fallible overflow handling, use
-> +/// [`Alignable::align_up`] instead.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::ptr::const_align_up;
-> +/// use kernel::sizes::SZ_4K;
-> +///
-> +/// assert_eq!(const_align_up::<16>(0x4f), 0x50);
-> +/// assert_eq!(const_align_up::<16>(0x40), 0x40);
-> +/// assert_eq!(const_align_up::<SZ_4K>(1), SZ_4K);
-> +/// ```
-> +#[inline(always)]
-> +pub const fn const_align_up<const ALIGN: usize>(value: usize) -> usize {
-> +    const { assert!(ALIGN.is_power_of_two(), "ALIGN must be a power of t=
-wo") };
-> +    match value.checked_add(ALIGN - 1) {
-> +        Some(v) =3D> v & !(ALIGN - 1),
-> +        None =3D> panic!("const_align_up: overflow"),
-> +    }
-> +}
+> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
+p/cmdq.rs
+> index 492e9489e808..4829830b6921 100644
+> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+> @@ -531,6 +531,7 @@ fn notify_gsp(bar: &Bar0) {
+>      ///
+>      /// # Errors
+>      ///
+> +    /// - `EMSGSIZE` if the command exceeds the maximum queue element si=
+ze.
+>      /// - `ETIMEDOUT` if space does not become available within the time=
+out.
+>      /// - `EIO` if the variable payload requested by the command has not=
+ been entirely
 
-The implementation doesn't address any of my original comment and all my po=
-ints
-still apply.
+What's the benefit of enumerating all the error codes like this? Unless all=
+ the
+mentioned error code here is supposed to be handled, then it doesn't gain m=
+uch
+for them to be mentioned, no?
+
+For the errors that do need special handling, we probably want to use enums=
+ to
+force their handling.
 
 Best,
 Gary
 
-> <blueforge> linux-github (nova-core-blackwell-v6)$=20
->
->
-> thanks,
+
+>      ///   written to by its [`CommandToGsp::init_variable_payload`] meth=
+od.
+> @@ -711,22 +712,20 @@ fn wait_for_msg(&self, timeout: Delta) -> Result<Gs=
+pMessage<'_>> {
+> =20
+>      /// Receive a message from the GSP.
+>      ///
+> -    /// `init` is a closure tasked with processing the message. It recei=
+ves a reference to the
+> -    /// message in the message queue, and a [`SBufferIter`] pointing to =
+its variable-length
+> -    /// payload, if any.
+> +    /// The expected message type is specified using the `M` generic par=
+ameter. If the pending
+> +    /// message has a different function code, `ERANGE` is returned and =
+the message is consumed.
+>      ///
+> -    /// The expected message is specified using the `M` generic paramete=
+r. If the pending message
+> -    /// is different, `EAGAIN` is returned and the unexpected message is=
+ dropped.
+> -    ///
+> -    /// This design is by no means final, but it is simple and will let =
+us go through GSP
+> -    /// initialization.
+> +    /// The read pointer is always advanced past the message, regardless=
+ of whether it matched.
+>      ///
+>      /// # Errors
+>      ///
+>      /// - `ETIMEDOUT` if `timeout` has elapsed before any message become=
+s available.
+>      /// - `EIO` if there was some inconsistency (e.g. message shorter th=
+an advertised) on the
+>      ///   message queue.
+> -    /// - `EINVAL` if the function of the message was unrecognized.
+> +    /// - `EINVAL` if the function code of the message was not recognize=
+d.
+> +    /// - `ERANGE` if the message had a recognized but non-matching func=
+tion code.
+> +    ///
+> +    /// Error codes returned by [`MessageFromGsp::read`] are propagated =
+as-is.
+>      pub(crate) fn receive_msg<M: MessageFromGsp>(&mut self, timeout: Del=
+ta) -> Result<M>
+>      where
+>          // This allows all error types, including `Infallible`, to be us=
+ed for `M::InitError`.
 
