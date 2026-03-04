@@ -1,179 +1,108 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022140.outbound.protection.outlook.com [52.101.96.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA30378D82;
-	Wed,  4 Mar 2026 20:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772654770; cv=fail; b=d3lHzXDYljKEQDbyLbI7bCg1HdV87YFtI15wHPrFiOmaIvR4aIVNaJYw9ZCAdvWEnQYRbT8ynFMhc4vQq5myG0IkB2NGaxK7upszCZzPJe64eBaVlHG4qMXII4WkTtDBbfiX8+DjR/yZINVKi0PgR1UqcLp+8LmFBh+aPgxfTaQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772654770; c=relaxed/simple;
-	bh=FZ/D8dfZFq2la9GRGDv/O+SXGutxJzdjWN5vS2c7/pw=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=g3SgXu6F+4qP5hO8E0VofyTycJALyPWSWICSh/voop93v+E+/T4/KDXvd8g3HggeugvqCxdDMV7w4KU71uAzNfSyC2IzzR0+CEY1JYBiQkUEjP50F4ieYdTrnkhT5JbP+aekwOqOhVI1zzM4L+EzasgQMsErqAHXemHOJ84MZd8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=i3NUVaY3; arc=fail smtp.client-ip=52.101.96.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1784F381AF6
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Mar 2026 20:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772654845; cv=none; b=D5P1f+WnBKSNKrAS6gAanDDFYDpCuCmcYIV91yzp0jFEUE5Y33XPDEufvQzJkk+mhKcC3qDq23cRdXM0Slvl2Ebh5Gdy8YgZ79VgzScBwPtyQe2GnBT3zDZeO6g9j+MFP6zYRXicspgEyKXP2nGhH3TpA/lWk/Gf1ht7iIv+ofc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772654845; c=relaxed/simple;
+	bh=EoYle/6JOsVNqnXQzbomRgDTXDfhqKNgorkD6gNFOcA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KX57Vu52R0icQtQ+SVsDGGmKxdsO6xvrJZIJEIgMcjRS1iV8rpxFDnk0RzRsGZVY0Ct/VJPg1zo/Alkmzf/ZvaA8R2z7aGfKQgaghJTsntX402onRmkjk7swpbe4NbRMBOlh0F4HsAODJcpIhtf5UG1tF3hgvs6vMxYzwqDFq9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UAANFyTl; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="i3NUVaY3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mqeKr3W5RuxeSWoVD3pbbPluDtBqNvlFK+e3yq5DxRhDaOvWRLUZut8oOK27vsmaVJjuDu47vg48i4hpayBaFD3NpMMd6JN7IWu/9RNNg2oswMw4mcziExlPI5M8O+NkYXYY1YpGc79VcFFk6rvcwyxs8fXfofK9rUYwuClxaYPaWN2o90Leqey4KQSgFvoZXKZWbvSGFNxz00SPfoCV2Nm5TPWJDMZCct1z4bbTcLkbEffviNzVvT52BpGnht/pQMsSvK5FCJlLPswdCuPEtP5Y3tR9nDMAfLs1tL3nhR/SlmKWTaM/d+mQRxYr4H37s8repSkLFakLK3I29BSpVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C+voua+D/9b+EQFZKm4k3KmXo7Q3bI+OOwsSqXKPmME=;
- b=luxDizpdNYO3xqgPLfc45JyYfcDNmyLccQy92z01IzI0FJfYu1QC/7Qjap22EaHPbiqEkoAhdmEYIOuUh38p+Uv2Xs8Fp6VAV0dcfgaU1TFrCZ8V3B25vaDGqfKx+aBMzZdsH9QZBlrKzcXErWDF80eKIZ/T0Ge7zmIY8h2l0cn9jHoqXyz5xoJOE5nvgxvbnZS8ivrWzaj5jM+iDUZ4qfLiLXXPmEgEn5JFoyJu3tAO6yC4lGpj5j5xEbr9fJDJtaW7xnzT9WWh9OdXtYCXOcfDFEv6HRykAv4oi8H96B8dz+g7OgXneKFDbszcNyQ/sMK+BpUxd+/zjB0moXrULg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C+voua+D/9b+EQFZKm4k3KmXo7Q3bI+OOwsSqXKPmME=;
- b=i3NUVaY3rg/HItWU7TU/qQWx/bUtxUBAotp5IgVJ3HTSsYKLT3pz60/nt+1TUSK4M06OHwhD0/6mvaeow41kaNoj0R3GqefnTFQBWTqArvkgCfUmsThNYTIDDG+3+hl7qwHinff4MjD3qqDItIxctvfp1Wj4nqmZUS5fJheAZOw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO3P265MB1884.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:fc::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Wed, 4 Mar
- 2026 20:06:02 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
- 20:06:02 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Mar 2026 20:06:02 +0000
-Message-Id: <DGU9O3HEY7CN.3OBR26YV3AHGT@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "John Hubbard" <jhubbard@nvidia.com>, "Rafael J . Wysocki"
- <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <linux-pm@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "LKML"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: cpufreq: fix clippy::double_parens warning in
- Policy doctest
-X-Mailer: aerc 0.21.0
-References: <20260304195330.185829-1-jhubbard@nvidia.com>
-In-Reply-To: <20260304195330.185829-1-jhubbard@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0388.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18f::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UAANFyTl"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4837584120eso54597665e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Mar 2026 12:07:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772654842; x=1773259642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZiNPyYsvz+QyWtSc/HtTaNZa5g2oofeCtGK50tm8P1E=;
+        b=UAANFyTlM6t14vrvIP709sxq71AF1N3tPyKlaj/UQQM/HCE2+zA2N+Gixc96yN1wa2
+         16o3oDXFn0YYgp3LN+hFyvqjkL9oTbq9kOnX8r/CobD7M9PLAVmAz6PdrcgZ3fqvEeWA
+         AGiNd5oc5EY2wNaNB6WdQkj4KIKtBc8bvS4Kdy8ER8/rciQ0Dhpmr0xmZ6HP+Xo9t2jK
+         nBgNb1tvw8R5EGPC0LIZmNy5Mts+zizrTlAWqzwIGNxrAchaTVMmang9dWfx8YBHdnDC
+         +dvwYjoQSuqWXg1vJoEMC3KNwBITsztxgXFAZOQSKhK0DpNSEjFyqojY5qZO7/9OafkK
+         nFoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772654842; x=1773259642;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZiNPyYsvz+QyWtSc/HtTaNZa5g2oofeCtGK50tm8P1E=;
+        b=qBKYAYa/i29fAUp8KUsDO9wQEqEGAcccHwowByxJamEGn4yW5bjrHlinXnC5fTWJYy
+         +WkONOTIT5hb8PmxHBZ44l8gdSY6dzPZ5SsgW0W0YFDwfdOzBCHmgmUxR7sw1FUlv/c6
+         z8cTY0tIwHuvUCnJBLqsLXSFbfuu25hfwyFqRa9on/0vyqlYlHPf03aZb82n/y2lZonf
+         oSLhp9PFZLu1Lypa+Q3YoA4SDGWy6XWXf7wzrpUofYVrDd4PquAEQ2HmSErg+8FyBgDA
+         AUmVi9CNctI8Af0WlUrGki5c8z+LI3ufHx0sfmyAm/IAgxJp38wWaAEYMZT/UR8uQ/3y
+         3DrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrz43or9766o3irzYZzpfJCltyRMPQxmTDwbcmasi8zrDEfroA6978R9Z5hoDCuHuMMIwG9VbgE0oOP47Log==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEV0vKbWohftdzgz6J4nKKK7WRS42RsWCYk/Oapp7r/hfzD8hU
+	d/TWMZClvF+s9gGlSOw3h9keyfK/qskZQJ87LAXgIKhRAVlFuMv+pq+lphip7OGlwIo=
+X-Gm-Gg: ATEYQzzC1hV0VbBRysJA+TbY+zXGhFAlaCFweLwSv485DBOsucShHU34DiI6TDuIQ6e
+	/PwWRd1Jy/iotGj5NX2VrsMz4veXM9ILnkkfWWjVRev4NEpbUUpE8/XsRFdJEW9oGU8ghVcFStH
+	FMuNnOhcyXyIl9hGvd2NyLI6MLiT/dvh2UDLi1znfof7LBMFpyETBTncAGmbxfHVXE388sb9UO9
+	WSsGmhVB46OB75zRnbrhJkYxj8jBk1ybki/BYugSKMYluQk14z7Tfo/y71Zm3bkBvVwfMkaFv7+
+	plN7WADzKIhtbJZuPKS1BN+jlu7No9bL5nsg8nPGh7V9SYw6o+5CfL0otX/qD3X8D9fBUbhVlGv
+	twZVjlBCKXjw2cfaow6XT4CzjtXNocUDx+CxnYRwsXBhjqZo1bNRd02xp8zDSPbNjB3CjobzI4y
+	UxzmuMizdF6JpH3/nnMyEHG4nt6yiUS+Q0nOwvB9l5N8+Zhv3qkvQ3PK+nNx7/mMTBT6D88+HTZ
+	NR1QKvmfhc0qsCSC/osjOFC7NUfplTqD19jowx4g2x/UUc=
+X-Received: by 2002:a05:600c:1c26:b0:483:71f7:2796 with SMTP id 5b1f17b1804b1-4851982e8bcmr55862335e9.10.1772654842178;
+        Wed, 04 Mar 2026 12:07:22 -0800 (PST)
+Received: from localhost.localdomain ([80.233.57.185])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851881224csm68872885e9.13.2026.03.04.12.07.21
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 04 Mar 2026 12:07:21 -0800 (PST)
+From: Edwin Toribio <edwin.toribio.j@gmail.com>
+To: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+Cc: carlos.bilbao@kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Edwin Toribio <edwin.toribio.j@gmail.com>
+Subject: [PATCH v2 0/3] docs: sp_SP: Add Rust documentation section
+Date: Wed,  4 Mar 2026 20:07:10 +0000
+Message-ID: <20260304200715.76360-1-edwin.toribio.j@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO3P265MB1884:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5452a074-f1f4-4dcb-1981-08de7a2975f6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	1KzP4a1vTRaLuTCjeWGHsV4OybuK8sPFO19RH1gA1imOjd+bSCnuvT8BrOHPl9o7qnKLE7BHx4CH7x5hajRzl7Vf1BCOqZyCoUeyW+w2Q45V2FyrvuoAkLTqdmAQ9u4t7IZRkMDvsR6Un3mBlzA5weP/Yrrs5v0qPi9Y3SSH92D4qqpe6UMq7NCslZhB3avlhXAv4UKw4jiHsQ+Mbg4rqo/nJiBve0VX8FccoSrZ6NLD3zaTC75f9I5ElE5mI9hYiSXpJK+FB4N6Y6/fy+9g/zZI6G1OPQfz0kRttRE6oW8NPSKqS7ZnShJaZYDSfRxg7+71TN2Zt53Ymkw9J5Fh0XGkpXktHg7CcNIkYO09jIQLKGsfTABMd9bBYRnKe97qfBvBkgyOp6qhT0GocR5iGgXpSSLcpAY0aN2QoWTQo1tDzgMFxNVChvazhXeeWvzKR4LyatCYLofFV7pZfJYIglH+T77VFjp+0LVEmixATrshgNzImvbm1ENXA+G0RFm00JIABO5PgAuh3RHqj9hneXhpyxPs/OP8ocjzvg9aUq48QfXgJNibhnE5bxItDKrU2PWkpB01miDeTmAfA24oF5IDRPg9zfBC2TUhjy2/2SVf1XAsrDfjBNoKxiMf1+lr8GtQyNmpAFSut/+IKSQXE0dqx2zmur3Z/UUalKALZYiNTZH33P6ln5CZBQJAjpiUmUC0HR41p67JNySnamrtK4V3MLkE+zu6IW7wrWCZ0BE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eHlPd2IxM2VSWG82WWFmQ1FUc3NHQXRVR3BLOTVVY25KYmo1eUY4K3pzRjI5?=
- =?utf-8?B?RzcvNWVRdHM5VStHdFlpV2gydXNua0xhMnVWNmR4czR6YU1Tb0J3NFFQelYw?=
- =?utf-8?B?OEk1aEVSc2xyS0J0ak1CbTdQMzZ3Z3NJKzVaWDR0Um43VExqc2RCdW9ra0NS?=
- =?utf-8?B?ODd1ejB4SVRGUC93T2lYYnpIUFpUL3Vta0xkditYcytrbWVJYy9XUnhISnl5?=
- =?utf-8?B?VVJkeW5WUXVaZldZUGdrYjZCdXNNeWRiZnQ1cFNEZjBHUHdHR0ZRd0pKdTBD?=
- =?utf-8?B?WFdiVllVYjgrU1M2bmhIc3RyK3BMYXo5ZnlaODNDYnBYa2krbWV2aHY4aXc1?=
- =?utf-8?B?L3Zac3IwLzRka2IreFd0U0JuaSs1bzBKZmhFVGhKNjlNbFZCbXpWdEpHbHQz?=
- =?utf-8?B?K3Jib2NJMXFVRDZLTitRSm12WkhFRkhWd0pPNDVJc3pRTVBrUDFNVHJIRmZo?=
- =?utf-8?B?c1VVY3BPbWcvVXdJeWo2WnltY3BRd3k4NnErMkJ0Rlo1UDRoNUlWN2VDa0dI?=
- =?utf-8?B?MXFuclBMUUtPZUZXL1l6TWpSU092ak1FUjJXVEo5ajFCZmltMzV6V3ZJdEJ6?=
- =?utf-8?B?blBhYXJ6aEFKQUZrUmdseHZPaHZLRXNOSHpRVTROMjlJMkltU0FQMEJtbUV2?=
- =?utf-8?B?WDRlS0VuS21LZmNOcFhqQWhRd09LZ3F5QTgrdkxmMUlXK1I3R0pYamRVVnlP?=
- =?utf-8?B?RFdhVVlrZmhUWDlGbUZpZmpmYk5ZeStzbmREYkprZktsbDNab1lvaDcyZERG?=
- =?utf-8?B?RGdRa2t5RzQ1ZlFhaHhSS2ZWeE5PWmpqU2dOUCtndk5FRWJJT3pqWExoVnFv?=
- =?utf-8?B?TzRrUzhqakdFMHFXdnRzeFdnaHFMNEVndFVhTVpRWmJXUGQ1Ukthc3Q2NUhm?=
- =?utf-8?B?aW1iV3pXUFp5V3hhczFMeHc5bVhjM0FDemFHU3E2WVJYQTZqOFA3UTFJMWhr?=
- =?utf-8?B?bDRER093RGZXRUJvM3RYcEtwTmR6RHpDZUI4TWowc0RGbEN4SHkyN2lqOEx4?=
- =?utf-8?B?aVB5WHU2cE9zNjlLd09pOTh3MXZ2anpiNERQVnJvUHB0aUp5YWIzeVhmaUtJ?=
- =?utf-8?B?bmRhUEx4R2hNOVA0UXBBMHFmRVhWUjdpNm9NR1lWVDBZcGtpWWtyd213UStY?=
- =?utf-8?B?NmtWbkJkbDkzVHVRaHhkdUxqOGdEUkIreTBGWS9QRGxLR3ZUTHE5VlJBcS9m?=
- =?utf-8?B?VUlXbkFRczFjeCs2WGtucGwxUjF3enVDSFoyNkpUcUNBcWpVbWlybnZ0ZkFY?=
- =?utf-8?B?WGVGNUEwV256dmVzZytaWFQ0cnFua2lVRGpZWlBNbFdNY28xM2J0WVhzalBi?=
- =?utf-8?B?WGsveHk1a0d0UGxXMVNnY3FhemNmeWtqRDI1UVRMVi9uWFFkcm9IRFlrK3Rw?=
- =?utf-8?B?K2hoSGRCbUJzOFNERUxMMzkxc2g0OU43VWV0L3loUzdQUFU1RUZua0czVGhL?=
- =?utf-8?B?SFZDYzJIMjlCbjZwanZodXRrN3NTTzBVYitQZ0xrc2kyMXFwbzNoNkJVWVdl?=
- =?utf-8?B?Z0xIYzd6VkZGcmx2V2NjUndYVGJPZkEzMTB1N01kY0laWFVFd3hidjc0MDdk?=
- =?utf-8?B?SWFNSVN1SDVmaEQxWm5CeE1wbmJNaGNhZHhaUjlqZXl2LzNjaDZYNlJlVmc3?=
- =?utf-8?B?QmM4NEdlZEtEZ3ZReG9KZFdBS0htUnphQVo3cWVhRkZCa0Eyem92Qkw3T1JG?=
- =?utf-8?B?MVdoRHpSVitPc3Bua0dET0xoR0U0Q2J4cWxIcVZ6K01UY2ZEWTh0RS9hT2Fs?=
- =?utf-8?B?NWdEYzAyZm9DTnltQU9CemdqclNQR2poUnM5eTBsTFpIbGxDWWlCNkhkSnVs?=
- =?utf-8?B?VC9EVFU2WmEwOEIxRFd3TEFGenQ1MGFZWU91SmJYRkpuQ3dvbU51c2YrZUZL?=
- =?utf-8?B?WDF1MFpmRUVEYld4V0VVUlErUnNuUW1HcDFWZERHRXZxYXBISUQ2QjJxQlJr?=
- =?utf-8?B?T2RFZXRHR2lNVzFGQm0ybE16aHEwSmM2TVJTYmd3Y3ROUmxJRWVkNGQ5Z3NK?=
- =?utf-8?B?TDVxVGJodDRCSU83K2R3U3htdzViQmxLUmZuNEhUSHp5VEkyR0EycXo1V3Zr?=
- =?utf-8?B?VVF4ZFNBMENnbjgvSW91SWNYa1UvdTFqYXRIZXo3aURJdFR4aWVQVlE2NlRM?=
- =?utf-8?B?V1A4c21YTW1KVE5Wd0RsakFTSnBRRlZHWTduVTNWZWh4a2NkTjFNTVFsRkZK?=
- =?utf-8?B?WDRIVFVYN1dpbjVIcHR1Z0J1dk5lRzB1Rm9KNENicTlFUE1Cc0lsc2w4Yk5a?=
- =?utf-8?B?dXY0eHVqaUJSTHlHSkJkRVV4cUV4R3dURFhvZUpsSVZlMUNOL3pvU283MUFO?=
- =?utf-8?B?Z0xWc0k0MWtScDNVL1BjeVBoVDBUVitYeW1HdkJyak82Q0hMMEVOdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5452a074-f1f4-4dcb-1981-08de7a2975f6
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 20:06:02.5231
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gSBsEWfvB2C3kKPxi3g22G5aZsllfHCyAP+47dBuXeiymUQUhtz43aUQTurS5O/xBowJksaOe+TkwgGhgXA10A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1884
+Content-Transfer-Encoding: 8bit
 
-On Wed Mar 4, 2026 at 7:53 PM GMT, John Hubbard wrote:
-> Clippy reports:
->     warning: consider removing unnecessary double parentheses
->       --> rust/kernel/cpufreq.rs:410:60
->        |
->    410 |     pr_info!("The policy details are: {:?}\n", (policy.cpu(), po=
-licy.cur()));
->        |                                                ^^^^^^^^^^^^^^^^^=
-^^^^^^^^^^^
+This series provides the Spanish translation for the Rust documentation
+section in the Linux kernel, including the quick-start guide, general 
+information, and coding guidelines.
 
-This looks like a false positive, probably due to how our fmt macro works?
+In this second version, all documents have been unified and updated to
+comply with the feedback provided regarding style and technical accuracy.
 
-Best,
-Gary
+Changes in v2:
+- Added new translations: coding-guidelines.rst and index.rst.
+- Standardized the use of "p. ej." abbreviation throughout all files.
+- Fixed the Hacking section truncation in quick-start.rst.
 
->
-> Fix this by using separate format arguments.
->
-> Fixes: 6ebdd7c93177 ("rust: cpufreq: Extend abstractions for policy and d=
-river ops")
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->  rust/kernel/cpufreq.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-> index 76faa1ac8501..e94a17731557 100644
-> --- a/rust/kernel/cpufreq.rs
-> +++ b/rust/kernel/cpufreq.rs
-> @@ -407,7 +407,7 @@ pub fn to_table(mut self) -> Result<TableBox> {
->  ///         .set_fast_switch_possible(true)
->  ///         .set_transition_latency_ns(DEFAULT_TRANSITION_LATENCY_NS);
->  ///
-> -///     pr_info!("The policy details are: {:?}\n", (policy.cpu(), policy=
-.cur()));
-> +///     pr_info!("The policy details are: cpu=3D{:?}, cur=3D{:?}\n", pol=
-icy.cpu(), policy.cur());
->  /// }
->  /// ```
->  #[repr(transparent)]
->
-> base-commit: ecc64d2dc9ff9738d2a896beb68e02c2feaf9a02
+Edwin Toribio (3):
+  docs: sp_SP: Add Spanish translation for Rust quick-start
+  docs: sp_SP: Add Spanish translation for Rust general information
+  docs: sp_SP: Add Spanish translation for Rust coding guidelines
+
+ .../sp_SP/rust/coding-guidelines.rst          | 543 ++++++++++++++++++
+ .../sp_SP/rust/general-information.rst        | 178 ++++++
+ .../translations/sp_SP/rust/index.rst         |  45 ++
+ .../translations/sp_SP/rust/quick-start.rst   | 384 +++++++++++++
+ 4 files changed, 1150 insertions(+)
+ create mode 100644 Documentation/translations/sp_SP/rust/coding-guidelines.rst
+ create mode 100644 Documentation/translations/sp_SP/rust/general-information.rst
+ create mode 100644 Documentation/translations/sp_SP/rust/index.rst
+ create mode 100644 Documentation/translations/sp_SP/rust/quick-start.rst
+
+-- 
+2.53.0
 
