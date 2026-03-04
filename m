@@ -1,161 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE6F3AE194;
-	Wed,  4 Mar 2026 14:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280F53B4E94;
+	Wed,  4 Mar 2026 14:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772635158; cv=none; b=mvi7m0ZuNCk9ainnlvfHlkc6WbDkB/u6TUxd7JChMvBtdQzOD3kpFBMwm6CIXM0SwHBkkHs6xeOf4QAB7r3HLN9DC3UJP75QRkBZEZPMv/aZ0Lju4BlJAx4MRriI8Z6Peq+EyVyPRcv7b6hSV7bK9xzobKavDUiiILhRUc8bcU4=
+	t=1772636287; cv=none; b=ateR9XdZPzUmtkG7U+JwS4vNB2JhJodZvnXg0NtwPg0RBlxz12Ye3KxlnHr3u8imyBB6ppjxQ7bqKs9XVaA6OlNBX7pBdP6xSbZ/7MpdFJm42Cz9K4hV/9oX9B26oxF9BvOi/1JDlGl4/rX5VQTZuiRlNoUeMUjTyWVNyIPsO84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772635158; c=relaxed/simple;
-	bh=jpHbkjBSvqWn6OcfIJDrEntNWYvpRmD8DXYmBcL7tLY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IBSbAInUQAxVC+1rCeDk9wttyyFz66+6tqzjoqjSlOUlrhaC3jDUu4qOxuT/WaVBBT6vCWS1cN6bAoCSC/6qXzGi/WbggCdDGOtSBkyxDnJyY8geudd4B4aZKEfum3r1HWf4KYRSHRT7luzhxozlcYM9a+77Q73XMF8MYy2TMOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqYh3mbC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772636287; c=relaxed/simple;
+	bh=dOS1j2epf5TPYMaiUEFBxK4GWJCF7AnlRNLv83KiR6E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Nc1GFWo3KdYYtI80GJqIBI7UEDMvYhnJpxm9GQLaWNKKzZvcZyIKM8y4ulpMlXR/i9tde7Hiv7M7q7lSP+j/xwgB2/8cnVSdzLfmVpcRR7Blhu94Ae4iKjEWd715lgvVjbMKj5fvCx7Z0BLxATCY1ommkrOw58j0o3iiidMApUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ym9EQcZf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oqYh3mbC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3438AC4CEF7;
-	Wed,  4 Mar 2026 14:39:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ym9EQcZf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46750C2BC9E;
+	Wed,  4 Mar 2026 14:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772635157;
-	bh=jpHbkjBSvqWn6OcfIJDrEntNWYvpRmD8DXYmBcL7tLY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oqYh3mbC6G+LZqZcA349+DHmgVGJez+uBJZFvNa/vvofVcpmLVlfolAwovLD1kpSr
-	 wqFBelLyJhq49roMuFGDnAoU8Kmr/N3htigXB42qH4Z8tKRe8F6f8yelEAuAKKKS91
-	 ZblkvtoBp/REJT6AFsI1bCjYhRG1cHkKEMcC9nHOOwjaaPNVrWZYWUVkdqHHzu5ky9
-	 MXEqQ6fTT3evFo1axez4UodBTySB5pJ6qzg0mcofU4oMP7DoUJal/l5hF/YSkWZYjj
-	 /oXFTEF+y8aOk858fCKQPlx0d2+Q4KbkDK86cBr99e0UuMtbjCjnUb+yXPSrE45y7x
-	 qJ99426pRHing==
-Date: Wed, 4 Mar 2026 11:39:14 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Ian Rogers <irogers@google.com>
-Cc: Dmitrii Dolgov <9erthalion6@gmail.com>,
-	linux-perf-users@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Levi Zim <i@kxxt.dev>, Namhyung Kim <namhyung@kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>
-Subject: Re: [PATCH v4] tools build: Fix rust cross compilation
-Message-ID: <aahEEkHP5g-T_tFg@x1>
-References: <20260218154800.367720-1-9erthalion6@gmail.com>
- <CAP-5=fXLNybYv08dDfAqAsDBzbOPzQY4EZQvdY0WZsfrMu9Yyg@mail.gmail.com>
+	s=k20201202; t=1772636286;
+	bh=dOS1j2epf5TPYMaiUEFBxK4GWJCF7AnlRNLv83KiR6E=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Ym9EQcZfkOKBQHZvEQz/FhHVNSqmg+h+6mOr4awZN6lqVP89047H95oA7hDTD8Lxp
+	 3/zrrsmHItaW0dHSdzHTPMNUEEPPrdDoAQGGe9wmG6r942WlV+NEL+DcbydsnltayO
+	 SnkhnV7y40XDZUGJYiA6FsWGZM40iGremynvaU5Cw1rh8jc4wDHWy/miN2N3sbvfLc
+	 Rn1TTCZbSsbm8xMotdnloy7atDTjiCMTCuYwLsPrm4P+VZShXKneJTrYQO7TL2CS2W
+	 aGLtKXusmSvGJfMzJsY89VPeZZyDFz0aM8vrKSLF2R5CeTp1fFyviINf8C+4nr6mjK
+	 wEsHpF7yuJvaA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAP-5=fXLNybYv08dDfAqAsDBzbOPzQY4EZQvdY0WZsfrMu9Yyg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Mar 2026 15:57:57 +0100
+Message-Id: <DGU347RJX5BV.1CZYELSZ9GS9D@kernel.org>
+Subject: Re: [PATCH v3 00/10] rust: pci: add abstractions for SR-IOV
+ capability
+Cc: "Jason Gunthorpe" <jgg@ziepe.ca>, "Peter Colberg" <pcolberg@redhat.com>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Abdiel Janulgue"
+ <abdiel.janulgue@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Xu Yilun" <yilun.xu@intel.com>, "Tom Rix"
+ <trix@redhat.com>, "Moritz Fischer" <mdf@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-doc@vger.kernel.org>,
+ <linux-fpga@vger.kernel.org>, <driver-core@lists.linux.dev>
+To: "Leon Romanovsky" <leon@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260303-rust-pci-sriov-v3-0-4443c35f0c88@redhat.com>
+ <20260304084750.GW12611@unreal> <20260304141852.GF964116@ziepe.ca>
+ <20260304142600.GB12611@unreal>
+In-Reply-To: <20260304142600.GB12611@unreal>
 
-On Tue, Feb 24, 2026 at 08:41:57AM -0800, Ian Rogers wrote:
-> On Wed, Feb 18, 2026 at 7:48 AM Dmitrii Dolgov <9erthalion6@gmail.com> wrote:
-> >
-> > Currently no target is specified to compile rust code when needed, which
-> > breaks cross compilation. E.g. for arm64:
-> >
-> >       LD      /tmp/build/tests/workloads/perf-test-in.o
-> >     aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
-> >     aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
-> >     [...repeated...]
-> >     aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
-> >     aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a(code_with_type.code_with_type.d12f4324cb53c560-cgu.0.rcgu.o): Relocations in generic ELF (EM: 62)
-> >     aarch64-linux-gnu-ld: /tmp/build/tests/workloads/code_with_type.a: error adding symbols: file in wrong format
-> >     make[5]: *** [/perf/tools/build/Makefile.build:162: /tmp/build/tests/workloads/perf-test-in.o] Error 1
-> >     make[4]: *** [/perf/tools/build/Makefile.build:156: workloads] Error 2
-> >     make[3]: *** [/perf/tools/build/Makefile.build:156: tests] Error 2
-> >     make[2]: *** [Makefile.perf:785: /tmp/build/perf-test-in.o] Error 2
-> >     make[2]: *** Waiting for unfinished jobs....
-> >     make[1]: *** [Makefile.perf:289: sub-make] Error 2
-> >     make: *** [Makefile:76: all] Error 2
-> >
-> > Detect required target and pass it via rust_flags to the compiler.
-> >
-> > Note that CROSS_COMPILE might be different from what rust compiler
-> > expects, since it may omit the target vendor value, e.g.
-> > "aarch64-linux-gnu" instead of "aarch64-unknown-linux-gnu". Thus
-> > explicitly map supported CROSS_COMPILE values to corresponding Rust
-> > versions, as suggested by Miguel Ojeda.
-> >
-> > Tested using arm64 cross-compilation example from [1].
-> >
-> > Fixes: 2e05bb52a12 ("perf test workload: Add code_with_type test workload")
-> > Link: https://perfwiki.github.io/main/arm64-cross-compilation-dockerfile/ [1]
-> > Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
-> > ---
-> > Changes in v4
-> > - Fixed incorrect target name for riscv
-> >
-> > Changes in v3
-> > - Improved commit message, add an example of the compilation failure
-> >
-> > Changes in v2:
-> > - Map supported CROSS_COMPILE values to corresponding Rust targets
-> >
-> >
-> >  tools/build/Build.include  |  9 +++++++++
-> >  tools/perf/Makefile.config | 14 ++++++++++++++
-> >  tools/perf/Makefile.perf   |  2 +-
-> >  3 files changed, 24 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tools/build/Build.include b/tools/build/Build.include
-> > index e45b2eb0d24..cd0baa7a168 100644
-> > --- a/tools/build/Build.include
-> > +++ b/tools/build/Build.include
-> > @@ -98,6 +98,15 @@ c_flags_2 = $(filter-out $(CFLAGS_REMOVE_$(basetarget).o), $(c_flags_1))
-> >  c_flags   = $(filter-out $(CFLAGS_REMOVE_$(obj)), $(c_flags_2))
-> >  cxx_flags = -Wp,-MD,$(depfile) -Wp,-MT,$@ $(CXXFLAGS) -D"BUILD_STR(s)=\#s" $(CXXFLAGS_$(basetarget).o) $(CXXFLAGS_$(obj))
-> >
-> > +###
-> > +# Rust flags to be used on rule definition, includes:
-> > +# - global $(RUST_FLAGS)
-> > +# - per target Rust flags
-> > +# - per object Rust flags
-> > +rust_flags_1 = $(RUST_FLAGS) $(RUST_FLAGS_$(basetarget).o) $(RUST_FLAGS_$(obj))
-> > +rust_flags_2 = $(filter-out $(RUST_FLAGS_REMOVE_$(basetarget).o), $(rust_flags_1))
-> > +rust_flags   = $(filter-out $(RUST_FLAGS_REMOVE_$(obj)), $(rust_flags_2))
-> > +
-> >  ###
-> >  ## HOSTCC C flags
-> >
-> > diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-> > index a8dc72cfe48..214d8f6d9b8 100644
-> > --- a/tools/perf/Makefile.config
-> > +++ b/tools/perf/Makefile.config
-> > @@ -1163,6 +1163,20 @@ ifndef NO_RUST
-> >      CFLAGS += -DHAVE_RUST_SUPPORT
-> >      $(call detected,CONFIG_RUST_SUPPORT)
-> >    endif
-> > +
-> > +  ifneq ($(CROSS_COMPILE),)
-> > +    RUST_TARGET_FLAGS_arm      := arm-unknown-linux-gnueabi
-> > +    RUST_TARGET_FLAGS_arm64    := aarch64-unknown-linux-gnu
-> > +    RUST_TARGET_FLAGS_m68k     := m68k-unknown-linux-gnu
-> > +    RUST_TARGET_FLAGS_mips     := mipsel-unknown-linux-gnu
-> > +    RUST_TARGET_FLAGS_powerpc  := powerpc64le-unknown-linux-gnu
-> > +    RUST_TARGET_FLAGS_riscv    := riscv64gc-unknown-linux-gnu
-> > +    RUST_TARGET_FLAGS_s390     := s390x-unknown-linux-gnu
-> > +    RUST_TARGET_FLAGS_x86      := x86_64-unknown-linux-gnu
-> > +    RUST_TARGET_FLAGS_x86_64   := x86_64-unknown-linux-gnu
-> > +
-> > +    RUST_FLAGS += --target=$(RUST_TARGET_FLAGS_$(ARCH))
-> 
-> I'm wondering about lesser tested platforms like loongarch, csky,
-> xtensa but I don't know how to concoct a triple for these. I wonder if
-> there should be a test for a missing string like:
-> 
->   ifeq($(RUST_TARGET_FLAGS_$(ARCH)),)
->     $(error Unknown rust cross compilation architecture $(ARCH))
->   endif
-> 
-> other than this:
-> 
-> Reviewed-by: Ian Rogers <irogers@google.com>
+On Wed Mar 4, 2026 at 3:26 PM CET, Leon Romanovsky wrote:
+> On Wed, Mar 04, 2026 at 10:18:52AM -0400, Jason Gunthorpe wrote:
+>> On Wed, Mar 04, 2026 at 10:47:50AM +0200, Leon Romanovsky wrote:
+>> > On Tue, Mar 03, 2026 at 04:15:20PM -0500, Peter Colberg wrote:
+>> > > Add Rust abstractions for the Single Root I/O Virtualization (SR-IOV=
+)
+>> > > capability of a PCI device. Provide a minimal set of wrappers for th=
+e
+>> > > SR-IOV C API to enable and disable SR-IOV for a device, and query if
+>> > > a PCI device is a Physical Function (PF) or Virtual Function (VF).
+>> >=20
+>> > <...>
+>> >=20
+>> > > For PF drivers written in C, disabling SR-IOV on remove() may be opt=
+ed
+>> > > into by setting the flag managed_sriov in the pci_driver structure. =
+For
+>> > > PF drivers written in Rust, disabling SR-IOV on unbind() is mandator=
+y.
+>> >=20
+>> > Why? Could you explain the rationale behind this difference between C =
+and
+>> > Rust? Let me remind you that SR=E2=80=91IOV devices which do not disab=
+le VFs do so
+>> > for a practical and well=E2=80=91established reason: maximizing hardwa=
+re
+>> > utilization.
+>>=20
+>> Personally I think drivers doing this are wrong. That such a driver
+>> bug was allowed to become UAPI is pretty bad. The rust approach is
+>> better.
+>
+> We already had this discussion. I see this as a perfectly valid
+> use-case.
 
-Thanks, applied to perf-tools, for v7.0.
-
-- Arnaldo
+Can you remind about a specific use-case for this please? (Ideally, one tha=
+t
+can't be solved otherwise.)
