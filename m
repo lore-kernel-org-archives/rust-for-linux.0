@@ -1,117 +1,169 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10EC366058;
-	Wed,  4 Mar 2026 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C7636074B
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Mar 2026 16:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772641635; cv=none; b=Xq8HoZBKB6rIidHwVoVFcS5uNMhuBhbfJYC7Gg2PTdDtt24cqm9jUifzNLaPllAWLWDfly/GT5rOHIWRNeVMy0EindR/n8VgFpwZt4aVBeLaRsUGaO5p6rB9vW2mzqjOnIvP75z4nknvFVaQDZPyZmuuOEQ7jZV0Ls9rm5yUw38=
+	t=1772641754; cv=none; b=XDfx4gKD5KT1AqY0n5IqO9PzCAPwTc9mXnWvBOypnU4PvjiOjdtpeuxz4BGiJsr68xN5WLkhKVyhx2twkliMUOOvt41TkQGcFz73fTPXxfA86KOvb6U1uREyPMXbM2/W8R8F1gTnpeJj53fglvZCa3LlCt/0xvsHqEnNI4/dByY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772641635; c=relaxed/simple;
-	bh=AfCEMFEFaW523pTkeEMztclMFG542ecaBMBKu13UGZU=;
+	s=arc-20240116; t=1772641754; c=relaxed/simple;
+	bh=03B2sII/wLyEEQmGcMTzXqixo/P52R1q/pDe72u3uUI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i+Lw41hWcPcjfOIza0+0Dux01W9FREK645zDwtpKxdKSqbR4/GGlD8uLPyih0wuGThxXSQnNcGQ4zmJZkUTLrNjo8B/sVgmwn/lu4HVSvBAafajHiA3DUfGKJ9kq6Hp5McJJtwDoP2XffvpMC/Aie8BKlP+2xHgxqAgPC0ruuFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KV8L5eiQ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=E8kJpQeAPwD250zUXfeQ5bGf7ehHE0rEMZkaOSZPY53UwXA8z5NGCfSGZ+fqqhwPMIecUk1fDvj9FhNB4xmAelRL4UBk/oTlj2xfuOQutRWbS0cdwVdojfUibzhoN5QPHQFR2Rlgl5CPv/fyS1CFi+zeQ7E7BlT5J7fy8xXE4vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7I/aSaZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KV8L5eiQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2EBC4CEF7;
-	Wed,  4 Mar 2026 16:27:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7I/aSaZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D99FC4CEF7;
+	Wed,  4 Mar 2026 16:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772641635;
-	bh=AfCEMFEFaW523pTkeEMztclMFG542ecaBMBKu13UGZU=;
+	s=k20201202; t=1772641754;
+	bh=03B2sII/wLyEEQmGcMTzXqixo/P52R1q/pDe72u3uUI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KV8L5eiQbBVOpo+OeokNyKPYBoKK5g7vSE/nknwa473tAFw/QjlmcNO0ix4gySsJR
-	 P8HGEuYKgLhs2iM5qBup4aRAoDdpXBSoN6aXuQpuSZQdcyK32b9CU44GBf06JQKrxe
-	 A0138itmdBGIzt7qc/FuKDjEYCSXJY2vYvZFDzZpkQ24AdU2CATXVuKtzKQ417beN1
-	 1HdgzguxGjgcfat/rasyFw88NZA2mgp2RTQ+oZK6lzIyI5/4MvYgarsiLUsmNN3co+
-	 4kUUCcvOouTRL65YcHGShRf++I/qi/7S9VXcwYBddr2f7ugd4CGFQAwpy46t5yyczu
-	 ppjBkqA5Ki4Cg==
-Date: Wed, 4 Mar 2026 18:27:11 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Peter Colberg <pcolberg@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
+	b=U7I/aSaZjksmqdFsuoGPl7phg5SnEmDx59qYo9qSqetn0Onnr3hwW2W39/KDSPU6I
+	 43PAeMfRQFt1Y4X9g+u2ek0UpY5jSKt2CkjMcnA/IxREETPMaPlGGWO00ttINnxvs3
+	 qiky8hF9gm9qhqHB2O7SLbEEkPkM9+TPcWgf65WK2Qr3SXaTfZBLH5B3W3Ht+UOrYT
+	 khjHt3r1bwcuSK08FzEeAHrQt7ymoWKNtirfOU26cySiIZYTRqL2dUVkTU1W89rfGp
+	 KvhiOrkP6CJJRs5VBTTwUHtcSB+6EAoRFhoCSOcp5uYLYNP3tqMmNTX+f/p+4YjZBH
+	 G4IRJKZMN5tfw==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A18D3F4006C;
+	Wed,  4 Mar 2026 11:29:13 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Wed, 04 Mar 2026 11:29:13 -0500
+X-ME-Sender: <xms:2V2oaWFEpzPKQB65tFqiAetm6ASKMt3McZPLgknXwlweO4oQFQs9NA>
+    <xme:2V2oaTMW-GOZcVv8eNDYGspbZDvW3IMxLXGulTcnHu9Db4bNKQCyAmPg6Jgmy27T0
+    Nb2QagbfqUtDZqj7UBMwnEdowVm8tkrgcoiHeeoYQSW3-VrowL7>
+X-ME-Received: <xmr:2V2oadJgYvVOsfZdPooT_eftF64GjX2K6uZQMCEj45nOZKPEeBxYNTzOOnkS4lNFdfZ1lqvxfuXtICBkPVB3VqdKvFI15exL>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieefleejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    eifeeuleefudevleevhfehkeffuedttdetjeetgfejtdejfeeltdekhfevleelheenucff
+    ohhmrghinhepfigrihhtpghquhgvuhgvpghhvggrugdrshhonecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
+    thhhphgvrhhsohhnrghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsoh
+    hquhhnpeepkhgvrhhnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthht
+    ohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlse
+    hgohhoghhlvgdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtth
+    hopehprghulhhmtghksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgr
+    rhihghhuohdrnhgvthdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurg
+    htihhonhdrohhrghdprhgtphhtthhopegtmhhllhgrmhgrshesghhoohhglhgvrdgtohhm
+    pdhrtghpthhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgv
+    lhdrohhrgh
+X-ME-Proxy: <xmx:2V2oaU9QqfhExU2v4VDZK1zqcUkXrY2K3umrRDRYlLbegAoJ3Fy36w>
+    <xmx:2V2oaRFlY1FUokX_bZko6isqVcLUGMCrs0lF4tmSBjKWAINgMdUD7A>
+    <xmx:2V2oaX6LeRCm-VgNJDT2GOrI-_kJ3bcr2FcvoYI6odlDXT1apeqVwg>
+    <xmx:2V2oaSYvxlmRE29RUGjlFxnrYyRecOpjq9wjxxoDYGnrERdLbUyrAg>
+    <xmx:2V2oadgIxd0Y7VYD80KpRnub66mrcmuNjpWOhu46-zScsnmRXby3Z9vV>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Mar 2026 11:29:13 -0500 (EST)
+Date: Wed, 4 Mar 2026 08:29:12 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>,
-	Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>,
-	Moritz Fischer <mdf@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-doc@vger.kernel.org, linux-fpga@vger.kernel.org,
-	driver-core@lists.linux.dev
-Subject: Re: [PATCH v3 00/10] rust: pci: add abstractions for SR-IOV
- capability
-Message-ID: <20260304162711.GI12611@unreal>
-References: <20260303-rust-pci-sriov-v3-0-4443c35f0c88@redhat.com>
- <20260304084750.GW12611@unreal>
- <20260304141852.GF964116@ziepe.ca>
- <20260304142600.GB12611@unreal>
- <DGU347RJX5BV.1CZYELSZ9GS9D@kernel.org>
+	Carlos Llamas <cmllamas@google.com>, linux-fsdevel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: poll: make PollCondVar upgradable
+Message-ID: <aahd2DIXFJiUKy0S@tardis.local>
+References: <20260213-upgrade-poll-v2-0-984a0fb184fb@google.com>
+ <20260213-upgrade-poll-v2-1-984a0fb184fb@google.com>
+ <aadbyBmaV8zCYiog@tardis.local>
+ <aafmf5icyPIFcwf_@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DGU347RJX5BV.1CZYELSZ9GS9D@kernel.org>
+In-Reply-To: <aafmf5icyPIFcwf_@google.com>
 
-On Wed, Mar 04, 2026 at 03:57:57PM +0100, Danilo Krummrich wrote:
-> On Wed Mar 4, 2026 at 3:26 PM CET, Leon Romanovsky wrote:
-> > On Wed, Mar 04, 2026 at 10:18:52AM -0400, Jason Gunthorpe wrote:
-> >> On Wed, Mar 04, 2026 at 10:47:50AM +0200, Leon Romanovsky wrote:
-> >> > On Tue, Mar 03, 2026 at 04:15:20PM -0500, Peter Colberg wrote:
-> >> > > Add Rust abstractions for the Single Root I/O Virtualization (SR-IOV)
-> >> > > capability of a PCI device. Provide a minimal set of wrappers for the
-> >> > > SR-IOV C API to enable and disable SR-IOV for a device, and query if
-> >> > > a PCI device is a Physical Function (PF) or Virtual Function (VF).
-> >> > 
-> >> > <...>
-> >> > 
-> >> > > For PF drivers written in C, disabling SR-IOV on remove() may be opted
-> >> > > into by setting the flag managed_sriov in the pci_driver structure. For
-> >> > > PF drivers written in Rust, disabling SR-IOV on unbind() is mandatory.
-> >> > 
-> >> > Why? Could you explain the rationale behind this difference between C and
-> >> > Rust? Let me remind you that SR‑IOV devices which do not disable VFs do so
-> >> > for a practical and well‑established reason: maximizing hardware
-> >> > utilization.
-> >> 
-> >> Personally I think drivers doing this are wrong. That such a driver
-> >> bug was allowed to become UAPI is pretty bad. The rust approach is
-> >> better.
-> >
-> > We already had this discussion. I see this as a perfectly valid
-> > use-case.
+On Wed, Mar 04, 2026 at 07:59:59AM +0000, Alice Ryhl wrote:
+[...]
+> > > +        // If a normal waiter registers in parallel with us, then either:
+> > > +        // * We took the lock first. In that case, the waiter sees the above cmpxchg.
+> > > +        // * They took the lock first. In that case, we wake them up below.
+> > > +        drop(lock.lock());
+> > > +        self.simple.notify_all();
+> > 
+> > Hmm.. what if the waiter gets its `&CondVar` before `upgrade()` and use
+> > that directly?
+> > 
+> > 	<waiter>				<in upgrade()>
+> > 	let poll_cv: &UpgradePollCondVar = ...;
+> > 	let cv = poll_cv.deref();
+> > 						cmpxchg();
+> > 						drop(lock.lock());
+> > 						self.simple.notify_all();
+> > 	let mut guard = lock.lock();
+> > 	cv.wait(&mut guard);
+> > 
+> > we still miss the wake-up, right?
+> > 
+> > It's creative, but I particularly hate we use an empty lock critical
+> > section to synchronize ;-)
 > 
-> Can you remind about a specific use-case for this please? (Ideally, one that
-> can't be solved otherwise.)
+> I guess instead of exposing Deref, I can just implement `wait` directly
+> on `UpgradePollCondVar`. Then this API misuse is not possible.
+> 
 
-You create X VFs through sriov_configure, unbind PF, bind it to vfio
-instead and forward (X + 1) functions to different VMs.
+If we do that,then we can avoid the `drop(lock.lock())` as well, if we
+do:
 
-If you destroy VFs on PF unbind, you will find yourself with one
-function less per-device, as you will have not-utilized PF now,
-which consumes HW resources anyway.
+    impl UpgradePollCondVar {
+        pub fn wait(...) {
+	    prepare_to_wait_exclusive(); // <- this will take lock in
+                                         // simple.wait_queue_head. So
+                                         // either upgrade() comes
+                                         // first, or they observe the
+                                         // wait being queued.
+            let cv_ptr = self.active.load(Relaxed);
+	    if !ptr_eq(cv_ptr, &self.simple) { // We have moved from
+	                                       // simple, so need to
+                                               // need to wake up and
+                                               // redo the wait.
+	        finish_wait();
+	    } else {
+	        guard.do_unlock(|| { schedule_timeout(); });
+		finish_wait();
+	    }
+	}
+    }
 
-Thanks 
+(CondVar::notify*() will take the wait_queue_head lock as well)
+
+> > Do you think the complexity of a dynamic upgrading is worthwhile, or we
+> > should just use the box-allocated PollCondVar unconditionally?
+> > 
+> > I think if the current users won't benefit from the dynamic upgrading
+> > then we can avoid the complexity. We can always add it back later.
+> > Thoughts?
+> 
+> I do actually think it's worthwhile to consider:
+> 
+> I started an Android device running this. It created 3961 instances of
+> `UpgradePollCondVar` during the hour it ran, but only 5 were upgraded.
+> 
+
+That makes sense, thank you for providing the data! But still I think we
+should be more informative about the performance difference between
+dynamic upgrading vs. unconditionally box-allocated PollCondVar, because
+I would assume when a `UpgradePollCondVar` is created, other allocations
+also happen as well (e.g. when creating a Arc<binder::Thread>), so the
+extra cost of the allocation may be unnoticeable.
+
+Regards,
+Boqun
+
+
+> Alice
