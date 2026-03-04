@@ -1,132 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C27C33065C;
-	Wed,  4 Mar 2026 15:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3704535F170;
+	Wed,  4 Mar 2026 16:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772638016; cv=none; b=PPXjOqqGUwfTVxvsDxLIXbpXuFkCuSk1zCfIJRMTlVJTT5JlKjExWTa4dhpOPgDG3fGv1RiCILqkzCV1W1laR0C+C32rF0EHEbeOmkP9KcWqq1mVi5QPskXgPS9mvLxkAdy62wbGgG1IrXctq9DFcRgKbCTHHgjwMpJt/VSh+As=
+	t=1772641093; cv=none; b=gM14WBhwx1xucgYFQTOLolqJK2QBEHlts1GKZZ1ernLxx18Wfc7aUJnwapn8P/grog49tr0sEDydM3HDhPsLEryUaTsDu560bCTfYjSwJ05Mlmcl0bHCC71B8ULBnQ/DCVqc2He2aVQ9aKTMN1rmcKGOQX57ULOklT8LXoIUziQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772638016; c=relaxed/simple;
-	bh=NSxpkcBTxGbZfTOBI1Osn6FZchKIMqEBt4E59vgg9yo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m8vweCD+IQlcQ5+JLpsgYr/KFgkoOCqsm01o/G7GNAUHaPM+OQwrKAUUEYOYQuhjAYc2sG2idveLoGntyhVZeDAMi/J0lsRTf4dMmJiLxPVGuGQCqRiY4DsdoYWvHKgC7Iv8rNgV2RbQJ5uYbAjDEJ2uTaokaWBqHiuDZiKypgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNr/i9Ed; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772641093; c=relaxed/simple;
+	bh=5p/5v6t2rr7Z7bDzsGSHpNhN199WTAKf1G5yx+mYi60=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ILU4rexlObQLdJ6f+s/H6SMT0KLC7JTytfvkUInfYrbYK/1WgHPqSbZ0qTInUA/xnMiAZg9sL0fnOLYV6vEH3D0Ti1d0DglA2mOgXjMQ0XoHzW/Jx6dQg42SqsycAoFizCtDqy74Old6t1CipShnbILO/8iS0AXNaPUarGd7cNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSehqj3W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNr/i9Ed"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA02C4CEF7;
-	Wed,  4 Mar 2026 15:26:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSehqj3W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB7DC4CEF7;
+	Wed,  4 Mar 2026 16:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772638015;
-	bh=NSxpkcBTxGbZfTOBI1Osn6FZchKIMqEBt4E59vgg9yo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JNr/i9Ed94o5FrVUAIdDA9j6qVGLnE5GzfbP/S1eQuij66w5wYafVkKmJfNrjW6BU
-	 A1qHbzpoX84W2Y3/DU8fCgtDh/bFbsR95IXw4bDa1YKfx2KDTn+9gvVk47D5GtsPhr
-	 S6XIEflAmCZI+kFJOhLUSAKMC159kKQKecuwzKR8DT3B4C+eY5YaSizaIDmG+RQ/bO
-	 OTFLtGzokmtE74YQuVHwoAjC3QCWckhfGWfFxU5RuztAn9pH5xH57mKx5+7NOyf21j
-	 vJcutnbWGpl00AJ4jYiuegaQaPdEVO7qzspdvmLlAaHDXjEVctpre1LGEdez5nx/iK
-	 AUByHkfctYKUQ==
-Date: Wed, 4 Mar 2026 17:26:52 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	"linux-mm @ kvack . org" <linux-mm@kvack.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v1 15/16] mm: rename zap_vma_ptes() to
- zap_special_vma_range()
-Message-ID: <20260304152652.GF12611@unreal>
-References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-16-david@kernel.org>
+	s=k20201202; t=1772641092;
+	bh=5p/5v6t2rr7Z7bDzsGSHpNhN199WTAKf1G5yx+mYi60=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=DSehqj3W22LDT9gZforPHOxf1eYJaDDdTVvciGu2puP0S8rnOuJKf+DH3WpnW2Wnl
+	 EYZsGDxQcKPvfIzdN1IRvNGQCp4ay7abnXdRe+2U3wyodPksnptBanRl2Jv6OWa1qq
+	 v7IW3a46UcsCkY/Sv+dUrWS7Xh0Pt/HeM3/Cgh8WVk+uMQqXFVgrlPq9MlTFBXgCKf
+	 87skIMgYGiEzitcJjTvkVxIqS3HYSsLMqrfOSz6N2IRZmmxfRu5kJNm0B9+rSH31ej
+	 PH4WqY2A/kRC6FXVhpIRfZg08F+3SDW3vstAMoGuBmjQX/fHb0d/YzQt1eVDRTBYCf
+	 ltZ8ENFZ6AUIQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260227200848.114019-16-david@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Mar 2026 17:18:07 +0100
+Message-Id: <DGU4TLDMLFN8.1KKSL2WATFZ7G@kernel.org>
+Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
+Cc: "Gary Guo" <gary@garyguo.net>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
+ <20260224-register-v7-5-aad44f760f33@nvidia.com>
+ <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
+ <DGQ67S1NH3OA.2MS0YVO0UU2E2@nvidia.com>
+ <DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net>
+ <DGRWZVJNLLH0.39JYHZIIMC9XK@nvidia.com>
+ <DGSB81ZE18O1.31CVVHMP38U2W@garyguo.net>
+ <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
+ <DGSC6U50TCHF.9FKDO3AWL3Y1@garyguo.net>
+ <DGSZWZCI0H7H.2EM8L04YH0YRP@nvidia.com>
+ <DGT09KTYDCU8.3BBAZBGIYRGWV@nvidia.com>
+ <DGT8FQ97BL8O.1VC1JEXIEBDRA@nvidia.com>
+In-Reply-To: <DGT8FQ97BL8O.1VC1JEXIEBDRA@nvidia.com>
 
-On Fri, Feb 27, 2026 at 09:08:46PM +0100, David Hildenbrand (Arm) wrote:
-> zap_vma_ptes() is the only zapping function we export to modules.
-> 
-> It's essentially a wrapper around zap_vma_range(), however, with some
-> safety checks:
-> * That the passed range fits fully into the VMA
-> * That it's only used for VM_PFNMAP
-> 
-> We might want to support VM_MIXEDMAP soon as well, so use the
-> more-generic term "special vma", although "special" is a bit overloaded.
-> Maybe we'll later just support any VM_SPECIAL flag.
-> 
-> While at it, improve the kerneldoc.
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  arch/x86/kernel/cpu/sgx/encl.c        |  2 +-
->  drivers/comedi/comedi_fops.c          |  2 +-
->  drivers/gpu/drm/i915/i915_mm.c        |  4 ++--
->  drivers/infiniband/core/uverbs_main.c |  6 +++---
->  drivers/misc/sgi-gru/grumain.c        |  2 +-
->  include/linux/mm.h                    |  2 +-
->  mm/memory.c                           | 16 +++++++---------
->  7 files changed, 16 insertions(+), 18 deletions(-)
+On Tue Mar 3, 2026 at 3:55 PM CET, Alexandre Courbot wrote:
+> So, to get a better idea of these two options I have converted this
+> patchset to use the 2-arguments `write_with` method. Here is the
+> difference between the two - it is particularly interesting to see how
+> nova-core changes:
+>
+> https://github.com/Gnurou/linux/compare/register_1arg..Gnurou:linux:regis=
+ter_2args
 
-Thanks,
-Acked-by: Leon Romanovsky <leon@kernel.org> # drivers/infiniband
+This looks good to me, but the fact that this turns out nicely has nothing =
+to do
+with write() now taking two arguments. I.e. there is no reason why we could=
+n't
+have the exact same write_with() method together with the single argument
+write() method.
+
+The contention point for me with a two arguments write() method still remai=
+ns
+that the arguments are redundant.
+
+I.e. you first have the location in form of an object instance of a ZST (wh=
+ich
+in the end is just a "trick" to pass in the type itself) and then we have t=
+he
+object that actually represents the entire register, describing both the
+location *and* the value.
+
+So, let's say a driver creates a register object with a custom constructor
+
+	let reset =3D regs::MyReg::reset();
+
+then the two argument approach would be
+
+	(1) bar.write(regs::MyReg, regs::MyReg::reset());
+
+whereas the single argument approach would just be
+
+	(2) bar.write(regs::MyReg::reset());
+
+So, if I would have to write (1), I'd probably be tempted to implement a re=
+set()
+function that takes the bar as argument to hide this, i.e.
+
+	regs::MyReg::reset(bar);
+
+I also can't agree with the argument that the notation of write(loc, val) -=
+ or
+write(val, loc) as the C side does it - is common and we should stick to it=
+.
+
+This notation is only common because it is necessary when operating on
+primitives or when the two representing types are discrete.
+
+But this isn't the case here, a register object is already distinct in term=
+s of
+its location and value.
+
+So, unless there is a strong argument why this improves anything on the use=
+r
+side of the API, I still feel like we should keep write() as is with a sing=
+le
+argument; having an additional write_with() method seems fine though.
