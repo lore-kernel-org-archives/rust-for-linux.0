@@ -1,222 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022124.outbound.protection.outlook.com [52.101.101.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D32137F8C5;
-	Wed,  4 Mar 2026 20:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772656642; cv=none; b=ms4PtNUHhGT5by65BvhXjAPyoOy3jDzz9sAYnK4sdEc3Mfe/asyHTC+48VaoNa4VoElf6cVtl2k1fFrXCejRaTgbpsCezmreWcBzVX+/hqlNZMd5EOE0wjuuAG89KsHdyOtnrg/W5smWycyTAr7RLsFfObGXNaSAvZ4ms1CT29g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772656642; c=relaxed/simple;
-	bh=l0aatOlpg16vzuI3qLpEk/qQ/D1PUDErgCsWFNKpMR4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=DXsNBa7DfrVKCXUhMQma7fBEnWoNo4cDlp0PlZZh/5e4wF82kxrxlwqyYM67r7j9a1G5jGtOEhLvKXKBr0ZeKp374Xk0X8Ci5Z67TUzMnn1USeF5qNYvmxcCHn45U+egb8K48ZHBJ5Ju6ft/bvxf4A/v68WOdFyxs5EkVvv15fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=io+tgc2M; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04B3382F0A;
+	Wed,  4 Mar 2026 20:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772656805; cv=fail; b=Y+z4eR1bmv5X37t3bmVgKTe+MKtuH9U017PnCmorN+cAtP2g5RprNk0ik8JmD5FvIQXjb3zvTRzOWo3zwZ6a0IaWhzjLQF6VvKTX8Muol+Gh0nEr77wEb4wjAGGaWAduKxc0kt6DjCeqApvS3oXaCQsk+j4Iby5D1plnJmNtWqw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772656805; c=relaxed/simple;
+	bh=EUUL1Lmh4h0RIIxXnLA49OE1i3ov7K4JpESNC0c/8oE=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=DXFjNZIEa2xP0vWvWrFElcl2dO0QqebEkka5jRIoyt+Zk3427B1qGoyi0kY/D0D6ZpKAcQ/zFOZ3wH22H3jGSy33YZbbS6N2FGzvHtlHjbXuWaydt4c+vzuKRSl2o4tXJF05TT6oG9CR4wc9n5F7SJwe3qy+OtWpL9NpRLhknV0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=a3sgBRA7; arc=fail smtp.client-ip=52.101.101.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="io+tgc2M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D158DC4CEF7;
-	Wed,  4 Mar 2026 20:37:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772656641;
-	bh=l0aatOlpg16vzuI3qLpEk/qQ/D1PUDErgCsWFNKpMR4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=io+tgc2MWF4pk18c4k0/6fom5AoL72AVm0JROYDKZumj0Go7ntYUB3H175z9A5y7B
-	 skgzqmgZIlnL/Nk5B+/QFwK9jCkh404lPwX+IvY7yMHW1djMVLY8PrpT7y7e6Q0UtE
-	 tjDlhKuYiQEmn6vQpiRgM8W/VEU13j02cXsP8kU9uv8/m68p20H67eqpOXHwoBcLws
-	 GTjSfpdXIzuzSJq5Ti/ppjG+zA+l2TS5Mr7z4Z18gTABTrdMM+WVKKAQBAvm+DZvBd
-	 ZEaPBrN8KcK0N2NSmn7Zbh0hM99Onf0TOsGKXIelTGxmSxpXVEbOb3NHjC5Hh9ihdj
-	 G0MwnDhvsqH1Q==
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="a3sgBRA7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uuW/P5GbaiIDf8TwgK/TK3B6Ztc9wysy6iI0hJAcnFP1sA/8g7B2FwEmVtxZA7KCUq1wqAbY6+DjlXo3dzZEJI1rK81cDwmNAqFk0aH/aEjuMSgrN1TKKJPxs/bm8xSLEstNVAcoH0VwSNtxFLqed30HLYlSC4yQEaFI4SglYxdgCuBDd7UPzh4O4jdzrzUlyx/EhbkfrAR6rphXmIEB6LfLlM4IgqkG3CoKpIlWCnx5hh1sl9ZG2E57FajEWxNK0gT+/mEe+naYvthGDTFi72CpozpoLo+B/h9wJBHPb5oU+TUA9XwsBKZl/oOunLOnAjgatWSQ5EYWUWA0DeK2vQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/+g8Nc2vjxhPUgA9D+Hojq4h6OBBwoRZ1WT5oKfT66c=;
+ b=xkwdoM/cN8sTWqlqQTJQt9KpKoVRq0duFUqm3vkkode4GRIPdZmJEluGL93wi3mlYcoJtjZTP8kGE/Brz/0RR4E4B7VEgsn9lGy4ZzkC1CnkJVYpjwjAMhAtW6p4DZ3BjOpMMz3IVl5msDrnt7UBZJT4P/tqluTsP9/Z3QIZ3p1EbySweVi6l+mPzMa6U/fbK+eztIVCSu7i2pQ70OOUWgU1S6OebYwxrMlcXeE48tL/jGww8q1bh12k9PGCF+kVOILm54lVgArWB3/sc1R1B6Lt+i6UY8hbmBYgf7in9yBPFu1X2l/dzhfQcgkA6J2XZsxifZM8coZ8kaxjaKjcTg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/+g8Nc2vjxhPUgA9D+Hojq4h6OBBwoRZ1WT5oKfT66c=;
+ b=a3sgBRA7usCs6HcQQNmd8YH0R68z4LUtLnOPfHEzKv2w3MegBpH+Q3cgmhxI+j4S78TNHqjH25DBo9dlO2ULj2Ttk+Bh91FncYz4/Qy9rEXFgkTy5HsJeQzc5uqN+uh5SrEEuIk1cyye2+aKqsqRGdT8rw693RVsuQK/BkBKRos=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
+ by LO0P265MB7060.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ee::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Wed, 4 Mar
+ 2026 20:40:00 +0000
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
+ 20:40:00 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Mar 2026 20:39:58 +0000
+Message-Id: <DGUAE329P4FH.3QPNCVLNA99MC@garyguo.net>
+From: "Gary Guo" <gary@garyguo.net>
+To: "Gary Guo" <gary@garyguo.net>, "John Hubbard" <jhubbard@nvidia.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, <linux-pm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: cpufreq: fix clippy::double_parens warning in
+ Policy doctest
+X-Mailer: aerc 0.21.0
+References: <20260304195330.185829-1-jhubbard@nvidia.com>
+ <DGU9O3HEY7CN.3OBR26YV3AHGT@garyguo.net>
+ <ea3d6134-22ce-4715-be75-e6d41568c7eb@nvidia.com>
+ <DGUA5GY2DGYN.3PG0FKLG7GFN1@garyguo.net>
+In-Reply-To: <DGUA5GY2DGYN.3PG0FKLG7GFN1@garyguo.net>
+X-ClientProxiedBy: AS9PR06CA0422.eurprd06.prod.outlook.com
+ (2603:10a6:20b:49e::6) To CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:27c::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Mar 2026 21:37:16 +0100
-Message-Id: <DGUAC0GJRR0Q.34WBS7BIZ58WF@kernel.org>
-Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
- <20260224-register-v7-5-aad44f760f33@nvidia.com>
- <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
- <DGQ67S1NH3OA.2MS0YVO0UU2E2@nvidia.com>
- <DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net>
- <DGRWZVJNLLH0.39JYHZIIMC9XK@nvidia.com>
- <DGSB81ZE18O1.31CVVHMP38U2W@garyguo.net>
- <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
- <DGSC6U50TCHF.9FKDO3AWL3Y1@garyguo.net>
- <DGSZWZCI0H7H.2EM8L04YH0YRP@nvidia.com>
- <DGT09KTYDCU8.3BBAZBGIYRGWV@nvidia.com>
- <DGT8FQ97BL8O.1VC1JEXIEBDRA@nvidia.com>
- <DGU4TLDMLFN8.1KKSL2WATFZ7G@kernel.org>
- <DGU7U81KKLCD.2LEPJ73BGLQU@garyguo.net>
- <DGU88IHVRYHD.9WP9Z40UAN37@garyguo.net>
- <DGU92W2W71JI.HBIFK6L78F9C@kernel.org>
- <DGU9AZ43QK6Y.115RDSK0M9JY5@garyguo.net>
-In-Reply-To: <DGU9AZ43QK6Y.115RDSK0M9JY5@garyguo.net>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|LO0P265MB7060:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bd7e18e-6be8-4230-0d97-08de7a2e3481
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	hY7ladnA3b8l0vTbtJfhrkzKcIFawewhKzWWIQ8y9DbgRuF+LcEWhawNOMWQtvvFEL2vvWIcf2Rqc3S+r/kae0SBl8GAiCeJZIwx20C8C9Xjb6OPfuikf+MVLeuCvUen+NVAmg0Bw5eVRoviDGaWUUI8Plsq5ECqueAwkv/JbzEM8m7R9X5mCi8HYH6ApjT+q9AxS2VsgiWOixGT9hOQRlNhpRAJ4XxBqbC/WcpZRbfjARqtnnpRLSJf4jHW4B2WuYd4uTc/syMclv10wZ7PFif1orBIhzyLKozXCM0J88i8m6CBBAdWzxz4+M7xu1a/GpmC19fs/CqXdwOtkF/54xg/fVqm6i4n85TpyDlh/LG3eWfSusJiNgalADP3GAfzCF+PFrCkco7p5EGURW2iyCXKARY/AaQj+I7iUJ58RfFGraW7M+kjCOKsrIdlCnl26mFC3sj8oeuEIVFJI/XuwSninOdtCn5WUkK5pkz8ZbCn98R24eJSutJS+sapJI8KSpAgR1G+Bnccejs7mzvkaxd3aOL/pDkyy3qIL27F72Foe34/vNj+47wz0meNfaae2MrWvCxSt7h71yQG5G5P/0YSw1ixpMIIxnNIby/buzL3LmtV5lKaNKIla63RYgZYuxDZKYuEkUaOYpLJLgf5KCvWPN/nopBWod5AUHpphMsxuVi5HnDQ/8jLmbHNJcLz4igrfWuYB6RY3jvC2FbWZbMycjpeKlwdAfRYNJVxx20=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(10070799003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eWg4V3VoYWVBY3NvYU1OcmRVQjl4M0hDckkvSzg4WW84R3NmbVJFYVhPQzhp?=
+ =?utf-8?B?eHdPMm9KQ1hIbmZtdVRYeHV5YWNacy9aNnVIL2RsVE1yUnFpRzNPNUhvV2tx?=
+ =?utf-8?B?MXpoVjJBcnNabWxJeXEzdkl4RFVSS2hEb3BzSS9WZ0RUOHNyUTRyVHduN3lz?=
+ =?utf-8?B?N0todC9JT01ma3RNcnpWNmprWlROdnBmaEI2RXlMNXZDWk9ITTRVemZ3Y2Fl?=
+ =?utf-8?B?eWhhSjdLNFY4aUg4OGp2KzNSWDVyVi9sSFdrSmVhUmVSU3poUHNvYjdxRUhD?=
+ =?utf-8?B?UTM4QTR2dW1veTMwQ1dTOXRHOVVrcmExeEh4WmZtQnp6d1BRMnRKK1N3M1Zr?=
+ =?utf-8?B?QndaM0pDdXI5UjRiaE4wMHRSMG1talNKWlluTGdpamFrUDBBODk1S3hsN2Vh?=
+ =?utf-8?B?TkVnamJJZDNKMytycG16Ym5RTnVBenBhWW5uOU0xaUFvMzJkRVFDNzhXTHg5?=
+ =?utf-8?B?ZDMvRVg1WU9sTzlidWtWNVAxSVJHdGJHdWdFWXBhaGhiaEdMcFN2cEltZ3d4?=
+ =?utf-8?B?UlpCVWdNaVcwQ2ttZitFaEgvRkl6RkVmczJlUm00YUYrN29QOUxkYlk0dWJj?=
+ =?utf-8?B?eXoxd3V5bHV6UmJWWFNJTGxaTlNzK2s4c0xTZEJHYXBnTG5SVVo2S0ZqNGsx?=
+ =?utf-8?B?MkFmQ0luWnc4VHJkUjQzclplaDBJSWx2bXFPWXNRdGVkQXZkYU1SblBVdVll?=
+ =?utf-8?B?WWp0b0RSb3NHUUQzemhXZkd5Z0dRRE9Jczd4bVcyNWU1Z3JPSTZZYUozdzJn?=
+ =?utf-8?B?Q3NvZ2Q1OXJ6YVN6K1J6KzJ4dXArcWlRc3JRSi80UUV0VktjUVE0dVNBa3hX?=
+ =?utf-8?B?Vm9qVlA5Y2pCOHEzRVhmcFBXQWJENExlNlNHMjU2bXRiMjdFOVF5RkVIdFpj?=
+ =?utf-8?B?dHgyM2tVTzdUbTB5ZUJRUVBUVVU5cFptdDhJNDBkM0t6QzR2alJwbmQ0Y3dN?=
+ =?utf-8?B?OGdLYldJWFcyYjhnWlMrT1I3d1R5LzRkeVhrd0dsWEJycm4yd1FseDVJNzM1?=
+ =?utf-8?B?TjVIMDZkcUN1em9tYlVtYzJCRUt1YjVrSlFnUHlnZ3F0UUpOMm5keU5NVDRP?=
+ =?utf-8?B?NEFyaUNXRGs2TEh4TEVnYjhKL3E3QXo4bzVjcmxwdkE2NFUvRzVtbkFkK0dv?=
+ =?utf-8?B?RmFuREZwSlBPT3JRV3AwWG1CYnUyK2RiWDc1KzFSbXhOOXZvcC9XSHhKYnhq?=
+ =?utf-8?B?RXM2cU5aNXZGTWYrSU1XYzlEWWsyeCsra3ZsZGVQK25RUllhVDh0R2MwaUxL?=
+ =?utf-8?B?bndWbWJYcWtSWUdGNTFkT3owejFITVQ2dXVJb3ZIOTE1R0xLL0doNk9Nb2lv?=
+ =?utf-8?B?QzVaVDFkSDJ2bTMzSUhKL3pHRnhJNGRPejV4aXBiTDJNcjg0dTRDdUxrNTht?=
+ =?utf-8?B?RDRSTDRIS3krdllyNGpHS0pVc0hDN1VXbFZDcFpaYWJRVDJGZlJoRFU2ZlhE?=
+ =?utf-8?B?L3ZpdWJxU0FoZkcvL2tPVkQ4STFwSGUrdmdpajFna1RIa1hXeTlpMVRqTDVy?=
+ =?utf-8?B?V0EwWCtOZi9McW1xd1NXRzgyZ3BpV05KNG9oTEZYYmRXR1hJN1hYcWxzRk55?=
+ =?utf-8?B?WS9tYSs0VFIwMkRWcmR3bzlGSDJUMXllbFM0dldIZUtIMTMvM21Bbk1SRXpj?=
+ =?utf-8?B?NWlzYXFsUmhGRHZtU2NCc1lLVXVQSyt6Zlg0T1RXR3d1MkpqU2JCdXVjWWJR?=
+ =?utf-8?B?OUtmMHhyaDB0SnNMSElPaS9xc1RIQWZHYUtTMUV4NVFqQlBZaUpoRlhQbnZr?=
+ =?utf-8?B?akdzZXFPMTNUV2NkZGlmRVgvMXpKOTRiU0M4WnQreDJRY0ZuaW8vQnZ3REVw?=
+ =?utf-8?B?OWw0T0cxdkVGQ0V3Sk1Ib3pvZEt3YWNETXQwTEtWc1pQeDdOYVJGSHNOanJ3?=
+ =?utf-8?B?WVV3c2Jnc3kxcG9PZDg1VWhKdTViZEV3dXI1YmsvejE3U2Mzam1uWHBHYTFH?=
+ =?utf-8?B?YnpzbFZKVi9id3NhQkFwN2ZBTEcwRlNUTU14SUxKYVllM05tOU9jeC8zZVJi?=
+ =?utf-8?B?akRxeUFzY3lUQjJ6a3BkU3g4YnJGZ1V3Nm84WWdCVFp3RGJJQjBNMDBmN1cz?=
+ =?utf-8?B?VVJUZjlFeithYjBYQUVwVHMyeE1Gc25JUXhuWGJ3OGpybHV0QytaM3ZUMGRu?=
+ =?utf-8?B?UzdHSlRrdUZBcXExeFdWaWFRU1p4QW1ZdmZqNWVWTm84bVRIblJFdUJHQjJR?=
+ =?utf-8?B?WWVJUGFQNmF0dVdRKzRncHZnQWFDQ2pHZEt3dFNva2dtbkJ4a1NqTFJibDBp?=
+ =?utf-8?B?SWV5Tkplb3J4Wnk2UVdlbUY1d3NRYTlmRmkwY00rS2sybzhIdHpqdlpJYkRk?=
+ =?utf-8?B?a2s0eE8yOFJLa0puN3BKQzdsSDQwdVFOYUJVcXFxTlQyNDFHT1Awdz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bd7e18e-6be8-4230-0d97-08de7a2e3481
+X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 20:40:00.2463
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iocLf2gf4tVwbbhm1DhEKRgeKCXO7xN9MgGbEqUztkjmBWfJP7/JcayTXMG8zMmVESnovM6oKF9/ReS6R3QfXQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB7060
 
-On Wed Mar 4, 2026 at 8:48 PM CET, Gary Guo wrote:
-> On Wed Mar 4, 2026 at 7:38 PM GMT, Danilo Krummrich wrote:
->> On Wed Mar 4, 2026 at 7:58 PM CET, Gary Guo wrote:
->>> On Wed Mar 4, 2026 at 6:39 PM GMT, Gary Guo wrote:
->>>> On Wed Mar 4, 2026 at 4:18 PM GMT, Danilo Krummrich wrote:
->>>>> On Tue Mar 3, 2026 at 3:55 PM CET, Alexandre Courbot wrote:
->>>>>> So, to get a better idea of these two options I have converted this
->>>>>> patchset to use the 2-arguments `write_with` method. Here is the
->>>>>> difference between the two - it is particularly interesting to see h=
-ow
->>>>>> nova-core changes:
->>>>>>
->>>>>> https://github.com/Gnurou/linux/compare/register_1arg..Gnurou:linux:=
-register_2args
->>>>>
->>>>> This looks good to me, but the fact that this turns out nicely has no=
-thing to do
->>>>> with write() now taking two arguments. I.e. there is no reason why we=
- couldn't
->>>>> have the exact same write_with() method together with the single argu=
-ment
->>>>> write() method.
->>>>>
->>>>> The contention point for me with a two arguments write() method still=
- remains
->>>>> that the arguments are redundant.
->>>>>
->>>>> I.e. you first have the location in form of an object instance of a Z=
-ST (which
->>>>> in the end is just a "trick" to pass in the type itself) and then we =
-have the
->>>>> object that actually represents the entire register, describing both =
-the
->>>>> location *and* the value.
->>>>>
->>>>> So, let's say a driver creates a register object with a custom constr=
-uctor
->>>>>
->>>>> 	let reset =3D regs::MyReg::reset();
->>>>>
->>>>> then the two argument approach would be
->>>>>
->>>>> 	(1) bar.write(regs::MyReg, regs::MyReg::reset());
->>>>>
->>>>> whereas the single argument approach would just be
->>>>>
->>>>> 	(2) bar.write(regs::MyReg::reset());
->>>>
->>>> That's only for bit field registers that has unique types. I still bel=
-ieve types
->>>> of registers should not be tightly coupled with name of registeres.
->>>>
->>>> Allowing a value of register to be directly used for `write` is also c=
-onfusing
->>>> if a value is not created immediately before written to.
->>>>
->>>>>
->>>>> So, if I would have to write (1), I'd probably be tempted to implemen=
-t a reset()
->>>>> function that takes the bar as argument to hide this, i.e.
->>>>>
->>>>> 	regs::MyReg::reset(bar);
->>>>>
->>>>> I also can't agree with the argument that the notation of write(loc, =
-val) - or
->>>>> write(val, loc) as the C side does it - is common and we should stick=
- to it.
->>>>>
->>>>> This notation is only common because it is necessary when operating o=
-n
->>>>> primitives or when the two representing types are discrete.
->>>>>
->>>>> But this isn't the case here, a register object is already distinct i=
-n terms of
->>>>> its location and value.
->>>>
->>>> I see no reason why register values for different locations have to be=
- distinct
->>>> in terms of value types.
+On Wed Mar 4, 2026 at 8:28 PM GMT, Gary Guo wrote:
+> On Wed Mar 4, 2026 at 8:07 PM GMT, John Hubbard wrote:
+>> On 3/4/26 12:06 PM, Gary Guo wrote:
+>>> On Wed Mar 4, 2026 at 7:53 PM GMT, John Hubbard wrote:
+>>>> Clippy reports:
+>>>>     warning: consider removing unnecessary double parentheses
+>>>>       --> rust/kernel/cpufreq.rs:410:60
+>>>>        |
+>>>>    410 |     pr_info!("The policy details are: {:?}\n", (policy.cpu(),=
+ policy.cur()));
+>>>>        |                                                ^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^
+>>>=20
+>>> This looks like a false positive, probably due to how our fmt macro wor=
+ks?
 >>
->> That's not what the register!() macro currently does, a register type al=
-ways has
->> a unique location, or is an array register, etc. In any case a register =
-type is
->> assoiciated with a location.
+>> Probably, but in any case we need to remain clippy clean, so this
+>> work-around seems about right, yes?
 >>
->> If the proposal is to disconnect location and register type entirely, th=
-at would
->> be a change to the current design.
->
-> It's not what the macro do today, but I don't want to ask Alex to change =
-it
-> further before landing the series. I do think it's a worthy follow-up to =
-add the
-> ability to decouple the location and type. It's not incompatible with cur=
-rent
-> design anyway.
-
-I'm not sure there are any relevant use-cases for this. Do you have real
-examples that would not be represented with array registers?
-
-Otherwise, I think this disconnect has no advantages. Actually, I think it =
-may
-even be the opposite, as it would allow for confusing the location.
-
->> If we'd have this clear separation, I would obviously not object to this=
- change,
->> but currently it's just unnecessary redundancy.
 >>
->>>> Even Nova today has quite a few registers that are just bitfields of a=
- single
->>>> field that spans all bits. I think many simple driver would probably w=
-ant to
->>>> just operate on primitives for these.
->>>
->>> I shall add that I think the fact that the registers that are *not* fie=
-lds still
->>> gain their dedicated type in Nova driver is due to the limitation of th=
-e initial
->>> `register!` API design that *requires* unique types due to the `value.o=
-p(io)`
->>> design as opposed to `io.op(value)`.
->>>
->>> I think even these ones should eventually be replaced by just primitive=
-s
->>> eventually. I see no benefit of
->>>
->>>     bar.write(REG.init(|x| x.with_value(value)))
->>>
->>> as opposed to just
->>>
->>>     bar.write(REG, value)
->>
->> Well, you don't have to make that we have to use init() with a closure f=
-or such
->> cases. We can also do something like:
->>
->> 	bar.write(Reg::from(value))
+>> thanks,
 >
-> This won't work for the array case, right? For array you'd have
+> Can you try this?
 >
->     bar.write(ARRAY.try_at(idx).ok_or(EINVAL)?.set(Reg::from(value)))
+> Best,
+> Gary
 >
-> and now the register name is repeating twice rather than just
+> -- >8 --
 >
->     bar.write(ARRAY.try_at(idx).ok_or(EINVAL)?, value)
+> diff --git a/rust/macros/fmt.rs b/rust/macros/fmt.rs
+> index ce6c7249305a..51988a69af21 100644
+> --- a/rust/macros/fmt.rs
+> +++ b/rust/macros/fmt.rs
+> @@ -2,7 +2,7 @@
+> =20
+>  use std::collections::BTreeSet;
+> =20
+> -use proc_macro2::{Ident, TokenStream, TokenTree};
+> +use proc_macro2::{Group, Ident, TokenStream, TokenTree};
+>  use quote::quote_spanned;
+> =20
+>  /// Please see [`crate::fmt`] for documentation.
+> @@ -69,7 +69,8 @@ pub(crate) fn fmt(input: TokenStream) -> TokenStream {
+>                      }
+>                      (None, acc)
+>                  })();
+> -                args.extend(quote_spanned!(first_span =3D> #lhs #adapter=
+(&(#rhs))));
+> +                let rhs =3D Group::new(proc_macro2::Delimiter::None, rhs=
+);
+> +                args.extend(quote_spanned!(first_span =3D> #lhs #adapter=
+(&#rhs)));
 
-We should be able to just do
+Actually `Delimiter::None` isn't fully fixed [1], so perhaps let's done use=
+ this
+approach.
 
-	bar.write(ARRAY.try_at(idx).ok_or(EINVAL)?.set(value.into()))
+Injecting a `#[allow(clippy::double_parens)]` would probably a better appro=
+ach
+today.
+
+Best,
+Gary
+
+Link: https://github.com/rust-lang/rust/issues/67062 [1]
+
+>              }
+>          };
+
