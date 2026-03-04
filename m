@@ -1,621 +1,221 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A41F366DBE
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Mar 2026 22:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF18933F8D6
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Mar 2026 23:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772665164; cv=none; b=Kbtb93/oU1zeeV98Rv0GrEvnHlpUWxWUIFAdZUKCajPddAV6oc7zT740XQ4ejpiK2CRl13rIY4n3vAaB2oa8JVM6n1ZZ/gEBlfPxl9ApI+Exm9zT+fS9pKnDIT3LMdEQ0Tk6dSsPH98Clg7ws4zv4Mi+jam5i/5zZsORws8+sqs=
+	t=1772667407; cv=none; b=h/0FewSJjPoFuNpJLJUDuqrmrJcMZz+V58eGGBEq5FdIo/3WZy6ch+LgMGqGsGZjgD6ivgAH4j4T6+jJBknw51Gi/gX2gLT+2cRIZB586xUNwiuWxscUBu9xaVjrWrMs93lWl1jWaip158cYU3dtigW4oZujTkc8ALexc+fcjek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772665164; c=relaxed/simple;
-	bh=tQJKrk8XMECCDXVxSiN+Dh5yVEEjUi/YG3j9kEQW3dA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dUfBA+Ox02yfLKdEVXt/3Wry+nRB+AO6QLRiHpwXnL+Fpxago85KYX6NZfs9FFF6xgGHCbH2Z5B9DiJL1ZeJ/4rrP6KopkWZR8zBmuPIvQfXpX29Vob8tyd3NEy/FZUDygYNwSGMXJDsyppe01L8kr1HgnBI0VHUdbsyEAZpLh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FI/KdKyn; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1772667407; c=relaxed/simple;
+	bh=ypEQk3RVqRLldhEd8CSZmPhnSpe47dPMerOMn6/YfJc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kcUTwQAePRy0/2BOsOnZqr27HtdsVz/6xbzkp72zjJVnAyusNYSAigR4U38Yn39AiX1PWIrOnCyF3+4peTcfGw1nNRZD+v9ofmAFlRuowORhiB+C/M3Af6f7hdOgwlU4jjE99ieslr9uTAlcza+DHxjyZP6kpK4lxGMUHEtCC7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aMTr7qNz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FI/KdKyn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772665161;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tQJKrk8XMECCDXVxSiN+Dh5yVEEjUi/YG3j9kEQW3dA=;
-	b=FI/KdKynhlzbSmqDBciMIO9SLsCqh/it6X/FJVghbTZSkDv/RaSFjk2RK0/8evOdFMRHqC
-	HWWCZtvP6W725txAaTE9/1uIRkaZW9xvQV5Mks4SR6yi72fZKy8DiA8VU0erplj2/HVUuu
-	7ZJZb7tBMuhjRmfpgRILMsxbsJE8LBg=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-524-zVA-clbPNCidxvcgSLXwbg-1; Wed, 04 Mar 2026 17:59:20 -0500
-X-MC-Unique: zVA-clbPNCidxvcgSLXwbg-1
-X-Mimecast-MFC-AGG-ID: zVA-clbPNCidxvcgSLXwbg_1772665160
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cb42f56c4aso4734224985a.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Mar 2026 14:59:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772665160; x=1773269960;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ut8h8kvGLZt/HvXnTiTmBBsoftW01FQ+qBcjZ1kIy7M=;
-        b=l4FFa+Xa0LuTVttHe8bOW7bDtFIACFuBgr8EhdM/8BT3ELqvRL3a7GXWVvt2OO9HIS
-         jC7OG10mN7i+ILLxMQobdUp5PjIdMLKK70GMTJrFR8QmYcEJWOhWmxWsRnqt+auoguCo
-         KsY2ziiKjzgd+DfxhfoNMj0gHFpL+ZliCFODdeeYZ+0Z15hntdQh1ymBVVudms6ZDE2x
-         9KEzcNeRrF/70jKVqEwGKRyUAqnASSDvXlUC1Mv64OtHBDwvmF0Sd5z9uTq8EcyjjyHM
-         LCu9zQUwA3NTRg/xav4ixjvL/E47ctWTdjSuZEY98naj0Uc4Kz7wsMgKXWXSUev38ZHL
-         VkhA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXgsc74oZqwbyWg7iOQ0VfDwVQrSnmJDjxXKFG/rra888WEvDIijQ26hSmp90oOtK/rRVlZaBlKwtx9Rqjcw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqSew77JeXKdAU5OEtSN5j1t/900IL+3JgZyjuLBNioTZ8jR3z
-	V8iVHbgqoD/mHIXi9ZFRPggt+iB3G8SGXf7E99XncrLK0Yo95bY8ir1SkJgq9FHdFLeh0NymTz0
-	NB7psYHPu31bEwqKa4xYcmRYLY/p65xXGQfLN/Ge3o2j3kTL0agdOqX6ikvrN7cVfpoLu
-X-Gm-Gg: ATEYQzzHxGSlGYsbRg/cl0MpkAZXoVLqqjbD8mY7Flf5yBDrVPMdCCnUtyXSEai8Xpc
-	4fpMKnVrD8yZ3bLQpVBqar3hgMOokFG9Tn5CxPtAZmuBZkg2eEqkJ7diAyRst2haCiuUd9LVu1e
-	lcqy5GBEaoOtaBaYudWhtLHXaPDfN6IaRMaPrr4573hxAtRTn9xc8UzT5Qpq2CxVq6UU4kESxxq
-	zu4k3LIpOL8ht6Nvy2zDeQtvoqvvOOZqdo6MwJQgRG53D5xRl7P4S1Nnx87s5irKnngMWPdP/Ey
-	xMHN6bXOg0aoxgJDoYzdNdF5/dL0IsFRY7yd4Kg1QiMNMLphYB6/oZo19qEplCsa+0ozjfwbviJ
-	+Y2O/wu2qTQr7FEJdFQ==
-X-Received: by 2002:a05:620a:3727:b0:8b2:ea5a:4149 with SMTP id af79cd13be357-8cd5afaa369mr465923585a.65.1772665159772;
-        Wed, 04 Mar 2026 14:59:19 -0800 (PST)
-X-Received: by 2002:a05:620a:3727:b0:8b2:ea5a:4149 with SMTP id af79cd13be357-8cd5afaa369mr465921185a.65.1772665159209;
-        Wed, 04 Mar 2026 14:59:19 -0800 (PST)
-Received: from [192.168.8.4] ([100.0.180.93])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a1fecc2bcsm13349476d6.42.2026.03.04.14.59.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 14:59:18 -0800 (PST)
-Message-ID: <e1c53700bdf4db6c2246a9b9e7098cb6db905797.camel@redhat.com>
-Subject: Re: [PATCH v7 6/7] rust: Introduce iosys_map bindings
-From: lyude@redhat.com
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
-	nouveau@lists.freedesktop.org, Daniel Almeida
- <daniel.almeida@collabora.com>,  Gary Guo <gary@garyguo.net>, Benno Lossin
- <lossin@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,  Janne Grunau
-	 <j@jannau.net>
-Date: Wed, 04 Mar 2026 17:59:18 -0500
-In-Reply-To: <aY6FbSjQpGFk8oWK@um790>
-References: <20260206223431.693765-1-lyude@redhat.com>
-	 <20260206223431.693765-7-lyude@redhat.com> <aY6FbSjQpGFk8oWK@um790>
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aMTr7qNz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C930C4AF09;
+	Wed,  4 Mar 2026 23:36:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772667407;
+	bh=ypEQk3RVqRLldhEd8CSZmPhnSpe47dPMerOMn6/YfJc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aMTr7qNzN1KNVffH5IIBJFsV3ewl5+wShHB7Dt81JnEZ+WznMIuA7+SO8yNd6vW0G
+	 s+lyYr43OvhDhgb0Zo1/KeIISNIwXJjE0nLc4eJu0K64FXPEaTKDAkxiqCl+qdk/tK
+	 +XO8gP0pS+tcF0X+mXkaOyXVVsWa7d4CDuO/18ScV+8e1a+4uju87s+YyG8lv1Gfh2
+	 NE6rNkFPL/6eKiHP4at6+em94J9Lin32ibYZCN5jM0XBB7WOWKjPNULszEVPFzNyE7
+	 J1bjpDRq4IuGNDHcGfq+eTi+UkKtAhtPbAg9y3gFzLJp1I836+d6fkhgD4RRIGRqib
+	 vNL2ImPi3TblA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2A9D6F40069;
+	Wed,  4 Mar 2026 18:36:46 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 04 Mar 2026 18:36:46 -0500
+X-ME-Sender: <xms:DsKoaf1VexCTVtghd6A8OBQUZpR5RZRYlx0f2OsKpp8pOuE5CKR7Yg>
+    <xme:DsKoaZ-95XXVSsdwGxVkFi5RYgQD6BttmANv_Sh72Gi5uUS_Y-9YwyRyXWywFtYSC
+    iGNxzrNTaELi4Iq8dpZEdsb1UYu9CZm1pfttYtdKO79MZZb0khjQA>
+X-ME-Received: <xmr:DsKoac6xjRsD7oK6xFFbGE2BeymMPQ4qjG9RivfRD2bvsr5_irC0T6n9rzA2Gu78y71eX1r2tZ3K3udwmUC-iBCzOMyVSZKl>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieegkeegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    eifeeuleefudevleevhfehkeffuedttdetjeetgfejtdejfeeltdekhfevleelheenucff
+    ohhmrghinhepfigrihhtpghquhgvuhgvpghhvggrugdrshhonecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
+    thhhphgvrhhsohhnrghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsoh
+    hquhhnpeepkhgvrhhnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthht
+    ohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlse
+    hgohhoghhlvgdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtth
+    hopehprghulhhmtghksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgr
+    rhihghhuohdrnhgvthdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurg
+    htihhonhdrohhrghdprhgtphhtthhopegtmhhllhgrmhgrshesghhoohhglhgvrdgtohhm
+    pdhrtghpthhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgv
+    lhdrohhrgh
+X-ME-Proxy: <xmx:DsKoaZszLVRV6rNP39CSC1IIbNS7s2pNT0IMXtgCRUFI1ILG0lBe0g>
+    <xmx:DsKoaW100Tgc-DW79uUvRssyCuVJyy4FKLL78S4Z2F1zScl5P6CLxA>
+    <xmx:DsKoaaq98mwppjN8DjfBF2B1dyOlYjkK7Y90nCvN5TmOaYDmCl_9iA>
+    <xmx:DsKoaeITBAXEe2ZjS-lsGRBbqNEcSAZiSzo4_bm9F9RVZJOEH00Few>
+    <xmx:DsKoaeRU8EeDR3HvqJcLH0pLoOIpDIE6Nr-VAzhevLNv6AkU7h4sqdf4>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Mar 2026 18:36:45 -0500 (EST)
+Date: Wed, 4 Mar 2026 15:36:44 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Carlos Llamas <cmllamas@google.com>, linux-fsdevel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: poll: make PollCondVar upgradable
+Message-ID: <aajCDJj3dS90JtYd@tardis.local>
+References: <20260213-upgrade-poll-v2-0-984a0fb184fb@google.com>
+ <20260213-upgrade-poll-v2-1-984a0fb184fb@google.com>
+ <aadbyBmaV8zCYiog@tardis.local>
+ <aafmf5icyPIFcwf_@google.com>
+ <aahd2DIXFJiUKy0S@tardis.local>
+ <aaimKbwAbPfBUPG6@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: zEkkRpvyFFudCtNBdn7YaFpuQyfEEj09ILLHAEEjL0w_1772665160
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaimKbwAbPfBUPG6@google.com>
 
-Hey! Sorry for the long delay in response
+On Wed, Mar 04, 2026 at 09:37:45PM +0000, Alice Ryhl wrote:
+> On Wed, Mar 04, 2026 at 08:29:12AM -0800, Boqun Feng wrote:
+> > On Wed, Mar 04, 2026 at 07:59:59AM +0000, Alice Ryhl wrote:
+> > [...]
+> > > > > +        // If a normal waiter registers in parallel with us, then either:
+> > > > > +        // * We took the lock first. In that case, the waiter sees the above cmpxchg.
+> > > > > +        // * They took the lock first. In that case, we wake them up below.
+> > > > > +        drop(lock.lock());
+> > > > > +        self.simple.notify_all();
+> > > > 
+> > > > Hmm.. what if the waiter gets its `&CondVar` before `upgrade()` and use
+> > > > that directly?
+> > > > 
+> > > > 	<waiter>				<in upgrade()>
+> > > > 	let poll_cv: &UpgradePollCondVar = ...;
+> > > > 	let cv = poll_cv.deref();
+> > > > 						cmpxchg();
+> > > > 						drop(lock.lock());
+> > > > 						self.simple.notify_all();
+> > > > 	let mut guard = lock.lock();
+> > > > 	cv.wait(&mut guard);
+> > > > 
+> > > > we still miss the wake-up, right?
+> > > > 
+> > > > It's creative, but I particularly hate we use an empty lock critical
+> > > > section to synchronize ;-)
+> > > 
+> > > I guess instead of exposing Deref, I can just implement `wait` directly
+> > > on `UpgradePollCondVar`. Then this API misuse is not possible.
+> > > 
+> > 
+> > If we do that,then we can avoid the `drop(lock.lock())` as well, if we
+> > do:
+> > 
+> >     impl UpgradePollCondVar {
+> >         pub fn wait(...) {
+> > 	    prepare_to_wait_exclusive(); // <- this will take lock in
+> >                                          // simple.wait_queue_head. So
+> >                                          // either upgrade() comes
+> >                                          // first, or they observe the
+> >                                          // wait being queued.
+> >             let cv_ptr = self.active.load(Relaxed);
+> > 	    if !ptr_eq(cv_ptr, &self.simple) { // We have moved from
+> > 	                                       // simple, so need to
+> >                                                // need to wake up and
+> >                                                // redo the wait.
+> > 	        finish_wait();
+> > 	    } else {
+> > 	        guard.do_unlock(|| { schedule_timeout(); });
+> > 		finish_wait();
+> > 	    }
+> > 	}
+> >     }
+> > 
+> > (CondVar::notify*() will take the wait_queue_head lock as well)
+> 
+> Yeah but then I have to actually re-implement those methods and not just
+> call them. Seems not worth it.
+> 
 
-Would you mind sending me the size/offset numbers you used here? My
-unit tests should have caught issues like this, so if they're happening
-I definitely should add it to the testcases I've got to make sure
-there's no problems
+We can pass a closure to wait_*() as condition:
 
-On Thu, 2026-02-12 at 17:59 -0800, Deborah Brouwer wrote:
-> Hi Lyude,
->=20
-> On Fri, Feb 06, 2026 at 05:34:30PM -0500, Lyude Paul wrote:
-> > This introduces a set of bindings for working with iosys_map in
-> > rust code
-> > using the new Io traits.
-> >=20
-> > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> >=20
-> > ---
-> > V5:
-> > - Fix incorrect field size being passed to iosys_map_memcpy_to()
-> > - Add an additional unit test, basic_macro(), which can
-> > successfully catch
-> > =C2=A0 the above issue so it doesn't happen again in the future.
-> > V6:
-> > - Drop as_slice/as_mut_slice (Alice Rhyl)
-> > V7:
-> > - Start using Alexandre Courbot's wonderful Io, IoCapable and
-> > IoKnownSize
-> > =C2=A0 traits instead of trying to roll our own IO accessors. This also
-> > changes
-> > =C2=A0 the following:
-> > =C2=A0 - We don't have a custom AsBytes/FromBytes type that we carry
-> > around any
-> > =C2=A0=C2=A0=C2=A0 longer with maps
-> > =C2=A0 - We now have optional compile-time size checking
-> > =C2=A0 - We don't need our own unit tests anymore
-> > =C2=A0 - RawIoSysMap can be used for unsafe IO operations, because why
-> > not.
-> > =C2=A0 - IoSysMapRef::new() can fail now since it needs to ensure SIZE
-> > is valid.
-> > =C2=A0 - We don't implement Deref<RawIoSysMap> for IoSysMapRef any
-> > longer. The
-> > =C2=A0=C2=A0=C2=A0 main reason for this is that we want to avoid users =
-having to
-> > manually
-> > =C2=A0=C2=A0=C2=A0 specify if they want the RawIoSysMap or IoSysMapRef =
-variant
-> > functions
-> > =C2=A0=C2=A0=C2=A0 like io_read()/io_write().
-> > =C2=A0=C2=A0=C2=A0 This is fine IMHO, but to make sure things remain ea=
-sy for APIs
-> > that
-> > =C2=A0=C2=A0=C2=A0 wrap around iosys map we make IoSysMapRef.raw_map pu=
-b(crate).
-> >=20
-> > =C2=A0rust/helpers/helpers.c=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> > =C2=A0rust/helpers/iosys_map.c |=C2=A0 34 +++++++
-> > =C2=A0rust/kernel/iosys_map.rs | 211
-> > +++++++++++++++++++++++++++++++++++++++
-> > =C2=A0rust/kernel/lib.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
-=A0 1 +
-> > =C2=A04 files changed, 247 insertions(+)
-> > =C2=A0create mode 100644 rust/helpers/iosys_map.c
-> > =C2=A0create mode 100644 rust/kernel/iosys_map.rs
-> >=20
-> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> > index 1d3333cc0d2a8..bd8ad237aa02e 100644
-> > --- a/rust/helpers/helpers.c
-> > +++ b/rust/helpers/helpers.c
-> > @@ -31,6 +31,7 @@
-> > =C2=A0#include "irq.c"
-> > =C2=A0#include "fs.c"
-> > =C2=A0#include "io.c"
-> > +#include "iosys_map.c"
-> > =C2=A0#include "jump_label.c"
-> > =C2=A0#include "kunit.c"
-> > =C2=A0#include "maple_tree.c"
-> > diff --git a/rust/helpers/iosys_map.c b/rust/helpers/iosys_map.c
-> > new file mode 100644
-> > index 0000000000000..6861d4ec48a4b
-> > --- /dev/null
-> > +++ b/rust/helpers/iosys_map.c
-> > @@ -0,0 +1,34 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +#include <linux/iosys-map.h>
-> > +#include <linux/types.h>
-> > +
-> > +#define
-> > rust_iosys_map_rd(type__)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 \
-> > +=09__rust_helper
-> > type__=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > +=09rust_helper_iosys_map_rd_ ## type__(const struct iosys_map
-> > *map, size_t offset) \
-> > +=09{=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > +=09=09return iosys_map_rd(map, offset,
-> > type__);=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > +=09}
-> > +#define
-> > rust_iosys_map_wr(type__)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 \
-> > +=09__rust_helper
-> > void=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- \
-> > +=09rust_helper_iosys_map_wr_ ## type__(const struct iosys_map
-> > *map, size_t offset, \
-> > +=09=09=09=09=09=C2=A0=C2=A0=C2=A0 type__
-> > value)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > +=09{=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > +=09=09iosys_map_wr(map, offset, type__,
-> > value);=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > +=09}
-> > +
-> > +rust_iosys_map_rd(u8);
-> > +rust_iosys_map_rd(u16);
-> > +rust_iosys_map_rd(u32);
-> > +
-> > +rust_iosys_map_wr(u8);
-> > +rust_iosys_map_wr(u16);
-> > +rust_iosys_map_wr(u32);
-> > +
-> > +#ifdef CONFIG_64BIT
-> > +rust_iosys_map_rd(u64);
-> > +rust_iosys_map_wr(u64);
-> > +#endif
-> > +
-> > +#undef rust_iosys_map_rd
-> > +#undef rust_iosys_map_wr
-> > diff --git a/rust/kernel/iosys_map.rs b/rust/kernel/iosys_map.rs
-> > new file mode 100644
-> > index 0000000000000..2070f0fb42cb8
-> > --- /dev/null
-> > +++ b/rust/kernel/iosys_map.rs
-> > @@ -0,0 +1,211 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! IO-agnostic memory mapping interfaces.
-> > +//!
-> > +//! This crate provides bindings for the `struct iosys_map` type,
-> > which provides a common interface
-> > +//! for memory mappings which can reside within coherent memory,
-> > or within IO memory.
-> > +//!
-> > +//! C header: [`include/linux/iosys-
-> > map.h`](srctree/include/linux/pci.h)
-> > +
-> > +use crate::{
-> > +=C2=A0=C2=A0=C2=A0 error::code::*,
-> > +=C2=A0=C2=A0=C2=A0 io::{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Io,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IoCapable,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IoKnownSize, //
-> > +=C2=A0=C2=A0=C2=A0 },
-> > +=C2=A0=C2=A0=C2=A0 prelude::*, //
-> > +};
-> > +use bindings;
-> > +use core::marker::PhantomData;
-> > +
-> > +/// Raw unsized representation of a `struct iosys_map`.
-> > +///
-> > +/// This struct is a transparent wrapper around `struct
-> > iosys_map`. The C API does not provide the
-> > +/// size of the mapping by default, and thus this type also does
-> > not include the size of the
-> > +/// mapping. As such, it cannot be used for actually accessing the
-> > underlying data pointed to by the
-> > +/// mapping.
-> > +///
-> > +/// With the exception of kernel crates which may provide their
-> > own wrappers around `RawIoSysMap`,
-> > +/// users will typically not interact with this type directly.
-> > +#[repr(transparent)]
-> > +pub struct RawIoSysMap<const SIZE: usize =3D
-> > 0>(bindings::iosys_map);
-> > +
-> > +impl<const SIZE: usize> RawIoSysMap<SIZE> {
-> > +=C2=A0=C2=A0=C2=A0 /// Convert from a raw `bindings::iosys_map`.
-> > +=C2=A0=C2=A0=C2=A0 #[expect(unused)]
-> > +=C2=A0=C2=A0=C2=A0 #[inline]
-> > +=C2=A0=C2=A0=C2=A0 pub(crate) fn from_raw(val: bindings::iosys_map) ->=
- Self {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Self(val)
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Returns whether the mapping is within IO memory=
- space or
-> > not.
-> > +=C2=A0=C2=A0=C2=A0 #[inline]
-> > +=C2=A0=C2=A0=C2=A0 pub fn is_iomem(&self) -> bool {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.0.is_iomem
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Convert from a `RawIoSysMap<SIZE>` to a raw
-> > `bindings::iosys_map` ref.
-> > +=C2=A0=C2=A0=C2=A0 #[expect(unused)]
-> > +=C2=A0=C2=A0=C2=A0 #[inline]
-> > +=C2=A0=C2=A0=C2=A0 pub(crate) fn as_raw(&self) -> &bindings::iosys_map=
- {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &self.0
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Convert from a `RawIoSysMap<SIZE>` to a raw mut=
-able
-> > `bindings::iosys_map` ref.
-> > +=C2=A0=C2=A0=C2=A0 #[allow(unused)]
-> > +=C2=A0=C2=A0=C2=A0 #[inline]
-> > +=C2=A0=C2=A0=C2=A0 pub(crate) fn as_raw_mut(&mut self) -> &mut
-> > bindings::iosys_map {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &mut self.0
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Returns the address pointed to by this iosys ma=
-p.
-> > +=C2=A0=C2=A0=C2=A0 ///
-> > +=C2=A0=C2=A0=C2=A0 /// Note that this address is not guaranteed to be =
-valid, and
-> > may or may not reside in I/O
-> > +=C2=A0=C2=A0=C2=A0 /// memory.
-> > +=C2=A0=C2=A0=C2=A0 #[inline]
-> > +=C2=A0=C2=A0=C2=A0 pub fn addr(&self) -> usize {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (if self.is_iomem() {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // =
-SAFETY: We confirmed above that this iosys map is
-> > contained within iomem, so it's
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // =
-safe to read vaddr_iomem
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uns=
-afe { self.0.__bindgen_anon_1.vaddr_iomem }
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // =
-SAFETY: We confirmed above that this iosys map is
-> > not contaned within iomem, so it's
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // =
-safe to read vaddr.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uns=
-afe { self.0.__bindgen_anon_1.vaddr }
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }) as usize
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +}
-> > +
-> > +// SAFETY: As we make no guarantees about the validity of the
-> > mapping, there's no issue with sending
-> > +// this type between threads.
-> > +unsafe impl<const SIZE: usize> Send for RawIoSysMap<SIZE> {}
-> > +
-> > +impl<const SIZE: usize> Clone for RawIoSysMap<SIZE> {
-> > +=C2=A0=C2=A0=C2=A0 fn clone(&self) -> Self {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Self(self.0)
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +}
-> > +
-> > +macro_rules! impl_raw_iosys_map_io_capable {
-> > +=C2=A0=C2=A0=C2=A0 ($ty:ty, $read_fn:ident, $write_fn:ident) =3D> {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 impl<const SIZE: usize> IoC=
-apable<$ty> for
-> > RawIoSysMap<SIZE> {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #[i=
-nline(always)]
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uns=
-afe fn io_read(&self, address: usize) -> $ty {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 // SAFETY: By the trait invariant `address` is a
-> > valid address for iosys map
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 // operations.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::$read_fn(&self.0, address) }
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #[i=
-nline(always)]
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uns=
-afe fn io_write(&self, value: $ty, address: usize)
-> > {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 // SAFETY: By the trait invariant `address` is a
-> > valid address for iosys map
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 // operations.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::$write_fn(&self.0, address,
-> > value) };
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > +=C2=A0=C2=A0=C2=A0 };
-> > +}
-> > +
->=20
-> I think there might be a mismatch between the absolute address being
-> passed to these read and write functions and the bindings helpers
-> that expect an offset argument.
->=20
-> This crashed Tyr when I tried to write the firmware in u8 chunks at
-> incremental offsets. But if i just calculated the offset and passed
-> that
-> instead of the absolute address, this worked fine:
->=20
-> =C2=A0 let offset =3D address - self.addr();
-> =C2=A0 unsafe { bindings::$write_fn(&self.0, offset, value) };
->=20
-> Here's some of the call trace:
->=20
-> [=C2=A0=C2=A0 31.553727] tyr fb000000.gpu: supply sram not found, using d=
-ummy
-> regulator
-> [=C2=A0=C2=A0 31.555096] tyr fb000000.gpu: mali-unknown id 0xa867 major 0=
-x67
-> minor 0x0 status 0x5
-> [=C2=A0=C2=A0 31.555778] tyr fb000000.gpu: Features: L2:0x7120306 Tiler:0=
-x809
-> Mem:0x301 MMU:0x2830 AS:0xff
-> [=C2=A0=C2=A0 31.556521] tyr fb000000.gpu: shader_present=3D0x00000000000=
-50005
-> l2_present=3D0x0000000000000001 tiler_present=3D0x0000000000000001
-> [=C2=A0=C2=A0 31.557868] stackdepot: allocating hash table of 524288 entr=
-ies
-> via kvcalloc
-> [=C2=A0 OK=C2=A0 ] Started systemd-tmpfiles-clean.tim=E2=80=A6y Cleanup o=
-f Temporary
-> Directories.
-> [=C2=A0=C2=A0 31.562424] stackdepot: allocating space for 8192 stack pool=
-s via
-> kvcalloc
-> [=C2=A0 OK=C2=A0 ] Reached target timers.target - Timer Units.
-> [=C2=A0=C2=A0 31.563676] tyr: Firmware protected mode entry not supported=
-,
-> ignoring
-> [=C2=A0=C2=A0 31.571391] Unable to handle kernel paging request at virtua=
-l
-> address 0000000000800069
-> [=C2=A0=C2=A0 31.572762] Mem abort info:
-> [=C2=A0=C2=A0 31.573027]=C2=A0=C2=A0 ESR =3D 0x0000000096000021
-> [=C2=A0=C2=A0 31.573402]=C2=A0=C2=A0 EC =3D 0x25: DABT (current EL), IL =
-=3D 32 bits
-> [=C2=A0=C2=A0 31.573878]=C2=A0=C2=A0 SET =3D 0, FnV =3D 0
-> [=C2=A0=C2=A0 31.574157]=C2=A0=C2=A0 EA =3D 0, S1PTW =3D 0
-> [=C2=A0=C2=A0 31.574442]=C2=A0=C2=A0 FSC =3D 0x21: alignment fault
-> [=C2=A0 OK=C2=A0 ] Listening on dbus.socket - D-Bus System Message Bus So=
-cket.
-> [=C2=A0=C2=A0 31.593348] Data abort info:
-> [=C2=A0=C2=A0 31.593628]=C2=A0=C2=A0 ISV =3D 0, ISS =3D 0x00000021, ISS2 =
-=3D 0x00000000
-> [=C2=A0=C2=A0 31.594117]=C2=A0=C2=A0 CM =3D 0, WnR =3D 0, TnD =3D 0, TagA=
-ccess =3D 0
-> [=C2=A0=C2=A0 31.594567]=C2=A0=C2=A0 GCS =3D 0, Overlay =3D 0, DirtyBit =
-=3D 0, Xs =3D 0
-> [=C2=A0=C2=A0 31.595042] user pgtable: 4k pages, 48-bit VAs,
-> pgdp=3D0000000105e50000
-> [=C2=A0=C2=A0 31.595613] [0000000000800069] pgd=3D0000000000000000,
-> p4d=3D0000000000000000
-> [=C2=A0=C2=A0 31.596434] Internal error: Oops: 0000000096000021 [#1]=C2=
-=A0 SMP
-> [=C2=A0=C2=A0 31.596936] Modules linked in: snd tyr(+) soundcore sha256
-> cfg80211 rfkill pci_endpoint_test fuse dm_mod ipv6
-> [=C2=A0=C2=A0 31.597830] CPU: 3 UID: 0 PID: 241 Comm: (udev-worker) Not t=
-ainted
-> 6.19.0-rc5 #282 PREEMPT
-> [=C2=A0=C2=A0 31.598561] Hardware name: Radxa ROCK 5B (DT)
-> [=C2=A0=C2=A0 31.598944] pstate: 00400009 (nzcv daif +PAN -UAO -TCO -DIT =
--SSBS
-> BTYPE=3D--)
-> [=C2=A0=C2=A0 31.599554] pc : __d_lookup_rcu+0xbc/0x168
-> [=C2=A0=C2=A0 31.599921] lr : __d_lookup_rcu+0x60/0x168
-> [=C2=A0=C2=A0 31.600283] sp : ffff800081ebba00
-> [=C2=A0=C2=A0 31.600574] x29: ffff800081ebba00 x28: 0000000000000049 x27:
-> ffff00010d07002b
-> [=C2=A0=C2=A0 31.601205] x26: 0000000000000081 x25: 000000000006915e x24:
-> ffff0002f6600000
-> [=C2=A0=C2=A0 31.601848] x23: ffff00010396a040 x22: ffff000102098460 x21:
-> 000000036915e207
-> [=C2=A0=C2=A0 31.601859] x20: ffff000101e10af8 x19: ffff800081ebbcac x18:
-> 2f64662f666c6573
-> [=C2=A0=C2=A0 31.601867] x17: ffffff00666c6573 x16: 00000000fffffffc x15:
-> 0000000000003431
-> [=C2=A0=C2=A0 31.601875] x14: 000000000000000f x13: 0080205100800107 x12:
-> 0000000000800069
-> [=C2=A0=C2=A0 31.601882] x11: ffffffffffffffff x10: 0000000000000018 x9 :
-> 0000000000000003
-> [=C2=A0=C2=A0 31.601890] x8 : 00000000008000a1 x7 : ffffb9d13df173c8 x6 :
-> 0000000000000000
-> [=C2=A0=C2=A0 31.601897] x5 : 0000000000000000 x4 : 0000000000000010 x3 :
-> ffffffffffff0a00
-> [=C2=A0=C2=A0 31.601905] x2 : ffff800081ebbcac x1 : ffffb9d1406be718 x0 :
-> 0000000000000001
-> [=C2=A0=C2=A0 31.601913] Call trace:
-> [=C2=A0=C2=A0 31.601915]=C2=A0 __d_lookup_rcu+0xbc/0x168 (P)
-> [=C2=A0=C2=A0 31.601922]=C2=A0 lookup_fast+0x98/0x174
-> [=C2=A0=C2=A0 31.601929]=C2=A0 link_path_walk+0x280/0x528
-> [=C2=A0=C2=A0 31.601935]=C2=A0 path_lookupat+0x60/0x1f0
-> [=C2=A0=C2=A0 31.601941]=C2=A0 do_o_path+0x34/0xb4
-> [=C2=A0=C2=A0 31.601947]=C2=A0 path_openat+0xccc/0xe34
-> [=C2=A0=C2=A0 31.601953]=C2=A0 do_filp_open+0xc0/0x170
-> [=C2=A0=C2=A0 31.601958]=C2=A0 do_sys_openat2+0x88/0x10c
-> [=C2=A0=C2=A0 31.601963]=C2=A0 __arm64_sys_openat+0x70/0x9c
-> [=C2=A0=C2=A0 31.601968]=C2=A0 invoke_syscall+0x40/0xcc
-> [=C2=A0=C2=A0 31.601974]=C2=A0 el0_svc_common+0x80/0xd8
-> [=C2=A0=C2=A0 31.601979]=C2=A0 do_el0_svc+0x1c/0x28
-> [=C2=A0=C2=A0 31.601984]=C2=A0 el0_svc+0x54/0x1d4
-> [=C2=A0=C2=A0 31.601991]=C2=A0 el0t_64_sync_handler+0x84/0x12c
-> [=C2=A0=C2=A0 31.601997]=C2=A0 el0t_64_sync+0x198/0x19c
-> [=C2=A0=C2=A0 31.602005] Code: 14000003 f9400108 b4000428 d100e10c (88dff=
-d8c)
-> [=C2=A0=C2=A0 31.602009] ---[ end trace 0000000000000000 ]---
-> [=C2=A0 OK=C2=A0 ] Listening on sshd-unix-local.socke=E2=80=A6temd-ssh-ge=
-nerator,
-> AF_UNIX Local).
-> [=C2=A0=C2=A0 31.620067] mc: Linux media interface: v0.10
-> [=C2=A0=C2=A0 31.623483] [drm] Initialized panthor 1.5.0 for fb000000.gpu=
- on
-> minor 0
-> [=C2=A0=C2=A0 31.623765] Unable to handle kernel paging request at virtua=
-l
-> address 00802a4d0080284d
-> [=C2=A0=C2=A0 31.624285] tyr fb000000.gpu: Tyr initialized correctly.
-> [=C2=A0=C2=A0 31.624752] Mem abort info:
-> [=C2=A0=C2=A0 31.624754]=C2=A0=C2=A0 ESR =3D 0x0000000096000004
-> [=C2=A0=C2=A0 31.625847]=C2=A0=C2=A0 EC =3D 0x25: DABT (current EL), IL =
-=3D 32 bits
-> [=C2=A0=C2=A0 31.626310]=C2=A0=C2=A0 SET =3D 0, FnV =3D 0
-> [=C2=A0=C2=A0 31.626578]=C2=A0=C2=A0 EA =3D 0, S1PTW =3D 0
-> [=C2=A0=C2=A0 31.626853]=C2=A0=C2=A0 FSC =3D 0x04: level 0 translation fa=
-ult
-> [=C2=A0=C2=A0 31.627277] Data abort info:
-> [=C2=A0=C2=A0 31.627529]=C2=A0=C2=A0 ISV =3D 0, ISS =3D 0x00000004, ISS2 =
-=3D 0x00000000
-> [=C2=A0=C2=A0 31.628006]=C2=A0=C2=A0 CM =3D 0, WnR =3D 0, TnD =3D 0, TagA=
-ccess =3D 0
-> [=C2=A0=C2=A0 31.628447]=C2=A0=C2=A0 GCS =3D 0, Overlay =3D 0, DirtyBit =
-=3D 0, Xs =3D 0
-> [=C2=A0=C2=A0 31.628910] [00802a4d0080284d] address between user and kern=
-el
-> address ranges
-> [=C2=A0=C2=A0 31.629535] Internal error: Oops: 0000000096000004 [#2]=C2=
-=A0 SMP
-> [=C2=A0=C2=A0 31.630030] Modules linked in: mc drm_client_lib snd tyr sou=
-ndcore
-> sha256 cfg80211 rfkill pci_endpoint_test fuse dm_mod ipv6
-> [=C2=A0=C2=A0 31.631017] CPU: 4 UID: 0 PID: 225 Comm: systemd-udevd Taint=
-ed:
-> G=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 D=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 6.19.0-rc5 #282 PREEMPT
-> [=C2=A0=C2=A0 31.631877] Tainted: [D]=3DDIE
-> [=C2=A0=C2=A0 31.632129] Hardware name: Radxa ROCK 5B (DT)
-> [=C2=A0=C2=A0 31.632506] pstate: a0400009 (NzCv daif +PAN -UAO -TCO -DIT =
--SSBS
-> BTYPE=3D--)
-> [=C2=A0=C2=A0 31.633111] pc : ___d_drop+0xd8/0x144
-> [=C2=A0=C2=A0 31.633433] lr : d_invalidate+0x3c/0x110
-> [=C2=A0=C2=A0 31.633776] sp : ffff800081d3ba70
-> [=C2=A0=C2=A0 31.634064] x29: ffff800081d3ba90 x28: 0000000000000001 x27:
-> ffffb9d140bfa000
-> [=C2=A0=C2=A0 31.634685] x26: ffff0001039b5108 x25: ffff00010396a000 x24:
-> ffffb9d140166275
-> [=C2=A0=C2=A0 31.635305] x23: ffffb9d140bfa000 x22: ffffb9d140152f3a x21:
-> ffff000104076000
-> [=C2=A0=C2=A0 31.635925] x20: ffff00010e520098 x19: ffff00010396a000 x18:
-> 0000000000000000
-> [=C2=A0=C2=A0 31.636545] x17: 0000000000000000 x16: 0000000000000000 x15:
-> 0000000000000000
-> [=C2=A0=C2=A0 31.637165] x14: 0000000000000000 x13: ffff00010792b8f0 x12:
-> 000000000000017a
-> [=C2=A0=C2=A0 31.637785] x11: 00000000008000a1 x10: 00802a4d0080284d x9 :
-> ffff0002f6604010
-> [=C2=A0=C2=A0 31.638405] x8 : ffff000105bfcd40 x7 : 0000000000000000 x6 :
-> ffffb9d13e272c60
-> [=C2=A0=C2=A0 31.639026] x5 : 0000000000000000 x4 : 0000000000000001 x3 :
-> 0000000000000000
-> [=C2=A0=C2=A0 31.639646] x2 : 0000000000000000 x1 : 0000000000000000 x0 :
-> ffff00010396a000
-> [=C2=A0=C2=A0 31.640266] Call trace:
-> [=C2=A0=C2=A0 31.640479]=C2=A0 ___d_drop+0xd8/0x144 (P)
-> [=C2=A0=C2=A0 31.640800]=C2=A0 d_invalidate+0x3c/0x110
-> [=C2=A0=C2=A0 31.641113]=C2=A0 proc_invalidate_siblings_dcache+0x244/0x2b=
-8
-> [=C2=A0=C2=A0 31.641577]=C2=A0 proc_flush_pid+0x1c/0x28
-> [=C2=A0=C2=A0 31.641897]=C2=A0 release_task+0x560/0x668
-> [=C2=A0=C2=A0 31.642218]=C2=A0 wait_consider_task+0x5a0/0xb44
-> [=C2=A0=C2=A0 31.642582]=C2=A0 __do_wait+0x154/0x1f0
-> [=C2=A0=C2=A0 31.642879]=C2=A0 do_wait+0x84/0x16c
-> [=C2=A0=C2=A0 31.643154]=C2=A0 __arm64_sys_waitid+0xac/0x218
-> [=C2=A0=C2=A0 31.643512]=C2=A0 invoke_syscall+0x40/0xcc
-> [=C2=A0=C2=A0 31.643833]=C2=A0 el0_svc_common+0x80/0xd8
-> [=C2=A0=C2=A0 31.644152]=C2=A0 do_el0_svc+0x1c/0x28
-> [=C2=A0=C2=A0 31.644441]=C2=A0 el0_svc+0x54/0x1d4
-> [=C2=A0=C2=A0 31.644718]=C2=A0 el0t_64_sync_handler+0x84/0x12c
-> [=C2=A0=C2=A0 31.645090]=C2=A0 el0t_64_sync+0x198/0x19c
-> [=C2=A0=C2=A0 31.645412] Code: 5280002a f85f83a0 17fffff1 a944280b (f9400=
-14c)
-> [=C2=A0=C2=A0 31.645941] ---[ end trace 0000000000000000 ]---
->=20
-> thanks,
-> Deborah
+    fn wait_internal<T: ?Sized, B: Backend>(
+        &self,
+        wait_state: c_int,
+        guard: &mut Guard<'_, T, B>,
+        cond: Some(FnOnce() -> bool),
+        timeout_in_jiffies: c_long,
+    ) -> c_long {
 
+I'm not just suggesting this because it helps in this case. In a more
+general pattern (if you see ___wait_event() macro in
+include/linux/wait.h), the condition checking after prepare_to_wait*()
+is needed to prevent wake-up misses. So maybe in long-term, we will have
+the case that we need to check the condition for `CondVar` as well.
+
+Plus, you don't need to pass a &Lock to poll() if you do this ;-)
+
+> > > > Do you think the complexity of a dynamic upgrading is worthwhile, or we
+> > > > should just use the box-allocated PollCondVar unconditionally?
+> > > > 
+> > > > I think if the current users won't benefit from the dynamic upgrading
+> > > > then we can avoid the complexity. We can always add it back later.
+> > > > Thoughts?
+> > > 
+> > > I do actually think it's worthwhile to consider:
+> > > 
+> > > I started an Android device running this. It created 3961 instances of
+> > > `UpgradePollCondVar` during the hour it ran, but only 5 were upgraded.
+> > > 
+> > 
+> > That makes sense, thank you for providing the data! But still I think we
+> > should be more informative about the performance difference between
+> > dynamic upgrading vs. unconditionally box-allocated PollCondVar, because
+> > I would assume when a `UpgradePollCondVar` is created, other allocations
+> > also happen as well (e.g. when creating a Arc<binder::Thread>), so the
+> > extra cost of the allocation may be unnoticeable.
+> 
+> Perf-wise it doesn't matter, but I'm concerned about memory usage.
+> 
+
+Let's see, we are comparing the memory cost between:
+
+(assuming on a 64-bit system, and LOCKDEP=n)
+
+    struct UpgradePollCondVar {
+        simple: CondVar,        // <- 24 bytes (1 spinlock + 2 pointers)
+        active: Atomic<*const UpgradePollCondVarInner>, // <- 8 bytes.
+                                                        // but +40 extra
+                                                        // bytes on the
+                                                        // heap in the
+                                                        // worst case.
+    }
+
+vs
+
+    struct BoxedPollCondVar {
+        active: Box<UpgradePollCondVarInner>, // <- 8 bytes, but +40
+                                              // extra bytes on the heap
+    }
+
+that's extra 16 bytes per binder::Thread, but binder::Thread itself is
+more than 100 bytes. Of course it's up to binder whether 16 bytes per
+thread is a lot or not, but to me, I would choose the simplicity ;-)
+
+Regards,
+Boqun
+
+> Alice
