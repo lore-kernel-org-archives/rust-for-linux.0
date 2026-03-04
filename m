@@ -1,169 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C7636074B
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Mar 2026 16:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AA4371D18
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Mar 2026 16:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772641754; cv=none; b=XDfx4gKD5KT1AqY0n5IqO9PzCAPwTc9mXnWvBOypnU4PvjiOjdtpeuxz4BGiJsr68xN5WLkhKVyhx2twkliMUOOvt41TkQGcFz73fTPXxfA86KOvb6U1uREyPMXbM2/W8R8F1gTnpeJj53fglvZCa3LlCt/0xvsHqEnNI4/dByY=
+	t=1772642757; cv=none; b=ZyCt1WzU+NpKteWIjDS35Vg6BefFqyQwx+MwvRCZpuWTF1UGIAWjubM5klIQ1JwYm9/W8/g7w6rA3jGezNlXiN0gn9RrbI+1bW+cxhlOpgBLQTWNfcZbfebMLhmGKNjv6sWPmWJQDqIxnTNNxMluB79ikROVKf8fnsMwAxUCf/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772641754; c=relaxed/simple;
-	bh=03B2sII/wLyEEQmGcMTzXqixo/P52R1q/pDe72u3uUI=;
+	s=arc-20240116; t=1772642757; c=relaxed/simple;
+	bh=6pAgg7PwRmYTS9sfT7RMwokWO0KOx6td5LNtCpZdbfA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E8kJpQeAPwD250zUXfeQ5bGf7ehHE0rEMZkaOSZPY53UwXA8z5NGCfSGZ+fqqhwPMIecUk1fDvj9FhNB4xmAelRL4UBk/oTlj2xfuOQutRWbS0cdwVdojfUibzhoN5QPHQFR2Rlgl5CPv/fyS1CFi+zeQ7E7BlT5J7fy8xXE4vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7I/aSaZ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=skiAfq+EsDZbuqKBcJ2eh7p9lXHUnrdWht2eolqxoXCy0w2q/476Ssy83Mc8OYlLuX9fDgN95m6SF5nuejw4rUwrUX1PRwzXvyM5pzo0kPt6IE1dF4f45i28tlo2QX8mG9oY6pzfkOuGCsGfNMlZ1oqAO2QoR95cgvQLPbwh8D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Ud6A6r1+; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7I/aSaZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D99FC4CEF7;
-	Wed,  4 Mar 2026 16:29:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772641754;
-	bh=03B2sII/wLyEEQmGcMTzXqixo/P52R1q/pDe72u3uUI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U7I/aSaZjksmqdFsuoGPl7phg5SnEmDx59qYo9qSqetn0Onnr3hwW2W39/KDSPU6I
-	 43PAeMfRQFt1Y4X9g+u2ek0UpY5jSKt2CkjMcnA/IxREETPMaPlGGWO00ttINnxvs3
-	 qiky8hF9gm9qhqHB2O7SLbEEkPkM9+TPcWgf65WK2Qr3SXaTfZBLH5B3W3Ht+UOrYT
-	 khjHt3r1bwcuSK08FzEeAHrQt7ymoWKNtirfOU26cySiIZYTRqL2dUVkTU1W89rfGp
-	 KvhiOrkP6CJJRs5VBTTwUHtcSB+6EAoRFhoCSOcp5uYLYNP3tqMmNTX+f/p+4YjZBH
-	 G4IRJKZMN5tfw==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A18D3F4006C;
-	Wed,  4 Mar 2026 11:29:13 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 04 Mar 2026 11:29:13 -0500
-X-ME-Sender: <xms:2V2oaWFEpzPKQB65tFqiAetm6ASKMt3McZPLgknXwlweO4oQFQs9NA>
-    <xme:2V2oaTMW-GOZcVv8eNDYGspbZDvW3IMxLXGulTcnHu9Db4bNKQCyAmPg6Jgmy27T0
-    Nb2QagbfqUtDZqj7UBMwnEdowVm8tkrgcoiHeeoYQSW3-VrowL7>
-X-ME-Received: <xmr:2V2oadJgYvVOsfZdPooT_eftF64GjX2K6uZQMCEj45nOZKPEeBxYNTzOOnkS4lNFdfZ1lqvxfuXtICBkPVB3VqdKvFI15exL>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieefleejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    eifeeuleefudevleevhfehkeffuedttdetjeetgfejtdejfeeltdekhfevleelheenucff
-    ohhmrghinhepfigrihhtpghquhgvuhgvpghhvggrugdrshhonecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
-    thhhphgvrhhsohhnrghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsoh
-    hquhhnpeepkhgvrhhnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthht
-    ohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlse
-    hgohhoghhlvgdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtth
-    hopehprghulhhmtghksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgr
-    rhihghhuohdrnhgvthdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurg
-    htihhonhdrohhrghdprhgtphhtthhopegtmhhllhgrmhgrshesghhoohhglhgvrdgtohhm
-    pdhrtghpthhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgv
-    lhdrohhrgh
-X-ME-Proxy: <xmx:2V2oaU9QqfhExU2v4VDZK1zqcUkXrY2K3umrRDRYlLbegAoJ3Fy36w>
-    <xmx:2V2oaRFlY1FUokX_bZko6isqVcLUGMCrs0lF4tmSBjKWAINgMdUD7A>
-    <xmx:2V2oaX6LeRCm-VgNJDT2GOrI-_kJ3bcr2FcvoYI6odlDXT1apeqVwg>
-    <xmx:2V2oaSYvxlmRE29RUGjlFxnrYyRecOpjq9wjxxoDYGnrERdLbUyrAg>
-    <xmx:2V2oadgIxd0Y7VYD80KpRnub66mrcmuNjpWOhu46-zScsnmRXby3Z9vV>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Mar 2026 11:29:13 -0500 (EST)
-Date: Wed, 4 Mar 2026 08:29:12 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Ud6A6r1+"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-899fbf92bdbso49291236d6.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Mar 2026 08:45:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1772642753; x=1773247553; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Q6mBd5S5w+Qyk+kaNVLUq/NDaIG3PNFY6vyWjAmF/Cg=;
+        b=Ud6A6r1+bHRxJNYf8G8kHphVUeyCOg+pUAFdANqR7rzdB4IgFobMnWmmC8/dkSlwZk
+         W5pmK93pu85/JbL9itjDQyiMSCmefo26iYavmvrVgZs/ZuUb0mHputv1yvFDQ8qsi0Sl
+         0kUTIMWBJ54P6wXjN6uhDE1xCj97YotZ7vpEonxJLN07kJIPGvgujQKJLb+Ce1iCydWW
+         dc6zpiuTYh+K4HOa0NzUv+DYQDR+lGKq4TvxV/WW839TW7EgJz9GErqcrNw3T92Zb9G0
+         wclkmpl6xlFd96apLB45jMxM6j38XlyOg3DAjTLV0ktP2fK+9pjYbQTdylIxNx8m8dzk
+         1gjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772642753; x=1773247553;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q6mBd5S5w+Qyk+kaNVLUq/NDaIG3PNFY6vyWjAmF/Cg=;
+        b=TABG9KSf7PAxml4Il/QfeEAxA195GCLkAji2bqBDZQkbya2f0o+l3/G3k02hKB3vVD
+         jvqBZk7YeNc8axr3+o2PrmFMBy59eO1cvzFSFVd81Q8vGk1iEnsf8qFq4ZveTiEjUNDo
+         EvB4bNUEMdd73MePKac0LMTvlAHaxsebgfj+4ZZfcQH5TW+gPbKtuaUOqkL7faFtF9TR
+         4f7XtlCZK1GRldMhu7dVNjay+anmd2At4NLgmNc6DHsYY0fJOlRaSulaxaBcIIEote1g
+         N7GEObeBvnjOLOjgRUBTZVWs1gKAf+OS6Xx+t8gULyg+wghZGVQyOTBWGGS7CCvd6uwR
+         oYtg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmvc2ZsBSalA0T2qfhj/ZRx7CRR/vCIQMiGOXElSLv8hfNSAuEHvC4byFeqlUddntJopM8wXGrpvZ8wSCNXQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywn5x5JKol0S+xgaiVEztuIYucFR3jXJPFqgiDA3NE8B/rDGa68
+	7rfUvlte/xjhcUygZ63qwcZ5t7oBFkx4In9iLtouejP0r2aiZ+QEhEDMXHwxwSn4aAA=
+X-Gm-Gg: ATEYQzx9n6n3U3TxbYKlnzkSLKwEbJBli82lfGiJs9fh0U5c4qb0vLhj6N47WrMFUHY
+	WSRqzr4U5/2aRRbPE+LNqMOpO/AimRY4XOcDTSrFoVQL/IDLc6x6VMzPL7TGBY8ko6IaMv4T/mS
+	2n/tgm6eGu+U+OXug8hNnxjLvRXA9d2TutjXVZ5bpRXt+gAvw5iK+17icM0ISTxAERfkF6iyyA5
+	sfECPJ3eRBpFctL6+MJRd4N4VmSTmWlHpTN/HN3T7dtr3LDCT8452EV4yAYe8W+iO+7a8HMtm5u
+	a48ffZ6W/MxOj8lfhbBsM/6wya9jOTGwNaPAlBFprbruPDEXsbXnKYC/BpVLlDZhFuSvUHU/zJc
+	aj2zzpWloL/igtQT/DUeFDioGmkbX7kjAX8+6HWL4NZZfWhvsv3gUKK+gx+3io1BGSP3uEDcYA6
+	uOtQC7nIimuzTq1OQq8PZCAhTL57C8z8hx8+AzZTQPBYc1WHPCEtW7GiHfcQNbXi78FU7d8CTW/
+	9By/RvW2CO67Lg+SiY=
+X-Received: by 2002:a05:6214:cc6:b0:899:f2af:bd85 with SMTP id 6a1803df08f44-89a19ce9729mr37872326d6.45.1772642752542;
+        Wed, 04 Mar 2026 08:45:52 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899fdf30e99sm69421516d6.3.2026.03.04.08.45.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2026 08:45:52 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vxpM7-00000005CBf-1l90;
+	Wed, 04 Mar 2026 12:45:51 -0400
+Date: Wed, 4 Mar 2026 12:45:51 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Peter Colberg <pcolberg@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Carlos Llamas <cmllamas@google.com>, linux-fsdevel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust: poll: make PollCondVar upgradable
-Message-ID: <aahd2DIXFJiUKy0S@tardis.local>
-References: <20260213-upgrade-poll-v2-0-984a0fb184fb@google.com>
- <20260213-upgrade-poll-v2-1-984a0fb184fb@google.com>
- <aadbyBmaV8zCYiog@tardis.local>
- <aafmf5icyPIFcwf_@google.com>
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>,
+	Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org, linux-fpga@vger.kernel.org,
+	driver-core@lists.linux.dev
+Subject: Re: [PATCH v3 00/10] rust: pci: add abstractions for SR-IOV
+ capability
+Message-ID: <20260304164551.GG964116@ziepe.ca>
+References: <20260303-rust-pci-sriov-v3-0-4443c35f0c88@redhat.com>
+ <20260304084750.GW12611@unreal>
+ <20260304141852.GF964116@ziepe.ca>
+ <20260304142600.GB12611@unreal>
+ <DGU347RJX5BV.1CZYELSZ9GS9D@kernel.org>
+ <20260304162711.GI12611@unreal>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aafmf5icyPIFcwf_@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260304162711.GI12611@unreal>
 
-On Wed, Mar 04, 2026 at 07:59:59AM +0000, Alice Ryhl wrote:
-[...]
-> > > +        // If a normal waiter registers in parallel with us, then either:
-> > > +        // * We took the lock first. In that case, the waiter sees the above cmpxchg.
-> > > +        // * They took the lock first. In that case, we wake them up below.
-> > > +        drop(lock.lock());
-> > > +        self.simple.notify_all();
+On Wed, Mar 04, 2026 at 06:27:11PM +0200, Leon Romanovsky wrote:
+> On Wed, Mar 04, 2026 at 03:57:57PM +0100, Danilo Krummrich wrote:
+> > On Wed Mar 4, 2026 at 3:26 PM CET, Leon Romanovsky wrote:
+> > > On Wed, Mar 04, 2026 at 10:18:52AM -0400, Jason Gunthorpe wrote:
+> > >> On Wed, Mar 04, 2026 at 10:47:50AM +0200, Leon Romanovsky wrote:
+> > >> > On Tue, Mar 03, 2026 at 04:15:20PM -0500, Peter Colberg wrote:
+> > >> > > Add Rust abstractions for the Single Root I/O Virtualization (SR-IOV)
+> > >> > > capability of a PCI device. Provide a minimal set of wrappers for the
+> > >> > > SR-IOV C API to enable and disable SR-IOV for a device, and query if
+> > >> > > a PCI device is a Physical Function (PF) or Virtual Function (VF).
+> > >> > 
+> > >> > <...>
+> > >> > 
+> > >> > > For PF drivers written in C, disabling SR-IOV on remove() may be opted
+> > >> > > into by setting the flag managed_sriov in the pci_driver structure. For
+> > >> > > PF drivers written in Rust, disabling SR-IOV on unbind() is mandatory.
+> > >> > 
+> > >> > Why? Could you explain the rationale behind this difference between C and
+> > >> > Rust? Let me remind you that SR‑IOV devices which do not disable VFs do so
+> > >> > for a practical and well‑established reason: maximizing hardware
+> > >> > utilization.
+> > >> 
+> > >> Personally I think drivers doing this are wrong. That such a driver
+> > >> bug was allowed to become UAPI is pretty bad. The rust approach is
+> > >> better.
+> > >
+> > > We already had this discussion. I see this as a perfectly valid
+> > > use-case.
 > > 
-> > Hmm.. what if the waiter gets its `&CondVar` before `upgrade()` and use
-> > that directly?
-> > 
-> > 	<waiter>				<in upgrade()>
-> > 	let poll_cv: &UpgradePollCondVar = ...;
-> > 	let cv = poll_cv.deref();
-> > 						cmpxchg();
-> > 						drop(lock.lock());
-> > 						self.simple.notify_all();
-> > 	let mut guard = lock.lock();
-> > 	cv.wait(&mut guard);
-> > 
-> > we still miss the wake-up, right?
-> > 
-> > It's creative, but I particularly hate we use an empty lock critical
-> > section to synchronize ;-)
+> > Can you remind about a specific use-case for this please? (Ideally, one that
+> > can't be solved otherwise.)
 > 
-> I guess instead of exposing Deref, I can just implement `wait` directly
-> on `UpgradePollCondVar`. Then this API misuse is not possible.
-> 
+> You create X VFs through sriov_configure, unbind PF, bind it to vfio
+> instead and forward (X + 1) functions to different VMs.
 
-If we do that,then we can avoid the `drop(lock.lock())` as well, if we
-do:
+No, illegal, and it doesn't even work right. When VFIO FLRs the PF it
+will blow up the half baked SRIOV and break everything.
 
-    impl UpgradePollCondVar {
-        pub fn wait(...) {
-	    prepare_to_wait_exclusive(); // <- this will take lock in
-                                         // simple.wait_queue_head. So
-                                         // either upgrade() comes
-                                         // first, or they observe the
-                                         // wait being queued.
-            let cv_ptr = self.active.load(Relaxed);
-	    if !ptr_eq(cv_ptr, &self.simple) { // We have moved from
-	                                       // simple, so need to
-                                               // need to wake up and
-                                               // redo the wait.
-	        finish_wait();
-	    } else {
-	        guard.do_unlock(|| { schedule_timeout(); });
-		finish_wait();
-	    }
-	}
-    }
+VFIO already has its own sriov_config support, the right flow is to
+bind the PF to VFIO and then enable sriov and do your assignments.
 
-(CondVar::notify*() will take the wait_queue_head lock as well)
-
-> > Do you think the complexity of a dynamic upgrading is worthwhile, or we
-> > should just use the box-allocated PollCondVar unconditionally?
-> > 
-> > I think if the current users won't benefit from the dynamic upgrading
-> > then we can avoid the complexity. We can always add it back later.
-> > Thoughts?
-> 
-> I do actually think it's worthwhile to consider:
-> 
-> I started an Android device running this. It created 3961 instances of
-> `UpgradePollCondVar` during the hour it ran, but only 5 were upgraded.
-> 
-
-That makes sense, thank you for providing the data! But still I think we
-should be more informative about the performance difference between
-dynamic upgrading vs. unconditionally box-allocated PollCondVar, because
-I would assume when a `UpgradePollCondVar` is created, other allocations
-also happen as well (e.g. when creating a Arc<binder::Thread>), so the
-extra cost of the allocation may be unnoticeable.
-
-Regards,
-Boqun
-
-
-> Alice
+Jason
