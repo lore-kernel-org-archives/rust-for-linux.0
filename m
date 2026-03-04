@@ -1,108 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280F53B4E94;
-	Wed,  4 Mar 2026 14:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C27C33065C;
+	Wed,  4 Mar 2026 15:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772636287; cv=none; b=ateR9XdZPzUmtkG7U+JwS4vNB2JhJodZvnXg0NtwPg0RBlxz12Ye3KxlnHr3u8imyBB6ppjxQ7bqKs9XVaA6OlNBX7pBdP6xSbZ/7MpdFJm42Cz9K4hV/9oX9B26oxF9BvOi/1JDlGl4/rX5VQTZuiRlNoUeMUjTyWVNyIPsO84=
+	t=1772638016; cv=none; b=PPXjOqqGUwfTVxvsDxLIXbpXuFkCuSk1zCfIJRMTlVJTT5JlKjExWTa4dhpOPgDG3fGv1RiCILqkzCV1W1laR0C+C32rF0EHEbeOmkP9KcWqq1mVi5QPskXgPS9mvLxkAdy62wbGgG1IrXctq9DFcRgKbCTHHgjwMpJt/VSh+As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772636287; c=relaxed/simple;
-	bh=dOS1j2epf5TPYMaiUEFBxK4GWJCF7AnlRNLv83KiR6E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Nc1GFWo3KdYYtI80GJqIBI7UEDMvYhnJpxm9GQLaWNKKzZvcZyIKM8y4ulpMlXR/i9tde7Hiv7M7q7lSP+j/xwgB2/8cnVSdzLfmVpcRR7Blhu94Ae4iKjEWd715lgvVjbMKj5fvCx7Z0BLxATCY1ommkrOw58j0o3iiidMApUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ym9EQcZf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772638016; c=relaxed/simple;
+	bh=NSxpkcBTxGbZfTOBI1Osn6FZchKIMqEBt4E59vgg9yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m8vweCD+IQlcQ5+JLpsgYr/KFgkoOCqsm01o/G7GNAUHaPM+OQwrKAUUEYOYQuhjAYc2sG2idveLoGntyhVZeDAMi/J0lsRTf4dMmJiLxPVGuGQCqRiY4DsdoYWvHKgC7Iv8rNgV2RbQJ5uYbAjDEJ2uTaokaWBqHiuDZiKypgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNr/i9Ed; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ym9EQcZf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46750C2BC9E;
-	Wed,  4 Mar 2026 14:57:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNr/i9Ed"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA02C4CEF7;
+	Wed,  4 Mar 2026 15:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772636286;
-	bh=dOS1j2epf5TPYMaiUEFBxK4GWJCF7AnlRNLv83KiR6E=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=Ym9EQcZfkOKBQHZvEQz/FhHVNSqmg+h+6mOr4awZN6lqVP89047H95oA7hDTD8Lxp
-	 3/zrrsmHItaW0dHSdzHTPMNUEEPPrdDoAQGGe9wmG6r942WlV+NEL+DcbydsnltayO
-	 SnkhnV7y40XDZUGJYiA6FsWGZM40iGremynvaU5Cw1rh8jc4wDHWy/miN2N3sbvfLc
-	 Rn1TTCZbSsbm8xMotdnloy7atDTjiCMTCuYwLsPrm4P+VZShXKneJTrYQO7TL2CS2W
-	 aGLtKXusmSvGJfMzJsY89VPeZZyDFz0aM8vrKSLF2R5CeTp1fFyviINf8C+4nr6mjK
-	 wEsHpF7yuJvaA==
+	s=k20201202; t=1772638015;
+	bh=NSxpkcBTxGbZfTOBI1Osn6FZchKIMqEBt4E59vgg9yo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JNr/i9Ed94o5FrVUAIdDA9j6qVGLnE5GzfbP/S1eQuij66w5wYafVkKmJfNrjW6BU
+	 A1qHbzpoX84W2Y3/DU8fCgtDh/bFbsR95IXw4bDa1YKfx2KDTn+9gvVk47D5GtsPhr
+	 S6XIEflAmCZI+kFJOhLUSAKMC159kKQKecuwzKR8DT3B4C+eY5YaSizaIDmG+RQ/bO
+	 OTFLtGzokmtE74YQuVHwoAjC3QCWckhfGWfFxU5RuztAn9pH5xH57mKx5+7NOyf21j
+	 vJcutnbWGpl00AJ4jYiuegaQaPdEVO7qzspdvmLlAaHDXjEVctpre1LGEdez5nx/iK
+	 AUByHkfctYKUQ==
+Date: Wed, 4 Mar 2026 17:26:52 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	"linux-mm @ kvack . org" <linux-mm@kvack.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [PATCH v1 15/16] mm: rename zap_vma_ptes() to
+ zap_special_vma_range()
+Message-ID: <20260304152652.GF12611@unreal>
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-16-david@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Mar 2026 15:57:57 +0100
-Message-Id: <DGU347RJX5BV.1CZYELSZ9GS9D@kernel.org>
-Subject: Re: [PATCH v3 00/10] rust: pci: add abstractions for SR-IOV
- capability
-Cc: "Jason Gunthorpe" <jgg@ziepe.ca>, "Peter Colberg" <pcolberg@redhat.com>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan
- Corbet" <corbet@lwn.net>, "Xu Yilun" <yilun.xu@intel.com>, "Tom Rix"
- <trix@redhat.com>, "Moritz Fischer" <mdf@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-doc@vger.kernel.org>,
- <linux-fpga@vger.kernel.org>, <driver-core@lists.linux.dev>
-To: "Leon Romanovsky" <leon@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260303-rust-pci-sriov-v3-0-4443c35f0c88@redhat.com>
- <20260304084750.GW12611@unreal> <20260304141852.GF964116@ziepe.ca>
- <20260304142600.GB12611@unreal>
-In-Reply-To: <20260304142600.GB12611@unreal>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227200848.114019-16-david@kernel.org>
 
-On Wed Mar 4, 2026 at 3:26 PM CET, Leon Romanovsky wrote:
-> On Wed, Mar 04, 2026 at 10:18:52AM -0400, Jason Gunthorpe wrote:
->> On Wed, Mar 04, 2026 at 10:47:50AM +0200, Leon Romanovsky wrote:
->> > On Tue, Mar 03, 2026 at 04:15:20PM -0500, Peter Colberg wrote:
->> > > Add Rust abstractions for the Single Root I/O Virtualization (SR-IOV=
-)
->> > > capability of a PCI device. Provide a minimal set of wrappers for th=
-e
->> > > SR-IOV C API to enable and disable SR-IOV for a device, and query if
->> > > a PCI device is a Physical Function (PF) or Virtual Function (VF).
->> >=20
->> > <...>
->> >=20
->> > > For PF drivers written in C, disabling SR-IOV on remove() may be opt=
-ed
->> > > into by setting the flag managed_sriov in the pci_driver structure. =
-For
->> > > PF drivers written in Rust, disabling SR-IOV on unbind() is mandator=
-y.
->> >=20
->> > Why? Could you explain the rationale behind this difference between C =
-and
->> > Rust? Let me remind you that SR=E2=80=91IOV devices which do not disab=
-le VFs do so
->> > for a practical and well=E2=80=91established reason: maximizing hardwa=
-re
->> > utilization.
->>=20
->> Personally I think drivers doing this are wrong. That such a driver
->> bug was allowed to become UAPI is pretty bad. The rust approach is
->> better.
->
-> We already had this discussion. I see this as a perfectly valid
-> use-case.
+On Fri, Feb 27, 2026 at 09:08:46PM +0100, David Hildenbrand (Arm) wrote:
+> zap_vma_ptes() is the only zapping function we export to modules.
+> 
+> It's essentially a wrapper around zap_vma_range(), however, with some
+> safety checks:
+> * That the passed range fits fully into the VMA
+> * That it's only used for VM_PFNMAP
+> 
+> We might want to support VM_MIXEDMAP soon as well, so use the
+> more-generic term "special vma", although "special" is a bit overloaded.
+> Maybe we'll later just support any VM_SPECIAL flag.
+> 
+> While at it, improve the kerneldoc.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  arch/x86/kernel/cpu/sgx/encl.c        |  2 +-
+>  drivers/comedi/comedi_fops.c          |  2 +-
+>  drivers/gpu/drm/i915/i915_mm.c        |  4 ++--
+>  drivers/infiniband/core/uverbs_main.c |  6 +++---
+>  drivers/misc/sgi-gru/grumain.c        |  2 +-
+>  include/linux/mm.h                    |  2 +-
+>  mm/memory.c                           | 16 +++++++---------
+>  7 files changed, 16 insertions(+), 18 deletions(-)
 
-Can you remind about a specific use-case for this please? (Ideally, one tha=
-t
-can't be solved otherwise.)
+Thanks,
+Acked-by: Leon Romanovsky <leon@kernel.org> # drivers/infiniband
