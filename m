@@ -1,116 +1,133 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755C137475B
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Mar 2026 08:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C7B37D13C;
+	Thu,  5 Mar 2026 10:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772700189; cv=none; b=u8HJW9sSS0P8Ddc/++QcFwaQsS8/0yVhUf7WAw16K0MXNMJddGtAfIFBHoPhnJzueF25gQXFGDXA68o0qYa0v4zZvDtS9SuSD5SqH6HtpqLM9jLx0K0z9TmOb2zeijcjYjTnHYFbp1EYN32pnQ+vPKqY8P1qZgjEKy4DUG3p2oA=
+	t=1772706369; cv=none; b=lcixBhUU0DIOqSYNQWBpo5wjH0clDXB02cWhnwyuNw7e+qrQinVEKXc6WUv5S+7ze9n2M4lRKz0eZDklvvEBU4r/sD1uvzjD+89JY36qbsL0YhPrlbfDuNtNE1iBA5MDE6UqzKXPyUtSo44cak3yNmCFhg1wm95xKVgvDC8MTtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772700189; c=relaxed/simple;
-	bh=mbnSWoGtpVXDY2O/y7CT2oXvHtcIcvxxDazvTWMlsag=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j1htEwRMZZX/7lIezJlkARSaqrAF++3Pb7qb1N3lHkQcdvTvym352fbWqgLFg1oEutIWM1fuEnPlZQbl0b9yjeFQ9XMnFqDXH22GI3EaCoptxVjf4Z+rw8rWHfdkoDkSYnrvC9i6kLtBZSLQl6q/BEH2mTvhW394liLd1XInvcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OU7o98Qc; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1772706369; c=relaxed/simple;
+	bh=mopNjxyGlc1UwRsEKNs25RNJFEbs0dSzzcVn/5Lrcpc=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=iAEDjZAenhPp7EQzpL+KE5yj2nJpN4PvU5e3pS4HIBgIhEPxOnl8uwSzjPAU70r5MM4KXwGcWRLvN+VrN7AutuQ6wRwFmeV6z7JBB0IGZqxo31IyVvxnmXTBTWHWot9suIC9nRfPPgleN5fD+1V61Ap8+SPv4WE1I1OkG6nrHPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GxKcrp1N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OU7o98Qc"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837c597cd5so45296575e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Mar 2026 00:43:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772700185; x=1773304985; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ImdwXMFzfOswNPEOQHnijbZ5BxVnmvmjujol0/tafME=;
-        b=OU7o98QcuPVQYKb9DcL7V1O+c1AaYuWMz390SqtiMJOIli46Gr7spJayvSgOzH1Rc8
-         /eOfoKZYvJ4aeZimQ5X2CoB5rAKThlUyfPSaG+BMTrn9J7ytSTXrT7llVCcx5zBz4Jn6
-         30irGrazQvupfYSz6xfQg73/rigoijIQC8vievagVrIGF1OlaVeznra1DyxMlhJp++6Y
-         2R/I3u+oGM1In7960b1S+n3cmgoWETLXsOSaGEfun8QklPw6jeifKw32QGdwvF5uqmB6
-         /Pzfe9v9eSKaHpSstLupNYsf6LhZmRAum64bUjjgCiBxV90LQUtnvZx9bMlExTIKyVlz
-         bM3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772700185; x=1773304985;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ImdwXMFzfOswNPEOQHnijbZ5BxVnmvmjujol0/tafME=;
-        b=ikMzz6l+uVGXqkl17f22ZQuXJIKpNoGFSchz87iwiY6QpkLXuTCVF1k3VwDLdzYEuF
-         E7pPoIrb8p1eXX7umRCzckgMrqvofkAgzsxW4c01oohV+9Quf0lKU+dAtGY3nRzmPEu0
-         4CCpExYOigR4hQ+FXR9vIS4o7pUGZwnDk5VgImWAROkOjDlmCGwz++r1QMJOFmLTdFcL
-         ocB+QZS69FrmzY/2yxaEF/xdxY2hZOGR4hr6jbIJmj4IqSPjbGpZVGvHuJcG/ZtRfulE
-         EGBRWJuXLjI3+8IYvH3B8OGfuxnh2xIYpvDWY1roNsdMQUlSgTpVA/YrX0sB9DYwJz0p
-         ujxw==
-X-Forwarded-Encrypted: i=1; AJvYcCWok41g12QeBNAsba5OV9ijNARl/DhfqekEUAihplexS6EYq1eG8OlH7OHlbI5u+EWgAPc90TzMIpzE1u/FFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGi0MGtEdtOb5Pf3EAAWFS0Cr2+ANOV1Cyi7W3U9tcn6PCM7BX
-	Izc+kYExo13oCp7HMarutE12YSbB53PG0B4u/R4zd69txnf4BBMnC2cbcY/XZ9ltBkb0rC7bXHe
-	6mZO8HxrJexhEh25EMw==
-X-Received: from wmj21.prod.google.com ([2002:a05:600c:255:b0:480:69c2:3949])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3e8f:b0:477:73e9:dc17 with SMTP id 5b1f17b1804b1-485198d8b81mr83642225e9.35.1772700184640;
- Thu, 05 Mar 2026 00:43:04 -0800 (PST)
-Date: Thu, 5 Mar 2026 08:43:03 +0000
-In-Reply-To: <aak9ZBJenK1DSCEt@monoceros>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GxKcrp1N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D2BC116C6;
+	Thu,  5 Mar 2026 10:26:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772706368;
+	bh=mopNjxyGlc1UwRsEKNs25RNJFEbs0dSzzcVn/5Lrcpc=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=GxKcrp1NjpcJWIlYGOBMnLhrtZ6KW4d3Q0AsVsyUvzolHHPP6pu6s51wSMSIwgRS8
+	 yRiD27V16apOqOOtv2fOISUXuKvkHACUrrPlr6xBqZFHu5ciJuhbc9UhQ9orhkEWDf
+	 II0Y3z566YoYLMtSeEE9GRld5OIGUZcnuIdMzeiLhGWiIXEfNzNmYiMrI0B0EAL1Xk
+	 iINr1gmDzlK2m7I7Eiqkt2q86r0lyXIrXhW6Vrmbz/UKLfzkURGwvNibTBARbSaz8d
+	 /j1S3OI9ZMKfFUyrzCZbD+54Rz097Q/i7rTizm7UWSUaKwbdTfdVatnF8a2lHxsm+T
+	 DqI3xJSMJJdfQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260113-clk-send-sync-v4-0-712bc7d94a79@google.com>
- <CGME20260113151335eucas1p157cd966c5f0f4e477fb11272810a0ae8@eucas1p1.samsung.com>
- <20260113-clk-send-sync-v4-3-712bc7d94a79@google.com> <90657b83-1cff-4c7d-adde-9b560c2be7c2@samsung.com>
- <3cfeounnaphhezvjpz5igswml6iu3b6jhwhjn2g4ziimjdoefi@ge4ezxx6jxlr> <aak9ZBJenK1DSCEt@monoceros>
-Message-ID: <aalCF0Egy6gWXdBK@google.com>
-Subject: Re: [PATCH v4 3/3] pwm: th1520: remove impl Send/Sync for Th1520PwmDriverData
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=" <ukleinek@kernel.org>
-Cc: Stephen Boyd <sboyd@kernel.org>, Michal Wilczynski <m.wilczynski@samsung.com>, 
-	Michael Turquette <mturquette@baylibre.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/3] kbuild: rust: add
+ `CONFIG_RUSTC_CLANG_LLVM_COMPATIBLE`
+From: Nicolas Schier <nsc@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Nicolas Schier <nicolas.schier@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+ linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+ Matthew Maurer <mmaurer@google.com>
+In-Reply-To: <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+ <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
+Date: Thu, 05 Mar 2026 11:12:59 +0100
+Message-Id: <177270557911.104478.12699746103670684667@derry.ads.avm.de>
+X-Mailer: b4 0.15-dev-363b9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1892; i=nsc@kernel.org;
+ s=20250924; h=from:subject:message-id;
+ bh=mopNjxyGlc1UwRsEKNs25RNJFEbs0dSzzcVn/5Lrcpc=;
+ b=owEBbQKS/ZANAwAKAQdSCnAWJhJpAcsmYgBpqVctnTqdxXgENccjqWqtvxCvG/SQspXXSTbSz
+ a0dBSGX4x+JAjMEAAEKAB0WIQSHQTenhzckp4G+wsYHUgpwFiYSaQUCaalXLQAKCRAHUgpwFiYS
+ aSYjEAC16lSRDiDLSgS1R1i3F1HH9EHYStgMq9R4oaJFqofyb5aAQRP8jrKAFe1mp6cWxOA0IeB
+ mh5i++AsAHMpukhZv3VRXZLkHM0d2mDOuk+pbPy7aw0LoDEiyOlgbVVFsyj0kuKTBkuBIVKJTZK
+ fGE5bfqFJBo+MVbilCgJly6KhHcNxCAZXSSeI1It6+/NGO6HNGXferB8ZrS+DAAeTenWZSaGVYU
+ F3e905Fv3wZtrGgwiGOxvGrJcWVr0hLfCuKGbIcdDpcsN4OmSOdQwQHdE1b5PJgv2t9Q18rcpv+
+ XMZi6XKwTbymtUtRPAERCs/Pd6gBQAcXkjidQJ4wq2fAAr7gei5qkkU+XwWI1Z/RjSzFx0NrTdo
+ 7eFqBttsygDVM5ztwdUQZ/4bely1jDEISSokiyW+dNxfZnmtnxZhSWeObmg0/51QnFa5Kw7/gT2
+ VKiZcDFuH+jJ/OHm2glGJYJzfybNdorAtzoxBxDkG6jchRm92ljqGoAlfVXq9PHE89oTkQKnhdh
+ wOZDoD2nuxE+DkzXvIhyqA6FnrO40hUs2si+NP0diQ9AHyl9I7GuajKEqXyGv2JO7e7NDuBIuJ7
+ f4AlvYDcrwpdvCyr+bk3qp+MH+w9ChuQ/AycvODpM7aWG+KMFujj2LOmi97wm0m523zi825m5LX
+ jenBOCuvsxI9Oag==
+X-Developer-Key: i=nsc@kernel.org; a=openpgp;
+ fpr=18ED52DBE34F860EE9FBC82B7D97093255A0CE7F
 
-On Thu, Mar 05, 2026 at 09:24:33AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> Hello,
->=20
-> On Tue, Jan 20, 2026 at 09:48:48AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > On Mon, Jan 19, 2026 at 10:45:56PM +0100, Michal Wilczynski wrote:
-> > > On 1/13/26 16:12, Alice Ryhl wrote:
-> > > > Now that clk implements Send and Sync, we no longer need to manuall=
-y
-> > > > implement these traits for Th1520PwmDriverData. Thus remove the
-> > > > implementations.
-> > >=20
-> > > I thought this was already merged :-).
-> > >=20
-> > > Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> >=20
-> > If I understand correctly this patch 3 depends on the first patch of
-> > this series so I cannot pick it up via the pwm tree *now*. There is
-> > another patch pending for the th1520 PWM driver, but as of now git seem=
-s
-> > to cope well when merging the pwm's tree for-next with this patch.  So
-> > it's fine for me if the series is picked up for 6.20-rc1 via the clock
-> > tree.
->=20
-> That didn't happen (with s/6.20/7.0/), so this patch is still open in my
-> todo list. Is the first patch still considered for the clk subsystem?
-> What is the plan for the pwm patch?
+On Tue, 03 Feb 2026 11:34:08 +0000, Alice Ryhl <aliceryhl@google.com> wrote:
+> This config detects if Rust and Clang have matching LLVM major version.
+> All IR or bitcode operations (e.g. LTO) rely on LLVM major version to be
+> matching, otherwise it may generate errors, or worse, miscompile
+> silently due to change of IR semantics.
+> 
+> It's usually suggested to use the exact same LLVM version, but this can
+> be difficult to guarantee. Rust's suggestion [1] is also major-version
+> only, so I think this check is sufficient for the kernel.
+> 
+> Link: https://doc.rust-lang.org/rustc/linker-plugin-lto.html [1]
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> ---
+>  init/Kconfig | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/init/Kconfig b/init/Kconfig
+> index fa79feb8fe57..06f6b23c9fde 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -82,6 +82,21 @@ config RUSTC_LLVM_VERSION
+>  	int
+>  	default $(rustc-llvm-version)
+>  
+> +config RUSTC_LLVM_MAJOR_VERSION
+> +	int
+> +	default $(shell,expr $(rustc-llvm-version) / 10000)
+> +
+> +config RUSTC_CLANG_LLVM_COMPATIBLE
+> +	bool
+> +	default y if CC_IS_CLANG && RUSTC_LLVM_MAJOR_VERSION = $(shell,expr $(cc-version) / 10000)
+> +	help
+> +	  This indicates whether Rust and Clang use LLVM of the same major
+> +	  version.
+> +
+> +	  Operations involving handling LLVM IR or bitcode (e.g. cross-language
+> +	  LTO) requires the same LLVM major version to work properly. For best
+> +	  compatibility it is recommended that the exact same LLVM is used.
+> +
+>  config ARCH_HAS_CC_CAN_LINK
+>  	bool
+>
 
-It's been on my todo list to try and contact Stephen to see if he can
-take these patches, or if he is okay with them going through another
-tree, but I have not gotten around to it. He has not replied on the list
-to any version of this series.
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Tested-by: Nicolas Schier <nsc@kernel.org>
 
-Alice
+-- 
+Nicolas
+
