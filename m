@@ -1,116 +1,84 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010001.outbound.protection.outlook.com [52.101.201.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D9C39FD4;
-	Thu,  5 Mar 2026 04:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B94E30FC1F;
+	Thu,  5 Mar 2026 07:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772684256; cv=fail; b=JhhOE+VKp5nI0Jg5CrTSr0EvwKPwZPUf8/8j1jUK4FKZyAmCHzDah3PavKFEe54Kmb5bPiiojb+TRS6XpuCokf6ai43Xghz3+jzoklvqkKOkkJIjya3cUHu+69M6Ci6VSd9wBNXDU9zlVuRAR2BtP1VYuluxc7dzYwftKrBpP7E=
+	t=1772694466; cv=fail; b=H2kpgRv3SlQalt1GreYcRGbYXLxeEwmcd8R0m7jOZkY6cSwmnCeyXSVfgJTc4v0YThSgwy84e7diNLIaKSIUlhwJ3y7nXR6OxL7sjsWsUKCanL8zpmb4kGRjZBDA1EP6ls+eHZ5BH3fxxhSCpOAtHl0FteDA5EWm06QY9OyIVXk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772684256; c=relaxed/simple;
-	bh=60OEqH64Qdr5jZ2+2UOnI3+SccegOENo7QrfP1punCc=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=FF5ErI3utaPOihBABloNOE4OXxU7LVgcAvY+tT0PcdWbmg9D+Psz0npCVewXTmzxYuKxPgqobPNt5JbRfjWVUSJ7zk+C1Ndf+NaJRJnT718bCu71vIMFxvcUm0logdJ6gEamYuZsX5eJkKtW6Dl9R6Z1JGZYCx9THEhWop11h1k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AGDMfZCD; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772694466; c=relaxed/simple;
+	bh=Yus+WyFgnf4jHU4AxQfvV+lJJzM2bXygQ2ckVd/rm8Q=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=c0OWxbYZkUpXU3llfaZR1Y3y/4uu9b9tD8kAAl95NvacJ6BEJ8xMzlwwhxp0HVBrvp9nlPWZPZVS6Aavm1BTiem/lPj4wj7dulnmSeLthDUDjSsn8hBlK4++aI2TaGSzyQ/3AGBw277vrcFRtJKhW+M/wCE/EXWhIqP5YaT4tqQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kU5wJLFD; arc=fail smtp.client-ip=52.101.201.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AGDMfZCD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772684254; x=1804220254;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=60OEqH64Qdr5jZ2+2UOnI3+SccegOENo7QrfP1punCc=;
-  b=AGDMfZCDbMMuDul9A/ni0SEguY2qdDM5rD1bEYBWrw51gsV/mZNCRTAe
-   BZ00wk/WoBrFBSPNiL2mb4e69nlKSxYGj7TLNUIkrizKCNAKNv3ge+QoR
-   gq+/fc6IsV5dfXAweGtD+FsvvkTjJWuqH6ZYfhl1XASoOZN5cU/aQEIi7
-   X00kTlU32k7d6E1KOXDax+1scoWVnXMfvCG8qYjHP4KPEN1H2+b2lj6Ta
-   4WTGGW3/dO3jOGk7YKJ2UdcsSdgM8gwDb6LaadQETXzYfV6JfyDXoseI1
-   nt0aVwkMQCl9bEicnDjDs0r7iLf6nOCLZ8XdtT7dRjfYvcHBN/R/ls3ye
-   A==;
-X-CSE-ConnectionGUID: Id3eyh52QKCUrisODVUNyA==
-X-CSE-MsgGUID: m7OopfdQTP6yZmoYDjB9uA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="61333883"
-X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="61333883"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 20:17:32 -0800
-X-CSE-ConnectionGUID: O8A6w8wLQh6ThGPruD50Yg==
-X-CSE-MsgGUID: ZlqeZfiEQzW0KLqFdgiWtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="249025962"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 20:17:32 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 4 Mar 2026 20:17:31 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 4 Mar 2026 20:17:31 -0800
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.66) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 4 Mar 2026 20:17:31 -0800
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kU5wJLFD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q8gTuWoqzpjuKeh5zIlqHRFNpqqeDjGibY30A/N+e9xuShx5h9ZCnVuklSpV3Et4GPhLY/QIwpK2uGAIe8YZ7H4lx3fc0NPwuyAQyXd0U9sfeRetdq86h1nkyjQ1hj7gIXaWEC4uMlohpBo5ndscohmv3Kc+Tp/QdERPjH6whOSlMKj5QH/Rgk3ICMN3vYY0ZJk34xafTX7bUx7dC0u9h2zMIFMjxt/iIilAPursi9zdRcCxg3CbVPKisQ7zuWe2y0BB45Wovt8jK4K+TP5nxk0z8/1JMzUV1sJfzxeuLlhN46ER+sQGGTp9fKogoQv4+60g7hURggw9ZgC5jeKwkw==
+ b=pYGpzq+cb591I9b+/gt2oBGUTgkBesAF5UxKX2Fm1yg5eMN7oUB2humMFJTCj5f2Lynawd0d8bdBt0flLNwr3pRT/IcnGQ5GLueM1LMzVVy84yAzZBTvodaaBCvtu5iJhoGazqJZJob9czaLrvT9Td4CnsE2XhI4kD0Fjud4w1L5Vz9P22Pj1rEAd6Xg8ZkxWUar29M7AwVUnij4aQsjsyNY4RpoF404SWHR/KHo2iQ9yWiDUXCFpVRG99+EbRpgyycSyXyScg/cjRLfPoWy6fpZ+HBMZoCG4f+uXxpRVBHelopMSJaz+kk2Fkn0IOBTJtWpsSSRlyOAanreVvINTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tnZB8+x989Pz7ct8Vm/BNDW1Xc/6Uwi//5x3ZIvABF8=;
- b=cQx9xMGFMdSkzYnal3LYWzZKbKkhp8qTwyhAjqsDUN4opm2r0zGnSrWAsTKpyYEs/XHYpZi87nystPGK6Xi11kdGZ/8LufY+cRC90NkxBkmce3E63e5v3XM0xx13vr89F2DWTd08OlxaixTaR3hlAz68rQsP0mvKTy4AL1kwip+GNqnmjrdxKEffKVYuLqem9WaAJ6JQvn8L/4fUORX9iAwwco0kNQ95nZ/X+PrZWmn6JV52xqEvd/YGwWwwdKWc9vapMH/2JdgQB9RWFWIL3mPC3BWWyK7eU1gmtWb4ApTqeQIaVCDaH6VBC2q7YF4EACIFe7wv4WFiiomXW4caRg==
+ bh=I8I5tny/Z1ZR8OShRIPk+NYR9/uoDPoe1lgzEb/PMcU=;
+ b=t97WFJF7JBQhTNcrvVemtmG1E2KyBj8dUe464faYXYOcc0uUyMra0sjSgeLEcoC//RWnco36qlyqfPnSLD8UbvRfHqGbQKKssEVnwnViFXJYoqfagAiq48fXbXGZgC4SPYppMWcqE1RW/iCMVy3bpqNwNbbL/4X7w0BoaNEQu9kjvEW/3/rLia/QGVW94SBZwv4IKPac0N7OUSVLv9gMN7VK9icZMW6xIsaczuV/UCi4xMPkdtYgGCw4E/XyFBXTJbVvK/5KDeo5f7b72lKBOtcYarEKcft3NJ0ugdWziu6egRELLbRsiROIdq0YvCJYe9zVemmqbb5T8TPoPr+ecA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I8I5tny/Z1ZR8OShRIPk+NYR9/uoDPoe1lgzEb/PMcU=;
+ b=kU5wJLFDbI4iOUSU77p7Clf7Ot06j7PBzJJFQbg7VHCvOPEEOfeo3WZAZzKkz/SL7AzrO3eYSP1jDAYgpp991EbN2kKs1RHaKCaWzceDF8xZFwj3hScs4dRiLbZxmpTWTdExvOYapHnICRNGJ2chqywU/Nk8QTSxElBACZpx+0Kf6jE1zovDdFGIiA71t2KkVu/RhyV6jS6xQarrHPMVVbZUJCwT6Rbi3dCUHX8x0KMesFxU0q1x7qsvyP7ADcXsHSZPF1GAHnSe4CqGrdwQHX3bvfMAyATE0GQE5WtJcXcIVe2apfWh1jYIGmlhig5fUB6EiZI6ngs3D/8ZdVGuCg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DS7PR11MB6293.namprd11.prod.outlook.com (2603:10b6:8:97::19) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MW4PR12MB6852.namprd12.prod.outlook.com (2603:10b6:303:207::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Thu, 5 Mar
- 2026 04:17:25 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff%3]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
- 04:17:25 +0000
-From: <dan.j.williams@intel.com>
-Date: Wed, 4 Mar 2026 20:17:24 -0800
-To: <dan.j.williams@intel.com>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, <dan.j.williams@intel.com>
-CC: Lukas Wunner <lukas@wunner.de>, Jason Gunthorpe <jgg@nvidia.com>,
-	"Alistair Francis" <alistair23@gmail.com>, <bhelgaas@google.com>,
-	<rust-for-linux@vger.kernel.org>, <akpm@linux-foundation.org>,
-	<linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <alex.gaynor@gmail.com>,
-	<benno.lossin@proton.me>, <boqun.feng@gmail.com>, <a.hindborg@kernel.org>,
-	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <tmgross@umich.edu>,
-	<ojeda@kernel.org>, <wilfred.mallawa@wdc.com>, <aliceryhl@google.com>,
-	Alistair Francis <alistair.francis@wdc.com>, <aneesh.kumar@kernel.org>,
-	<yilun.xu@linux.intel.com>, <aik@amd.com>, Mathieu Poirier
-	<mathieu.poirier@linaro.org>, Thomas Fossati <thomas.fossati@linaro.org>
-Message-ID: <69a903d4511e4_6423c1004d@dwillia2-mobl4.notmuch>
-In-Reply-To: <699ca65b5ff9b_1cc510019@dwillia2-mobl4.notmuch>
-References: <20260219124313.GE723117@nvidia.com>
- <20260219124119.GD723117@nvidia.com>
- <aZcbBt7OmNeH3oA0@wunner.de>
- <20260219143129.GF723117@nvidia.com>
- <aZcnTnYJ61Kma0yd@wunner.de>
- <20260219173937.GH723117@nvidia.com>
- <aZgbukYiIxg44_e7@wunner.de>
- <20260220141057.GL723117@nvidia.com>
- <aZn9cfhv0YRxI1mw@wunner.de>
- <699a3ff3f019a_1cc5100e1@dwillia2-mobl4.notmuch>
- <20260223171527.000016ef@huawei.com>
- <699ca65b5ff9b_1cc510019@dwillia2-mobl4.notmuch>
-Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0171.namprd03.prod.outlook.com
- (2603:10b6:a03:338::26) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Thu, 5 Mar
+ 2026 07:07:41 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
+ 07:07:41 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Mar 2026 16:07:36 +0900
+Message-Id: <DGUNQN0P5850.3E1UV2JK8WJEW@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "John Hubbard" <jhubbard@nvidia.com>
+Cc: "Gary Guo" <gary@garyguo.net>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 21/38] rust: ptr: add const_align_up() and enable
+ inline_const feature
+References: <20260221020952.412352-1-jhubbard@nvidia.com>
+ <20260221020952.412352-22-jhubbard@nvidia.com>
+ <ee76d46cc0cab88ce6dbdeda6a8850dc@garyguo.net>
+ <89b240a4-33ec-44dc-8f7c-1a3f8d379e0d@nvidia.com>
+ <DGMAKO04ZM3J.1NJDI9SYE354S@kernel.org>
+ <ba7aec533e083622be9055e77c30fee0@garyguo.net>
+ <DGMEORS8PL1T.242O5BRE6ZSM6@kernel.org>
+ <282c94d3-f32c-4851-969f-61fc968de6a7@nvidia.com>
+ <DGTYFUCCECHS.T8EW6ZPL8NZS@garyguo.net>
+ <2fe31d10-733c-414c-9936-2d892f2a4186@nvidia.com>
+ <DGU8CN7OXXB4.1S5OOWY9GNRKJ@garyguo.net>
+ <3ff4588c-1322-4723-bb30-9049d0b316d6@nvidia.com>
+ <DGUGFGFA7FVJ.297YIFEBLO3SH@nvidia.com>
+ <22041c9e-1eda-4273-b5be-6f277dec4a4c@nvidia.com>
+In-Reply-To: <22041c9e-1eda-4273-b5be-6f277dec4a4c@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0224.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c5::8) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -118,165 +86,177 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS7PR11MB6293:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97096c32-33f1-48bd-8f73-08de7a6e1b35
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW4PR12MB6852:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81aea4c4-d57c-4643-45a9-08de7a85e3f7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|3122999024;
-X-Microsoft-Antispam-Message-Info: imFx0LuuU+zgRpFygHtGzKhk8yR1ktHBaGMCj/vqwEyjAdBIpJ+7GL/eniN4DE/ABj9WcADZHc2on7ImzGCj9QL8kKzloOuaQKCclav+PtS9C12l3FhO+8WjoZzXD19NYdBaOqCBfjmFdALKJHiUMiA191o0/nhGw8noPSTC2XfM5ZYYp6alpN8nBiNfkgU7PcAhzJOpEkyBQodlAQxbUvpPFS0IYrGIkUbIb/SSIn7MwAgW3a4LsVQ21zxhXJtSq8ZiYMbRwlIBRV1KK2iKsZqy9Tzl6FtfyCz+LFh2C7gyECGlr7DSjlQoiEEP6ofQr6n0c4JtC0k/JZ+0K2rJAT/CZ+YdNtjeAbazvsBGkVAWKgOkcezCgsj6K7m6dY3klu6M2fLoJeeLqYXJl8H3Fq5DBnW7rNboxaO4W6cac1UqFvhj6d66s/qTWVZsI0HuPdOGUozolzriM/y+rGpwNw60BTierAGZe59kKcTTmnBldLpbcCLtA9d4/fYVTWesEI94jk/JoXFPVjHFSCa52WdB6JaCaekk/CtxxDln7OuLCOuBA9H3QuwqLSYqOQpEztUVkER/bQAPXOeUF5WjT2tpNoh91JGDr9fYCo/5m6i14cuiA7XskFkULqUnqtM8KTKUw5EbI22VCgfniC1TocViuQS6dSfWXhsb3uu3ROh60bIbmz4CPTr8NXkcI3Poj14/uxaa4dhQxWrdpzs49G9FwC+tCHFdmFvIDE93nwE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(3122999024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WkEvYlAyOHM2NVFFYjNWUUNHbzZXSjEzbDZ4TWtGS0d1VkdrajR6SjRNc05l?=
- =?utf-8?B?R2tkbmlHRGZPUlQ2UG9OSGhMYjUxd3Z2alQrVlR2Mjkxd3duMExKTXhWRGxB?=
- =?utf-8?B?dmNHSDdYYTFINXZ3bmtSRTRFNzFpbFJxalVNa29IZmUvZzZWbHBmOXZlYTlq?=
- =?utf-8?B?dFp5SnBKZlRFTXFqRnRkY3FuczNaWlFIMzlPN1pGbjR0Y3BNMWEvc1lyYnlD?=
- =?utf-8?B?VW5ydU1hSmFmSisyb1JHZG9JRWpVV0pXalJFdGx4SFJFaTc5NkRZZ2VtbmJ0?=
- =?utf-8?B?amxnU25tTjcxVThnVFNVOXBoazR5cEMvT2MxNEdsL0s1NENYRWxqVzRXZG1m?=
- =?utf-8?B?TEM1WVRBdjZGODA1cEVQL0twdTlNMUJzYWRSWWlQSmF1UjRCOEZqeWJQdU1x?=
- =?utf-8?B?UUl0ejJrUzdBTmQwK2lWa3hYSTk3a2NaQmNueXNBS1NzUUFPWXhuS3Q0Z251?=
- =?utf-8?B?SHhvZ2hhSExjUFVDRmlkSDQ2cVJVMVp0SmRuVk9kNkp3dzJRMk1JajFWdmxh?=
- =?utf-8?B?YktVQkdwbWQ5S1pjU2d0bHArRFo2V1Q5eUlOWjNJOVZPVHptOEVKNEVrYnZL?=
- =?utf-8?B?V25QUGtHSFpmYnhsbEpzMVI3ckt5cTIzeThyZVlMRGtOcjVoNEVjbDJLMWRv?=
- =?utf-8?B?MnJHYzVuVXRhWmZQTjRLaWlZZWZXOW94M1BGSEo2MndQWHdkek9BNXc5cE5J?=
- =?utf-8?B?YnVHb0EzZ0hValZ6eUphY0NjWC9UU3E4LzNxdlY3bi9qK29lbTAvZGtjL2F4?=
- =?utf-8?B?c0xPZExNSExIYXZrQXFJN1pMOTRYUmtuVWh3SXZVRllrY3BML1B4c2VnMW5P?=
- =?utf-8?B?b2FWYVJBZzUzZTkvdjdsQmorWEN4N0hJSTQ0NTJiQUFhZnhrT28wZ24xbUlI?=
- =?utf-8?B?ZTNPMlZacU5ycnZQOS93bDM3bVExN1RvNGNXRXk0ZVg0azUxdVFRUEZwRWZ6?=
- =?utf-8?B?OXM0RjZsUStGbXFsR1QxVDdDZTFkVC9Rbk9NVmF5QzZROWFIU2dFNWExd1dt?=
- =?utf-8?B?YmwxZmdZa0RjekdFd2FnK1Z6Tk56OGE3U0RJbkRtNlFUY0RLNXUrMGNQTjRv?=
- =?utf-8?B?djVPRk1EMURiclFrMlcrS09Id2JsQ2FlV1VNbDJxT0szbTl2YmVEU3NxWTdi?=
- =?utf-8?B?MUdLdjl0QVpkMWl5bUhDMmxrd0xpbThNamdLbmsrUjZNditWbTlweDZQM3Rz?=
- =?utf-8?B?V0tFd1NyK3FETHcyYXdBclp3dzF2VTFRMy9IcnZLb1hHVGluaVVpVm5OQlIv?=
- =?utf-8?B?QTh2dUhyQ1JVQk9Ea0t2clJxSEk3SlpHbW5OMnZYTEtjLzkwQkNJNGZ0R05G?=
- =?utf-8?B?bHhqMVAweHhRVHRKVnVJa3NTUUNBOUo5eW1NWGxxWTZCVU0yZ3ZVdnFoNGoy?=
- =?utf-8?B?aUhWZ04yeGo3bWhQdFg5ZGVYeG1GWjNFbmZSUnB1SlJGd0dEemNOT24wYjNo?=
- =?utf-8?B?cWttRDJSYjRFR3liS1pXV0svT3V5QmJWNmFmeFJsZWM0SlNYZlI5NTVWOTRu?=
- =?utf-8?B?V3V0NFR2cU52RHJzUVd4dlFpclRkSGFTTlk2ZFRDZ2U0QmxwVUVvZUtsa3Ra?=
- =?utf-8?B?OHU1d2FEMWY1QUh5VTl6Nlc5cTdUa3d6MCs2MDlZZytlM2RpUXluTUhSSTdP?=
- =?utf-8?B?KzhIUGFveWNabllvVmhDT3ZsUmRjOWtMY2pZWW1UYW8rME8rMHZyTkRzd1ov?=
- =?utf-8?B?SkhmSW12cWNYUGtueDdtT3RUY09ZaTlKamVEbmdsWTFvcE91Sk91Nk8xYTFH?=
- =?utf-8?B?dmc1cXB0ZnhGcjhiRzZNRXBYYXcrakdRRm4zUVpCQlpEWmF0N2tnM0dwemUr?=
- =?utf-8?B?TTRmTzdlOUl1ejI0VDFJN3ZYbW1WU3hqbjcwNTZyczFHRDBRMDhkaFh6Q3FG?=
- =?utf-8?B?QS9DdDJLbmlDN0V6VzA5WnBnMmlHTjRUNTJBUlE5MkZMNXZzRVBZRWxjQlBr?=
- =?utf-8?B?aDdpaytrRDZWS2FUMlNMRGNSRXNwMml3V0JaVk51QVJaKzY0bktYZlFGdm5O?=
- =?utf-8?B?ay9Ic2drTDBabGExNVhWa2lqcVBmOGdHclJlYVM1Z1EwRFduNHpVbi82b3RV?=
- =?utf-8?B?Y3NtaGQwelhrczlRL1F2ek9zd0Q1eFRJZ1JnYlQ1aTh0M2szcFZkc0RMN1BB?=
- =?utf-8?B?emhkL0orbTdKT3M2YldUTDZpVXpEU21yQ29wUDdXODgrcmhDU2dKSHVWZTVY?=
- =?utf-8?B?akp3TzhwTXMrOUpXMWl5bXVDTFh0R2lGSHdRWFRoakNVdXliZ2pmUnlIRXVy?=
- =?utf-8?B?b2FyUVZ3bFl6QWp1U1NqL1BDVnplK0Z6eDRldVMyeWJXZnNBTDIzUEtpM0ly?=
- =?utf-8?B?TEtVYStHRk0zV2U2QjlaS2lQenhLaUdwNVF0U0dMd1pSNjJheERvT01KVXhI?=
- =?utf-8?Q?Tu5M8FV6MEhEHdM8=3D?=
-X-Exchange-RoutingPolicyChecked: R53qdPM1R0pyfvlxaxG1QW2Vn79Zdi6u2sZQ5QaUaZcnk0Y2jKqsnJVryw2VtyCchwqxycknqy0vj4TbzHVj8VjMtVW1u8ZI8Wiz+G82OmCAQQOaGkpbfefbM9dkjeHnoB8c6YisQGYNRWztJG/AoEfPRRWPie9kDQEH6BY0DaRC+/BWcSu93tJuJTc4NXq/sjHePpoXQ1X3HjiWDHhHS8x1Cihx59XTevCa32cZC28KBrQuECpFZc0B2RoHV6x0lzH6+53tcEt4HvVMO6PfENdf6cbb96TdfX2NbEdn2aXtQ5HMrzXgv54QZwcGr+g2GALWVNGeeq32RjoFxzHK2g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97096c32-33f1-48bd-8f73-08de7a6e1b35
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	+xwy+ILinG5LIVIlIMQdBBVLtH6Vp+ZqezhiQ5u8QkjNZ5cOntBva7tgmiWMJ/BHEONKUPyLHaZl6pBdQBwImWPl3QgbdR/bDHL2b3JFhyRrpYQdh2B85aRdHq7ciozWtUyByzhAYxGKKfehKH6keQxB1uh1HTs+JHTPgpH6m7ZI+Q1IZgTbZ3vYRPfQotnlMnS3z+SE5H4/sjoz+KeoEk6mqDGPzBtvmAO3rifcP8hjRt8W+xALum4hx2MlYq7f991xhTrG6vXRH/IHKb+I3dRgRiMFKkmbVkKxBHIvci8E03NZpGRYIvRlLuRi97xk+KPqyxGI0UF8y2fvMLtrMhhPQOOyYvvcSbyua+qBBoCPqT7aCcjTveOFSA+CCTVBimzsa543mRMZ1/FK96DF9BACtTk5yRjnG9r2YUAAeHClNmHOqdGpKq4zT0x/AKiY2AalERbJ55nP9/VLToKRDcTyvsQMpdf/ayRjb/CCN7mmdgu3EwBBtRmSXXHU4kZmUQYHTWWzhM4/cBrqQ+Rbdwv7iPYws2qRWKutv/rmKVpfKJUxIh7R2f6rMcVHVfhHqkdYIl5HHD6l80l7Dxh6FMfHBkYY6sZLod3Q2yae4DPuodh+FlVhP8di1cxBxyWRlFdlpVgEjAGAgBvrHvVZc/+DOWVMuAbBJkYIaJQ8XHSV81iBPIIFkgD1vIXwbzbgADLvbMDVWWoWcAOXNtxfrmP6uNC6prwmIxSXkYoys3Q=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U3dqNW1vbXRwMWJrMDZtRWE0Kzc4TXZBRzNuNFdLZUdvZjF0aWZmcEExd2Fk?=
+ =?utf-8?B?Zml1Qkp0MHAzRE1WcEF0a3dsc2U3Q3o5elBhdmtDYit4ZmlwWjdTaG1mSUNS?=
+ =?utf-8?B?cElFUFpQZ0J0SnY1WDlvYk9MWFFMelV2Tnd0emxIN3Ewb2RRZG9LeDJJSUdL?=
+ =?utf-8?B?ZWVCcGM5RjNiYk05M1ZNcTNJZU9oWkUxeUlBTUFHdjl1RHpqQndqRkZuWUkv?=
+ =?utf-8?B?Z3VtT3h0ZVRYM0NZSEEyczlrOTBaeG5NTzRlbXVxbE9PK3Y0c2dFQjBkaXdW?=
+ =?utf-8?B?T01vV00zVWJCTUpMR0NOYjlVRW5NeVA2YTJwQksvLytjWmZNa3VWeGNLK3JR?=
+ =?utf-8?B?WVBFYmM5Q2JoQW0waWErcGg1WXJPamwxSUJzMStJUW9lS0JsUURFbzVhd2JO?=
+ =?utf-8?B?bDlTbVJ6eFlaczF4S29EK0ZLOXlLSERETm92SkRNQklXZUk4SUZvZWQrbzJp?=
+ =?utf-8?B?enB1SCtYcGg1L3BxSzRKNmJyaXVQaWFtWHBvdnR1dmc3aVR1Z3JnVDRQck5x?=
+ =?utf-8?B?ME00QWpYWDg4WUJjUi85MTUrbWpiR2hlL0VYbndDOGpEMHBvOUh1eDM0cko0?=
+ =?utf-8?B?MVYvaUdzOXZHYk1WWS85bVB2QmEvL0ZScUttcjZNSHBFM3hubkJXclJ5b0px?=
+ =?utf-8?B?RnJka1l5UkY0NHJUMWg4eU5iQ0pGYzQrZXI0WU1WTXlOTmxzR2NKSktMRll2?=
+ =?utf-8?B?RlZ4QWx0bW1SSVVPV1lqeitPaHQzMDlFWlJBQXdDdzZZZkZpOFNvMkJBSEtO?=
+ =?utf-8?B?bklsSXRlYUxsbUVreFVIQTRTdHNYWVVncWo2MkdnR09JYzZFeUYyeTBVREdt?=
+ =?utf-8?B?MkdNY2hBcXYrT1ExbGhJWG1reHhZdGhUWlFhVkdLa1ViUlI5WXpxdXpSVitK?=
+ =?utf-8?B?WHo2ZHg2V1A1Q0J0TTFvbU9pakdRcW4zRDQxb0RseHZCVlU1UGVMcWErVDB5?=
+ =?utf-8?B?RkMzMHBMVlE5V0hKTzR4V1NGSGZ3ekxzLzQ2OE5EVWxQOW12SkduT2ZkTzAy?=
+ =?utf-8?B?UU9IOXFiL0VGUmU5eUtrMmg4MFQ5aHVnTnNsdEtqRDFFZWFSeHNxLzYvQnRW?=
+ =?utf-8?B?NlU4NG9raDQxUUxxeE9YeURFVTJBY0RqSFdsWkhsT2JrM1d4czBLVmVsa1lQ?=
+ =?utf-8?B?UTdUTVlwMWlKV3dXTTY0V2JDbUFmb3EyTm05TWtYMXBKWHhHbkE4U1AvUjNS?=
+ =?utf-8?B?SXc0b2R0Ni9wbjNHa2h4bnlXSElMQmMwbldYTktFOVg0THlLenU2eFBmWDJr?=
+ =?utf-8?B?WW9lZDc1MmU5TXdtZUYxdThvb3VMdHVONEkraDRMMXp4ZUZTOTBIeXVlSUQ5?=
+ =?utf-8?B?V1VYM1NPT0d0NXQwNHhmdGlVNEYzUUYyRnZBQkFQVjJETWZYUlRndXVBZFJZ?=
+ =?utf-8?B?eGh2ZU1VTm82OUFMU05XY3VHR1h0blcyNllVckJEQVlLOHJIamFWd2lCbGNT?=
+ =?utf-8?B?T25LYmxDTG9UOVhuOUdNYnFDdU5tanVkR1FUU3QrWkxLQVMzb3RkbFJPZTFt?=
+ =?utf-8?B?ZUVxZXpRNDdmZXFyaFR6QVhHbmxqbnh4K2xEUkU2QzBrdHlmOEMrUlVGdVBJ?=
+ =?utf-8?B?NlluU2J5dDBjOWJGUDVyUWVwQjZyOXM5d3p5SENKdGZnbVkwN3k5d0t6MXJK?=
+ =?utf-8?B?TExqNDJxdUEyQ1gvOU1HdUl1MnBKMW90aVYzdGIya2I3NFhFZDFTTzhDOENh?=
+ =?utf-8?B?QTk2dUVmaHc5ZWJUSUgxQ2V3U08vdWdrUzZWdWVwZVN3d2JGZ1pyc1UvT1BK?=
+ =?utf-8?B?bDI3VkptbDk3czVSQXlrbm9qN2Nmb2RhMmo3TXZ4WDBrTUdDZjNsNngva0x3?=
+ =?utf-8?B?RmdKUmNUcFI4c1FieGxmUWlPbk1ldnBrNmRqVGFnTXRaRHVldEFkcS9oRWc4?=
+ =?utf-8?B?QUYzMUJhWVV1VkJnTGZMUTdHU3F3YlZmV0VKNzhuOFJTaFk4Tml4UHN6TnFI?=
+ =?utf-8?B?cTdEUVY1YzBzWUpTeUFqY2lHNzYxUFBJeTJ6L1Nrd1dMKzB6SW1pNGIvdDZB?=
+ =?utf-8?B?OTQ2NmxEcjFsTFZndE0zbXNDZUdYcWszNjQrejlXVUNNaXR3NzJmQ1l3QkR3?=
+ =?utf-8?B?VzFwSFcyRnRIcTZpUVZkR3ZSN28yZldqT0JhNitOdnozOWtBU0hodnQ5dWxP?=
+ =?utf-8?B?Sm0rRExZMFhxYWxGN0RRYVRxWTVHV0E0RDFmNS9jdFh5bkdNRi9BRE5QaFJF?=
+ =?utf-8?B?R0U2VTNmbmQwMGdPZ2RhUFEya01XblY2Rlp1TTBQT2t4VE55TFpuOG9uUURJ?=
+ =?utf-8?B?bHZsMHV3VlR2U3I1cEZ2djBMOGJWNjg1dS9kb0RkYUFMUk05SjBHb1VuNGNi?=
+ =?utf-8?B?UStuQ2tpSGNuRktSaS92MEx3dW1xbzF3bk1ZMHMzZjkzcWszRUtEZ3lEWnp3?=
+ =?utf-8?Q?kqMh2s7/iFRzK2j23unGo87YjkMZzSZ4nYaleqJSKJmVA?=
+X-MS-Exchange-AntiSpam-MessageData-1: ndYyeswpeSfU9g==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81aea4c4-d57c-4643-45a9-08de7a85e3f7
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 04:17:25.6774
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 07:07:40.9241
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3lisXL+vEgrTnL0gQRMfqF8No+IugmEhmq6RxcGX0N2cSoc4B+5S5YsFinRqxEKVowg8pzKceAAMX6IzRBsK04fK5ga5Uyayl3r/j5+RRRw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6293
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5rT3XefE/fIIA5ialqWxZ6NpJdnPBoLSa/Od60fN4zTWk7OUzWq9I2TYMIFlHEhiM+YYr71/bPQt3MUxAlSnAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6852
 
-dan.j.williams@ wrote:
-[..]
-> > For that caching the public key bit, I'm not clear on whether you intend
-> > to do that from kernel side (which I think I'd prefer) or have user space
-> > squirt that key back in again?  If we are doing it in kernel we can
-> > at least always verify the transcript is self consistent and refuse to
-> > give anything to user space if it's not consistent (other than debug material).
-> > By self consistent I mean we verify the signature against the device provided
-> > cert (might as well verify whole chain as that's trivial given we have to partly
-> > parse them anyway to find the cert).  I don't think it maters hugely if
-> > we do this in kernel beyond advantage of removing a few foot guns and
-> > simplifying the userpace interface to "I'm fine with the provided transcript
-> > for use when I'm not here next time" write. Disadvantage is we use the
-> > cert parsing code (which is there anyway) and parse it all twice - once
-> > in kernel and probably again in userspace or at some remote verifier.
-> 
-> Right, the proposal is cache the public-key from pci_tsm_ops::connect()
-> and at least require that the resulting transcript from that session
-> establishment is properly self-signed. No point in continuing with a TSM
-> implementation that is not self-consistent.
+On Thu Mar 5, 2026 at 10:31 AM JST, John Hubbard wrote:
+> On 3/4/26 5:23 PM, Alexandre Courbot wrote:
+>> On Thu Mar 5, 2026 at 4:14 AM JST, John Hubbard wrote:
+>>> On 3/4/26 11:04 AM, Gary Guo wrote:
+>>>> On Wed Mar 4, 2026 at 6:53 PM GMT, John Hubbard wrote:
+>>>>> On 3/4/26 3:18 AM, Gary Guo wrote:
+>>>>>> On Wed Mar 4, 2026 at 3:47 AM GMT, John Hubbard wrote:
+>>>>> ...
+>>>>> +#[inline(always)]
+>>>>> +pub const fn const_align_up<const ALIGN: usize>(value: usize) -> Opt=
+ion<usize> {
+>>>>> +    const { assert!(ALIGN.is_power_of_two(), "ALIGN must be a power =
+of two") };
+>>>>> +    match value.checked_add(ALIGN - 1) {
+>>>>> +        Some(v) =3D> Some(v & !(ALIGN - 1)),
+>>>>> +        None =3D> None,
+>>>>> +    }
+>>>>> +}
+>>>>
+>>>> I think your signature should probably just be
+>>>>
+>>>> pub const fn const_align_up(value: usize, align: Alignment) -> Option<=
+usize> {
+>>>>     ...
+>>>> }
+>>>>
+>>>
+>>> OK yes that's a bit nicer. I've done that for v6, thanks!
+>>=20
+>> Hold on a bit - if we are purposing this new method for use in const
+>> contexts, what use do we have for a `None` return value? By definition
+>> we would know both `value` and `align` and thus the result is
+>> deterministic.
+>>=20
+>> We do have an alignment method for non-const contexts already. Gary's
+>> initial comment was:
+>>=20
+>>> Either this function is always used in const context, in which case
+>>> you take `ALIGN` as normal function parameter and use `build_assert` an=
+d
+>>> `build_error`
+>>=20
+>> So why not make both arguments generic in this new method, and fail at
+>> build in case of overflow?=20
+>
+> At this point, it is completely impossible to write a patch that complies
+> with Gary, Danilo, and Alex. It's all over the map.
 
-So I ended up dropping this bit of the proposal because there is no need
-for the kernel to be involved in any decision about the validity and
-sufficiency of device evidence. Userspace has everything it needs to
-make that initial determination. "Authenticated" simply means "evidence
-ready".
+IIUC it is possible. Let's summarize the constraints:
 
-Automatic device recovery into the TCB is a separate concern that needs
-to be prepared to handle more than just "is this device able to generate
-a fresh signature with the same cert chain that userspace saw before".
-Yes, that is a minimal requirement but not sufficient for many cases.
-For example cases that want to validate measurements, interface reports,
-or opt-out of recovery because SPDM session loss is fatal.
+- Gary wants to avoid a panic in case this gets called at runtime,
+- Danilo suggested returning a Result that can be discarded in const
+  context (but took that suggestion back as we already have methods for
+  non-const contexts and thus wouldn't bring any benefit),
+- I also pointed out that there is not reason to have a failure path for
+  const context and suggested two generic arguments.
 
-I had a chat with Lukas about what I think that looks like this morning
-and offered to summarize that in this thread. Note, this description is
-assuming the drivers/pci/tsm/evidence.c implementation started here [1].
+So here is what I had in mind, if using a standalone function:
 
-[1]: http://lore.kernel.org/20260303000207.1836586-9-dan.j.williams@intel.com
+  pub const fn const_align_up<const ALIGN: usize, const VALUE: usize>() -> =
+usize {
+      const { assert!(ALIGN.is_power_of_two(), "ALIGN must be a power of tw=
+o") };
+      const {
+          assert!(
+              VALUE <=3D usize::MAX - (ALIGN - 1),
+              "requested alignment would overflow"
+          )
+      };
 
-Authenticate a device
-=====================
-Look in /sys/class/tsm to find a tsmN device which will be either an
-instance associated with native kernel PCI CMA/SPDM or a platform tsm
-like the one provided by AMD SEV-TIO, ARM CCA, Intel TDX, etc...
+      (VALUE + (ALIGN - 1)) & !(ALIGN - 1)
+  }
 
-echo tsmN > /sys/bus/pci/devices/$device/tsm/connect
+  const TEST_ALIGN: usize =3D const_align_up::<256, 10>();
 
-Once that succeeds the PCI/TSM evidence netlink interface is available
-to dump any signatures created during that session establishment.
+This uses purely const asserts, but you have to work with two `usize`
+arguments. The version below looks a bit nicer as it leverages the
+power-of-two invariant of `Alignment`:
 
-After userspace is happy with that evidence it can bind a driver.
+  impl Alignment {
+      const fn const_align_up(self, value: usize) -> usize {
+          build_assert!(value <=3D usize::MAX - !self.mask());
 
-If running in a confidential VM where the TSM driver is capable of
-securing more than just an SPDM session the interface is:
+          (value + !self.mask()) & self.mask()
+      }
+  }
 
-echo tsmN > /sys/bus/pci/devices/$device/tsm/lock
+  const TEST_ALIGN2: usize =3D Alignment::new::<256>().const_align_up(10);
 
-Similar evidence can be collected, and when userspace is happy with it
-it can accept the device:
+It has to trade the const asserts for `build_assert`, which could cause
+these cryptic error messages if called in a non-const context, so we
+should document that this is only to be called in const contexts. But
+otherwise it fits the bill and looks reasonable imho.
 
-echo 1 > /sys/bus/pci/devices/$device/tsm/accept
+Unfortunate that we cannot make it generic against all integer types
+without `const_trait_impl`, but generating `const_align_usize_up`,
+`const_align_u32_up`... etc using a macro should be doable if needed.
 
-...and bind a driver.
+Oh and if this cannot reach consensus I am ok with just dropping this
+patch for now and doing something like this in the next one:
 
-Auto-recover device (future work)
-=================================
-By default, devices fall out of the TCB on recovery events for the TDISP
-case and need userspace to rerun the lock and accept flow. For the
-native SPDM CMA case the default is that the kernel continues to operate
-the device post recovery and only userspace polling could detect device
-replacement.
+  const SZ_128K_ALIGN_MASK: usize =3D Alignment::new::<SZ_128K>().mask();
 
-To go beyond those defaults the kernel needs userpsace to tell it how to
-re-validate the device. I think that can be as simple as a netlink
-message to store hashes of cert chains or measurements and then use
-those in a new challenge / response with the device with a kernel
-decided nonce. It can also be more sophisiticated than that. The
-point is that it will be use case dependendent, policy driven, and
-separate from the "connect" or "lock" flow.
+  const PMU_RESERVED_SIZE: usize =3D SZ_8M + SZ_16M + SZ_4K;
+  // Align to 128K.
+  const PMU_RESERVED_SIZE_ALIGNED: u32 =3D num::usize_into_u32::<
+      { (PMU_RESERVED_SIZE + !SZ_128K_ALIGN_MASK) & SZ_128K_ALIGN_MASK },
+  >();
 
-The equivalent behavior to what is present in this SPDM proposal is
-extend drivers/pci/tsm/evidence.c to add a netlink operation that tells
-the kernel to cache the public-key and challenge the device regenerate a
-valid signature. Then plumb all the recovery paths to call a new
-'struct pci_tsm_ops::revalidate()' operation in all the same places
-where this patch set wants to reauthenticate. Later when something more
-sophisticated than "challenge the device to create a signature" comes
-along it can reuse those revalidate() hooks.
-
-Auto-authenticate devices (future work)
-=======================================
-One of the nice aspects of the .cma keyring proposal is that it would be
-amenable to CONFIG_SYSTEM_EXTRA_CERTIFICATE. Give the kernel the
-certificate to validate device signatures without needing to ask
-userspace. That still comes with the caveat that it is not sufficient
-for the cases that care about more than mere signature verification. I
-am not opposed to that being built just that it is not a policy that is
-implied by the device "authenticated" state. It is policy that is
-incremental to the base which makes no assumptions about kernel
-verification.
