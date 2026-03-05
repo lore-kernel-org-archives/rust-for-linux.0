@@ -1,71 +1,116 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013044.outbound.protection.outlook.com [40.107.201.44])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D0B3368A8;
-	Thu,  5 Mar 2026 02:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D9C39FD4;
+	Thu,  5 Mar 2026 04:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772676614; cv=fail; b=fqqkEYH2iox2to7GHy/hT8Pw6wv+DjoCVAvDr/7lU06x2A4BoNjPFGu/7/dTz2GLFns7SxqZi2uI6qv3+EgyWvalyBZPWnO8XnoaoEb+gvShQ9iC004SCnPbll4QeaSz3MnKSjuvRlHbnkQiR+oLhZNiLmoKeHx/W9tpnD6T8Ng=
+	t=1772684256; cv=fail; b=JhhOE+VKp5nI0Jg5CrTSr0EvwKPwZPUf8/8j1jUK4FKZyAmCHzDah3PavKFEe54Kmb5bPiiojb+TRS6XpuCokf6ai43Xghz3+jzoklvqkKOkkJIjya3cUHu+69M6Ci6VSd9wBNXDU9zlVuRAR2BtP1VYuluxc7dzYwftKrBpP7E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772676614; c=relaxed/simple;
-	bh=OZYPaSZQ7+PMmfOocU7relQ1T4QpuJGMEy1s+wjUdzo=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=TqK4tUJ1VpYPBWNTTgY4BCy6738TDBcgdzPQzitAaikJydauV6al7SG93DUqXptTN6nwjafKn43n7TH6IHGAuk1rKi3hXSDqH8HG1yxhIJHCd7oQbRSw8i9YMJXlm2vy/FdmLjIvEkz5IZTc0WY4uaNr9R2fLl5DTcwkaPVeFRE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uACXe/Zq; arc=fail smtp.client-ip=40.107.201.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1772684256; c=relaxed/simple;
+	bh=60OEqH64Qdr5jZ2+2UOnI3+SccegOENo7QrfP1punCc=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=FF5ErI3utaPOihBABloNOE4OXxU7LVgcAvY+tT0PcdWbmg9D+Psz0npCVewXTmzxYuKxPgqobPNt5JbRfjWVUSJ7zk+C1Ndf+NaJRJnT718bCu71vIMFxvcUm0logdJ6gEamYuZsX5eJkKtW6Dl9R6Z1JGZYCx9THEhWop11h1k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AGDMfZCD; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uACXe/Zq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AGDMfZCD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772684254; x=1804220254;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=60OEqH64Qdr5jZ2+2UOnI3+SccegOENo7QrfP1punCc=;
+  b=AGDMfZCDbMMuDul9A/ni0SEguY2qdDM5rD1bEYBWrw51gsV/mZNCRTAe
+   BZ00wk/WoBrFBSPNiL2mb4e69nlKSxYGj7TLNUIkrizKCNAKNv3ge+QoR
+   gq+/fc6IsV5dfXAweGtD+FsvvkTjJWuqH6ZYfhl1XASoOZN5cU/aQEIi7
+   X00kTlU32k7d6E1KOXDax+1scoWVnXMfvCG8qYjHP4KPEN1H2+b2lj6Ta
+   4WTGGW3/dO3jOGk7YKJ2UdcsSdgM8gwDb6LaadQETXzYfV6JfyDXoseI1
+   nt0aVwkMQCl9bEicnDjDs0r7iLf6nOCLZ8XdtT7dRjfYvcHBN/R/ls3ye
+   A==;
+X-CSE-ConnectionGUID: Id3eyh52QKCUrisODVUNyA==
+X-CSE-MsgGUID: m7OopfdQTP6yZmoYDjB9uA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="61333883"
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="61333883"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 20:17:32 -0800
+X-CSE-ConnectionGUID: O8A6w8wLQh6ThGPruD50Yg==
+X-CSE-MsgGUID: ZlqeZfiEQzW0KLqFdgiWtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="249025962"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 20:17:32 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 4 Mar 2026 20:17:31 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 4 Mar 2026 20:17:31 -0800
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.66) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 4 Mar 2026 20:17:31 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FoxGMULsE41dvYioMxl13dfPX/0aoXJcwt8CjqLohWmoWiPUpKuXX8PRqo09uCJMaq3llGDeHwS8eQ+W5JIDDEbcyGlCHldPNNiYudu7SG1xn7QozCNrV29tIK2TUNpEJRLXTb7l/IPx4CtjOhd4G6j53+kXIkAJUJCaid4LO9Gwp4i5CODx/mrh1lDAsSGxIBAfhm0vpBcBIV1S0cvGZKWgrOZ/gPwkZLjolpzHTZr4nTRZwSuUghSLt8eRxELYr3C6Dr4E4PgoMkNcl7vRsCyDdpIOrk51LQMcxXjLVLfbLezHB3Tg/wmby9udKH6x6pIDUI52VSmnBJNloJfg2Q==
+ b=Q8gTuWoqzpjuKeh5zIlqHRFNpqqeDjGibY30A/N+e9xuShx5h9ZCnVuklSpV3Et4GPhLY/QIwpK2uGAIe8YZ7H4lx3fc0NPwuyAQyXd0U9sfeRetdq86h1nkyjQ1hj7gIXaWEC4uMlohpBo5ndscohmv3Kc+Tp/QdERPjH6whOSlMKj5QH/Rgk3ICMN3vYY0ZJk34xafTX7bUx7dC0u9h2zMIFMjxt/iIilAPursi9zdRcCxg3CbVPKisQ7zuWe2y0BB45Wovt8jK4K+TP5nxk0z8/1JMzUV1sJfzxeuLlhN46ER+sQGGTp9fKogoQv4+60g7hURggw9ZgC5jeKwkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pvxbo4AKFT9rLv4O5LqtsUw77McnmzCiWrO+9AFxH3o=;
- b=euFBhnjE4AabDhKDzggqAgAFFLs25gUQArBj4VkJmayqFFU+wmXaKsZXtUkrfF9Lqca4BEEE754FQsdzkoBvCG/UXuY5Q++iMR0p9wEaQlraZfysZy917+dbufRfpslgnvdpdL7ZCs9pt03PWNqwwjqSSeyszWBUnC6UUucUdyZiF9W7Lfpx2X/Pr2N2UurbwRcSYXSAxt7GLQioAt3yL4tt/9RMqH2BpyyDfcPlQCgVVY3M1H3hcoKkagrr0Ie8FcHGISqXGyhXWlEP26gxczMsQHVot6X3537IY5Qeps9vgFsSxupTi0IpbxMW40ilSt1NYNhQxzFobl1IlDPRXw==
+ bh=tnZB8+x989Pz7ct8Vm/BNDW1Xc/6Uwi//5x3ZIvABF8=;
+ b=cQx9xMGFMdSkzYnal3LYWzZKbKkhp8qTwyhAjqsDUN4opm2r0zGnSrWAsTKpyYEs/XHYpZi87nystPGK6Xi11kdGZ/8LufY+cRC90NkxBkmce3E63e5v3XM0xx13vr89F2DWTd08OlxaixTaR3hlAz68rQsP0mvKTy4AL1kwip+GNqnmjrdxKEffKVYuLqem9WaAJ6JQvn8L/4fUORX9iAwwco0kNQ95nZ/X+PrZWmn6JV52xqEvd/YGwWwwdKWc9vapMH/2JdgQB9RWFWIL3mPC3BWWyK7eU1gmtWb4ApTqeQIaVCDaH6VBC2q7YF4EACIFe7wv4WFiiomXW4caRg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pvxbo4AKFT9rLv4O5LqtsUw77McnmzCiWrO+9AFxH3o=;
- b=uACXe/Zqq5fmwCmjU1Tm4JwxIuKIB2I47ji7ifp8cxFfWXu0T45C6tIs0Tn0uVWmlIQJPS227xzzduLYehEa1P6UlVc10m+MJoPNX0ECrDYd891iO48eyGRhYMPdvBfpE79offSTJq2yqJjp5EARhYwg/0SbBB5Ks7Sva1wYlNQpRXhblNlzeyCgGo8yqorCOwSmqzyWA2yNhzq3DtzhFz5ZmlrKqrsdFutCjKJPQ1XFwxrq7Lh27Orj7O1nks1l41r55ySgaTB9IMwgkXoZ3k68fv650jAYKFDSMkKA/B//55doWt+COMckIABKXJuapHWCkWCAoWged10jfnYygw==
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DS4PR12MB999101.namprd12.prod.outlook.com (2603:10b6:8:2fb::11) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DS7PR11MB6293.namprd11.prod.outlook.com (2603:10b6:8:97::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Thu, 5 Mar
- 2026 02:10:10 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
- 02:10:10 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Mar 2026 11:10:06 +0900
-Message-Id: <DGUHEUO4O47L.GD24M2B30IKY@nvidia.com>
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, "Alistair Popple" <apopple@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Zhi Wang" <zhiw@nvidia.com>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v3 3/5] gpu: nova-core: gsp: add reply/no-reply info to
- `CommandToGsp`
-References: <20260304-cmdq-locking-v3-0-a6314b708850@nvidia.com>
- <20260304-cmdq-locking-v3-3-a6314b708850@nvidia.com>
- <DGTZ9NLS9TPM.2NRF5C9VN2B7C@nvidia.com>
- <DGUGNCEXKDD2.ETWE4H89AL00@nvidia.com>
-In-Reply-To: <DGUGNCEXKDD2.ETWE4H89AL00@nvidia.com>
-X-ClientProxiedBy: OS7PR01CA0232.jpnprd01.prod.outlook.com
- (2603:1096:604:25d::14) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Thu, 5 Mar
+ 2026 04:17:25 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff%3]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
+ 04:17:25 +0000
+From: <dan.j.williams@intel.com>
+Date: Wed, 4 Mar 2026 20:17:24 -0800
+To: <dan.j.williams@intel.com>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, <dan.j.williams@intel.com>
+CC: Lukas Wunner <lukas@wunner.de>, Jason Gunthorpe <jgg@nvidia.com>,
+	"Alistair Francis" <alistair23@gmail.com>, <bhelgaas@google.com>,
+	<rust-for-linux@vger.kernel.org>, <akpm@linux-foundation.org>,
+	<linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <alex.gaynor@gmail.com>,
+	<benno.lossin@proton.me>, <boqun.feng@gmail.com>, <a.hindborg@kernel.org>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <tmgross@umich.edu>,
+	<ojeda@kernel.org>, <wilfred.mallawa@wdc.com>, <aliceryhl@google.com>,
+	Alistair Francis <alistair.francis@wdc.com>, <aneesh.kumar@kernel.org>,
+	<yilun.xu@linux.intel.com>, <aik@amd.com>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>, Thomas Fossati <thomas.fossati@linaro.org>
+Message-ID: <69a903d4511e4_6423c1004d@dwillia2-mobl4.notmuch>
+In-Reply-To: <699ca65b5ff9b_1cc510019@dwillia2-mobl4.notmuch>
+References: <20260219124313.GE723117@nvidia.com>
+ <20260219124119.GD723117@nvidia.com>
+ <aZcbBt7OmNeH3oA0@wunner.de>
+ <20260219143129.GF723117@nvidia.com>
+ <aZcnTnYJ61Kma0yd@wunner.de>
+ <20260219173937.GH723117@nvidia.com>
+ <aZgbukYiIxg44_e7@wunner.de>
+ <20260220141057.GL723117@nvidia.com>
+ <aZn9cfhv0YRxI1mw@wunner.de>
+ <699a3ff3f019a_1cc5100e1@dwillia2-mobl4.notmuch>
+ <20260223171527.000016ef@huawei.com>
+ <699ca65b5ff9b_1cc510019@dwillia2-mobl4.notmuch>
+Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0171.namprd03.prod.outlook.com
+ (2603:10b6:a03:338::26) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -73,128 +118,165 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS4PR12MB999101:EE_
-X-MS-Office365-Filtering-Correlation-Id: a722d124-519f-450e-1990-08de7a5c53fc
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS7PR11MB6293:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97096c32-33f1-48bd-8f73-08de7a6e1b35
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	gcRlvU+ZuXaFyvUuuFJYMR4Yczbrg846WHi8kvLowo6yYgRtB3Lo/wh1YpLTArQktPoaQw9YwcJB21HH7BQ+oPr3bjC2bMhsbfyiMnBiF8/ACltyWm1zNnng+/z77gGk3Kf1yNz4jdvgmXTfQyPGzXE97juFTVJP4xIbnjpCDza9DHXwAtZoWk3gniQtjAeaPSOH1vcUreBao9Nwb+Rqu4ilYYZFTe8JN8megCxsfjt+XervtXzE7Ld7p17E5rcUfAgP2Xx/K04MKgVwmTDTf8bCxOVHlor6PPurqJzZbT6nRaCcNQjZmzCwgkd0qI+poun03ksttQzsSO3SIdm0Jqx9KjEMnsFikSb6lDbNHwi0ti+vLcIminMr5vQQoO6rU4ZzsMpuGb8BJvFmTefY3V0kIDzNzQ4xhL+F1lvUZbvYcVxz2gzbBhh9B6bGUElcKhGeZ4rpJZ9UGpxQahZCmLJh045BSCfRAXhPv3c7HhqSDCe08aaCrAaPZVjrhihhpAORZcT43scgLuKqp42VyOUGnump3s1OXTKAn1DLC5UCm5LZRMpGPCkhtHXiCuRJxBx/vi9adePzSwsrAgVaDCSDzQOG5Q0PtAjz0xO13FEZHGXr0jEmC68mEaP8xAzFAr+Z6siW/sbx28zRAhJFfZ+Z27PDXBEOkwmvNHt+tG1QFy32fwqUN9QerQndV/QJHa249KaKKJ4oYG+vH717ZOExfdzROpBlCOP4QUGZ2h0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VU8xVExpWU5WendDZEpFdGZjenRYZ21ILzhUdUlwTzNMMFRWS2VqSUkxcHA4?=
- =?utf-8?B?WndpS2VRK2kxTlpmbDUxSHNoazVnemYwYW5BRnJ2Y25uSnV0dUVsTWMzSUJJ?=
- =?utf-8?B?VDB1bVpoRnVOalZYUTNjRnhHeGtTZ2Q0dnAwRjVkbmIyQUFUcGVhTWNrTVo4?=
- =?utf-8?B?bVNMd2FiWmc1RW5vcmswQjJHa2MzOTlaU0daQTBYV1Y5ai9HMm1CR3lMU2VR?=
- =?utf-8?B?NFpZTEw1NmtqdStTQXhzaDNudjdIZGdqYXpRbFZMdEt3Rk05MXpSdU1DQ1hT?=
- =?utf-8?B?QktDU1N6WWV1ejNvbmRieXdkLy8ySlY1OFN2bDZkaFlQdlhGU3F5WGErZGtj?=
- =?utf-8?B?N21rSldFc2hvbFJpTmlHK0VaY3JiL0RuUkxoSElXeXQ3UzBZSUhTbE4xTDVZ?=
- =?utf-8?B?ZXZ5RTlPTW1YWXk0a25JcGladTQ1clljYXQyNGp4dVNqbUVmZWVHK1FhNWJl?=
- =?utf-8?B?TWJJcEpCeENtcTNtdGltUEdXU0FUQS9VYTdrTFJqajI1YzlSWXJ0UStldEM1?=
- =?utf-8?B?QUViamJtakphOVROZHQ4a2QzRVU4cjRhWWZnRkJKb3oyeWNZMnRkbit1MTA3?=
- =?utf-8?B?UkpYTE1aSWJydmcra2FnbFdZdUVlQUVzaG9kcDJ1emRyMld5WkExVHdnK2ZZ?=
- =?utf-8?B?T0hHcEd5TmNzMURYUVE4Mm9iblZ3S0dSdTlGZEkxTHRHR1Q0L29sbzFlelBZ?=
- =?utf-8?B?RkVOcnczODRTbHFKTzFHUU9VY0c4NHpQNGlwR1g0SC9TWVJKbm5pWWhlNWkv?=
- =?utf-8?B?SUpJTEJHU0VhdmMySHpXdXRMVk5pbWtlUGlaeHgwaFZ4NkJ6WEZsWG1hVjdK?=
- =?utf-8?B?NFBobmZSdFd1ZGllc2xUTk91TzZQS2hnM3I1ang0ZkhCNzZyTENSRHBDRkFu?=
- =?utf-8?B?Tk1BUDJJMWVlbFZsQ2JIM2FwZEhhQ3NESjEwdDFKZlgrVkZjNzMwbk9sMmYr?=
- =?utf-8?B?UGZHRXR4NU04NU1sNk5acjhVOE83WU96Nk8zZmEwOEZEVEJYQjFzYVp2SmQx?=
- =?utf-8?B?cGhoSUg2bnlMMzlvQ3RqZ3BzakZKMEZHWTFBM2FpT1V5NzdrZGQrWlptMTYz?=
- =?utf-8?B?aENhT1IzaWNGMmo4UW1kNWxPZUd4MjhpQ1VGNWF0M010a2d5dGI1ZFNDcGV0?=
- =?utf-8?B?T3ZwdEsvU1pGNStoVC9aRnk5OC96di94Q0VlcmxCbUFjc0djNzFGMzdaTmI4?=
- =?utf-8?B?YlRyUEFHY0NZcEtRTzkyZk4vMFBVLzVSRHZzVTR3eHY5bURLRXNyaXAyWGNW?=
- =?utf-8?B?c2h4RmJEMmtyREp2bmp1M3EwTnpyVWNLaURsTC9nMTB2ZmUzZGJsMHJmdWJq?=
- =?utf-8?B?VnJjSVNNTDhsSmNUdW8zSkszNG93UkkwK2JCblU4NlZvc1daTWtxV1dEdFZW?=
- =?utf-8?B?TWxsNTZWS0k3T3JFMWpGMU1WY0xZTDRwaFNsajk1cXpsczBCbFNFSi9NOXlM?=
- =?utf-8?B?WEIyUU1mZFFQNG45Qm9zVWhJdTZhTFlHWEkvNmRLSUM1b2NoYlZSZnFEaU44?=
- =?utf-8?B?Q2NDaXlFeDQ1SklkOHFNd1dxVHd0MlNzT1Mzd1ZjYWxiN0gxeFViV20zMDdX?=
- =?utf-8?B?dTh1RHhvWVJRbmhTbVlUS2x6aUdQNURjKzFlRmpoTkZwRHZjUGRCcFhjdWIv?=
- =?utf-8?B?WFh3TEdXWUpTNmZHbGJlVWVYZjExQ1JVc0IyZGppRjNwWHQ4UnJkc0hSbmJE?=
- =?utf-8?B?bHFtV0NmcXdCbkdCN1lZbzh5WEp3WityOU1Kbjk1NXBMOFNJM3lSVWZjZnRx?=
- =?utf-8?B?alFWWThCZUE4eE9GVEhqN2h0UVE5V2h1czFrVDBtTXpsYlJHNUczK0xtTStk?=
- =?utf-8?B?TU9NSW1JUWdPblNOeDduQVN2NG1qakV3Y3B1Tmkwb1AzWUZtdGhtcEk4b21i?=
- =?utf-8?B?OXRRUUYxOVpIazNCYXB4ODlFakZacWpsN2V4c1pOWmcvQklzaW13cjM0VVk3?=
- =?utf-8?B?eldJb1ptdDRuWnZzQUtVUGRqMFdWbW9vaHlKUzJlOXY2YjdwamszT2tHNXM0?=
- =?utf-8?B?aU1iWndqSFpiVXcxN2tBSWtWbkpaYjZtNHQzN2FjNlQ4Tnc2MmVzZW81K0k3?=
- =?utf-8?B?UVpQOUhkTzFJVmZaSW5lQkVpbVptdUxOeGduOXJnYXYzZmJHeUNGbmJMZ214?=
- =?utf-8?B?VWYxUkYyeUJ0STE1R2xGRFo1bGFVVTBKdGZnZUZTMklaNWg3aGprdHBDelVl?=
- =?utf-8?B?TlFCRm5JRExpanFsMkNZVGpMUHNkcnlvYmhsc2ozRnFySHNtTENZMkFrZjJ1?=
- =?utf-8?B?dTl4RzNNd0g5R1RvM3NSNXBKNmh3cGlEUGhNam04SGNSS0JseFFST0oyekRK?=
- =?utf-8?B?U0RrZVpUMWRMWVZaWms5NDRMMzFndENCRXlpdmlVRGQ1SGJHNHdjKy9pZGRY?=
- =?utf-8?Q?QROYdG2zH+dBlX28zh1nbJJ3hEfa7GMkQN4EkkxM0SJRY?=
-X-MS-Exchange-AntiSpam-MessageData-1: /hlBPtZN8oflaQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a722d124-519f-450e-1990-08de7a5c53fc
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|3122999024;
+X-Microsoft-Antispam-Message-Info: imFx0LuuU+zgRpFygHtGzKhk8yR1ktHBaGMCj/vqwEyjAdBIpJ+7GL/eniN4DE/ABj9WcADZHc2on7ImzGCj9QL8kKzloOuaQKCclav+PtS9C12l3FhO+8WjoZzXD19NYdBaOqCBfjmFdALKJHiUMiA191o0/nhGw8noPSTC2XfM5ZYYp6alpN8nBiNfkgU7PcAhzJOpEkyBQodlAQxbUvpPFS0IYrGIkUbIb/SSIn7MwAgW3a4LsVQ21zxhXJtSq8ZiYMbRwlIBRV1KK2iKsZqy9Tzl6FtfyCz+LFh2C7gyECGlr7DSjlQoiEEP6ofQr6n0c4JtC0k/JZ+0K2rJAT/CZ+YdNtjeAbazvsBGkVAWKgOkcezCgsj6K7m6dY3klu6M2fLoJeeLqYXJl8H3Fq5DBnW7rNboxaO4W6cac1UqFvhj6d66s/qTWVZsI0HuPdOGUozolzriM/y+rGpwNw60BTierAGZe59kKcTTmnBldLpbcCLtA9d4/fYVTWesEI94jk/JoXFPVjHFSCa52WdB6JaCaekk/CtxxDln7OuLCOuBA9H3QuwqLSYqOQpEztUVkER/bQAPXOeUF5WjT2tpNoh91JGDr9fYCo/5m6i14cuiA7XskFkULqUnqtM8KTKUw5EbI22VCgfniC1TocViuQS6dSfWXhsb3uu3ROh60bIbmz4CPTr8NXkcI3Poj14/uxaa4dhQxWrdpzs49G9FwC+tCHFdmFvIDE93nwE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(3122999024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WkEvYlAyOHM2NVFFYjNWUUNHbzZXSjEzbDZ4TWtGS0d1VkdrajR6SjRNc05l?=
+ =?utf-8?B?R2tkbmlHRGZPUlQ2UG9OSGhMYjUxd3Z2alQrVlR2Mjkxd3duMExKTXhWRGxB?=
+ =?utf-8?B?dmNHSDdYYTFINXZ3bmtSRTRFNzFpbFJxalVNa29IZmUvZzZWbHBmOXZlYTlq?=
+ =?utf-8?B?dFp5SnBKZlRFTXFqRnRkY3FuczNaWlFIMzlPN1pGbjR0Y3BNMWEvc1lyYnlD?=
+ =?utf-8?B?VW5ydU1hSmFmSisyb1JHZG9JRWpVV0pXalJFdGx4SFJFaTc5NkRZZ2VtbmJ0?=
+ =?utf-8?B?amxnU25tTjcxVThnVFNVOXBoazR5cEMvT2MxNEdsL0s1NENYRWxqVzRXZG1m?=
+ =?utf-8?B?TEM1WVRBdjZGODA1cEVQL0twdTlNMUJzYWRSWWlQSmF1UjRCOEZqeWJQdU1x?=
+ =?utf-8?B?UUl0ejJrUzdBTmQwK2lWa3hYSTk3a2NaQmNueXNBS1NzUUFPWXhuS3Q0Z251?=
+ =?utf-8?B?SHhvZ2hhSExjUFVDRmlkSDQ2cVJVMVp0SmRuVk9kNkp3dzJRMk1JajFWdmxh?=
+ =?utf-8?B?YktVQkdwbWQ5S1pjU2d0bHArRFo2V1Q5eUlOWjNJOVZPVHptOEVKNEVrYnZL?=
+ =?utf-8?B?V25QUGtHSFpmYnhsbEpzMVI3ckt5cTIzeThyZVlMRGtOcjVoNEVjbDJLMWRv?=
+ =?utf-8?B?MnJHYzVuVXRhWmZQTjRLaWlZZWZXOW94M1BGSEo2MndQWHdkek9BNXc5cE5J?=
+ =?utf-8?B?YnVHb0EzZ0hValZ6eUphY0NjWC9UU3E4LzNxdlY3bi9qK29lbTAvZGtjL2F4?=
+ =?utf-8?B?c0xPZExNSExIYXZrQXFJN1pMOTRYUmtuVWh3SXZVRllrY3BML1B4c2VnMW5P?=
+ =?utf-8?B?b2FWYVJBZzUzZTkvdjdsQmorWEN4N0hJSTQ0NTJiQUFhZnhrT28wZ24xbUlI?=
+ =?utf-8?B?ZTNPMlZacU5ycnZQOS93bDM3bVExN1RvNGNXRXk0ZVg0azUxdVFRUEZwRWZ6?=
+ =?utf-8?B?OXM0RjZsUStGbXFsR1QxVDdDZTFkVC9Rbk9NVmF5QzZROWFIU2dFNWExd1dt?=
+ =?utf-8?B?YmwxZmdZa0RjekdFd2FnK1Z6Tk56OGE3U0RJbkRtNlFUY0RLNXUrMGNQTjRv?=
+ =?utf-8?B?djVPRk1EMURiclFrMlcrS09Id2JsQ2FlV1VNbDJxT0szbTl2YmVEU3NxWTdi?=
+ =?utf-8?B?MUdLdjl0QVpkMWl5bUhDMmxrd0xpbThNamdLbmsrUjZNditWbTlweDZQM3Rz?=
+ =?utf-8?B?V0tFd1NyK3FETHcyYXdBclp3dzF2VTFRMy9IcnZLb1hHVGluaVVpVm5OQlIv?=
+ =?utf-8?B?QTh2dUhyQ1JVQk9Ea0t2clJxSEk3SlpHbW5OMnZYTEtjLzkwQkNJNGZ0R05G?=
+ =?utf-8?B?bHhqMVAweHhRVHRKVnVJa3NTUUNBOUo5eW1NWGxxWTZCVU0yZ3ZVdnFoNGoy?=
+ =?utf-8?B?aUhWZ04yeGo3bWhQdFg5ZGVYeG1GWjNFbmZSUnB1SlJGd0dEemNOT24wYjNo?=
+ =?utf-8?B?cWttRDJSYjRFR3liS1pXV0svT3V5QmJWNmFmeFJsZWM0SlNYZlI5NTVWOTRu?=
+ =?utf-8?B?V3V0NFR2cU52RHJzUVd4dlFpclRkSGFTTlk2ZFRDZ2U0QmxwVUVvZUtsa3Ra?=
+ =?utf-8?B?OHU1d2FEMWY1QUh5VTl6Nlc5cTdUa3d6MCs2MDlZZytlM2RpUXluTUhSSTdP?=
+ =?utf-8?B?KzhIUGFveWNabllvVmhDT3ZsUmRjOWtMY2pZWW1UYW8rME8rMHZyTkRzd1ov?=
+ =?utf-8?B?SkhmSW12cWNYUGtueDdtT3RUY09ZaTlKamVEbmdsWTFvcE91Sk91Nk8xYTFH?=
+ =?utf-8?B?dmc1cXB0ZnhGcjhiRzZNRXBYYXcrakdRRm4zUVpCQlpEWmF0N2tnM0dwemUr?=
+ =?utf-8?B?TTRmTzdlOUl1ejI0VDFJN3ZYbW1WU3hqbjcwNTZyczFHRDBRMDhkaFh6Q3FG?=
+ =?utf-8?B?QS9DdDJLbmlDN0V6VzA5WnBnMmlHTjRUNTJBUlE5MkZMNXZzRVBZRWxjQlBr?=
+ =?utf-8?B?aDdpaytrRDZWS2FUMlNMRGNSRXNwMml3V0JaVk51QVJaKzY0bktYZlFGdm5O?=
+ =?utf-8?B?ay9Ic2drTDBabGExNVhWa2lqcVBmOGdHclJlYVM1Z1EwRFduNHpVbi82b3RV?=
+ =?utf-8?B?Y3NtaGQwelhrczlRL1F2ek9zd0Q1eFRJZ1JnYlQ1aTh0M2szcFZkc0RMN1BB?=
+ =?utf-8?B?emhkL0orbTdKT3M2YldUTDZpVXpEU21yQ29wUDdXODgrcmhDU2dKSHVWZTVY?=
+ =?utf-8?B?akp3TzhwTXMrOUpXMWl5bXVDTFh0R2lGSHdRWFRoakNVdXliZ2pmUnlIRXVy?=
+ =?utf-8?B?b2FyUVZ3bFl6QWp1U1NqL1BDVnplK0Z6eDRldVMyeWJXZnNBTDIzUEtpM0ly?=
+ =?utf-8?B?TEtVYStHRk0zV2U2QjlaS2lQenhLaUdwNVF0U0dMd1pSNjJheERvT01KVXhI?=
+ =?utf-8?Q?Tu5M8FV6MEhEHdM8=3D?=
+X-Exchange-RoutingPolicyChecked: R53qdPM1R0pyfvlxaxG1QW2Vn79Zdi6u2sZQ5QaUaZcnk0Y2jKqsnJVryw2VtyCchwqxycknqy0vj4TbzHVj8VjMtVW1u8ZI8Wiz+G82OmCAQQOaGkpbfefbM9dkjeHnoB8c6YisQGYNRWztJG/AoEfPRRWPie9kDQEH6BY0DaRC+/BWcSu93tJuJTc4NXq/sjHePpoXQ1X3HjiWDHhHS8x1Cihx59XTevCa32cZC28KBrQuECpFZc0B2RoHV6x0lzH6+53tcEt4HvVMO6PfENdf6cbb96TdfX2NbEdn2aXtQ5HMrzXgv54QZwcGr+g2GALWVNGeeq32RjoFxzHK2g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97096c32-33f1-48bd-8f73-08de7a6e1b35
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 02:10:09.9511
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 04:17:25.6774
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xz8otuAa654h+eOHxPbGnQ25GbeIKrpfae9itMxHxxlzio21jgsGIlYzuykNSh/W3AKRF6ssSG9C5NGBUwA5Ig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB999101
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3lisXL+vEgrTnL0gQRMfqF8No+IugmEhmq6RxcGX0N2cSoc4B+5S5YsFinRqxEKVowg8pzKceAAMX6IzRBsK04fK5ga5Uyayl3r/j5+RRRw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6293
+X-OriginatorOrg: intel.com
 
-On Thu Mar 5, 2026 at 10:34 AM JST, Eliot Courtney wrote:
-> On Wed Mar 4, 2026 at 8:56 PM JST, Alexandre Courbot wrote:
->>> +    /// Sends `command` to the GSP and waits for the reply.
->>> +    ///
->>> +    /// # Errors
->>> +    ///
->>> +    /// - `ETIMEDOUT` if space does not become available to send the c=
-ommand, or if the reply is
->>> +    ///   not received within the timeout.
->>> +    /// - `EIO` if the variable payload requested by the command has n=
-ot been entirely
->>> +    ///   written to by its [`CommandToGsp::init_variable_payload`] me=
-thod.
->>> +    ///
->>> +    /// Error codes returned by the command and reply initializers are=
- propagated as-is.
->>> +    pub(crate) fn send_command<M>(&mut self, bar: &Bar0, command: M) -=
-> Result<M::Reply>
->>> +    where
->>> +        M: CommandToGsp,
->>> +        M::Reply: MessageFromGsp,
->>> +        Error: From<M::InitError>,
->>> +        Error: From<<M::Reply as MessageFromGsp>::InitError>,
->>> +    {
->>> +        self.send_command_internal(bar, command)?;
->>> +
->>> +        loop {
->>> +            match self.receive_msg::<M::Reply>(Self::RECEIVE_TIMEOUT) =
-{
->>> +                Ok(reply) =3D> break Ok(reply),
->>> +                Err(ERANGE) =3D> continue,
->>> +                Err(e) =3D> break Err(e),
->>> +            }
->>> +        }
->>
->> There is an opportunity for factorize some more code here.
->>
->> Notice how the other callers of `receive_msg` (`wait_gsp_init_done` and
->> `GspSequencer::run`) both use the same kind of loop, down to the same
->> error handling. We could move that loop logic here and do it in a single
->> place.
->>
->> In the future, we will probably want to add handlers for
->> unexpected messages from the GSP and it will be easier if we receive all
->> messages from a single place.
->>
->> This can be a separate patch from this one, but I think it makes sense
->> to have that in this series.
->>
->> I expect the last patch to change a bit as a consequence of that - maybe
->> we will need a `receive_msg_loop` or something in `CmdqInner`.
->
-> I agree we should migrate all callers and make Cmdq responsible for
-> draining / handling spontaneous messages from the GSP, but I was
-> planning on doing it in a separate patch series until now. I can put it
-> into this one though if you want though no worries.
+dan.j.williams@ wrote:
+[..]
+> > For that caching the public key bit, I'm not clear on whether you intend
+> > to do that from kernel side (which I think I'd prefer) or have user space
+> > squirt that key back in again?  If we are doing it in kernel we can
+> > at least always verify the transcript is self consistent and refuse to
+> > give anything to user space if it's not consistent (other than debug material).
+> > By self consistent I mean we verify the signature against the device provided
+> > cert (might as well verify whole chain as that's trivial given we have to partly
+> > parse them anyway to find the cert).  I don't think it maters hugely if
+> > we do this in kernel beyond advantage of removing a few foot guns and
+> > simplifying the userpace interface to "I'm fine with the provided transcript
+> > for use when I'm not here next time" write. Disadvantage is we use the
+> > cert parsing code (which is there anyway) and parse it all twice - once
+> > in kernel and probably again in userspace or at some remote verifier.
+> 
+> Right, the proposal is cache the public-key from pci_tsm_ops::connect()
+> and at least require that the resulting transcript from that session
+> establishment is properly self-signed. No point in continuing with a TSM
+> implementation that is not self-consistent.
 
-If it ends up being convulated, let's do that afterwards but since it
-looks like a quick and easy win I thought it would make sense to have it
-here. Your call though.
+So I ended up dropping this bit of the proposal because there is no need
+for the kernel to be involved in any decision about the validity and
+sufficiency of device evidence. Userspace has everything it needs to
+make that initial determination. "Authenticated" simply means "evidence
+ready".
+
+Automatic device recovery into the TCB is a separate concern that needs
+to be prepared to handle more than just "is this device able to generate
+a fresh signature with the same cert chain that userspace saw before".
+Yes, that is a minimal requirement but not sufficient for many cases.
+For example cases that want to validate measurements, interface reports,
+or opt-out of recovery because SPDM session loss is fatal.
+
+I had a chat with Lukas about what I think that looks like this morning
+and offered to summarize that in this thread. Note, this description is
+assuming the drivers/pci/tsm/evidence.c implementation started here [1].
+
+[1]: http://lore.kernel.org/20260303000207.1836586-9-dan.j.williams@intel.com
+
+Authenticate a device
+=====================
+Look in /sys/class/tsm to find a tsmN device which will be either an
+instance associated with native kernel PCI CMA/SPDM or a platform tsm
+like the one provided by AMD SEV-TIO, ARM CCA, Intel TDX, etc...
+
+echo tsmN > /sys/bus/pci/devices/$device/tsm/connect
+
+Once that succeeds the PCI/TSM evidence netlink interface is available
+to dump any signatures created during that session establishment.
+
+After userspace is happy with that evidence it can bind a driver.
+
+If running in a confidential VM where the TSM driver is capable of
+securing more than just an SPDM session the interface is:
+
+echo tsmN > /sys/bus/pci/devices/$device/tsm/lock
+
+Similar evidence can be collected, and when userspace is happy with it
+it can accept the device:
+
+echo 1 > /sys/bus/pci/devices/$device/tsm/accept
+
+...and bind a driver.
+
+Auto-recover device (future work)
+=================================
+By default, devices fall out of the TCB on recovery events for the TDISP
+case and need userspace to rerun the lock and accept flow. For the
+native SPDM CMA case the default is that the kernel continues to operate
+the device post recovery and only userspace polling could detect device
+replacement.
+
+To go beyond those defaults the kernel needs userpsace to tell it how to
+re-validate the device. I think that can be as simple as a netlink
+message to store hashes of cert chains or measurements and then use
+those in a new challenge / response with the device with a kernel
+decided nonce. It can also be more sophisiticated than that. The
+point is that it will be use case dependendent, policy driven, and
+separate from the "connect" or "lock" flow.
+
+The equivalent behavior to what is present in this SPDM proposal is
+extend drivers/pci/tsm/evidence.c to add a netlink operation that tells
+the kernel to cache the public-key and challenge the device regenerate a
+valid signature. Then plumb all the recovery paths to call a new
+'struct pci_tsm_ops::revalidate()' operation in all the same places
+where this patch set wants to reauthenticate. Later when something more
+sophisticated than "challenge the device to create a signature" comes
+along it can reuse those revalidate() hooks.
+
+Auto-authenticate devices (future work)
+=======================================
+One of the nice aspects of the .cma keyring proposal is that it would be
+amenable to CONFIG_SYSTEM_EXTRA_CERTIFICATE. Give the kernel the
+certificate to validate device signatures without needing to ask
+userspace. That still comes with the caveat that it is not sufficient
+for the cases that care about more than mere signature verification. I
+am not opposed to that being built just that it is not a policy that is
+implied by the device "authenticated" state. It is policy that is
+incremental to the base which makes no assumptions about kernel
+verification.
