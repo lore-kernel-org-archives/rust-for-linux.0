@@ -1,91 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F5622425B;
-	Thu,  5 Mar 2026 08:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111D4374724;
+	Thu,  5 Mar 2026 08:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772697945; cv=none; b=Lc34Mk/h0zWPi8ibefOUL9AmbMrHknQ92/le3Wv04+BAo8dVXzQc+XBsLZJQcM3MLHt+m9exRHyJ6ismCfj9zTCgy5w2gPK/9xBT6dLE/Fcg7WQGOrZHGX8qbi3QS6UKuV+ki8xiGRMPdDOAs17/M20TUJMo/CJ89mqZGwX40RA=
+	t=1772699077; cv=none; b=hyNq5AbVusukj5HY0dIsT6wxGLEn553i84xDXFCCv6T995GQ0ioOwQN+zIq0ygLIdkzfh/2FPjvR1obHagSF17f0JIpOeuumGE3aguT6JS8skzms42vAQiplyBAyb2Hq382vSOSlDi+nJp1K05YaoGHkhGAvpl9eITbUNHdgzcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772697945; c=relaxed/simple;
-	bh=vA6PYAMRHM36XFlE5PCJYcHBuMHbNaBZqJ9H6p7K5dg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=gCbrJEBu7nEh1OJj1Uc09b8xdoWDF3e18/1wboBBGX9islVNPFc3OspHmyiUejDeBq0CO7c+Rlj5k7Mktl0y9yNE/TVAreRy4AdmRXMdNKGDbaQF4e4AV6rvnY3udfnoT9O5yh+KCXdZ9QvGdyJgou0Fd4xXIlC848zH/l+/i+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8vu4B9z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772699077; c=relaxed/simple;
+	bh=v9aqov2TRju92BUkePwYkzbYjnrsweKBt5HjUS1ipP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hlCkrskXtOetMZpTkYx7XtZVqTclHi4Kr6F8VHY+JgHIlYdl6dBZJXwlzV2j/3MGA0fdqhyBQ9EC6e61wW18+0TTk+0ZFTxlc1efqb/x3Phly9dDFnthHf5HNRVA9mYj+EFyqOPhqf/YG/+3N/7v6I+m+FuWpRQ2kOOhLkFR8rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Esq7gGZU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8vu4B9z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70967C116C6;
-	Thu,  5 Mar 2026 08:05:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Esq7gGZU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFFBC2BC9E;
+	Thu,  5 Mar 2026 08:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772697945;
-	bh=vA6PYAMRHM36XFlE5PCJYcHBuMHbNaBZqJ9H6p7K5dg=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=N8vu4B9zw9meGzC9Ue0wr0hvLnw+5NbaV9nOFgqFQ/HuwQwVxLbOl/8pWAuLKGIwj
-	 wyyDcPl8yoSxvuw5FFsVFMa0W9/3etmzjimY3qBINzXS6HekN3DH+MDYpHYbAsxTB0
-	 9e1q/JCTgRT7+79XysTCnSRED/pmrc4N3FGhq7DYaWmh6tl0hRVwC+j4JTYKOZUPdD
-	 Hi9eRPnuB6V1PaedpwE3XR/Mz3CAg7QmajHEr+LvMsKL6QnP9AgJUalTv1yi/ytaLM
-	 QyOtu4jKUL5v75DuyYeLal1eTUIBzkrzN5f0SskS82aw4HDee/l+MVnZIF4x2KbPHE
-	 xQxMVSTJU+qcw==
+	s=k20201202; t=1772699076;
+	bh=v9aqov2TRju92BUkePwYkzbYjnrsweKBt5HjUS1ipP0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Esq7gGZU0KXs35RQU+pRlI1hgRQdxYIiLM86nXyEIyCQU01GYI19QdoSxNiwazxtb
+	 amix2JoNVwSw4sHwRX3GaRsSGHP3oMYdlKSU2WBjkb5dY8S+Z/qMrUI0igGiit/ebl
+	 EpQYoux7iIB/RdepnrDkfAXKEPEl9C1XqqRL/UnEIROc9kL4kuSOGfrCE3T61m8xtC
+	 mhfz6afBq6fQwsKYcva3+3WIGl4XWrNfxbUL32wxY79TmAi1f0EQl3VDDWv+huynVD
+	 r/g0D1cAC8Lggqh/H7lVjcJ/nM4kvBuAHF13ttzcQ5ww/I1MaSPwikStFIfZh/4Xg0
+	 MGUlxzUri/dKA==
+Date: Thu, 5 Mar 2026 09:24:33 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Stephen Boyd <sboyd@kernel.org>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v4 3/3] pwm: th1520: remove impl Send/Sync for
+ Th1520PwmDriverData
+Message-ID: <aak9ZBJenK1DSCEt@monoceros>
+References: <20260113-clk-send-sync-v4-0-712bc7d94a79@google.com>
+ <CGME20260113151335eucas1p157cd966c5f0f4e477fb11272810a0ae8@eucas1p1.samsung.com>
+ <20260113-clk-send-sync-v4-3-712bc7d94a79@google.com>
+ <90657b83-1cff-4c7d-adde-9b560c2be7c2@samsung.com>
+ <3cfeounnaphhezvjpz5igswml6iu3b6jhwhjn2g4ziimjdoefi@ge4ezxx6jxlr>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ygr7vi7eyprc7gqk"
+Content-Disposition: inline
+In-Reply-To: <3cfeounnaphhezvjpz5igswml6iu3b6jhwhjn2g4ziimjdoefi@ge4ezxx6jxlr>
+
+
+--ygr7vi7eyprc7gqk
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Mar 2026 09:05:40 +0100
-Message-Id: <DGUOZ3GDF3D4.3CBJGK1S3DPCO@kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: pin-init: internal: init: remove
- `#[disable_initialized_field_access]`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Gary Guo" <gary@garyguo.net>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Janne Grunau" <j@jannau.net>,
- <asahi@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260302140424.4097655-1-lossin@kernel.org>
- <aabGlKYNd0CrO7_f@google.com> <DGTSY7NPZEDA.27MENGDJA87B8@kernel.org>
- <CANiq72kNdc7=-uoWXBpxkn2No6-Z0hVnx_yWMNphyTVscsMkUA@mail.gmail.com>
-In-Reply-To: <CANiq72kNdc7=-uoWXBpxkn2No6-Z0hVnx_yWMNphyTVscsMkUA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] pwm: th1520: remove impl Send/Sync for
+ Th1520PwmDriverData
+MIME-Version: 1.0
 
-On Wed Mar 4, 2026 at 1:26 PM CET, Miguel Ojeda wrote:
-> On Wed, Mar 4, 2026 at 8:00=E2=80=AFAM Benno Lossin <lossin@kernel.org> w=
-rote:
->>
->> I figured that we can't really "close" a Zulip topic (we can mark it as
->> completed, but that topic was originally about the field accessors, so
->> not sure if this makes much sense.
->
-> Using Link: instead of Closes: is supposed to mean that only part of
-> the issue is fixed, i.e. whether you can "technically close" it or not
-> is not important (e.g. Closes: to an archive like lore.kernel.org are
-> very common and actually what the docs mention as the first use case).
->
-> So I would say Closes: should be the "default", and Link: is for
-> particular cases where an actual issue (or message) carries several
-> topics and could be confusing to have several commits with the exact
-> same Closes: line.
->
-> In the case of Zulip, we can link to particular messages in a single
-> thread, so typically it is possible to use Closes:, though the current
-> UI isn't great to see where exactly it was linked to... :(
->
-> Anyway, I guess the inspiration was the similar feature from forges,
-> and perhaps in case someone has a custom tracking system that actually
-> auto-closes things in a forge, but it is a bit confusing. Having
-> allowed "# ..." for Closes: or a similar Closes(foo): instead of
-> reusing Link: may have been better.
->
-> I hope that helps!
+Hello,
 
-Yeah that explains it, thanks!
+On Tue, Jan 20, 2026 at 09:48:48AM +0100, Uwe Kleine-K=F6nig wrote:
+> On Mon, Jan 19, 2026 at 10:45:56PM +0100, Michal Wilczynski wrote:
+> > On 1/13/26 16:12, Alice Ryhl wrote:
+> > > Now that clk implements Send and Sync, we no longer need to manually
+> > > implement these traits for Th1520PwmDriverData. Thus remove the
+> > > implementations.
+> >=20
+> > I thought this was already merged :-).
+> >=20
+> > Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
+>=20
+> If I understand correctly this patch 3 depends on the first patch of
+> this series so I cannot pick it up via the pwm tree *now*. There is
+> another patch pending for the th1520 PWM driver, but as of now git seems
+> to cope well when merging the pwm's tree for-next with this patch.  So
+> it's fine for me if the series is picked up for 6.20-rc1 via the clock
+> tree.
 
-In that case you can make it a closes tag when picking.
+That didn't happen (with s/6.20/7.0/), so this patch is still open in my
+todo list. Is the first patch still considered for the clk subsystem?
+What is the plan for the pwm patch?
 
-Cheers,
-Benno
+Best regards
+Uwe
+
+--ygr7vi7eyprc7gqk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmmpPb4ACgkQj4D7WH0S
+/k6AYgf+IFbJpwiUp9P8Rmry4DJdrF6HeXt7L7+0cSOAtSjz8246LrMcqOZN03RB
+YAi8NxU8tZw4Ib54H+GNZUp+gf4jryjO+ry/HXrbC9giXxYVAPBzNhRLgpLUXsm/
+dIJFq7MwB5s7zFnJ6F/u2kD/cCvzCgokFftc831AAAOI7oFD0yZx6nHS/FT60M9B
+eK4cNPn/MEB3vgaxHub02lpr0ctEd+s9sPzbmUobR5KI4yqf60VKycdMGfZtu/m6
+h/nZTyq/u+CEZP92L59gx7GPKTnJZ2XcHKXJSw5wgPiNCYRWn4s1EbKXA6uvKQV5
+r6wXppJz8sU18n8EljYkeht9uPMW0g==
+=NxJx
+-----END PGP SIGNATURE-----
+
+--ygr7vi7eyprc7gqk--
