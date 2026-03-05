@@ -1,169 +1,122 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62D8396B9B
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Mar 2026 12:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FD539E18E
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Mar 2026 12:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772714703; cv=none; b=rtMs+ScStQUUTUE5RUn+XDU/ypeTKrx3GJVZS0CbMK5KPGid6Jh4aaGacMv6dyegt6XMzPjHk/nwmskjV/hFlsbUvh7vOl4VLHamovaUWParH7ndnbM7JL9FBD87GNEF5uYF8Xxwf3NM+rUzlGErRvRviPdftBy6koP176oC/Mc=
+	t=1772714862; cv=none; b=umRn9v9V4r4lK1B24Ep39rjSKz1L0OugYpeH9wzj+z0lKq6D5pEa627PXPyh9q5EGJX6pNpjJNIQ2SyIVeBurvol/MuP6qn3BDJazsz/ezhzIZlkch6tcApteozgRH8UVCiUhnLQ5mp4cmcpTwJ3nGzqp1+6zwjGnE5G7ihkyTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772714703; c=relaxed/simple;
-	bh=AEsLE3FbYmT8/DFevCckFk6DGQAjaJpQ4yTnvlNJev8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WuttAUoEpBGKvYFNhaiD1WeSPYU/f6AUNCE8VyAisVqVEolSNoieetdLUX0rGmwthg2f6ztRSXnzTUjSYE5InytSoG1ZdbFPd3hxC/Ry9BvzFm3DnRK1i1G+mY6nie5BetE55Ssjs+HnV8k1+tipg7cGgH1lEfRNbDV8KAmmNpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HsAPi4dI; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1772714862; c=relaxed/simple;
+	bh=XyTZlz49dcBZy4m8+TW86YPTVZBYLxNCnLO0RL+KgGM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NTxt5d0uxPVOnmV5/CJhmCPDQfhifVYKKv9eIhboPN7Tb3bSAtm/El7X4jzdS18TvB62WRYpVCFC1d/otMLWor4btJx6BuNFOD0kTNWpteYGkUVtuoaYAE8e6XHTsNlpyXcl/MNHpWluZwS6FvzjGQ1n7VGr3BIdx4EEI3z4YUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EHILE0qi; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HsAPi4dI"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48379489438so78357875e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Mar 2026 04:45:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EHILE0qi"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4837f27cf2dso73303265e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Mar 2026 04:47:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772714699; x=1773319499; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AEsLE3FbYmT8/DFevCckFk6DGQAjaJpQ4yTnvlNJev8=;
-        b=HsAPi4dItiRbXiDw9ZCcuYCUMm5JJP1LEWImC+ek9Z7oOlsBHPV9HfO/HKVFOkcbJG
-         UU0ceGeQRpkY/WKpnIZyL9LoBs+pYd2xBNFTDYwpeB/3+BQpURvh26d+/0Pk9C6vkfMB
-         H3M1d++J+mQtGZU+dWwNqSLZDdXlsqt0Bo/VXBMkpQBthBb4zzKcXhucMaWqkfRJsjhr
-         P8ofMxcdLzy1viGAMT5FQJa9mEbShwzEFHKYpWoMJ8vzjfZGE5V8KP/M5a+N2H4EsZAX
-         bymnmU7mhw/BCXwpZMA/iegQJADTiwpob2M5XlT/hBPyQjUFh9O4oej055GiNq4srmnm
-         vW7g==
+        d=suse.com; s=google; t=1772714860; x=1773319660; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zqNYIX4NXmfME4/eKoM3tAKNkR8+A/R/5/pglWf9PuE=;
+        b=EHILE0qi21QsNQ8xMW6chZvySVvxwiEOCF35nskmYe+URb4SsSo2RUfVGJAYuTS+gS
+         pVnfygoWKOVxQ5OAtMwkMFyXo9E2nKRin9usk0fbuwiCvr1Pp27JWkB4/K5Cn47ZwHlD
+         baZ/T/RfmOzVv1ohvD5103oaXlhcUZzEJ3LrK8aLQaFPTPF18+QuIxzuZIGgI53oQHYT
+         bqA3hMgD0ovqgtWeWHy4KsoPM+qVWei9bgZc6h5rIklJl48j96L/qRxA0y4a/fc2zHNI
+         FaCIjuhO8UVnNZEUtueZgkUuWDwb1llfC9x1HrGlQcvuxQ0EMwIpJTZso/k93m2SxpxP
+         GHRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772714699; x=1773319499;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AEsLE3FbYmT8/DFevCckFk6DGQAjaJpQ4yTnvlNJev8=;
-        b=Q5vsU/nokyMyAOn4Vv5hE1+WTMrHU0BDOQwZbBwe2ecMyaJAhQ7jk+L8KBPaDnuzpe
-         j21Po1oKxGxUj4PPU8o2lyIUbrweqQgaKSaNt2qOh/SHe/+DSSLIJK4d6NqEQg1qjFg0
-         4mWjIrLcsJ1Vfc8Q8nlqOVtalxLW8wgHVznaQ4B7gtXHT06/eSe/KW55z+b/ukN3egsF
-         t9IFZMy8uh3gA3/6/v53aYsCGlWpPH4jwxVCXMtvtZzRjxbKBylcAHS08iSd8GdmY3+9
-         e2988Y5e8doyH0f6ml5vp4jkgpLOAlASAU/+N+n8F6DUS5mzarPYLfHeK/wY8rCAFM9K
-         oo/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUUm1tssU2n6vufV34oDZ1R8dlXVaYsvpgGJ8raN5meqtMbVq9OhdBpoYugLamhU/K7uFK6bdsae2FkFF8Rvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5J8NpGKzX/9dSeV4mrljg5Kf4gNSH06CMdldaQHhuqSszjSIu
-	hR/zGITiLD0rznDi3cDsTlqnHV550K4ayKLjPyFm3SJF0FnzeUSusERBn06GpHeBJ5pq8xzaZBE
-	5hhiEA6ntATsMRPbmSA==
-X-Received: from wmbjj12.prod.google.com ([2002:a05:600c:6a0c:b0:480:6b05:6b98])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1986:b0:45d:d8d6:7fcc with SMTP id 5b1f17b1804b1-48519897a4cmr90895685e9.27.1772714698962;
- Thu, 05 Mar 2026 04:44:58 -0800 (PST)
-Date: Thu, 5 Mar 2026 12:44:58 +0000
-In-Reply-To: <DGUUOQV5IT6D.3KTG8Y66S5XP5@garyguo.net>
+        d=1e100.net; s=20230601; t=1772714860; x=1773319660;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zqNYIX4NXmfME4/eKoM3tAKNkR8+A/R/5/pglWf9PuE=;
+        b=N8TuqT5cZmFdhCKbmhYXlQy5hfOcIGlcUDAj0AZtiQrn0oDAZnEbqTTPNBUgNZ95j/
+         KIWdRkWyAR+/6OqjLEbeyIUsJBKjJ4SJx0dgma5wKZByXl0jHLlqqYKWiBTDTQGFSZ+n
+         vNkWo7kfc7KJMCje/CvgatB4ls/bwGYTuEVWwxeA1AzzsPinpSlWdBiNZO0aYiO1kX91
+         6TvX4b0E3JElo+RhkkXbu0Ex5WpTBRXEjm1vhFAkMN5xiH9S4kBPhrM6fccnyR2vEhhI
+         gGaypVEQ/KU+dWMwA1Zr7bH9VIg15mLOJbEOsJZPk6NntIinx81BjZlUKgb6HfXUKrvL
+         6RJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUBLVVO3P28fjeHblXYv3UGcT/+nyjI1vamweHbpx46sYSqprMVaylr6QhB/I1Fw1HDLt8Kn4hz7C1awjwP7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9cLsp75YllPzGkxulVUR4Qi2KoYHIHSHrZSu0MdljBKJOWs35
+	8FVANe5jU48KPEzZ/JBF9SCZbHxOCKnDnibQjBttDrRYIF8x8Dqr/Peh4t4ORJYUlsk=
+X-Gm-Gg: ATEYQzziymt0Y3otCjgHbJU6EO6OI6LpJmzeId0ScnYU6A2L86vsqMPFLeBZfOxjNRC
+	KXJh3AzeU6HS2308hynSBRyW1sqoUhcYpzKlkARJyIBTcJX9hg0R7VGOZ30fq/1G0l46vJ4Cshu
+	lMxZ5TUVPnq3s/yeJXyPhr1+oX14bKCx55R9Kn64oZeifynV8P/xGUy09szRYMnFQ0i6Ser9sgq
+	2Eo+Eh5jQTTW1BHdIqUCFvr94E4jdN7SlJSvUG/jX6oUAa+IL4IvpOlB7eqCZ7ks5TF4VNkfO84
+	EiQNqoLr2uoNofYyGi3G61TuTLrwnSRvjF0sFQaWzKq6fn3MVWbIUiRUxsG8O9LNAxTRpAYUH4B
+	GEZrQjL9BKXl22Sea72NYGNDv5Z8oo1Kj6wm33uC5bCspOA7jPjM0m4LUF1IAwUKupgcXw7mkIx
+	X3ITn11YSOzctwsGbKxWVFBydJH6GZ+Q52WVAJtu4dbEzG
+X-Received: by 2002:a05:600c:c84:b0:480:4be7:4f53 with SMTP id 5b1f17b1804b1-485198c70a6mr97452685e9.31.1772714859895;
+        Thu, 05 Mar 2026 04:47:39 -0800 (PST)
+Received: from [10.100.51.209] (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851a8a9542sm72254915e9.1.2026.03.05.04.47.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Mar 2026 04:47:39 -0800 (PST)
+Message-ID: <4f09a589-c9f7-4d4e-a9e4-c3c9787a38ae@suse.com>
+Date: Thu, 5 Mar 2026 13:47:38 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260224-binder-crate-name-v1-0-7dfc1289abbd@google.com>
- <CANiq72keRQupX8UX7PQrLYgzzbdRquxV06SDzY9aubA_p+uGjw@mail.gmail.com>
- <aZ3A_KBWFJES0d_t@google.com> <aalf03M58WisOEZ-@google.com>
- <DGUUC74P2D10.30VWI1W6CR6Z2@garyguo.net> <aal2toHN877W0Sf3@google.com> <DGUUOQV5IT6D.3KTG8Y66S5XP5@garyguo.net>
-Message-ID: <aal6yoeJQwgW_rih@google.com>
-Subject: Re: [PATCH 0/2] Change Rust Binder crate name to rust_binder
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] rust: module_param: add StringParam type for C string
+ parameters
+To: Matthew Wood <thepacketgeek@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>, David Gow <davidgow@google.com>,
+ =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
+ linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260226234736.428341-1-thepacketgeek@gmail.com>
+ <20260226234736.428341-2-thepacketgeek@gmail.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260226234736.428341-2-thepacketgeek@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 05, 2026 at 12:34:16PM +0000, Gary Guo wrote:
-> On Thu Mar 5, 2026 at 12:27 PM GMT, Alice Ryhl wrote:
-> > On Thu, Mar 05, 2026 at 12:17:52PM +0000, Gary Guo wrote:
-> >> On Thu Mar 5, 2026 at 10:49 AM GMT, Alice Ryhl wrote:
-> >> > On Tue, Feb 24, 2026 at 03:17:16PM +0000, Alice Ryhl wrote:
-> >> >> On Tue, Feb 24, 2026 at 02:24:59PM +0100, Miguel Ojeda wrote:
-> >> >> > On Tue, Feb 24, 2026 at 10:38=E2=80=AFAM Alice Ryhl <aliceryhl@go=
-ogle.com> wrote:
-> >> >> > >
-> >> >> > > Currently the crate name of the Rust Binder driver is rust_bind=
-er_main,
-> >> >> > > but I'd like it to be called rust_binder instead. This affects =
-e.g.
-> >> >> > > symbol names in stack traces.
-> >> >> >=20
-> >> >> > We discussed allowing to customize crate names years ago, at leas=
-t for
-> >> >> > dashes vs. underscores, for matching C names more closely and per=
-haps
-> >> >> > other needs.
-> >> >> >=20
-> >> >> > Back then, we decided to keep things simple to avoid confusion (i=
-.e. a
-> >> >> > single identifier used everywhere the same way is simpler, at lea=
-st
-> >> >> > for humans) and to avoid having to deal with those dual names
-> >> >> > everywhere (e.g. adding workarounds for rust-analyzer here).
-> >> >> >=20
-> >> >> > I talked with Alice about what she needed here -- could we rename=
- that
-> >> >> > source file to just something like `binder`? That would avoid the=
- need
-> >> >> > to have a custom name, so everything would still match (symbols,
-> >> >> > source file, object file...), and it would give you even shorter
-> >> >> > names.
-> >> >>=20
-> >> >> Sure just renaming rust_binder_main.rs to binder.rs would work too.
-> >> >
-> >> > I realized that there's a much simpler way to allow crates to rename
-> >> > themselves: do not pass the --crate-name argument at all.
-> >> >
-> >> > Because if you do not pass this argument, then rustc will use the
-> >> > name of the .rs file as the crate name by default, *but* if the crat=
-e
-> >> > contains #![crate_name =3D "..."], then that will be used instead.
-> >> >
-> >> > Do you still want to enforce that the crate name always matches the
-> >> > file name? It seems unfortunate that it's currently impossible to cr=
-eate
-> >> > a Rust module where the .ko file and crate name is the same, unless =
-no
-> >> > extra object files are linked into the module.
-> >>=20
-> >> I think previously a fixed crate name is load-bearing because we need =
-rustc to
-> >> emit outputs to a fixed location.
-> >>=20
-> >> This shouldn't be needed after commit 295d8398c67e ("kbuild: specify o=
-utput
-> >> names separately for each emission type from rustc"), so if nothing br=
-eaks with
-> >> `--crate-name` removed, then I think it makes sense to drop it to allo=
-w custom
-> >> rustflags to override them.
-> >
-> > Are you sure? I know this commit shows up in blame, but it just adds a
-> > backslash to the --crate-name argument.
-> >
-> > I do not believe that omitting --crate-name changes anything in cases
-> > where the crate name already matches the file name.
->=20
-> Before this change we rely on the crate name to match the file name, othe=
-rwise
-> the .d file and .o file will be placed at wrong location and Kbuild canno=
-t find
-> the output files.
->=20
-> With this change we specify everything explicitly, so even if you pass
-> `--crate-name=3Dfoo`, the object file is still `rust_binder.o` so the bui=
-ld can
-> continue.
->=20
-> My point is that you *cannot* reasonably override crate names before this
-> change.
+On 2/27/26 12:47 AM, Matthew Wood wrote:
+> Introduce StringParam, a Copy wrapper around *const c_char that
+> represents a string module parameter whose memory is managed by the
+> kernel parameter subsystem.
+> 
+> StringParam provides:
+>   - from_ptr(): construct from a raw C string pointer
+>   - from_c_str(): construct from a static CStr (for compile-time
+>     default values)
+>   - null(): construct an unset/empty parameter
+>   - as_cstr() / as_bytes(): safe accessors that return None when the
+>     pointer is null
+> 
+> The type is marked Send + Sync because the underlying pointer is
+> effectively 'static for the module's lifetime — the kernel guarantees
+> the string memory remains valid while the module is loaded.
 
-Ok I understand now what you're getting at. That commit is required to
-change the crate name (but it's not required to omit --crate-name
-without changing what the crate name is).
+It is correct that module::args is currently valid for the module's
+lifetime. However, I wonder if this is still needed and we're not
+unnecessarily wasting memory. Since commit e180a6b7759a ("param: fix
+charp parameters set via sysfs"), even charp parameters are kmalloc'ed,
+unless they end up pointing into static_command_line when the specific
+parameters are built into vmlinux and set during boot.
 
-Alice
+Similarly, if Rust modules eventually need to support parameters set via
+sysfs, it will also be necessary to make copies.
+
+-- 
+Cheers,
+Petr
