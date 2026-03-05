@@ -1,109 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022089.outbound.protection.outlook.com [52.101.96.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53656370D6F;
-	Thu,  5 Mar 2026 11:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772709390; cv=none; b=sKHatvMEf6dNsNQ0/bX8x/e0gfXiqATFV+4ksA/YtP79aYq6lDvdTJoeJZejzSUmpIHVE4AYA6/c4qcpsR/Leu/1FtGslX0mNUDiR9+xsT3bteqwBIKKJ8WAZAgOikpn8O5UU5qE/dG9WYkwzjY3mTkt3CWdX4+K4qMFV3EvV/k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772709390; c=relaxed/simple;
-	bh=lrn12u6sL6iGiv7dTsc1sF0gtNSSPZgx/BMyrzPZGnw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=CvWF/tEmO3Ra7M8oHxQZEzjfWWG93b/ur6BBhnSkJnVZM+SeMEIsZo18wHgaHNvQpUrVaUh7qd5wzIlTHX9iPHLlLhkk4fygMcc+bWLZTCdVCVnOQ/sDTLCkM/4v7+bEUSgVEEBdHmd7qZxZYDng6c/aDm1YGNqFMz1NqeGkyhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KJpOjRjs; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C0539B48E;
+	Thu,  5 Mar 2026 12:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772713084; cv=fail; b=pCnBrzMnxvlYYaREBKZrjLRBoQ0wnVLwZ594Jz6yDBNYZm9amR8v6RddSSm0h+C22phFE+1uh/N8m4sqInHwp1OddWz08a6XMK0K2kO3c8mOmOyZXKx/+C0QjV2sd6Qtc6yOH12N+jGJjN9I/pJShcHdmY1mIVQJfCZw4cHLh2g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772713084; c=relaxed/simple;
+	bh=FsDs4WaJIZ0CWh0e17fRoDZ0SHXmcfXsISGRHCpqQCs=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=R115JLs8TdYP102ezLv0zDyhAq0S/4oxjgcpZR0sEB3KRHtyPiWfh6S5f+pwNV33uBC3+A1JTC0/Noqnt3qoIE3XFuVkVdo/njj0mXoVm4pvLFjhjehcrpYXpZKxJ2H7ri8lSXLj1ptZDWb7Ljmetx7A+JQRch6LQxScj3G3Cws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=AZEKRimD; arc=fail smtp.client-ip=52.101.96.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KJpOjRjs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C242BC2BC87;
-	Thu,  5 Mar 2026 11:16:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772709389;
-	bh=lrn12u6sL6iGiv7dTsc1sF0gtNSSPZgx/BMyrzPZGnw=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=KJpOjRjsdjQDEtf+Bo+H9g/cw839Els4EBc5934Vs3bnb7Vyqt2if5+0a6Br7ayBn
-	 2KJsfbGKeP0sUDTeiGM5QBSOEOy13j7Q1i4vq3fojuuz4JIjemBNTBbaRWw+bd2D+R
-	 6AShFbSzTxvgE0WPKoqyOOk4Aky2wwFxgS34tFJkKEuCHwnJpTsCK3zMsvYvA4aY/Q
-	 KM/czFBJIhMFVaa4Ai4u18/LCNpIYOo8sYGArXAGAMwVt3PjE3VvDFBtDdtCMt9guF
-	 nWpyWn/qo1zxNHN3HN1vdJYNitDF6IjUSY3uLZU85WZA65s1NJZS9onKA5zA6fSsrN
-	 eh4ygkb6vP8CQ==
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="AZEKRimD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k6S5DOXB+S0Dz3u/oKWwYLX8wbQszwT7mwl0BgyAqtGeV87fap+m5iyiFpNVmnw8/9T5vmr002TkvNkjmvTFLKLrYS7+g5R5pRd7xuu8hP536rEQUgsXFbpOiHv/1M4n3oD4F1cbcOjTppc0C53MQIjfR5qjbWe6JPr56h/t2zSOXGrxv2nfyWufDgui4jgBWUW4bcuUi3kA/CyqaYsG0Cu4YXsZbiYtlEzla7gMOrs2UX7NDnjvNwApFvoam4J6EVN3DuLePbGd967/MfCnEtpGChi0erXP2qbc/x0SibUlW2BoCu2yRAgkWNVERczG1t78B70GpTwCCuGgT0RbfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FsDs4WaJIZ0CWh0e17fRoDZ0SHXmcfXsISGRHCpqQCs=;
+ b=w1a2JQCPehLs3HjnV4VqDHoC9rD9QoJjqgosQM6edivNdZphrjzO2TTJI0SwQ9aFnlmEq2YAeK6bgNa0hBEx74in1DExru5xt1ib/oGFjdAAqGoix87hRtBjt/zw21IykQU+5gOBcovlstlcNzwRs5JEUQB+EDKNYmmX+prRk7OyzPxVINYe1IfRBDScGOjORJuC3rjhnyzf5elVNSnQd02l+yHfEYKCkQpmonqgimb2b9/86WPPDLov//+Npo515Iuc+Gi46gFe76sD0preRaSwsR2yN/xgVhulIKKTURUtbbrY10QUG+Au9NjExwvlUg1Yl0yu8haW68eDtvGotg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FsDs4WaJIZ0CWh0e17fRoDZ0SHXmcfXsISGRHCpqQCs=;
+ b=AZEKRimDjFS+DTulAzC29Kgo4OsCCvUIjIK+EfSsXDyX2qYq8JJvYOAbNoopvF0ocUyfEcU2QfQ+70HHmX5XdJBdOvVMTKPJibLuMC82PFRI3XxreWepI5ctOrddCbZ2NZ6Q0go7ueGrz8M8noRHa40hCbSZzwZQEnBfjenL2rI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWLP265MB6302.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:185::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Thu, 5 Mar
+ 2026 12:17:54 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
+ 12:17:54 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Mar 2026 12:17:52 +0000
+Message-Id: <DGUUC74P2D10.30VWI1W6CR6Z2@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Tamir
+ Duberstein" <tamird@kernel.org>, "Jesung Yang" <y.j3ms.n@gmail.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Carlos Llamas"
+ <cmllamas@google.com>, <linux-kbuild@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 0/2] Change Rust Binder crate name to rust_binder
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20260224-binder-crate-name-v1-0-7dfc1289abbd@google.com>
+ <CANiq72keRQupX8UX7PQrLYgzzbdRquxV06SDzY9aubA_p+uGjw@mail.gmail.com>
+ <aZ3A_KBWFJES0d_t@google.com> <aalf03M58WisOEZ-@google.com>
+In-Reply-To: <aalf03M58WisOEZ-@google.com>
+X-ClientProxiedBy: LO2P265CA0433.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:e::13) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Mar 2026 12:16:24 +0100
-Message-Id: <DGUT14ILG35P.1UMNRKU93JUM1@kernel.org>
-Subject: Re: [PATCH v5 2/9] gpu: nova-core: gsp: add mechanism to wait for
- space on command queue
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Zhi Wang" <zhiw@nvidia.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
-To: "Eliot Courtney" <ecourtney@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260304-cmdq-continuation-v5-0-3f19d759ed93@nvidia.com>
- <20260304-cmdq-continuation-v5-2-3f19d759ed93@nvidia.com>
- <DGTYVZMRVLLE.3HQVL7ZT6MU7H@kernel.org>
- <DGUODB0SCS88.2LMCK991QHVG4@nvidia.com>
-In-Reply-To: <DGUODB0SCS88.2LMCK991QHVG4@nvidia.com>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB6302:EE_
+X-MS-Office365-Filtering-Correlation-Id: eaf646bd-22e5-47fe-80a5-08de7ab13a48
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	CBSFcFsjSSCDmjg1yKrndjzvKmxusjeWAST6GGAe3U8qwJLKbyHmRL9eiScvaHArk8y8eW3MlEyXHULumMMs5W0vyPj/oh6Gd1NOACjFCRiwm2zq970h/Z3httkffDdP16XJPrOq7zOWbUJf5/OTQZMobpQLY44h1PVCmdfRs8qZdlrEjftHUrrp6pcc1/BtrCCRmc0WgBuz2yT2VIFU5ooDMSC834N+1zcVWhSIdcxpmgv+VFdkgyLa4Pv3Ahd28Rvl0utj/76xa6Cx1Q2FcG/R15TIFL0VDlswgYnREgehAE/RBbPF3o9l1tMAzFC074bTVeJgoh8ImMiE55Pln/s32fo2ysucftx7c7qasA0RQZ+zUAlrh9ZHBsAbmNstszXJhMX+BiizKS5LQl2nF9mr1nK23BNEaT+rDTsiA79nTFNYNXl4ViCQvUaxVt1ik6WLnUUEa/SLJA/OvZkW1LUDPiResTjMmGJPjyz5Iul8q9QXq2CVy/WGiB4ZjR2A6A1rCy7mTjS5gzkNFlEgX+Owsw76tHaRQBo1wiv4XNrxMRGJ+QPh8CuwWAlQ1ICwOvTuQwtZn29PSjTSbY3tN/4rlwyr9sw4GT8Y0n1+oHsRJKSag8q9h/27MTV33/kEPajBOTnkdvJezE0UQSdAZaub42NnKR331+4gtmj1mEPZ2RHi4aQsohB4xYAJu2Egr45AhIte6M/L+tC0NY+rarDzW4gNq7K+fezfBhcHo2I=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TmloVEZhL0NvU3ZFcW45ZHB3YlAzbGxLYXk2WkVZV2xyUzBLMzdlZnJRTmll?=
+ =?utf-8?B?ck9wdi9Rb3dkeDk2ZmRsMHJYS0VLMXBnYzNZZzRXeFJXSzZlRXc1YzlvYk9m?=
+ =?utf-8?B?SUo3QWZLN2ZVVy9hYUM1WDVXalBud2pIRVpMdDlSWE1SM2NGUXNPV1EzK0hW?=
+ =?utf-8?B?d1VudE4vZFEwR3lRbWVzWDVZVEx6SGV6OXRGVGNMdTJPVWx1dE13UzIrVG9N?=
+ =?utf-8?B?VXphU25zRzZrZjZCWkZiRllxTS95c2F3UkJsajZpbWJ1YmlkOENNSzh0U1Ur?=
+ =?utf-8?B?NlNvMVFiQ1BxRzhjTzM5alZBRlV4djVzODBrVFgybXhvU1BMRTdrbzFjL1N2?=
+ =?utf-8?B?Zk5NVFdzTjNMQXc4dmZMYXNTV2ttRjdpYXA1eW4zVW5leHprRUN0MHBNVUxT?=
+ =?utf-8?B?YXB4elY5Zk9Ndzc1NUZobDdUYytWaTdOaEFUcy8zbElPUlBsZ3VNOHU5NDNl?=
+ =?utf-8?B?MWVrOG16UmpnZzVLQWNCREdZdmQxcCs4Z0lHSi90MFFFNkgrRit0RzdDYS90?=
+ =?utf-8?B?Y0krbW5WcVJrL2MyaDBwUS8rS3lJTnVFWlUwUGl4ZlRKb3pxakZoejRFcUVX?=
+ =?utf-8?B?Ykhqb2l2aUZud1dEaUdqelJxblpQWExGS1ZkVjV4amJWaHJ1Yy9aSmdMYTdQ?=
+ =?utf-8?B?bnBaZmc2aTN5K1BMT3YzZWJmSUJuYTd0Z0xDaURlZy9tRDB3bCtmdEhOcTlu?=
+ =?utf-8?B?dGxzUGN1WkdXdHJ6VjhPc1ZrRHc0azdFTXVBeFVLTTFTQU5JNnZVQ3F5UjJo?=
+ =?utf-8?B?WHloY29DZDFuRkFQc3RDc0MyRkh2STJnUUFtMHZ4ZndGNmtidmUySUlaNTFU?=
+ =?utf-8?B?VzlyMDQ4QVFBSzl3USt6d0pkaXpHcDMzRTFDRWJIZ01BSW81OUdWbm9PNU9y?=
+ =?utf-8?B?ZUpEQTJHQ3p2TGRCWXluVGxFbVI2alBVR21rSHE4cTlwWlVVRktPN1RXYUJy?=
+ =?utf-8?B?Z3JON2E1NWp3VkRacGlQWFZHSVVhL3ZJYlZYNXI4dzhmbUl4Y0VqK00ya2hk?=
+ =?utf-8?B?S1dyR3Uybmp1T3loZVN0NXhWbExaaG55SlBhNnVSd2t0cFM4dWJkaGNTdFF4?=
+ =?utf-8?B?V09oT2plcTU3ZGU2RG9aRW1jakJoeGZPdXQ4TkFmY044dS95VlhzVDhhMENV?=
+ =?utf-8?B?bWhwQXBuNXNVZHpDMjN0R09JR2xMaUV5Q3JNdjFFY3ZBSURCMEo1RUt5cElE?=
+ =?utf-8?B?OWJ3b2hFZEdhWkVzdEpKQngyN2JwOCtWYmI5OTdlMkxybjBFa1dBR3hVL1FF?=
+ =?utf-8?B?SEJSQzZmNTZMczJGTG9hWGQ5aWdLUXM4bExaOXRQTndIZFF0YUNTb2tjbDZJ?=
+ =?utf-8?B?UnZ1c1ViZllxRm9DSlpyZURRTFZpTkhzQVpoWVI0ZUJkVFU2eVBDdVI2OXZ3?=
+ =?utf-8?B?a0U1Z2NaNlFOUjlzS09VMHd2M2RmTXNxblVvNVVtYW1qQlpNZndKaURDa2lQ?=
+ =?utf-8?B?cDVnQ2NUVVE0WXlYZ1lsenIrY1owS2VyUjlSUGt4WW9ub3c5YzZabWM5VFl5?=
+ =?utf-8?B?OXhtUWtZU0RQbS84amlQTXB0bGkyc0VPdHAvT2FuNWJGbkpma0Z0dzEzWTdL?=
+ =?utf-8?B?YktvSmRQOGhZY0M1bnNTVVpvODFlU2k2Z3BwZGZ6VGtzUWNqalZhMUdzc1VZ?=
+ =?utf-8?B?bDRGTGlPWUxLMEl3YUQ1TU5Pdlp0aER4MWppYmU5Z2N0TXBIendzZjlnWnFI?=
+ =?utf-8?B?dnQ0MTlhc05NL0RUS09TdnJtSmFQQ0F1VzZkeHJhclVBN1lLV3g3ejI2S3dS?=
+ =?utf-8?B?MElxWFU1aFRBOEtGRGVuT0lOUWVuYm8vMUFDNHZ3MlJOYUpSZHRWdElCZ0Zx?=
+ =?utf-8?B?SERnQk8vQnJidkNmbW9oelE5YkhZaWtkcHJ2Y2Z4OGRiVVR4U25nbXhmeWJR?=
+ =?utf-8?B?Vm5IQnRXZEhrQVJBZlJHQTVNNWllWmsySlB0TUFBWExCMitkY20zMGpCMnNY?=
+ =?utf-8?B?VlBtREpqaGxFK25FU2U4LzBpSDJDRGh3RjZTcFpzMVpIc2pVTHRoZmQ1dGVy?=
+ =?utf-8?B?a0p4aEpkOExya0o4WlQrY1N5djQ4NDBWU0haMGhKZnZGOXJlcjNQSTBWb0Zu?=
+ =?utf-8?B?eTFQckhaREpXVmw3TTN1VW42L3dtRURPNWdQWEhvQWRYZWIzdnQzcWJZeXgx?=
+ =?utf-8?B?VVJPR0ViRUh2NXVUZjExbFUzU0E4bERCelBQYk5Ja1JpTFVXNUJkSzdzVWkv?=
+ =?utf-8?B?RHFYU1I2b3QzMlFnQ1RGaDY3cHZndnZKQzlwdEhMMnZzN0s1ajBYbERFckFF?=
+ =?utf-8?B?eDA1ZU1yM2pNVk52QzhodHpjOTNsSURib0Y1MFl3aThMeVlCWHd0V04zWXJE?=
+ =?utf-8?B?bDFodU5jMHhxTVFXcWZtMlN5Q0RGZ2VHM09PWnJDcTMrWkxqS0RMUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: eaf646bd-22e5-47fe-80a5-08de7ab13a48
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 12:17:54.0083
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TXCcpL1gLO+3lxUoN79cRA1AJvqZ22G8QvKVDFHnelX08yNDHS60eyGBm3JcG0G4ADgJHzflXlDet+jby+LnJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6302
 
-On Thu Mar 5, 2026 at 8:37 AM CET, Eliot Courtney wrote:
-> On Wed Mar 4, 2026 at 8:39 PM JST, Danilo Krummrich wrote:
->> On Wed Mar 4, 2026 at 2:42 AM CET, Eliot Courtney wrote:
->>> +    fn allocate_command(&mut self, size: usize, timeout: Delta) -> Res=
-ult<GspCommand<'_>> {
->>> +        read_poll_timeout(
->>> +            || Ok(self.driver_write_area_size()),
->>> +            |available_bytes| *available_bytes >=3D size_of::<GspMsgEl=
-ement>() + size,
->>> +            Delta::ZERO,
->>
->> Isn't this either creating unneccessary thrashing of the memory controll=
-er or
->> unnecessary contention at the cache-coherency level?
->>
->> I think we should probably add at least a small delay of something aroun=
-d 1us.
+On Thu Mar 5, 2026 at 10:49 AM GMT, Alice Ryhl wrote:
+> On Tue, Feb 24, 2026 at 03:17:16PM +0000, Alice Ryhl wrote:
+>> On Tue, Feb 24, 2026 at 02:24:59PM +0100, Miguel Ojeda wrote:
+>> > On Tue, Feb 24, 2026 at 10:38=E2=80=AFAM Alice Ryhl <aliceryhl@google.=
+com> wrote:
+>> > >
+>> > > Currently the crate name of the Rust Binder driver is rust_binder_ma=
+in,
+>> > > but I'd like it to be called rust_binder instead. This affects e.g.
+>> > > symbol names in stack traces.
+>> >=20
+>> > We discussed allowing to customize crate names years ago, at least for
+>> > dashes vs. underscores, for matching C names more closely and perhaps
+>> > other needs.
+>> >=20
+>> > Back then, we decided to keep things simple to avoid confusion (i.e. a
+>> > single identifier used everywhere the same way is simpler, at least
+>> > for humans) and to avoid having to deal with those dual names
+>> > everywhere (e.g. adding workarounds for rust-analyzer here).
+>> >=20
+>> > I talked with Alice about what she needed here -- could we rename that
+>> > source file to just something like `binder`? That would avoid the need
+>> > to have a custom name, so everything would still match (symbols,
+>> > source file, object file...), and it would give you even shorter
+>> > names.
+>>=20
+>> Sure just renaming rust_binder_main.rs to binder.rs would work too.
 >
-> This is what nouveau does (specifically `usleep_range(1, 2)`). OTOH,
-> openrm just does a busy wait, which is what I replicated here for now.
-> GSP command queue not having space IIUC is meant to be very exceptional.
-> I am not sure which is best, maybe Alex has an opinion, but also happy
-> to change it because that reasoning makes sense to me and I don't know
-> enough about the distribution of how often it would actually need
-> to wait to know if 0 delay is justified.
+> I realized that there's a much simpler way to allow crates to rename
+> themselves: do not pass the --crate-name argument at all.
+>
+> Because if you do not pass this argument, then rustc will use the
+> name of the .rs file as the crate name by default, *but* if the crate
+> contains #![crate_name =3D "..."], then that will be used instead.
+>
+> Do you still want to enforce that the crate name always matches the
+> file name? It seems unfortunate that it's currently impossible to create
+> a Rust module where the .ko file and crate name is the same, unless no
+> extra object files are linked into the module.
 
-Well, what this code says is "let's hammer the cache / memory controller as=
- fast
-as we can for up to one second".
+I think previously a fixed crate name is load-bearing because we need rustc=
+ to
+emit outputs to a fixed location.
 
-This really should come with some justification why it is actually needed f=
-or
-proper operation of the driver.
+This shouldn't be needed after commit 295d8398c67e ("kbuild: specify output
+names separately for each emission type from rustc"), so if nothing breaks =
+with
+`--crate-name` removed, then I think it makes sense to drop it to allow cus=
+tom
+rustflags to override them.
 
-@Alex: It also seems that this is based on broken code, i.e. I noticed how =
-the
-DMA read is done in this case in e.g. gsp_read_ptr().
-
-	fn cpu_read_ptr(&self) -> u32 {
-	    let gsp_mem =3D self.0.start_ptr();
-=09
-	    // SAFETY:
-	    //  - The ['CoherentAllocation'] contains at least one object.
-	    //  - By the invariants of CoherentAllocation the pointer is valid.
-	    (unsafe { (*gsp_mem).cpuq.rx.read_ptr() } % MSGQ_NUM_PAGES)
-	}
-
-Why isn't this using dma_read!()? I think creating this reference is UB.
+Best,
+Gary
