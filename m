@@ -1,363 +1,155 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012068.outbound.protection.outlook.com [52.101.43.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A2831D74B;
-	Fri,  6 Mar 2026 07:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AD734EF12
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 10:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772783271; cv=fail; b=TxoeoCi1JM0KOA+idicqQYxfh9XnqyB/3dkM0ErNeXWkXlmJ6rC6KFt70G4IUJzeiM/truOM9hc+itsYWX6WxnFag1/nKwCk9xruEVUtp+1fSGZ5DnDthXPAWtSYDzJJfAALAvwlUlxY5XATz+ycP1G0fu6CqLdm3oLNIR7j3A0=
+	t=1772791669; cv=pass; b=azaGLA3ulqkRcng7z9lkT52qIXWwnv2zU3/3Ra5ULfIR/FzKxNw81gtEb61gDGc0TEvwP7AUTEKLc5qv9RhVegY74cQ+BEYG+vYQvUJHy02G+yiZxQ2lgH5Bxa2VZ3AXj3fQBeqA6+KCvOPTwNPuq32TGlMWNCeS/I95ncIB9yc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772783271; c=relaxed/simple;
-	bh=OjAi9f1qB5KcIig1vAqqC1ZdliVbAgLSAB3kzleICkw=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=m9ySjXsi+L4tACevljpNCLZ+XjyZ93+dvZEhbq6tCNDKsiCZOo9RkIgDM63I4eZ8Brs2pMUS1kFg/6TdX1EbZB19VTReZmfF9hCtQgFrM5fLZEbXGFL7CBgAqNy2PTnTMA/HnmmeC0jJOeIOESsjZiyQkEw+FnkKVMpzsR7rXpo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=X5IUszUW; arc=fail smtp.client-ip=52.101.43.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1772791669; c=relaxed/simple;
+	bh=FpWh862gEku98kCLig3c46uSdzxamRSgEzhbqtKtTvc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kCv1R7tTMebUW97I7J3TVJI+rnYoO1aUJaLBGJpcb2ICa+9zBfRJRqPWYcxYkGRi8e/H5JCxWrYh5FtmlIr8rd9bEvmjofAyjwIsMOySnfTZGEBy842amoy178LHWgtYMu/atucYQZ9yCwfNppWzT1tKJleXctZ99zR6az2weCY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=APs3Pd/Y; arc=pass smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="X5IUszUW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kp/Dv1m8hPzvCqq1puuHmUNcS1ct3hFOfqvhpogCR+SNdR67EmgoqyRxWdjaUlgUgGJNRYLf4NbNxUbJuLxAHxzVXwjCvIvC32Lnt/Lghu6ziloMV97SEx7E5sotO80ioqBU65Enu8AjFe+tzn+uMjX/ipQATaYMGpARKvSUrSw4ypTui+Q+MprLQ02rtYNAHMPKG9zx0VOi+JmLQO9HtmYRVO0h2icbTrOaPuBKle+Njqt0kP6VyuZnSwZ/KSnQmJP+w73+qE0u/4KPegrd/lyp7D3E/X9K6KS+/tIP/8QL+HkKjlTvT2I7OPEOL/UgIrVoMj1AiQ/LRbo+kaXcMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x8e+KAb+2NQwWsNEaxRufMIVawsmuLrajqkNF5zThs0=;
- b=Yh+TRflk8tcIWrrT9GkLZC3K50sjZjC2h8+tOfOwLlSRrS7a2jntcssum3fwBP905HJzazqWhAssmb9K3X7LTY8hM3LoJHcIRqwY8p3cekcqPQDMfVd285t0FKQwUr7X8PPZLsNu1Hd9RpYqSovFQqIboAmypZn8gv5h/+GPEpbhftFKzbKIde1XWXE/hc2lu+dxwz+vHxjBHNzNvQJGpLo3CqtUHmYK9LCSVDGJ484OduXqyFadzy7PV95QD5dS3OHU2ohS/Z4Ep0ekSfGfCJa5HgVJX5NHeEjLfBtP3RNsZ3oPZG5t2E1EscbjZXoccGCqqIz0qzOiYxQP0DxDYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x8e+KAb+2NQwWsNEaxRufMIVawsmuLrajqkNF5zThs0=;
- b=X5IUszUW5hWpaMyZfjBh4pCcQUtVf+hZa3leNI4AVhZvmtm/FOe88Ib4uP0MazKnj8WBHCdZ811lqgvcRsnZ20Jv8BT5JIzdIbGV4nFfFPrzKn6qIYTfA3pRQ9i2pcMD+VlniWjWD2i4stK4a4F+zHJWlIEUGyq1Y2wccC2x1Q85nvG7oR+VU378xErcyE0Dz/3YlBcrgut5ITcFs7M5czGIeI7+lf0pKGtputXH+gZsOEU4aUTL0pOdXDPFo1B7HvJYhY3l6HqX/SoREOzIfdFC6Iov80dbh/wnDy3O2sZOVPwdrMZnyo8IFDFUvK/uMwtl+EVPngTsTdvkAaHxqQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by BY5PR12MB4211.namprd12.prod.outlook.com (2603:10b6:a03:20f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Fri, 6 Mar
- 2026 07:47:46 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9700.003; Fri, 6 Mar 2026
- 07:47:45 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Mar 2026 16:47:42 +0900
-Message-Id: <DGVJ7VQX3TD5.2UYW004QJPI6N@nvidia.com>
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
-References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
- <20260224-register-v7-5-aad44f760f33@nvidia.com>
- <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
- <DGQ67S1NH3OA.2MS0YVO0UU2E2@nvidia.com>
- <DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net>
- <DGRWZVJNLLH0.39JYHZIIMC9XK@nvidia.com>
- <DGSB81ZE18O1.31CVVHMP38U2W@garyguo.net>
- <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
- <DGSC6U50TCHF.9FKDO3AWL3Y1@garyguo.net>
- <DGSZWZCI0H7H.2EM8L04YH0YRP@nvidia.com>
- <DGT09KTYDCU8.3BBAZBGIYRGWV@nvidia.com>
- <DGT8FQ97BL8O.1VC1JEXIEBDRA@nvidia.com>
- <DGU4TLDMLFN8.1KKSL2WATFZ7G@kernel.org>
- <DGU7U81KKLCD.2LEPJ73BGLQU@garyguo.net>
- <DGU88IHVRYHD.9WP9Z40UAN37@garyguo.net>
- <DGU92W2W71JI.HBIFK6L78F9C@kernel.org>
- <DGU9AZ43QK6Y.115RDSK0M9JY5@garyguo.net>
- <DGUAC0GJRR0Q.34WBS7BIZ58WF@kernel.org>
- <DGUB44J4FNCA.32QOV1DYI7VBK@garyguo.net>
- <DGUBN1HP1F8I.2RZGSFCBO9FQS@kernel.org>
- <DGUCFC9NJG5B.Z7YUXK4NEE04@garyguo.net>
- <DGVGGGBSC9PI.1TJV2ZAIML0BI@nvidia.com>
-In-Reply-To: <DGVGGGBSC9PI.1TJV2ZAIML0BI@nvidia.com>
-X-ClientProxiedBy: TYCPR01CA0167.jpnprd01.prod.outlook.com
- (2603:1096:400:2b2::7) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="APs3Pd/Y"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2bda3b4318dso775912eec.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 06 Mar 2026 02:07:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772791667; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jqzxtdziYRw86jovqbDcNS1a4lKS+cjn2y2qBDe2bCMas7AxW9Pw6zoM1XmO0o27tp
+         NrC/nHUoedZMenDy7P0JdK/IgrIERoriYMSXZCjuwFkmHnM2h8d4+CVs+BBpYdiAr1W6
+         iMfnV5nd0pa65j719+tZiHzrXbOyy6jirxkxRrpCG0r2idEHU7+q3EHV0eq7UZ7u2XuW
+         1NVpOcMLt4tJAuZsFXRJi3I8Uqrpzr4xU/mMvy0+nHofKSmyW2z8bol5da3Z8TEIm3dq
+         pZ1lkFzwC9tRzYYHmIQRRz8JDimHRKqeqMGEhk0EsTlWDLjTwBYr6+qZJ58XIrpAdZDq
+         cC7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bMWTs4qndO1zee7/ID+Vcc2GRKot4BShkBFBU3cRJAc=;
+        fh=4aLpjHTU1W2OYRI5S2KnMQbRYWYDmwutnDGoapJOkFQ=;
+        b=QpuyO/56EYKdWddF1oBWTRRoHXjg0q15OLbaByBKgYL9MmluzYxRBn2GJnz/IQ2sTT
+         AjAfJ7XOFsHV7GBCnLrMlNoxfRZxlSzvXlaHE+dJQpe5hJjFvxYvu8PKFXabD/YtrnX7
+         LukhU5XF0h2+LqAVpNsRHJZOJ7XEFssIOVU9TZDk7Gx1+8W4mxA5NZAOXWhyBf/9oQ0c
+         pjPOFxsdb+micEFirxOJgYEao1YyHONWlIqLYOCIr2/Bh3McIP+0m+4VmnN+Zmw357/q
+         2I/+TebNkyYw7gQe5CruqYsO//fZ+jsAOTpls8xCIdKguVeSCAYiSD3a3vwvbXVVrZuc
+         i2Vg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772791667; x=1773396467; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bMWTs4qndO1zee7/ID+Vcc2GRKot4BShkBFBU3cRJAc=;
+        b=APs3Pd/Yk2qIARVTbwX3gq4Vn2tbe8F1F4uCQFDwqdgT7gg73y6/6yDGEy/t6MW7Fz
+         I41rTugc1y1ZRJi+8vTdSEj5YXWX0g0ps5v7LTcVz0lpgZf4beicsmozcJ6yEvmwxy9N
+         LZHdYSpV3CLUUnlkeTMR9RZui+5mzuscN54qrZWmY+puoOi4dxaEViGl7v6J73CKqXm1
+         EO+ohYRuqMKG0pItUSg/KPDCvt2ZCifTq1jXQtUCh+mrbhMrtl7PqZ91u6WPlBovwid2
+         uFC9XzEI2RiSNbtIeko9ZSXmwzRVoKnPW27pz3iyCHeISv8Y9ilcD47jy+/mVRuxtavx
+         B4PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772791667; x=1773396467;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bMWTs4qndO1zee7/ID+Vcc2GRKot4BShkBFBU3cRJAc=;
+        b=ihjRwWbyjH50Zd8lZFZhbAo2WJI1cXBoW1+UbnjTgHD0HUEjW0dUqhooDfRN8VqIqu
+         ZU9ZPy2Y/mcFZM81ODQc7KqdUPOyQeEQALlKLI0El1ZF+HlCJceEBF1Wc/u9hPpoyuOE
+         NFstn/pFCskb7IIIiSMRbV6voT00fab9U7IsInAKQivG+0cw1dvHXVvXO1v7TdQE7cmu
+         GLI+9LHgY0m4wnWTqLvxDyNXK+R/LceXKjRhokwurcIJy4RGRdGCUPyKOW9g/wBE1wHg
+         jkdMP23ycQ3RSxdseBHqbVyMuq7MEuEI2RYxQ+anvgbKjOdJYpCqiXbthrF4Jfp3DRZA
+         e6pw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKxpZ19FxlWs4ofL6xSXda87gUZjVAyHObnHyDgCcjSg7BaKQKxsiRyboIzkFBsyxTIfmeX8sER7X83MvJtg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUNN4XC0/WMwAH/CAjcxUrKAq58hZU2wKMtHDNuaCkOogZycS7
+	gpwWhD4D5VSDNGnePjoH7LQRf3n9RvFGOYCrMiRFDXCbsYqWsZQyCJXGe4xry1oXJihqDQO81Np
+	kgbaa8mMr0BBsKRJH57m021dndTE/U4g=
+X-Gm-Gg: ATEYQzw7y26FDTKzWSz+JuBHXxV6TrpkAP48RAvegDBq7ZjtKew8giG/y+IylUQ9IK8
+	Oyla9Ktsi4eM9CJNZPd3FupTZSvFkD3dxtzhVwWxsc8tLWLGebbUVN3ZROsRdXC8BB0Dd8FqlZx
+	B0Q3gUxdV86ywePxo9Xh4zOazmIwxKqOYo96f0W5W5CR8w5U5U8uLqutJM24CrEdocFRJ2bkaOP
+	x+EbR0aqh7xpO9Pzm/Z40pkt8X77OGmXj680xOM6kd8nQ8ge85Jr++HjPqf3erTHq7AtXg84Gh7
+	fZd+Pni8hr49UjR9GUiU4lQ29wPlbk4P+uShgDNugja5PwXCYtcTJcmffX7tUjb3Xe2xSBaAVRK
+	nw6zLjapoNlfPCjDQhId4nZFR
+X-Received: by 2002:a05:7300:cd90:b0:2be:1544:5c34 with SMTP id
+ 5a478bee46e88-2be4e09a273mr256769eec.8.1772791667261; Fri, 06 Mar 2026
+ 02:07:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BY5PR12MB4211:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86fa4296-2aae-4a2f-dc1e-08de7b54a7cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	M9+ONInCLbH7CNod7SUhgUAgbHisfCbHbq0ZfIFFuDKp0sTp4+bYqjevxBkpW0hyNK2GMa94IKgrdLMSHnQJznu1v9ig4rJtVqeNsghAerKBpUqLk4nyjDPEhVr9feXf3o6qEiHD3v9gzc/Y/2Z+3Nqv9Rvsy22WP0oqPIxcwhBVjEyy6CWAFaYlM1imcoPSRkg8bgnA+DABKzsl2rLIlU9xroekDK6A2Npuz9c0QJMWGlnWfkrHX2BQt7laH6Ohw2kQKdmyflmHaBi0h0YwqVA8rFKrbsdY9O45yiqOKvd8V/9AynwvMM6D/dIEzGXqscsfUIrxgJ4E7q89U7SIg/JXTbWNsRPZg2h8x++q+fqfbG88SsrhR/QYghawUZsTq1AKfi1gKOggXxmwhb7K8+/NbpqESfCYBq+1fpijR/1yCbbe4s6I7OUuZeEZChv0fVH3LQTzgzE6lIsVct7t1zWAIWysgaKKe+iRJqxnU8yKQOsbvr0O2clTz5enUy0Dz2HVQ6zEPNk5RViXpaBnUR+aJXbMU0Py0JuryiAn3v4zKNd6Ti/tw/XfGlfhy2T795Df+xLTiADm9mBjaSi7dTnurjOQrLuBFwbcRbIzU+CD++ah11+8LJ/oSmiazvIjHa4I79JOpekZJCxHX7s42DvJuUWLxyRaMYQ2AkAB9vUUhUlWH82AquuoCEZYPzaN28+UXBiuY1YiqEGcW04gTQQQ+WT14pEl5P5Ap3KB1b59v07q3OzKjA0iv947CQLb
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NXBQd1hYRUs3SVZKckR4MWdiQzZPeWVFanR2WUJVWGJIdHd0VndETm5vU0tz?=
- =?utf-8?B?UWs4VjcvN2N3ajlPc3B6VTZqSnhlMWxtdTVkZGVCVG5MalY1eWg5d2V2VlVy?=
- =?utf-8?B?OUxzWW96UHcxekphb0lxME9lU0k0a09DYUR0WlZ5MmdwdUpLNlRhZTV1cUVY?=
- =?utf-8?B?bjhtWVphZm9aMHdjaCtPaDJyb0JZY2ozaGhSR1JUS2JjS2xzZFVVcDVJcnMr?=
- =?utf-8?B?S1FlSFJmRmNhNThRVFZ4dWJWdWVtcFFvUTd6aEo3anc0c2lnZ2N6MlUrOHU3?=
- =?utf-8?B?VzJ0aUdnc2JxYzE3VlY4UkdpYjFHdW1wZjRkM1JGMGJXQjZnTG4wR3FVd3k5?=
- =?utf-8?B?L3JqcXM0a2pFVlB2bElBeW1maWxkSUJ1dEtzQ1BtSE84R0QydjF6eFBRR0tM?=
- =?utf-8?B?RmttcWdIS0hiakhxY1BudnBLcE1COEF6czFHSDI3Y1hka3F2NzhqY2JBQW12?=
- =?utf-8?B?OEE2V0tDOU5xaVFrVXdyaERQbTdiNmVEVHNOM3dmQmNMTDRGZk9kTkFWaC9O?=
- =?utf-8?B?RXFlRSs2a3dBaFBwOGtMY0wrLzBsVitieW8wcEQwMnZQMkJldkFlYnJGRGls?=
- =?utf-8?B?M25iUldvTXJkSDVvVHJPR2ppUUxZdDUyMlFrTzA3azNYcFF2R1BxaDlqdklw?=
- =?utf-8?B?MUsxUnhQdzhkbWxJZ3NKeCs1U2ptQmdUbVBuL2I3cDZtMXNsWXJuWkxweGF3?=
- =?utf-8?B?dWNKeFNGU216ampVNFlpNm5xbDFlWkNvZmVRMXRzUUJCMlNHSnBXR1YxY2RV?=
- =?utf-8?B?bytSbENzNEdXUlI5amF2cDkwYXBubTVWdVd2Qnc0YjVuTEdWcFFQenZtanJm?=
- =?utf-8?B?alk3OGt5T3BGamlraDFhZU9ITERJUmorTkF2YmQ4aE82emFhYzFyUlA0cGdP?=
- =?utf-8?B?ck5wcEpmOE95cStYSWU1WDRERjlkUDREQjBLOW5VWFZYQmlGcVBGODdnd09n?=
- =?utf-8?B?NEwwQjdiTFZVcDU5RnM1Rmd3RU9CbGtVZnhSOVFjcnpWdFJsaXVoRUZvMk9P?=
- =?utf-8?B?QTJlSWZwZFNML0RtcVdCY2tvVzNuWVRwU3cwNjNFcjlqZ0dzQVk1Z3hJRzVm?=
- =?utf-8?B?M2J0VHo5bmM1c29SdFJlUWl3Nkh2d2JQbkF5QmpyR3lvSmtqbWEvZTU0YW8z?=
- =?utf-8?B?Y1YzMTFSVFN3eHBaV0RnbExSUDMxNXFJWkZPQWdlNDZCMkU0RzQ3ckc1SDRo?=
- =?utf-8?B?NC9DRzhPREpCcndUWkR3empFNnU2TFlzRGhCd3NlUExBa0pMbWt6YVVBaVl2?=
- =?utf-8?B?cGR5RE10c213bkRPaEJhUUJoamNyMm5Wa0ZsakRGQ2hHdkcvdTNkUjlINit2?=
- =?utf-8?B?am1uMzNYT2JuZ1NkREFTWjY4YjZwbzI4alBhY09hWk9iS3pwdGV5L0l6MjQx?=
- =?utf-8?B?M3NwVE1IMzl4VHo3dlhhUGg0S2xIMmUyTk4xcm81RkpSTlVLaFlGSGtyUXpD?=
- =?utf-8?B?ZFc3bG1mR0Rxb0VzbHEyNUVpS3dVMnNiZW4zdUJud1BKNXJ0M1pheWsrSjY3?=
- =?utf-8?B?M2xuVDdFTVBjNmp6bVZ0dUVUYkdRVzh0eXU0c2VCNFZuTVRFMk5RdEx0SytK?=
- =?utf-8?B?MVZOTjVONnExd0tvendka2Z6TGFlNGVaT1hiRUQydGRyTnFSaHVTTVBwcUdB?=
- =?utf-8?B?Q1FFUGJqZmFRRGRzeWl4OGxQeENDSlBndHFpM0lwcmwxck9YdjZDNUhFR1g4?=
- =?utf-8?B?NWpUL1F6Yk14TjJSR2JVcE5pQ2s1MDFtdGJsSWY2K3ZobVZPZHRiQkNMOEZE?=
- =?utf-8?B?a1JIMXhBYVc0WDNqbDdqU21ZZDRwU1F4VFNuNG9hUzVvOUJZT2FjZm1GMHJm?=
- =?utf-8?B?VTFaZXJ5VkFjR3Y0UFQwQndFTVg4eE1OS1didUtlbFAwZllpTkdYMDZ1d25a?=
- =?utf-8?B?TGRtQTg3SFRheDZoRUQzZEZaQWw2ZFlSWmtGcm45OEpFZ1ltb1dZandkeEx5?=
- =?utf-8?B?cEJWcGVWSmNHYnFPRkEzQkhwRnhKMWdwbEIwVzNqRmxFdmd4NFJCdEU3M05Q?=
- =?utf-8?B?MDlaNlFPVWJ1aDhEZENYNWFWYjhkbGpTcmNuczZSajA1NGVOdVRVM1VoWnRj?=
- =?utf-8?B?SGt5YmNRZUlKSWJQd0lySUkyb0hhQWJYMHNNWWEzWk1lUHByZTZyTFpaU0hC?=
- =?utf-8?B?UFBNYUxXREFGdVhmeUJMc2pZc0NvVXlRNzVjUnFHNkV5S2lEZEQ2Z094VDNB?=
- =?utf-8?B?d0tWWjNVQlJpbGg4RzBpMTMzTFVGWlIzbURkQ0oycnVkOVpPRjZHcjhQMHIy?=
- =?utf-8?B?Sit0UGwrMXhzeHVHRkhZcGcrc1Y0eDlzR2dCQjhFR0NudHAzbHdkNkVMU1Fx?=
- =?utf-8?B?bHl4cHVtRHZLZnVDejk2c3B5MlV4bk4wVS83UTlhalE5a2xla2ZEcldEUGpt?=
- =?utf-8?Q?4adBzbTv6WErjEC4kD7GKySivc98p5beJQUBzW2AfyGxQ?=
-X-MS-Exchange-AntiSpam-MessageData-1: +d2F9nmou/nudg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86fa4296-2aae-4a2f-dc1e-08de7b54a7cc
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 07:47:45.8055
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tmkePwmUr9Ox5rJT71svrQX6z9KIFGmK72fBZCAUSLFyg/bDa6niBCstzFKBYUCN9b4Ec/CRl62i+rUCxMJ2UQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4211
+References: <20260226152112.3222886-1-gary@kernel.org>
+In-Reply-To: <20260226152112.3222886-1-gary@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 6 Mar 2026 11:07:33 +0100
+X-Gm-Features: AaiRm50zvPItKVKfhOfvASJU43xsYV_zn_llnCUBdfgj1_h5pAFqNBKGxo2J0yQ
+Message-ID: <CANiq72nu=HNnMiT4HEFi3Tk+zFy9tZ66biy8QXC01qk7wLg0KA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: build: remap path to avoid absolute path
+To: Gary Guo <gary@garyguo.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+	Janne Grunau <j@jannau.net>, Asahi Lina <lina+kernel@asahilina.net>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri Mar 6, 2026 at 2:37 PM JST, Alexandre Courbot wrote:
-> On Thu Mar 5, 2026 at 7:15 AM JST, Gary Guo wrote:
->> On Wed Mar 4, 2026 at 9:38 PM GMT, Danilo Krummrich wrote:
->>> On Wed Mar 4, 2026 at 10:13 PM CET, Gary Guo wrote:
->>>> On Wed Mar 4, 2026 at 8:37 PM GMT, Danilo Krummrich wrote:
->>>>> On Wed Mar 4, 2026 at 8:48 PM CET, Gary Guo wrote:
->>>>>> On Wed Mar 4, 2026 at 7:38 PM GMT, Danilo Krummrich wrote:
->>>>>>> On Wed Mar 4, 2026 at 7:58 PM CET, Gary Guo wrote:
->>>>>>>> On Wed Mar 4, 2026 at 6:39 PM GMT, Gary Guo wrote:
->>>>>>>>> On Wed Mar 4, 2026 at 4:18 PM GMT, Danilo Krummrich wrote:
->>>>>>>>>> On Tue Mar 3, 2026 at 3:55 PM CET, Alexandre Courbot wrote:
->>>>>>>>>>> So, to get a better idea of these two options I have converted =
-this
->>>>>>>>>>> patchset to use the 2-arguments `write_with` method. Here is th=
+On Thu, Feb 26, 2026 at 4:21=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
+>
+> From: Gary Guo <gary@garyguo.net>
+>
+> When building with a out directory (O=3D), absolute paths can end up in t=
+he
+> file name in `#[track_caller]` or the panic message. This is not desirabl=
 e
->>>>>>>>>>> difference between the two - it is particularly interesting to =
-see how
->>>>>>>>>>> nova-core changes:
->>>>>>>>>>>
->>>>>>>>>>> https://github.com/Gnurou/linux/compare/register_1arg..Gnurou:l=
-inux:register_2args
->>>>>>>>>>
->>>>>>>>>> This looks good to me, but the fact that this turns out nicely h=
-as nothing to do
->>>>>>>>>> with write() now taking two arguments. I.e. there is no reason w=
-hy we couldn't
->>>>>>>>>> have the exact same write_with() method together with the single=
- argument
->>>>>>>>>> write() method.
->>>>>>>>>>
->>>>>>>>>> The contention point for me with a two arguments write() method =
-still remains
->>>>>>>>>> that the arguments are redundant.
->>>>>>>>>>
->>>>>>>>>> I.e. you first have the location in form of an object instance o=
-f a ZST (which
->>>>>>>>>> in the end is just a "trick" to pass in the type itself) and the=
-n we have the
->>>>>>>>>> object that actually represents the entire register, describing =
-both the
->>>>>>>>>> location *and* the value.
->>>>>>>>>>
->>>>>>>>>> So, let's say a driver creates a register object with a custom c=
-onstructor
->>>>>>>>>>
->>>>>>>>>> 	let reset =3D regs::MyReg::reset();
->>>>>>>>>>
->>>>>>>>>> then the two argument approach would be
->>>>>>>>>>
->>>>>>>>>> 	(1) bar.write(regs::MyReg, regs::MyReg::reset());
->>>>>>>>>>
->>>>>>>>>> whereas the single argument approach would just be
->>>>>>>>>>
->>>>>>>>>> 	(2) bar.write(regs::MyReg::reset());
->>>>>>>>>
->>>>>>>>> That's only for bit field registers that has unique types. I stil=
-l believe types
->>>>>>>>> of registers should not be tightly coupled with name of registere=
-s.
->>>>>>>>>
->>>>>>>>> Allowing a value of register to be directly used for `write` is a=
-lso confusing
->>>>>>>>> if a value is not created immediately before written to.
->>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> So, if I would have to write (1), I'd probably be tempted to imp=
-lement a reset()
->>>>>>>>>> function that takes the bar as argument to hide this, i.e.
->>>>>>>>>>
->>>>>>>>>> 	regs::MyReg::reset(bar);
->>>>>>>>>>
->>>>>>>>>> I also can't agree with the argument that the notation of write(=
-loc, val) - or
->>>>>>>>>> write(val, loc) as the C side does it - is common and we should =
-stick to it.
->>>>>>>>>>
->>>>>>>>>> This notation is only common because it is necessary when operat=
-ing on
->>>>>>>>>> primitives or when the two representing types are discrete.
->>>>>>>>>>
->>>>>>>>>> But this isn't the case here, a register object is already disti=
-nct in terms of
->>>>>>>>>> its location and value.
->>>>>>>>>
->>>>>>>>> I see no reason why register values for different locations have =
-to be distinct
->>>>>>>>> in terms of value types.
->>>>>>>
->>>>>>> That's not what the register!() macro currently does, a register ty=
-pe always has
->>>>>>> a unique location, or is an array register, etc. In any case a regi=
-ster type is
->>>>>>> assoiciated with a location.
->>>>>>>
->>>>>>> If the proposal is to disconnect location and register type entirel=
-y, that would
->>>>>>> be a change to the current design.
->>>>>>
->>>>>> It's not what the macro do today, but I don't want to ask Alex to ch=
-ange it
->>>>>> further before landing the series. I do think it's a worthy follow-u=
-p to add the
->>>>>> ability to decouple the location and type. It's not incompatible wit=
-h current
->>>>>> design anyway.
->>>>>
->>>>> I'm not sure there are any relevant use-cases for this. Do you have r=
-eal
->>>>> examples that would not be represented with array registers?
->>>>
->>>> Even for the cases where there's a PIO register, I think it's benefici=
-al to just
->>>> get a value without a type.
->>>>
->>>> I don't see why we want people to write
->>>>
->>>>     self.io.read(UART_RX).value()
->>>>
->>>> vs
->>>>
->>>>     self.io.read(UART_RX)
->>>>
->>>> or
->>>>
->>>>     self.io.write(UART_TX::from(byte))
->>>>
->>>> vs
->>>>
->>>>     self.io.write(UART_TX, byte)
->>>>
->>>> what benefit does additional type provide?
->>>
->>> Well, for FIFO registers this is indeed better. However, my main concer=
-n was
->>> this
->>>
->>> 	bar.write(regs::MyReg, regs::MyReg::foo())
->>
->> This specific case is indeed more cumbersome with the two argument appro=
-ach,
->> although given Alex's nova diff I think the occurance shouldn't be that
->> frequent.
->>
->> It's also not that the two argument approach would preclude us from havi=
-ng a
->> single argument option. In fact, with the two-argument design as the bas=
-is, we
->> can implement such a helper function cleaner than Alex's PATCH 10/10 (wh=
-ich uses
->> `Into<IoWrite>`:
->>
->>     /// Indicates that this type is always associated with a specific fi=
-xed I/O
->>     /// location.
->>     ///
->>     /// This allows use of `io.bikeshed_shorthand_name(value)` instead o=
-f specifying
->>     /// the register name explicitly `io.write(REG, value)`.
->>     trait FixedIoLocation {
->>         type IoLocType: IoLoc<Self>;
->>         const IO_LOCATION: Self::IoLocType;
->>     }
->>
->>     trait Io {
->>         fn bikeshed_shorthand_name<T>(&self, value: T)
->>             where T: FixedIoLocation +
->>                   Self: IoCapable<<T::IoLocType as IoLoc<T>>::IoType>,
->>         {
->>             self.write(T::IO_LOCATION, value)
->>         }
->>     }
->>
->> No need for a `IoWrite` type, everything is done via traits.
+> as this leaks the exact path being used to build the kernel and means tha=
+t
+> the same location can appear in two forms (relative or absolute).
 >
-> That's cool but will only work for fixed registers. If you work with, say=
-, an
-> array of registers, cannot implement this trait on a value as the value
-> doesn't have an index assigned - meaning you would have to build a
-> location in addition of it.
+> This is reported by Asahi [1] and is being workaround in [2] previously t=
+o
+> force everything to be absolute path. Using absolute path for everything
+> sovles the inconsistency, however it does not address the reproducibility
+> issue. So, fix this by remap all absolute paths to srctree to relative pa=
+th
+> instead.
 >
-> So it only solves the problem partially.
+> This is previously attemped in commit dbdffaf50ff9 ("kbuild, rust: use
+> -fremap-path-prefix to make paths relative") but that was reverted as
+> remapping debug info causes some tool (e.g. objdump) to be unable to find
+> sources. Therefore, use `--remap-path-scope` to only remap macros but lea=
+ve
+> debuginfo untouched. `--remap-path-scope` is only stable in Rust 1.95, so
+> use `rustc-option` to detect its presence. This feature has been availabl=
+e
+> as  `-Zremap-path-scope` for all versions that we support; hwoever due to
+> bugs in the Rust compiler, it does not work reliably until 1.94. I opted =
+to
+> not enable it for 1.94 as it's just a single version that we missed.
+>
+> This change can be validated by building a kernel with O=3D, strip debug =
+info
+> on vmlinux, and then check if the absolute path exists in `strings
+> vmlinux`, e.g. `strings vmlinux |grep \/home`.
+>
+> Reported-by: Janne Grunau <j@jannau.net>
+> Reported-by: Asahi Lina <lina+kernel@asahilina.net>
+> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-Gener=
+al/topic/Per-call-site.20data.20and.20lock.20class.20keys/near/572466559 [1=
+]
+> Link: https://github.com/AsahiLinux/linux/commit/54ab88878869036c9d662010=
+1bfe17a81e88c2f9 [2]
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-... but the remainder of the solution can be implemented to look
-something like this:
+Applied to `rust-fixes` -- thanks everyone!
 
-  // Write a fixed register.
-  bar.write(regs::MyReg::foo());
+    [ Reworded for few typos. - Miguel ]
 
-  // Write into a registers array at index 10.
-  bar.write(Reg::at(10, regs::MyRegArray::foo()));
-
-  // Write a relative register at the `Gsp` instance.
-  bar.write(Reg::of::<Gsp>(regs::MyRelativeReg::foo()));
-
-Amongst other benefits (no closures and the complications they bring),
-it also seems to be the shortest syntax so far.
-
-This could coexist with a 2-arguments write method, or completely
-supplant it.
-
-Before doing and sharing a full implementation, I'd like to check from
-this syntax that people don't hate it. WDYT?
+Cheers,
+Miguel
