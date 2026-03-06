@@ -1,73 +1,92 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010059.outbound.protection.outlook.com [52.101.46.59])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012068.outbound.protection.outlook.com [52.101.43.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A19374198;
-	Fri,  6 Mar 2026 07:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A2831D74B;
+	Fri,  6 Mar 2026 07:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772781767; cv=fail; b=lDlbmopmny9J6cjIOabVJHB62zlGRAMYD2i85pIi+eZgzZQVGspd4lPGaF8oND1k/dnc04CqtkLRtqjA38aQPwpYpMpzNrAKqjzmCDZn9p+eM+lymX+qi6qRApvQOdQ/0WQZEV2coMEFpxRXLUj5vIEte+4uc12Tm168oPSDqgk=
+	t=1772783271; cv=fail; b=TxoeoCi1JM0KOA+idicqQYxfh9XnqyB/3dkM0ErNeXWkXlmJ6rC6KFt70G4IUJzeiM/truOM9hc+itsYWX6WxnFag1/nKwCk9xruEVUtp+1fSGZ5DnDthXPAWtSYDzJJfAALAvwlUlxY5XATz+ycP1G0fu6CqLdm3oLNIR7j3A0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772781767; c=relaxed/simple;
-	bh=nSfvdFIIwow7WQxh09c+7ICijDYf325eGxyABN+1U7c=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=EwgGjq4lDFtSOzh1UUCXj7LlAwi5+P6TfVsubY1GlVPaaCkFXkXZiwdXoMLwbt8QKGyb/uIHJ22e/4fERncvqj5WruJowzbWgnrUrtXR8L54bj0FloxQaUoY/zECDxoIVUTn282zrF1T3kQYmi5FuZdIlZeAkkF2V25P6TbTZZI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RS2KEe5A; arc=fail smtp.client-ip=52.101.46.59
+	s=arc-20240116; t=1772783271; c=relaxed/simple;
+	bh=OjAi9f1qB5KcIig1vAqqC1ZdliVbAgLSAB3kzleICkw=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=m9ySjXsi+L4tACevljpNCLZ+XjyZ93+dvZEhbq6tCNDKsiCZOo9RkIgDM63I4eZ8Brs2pMUS1kFg/6TdX1EbZB19VTReZmfF9hCtQgFrM5fLZEbXGFL7CBgAqNy2PTnTMA/HnmmeC0jJOeIOESsjZiyQkEw+FnkKVMpzsR7rXpo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=X5IUszUW; arc=fail smtp.client-ip=52.101.43.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RS2KEe5A"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="X5IUszUW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wZ/wx0UPwmjU4kNFFl9Dud3XPmZcxb5Hbf/8b9jDbXQyOx0q0/7YBBzbd2hmMxdW56o5M+6DFIyEveb//e9XsN3epylnIUENd4A74kw1SzLIBFs5P7YAruFgSHOfYU1O+JrSq0lHhCWbOk8VkAr+dlI44qveZJDbJx5B4Wrgpp4yrqyudYe8zBiYKn0tn0KauOpCfD/dIo9fBaN/OOSOximHm7zY+KpF645w/e1XB63a/ArISdzM4kP0PTgY3Lbb/U5A2Rdpo8n/9nG8snLw2u5SzNKcBYnmsD+OZa/6IPTiBRkN4Bx3o3mSL0Ft3vxGtUhF61MGFDrGHeHwETGY+w==
+ b=kp/Dv1m8hPzvCqq1puuHmUNcS1ct3hFOfqvhpogCR+SNdR67EmgoqyRxWdjaUlgUgGJNRYLf4NbNxUbJuLxAHxzVXwjCvIvC32Lnt/Lghu6ziloMV97SEx7E5sotO80ioqBU65Enu8AjFe+tzn+uMjX/ipQATaYMGpARKvSUrSw4ypTui+Q+MprLQ02rtYNAHMPKG9zx0VOi+JmLQO9HtmYRVO0h2icbTrOaPuBKle+Njqt0kP6VyuZnSwZ/KSnQmJP+w73+qE0u/4KPegrd/lyp7D3E/X9K6KS+/tIP/8QL+HkKjlTvT2I7OPEOL/UgIrVoMj1AiQ/LRbo+kaXcMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JhjPLt6NxTNFngqKhEkocI+NvtVDgY8YQLLP3r4SpW8=;
- b=gLl1VWD8v8VR3n9pQLLXDQArb40vOxam8GDU2vk4Bvhh/dX5gn/Pzf8JEAKQdcC5hPeVlGiMAm+DFNC8fid1+N1r8xDK2bPk22fDWMWzp/E8Ol8l0EBbHCkZpqyWgyNCJBoRoejNs/a3jHswnuLyciYqpZwLiJ8tod+jl9IstiwSnkMHBYlvZ33K5L0edKx1/4CU3kOqz/F5ygIC9gT2DKFPH/nuTYac5D6IrNaUPR4RdAEd2Rr6MrngbNCEWjd3yq2Ovd1s7T8xU8BZBG3qwnbtGxrCS7xlHg/iOJWIPRMS1wvGLrlXSLuzcr3vlVWnQtJ81nEhI2q0Qea1Ys1fuQ==
+ bh=x8e+KAb+2NQwWsNEaxRufMIVawsmuLrajqkNF5zThs0=;
+ b=Yh+TRflk8tcIWrrT9GkLZC3K50sjZjC2h8+tOfOwLlSRrS7a2jntcssum3fwBP905HJzazqWhAssmb9K3X7LTY8hM3LoJHcIRqwY8p3cekcqPQDMfVd285t0FKQwUr7X8PPZLsNu1Hd9RpYqSovFQqIboAmypZn8gv5h/+GPEpbhftFKzbKIde1XWXE/hc2lu+dxwz+vHxjBHNzNvQJGpLo3CqtUHmYK9LCSVDGJ484OduXqyFadzy7PV95QD5dS3OHU2ohS/Z4Ep0ekSfGfCJa5HgVJX5NHeEjLfBtP3RNsZ3oPZG5t2E1EscbjZXoccGCqqIz0qzOiYxQP0DxDYg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JhjPLt6NxTNFngqKhEkocI+NvtVDgY8YQLLP3r4SpW8=;
- b=RS2KEe5AKVBa1II1UeoTvETbLLKVzktBeJz+h8jTWZjY4gs1XviEWlg0m0V2T/4ClutRb4ahQbOdRq+B+8JL2tS1E0qvJYh3OSACXCrPMcokqyqSh9Taypgq8YqBVV9eIIDsmXKo771vZEtcXYHf108yjaYE0adq3wDMuuIFV7s9kBVzZDkyLan/7l9+98s/PRNEkXlK2EyudCtmooUA/jg6Pq1lfyiU2XgjWLTmimTQ8jyUtobIak4UJsu2+PBuZc51Xr0tqhZdd8ZT3sxQQ0LITosZ+dCGDvgZ9GmsRmTMo/3zVnXB5cc/FU93VFpPL25ciOgdo7/qDs/lUlT+eg==
+ bh=x8e+KAb+2NQwWsNEaxRufMIVawsmuLrajqkNF5zThs0=;
+ b=X5IUszUW5hWpaMyZfjBh4pCcQUtVf+hZa3leNI4AVhZvmtm/FOe88Ib4uP0MazKnj8WBHCdZ811lqgvcRsnZ20Jv8BT5JIzdIbGV4nFfFPrzKn6qIYTfA3pRQ9i2pcMD+VlniWjWD2i4stK4a4F+zHJWlIEUGyq1Y2wccC2x1Q85nvG7oR+VU378xErcyE0Dz/3YlBcrgut5ITcFs7M5czGIeI7+lf0pKGtputXH+gZsOEU4aUTL0pOdXDPFo1B7HvJYhY3l6HqX/SoREOzIfdFC6Iov80dbh/wnDy3O2sZOVPwdrMZnyo8IFDFUvK/uMwtl+EVPngTsTdvkAaHxqQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by CY8PR12MB7340.namprd12.prod.outlook.com (2603:10b6:930:50::16) with
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by BY5PR12MB4211.namprd12.prod.outlook.com (2603:10b6:a03:20f::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Fri, 6 Mar
- 2026 07:22:42 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9654.022; Fri, 6 Mar 2026
- 07:22:42 +0000
-From: Eliot Courtney <ecourtney@nvidia.com>
-Date: Fri, 06 Mar 2026 16:22:06 +0900
-Subject: [PATCH v6 9/9] gpu: nova-core: gsp: add tests for continuation
- records
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260306-cmdq-continuation-v6-9-cc7b629200ee@nvidia.com>
-References: <20260306-cmdq-continuation-v6-0-cc7b629200ee@nvidia.com>
-In-Reply-To: <20260306-cmdq-continuation-v6-0-cc7b629200ee@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: Zhi Wang <zhiw@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
- Alistair Popple <apopple@nvidia.com>, 
- Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Eliot Courtney <ecourtney@nvidia.com>
-X-Mailer: b4 0.14.3
-X-ClientProxiedBy: TY4PR01CA0106.jpnprd01.prod.outlook.com
- (2603:1096:405:378::13) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Fri, 6 Mar
+ 2026 07:47:46 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9700.003; Fri, 6 Mar 2026
+ 07:47:45 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Mar 2026 16:47:42 +0900
+Message-Id: <DGVJ7VQX3TD5.2UYW004QJPI6N@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
+References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
+ <20260224-register-v7-5-aad44f760f33@nvidia.com>
+ <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
+ <DGQ67S1NH3OA.2MS0YVO0UU2E2@nvidia.com>
+ <DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net>
+ <DGRWZVJNLLH0.39JYHZIIMC9XK@nvidia.com>
+ <DGSB81ZE18O1.31CVVHMP38U2W@garyguo.net>
+ <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
+ <DGSC6U50TCHF.9FKDO3AWL3Y1@garyguo.net>
+ <DGSZWZCI0H7H.2EM8L04YH0YRP@nvidia.com>
+ <DGT09KTYDCU8.3BBAZBGIYRGWV@nvidia.com>
+ <DGT8FQ97BL8O.1VC1JEXIEBDRA@nvidia.com>
+ <DGU4TLDMLFN8.1KKSL2WATFZ7G@kernel.org>
+ <DGU7U81KKLCD.2LEPJ73BGLQU@garyguo.net>
+ <DGU88IHVRYHD.9WP9Z40UAN37@garyguo.net>
+ <DGU92W2W71JI.HBIFK6L78F9C@kernel.org>
+ <DGU9AZ43QK6Y.115RDSK0M9JY5@garyguo.net>
+ <DGUAC0GJRR0Q.34WBS7BIZ58WF@kernel.org>
+ <DGUB44J4FNCA.32QOV1DYI7VBK@garyguo.net>
+ <DGUBN1HP1F8I.2RZGSFCBO9FQS@kernel.org>
+ <DGUCFC9NJG5B.Z7YUXK4NEE04@garyguo.net>
+ <DGVGGGBSC9PI.1TJV2ZAIML0BI@nvidia.com>
+In-Reply-To: <DGVGGGBSC9PI.1TJV2ZAIML0BI@nvidia.com>
+X-ClientProxiedBy: TYCPR01CA0167.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b2::7) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -75,229 +94,270 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|CY8PR12MB7340:EE_
-X-MS-Office365-Filtering-Correlation-Id: c48f6ec0-fbac-40b5-666e-08de7b512765
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BY5PR12MB4211:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86fa4296-2aae-4a2f-dc1e-08de7b54a7cc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024|921020;
+	BCL:0;ARA:13230040|366016|10070799003|1800799024|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	qownsbJh03gvXZq89MidlxO2OyNwaLxAiE62DhkT25UVc4CmwiCCc0+WFccASrDvbCzU+m3D2M38Hlx5pSDuvGT1k3z5HQAmhjFh/QhXgblp66Q9Vo1u44evhUuw5MeTS47IjyvmmR8kquBXSuhgkAYaiag/CbuVPybPlwsEf1kK4hxaaUzeqOCPh/D6lodlHaSR1C36AMB0d1LXBnRUATuin/c35T3M/tcM54KGpge5/OlreEToidNBb0qG5oFNBbGQR7VV7bdRSxHKj9ojejGsg4F4JjyEFF0cVOwQgKPFQWKuyITdFrgi97reOl7xNcKZgOzoLEfYPC6WA9O4GA13TF5efcdKAMRea2giqWCPNB2AHOsm3g/2pSwVL26BOATQwr8gd1Z1FHVJegP2XFKX5fiUDVemjW5rIexi/pS5CgOWWuftPrU6K4czXNkwY4lcqF3r4TLfOLjCCwZ8rKwnDqv6YxTEY4/7yEgXNqJU992RTKJ2yHFFagDk9xgsXCyZivLYkOeGQAdkb47zcq+BfTSKqO8jW1D5e1gXVOAoPDGM1RPdh8khGENt5cANCHIbbrqHUnv/z1jyYx3FKX53b6xwfXxo/b+oXWDYBxYHA/wL4m/VCIb+Uek56uraqdoRhtK2aLHc1D42gz+ounGYcA92gQHpTrGixFGbaj6sE7N7sxqSEpUERGRTXlsMSb8GI5rUXcKzjnykqXGFkEj/t3TxwBJtinCnXar74OvtsAZ5p324l6zU3MG9a4B10e+BH+yijBQuXPav65YGkg==
+	M9+ONInCLbH7CNod7SUhgUAgbHisfCbHbq0ZfIFFuDKp0sTp4+bYqjevxBkpW0hyNK2GMa94IKgrdLMSHnQJznu1v9ig4rJtVqeNsghAerKBpUqLk4nyjDPEhVr9feXf3o6qEiHD3v9gzc/Y/2Z+3Nqv9Rvsy22WP0oqPIxcwhBVjEyy6CWAFaYlM1imcoPSRkg8bgnA+DABKzsl2rLIlU9xroekDK6A2Npuz9c0QJMWGlnWfkrHX2BQt7laH6Ohw2kQKdmyflmHaBi0h0YwqVA8rFKrbsdY9O45yiqOKvd8V/9AynwvMM6D/dIEzGXqscsfUIrxgJ4E7q89U7SIg/JXTbWNsRPZg2h8x++q+fqfbG88SsrhR/QYghawUZsTq1AKfi1gKOggXxmwhb7K8+/NbpqESfCYBq+1fpijR/1yCbbe4s6I7OUuZeEZChv0fVH3LQTzgzE6lIsVct7t1zWAIWysgaKKe+iRJqxnU8yKQOsbvr0O2clTz5enUy0Dz2HVQ6zEPNk5RViXpaBnUR+aJXbMU0Py0JuryiAn3v4zKNd6Ti/tw/XfGlfhy2T795Df+xLTiADm9mBjaSi7dTnurjOQrLuBFwbcRbIzU+CD++ah11+8LJ/oSmiazvIjHa4I79JOpekZJCxHX7s42DvJuUWLxyRaMYQ2AkAB9vUUhUlWH82AquuoCEZYPzaN28+UXBiuY1YiqEGcW04gTQQQ+WT14pEl5P5Ap3KB1b59v07q3OzKjA0iv947CQLb
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cnA0TU1Xd3NVdlJ6WTFOb0RnZWRNRHNETC91alZyb04vSWg5b2w3WDRzd3pP?=
- =?utf-8?B?T3J4ZUV5V2JEQm4vdktFTmpybTdoRmtHcmtyMFUyZlVtY3pLOWxVaFh3Z2Rl?=
- =?utf-8?B?b0pxNDNiT2kyRWw4TldEMi9tdWwzZkduenkyc0tHRUczTEdLeEVyUUpWd1Nt?=
- =?utf-8?B?SXRlUWlXL2tkNTFEaFMxTThyWnRXNVpLTHB0cU5NWkkxZkJ0Zy9oV05PNmJG?=
- =?utf-8?B?anR1bDZJcEpDZzA5cXRPYndHeWl0NHBSRFJRNjNZNkk4cUlXNUd0blJVUytB?=
- =?utf-8?B?dVpSYkJrMnliYndkVk1va2pQdlM0QVpWbW5LN2E4bDVXdi9WNUh0SXNJSEp5?=
- =?utf-8?B?UERHNUNMSWVCR0Z0VXpaY1g4UDZxd3RsM3RPZzRia1BIUk1CcS90NjBlNTVv?=
- =?utf-8?B?MU5aUWlYVmtmRDV0eVNubG50cnMwNlBuN1lGNHFQOWgxZmF1T2pBN2NhbEJF?=
- =?utf-8?B?TVUzMGZVcEh5R2lUdzhWWnlGY1U5T2lqNkN0ZXJMVFRJNFFzdEZiRjZKOHBy?=
- =?utf-8?B?RU1YTUlIREMvSUp3SmFRT0hGOVVJOVFoVHNSSlN2U2RRSVJ3ak16YjFwSUJx?=
- =?utf-8?B?VW9NQUtkblhzaTJVMndkaXJpWFlPWjZYRitMTThFL2xHdkZqT05pdm1BeXNq?=
- =?utf-8?B?QllqczNXVHZWRUZDTXF4T3g3c24yQmFRSk1hSGdGbDVnbWF5Vkhuck81MTk0?=
- =?utf-8?B?Y3VGTDZxYkQyTjUrU3MxMlRra3FwN0RaMmJCQTBQNExrQzVPamFCdEZpRWc1?=
- =?utf-8?B?bUUxZWdPdEVRenVHV2VoMldrTXE0YWQvNUVOOXdUNkhuUDBsSURHRSs1VUM1?=
- =?utf-8?B?Qk5JSitpb0RaUld4V1QxWWlMM2FzSmlrNFdtM0llT1pNbS8xNTQyWE15Tlcx?=
- =?utf-8?B?bnMwZmZMTHdDWnUxbHB1T0dLajRFay9oQVlzWlpiSlk1RWZyMTEvdGRRUmVl?=
- =?utf-8?B?U1NKeUtqdnZoRDZJc1Vsak9IZy9EOWdaWGFvV0lCcHpoclVXeHEyZzQyY0tT?=
- =?utf-8?B?aFlSdStFNEV0VnovLzV5RWhpVjFZTFRFK2dwcnYyaXVYT0Y0WUkya2F1elpZ?=
- =?utf-8?B?VGlvRmJzMGVGN2pVR1lNTE85NUlpbHlxdTR2OUNZQjhyc1czUnVjQ3FXYlpI?=
- =?utf-8?B?ejZ5R2V5KzJkVWRKRVBZQkxGdkZMQmtEOU9JdDd6VXpaYUJuVnNia0NRSWZj?=
- =?utf-8?B?Tml1Uy9pQUZlNHN5L0w4aE0xbXNpblBqSkxQWXpyazlCSFRLRnhKYW1qaFVW?=
- =?utf-8?B?TGxOUWdlNGlGQ0NRL2EwRzhwZGVyK1dxZHc1em40bzM3ajZlNlVUcVhwYnBw?=
- =?utf-8?B?Rm5MK04zQ1pqZVlvTlFGQ2hWWThRTm1NNzNncE1iUXlEb3ErSUZ2VmVaVGlz?=
- =?utf-8?B?VitvVzJJRURFOGs5eG1TaEgyY1A3OE5uZXF1bHdPTWd0bUFNWitqbStHTGp3?=
- =?utf-8?B?anRNdnZ1V2RPQkVYZlFkbW5WOUtGUXphOWhRUXpZN2RlaDNpMjlycXhTS05C?=
- =?utf-8?B?K21PU25LL3RmZHpxb1V1ZGJzQWxob1RFWVB4dGZaNWo1eHBoTDVwWGcvZlFT?=
- =?utf-8?B?Zkd3TGg1YTZINEQrYmJkUGpvblNKdDFreWgxRWw3cGNYNDZFOUJOUFJKSGpX?=
- =?utf-8?B?Y3JPYzA0dDViWjdYYnU1NHpmVHNvajBEYkdKTk5MTm1JTUVabUMxVUcwOVp3?=
- =?utf-8?B?cDhORGc2M0MybWZ4cFRwZFh4bTVNbWFzK2NSSTBnSlFjMGpMcjdidU42dlR4?=
- =?utf-8?B?aE8zSXQyazV0bHVnTkZsWC8yNVBZUkJPQmFWTFdMNmtHMDVxY1Qzd1UwUGE5?=
- =?utf-8?B?dmNBQ1NTUXlkTXRvVy9SSnlkSkF3MDNydWY5WmxTR2RGdkRhelVrRU9ocGdv?=
- =?utf-8?B?T05vQ2F5VFU0K1ZTanFBelV3MytTdDFxR3dPVkJwM05IaW4vU1oxQzhXU0hU?=
- =?utf-8?B?ditldG4zV05YalJUMXZEUW56T2ZmUnZVK0Q4cWhUUisxRUQxQzJ0bFhBemUw?=
- =?utf-8?B?UFdZbmVvUHRsUUgwNFZVdmxQUE9HblZaUHplNkU3T2JLWGw2dTdneVZlSVVq?=
- =?utf-8?B?WGIwaG4rWStpejRkVVMrZWFnSllZRDhYeTZCOXRnQkwyQ2hRMXBKdnBxQ2FZ?=
- =?utf-8?B?MjlUK1VPSjg3Y2dhTDFKMWxWVitqZzh3eTluMjVmZjRUMUxiYzJjcUxDdTdF?=
- =?utf-8?B?M2JqUVFwelEzcXd5SFM2OHhtSWRFdUdnN01tdzBQTndnTWpVZUE0RmkvczZT?=
- =?utf-8?B?aWs5L0E2L2c1OHAwNFQvRFoxeXY3b0l6TXFjVmFPdVdPQnZycDh6MXp0dXB2?=
- =?utf-8?B?aWd6YTlQMm5pNzlwbjFtVkVRV082MWordkxXbkYrWVV6eWxiTGtoTENMN3g5?=
- =?utf-8?Q?MaxEsVH6NYls7woq9GDar05Lxins1kNc1of2F1MQanbVa?=
-X-MS-Exchange-AntiSpam-MessageData-1: qUqOoQC9/IlKsA==
+	=?utf-8?B?NXBQd1hYRUs3SVZKckR4MWdiQzZPeWVFanR2WUJVWGJIdHd0VndETm5vU0tz?=
+ =?utf-8?B?UWs4VjcvN2N3ajlPc3B6VTZqSnhlMWxtdTVkZGVCVG5MalY1eWg5d2V2VlVy?=
+ =?utf-8?B?OUxzWW96UHcxekphb0lxME9lU0k0a09DYUR0WlZ5MmdwdUpLNlRhZTV1cUVY?=
+ =?utf-8?B?bjhtWVphZm9aMHdjaCtPaDJyb0JZY2ozaGhSR1JUS2JjS2xzZFVVcDVJcnMr?=
+ =?utf-8?B?S1FlSFJmRmNhNThRVFZ4dWJWdWVtcFFvUTd6aEo3anc0c2lnZ2N6MlUrOHU3?=
+ =?utf-8?B?VzJ0aUdnc2JxYzE3VlY4UkdpYjFHdW1wZjRkM1JGMGJXQjZnTG4wR3FVd3k5?=
+ =?utf-8?B?L3JqcXM0a2pFVlB2bElBeW1maWxkSUJ1dEtzQ1BtSE84R0QydjF6eFBRR0tM?=
+ =?utf-8?B?RmttcWdIS0hiakhxY1BudnBLcE1COEF6czFHSDI3Y1hka3F2NzhqY2JBQW12?=
+ =?utf-8?B?OEE2V0tDOU5xaVFrVXdyaERQbTdiNmVEVHNOM3dmQmNMTDRGZk9kTkFWaC9O?=
+ =?utf-8?B?RXFlRSs2a3dBaFBwOGtMY0wrLzBsVitieW8wcEQwMnZQMkJldkFlYnJGRGls?=
+ =?utf-8?B?M25iUldvTXJkSDVvVHJPR2ppUUxZdDUyMlFrTzA3azNYcFF2R1BxaDlqdklw?=
+ =?utf-8?B?MUsxUnhQdzhkbWxJZ3NKeCs1U2ptQmdUbVBuL2I3cDZtMXNsWXJuWkxweGF3?=
+ =?utf-8?B?dWNKeFNGU216ampVNFlpNm5xbDFlWkNvZmVRMXRzUUJCMlNHSnBXR1YxY2RV?=
+ =?utf-8?B?bytSbENzNEdXUlI5amF2cDkwYXBubTVWdVd2Qnc0YjVuTEdWcFFQenZtanJm?=
+ =?utf-8?B?alk3OGt5T3BGamlraDFhZU9ITERJUmorTkF2YmQ4aE82emFhYzFyUlA0cGdP?=
+ =?utf-8?B?ck5wcEpmOE95cStYSWU1WDRERjlkUDREQjBLOW5VWFZYQmlGcVBGODdnd09n?=
+ =?utf-8?B?NEwwQjdiTFZVcDU5RnM1Rmd3RU9CbGtVZnhSOVFjcnpWdFJsaXVoRUZvMk9P?=
+ =?utf-8?B?QTJlSWZwZFNML0RtcVdCY2tvVzNuWVRwU3cwNjNFcjlqZ0dzQVk1Z3hJRzVm?=
+ =?utf-8?B?M2J0VHo5bmM1c29SdFJlUWl3Nkh2d2JQbkF5QmpyR3lvSmtqbWEvZTU0YW8z?=
+ =?utf-8?B?Y1YzMTFSVFN3eHBaV0RnbExSUDMxNXFJWkZPQWdlNDZCMkU0RzQ3ckc1SDRo?=
+ =?utf-8?B?NC9DRzhPREpCcndUWkR3empFNnU2TFlzRGhCd3NlUExBa0pMbWt6YVVBaVl2?=
+ =?utf-8?B?cGR5RE10c213bkRPaEJhUUJoamNyMm5Wa0ZsakRGQ2hHdkcvdTNkUjlINit2?=
+ =?utf-8?B?am1uMzNYT2JuZ1NkREFTWjY4YjZwbzI4alBhY09hWk9iS3pwdGV5L0l6MjQx?=
+ =?utf-8?B?M3NwVE1IMzl4VHo3dlhhUGg0S2xIMmUyTk4xcm81RkpSTlVLaFlGSGtyUXpD?=
+ =?utf-8?B?ZFc3bG1mR0Rxb0VzbHEyNUVpS3dVMnNiZW4zdUJud1BKNXJ0M1pheWsrSjY3?=
+ =?utf-8?B?M2xuVDdFTVBjNmp6bVZ0dUVUYkdRVzh0eXU0c2VCNFZuTVRFMk5RdEx0SytK?=
+ =?utf-8?B?MVZOTjVONnExd0tvendka2Z6TGFlNGVaT1hiRUQydGRyTnFSaHVTTVBwcUdB?=
+ =?utf-8?B?Q1FFUGJqZmFRRGRzeWl4OGxQeENDSlBndHFpM0lwcmwxck9YdjZDNUhFR1g4?=
+ =?utf-8?B?NWpUL1F6Yk14TjJSR2JVcE5pQ2s1MDFtdGJsSWY2K3ZobVZPZHRiQkNMOEZE?=
+ =?utf-8?B?a1JIMXhBYVc0WDNqbDdqU21ZZDRwU1F4VFNuNG9hUzVvOUJZT2FjZm1GMHJm?=
+ =?utf-8?B?VTFaZXJ5VkFjR3Y0UFQwQndFTVg4eE1OS1didUtlbFAwZllpTkdYMDZ1d25a?=
+ =?utf-8?B?TGRtQTg3SFRheDZoRUQzZEZaQWw2ZFlSWmtGcm45OEpFZ1ltb1dZandkeEx5?=
+ =?utf-8?B?cEJWcGVWSmNHYnFPRkEzQkhwRnhKMWdwbEIwVzNqRmxFdmd4NFJCdEU3M05Q?=
+ =?utf-8?B?MDlaNlFPVWJ1aDhEZENYNWFWYjhkbGpTcmNuczZSajA1NGVOdVRVM1VoWnRj?=
+ =?utf-8?B?SGt5YmNRZUlKSWJQd0lySUkyb0hhQWJYMHNNWWEzWk1lUHByZTZyTFpaU0hC?=
+ =?utf-8?B?UFBNYUxXREFGdVhmeUJMc2pZc0NvVXlRNzVjUnFHNkV5S2lEZEQ2Z094VDNB?=
+ =?utf-8?B?d0tWWjNVQlJpbGg4RzBpMTMzTFVGWlIzbURkQ0oycnVkOVpPRjZHcjhQMHIy?=
+ =?utf-8?B?Sit0UGwrMXhzeHVHRkhZcGcrc1Y0eDlzR2dCQjhFR0NudHAzbHdkNkVMU1Fx?=
+ =?utf-8?B?bHl4cHVtRHZLZnVDejk2c3B5MlV4bk4wVS83UTlhalE5a2xla2ZEcldEUGpt?=
+ =?utf-8?Q?4adBzbTv6WErjEC4kD7GKySivc98p5beJQUBzW2AfyGxQ?=
+X-MS-Exchange-AntiSpam-MessageData-1: +d2F9nmou/nudg==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c48f6ec0-fbac-40b5-666e-08de7b512765
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86fa4296-2aae-4a2f-dc1e-08de7b54a7cc
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 07:22:41.9511
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 07:47:45.8055
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +kgDindNBS9gJkQGrfsXFUu8s1abF7jlSBr82/BNo/hy8xisvrGKxpmfqsXdxehEjfez0xO4LswYAWk+mEjaHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7340
+X-MS-Exchange-CrossTenant-UserPrincipalName: tmkePwmUr9Ox5rJT71svrQX6z9KIFGmK72fBZCAUSLFyg/bDa6niBCstzFKBYUCN9b4Ec/CRl62i+rUCxMJ2UQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4211
 
-Add tests for continuation record splitting. They cover boundary
-conditions at the split points to make sure the right number of
-continuation records are made. They also check that the data
-concatenated is correct.
+On Fri Mar 6, 2026 at 2:37 PM JST, Alexandre Courbot wrote:
+> On Thu Mar 5, 2026 at 7:15 AM JST, Gary Guo wrote:
+>> On Wed Mar 4, 2026 at 9:38 PM GMT, Danilo Krummrich wrote:
+>>> On Wed Mar 4, 2026 at 10:13 PM CET, Gary Guo wrote:
+>>>> On Wed Mar 4, 2026 at 8:37 PM GMT, Danilo Krummrich wrote:
+>>>>> On Wed Mar 4, 2026 at 8:48 PM CET, Gary Guo wrote:
+>>>>>> On Wed Mar 4, 2026 at 7:38 PM GMT, Danilo Krummrich wrote:
+>>>>>>> On Wed Mar 4, 2026 at 7:58 PM CET, Gary Guo wrote:
+>>>>>>>> On Wed Mar 4, 2026 at 6:39 PM GMT, Gary Guo wrote:
+>>>>>>>>> On Wed Mar 4, 2026 at 4:18 PM GMT, Danilo Krummrich wrote:
+>>>>>>>>>> On Tue Mar 3, 2026 at 3:55 PM CET, Alexandre Courbot wrote:
+>>>>>>>>>>> So, to get a better idea of these two options I have converted =
+this
+>>>>>>>>>>> patchset to use the 2-arguments `write_with` method. Here is th=
+e
+>>>>>>>>>>> difference between the two - it is particularly interesting to =
+see how
+>>>>>>>>>>> nova-core changes:
+>>>>>>>>>>>
+>>>>>>>>>>> https://github.com/Gnurou/linux/compare/register_1arg..Gnurou:l=
+inux:register_2args
+>>>>>>>>>>
+>>>>>>>>>> This looks good to me, but the fact that this turns out nicely h=
+as nothing to do
+>>>>>>>>>> with write() now taking two arguments. I.e. there is no reason w=
+hy we couldn't
+>>>>>>>>>> have the exact same write_with() method together with the single=
+ argument
+>>>>>>>>>> write() method.
+>>>>>>>>>>
+>>>>>>>>>> The contention point for me with a two arguments write() method =
+still remains
+>>>>>>>>>> that the arguments are redundant.
+>>>>>>>>>>
+>>>>>>>>>> I.e. you first have the location in form of an object instance o=
+f a ZST (which
+>>>>>>>>>> in the end is just a "trick" to pass in the type itself) and the=
+n we have the
+>>>>>>>>>> object that actually represents the entire register, describing =
+both the
+>>>>>>>>>> location *and* the value.
+>>>>>>>>>>
+>>>>>>>>>> So, let's say a driver creates a register object with a custom c=
+onstructor
+>>>>>>>>>>
+>>>>>>>>>> 	let reset =3D regs::MyReg::reset();
+>>>>>>>>>>
+>>>>>>>>>> then the two argument approach would be
+>>>>>>>>>>
+>>>>>>>>>> 	(1) bar.write(regs::MyReg, regs::MyReg::reset());
+>>>>>>>>>>
+>>>>>>>>>> whereas the single argument approach would just be
+>>>>>>>>>>
+>>>>>>>>>> 	(2) bar.write(regs::MyReg::reset());
+>>>>>>>>>
+>>>>>>>>> That's only for bit field registers that has unique types. I stil=
+l believe types
+>>>>>>>>> of registers should not be tightly coupled with name of registere=
+s.
+>>>>>>>>>
+>>>>>>>>> Allowing a value of register to be directly used for `write` is a=
+lso confusing
+>>>>>>>>> if a value is not created immediately before written to.
+>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> So, if I would have to write (1), I'd probably be tempted to imp=
+lement a reset()
+>>>>>>>>>> function that takes the bar as argument to hide this, i.e.
+>>>>>>>>>>
+>>>>>>>>>> 	regs::MyReg::reset(bar);
+>>>>>>>>>>
+>>>>>>>>>> I also can't agree with the argument that the notation of write(=
+loc, val) - or
+>>>>>>>>>> write(val, loc) as the C side does it - is common and we should =
+stick to it.
+>>>>>>>>>>
+>>>>>>>>>> This notation is only common because it is necessary when operat=
+ing on
+>>>>>>>>>> primitives or when the two representing types are discrete.
+>>>>>>>>>>
+>>>>>>>>>> But this isn't the case here, a register object is already disti=
+nct in terms of
+>>>>>>>>>> its location and value.
+>>>>>>>>>
+>>>>>>>>> I see no reason why register values for different locations have =
+to be distinct
+>>>>>>>>> in terms of value types.
+>>>>>>>
+>>>>>>> That's not what the register!() macro currently does, a register ty=
+pe always has
+>>>>>>> a unique location, or is an array register, etc. In any case a regi=
+ster type is
+>>>>>>> assoiciated with a location.
+>>>>>>>
+>>>>>>> If the proposal is to disconnect location and register type entirel=
+y, that would
+>>>>>>> be a change to the current design.
+>>>>>>
+>>>>>> It's not what the macro do today, but I don't want to ask Alex to ch=
+ange it
+>>>>>> further before landing the series. I do think it's a worthy follow-u=
+p to add the
+>>>>>> ability to decouple the location and type. It's not incompatible wit=
+h current
+>>>>>> design anyway.
+>>>>>
+>>>>> I'm not sure there are any relevant use-cases for this. Do you have r=
+eal
+>>>>> examples that would not be represented with array registers?
+>>>>
+>>>> Even for the cases where there's a PIO register, I think it's benefici=
+al to just
+>>>> get a value without a type.
+>>>>
+>>>> I don't see why we want people to write
+>>>>
+>>>>     self.io.read(UART_RX).value()
+>>>>
+>>>> vs
+>>>>
+>>>>     self.io.read(UART_RX)
+>>>>
+>>>> or
+>>>>
+>>>>     self.io.write(UART_TX::from(byte))
+>>>>
+>>>> vs
+>>>>
+>>>>     self.io.write(UART_TX, byte)
+>>>>
+>>>> what benefit does additional type provide?
+>>>
+>>> Well, for FIFO registers this is indeed better. However, my main concer=
+n was
+>>> this
+>>>
+>>> 	bar.write(regs::MyReg, regs::MyReg::foo())
+>>
+>> This specific case is indeed more cumbersome with the two argument appro=
+ach,
+>> although given Alex's nova diff I think the occurance shouldn't be that
+>> frequent.
+>>
+>> It's also not that the two argument approach would preclude us from havi=
+ng a
+>> single argument option. In fact, with the two-argument design as the bas=
+is, we
+>> can implement such a helper function cleaner than Alex's PATCH 10/10 (wh=
+ich uses
+>> `Into<IoWrite>`:
+>>
+>>     /// Indicates that this type is always associated with a specific fi=
+xed I/O
+>>     /// location.
+>>     ///
+>>     /// This allows use of `io.bikeshed_shorthand_name(value)` instead o=
+f specifying
+>>     /// the register name explicitly `io.write(REG, value)`.
+>>     trait FixedIoLocation {
+>>         type IoLocType: IoLoc<Self>;
+>>         const IO_LOCATION: Self::IoLocType;
+>>     }
+>>
+>>     trait Io {
+>>         fn bikeshed_shorthand_name<T>(&self, value: T)
+>>             where T: FixedIoLocation +
+>>                   Self: IoCapable<<T::IoLocType as IoLoc<T>>::IoType>,
+>>         {
+>>             self.write(T::IO_LOCATION, value)
+>>         }
+>>     }
+>>
+>> No need for a `IoWrite` type, everything is done via traits.
+>
+> That's cool but will only work for fixed registers. If you work with, say=
+, an
+> array of registers, cannot implement this trait on a value as the value
+> doesn't have an index assigned - meaning you would have to build a
+> location in addition of it.
+>
+> So it only solves the problem partially.
 
-Tested-by: Zhi Wang <zhiw@nvidia.com>
-Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
----
- drivers/gpu/nova-core/gsp/cmdq/continuation.rs | 138 +++++++++++++++++++++++++
- 1 file changed, 138 insertions(+)
+... but the remainder of the solution can be implemented to look
+something like this:
 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq/continuation.rs b/drivers/gpu/nova-core/gsp/cmdq/continuation.rs
-index 67b3e03fd8ea..2aa17caac2e0 100644
---- a/drivers/gpu/nova-core/gsp/cmdq/continuation.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq/continuation.rs
-@@ -161,3 +161,141 @@ fn init_variable_payload(
-         dst.write_all(&self.payload)
-     }
- }
-+
-+#[kunit_tests(nova_core_gsp_continuation)]
-+mod tests {
-+    use super::*;
-+
-+    use kernel::transmute::{
-+        AsBytes,
-+        FromBytes, //
-+    };
-+
-+    /// Non-zero-sized command header for testing.
-+    #[repr(C)]
-+    #[derive(Clone, Copy, Zeroable)]
-+    struct TestHeader([u8; 64]);
-+
-+    // SAFETY: `TestHeader` is a plain array of bytes for which all bit patterns are valid.
-+    unsafe impl FromBytes for TestHeader {}
-+
-+    // SAFETY: `TestHeader` is a plain array of bytes for which all bit patterns are valid.
-+    unsafe impl AsBytes for TestHeader {}
-+
-+    struct TestPayload {
-+        data: KVVec<u8>,
-+    }
-+
-+    impl TestPayload {
-+        fn generate_pattern(len: usize) -> Result<KVVec<u8>> {
-+            let mut data = KVVec::with_capacity(len, GFP_KERNEL)?;
-+            for i in 0..len {
-+                // Mix in higher bits so the pattern does not repeat every 256 bytes.
-+                data.push((i ^ (i >> 8)) as u8, GFP_KERNEL)?;
-+            }
-+            Ok(data)
-+        }
-+
-+        fn new(len: usize) -> Result<Self> {
-+            Ok(Self {
-+                data: Self::generate_pattern(len)?,
-+            })
-+        }
-+    }
-+
-+    impl CommandToGsp for TestPayload {
-+        const FUNCTION: MsgFunction = MsgFunction::Nop;
-+        type Command = TestHeader;
-+        type InitError = Infallible;
-+
-+        fn init(&self) -> impl Init<Self::Command, Self::InitError> {
-+            TestHeader::init_zeroed()
-+        }
-+
-+        fn variable_payload_len(&self) -> usize {
-+            self.data.len()
-+        }
-+
-+        fn init_variable_payload(
-+            &self,
-+            dst: &mut SBufferIter<core::array::IntoIter<&mut [u8], 2>>,
-+        ) -> Result {
-+            dst.write_all(self.data.as_slice())
-+        }
-+    }
-+
-+    /// Maximum variable payload size that fits in the first command alongside the header.
-+    const MAX_FIRST_PAYLOAD: usize = SplitState::<TestPayload>::MAX_FIRST_PAYLOAD;
-+
-+    fn read_payload(cmd: impl CommandToGsp) -> Result<KVVec<u8>> {
-+        let len = cmd.variable_payload_len();
-+        let mut buf = KVVec::from_elem(0u8, len, GFP_KERNEL)?;
-+        let mut sbuf = SBufferIter::new_writer([buf.as_mut_slice(), &mut []]);
-+        cmd.init_variable_payload(&mut sbuf)?;
-+        drop(sbuf);
-+        Ok(buf)
-+    }
-+
-+    struct SplitTest {
-+        payload_size: usize,
-+        num_continuations: usize,
-+    }
-+
-+    fn check_split(t: SplitTest) -> Result {
-+        let payload = TestPayload::new(t.payload_size)?;
-+        let mut num_continuations = 0;
-+
-+        let buf = match SplitState::new(payload)? {
-+            SplitState::Single(cmd) => read_payload(cmd)?,
-+            SplitState::Split(cmd, mut continuations) => {
-+                let mut buf = read_payload(cmd)?;
-+                assert!(size_of::<TestHeader>() + buf.len() <= MAX_CMD_SIZE);
-+
-+                while let Some(cont) = continuations.next() {
-+                    let payload = read_payload(cont)?;
-+                    assert!(payload.len() <= MAX_CMD_SIZE);
-+                    buf.extend_from_slice(&payload, GFP_KERNEL)?;
-+                    num_continuations += 1;
-+                }
-+
-+                buf
-+            }
-+        };
-+
-+        assert_eq!(num_continuations, t.num_continuations);
-+        assert_eq!(
-+            buf.as_slice(),
-+            TestPayload::generate_pattern(t.payload_size)?.as_slice()
-+        );
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn split_command() -> Result {
-+        check_split(SplitTest {
-+            payload_size: 0,
-+            num_continuations: 0,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_FIRST_PAYLOAD,
-+            num_continuations: 0,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_FIRST_PAYLOAD + 1,
-+            num_continuations: 1,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_FIRST_PAYLOAD + MAX_CMD_SIZE,
-+            num_continuations: 1,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_FIRST_PAYLOAD + MAX_CMD_SIZE + 1,
-+            num_continuations: 2,
-+        })?;
-+        check_split(SplitTest {
-+            payload_size: MAX_FIRST_PAYLOAD + MAX_CMD_SIZE * 3 + MAX_CMD_SIZE / 2,
-+            num_continuations: 4,
-+        })?;
-+        Ok(())
-+    }
-+}
+  // Write a fixed register.
+  bar.write(regs::MyReg::foo());
 
--- 
-2.53.0
+  // Write into a registers array at index 10.
+  bar.write(Reg::at(10, regs::MyRegArray::foo()));
 
+  // Write a relative register at the `Gsp` instance.
+  bar.write(Reg::of::<Gsp>(regs::MyRelativeReg::foo()));
+
+Amongst other benefits (no closures and the complications they bring),
+it also seems to be the shortest syntax so far.
+
+This could coexist with a 2-arguments write method, or completely
+supplant it.
+
+Before doing and sharing a full implementation, I'd like to check from
+this syntax that people don't hate it. WDYT?
