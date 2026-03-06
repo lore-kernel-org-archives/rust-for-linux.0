@@ -1,133 +1,204 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A774E311C01
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 19:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E924D361645
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 19:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772825287; cv=none; b=nGHnklcDspr3VSWi7LAKrB6eK2Ygt2AcGiSnPJmGiM2n2Jjv6xK7uner3SX7LJK6PxRbkZfausnFPAQ4McfrjeIEIYLBFQpjA1o/QOZQ6DRsfw27ei2fAiREFTIbB+EmsKuFK77U2cWvHN9JIBNihzwlJXBEUjWnmdlKc8T3b2k=
+	t=1772825732; cv=none; b=BkNXd/BBmhBIvQoDIw3q7MvPwl8cZLHU/tU7Gy/0GIwppIYqKhO3tpUW750hJ7uTM+gQujI/CuTQgAfnqpDS4iglxTDMW7tNdls+nrAFY93n5wQp7RMAJjsrLUpnlgj+uX120cYXoMZY+6HUHs4k6kr8XjHMtbBMTZpaHTRDHUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772825287; c=relaxed/simple;
-	bh=1wSzry9qXgOGT6an8EaEVFIb7De7cskzidp6Q/iEeZ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=APfpAUwowbWXGla58NhlLOFtrm3TPg6SuQw6kw7S8lxVEMzykH9T5/phKXZYm18QvUbLxQx4MKT9+ETUdXpzVWOu0M5mBGYyTCYqrKgwvtSLQV17ZtU2Mt/tWBck7oB1ng6Rv3rsy35gjLRtAQP3vRAagsF+j0Xe2Sq5UUroPN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RrSPeJQn; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1772825732; c=relaxed/simple;
+	bh=keqz28rKvxuSgS9woVzrUhaF71wCeQ6RBjDla6L6OYM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=i1dSwm7GKVPR1TwKfM4EGuFt5bJ/5nnGeXbiSm7QmXKIe+3pZDL1QDWokpoJUUAaO4jhD2IQM1bh7SfEx+eUP1wtTkxhcMcJHBKFY6juAj9nikcRlu6GkiTzyiJpHCTV8ChdZoFEFE11K5kHNTz0Woxjl8XyVY8rQ1z9asWidw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=O/arWnwH; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RrSPeJQn"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ae49120e97so10235ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Mar 2026 11:28:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772825286; x=1773430086; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PvXYP23IhuFH1eZo6K/xzmMOw61rGrmSbBCOFimt1yM=;
-        b=RrSPeJQnLdLtKC0ennxeJvxxlxVOcRVe2l/C8vOk2RHhFqhvRnGb01aNx6vA2Vpz2L
-         xOyfFl/WVz2E14hgaOoutMZQY/he1ZBVTjPLZ3z43NzUTazwZ+iqky+T4kfo6aUyqFIN
-         dgafzgrhlP3CI0L8A5CiGgTqAAmR/7wt3H5a7iQskbBfIIP19A1A4yZxzNIcufVKl6jk
-         jGmAVEISb76IhMdDrH/mVz8eksJmJmRwhmnLKlyGXMRA2KA493eAFMAo/Sfpfsu4/T16
-         fyJNU6G2ladry1Zof/+tmT7VMBO2uvBV4QW7RPrxy8s6/fYQwOSH4wThf2OGS0v1k12p
-         vFmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772825286; x=1773430086;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PvXYP23IhuFH1eZo6K/xzmMOw61rGrmSbBCOFimt1yM=;
-        b=mD7Q0d2vcEoRJOe50bEfvWNOe54XmvL9xwnSsGr7Gtsmd1n4vMXmahp+ZZ9Y0V7Eh4
-         jqfkg/dijPKWKlvq7jpehEkOB+SOQyPRfv1N09gNyYXKQgKclj/2rMf2haVYxgiLfE1q
-         5ZpDEtn0wDLH/bW0oKmqSqD6vEIsRuzXs47vCgkvBVWqSY0zY8HKb00+0zhMVIltVwDl
-         DG/zrulkJt5aQPw2uTknypy+doV/+aRBza/d1WqOsigHhlE2m2zYQkC4km4dizJV8VCa
-         uwA181zP4Y5O8UAokGW9XzjfV4L77+YXHFKdLDuoCvtdUWQ4TzlzcNeWtXDfNYiY8Bcr
-         dV4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWK39iC2OvsCgjRqvNmpEN1cEunN29cyH4ccWjLdWqTRbl8/3tb785qJIlCw0yxUud7jPRBZnruapWh7GeUmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrX8WCOYwmZ///24X1gOlnw0Gg6y1HgWOLUJHcBh7woTD0WZzv
-	cpemiY0IjBaU21LC7Qqfqyi49JXPdfKJGcdm/a8bSYpjcryzRxtqvF27fmiLRG2xVw==
-X-Gm-Gg: ATEYQzyOcGDtw9T0hbwr0MNORI3ofXo66XuORobBHiWBVBnoHVtMbomxU6PxXIipECT
-	c2i4KWBzSWI+OWKd9Yex7xzBx0Zq+wN0PSs18mcmBhp8eLFaqqAgG2Ixgopb+O9YEeDv8ySo1qS
-	sxEhJey90oGXHj0KA0SQyeHGMXhizSwY7Rm9Jk1BwgBZne4gTTEYeuroGGxkbREcsS23Ute5dyI
-	otQCu3TqIqyPejO0KlD3mWpqVeUbcyywq8tVrucX47sk7pNAPLG4D3ok1pBSmDb2/lCxlqg6NxG
-	gRdJPCOl9qh4O+OroL3eAxXy+0JJB7oztmBMLD5a0gsv6q82MYtjFUIPlhJ5XmW/vBYDNBDjghI
-	X7z1SaCr2lPVMR/C1YEoeRTxl6BUNP9BY4P7BoL1DD2agaZeOQkXbiZo5Ia9mig1C95TizhYmeX
-	gHPkZMIHxJ8jqSU3Xrtd0A9Efn2LntOwqV6tvDcRwvSj1AQdUqbUrf7WUQwWAVpE56NrE=
-X-Received: by 2002:a17:902:d487:b0:2a7:4151:2c74 with SMTP id d9443c01a7336-2ae8ad895d7mr224085ad.16.1772825285389;
-        Fri, 06 Mar 2026 11:28:05 -0800 (PST)
-Received: from google.com (197.23.125.34.bc.googleusercontent.com. [34.125.23.197])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e0cb598sm2259382a12.13.2026.03.06.11.28.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 11:28:04 -0800 (PST)
-Date: Fri, 6 Mar 2026 19:27:59 +0000
-From: Sami Tolvanen <samitolvanen@google.com>
-To: Matthew Wood <thepacketgeek@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Aaron Tomlin <atomlin@atomlin.com>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	David Gow <davidgow@google.com>,
-	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>,
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/8] rust: module_param: wire StringParam into the
- module! macro
-Message-ID: <20260306192759.GA1369418@google.com>
-References: <20260226234736.428341-1-thepacketgeek@gmail.com>
- <20260226234736.428341-3-thepacketgeek@gmail.com>
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="O/arWnwH"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 7DAA6240105
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 20:35:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1772825729; bh=HVPpVZG7q91124YZI/Aaqk7D7oF9wWOqNzAvI9ipxxA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
+	b=O/arWnwH7dVpBHJSs93JlycRBmvhfjVWlkndacK1aiDQAUEqLvRn0BMn1rIU1j/7I
+	 6bG7Ot/7ZzMppLuzlddP+DA3jkSgzXrXX+2viQj9W5vfRsuBi4eHd9wo8QW/gFD9en
+	 YrS0VrFcAcgZLjUFlY3EKGgPy4HnZTYUpn21iNTvxJNwKM0+/f2bzCmzELtIaCouM6
+	 +CYD/6aFnFvf2f2XXIA6InOSD1HTGwsU9f+TUg+46azv9x0cX1GIJJ5AW7Vxhxb62E
+	 44AVKgJyp7S2JARzYkoEOnvbogFoVvC6LPQmLs0zztp+xpExlLWR4131jP8TafuC8x
+	 R8t5OILfzXEKA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fSGpQ3ktFz9rxP;
+	Fri,  6 Mar 2026 20:35:26 +0100 (CET)
+From: Markus Probst <markus.probst@posteo.de>
+Date: Fri, 06 Mar 2026 19:35:28 +0000
+Subject: [PATCH v2 1/4] rust: devres: return reference in
+ `devres::register`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226234736.428341-3-thepacketgeek@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260306-rust_serdev-v2-1-e9b23b42b255@posteo.de>
+References: <20260306-rust_serdev-v2-0-e9b23b42b255@posteo.de>
+In-Reply-To: <20260306-rust_serdev-v2-0-e9b23b42b255@posteo.de>
+To: Rob Herring <robh@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Kari Argillander <kari.argillander@gmail.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Boqun Feng <boqun@kernel.org>
+Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
+ driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2571;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=keqz28rKvxuSgS9woVzrUhaF71wCeQ6RBjDla6L6OYM=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBpqyxy1nbeJUHcNxtJL4EPZbQrd8PiQx+yRrQKZ
+ joLtZimkCaJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaasschsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9JhXQ/+P6/oPzN8ph5TJUYaS5kxqLm7x9ahfle
+ qrf3KI5Ba8mFpDjEx8RBtD+iX9MiHIX4oBr6WFyfPW8rpus3r8pWkiPvOHaz8a2JyWG2AD1mnRX
+ FgQaLQmqtvVl228CnsRSGy2UXPocJ9CbjrUdYR+3eeWjTCgAlkLu9hLbMXFkuhC4EQqkoMZzVwB
+ IAso2JJI0iyVajGEFM8lIQgKSM0sODWDloUza9ozFNZp98u0OeKOc2GKNt+wWv9t1eVMOqGbKB6
+ NCwDM/VnVS1QHnaWYAclNypZTPjFWC+IM3dgXZLi+vugPLszQnLlDYebCyb5Qe4JwScQNH/BQAk
+ CZRuyki3ianoINHXaqCqX4bgqoKQgGv4ELwbmR0u7jkwHPKSsNNxWdA89DMbYAdsnYlOVCD78yM
+ kcOOTsHXIm5stFgSN4B/i//LMdXNCCijLGZ/zdAsNIafr45qasnQxY5Nux3yVRCJMGTBFornwJA
+ L6cFxeyqhzyws7IUX7398rGGSfMMKgIwNwNWQHCMAjKjbyUN9RoROQBxS7sTwi7AIJ5XEBeKvX1
+ lmOCnWz8OfOzLKCay4qDExeKCkZHb61JJ3w32UKyzPe2qPIu84hvHm5WJsURcKEJY9tBhGe6Brs
+ MW0YFXJ9xwcWk59ofs4r400XNfOmcj8KNpjNiAm7By9FQC928oHs=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Thu, Feb 26, 2026 at 03:47:28PM -0800, Matthew Wood wrote:
-> +/// Set a string module parameter from a string.
-> +///
-> +/// Similar to [`set_param`] but for [`StringParam`].
-> +///
-> +/// # Safety
-> +///
-> +/// Same requirements as [`set_param`].
-> +unsafe extern "C" fn set_string_param(
-> +    val: *const c_char,
-> +    param: *const bindings::kernel_param,
-> +) -> c_int {
-> +    if val.is_null() {
-> +        crate::pr_warn!("Null pointer passed to `module_param::set_string_param`");
-> +        return EINVAL.to_errno();
-> +    }
-> +
-> +    crate::error::from_result(|| {
-> +        // SAFETY: val points to a valid C string from the kernel.
-> +        let cstr_param = unsafe { StringParam::from_ptr(val) };
-> +
-> +        // SAFETY: By function safety requirements, param.arg points to our SetOnce<StringParam>.
-> +        let container = unsafe { &*((*param).__bindgen_anon_1.arg.cast::<SetOnce<StringParam>>()) };
+Return the reference to the initialized data in the `devres::register`
+function.
 
-I do realize this matches set_param, and there's a good chance I
-missed something when reading the macros, but doesn't arg actually
-point to ModuleParamAccess<T> here? Since the struct is not repr(C),
-isn't the compiler technically speaking allowed to reorder the
-fields, which means SetOnce<T> might not actually be at offset 0?
+This is needed in a following commit (rust: add basic serial device bus
+abstractions).
 
-> +
-> +        container
-> +            .populate(cstr_param)
-> +            .then_some(0)
-> +            .ok_or(kernel::error::code::EEXIST)
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+ rust/kernel/cpufreq.rs    |  3 ++-
+ rust/kernel/devres.rs     | 15 +++++++++++++--
+ rust/kernel/drm/driver.rs |  3 ++-
+ 3 files changed, 17 insertions(+), 4 deletions(-)
 
-Does this mean the behavior for Rust modules differs from C modules if
-the user specifies multiple instances of the same parameter? I believe
-we just use the last value of the parameter instead of failing in C.
+diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+index 76faa1ac8501..8cf86bb8e0f4 100644
+--- a/rust/kernel/cpufreq.rs
++++ b/rust/kernel/cpufreq.rs
+@@ -1051,7 +1051,8 @@ pub fn new_foreign_owned(dev: &Device<Bound>) -> Result
+     where
+         T: 'static,
+     {
+-        devres::register(dev, Self::new()?, GFP_KERNEL)
++        devres::register(dev, Self::new()?, GFP_KERNEL)?;
++        Ok(())
+     }
+ }
+ 
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 6afe196be42c..f882bace8601 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -326,15 +326,26 @@ fn register_foreign<P>(dev: &Device<Bound>, data: P) -> Result
+ /// }
+ ///
+ /// fn from_bound_context(dev: &Device<Bound>) -> Result {
+-///     devres::register(dev, Registration::new(), GFP_KERNEL)
++///     devres::register(dev, Registration::new(), GFP_KERNEL)?;
++///     Ok(())
+ /// }
+ /// ```
+-pub fn register<T, E>(dev: &Device<Bound>, data: impl PinInit<T, E>, flags: Flags) -> Result
++pub fn register<'a, T, E>(
++    dev: &'a Device<Bound>,
++    data: impl PinInit<T, E>,
++    flags: Flags,
++) -> Result<&'a T>
+ where
+     T: Send + 'static,
+     Error: From<E>,
+ {
+     let data = KBox::pin_init(data, flags)?;
+ 
++    let data_ptr = &raw const *data;
++
+     register_foreign(dev, data)
++        // SAFETY: `dev` is valid for the lifetime of 'a. As long as there is a reference to
++        // `Device<Bound>`, it is guaranteed that the device is not unbound and data has not been
++        // dropped. Thus `data_ptr` is also valid for the lifetime of 'a.
++        .map(|()| unsafe { &*data_ptr })
+ }
+diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
+index e09f977b5b51..51e0c7e30cc2 100644
+--- a/rust/kernel/drm/driver.rs
++++ b/rust/kernel/drm/driver.rs
+@@ -145,7 +145,8 @@ pub fn new_foreign_owned(
+ 
+         let reg = Registration::<T>::new(drm, flags)?;
+ 
+-        devres::register(dev, reg, GFP_KERNEL)
++        devres::register(dev, reg, GFP_KERNEL)?;
++        Ok(())
+     }
+ 
+     /// Returns a reference to the `Device` instance for this registration.
 
-Sami
+-- 
+2.52.0
+
