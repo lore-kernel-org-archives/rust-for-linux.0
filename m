@@ -1,41 +1,40 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E18C4279FE
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 19:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399CB426ED6
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 19:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772825912; cv=none; b=V6NIGYQw5hZmHVfG6urTQwdkyUqU4mrbUt1i97eC5bbtue3H48aDYj7Hyhysd97+m2WL7Al5tJhvG3stqhMGOyDYqKfcI+4AphWay0udK1CK+J5B/Bl7M+30wSqsYbg7I7BvAYI3GtQXcCcJgRmwZ8bZswJTj1MQBTv72jRa1Lg=
+	t=1772825924; cv=none; b=LXzltJZoJtYHCOQuKiZiTtO1BQxTJh8dOdvbmt3hQV5Xj2qrMyybGblljXtVeKadoHow2hpi6Nzs/BHLyS+qqSCe7vuImNh39HxS8guZr66rWcpKETzbJAQkJd+8urludugm1kxviBGigLC1cugYNpQ5IdLbW2fB40nL82HIzFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772825912; c=relaxed/simple;
-	bh=zHHOV29KIIfesKx99zFZZnx3MXzbs1mtNMLCzguKvYU=;
+	s=arc-20240116; t=1772825924; c=relaxed/simple;
+	bh=gX0g9LfijMawVM2avstuXD8jqFulHA4evwgbIVWxvkc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hB2i5gNwYxc7ARLSsrWkVDxZp2R8Cb1AwvSJ9wcS5hYzXsSxltiFCs/m6nqCHuPud6eTJ2cuynGopKoJaJ7e099uQK1W20/iJzqmalw3weh9JSqURIDPAo8Um7DWLKfGGGLeQfRH7WGxEzNEhrv0GeBH6hC+py2s84NU3X6TVqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=peqQ22jB; arc=none smtp.client-ip=185.67.36.65
+	 In-Reply-To:To:Cc; b=GuApesWhu2+MD8HBEBYRDPwZgHC3Hl3gwBH3C3RRouYrIrhFzRhPy/usHpesiHKwb2OKCDtY54rzoDDcr2K00ugdx9C53clDtj2fMF/7qG+otjyyTPZwjIzf5Dos7senvEkqudFlgtXK3GVxL04yESKMI1qf9L8tlFx35pB9Gg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=bvBimlQt; arc=none smtp.client-ip=185.67.36.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="peqQ22jB"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="bvBimlQt"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 98111240027
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 20:38:29 +0100 (CET)
+	by mout02.posteo.de (Postfix) with ESMTPS id B9129240103
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 20:38:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1772825909; bh=LsxqaLzFPCnd5l1ujHq9VRUc7Kk6DnDqykvlCjyl0IE=;
+	t=1772825911; bh=JphZx8WJ4w5RE0+6MGlxWHM1KcEW/8NdJkZzsQGKZnU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=peqQ22jBW7fDD4mv0lfpIE6pAIDnVlI8RGWtrExuRQv84mmryhfHGA726HdYJvRLR
-	 m/Ne1cuBMRBzlfT9gZ8oLPGq8qyfOjIx11PSczZq19RZDqEdVCZvqVABuUBXlbpq/o
-	 pHYfEemtppt24MN/264FVXeBDM05vXYfKCfa+qbI+Toc7xLS+a73nd9KP0YiQSPMEx
-	 AR1t1to+CkyT7kdwl3719kXh1kO842obLvXx+gFHcY/GNDY/rzaHNG/jhJI9QRZR4L
-	 7fLkqHpv7vWGX2g5gxbgxkiq7fBDJr+482bs6UN4yeBL0+ZKTUyI6m4p1cMCgjwqOy
-	 mR2j7Yz2tm+LA==
+	b=bvBimlQtiLCWQ4Y5Hhf6B5nQCFGZWJxBrNYUViitGZ7cjGdimTiH9S/4kt3NOqlJx
+	 /9RTwHAs3/Xr3bGXPqSXwZYsPm3xLNtN13wPQgknEDF3EAtiD3rkrEm9D9/VD2JIH5
+	 ry/SurFJLA5/bKyhZVgInMsgSx53sL233ttBjYl24U47T7OIH6vaOZyvz1KjEE4NX2
+	 RICDmciT8aYDx+f5W23PCuaV5njnRS296onNdV6vzxkPlHMYdFzSdZzk42jvOYXPfI
+	 iiA2fVetQNWuNax77AUcyEF1n3VD/rmx5kPC+emaLxVTD/SFoIhEMZeLd8SErFnTYi
+	 d+tRK/1LqL0uw==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fSGsv1KRlz6tvq;
-	Fri,  6 Mar 2026 20:38:27 +0100 (CET)
+	by submission (posteo.de) with ESMTPSA id 4fSGsx12kqz6tyH;
+	Fri,  6 Mar 2026 20:38:28 +0100 (CET)
 From: Markus Probst <markus.probst@posteo.de>
-Date: Fri, 06 Mar 2026 19:38:28 +0000
-Subject: [PATCH 1/2] dt-bindings: mfd: Add binding for synology,microp
- devices
+Date: Fri, 06 Mar 2026 19:38:30 +0000
+Subject: [PATCH 2/2] staging: Add initial synology microp driver
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,7 +43,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260306-synology_microp_initial-v1-1-fcffede6448c@posteo.de>
+Message-Id: <20260306-synology_microp_initial-v1-2-fcffede6448c@posteo.de>
 References: <20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de>
 In-Reply-To: <20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de>
 To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -60,21 +59,21 @@ To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-staging@lists.linux.dev, rust-for-linux@vger.kernel.org, 
  Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2869;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14844;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=zHHOV29KIIfesKx99zFZZnx3MXzbs1mtNMLCzguKvYU=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBpqy0sNV/wBB/FhSux8qwvgIO4ZlnRLc1gsI91T
- OhwgMOsiIWJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaastLBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9Jd2w/+N2wxIvEjuRTyucGz1GHrowZJEHA++/u
- B1gNbzPiYnBSTjs0vXQ7cSnA3Amz/3DX1rK1M2Xy2SVbmAoSf7Mvt9ImrgBwn1tYkPwL0bC01+b
- lR4cV7GmvibZv3dJtB0Ne+1SnwvSP0Q4jOkMfhHfawJAwYChtRK+ySc6tvOUnmlHuI2cuh6yXpo
- hwPuy3k624s4AN4+FTAyk6rKCeelty2aHaOp4DOKOL/OpgNbbxknzyzwl0PTeagiYcXtWnM3UMz
- xa3MsjMenT+nxNxLllWY1g8SVPtbaTXCBrc4BHEJ5cLGHLDJlermDTd2rXFJVRK3fnVIkFzMVaT
- 5a2jL4cYvzdAN17aXga1EUEQR5OyWXGPdH+T9hPsFJ8G4qzXUZQTTpOLTZsyB5xI+VvdvPiYJSB
- jvsH9HcNgjGsF7R6hDBfBoaBEGsV/0GkJs0qoQ8V4UP8HPBujvp+oCtlrZ34TRD2bLd2WLpvPfH
- ekvXD0C/wB2Qtw5bgUsMrhi6qK+kckUOp5CLcZjLylnHuHdKDcGDMOt+nd62EJwvmMiSTtKK5JY
- S6FsYBx9dNRORDuaid0I0djiHxC2CDpS5kOLC2lLpk5B0orwcmRuRxGHPXuSHbc9CPLPuZjETpz
- p0MJim3RpB+J6XXTy0UiFzuQI5wkhn5dZVoOIqfZw1/t/TAsRB18=
+ bh=gX0g9LfijMawVM2avstuXD8jqFulHA4evwgbIVWxvkc=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBpqy0uMRSuQuUWWgaBtIN6PWOBl1FHmcgzs0Lu9
+ bMulSjzwZyJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaastLhsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9Jn5BAAnaq3Pp0pVUZ15Yqp918HJhEyP9vxlPg
+ Ost/gqwsw/uYWiqFTzV8odpjwNFZKi0y6vPuplOtu4S9G2fO8DhzmYJrU9XhPL8CcJ0z/OhsJ7s
+ dALExmj6m0fxtJurmBGVtNp/9chI5uogijXCxFtLZTnSrXxWX4z7cn9yG4Qs6A20AZvE0zlaTZn
+ KAvntKRgaZv0plsbiLaQpHC5AezI9kiNW8FYw1u8lfGravVAhnZe26Nh28bihQyqV3F7qT+EoLV
+ JVkPtM3XYnGGQqspptcihxadz/yAVTphk/5LUM23ZSlp2r0ZQ33TlsmLI58t5WUPdTUSGjoUA5P
+ OmE5KXe78D3JdpDwKV6OxArbizW0KGAHqlDK5ZoKKvew0Qz2RinaXia8qazFsXGetjJeZWQPQBA
+ wnntaHYs8LELIYeTmT2E9s8W83z3/6wjFWVlGOhpB+6pt12C8pwJtKV66bpiskg5rHkxpTgjvRF
+ WcAs+oM7hZQp08BKmKRcAcvkZETZYDJi1Ecy9ViWC16DjSa0qDfBWOeJFiS/CExqwO2e7qrpXTc
+ 4aBh4IPXB7KI8ivs9sfGK9S+UFfA+H+JT4+lJLfU5i3NE9iLkzXAOrSlTSBG1J/kn2oaBOsDZuA
+ HLPRcY5d/p34kgzb64VOL6S81/Yh46WhqgQxb8Rt8SK3bTfAhMLo=
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
 Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
@@ -120,100 +119,472 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
   aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Add the Synology Microp devicetree bindings. Those devices are
-microcontrollers found on Synology NAS devices. They are connected to a
-serial port on the host device.
-
-Those devices are used to control certain LEDs, fan speeds, a beeper, to
-handle buttons, fan failures and to properly shutdown and reboot the
-device.
-
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
+Add a initial synology microp driver, written in Rust, to the staging tree.
+The driver targets a microcontroller found in Synology NAS devices. It
+currently only supports controlling of the power led, status led, alert
+led and usb led. Other components such as fan control or handling
+on-device buttons will be added once the required rust abstractions are
+there.
 ---
- .../devicetree/bindings/mfd/synology,microp.yaml   | 75 ++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
+ MAINTAINERS                                        |   6 +
+ drivers/staging/Kconfig                            |   2 +
+ drivers/staging/Makefile                           |   1 +
+ drivers/staging/synology_microp/Kconfig            |   4 +
+ drivers/staging/synology_microp/Makefile           |   2 +
+ drivers/staging/synology_microp/TODO               |   8 +
+ drivers/staging/synology_microp/command.rs         |  48 +++++
+ drivers/staging/synology_microp/led.rs             | 229 +++++++++++++++++++++
+ drivers/staging/synology_microp/synology_microp.rs |  73 +++++++
+ rust/uapi/uapi_helper.h                            |   2 +
+ 10 files changed, 375 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mfd/synology,microp.yaml b/Documentation/devicetree/bindings/mfd/synology,microp.yaml
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e9e83ab552c7..a1f8dec31db2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -25143,6 +25143,12 @@ L:	linux-fbdev@vger.kernel.org
+ S:	Maintained
+ F:	drivers/staging/sm750fb/
+ 
++STAGING - SYNOLOGY MICROP DRIVER
++M:  Markus Probst <markus.probst@posteo.de>
++S:  Maintained
++F: Documentation/devicetree/bindings/mfd/synology,microp.yaml
++F: drivers/staging/synology_microp/
++
+ STAGING SUBSYSTEM
+ M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ L:	linux-staging@lists.linux.dev
+diff --git a/drivers/staging/Kconfig b/drivers/staging/Kconfig
+index 2f92cd698bef..193d4a5d7f56 100644
+--- a/drivers/staging/Kconfig
++++ b/drivers/staging/Kconfig
+@@ -48,4 +48,6 @@ source "drivers/staging/axis-fifo/Kconfig"
+ 
+ source "drivers/staging/vme_user/Kconfig"
+ 
++source "drivers/staging/synology_microp/Kconfig"
++
+ endif # STAGING
+diff --git a/drivers/staging/Makefile b/drivers/staging/Makefile
+index f5b8876aa536..cb0cadd08ae2 100644
+--- a/drivers/staging/Makefile
++++ b/drivers/staging/Makefile
+@@ -13,3 +13,4 @@ obj-$(CONFIG_MOST)		+= most/
+ obj-$(CONFIG_GREYBUS)		+= greybus/
+ obj-$(CONFIG_BCM2835_VCHIQ)	+= vc04_services/
+ obj-$(CONFIG_XIL_AXIS_FIFO)	+= axis-fifo/
++obj-$(CONFIG_MFD_SYNOLOGY_MICROP) += synology_microp/
+diff --git a/drivers/staging/synology_microp/Kconfig b/drivers/staging/synology_microp/Kconfig
 new file mode 100644
-index 000000000000..0fcb0b750bf0
+index 000000000000..8d315d2576d8
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/mfd/synology,microp.yaml
-@@ -0,0 +1,75 @@
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mfd/synology,microp.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/staging/synology_microp/Kconfig
+@@ -0,0 +1,4 @@
 +
-+title: Synology NAS on-board Microcontroller
++config MFD_SYNOLOGY_MICROP
++	tristate "Synology Microp driver"
++	depends on RUST && SERIAL_DEV_BUS && LEDS_CLASS && LEDS_CLASS_MULTICOLOR
+diff --git a/drivers/staging/synology_microp/Makefile b/drivers/staging/synology_microp/Makefile
+new file mode 100644
+index 000000000000..d762cada20c9
+--- /dev/null
++++ b/drivers/staging/synology_microp/Makefile
+@@ -0,0 +1,2 @@
 +
-+maintainers:
-+  - Markus Probst <markus.probst@posteo.de>
++obj-y	+= synology_microp.o
+diff --git a/drivers/staging/synology_microp/TODO b/drivers/staging/synology_microp/TODO
+new file mode 100644
+index 000000000000..d432ddd8403c
+--- /dev/null
++++ b/drivers/staging/synology_microp/TODO
+@@ -0,0 +1,8 @@
++TODO:
++- not all devices have a alert or usb led. Only register them, if a fwnode entry is present.
++- add missing components:
++  - handle on-device buttons (Power, Factory reset, "USB Copy")
++  - handle fan failure
++  - beeper
++  - fan speed control
++  - correctly perform device power-off and restart on Synology devices
+diff --git a/drivers/staging/synology_microp/command.rs b/drivers/staging/synology_microp/command.rs
+new file mode 100644
+index 000000000000..e98e46423e2d
+--- /dev/null
++++ b/drivers/staging/synology_microp/command.rs
+@@ -0,0 +1,48 @@
++use kernel::{
++    device::Bound,
++    error::Result,
++    serdev, //
++};
 +
-+description: |
-+  Synology devices contain a microcontroller on their device to control
-+  certain leds, fan speeds, a beeper, to properly handle system shutdown
-+  and reboot, buttons and fan failures.
++use crate::led;
 +
-+properties:
-+  compatible:
-+    enum:
-+      - synology,microp
-+  power-led:
-+    $ref: /schemas/leds/common.yaml
-+    unevaluatedProperties: false
-+  status-led:
-+    $ref: /schemas/leds/common.yaml
-+    unevaluatedProperties: false
-+  alert-led:
-+    $ref: /schemas/leds/common.yaml
-+    unevaluatedProperties: false
-+  usb-led:
-+    $ref: /schemas/leds/common.yaml
-+    unevaluatedProperties: false
-+  no-check-fan:
-+    type: boolean
-+    description: |
-+      Disable fan failure check.
++#[derive(Copy, Clone)]
++#[expect(
++    clippy::enum_variant_names,
++    reason = "future variants will not end with Led"
++)]
++pub(crate) enum Command {
++    PowerLed(led::State),
++    StatusLed(led::StatusLedColor, led::State),
++    AlertLed(led::State),
++    UsbLed(led::State),
++}
 +
-+      The fan failure event is triggered on the device, even if the fan
-+      has been intentionally set to a low speed. This property prevents a
-+      hardware protection shutdown if a fan failure event is reported.
-+  no-check-cpu-fan:
-+    type: boolean
-+    description: |
-+      Disable cpu fan failure check.
++impl Command {
++    pub(crate) fn write(self, dev: &serdev::Device<Bound>) -> Result<()> {
++        dev.write_all(
++            match self {
++                Command::PowerLed(led::State::On) => &[0x34],
++                Command::PowerLed(led::State::Blink) => &[0x35],
++                Command::PowerLed(led::State::Off) => &[0x36],
 +
-+      The cpu fan failure event is triggered on the device, even if the cpu
-+      fan has been intentionally set to a low speed. This property prevents
-+      a hardware protection shutdown if a cpu fan failure event is
-+      reported.
++                Command::StatusLed(_, led::State::Off) => &[0x37],
++                Command::StatusLed(led::StatusLedColor::Green, led::State::On) => &[0x38],
++                Command::StatusLed(led::StatusLedColor::Green, led::State::Blink) => &[0x39],
++                Command::StatusLed(led::StatusLedColor::Orange, led::State::On) => &[0x3A],
++                Command::StatusLed(led::StatusLedColor::Orange, led::State::Blink) => &[0x3B],
 +
-+required:
-+  - compatible
-+  - power-led
-+  - status-led
++                Command::AlertLed(led::State::On) => &[0x4C, 0x41, 0x31],
++                Command::AlertLed(led::State::Blink) => &[0x4C, 0x41, 0x32],
++                Command::AlertLed(led::State::Off) => &[0x4C, 0x41, 0x33],
 +
-+additionalProperties: false
++                Command::UsbLed(led::State::On) => &[0x40],
++                Command::UsbLed(led::State::Blink) => &[0x41],
++                Command::UsbLed(led::State::Off) => &[0x42],
++            },
++            serdev::Timeout::Max,
++        )?;
++        dev.wait_until_sent(serdev::Timeout::Max);
++        Ok(())
++    }
++}
+diff --git a/drivers/staging/synology_microp/led.rs b/drivers/staging/synology_microp/led.rs
+new file mode 100644
+index 000000000000..deeece661937
+--- /dev/null
++++ b/drivers/staging/synology_microp/led.rs
+@@ -0,0 +1,229 @@
++use core::sync::atomic::{
++    AtomicBool,
++    Ordering, //
++};
 +
-+examples:
-+  - |
-+    #include <dt-bindings/leds/common.h>
++use kernel::{
++    device::Bound,
++    devres::Devres,
++    error::Error,
++    led::{self, MultiColorSubLed},
++    macros::vtable,
++    prelude::*,
++    serdev, //
++};
 +
-+    uart {
-+      microp {
-+        compatible = "synology,microp";
++use crate::command::Command;
 +
-+        power-led {
-+          color = <LED_COLOR_ID_BLUE>;
-+          function = LED_FUNCTION_POWER;
++pub(crate) struct SynologyMicropLedHandler {
++    blink: AtomicBool,
++    map: fn(State) -> Command,
++}
++
++pub(crate) struct SynologyMicropStatusLedHandler {
++    blink: AtomicBool,
++}
++
++#[derive(Copy, Clone)]
++pub(crate) enum State {
++    On,
++    Blink,
++    Off,
++}
++
++#[derive(Copy, Clone)]
++pub(crate) enum StatusLedColor {
++    Green,
++    Orange,
++}
++
++impl SynologyMicropLedHandler {
++    fn register<'a>(
++        parent: &'a serdev::Device<Bound>,
++        fwnode_child_name: &'static CStr,
++        default_trigger: &'static CStr,
++        brightness: u32,
++        color: led::Color,
++        map: fn(State) -> Command,
++    ) -> impl PinInit<Devres<led::Device<Self>>, Error> + 'a {
++        led::DeviceBuilder::new()
++            .fwnode(
++                parent
++                    .as_ref()
++                    .fwnode()
++                    .and_then(|fwnode| fwnode.get_child_by_name(fwnode_child_name)),
++            )
++            .default_trigger(default_trigger)
++            .initial_brightness(brightness)
++            .devicename(c"synology-microp")
++            .color(color)
++            .build(
++                parent,
++                Ok(Self {
++                    blink: AtomicBool::new(true),
++                    map,
++                }),
++            )
++    }
++
++    pub(crate) fn register_power<'a>(
++        parent: &'a serdev::Device<Bound>,
++    ) -> impl PinInit<Devres<led::Device<Self>>, Error> + 'a {
++        Self::register(
++            parent,
++            c"power-led",
++            c"timer",
++            1,
++            led::Color::Blue,
++            Command::PowerLed,
++        )
++    }
++
++    pub(crate) fn register_alert<'a>(
++        parent: &'a serdev::Device<Bound>,
++    ) -> impl PinInit<Devres<led::Device<Self>>, Error> + 'a {
++        Self::register(
++            parent,
++            c"alert-led",
++            c"none",
++            0,
++            led::Color::Orange,
++            Command::AlertLed,
++        )
++    }
++
++    pub(crate) fn register_usb<'a>(
++        parent: &'a serdev::Device<Bound>,
++    ) -> impl PinInit<Devres<led::Device<Self>>, Error> + 'a {
++        Self::register(
++            parent,
++            c"usb-led",
++            c"none",
++            0,
++            led::Color::Green,
++            Command::UsbLed,
++        )
++    }
++}
++
++#[vtable]
++impl led::LedOps for SynologyMicropLedHandler {
++    type Bus = serdev::Device<Bound>;
++    type Mode = led::Normal;
++    const BLOCKING: bool = true;
++    const MAX_BRIGHTNESS: u32 = 1;
++
++    fn brightness_set(
++        &self,
++        dev: &Self::Bus,
++        _classdev: &led::Device<Self>,
++        brightness: u32,
++    ) -> Result<()> {
++        (self.map)(if brightness == 0 {
++            self.blink.store(false, Ordering::Relaxed);
++            State::Off
++        } else if self.blink.load(Ordering::Relaxed) {
++            State::Blink
++        } else {
++            State::On
++        })
++        .write(dev)
++    }
++
++    fn blink_set(
++        &self,
++        dev: &Self::Bus,
++        _classdev: &led::Device<Self>,
++        delay_on: &mut usize,
++        delay_off: &mut usize,
++    ) -> Result<()> {
++        *delay_on = 167;
++        *delay_off = 167;
++
++        self.blink.store(true, Ordering::Relaxed);
++        (self.map)(State::Blink).write(dev)
++    }
++}
++
++impl SynologyMicropStatusLedHandler {
++    pub(crate) fn register(
++        parent: &serdev::Device<Bound>,
++    ) -> impl PinInit<Devres<led::MultiColorDevice<Self>>, Error> + '_ {
++        const SUBLEDS: &[MultiColorSubLed] = &[
++            MultiColorSubLed::new(led::Color::Green).initial_intensity(1),
++            MultiColorSubLed::new(led::Color::Orange),
++        ];
++
++        led::DeviceBuilder::new()
++            .fwnode(
++                parent
++                    .as_ref()
++                    .fwnode()
++                    .and_then(|fwnode| fwnode.get_child_by_name(c"status-led")),
++            )
++            .devicename(c"synology-microp")
++            .color(led::Color::Multi)
++            .build_multicolor(
++                parent,
++                Ok(SynologyMicropStatusLedHandler {
++                    blink: AtomicBool::new(false),
++                }),
++                SUBLEDS,
++            )
++    }
++}
++
++#[vtable]
++impl led::LedOps for SynologyMicropStatusLedHandler {
++    type Bus = serdev::Device<Bound>;
++    type Mode = led::MultiColor;
++    const BLOCKING: bool = true;
++    const MAX_BRIGHTNESS: u32 = 1;
++
++    fn brightness_set(
++        &self,
++        dev: &Self::Bus,
++        classdev: &led::MultiColorDevice<Self>,
++        brightness: u32,
++    ) -> Result<()> {
++        if brightness == 0 {
++            self.blink.store(false, Ordering::Relaxed);
++        }
++
++        let (color, subled_brightness) = if classdev.subleds()[1].brightness == 0 {
++            (StatusLedColor::Green, classdev.subleds()[0].brightness)
++        } else {
++            (StatusLedColor::Orange, classdev.subleds()[1].brightness)
 +        };
 +
-+        status-led {
-+          color = <LED_COLOR_ID_MULTI>;
-+          function = LED_FUNCTION_STATUS;
++        if subled_brightness == 0 {
++            Command::StatusLed(color, State::Off)
++        } else if self.blink.load(Ordering::Relaxed) {
++            Command::StatusLed(color, State::Blink)
++        } else {
++            Command::StatusLed(color, State::On)
++        }
++        .write(dev)
++    }
++
++    fn blink_set(
++        &self,
++        dev: &Self::Bus,
++        classdev: &led::MultiColorDevice<Self>,
++        delay_on: &mut usize,
++        delay_off: &mut usize,
++    ) -> Result<()> {
++        *delay_on = 167;
++        *delay_off = 167;
++
++        self.blink.store(true, Ordering::Relaxed);
++
++        let color = if classdev.subleds()[1].brightness == 0 {
++            StatusLedColor::Green
++        } else {
++            StatusLedColor::Orange
 +        };
-+      };
-+    };
++
++        Command::StatusLed(color, State::Blink).write(dev)
++    }
++}
+diff --git a/drivers/staging/synology_microp/synology_microp.rs b/drivers/staging/synology_microp/synology_microp.rs
+new file mode 100644
+index 000000000000..abc513edc590
+--- /dev/null
++++ b/drivers/staging/synology_microp/synology_microp.rs
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Synology Microp driver
++
++use kernel::{
++    device,
++    devres::Devres,
++    of,
++    prelude::*,
++    serdev, //
++};
++use pin_init::pin_init_scope;
++
++use crate::{
++    led::{
++        SynologyMicropLedHandler,
++        SynologyMicropStatusLedHandler, //
++    }, //
++};
++
++pub(crate) mod command;
++mod led;
++
++kernel::module_serdev_device_driver! {
++    type: SynologyMicropDriver,
++    name: "synology_microp",
++    authors: ["Markus Probst <markus.probst@posteo.de>"],
++    description: "Synology Microp driver",
++    license: "GPL v2",
++}
++
++#[pin_data]
++struct SynologyMicropDriver {
++    #[pin]
++    power_led: Devres<kernel::led::Device<SynologyMicropLedHandler>>,
++    #[pin]
++    status_led: Devres<kernel::led::MultiColorDevice<SynologyMicropStatusLedHandler>>,
++    #[pin]
++    alert_led: Devres<kernel::led::Device<SynologyMicropLedHandler>>,
++    #[pin]
++    usb_led: Devres<kernel::led::Device<SynologyMicropLedHandler>>,
++}
++
++kernel::of_device_table!(
++    OF_TABLE,
++    MODULE_OF_TABLE,
++    <SynologyMicropDriver as serdev::Driver>::IdInfo,
++    [(of::DeviceId::new(c"synology,microp"), ()),]
++);
++
++#[vtable]
++impl serdev::Driver for SynologyMicropDriver {
++    type IdInfo = ();
++    const OF_ID_TABLE: Option<kernel::of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
++
++    fn probe(
++        dev: &serdev::Device<device::Core>,
++        _id_info: Option<&Self::IdInfo>,
++    ) -> impl PinInit<Self, kernel::error::Error> {
++        pin_init_scope(move || {
++            let _ = dev.set_baudrate(9600);
++            dev.set_flow_control(false);
++            dev.set_parity(serdev::Parity::None)?;
++
++            Ok(try_pin_init!(Self {
++                power_led <- SynologyMicropLedHandler::register_power(dev),
++                status_led <- SynologyMicropStatusLedHandler::register(dev),
++                alert_led <- SynologyMicropLedHandler::register_alert(dev),
++                usb_led <- SynologyMicropLedHandler::register_usb(dev),
++            }))
++        })
++    }
++}
+diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
+index 06d7d1a2e8da..94b6c1b59e56 100644
+--- a/rust/uapi/uapi_helper.h
++++ b/rust/uapi/uapi_helper.h
+@@ -14,3 +14,5 @@
+ #include <uapi/linux/mdio.h>
+ #include <uapi/linux/mii.h>
+ #include <uapi/linux/ethtool.h>
++#include <uapi/linux/serial_reg.h>
++
 
 -- 
 2.52.0
