@@ -1,301 +1,751 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010028.outbound.protection.outlook.com [52.101.46.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D692DC35C;
-	Fri,  6 Mar 2026 11:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772795444; cv=fail; b=ZxupGaYnWN9i30Pk+DPS0tRDulY1HN8hRGIax02K3Oyk0jCsAja61NBZNRv68Zd4aZ5neMKuJVWD+Tfa8cKR3sJPoWCu/2+MpRdTDy7DMaC87oMMXM78E5eAnpiZNAa2LgbF9uzN9Jh1lZEbcAEVHrhyzrC9xvx+zXNGZfyNadM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772795444; c=relaxed/simple;
-	bh=tiPtBDofq9iCOq3o6XwyjSl5BDMC0d5YxSA+Z4HDuEg=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=cqVxJHTQ3gFVReoXQ/744M4MXrcgQZsc6Rh7BO0M8VLp7MFoxkAhCx/05Y+04NPaC/olovqDOuFcSyjVWdvMmYv7Xnog2DSeNP3SHX/YMhSVPeMWLaQZaK2o7oAhDEo+RAhPs4bBCvVBGozwKdKS4iM3ELtrrxUES5wQYoRdIQ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mt725Zh4; arc=fail smtp.client-ip=52.101.46.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC5530AAA6
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 11:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772796540; cv=none; b=E+wl5GBC7WpSrHCKSEOMGAE305xwqRwdc1NUUyH78M6VaQCEOIvtxKiEhYoZLrfHOWLjkyega/AA+0Toz7jFPQ56ghyrBjrZFs6VqyaWYXrVSqwtmO8piolVZIcaDa90rUPJ2wZvpsoMQYLE/myQthQhnuFrHHYu0zPc0ez1d4Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772796540; c=relaxed/simple;
+	bh=7RIQpIBTi8ras99qSujDqTwhHj9NSVSSg+jlmRDr5/8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iinrfH0iZiVxVmmvoVtQnWAKkbCVYI/Kl5blKJCCfx5nN9zD6tjLPlDOy5vJ2rqkLaV0cQgw+cb9KTZ1cg38cVnzsAHbqWb0Got13uKWlMolrNPKbvBKU8QvvgHof3zK1SjfBJFhA4MP4LUkALYBXutIotvj72VLP59LVASwzIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OsIlokJp; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mt725Zh4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jrf+/FF90VQZsUSJLXSzZ21uxBbULspA4jTzr5E5oCH8FK06mGxdQ8Y1Mj/9mceXFWf+E6KTJZ4Iddg2waPUDxfIATuXvykJK8qloXJl9a3tV3hh2iCj42qxAR64y0DdqGoE0sdGf/kOomE9uP6nJoJ2dca7HsG+66A7uuL+O8RN5NWAJCbw4wk0Cm8iEL8/f9TKDxbX961Z/H0bUhovPhbiUHFUzB2vbt/wNRY7R/pjaSCrmnkm/7liKgU8+KSMaYE9Oxr/8GuDq9NJwpuzJkhCPLsqavt6KUPWKEQZZB6PXWj5QlPn0z7PrRKjLbPEq5EY2btdFI5CSXIMP8YhWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bjPLSz1+U2xJQMky/XEc0VJkzjQvcbveEu2BatkJrsg=;
- b=eDhIFLYKUMfF5Jod7eoPR9gdG/J6uQu2+xabmFzTbOUlGQue4T+3O4T+KaoBlWYWCs4Omx1jH4l3F8H5Yld4zFhSV+LJRcFgJ+wXV0dk8J1jdEJOrJQUxbVMfBa0Zi1hydBAZuu5PLrtQXA82n2k8TBqnTMglzpIwmfvLdGxx95rPVZn0i4yQcWt9x4J8moMPqeAaEYyXSdqzz9Z/ebyj1Ts8DqH4H9oCeV8oBztmd7KyQH5u+EBC2AI6dfflItNvV4zRRQ9VnFn41s5mQPQ92rrqF3fSQBXSWcC+dON51sFuyVeSXVis/Tuvsq18/pV1eEk/0dZe8aB6mWRBJsWGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bjPLSz1+U2xJQMky/XEc0VJkzjQvcbveEu2BatkJrsg=;
- b=mt725Zh4TPk72j2ctjhbs6EGn0aE3TvgN1sERPUsqPXgVAAmDyN2vgnEvQJwKLVPEBpxApBIbUptKPPatepuQs87SAHxJH7wf+D/vwMtn+m9zCtaNSNx7qEbCeDDxO/iotO8qWtdNlkqr4kugtT5j4kmlK95OVBXCPqLxepLSPiHhWRGm58y647xBDWyt4WRxaMoYiejdYBja3RtJrm0m2VZNU03ADLWKK1PIP/7SRW6nc/IBcRDS0D7n60bHIEgM8UdPXMIX0NTdDpJTHDiVuV3XzgpHOcgOU3q/oxHiLCUemCmzdwWz5qGAXRivs9bZr//ilvY5dQBx+4YGcr1HQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SJ0PR12MB5662.namprd12.prod.outlook.com (2603:10b6:a03:429::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Fri, 6 Mar
- 2026 11:10:39 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9700.003; Fri, 6 Mar 2026
- 11:10:39 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Mar 2026 20:10:36 +0900
-Message-Id: <DGVNJ8ANGP3Q.1RAGWU2HJGRIB@nvidia.com>
-Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
- <20260224-register-v7-5-aad44f760f33@nvidia.com>
- <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
- <DGQ67S1NH3OA.2MS0YVO0UU2E2@nvidia.com>
- <DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net>
- <DGRWZVJNLLH0.39JYHZIIMC9XK@nvidia.com>
- <DGSB81ZE18O1.31CVVHMP38U2W@garyguo.net>
- <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
- <DGSC6U50TCHF.9FKDO3AWL3Y1@garyguo.net>
- <DGSZWZCI0H7H.2EM8L04YH0YRP@nvidia.com>
- <DGT09KTYDCU8.3BBAZBGIYRGWV@nvidia.com>
- <DGT8FQ97BL8O.1VC1JEXIEBDRA@nvidia.com>
- <DGU4TLDMLFN8.1KKSL2WATFZ7G@kernel.org>
- <DGU7U81KKLCD.2LEPJ73BGLQU@garyguo.net>
- <DGU88IHVRYHD.9WP9Z40UAN37@garyguo.net>
- <DGU92W2W71JI.HBIFK6L78F9C@kernel.org>
- <DGU9AZ43QK6Y.115RDSK0M9JY5@garyguo.net>
- <DGUAC0GJRR0Q.34WBS7BIZ58WF@kernel.org>
- <DGUB44J4FNCA.32QOV1DYI7VBK@garyguo.net>
- <DGUBN1HP1F8I.2RZGSFCBO9FQS@kernel.org>
- <DGUCFC9NJG5B.Z7YUXK4NEE04@garyguo.net>
- <DGVGGGBSC9PI.1TJV2ZAIML0BI@nvidia.com>
- <DGVMXCZGEWV9.41R0TPTD22S1@garyguo.net>
-In-Reply-To: <DGVMXCZGEWV9.41R0TPTD22S1@garyguo.net>
-X-ClientProxiedBy: TY4PR01CA0011.jpnprd01.prod.outlook.com
- (2603:1096:405:26e::7) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OsIlokJp"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-483786a09b1so92445915e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 06 Mar 2026 03:28:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772796536; x=1773401336; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Zbo4Hu1ScegKDIbfeAknCaTicVQy5upTDK1+hKqIK7w=;
+        b=OsIlokJpLM65nhGu6zhBJN/+lLhUqfv6dPlia6SpHUzq5vXubxSHcvHEUg+qOAQBvu
+         Sw5w2akJipFMgtIONpN13dT9eWIiPKpuq+rYYUhBtgSzUznQFZljxtskcp1YQQr1n9aF
+         uQ8xNp8FptP857z9tz1JKQ9UzONMe9XI3A+15G+9bZ+IqeFhdDCeQJAu5FGGAAuZkT0W
+         +BDuOoylW2/i3N2CyYaD8XTCQIXpg4ImgzaOAdaEOQeoNdC/3QgNYcfLV4Ftxnx2sFnJ
+         STTaw5NQQiOTMLTSXKI6vfGWBZm19xRGvgvWG0LDi8qxdW1Kb/6xLXGPthJ8hmJku5Ir
+         ZogA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772796536; x=1773401336;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Zbo4Hu1ScegKDIbfeAknCaTicVQy5upTDK1+hKqIK7w=;
+        b=v1k3GWoSO40gI5lw52teR+qzNQM78h4D+Qo8QT0n6g4souOBu4PE35hwoX+H//8D7U
+         xZBlAnw65A6NUKjPDTrcqGeXF01CbK9B6VTmTF4ywlj6Qv/duTYWU9pe3WdnHFx82T3C
+         rWasP2uvXVfhq62V7iAxH8+ag/aOwlLdnFXMSANWNyKyHxNUxHo5H9fdy6CujrMtrPIR
+         UX8MJxyBpBuNBJQe3U2O920LnlWuvenCWTkuK5ZTS7ByIkuZuiRItI9wqXwo/lxk/GIk
+         7u+00ZiUcsXUN551iFzPz8oViUMSrUes+1Ofgu6ukyL6V5zzqxJA3CFhGblc5FYsYIA1
+         9nBg==
+X-Forwarded-Encrypted: i=1; AJvYcCVCq+4ocpgIxpNrB919NRBOsj7dV58SPgcliR5krKAdWLJO/MinheUwlD9PkYmarAvaiG/Naw7orWdvvrUh2A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtvsybx7R5hiXl4CZ5C6Q1LnzAMAauK3d0yl3EDNDQoVx6qEf4
+	Cl22ar7uXoK2FuF+0Up849LmCKG4hZjBX+GHyyIH5e9DSAI6BzzX94CkQy/G82N46JpKSWl9jCL
+	iyOz23JBi6xgRrs/o7Q==
+X-Received: from wmoh17.prod.google.com ([2002:a05:600c:3151:b0:480:3227:a124])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3acf:b0:483:6bb1:117 with SMTP id 5b1f17b1804b1-48526978984mr25665405e9.32.1772796535580;
+ Fri, 06 Mar 2026 03:28:55 -0800 (PST)
+Date: Fri, 06 Mar 2026 11:28:46 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB5662:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb376d8b-236a-4a82-a873-08de7b70ffe6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	mKI1TAhNZRBmvIN2iWXR7+VnQN4htm4JJkQIsrjued1i25+BNN7Kf5oJL8a32GhzWiLf1UBI3PuJwJphmq5XXBrI+tSIGYkSZmP8mKXNdPtTii8l5zJroYx5/EqOD4hcN7iXrKdXyMJWuK4j7ss9dLcY3t0rCq9kEGFkU1Orck3Us5JPid0UN4CW2LT/g2vhpZ2uU/K++BYFFVWKK+rY2AqqhXX0GS1kvyLPUm3EE7AhaXHFyCBMKLRD8lUU4X4qSr+UEfw/f6d/4ET0+PEi5WJ/ncHTODhP9b2Lp3LqOY9mNkhVqBBmh1bjtXsM2NPEUhBGB4juL005hoomztMx7Q3/+sDxutZjHH0acvIxyhSTBOoB8djqOvj3o5KiFr36rk2AWjmCRZtlbqQUmsQd8WrE6PiV3DXN2xOp0fQD4SJsPvncM6m57mMHNtdpgdujuP2B8H7fsY3qYWRPNO+1/c1unJVAnw5bqTloHeOQigqt1QhSTVh8fwPb8GAHINAB+Msz1gHqT3iX6uC7lro/uPGFTYUHnjG+15pnZFdeusMp+7BAr4zsy3NY9rcf53Q7GU76NVT0Gn2q6577LNVDg7qCg2nNco/AUbVIP1zvegWf//gfODQVY95+nxK0smJdZhwbEdC1Gv64fqLt7sDxk1+4/exZNsiRIbBG4CoegtyXjwdPCl+uymkbcSrVoSJBequqfZ41QklhFPBBzRBn7/me2D12jr9p0bydTFDRN510vsqiS105IF8y+uoVAPBa
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?am1RTXVycTdqRVdwenpRRFdTK0FMa1AzK1VxWHBaelltTHEzOEl1SkEzcnMy?=
- =?utf-8?B?QjVML0lLZGFlc2p5T1FLTHduT0dGZjVyNUgzYUI2aGZ5RHhURWNrZjFIb1Rn?=
- =?utf-8?B?MVhWcHYvalBUSlI4QTR3c2JPQkFlUFVBc1Z0eHFvajBaTWV5S0VUNjluVlda?=
- =?utf-8?B?RmVZYU04bDVOazJZcW11MlJDaU1wS2dWUlZHaHhDSGpnVEE1T0V2TjNQUExJ?=
- =?utf-8?B?RTNwMjJCWnVVUFA5U2grTlFia1krOHhheVpHWG1sMFhXRWJaRDQ2Wkt2YUV4?=
- =?utf-8?B?SVh1RWVpNjRSMkV4UVZZR2paRjV4UVdWTWtRZWZvR2RIUjQ5TVozeE9Hb2c4?=
- =?utf-8?B?cmxPY1N6Qk4wb0lwOXZ1Z0NmZXF4WFZGcVV5cm8yZk5RNmhQRUZYa3N3bTcy?=
- =?utf-8?B?Qm8xRFZyRnBKUmNRWG4rWEpCeno3R2lPYy9hWWF1RUJ2S0FjMXlUeE8vSGFR?=
- =?utf-8?B?eE1VZTRUbGlnYy8wZGU5Rlp4YWZDRXk1NmlEbXBxWkJqN2FETmZGNlBLZ2pl?=
- =?utf-8?B?ek4wZFpDakNHeUYrZTlSQVcrUWxONXdTZWZEWVFCUzB5aVVpTlFsekdrSFBN?=
- =?utf-8?B?Q2c0azRhaUdGclVVSkc1eS9ySW1jMGE2bUxxUDZjeTlxYjhnMGNKeGhtQTR2?=
- =?utf-8?B?ZmN5YTNTWnN4RXNYSG9yQk9wbkVlSklYQUVmZmhKdkppemc1NXB3enllaDZx?=
- =?utf-8?B?bnlXQmRYMEVFWWp5aVFkTnFscG1xWDFvOUdzbDZONlR6MHBFZUtxRVBDV2Y4?=
- =?utf-8?B?MGtJeWxxSldudG9rNjZSWkJxK01zSlh3ZExVUFJzQ1pFL2ZqZ1NNOHJFVnhY?=
- =?utf-8?B?WXdvN2ZDcElHZitGbkZ5TmtlNXpsMjFZZmJZamR2VXUyVnZyRUNvNS9rNi9W?=
- =?utf-8?B?cjU2bmtTYUE3MGRWUnk5dUVteTZPTnNUV2VjSDVnU2s4dmZ2MlpyRlBFZGF3?=
- =?utf-8?B?SCtLZFM5SldNbFdNTkJLYklMbkkxckx4amRyWkM2RGNpRFlnVU5oWFhxWWo0?=
- =?utf-8?B?LzJjTGh4eVhvcWh0aCs4K3Ntbk1TR0tjaWFXUkJGbktXVk9Nd1dkblkxeFpP?=
- =?utf-8?B?bzdWVXVvc2wwV2lVWGdVSjlsWHBHN1d4b3JKbkROekc0YW9kS1Q0TnNDQit1?=
- =?utf-8?B?U1o0Rk8zM1YxQTJ4MmdiK0Vkb1lPRE9zUVI4TEN2dVlFRy9ZemdXQnhGOUVi?=
- =?utf-8?B?S1RPcE5obnhRSkZtWjhPQXZmcXN6K1lDZ1F6YkU3aDMzNGQrcUg2UDFad1pJ?=
- =?utf-8?B?WHloMVFnU1lQd01JWmIySU1lOHlzVE9PUWpRME5HMWtRRmxPUEphR2xUZHA1?=
- =?utf-8?B?WWgxOFVRMjRBcWd5NFV1Z1lRbGkvWXpqdUF4NzRROTFQMEdzV1FlR3Ard2tF?=
- =?utf-8?B?bjRGL1JSMjBVM1M0bTVJL3ozWDU4cklwK0h1QkN1MEJEdEJjQis2L0ltZGlo?=
- =?utf-8?B?Rkk0dnhpemEyb00yNEZxUnRqYlZkN0FVMzVJdUQvU2ozbFJreHJPdmkxQVFj?=
- =?utf-8?B?WFZrR0Fub3B6R25pYVVER2oxUnNkaUx3U1JWcThjclVTWkhMSTJ2Yy9pUitU?=
- =?utf-8?B?cVo0azNYRzQ2blRxVWU0eGlpN1RHcVFuQlVRZFdxbTZuU05oMlo3LzZoeFRC?=
- =?utf-8?B?cEZYV1BtVmM4ZlNEQmpVeDhkSFo4Sm43SElValdHVG1PMGRrcXdWR2Z0L1p3?=
- =?utf-8?B?dFdCbDlSMW9HZkl0SEFiWHA2MG52eHZNdmRGVkdTcGJxYS9XZlZHRDhoR2s2?=
- =?utf-8?B?Y1YxN3lxejdJdnVuK2RYdERSbEZTSmJnUWlSK0lIVDVhWUwzdHJVMmszdXR0?=
- =?utf-8?B?c28wanVNZnkvVXZhTVI4bWp1R0t3b1VkY2ViM2g4TkltcXZqZHpiN1Ixbnlj?=
- =?utf-8?B?QitVRVNxRjRxeVcxTUx5UXdUNk81MDZ0RUt0TVkyTDJyVndCSCt6ZGtyVEdY?=
- =?utf-8?B?cHJObGtMRVVxWEdqQ1NYcDZrYzNQNmRCL3E3c1BqWC9QVnhuUjNFUTRLS2hS?=
- =?utf-8?B?cDY0bzk5TUo3ZFk1TWpNWkFnMi96QnA4L3dPRkpTVklyUHRsWVlqQ3ZNWmxq?=
- =?utf-8?B?dFZJa0MzY0lrNHErTU5xN0ZPZXAvNjlGTWEvajBOVlZhSUFpWFkxRXpyRVMr?=
- =?utf-8?B?N094d1R2SmVOdjBZd1h4Q1AwcFNRQ0d5VWk1dlpPc0NvUm5IRzNiWU9Qa3lR?=
- =?utf-8?B?VzRtYXBCUC9qb0FUWCtPSFVMQ2NmbVcwcER3MXY1NjA5d3lhd2pEU1hRaGYw?=
- =?utf-8?B?cmx3eEZhclJwYzl2N2lYTktsNEhISlVWOFc3TE5pK2t4bnVSWkpEQVJ0WFdt?=
- =?utf-8?B?L1hVMUUvZ1FuNVNOV0t1Vnp4RkJtTCtidHhZcTZ5SVg0cXRrSVpXclpoL0dh?=
- =?utf-8?Q?Y3k/rHUPjEBnHsoJoVssIbNaHMF3pLwf4IBRRJJl1HvL7?=
-X-MS-Exchange-AntiSpam-MessageData-1: yLSmerXaEKZU6w==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb376d8b-236a-4a82-a873-08de7b70ffe6
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 11:10:39.5095
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b1ETsPszvzuL4bQL7YKg4qVAbG/xfTXLfSCrQgJ0gnVPmaPKGPUED22GsUilIAyhbdsQusHgWtW5miD9cusPJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5662
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAG66qmkC/x2MSwqAIBQAryJvnWCK9rlKtBB71ttoqEQg3j1pO
+ TAzFTImwgwrq5DwoUwxdBgHBu6y4UROR2eQQhqhhOYl2ZCtK93jFHzkRhqtnNF+mhfo2Z3Q0/s vt721DwR4c4diAAAA
+X-Change-Id: 20260305-transaction-info-62653c65f789
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=27898; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=7RIQpIBTi8ras99qSujDqTwhHj9NSVSSg+jlmRDr5/8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpqrpxHosUzhFUaIRgDp444ROwReQD388EdDasV
+ BdNc8knWN+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaaq6cQAKCRAEWL7uWMY5
+ RuVQEACasg+PVH/huoO0m5f5pzwqbLwHG4nR8PlGAn3H8bdT7PuVpRGlvPWj9D1SgRSYGDT4FaI
+ bNegx2k7jMtv4oht4YWYRdM8N/i6x7cRbccpAyNiPWoq1sbA5/QofdGTbSwIykn2PahKvAoy7Kk
+ U4B2ZuzKDWaZ8v1NoXm8gL6dg6uC3CWGzM3X5YdWkKmTCAou98eUeDVeuuYFT9rmS3cg7cqXmBJ
+ /mTmSY7W4qvOmmYzd4SLbytLE0aIbid8VLXtA6ZmpWVpPcHZNgRB1+LpJZ1+CbpiAyewezh8hfF
+ 9OqdRYc3C6D+iq66NtCO6uLx+GPbKhn0JrsnJyionziUEtBz4X/UasPvlbCEVXRJUEbqUeVQPwz
+ 7rhQMnVOsZ5gRrHQm4s7MItUNcF18xgARmwl8e8knJkl0Fhi8RWsxQivECQy2iNnMjtNRSxVQ6t
+ q+KaRqk98iigkqZdPB10gw/LNRUEyehc7JqLgzdkjPL3q127n3k7z2Opukde9922ZCqyof1vc1t
+ yA8A3wBpJ+kUF/pYP+L99mAAB8AJjF+ZMrodAG39yzp5A5YLUHOUnnBkWJU2S/eKKBr6bCoWAkk
+ 2fdrIkv1/Ue960avsX0JSEeIBfwAJ/eg9Y7hs+ZYco7S+6wkmGQmeMhcLTRha8bMjph09ykiBkK rVe9Fh4sMWZGBtg==
+X-Mailer: b4 0.14.3
+Message-ID: <20260306-transaction-info-v1-1-fda58fca558b@google.com>
+Subject: [PATCH] rust_binder: introduce TransactionInfo
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Mar 6, 2026 at 7:42 PM JST, Gary Guo wrote:
-> On Fri Mar 6, 2026 at 5:37 AM GMT, Alexandre Courbot wrote:
->> On Thu Mar 5, 2026 at 7:15 AM JST, Gary Guo wrote:
->>> On Wed Mar 4, 2026 at 9:38 PM GMT, Danilo Krummrich wrote:
->>>> On Wed Mar 4, 2026 at 10:13 PM CET, Gary Guo wrote:
->>>>> Even for the cases where there's a PIO register, I think it's benefic=
-ial to just
->>>>> get a value without a type.
->>>>>
->>>>> I don't see why we want people to write
->>>>>
->>>>>     self.io.read(UART_RX).value()
->>>>>
->>>>> vs
->>>>>
->>>>>     self.io.read(UART_RX)
->>>>>
->>>>> or
->>>>>
->>>>>     self.io.write(UART_TX::from(byte))
->>>>>
->>>>> vs
->>>>>
->>>>>     self.io.write(UART_TX, byte)
->>>>>
->>>>> what benefit does additional type provide?
->>>>
->>>> Well, for FIFO registers this is indeed better. However, my main conce=
-rn was
->>>> this
->>>>
->>>> 	bar.write(regs::MyReg, regs::MyReg::foo())
->>>
->>> This specific case is indeed more cumbersome with the two argument appr=
-oach,
->>> although given Alex's nova diff I think the occurance shouldn't be that
->>> frequent.
->>>
->>> It's also not that the two argument approach would preclude us from hav=
-ing a
->>> single argument option. In fact, with the two-argument design as the ba=
-sis, we
->>> can implement such a helper function cleaner than Alex's PATCH 10/10 (w=
-hich uses
->>> `Into<IoWrite>`:
->>>
->>>     /// Indicates that this type is always associated with a specific f=
-ixed I/O
->>>     /// location.
->>>     ///
->>>     /// This allows use of `io.bikeshed_shorthand_name(value)` instead =
-of specifying
->>>     /// the register name explicitly `io.write(REG, value)`.
->>>     trait FixedIoLocation {
->>>         type IoLocType: IoLoc<Self>;
->>>         const IO_LOCATION: Self::IoLocType;
->>>     }
->>>
->>>     trait Io {
->>>         fn bikeshed_shorthand_name<T>(&self, value: T)
->>>             where T: FixedIoLocation +
->>>                   Self: IoCapable<<T::IoLocType as IoLoc<T>>::IoType>,
->>>         {
->>>             self.write(T::IO_LOCATION, value)
->>>         }
->>>     }
->>>
->>> No need for a `IoWrite` type, everything is done via traits.
->>
->> That's cool but will only work for fixed registers. If you work with, sa=
-y, an
->> array of registers, cannot implement this trait on a value as the value
->> doesn't have an index assigned - meaning you would have to build a
->> location in addition of it.
->
-> For array registers I think it makes more sense to use the two-argument v=
-ersion,
-> no?
->
-> The example here is to demonstrate that we can add a shorthand version fo=
-r the
-> fixed register version that can write a value to register without mention=
-ing its
-> name (as a supplemental helper), and the basic write method is the two-ar=
-gument
-> one.
->
-> For cases where the type doesn't guarantee a fixed location like FIFO reg=
-ister
-> or an array register, mentioning the name twice is fine.
+Rust Binder exposes information about transactions that are sent in
+various ways: printing to the kernel log, tracepoints, files in
+binderfs, and the upcoming netlink support. Currently all these
+mechanisms use disparate ways of obtaining the same information, so
+let's introduce a single Info struct that collects all the required
+information in a single place, so that all of these different mechanisms
+can operate in a more uniform way.
 
-It's still tedious, and a step back compared to the one-argument version
-imho.
+For now, the new info struct is only used to replace a few things:
+* The BinderTransactionDataSg struct that is passed as an argument to
+  several methods is removed as the information is moved into the new
+  info struct and passed down that way.
+* The oneway spam detection fields on Transaction and Allocation can be
+  removed, as the information can be returned to the caller via the
+  mutable info struct instead.
+But several other uses of the info struct are planned in follow-up
+patches.
 
->
-> [
->
->     For array case, you *could* also do
->
->     impl IoLoc<RegisterName> for usize {
->         fn offset(self) -> usize {
->             self * stride + fixed_base
->         }
->     }
->
->
->     and now you can do `self.write(index, reg_value)`, although I think t=
-his
->     might confuse some people.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Note that this patch depends on commit 4cb9e13fec0d ("rust_binder: avoid
+reading the written value in offsets array") from char-misc-linus.
+Patches in char-misc-next also affect the diff.
 
-Yes, in this case the semantics of write's first argument would be
-dependent on the second argument... I think that's a potential footgun.
+This diff was generated based on linux-next 20260305, but also applies
+on the result of merging together char-misc-linus and char-misc-next.
+---
+ drivers/android/binder/allocation.rs  |   3 -
+ drivers/android/binder/error.rs       |  10 +-
+ drivers/android/binder/process.rs     |  15 ++-
+ drivers/android/binder/thread.rs      | 190 +++++++++++++++++++---------------
+ drivers/android/binder/transaction.rs |  83 +++++++++------
+ rust/kernel/uaccess.rs                |   2 +-
+ 6 files changed, 168 insertions(+), 135 deletions(-)
 
->
->     For the fixed case you could do
->
->     impl IoLoc<RegisterName> for () {
->         fn offset(self) -> usize {
->             fixed_loc
->         }
->     }
->
->     which means you can do `self.write((), value)`. I think this looks a =
-bit
->     uglier compared to a dedicated method, but TBH it isn't too terrible.
+diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
+index 7f65a9c3a0e5..97edfb1ff382 100644
+--- a/drivers/android/binder/allocation.rs
++++ b/drivers/android/binder/allocation.rs
+@@ -56,7 +56,6 @@ pub(crate) struct Allocation {
+     pub(crate) process: Arc<Process>,
+     allocation_info: Option<AllocationInfo>,
+     free_on_drop: bool,
+-    pub(crate) oneway_spam_detected: bool,
+     #[allow(dead_code)]
+     pub(crate) debug_id: usize,
+ }
+@@ -68,7 +67,6 @@ pub(crate) fn new(
+         offset: usize,
+         size: usize,
+         ptr: usize,
+-        oneway_spam_detected: bool,
+     ) -> Self {
+         Self {
+             process,
+@@ -76,7 +74,6 @@ pub(crate) fn new(
+             size,
+             ptr,
+             debug_id,
+-            oneway_spam_detected,
+             allocation_info: None,
+             free_on_drop: true,
+         }
+diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
+index b24497cfa292..45d85d4c2815 100644
+--- a/drivers/android/binder/error.rs
++++ b/drivers/android/binder/error.rs
+@@ -13,7 +13,7 @@
+ /// errno.
+ pub(crate) struct BinderError {
+     pub(crate) reply: u32,
+-    source: Option<Error>,
++    pub(crate) source: Option<Error>,
+ }
+ 
+ impl BinderError {
+@@ -41,14 +41,6 @@ pub(crate) fn new_frozen_oneway() -> Self {
+     pub(crate) fn is_dead(&self) -> bool {
+         self.reply == BR_DEAD_REPLY
+     }
+-
+-    pub(crate) fn as_errno(&self) -> kernel::ffi::c_int {
+-        self.source.unwrap_or(EINVAL).to_errno()
+-    }
+-
+-    pub(crate) fn should_pr_warn(&self) -> bool {
+-        self.source.is_some()
+-    }
+ }
+ 
+ /// Convert an errno into a `BinderError` and store the errno used to construct it. The errno
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index da81a9569365..ae26fe817794 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -48,6 +48,7 @@
+     range_alloc::{RangeAllocator, ReserveNew, ReserveNewArgs},
+     stats::BinderStats,
+     thread::{PushWorkRes, Thread},
++    transaction::TransactionInfo,
+     BinderfsProcFile, DArc, DLArc, DTRWrap, DeliverToRead,
+ };
+ 
+@@ -1003,16 +1004,15 @@ pub(crate) fn buffer_alloc(
+         self: &Arc<Self>,
+         debug_id: usize,
+         size: usize,
+-        is_oneway: bool,
+-        from_pid: i32,
++        info: &mut TransactionInfo,
+     ) -> BinderResult<NewAllocation> {
+         use kernel::page::PAGE_SIZE;
+ 
+         let mut reserve_new_args = ReserveNewArgs {
+             debug_id,
+             size,
+-            is_oneway,
+-            pid: from_pid,
++            is_oneway: info.is_oneway(),
++            pid: info.from_pid,
+             ..ReserveNewArgs::default()
+         };
+ 
+@@ -1028,13 +1028,13 @@ pub(crate) fn buffer_alloc(
+             reserve_new_args = alloc_request.make_alloc()?;
+         };
+ 
++        info.oneway_spam_suspect = new_alloc.oneway_spam_detected;
+         let res = Allocation::new(
+             self.clone(),
+             debug_id,
+             new_alloc.offset,
+             size,
+             addr + new_alloc.offset,
+-            new_alloc.oneway_spam_detected,
+         );
+ 
+         // This allocation will be marked as in use until the `Allocation` is used to free it.
+@@ -1066,7 +1066,7 @@ pub(crate) fn buffer_get(self: &Arc<Self>, ptr: usize) -> Option<Allocation> {
+         let mapping = inner.mapping.as_mut()?;
+         let offset = ptr.checked_sub(mapping.address)?;
+         let (size, debug_id, odata) = mapping.alloc.reserve_existing(offset).ok()?;
+-        let mut alloc = Allocation::new(self.clone(), debug_id, offset, size, ptr, false);
++        let mut alloc = Allocation::new(self.clone(), debug_id, offset, size, ptr);
+         if let Some(data) = odata {
+             alloc.set_info(data);
+         }
+@@ -1414,8 +1414,7 @@ fn deferred_release(self: Arc<Self>) {
+                 .alloc
+                 .take_for_each(|offset, size, debug_id, odata| {
+                     let ptr = offset + address;
+-                    let mut alloc =
+-                        Allocation::new(self.clone(), debug_id, offset, size, ptr, false);
++                    let mut alloc = Allocation::new(self.clone(), debug_id, offset, size, ptr);
+                     if let Some(data) = odata {
+                         alloc.set_info(data);
+                     }
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 6f283de53213..97a5e4acf64c 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -19,7 +19,7 @@
+     sync::poll::{PollCondVar, PollTable},
+     sync::{aref::ARef, Arc, SpinLock},
+     task::Task,
+-    uaccess::UserSlice,
++    uaccess::{UserPtr, UserSlice, UserSliceReader},
+     uapi,
+ };
+ 
+@@ -30,7 +30,7 @@
+     process::{GetWorkOrRegister, Process},
+     ptr_align,
+     stats::GLOBAL_STATS,
+-    transaction::Transaction,
++    transaction::{Transaction, TransactionInfo},
+     BinderReturnWriter, DArc, DLArc, DTRWrap, DeliverCode, DeliverToRead,
+ };
+ 
+@@ -951,13 +951,11 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
+     pub(crate) fn copy_transaction_data(
+         &self,
+         to_process: Arc<Process>,
+-        tr: &BinderTransactionDataSg,
++        info: &mut TransactionInfo,
+         debug_id: usize,
+         allow_fds: bool,
+         txn_security_ctx_offset: Option<&mut usize>,
+     ) -> BinderResult<NewAllocation> {
+-        let trd = &tr.transaction_data;
+-        let is_oneway = trd.flags & TF_ONE_WAY != 0;
+         let mut secctx = if let Some(offset) = txn_security_ctx_offset {
+             let secid = self.process.cred.get_secid();
+             let ctx = match security::SecurityCtx::from_secid(secid) {
+@@ -972,10 +970,10 @@ pub(crate) fn copy_transaction_data(
+             None
+         };
+ 
+-        let data_size = trd.data_size.try_into().map_err(|_| EINVAL)?;
++        let data_size = info.data_size;
+         let aligned_data_size = ptr_align(data_size).ok_or(EINVAL)?;
+-        let offsets_size: usize = trd.offsets_size.try_into().map_err(|_| EINVAL)?;
+-        let buffers_size: usize = tr.buffers_size.try_into().map_err(|_| EINVAL)?;
++        let offsets_size = info.offsets_size;
++        let buffers_size = info.buffers_size;
+         let aligned_secctx_size = match secctx.as_ref() {
+             Some((_offset, ctx)) => ptr_align(ctx.len()).ok_or(EINVAL)?,
+             None => 0,
+@@ -998,32 +996,25 @@ pub(crate) fn copy_transaction_data(
+             size_of::<u64>(),
+         );
+         let secctx_off = aligned_data_size + offsets_size + buffers_size;
+-        let mut alloc =
+-            match to_process.buffer_alloc(debug_id, len, is_oneway, self.process.task.pid()) {
+-                Ok(alloc) => alloc,
+-                Err(err) => {
+-                    pr_warn!(
+-                        "Failed to allocate buffer. len:{}, is_oneway:{}",
+-                        len,
+-                        is_oneway
+-                    );
+-                    return Err(err);
+-                }
+-            };
++        let mut alloc = match to_process.buffer_alloc(debug_id, len, info) {
++            Ok(alloc) => alloc,
++            Err(err) => {
++                pr_warn!(
++                    "Failed to allocate buffer. len:{}, is_oneway:{}",
++                    len,
++                    info.is_oneway(),
++                );
++                return Err(err);
++            }
++        };
+ 
+-        // SAFETY: This accesses a union field, but it's okay because the field's type is valid for
+-        // all bit-patterns.
+-        let trd_data_ptr = unsafe { &trd.data.ptr };
+-        let mut buffer_reader =
+-            UserSlice::new(UserPtr::from_addr(trd_data_ptr.buffer as _), data_size).reader();
++        let mut buffer_reader = UserSlice::new(info.data_ptr, data_size).reader();
+         let mut end_of_previous_object = 0;
+         let mut sg_state = None;
+ 
+         // Copy offsets if there are any.
+         if offsets_size > 0 {
+-            let mut offsets_reader =
+-                UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
+-                    .reader();
++            let mut offsets_reader = UserSlice::new(info.offsets_ptr, offsets_size).reader();
+ 
+             let offsets_start = aligned_data_size;
+             let offsets_end = aligned_data_size + offsets_size;
+@@ -1198,37 +1189,92 @@ fn top_of_transaction_stack(&self) -> Result<Option<DArc<Transaction>>> {
+         }
+     }
+ 
+-    fn transaction<T>(self: &Arc<Self>, tr: &BinderTransactionDataSg, inner: T)
+-    where
+-        T: FnOnce(&Arc<Self>, &BinderTransactionDataSg) -> BinderResult,
+-    {
+-        if let Err(err) = inner(self, tr) {
+-            if err.should_pr_warn() {
+-                let mut ee = self.inner.lock().extended_error;
+-                ee.command = err.reply;
+-                ee.param = err.as_errno();
+-                pr_warn!(
+-                    "Transaction failed: {:?} my_pid:{}",
+-                    err,
+-                    self.process.pid_in_current_ns()
+-                );
++    // No inlining avoids allocating stack space for `BinderTransactionData` for the entire
++    // duration of `transaction()`.
++    #[inline(never)]
++    fn read_transaction_info(
++        &self,
++        cmd: u32,
++        reader: &mut UserSliceReader,
++        info: &mut TransactionInfo,
++    ) -> Result<()> {
++        let td = match cmd {
++            BC_TRANSACTION | BC_REPLY => {
++                reader.read::<BinderTransactionData>()?.with_buffers_size(0)
++            }
++            BC_TRANSACTION_SG | BC_REPLY_SG => reader.read::<BinderTransactionDataSg>()?,
++            _ => return Err(EINVAL),
++        };
++
++        // SAFETY: Above `read` call initializes all bytes, so this union read is ok.
++        let trd_data_ptr = unsafe { &td.transaction_data.data.ptr };
++
++        info.is_reply = matches!(cmd, BC_REPLY | BC_REPLY_SG);
++        info.from_pid = self.process.task.pid();
++        info.from_tid = self.id;
++        info.code = td.transaction_data.code;
++        info.flags = td.transaction_data.flags;
++        info.data_ptr = UserPtr::from_addr(trd_data_ptr.buffer as usize);
++        info.data_size = td.transaction_data.data_size as usize;
++        info.offsets_ptr = UserPtr::from_addr(trd_data_ptr.offsets as usize);
++        info.offsets_size = td.transaction_data.offsets_size as usize;
++        info.buffers_size = td.buffers_size as usize;
++        // SAFETY: Above `read` call initializes all bytes, so this union read is ok.
++        info.target_handle = unsafe { td.transaction_data.target.handle };
++        Ok(())
++    }
++
++    #[inline(never)]
++    fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Result<()> {
++        let mut info = TransactionInfo::zeroed();
++        self.read_transaction_info(cmd, reader, &mut info)?;
++
++        let ret = if info.is_reply {
++            self.reply_inner(&mut info)
++        } else if info.is_oneway() {
++            self.oneway_transaction_inner(&mut info)
++        } else {
++            self.transaction_inner(&mut info)
++        };
++
++        if let Err(err) = ret {
++            if err.reply != BR_TRANSACTION_COMPLETE {
++                info.reply = err.reply;
+             }
+ 
+             self.push_return_work(err.reply);
++            if let Some(source) = &err.source {
++                info.errno = source.to_errno();
++                info.reply = err.reply;
++
++                {
++                    let mut ee = self.inner.lock().extended_error;
++                    ee.command = err.reply;
++                    ee.param = source.to_errno();
++                }
++
++                pr_warn!(
++                    "{}:{} transaction to {} failed: {source:?}",
++                    info.from_pid,
++                    info.from_tid,
++                    info.to_pid
++                );
++            }
+         }
++
++        Ok(())
+     }
+ 
+-    fn transaction_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderResult {
+-        // SAFETY: Handle's type has no invalid bit patterns.
+-        let handle = unsafe { tr.transaction_data.target.handle };
+-        let node_ref = self.process.get_transaction_node(handle)?;
++    fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
++        let node_ref = self.process.get_transaction_node(info.target_handle)?;
++        info.to_pid = node_ref.node.owner.task.pid();
+         security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
+         // TODO: We need to ensure that there isn't a pending transaction in the work queue. How
+         // could this happen?
+         let top = self.top_of_transaction_stack()?;
+         let list_completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
+         let completion = list_completion.clone_arc();
+-        let transaction = Transaction::new(node_ref, top, self, tr)?;
++        let transaction = Transaction::new(node_ref, top, self, info)?;
+ 
+         // Check that the transaction stack hasn't changed while the lock was released, then update
+         // it with the new transaction.
+@@ -1244,7 +1290,7 @@ fn transaction_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderRe
+             inner.push_work_deferred(list_completion);
+         }
+ 
+-        if let Err(e) = transaction.submit() {
++        if let Err(e) = transaction.submit(info) {
+             completion.skip();
+             // Define `transaction` first to drop it after `inner`.
+             let transaction;
+@@ -1257,18 +1303,21 @@ fn transaction_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderRe
+         }
+     }
+ 
+-    fn reply_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderResult {
++    fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+         let orig = self.inner.lock().pop_transaction_to_reply(self)?;
+         if !orig.from.is_current_transaction(&orig) {
+             return Err(EINVAL.into());
+         }
+ 
++        info.to_tid = orig.from.id;
++        info.to_pid = orig.from.process.task.pid();
++
+         // We need to complete the transaction even if we cannot complete building the reply.
+         let out = (|| -> BinderResult<_> {
+             let completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
+             let process = orig.from.process.clone();
+             let allow_fds = orig.flags & TF_ACCEPT_FDS != 0;
+-            let reply = Transaction::new_reply(self, process, tr, allow_fds)?;
++            let reply = Transaction::new_reply(self, process, info, allow_fds)?;
+             self.inner.lock().push_work(completion);
+             orig.from.deliver_reply(Ok(reply), &orig);
+             Ok(())
+@@ -1289,16 +1338,12 @@ fn reply_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderResult {
+         out
+     }
+ 
+-    fn oneway_transaction_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderResult {
+-        // SAFETY: The `handle` field is valid for all possible byte values, so reading from the
+-        // union is okay.
+-        let handle = unsafe { tr.transaction_data.target.handle };
+-        let node_ref = self.process.get_transaction_node(handle)?;
++    fn oneway_transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
++        let node_ref = self.process.get_transaction_node(info.target_handle)?;
++        info.to_pid = node_ref.node.owner.task.pid();
+         security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
+-        let transaction = Transaction::new(node_ref, None, self, tr)?;
+-        let code = if self.process.is_oneway_spam_detection_enabled()
+-            && transaction.oneway_spam_detected
+-        {
++        let transaction = Transaction::new(node_ref, None, self, info)?;
++        let code = if self.process.is_oneway_spam_detection_enabled() && info.oneway_spam_suspect {
+             BR_ONEWAY_SPAM_SUSPECT
+         } else {
+             BR_TRANSACTION_COMPLETE
+@@ -1306,7 +1351,7 @@ fn oneway_transaction_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> B
+         let list_completion = DTRWrap::arc_try_new(DeliverCode::new(code))?;
+         let completion = list_completion.clone_arc();
+         self.inner.lock().push_work(list_completion);
+-        match transaction.submit() {
++        match transaction.submit(info) {
+             Ok(()) => Ok(()),
+             Err(err) => {
+                 completion.skip();
+@@ -1327,29 +1372,8 @@ fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
+             GLOBAL_STATS.inc_bc(cmd);
+             self.process.stats.inc_bc(cmd);
+             match cmd {
+-                BC_TRANSACTION => {
+-                    let tr = reader.read::<BinderTransactionData>()?.with_buffers_size(0);
+-                    if tr.transaction_data.flags & TF_ONE_WAY != 0 {
+-                        self.transaction(&tr, Self::oneway_transaction_inner);
+-                    } else {
+-                        self.transaction(&tr, Self::transaction_inner);
+-                    }
+-                }
+-                BC_TRANSACTION_SG => {
+-                    let tr = reader.read::<BinderTransactionDataSg>()?;
+-                    if tr.transaction_data.flags & TF_ONE_WAY != 0 {
+-                        self.transaction(&tr, Self::oneway_transaction_inner);
+-                    } else {
+-                        self.transaction(&tr, Self::transaction_inner);
+-                    }
+-                }
+-                BC_REPLY => {
+-                    let tr = reader.read::<BinderTransactionData>()?.with_buffers_size(0);
+-                    self.transaction(&tr, Self::reply_inner)
+-                }
+-                BC_REPLY_SG => {
+-                    let tr = reader.read::<BinderTransactionDataSg>()?;
+-                    self.transaction(&tr, Self::reply_inner)
++                BC_TRANSACTION | BC_TRANSACTION_SG | BC_REPLY | BC_REPLY_SG => {
++                    self.transaction(cmd, &mut reader)?;
+                 }
+                 BC_FREE_BUFFER => {
+                     let buffer = self.process.buffer_get(reader.read()?);
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index 10af40527ca7..5dff3d655c4d 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -8,7 +8,7 @@
+     seq_print,
+     sync::atomic::{ordering::Relaxed, Atomic},
+     sync::{Arc, SpinLock},
+-    task::Kuid,
++    task::{Kuid, Pid},
+     time::{Instant, Monotonic},
+     types::ScopeGuard,
+ };
+@@ -24,6 +24,33 @@
+     BinderReturnWriter, DArc, DLArc, DTRWrap, DeliverToRead,
+ };
+ 
++#[derive(Zeroable)]
++pub(crate) struct TransactionInfo {
++    pub(crate) from_pid: Pid,
++    pub(crate) from_tid: Pid,
++    pub(crate) to_pid: Pid,
++    pub(crate) to_tid: Pid,
++    pub(crate) code: u32,
++    pub(crate) flags: u32,
++    pub(crate) data_ptr: UserPtr,
++    pub(crate) data_size: usize,
++    pub(crate) offsets_ptr: UserPtr,
++    pub(crate) offsets_size: usize,
++    pub(crate) buffers_size: usize,
++    pub(crate) target_handle: u32,
++    pub(crate) errno: i32,
++    pub(crate) reply: u32,
++    pub(crate) oneway_spam_suspect: bool,
++    pub(crate) is_reply: bool,
++}
++
++impl TransactionInfo {
++    #[inline]
++    pub(crate) fn is_oneway(&self) -> bool {
++        self.flags & TF_ONE_WAY != 0
++    }
++}
++
+ use core::mem::offset_of;
+ use kernel::bindings::rb_transaction_layout;
+ pub(crate) const TRANSACTION_LAYOUT: rb_transaction_layout = rb_transaction_layout {
+@@ -52,7 +79,6 @@ pub(crate) struct Transaction {
+     data_address: usize,
+     sender_euid: Kuid,
+     txn_security_ctx_off: Option<usize>,
+-    pub(crate) oneway_spam_detected: bool,
+     start_time: Instant<Monotonic>,
+ }
+ 
+@@ -65,17 +91,16 @@ pub(crate) fn new(
+         node_ref: NodeRef,
+         from_parent: Option<DArc<Transaction>>,
+         from: &Arc<Thread>,
+-        tr: &BinderTransactionDataSg,
++        info: &mut TransactionInfo,
+     ) -> BinderResult<DLArc<Self>> {
+         let debug_id = super::next_debug_id();
+-        let trd = &tr.transaction_data;
+         let allow_fds = node_ref.node.flags & FLAT_BINDER_FLAG_ACCEPTS_FDS != 0;
+         let txn_security_ctx = node_ref.node.flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX != 0;
+         let mut txn_security_ctx_off = if txn_security_ctx { Some(0) } else { None };
+         let to = node_ref.node.owner.clone();
+         let mut alloc = match from.copy_transaction_data(
+             to.clone(),
+-            tr,
++            info,
+             debug_id,
+             allow_fds,
+             txn_security_ctx_off.as_mut(),
+@@ -88,15 +113,14 @@ pub(crate) fn new(
+                 return Err(err);
+             }
+         };
+-        let oneway_spam_detected = alloc.oneway_spam_detected;
+-        if trd.flags & TF_ONE_WAY != 0 {
++        if info.is_oneway() {
+             if from_parent.is_some() {
+                 pr_warn!("Oneway transaction should not be in a transaction stack.");
+                 return Err(EINVAL.into());
+             }
+             alloc.set_info_oneway_node(node_ref.node.clone());
+         }
+-        if trd.flags & TF_CLEAR_BUF != 0 {
++        if info.flags & TF_CLEAR_BUF != 0 {
+             alloc.set_info_clear_on_drop();
+         }
+         let target_node = node_ref.node.clone();
+@@ -110,15 +134,14 @@ pub(crate) fn new(
+             sender_euid: Kuid::current_euid(),
+             from: from.clone(),
+             to,
+-            code: trd.code,
+-            flags: trd.flags,
+-            data_size: trd.data_size as _,
+-            offsets_size: trd.offsets_size as _,
++            code: info.code,
++            flags: info.flags,
++            data_size: info.data_size,
++            offsets_size: info.offsets_size,
+             data_address,
+             allocation <- kernel::new_spinlock!(Some(alloc.success()), "Transaction::new"),
+             is_outstanding: Atomic::new(false),
+             txn_security_ctx_off,
+-            oneway_spam_detected,
+             start_time: Instant::now(),
+         }))?)
+     }
+@@ -126,21 +149,19 @@ pub(crate) fn new(
+     pub(crate) fn new_reply(
+         from: &Arc<Thread>,
+         to: Arc<Process>,
+-        tr: &BinderTransactionDataSg,
++        info: &mut TransactionInfo,
+         allow_fds: bool,
+     ) -> BinderResult<DLArc<Self>> {
+         let debug_id = super::next_debug_id();
+-        let trd = &tr.transaction_data;
+-        let mut alloc = match from.copy_transaction_data(to.clone(), tr, debug_id, allow_fds, None)
+-        {
+-            Ok(alloc) => alloc,
+-            Err(err) => {
+-                pr_warn!("Failure in copy_transaction_data: {:?}", err);
+-                return Err(err);
+-            }
+-        };
+-        let oneway_spam_detected = alloc.oneway_spam_detected;
+-        if trd.flags & TF_CLEAR_BUF != 0 {
++        let mut alloc =
++            match from.copy_transaction_data(to.clone(), info, debug_id, allow_fds, None) {
++                Ok(alloc) => alloc,
++                Err(err) => {
++                    pr_warn!("Failure in copy_transaction_data: {:?}", err);
++                    return Err(err);
++                }
++            };
++        if info.flags & TF_CLEAR_BUF != 0 {
+             alloc.set_info_clear_on_drop();
+         }
+         Ok(DTRWrap::arc_pin_init(pin_init!(Transaction {
+@@ -150,15 +171,14 @@ pub(crate) fn new_reply(
+             sender_euid: Kuid::current_euid(),
+             from: from.clone(),
+             to,
+-            code: trd.code,
+-            flags: trd.flags,
+-            data_size: trd.data_size as _,
+-            offsets_size: trd.offsets_size as _,
++            code: info.code,
++            flags: info.flags,
++            data_size: info.data_size,
++            offsets_size: info.offsets_size,
+             data_address: alloc.ptr,
+             allocation <- kernel::new_spinlock!(Some(alloc.success()), "Transaction::new"),
+             is_outstanding: Atomic::new(false),
+             txn_security_ctx_off: None,
+-            oneway_spam_detected,
+             start_time: Instant::now(),
+         }))?)
+     }
+@@ -248,7 +268,7 @@ fn drop_outstanding_txn(&self) {
+     /// stack, otherwise uses the destination process.
+     ///
+     /// Not used for replies.
+-    pub(crate) fn submit(self: DLArc<Self>) -> BinderResult {
++    pub(crate) fn submit(self: DLArc<Self>, info: &mut TransactionInfo) -> BinderResult {
+         // Defined before `process_inner` so that the destructor runs after releasing the lock.
+         let mut _t_outdated;
+ 
+@@ -298,6 +318,7 @@ pub(crate) fn submit(self: DLArc<Self>) -> BinderResult {
+         }
+ 
+         let res = if let Some(thread) = self.find_target_thread() {
++            info.to_tid = thread.id;
+             crate::trace::trace_transaction(false, &self, Some(&thread.task));
+             match thread.push_work(self) {
+                 PushWorkRes::Ok => Ok(()),
+diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+index f989539a31b4..984c3ec03a7b 100644
+--- a/rust/kernel/uaccess.rs
++++ b/rust/kernel/uaccess.rs
+@@ -19,7 +19,7 @@
+ ///
+ /// This is the Rust equivalent to C pointers tagged with `__user`.
+ #[repr(transparent)]
+-#[derive(Copy, Clone)]
++#[derive(Copy, Clone, Zeroable)]
+ pub struct UserPtr(*mut c_void);
+ 
+ impl UserPtr {
 
-There is another potential solution I have played with:
+---
+base-commit: 3f9cd19e764b782706dbaacc69e502099cb014ba
+change-id: 20260305-transaction-info-62653c65f789
 
-    https://lore.kernel.org/all/DGVJ7VQX3TD5.2UYW004QJPI6N@nvidia.com/
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-It would let us keep the 2-arguments as a base, while letting us take
-advantage of the one-argument syntax you proposed in [1] and extending
-it to support other register types.
-
-[1] https://lore.kernel.org/all/DGU9AZ43QK6Y.115RDSK0M9JY5@garyguo.net/
-
-I think it turns out pretty nice and the supporting code is also not too
-ugly. I'll try to send a diff a bit later so you can see how it behaves
-in practice.
