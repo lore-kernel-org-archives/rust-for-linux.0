@@ -1,137 +1,201 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AC8C2FF
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 12:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772800610; cv=pass; b=IHiDx5V19+b9Lpug9hK+SjIOJw4dplbHnOTTPDpd4r+ic3U2Unrue+GhvOcIuT/kLKiX1Q6Iru4Cie0a7ie0zAgjqXGvRa2i+91OIjxWRt0rqiYJ0Il6tOsEStWeeMORgPy7KNPHZTlZz1+qDGXpBPGGdfXBTmQ08J7drLvCBdQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772800610; c=relaxed/simple;
-	bh=HQEassPVGYM1jCdRfpSudNR1v3HtLxgtQuAEtQArpTE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z+r3S+OkAaLfbrDpMFws5pSeIeKLqjcz34M2ux9ulhAmaOFCtlsmqwPUoGa+2UtCaI7QJa1AVYHFa6+ab2ttD0ccB4f/4AEhroTMvlfMOjExQ1spllQswePmi9wj38f+TkaJtEQx2Vaa69Hz98XOX7rcB3+ZY46fWiN0cOxgS08=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4tAOYqz; arc=pass smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8939C286D53;
+	Fri,  6 Mar 2026 12:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772800810; cv=none; b=FIERidZlnzKuqOQMylcQlpd5eVAKVMY+FdzbvCGSwIe2X0fMt7JuK/ECDnvjVvhke/+vqDRlRlaZ90mNat/J/8H6GnKB2oqp45AXTujKaXYInhhk8FB6qMF6ogYyExJLxe9IHOKcmNVun/k66HawNSAIfYRO6ECLTQcBN7lluLE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772800810; c=relaxed/simple;
+	bh=momqQiCPeBiESmsNjbCQuXjIElnPD5t8ixlqkLdaUNY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oi9peaPdNngUeQ35HPbdsfC2NO+/sAWbk+FWiUqlnGdW9GdcY81vYWPAiH02Yg0G840kKycA+/HZn4S7yDQFMQEYU6o+NTQlqnxSqvKBEKMdIGXyZ5SEEmdrpqUkjoXTYWR8xpvZUnFpg7vGd0ezofZmehB9T8yLo1jg0wGK1UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=teU+WZvc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4tAOYqz"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2bd801b4078so785111eec.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Mar 2026 04:36:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772800609; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ECMqkfrb3pSYr61eCH85j3JAkoa/apoP6qV6lyMB8hXpwRWt4WinaczxdpoHq5bWFT
-         Qqvlazfm+4gdgwCrSZVNM+YJmvlImSGEKmo2lGKAR7KDaat6C2EXUQiYJNivICKrLueT
-         xEdI2xqoI8Bb4BD0le5P2yhyWcxN7xF4Ii5YVUq6ikyMB5CAqkOA9u1SEf/GX1Pkfpz8
-         iUvUYiVMqZO+apAEd8tSQI/eyBOFw/DxtbUM0PIFFnnT3zpBfuMnaJLHe29bil8dDahM
-         9L/4ELxL0EZkmEsSOGFW7W7UOsiR+e1cxOM8ZXHE2f3Jol9d2OHe2xVbX5E+T3Zxa+0C
-         3GjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=knqD/zlQpWPkzS9PyTnnmuqyEYSvWpR1vlkN+XG+Guk=;
-        fh=KfkJ/JdON+3VloTW+FZSq95Fk4dNCNQhASsSCq9ackA=;
-        b=cf9zWr0vaPFaqrGa12zWYdnCJkQSiDbIAIa1yvTv8JDM18io3PSW/aMFy9VnwF2Rl1
-         NAqTsDwDiq4uMx0w/1Sh8SfLXRxbnNNDjEFHwqk8TsaAMd7DbujYkdF6jdeQnJD4dKGX
-         U421815IlhUdDG3N3674smX8e3PVPVBAzoocyFHzZ/Dur3PtDcpx03az8TKxnJ/mrDCq
-         yY3B5WbA8WBbVb7Z1/70QP1i9iMXionT7sZKUu7tjjc5cfqQMt7wCQHCitESHMv7WGj2
-         tQ6ai5+E28/oLts7+bG7WFCR4B+26aqm6iO6e2dvuDxcfmfBfhKWTmqIhBt4pRWUvG7K
-         VNpQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772800609; x=1773405409; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=knqD/zlQpWPkzS9PyTnnmuqyEYSvWpR1vlkN+XG+Guk=;
-        b=G4tAOYqzk9YUVw/CNcm5RnyA+RxL249pNcgMEcfMb/KCL1m9DqyQw0jZpaiJHZl/wB
-         258u8SW4s8ZFOdhTmi3v+9W4qSnpFsRWjFvJPPYmNwvS0mWkF6veKm5cahWolh2hYAc2
-         qyPUBHTUtfBxXMit2RZOk85GVDaCVkIVv2S6KIgPjlCUDOaKhrLyYXtVE9qlCDefrp5Y
-         meWm21cr0Vm2OMgyMnb/G0a1eC4j8Fizosw/H8GgcALkp13cVFiLmzUmICupB6iACe6D
-         tOosPmJgVWufTypW/PPHzzLTZeMSZN41yXcO8aSGDJdYFpD68WgHfwTPi1ZQplM+RqK4
-         TWZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772800609; x=1773405409;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=knqD/zlQpWPkzS9PyTnnmuqyEYSvWpR1vlkN+XG+Guk=;
-        b=r9M8gxhct8qxDuwMsTxZYK34XYYIe9PLdw87Hj76RxL46iKUSZV68dzBjatltUZxAS
-         iVCauzDqfn3HyWNg+PLdqUmqLrFtCdUq2bSDckRx4jaXW7AcMiGjWzcmeiQf55q961A9
-         i4lNZy1vzf92mrrIBNMwjYiAINK1yznl0Lh5kSwkYxJpUW9kJ9JTooSUnG6AO0tEysaV
-         6ttLUlEJXwr+GoEd2sxmDA72Q+TgLmBHtEUk0diJlprfZMtIXdd8C0fPBIHC2CL2FmI5
-         qTTt16t9Gq0yy8OfUDmUf4bJlw7F1sPFbkjQnv4aGVE3XTbh7Eq8HvH/v8GR9dUjd5wX
-         DKZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsIq+PvlujjVqX/m3VwGI/aaY2zQPq83noDWfQ1CTxseoIhV3ab812axpvat2zYyebd9R4Zx3xn4C6DKEOgw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZQyabmrSZ7TMteQlPwkq+5MawpFBEOjwQwn4yv3QAH5AZzhV+
-	UNf7RLvmxk7hE5pkRcYbDpj/RQao3k9zT2YRVwUjBrT+7tWO64lH7yqe3ZRAIW86b+W0/Xy+GUg
-	Fi/K8c3bC4ddSqwgeGs3qeE86Y09EOco=
-X-Gm-Gg: ATEYQzzzE2B3lUZXxW2Q/qgkOQTFvRaiJYyUwNr4IDQzuIkmLvM3h/lJSkMGgtarbjA
-	0dH+I9hMvS52spRAkhR1QxIf/f1UA9lemHe/8JwjR02KaD8ynX/wgqiy9gcGYnGnlrRjauQFwrc
-	F8775dlty9n4fXNRsRy9BrtXb40f9Be1Hs9mH2yw2IPuAdkmSRE11UKXlk3G70+mlipxSOTQdwu
-	t1nETYye93yqdnKpRmLWAa9mNpdNpJwTdKv11sp7xgnd2a+8yLj/2xFB+rL5kGPHonzaPSmOZtw
-	VItJ9SkZpPn5kUNFNmuiUP5vcRSMw9Ev2LflPrnL/vXvHiuDAdHfTzYewIG3bhW+f+ccpMlw3KE
-	DyTbpCIMLY1IoXuiFAuOOw6Wv
-X-Received: by 2002:a05:7300:148e:b0:2be:2912:ff65 with SMTP id
- 5a478bee46e88-2be4e055899mr438556eec.3.1772800608643; Fri, 06 Mar 2026
- 04:36:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="teU+WZvc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E997C4CEF7;
+	Fri,  6 Mar 2026 12:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772800810;
+	bh=momqQiCPeBiESmsNjbCQuXjIElnPD5t8ixlqkLdaUNY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=teU+WZvcr3Vfjfj4PS79KVLwqpyqTY1ONa1PtwIvjXtMon6hdWoFyi7tYSgQVQlA7
+	 7WqNZXjH072FsKlQxHwMb1xYD4ogJ/HhRqFMhvz7mUpomd6qDRF1LsEb2Nx0xCA20F
+	 Q306mWNpenrHSDponyi32Ye/+ALDPg+T87ZCaJf9rHbmPLs7TEcXwfiNFZJ08Qk58i
+	 YudRyMnPxWInwwAAt3CqHvwKRQrMAo7VQbC5DvtngGuMvZuxZUii1u78G4eRDQ1D/r
+	 cgHhuLioq6MaNE+pd+1wCN6iTybUQcrEBmRwhDJWiYLDD7kyNQioEEvs3ECG9KmNxt
+	 q/+pMMPgggcHw==
+Date: Fri, 6 Mar 2026 12:40:07 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, 
+	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v1 08/16] mm/memory: move adjusting of address range to
+ unmap_vmas()
+Message-ID: <6858ccdd-5065-4396-81c9-489bf2d43c9e@lucifer.local>
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-9-david@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260304195330.185829-1-jhubbard@nvidia.com> <DGU9O3HEY7CN.3OBR26YV3AHGT@garyguo.net>
- <ea3d6134-22ce-4715-be75-e6d41568c7eb@nvidia.com> <DGUA5GY2DGYN.3PG0FKLG7GFN1@garyguo.net>
- <DGUAE329P4FH.3QPNCVLNA99MC@garyguo.net> <0c4ae9ef-b803-4ead-a2c3-d5dc37592d5e@nvidia.com>
- <DGUUMXMLYH02.2ZIPQEXAJYTEG@garyguo.net>
-In-Reply-To: <DGUUMXMLYH02.2ZIPQEXAJYTEG@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 6 Mar 2026 13:36:36 +0100
-X-Gm-Features: AaiRm52ifH2FYBZ84a06nnd-7ZSPspJMkRBn-0RHo0yD6BLwqFwbKKjW_sSOGls
-Message-ID: <CANiq72mWdFU11GcCZRchzhy0Gi1QZShvZtyRkHV2O+WA2uTdVQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: cpufreq: fix clippy::double_parens warning in
- Policy doctest
-To: Gary Guo <gary@garyguo.net>
-Cc: John Hubbard <jhubbard@nvidia.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227200848.114019-9-david@kernel.org>
 
-On Thu, Mar 5, 2026 at 1:32=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Fri, Feb 27, 2026 at 09:08:39PM +0100, David Hildenbrand (Arm) wrote:
+> __zap_vma_range() has two callers, whereby
+> zap_page_range_single_batched() documents that the range must fit into
+> the VMA range.
 >
-> I think we should either disable with
+> So move adjusting the range to unmap_vmas() where it is actually
+> required and add a safety check in __zap_vma_range() instead. In
+> unmap_vmas(), we'd never expect to have empty ranges (otherwise, why
+> have the vma in there in the first place).
 >
->     #[allow(clippy::double_parens, reason =3D "false positive before 1.92=
-")]
->     fn update_policy(policy: &mut Policy) {
+> __zap_vma_range() will no longer be called with start == end, so
+> cleanup the function a bit. While at it, simplify the overly long
+> comment to its core message.
 >
-> or disable it globally for all Rust code before 1.92.
+> We will no longer call uprobe_munmap() for start == end, which actually
+> seems to be the right thing to do.
 >
-> Miguel, which one do you think is better?
+> Note that hugetlb_zap_begin()->...->adjust_range_if_pmd_sharing_possible()
+> cannot result in the range exceeding the vma range.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Hmm... Disabling globally for all versions could also be an option --
-not having this lint doesn't sound like a big deal, I think.
+LGTM, So:
 
-I guess it depends on how prevalent it is, i.e. how much we expect to
-hit it for the 1.5 years or so (since we will eventually bump above it
-anyway).
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Or do you think the lint is very valuable?
-
-Doing it globally for certain versions (i.e. `rust_common_flags`, not
-just `KBUILD_RUSTFLAGS`) requires a bit of reorganization, so for
-simplicity here in this series I would suggest a local `allow`, and
-then we can see later on how prevalent it is to decide whether to do
-it locally (whether per version or not).
-
-I hope that helps.
-
-Cheers,
-Miguel
+> ---
+>  mm/memory.c | 58 +++++++++++++++++++++--------------------------------
+>  1 file changed, 23 insertions(+), 35 deletions(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index f0aaec57a66b..fdcd2abf29c2 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2073,44 +2073,28 @@ static void unmap_page_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  	tlb_end_vma(tlb, vma);
+>  }
+>
+> -
+> -static void __zap_vma_range(struct mmu_gather *tlb,
+> -		struct vm_area_struct *vma, unsigned long start_addr,
+> -		unsigned long end_addr, struct zap_details *details)
+> +static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> +		unsigned long start, unsigned long end,
+> +		struct zap_details *details)
+>  {
+> -	unsigned long start = max(vma->vm_start, start_addr);
+> -	unsigned long end;
+> -
+> -	if (start >= vma->vm_end)
+> -		return;
+> -	end = min(vma->vm_end, end_addr);
+> -	if (end <= vma->vm_start)
+> -		return;
+> +	VM_WARN_ON_ONCE(start >= end || !range_in_vma(vma, start, end));
+>
+>  	if (vma->vm_file)
+>  		uprobe_munmap(vma, start, end);
+>
+> -	if (start != end) {
+> -		if (unlikely(is_vm_hugetlb_page(vma))) {
+> -			/*
+> -			 * It is undesirable to test vma->vm_file as it
+> -			 * should be non-null for valid hugetlb area.
+> -			 * However, vm_file will be NULL in the error
+> -			 * cleanup path of mmap_region. When
+> -			 * hugetlbfs ->mmap method fails,
+> -			 * mmap_region() nullifies vma->vm_file
+> -			 * before calling this function to clean up.
+> -			 * Since no pte has actually been setup, it is
+> -			 * safe to do nothing in this case.
+> -			 */
+> -			if (vma->vm_file) {
+> -				zap_flags_t zap_flags = details ?
+> -				    details->zap_flags : 0;
+> -				__unmap_hugepage_range(tlb, vma, start, end,
+> -							     NULL, zap_flags);
+> -			}
+> -		} else
+> -			unmap_page_range(tlb, vma, start, end, details);
+> +	if (unlikely(is_vm_hugetlb_page(vma))) {
+> +		zap_flags_t zap_flags = details ? details->zap_flags : 0;
+> +
+> +		/*
+> +		 * vm_file will be NULL when we fail early while instantiating
+> +		 * a new mapping. In this case, no pages were mapped yet and
+> +		 * there is nothing to do.
+> +		 */
+> +		if (!vma->vm_file)
+> +			return;
+> +		__unmap_hugepage_range(tlb, vma, start, end, NULL, zap_flags);
+> +	} else {
+> +		unmap_page_range(tlb, vma, start, end, details);
+>  	}
+>  }
+>
+> @@ -2174,8 +2158,9 @@ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
+>  				unmap->vma_start, unmap->vma_end);
+>  	mmu_notifier_invalidate_range_start(&range);
+>  	do {
+> -		unsigned long start = unmap->vma_start;
+> -		unsigned long end = unmap->vma_end;
+> +		unsigned long start = max(vma->vm_start, unmap->vma_start);
+> +		unsigned long end = min(vma->vm_end, unmap->vma_end);
+> +
+>  		hugetlb_zap_begin(vma, &start, &end);
+>  		__zap_vma_range(tlb, vma, start, end, &details);
+>  		hugetlb_zap_end(vma, &details);
+> @@ -2204,6 +2189,9 @@ void zap_page_range_single_batched(struct mmu_gather *tlb,
+>
+>  	VM_WARN_ON_ONCE(!tlb || tlb->mm != vma->vm_mm);
+>
+> +	if (unlikely(!size))
+> +		return;
+> +
+>  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
+>  				address, end);
+>  	hugetlb_zap_begin(vma, &range.start, &range.end);
+> --
+> 2.43.0
+>
