@@ -1,51 +1,50 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020073.outbound.protection.outlook.com [52.101.195.73])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010027.outbound.protection.outlook.com [52.101.56.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBED63921F7;
-	Fri,  6 Mar 2026 13:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0ACB7E0E4;
+	Fri,  6 Mar 2026 14:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772803249; cv=fail; b=VP9/Bw1BtwUAt5BtkAyiJSIRz9IzlI49E8awsyaqnKg0R0mWQEC3GS1rAaAfP0CAehowJUWDK3weFKJr0CXooa1KpIBPaTQpz0YSmbNDRpV+XnvY32/YIVsy6QPHWar+LAm14op+sNpjYq24FsgEb+CkDnyDYqZUITCjh1UKIsg=
+	t=1772807590; cv=fail; b=NjynjUkqit8mRKzmktpgD6rbPn4B4lqHg8dNDqq4/YU6zVmQ8jeNtL4Xf6gN5VOz6VdbANTifzZUTQALYr166+u7pGcgw5Ex5jtqhzBVQuoWYdWg2EQadQa2Yg/o44GCIbauK8x8RC7ZIIII66V6IuVpgLubrl5eQQrH29PcUbw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772803249; c=relaxed/simple;
-	bh=xQ7UTJ7zwFJZid2XZNOx1qlKQhMKfy7zdBT71afWxF8=;
+	s=arc-20240116; t=1772807590; c=relaxed/simple;
+	bh=EyRQ3WOnuFznp4gh8eV7bDLbcMkkP3ZWhOGf7ohbOVg=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=TZW/4l8W3t8AT0L+Mm5g4Dvc976D+M+W0Xm/xUuF/MPPUD08vHOvw6WcR6MSb4uc2B2wi5u89K3En9DQlypNUL4YoMDVjmb+oFoinC++4xCeKp487V4/tVAS63EzI/wlnnbrxygf0Ov1X3G0CkLcVfh/Ubp4lFQOuk1A2m5Y3go=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=x9dgS4fm; arc=fail smtp.client-ip=52.101.195.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	 In-Reply-To:MIME-Version; b=p9Tq1/M3x6tZP7qhgudQwdGMBl/jXf29dnmxGkhGzcJcv10odRP8SylgmnxEJJJCOb6Y20EtCjhCby38H3IIXrXWJ6lmatRjMCE7+rlplOLWGePOFSzRsQO5cQTwNvAcGmKxg8gfC3gO9MOR3kv6lXdjOEjtgYryVV/7OtuBo34=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Q3blkxHy; arc=fail smtp.client-ip=52.101.56.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="x9dgS4fm"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Q3blkxHy"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j2BGRj9NymJ8E3rce6ZHqIe6URFLiYAx0Doaq8fyd42UWhhKpx67VPR9yE6AQKOaYTCBISVp6tF6QQ4iaUyD+VFO1UNweOHg2HuH5L2sEsLxgRcKmcnnC7VU7RKkkkeuZsl/blXIG1E6X6c1BXwTDhiTGYhokgE8RvdQyBZT3VYrjzF5meXthw5LN++QssuoPaG8682NDor6EncuQu7lmHhFzPOfUhnFVjt+JK33+TNfgsC/fTKGnvf8nUqOASRDb1QCJ/YCOGkXAIt4FI/n5t6rztisJ+eSsul8OUBqkl6HY1PuW2rP3T6ovChRuCclga301K7Eqq3l4c0/cWgNEQ==
+ b=dJ3n3CXY44t03uddQXuqYzYseBzuXORXC5lt7Ayqz7bCUUO1HmuXodnBlp/aQYO8TkMkZD/i9RS6tBBMdK2BaP65XCmEpqkp4APDarQTNku07KYoMRgkogQRkDO6uU68LFkZ6E5Pv76XlqLi/PwesfCxWEjBnjsNSUHW3Elm3wSsRFqzFwppnl2J4G6lFIBxHoPjgeqLq9/zj3+ogZ1MGZ+vtktenQTUbREzh0mN6icCk573slCRNLzFnBdyMHK5qjNuKRpt+Pn5PimDYrG4jUxAcsfWatmaS/H+U1Ig0m2iGQ59gwQmB1jdzgrdWmOOdLoPhRq8fzDE8AP9I4kE8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WRHj+0MT2+7/Nccvn1JgQV6ZP9D5heVwfvpq2Iq8ugw=;
- b=eeHNoEM3sQJbs5RnrX2lDYX9xqDaow0HI0iCccjLkJW7ui+JiFNwx8I4YaI0nG9QqjurWP/cm5sdrONWi0W9+MSyjLIIdMY3ugvr3qegNBkQ/NZL/YasVouh9+MfZAvHbtgeyOXuCQMgsyPa85cRmiIIn5asmYntIqvs4/vO/EdW2/IUkeGJ+vqed3IL2j4LKHQ4V/kzF0NbBbPGqXYewPU+MxAV9Mxh/6bx4O1QB+g6e3i3ElXa99k1xOnmqr0afoQUcSnNApVwRT321S4onpePjJ9so/TBbcsFNoCCwRQzTH7+KY2pqHPe4kUoicNyTR2isHr1yPxl/W21xXth5Q==
+ bh=bkpNojOvAubsQxl052gbW6oGKtbH4pNaIfejBoxiWv8=;
+ b=q1q1UX/ifctr2ZwIr98fmCAQcJzTqe1j7Y3ivChUZcPUV76TRTW1vrvppLaxMNr+aUD53kt5Lt95hTrL3H3+ngll5o4Uz4h//OEVT160n2yAAx1BG1Kx7dRstbnAVoaA/qvDNE6+KJw7fxbg9CYq5ULBUy5mOP+rDHk13xaBw2BZJaSilX0I/mSDbJ8lh56T3mAR/9h30ydIXpWYXKHkaLGH6Ph9hUNJcSwJUAC6X6LKsZrV4HlLGp7oWnWQmlRtaHR01zZLgXYcaFYEcvneO29M9oF1MdtoPQiA3FyxX0nFzIpXZ3mq87qgU60gPdHwtFsiAoAclFkTr+CvuC8dZg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WRHj+0MT2+7/Nccvn1JgQV6ZP9D5heVwfvpq2Iq8ugw=;
- b=x9dgS4fme9uuXV3Og2nNhGUQp5tBRvlaE8OjKUpkR8nq6sBgTrJAfmR19WlCLiWomKLG46K+LEWMWbHdiIVjKfKKkIFH7XYZywAy74K8elsrpxPPMFLIcV7N+p/mm4exq6zwMqs/ek7BXDW1FsXdeGUHbEy9q7EybAj+/a6DUB4=
+ bh=bkpNojOvAubsQxl052gbW6oGKtbH4pNaIfejBoxiWv8=;
+ b=Q3blkxHy8poee4R/ttUhMqo0tnzIr3bD09qGmDfwHVSP83lugK1Ans/671K6jFps20Oub27RSAygrAI5jkJf7LoeB14BzMqcpaniGKxOm5sRm4nlS5IWbgI3GjdgDooVpoJmv8uVC+YAP3zmRBco20eqvlOWhobh3mnBLW6Bdz6mgwZhxSAx+e08hrWGxK3DQZupcCsctUXf+/OjKY5KaqqgvWExZWMnj44lFiyiZHvOqK526pQSDvmjYJtuEXtrBdcGNDi9eG/H6UVQf8sibwYtxTeENm5wDKYUo2+y+jnbwCcMj7YcwlSQG17Fn9qKOr/LwZx5HPd7tEWVWTEj3w==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB7163.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f3::8) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by IA1PR12MB6601.namprd12.prod.outlook.com (2603:10b6:208:3a3::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.19; Fri, 6 Mar
- 2026 13:20:44 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9678.017; Fri, 6 Mar 2026
- 13:20:44 +0000
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.5; Fri, 6 Mar
+ 2026 14:33:03 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9700.003; Fri, 6 Mar 2026
+ 14:33:03 +0000
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Mar 2026 13:20:43 +0000
-Message-Id: <DGVQAUVL2SZZ.2TINCJXUIDTCK@garyguo.net>
+Date: Fri, 06 Mar 2026 23:32:59 +0900
+Message-Id: <DGVRU6S7WUIU.1OL2CZU2ZUIUO@nvidia.com>
 Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
  <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
  "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
@@ -59,9 +58,9 @@ Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
  <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>
+Content-Transfer-Encoding: quoted-printable
 References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
  <20260224-register-v7-5-aad44f760f33@nvidia.com>
  <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
@@ -88,10 +87,11 @@ References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
  <DGVNJ8ANGP3Q.1RAGWU2HJGRIB@nvidia.com>
  <DGVO2O009306.GNU06PZ13VA6@garyguo.net>
  <DGVPNC2HE0JB.1HOBJZX8L8XMQ@nvidia.com>
-In-Reply-To: <DGVPNC2HE0JB.1HOBJZX8L8XMQ@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0101.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:191::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+ <DGVQAUVL2SZZ.2TINCJXUIDTCK@garyguo.net>
+In-Reply-To: <DGVQAUVL2SZZ.2TINCJXUIDTCK@garyguo.net>
+X-ClientProxiedBy: TYCP286CA0099.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b4::17) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -99,256 +99,324 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB7163:EE_
-X-MS-Office365-Filtering-Correlation-Id: 972b7363-fbed-4418-919a-08de7b832bcf
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA1PR12MB6601:EE_
+X-MS-Office365-Filtering-Correlation-Id: c20e046f-c16e-43f4-3e0c-08de7b8d45f4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|1800799024|7416014|376014;
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003;
 X-Microsoft-Antispam-Message-Info:
-	N0V0cWB+d1Zc0WVqH4PnB3esu/JlLB8UFpvfiNTHXe4y05xuzAXa5q34M3X7ZaY0y3Y+yGHNllHuNRwsTcDGfnVmymgU3YvztU2mDSbL8es44+upY/niEUVzeqycSuDTYQKc9d4esggvGGb6VL+9/qSi2PTuK3uicCSKqF/Dw6MsT7ZAnFNLfJDrYun5YFbURUy4+IEBSSO/l7MD4X6h1OoV3qZobhzatnHkvdY9vS0lYppswPR+mfYiVTHJYIXNZ98ln7yY2mpmHsJVv9kcDEcmSASgzuLbvO/Rf8Ya0UfJN6WH3HLQZkiQdq6AzVyo4V3VPy7zRlY0tSeqIPVa4DeEPZ6GEe6KnSF1C/5xArdhzZukbpiLtzAC2w469tWAH5Sk2bCG7/pwIvyrZZ03msnTNmjmL8fHbHCcxmQWhct7EfisfVBOMWEmYfbuWZjtulbgzMv0q25tdiQ00tcJaaTeBgFk4AZwWzk270ZEsa58ts/QJDUbkIhTbHQ95KTn3m2Et8er+dRFQnh1/dF1D3s/yoWdG4n8p/qs29ARaX/2BxIgvcKVKJT6+xmBrJirRj8lJeSFpYXMqdwTq0GI5dPa69/FqrQfpTdj+2328ud/Qx4Zvwvy5z/IhJGvth9tJPMdhxk+yf6A7gHmps6ToZn4FuvoW5XQvl2aj7llWMCxOwd11GXHZtoTNnnTNnUE6yXWZcyR3l8N4tsFMA9CMY227nTmn62qPppODkYqaiM=
+	RVa/Cp1t4Z+yLoazKxk+SQt7IdoZQSEMyzVjBtmUVZMZ145A/eFcNNezkXenlzggD0/2DbEfPV8KCqI6N9/JUyXfoQKPhXd0937oAslqUOlZwzr2KgP+XAVPSvSxLxy1wyhpbz+TlZ/wKMZAVha9toS3EUF9JN+6141zT5gFstABVAXIFXVq6qt6MtK/H2gGnoAXvqMzf+PHvjzwM83fbSs+txLyp3C/SEk5u2+xGr4u3D8zg26Oap8yu/ENYZykpgaibTZmAefe3oyTAJERzUH+bwopNBYu0wcb/lXSv+eY7bBRPqYzmuAVqA+4PweX1ZGl7ouFBimsa9i2sojX9pB46f0JHGCpX3q/OWT5fZvEdCixsC594vGx4fqdgtrr1Caqhc4XJ+CrgJ3b6RH4p/PVlOV2V0JFYBb1MRgYAZ7lSBmLkXs6GFfey1QaSB41F22sQXIFhS4NY9pGwZ0nxS4kaw8Fto3pcjcny7iW8tkVsiZCdkYbWlKx4z3//glDTvZPKRIQXqcVRsA3Fp0Nn7jKZL/G49b0MbOR35lwkmcs3NzU7sA3U7J3e8vckQLi7P/H1M+4b4xt+Ho6BIvMsaqZ6uIQp/9mU/db2vQCQYTEZ0Gy2i5effJOezIhZ1Qt5tYh7j3+Yu/EGuiZ7kbbskzwr1S+UHFkb7bSE0pD/gmNUNytKrcnwZItmimHi3Y1kkFyyr4T1mrjkJSdr+pyEbHQjuKIjVHfsl2kIff1My0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(7416014)(376014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MENIcHg5cDZOU0NrNkUycjhjZCtqYW0zRVoyU21LSGd3Ym55UytiVjVLTldo?=
- =?utf-8?B?MElRemw1YS9hMjZOeWhqWjMrSktlbmJLUjFCQVBhS2hSZHBMbzlqZXgwZkdT?=
- =?utf-8?B?SnlzcG5Zdjh6N1l6c0lZUyt5L3doOEErUE9sRFpXelgyaWMzeEVaS0VKZ215?=
- =?utf-8?B?RDBTclFxTjVXMVZXbE40SVdWRU5DcWQzNlh1dlBDMkRHaTZ5dGJJZWs0WXVH?=
- =?utf-8?B?dWdDeEpWWlhLanBCRERRbnlveklncGY2ZmZHeEYxb2xTbktVUU5KRTQvV2d4?=
- =?utf-8?B?VjhzZ3d2NnVmc2p6UzBlbE5FY3h4Q0taM09RWXVQY2Q1N0JTZjYwbmRkdHNT?=
- =?utf-8?B?REV3aHo5N0VnWHViZDc0bkFMME9IQlJhNGtZa1BQUE9LQWNiZ1BIbUt6T2pr?=
- =?utf-8?B?UVFPUG84N3MrYkZDT2FkOGY0bHNrUXpoNUd2d2RVWTRLYmVadGVYaFRaYnN1?=
- =?utf-8?B?RlJZMHl4T09xRmdNSG9zMm03UmhDV01tTlYwNzJ1YnJZUHovOFlXcFQ0dTlY?=
- =?utf-8?B?UngwSklPdEJ2RnVKN0srVlNFenN5Vjc3ZzB2ekNESjZ2YnFVYlg3OWNPUzVs?=
- =?utf-8?B?NkJCV2xkUUVEK0pRQitwVFY5YTlOa3c2aHF5TERwOWttRU9VdkZ5TzRaWWtK?=
- =?utf-8?B?cFNTMDFsNTEyMTM5c0VicGd1SmgyNEVNeVpWZTFSa0V4cXBaT2g1QlloVlpv?=
- =?utf-8?B?TVRyUVNKZ2xEZFRTU1NSRGZyM0hQZW1MT2RtejY3aUVkWnkwK2ZrckNyaURY?=
- =?utf-8?B?UnVtSDREQkY1MXNmNUZxckk2VDEyeHMzZ1NrdUN3Z1JCUTVWMnI0YTk4THoy?=
- =?utf-8?B?ajdBVmZhTHorV0t2MS9aZDBaM200dDA3czZtSXVvenVHWlA0aENOejhYcnU0?=
- =?utf-8?B?T1NIVEczUC9oQTM1TjdUb3lQc2VSTFVkaFFjY05wVm5XQXh4UHh0WTRTSi9Y?=
- =?utf-8?B?OTJMeDh0NkpkMHl0eEhCcDl3em00RG1ONE5PYndUNk05cFhPUnovVVlLb0lt?=
- =?utf-8?B?MU0ydmpZczlIeWRpMVgyQlZ5WGNHZGVneFF4ZlZJRHV1NXZLUWtFWDJ0bFJq?=
- =?utf-8?B?VlQ0eFZRalhVZjk0YnpIcXRsN2lSUFN6RnVHRnZiZmlscWRVNTNVYkIzdDlO?=
- =?utf-8?B?MXJRM3BjbWxuU0VmeHJDTTVmQmI5ZXFMYUxnQys3Q3gxY2p6NTRZT0J3MWov?=
- =?utf-8?B?WGxBTDFqaTJrV3JhNHRTelFDN2VPbW1nNWQ2QWxiVHlxMGRIOHBvY3Vac0tR?=
- =?utf-8?B?UFhwQlVwbkJReDd5K3R3S05Qb3Vhb2tJcU04bm1kWGFsWHVXWFdwMStqQlEz?=
- =?utf-8?B?b1FiWHNDQ1JtanpZdUZ3UzNOSnBkaktFUytBa2p1YkdBc0Z4TEJWY1J4TjU1?=
- =?utf-8?B?dnpUNUFmUStzY2o2eVZLRTEza0syYjgzTXlJb055UEpUQTVMNUMxdHFMOXVs?=
- =?utf-8?B?b3plMXBwTmRnRGdhTC9RT2tVNDQvb2s5ZlVzOVJSb3h0SGZBN0hUV2ZyMC9a?=
- =?utf-8?B?SEJNenM2d1VuRFNHbDFKdW1VTlc2ZFJFWDNyYkc2ZUNtOWdJODRjbStMREUy?=
- =?utf-8?B?d1J2MzIwcmJJZ2hGWkFDU29RTHZzSkZXeks5N2N5b2xCeWVmaCt3Z09IRzh0?=
- =?utf-8?B?dnl6RHZZdjh4WWFCTjF5QWt0bFpMUFR1c1p0Ynkwd1ZOOGNhOTNEU2g1dmlF?=
- =?utf-8?B?TFNsTi9RMUt2WC9sQXdmMFJjWENnQjQ3QTIzZzV6NHFRMHdJakVqa2RBS3du?=
- =?utf-8?B?U2tVRURua1Z2Qzl3VFMrajcvcGJxa0oxc1poRTByMGZqMit0dHA1N1p0S2wx?=
- =?utf-8?B?Q0dvS3UvOFlWWnMxNEJ1eXRKZ2FPSWQ0WWRiT013dkRqQ1NTbEJZd0dOZTho?=
- =?utf-8?B?NUFxbmdSeUJ3djAwVkZ3eldUeFh4TkJJTTlLR05UazR5ZlZqRzZnWU9HNk1s?=
- =?utf-8?B?YXM0N0FpcUdIT256L1ZNZmMrTkdZb2VMUWsvVzhOcUlNQVM5MllKeWFrcW5H?=
- =?utf-8?B?RDd1cUJhVVZqdmFiN0QrSkxFTHE4SWdjeUVreXJvanB6cGl4M2RoL3ZjMndp?=
- =?utf-8?B?SHpEQ0prUGZOaCtiQTFPemRsNUJ6d09UelJxblNlSlFsOUxGTExoRlRtQ3N6?=
- =?utf-8?B?N0haZzNZN2ZsMEcydjRaMWdiQ3RtemM0MXBRaENWRDBNUGNTTGh4TnNOSVY3?=
- =?utf-8?B?MHdlTGNjeXU5Umw2VExQVFFTTm1WTk9zY3JQaUlyV2RJMmdUUFcyVHJlZkNL?=
- =?utf-8?B?aEJCbkxnVU5uRC8vNUlyb2lmR0Y0OEp2SmZ3dkZFcVhQUDczU1JqMTNXY3ZU?=
- =?utf-8?B?U09SYWFnNzV4aU5tVjJQTmFFMW5DYnZTNHVEenArd0VBSWMwQkF2UT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 972b7363-fbed-4418-919a-08de7b832bcf
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?bG1FV1ZuR2hMRjhDQUdkUThQUDlZcXdJcXpSbzRuRi91Uy9ZSlhlSDhjMVhl?=
+ =?utf-8?B?dlZDMDM4c2hNYlROMHRSOWFLNnYrYUJPSVVBbWsybjZJcy9Da3pacTMwcjlR?=
+ =?utf-8?B?SEYra2NGbEU4bzNoanhnYk5RMFQrdXovZnc1MGJPbnZNYlhqSEtKY0dCeTBP?=
+ =?utf-8?B?ZHhlU1FMWEtqWk9iNTRQYTZmcDNJcVFvZDhGc2ljWnBhOTY2cTUxTk1RUGRI?=
+ =?utf-8?B?dy9uRWxjL0JkdnJ1MGtXSHd5Nnd6ck1JSEg2TUhTTENvRVlzaTR6Sm1NM09X?=
+ =?utf-8?B?SVhHa1oveDc0YWxjR0l4VXhCVUtvcUNVUFlqNXFUblBJREoyLzdjVGo2Ujkw?=
+ =?utf-8?B?blVtc3FrYnV2REx2YnBHeXZqeGNwT0lNUmpLWWlHeXNHQjJFbFdRcmdnMVBH?=
+ =?utf-8?B?SnlvOGhpQ1FEMEFJTGgyVXZvVnZqb29uOVZXTm9DTnBMMVUyeTdjRjFLQzZz?=
+ =?utf-8?B?VW5ZZWZqV29hMWh6aFNoT2pXTllxSmpFWG5jb3ExMFU0SHFnNW9CMVZHUUQz?=
+ =?utf-8?B?MHJLY0xKTzkxczlvcW53K2x2NFVyMmVJcDNRNjQ0dFZUUTFvOGd1VU1uWlB6?=
+ =?utf-8?B?dXpwUUNSTklOdWFINkYva3lHeHh0V0QwYlB0MEN3b2k0RmVjYWtYVkdxek1v?=
+ =?utf-8?B?ZWNDaWppSjFLNjcvNyszZnJVZVkyMUhjREdRUW1EL1BhbjZhbmRBeUJURDNG?=
+ =?utf-8?B?SjhSUW9wellXUzM5U3dtVDFsc09nV0ZzUVVYL21aemNFK2ZJVWVwZXh2TnRD?=
+ =?utf-8?B?SHd0WjZ4TmVuTlJEY2lqRENHOGZlSDVuQTNDT09oa2R3MXRxOG1PVGxzbCtU?=
+ =?utf-8?B?V3VFTWd5ZGpIZHU4eFhZTDAzNlFvbEhZR2xMWnA0NlprS3BYNDhiUk1EWFRr?=
+ =?utf-8?B?OG53NnhFNUg4eXRSTjBLRy9IMmtGVEhxSGNpWnBTNVhrRGRydWZqQUdoZE5J?=
+ =?utf-8?B?SFIzbE9DUGdQTUhQVnpDbFkxNExYVzRPdk9qZy9iVUNibXVveDlKT1ByVXl0?=
+ =?utf-8?B?alB5YmxkSkg3U1JwMW8vRGxsWVZMMkVNUkdGNDNKaS92dlVSdTMxdDcwOGVF?=
+ =?utf-8?B?c0s4cEc2S051aHlWOWZtOFVkdkY0RXM1WGliY3I5KzZOV1FQMzYzUW9yTWNF?=
+ =?utf-8?B?UCtoYmUxYmhHU2k4UzlXZDNoWEZiRW1yRDhmZUUyZ0xweVoxOWNjQkVnWFFW?=
+ =?utf-8?B?NVBtdCt2Y2RRdW8xUE5FbEFlWnpWb3V5UjN3WXg2NXA1dDFYU3FmZ1hVbWkv?=
+ =?utf-8?B?M25OZWNCdjR4bW5HbER2cDVsUTJ3bmdYYXBBMC9pRTFCLzAzNUJTM2hDSm13?=
+ =?utf-8?B?ZnNWZDEySnU1ZlJtNmpDcHZON3k2a2ZRWXVBeUVlUERBOVRVd1FDS084WlBp?=
+ =?utf-8?B?dDc0WlhMc0xhMlRDejRCcnFzdkJLUDVtYTZwQ3kxaDcyMzlCQTRHeFlVVGNa?=
+ =?utf-8?B?NEpVdVZTT2s3RFNSemhQbURLY09BaVZWUWRwZ1dFTzU0bjZGRThkZjlFZnpR?=
+ =?utf-8?B?aUQxTmg2aGVHeDhBQ0pOMEppSlNGd2lHNGpiRVovTWZwSWhzZnlIcWplb0Y3?=
+ =?utf-8?B?bVdicEZ1M1B5d2tBWkxaZERhbWR4MGk1bWJSb3lSOFJ1UlcrUllxZ2FDNEZl?=
+ =?utf-8?B?WGJCcHhuTzA0d0NxYnpNbzRPL0p2bnY5MFRZVjhTYTNZNDc3bjhHcGxqRjda?=
+ =?utf-8?B?V3dWejNYV00zYXcrYVpRMXZDS3FlaU1EYmtXcmVDVm9PSXRIK3dPbTR1Z3NE?=
+ =?utf-8?B?QjZFMllxdThtZXZ5aVRmdGFIU1Jxcjh5UnVVaTVTbytUeXZRTWEra2Z3LzFn?=
+ =?utf-8?B?OEY1S0lmc0E1Tkh0WXh5eXVURWIybGdwOEdIQ1hmQ3ptNXQxek1iSURqZ29H?=
+ =?utf-8?B?blRpUmUxemtqTm1lS29KL1lkNUd5Z3NrdFRjSTFLTlJyZHN6Sm1TU2ZIcCtY?=
+ =?utf-8?B?NFpXYjY0MHhrT2dET2dPbkVtcGtndzlIZHB0L1ZiYjhFdWQyRnVzaVdOUGZR?=
+ =?utf-8?B?SzZSZ045YUttdGpjVGVXZ1JNOThDcWxsMmdYUFQvRUpQdHFVc3JPLzhPZWUy?=
+ =?utf-8?B?YlBiS1BFYldUK0I3Z0hlKy9FZGVVSHBaUVdPTzdBUkc1MXBGVTdJRmxhSUJU?=
+ =?utf-8?B?TVJLRUZsZ0tRbmxWMXViaWY0RVgzNFZ4YUptSE5lMi9HaTUyU1JLWXA0c3dK?=
+ =?utf-8?B?VTBPM3ppOElIcitwY0tHYkdyVDFJZFh6VzdWQVdTalVtK1ZndWlINTVnclht?=
+ =?utf-8?B?Qi9leTJvbFAwZEhqS0x2blZJQmtFbmV6Z2VVTEhkajQveGh6Zi8yZ0NLdXJa?=
+ =?utf-8?B?UDQ0dHJiZTJlZUdyZUJObnZ1TW9meFFUS3pndjZMUkowYm96bmVldnViVHFM?=
+ =?utf-8?Q?kNnd4W/TMwCN55oZRkrw2CAORIXePv1qJJLVmWqK+IB0j?=
+X-MS-Exchange-AntiSpam-MessageData-1: KS9OLWQcSSMljg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c20e046f-c16e-43f4-3e0c-08de7b8d45f4
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 13:20:44.0157
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 14:33:02.9424
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Bogzz32Ey8n4BBZYDyGG/pidss17LFUym1VXLCts7Z8TmpUVQz62/+T8ktmBo3meOA9IjWvZ7yCK/z+cOEQOfQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7163
+X-MS-Exchange-CrossTenant-UserPrincipalName: KDIXJSE3Mv+MoYktT1GnAxO9ZyKhpWfdAv5DyCM/SEnaSzplIgV9OVpyhlXnSwOg//oJG4O3+HkHgxAi6xkoow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6601
 
-On Fri Mar 6, 2026 at 12:50 PM GMT, Alexandre Courbot wrote:
-> On Fri Mar 6, 2026 at 8:35 PM JST, Gary Guo wrote:
->> On Fri Mar 6, 2026 at 11:10 AM GMT, Alexandre Courbot wrote:
->>> On Fri Mar 6, 2026 at 7:42 PM JST, Gary Guo wrote:
->>>> On Fri Mar 6, 2026 at 5:37 AM GMT, Alexandre Courbot wrote:
->>>>> On Thu Mar 5, 2026 at 7:15 AM JST, Gary Guo wrote:
->>>>>> On Wed Mar 4, 2026 at 9:38 PM GMT, Danilo Krummrich wrote:
->>>>>>> On Wed Mar 4, 2026 at 10:13 PM CET, Gary Guo wrote:
->>>>>>>> Even for the cases where there's a PIO register, I think it's bene=
-ficial to just
->>>>>>>> get a value without a type.
+On Fri Mar 6, 2026 at 10:20 PM JST, Gary Guo wrote:
+> On Fri Mar 6, 2026 at 12:50 PM GMT, Alexandre Courbot wrote:
+>> On Fri Mar 6, 2026 at 8:35 PM JST, Gary Guo wrote:
+>>> On Fri Mar 6, 2026 at 11:10 AM GMT, Alexandre Courbot wrote:
+>>>> On Fri Mar 6, 2026 at 7:42 PM JST, Gary Guo wrote:
+>>>>> On Fri Mar 6, 2026 at 5:37 AM GMT, Alexandre Courbot wrote:
+>>>>>> On Thu Mar 5, 2026 at 7:15 AM JST, Gary Guo wrote:
+>>>>>>> On Wed Mar 4, 2026 at 9:38 PM GMT, Danilo Krummrich wrote:
+>>>>>>>> On Wed Mar 4, 2026 at 10:13 PM CET, Gary Guo wrote:
+>>>>>>>>> Even for the cases where there's a PIO register, I think it's ben=
+eficial to just
+>>>>>>>>> get a value without a type.
+>>>>>>>>>
+>>>>>>>>> I don't see why we want people to write
+>>>>>>>>>
+>>>>>>>>>     self.io.read(UART_RX).value()
+>>>>>>>>>
+>>>>>>>>> vs
+>>>>>>>>>
+>>>>>>>>>     self.io.read(UART_RX)
+>>>>>>>>>
+>>>>>>>>> or
+>>>>>>>>>
+>>>>>>>>>     self.io.write(UART_TX::from(byte))
+>>>>>>>>>
+>>>>>>>>> vs
+>>>>>>>>>
+>>>>>>>>>     self.io.write(UART_TX, byte)
+>>>>>>>>>
+>>>>>>>>> what benefit does additional type provide?
 >>>>>>>>
->>>>>>>> I don't see why we want people to write
+>>>>>>>> Well, for FIFO registers this is indeed better. However, my main c=
+oncern was
+>>>>>>>> this
 >>>>>>>>
->>>>>>>>     self.io.read(UART_RX).value()
->>>>>>>>
->>>>>>>> vs
->>>>>>>>
->>>>>>>>     self.io.read(UART_RX)
->>>>>>>>
->>>>>>>> or
->>>>>>>>
->>>>>>>>     self.io.write(UART_TX::from(byte))
->>>>>>>>
->>>>>>>> vs
->>>>>>>>
->>>>>>>>     self.io.write(UART_TX, byte)
->>>>>>>>
->>>>>>>> what benefit does additional type provide?
+>>>>>>>> 	bar.write(regs::MyReg, regs::MyReg::foo())
 >>>>>>>
->>>>>>> Well, for FIFO registers this is indeed better. However, my main co=
-ncern was
->>>>>>> this
+>>>>>>> This specific case is indeed more cumbersome with the two argument =
+approach,
+>>>>>>> although given Alex's nova diff I think the occurance shouldn't be =
+that
+>>>>>>> frequent.
 >>>>>>>
->>>>>>> 	bar.write(regs::MyReg, regs::MyReg::foo())
+>>>>>>> It's also not that the two argument approach would preclude us from=
+ having a
+>>>>>>> single argument option. In fact, with the two-argument design as th=
+e basis, we
+>>>>>>> can implement such a helper function cleaner than Alex's PATCH 10/1=
+0 (which uses
+>>>>>>> `Into<IoWrite>`:
+>>>>>>>
+>>>>>>>     /// Indicates that this type is always associated with a specif=
+ic fixed I/O
+>>>>>>>     /// location.
+>>>>>>>     ///
+>>>>>>>     /// This allows use of `io.bikeshed_shorthand_name(value)` inst=
+ead of specifying
+>>>>>>>     /// the register name explicitly `io.write(REG, value)`.
+>>>>>>>     trait FixedIoLocation {
+>>>>>>>         type IoLocType: IoLoc<Self>;
+>>>>>>>         const IO_LOCATION: Self::IoLocType;
+>>>>>>>     }
+>>>>>>>
+>>>>>>>     trait Io {
+>>>>>>>         fn bikeshed_shorthand_name<T>(&self, value: T)
+>>>>>>>             where T: FixedIoLocation +
+>>>>>>>                   Self: IoCapable<<T::IoLocType as IoLoc<T>>::IoTyp=
+e>,
+>>>>>>>         {
+>>>>>>>             self.write(T::IO_LOCATION, value)
+>>>>>>>         }
+>>>>>>>     }
+>>>>>>>
+>>>>>>> No need for a `IoWrite` type, everything is done via traits.
 >>>>>>
->>>>>> This specific case is indeed more cumbersome with the two argument a=
-pproach,
->>>>>> although given Alex's nova diff I think the occurance shouldn't be t=
-hat
->>>>>> frequent.
->>>>>>
->>>>>> It's also not that the two argument approach would preclude us from =
-having a
->>>>>> single argument option. In fact, with the two-argument design as the=
- basis, we
->>>>>> can implement such a helper function cleaner than Alex's PATCH 10/10=
- (which uses
->>>>>> `Into<IoWrite>`:
->>>>>>
->>>>>>     /// Indicates that this type is always associated with a specifi=
-c fixed I/O
->>>>>>     /// location.
->>>>>>     ///
->>>>>>     /// This allows use of `io.bikeshed_shorthand_name(value)` inste=
-ad of specifying
->>>>>>     /// the register name explicitly `io.write(REG, value)`.
->>>>>>     trait FixedIoLocation {
->>>>>>         type IoLocType: IoLoc<Self>;
->>>>>>         const IO_LOCATION: Self::IoLocType;
->>>>>>     }
->>>>>>
->>>>>>     trait Io {
->>>>>>         fn bikeshed_shorthand_name<T>(&self, value: T)
->>>>>>             where T: FixedIoLocation +
->>>>>>                   Self: IoCapable<<T::IoLocType as IoLoc<T>>::IoType=
->,
->>>>>>         {
->>>>>>             self.write(T::IO_LOCATION, value)
->>>>>>         }
->>>>>>     }
->>>>>>
->>>>>> No need for a `IoWrite` type, everything is done via traits.
+>>>>>> That's cool but will only work for fixed registers. If you work with=
+, say, an
+>>>>>> array of registers, cannot implement this trait on a value as the va=
+lue
+>>>>>> doesn't have an index assigned - meaning you would have to build a
+>>>>>> location in addition of it.
 >>>>>
->>>>> That's cool but will only work for fixed registers. If you work with,=
- say, an
->>>>> array of registers, cannot implement this trait on a value as the val=
-ue
->>>>> doesn't have an index assigned - meaning you would have to build a
->>>>> location in addition of it.
+>>>>> For array registers I think it makes more sense to use the two-argume=
+nt version,
+>>>>> no?
+>>>>>
+>>>>> The example here is to demonstrate that we can add a shorthand versio=
+n for the
+>>>>> fixed register version that can write a value to register without men=
+tioning its
+>>>>> name (as a supplemental helper), and the basic write method is the tw=
+o-argument
+>>>>> one.
+>>>>>
+>>>>> For cases where the type doesn't guarantee a fixed location like FIFO=
+ register
+>>>>> or an array register, mentioning the name twice is fine.
 >>>>
->>>> For array registers I think it makes more sense to use the two-argumen=
-t version,
->>>> no?
+>>>> It's still tedious, and a step back compared to the one-argument versi=
+on
+>>>> imho.
 >>>>
->>>> The example here is to demonstrate that we can add a shorthand version=
- for the
->>>> fixed register version that can write a value to register without ment=
-ioning its
->>>> name (as a supplemental helper), and the basic write method is the two=
--argument
->>>> one.
+>>>>>
+>>>>> [
+>>>>>
+>>>>>     For array case, you *could* also do
+>>>>>
+>>>>>     impl IoLoc<RegisterName> for usize {
+>>>>>         fn offset(self) -> usize {
+>>>>>             self * stride + fixed_base
+>>>>>         }
+>>>>>     }
+>>>>>
+>>>>>
+>>>>>     and now you can do `self.write(index, reg_value)`, although I thi=
+nk this
+>>>>>     might confuse some people.
 >>>>
->>>> For cases where the type doesn't guarantee a fixed location like FIFO =
-register
->>>> or an array register, mentioning the name twice is fine.
+>>>> Yes, in this case the semantics of write's first argument would be
+>>>> dependent on the second argument... I think that's a potential footgun=
+.
 >>>
->>> It's still tedious, and a step back compared to the one-argument versio=
-n
->>> imho.
+>>> I mean, `bar.write(Reg::at(10, regs::MyRegArray::foo()))` in your examp=
+le is
+>>> also kind of "first argument depends on the second argument" situation,=
+ just
+>>> with a bit more boilerplate.
+>>
+>> Not really, `at` is enough to know that you are accessing an array.
+>>
+>> Whereas `write(index, reg_value)` doesn't give us any indication of what
+>> type of indirection (if any) we have.
+>
+> I  mean not sure `at` gives me that impression at all. It would just let =
+me know
+> that I am accessing it at a different location. If you omit the `MyRegArr=
+ay`
+> part then there's no real indication that this is an array to me.
+
+`at` is a function name, we can change it - I picked it because it is
+short and reasonably descriptive. The point being: we have a unique
+function that indicates unambigously that we are using a location for
+an array of registers.
+
+You seem to reject this design because the syntax isn't obvious and
+natural to you at first read. We are trying to build something new, so
+of course if will look a bit alien at the first encounter. That's why we
+have documentation, and I think it is not very difficult to wrap your
+head around it after seeing a few examples.
+
+>
+> If `at` is only for array, how would you represent the case where the sam=
+e type
+> is being used in multiple registers?
+
+That's not something that is supported by the register macro currently
+(probably not a big change, but not something I will do in this series).
+
+But to try and answer your question, such register types would not have
+an `IoLoc` implementation of their own and would need to have their
+location constructed explicitly. In accordance, the construction of
+their value would not bear any location information; thus there would be
+no redundancy.
+
+We do have a case that is pretty close to this with relative registers.
+These are accessed like this (real examples):
+
+    bar.write(Reg::of::<Gsp>(regs::NV_PFALCON_FALCON_DMACTL::zeroed()));
+
+and
+
+    bar.write(Reg::of::<Sec2>(regs::NV_PFALCON_FALCON_DMACTL::zeroed()));
+
+But for register types that can be used at several arbitrary locations,
+I think this would be even simpler. The different locations would just
+need to implement `IoLoc<T>`, where `T` is the shared register type.
+Then, considering that the two-arguments version is called `write_at`,
+you can simply do:
+
+   bar.write_at(REG_LOCATION, reg_value);
+
+... but this design also makes this possible:
+
+   bar.write((REG_LOCATION, reg_value));
+
+Tuples of (location, value) do implement `IoLoc` themselves, so we can
+use this little trick to support a 2-arguments syntax with a single
+method.
+
+>
+>>
 >>>
->>>>
->>>> [
->>>>
->>>>     For array case, you *could* also do
->>>>
->>>>     impl IoLoc<RegisterName> for usize {
->>>>         fn offset(self) -> usize {
->>>>             self * stride + fixed_base
->>>>         }
->>>>     }
->>>>
->>>>
->>>>     and now you can do `self.write(index, reg_value)`, although I thin=
-k this
->>>>     might confuse some people.
+>>> If you want to make things more explicit you could also have
+>>> `bar.write(at_array(10), ...)` or something similar.
+>>
+>> Is it possible to generate an `IoLoc<T>` without having `T` mentioned
+>> anywhere in the call to `at_array`?
+>
+> Exactly same as the `impl IoLoc<REG> for usize`:
+>
+>     struct AtArray(usize);
+>
+>     impl IoLoc<REG> for AtArray {
+>         ...
+>     }
+
+Right, but can the correct `REG` be inferred when the call to `at_array`
+doesn't bear that information? The type inferred by the second argument
+would have to be propagated to the first. Guess I'll try and see.
+
+>
+>>
 >>>
->>> Yes, in this case the semantics of write's first argument would be
->>> dependent on the second argument... I think that's a potential footgun.
+>>> For the array case I really think trying to shove everything into a sin=
+gle
+>>> argument is a footgun. The type of value in this case *doesn't* tell us=
+ the
+>>> location, and the location needs to be explicit.
 >>
->> I mean, `bar.write(Reg::at(10, regs::MyRegArray::foo()))` in your exampl=
-e is
->> also kind of "first argument depends on the second argument" situation, =
-just
->> with a bit more boilerplate.
->
-> Not really, `at` is enough to know that you are accessing an array.
->
-> Whereas `write(index, reg_value)` doesn't give us any indication of what
-> type of indirection (if any) we have.
-
-I  mean not sure `at` gives me that impression at all. It would just let me=
- know
-that I am accessing it at a different location. If you omit the `MyRegArray=
-`
-part then there's no real indication that this is an array to me.
-
-If `at` is only for array, how would you represent the case where the same =
-type
-is being used in multiple registers?
-
->
+>>     bar.write(Reg::at(10, regs::MyRegArray::foo()))
 >>
->> If you want to make things more explicit you could also have
->> `bar.write(at_array(10), ...)` or something similar.
->
-> Is it possible to generate an `IoLoc<T>` without having `T` mentioned
-> anywhere in the call to `at_array`?
-
-Exactly same as the `impl IoLoc<REG> for usize`:
-
-    struct AtArray(usize);
-
-    impl IoLoc<REG> for AtArray {
-        ...
-    }
-
->
+>> "write the constructed value at the 10th position of the `MyRegArray`
+>> register array"
 >>
->> For the array case I really think trying to shove everything into a sing=
-le
->> argument is a footgun. The type of value in this case *doesn't* tell us =
-the
->> location, and the location needs to be explicit.
+>> What is missing here?
 >
->     bar.write(Reg::at(10, regs::MyRegArray::foo()))
+> This is completely un-natural if I try to read it with fresh mind (try to=
+ forget
+> about implementation details for a second).
+
+That's what documentation is for. Please give it a fair chance and ask
+yourself: would it still look unnatural after working with it for
+20 minutes?
+
 >
-> "write the constructed value at the 10th position of the `MyRegArray`
-> register array"
+> `MyRegArray` here is a type name that is a bitfield and not an array. `fo=
+o` returns a
+> single value and not an array. "at" here is saying that the register is a=
+t a
+> specific location and doesn't really indicate the array nature.
 >
-> What is missing here?
+> This is why I insist that I would prefer an explicit location
+>
+>     bar.write(REG_ARRAY.at(10), Reg::foo())
+>
+> would have no ambiguity whatsoever about user's intent.
 
-This is completely un-natural if I try to read it with fresh mind (try to f=
-orget
-about implementation details for a second).
+IIUC `REG_ARRAY` would be a const ZST and `at` a method returning an
+`AtArray(usize)`? I still have doubts that its generic type could be
+inferred automatically but it's worth giving it a go.
 
-`MyRegArray` here is a type name that is a bitfield and not an array. `foo`=
- returns a
-single value and not an array. "at" here is saying that the register is at =
-a
-specific location and doesn't really indicate the array nature.
+If that works, then I assume fixed register writes would look like
 
-This is why I insist that I would prefer an explicit location
+    bar.write(FIXED, Reg::foo());
 
-    bar.write(REG_ARRAY.at(10), Reg::foo())
-
-would have no ambiguity whatsoever about user's intent.
-
-Best,
-Gary
+Unless we have a specialized `write` variant for them.
