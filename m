@@ -1,137 +1,98 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DAD36AB62
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 17:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B263214BF92
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Mar 2026 17:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772817746; cv=none; b=nffmOmZKzSQ10YRG2tKfIsXSyxKSa+Wi5XfCm/En8/VNNF4/OugYpjfFRnfVJQ/7uEwgiXcd5k/MPLJYfKiYwnWJyWd24wsKwbGv2xpdw1dPi9VqmyUCAiFVuMJwc5jMFLhgsalXFsztlXjXG/17NoeVSr4ScUL1J3+zStSaVpQ=
+	t=1772818356; cv=none; b=SUAi9Xs+KXGZsoofxJN/W7AeyF3r92XcyLqv/lDo83+ZoLbFFRsf9uNpbZRyH41yLMwdzECqRdiCtP1q/WvoXEUfBtCodXEW+Rv+VRsclYJgqUNFE3krKojBpNyUi9rUgX1ulA+5GH9KB+m5WyA+9spBOqO2TIkawEPpv7RY+xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772817746; c=relaxed/simple;
-	bh=xxB+8H55hbL/yjvhqnz15bcDlScKmxdX8S07eoZ8gKc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NMUc2Gwh4zIAG8TjIQ519kX2oB7BbySmvtSEN0XGS26ZOaE/LhG8dsxO/hwFd9ZijiLGjHOoDBb3o8Mf99e87RnSqWVYVCQ+F4VgJJv8SYAoqU1V1LMwKdt+iEYGWuM4RhjtW3JQ47QjIlDg6VeaI0XCyx9wUTlTG0l+x1+NV8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=au0Yn6VX; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1772818356; c=relaxed/simple;
+	bh=bIxrx4KoLTRQn4XRd5Efn4xp/evATyJ+zwU3/uVKTz4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=czY4+ve6oe6NEbSczcNd9kyLyF0u+iJSwX6NMm2g6mK58l62pH1vUL3YlqB+i7MyQwkx22el+qeLP4QkqsBTpHAcosHKAUS4wflrdFx5VclEtwXsTftdDfPELdl2+A+DhG2sQtTdE0xw2Y3ia1L6ViDM5SI6i7b2yjq+HzlqaIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lJnLJBIc; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="au0Yn6VX"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-439cd6b09f8so1897965f8f.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Mar 2026 09:22:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lJnLJBIc"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4806cfffca6so102543125e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 06 Mar 2026 09:32:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772817743; x=1773422543; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YCiYsbFiG6El5+CfgRgDUsrrJZ9QgM65vIFR8M6oVrU=;
-        b=au0Yn6VXmh/3GeqfKl4apMtNpJp0XpBswNmJxziLQVYxn5wnfW2+xemwWPQa5P+0gG
-         LqtQWmeUH3q/+zTn7Me69tny7suju6D4+WyMJ4R0nuKXc0Pb96zc5enTtyI9Vxlpztid
-         LR795Xzzb4As04AwHUFgucNfSHw3DF5+HvzRWv9dOVD/Lf0HsMVJsrsou8UCCT2bKBaF
-         DYG2/IzepUKBa6RpzZBGZi80/d7GlVq2veF88uq8N5dailwBKE54cJqXCoPWKfamWelY
-         kK6jkwoAic5nTSGbIbI2xZuljCmFo1oW6/g8xPWP+OtAwPrTR1qkC5aHmPXBmp+S+ErS
-         lpEA==
+        d=google.com; s=20230601; t=1772818354; x=1773423154; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/vcQthuk1eWzIx9SkfXAplSVF+zzfp3bHB4lRD3w+Jw=;
+        b=lJnLJBIc1ZBH86wfUNtyAfhXTbL94Kt2oQrsHurvUN2KFu8IXpFusZKKorF0e8v3fX
+         aXqwJAL9RufrR4jNwJKB/KphH5EFn90w34anqjhWi8COeq6GuM2frgKyHOSt+xHBGXMe
+         f7HTA3Pk7HzldbyQxam2WeZ3zusng+1aMPgOnRp5q1yc4i69hiaMrnaMb7/xHZU3mdXR
+         9csfD9J/EBfzrcjlgCOxTwzU2TZo1g+YVQmDlqVR5SnXljND3AdKhnshaG7gbJzjLkG9
+         9bsdkX5Ab4c3svjr9n/Na7AHK04hon7W3bQL0gm3Jm3pjXdPKa3aDLBf7KMvtj45MAI0
+         jhtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772817743; x=1773422543;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YCiYsbFiG6El5+CfgRgDUsrrJZ9QgM65vIFR8M6oVrU=;
-        b=AiR91T0ayH2rXuyoOLGn3IA+YmoB12St6Th+HpTWB98ytKcKW4acIPKuUttaTM5shM
-         md2ka3kIvAyHpT8FhK6o2FmPHOGa2EqXNrv0IMW3u/CsvX/k/bHzWfPI4biaogkyC3WT
-         YpztbNbUO/vGin/diY9G1bYbFuj+b38N6Hsft3F9K1H587r8AiJc1hnyxq3+9dcmgAOE
-         RvDRSd+3okcerBFKigZ1bFrGhubzETJfsrByhmPDmMZshDa8NG76Y5+xFKiEnUfmEpif
-         nqrRCjFbSQzqiZtcIuGTL4GaS8GUktOGlz/tJwVU3n/8qnFhG1O9awqj63TZLs9+1/66
-         +qIw==
-X-Forwarded-Encrypted: i=1; AJvYcCXEPvMrd98oNWbERyVqluFBVICvRk1x/K960ZJ9/PzTqfbNrB+t+pow3G63POYf+v7PLKRw99QK/FE3kYxT5g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YziSSScpls7Ikt8r/+v17R8Wv42/Fbb1ewQ/8GkyXMYqisrx0VU
-	W0GpuGYj7xQJfbWSKIwrsIxseNwcpjMsTiMuAxFlXIM5+WmEwlHkBSEvBte20zHIJJ4=
-X-Gm-Gg: ATEYQzyVLVJ8y+3jpKT2K5AFp2ugzo1MB4IXfX16xSCy+NyB6iSrCYqgHlpuUyZ6AJf
-	xlLITA07QbbYaIzBxsvnL7SuOs7436/vuTZb69RWHonYsM07ACqtf3gwT7MG4J2yomZQGnjEaYT
-	lxJWzLChUotBKed1C7uwKjn2fOgRGysY8Yz8ObwpwCxDL9gGAIGV1X0keBN1Hz5v88K5vZrzgDt
-	iMRxowMpsA8gG+mUhAaeQVdtCcaQj3hwLMRWTey/uSOumIJYezXLAPPXonLSNICsRqFrBiFuf1Z
-	Rr07Tg10qoJBykwZ32aF/quLbPXkGHXXPFmF480Xiq/SPWijjz4JfmL6wbANB73UxwE96hT04Pg
-	2IIDb7Ar5abDc6zNW2TpGONvcl/af+E980f1ankUtbn0ZEsE/BfX3ZRx/14Z9Em8A5T4rEBp3VF
-	57hjBXVk6C1ncRfMV83FZF8goa+WcoAJtxNEzoTQJXRwuw
-X-Received: by 2002:a05:600c:548b:b0:483:78c7:e1c1 with SMTP id 5b1f17b1804b1-4852693046bmr52154805e9.12.1772817743033;
-        Fri, 06 Mar 2026 09:22:23 -0800 (PST)
-Received: from [10.100.51.209] (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4852ad0ce60sm30982035e9.12.2026.03.06.09.22.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Mar 2026 09:22:22 -0800 (PST)
-Message-ID: <488d93b9-d13c-4269-b7d5-ede1536f5701@suse.com>
-Date: Fri, 6 Mar 2026 18:22:21 +0100
+        d=1e100.net; s=20230601; t=1772818354; x=1773423154;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/vcQthuk1eWzIx9SkfXAplSVF+zzfp3bHB4lRD3w+Jw=;
+        b=tk8IuNE/r8gcqW/urmGPV3IvplYy/RlfBP9aWSMwGVoB2pG+09cS/pE5OjI8hnWNhs
+         CXIja9iIJmvtvXtixMipDb43hbCkR3YRHZNI8Xnnf/AduAii57GUYv5FXrG0J+HN4EvI
+         NFUFaoL1DVlU89dJxhQ3p7E5bFMQHvrGQa39WMSaPJn5jimUKIjV9cjVP6dh+vbQpbZu
+         qa4APAic5npFug7YjMj3qsPn8vw39h+Q8qRfY2jLCS2PsctbGxUIQI7cAlz6JBCi6+4s
+         nc6gvA7sKM6xztXwS5/7JUia7XB8PS36t0MwWW05Iu98TFhJt0Jxb2PDTJfxEZ1D+Vy3
+         Q2jA==
+X-Forwarded-Encrypted: i=1; AJvYcCUFq35YBtk0Jf3G/m0Krkub0jIJj4bvbRe1vmvmSNP+XvPXKcRRFEH4fCGoUC/lBB5ZEDxy+WOoAg4pOyjz6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzadyzhBJqi9GIPVvfdqv4Kj+yMGEvzZ0UBlwOT5UayzXN7ZxsB
+	5yrK3/G2r41jcSH1In6qjjwEU4RaJYdKUFZdhB1pfqTY64HEoFgSktM+2Rfq4tYsPYbjZ7TD88u
+	1n/iSdCs6MZHmmQftMA==
+X-Received: from wmc2.prod.google.com ([2002:a05:600c:6002:b0:483:43e2:3e67])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4710:b0:480:20f1:7abd with SMTP id 5b1f17b1804b1-48526978dc0mr46728455e9.31.1772818354024;
+ Fri, 06 Mar 2026 09:32:34 -0800 (PST)
+Date: Fri, 6 Mar 2026 17:32:33 +0000
+In-Reply-To: <20260203-inline-helpers-v2-3-beb8547a03c9@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/8] rust: macros: add early_param support to module!
- macro
-To: Matthew Wood <thepacketgeek@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>, David Gow <davidgow@google.com>,
- =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
- linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260226234736.428341-1-thepacketgeek@gmail.com>
- <20260226234736.428341-7-thepacketgeek@gmail.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260226234736.428341-7-thepacketgeek@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com> <20260203-inline-helpers-v2-3-beb8547a03c9@google.com>
+Message-ID: <aasPsbMEsX6iGUl8@google.com>
+Subject: Re: [PATCH v2 3/3] build: rust: provide an option to inline C helpers
+ into Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 2/27/26 12:47 AM, Matthew Wood wrote:
-> Allow module parameters to be registered as early boot command-line
-> parameters via the existing __setup infrastructure.
-> 
-> Add an optional `early_param` field to the parameter block in the
-> module! macro.  When specified, the macro generates:
-> 
->   - A setup callback that calls ModuleParam::from_setup_arg() and
->     stores the result via ModuleParamAccess::set_value().
->   - A static string in .init.rodata with the command-line prefix.
->   - An ObsKernelParam entry in the .init.setup section linking the
->     two together.
+On Tue, Feb 03, 2026 at 11:34:10AM +0000, Alice Ryhl wrote:
+>  $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c FORCE
+>  	$(call if_changed_dep,bindgen)
+>  
+> +quiet_cmd_rust_helper = HELPER  $@
+> +      cmd_rust_helper = \
+> +	$(CC) $(filter-out $(CFLAGS_REMOVE_helpers/helpers.o), $(c_flags)) \
+> +		-c -g0 $< $(if $(filter %_module.bc,$@),-DMODULE) -emit-llvm -o $@
+> +
+> +$(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: $(src)/helpers/helpers.c FORCE
+> +	+$(call if_changed_dep,rust_helper)
 
-The early_param() macro on the C side creates an obs_kernel_param entry
-with early=1. However, this patch handles the new early_param setting in
-Rust by creating an obs_kernel_param with early=0. Non-early
-obs_kernel_params are processed by obsolete_checksetup() during the
-parse_args("Booting kernel") call in start_kernel(), which also handles
-regular kernel_params.
+I think this needs:
 
-Actual early parameters are handled by parse_early_param(). Note that
-the command line parsed in this case is marked as __initdata, so it
-would not be available for the kernel's entire lifetime, as the previous
-patches assume.
+$(obj)/helpers/helpers.bc: private part-of-builtin := y
+$(obj)/helpers/helpers_module.bc: private part-of-module := y
 
-So I'm somewhat confused by this patch, or perhaps I misunderstood
-something?
+at least it seems to make a difference for AutoFDO.
 
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index 0c36194d9971..83dcc89a425a 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-[...]
-> +                    #[link_section = ".init.setup"]
-> +                    #[used(compiler)]
-> +                    static #setup_name: ::kernel::module_param::ObsKernelParam =
-> +                        ::kernel::module_param::ObsKernelParam {
-> +                            str_: #setup_str_name.as_ptr().cast(),
-> +                            setup_func: ::core::option::Option::Some(#setup_fn_name),
-> +                            early: 0,
-> +                        };
-
--- 
-Thanks,
-Petr
+Alice
