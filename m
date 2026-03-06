@@ -1,212 +1,354 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020073.outbound.protection.outlook.com [52.101.195.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DB519D081;
-	Fri,  6 Mar 2026 13:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772803011; cv=none; b=MDkaJBuHLYeBZT1/GzCXtQdDrYhi/K7b6lTtH5GytWS+1MlZssZXMJ37ZR1xhYIabStu7wM1hh1DOSHxx3RqnJHpuaj2lAloX5/WyqAdiTj5/zjHfiWfm6ALpW2xNyB//FXeZnqvCX6Hor/9BEfGVlrzEhdDRaolJlkVoEbcuuQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772803011; c=relaxed/simple;
-	bh=1s6QLN/ghCrLJXZlKMxpYlFZehpnA7MCuk3K8EQdMlY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iB7VtbbOcTJa/43rWBF5BHmE52rIDYjZmK0JgcSCLI3/5oc4sqGTB/cBFy3RorRsO/IDI4OnUNfXHu6Kbusf81j89xmIh9rPM/p/KgjBUQKJqJvSsRLgfdhR5XxTwrNXl3xOeWnMEtE5wHLChVGO9An9elB6/D0tIA2ic+eNweE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iIIEqtJ3; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBED63921F7;
+	Fri,  6 Mar 2026 13:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772803249; cv=fail; b=VP9/Bw1BtwUAt5BtkAyiJSIRz9IzlI49E8awsyaqnKg0R0mWQEC3GS1rAaAfP0CAehowJUWDK3weFKJr0CXooa1KpIBPaTQpz0YSmbNDRpV+XnvY32/YIVsy6QPHWar+LAm14op+sNpjYq24FsgEb+CkDnyDYqZUITCjh1UKIsg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772803249; c=relaxed/simple;
+	bh=xQ7UTJ7zwFJZid2XZNOx1qlKQhMKfy7zdBT71afWxF8=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=TZW/4l8W3t8AT0L+Mm5g4Dvc976D+M+W0Xm/xUuF/MPPUD08vHOvw6WcR6MSb4uc2B2wi5u89K3En9DQlypNUL4YoMDVjmb+oFoinC++4xCeKp487V4/tVAS63EzI/wlnnbrxygf0Ov1X3G0CkLcVfh/Ubp4lFQOuk1A2m5Y3go=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=x9dgS4fm; arc=fail smtp.client-ip=52.101.195.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iIIEqtJ3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6669FC2BC86;
-	Fri,  6 Mar 2026 13:16:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772803010;
-	bh=1s6QLN/ghCrLJXZlKMxpYlFZehpnA7MCuk3K8EQdMlY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iIIEqtJ3tRMZ/QwYlyeMDf3S9PjzkVQkuz2ZOMvO4eTfkXzL8qKoudLNUlR5NEwQD
-	 8FNqliqMzEOtiPWm6TIg7UUBnmrYObcaHyEepfOoLaAtXjffktNCOYCvabXVOP1m8L
-	 WJWa/LFj2mYn+sTemJgm9xHc/mm1r4dw2qOUR4BC6BQDtNsfRS2HCk7BhPy2gHFDrM
-	 CKBuhXifw+SCwzUcqO1D7W/TEfS/I5MBdPyFBT1LQbyQbzFAGTL26JGaPzs1Dl7ZPx
-	 ban9iQy4V/ZbzDBUMQy/CEPCUCXZ2WyARWnTuLMg+eRLJIQUk3cWU2Qe3v1kpB6X3N
-	 pJOexzVCg18Yg==
-Message-ID: <bc5cfcc4-5e51-4da1-9ce9-ea0831bec400@kernel.org>
-Date: Fri, 6 Mar 2026 14:16:26 +0100
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="x9dgS4fm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j2BGRj9NymJ8E3rce6ZHqIe6URFLiYAx0Doaq8fyd42UWhhKpx67VPR9yE6AQKOaYTCBISVp6tF6QQ4iaUyD+VFO1UNweOHg2HuH5L2sEsLxgRcKmcnnC7VU7RKkkkeuZsl/blXIG1E6X6c1BXwTDhiTGYhokgE8RvdQyBZT3VYrjzF5meXthw5LN++QssuoPaG8682NDor6EncuQu7lmHhFzPOfUhnFVjt+JK33+TNfgsC/fTKGnvf8nUqOASRDb1QCJ/YCOGkXAIt4FI/n5t6rztisJ+eSsul8OUBqkl6HY1PuW2rP3T6ovChRuCclga301K7Eqq3l4c0/cWgNEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WRHj+0MT2+7/Nccvn1JgQV6ZP9D5heVwfvpq2Iq8ugw=;
+ b=eeHNoEM3sQJbs5RnrX2lDYX9xqDaow0HI0iCccjLkJW7ui+JiFNwx8I4YaI0nG9QqjurWP/cm5sdrONWi0W9+MSyjLIIdMY3ugvr3qegNBkQ/NZL/YasVouh9+MfZAvHbtgeyOXuCQMgsyPa85cRmiIIn5asmYntIqvs4/vO/EdW2/IUkeGJ+vqed3IL2j4LKHQ4V/kzF0NbBbPGqXYewPU+MxAV9Mxh/6bx4O1QB+g6e3i3ElXa99k1xOnmqr0afoQUcSnNApVwRT321S4onpePjJ9so/TBbcsFNoCCwRQzTH7+KY2pqHPe4kUoicNyTR2isHr1yPxl/W21xXth5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WRHj+0MT2+7/Nccvn1JgQV6ZP9D5heVwfvpq2Iq8ugw=;
+ b=x9dgS4fme9uuXV3Og2nNhGUQp5tBRvlaE8OjKUpkR8nq6sBgTrJAfmR19WlCLiWomKLG46K+LEWMWbHdiIVjKfKKkIFH7XYZywAy74K8elsrpxPPMFLIcV7N+p/mm4exq6zwMqs/ek7BXDW1FsXdeGUHbEy9q7EybAj+/a6DUB4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWLP265MB7163.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f3::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.19; Fri, 6 Mar
+ 2026 13:20:44 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9678.017; Fri, 6 Mar 2026
+ 13:20:44 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Mar 2026 13:20:43 +0000
+Message-Id: <DGVQAUVL2SZZ.2TINCJXUIDTCK@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
+ <20260224-register-v7-5-aad44f760f33@nvidia.com>
+ <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
+ <DGQ67S1NH3OA.2MS0YVO0UU2E2@nvidia.com>
+ <DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net>
+ <DGRWZVJNLLH0.39JYHZIIMC9XK@nvidia.com>
+ <DGSB81ZE18O1.31CVVHMP38U2W@garyguo.net>
+ <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
+ <DGSC6U50TCHF.9FKDO3AWL3Y1@garyguo.net>
+ <DGSZWZCI0H7H.2EM8L04YH0YRP@nvidia.com>
+ <DGT09KTYDCU8.3BBAZBGIYRGWV@nvidia.com>
+ <DGT8FQ97BL8O.1VC1JEXIEBDRA@nvidia.com>
+ <DGU4TLDMLFN8.1KKSL2WATFZ7G@kernel.org>
+ <DGU7U81KKLCD.2LEPJ73BGLQU@garyguo.net>
+ <DGU88IHVRYHD.9WP9Z40UAN37@garyguo.net>
+ <DGU92W2W71JI.HBIFK6L78F9C@kernel.org>
+ <DGU9AZ43QK6Y.115RDSK0M9JY5@garyguo.net>
+ <DGUAC0GJRR0Q.34WBS7BIZ58WF@kernel.org>
+ <DGUB44J4FNCA.32QOV1DYI7VBK@garyguo.net>
+ <DGUBN1HP1F8I.2RZGSFCBO9FQS@kernel.org>
+ <DGUCFC9NJG5B.Z7YUXK4NEE04@garyguo.net>
+ <DGVGGGBSC9PI.1TJV2ZAIML0BI@nvidia.com>
+ <DGVMXCZGEWV9.41R0TPTD22S1@garyguo.net>
+ <DGVNJ8ANGP3Q.1RAGWU2HJGRIB@nvidia.com>
+ <DGVO2O009306.GNU06PZ13VA6@garyguo.net>
+ <DGVPNC2HE0JB.1HOBJZX8L8XMQ@nvidia.com>
+In-Reply-To: <DGVPNC2HE0JB.1HOBJZX8L8XMQ@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0101.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:191::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 11/16] mm/memory: inline unmap_page_range() into
- __zap_vma_range()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
- <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
- Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-12-david@kernel.org>
- <a5765cac-69d6-4314-82d5-80ee363906de@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <a5765cac-69d6-4314-82d5-80ee363906de@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB7163:EE_
+X-MS-Office365-Filtering-Correlation-Id: 972b7363-fbed-4418-919a-08de7b832bcf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|10070799003|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	N0V0cWB+d1Zc0WVqH4PnB3esu/JlLB8UFpvfiNTHXe4y05xuzAXa5q34M3X7ZaY0y3Y+yGHNllHuNRwsTcDGfnVmymgU3YvztU2mDSbL8es44+upY/niEUVzeqycSuDTYQKc9d4esggvGGb6VL+9/qSi2PTuK3uicCSKqF/Dw6MsT7ZAnFNLfJDrYun5YFbURUy4+IEBSSO/l7MD4X6h1OoV3qZobhzatnHkvdY9vS0lYppswPR+mfYiVTHJYIXNZ98ln7yY2mpmHsJVv9kcDEcmSASgzuLbvO/Rf8Ya0UfJN6WH3HLQZkiQdq6AzVyo4V3VPy7zRlY0tSeqIPVa4DeEPZ6GEe6KnSF1C/5xArdhzZukbpiLtzAC2w469tWAH5Sk2bCG7/pwIvyrZZ03msnTNmjmL8fHbHCcxmQWhct7EfisfVBOMWEmYfbuWZjtulbgzMv0q25tdiQ00tcJaaTeBgFk4AZwWzk270ZEsa58ts/QJDUbkIhTbHQ95KTn3m2Et8er+dRFQnh1/dF1D3s/yoWdG4n8p/qs29ARaX/2BxIgvcKVKJT6+xmBrJirRj8lJeSFpYXMqdwTq0GI5dPa69/FqrQfpTdj+2328ud/Qx4Zvwvy5z/IhJGvth9tJPMdhxk+yf6A7gHmps6ToZn4FuvoW5XQvl2aj7llWMCxOwd11GXHZtoTNnnTNnUE6yXWZcyR3l8N4tsFMA9CMY227nTmn62qPppODkYqaiM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(7416014)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MENIcHg5cDZOU0NrNkUycjhjZCtqYW0zRVoyU21LSGd3Ym55UytiVjVLTldo?=
+ =?utf-8?B?MElRemw1YS9hMjZOeWhqWjMrSktlbmJLUjFCQVBhS2hSZHBMbzlqZXgwZkdT?=
+ =?utf-8?B?SnlzcG5Zdjh6N1l6c0lZUyt5L3doOEErUE9sRFpXelgyaWMzeEVaS0VKZ215?=
+ =?utf-8?B?RDBTclFxTjVXMVZXbE40SVdWRU5DcWQzNlh1dlBDMkRHaTZ5dGJJZWs0WXVH?=
+ =?utf-8?B?dWdDeEpWWlhLanBCRERRbnlveklncGY2ZmZHeEYxb2xTbktVUU5KRTQvV2d4?=
+ =?utf-8?B?VjhzZ3d2NnVmc2p6UzBlbE5FY3h4Q0taM09RWXVQY2Q1N0JTZjYwbmRkdHNT?=
+ =?utf-8?B?REV3aHo5N0VnWHViZDc0bkFMME9IQlJhNGtZa1BQUE9LQWNiZ1BIbUt6T2pr?=
+ =?utf-8?B?UVFPUG84N3MrYkZDT2FkOGY0bHNrUXpoNUd2d2RVWTRLYmVadGVYaFRaYnN1?=
+ =?utf-8?B?RlJZMHl4T09xRmdNSG9zMm03UmhDV01tTlYwNzJ1YnJZUHovOFlXcFQ0dTlY?=
+ =?utf-8?B?UngwSklPdEJ2RnVKN0srVlNFenN5Vjc3ZzB2ekNESjZ2YnFVYlg3OWNPUzVs?=
+ =?utf-8?B?NkJCV2xkUUVEK0pRQitwVFY5YTlOa3c2aHF5TERwOWttRU9VdkZ5TzRaWWtK?=
+ =?utf-8?B?cFNTMDFsNTEyMTM5c0VicGd1SmgyNEVNeVpWZTFSa0V4cXBaT2g1QlloVlpv?=
+ =?utf-8?B?TVRyUVNKZ2xEZFRTU1NSRGZyM0hQZW1MT2RtejY3aUVkWnkwK2ZrckNyaURY?=
+ =?utf-8?B?UnVtSDREQkY1MXNmNUZxckk2VDEyeHMzZ1NrdUN3Z1JCUTVWMnI0YTk4THoy?=
+ =?utf-8?B?ajdBVmZhTHorV0t2MS9aZDBaM200dDA3czZtSXVvenVHWlA0aENOejhYcnU0?=
+ =?utf-8?B?T1NIVEczUC9oQTM1TjdUb3lQc2VSTFVkaFFjY05wVm5XQXh4UHh0WTRTSi9Y?=
+ =?utf-8?B?OTJMeDh0NkpkMHl0eEhCcDl3em00RG1ONE5PYndUNk05cFhPUnovVVlLb0lt?=
+ =?utf-8?B?MU0ydmpZczlIeWRpMVgyQlZ5WGNHZGVneFF4ZlZJRHV1NXZLUWtFWDJ0bFJq?=
+ =?utf-8?B?VlQ0eFZRalhVZjk0YnpIcXRsN2lSUFN6RnVHRnZiZmlscWRVNTNVYkIzdDlO?=
+ =?utf-8?B?MXJRM3BjbWxuU0VmeHJDTTVmQmI5ZXFMYUxnQys3Q3gxY2p6NTRZT0J3MWov?=
+ =?utf-8?B?WGxBTDFqaTJrV3JhNHRTelFDN2VPbW1nNWQ2QWxiVHlxMGRIOHBvY3Vac0tR?=
+ =?utf-8?B?UFhwQlVwbkJReDd5K3R3S05Qb3Vhb2tJcU04bm1kWGFsWHVXWFdwMStqQlEz?=
+ =?utf-8?B?b1FiWHNDQ1JtanpZdUZ3UzNOSnBkaktFUytBa2p1YkdBc0Z4TEJWY1J4TjU1?=
+ =?utf-8?B?dnpUNUFmUStzY2o2eVZLRTEza0syYjgzTXlJb055UEpUQTVMNUMxdHFMOXVs?=
+ =?utf-8?B?b3plMXBwTmRnRGdhTC9RT2tVNDQvb2s5ZlVzOVJSb3h0SGZBN0hUV2ZyMC9a?=
+ =?utf-8?B?SEJNenM2d1VuRFNHbDFKdW1VTlc2ZFJFWDNyYkc2ZUNtOWdJODRjbStMREUy?=
+ =?utf-8?B?d1J2MzIwcmJJZ2hGWkFDU29RTHZzSkZXeks5N2N5b2xCeWVmaCt3Z09IRzh0?=
+ =?utf-8?B?dnl6RHZZdjh4WWFCTjF5QWt0bFpMUFR1c1p0Ynkwd1ZOOGNhOTNEU2g1dmlF?=
+ =?utf-8?B?TFNsTi9RMUt2WC9sQXdmMFJjWENnQjQ3QTIzZzV6NHFRMHdJakVqa2RBS3du?=
+ =?utf-8?B?U2tVRURua1Z2Qzl3VFMrajcvcGJxa0oxc1poRTByMGZqMit0dHA1N1p0S2wx?=
+ =?utf-8?B?Q0dvS3UvOFlWWnMxNEJ1eXRKZ2FPSWQ0WWRiT013dkRqQ1NTbEJZd0dOZTho?=
+ =?utf-8?B?NUFxbmdSeUJ3djAwVkZ3eldUeFh4TkJJTTlLR05UazR5ZlZqRzZnWU9HNk1s?=
+ =?utf-8?B?YXM0N0FpcUdIT256L1ZNZmMrTkdZb2VMUWsvVzhOcUlNQVM5MllKeWFrcW5H?=
+ =?utf-8?B?RDd1cUJhVVZqdmFiN0QrSkxFTHE4SWdjeUVreXJvanB6cGl4M2RoL3ZjMndp?=
+ =?utf-8?B?SHpEQ0prUGZOaCtiQTFPemRsNUJ6d09UelJxblNlSlFsOUxGTExoRlRtQ3N6?=
+ =?utf-8?B?N0haZzNZN2ZsMEcydjRaMWdiQ3RtemM0MXBRaENWRDBNUGNTTGh4TnNOSVY3?=
+ =?utf-8?B?MHdlTGNjeXU5Umw2VExQVFFTTm1WTk9zY3JQaUlyV2RJMmdUUFcyVHJlZkNL?=
+ =?utf-8?B?aEJCbkxnVU5uRC8vNUlyb2lmR0Y0OEp2SmZ3dkZFcVhQUDczU1JqMTNXY3ZU?=
+ =?utf-8?B?U09SYWFnNzV4aU5tVjJQTmFFMW5DYnZTNHVEenArd0VBSWMwQkF2UT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 972b7363-fbed-4418-919a-08de7b832bcf
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 13:20:44.0157
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bogzz32Ey8n4BBZYDyGG/pidss17LFUym1VXLCts7Z8TmpUVQz62/+T8ktmBo3meOA9IjWvZ7yCK/z+cOEQOfQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7163
 
-On 3/6/26 13:29, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Feb 27, 2026 at 09:08:42PM +0100, David Hildenbrand (Arm) wrote:
->> Let's inline it into the single caller to reduce the number of confusing
->> unmap/zap helpers.
+On Fri Mar 6, 2026 at 12:50 PM GMT, Alexandre Courbot wrote:
+> On Fri Mar 6, 2026 at 8:35 PM JST, Gary Guo wrote:
+>> On Fri Mar 6, 2026 at 11:10 AM GMT, Alexandre Courbot wrote:
+>>> On Fri Mar 6, 2026 at 7:42 PM JST, Gary Guo wrote:
+>>>> On Fri Mar 6, 2026 at 5:37 AM GMT, Alexandre Courbot wrote:
+>>>>> On Thu Mar 5, 2026 at 7:15 AM JST, Gary Guo wrote:
+>>>>>> On Wed Mar 4, 2026 at 9:38 PM GMT, Danilo Krummrich wrote:
+>>>>>>> On Wed Mar 4, 2026 at 10:13 PM CET, Gary Guo wrote:
+>>>>>>>> Even for the cases where there's a PIO register, I think it's bene=
+ficial to just
+>>>>>>>> get a value without a type.
+>>>>>>>>
+>>>>>>>> I don't see why we want people to write
+>>>>>>>>
+>>>>>>>>     self.io.read(UART_RX).value()
+>>>>>>>>
+>>>>>>>> vs
+>>>>>>>>
+>>>>>>>>     self.io.read(UART_RX)
+>>>>>>>>
+>>>>>>>> or
+>>>>>>>>
+>>>>>>>>     self.io.write(UART_TX::from(byte))
+>>>>>>>>
+>>>>>>>> vs
+>>>>>>>>
+>>>>>>>>     self.io.write(UART_TX, byte)
+>>>>>>>>
+>>>>>>>> what benefit does additional type provide?
+>>>>>>>
+>>>>>>> Well, for FIFO registers this is indeed better. However, my main co=
+ncern was
+>>>>>>> this
+>>>>>>>
+>>>>>>> 	bar.write(regs::MyReg, regs::MyReg::foo())
+>>>>>>
+>>>>>> This specific case is indeed more cumbersome with the two argument a=
+pproach,
+>>>>>> although given Alex's nova diff I think the occurance shouldn't be t=
+hat
+>>>>>> frequent.
+>>>>>>
+>>>>>> It's also not that the two argument approach would preclude us from =
+having a
+>>>>>> single argument option. In fact, with the two-argument design as the=
+ basis, we
+>>>>>> can implement such a helper function cleaner than Alex's PATCH 10/10=
+ (which uses
+>>>>>> `Into<IoWrite>`:
+>>>>>>
+>>>>>>     /// Indicates that this type is always associated with a specifi=
+c fixed I/O
+>>>>>>     /// location.
+>>>>>>     ///
+>>>>>>     /// This allows use of `io.bikeshed_shorthand_name(value)` inste=
+ad of specifying
+>>>>>>     /// the register name explicitly `io.write(REG, value)`.
+>>>>>>     trait FixedIoLocation {
+>>>>>>         type IoLocType: IoLoc<Self>;
+>>>>>>         const IO_LOCATION: Self::IoLocType;
+>>>>>>     }
+>>>>>>
+>>>>>>     trait Io {
+>>>>>>         fn bikeshed_shorthand_name<T>(&self, value: T)
+>>>>>>             where T: FixedIoLocation +
+>>>>>>                   Self: IoCapable<<T::IoLocType as IoLoc<T>>::IoType=
+>,
+>>>>>>         {
+>>>>>>             self.write(T::IO_LOCATION, value)
+>>>>>>         }
+>>>>>>     }
+>>>>>>
+>>>>>> No need for a `IoWrite` type, everything is done via traits.
+>>>>>
+>>>>> That's cool but will only work for fixed registers. If you work with,=
+ say, an
+>>>>> array of registers, cannot implement this trait on a value as the val=
+ue
+>>>>> doesn't have an index assigned - meaning you would have to build a
+>>>>> location in addition of it.
+>>>>
+>>>> For array registers I think it makes more sense to use the two-argumen=
+t version,
+>>>> no?
+>>>>
+>>>> The example here is to demonstrate that we can add a shorthand version=
+ for the
+>>>> fixed register version that can write a value to register without ment=
+ioning its
+>>>> name (as a supplemental helper), and the basic write method is the two=
+-argument
+>>>> one.
+>>>>
+>>>> For cases where the type doesn't guarantee a fixed location like FIFO =
+register
+>>>> or an array register, mentioning the name twice is fine.
+>>>
+>>> It's still tedious, and a step back compared to the one-argument versio=
+n
+>>> imho.
+>>>
+>>>>
+>>>> [
+>>>>
+>>>>     For array case, you *could* also do
+>>>>
+>>>>     impl IoLoc<RegisterName> for usize {
+>>>>         fn offset(self) -> usize {
+>>>>             self * stride + fixed_base
+>>>>         }
+>>>>     }
+>>>>
+>>>>
+>>>>     and now you can do `self.write(index, reg_value)`, although I thin=
+k this
+>>>>     might confuse some people.
+>>>
+>>> Yes, in this case the semantics of write's first argument would be
+>>> dependent on the second argument... I think that's a potential footgun.
 >>
->> Get rid of the unnecessary BUG_ON().
+>> I mean, `bar.write(Reg::at(10, regs::MyRegArray::foo()))` in your exampl=
+e is
+>> also kind of "first argument depends on the second argument" situation, =
+just
+>> with a bit more boilerplate.
+>
+> Not really, `at` is enough to know that you are accessing an array.
+>
+> Whereas `write(index, reg_value)` doesn't give us any indication of what
+> type of indirection (if any) we have.
+
+I  mean not sure `at` gives me that impression at all. It would just let me=
+ know
+that I am accessing it at a different location. If you omit the `MyRegArray=
+`
+part then there's no real indication that this is an array to me.
+
+If `at` is only for array, how would you represent the case where the same =
+type
+is being used in multiple registers?
+
+>
 >>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> Small nits below, but overall LGTM so:
-> 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> 
->> ---
->>  mm/memory.c | 32 ++++++++++++--------------------
->>  1 file changed, 12 insertions(+), 20 deletions(-)
+>> If you want to make things more explicit you could also have
+>> `bar.write(at_array(10), ...)` or something similar.
+>
+> Is it possible to generate an `IoLoc<T>` without having `T` mentioned
+> anywhere in the call to `at_array`?
+
+Exactly same as the `impl IoLoc<REG> for usize`:
+
+    struct AtArray(usize);
+
+    impl IoLoc<REG> for AtArray {
+        ...
+    }
+
+>
 >>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 394b2e931974..1c0bcdfc73b7 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -2056,25 +2056,6 @@ static inline unsigned long zap_p4d_range(struct mmu_gather *tlb,
->>  	return addr;
->>  }
->>
->> -static void unmap_page_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->> -		unsigned long addr, unsigned long end,
->> -		struct zap_details *details)
->> -{
->> -	pgd_t *pgd;
->> -	unsigned long next;
->> -
->> -	BUG_ON(addr >= end);
->> -	tlb_start_vma(tlb, vma);
->> -	pgd = pgd_offset(vma->vm_mm, addr);
->> -	do {
->> -		next = pgd_addr_end(addr, end);
->> -		if (pgd_none_or_clear_bad(pgd))
->> -			continue;
->> -		next = zap_p4d_range(tlb, vma, pgd, addr, next, details);
->> -	} while (pgd++, addr = next, addr != end);
->> -	tlb_end_vma(tlb, vma);
->> -}
->> -
->>  static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>  		unsigned long start, unsigned long end,
->>  		struct zap_details *details)
->> @@ -2100,7 +2081,18 @@ static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>  			return;
->>  		__unmap_hugepage_range(tlb, vma, start, end, NULL, zap_flags);
->>  	} else {
->> -		unmap_page_range(tlb, vma, start, end, details);
->> +		unsigned long next, cur = start;
-> 
-> VERY nitty, but generally current is abbreviated to curr not cur.
-> 
+>> For the array case I really think trying to shove everything into a sing=
+le
+>> argument is a footgun. The type of value in this case *doesn't* tell us =
+the
+>> location, and the location needs to be explicit.
+>
+>     bar.write(Reg::at(10, regs::MyRegArray::foo()))
+>
+> "write the constructed value at the 10th position of the `MyRegArray`
+> register array"
+>
+> What is missing here?
 
-The following might not be fully expressive (but simple to grep):
+This is completely un-natural if I try to read it with fresh mind (try to f=
+orget
+about implementation details for a second).
 
-$ git grep "cur_" | wc -l
-24261
-$ git grep "curr_" | wc -l
-9288
+`MyRegArray` here is a type name that is a bitfield and not an array. `foo`=
+ returns a
+single value and not an array. "at" here is saying that the register is at =
+a
+specific location and doesn't really indicate the array nature.
 
-Tells me that "cur" is rather common.
+This is why I insist that I would prefer an explicit location
 
-> It's not a big deal, but why not addr?
+    bar.write(REG_ARRAY.at(10), Reg::foo())
 
-Good question, I can just do that. :)
+would have no ambiguity whatsoever about user's intent.
 
--- 
-Cheers,
-
-David
+Best,
+Gary
