@@ -1,137 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D232D47FF;
-	Sat,  7 Mar 2026 12:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772885056; cv=none; b=IXA/b+KB7QovlOP6KO/gp4cmnjFBPd+pczilrSzz0GS3aIqHjgMYL2QdfPh9Fa++1PQAsmn7JmHm6oTSUCulzfhYlgk3LigzGnzHj1eJJS7ak27Lgh2cHWVbJo+TWVxzi28+ZTew8d2wFnD9GyS2+Ud1qrC7n6D60+ngN4CeZZY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772885056; c=relaxed/simple;
-	bh=1PvKYukyaRzl1NZUan8LwurnhLCl+JYAX732iKgm2Zc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TDiZPIpRx0Fx7G21u7Szk0JECRAr/mXxT/R7qfOrv+78GmEfhQOqagz7zK/O9y9eIX0Xmmr71JwJSJmzHKuY7cUeA0cksNJCu36ypr+IqVzHVdREZMmvqCVJkyT4km+Rb1hhpZxhc6yOHKOuy13SwRu11Eg6g6iouUpmrtcn41s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PdNMvFib; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC684318B9C
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 12:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772885264; cv=pass; b=txJqyRbr2N56Ub/3J2UIVW3grOUi0GBIDo4AYLp99evM2xLU5re8iWWbsmgjAU+M9S5qsBQ86OZTrgbgtnvsrpMmeFgkBMfJZ3Z3/JpV0l4rTcrJ00G6i9EJCj+WW5ea3EzefO4K4onXdTP0L4+HzVSUp2VPwzwNY8s39QFQeQk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772885264; c=relaxed/simple;
+	bh=tBQGSoGncUbzZzImbMVJ7rDz3iNCLcC7iwu7JDNpdN0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ax+yFOGjWmehBfO7mVr1gZCDKEi3DKgfRVkBIuxTP/HKeAv6yaaHNF+yiyeRy90hL1n3i3IX8fuHf3UtP+aT3UBHKRALbxGUnqdTSEzbUVVh7h4elXplAvgCj/PY458lm4ZpH5DhLs9KdwAoib2+Klc+hTffDwQLKkPQfAiyhjY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F2/Glw7a; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PdNMvFib"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772885055; x=1804421055;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1PvKYukyaRzl1NZUan8LwurnhLCl+JYAX732iKgm2Zc=;
-  b=PdNMvFibOOaMtrfyPHDLdpXcfwm9Dj+rsy7eHzy6RjiONng/9LRCzdQq
-   7CWN4NZLTVv/PWvNEDpgURoUXWOGkRkxrl17Vi/EQEdU+0SclMgShNWE1
-   tOBqbVZd0C1JfajbHumzzA5AZ/sn5o7OOIa5agYWMurYoozm11SZAeVoS
-   k6uVea4aVVzS/veGBntjYdNKndVpSaWUlUF3jXIACTOXlVNSgDEN2OpBV
-   DXNC6wOs0rZmfCu4yBNgtdy52NdThIqDOn6kFvMyKl5CxtCJgaScsMdNi
-   s0dmTvn6xDskHbzP33a18aw+kPp1XecwIx9wasZhXMuNCZDryswCl5gx3
-   w==;
-X-CSE-ConnectionGUID: uHL5yhJaQuW9f97XeTUUSg==
-X-CSE-MsgGUID: fYVgH2bFThusMVVO7TqYYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="61551341"
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="61551341"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2026 04:04:13 -0800
-X-CSE-ConnectionGUID: ZVtXw897RjCfKfoBYSxPkw==
-X-CSE-MsgGUID: IpCTFG2LR5uX+B5V1nZzKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="223746392"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by orviesa004.jf.intel.com with ESMTP; 07 Mar 2026 04:04:10 -0800
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vyqO6-000000002TJ-20Qp;
-	Sat, 07 Mar 2026 12:04:06 +0000
-Date: Sat, 7 Mar 2026 13:03:18 +0100
-From: kernel test robot <lkp@intel.com>
-To: Mohamad Alsadhan <mo@sdhn.cc>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Mohamad Alsadhan <mo@sdhn.cc>
-Subject: Re: [PATCH 2/3] rust_binder: add Rust binder tracepoints
-Message-ID: <202603071232.kB8K6o91-lkp@intel.com>
-References: <20260307-rust-binder-trace-v1-2-5e03283c6e53@sdhn.cc>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F2/Glw7a"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2bd5658b901so688871eec.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Mar 2026 04:07:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772885263; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lctQfHbYBRcaSXmQy0x/48GqBTBDr4JrOniH2kdQJztiUABgiYQyWqE8JjLhdKtNhC
+         3fh7uDg6WOqaoCNY5VHk+J+3JYPTayxHEZ7jqMRw/aRPngfZNA6aSWH7JHkxzsQEggQ5
+         Jz+fq7mA3IZiP5dlDLrrCvXRlvoVjfH13vWf70mzLYCrwHEsUCsNdSYNbWbS6CnVfeww
+         jOAzbVNjKQFt1PAQ57vvXdytPITe16geZiPzHqrD0Py950QcCi4zOxZQSY1wdY+2vc1E
+         c8+oWO7veqku0YSDdtg4du2m2A/M+Dwt/2TqLBtmpR2Lcwu8W42dCAh3dhGX5Gv90Cz3
+         vw1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3lHG9aOAw9qIuzF1k64BAc+sc5OJ1SbvKF5R81sep7w=;
+        fh=nOnf9DbfnwosfQeuyZQuM+DUaaytD738t98OLJDES24=;
+        b=JSH7Vd/jX+RqEwJIQNwSzTmONz0YhoSqBglTju207mcJCXSctajroAfWtWaZUSPCgX
+         LZ1OSNQ+dIdLE62En99Mf6Hp/uOPvioblX/F/WCymi0dulyU9QVHNHE7jAzanddcC/r0
+         5cxCbHBOg12eQQZcVWlKkqI/c5eui2dIdHuIa0l3gt+QOSm/uFCjBw1EkPKOu62ZtMFI
+         V57RiQ1MJVygz5LOM4mngkGQHQfjl9+qCYtlmej35Imufjvb8VrTSNYeR33dRcUoFtPe
+         //8pc4C99j0g//o01vF617qEFktk1pBB4V5oULYpPRUr2SM9usxsXNxp+akVRLJ+EHpv
+         k3vQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772885263; x=1773490063; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3lHG9aOAw9qIuzF1k64BAc+sc5OJ1SbvKF5R81sep7w=;
+        b=F2/Glw7aXp8787sjI7Ots6cj8VXp+WgNV5m1+337OQqRndoJf20wUHMsvGAsWrvLo0
+         ejwUz6I1R2/4tlIxqo1CUO+5CtLtNOmSIGrNMYhzp8h9ZChaLIsnwc7gi/uJONXlZ7Et
+         fofYJ47Bzvtijd415PRJ9KeICVvIVWnXankHvvLYh8iPSW26ajXDJv5hSgIufQVGAla3
+         yJe+YuWx+Y+8Ii6/Xfo9z53O1R+fO9FdRP9uhXr0cPsDQlCLKBVcWOXUWOVp3K6DzBgL
+         aeNFAO/rJaV0T9KJ9V8omrv7xry0caRpekLN9Je9jZW69WNot5d/ghh+iUjqG7Iq6arG
+         Y9Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772885263; x=1773490063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3lHG9aOAw9qIuzF1k64BAc+sc5OJ1SbvKF5R81sep7w=;
+        b=rjo0KaceWJZW6ONUw6kT7pJ43+iVY6H1p7eVVmUxosPLT3Nj8k10W1cyxqwHAMhSni
+         9sYKDVrTtuW/GgwP+FQjSf+I5QEEOHLHfqcC3pBDplc6kroTyuXDj1bk9pkmf82WrzWV
+         UTYe3BLFxJYIMKwOJQtOUCES5p3NJTFAGEfg65qgjrtOFSulybFPZrD786Qtz4X61n6n
+         7/BrK93wP12COpD+gMc+v8Aexo5QFrvbx3Tz+znxk9gJQFUeN42nD67t7b5jIDfKKoxb
+         Pb+h9JLEt5nqNND9wNPKTt7x6jMnqUizxcU1UrtSXHubl9FWsuxFZiIX9HlzbygoKVI8
+         Sb3A==
+X-Forwarded-Encrypted: i=1; AJvYcCXV3Omh7Kc1d+1Ei+oQgwRyfdRtQKk/Bjqyp4A8KL9t6r5ry/GPBIl2FVv67SX9kT4OlOxM7ZIeYrHDM1G5VQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq4TsEO4Eqx6HWvYf0H2s9ByAhdtSCes9JD4WHyi8Gfc+e2CDR
+	R5HO5dpF1eYoicHiVkU2yv69S1dcpbBsnpjdItHqMMb0J6g69E+f2aQA0Mu+YYxxMYqMPwiTY0B
+	mtYg1xLVpHR6yTEBggYwoFZpT5/88E9g=
+X-Gm-Gg: ATEYQzzkUxeC2eBS2OlrC1OsL43MnNXf6vmcfNw/ss7RR6pW2opownReA5znMulDKWX
+	ejMSwmuNo//EzntyM9Ol7nRzuD9nl6M+6AHTnxFD1kMzSZGAzX0T4DewFm0bpvtV2eN2bvyiYja
+	pl2EPZD8dOzzpU7oen/GdqoH0AUVT3aSoePwYO8kN77hw1zjzOrSN4E9Mg34PoJSY6FjIJyZWdJ
+	Cn1pVZff4NMH6jRVpjRei9BCpxoEre33L79urEyB+kkJAEJ21utExJO3VvJfOK9Y8RDP0D0VR1S
+	YCgxg6aUoQDvaSLdKV7IFhX4WRc0VS9ul/VfVxqM7zltBwN9Km4bIvgFdq4VAB88Z7vTW7TOnNp
+	bXXv30NRMDOG/BdYR5KEMGYtC
+X-Received: by 2002:a05:7300:fd16:b0:2bd:fe5a:b87b with SMTP id
+ 5a478bee46e88-2be4dd63a9dmr1097364eec.0.1772885262757; Sat, 07 Mar 2026
+ 04:07:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260307-rust-binder-trace-v1-0-5e03283c6e53@sdhn.cc> <20260307-rust-binder-trace-v1-2-5e03283c6e53@sdhn.cc>
 In-Reply-To: <20260307-rust-binder-trace-v1-2-5e03283c6e53@sdhn.cc>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 7 Mar 2026 13:07:29 +0100
+X-Gm-Features: AaiRm51-ZXfEmco47_WZnLbu447KNvOuM74Xh4LDqbUfOg7QqYaSzD3JuxEJIrY
+Message-ID: <CANiq72kGc1vmQa_tVQ4MxR5NU9C54nqiVuM7+JctFtfzkWvM6w@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust_binder: add Rust binder tracepoints
+To: Mohamad Alsadhan <mo@sdhn.cc>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Mohamad,
+On Sat, Mar 7, 2026 at 6:42=E2=80=AFAM Mohamad Alsadhan <mo@sdhn.cc> wrote:
+>
+>  static inline size_t rust_binder_transaction_debug_id(rust_binder_transa=
+ction t)
+>  {
+> -       return *(size_t *) (t + RUST_BINDER_LAYOUT.t.debug_id);
+> +       return *(size_t *)(t + RUST_BINDER_LAYOUT.t.debug_id);
+>  }
 
-kernel test robot noticed the following build errors:
+The kernel test robot just reported the Rust side wasn't formatted,
+but this seems to be a C formatter at work. Spurious changes?
 
-[auto build test ERROR on 11439c4635edd669ae435eec308f4ab8a0804808]
+Thanks!
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mohamad-Alsadhan/rust_binder-remove-rust_-prefix-from-tracepoints/20260307-134539
-base:   11439c4635edd669ae435eec308f4ab8a0804808
-patch link:    https://lore.kernel.org/r/20260307-rust-binder-trace-v1-2-5e03283c6e53%40sdhn.cc
-patch subject: [PATCH 2/3] rust_binder: add Rust binder tracepoints
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260307/202603071232.kB8K6o91-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260307/202603071232.kB8K6o91-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603071232.kB8K6o91-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS=\ -fno-crash-diagnostics\ -Wno-error=return-type\ -Wreturn-type\ -funsigned-char\ -Wundef\ -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck 
-   make: Entering directory '/kbuild/src/consumer'
-   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
->> Diff in drivers/android/binder/trace.rs:75:
-        unsafe { binder_wait_for_work(proc_work, transaction_stack, thread_todo) }
-    }
-    
-   -
-   -
-    #[inline]
-    pub(crate) fn trace_transaction(reply: bool, t: &Transaction, thread: Option<&Task>) {
-        let thread = match thread {
->> Diff in drivers/android/binder/trace.rs:75:
-        unsafe { binder_wait_for_work(proc_work, transaction_stack, thread_todo) }
-    }
-    
-   -
-   -
-    #[inline]
-    pub(crate) fn trace_transaction(reply: bool, t: &Transaction, thread: Option<&Task>) {
-        let thread = match thread {
-   make[2]: *** [Makefile:1912: rustfmt] Error 123
-   make[2]: Target 'rustfmtcheck' not remade because of errors.
-   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'rustfmtcheck' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'rustfmtcheck' not remade because of errors.
-   make: Leaving directory '/kbuild/src/consumer'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Miguel
