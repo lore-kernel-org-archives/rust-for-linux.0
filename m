@@ -1,55 +1,55 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F592D9499
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 21:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FFE3290B7
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 21:28:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772918389; cv=none; b=hrT5kxmkPlhgPzFP9elBilZPnHhVvxQym36NYUX2SjM2WAaVOQjIKZifpNaS40O+ydYpac9eYaDtEszixb9R6u94H2Ndt2HNzSWFya0b+iSwkhaHpSiQ4yLB7PZ40IZWKii6+g5HIug9Snbz7VwURnZ0QHgg3TA1D3C92qJGrPQ=
+	t=1772918922; cv=none; b=C0XH/GP9Dm87v2dkNj8aea04GkmBd490iTaf5gt2nnK86gTTW9U4CPEkRubkrk0kZ48WntsTAv484kaGPrtrAgFvsagzd7fAVLdCLsIPduF8elqXuL19oMKOkgd4qrFDjreqWlK9aQ09kGRpcO+5fVQcJ8LKGwS6dG5lf+4r2fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772918389; c=relaxed/simple;
-	bh=EyEhd8isLT2A1zxJ3MYPyibZR68tS1ElsUONBQssKnU=;
+	s=arc-20240116; t=1772918922; c=relaxed/simple;
+	bh=1bK4p5mzYeMCWDs67MGklTJGxrWR+9TZ2JdRQtnv8Ww=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ScZMGBnJuyERU2uVzihDflTt8hWsAuWgTaiO/xpFWPWv67srbydmuR3zhwslyqOXNMJlj35jBE1469pVQ0OuJ2HHrp+XTWM2jRUcZpm/0+8Hf1afUZj1EtlEcYDBdv2/wJXSOD964iZu2+2bH9av83W6SmxgaeKPMPYJ9Xo/ELE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QnMDcQrh; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=EeFy+eHnJFBcr8jV//h7F3dSII1iIZ1WwI97a9s8VxQzAdZT5BqK7ZFO7whJUiyNTzXUKVDfgV1jSNmQtF5ecFsWJvPnJbbVhUHdWditULhnZx/mtAUVbb2S0+kq6291ROkC1qMK0B28XXjrB3aU4yLhxm1V57tBkCxdVioXW/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NU8GDp0g; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QnMDcQrh"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-439c112b1a4so4299177f8f.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Mar 2026 13:19:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NU8GDp0g"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-660f37136ecso1307642a12.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Mar 2026 13:28:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772918385; x=1773523185; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1772918919; x=1773523719; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lTCrtPJ7PlQ0PfecVrHBCkWSm+F944hA0c41XfadJYw=;
-        b=QnMDcQrhMJF0650BvaoP36mNfAyAh1P6KcIHm8HQqlwBuPkPuaNiCOv1URgduKT0Le
-         8rw0HLaWZfB/BSJemKM2556dJ/1/X8BqT2UWZXnq4ny+Dt4WUxFS6WYSbGlqdJlXw/NL
-         dwVAIi7GbZwkN4+mUZg02eryZWz6jYa+Xq0wRQY72SVMGwhoyR4xJUUjt7kMU2k2OcMR
-         CQ+5G8bs6zU88ZudMyZptDpnPb6/LKLxcYUzDB7D4v36PLYRhbRPPIZ02Gs72sRpoU+y
-         GkK0aBWf0i3RepGaf0Uwc2Ro17wZPuC0bKYvQfBA116M9CQeavKShmqHRlpjEuiEd5bt
-         wE6g==
+        bh=KXZ2BtMMwe7rXhuI9FW2OS3wA90krDOiJKGgmhoSpL0=;
+        b=NU8GDp0g20o35tVSF2xZAWpKYNqzKc0JdJ0p2GzKlRGomkAI1xh2kfVeplpTnxKD7r
+         978MPt33LOd/U/rygfzMtKvHQA4/GBEfK2cnuYh7nuJDOvGVX6CfsxZ5ljVFUFnXS3Is
+         docUZYk+e434kTIFf3ZsbErf/KHulPGTKlA1v4jWdw+dOKe1oiLOYdLJXJXTlAvDrxW6
+         ndTtTxuhC40YE4ZHYdwm+NeROrSby7P0WDdiwu1ffMX4YfeTSbktCRQ6PKkNjn+0haIR
+         pPfelNjMrf2IExS+27TqN6LvxeACByxJnreqKkMwh06tGqUG8drEn3WlvJo32XrfrPvc
+         erjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772918385; x=1773523185;
+        d=1e100.net; s=20230601; t=1772918919; x=1773523719;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lTCrtPJ7PlQ0PfecVrHBCkWSm+F944hA0c41XfadJYw=;
-        b=d4W+KkJ1y4YwFoWiIhjWgbwdj+45BuwsjlnpI7P02es0X4rfz9fqiB8juZDaT73RLh
-         FXBNjt2814F3SXXDQsHaiA5ywGTXCTF/5S505VJghRBAOz+sLAwcTKyOBhtgrFmhHXG2
-         pXALNLQfX+7Qm7LIWE5pF012gyjHMlRymUaR42AsqlyJAbDGcQ5zyHYq3JFoVt7rlMuX
-         svkFrD5pyWReHORxAelRroZ17GBDa3l2FjzFWwsZVdGOvMxzHsZdB+VqPbRpBv9EB93O
-         2PNtM0lMOJsROXRACeLyry6LgJe8HZ1/boSUr7YSJRlNX9rTSTJQ7sP8R9iyHDlvs0Vo
-         N3tg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfHuxslLeDHB+lSoJMIz8heHEF76+ctDOTRtnApji8st5IxPIzQhRR1hh7nDKYuu3MfePP2c7RM5fkwGnbug==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx59E56nWXbU8+Y64shmOyfA6rdnY2XD7rkAYBU9qpcg2f+zXr2
-	kQ93/sQm20g70MXD+PVQ4ksck/3+fCRzuGyIzHyxEi5+Kl2FM+C8Fhcl33BdAkBhoobmq/85+Mb
-	La84PfUhRG40doqdb1g==
-X-Received: from wrbbn3.prod.google.com ([2002:a05:6000:603:b0:439:cbfc:f8bb])
+        bh=KXZ2BtMMwe7rXhuI9FW2OS3wA90krDOiJKGgmhoSpL0=;
+        b=eC8LF3uM+ht/cpkUYemFWDR3ms9++h2nvnMWe2vAjkeF2jSUO92iQ9bdW1nRLLBpMv
+         yQUzM3qdb1s18mWr0LxOAEd2GFlsSo0Ga8sW2IzqxamY+anE++AFHb/2lUwH7KToMM+G
+         PNwsF25NYMpU2bgr6D+97HxXRiDv8R6WyWeF4QuZpIupI6ousrJdeITMLIv9F8WDUlRc
+         A0F3uVP0mfOFUPAHQ09D6JfcV81LyvjLh7qYeKld53WqGdSNVMT81YMa8lk0obRZt8Ru
+         S2o0w8lGqJGYOyWeqRlsSdXUZPV8ZjUFssmYpGS61YEfYJKUwZHbSwl4GASJcaKC4q0O
+         lUJg==
+X-Forwarded-Encrypted: i=1; AJvYcCX4yAeHc8Pt/Nnr4ADt2pEZTgL4mjLBLq+gN+oVEtvGfpJ8HO82w+zwk6Eo6oj/VBoMoTUx36hhNzmQ3+dD5w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjHZ4xeiJlU+dV1jNWlzGrYFMYl9OQYU4i/NYBTxB5sg2N+Yoq
+	dIKuV7gcYoSD15XWoPvJYKdB0AUXBSsW+Z0mvNgfIqw5G9Uutrk+lEtcIocpenEuQRK55ltp4pZ
+	TdPM7TdXsPpmEiQICMA==
+X-Received: from edse9.prod.google.com ([2002:aa7:d7c9:0:b0:660:e726:1fa])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2482:b0:439:bae9:6151 with SMTP id ffacd0b85a97d-439da67bff5mr11365076f8f.48.1772918385124;
- Sat, 07 Mar 2026 13:19:45 -0800 (PST)
-Date: Sat, 7 Mar 2026 21:19:44 +0000
-In-Reply-To: <273a1167-2269-400c-931d-953063bcb733@lunn.ch>
+ 2002:a05:6402:42cb:b0:65f:7000:928f with SMTP id 4fb4d7f45d1cf-6619d2efe84mr3606718a12.0.1772918918922;
+ Sat, 07 Mar 2026 13:28:38 -0800 (PST)
+Date: Sat, 7 Mar 2026 21:28:38 +0000
+In-Reply-To: <081b1f16-5c8b-4a18-a9f1-d56e757de4c0@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,9 +57,9 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260306-binder-netlink-v1-0-daceb5bc83f2@google.com>
- <20260306-binder-netlink-v1-4-daceb5bc83f2@google.com> <273a1167-2269-400c-931d-953063bcb733@lunn.ch>
-Message-ID: <aayWcASp31c5D7Pr@google.com>
-Subject: Re: [PATCH 4/4] rust_binder: report netlink transactions
+ <20260306-binder-netlink-v1-1-daceb5bc83f2@google.com> <081b1f16-5c8b-4a18-a9f1-d56e757de4c0@lunn.ch>
+Message-ID: <aayYhgy3pRxFWbr7@google.com>
+Subject: Re: [PATCH 1/4] rust: netlink: add raw netlink abstraction
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -74,25 +74,41 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sat, Mar 07, 2026 at 05:56:45PM +0100, Andrew Lunn wrote:
-> On Fri, Mar 06, 2026 at 03:12:16PM +0000, Alice Ryhl wrote:
-> > From: Carlos Llamas <cmllamas@google.com>
-> > 
-> > The Android Binder driver supports a netlink API that reports
-> > transaction *failures* to a userapce daemon. This allows devices to
-> > monitor processes with many failed transactions so that it can e.g. kill
-> > misbehaving apps.
-> > 
-> > One very important thing that this monitors is when many oneway messages
-> > are sent to a frozen process, so there is special handling to ensure
-> > this scenario is surfaced over netlink.
-> > 
-> > Signed-off-by: Carlos Llamas <cmllamas@google.com>
+On Sat, Mar 07, 2026 at 04:43:02PM +0100, Andrew Lunn wrote:
+> > diff --git a/rust/kernel/netlink.rs b/rust/kernel/netlink.rs
 > 
-> Hi Alice
+> ...
 > 
-> Since you are submitting this it needs your Signed-off-by as well.
+> > +/// The default netlink message size.
+> > +pub const GENLMSG_DEFAULT_SIZE: usize = bindings::GENLMSG_DEFAULT_SIZE;
+> > +
+> > +/// A wrapper around `struct sk_buff` for generic netlink messages.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The pointer has ownership over a valid `sk_buff`.
+> > +pub struct SkBuff {
+> > +    skb: NonNull<kernel::bindings::sk_buff>,
+> > +}
+> 
+> struct sk_buff is a core data structure which appears all over the
+> networking stack, but also other places like crypto, scsi, tty, file
+> systems, etc. Since it is a top level data structure, it seems odd
+> Rust puts it into netlink.rs.
+> 
+> How do you see the Rust SkBuff evolving to a general purpose data
+> structure which can be used everywhere?
 
-Oh I forgot to update this, thanks for reminding me!
+We can make a kernel::net module (rust/kernel/net/) and put it there
+instead? I guess netlink.rs can also be a submodule of that.
+
+Hmm ... but I'm currently using genlmsg_new() / nlmsg_free(), and I
+assume the other use-cases do not go through those methods, since they
+sound netlink specific.
+
+To be honest, I'm new to the kernel's networking stack, so I probably
+can't design Rust wrapper for sk_buff that supports all those different
+usecases without someone walking me through how it works. It may or may
+not be best to write a netlink-specific struct now and expand it later.
 
 Alice
