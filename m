@@ -1,86 +1,106 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5336D344D88
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 21:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AF22EA171;
+	Sat,  7 Mar 2026 21:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772919015; cv=none; b=Tpw8XMJvX+55qCrW0xZNV3yMCdcth4CNqILTrlAyLBn9J6b7LGIaxphrUT0K2RkXzy05coOiJ8Tfk7DE6B6+d5LX6Q7dek7fyQ+EeiIqF5XKpuV165/1bad+zyL+RO8LzMW0Odqpw8tXwy8ZaoNoc/Aj1vKkXNuauW0CTMKA8zk=
+	t=1772919666; cv=none; b=B3XrGyFHBwIEuSpm7GzuLiMjQG2rbDvElhR2JvscMY62SE94LBjJ+giVEsUqey8LdqjvlX/dEBvU/qrM2NzXRQC98AzG/uIqSa6SVsO7+jYlEAcNs2U1g7fbwuOBAwMX1EIQVicdt8tB8pd48rafOp7Hyg0l9ULLeZGVHvF+0lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772919015; c=relaxed/simple;
-	bh=5blZ65rb52lpa9/KLUc49AAPOcoeZtUgQI+crtdIS4w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=muLeDVYxwYMJOoQGH+60cC88wIqGzb0tdDDsWxgcDFrEDRIHi2ibh3odkzc3vdmCrf3dVz9J/MwKp5LuU2uPKEu0yCRJI9D1dTBUQ+ypz6woJLXBT6EB51x3rk3AvHVcUJoBrSHs8RaHQILjNUajgVjtye7C0fOVzrnkYk/FEXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hpInvjh8; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1772919666; c=relaxed/simple;
+	bh=La9CHRdOrLzZLDPTAtAarkgvYs/tV6l4hovAURiSbWs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=Rz9B1q8oARzNpI7L0+8mMDikmfE5D9skLP6SV6AC64NnwJW6FP8eQVceqQHLUZuTXPNWoQAoYi3IHq8k3/TGvcGtl4ayGxu5NxztExyzZPMii+synGtqfDsPloQEzfFTr28oL1nBjJ8ThoaFE8xYFMB+TjW+LZnRqaEOzliqSpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H95SauM8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hpInvjh8"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-483786a09b1so104872635e9.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Mar 2026 13:30:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772919013; x=1773523813; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jrqxpHngCov/LvVCWNrhiPff2zJYB2s6GPlhyApK1cM=;
-        b=hpInvjh8seVsmn2NdXieKNpeQv9ZC1ZZ1MPHY59EYJ+uTwkWJb8x1ih/O6X6ek5Eih
-         6D9ulRSIKj+ZpfjdkYzDXPopfvu7NGDY75a2RXsLcC0WcQlbA7TXAaPrMYlMjwk7AwNF
-         V09wA0il/FUF3F9G0tbPboYfqjmlzi6D1xGaCQAU9ybArRwI8E86is8QlviZHtqJII4n
-         UaqoTWC75jBLeXVw0zPxQJtN8iVP1LXyzRVXRSYATilBcLy3r7R62OyyPMN9XqophMec
-         DIVrjULX8NTyOcexQMtaUizmZAJDV0v2mRxKHQESmgETETbsirFij1ACDQUmuSKp4Pzp
-         fnFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772919013; x=1773523813;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jrqxpHngCov/LvVCWNrhiPff2zJYB2s6GPlhyApK1cM=;
-        b=LDSweOcL2S+Ebn3PjbS4asoGa8ujdfQp6q5EzcFxOj03pSkWJDP5yilwB0BRjd3kOO
-         HnPkr39dkfAT+uYpIuMifredmLajnr3D800CxFvPQVh2mEZuqCUkVohV2JyvuhJiBhHL
-         Bv3/LjbTFtHMHHrHP/HPAznlZTsKtUD9v6hNGrNjR1asjeWLzysKvpLX4jZSnlpS/C6+
-         W+WUjTwSTvXE3SJqyK9yhkkvd9d5xsafb5c7on4PFbY9m2QPX5caDEHJkcJUFMNXYRTl
-         H68v98K9c9pIVe+yFdNGkvL5DqxBpFWKWmr30b7o0X07mEO1Cx7J+6F/B6Mi6wGGZyxj
-         bGwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMHhFBMEfUAPr7Wnqsks4Rtxe26uWh9941Myg1pgd9tWomu5RFV8ok8H1C53XHq+x5jgZrIs5bF1bprGQvNA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGE4kTJZHiWIV5Bap+a93F7Fsz9OuFchkknqoDYwhfUmSP6s8N
-	Koc6Jpya6MeLQMmL9Ihasezwso7nk8wsg9iUpWqlHxl4FTNMEoi7j9U52Qx69y+yifw49swPBLv
-	co/EOQyNb58bxHTX9uA==
-X-Received: from wmbdv11.prod.google.com ([2002:a05:600c:620b:b0:483:7c8d:ed1d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5253:b0:483:456a:514b with SMTP id 5b1f17b1804b1-4852692f158mr110926015e9.12.1772919012662;
- Sat, 07 Mar 2026 13:30:12 -0800 (PST)
-Date: Sat, 7 Mar 2026 21:30:11 +0000
-In-Reply-To: <20260307104155.108d5d69@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H95SauM8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11D8C19422;
+	Sat,  7 Mar 2026 21:41:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772919665;
+	bh=La9CHRdOrLzZLDPTAtAarkgvYs/tV6l4hovAURiSbWs=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=H95SauM8cMdRQfmSjJluEq8aC2rl46kqs9CmLlS3flPDGexJ5R4xuif9BMgpdsbV2
+	 pZrp5gzJAJQ8LY9vJti5i6kN3kLq4bYGtkwsa+wqufxMOnam3N0RBCtW5c/V7UeSJv
+	 RORBiaElmYpn1Z18xNhoDrFmEa3w3v95O2PPcf3WHGKy8JcLZ42wBSsZRdwqA7Kl8l
+	 eN/Uuw+K6x+vNiVwwDQ0fcDNaXH5BRi3b5Ek9xuWhfKneyG/1ClMFKfeUKL873VUBl
+	 nOK/n8U4i3TcAtmHss+HGbLrhkFQEdhXUVlnQipuZW45KSMJ/viqZZzdiEmWLghvsl
+	 1wwTD6KoxVTMw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260306-binder-netlink-v1-0-daceb5bc83f2@google.com>
- <20260306-binder-netlink-v1-2-daceb5bc83f2@google.com> <20260307104155.108d5d69@kernel.org>
-Message-ID: <aayY46dOBAJdFVKb@google.com>
-Subject: Re: [PATCH 2/4] ynl_gen: generate Rust files from yaml files
-From: Alice Ryhl <aliceryhl@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 07 Mar 2026 22:40:58 +0100
+Message-Id: <DGWVKFEQVHA0.2C27PSBYR62D6@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
+ <20260224-register-v7-5-aad44f760f33@nvidia.com>
+ <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
+ <DGQ67S1NH3OA.2MS0YVO0UU2E2@nvidia.com>
+ <DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net>
+ <DGRWZVJNLLH0.39JYHZIIMC9XK@nvidia.com>
+ <DGSB81ZE18O1.31CVVHMP38U2W@garyguo.net>
+ <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
+ <DGSC6U50TCHF.9FKDO3AWL3Y1@garyguo.net>
+ <DGSZWZCI0H7H.2EM8L04YH0YRP@nvidia.com>
+ <DGT09KTYDCU8.3BBAZBGIYRGWV@nvidia.com>
+ <DGT8FQ97BL8O.1VC1JEXIEBDRA@nvidia.com>
+ <DGU4TLDMLFN8.1KKSL2WATFZ7G@kernel.org>
+ <DGU7U81KKLCD.2LEPJ73BGLQU@garyguo.net>
+ <DGU88IHVRYHD.9WP9Z40UAN37@garyguo.net>
+ <DGU92W2W71JI.HBIFK6L78F9C@kernel.org>
+ <DGU9AZ43QK6Y.115RDSK0M9JY5@garyguo.net>
+ <DGUAC0GJRR0Q.34WBS7BIZ58WF@kernel.org>
+ <DGUB44J4FNCA.32QOV1DYI7VBK@garyguo.net>
+ <DGUBN1HP1F8I.2RZGSFCBO9FQS@kernel.org>
+ <DGUCFC9NJG5B.Z7YUXK4NEE04@garyguo.net>
+ <DGVGGGBSC9PI.1TJV2ZAIML0BI@nvidia.com>
+ <DGVMXCZGEWV9.41R0TPTD22S1@garyguo.net>
+ <DGVNJ8ANGP3Q.1RAGWU2HJGRIB@nvidia.com>
+ <DGVO2O009306.GNU06PZ13VA6@garyguo.net>
+ <DGVPNC2HE0JB.1HOBJZX8L8XMQ@nvidia.com>
+ <DGVQAUVL2SZZ.2TINCJXUIDTCK@garyguo.net>
+ <DGVRU6S7WUIU.1OL2CZU2ZUIUO@nvidia.com>
+ <DGVT62XLP0MZ.YVAQQ5APE9S6@garyguo.net>
+ <DGW40MO7G2B1.27TW3629TLBOD@nvidia.com>
+ <DGWUWSDMLCTQ.1675OOTK845MA@garyguo.net>
+In-Reply-To: <DGWUWSDMLCTQ.1675OOTK845MA@garyguo.net>
 
-On Sat, Mar 07, 2026 at 10:41:55AM -0800, Jakub Kicinski wrote:
-> On Fri, 06 Mar 2026 15:12:14 +0000 Alice Ryhl wrote:
-> > +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-> 
-> The name of the file says gen_c ...
+On Sat Mar 7, 2026 at 10:10 PM CET, Gary Guo wrote:
+>> But if we can agree on
+>>
+>>     bar.put(Reg::foo());
+>>
+>> or even
+>>
+>>     bar.write_val(Reg::foo());
+>
+> I'm okay with either.
 
-I see there is also an ynl_gen_rst.py file in the same directory. Are
-you suggesting that I create a ynl_gen_rust.py file instead?
+write_val() or something similar please; put() is not a good choice for
+something that does not release a reference count in the kernel.
 
-Alice
+(As for write_val(), I'm generally fine with the name, but I want to note t=
+hat
+it also may be slightly confusing as it is the two-argument write() method =
+which
+distinguishes between location and value, whereas this one combines the two=
+.)
