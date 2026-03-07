@@ -1,118 +1,199 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC684318B9C
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 12:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772885264; cv=pass; b=txJqyRbr2N56Ub/3J2UIVW3grOUi0GBIDo4AYLp99evM2xLU5re8iWWbsmgjAU+M9S5qsBQ86OZTrgbgtnvsrpMmeFgkBMfJZ3Z3/JpV0l4rTcrJ00G6i9EJCj+WW5ea3EzefO4K4onXdTP0L4+HzVSUp2VPwzwNY8s39QFQeQk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772885264; c=relaxed/simple;
-	bh=tBQGSoGncUbzZzImbMVJ7rDz3iNCLcC7iwu7JDNpdN0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ax+yFOGjWmehBfO7mVr1gZCDKEi3DKgfRVkBIuxTP/HKeAv6yaaHNF+yiyeRy90hL1n3i3IX8fuHf3UtP+aT3UBHKRALbxGUnqdTSEzbUVVh7h4elXplAvgCj/PY458lm4ZpH5DhLs9KdwAoib2+Klc+hTffDwQLKkPQfAiyhjY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F2/Glw7a; arc=pass smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2916330664
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 12:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772888316; cv=none; b=eVfJa2sNm99WyAo3DXbIyHhpso6sEI06dUlHmIT9UQUtc7lA8e4PHa2ozJOb1z+X5uu+fn5Lhm5ADEGohZoUEc1vPAc+JIc3QLYIfpRAJeeZQRS4G7stpqd7MzPIuCQF65QPZOdg+WD+mzFGbGeFmVLWtB08Lso3QVil0+R4az4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772888316; c=relaxed/simple;
+	bh=Fj+OrpPXWH4i0peZ38llrgnJu7mnjMoWLPvt0OuLv4Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ig3Tmcvmo9H+0t8tqGKzBB+lJOS0AYTB9Htf5kxAy4LgR0VTW8+qFfh2eKY0bbB2HIx8IwOnCJT9k1Dn+K7n3JSnHiEMwUvzPuR0RKnesRhQ8z8v0b+UWf+gIQMlKi8fAmrb0h2JyjgEESQwvVOKunqmfgQuDXBK9X0V8WwiFkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=LCsawahp; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F2/Glw7a"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2bd5658b901so688871eec.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Mar 2026 04:07:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772885263; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lctQfHbYBRcaSXmQy0x/48GqBTBDr4JrOniH2kdQJztiUABgiYQyWqE8JjLhdKtNhC
-         3fh7uDg6WOqaoCNY5VHk+J+3JYPTayxHEZ7jqMRw/aRPngfZNA6aSWH7JHkxzsQEggQ5
-         Jz+fq7mA3IZiP5dlDLrrCvXRlvoVjfH13vWf70mzLYCrwHEsUCsNdSYNbWbS6CnVfeww
-         jOAzbVNjKQFt1PAQ57vvXdytPITe16geZiPzHqrD0Py950QcCi4zOxZQSY1wdY+2vc1E
-         c8+oWO7veqku0YSDdtg4du2m2A/M+Dwt/2TqLBtmpR2Lcwu8W42dCAh3dhGX5Gv90Cz3
-         vw1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3lHG9aOAw9qIuzF1k64BAc+sc5OJ1SbvKF5R81sep7w=;
-        fh=nOnf9DbfnwosfQeuyZQuM+DUaaytD738t98OLJDES24=;
-        b=JSH7Vd/jX+RqEwJIQNwSzTmONz0YhoSqBglTju207mcJCXSctajroAfWtWaZUSPCgX
-         LZ1OSNQ+dIdLE62En99Mf6Hp/uOPvioblX/F/WCymi0dulyU9QVHNHE7jAzanddcC/r0
-         5cxCbHBOg12eQQZcVWlKkqI/c5eui2dIdHuIa0l3gt+QOSm/uFCjBw1EkPKOu62ZtMFI
-         V57RiQ1MJVygz5LOM4mngkGQHQfjl9+qCYtlmej35Imufjvb8VrTSNYeR33dRcUoFtPe
-         //8pc4C99j0g//o01vF617qEFktk1pBB4V5oULYpPRUr2SM9usxsXNxp+akVRLJ+EHpv
-         k3vQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772885263; x=1773490063; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3lHG9aOAw9qIuzF1k64BAc+sc5OJ1SbvKF5R81sep7w=;
-        b=F2/Glw7aXp8787sjI7Ots6cj8VXp+WgNV5m1+337OQqRndoJf20wUHMsvGAsWrvLo0
-         ejwUz6I1R2/4tlIxqo1CUO+5CtLtNOmSIGrNMYhzp8h9ZChaLIsnwc7gi/uJONXlZ7Et
-         fofYJ47Bzvtijd415PRJ9KeICVvIVWnXankHvvLYh8iPSW26ajXDJv5hSgIufQVGAla3
-         yJe+YuWx+Y+8Ii6/Xfo9z53O1R+fO9FdRP9uhXr0cPsDQlCLKBVcWOXUWOVp3K6DzBgL
-         aeNFAO/rJaV0T9KJ9V8omrv7xry0caRpekLN9Je9jZW69WNot5d/ghh+iUjqG7Iq6arG
-         Y9Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772885263; x=1773490063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3lHG9aOAw9qIuzF1k64BAc+sc5OJ1SbvKF5R81sep7w=;
-        b=rjo0KaceWJZW6ONUw6kT7pJ43+iVY6H1p7eVVmUxosPLT3Nj8k10W1cyxqwHAMhSni
-         9sYKDVrTtuW/GgwP+FQjSf+I5QEEOHLHfqcC3pBDplc6kroTyuXDj1bk9pkmf82WrzWV
-         UTYe3BLFxJYIMKwOJQtOUCES5p3NJTFAGEfg65qgjrtOFSulybFPZrD786Qtz4X61n6n
-         7/BrK93wP12COpD+gMc+v8Aexo5QFrvbx3Tz+znxk9gJQFUeN42nD67t7b5jIDfKKoxb
-         Pb+h9JLEt5nqNND9wNPKTt7x6jMnqUizxcU1UrtSXHubl9FWsuxFZiIX9HlzbygoKVI8
-         Sb3A==
-X-Forwarded-Encrypted: i=1; AJvYcCXV3Omh7Kc1d+1Ei+oQgwRyfdRtQKk/Bjqyp4A8KL9t6r5ry/GPBIl2FVv67SX9kT4OlOxM7ZIeYrHDM1G5VQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq4TsEO4Eqx6HWvYf0H2s9ByAhdtSCes9JD4WHyi8Gfc+e2CDR
-	R5HO5dpF1eYoicHiVkU2yv69S1dcpbBsnpjdItHqMMb0J6g69E+f2aQA0Mu+YYxxMYqMPwiTY0B
-	mtYg1xLVpHR6yTEBggYwoFZpT5/88E9g=
-X-Gm-Gg: ATEYQzzkUxeC2eBS2OlrC1OsL43MnNXf6vmcfNw/ss7RR6pW2opownReA5znMulDKWX
-	ejMSwmuNo//EzntyM9Ol7nRzuD9nl6M+6AHTnxFD1kMzSZGAzX0T4DewFm0bpvtV2eN2bvyiYja
-	pl2EPZD8dOzzpU7oen/GdqoH0AUVT3aSoePwYO8kN77hw1zjzOrSN4E9Mg34PoJSY6FjIJyZWdJ
-	Cn1pVZff4NMH6jRVpjRei9BCpxoEre33L79urEyB+kkJAEJ21utExJO3VvJfOK9Y8RDP0D0VR1S
-	YCgxg6aUoQDvaSLdKV7IFhX4WRc0VS9ul/VfVxqM7zltBwN9Km4bIvgFdq4VAB88Z7vTW7TOnNp
-	bXXv30NRMDOG/BdYR5KEMGYtC
-X-Received: by 2002:a05:7300:fd16:b0:2bd:fe5a:b87b with SMTP id
- 5a478bee46e88-2be4dd63a9dmr1097364eec.0.1772885262757; Sat, 07 Mar 2026
- 04:07:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="LCsawahp"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 54DF1240028
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 13:58:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1772888312; bh=Opr1f1ATZy2cRkzInxq0gxGUxnt6PVN0pwyqViGilD8=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=LCsawahpDw94cYYZ7W0tJCUmYuvpxawppXoDfBJipstI5VURA1XhGqsT2OGhUOWen
+	 6m1vLQY7zZ6Q9NQq3exhwGYMOJ32+qnlPNvdjrlX+N+hhnYnbSwXxGkvue3hJ9zusf
+	 iWgeNwYBhlVX83PyXet9Nf5vfNDApQvAdGiJEXb4R/2RHsFH4cU7RulAoJPsvqHABR
+	 0jSlkFuLO50UT8C/7RnFLCf35hGQgZClKI2vyTNUYxIivLDwkZGWWEqvdE+BCTDzD8
+	 hx9t5Nkzx2D6MAmJ03BjSjzsyZNyffiINy1vLTjDt4Pe1wkzsJULpnILOKdAIqHu74
+	 alpwxa2lgDV1A==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fSjxx752Pz6v13;
+	Sat,  7 Mar 2026 13:58:29 +0100 (CET)
+Message-ID: <938755087c25b0b4eb6e32b84c1dd25cc2d71439.camel@posteo.de>
+Subject: Re: [PATCH 2/2] staging: Add initial synology microp driver
+From: Markus Probst <markus.probst@posteo.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Miguel
+ Ojeda <ojeda@kernel.org>,  Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-staging@lists.linux.dev, rust-for-linux@vger.kernel.org
+Date: Sat, 07 Mar 2026 12:58:31 +0000
+In-Reply-To: <2026030742-concave-dastardly-801e@gregkh>
+References: <20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de>
+	 <20260306-synology_microp_initial-v1-2-fcffede6448c@posteo.de>
+	 <2026030742-concave-dastardly-801e@gregkh>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-UEj1ciT76eIznC7lX4dC"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260307-rust-binder-trace-v1-0-5e03283c6e53@sdhn.cc> <20260307-rust-binder-trace-v1-2-5e03283c6e53@sdhn.cc>
-In-Reply-To: <20260307-rust-binder-trace-v1-2-5e03283c6e53@sdhn.cc>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 7 Mar 2026 13:07:29 +0100
-X-Gm-Features: AaiRm51-ZXfEmco47_WZnLbu447KNvOuM74Xh4LDqbUfOg7QqYaSzD3JuxEJIrY
-Message-ID: <CANiq72kGc1vmQa_tVQ4MxR5NU9C54nqiVuM7+JctFtfzkWvM6w@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust_binder: add Rust binder tracepoints
-To: Mohamad Alsadhan <mo@sdhn.cc>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+
+
+--=-UEj1ciT76eIznC7lX4dC
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 7, 2026 at 6:42=E2=80=AFAM Mohamad Alsadhan <mo@sdhn.cc> wrote:
->
->  static inline size_t rust_binder_transaction_debug_id(rust_binder_transa=
-ction t)
->  {
-> -       return *(size_t *) (t + RUST_BINDER_LAYOUT.t.debug_id);
-> +       return *(size_t *)(t + RUST_BINDER_LAYOUT.t.debug_id);
->  }
+On Sat, 2026-03-07 at 08:15 +0100, Greg Kroah-Hartman wrote:
+> On Fri, Mar 06, 2026 at 07:38:30PM +0000, Markus Probst wrote:
+> > Add a initial synology microp driver, written in Rust, to the staging t=
+ree.
+> > The driver targets a microcontroller found in Synology NAS devices. It
+> > currently only supports controlling of the power led, status led, alert
+> > led and usb led. Other components such as fan control or handling
+> > on-device buttons will be added once the required rust abstractions are
+> > there.
+> > ---
+> >  MAINTAINERS                                        |   6 +
+> >  drivers/staging/Kconfig                            |   2 +
+> >  drivers/staging/Makefile                           |   1 +
+> >  drivers/staging/synology_microp/Kconfig            |   4 +
+> >  drivers/staging/synology_microp/Makefile           |   2 +
+> >  drivers/staging/synology_microp/TODO               |   8 +
+> >  drivers/staging/synology_microp/command.rs         |  48 +++++
+> >  drivers/staging/synology_microp/led.rs             | 229 +++++++++++++=
+++++++++
+> >  drivers/staging/synology_microp/synology_microp.rs |  73 +++++++
+> >  rust/uapi/uapi_helper.h                            |   2 +
+> >  10 files changed, 375 insertions(+)
+>=20
+> No signed-off-by?
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
 
-The kernel test robot just reported the Rust side wasn't formatted,
-but this seems to be a C formatter at work. Spurious changes?
+>=20
+> And why staging?  That's for stuff that needs obvious cleanups done to
+> it, you don't list that here.
+Because the driver is not done yet. There are components that do not
+exist yet, because the rust abstractions are missing.
 
-Thanks!
+Merging an initial version of this driver into staging makes it
+possible for the serdev and led rust abstractions to be merged (as
+their now exists a driver). After this I can work on the missing rust
+abstractions.
 
-Cheers,
-Miguel
+Once the driver is complete, is can be moved into the mfd tree.
+
+>=20
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index e9e83ab552c7..a1f8dec31db2 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -25143,6 +25143,12 @@ L:	linux-fbdev@vger.kernel.org
+> >  S:	Maintained
+> >  F:	drivers/staging/sm750fb/
+> > =20
+> > +STAGING - SYNOLOGY MICROP DRIVER
+> > +M:  Markus Probst <markus.probst@posteo.de>
+> > +S:  Maintained
+> > +F: Documentation/devicetree/bindings/mfd/synology,microp.yaml
+> > +F: drivers/staging/synology_microp/
+>=20
+> No tabs?
+Will be fixed.
+
+>=20
+> thanks,
+>=20
+> greg k-h
+
+Thanks
+- Markus Probst
+
+--=-UEj1ciT76eIznC7lX4dC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmmsIPIbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSvsYQAIEgoTQripeEonZYf2T+
+I11oZrrA0SUhwn/jkGjIjlT7l+4DLf2cchXwnBs8PpRXk0RWh+ujD3VmhZp+sbZ8
+IvfEHg1djnWT804ytrHYoeL8/DiQQuOdpkElqn8JeqIasL0CL1KMFaNoaEoCQgU1
+BgWI7hPkObgoNTa67OWJTq8co9OX/E6Cs80FtpD+8Y2Wbwg+c7+bM85Opt6lEzDR
+ZcxsfJKRyF64bJVjZr3SlBk4QDT3Gr62Et87DRk9ydI/U1lFv1LEcZ9baEfHX35F
+CK4Z/l3CUfEBNYi97+RKeE3neBTvEZc3mvXxDbuk/jZi5ltU3NFkjij+E3LNG1TS
+IAzGenjxpFXLQgq4HWvfGPHT+6+hnN6Ba1yM38l7xn9sWMac8hxeBBEsEGNgJ12m
+UlFcTaymHmNXrGR+oPrCbk8+QYiZeJdWqpYJG6ZyH4tndx2olqphGj678rCjAz3t
+lAeF+hycyVoWPQZ8tEVaPzNP6N+OH6KDibDByVv0YIRgA2LLdCrBciBkRjRlChiM
+0K4Eprc8WPmHryp2o1JIXWv4IpK0RDjsLYS4csZaYjjh4Ue0YkJX35sxwp8DDFJH
+b8azPrU0m1TvpFqnbwNNUZ7WzeqJuhs/0+9fvBM3Kd0qlQwzxDDQcOVCEObr1Gm/
+WTx2OyRxSU6FDU9eTsmICUEj
+=5+ov
+-----END PGP SIGNATURE-----
+
+--=-UEj1ciT76eIznC7lX4dC--
