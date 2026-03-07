@@ -1,156 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C453A4531;
-	Sat,  7 Mar 2026 15:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025809460
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 15:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772896326; cv=none; b=qrgqWCbeJlVourjONXC+XwsjJjmZ5qO/1NY6mel0RnwMSr5c1p1spRHo3+yd63yHvvVVdp/EPsDalaqELn45Ii+w9mWiap+Bc238/Ha6XPn9CwGjTQfwSszCzKDR2kym+LNKAYtbdJTR+vXtciT7qUgrQ/lS4Q0whC0nrOZsYvc=
+	t=1772897212; cv=none; b=OqtxHJ299g0kwxuH5C1RU/K6TpciH5Chp5RRKtnQ615KHtU9hpKGcKPNDZEhqeNMufhwAglpOwOClK/ldYku/6GWm7TPxOeEALSONGNp4len6devrZf0OvYvKD0lslMFnj+5NQLeoKxIEtHkJjIT6/acJG3QyRGxvO+yBGsT2eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772896326; c=relaxed/simple;
-	bh=VResUl6ZPrrbBqrCutAMUK+6DdFoN8EOfBG0giZUGe0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r7bja3yYuWJxiCJi7T9jQsFxNMrcBfp+T8ff75GBw6AbdB4e3NUp8E4SdTm6LIKgdxKAAdvSvSgFcWAAaNB08Y1ltPby63OUYV0czJJ0pA4JaceMM4u7hJOMX5xD9dB7yqjxDwSlsgbeie3kgwksj6YwPWRcRirPI4tlXsqFJ/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jAlw8U1d; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772897212; c=relaxed/simple;
+	bh=HzJG9VphlnI2o+NaSPQSdVkEilK/Vxmgkaou76p+uQg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Nn2YvNXbKv4a9qVhKX9WotcVpZQN21kdB0Uxjr1R3xO+Pd3NZQQJvSya4/YxrpX+PvtQ6JbAo9WK97B/Pu2x37sQ4r28DGJzoeUob0YCgvB8CE/jGfKj9VyERnVi4IAaJbfwNLHMB0wO35n2hBedsR1gq2OZ+KUxpVmDmXYiEGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N8vnF/RL; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jAlw8U1d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6128C19422;
-	Sat,  7 Mar 2026 15:12:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772896325;
-	bh=VResUl6ZPrrbBqrCutAMUK+6DdFoN8EOfBG0giZUGe0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jAlw8U1dyC70s7AXpeuRZKfoWgrN9Fihj1/7CvW8LmUme47RQR+U4nn/GVz0+aCNM
-	 ULzLQkvnN0BAqPcTFWXDqeHtL/S10bdOPfy7hJF+q4StXbNOdtUjZunxkhLFoyaJjv
-	 cMsnDZEu2xZMAMrUpUWuK1ybtaMKpNiQfucJjAOWt5zdHP2VcSmOrvgJMFi6UhhdYm
-	 uway5Yer8qKOUYL5+QaBrIC88SpDxIJMCAVy3ByAVjmoOz7oNCpqmpPLRavPs7BgvP
-	 AFcmZol48G89glMtJPsuQPzZqTFeH1Jr1rd9o7MmZf2JkNQ7JSIKD9Aoc9fPEUUFuY
-	 6fc15iamgJRgw==
-Message-ID: <97c0b406-64eb-4a10-b3a9-a857ff698091@kernel.org>
-Date: Sat, 7 Mar 2026 16:12:00 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N8vnF/RL"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2addb31945aso73670275ad.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Mar 2026 07:26:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772897209; x=1773502009; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=byARshYttLimEU51kozrx7eMCOL+frdJ+wd8sMWbMnA=;
+        b=N8vnF/RLq+pQ68wvvrkVPCBKVVD+bFgzXFEeJXLNw0JGo3yDB966v5xV27nVM022/5
+         yu0m9MQReAFjwruc/sfkdNb7nkqy9ZLdtB/gfoqtNLDYCScMiHEgDcmIslZ+vMTw6TLw
+         ULp0EC1MbCS3zsaFVSamKPVIC6GEG/YzWJOei6TEOoGUXKdzD5bO61jhpfYG4YT6rQ9C
+         B0PpTmrItMOOWEmnCe8dnUdp34eJKlV04D1L/6MI7lLi/3Jv1muPJZ+8sWxFEb0ngcHe
+         RWdt4VJB0+jjcxxUCDGaGUk5XGRHwkNvomJ78sEtMYUiR9p4zycieCwUWIYA0QwUQDKn
+         UX2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772897209; x=1773502009;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=byARshYttLimEU51kozrx7eMCOL+frdJ+wd8sMWbMnA=;
+        b=veA6aVQfnnVpVr4rqKCQYevCEtiP1pw2ZNdyVsLfEEKCz7/PDiD1/hHoMzuJJpN1a5
+         MmbSC9XB19bxJJUxExxC+Y+uwR2ABVYt7X7a2gqrEilHuWmNP/zIKJNClW678YlDDASI
+         lrgcKlL2yxrtSXR6HO+3J/hfU67xzLUJSR/9nuQ1mFOe9YSWgfAudzLsUsFOm3R8Qtg8
+         Jzf8r1EhvGrGUbOc030eYMHh0DMW8gEjLF29XdijoBQR7yqZpx+ztdzjgBz2k8J9U+UB
+         86nTOQGyduptMdNLMGPLsqy49Ep2ZM8Y8bcuNROlb+/PPLmfoYHlKmZV0zgh7xiFFJGm
+         Jsqg==
+X-Forwarded-Encrypted: i=1; AJvYcCWsN3hGxYzEexPN3Lp1bW0vncCSwmFX2Xd/zPeh5rpEMxlfNggRzdZSNCCBH8AR0ZjvgkA36+Umk/YZEbdFPg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBFe/+APeNbpxrI1Rf6mrWcJqsHPY+XHSd56YjKJ0zYrufKvxP
+	2jW4GxHW4z68KOvznx+TKUTt8IIWOMQ8nRlcshV+SMZcwwFVvcb5YI7J
+X-Gm-Gg: ATEYQzynrYdUrBFPsGAJlFugubUQkx2EeUvlIq5Z8ER0yn81YG8+7bk6iLMR7RZcnht
+	iluTfOZHnHmdiRzpu+KOIGaROBvlfdm38EWpCuTr2UEB5+rHRyGOQJ+6jw8AUO9k1tvj43Nqs1V
+	nGfksJc8TBwO3Leld/HlyJMt0SvFg7L2bPRZ+R57VzlpAi1xirvYAKInM/7nq7ZGLys5UjIah5M
+	2UsqqRlymiJ/9Wyq/TRTLlEi13+DMY/imur6RImYrq0+ZH3LP+8SXoMPZYsEZBnAyK7/F3ovKKP
+	GQr+kb1xfHz2peynEN7BJ4NZL3FUWqvJBgqmfjTI+4cEY7qXQFknlUgXocFuS/7VOzhL8Vlrpck
+	D+aE3iIEnV/6ofkcYiPVReovZxDyzRQqI762yePXkIyaJiHNIHxA5oG0Pjzo6mmLpauOhNd5EN7
+	4s//jDBSL9XytUbzGNtB2J+AQVPHdfHPPhBxbI
+X-Received: by 2002:a17:903:2441:b0:2ae:425b:b3f8 with SMTP id d9443c01a7336-2ae82466e85mr57906625ad.42.1772897209328;
+        Sat, 07 Mar 2026 07:26:49 -0800 (PST)
+Received: from shankari-IdeaPad.. ([43.247.145.9])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83e584e5sm75313185ad.17.2026.03.07.07.26.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Mar 2026 07:26:48 -0800 (PST)
+From: Shankari Anand <shankari.ak0208@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Igor Korotin <igor.korotin.linux@gmail.com>,
+	Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Shankari Anand <shankari.ak0208@gmail.com>
+Subject: Re: [PATCH v2 0/4] rust: refactor ARef and AlwaysRefCounted imports
+Date: Sat,  7 Mar 2026 20:56:33 +0530
+Message-Id: <20260307152633.8205-1-shankari.ak0208@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260102202714.184223-1-shankari.ak0208@gmail.com>
+References: <20260102202714.184223-1-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: mfd: Add binding for synology,microp
- devices
-To: Markus Probst <markus.probst@posteo.de>, Lee Jones <lee@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-staging@lists.linux.dev, rust-for-linux@vger.kernel.org
-References: <20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de>
- <20260306-synology_microp_initial-v1-1-fcffede6448c@posteo.de>
- <be179573-edc3-4b6c-8c91-ae7b0c61c1b1@kernel.org>
- <91a80c27dd3a2bad819a8537187a9d9adfa4a123.camel@posteo.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <91a80c27dd3a2bad819a8537187a9d9adfa4a123.camel@posteo.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 07/03/2026 16:03, Markus Probst wrote:
->>> +  usb-led:
->>> +    $ref: /schemas/leds/common.yaml
->>> +    unevaluatedProperties: false
->>
->> That's pretty unreadable code.
->>
->>> +  no-check-fan:
->>
->> Vendor prefix
+On Sat, Jan 03, 2026 at 01:57:10AM +0530, Shankari Anand wrote:
+Hello Miguel,
+
+> Resending the v2 patch series with changes suggested as in the 
+> v1 patch series [1].
+> Also re-worded the commit titles to refer to the target subsystem.
 > 
-> In the documentation it says
+> Have resent only the patches that haven't been picked up yet in the series.
 > 
-> "
-> Nonstandard property names should specify a unique string prefix, such
-> as a stock ticker symbol, identifying the name of the company or
-> organization that defined the property.
-> "
+> Thanks and regards,
+> Shankari
 > 
-> I am not sure whether to use synology or linux as vendor prefix here.
-
-You cannot have linux prefix - you are not adding bindings for a
-abstracted/generalized device.
-
+> [1] https://lore.kernel.org/all/20251123092438.182251-1-shankari.ak0208@gmail.com/
 > 
-> The property itself was not defined by synology,
+> Shankari Anand (4):
+>   drivers: android: binder: Update ARef imports from sync::aref
+>   rust: i2c: Update ARef and AlwaysRefCounted imports to use sync::aref
+>   rust: usb: Update AlwaysRefCounted imports to use sync::aref
+>   rust: types: remove temporary re-exports of ARef and AlwaysRefCounted
 > 
-> but the property also is not necessarily specific to linux.
-> The driver has to tell the device whether it should even check for fan
-> failures. The property wouldn't alter behaviour of the driver, but of
-
-Driver stuff so not really suitable for bindings in the first place.
-
-> the device. The device itself would not check for fan failures anymore.
+>  drivers/android/binder/process.rs      | 2 +-
+>  drivers/android/binder/thread.rs       | 3 +--
+>  rust/kernel/i2c.rs                     | 10 ++++------
+>  rust/kernel/types.rs                   | 2 --
+>  rust/kernel/usb.rs                     | 3 ++-
+>  5 files changed, 8 insertions(+), 12 deletions(-)
 > 
-> Thanks
-> - Markus Probst
+> -- 
+> 2.34.1
 > 
->>
->>> +    type: boolean
->>> +    description: |
->>> +      Disable fan failure check.
->>
->> You described the desired Linux feature or behavior, not the actual
->> hardware. The bindings are about the latter, so instead you need to
->> rephrase the property and its description to match actual hardware
->> capabilities/features/configuration etc.
 
-Do not ignore the comments.
+Would it be possible for you to pickup the 2,3,4 patches of this series so as to
+complete this cleanup in one go?
+The first one has been picked up already [1].
 
+Thanks and regards,
+Shankari
 
-Best regards,
-Krzysztof
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9caa30dada9e8ec9b1b09cf95e6d1a806c86d101
+
