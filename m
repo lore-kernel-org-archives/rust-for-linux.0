@@ -1,112 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBCE330D58;
-	Sat,  7 Mar 2026 17:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6052C38B7B8;
+	Sat,  7 Mar 2026 18:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772903388; cv=none; b=kL59fkAXs89RDXNzXZ0Zn2OE2uD8C/vc8NOrtOEB7Oa9WlR++/cSlbFI9V2d/k5aUSxJCxAe59HJbYUIfNiXQeXRzCZVoVqnHgMgTZA7Ubxse4S92ZXJljFR4wzQy+N+v217g3M+H0PrRodOO6JMPpznrfQf63uI5t1jJKZ1NhE=
+	t=1772908894; cv=none; b=j7PeCASjDsL6aXKonWcQiAyjKaS9gyv8ocK9ctOyIcZqXuYnzyNQeUnuB5t4KCF4ftaheukeKMHToNFPVPA2+n4zaEQR4k4v6dZ2johdHFFXQZTfsR/+beguWG2LxVQHHmlH7QUyqfBgMH2iNq/xpQerdyo7eOicCg5gQw2J7c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772903388; c=relaxed/simple;
-	bh=4IxBPKKn4evJJtdNJSN8E6aqj/2UG4QKdCiEcgJfsKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TvZTCX5pKcsZkFW+Ghu0X/5eGVYGHzuiwAB8TFHj+GmEbBjM1PJR9qPAsQOS67eEE1D+ryAE3n/V+CVEAATChkzq1GEDL3iIsZyRgd0NBbjiTsa7+bPBhX0/puYK3L4691xERJrPKYpjjWNt2lvRbuSPIwtOpFwUAF+9G22FGGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a7eih2Oe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772908894; c=relaxed/simple;
+	bh=aQJl1UI0uKhZlGzFHId7PJWVoDMdBYctJU3Yed7wPoo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZLq7Apo93E4MDGaFK9mdokOxk9wOQTAavo5Qp0g8NtGl2IUlpJZeVOjltc8psl4dE/r4DHgTOOG44RX8E5F042t6g1BV0peblNSob2iVI+wW25f8Of93XNZPsoF6Qf+ypMTqMgplzKd3I4Prg/7TFGvHYS/e6SFJXyDh52Ko+z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M11rts0k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a7eih2Oe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3EDC19422;
-	Sat,  7 Mar 2026 17:09:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M11rts0k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E491CC19422;
+	Sat,  7 Mar 2026 18:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772903388;
-	bh=4IxBPKKn4evJJtdNJSN8E6aqj/2UG4QKdCiEcgJfsKU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a7eih2OeNA8aD5t7CYyIdfCBqsbluM+pMKH1e6DM2wuOIBl1BlQ0P4MIwPa5Ctw1k
-	 f3ivvrFaGIj6D01oxXhGfap4FYXLkoA5Xs7vP/fBa7FSlzMSIJEbewR2X1gzzqYC3c
-	 A5YHUlnoaTVwikS6RcCjrdyJGzLVQHgWU/UyZitpmL6QuVn3ECKDpI1o7Hafju3fF0
-	 Naz/tnlIFymkk7zSZnKbSw3odKnwySbTcsOptVOqK2uf30/REChvd7rNTL/CzvsxI2
-	 5aAGbIIZ0uVTmnxCDl0QKvUx1yvahoQ2X8EgBzAIylDT957y3JQVeSuqEDOYQy0ZWR
-	 D539uM2LmijDg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	jhubbard@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rafael@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	viresh.kumar@linaro.org
-Subject: [RFC PATCH] rust: kbuild: support global per-version flags
-Date: Sat,  7 Mar 2026 18:09:29 +0100
-Message-ID: <20260307170929.153892-1-ojeda@kernel.org>
-In-Reply-To: <CANiq72mWdFU11GcCZRchzhy0Gi1QZShvZtyRkHV2O+WA2uTdVQ@mail.gmail.com>
-References: <CANiq72mWdFU11GcCZRchzhy0Gi1QZShvZtyRkHV2O+WA2uTdVQ@mail.gmail.com>
+	s=k20201202; t=1772908893;
+	bh=aQJl1UI0uKhZlGzFHId7PJWVoDMdBYctJU3Yed7wPoo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=M11rts0kei1juFXlDJiS7P3kGanYN7GuXK7lcHmX4aCUnMUNZa1OqbQyTTz/PwBOV
+	 b8H+ixDnr/u19E9POfmdDFMKpLzSFtC1sJWpdqLJQ0xcrV8hpxBRabgx5G+eFyj8J3
+	 mxx8TAFGbpexHkGyOAesYDtKsxd4nqFKYqAHP2K1Q+fixUtxybYtUZdSybptc1yz9R
+	 AifRo4zg5uI9NsB9Eou+Fuz6Dr7qGuQj+C7uR7ufzdkp/23lAcPu3v4jpIA4oIGRCv
+	 DftWwa1fR7CI2d/3LofDaffWDvhG2DQ/zCBEvSapJhIni/9VDm5EMF7b45liqxnYsA
+	 tk3BnEWw0N34Q==
+Date: Sat, 7 Mar 2026 10:41:31 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Arve
+ =?UTF-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Carlos Llamas
+ <cmllamas@google.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 0/4] Rust netlink support + use in Rust Binder
+Message-ID: <20260307104131.4c1d0de5@kernel.org>
+In-Reply-To: <20260306-binder-netlink-v1-0-daceb5bc83f2@google.com>
+References: <20260306-binder-netlink-v1-0-daceb5bc83f2@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Sometimes it is useful to gate global Rust flags per compiler version.
-For instance, we may want to disable a lint that has false positives in
-a single version [1].
+On Fri, 06 Mar 2026 15:12:12 +0000 Alice Ryhl wrote:
+> The C Binder driver exposes messages over netlink when transactions
+> fail, so that a userpace daemon can respond to processes with many
+> failing transactions.
 
-We already had helpers like `rustc-min-version` for that, which we use
-elsewhere, but we cannot currently use them for `rust_common_flags`,
-which contains the global flags for all Rust code (kernel and host),
-because `rustc-min-version` depends on `CONFIG_RUSTC_VERSION`, which
-does not exist when `rust_common_flags` is defined.
+Ugh, now I regret letting binder use Netlink. Should have seen this
+coming :/
 
-Thus, to support that, introduce `rust_common_flags_per_version`,
-defined after the `include/config/auto.conf` inclusion (where
-`CONFIG_RUSTC_VERSION` becomes available), and append it to
-`rust_common_flags`, `KBUILD_HOSTRUSTFLAGS` and `KBUILD_RUSTFLAGS`.
+> This patch series adds netlink support from Rust, then implements an
+> equivalent API in Rust Binder.
+> 
+> As Binder only uses broadcast messages, I did not add support for other
+> kinds of messages.
 
-An alternative is moving all those three down, but that would mean
-separating them from the other `KBUILD_*` variables.
-
-Link: https://lore.kernel.org/rust-for-linux/CANiq72mWdFU11GcCZRchzhy0Gi1QZShvZtyRkHV2O+WA2uTdVQ@mail.gmail.com/ [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-> Doing it globally for certain versions (i.e. `rust_common_flags`, not
-> just `KBUILD_RUSTFLAGS`) requires a bit of reorganization,
-
-If we wanted to go for a per-version global one, we we would need
-something like this patch -- sending it here so that it gets archived
-in case we need it.
-
- Makefile | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/Makefile b/Makefile
-index 2446085983f7..a49cddb0599b 100644
---- a/Makefile
-+++ b/Makefile
-@@ -833,6 +833,14 @@ endif # CONFIG_TRACEPOINTS
-
- export WARN_ON_UNUSED_TRACEPOINTS
-
-+# Per-version Rust flags. These are like `rust_common_flags`, but may
-+# depend on the Rust compiler version (e.g. using `rustc-min-version`).
-+rust_common_flags_per_version :=
-+
-+rust_common_flags += $(rust_common_flags_per_version)
-+KBUILD_HOSTRUSTFLAGS += $(rust_common_flags_per_version)
-+KBUILD_RUSTFLAGS += $(rust_common_flags_per_version)
-+
- include $(srctree)/arch/$(SRCARCH)/Makefile
-
- ifdef need-config
-
-base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
---
-2.53.0
+Please no duplication of existing code in Rust.
