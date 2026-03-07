@@ -1,106 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AF22EA171;
-	Sat,  7 Mar 2026 21:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F7C35BDCB;
+	Sat,  7 Mar 2026 21:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772919666; cv=none; b=B3XrGyFHBwIEuSpm7GzuLiMjQG2rbDvElhR2JvscMY62SE94LBjJ+giVEsUqey8LdqjvlX/dEBvU/qrM2NzXRQC98AzG/uIqSa6SVsO7+jYlEAcNs2U1g7fbwuOBAwMX1EIQVicdt8tB8pd48rafOp7Hyg0l9ULLeZGVHvF+0lA=
+	t=1772920640; cv=none; b=gd8Mum10R0hJ2U1UZzUtlIq7/VBHzL4p6778i28Nzrj5nBAAi8Csxi/+HsPW6ubii+1pLSNqu6m0rxw576tApYSeKr9f4pfgA6BnMYHenL2b6IoKt526pu7SZg0eS+xItbCClROgvtdfgwRPgNz04e01E2ouB1NKbJkf7cnLsq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772919666; c=relaxed/simple;
-	bh=La9CHRdOrLzZLDPTAtAarkgvYs/tV6l4hovAURiSbWs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=Rz9B1q8oARzNpI7L0+8mMDikmfE5D9skLP6SV6AC64NnwJW6FP8eQVceqQHLUZuTXPNWoQAoYi3IHq8k3/TGvcGtl4ayGxu5NxztExyzZPMii+synGtqfDsPloQEzfFTr28oL1nBjJ8ThoaFE8xYFMB+TjW+LZnRqaEOzliqSpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H95SauM8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772920640; c=relaxed/simple;
+	bh=99M4VuiUwyQ2j0+BsOoEDhTe6t3pSU59HjbXD5IpkVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NWxKVKHIjuuyJqd2zEtxj3bu2Ci+Uij0C+eriiFH2OuIlSFQo6JXvz93wf/27ljsaxHqLjmWpyZUOyn/+aREWQ6w+vAaQ1UqI0MJ2F6sKwTm/6HF2nS39cSWV+9U5PFPrR6DWIMYgdp0zxshWRlvNS/QWVVZ3qcCfQjTsLKfmus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=gnxNrxDG; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H95SauM8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11D8C19422;
-	Sat,  7 Mar 2026 21:41:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772919665;
-	bh=La9CHRdOrLzZLDPTAtAarkgvYs/tV6l4hovAURiSbWs=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=H95SauM8cMdRQfmSjJluEq8aC2rl46kqs9CmLlS3flPDGexJ5R4xuif9BMgpdsbV2
-	 pZrp5gzJAJQ8LY9vJti5i6kN3kLq4bYGtkwsa+wqufxMOnam3N0RBCtW5c/V7UeSJv
-	 RORBiaElmYpn1Z18xNhoDrFmEa3w3v95O2PPcf3WHGKy8JcLZ42wBSsZRdwqA7Kl8l
-	 eN/Uuw+K6x+vNiVwwDQ0fcDNaXH5BRi3b5Ek9xuWhfKneyG/1ClMFKfeUKL873VUBl
-	 nOK/n8U4i3TcAtmHss+HGbLrhkFQEdhXUVlnQipuZW45KSMJ/viqZZzdiEmWLghvsl
-	 1wwTD6KoxVTMw==
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="gnxNrxDG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=WyD3akZ6snIIF8wdvZDEhv9RdHIGsOCzt0lWUwHBS0k=; b=gnxNrxDGKhBw8txpCJD3Xsr5rq
+	99pgbNCWaKQ26if8o04Ee1hqvDneQLjU0s7ulkMPKdUXqhVmsliSaROBJqlF+iyn/COsXdOu20LG0
+	nCPva+ysB+S/jzYRyUdU/e1DiN44aOA3bExEuMPwD1s2Aj3D9gJ2x41an9ylRoF1S+lg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vyzMu-00Af0y-Vd; Sat, 07 Mar 2026 22:39:28 +0100
+Date: Sat, 7 Mar 2026 22:39:28 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 0/4] Rust netlink support + use in Rust Binder
+Message-ID: <42407d43-00e9-4938-8d6c-70d83b0f2ac9@lunn.ch>
+References: <20260306-binder-netlink-v1-0-daceb5bc83f2@google.com>
+ <20260307104131.4c1d0de5@kernel.org>
+ <aayWSuOM59uojtuG@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 07 Mar 2026 22:40:58 +0100
-Message-Id: <DGWVKFEQVHA0.2C27PSBYR62D6@kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v7 05/10] rust: io: add IoLoc and IoWrite types
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-References: <20260224-register-v7-0-aad44f760f33@nvidia.com>
- <20260224-register-v7-5-aad44f760f33@nvidia.com>
- <DGPXX0NEGDZ4.1PKJR9IWL2FS3@garyguo.net>
- <DGQ67S1NH3OA.2MS0YVO0UU2E2@nvidia.com>
- <DGRJJA3068FV.3CE7J7SKLTN8O@garyguo.net>
- <DGRWZVJNLLH0.39JYHZIIMC9XK@nvidia.com>
- <DGSB81ZE18O1.31CVVHMP38U2W@garyguo.net>
- <DGSBMKY53C5T.3BRV3QI7KOZTL@kernel.org>
- <DGSC6U50TCHF.9FKDO3AWL3Y1@garyguo.net>
- <DGSZWZCI0H7H.2EM8L04YH0YRP@nvidia.com>
- <DGT09KTYDCU8.3BBAZBGIYRGWV@nvidia.com>
- <DGT8FQ97BL8O.1VC1JEXIEBDRA@nvidia.com>
- <DGU4TLDMLFN8.1KKSL2WATFZ7G@kernel.org>
- <DGU7U81KKLCD.2LEPJ73BGLQU@garyguo.net>
- <DGU88IHVRYHD.9WP9Z40UAN37@garyguo.net>
- <DGU92W2W71JI.HBIFK6L78F9C@kernel.org>
- <DGU9AZ43QK6Y.115RDSK0M9JY5@garyguo.net>
- <DGUAC0GJRR0Q.34WBS7BIZ58WF@kernel.org>
- <DGUB44J4FNCA.32QOV1DYI7VBK@garyguo.net>
- <DGUBN1HP1F8I.2RZGSFCBO9FQS@kernel.org>
- <DGUCFC9NJG5B.Z7YUXK4NEE04@garyguo.net>
- <DGVGGGBSC9PI.1TJV2ZAIML0BI@nvidia.com>
- <DGVMXCZGEWV9.41R0TPTD22S1@garyguo.net>
- <DGVNJ8ANGP3Q.1RAGWU2HJGRIB@nvidia.com>
- <DGVO2O009306.GNU06PZ13VA6@garyguo.net>
- <DGVPNC2HE0JB.1HOBJZX8L8XMQ@nvidia.com>
- <DGVQAUVL2SZZ.2TINCJXUIDTCK@garyguo.net>
- <DGVRU6S7WUIU.1OL2CZU2ZUIUO@nvidia.com>
- <DGVT62XLP0MZ.YVAQQ5APE9S6@garyguo.net>
- <DGW40MO7G2B1.27TW3629TLBOD@nvidia.com>
- <DGWUWSDMLCTQ.1675OOTK845MA@garyguo.net>
-In-Reply-To: <DGWUWSDMLCTQ.1675OOTK845MA@garyguo.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aayWSuOM59uojtuG@google.com>
 
-On Sat Mar 7, 2026 at 10:10 PM CET, Gary Guo wrote:
->> But if we can agree on
->>
->>     bar.put(Reg::foo());
->>
->> or even
->>
->>     bar.write_val(Reg::foo());
->
-> I'm okay with either.
+> > Please no duplication of existing code in Rust.
+> 
+> The plan is certainly to get rid of C Binder, but it was unfortunately
+> not possible to get there without a transition period.
 
-write_val() or something similar please; put() is not a good choice for
-something that does not release a reference count in the kernel.
+Dumb question....
 
-(As for write_val(), I'm generally fine with the name, but I want to note t=
-hat
-it also may be slightly confusing as it is the two-argument write() method =
-which
-distinguishes between location and value, whereas this one combines the two=
-.)
+Why?
+
+You are just sending messages to user space. Does the rust version
+send different messages? Can user space tell the difference?
+
+     Andrew
