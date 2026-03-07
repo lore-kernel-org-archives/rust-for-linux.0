@@ -1,32 +1,32 @@
-Received: from outbound.mr.icloud.com (p-west2-cluster4-host2-snip4-6.eps.apple.com [57.103.69.207])
+Received: from outbound.mr.icloud.com (p-west2-cluster4-host12-snip4-2.eps.apple.com [57.103.69.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCAD3242D9
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 05:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.69.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56883624CE
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 05:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.69.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772862161; cv=none; b=ALYT4rXSEpy9usOIpkdqm8/ltObXVyzN3mdG1ry2QgJV49fGmOpatmW/V/vg8JscG9YzWF6rsYemsEHuaJqdJAqwAiK11aVFXykNuAvD3WXDEd18O380s2n5TOqUh+/khqsLnmKv6+KCN0qmpgpDUqq4ygfMXFVe9Pou/dKbjSY=
+	t=1772862169; cv=none; b=AfVIo2St2GA1SJy+x4xpSIq6CwvBm725DZ5Kf47KRiu1oGPIAR0HyhgGOb5YEGrwOSDOGZNcaIV+QLf7mi/YGa1q6s8L2Hewo0cfWlboKgxKCN2VNvFuMlcBnqsQXkB8rLE5lC+EBVzbzQUOUNRIlh9SwWq9tP4rVOydr0IwAFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772862161; c=relaxed/simple;
-	bh=ZSjmcrdV34bzKXpWd6cHEsF5+ig9nZV5X885Ax1Wnmo=;
+	s=arc-20240116; t=1772862169; c=relaxed/simple;
+	bh=1urO3W+tXQpxz7/cygxJHgwN7ArPo0nOtZjl1ZP95Z4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Sb5Ln2hJo+GFytphXvQn+Rl9y0+jqXEi/a7LONXsLSBbHpSeaIOQ1sZUvC7GaRCE9fyYFR3rYCSkCrllVQL9qXZo/0nSHJTRf9xXnAZZA9yrXBfYipasPWTIEc0PA86c0deJhK6PKA3bseIppN7EzvHLAF83ydn+X55GEVtj9bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=vbHUWKX3; arc=none smtp.client-ip=57.103.69.207
+	 In-Reply-To:To:Cc; b=A5pTKTjgdLc3CjuNWs/eOxBa81IVgmezx86ODMJQCthkVj6ChKC4esxFfoVG2yMMWFNrjAPesuxruvD+n7L0SrCZkFCSLIDVUtGNfyoNaMey+d4x8nGM0ED+GBznxsRJAwEVvqXTi5AO5CZXifcLoRlEdDzmRTvcRBV1oywxtEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=Q/0NAPcG; arc=none smtp.client-ip=57.103.69.143
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="vbHUWKX3"
+	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="Q/0NAPcG"
 Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-9 (Postfix) with ESMTPS id B65D01800185;
-	Sat,  7 Mar 2026 05:42:37 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1772862159; x=1775454159; bh=KssQoUW/on33937pJ9+KEqYfwRqQfvvxPh/DLlwy+no=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=vbHUWKX3WuObe8XcgdavxkUK/y5FQb8Sn4yreV32ycXZ4JLCnmfxDbu/qrvsqMdZanSmNmABdcPrMLbZ1nQU46TBAsKhWp7ESOtGPwEslGcZZ1TvRD7AgK8hNWIuY1SxTqwqUjmbrrh95u/1IShXVOTIuk5+iGt3Pdmu04wd+7cP7wypNEQt8D5QCwP9Er4h/zcxfQEKQtOcYhp55Oq6sSXHg9zmdhX7kGvluAL74/AZBIgpVAIPtFiamvmbr2LzORkfdNulqtHdKJtLz830loSyYp9/7BuHYQcdRPS+kuz+SoQDCZ9AWuR+Ux26ZHOJK0QPDIR98ZcRQaUfEjYhqg==
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-9 (Postfix) with ESMTPS id 75D041800095;
+	Sat,  7 Mar 2026 05:42:42 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1772862167; x=1775454167; bh=XdHlyaAEEcdA5hKeorywmqGd2sIe7DLH+uuYf9TpebA=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=Q/0NAPcGPYUax5B5LdrBa6yFq9XGTSqrmIla5D8gldfoPTsC93HMUplavNB68X0Jka6YM36ICDQwBQJiJy60cKMTHcU1ygNFcs+EhjNozACLPCWVo4XplfvC8bqkVNhs/5RYx9mcKIATk///4qj8QSvQTrlS5kozKAM+FDvhfx76M9q7hs8xAc/qy+XhvKsu/HJDOYNaiuNfzcP47UVVIwaTyBPQLkCeVoSZxW2j2M2v14ktidfwNztPXBf2aDUAhDCl/BRSXsUP2IEIf8E7IjddQDdrJAIe9blFYL7La9G5mBaZgQPYD8nfg8PujhPYFm5Dxx/8vhTcbJwyEVafBA==
 mail-alias-created-date: 1772007648188
 Received: from [127.0.0.1] (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-9 (Postfix) with ESMTPSA id 1935718000AB;
-	Sat,  7 Mar 2026 05:42:32 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-9 (Postfix) with ESMTPSA id A9BA51800168;
+	Sat,  7 Mar 2026 05:42:37 +0000 (UTC)
 From: Mohamad Alsadhan <mo@sdhn.cc>
-Date: Sat, 07 Mar 2026 08:41:22 +0300
-Subject: [PATCH 2/3] rust_binder: add Rust binder tracepoints
+Date: Sat, 07 Mar 2026 08:41:23 +0300
+Subject: [PATCH 3/3] rust_binder: add in the new tracepoint calls
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,7 +35,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260307-rust-binder-trace-v1-2-5e03283c6e53@sdhn.cc>
+Message-Id: <20260307-rust-binder-trace-v1-3-5e03283c6e53@sdhn.cc>
 References: <20260307-rust-binder-trace-v1-0-5e03283c6e53@sdhn.cc>
 In-Reply-To: <20260307-rust-binder-trace-v1-0-5e03283c6e53@sdhn.cc>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -49,452 +49,260 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
  rust-for-linux@vger.kernel.org, Mohamad Alsadhan <mo@sdhn.cc>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13805; i=mo@sdhn.cc;
- h=from:subject:message-id; bh=ZSjmcrdV34bzKXpWd6cHEsF5+ig9nZV5X885Ax1Wnmo=;
- b=owGbwMvMwCV2WSbwWIGm61bG02pJDJmrd+03K1xxhM/Q8eau/Oe/L73YMsHfOjF/6aMvm8Sff
- HoZ2+3k0FHKwiDGxSArpsjy/Lz30YM/bpidOb/3FMwcViaQIQxcnAIwkUJZhn+2vNMc/8xfyXNO
- K3lmw7uVMull0nM5/zY8a/Py3jdbpViM4SejpsEhvuymkDM//JU2Keye9K1V56vzQv01WisXsiQ
- 9zeEAAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10445; i=mo@sdhn.cc;
+ h=from:subject:message-id; bh=1urO3W+tXQpxz7/cygxJHgwN7ArPo0nOtZjl1ZP95Z4=;
+ b=owGbwMvMwCV2WSbwWIGm61bG02pJDJmrdx1wqL/59/T6JI3p91cFpTQaZjzeNJtZxDmb9cGKo
+ oyH/2aqdJSyMIhxMciKKbI8P+999OCPG2Znzu89BTOHlQlkCAMXpwBMROMlw/9iHc2EtjDl2UEr
+ I5Wvc1sZ235PslrnvNTd6+OjC196nCIZ/ke/sRZsO37hYYqtWchmcbcNsiWfXQwie6fk7WpcuZE
+ pnxMA
 X-Developer-Key: i=mo@sdhn.cc; a=openpgp;
  fpr=E7CF4BC5C1F8D836CCCFBDCAD31C51C6702945B5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA3MDA0OSBTYWx0ZWRfX6/e6AJcF9u9B
- G1FqH7gypmn8tvj3TPmeN81f/kcgOKBIoIwTZlX5BDTOge9/PXExvwMMi0YlyT0zwidp5QNdPxP
- 2W12hyLNEdTUfv/HYewbxAfLqSqYEuX+F755rlljHRUeC3c1X3JAxnJrBrmHQ8nwXXVW0ixES/E
- xBHS8vRMFlIxvzJFp9A6WWfgx17PNe4R/AuOUg7qzpaV0tb2O8MYFYFithcQLKC4sGUPYmdDgoq
- dbqsTmIo2G7AXbkL6jq0delB7GM6ONIRaKLlvwOaoxTv6sBT0lcfRDhu3SGPI3In0eiL6+e0Htg
- mC9mN/7sqi4/gssr5T0LSX2ZkTyW70pC81sXrrcAVA0N464Pwe05xE07VosFRw=
-X-Authority-Info-Out: v=2.4 cv=E97AZKdl c=1 sm=1 tr=0 ts=69abbacf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA3MDA0OSBTYWx0ZWRfX6pxpeHcWmHoo
+ eAHAKg+6UJIvBl7ZH0Id7XI18wxemMFPejiKB6MkTBp8WfjChlDh9aCVtoKy84OAfkbKTBOf+36
+ jj3xhL5tIMKW59e9WJ2oS+hZzbEMWmUNh/mt90JHstmxKkheCO3/rR5mLVWDItZdNax2qaeXepm
+ 9Lc94SG5jMPZNLCHZai1zWrKWlYDhodqu1CliQ8azYK1zTI5HdtaLhMwL89M7fTBp8UHTdqVo07
+ bFa0vZqlNoVRomy2UEKq9VYty44UQ1Am/7/L3hQBgKwtluCQ+J+2R6lVNclX3Y7WwoUEDFjXoiW
+ T5BZ1SHsrimJOt2kfIrLO9SeJuW/AZYj9htxRbeygQcW2NZNSSAAh6CG4LKgzo=
+X-Proofpoint-GUID: _n76JRJNc5pIKCdgzZizqTylJVfPAtCZ
+X-Proofpoint-ORIG-GUID: _n76JRJNc5pIKCdgzZizqTylJVfPAtCZ
+X-Authority-Info-Out: v=2.4 cv=QstTHFyd c=1 sm=1 tr=0 ts=69abbad4
  cx=c_apl:c_pps:t_out a=9OgfyREA4BUYbbCgc0Y0oA==:117
  a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=IkcTkHD0fZMA:10 a=MKtGQD3n3ToA:10
  a=1oJP67jkp3AA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=NEAV23lmAAAA:8 a=1XWaLZrsAAAA:8 a=GLZNLDFE_iTv8WvtVSgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 1rFqbj5kQ4B482NOkpuHg7sXYZa8_ykL
-X-Proofpoint-ORIG-GUID: 1rFqbj5kQ4B482NOkpuHg7sXYZa8_ykL
+ a=zAWbjIijrVrU-cM0pgIA:9 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-07_02,2026-03-06_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- lowpriorityscore=0 mlxscore=0 suspectscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 bulkscore=0 clxscore=1030 phishscore=0 adultscore=0
- classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.22.0-2601150000 definitions=main-2603070049
-X-JNJ: AAAAAAABI1dkXKzm58p362nc13O7HdXWNBZAT8T+ineSqm32jJXVpNN7Usc960NgoSNTMfUj8paYZ1cAtYMLpogWGThiS91uqHGM61mU+0XOY2EOCIq0UtlBYHvfhjE73HGPGHsTho1cW8R1aO38vdAjw48Tu6QWtcvccE88LtoCp+ij3ANQE6vF/Qnq3F101N9u9SQX87LJehLnMcp1OceZ9lrDqsFgGZVbOysPgjhd4DncHeNMxsrwk7e1ByjKIe0VLgRjjGNzMG2PlnGBsQ4SYzv4a+vsAPvDwcV4mpZAqbtzegaMH3dWgVRxh4sKCXCJQf+N3xFDLFqcvnI1PR7/zqSQp9y9z0jVX3lhbBKl7hYgZ2meBcJLFhAX9Qvmj8oj6U3NK6BjS5y+7tAtKQd/DZpHkTJFixhqZuYbTSDRU587iUqRxJp3Fm80SyJznv7dSNZImvKx23KiNDa2fNDveIchvwdbs+wDeLP2hk1i6y9Zz8HUfezQ1budeAlosAYFzvRzMYgRxW65w+matMtqj2sDJN9WVGEUuPYOAFzJO+0jL3t/gFJ9qqxfWsyTJNWko4hHQRojEszrlWxCn0jR8x3UE0wIwSxx57TT/1qOGOSo0gH3C7mS55CvoZzoJP2yxMmD57+8w5411iTysxQAXgPk8tpfcVh8Wvgp6eeSUGbYXYLI33mEq/sTV0FhP79j9FOO3xUooPU2dUS7cBNcqhx11wAvM74lJ28UsaWoQTE5XvZ41tOMD1zr0ZBzCROPe16X46scqFYlr5kNX7gL6EFh62PRnz8VtY9D8muFAhTpRtkK
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
+ spamscore=0 adultscore=0 phishscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 classifier=spam authscore=0
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2603070049
+X-JNJ: AAAAAAABya6QzZO04yEzdPVNqOQa4b+ghuwAAttnC03V4ALEKXQTs/kyUmEAoMwtPEuEQpIOc6tDOjIy0V/Zn4aWCB7QokqRiG1ag8QFE8nS81WqcmFkVniMLnHv5fdAmicwfjLKXxenP31dNTV35TGrUcM/cGfdl+784mevIOa8ZZpRbCiy7VAQ1YB90MmK7FACQFjbCSzDCRBHQD339jyppNAwjqkajoVcuBhGiseP779fo2nP7/0h2mj9HIj2v3d5os3WbB/aQmkTyFZEONhUfQTsVr2yDDUf9T2CSOJEI5q56R5MQrWPDNA0AETexP/G2AE2zVoJpkCgFm03mzAh0nldt3EBWGQ0EMN4JDPP9j7AcV83IRgyO1KGSFeJklRY81Rlu0JH/3ZXjdFOEWukl3n/ksWZroM9Lg2wTdpj8V2WrJpS8TgtlWUcHlycyRpgfqzNJTAe3sD4V2ctUOSNTBLxRX9Zcbm5wUfznfqLiQCIruFlAgByEEsl/AigBlaU25g6wuOJNH/vGgzPc3HYOMp09OL5/b9ux7DBqPvJ95mSAkGvy3YvpJoss21c52cMYWwFP3qyEc8tFBhjdFpvqBEdqNScMdh8+QeO/uw/Uf9coKsKM9CScxz08Ks3TSh8brWWj62y2Fl/nDe4EHCal9m+/JKrhSN6pC5m9VWrR2CpXdJrojgMHSHXxr2onBME3nnLRt2xBpRgRnD+z4olPBVH+xtvua9rjkSx4tSrLCiIB9bpB7/etGIybJtIU2XnRR5yh11H5LeIYoU/q47ASpey5kzxNy5bCzGpbo4=
 
-New tracepoints: `{ioctl,read,write}_done`, `wait_for_work`,
-`transaction_received`, `transaction_fd_{send,recv}`,
-`{alloc,free}_lru_{start,end}`, `alloc_page_{start,end}`,
-`unmap_{user,kernel}_{start,end}`, `command` and `return`.
+Wire the new Rust Binder tracepoints into live execution paths.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1226
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Hook trace calls into:
+
+- ioctl entry/exit (`binder_ioctl`, `binder_ioctl_done`)
+- command parsing and return writes (`binder_command`,
+  `binder_return`)
+- read/write completion (`binder_read_done`, `binder_write_done`)
+- wait (`binder_wait_for_work`)
+- transaction (`binder_transaction_received`)
+- fd translation (`binder_transaction_fd_{send,recv}`)
+- buffer/page lifecycle (`binder_alloc_*`, `binder_free_*`,
+  `binder_unmap_*`)
+
 Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
 ---
- drivers/android/binder/rust_binder.h        |  28 +++--
- drivers/android/binder/rust_binder_events.h | 172 ++++++++++++++++++++++++++++
- drivers/android/binder/trace.rs             | 111 +++++++++++++++++-
- 3 files changed, 299 insertions(+), 12 deletions(-)
+ drivers/android/binder/allocation.rs       |  1 +
+ drivers/android/binder/page_range.rs       | 17 +++++++++++++++++
+ drivers/android/binder/process.rs          |  7 +++++--
+ drivers/android/binder/rust_binder_main.rs |  1 +
+ drivers/android/binder/thread.rs           | 15 +++++++++++++--
+ drivers/android/binder/transaction.rs      |  2 ++
+ 6 files changed, 39 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/android/binder/rust_binder.h b/drivers/android/binder/rust_binder.h
-index d2284726c..b27283fc9 100644
---- a/drivers/android/binder/rust_binder.h
-+++ b/drivers/android/binder/rust_binder.h
-@@ -59,44 +59,52 @@ extern const struct rust_binder_layout RUST_BINDER_LAYOUT;
+diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
+index 7f65a9c3a..8c0f94463 100644
+--- a/drivers/android/binder/allocation.rs
++++ b/drivers/android/binder/allocation.rs
+@@ -208,6 +208,7 @@ pub(crate) fn translate_fds(&mut self) -> Result<TranslatedFds> {
+             let res = FileDescriptorReservation::get_unused_fd_flags(bindings::O_CLOEXEC)?;
+             let fd = res.reserved_fd();
+             self.write::<u32>(file_info.buffer_offset, &fd)?;
++            crate::trace::trace_transaction_fd_recv(self.debug_id, fd, file_info.buffer_offset);
  
- static inline size_t rust_binder_transaction_debug_id(rust_binder_transaction t)
- {
--	return *(size_t *) (t + RUST_BINDER_LAYOUT.t.debug_id);
-+	return *(size_t *)(t + RUST_BINDER_LAYOUT.t.debug_id);
- }
+             reservations.push(
+                 Reservation {
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index fdd97112e..43fe23907 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -327,6 +327,8 @@ pub(crate) fn use_range(&self, start: usize, end: usize) -> Result<()> {
  
- static inline u32 rust_binder_transaction_code(rust_binder_transaction t)
- {
--	return *(u32 *) (t + RUST_BINDER_LAYOUT.t.code);
-+	return *(u32 *)(t + RUST_BINDER_LAYOUT.t.code);
- }
+             // SAFETY: The pointer is valid, and we hold the lock so reading from the page is okay.
+             if let Some(page) = unsafe { PageInfo::get_page(page_info) } {
++                crate::trace::trace_alloc_lru_start(self.pid, i);
++
+                 // Since we're going to use the page, we should remove it from the lru list so that
+                 // the shrinker will not free it.
+                 //
+@@ -335,9 +337,12 @@ pub(crate) fn use_range(&self, start: usize, end: usize) -> Result<()> {
+                 // The shrinker can't free the page between the check and this call to
+                 // `list_lru_del` because we hold the lock.
+                 unsafe { PageInfo::list_lru_del(page_info, page.nid(), self.shrinker) };
++
++                crate::trace::trace_alloc_lru_end(self.pid, i);
+             } else {
+                 // We have to allocate a new page. Use the slow path.
+                 drop(inner);
++                crate::trace::trace_alloc_page_start(self.pid, i);
+                 // SAFETY: `i < end <= inner.size` so `i` is in bounds.
+                 match unsafe { self.use_page_slow(i) } {
+                     Ok(()) => {}
+@@ -346,6 +351,7 @@ pub(crate) fn use_range(&self, start: usize, end: usize) -> Result<()> {
+                         return Err(err);
+                     }
+                 }
++                crate::trace::trace_alloc_page_end(self.pid, i);
+                 inner = self.lock.lock();
+             }
+         }
+@@ -448,8 +454,12 @@ pub(crate) fn stop_using_range(&self, start: usize, end: usize) {
  
- static inline u32 rust_binder_transaction_flags(rust_binder_transaction t)
- {
--	return *(u32 *) (t + RUST_BINDER_LAYOUT.t.flags);
-+	return *(u32 *)(t + RUST_BINDER_LAYOUT.t.flags);
- }
+             // SAFETY: Okay for reading since we have the lock.
+             if let Some(page) = unsafe { PageInfo::get_page(page_info) } {
++                crate::trace::trace_free_lru_start(self.pid, i);
++
+                 // SAFETY: The pointer is valid, and it's the right shrinker.
+                 unsafe { PageInfo::list_lru_add(page_info, page.nid(), self.shrinker) };
++
++                crate::trace::trace_free_lru_end(self.pid, i);
+             }
+         }
+     }
+@@ -667,6 +677,7 @@ fn drop(self: Pin<&mut Self>) {
+     let mmap_read;
+     let mm_mutex;
+     let vma_addr;
++    let pid;
  
- // Nullable!
--static inline rust_binder_node rust_binder_transaction_target_node(rust_binder_transaction t)
-+static inline rust_binder_node
-+rust_binder_transaction_target_node(rust_binder_transaction t)
- {
--	void *p = *(void **) (t + RUST_BINDER_LAYOUT.t.target_node);
-+	void *p = *(void **)(t + RUST_BINDER_LAYOUT.t.target_node);
+     {
+         // CAST: The `list_head` field is first in `PageInfo`.
+@@ -700,7 +711,9 @@ fn drop(self: Pin<&mut Self>) {
  
- 	if (p)
- 		p = p + RUST_BINDER_LAYOUT.n.arc_offset;
- 	return p;
- }
+         // SAFETY: Both pointers are in bounds of the same allocation.
+         page_index = unsafe { info.offset_from(inner.pages) } as usize;
++        pid = range.pid;
  
--static inline rust_binder_process rust_binder_transaction_to_proc(rust_binder_transaction t)
-+static inline rust_binder_process
-+rust_binder_transaction_to_proc(rust_binder_transaction t)
- {
--	void *p = *(void **) (t + RUST_BINDER_LAYOUT.t.to_proc);
-+	void *p = *(void **)(t + RUST_BINDER_LAYOUT.t.to_proc);
++        crate::trace::trace_unmap_kernel_start(pid, page_index);
+         // SAFETY: We hold the spinlock, so we can take the page.
+         //
+         // This sets the page pointer to zero before we unmap it from the vma. However, we call
+@@ -709,6 +722,8 @@ fn drop(self: Pin<&mut Self>) {
+         page = unsafe { PageInfo::take_page(info) };
+         vma_addr = inner.vma_addr;
  
- 	return p + RUST_BINDER_LAYOUT.p.arc_offset;
- }
++        crate::trace::trace_unmap_kernel_end(pid, page_index);
++
+         // From this point on, we don't access this PageInfo or ShrinkablePageRange again, because
+         // they can be freed at any point after we unlock `lru_lock`. This is with the exception of
+         // `mm_mutex` which is kept alive by holding the lock.
+@@ -719,7 +734,9 @@ fn drop(self: Pin<&mut Self>) {
  
--static inline struct task_struct *rust_binder_process_task(rust_binder_process t)
-+static inline struct task_struct *
-+rust_binder_process_task(rust_binder_process t)
- {
--	return *(struct task_struct **) (t + RUST_BINDER_LAYOUT.p.task);
-+	return *(struct task_struct **)(t + RUST_BINDER_LAYOUT.p.task);
- }
+     if let Some(vma) = mmap_read.vma_lookup(vma_addr) {
+         let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
++        crate::trace::trace_unmap_user_start(pid, page_index);
+         vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
++        crate::trace::trace_unmap_user_end(pid, page_index);
+     }
  
- static inline size_t rust_binder_node_debug_id(rust_binder_node t)
- {
--	return *(size_t *) (t + RUST_BINDER_LAYOUT.n.debug_id);
-+	return *(size_t *)(t + RUST_BINDER_LAYOUT.n.debug_id);
-+}
-+
-+static inline binder_uintptr_t rust_binder_node_ptr(rust_binder_node t)
-+{
-+	return *(binder_uintptr_t *)(t + RUST_BINDER_LAYOUT.n.ptr);
- }
+     drop(mmap_read);
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 41de55931..4d7b165e7 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1656,11 +1656,14 @@ pub(crate) fn ioctl(this: ArcBorrow<'_, Process>, file: &File, cmd: u32, arg: us
  
- #endif
-diff --git a/drivers/android/binder/rust_binder_events.h b/drivers/android/binder/rust_binder_events.h
-index e3adfb931..6725453f5 100644
---- a/drivers/android/binder/rust_binder_events.h
-+++ b/drivers/android/binder/rust_binder_events.h
-@@ -30,6 +30,45 @@ TRACE_EVENT(binder_ioctl,
- 	TP_printk("cmd=0x%x arg=0x%lx", __entry->cmd, __entry->arg)
- );
+         const _IOC_READ_WRITE: u32 = _IOC_READ | _IOC_WRITE;
  
-+DECLARE_EVENT_CLASS(binder_function_return_class,
-+	TP_PROTO(int ret),
-+	TP_ARGS(ret),
-+	TP_STRUCT__entry(
-+		__field(int, ret)
-+	),
-+	TP_fast_assign(
-+		__entry->ret = ret;
-+	),
-+	TP_printk("ret=%d", __entry->ret)
-+);
+-        match _IOC_DIR(cmd) {
++        let res = match _IOC_DIR(cmd) {
+             _IOC_WRITE => Self::ioctl_write_only(this, file, cmd, &mut user_slice.reader()),
+             _IOC_READ_WRITE => Self::ioctl_write_read(this, file, cmd, user_slice),
+             _ => Err(EINVAL),
+-        }
++        };
 +
-+#define DEFINE_RBINDER_FUNCTION_RETURN_EVENT(name)	\
-+DEFINE_EVENT(binder_function_return_class, name,	\
-+	TP_PROTO(int ret), \
-+	TP_ARGS(ret))
-+
-+DEFINE_RBINDER_FUNCTION_RETURN_EVENT(binder_ioctl_done);
-+DEFINE_RBINDER_FUNCTION_RETURN_EVENT(binder_read_done);
-+DEFINE_RBINDER_FUNCTION_RETURN_EVENT(binder_write_done);
-+
-+TRACE_EVENT(binder_wait_for_work,
-+	TP_PROTO(bool proc_work, bool transaction_stack, bool thread_todo),
-+	TP_ARGS(proc_work, transaction_stack, thread_todo),
-+	TP_STRUCT__entry(
-+		__field(bool, proc_work)
-+		__field(bool, transaction_stack)
-+		__field(bool, thread_todo)
-+	),
-+	TP_fast_assign(
-+		__entry->proc_work = proc_work;
-+		__entry->transaction_stack = transaction_stack;
-+		__entry->thread_todo = thread_todo;
-+	),
-+	TP_printk("proc_work=%d transaction_stack=%d thread_todo=%d",
-+		  __entry->proc_work, __entry->transaction_stack,
-+		  __entry->thread_todo)
-+);
-+
- TRACE_EVENT(binder_transaction,
- 	TP_PROTO(bool reply, rust_binder_transaction t, struct task_struct *thread),
- 	TP_ARGS(reply, t, thread),
-@@ -60,6 +99,139 @@ TRACE_EVENT(binder_transaction,
- 		  __entry->reply, __entry->flags, __entry->code)
- );
++        crate::trace::trace_ioctl_done(res);
++        res
+     }
  
-+TRACE_EVENT(binder_transaction_received,
-+	TP_PROTO(rust_binder_transaction t),
-+	TP_ARGS(t),
-+	TP_STRUCT__entry(
-+		__field(int, debug_id)
-+	),
-+	TP_fast_assign(
-+		__entry->debug_id = rust_binder_transaction_debug_id(t);
-+	),
-+	TP_printk("transaction=%d", __entry->debug_id)
-+);
-+
-+TRACE_EVENT(binder_transaction_fd_send,
-+	TP_PROTO(int t_debug_id, int fd, size_t offset),
-+	TP_ARGS(t_debug_id, fd, offset),
-+	TP_STRUCT__entry(
-+		__field(int, debug_id)
-+		__field(int, fd)
-+		__field(size_t, offset)
-+	),
-+	TP_fast_assign(
-+		__entry->debug_id = t_debug_id;
-+		__entry->fd = fd;
-+		__entry->offset = offset;
-+	),
-+	TP_printk("transaction=%d src_fd=%d offset=%zu",
-+		  __entry->debug_id, __entry->fd, __entry->offset)
-+);
-+
-+TRACE_EVENT(binder_transaction_fd_recv,
-+	TP_PROTO(int t_debug_id, int fd, size_t offset),
-+	TP_ARGS(t_debug_id, fd, offset),
-+	TP_STRUCT__entry(
-+		__field(int, debug_id)
-+		__field(int, fd)
-+		__field(size_t, offset)
-+	),
-+	TP_fast_assign(
-+		__entry->debug_id = t_debug_id;
-+		__entry->fd = fd;
-+		__entry->offset = offset;
-+	),
-+	TP_printk("transaction=%d dest_fd=%d offset=%zu",
-+		  __entry->debug_id, __entry->fd, __entry->offset)
-+);
-+
-+DECLARE_EVENT_CLASS(binder_lru_page_class,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index),
-+	TP_STRUCT__entry(
-+		__field(int, proc)
-+		__field(size_t, page_index)
-+	),
-+	TP_fast_assign(
-+		__entry->proc = pid;
-+		__entry->page_index = page_index;
-+	),
-+	TP_printk("proc=%d page_index=%zu",
-+		  __entry->proc, __entry->page_index)
-+);
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_alloc_lru_start,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_alloc_lru_end,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_free_lru_start,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_free_lru_end,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_alloc_page_start,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_alloc_page_end,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_unmap_user_start,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_unmap_user_end,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_unmap_kernel_start,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+DEFINE_EVENT(binder_lru_page_class, binder_unmap_kernel_end,
-+	TP_PROTO(int pid, size_t page_index),
-+	TP_ARGS(pid, page_index));
-+
-+TRACE_EVENT(binder_command,
-+	TP_PROTO(uint32_t cmd),
-+	TP_ARGS(cmd),
-+	TP_STRUCT__entry(
-+		__field(uint32_t, cmd)
-+	),
-+	TP_fast_assign(
-+		__entry->cmd = cmd;
-+	),
-+	TP_printk("cmd=0x%x %s",
-+		  __entry->cmd,
-+		  _IOC_NR(__entry->cmd) < ARRAY_SIZE(binder_command_strings) ?
-+			  binder_command_strings[_IOC_NR(__entry->cmd)] :
-+			  "unknown")
-+);
-+
-+TRACE_EVENT(binder_return,
-+	TP_PROTO(uint32_t cmd),
-+	TP_ARGS(cmd),
-+	TP_STRUCT__entry(
-+		__field(uint32_t, cmd)
-+	),
-+	TP_fast_assign(
-+		__entry->cmd = cmd;
-+	),
-+	TP_printk("cmd=0x%x %s",
-+		  __entry->cmd,
-+		  _IOC_NR(__entry->cmd) < ARRAY_SIZE(binder_return_strings) ?
-+			  binder_return_strings[_IOC_NR(__entry->cmd)] :
-+			  "unknown")
-+);
-+
- #endif /* _RUST_BINDER_TRACE_H */
+     pub(crate) fn mmap(
+diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+index aa5f2a75a..1028e0a8a 100644
+--- a/drivers/android/binder/rust_binder_main.rs
++++ b/drivers/android/binder/rust_binder_main.rs
+@@ -116,6 +116,7 @@ fn new(writer: UserSliceWriter, thread: &'a Thread) -> Self {
+     /// Write a return code back to user space.
+     /// Should be a `BR_` constant from [`defs`] e.g. [`defs::BR_TRANSACTION_COMPLETE`].
+     fn write_code(&mut self, code: u32) -> Result {
++        crate::trace::trace_return(code);
+         stats::GLOBAL_STATS.inc_br(code);
+         self.thread.process.stats.inc_br(code);
+         self.writer.write(&code)
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 0b62d24b2..ef7fba700 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -706,6 +706,7 @@ fn translate_object(
+                     core::mem::offset_of!(uapi::binder_fd_object, __bindgen_anon_1.fd);
  
- /* This part must be outside protection */
-diff --git a/drivers/android/binder/trace.rs b/drivers/android/binder/trace.rs
-index d54b18ab7..e270d08a5 100644
---- a/drivers/android/binder/trace.rs
-+++ b/drivers/android/binder/trace.rs
-@@ -5,13 +5,33 @@
- use crate::transaction::Transaction;
+                 let field_offset = offset + FD_FIELD_OFFSET;
++                crate::trace::trace_transaction_fd_send(view.alloc.debug_id, fd, field_offset);
  
- use kernel::bindings::{rust_binder_transaction, task_struct};
--use kernel::ffi::{c_uint, c_ulong};
--use kernel::task::Task;
-+use kernel::error::Result;
-+use kernel::ffi::{c_int, c_uint, c_ulong};
-+use kernel::task::{Pid, Task};
- use kernel::tracepoint::declare_trace;
+                 view.alloc.info_add_fd(file, field_offset, false)?;
+             }
+@@ -1323,6 +1324,7 @@ fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
+         while reader.len() >= size_of::<u32>() && self.inner.lock().return_work.is_unused() {
+             let before = reader.len();
+             let cmd = reader.read::<u32>()?;
++            crate::trace::trace_command(cmd);
+             GLOBAL_STATS.inc_bc(cmd);
+             self.process.stats.inc_bc(cmd);
+             match cmd {
+@@ -1412,11 +1414,18 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+             UserSlice::new(UserPtr::from_addr(read_start as _), read_len as _).writer(),
+             self,
+         );
+-        let (in_pool, use_proc_queue) = {
++        let (in_pool, has_transaction, thread_todo, use_proc_queue) = {
+             let inner = self.inner.lock();
+-            (inner.is_looper(), inner.should_use_process_work_queue())
++            (
++                inner.is_looper(),
++                inner.current_transaction.is_some(),
++                !inner.work_list.is_empty(),
++                inner.should_use_process_work_queue(),
++            )
+         };
  
- declare_trace! {
-     unsafe fn binder_ioctl(cmd: c_uint, arg: c_ulong);
-+    unsafe fn binder_ioctl_done(ret: c_int);
-+    unsafe fn binder_read_done(ret: c_int);
-+    unsafe fn binder_write_done(ret: c_int);
-+    unsafe fn binder_wait_for_work(proc_work: bool, transaction_stack: bool, thread_todo: bool);
-     unsafe fn binder_transaction(reply: bool, t: rust_binder_transaction, thread: *mut task_struct);
-+    unsafe fn binder_transaction_received(t: rust_binder_transaction);
-+    unsafe fn binder_transaction_fd_send(t_debug_id: c_int, fd: c_int, offset: usize);
-+    unsafe fn binder_transaction_fd_recv(t_debug_id: c_int, fd: c_int, offset: usize);
-+    unsafe fn binder_alloc_lru_start(pid: c_int, page_index: usize);
-+    unsafe fn binder_alloc_lru_end(pid: c_int, page_index: usize);
-+    unsafe fn binder_free_lru_start(pid: c_int, page_index: usize);
-+    unsafe fn binder_free_lru_end(pid: c_int, page_index: usize);
-+    unsafe fn binder_alloc_page_start(pid: c_int, page_index: usize);
-+    unsafe fn binder_alloc_page_end(pid: c_int, page_index: usize);
-+    unsafe fn binder_unmap_user_start(pid: c_int, page_index: usize);
-+    unsafe fn binder_unmap_user_end(pid: c_int, page_index: usize);
-+    unsafe fn binder_unmap_kernel_start(pid: c_int, page_index: usize);
-+    unsafe fn binder_unmap_kernel_end(pid: c_int, page_index: usize);
-+    unsafe fn binder_command(cmd: u32);
-+    unsafe fn binder_return(ret: u32);
- }
++        crate::trace::trace_wait_for_work(use_proc_queue, has_transaction, thread_todo);
++
+         let getter = if use_proc_queue {
+             Self::get_work
+         } else {
+@@ -1482,6 +1491,7 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlice, wait: bool) -> Resul
+         let mut ret = Ok(());
+         if req.write_size > 0 {
+             ret = self.write(&mut req);
++            crate::trace::trace_write_done(ret);
+             if let Err(err) = ret {
+                 pr_warn!(
+                     "Write failure {:?} in pid:{}",
+@@ -1498,6 +1508,7 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlice, wait: bool) -> Resul
+         // Go through the work queue.
+         if req.read_size > 0 {
+             ret = self.read(&mut req, wait);
++            crate::trace::trace_read_done(ret);
+             if ret.is_err() && ret != Err(EINTR) {
+                 pr_warn!(
+                     "Read failure {:?} in pid:{}",
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index 75e6f5fba..c43846bb7 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -430,6 +430,8 @@ fn do_work(
  
- #[inline]
-@@ -19,12 +39,44 @@ fn raw_transaction(t: &Transaction) -> rust_binder_transaction {
-     t as *const Transaction as rust_binder_transaction
- }
+         self.drop_outstanding_txn();
  
-+#[inline]
-+fn to_errno(ret: Result) -> i32 {
-+    match ret {
-+        Ok(()) => 0,
-+        Err(err) => err.to_errno(),
-+    }
-+}
++        crate::trace::trace_transaction_received(&self);
 +
- #[inline]
- pub(crate) fn trace_ioctl(cmd: u32, arg: usize) {
-     // SAFETY: Always safe to call.
-     unsafe { binder_ioctl(cmd, arg as c_ulong) }
- }
- 
-+#[inline]
-+pub(crate) fn trace_ioctl_done(ret: Result) {
-+    // SAFETY: Always safe to call.
-+    unsafe { binder_ioctl_done(to_errno(ret)) }
-+}
-+#[inline]
-+pub(crate) fn trace_read_done(ret: Result) {
-+    // SAFETY: Always safe to call.
-+    unsafe { binder_read_done(to_errno(ret)) }
-+}
-+#[inline]
-+pub(crate) fn trace_write_done(ret: Result) {
-+    // SAFETY: Always safe to call.
-+    unsafe { binder_write_done(to_errno(ret)) }
-+}
-+
-+#[inline]
-+pub(crate) fn trace_wait_for_work(proc_work: bool, transaction_stack: bool, thread_todo: bool) {
-+    // SAFETY: Always safe to call.
-+    unsafe { binder_wait_for_work(proc_work, transaction_stack, thread_todo) }
-+}
-+
-+
-+
- #[inline]
- pub(crate) fn trace_transaction(reply: bool, t: &Transaction, thread: Option<&Task>) {
-     let thread = match thread {
-@@ -35,3 +87,58 @@ pub(crate) fn trace_transaction(reply: bool, t: &Transaction, thread: Option<&Ta
-     // valid or null.
-     unsafe { binder_transaction(reply, raw_transaction(t), thread) }
- }
-+
-+#[inline]
-+pub(crate) fn trace_transaction_received(t: &Transaction) {
-+    // SAFETY: The raw transaction is valid for the duration of this call.
-+    unsafe { binder_transaction_received(raw_transaction(t)) }
-+}
-+
-+#[inline]
-+pub(crate) fn trace_transaction_fd_send(t_debug_id: usize, fd: u32, offset: usize) {
-+    // SAFETY: This function is always safe to call.
-+    unsafe { binder_transaction_fd_send(t_debug_id as c_int, fd as c_int, offset) }
-+}
-+#[inline]
-+pub(crate) fn trace_transaction_fd_recv(t_debug_id: usize, fd: u32, offset: usize) {
-+    // SAFETY: This function is always safe to call.
-+    unsafe { binder_transaction_fd_recv(t_debug_id as c_int, fd as c_int, offset) }
-+}
-+
-+macro_rules! define_wrapper_lru_page_class {
-+    ($($name:ident),* $(,)?) => {
-+        $(
-+            kernel::macros::paste! {
-+                #[inline]
-+                pub(crate) fn [<trace_ $name>](pid: Pid, page_index: usize) {
-+                    // SAFETY: Always safe to call.
-+                    unsafe { [<binder_ $name>](pid as c_int, page_index) }
-+                }
-+            }
-+        )*
-+    };
-+}
-+
-+define_wrapper_lru_page_class!(
-+    alloc_lru_start,
-+    alloc_lru_end,
-+    free_lru_start,
-+    free_lru_end,
-+    alloc_page_start,
-+    alloc_page_end,
-+    unmap_user_start,
-+    unmap_user_end,
-+    unmap_kernel_start,
-+    unmap_kernel_end,
-+);
-+
-+#[inline]
-+pub(crate) fn trace_command(cmd: u32) {
-+    // SAFETY: This function is always safe to call.
-+    unsafe { binder_command(cmd) }
-+}
-+#[inline]
-+pub(crate) fn trace_return(ret: u32) {
-+    // SAFETY: This function is always safe to call.
-+    unsafe { binder_return(ret) }
-+}
+         // When this is not a reply and not a oneway transaction, update `current_transaction`. If
+         // it's a reply, `current_transaction` has already been updated appropriately.
+         if self.target_node.is_some() && tr_sec.transaction_data.flags & TF_ONE_WAY == 0 {
 
 -- 
 2.52.0
