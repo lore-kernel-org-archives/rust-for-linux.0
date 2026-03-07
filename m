@@ -1,38 +1,38 @@
 Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9AC225417
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 14:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F0A3A1E9B
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 15:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772894616; cv=none; b=my/AxCHjSB79j/KcN231YK4HdEzucpFFU7+nwHicbtKnsjL6XuuhPr6338a82FAzY4BThmHSIgLJrQqwz3M/JvJRafucahNZGP83qwkcwEMMd8ojxZhtJpPJGP7HyYyOSJ/qjv3rlL4lQMOwbyNw8cCQm5Z2v8n1maIynGdVHuQ=
+	t=1772895809; cv=none; b=TYo4Wl1izmXvZYL9aaKVTFeGvR9Qn1IMHPIMK7zHCgLEJLjFeR+vWC0ql1uFQAt4gxQ7o7LsJn9Yqup80GUZFQ+hAEgHlBvg/gdP2CivFnXzc4FD6wYkNEPkSl/2W5bAjAXS/InfJv5L5qinC9Ayjn9OK8+cReIYYWJYe4TZR2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772894616; c=relaxed/simple;
-	bh=qD0U5lewz7426Q2YvwhJNhtvRwekMbJ2NJP5kc56hjI=;
+	s=arc-20240116; t=1772895809; c=relaxed/simple;
+	bh=YopjtQ831nORHTq3BmR2IvkR3be1dw7pERjTIvZN7Ck=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gsd4iJjrJnaI680C5uP7OaMFlet8Mts9Oy3WhP1DKsof7GeUNH4PAAVYxMmfO977xVgPYjzs9AfFiWM3r0oHT5CjAU5IqcojiiM0dcNZAZ3230+N9ZgR1z6XhsFTVe+L6kL+9RDhJrEvIF80dhHeIYEkhY+DWZgquLYkRhjrh0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=hO/OPOlL; arc=none smtp.client-ip=185.67.36.66
+	 Content-Type:MIME-Version; b=j8fMh3TxZI1t9N358dtybkslzth7iBVst0+h7PeBxZEx8pHB2R4ou7g7JKsFvesk6GO4fVKRFeujcXCrt9kCDFPzAejZ63jtWahPywJ2C4PaZDj8X1mEKaUS5bouQ8mX5855k8QlUS/n+pLw27aafANE/zHhs68fehgAGgHHtX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=Uch8DRUT; arc=none smtp.client-ip=185.67.36.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="hO/OPOlL"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="Uch8DRUT"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id D19A9240103
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 15:43:31 +0100 (CET)
+	by mout02.posteo.de (Postfix) with ESMTPS id 02EBF240108
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Mar 2026 16:03:25 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1772894611; bh=gkn5VetmaVc1kf4PBy8wcklq2xsb1pnj9jUKQzNsy+o=;
+	t=1772895805; bh=85pMn91pvCeVIfx+UL//VyWHbHVXCjnJFWgF9MrBPsU=;
 	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
 	 MIME-Version:OpenPGP:From;
-	b=hO/OPOlLamalCA0hRVQg+sPJZ43gjTIBuuatmOvqMvukShxRUrB/uTglX7LfZByjn
-	 TUoOFWPHqrbaH1zlD4nmmo4UTHoAAwHO/m03aDA3IPxtS3udRrI3gyRXT15l0m63c5
-	 aLLHw6KfBBq5wzBI/7yT+IgFYJQVWD9Vg5/FMepMqKOMpN3st3kSGcsSFV1biXGN3o
-	 OBeaWz6JYFtH5OJ9C4j1vwU4dEbWQBeaaciGvugWFGwxwtpPBVymYRvK+l1qJpuxBp
-	 aSne/HQCHR+iE0uxC5BooDPU4XaQe8jGPQgSjGkOZ+u4QUR84C/Oy57sryO/56/2MP
-	 6CAG+9OnoYDUA==
+	b=Uch8DRUTxr8UyQhWkFFLshxHP8+EAXuJYY48ZcqFiHZx4EmHcNxStzOxi8dhrnYvf
+	 uKegAwi2GzzJjMpOV7t7ZPnxsXlWWiEZ5zCMX9eROsW7eBQ0DLQx+CoOb7weuxNXPt
+	 S1Ge8DwDmf7tDMwYL0gzEAPQTFXEsNJonVFF0qxof/n9E3oAfTVVT2KFjoj62auNXb
+	 5a8m3sZfXRdmMkd2KZ3+UVXdFfbVAT75dHmvgpAxDpb8muWsDbrW2AUyR6vziFD9I9
+	 txbHtMsIyHi5FQemnj1SxoJXczOUerHAhQ5vCV/2B3TJBSCLP2kKikSGDbrZjAvY2G
+	 JYbcZaLsArkbQ==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fSmH54Bpnz6tvk;
-	Sat,  7 Mar 2026 15:43:29 +0100 (CET)
-Message-ID: <347d1d2c676c70dd041e287e83b4bbe6a2784a9f.camel@posteo.de>
+	by submission (posteo.de) with ESMTPSA id 4fSmk26h3vz9rxQ;
+	Sat,  7 Mar 2026 16:03:22 +0100 (CET)
+Message-ID: <91a80c27dd3a2bad819a8537187a9d9adfa4a123.camel@posteo.de>
 Subject: Re: [PATCH 1/2] dt-bindings: mfd: Add binding for synology,microp
  devices
 From: Markus Probst <markus.probst@posteo.de>
@@ -47,7 +47,7 @@ To: Krzysztof Kozlowski <krzk@kernel.org>, Lee Jones <lee@kernel.org>, Rob
  <dakr@kernel.org>
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-staging@lists.linux.dev, rust-for-linux@vger.kernel.org
-Date: Sat, 07 Mar 2026 14:43:30 +0000
+Date: Sat, 07 Mar 2026 15:03:24 +0000
 In-Reply-To: <be179573-edc3-4b6c-8c91-ae7b0c61c1b1@kernel.org>
 References: <20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de>
 	 <20260306-synology_microp_initial-v1-1-fcffede6448c@posteo.de>
@@ -97,7 +97,7 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
  dQNGrZ91M9nlIBKw8Y7c7xZ4098qX2b8JX/CxD+gC1r4C8vuA3GkhFLx+KlkON7LyiJPkrePp6Qky
  jfGillcaQOqFZ3WwVqyzG1BUfTow==
 Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-Z9LPrWNQMdm4nklMoFU9"
+	protocol="application/pgp-signature"; boundary="=-K52iwPLrwnGDR7Khi5Qh"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -107,7 +107,7 @@ MIME-Version: 1.0
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
 
---=-Z9LPrWNQMdm4nklMoFU9
+--=-K52iwPLrwnGDR7Khi5Qh
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -187,6 +187,27 @@ wn
 > > +  no-check-fan:
 >=20
 > Vendor prefix
+
+In the documentation it says
+
+"
+Nonstandard property names should specify a unique string prefix, such
+as a stock ticker symbol, identifying the name of the company or
+organization that defined the property.
+"
+
+I am not sure whether to use synology or linux as vendor prefix here.
+
+The property itself was not defined by synology,
+
+but the property also is not necessarily specific to linux.
+The driver has to tell the device whether it should even check for fan
+failures. The property wouldn't alter behaviour of the driver, but of
+the device. The device itself would not check for fan failures anymore.
+
+Thanks
+- Markus Probst
+
 >=20
 > > +    type: boolean
 > > +    description: |
@@ -235,15 +256,6 @@ vents
 > > +    uart {
 >=20
 > Drop, unuesed
-The device uses the serial device bus. Thus the device node needs to be
-inside a uart device node. The uart node represents a serial device
-port in that example.
-
-This is also done the same way in
-- Documentation/devicetree/bindings/mfd/qnap,ts433-mcu.yaml
-- Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml
-- Documentation/devicetree/bindings/net/bluetooth/brcm,bluetooth.yaml
-
 >=20
 > > +      microp {
 >=20
@@ -254,10 +266,6 @@ tree-basics.html#generic-names-recommendation
 > If you cannot find a name matching your device, please check in kernel
 > sources for similar cases or you can grow the spec (via pull request to
 > DT spec repo).
-"mcu" seems the most fitting, altough it is not part of the list.
-It it used here though:
-- Documentation/devicetree/bindings/mfd/qnap,ts433-mcu.yaml
-
 >=20
 > > +        compatible =3D "synology,microp";
 > > +
@@ -278,29 +286,26 @@ It it used here though:
 > Best regards,
 > Krzysztof
 
-Thanks
-- Markus Probst
-
---=-Z9LPrWNQMdm4nklMoFU9
+--=-K52iwPLrwnGDR7Khi5Qh
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmmsOY0bFIAAAAAABAAO
-bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSHAcP/R4hsVTBVkVSs/+oHk4+
-GLY7t2uaSeUFKsA7C2Y57r7cGkapvK62PkQItuSUpsyER2oXXGYfVqC6R+u1Z/3N
-q18fgRk/oBOCfp5kbeZXTvmZEIFxteNrw5t9tvStJQuoQkN0vIp5WZ3B5UjS2WrE
-Ws8P0y6C3azG4Cdep0Qshn58Tmw0MZg7M1DxGd2HJdvX/PZc8+hLkqMdgTiCTzc4
-/BDblf5xIVYV+tD/xT8bGbz4q8zii0TwetuSkZBVw4ogs/6j2YE6w0z+0g4YZSbC
-0kPJkfRwjUG/PEzz4Yo9moV6KEHhjE4yZ2hr6dfHOU+oEVMPL1NMM5YBSv4a07Rq
-CPW8qF6Jb1cY/f7pRQ4Hs55BtLow9rUaF6pIyNg86STFxzUUO1uEooYVxAgr1mAa
-yFw0PKnsNqKIo64oFPHutjPy/zGHeDwxBpx6YvZEFo13HO7OGl+VzXmIs23w2myh
-IWaShykup365xbWyh3PFKzd0pELTqU3yPq+yy8RcOWGy+GcKF+y6LvQv+MHZCU/y
-uTCrQdZDolE/8UPhcRkt4NLPoReWGsozA5kr9wH8/3RHFEWlhBxZbcFREGuxER6Q
-dEiIKCJrfAN3U5Xavr7zRv7Qqs+UpNrAVdyMKtq2yosr/uL6pdTn6uTDolCPXCz5
-3svU61qpWesk/wtc6FjMLVG/
-=2ENr
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmmsPjcbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSMngP/2YowX4VAeDRbbrgtrmO
+Ok474zMAqY5Y3+DHEpA4fcZRIi0hpUMTE+ZGY1OyXB9k326T4Xephwa19IBBDlDp
+riKr8lWQ/q5G2K55J3asj35KnQ6eJnY0+LsY53uf1KTGhKUkyC9NHdt9jeiVFkZn
+rZv34j6mjQuFAvJhydO6tY5quAv7wksjkaEw93jwXWgfJg2SqK+AkewfyImJd5FB
+TuCE8lzeUROPOyIRcPQAmHCiGSfKJv6IzFxRYDlyWcFzWZQvHgelKGAuIKYuF48t
+469xFyPf044AvBAdxh+31DLvaotXq+UHQTeHRc1qmv9P/QSJEfhgE8iyM7/9rGSN
+ptlhk1JC/Oq+s706zrlA8ryvHjdlQICzIObKYqgczpMwZSIGwDpbrzMuCnkzkDro
+rxe5q7Bm2CVZBL6yGN/qUqxH7J7iy0aDsQHTe2TZIesHwnI25URUiQPiSpefckyk
+xhmnZoCIA2LVsQDWtEx+b8SU2KgFrBmloI3xPbI81a8WxQs7cdFJ4Ha5GhLNNiLT
+V5k0DvXM0rXsQZCC8Q4Ll6NM/Gf9LWjYwjfpYJzeOPQAMSnaGQTrl+tGP3KHf69r
+rKjwZWjH32yJpgqvl7dHJxF5euqimJT/O0D9Rojoq/95JzVaJ1tb+iaIc88kEaCM
+BduN50fu24ONmMfq6ubxonbW
+=NMMl
 -----END PGP SIGNATURE-----
 
---=-Z9LPrWNQMdm4nklMoFU9--
+--=-K52iwPLrwnGDR7Khi5Qh--
