@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C859F3016E0;
-	Sun,  8 Mar 2026 18:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFC523E35F;
+	Sun,  8 Mar 2026 18:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772996121; cv=none; b=EtG6gb+uXhQi9wLLxZl/X5NcHPiQGk9X5oFxdjXiH7X61WIXYnkRhVSJEhtGN6vTRUX2ocyS3NKdoPokK6wQDy1Bg5C51O8HuwIEEkh7VGur/yWSkQlCEUzoFMhENuXwdW9DDbTkPvh7t6ttiWPQZ/G1YGGCCLn9f8M7/pc1KHU=
+	t=1772996207; cv=none; b=l2ejvBztwLwc78JGWdOdFKgq8HGgI8UPDhZ+trwRL8djt2dP+7txWuO1Qk1uYGRfhRfA2GIypsS2MKz7w5dsfWJVUWnxjN5ADCrFOhtlXr6pKnNQr8FsjXe1AArH9AVJbPWSv2n2tdlxIcwr2rhFafCIyZ+32uwQ3sYlRDihYWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772996121; c=relaxed/simple;
-	bh=RSx761abYApX0s6NDuvzp17AfAnTUYOmexubAKrAIA4=;
+	s=arc-20240116; t=1772996207; c=relaxed/simple;
+	bh=1b7PrKCMWI8OXsaOWPp+ifcUI4P+AtBHqjypjS8juqQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YAq57VaLHpB1FjBwwvb1o36Yt7zAb4Z+CEZIhaanTCOJ5oCPQ9TQCC031EK63w2/cSJ+O314R8cMNurvfQbc368jix0Zf/FUB4dyZ6VYCWVZP5dpbZLii2w1+5uYu2GddLKtyNJrRyclwgpBg42tCsGeozQwmWxmibrUdqJ70Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuncFJWU; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=XBHuayz9eflJhMG0yWLnaR7Vr/9I6dZUb6qX7it7eEB/sS1HUJRRVQ8q/fS2izwLhAe8SoWjWc8NB1PZYlqmu2QpwmRUqS8MnC95PyGt6WRd4bPpLwUodURShItgqAWMKPgiyInYupSLNGEfCQaxhQqMLPe2/ov3o90824QLF5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pT4rhOAE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuncFJWU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0269C2BCB0;
-	Sun,  8 Mar 2026 18:55:20 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pT4rhOAE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10045C116C6;
+	Sun,  8 Mar 2026 18:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772996121;
-	bh=RSx761abYApX0s6NDuvzp17AfAnTUYOmexubAKrAIA4=;
+	s=korg; t=1772996206;
+	bh=1b7PrKCMWI8OXsaOWPp+ifcUI4P+AtBHqjypjS8juqQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CuncFJWUIXj8Fxz4jPPLRScQMocQ4M0obaoBz0/V8WOPuVofh7q/95CvQlJkDK4fH
-	 VPuANrniA4cidEmpBG2MwcCUl66tAqbRISj4Tp9kUOjfjikUIOD/9inviFObqC/rAn
-	 PCOjuxmWWqIJGPIktUU9Vb8PUpXCzO6pcmw+ZR3Y=
-Date: Sun, 8 Mar 2026 19:55:19 +0100
+	b=pT4rhOAE2mrmtIa9HfDNaSx00pIGSsLAzJ6PNa6JHX/SlMrDrPhKXvaG4cV0y9Ste
+	 TWJRp3iH0FU5MQQjTdUK2E2tusA8yU3a/BHdAIngiD3V5mEV1AvZ7HNDDMPZwMOtCG
+	 B3OeBmGccJfkjJTC7E7Td28V1eFsP0e8spi+vZGs=
+Date: Sun, 8 Mar 2026 19:56:44 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Markus Probst <markus.probst@posteo.de>
 Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -37,7 +37,7 @@ Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v2 2/2] mfd: Add initial synology microp driver
-Message-ID: <2026030827-nautical-overplant-399c@gregkh>
+Message-ID: <2026030850-quickstep-blinking-b853@gregkh>
 References: <20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de>
  <20260308-synology_microp_initial-v2-2-9389963f31c5@posteo.de>
 Precedence: bulk
@@ -51,91 +51,22 @@ Content-Disposition: inline
 In-Reply-To: <20260308-synology_microp_initial-v2-2-9389963f31c5@posteo.de>
 
 On Sun, Mar 08, 2026 at 06:41:20PM +0000, Markus Probst wrote:
-> Add a initial synology microp driver, written in Rust.
-> The driver targets a microcontroller found in Synology NAS devices. It
-> currently only supports controlling of the power led, status led, alert
-> led and usb led. Other components such as fan control or handling
-> on-device buttons will be added once the required rust abstractions are
-> there.
+> +kernel::module_serdev_device_driver! {
+> +    type: SynologyMicropDriver,
+> +    name: "synology_microp",
+> +    authors: ["Markus Probst <markus.probst@posteo.de>"],
+> +    description: "Synology Microp driver",
+> +    license: "GPL v2",
+> +    params: {
+> +        check_fan: i32 {
+> +            default: 1,
+> +            description: "Check for cpu fan failures",
+> +        },
+> +    },
 
-Why is this a mfd device?  Shouldn't it be an aux device?
-
-But this is just a serial port connection, so why is a kernel driver
-needed at all?
-
-> Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> ---
->  MAINTAINERS                                    |   6 +
->  drivers/mfd/Kconfig                            |   2 +
->  drivers/mfd/Makefile                           |   2 +
->  drivers/mfd/synology_microp/Kconfig            |  14 ++
->  drivers/mfd/synology_microp/Makefile           |   2 +
->  drivers/mfd/synology_microp/TODO               |   7 +
->  drivers/mfd/synology_microp/command.rs         |  50 +++++
->  drivers/mfd/synology_microp/led.rs             | 275 +++++++++++++++++++++++++
->  drivers/mfd/synology_microp/synology_microp.rs |  82 ++++++++
->  rust/uapi/uapi_helper.h                        |   2 +
->  10 files changed, 442 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e9e83ab552c7..092cd9e8a730 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -25550,6 +25550,12 @@ F:	drivers/dma-buf/sync_*
->  F:	include/linux/sync_file.h
->  F:	include/uapi/linux/sync_file.h
->  
-> +SYNOLOGY MICROP DRIVER
-> +M:	Markus Probst <markus.probst@posteo.de>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/mfd/synology,microp.yaml
-> +F:	drivers/mfd/synology_microp/
-> +
->  SYNOPSYS ARC ARCHITECTURE
->  M:	Vineet Gupta <vgupta@kernel.org>
->  L:	linux-snps-arc@lists.infradead.org
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index 7192c9d1d268..bc269719749f 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -2580,5 +2580,7 @@ config MFD_MAX7360
->  	  additional drivers must be enabled in order to use the functionality
->  	  of the device.
->  
-> +source "drivers/mfd/synology_microp/Kconfig"
-> +
->  endmenu
->  endif
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index e75e8045c28a..0a6fa33d5c35 100644
-> --- a/drivers/mfd/Makefile
-> +++ b/drivers/mfd/Makefile
-> @@ -304,3 +304,5 @@ obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu_spi.o rsmu_core.o
->  obj-$(CONFIG_MFD_UPBOARD_FPGA)	+= upboard-fpga.o
->  
->  obj-$(CONFIG_MFD_LOONGSON_SE)	+= loongson-se.o
-> +
-> +obj-$(CONFIG_MFD_SYNOLOGY_MICROP)	+= synology_microp/
-> diff --git a/drivers/mfd/synology_microp/Kconfig b/drivers/mfd/synology_microp/Kconfig
-> new file mode 100644
-> index 000000000000..4bbbcf0b6e94
-> --- /dev/null
-> +++ b/drivers/mfd/synology_microp/Kconfig
-> @@ -0,0 +1,14 @@
-> +
-> +config MFD_SYNOLOGY_MICROP
-> +	tristate "Synology Microp driver"
-> +	depends on RUST
-> +	depends on SERIAL_DEV_BUS
-
-We don't have rust serdev bindings yet, but if we do, shouldn't you just
-depend on them instead of two different things here?
-
-
-> +	depends on LEDS_CLASS && LEDS_CLASS_MULTICOLOR
-> +	default n
-
-n is always the default, no need to say it again :)
+This is not the 1990's, please do not add new module parameters for no
+good reason.  This should be dynamic (why would you NOT want to check
+for cpu fan failures?) and per-device, not per-module.
 
 thanks,
 
