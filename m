@@ -1,40 +1,40 @@
 Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6D330AACB
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Mar 2026 18:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C658394482
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Mar 2026 18:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772995282; cv=none; b=lKPV1ivJOtPw0nldQ9xhfqcjVEEjfYn2iST6rUCypO1jKJI3OVls9xLeZO3QUkF0AhQts96MaNM91UHaO6/ARZBM6+sE4TJ3s7tMPCzjb8bmRfZ1mf/4TVjFJQ3lq/RtMBJ8i7oUAtDIrwYevj3LlJtL9AjLIZ74o/jwKJg4doA=
+	t=1772995282; cv=none; b=lpVnmB6pjBpRNx4M/1/2tF2s4hAwlSG/JYFqVH+PfxoWKFNaTvkA8Tc/6ahdV1uCvwnHEa8cf2SfxuP0rtQb5yR9feVHKhGnBKHbSo5Ypth/e4vA/fYQjxgSaQ9y6520wiXfsPw9rWYxP26AGhajVCABCYN+Z1VhyYWOXN6i5PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772995282; c=relaxed/simple;
-	bh=Rll2LiAd7aJ8ZjObMsrm3nlYdAzbjAMx+r5VAi0oRKk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IZ7BzGG605Uyd3wGSVqgwrrzshjcUW4sx02tPJv0/liZR6juGfAzP3TUbfZyyRiz1Tj1pqqEoABdv7zhgz77Uwf26uE7+226t1teeBzAVAMeD8oVxEigcte/QQ8p+LFXUgLlcl4b8AlvLZ3HQTO67FNAd9uywUCeyWmziZsc1Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=HQ6/j56b; arc=none smtp.client-ip=185.67.36.65
+	bh=nHXYuESLKr93xVIV34PnLf/bt4/S8/+tlOFebQTwCrU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=SysMKlL82wxj+i/XHt5mt6wUsjJPpn7xuQ0MdGZd7U61AmteaX0P1ORZup4zn62HKLwdmdSgfmyZXCFXf1Fu/SR0DqK7p12zXIx9Mi4Mtnt7s7RLvlTMBA4wOvogT7EADwdMmWCbq8NzLzBNUVhW0KJgaGUOVWF0XP3lE6Pmucc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=ZG8YmvCA; arc=none smtp.client-ip=185.67.36.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="HQ6/j56b"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="ZG8YmvCA"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 6A6BA24002E
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Mar 2026 19:41:18 +0100 (CET)
+	by mout01.posteo.de (Postfix) with ESMTPS id 6C67624002D
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Mar 2026 19:41:19 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1772995278; bh=Kb5QLxTf/WIFX1fpcVI2uQXKYdI4l9L0Is1c2qLFeDk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
-	b=HQ6/j56bF7znKcyZxM/1lpel2kwicKXw3pg1yUr4MG9K9EufLn9gtxnLaUGo2i5XE
-	 9bpSv8Bg6y18Ak+GFH2mo5bzZCTgOkbTj/5oLryRbJDnkcYX0unjH1v8aBobHHSTPn
-	 HqLIjw+HHzP/+F2/M8NRwxUf0E8pWMRgqa4QntB7Kp0JOj53CZN9TyNSfCjL0umUWV
-	 cYPrDIhCMa6BzxNZuWlSS5yu7SMpeH8+cTBe4hBun5SpYeOGXtzv/tvA8zc6hQHiog
-	 pytGWFl/4zVu/AxZfSbACHYET/NmF8FmsyXNe7NzAnR3X+fx5wF9K4qBfxQlk3yO2a
-	 6wsBNvoBd5MZg==
+	t=1772995279; bh=VjkL5/W8szE3iuKsDe3K4xDA7ycY45Ophsnoqi7RSsI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
+	b=ZG8YmvCAiwJGYmowl/5pp1yyE1AgbIcyOu61pxErfz/0sKTa7Xv24otiO/w7SmmeZ
+	 9VkzJ+ML+jn4Skn/95Ju5D97FpYQTqmbTS1LheS5kaEJZPGlhWOg295UwEjp+Ksx9N
+	 DNixFTNdN+V2Gxj2g6DmrhnUkFm6LjKvTnYsXr2yU9dcdoP4NF2uMKhSq5u8r3xOAL
+	 8sCFtvd6bINtx+DBAADhA8Pk0z1yZvKSocZeIpXSzeci9U8lu+ZCTz41dqh3cZiiAE
+	 5xiLu17oaQeqW01Vw/AfOm/oyMERwrDHhI0MOrHoToaNekXppeTcnv1zxj9y74mtxJ
+	 EEBlW+bg9HtgQ==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fTTVz6pClz9rxP;
-	Sun,  8 Mar 2026 19:41:15 +0100 (CET)
+	by submission (posteo.de) with ESMTPSA id 4fTTW14bPgz9rxR;
+	Sun,  8 Mar 2026 19:41:17 +0100 (CET)
 From: Markus Probst <markus.probst@posteo.de>
-Subject: [PATCH v2 0/2] Introduce Synology Microp driver
-Date: Sun, 08 Mar 2026 18:41:17 +0000
-Message-Id: <20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de>
+Date: Sun, 08 Mar 2026 18:41:18 +0000
+Subject: [PATCH v2 1/2] dt-bindings: mfd: Add synology,microp device
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -43,12 +43,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJnCrWkC/4WPQW7DIBBFr2KxLhFQbIxXvUcVWQ4MyUi2cYGgW
- JHvHmpXandd/pHe/2+eJEJAiKSrniRAxoh+LkG8VcTchvkKFG3JRDDRsHfW0LjOfvTXtZ/QBL/
- 0OGPCYaTMKTsYdVFSN6TQSwCHj73583zkAF/3MpCO429/mWOi5oIrGu4x9UXJQqYAtWw5aNbWp
- suC/FX6QTiXBzKCjXTQtXbKCKec7jLficsQgRo/TZi6KqsTo8EI8i10w5h8WPfPM9+N/n0yc8q
- oM86BhUbK1nwsPibwJwvkvG3bC++UCZJPAQAA
-X-Change-ID: 20260306-synology_microp_initial-0f7dac7b7496
+Message-Id: <20260308-synology_microp_initial-v2-1-9389963f31c5@posteo.de>
+References: <20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de>
+In-Reply-To: <20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de>
 To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
@@ -61,21 +58,21 @@ To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
  Danilo Krummrich <dakr@kernel.org>
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  rust-for-linux@vger.kernel.org, Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3087;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1987;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=Rll2LiAd7aJ8ZjObMsrm3nlYdAzbjAMx+r5VAi0oRKk=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBprcLF2rtp9UPti5j2ESXxsIwqi9SOT9mg6OdCJ
- HHpvmzlx/GJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaa3CxRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9L4gA//ZARmTJAmWfpO/6tGGkS7s/qBaydHxHu
- xNN07r98RalqWYnhKUKu041aK9Kf85v2pSdxnC2qD++xjNJx6+ux1fwHo0VTtnrQ4Y8MtjkQ9S4
- 8ZL7EnP2icKDeFwJFH7DH0XyvG01+sf8HWvvSdkBWLFZFtevUZk+YNvqxgI4H9scsdw5LyO+sdW
- U2hAujXQyAAQa0zcXmFptHCvllNMsfKzskh0TY17RwBOoE20trjx5IKWxVhTzbigcBaXioSC0LB
- VUao1ZfuLThHHU+vvg+mFA2P19XDeAUBsy0RdmT3Qn3vmvU8Vc1xltzi1xEzI/Uk1jWIZN8ohjF
- J5jURaW9SlPN1mIOu7t/DUL5h6LXqKZZFIP27FcRMZ9o/sC70Qx1KE2s+UzfoHHAc8YY0m1WHMa
- 0YCYGF78e5N/fuz6ycnogSKdyGRmYJj/fZWEnK1aRztI7xPPAI/2zdBQ449nRk+aNVyNdHhUQEX
- qwCKKIYjGezcWSHXjOkWq7Dveuvxicve6SpZrlOSN4Obv0hXPJx1XKK/kHNiNWkRGQwVC687BER
- EjVV87Q6ju6Q5JT6N1jbFaodwOCWcXwQ2t6bE1bSp26P2onYLUtP1J11v+D8wrx3eSghRAEZLiX
- GEBqnyXRp9v+12Jq38MO7F3kLqDh5RBpOJ1zl5YA0oyBg7xpxiTk=
+ bh=nHXYuESLKr93xVIV34PnLf/bt4/S8/+tlOFebQTwCrU=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBprcLHf/aJPEHMZZlhvPYoaFsdPJ4NaHFiot4Ns
+ 3FVVSAruB6JAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaa3CxxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9JVsQ//UXQZugJEftAvs3FuLNXgbgjQ/Rt3Mt5
+ 0o9Nz9Sa53y0mKvu+yaou1HOgedkoNErgPvA6lAv8ve/I2v17esGuGn9OKnzUcODGn8ycobreD+
+ MLHho2TodvSY11Va628c2SLivqGkSoQk5AIlmfDc2vCIBP3PEPYrbGreAlv+MoaGcmIRdcP7LlH
+ aBpc8yDOh+yGiez9I0zgNQB7W9dHcD86ZqMI+CBAVL/ic5hpzYj5pF4VoxLRKIl6iN69+7IRlIR
+ Jubk0S+UiFW6A0Y7q515bO9b09AA+9aOeNu0hN3xiaQCPyrWbD54MgM2UWX212TatYOjkmIa2D1
+ ACDY3RtVHIUW8+8dUJ3lv6EMtFyGpmi3FXtVw0cJLPL9gqYAl4Dn8+SNORhnZ4Dt/CGRUld+6oE
+ HCUbePg4deCkN9vcF/hzh60JWy84Yalx/EuzEbTHpFbzyPtcjtPknaUo3s7FxaPCrNAQH7Hq5Ma
+ jrIxjSvJrhzJ97okqvfrizClz2+/l0JWWRJSFbZzKyupbFq/6g5OtIV3u9ep0MWLDAoIUk4UXlk
+ XhCkcKRNBcgRWrSyqOlCjgRZCLnVqK+4hTq0Z3TPsNIEbdCGWu+2vqEOMCJvXtd/3J8YeLibXVz
+ SkqaKr3z1bt8uy6TgsfADIxjKRjD4E+ABX1xQEG3NH/ssCHAR6bQ=
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
 Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
@@ -121,67 +118,75 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
   aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Synology uses a microcontroller in their NAS devices connected to a
-serial port to control certain LEDs, fan speeds, a beeper, to handle
-proper shutdown and restart, buttons and fan failures.
+Add the Synology Microp devicetree bindings. Those devices are
+microcontrollers found on Synology NAS devices. They are connected to a
+serial port on the host device.
 
-This patch series depends on the rust led abstraction [1] and the rust
-serdev abstraction [2].
-
-This is only a initial version of the driver able to control LEDs.
-The following rust abstractions would be required, to implement the
-remaining features:
-- hwmon (include/linux/hwmon.h)
-- input (include/linux/input.h)
-- sysoff handler + hardware protection shutdown (include/linux/reboot.h)
-
-[1] https://lore.kernel.org/rust-for-linux/20260207-rust_leds-v12-0-fdb518417b75@posteo.de/
-[2] https://lore.kernel.org/rust-for-linux/20260306-rust_serdev-v2-0-e9b23b42b255@posteo.de/
+Those devices are used to control certain LEDs, fan speeds, a beeper, to
+handle buttons, fan failures and to properly shutdown and reboot the
+device.
 
 Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
-Changes in v2:
-- fix missing tabs in MAINTAINERS file
-- remove word binding from patch subject
-- add missing signed-off-by
-- add missing help entry in Kconfig
-- add missing spdx license headers
-- remove no-check{,-cpu}-fan properties from the dt-bindings and replace
-  them with the check_fan module parameter
-- use patternProperties for leds in dt-bindings
-- license dt-binding as GPL-2.0-only OR BSD-2-Clause
-- move driver from staging tree into mfd tree and mark it as work in
-  progress inside Kconfig
-- only register alert and usb led if fwnode is present
-- Link to v1: https://lore.kernel.org/r/20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de
+ .../devicetree/bindings/mfd/synology,microp.yaml   | 49 ++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
----
-Markus Probst (2):
-      dt-bindings: mfd: Add synology,microp device
-      mfd: Add initial synology microp driver
+diff --git a/Documentation/devicetree/bindings/mfd/synology,microp.yaml b/Documentation/devicetree/bindings/mfd/synology,microp.yaml
+new file mode 100644
+index 000000000000..60609bb19b66
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mfd/synology,microp.yaml
+@@ -0,0 +1,49 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mfd/synology,microp.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Synology NAS on-board Microcontroller
++
++maintainers:
++  - Markus Probst <markus.probst@posteo.de>
++
++description:
++  Synology devices contain a microcontroller on their device to control
++  certain leds, fan speeds, a beeper, to properly handle system shutdown
++  and reboot, buttons and fan failures.
++
++properties:
++  compatible:
++    const: synology,microp
++
++patternProperties:
++  "^(power|status|alert|usb)-led$":
++    $ref: /schemas/leds/common.yaml
++    unevaluatedProperties: false
++
++required:
++  - compatible
++  - power-led
++  - status-led
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/leds/common.h>
++
++    mcu {
++      compatible = "synology,microp";
++
++      power-led {
++        color = <LED_COLOR_ID_BLUE>;
++        function = LED_FUNCTION_POWER;
++      };
++
++      status-led {
++        color = <LED_COLOR_ID_MULTI>;
++        function = LED_FUNCTION_STATUS;
++      };
++    };
 
- .../devicetree/bindings/mfd/synology,microp.yaml   |  49 ++++
- MAINTAINERS                                        |   6 +
- drivers/mfd/Kconfig                                |   2 +
- drivers/mfd/Makefile                               |   2 +
- drivers/mfd/synology_microp/Kconfig                |  14 ++
- drivers/mfd/synology_microp/Makefile               |   2 +
- drivers/mfd/synology_microp/TODO                   |   7 +
- drivers/mfd/synology_microp/command.rs             |  50 ++++
- drivers/mfd/synology_microp/led.rs                 | 275 +++++++++++++++++++++
- drivers/mfd/synology_microp/synology_microp.rs     |  82 ++++++
- rust/uapi/uapi_helper.h                            |   2 +
- 11 files changed, 491 insertions(+)
----
-base-commit: 9fad1d148df6f36105159c2503d0ecb1397bc89a
-change-id: 20260306-synology_microp_initial-0f7dac7b7496
-prerequisite-change-id: 20251217-rust_serdev-ee5481e9085c:v2
-prerequisite-patch-id: 52b17274481cc770c257d8f95335293eca32a2c5
-prerequisite-patch-id: 680c0509490833f416b17eb3b918bb829ce7b90f
-prerequisite-patch-id: 37016d6c07f0da898be02bf30110e8c0a30025d2
-prerequisite-patch-id: 3dfc1f7e5ecd3e0dd65d676aeb16f55260847b25
-prerequisite-change-id: 20251114-rust_leds-a959f7c2f7f9:v12
-prerequisite-patch-id: 42c445ef6981e3a3740dbaaf307f4b810042e46f
-prerequisite-patch-id: 90c7b200cca722a592353885e21af069101c4e09
-prerequisite-patch-id: c664a52faa3d47000d252eb7603c9c08382e868a
+-- 
+2.52.0
 
