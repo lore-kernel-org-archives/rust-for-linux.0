@@ -1,116 +1,170 @@
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6167114A62B
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Mar 2026 19:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772997389; cv=pass; b=lxkPLQ1zpamBDvB8mjuTZ+rxF+rKZ2CmPp5n2y90cB+hx/bbLTlY/skza8aGJ1ITJJc42Zxgb5i1I6vxdd0p0x4R18qnwFZ6Xvj5UsdNenkZ3ytvHHzOapPnF0pNQ0Z1F3WXEHa/cAGivXPZbeEd5YUEccy76CLo/deoT84VKu0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772997389; c=relaxed/simple;
-	bh=OoM/WBxM1I8Ed2nQOe/ethQEmYCVMbXjh/MzJXB7iOA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fzbn/qxG6glu5qqCP+JpQlspl4w5raoLX4NEIhWgcCmRBTObW6GSulbrCht2LqJ/qLGCRLlSRIi8Hg40cUHNOA8lV2B9Jzvp7tq7zkSAKwlprP52t+jIiSVUY0AvMI3zZKq36UXz+vs0a5u9co7SgECLz+E5k0Eq8Mzr+8KWx4c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WkN1DAhO; arc=pass smtp.client-ip=74.125.82.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B4133263E
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Mar 2026 19:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772997809; cv=none; b=sLCZD1NhtbQdxsztHhbBH+af6f0eII9bc9ZJIzG4fZUHv+zBq88rqvQUDG2GdKf57TMLZSYZghjUPw22ePRAHQBaE4GVUVAZU5sNkVeHInDu42z9ToMxFDYLiPfKyG/oZF2fHFM67gmaBWLC9q5VYPfH5NxQ8kZFIuCEXUlr310=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772997809; c=relaxed/simple;
+	bh=xihVpT5t3yGzukukyCC5y7BNAC5zNdc1OPNdh7cS9HQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=II/HaPBXTcdXqrpgUtwUNRbNYYbHxOEgBoIefmcKRHKbP0hvX7ct7B6iB/ucSXrzHGQYPuRvQ32BWoWIpYCsRzew7fQTEDKQFo9SY5YwiDFl1bJukAok8WizF9/q8ZUECqCVpSYYMd+RSmmTaWtpubZJ8kj6bntJQnlEaXmGeEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=fQ/GYSR+; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WkN1DAhO"
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-128bae6a35aso203744c88.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Mar 2026 12:16:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1772997387; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Y7msoNQ66ni7yUTUe+zmgHMOkxK8ypL/sB/HVbbqs3M0eIDrhtImsjsuLcEP8i2tzP
-         U77L6rxiixAZeLJ5JRuKY9otEZU8psW+tSY0LVfXh6qf4te7AP7Obnon1aAATmZrPlWn
-         wssnf9dp0oYCNXKAnlBvF2geRs612t6CFVeiYY2uoFsw/Xc95ymlcwxB2NaoJpQ4eNM/
-         MC0nO1jKiD1YWi/9lx9KXzpDM1DJMbRKh3TJ878GK1KULh4l32aKo9pykXoH6oK6b7L6
-         fz/NcMegAFZQAM0Wi+jFEhjIzjQs/D0dgoVScEricshsc/dDDVHUOib0nwISvWZ124pH
-         Gp1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OoM/WBxM1I8Ed2nQOe/ethQEmYCVMbXjh/MzJXB7iOA=;
-        fh=HFHgAlLf5SmM4T4HCu9uzawKwCGlJwD1lZ3M2GrPuA8=;
-        b=Xu/aS47VNWhSbr1BY8ZucW6/+z8qmnm5gChfUc/WP+Ij/3eyaQSXCDguGm8cq+EjWH
-         0m0Y+6XbGgo40R0A+v0GcQyPKDFvFjXzd9TWdi5WcbX4nI5BBXGbytPEB21DplYULYqL
-         4UQfLm9csPIa1rdyYuJvx3manXXJmH7626IFzAu/Cgr8xJSiHgi8G5GGgOmMk7byq6nX
-         qYL4EtZ6GHJAGG3q9d3ObSCCvdZcBJYxAxgvBuithijzmVVjSBAGTTYxyM0T1Xf8Tikz
-         /SLOnDoyaNiU8L1vUj6iWmoUiBXVBpK+f8Q1CxH5f3G/FxuLTUVENq6VY7rE3C+MuA53
-         MlyQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772997387; x=1773602187; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OoM/WBxM1I8Ed2nQOe/ethQEmYCVMbXjh/MzJXB7iOA=;
-        b=WkN1DAhOAklPngTa5C8A7Q0b1cURPD5QylwfWolGOBa1XhPuYVlo3/0juKEuKLi1/N
-         44YlRsZ2IxaLdY7Kav7WtOReNdcVOOsr+OuM0ykXWJSpGMHtz/I5brGwS0/PpBNW2PQa
-         In8tlKcFwj0yCZfYs7NIPPuexAV3XCjekv53s+9XVMTYPvoW7hMcv/vBgvmlBOxu2R3D
-         u2inTRIx5IWlVrOIn07GH9ImMTDRZTF1kQkOzaRwkbzkg1BrEC8GhZ1MKzJ5BbzjGypr
-         Bz97hSagdS3622NpND/eTodsWzTlUZcoyYsmgLOVg1qmiJLb5px4w3Ab1pmxffSSXJK0
-         4sJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772997387; x=1773602187;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OoM/WBxM1I8Ed2nQOe/ethQEmYCVMbXjh/MzJXB7iOA=;
-        b=Lb8DEwo20uOztNCaykfn7GuR0p/4PAjR7uzMvCMu0gFJaToR2wb3UrkkNIOBUwF6Tb
-         yDiq6cggmDF7PKApIBMFVR0GoxsTCkEQ7UCyyy1A7lWaKyzlgNQcabu3Z3xHeUsTQ19g
-         KyQ7AYPkhR6mj9JcNz0zkggTDmnGU3OLvWWUDqUsuNombAcH9BEtFEkEeujwcevb1/GR
-         rx218E84Sqt5Vk078rNahlOd2rZdx1rcpooe6uCLOdxTQlwN0itA9fLrS2tSKqyhGiz/
-         UnvMOvUvYyLzwJjBEhh3Y0VUA7THtHJ9OqXNRTT+IoSIAoVNVl60H/OrgaAFS1EPzz2Q
-         VWiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVpxid3nH2WvpVeZ2AiKqRVlIGlyC4Q0K1I/JuhlUWby8APprOm0UKF3pj/CxlgnAu0P6e51+y4tEiaKsE8yQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxAEDyTFzc96dGfNp4eTOP+7n3EfkDTHvJuzDMzZ275Z5I7Qjz
-	RT6iopTpYc6Vw0D9EenjUNNZjDBepX54HcniqEANIthDzYoRP7tROvmWJohjTVdqwU0MAklrU4Z
-	xuawZxNulLKql/jYIjikt4ptc3UniIdw=
-X-Gm-Gg: ATEYQzwG+CUWA+LEyqGmmhPrlvrAMVV18mrckWtZzb+Nz/+cBi+5F90It37+WDvJqUH
-	WOsbnT+frPV9vAJD60Maf3RZwzBfCRJ89M3NOFNpSoDXgPpC4iuEtYLZKL289t1+GhxxFrS/q4l
-	ZxJG72n0Bl4wlfJt4XOXqTHNNg+cAVjVlIbH+zqwRTicOujkFeF9dL5VPfR1klIN7bj7gRCpqMn
-	rcs8cZ2SPcdE6chMXaje4R7QM30LhzL7iJp2c8QHpNoWVfsyNA6UnCUGyt4QCKSZ+VSQa+98pcr
-	gBCMkGkLvTc66A7B81U+Dfo6Jq2Yr20J/GaXF0pc4qbb2gYIO0Ve/Yp/hRPnSdgTlwDTtbANATk
-	CdSPHgK99Lpoxr5gRWcULRBmw
-X-Received: by 2002:a05:7300:724b:b0:2be:140c:bc2b with SMTP id
- 5a478bee46e88-2be4de7afc2mr1754785eec.2.1772997387328; Sun, 08 Mar 2026
- 12:16:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="fQ/GYSR+"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 1DD6224002B
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Mar 2026 20:23:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1772997806; bh=VMIAFOgNSso9aT66tTAOxXE8s8eAGET6wZgGMCzMmW8=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=fQ/GYSR+xjemUMrTa52mx+8SMqDa9FDJ2EgwPbQygiTCwj6s0x5jKJ1bSzXgP9LCq
+	 mEkeeX3BEOk9+ZCu56da3N6WD6Paiu/1v0IHVsvsdEgYrerwDFJzLocLROlHpZ8BOV
+	 xAs1A/giAoqFZJofQUm4OmMmxwn5T1cmryMtskaykUjmuMyxQBxT8rgi1Aj9mfG03b
+	 Pn3VJKQWOnjnmGesOnV40/+975H6aV8xZQ+JaF1LcjJlm3gr0yarrLZBGle34VmZQl
+	 Gmc/YPjcfrNJbafsKawf7sdq43cdX30KCkjvge49bR7NmhE94fpE/rAh92rhOko2k/
+	 WW8l9w/jqJ0WQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fTVRc1YsWz9rxG;
+	Sun,  8 Mar 2026 20:23:24 +0100 (CET)
+Message-ID: <33a7bfd923ebf118714dd79f4af0d4d8c4120d73.camel@posteo.de>
+Subject: Re: [PATCH v2 2/2] mfd: Add initial synology microp driver
+From: Markus Probst <markus.probst@posteo.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Miguel
+ Ojeda <ojeda@kernel.org>,  Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Date: Sun, 08 Mar 2026 19:23:25 +0000
+In-Reply-To: <2026030850-quickstep-blinking-b853@gregkh>
+References: <20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de>
+	 <20260308-synology_microp_initial-v2-2-9389963f31c5@posteo.de>
+	 <2026030850-quickstep-blinking-b853@gregkh>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-OkxVV+ihTBYocaFXg3Ag"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260304200715.76360-1-edwin.toribio.j@gmail.com>
- <20260304200715.76360-4-edwin.toribio.j@gmail.com> <389808bb-f71d-4c35-bfd0-b4db14268d58@gmail.com>
-In-Reply-To: <389808bb-f71d-4c35-bfd0-b4db14268d58@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 8 Mar 2026 20:16:14 +0100
-X-Gm-Features: AaiRm52rG8puc9hF8MHCGxtrNxjJwwn-iuvjSDLwS0_IZhQ2jcoi98z_O9DHNQY
-Message-ID: <CANiq72=Qe3x5xVQsFOd4YuD35mOan=mUt4PEFRQvStGnmLUcQw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] docs: sp_SP: Add Spanish translation for Rust
- coding guidelines
-To: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-Cc: Edwin Toribio <edwin.toribio.j@gmail.com>, carlos.bilbao@kernel.org, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+
+
+--=-OkxVV+ihTBYocaFXg3Ag
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 8, 2026 at 7:40=E2=80=AFPM Carlos Bilbao
-<carlos.bilbao.osdev@gmail.com> wrote:
->
-> In Rust, there's some keywords like # Examples, # Safety, # Panics, etc,
-> that need to stay in English.
+On Sun, 2026-03-08 at 19:56 +0100, Greg Kroah-Hartman wrote:
+> On Sun, Mar 08, 2026 at 06:41:20PM +0000, Markus Probst wrote:
+> > +kernel::module_serdev_device_driver! {
+> > +    type: SynologyMicropDriver,
+> > +    name: "synology_microp",
+> > +    authors: ["Markus Probst <markus.probst@posteo.de>"],
+> > +    description: "Synology Microp driver",
+> > +    license: "GPL v2",
+> > +    params: {
+> > +        check_fan: i32 {
+> > +            default: 1,
+> > +            description: "Check for cpu fan failures",
+> > +        },
+> > +    },
+>=20
+> This is not the 1990's, please do not add new module parameters for no
+> good reason.  This should be dynamic and per-device, not per-module.
+agreed.
 
-I don't know what the translations' policy is, but shouldn't all code
-remain in English? i.e. not just section names, but comments and Rust
-docs (i.e. `///`, `//!` and `//`).
+> why would you NOT want to check for cpu fan failures?
 
-From a quick look, at least I see another couple translations that
-keeps them in English.
+Because it is also triggered at low fan speeds, even if they are
+intentionally set by the driver. While the parameter is 1, the driver
+would enable those checks for fan failures and would prevent low fan
+speeds. The parameter would allow it to disable this check and allow
+for low fan speeds.
 
-Thanks!
+>=20
+> thanks,
+>=20
+> greg k-h
 
-Cheers,
-Miguel
+
+Thanks
+- Markus Probst
+
+--=-OkxVV+ihTBYocaFXg3Ag
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmmtzKkbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSc1oP/i2i9L1poaiTYuQWgWeo
+SxGi5N4hZYJZ24TNnMIWkZUNmAFvfQD71UUzBLhN+M8GuLJwLeIjaO7LMHnDJf7z
+6JdNh4RZ1kIRRt1tz/xJzZkQcCmqC9vKruHQjtY0DqK/BhOvVWO8BE3fgg2rYyRq
+GJPa4/gGG+LbRE58S+P/O+iTzhcyVYbgFCpyDl28n4gI0kRsYXoaK5g/yRROho/1
+Tau+zNxS+Ikw1MTAVQqapp3hAGQOfl/zUVFoxEAUAfeOIBUqOZRFm4qZjdLYp6xA
+fBJAR2QvWZw3rUifBWceEN27ivNJgTdWBJ6lRVT+4TEllICXpYDWgIjtyQQs7CAq
+GmYLDpedg3f413mdMFPEN90xX1OTL/J4RkrqIgpZ/6qS3eWMtg1ItzwGGxyUSqWJ
+TePxkJAlaR7hbtQZwOPopt6oNZDb+D5pbRlRwPeg3Qmp7dXrbQKubB6ft/frqfXu
+si6DCET47fg+VXkoBu0yLxlAUtLD1u8z+AqMphDbyWZX7VZ8VQuV41ZZgRNwYCfa
+j+gRFBhA97TeMTCsBeU8flH0BKAxIM699MNEpErdB9Pb/MtE9xUBQWSj1Fuzzei/
+cJJZk9kA1ZJ6rV60R7nB8nVk6ll/Q2TyTt1QHcA5DBYYHDUZEWhoRS0cGAv4Ia58
+LiPYVjBz1y/L5QtJAv7WtDxM
+=T8rS
+-----END PGP SIGNATURE-----
+
+--=-OkxVV+ihTBYocaFXg3Ag--
