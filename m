@@ -1,72 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6DA34AAEF;
-	Mon,  9 Mar 2026 18:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF213E8C68;
+	Mon,  9 Mar 2026 18:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773081297; cv=none; b=q9vbliNbaGn3wQPVubZ9UswsMrdsQ63IPEMiWZITJSZUcDmhqYq+IgVwWfeuDnr1xOtZNB4+yGdujcJ1/9GlD7ybQ5oROO5Bc/9qETxnSVkUdzA1GAQDtRFEKzweOqO4SLV/VSpxArArGqg1i/VaoaA0jMl/TyokoAwV1FTZOEM=
+	t=1773081726; cv=none; b=ScyBO5yU6MlIQyrXZHBNcU8kjnUdhxFKCXxRrVTxTLijFsZgJpjXyRduaJ35LrfKe5BWrJAnK+WYfOY1Ap2Ih/cx9d+EQIQgDKMR2FENDffccCgWJ2Jshd3Oj7GvCiAk5TmcZBN1b1xIG+rletcMIPiCYV+U1PTkBGhNOYBVEQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773081297; c=relaxed/simple;
-	bh=Esr1GslHjBaVC+amlL7vTFDGBBx3xrkcBP50auaoYrQ=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=IqG+EK4c40MbgcLXXDQF1KTmsbHTsrX8teZU1mWOEgD1hxGw3wEWiusscTXXR6rDxqCjoMwpWpYj7tj1x9bChkRGMs1Or89eLSuS6FS9U8nXnBdS92if1OLBq0nrrh2I999urCvChc/nSkhVufvkKEkvoGK+8fH0tjPogS7QRak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L91+1cud; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773081726; c=relaxed/simple;
+	bh=r/cU1KShruG6ecs9A5kxfJ1Mq4uP7CrBfYEwXpSlHIA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=f98adgXonYOB5nUhCxQYRSIRkIzAPAWvcnBLHoYTm4MTDFg+ux4FXKM6/MYcdive7vasnvTRBSMN0CB6agPcVl897rhdanheHowO+GQTRwHO0H9K/p3puUsQy0dDZuvnEm8OV6biVUs9aFaywDQN3tOqPWJUxM3xnZEmtHMMSUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guXoeHu+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L91+1cud"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04042C2BC87;
-	Mon,  9 Mar 2026 18:34:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guXoeHu+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B7BC2BC9E;
+	Mon,  9 Mar 2026 18:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773081297;
-	bh=Esr1GslHjBaVC+amlL7vTFDGBBx3xrkcBP50auaoYrQ=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
-	b=L91+1cudzksyr/eKZjzeO8q3J1+MAgtj7uScASte1Zo6sFN3JAl/qH161klYa8yuD
-	 Rzq0k9L8qBG0TKddC3pGGX0HVJLWfoUmYqNaDYTb/xei2isYqTIeMJcCJ+BI3Jj4x0
-	 Gb4Ar4pIzobWqF67aBnlPBWQBcwcZTmISjz/LvD7BVflf5KLHMwtaKhzv8prLJ4VIL
-	 P7Z9oeMuiyJsTVOvdC82s91TLPImSA9AXUsLtpPftRBQqCEz0sy5kzbte2INu154W+
-	 I/BHJ4R13P+bwSXG5fy/mjlCbEspHz1t3Ro+UkeEInTCth/jI6f7JGVLu/jgXAWuqF
-	 /0rjh+k2AmE5g==
+	s=k20201202; t=1773081726;
+	bh=r/cU1KShruG6ecs9A5kxfJ1Mq4uP7CrBfYEwXpSlHIA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=guXoeHu+x1iH1aF8sz8pPaIk1r90eu9vLxq0pXld6++8vTk6WdDCYx+2lqraqVQ99
+	 VggOETnphOoJoEm+VTCohTtbDUpGMtDt1kOSaJ+V8fBzkiGtSCxu7Nq1UA3WhMKdu3
+	 cAVxi3+lAjmfBorBVllh3XZADbvNtD+pExXDsbfr5SVXl3e4pomjI0BXaiBJq+dXZj
+	 fjdCHOGnxZs9AS6ytnqVokZV3Y44Tu702BlZKYYsq5FtRu+UkgwRkvyYa8rYqmgCVc
+	 rA3turEIbL5LT42BFA7380S/Rs978frimAPejQ9MXo3uLKr54zVHS5/aGQArHfJsUY
+	 KXUpUaq1N8tUg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 2/2] scripts: generate_rust_analyzer.py: fix IDE
- support for primitive types
-From: Tamir Duberstein <tamird@kernel.org>
-To: Jesung Yang <y.j3ms.n@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Tamir Duberstein <tamird@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260308-ra-fix-primitive-v3-2-598017bcefd8@gmail.com>
-References: <20260308-ra-fix-primitive-v3-0-598017bcefd8@gmail.com>
- <20260308-ra-fix-primitive-v3-2-598017bcefd8@gmail.com>
-Date: Mon, 09 Mar 2026 14:34:51 -0400
-Message-Id: <177308129159.19064.4199036057098584250@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
-X-Mailer: b4 0.15-dev
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Mar 2026 19:42:00 +0100
+Message-Id: <DGYH0HGYXAHS.XZ9FXJCXDZ0Y@kernel.org>
+Subject: Re: [PATCH FOR REFERENCE v8 10/10] gpu: nova-core: use the kernel
+ `register!` macro
+Cc: "Gary Guo" <gary@garyguo.net>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
+ <20260310-register-v8-10-424f80dd43bc@nvidia.com>
+ <3f0329e0-6718-4a5a-958d-4a8fa263e879@nvidia.com>
+ <d85a3776-4a73-457d-8722-82d8dfc58591@nvidia.com>
+ <4f7baebe-e993-40b5-9cb2-3d4699da1299@nvidia.com>
+ <fd45410a-43cc-4d8a-a750-6f3211dd2797@nvidia.com>
+ <DGYGQ78QQUDO.1TVZTLEWVG6HL@garyguo.net>
+ <3212056f-f1ec-4454-b07d-ec96ffeda266@nvidia.com>
+In-Reply-To: <3212056f-f1ec-4454-b07d-ec96ffeda266@nvidia.com>
 
-On Sun, 08 Mar 2026 08:30:35 +0900, Jesung Yang <y.j3ms.n@gmail.com> wrote:
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-> index a4d25bb8b602..ab399f6044fa 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -52,9 +52,11 @@ class CrateWithGenerated(Crate):
->      source: Source
->  
->  
-> -class RustProject(TypedDict):
-> +# TODO: use `typing.NotRequired` when Python 3.11 is adopted.
-> +class RustProject(TypedDict, total=False):
+On Mon Mar 9, 2026 at 7:34 PM CET, John Hubbard wrote:
+> On 3/9/26 11:28 AM, Gary Guo wrote:
+>> On Mon Mar 9, 2026 at 6:01 PM GMT, John Hubbard wrote:
+>>> On 3/9/26 10:51 AM, Joel Fernandes wrote:
+>>>> On 3/9/2026 1:34 PM, John Hubbard wrote:
+>>>>> On 3/9/26 8:43 AM, Joel Fernandes wrote:
+>>>>>> On 3/9/2026 11:14 AM, Alexandre Courbot wrote:
+>>> ...
+>>> What about this instead (*very* approximately):
+>>>
+>>>    // set up or construct NV_PFALCON_FALCON_MAILBOX1:
+>>>
+>>>    let reg =3D NV_PFALCON_FALCON_MAILBOX1::zeroed(&bar);
+>>=20
+>> This doesn't really make sense. What does "zeroed(&bar)" even mean? You'=
+re
+>> neither zeroing the register on the bar, nor constructing a zeroed value=
+?
+>>=20
+>
+> The idea was to separate constructing with a zeroed value, from
+> the actual register write. I am not surprised that the syntax
+> is All Wrong at this point, I'm just hoping to spark more ideas
+> about how to make this clear and nice to read.
 
-This is good. Could you please indicate which fields would be `NotRequired`?
+This is where you would use write_val(), i.e.
 
+	// Construct with some custom constructor.
+	let reg =3D regs::NV_PFALCON_FALCON_MAILBOX1::new(...);
 
--- 
-Tamir Duberstein <tamird@kernel.org>
+	bar.write_val(reg);
