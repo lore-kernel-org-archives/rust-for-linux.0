@@ -1,85 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FE627FB1F;
-	Mon,  9 Mar 2026 17:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6650228D8DB;
+	Mon,  9 Mar 2026 17:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773075613; cv=none; b=IadEq0V3QJnlBLRj8MCRlhUAhxcvcjxR/OTMVRhtHqeLhD1dwcQmX5frOlu45hpPvN6oM+C5Aj4+VfUMorm1u8EdXa8RMIVguAnaB7ZB7w8dU4qtuMZqs8EyR/6uOUzd1zi35iC133WIrbAPLmGwNVvlTp6LHfEO+S/KKRiFtLo=
+	t=1773075728; cv=none; b=gL8RwU/nHpVzB0yBLg5QawQgMa0u+8JXh2E+OmjoOZ6HdE6mjnITEnlTFzi35vaZacaJ6Ong4eDZQng5Dz9ohIsCttnx40X57iJVnQbkVcXpSJVWSE38ux47488DMJ7HYBOLdk2Zfj5cqP3N8By04CwAQ8jIyeo/aqtyJf8j+kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773075613; c=relaxed/simple;
-	bh=CtqSZRrtQ086u71AP2P/+EeQ4W/0e0n5IIi6cp4D3LY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=KPuGkwGLLJDy5uQs/ybH1xflZqyJuXD20TfE1xOquJo3x3PcLqhVZmpZtG5Qdq57Acb/oQC8TP/pGZYsRKnEgJIdviTtlySc9nRk32gZOzbD1oN30h1TPYTDmIcZ6tEAbCHDVnpD0O3b5A0rjhCLaWXjQludIoikXa0CrrOekBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l2RNgURe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773075728; c=relaxed/simple;
+	bh=3uq35Ktmul8lpGjhELuw35FYfyLMGaLFJUwwLb4+sqk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rfSbpcz6zizqBxXTArxazYCOo7/VWGU//D6FbJi5GOFRsXKiubQib97L4GIAzDzx4rMzgVsbwulqYbtY0ozOSPR0TIw0sZV2AyrZ+Qejy/5lmjsMQbuvui9CMKDzj+u8IHucT8214nYD6DOanzeRL16Wggi5mLgfcbViQ8YGajU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vGQaIc0l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l2RNgURe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874CFC4CEF7;
-	Mon,  9 Mar 2026 17:00:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vGQaIc0l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31E7C4CEF7;
+	Mon,  9 Mar 2026 17:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773075613;
-	bh=CtqSZRrtQ086u71AP2P/+EeQ4W/0e0n5IIi6cp4D3LY=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=l2RNgUReeisohSOqQEi1BMesOrHU+atDi+li0Bc300RhI+QPC2Hopn5Wj/HRuh4Pg
-	 ItbtBP6b1VQfrr7w9JldiQ1teAdj9+afnY21kw23oSVfQs8DyshNBv9HH+w+8VsNu3
-	 WwQUYY2APS0OPRF5rEwOPS3PwvkpijnT5ZbEdnMRuQ6a7JqKeDTZHX0Ww4VDljs/7K
-	 hg3JqnKbcCQf/Cz5Qzo9PxxVtc2WuScrKdSjCWh7kQRwg87/N8D1P+gSVyNddQ6Nbm
-	 /UpnDyfZpdPRagImRsaaoWg4tYIdkMNMrAhbB8hqoQZ7asbYB7li9ARgGRmC3Lh1qn
-	 pFyBh1bwqOJRA==
+	s=k20201202; t=1773075728;
+	bh=3uq35Ktmul8lpGjhELuw35FYfyLMGaLFJUwwLb4+sqk=;
+	h=From:Date:Subject:To:Cc:From;
+	b=vGQaIc0lzv94/DjCNdOx3HxYGXxjHc6qx9q1d91GLq5/o3T03wVt2wH+pdUTpPYv7
+	 rb90DuZ1Aydd0zJPwPbsMTU/wrE/Mx4wn5rnPUe1ALUpeairiFaK9G22SYA65+LH1V
+	 16AH+15ktsUg5Y/rb7noPGX+CyHqOP0Dgkg0RMP3wiNCoOcyBHoO0uctz44N7nWcxw
+	 /1Whozd6GsDVxtLBsA09v0f0twG//xThJw4k0Aqqk4U1BwG0K+2y29DtUp6G19IZgE
+	 3jh1YW42LdYFJlKCH0KwiKiYmwv+CCtrs5pFnbpV2XSwVT6kZgZgOfOOwUOITcQt5A
+	 RNT3eotrqExaQ==
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Mon, 09 Mar 2026 13:01:57 -0400
+Subject: [PATCH v2] rust: update `kernel::c_str!` documentation
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Mar 2026 18:00:06 +0100
-Message-Id: <DGYEUGRWCLZK.2325N9QPODXTP@kernel.org>
-Cc: <tim.kovalenko@proton.me>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Alice Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
- "Nicolas Schier" <nsc@kernel.org>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, <driver-core@lists.linux.dev>
-To: "Tim Kovalenko via B4 Relay"
- <devnull+tim.kovalenko.proton.me@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v4 0/4] Fixes the stack overflow
-References: <20260309-drm-rust-next-v4-0-4ef485b19a4c@proton.me>
-In-Reply-To: <20260309-drm-rust-next-v4-0-4ef485b19a4c@proton.me>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260309-cstr-rename-macro-v2-1-25f7de75944e@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ6CMBBFr0Jm7Zi2kCa48h6GRSkDVKUlUyQaw
+ t1tce/yJe+/v0EkdhThUmzAtLrogk+gTgXY0fiB0HWJQQmlRSkU2rgwMnkzEU7GckBdKSFb0rb
+ WNaTdzNS799G8NT+Or/ZOdsmhbIwuLoE/x+kqs/evv0qUaJSue6o6W/bi+iD29DwHHqDZ9/0Ln
+ xlhYsUAAAA=
+X-Change-ID: 20260302-cstr-rename-macro-64201be6c969
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Breno Leitao <leitao@debian.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Brendan Higgins <brendan.higgins@linux.dev>, 
+ David Gow <davidgow@google.com>, Rae Moar <raemoar63@gmail.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-kselftest@vger.kernel.org, 
+ kunit-dev@googlegroups.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Tamir Duberstein <tamird@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2588; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=3uq35Ktmul8lpGjhELuw35FYfyLMGaLFJUwwLb4+sqk=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDJnr/rJ/Tal7XLv2ZHIAx++NsRPfc24IZ3B7lGztnlRuV
+ JeY+jS6o5SFQYyLQVZMkSVR9NDe9NTbe2Qz3x2HmcPKBDKEgYtTACZy7SHDbzbpKayz/LZbF89M
+ uRfLbJy/0uS7XH6N89s/e72TpsRPF2T4Z52eW/VSNnZ59JYzP7q/aPr6rd424aVut/WP3ad8c4O
+ OsQEA
+X-Developer-Key: i=tamird@kernel.org; a=openpgp;
+ fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-On Mon Mar 9, 2026 at 5:34 PM CET, Tim Kovalenko via B4 Relay wrote:
->
-> ---
-> Changes in v4:
-> - Rebase on top of projection changes
+Now that all literals are C-Strings, update the documentation to explain
+that use of this macro should be limited to non-literal strings.
 
-Thanks for the quick follow-up!
+Link: https://github.com/Rust-for-Linux/linux/issues/1075
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+---
+This patch completes the work of replacing our custom `CStr` with
+upstream's.
+---
+Changes in v2:
+- Drop rename, keep only documentation update. (Gary Guo)
+- Add example of misuse to documentation. (Gary Guo)
+- Link to v1: https://patch.msgid.link/20260302-cstr-rename-macro-v1-1-a269fe4dc3f0@kernel.org
+---
+ rust/kernel/str.rs | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-There was no need to include the series you rebased onto, i.e. it is usuall=
-y
-enough to just mention that your patch is based on another series and provi=
-de a
-link.
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index fa87779d2253..6dae82e7d875 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -376,19 +376,32 @@ fn as_ref(&self) -> &BStr {
+     }
+ }
+ 
+-/// Creates a new [`CStr`] from a string literal.
++/// Creates a new [`CStr`] at compile time.
+ ///
+-/// The string literal should not contain any `NUL` bytes.
++/// Rust supports C string literals since Rust 1.77, and they should be used instead of this macro
++/// where possible. This macro exists to allow static *non-literal* C strings to be created at
++/// compile time. This is most often used in other macros.
++///
++/// # Panics
++///
++/// This macro panics if the operand contains an interior `NUL` byte.
+ ///
+ /// # Examples
+ ///
+ /// ```
+ /// # use kernel::c_str;
+ /// # use kernel::str::CStr;
+-/// const MY_CSTR: &CStr = c_str!("My awesome CStr!");
++/// // This is allowed, but `c"literal"` should be preferred for literals.
++/// const BAD: &CStr = c_str!("literal");
++///
++/// // `c_str!` is still needed for static non-literal C strings.
++/// const GOOD: &CStr = c_str!(concat!(file!(), ":", line!(), ": My CStr!"));
+ /// ```
+ #[macro_export]
+ macro_rules! c_str {
++    // NB: we could write `($str:lit) => compile_error!("use a C string literal instead");` here but
++    // that would trigger when the literal is at the top of several macro expansions. That would be
++    // too limiting to macro authors.
+     ($str:expr) => {{
+         const S: &str = concat!($str, "\0");
+         const C: &$crate::str::CStr = match $crate::str::CStr::from_bytes_with_nul(S.as_bytes()) {
 
-But don't worry, I just mention this for the next time, there is nothing th=
-at
-needs to be done on your end.
+---
+base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
+change-id: 20260302-cstr-rename-macro-64201be6c969
 
-(One additional thing to note, in case you will actually have to (re-)send
-patches of other people in the future, is that such patches still need to h=
-ave
-your Signed-off-by: in addition, since by sending them you are involved in =
-the
-handling of those patches.)
+Best regards,
+--  
+Tamir Duberstein <tamird@kernel.org>
 
-Thanks,
-Danilo
