@@ -1,86 +1,114 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp-42ac.mail.infomaniak.ch (smtp-42ac.mail.infomaniak.ch [84.16.66.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3FB41B35D;
-	Mon,  9 Mar 2026 21:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773090573; cv=pass; b=lQz2INVZiqUVmkr36rxv0FH1OhvzajSBLEt8ynqKE3x62ImmbEM3ThAYfOZ2ciCYhUIXN//vGsFXHCWvEBx2YT51ae/oJEg79U/+UBtrBguXfrBXK3eZQGp3s6704Wd3EymKwzjgBnyT3CI3IzOG9+dvFp80Tmi1lMibf9oOos0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773090573; c=relaxed/simple;
-	bh=qDTvNS6cIGKA59zHh1a6irMtq2Tj0Muev8wCuKgyuac=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=LNLBPyZOHfFkw1ywC0XtxJa9YnZtlBLu5Itt7V4VkbgzrYH8zrr3ocUaYICu6iFnbIoyC4b2MGGNK+FYnQiGIJjnYQDa9qj/4Jn+fmzEogLktjv0moZ9gDwzkw/A4QIo22n3GanU4Dg95ezghC+x9Qa7IwHEW2yCIgsdrgfTJDM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=E4FmLzrB; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C222DC76A
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Mar 2026 21:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773091010; cv=none; b=o1beMtNHvNR8ZtEHda1SP0HfZCTEG/aoJT/XIokQVTVuGOCZUAqFCXMg0WPbuS6mQCybO8b2iVZ9GCdIOTxVmUUfetcO7empr+eSgeMcaDi90VFAsJoS1J54NQ6tynbT7oGwivT+yfGVzdW1qWnNavC9nNJpZonf6qXmF89xHt4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773091010; c=relaxed/simple;
+	bh=BVbyqVJIaM9xjQ1nS8IQ1kQME9t/EvrLMl129XoNgy4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=eOyaGNah2JTldIhQ7PzoCQFSoroqkw3x03fNR4o2PjIk+2yh49fCJON37jbMXb2nM1/FvxAN2ZOlA+UkMQeGpjb7N37FIjlG3N4EvWcYhGLSGT20DLw/Ynohxke4J91o57GmpyeoX79vZsBWq0NRZ2Vg/4JC0nIzA9OvCpErXTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me; spf=pass smtp.mailfrom=ik.me; dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b=ZPyjEyv4; arc=none smtp.client-ip=84.16.66.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ik.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="E4FmLzrB"
-ARC-Seal: i=1; a=rsa-sha256; t=1773090556; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=NFklYgfGMwZf5EDlsJsQzE4cMQ38mU4FSVQ5d1ckpRx6iXvkldj/63Rxv3UHV0Ec4ccJUoy0TBOzMNUmyejYwBVcJHtvI8t6hrdkW8vbeEQwyDWPTB1WdRgkbJIHSWNDHZUCDLKeS5z/KvbH1TU/LLucQYO9bvMpFVlmyM95RhQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1773090556; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=qDTvNS6cIGKA59zHh1a6irMtq2Tj0Muev8wCuKgyuac=; 
-	b=KnmRjXtvP/3lR2ow5x1Pd1rSvVQQSBuDjELwT8JIeHBUbenoVA4ejME/0h6prD+6NXVKtRsdZzxg8StI/Y1z2TWOt+Tw+Pr4N/R+DapcWIBJYQ/eiAjdpAxYgp00ROjq+dXovq2YyXepbp7leFBIEqIyLJj8SL5+LIAJgzLnC9E=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773090556;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=qDTvNS6cIGKA59zHh1a6irMtq2Tj0Muev8wCuKgyuac=;
-	b=E4FmLzrBTTiuiRF1nmGXuNUYOHWlWBCpQFVg7aJ3We/pJ/QCPbXzXC9zoqzwP3/G
-	l7bc7mQuD1GnuxfC0Im07mhkzFYjFbfPRLmNnzJ/yOypVFVUfoq375uByS6B2iqPeJI
-	+s68UvudLxgW2NnieaD2R+/VTzxfPnu4f7O1ZmIQ=
-Received: by mx.zohomail.com with SMTPS id 17730905548991009.0604464943193;
-	Mon, 9 Mar 2026 14:09:14 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b="ZPyjEyv4"
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fV8vx0X8lzPMG;
+	Mon,  9 Mar 2026 22:16:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ik.me; s=20200325;
+	t=1773091004; bh=53430ld6TuOhPe06CqOr6FSTQYKWdBF9o2ZOnQ454dI=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ZPyjEyv4HE7KJmDTEVH+QqE3n8wAIA0Ro1jil9TZoNSQZxyMbyrYW/e7LzScv7RQr
+	 o5Uz6DDlBd02ieGQHeMdQBvTwkp238+0ASvpUwt/NT6nmRXeel/9YcIXmpYr746jRm
+	 gP1ZUv8Cqa9MVPxtVLG2KWxA9oRRDZsOS8PwcCD4=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fV8vv4BwqzBGL;
+	Mon,  9 Mar 2026 22:16:43 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v8 00/10] rust: add `register!` macro
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
-Date: Mon, 9 Mar 2026 18:08:56 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Boqun Feng <boqun@kernel.org>,
- Yury Norov <yury.norov@gmail.com>,
- John Hubbard <jhubbard@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>,
- Edwin Peer <epeer@nvidia.com>,
- Eliot Courtney <ecourtney@nvidia.com>,
- Dirk Behme <dirk.behme@de.bosch.com>,
- Steven Price <steven.price@arm.com>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <E454818E-6D9D-4913-829B-1CECDD2956DC@collabora.com>
-References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Mar 2026 22:16:43 +0100
+Message-Id: <DGYKAXUZE263.3VQZGY7KJ5FEY@ik.me>
+Cc: "Alistair Popple" <apopple@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "dri-devel@lists.freedesktop.org"
+ <dri-devel@lists.freedesktop.org>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "nouveau@lists.freedesktop.org"
+ <nouveau@lists.freedesktop.org>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>
+Subject: Re: [PATCH v11 00/12] gpu: nova-core: add Turing support
+From: "Ewan Chorynski" <ewan.chorynski@ik.me>
+To: "Timur Tabi" <ttabi@nvidia.com>, "ewan.chorynski@ik.me"
+ <ewan.chorynski@ik.me>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ "dakr@kernel.org" <dakr@kernel.org>, "aliceryhl@google.com"
+ <aliceryhl@google.com>, "airlied@gmail.com" <airlied@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "simona@ffwll.ch" <simona@ffwll.ch>
+X-Mailer: aerc 0.21.0
+References: <20260306-turing_prep-v11-0-8f0042c5d026@nvidia.com>
+ <DGYIFHP99CQ3.2XWVRPO9O1E1D@ik.me>
+ <282984b6-a0e1-4e3a-bb57-db817b7e9249@nvidia.com>
+ <864ab8a502db872468d7b01e0adfff386d2187cc.camel@nvidia.com>
+ <fa3c5390-aea2-45c2-89ef-05a64070a44b@nvidia.com>
+ <DGYJY8VKR9EK.1XPGZ34UPJ0B2@ik.me>
+ <5390ee90b722b29e686d948bc855da1eb62a4f6b.camel@nvidia.com>
+In-Reply-To: <5390ee90b722b29e686d948bc855da1eb62a4f6b.camel@nvidia.com>
+Feedback-ID: :52330b22a40e583:ham:e74197f626dda86
+X-Infomaniak-Routing: alpha
 
-Hi Alex,
+On Mon Mar 9, 2026 at 10:05 PM CET, Timur Tabi wrote:
+> On Mon, 2026-03-09 at 22:00 +0100, Ewan Chorynski wrote:
+>> On Mon Mar 9, 2026 at 9:29 PM CET, John Hubbard wrote:
+>> > On 3/9/26 1:18 PM, Timur Tabi wrote:
+>> > > On Mon, 2026-03-09 at 13:04 -0700, John Hubbard wrote:
+>> > > >=20
+>> > > > I have that exact card available, so I'll give this a quick test a=
+nd see
+>> > > > what's missing or wrong, now that Alex has pushed the entire Turin=
+g support
+>> > > > set up to drm-rust-next.
+>> > >=20
+>> > > The TU117 is technically a mobile chip, and its VBIOS is different.=
+=C2=A0 My initial version of the
+>> > > Turing patches would "ignore" the problematic VBIOS sections, so per=
+haps this changed.
+>> > >=20
+>> >=20
+>> > No repro on the latest drm-rust-next branch:
+>>=20
+>> I guess I may have an issue with my linux-firmware. I have no stable
+>> right now so I can't download the latest one but I'll try
+>> soon. On which commit on linux-firmware are you ?
+>
+> There's only one version of linux-firmware that works with Nova, and you =
+didn't have it, it wouldn't
+> boot at all.
+>
+> Although, now that I think about it, I'm assuming that on Turing, if gen_=
+bootloader is absent,
+> NovaCore will not even try to boot.  That file was added recently and is =
+missing in most distros
+> today.
+>
+> /lib/firmware/nvidia/tu102/gsp/gen_bootloader-570.144.bin  (or its zstd c=
+ompressed version)
+>
+> If you have this file, then you have everything you need to boot NovaCore=
+ on Turing.
 
-We will test that on Tyr shortly. There=E2=80=99s a patch on the list =
-that targeted
-an earlier version of the macro. We will rebase it on the current one.
+I had this file installed but I think I broke something when I updated.
+I tried to redo my installation from the tarball I had and now it is
+probing, so the issue was indeed on my side with my firmware.
 
-At least you get one more user from the get-go.
+Thanks for trying the repro and sorry for the false alarm.
 
-=E2=80=94 Daniel=
+Have a good day
+Ewan
+
