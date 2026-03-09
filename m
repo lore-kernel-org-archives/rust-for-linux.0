@@ -1,219 +1,148 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C9E3D6689
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Mar 2026 15:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9AD3D4100;
+	Mon,  9 Mar 2026 15:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773069612; cv=none; b=PB+V1kB7cNHw9JKIFJXhTJzQuZv2HialVqTKSGgzSirU+3RrBWnE9rFnF/3kWFd3lUvlZD+EHscTl02y+QGRONeMVMLdbkTdAAx9PQcPWFrB4mfwWZYYQrW/+eGLpalSnQ9MsTY+oWci3YzcXhYU248HQJNSrjN0bzpJcVdvo4E=
+	t=1773070037; cv=none; b=i/Nh/A4DCB2Gh5zz1cRk846BLx7J59HLm/ZcDCs1HctwZNXtTpT9Zvrqm2SO5tPNTNJd4LZTbPYyl8bxbTjUaVASatpswhzVoUqfGpI7BRsdD75uzKnSPQZ8hZMv/9YFWzrdXgVNU/qbXzq7JXKAvunU63dx1NNiAAzs/CNgk+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773069612; c=relaxed/simple;
-	bh=dDbA88Nq/He79YvW/4a9fhCmEA3HAGYP6l3HiFyoAbo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=l/0BA7PUUM1rp+J8E5MAKIp3FgE5LsBeJx0m8ngH04eVXbsei2qIOuNAXWlouEGhQ5zFNTMA061dibbCqjmQLWFKRm3F6A0kRLutH9DwcIAnaoHmoJdmFnuI9cYrVS5xndfztkeh74haVh7d77gWKR3prXzf/Q2wtT2/h8t+ehU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=j72gDJ+U; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1773070037; c=relaxed/simple;
+	bh=6gDovicIUbZD+h74u0zKigreYrzh7H9eTfzFVv5rm/U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H9P7TvoSlWZKQD/UtUoqJOfqVd9r1/QyJqyyqU4La9bxy9surfIP53+F4i8TdGA0bqthKB18MkmXTf5o/WxDzK0vWoh827RbcnKnV+SiUdn6muBNUYuk71oFxGBWTragoye79YiEnTdFmxbWQSMPImSH+aL0NArZFbKIYPahtKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pACa5uA7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="j72gDJ+U"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 7C480240104
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Mar 2026 16:20:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1773069608; bh=nULKzfUTIQMky612jlNg5QuwE8AIyUAY4F6wfaq0jVI=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=j72gDJ+UoORVvj3mdI1zJFusEDDPgR2xEPgGi4x8CzNGri9/bpwVbygo21PJYlZzc
-	 DqtCkHeOOCSl78oNqiMQk+2cgXJ/77yNNGHsSVLxzHpac5Ag0XvZmFZok0b3gLoVHW
-	 OAtkjyJYDk/b3IIvzG+N+i7yx5UtunLU2AriUMRG1wK3vJW4UmKgs0jTi5b1KiFRIx
-	 lij1Rn3FSKSb8Egr9ZPvZItjjzB/BpQWA0m9Lif38GbvjSZGDrMQ5VSGB4e4cbNTXN
-	 yGx9VrbQdIZZkjJSQYTmukKn+Mg9QFOa8aHZHuFhGJPGtLcWSieAX/s+aBD6i45Nmq
-	 5yLeHySl7X5Fw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fV10P6VDfz6trs;
-	Mon,  9 Mar 2026 16:20:05 +0100 (CET)
-Message-ID: <2b04fdc5abc18f4344b2f15353be8d3092c60913.camel@posteo.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pACa5uA7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFF6C4CEF7;
+	Mon,  9 Mar 2026 15:27:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773070037;
+	bh=6gDovicIUbZD+h74u0zKigreYrzh7H9eTfzFVv5rm/U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pACa5uA7ugSlUXqaf/Dz3sfa2nPMOyFe8IygSv3MX3ONXHf/Pjcf9BbBaYZdyu5JV
+	 3GMXvg8KqcNSW8eLJ+QX3v1bqkcuhom9rw7dDGfbzcLyCk3YdbCsjuI7WTY03i61+L
+	 BElZi65pvjA1VWUfSL4Y0Hk8DEOzjO//ZJ3NLQFsCXimsCyWusYAsTYZTJ/8qZJ4DQ
+	 LpA5EVpUjq4wO0ZPdwjknuZu1FjZAHYBoChqPogASJaJk0npugWEqL5Gt3TSuHLZmw
+	 SPG6un1zb/CjWeSSIkamioqIDwMPCa0Fz6P1ZnqQ0dW56nQMZ2jTKxIU14TcTQpJE4
+	 WakwCiga7PdHg==
+Date: Mon, 9 Mar 2026 15:27:11 +0000
+From: Lee Jones <lee@kernel.org>
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v2 2/2] mfd: Add initial synology microp driver
-From: Markus Probst <markus.probst@posteo.de>
-To: Lee Jones <lee@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman	
- <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Miguel
- Ojeda <ojeda@kernel.org>,  Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org
-Date: Mon, 09 Mar 2026 15:20:07 +0000
-In-Reply-To: <20260309151555.GU183676@google.com>
+Message-ID: <20260309152711.GV183676@google.com>
 References: <20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de>
-	 <20260308-synology_microp_initial-v2-2-9389963f31c5@posteo.de>
-	 <2026030827-nautical-overplant-399c@gregkh>
-	 <8efdf3e1bbf24504d560c12131cade543bec82f5.camel@posteo.de>
-	 <2026030913-agonizing-shoptalk-ed98@gregkh>
-	 <7f8d979a881b29398f524f526f52ba9727d95a7c.camel@posteo.de>
-	 <DGYAFNSJ7576.1E0JZ2W499ZQ7@kernel.org>
-	 <e43ca445ec7887d3d15676adb7db04f5685f4195.camel@posteo.de>
-	 <20260309151555.GU183676@google.com>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-gvGPU8lHXtJYC70xBLES"
+ <20260308-synology_microp_initial-v2-2-9389963f31c5@posteo.de>
+ <2026030827-nautical-overplant-399c@gregkh>
+ <8efdf3e1bbf24504d560c12131cade543bec82f5.camel@posteo.de>
+ <2026030913-agonizing-shoptalk-ed98@gregkh>
+ <7f8d979a881b29398f524f526f52ba9727d95a7c.camel@posteo.de>
+ <DGYAFNSJ7576.1E0JZ2W499ZQ7@kernel.org>
+ <e43ca445ec7887d3d15676adb7db04f5685f4195.camel@posteo.de>
+ <20260309151555.GU183676@google.com>
+ <2b04fdc5abc18f4344b2f15353be8d3092c60913.camel@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2b04fdc5abc18f4344b2f15353be8d3092c60913.camel@posteo.de>
 
+On Mon, 09 Mar 2026, Markus Probst wrote:
 
---=-gvGPU8lHXtJYC70xBLES
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> On Mon, 2026-03-09 at 15:15 +0000, Lee Jones wrote:
+> > On Mon, 09 Mar 2026, Markus Probst wrote:
+> > 
+> > > On Mon, 2026-03-09 at 14:32 +0100, Danilo Krummrich wrote:
+> > > > On Mon Mar 9, 2026 at 1:52 PM CET, Markus Probst wrote:
+> > > > > Yes. I will split it into multiple drivers using the aux bus in the
+> > > > > next revision.
+> > > > 
+> > > > Independent of the other discussion whether this belongs into the kernel in the
+> > > > first place, reading over the cover letter and commit message I understood the
+> > > > following.
+> > > > 
+> > > >   "Synology uses a microcontroller in their NAS devices connected to a serial
+> > > >   port [...]" controlling LEDs, fan speeds, a beeper, etc.
+> > > > 
+> > > >   I.e. it muliplexes several physical functions that belong to different
+> > > >   subsystems, such as hwmon, input, etc. over a single serial port.
+> > > > 
+> > > > This sounds like a textbook candidate for MFD to me.
+> > 
+> > Then you do not know what a textbook candidate for MFD is. :)
+> > 
+> > What part of the MFD API does this device utilise?
+> > 
+> > > > I.e. there is a very loose coupling of the different functions that make up for
+> > > > entirely independent drivers, except that they share the same serial port
+> > > > connection.
+> > > > 
+> > > > Whereas the auxiliary bus is more for very complicated devices to be broken down
+> > > > into more managable (sometimes optional) sub-domains, where the corresponding
+> > > > drivers usually have driver specific APIs to interact with each other.
+> > > > 
+> > > > - Danilo
+> > > 
+> > > QNAP and Synology do things very similarly.
+> > > There is already a driver for QNAP devices:
+> > > 
+> > > drivers/mfd/qnap-mcu.c
+> > > drivers/leds/leds-qnap-mcu.c
+> > > drivers/input/misc/qnap-mcu-input.c
+> > > drivers/hwmon/qnap-mcu-hwmon.c
+> > > drivers/nvmem/qnap-mcu-eeprom.c
+> > > 
+> > > drivers/power/reset/qnap-poweroff.c (this one is not part of the mfd)
+> > > 
+> > > and I try to implement the equivalent for Synology devices.
+> > > Given its a MFD I would assume the same applies to this driver?
+> > 
+> > Of course not.
+> > 
+> > The QNAP driver above calls devm_mfd_add_devices().
+> > 
+> > This one uses none of the MFD functionality provided.
+> > 
+> > Linux supports 10's if not 100's of devices which do more than one
+> > thing.  Only a fraction of them are Linux MFDs.  MFD in Linux is an API,
+> > not a type of device.
+> > 
+> > Don't get me wrong, you could probably code up this device as a Linux
+> > MFD, but you have chosen not to, so therefore it cannot reside here.
+> From what I have read so far, the way its written it probably can't
+> live anywhere inside the kernel right now.
 
-On Mon, 2026-03-09 at 15:15 +0000, Lee Jones wrote:
-> On Mon, 09 Mar 2026, Markus Probst wrote:
->=20
-> > On Mon, 2026-03-09 at 14:32 +0100, Danilo Krummrich wrote:
-> > > On Mon Mar 9, 2026 at 1:52 PM CET, Markus Probst wrote:
-> > > > Yes. I will split it into multiple drivers using the aux bus in the
-> > > > next revision.
-> > >=20
-> > > Independent of the other discussion whether this belongs into the ker=
-nel in the
-> > > first place, reading over the cover letter and commit message I under=
-stood the
-> > > following.
-> > >=20
-> > >   "Synology uses a microcontroller in their NAS devices connected to =
-a serial
-> > >   port [...]" controlling LEDs, fan speeds, a beeper, etc.
-> > >=20
-> > >   I.e. it muliplexes several physical functions that belong to differ=
-ent
-> > >   subsystems, such as hwmon, input, etc. over a single serial port.
-> > >=20
-> > > This sounds like a textbook candidate for MFD to me.
->=20
-> Then you do not know what a textbook candidate for MFD is. :)
->=20
-> What part of the MFD API does this device utilise?
->=20
-> > > I.e. there is a very loose coupling of the different functions that m=
-ake up for
-> > > entirely independent drivers, except that they share the same serial =
-port
-> > > connection.
-> > >=20
-> > > Whereas the auxiliary bus is more for very complicated devices to be =
-broken down
-> > > into more managable (sometimes optional) sub-domains, where the corre=
-sponding
-> > > drivers usually have driver specific APIs to interact with each other=
-.
-> > >=20
-> > > - Danilo
-> >=20
-> > QNAP and Synology do things very similarly.
-> > There is already a driver for QNAP devices:
-> >=20
-> > drivers/mfd/qnap-mcu.c
-> > drivers/leds/leds-qnap-mcu.c
-> > drivers/input/misc/qnap-mcu-input.c
-> > drivers/hwmon/qnap-mcu-hwmon.c
-> > drivers/nvmem/qnap-mcu-eeprom.c
-> >=20
-> > drivers/power/reset/qnap-poweroff.c (this one is not part of the mfd)
-> >=20
-> > and I try to implement the equivalent for Synology devices.
-> > Given its a MFD I would assume the same applies to this driver?
->=20
-> Of course not.
->=20
-> The QNAP driver above calls devm_mfd_add_devices().
->=20
-> This one uses none of the MFD functionality provided.
->=20
-> Linux supports 10's if not 100's of devices which do more than one
-> thing.  Only a fraction of them are Linux MFDs.  MFD in Linux is an API,
-> not a type of device.
->=20
-> Don't get me wrong, you could probably code up this device as a Linux
-> MFD, but you have chosen not to, so therefore it cannot reside here.
-=46rom what I have read so far, the way its written it probably can't
-live anywhere inside the kernel right now. So it will be restructured
-to either use mfd or auxiliary, which both involve splitting the driver
-up into multiple pieces. From what Danilo is writing, it will likely be
-mfd.
+There is a place for everything in the kernel.
 
-Thanks
-- Markus Probst
+> So it will be restructured
+> to either use mfd or auxiliary, which both involve splitting the driver
+> up into multiple pieces.
 
+The driver should absolutely be split up into multiple pieces with each
+part being redistributed into its associated subsystem.
 
---=-gvGPU8lHXtJYC70xBLES
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+> From what Danilo is writing, it will likely be
+> mfd.
 
------BEGIN PGP SIGNATURE-----
+If you use the MFD API, then it can live in drivers/mfd.  If you go with
+the Auxiliary route, then you'll have to find somewhere else to put it.
 
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmmu5RAbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSKBwP/3jY8Ecy41yVnY4FK/39
-KepTy+K1ImkDt5m0c9NuAVieRpbrYweDCMiw6A4PiZA47gPsbXshXBqr6KBETsJA
-UOCAr7yg4ZeUlIp3tet5nh0RKX3NL2iLxfYoT/8f5in67jkz/3qnHQS78enq9+Sc
-bx/ZnM0rQPuchHxvB109mzObquBfdsgw5uF2DWoD26ZngjAXZy008zrG9EfPElPY
-7F18956OjCAUvBoQ0XRdTrG+72e82MCDxO3sZaEc+p3KtOigpKNWyzyEhBzhAIj1
-mfh1TojAzsBt42Sq8fIZpBojfgsrNMKObMXRvCfeg/50lFXR+7ySfc3VO65e+1Ar
-i43uv4iZTet+KW4CaAxnhPltxf0L8O1Y9RSJmwW0G00EWkWOiG/Ls8rnT9bgTJrL
-1UsepZnNfxBIqLlVwnE7MKO0Xk30HYLk9ZSWzvlIW9WirYtE53tyZ6QEn9/1RgHI
-CcmAKV8XkDtMYeXFEz2yZvcl5q39Gx/Cv7nYZVu+wAbO9ap1HsddtB6/rxLq0lsc
-Z3/84rs0UYCgH908swU9TbF6OE2SzbgiKP+4Xh5SSGtAMwVmfVl4mvnoVX3vuh1A
-Hgz9jSW33HM8exNilUE/YgndkTWk4VfY46XkWzzujJJ86D9zqETYpFNS82GqidLj
-IsEOo2rSO2wR8DIydf4oIW37
-=Skj1
------END PGP SIGNATURE-----
-
---=-gvGPU8lHXtJYC70xBLES--
+-- 
+Lee Jones [李琼斯]
