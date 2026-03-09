@@ -1,177 +1,163 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1354B3A9D8A;
-	Mon,  9 Mar 2026 16:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1347C3BE14A;
+	Mon,  9 Mar 2026 16:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773074119; cv=none; b=FpW3ftCdADHUfVRi1txs5H3AK134YjI/m8rumOZGFcYAjPqKufkkaFlV1ZP+QFVvchKdZNJHNQzcxwMYbi++09d+0Jc1UQHLM5svao4epYV5CYI4cXPEvKLWWvw6W7XVwlS88DMGk5UtFBQWJzXuUEmK0DoCQuvV1ZlEfbi7R3E=
+	t=1773074655; cv=none; b=jiIJmXdkHaPa/GL1PHUFkuBqFbwgQRi/1izVxMiemo6u0n68m6HP9l9579zHEXAXvleDUssZNZNHn/aq/Fb00M0IbRuhIc+PmydC3XlarWa/WIjYS+81439Mwa3bCt8CJP27RkL0sfLGUH7pUE/vTeOuz/j/ntpjfEcGUKk9zcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773074119; c=relaxed/simple;
-	bh=fssZhaE39h8/ifGb5lyKDHlx9SyrHqGfVID8VjmY0ME=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AaVgx4Wp8NeWhrHizVG7oGkejqq7M2iawmhG7jQj6PwZRwFp6ImLy+4buVtI6oJCsNjNb/f24TlbS95M/MUN8263SU/wGsq0MGix9uMBHR0GY4P7lQeWQk8DtioD7bv6H1IrySEFt45Z/lfv6OD0XsiU4wXn3/pt8e9uZC43OOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nE9CPFES; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773074655; c=relaxed/simple;
+	bh=Uk7QgN6xzOCWYu8MBXFyjWy0R+x2ZeLTbcNOpvXhzcE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RNgSKDtNyomlCLk2B1/HCCni4CujI6n/mP1XFJicpkgAJ0qyRroUoOlfR8+xCaoub/bWP7GEgdzp0Nn4nzstp+sH30zI21eEzsE+ljIqthw8kyP7zOjYHp8tF+YjHsvNn+kcCmDaBJOnb2O6RUaQ3u/rHJmrGFFwfY0Lu82qmsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N83WeFjH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nE9CPFES"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C224BC2BCB7;
-	Mon,  9 Mar 2026 16:35:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N83WeFjH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F45C2BC86;
+	Mon,  9 Mar 2026 16:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773074118;
-	bh=fssZhaE39h8/ifGb5lyKDHlx9SyrHqGfVID8VjmY0ME=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nE9CPFESeIElYpdFRVFYi/eDY9RoazP12jcTKXLiS3P7dRa9zphKtGh1pPAm0qMUf
-	 Si1w3fT84m6mtNoKkiABeBnJPXnSSW1pcCw5+SieCJkAQsC0XZRTZbvXQhkysdgEm9
-	 B56/DvoqOv6oxIeGkLvbO/i/fL6vA8SyOZbjKIf6Ub6oMWmKpiG3trmrmtJGoc+9ut
-	 oISHSJI+QPG7Oi1wFCM0b/vDyzjppoceO75Z3Y3wZExWRhgsBxLQdEUmL3sEVDuhK9
-	 Xmb/yGfDEC15+YoOym7ExlwwmTmLi825LE4F0VxIHZet28u3jXNL+ZEPYjOhdEi7rC
-	 oLdNDkjd3nh2g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1174F41812;
-	Mon,  9 Mar 2026 16:35:18 +0000 (UTC)
-From: Tim Kovalenko via B4 Relay <devnull+tim.kovalenko.proton.me@kernel.org>
-Date: Mon, 09 Mar 2026 12:34:21 -0400
-Subject: [PATCH v4 4/4] gpu: nova-core: fix stack overflow in GSP memory
- allocation
+	s=k20201202; t=1773074654;
+	bh=Uk7QgN6xzOCWYu8MBXFyjWy0R+x2ZeLTbcNOpvXhzcE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=N83WeFjHOOqWdbT02p7u6F13MMV7RRau8GbcaBSyL47Q6vraRT6zI0/uD7vTeMN+7
+	 jEganNn2JAI3p1bhGbQgVTlIj/PYZ25c4VNozic7qKb9tSU1YYc6xWeetAnJuwud7a
+	 pSpMO/wkDQeTMONUSdQx3eHU/4lrDnGQQ3MZbE10I4mXfspZDeSov/kUkNe0L78NCB
+	 rLiNZBXTOVj0tOlyFahCjpdld9enU7FrrwsPTSrEy+IBzIG7ccingg6ZVLS4fysV0R
+	 cvMYjW5kHwTVCmuY0LVXEcsy6DmN2iZknFT4/P+pQzGtvpHCm6qJ5er7m3qAR6IPTW
+	 T4Mx+idBPe/FQ==
+From: Puranjay Mohan <puranjay@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org
+Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>, "David Hildenbrand (Arm)"
+ <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
+ <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=
+ <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Carlos Llamas
+ <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, H Hartley Sweeten
+ <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jason
+ Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Dimitri
+ Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet
+ <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, "David S.
+ Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda
+ <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from
+ zap_page_range_single()
+In-Reply-To: <20260227200848.114019-3-david@kernel.org>
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-3-david@kernel.org>
+Date: Mon, 09 Mar 2026 16:44:10 +0000
+Message-ID: <m21phtx89x.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-drm-rust-next-v4-4-4ef485b19a4c@proton.me>
-References: <20260309-drm-rust-next-v4-0-4ef485b19a4c@proton.me>
-In-Reply-To: <20260309-drm-rust-next-v4-0-4ef485b19a4c@proton.me>
-To: Alexandre Courbot <acourbot@nvidia.com>, 
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Boqun Feng <boqun@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Robin Murphy <robin.murphy@arm.com>, Boqun Feng <boqun@kernel.org>
-Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kbuild@vger.kernel.org, driver-core@lists.linux.dev, 
- Tim Kovalenko <tim.kovalenko@proton.me>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773074117; l=3986;
- i=tim.kovalenko@proton.me; s=20260212; h=from:subject:message-id;
- bh=02lIiBKVUWPZgiHflont6ppBx+2QAZbO4PzXiivsIkE=;
- b=pE0ZKAo+0q+3X2PamEznSFPbbQiSdIw7Xy/EgQG+Zfy/iiwn0Rb6Om2UKZsCeEXyeudQjTtkF
- +jL/j8+uX6ICxdDQJsEfm++qZt+CwLBc7cGDTtVkdNtnXo/EFKH2KKd
-X-Developer-Key: i=tim.kovalenko@proton.me; a=ed25519;
- pk=/+OiulEpgeZifgP4mDE4e5YlV6nMeY+frze/lY/xiHI=
-X-Endpoint-Received: by B4 Relay for tim.kovalenko@proton.me/20260212 with
- auth_id=635
-X-Original-From: Tim Kovalenko <tim.kovalenko@proton.me>
-Reply-To: tim.kovalenko@proton.me
+Content-Type: text/plain
 
-From: Tim Kovalenko <tim.kovalenko@proton.me>
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-The `Cmdq::new` function was allocating a `PteArray` struct on the stack
-and was causing a stack overflow with 8216 bytes.
+> Nobody except memory.c should really set that parameter to non-NULL. So
+> let's just drop it and make unmap_mapping_range_vma() use
+> zap_page_range_single_batched() instead.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  arch/s390/mm/gmap_helpers.c    |  2 +-
+>  drivers/android/binder_alloc.c |  2 +-
+>  include/linux/mm.h             |  5 ++---
+>  kernel/bpf/arena.c             |  3 +--
+>  kernel/events/core.c           |  2 +-
+>  mm/madvise.c                   |  3 +--
+>  mm/memory.c                    | 16 ++++++++++------
+>  net/ipv4/tcp.c                 |  5 ++---
+>  rust/kernel/mm/virt.rs         |  2 +-
+>  9 files changed, 20 insertions(+), 20 deletions(-)
+>
+> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+> index dea83e3103e5..ae2d59a19313 100644
+> --- a/arch/s390/mm/gmap_helpers.c
+> +++ b/arch/s390/mm/gmap_helpers.c
+> @@ -89,7 +89,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
+>  		if (!vma)
+>  			return;
+>  		if (!is_vm_hugetlb_page(vma))
+> -			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr, NULL);
+> +			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
+>  		vmaddr = vma->vm_end;
+>  	}
+>  }
+> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+> index 241f16a9b63d..dd2046bd5cde 100644
+> --- a/drivers/android/binder_alloc.c
+> +++ b/drivers/android/binder_alloc.c
+> @@ -1185,7 +1185,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	if (vma) {
+>  		trace_binder_unmap_user_start(alloc, index);
+>  
+> -		zap_page_range_single(vma, page_addr, PAGE_SIZE, NULL);
+> +		zap_page_range_single(vma, page_addr, PAGE_SIZE);
+>  
+>  		trace_binder_unmap_user_end(alloc, index);
+>  	}
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index ecff8268089b..a8138ff7d1fa 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2835,11 +2835,10 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
+>  void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+>  		  unsigned long size);
+>  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+> -			   unsigned long size, struct zap_details *details);
+> +			   unsigned long size);
+>  static inline void zap_vma_pages(struct vm_area_struct *vma)
+>  {
+> -	zap_page_range_single(vma, vma->vm_start,
+> -			      vma->vm_end - vma->vm_start, NULL);
+> +	zap_page_range_single(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+>  }
+>  struct mmu_notifier_range;
+>  
+> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+> index 144f30e740e8..c34510d83b1f 100644
+> --- a/kernel/bpf/arena.c
+> +++ b/kernel/bpf/arena.c
+> @@ -656,8 +656,7 @@ static void zap_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
+>  	guard(mutex)(&arena->lock);
+>  	/* iterate link list under lock */
+>  	list_for_each_entry(vml, &arena->vma_list, head)
+> -		zap_page_range_single(vml->vma, uaddr,
+> -				      PAGE_SIZE * page_cnt, NULL);
+> +		zap_page_range_single(vml->vma, uaddr, PAGE_SIZE * page_cnt);
+>  }
 
-Modify the `PteArray` to calculate and write the Page Table Entries
-directly into the coherent DMA buffer one-by-one. This reduces the stack
-usage quite a lot.
-
-Signed-off-by: Tim Kovalenko <tim.kovalenko@proton.me>
----
- drivers/gpu/nova-core/gsp.rs      | 34 +++++++++++++++++++---------------
- drivers/gpu/nova-core/gsp/cmdq.rs | 15 ++++++++++++++-
- 2 files changed, 33 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-index 25cd48514c777cb405a2af0acf57196b2e2e7837..20170e483e04c476efce8997b3916b0ad829ed38 100644
---- a/drivers/gpu/nova-core/gsp.rs
-+++ b/drivers/gpu/nova-core/gsp.rs
-@@ -47,16 +47,11 @@
- unsafe impl<const NUM_ENTRIES: usize> AsBytes for PteArray<NUM_ENTRIES> {}
- 
- impl<const NUM_PAGES: usize> PteArray<NUM_PAGES> {
--    /// Creates a new page table array mapping `NUM_PAGES` GSP pages starting at address `start`.
--    fn new(start: DmaAddress) -> Result<Self> {
--        let mut ptes = [0u64; NUM_PAGES];
--        for (i, pte) in ptes.iter_mut().enumerate() {
--            *pte = start
--                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
--                .ok_or(EOVERFLOW)?;
--        }
--
--        Ok(Self(ptes))
-+    /// Returns the page table entry for `index`, for a mapping starting at `start` DmaAddress.
-+    fn entry(start: DmaAddress, index: usize) -> Result<u64> {
-+        start
-+            .checked_add(num::usize_as_u64(index) << GSP_PAGE_SHIFT)
-+            .ok_or(EOVERFLOW)
-     }
- }
- 
-@@ -86,16 +81,25 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
-             NUM_PAGES * GSP_PAGE_SIZE,
-             GFP_KERNEL | __GFP_ZERO,
-         )?);
--        let ptes = PteArray::<NUM_PAGES>::new(obj.0.dma_handle())?;
-+
-+        let start_addr = obj.0.dma_handle();
- 
-         // SAFETY: `obj` has just been created and we are its sole user.
--        unsafe {
--            // Copy the self-mapping PTE at the expected location.
-+        let pte_region = unsafe {
-             obj.0
--                .as_slice_mut(size_of::<u64>(), size_of_val(&ptes))?
--                .copy_from_slice(ptes.as_bytes())
-+                .as_slice_mut(size_of::<u64>(), NUM_PAGES * size_of::<u64>())?
-         };
- 
-+        // This is a  one by one GSP Page write to the memory
-+        // to avoid stack overflow when allocating the whole array at once.
-+        for (i, chunk) in pte_region.chunks_exact_mut(size_of::<u64>()).enumerate() {
-+            let pte_value = start_addr
-+                .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
-+                .ok_or(EOVERFLOW)?;
-+
-+            chunk.copy_from_slice(&pte_value.to_ne_bytes());
-+        }
-+
-         Ok(obj)
-     }
- }
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index 0056bfbf0a44cfbc5a0ca08d069f881b877e1edc..c8327d3098f73f9b880eee99038ad10a16e1e32d 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -202,7 +202,20 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
- 
-         let gsp_mem =
-             CoherentAllocation::<GspMem>::alloc_coherent(dev, 1, GFP_KERNEL | __GFP_ZERO)?;
--        dma_write!(gsp_mem, [0]?.ptes, PteArray::new(gsp_mem.dma_handle())?);
-+
-+        const NUM_PTES: usize = GSP_PAGE_SIZE / size_of::<u64>();
-+
-+        let start = gsp_mem.dma_handle();
-+        // One by one GSP Page write to the memory to avoid stack overflow when allocating
-+        // the whole array at once.
-+        for i in 0..NUM_PTES {
-+            dma_write!(
-+                gsp_mem,
-+                [0]?.ptes.0[i],
-+                PteArray::<NUM_PTES>::entry(start, i)?
-+            );
-+        }
-+
-         dma_write!(
-             gsp_mem,
-             [0]?.cpuq.tx,
-
--- 
-2.53.0
-
-
+Acked-by: Puranjay Mohan <puranjay@kernel.org>
