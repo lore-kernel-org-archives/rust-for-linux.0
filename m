@@ -1,153 +1,169 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011005.outbound.protection.outlook.com [40.93.194.5])
+Received: from smtp-42ad.mail.infomaniak.ch (smtp-42ad.mail.infomaniak.ch [84.16.66.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E006226AA91;
-	Mon,  9 Mar 2026 20:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773087498; cv=fail; b=Znsa5cwTqPgKhNEkcYq+LkbU2cw0a9ppnuB1Z6neuo54Kor2nBnAbaOdGjnz7u31PHWd+44OidYzb0w7TSUTbu4DMSyWqRjMjqnLgapREVYy97MUjsD6L0AF+PFJJ3g53P0jFDP3UrFL9d/KD/Wpzbgz+DbtULZ5PAaDZYw1ML4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773087498; c=relaxed/simple;
-	bh=6YwDFS7s4LnYzENGU6ejo81g4HBQodskUVHGmpdjyWI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=FdeUETiWcAYzxxBPKll9PzbZiismlAcZmvqKWpv2Dj2DO2tY4660j/zutMdGXa15rLPaPjmL/3txhdGFuxJxU/pWBZV/hj0PjWNo+RN4IF/xGDluS/4HD1rRkzy1uDC1WpWwgr7b7hQWU08995W0jF7pGqOjtiSMNGxo6si//uU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DU/6AcH0; arc=fail smtp.client-ip=40.93.194.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7521258ED4
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Mar 2026 20:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773088051; cv=none; b=lQbfzc6qxZNA54k6vk7f9VgRN/QNkKFiyfwyj5Ubi4OQhoQjFX2tMf8Ho28sf9OHpLCnlItk/aEmXHx+vrAVDtmuHbrrGsbRCxG0sG4KTCY7Vi4jditScsnzJn21/ZtmoOGQglup/htvFLcS7sk9aXhVS9G6s3l0zmo91aS5m6Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773088051; c=relaxed/simple;
+	bh=KBnkBjJlGPYb9IR1gGzizVR4979iyK3WGpjnMyCHq8c=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=aqtowVa60gy+VjiM55oz75q7T8wHAonvkmCXX+I4E8QPKMZyavMjr3yzecoyFctT35gz8ibVcrSWordB5qkCmDZ1WkRtFZFhv+DuuEe7OVdXm0HpKp2ldIZNxtQsGqC0/oXG2aPVHjzzq3JPeZw9Ka8DpCcSv96xeWmShrAdO0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me; spf=pass smtp.mailfrom=ik.me; dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b=iQTK/4ga; arc=none smtp.client-ip=84.16.66.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ik.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DU/6AcH0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t/O1w9DlO6V0FEZYtTW3KLokQRjLAVK+Ok24FpJPovt03Q7VIf6AmFnER8GwtJI83VPpAjCygWsXjBRoznyGQkaJrzwmS/mnRwGReAx59VC5G5gtRcdL7xsgMlylVk907HfVJmRSt6xkZvohrGbYMZKiAzKlV8ebhN/9gL6t49rcgWUd6CSLKtjjpf7GWrRUpGrzoaTjYcb5t28/wAUKiAy3/SrOuXeG8avKH43j9qKtrIQsvJHQCB7hjAd+IusZbWddnpV93/QkRHdF8J5MFkGCLhlDIFG57V7PnHvuWUMDxr8TKLEyh0Zjd52PI5BrmN6jv/BSjTWkjjuO/q0E6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6YwDFS7s4LnYzENGU6ejo81g4HBQodskUVHGmpdjyWI=;
- b=P4Vhdqz7O4JLRpSdJeyh8dQ08uP2h+zT56kaF3HmnMEspCoREmuACfTUQcttVmvWThFpB89oYCKaCzo2bVnrNGjtuCJmvilgECo6tvsVDM6X/bEXYrp0fmoLIBawjJz+L15THfpri9qLzT3Cmx8Hb1G9zLGu8uEOM/ed2Qf7+HRZkLoEZe4xKjs/W2IDrQHDZGDJm0+g8njl/unM3J1jARrh+fPtf1PF5FnEjXI6pd/VNyx+hSy+P2pBgJk9JPy7UyVpe6aWnKZVUusebKbAS0VcDf0105oJgooG03D5VhL7hGlN9wsSqfPWIPBIf4QnruNMndYxiECBTuNMljfggA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6YwDFS7s4LnYzENGU6ejo81g4HBQodskUVHGmpdjyWI=;
- b=DU/6AcH0GnH5vi4XgAANQfkBQfYvxbsdGAjBELR8xxTvDX2HblglOBT1i3KQ7xg0OFZPeK6JsLAsJ2UEQ2lv0dAHohzIbiDgcR+olLClr0eIm2RHuTO+9BX9icS1BKUbfDMQyqUGDL168ROzJfExOkqGEgMcG+Tw+yW7djTxprYunB+DFUa2vwfIhSgkE9kFelbjLfBXQ0/0lbfgwHesgAWXyQ+PVbKtXAT8T7urcktaxQtVZxSmv7ICjumg4nhy20WDWErbhfkOB1oPbhQWuOhWkgWd3P+Goz2Fzr25YSqFkmwfhDIH4oAOzEM38lYWs9CBt7iGAj/+8Xgtq8tA6A==
-Received: from CH8PR12MB9815.namprd12.prod.outlook.com (2603:10b6:610:277::13)
- by PH7PR12MB7988.namprd12.prod.outlook.com (2603:10b6:510:26a::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Mon, 9 Mar
- 2026 20:18:13 +0000
-Received: from CH8PR12MB9815.namprd12.prod.outlook.com
- ([fe80::1592:590a:e527:ca24]) by CH8PR12MB9815.namprd12.prod.outlook.com
- ([fe80::1592:590a:e527:ca24%3]) with mapi id 15.20.9700.010; Mon, 9 Mar 2026
- 20:18:13 +0000
-From: Timur Tabi <ttabi@nvidia.com>
-To: "ewan.chorynski@ik.me" <ewan.chorynski@ik.me>, Alexandre Courbot
-	<acourbot@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>,
-	"aliceryhl@google.com" <aliceryhl@google.com>, "airlied@gmail.com"
-	<airlied@gmail.com>, John Hubbard <jhubbard@nvidia.com>, "simona@ffwll.ch"
-	<simona@ffwll.ch>
-CC: Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>, Joel
- Fernandes <joelagnelf@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>
-Subject: Re: [PATCH v11 00/12] gpu: nova-core: add Turing support
-Thread-Topic: [PATCH v11 00/12] gpu: nova-core: add Turing support
-Thread-Index: AQHcrSUU5EX/S9sMckG758uYAhOBAbWmoSaAgAAEZACAAAPgAA==
-Date: Mon, 9 Mar 2026 20:18:13 +0000
-Message-ID: <864ab8a502db872468d7b01e0adfff386d2187cc.camel@nvidia.com>
-References: <20260306-turing_prep-v11-0-8f0042c5d026@nvidia.com>
-	 <DGYIFHP99CQ3.2XWVRPO9O1E1D@ik.me>
-	 <282984b6-a0e1-4e3a-bb57-db817b7e9249@nvidia.com>
-In-Reply-To: <282984b6-a0e1-4e3a-bb57-db817b7e9249@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH8PR12MB9815:EE_|PH7PR12MB7988:EE_
-x-ms-office365-filtering-correlation-id: 13bec65c-4558-4392-5348-08de7e18fdb0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700021;
-x-microsoft-antispam-message-info:
- YsC/nC1wGVxVvwnVEmoSEZdFjxll5ik/ezS0yfshepEQag4+XaZPHBV6Twhi2eyc3KZj4Wsy/iBe6bODJnkamNEjN6L9yMSVfp3wJjVq0O1FZgwzpVVKVpBaz5ong+sunnAztuRpBZI8vWKBQlS2j2ggifzJJxKsQWqYLLVPvIFg2tKmq2AP27eudmnN/zu1HitvK2XbWW5WL0EUpgS9wG6XL7ojuVIERvII0PzreDjPwL+686oa9aSHxM1177lXvahquM3CLMAh3Hy6SUzRAxjkBzo2fyBxU+aTALabducxbHgCpYDm+qwLbJB6Ch3d7wRsWpkbzRC+nM5KHmy9ANsVZC7LKq0mxantSRqVdXXOyQuBbBrR/rVjgFGLn8AQgGVJiur6qOggFMAVSgjR1W1XyQMf54I6Lf5d2JFNJXZdlDYw4achzJEUvGlKJQN4zBqENeGU8tdDixUQUbWnunHFmPu07ELX48dQyfIMlu/INTbzAFsV+gWz8zTmTLCaTVpS1XecqLlEF62g1r4E0d5bbiOsMFd4r7pXN9S2rkVzqYHbH3kLXYk72tbnyP2AVIAo1msVs6A2VBqiApB2pHCqw45ly7+bgzKMGk3jECeBvw3KpS7cKwJYFeVjTN4UCBYbMWN6Nr1ClQ64eEIF6dR4hwLvDGEa+iffe8lsIBkDz8h93oid5bMOvIcXqDLfEJ4Q543c/VDExV23ajYExT/AMuHkk/pE0fu1kUD+GnjXPOkYA+L7M8IN34gz7YY3DFMeb2WnYQH8iD2U4ui75W8y1hrfTYTFF5OQqPjQNoE=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR12MB9815.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?TUUrS205M2lCMC9IaHgwZDBtSm1pd0xuMjNLbDJxbFg2bCtFQ3YzVGdyTzkw?=
- =?utf-8?B?NzFzL3h1UWZoM1k4OU42ZHNxQVRBaitGQk01ejc4eFhpVzI4THVkVXRUY01N?=
- =?utf-8?B?TVVmYmIraEx1eUVRTWFrY2F5RGM1ZThQY2lKRWhiRkpqTGFaaVlWOHFCYWkv?=
- =?utf-8?B?TFA4bGtpSEQ2V00vTlJqWGU0QUZzUjVINnJWYmRId0RZeWtTek9pYmxLRmxv?=
- =?utf-8?B?Mi9EVlF5UTRZL1NTcGpiQzJqTWtOUFk4RkNvQ21EYmcweVZyNmhRSUNRU1Fr?=
- =?utf-8?B?b2oyVzFRaG42OXhsTnc2SFlqSmhJOUp6MjMwRTJVajJoT3kzQVNHb0tsWS9O?=
- =?utf-8?B?ZzFZbmFSUWVLUm8wU2lqM0NFb011Z1FZaGhGVkdsczM5R1U4N1FKRnVnQ2Ru?=
- =?utf-8?B?cWpYY04reGRSR0llYWQzcTN2M3AxbGVXU3FyRjR1MW5Cd1RObHNGdG5JS1Zw?=
- =?utf-8?B?Y0RyeHg2NVFJVE04Nkw0eElrRk1uT0dCbWZjZWk5MDk3ZDBqYVRtMjlwNUpo?=
- =?utf-8?B?b2xmYjMzcHlFWGhwRGppMDRzeGM2M3docmlkWjRCenNHeUlyc2hESnhDazJx?=
- =?utf-8?B?T2I1UlNNSXk0dVpBekU0d1VFek1vQzZyRHBqZjlIeEdxcG13OG5mZ0RUN3Zw?=
- =?utf-8?B?ZWdlVUdhQWJRQlRBbFFSVFFSZ2htc3djSjBZbklwTHRubnYycUNiTUtzRWtZ?=
- =?utf-8?B?U2NGT0lIaXJIYzFteTN0amVYcWM5d0w5Q3NYcm9ZcFV6R1J5NTA1L0pJTldy?=
- =?utf-8?B?NFZDSDNJSkY1ODZ4QTR5dE8zK1dPbWxUSncrU2V6MzF6T0FWbm1NSmQyK05k?=
- =?utf-8?B?OTFDSHBmSVhKUjhuTkVMT1Z1bFZrRlJOQ213cjJQbEpLK1VsY2lwbzdaN0Er?=
- =?utf-8?B?aGFGci9CS0tVdWY4L0E4cHVMcmhPK3oxMC9hL2gzcnJ3VU4yeGVOQXpTZzJ1?=
- =?utf-8?B?VHpJMkxmYzQxaUJyRGNvT1pLYVNKTm80VTF3ZHUwQURJM3NrYktUVkxkck95?=
- =?utf-8?B?ZXhTTlZTazBGdzZSa1lYamxXcnl3KzI3SDVxblN1Q29VNFJPRFRTNUI4c0FT?=
- =?utf-8?B?eVlXZjBwMVhKMERuZDUxbWZ5b0RSUjhDZmF5dWNkcDArK3ZnSE5yenFRMjlV?=
- =?utf-8?B?emRSUWJacm1UUmZyODk3czBGRWVtamtQZ0YrYmVOR1VVQ3FzTXcvdzkvTjVr?=
- =?utf-8?B?RitnN2lBaThkeUtUWnZQa2VDeXlGUzJYSWxxeE9XaFhpbnpDaG11SlRoLzBB?=
- =?utf-8?B?SENZT25XYWoxTFMxRlJoODJ6L0szT2lVV0oxYXBmbytSSGFOUmJSSjQvKzJm?=
- =?utf-8?B?cUlSSEkrL09SaGV4YkNCWnlQN0xyRkx2U1lVWExCVldkWURNakM0NFRUeU5R?=
- =?utf-8?B?Szk2TFQ0a0VESXp5enlabEVGUzh6aEVHRzVOTHFYZnRLdXcyd2N0MzdLK0p3?=
- =?utf-8?B?UkJMc05CWG9teDVQOUxEd2xBN0RkQWZORWVsUk01VXJSVzVUQktBNjV0S21U?=
- =?utf-8?B?dGh5ODJIaFBuWVdWWTdzdTJrM1F2a01uWmhwNllVY1JaVUJGTk1xNzZJeFhU?=
- =?utf-8?B?Mk5wWXpmMzhUYVhZSGk0WEhKQUFQVjlPN2c5cEJJbFh1RlpUZWhUcXI1MmdZ?=
- =?utf-8?B?bThCQ0M2WHh4U1JWMmlNWmlvWFErTXRnWDJtRE5wMHowdlZTMU5FTXRVeDZt?=
- =?utf-8?B?ZjluOFI0OGlMbndETERONlhBUmdkTC9pWm1KUjZYb2dSVTcyZzlEVDB6U2Q0?=
- =?utf-8?B?WXhiR2w1RTRvR21CQ1phNmFFZzJiTGtmQUxGS0h2b1RZY01UemwyT0VMb0tj?=
- =?utf-8?B?VGtuZlNvMlB1bmp2b0lTeElhdFZKWWV2ZzZrNnM4UlhUL3ZEWUJ5dEVOS1I4?=
- =?utf-8?B?THVxQktEVHdTeHhaUFk0d3YvTHFiZGpNZ1Y1U3FEK0xjZ0RMWDBMUGw4MGkv?=
- =?utf-8?B?blpPTlRJck4zemJnVHp3NjY0cWJ6MEtRbVRJbzRiTjV0UGdVYmdPMkZqcFlW?=
- =?utf-8?B?aTU1bmZ4bGwwazl1NEl2UTloZmxqNko1QW5CUTFCWUkrRnZGZ2djU3RZcWpP?=
- =?utf-8?B?amtPVFM2Nnlkemo2WUJOL2k4eUZoQXc0T3ZPWHNMSzd4ajBXVllza2RjRGMy?=
- =?utf-8?B?Q3ZWT1NnZ0ppVnNNaXNZbDFSNHdVRGtKakQwcmFFVytmSjUrSy9ib09CRDE5?=
- =?utf-8?B?S2dhYmpPUCtZSDUzL1prN3FQeUJ4WER2MDFjUjFWbldaQ2dYY3FYZFhWS1pZ?=
- =?utf-8?B?WGJBY1RVM2xjckkwQlZ5REFGRHg5N2VmelVZOGs3MGdiV25KVzRHelQ4RFky?=
- =?utf-8?B?QkdvVXBHNHNsSGcydXVFT0k1K1ZBQTRkTjl0VXlDRE11cGxmV0dCdz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <694F1DEDBD720D47A26876FAC086FFD5@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b="iQTK/4ga"
+Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fV6yJ0Qd6z620;
+	Mon,  9 Mar 2026 20:48:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ik.me; s=20200325;
+	t=1773085719; bh=JSB1VwR1hlXdj+drdPisjtXSesd6AYdMKEWkO/sGqrs=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=iQTK/4gaQcfdwI+buCORDM4mGZR5RWb+mRBHrw/v/BGEgHN4Dwuxuifm2hK2BrVPA
+	 e4JOU+r99Eq5Ry2biEsIzl3Np/H20WPhxdq5QM0+ktCpM+OsacDpSUE9r4qRm7+lmU
+	 PH4eYlzQTSV7Wk5hsoNYZfEerIAhRuOgMRb1c51U=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fV6yG1p98z27L;
+	Mon,  9 Mar 2026 20:48:38 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH8PR12MB9815.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13bec65c-4558-4392-5348-08de7e18fdb0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Mar 2026 20:18:13.3481
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ca825hj5NIxm+twfcfF3ILOn2C2c3Pn87aPtZ2uTyluugk0rh6HYbwe6wUnf52fq+5vJ5IBtQAlxAwrSwiOMow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7988
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Mar 2026 20:48:37 +0100
+Message-Id: <DGYIFHP99CQ3.2XWVRPO9O1E1D@ik.me>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <nouveau@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v11 00/12] gpu: nova-core: add Turing support
+From: "Ewan Chorynski" <ewan.chorynski@ik.me>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+X-Mailer: aerc 0.21.0
+References: <20260306-turing_prep-v11-0-8f0042c5d026@nvidia.com>
+In-Reply-To: <20260306-turing_prep-v11-0-8f0042c5d026@nvidia.com>
+Feedback-ID: :b2b0f7d1dda10c9:ham:e74197f626dda86
+X-Infomaniak-Routing: alpha
 
-T24gTW9uLCAyMDI2LTAzLTA5IGF0IDEzOjA0IC0wNzAwLCBKb2huIEh1YmJhcmQgd3JvdGU6DQo+
-IA0KPiBJIGhhdmUgdGhhdCBleGFjdCBjYXJkIGF2YWlsYWJsZSwgc28gSSdsbCBnaXZlIHRoaXMg
-YSBxdWljayB0ZXN0IGFuZCBzZWUNCj4gd2hhdCdzIG1pc3Npbmcgb3Igd3JvbmcsIG5vdyB0aGF0
-IEFsZXggaGFzIHB1c2hlZCB0aGUgZW50aXJlIFR1cmluZyBzdXBwb3J0DQo+IHNldCB1cCB0byBk
-cm0tcnVzdC1uZXh0Lg0KDQpUaGUgVFUxMTcgaXMgdGVjaG5pY2FsbHkgYSBtb2JpbGUgY2hpcCwg
-YW5kIGl0cyBWQklPUyBpcyBkaWZmZXJlbnQuICBNeSBpbml0aWFsIHZlcnNpb24gb2YgdGhlDQpU
-dXJpbmcgcGF0Y2hlcyB3b3VsZCAiaWdub3JlIiB0aGUgcHJvYmxlbWF0aWMgVkJJT1Mgc2VjdGlv
-bnMsIHNvIHBlcmhhcHMgdGhpcyBjaGFuZ2VkLg0KDQo+IA0KPiA+IA0KPiA+IEhvd2V2ZXIgbm91
-dmVhdSBkb2VzIG5vdCBwcm9iZSBlaXRoZXIgd2l0aCB0aGlzIGZpcm13YXJlIHNvIHRoYXQncyBu
-b3QNCj4gPiByZWFsbHkgdGhpcyBwYXRjaHNldCBmYXVsdC4NCg0KTm93ICp0aGF0KiBpcyBpbnRl
-cmVzdGluZy4gIE5vdXZlYXUgZG9lcyBnZW5lcmFsbHkgd29yayBvbiBUVTExN3MuDQoNCg==
+On Fri Mar 6, 2026 at 5:52 AM CET, Alexandre Courbot wrote:
+> This patchset adds the remaining support required for booting the GSP on
+> Turing.
+>
+> We did a deep dive with Eliot looking for the reasons why some fields
+> involved in the bootloader are ignored or used apparently
+> inconsistently, and this results in a more documented flow and a few
+> fixes. Apart from that, this series seems to be stabilizing and
+> successfully probes my TU106:
+>
+>     NovaCore 0000:08:00.0: NVIDIA (Chipset: TU106, Architecture: Turing, =
+Revision: a.1)
+>     NovaCore 0000:08:00.0: GPU name: NVIDIA GeForce RTX 2070
+>
+> This series is based on `drm-rust-next`. A tree with all the patches is
+> available at [1].
+>
+> [1] https://github.com/Gnurou/linux/tree/b4/turing
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>
+> Changes in v11:
+> - Fix build error/warnings and rustfmt formatting.
+> - Address incorrect IMEM section start offsets in FalconUCodeDescV2
+>   and better document fields usage and unused fields.
+> - Use `get`/`get_mut` instead of direct array indexing when accessing
+>   firmware content.
+> - Link to v10: https://patch.msgid.link/20260301-turing_prep-v10-0-dde5ee=
+437c60@nvidia.com
+>
+> Changes in v10:
+> - Store the firmwares into a regular KVec and move them into a DMA
+>   object only when actually loading using DMA.
+> - Use `try_update` when updating the `NV_PFALCON_FBIF_TRANSCFG` register
+>   array as its index is not build-time proven to be valid.
+> - Fix alignment issue when processing imem section of the FWSEC
+>   bootloader (thanks Eliot!).
+> - Link to v9: https://patch.msgid.link/20260212-turing_prep-v9-0-238520ad=
+8799@nvidia.com
+>
+> Changes in v9:
+> - Add a few preparatory patches to simplify the actual feature patches.
+> - Use a wrapping type for the bootloader.
+> - Simplify the falcon loading code and move the complexity to the
+>   firmware types.
+> - Add the generic bootloader files to `ModInfoBuilder`.
+> - Link to v8: https://lore.kernel.org/all/20260122222848.2555890-1-ttabi@=
+nvidia.com/
+>
+> ---
+> Alexandre Courbot (10):
+>       gpu: nova-core: create falcon firmware DMA objects lazily
+>       gpu: nova-core: falcon: add constant for memory block alignment
+>       gpu: nova-core: falcon: rename load parameters to reflect DMA depen=
+dency
+>       gpu: nova-core: falcon: remove FalconFirmware's dependency on Falco=
+nDmaLoadable
+>       gpu: nova-core: move brom_params and boot_addr to FalconFirmware
+>       gpu: nova-core: falcon: remove unwarranted safety check in dma_load
+>       gpu: nova-core: firmware: add comments to justify v3 header values
+>       gpu: nova-core: firmware: fix and explain v2 header offsets computa=
+tions
+>       gpu: nova-core: make Chipset::arch() const
+>       gpu: nova-core: add gen_bootloader firmware to ModInfoBuilder
+>
+> Timur Tabi (2):
+>       gpu: nova-core: add PIO support for loading firmware images
+>       gpu: nova-core: use the Generic Bootloader to boot FWSEC on Turing
+>
+>  drivers/gpu/nova-core/falcon.rs                    | 315 +++++++++++++++=
++---
+>  drivers/gpu/nova-core/falcon/hal.rs                |   6 +-
+>  drivers/gpu/nova-core/firmware.rs                  | 107 ++++---
+>  drivers/gpu/nova-core/firmware/booter.rs           |  65 ++--
+>  drivers/gpu/nova-core/firmware/fwsec.rs            | 129 +++-----
+>  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs | 348 +++++++++++++++=
+++++++
+>  drivers/gpu/nova-core/gpu.rs                       |   9 +-
+>  drivers/gpu/nova-core/gsp/boot.rs                  |  17 +-
+>  drivers/gpu/nova-core/regs.rs                      |  30 ++
+>  9 files changed, 820 insertions(+), 206 deletions(-)
+> ---
+> base-commit: 15da5bc9f3adab7242867db0251fe451ac3ddb72
+> change-id: 20260204-turing_prep-6f6f54fe1850
+>
+> Best regards,
+
+Hi,
+
+I just want to remind that there is still issues for some Turing cards
+with the firmware used by Nova (570.144) and this patchset still suffer
+from the issue.
+
+I am not able to probe on my GeForce GTX 1650 Mobile :
+
+[    2.246095] NovaCore 0000:01:00.0: NVIDIA (Chipset: TU117, Architecture:=
+ Turing, Revision: a.1)
+[    2.722681] NovaCore 0000:01:00.0: Booter-load failed with error 0x31
+
+However nouveau does not probe either with this firmware so that's not
+really this patchset fault.
+
+Are there any plans to check this to enable support on all Turing cards ?
+
+I already reported this error in the V4 patch [1] for context.
+
+Feel free to ask me if you need additional tests or results.
+
+[1]: https://lore.kernel.org/rust-for-linux/DFA1CUMND2ME.1D3PAJW641QHM@ik.m=
+e/T/#u
+
+Regards,
+Ewan
