@@ -1,82 +1,101 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C573F37A481
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Mar 2026 09:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E252937AA93;
+	Mon,  9 Mar 2026 09:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773048455; cv=none; b=K9VLnwHgbu4zDYhStMNfDLIHO5i2qrglai5la+jKigXjgoh2Hn3CTolTmHbkklGr2DenPfXp7Pt6zkIDRL9tzRK87HAcxQrrEWwpV5h+NqeR84AV09fPR65LdxEgVxIOt4AHMxZhADd9KUglgaYHeobybsPLj/m6WRxIu2h092A=
+	t=1773049392; cv=none; b=nlLCflAUhc9jt71JYhJXNhlBxyxUfJVbujvtQlufOvJNJYpPeXEdpC9t8sVuTat18huPBnhWoppkqStt1apc5ZqwYH3PyvTRBphL2O6NmRo7ptCou5rQe7a4x4fOUdWkW5R22tEDItwwiTR5ouvyjxbWrFvxage9vPyC6gSKXFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773048455; c=relaxed/simple;
-	bh=uJo6kcu3rSOSjO1Me31c4L0R8zx6Lei1xYU4fBz/9xQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=O/G6p7Nh3FIXX1HsiAq5Zy48paixhmxRg2Zld7hckF2fubnrFyyQfQ1KBH6w78FdIjuxhQ74HI0qvgCYJWBj+o4iBG/W/AI+P3c+MGbxFq99bp1SC9kQULWPR3PgE0SCwc5vJzZpM6uON0tyS9cV7rVQVCbi3EeCmmZUKMKhlhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AX6h2EIG; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1773049392; c=relaxed/simple;
+	bh=hcQscNv6X2IlMsZ1MJR70rObJ5x82p83FljFASKR/yA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JwM+0ZLfIbh9wac215NkFdr1XmFgyASox1jS41OYUSM/j0rmhpgEjFt38ffz1+8Yaq4oSK2W4lYDWMlgsliHfo8zZoSMXvhql5nTw/RixII8it5XE8IvaQZOzN/qMkaRtKMQ1grxe9VQou6EB1nwGRAIO/8/hm7+p8ruJowvC3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g3QyHLg+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AX6h2EIG"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b938cb02038so467880866b.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Mar 2026 02:27:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773048452; x=1773653252; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GekrONwdW/E2ASq8vDcpU6JmstrAl1AYagM70tLaMWo=;
-        b=AX6h2EIG7fQClkpwnIpID7Q9x3fJKMWiuoOAPBZFNcPD5yF/3F5ET+xXJvCzs+n+/S
-         NGHvZtUk+OXUUEYK7yqgOF9VHFaFez5PETDbXjZ9i9z3aqqzK87NNqIzbn9hVDZHUAfj
-         yhCSmA9AivKphIKb7H5tr1aW+hduJ8kFtTonUVcHxjXg4ctn47ySP3+17bxKMas5RUhA
-         W4IUKB1Jz62sQRB0YU6aLnV9chyCIKA8UQv/S0CsYhqkKECjNBstWO9N9StBMzl8obvk
-         GwRCYJ5Wbouc7ueyn7eRmLboL3Q4u5+Kmqm22+/Zd+ci843fj9QCK56wD22PvhFmYPOG
-         2BVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773048452; x=1773653252;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GekrONwdW/E2ASq8vDcpU6JmstrAl1AYagM70tLaMWo=;
-        b=JViF1XQC29DXudPFyxh3MJe15br3wH9BheR5/4NDfi5dL3K6hEuUuMPsYNPteIS/A9
-         2VYV1swGXlv9i32dN4zNbw25Ph9srW3c2gV5yIEUDyYvxu3wPdcfjKz1lpHmXM20jlN+
-         Rqjqm97zKPDVWtyAgN4llDpp2Df4wmtdG9GYrWbvpls6/A97vtxeAWpEVkOKIrFb+n0X
-         WP9gUHi/OS5y6u7S+Eoyhv5AGm6ANXuqKAeA9N9u3FkSzNUVqtfdrlpFuS1bf3gP0jny
-         lTM62c33WC0cfJmYbzCJIIwQYivi7c4wTc4KjFF7kfdcOLoD+2ImXlF5lp+L1b3QEgMd
-         JGkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXktczmn1A2sUQxz2xFNu9ApnEfBvO2+G6kEwLS+Y21MmVYhKoSAE2aE8obYJa70N6yQiCyVLE3N/YEfcTAKQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLEWIM7+B/daFaISuuWZfDUuX5W+FuKuH1Ahu4b/K6Wu9Qbb2c
-	gi2Tqjxof4LfC26n83QQ3M7fRAlatpdwfQKqXo9mMWXy3+XnYKqIiCGx7Cv/78Hjj5e6zvZq5Op
-	51y/75/dGnbW+7WXofg==
-X-Received: from edvi5.prod.google.com ([2002:aa7:dd05:0:b0:661:5234:afa2])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:2d23:b0:b96:dce1:2f52 with SMTP id a640c23a62f3a-b96dce1782fmr288787466b.19.1773048451887;
- Mon, 09 Mar 2026 02:27:31 -0700 (PDT)
-Date: Mon, 9 Mar 2026 09:27:30 +0000
-In-Reply-To: <20260302202331.176140-1-deborah.brouwer@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g3QyHLg+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2451DC4CEF7;
+	Mon,  9 Mar 2026 09:43:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773049391;
+	bh=hcQscNv6X2IlMsZ1MJR70rObJ5x82p83FljFASKR/yA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g3QyHLg+DaI5NY+BHCuKPojHTq6OhmW+NN6e9IDrnlxJzST0+B8MOuPiMzTOi3MHj
+	 13rfzrK9d603+yt5jZjg+mzwKljAQz3DNm8xLWXsiPIbCaMgV4ItIUYYUm423wJKY5
+	 HXXMwW4KPyyjIuf9pNxIc8nIzzFBAMy8mLsAwyIQM/F7C4mRG240o+WUdgulUmtCK3
+	 SG8wHM6HqGbed3CSH2QQLB/ObkQJ97USNAcM8xewthB/FIKf9j3zS6PPu0QQOqbOr5
+	 9x1zgSUK1U4EzBi1EAioYyc3Swd4GCE653jS4uM7iXbSggPFSvJy1MrLSeCAEBjgkP
+	 a7Ok9ie/sR8pg==
+Date: Mon, 9 Mar 2026 09:43:04 +0000
+From: Lee Jones <lee@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Markus Probst <markus.probst@posteo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mfd: Add initial synology microp driver
+Message-ID: <20260309094304.GQ183676@google.com>
+References: <20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de>
+ <20260308-synology_microp_initial-v2-2-9389963f31c5@posteo.de>
+ <2026030827-nautical-overplant-399c@gregkh>
+ <8efdf3e1bbf24504d560c12131cade543bec82f5.camel@posteo.de>
+ <2026030913-agonizing-shoptalk-ed98@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260302202331.176140-1-deborah.brouwer@collabora.com>
-Message-ID: <aa6Sgm-JIS2_pudv@google.com>
-Subject: Re: [PATCH] drm/tyr: Use DRM device type alias across driver
-From: Alice Ryhl <aliceryhl@google.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	daniel.almeida@collabora.com, boris.brezillon@collabora.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2026030913-agonizing-shoptalk-ed98@gregkh>
 
-On Mon, Mar 02, 2026 at 12:23:31PM -0800, Deborah Brouwer wrote:
-> Currently Tyr defines a convenience type alias for its DRM device type,
-> `TyrDrmDevice` but it does not use the alias outside of `tyr/driver.rs`.
-> 
-> Replace `drm::Device<TyrDrmDriver>` with the alias `TyrDrmDevice` across
-> the driver.
-> 
-> This change will ease future upstream Tyr development by reducing the
-> diffs when multiple series are touching these files.
-> 
-> No functional changes are intended.
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+On Mon, 09 Mar 2026, Greg Kroah-Hartman wrote:
 
-Merged into drm-rust-next. Thanks!
+> On Sun, Mar 08, 2026 at 07:15:16PM +0000, Markus Probst wrote:
+> > On Sun, 2026-03-08 at 19:55 +0100, Greg Kroah-Hartman wrote:
+> > > On Sun, Mar 08, 2026 at 06:41:20PM +0000, Markus Probst wrote:
+> > > > Add a initial synology microp driver, written in Rust.
+> > > > The driver targets a microcontroller found in Synology NAS devices. It
+> > > > currently only supports controlling of the power led, status led, alert
+> > > > led and usb led. Other components such as fan control or handling
+> > > > on-device buttons will be added once the required rust abstractions are
+> > > > there.
+> > > 
+> > > Why is this a mfd device?  Shouldn't it be an aux device?
+> > > 
+> > > But this is just a serial port connection, so why is a kernel driver
+> > > needed at all?
+> > I am not sure what you mean.
+> 
+> Can't this just be controlled from userspace over the tty device to the
+> uart this device uses?  Why is a kernel driver needed at all?
+> 
+> > It has multiple functions (leds, hwmon, power/reset, input etc.) and
+> > does is a multifunction device (mfd).
+> > 
+> > It does not however use mfd-core or anything from the auxiliary device
+> > and instead implements its functionality directly in this driver.
+> 
+> If it does not use mfd-core, then it should not be in drivers/mfd/
+> right?  Instead, use the aux bus code to split this up into different
+> devices and attach them that way, as that's what the aux bus code was
+> created for.
+
+Correct.
+
+If the MFD APIs are not used, your device is not a Linux MFD.
+
+MFD is not a dumping ground for devices with more than one function.
+
+Please place all of the relevant pieces into their respective subsystems.
+
+-- 
+Lee Jones [李琼斯]
