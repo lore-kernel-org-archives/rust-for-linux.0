@@ -1,197 +1,147 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010031.outbound.protection.outlook.com [40.93.198.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914F03E1222;
-	Mon,  9 Mar 2026 15:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773071957; cv=fail; b=kEkksmNShaNoO+CfUQNWBGm0qWcMO7DajosnRZrjqQUPm2b/Tp+wBJ5D9Q04cytAr7tBYCepJ3oJ2pOSELB9BFqA86UZLKNgtHe9DxANKJ1ZtXoh9lcp4ZgzpYFyPJK6XJF+cV7FoLDcty4f5+oRBQp4IA5E3n0i3T5BB+yJz94=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773071957; c=relaxed/simple;
-	bh=d210dpF/C+VIfHhzRasoIhOpyhNH/RH3eUdT5wGdj4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=i+w0Q24j5r8ieJW3CRIue8FSPXZaYDHfF/+OChrYUMG1wd2LglY93csCTzZuSf430d6mz6NIJ006E2PWAVxtBupTdLx0xy6k3CqfNIrjAqO2HuhBSn2U8PDIR/j5L4n3uq+3WbWvjXGB/yFn4UUZqWzoa9ChzBEVe9CQ9CCJLtM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XlX7oqCJ; arc=fail smtp.client-ip=40.93.198.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBE138F255;
+	Mon,  9 Mar 2026 16:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773074119; cv=none; b=iXrekU/BkYo76paR/xntra21/TjNsHoOa4eWjS1vtlzAt8mkSVaGWrZ3WgChNqXBQ1j6h2eNtk4MVb4J2VAub5JQb0MCbkNrTF52M95O3b1eI7b+UfmRknwU+2UPLo6SrSZDSqdlBsS2S3AotShEMTa9EhdJzN/Esci/MZwic9s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773074119; c=relaxed/simple;
+	bh=gvPoHfp4kILjun0x+PiFZTGPIwNfY5nP6rl8dO323WQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=B0r2KSo/8H2bUWzwX2CJQTvUclYFRCR7MetNW0HwqguMy1WtL6mjNNYmXprUTK9/HhVjBpGKmZ8IHDiLPNfxZ8Knanu+2vqGT1aeGatVMTiaQ1WIRZl4wmCTmaTaxk0ZIwKYAySPjJ7KvQIKiJqnjPXIcmRdSayPK1o4F94oPMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyLYSwNI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XlX7oqCJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PuUMyOmCb4Tcr4XEnSoGcisyYbYDINb7zkaTs2Hkqs5z3e1omAqRSZXboQFieq8u566HxvtMM8kDMgTWwRLhUDA75Oepx6V10BIKDwemzgXlyGrQRw+9/HY6CtSK1zwxMD4Ox+Mzoz4Hc3Q4DHZ63pAAlTgOQZkFP5hcyRTCfrPxExyFasBGp6PLBed2qoSzigXHI934/YZ+TtOjmOWPWv6M9OxPHl8OOhmMItiZoYb5qNjfUqXfab1FdryhD+Nzlz4GpsTVSec6w/xcMilbqUod6YiS0Uy8RyPvj/cVbfssj2oNwQKtH2bR8WC8uOkaxAfjaotMwELI8fm9G8i7Hg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kCOH0FZ7acVXJXKuoGLx9EQ+XMDVNhB83GpTC/uRX3c=;
- b=eCyOLBeCZ4V87rfdJpfrlGRTQfupYeou6hcuzE8aedvzayijghjZvBRCJg9kIyRFyvjgc1HYVcTrInwOa/QzMm7W2YZ3Rv3lyWCp+qSoK6ox95II3x43tVp6XFTqSGbZQ4LIw09wBhu0e/9ACcl7oF53G31ALVO2wgdcuNXNEbMp7qwJslDInRh9mfAoLgPVJFfASUVIzHAhoPkjES1/i8e9W7yAPQq2hX2W/JM9vZWTSS98/AcQ4eR6F60O6GiTFRksnSkq9M3dc+r1UPxIU7vjZfuedBLAVcqGxoUf1X83rpvlppn+//BW00Co54lTn6IetSBsN4pEDqO4wf2Yqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kCOH0FZ7acVXJXKuoGLx9EQ+XMDVNhB83GpTC/uRX3c=;
- b=XlX7oqCJ+KafBHoabh0bSKNqSmYrBc2AkUF10YZiRdixLgReSUCrQldnwbdwr2JwQStnphNFDwcz2fFkmzdFzjOHnHmuesgT7c7SBbZGXUPt06CSPgkVDYbPtQPbfRtjpivlOR9s9/FYantwsd8XuyWS/hmyB8Y+21YpXq2Atj9Q2UuskZT5RAuHSVAFB+00RpZ0M3h4jPzhrn67/plMsWLeijA+VYIUsLx4OICHaeOpcsTlA6FAc6rPXRV2EkrZ8axUg0rEPNoySSaaDAZbm6/eEEJxfE2n3M0+N7m5bxy5D9lIVtYqlu1E6FzqmdWLIfPeZJ4WvMB5XMQ4h0gc1Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by PH7PR12MB9174.namprd12.prod.outlook.com (2603:10b6:510:2ed::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Mon, 9 Mar
- 2026 15:59:10 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9654.022; Mon, 9 Mar 2026
- 15:59:10 +0000
-Date: Mon, 9 Mar 2026 12:59:09 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: dan.j.williams@intel.com, Lukas Wunner <lukas@wunner.de>,
-	Alistair Francis <alistair23@gmail.com>, bhelgaas@google.com,
-	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com,
-	benno.lossin@proton.me, boqun.feng@gmail.com, a.hindborg@kernel.org,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, wilfred.mallawa@wdc.com, aliceryhl@google.com,
-	Alistair Francis <alistair.francis@wdc.com>,
-	aneesh.kumar@kernel.org, yilun.xu@linux.intel.com, aik@amd.com,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Thomas Fossati <thomas.fossati@linaro.org>
-Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
-Message-ID: <20260309155909.GG3717316@nvidia.com>
-References: <aZn9cfhv0YRxI1mw@wunner.de>
- <699a3ff3f019a_1cc5100e1@dwillia2-mobl4.notmuch>
- <20260223171527.000016ef@huawei.com>
- <699ca65b5ff9b_1cc510019@dwillia2-mobl4.notmuch>
- <69a903d4511e4_6423c1004d@dwillia2-mobl4.notmuch>
- <20260305124837.GS972761@nvidia.com>
- <69a9de4791667_6423c1006c@dwillia2-mobl4.notmuch>
- <20260309113941.00007258@huawei.com>
- <20260309123148.GC3717316@nvidia.com>
- <20260309153339.00007b29@huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309153339.00007b29@huawei.com>
-X-ClientProxiedBy: BLAP220CA0014.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:32c::19) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyLYSwNI"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9D450C2BCAF;
+	Mon,  9 Mar 2026 16:35:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773074118;
+	bh=gvPoHfp4kILjun0x+PiFZTGPIwNfY5nP6rl8dO323WQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=UyLYSwNI19v9fIU/UbWQcc5LMvSlHh2m1+TmiGF9bUNaACjOvtlccovTSWh9MZjOu
+	 FRjSnf/V5MzFcFzJlOXhxossZXZYcvi2ULR2U0DcU7BvOSd5AQpdYQPftTVApp3LeC
+	 DdaoRbnIqtjX4kzODRi7OISkxtYKvCjqe9aamimi8IykwcmXBq2K5mA2e11fF6XfOn
+	 EEeJuwI3Ay0TEzU5vsUR9rWGgBJg7hT6fDYWpRsSC+GxxkGgxEvGNnAp+yZhvtLemF
+	 NYfDCOQgK3qCxuv5q0owT3xbZkd9kfsFebgC6HOpEZN3r68PQgLWV5vsPmBJr3pMkD
+	 rNvIeysjpvkKw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F83BF41810;
+	Mon,  9 Mar 2026 16:35:18 +0000 (UTC)
+From: Tim Kovalenko via B4 Relay <devnull+tim.kovalenko.proton.me@kernel.org>
+Date: Mon, 09 Mar 2026 12:34:18 -0400
+Subject: [PATCH v4 1/4] rust: ptr: add `KnownSize` trait to support DST
+ size info extraction
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH7PR12MB9174:EE_
-X-MS-Office365-Filtering-Correlation-Id: fddaa0b5-45a5-46b9-b145-08de7df4cd05
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	znyNoKzzObUF4zZoAWI2FNmsY5AF7XV2Tltt/lnBoy2801PHU0G8vQJIf+T/6x8nWTaXs7+GfAg5pnG3W+Y2KUqhiK3h9e7sarEiqH6qdhQI9xHEDUfhQFFqn28M0yiFmW95n5ARJ8MxiUvaZ82dYo5TgdCONsLyP+zfBtX78gHpfy05Dzo2I1mFxjFJp6Z6LzYP0RtHiRJHYN2iPAaMoOyPLsvsHra+cczJMVZO/zVoTNEAo4F4kQDMz2DOkf8Qfg0jslu/2iFvr7bi6w6j5hsLkCAilikhP9JedLlZhpbRd1Pgyx2465RgjZehdtfS1iW9D+bppX7XScWPvjiamrP7jVALZuPN2nBm7p1fj6i9iVEapY9Culm/lGOcuTEldP7gLF1nslmXp4cHa//9YtY2mLN9NHQMBHx2lkMiEIwaMjQerDyi4VrjZvy62L8vdaD9A/95LtxDcunbr8yAsoGXiJkKWvAVjkCUcBi17k6Xmma65/dddrbhvjPJIM0t/3rV8eZTfyWTIg/dVxavlIXcxjVawy2H2x1RitDqWma5+yqYYegh+A6s+JhNEMx25X9hO2C5xdMLq2LyxJZOX6vaRvnjXIeQ1lm8TeQ+oogGnpwpt81Rut2LhpL8ICzUXGkdrYqL/RgeJ9IZfNOAKb8j8mpilU9ZejXfUMB8naiKIG2MH5m/RuUlzENGr67s+wdYb+/Ud6YoUbOhPm+6C4oPvyr+a17YSsUUB90xlB4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fFsY0+sKos+6ch5RZyP3yUULs/o1Ti+pBn/psH/u82bmEbVy8g0RyBDhKowl?=
- =?us-ascii?Q?kO4rGptSEGK57CW27pzYs4hZHIQPtqObgSRvMqr5zdc6zCxRk2oGgfV59Jdm?=
- =?us-ascii?Q?LM4z7Xx695yZ0Ot+egY4Q2xkTbAcJoquW4I7e2RJe3o429jWDrTQQpdhhvaf?=
- =?us-ascii?Q?MmOFHy59pwdeMm0HUksbs2tmQh35C85ZgzFK78u1aUKrrmEAfv6H6oNAkhD2?=
- =?us-ascii?Q?fiRBWoH3LsmJjVTa6N6yJnX8Bmdk0kidnA9UfjxOFyu0vVcv9ScVV9SgchOF?=
- =?us-ascii?Q?99T4+TtYurnhjdt0cVLaS3m34xDSlDJ4PWTIZ1SBOsbuFw5M3Iocenr5m/kc?=
- =?us-ascii?Q?1sLgzImDoUO8UD2wRzX0SRnLEoFSK2ZmrSHNiCGX3vrmDHBYsI55w76wWeQn?=
- =?us-ascii?Q?z6SEh6xdkJo1/l/0jzqA2Yolq53E43HBrCn1dZdoS8q8TGSVh1smuK5TID7C?=
- =?us-ascii?Q?Cdit0lkyOBmR4OvXgmxTru/r8ZGW7sOvc3VQIHaiMsg8RlTKEdA0dT188qoX?=
- =?us-ascii?Q?27chRVWzLkAyU5TJmqFsCkyZFztUNM7Tcpn8Baek2Y6jLtC1F6zHFm5/LCdG?=
- =?us-ascii?Q?rHbElQDN3yyGypDuMCXB5QJngIAgLHlBZtS9pNrKJZrJaJnnUI4Aq7jNWlxa?=
- =?us-ascii?Q?xlWCDr2t7S7S8VkyhSVKVDC1UuV/wvEVnq0qp1jMU3TqyXxy1XJ6UuHv/H0G?=
- =?us-ascii?Q?H8PtdJHwAXFC8Vj3Dv6ohhW9BMNTX9Sd6+R/qAg0XaxVJNCWi224yWVD/p92?=
- =?us-ascii?Q?ExKC6FNEfxvuHVCGiqKDrLd05ofqS4RUEG+OK7+8YM+UYFzRzPbTsZqLh6h9?=
- =?us-ascii?Q?eqL//f+6JlPPnzC/ZEcelGZbmnjN2PKBGvl2+gC3Zgvt2cnGhVy84R9aAvYK?=
- =?us-ascii?Q?aric4eTG9vqlXS7kO6e/01VRYpngkvVgvWRnYPtt79T0PGcFz1Y+QEG/O+pN?=
- =?us-ascii?Q?JkTAH0/jOqhND3onI5fhtdT8h+wcMuuvy9vR5pTc7WKyDGwUg+gzF1h55puN?=
- =?us-ascii?Q?Mac3DWTxpT2pHbWRTBG3LElWHZ/kDFz23nF0vcKEszHtRUQJW4zRR0DACXFO?=
- =?us-ascii?Q?NZyIorpyDEbsBm+3QIBWgzq5TkdLS2kHPmk8Sl1zRJf7xQxoImMxWNDPOcWp?=
- =?us-ascii?Q?uAwRaG1ZnALm26UWxWYDJcsQX/0qw4bQ6PCMASPTzIlOy9NCiMdLHQHK9JIm?=
- =?us-ascii?Q?nHlnOU8nynKyw5ndUHhNXD7bpAatUzU/y/Cn2j/6PmfrUPb21HPQbT7KklZP?=
- =?us-ascii?Q?aBSDeZxNEzvwYr3un4j9b3kbcUV6OwZ3vjy47P2z+voQ6K7u4h0obPFnn4UK?=
- =?us-ascii?Q?w2PivmgXxh0Xggip72P2KuyI2lrVFh5MFdzaOOipXi/CiweINrbfNWuco0EX?=
- =?us-ascii?Q?NeKeY8yCvv4kHb1uXjitXe2Gd+VARcwKY768hpI4h9dX8WjlUK9DFUOx7R2p?=
- =?us-ascii?Q?+QW4hM27Bgoixk748x/KD5A1pHSjjBwBm1ZignNhSI2o1oFD+WRcPjXjGyVU?=
- =?us-ascii?Q?//cojqI68erX48XsePYgGZlJJZOLoO3NDXa4hJ9txI/XjdgNFTbEH78ia7ct?=
- =?us-ascii?Q?xufgJiLExtqFSXucLLa3Z2rEa/Kd6ThSyvwf8+nneFmiLjWFGJS+wqP+Ut+l?=
- =?us-ascii?Q?pItZV8YDXxl41Zn5Kyvs7Og5aCT3R5b33xj0PMxj5qz+5CfBaIulrw9dKNcj?=
- =?us-ascii?Q?7mzr9/s0TLmaHGrAS2JckJsrVMtFCCKHIiOelDE+l8cFG7Pvn3A7UhCrSmMF?=
- =?us-ascii?Q?qt1ZvnLS9A=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fddaa0b5-45a5-46b9-b145-08de7df4cd05
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 15:59:10.0222
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wmVE5MCmCSWWyThwbINICFnzxubi4Ot4S3sEtvehzX5aHfi7pvxuY6qyiNuKlDAu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9174
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260309-drm-rust-next-v4-1-4ef485b19a4c@proton.me>
+References: <20260309-drm-rust-next-v4-0-4ef485b19a4c@proton.me>
+In-Reply-To: <20260309-drm-rust-next-v4-0-4ef485b19a4c@proton.me>
+To: Alexandre Courbot <acourbot@nvidia.com>, 
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Boqun Feng <boqun@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Robin Murphy <robin.murphy@arm.com>, Boqun Feng <boqun@kernel.org>
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kbuild@vger.kernel.org, driver-core@lists.linux.dev
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773074117; l=2158;
+ i=tim.kovalenko@proton.me; s=20260212; h=from:subject:message-id;
+ bh=FheLpAl87yI4UaHfqa3k20aJCUg9ixwJ8DWS/cDgRg4=;
+ b=45N81LFvbnZxj7EBp15VjpGQhHombjwrqodP4FxEVsCd0JDjLKei5FWNCjy3jFam1BlfUrrI7
+ tx8XLpQNe94AjeTcEcFGAGgbnHF9RBdYUogAKI4RUMXskNkIfccBCVr
+X-Developer-Key: i=tim.kovalenko@proton.me; a=ed25519;
+ pk=/+OiulEpgeZifgP4mDE4e5YlV6nMeY+frze/lY/xiHI=
+X-Endpoint-Received: by B4 Relay for tim.kovalenko@proton.me/20260212 with
+ auth_id=635
+X-Original-From: Tim Kovalenko <tim.kovalenko@proton.me>
+Reply-To: tim.kovalenko@proton.me
 
-On Mon, Mar 09, 2026 at 03:33:39PM +0000, Jonathan Cameron wrote:
+From: Gary Guo <gary@garyguo.net>
 
-> I'm not sure exactly what our security model is in the native CMA case,
-> so what software we can trust on the host. I.e. does the DH session actually
-> need to be between the kernel and the peer?
+Add a `KnownSize` trait which is used obtain a size from a raw pointer's
+metadata. This makes it possible to obtain size information on a raw slice
+pointer. This is similar to Rust `core::mem::size_of_val_raw` which is not
+yet stable.
 
-Yes, absolutely a DH session is required in all cases, it is the only
-way to generate a PCI encryption shared secret and exclude a MIM.
+Signed-off-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/kernel/lib.rs |  1 +
+ rust/kernel/ptr.rs | 27 ++++++++++++++++++++++++++-
+ 2 files changed, 27 insertions(+), 1 deletion(-)
 
-For native the verifer should be able to measure the running kernel
-using the TPM, and then confirm the measured kernel and the peer have
-established a MIM free PCIe encryption, and finally measure the peer
-device.
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 3da92f18f4eed16335c3c251e6bff68dcf7e781e..510cc7fe496113f85c34f420b1c4be95596297ad 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -20,6 +20,7 @@
+ #![feature(generic_nonzero)]
+ #![feature(inline_const)]
+ #![feature(pointer_is_aligned)]
++#![feature(slice_ptr_len)]
+ //
+ // Stable since Rust 1.80.0.
+ #![feature(slice_flatten)]
+diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
+index 5b6a382637fef11e9c0ae9122906422a970d7fcd..cf980a103acf19ee3bd17bb1dfdbcadfe30467ae 100644
+--- a/rust/kernel/ptr.rs
++++ b/rust/kernel/ptr.rs
+@@ -2,7 +2,10 @@
+ 
+ //! Types and functions to work with pointers and addresses.
+ 
+-use core::mem::align_of;
++use core::mem::{
++    align_of,
++    size_of, //
++};
+ use core::num::NonZero;
+ 
+ /// Type representing an alignment, which is always a power of two.
+@@ -225,3 +228,25 @@ fn align_up(self, alignment: Alignment) -> Option<Self> {
+ }
+ 
+ impl_alignable_uint!(u8, u16, u32, u64, usize);
++
++/// Trait to represent compile-time known size information.
++///
++/// This is a generalization of what [`size_of`] which works for dynamically sized types.
++pub trait KnownSize {
++    /// Get the size of an object of this type in bytes, with the metadata of the given pointer.
++    fn size(p: *const Self) -> usize;
++}
++
++impl<T> KnownSize for T {
++    #[inline(always)]
++    fn size(_: *const Self) -> usize {
++        size_of::<T>()
++    }
++}
++
++impl<T> KnownSize for [T] {
++    #[inline(always)]
++    fn size(p: *const Self) -> usize {
++        p.len() * size_of::<T>()
++    }
++}
 
-For instance, imagine an enhanced version of "Network-Bound Disk
-Encryption" where the storage key is not released unless the server
-also validates PCI properties (physically encrypted with no MIM, right
-devices, etc)
+-- 
+2.53.0
 
-> > I suppose the flow is the usual crypto something
-> > like
-> >  - Kernel negotiates a DH session/CSPRNG with the peer, generates
-> >    symmetric keys from the CSPRNG 
-> >  - Kernel forwards a nonce challenge and peer signs it, somehow mixing in
-> >    CSPRNG data to bind to the DH session
-> 
-> We have a small amount of context (8 bytes) that we can put anything as
-> part of challenge/auth (alongside the nonce) It will part of the signed
-> response. Would that work for something from with the CSPRNG,
-> mixed so that you can't go from that context to the CSPRNG value?
 
-I assume SPDM is doing this already somehow otherwise there is no way
-to setup the PCI encryption keys. The fundamental purpose of the
-signature is to exclude a MIM by signing something that proves there
-is no MIM, and that is usually a value that both sides independently
-pull out of the CSPRNG. If they derive the same value then they have
-the same CSPRNG and DH tells us nobody else can have it. But there are
-other approaches too..
-
-> > Of course all of this should try to align with the way TSMs are
-> > working so we have as uniform as possible uAPI for evidence transfer.
-> > Though obviously a kernel SPDM has to be distinguisable from any other
-> > TSM from a verifier POV.
-> 
-> Agreed. Very interesting to know what exactly is going in the TSM
-> SPDM exchanges as hopefully that will reflect best practice. If we
-> are really lucky they won't all do different things ;)
-
-Yeah, and I don't really know the details, just have some general idea
-how attestation and PCI link encryption should work in broad strokes.
-
-But I know people who do, so if we can get a series that clearly lays
-out the proposed kernel flow I can possibly get someone to compare
-it..
-
-The baseline I expect is a merkle tree signed by the root of trust
-(TPM or platform TSM) that encompases everything down to the required
-bits of the SPDM negotiation to prove no MIM.
-
-Jason
