@@ -1,101 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E252937AA93;
-	Mon,  9 Mar 2026 09:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632223859D5
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Mar 2026 09:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773049392; cv=none; b=nlLCflAUhc9jt71JYhJXNhlBxyxUfJVbujvtQlufOvJNJYpPeXEdpC9t8sVuTat18huPBnhWoppkqStt1apc5ZqwYH3PyvTRBphL2O6NmRo7ptCou5rQe7a4x4fOUdWkW5R22tEDItwwiTR5ouvyjxbWrFvxage9vPyC6gSKXFM=
+	t=1773050298; cv=none; b=UQpaMQ354n0EPk66w8dgUcZs1VgC6YoreFvqS78HzsGsHhLP+ff52Iym6Kops8G9922pskywZLhSvv4ClofZTMnNNrd4hM1oWStij8PT7vQ5NbVC3+Hkt4o24TTtcQ8SAG89qD+n4RZ7CmIbohayBA4LbI+7wQKKss3B7CDQUKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773049392; c=relaxed/simple;
-	bh=hcQscNv6X2IlMsZ1MJR70rObJ5x82p83FljFASKR/yA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JwM+0ZLfIbh9wac215NkFdr1XmFgyASox1jS41OYUSM/j0rmhpgEjFt38ffz1+8Yaq4oSK2W4lYDWMlgsliHfo8zZoSMXvhql5nTw/RixII8it5XE8IvaQZOzN/qMkaRtKMQ1grxe9VQou6EB1nwGRAIO/8/hm7+p8ruJowvC3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g3QyHLg+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773050298; c=relaxed/simple;
+	bh=SUfOjeox29ZT2RsTua6W9LzSTFJPTYWVjjKoEgPYwm4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LBRfSDk4TkQcLWfvxPd0gpppbPnphToGnaA3dtHS1WIIBUSU2EISkvGFhQT0ny2tord/l/XYbvLOsyPnhceBxY1ekrNjO8KJ0rx1EGfxcHKqxHROpuzLuz8F+j5LwmfMS8jFtuh0Wdvj9Fhq2CG4VRzYFUskP4pOsTmyjjmLPjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dg/jpG7h; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g3QyHLg+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2451DC4CEF7;
-	Mon,  9 Mar 2026 09:43:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773049391;
-	bh=hcQscNv6X2IlMsZ1MJR70rObJ5x82p83FljFASKR/yA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g3QyHLg+DaI5NY+BHCuKPojHTq6OhmW+NN6e9IDrnlxJzST0+B8MOuPiMzTOi3MHj
-	 13rfzrK9d603+yt5jZjg+mzwKljAQz3DNm8xLWXsiPIbCaMgV4ItIUYYUm423wJKY5
-	 HXXMwW4KPyyjIuf9pNxIc8nIzzFBAMy8mLsAwyIQM/F7C4mRG240o+WUdgulUmtCK3
-	 SG8wHM6HqGbed3CSH2QQLB/ObkQJ97USNAcM8xewthB/FIKf9j3zS6PPu0QQOqbOr5
-	 9x1zgSUK1U4EzBi1EAioYyc3Swd4GCE653jS4uM7iXbSggPFSvJy1MrLSeCAEBjgkP
-	 a7Ok9ie/sR8pg==
-Date: Mon, 9 Mar 2026 09:43:04 +0000
-From: Lee Jones <lee@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Markus Probst <markus.probst@posteo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mfd: Add initial synology microp driver
-Message-ID: <20260309094304.GQ183676@google.com>
-References: <20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de>
- <20260308-synology_microp_initial-v2-2-9389963f31c5@posteo.de>
- <2026030827-nautical-overplant-399c@gregkh>
- <8efdf3e1bbf24504d560c12131cade543bec82f5.camel@posteo.de>
- <2026030913-agonizing-shoptalk-ed98@gregkh>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dg/jpG7h"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b90484c398cso1009299266b.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Mar 2026 02:58:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773050296; x=1773655096; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hHkNiGwy5TmnN/F2tJnTKyH3OPa02KR5v3rz+QeQiXw=;
+        b=dg/jpG7hWckO2sGkcVw7dbjIQDECszuzrBUV42dtdyFK1TvPR9lfPsNTWKXiCsDevP
+         mmfg3WKG6oSGm2UrmAOOSqFDLqJ8R04Nahc1n7U48VTcBXsi+Uk5q3sVuixOHtcz5WSN
+         l+M+9pL09cNMtl3IXyuLszcTcL5c6gPPklAjZAXS0VovJyhFTIQiu4gqKJw5IomXzdvD
+         ja/5r74Zjxpm/tec5pAUQ+2TVAfhxdJ5XEzlXiWJv34mCizv6lsRPIGSaRw1oylvFAXO
+         Ca+8Rx1wpyncyzDebL3E2ZI5UI+YCKD3w3444qP9VDv+TebFA8Me8/h7W7BofxadT1AH
+         JStw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773050296; x=1773655096;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hHkNiGwy5TmnN/F2tJnTKyH3OPa02KR5v3rz+QeQiXw=;
+        b=AyVz4iNCuPwbqGDfyexKBW9NV3RhSawqQjFCSMlY7ZPCbeLQcLVUjXwvFTZwQWLa+i
+         aXODt4hdgEhoBPGihW9jreoTDdaSrFuESNt4BOyL06R+RJuvuttxsaFUoISeFvu3L4bi
+         0a4Wm+j3AHbU3gtodjvAocle0MfaIkccaHfkMsk+dRM6a4+ZZ+1zLYYDNqQaO8ob7ZHo
+         qZH3Wnbd4n8M3MdcaienrkVyUMAj82yEAe/QU5+p5NmS9XtpY/NUE+L5CIeOTrX4RtlS
+         CKWGOjZ84pwUdtaCs7OGaVDS0XXQQhlZUfhllHnXK8VtIABpnZbn03YCMOzpJOvoJJ32
+         ePNw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQAK3AWrzjyhZREImIBEs29ex8hb8GlQA/tm7A2HMHIgHHPozyjFNcRV1uSjtEmwbYDiAq5/H2SpVDHoDntw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIMkbhjBUOAiHpv528JIN9flxDqhkazTCfvLtl/B+t+nHjQ9qz
+	52HyzzpCL9YJ4fdUAEca7zx3tolilTqA0dHC2seq2nPyKyCsXadxDQO+wqTJ8xADhqynLJ00QAD
+	S2iMZkBMDlHc7fdXa5w==
+X-Received: from ejcub16.prod.google.com ([2002:a17:907:c810:b0:b94:562:edf7])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:6e8a:b0:b8d:cbb5:c072 with SMTP id a640c23a62f3a-b942e05c670mr611198566b.57.1773050295425;
+ Mon, 09 Mar 2026 02:58:15 -0700 (PDT)
+Date: Mon, 9 Mar 2026 09:58:14 +0000
+In-Reply-To: <20260307204708.60398-1-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2026030913-agonizing-shoptalk-ed98@gregkh>
+Mime-Version: 1.0
+References: <20260307204708.60398-1-iprintercanon@gmail.com>
+Message-ID: <aa6Ztn4Sul7Os1nL@google.com>
+Subject: Re: [PATCH] drm/tyr: replace fixed sleeps with read_poll_timeout
+From: Alice Ryhl <aliceryhl@google.com>
+To: Artem Lytkin <iprintercanon@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, daniel.almeida@collabora.com, 
+	dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch, 
+	rust-for-linux@vger.kernel.org, boris.brezillon@collabora.com
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, 09 Mar 2026, Greg Kroah-Hartman wrote:
+Cc'ing rust-for-linux list.
 
-> On Sun, Mar 08, 2026 at 07:15:16PM +0000, Markus Probst wrote:
-> > On Sun, 2026-03-08 at 19:55 +0100, Greg Kroah-Hartman wrote:
-> > > On Sun, Mar 08, 2026 at 06:41:20PM +0000, Markus Probst wrote:
-> > > > Add a initial synology microp driver, written in Rust.
-> > > > The driver targets a microcontroller found in Synology NAS devices. It
-> > > > currently only supports controlling of the power led, status led, alert
-> > > > led and usb led. Other components such as fan control or handling
-> > > > on-device buttons will be added once the required rust abstractions are
-> > > > there.
-> > > 
-> > > Why is this a mfd device?  Shouldn't it be an aux device?
-> > > 
-> > > But this is just a serial port connection, so why is a kernel driver
-> > > needed at all?
-> > I am not sure what you mean.
+On Sat, Mar 07, 2026 at 11:47:08PM +0300, Artem Lytkin wrote:
+> The Tyr driver uses fixed 100ms sleeps followed by manual register
+> checks in l2_power_on() and issue_soft_reset(). Both functions have
+> TODO comments noting that read_poll_timeout() was not yet available
+> in Rust.
 > 
-> Can't this just be controlled from userspace over the tty device to the
-> uart this device uses?  Why is a kernel driver needed at all?
+> read_poll_timeout() has since been implemented in the kernel (at
+> rust/kernel/io/poll.rs) and is actively used by other Rust drivers.
 > 
-> > It has multiple functions (leds, hwmon, power/reset, input etc.) and
-> > does is a multifunction device (mfd).
-> > 
-> > It does not however use mfd-core or anything from the auxiliary device
-> > and instead implements its functionality directly in this driver.
+> Replace the fixed sleeps with proper read_poll_timeout() calls:
+>   - l2_power_on: 100us poll interval, 20ms timeout (matches the C
+>     panthor driver)
+>   - issue_soft_reset: 1ms poll interval, 100ms timeout (the C driver
+>     uses interrupt-driven wait_event_timeout; polling is used here as
+>     the Tyr driver does not yet have IRQ support)
 > 
-> If it does not use mfd-core, then it should not be in drivers/mfd/
-> right?  Instead, use the aux bus code to split this up into different
-> devices and attach them that way, as that's what the aux bus code was
-> created for.
+> This also changes the error code on timeout from EIO to ETIMEDOUT,
+> which better reflects the nature of the failure. No callers in the
+> driver inspect the specific error code.
+> 
+> Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
 
-Correct.
+I thought we already had a patch fixing these? Did it get lost
+somewhere?
 
-If the MFD APIs are not used, your device is not a Linux MFD.
-
-MFD is not a dumping ground for devices with more than one function.
-
-Please place all of the relevant pieces into their respective subsystems.
-
--- 
-Lee Jones [李琼斯]
+Alice
