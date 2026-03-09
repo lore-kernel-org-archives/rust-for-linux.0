@@ -1,99 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012026.outbound.protection.outlook.com [40.107.209.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3044389455;
-	Mon,  9 Mar 2026 15:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773070640; cv=none; b=CwEvNtb5yV5gJ9za1sG8StEDb50vkN3IFTI+gNYl0OJUYPQV8zxv3UZQ3pz4Jtn6voTZm9eMlSYqKpKo3EKjAUwA9dTAOjnPASphTJktzvyisUYeNZ4xpP//Nf2OgU0CiHgC1D0UAc0RY3AIlMaofs0bXpwf70mkTsgsWQ5jffE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773070640; c=relaxed/simple;
-	bh=3ybwSeod76pQR7YjiZXftNF1P5kZQBu6iqMvoeQc6BA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=OxYjgO1mbqTdpF1si9SXITegzMQP4cDkirtrw8iee7HhYk9G/VDucBtSzaOb1INrmEUw8tPP1erDWSzVklbN5QfERQRDATux7N9v9qqhmJXH8rjwkWddij3Mp9Yp+881bOprhhTtncJ6uLIPuh+HyFJgXP54dlZfD3C/Q0kVBi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eZROZrOo; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F963DA5C5;
+	Mon,  9 Mar 2026 15:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773071049; cv=fail; b=AejS0i3lCoBjrek3q9qDFmphfdPcOcJvTMyWWVNmQwq/g8HU+et6CfxjybEwjDyj2ABUhOM0LA4TVOKl7QxFbHWmIR+SXPIDP4xSdSvmY9Y748Luhxe+QC0CaUxOrLMcgsBsnt6qFQcco/u3ic94lBk0+IAklrTeG4PYMI1+rGE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773071049; c=relaxed/simple;
+	bh=7DIfs7pvF6faG5VNQRmeDd5bTsizHXXShDqO3jDuSqI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qipYZHBPkUMnP9fOXxrT3SIarZk9UinbYOso+AKiReADucneYMwoOR3FWifmY3cMV+ESHxlW8ShOOvHLwMiqEYrsDnzD9bV7nUKuxSQx8nSo2KMyBXnUX9DcFO1LlxCDNXQ9jTgl5DvAFqJyYAtTLA2aWPn4ijRDxWD0qWvkXB0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NNH1gnua; arc=fail smtp.client-ip=40.107.209.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eZROZrOo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAD1C4CEF7;
-	Mon,  9 Mar 2026 15:37:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773070640;
-	bh=3ybwSeod76pQR7YjiZXftNF1P5kZQBu6iqMvoeQc6BA=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=eZROZrOoGNIwfwvlBXnBXVOHCgdWVzzhfkX2qinom1gj/ZvjejTaMx7C88er6a17C
-	 P8+pkcUqEFrkYchCzu3zZ3N74mBxhY0wvGcMVHdebwa9o6dwAnwd+EeuXOtOeE7Y6K
-	 u0+wUziPOxkUHRmF7ynlRelYVj56yb+JYI0T3EhK0Cw2CgJhsfw0VVETCP2nxRSz7W
-	 pfWZI8+HRIw5tegtq7w5yl/cmmBzvbNpwtKC0zX96QnHe3FTjn3G57q7k0jJQgq4kP
-	 ZiZre93Dujh4y+N5iTnLrMVw5VRFETPouX2Ua9rinGCGflYkU9JE/XBj7q52ZQmDCg
-	 Ovqcml6Tuz20g==
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NNH1gnua"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=StPLnACekHkV0wUW7001Q3lT37RvF7aDSJW9pTKRKixMWHioaeJ/NxkToBRTIM+/29j1R1FBXSpMvhIlN+/QiqWLxEPwQjA6lfIMwIiulAatdiX2gex076E1kUSUWixaVsLjJRWyKugKZKuhvex3JpgbKl0fBqbRA4pvmWxW7myhJlGOj5DwOrXSb8C1lrruakuBaX18yoOkAnUYXNoSWhWK/6qi5xeMqqdukfToNa75k0+0254TR6DiOCMw5UgE7FKJoTd8JHs47E5AOr0JzTyCUrhCZ9nivh0175uykZ8N4ev6KvO98E2ZJcS9hGZp5k6zNC2Wt4SjcQWyo9EpGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t0vz+iMpR134YJ7bE9PPNTDLmh9Wj8Hk7MxhTDCF4pA=;
+ b=QcJHfQ/V61p7Cw/j+tEywjCFuoxePoCyKGHAcTwG17A5dqDRVfvo44BCT6Df0BTkWTH87Eia5YbjmuLXYaVLirRQlitklbBBmxhzNli5CZEIDhsiyyEslemxKTnH81xDNEVjvXruno0Fj4R4Ii1uP82BE+gPzgsBdK7MzbTOigBc2xRLER01kWe1ivxOzMJgZJcoOPVj9hkn4pL+Xy+swQGu4rIwAbXHovvwKRInvIXRnkxiDbdNCXxIxmnFCCWhFL6xTtXU7y73PO/s3hB3aI3pLyZ6T7rA3ZjzwPE2RvAYI0FnuaaS7Y8MoR23LYNPKtvlQtyExN4Uz74JvelBKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t0vz+iMpR134YJ7bE9PPNTDLmh9Wj8Hk7MxhTDCF4pA=;
+ b=NNH1gnuayeE01R3XvsSze7x99VKuR1fkuvGsgKQUPYOk7aJUJvSMyT0gXUCrtpJFR+EDsQte81aDxQYP/eO8oCLdwhfvEn/32wJ18VNOteGDu0gZfK6NM58xDJScwfOp1LZccnX/eI0Jl7VkRTokXXJXPOth8zASANzw222hV7tWjQZ8I6l3x/o+T52anRmxrrgqSYRquo776ljfFtix4izKRxeqNc6zzj112UjZ637VXfOQ5FgXTR52xaAtSP+qJLjrvLdaTxOKfzOCxHBa/kJsEr/9t7h3SYChhIbp6dZa/KKRS4+Go20vDzyPw1GH9R65oe0t2K62V8hJKTMmtg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ SN7PR12MB7202.namprd12.prod.outlook.com (2603:10b6:806:2a9::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Mon, 9 Mar
+ 2026 15:44:00 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9700.009; Mon, 9 Mar 2026
+ 15:43:59 +0000
+Message-ID: <3f0329e0-6718-4a5a-958d-4a8fa263e879@nvidia.com>
+Date: Mon, 9 Mar 2026 11:43:55 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH FOR REFERENCE v8 10/10] gpu: nova-core: use the kernel
+ `register!` macro
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Boqun Feng <boqun@kernel.org>
+Cc: Yury Norov <yury.norov@gmail.com>, John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+ Dirk Behme <dirk.behme@de.bosch.com>, Steven Price <steven.price@arm.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
+ <20260310-register-v8-10-424f80dd43bc@nvidia.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <20260310-register-v8-10-424f80dd43bc@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BLAPR03CA0152.namprd03.prod.outlook.com
+ (2603:10b6:208:32f::16) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Mar 2026 16:37:15 +0100
-Message-Id: <DGYD30Z605PK.NEMCORGS2FTD@kernel.org>
-To: "Lee Jones" <lee@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 2/2] mfd: Add initial synology microp driver
-Cc: "Markus Probst" <markus.probst@posteo.de>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-References: <20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de>
- <20260308-synology_microp_initial-v2-2-9389963f31c5@posteo.de>
- <2026030827-nautical-overplant-399c@gregkh>
- <8efdf3e1bbf24504d560c12131cade543bec82f5.camel@posteo.de>
- <2026030913-agonizing-shoptalk-ed98@gregkh>
- <7f8d979a881b29398f524f526f52ba9727d95a7c.camel@posteo.de>
- <DGYAFNSJ7576.1E0JZ2W499ZQ7@kernel.org>
- <e43ca445ec7887d3d15676adb7db04f5685f4195.camel@posteo.de>
- <20260309151555.GU183676@google.com>
-In-Reply-To: <20260309151555.GU183676@google.com>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|SN7PR12MB7202:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86620765-28f9-4f95-825a-08de7df2ae63
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	70rJSTkdK2sItcivVcmlNQTUICf2zFWlxeeIBq5ZzCnv8lJ2nB0odvKygINIFnQXIdo96vDVkm4qE3wU4UIbQfXpvmLNxLRzLqbpjvAWSZ6svFrCo6HMJmE5oaP0yGW3syfAVMnoWW67J8NEg5aS3sKCT6Jafglw5rWDXndLkuethoevGUBs7DHgDeivc14qzAj91AepomK5duiKfHZTBQ2XpXjIu0Ic5UPM23HoPVfiVwAua0W3ZCk2t97OQcYGBrUPqOSfBnsvXUKzkZxE7xz5GOx/9pj5ixonuF6+sEuxl7KSpDecrQYOP0unaBncMdDwGElm6zSLA9EeGs2Hz0ccAiem8b/B46HzClswHdqt+nB398G5VGWfsnGQAClTamJI5TfOKXjrterisZfwwZzrdRDutkYW3wTltizmeAgb1ZQV1JhBsOvT9wQ+7zf2Nc38BOpCzJ5IrFKL5AqJxt2LRhCBziZ4dHY3neWQajZAGAFGKkGUrxONcd6a67ZGOWwmf4TkZzGt5cDj1mjHFsXP8F4VXfVjki0QjzgyzWfLD+R4/UPf5rO7ACTnIIKi3u3khrKbdFiJDIlfdCdzH34ZKaJDyOM2Qki/kavETSSjXEg26MV+X8zWKlgv4bpE58DVEEeZN1D5wEojKR24LcUh8Z5U2S7tIRMxIgx9C17CusJg1dzUQw37LbtiR3RMtXGEWCbD5F3uVDh/qcnUcpXKKv1ofLAGoSBxUYvqCikjIPlHTYZrh/ivm37MqQgnKO8bZsVDtreZGZpVuZXpQQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VnJlTWxoZHlZTXJhclppRk9xZ093YTR3YmNsR3ZOZzNLOHlNQjZXWmxGakpm?=
+ =?utf-8?B?bXVpRTVnSEh6UWl3SWVtYlVoeGlXSXBDWW50bzNmZ1ovRXVKcnozSXN0WHNW?=
+ =?utf-8?B?aURlc1VkRXZNNGRpRmRCV25QSmZvSCsyRWxyeG9VcnVsU05sMFBWZ0drRHlU?=
+ =?utf-8?B?T04zSXBneklvTk1RZHBCUnBieWdOYjhTcndkOEF0ckRmR2JHL3B6RUdnQXBq?=
+ =?utf-8?B?TlBtTFliZWhrKzhHZHFzMnV3NWwyN2JldVRuWUVaWVdSSTh1bFJwUVpwMElv?=
+ =?utf-8?B?YjlXd24rUWN4cnRxQkt3VklPeHZLSGpnTndXNFM5K1ZoaDY0cktNN3luWlVJ?=
+ =?utf-8?B?MmFrTjVaT0JGemc5Nk81UHZnakFlOXVsbWwzN1diOWZ2UU0xMXFoNkE0WVA0?=
+ =?utf-8?B?UlNGOEl6dGxnSUF4SWJOQnp6akF3OHRsem1rejVtVkFzdXlUYlJBdUpJN09H?=
+ =?utf-8?B?clBJRmM0dHg2Skx0V3JBd3FzbUk5R2tPOTBMM0ZzQmxsaG54Zk4vQUtROGEw?=
+ =?utf-8?B?YlNoRDRQYTFVMFZHQkwzV1M3YTI2cnA3dFZ0YlNpRVdjU1hyT1Q2WWVxSWhu?=
+ =?utf-8?B?R3JsNS96WmxaSFh6a09TYzZOUXFpbzJSRklhSmR5U3lzekF3dFJaOWUwYkM1?=
+ =?utf-8?B?LzBxdHdaakxiSDExejBwRmdZOEphYjQvVWVUT2M0LzBiVll4NEZkRUMydGxj?=
+ =?utf-8?B?SHFXQVdrblRSWlJOaWxkTmhyWm9ZSXBYT3NrcE5seCtER29ZZjdRSUNDUFQz?=
+ =?utf-8?B?eXNSMDNUaUZ5VHhUTkNvbk5mUS9QZzkyaS9PaHc5Mk1OVWFCZEVEN1JpVDY1?=
+ =?utf-8?B?SzdqM3lTMjgwL2dNNTl2R21ML0pRMEFIbTBhTHBiNDd6ZU96bUJ1SVR6SFpC?=
+ =?utf-8?B?Tm93U0IxMDNRS21oWTgwdVdBc0VReS9kakpqVG9ibWJOMll5OUlzdHRXUFRC?=
+ =?utf-8?B?RkRxZ0g5bmhIY0FQb1dKbmVqZk1VK3FJRVVwSGJJeW13S3lwUzdGM3dXczQx?=
+ =?utf-8?B?M0hKSC8wYm9DT1JXQ096bHpaZUZlY3hFWGlPcFJESDdVVHkyeFBlamRhWU16?=
+ =?utf-8?B?Vm5rMlVqeFhJUjZ0MlN4eWx3RFNuckhYM0dFV1FCL2NieThKK25uNVZDeGFu?=
+ =?utf-8?B?dkVJOVFJcGxyRmlLWVBENVJqQWpxTWp2aHlpd2ZPa3NUem9Melh4TmxTN2d6?=
+ =?utf-8?B?LytyMmY1c2NNdkpad0lLM1lqOXNLYVZXbXMyQUl1YXV6Q0t4OFNpRWQ1OTRh?=
+ =?utf-8?B?OFhFb1dhZnVLeHF1ZzNxOGwrSkZkNWh2OHB4cE4vQktmT0RUTGZpU2VxT3VK?=
+ =?utf-8?B?eDUrak41eVRPNlFpbXVCYXdVdWhDUSsvVXp6WjM3WXpQUVdJZmRNTUE4NWUv?=
+ =?utf-8?B?cFBSQUlIendyVkRLRzZrRFVKQzkvMFJ2VzBjeGlrdXRqTE13TUZDYzBUYVNz?=
+ =?utf-8?B?cUZVSG95Z1ZMU3loVmdlZlExRUw4cTB0Vm43ZTV2L1ZvbnFKbm1aUEJGS0NC?=
+ =?utf-8?B?YjRYb2lkdTdIcU5kbDFSWjBwZnlEVVU0bExidDJCL0o5YS9vSXYyOFEyR1Ru?=
+ =?utf-8?B?YUN0WG5oKzBaWHFDcWRKaTZsL0RKTm5QeFgxRERxMjZycFNLTVhrMzVIdnFP?=
+ =?utf-8?B?Z1FPTlBrZUZsOFhZdyswOGVud01CbEFITGtUaUdqckNGSDZIVlRZcURFMDR3?=
+ =?utf-8?B?dzU3WXpwbEtzY0dVNVVrcnlzbEo0dEFoRGp5ZENWem9ndkY0VWRHOTJyRUpm?=
+ =?utf-8?B?QzBwaVFXUFlQL0l2UUFXc2Ntd3RHNHpMNGo1bEZ0aTQyNHRadGcvdHBWVFFV?=
+ =?utf-8?B?ejg2RDZuSzNtQWFPT2Q0T1pOMHp6U3haaGplb0JFQzFZV2pIT2hQMWFhc2Rn?=
+ =?utf-8?B?azJPVFNWM25KemV3MTFndmtwVURBMVo2MlNGWGpsRFF0cFhJN1RvVkVzaENr?=
+ =?utf-8?B?L014YlIyMFBrMVg0U0JrNHMwWkVjMW5oVWwwWlg2QVBHYnh2SWtWMnNhZy9N?=
+ =?utf-8?B?MHVCNUZLcnlJNXozL3cySm5hRUc3R0kwMkwwVG1oWVIzWWxNbWQ0YWxUanFw?=
+ =?utf-8?B?Tk03QzdDcHVWblBHY3dTdmd0U1l1VzZ1djVDelRzVWdFQU9kVDBPSERFOVNH?=
+ =?utf-8?B?MjR3c3NQUG1jWnNDQWx3b3VkZDJTdzVRazNTL05QNHc4QWxrZmlONklsWEpI?=
+ =?utf-8?B?MXdVaUgxZksxMEdrWVRTQUdtM0w0bkMzWkw1K0c5ZjJiMWNnbnFETFh3bEwx?=
+ =?utf-8?B?UURFczc3aFNQQmN3MkRSdVBIcUM2QnNzNC9iV0NqOGZFeHZqRS91SnJ1UDRj?=
+ =?utf-8?B?N0FoVWZpTjA3Z2w5NzVuYkpObjJZZS82eGtGQnNwZlZtSUluQS9pUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86620765-28f9-4f95-825a-08de7df2ae63
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 15:43:59.7220
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2a0+69niArPkGXeEoHHcBJYu3fIfmcvyZdKwSU4w4px9bpJwS/I7DfehSOy6WVmX5qparPCmq7hInM1gI9vM7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7202
 
-On Mon Mar 9, 2026 at 4:15 PM CET, Lee Jones wrote:
-> On Mon, 09 Mar 2026, Markus Probst wrote:
+
+On 3/9/2026 11:14 AM, Alexandre Courbot wrote:
 >
->> On Mon, 2026-03-09 at 14:32 +0100, Danilo Krummrich wrote:
->> > On Mon Mar 9, 2026 at 1:52 PM CET, Markus Probst wrote:
->> > > Yes. I will split it into multiple drivers using the aux bus in the
->> > > next revision.
->> >=20
->> > Independent of the other discussion whether this belongs into the kern=
-el in the
->> > first place, reading over the cover letter and commit message I unders=
-tood the
->> > following.
->> >=20
->> >   "Synology uses a microcontroller in their NAS devices connected to a=
- serial
->> >   port [...]" controlling LEDs, fan speeds, a beeper, etc.
->> >=20
->> >   I.e. it muliplexes several physical functions that belong to differe=
-nt
->> >   subsystems, such as hwmon, input, etc. over a single serial port.
->> >=20
->> > This sounds like a textbook candidate for MFD to me.
->
-> Then you do not know what a textbook candidate for MFD is. :)
->
-> What part of the MFD API does this device utilise?
+> @@ -797,26 +792,30 @@ pub(crate) fn start(&self, bar: &Bar0) -> Result<()> {
+>      /// Writes values to the mailbox registers if provided.
+>      pub(crate) fn write_mailboxes(&self, bar: &Bar0, mbox0: Option<u32>, mbox1: Option<u32>) {
+>          if let Some(mbox0) = mbox0 {
+> -            regs::NV_PFALCON_FALCON_MAILBOX0::default()
+> -                .set_value(mbox0)
+> -                .write(bar, &E::ID);
+> +            bar.write(
+> +                WithBase::of::<E>(),
+> +                regs::NV_PFALCON_FALCON_MAILBOX0::zeroed().with_value(mbox0),
+> +            );
+>          }
+>  
+>          if let Some(mbox1) = mbox1 {
+> -            regs::NV_PFALCON_FALCON_MAILBOX1::default()
+> -                .set_value(mbox1)
+> -                .write(bar, &E::ID);
+> +            bar.write(
+> +                WithBase::of::<E>(),
+> +                regs::NV_PFALCON_FALCON_MAILBOX1::zeroed().with_value(mbox1),
+> +            );
+>          }
+>      }
 
-I did *not* say this driver - as in the code that was posted - is a textboo=
-k
-example for MFD.
+TBH, this is quite a readability hit, the previous was much more readable IMHO.
 
-I said that the hardware that is supposed to be fully supported eventually =
-is a
-textbook candidate for an MFD driver, i.e. it should use things like
-devm_mfd_add_devices().
+Why doesn't the previous caller-side syntax still work?
 
-I think this was obvious from what I wrote above.
+thanks,
+
+-- 
+Joel Fernandes
+
