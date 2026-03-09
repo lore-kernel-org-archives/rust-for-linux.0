@@ -1,107 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012008.outbound.protection.outlook.com [52.101.48.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D597413251
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Mar 2026 19:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773086388; cv=none; b=mIXv8MiGHQgRKe8hgFoaCidUvsODQ2zzcFNCJFlETcg25b5qfrlDP999Z7Q46bDkEo8soYJ/jpSO5bN45msZNQqgxtyGdO0e3ByMXP7q5zBzWuQyubxdX8l8pHCZO+juPv1Ni+EU5yAC8pS9ngZwRA8Ji3tqTvzf8JX0wj70KtI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773086388; c=relaxed/simple;
-	bh=Tl78mMV6soCSfLvpu1T1j4NlBTgw9RXXeBsUL7JJlBQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=XBl4S0UZ7P+NVPBiSmygx9/UJfIDxCgneHJpVpdLcLcv8iQbKw667b7XtB1N3DFb76gkDx1Yi7iM6GemFrWdvkwpJYxTUhoAKd3XGJVNmFMj12wpc15P3OfPubAXyD31JMyvnxw4nLTL2vckolF6/Lz+pHIqi+SXmWOTQb4dGSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWjL+J+h; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920451F7569;
+	Mon,  9 Mar 2026 20:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773086668; cv=fail; b=AY6HJWmdAhxmVz3nVsa1Zy9bsmTyUNQS7Po+DlMsgLvnnZnhRsVNEdvAY1DoD8LeK8SV8SsRshccVipZUa9IzykdZO+zIt733OGApFnzBaxpRBdrtXJZFZu30ww1o/b66+9JU+8bp0wFlL7I8x0/OVbEkckeBSU24OL1Uk1R8os=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773086668; c=relaxed/simple;
+	bh=Pumq4Vn1Nx3Fsd9C04zYOKnlgwmBfFcwdDHI53JwaWs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=LnbLQX1pufYJid7DFQueiGW9ZqqNjaQVtNEuB+YkdUS9ypk6j22C626g8nsepV8wFX8Sgd4JZq8UNuYeNgpGK41M40T5JersXB0aXZBhZBT6/qO40itOFI2FEXy5Pl5nR7Y/I8MphjiYcxI+G1dnzfGoi975zu/CGGN1aFG1wms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=l6UY21Mp; arc=fail smtp.client-ip=52.101.48.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWjL+J+h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C144C2BC9E;
-	Mon,  9 Mar 2026 19:59:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773086388;
-	bh=Tl78mMV6soCSfLvpu1T1j4NlBTgw9RXXeBsUL7JJlBQ=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=kWjL+J+hqXGQQrNsT8O9Z/e4pRvMk57f6PYAXuGDM0Hl/txD4r+Kmel4j1SZ+NUH7
-	 qG6Y801TUpLgCzHpoIkCgLI4KrwnKBU2vkRevcNdoihF1zPLFJqb9lg/XQv5dAVisi
-	 G3K6hOewWaIP6eRVsBMSGW6q2+mPTZ5FJbCyGX74Q7SsvtAe6Nkpq0wcu/wXQI5/NU
-	 eQkOzRgUd06XZEASsjm9om3duwd2WxoZ/tYCSw54QP4fjsJd3KM+wMWKX6abmu16MV
-	 7L7jvA7QoLG+MUWteVk1BjfDNaZXZcuQjjxISx5Nta3B9JkdXf2+vsmhJkcRvTf335
-	 aT8BQp6tk1CPA==
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="l6UY21Mp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JkFdhuoq63xVbj3YNPyCyWimUq4JVYlyd7yl50tOMRSuygM0I4I4s0TVqRPycNWHGWAc1B/FC/1kWC0JyCtSDbvxWE3mx8m1wbveG9LWT0c42eiefeP3AzV28v4+ExPNXYFDKMFiP2poVsjG/YpjRtR1LeqlCa0veeFemFNN5GMEjZkiQ8kZ43mtsFmLp3zqjhJ+QdV/W70amocmcgNIlw2tcUrcfarqMBeG5VkgDTYy/neoqT+iQNa0Y2pRlyZWXi0rzyvFhflOnhhYs8eqLV+ZWq0PyGPy5qSmJBaKUgnQClVyxH677l3CFgun86bAJ/GqWOtU8Cf/l8hyoFVg6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i3rxjeXiyGLrCNpgZ7OsPNnTfV/wcfc+lWYrkQYqAx4=;
+ b=bQKqvlteq9n6U0uyQTJi8E8xq29NwlXgyjmGlHdF7ZYIYRbRSHKKdlC66b1um2nJN6gJoPnX5brgaAlX3f3NyXBrkbwGbPl8s5kQ7eYVnXzln4Zjkp96SAmczuT4ipXhZRksIWYQWAA4+/343ba18VU+FvirIk+TI5C1sa+rGp9WSNulzi8ChemHFFOY8PUI8k3IsIKksc9kkdwHWMDDNVFLoNI+9BHRd8XsEy+OQo4PehCQsRTH1bU9i68eUv3SRr0yyieNJ58la9zHEN+YPwGNo8AIWVf8sllZ4zXN8dzL5Wq9JP0MgjB5BZeSCGBhFeDi4HtSRZmqJm8i0VTIxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i3rxjeXiyGLrCNpgZ7OsPNnTfV/wcfc+lWYrkQYqAx4=;
+ b=l6UY21MpF9pfiAwLjsbv5TvANBzZim7SvIXFLhkpscwmWRVKI9pj2hm6G9VqnhIFwvLCxqHji2HKT0IxtrvkJDH/XEqnkvZhR9jdi7ggbRkLh3/dO6GiFTjEK5OrmenF91N4w0Ypb5diJlIC79ijFAwPqj/U9SmrLqBZP2OQrqcD9skc6foW+on0hqInEcLj7DgHMLvs9LVij3Mamv1w/9QhVYggmoHTDOgP4e7kEI4AN5qDTuZmBFapHrNkoWNNUsCX8V7nEz+eIQrDO/pScKgFXtAAUq3TQa0DbTyXjqZ2Tw0kSVU85KeBolj9FZgAow5ojq586/jJ2zB4rdFDAA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ MN2PR12MB4376.namprd12.prod.outlook.com (2603:10b6:208:26c::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Mon, 9 Mar
+ 2026 20:04:24 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9700.010; Mon, 9 Mar 2026
+ 20:04:24 +0000
+Message-ID: <282984b6-a0e1-4e3a-bb57-db817b7e9249@nvidia.com>
+Date: Mon, 9 Mar 2026 13:04:20 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 00/12] gpu: nova-core: add Turing support
+To: Ewan Chorynski <ewan.chorynski@ik.me>,
+ Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: Alistair Popple <apopple@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20260306-turing_prep-v11-0-8f0042c5d026@nvidia.com>
+ <DGYIFHP99CQ3.2XWVRPO9O1E1D@ik.me>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DGYIFHP99CQ3.2XWVRPO9O1E1D@ik.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR02CA0028.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::41) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Mar 2026 20:59:44 +0100
-Message-Id: <DGYIO09FC9VC.5DQNYP82VVFC@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v7 2/7] rust: uaccess: add write_dma() for copying from
- DMA buffers to userspace
-Cc: "Gary Guo" <gary@garyguo.net>, "Alice Ryhl" <aliceryhl@google.com>,
- <mmaurer@google.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-To: "Timur Tabi" <ttabi@nvidia.com>
-References: <20260203224757.871729-1-ttabi@nvidia.com>
- <20260203224757.871729-3-ttabi@nvidia.com>
-In-Reply-To: <20260203224757.871729-3-ttabi@nvidia.com>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|MN2PR12MB4376:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f29e692-5065-4219-59d5-08de7e170f34
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	TLUV/3r6ZtQ0bIrIKaz+CSjXgqKU/Q4wubJNUqNTHcbsOv6o3WuD+J304ULlYuMtoKH97rBAOq+wrCDjf9PusuaT65qz89Sh9xVHYgOvc29cY2vMHnDp/DNsJ4Ex9CSFEa7McSvRf8HS5ZZrGVNYuL5j8GH7dFf8hJtcPXn4/RV0Sv2HuMy+jHdbOfR3gEmDh4i0WfzPhSVH/VoRWV2/bjODGKxb1SdHrIQRI5r8u9k82UrZGWb7nEBLv3LQQiBPqkc+Qefr1OFKA1zo070I4Whf+AYRwIKbsjHSnipKFJ5XulHbuyctTQCEx/AqSugLGxSPxOZWltmFu6dKyP+dcyfRYxsVgEufWIDF3iWgz1ATG4uaIQ8zwW+4XsntyGadHXFYKfr1mEta/NRgwN74t2/U26/lzIFn57t2zXhT/7Lz4aB0Pf9u12cPYj89U8Dl93w9QzEBgvxUMecNA6oK2T5CLvRQBR2tKo6yX+NZ+uGDXxgqF9WAbv5CO68UxrTjVDFHIXt55Aubcwy1G9/W7Gi4Giq5ndCcs3GGKyjRG+A2wAHxZHqa5PtXI/sq8RjjwBBVijGQL6yEKbQXo9BiiEp+Jayji/mMHVycdgspY6CuJ7xJNazc7d8GqDTdlG2kPg4P7lbkiB2fyhmqvYC7c3WJ6Flwt7hH1KyN+xNxc3yvgMl15gAgURjGJ3MBxvhE/hy1+ddD36ALBFcSSAPx0zXkPfeHHdqMwKhUMPCS2pA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ODJIREdFazhMb2JrdHdrMC8zNGJ0dHYzS3ozRGpORmtYcm53ZWgxK3BEVmR6?=
+ =?utf-8?B?TndhVXVGc2U1N2o3N2xyOG1xRGtSNksrSnpJWERDMUNHbzIwMXY4Y1ZWSWtk?=
+ =?utf-8?B?bmN2Q3FDbm9hTGZ2K3RNT2xYZllmM3pyKyt6UmtjL3lqc3pnNy92cFl2SFY3?=
+ =?utf-8?B?aUZvakFGTFVwU2tmLzR2cHk0QzR6Z3Vwdi9paFZsU3c4ZmRhYnF5REJmemFa?=
+ =?utf-8?B?Y214S1lEa3E5YW1NT3FEWDhyOHcxUGJFUmFFWmQrdktMRi9VUURySFY5bWFD?=
+ =?utf-8?B?SlRCRzdUem1QMGVNelljUFcrWldRbVh1ZFEycHhoRDkyQ2t4ZEFvTkVRWUwz?=
+ =?utf-8?B?SXBFcTFJQ3hpWC90R1ZOME1wa0Z3bG9qTG5Eb0t1RHRTMmZOSC9RM2VxcW9x?=
+ =?utf-8?B?b0orOEtBYVJPNExhMFc2NjkwdS8zTDduNGZuRktFM0ZpREl0aVBPeVJ4Qzl5?=
+ =?utf-8?B?bEN5QmdKNXhtUEIxNm1IZnl3dXhBcldVMkNqSWF1T0RZdzJHTnB2bm82Nno1?=
+ =?utf-8?B?emdtS0FNZmxEekxEbXNSSVV1VVk2aU9XSWxUc3lQN3QzdHh4bWNxSzQrVGpu?=
+ =?utf-8?B?RHVVR0x5dlJDakNESStXRlFJeEl0TUJzKzRqb3cvUytYVlJOL01qRnZ1ckI1?=
+ =?utf-8?B?b3o3RkxqUm1hbU1WclB5YVNnWkNaQ1FaQjVsbVNVNmp6YmdPbTZvSkp2QUw1?=
+ =?utf-8?B?cmRpWG9SODJxSy9IMmZSODBXVFR4ME1oemI4bVlJTkpYamFrY2pVdkdhY0pW?=
+ =?utf-8?B?QlRKczNKS2NJZGFBSGdUR3FYdlh6dVJTY0FjdDBhTEl6K2U5TWxOZG5adStk?=
+ =?utf-8?B?VmRJeXl2UVZLbmdEd0llVUVzRjJnejVxVE1zenhRNlMvSlFpMXpBdE8zYmlu?=
+ =?utf-8?B?dURLUnZSbVl2SzN6RHEvZUZ5RGlyUUVTck1MVUhyZWxqbHJhejNBSWg0SThK?=
+ =?utf-8?B?dERncTZnMW54YVI4SUhnRVNOdXovblB1UVFYTDI1WlFLMjgrR3RoRVp2VDBN?=
+ =?utf-8?B?eE05dUw0c1l6MTU3MktzQ0xWZzhydFBDaHZEUUhzZ09xWDdKMjhJaENrNC90?=
+ =?utf-8?B?c2dBZjkyOEJhRnA3akJ1Z3pFQXB0OHpFU0F2VllUV0dpcmpsRGhyTnhaY2gv?=
+ =?utf-8?B?MTJ6a1hXcS9DOVpvNCtubGIyRDhqN0tZN1RubzdEN0R3amx6T1Y1eVduZmJz?=
+ =?utf-8?B?VTFqRUJGLzdrOXlRQjZhSDU3UlgrZkRkOS94aXFVWXNlaWJPOEpTYVpLaEFK?=
+ =?utf-8?B?Z0JwNkFjdVhUNEhHVGgvYjdqcDdWdm5TbnlJTnpOREM5bGhlSVNFM3dCcUFN?=
+ =?utf-8?B?dndsZ24zRnRNUi9FaE8xL0dYTlNxT3pqYTlZYk1ZODZFSGdRN3FPOWxuaFlL?=
+ =?utf-8?B?YUJweTc5MFN1VGlMYjh2eXB2cCtuYSsyOGN5UC9vNFVETTdwdyt1RkFGaW5j?=
+ =?utf-8?B?NGVOOGJaVzlPbm5TTlphaEk0Yko5R1FQUVN4MkJQMGxabmxRK09jK0ZpTjJy?=
+ =?utf-8?B?N0xQVnRXRDhsZnZlbisrelFUZzFrc2lSOUFNKzRuK0xIaHd6Rk9nNUFhSXNx?=
+ =?utf-8?B?VWpqZ1R4T0VhWGUveUJlT0lncVdnUUFaRkV4M09TSXNNemUrSVdtOHNORUUy?=
+ =?utf-8?B?dU1BOGVGK1EySXAxb2ZhUnc3U3JNQmtFd1JSclF2YVQ0RlRYTWswTlR0TFVY?=
+ =?utf-8?B?SzhKNmxuVkRjSjF0OVBzMFkwRVlQNEVoMWRzOFc5TDU5Q3NSYjlMWWozcCsz?=
+ =?utf-8?B?WFlvUVdiK1hUMGsybzUzU0FWQmNyay9naE4weUhKa0JhUDRNdk9zRjRUS2ZI?=
+ =?utf-8?B?V201MGdYeHhSMm9PUktDdTN6Tk5XeVdUcmVTODJjRUdnb2VMMkRHVGFaTUdJ?=
+ =?utf-8?B?RGQ0cnA1UDc3cmhlRUdMOW5JZVdac3VqVmZFQ3Jqd3pxVEtDbXZYL3Qva0dS?=
+ =?utf-8?B?RW5KWE5zVldaSUFKZ3BjTlEzSCtlT2xRNklWb2Ftall0OW5vTDJpdmgyUHBO?=
+ =?utf-8?B?cGFMdHBGYXpSZFYzMXZDeDFWR0MrRXMrdUVKK3l6RVUwUktiMzlrUi9rdm5y?=
+ =?utf-8?B?V1QxYlNKN29GZ3Q3L2RCOE4vUkRDWTNHeU9nRmJuU1BRSWsrb2FtRnc4VHlN?=
+ =?utf-8?B?RXF1aW1JSDkwWDJodmduMkhMdVdkaHZlVGE1KzRwbmxtMWFRUmxXOG9NNjli?=
+ =?utf-8?B?b0hjeU4wcUlIUDNXMTBONWw2bXJFaDdYREZiTkU5Mi81OHUyVUFlWXpVT2dX?=
+ =?utf-8?B?ejhEOW8vRFpmSnJuUVo4WEZVUXo4RkdUTkY3bE1iUVVjbW1NaVZ5YjdiQlM5?=
+ =?utf-8?B?RTVoZFc0UkZYeU9rQU5hUjFaaFdNYklUV2UvZDRZbzNBMStxbzlHQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f29e692-5065-4219-59d5-08de7e170f34
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 20:04:23.9316
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WmFVLztN4qbwVOyC2fYffycK41Hsyt5RbA4QGWyVra27UNmkuYUTNeKyLeq759bI55VyydFMWCbXlNs+zxlmWQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4376
 
-On Tue Feb 3, 2026 at 11:47 PM CET, Timur Tabi wrote:
-> Add UserSliceWriter::write_dma() to copy data from a CoherentAllocation<u=
-8>
-> to userspace. This provides a safe interface for copying DMA buffer
-> contents to userspace without requiring callers to work with raw pointers=
-.
->
-> Because write_dma() and write_slice() have common code, factor that code
-> out into a helper function, write_raw().
->
-> The method handles bounds checking and offset calculation internally,
-> wrapping the unsafe copy_to_user() call.
->
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->  rust/kernel/uaccess.rs | 74 +++++++++++++++++++++++++++++++++++-------
->  1 file changed, 63 insertions(+), 11 deletions(-)
->
-> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> index f989539a31b4..d29a52f2a878 100644
-> --- a/rust/kernel/uaccess.rs
-> +++ b/rust/kernel/uaccess.rs
-> @@ -7,6 +7,7 @@
->  use crate::{
->      alloc::{Allocator, Flags},
->      bindings,
-> +    dma::CoherentAllocation,
->      error::Result,
->      ffi::{c_char, c_void},
->      fs::file,
-> @@ -459,20 +460,20 @@ pub fn is_empty(&self) -> bool {
->          self.length =3D=3D 0
->      }
-> =20
-> -    /// Writes raw data to this user pointer from a kernel buffer.
-> -    ///
-> -    /// Fails with [`EFAULT`] if the write happens on a bad address, or =
-if the write goes out of
-> -    /// bounds of this [`UserSliceWriter`]. This call may modify the ass=
-ociated userspace slice even
-> -    /// if it returns an error.
-> -    pub fn write_slice(&mut self, data: &[u8]) -> Result {
-> -        let len =3D data.len();
-> -        let data_ptr =3D data.as_ptr().cast::<c_void>();
-> +    /// Low-level write from a raw pointer. Caller must ensure ptr is va=
-lid for `len` bytes.
-> +    fn write_raw(&mut self, ptr: *const u8, len: usize) -> Result {
+On 3/9/26 12:48 PM, Ewan Chorynski wrote:
+> On Fri Mar 6, 2026 at 5:52 AM CET, Alexandre Courbot wrote:
+...
+> I am not able to probe on my GeForce GTX 1650 Mobile :
+> 
+> [    2.246095] NovaCore 0000:01:00.0: NVIDIA (Chipset: TU117, Architecture: Turing, Revision: a.1)
+> [    2.722681] NovaCore 0000:01:00.0: Booter-load failed with error 0x31
 
-The method has to be unsafe as the caller has to promise that ptr is indeed=
- a
-slice with len elements.
+I have that exact card available, so I'll give this a quick test and see
+what's missing or wrong, now that Alex has pushed the entire Turing support
+set up to drm-rust-next.
 
-Another option would be to pass a fat pointer, i.e. *const [u8]. write_dma(=
-)
-would then need to use ptr::slice_from_raw_parts() and the safety requireme=
-nt of
-this function becomes that ptr simply has to be valid.
+> 
+> However nouveau does not probe either with this firmware so that's not
+> really this patchset fault.
+> 
+> Are there any plans to check this to enable support on all Turing cards ?
+
+Yes, the plan is that Nova will support all Turing and later GPUs.
+
+
+thanks,
+-- 
+John Hubbard
+
