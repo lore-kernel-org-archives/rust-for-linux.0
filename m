@@ -1,165 +1,260 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010034.outbound.protection.outlook.com [52.101.193.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CF73B8BA2;
-	Mon,  9 Mar 2026 13:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773064006; cv=none; b=hbOb0e2ZFhyy7OHmfLEhF6WAD/0Vf/BHg2CfDvebegzzntr/g5oidbCYbJj5lpq4cYfse/+5gMFzLKbKwUAEenVJrj0hfrqHDczg7G6y8eGNunclGWZr4lQjANfdWiSrPcJmsMCRGdSsakj3jwiZe09BkanfNWTqJbIJWpFmz/w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773064006; c=relaxed/simple;
-	bh=w0QUYZum+m+R/ZMJD9ICvWbnwxxvrz4NQJRGvdgYc+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OS94GinChKh1M1pwP5cNfLlXU6oLtX0Jd1ZQ+G2iSmNSnKEjsV6h5A67C8e/vg87ZktdfN8BAGWxArASYOu0bPaTWmID97jvWFXvX9drsXeobc5kkWjUIZDi7xDOZe2lDt0lEFgbKZ8TGnf6sA3B2nW/DkXb5QBpI9ju3zJA93s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVr69GD8; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08EC3CF69A;
+	Mon,  9 Mar 2026 13:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773064437; cv=fail; b=UvNb8dci0iQ8BQTp3zEE2H1i4bFcCjtYbrRMyH4gM+bQVIAar/RRfLicdafnqLlfAFycn9V9QveIG+/bsNcBr5D9uOxunyue2DSAHPX07SGPvr7Abph0H11G8qj8zuz1YjfQg49aYnHkxLAZF7jNtj57C49bg6D0tZEnroHoQvQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773064437; c=relaxed/simple;
+	bh=03wxzqda5h/UiCOUcZcbuMHk2kHi7wX7WCPSJH3a9qc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gCMKkQ6r0+YH6LssyHP0ZzxQsz5HTos3LR5NDVRt05tmeCRizIIFrNJazwC0ZUfAjOa44/OR6bkKX/dyn915x8OreyMBTJMk/YhDv15Ua1Uh0+wV/EXcf+UgBWTQGl0N6V+Gx7YnK3lOfyeORuCgALnNIeSjp2OGAf8DgE1pOCU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iEngbn6e; arc=fail smtp.client-ip=52.101.193.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVr69GD8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF8FC4CEF7;
-	Mon,  9 Mar 2026 13:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773064005;
-	bh=w0QUYZum+m+R/ZMJD9ICvWbnwxxvrz4NQJRGvdgYc+w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BVr69GD85TMcTAfG+a8utDGbnLRZpnfsgk6oAEieKIf3SbpafBvF3+irOxH5364Mf
-	 5pQjiP3OB9FC6sxDF6sRahqD3JxDLeM/LKZhytQKKexcd9nKBgdJPKEyw8sk8hmBqZ
-	 6Umeng6LJPjNhP9ijAtZ1GLP3fQirKriMZIBcjz1MV/Ly4Ym8+L+fbakf0sGYzf2HZ
-	 3zIBqoZorFxzO8i8L6kszr5AnLvTpWYNSPn5PmXLkOowtVs0WINaH4TFDGQhbj2jWW
-	 Xu+fRiMPtxXfm3CsyrGqKEUJHR4HPp+HrebcbqvJ0J7zXXW7tbIaDGtBQ28EmTK0dV
-	 febooG99fQKig==
-Date: Mon, 9 Mar 2026 13:46:27 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, 
-	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 11/16] mm/memory: inline unmap_page_range() into
- __zap_vma_range()
-Message-ID: <737a88b8-8221-44e6-aa90-3be326bc8612@lucifer.local>
-References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-12-david@kernel.org>
- <a5765cac-69d6-4314-82d5-80ee363906de@lucifer.local>
- <bc5cfcc4-5e51-4da1-9ce9-ea0831bec400@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iEngbn6e"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vm6GdmmJNvguxP8sjwMOqV8V0VLvDBxjWz4QXlwXRBryP5b6xPU7ag3YgGYGUlJOwIUGLvVGJORfPoEka/Ei2naaa534q1ETot/mwl7nnho0vEIW76C/yrIBEIsEop/+4U/RGXZuAjpXTx7DBhatzSHjHpw8XAr+Y8ZouKiKM/Zkw3rJGLHKMCxYWv960XHimwfRMJvs6V4PdW3eAv5jfjClbsWtb8yoomh8kXl6Ivq4Ff7sSWIPZy0G33wsVrvv3kGwVNWIE4ofb1AIKCzG/YXtVZ1YZ3bLvJzcu+DGh34VuMqOGzGKLovSs2X6wdnOdKrCxoq6XTBWnFxnHfjhGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8TKBgpRZ1LF+riKYp7m4qyYg6CwL4avNKoePBXwYvXI=;
+ b=ptPCxw3HrqVnb9kGa9/OYUNtxbrFznBct0rzY9lZi313l172RJM5VpNqdU7ff1mQ65pSABwNG2dVLgZjJW3I8MeVIi3tL6q5EZY/LUF6a9hzS4wTjzBkBpTRCbNnGm3NgMw7/pAEzjHTz6BrSezmIxdYeNp1lrw5ROvqIQcvWTi27ojvt3kAo1V2RItJj+eCMlceKvkP28j0keA7XwkjGSYp99pjESt80N2rzExct3eV+mmLNwB4B00S2R7N6YPQTCpedi2cUamAMyTBBM0WkmC4xVaxT6rbyu24a1DDuqAr7w19WTlIhkYPLxitTZeodAGj2hrI/VFsVyFsPb5vlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8TKBgpRZ1LF+riKYp7m4qyYg6CwL4avNKoePBXwYvXI=;
+ b=iEngbn6eZ0cppiD5tykEGn06OAWDFQmI71sxcNjhNyCc+e72ftGr1ngIxmmssHRrxdp9JIOTpleGXe29El+FX7Hct3p4kAGaMyaprRMbjKx87lvFSfwWTrarbYlrPvs2/Nr69CnxRpuCE64cmMk45V+VwdCTs1HKd4Ek0ZLuDnYWlgwcW3X374q4FZTfPZJBgMa5HDuTubn2TReMOUsfrpYjuZbs0ykOer7etgCipsfcF4xCtGQphgDnf2HWDxNtTMZW6XssglQsoL7fqxgTVlNtW2NuAt77J5n9cAmeHGQ8woiMO95t3TCxG9hZy3fZ6oyMfzWPwEQtYl0f1QIcbw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ BY5PR12MB4082.namprd12.prod.outlook.com (2603:10b6:a03:212::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Mon, 9 Mar
+ 2026 13:53:49 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9700.009; Mon, 9 Mar 2026
+ 13:53:48 +0000
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Airlie <airlied@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Koen Koning <koen.koning@linux.intel.com>,
+	dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Nikola Djukic <ndjukic@nvidia.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Helge Deller <deller@gmx.de>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Edwin Peer <epeer@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Andy Ritger <aritger@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Elle Rhumsaa <elle@weathered-steel.dev>,
+	alexeyi@nvidia.com,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	joel@joelfernandes.org,
+	linux-doc@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	Joel Fernandes <joelagnelf@nvidia.com>
+Subject: [PATCH v12.1 0/1] Rust GPU buddy allocator bindings
+Date: Mon,  9 Mar 2026 09:53:37 -0400
+Message-Id: <20260309135338.3919996-1-joelagnelf@nvidia.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260308180407.3988286-1-joelagnelf@nvidia.com>
+References: <20260308180407.3988286-1-joelagnelf@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CYZPR05CA0036.namprd05.prod.outlook.com
+ (2603:10b6:930:a3::24) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bc5cfcc4-5e51-4da1-9ce9-ea0831bec400@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|BY5PR12MB4082:EE_
+X-MS-Office365-Filtering-Correlation-Id: 597b2e98-dc76-4f2b-dc99-08de7de349cc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	KYNmmuakd6CrA22J0broSzJgjvCoeeaX1OnUk3/zgg293mCMmvf59RjmmKMDvLiuFFHWbSMQEaz/ueoLHcscb3xMiTFBke54GRXUYhbLKscJR1GYFrbchpe4RNuXrI15G4KaXIlEspDfRG7a4ZgiJVTFL1QVFP1ofyfHFEZMhAwi7UsdwVKOYekUuqXB7OB2uVAltPf3SD7WtcRqNvwsI8Xd7quh90jIjPVxPjZB+gqnU+7JdHgUeiME5rHmL7OUkEdOif3JldgrI4WJsqHba5JeKPF4zOQtGGZ9FoDXMASj2LfWb26AgD+0Jodd123HSxL2lAPSdcp0iC8TY8L5gDdn4ut89oai+WVURwfZ/SQxSlgS24gt0LMTqKMVYhBEXwi5Q6lA8NrPf1hhYaA1mHlBYfPkC1C1xlcxY3PcZjQshyyTFtp6sObQqU5FeSpfbhOD12+idedcla0akvERX4NR3mzLnSNhtFZErdocBU3Ha0vloGvZRHmO/RPYRz5Ujfz7oec84ARNArhO6CaC8jFrWJKFZYE8t8gvJE+mSnZEtp28I8kcS4YxDMC6kDIPMWnVjGtROePAznoGwr+TWIMPuX9fUNaZhMwGiTwydZ38x9xDJKFvLdUt0Ra2I0ZxgJ07Y0DOrMFWzWH03lKthMz1sK1oDE23kPAvYYyGk65maAuldigLntWaUDcWLB3+5yyerltxRZIAjUoaPjBNOlXvdJXzh/SVixD3/AgGVx4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VRCdMjPMuU3PzfD4lp2NoNFYZqLRWvOUdM840gKiHmRbd80hYRYuXHKmmb1l?=
+ =?us-ascii?Q?PvdLBA6mxBkKOOu5QiliOSaRjrTzQ6Wh1PzaG/+G/+g2GrHqsatZce7miV6v?=
+ =?us-ascii?Q?GAmEnSYGE/aEByJHIK59PY+dQAbBjL9H7jsErw3yUF9/VUmQX/sUOofMVFoa?=
+ =?us-ascii?Q?YxYSXulKpa8o8E4IxQyssPyCOA3HWs9JUpQ1rjA7KzFzseHoFLRh9kBhbR2t?=
+ =?us-ascii?Q?R/gPzXt9BTTzFvEKAvB4OhCwY4cUWZhXU8D6rpF/5k8AW4XW9A0Itgj6GcyR?=
+ =?us-ascii?Q?6VxsK/tWkPieT5BBs9CWskWcK2asqslNO3sA4SHRus9Vnv4ndT14q5m7m4zw?=
+ =?us-ascii?Q?0ex2KO+NktiE/3IcIxFerqsoehZQZ5hvrYX6kRbkCPCw9J8OVxTwc7GVvLTV?=
+ =?us-ascii?Q?v3sXioqgqq291P5l/n9L8OFP+Kx44rDB312MHMBb1Z/0uQKYLdYGrja+BvMp?=
+ =?us-ascii?Q?j6+rkPtyvNQUh8laoXQRMvtChxprONG9g3dV669rKtmVE2AIWyJdbDznozcX?=
+ =?us-ascii?Q?kOhoEgodbZwGwtJ9hBSrGANyLt8ROHZ4QcCQ1duS8mmw8eu7lA/NefJwjnne?=
+ =?us-ascii?Q?4y/aHeS/can9JWXHUOth/9BiVQ0sgm1aXIJncP/i4x14YJlktqfXvbf/C5Qa?=
+ =?us-ascii?Q?dYOiu4pxtj4eFO3iNUhaVCpeuNVJElNnnbx2fMOVqWX7/GSf8QNx7vAXogn2?=
+ =?us-ascii?Q?M+h7YcLVrTfd2l5ZwKLj9OxaztspZZzzzE6hkvMm/1n/1EikTt/uBVxqK0+S?=
+ =?us-ascii?Q?DD6BH3FTDLTn1V9ghReKxgvqD1K0TrK8/EOfufouPWKXALAQdyHDpY5INr2j?=
+ =?us-ascii?Q?H5xoK6F1AyUndnbuyvhSIr9tqfxPmGSlm3IlvMJw7BJq5FMg1XE2DGyonK4L?=
+ =?us-ascii?Q?axOl0RURhLX11lDm0CrUwzPSwxNh2mBo3rxZCYr6nlL1IDh4fOaHJ1i2V2ZP?=
+ =?us-ascii?Q?hwVe6QBCJOfMT/+5CuxJqqkvw8i7iOOBS0KJj+egYsG8Fkvj2OQyZB/u/snS?=
+ =?us-ascii?Q?p99o+9PqpB1BLHETBvxUornWM8uAovICbpUGJqGy8GQ7F4CstsoT2ajsiHI6?=
+ =?us-ascii?Q?GLZX8ODoKtDHLZpGrvz+ZSyCeWHEV3jkyLfyEbkf0a7au0Bubc23MEvgCr+Z?=
+ =?us-ascii?Q?UTLKUR/iT1l7e3wCgoCzyByU6Jlo13HR8TdzMcyRJBBjPRbExCXBJiDD0CiA?=
+ =?us-ascii?Q?u74KgmRWPn7an9U9c9hJMlPM9cUC6PX8w/Qe1B/t9vIkMYnykPpYv1RyFwqu?=
+ =?us-ascii?Q?ffj0cshyOGPE5TX7/cFuQjFvpJ9G/fD8ZEYuislkSi+mCZ5kB4l/wKG7vCZd?=
+ =?us-ascii?Q?aZC6k7u+Nrj0iGJRki1okPihlygu4BUKWHx9m5CZlOTNwIEvDEse27ut18EU?=
+ =?us-ascii?Q?1NU+Gn/s81c3iv+W50vmnhCUcw3vtJ5GHzoKYcU+Ro3TWYEGQ8fuQcnEcN0j?=
+ =?us-ascii?Q?NproQ+SGbcya35ltmwYXLf06WXlr9tqo/iAhbr6cAUrpTJvCbF6D8GoqVT6R?=
+ =?us-ascii?Q?ZJEctUyqNVtdJqjb5CNQrnsfv/44ZtqxxK9h2rPVbtHGhR3E4hE2HrMaOwpu?=
+ =?us-ascii?Q?UzWNfG+ixQTCu5+idgEBHvAKu5k5yRB6O6A0Vbkx8kbQddBf01XxWlZWM23d?=
+ =?us-ascii?Q?euPZEPhNGB7F/nF8rzH1FPgEw4mLKTCgJ4G678YNynrgias+1O/+JkT2UAIx?=
+ =?us-ascii?Q?uplCjqMFBuYaopgDgMQ0ZUVT7ROgZupXvC4e75Gt5AAdErlhxLSMzlkJmLTt?=
+ =?us-ascii?Q?PVMFdzfNOg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 597b2e98-dc76-4f2b-dc99-08de7de349cc
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 13:53:48.4213
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3zPvav3Y915nfftHR466eibh/OJnuhUDUmPm2IIJVI9CIxXM0U3ABmrcPUC38bG9uv8Gs1SmKyhu3UZuUkX63g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4082
 
-On Fri, Mar 06, 2026 at 02:16:26PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/6/26 13:29, Lorenzo Stoakes (Oracle) wrote:
-> > On Fri, Feb 27, 2026 at 09:08:42PM +0100, David Hildenbrand (Arm) wrote:
-> >> Let's inline it into the single caller to reduce the number of confusing
-> >> unmap/zap helpers.
-> >>
-> >> Get rid of the unnecessary BUG_ON().
-> >>
-> >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> >
-> > Small nits below, but overall LGTM so:
-> >
-> > Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> >
-> >> ---
-> >>  mm/memory.c | 32 ++++++++++++--------------------
-> >>  1 file changed, 12 insertions(+), 20 deletions(-)
-> >>
-> >> diff --git a/mm/memory.c b/mm/memory.c
-> >> index 394b2e931974..1c0bcdfc73b7 100644
-> >> --- a/mm/memory.c
-> >> +++ b/mm/memory.c
-> >> @@ -2056,25 +2056,6 @@ static inline unsigned long zap_p4d_range(struct mmu_gather *tlb,
-> >>  	return addr;
-> >>  }
-> >>
-> >> -static void unmap_page_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> >> -		unsigned long addr, unsigned long end,
-> >> -		struct zap_details *details)
-> >> -{
-> >> -	pgd_t *pgd;
-> >> -	unsigned long next;
-> >> -
-> >> -	BUG_ON(addr >= end);
-> >> -	tlb_start_vma(tlb, vma);
-> >> -	pgd = pgd_offset(vma->vm_mm, addr);
-> >> -	do {
-> >> -		next = pgd_addr_end(addr, end);
-> >> -		if (pgd_none_or_clear_bad(pgd))
-> >> -			continue;
-> >> -		next = zap_p4d_range(tlb, vma, pgd, addr, next, details);
-> >> -	} while (pgd++, addr = next, addr != end);
-> >> -	tlb_end_vma(tlb, vma);
-> >> -}
-> >> -
-> >>  static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> >>  		unsigned long start, unsigned long end,
-> >>  		struct zap_details *details)
-> >> @@ -2100,7 +2081,18 @@ static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> >>  			return;
-> >>  		__unmap_hugepage_range(tlb, vma, start, end, NULL, zap_flags);
-> >>  	} else {
-> >> -		unmap_page_range(tlb, vma, start, end, details);
-> >> +		unsigned long next, cur = start;
-> >
-> > VERY nitty, but generally current is abbreviated to curr not cur.
-> >
->
-> The following might not be fully expressive (but simple to grep):
->
-> $ git grep "cur_" | wc -l
-> 24261
-> $ git grep "curr_" | wc -l
-> 9288
+This patch adds safe Rust abstractions over the Linux kernel's GPU buddy
+allocator for physical memory management. The prerequisite infrastructure
+patches (DRM buddy code movement and the uninitialized buddy fix) have been
+absorbed into upstream -next, so this is now a standalone patch.
 
-Lol hmm...
+The git tree with all patches can be found at:
+git://git.kernel.org/pub/scm/linux/kernel/git/jfern/linux.git (tag: gpu-buddy-bindings-v12.1-20260309)
 
->
-> Tells me that "cur" is rather common.
->
-> > It's not a big deal, but why not addr?
->
-> Good question, I can just do that. :)
+Change log:
 
-Thanks!
+Changes from v12 to v12.1:
+- Fixed undeclared type `GpuBuddyFlags` in doc examples: renamed to
+  `GpuBuddyAllocFlags` in all seven doc test examples (found by kernel
+  test robot).
 
->
-> --
-> Cheers,
->
-> David
+Changes from v11 to v12:
+- Rebased on linux-next; this is now a standalone single patch as dependencies
+  are absorbed (but clist is a prerequisite).
+- Redesigned allocation API (Alexandre Courbot) for better Rust ergonomics.
+- Split single long example into 4 self-contained examples (Alexandre Courbot).
+- Several safety and invariant comment changes (Danilo).
+- MAINTAINERS changes (Arun, Mathew, Danilo, Dave).
+- Fixed `#[cfg(CONFIG_GPU_BUDDY)]` to `#[cfg(CONFIG_GPU_BUDDY = "y")]` (Danilo Krummrich).
+- Updated `ffi::clist::CListHead` to `interop::list::CListHead`.
 
-Cheers, Lorenzo
+Changes from v10 to v11:
+- Dropped "rust: ffi: Convert pub use to pub mod and create ffi module" patch;
+  the ffi module restructuring will go through a different path.
+- Dropped "rust: clist: Add support to interface with C linked lists" patch;
+  the clist module will be submitted separately.
+- Dropped "nova-core: Kconfig: Sort select statements alphabetically" cosmetic
+  patch.
+- Patches 1-3 (DRM buddy movement and fix) are included as reference only;
+  they are already being pulled into upstream via drm-misc-next.
+- Removed clist patches as those can go in independently (Alice).
+- Moved the Kconfig GPU_BUDDY selection patch to nova-core mm series to enable
+  it when it is actually used.
+- Various nits to comments, etc.
+
+Changes from v9 to v10:
+- Absorbed the DRM buddy code movement patches into this series as patches 1-2.
+  Dave Airlie reworked these into two parts for better git history.
+- Added "gpu: Fix uninitialized buddy for built-in drivers" fix by Koen Koning,
+  using subsys_initcall instead of module_init to fix NULL pointer dereference
+  when built-in drivers use the buddy allocator before initialization.
+- Added "rust: ffi: Convert pub use to pub mod and create ffi module" to prepare
+  the ffi module for hosting clist as a sub-module.
+- Moved clist from rust/kernel/clist.rs to rust/kernel/ffi/.
+- Added "nova-core: Kconfig: Sort select statements alphabetically" (Danilo).
+
+Changes from v8 to v9:
+- Updated nova-core Kconfig patch: addressed sorting of Kconfig options.
+- Added Daniel Almeida's Reviewed-by tag to clist patch.
+- Minor refinements to GPU buddy bindings.
+
+Changes from v7 to v8:
+- Added nova-core Kconfig patch to select GPU_BUDDY for VRAM allocation.
+- Various changes suggested by Danilo Krummrich, Gary Guo, and Daniel Almeida.
+- Added Acked-by: Gary Guo for clist patch.
+
+Changes from v6 to v7:
+- Major restructuring: split the large 26-patch v6 RFC series. v7 only contains
+  the Rust infrastructure patches (clist + GPU buddy bindings), extracted from
+  the full nova-core MM series. The nova-core MM patches follow separately.
+- Rebased on linux-next.
+
+Link to v12: https://lore.kernel.org/all/20260308180407.3988286-1-joelagnelf@nvidia.com/
+Link to v11: https://lore.kernel.org/all/20260224224005.3232841-1-joelagnelf@nvidia.com/
+
+Joel Fernandes (1):
+  rust: gpu: Add GPU buddy allocator bindings
+
+ MAINTAINERS                     |   6 +-
+ rust/bindings/bindings_helper.h |  11 +
+ rust/helpers/gpu.c              |  23 ++
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/gpu/buddy.rs        | 611 ++++++++++++++++++++++++++++++++
+ rust/kernel/gpu/mod.rs          |   5 +
+ rust/kernel/lib.rs              |   2 +
+ 7 files changed, 658 insertions(+), 1 deletion(-)
+ create mode 100644 rust/helpers/gpu.c
+ create mode 100644 rust/kernel/gpu/buddy.rs
+ create mode 100644 rust/kernel/gpu/mod.rs
+
+-- 
+2.34.1
+
