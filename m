@@ -1,124 +1,351 @@
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EADB38944D
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Mar 2026 22:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773096019; cv=pass; b=sVixVSk7Gk0efX2uSl/UdXGcCzlhtX0NCFFHqrxadDrvQlgweuAGO7wRlGhN/9893HNWVhMIDIMuvKbvSGz7g6QD9/n0RsqYjazWlBH/8sTED9u2Mb4957ivl3e2QfPkx4M97yyd+yx/x/38zrWR0lX8QsmmGV+A/7A290NE4+s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773096019; c=relaxed/simple;
-	bh=7ZruxRPvWNkf2N29j9GJ6qz1GqSjD5GFtkioQbQCT50=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LOL7eW1+mXF4e5vK1pB/AtGJzjzAHWROTIlBt7Yusd7tUjBw4y5+8X/gZ9mm5Ts3Fa5cWLWGVptOZZ7Cqv5DK1j9+D4PihWUFX63h34qiKSfPTD2GTq354ftNkAL0+MJuj4uBBQN00I0R/uLSWhzAndzpELZnyoLYMeIujju04k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKzKCvI3; arc=pass smtp.client-ip=74.125.82.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C002D73A1;
+	Mon,  9 Mar 2026 22:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773096854; cv=none; b=W27NHAbQy9u8/C8kMIYAbtK2EAuHPsr2cQCYGRLMlNqpTPLM+P5uh1Ur3kif7BqAcU6Tmsh+R9RSHlmOKBGwNZUvh9641a0hIX0jArtxl+g8WrpU17D2ueq0mF9za53J3IWsuRZ6nGfqigDhVgwyXyw+Y6qGTlYoQkfg/cF0k+s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773096854; c=relaxed/simple;
+	bh=CM+b09gantZoiEoPoLZ9ClvloNmdrwoMovABA/Vy84I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gu70wgNcfY+4NLwYRR+EbsBfeZJcE0asxoPVh5nBMs9cPzXVJfDlTylyp1wbqogUI/YvWbFgitE/gYW5LUk7dNR9mcNE0J3g7XKM8lVezwtxcTKOnsMPb0A12C6WVRu7t5av561oInZWL5A7gveXgaBASpJtNXXFBw41t24vQig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrFe7FnZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKzKCvI3"
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-124713e4244so739779c88.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Mar 2026 15:40:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773096017; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GFou3XRv3Ahp9SKHqc8hBlDOnzcDPAqOi2JP350D1TVzpZkEiBPu2/1yP176yjacD2
-         4Ih4OSUAMCrEnPvaN4wiziZb7r9rzcj0g6GpKv2x1xkaffAKqG/qT+s566u3hwaHSnH/
-         F7hNuoizHsIK8tfuu9W2Dj8TMgrLQZ1PPCEtFJ8odOvcpiT0GZOhQk0h9ZUBYMvpp3EU
-         LPtslv7JrtromUKPKODTLk45+9Ge4vB7W0lpLTWliUkk1/Kb1XVfCp5U5HvpxVFLc4dQ
-         rndPEnlcP/kHOYQlLqFnREdik1zi4Oyo5mgphobRdfmGXUZzoIVOg07Lw7bxG7wjFtHL
-         59sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7ZruxRPvWNkf2N29j9GJ6qz1GqSjD5GFtkioQbQCT50=;
-        fh=TZ6AVHnznbaPH2+0aauBNrLoHhvwQyGGI6GCFYpJJKk=;
-        b=OqbUy2nA4b0pWFIv7xdtiKyvLFhSfxn3Qaayk/hcZDMZk6bWNGzpKTNXUArSDXnFl4
-         oGg8LI3KS6VWZ4q4Q2VH8CK0ca3iZRqV7lPePJeXPqNSlgVAaEJ5pCJ4N5NsQTig+yCf
-         ts/cfyUOE5pI/zHD6Q6pbiehqkNY3Uk07E7u4Ariv4upnkYgHnSq2Ad/HYLiWAwfTvWC
-         pUuY8JvTU09usyRliIZ4rFjiJ718d+WEBERuxTH7HKLqIPYYaQD7oBSEPKnfgGl80Rxs
-         YtZGlgmqVvUkkppecYdEZDbvofryLk9KmNQmlZpOploib9FWoBwAZMJyEjfB0PWnHOTc
-         PkIw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773096017; x=1773700817; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7ZruxRPvWNkf2N29j9GJ6qz1GqSjD5GFtkioQbQCT50=;
-        b=OKzKCvI3qaATyuK2rCUsFNOh0qp3Z0G1ELbPYx9YwirY4TpoNA2CQjLGs4kTNTUl/s
-         0egq4WVTVMVe8OkXHc1/mvGHmWonwtvOTInz7HoK4eD+ry5OGF5K2jNS+L9IDJw3BkaF
-         /9huU4wttGlP9s1u6Le5GhESqsDU4Lb3dv3gfh323G25SHqdIn5da+mdRX+4WOQYqroe
-         76lt+JdRNZfcSJ74asngJYv8IOIqc++cS4UcOUX3+8FGc3WuRPyDXAudjr/GbMhbWS3x
-         Tg02Aoa9/UZU4bHSV0lhF5RVUnmTBeODX3yOYRYss3aleD6nUz4SbG342sR3h6sDbpzP
-         oMWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773096017; x=1773700817;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7ZruxRPvWNkf2N29j9GJ6qz1GqSjD5GFtkioQbQCT50=;
-        b=F2mZ3wsF1m8ACxaxnkiqLKzqeJCiTMpfMOAb2xjDxPPSHa0NLgUYTKNSMi8E4IC++E
-         T0MVrBb98GnFWeogn6bTb1jN/A35DnfUy+G8Y8GCFAOBjxmRgGKoFSjDzuSrLSLcKbpH
-         QGYjs+8zehEhYtpc8OFpXdXS+hk2gSCb9LH7q7hLnkSng2/YbrfoSDSNk8mTBV8Qh9EV
-         lni+ImYitVWimyEiBDqRm7IJAV+Ab6lkn/LRymMc4AZUItMbgJIvZnv2cudlmcMOIT9b
-         exv8KbczVSnPaFP2CokfJZtJgTJR5Y2dAtN9ZaaYhy5g1rkFzkkaTQf1WDpEB+ZLvh13
-         wRsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXeteCacNRv8dBmaRLRLvrGZVAn3veinemabCY8ZwREpRg7y0F7pGOrRliBGJY6gAGkqLbupKN8gwjN5x76cQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwE8hEM5OxUyRMJtwMRwGDfXXOHsjSkYlq2vTybKNi3nOfG99Ko
-	m+8USwoqqcMCQyZzRQgUKFm0LTMS57Ov7tPg9WF14b6HRWmoDw5E8GMDySBaJfqPKEwPg8sU51L
-	jgefFOIuMNjOOYiMwxMmW09P2fiUP4Lc=
-X-Gm-Gg: ATEYQzwAK0nzUYe2vQz2gc1NAn+lRHYsYqrZil70NBRPVyFPLkt6d6jusVVItkqGv3F
-	MXE6tvb9LYkqVhoPWsNJni5f0X4re8o51dXG8msFEgQSesMNGn8y8YH4ZyymU3JeU+cJjIikWn+
-	tLO5J9QGA72C1jdl26WeGdWb2Eju0vfP9zIV6eTYow1z3/Of7V0Aa63fvE1tX8tNcA5KZ3SJJig
-	nlmJuHCVM5D/oRIRoaHeBjvDYDt5ODLNRPh8WB4WQIXCfhM/CjOEVuILKhjpdG+UNhSssoENUCB
-	RgtchpVF6glcxgNL6zg3f2aF9HJ/uzu5P9YvJ0jrjOtk+nTKPQj/SeYH1Aq165Vo9CbNL3PJqho
-	GlkDBnNMYb+l+M9jYJxDK+OA=
-X-Received: by 2002:a05:7300:148e:b0:2be:2912:ff65 with SMTP id
- 5a478bee46e88-2be4e055899mr2839234eec.3.1773096017354; Mon, 09 Mar 2026
- 15:40:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrFe7FnZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50469C4CEF7;
+	Mon,  9 Mar 2026 22:54:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773096854;
+	bh=CM+b09gantZoiEoPoLZ9ClvloNmdrwoMovABA/Vy84I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QrFe7FnZnPBFJA4RWGrT9BW0S/+Bx6F3E6Qj/A50DRYRfWqkSqNUEVyHJVHnxIaHW
+	 i7nffCVtopE+zFsoRRksM9NSL7D8hh9KpbcLh/oiMc82+tQ+DfIi9y/msuF6ivZVvE
+	 a4CdjrkECCUfSkx6sGZT8mB81RY/EXu/TumZCvut2vYGezEuJIdfpL+Mf3v87k7iJA
+	 iEPmTrdlgXJAgyju8CgGqI0s84oLcK8h27J3JkVcOkENz2B5xodSIeHVV30pe1WJfa
+	 OwFtoZxdb0YDzfEzNNylLeX7cDYNNaFg2UnzuISR39T3QLJhDwvrPVB9ZOkPT/U8x/
+	 cJDhpigdaGLUg==
+From: Danilo Krummrich <dakr@kernel.org>
+To: acourbot@nvidia.com,
+	aliceryhl@google.com
+Cc: nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>
+Subject: [PATCH] gpu: nova-core: gsp: fix UB in DmaGspMem pointer accessors
+Date: Mon,  9 Mar 2026 23:53:24 +0100
+Message-ID: <20260309225408.27714-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260309-drm-rust-next-v4-0-4ef485b19a4c@proton.me>
- <20260309-drm-rust-next-v4-4-4ef485b19a4c@proton.me> <DGYI9CQRWXU3.XNDVWJE0DP6H@kernel.org>
-In-Reply-To: <DGYI9CQRWXU3.XNDVWJE0DP6H@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Mar 2026 23:40:05 +0100
-X-Gm-Features: AaiRm51i63wiK9zFG4xNzbBEqTFq-Q0BP2B6Ia2Eg8BVDjn1989Ch1oIVRSK_CU
-Message-ID: <CANiq72nRZhJV3d33h++jYp1iEO3a=+pqrzZXf690Bbafs84qbg@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] gpu: nova-core: fix stack overflow in GSP memory allocation
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Tim Kovalenko via B4 Relay <devnull+tim.kovalenko.proton.me@kernel.org>, tim.kovalenko@proton.me, 
-	Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl <aliceryhl@google.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Boqun Feng <boqun@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Robin Murphy <robin.murphy@arm.com>, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	driver-core@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 9, 2026 at 8:40=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> Reported-by: Gary Guo <gary@garyguo.net>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/509436-Nova/=
-topic/.60Cmdq.3A.3Anew.60.20uses.20excessive.20stack.20size/near/570375549
-> Fixes: f38b4f105cfc ("gpu: nova-core: Create initial Gsp")
+The DmaGspMem pointer accessor methods (gsp_write_ptr, gsp_read_ptr,
+cpu_read_ptr, cpu_write_ptr, advance_cpu_read_ptr,
+advance_cpu_write_ptr) dereference a raw pointer to DMA memory, creating
+an intermediate reference before calling volatile read/write methods.
 
-`objtool` also complains about it because it doesn't handle certain
-instructions, so probably:
+This is undefined behavior since DMA memory can be concurrently modified
+by the device.
 
-Link: https://lore.kernel.org/rust-for-linux/CANiq72mAQxbRJZDnik3Qmd4phvFwP=
-A01O2jwaaXRh_T+2=3DL-qA@mail.gmail.com/
+Fix this by moving the implementations into a gsp_mem module in fw.rs
+that uses the dma_read!() / dma_write!() macros, making the original
+methods on DmaGspMem thin forwarding wrappers.
 
-Cheers,
-Miguel
+An alternative approach would have been to wrap the shared memory in
+Opaque, but that would have required even more unsafe code.
+
+Since the gsp_mem module lives in fw.rs (to access firmware-specific
+binding field names), GspMem, Msgq, DmaGspMem and their relevant fields
+are temporarily widened to pub(in crate::gsp). This will be reverted
+once IoView projections are available.
+
+Cc: Gary Guo <gary@garyguo.net>
+Closes: https://lore.kernel.org/nouveau/DGUT14ILG35P.1UMNRKU93JUM1@kernel.org/
+Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindings and handling")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ drivers/gpu/nova-core/gsp/cmdq.rs |  71 +++++----------------
+ drivers/gpu/nova-core/gsp/fw.rs   | 101 ++++++++++++++++++++----------
+ 2 files changed, 84 insertions(+), 88 deletions(-)
+
+diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
+index ae54708c38eb..00a4062a47dc 100644
+--- a/drivers/gpu/nova-core/gsp/cmdq.rs
++++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+@@ -2,11 +2,7 @@
+ 
+ use core::{
+     cmp,
+-    mem,
+-    sync::atomic::{
+-        fence,
+-        Ordering, //
+-    }, //
++    mem, //
+ };
+ 
+ use kernel::{
+@@ -146,30 +142,32 @@ struct MsgqData {
+ #[repr(C)]
+ // There is no struct defined for this in the open-gpu-kernel-source headers.
+ // Instead it is defined by code in `GspMsgQueuesInit()`.
+-struct Msgq {
++// TODO: Revert to private once `IoView` projections replace the `gsp_mem` module.
++pub(in crate::gsp) struct Msgq {
+     /// Header for sending messages, including the write pointer.
+-    tx: MsgqTxHeader,
++    pub(in crate::gsp) tx: MsgqTxHeader,
+     /// Header for receiving messages, including the read pointer.
+-    rx: MsgqRxHeader,
++    pub(in crate::gsp) rx: MsgqRxHeader,
+     /// The message queue proper.
+     msgq: MsgqData,
+ }
+ 
+ /// Structure shared between the driver and the GSP and containing the command and message queues.
+ #[repr(C)]
+-struct GspMem {
++// TODO: Revert to private once `IoView` projections replace the `gsp_mem` module.
++pub(in crate::gsp) struct GspMem {
+     /// Self-mapping page table entries.
+     ptes: PteArray<{ GSP_PAGE_SIZE / size_of::<u64>() }>,
+     /// CPU queue: the driver writes commands here, and the GSP reads them. It also contains the
+     /// write and read pointers that the CPU updates.
+     ///
+     /// This member is read-only for the GSP.
+-    cpuq: Msgq,
++    pub(in crate::gsp) cpuq: Msgq,
+     /// GSP queue: the GSP writes messages here, and the driver reads them. It also contains the
+     /// write and read pointers that the GSP updates.
+     ///
+     /// This member is read-only for the driver.
+-    gspq: Msgq,
++    pub(in crate::gsp) gspq: Msgq,
+ }
+ 
+ // SAFETY: These structs don't meet the no-padding requirements of AsBytes but
+@@ -321,12 +319,7 @@ fn allocate_command(&mut self, size: usize) -> Result<GspCommand<'_>> {
+     //
+     // - The returned value is between `0` and `MSGQ_NUM_PAGES`.
+     fn gsp_write_ptr(&self) -> u32 {
+-        let gsp_mem = self.0.start_ptr();
+-
+-        // SAFETY:
+-        //  - The 'CoherentAllocation' contains at least one object.
+-        //  - By the invariants of `CoherentAllocation` the pointer is valid.
+-        (unsafe { (*gsp_mem).gspq.tx.write_ptr() } % MSGQ_NUM_PAGES)
++        super::fw::gsp_mem::gsp_write_ptr(&self.0)
+     }
+ 
+     // Returns the index of the memory page the GSP will read the next command from.
+@@ -335,12 +328,7 @@ fn gsp_write_ptr(&self) -> u32 {
+     //
+     // - The returned value is between `0` and `MSGQ_NUM_PAGES`.
+     fn gsp_read_ptr(&self) -> u32 {
+-        let gsp_mem = self.0.start_ptr();
+-
+-        // SAFETY:
+-        //  - The 'CoherentAllocation' contains at least one object.
+-        //  - By the invariants of `CoherentAllocation` the pointer is valid.
+-        (unsafe { (*gsp_mem).gspq.rx.read_ptr() } % MSGQ_NUM_PAGES)
++        super::fw::gsp_mem::gsp_read_ptr(&self.0)
+     }
+ 
+     // Returns the index of the memory page the CPU can read the next message from.
+@@ -349,27 +337,12 @@ fn gsp_read_ptr(&self) -> u32 {
+     //
+     // - The returned value is between `0` and `MSGQ_NUM_PAGES`.
+     fn cpu_read_ptr(&self) -> u32 {
+-        let gsp_mem = self.0.start_ptr();
+-
+-        // SAFETY:
+-        //  - The ['CoherentAllocation'] contains at least one object.
+-        //  - By the invariants of CoherentAllocation the pointer is valid.
+-        (unsafe { (*gsp_mem).cpuq.rx.read_ptr() } % MSGQ_NUM_PAGES)
++        super::fw::gsp_mem::cpu_read_ptr(&self.0)
+     }
+ 
+     // Informs the GSP that it can send `elem_count` new pages into the message queue.
+     fn advance_cpu_read_ptr(&mut self, elem_count: u32) {
+-        let rptr = self.cpu_read_ptr().wrapping_add(elem_count) % MSGQ_NUM_PAGES;
+-
+-        // Ensure read pointer is properly ordered.
+-        fence(Ordering::SeqCst);
+-
+-        let gsp_mem = self.0.start_ptr_mut();
+-
+-        // SAFETY:
+-        //  - The 'CoherentAllocation' contains at least one object.
+-        //  - By the invariants of `CoherentAllocation` the pointer is valid.
+-        unsafe { (*gsp_mem).cpuq.rx.set_read_ptr(rptr) };
++        super::fw::gsp_mem::advance_cpu_read_ptr(&self.0, elem_count)
+     }
+ 
+     // Returns the index of the memory page the CPU can write the next command to.
+@@ -378,26 +351,12 @@ fn advance_cpu_read_ptr(&mut self, elem_count: u32) {
+     //
+     // - The returned value is between `0` and `MSGQ_NUM_PAGES`.
+     fn cpu_write_ptr(&self) -> u32 {
+-        let gsp_mem = self.0.start_ptr();
+-
+-        // SAFETY:
+-        //  - The 'CoherentAllocation' contains at least one object.
+-        //  - By the invariants of `CoherentAllocation` the pointer is valid.
+-        (unsafe { (*gsp_mem).cpuq.tx.write_ptr() } % MSGQ_NUM_PAGES)
++        super::fw::gsp_mem::cpu_write_ptr(&self.0)
+     }
+ 
+     // Informs the GSP that it can process `elem_count` new pages from the command queue.
+     fn advance_cpu_write_ptr(&mut self, elem_count: u32) {
+-        let wptr = self.cpu_write_ptr().wrapping_add(elem_count) & MSGQ_NUM_PAGES;
+-        let gsp_mem = self.0.start_ptr_mut();
+-
+-        // SAFETY:
+-        //  - The 'CoherentAllocation' contains at least one object.
+-        //  - By the invariants of `CoherentAllocation` the pointer is valid.
+-        unsafe { (*gsp_mem).cpuq.tx.set_write_ptr(wptr) };
+-
+-        // Ensure all command data is visible before triggering the GSP read.
+-        fence(Ordering::SeqCst);
++        super::fw::gsp_mem::advance_cpu_write_ptr(&self.0, elem_count)
+     }
+ }
+ 
+diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw.rs
+index 83ff91614e36..ca03d497246d 100644
+--- a/drivers/gpu/nova-core/gsp/fw.rs
++++ b/drivers/gpu/nova-core/gsp/fw.rs
+@@ -40,6 +40,75 @@
+     },
+ };
+ 
++// TODO: Replace with `IoView` projections once available; the `unwrap()` calls go away once we
++// switch to the new `dma::Coherent` API.
++pub(in crate::gsp) mod gsp_mem {
++    use core::sync::atomic::{
++        fence,
++        Ordering, //
++    };
++
++    use kernel::{
++        dma::CoherentAllocation,
++        dma_read,
++        dma_write,
++        prelude::*, //
++    };
++
++    use crate::gsp::cmdq::{
++        GspMem,
++        MSGQ_NUM_PAGES, //
++    };
++
++    pub(in crate::gsp) fn gsp_write_ptr(qs: &CoherentAllocation<GspMem>) -> u32 {
++        // PANIC: A `dma::CoherentAllocation` always contains at least one element.
++        || -> Result<u32> { Ok(dma_read!(qs, [0]?.gspq.tx.0.writePtr) % MSGQ_NUM_PAGES) }().unwrap()
++    }
++
++    pub(in crate::gsp) fn gsp_read_ptr(qs: &CoherentAllocation<GspMem>) -> u32 {
++        // PANIC: A `dma::CoherentAllocation` always contains at least one element.
++        || -> Result<u32> { Ok(dma_read!(qs, [0]?.gspq.rx.0.readPtr) % MSGQ_NUM_PAGES) }().unwrap()
++    }
++
++    pub(in crate::gsp) fn cpu_read_ptr(qs: &CoherentAllocation<GspMem>) -> u32 {
++        // PANIC: A `dma::CoherentAllocation` always contains at least one element.
++        || -> Result<u32> { Ok(dma_read!(qs, [0]?.cpuq.rx.0.readPtr) % MSGQ_NUM_PAGES) }().unwrap()
++    }
++
++    pub(in crate::gsp) fn advance_cpu_read_ptr(qs: &CoherentAllocation<GspMem>, count: u32) {
++        let rptr = cpu_read_ptr(qs).wrapping_add(count) % MSGQ_NUM_PAGES;
++
++        // Ensure read pointer is properly ordered.
++        fence(Ordering::SeqCst);
++
++        // PANIC: A `dma::CoherentAllocation` always contains at least one element.
++        || -> Result {
++            dma_write!(qs, [0]?.cpuq.rx.0.readPtr, rptr);
++            Ok(())
++        }()
++        .unwrap()
++    }
++
++    pub(in crate::gsp) fn cpu_write_ptr(qs: &CoherentAllocation<GspMem>) -> u32 {
++        // PANIC: A `dma::CoherentAllocation` always contains at least one element.
++        || -> Result<u32> { Ok(dma_read!(qs, [0]?.cpuq.tx.0.writePtr) % MSGQ_NUM_PAGES) }().unwrap()
++    }
++
++    pub(in crate::gsp) fn advance_cpu_write_ptr(qs: &CoherentAllocation<GspMem>, count: u32) {
++        let wptr = cpu_write_ptr(qs).wrapping_add(count) & MSGQ_NUM_PAGES;
++
++        // PANIC: A `dma::CoherentAllocation` always contains at least one element.
++        || -> Result {
++            dma_write!(qs, [0]?.cpuq.tx.0.writePtr, wptr);
++            Ok(())
++        }()
++        .unwrap();
++
++        // Ensure all command data is visible before triggering the GSP read.
++        fence(Ordering::SeqCst);
++    }
++}
++
+ /// Empty type to group methods related to heap parameters for running the GSP firmware.
+ enum GspFwHeapParams {}
+ 
+@@ -708,22 +777,6 @@ pub(crate) fn new(msgq_size: u32, rx_hdr_offset: u32, msg_count: u32) -> Self {
+             entryOff: num::usize_into_u32::<GSP_PAGE_SIZE>(),
+         })
+     }
+-
+-    /// Returns the value of the write pointer for this queue.
+-    pub(crate) fn write_ptr(&self) -> u32 {
+-        let ptr = core::ptr::from_ref(&self.0.writePtr);
+-
+-        // SAFETY: `ptr` is a valid pointer to a `u32`.
+-        unsafe { ptr.read_volatile() }
+-    }
+-
+-    /// Sets the value of the write pointer for this queue.
+-    pub(crate) fn set_write_ptr(&mut self, val: u32) {
+-        let ptr = core::ptr::from_mut(&mut self.0.writePtr);
+-
+-        // SAFETY: `ptr` is a valid pointer to a `u32`.
+-        unsafe { ptr.write_volatile(val) }
+-    }
+ }
+ 
+ // SAFETY: Padding is explicit and does not contain uninitialized data.
+@@ -739,22 +792,6 @@ impl MsgqRxHeader {
+     pub(crate) fn new() -> Self {
+         Self(Default::default())
+     }
+-
+-    /// Returns the value of the read pointer for this queue.
+-    pub(crate) fn read_ptr(&self) -> u32 {
+-        let ptr = core::ptr::from_ref(&self.0.readPtr);
+-
+-        // SAFETY: `ptr` is a valid pointer to a `u32`.
+-        unsafe { ptr.read_volatile() }
+-    }
+-
+-    /// Sets the value of the read pointer for this queue.
+-    pub(crate) fn set_read_ptr(&mut self, val: u32) {
+-        let ptr = core::ptr::from_mut(&mut self.0.readPtr);
+-
+-        // SAFETY: `ptr` is a valid pointer to a `u32`.
+-        unsafe { ptr.write_volatile(val) }
+-    }
+ }
+ 
+ // SAFETY: Padding is explicit and does not contain uninitialized data.
+
+base-commit: 4da879a0d3fd170a70994b73baa554c6913918b5
+-- 
+2.53.0
+
