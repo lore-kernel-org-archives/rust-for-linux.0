@@ -1,99 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F7D3E024F
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 19:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BC034F470
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 19:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773172617; cv=none; b=PfLGAdWCcCqGQ3ozHbxOXiV07om9ZHgouxyGVzkKUJLb95EHwHDSy2ifMuoLK2J89mYAoNNYStY02qBJLX6B2W3m9xGkVlvxJa1pCus8fDPKwn8M7RX9kzEyRc0N8/QPTa4LD6kokKwdSjJH5xYsn/A9XI4wNHuhIgrGZZpvH20=
+	t=1773172695; cv=none; b=ssCZOzBxkKDAyWJkBV9OUB3E7S4+WqEbJ8hb6KpYd0ZkrNKfuXZfFla8/02/7zNZOijrlloZSz2Ixq3YmiXzXbtdfINzfUYfr1rx6GvOaO9tPTvQQ9xUUE81z8s/8wTiVNieAvDbRn+nXbs6BfT/NSrhFmlSWDywJ21OLkgVrt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773172617; c=relaxed/simple;
-	bh=MVBJnIqJflJGSFwfGDyGrwXlPsLUaoynPyttg2cgWFQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=RhE3X/P3gom/VFLMMYFKYkni+T+NRSp6UXvPvAZTcq9BxG2s0CEJE/SWumVUQs2IcR+7OST0xfQTRVkhudOSwEW0kuCpWWXS0edqrch/jchzsXopeSm5/EbMQ3JjN8OKCHbmAuklheRM8j/B8sI/zU38wEarLZztqiGzOTZv6LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZcMHmmm6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773172695; c=relaxed/simple;
+	bh=OR+qgP39kATrp/QfTOJZ3bPaOj3WuwOeZ5qDFD59pXA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=EmK7ynWp1UbTpR5jKEt52+HuXpxvagJChkxvNV//46mwR/Xzcf/MwH3UYCLHwKI9XEcO1bdUYAgu0gl04Wz9VFnPqchWNpkvp+ZBRvO5gmS3EZOfGysdlWbQXRIJ60E1xcSTMdy6otoz/s90x7wjF3xXmboGYTRSnsbIHZHT1bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N056z1hl; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZcMHmmm6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF98C19423;
-	Tue, 10 Mar 2026 19:56:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773172617;
-	bh=MVBJnIqJflJGSFwfGDyGrwXlPsLUaoynPyttg2cgWFQ=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=ZcMHmmm6VcVdSlzHmiOLIgX+GOoN0DhFXgA19ksUc2hLPskNm24B/04DM/pc19ksH
-	 Qy/TrcW7ZBZvBkKcIxRiahTJtv1MOXwtQo5u9GLJFanA9GbI61HtROPkYUex007wJY
-	 HeAsAj5QOm7aFwDKQlzG/qT8W6SI9h6kfeXfWPf2bDVp4dj6MMGyeP0clPsp7rWl13
-	 jv4pNk7XcyChbAnOX/NtUkWP8gzmJb7t4+hVttZPJCFtAHttuYoJT7Tqas8+/D1+qS
-	 OXB8KXZ6MwHIHWQhfIEN3onRfwU+ulC/Biq1zigEnt33kmPvRf1JaycSNxtvEaZ7IB
-	 37HhxW/+0QX0g==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N056z1hl"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6612922bf82so5801552a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 12:58:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773172692; x=1773777492; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OR+qgP39kATrp/QfTOJZ3bPaOj3WuwOeZ5qDFD59pXA=;
+        b=N056z1hlQzhx/tp2YEh+ANc9XY8yDuOBtQX/gd+3VRqdGsTSnVwG+CGb+/9XutNKLX
+         BdSw9T5KvwwBHoFy+OsnYptQb0wrbwkg3o6anT1WPhqlrtEU0JrN057MmEQf1gYeEKGe
+         6+bfgWb5ZX4YylKDCQj3W1ztRT70hBqGkGaYq+GRoUcSxYZr2wZyaD3Goi1fOIS54vDP
+         qhwJLpfhNDhIH+c2zM2WvK1CjV8cSnDjW218DRrTt1dvs4v2gW+6sDDaEdXbTjYjkqaC
+         2++JTaxEC+w512rwe75unnazLoFvE5evrhMQ4bJh7yXhxskxzSDFOvrG0Qjfq9kaS6ZG
+         C3bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773172692; x=1773777492;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OR+qgP39kATrp/QfTOJZ3bPaOj3WuwOeZ5qDFD59pXA=;
+        b=k3wtGc1EDZ1df9UgKyMyag1ZpVsQOOVN9pPHbeDl8x7rWBc33CyfUuQQCOg3lic764
+         5SPOzVJhDtzl4cPvue+/sy+rvhDXDySILXCcedMwjcmG5eAfqsgTHdgU70v1o3WpY3zJ
+         i1P1W5rR5oaihFtd2vw/oN9EPGXRRKR7s+oUZNwBHYs9xl6D3ogcz/7sQszoocgd6Tec
+         o83mlFHM+kA7oje0yGSisk+wjQqojwXcg56rat5c72/UxdzyS6KZcHSFnR2oDDDlZfWg
+         hlTzDktDPEXiVMTllAAzX91JozLOX89QLEoOrrSG/ILcD7oGK+Z8iX4b1GyLYUGELEtw
+         ocIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxTzpI+MQ9YX6PhhU6zFxtRsrIbtacf0UsHurZ/XS0SEGVv9WBouxe4uxrGvPUP2ojx8w/D4gqP9rwTEll8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3IttI+/Et3gOCmPl9Xm+EeOwbVEAcTuQP1z4mq9rVSlsdYLYO
+	SCvyWOVMwiU8YQjaDtofOGOfSfX6sZBxgyUXNjyZ4SH5ft7R+s/MDNL1mDfmslhRhJWw2aDNhR+
+	vhiaMZxxpttoWM3Hf9A==
+X-Received: from edl4-n2.prod.google.com ([2002:a05:6402:4244:20b0:660:af3b:aad3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:5191:b0:660:a4ad:1685 with SMTP id 4fb4d7f45d1cf-6619d4e3905mr9544182a12.18.1773172692025;
+ Tue, 10 Mar 2026 12:58:12 -0700 (PDT)
+Date: Tue, 10 Mar 2026 19:58:10 +0000
+In-Reply-To: <CAJ-ks9=ijHBzOGxViDzJzGhEBhLg99ryNpN-FRsFN+NLJwVUYg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260310-binder-crate-name-v2-0-0f7c97900d36@google.com>
+ <20260310-binder-crate-name-v2-1-0f7c97900d36@google.com> <abAzTFLYsUxK7VJ6@google.com>
+ <177315751568.96522.7020199079773666163@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
+ <CANiq72nM6ECBE+iiKrBRzCwOyd7BtQ4w6o9AH4+o5rcrcY30kQ@mail.gmail.com> <CAJ-ks9=ijHBzOGxViDzJzGhEBhLg99ryNpN-FRsFN+NLJwVUYg@mail.gmail.com>
+Message-ID: <abB30ipu_Jwc6aBc@google.com>
+Subject: Re: [PATCH v2 1/2] rust: support overriding crate_name
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Mar 2026 20:56:53 +0100
-Message-Id: <DGZD8D623QRZ.BXYEDETBVH84@kernel.org>
-Subject: Re: [PATCH v7 2/7] rust: uaccess: add write_dma() for copying from
- DMA buffers to userspace
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "gary@garyguo.net"
- <gary@garyguo.net>, "mmaurer@google.com" <mmaurer@google.com>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
- "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "aliceryhl@google.com"
- <aliceryhl@google.com>, "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Timur Tabi" <ttabi@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260203224757.871729-1-ttabi@nvidia.com>
- <20260203224757.871729-3-ttabi@nvidia.com>
- <DGYIO09FC9VC.5DQNYP82VVFC@kernel.org>
- <4452ba874cae2d6dfa64b9625e4e5f2ab7f34559.camel@nvidia.com>
-In-Reply-To: <4452ba874cae2d6dfa64b9625e4e5f2ab7f34559.camel@nvidia.com>
 
-On Tue Mar 10, 2026 at 8:52 PM CET, Timur Tabi wrote:
-> On Mon, 2026-03-09 at 20:59 +0100, Danilo Krummrich wrote:
->
->> > +=C2=A0=C2=A0=C2=A0 /// Low-level write from a raw pointer. Caller mus=
-t ensure ptr is valid for `len` bytes.
->> > +=C2=A0=C2=A0=C2=A0 fn write_raw(&mut self, ptr: *const u8, len: usize=
-) -> Result {
->>=20
->> The method has to be unsafe as the caller has to promise that ptr is ind=
-eed a
->> slice with len elements.
->
-> Ok.
->
->> Another option would be to pass a fat pointer, i.e. *const [u8]. write_d=
-ma()
->> would then need to use ptr::slice_from_raw_parts() and the safety requir=
-ement of
->> this function becomes that ptr simply has to be valid.
->
-> So I tried this approach, but the end result was that write_raw() and wri=
-te_slice() were practically
-> identical.
+On Tue, Mar 10, 2026 at 03:38:58PM -0400, Tamir Duberstein wrote:
+> On Tue, Mar 10, 2026 at 3:13=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > On Tue, Mar 10, 2026 at 4:45=E2=80=AFPM Tamir Duberstein <tamird@kernel=
+.org> wrote:
+> > >
+> > > Did you want me to take this part through rust-analyzer-next? There's=
+ a
+> > > significant rewrite there that adds type annotations to this file, so=
+ it
+> > > would be better if this patch could apply on top (with annotations).
 
-That sounds wrong, the only thing that write_slice() needs to do is to forw=
-ard
-to write_raw(), that's a one-liner and not different to what you have in yo=
-ur
-patch currently?
+I will rebase on rust-analyzer-next and resend once discussion has died
+down.
 
-> At this point, why bother with write_raw() -- just have write_dma() call =
-write_slice():
->
->         let src_ptr =3D unsafe { alloc.start_ptr().add(offset) };
->         let slice =3D unsafe { core::slice::from_raw_parts(src_ptr, count=
-) };
->         self.write_slice(slice)
->
-> I think this is better, but I wanted to get your opinion before I posted =
-a v8 with this change.
+> > We should ideally avoid breaking it between commits, so we could apply
+> > it after I merge your future PR, with your Acked-by. Another way is
+> > next cycle, through rust-analyzer-next.
+>=20
+> The change to `generate_rust_analyzer.py` is safe to land even without
+> the other changes in this series, so it should be possible to take
+> that through rust-analyzer-next this cycle and then take the other
+> changes in this series after my PR. Do I understand correctly?
 
-The problem is that creating a slice of a DMA buffer, that is used by a dev=
-ice
-concurrently, is undefined behavior. Hence the indirection through write_ra=
-w().
+I have no strong opinion on this. I can split it if you want me to, but
+I'm also fine with Miguel landing the entire thing in rust-next, or with
+Tamir landing the entire thing in rust-analyzer-next. Just let me know
+what you want me to do.
+
+Alice
