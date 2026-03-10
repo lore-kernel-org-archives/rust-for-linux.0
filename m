@@ -1,79 +1,283 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46712C1586;
-	Tue, 10 Mar 2026 15:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8427B30FF1E
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 15:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773155838; cv=none; b=OGr7ZxzoOiYxgz9UioiNmNbx1EePzVdL0TCDAHOa9xNtyNwe6KEKj7e9ZGsibPPfWBgvTuKqZrrroOoXqY27xMXfdykEHm9WjHrqQnkUgkTZNm3nf8fuLoQgdH3+M8G0ppVcxZ6XPS1KcFx6fXIFr0hgmjqcxZKMR7vud7pUEjs=
+	t=1773155988; cv=none; b=IcvibDr4L0NKtzPcnC0SRfJUM301ehkKTJ4J0AnS3Q81GcdM6qj2xX7SDtSNWo9Mybmca3hZm+gbIzvxeWcSkYuL/3I7+iGjV7verbKv5ChrpQZ1k5Tq0NlQZzWizPW76i6GebbB2an2GquBAaZKFNFeoYvuaaZKDlrjm6p9ArI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773155838; c=relaxed/simple;
-	bh=Pu74DJjxj+c2wwEPK8joh63di99Jqtn3Wr6JKH31fhk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=ThVw5CCiqk8pofpig0XVOAxgRE+9Z0/vnLre3/Td85IVBtivTUowis+yB0yEjiGH+0sVdxC0OZ+S5fHwCrkj2Qu0CLtYchzHF08iwpPXaS80vb/bSvLi+ICEnCEDRUs1zc3eRUWjdiSlPXxgkFPpUFzRb5u8a/cijT/vFtFEjF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JnZUQYrj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773155988; c=relaxed/simple;
+	bh=Yn4rjllrYHk/ctlmLPVwWjts5+Uwqds4FvaaiUMOC/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xpe65p20Jnmkm4jz5de7XmOzAUSVjBwPN0rbfya0SglRUaUPQ70aLA6p7y9aa6yD8zFfdljYKGmKJHHIWkgp4FEP2E4A5JJ2jJj/gnqIAE/wjVFQR3cmq7FtNjxdOn9aawYAWTTzh5Hxk4QcdFpTYBJvFWA0lGtJMxcLWWLxQKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MWh0omad; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JnZUQYrj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB13C19423;
-	Tue, 10 Mar 2026 15:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773155838;
-	bh=Pu74DJjxj+c2wwEPK8joh63di99Jqtn3Wr6JKH31fhk=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=JnZUQYrjux4C4fXStJ8ghNVKDu5p6M5C26BDNtGqcI8jvGf/Roj8INNaTe/HD29N/
-	 yhcPD4cmLgd3Tfj2Boo6pkqYMGFoXUMuVc1oeUKXM15Wt2sqJtJWIoBpUn70iIiNlx
-	 IStzg2CQHKZwuCZqmDsH3T6ocUSFIX62CkF0nOOqcXtiqsNHjowPPnuXtWVMO2cFTJ
-	 hEr9YFwZvtsGU/I5OQTyc2Fe0VkWSo8Veat3mfy6cYPK9eVdQphlVkLQ/xvYv5d2iP
-	 wlvwkfQgejWmM2bltPRcMzDZshWUzFmqyBXbGH4H+WbzZyYjTXtS+T6MPhWKqKytwM
-	 ZQcxiZ1/KT45g==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MWh0omad"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c7381c4345cso2648220a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 08:19:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773155986; x=1773760786; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/tbEPBXLOW6W4Gfj+URzMtQVIzs7pEYzk3RvSx2kF+M=;
+        b=MWh0omadQaDkZEzZkUwMCqVo98TdS/1ONqS5uQa0Xo6j2NaD82SiY5MW61vCZJJPXx
+         NikzYetZomo5HetmP5/qiPFKhSzzAku/yCqzLzkQyNKHMbk6l8h53mpkoa5J/OAESrmq
+         oASvKkdf78Xc/7vGTBJrDQissoqtgkddvIbb5tCCh6HbR7v48lkhhIKeu52m+nDQSs5v
+         ZJYM9PjVq4gOShgtJcbGkRNDeg/8pSEI6RNjoq7Cmbve8HzhiiRvg5mbL4vRfNr8M4rl
+         hx3GyNujBrHftHc7muHV0IqY54afmxZ73nEZQO/hdzpRhpQyY6EfPZAXWkU1ksTPwzHB
+         b0vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773155986; x=1773760786;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/tbEPBXLOW6W4Gfj+URzMtQVIzs7pEYzk3RvSx2kF+M=;
+        b=gJNxh0k1UT4pIC8Cfe/JEQigOfQqmZgW2ElO7QTAuUw2VZ9ezxgmpDF2UHuKIhkfRp
+         kU0/b26a0KmCqIq1WP8ixgbJweCCrmAPEq2ZHuBUeRxeWWw9/xbb7gd5tmlcbRaXr0PC
+         4nz5Wq85FaWCa9pC1dGJ6Wwve9DtFbLLKosuD+HJzoF7r5xfw4D4db8D5CBOYchQXJoE
+         MGmEvLid/lu88d1rPXuE6opzNjDWF+rJvn0OXIJVisZcKoM2VVResyDobj3HrFNkrNfN
+         dKesqaoAYHOdp3DMOnz9k4uxZeL7pNhhnQjN+A04PfO9IMx81zHyCmpMUyLkJ2sWlRVx
+         sgww==
+X-Forwarded-Encrypted: i=1; AJvYcCVq6BiRtKlXSheh0Lo2tRx8ZiTLQoCTAVDTku4Qm1E3r1MhOHnsS1bjRVhYWePcTePkOZzfepC6bTnsS7TNwQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxN5IyXKFbqeGzcjE4NRlmY/W/73toQhkN0oTnolbnUs+krEtW
+	/ZdZ9mJAWXNZnkhhdWxJpIjocluZ+uo5/e8tUFoldNBwb1JPcA0yTH1s
+X-Gm-Gg: ATEYQzxL0WEzZHYGl7wanYQaTmTYe5PpoXvhv9D9rLeh6BryC9RYcNoEGny31m/FYkW
+	V+lyhAESdVziUu9LGUTYUA7O3S3FoG1TjUMcZW4rXmHAd9KbDVKPpdn91KGKOwJqMvDDwEGA0Bk
+	9lL1kVVNHFrulOVZEPESDTdVLfT04BXl7Zspd4qBylxrUmGYpzHt86v5z2l9bXrGfJiXqKvO6hs
+	Dsiw9Ont3Iu9AVxNwKM6JqOHivtAxx0DK18/vlc2oG/mZL5Nk4oExrvXG648hndCXEWel8yusRR
+	xAtgjkNeDd9fj1o0UakY/VrMp80kWBmbyTOeBMws3kEyezGxVgg1M9qW+mbiKe+Vjz0LaT/EGuc
+	KjcWfs2r8gLYX518GyVuS0vLHfQ8J+hnkGm7oCyqmaJ0uzf0pWtC+fNIUkAxvV9ZRmMKmFH6Dvk
+	I9GH0fhaBi4E38fM45WR92lViDHinw/v3FSKGTWuC03PVicOlpeHozfTeteWAiU81C5tBNvyMvA
+	3b6
+X-Received: by 2002:a17:90b:2c86:b0:359:8ca0:308d with SMTP id 98e67ed59e1d1-359f05cddb0mr3295256a91.14.1773155985702;
+        Tue, 10 Mar 2026 08:19:45 -0700 (PDT)
+Received: from localhost.localdomain ([2001:448a:2003:2adb:898c:8fe1:aebd:4139])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359f080db95sm5051182a91.9.2026.03.10.08.19.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 10 Mar 2026 08:19:45 -0700 (PDT)
+From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	ojeda@kernel.org
+Cc: linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Subject: [RFC PATCH net-next] net: phy: rust: add experimental Davicom PHY driver
+Date: Tue, 10 Mar 2026 22:19:35 +0700
+Message-ID: <20260310151935.33197-1-muchamadcoirulanwar@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Mar 2026 16:17:12 +0100
-Message-Id: <DGZ7A85M7Z0H.17846X6ECHBHD@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v8 06/10] rust: io: use generic read/write accessors for
- primitive accesses
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
- <20260310-register-v8-6-424f80dd43bc@nvidia.com>
-In-Reply-To: <20260310-register-v8-6-424f80dd43bc@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon Mar 9, 2026 at 4:14 PM CET, Alexandre Courbot wrote:
->      /// Generic fallible read with runtime bounds check.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// Read a primitive type from an I/O address:
-> +    ///
-> +    /// ```no_run
-> +    /// use kernel::io::{Io, Mmio};
+This is an experimental Rust port of the legacy Davicom PHY driver
+(davicom.c) to explore the boundaries of the current PHY abstractions.
 
-NIT: Please use kernel import style, here and in various other places (incl=
-uding
-other patches).
+During the porting process, a few limitations in the current
+`net::phy::Driver` trait were observed:
+1. Callbacks for `config_init`, `config_intr`, and `handle_interrupt`
+   are not yet exposed.
+2. `bindings::genphy_config_aneg` is not yet wrapped.
 
-> @@ -514,6 +563,20 @@ fn write<T, L>(&self, location: L, value: T)
->      ///
->      /// Caution: this does not perform any synchronization. Race conditi=
-ons can occur in case of
->      /// concurrent access.
+In this RFC, the logic for these missing callbacks is implemented
+and marked with `#[allow(dead_code)]` to demonstrate the required
+hardware logic. Additionally, `unsafe` blocks are used as a temporary
+workaround for `genphy_config_aneg` and interface checking.
 
-Same as in the previous patch.
+Note: I don't have access to the physical Davicom hardware.
+This patch is compile-tested and verified via QEMU only. It is
+submitted as an RFC to share findings regarding the missing
+abstractions and gather feedback on the Rust PHY usage.
+
+Signed-off-by: Muchamad Coirul Anwar  <muchamadcoirulanwar@gmail.com>
+---
+ drivers/net/phy/davicom_rust.rs | 165 ++++++++++++++++++++++++++++++++
+ 1 file changed, 165 insertions(+)
+ create mode 100644 drivers/net/phy/davicom_rust.rs
+
+diff --git a/drivers/net/phy/davicom_rust.rs b/drivers/net/phy/davicom_rust.rs
+new file mode 100644
+index 000000000000..173f14ce25cf
+--- /dev/null
++++ b/drivers/net/phy/davicom_rust.rs
+@@ -0,0 +1,165 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++//! Davicom PHY Rust driver.
++//!
++//! C version `drivers/net/phy/davicom.c`
++
++use kernel::net::phy::{self, reg::C22, DeviceId, Driver};
++use kernel::prelude::*;
++
++/// Register 0x10: Scrambler Control Register (SCR)
++const SCR: C22 = C22::vendor_specific::<0x10>();
++const SCR_INIT: u16 = 0x0610;
++const SCR_RMII: u16 = 0x0100;
++
++/* DM9161 Interrupt Register */
++
++/// Register 0x15: Interrupt Register
++const INTR: C22 = C22::vendor_specific::<0x15>();
++const INTR_PEND: u16 = 0x8000;
++const INTR_DPLX_MASK: u16 = 0x0800;
++const INTR_SPD_MASK: u16 = 0x0400;
++const INTR_LINK_MASK: u16 = 0x0200;
++const INTR_MASK: u16 = 0x0100;
++const INTR_DPLX_CHANGE: u16 = 0x0010;
++const INTR_SPD_CHANGE: u16 = 0x0008;
++const INTR_LINK_CHANGE: u16 = 0x0004;
++const INTR_INIT: u16 = 0x0000;
++const INTR_STOP: u16 = INTR_DPLX_MASK | INTR_SPD_MASK | INTR_LINK_MASK | INTR_MASK;
++const INTR_CHANGE: u16 = INTR_DPLX_CHANGE | INTR_SPD_CHANGE | INTR_LINK_CHANGE;
++
++/// Register 0x12: 10Base-T Configuration/Status Register
++const BTCSR: C22 = C22::vendor_specific::<0x12>();
++const BTCSR_INIT: u16 = 0x7800;
++
++/// Handles incoming hardware interrupts from the Davicom PHY.
++///
++/// This checks if the interrupt was caused by a link, speed, or duplex change.
++/// If so, it notifies the kernel to update the link state using `genphy_update_link`.
++///
++/// TODO: This function is currently unused because the Rust PHY abstraction `net::phy::Driver`
++/// does not yet expose a `handle_interrupt` callback. It is included here for the RFC.
++#[allow(dead_code)]
++fn dm9161_handle_interrupt(dev: &mut phy::Device) -> Result {
++    let irq_status = dev.read(INTR)?;
++
++    if (irq_status & INTR_CHANGE) == 0 {
++        return Ok(());
++    }
++
++    dev.genphy_update_link()?;
++
++    Ok(())
++}
++
++#[allow(dead_code)]
++fn dm9161_ack_interrupt(dev: &mut phy::Device) -> Result {
++    let _ = dev.read(INTR)?;
++    Ok(())
++}
++
++/// Configures whether the hardware alarm (interrupts) should be turned on or off.
++///
++/// It reads the current interrupt status requested by the OS by accessing the raw pointer.
++///
++/// TODO: This function is currently unused because the Rust PHY abstraction `net::phy::Driver`
++/// does not yet expose a `config_intr` callback. It is included here for the RFC.
++#[allow(dead_code)]
++fn dm9161_config_intr(dev: &mut phy::Device) -> Result {
++    let mut temp = dev.read(INTR)?;
++
++    let intr_enabled = unsafe {
++        let ptr = (dev as *mut phy::Device).cast::<bindings::phy_device>();
++        (*ptr).interrupts == bindings::PHY_INTERRUPT_ENABLED as u8
++    };
++
++    if intr_enabled {
++        dm9161_ack_interrupt(dev)?;
++        temp &= !INTR_STOP;
++        dev.write(INTR, temp)?;
++    } else {
++        temp |= INTR_STOP;
++        dev.write(INTR, temp)?;
++        dm9161_ack_interrupt(dev)?;
++    }
++    Ok(())
++}
++
++/// Configures PHY Auto-Negotiation.
++///
++/// Isolates the PHY during configuration, then calls the generic `genphy_config_aneg`
++/// via unsafe C bindings because Rust abstractions don't expose it directly yet.
++fn dm9161_config_aneg(dev: &mut phy::Device) -> Result {
++    dev.write(C22::BMCR, bindings::BMCR_ISOLATE as u16)?;
++
++    let err = unsafe {
++        let ptr = (dev as *mut phy::Device).cast::<bindings::phy_device>();
++        bindings::genphy_config_aneg(ptr)
++    };
++    to_result(err)?;
++
++    Ok(())
++}
++
++/// Initializes the Davicom PHY hardware upon detection.
++///
++/// Depending on the `interface` mode (MII vs RMII), the Scrambler Control Register (SCR)
++/// is configured. It relies on `C22::vendor_specific` addresses.
++///
++/// TODO: This function is currently unused because the Rust PHY abstraction `net::phy::Driver`
++/// does not yet expose a `config_init` callback. It is included here for the RFC.
++#[allow(dead_code)]
++fn dm9161_config_init(dev: &mut phy::Device) -> Result {
++    dev.write(C22::BMCR, bindings::BMCR_ISOLATE as u16)?;
++
++    let interface = unsafe {
++        let ptr = (dev as *mut phy::Device).cast::<bindings::phy_device>();
++        (*ptr).interface
++    };
++
++    let temp = match interface as core::ffi::c_uint {
++        bindings::phy_interface_t_PHY_INTERFACE_MODE_MII => SCR_INIT,
++        bindings::phy_interface_t_PHY_INTERFACE_MODE_RMII => SCR_INIT | SCR_RMII,
++        _ => return Err(code::EINVAL),
++    };
++
++    dev.write(SCR, temp)?;
++
++    dev.write(BTCSR, BTCSR_INIT)?;
++
++    dev.write(C22::BMCR, bindings::BMCR_ANENABLE as u16)?;
++
++    Ok(())
++}
++
++/// Representation of the Davicom DM9161E chip.
++struct DavicomDM9161E;
++
++#[vtable]
++impl Driver for DavicomDM9161E {
++    const NAME: &'static CStr = c"Davicom DM9161E";
++    const PHY_DEVICE_ID: phy::DeviceId = DeviceId::new_with_custom_mask(0x0181b880, 0x0ffffff0);
++    fn config_aneg(dev: &mut phy::Device) -> Result {
++        dm9161_config_aneg(dev)
++    }
++}
++
++struct DavicomDM9161A;
++
++#[vtable]
++impl Driver for DavicomDM9161A {
++    const NAME: &'static CStr = c"Davicom DM9161A";
++    const PHY_DEVICE_ID: phy::DeviceId = DeviceId::new_with_custom_mask(0x0181b8a0, 0x0ffffff0);
++    fn config_aneg(dev: &mut phy::Device) -> Result {
++        dm9161_config_aneg(dev)
++    }
++}
++
++kernel::module_phy_driver! {
++    drivers: [DavicomDM9161E, DavicomDM9161A],
++    device_table: [DeviceId::new_with_driver::<DavicomDM9161E>(), DeviceId::new_with_driver::<DavicomDM9161A>()],
++    name: "davicom_rust",
++    authors: ["Andy Fleming"],
++    description: "Davicom PHY Rust Driver",
++    license: "GPL"
++}
+-- 
+2.50.0
+
