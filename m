@@ -1,283 +1,145 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8427B30FF1E
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 15:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D7439C019;
+	Tue, 10 Mar 2026 15:45:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773155988; cv=none; b=IcvibDr4L0NKtzPcnC0SRfJUM301ehkKTJ4J0AnS3Q81GcdM6qj2xX7SDtSNWo9Mybmca3hZm+gbIzvxeWcSkYuL/3I7+iGjV7verbKv5ChrpQZ1k5Tq0NlQZzWizPW76i6GebbB2an2GquBAaZKFNFeoYvuaaZKDlrjm6p9ArI=
+	t=1773157522; cv=none; b=fmktnAG5EGpUdG/LubPQ+5zh1qqsZ4ruErt3OPa6TgvAmlfyoCEOuH9Tde6MovbpbTZoweOjcz7hqKeKVHOR0ZgZVMhtSmKbFmxwPQT7NxO9vTuE8voVbO4rH/v+trKVJkIAP17fTprhgnTByW4uPW1GmMJS5Pie61r2JZY/N4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773155988; c=relaxed/simple;
-	bh=Yn4rjllrYHk/ctlmLPVwWjts5+Uwqds4FvaaiUMOC/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xpe65p20Jnmkm4jz5de7XmOzAUSVjBwPN0rbfya0SglRUaUPQ70aLA6p7y9aa6yD8zFfdljYKGmKJHHIWkgp4FEP2E4A5JJ2jJj/gnqIAE/wjVFQR3cmq7FtNjxdOn9aawYAWTTzh5Hxk4QcdFpTYBJvFWA0lGtJMxcLWWLxQKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MWh0omad; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773157522; c=relaxed/simple;
+	bh=WAaHhyzoG5PZZQyATwfwHJX7fiydFxMz2tRgIzm86w8=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=qOpALMkrUchAiAcNNMrpjugUiWz8QlpSEiXddwjJE4zmPmBkZRi5ydetIRDH868GAtw8INefKgpURZ0msNI75LuhmNAjv+kQnC/mhiPCT3JyXXv9CQWkGTah9Fk2pk1/OdzVuKjWYS5x4jJ1mq4pIPyohHrDk06eEcmc8FGs3r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fs0AlLQH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MWh0omad"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c7381c4345cso2648220a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 08:19:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773155986; x=1773760786; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/tbEPBXLOW6W4Gfj+URzMtQVIzs7pEYzk3RvSx2kF+M=;
-        b=MWh0omadQaDkZEzZkUwMCqVo98TdS/1ONqS5uQa0Xo6j2NaD82SiY5MW61vCZJJPXx
-         NikzYetZomo5HetmP5/qiPFKhSzzAku/yCqzLzkQyNKHMbk6l8h53mpkoa5J/OAESrmq
-         oASvKkdf78Xc/7vGTBJrDQissoqtgkddvIbb5tCCh6HbR7v48lkhhIKeu52m+nDQSs5v
-         ZJYM9PjVq4gOShgtJcbGkRNDeg/8pSEI6RNjoq7Cmbve8HzhiiRvg5mbL4vRfNr8M4rl
-         hx3GyNujBrHftHc7muHV0IqY54afmxZ73nEZQO/hdzpRhpQyY6EfPZAXWkU1ksTPwzHB
-         b0vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773155986; x=1773760786;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/tbEPBXLOW6W4Gfj+URzMtQVIzs7pEYzk3RvSx2kF+M=;
-        b=gJNxh0k1UT4pIC8Cfe/JEQigOfQqmZgW2ElO7QTAuUw2VZ9ezxgmpDF2UHuKIhkfRp
-         kU0/b26a0KmCqIq1WP8ixgbJweCCrmAPEq2ZHuBUeRxeWWw9/xbb7gd5tmlcbRaXr0PC
-         4nz5Wq85FaWCa9pC1dGJ6Wwve9DtFbLLKosuD+HJzoF7r5xfw4D4db8D5CBOYchQXJoE
-         MGmEvLid/lu88d1rPXuE6opzNjDWF+rJvn0OXIJVisZcKoM2VVResyDobj3HrFNkrNfN
-         dKesqaoAYHOdp3DMOnz9k4uxZeL7pNhhnQjN+A04PfO9IMx81zHyCmpMUyLkJ2sWlRVx
-         sgww==
-X-Forwarded-Encrypted: i=1; AJvYcCVq6BiRtKlXSheh0Lo2tRx8ZiTLQoCTAVDTku4Qm1E3r1MhOHnsS1bjRVhYWePcTePkOZzfepC6bTnsS7TNwQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxN5IyXKFbqeGzcjE4NRlmY/W/73toQhkN0oTnolbnUs+krEtW
-	/ZdZ9mJAWXNZnkhhdWxJpIjocluZ+uo5/e8tUFoldNBwb1JPcA0yTH1s
-X-Gm-Gg: ATEYQzxL0WEzZHYGl7wanYQaTmTYe5PpoXvhv9D9rLeh6BryC9RYcNoEGny31m/FYkW
-	V+lyhAESdVziUu9LGUTYUA7O3S3FoG1TjUMcZW4rXmHAd9KbDVKPpdn91KGKOwJqMvDDwEGA0Bk
-	9lL1kVVNHFrulOVZEPESDTdVLfT04BXl7Zspd4qBylxrUmGYpzHt86v5z2l9bXrGfJiXqKvO6hs
-	Dsiw9Ont3Iu9AVxNwKM6JqOHivtAxx0DK18/vlc2oG/mZL5Nk4oExrvXG648hndCXEWel8yusRR
-	xAtgjkNeDd9fj1o0UakY/VrMp80kWBmbyTOeBMws3kEyezGxVgg1M9qW+mbiKe+Vjz0LaT/EGuc
-	KjcWfs2r8gLYX518GyVuS0vLHfQ8J+hnkGm7oCyqmaJ0uzf0pWtC+fNIUkAxvV9ZRmMKmFH6Dvk
-	I9GH0fhaBi4E38fM45WR92lViDHinw/v3FSKGTWuC03PVicOlpeHozfTeteWAiU81C5tBNvyMvA
-	3b6
-X-Received: by 2002:a17:90b:2c86:b0:359:8ca0:308d with SMTP id 98e67ed59e1d1-359f05cddb0mr3295256a91.14.1773155985702;
-        Tue, 10 Mar 2026 08:19:45 -0700 (PDT)
-Received: from localhost.localdomain ([2001:448a:2003:2adb:898c:8fe1:aebd:4139])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359f080db95sm5051182a91.9.2026.03.10.08.19.42
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 10 Mar 2026 08:19:45 -0700 (PDT)
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	ojeda@kernel.org
-Cc: linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Subject: [RFC PATCH net-next] net: phy: rust: add experimental Davicom PHY driver
-Date: Tue, 10 Mar 2026 22:19:35 +0700
-Message-ID: <20260310151935.33197-1-muchamadcoirulanwar@gmail.com>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fs0AlLQH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2590C19425;
+	Tue, 10 Mar 2026 15:45:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773157522;
+	bh=WAaHhyzoG5PZZQyATwfwHJX7fiydFxMz2tRgIzm86w8=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=Fs0AlLQHxOdvOz0IaWDyD9MmbmQ3m8vRJh1NciO7exglEA+Zi1SsY9F1lrjgGKquN
+	 1tg9mQ9est/sETWfr+edU15T7ZIiESDvXFwrwdOvh2T/E5yaXvgATO96RRA4Pm2H4h
+	 RfW/YCXMqDUM8IFfHsxXPqaqTlegLw2LQSDip0qyuUvgGfq/r5+nmycpaRm1Ab3tBK
+	 O6qcQ1lrEAXo3Z7YWRprX8L1SFPyEEWERzQOsLIDmZcGFohBqZ28gz5d2d9ROK10LU
+	 LBWx3+0mk0GhQ+7WIMPQ7if9jh/sZ2qFAGzzGC8djv6sedfZOsAFC0h+0fn/0WMALl
+	 Ln2AURiLtuAdw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/2] rust: support overriding crate_name
+From: Tamir Duberstein <tamird@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Jesung Yang <y.j3ms.n@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Carlos Llamas <cmllamas@google.com>, linux-kbuild@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+In-Reply-To: <abAzTFLYsUxK7VJ6@google.com>
+References: <20260310-binder-crate-name-v2-0-0f7c97900d36@google.com>
+ <20260310-binder-crate-name-v2-1-0f7c97900d36@google.com>
+ <abAzTFLYsUxK7VJ6@google.com>
+Date: Tue, 10 Mar 2026 11:45:15 -0400
+Message-Id: <177315751568.96522.7020199079773666163@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3705; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=WAaHhyzoG5PZZQyATwfwHJX7fiydFxMz2tRgIzm86w8=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDJkbbHp2Ht1d1jrt3oEetes9qXzz9x0u3//ui1qmiuTuA
+ i7jhycXd5SyMIhxMciKKbIkih7am556e49s5rvjMHNYmUCGMHBxCsBEymIY/sfHlcunPRFdwec1
+ r6UjbseTmbxMkae2TZmivIe16bj4hDcM/9SaGIK++JcnGv9Mqt/O52f+K/AuX+7l2RVC65U1ijk
+ /MQIA
+X-Developer-Key: i=tamird@kernel.org; a=openpgp;
+ fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-This is an experimental Rust port of the legacy Davicom PHY driver
-(davicom.c) to explore the boundaries of the current PHY abstractions.
+On 2026-03-10 15:05:48+00:00, Alice Ryhl wrote:
+> On Tue, Mar 10, 2026 at 02:53:40PM +0000, Alice Ryhl wrote:
+> 
+> > Currently you cannot filter out the crate-name argument
+> > RUSTFLAGS_REMOVE_stem.o because the Rust filter-out invocation does not
+> > include that particular argument. Since --crate-name is an argument that
+> > can't be passed multiple times, this means that it's currently not
+> > possible to override the crate name. Thus, remove the --crate-name
+> > argument for drivers. This allows them to override the crate name using
+> > the #![crate_name] annotation.
+> > 
+> > The --crate-name argument is kept for the crates under rust/ for
+> > simplicity and to avoid changing many of them by adding #![crate_name].
+> > 
+> > The rust analyzer script is updated to use rustc to obtain the crate
+> > name of the driver crates, which picks up the right name when it is
+> > configured via #![crate_name] or not.
+> > 
+> > Note that the crate name in the python script is not actually that
+> > important - the only place where the name actually affects anything is
+> > in the 'deps' array which specifies an index and name for each
+> > dependency, and determines what that dependency is called in *this*
+> > crate. (The same crate may be called different things in each
+> > dependency.) Since driver crates are leaf crates, this doesn't apply and
+> > the rustc invocation only affects the 'display_name' parameter.
+> > 
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  scripts/Makefile.build            | 1 -
+> >  scripts/generate_rust_analyzer.py | 8 +++++++-
+> >  2 files changed, 7 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> > index 32e209bc7985..adc3e2d1ac78 100644
+> > --- a/scripts/Makefile.build
+> > +++ b/scripts/Makefile.build
+> > @@ -332,7 +332,6 @@ rust_common_cmd = \
+> >  	-Zcrate-attr='feature($(rust_allowed_features))' \
+> >  	-Zunstable-options --extern pin_init --extern kernel \
+> >  	--crate-type rlib -L $(objtree)/rust/ \
+> > -	--crate-name $(basename $(notdir $@)) \
+> >  	--sysroot=/dev/null \
+> >  	--out-dir $(dir $@) --emit=dep-info=$(depfile)
+> >  
+> > diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+> > index f9b545104f21..d25bc3d7e719 100755
+> > --- a/scripts/generate_rust_analyzer.py
+> > +++ b/scripts/generate_rust_analyzer.py
 
-During the porting process, a few limitations in the current
-`net::phy::Driver` trait were observed:
-1. Callbacks for `config_init`, `config_intr`, and `handle_interrupt`
-   are not yet exposed.
-2. `bindings::genphy_config_aneg` is not yet wrapped.
+Did you want me to take this part through rust-analyzer-next? There's a
+significant rewrite there that adds type annotations to this file, so it
+would be better if this patch could apply on top (with annotations).
 
-In this RFC, the logic for these missing callbacks is implemented
-and marked with `#[allow(dead_code)]` to demonstrate the required
-hardware logic. Additionally, `unsafe` blocks are used as a temporary
-workaround for `genphy_config_aneg` and interface checking.
+> > @@ -194,6 +194,12 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+> >          except FileNotFoundError:
+> >              return False
+> >  
+> > +    def get_crate_name(path):
+> > +        return subprocess.check_output(
+> > +            [os.environ["RUSTC"], "--print", "crate-name", path],
+> > +            stdin=subprocess.DEVNULL,
+> > +        ).decode('utf-8').strip()
 
-Note: I don't have access to the physical Davicom hardware.
-This patch is compile-tested and verified via QEMU only. It is
-submitted as an RFC to share findings regarding the missing
-abstractions and gather feedback on the Rust PHY usage.
+It would be good to extract shelling out to rustc into a helper, now
+that we have two instances of this pattern.
 
-Signed-off-by: Muchamad Coirul Anwar  <muchamadcoirulanwar@gmail.com>
----
- drivers/net/phy/davicom_rust.rs | 165 ++++++++++++++++++++++++++++++++
- 1 file changed, 165 insertions(+)
- create mode 100644 drivers/net/phy/davicom_rust.rs
+> > +
+> >      # Then, the rest outside of `rust/`.
+> >      #
+> >      # We explicitly mention the top-level folders we want to cover.
+> > @@ -212,7 +218,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+> >  
+> >              logging.info("Adding %s", name)
+> 
+> Actually I guess we might want get_crate_name(path) here (or just path).
+> But the other uses of 'name' should stay as-is.
 
-diff --git a/drivers/net/phy/davicom_rust.rs b/drivers/net/phy/davicom_rust.rs
-new file mode 100644
-index 000000000000..173f14ce25cf
---- /dev/null
-+++ b/drivers/net/phy/davicom_rust.rs
-@@ -0,0 +1,165 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+//! Davicom PHY Rust driver.
-+//!
-+//! C version `drivers/net/phy/davicom.c`
-+
-+use kernel::net::phy::{self, reg::C22, DeviceId, Driver};
-+use kernel::prelude::*;
-+
-+/// Register 0x10: Scrambler Control Register (SCR)
-+const SCR: C22 = C22::vendor_specific::<0x10>();
-+const SCR_INIT: u16 = 0x0610;
-+const SCR_RMII: u16 = 0x0100;
-+
-+/* DM9161 Interrupt Register */
-+
-+/// Register 0x15: Interrupt Register
-+const INTR: C22 = C22::vendor_specific::<0x15>();
-+const INTR_PEND: u16 = 0x8000;
-+const INTR_DPLX_MASK: u16 = 0x0800;
-+const INTR_SPD_MASK: u16 = 0x0400;
-+const INTR_LINK_MASK: u16 = 0x0200;
-+const INTR_MASK: u16 = 0x0100;
-+const INTR_DPLX_CHANGE: u16 = 0x0010;
-+const INTR_SPD_CHANGE: u16 = 0x0008;
-+const INTR_LINK_CHANGE: u16 = 0x0004;
-+const INTR_INIT: u16 = 0x0000;
-+const INTR_STOP: u16 = INTR_DPLX_MASK | INTR_SPD_MASK | INTR_LINK_MASK | INTR_MASK;
-+const INTR_CHANGE: u16 = INTR_DPLX_CHANGE | INTR_SPD_CHANGE | INTR_LINK_CHANGE;
-+
-+/// Register 0x12: 10Base-T Configuration/Status Register
-+const BTCSR: C22 = C22::vendor_specific::<0x12>();
-+const BTCSR_INIT: u16 = 0x7800;
-+
-+/// Handles incoming hardware interrupts from the Davicom PHY.
-+///
-+/// This checks if the interrupt was caused by a link, speed, or duplex change.
-+/// If so, it notifies the kernel to update the link state using `genphy_update_link`.
-+///
-+/// TODO: This function is currently unused because the Rust PHY abstraction `net::phy::Driver`
-+/// does not yet expose a `handle_interrupt` callback. It is included here for the RFC.
-+#[allow(dead_code)]
-+fn dm9161_handle_interrupt(dev: &mut phy::Device) -> Result {
-+    let irq_status = dev.read(INTR)?;
-+
-+    if (irq_status & INTR_CHANGE) == 0 {
-+        return Ok(());
-+    }
-+
-+    dev.genphy_update_link()?;
-+
-+    Ok(())
-+}
-+
-+#[allow(dead_code)]
-+fn dm9161_ack_interrupt(dev: &mut phy::Device) -> Result {
-+    let _ = dev.read(INTR)?;
-+    Ok(())
-+}
-+
-+/// Configures whether the hardware alarm (interrupts) should be turned on or off.
-+///
-+/// It reads the current interrupt status requested by the OS by accessing the raw pointer.
-+///
-+/// TODO: This function is currently unused because the Rust PHY abstraction `net::phy::Driver`
-+/// does not yet expose a `config_intr` callback. It is included here for the RFC.
-+#[allow(dead_code)]
-+fn dm9161_config_intr(dev: &mut phy::Device) -> Result {
-+    let mut temp = dev.read(INTR)?;
-+
-+    let intr_enabled = unsafe {
-+        let ptr = (dev as *mut phy::Device).cast::<bindings::phy_device>();
-+        (*ptr).interrupts == bindings::PHY_INTERRUPT_ENABLED as u8
-+    };
-+
-+    if intr_enabled {
-+        dm9161_ack_interrupt(dev)?;
-+        temp &= !INTR_STOP;
-+        dev.write(INTR, temp)?;
-+    } else {
-+        temp |= INTR_STOP;
-+        dev.write(INTR, temp)?;
-+        dm9161_ack_interrupt(dev)?;
-+    }
-+    Ok(())
-+}
-+
-+/// Configures PHY Auto-Negotiation.
-+///
-+/// Isolates the PHY during configuration, then calls the generic `genphy_config_aneg`
-+/// via unsafe C bindings because Rust abstractions don't expose it directly yet.
-+fn dm9161_config_aneg(dev: &mut phy::Device) -> Result {
-+    dev.write(C22::BMCR, bindings::BMCR_ISOLATE as u16)?;
-+
-+    let err = unsafe {
-+        let ptr = (dev as *mut phy::Device).cast::<bindings::phy_device>();
-+        bindings::genphy_config_aneg(ptr)
-+    };
-+    to_result(err)?;
-+
-+    Ok(())
-+}
-+
-+/// Initializes the Davicom PHY hardware upon detection.
-+///
-+/// Depending on the `interface` mode (MII vs RMII), the Scrambler Control Register (SCR)
-+/// is configured. It relies on `C22::vendor_specific` addresses.
-+///
-+/// TODO: This function is currently unused because the Rust PHY abstraction `net::phy::Driver`
-+/// does not yet expose a `config_init` callback. It is included here for the RFC.
-+#[allow(dead_code)]
-+fn dm9161_config_init(dev: &mut phy::Device) -> Result {
-+    dev.write(C22::BMCR, bindings::BMCR_ISOLATE as u16)?;
-+
-+    let interface = unsafe {
-+        let ptr = (dev as *mut phy::Device).cast::<bindings::phy_device>();
-+        (*ptr).interface
-+    };
-+
-+    let temp = match interface as core::ffi::c_uint {
-+        bindings::phy_interface_t_PHY_INTERFACE_MODE_MII => SCR_INIT,
-+        bindings::phy_interface_t_PHY_INTERFACE_MODE_RMII => SCR_INIT | SCR_RMII,
-+        _ => return Err(code::EINVAL),
-+    };
-+
-+    dev.write(SCR, temp)?;
-+
-+    dev.write(BTCSR, BTCSR_INIT)?;
-+
-+    dev.write(C22::BMCR, bindings::BMCR_ANENABLE as u16)?;
-+
-+    Ok(())
-+}
-+
-+/// Representation of the Davicom DM9161E chip.
-+struct DavicomDM9161E;
-+
-+#[vtable]
-+impl Driver for DavicomDM9161E {
-+    const NAME: &'static CStr = c"Davicom DM9161E";
-+    const PHY_DEVICE_ID: phy::DeviceId = DeviceId::new_with_custom_mask(0x0181b880, 0x0ffffff0);
-+    fn config_aneg(dev: &mut phy::Device) -> Result {
-+        dm9161_config_aneg(dev)
-+    }
-+}
-+
-+struct DavicomDM9161A;
-+
-+#[vtable]
-+impl Driver for DavicomDM9161A {
-+    const NAME: &'static CStr = c"Davicom DM9161A";
-+    const PHY_DEVICE_ID: phy::DeviceId = DeviceId::new_with_custom_mask(0x0181b8a0, 0x0ffffff0);
-+    fn config_aneg(dev: &mut phy::Device) -> Result {
-+        dm9161_config_aneg(dev)
-+    }
-+}
-+
-+kernel::module_phy_driver! {
-+    drivers: [DavicomDM9161E, DavicomDM9161A],
-+    device_table: [DeviceId::new_with_driver::<DavicomDM9161E>(), DeviceId::new_with_driver::<DavicomDM9161A>()],
-+    name: "davicom_rust",
-+    authors: ["Andy Fleming"],
-+    description: "Davicom PHY Rust Driver",
-+    license: "GPL"
-+}
--- 
-2.50.0
+It would probably be good to rename `name` to reduce some of this
+confusion.
 
