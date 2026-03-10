@@ -1,105 +1,236 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011049.outbound.protection.outlook.com [52.101.62.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896E535BDD7
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 07:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773128865; cv=none; b=n3TOm1sSUwC0BqUQgdk6/FWdFCDSXO4BHbfTBSbit5H8zuVAgWTO0FxVbnW5INZLi6oaJmwtuHOhO4/w6EZHHs2Dt8KCWn09Im/78oKsXdgSLvCiwGYzwCaG5VOcmCMoTTo0GvN27QPn8szw2kmMbAtBJisa2Tvu/rBiAc8XMXc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773128865; c=relaxed/simple;
-	bh=CEMltqQW9u10Dc2iBNuTXi2X2wgdQ6LtEATQpEiFmIw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Odae1kFJ5H6akC1zeyOkWjPe8L58ru2lkv5Ja60YWJTgScS5DrLtcOHNc5+GoASKTSumP5doQDY964yrX8DiMgaJt8qUx1WyzjZgOVO6z1asrrh9tWEiWXnVoBtwcYLmYuXyaG17D6AWsSHbr7/FOkluTv05M9lDr27OeeXPmvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t9qU+g0F; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573503D6CBA;
+	Tue, 10 Mar 2026 08:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773130031; cv=fail; b=qOxIPUSAqs0vRDFpNNSzG06PhP3PDTDTlKBvrps1vXEm8N179i917h6S4WKbv94LhECh8VHsXGHTDG9fr+sTthhX14REzBDd8GaOp/QHibiCMs389x12pMtvfVhf8RLA9mzV7hpjf+IHGN+IKCkBn+WkE2ZvfEeskrRoNl8tOJI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773130031; c=relaxed/simple;
+	bh=Vc1ESxQeYMkH4Lk6lGryI+0+PjbIYXXBnDgnVLpcFGw=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=NSWdHT4hJq5wCxhW/GZaO2qWLQ8CW4DqOJN1reyFR/sb05KheIpDM8hb2SrB7M6veWeSZU446Ay7zvYWAQppNx611/AtVSDa9O8EgcLoYBLBIcnP9EqOLf40Yp3iHmmNUm6uhmP77M0HvQyyQ8WvmdqkJdy90Fcl6jXYwVnSb0c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uOWiSK3j; arc=fail smtp.client-ip=52.101.62.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t9qU+g0F"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b96d8d60303so198701666b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 00:47:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773128861; x=1773733661; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xXA6X3KJ8wqz98mCcEpEVMkHZRCBuaUnyvX8XE1PQJs=;
-        b=t9qU+g0Fg35pqzgVF0KwcUYxr5CrkQ2lw8+6R71nPpEhzSqvJLx2qzMIsHCSAP9biG
-         G1swGxvwSmr1XKQ1Y9XCk3yC8w79Hdl4AF19fXQgZRbeOJNMfvoalEopeJo9Nh2GU4ZL
-         OsgA94v9GY5pKXkAgjeGUp63996z8XRbxqXlLU4vqaWGwvckO+cDtkul+gBS78A/YuGj
-         oOI9EJSofRvcPtxFQIpFmo7VfvEtINJDGy8Ftf3fUOGU68d/3l1DrMaGWQPTdehcWNfX
-         9Vky5JNr8ybVxh7A2pFGfZ3x/pZzVDPibbZvA/dn9QqPC34Ut9rwcDT5BT4QLgb5YKVk
-         pq9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773128861; x=1773733661;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xXA6X3KJ8wqz98mCcEpEVMkHZRCBuaUnyvX8XE1PQJs=;
-        b=OVExRTSMDzxBHn39daLa1/gblsxOnZ/L3g35aMpA6HWz8EhfQAOJw7VmZR1NVoDwGu
-         uqMcjco/P+Qs3/pqOMTytwxAytj97n8U6l4e4rV7ynCjfsVfXO+ulnY29L8lnyL9U8QB
-         DSrrEUfYxq7T2Ozlkhmq8lpNE7Tdu6loOZmSC2lje85AI6FUGC3vVZ5KqVuxDGRtiD5e
-         +nQVjS9boA6HgPLgxjxiGQUiwGkmrcInP/YYBBvffgNlLI4bgXNgCOA5L2Bql8nNO2ar
-         /Rc7qPccGKB6LxytvAxHLEqOyRWezb43Y8+lzNFfbmvNgxWbbVXteUhbiYzEEh83SnpJ
-         PP+A==
-X-Forwarded-Encrypted: i=1; AJvYcCWBCPPNdIAHpiV/rzmLHqZUNfh09nLeUmBIB9LB2Oh7wXmU6qsa7hfPWo/f/0eSLtrM2FGah+VjvluEP5JQeQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1/+WC6SB84MJ4U0GG4mbHSC6nXT4lAp99GeTNN4YJd/1osw0m
-	5jykehDqxacyrHbDcOsRLRAglIfKEIp89ZC5XBMGvCkqEs95zqYuZzHqKddnS0SHiVR82Ypr9Hp
-	KSWLvCKKNyY5/HCTrBg==
-X-Received: from ejav26.prod.google.com ([2002:a17:906:339a:b0:b94:578:d46e])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:e117:b0:b96:f7c7:6233 with SMTP id a640c23a62f3a-b96f7c76586mr210194966b.19.1773128860572;
- Tue, 10 Mar 2026 00:47:40 -0700 (PDT)
-Date: Tue, 10 Mar 2026 07:47:39 +0000
-In-Reply-To: <20260309142400.596f5010@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uOWiSK3j"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LfuQbQLDB5yKYbnrJDi9RZ/Xme787TQQRa9xyuXEczVG02Eu7jX3Qg40ik030hAUKgWMa4ObDS9ga9rkiHbS9+IrqMUOwuUSlZ8nJCwRUNKjsmfJmHQwNF+3YpMbpORgZ2y5eyDHBXCKGgCJoY0/dgqSbGE+ZydgqJGJJ6M55FYK+f32JZF5C3wqkURvzRGS4kQylzXPQsl2ppyIXRTCkqWqdEPsbU9szGvHyJOA1VoRrhA3o/5t5SSGpQDCkemBh00HQUpt1pb3KUJoXY+fVRujMH0edH20UKZiVMCczL2wjgwOM+Qlz8bGkFwmjU3/WqmcRzfDN9XLyQ/pvJKpqg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8dILYh8SwYXD5AAhTNsEmIq56L8T+ZPt8PhETuEx3MI=;
+ b=A52YJ+2OR8b8xd93APpvZVbMghj/CH19aw42d+4fY4LRN6tf30szthK4XJUQLFWmcQcUYNuNEJFwVoMTGZnTZ6/aJIbmpuAXbdyDb1fd/4ns/R02apoZPSTGSb7QDP4fdcd8hE7V43BVgq7A+dXMyWlXlXkU49yMG6YPBIOGDzCd+ijmL4CT6C86nOigQP14retzH3wS8zM3n9aDBm9cO6Qt+FxrRjVI5djsLfgvzirEtTqTlj16vSVwzsIW749WfbGh3fQaWn7ggFBYRj0aG+j7etV38A6SoeDCRLvyqfYU2S39d8HIZ+NIkhzrENprZA4lIe1KTLgvhjoJ6P4pAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8dILYh8SwYXD5AAhTNsEmIq56L8T+ZPt8PhETuEx3MI=;
+ b=uOWiSK3jgrO+0k2uXOICR0svKFnyDwVNwbVIIjif100uMbDA2//btNx4FIkSV1d8QVNVn/la8Q97M4fmdmKmUjWu8oCLhODKASt/YjGTATNAYnZUds/vKHplZy6QtJknJ5TRd81zt6r6s5tAWKFHCLi9ROSKTfQBjQlRs+4mzPK2cCEDBsFLw0jykB7P3evPurd4VzEVnQrHoV/hYyaLMPJyv40OSbOwj2aqw8VOVi1/ryp1l8XoOHZ20yKGViYvM08QmpihIFQ4/kKwwBTZoPyprHJezzC+9YSRKJDR/Y2m3rUjgygdohnf1xkp0nPLtiQPfd4Rm2xM92TtfdJtEA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DS0PR12MB7512.namprd12.prod.outlook.com (2603:10b6:8:13a::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
+ 2026 08:07:01 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9700.009; Tue, 10 Mar 2026
+ 08:07:01 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Mar 2026 17:06:57 +0900
+Message-Id: <DGYY4SVKBYUK.2P9ZLCZPVOLSI@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Shashank
+ Sharma" <shashanks@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ "LKML" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 03/34] gpu: nova-core: Hopper/Blackwell: basic GPU
+ identification
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "John Hubbard" <jhubbard@nvidia.com>
+References: <20260310021125.117855-1-jhubbard@nvidia.com>
+ <20260310021125.117855-4-jhubbard@nvidia.com>
+In-Reply-To: <20260310021125.117855-4-jhubbard@nvidia.com>
+X-ClientProxiedBy: TY4PR01CA0095.jpnprd01.prod.outlook.com
+ (2603:1096:405:37d::6) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260306-binder-netlink-v1-0-daceb5bc83f2@google.com>
- <20260307104131.4c1d0de5@kernel.org> <aayWSuOM59uojtuG@google.com>
- <20260307135941.51353a4f@kernel.org> <aayrtyPKOqVGpich@google.com> <20260309142400.596f5010@kernel.org>
-Message-ID: <aa_Mm3mHmF-eFh5x@google.com>
-Subject: Re: [PATCH 0/4] Rust netlink support + use in Rust Binder
-From: Alice Ryhl <aliceryhl@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS0PR12MB7512:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3466cfb6-259c-4329-77af-08de7e7c0223
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|10070799003|366016;
+X-Microsoft-Antispam-Message-Info:
+	+J77Baa00vSNfd0nlWGVLMwe1ZYwON/kK2iH0PoqFwj00Zznf9paKHfY/YYXNqDnb+bgEWEG2aXAArPmqG4V1wEPJcEuqWAmJ5cMcxh3KfPuSMQ8PtF9VWE19lgj83itjH+bWD8V00HWorAzSKIv5fgPOXJN0sPQ9l7TPXg926ouTkmEBiZFxdouja76VMAK3ClWp4yJ7Ka6ubWW5SdJ0euXc9F0xTzc3VUa5nIij9S773rST/U4SbmufzRup5j3YJjTDZayFZu4mK2CYL5ndvq3GOocwfhEWaMVyp/XOgDt90fWsNidCt/JIKA6zlJZyl9QATAxC16X8KgCYcRZ4+UD+r1a0o9pST2JMwswAAY/OX1oiSIGBIpHGb627NJNwJBTSxsCQl5W8niSqvPnGYCLZVsivU5F2Mh9F7HtI6Q6yMoiI05VIq70OC9U8sTkAXIefe7/hlGx1L72Q5EFlcJUD1wxWe0WDzBjeRar9aInaiMNAf5zfvNU2qwwkAhlX5DvjLLTjbyOSJSDE2A62mMqvCEryDwUZPjtCY8ZY6Pa6+QBj4SmC/VlJ7xR5pQL3wKo+Msm7u+kVMZmw8xe4p/mL7z0Ae2YSzmoULovZUqYjXTwp5NhcUAnLQS3p1hupsqjXVRcLu9y24N6VOWpYIdTYSN/0XN3SloTcp08hf8+KdanYrWqMDPQmM4zxVrJnRh/6L0frL7QdhZqvKXBte6fjZgUaBYMzb8VtP1+oy4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(10070799003)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SHZacEkxc2lYQktmV2ZkZFZWMVpNVVh5azUyQ2p6UE9iRklDRjRHWW9pUlBo?=
+ =?utf-8?B?S3E5Zm11R21CZWwyaUhId0htWjU5RHN1N3RDTHJsRmxmTTFrUFN5MU9VcVdS?=
+ =?utf-8?B?VTBzckIzbEVaQ0xzbVBSTmI2cGRQNzhOSE9Rbys1VXl6bnJUUkJDNzNzY1B0?=
+ =?utf-8?B?SlFtR2tDelVUUGx6aTZ3anJZZm9FNTJDQVd3OFJlVXg4M3llVTdxMjlTZXpD?=
+ =?utf-8?B?MkY2K0V4YTczWGxhTDBoeHovRHNudHVLVHkwRmZlV253Ny9ncmozNEFRKzhx?=
+ =?utf-8?B?QTF3RzREQnl5bVNlSERJM1FMZjJ6WVNEeGcyRWtUZVJIdTVkNCs2SzQra3RH?=
+ =?utf-8?B?ZjlmMExiRVlmUGVCU1ZiVUQ4Q1RrSWt0b1B5a1hoblIwTk12ZU84TGM2bHoy?=
+ =?utf-8?B?UlNxclJtRFRrUGdISXc2MWFuYkUrWDBEM21zekhFVWtSZzBoK1FOaW4rM0pZ?=
+ =?utf-8?B?WXBibk9sNEwwUGI2NzE0bG1GRjBOY1pYKzNSSHErNmdwOUtiQUp4dEhKQWdj?=
+ =?utf-8?B?VVZKcVhoZmlnZlA1NWt3VGNrYzUxVUhkeHh1bEpEM0c0QnVvVERGdXRnMnEw?=
+ =?utf-8?B?MmN5OGNDeWlzeUZrT0w1U002YjlFd3JQb0xacXRaZTBLNGFSajVnQmcwVE5R?=
+ =?utf-8?B?cHlxSjB0ZXltajI5QkVMSnM1RHhZdEtUQlFLL283aXVNQlppMDloWENNWjVt?=
+ =?utf-8?B?cUhybXRZWnluTk15aTFHREVBUkRtNlJOL21pRUJJRWxYTUVuZ0c1U0VHaldw?=
+ =?utf-8?B?cUY2cnQ3ekhCWWhWVTJzakVhTm1NOWRBVVJ1NFpnRG53VHQ4OUdIVEg3Ylhr?=
+ =?utf-8?B?TUVGL0tZcG4yQ1Nhakg1OG1IU1dtUWdheUtMbStzRFA2aGpZZGY1WlB6aTdS?=
+ =?utf-8?B?K0p0MEovWjM0R2w1SVp6MWUraW8vRVVuYWpUa0pnSm43VEg3c002NVZDbFdM?=
+ =?utf-8?B?TlpsRVZhZHhISWdJSC9CaG12Z2Q0clQ3VWQvUTBubkVWbHMvWkh2MFBQTmE1?=
+ =?utf-8?B?RzZSaENPemZWbmZ3RTNvdkcydzBoNDBudCszdjRtTGZ3QXpIVnlvUXloYTli?=
+ =?utf-8?B?dWt3cEVIU3NpSFR1WUkyU2ZmYVdvaHBBM3RCa1EzSTVnd3lqdkQ5S29uT25D?=
+ =?utf-8?B?WWpDRWpicGtMRXJUbVRYZlNkVUJYOHgrRDhhZk1TZ2tBek15a1hHZ1dDNnRU?=
+ =?utf-8?B?ckJWUEh2VENsWFQrS3pUVkpKOTE5aWVCY0N2K2Y4cldtL3k3K05aL292eW1E?=
+ =?utf-8?B?NWlmNHl0eExSRWZwb3h4cWpnUVMyYkd0V09aWW8xemhXckRDWjhJTUE3b25T?=
+ =?utf-8?B?NjY1N0J5TXFyczdkM0NRNXBzTnZsbk5hRG5QNUpuZWxOVldpbVUySHJYY2NO?=
+ =?utf-8?B?Yi9CRWsvNVNDMUV5RGt6V3pabThGd3lEbXJheVJXWTNRSkluUDhRRUtVeVEy?=
+ =?utf-8?B?cmtnMmtvRkFmRkl4MjgyWlJjbmRUc3R6NzdZNjJ4eFR6blpOWmI5cXErV1J4?=
+ =?utf-8?B?UGxFd3c1WDF6SExrMlFlK0c4R3VVbEVvU1Y1K3VyRDB1TVVyS3FVYzgwUit2?=
+ =?utf-8?B?RzlrME1US0ZORFRYS2dqRWp1NFF5ZzhWN0Y4OFNHOGticXJVakwvblZJUmJD?=
+ =?utf-8?B?KzZHbXlzWDUvYzB4T3Q1bFNUMXFZNlcxZS9mTDRYelZXNi8vV1ErY0hkbDl1?=
+ =?utf-8?B?eFJIQSsvb01jQ1JXa3Vqc0VwdWd2VnJnOFVTVCs4UW1IcG5ZOGVsaHQ3SFln?=
+ =?utf-8?B?eVNWQ3hENERucHVrUUErY3hBenJaQWtyZ1RKNjVrbVloQitSMDhyeDBJT1Fi?=
+ =?utf-8?B?TGxTYm1XS0l1VnljSXlORGRNMGpYMHgrb3p5dlFYNnRmSmRqeUtiU3dLakRn?=
+ =?utf-8?B?K3MzeFA5VHNGSVBERWxibGlLTlBqcmRyYkNDZzVQUlZYbnNudGhQRzZYOUpB?=
+ =?utf-8?B?SGVzNldGTVJzaFhHQW10cDI1dmhqaWJvdTFJU1g4dzlzUVlRTGREN24rU1Uw?=
+ =?utf-8?B?NFJVL0hKZzhSMXcwMDhKeEF1WFVFU2tOUytnK3d0NjZKNjdDSnlYWHRJQVZx?=
+ =?utf-8?B?d3U1S3I3Y1hpMUZVZFI2OUk4S3VIWHpWOHNnMHZYak5ORk9WcmI0TFoydm5r?=
+ =?utf-8?B?eUR6ejJuQk1LaG96UmxMV3NaUVlxK0FxL2c1OGhnZUNxSS9TZElwZW80NW9a?=
+ =?utf-8?B?SE42UEU4dGkrK05aZ2p0bnZ1WnJheGRZZUpMV0FKWEtBbVp3U24rRVZtN0xO?=
+ =?utf-8?B?V2NyNjdRaStXbmF6alV3aFRMY1M4VUNLYkJwZ2t3NkllVUJsSW1Ld05GL08v?=
+ =?utf-8?B?U1hXZHltbmRxZkZRVXMxUm83ejJPeGZsR3VaK2lVbTRCRjdRcW1pR2dsUSs5?=
+ =?utf-8?Q?wWo19FfOusd+sETgOKiHfzgJKoGhhb0eKVUCcXx4Xs34g?=
+X-MS-Exchange-AntiSpam-MessageData-1: eqhjoxZa0JO32g==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3466cfb6-259c-4329-77af-08de7e7c0223
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 08:07:01.2021
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: H+vGNafpJ06PjSTRs9ZLjyOT9JU13eVpy1QVoPZPyF83deTXmLiZXr3myEI4eBp1PIfRdeK58CxrQ/IADTvgFg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7512
 
-On Mon, Mar 09, 2026 at 02:24:00PM -0700, Jakub Kicinski wrote:
-> On Sat, 7 Mar 2026 22:50:31 +0000 Alice Ryhl wrote:
-> > > > To be honest, I'm not entirely happy with what Binder is using netlink
-> > > > for either, but it is what it is.  
-> > > 
-> > > If we're both not happy let's take this opportunity to find a better
-> > > solution?  
-> > 
-> > My understanding is that userspace is already using or looking into
-> > using the netlink uapi that Binder exposes here. I don't know to what
-> > extent; it's not used *that* much yet, but it may still be tricky to
-> > change the uapi at this point.
-> 
-> Let's explore it? What user space components would need to be updated?
-> What's a better design?
+On Tue Mar 10, 2026 at 11:10 AM JST, John Hubbard wrote:
+> Hopper (GH100) and Blackwell identification, including ELF
+> .fwsignature_* items.
+>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/falcon/hal.rs   |  3 ++-
+>  drivers/gpu/nova-core/fb/hal.rs       |  5 ++---
+>  drivers/gpu/nova-core/firmware/gsp.rs | 17 +++++++++++++++++
+>  drivers/gpu/nova-core/gpu.rs          | 22 ++++++++++++++++++++++
+>  4 files changed, 43 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/falcon/hal.rs b/drivers/gpu/nova-core/=
+falcon/hal.rs
+> index a7e5ea8d0272..c7f12f2a7a35 100644
+> --- a/drivers/gpu/nova-core/falcon/hal.rs
+> +++ b/drivers/gpu/nova-core/falcon/hal.rs
+> @@ -80,7 +80,8 @@ pub(super) fn falcon_hal<E: FalconEngine + 'static>(
+>          TU102 | TU104 | TU106 | TU116 | TU117 =3D> {
+>              KBox::new(tu102::Tu102::<E>::new(), GFP_KERNEL)? as KBox<dyn=
+ FalconHal<E>>
+>          }
+> -        GA102 | GA103 | GA104 | GA106 | GA107 | AD102 | AD103 | AD104 | =
+AD106 | AD107 =3D> {
+> +        GA102 | GA103 | GA104 | GA106 | GA107 | AD102 | AD103 | AD104 | =
+AD106 | AD107 | GH100
+> +        | GB100 | GB102 | GB202 | GB203 | GB205 | GB206 | GB207 =3D> {
+>              KBox::new(ga102::Ga102::<E>::new(), GFP_KERNEL)? as KBox<dyn=
+ FalconHal<E>>
+>          }
+>          _ =3D> return Err(ENOTSUPP),
+> diff --git a/drivers/gpu/nova-core/fb/hal.rs b/drivers/gpu/nova-core/fb/h=
+al.rs
+> index aba0abd8ee00..e709affaa7e8 100644
+> --- a/drivers/gpu/nova-core/fb/hal.rs
+> +++ b/drivers/gpu/nova-core/fb/hal.rs
+> @@ -34,8 +34,7 @@ pub(super) fn fb_hal(chipset: Chipset) -> &'static dyn =
+FbHal {
+>      match chipset {
+>          TU102 | TU104 | TU106 | TU117 | TU116 =3D> tu102::TU102_HAL,
+>          GA100 =3D> ga100::GA100_HAL,
+> -        GA102 | GA103 | GA104 | GA106 | GA107 | AD102 | AD103 | AD104 | =
+AD106 | AD107 =3D> {
+> -            ga102::GA102_HAL
+> -        }
+> +        GA102 | GA103 | GA104 | GA106 | GA107 | AD102 | AD103 | AD104 | =
+AD106 | AD107 | GH100
+> +        | GB100 | GB102 | GB202 | GB203 | GB205 | GB206 | GB207 =3D> ga1=
+02::GA102_HAL,
+>      }
+>  }
+> diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-cor=
+e/firmware/gsp.rs
+> index 9488a626352f..bc2243450989 100644
+> --- a/drivers/gpu/nova-core/firmware/gsp.rs
+> +++ b/drivers/gpu/nova-core/firmware/gsp.rs
+> @@ -222,6 +222,23 @@ pub(crate) fn new<'a>(
+>                          Architecture::Ampere if chipset =3D=3D Chipset::=
+GA100 =3D> ".fwsignature_tu10x",
+>                          Architecture::Ampere =3D> ".fwsignature_ga10x",
+>                          Architecture::Ada =3D> ".fwsignature_ad10x",
+> +                        Architecture::Hopper =3D> ".fwsignature_gh10x",
+> +                        Architecture::Blackwell =3D> {
+> +                            // Distinguish between GB10x and GB20x serie=
+s
+> +                            match chipset {
+> +                                // GB10x series: GB100, GB102
+> +                                Chipset::GB100 | Chipset::GB102 =3D> ".f=
+wsignature_gb10x",
+> +                                // GB20x series: GB202, GB203, GB205, GB=
+206, GB207
+> +                                Chipset::GB202
+> +                                | Chipset::GB203
+> +                                | Chipset::GB205
+> +                                | Chipset::GB206
+> +                                | Chipset::GB207 =3D> ".fwsignature_gb20=
+x",
+> +                                // It's not possible to get here with a =
+non-Blackwell chipset, but
+> +                                // Rust doesn't know that.
+> +                                _ =3D> return Err(ENOTSUPP),
+> +                            }
+> +                        }
 
-Well ... the thing I'm the most unhappy about is needing to have a
-userspace daemon that is notified about all transaction failures to
-begin with.
+Can we use the same trick as Turing above to avoid the double-match and
+unused catch-all statement? That would look something like:
 
-But if you must have such a daemon, I think the netlink based API is
-an okay way to do it. You can easily add new fields in the future, and
-it implements notifications to userspace on our behalf.
+    Architecture::Blackwell if matches!(chipset, Chipset::GB100 | Chipset::=
+GB102) =3D> {
+        Some(".fwsignature_gb10x")
+    }
+    Architecture::Blackwell =3D> Some(".fwsignature_gb20x"),
 
-Though using raw pids in the netlink messages is pretty ugly ... pids
-can change, and the pid namespace of the receiving proc ends up ignored.
-
-Alice
+Note that this is not perfect either, but it is at least more succint.
