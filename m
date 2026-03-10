@@ -1,107 +1,172 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AE0327BFA;
-	Tue, 10 Mar 2026 15:52:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39F230AD00;
+	Tue, 10 Mar 2026 16:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773157938; cv=none; b=piAk3/EqfWFnD87WaoMl8Hq6UCC2/3okTCud+THg9jgjBmfXKJl2L1PP4P8O044wvWBDGdu8vWXhtKWrJnW0CFxZJ+KdcaWZGLmdjAwr1uNUk1kRHCOx/93frMfzp+pRs2P1CQ0qYfS8UaX5sY/eqiT2eFIgvPy06N0/+e06kd8=
+	t=1773160499; cv=none; b=QNgy1dGyuCmbG4RraxYz4JlS0UtOCECWHEgNjF2hB6BaRXXImOmAXy4dNOBu65U9YEuVkL6UzgUsFeCQRmmdryNIEXWFyshyx7IpPFVZb58FhmbVPY9BnMLl1gSz6oF7S9u4CFLZNqmlFgXxkCroeung9iak+8mOciJ1dnYQI5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773157938; c=relaxed/simple;
-	bh=nPSOw4Lmnu+4vxpqa4s1Zh62JgzepqmnWq3Dn4hj1CI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=npjYO5af4nuVuNgJyOQ1PBEn0MNYe/VsPdnAhF/fK47cKSGS0vZlfR97OA7gGGVeZ0QUPbMnh0fo3rVOldS2GuvX5QvzXwjnd+z8XmjZxWENKDyJgK1u6oZQDzn2KqUkonGE6y9FWWmarWaM0T7iJShhPc1PsZAgzy7qgdAHFLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fEPH/Uyu; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1773160499; c=relaxed/simple;
+	bh=yCuUK+ophe5GEAM3KX/PkfggmxPTdFkTeolpCuDaeVc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=oycvWvgi1qZkJpMjJPEiwmLsdlHlMwhX7gr1CXDJSGPFXeKe5tfzkG1QdfTsMOw8UL9ebaeEEBEYKEqHk2/0Z9qsFZfsbD/oqHN4KN4olwc/xClM/gYTL5xO27G8zUgzBaCF6/5CMTS6+CloaQLD5MB8/soMV+pafKEW/pL8qRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4FiaucW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fEPH/Uyu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Mm5ZdlYa6HH91EKrqW/ftb9Mw44uy3yVXV+QGoBnUFQ=; b=fEPH/UyuwAtwpUkLnoj4GRMGvZ
-	M0NExu5BDlW78HxiHgnS6hzN2FIsPt2yVPHbq7DzXhu2HDaYjUZ8NPI+ryDbdGFFF5RK25xq1+QPH
-	BCfDe8TufhVv+CI048L+CYVlsgyu6ED2AviVUtqOWHFux13XuYbf/L2MGeF1PrZOrVsQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vzzNN-00B39f-CK; Tue, 10 Mar 2026 16:52:05 +0100
-Date: Tue, 10 Mar 2026 16:52:05 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Cc: hkallweit1@gmail.com, ojeda@kernel.org, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH net-next] net: phy: rust: add experimental Davicom
- PHY driver
-Message-ID: <917edd8c-cda0-4d35-8300-47205a975a81@lunn.ch>
-References: <20260310151935.33197-1-muchamadcoirulanwar@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J4FiaucW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50048C19423;
+	Tue, 10 Mar 2026 16:34:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773160499;
+	bh=yCuUK+ophe5GEAM3KX/PkfggmxPTdFkTeolpCuDaeVc=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=J4FiaucWSNUZEeQc++npq5RWuF53HqSM5Q/dGOBb8hXd7MHRKEEIfwgXCc3gwvGb+
+	 DjS6cGzf2mwq04FstmeuMaEB0QgDPnEJ94v+FSeQxnbkgn39hExYeEZ3j6DpUiQfZ7
+	 kmJq9VpHo9IH/N8kn374oSuInyK08Yul4NffNQAu2CA7IsJHFSIh+4d+fyTfYoZphV
+	 RQwnkmQcBr5Ya458VBIDQWRqMcgoMthXO8jxuKJsVCOAQnT6ojBxqyLGizMNmaRIlw
+	 JK7RiefJaZxjBQqkr0GbiCt9OHIwo/aKmB+hB0v3+RcTuuttwR8uNJJsq9XLm0tkYd
+	 NyG+2S6CFFFGA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260310151935.33197-1-muchamadcoirulanwar@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Mar 2026 17:34:53 +0100
+Message-Id: <DGZ8XPCCUDQ5.14RUPZWK8L509@kernel.org>
+Subject: Re: [PATCH v8 07/10] rust: io: introduce `IntoIoVal` trait and
+ single-argument `write_val`
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
+ <20260310-register-v8-7-424f80dd43bc@nvidia.com>
+In-Reply-To: <20260310-register-v8-7-424f80dd43bc@nvidia.com>
 
-On Tue, Mar 10, 2026 at 10:19:35PM +0700, Muchamad Coirul Anwar wrote:
-> This is an experimental Rust port of the legacy Davicom PHY driver
-> (davicom.c) to explore the boundaries of the current PHY abstractions.
-> 
-> During the porting process, a few limitations in the current
-> `net::phy::Driver` trait were observed:
-> 1. Callbacks for `config_init`, `config_intr`, and `handle_interrupt`
->    are not yet exposed.
-> 2. `bindings::genphy_config_aneg` is not yet wrapped.
-> 
-> In this RFC, the logic for these missing callbacks is implemented
-> and marked with `#[allow(dead_code)]` to demonstrate the required
-> hardware logic. Additionally, `unsafe` blocks are used as a temporary
-> workaround for `genphy_config_aneg` and interface checking.
-> 
-> Note: I don't have access to the physical Davicom hardware.
-> This patch is compile-tested and verified via QEMU only. It is
-> submitted as an RFC to share findings regarding the missing
-> abstractions and gather feedback on the Rust PHY usage.
+On Mon Mar 9, 2026 at 4:14 PM CET, Alexandre Courbot wrote:
+> +    /// Generic infallible write of value bearing its location, with com=
+pile-time bounds check.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// Tuples carrying a location and a value can be used with this met=
+hod:
+> +    ///
+> +    /// ```no_run
+> +    /// use kernel::io::{Io, Mmio};
+> +    ///
+> +    /// fn do_writes(io: &Mmio) {
+> +    ///     // 32-bit write of value `1` at address `0x10`.
+> +    ///     io.write_val((0x10, 1u32));
+> +    /// }
+> +    /// ```
+> +    #[inline(always)]
+> +    fn write_val<T, L, V>(&self, value: V)
 
-How good is the QEMU emulation of this PHY? What features does it
-support, compared to the real thing?
+Still not super satisfied with the name write_val() plus I have some more
+considerations, sorry. :)
 
-Adding support for interrupts to the Rust API seems useful, but does
-the QEMU emulator support it? What emulated board are you using with
-this PHY? Does that board have interrupts wired up? Can you triggering
-interrupts by changing the link state?
+Let's look at this:
 
-> +/// Register 0x10: Scrambler Control Register (SCR)
-> +const SCR: C22 = C22::vendor_specific::<0x10>();
-> +const SCR_INIT: u16 = 0x0610;
-> +const SCR_RMII: u16 = 0x0100;
+	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
 
-Does QEMU have the scrambler? What happens if you wrongly configure
-the scrambler.
+	// Pass around, do some modifications, etc.
 
-> +/// Configures PHY Auto-Negotiation.
-> +///
-> +/// Isolates the PHY during configuration, then calls the generic `genphy_config_aneg`
-> +/// via unsafe C bindings because Rust abstractions don't expose it directly yet.
-> +fn dm9161_config_aneg(dev: &mut phy::Device) -> Result {
-> +    dev.write(C22::BMCR, bindings::BMCR_ISOLATE as u16)?;
+	bar.write_val(reg);
 
-What does the emulation do if you don't isolate the PHY? Is there an
-errata for this PHY which tells you why it needs isolating?
+In this case read() returns an object that encodes the absolute location an=
+d
+value, i.e. read() pairs with write_val(), which is a bit odd.
 
-I don't want to add code which cannot be tested. Ideally, it should be
-tested on real hardware. We also are pushing back on duplicate C and
-Rust. So if you want to write a Rust PHY driver, i suggest you find
-some hardware which does not have a C driver, and add support for it
-using Rust. Then i would be happy to expand the Rust binding as
-needed.
+In this example:
 
-    Andrew
+	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
 
----
-pw-bot: cr
+	// Pass around, do some modifications, etc.
+
+	bar.write(WithBase::of::<E>(), reg);
+
+read() pairs with write(), since the object returned by read() does only en=
+code
+a relative location, so we have to supply the base location through the fir=
+st
+argument of write().
+
+Well, technically it also pairs with write_val(), as we could also pass thi=
+s as
+tuple to write_val().
+
+	bar.write_val((WithBase::of::<E>(), reg));
+
+However, my point is that this is a bit inconsistent and I think a user wou=
+ld
+expect something more symmetric.
+
+For instance, let's say write() would become the single argument one, then
+read() could return an impl of IntoIoVal, so we would have
+
+	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
+	bar.write(reg);
+
+	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
+	bar.write(reg);
+
+and additionally we can have
+
+	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
+	bar.write_val(WithBase::of::<E>(), val);
+
+The same goes for
+
+	let val =3D bar.read_val(regs::NV_PMC_BOOT_0);
+	bar.write_val(regs::NV_PMC_BOOT_0, val);
+
+which for complex values does not achieve anything, but makes sense for the=
+ FIFO
+register use-case, as val could also be a primitive, e.g. u32.
+
+With a dynamic base, and a single field we could just do the following to
+support such primitives:
+
+	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
+	bar.write_val(regs::NV_PFALCON_FALCON_RM::of::<E>(), val);
+
+I think adding this symmetry should be trivial, as most of this already com=
+piles
+with the current code.
+
+Also, let's not get into a discussion whether we name on or the other write=
+()
+vs.  write_foo(). I just turned it around as I think with the specific name
+write_val() it makes more sense this way around.
+
+But I'm perfectly happy either way as long as we find descriptive names tha=
+t
+actually make sense.
+
+Unfortunately, I can't really think of a good name for write_val() with its
+current semantics. If we flip it around as in my examples above, the _val()
+prefix seems fine. Maybe write_reg() and read_reg()?
+
+> +    where
+> +        L: IoLoc<T>,
+> +        V: IntoIoVal<T, L>,
+> +        Self: IoKnownSize + IoCapable<L::IoType>,
+> +    {
+> +        let (location, value) =3D value.into_io_val();
+> +
+> +        self.write(location, value)
+> +    }
