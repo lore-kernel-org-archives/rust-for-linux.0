@@ -1,150 +1,136 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063623DE43B
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 22:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0CD3CE4A0
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 22:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773180359; cv=pass; b=h+HvXr12wBZh+0rHbTPRk0VDUer95Rv6DUAlda3Mxgvl0JQobmp48PDM/91N+E3QyZUrZqWnnrlS3z4n8dqXTE5HAADAzku7soL/veI6LZWDAoqQbzoYPUYr9KPg9R59g1FbF2oUFJwsA7+waXJkOLq9S7cC1QAafZ6y7pA23A8=
+	t=1773180552; cv=pass; b=tIannvuogWiAvJwZh2nNCD4bgymzpIPMCLRelFKGPUwtXa4fJxjEPSeJOqMvMFMArk0IYqZY4M6I6ngC/nvf/OHjuCIG9LNF/FBSFMYMYxSDIg8RNRXZR+y6WMNWBnLhu9jRJAYmQ2FDzOcpKNLPU5EUBoa/O/fn60x49YDEbqk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773180359; c=relaxed/simple;
-	bh=D4vxySje2jcLDUWWdsj+8rItrXiAllGaKDdCs5nMmGU=;
+	s=arc-20240116; t=1773180552; c=relaxed/simple;
+	bh=wLS8ZuVk+K1EIfr1RZsdGmPYwBVKSAqnfcayfIj3r0U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bBlfEAjCMrA0KkGih+vNVxGwA222JdjbIA/q1990MozWdUQkpz98kF+bUeoB89FRmZs9n0H0X+R5uZawwX/Z8S7F+FGXqvxVoHqIRXa5/DZrElYad7e3H5hOScW/WaRnvjM+fbzUtfRIZAVPmWf+I+zI1lnQikzw8ZpB0c5okgI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GYT5cyQX; arc=pass smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=lpup2twy4YGXRH0IQLCmXOi0uBlzVG1HCEZrti3we8RRvBOzY9XUpOo2v5jven1Z3/nQ68rmaw0eWq9fAEs1lOTwlPgqkhZyDt60M6lzuAs3KCu7HuQjSmiZ31d2fpAYrAO/fUwSKqnMXrmypIRzyyCVDKJ/Q74hRw2nSjaiiWQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pt8UBQCq; arc=pass smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GYT5cyQX"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-439b78b638eso10700947f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 15:05:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773180353; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pt8UBQCq"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1273c690e5bso33727c88.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 15:09:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773180550; cv=none;
         d=google.com; s=arc-20240605;
-        b=O9+mn+7j8sc6cifgVDF+YhHRTRafWfHOEVRftib4LkX3jQI4P5uzvXEg499GwB2LGY
-         DaXq+1iZ+rQ44t/lqI0Vm0iC9GwvaqnZRIs4ehiZt8N821MquTI8FNb5x0gH54qKCCK0
-         xKCjGn6ZtaBdd3FxoyOhAwivWt2/IqV+sMxQIiPLpw4/qcLbLWIzU+ZfaYU3/+Yzw2mD
-         2Ye6kYsO8QFQI3UynLBDBUD0ynI+F+n1Wiiph/YyB3KBP1maWdzQAb0ipiTME949GuRo
-         Xsyhen3tO3+zWUSL+zi3/lXwkfcTbV5yzRZV7CTQRtqPYJoW73pXC4DhTvqvdSOyqFBR
-         3ZWQ==
+        b=jkz1e6hkAkMcznhqObgMr1dq1P7hblGtp3I1FAjZytPp/5n6vKn3AYCdUIW6Eqjvwl
+         CWRRzIxT2vTxGuol9uhveXaOlbvNTIo476tl9w15XNdrfBDw/fLgJ+KL9GhYYdJ5Jd1Z
+         BOlvXwn3No7PZDZ3g7E1tj/AcrltbNsGIbn9xBwgEKALyz65jxCwPYtN/r/3lZ6ojNwI
+         pV1zXrtJcq87lmIEwUCv0+Qh8gwsGZSetuDoIWrTGEjNxnR4Sd2ZaOGV9UaqjZ6Vvpam
+         WDlVTmB/LVnUbaGrCb4IO0Oxl1ET+tKn9Wwu6b6j+WiU4LaakLQdL6p9uvOCb+Wljc+c
+         yr1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=hblvCdCPp1muqLiuiLssybvP2wS4P0sZptlfqiYT1kQ=;
-        fh=DBFeJpDDOqYW40agksrRJReOF7o09JJ1Tc/2beJXsDM=;
-        b=jhJ+oeRO3wjojcZw6GtEtNhiCqnyIH96qcyKdkS5PMwOJZJw3hElcJWmT6nhpz6SSK
-         y8kUl13He85UgGjm8kh7FxrMzVAV0d8pLScIC37j1ZGpmm0pUYgmtMtabhaxkY5ZM7WU
-         ZUwOeunXNxPforSGdxJ4B+9Oudd9L4Bmk+rS4mRplRjXVWFxGMc/IqxCosWlPDHWDPX2
-         rMoiU73dXs0bThRElm/nvLmKvkt1IoRGubmPFupNkrR01+BPprcVuwAx920Hl9eUEOi7
-         zYOZ+rYRSqoSgcQt/+iNTANYDoOOJzQAU8UJTNpTGAB7fHEcsqO/dRa9L0buzIdR2ARo
-         TxGA==;
+        bh=wLS8ZuVk+K1EIfr1RZsdGmPYwBVKSAqnfcayfIj3r0U=;
+        fh=tT2ZH5ODTufO9JR4le4vT5ggNpOIX5oN80nYBpVS2ic=;
+        b=YNGvZ4pc/DG4kNfr01cCJgn8zXXRlB8a1gZl1KbgKSHUK5S/YOkFUXRzYDuHTfNw9L
+         Uf+x/RJeb8tF8kFPE46jMJxVkfHTt+npum89m41V1Ca4FwpAnKSSJPEjCGu1vExNSW12
+         UCW+f2NVyF5nGuSiPLmy5wXmVjMyTlV6hufcljMseHx64UFbLLXciHvM+mNO0au3zaHd
+         1/eNlTGf1ulmuBfhL6P9OIIcAwdGoMOeFYlzogrMeGEp8RdNsKSZ80U6VbT9KycYW9cF
+         2T2i4btej//LoYZsOlZSSQp3Fpp2CL9oiL71KVW0fDTaJGqqp7AfOB5Lx3f1akmGn6kT
+         5jvQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773180353; x=1773785153; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773180550; x=1773785350; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hblvCdCPp1muqLiuiLssybvP2wS4P0sZptlfqiYT1kQ=;
-        b=GYT5cyQXMF/RaWpLhEOfwAKVSb+RRKY9SLzby7SBcplFpyxIeIQuxf8Cudx0ke8GD0
-         uG+ZEcv+TtV8XCdndCol6w9K5tJHKLkV/kSLsSbkz/8isTn+roQQK13pjG/lP4FOMvJA
-         ia+hq8NP/GmwAvFNMlYscVOYziRANYPyqFdQUgCtYZWoqSHfP7wNrY6bBV1AlVfoUHIa
-         vjQ/mccq44SQIgutb+0fGfDl5Pzd861UnWe3vzdM1HLSwvAt7TrVZnwSDB8Ss2uY9z1v
-         XCBbsz60gaPlqEfn7cdOlGcpi97wF7BJ9bAHqPIAop9O/tYuFNn3bfgEHeIH3HAQbOdu
-         nDtw==
+        bh=wLS8ZuVk+K1EIfr1RZsdGmPYwBVKSAqnfcayfIj3r0U=;
+        b=Pt8UBQCqFC3XppfTxlnjkpzLLM0nFh4Sw26iDqM2Fh7QSG8lNzi7+vUqlePgxFcNM6
+         c/ugPl+CmlQSnvZNghWj6h2Gf8H188tOLFzwhZKdUHlePKjWma9zuXmWFMO7nw1StYVs
+         BsFjBglkDqH7UFWcQT3EJbqkurG9bPZiKaguzSnMN2cWautI636VmETZuaEvbOVW4M8J
+         DjYcIckgAA5HG7t1bQcE1kC878f5rOMIs8Z21NtCIAVMNBV1RYjmk7VWv9Z5FtydMW2F
+         VKAeXBu5ySQQa7njaGuBbbkP+zwUStL27V79cGTv1iq+HhwLllSwIPZuRu9CeXnRdnRm
+         i5sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773180353; x=1773785153;
+        d=1e100.net; s=20230601; t=1773180550; x=1773785350;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hblvCdCPp1muqLiuiLssybvP2wS4P0sZptlfqiYT1kQ=;
-        b=vhyTWmPMmK0S0Qhf/w5UuzTW2MBcTquJEvTcQiFTTMfmgqTarsTMYMMBYBZMF6PN9j
-         UsKdSooUpT9MY+keT65S0J67tW97180OEev9ArazNitHlH0KXyXKic+ct+UWp3tTdMyI
-         tA9AYERMH4uXniMeUEBcQjHlOF3OqEdE4MaMkj7QTkZ/KvetDfZCHGYR/6p2y+xUrQVr
-         hyPSJBaKFKIJl6t2ls+lfPsoJwwGumXF5G4yNvF3AVX1SPtHbv1hyYTQpUyJmvamZkjJ
-         hAtnFC8xsq/fl3YZHLwRTHzUkoB6TiU5C+wVFkzZKBA9/5b275fsm7/N2RX9RF8dy/ss
-         fx5g==
-X-Forwarded-Encrypted: i=1; AJvYcCWDq/+2Kj/aUEZtL4eWfiOTuA1TgFsmpfnJpyzYIah6IJpt01EHdVcdkhWheBXMoGQxLn5ISgDH4c76XkHNHQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXjD7zkE+sOppli8pODAmPIJ7p0H4IeVglqZ8g8PV6ItoAs0iv
-	XexnoOgkkIQbXV0ZvZPCQrecGZ7vXoyGS1gM2AV89RP5ZaDM4JP4KtoZVsic5BccixaZkOraLio
-	qIwEb2aqa/o2oruR0F4hqVLYeflW6OwGcYMyuyxsNiYAG7rxmKpf+D2vd
-X-Gm-Gg: ATEYQzwtpKUerivKtupaKenz0+yafHQSaSc77KdxNdLmf3JvxsMzgm8Ii5x69Bfka/3
-	yno7un4uX5p+AX0ileME5p46PAbdzDyKTPGYsnvAcxayBAsf8MkhfW2LKWs2t1bseKSxu4MyfcC
-	AEueuSbkCX1Jy567fBv1Krq4mwr7GLGrlUBdqlvqXZl1dd1MSYVD2P/+b8Bg8+2SnQHqQClaxrM
-	z49+IYO/kf9e62e+n1V1OokwhFd2FegEU7cN17leWLW3p9EQ3KysuqfaRhVpamxekimAcUme+eR
-	dPMeLxcIuJBNwR0SfE9bF1VQPxSUytAVei83Ug==
-X-Received: by 2002:a05:600c:3114:b0:485:4526:ee06 with SMTP id
- 5b1f17b1804b1-4854b0bb7dbmr6727395e9.11.1773180352890; Tue, 10 Mar 2026
- 15:05:52 -0700 (PDT)
+        bh=wLS8ZuVk+K1EIfr1RZsdGmPYwBVKSAqnfcayfIj3r0U=;
+        b=O7ieXMI+iYjt1iJ69d5isPlrPAjvwHv+1XgZZVFsxCwJnusFxxAhQdbV3D5PJmNxG+
+         IPqbtkHb3zM5qiSQckaB822ZXp+Gm33zLby/uRo01V5GXzWvBLK5jKXdOGPLAheXweEL
+         M0cgyKyUG722m2t6X/25EEUNIdSFcxmo8yzJpCNjNkdvMAewGWlVAG2wsV9qsZI73c5m
+         gQQvvhyyTMr3NGyH5z8X//Cllm25Xl4/MExTfrCbmH7JdyxDdjlmGterHKAebrhLO+Fu
+         c+EhkZ6hSbtVLDKx+/VaQpWuQSGAeJPa7si+EAU8v1F5g7o0f5YuOmtqzeT1lrzfajsH
+         4Trg==
+X-Forwarded-Encrypted: i=1; AJvYcCXBHfump7CPTJSWeu6BjoTrFrbv9FN9/UO0bPF9xwttqrcfXRmSWYJtxtDITSmrAvZH9iwhF0Y+yxoNzO753w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRMHMWfWIKz9DmL/L3mxJC1lXif3CA8qi5vZ8oLvu3SfpDfHOn
+	Pi/owJvNiYVP0FNy6fX/Gt+/pA8eQydSM71VIOz0/0B/gs9vNJAbhMAd1s0UeCfg+Y+DP1l3pJy
+	0LBynDraJCxqGFCCG8FbBkHp2NTMbge4=
+X-Gm-Gg: ATEYQzzWfReZCoBQi5QMWms/2APPESSrldco0HPaCcBYuLrXsdK96jHKQSuk0Vsfot1
+	mtNRQ0zKoO4Lwwxuz2655IQtKeikuCL6+uuXTNWU/nFwJ0P76NrEtzc2c9sdJBCKU2pXyfNLPmc
+	ARaXUTi9qlygtMm5PfwGpDlOqFO0vGQQ0xwFgl0Zy+uJGXKFrC4RVcU/TBvTOj0924evEovHsAT
+	kUh3QQbbgk83ZiAcUNwVU3brcBfYCfkAo3cKplInKjt5KrQ/Tbm9dPdSuAukr4CvGYwCv5eqcbP
+	DfvOxARoPsfhhtVP/DHmBfzdIDxjX66830ULwfQdQQu1nf39tsLmQlIg15HU7dZi88emn2JHAV1
+	A67ZRevJTagPbrKtctGkOxgwLu8VHqpi/gg==
+X-Received: by 2002:a05:693c:2b0a:b0:2bd:d8e6:90a0 with SMTP id
+ 5a478bee46e88-2be8a553e6amr67357eec.3.1773180550156; Tue, 10 Mar 2026
+ 15:09:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260310220000.1897166-1-ttabi@nvidia.com> <20260310220000.1897166-2-ttabi@nvidia.com>
-In-Reply-To: <20260310220000.1897166-2-ttabi@nvidia.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 10 Mar 2026 23:05:40 +0100
-X-Gm-Features: AaiRm52vMWD1hUQdoTLBXH731zprYyazaHr2Z67UGYmg14XKa-DqpFKMibMQL2o
-Message-ID: <CAH5fLghramRQukqaMyMu_YOnmkDfy1xEOVBwwpEFDxawm5akhQ@mail.gmail.com>
-Subject: Re: [PATCH v8 1/7] rust: device: add device name method
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: Gary Guo <gary@garyguo.net>, mmaurer@google.com, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+References: <20260310023145.120037-1-jhubbard@nvidia.com> <20260310023145.120037-2-jhubbard@nvidia.com>
+ <CANiq72kiiKkK0Q5w=UKNsPXvuuHMASpRJ7KAMy=2908n_u-DUA@mail.gmail.com>
+ <CANiq72k45b+famoLjUyk+UFnZbEONLNSgiwDDQCgUoV6U2m1uQ@mail.gmail.com>
+ <DGZEBEPLULOZ.2GT5QV8I8VBXJ@kernel.org> <DGZEHD0JWHZ6.3HW5U5JTEN9NT@kernel.org>
+In-Reply-To: <DGZEHD0JWHZ6.3HW5U5JTEN9NT@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Mar 2026 23:08:56 +0100
+X-Gm-Features: AaiRm52VOULwhjjJRTCmeIenz99paxgR2nFN0LF0SfIyTSnIzK9qzwEKOMZzI9Q
+Message-ID: <CANiq72=OJfRgJB1fA1T1OkteAzOYZP5OAkFqKV+WueE5C0N+Xw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: sizes: add u64 variants of SZ_* constants
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: John Hubbard <jhubbard@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+	Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2026 at 11:00=E2=80=AFPM Timur Tabi <ttabi@nvidia.com> wrot=
-e:
+On Tue, Mar 10, 2026 at 9:55=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
 >
-> Add a name() method to the `Device` type, which returns a CStr that
-> contains the device name.
+> Forgot to mention, the background of this is that existing DRM components=
+, such
+> as GPUVM, Buddy, etc. just use u64 as a common denominator. However, this
+> becomes annoying when the corresponding device is u32 (or even smaller ou=
+tside
+> of DRM). Because then we have all the fallible conversions on the other e=
+nd
+> where the driver interacts with the HW.
 >
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+> So, on the Rust side I think we want to abstract this, such that drivers =
+can
+> choose the actual device size type and the corresponding APIs just work w=
+ith
+> this type and store the actual value in the backing u64 internally, but h=
+and it
+> out as the actual type the driver passed in originally.
 
-with below nits fixed:
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I see, thanks for that context -- yes, if the types are different and
+known, it would be better to abstract over the right one.
 
-> ---
->  rust/helpers/device.c |  5 +++++
->  rust/kernel/device.rs | 10 ++++++++++
->  2 files changed, 15 insertions(+)
->
-> diff --git a/rust/helpers/device.c b/rust/helpers/device.c
-> index a8ab931a9bd1..3be4ee590784 100644
-> --- a/rust/helpers/device.c
-> +++ b/rust/helpers/device.c
-> @@ -25,3 +25,8 @@ __rust_helper void rust_helper_dev_set_drvdata(struct d=
-evice *dev, void *data)
->  {
->         dev_set_drvdata(dev, data);
->  }
-> +
-> +__rust_helper const char *rust_helper_dev_name(const struct device *dev)
-> +{
-> +       return dev_name(dev);
-> +}
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 94e0548e7687..6be93425fa0b 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -489,6 +489,16 @@ pub fn fwnode(&self) -> Option<&property::FwNode> {
->          // defined as a `#[repr(transparent)]` wrapper around `fwnode_ha=
-ndle`.
->          Some(unsafe { &*fwnode_handle.cast() })
->      }
-> +
-> +    /// Returns the name of the device.
-> +    ///
-> +    /// This is the kobject name of the device, or its initial name if t=
-he kobject is not yet
-> +    /// available.
-> +    pub fn name(&self) -> &CStr {
+(And perhaps it may even make sense to use newtypes too, depending on
+the details.)
 
-Missing #[inline]
-
-We want 'strlen' to be inlined into the caller so that it can be optimized.
-
-Alice
+Cheers,
+Miguel
