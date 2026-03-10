@@ -1,145 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B6029AB1A
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 08:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D597142847B
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 09:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773131082; cv=none; b=jbby6B9jOEMM9NcWQbhvyGJTAyyA5cxEgAFmE3Bvg1t7vBzpXZoxia3sJiAD5qiI2hUmFxJSKmn+2QwlqiGAwXoAXVfgiFns66U6eSckCOIOYgdASCdvVG2t/C1a+S/R8vdHvJTLr9FMk9Ksm9e/G0UE0tG3sdp1HcYlS5npO94=
+	t=1773136662; cv=none; b=P85pJR3QFvTZw2+ze/gNTts1qvA/doc5VZDv2CVNooEDblOIFrxlXf27Z9VUslq41vTpBTmEwlIfKSW0k9FPG1/BOeVON3k+AGgzSPgvgip/iSW1Vtxz7UK3neiKsz42h5eil/Cnp/W0/FBjfLb85GWqpikHNGG3JZ/UFXd/OTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773131082; c=relaxed/simple;
-	bh=wcr4t1LlPHXTR5rGl0JHNsU6hh5CoJncENRu5n+8+xY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WOYNoRgA2cyvBQ7OqDdhu9ROCFRjANbPHm21sINKz4bi5UYUDumnw5msDI6zZDWxq6/6xn+6MG/19tr57Ga0/DXS1QRelMapUJ769rTRolQQnZ08vWgFrjY5xik0k/2M3yo+/RckBb6sX26ZXtZd/qwAyi5TIvnmhf4lmLJeMMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZMfAy4Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773136662; c=relaxed/simple;
+	bh=dGBJzTjz5m+NMa32dIJtv8wj8C76M3988tpUHTl+siQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SN0w9UqHxtGp7/q5bEMPBfv1nh4jd2kL79hWbuGEth6KCQQfHnbPOwt0augLbV/vQk2uGF6RT+cnEYCf/P0nFD5nsyAgkAfpGpCNd3mzDnJNgvb6KsYreQ4fphtqtBL6UBmpWXfaqYAn9zCOoDcvayFkHCNN7XwsyYH+6422snk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C7CpuY6S; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZMfAy4Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA5AC19423;
-	Tue, 10 Mar 2026 08:24:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773131082;
-	bh=wcr4t1LlPHXTR5rGl0JHNsU6hh5CoJncENRu5n+8+xY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aZMfAy4Q8AIyx2nG7BTHO95U48i30qXyGToPlFuAervjMEV22Lti5yC8kEixyKvCd
-	 5nTL4e3bm1kxYt96im9nRwcRiUo7J+vK8V97CoGvwwohk/SMR+Lvnif8d7apxKksGZ
-	 yIj5GIe6nPyZWS1aRI+b2IpP4Mnp3aPepql8gvDaFxUtF7lqQbJCoAcD5DNKwnY2Bs
-	 sSCpDNMJ116GA113wJBa9siEmEm47pAMtgBW1WMSIHPeHyCXxT9mgh+8Is7wpIHMnf
-	 JQ+lhiXWQof5M+DT5v/1RnowVPr6Do7CRks9JGDjzxvvTVFKxVjk7lMdAkmsAyEiXI
-	 pcBGXjwkhI5Rw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, FUJITA Tomonori <tomo@aliasing.net>,
- gary@garyguo.net
-Cc: ojeda@kernel.org, dirk.behme@de.bosch.com, aliceryhl@google.com,
- anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun@kernel.org,
- dakr@kernel.org, frederic@kernel.org, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tglx@kernel.org,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v2] rust: hrtimer: Restrict expires() to safe contexts
-In-Reply-To: <DGQM5E2RZ8S3.1395H7JR422YB@garyguo.net>
-References: <DGOYGXQ1JWJ2.7F00MTVQPUKA@garyguo.net>
- <87qzq7bbig.fsf@t14s.mail-host-address-is-not-set>
- <DGPQVSXND3M9.1738YQZSFDNDJ@garyguo.net>
- <20260228.102641.702865761508670909.fujita@bee>
- <DGQM5E2RZ8S3.1395H7JR422YB@garyguo.net>
-Date: Tue, 10 Mar 2026 09:24:26 +0100
-Message-ID: <87ldg0m6rp.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C7CpuY6S"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-829ac4670c4so2491639b3a.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 02:57:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773136660; x=1773741460; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=M+5TAXXK2Id9C75JxvtSg5OOL0DW00u/yNAzn1WJF60=;
+        b=C7CpuY6S+OJjYIE6bs444s48Ad1UJ6ipy75LxMDl9ODW6JZSqGf6pq5vzx68eyFcOk
+         RTJKt2+x+o2x5b8fFfTQarlCBGn0rsIT08Y3YUBJIa5uowSuwgaD+i8PbhTEsvAmw3VA
+         xqwhk/OLmJB4g3lt6rpMOB2wXSWAvalTo+Y1GhX94OXm9YYAKPjCWAUk2iXJ9GiY6opN
+         Q4L03G15B92Nki+FPNeR+vApxvecUNSTp8rI3cLVdqBqZagP9uiBFcgteRy4B2kip8ds
+         rcTJ91I7GbnNCQPaIJ1b95LlJFqTIZR/jKfXNaYqJ8gP7a4ChHE/8iuIAZtihCTGEClH
+         HQzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773136660; x=1773741460;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M+5TAXXK2Id9C75JxvtSg5OOL0DW00u/yNAzn1WJF60=;
+        b=ZsCIA0rNrhc3F31b8/dCRVCkXPBk+RJymhFsooQNn6vNLrWPu+PEqEJX2ioQMe9XiM
+         2h8h/UYZ/gAefzgCYIJH4kNzIA0gTsjEsUuRYj3uMEs67dFike6jhe336h/7LmvflQCp
+         PQFcKNdwJgiYBt06JVo4/w6v1XPmjwNWCtqlBlBkd0DyVhKoROQYtQJ3pE0xDw8DP9VB
+         8O6+IBStdBN7s5/AwAnLDfvsS/xWasxLU16VaQeoZepI5qFrHNGJnUUeWY0OGDc5/c7r
+         XOC/cAX+3Aw0QngrhvRASkYRtxLcEQA4D1nA9aQmtOQuG+BjTXaSag4vfI7Lx+70FlIH
+         WBWA==
+X-Gm-Message-State: AOJu0Yx1RpMSl4cxwqJlykRXaWwYsOHU8u3hvhUo4thB3/m6UqpOpjiT
+	ybpJh6+orBV6t96DxlUgwvcG1/Re/PeqVo0K1o+AZgXReWazkxarg+Vxn7C1shJk
+X-Gm-Gg: ATEYQzzLL5x49SXjRbFyRc12qoBZ5+sYrWlExEi2tX8KMLwGYYG+skRFLhI2w4A7X8N
+	5Zpwv+BaSqMjb5ycwKgnB+Op4ArthVrLIlxlk9y6kV/8sJuK/pLGNEjoZrNoGNJlS5NShx1FgwG
+	v5t/kIaJ/nDx0gglx4+TEnFFuiC3YOmhhAlxeCeUsBcor4P2DYu5Zpk+nUlQZm+bZSrvWQ+E/kw
+	Smigf9+L9J8L15pFYYNyhDaCa4L3jTos83vxryDelnSOJY4uWMz383c0NwprcfrdRFcXQ/IqC06
+	JGtgwXBWOzn3LH3B2NZeAc4mU/qwGYvTl5Cp7EAQX2Jafemte+76XVixfftZfDDcTrCHw3byxz1
+	QQnIfN+yuu5KD6/bSp1EaJZnhIsWMlNHUHSrOUrTRCmWi1On/QYPembk1Zhs4q1eRzLJ50bDZqf
+	k9vd95cyahuiPHz/r6mm9eadEbvTqDss2QkHQEU7XWa+S6Zhn2c+lJH8bO8NrlwQeRhZL0vjdqq
+	+eNPtRIYT8=
+X-Received: by 2002:a05:6a00:2351:b0:81e:c5a:8c25 with SMTP id d2e1a72fcca58-829a2ef7a72mr12136818b3a.44.1773136659657;
+        Tue, 10 Mar 2026 02:57:39 -0700 (PDT)
+Received: from Albab.localdomain ([114.130.187.116])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a48a3b74sm17105000b3a.45.2026.03.10.02.57.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 02:57:39 -0700 (PDT)
+From: Albab Hasan <albabhasan276@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	acourbot@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	Albab Hasan <albabhasan276@gmail.com>
+Subject: [PATCH] rust: transmute: use split_at_checked() and split_at_mut_checked()
+Date: Tue, 10 Mar 2026 15:57:10 +0600
+Message-ID: <20260310095710.1166-1-albabhasan276@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Gary Guo" <gary@garyguo.net> writes:
+Replace manual bounds checking followed by split_at() and split_at_mut()
+calls with the checked variants split_at_checked() and
+split_at_mut_checked(), which return None instead of panicking on
+out-of-bounds indices.
 
-> On Sat Feb 28, 2026 at 1:26 AM GMT, FUJITA Tomonori wrote:
->> On Fri, 27 Feb 2026 12:32:05 +0000
->> "Gary Guo" <gary@garyguo.net> wrote:
->>
->>> On Thu Feb 26, 2026 at 6:33 PM GMT, Andreas Hindborg wrote:
->>>> "Gary Guo" <gary@garyguo.net> writes:
->>>>
->>>>> On Thu Feb 26, 2026 at 1:19 PM GMT, Andreas Hindborg wrote:
->>>>>> FUJITA Tomonori <tomo@aliasing.net> writes:
->>>>>>
->>>>>>> On Thu, 26 Feb 2026 11:42:39 +0000
->>>>>>> "Gary Guo" <gary@garyguo.net> wrote:
->>>>>>>
->>>>>>> >> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->>>>>>> >> index 856d2d929a00..78e2343fd016 100644
->>>>>>> >> --- a/rust/kernel/time/hrtimer.rs
->>>>>>> >> +++ b/rust/kernel/time/hrtimer.rs
->>>>>>> >> @@ -224,27 +224,39 @@ pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
->>>>>>> >>          self.forward(HrTimerInstant::<T>::now(), interval)
->>>>>>> >>      }
->>>>>>> >>
->>>>>>> >> +    /// Return the time expiry for this [`HrTimer`].
->>>>>>> >> +    ///
->>>>>>> >> +    /// # Safety
->>>>>>> >> +    ///
->>>>>>> >> +    /// - `self_ptr` must point to a valid `Self`.
->>>>>>> >> +    /// - The caller must either have exclusive access to the data pointed to by `self_ptr`, or be
->>>>>>> >> +    ///   within the context of the timer callback.
->>>>>>> >> +    #[inline]
->>>>>>> >> +    unsafe fn raw_expires(self_ptr: *const Self) -> HrTimerInstant<T>
->>>>>>> >
->>>>>>> > I guess the signature of this can also be
->>>>>>> >
->>>>>>> > `unsafe fn raw_expires(&self) -> HrTimerInstant<T>`? Then you can remove the
->>>>>>> > first safety requirement.
->>>>>>>
->>>>>>> Thanks, I've updated the signature to use &self.
->>>>>>>
->>>>>>> Andreas, this breaks the consistency with raw_forward. Is this
->>>>>>> acceptable?
->>>>>>
->>>>>> If we do this, we get to argue that the NonNull we have in the callback context
->>>>>> is convertible to a reference. Either way is fine with me.
->>>>>>
->>>>>> If you change this to a reference, then I think we should rename the function to
->>>>>> `expires_unchecked`. The `raw` usually refers to operations on pointers rather
->>>>>> than references.
->>>>>
->>>>> Does it make sense to simply have `HrTimerCallback<'a, T: ...>(&'a HrTimer<T>)`?
->>>>
->>>> I assume you mean `HrTimerCallbackContext`.
->>>>
->>>> Could it be a mut reference? We are supposed to have exclusive access
->>>> when we have the context.
->>> 
->>> If `Pin<&mut Hrtimer>` would work, then we can perhaps remove the
->>> `HrTimerCallbackContext` type and just pass a `Pin<&mut HrTimer>` to the callback?
->>
->> During the callback, ArcTimerHandle still holds Arc<T>, and the
->> callback receives ArcBorrow<T>. Creating Pin<&mut HrTimer<T>> would
->> cause aliasing between &HrTimer<T> and &mut HrTimer<T>?
->
-> This is fine from an aliasing POV as `Opaque` cancels the noalias requirement
-> of `&mut` already.
->
-> As long as we can guarantee that no method on `Pin<&mut HrTimer<T>>` can race
-> with methods on `&HrTimer<T>` it should be okay.
+These methods were stabilized in Rust 1.80.0, which is the current
+minimum supported Rust version for the kernel.
 
-Is this really OK?
+This simplifies from_bytes_prefix(), from_bytes_mut_prefix(), and
+from_bytes_copy_prefix() by removing the explicit bounds checks and
+panic-avoidance comments that are no longer needed.
 
-struct Foo {
-  timer: HrTimer<Foo>,
-}
+Signed-off-by: Albab Hasan <albabhasan276@gmail.com>
+---
+ rust/kernel/transmute.rs | 33 ++++++---------------------------
+ 1 file changed, 6 insertions(+), 27 deletions(-)
 
-Surely it cannot be OK to hold both `&Foo` and `Pin<&mut HrTimer<Foo>>`,
-even though the internals of `HrTimer<_>` is an `Opaque` field?
-
-I understand that it would be OK if we had a `Pin<&mut
-Opaque<bindings::hrtimer>` referencing inside `Foo`, but the other one
-really breaks my mental model.
-
-Even if it works out with the current types, if we add a field to
-`HrTimer`, stuff breaks.
-
-
-Best regards,
-Andreas Hindborg
-
+diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+index 5711580c9f9b..643b19406a24 100644
+--- a/rust/kernel/transmute.rs
++++ b/rust/kernel/transmute.rs
+@@ -67,16 +67,9 @@ fn from_bytes_prefix(bytes: &[u8]) -> Option<(&Self, &[u8])>
+     where
+         Self: Sized,
+     {
+-        if bytes.len() < size_of::<Self>() {
+-            None
+-        } else {
+-            // PANIC: We checked that `bytes.len() >= size_of::<Self>`, thus `split_at` cannot
+-            // panic.
+-            // TODO: replace with `split_at_checked` once the MSRV is >= 1.80.
+-            let (prefix, remainder) = bytes.split_at(size_of::<Self>());
++        let (prefix, remainder) = bytes.split_at_checked(size_of::<Self>())?;
+ 
+-            Self::from_bytes(prefix).map(|s| (s, remainder))
+-        }
++        Self::from_bytes(prefix).map(|s| (s, remainder))
+     }
+ 
+     /// Converts a mutable slice of bytes to a reference to `Self`.
+@@ -110,16 +103,9 @@ fn from_bytes_mut_prefix(bytes: &mut [u8]) -> Option<(&mut Self, &mut [u8])>
+     where
+         Self: AsBytes + Sized,
+     {
+-        if bytes.len() < size_of::<Self>() {
+-            None
+-        } else {
+-            // PANIC: We checked that `bytes.len() >= size_of::<Self>`, thus `split_at_mut` cannot
+-            // panic.
+-            // TODO: replace with `split_at_mut_checked` once the MSRV is >= 1.80.
+-            let (prefix, remainder) = bytes.split_at_mut(size_of::<Self>());
++        let (prefix, remainder) = bytes.split_at_mut_checked(size_of::<Self>())?;
+ 
+-            Self::from_bytes_mut(prefix).map(|s| (s, remainder))
+-        }
++        Self::from_bytes_mut(prefix).map(|s| (s, remainder))
+     }
+ 
+     /// Creates an owned instance of `Self` by copying `bytes`.
+@@ -149,16 +135,9 @@ fn from_bytes_copy_prefix(bytes: &[u8]) -> Option<(Self, &[u8])>
+     where
+         Self: Sized,
+     {
+-        if bytes.len() < size_of::<Self>() {
+-            None
+-        } else {
+-            // PANIC: We checked that `bytes.len() >= size_of::<Self>`, thus `split_at` cannot
+-            // panic.
+-            // TODO: replace with `split_at_checked` once the MSRV is >= 1.80.
+-            let (prefix, remainder) = bytes.split_at(size_of::<Self>());
++        let (prefix, remainder) = bytes.split_at_checked(size_of::<Self>())?;
+ 
+-            Self::from_bytes_copy(prefix).map(|s| (s, remainder))
+-        }
++        Self::from_bytes_copy(prefix).map(|s| (s, remainder))
+     }
+ }
+ 
+-- 
+2.43.0
 
