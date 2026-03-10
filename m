@@ -1,75 +1,70 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020106.outbound.protection.outlook.com [52.101.196.106])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022113.outbound.protection.outlook.com [52.101.101.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACD140DFAA;
-	Tue, 10 Mar 2026 22:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3338A1F0991;
+	Tue, 10 Mar 2026 22:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.113
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773182010; cv=fail; b=bvR9Mb9/+oLRZMNIQXVA+sNYVHpePV19q5ns2Z6izTWjwKuEKfijbQ4oyUES0MjY+OOMiUdKUi1lFmGElkwclX1iowrATrtQqRzEqkc4Q+DvH5w8lTfTTAsLFblACQWezCFhwJE14gk+yGYEHhlUR+czIHljsGIECcPO2oGvkzI=
+	t=1773182220; cv=fail; b=fxNsSnqGd7H+MlED/1y7kxFVDusuPST4yL+yqfxTOgAxyT9Y0Z/xctyr8+GKL8Kx1zmChBXKhCndrCVvPHnffIre2l2/WuVVji7o7bwo252lWMJ88gDJNoCCow3fsvDbtInaBI5voomfrMc4Ey68ZQTCnDyzR5zHC2LCYVO2KbE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773182010; c=relaxed/simple;
-	bh=WrhU+CLqbwlvOB8kR4iZMEHxD/Cm2wlrXyUinkigCIA=;
+	s=arc-20240116; t=1773182220; c=relaxed/simple;
+	bh=xxLn1iwMQy9mdGkxN9mwbN3ZRZeiIFKs9bWe2GRNwUw=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=C9kfFO6GrlvxIjBAvthKtTSFNzizKet4KWiVskIporxVaamPV9tIxylmU47cmB3AtleVSyeR6+/q/WE2huvu/kLWs0FWdl5XQAxbDOxxYhHx3pFzMD7bHYFzNlpCqOjAjZR/jdUzfU5c2g3zUXtpvU66wjG6HroN3ZngwuATTnk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=th8kUaDz; arc=fail smtp.client-ip=52.101.196.106
+	 In-Reply-To:MIME-Version; b=l1W5Ly9D34h0GoqXjRPH1mqvKobC7zQJpN2ynteP46Ff36dnrH2AjrOHAmQ+ktmJYwpK/nMIzJbcdWZ0RkfuphoBRuigWcBFDlmTyz6h3z1plkeS5a/dLos0A0xVn95pzNvkKJUD/V+DiiszABj46J8HOeliSV4J8e5z14w3Uec=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=pBi2KuFT; arc=fail smtp.client-ip=52.101.101.113
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="th8kUaDz"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="pBi2KuFT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KF3kdLz4HWzHqvUK1QwthKGurscu6XC/2fD+ug3rZSZg9t+vfIl52xypnJnHB/LJWLSg/hjO7VET2TzVSMKC5XEH1IwyLRtavkbH7doKywbI7GgvsiMJfLfo2qcGSXmoDYFU6CuADW9i+sQQSwRZtFySK6U98DjjOOBZY2RPyZ+wODNjO6IxN94xz9PdJC65/Dx/0Y5/Ef01fQPkMzr1LVhu/wMC5xDTZoBVgokQneJEbvYJbl3MrSR8F56IboQR20YyEH9ICE3wnwZCZ0ZO7R89kzRuEfzhiLDZ3b8q9wODTHerHTsAacjDZSPQtft0p0vDr0Bh9UmXeQAMdoS6OA==
+ b=fHG2K/wkIdWzyJjMtUN1Gp2w7++lYCyODIMPfC3ElY3w4pTKbWsS166tSrXDdaq6JbSMyC50bw7ZEfOToJQrvmMslM60qyPkVP1ITElgczDhNjuxfPF6eVvdwKlSCKj8sfev58r9qtkx+cvMEorxRgnDSSChduIIglzyWjqE3pmEYLkX14cqfXku8VwyrBLFrl97YRRG5bWQU3W3//n53s+da2W+e9eGen2gdQCedlAdSDiPQuZ2+XCpZ9QFuaAmRYemRCmCuC3wnu1ToABhQn7AI4IXagzfeFo9t0pZoIZtP3jPVWmVdZvKMdSH1UUPdKUA8qv98eElP3WeJWFP9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PYCrPfJTVOfoClhh7ZWM4zpwjQLh1Pmk6B3LZOmqV8Y=;
- b=Tp+1SOaEKO46tTwOvNmofMy9CDXhs7dGGIXY6nv7W8tm5dBJCKinE+x0fKTa9ZI0T+svUitlYUto070JH1pHe7vELY96WVIU+rjklrgzRCY7OIKdYoKVYW4qtqQUGGyGGKZCJ4bkDzqNOc6x4j9A/jEoPl6j8JnDxwYJ14lyrE4zb4jL5ZVv1zzL7kkMrxFwY9t4a/z27D2RoWUtsKWWr2pSrquUEOTGpPFkDC8KIjxO0HRMtWF8RwCudVb8LUGHAsblQ9/NDwqKA7DpWqF51iWPNaPlQDyLO41rq2qqrYOHNIsomL1+j0mSAIiUvOdRuWIkx12w4o3SoceqjVxRfg==
+ bh=v6oEcnWzX+B1zMr+4BQYSRJ/2m72Tiwyqp4AcdyvLd0=;
+ b=wNFiv3zfU14iUR/cDNe42+fQvW2aMNV8aJzOtLdpWdLZxw1kQKsl3piVqq9OV6lhNBeYtirj2mrNVBTP9uB1iyEy5VKvmJARKEgWTYJU5k2LNG4Wy7zEOMFmnB9BUANJgx+x+ZMU/s3R+1Hmyay/lECeDuHUA2mVb3/nmBLtge+cvus8ykwmovdfbFTuGoKzQkMwTi5CJDGnNv4UUrCNiLb5iRhF+fgA4BOo779B3PLXzBVNYaHJZ34opAWSbx8meiIheQ0MsOPN0CgDSRAxs7JxLlugc+op3rTTnFuVZb81lKX9Ihw+6eXoC35FNjr8su2rz+Ko141A5P/JVQ6UDw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PYCrPfJTVOfoClhh7ZWM4zpwjQLh1Pmk6B3LZOmqV8Y=;
- b=th8kUaDz8XgX996Jwmkk0tI/+Et9q1DUES8ody+QAuaiO7m1Ae4bbhzOQ5jniL0l106s4pLDHpAzAZYmNFEEr/pxskgI9R/6v6eTi8z9hiMv6C4Ljo8GRnfe07jhQCVmr1BUPc4PJyRYXn6EGuTY+ZcUHAr9Z9mkBPPX6M7VvxA=
+ bh=v6oEcnWzX+B1zMr+4BQYSRJ/2m72Tiwyqp4AcdyvLd0=;
+ b=pBi2KuFTtUT3DZ1zxSRWAb9e8eFQ511NK/EJ+F+eaujmcnuH3f9bJe0kEqvwBzDK6nEJk1EKFoxe4Eyl/9SjkRIyGBuYc/MAbJX/kd/bHp4TkMdsIZHWOBnI3zOqiw/XgVwqiOJJXYsvyL060sz/n0Hd3g5eSsZZooM8remqFTg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by CWXP265MB2071.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:86::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Tue, 10 Mar
- 2026 22:33:25 +0000
+ 2026 22:36:56 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9678.024; Tue, 10 Mar 2026
- 22:33:25 +0000
+ 22:36:56 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Mar 2026 22:33:24 +0000
-Message-Id: <DGZGK7BW0J65.2T447EQK6I0HV@garyguo.net>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v8 07/10] rust: io: introduce `IntoIoVal` trait and
- single-argument `write_val`
+Date: Tue, 10 Mar 2026 22:36:55 +0000
+Message-Id: <DGZGMWASD35M.4Z0SYXHS15Y3@garyguo.net>
+Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Jesung
+ Yang" <y.j3ms.n@gmail.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Carlos Llamas" <cmllamas@google.com>,
+ <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] rust: support overriding crate_name
 From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alexandre Courbot"
- <acourbot@nvidia.com>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Tamir Duberstein" <tamird@kernel.org>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
- <20260310-register-v8-7-424f80dd43bc@nvidia.com>
- <DGZ8XPCCUDQ5.14RUPZWK8L509@kernel.org>
-In-Reply-To: <DGZ8XPCCUDQ5.14RUPZWK8L509@kernel.org>
-X-ClientProxiedBy: LO4P123CA0243.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a7::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260310-binder-crate-name-v2-0-0f7c97900d36@google.com>
+ <20260310-binder-crate-name-v2-1-0f7c97900d36@google.com>
+In-Reply-To: <20260310-binder-crate-name-v2-1-0f7c97900d36@google.com>
+X-ClientProxiedBy: LO4P123CA0249.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a7::20) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -79,213 +74,146 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2071:EE_
-X-MS-Office365-Filtering-Correlation-Id: 998b16e2-5fd7-46ce-7f0e-08de7ef50b05
+X-MS-Office365-Filtering-Correlation-Id: 069b8283-ce76-485d-fa18-08de7ef588c2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7416014|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|366016|7053199007|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	awBJ8yIUNXYvdNpaEw0Z9+aelRi1TnKJDd0tRJZ3NZCpYUtvo2+eBN8vUx2idpDI5uI65kB0GX0+bJ48T7pOgt41xN5IypjNCzv1X60KYs7IXe05EpcEa/5mOa0tvyoTe0akIUdq0/GsuRBi3kIJv7MMoBAGrtIZFDICXtT6YA/LotAwm4ccLaqfHXKahRga1cBGHu3AWDTadb7WI56zGGMmfaO2r2EFt8R8trsBrAMrR5zpqwpDa+VcHL8X2xScZaWmFCqdNwFcTiefMZNu0fKmcY6T5TVBsF/+EeSgjVVRrGjmVxyk7VsgHjMUoPsb08TMdPiD8EdHA2PDnj44n3b1A0iCFR3pq9cUK/pk6xEkjO7RcoWdWB2udla1a0VI0njXIXfmYErMEKEJNRSFEyN10++q9WMvrk6aqgqrXpXMu5h8MXQM4g9TbK8TL8Z3/PnvqpuEJDzewy4mB8E1r7AkFapP8L0VfT0NYKydaJEvlAqr1MjlHUc4eYIhUeyfXtwPzq3QImcdm9JWCrw6jh33zS33A926R6CjWig26aNAOdm2GdX3x1TBsG1XF/kj0ehkUklfkQytdXuQKv73hSWfwCNTxVvTcfoX+TxRWfoJSkrAn2MH2q68/ShPDUNoOIhjDepRbsgIBh+U0e8k9i/LCgDInSbsEiI5tdUZPsAqym6OQ92ik9i3cQ6uUG1Q6npHeJEBJJ/R+fagvmYOf9S1RS/E4GOjEMwgJdlCPk0=
+	zTuNhqcuckV2Wi6e3mtPSRVlRw8w1n42Pz9Ys1BRRsGLY7rZ4QZ/YXFMWX5wOp+idOGnGp3NEo1QM6kWOHslAWFwgs3hJd7Df8GfwTSVcncyoCr85CWu6pFhqnt2uPlyygfeDGERLF9SUJ960A2vqMxwsL4kophJ8fA4Eb5r/UfshjkKnDlP8TKI+l3WI4430Vr859QKUpRhHcekdhZ0RmSYtJsda5oNyYDycahhlov9ZKqjKjvGD0EQyF3m5bh9jMatptfl9zkKFLz/bCuzT72YvRnhjE+7sPui8oi1HZQ0UF4X4yTeKhNMQbY4tno0mJLyq3v7c7Nckt+alFhQ8lF2bDOvjp8LboRgF4sTcbHHUENsQ8X7PB8ZNR6x1b1jzCnhNwAD6IWrvQxGSAmw5MZfEJQP6P/2u8uG/9xctSh+vOvte7+IRmaODgmouW6m19o/KU7CPIGuBaFYB+T6U1LobduMqfaupNH/CZtonSGJP64Krub9Giw8/37wo/DyBmbLbn8B2mADJr970X7t9WdfKESjK1g5hzNpjay3fgpi0vn5aqklVKQl6OkB5iijUuGbMGGx39AqgVKWLzVDOGGLICWgCz0qricDQ9oKiJJ8LVBh7ijAJNm5f1wVRK/8Ll2TnjIpAisSHzmMkyG5oTeKa6XKqNx95ateJaRpGhT99JtfRoiKPzKYUc7ZZCV1/aFcNjYrxYVhb0uuev5og9aIF1/ldmx8TCWpGCLEe2s=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7416014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(366016)(7053199007)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Rng0L1BCcUVQL05wVUxjRlZwUjlUU2Q2TWIrclNFTFFrd2FtT280T3pMOVkz?=
- =?utf-8?B?ZDVBNFh6ZVY2ZGV1ekpUWUtMOXorbGRaSmRSRXh6T09EWitEUmJjRkVhTGhy?=
- =?utf-8?B?YW9nQXNFem5kV2JpdEgyaGFkVjJyT0phbkRBZUFadWFiUjZVcXdZeGNOVTFz?=
- =?utf-8?B?VnVqd201aWd6dmxtbk9NV3d4SFhpVjhGbUxOKzFvVHlGUUFEakFPN1hGNEYz?=
- =?utf-8?B?NHE4Y3RPS3RwOW44TFlpeGs1UXlQYXU5Szd5bksyd2RhVHpWSVpybjlxd1E3?=
- =?utf-8?B?TjZlZWNxcVloNEdwTDVHMDZIK3ZjY2c3VDJROVQ2SzFhbCs3ZE5nMmR6RWVj?=
- =?utf-8?B?emJBcit3WnQwNHVRbzJrdmxBclQ1Y1FINEt2KzlVaEFhbHA1eTJIZTVZYVBk?=
- =?utf-8?B?NlVsQ1NhWWV3QTJSb1VXUUNKbEc2WDNJcXRyaFZ5MjNpZVVrTWtaaWVuWXRD?=
- =?utf-8?B?YTdqaEI4MndDZzVVUStMT2FMQ0hGYXVqZUN5aklwL2NZOGp1ZDNjYnZPSm1m?=
- =?utf-8?B?c3N5eVU0SXFIMEwyVVBGUlFkWnZrTTFoSTVJcElLU3hpdTczZXZvUUlUOWRY?=
- =?utf-8?B?R2IxVzRTT2NQbFNFQ2Zjc2VPellvQ0JmL20xR0llVWJQRjVFT3JtMG9YYjJB?=
- =?utf-8?B?Qm1PbWhXT0prdmNkL1NsV21wNFZGWFoxaWEzeUdlMmFJU0ZsRlgwVGs3dWwz?=
- =?utf-8?B?d1ZaN050cG9jSEZ5d1FmcC90WHBLK1VGN3UrSWlhVTVhMnRnSHJ3ZUI2aUFR?=
- =?utf-8?B?clFURnpTSUtGNnFqUDVXYUlCYVFyT1BzU2FFZkZhNEtDTkI0OHg4ME41dWxY?=
- =?utf-8?B?RllQV1RoWGZuTHY0RXJISjE3RjlsL2xPZ1dxVkNsdmJENFlHaUt1TFNVQTNT?=
- =?utf-8?B?YTM5cG5rcmh2c2V3WXJMdDBvbm9tN0hTT3d1dmxSSitNbW5XRGgvRWFIVWh5?=
- =?utf-8?B?eFdkZGlQRDVXQTJ6L0pkblRNT0xYZmxmQ004eFBCaHQvSG9jbmRneFVtUklr?=
- =?utf-8?B?R0xzRVdFS2tPSzNxN1dJWENNNjhnb0FxQWZvYktVRERkZlBQWFpSazZvMEQ5?=
- =?utf-8?B?ZjVxZytKYnF6MkdSQ1hvTlFvZG5WYnJSQU54ZVg3RWlQcENkS0x1Ny9rMzZk?=
- =?utf-8?B?c290VlZ1cGV1ZmhjdnFxMDFxakcvRk9YSTEyTnBOSkdwNlVTWTRQSkxzQ3ha?=
- =?utf-8?B?WUpjMnZpemZaaDZFV3Y1KzNFY1ZZZEY1aWl4SDZmSEY3N0t2TVlpcUloRnk0?=
- =?utf-8?B?V2VLaC9zaEQ5dm9naE11VFkxNHFhb3FtZVlsaHVrMW5vTVNPVmhMdzlFL1Fz?=
- =?utf-8?B?NStxSkZFRURiZk1ibk5oZXZrSTdQTnVjSWlkWm11N1lLc1VadlBRcXlldmtS?=
- =?utf-8?B?UkhJVWdKSWZDVllXV1JZSFk3VExxUE1ic0NyVVhwWWdGUEQ0VEF3YXVSc0Ux?=
- =?utf-8?B?cU9PaWhGaGdCM2V4WHdRUHJjUWdSRzJwaEovN0RocHN6SFkwVU01WGVPbXds?=
- =?utf-8?B?bHBMOTBMMU1GWk1jYjBTeEQ1UGt5RUd1NkNiOG9EUHdObnlDVmozZGlwMUU0?=
- =?utf-8?B?MDB6ZWNmN3dlNG1DUDg3OXlnZXdOMlc5M3FJNnNuVythMVVvWEYza3ZjaFh6?=
- =?utf-8?B?WWVkS2pERFBSakJ4Z3JqeVkxSU9OUXAyT1lsWFhTUFlIQS9LNGRVWFM0MXNz?=
- =?utf-8?B?MXppdEt4eVdJVytXSzArRVhLTWpwaUR4NFlqY3RiK3lCam9JVTM5dTNtUUQ1?=
- =?utf-8?B?R3I4WE5qMm56aE1VN3NpaS9DR3ZaM3lEY0UwSXNqTmpmT3ArZ3ZWRTloeitq?=
- =?utf-8?B?cWZxZjdqNjlLZHFOZ25HbG05bE5ETFdFTE1rM1l2dXpESWkwK0h0cG5TS2tm?=
- =?utf-8?B?cHFjMjQwQmNhUUhXV3dTNFhNbXFMNHdOOGxyTHdDamlHaHZ5eHpHY1ExMmR0?=
- =?utf-8?B?VUhvTEtlemozdEY0Zk1BVzRlYjFUTTRVWE1BSnVzQzdjbVJtMjJ3UlB4cWZY?=
- =?utf-8?B?c2dOR3o5R2EydHprRlhXc1ZEZS9aKzQ5dlF2REVlMGJFRzRKQ0pFTFZhVXB1?=
- =?utf-8?B?eSs1MUNDK3R0enl6VEhDeGhwRzI1cFE1VmN3UDk5Q1FnZ1RwLytTQXRmQlVj?=
- =?utf-8?B?ZzIwSkxNQzRYWlVmL0xIcG5Zc3F1Rlp4S0dqSkpWbm5NVGh2OUMxUXRrcU9D?=
- =?utf-8?B?M1d4TkxSU1RuVmRpY21UV1ZxM0M1OEc2TmJIZ0lORnFyMXZaUnRBQ1lIa1py?=
- =?utf-8?B?czFWZnpEOUNGQklNdElZSkQ3RkNzNldaYnJIdEcxZmtDOVBMc0VPVVYvcDJ3?=
- =?utf-8?B?b1MzbFk0eHpGckp0ZktIako0OUJhQzQwbGluMjNUaVhXejBWMC81dz09?=
+	=?utf-8?B?TlRWUklzbE9FSWc3YldPR01mUjdhMVgvdlFBZTBlZjlZZXpYbnZmSU9jMnpt?=
+ =?utf-8?B?MDFJZU51MEpBdXNWMUdMMytjbUxlSFpnWlFWZGpBODI5Z2dxYnQxTG8wUjNo?=
+ =?utf-8?B?OEwzVEJib1BIdXoxMTljTHN2YmZYRlhNUW8weXRjOVVGd1d0N0dvY0VCK1BX?=
+ =?utf-8?B?ZlQ4QWVDbnRlV1JyK2hPak1ZT0lDSVZaWXkzNW9vbWhUN1FSNlJDanZSUjND?=
+ =?utf-8?B?cmdmcnAyRWVwWWx0c3FiSEJOY0xyRDFrWkF2V3Q3cDhySkpNMmVaU0pBRTZv?=
+ =?utf-8?B?Tk9mdmRGSmhPMWlGYnduV0tTYjBLUlJGb0FRTzV5alorcnRVc2pkSG1HdXNs?=
+ =?utf-8?B?c0VvU2lHdHBoWWFpUmZyR0xzZmJIUWdzTy81SFZYMzhCWnVpbGFzaHRHcnhW?=
+ =?utf-8?B?Y2hlTUQ1VDE1ZXRYbU0rNUU5RlcwaURDVEVtQ0lSMWNGY2QwSWVlRW5zZFd2?=
+ =?utf-8?B?SXJ4STh6VkZIMFpHYitySmtYeW13QnJFUTB2Qzd4WEN6N01pMXo5SlI5T0Yx?=
+ =?utf-8?B?ZW5kb2ZNQVRGWkZ3TFR1aTJIOFBZV3FMZG96U2FDTDhWV3hIQUxTbnhtSXVv?=
+ =?utf-8?B?YlhPVE5pM2dMSDcvOFFNdnF5Q1dDQ0s0VlJJb2JXRndRVlI2dXlJQVljMjBG?=
+ =?utf-8?B?cUw0c3Q1T3F3cW5MTzV2YndNckZ6eFV2eENwMDVBUmxRM0lCM1MvZXY3QWs5?=
+ =?utf-8?B?MkduVWFPWE9LSGRwTU5uOEEycTZFMjJOREx2dndlT2VtS3F5d3QyeEVwN2JE?=
+ =?utf-8?B?Q3ovQUl5RXVkREd0Wk14OWVZWHkxdHZsTlpJSmJxcm10aWhFZ1MxOXBCUzl4?=
+ =?utf-8?B?RHRxdXRVanRIR1dRaGQvZGZsMWttMjBEVGVJaTh2a0M0WGl3SkhyWmNzRWh6?=
+ =?utf-8?B?RTQ4YndRYWpjdnJPcEtFcytjdnFYYnRCbjlqK2R6cjZUOFlEdDVFaktNNGIv?=
+ =?utf-8?B?MWdVRmxlbTh4TEN5eDV5eDhvMHBCb0VxcEx3Q2Fmb2htUVFqRXRUVm9TYmh1?=
+ =?utf-8?B?azl5WWMxbjlOR0xzaitISzdHZkhhMjFpUk9vMXVxYkE4WCtqMnJiTWMxbXY5?=
+ =?utf-8?B?ZkZqRnBLZ1NiajhkUHRSOFdySjl3MytHWmxYcFlXdzhOK0dyQ09sSHorU3h6?=
+ =?utf-8?B?TzFERFRqMnpmNnE0Z28xQXA4NnB6bm1zNDMrbTg0TXM5dkVKamRNSVo0YnBZ?=
+ =?utf-8?B?VTIvcldPc2hoRWJJTy9aaWRmSnRZcTNDUEVpQ29JKzJsa0ZxYjZGQzFaL1JR?=
+ =?utf-8?B?UTYwSjVnVTJqTWxna2pFUUN6eERsc0NBMkpydTlJazZ2Q1FMSm5Bd29QUGlY?=
+ =?utf-8?B?NjI3UXVxM05tYnZTKzZ3ZnBwekZ5Q3V5dndVbW1GZm94S1QrV2FUK0V2cnRj?=
+ =?utf-8?B?ZGIvMndTV1JBbDBzZGVuNlpVSzNDdHAzMXBIemF1WWhCczBFSVVuUEZGRG5h?=
+ =?utf-8?B?UVVzeHp2MVdWcmgrTkpEMjhjcHFoN2dFdUd5bjJxUWFiMTZ6QjBqNmRsODdy?=
+ =?utf-8?B?QVdsYlY0VktPb3BCSjgxMS9HMWpqekZmSjhKUVNreTRNN2FaVE16ZVN0VHZo?=
+ =?utf-8?B?aHdlcE9ya3JYQ1pocmJJeGJZZ0Erejk4R3pVb2hoaWNNcURvS2V2QkpMMk02?=
+ =?utf-8?B?MVZxUnF3L0NqdkdYcGQ2Q2xMMythTUFmVGRzL0lka1NGMFZoV3NLRHVPZFRE?=
+ =?utf-8?B?L050YW9vQjBmcVdacFY0Nk1Yc0pxb29nY0JkTURwd1M0V0E4d3FmVjhPYnNl?=
+ =?utf-8?B?WTNFUmIzZk5ScjNzaUFKS3JlWHB1YTNaR0xVSHEzejlzTGFMYWFQclo0VUt5?=
+ =?utf-8?B?c1VyKzBnUmxTc092TVpjK3JLNEFiQ1RCdm5GdVVSK2FacjhTcjh3SFBSNnpi?=
+ =?utf-8?B?QTIwNlkzK0hCdkkxc2JOOWtYeWdIcXcxQ3NTcmk4SldnR3Qyam9KOEJTc2lx?=
+ =?utf-8?B?OXF1LzREZHE4RWR4cFJjUHA1RnpkK2I0NVR3d2xoUkRpNmhaSEJ6SXNNK29X?=
+ =?utf-8?B?SWwyUGVPcXRKc0NUbTBTdCt3Y0FZSG8vWlBXRUNDQVBHeHlrb3pNdCtDSU1w?=
+ =?utf-8?B?bGtmRXdjRmFxYWZwRVlNaFdqY0JTUHh6aThPcnhDSXFNVWZJclRQdG1UUi9r?=
+ =?utf-8?B?WXNBK3p4MHNaV1pJQmRNUUxNZ0VVSTRlVExBRG45Y28yVzRhbXBENTFIbHQx?=
+ =?utf-8?B?S3NDdzlmb1FIaTAycEdOQ0Q1eU5qMnR1QjZ0azVCVEVDbGFlUjdmNjRTcHN1?=
+ =?utf-8?B?WXFacWVCTCtXNE9hTG95TzFVOEFLNlRLd1FLcFdEUjdJNjd3dk5zQjVaeUlw?=
+ =?utf-8?B?K29qU2doSkYvd1RhNU1KVlJNWEowVmliRnN0ajhsQkxWbzU4dGRmQT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 998b16e2-5fd7-46ce-7f0e-08de7ef50b05
+X-MS-Exchange-CrossTenant-Network-Message-Id: 069b8283-ce76-485d-fa18-08de7ef588c2
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 22:33:25.1050
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 22:36:56.0492
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DfuxACfiy431BPbOitWrS7sxD/m1cZSjn+fegEBUZRFhhHlmbFKJ93sMEmOGcFkblLyh6YHoHR543i9YoTApyg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: w5a6iPVxfAKRsIA2+gDS+V61+2TRr5Lovo++2p0TcGC//Z8jCoVrmmGNVp8puqUUq/49UlOLMvPaBdgqdgZZbA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2071
 
-On Tue Mar 10, 2026 at 4:34 PM GMT, Danilo Krummrich wrote:
-> On Mon Mar 9, 2026 at 4:14 PM CET, Alexandre Courbot wrote:
->> +    /// Generic infallible write of value bearing its location, with co=
-mpile-time bounds check.
->> +    ///
->> +    /// # Examples
->> +    ///
->> +    /// Tuples carrying a location and a value can be used with this me=
-thod:
->> +    ///
->> +    /// ```no_run
->> +    /// use kernel::io::{Io, Mmio};
->> +    ///
->> +    /// fn do_writes(io: &Mmio) {
->> +    ///     // 32-bit write of value `1` at address `0x10`.
->> +    ///     io.write_val((0x10, 1u32));
->> +    /// }
->> +    /// ```
->> +    #[inline(always)]
->> +    fn write_val<T, L, V>(&self, value: V)
->
-> Still not super satisfied with the name write_val() plus I have some more
-> considerations, sorry. :)
->
-> Let's look at this:
->
-> 	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
->
-> 	// Pass around, do some modifications, etc.
->
-> 	bar.write_val(reg);
->
-> In this case read() returns an object that encodes the absolute location =
-and
-> value, i.e. read() pairs with write_val(), which is a bit odd.
+On Tue Mar 10, 2026 at 2:53 PM GMT, Alice Ryhl wrote:
+> Currently you cannot filter out the crate-name argument
+> RUSTFLAGS_REMOVE_stem.o because the Rust filter-out invocation does not
+> include that particular argument. Since --crate-name is an argument that
+> can't be passed multiple times, this means that it's currently not
+> possible to override the crate name. Thus, remove the --crate-name
+> argument for drivers. This allows them to override the crate name using
+> the #![crate_name] annotation.
 
-I mean, it also pairs with `bar.write(regs::NV_PMC_BOOT_0, reg)`, so it's n=
-ot
-totally odd. We just need to teach that "write_val" infers the register loc=
-ation
-from value.
+Could you add a line about the fact that crate name have no impact on outpu=
+t
+locations as we always use fixed emit paths, as we discussed in v1?
+
+With that change:
+
+Acked-by: Gary Guo <gary@garyguo.net>
 
 >
-> In this example:
+> The --crate-name argument is kept for the crates under rust/ for
+> simplicity and to avoid changing many of them by adding #![crate_name].
 >
-> 	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
+> The rust analyzer script is updated to use rustc to obtain the crate
+> name of the driver crates, which picks up the right name when it is
+> configured via #![crate_name] or not.
 >
-> 	// Pass around, do some modifications, etc.
+> Note that the crate name in the python script is not actually that
+> important - the only place where the name actually affects anything is
+> in the 'deps' array which specifies an index and name for each
+> dependency, and determines what that dependency is called in *this*
+> crate. (The same crate may be called different things in each
+> dependency.) Since driver crates are leaf crates, this doesn't apply and
+> the rustc invocation only affects the 'display_name' parameter.
 >
-> 	bar.write(WithBase::of::<E>(), reg);
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  scripts/Makefile.build            | 1 -
+>  scripts/generate_rust_analyzer.py | 8 +++++++-
+>  2 files changed, 7 insertions(+), 2 deletions(-)
 >
-> read() pairs with write(), since the object returned by read() does only =
-encode
-> a relative location, so we have to supply the base location through the f=
-irst
-> argument of write().
->
-> Well, technically it also pairs with write_val(), as we could also pass t=
-his as
-> tuple to write_val().
->
-> 	bar.write_val((WithBase::of::<E>(), reg));
->
-> However, my point is that this is a bit inconsistent and I think a user w=
-ould
-> expect something more symmetric.
->
-> For instance, let's say write() would become the single argument one, the=
-n
-> read() could return an impl of IntoIoVal, so we would have
->
-> 	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
-> 	bar.write(reg);
->
-> 	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
-> 	bar.write(reg);
-
-How would you modify the value then? `reg` becomes a combined pair with bot=
-h
-location and value, and we would start need to use a closure to mutate inne=
-r
-values again, which in my opinion is bad.
-
-This would again become the `IoWrite` design of the last iteration which is=
- the
-part that I disliked most.
-
->
-> and additionally we can have
->
-> 	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
-> 	bar.write_val(WithBase::of::<E>(), val);
->
-> The same goes for
->
-> 	let val =3D bar.read_val(regs::NV_PMC_BOOT_0);
-> 	bar.write_val(regs::NV_PMC_BOOT_0, val);
->
-> which for complex values does not achieve anything, but makes sense for t=
-he FIFO
-> register use-case, as val could also be a primitive, e.g. u32.
->
-> With a dynamic base, and a single field we could just do the following to
-> support such primitives:
->
-> 	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
-> 	bar.write_val(regs::NV_PFALCON_FALCON_RM::of::<E>(), val);
->
-> I think adding this symmetry should be trivial, as most of this already c=
-ompiles
-> with the current code.
->
-> Also, let's not get into a discussion whether we name on or the other wri=
-te()
-> vs.  write_foo(). I just turned it around as I think with the specific na=
-me
-> write_val() it makes more sense this way around.
-
-To me flipping this around is the odd one. If this is flipped around then t=
-his
-should be named `write_at`, but then it becomes odd as it is the dual of `r=
-ead`
-and we won't have `read_at`.
-
-Best,
-Gary
-
->
-> But I'm perfectly happy either way as long as we find descriptive names t=
-hat
-> actually make sense.
->
-> Unfortunately, I can't really think of a good name for write_val() with i=
-ts
-> current semantics. If we flip it around as in my examples above, the _val=
-()
-> prefix seems fine. Maybe write_reg() and read_reg()?
->
->> +    where
->> +        L: IoLoc<T>,
->> +        V: IntoIoVal<T, L>,
->> +        Self: IoKnownSize + IoCapable<L::IoType>,
->> +    {
->> +        let (location, value) =3D value.into_io_val();
->> +
->> +        self.write(location, value)
->> +    }
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 32e209bc7985..adc3e2d1ac78 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -332,7 +332,6 @@ rust_common_cmd =3D \
+>  	-Zcrate-attr=3D'feature($(rust_allowed_features))' \
+>  	-Zunstable-options --extern pin_init --extern kernel \
+>  	--crate-type rlib -L $(objtree)/rust/ \
+> -	--crate-name $(basename $(notdir $@)) \
+>  	--sysroot=3D/dev/null \
+>  	--out-dir $(dir $@) --emit=3Ddep-info=3D$(depfile)
+> =20
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
+alyzer.py
+> index f9b545104f21..d25bc3d7e719 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -194,6 +194,12 @@ def generate_crates(srctree, objtree, sysroot_src, e=
+xternal_src, cfgs, core_edit
+>          except FileNotFoundError:
+>              return False
+> =20
+> +    def get_crate_name(path):
+> +        return subprocess.check_output(
+> +            [os.environ["RUSTC"], "--print", "crate-name", path],
+> +            stdin=3Dsubprocess.DEVNULL,
+> +        ).decode('utf-8').strip()
+> +
+>      # Then, the rest outside of `rust/`.
+>      #
+>      # We explicitly mention the top-level folders we want to cover.
+> @@ -212,7 +218,7 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
+ternal_src, cfgs, core_edit
+> =20
+>              logging.info("Adding %s", name)
+>              append_crate(
+> -                name,
+> +                get_crate_name(path),
+>                  path,
+>                  ["core", "kernel", "pin_init"],
+>                  cfg=3Dcfg,
 
