@@ -1,74 +1,79 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011058.outbound.protection.outlook.com [52.101.62.58])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011040.outbound.protection.outlook.com [52.101.62.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5042730CD89;
-	Tue, 10 Mar 2026 02:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37261DE887;
+	Tue, 10 Mar 2026 02:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773108360; cv=fail; b=sYDeqRa1fYzLb701JHbucA8NzEQyNxLrQhwbHmFOuI/V1iKFkpLA+RHjMxHBcp9GsJLk581i/rvVRNlc8rWhl+CDtCA+GiQ/yNR3he3j9m22+TTNLPLBCO28OTtjBmUO3R5LjlSCyJw8f2IPe0+VEEUOnWNwxW92kLAsN2oJrw0=
+	t=1773108695; cv=fail; b=B3qqXdj4W0uiheL+w1stBYlaDv/HDEamtIBoB5N+pzYDvbgUXkjoZFVq3u8RNjxMrr924ZdgQZA4pr1fXF1pffBw7Hrsy2HPdGdzzs0JoNON1pXI0Uget+Do6wgL/7wwEKvE9mLTikqgBaZP/F++O42OWy1VACZUevPCgkQcXSU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773108360; c=relaxed/simple;
-	bh=T8gxkkqwKhDV53+Xlb2QJIS+oy/l4GgLR3NL1nLGGy4=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=EUMSuAmn5xMmTFryN0rkDwJC3fUeef9YMU1WTLsoQA1iTAzBFJX/gqi2BQqLxnyVEmUJaVvUoYJyf77hPe4HWHRWPXPjdh0aE8zs3AeVZ0fADvM/aeWE963nhAZl+22g8Ptteg650HotX8/gnzvjulz2XAkOmPhKtvqWWFfun8Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=A6b8eDoT; arc=fail smtp.client-ip=52.101.62.58
+	s=arc-20240116; t=1773108695; c=relaxed/simple;
+	bh=mdAJUU9Qqwiel6NBtgCCBiIQuKTMMQ2OgxzH0H2XNJ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jzu0opNjBFX4QDuoObgSO/KMqKfkb9HX/5kr+LAzGP4/vwG9X9OLbMVhXZ4lJ9qJ3Mlw4NZHEG1YoQeFtrjCPuoHvibPGLIeJRi6g9TyQfyPt/azbZ3XcoF4u105bDVE9jl1S5C2Mx+PwU+0UzmJFpeuId9BTylGnTyAZJREtb0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H6WQyvQ8; arc=fail smtp.client-ip=52.101.62.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="A6b8eDoT"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H6WQyvQ8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MzOLQ7hPmPi1TfECyMh0i0Ys3fR5yCQC3edrGCIYxn7SuwnG61rhd3MHiZBsH72Tb0HpeAB4gfDG6HhqMWJ/qIWB/1yqEzj7IsJxLT2WNM+zTjs/1xnGeGRkotieOsDjnepQwVCaaYJQDsXI2wpg6QRVcE0XOJyVTmuorSNxYtiVd9BKT8vlANYZYK0Ku6WeAkbEohpW8qKqscBnncfAs2YFomAmSLSabkNICVZ/KPZDCBecwqdQeqPqEPOl+/R9LilEghlJzJkl4Ie9iq3uWsFF4miKoSiBoD3PEHQwuVjZPd5r1/5AqgQzZpHuWoN3LkagIHmAvvZ4XbeENIcplQ==
+ b=hVtgOVzn3DhVVC/13me+PgTx8UCgp4ObVYnvMtU+wZQWDzzbU+Xwi/we/wWW6jupgCGM8Xtp3kCuecyqO+LFtBCL5QhH0aYnF2objaTyNWITsTrkPVDL4IMh4+StHLQto5gfVKvphRxtzkqJ2lqv8KuZjsgh8C4Fb1UIDvYrJVNlnLOorjPjvA0kldzHY8CACfiuOnfkVbmrdR4jD70raIkITBdbRouZzfFlDLhnMg7SUKILqwOl9ldBw6lZox+GBw+GDRiG5oDQ+ba8gbQd7hl6Qmarx/fSON+itiHdf5jvXdBK08Ss9EJ4w2FkrmtFCqD9NTRrJMxwdlZxNVIddg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0V6o7NfQ1oqWuXPEx8iHHF3E0693D4VtZv2ph1ETIIQ=;
- b=u9E20Zx2QDLSoGHL5treFcc+tryh7CB14+2geHusE1y8TuGVYnRUk393tTOLia8B8hT826SS7temDeixbpGExAsuDo8vKF1KCS+E109Om6ue651tHdQ+pUCGmYvoFxEf0Znl/OVkeuNlJKdJChXBHq4xB4+f7tjv5wt9mpD4qx/g3w1vbGL6hZ3mW3dBqBk+3dgfwEaaF/tbqNSyKM5bAnLNnPDCc0MSiKFDM5hQL5qLpEGsBR/KiUw3NwjsVXPQY92Y3mnj5cHXgl1uMZA+iCP9ubwrWzNge1lLrCSceIyYbyxOh/1+U6LhD18NHKpL3yfK2FJcAnamFWMQHS0Gow==
+ bh=QzzqOHR9vlghsiCVDtS0DjwOG8POZhcKFeO0quMEEyU=;
+ b=xIHJRmkilEfu7dT794fhNLlOiULJcP/CjnalB9E3ntn3JgXOWGjDdvmsOfQKPzup6HOe+l9qcOLUQeGypr4640daMbxYb/FsVJyaMKI3f2pv580Q4HZ5lGbszHUIdOY2Z8bP2EJBfJrgoFz8Tfvg/2cyRa4yk9J5k3NOIh574GOPaw4eJKDMOycb8/8qxAXAI3aI2EEdwCJYus1cpWlEgX+QEGyfDoh0q8Tmlm0rtza7ECKpxZg26uMVbir8NxQwouFxqDXPQBI0HOHq5xuj2dU9rJgPfdOOpM48gL8iQSlnSIRvTlY3enEU7alEKGA5VJfJJDJ8HZGm26BSfoZMyg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0V6o7NfQ1oqWuXPEx8iHHF3E0693D4VtZv2ph1ETIIQ=;
- b=A6b8eDoTydlmh+JN5tsFMyWQFRhDmPtW4SQrKa8iJMvcDs20i80adF5SD1jo0X8EByDeEM6SgjO4pt68yPcUD8ChoY9WTr4OO+6HaUKHiZeWWGCfZ5NYhIxyPdYVQxsZpxmqA0Fm851+mlQxNwdOBGnO/fD4pWG15p9JIAQCkUnZm3KQm0R5HbV1Tn/B7OWE/kUXiFhz7lPOkbvW7I3CZKCUyFUZQ917zI1IdQVzSfHQ3+BjuUfhtg4bV1g54w6Lyl3tSCTa4JXJ2YrpUQruD7mrj/omGRduPch5QQclpUt2yjxTTDiZIvaw+DQZhoaNu57lasvd0bxO/+er+K6sCg==
+ bh=QzzqOHR9vlghsiCVDtS0DjwOG8POZhcKFeO0quMEEyU=;
+ b=H6WQyvQ8UqQ27t5lvHQNGdYyDtbWGP+2kuy3mRqi+0XqL09XVI8Bb5EGlimHIpuwn7Q78lL5w9RvjQ2rkyleVN1NNSV/80de7SmwQrkfeluNDAViRoi9fpphpGn/g7WWTqPeB3KS87F+MC43/gVxVn+EIn+tw5o8uFtDpl3Uk6IRoBv3rhrBZRiUvU+jOaNqc4hu3GJMYY5m0PXanXe8X9GmC2oo5jakKl5/eWYUNrh4Phl78Y4l7u0wDV6Qv2GrslSR1KvnCdhdZg6UHBDNx3eIEyIR+kZxWjcmZAsVYHO87gosKicyLdNJfA9MeMBk889MpaAfzzaGYQ9MbaptPg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH7PR12MB7307.namprd12.prod.outlook.com (2603:10b6:510:20b::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
- 2026 02:05:54 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9700.009; Tue, 10 Mar 2026
- 02:05:54 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Mar 2026 11:05:50 +0900
-Message-Id: <DGYQGB9NCHT1.1IU821055E3S1@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v8 07/10] rust: io: introduce `IntoIoVal` trait and
- single-argument `write_val`
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
- <20260310-register-v8-7-424f80dd43bc@nvidia.com>
- <DGYCXZ3BGN5X.1ZDK1YSNDXWRU@garyguo.net>
-In-Reply-To: <DGYCXZ3BGN5X.1ZDK1YSNDXWRU@garyguo.net>
-X-ClientProxiedBy: TY4P301CA0030.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:2be::9) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ SN7PR12MB6930.namprd12.prod.outlook.com (2603:10b6:806:262::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.11; Tue, 10 Mar 2026 02:11:28 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9700.010; Tue, 10 Mar 2026
+ 02:11:28 +0000
+From: John Hubbard <jhubbard@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Shashank Sharma <shashanks@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH v6 00/34] gpu: nova-core: firmware: Hopper/Blackwell support
+Date: Mon,  9 Mar 2026 19:10:50 -0700
+Message-ID: <20260310021125.117855-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY3PR03CA0001.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::6) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,121 +81,195 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH7PR12MB7307:EE_
-X-MS-Office365-Filtering-Correlation-Id: 586f37a1-dd66-4a40-afa9-08de7e498fa7
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SN7PR12MB6930:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee50f189-7f06-4499-879c-08de7e4a567b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	vZ9hlgKwqr/sX58pqYOcOVcCxalsCiEcRt0KUm5dKQWaqYXCEPcPXNKQ3ZcjZq45CleBMj/hRzRXHTdMMtrfYaDUH9ZAgzQHac7uaMp2hVVTtzLSlXykF8MYpNvz1gXeE72CWDtfEechgwQQgSauyH8v7t5U+f/7BQkR7GcAIPOqEJBWgji3mwVEKqmsQuLlvl3ys/auIOnYzQAUnskaWufNjGt2448gmw21MBxkC87kG78XPdIb5ijhanw+ZMTLChM26hDAGDefWb4xOznxjMMbO2SWWOOrAlwYwsa7Nczjh+fGtXR0gV89Tu2A2CBTe//Hlfd445rwZVDRuXDeKSxvLGv9B8Vz6tMLboipAzq593/2P9XPd2hzOBI2tGwwWNRKmI++xYGM2RJ8kU35NFQAtxXE/MXKrz04NSp5MfdTiJw30tk6OqM3EdyD0LsKsrffOOzd0xmX4f+mPvgMKstFg67AyWgtLk67r1+ZT2AGYNoKygsecBs69KUQRI2gmwnZNC7c2DU0DKAXvGw2CT2ErcZIHATPk6IpTtxDkB1zcrBYbkfjTBGlDVYRd24pNbPrVES6CvefRHCg6ZaFDtq+DSuz6qfbeWsEv41lhirrFHO2W/6f5D+vyvhf2gYNh6JHpxxa/HOH/QxfMVYn4IymlMx5EJYLVmOh81MuRE0r9KIDMBcfn/7gJpd2fgbJWIMeABxxq34L/dYmVqdrlYbkYwkEFmGCFmQQ7wKJJOA=
+	F6cpFKNsm8HvNZ/65EqgzqPRXBPv4RV7gs4E0qfuts+QjEAY+xPEkRymW08LdSPRNRilMKL3pVcqJLXQp00zbhyh+m6YRk/ReUxFTPZolwXchgDmTFy8PrpwZOD5s8zc67QSdw4lMm0iHiTXGHO9kW71MAuS5Ai+CHAcx3wPxxN1W6KY+zkbp7vTvjPcCGOQ7JjQjIux2URN+WE34Lt2jgY9y5856/4WJ4kMNHeDCPcbAH7oLw2xQmg3ZRMk+CNXmelATXYbaO7lvlzdPv98Xe/jDG6j9TtnQ7c3nJT/jRDKMhckwd4wE89mtUIWzLFhcrKuGe6bK1GN2X5Fovb1054bYT3knrH69Vy/z4oH4w3DUexMRJ3xoZ3CFZV7IiTpxxQZv7trnAVRuWhrFac5a40AEK8YZ4kteX4piI0r0t54n2r82sXs5MIXPuNbvfVxGReE3rSsdrZ0wL/P6ECawyuTYlkG9Rkf1qElUV8oMoefhhmqC2PDX5iiMbrravaK8Ajm6SsgxKY5QYuLHP1pJ/VDVQIp9hy0t6q7c/L1YNu+5bW8yAvhDwq/0Y/9fM1uYoi24xjSvNTnXscJiMh/dzSYzhf6zsEZAEXVhVC1FdKRFkH2sJVCxw4PeuKpNGcGoErG2b2Rl4keD1mtU9D0s1a5tXOp8/w2Io40rBeZp4c8fLHmK923kg4FXKIS9laXEI136tHnRVNGKVIfVnqxWs9MY9sABKuja5KmIfseZqg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S2xjUTljeHFMdjRZVzFLNHRIaUZDd1JwU3dReTloZWtySTRiRDYzOE1JSUdi?=
- =?utf-8?B?T0FRbkVoSlRTSnlSaDZqcHFIOWRNY29KaDNLYkk2UW1sc0F1ZFBwYmJFeDJB?=
- =?utf-8?B?SGkvUlJnOXpvSjlVQXFlN0M1MFFYQXZEYml1bVVwTmJPbk81Ly9jeTJUUE1t?=
- =?utf-8?B?MVBHVy9GKzV1YmhrQW9kRU1GekdSUE5tcjlhd3dMUmM0VmFJNHF6eHBmMmR1?=
- =?utf-8?B?anFyd0FYTTdRTlhMRWdzZEtBNUF2SmF4UVMweUJxUjhHWVRsRlI3SDQrSDRh?=
- =?utf-8?B?QjRpbUYrWFNUMkNDNTFDUjA5Y2pIUGVXOWlMdGVRUDd1cVR2QUxaSzR3QjMy?=
- =?utf-8?B?WlpYL2V4L1MwdjI3akQ0VTVSQm5DVThqdjlsVEtHK1FwRnZTajRtRDRHZGJN?=
- =?utf-8?B?cGRjaGpPM0FTeDRiMTZERjhDZ2xjVndYR1lGbGtOYUtqRGpiYklLY1E5STE0?=
- =?utf-8?B?VEoyTkwrOVlsZjdJUXpWdGhQNzZCS29tN3duSnlhYm1KSWYwbUpHYm00TUlm?=
- =?utf-8?B?a01WdHlXcHp1dGorR3pRZEhSLzlIamhvNUc3T2VvcHIwOUI1WkEraWhZbU1u?=
- =?utf-8?B?cjV0SU5jazZOVnltTHhIZ2lidFpoNml3SVNKb1pXNHFQeVhCR3o5aUhPemVq?=
- =?utf-8?B?a2lVVjczem9Lc3dnRGthaWhnVkYwZ2lOa0RLS3A4aVNQak0rOXc1ajlqWXZT?=
- =?utf-8?B?UXdkMXoyY1NxQlhicm53SkhhelFicUgvbjU0eU0rRkc5UkphS2xYaGNHc0FY?=
- =?utf-8?B?eXVsRXhOcXM5bWM1bGJRT05rSGN2Nm9MM2x0dmxwM1VqNTEweEZYend3TkNT?=
- =?utf-8?B?NW5JRDlWQU1hMmRkbHFDM2VkdFhMODhtL0RZT0xmWGFBT0puWmkxMWk2dm1C?=
- =?utf-8?B?eHJRdVBsMXFFcVQvVitRRTZURWdRRC9CenlnWFdxSE15WFc5YW11RVNqUUVB?=
- =?utf-8?B?Ukdvd0wyTDB0eG4rclFFdWQwdzQwQ0FpL2RvbnpLN2VQY1lnM3BxZVZ3YUNi?=
- =?utf-8?B?MkVBcE52NnZoQSs5M0ZKZjJzNXpVVm5acG80dGhGVk1ESGh1S2w2LzFrbnVa?=
- =?utf-8?B?ZU0zbW5uSHFuZno1OVBIYk9jOWFBOW1qSURNRFh3bVhVR3dDd3Mxd3BuaFVL?=
- =?utf-8?B?aERMVjRVTlJuUit4bXN4eDNuL0xMN0FVdDhmMWtWL3hqMFF5YkZOWVc3czJD?=
- =?utf-8?B?OThIUDFQQTUwN0ZKbFgxVXp5STgrcC9XRitZZkpZSXZaRmpCaTRuVEFkTEFH?=
- =?utf-8?B?NUhQVHlTcm5VUDVXdVBLekprYzRhVzU4c2J0bWRwTFJwMGVpZktXVGJqdnJj?=
- =?utf-8?B?Z0dDdWpSeU1TZjVhUjFENHdpdTh4K01RQ1RndHZoOSt2RG5YR1hqUnZmSFFu?=
- =?utf-8?B?UTNRNUQyVXZuVFhMdzcxM2pFNFZCczNkSjNqVnFycVRIR1pXTUV0NjlsYzBS?=
- =?utf-8?B?aDUvcnBOR3JkWXFuTTVXRXNybTJPQ2l1em1RcHUrb21mV3B3QUpuMmxvNHY0?=
- =?utf-8?B?WEZ3YnRyM01ieWhHb00wT0VjN3FIdjZDeTRFbnNZNHV2cEpRS3dWclpudng0?=
- =?utf-8?B?TXZybzBaRHNCT0xuQTN1dzgxR3dtdDJUY2tHdzAzVWVKZFF1TjNLVUpsM0c5?=
- =?utf-8?B?QVFGa21jaVVFYXA2QitSeTNQZWQ4dkhaMnVzWXhpQ2ZmTUl1eWVCTFRQNlI2?=
- =?utf-8?B?c2MyNEF3WWN2ZDZQUEw3ZlRLMVpxRmFTTUp1Mjl5VThRc2xsa21kNDJJV0Rm?=
- =?utf-8?B?dFcyNzAvTTdIdkhJZitZQnZxOEsvY1dHSk5hN2VvcjJQU2x1Z05lNUFtN1RV?=
- =?utf-8?B?enA0dFRURmlSWTJYdnFmR2diUlpMU0I0b0puQ2FCUUZOVWZGMHhKcmNCY2NN?=
- =?utf-8?B?MFZRYjIydVBoY2FYdTl2RGcxeS9XdWpCZWZOb0UrV3o2VXVEMFhVY2t5R2FV?=
- =?utf-8?B?Nk5KQTZIbld4bjVlTWs4NjRYbkRQTisraVhGSHdTYzcyeTRoR255ak4wRVNM?=
- =?utf-8?B?OXcvcVJ1NWJVSllEcklMOVVGYUYyQU1YTi9VMFRGSWU5N3B1THg1a0pqSUlC?=
- =?utf-8?B?UVlySEt6cmkyd2c0eTdWZEhiVk9kY1dEd1Z3dFdVMmIxNGRNaUJuSERnRlJZ?=
- =?utf-8?B?bkJ5YTh2ZnJmYXhTMFoxbEdBYWZJRENWck5oRmd2Wkt0VXRxT1lEbjV5Slpl?=
- =?utf-8?B?WDdPQTRlY3BzRmw0d2V1SnlFOU9XVDlUaXEzb3FFSlVPNGZWTzNzeXhWNXFU?=
- =?utf-8?B?OXBnQk0xQnFSYy9sTDVYTzdrb1JPVzdIVStmOWVQZStZM2s2S2kwdDNueXRp?=
- =?utf-8?B?YUxrNm5Ed1hJYnlyY2FlVW1ZQWpaTmhGWExxcFNsS2hxcEcybUl2a1lBM01N?=
- =?utf-8?Q?E0ofgCtJc35OM+CeTOH1tmXhklH8VTcYDjXdVg4mwjOUh?=
-X-MS-Exchange-AntiSpam-MessageData-1: PysdLJ74MR1hCw==
+	=?us-ascii?Q?RGPa80QZ0b3Gg7K2gIhWbH8WWMbw0dw4xdvRFHf289M4pHXlrvUeBqmGo6+v?=
+ =?us-ascii?Q?+oMngPcXj41m7sZQr4iEfvzzSjZWY1gMv/TNcMD1YRU6RQH4e3oAzy5bE00H?=
+ =?us-ascii?Q?oHpGxR2yqKFa2c05CJf/iL/0eF3a9uIkAZDxe+L0OI94fmkfMYoYDi0x5+SP?=
+ =?us-ascii?Q?7liwu7iCFVxLFx61hEzESjbf/RxYdTt5tTv+IBuoDRuvjlFWUlD1ZFUg/ZtW?=
+ =?us-ascii?Q?7Zx/TGQas3o936d0674jubD10haOrdLkepma9d+1i4huq5Nl8CUoRwzpsFUa?=
+ =?us-ascii?Q?nZoaevmiTvKmHtwWgcnnQhSSsbE2Pt1fSsGxxrnpFDma0FG/2uLejGHA5dd8?=
+ =?us-ascii?Q?mf/KgMtS8G76eVbPv+OMG+ORtIabqk+Y7EMYr1vzl2A6ocfoQR5C3hC8mZX6?=
+ =?us-ascii?Q?9T0f3sZcbLLu2sXTAZV15N71fHGYUexLgkBT4vupnnzDy2qMFKstoyBprv2z?=
+ =?us-ascii?Q?90jcXes1I4iq7pCT0n3RQFhup8xQngpUap5viiqqyzK5lcSVe4ojt2Jaiue8?=
+ =?us-ascii?Q?bpNt+U4lavOC2cHhSuG2v3i7Fi+cY60Ipu59ZOA5hqZQ3Hmdlm8OWuYWOjcy?=
+ =?us-ascii?Q?fPrqmSsI3FW7p+SbGUfVfUYDXzUTFwd/98ErZqZUC6YUAeVqxUz+pSTrwS5K?=
+ =?us-ascii?Q?0DT0Kxb2n2/e82DSK9nkx1qbeamZuxalECTvYIubl+8+xlQHN2Bfjx7EycP2?=
+ =?us-ascii?Q?t8Zq66MMDXRzUbHmFVXFxXvTbwEuK9q9eBNyDqEdrprEvjjrn+1nsKoydxkD?=
+ =?us-ascii?Q?5mi+hgk6nMsMoLFpSTFt85FqxOuLbEziyf1BZD2Or9jmZ09Tv3jLuhMipFFU?=
+ =?us-ascii?Q?Thxm1jP9Qd2t39PMmO/no4KgaPCGRUZqJEYT5AZIBp0dD9vFzvrcy3ww3M2q?=
+ =?us-ascii?Q?+pItg/5kd7eiXo965bquh6mhqRaHjSAFdUtaXHHLiVibYkL1+8fwNcszc9Ej?=
+ =?us-ascii?Q?wU0HhB0cigwp+N+PGeE6byyZTtWOFc7+GiDbX3cJQgsutIJOscKs5Hx7h+Bq?=
+ =?us-ascii?Q?UZJiNaVk6h9zz0rxX7/eh/aUeRDzDZKHGLh4rkV2o2H0LuCf8n32nqU4O6yz?=
+ =?us-ascii?Q?wJotEchD8uGXLsQrOowhCgTB3+Yk1QXX0ikyt9RvCfOjO/gN6nwDbhtx7X2h?=
+ =?us-ascii?Q?d92erHkamsfM+E9yg3/zMxC8oTXNNQBdrPy7h3padbXYRwTl0A/p8ADpAZwP?=
+ =?us-ascii?Q?HDNePjKTh9zIissLc56SDoQ+GCaYap2Dax4wHSTPV2d8TCxv8HNMe14yE2W8?=
+ =?us-ascii?Q?GmBhWnuDKauizQz04F6MN5meLESt4qBChlUqPS8I5eH3YAwYkEf92/qE2vcC?=
+ =?us-ascii?Q?9+VKsx481p3lSvfwgXV7U7MwklRxlR7CvqKxR0hjo0QSxbV/XGPKjk1kddnN?=
+ =?us-ascii?Q?79AjMURXJ20Z3f4vFBYPAA2UdGZJvHzGEK+uS+0i+A8wA7mZqmPLK+hSvDp8?=
+ =?us-ascii?Q?tr2OjqdoLSQqoLG8OUg3l8koEo9VSvBwJ8L2kL7ZQf0umyj9DTf+5pzWRYI+?=
+ =?us-ascii?Q?gmK06ZoGPJVD4UQZGIDSl+S/sN3CCeYaNc3Fv9sa4lsIxG5jFqSncedIp8vo?=
+ =?us-ascii?Q?rO/jMHXwym+7i5EqcbdDlSqyjGN6UB101Yr7E1w7QvW1uZx0AFP/+osbWcV0?=
+ =?us-ascii?Q?XyY+Ahd2cH+G7h2zH+J7N+pRPADWMouR1Vaa7YEh5HlXuis+8IBzrP2hgSVP?=
+ =?us-ascii?Q?J8QNk4WgKSMiVfBK/Zw1qDhfbcfHc8tACAAR+TMUhuhz2yPlMzXvqhwghPDa?=
+ =?us-ascii?Q?E2yhPTcmzQ=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 586f37a1-dd66-4a40-afa9-08de7e498fa7
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee50f189-7f06-4499-879c-08de7e4a567b
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 02:05:54.2548
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 02:11:27.9389
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0xzw+oCN+FlaSs3DxkJwqJmkhUljlbEFOHwjeBym/nWnT2bN67KNSgCodeVif8MHjoZwNe7cqhBXDeF9MgLSrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7307
+X-MS-Exchange-CrossTenant-UserPrincipalName: pkrZnFx6WmOlxY7Fr4sJmL0dThXsodhBKHeosSwMQ+kN+aDTHlwo1YuINc0RQoRZKCmf99pHlPb3zzaLbcPDQA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6930
 
-On Tue Mar 10, 2026 at 12:30 AM JST, Gary Guo wrote:
-> On Mon Mar 9, 2026 at 3:14 PM GMT, Alexandre Courbot wrote:
->> Some I/O types, like fixed address registers, carry their location
->> alongside their values. For these types, the regular `Io::write` method
->> can lead into repeating the location information twice: once to provide
->> the location itself, another time to build the value.
->>
->> Add a new `Io::write_val` convenience method that takes a single
->> argument implementing `IntoIoVal`, a trait that decomposes implementors
->> into a `(location, value)` tuple. This allows write operations on fixed
->> offset registers to be done while specifying their name only once.
->>
->> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->> ---
->>  rust/kernel/io.rs | 68 ++++++++++++++++++++++++++++++++++++++++++++++++=
-+++++++
->>  1 file changed, 68 insertions(+)
->>
->> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
->> index ed6fab001a39..09a0fe06f201 100644
->> --- a/rust/kernel/io.rs
->> +++ b/rust/kernel/io.rs
->> @@ -216,6 +216,22 @@ fn offset(&self) -> usize {
->>  // Provide the ability to read any primitive type from a [`usize`].
->>  impl_usize_ioloc!(u8, u16, u32, u64);
->> =20
->> +/// Trait implemented by items that contain both an I/O location and a =
-value to assign to it.
->> +///
->> +/// Implementors can be used with [`Io::write_val`].
->> +pub trait IntoIoVal<T, L: IoLoc<T>> {
->
-> Is this generics instead of associative types for some reason? If so, ple=
-ase
-> mention it in the commit mesasge.
+Hi,
 
-Associated types sound better in that situation, I don't think we can
-have several implementors with different returned types for the same
-value anyway.
+This is based on today's drm-rust-next. A git branch is here:
 
->
->> +    /// Consumes `self` and returns a `(location, value)` tuple describ=
-ing a valid I/O write
->> +    /// operation.
->> +    fn into_io_val(self) -> (L, T);
->> +}
->> +
->> +/// `(location, value)` tuples can be used as [`IntoIoVal`]s.
->> +impl<T, L: IoLoc<T>> IntoIoVal<T, L> for (L, T) {
->
-> Missing inline annotations.
+    https://github.com/johnhubbard/linux/tree/nova-core-blackwell-v6
 
-Fixed, thanks! (and elsewhere in this series as well)
+It's been tested on Turing (new!), Ampere and Blackwell:
+
+    NovaCore 0000:e1:00.0: GPU name: NVIDIA GeForce GTX 1650
+    NovaCore 0000:e1:00.0: GPU name: NVIDIA RTX A4000
+    NovaCore 0000:01:00.0: GPU name: NVIDIA RTX PRO 6000 Blackwell Max-Q
+    Workstation Edition
+
+Changes in v6:
+
+* Rebased onto drm-rust-next (v7.0-rc1 based).
+
+* Dropped the first two patches from v5 (aux device fix and pdev
+  macros), which have since been merged independently.
+
+* const_align_up(): reworked per review from Gary Guo, Miguel Ojeda,
+  and Danilo Krummrich: now returns Option<usize> instead of panicking,
+  takes an Alignment argument instead of a const generic, and no longer
+  needs the inline_const feature addition in scripts/Makefile.build.
+
+* The rust/sizes and SZ_*_U64 patches from v5 are no longer included.
+  I plan to post those as a separate series that depends on this one.
+
+Changes in v5:
+
+* Rebased onto linux.git master.
+
+* Split MCTP protocol into its own module and file.
+
+* Many Rust-based improvements: more use of types, especially. Also
+  used Result and Option more.
+
+* Lots of cleanup of comments and print output and error handling.
+
+* Added const_align_up() to rust/ and used it in nova-core. This
+  required enabling a Rust feature: inline_const, as recommended by
+  Miguel Ojeda.
+
+* Refactoring various things, such as Gpu::new() to own Spec creation,
+  and several more such things.
+
+* Fixed three Delta::ZERO busy-polls (patches 21, 24, 31) to use
+  non-zero sleep intervals (after just realizing that it was a bad
+  choice to have zero in there).
+
+* Reduced GH100/GB100 HAL duplication. Made FSP_PKEY_SIZE/FSP_SIG_SIZE
+  consistent across patches. Replaced fragile architecture checks with
+  chipset.arch(). Renamed LIBOS_BLACKWELL.
+
+* Narrowed the scope of some of the #![expect(dead_code)] cases,
+  although that really only matters within the series, not once it is
+  fully applied.
+
+John Hubbard (34):
+  gpu: nova-core: print FB sizes, along with ranges
+  gpu: nova-core: add FbRange.len() and use it in boot.rs
+  gpu: nova-core: Hopper/Blackwell: basic GPU identification
+  gpu: nova-core: factor .fwsignature* selection into a new
+    find_gsp_sigs_section()
+  gpu: nova-core: use GPU Architecture to simplify HAL selections
+  gpu: nova-core: apply the one "use" item per line policy to
+    commands.rs
+  gpu: nova-core: move GPU init and DMA mask setup into Gpu::new()
+  gpu: nova-core: set DMA mask width based on GPU architecture
+  gpu: nova-core: Hopper/Blackwell: skip GFW boot waiting
+  gpu: nova-core: move firmware image parsing code to firmware.rs
+  gpu: nova-core: factor out an elf_str() function
+  gpu: nova-core: don't assume 64-bit firmware images
+  gpu: nova-core: add support for 32-bit firmware images
+  gpu: nova-core: add auto-detection of 32-bit, 64-bit firmware images
+  gpu: nova-core: Hopper/Blackwell: add FMC firmware image, in support
+    of FSP
+  gpu: nova-core: Hopper/Blackwell: add FSP falcon engine stub
+  gpu: nova-core: Hopper/Blackwell: add FSP falcon EMEM operations
+  gpu: nova-core: Hopper/Blackwell: add FSP message infrastructure
+  rust: ptr: add const_align_up()
+  gpu: nova-core: Hopper/Blackwell: calculate reserved FB heap size
+  gpu: nova-core: add MCTP/NVDM protocol types for firmware
+    communication
+  gpu: nova-core: Hopper/Blackwell: add FSP secure boot completion
+    waiting
+  gpu: nova-core: Hopper/Blackwell: add FSP message structures
+  gpu: nova-core: Hopper/Blackwell: add FMC signature extraction
+  gpu: nova-core: Hopper/Blackwell: add FSP send/receive messaging
+  gpu: nova-core: Hopper/Blackwell: add FspCotVersion type
+  gpu: nova-core: Hopper/Blackwell: larger non-WPR heap
+  gpu: nova-core: Hopper/Blackwell: add FSP Chain of Trust boot
+  gpu: nova-core: Blackwell: use correct sysmem flush registers
+  gpu: nova-core: Hopper/Blackwell: larger WPR2 (GSP) heap
+  gpu: nova-core: refactor SEC2 booter loading into
+    BooterFirmware::run()
+  gpu: nova-core: Hopper/Blackwell: add GSP lockdown release polling
+  gpu: nova-core: Hopper/Blackwell: new location for PCI config mirror
+  gpu: nova-core: Hopper/Blackwell: integrate FSP boot path into boot()
+
+ drivers/gpu/nova-core/driver.rs          |  15 -
+ drivers/gpu/nova-core/falcon.rs          |   1 +
+ drivers/gpu/nova-core/falcon/fsp.rs      | 222 ++++++++++
+ drivers/gpu/nova-core/falcon/hal.rs      |  20 +-
+ drivers/gpu/nova-core/fb.rs              | 113 ++++-
+ drivers/gpu/nova-core/fb/hal.rs          |  38 +-
+ drivers/gpu/nova-core/fb/hal/ga102.rs    |   2 +-
+ drivers/gpu/nova-core/fb/hal/gb100.rs    |  75 ++++
+ drivers/gpu/nova-core/fb/hal/gb202.rs    |  62 +++
+ drivers/gpu/nova-core/fb/hal/gh100.rs    |  38 ++
+ drivers/gpu/nova-core/firmware.rs        | 186 ++++++++
+ drivers/gpu/nova-core/firmware/booter.rs |  35 +-
+ drivers/gpu/nova-core/firmware/fsp.rs    |  46 ++
+ drivers/gpu/nova-core/firmware/gsp.rs    | 140 ++----
+ drivers/gpu/nova-core/fsp.rs             | 525 +++++++++++++++++++++++
+ drivers/gpu/nova-core/gpu.rs             | 117 ++++-
+ drivers/gpu/nova-core/gsp/boot.rs        | 300 ++++++++++---
+ drivers/gpu/nova-core/gsp/commands.rs    |   8 +-
+ drivers/gpu/nova-core/gsp/fw.rs          |  80 +++-
+ drivers/gpu/nova-core/gsp/fw/commands.rs |  32 +-
+ drivers/gpu/nova-core/mctp.rs            | 105 +++++
+ drivers/gpu/nova-core/nova_core.rs       |   2 +
+ drivers/gpu/nova-core/regs.rs            |  97 +++++
+ rust/kernel/ptr.rs                       |  24 ++
+ 24 files changed, 2016 insertions(+), 267 deletions(-)
+ create mode 100644 drivers/gpu/nova-core/falcon/fsp.rs
+ create mode 100644 drivers/gpu/nova-core/fb/hal/gb100.rs
+ create mode 100644 drivers/gpu/nova-core/fb/hal/gb202.rs
+ create mode 100644 drivers/gpu/nova-core/fb/hal/gh100.rs
+ create mode 100644 drivers/gpu/nova-core/firmware/fsp.rs
+ create mode 100644 drivers/gpu/nova-core/fsp.rs
+ create mode 100644 drivers/gpu/nova-core/mctp.rs
+
+
+base-commit: dd8a93dafe6ef50b49d2a7b44862264d74a7aafa
+prerequisite-patch-id: 1ec0faa352dab8fa7c0f209474b75cd21931340d
+-- 
+2.53.0
+
